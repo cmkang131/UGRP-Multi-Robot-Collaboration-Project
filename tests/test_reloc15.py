@@ -94,3 +94,14 @@ def test_fixed_image_border_cannot_override_moving_floor():
     assert dense['status']=='measured' and dense['gradient_rank']==8
     assert abs(dense['delta_yaw']-expected)<abs(sparse['delta_yaw']-expected)
     assert dense['support_radius_px']==80 and not dense['correlation_is_accuracy_certificate']
+
+
+def test_unresolvable_dense_yaw_never_mutates_pose_or_renews_fix(monkeypatch):
+    from harness.reloc15_heading import Heading
+    import harness.reloc15_dense_yaw as mod
+    monkeypatch.setattr(mod,'measure',lambda *a:dict(status='measured',delta_yaw=math.radians(75),sigma_yaw=math.radians(7.8)))
+    h=Heading(dense_v1=True,quality_v1=True);h.servo={1:1500,3:803,4:1888,5:2192,6:1491};h.servo_since=0.
+    own=SimpleNamespace(x=np.array([2.,3.,.1]),P=np.eye(3)*.01);image=np.zeros((480,640,3),np.uint8)
+    h.observe(image,3.,own);h.observe(image,3.2,own)
+    np.testing.assert_allclose(own.x,[2.,3.,.1]);np.testing.assert_allclose(own.P,np.eye(3)*.01)
+    assert h.last['status']=='unknown_yaw_precision' and h.last_measurement_t is None

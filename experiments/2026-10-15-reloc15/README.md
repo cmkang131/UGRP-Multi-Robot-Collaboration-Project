@@ -29,3 +29,5 @@ R2 준비 후보(아직실행아님): `reloc15_update_budget_v1` 기본off는조
 추가평가재생은카메라/base회전분리를지지하지않았다. 운반27.8–125.7초actual-vs-command camera회전오차p95약.21°·yaw차최대.0067°([camera-summary](camera-summary.json)). 대신 R1 139.7→139.9초고오차영상쌍은35/39인라이어가이미지테두리에몰려H≈I가됐다. 실제floor특징4개는이상점으로버려졌다. 원본평가yaw−1.7448°에희소정합−.0244°,마스크ECC−2.6060°. 5개고오차쌍에서ECC오차.21–.86°로희소정합1.62–2.85°보다작다([분포](dense-check.json)). 이5쌍은이미열람한진단자료이며확증자료아님.
 
 `reloc15_dense_yaw_v1` 기본off는관측주기5Hz를유지하고정합방법만바꾼다. 경계제외반경80px는기존LK창21px·pyramid3의전체지지반경(21−1)/2×2³에서계산한다. ECC정합각50회는[OpenCV공식기본count](https://docs.opencv.org/5.0/main_modules/video_track.html)를계산량상한으로사용한다. correlation수용상수없음. dense homography Jacobian의8개파라미터rank를기계정밀도로확인하고,정/역방향순환잔차·모든cheirality해·기존pixel/pitch불확실도를기록한다. 높은correlation은정확도인증이아니다. 실제제어입력은여전히자기RGB/발행명령뿐이며정답은평가에만쓴다.
+
+R2自己지도93584의갱신후보는주행오류6/45(기준43/45)·전체73/216(기준152/214)로줄었지만0오류아님. 93583은주행29/33오류로남는다. R2dense운반은forward/backward82px·yaw75°·sigma7.8°인정합도적용한결함이확인돼2개모두SIGINT/SUPERVISOR_STOP했다. 새기본off `reloc15_heading_quality_v1`은기존S2 confidence3×σ가현행과제5°보다큰관측을unknown으로남기고자세/P/fix시각을바꾸지않는다. 5°는기존과제목표,3은기존S2값이며새보수오차를발명하지않는다. 해당분해능조건이실제정확도를보증한다는주장은하지않는다. R3은이한변수만비교한다.

@@ -26,13 +26,14 @@ def commanded_rotation(servo):
 
 
 class Heading:
-    def __init__(self, *, sample_s=.2, dense_v1=False):
+    def __init__(self, *, sample_s=.2, dense_v1=False, quality_v1=False):
         # R2 .1s = native 10Hz command clock/user recording cadence. At
         # saved failure p95/max yaw speed16.87/17.99deg/s this spans1.69/1.80deg
         # instead of3.37/3.60deg at .2s, below existing5deg task target.
         if sample_s not in (.1,.2):raise ValueError('native 10Hz/5Hz only')
         self.sample_s=sample_s
         self.dense_v1=dense_v1
+        self.quality_v1=quality_v1
         self.previous=None;self.delta_yaw=0.;self.servo=None;self.servo_since=None
         self.last_measurement_t=None;self.accepted=0;self.last=dict(category='no_pair')
 
@@ -64,6 +65,16 @@ class Heading:
             observation=yaw_measurement(old['rgb'],rgb,cm,self.servo,None)
         self.last.update(observation)
         if observation['status']!='measured':return
+        if self.quality_v1:
+            from harness.zone_solo_cyan_rotation_envelope import PARAMS as YAW
+            # Existing5deg task precision and existing S2 confidence multiplier3.
+            # R2 t29.7 accepted75deg with sigma7.8deg/FB82px. Such a measurement
+            # cannot resolve the task heading and must not mutate it or its age.
+            bound=YAW['confidence_sigma']*observation['sigma_yaw']
+            self.last.update(precision_bound_rad=bound,task_heading_precision_rad=math.radians(5))
+            if not np.isfinite(bound) or bound>math.radians(5):
+                self.last.update(category='weak_observation',status='unknown_yaw_precision')
+                return
         # Replace this pair's command yaw exactly once. Preserve xy and its
         # epoch; relative yaw is not an absolute metric RGB fix.
         own.x[2]=wrap(own.x[2]+observation['delta_yaw']-command_yaw)

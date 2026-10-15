@@ -1,6 +1,280 @@
 {
   "runs": [
     {
+      "run": "reloc15-r2-carry-93266-candidate-e44b4987",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r2-carry-93266-candidate-e44b4987/raw",
+      "source_sha": "e44b49873caf903a7bbcdf8aa054aabf88456c2e",
+      "status": "interrupted",
+      "termination_category": "supervisor_stop",
+      "termination_reason": "confirmed dense yaw accepts ill-conditioned alignment: 93315 t29.7 75deg with FB82px and sigma7.8deg; do not apply measurements exceeding existing5deg task precision; add opt-in quality admission",
+      "sim_s": null,
+      "first30": {
+        "elapsed_sim_s": 30.00000000005842,
+        "wall_elapsed_s": 85.1530883359992,
+        "wall_per_sim": 2.8384362868944564,
+        "top_capture": false
+      },
+      "physical_success": null,
+      "funnel": {
+        "pickup_seen": 1,
+        "aligned": 1,
+        "lifted_controller": 1,
+        "zone_place_view": 0,
+        "release": 0
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 83,
+        "blocked_held": 169,
+        "measurements_by_phase": {
+          "pickup_search": 1,
+          "approach": 270,
+          "align": 18,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "pose_error": {
+        "N": 544,
+        "xy_m": {
+          "N": 544,
+          "min": 0.012827186793623794,
+          "p50": 0.22897888778202374,
+          "p90": 0.3135999395764207,
+          "p95": 0.31396175556557704,
+          "p99": 0.3149309950753465,
+          "max": 0.31589449893712296
+        },
+        "yaw_deg": {
+          "N": 544,
+          "min": 0.0002705680547237996,
+          "p50": 1.0388728355714631,
+          "p90": 5.58530871859696,
+          "p95": 7.138766193794112,
+          "p99": 70.24164511887592,
+          "max": 92.97927628230302
+        },
+        "true_yaw_over20_N": 16,
+        "trigger_recall": 0.0,
+        "max_untriggered_yaw_deg": 92.97927628230302,
+        "missed_over20_by_phase": {
+          "carry_to_zone": 16
+        }
+      },
+      "sha256": {
+        "raw/result.json": "e5f3ebbf238b4a74762afdf55890ae915299f3d4523957fd0e20592413ad02aa",
+        "raw/teacher-commands.jsonl.zst": "92388128d8bb2445897812ec0ad68c00c1206a6b4bda273920b931414df23ea7",
+        "raw/eval-only.jsonl.zst": "58321e2659c6fdedc3a74b85f89c70c8c2af67ff7066db247554cca0248337d8",
+        "EXIT": "f5bde7eb9f6c71611dc5726e8aca3eb4eba3e386da49e0a4ed5c295a90a73a0d"
+      },
+      "heading_observation_counts": {
+        "servo_unsettled_or_no_pair": 211,
+        "relative_rgb_yaw": 61
+      },
+      "held_cargo_yaw": {
+        "N": 149,
+        "p50_p95_max_deg": [
+          3.9380592381909447,
+          50.42202779083384,
+          92.97927628230302
+        ],
+        "over20_N": 16
+      },
+      "failure_rgb_buffer": {
+        "reason": "interrupted",
+        "recording_only": true,
+        "training_rgb": false,
+        "hz": 10,
+        "span_sim_s": 10,
+        "frame_N": 101,
+        "bytes": 1149578
+      },
+      "result_status": "interrupted"
+    },
+    {
+      "run": "reloc15-r2-carry-93315-baseline-e44b4987",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r2-carry-93315-baseline-e44b4987/raw",
+      "source_sha": "e44b49873caf903a7bbcdf8aa054aabf88456c2e",
+      "status": "interrupted",
+      "termination_category": "supervisor_stop",
+      "termination_reason": "confirmed fixed-image-border consensus defect in sparse RGB yaw; stop this owned baseline and use preserved R1 comparator; dense fix only for further carry",
+      "sim_s": null,
+      "first30": {},
+      "physical_success": null,
+      "funnel": {
+        "pickup_seen": 1,
+        "aligned": 0,
+        "lifted_controller": 0,
+        "zone_place_view": 0,
+        "release": 0
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 0,
+        "blocked_held": 0,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "pickup_search": 1,
+          "approach": 60,
+          "align": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "pose_error": {
+        "N": 72,
+        "xy_m": {
+          "N": 72,
+          "min": 0.012546639813297223,
+          "p50": 0.059994332806245346,
+          "p90": 0.06727096113453268,
+          "p95": 0.07033308685138276,
+          "p99": 0.07033396787997187,
+          "max": 0.07033415198836035
+        },
+        "yaw_deg": {
+          "N": 72,
+          "min": 0.8765254007656614,
+          "p50": 1.7153572227890463,
+          "p90": 2.0617643590237726,
+          "p95": 2.113794813050615,
+          "p99": 2.153678548035509,
+          "max": 2.1739178680538886
+        },
+        "true_yaw_over20_N": 0,
+        "trigger_recall": null,
+        "max_untriggered_yaw_deg": 2.1739178680538886,
+        "missed_over20_by_phase": {}
+      },
+      "sha256": {
+        "raw/result.json": "12a6e25c6961909497b2b9dd8dc2abf2210730d9c66426303e1a60536c02310c",
+        "raw/teacher-commands.jsonl.zst": "23639fe12a78a207bd1850a35dd57b0f13fa5a9371064ded018cfedc00f59458",
+        "raw/eval-only.jsonl.zst": "8c364484388f398fad9f1adb25199cc223e1e8a48f1250253815fc671a8b4d91",
+        "EXIT": "f5bde7eb9f6c71611dc5726e8aca3eb4eba3e386da49e0a4ed5c295a90a73a0d"
+      },
+      "heading_observation_counts": {
+        "servo_unsettled_or_no_pair": 36
+      },
+      "held_cargo_yaw": {
+        "N": 0,
+        "p50_p95_max_deg": [],
+        "over20_N": 0
+      },
+      "failure_rgb_buffer": {
+        "reason": "interrupted",
+        "recording_only": true,
+        "training_rgb": false,
+        "hz": 10,
+        "span_sim_s": 10,
+        "frame_N": 72,
+        "bytes": 1093665
+      },
+      "result_status": "interrupted"
+    },
+    {
+      "run": "reloc15-r2-carry-93315-candidate-e44b4987",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r2-carry-93315-candidate-e44b4987/raw",
+      "source_sha": "e44b49873caf903a7bbcdf8aa054aabf88456c2e",
+      "status": "interrupted",
+      "termination_category": "supervisor_stop",
+      "termination_reason": "confirmed dense yaw accepts ill-conditioned alignment: 93315 t29.7 75deg with FB82px and sigma7.8deg; do not apply measurements exceeding existing5deg task precision; add opt-in quality admission",
+      "sim_s": null,
+      "first30": {
+        "elapsed_sim_s": 30.00000000005842,
+        "wall_elapsed_s": 140.8440775880008,
+        "wall_per_sim": 4.694802599124173,
+        "top_capture": false
+      },
+      "physical_success": null,
+      "funnel": {
+        "pickup_seen": 1,
+        "aligned": 1,
+        "lifted_controller": 1,
+        "zone_place_view": 0,
+        "release": 0
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 531,
+        "blocked_held": 192,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "pickup_search": 1,
+          "approach": 68,
+          "align": 21,
+          "hover": 4,
+          "carry_reacquire": 1,
+          "carry_reobserve": 1
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "pose_error": {
+        "N": 826,
+        "xy_m": {
+          "N": 826,
+          "min": 0.0023316059215324207,
+          "p50": 0.09515537920982547,
+          "p90": 0.1290586980445431,
+          "p95": 0.1318858589895305,
+          "p99": 0.17160493358140688,
+          "max": 0.20938562982680242
+        },
+        "yaw_deg": {
+          "N": 826,
+          "min": 0.007628060807482324,
+          "p50": 1.9238835389704534,
+          "p90": 18.934727342564578,
+          "p95": 94.736978819392,
+          "p99": 94.86208949708306,
+          "max": 95.28180230882516
+        },
+        "true_yaw_over20_N": 69,
+        "trigger_recall": 0.0,
+        "max_untriggered_yaw_deg": 95.28180230882516,
+        "missed_over20_by_phase": {
+          "carry_to_zone": 4,
+          "carry_recover_lower": 10,
+          "carry_recover_open": 7,
+          "carry_recover_retract": 18,
+          "carry_recover_backoff": 25,
+          "carry_reobserve": 5
+        }
+      },
+      "sha256": {
+        "raw/result.json": "f22cce318fe4a81a7ac638e40b466b54b961e9076080d212879da2423c2af53b",
+        "raw/teacher-commands.jsonl.zst": "68d7f5cfb1133b0beb369666930fb8b2218b0da0ea575c5dafe34873ccb8c260",
+        "raw/eval-only.jsonl.zst": "fe626cafb02be3d694f74ef01e43e0a1ae05bd59b588ad7ff40eddf66f5b7374",
+        "EXIT": "f5bde7eb9f6c71611dc5726e8aca3eb4eba3e386da49e0a4ed5c295a90a73a0d"
+      },
+      "heading_observation_counts": {
+        "servo_unsettled_or_no_pair": 348,
+        "relative_rgb_yaw": 65
+      },
+      "held_cargo_yaw": {
+        "N": 158,
+        "p50_p95_max_deg": [
+          16.47312807265937,
+          21.9604429403418,
+          94.91255575405206
+        ],
+        "over20_N": 8
+      },
+      "failure_rgb_buffer": {
+        "reason": "interrupted",
+        "recording_only": true,
+        "training_rgb": false,
+        "hz": 10,
+        "span_sim_s": 10,
+        "frame_N": 101,
+        "bytes": 1463142
+      },
+      "result_status": "interrupted"
+    },
+    {
       "run": "reloc15-r2-selfmap-93583-candidate-44ba1bc6",
       "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r2-selfmap-93583-candidate-44ba1bc6/raw",
       "source_sha": "44ba1bc6d7aaeb8cbd9408e8dcf02f9d2d56f262",

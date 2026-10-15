@@ -1,6 +1,6 @@
 {
   "schema": "ugrp.reloc15.rejection_table.v1",
-  "stage": "R1 completed before R2",
+  "stage": "R2 completed before final carry quality comparison",
   "analysis_host": "gcp1",
   "source": "reloc14/round3-full.json",
   "source_sha256": "64fa375b4ccb006c0c5714fb17c2caae968dd608b6205038690ace4eaa3aad9b",
@@ -557,6 +557,13 @@
       "round": 1,
       "summary": "round1.json",
       "source_sha": "9607de16cfeac0a5ae1308732bab33604b8db7e7"
+    },
+    {
+      "round": 2,
+      "summary": "round2.json",
+      "selfmap_source_sha": "44ba1bc6c0eb0464d0db1de88e77a82a2ab3e361",
+      "carry_source_sha": "e44b49873caf903a7bbcdf8aa054aabf88456c2e",
+      "note": "full actual source_sha is present per run; selfmap/carry sources and conditions not pooled"
     }
   ]
 }
