@@ -39,7 +39,7 @@ STRATA = ((-.30, -.02), (0., .10), (.10, .20), (.20, .30))
 PEERS = ('other_end', 'approaching', 'near_own', 'absent')
 FOOTPRINT = [(-.12, -.05), (.12, -.05), (.12, .05), (-.12, .05)]
 CROSS_OFFSET_M = .08
-LOUD = ('nearest', 'alternating')
+LOUD = ('nearest', 'alternating', 'fixed_rgb_lugs_v1')
 
 
 def assign(own, other, crate, p=CRATE):
@@ -135,7 +135,11 @@ def prepare(*, count=40, seed=77000, split='crate_gate', destination='B', assign
                 pa = az+math.pi+rng.uniform(-.8, .8)
                 other = [x+pr*math.cos(pa), y+pr*math.sin(pa)]
             otheryaw = math.atan2(y-other[1], x-other[0])
-            if assignment == 'nearest':
+            if assignment == 'fixed_rgb_lugs_v1':
+                # Public role tickets, independent of both GT spawn positions.
+                # Runtime confirms the assigned colour in each own RGB frame.
+                end1,end2='teal','blue'
+            elif assignment == 'nearest':
                 end1, end2 = assign(own, other, crate)
             else:
                 end1 = 'teal' if i % 2 == 0 else 'blue'
@@ -176,7 +180,8 @@ def prepare(*, count=40, seed=77000, split='crate_gate', destination='B', assign
                 'roles': roles, 'role_tickets': {rid: CRATE.role_of(e) for rid, e in roles.items()},
                 'target_item': CRATE.item_id, 'object_kind': 'heavy_crate', 'skill': 'grasp_lift_release',
                 'destination_region': 'zone_'+destination, 'lug_color_scene': 'crate_lug_colors_v1',
-                'assignment_source': 'demo_rule_nearest_lug' if assignment == 'nearest' else 'demo_rule_alternating',
+                'assignment_source': ('fixed_rgb_lugs_v1' if assignment == 'fixed_rgb_lugs_v1' else
+                                      'demo_rule_nearest_lug' if assignment == 'nearest' else 'demo_rule_alternating'),
                 'initial_pan': {'r1': rng.randint(500, 2500), 'r2': rng.randint(500, 2500)},
                 'peer_case': peer, 'stratum': {'axial_outside_m': [lo, hi], 'sampled_outside_m': d,
                                                'axis': 'y' if axis_y else 'x', 'side': side_sign},

@@ -81,11 +81,22 @@ class QuantizedWheels:
 
 class PairReleaseCode:
     """Code-side GO/ACK and shared step choice. Reads only posted messages."""
-    def __init__(self, robots, margin=MARGIN_M):
+    def __init__(self, robots, margin=MARGIN_M, *, channel='legacy', input_audit=None):
+        if channel not in ('legacy','fixed_signals_v1'):raise ValueError('unsupported release channel')
+        if channel=='fixed_signals_v1' and input_audit is None:raise ValueError('fixed release requires provenance audit')
+        self.channel=channel;self.input_audit=input_audit
         self.robots = tuple(robots); self.margin = margin
         self.outbox = []; self.delivered = {r: None for r in robots}
         self.go = None; self.log = []; self.steps = 0
     def post(self, rid, message, now):
+        if self.channel=='fixed_signals_v1':
+            from harness.grasp_act_input_audit import admit
+            message=admit(message,self.input_audit)
+            if (rid not in self.robots or set(message)!={'phase','signal'}
+                    or message['phase'] not in ('look','observe','lowered')
+                    or message['signal'] not in ('INSIDE','OUTSIDE','UNKNOWN','READY')
+                    or (message['phase']=='lowered')!=(message['signal']=='READY')):
+                raise ValueError('fixed channel forbids relative margins/positions')
         self.outbox.append((now+SIGNAL_DELAY_S, rid, dict(message, t=now)))
     def deliver(self, now):
         keep = []
@@ -118,6 +129,17 @@ class PairReleaseCode:
 
     def decide(self, now, *, require_seen=True):
         msgs = {r: self.delivered[r] for r in self.robots}
+        if self.channel=='fixed_signals_v1':
+            signals=[msgs[r]['signal'] for r in self.robots]
+            if any(s not in ('INSIDE','OUTSIDE','UNKNOWN') for s in signals):
+                raise ValueError('release decision requires fresh observed fixed signals')
+            if all(s=='INSIDE' for s in signals):choice={'action':'lower'}
+            elif 'UNKNOWN' in signals:choice={'action':'observe'}
+            elif all(s=='OUTSIDE' for s in signals):choice={'action':'handoff'}
+            else:choice={'action':'shift','shift_m':OUTSIDE_STEP_M*(1 if signals[0]=='OUTSIDE' else -1)}
+            choice.update(t=now,channel=self.channel,signals=signals)
+            self.log.append(choice);self.steps+=choice['action']=='shift'
+            return choice
         lo, hi, evidence = self.interval(msgs)
         seen = all(k in ('edge', 'inside_lb') for k in evidence) or not require_seen
         exact = {r: msgs[r]['kind'] == 'edge' for r in self.robots}

@@ -23,7 +23,21 @@ LIFT_WAIT_LIMIT_S = 20.
 
 
 class CrateGraspTeacher(VisibleOnlyGraspTeacher):
-    def __init__(self, *args, profile=CRATE, crate_lift_pose='off', crate_approach_recovery='off', **kwargs):
+    def __init__(self, *args, profile=CRATE, crate_lift_pose='off', crate_approach_recovery='off',
+                 crate_wall_footprint='off', crate_stances='off', crate_pulse_safety='off', **kwargs):
+        from sim.crate_navigation_v12 import WALL_MODE, STANCE_MODE
+        from sim.crate_approach_recovery import PULSE_MODES
+        if crate_wall_footprint not in ('off',WALL_MODE) or crate_stances not in ('off',STANCE_MODE):
+            raise ValueError('unknown crate navigation mode')
+        if crate_pulse_safety not in PULSE_MODES:raise ValueError('unknown crate pulse safety')
+        if any(v!='off' for v in (crate_wall_footprint,crate_stances,crate_pulse_safety)):
+            if crate_approach_recovery=='off' or crate_lift_pose!=ANTIPODAL_OPTION:
+                raise ValueError('crate12 navigation requires recovery and antipodal grasp')
+        if crate_wall_footprint!='off' and crate_pulse_safety=='off':
+            raise ValueError('wall footprint requires swept pulse checks')
+        self.crate_wall_footprint=crate_wall_footprint
+        self.crate_stances=crate_stances
+        self.crate_pulse_safety=crate_pulse_safety
         from sim.crate_approach_recovery import MODES, OPTION
         if crate_approach_recovery not in MODES:
             raise ValueError(f'crate_approach_recovery: {crate_approach_recovery}')
@@ -58,6 +72,20 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
             self.staging_distance = STATION_M
             self.approach_choice = (0., STATION_M)
             self.approach_distances = (STATION_M,)
+        if crate_stances!='off':
+            from sim.crate_navigation_v12 import ANGLES_DEG,DISTANCES_M,stance_grasp_valid
+            self.approach_angles=ANGLES_DEG
+            self.approach_distances=tuple(dict.fromkeys((self.staging_distance,*DISTANCES_M)))
+            self.approach_grasp_filter=lambda world,pose:stance_grasp_valid(world,self.rid,self.end,pose)
+
+    def _navigation(self, world):
+        if self.crate_wall_footprint=='off':return None
+        from sim.crate_navigation_v12 import WallFootprint
+        return WallFootprint(world,self.rid,self.folded_ready,self.cargo_profile,self.bounds)
+
+    def _uses_goal_set(self, world):
+        if self.crate_wall_footprint!='off' or self.crate_stances!='off':return True
+        return super()._uses_goal_set(world)
 
     def _begin_relook(self, now, reason):
         if self.crate_lift_pose in CARTESIAN_MODES:
@@ -97,7 +125,7 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
             radius, discs, rects = constraints(world, self.rid, self.folded_ready, self.cargo_profile)
             fixed = [d for d in discs if not isinstance(d, PeerDisc)]
             legal = [c for c in candidates if c['reason'] != 'grasp_geometry']
-            if legal and all(c['reason'] == 'blocked_goal' and not free(c['goal'], fixed, rects, radius)
+            if self.crate_wall_footprint=='off' and legal and all(c['reason'] == 'blocked_goal' and not free(c['goal'], fixed, rects, radius)
                              for c in legal):
                 self._approach_handoff(now)
                 self.crate_recovery_log.append({'t': now, 'recovery': 'static_stances_blocked_handoff'})
@@ -105,14 +133,26 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
 
     def _check_navigation_pulse(self, truth, value, now):
         # A held or invisible assigned lug is never read by this correction.
-        if (self.crate_approach_recovery == 'off' or self.phase not in ('approach', 'align', 'ready')
-                or truth['visibility'][self.rid]['visible_probes'] < 5 or truth['beam'] is None):
+        if self.crate_approach_recovery == 'off' or self.phase not in ('approach','align','ready','search','relook'):
             return value
         from sim.crate_approach_recovery import safe_pulse
+        if (self.phase in ('search','relook') or truth['visibility'][self.rid]['visible_probes'] < 5
+                or truth['beam'] is None):
+            # Losing the lug must not revoke an already known static wall.
+            # Only own issued pose and retained walls are needed for this check.
+            if (self.crate_wall_footprint!='off' and any(value['wheels'])
+                    and not safe_pulse(value,truth['robots'][self.rid]['pose'],[],truth.get('walls',[]),.13,
+                                       mode=self.crate_pulse_safety,wall_footprint=True)):
+                self.crate_recovery_log.append({'t':now,'recovery':'persistent_wall_search_hold'})
+                return self._hold(now)
+            return value
         from sim.grasp_act_visible_route import constraints, waypoint, drive
         pose, g, _, goal = self._geometry(truth)
         radius, discs, rects = constraints(truth, self.rid, self.folded_ready, self.cargo_profile)
-        if safe_pulse(value, pose, discs, rects, radius):
+        footprint=self.crate_wall_footprint!='off'
+        if footprint:rects=truth.get('walls',[])
+        safe=lambda c:safe_pulse(c,pose,discs,rects,radius,mode=self.crate_pulse_safety,wall_footprint=footprint)
+        if safe(value):
             return value
         # Use the same collision-checked route with yaw decoupled. Recheck
         # the quantized wheel pulse too; no untested fallback can be issued.
@@ -121,8 +161,18 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
             effort = drive(pose, goal, target, g)
             effort['turn'] = 0.
             candidate = self._continuous(now, **effort)
-            if any(candidate['wheels']) and safe_pulse(candidate, pose, discs, rects, radius):
+            if any(candidate['wheels']) and safe(candidate):
                 self.crate_recovery_log.append({'t': now, 'recovery': 'safe_translation_without_yaw'})
+                return candidate
+        if self.crate_pulse_safety!='off':
+            # Translation into an inflated crate remains rejected. Pure yaw
+            # leaves circular cargo clearance unchanged; walls still sweep the
+            # oriented chassis. No arbitrary mm tolerance is granted.
+            error=math.atan2(g[1]-pose[1],g[0]-pose[0])-pose[2]
+            error=math.atan2(math.sin(error),math.cos(error))
+            candidate=self._continuous(now,0.,0.,max(-.15,min(.15,.6*error)))
+            if any(candidate['wheels']) and safe(candidate):
+                self.crate_recovery_log.append({'t':now,'recovery':'no_closer_yaw'})
                 return candidate
         self.crate_recovery_log.append({'t': now, 'recovery': 'unsafe_pulse_hold_replan'})
         self.path = []; self.path_goal = None; self.next_plan = now
@@ -248,6 +298,8 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
     def diagnostic(self):
         return {**super().diagnostic(), 'profile': 'visible_only_crate', 'lift_barrier': True,
                 'crate_approach_recovery': self.crate_approach_recovery,
+                'crate_wall_footprint': self.crate_wall_footprint,
+                'crate_stances': self.crate_stances, 'crate_pulse_safety': self.crate_pulse_safety,
                 'crate_recovery_log': self.crate_recovery_log,
                 'closed_at': self.closed_at, 'lift_done': self.lift_done,
                 'crate_lift_pose': self.crate_lift_pose, 'lift_pose_selection': self.lift_selection,

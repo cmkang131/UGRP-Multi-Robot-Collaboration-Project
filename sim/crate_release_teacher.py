@@ -17,9 +17,39 @@ from sim.cargo_teacher_profile import CRATE
 
 
 class CrateReleaseTeacher(ReleaseTeacher):
-    def __init__(self, *args, profile=CRATE, **kwargs):
+    def __init__(self, *args, profile=CRATE, input_audit=None, **kwargs):
         super().__init__(*args, **kwargs)
         self.profile = profile
+        self.input_audit=input_audit
+        self.observation_sources=frozenset()
+
+    def perceive(self, obs, now):
+        if self.input_audit is not None:
+            from harness.grasp_act_input_audit import Sourced,admit
+            if not isinstance(obs,Sourced):raise ValueError('strict release requires sourced observations')
+            self.observation_sources=obs.sources
+            obs=admit(obs,self.input_audit)
+        return super().perceive(obs,now)
+
+    def fixed_message(self, phase, now):
+        """Local report -> finite vocabulary; continuous margins never cross."""
+        from harness.grasp_act_input_audit import sourced
+        if phase not in ('look','observe'):
+            return sourced({'phase':phase,'signal':'READY'},'issued_commands')
+        report=self.last_report or {}
+        m=report.get('margin_m');kind=report.get('kind')
+        from sim.grasp_act_release_teacher import MARGIN_M
+        # Current own scan only, no stale report or map-prior claim of INSIDE.
+        fresh=self.last_scan is not None and bool(self.last_scan[1]) and now-self.last_scan[0]<=.15+1e-9
+        signal='UNKNOWN'
+        if fresh:
+            if kind in ('edge','inside_lb') and m is not None and m>=MARGIN_M:
+                signal='INSIDE'
+            elif kind=='outside' or (kind=='edge' and m is not None and m<MARGIN_M):
+                signal='OUTSIDE'
+            # A small *lower bound* is not evidence of insufficient clearance.
+        if not self.observation_sources:raise ValueError('release report missing observation provenance')
+        return sourced({'phase':phase,'signal':signal},*self.observation_sources,'issued_commands')
 
     def _outward(self, axis):
         sign = -1. if self.end == 'teal' else 1.

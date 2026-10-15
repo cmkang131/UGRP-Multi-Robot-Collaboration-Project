@@ -1,0 +1,1870 @@
+{
+  "schema": "ugrp.crate12.summary.v1",
+  "source_revision": "the Git commit containing this record; exact pushed SHA in crate12 queue and local delivery.json",
+  "baseline_measurement_commit": "f2eb280a45c4ab51c1dd7f950ae210468bb821fc",
+  "best_baseline": {
+    "sha8": "bf31840f",
+    "success": 8,
+    "N": 10,
+    "scope": "prior GCP physical teacher diagnostic; not crate12"
+  },
+  "profile": "crate12_v1",
+  "default": "off",
+  "physical_runs": 0,
+  "physical_effect_verified": false,
+  "new_results_pooled_with_prior": false,
+  "tests": {
+    "passed": 88,
+    "failed": 0,
+    "errors": 0,
+    "files": [
+      "tests/test_crate12.py",
+      "tests/test_crate_approach_recovery.py",
+      "tests/test_grasp_act_goal_set.py"
+    ],
+    "log": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate12-audit/tests.log",
+      "sha256": "58f8e6aeef87b4eb6cc754ae56c501badbd03ad2da8bb213f0725e10807ae970"
+    },
+    "junit": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate12-audit/tests.xml",
+      "sha256": "8515cc924987b64a494cbff0ee8ee5591e3da452daec2d3a4cb12b792b1f7e65"
+    }
+  },
+  "replay_scope": "grasp commands+phase+done only; stop before first divergence; RGB colour, release, lookaround and final outcome NOT replayed",
+  "off_ledger_match_runs": 9,
+  "off_matching_robot_commands": 4816,
+  "input_sources": {
+    "crate-diag-77978-bf31840f": {
+      "source_sha": "bf31840fe16cd2d37631d8a8e50ff077e3d42575",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77978-bf31840f/raw",
+      "uncompressed_input_sha256": {
+        "plan.json": "ba83dfc8b384a0cd3e1a36d7b49e4cfca4382d50457e1b85dc0dd3d69b32cc68",
+        "result.json": "234b9cc84190a7bb8533cfcafba1b009b270ecd3093c1865b314da8f31ac7c83",
+        "eval-only.jsonl": "398e1a670e82b33b5d29abbe03cd4573390d0333c075ccaaea0e7b350affd7f8",
+        "teacher-r1.jsonl": "1b7580eed540266853d8e64a32659d850b9a940aa7086a029d8e6f94851498b6",
+        "teacher-r2.jsonl": "f8986f96e839f1d5c35e547e38b10b81851f27ef87177669652d989e249b42bf"
+      }
+    },
+    "crate-diag-77979-bf31840f": {
+      "source_sha": "bf31840fe16cd2d37631d8a8e50ff077e3d42575",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77979-bf31840f/raw",
+      "uncompressed_input_sha256": {
+        "plan.json": "26004f1d4d9de8d936185cd5033f7e3aa2541f3313596838db685e306afc53fe",
+        "result.json": "42f79496f52dcb2f320c461a90d06e91fe44f3397b94bbe1bdc795c997e208d0",
+        "eval-only.jsonl": "bd9ef7afd934e86d819d024d55f60111d04d22cf82ef1422d4682bad6a02b63e",
+        "teacher-r1.jsonl": "49e090edacb0a169b9096543a6c4635cd7ad431987991c2e629071164c1ceee7",
+        "teacher-r2.jsonl": "e7a8d383d2abf233e6dca068ee117b3078544fbc0ffd0e274e7f18b28f2267db"
+      }
+    },
+    "crate-diag-77981-49d11b8e": {
+      "source_sha": "49d11b8e603c54fd42e6707f735fca8f55c11a0e",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77981-49d11b8e/raw",
+      "uncompressed_input_sha256": {
+        "plan.json": "1bc099eb089d173857a5d5b08c8cb7ada0359758b7bcaf921e86e5db5fdb2607",
+        "result.json": "8ebf152efb1771b5f4c3fdb73e87514f287d5e78004fc23ff674f024b759d8f3",
+        "eval-only.jsonl": "616c93fd27da4de8145cd9abeb32ddda669ce871274407b8384a510566d7d60b",
+        "teacher-r1.jsonl": "cc0182d3899b00258cc2bb796ab9b05bb7ee5b78fafad3c5ec3a2faea0dffa63",
+        "teacher-r2.jsonl": "a0752cddcd029fa03f0ca7e38d7bb3797fb6f6d39ce9447a3860db6ff0af8ccf"
+      }
+    },
+    "crate-diag-77982-49d11b8e": {
+      "source_sha": "49d11b8e603c54fd42e6707f735fca8f55c11a0e",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77982-49d11b8e/raw",
+      "uncompressed_input_sha256": {
+        "plan.json": "719920fa0323c06d57ca5ca86b84bf96c18b43cdcb9e7e24d34050a3bae25ac6",
+        "result.json": "b1b8187197efa3861795584c1ea75a78b3d1e234a07652f2f83cc09b43bca9aa",
+        "eval-only.jsonl": "f0444de4b22e9fabb83779c1617606a67ac1ba3e4abaef0763cdc3c9998cc9e5",
+        "teacher-r1.jsonl": "96fa3b6037adeaeab4ac291f3c09fb6793a71cc5da646016bc32388040ead330",
+        "teacher-r2.jsonl": "ea93291aa0abec588b0376f2d408b1d566b679e0dfe24e1c133ee485f72b9842"
+      }
+    },
+    "crate-diag-77988-49d11b8e": {
+      "source_sha": "49d11b8e603c54fd42e6707f735fca8f55c11a0e",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77988-49d11b8e/raw",
+      "uncompressed_input_sha256": {
+        "plan.json": "66000dc1f6cc3a72974af6d0777f80050d535966f38a75f13f000ae9051c3ccf",
+        "result.json": "dd3d41eaac719d2228e3668a146f966b26527992d8ffed5795a3a885a8fa27a7",
+        "eval-only.jsonl": "b02c072ce38d526f462ebcf62ad15f517ac5cd455e36b6afd968a0064e5770b5",
+        "teacher-r1.jsonl": "6cc8d6189dd6de5afa50259a781ad2235c509c94d77a2679f99d0ee9f1c67f6c",
+        "teacher-r2.jsonl": "4528783c5df3e1a58623b3ff133c20f2086e21d79ea14cd455dd4b4a898a580b"
+      }
+    },
+    "crate-diag-77989-49d11b8e": {
+      "source_sha": "49d11b8e603c54fd42e6707f735fca8f55c11a0e",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77989-49d11b8e/raw",
+      "uncompressed_input_sha256": {
+        "plan.json": "9ab50bdfe40bd43cc4c6fa9b839d22be8cbf31ce4a5d990e2547b8aa769a1c66",
+        "result.json": "d56ea60c30d7ae18a913654459d420b5422fb99a34ff2c09a16ee594ca6aeebc",
+        "eval-only.jsonl": "3b1ea733e95d50de6ddf35f1246ac8970e3e6816d9136cbba3bcb87a3759194c",
+        "teacher-r1.jsonl": "28d684f29b9ccc12468dfb245f647fbda04a3919d1e058670a22c146d0dde46c",
+        "teacher-r2.jsonl": "34a67a72b04aabd68794c0f9080eca8c98247f7f29513f47bd61203f4ddd4902"
+      }
+    },
+    "crate-reproduction-77969-49d11b8e": {
+      "source_sha": "49d11b8e603c54fd42e6707f735fca8f55c11a0e",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77969-49d11b8e/raw",
+      "uncompressed_input_sha256": {
+        "plan.json": "c77919728089459cd64d288503cb09480242f5fb13e2a0726f2f59c434f3a9fd",
+        "result.json": "f67394e84cda223bd870d2dde18dd0fbd35b0af4501943d494387def73dea997",
+        "eval-only.jsonl": "413662cab113b31c22498d73973171b9fc742df9bc3c136ccb344225c08ea072",
+        "teacher-r1.jsonl": "7be853f0c054d6eddab8268990b960b2cd489e6bc3f5cf59479c76b0ceb44be1",
+        "teacher-r2.jsonl": "d04befd57c7aa3137fd7187ceb4e9bd741bcbb4828417390ed2624407bcaf8a4"
+      }
+    },
+    "crate-reproduction-77978-49d11b8e": {
+      "source_sha": "49d11b8e603c54fd42e6707f735fca8f55c11a0e",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77978-49d11b8e/raw",
+      "uncompressed_input_sha256": {
+        "plan.json": "ba83dfc8b384a0cd3e1a36d7b49e4cfca4382d50457e1b85dc0dd3d69b32cc68",
+        "result.json": "267cdb3adf9bd756a3196793e53e8202e75fd5a45a9c1809633306338440251c",
+        "eval-only.jsonl": "b4a594b276349ca98e773016da028ef73b253433dcba64a97fe26692d3b144ce",
+        "teacher-r1.jsonl": "1f6fc873bce5bd94f47080aceb53a38e82efce6db945568912354f30931cfe8d",
+        "teacher-r2.jsonl": "e111c4fdcbdeca762751f19e4d9a85cd0dbb7924556592a1a4f6cce3605b5524"
+      }
+    },
+    "crate-reproduction-77979-49d11b8e": {
+      "source_sha": "49d11b8e603c54fd42e6707f735fca8f55c11a0e",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77979-49d11b8e/raw",
+      "uncompressed_input_sha256": {
+        "plan.json": "26004f1d4d9de8d936185cd5033f7e3aa2541f3313596838db685e306afc53fe",
+        "result.json": "91f70d7193694a2361b80b36ec672c18c71d43f3b90ed6a42855f5b3e59ab312",
+        "eval-only.jsonl": "e7f435f5e5d64e3a4e95ae77b6aacdb94dd648bb44957b8c895f10e99a848bdf",
+        "teacher-r1.jsonl": "a4e441b79b5e753c194622e9197091fdd08e2109dd57ef6b1a3cd7fa7038373c",
+        "teacher-r2.jsonl": "066be9e39e0911090f737e84794ac24d23f45438cb5047f3469384e280261714"
+      }
+    }
+  },
+  "input_hashcheck": {
+    "runs": 13,
+    "files_checked": 78,
+    "frames_checked": 0,
+    "mismatch": [],
+    "not_in_sums": [],
+    "per_run_files": {
+      "crate-diag-77948-c5a76175": 6,
+      "crate-diag-77949-c5a76175": 6,
+      "crate-diag-77968-5644e3dd": 6,
+      "crate-diag-77969-5644e3dd": 6,
+      "crate-diag-77978-bf31840f": 6,
+      "crate-diag-77979-bf31840f": 6,
+      "crate-diag-77981-49d11b8e": 6,
+      "crate-diag-77982-49d11b8e": 6,
+      "crate-diag-77988-49d11b8e": 6,
+      "crate-diag-77989-49d11b8e": 6,
+      "crate-reproduction-77969-49d11b8e": 6,
+      "crate-reproduction-77978-49d11b8e": 6,
+      "crate-reproduction-77979-49d11b8e": 6
+    }
+  },
+  "replay_raw": {
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate12-audit/replay.json.zst",
+    "sha256": "4ba6ab053b4232db5a84eb23ca5646d320810dee339eefe55a5efde5bc493673",
+    "uncompressed_sha256": "e918cea070d29027aa200abce5f049eef1a5c090b3fe99313f9eded8e39fa343"
+  },
+  "replays": [
+    {
+      "run": "crate-diag-77978-bf31840f",
+      "mode": "off",
+      "checked_matching_robot_commands": 722,
+      "complete_ledger_match": true,
+      "wall_retained": [],
+      "first_difference": null
+    },
+    {
+      "run": "crate-diag-77978-bf31840f",
+      "mode": "walls",
+      "checked_matching_robot_commands": 247,
+      "complete_ledger_match": false,
+      "wall_retained": [
+        {
+          "tick": 114,
+          "elapsed_s": 11.4,
+          "walls": {
+            "zone_wall_south": 5.2
+          }
+        },
+        {
+          "tick": 117,
+          "elapsed_s": 11.7,
+          "walls": {
+            "zone_wall_south": 5.5
+          }
+        },
+        {
+          "tick": 123,
+          "elapsed_s": 12.3,
+          "walls": {
+            "zone_wall_south": 6.1
+          }
+        }
+      ],
+      "first_difference": {
+        "tick": 123,
+        "elapsed_s": 12.3,
+        "robots": [
+          {
+            "robot": "r1",
+            "phase": "approach",
+            "old_phase": "approach",
+            "old_wheels": [
+              -0.35,
+              0.35,
+              0.35,
+              0.35
+            ],
+            "new_wheels": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "old_duration_s": [
+              0.01876576995617297,
+              0.07331400736199237,
+              0.017599721647706634,
+              0.03694851575811276
+            ],
+            "new_duration_s": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "recoveries": []
+          }
+        ]
+      }
+    },
+    {
+      "run": "crate-diag-77978-bf31840f",
+      "mode": "pulse",
+      "checked_matching_robot_commands": 247,
+      "complete_ledger_match": false,
+      "wall_retained": [],
+      "first_difference": {
+        "tick": 123,
+        "elapsed_s": 12.3,
+        "robots": [
+          {
+            "robot": "r1",
+            "phase": "approach",
+            "old_phase": "approach",
+            "old_wheels": [
+              -0.35,
+              0.35,
+              0.35,
+              0.35
+            ],
+            "new_wheels": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "old_duration_s": [
+              0.01876576995617297,
+              0.07331400736199237,
+              0.017599721647706634,
+              0.03694851575811276
+            ],
+            "new_duration_s": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "recoveries": []
+          }
+        ]
+      }
+    },
+    {
+      "run": "crate-diag-77978-bf31840f",
+      "mode": "bundle",
+      "checked_matching_robot_commands": 247,
+      "complete_ledger_match": false,
+      "wall_retained": [],
+      "first_difference": {
+        "tick": 123,
+        "elapsed_s": 12.3,
+        "robots": [
+          {
+            "robot": "r1",
+            "phase": "approach",
+            "old_phase": "approach",
+            "old_wheels": [
+              -0.35,
+              0.35,
+              0.35,
+              0.35
+            ],
+            "new_wheels": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "old_duration_s": [
+              0.01876576995617297,
+              0.07331400736199237,
+              0.017599721647706634,
+              0.03694851575811276
+            ],
+            "new_duration_s": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "recoveries": []
+          }
+        ]
+      }
+    },
+    {
+      "run": "crate-diag-77979-bf31840f",
+      "mode": "off",
+      "checked_matching_robot_commands": 1268,
+      "complete_ledger_match": true,
+      "wall_retained": [],
+      "first_difference": null
+    },
+    {
+      "run": "crate-diag-77979-bf31840f",
+      "mode": "walls",
+      "checked_matching_robot_commands": 1268,
+      "complete_ledger_match": true,
+      "wall_retained": [
+        {
+          "tick": 114,
+          "elapsed_s": 11.4,
+          "walls": {}
+        },
+        {
+          "tick": 117,
+          "elapsed_s": 11.7,
+          "walls": {}
+        },
+        {
+          "tick": 123,
+          "elapsed_s": 12.3,
+          "walls": {}
+        }
+      ],
+      "first_difference": null
+    },
+    {
+      "run": "crate-diag-77979-bf31840f",
+      "mode": "pulse",
+      "checked_matching_robot_commands": 179,
+      "complete_ledger_match": false,
+      "wall_retained": [],
+      "first_difference": {
+        "tick": 89,
+        "elapsed_s": 8.9,
+        "robots": [
+          {
+            "robot": "r1",
+            "phase": "approach",
+            "old_phase": "approach",
+            "old_wheels": [
+              0.35,
+              0.35,
+              -0.35,
+              0.35
+            ],
+            "new_wheels": [
+              -0.35,
+              0.35,
+              -0.35,
+              0.35
+            ],
+            "old_duration_s": [
+              0.061999467749985535,
+              0.029891321307961308,
+              0.008109210942053155,
+              0.1
+            ],
+            "new_duration_s": [
+              0.027857142857142865,
+              0.027857142857142865,
+              0.027857142857142865,
+              0.027857142857142865
+            ],
+            "recoveries": [
+              {
+                "t": 10.699999999997738,
+                "recovery": "no_closer_yaw"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "run": "crate-diag-77979-bf31840f",
+      "mode": "bundle",
+      "checked_matching_robot_commands": 179,
+      "complete_ledger_match": false,
+      "wall_retained": [],
+      "first_difference": {
+        "tick": 89,
+        "elapsed_s": 8.9,
+        "robots": [
+          {
+            "robot": "r1",
+            "phase": "approach",
+            "old_phase": "approach",
+            "old_wheels": [
+              0.35,
+              0.35,
+              -0.35,
+              0.35
+            ],
+            "new_wheels": [
+              -0.35,
+              0.35,
+              -0.35,
+              0.35
+            ],
+            "old_duration_s": [
+              0.061999467749985535,
+              0.029891321307961308,
+              0.008109210942053155,
+              0.1
+            ],
+            "new_duration_s": [
+              0.027857142857142865,
+              0.027857142857142865,
+              0.027857142857142865,
+              0.027857142857142865
+            ],
+            "recoveries": [
+              {
+                "t": 10.699999999997738,
+                "recovery": "no_closer_yaw"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "run": "crate-diag-77981-49d11b8e",
+      "mode": "off",
+      "checked_matching_robot_commands": 322,
+      "complete_ledger_match": true,
+      "wall_retained": [],
+      "first_difference": null
+    },
+    {
+      "run": "crate-diag-77981-49d11b8e",
+      "mode": "walls",
+      "checked_matching_robot_commands": 322,
+      "complete_ledger_match": true,
+      "wall_retained": [
+        {
+          "tick": 114,
+          "elapsed_s": 11.4,
+          "walls": {
+            "zone_wall_east": 4.8
+          }
+        },
+        {
+          "tick": 117,
+          "elapsed_s": 11.7,
+          "walls": {
+            "zone_wall_east": 5.1
+          }
+        },
+        {
+          "tick": 123,
+          "elapsed_s": 12.3,
+          "walls": {
+            "zone_wall_east": 5.7
+          }
+        }
+      ],
+      "first_difference": null
+    },
+    {
+      "run": "crate-diag-77981-49d11b8e",
+      "mode": "pulse",
+      "checked_matching_robot_commands": 201,
+      "complete_ledger_match": false,
+      "wall_retained": [],
+      "first_difference": {
+        "tick": 100,
+        "elapsed_s": 10.0,
+        "robots": [
+          {
+            "robot": "r1",
+            "phase": "approach",
+            "old_phase": "approach",
+            "old_wheels": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "new_wheels": [
+              0.35,
+              -0.35,
+              0.35,
+              -0.35
+            ],
+            "old_duration_s": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "new_duration_s": [
+              0.027857142857142865,
+              0.027857142857142865,
+              0.027857142857142865,
+              0.027857142857142865
+            ],
+            "recoveries": [
+              {
+                "t": 11.799999999995174,
+                "recovery": "no_closer_yaw"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "run": "crate-diag-77981-49d11b8e",
+      "mode": "bundle",
+      "checked_matching_robot_commands": 201,
+      "complete_ledger_match": false,
+      "wall_retained": [],
+      "first_difference": {
+        "tick": 100,
+        "elapsed_s": 10.0,
+        "robots": [
+          {
+            "robot": "r1",
+            "phase": "approach",
+            "old_phase": "approach",
+            "old_wheels": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "new_wheels": [
+              0.35,
+              -0.35,
+              0.35,
+              -0.35
+            ],
+            "old_duration_s": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "new_duration_s": [
+              0.027857142857142865,
+              0.027857142857142865,
+              0.027857142857142865,
+              0.027857142857142865
+            ],
+            "recoveries": [
+              {
+                "t": 11.799999999995174,
+                "recovery": "no_closer_yaw"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "run": "crate-diag-77982-49d11b8e",
+      "mode": "off",
+      "checked_matching_robot_commands": 508,
+      "complete_ledger_match": true,
+      "wall_retained": [],
+      "first_difference": null
+    },
+    {
+      "run": "crate-diag-77982-49d11b8e",
+      "mode": "walls",
+      "checked_matching_robot_commands": 508,
+      "complete_ledger_match": true,
+      "wall_retained": [
+        {
+          "tick": 114,
+          "elapsed_s": 11.4,
+          "walls": {}
+        },
+        {
+          "tick": 117,
+          "elapsed_s": 11.7,
+          "walls": {}
+        },
+        {
+          "tick": 123,
+          "elapsed_s": 12.3,
+          "walls": {}
+        }
+      ],
+      "first_difference": null
+    },
+    {
+      "run": "crate-diag-77982-49d11b8e",
+      "mode": "pulse",
+      "checked_matching_robot_commands": 221,
+      "complete_ledger_match": false,
+      "wall_retained": [],
+      "first_difference": {
+        "tick": 110,
+        "elapsed_s": 11.0,
+        "robots": [
+          {
+            "robot": "r2",
+            "phase": "approach",
+            "old_phase": "approach",
+            "old_wheels": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "new_wheels": [
+              0.35,
+              -0.35,
+              0.35,
+              -0.35
+            ],
+            "old_duration_s": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "new_duration_s": [
+              0.005073998302395883,
+              0.005073998302395883,
+              0.005073998302395883,
+              0.005073998302395883
+            ],
+            "recoveries": [
+              {
+                "t": 12.799999999992844,
+                "recovery": "no_closer_yaw"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "run": "crate-diag-77982-49d11b8e",
+      "mode": "bundle",
+      "checked_matching_robot_commands": 221,
+      "complete_ledger_match": false,
+      "wall_retained": [],
+      "first_difference": {
+        "tick": 110,
+        "elapsed_s": 11.0,
+        "robots": [
+          {
+            "robot": "r2",
+            "phase": "approach",
+            "old_phase": "approach",
+            "old_wheels": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "new_wheels": [
+              0.35,
+              -0.35,
+              0.35,
+              -0.35
+            ],
+            "old_duration_s": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "new_duration_s": [
+              0.005073998302395883,
+              0.005073998302395883,
+              0.005073998302395883,
+              0.005073998302395883
+            ],
+            "recoveries": [
+              {
+                "t": 12.799999999992844,
+                "recovery": "no_closer_yaw"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "run": "crate-diag-77988-49d11b8e",
+      "mode": "off",
+      "checked_matching_robot_commands": 402,
+      "complete_ledger_match": true,
+      "wall_retained": [],
+      "first_difference": null
+    },
+    {
+      "run": "crate-diag-77988-49d11b8e",
+      "mode": "walls",
+      "checked_matching_robot_commands": 402,
+      "complete_ledger_match": true,
+      "wall_retained": [
+        {
+          "tick": 114,
+          "elapsed_s": 11.4,
+          "walls": {}
+        },
+        {
+          "tick": 117,
+          "elapsed_s": 11.7,
+          "walls": {}
+        },
+        {
+          "tick": 123,
+          "elapsed_s": 12.3,
+          "walls": {}
+        }
+      ],
+      "first_difference": null
+    },
+    {
+      "run": "crate-diag-77988-49d11b8e",
+      "mode": "pulse",
+      "checked_matching_robot_commands": 271,
+      "complete_ledger_match": false,
+      "wall_retained": [],
+      "first_difference": {
+        "tick": 135,
+        "elapsed_s": 13.5,
+        "robots": [
+          {
+            "robot": "r1",
+            "phase": "approach",
+            "old_phase": "approach",
+            "old_wheels": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "new_wheels": [
+              -0.35,
+              0.35,
+              -0.35,
+              0.35
+            ],
+            "old_duration_s": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "new_duration_s": [
+              0.027857142857142865,
+              0.027857142857142865,
+              0.027857142857142865,
+              0.027857142857142865
+            ],
+            "recoveries": [
+              {
+                "t": 15.299999999987017,
+                "recovery": "no_closer_yaw"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "run": "crate-diag-77988-49d11b8e",
+      "mode": "bundle",
+      "checked_matching_robot_commands": 271,
+      "complete_ledger_match": false,
+      "wall_retained": [],
+      "first_difference": {
+        "tick": 135,
+        "elapsed_s": 13.5,
+        "robots": [
+          {
+            "robot": "r1",
+            "phase": "approach",
+            "old_phase": "approach",
+            "old_wheels": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "new_wheels": [
+              -0.35,
+              0.35,
+              -0.35,
+              0.35
+            ],
+            "old_duration_s": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "new_duration_s": [
+              0.027857142857142865,
+              0.027857142857142865,
+              0.027857142857142865,
+              0.027857142857142865
+            ],
+            "recoveries": [
+              {
+                "t": 15.299999999987017,
+                "recovery": "no_closer_yaw"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "run": "crate-diag-77989-49d11b8e",
+      "mode": "off",
+      "checked_matching_robot_commands": 548,
+      "complete_ledger_match": true,
+      "wall_retained": [],
+      "first_difference": null
+    },
+    {
+      "run": "crate-diag-77989-49d11b8e",
+      "mode": "walls",
+      "checked_matching_robot_commands": 548,
+      "complete_ledger_match": true,
+      "wall_retained": [
+        {
+          "tick": 114,
+          "elapsed_s": 11.4,
+          "walls": {}
+        },
+        {
+          "tick": 117,
+          "elapsed_s": 11.7,
+          "walls": {}
+        },
+        {
+          "tick": 123,
+          "elapsed_s": 12.3,
+          "walls": {}
+        }
+      ],
+      "first_difference": null
+    },
+    {
+      "run": "crate-diag-77989-49d11b8e",
+      "mode": "pulse",
+      "checked_matching_robot_commands": 241,
+      "complete_ledger_match": false,
+      "wall_retained": [],
+      "first_difference": {
+        "tick": 120,
+        "elapsed_s": 12.0,
+        "robots": [
+          {
+            "robot": "r1",
+            "phase": "approach",
+            "old_phase": "approach",
+            "old_wheels": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "new_wheels": [
+              -0.35,
+              0.35,
+              -0.35,
+              0.35
+            ],
+            "old_duration_s": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "new_duration_s": [
+              0.027857142857142865,
+              0.027857142857142865,
+              0.027857142857142865,
+              0.027857142857142865
+            ],
+            "recoveries": [
+              {
+                "t": 13.799999999990513,
+                "recovery": "no_closer_yaw"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "run": "crate-diag-77989-49d11b8e",
+      "mode": "bundle",
+      "checked_matching_robot_commands": 241,
+      "complete_ledger_match": false,
+      "wall_retained": [],
+      "first_difference": {
+        "tick": 120,
+        "elapsed_s": 12.0,
+        "robots": [
+          {
+            "robot": "r1",
+            "phase": "approach",
+            "old_phase": "approach",
+            "old_wheels": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "new_wheels": [
+              -0.35,
+              0.35,
+              -0.35,
+              0.35
+            ],
+            "old_duration_s": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "new_duration_s": [
+              0.027857142857142865,
+              0.027857142857142865,
+              0.027857142857142865,
+              0.027857142857142865
+            ],
+            "recoveries": [
+              {
+                "t": 13.799999999990513,
+                "recovery": "no_closer_yaw"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "run": "crate-reproduction-77969-49d11b8e",
+      "mode": "off",
+      "checked_matching_robot_commands": 406,
+      "complete_ledger_match": true,
+      "wall_retained": [],
+      "first_difference": null
+    },
+    {
+      "run": "crate-reproduction-77969-49d11b8e",
+      "mode": "walls",
+      "checked_matching_robot_commands": 406,
+      "complete_ledger_match": true,
+      "wall_retained": [
+        {
+          "tick": 114,
+          "elapsed_s": 11.4,
+          "walls": {}
+        },
+        {
+          "tick": 117,
+          "elapsed_s": 11.7,
+          "walls": {}
+        },
+        {
+          "tick": 123,
+          "elapsed_s": 12.3,
+          "walls": {}
+        }
+      ],
+      "first_difference": null
+    },
+    {
+      "run": "crate-reproduction-77969-49d11b8e",
+      "mode": "pulse",
+      "checked_matching_robot_commands": 99,
+      "complete_ledger_match": false,
+      "wall_retained": [],
+      "first_difference": {
+        "tick": 49,
+        "elapsed_s": 4.9,
+        "robots": [
+          {
+            "robot": "r1",
+            "phase": "approach",
+            "old_phase": "approach",
+            "old_wheels": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "new_wheels": [
+              0.35,
+              -0.35,
+              0.35,
+              -0.35
+            ],
+            "old_duration_s": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "new_duration_s": [
+              0.008009737030135536,
+              0.008009737030135536,
+              0.008009737030135536,
+              0.008009737030135536
+            ],
+            "recoveries": [
+              {
+                "t": 6.700000000002443,
+                "recovery": "no_closer_yaw"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "run": "crate-reproduction-77969-49d11b8e",
+      "mode": "bundle",
+      "checked_matching_robot_commands": 99,
+      "complete_ledger_match": false,
+      "wall_retained": [],
+      "first_difference": {
+        "tick": 49,
+        "elapsed_s": 4.9,
+        "robots": [
+          {
+            "robot": "r1",
+            "phase": "approach",
+            "old_phase": "approach",
+            "old_wheels": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "new_wheels": [
+              0.35,
+              -0.35,
+              0.35,
+              -0.35
+            ],
+            "old_duration_s": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "new_duration_s": [
+              0.008009737030135536,
+              0.008009737030135536,
+              0.008009737030135536,
+              0.008009737030135536
+            ],
+            "recoveries": [
+              {
+                "t": 6.700000000002443,
+                "recovery": "no_closer_yaw"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "run": "crate-reproduction-77978-49d11b8e",
+      "mode": "off",
+      "checked_matching_robot_commands": 204,
+      "complete_ledger_match": true,
+      "wall_retained": [],
+      "first_difference": null
+    },
+    {
+      "run": "crate-reproduction-77978-49d11b8e",
+      "mode": "walls",
+      "checked_matching_robot_commands": 204,
+      "complete_ledger_match": true,
+      "wall_retained": [],
+      "first_difference": null
+    },
+    {
+      "run": "crate-reproduction-77978-49d11b8e",
+      "mode": "pulse",
+      "checked_matching_robot_commands": 204,
+      "complete_ledger_match": true,
+      "wall_retained": [],
+      "first_difference": null
+    },
+    {
+      "run": "crate-reproduction-77978-49d11b8e",
+      "mode": "bundle",
+      "checked_matching_robot_commands": 204,
+      "complete_ledger_match": true,
+      "wall_retained": [],
+      "first_difference": null
+    },
+    {
+      "run": "crate-reproduction-77979-49d11b8e",
+      "mode": "off",
+      "checked_matching_robot_commands": 436,
+      "complete_ledger_match": true,
+      "wall_retained": [],
+      "first_difference": null
+    },
+    {
+      "run": "crate-reproduction-77979-49d11b8e",
+      "mode": "walls",
+      "checked_matching_robot_commands": 436,
+      "complete_ledger_match": true,
+      "wall_retained": [
+        {
+          "tick": 114,
+          "elapsed_s": 11.4,
+          "walls": {}
+        },
+        {
+          "tick": 117,
+          "elapsed_s": 11.7,
+          "walls": {}
+        },
+        {
+          "tick": 123,
+          "elapsed_s": 12.3,
+          "walls": {}
+        }
+      ],
+      "first_difference": null
+    },
+    {
+      "run": "crate-reproduction-77979-49d11b8e",
+      "mode": "pulse",
+      "checked_matching_robot_commands": 179,
+      "complete_ledger_match": false,
+      "wall_retained": [],
+      "first_difference": {
+        "tick": 89,
+        "elapsed_s": 8.9,
+        "robots": [
+          {
+            "robot": "r1",
+            "phase": "approach",
+            "old_phase": "approach",
+            "old_wheels": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "new_wheels": [
+              -0.35,
+              0.35,
+              -0.35,
+              0.35
+            ],
+            "old_duration_s": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "new_duration_s": [
+              0.027857142857142865,
+              0.027857142857142865,
+              0.027857142857142865,
+              0.027857142857142865
+            ],
+            "recoveries": [
+              {
+                "t": 10.699999999997738,
+                "recovery": "no_closer_yaw"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "run": "crate-reproduction-77979-49d11b8e",
+      "mode": "bundle",
+      "checked_matching_robot_commands": 179,
+      "complete_ledger_match": false,
+      "wall_retained": [],
+      "first_difference": {
+        "tick": 89,
+        "elapsed_s": 8.9,
+        "robots": [
+          {
+            "robot": "r1",
+            "phase": "approach",
+            "old_phase": "approach",
+            "old_wheels": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "new_wheels": [
+              -0.35,
+              0.35,
+              -0.35,
+              0.35
+            ],
+            "old_duration_s": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "new_duration_s": [
+              0.027857142857142865,
+              0.027857142857142865,
+              0.027857142857142865,
+              0.027857142857142865
+            ],
+            "recoveries": [
+              {
+                "t": 10.699999999997738,
+                "recovery": "no_closer_yaw"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "near_wall": {
+    "scope": "EVALUATION ONLY saved initial geometry; wall-free antipodal IK/load candidates, not route/physical success",
+    "N_run_instances": 11,
+    "N_unique_seeds": 8,
+    "feasible_n": {
+      "old": 0,
+      "footprint_only": 0,
+      "expanded_only": 0,
+      "both": 0
+    },
+    "runs": [
+      {
+        "run": "crate-diag-77948-c5a76175",
+        "seed": 77948,
+        "sha8": "c5a76175",
+        "robots": {
+          "r1": {
+            "old": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 0
+            },
+            "footprint_only": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 0
+            },
+            "expanded_only": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 0
+            },
+            "both": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 0
+            }
+          },
+          "r2": {
+            "old": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 3
+            },
+            "footprint_only": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 3
+            },
+            "expanded_only": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 27
+            },
+            "both": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 27
+            }
+          }
+        },
+        "both_robots_wall_feasible": {
+          "old": false,
+          "footprint_only": false,
+          "expanded_only": false,
+          "both": false
+        }
+      },
+      {
+        "run": "crate-diag-77949-c5a76175",
+        "seed": 77949,
+        "sha8": "c5a76175",
+        "robots": {
+          "r1": {
+            "old": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 3
+            },
+            "footprint_only": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 3
+            },
+            "expanded_only": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 27
+            },
+            "both": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 27
+            }
+          },
+          "r2": {
+            "old": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 0
+            },
+            "footprint_only": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 0
+            },
+            "expanded_only": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 0
+            },
+            "both": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 0
+            }
+          }
+        },
+        "both_robots_wall_feasible": {
+          "old": false,
+          "footprint_only": false,
+          "expanded_only": false,
+          "both": false
+        }
+      },
+      {
+        "run": "crate-diag-77968-5644e3dd",
+        "seed": 77968,
+        "sha8": "5644e3dd",
+        "robots": {
+          "r1": {
+            "old": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 0
+            },
+            "footprint_only": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 0
+            },
+            "expanded_only": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 0
+            },
+            "both": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 0
+            }
+          },
+          "r2": {
+            "old": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 3
+            },
+            "footprint_only": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 3
+            },
+            "expanded_only": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 27
+            },
+            "both": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 27
+            }
+          }
+        },
+        "both_robots_wall_feasible": {
+          "old": false,
+          "footprint_only": false,
+          "expanded_only": false,
+          "both": false
+        }
+      },
+      {
+        "run": "crate-diag-77969-5644e3dd",
+        "seed": 77969,
+        "sha8": "5644e3dd",
+        "robots": {
+          "r1": {
+            "old": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 3
+            },
+            "footprint_only": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 3
+            },
+            "expanded_only": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 27
+            },
+            "both": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 27
+            }
+          },
+          "r2": {
+            "old": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 0
+            },
+            "footprint_only": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 0
+            },
+            "expanded_only": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 0
+            },
+            "both": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 0
+            }
+          }
+        },
+        "both_robots_wall_feasible": {
+          "old": false,
+          "footprint_only": false,
+          "expanded_only": false,
+          "both": false
+        }
+      },
+      {
+        "run": "crate-diag-77978-bf31840f",
+        "seed": 77978,
+        "sha8": "bf31840f",
+        "robots": {
+          "r1": {
+            "old": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 0
+            },
+            "footprint_only": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 0
+            },
+            "expanded_only": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 0
+            },
+            "both": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 0
+            }
+          },
+          "r2": {
+            "old": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 3
+            },
+            "footprint_only": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 3
+            },
+            "expanded_only": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 27
+            },
+            "both": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 27
+            }
+          }
+        },
+        "both_robots_wall_feasible": {
+          "old": false,
+          "footprint_only": false,
+          "expanded_only": false,
+          "both": false
+        }
+      },
+      {
+        "run": "crate-diag-77979-bf31840f",
+        "seed": 77979,
+        "sha8": "bf31840f",
+        "robots": {
+          "r1": {
+            "old": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 0
+            },
+            "footprint_only": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 0
+            },
+            "expanded_only": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 0
+            },
+            "both": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 0
+            }
+          },
+          "r2": {
+            "old": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 3
+            },
+            "footprint_only": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 3
+            },
+            "expanded_only": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 27
+            },
+            "both": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 27
+            }
+          }
+        },
+        "both_robots_wall_feasible": {
+          "old": false,
+          "footprint_only": false,
+          "expanded_only": false,
+          "both": false
+        }
+      },
+      {
+        "run": "crate-diag-77988-49d11b8e",
+        "seed": 77988,
+        "sha8": "49d11b8e",
+        "robots": {
+          "r1": {
+            "old": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 0
+            },
+            "footprint_only": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 0
+            },
+            "expanded_only": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 0
+            },
+            "both": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 0
+            }
+          },
+          "r2": {
+            "old": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 3
+            },
+            "footprint_only": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 3
+            },
+            "expanded_only": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 27
+            },
+            "both": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 27
+            }
+          }
+        },
+        "both_robots_wall_feasible": {
+          "old": false,
+          "footprint_only": false,
+          "expanded_only": false,
+          "both": false
+        }
+      },
+      {
+        "run": "crate-diag-77989-49d11b8e",
+        "seed": 77989,
+        "sha8": "49d11b8e",
+        "robots": {
+          "r1": {
+            "old": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 0
+            },
+            "footprint_only": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 0
+            },
+            "expanded_only": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 0
+            },
+            "both": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 0
+            }
+          },
+          "r2": {
+            "old": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 3
+            },
+            "footprint_only": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 3
+            },
+            "expanded_only": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 27
+            },
+            "both": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 27
+            }
+          }
+        },
+        "both_robots_wall_feasible": {
+          "old": false,
+          "footprint_only": false,
+          "expanded_only": false,
+          "both": false
+        }
+      },
+      {
+        "run": "crate-reproduction-77969-49d11b8e",
+        "seed": 77969,
+        "sha8": "49d11b8e",
+        "robots": {
+          "r1": {
+            "old": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 3
+            },
+            "footprint_only": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 3
+            },
+            "expanded_only": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 27
+            },
+            "both": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 27
+            }
+          },
+          "r2": {
+            "old": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 0
+            },
+            "footprint_only": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 0
+            },
+            "expanded_only": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 0
+            },
+            "both": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 0
+            }
+          }
+        },
+        "both_robots_wall_feasible": {
+          "old": false,
+          "footprint_only": false,
+          "expanded_only": false,
+          "both": false
+        }
+      },
+      {
+        "run": "crate-reproduction-77978-49d11b8e",
+        "seed": 77978,
+        "sha8": "49d11b8e",
+        "robots": {
+          "r1": {
+            "old": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 0
+            },
+            "footprint_only": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 0
+            },
+            "expanded_only": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 0
+            },
+            "both": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 0
+            }
+          },
+          "r2": {
+            "old": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 3
+            },
+            "footprint_only": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 3
+            },
+            "expanded_only": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 27
+            },
+            "both": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 27
+            }
+          }
+        },
+        "both_robots_wall_feasible": {
+          "old": false,
+          "footprint_only": false,
+          "expanded_only": false,
+          "both": false
+        }
+      },
+      {
+        "run": "crate-reproduction-77979-49d11b8e",
+        "seed": 77979,
+        "sha8": "49d11b8e",
+        "robots": {
+          "r1": {
+            "old": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 0
+            },
+            "footprint_only": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 0
+            },
+            "expanded_only": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 0
+            },
+            "both": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 0
+            }
+          },
+          "r2": {
+            "old": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 3
+            },
+            "footprint_only": {
+              "legal_grasp_candidates": 3,
+              "wall_free_candidates": 3
+            },
+            "expanded_only": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 27
+            },
+            "both": {
+              "legal_grasp_candidates": 27,
+              "wall_free_candidates": 27
+            }
+          }
+        },
+        "both_robots_wall_feasible": {
+          "old": false,
+          "footprint_only": false,
+          "expanded_only": false,
+          "both": false
+        }
+      }
+    ]
+  },
+  "queue_plan": {
+    "path_pattern": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-crate-diag-<SHA8>.json",
+    "fresh_seeds": [
+      77990,
+      77991,
+      77992,
+      77993,
+      77994,
+      77995,
+      77996,
+      77997,
+      77998,
+      77999
+    ],
+    "fresh_N": 10,
+    "fresh_near_wall_n": 2,
+    "reproduction_seeds": [
+      77978,
+      77981,
+      77982
+    ],
+    "reproduction_N": 3,
+    "gate_N": 0,
+    "coordinator_approval": {
+      "approved": false
+    },
+    "runs_enabled": false,
+    "local_unused_verified": true,
+    "remote_unused_verified": false,
+    "remote_inventory_error": "gcp1 SSH ProxyCommand failed in gcloud compute instances describe (project explicitly set); no remote command executed",
+    "plan_sha256": {
+      "diag_plan_crate12_77990.json": "c9458e88e7f0062161292f40c37906da7dd719123873ddee829d6e6823115c52",
+      "repro_plan_crate12.json": "d8f162dc659a08a240db07152fb7745fda17cabb14fae899b8abf31e88e2a1d2"
+    }
+  },
+  "remaining": [
+    "near_wall paired feasible stances 0/11 (0/8 unique); no exclusion or physical impossibility claim",
+    "RGB lug thresholds on fresh actual images, new GCP physical outcomes and wall padding need verification",
+    "local static-wall map only; authored-map localization, RGB landmark identification and pose correction not implemented",
+    "Eyes.classify remains perfect visible teacher perception, not RGB student perception; adapter z convention not changed",
+    "value source tags trust producer labeling; not a detector for maliciously mislabeled GT",
+    "student training writer/gate not admitted; training mode fails before simulator creation",
+    "remote seed reservations, cost/disk/admission/speed and coordinator approval remain unverified"
+  ],
+  "artifacts": [
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/experiments/2026-10-14-crate-teacher/crate11-measure.md",
+      "sha256": "ee1e8b8cf57037b66cf44a3ab43bf14a835e6dae89f0af707d83f7b602682812"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/experiments/2026-10-14-crate-teacher/crate11-summary.json",
+      "sha256": "92ad24463bf801d4755078b138534e2a5f7fd662b0120de6d9d9aa2be448bbe1"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gt-leak-audits/gt-leak-audit-bf31840f.md",
+      "sha256": "5f448850a8ac496c366ee7e2ead36b7d636599fc674ea71e540351173c774b08"
+    }
+  ]
+}

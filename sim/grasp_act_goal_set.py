@@ -36,7 +36,7 @@ def nominal_goal_blocked(world, rid, end, bounds, folded, *, profile=None, stati
 
 
 def select_goal(world, rid, end, bounds, folded, current=(0., STATION_M), *, profile=None,
-                distances=DISTANCES_M, excluded=(), grasp_filter=None):
+                distances=DISTANCES_M, excluded=(), grasp_filter=None, angles=ANGLES_DEG, navigation=None):
     """Fallback after nominal_goal_blocked; keep an already selected stance.
 
     Angles stay on the assigned end's outward half-circle. Distances must pass
@@ -62,17 +62,20 @@ def select_goal(world, rid, end, bounds, folded, current=(0., STATION_M), *, pro
         if grasp_filter is not None and not grasp_filter(world, (goal[0], goal[1], heading)):
             row['reason'] = 'grasp_geometry'; return None
         if not reachable[distance]:row['reason'] = 'ik_unreachable'; return None
-        if not (x0+radius <= goal[0] <= x1-radius and y0+radius <= goal[1] <= y1-radius):
+        if navigation is None and not (x0+radius <= goal[0] <= x1-radius and y0+radius <= goal[1] <= y1-radius):
             row['reason'] = 'outside_bounds'; return None
-        if not free(goal, discs, rects, radius):row['reason'] = 'blocked_goal'; return None
+        clear = free(goal, discs, rects, radius) if navigation is None else navigation.free(goal, heading)
+        if not clear:row['reason'] = 'blocked_goal'; return None
         # Avoid A* for a clear direct route, including a robot already at goal.
-        if segment_free(start, goal, discs, rects, radius):
+        if navigation is not None:
+            path = navigation.path(start, goal, heading)
+        elif segment_free(start, goal, discs, rects, radius):
             path = [tuple(start), goal]
         else:
             path = plan_path(start, goal, bounds, discs, rects=rects, radius=radius)
         if not path:row['reason'] = 'no_path'; return None
         points = [tuple(start), *path]
-        if not all(segment_free(a, b, discs, rects, radius) for a, b in zip(points, points[1:])):
+        if navigation is None and not all(segment_free(a, b, discs, rects, radius) for a, b in zip(points, points[1:])):
             row['reason'] = 'unsafe_segment'; return None
         cost = sum(math.dist(a, b) for a, b in zip(points, points[1:])) + .02*abs(wrap(heading-pose[2]))
         row.update(reason='feasible', cost=cost)
@@ -81,7 +84,7 @@ def select_goal(world, rid, end, bounds, folded, current=(0., STATION_M), *, pro
     best = candidate(current)
     if best is None:
         alternatives = []
-        for angle in ANGLES_DEG:
+        for angle in angles:
             for distance in distances:
                 choice = (math.radians(angle), distance)
                 if choice == current:continue

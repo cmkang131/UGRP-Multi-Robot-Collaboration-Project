@@ -25,7 +25,8 @@ from scripts.run_grasp_act_release import (HeldAudit, HELD_OBJECT_MODES, Eyes, d
 from sim.grasp_act_release_teacher import OBSERVE_MODES, REACH_MODES
 from sim.cargo_teacher_profile import CRATE
 
-LOOKAROUND_MODES = ('off', 'setdown_lookaround_v1')
+from sim.crate_observation_v12 import PROFILE as CRATE12, ASSIGNMENT, LOOKAROUND as OWN_LOOKAROUND, RELEASE
+LOOKAROUND_MODES = ('off', 'setdown_lookaround_v1', OWN_LOOKAROUND)
 RGB_LIFT_MODES = ('off', 'crate_rgb_lift_v1', 'crate_rgb_lift_v2', 'crate_rgb_lift_v3')
 from sim.cargo_scene_version import VERSIONS as CARGO_SCENE_VERSIONS
 from sim.crate_lift_pose import MODES as LIFT_POSE_MODES, CARTESIAN_MODES
@@ -34,12 +35,14 @@ HOLD_S = 3.
 LIFT_FORCE_N = .5
 
 
-def make_grasp_teacher(rid, end, pwm, *, teacher_stability='off', teacher_search='off', approach_goal_set='off', crate_lift_pose='off', crate_approach_recovery='off'):
+def make_grasp_teacher(rid, end, pwm, *, teacher_stability='off', teacher_search='off', approach_goal_set='off', crate_lift_pose='off', crate_approach_recovery='off',
+                       crate_wall_footprint='off', crate_stances='off', crate_pulse_safety='off'):
     from sim.crate_grasp_teacher import CrateGraspTeacher
     return CrateGraspTeacher(rid, end, pwm, bounds=(-20, 20, -20, 20), profile=CRATE,
                              teacher_stability=teacher_stability, teacher_search=teacher_search,
                              approach_goal_set=approach_goal_set, crate_lift_pose=crate_lift_pose,
-                             crate_approach_recovery=crate_approach_recovery)
+                             crate_approach_recovery=crate_approach_recovery,crate_wall_footprint=crate_wall_footprint,
+                             crate_stances=crate_stances,crate_pulse_safety=crate_pulse_safety)
 
 
 def run_meta(plan, sha, pr, crate_lift_pose, crate_approach_recovery='off'):
@@ -152,7 +155,27 @@ def held_lugs(world, inst, roles, profile=CRATE):
 def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', observe_mode='gaze_v2', render_dr='off',
         zone_slots='floor', reach_mode='calibrated_mid_v1', held_object='visible_v0', lookaround='off',
         execution_host=None, pr=None, crate_scene='catalogue_v1', rgb_lift='off',
-        teacher_stability='off', teacher_search='off', approach_goal_set='off', crate_lift_pose='off', crate_approach_recovery='off'):
+        teacher_stability='off', teacher_search='off', approach_goal_set='off', crate_lift_pose='off', crate_approach_recovery='off',
+        crate_profile='off', static_walls='off', crate_wall_footprint='off', crate_stances='off', crate_pulse_safety='off',
+        assignment='off', release_channel='legacy', recording_mode='success_measurement'):
+    from sim.crate_observation_v12 import validate_recording, fixed_role, own_lug, tagged_world, OwnLookaround
+    from harness.grasp_act_input_audit import sourced
+    if crate_profile==CRATE12:
+        static_walls='persistent_walls_v1'
+        crate_wall_footprint='crate_footprint_v1';crate_stances='crate_stances_v1';crate_pulse_safety='crate_no_closer_v1'
+        assignment=ASSIGNMENT;release_channel=RELEASE
+        if lookaround=='off':lookaround=OWN_LOOKAROUND
+    validate_recording(mode=recording_mode,profile=crate_profile,held_object=held_object,
+        own_pose_source=own_pose_source,lookaround=lookaround,assignment=assignment,release_channel=release_channel)
+    if static_walls not in ('off','persistent_walls_v1'):raise ValueError('unknown static wall mode')
+    if assignment not in ('off',ASSIGNMENT):raise ValueError('unknown assignment mode')
+    if release_channel not in ('legacy',RELEASE):raise ValueError('unknown release channel')
+    strict=crate_profile==CRATE12
+    if release_channel==RELEASE and not strict:raise ValueError('fixed release requires crate12_v1 provenance profile')
+    if lookaround==OWN_LOOKAROUND and not strict:raise ValueError('own lookaround requires crate12_v1 provenance profile')
+    modes=dict(crate_profile=crate_profile,static_walls=static_walls,crate_wall_footprint=crate_wall_footprint,
+               crate_stances=crate_stances,crate_pulse_safety=crate_pulse_safety,assignment=assignment,release_channel=release_channel)
+    modes['value_provenance']='value_sources_v1' if strict else 'off'
     from sim.crate_approach_recovery import MODES as CRATE_APPROACH_MODES
     if crate_approach_recovery not in CRATE_APPROACH_MODES:
         raise ValueError('unknown crate approach recovery')
@@ -166,10 +189,11 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
     make_grasp_teacher('r1', 'teal', {1: 1500, 3: 820, 4: 2320, 5: 1320, 6: 1500},
                        teacher_stability=teacher_stability, teacher_search=teacher_search,
                        approach_goal_set=approach_goal_set, crate_lift_pose=crate_lift_pose,
-                       crate_approach_recovery=crate_approach_recovery)
+                       crate_approach_recovery=crate_approach_recovery,crate_wall_footprint=crate_wall_footprint,
+                       crate_stances=crate_stances,crate_pulse_safety=crate_pulse_safety)
     if crate_lift_pose != 'off' and (crate_scene != 'crate_mass_025_v1' or reach_mode != 'pad_window_v2'):
         raise ValueError('crate lift planning requires crate_mass_025_v1 and pad_window_v2')
-    if lookaround != 'off' and own_pose_source == 'commands':
+    if lookaround == 'setdown_lookaround_v1' and own_pose_source == 'commands':
         raise ValueError('lookaround requires a verified map localization; GT handoff anchors are forbidden')
     from sim.cargo_scene_version import check as check_cargo_scene
     plan = {**plan, 'cargo_scene_version': check_cargo_scene(crate_scene)}
@@ -177,6 +201,11 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
         raise ValueError('heavy_crate plan required')
     if len(set(plan['roles'].values())) != 2 or set(plan['roles']) != {'r1', 'r2'}:
         raise ValueError('two robots on two different lugs required')
+    if assignment==ASSIGNMENT:
+        if plan.get('lug_color_scene')!='crate_lug_colors_v1':raise ValueError('fixed RGB roles require coloured lugs')
+        plan={**plan,'setup_assignment_source':plan['assignment_source'],
+              'assignment_source':ASSIGNMENT,'roles':{r:fixed_role(r) for r in ('r1','r2')},
+              'role_tickets':{r:CRATE.role_of(fixed_role(r)) for r in ('r1','r2')}}
     audit = HeldAudit(held_object)
     from harness.grasp_act_input_audit import AuditedTeacherInput, new_input_audit
     boundary_audit = new_input_audit(True, 'issued')
@@ -205,7 +234,7 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
     sha = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     if subprocess.check_output(['git', 'status', '--porcelain', '--untracked-files=no'], cwd=ROOT):
         raise RuntimeError('committed source required')
-    write(out/'RUN_META.json', run_meta(plan, sha, pr, crate_lift_pose, crate_approach_recovery))
+    write(out/'RUN_META.json', {**run_meta(plan, sha, pr, crate_lift_pose, crate_approach_recovery),**modes})
     report = {'status': 'running', 'source_sha': sha, 'teacher': 'crate_visible_only_v1', 'object_kind': 'heavy_crate',
               'own_pose_source': own_pose_source, 'observe_mode': observe_mode, 'zone_slots': zone_slots,
               'reach_mode': reach_mode, 'held_object': held_object, 'lookaround': lookaround,
@@ -215,7 +244,7 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
               'crate_lift_pose': crate_lift_pose, 'crate_approach_recovery': crate_approach_recovery,
               'lift_confirmation': 'own issued lift + own RGB; unconfirmed/unknown stops before release',
               'execution_host': execution_host, 'weld': 'off', 'recording_mode': 'success_measurement',
-              'student_execution': False, 'success_rule': SUCCESS,
+              'student_execution': False, 'success_rule': SUCCESS, **modes,
               'grasp_criteria': {'min_z_m': .012, 'max_tilt_deg': 10., 'hold_s': HOLD_S, 'bilateral_n': LIFT_FORCE_N},
               'loadavg_at_start': os.getloadavg(), 'prefix_held': None, 'release_success': None}
     write(out/'result.json', report)
@@ -302,8 +331,9 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
             previous[rid] = v5.command({'t': origin, 'wheels': [0.]*4, 'duration_s': [0.]*4, 'pwm': pwm})
             teachers[rid] = make_grasp_teacher(rid, end, pwm, teacher_stability=teacher_stability,
                                                teacher_search=teacher_search, approach_goal_set=approach_goal_set,
-                                               crate_lift_pose=crate_lift_pose, crate_approach_recovery=crate_approach_recovery)
-            models[rid] = VisibleWorld(rid, end, pose_source='issued', profile=CRATE)
+                                               crate_lift_pose=crate_lift_pose, crate_approach_recovery=crate_approach_recovery,
+                                               crate_wall_footprint=crate_wall_footprint,crate_stances=crate_stances,crate_pulse_safety=crate_pulse_safety)
+            models[rid] = VisibleWorld(rid, end, pose_source='issued', profile=CRATE,static_walls=static_walls)
             clocks[rid] = v5.IssuedClock()
         i = 0
         both_since = None
@@ -338,16 +368,23 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
             truth['visibility'] = {rid: band.measure(world.data, rid, end) for rid, end in roles.items()}
             perceived = {}
             truth['visible_measurements'] = {}
+            assignment_inputs = {}
             for rid, end in roles.items():
                 # The synchronized lift needs only its already-issued arm sequence.
                 # Hide all cargo measurements for both robots from the first lift command.
                 holding = any(t.phase in ('lift', 'complete') for t in teachers.values())
                 ms = grasp_inputs(lambda: measurements(world, band, rid, end, object_bodies), holding=holding, audit=audit)
+                if assignment==ASSIGNMENT and not holding:
+                    color=own_lug(own_rgb(ports[rid]),rid)
+                    assignment_inputs[rid]={**color,'own_issued_pose':list(models[rid].pose)}
+                    if not color['confirmed']:ms=[m for m in ms if m['kind']!='band']
                 truth['visible_measurements'][rid] = ms
                 v = truth['visibility'][rid]
                 v['any_probe_visible'] = v['visible']
                 v['visible'] = v['visible_probes'] >= 5
-                perceived[rid] = AuditedTeacherInput(models[rid].observe(ms, now), boundary_audit)
+                visual=models[rid].observe(ms,now)
+                perceived[rid] = AuditedTeacherInput(tagged_world(visual,holding=holding) if strict else visual,
+                    boundary_audit,provenance='value_sources_v1' if strict else 'off')
             timings['evaluation'] += time.monotonic()-at
             if i % 10 == 0:
                 frames(i, 'grasp')
@@ -411,7 +448,7 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
                                  'visible_probes': {r: truth['visibility'][r]['visible_probes'] for r in roles},
                                  # Exact inputs for offline decision replay. Keep these separate
                                  # from evaluation truth; never reconstruct missing inputs from GT.
-                                 'visible_measurements': truth['visible_measurements'],
+                                 'visible_measurements': truth['visible_measurements'], 'assignment_inputs':assignment_inputs,
                                  'pick_permits': permits, 'lift_permits': lift_permits,
                                  'servo_load': load_row,
                                  **({'load_detail': collect_load_detail(world, inst, roles)}
@@ -486,9 +523,10 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
                                                                     float(world.robot(rid).base_rpy()[2])]
             pwm = {int(s): int(ports[rid]._servo_pulses[s]) for s in v5.SERVOS}
             rel[rid] = CrateReleaseTeacher(rid, end, pwm, handoff_pose_estimate=estimate, zone_rect=rect,
-                                           own_pose_source=own_pose_source, reach_mode=reach_mode)
+                                           own_pose_source=own_pose_source, reach_mode=reach_mode,
+                                           input_audit=boundary_audit if strict else None)
         R = tuple(roles)
-        code = PairReleaseCode(R)
+        code = PairReleaseCode(R,channel=release_channel,input_audit=boundary_audit)
         release_t0 = float(world.data.time)
         st = {'phase': 'look', 'since': release_t0, 'iter': 0, 'steps': 0, 'search': 0, 'sched': {}, 'plan': {}, 'go': None,
               'after_visible': False, 'choice': None}
@@ -503,7 +541,7 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
             data = world.data
             pose = pose_of(rid)
             t = rel[rid]
-            if t.holding and held_object == 'hidden_v1':
+            if strict or (t.holding and held_object == 'hidden_v1'):
                 (ex, ey), (ox, oy), _ = t.end_and_outward(now)
                 c_, s_ = math.cos(pose[2]), math.sin(pose[2])
                 e = np.array([pose[0]+c_*ex-s_*ey, pose[1]+s_*ex+c_*ey, 0.])
@@ -540,7 +578,7 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
 
         def post(tag, now):
             for rid, t in rel.items():
-                code.post(rid, {**(t.last_report or {}), 'phase': tag}, now)
+                code.post(rid, t.fixed_message(tag,now) if release_channel==RELEASE else {**(t.last_report or {}), 'phase': tag}, now)
 
         def ready_to(tag, now):
             code.deliver(now)
@@ -582,7 +620,8 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
 
         # own pose estimate for the look-around (map frame, own commands only; truth only scores it)
         la = None
-        if lookaround != 'off':
+        own_la={rid:OwnLookaround(models[rid]) for rid in roles} if lookaround==OWN_LOOKAROUND else {}
+        if lookaround == 'setdown_lookaround_v1':
             from sim import crate_lookaround as cl
             lam = cl.load_module()
             la = {'mod': lam, 'est': {}, 'plans': {}, 'script': {}, 'log': {}, 'landmarks': cl.landmarks_from_map(static)}
@@ -603,7 +642,8 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
             fine = ph in ('look', 'observe')
             for rid, t in rel.items():
                 t.phase = ph
-                t.perceive(observe(rid, now, fine), now)
+                obs=observe(rid,now,fine)
+                t.perceive(sourced(obs,'visible_teacher_measurement','issued_commands','known_shape') if strict else obs,now)
             if ph == 'look' and age >= .6:
                 for t in rel.values():
                     t.report(now, 'look')
@@ -612,6 +652,8 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
             elif ph == 'await_look' and ready_to('look', now):
                 choice = code.decide(now, require_seen=False)
                 st['choice'] = choice
+                if release_channel==RELEASE and (choice['action'] in ('observe','handoff') or st['steps']>=8):
+                    outcome='release_fixed_signal_insufficient';break
                 if choice['action'] == 'lower' or st['steps'] >= 8:
                     start_lower(now)
                 else:
@@ -681,10 +723,12 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
             elif ph == 'await_observe' and ready_to('observe', now):
                 choice = code.decide(now, require_seen=True)
                 st['choice'] = choice
+                if release_channel==RELEASE and choice['action'] in ('observe','handoff'):
+                    outcome='release_fixed_signal_insufficient';break
                 if choice['action'] == 'lower' and observe_mode == 'backoff_v3':
                     for rid in rel:
                         schedule(rid, [(0., FOLDED_BACKOFF)], now)
-                    st.update(phase='lookaround' if la else 'done', since=now)
+                    st.update(phase='lookaround' if la or own_la else 'done', since=now)
                     done_at = now
                 elif choice['action'] == 'lower':
                     for rid, t in rel.items():
@@ -734,11 +778,21 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
                 if now >= st['go']-1e-9 and not run_plan(now):
                     for rid, t in rel.items():
                         schedule(rid, [(0., FOLDED_BACKOFF)], now)
-                    st.update(phase='lookaround' if la else 'done', since=now)
+                    st.update(phase='lookaround' if la or own_la else 'done', since=now)
                     done_at = now
             elif ph == 'lookaround':
                 run_sched(now)
-                if not _lookaround_step(world, la, rel, roles, eyes, ports, wheels, st, now, nrng, cl, plan, lookaround_log=report.setdefault('lookaround', {})):
+                if own_la:
+                    def pan(rid,pulse,at):
+                        ports[rid].apply({'kind':'look','pan_pulse':pulse},at);rel[rid].pwm[6]=pulse
+                    active=[scan.step(now,apply_pan=lambda pulse,at,rid=rid:pan(rid,pulse,at),
+                                      issue_wheels=wheels[rid].command,capture=lambda rid=rid:own_rgb(ports[rid]))
+                            for rid,scan in own_la.items()]
+                    report['lookaround_own']={r:s.log for r,s in own_la.items()}
+                    if any(s.log.get('outcome')=='wall_blocked' for s in own_la.values()):
+                        outcome='lookaround_wall_blocked';break
+                    if not any(active):st.update(phase='done',since=now)
+                elif not _lookaround_step(world, la, rel, roles, eyes, ports, wheels, st, now, nrng, cl, plan, lookaround_log=report.setdefault('lookaround', {})):
                     st.update(phase='done', since=now)
             elif ph == 'done':
                 run_sched(now)
@@ -760,6 +814,7 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
             k += 1
             advance(tick_t+.1)
             for rid, t in rel.items():
+                if rid in own_la:own_la[rid].propagate(*odometry(*issued[rid]))
                 if la is not None:
                     dx, dy, da = odometry(*issued[rid])
                     la['est'][rid].propagate(dx, dy, da)
@@ -959,6 +1014,14 @@ def main():
     p.add_argument('--approach-goal-set', choices=('off', 'approach_goal_set_v1'), default='off')
     from sim.crate_approach_recovery import MODES as CRATE_APPROACH_MODES
     p.add_argument('--crate-approach-recovery', choices=CRATE_APPROACH_MODES, default='off')
+    p.add_argument('--crate-profile',choices=('off',CRATE12),default='off')
+    p.add_argument('--static-walls',choices=('off','persistent_walls_v1'),default='off')
+    p.add_argument('--crate-wall-footprint',choices=('off','crate_footprint_v1'),default='off')
+    p.add_argument('--crate-stances',choices=('off','crate_stances_v1'),default='off')
+    p.add_argument('--crate-pulse-safety',choices=('off','crate_no_closer_v1'),default='off')
+    p.add_argument('--assignment',choices=('off',ASSIGNMENT),default='off')
+    p.add_argument('--release-channel',choices=('legacy',RELEASE),default='legacy')
+    p.add_argument('--recording-mode',choices=('success_measurement','training'),default='success_measurement')
     p.add_argument('--execution-host', choices=('azure', 'gcp1'), default='gcp1')
     p.add_argument('--pr', type=int, default=None)
     a = p.parse_args()
@@ -973,7 +1036,10 @@ def main():
                          crate_scene=a.crate_scene, rgb_lift=a.rgb_lift,
                          teacher_stability=a.teacher_stability, teacher_search=a.teacher_search,
                          approach_goal_set=a.approach_goal_set, crate_lift_pose=a.crate_lift_pose,
-                         crate_approach_recovery=a.crate_approach_recovery),
+                         crate_approach_recovery=a.crate_approach_recovery,crate_profile=a.crate_profile,
+                         static_walls=a.static_walls,crate_wall_footprint=a.crate_wall_footprint,crate_stances=a.crate_stances,
+                         crate_pulse_safety=a.crate_pulse_safety,assignment=a.assignment,release_channel=a.release_channel,
+                         recording_mode=a.recording_mode),
                      ensure_ascii=False, default=str))
 
 

@@ -24,6 +24,14 @@ def propagate_owned(point,issued,dt):
 
 
 class VisibleOnlyGraspTeacher(GraspTeacher):
+    def _navigation(self, world):
+        return None
+
+    def _goal_free(self, world, goal, heading, radius, discs, rects):
+        from sim.grasp_act_visible_route import free
+        nav = self._navigation(world)
+        return free(goal, discs, rects, radius) if nav is None else nav.free(goal, heading)
+
     def __init__(self,*args,**kwargs):
         self.teacher_stability=kwargs.pop('teacher_stability','off')
         if self.teacher_stability not in ('off','align_relook_v1'):
@@ -105,7 +113,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
             from sim.grasp_act_visible_route import constraints,free
             pose,g,heading,goal=self._geometry(truth)
             radius,discs,rects=constraints(truth,self.rid,self.folded_ready,self.cargo_profile)
-            if self.phase in ('align','ready') and (not self.approach_plan_valid or not free(goal,discs,rects,radius)):
+            if self.phase in ('align','ready') and (not self.approach_plan_valid or not self._goal_free(truth,goal,heading,radius,discs,rects)):
                 self._set('approach',now);self._reset_alignment();self.next_plan=now
             if self.phase=='approach' and not self._plan_approach(truth,now):
                 return self._hold(now),False
@@ -358,16 +366,19 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         pose,g,heading,goal=self._geometry(world)
         radius,discs,rects=constraints(world,self.rid,self.folded_ready,self.cargo_profile)
         self.planning_radius=radius
+        nav=self._navigation(world)
         changed=self.path_goal is None or math.dist(goal,self.path_goal)>.025
-        blocked=not free(goal,discs,rects,radius)
-        unusable=self.path and math.dist(pose[:2],goal)>.08 and waypoint(pose[:2],self.path,discs,rects,radius) is None
+        blocked=not self._goal_free(world,goal,heading,radius,discs,rects)
+        target=(waypoint(pose[:2],self.path,discs,rects,radius) if nav is None else nav.waypoint(pose[:2],self.path,g))
+        unusable=self.path and math.dist(pose[:2],goal)>.08 and target is None
         entering=not self.approach_plan_valid and self.approach_blocked_since is None
         if entering or changed or now>=self.next_plan or (self.approach_plan_valid and (blocked or unusable)):
-            from sim.grasp_act_goal_set import DISTANCES_M
+            from sim.grasp_act_goal_set import DISTANCES_M,ANGLES_DEG
             selected,checked=select_goal(world,self.rid,self.end,self.bounds,self.folded_ready,self.approach_choice,
                                         profile=self.cargo_profile,distances=getattr(self,'approach_distances',DISTANCES_M),
                                         excluded=getattr(self,'approach_excluded',()),
-                                        grasp_filter=getattr(self,'approach_grasp_filter',None))
+                                        grasp_filter=getattr(self,'approach_grasp_filter',None),
+                                        angles=getattr(self,'approach_angles',ANGLES_DEG),navigation=nav)
             self.planner_calls+=1;self.next_plan=now+1.;self.path_goal=tuple(goal)
             self.blocked_goal_calls+=int(blocked)
             self.approach_plan_valid=selected is not None
@@ -412,7 +423,8 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
             if not self._plan_approach(world,now):return self._hold(now)
             pose,g,heading,goal=self._geometry(world)
             radius,discs,rects=constraints(world,self.rid,self.folded_ready,self.cargo_profile)
-            target=waypoint(pose[:2],self.path,discs,rects,radius)
+            nav=self._navigation(world)
+            target=(waypoint(pose[:2],self.path,discs,rects,radius) if nav is None else nav.waypoint(pose[:2],self.path,g))
             if target is None:return self._hold(now)
             return self._continuous(now,**drive(pose,goal,target,g))
         radius,discs,rects=constraints(world,self.rid,self.folded_ready,self.cargo_profile)
@@ -541,7 +553,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
             if not self.approach_plan_valid or self.approach_blocked_since is not None:return False
             from sim.grasp_act_visible_route import constraints,free
             radius,discs,rects=constraints(truth,self.rid,self.folded_ready,self.cargo_profile)
-            if not free(goal,discs,rects,radius):return False
+            if not self._goal_free(truth,goal,heading,radius,discs,rects):return False
         x,y=local(pose,g)
         try:grasp_poses((x,y,g[2]))
         except ValueError:return False

@@ -1,0 +1,499 @@
+{
+  "schema": "ugrp.crate_teacher.plan.v1",
+  "scope": "exact saved episode geometry; runtime uses crate12 profile; development denominator only",
+  "episodes": [
+    {
+      "episode_id": "crate_diagnostic-77978",
+      "batch": "crate-teacher-crate_diagnostic-77970",
+      "seed": 77978,
+      "split": "crate_diagnostic",
+      "scenario_id": "s2_unmapped_blockage_v5",
+      "scenario_source_sha256": "1c290dc8abdb261707490c988ec20439456b4fb467804a9c302b89fc82b8eb64",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "cargo_pose": [
+        4.6126770117299,
+        -2.754008395264413,
+        1.4772380371933245
+      ],
+      "spawns": {
+        "r1": [
+          3.771623886085637,
+          -2.1195272016938578,
+          0.032355118817659255,
+          -1.5381490899628862
+        ],
+        "r2": [
+          4.640983835606372,
+          -2.4523335310114787,
+          0.032355118817659255,
+          -1.6643546163964686
+        ],
+        "r3": [
+          3.930109852617704,
+          -0.8177489280418229,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "role_tickets": {
+        "r1": "west",
+        "r2": "east"
+      },
+      "target_item": "crate_1",
+      "object_kind": "heavy_crate",
+      "skill": "grasp_lift_release",
+      "destination_region": "zone_B",
+      "lug_color_scene": "crate_lug_colors_v1",
+      "assignment_source": "demo_rule_nearest_lug",
+      "initial_pan": {
+        "r1": 2083,
+        "r2": 1574
+      },
+      "peer_case": "other_end",
+      "stratum": {
+        "axial_outside_m": [
+          0.1,
+          0.2
+        ],
+        "sampled_outside_m": 0.11815468207687387,
+        "axis": "y",
+        "side": -1
+      },
+      "near_wall": true,
+      "handoff_pose_error": {
+        "r1": [
+          -0.025473643071909337,
+          -0.051912517299097995,
+          0.03852189703438801
+        ],
+        "r2": [
+          0.07218417798048497,
+          0.04163313153404231,
+          -0.02529468778396646
+        ]
+      },
+      "crate_to_zone_center_m": 0.6541312465421084,
+      "proposal_attempts": 6,
+      "cargo_scene_version": "crate_mass_025_v1",
+      "start_assigned_los": "start_assigned_los_v1",
+      "start_los_audit": {
+        "robots": {
+          "r1": {
+            "role": "teal",
+            "pitch_results": [
+              {
+                "pitch": [
+                  820,
+                  2320
+                ],
+                "max_seen": 5,
+                "views": 117,
+                "any_angles": 2,
+                "gate5_angles": 1,
+                "witness": {
+                  "yaw_deg": -64,
+                  "visible_probes": 5,
+                  "camera_xyz": [
+                    3.8263254707027974,
+                    -2.231682070774897,
+                    0.23823638145450965
+                  ]
+                },
+                "occluders": {
+                  "cargo_crate_1__box": 1
+                }
+              }
+            ],
+            "any": true,
+            "gate5": true,
+            "step_deg": 1,
+            "exhaustive": false
+          },
+          "r2": {
+            "role": "blue",
+            "pitch_results": [
+              {
+                "pitch": [
+                  820,
+                  2320
+                ],
+                "max_seen": 0,
+                "views": 360,
+                "any_angles": 0,
+                "gate5_angles": 0,
+                "witness": null,
+                "occluders": {}
+              },
+              {
+                "pitch": [
+                  700,
+                  2440
+                ],
+                "max_seen": 0,
+                "views": 360,
+                "any_angles": 0,
+                "gate5_angles": 0,
+                "witness": null,
+                "occluders": {}
+              },
+              {
+                "pitch": [
+                  500,
+                  2500
+                ],
+                "max_seen": 6,
+                "views": 66,
+                "any_angles": 7,
+                "gate5_angles": 1,
+                "witness": {
+                  "yaw_deg": -115,
+                  "visible_probes": 6,
+                  "camera_xyz": [
+                    4.588948172682152,
+                    -2.5639243702657692,
+                    0.18002566614752122
+                  ]
+                },
+                "occluders": {
+                  "cargo_crate_1__box": 4
+                }
+              }
+            ],
+            "any": true,
+            "gate5": true,
+            "step_deg": 1,
+            "exhaustive": false
+          }
+        },
+        "accepted": true,
+        "scene_xml_sha256": "5c26c7385d050a7ade9130321468e3d8940800096e1e204f742fc7f2047fc69c",
+        "mj_step_calls": 0,
+        "render_calls": 0
+      },
+      "start_los_proposals": 2
+    },
+    {
+      "episode_id": "crate_diagnostic-77981",
+      "batch": "crate-teacher-crate_diagnostic-77980",
+      "seed": 77981,
+      "split": "crate_diagnostic",
+      "scenario_id": "s8_mixed_tiers_v5",
+      "scenario_source_sha256": "906b8bc382c0fc4de7c3f974053e9c412f7ac17f7b1c719dd25d8ae1a24df8cf",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "cargo_pose": [
+        4.6139362077193145,
+        -1.652923285212187,
+        4.793786124284333
+      ],
+      "spawns": {
+        "r1": [
+          3.588027205912863,
+          -1.9054442179030375,
+          0.032355118817659255,
+          0.4650655108215731
+        ],
+        "r2": [
+          3.6600825965503723,
+          -2.4872801343102435,
+          0.032355118817659255,
+          0.7186725923070437
+        ],
+        "r3": [
+          5.166960901937067,
+          -2.4876015419325035,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "role_tickets": {
+        "r1": "west",
+        "r2": "east"
+      },
+      "target_item": "crate_1",
+      "object_kind": "heavy_crate",
+      "skill": "grasp_lift_release",
+      "destination_region": "zone_B",
+      "lug_color_scene": "crate_lug_colors_v1",
+      "assignment_source": "demo_rule_nearest_lug",
+      "initial_pan": {
+        "r1": 1696,
+        "r2": 1222
+      },
+      "peer_case": "approaching",
+      "stratum": {
+        "axial_outside_m": [
+          -0.3,
+          -0.02
+        ],
+        "sampled_outside_m": -0.08925523092973173,
+        "axis": "y",
+        "side": 1
+      },
+      "near_wall": false,
+      "handoff_pose_error": {
+        "r1": [
+          0.020836494723989584,
+          0.02235289182191393,
+          -0.031186681795310624
+        ],
+        "r2": [
+          0.0010304189880257148,
+          -0.009836014558895965,
+          0.11203039913306005
+        ]
+      },
+      "crate_to_zone_center_m": 0.447293870728249,
+      "proposal_attempts": 3,
+      "cargo_scene_version": "crate_mass_025_v1",
+      "start_assigned_los": "start_assigned_los_v1",
+      "start_los_audit": {
+        "robots": {
+          "r1": {
+            "role": "teal",
+            "pitch_results": [
+              {
+                "pitch": [
+                  820,
+                  2320
+                ],
+                "max_seen": 6,
+                "views": 178,
+                "any_angles": 1,
+                "gate5_angles": 1,
+                "witness": {
+                  "yaw_deg": -3,
+                  "visible_probes": 6,
+                  "camera_xyz": [
+                    3.7126399191278976,
+                    -1.9119748934730718,
+                    0.23823638145450965
+                  ]
+                },
+                "occluders": {
+                  "cargo_crate_1__box": 3
+                }
+              }
+            ],
+            "any": true,
+            "gate5": true,
+            "step_deg": 1,
+            "exhaustive": false
+          },
+          "r2": {
+            "role": "blue",
+            "pitch_results": [
+              {
+                "pitch": [
+                  820,
+                  2320
+                ],
+                "max_seen": 8,
+                "views": 196,
+                "any_angles": 2,
+                "gate5_angles": 1,
+                "witness": {
+                  "yaw_deg": 15,
+                  "visible_probes": 8,
+                  "camera_xyz": [
+                    3.7806144192026396,
+                    -2.4549837297683172,
+                    0.23823638145450962
+                  ]
+                },
+                "occluders": {}
+              }
+            ],
+            "any": true,
+            "gate5": true,
+            "step_deg": 1,
+            "exhaustive": false
+          }
+        },
+        "accepted": true,
+        "scene_xml_sha256": "ec1a6de1605b63b513eeeed9af6733d2b401f70fc06e77026eefb10f9c2f3be8",
+        "mj_step_calls": 0,
+        "render_calls": 0
+      },
+      "start_los_proposals": 1
+    },
+    {
+      "episode_id": "crate_diagnostic-77982",
+      "batch": "crate-teacher-crate_diagnostic-77980",
+      "seed": 77982,
+      "split": "crate_diagnostic",
+      "scenario_id": "s2_unmapped_blockage_v5",
+      "scenario_source_sha256": "1c290dc8abdb261707490c988ec20439456b4fb467804a9c302b89fc82b8eb64",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "cargo_pose": [
+        4.682885255060496,
+        -2.0582831112375977,
+        0.0296210470308039
+      ],
+      "spawns": {
+        "r1": [
+          4.844078378170743,
+          -1.1550065711485762,
+          0.032355118817659255,
+          -1.529045602357896
+        ],
+        "r2": [
+          4.939313996134663,
+          -0.7213109300661706,
+          0.032355118817659255,
+          -1.7602931620074505
+        ],
+        "r3": [
+          -0.32150399891782777,
+          -2.1901057804184565,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "role_tickets": {
+        "r1": "west",
+        "r2": "east"
+      },
+      "target_item": "crate_1",
+      "object_kind": "heavy_crate",
+      "skill": "grasp_lift_release",
+      "destination_region": "zone_B",
+      "lug_color_scene": "crate_lug_colors_v1",
+      "assignment_source": "demo_rule_nearest_lug",
+      "initial_pan": {
+        "r1": 1792,
+        "r2": 1314
+      },
+      "peer_case": "near_own",
+      "stratum": {
+        "axial_outside_m": [
+          -0.3,
+          -0.02
+        ],
+        "sampled_outside_m": -0.055686549695805276,
+        "axis": "x",
+        "side": 1
+      },
+      "near_wall": false,
+      "handoff_pose_error": {
+        "r1": [
+          -0.03523252447789562,
+          -0.03437890008930599,
+          -0.04675846012029683
+        ],
+        "r2": [
+          -0.02412581914594046,
+          0.02513921664996016,
+          0.003172818771503992
+        ]
+      },
+      "crate_to_zone_center_m": 0.09279150992659942,
+      "proposal_attempts": 1,
+      "cargo_scene_version": "crate_mass_025_v1",
+      "start_assigned_los": "start_assigned_los_v1",
+      "start_los_audit": {
+        "robots": {
+          "r1": {
+            "role": "teal",
+            "pitch_results": [
+              {
+                "pitch": [
+                  820,
+                  2320
+                ],
+                "max_seen": 7,
+                "views": 53,
+                "any_angles": 2,
+                "gate5_angles": 1,
+                "witness": {
+                  "yaw_deg": -128,
+                  "visible_probes": 7,
+                  "camera_xyz": [
+                    4.767253845957048,
+                    -1.2533374883026445,
+                    0.2382363814545096
+                  ]
+                },
+                "occluders": {}
+              }
+            ],
+            "any": true,
+            "gate5": true,
+            "step_deg": 1,
+            "exhaustive": false
+          },
+          "r2": {
+            "role": "blue",
+            "pitch_results": [
+              {
+                "pitch": [
+                  820,
+                  2320
+                ],
+                "max_seen": 6,
+                "views": 66,
+                "any_angles": 4,
+                "gate5_angles": 1,
+                "witness": {
+                  "yaw_deg": -115,
+                  "visible_probes": 6,
+                  "camera_xyz": [
+                    4.886578115192916,
+                    -0.8344033917049167,
+                    0.23823638145450965
+                  ]
+                },
+                "occluders": {
+                  "r1__v3_elbow_servo": 4,
+                  "r1__v3_forearm_near_disc_left": 6,
+                  "r1__v3_upper_arm_far_disc_left": 4,
+                  "r1__v3_forearm_near_hole_left": 5
+                }
+              }
+            ],
+            "any": true,
+            "gate5": true,
+            "step_deg": 1,
+            "exhaustive": false
+          }
+        },
+        "accepted": true,
+        "scene_xml_sha256": "73b3d5f5abd7fa432e67b8361dff63230cddfbda8cc10fe158d5b8f861b9136e",
+        "mj_step_calls": 0,
+        "render_calls": 0
+      },
+      "start_los_proposals": 1
+    }
+  ],
+  "sources": [
+    {
+      "run": "crate-diag-77978-bf31840f",
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77978-bf31840f/raw/plan.json",
+      "sha256": "ba83dfc8b384a0cd3e1a36d7b49e4cfca4382d50457e1b85dc0dd3d69b32cc68",
+      "seed": 77978
+    },
+    {
+      "run": "crate-diag-77981-49d11b8e",
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77981-49d11b8e/raw/plan.json",
+      "sha256": "1bc099eb089d173857a5d5b08c8cb7ada0359758b7bcaf921e86e5db5fdb2607",
+      "seed": 77981
+    },
+    {
+      "run": "crate-diag-77982-49d11b8e",
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77982-49d11b8e/raw/plan.json",
+      "sha256": "719920fa0323c06d57ca5ca86b84bf96c18b43cdcb9e7e24d34050a3bae25ac6",
+      "seed": 77982
+    }
+  ]
+}

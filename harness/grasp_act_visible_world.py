@@ -15,7 +15,9 @@ def command_delta(issued,dt):
 
 
 class VisibleWorld:
-    def __init__(self,rid,end,*,pose_source='issued',profile=None):
+    def __init__(self,rid,end,*,pose_source='issued',profile=None,static_walls='off'):
+        if static_walls not in ('off','persistent_walls_v1'):raise ValueError('unknown static wall mode')
+        self.static_walls=static_walls
         if pose_source not in ('issued','perfect_self_comparison'):raise ValueError('explicit pose source required')
         self.rid=rid;self.end=end;self.pose_source=pose_source;self.profile=profile  # None: long beam
         self.pose=[0.,0.,0.];self.memory={};self.previous=None;self.previous_t=None
@@ -40,7 +42,8 @@ class VisibleWorld:
             q={**deepcopy(m),'xyz':[self.pose[0]+co*x-si*y,self.pose[1]+si*x+co*y,z],
                'yaw':self.pose[2]+m['yaw'],'seen_t':now}
             self.memory[m['id']]=q;seen.add(m['id'])
-        self.memory={k:v for k,v in self.memory.items() if now-v['seen_t']<=MEMORY_S}
+        self.memory={k:v for k,v in self.memory.items() if now-v['seen_t']<=MEMORY_S
+                     or (self.static_walls=='persistent_walls_v1' and v['kind']=='wall')}
         band=self.memory.get('band_'+self.end);beam=None
         if band is not None:
             x,y,z=band['xyz'];a=band['yaw']
@@ -61,4 +64,5 @@ class VisibleWorld:
         visibility={'visible_probes':next((m['visible_n'] for m in measurements if m['id']=='band_'+self.end),0),
                     'objects':[k for k in seen if k in objects],'peers':[k for k in seen if k in robots and k!=self.rid]}
         return {'t':now,'robots':robots,'objects':objects,'walls':walls,'beam':beam,'visibility':{self.rid:visibility},
-                'scope':'visible_only; remembered objects expire at student memory horizon'}
+                'scope':('visible_only; static walls persist in issued odometry frame; dynamic memory expires'
+                         if self.static_walls!='off' else 'visible_only; remembered objects expire at student memory horizon')}
