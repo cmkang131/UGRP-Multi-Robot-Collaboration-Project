@@ -116,3 +116,20 @@ def test_memory_only_connector_failure_is_a_target_even_when_goal_is_clear():
             found='tile_1' in t.search22_targets
             if found:break
     assert found and nav.path_blockers
+
+
+def test_reobserve_selects_near_stale_blocker_instead_of_short_fresh_cargo():
+    t=teacher();w=deepcopy(FIX['world']);now=w['t'];pose=w['robots']['r1']['pose']
+    def target(k,d,z,seen):
+        m=measurement();m.update(id=k,xyz=[pose[0]+d,pose[1],.02],top_z_bound_m=z,seen_t=seen)
+        return m
+    t.search22_targets={'near':target('near',.15,.08,now-1),'far':target('far',1.,.02,now-1),'fresh':target('fresh',.01,.01,now)}
+    schedule(t,w,now,force=True)
+    assert t.search21_recovery['target'][0]=='near'
+
+
+def test_blocked_start_is_checked_once_before_enumerating_connectors(monkeypatch):
+    t=teacher();w=deepcopy(FIX['world']);nav=BodyNavigation(t,w,admission=True);calls=[]
+    monkeypatch.setattr(nav,'free',lambda *a,**k:calls.append(a) or False)
+    assert nav.plan_path((0.,0.),(1.,1.),t.bounds,[]) is None
+    assert len(calls)==1

@@ -143,7 +143,10 @@ def schedule(t, world, now, *, force=False):
     t.approach_blocked_since = None
     from sim.grasp_act_search22 import enabled as search22
     if search22(t) and t.search22_targets:
-        t.search21_recovery['target']=min(t.search22_targets.items(),key=lambda kv:kv[1].get('top_z_bound_m',1.))
+        targets={k:m for k,m in t.search22_targets.items()
+            if world['visibility'][t.rid]['observations'].get(k,m)['seen_t']<now-1e-8}
+        if targets:t.search21_recovery['target']=min(targets.items(),
+            key=lambda kv:math.dist(world['robots'][t.rid]['pose'][:2],kv[1]['xyz'][:2]))
     t.search21_log.append({'t':now,'event':'empty_set_reobserve','encounter':t.search21_encounters})
 
 

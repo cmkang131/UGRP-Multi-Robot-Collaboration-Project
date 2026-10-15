@@ -82,7 +82,7 @@ class BodyNavigation(Search21Navigation):
         labels += [k for k in world['objects'] if k!='beam_1']
         labels += ['band_'+t.end]*5 if world['beam'] else []
         self.world_observations=obs
-        self.labels=labels;self.details=[];self.path_blockers=[]
+        self.labels=labels;self.details=[];self.path_blockers=[];self.probe_cache={}
         for key in labels:
             m=obs.get(key);fresh=m is not None and m['seen_t']>=world['t']-1e-8
             info=uncertainty(m,self.pose) if m is not None else None
@@ -102,7 +102,9 @@ class BodyNavigation(Search21Navigation):
         result=super().free(p,discs,rects,radius,heading=heading)
         if not result and self.fresh_target:
             yaw=self.heading(p) if heading is None else heading
-            checks=self.candidate_audit(p,yaw)
+            key=(*p[:2],yaw)
+            if key not in self.probe_cache:self.probe_cache[key]=self.candidate_audit(p,yaw)
+            checks=self.probe_cache[key]
             blockers=[d for d in checks if d['blocked']]
             # A collision-free sampled pose rejected ONLY by memory inflation
             # identifies a reobservation target, also on a connector/retreat.
@@ -115,6 +117,10 @@ class BodyNavigation(Search21Navigation):
                     if not any(b['id']==d['id'] for b in self.path_blockers):
                         self.path_blockers.append({**d,'sample_pose':[*p[:2],yaw]})
         return result
+
+    def plan_path(self,start,goal,bounds,discs,*,rects=(),radius=.13):
+        if not self.free(start,discs,rects,radius):return None
+        return super().plan_path(start,goal,bounds,discs,rects=rects,radius=radius)
 
     def candidate_audit(self,p,heading):
         pose=(*p[:2],heading);rows=[]
@@ -183,8 +189,10 @@ def recovery_step(t,world,now,before):
     from sim.grasp_act_teacher import local
     from sim.grasp_act_pregrasp import issued_sweep_reason
     key,m=state['target'];age=now-state['start']
-    if age>=1.4-1e-8:
-        t.search22_log.append({'t':now,'event':'targeted_reobserve_replan','id':key})
+    fresh=world['visibility'][t.rid]['observations'].get(key)
+    reacquired=fresh is not None and fresh['seen_t']>=now-1e-8 and age>=.3-1e-8
+    if age>=1.4-1e-8 or reacquired:
+        t.search22_log.append({'t':now,'event':'targeted_reobserve_replan','id':key,'reacquired':reacquired})
         t.search21_recovery=None;t.path=[];t.path_goal=None;t.next_plan=now;t.approach_plan_valid=False
         t.progress.reset();t.search21_progress=None
         return t._hold(now),False
