@@ -1,0 +1,1067 @@
+{
+  "schema": "ugrp.beampair6.summary.v1",
+  "status": "READY_HOLD_SCENE",
+  "branch": "A",
+  "source_sha": "08f129213031255dd188e20df832bb6714dfca9a",
+  "generator_source_sha": "7facb60b921e80831ad50a20a8ae2ee89d0d2b25",
+  "dependency_sha": "26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+  "host": "gcp2",
+  "project": "ugrp-sim-b-1014",
+  "machine_type": "n4-highcpu-64",
+  "scenario_source_sha": "34e5deb40caa58317ae9ec5e9ac934c8cf09a941",
+  "placement_census": {
+    "v7_unique_beams": 7,
+    "v7_seeded_ends_N": 42,
+    "v7_distribution": {
+      "91": 42
+    },
+    "v7_inserted_fixed_event_seeded_ends_N": 6,
+    "v7_event_distribution": {
+      "91": 6
+    },
+    "old_gate_N": 40,
+    "old_gate_ends_N": 80,
+    "old_gate_distribution": {
+      "0": 1,
+      "91": 79
+    },
+    "original_8318626": "out_of_research_placement_support; original preserved and not rerun",
+    "k": 91,
+    "k_basis": "minimum (empirical percentile 0) of all v7 authored initial end counts; event phase separately checked",
+    "new_gate_seed_range": [
+      8318700,
+      8318739
+    ],
+    "new_gate_N": 40,
+    "new_gate_ends_distribution": {
+      "91": 80
+    },
+    "new_setup_recheck_N": 40
+  },
+  "toggles": {
+    "setup": "beampair_gate_valid_v2",
+    "wall_layer": "beampair_wall_clear_v1",
+    "approach_repair": "beampair_approach_v2",
+    "peer_rendezvous": "peer_rendezvous_v2",
+    "default": "off",
+    "planning": "search24_checks_v1 + search25_checks_v1",
+    "failure_tail": "recording-only last10SIMs at10Hz"
+  },
+  "scene": "cargo_v7 / grasp_act_teal_blue_v1 / floor_light_v1",
+  "held_object_hidden_v1": true,
+  "weld": false,
+  "training": false,
+  "LLM_calls": 0,
+  "rounds_executed": 1,
+  "round_limit": 3,
+  "planned_N": 6,
+  "started_N": 6,
+  "successful_N": 6,
+  "unstarted_N": 0,
+  "HOST_ERROR_N": 0,
+  "cap_end_N": 0,
+  "invisible_measurements": 0,
+  "held_world_reads": 0,
+  "missing_rejection_audit_N": 0,
+  "runs": [
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-000/raw",
+      "result_path": "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-000/raw/result.json",
+      "result_sha256": "0a84da259ac2fa619616fe0819779534f32eb0b4810257ac7d376b2056faf34a",
+      "status": "complete",
+      "legacy_success": true,
+      "cap_end": false,
+      "sim_s": 38.000000000098844,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1631,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "max_strict_hold_s": 3.0000000000143245,
+      "strict_success": true,
+      "visible_eligible": true,
+      "seed": 8318726,
+      "frame_funnel": [
+        {
+          "gate": "any_assigned_probe",
+          "entered": 762,
+          "passed": 545,
+          "rejected": 217
+        },
+        {
+          "gate": "meaningful_region_5_of_15",
+          "entered": 545,
+          "passed": 543,
+          "rejected": 2
+        },
+        {
+          "gate": "measurement_admitted_not_held",
+          "entered": 543,
+          "passed": 543,
+          "rejected": 0
+        }
+      ],
+      "adapter_sha": "08f129213031255dd188e20df832bb6714dfca9a",
+      "dependency_sha": "26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+      "held_object_hidden_v1": true,
+      "hidden_measurement_ticks": 106,
+      "held_world_reads": 0,
+      "probe_burst_ticks": {
+        "r1": 3,
+        "r2": 10
+      },
+      "probe_executed_ticks": {
+        "r1": 3,
+        "r2": 10
+      },
+      "stages": {
+        "both_align": true,
+        "both_ready": true,
+        "both_pick": true,
+        "both_command_complete": true
+      },
+      "event_funnel": [
+        {
+          "gate": "own_ready",
+          "entered": 2,
+          "passed": 2,
+          "rejected": 0
+        },
+        {
+          "gate": "own_pick_after_go_ack",
+          "entered": 2,
+          "passed": 2,
+          "rejected": 0
+        },
+        {
+          "gate": "own_command_complete",
+          "entered": 2,
+          "passed": 2,
+          "rejected": 0
+        }
+      ]
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-001/raw",
+      "result_path": "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-001/raw/result.json",
+      "result_sha256": "0a9654776a19a98340f6faa4c5c34d87fbdec71dfc00bf80b6b493365cd27a2d",
+      "status": "complete",
+      "legacy_success": true,
+      "cap_end": false,
+      "sim_s": 55.800000000183836,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1803,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "max_strict_hold_s": 3.0000000000143245,
+      "strict_success": true,
+      "visible_eligible": true,
+      "seed": 8318620,
+      "frame_funnel": [
+        {
+          "gate": "any_assigned_probe",
+          "entered": 1118,
+          "passed": 781,
+          "rejected": 337
+        },
+        {
+          "gate": "meaningful_region_5_of_15",
+          "entered": 781,
+          "passed": 773,
+          "rejected": 8
+        },
+        {
+          "gate": "measurement_admitted_not_held",
+          "entered": 773,
+          "passed": 773,
+          "rejected": 0
+        }
+      ],
+      "adapter_sha": "08f129213031255dd188e20df832bb6714dfca9a",
+      "dependency_sha": "26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+      "held_object_hidden_v1": true,
+      "hidden_measurement_ticks": 80,
+      "held_world_reads": 0,
+      "probe_burst_ticks": {
+        "r1": 9,
+        "r2": 4
+      },
+      "probe_executed_ticks": {
+        "r1": 9,
+        "r2": 4
+      },
+      "stages": {
+        "both_align": true,
+        "both_ready": true,
+        "both_pick": true,
+        "both_command_complete": true
+      },
+      "event_funnel": [
+        {
+          "gate": "own_ready",
+          "entered": 2,
+          "passed": 2,
+          "rejected": 0
+        },
+        {
+          "gate": "own_pick_after_go_ack",
+          "entered": 2,
+          "passed": 2,
+          "rejected": 0
+        },
+        {
+          "gate": "own_command_complete",
+          "entered": 2,
+          "passed": 2,
+          "rejected": 0
+        }
+      ]
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-002/raw",
+      "result_path": "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-002/raw/result.json",
+      "result_sha256": "49db80e75792a2f7d0579b4de379d435a43c4f2ba83f80846cb93ac69714ef97",
+      "status": "complete",
+      "legacy_success": true,
+      "cap_end": false,
+      "sim_s": 31.20000000006637,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 938,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "max_strict_hold_s": 3.0000000000143245,
+      "strict_success": true,
+      "visible_eligible": true,
+      "seed": 8318600,
+      "frame_funnel": [
+        {
+          "gate": "any_assigned_probe",
+          "entered": 626,
+          "passed": 424,
+          "rejected": 202
+        },
+        {
+          "gate": "meaningful_region_5_of_15",
+          "entered": 424,
+          "passed": 422,
+          "rejected": 2
+        },
+        {
+          "gate": "measurement_admitted_not_held",
+          "entered": 422,
+          "passed": 422,
+          "rejected": 0
+        }
+      ],
+      "adapter_sha": "08f129213031255dd188e20df832bb6714dfca9a",
+      "dependency_sha": "26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+      "held_object_hidden_v1": true,
+      "hidden_measurement_ticks": 102,
+      "held_world_reads": 0,
+      "probe_burst_ticks": {
+        "r1": 1,
+        "r2": 12
+      },
+      "probe_executed_ticks": {
+        "r1": 1,
+        "r2": 0
+      },
+      "stages": {
+        "both_align": true,
+        "both_ready": true,
+        "both_pick": true,
+        "both_command_complete": true
+      },
+      "event_funnel": [
+        {
+          "gate": "own_ready",
+          "entered": 2,
+          "passed": 2,
+          "rejected": 0
+        },
+        {
+          "gate": "own_pick_after_go_ack",
+          "entered": 2,
+          "passed": 2,
+          "rejected": 0
+        },
+        {
+          "gate": "own_command_complete",
+          "entered": 2,
+          "passed": 2,
+          "rejected": 0
+        }
+      ]
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-003/raw",
+      "result_path": "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-003/raw/result.json.zst",
+      "result_sha256": "3b155b52f0aa5cd5512e6865a607bd2cff607893e929f91b4235565954660028",
+      "status": "complete",
+      "legacy_success": true,
+      "cap_end": false,
+      "sim_s": 48.300000000148025,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1746,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "max_strict_hold_s": 3.0000000000143245,
+      "strict_success": true,
+      "visible_eligible": true,
+      "seed": 8318604,
+      "frame_funnel": [
+        {
+          "gate": "any_assigned_probe",
+          "entered": 968,
+          "passed": 620,
+          "rejected": 348
+        },
+        {
+          "gate": "meaningful_region_5_of_15",
+          "entered": 620,
+          "passed": 618,
+          "rejected": 2
+        },
+        {
+          "gate": "measurement_admitted_not_held",
+          "entered": 618,
+          "passed": 618,
+          "rejected": 0
+        }
+      ],
+      "adapter_sha": "08f129213031255dd188e20df832bb6714dfca9a",
+      "dependency_sha": "26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+      "held_object_hidden_v1": true,
+      "hidden_measurement_ticks": 92,
+      "held_world_reads": 0,
+      "probe_burst_ticks": {
+        "r1": 5,
+        "r2": 8
+      },
+      "probe_executed_ticks": {
+        "r1": 5,
+        "r2": 8
+      },
+      "stages": {
+        "both_align": true,
+        "both_ready": true,
+        "both_pick": true,
+        "both_command_complete": true
+      },
+      "event_funnel": [
+        {
+          "gate": "own_ready",
+          "entered": 2,
+          "passed": 2,
+          "rejected": 0
+        },
+        {
+          "gate": "own_pick_after_go_ack",
+          "entered": 2,
+          "passed": 2,
+          "rejected": 0
+        },
+        {
+          "gate": "own_command_complete",
+          "entered": 2,
+          "passed": 2,
+          "rejected": 0
+        }
+      ]
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-004/raw",
+      "result_path": "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-004/raw/result.json.zst",
+      "result_sha256": "85ef38d3373e804b3f092b091297bc64590c5e595cfffa717b6a9c950849c2c2",
+      "status": "complete",
+      "legacy_success": true,
+      "cap_end": false,
+      "sim_s": 48.00000000014659,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1586,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "max_strict_hold_s": 3.0000000000143245,
+      "strict_success": true,
+      "visible_eligible": true,
+      "seed": 8318611,
+      "frame_funnel": [
+        {
+          "gate": "any_assigned_probe",
+          "entered": 962,
+          "passed": 673,
+          "rejected": 289
+        },
+        {
+          "gate": "meaningful_region_5_of_15",
+          "entered": 673,
+          "passed": 659,
+          "rejected": 14
+        },
+        {
+          "gate": "measurement_admitted_not_held",
+          "entered": 659,
+          "passed": 659,
+          "rejected": 0
+        }
+      ],
+      "adapter_sha": "08f129213031255dd188e20df832bb6714dfca9a",
+      "dependency_sha": "26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+      "held_object_hidden_v1": true,
+      "hidden_measurement_ticks": 94,
+      "held_world_reads": 0,
+      "probe_burst_ticks": {
+        "r1": 12,
+        "r2": 1
+      },
+      "probe_executed_ticks": {
+        "r1": 12,
+        "r2": 1
+      },
+      "stages": {
+        "both_align": true,
+        "both_ready": true,
+        "both_pick": true,
+        "both_command_complete": true
+      },
+      "event_funnel": [
+        {
+          "gate": "own_ready",
+          "entered": 2,
+          "passed": 2,
+          "rejected": 0
+        },
+        {
+          "gate": "own_pick_after_go_ack",
+          "entered": 2,
+          "passed": 2,
+          "rejected": 0
+        },
+        {
+          "gate": "own_command_complete",
+          "entered": 2,
+          "passed": 2,
+          "rejected": 0
+        }
+      ]
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-005/raw",
+      "result_path": "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-005/raw/result.json",
+      "result_sha256": "6b28cff2b981caa52014e41f507db74c0f55ae61a5bf4a639cb586a202ba203f",
+      "status": "complete",
+      "legacy_success": true,
+      "cap_end": false,
+      "sim_s": 27.900000000050614,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 668,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "max_strict_hold_s": 3.0000000000143245,
+      "strict_success": true,
+      "visible_eligible": true,
+      "seed": 8318631,
+      "frame_funnel": [
+        {
+          "gate": "any_assigned_probe",
+          "entered": 560,
+          "passed": 274,
+          "rejected": 286
+        },
+        {
+          "gate": "meaningful_region_5_of_15",
+          "entered": 274,
+          "passed": 267,
+          "rejected": 7
+        },
+        {
+          "gate": "measurement_admitted_not_held",
+          "entered": 267,
+          "passed": 267,
+          "rejected": 0
+        }
+      ],
+      "adapter_sha": "08f129213031255dd188e20df832bb6714dfca9a",
+      "dependency_sha": "26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+      "held_object_hidden_v1": true,
+      "hidden_measurement_ticks": 82,
+      "held_world_reads": 0,
+      "probe_burst_ticks": {
+        "r1": 8,
+        "r2": 5
+      },
+      "probe_executed_ticks": {
+        "r1": 8,
+        "r2": 5
+      },
+      "stages": {
+        "both_align": true,
+        "both_ready": true,
+        "both_pick": true,
+        "both_command_complete": true
+      },
+      "event_funnel": [
+        {
+          "gate": "own_ready",
+          "entered": 2,
+          "passed": 2,
+          "rejected": 0
+        },
+        {
+          "gate": "own_pick_after_go_ack",
+          "entered": 2,
+          "passed": 2,
+          "rejected": 0
+        },
+        {
+          "gate": "own_command_complete",
+          "entered": 2,
+          "passed": 2,
+          "rejected": 0
+        }
+      ]
+    }
+  ],
+  "first30": [
+    {
+      "seed": 8318726,
+      "through_sim_s": 30,
+      "commands_N": 600,
+      "nonzero_wheel_N": 442,
+      "compute_budgets": {
+        "checks": 600
+      },
+      "model_calls": 0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1631,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "timing": {
+        "sim_s": 30.00000000006064,
+        "wall_s": 104.04096691099994,
+        "scope": "first 30 SIM seconds including initialization; recording only",
+        "wall_per_sim": 3.4680322303596545
+      }
+    },
+    {
+      "seed": 8318620,
+      "through_sim_s": 30,
+      "commands_N": 600,
+      "nonzero_wheel_N": 396,
+      "compute_budgets": {
+        "checks": 600
+      },
+      "model_calls": 0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1803,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "timing": {
+        "sim_s": 30.00000000006064,
+        "wall_s": 103.33829733000039,
+        "scope": "first 30 SIM seconds including initialization; recording only",
+        "wall_per_sim": 3.44460991099305
+      }
+    },
+    {
+      "seed": 8318600,
+      "through_sim_s": 30,
+      "commands_N": 600,
+      "nonzero_wheel_N": 182,
+      "compute_budgets": {
+        "checks": 600
+      },
+      "model_calls": 0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 938,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "timing": {
+        "sim_s": 30.00000000006064,
+        "wall_s": 100.80624926500013,
+        "scope": "first 30 SIM seconds including initialization; recording only",
+        "wall_per_sim": 3.3602083088265453
+      }
+    },
+    {
+      "seed": 8318604,
+      "through_sim_s": 30,
+      "commands_N": 600,
+      "nonzero_wheel_N": 390,
+      "compute_budgets": {
+        "checks": 600
+      },
+      "model_calls": 0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1746,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "timing": {
+        "sim_s": 30.00000000006064,
+        "wall_s": 109.21082251899998,
+        "scope": "first 30 SIM seconds including initialization; recording only",
+        "wall_per_sim": 3.640360750625974
+      }
+    },
+    {
+      "seed": 8318611,
+      "through_sim_s": 30,
+      "commands_N": 600,
+      "nonzero_wheel_N": 338,
+      "compute_budgets": {
+        "checks": 600
+      },
+      "model_calls": 0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1586,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "timing": {
+        "sim_s": 30.00000000006064,
+        "wall_s": 112.52879818700012,
+        "scope": "first 30 SIM seconds including initialization; recording only",
+        "wall_per_sim": 3.7509599395590887
+      }
+    },
+    {
+      "seed": 8318631,
+      "through_sim_s": 27.900000000050614,
+      "commands_N": 560,
+      "nonzero_wheel_N": 241,
+      "compute_budgets": {
+        "checks": 560
+      },
+      "model_calls": 0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 668,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "timing": null
+    }
+  ],
+  "wall_layer": {
+    "8318726": {
+      "robots": {
+        "r1": {
+          "active": false,
+          "scan_N": 0,
+          "ray_N": 0,
+          "miss_cell_updates": 0,
+          "cleared_cell_updates": 0,
+          "cleared_by_object": {},
+          "last": {
+            "t": 34.50000000007372,
+            "event": "wall_scan",
+            "ray_N": 0,
+            "miss_cell_N": 0,
+            "hit_cell_N": 0,
+            "cleared_cell_N": 0,
+            "cleared_by_object": {},
+            "occupied_cell_N": 2375,
+            "active": false,
+            "reason_category": "observed_hit_miss_update",
+            "blocked_object": "wall_layer",
+            "min_gap_m": null,
+            "gap_scope": "sensor update; no clearance decision"
+          }
+        },
+        "r2": {
+          "active": false,
+          "scan_N": 0,
+          "ray_N": 0,
+          "miss_cell_updates": 0,
+          "cleared_cell_updates": 0,
+          "cleared_by_object": {},
+          "last": {
+            "t": 34.50000000007372,
+            "event": "wall_scan",
+            "ray_N": 0,
+            "miss_cell_N": 0,
+            "hit_cell_N": 0,
+            "cleared_cell_N": 0,
+            "cleared_by_object": {},
+            "occupied_cell_N": 3279,
+            "active": false,
+            "reason_category": "observed_hit_miss_update",
+            "blocked_object": "wall_layer",
+            "min_gap_m": null,
+            "gap_scope": "sensor update; no clearance decision"
+          }
+        }
+      },
+      "visible_ray_N": 0,
+      "held_ray_N": 0
+    },
+    "8318620": {
+      "robots": {
+        "r1": {
+          "active": false,
+          "scan_N": 0,
+          "ray_N": 0,
+          "miss_cell_updates": 0,
+          "cleared_cell_updates": 0,
+          "cleared_by_object": {},
+          "last": {
+            "t": 53.60000000016492,
+            "event": "wall_scan",
+            "ray_N": 0,
+            "miss_cell_N": 0,
+            "hit_cell_N": 0,
+            "cleared_cell_N": 0,
+            "cleared_by_object": {},
+            "occupied_cell_N": 2934,
+            "active": false,
+            "reason_category": "observed_hit_miss_update",
+            "blocked_object": "wall_layer",
+            "min_gap_m": null,
+            "gap_scope": "sensor update; no clearance decision"
+          }
+        },
+        "r2": {
+          "active": false,
+          "scan_N": 0,
+          "ray_N": 0,
+          "miss_cell_updates": 0,
+          "cleared_cell_updates": 0,
+          "cleared_by_object": {},
+          "last": {
+            "t": 53.60000000016492,
+            "event": "wall_scan",
+            "ray_N": 0,
+            "miss_cell_N": 0,
+            "hit_cell_N": 0,
+            "cleared_cell_N": 0,
+            "cleared_by_object": {},
+            "occupied_cell_N": 5766,
+            "active": false,
+            "reason_category": "observed_hit_miss_update",
+            "blocked_object": "wall_layer",
+            "min_gap_m": null,
+            "gap_scope": "sensor update; no clearance decision"
+          }
+        }
+      },
+      "visible_ray_N": 0,
+      "held_ray_N": 0
+    },
+    "8318600": {
+      "robots": {
+        "r1": {
+          "active": false,
+          "scan_N": 0,
+          "ray_N": 0,
+          "miss_cell_updates": 0,
+          "cleared_cell_updates": 0,
+          "cleared_by_object": {},
+          "last": {
+            "t": 27.900000000042205,
+            "event": "wall_scan",
+            "ray_N": 0,
+            "miss_cell_N": 0,
+            "hit_cell_N": 0,
+            "cleared_cell_N": 0,
+            "cleared_by_object": {},
+            "occupied_cell_N": 2411,
+            "active": false,
+            "reason_category": "observed_hit_miss_update",
+            "blocked_object": "wall_layer",
+            "min_gap_m": null,
+            "gap_scope": "sensor update; no clearance decision"
+          }
+        },
+        "r2": {
+          "active": false,
+          "scan_N": 0,
+          "ray_N": 0,
+          "miss_cell_updates": 0,
+          "cleared_cell_updates": 0,
+          "cleared_by_object": {},
+          "last": {
+            "t": 27.900000000042205,
+            "event": "wall_scan",
+            "ray_N": 0,
+            "miss_cell_N": 0,
+            "hit_cell_N": 0,
+            "cleared_cell_N": 0,
+            "cleared_by_object": {},
+            "occupied_cell_N": 0,
+            "active": false,
+            "reason_category": "observed_hit_miss_update",
+            "blocked_object": "wall_layer",
+            "min_gap_m": null,
+            "gap_scope": "sensor update; no clearance decision"
+          }
+        }
+      },
+      "visible_ray_N": 0,
+      "held_ray_N": 0
+    },
+    "8318604": {
+      "robots": {
+        "r1": {
+          "active": false,
+          "scan_N": 0,
+          "ray_N": 0,
+          "miss_cell_updates": 0,
+          "cleared_cell_updates": 0,
+          "cleared_by_object": {},
+          "last": {
+            "t": 45.50000000012624,
+            "event": "wall_scan",
+            "ray_N": 0,
+            "miss_cell_N": 0,
+            "hit_cell_N": 0,
+            "cleared_cell_N": 0,
+            "cleared_by_object": {},
+            "occupied_cell_N": 2117,
+            "active": false,
+            "reason_category": "observed_hit_miss_update",
+            "blocked_object": "wall_layer",
+            "min_gap_m": null,
+            "gap_scope": "sensor update; no clearance decision"
+          }
+        },
+        "r2": {
+          "active": false,
+          "scan_N": 0,
+          "ray_N": 0,
+          "miss_cell_updates": 0,
+          "cleared_cell_updates": 0,
+          "cleared_by_object": {},
+          "last": {
+            "t": 45.50000000012624,
+            "event": "wall_scan",
+            "ray_N": 0,
+            "miss_cell_N": 0,
+            "hit_cell_N": 0,
+            "cleared_cell_N": 0,
+            "cleared_by_object": {},
+            "occupied_cell_N": 3182,
+            "active": false,
+            "reason_category": "observed_hit_miss_update",
+            "blocked_object": "wall_layer",
+            "min_gap_m": null,
+            "gap_scope": "sensor update; no clearance decision"
+          }
+        }
+      },
+      "visible_ray_N": 0,
+      "held_ray_N": 0
+    },
+    "8318611": {
+      "robots": {
+        "r1": {
+          "active": false,
+          "scan_N": 0,
+          "ray_N": 0,
+          "miss_cell_updates": 0,
+          "cleared_cell_updates": 0,
+          "cleared_by_object": {},
+          "last": {
+            "t": 45.10000000012433,
+            "event": "wall_scan",
+            "ray_N": 0,
+            "miss_cell_N": 0,
+            "hit_cell_N": 0,
+            "cleared_cell_N": 0,
+            "cleared_by_object": {},
+            "occupied_cell_N": 2354,
+            "active": false,
+            "reason_category": "observed_hit_miss_update",
+            "blocked_object": "wall_layer",
+            "min_gap_m": null,
+            "gap_scope": "sensor update; no clearance decision"
+          }
+        },
+        "r2": {
+          "active": false,
+          "scan_N": 0,
+          "ray_N": 0,
+          "miss_cell_updates": 0,
+          "cleared_cell_updates": 0,
+          "cleared_by_object": {},
+          "last": {
+            "t": 45.10000000012433,
+            "event": "wall_scan",
+            "ray_N": 0,
+            "miss_cell_N": 0,
+            "hit_cell_N": 0,
+            "cleared_cell_N": 0,
+            "cleared_by_object": {},
+            "occupied_cell_N": 880,
+            "active": false,
+            "reason_category": "observed_hit_miss_update",
+            "blocked_object": "wall_layer",
+            "min_gap_m": null,
+            "gap_scope": "sensor update; no clearance decision"
+          }
+        }
+      },
+      "visible_ray_N": 0,
+      "held_ray_N": 0
+    },
+    "8318631": {
+      "robots": {
+        "r1": {
+          "active": false,
+          "scan_N": 0,
+          "ray_N": 0,
+          "miss_cell_updates": 0,
+          "cleared_cell_updates": 0,
+          "cleared_by_object": {},
+          "last": {
+            "t": 25.600000000031223,
+            "event": "wall_scan",
+            "ray_N": 0,
+            "miss_cell_N": 0,
+            "hit_cell_N": 0,
+            "cleared_cell_N": 0,
+            "cleared_by_object": {},
+            "occupied_cell_N": 1863,
+            "active": false,
+            "reason_category": "observed_hit_miss_update",
+            "blocked_object": "wall_layer",
+            "min_gap_m": null,
+            "gap_scope": "sensor update; no clearance decision"
+          }
+        },
+        "r2": {
+          "active": false,
+          "scan_N": 0,
+          "ray_N": 0,
+          "miss_cell_updates": 0,
+          "cleared_cell_updates": 0,
+          "cleared_by_object": {},
+          "last": {
+            "t": 25.600000000031223,
+            "event": "wall_scan",
+            "ray_N": 0,
+            "miss_cell_N": 0,
+            "hit_cell_N": 0,
+            "cleared_cell_N": 0,
+            "cleared_by_object": {},
+            "occupied_cell_N": 1035,
+            "active": false,
+            "reason_category": "observed_hit_miss_update",
+            "blocked_object": "wall_layer",
+            "min_gap_m": null,
+            "gap_scope": "sensor update; no clearance decision"
+          }
+        }
+      },
+      "visible_ray_N": 0,
+      "held_ray_N": 0
+    }
+  },
+  "integrity": {
+    "raw_manifest_files": 583,
+    "adapter_manifest_files": 30,
+    "detail": "r1-integrity.json"
+  },
+  "gate40": {
+    "status": "HOLD_SCENE",
+    "ready": false,
+    "approved": false,
+    "submitted": false,
+    "measured_N": 0,
+    "max_parallel": 16,
+    "training": false,
+    "rejection_table": "/Users/changmin/projects/ugrp-wt/beam-pair/experiments/2026-10-16-beampair6/rejection_table.json"
+  },
+  "tests": {
+    "scope": "nonphysics targeted8",
+    "passed": 8,
+    "failed": 0,
+    "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_beampair6.py tests/test_beampair5.py"
+  },
+  "limits": [
+    "All v7 authored initial beams exhaustively checked; gate v1 is a finite40-seed sample, not an analytic continuous RNG distribution.",
+    "Placement table checks existing chassis goal geometry against map fixed obstacles; runtime still checks path, body/arm sweep, view and protocol.",
+    "Short6 are mixed new-placement sentinel plus seen regressions, never counted as gate40 research samples.",
+    "No student, training, transport, release or hardware result; no results from earlier teachers/gcp1 pooled.",
+    "16-concurrent speed and scene approval remain pending; VM scheduling was24h, command cap8h; no VM guard modified.",
+    "Raw stays only on gcp2 persistent disk; this is not a separate raw backup.",
+    "beampair_wall_clear_v1 was enabled but never activated in these six valid setups; fresh physical coverage of its clearing path is0. Its beampair5 evidence is kept separate."
+  ],
+  "lifecycle": {
+    "own_active_processes": 0,
+    "own_lease_released": true,
+    "other_leases": [
+      "simalt5.json",
+      "scenetex4.json"
+    ],
+    "VM_status": "RUNNING",
+    "VM_stopped": false
+  }
+}

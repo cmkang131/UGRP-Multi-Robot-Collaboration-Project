@@ -1,0 +1,902 @@
+{
+  "schema": "ugrp.beampair6.rejection_table.v1",
+  "source_sha": "08f129213031255dd188e20df832bb6714dfca9a",
+  "raw_root": "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round",
+  "episode_funnel": [
+    {
+      "gate": "started",
+      "entered": 6,
+      "passed": 6,
+      "rejected": 0
+    },
+    {
+      "gate": "both_align",
+      "entered": 6,
+      "passed": 6,
+      "rejected": 0
+    },
+    {
+      "gate": "both_ready",
+      "entered": 6,
+      "passed": 6,
+      "rejected": 0
+    },
+    {
+      "gate": "both_pick",
+      "entered": 6,
+      "passed": 6,
+      "rejected": 0
+    },
+    {
+      "gate": "both_command_complete",
+      "entered": 6,
+      "passed": 6,
+      "rejected": 0
+    },
+    {
+      "gate": "joint_hold_3s",
+      "entered": 6,
+      "passed": 6,
+      "rejected": 0
+    },
+    {
+      "gate": "input_eligible_success",
+      "entered": 6,
+      "passed": 6,
+      "rejected": 0
+    }
+  ],
+  "reason_distribution": {
+    "peer_goal": 178,
+    "cargo_goal": 2
+  },
+  "blocked_objects": {
+    "r2": 74,
+    "r1": 104,
+    "beam_1": 2
+  },
+  "candidate_populations": {
+    "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-000/raw": {
+      "rendezvous_wait_candidates": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "current_and_predicted_clear_path",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "nonrepeated_selected_wait",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      }
+    },
+    "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-001/raw": {
+      "rendezvous_wait_candidates": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "current_and_predicted_clear_path",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "nonrepeated_selected_wait",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      }
+    },
+    "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-002/raw": {
+      "rendezvous_wait_candidates": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "current_and_predicted_clear_path",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "nonrepeated_selected_wait",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      }
+    },
+    "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-003/raw": {
+      "rendezvous_wait_candidates": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "current_and_predicted_clear_path",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "nonrepeated_selected_wait",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      }
+    },
+    "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-004/raw": {
+      "rendezvous_wait_candidates": {
+        "N": 2,
+        "ordered_funnel": [
+          {
+            "gate": "current_and_predicted_clear_path",
+            "entered": 2,
+            "passed": 1,
+            "rejected": 1
+          },
+          {
+            "gate": "nonrepeated_selected_wait",
+            "entered": 1,
+            "passed": 1,
+            "rejected": 0
+          }
+        ]
+      }
+    },
+    "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-005/raw": {
+      "rendezvous_wait_candidates": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "current_and_predicted_clear_path",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "nonrepeated_selected_wait",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      }
+    }
+  },
+  "frame_populations": {
+    "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-000/raw": [
+      {
+        "gate": "any_assigned_probe",
+        "entered": 762,
+        "passed": 545,
+        "rejected": 217
+      },
+      {
+        "gate": "meaningful_region_5_of_15",
+        "entered": 545,
+        "passed": 543,
+        "rejected": 2
+      },
+      {
+        "gate": "measurement_admitted_not_held",
+        "entered": 543,
+        "passed": 543,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-001/raw": [
+      {
+        "gate": "any_assigned_probe",
+        "entered": 1118,
+        "passed": 781,
+        "rejected": 337
+      },
+      {
+        "gate": "meaningful_region_5_of_15",
+        "entered": 781,
+        "passed": 773,
+        "rejected": 8
+      },
+      {
+        "gate": "measurement_admitted_not_held",
+        "entered": 773,
+        "passed": 773,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-002/raw": [
+      {
+        "gate": "any_assigned_probe",
+        "entered": 626,
+        "passed": 424,
+        "rejected": 202
+      },
+      {
+        "gate": "meaningful_region_5_of_15",
+        "entered": 424,
+        "passed": 422,
+        "rejected": 2
+      },
+      {
+        "gate": "measurement_admitted_not_held",
+        "entered": 422,
+        "passed": 422,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-003/raw": [
+      {
+        "gate": "any_assigned_probe",
+        "entered": 968,
+        "passed": 620,
+        "rejected": 348
+      },
+      {
+        "gate": "meaningful_region_5_of_15",
+        "entered": 620,
+        "passed": 618,
+        "rejected": 2
+      },
+      {
+        "gate": "measurement_admitted_not_held",
+        "entered": 618,
+        "passed": 618,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-004/raw": [
+      {
+        "gate": "any_assigned_probe",
+        "entered": 962,
+        "passed": 673,
+        "rejected": 289
+      },
+      {
+        "gate": "meaningful_region_5_of_15",
+        "entered": 673,
+        "passed": 659,
+        "rejected": 14
+      },
+      {
+        "gate": "measurement_admitted_not_held",
+        "entered": 659,
+        "passed": 659,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-005/raw": [
+      {
+        "gate": "any_assigned_probe",
+        "entered": 560,
+        "passed": 274,
+        "rejected": 286
+      },
+      {
+        "gate": "meaningful_region_5_of_15",
+        "entered": 274,
+        "passed": 267,
+        "rejected": 7
+      },
+      {
+        "gate": "measurement_admitted_not_held",
+        "entered": 267,
+        "passed": 267,
+        "rejected": 0
+      }
+    ]
+  },
+  "event_populations": {
+    "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-000/raw": [
+      {
+        "gate": "own_ready",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      },
+      {
+        "gate": "own_pick_after_go_ack",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      },
+      {
+        "gate": "own_command_complete",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-001/raw": [
+      {
+        "gate": "own_ready",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      },
+      {
+        "gate": "own_pick_after_go_ack",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      },
+      {
+        "gate": "own_command_complete",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-002/raw": [
+      {
+        "gate": "own_ready",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      },
+      {
+        "gate": "own_pick_after_go_ack",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      },
+      {
+        "gate": "own_command_complete",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-003/raw": [
+      {
+        "gate": "own_ready",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      },
+      {
+        "gate": "own_pick_after_go_ack",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      },
+      {
+        "gate": "own_command_complete",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-004/raw": [
+      {
+        "gate": "own_ready",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      },
+      {
+        "gate": "own_pick_after_go_ack",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      },
+      {
+        "gate": "own_command_complete",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-005/raw": [
+      {
+        "gate": "own_ready",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      },
+      {
+        "gate": "own_pick_after_go_ack",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      },
+      {
+        "gate": "own_command_complete",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      }
+    ]
+  },
+  "rendezvous_event_populations": {
+    "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-000/raw": [
+      {
+        "gate": "deadline_replanned",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      },
+      {
+        "gate": "own_align_after_retry",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      },
+      {
+        "gate": "own_complete_after_retry",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      },
+      {
+        "gate": "joint_hold_3s_after_retry",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-001/raw": [
+      {
+        "gate": "deadline_replanned",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      },
+      {
+        "gate": "own_align_after_retry",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      },
+      {
+        "gate": "own_complete_after_retry",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      },
+      {
+        "gate": "joint_hold_3s_after_retry",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-002/raw": [
+      {
+        "gate": "deadline_replanned",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      },
+      {
+        "gate": "own_align_after_retry",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      },
+      {
+        "gate": "own_complete_after_retry",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      },
+      {
+        "gate": "joint_hold_3s_after_retry",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-003/raw": [
+      {
+        "gate": "deadline_replanned",
+        "entered": 1,
+        "passed": 1,
+        "rejected": 0
+      },
+      {
+        "gate": "own_align_after_retry",
+        "entered": 1,
+        "passed": 1,
+        "rejected": 0
+      },
+      {
+        "gate": "own_complete_after_retry",
+        "entered": 1,
+        "passed": 1,
+        "rejected": 0
+      },
+      {
+        "gate": "joint_hold_3s_after_retry",
+        "entered": 1,
+        "passed": 1,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-004/raw": [
+      {
+        "gate": "deadline_replanned",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      },
+      {
+        "gate": "own_align_after_retry",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      },
+      {
+        "gate": "own_complete_after_retry",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      },
+      {
+        "gate": "joint_hold_3s_after_retry",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-005/raw": [
+      {
+        "gate": "deadline_replanned",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      },
+      {
+        "gate": "own_align_after_retry",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      },
+      {
+        "gate": "own_complete_after_retry",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      },
+      {
+        "gate": "joint_hold_3s_after_retry",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      }
+    ]
+  },
+  "analysis_script_sha256": "1d602385e411ca5df0a3ae0679d9ebe323f2e3813871604912763f5c4a923f28",
+  "missing_rejection_audit_N": 0,
+  "reproduce": "cd /home/ugrp/ugrp-sim/src/08f129213031255dd188e20df832bb6714dfca9a && PYTHONPATH=. /home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python /home/ugrp/ugrp-sim/src/08f129213031255dd188e20df832bb6714dfca9a/scripts/analyze_beampair1.py /home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round --out /home/ugrp/ugrp-sim/ops-reviews/beampair6/r1-analysis",
+  "blocker_occurrences": [],
+  "wall_update_funnel": {
+    "8318726": {
+      "robots": {
+        "r1": {
+          "active": false,
+          "scan_N": 0,
+          "ray_N": 0,
+          "miss_cell_updates": 0,
+          "cleared_cell_updates": 0,
+          "cleared_by_object": {},
+          "last": {
+            "t": 34.50000000007372,
+            "event": "wall_scan",
+            "ray_N": 0,
+            "miss_cell_N": 0,
+            "hit_cell_N": 0,
+            "cleared_cell_N": 0,
+            "cleared_by_object": {},
+            "occupied_cell_N": 2375,
+            "active": false,
+            "reason_category": "observed_hit_miss_update",
+            "blocked_object": "wall_layer",
+            "min_gap_m": null,
+            "gap_scope": "sensor update; no clearance decision"
+          }
+        },
+        "r2": {
+          "active": false,
+          "scan_N": 0,
+          "ray_N": 0,
+          "miss_cell_updates": 0,
+          "cleared_cell_updates": 0,
+          "cleared_by_object": {},
+          "last": {
+            "t": 34.50000000007372,
+            "event": "wall_scan",
+            "ray_N": 0,
+            "miss_cell_N": 0,
+            "hit_cell_N": 0,
+            "cleared_cell_N": 0,
+            "cleared_by_object": {},
+            "occupied_cell_N": 3279,
+            "active": false,
+            "reason_category": "observed_hit_miss_update",
+            "blocked_object": "wall_layer",
+            "min_gap_m": null,
+            "gap_scope": "sensor update; no clearance decision"
+          }
+        }
+      },
+      "visible_ray_N": 0,
+      "held_ray_N": 0
+    },
+    "8318620": {
+      "robots": {
+        "r1": {
+          "active": false,
+          "scan_N": 0,
+          "ray_N": 0,
+          "miss_cell_updates": 0,
+          "cleared_cell_updates": 0,
+          "cleared_by_object": {},
+          "last": {
+            "t": 53.60000000016492,
+            "event": "wall_scan",
+            "ray_N": 0,
+            "miss_cell_N": 0,
+            "hit_cell_N": 0,
+            "cleared_cell_N": 0,
+            "cleared_by_object": {},
+            "occupied_cell_N": 2934,
+            "active": false,
+            "reason_category": "observed_hit_miss_update",
+            "blocked_object": "wall_layer",
+            "min_gap_m": null,
+            "gap_scope": "sensor update; no clearance decision"
+          }
+        },
+        "r2": {
+          "active": false,
+          "scan_N": 0,
+          "ray_N": 0,
+          "miss_cell_updates": 0,
+          "cleared_cell_updates": 0,
+          "cleared_by_object": {},
+          "last": {
+            "t": 53.60000000016492,
+            "event": "wall_scan",
+            "ray_N": 0,
+            "miss_cell_N": 0,
+            "hit_cell_N": 0,
+            "cleared_cell_N": 0,
+            "cleared_by_object": {},
+            "occupied_cell_N": 5766,
+            "active": false,
+            "reason_category": "observed_hit_miss_update",
+            "blocked_object": "wall_layer",
+            "min_gap_m": null,
+            "gap_scope": "sensor update; no clearance decision"
+          }
+        }
+      },
+      "visible_ray_N": 0,
+      "held_ray_N": 0
+    },
+    "8318600": {
+      "robots": {
+        "r1": {
+          "active": false,
+          "scan_N": 0,
+          "ray_N": 0,
+          "miss_cell_updates": 0,
+          "cleared_cell_updates": 0,
+          "cleared_by_object": {},
+          "last": {
+            "t": 27.900000000042205,
+            "event": "wall_scan",
+            "ray_N": 0,
+            "miss_cell_N": 0,
+            "hit_cell_N": 0,
+            "cleared_cell_N": 0,
+            "cleared_by_object": {},
+            "occupied_cell_N": 2411,
+            "active": false,
+            "reason_category": "observed_hit_miss_update",
+            "blocked_object": "wall_layer",
+            "min_gap_m": null,
+            "gap_scope": "sensor update; no clearance decision"
+          }
+        },
+        "r2": {
+          "active": false,
+          "scan_N": 0,
+          "ray_N": 0,
+          "miss_cell_updates": 0,
+          "cleared_cell_updates": 0,
+          "cleared_by_object": {},
+          "last": {
+            "t": 27.900000000042205,
+            "event": "wall_scan",
+            "ray_N": 0,
+            "miss_cell_N": 0,
+            "hit_cell_N": 0,
+            "cleared_cell_N": 0,
+            "cleared_by_object": {},
+            "occupied_cell_N": 0,
+            "active": false,
+            "reason_category": "observed_hit_miss_update",
+            "blocked_object": "wall_layer",
+            "min_gap_m": null,
+            "gap_scope": "sensor update; no clearance decision"
+          }
+        }
+      },
+      "visible_ray_N": 0,
+      "held_ray_N": 0
+    },
+    "8318604": {
+      "robots": {
+        "r1": {
+          "active": false,
+          "scan_N": 0,
+          "ray_N": 0,
+          "miss_cell_updates": 0,
+          "cleared_cell_updates": 0,
+          "cleared_by_object": {},
+          "last": {
+            "t": 45.50000000012624,
+            "event": "wall_scan",
+            "ray_N": 0,
+            "miss_cell_N": 0,
+            "hit_cell_N": 0,
+            "cleared_cell_N": 0,
+            "cleared_by_object": {},
+            "occupied_cell_N": 2117,
+            "active": false,
+            "reason_category": "observed_hit_miss_update",
+            "blocked_object": "wall_layer",
+            "min_gap_m": null,
+            "gap_scope": "sensor update; no clearance decision"
+          }
+        },
+        "r2": {
+          "active": false,
+          "scan_N": 0,
+          "ray_N": 0,
+          "miss_cell_updates": 0,
+          "cleared_cell_updates": 0,
+          "cleared_by_object": {},
+          "last": {
+            "t": 45.50000000012624,
+            "event": "wall_scan",
+            "ray_N": 0,
+            "miss_cell_N": 0,
+            "hit_cell_N": 0,
+            "cleared_cell_N": 0,
+            "cleared_by_object": {},
+            "occupied_cell_N": 3182,
+            "active": false,
+            "reason_category": "observed_hit_miss_update",
+            "blocked_object": "wall_layer",
+            "min_gap_m": null,
+            "gap_scope": "sensor update; no clearance decision"
+          }
+        }
+      },
+      "visible_ray_N": 0,
+      "held_ray_N": 0
+    },
+    "8318611": {
+      "robots": {
+        "r1": {
+          "active": false,
+          "scan_N": 0,
+          "ray_N": 0,
+          "miss_cell_updates": 0,
+          "cleared_cell_updates": 0,
+          "cleared_by_object": {},
+          "last": {
+            "t": 45.10000000012433,
+            "event": "wall_scan",
+            "ray_N": 0,
+            "miss_cell_N": 0,
+            "hit_cell_N": 0,
+            "cleared_cell_N": 0,
+            "cleared_by_object": {},
+            "occupied_cell_N": 2354,
+            "active": false,
+            "reason_category": "observed_hit_miss_update",
+            "blocked_object": "wall_layer",
+            "min_gap_m": null,
+            "gap_scope": "sensor update; no clearance decision"
+          }
+        },
+        "r2": {
+          "active": false,
+          "scan_N": 0,
+          "ray_N": 0,
+          "miss_cell_updates": 0,
+          "cleared_cell_updates": 0,
+          "cleared_by_object": {},
+          "last": {
+            "t": 45.10000000012433,
+            "event": "wall_scan",
+            "ray_N": 0,
+            "miss_cell_N": 0,
+            "hit_cell_N": 0,
+            "cleared_cell_N": 0,
+            "cleared_by_object": {},
+            "occupied_cell_N": 880,
+            "active": false,
+            "reason_category": "observed_hit_miss_update",
+            "blocked_object": "wall_layer",
+            "min_gap_m": null,
+            "gap_scope": "sensor update; no clearance decision"
+          }
+        }
+      },
+      "visible_ray_N": 0,
+      "held_ray_N": 0
+    },
+    "8318631": {
+      "robots": {
+        "r1": {
+          "active": false,
+          "scan_N": 0,
+          "ray_N": 0,
+          "miss_cell_updates": 0,
+          "cleared_cell_updates": 0,
+          "cleared_by_object": {},
+          "last": {
+            "t": 25.600000000031223,
+            "event": "wall_scan",
+            "ray_N": 0,
+            "miss_cell_N": 0,
+            "hit_cell_N": 0,
+            "cleared_cell_N": 0,
+            "cleared_by_object": {},
+            "occupied_cell_N": 1863,
+            "active": false,
+            "reason_category": "observed_hit_miss_update",
+            "blocked_object": "wall_layer",
+            "min_gap_m": null,
+            "gap_scope": "sensor update; no clearance decision"
+          }
+        },
+        "r2": {
+          "active": false,
+          "scan_N": 0,
+          "ray_N": 0,
+          "miss_cell_updates": 0,
+          "cleared_cell_updates": 0,
+          "cleared_by_object": {},
+          "last": {
+            "t": 25.600000000031223,
+            "event": "wall_scan",
+            "ray_N": 0,
+            "miss_cell_N": 0,
+            "hit_cell_N": 0,
+            "cleared_cell_N": 0,
+            "cleared_by_object": {},
+            "occupied_cell_N": 1035,
+            "active": false,
+            "reason_category": "observed_hit_miss_update",
+            "blocked_object": "wall_layer",
+            "min_gap_m": null,
+            "gap_scope": "sensor update; no clearance decision"
+          }
+        }
+      },
+      "visible_ray_N": 0,
+      "held_ray_N": 0
+    }
+  },
+  "status": "READY_HOLD_SCENE",
+  "branch": "A",
+  "placement_validity": "/Users/changmin/projects/ugrp-wt/beam-pair/experiments/2026-10-16-beampair6/placement-validity.json",
+  "placement_validity_csv": "/Users/changmin/projects/ugrp-wt/beam-pair/experiments/2026-10-16-beampair6/placement-validity.csv",
+  "pre_edit_rejection_table": "/Users/changmin/projects/ugrp-wt/beam-pair/experiments/2026-10-16-beampair6/rejection_table-before.json",
+  "setup_funnel": "/Users/changmin/projects/ugrp-wt/beam-pair/experiments/2026-10-16-beampair6/setup-funnel.json",
+  "setup_rejections_with_scene_names": "/Users/changmin/projects/ugrp-wt/beam-pair/experiments/2026-10-16-beampair6/setup-rejections-resolved.json",
+  "population_note": "setup proposals / seeded target ends / candidates / frames / protocol events / episodes are separate denominators"
+}

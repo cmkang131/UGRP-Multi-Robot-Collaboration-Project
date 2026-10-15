@@ -128,3 +128,7 @@ SHA256 `69bdd4f62546e3e38ea024cf94b6bc12b86cef39b8a187ee155b7f11794a1c69`.
 tail은 원촬영202장이다. [원본·해시·검토](../experiments/2026-10-16-beampair5/r1-playback-review.json).
 재관측 뒤 정지와 실제 북쪽 벽에 걸린 인증 목표 집합을 보여준다. 학생·전체 파지 공간·
 다른 장면 성공으로 일반화하지 않는다. 후속 인터럽트 원장 수정은 비물리 검사만 했다.
+
+## 2026-10-16 beampair6 — v7 배치 지원 조건
+
+실행 소스 `08f129213031255dd188e20df832bb6714dfca9a`, 의존성 `26f84d0f0ada1c33473c83cca2d3415ce51bd247`, gcp2/n4-highcpu-64. 기본 off `beampair_gate_valid_v2`(초기화만)·`beampair_wall_clear_v1` 교사 후보. 새 배치8318726의 공동 들기 완료38.0 SIM초. [대표 영상](../experiments/2026-10-16-beampair6/representative-8318726.mp4)은 개요(평가용)+r1/r2 자기 카메라3배속, 284710bytes, SHA256 `3bd8f031066f010bf0ce168f048b197f19210cd61dce6118b7fe9dc50f0d12b5`. 전체0–38초2Hz77프레임을 직접 봤다. 자기 카메라는10Hz 저장 qpos 재렌더이며 원촬영10Hz가 아니다. [원본·ffprobe·검토](../experiments/2026-10-16-beampair6/playback-review.json). 학생·운반·놓기·실물 성공을 뜻하지 않는다.

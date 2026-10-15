@@ -1,0 +1,57 @@
+{
+  "new_success": {
+    "seed": 8318726,
+    "review_source": "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-000/raw",
+    "video": "/home/ugrp/ugrp-sim/ops-reviews/beampair6/playback/beampair6-r1-8318726/playback-3x.mp4",
+    "video_sha256": "3bd8f031066f010bf0ce168f048b197f19210cd61dce6118b7fe9dc50f0d12b5",
+    "ffprobe": {
+      "programs": [],
+      "streams": [
+        {
+          "width": 960,
+          "height": 272,
+          "duration": "12.700000",
+          "nb_read_frames": "381"
+        }
+      ]
+    },
+    "video_bytes": 284710,
+    "local": "/Users/changmin/projects/ugrp-wt/beam-pair/outputs/e2e18-admin/playback/beampair6-r1-8318726",
+    "full_2Hz_window": [
+      0,
+      38
+    ],
+    "full_frames": 77,
+    "direct_visual_review_completed": true,
+    "timeline": [
+      "0\u201312: both scan and approach; r1 teal, r2 blue",
+      "12\u201324: each closes on a different assigned end, no same-end contention",
+      "24\u201330: final alignment, r1 waits READY while r2 aligns",
+      "30\u201338: both pick and complete; no mutual blocking observed"
+    ],
+    "own_rgb_source": "saved qpos rerender, not original10Hz capture"
+  },
+  "pre_edit": {
+    "failure_seed": 8318626,
+    "full_2Hz_window": [
+      0,
+      27.5
+    ],
+    "full_frames": 56,
+    "tail_10Hz_window": [
+      17.5,
+      27.5
+    ],
+    "tail_frames": 101,
+    "success_seed": 8318604,
+    "success_full_2Hz_window": [
+      0,
+      48.6
+    ],
+    "success_frames": 99,
+    "files": "outputs/e2e18-admin/playback/beampair5-{baseline,success}",
+    "timeline": "r1 ready by5.2s; r2 scans, pans/backs17.5\u201320.7; stationary20.7\u201327.5 with blue visible; no same-end or peer blocking"
+  },
+  "Mac_screen_apps_opened": false,
+  "scope": "images read as files only; ffprobe verifies playback; no Mac physics or renderer"
+}
