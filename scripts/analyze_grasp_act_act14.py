@@ -47,10 +47,15 @@ def analyze(root,output):
     funnel=recount(evaluations)
     stages=('approach','alignment','grasp','lift_confirmation')
     failed=next((s for s in stages if not funnel['cumulative_run_pass'][s]),None)
-    rejection=None if failed is None else {'category':failed+'_not_passed','blocking_object':'none_observed',
+    contacts=[v for r in evaluations for v in r.get('external_contacts',[])]
+    contact=min(contacts,key=lambda x:x['gap_m']) if contacts else None
+    measured=bool(evaluations) and all('external_contacts' in r for r in evaluations)
+    rejection=None if failed is None else {'category':failed+'_not_passed',
+        'blocking_object':contact['object'] if contact else 'none_observed' if measured else 'not_measured',
         'target_object':read_json(raw/'plan.json')['item_id'],
-        'minimum_gap_m':min((r['target_finger_min_gap_m'] for r in evaluations),default=None),
-        'scope':'target finger gap; no collision cause inferred'}
+        'minimum_gap_m':contact['gap_m'] if contact else None,
+        'target_finger_min_gap_m':min((r['target_finger_min_gap_m'] for r in evaluations),default=None),
+        'scope':'minimum observed non-floor external contact gap; target gap separate; no collision cause inferred'}
     frames=[]; tiles=[]
     if records:
         for j,index in enumerate(np.linspace(0,len(records)-1,min(6,len(records)),dtype=int)):

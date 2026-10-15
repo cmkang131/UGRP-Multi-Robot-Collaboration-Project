@@ -35,6 +35,14 @@ train/val 차이로 평가한다. 체크포인트 선택이나 재학습에는 v
 13 passed, 1 skipped(Mac 환경에 torch 없음; L4에서 손실 검사를 수행 예정).
 실제 수치·원본 위치·전체 해시·시도 실패/미완료·VM 종료 확인은 후속 요약에 기록한다.
 
+탐색 소스 `3bd9e013` 뒤 본 시험 전 기록기만 보완했다. 정적 거부표의 가장 가까운 물체가
+실제로 거부한 물체와 다를 수 있어, **실제 거부 predicate에 걸린 ID와 그 기준 대비 signed gap**을
+기록한다(분포 start_blocked19, 후보42→통과23 그대로, 23개 계획 바이트 일치).
+들기 funnel의 온라인 시각은 점수 갱신 뒤 기록해 1표본 지연을 없앴다. 원장 재집계기는
+처음부터 현재 표본의 점수를 사용했다. 본 시험에는 비바닥 외부 접촉의 geom 이름/실제 contact
+gap을 평가 전용으로 추가한다. 접촉을 측정하지 않은 이전 탐색의 blocker는 미측정으로 해석하며,
+없음을 주장하지 않는다. 학생·장면·명령·완료/종료 선택 코드는 그대로다.
+
 참고: [고정 LeRobot ACT 구현](https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/policies/act/modeling_act.py),
 프로젝트 `harness/grasp_act_loss.py`, `grasp_act_data.py`, `grasp_act_policy.py`,
 교사 `6f057f7e:sim/grasp_act_solo_teacher.py`와 `scripts/make_solo_teacher_plan.py`.

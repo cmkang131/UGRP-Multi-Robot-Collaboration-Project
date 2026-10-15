@@ -167,6 +167,7 @@ def run(plan, protocol, model, output, *, actor_python, cap_s=60., n_action_step
         funnel = {'frames': 0, 'valid_inputs': 0, 'actions': 0, 'approach': 0,
                   'alignment': 0, 'grasp': 0, 'lift_confirmation': 0}
         first_pass = {}
+        minimum_external_contact = None
         sequence = SoloSequence(with_release)
         # Evaluation-only private handles; these never leave the simulation owner.
         body = world.model.body(obj['body_name']).id
@@ -227,10 +228,9 @@ def run(plan, protocol, model, output, *, actor_python, cap_s=60., n_action_step
                     yaw_error = abs(math.atan2(math.sin(object_yaw-yaw), math.cos(object_yaw-yaw)))
                     passed = {'approach': station_error <= .08,
                               'alignment': station_error <= .008 and yaw_error <= .04,
-                              'grasp': min(forces) >= .5,
-                              'lift_confirmation': score.lift.record()['lift_success']}
+                              'grasp': min(forces) >= .5}
                     predecessor = True
-                    for stage in ('approach', 'alignment', 'grasp', 'lift_confirmation'):
+                    for stage in ('approach', 'alignment', 'grasp'):
                         ok = predecessor and passed[stage]
                         funnel[stage] += int(ok)
                         if ok: first_pass.setdefault(stage, now)
@@ -239,11 +239,27 @@ def run(plan, protocol, model, output, *, actor_python, cap_s=60., n_action_step
                                 float(world.model.stat.extent), None)) for finger in fingers for g in gids]
                     evaluation.update(station_error_m=station_error, yaw_error_rad=yaw_error,
                                       target_finger_min_gap_m=min(gaps), target_object=plan['item_id'])
+                    contacts=[]
+                    for contact in world.data.contact[:world.data.ncon]:
+                        a,b=int(contact.geom1),int(contact.geom2)
+                        names=[world.model.geom(g).name or str(g) for g in (a,b)]
+                        if sum(n.startswith(rid+'__') for n in names)!=1:continue
+                        external=names[1] if names[0].startswith(rid+'__') else names[0]
+                        if 'floor' in external or 'ground' in external:continue
+                        contacts.append({'object':external,'gap_m':float(contact.dist)})
+                    evaluation['external_contacts']=contacts
+                    if contacts:
+                        contact=min(contacts,key=lambda x:x['gap_m'])
+                        if minimum_external_contact is None or contact['gap_m']<minimum_external_contact['gap_m']:
+                            minimum_external_contact=contact
                 velocity = np.zeros(6)
                 mujoco.mj_objectVelocity(world.model, world.data, mujoco.mjtObj.mjOBJ_BODY, body, velocity, 0)
                 linear_speed = float(np.linalg.norm(velocity[3:]))
                 score.add(now, skill=obs['skill'], linear_speed=linear_speed,
                           **{k: evaluation[k] for k in ('clearance', 'tilt', 'forces', 'weld')})
+                if teacher_start_v1 and 'grasp' in first_pass and score.lift.record()['lift_success']:
+                    funnel['lift_confirmation'] += 1
+                    first_pass.setdefault('lift_confirmation',now)
                 evaluations.write(json.dumps({'t': now, 'skill': obs['skill'],
                     'linear_speed': linear_speed, **evaluation}, allow_nan=False) + '\n')
                 if tick % 10 == 0:
@@ -277,9 +293,11 @@ def run(plan, protocol, model, output, *, actor_python, cap_s=60., n_action_step
                 'cumulative_run_pass': {s: int(s in first_pass) for s in ('approach','alignment','grasp','lift_confirmation')},
                 'first_pass_sim_t': first_pass, 'failure_stage': missing,
                 'rejection': None if missing is None else {'category': missing+'_not_passed',
-                    'blocking_object': 'none_observed', 'target_object': plan['item_id'],
-                    'minimum_gap_m': evaluation.get('target_finger_min_gap_m'),
-                    'scope': 'target finger gap only; no collision cause inferred'},
+                    'blocking_object': minimum_external_contact['object'] if minimum_external_contact else 'none_observed',
+                    'target_object': plan['item_id'],
+                    'minimum_gap_m': minimum_external_contact['gap_m'] if minimum_external_contact else None,
+                    'target_finger_min_gap_m': evaluation.get('target_finger_min_gap_m'),
+                    'scope': 'observed non-floor external contacts; no collision cause inferred'},
                 'source': str(output / 'eval-only.jsonl'), 'reproduce': 'python -m scripts.analyze_grasp_act_act14 --root '+str(output)})
     except BaseException as exc:
         report.update(status='interrupted' if isinstance(exc, KeyboardInterrupt) else 'HOST_ERROR',
