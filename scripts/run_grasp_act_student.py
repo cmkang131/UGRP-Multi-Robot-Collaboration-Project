@@ -53,7 +53,8 @@ def response(process, timeout=120.):
 
 
 def run(plan, protocol, model, output, *, actor_python, cap_s=60., n_action_steps=c.CHUNK,
-        temporal_ensemble_coeff=None, actor_threads=1, teacher_start_v1=False):
+        temporal_ensemble_coeff=None, actor_threads=1, teacher_start_v1=False,
+        diagnostic_observer_factory=None):
     if actor_threads not in (1, 2, 4, 8, 16):
         raise ValueError('bounded actor thread setting required')
     ChunkExecutor(None, n_action_steps=n_action_steps, temporal_ensemble_coeff=temporal_ensemble_coeff)
@@ -161,6 +162,10 @@ def run(plan, protocol, model, output, *, actor_python, cap_s=60., n_action_step
             return result['chunk']
         executor = ChunkExecutor(predict, n_action_steps=n_action_steps, temporal_ensemble_coeff=temporal_ensemble_coeff)
         score = SoloScore()
+        # Offline replay diagnostics only. The observer receives the selected
+        # command and has no return path into the executor or sequence.
+        diagnostic_observer = (diagnostic_observer_factory(world, port, obj, previous, scene)
+                               if diagnostic_observer_factory else None)
         # Evaluation-only funnel. Existing frozen teacher boundaries: approach
         # .08m, box alignment .008m/.04rad (6f057f7e SoloTeacher._seek/Cargo).
         # Finger load/lift use the unchanged LiftScore criteria. None feed policy.
@@ -191,6 +196,8 @@ def run(plan, protocol, model, output, *, actor_python, cap_s=60., n_action_step
                 funnel['valid_inputs'] += 1
                 inputs.write(json.dumps(obs) + '\n')
                 value, done = executor.step(obs, jpegs)
+                if diagnostic_observer is not None:
+                    diagnostic_observer(obs, jpeg, value, done)
                 funnel['actions'] += 1
                 commands.write(json.dumps({'command': value, 'skill': obs['skill'], 'done_requested': done}) + '\n')
                 # Match recording's independent normalized wheel pulses exactly.
