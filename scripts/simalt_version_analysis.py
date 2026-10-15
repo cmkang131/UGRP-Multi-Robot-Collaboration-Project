@@ -23,7 +23,8 @@ def main():
              'C316_damping312': a.root/'c316-damping312-grip'}
     if a.with_geometry_round:
         paths.update(C316_geometry312=a.root/'c316-geometry312-grip',
-                     Warp_geometry312=a.root/'warp-geometry312-grip')
+                     Warp_geometry312=a.root/'warp-geometry312-grip',
+                     C312_port=a.root/'c312-native-port-selfcontrol')
     meta = {k: json.loads((v/'result.json').read_text()) for k, v in paths.items()}
     nc = len(meta['C312']['columns'])
     arrays = {k: np.load(v/'steps.npz')['records'] for k, v in paths.items()}
@@ -53,25 +54,28 @@ def main():
         'interpretation': 'C316 raw also changes Plane–Mesh; do not call its entire error damping or Warp. Reciprocal damping ablation isolates the intervention on each engine.'}
     if a.with_geometry_round:
         geometry=end['Warp312']-end['Warp_geometry312']
-        version=end['C316_geometry312']-end['C312']
+        port=end['C312_port']-end['C312']
+        version=end['C316_geometry312']-end['C312_port']
         backend=end['Warp_geometry312']-end['C316_geometry312']
         final_residual=end['Warp_geometry312']-end['C312']
         decomposition['final_round']={
             'geometry_intervention_vector_m':geometry.tolist(),
             'geometry_intervention_norm_m':float(np.linalg.norm(geometry)),
-            'compiled_matched_C316_version_vector_m':version.tolist(),
-            'compiled_matched_C316_version_norm_m':float(np.linalg.norm(version)),
+            'native_port_selfcontrol_vector_m':port.tolist(),
+            'native_port_selfcontrol_norm_m':float(np.linalg.norm(port)),
+            'compiled_matched_C_version_vector_m':version.tolist(),
+            'compiled_matched_C_version_norm_m':float(np.linalg.norm(version)),
             'same_version_Warp_vector_m':backend.tolist(),
             'same_version_Warp_norm_m':float(np.linalg.norm(backend)),
             'final_Warp_residual_vector_m':final_residual.tolist(),
             'final_Warp_residual_norm_m':float(np.linalg.norm(final_residual)),
             'telescoping_original_error_components':{
                 'damping_m':damping.tolist(),'geometry_m':geometry.tolist(),
-                'native_version_m':version.tolist(),'Warp_backend_m':backend.tolist()},
+                'C_port_m':port.tolist(),'native_version_m':version.tolist(),'Warp_backend_m':backend.tolist()},
             'original_error_projection_fractions':{
                 label:float(vector@total/(total@total)) for label,vector in
-                [('damping',damping),('geometry',geometry),('native_version',version),('Warp_backend',backend)]},
-            'note':'Ordered vector interventions include interactions; norms cannot be added or interpreted as independent causal percentages.'}
+                [('damping',damping),('geometry',geometry),('C_port',port),('native_version',version),('Warp_backend',backend)]},
+            'note':'Ordered vector interventions include interactions and the measured C port effect; norms cannot be added or interpreted as independent causal percentages. Same-version Warp residual includes collision implementation, float32 and solver arithmetic; it is not a float32-only estimate.'}
     first_rows = []
     step_rows = []
     crossings={}
