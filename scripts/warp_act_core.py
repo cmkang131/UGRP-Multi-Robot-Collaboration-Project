@@ -81,3 +81,21 @@ def control_tape(rows, relay_state, *, dt, steps, lookup, wheel_ids, servo_ids,
         previous_time = at
     return tape, dict(relay=state, wheels=wheels, applied=applied, pwm=pwm,
                       target=target, servo_active=servo_active, servo_time=previous_time)
+
+
+def model_key(xml):
+    """Same scene/model excluding only free-body initial pose declarations.
+
+    MuJoCo free-joint qpos stores that pose per world. Static bodies, geometry,
+    dynamics, materials, sensors and camera parameters must remain exact.
+    No approximate numeric model matching or mixed-map batching is admitted.
+    """
+    import hashlib
+    import xml.etree.ElementTree as ET
+    root=ET.fromstring(xml)
+    for body in root.iter('body'):
+        free=body.find('freejoint') is not None or any(j.get('type')=='free' for j in body.findall('joint'))
+        if free:
+            for attr in ('pos','quat','euler','axisangle','xyaxes','zaxis'):
+                body.attrib.pop(attr,None)
+    return hashlib.sha256(ET.tostring(root)).hexdigest()

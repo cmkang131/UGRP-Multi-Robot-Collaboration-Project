@@ -90,3 +90,11 @@ def test_pwm_tape_matches_real_camera_port_without_physics():
         lookup=np.tile(np.arange(500,2501),(5,1)),wheel_ids=[0,1,2,3],
         servo_ids=[[4],[5],[6],[7],[8]],start_fraction=.325,kinetic_fraction=1/12,torque_cap_nm=1.)
     assert np.array_equal(tape[:,:,4:9],np.asarray(expected).transpose(1,0,2))
+
+
+def test_model_grouping_allows_only_free_joint_initial_pose_changes():
+    from scripts.warp_act_core import model_key
+    xml='<mujoco><worldbody><body pos="1 0 0"><freejoint/><geom size=".1"/></body><geom pos="1 2 3" size=".1"/></worldbody></mujoco>'
+    assert model_key(xml)==model_key(xml.replace('body pos="1 0 0"','body pos="4 5 6"'))
+    assert model_key(xml)!=model_key(xml.replace('geom pos="1 2 3"','geom pos="4 5 6"'))
+    assert model_key(xml)!=model_key(xml.replace('size=".1"','size=".2"'))

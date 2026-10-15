@@ -9,7 +9,7 @@ import hashlib
 import time
 from pathlib import Path
 import numpy as np
-from warp_act_core import SERVOS, control_tape
+from warp_act_core import SERVOS, control_tape, model_key
 
 
 class Transport:
@@ -94,12 +94,19 @@ class WarpTransport(Transport):
             self.compat['damping'] = apply_reference(m, xml, compiled_reference)
         if m.opt.noslip_iterations != 10 or np.any(d.eq_active):
             raise ValueError('noslip10 / weld OFF required')
-        # This initial implementation admits replicated SAME-model starts only.
-        # Mixed scene batching requires explicit per-model grouping, not silent sharing.
+        # Free-joint initial poses live in per-world qpos, not shared static geometry.
         for c in contexts[1:]:
             other = c['world']
-            if other.scene_xml != contexts[0]['world'].scene_xml:
-                raise ValueError('same-model batch required; scene XML differs')
+            if model_key(other.scene_xml) != model_key(contexts[0]['world'].scene_xml):
+                raise ValueError('same static model required; group mixed maps/geometry into separate batches')
+            # Match the perception mirror's compiled geometry to the same canonical model.
+            for name in dir(m):
+                if name.startswith(('geom_','mesh_','bvh_')):
+                    value=getattr(m,name)
+                    if isinstance(value,np.ndarray):
+                        target=getattr(other.model,name)
+                        if target.shape!=value.shape:raise ValueError('compiled geometry layout mismatch')
+                        target[:]=value
         wp.init()
         self.wm = mjw.put_model(m)
         self.wm.opt.tolerance.fill_(float(m.opt.tolerance))
@@ -159,19 +166,21 @@ class WarpTransport(Transport):
         @wp.kernel
         def advance(tick:wp.array[int]):
             tick[0]+=1
-        target = wp.constant(contexts[0]['gids'][0])
-        if len(contexts[0]['gids']) != 1:
+        if any(len(c['gids']) != 1 for c in contexts):
             raise ValueError('warp1 evaluator currently supports the single box collision geom only')
-        fingers = sorted(contexts[0]['finger_ids'],key=contexts[0]['finger_ids'].get)
-        left,right=wp.constant(fingers[0]),wp.constant(fingers[1])
+        self.target_ids=wp.array([c['gids'][0] for c in contexts],dtype=int)
+        self.finger_ids=wp.array([sorted(c['finger_ids'],key=c['finger_ids'].get) for c in contexts],dtype=int)
         @wp.kernel
         def evaluate(nacon:wp.array[int],worldid:wp.array[int],geom:wp.array[wp.vec2i],
                      cone:int,njmax:int,frame:wp.array[wp.mat33],friction:wp.array[vec5],
                      condim:wp.array[int],adr:wp.array2d[int],adhesion:wp.array[float],
-                     efc_force:wp.array2d[float],out:wp.array2d[float]):
+                     efc_force:wp.array2d[float],targets:wp.array[int],fingers:wp.array2d[int],out:wp.array2d[float]):
             i=wp.tid()
             if i<nacon[0]:
                 a,b=geom[i][0],geom[i][1]
+                w=worldid[i]
+                target=targets[w]
+                left,right=fingers[w,0],fingers[w,1]
                 k=int(-1)
                 if a==target or b==target:
                     if a==left or b==left:k=0
@@ -272,5 +281,5 @@ class WarpTransport(Transport):
         d=self.wd
         wp.launch(self.eval_kernel,dim=d.naconmax,inputs=[d.nacon,d.contact.worldid,d.contact.geom,
             int(self.m.opt.cone),int(d.njmax),d.contact.frame,d.contact.friction,d.contact.dim,
-            d.contact.efc_address,d.contact.adhesion,d.efc.force,self.force_out])
+            d.contact.efc_address,d.contact.adhesion,d.efc.force,self.target_ids,self.finger_ids,self.force_out])
         self.contact_forces=self.force_out.numpy()
