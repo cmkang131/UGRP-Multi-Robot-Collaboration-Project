@@ -58,3 +58,21 @@ def test_rel15_disabled_by_default_and_requires_tracking():
     from harness.self_map_integration import Options
     assert not Options().reloc15_pose_handoff_v1
     with pytest.raises(ValueError):Options(reloc15_pose_handoff_v1=True)
+
+
+def test_update_budget_is_per_filter_and_stationary_image_is_not_remeasured():
+    from harness.e2e_static_rgb_localizer import create
+    from harness.selfmap4_geometry import static_input
+    from harness.own_map_amcl_vendor.field import PARAMS
+    static,_=static_input()
+    baseline=create(static,option='static_landmarks_v1',seed=1)
+    candidate=create(static,option='static_landmarks_v1',seed=1)
+    candidate.reloc15_update_budget=dict(distance_m=.05,yaw_rad=math.radians(2.5))
+    servo={1:2000,3:740,4:2320,5:1320,6:1500}
+    for pf in (baseline,candidate):
+        pf.step(t=0.,points=[[1.,0]],delta=[0,0,0],servo=servo)
+    old=baseline.step(t=1.,points=[[1.,0]],delta=[.06,0,.05],servo=servo)
+    new=candidate.step(t=1.,points=[[1.,0]],delta=[.06,0,.05],servo=servo)
+    assert not old['updated'] and new['updated']
+    assert not candidate.step(t=2.,points=[[1.,0]],delta=[0,0,0],servo=servo)['updated']
+    assert PARAMS['update_min_d_m']==.25 and PARAMS['update_min_a_rad']==.2

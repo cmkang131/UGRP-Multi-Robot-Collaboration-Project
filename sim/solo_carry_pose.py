@@ -42,7 +42,7 @@ def task_start(static):
 class CommandPose:
     def __init__(self, start, *, now=0., robot_id='r1', map_sha256='', amcl_option='off', drive_model_deadband_v1=False,
                  carry5_trim_yaw_calibration_v1=False, trim_calibration=None,
-                 reloc9_rotation_calibration_v1=False, reloc10_rotation_calibration_v1=False, carry_pose_budget_recal_v1=False, reloc14_carry_budget_v1=False, reloc14_carry_tracking_v1=False, tracking_static=None, reloc15_rgb_heading_v1=False):
+                 reloc9_rotation_calibration_v1=False, reloc10_rotation_calibration_v1=False, carry_pose_budget_recal_v1=False, reloc14_carry_budget_v1=False, reloc14_carry_tracking_v1=False, tracking_static=None, reloc15_rgb_heading_v1=False, reloc15_heading_10hz_v1=False):
         if amcl_option not in ('off', 'report_v1'):
             raise ValueError('unknown carry AMCL report option')
         if (set(start) != START_KEYS
@@ -111,10 +111,12 @@ class CommandPose:
             self.tracker = CarryTracker(tracking_static,start)
         if type(reloc15_rgb_heading_v1) is not bool:
             raise ValueError('heading toggle must be bool')
+        if type(reloc15_heading_10hz_v1) is not bool or reloc15_heading_10hz_v1 and not reloc15_rgb_heading_v1:
+            raise ValueError('10Hz heading requires RGB heading')
         self.heading = None
         if reloc15_rgb_heading_v1:
             from harness.reloc15_heading import Heading
-            self.heading = Heading()
+            self.heading = Heading(sample_s=.1 if reloc15_heading_10hz_v1 else .2)
         self.last_dt = None
 
     @property

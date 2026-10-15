@@ -26,7 +26,12 @@ def commanded_rotation(servo):
 
 
 class Heading:
-    def __init__(self):
+    def __init__(self, *, sample_s=.2):
+        # R2 .1s = native 10Hz command clock/user recording cadence. At
+        # saved failure p95/max yaw speed16.87/17.99deg/s this spans1.69/1.80deg
+        # instead of3.37/3.60deg at .2s, below existing5deg task target.
+        if sample_s not in (.1,.2):raise ValueError('native 10Hz/5Hz only')
+        self.sample_s=sample_s
         self.previous=None;self.delta_yaw=0.;self.servo=None;self.servo_since=None
         self.last_measurement_t=None;self.accepted=0;self.last=dict(category='no_pair')
 
@@ -38,14 +43,14 @@ class Heading:
     def observe(self,rgb,now,own):
         # Existing carry-tracker/VO 5Hz observation and loaded settle 2.25s.
         from harness.e2e_rgb_vo import PARAMS
-        if self.previous is not None and now-self.previous['t']<.2-1e-8:return
+        if self.previous is not None and now-self.previous['t']<self.sample_s-1e-8:return
         held=self.servo is not None and self.servo[1]<=1600
         good=held and now-self.servo_since>=PARAMS['settle_s'][1]
         old=self.previous
         self.previous=dict(rgb=rgb.copy(),t=now,pwm=self.servo,yaw=float(own.x[2]),variance=float(own.P[2,2]))
         command_yaw=self.delta_yaw;self.delta_yaw=0.
         self.last=dict(category='weak_observation',blocked_object='own_rgb_background',minimum_gap_m=None,
-            gap_status='not_applicable_localization_gate',exposure_sim_t=now,
+            gap_status='not_applicable_localization_gate',exposure_sim_t=now,sample_s=self.sample_s,
             last_measurement_t=self.last_measurement_t,command_yaw_rad=command_yaw)
         if not good or old is None or old['pwm']!=self.servo:
             self.last['category']='servo_unsettled_or_no_pair';return

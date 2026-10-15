@@ -183,6 +183,7 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
                                 reloc14_compute_budget_v1=plan.get('reloc14_compute_budget_v1', False),
                                 reloc14_carry_tracking_v1=plan.get('reloc14_carry_tracking_v1', False),
                                 reloc15_rgb_heading_v1=plan.get('reloc15_rgb_heading_v1', False),
+                                reloc15_heading_10hz_v1=plan.get('reloc15_heading_10hz_v1', False),
                                 carry_pose_budget_xy_reserve0_v1=plan.get('carry_pose_budget_xy_reserve0_v1', False))
             if carry.loc.drive_model_enabled:
                 ops.delta = carry.loc.cached_delta
@@ -496,8 +497,9 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
                      'base_xyz': list(map(float, base)), 'visible_n': visible_n, 'probe_N': probe_N,
                      'lookaround_estimate_xy': list(map(float, relook.loc.own.x[:2])) if relook.loc is not None else None})+'\n')
             last_eval_pos, last_eval_t = pos, now
-            if tick % 10 == 0:
+            if tick % 5 == 0:
                 cv2.imwrite(str(out/'review-own'/f'{tick:06d}.jpg'), cv2.resize(bgr, (320, 240)))
+            if tick % 10 == 0:
                 if not plan.get('reloc10_own_review_only_v1', False):
                     (out/'review-top'/f'{tick:06d}.jpg').write_bytes(world.render_team_jpeg(camera=static['top_cameras'][0]['name']))
                 write(out/'progress.json', {'sim_s': now-origin, 'phase': teacher.phase, 'source_sha': sha})
@@ -614,7 +616,7 @@ def validate_carry(plan, *, enabled, training_rgb, truth_free, lift, negative):
     if plan.get('render_profile','floor_light_v1') not in ('floor_light_v1','floor_light_textured_v1'):
         raise ValueError('unknown carry render profile')
     for option in ('carry5_rank_aware_views_v1', 'carry5_trim_yaw_calibration_v1', 'carry7_robust_recovery_v1',
-                   'reloc9_rotation_calibration_v1', 'reloc9_wall_height_guard_v1', 'reloc9_reacquisition_v1', 'reloc10_rotation_calibration_v1', 'reloc10_own_review_only_v1', 'reloc12_carry_reacquire_v1', 'carry_pose_budget_recal_v1', 'carry_pose_budget_xy_reserve0_v1', 'reloc14_carry_budget_v1', 'reloc14_compute_budget_v1', 'reloc14_scene_v7', 'reloc14_carry_tracking_v1', 'reloc15_rgb_heading_v1'):
+                   'reloc9_rotation_calibration_v1', 'reloc9_wall_height_guard_v1', 'reloc9_reacquisition_v1', 'reloc10_rotation_calibration_v1', 'reloc10_own_review_only_v1', 'reloc12_carry_reacquire_v1', 'carry_pose_budget_recal_v1', 'carry_pose_budget_xy_reserve0_v1', 'reloc14_carry_budget_v1', 'reloc14_compute_budget_v1', 'reloc14_scene_v7', 'reloc14_carry_tracking_v1', 'reloc15_rgb_heading_v1', 'reloc15_heading_10hz_v1'):
         if type(plan.get(option, False)) is not bool:
             raise ValueError(option+' must be bool')
         if plan.get(option) and plan.get('carry5_profile') != 'carry5_active_localization_v1':

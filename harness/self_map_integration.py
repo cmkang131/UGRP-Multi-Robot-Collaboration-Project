@@ -52,11 +52,12 @@ class Options:
     reloc14_continuous_tracking_v1: bool = False
     reloc14_compute_budget_v1: bool = False
     reloc15_pose_handoff_v1: bool = False
+    reloc15_update_budget_v1: bool = False
     revision_xy_threshold_m: float = .1
     revision_yaw_threshold_rad: float = math.radians(5)
 
     def __post_init__(self):
-        for name in ('reloc12_raw_cov_gate_v1', 'reloc12_ransac_hypotheses_v1', 'reloc13_execution_cov_v1', 'reloc13_execution_frame_v1', 'reloc13_live_r7_v1', 'reloc14_continuous_tracking_v1', 'reloc14_compute_budget_v1', 'reloc15_pose_handoff_v1'):
+        for name in ('reloc12_raw_cov_gate_v1', 'reloc12_ransac_hypotheses_v1', 'reloc13_execution_cov_v1', 'reloc13_execution_frame_v1', 'reloc13_live_r7_v1', 'reloc14_continuous_tracking_v1', 'reloc14_compute_budget_v1', 'reloc15_pose_handoff_v1', 'reloc15_update_budget_v1'):
             if type(getattr(self, name)) is not bool or (getattr(self, name) and self.multiframe_registration == 'off'):
                 raise ValueError('reloc12 requires multiframe registration and bool toggles')
         if self.reloc13_execution_cov_v1 and not self.reloc12_raw_cov_gate_v1:
@@ -65,6 +66,8 @@ class Options:
             raise ValueError('reloc13 execution frame requires execution covariance')
         if self.reloc13_live_r7_v1 and not self.reloc13_execution_frame_v1:
             raise ValueError('live R7 requires execution frame')
+        if self.reloc15_update_budget_v1 and not self.reloc15_pose_handoff_v1:
+            raise ValueError('update budget comparison requires timestamped handoff')
         if self.reloc15_pose_handoff_v1 and not self.reloc14_continuous_tracking_v1:
             raise ValueError('reloc15 requires continuous tracking')
         if self.reloc14_continuous_tracking_v1 and not self.reloc13_live_r7_v1:
@@ -226,6 +229,14 @@ class SelfMapIntegration:
 
                 correction_safety=self.options.correction_safety,
                 active_relocalization=self.options.active_relocalization)
+            if self.options.reloc15_update_budget_v1:
+                # loc.md priority1 candidate: half of the existing 10cm/5deg
+                # task error target, NOT an accuracy certificate or fitted
+                # sensor-noise value. R1 93584 delivery-only 152/214 bad matched
+                # baseline. Change just the motion opportunity (.25m/.2rad).
+                # Distinct issued displacement/angle is still required, so
+                # repeated stationary images do not multiply the likelihood.
+                self.registration.pf.reloc15_update_budget=dict(distance_m=.1/2,yaw_rad=math.radians(5)/2)
             self.flow = PlaneFlow()
         elif static_map is not None:
             raise ValueError('STATIC_MAP_REQUIRES_SELFMAP4_PROFILE')

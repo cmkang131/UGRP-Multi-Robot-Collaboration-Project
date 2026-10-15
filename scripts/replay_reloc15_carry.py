@@ -76,7 +76,16 @@ def main():
                     slip=float(np.linalg.norm(v[:2]))
                 contacts.append(dict(names=names,slip_xy_m_s=slip,normal_N=float(force[0]),tangent_N=float(np.linalg.norm(force[1:3])),
                     moment_z_Nm=float(np.cross(c.pos-base,vec)[2]),pos=c.pos.tolist()))
-            probes.append(dict(t=now,phase=r['phase'],base_xyz=base.tolist(),yaw_rad=yaw,
+            cid=world.controllers[rid].robot_cam_cid
+            base_rotation=d.body(rid+'__robot').xmat.reshape(3,3)
+            actual_rotation=base_rotation.T@d.cam_xmat[cid].reshape(3,3)@np.diag([1.,-1.,-1.])
+            from harness.reloc15_heading import commanded_rotation
+            nominal_rotation=commanded_rotation(r['command']['pwm'])
+            relative=actual_rotation@nominal_rotation.T
+            camera_error=dict(rotation_error_deg=math.degrees(math.acos(float(np.clip((np.trace(relative)-1)/2,-1,1)))),
+                relative_yaw_deg=math.degrees(math.atan2(relative[1,0],relative[0,0])),
+                actual_camera_to_body=actual_rotation.tolist(),nominal_camera_to_body=nominal_rotation.tolist())
+            probes.append(dict(t=now,phase=r['phase'],base_xyz=base.tolist(),yaw_rad=yaw,camera_error=camera_error,
                 replay_xyz_error_m=xy,cargo_xyz=d.body(body).xpos.tolist(),contacts=contacts,
                 wheel_ctrl=d.ctrl[world.controllers[rid].wheel_act].tolist(),
                 wheel_qvel=d.qvel[m.jnt_dofadr[m.actuator_trnid[world.controllers[rid].wheel_act,0]]].tolist()))

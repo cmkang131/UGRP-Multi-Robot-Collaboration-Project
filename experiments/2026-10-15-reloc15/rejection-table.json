@@ -1,6 +1,6 @@
 {
   "schema": "ugrp.reloc15.rejection_table.v1",
-  "stage": "before_control_changes",
+  "stage": "R1 completed before R2",
   "analysis_host": "gcp1",
   "source": "reloc14/round3-full.json",
   "source_sha256": "64fa375b4ccb006c0c5714fb17c2caae968dd608b6205038690ace4eaa3aad9b",
@@ -551,5 +551,12 @@
   ],
   "carry_yaw": "carry-yaw.json",
   "ready": false,
-  "reproduce": "python3 /tmp/reloc15-baseline.py"
+  "reproduce": "python3 /tmp/reloc15-baseline.py",
+  "rounds": [
+    {
+      "round": 1,
+      "summary": "round1.json",
+      "source_sha": "9607de16cfeac0a5ae1308732bab33604b8db7e7"
+    }
+  ]
 }
