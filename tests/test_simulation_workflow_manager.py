@@ -481,6 +481,8 @@ raise SystemExit(3 if a.fail else 0)
         samples['e2e-one-beam-ownmap-inputs'] = sha
         samples['beampair1'] = ['--plan', str(source), '--episode', '0',
                                  '--dependency-root', str(model), '--mode', 'short']
+        samples['beampair8-record'] = ['--plan', str(source), '--episode', '0',
+                                       '--dependency-root', str(model)]
         # v196 is the preserved HOST_ERROR catalog: it incorrectly required a
         # value for this boolean. Keep its original bytes and the rejection.
         samples['e2e-rpp-lookahead-v196'] = [*e2e_args, '--dev-light']
