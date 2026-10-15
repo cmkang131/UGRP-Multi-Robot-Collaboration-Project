@@ -1,0 +1,110 @@
+{
+  "schema": "ugrp.reloc8_summary.v1",
+  "flow": "carry",
+  "source_revision": "commit containing this record; full SHA pinned in newly generated external queue",
+  "baseline_sha": "8c6f219cb39595a877fc0af487b3ea7e9fefb27f",
+  "toggle": "reloc8_active_vision_v1",
+  "default": "off",
+  "new_physics_runs": 0,
+  "render_calls": 0,
+  "model_calls": 0,
+  "training_runs": 0,
+  "verified_scope": "fixed saved priors/proposals and selected RGB; not causal full trajectory, new-view pixels or physical improvement",
+  "metrics": {
+    "views_N": 28,
+    "old_accepted_N": 0,
+    "new_accepted_N": 0,
+    "old_ambiguous_N": 24,
+    "new_ambiguous_N": 12,
+    "dangerous_accepted_N": 0
+  },
+  "related_pytest_passed": 14,
+  "pytest_log": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/reloc8/carry-tests-final2.txt",
+  "analysis": {
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/reloc8/carry-final2.json",
+    "sha256": "2d5a86163aa9df7a14bcc0c67484dd1c2731cc8ce2ba637cb42b379bd97515e5"
+  },
+  "runs": [
+    {
+      "name": "solo-carry-93261-8c6f219c",
+      "source_sha": "8c6f219cb39595a877fc0af487b3ea7e9fefb27f",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93261-8c6f219c/raw",
+      "status": "complete",
+      "physical_success": false,
+      "termination_reason": "carry_relocalization_unconfirmed",
+      "error_type": null,
+      "elapsed_sim_s": 196.09999999706008,
+      "new_execution": false
+    },
+    {
+      "name": "solo-carry-93262-8c6f219c",
+      "source_sha": "8c6f219cb39595a877fc0af487b3ea7e9fefb27f",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93262-8c6f219c/raw",
+      "status": "interrupted",
+      "physical_success": null,
+      "termination_reason": null,
+      "error_type": "KeyboardInterrupt",
+      "elapsed_sim_s": null,
+      "new_execution": false
+    },
+    {
+      "name": "solo-carry-93266-8c6f219c",
+      "source_sha": "8c6f219cb39595a877fc0af487b3ea7e9fefb27f",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93266-8c6f219c/raw",
+      "status": "interrupted",
+      "physical_success": null,
+      "termination_reason": null,
+      "error_type": "KeyboardInterrupt",
+      "elapsed_sim_s": null,
+      "new_execution": false
+    }
+  ],
+  "raw_sources": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93261-8c6f219c/raw/result.json.zst",
+      "sha256": "1617d3cd5cd6ebe686365cd7dd33721d252dbb44ed4fae00ce5da5b5e726d484",
+      "decoded_sha256": "562310b8ac3ea00a4a4cdb46142508d6d4bce0742fc687a2033797a0e7c7f631",
+      "original_manifest_verified": true
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93262-8c6f219c/raw/result.json",
+      "sha256": "477665c321ae4368a299543307c727b7779e90bca42204f2a50f917beaae2e83",
+      "decoded_sha256": "477665c321ae4368a299543307c727b7779e90bca42204f2a50f917beaae2e83",
+      "original_manifest_verified": true
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93266-8c6f219c/raw/result.json",
+      "sha256": "1a901a0b9f440f5ebd115b866e32622d017863d4dc7e296f3e9a6dc0deb29cb4",
+      "decoded_sha256": "1a901a0b9f440f5ebd115b866e32622d017863d4dc7e296f3e9a6dc0deb29cb4",
+      "original_manifest_verified": true
+    }
+  ],
+  "inputs": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93261-8c6f219c/raw/result.json.zst",
+      "sha256": "1617d3cd5cd6ebe686365cd7dd33721d252dbb44ed4fae00ce5da5b5e726d484",
+      "decoded_sha256": "562310b8ac3ea00a4a4cdb46142508d6d4bce0742fc687a2033797a0e7c7f631",
+      "original_manifest_verified": true
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93261-8c6f219c/raw/carry-static-map.json",
+      "sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b",
+      "decoded_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b",
+      "original_manifest_verified": true
+    }
+  ],
+  "selected_rgb_N": 30,
+  "six_per_third_verified": false,
+  "material_ratios": "heuristic color proxy, not semantic GT",
+  "previous_results_combinable": false,
+  "source_sha256": {
+    "harness/active_relocalization.py": "4c1abb8b96183fa2dbbffdbb03c9c42c5941096ec37a78fa35377e955287aa74",
+    "scripts/analyze_reloc8.py": "a895e716119a5b6d130d99e2279b7da29cbb605c9e75107531e0839ade2b12ae",
+    "tests/test_active_relocalization.py": "4aee8c2ff2b7a10c6bc55c65bfbff2b810be4ef9d2a71920418242f028c60c54",
+    "sim/lookaround_localization.py": "d2f735ed41d247a58d270e389bcdd63f41b8b39c99190a21955c8e075100e326",
+    "sim/grasp_act_solo_lookaround.py": "381104035570b5641895a27635fa189cd461ff08821e9a9560a1cfd4f1ba71d2",
+    "scripts/run_solo_grasp_act_teacher.py": "c178d99af4171ab6c4f02af4f35af0f8a4378409a83f56ba5c1cb16fe7462063",
+    "scripts/prepare_reloc8_carry_queue.py": "39077bb55e92370c6936d0979bcdadfefa56ace9dbd958df7f5dcd40587f549b",
+    "tests/test_reloc8_carry.py": "4f220fb03a2954c6b172c0d2901773bbb6526e4801c5ca46eb89522ab704b430"
+  }
+}

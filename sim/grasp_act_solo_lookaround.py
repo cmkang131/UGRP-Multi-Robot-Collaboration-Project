@@ -18,7 +18,8 @@ from __future__ import annotations
 class SoloLookaround:
     def __init__(self, static, *, ops, odometry_profile='off',
                  localizer_factory=None, runner_factory=None, truth_free_v1=False, command_pose=None, carry5=False,
-                 carry5_rank_aware_views_v1=False, carry7_robust_recovery_v1=False):
+                 carry5_rank_aware_views_v1=False, carry7_robust_recovery_v1=False,
+                 active_relocalization='off'):
         if localizer_factory is None or runner_factory is None:
             from sim.lookaround_localization import LookaroundLocalizer, ScriptRunner
             localizer_factory = localizer_factory or LookaroundLocalizer
@@ -40,6 +41,12 @@ class SoloLookaround:
         if type(carry7_robust_recovery_v1) is not bool or (carry7_robust_recovery_v1 and not self.rank_aware_v1):
             raise ValueError('carry7 requires rank-aware command-pose recovery')
         self.robust_recovery_v1 = carry7_robust_recovery_v1
+        from harness.active_relocalization import validate
+        validate(active_relocalization)
+        if active_relocalization != 'off' and not self.robust_recovery_v1:
+            raise ValueError('RELOC8_REQUIRES_CARRY7_SAFETY')
+        self.active_relocalization = active_relocalization
+        self.active_replans = 0
         self.accepted_ready = False
         self.deadline = None
         self.rank_retry = 0
@@ -87,6 +94,7 @@ class SoloLookaround:
     def start(self, now, pan_pulse, *, continuation=False):
         if not continuation:
             self.partial_replans = 0
+            self.active_replans = 0
             self.partial_budget_exhausted = False
         self.accepted_ready = False
         if self.truth_free_v1 and self.command_pose is None:
@@ -115,6 +123,7 @@ class SoloLookaround:
             self.loc.rank_retry = self.rank_retry
         if self.robust_recovery_v1:
             self.loc.robust_recovery_v1 = True
+        self.loc.active_relocalization = self.active_relocalization
         plan = self.loc.make_plan(int(pan_pulse))
         self.runner = (Carry5ViewRunner(plan, self.command_pose, self.ops, now) if self.carry5
                        else self.make_runner(self.loc.script(), now))
@@ -168,6 +177,8 @@ class SoloLookaround:
             if self.command_pose is not None:
                 if rec.get('fix_acceptance', {}).get('accepted') is True:
                     self.command_pose.accepted_fix(at)
+                    if self.active_relocalization != 'off':
+                        self.loc._reloc8_evidence.frames.clear()
                     if self.robust_recovery_v1:
                         import math
                         s = self.command_pose.sigmas()
@@ -183,6 +194,9 @@ class SoloLookaround:
                         self.partial_budget_exhausted = True
                 else:
                     self.loc.own.x, self.loc.own.P = prior_x, prior_P
+                if self.active_relocalization != 'off' and not self.accepted_ready and self.active_replans < 2:
+                    self.active_replans += 1
+                    self.replan_pending = True
             self.events.append({'t': at, 'event': 'view', 'status': rec.get('status'),
                                 'wall_points': rec.get('wall_points'), 'floor_lines': rec.get('floor_lines'),
                                 'doors': rec.get('doors'), 'seen_groups': rec.get('seen_groups'),
@@ -244,7 +258,7 @@ class Carry5ViewRunner:
             return
         view = self.views[self.i]
         if self.stage == 'arm':
-            set_servo(look_servo(view['pan_deg']), now)
+            set_servo(view.get('servo', look_servo(view['pan_deg'])), now)
             self.wait_from = now; self.stage = 'arm_wait'; return
         if self.stage == 'arm_wait':
             if now-self.wait_from < 1.:
@@ -257,7 +271,7 @@ class Carry5ViewRunner:
                 wheels, duration = self.ops.duty([0., 0., .65*turn])
                 set_wheels([(wheels, duration)], now)
                 return
-            set_servo(look_servo(view['pan_deg']), now)
+            set_servo(view.get('servo', look_servo(view['pan_deg'])), now)
             self.wait_from = now; self.stage = 'settle'; return
         if self.stage == 'settle' and now-self.wait_from >= .8-1e-9:
             capture(now)

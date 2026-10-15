@@ -205,6 +205,17 @@ class LookaroundLocalizer:
     # --- view plan ---
     def make_plan(self, start_pan_pulse=1500):
         start = (start_pan_pulse-1500)*PAN_DEG_PER_PULSE
+        if getattr(self, 'active_relocalization', 'off') != 'off':
+            from harness.active_relocalization import next_view, OPTION
+            view = next_view(self.static, self.own.x, self.planning_covariance,
+                hypotheses=getattr(self, '_sensor_modes', {}).get('hypotheses', []),
+                previous_headings=getattr(self, '_reloc8_headings', []))
+            self.plan = dict(views=[{**view, 'expected': view['expected_signature']}],
+                expected_gain_nats=None, expected_landmarks=[], rotated=view['body_yaw_deg'] != 0,
+                pose_estimate_at_plan=self.own.x.tolist(),
+                sigma_at_plan=np.sqrt(np.diag(self.planning_covariance)).tolist(),
+                rank_aware=dict(profile=OPTION, robust_feasible=view['feasible'], predicted_only=True))
+            return self.plan
         if getattr(self, 'rank_aware_v1', False):
             from sim.solo_carry6 import rank_aware_plan, MARGIN_PX
             plan = rank_aware_plan(tuple(self.own.x), self.planning_covariance, self.landmarks,
@@ -422,6 +433,27 @@ class LookaroundLocalizer:
             self._sensor_modes.update(global_coarse_poses=len(global_px),global_refined_poses=len(refined),
                                       global_coverage_certified=False)
             rec['sensor_modes'] = self._sensor_modes
+            if getattr(self, 'active_relocalization', 'off') != 'off':
+                from harness.active_relocalization import ViewEvidence, conditioned_modes
+                if not hasattr(self, '_reloc8_evidence'):
+                    self._reloc8_evidence = ViewEvidence()
+                    self._reloc8_headings = []
+                poses = np.concatenate((px, global_px, refined))
+                # These are immutable measurements from this own RGB frame.
+                all_scores, independent = self._reloc8_evidence.score(poses, x0, rec['t'],
+                    x0[2]+math.radians((rec['pan_pulse']-1500)*PAN_DEG_PER_PULSE), sensor_score)
+                modes = conditioned_modes(poses, all_scores, x0, P)
+                modes.update(independent_rgb_views=1+len(independent), independent_times=independent,
+                    single_view_ambiguous=modes['ambiguous'], profile=self.active_relocalization)
+                # A command prior can narrow the search, never establish a fix.
+                modes['ambiguous'] = modes['ambiguous'] or not independent
+                if independent:
+                    logw = all_scores[:len(px)]-.5*np.einsum('ni,ij,nj->n', D, Pi, D)
+                self._sensor_modes = modes
+                rec['reloc8_modes'] = modes
+                heading = x0[2]+math.radians((rec['pan_pulse']-1500)*PAN_DEG_PER_PULSE)
+                self._reloc8_evidence.add(x0, rec['t'], heading, sensor_score)
+                self._reloc8_headings = (self._reloc8_headings+[float(heading)])[-6:]
         w = np.exp(logw-logw.max()); w /= w.sum()
         mean_d = w@D; dd = D-mean_d
         cov = (w[:, None]*dd).T@dd+np.diag([step_xy**2/12]*2+[step_t**2/12])
