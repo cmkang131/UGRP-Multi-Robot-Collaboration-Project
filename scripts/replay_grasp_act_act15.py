@@ -62,8 +62,8 @@ class ShadowTeacher:
     def __call__(self, observation, jpeg, selected, done):
         import numpy as np
         world, teacher, rid = self.world, self.teacher, self.plan['robot_id']
-        now = observation['t']; original = self.original[self.n]
-        if ([r['sha256'] for r in observation['rgb']] != [r['sha256'] for r in original['rgb']]
+        now = observation['t']; original = self.original[self.n] if self.original is not None else None
+        if original is not None and ([r['sha256'] for r in observation['rgb']] != [r['sha256'] for r in original['rgb']]
                 or observation['issued'] != original['issued']):
             raise ValueError('replay differs from original student inputs at '+str(self.n))
         n,N = self.eyes.region_visible(world.data,rid,self.gids) if self.valid else (0,0)
@@ -118,15 +118,22 @@ class ShadowTeacher:
         teacher.arm.commanded.update(teacher.sink.pwm);teacher.remember_applied(selected)
         self.n += 1
         write_json(self.output/'shadow-progress.json',{'rows':self.n,'input_audit':self.audit.record(),
-            'replay_rgb_and_issued_exact':True,'labels_after_hover_invalid':True})
+            'replay_rgb_and_issued_exact':True if original is not None else None,
+            'labels_after_hover_invalid':True,'teacher_actions_executed':0})
 
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
-    for k in ('root','output','model','scene-source'):p.add_argument('--'+k,type=Path,required=True)
+    for k in ('output','model','scene-source'):p.add_argument('--'+k,type=Path,required=True)
+    p.add_argument('--root',type=Path)
+    p.add_argument('--collect-plan',type=Path)
     p.add_argument('--actor-python',required=True)
-    a=p.parse_args();raw=a.root/'raw';plan=json.loads((raw/'plan.json').read_text())
-    commands=read_rows(existing(raw/'commands.jsonl'));original=read_rows(existing(raw/'student-inputs.jsonl'))
+    a=p.parse_args()
+    if bool(a.root)==bool(a.collect_plan):p.error('choose saved replay or fresh student collection')
+    raw=a.root/'raw' if a.root else None
+    plan=json.loads(((raw/'plan.json') if raw else a.collect_plan).read_text())
+    commands=read_rows(existing(raw/'commands.jsonl')) if raw else None
+    original=read_rows(existing(raw/'student-inputs.jsonl')) if raw else None
     from scripts import run_grasp_act_student as runner
     from scripts.run_grasp_act_recovery import dependency_modules
     from harness.grasp_act_dart import recovery_hooks
@@ -142,7 +149,7 @@ def main():
             row=commands[self.i];self.i+=1
             if abs(row['command']['t']-obs['t'])>1e-8:raise ValueError('replay time mismatch')
             return row['command'],row['done_requested']
-    runner.ChunkExecutor=ReplayExecutor
+    if raw:runner.ChunkExecutor=ReplayExecutor
     protocol={'closed_loop_seeds':[plan['seed']],'train_seeds':[],'validation_seeds':[]}
     with dependency_modules(a.scene_source):
         from sim import grasp_act_solo_teacher as teacher_module
