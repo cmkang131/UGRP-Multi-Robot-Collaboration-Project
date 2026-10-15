@@ -47,12 +47,12 @@ def main(count):
     summary=dict(schema='ugrp.reloc17.summary.v1',verdict=verdict,created=datetime.datetime.now(datetime.timezone.utc).isoformat(),pr=536,parent_pr=532,base_sha='5f63909becb63edc633ab3ad243a4b694fb38846',candidate_source_sha=final[0]['source_sha'],
         scene='walls_floor_contrast_v5_indigo110_s80 + v1 floor + no_mip_v1',host='gcp2 / ugrp-sim-b-1014 / n4-highcpu-64 / C MuJoCo CPU',
         investigation_complete_before_controller_edit=True,controller_fix='reloc17_servo_wait_v1 (default off), ordinary pending-servo hold replaced by existing zero-wheel primitive; terminal hold unchanged',
-        constants_changed=False,raw_truth_scope='evaluator-only error calculation; no GT, joints or contacts supplied to controller',
+        acceptance_constants_changed=False,raw_truth_scope='evaluator-only error calculation; no GT, joints or contacts supplied to controller',
         runs=lite,rounds=count,pairs=pairs,final_place=dict(N=len(carry),verified=sum(bool(r.get('place_verified')) for r in carry)),
         speed={f'round{n}':read(ROOT/f'reloc17-round{n}/speed-gate.json') for n in range(1,count+1)},
         scope=dict(mac_physics=0,mac_render=0,mac_gui=0,model_calls=0,training=0,weld=False,full_raw_backup=False,full_raw_download=False,physical_robot_or_ACT_student_success_not_claimed=True),
         playback='playback-review.md; full mission success video unavailable',records=dict(inventory='inventory.json',rejection_table='rejection-table-candidate.json',references='references.md',constants='constants.md',decomposition='decomposition.md'))
-    write(out/'summary.json',summary);write(out/'inventory.json',inventory);write(out/'rejection-table-candidate.json',dict(unit='ordered frames/events, acquisition and tracking kept separate',runs=rejections,reproduce=f'{__file__} --rounds {count}'))
+    write(out/'summary.json',summary);write(out/'inventory.json',inventory);write(out/'rejection-table-candidate.json',dict(unit='ordered frames/events, acquisition and tracking kept separate',runs=rejections,reproduce=f'PYTHONPATH=. /home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python {__file__} --rounds {count}'))
     for n in range(1,count+1):
         src=ROOT/f'reloc17-round{n}';(out/f'round{n}.md').write_bytes((src/'table.md').read_bytes());write(out/f'round{n}-speed.json',read(src/'speed-gate.json'))
     for name in ('host.json','servo-audit.json','likelihood-audit.json','playback-manifest.json'):

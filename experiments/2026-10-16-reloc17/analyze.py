@@ -77,7 +77,7 @@ def main(queuefile,output=None):
         else:r.update(failure=result.get('failure'),frames=result.get('frames',0))
         r['source_hashes']={str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in (Path(t['raw'])/'result.json',folder/'task.json') if p.exists()}
         reports.append(r)
-    data=dict(schema='ugrp.reloc17.analysis.v1',analysis_host='gcp2',source_queue=str(queuefile),reproduce=f'PYTHONPATH=. {__file__} --queue {queuefile}',runs=reports)
+    data=dict(schema='ugrp.reloc17.analysis.v1',analysis_host='gcp2',source_queue=str(queuefile),reproduce=f'PYTHONPATH=. /home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python {__file__} --queue {queuefile}',runs=reports)
     out=Path(output) if output else queuefile.parent;out.mkdir(exist_ok=True,parents=True);(out/'summary.json').write_text(json.dumps(data,indent=2)+'\n')
     rejection=dict(source_queue=str(queuefile),runs=[dict(run=r['name'],raw=r['raw'],**r['registration_frame_funnel']) if 'registration_frame_funnel' in r else dict(run=r['name'],heading=r.get('heading'),failure=r.get('failure')) for r in reports])
     (out/'rejection-table.json').write_text(json.dumps(rejection,indent=2)+'\n')
