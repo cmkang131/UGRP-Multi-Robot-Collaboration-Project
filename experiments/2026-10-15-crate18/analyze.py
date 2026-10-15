@@ -53,6 +53,13 @@ def summarize(folder):
    aligned={rid:any(t.get('teacher_phase') in ('ready','pick','closed','lift','complete') for t in lines(raw/f'teacher-{rid}.jsonl')) for rid in ('r1','r2')},
    sources=sources,raw=f"gcp1:/home/ugrp/ugrp-sim/runs/{r['name']}")
   summary.append(row)
- (folder/'summary.json').write_text(json.dumps(summary,indent=2)+'\n')
+ payload=(json.dumps(summary,indent=2)+'\n').encode()
+ target=folder/'summary.json'
+ if len(payload)>65536:
+  compressed=subprocess.check_output(['zstd','-q','-c'],input=payload)
+  assert subprocess.check_output(['zstd','-dc'],input=compressed)==payload
+  Path(str(target)+'.zst').write_bytes(compressed)
+  if target.exists():target.unlink()
+ else:target.write_bytes(payload)
  for r in summary:print(json.dumps({k:r[k] for k in ['name','status','success','aligned','pick_permits','lift_permits','outcomes','release_outcome','sim_s']},ensure_ascii=False))
 if __name__=='__main__':summarize(Path(sys.argv[1]))

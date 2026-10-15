@@ -85,7 +85,7 @@
       "complete": 6,
       "physical_hold": 4,
       "full_completion": 0,
-      "record": "round2.json"
+      "record": "round2.json.zst"
     },
     {
       "round": 3,
@@ -93,7 +93,7 @@
       "complete": 6,
       "physical_hold": 5,
       "full_completion": 0,
-      "record": "round3.json"
+      "record": "round3.json.zst"
     }
   ],
   "pooling": "all rounds/candidates/old crate16/17/source/hosts separate; paired DEV, not an independent95% gate",
@@ -133,5 +133,6 @@
     "gcp1:/home/ugrp/ugrp-sim/runs/crate18-r3-no_clearance-79317-9cb9686a"
   ],
   "queue_path_template": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-crate18-diag-<record-sha8>.json",
-  "queue_source_scope": "record commit; controller/runtime and both plans byte-identical to tested execution SHA; verified in queue writer"
+  "queue_source_scope": "record commit; controller/runtime and both plans byte-identical to tested execution SHA; verified in queue writer",
+  "compression_index": "local-compression.json"
 }
