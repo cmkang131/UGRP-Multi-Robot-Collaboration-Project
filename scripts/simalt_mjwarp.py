@@ -10,6 +10,7 @@ import json
 from pathlib import Path
 import platform
 import time
+import warnings
 
 COMMIT='57b4692f4d3cdf4d27d916b4b8c4759ba36e9148'
 
@@ -37,6 +38,7 @@ def main():
         import mujoco
         import warp as wp
         import mujoco_warp as mjw
+        warnings.filterwarnings("error", message=".*overflow.*", category=RuntimeWarning)
         wp.init()
         result.update(mujoco_version=mujoco.__version__,warp_version=wp.__version__)
         m=mujoco.MjModel.from_xml_path(str(a.xml))
