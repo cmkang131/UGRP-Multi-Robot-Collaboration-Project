@@ -40,7 +40,7 @@ def task_start(static):
 
 
 class CommandPose:
-    def __init__(self, start, *, now=0., robot_id='r1', map_sha256='', amcl_option='off'):
+    def __init__(self, start, *, now=0., robot_id='r1', map_sha256='', amcl_option='off', drive_model_deadband_v1=False):
         if amcl_option not in ('off', 'report_v1'):
             raise ValueError('unknown carry AMCL report option')
         if (set(start) != START_KEYS
@@ -51,6 +51,12 @@ class CommandPose:
         if (len(start['pose_m_rad']) != 3 or not all(map(math.isfinite, values))
                 or min(start['sigma_xy_m'], start['sigma_yaw_rad']) <= 0):
             raise ValueError('finite task prior required')
+        from harness.drive_model import CommandDriveModel, validate_options
+        validate_options(drive_model_deadband_v1)
+        self.drive_model_enabled = drive_model_deadband_v1
+        self.drive_model = CommandDriveModel() if drive_model_deadband_v1 else None
+        self.last_delta = None
+        self.last_command_key = None
         self.start = dict(start)
         self.own = OwnPose(start['pose_m_rad'], start['sigma_xy_m'], start['sigma_yaw_rad'])
         self.robot_id, self.map_sha256, self.amcl_option = robot_id, map_sha256, amcl_option
@@ -71,12 +77,34 @@ class CommandPose:
             raise ValueError('bounded command integration required')
         if abs(float(issued['t'])-self.now) > 1e-6:
             raise ValueError('command integration must follow the actual tick clock')
-        dx, dy, da = command_delta(issued, dt)
+        dx, dy, da = command_delta(issued, dt, drive_model_deadband_v1=self.drive_model_enabled, model=self.drive_model)
+        self.last_delta = (dx, dy, da)
+        self.last_command_key = self.command_key(issued, dt)
         self.own.propagate(dx, dy, da, k_trans=0., k_rot=0.)
         self.distance_since_fix += math.hypot(dx, dy)
         self.turn_since_fix += abs(da)
         self.last_dt = float(dt)
         self.now = float(issued['t'])+dt
+
+    @staticmethod
+    def command_key(issued, dt):
+        return (float(issued['t']), tuple(issued['wheels']), tuple(issued['duration_s']), float(dt))
+
+    def cached_delta(self, issued, dt):
+        """One stateful integration per tick, shared by all carry consumers."""
+        if dt == 0:
+            return (0., 0., 0.)
+        key = self.command_key(issued, dt)
+        if (self.last_command_key is None or key[:3] != self.last_command_key[:3]
+                or abs(key[3]-self.last_command_key[3]) > 1e-8):
+            raise ValueError('carry command delta must be integrated once before consumption')
+        return self.last_delta
+
+    def propagate_point(self, point, issued, dt):
+        dx, dy, yaw = self.cached_delta(issued, dt)
+        x, y, z = point; x -= dx; y -= dy
+        c, s = math.cos(yaw), math.sin(yaw)
+        return [c*x+s*y, -s*x+c*y, z]
 
     def accepted_fix(self, now):
         self.last_fix = float(now)
@@ -145,4 +173,7 @@ class CommandPose:
                 'error_bound_semantics': 'covariance sigma plus correlated command bias; not calibrated sigma',
                 'issued_distance_since_fix_m': self.distance_since_fix,
                 'issued_turn_since_fix_rad': self.turn_since_fix,
-                'uncertainty_calibrated': False, 'top_rgb_control_allowed': False}
+                'uncertainty_calibrated': False, 'top_rgb_control_allowed': False,
+                **({'drive_model_deadband_v1': True, 'drive_model': 'shared v7 relay and confirmed damping',
+                    'budget_epoch_t': self.started if self.last_fix is None else self.last_fix}
+                   if self.drive_model_enabled else {})}

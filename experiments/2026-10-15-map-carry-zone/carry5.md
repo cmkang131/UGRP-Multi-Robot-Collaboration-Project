@@ -18,8 +18,8 @@ PR #505 / `claude/map-carry-zone`, 기준 `870c0c59f3c2eae556abaa809ac1eddf33dce
   기존 진단의 측정이다. 이번 저장 입력 재현은 `.zst` 원장 **537틱**을 읽었다.
   21/30/53.6초 A*는 **정적 벽만: 경로 없음 3/3, RGB 원반만: 경로 있음 3/3**을 재확인했다.
   평가 정답 자세 반사실은 기존 근거 A에만 있으며 이번 제어 재현에는 넣지 않았다.
-- 같은 저장 명령을 carry5 경보 조건으로 재생하면 **10.0초**에 먼저 정지·재관측 요청을 낸다.
-  이때 yaw 예산 16.19°이고 하드 가드는 열려 있다. 이후 원장 재생은 옛 명령의 분석이며
+- 같은 저장 명령을 carry5 경보 조건으로 재생하면 **10.7초**에 먼저 정지·재관측 요청을 낸다.
+  이때 yaw 예산 16.13°이고 하드 가드는 열려 있다. 이후 원장 재생은 옛 명령의 분석이며
   새 정책의 폐루프 결과가 아니다. 미래 RGB나 성공한 fix를 만들어 넣지 않았다.
 
 ## 변경
@@ -72,14 +72,14 @@ PR #505 / `claude/map-carry-zone`, 기준 `870c0c59f3c2eae556abaa809ac1eddf33dce
 
 | v4 시드 | 종류/구역 | v4 첫 종료 | carry5 첫 재확인 | fix 이후 명령 거리/회전 | 계획 뷰 | 운반 시작 예산0 반사실 |
 |---|---|---|---|---|---|---|
-| 93220 | cyan / A | 19.7s / unavailable | approach 11.9s | 1.309m / 0.0° | 3 | 10.3s / 3뷰 |
-| 93221 | red / C | 9.3s / stale | carry 10.7s | 1.286m / 0.0° | 3 | 10.2s / 3뷰 |
-| 93222 | green / C | 11.4s / stale | carry 10.7s | 1.284m / 0.0° | 3 | 10.3s / 3뷰 |
-| 93223 | yellow / A | 19.7s / unavailable | approach 11.9s | 1.309m / 0.0° | 3 | 10.3s / 3뷰 |
-| 93224 | cyan / A | 20.3s / unavailable | approach 13.0s | 1.290m / 0.0° | 3 | 10.3s / 1뷰 |
-| 93225 | red / C | 9.3s / stale | carry 10.7s | 1.286m / 0.0° | 3 | 10.2s / 3뷰 |
-| 93226 | green / C | 11.4s / stale | carry 10.7s | 1.284m / 0.0° | 3 | 10.3s / 3뷰 |
-| 93227 | yellow / A | 19.7s / unavailable | approach 11.9s | 1.309m / 0.0° | 3 | 10.3s / 3뷰 |
+| 93220 | cyan / A | 19.7s / unavailable | approach 14.3s | 1.308m / 0.0° | 3 | 12.4s / 3뷰 |
+| 93221 | red / C | 9.3s / stale | carry 12.9s | 1.290m / 0.0° | 3 | 12.3s / 3뷰 |
+| 93222 | green / C | 11.4s / stale | carry 12.9s | 1.280m / 0.0° | 3 | 12.4s / 3뷰 |
+| 93223 | yellow / A | 19.7s / unavailable | approach 14.3s | 1.308m / 0.0° | 3 | 12.4s / 3뷰 |
+| 93224 | cyan / A | 20.3s / unavailable | approach 15.6s | 1.287m / 0.0° | 3 | 12.4s / 1뷰 |
+| 93225 | red / C | 9.3s / stale | carry 12.9s | 1.290m / 0.0° | 3 | 12.3s / 3뷰 |
+| 93226 | green / C | 11.4s / stale | carry 12.9s | 1.280m / 0.0° | 3 | 12.4s / 3뷰 |
+| 93227 | yellow / A | 19.7s / unavailable | approach 14.3s | 1.308m / 0.0° | 3 | 12.4s / 3뷰 |
 
 carry5 **8/8**은 하드 가드가 열린 상태에서 재확인으로 분기하며 **8/8**에서 3개 관측 방향을
 계획한다. 수용 RGB fix는 **0/8(새 관측 미실행)**이다. fix 미수용 분기는 모두 종료한다.
@@ -89,16 +89,27 @@ v4 시작 즉시 종료 분류는 이번 4/8, 검토자 3/8로 차이가 있으�
 
 ## 검증과 의존성
 
-관련 8개 파일의 최종 pytest 출력은 `offline-tests-carry5.txt`다.
+공용 모델 병합 전 관련 8개 파일 **142 passed** (`offline-tests-carry5.txt`).
+병합 후 모델·carry5·carry4 **50 passed** (`offline-final-carry5.txt`),
+마지막 소비 경로/runner 관련 3개 파일 **70 passed in 53.04s**
+(`offline-integration-carry5.txt`). 서로 겹치는 시험 수를 합산하지 않는다.
 실제 v4 8개 경로, 하드 가드 이전 분기, 지도 기반 시선, 무정보 영상 fix 거부,
 held 상태 내려놓기 후 실제 관측 호출, 수용된 특징 잔차의 epoch 초기화,
 슬롯 재선택·트랙 연결/삭제·단일 pickup 제외·기본 off 원본 바이트를 검사했다.
 runner 시험만 가짜 backend를 사용하며 새 물리·렌더 검증과 구분한다.
 
-공용 `drive_model_deadband_v1`은 **중복 구현하지 않았다**. 최종 커밋 직전 origin fetch 후
-브랜치/토글 커밋 유무는 `carry5-dependency.json`에 기록한다. 아직 토글 커밋이 없으면
-carry5 재현은 기존 M1이며, 계획의 `drive_model_required`는 충족되지 않은 의존성이다.
-새 대기열은 이 경우에도 `ready=false`를 유지한다. 통합·활성화 뒤 실제 오차를 다시 재야 한다.
+공용 `drive_model_deadband_v1`은 **중복 구현하지 않았다**. origin fetch 뒤
+`claude/drive-model-deadband`의 **01703ed2790dadad666e53d1b276b97f2b510bda**를 병합했고
+carry5 계획에서 켰다(`carry5-dependency.json`). add/add 충돌에서 기존 v6 학생 계약과
+pickup_site를 유지하고 공용 모델의 M1/M2 API를 통합했다. 구형 carry 프로필은 계속 off다.
+한 로봇·틱마다 relay를 **한 번만** 적분해 지도 자세, 교사의 상대 기억·후퇴 거리,
+lookback 원위치 기억이 같은 증분을 쓴다. 다른 고정 오차 계수를 겹쳐 적용하지 않는다.
+재집기마다 lookback 인식을 새로 시작하고 grasp별 증거 파일명을 분리했다.
+
+공용 모델은 확인된 감쇠 B=(T0−Tk)/omega0를 사용한다. 원인 미확인 추가 감쇠를
+임의로 보정하지 않아 저장 원본 분석상 M1 과대가 약 10–15% 남는다(공용 모델 README).
+따라서 데드밴드 반영을 완전 보정으로 부르지 않는다. 위 carry5 표는 이 모델 ON으로
+다시 계산한 값이다. 물리·가림·접촉·RGB fix 수용률은 여전히 미검증이다.
 
 새 계획 `diagnostic-plan-v5.json`: **93240–93247**, 4색×2. 로컬 등록부 4개와 기존 대기열
 96개에서 충돌 0건(`carry5-seed-check.json`). 원격 미사용 여부는 접속 금지 때문에 미확인이다.

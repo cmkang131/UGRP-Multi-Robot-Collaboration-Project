@@ -152,7 +152,7 @@ class RGBCommandPose:
 
 
 class CarryToZone:
-    def __init__(self, static, zone, *, start=None, now=0., robot_id='r1', amcl_option='off', recovery_profile='off'):
+    def __init__(self, static, zone, *, start=None, now=0., robot_id='r1', amcl_option='off', recovery_profile='off', drive_model_deadband_v1=False):
         if recovery_profile not in ('off', 'carry5_active_localization_v1'):
             raise ValueError('unknown carry recovery profile')
         self.recovery_profile = recovery_profile
@@ -184,7 +184,8 @@ class CarryToZone:
         if start != expected:
             raise ValueError('carry requires the declared static task start; no spawn-derived prior')
         self.loc = CommandPose(start, now=now, robot_id=robot_id,
-                               map_sha256=self.map_sha256, amcl_option=amcl_option)
+                               map_sha256=self.map_sha256, amcl_option=amcl_option,
+                               drive_model_deadband_v1=drive_model_deadband_v1)
 
     def issue(self, issued, dt):
         self.loc.issue(issued, dt)

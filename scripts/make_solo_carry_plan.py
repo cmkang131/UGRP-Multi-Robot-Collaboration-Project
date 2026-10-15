@@ -73,7 +73,7 @@ def prepare(*, carry5=False):
         if carry5:
             p.update(carry5_profile='carry5_active_localization_v1', batch='solo-carry-zone-v5',
                      drive_model_dependency='claude/drive-model-deadband',
-                     drive_model_required='drive_model_deadband_v1')
+                     drive_model_required='drive_model_deadband_v1', drive_model_deadband_v1=True)
         episodes.append(p)
     return {'schema': 'ugrp.solo_carry_plan.v5' if carry5 else 'ugrp.solo_carry_plan.v4', 'episodes': episodes,
             'distribution': dict(Counter(e['kind'] for e in episodes)),
@@ -127,7 +127,8 @@ def queue(plan, sha, pr, *, plan_path=PLAN):
         result.update(supersedes_blocked_queue='20261015-solo-carry-870c0c59.json',
             carry5_profile='carry5_active_localization_v1', approved=False,
             dependency={'branch': 'claude/drive-model-deadband', 'required_toggle': 'drive_model_deadband_v1',
-                        'ready': False, 'reason': 'toggle commit must be merged and enabled before submission'},
+                        'integrated': True, 'commit': '01703ed2790dadad666e53d1b276b97f2b510bda',
+                        'enabled_in_carry5': True, 'reason': 'merged shared implementation; physical effect unverified'},
             execution_stages=[{'name': 'first_one', 'indices': [0], 'enabled': False},
                               {'name': 'remaining_seven', 'indices': list(range(1,8)), 'enabled': False,
                                'requires': 'first run retrieval, first30 and video review plus explicit approval'}])

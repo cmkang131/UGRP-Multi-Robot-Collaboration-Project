@@ -6,18 +6,37 @@ unanchored command-odometry frame, unless the named comparison is selected.
 import math
 from copy import deepcopy
 from harness.grasp_act_contract import MEMORY_S
+from harness.drive_model import CommandDriveModel, validate_options
 
 
-def command_delta(issued,dt):
+SEARCH17_GAINS = (.75141578, .68525882, .71802760)
+
+
+def command_delta(issued,dt,*,mode='off',drive_model_deadband_v1=False,model=None):
+    if mode not in ('off','search17_fixed_v1'):raise ValueError('unknown search17 odometry')
+    validate_options(drive_model_deadband_v1,search17_odometry=mode)
+    if drive_model_deadband_v1:
+        return (model if model is not None else CommandDriveModel()).delta(issued['wheels'],issued['duration_s'],dt)
+    if model is not None:raise ValueError('drive model state requires drive_model_deadband_v1')
     a,b,c,d=[w*min(dt,t) for w,t in zip(issued['wheels'],issued['duration_s'])]
     gain=.0325*150*2*math.pi/60
-    return gain*(a+b+c+d)/4,gain*(-a+b+c-d)/4,gain*(-a+b-c+d)/(4*.1255)
+    delta=(gain*(a+b+c+d)/4,gain*(-a+b+c-d)/4,gain*(-a+b-c+d)/(4*.1255))
+    # Fixed offline least-squares gains; no runtime measured pose or velocity.
+    # Fit: 19 even-index successful 752b0cbb episodes; held out: other 21.
+    # See search17.md. Coordinator interpretation of fixed calibration is
+    # user-unconfirmed; this option is never enabled by default.
+    return tuple(x*g for x,g in zip(delta,SEARCH17_GAINS)) if mode!='off' else delta
 
 
 class VisibleWorld:
-    def __init__(self,rid,end,*,pose_source='issued'):
+    def __init__(self,rid,end,*,pose_source='issued',odometry='off',drive_model_deadband_v1=False):
         if pose_source not in ('issued','perfect_self_comparison'):raise ValueError('explicit pose source required')
-        self.rid=rid;self.end=end;self.pose_source=pose_source
+        if odometry not in ('off','search17_fixed_v1'):raise ValueError('unknown search17 odometry')
+        validate_options(drive_model_deadband_v1,search17_odometry=odometry)
+        if (odometry!='off' or drive_model_deadband_v1) and pose_source!='issued':raise ValueError('drive correction requires issued pose')
+        self.drive_model_deadband_v1=drive_model_deadband_v1
+        self.drive_model=CommandDriveModel() if drive_model_deadband_v1 else None
+        self.rid=rid;self.end=end;self.pose_source=pose_source;self.odometry=odometry
         self.pose=[0.,0.,0.];self.memory={};self.previous=None;self.previous_t=None
 
     def issue(self,command):self.previous=deepcopy(command)
@@ -28,7 +47,9 @@ class VisibleWorld:
             self.pose=list(comparison_pose)
         elif comparison_pose is not None:raise ValueError('GT self pose forbidden in default profile')
         elif self.previous is not None and self.previous_t is not None:
-            x,y,a=command_delta(self.previous,min(.15,max(0.,now-self.previous_t)))
+            dt=max(0.,now-self.previous_t) if self.drive_model_deadband_v1 else min(.15,max(0.,now-self.previous_t))
+            x,y,a=command_delta(self.previous,dt,mode=self.odometry,
+                                drive_model_deadband_v1=self.drive_model_deadband_v1,model=self.drive_model)
             co,si=math.cos(self.pose[2]),math.sin(self.pose[2])
             self.pose=[self.pose[0]+co*x-si*y,self.pose[1]+si*x+co*y,self.pose[2]+a]
         self.previous_t=now;seen=set()
@@ -56,6 +77,7 @@ class VisibleWorld:
             if m['kind']=='cargo':
                 objects[key]={'xy':m['xyz'][:2],'radius':m['radius'],'top_z_bound_m':m['top_z_bound_m']}
         visibility={'visible_probes':next((m['visible_n'] for m in measurements if m['id']=='band_'+self.end),0),
-                    'objects':[k for k in seen if k in objects],'peers':[k for k in seen if k in robots and k!=self.rid]}
+                    'objects':[k for k in seen if k in objects],'peers':[k for k in seen if k in robots and k!=self.rid],
+                    'observations':deepcopy(self.memory)}
         return {'t':now,'robots':robots,'objects':objects,'walls':walls,'beam':beam,'visibility':{self.rid:visibility},
                 'scope':'visible_only; remembered objects expire at student memory horizon'}

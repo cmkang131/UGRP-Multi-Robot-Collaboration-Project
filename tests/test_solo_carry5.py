@@ -122,6 +122,7 @@ def test_carry5_parking_uses_controller_worst_supported_disc():
 
 def recovery_teacher(*, holding=False):
     m = map_controller(EPISODES[0], True); ops = primitives()
+    ops.delta = m.loc.cached_delta; ops.propagate = m.loc.propagate_point
     look = SoloLookaround(m.static, ops=ops, truth_free_v1=True, command_pose=m.loc, carry5=True)
     t = SoloTeacher('cyan', 'west', ops.folded, profile='solo_visible_only_v1',
         held_object_hidden_v1=True, setdown_lookaround_v1=True, lookaround=look,
@@ -209,3 +210,33 @@ def test_controlled_setdown_is_not_reported_as_uninterrupted_carry():
     result = score.record(False)
     assert result['intermediate_controlled_setdowns'] == 1
     assert not result['uninterrupted_carry'] and not result['physical_success']
+
+
+def test_shared_deadband_delta_integrated_once_for_pose_memory_and_lookback():
+    from harness.drive_model import CommandDriveModel
+    from sim.grasp_act_solo_lookback import LookbackObserver
+    m = map_controller(EPISODES[0], True)
+    cmd = {'t': 0., 'wheels': [.35]*4, 'duration_s': [.1]*4}
+    start = np.array(m.loc.pose)
+    m.issue(cmd, .1)
+    expected = CommandDriveModel().delta(cmd['wheels'], cmd['duration_s'], .1)
+    for _ in range(4):
+        assert m.loc.cached_delta(cmd, .1) == expected
+        assert m.loc.propagate_point((1.,0.,0.), cmd, .1)[0] == pytest.approx(1.-expected[0])
+    np.testing.assert_allclose(np.array(m.loc.pose)-start, expected)
+    observer = LookbackObserver('cyan', propagate=m.loc.propagate_point)
+    observer.previous = cmd; observer.site = (1.,0.,0.); observer.advanced_t = 0.
+    observer._advance(.1)
+    assert observer.site[0] == pytest.approx(1.-expected[0])
+    np.testing.assert_allclose(np.array(m.loc.pose)-start, expected)
+    with pytest.raises(ValueError, match='integrated once'):
+        m.loc.cached_delta({**cmd, 't': 9.}, .1)
+
+
+def test_carry5_runner_rejects_missing_shared_toggle():
+    from scripts.run_solo_grasp_act_teacher import validate_carry
+    plan = json.loads(Path('experiments/2026-10-15-map-carry-zone/diagnostic-plan-v5.json').read_text())['episodes'][0]
+    kwargs = dict(enabled=True, training_rgb=False, truth_free=True, lift='solo_lift_lookback_v1', negative=False)
+    validate_carry(plan, **kwargs)
+    with pytest.raises(ValueError, match='shared drive_model'):
+        validate_carry({**plan, 'drive_model_deadband_v1': False}, **kwargs)

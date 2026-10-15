@@ -26,7 +26,7 @@ def issue(carry, drive):
 def map_controller(episode, enabled):
     static = resolve(episode['map_id'])[0]
     return CarryToZone(static, episode['destination_zone'], start=task_start(static),
-                       recovery_profile=PROFILE if enabled else 'off')
+                       recovery_profile=PROFILE if enabled else 'off', drive_model_deadband_v1=enabled)
 
 
 def replay(episode, *, enabled=True, approach=True):

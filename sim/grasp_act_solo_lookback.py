@@ -172,7 +172,8 @@ def colour_evidence(frame, kind, roi, ring):
 
 
 class LookbackObserver:
-    def __init__(self, kind):
+    def __init__(self, kind, *, propagate=None):
+        self.propagate = propagate
         self.kind = kind
         self.before = self.before_command = self.grasp = None
         self.samples = {}
@@ -210,7 +211,7 @@ class LookbackObserver:
             dt = now-self.advanced_t
             if dt > .15+1e-8:
                 self.invalid = 'command_history_gap'
-            self.site = tuple(propagate_owned(self.site, self.previous, dt))
+            self.site = tuple((self.propagate or propagate_owned)(self.site, self.previous, dt))
             self.advanced_t = now
 
     def observe(self, frame, command, *, complete, save):

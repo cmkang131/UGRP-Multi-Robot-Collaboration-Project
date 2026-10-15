@@ -1,0 +1,137 @@
+{
+  "schema": "ugrp.carry5.offline.v1",
+  "source_commit": "commit containing this summary; exact final SHA pinned in new vm3 queue",
+  "base_sha": "870c0c59f3c2eae556abaa809ac1eddf33dce5ca",
+  "dependency": {
+    "checked_at": "2026-10-15T04:22:10.700774+00:00",
+    "fetch_origin_succeeded": true,
+    "ref": "origin/claude/drive-model-deadband",
+    "commit": "01703ed2790dadad666e53d1b276b97f2b510bda",
+    "toggle": "drive_model_deadband_v1",
+    "merged_parent": "01703ed2790dadad666e53d1b276b97f2b510bda",
+    "enabled_in_carry5": true,
+    "previous_profiles_default": "off",
+    "implementation": "harness/drive_model.py from dependency; not duplicated",
+    "integration": "single CommandPose.issue call per robot tick; cached delta used by teacher and lookback",
+    "physical_effect_verified": false,
+    "residual": "additional damping unexplained; shared model does not fit it away"
+  },
+  "profile": "carry5_active_localization_v1",
+  "default": "off",
+  "research_result": false,
+  "physics_runs": 0,
+  "render_runs": 0,
+  "remote_connections": 0,
+  "model_calls": 0,
+  "physical_effect_verified": false,
+  "new_runs": [
+    {
+      "seed": 93240,
+      "status": "NOT_SUBMITTED",
+      "enabled": false
+    },
+    {
+      "seed": 93241,
+      "status": "NOT_SUBMITTED",
+      "enabled": false
+    },
+    {
+      "seed": 93242,
+      "status": "NOT_SUBMITTED",
+      "enabled": false
+    },
+    {
+      "seed": 93243,
+      "status": "NOT_SUBMITTED",
+      "enabled": false
+    },
+    {
+      "seed": 93244,
+      "status": "NOT_SUBMITTED",
+      "enabled": false
+    },
+    {
+      "seed": 93245,
+      "status": "NOT_SUBMITTED",
+      "enabled": false
+    },
+    {
+      "seed": 93246,
+      "status": "NOT_SUBMITTED",
+      "enabled": false
+    },
+    {
+      "seed": 93247,
+      "status": "NOT_SUBMITTED",
+      "enabled": false
+    }
+  ],
+  "reference_93220": {
+    "status": "SUPERVISOR_STOP",
+    "remaining_old_runs_blocked": 7,
+    "not_pooled": true,
+    "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93220-870c0c59/raw/teacher-commands.jsonl.zst",
+    "sha256": "ac1d328603d3d4f01cc3a34fcba69162b7c1db5734210ea93d9eff36ad960814"
+  },
+  "v4_command_replay": {
+    "cases": 8,
+    "pre_hard_guard_reobserve": 8,
+    "new_camera_fixes_measured": 0,
+    "complete_transport_measured": 0
+  },
+  "tests": {
+    "pre_dependency": 142,
+    "dependency_core": 50,
+    "final_consumer_and_runner": 70,
+    "counts_overlap": true
+  },
+  "queue": {
+    "path_template": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-solo-carry-<SHA8>.json",
+    "approved": false,
+    "ready": false,
+    "runs_enabled": false,
+    "max_parallel": 1,
+    "stages": [
+      1,
+      7
+    ]
+  },
+  "artifacts": [
+    {
+      "path": "experiments/2026-10-15-map-carry-zone/carry5.md",
+      "sha256": "c08e447f65a7e4cfb1c5d1d138c080aafd2116689c8a7d87a641ca7aad104af1"
+    },
+    {
+      "path": "experiments/2026-10-15-map-carry-zone/carry5-replay.json",
+      "sha256": "30c830c7a03c3757e32be59fdda66b32bfd6a36de8e40088d4b9ba67c5d4712f"
+    },
+    {
+      "path": "experiments/2026-10-15-map-carry-zone/carry5-frame-review.json",
+      "sha256": "af031cbb03c5db37ccc4399d2e81ef244ef2f759a11e41f0c15c636f66f85f87"
+    },
+    {
+      "path": "experiments/2026-10-15-map-carry-zone/carry5-seed-check.json",
+      "sha256": "575edfd97f97f2a835b80af9789d50401cbf6e9a3a06e3bd07f085806c9aeddf"
+    },
+    {
+      "path": "experiments/2026-10-15-map-carry-zone/carry5-dependency.json",
+      "sha256": "7812a19d0df677dd8e7edb16356dc064c1140f115ccd0e59089639858a7ecbdf"
+    },
+    {
+      "path": "experiments/2026-10-15-map-carry-zone/diagnostic-plan-v5.json",
+      "sha256": "b7979254aedfd62e2e3f6d79a783fe6fc534356b577cef3858a18879ee23262c"
+    },
+    {
+      "path": "experiments/2026-10-15-map-carry-zone/offline-tests-carry5.txt",
+      "sha256": "fb7df3f800feddcf86324e07af1546f32bb5a087e0ab5454f43a10976306844d"
+    },
+    {
+      "path": "experiments/2026-10-15-map-carry-zone/offline-final-carry5.txt",
+      "sha256": "00f2cff430516f0de9166a1a6827db9ca42f034d72b4bbcd9a73f9334c281bee"
+    },
+    {
+      "path": "experiments/2026-10-15-map-carry-zone/offline-integration-carry5.txt",
+      "sha256": "86b53d0b976be8426a5765ca2d87004d2d70217df564efdd54437d0328cff65c"
+    }
+  ]
+}

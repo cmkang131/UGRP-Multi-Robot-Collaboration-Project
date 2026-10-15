@@ -162,7 +162,11 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
                 raise ValueError('carry static map/scene hash mismatch')
             carry = CarryToZone(static, plan['destination_zone'], start=plan['task_start'],
                                 now=float(data.time), robot_id=rid,
-                                recovery_profile=plan.get('carry5_profile', 'off'))
+                                recovery_profile=plan.get('carry5_profile', 'off'),
+                                drive_model_deadband_v1=plan.get('drive_model_deadband_v1', False))
+            if carry.loc.drive_model_enabled:
+                ops.delta = carry.loc.cached_delta
+                ops.propagate = carry.loc.propagate_point
             score = ZoneScore(carry.region, active_recovery=carry.active_recovery)
             write(out/'carry-static-map.json', static)
         # Legacy look-around used live truth + frozen error as a map estimate.
@@ -233,13 +237,17 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
                               solo_carry_to_zone_v1=solo_carry_to_zone_v1, carry=carry)
         if rgb_lift_mode == 'solo_lift_lookback_v1':
             from sim.grasp_act_solo_lookback import LookbackObserver
-            lift_observer = LookbackObserver(plan['kind'])
+            lift_observer = LookbackObserver(plan['kind'], propagate=ops.propagate) if carry is not None and carry.active_recovery else LookbackObserver(plan['kind'])
         else:
             lift_observer = SoloLiftObserver(plan['kind'], mode=rgb_lift_mode) if rgb_lift_mode != 'off' else None
         if lift_observer is not None:
             (out/'lift-rgb').mkdir()
 
+        lift_reference_index = 0
+
         def save_lift(tag, frame, now):
+            if carry is not None and carry.active_recovery:
+                tag = f'grasp-{lift_reference_index:02d}-'+tag
             path = out/'lift-rgb'/f'{tag}.png'
             if not cv2.imwrite(str(path), frame):
                 raise RuntimeError('failed to save own lift RGB evidence')
@@ -379,6 +387,8 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
                 look_eval['views'].append(row)
                 ev.write(json.dumps({'kind': 'lookaround_view', **row})+'\n')
                 look_state['last_view_n'] = len(views)
+            if carry is not None and carry.active_recovery and relook.armed:
+                look_eval.setdefault('armed_t', relook.events[0]['t'] if relook.events else now)
             if complete and relook.loc is not None and 'after' not in look_eval:
                 look_eval['after'] = look_truth(); look_eval['sim_s'] = now-look_eval['armed_t']
             apply(port, value, now, previous)
@@ -387,6 +397,9 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
                     # Before hover/descent/close: the last visible pickup frame.
                     # Its camera pose is the PREVIOUS issued command, not the
                     # newly queued arm target and never teacher.grasp_xyz.
+                    if carry is not None and carry.active_recovery:
+                        lift_reference_index += 1
+                        lift_observer = LookbackObserver(plan['kind'], propagate=ops.propagate)
                     lift_observer.start(bgr, {**previous, 't': now}, save_lift)
                 lift_observer.issue(value, teacher.phase)
             elif lift_observer is not None and phase_before == 'close' and teacher.phase == 'lift':
@@ -558,6 +571,8 @@ def validate_carry(plan, *, enabled, training_rgb, truth_free, lift, negative):
         raise ValueError('carry3 requires explicit static pickup search profile')
     if plan.get('carry5_profile', 'off') not in ('off', 'carry5_active_localization_v1'):
         raise ValueError('unknown carry5 profile')
+    if plan.get('carry5_profile') == 'carry5_active_localization_v1' and plan.get('drive_model_deadband_v1') is not True:
+        raise ValueError('carry5 requires the merged shared drive_model_deadband_v1')
     scenario = load_scenario(plan['scenario_id'])
     source = ROOT/'configs/zone_study_scenarios_v6'/f"{plan['scenario_id']}.json"
     if hashlib.sha256(source.read_bytes()).hexdigest() != plan['scenario_source_sha256']:

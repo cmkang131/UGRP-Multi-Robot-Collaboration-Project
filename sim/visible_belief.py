@@ -12,6 +12,7 @@ for currently visible targets (evaluation owner does the gating).
 """
 from __future__ import annotations
 import math
+from harness.drive_model import CommandDriveModel, validate_options
 
 # Provisional: planned student command history 16 x 0.1 s (Codex contract v5
 # plan, PR #484 comment 2026-10-14). Re-bind when v5 lands.
@@ -31,8 +32,13 @@ ODOMETRY_PROFILES = {
 }
 
 
-def rates(profile='off'):
+def rates(profile='off', *, drive_model_deadband_v1=False):
     """(axial m/s, lateral m/s, yaw rad/s) at wheel level 0.35 for an odometry profile."""
+    validate_options(drive_model_deadband_v1,profile=profile)
+    if drive_model_deadband_v1:
+        axial=CommandDriveModel().delta([.35]*4,[1.]*4,1.)[0]
+        yaw=CommandDriveModel().delta([-.35,.35,-.35,.35],[1.]*4,1.)[2]
+        return axial,axial,yaw
     return ODOMETRY_PROFILES[profile]
 
 
@@ -42,8 +48,13 @@ def wheel_to_body(wheels):
     return (w0+w1+w2+w3)/4, (-w0+w1+w2-w3)/4, (-w0+w1-w2+w3)/4
 
 
-def odometry(wheels, seconds, profile='off'):
+def odometry(wheels, seconds, profile='off', *, drive_model_deadband_v1=False, model=None, durations_s=None):
     """Body-frame displacement (dx, dy, dyaw) from issued wheel levels only."""
+    validate_options(drive_model_deadband_v1,profile=profile)
+    if drive_model_deadband_v1:
+        return (model if model is not None else CommandDriveModel()).delta(
+            wheels,[seconds]*4 if durations_s is None else durations_s,seconds)
+    if model is not None or durations_s is not None:raise ValueError('drive model state/durations require drive_model_deadband_v1')
     f, l, t = wheel_to_body(wheels)
     k = 1/.35; ax, lat, yaw = rates(profile)
     return (f*k*ax*seconds, l*k*lat*seconds, t*k*yaw*seconds)
