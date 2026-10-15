@@ -70,3 +70,15 @@ L4 합계 최대 8시간(교사/기록/학습/평가의 GPU 점유 모두 포함
 03:22 KST: 원격 `claude/act16w` push 확인. 기반 `claude/warp-act`가 아직
 원격에 없어 해당 base의 draft PR 생성은 실패했다(Branch not found).
 warp1이 기반 브랜치를 게시한 뒤 다시 만든다. 다른 작업의 브랜치는 push하지 않는다.
+
+
+03:49 KST, 조정자의 03:45 장면 결정을 확인했다. ACT는
+`walls_floor_contrast_v5_indigo110_s80` + v1 바닥 + `no_mip_v1`이다.
+[결정 원문과 SHA](scene-decision.json). scenetex5의 NOT_READY는 경계 알고리즘
+포함 관문의 판정이며, 이후 조정자가 선택한 **장면 결정**과 구분한다.
+ACT16w의 MJWarp 장면 바인딩·RGB·교사/학생 성공은 아직 측정하지 않았다.
+
+DAgger 표적은 학생이 실제 방문한 상태의 교사 첫 행동이다. 학생 경로의 다음
+시점 교사 질의를 현재 상태의 교사 미래 chunk로 이어 붙이지 않는다. 별도 교사
+branch rollout이 없으면 h0만 유효하고 미래 7개는 padding 처리한다. 학생의
+RGB/발행 이력은 원래 그대로 보존하며 교사의 제안으로 교체하지 않는다.

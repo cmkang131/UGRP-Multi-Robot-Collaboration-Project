@@ -20,3 +20,8 @@ P1: `scripts/warp_act_backend.py:120-134`에서 최초 `put_data(m,d,nworld=N)`
 
 재현 검토: `git show e9c97e2eb6ea994e37cf82d0ebe391c517f81be7:scripts/warp_act_backend.py`.
 수정은 warp1의 소유 checkout에 하지 않았다. 시작 조건 대기를 유지한다.
+
+03:50 KST 후속 정적 확인: warp1 `2fd1490a6f00459a0e32c4e89adc8421a8dba1a4`에
+`copy_initial_state(contexts)`를 두 번째 put_data 뒤에도 호출하는 수정이 있다.
+qpos/qvel뿐 아니라 integration 입력도 world별로 복사한다. 실제 N16 상태/RGB
+보존 결과는 아직 읽지 않았으므로 런타임 해소로 보고하지 않는다.
