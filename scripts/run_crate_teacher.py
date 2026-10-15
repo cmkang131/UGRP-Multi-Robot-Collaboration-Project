@@ -36,13 +36,13 @@ LIFT_FORCE_N = .5
 
 
 def make_grasp_teacher(rid, end, pwm, *, teacher_stability='off', teacher_search='off', approach_goal_set='off', crate_lift_pose='off', crate_approach_recovery='off',
-                       crate_wall_footprint='off', crate_stances='off', crate_pulse_safety='off', crate_candidate_recovery='off', crate_alignment='off', crate_motion='off'):
+                       crate_wall_footprint='off', crate_stances='off', crate_pulse_safety='off', crate_candidate_recovery='off', crate_alignment='off', crate_motion='off', crate18='off'):
     from sim.crate_grasp_teacher import CrateGraspTeacher
     return CrateGraspTeacher(rid, end, pwm, bounds=(-20, 20, -20, 20), profile=CRATE,
                              teacher_stability=teacher_stability, teacher_search=teacher_search,
                              approach_goal_set=approach_goal_set, crate_lift_pose=crate_lift_pose,
                              crate_approach_recovery=crate_approach_recovery,crate_wall_footprint=crate_wall_footprint,
-                             crate_stances=crate_stances,crate_pulse_safety=crate_pulse_safety,crate_candidate_recovery=crate_candidate_recovery,crate_alignment=crate_alignment,crate_motion=crate_motion)
+                             crate_stances=crate_stances,crate_pulse_safety=crate_pulse_safety,crate_candidate_recovery=crate_candidate_recovery,crate_alignment=crate_alignment,crate_motion=crate_motion,crate18=crate18)
 
 
 def run_meta(plan, sha, pr, crate_lift_pose, crate_approach_recovery='off'):
@@ -157,7 +157,7 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
         execution_host=None, pr=None, crate_scene='catalogue_v1', rgb_lift='off',
         teacher_stability='off', teacher_search='off', approach_goal_set='off', crate_lift_pose='off', crate_approach_recovery='off',
         crate_profile='off', static_walls='off', crate_wall_footprint='off', crate_stances='off', crate_pulse_safety='off',
-        assignment='off', release_channel='legacy', recording_mode='success_measurement', crate_candidate_recovery='off', crate_alignment='off', crate_motion='off'):
+        assignment='off', release_channel='legacy', recording_mode='success_measurement', crate_candidate_recovery='off', crate_alignment='off', crate_motion='off', crate18='off'):
     from sim.crate_observation_v12 import validate_recording, fixed_role, own_lug, tagged_world, OwnLookaround
     from harness.grasp_act_input_audit import sourced
     if crate_profile in PROFILES:
@@ -190,6 +190,7 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
     modes['crate_candidate_recovery'] = crate_candidate_recovery
     modes['crate_alignment'] = crate_alignment
     modes['crate_motion'] = crate_motion
+    if crate18 != 'off': modes['crate18'] = crate18
     modes['inspection_return_mode'] = 'crate_inspection_return_v1' if crate_profile in (CRATE13, CRATE14, CRATE15, CRATE16, CRATE17, CRATE17_NO_CLEARANCE) else 'off'
     modes['value_provenance']='value_sources_v1' if strict else 'off'
     from sim.crate_approach_recovery import MODES as CRATE_APPROACH_MODES
@@ -206,7 +207,7 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
                        teacher_stability=teacher_stability, teacher_search=teacher_search,
                        approach_goal_set=approach_goal_set, crate_lift_pose=crate_lift_pose,
                        crate_approach_recovery=crate_approach_recovery,crate_wall_footprint=crate_wall_footprint,
-                       crate_stances=crate_stances,crate_pulse_safety=crate_pulse_safety,crate_candidate_recovery=crate_candidate_recovery,crate_alignment=crate_alignment,crate_motion=crate_motion)
+                       crate_stances=crate_stances,crate_pulse_safety=crate_pulse_safety,crate_candidate_recovery=crate_candidate_recovery,crate_alignment=crate_alignment,crate_motion=crate_motion,crate18=crate18)
     if crate_lift_pose != 'off' and (crate_scene != 'crate_mass_025_v1' or reach_mode != 'pad_window_v2'):
         raise ValueError('crate lift planning requires crate_mass_025_v1 and pad_window_v2')
     if lookaround == 'setdown_lookaround_v1' and own_pose_source == 'commands':
@@ -349,7 +350,7 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
             teachers[rid] = make_grasp_teacher(rid, end, pwm, teacher_stability=teacher_stability,
                                                teacher_search=teacher_search, approach_goal_set=approach_goal_set,
                                                crate_lift_pose=crate_lift_pose, crate_approach_recovery=crate_approach_recovery,
-                                               crate_wall_footprint=crate_wall_footprint,crate_stances=crate_stances,crate_pulse_safety=crate_pulse_safety,crate_candidate_recovery=crate_candidate_recovery,crate_alignment=crate_alignment,crate_motion=crate_motion)
+                                               crate_wall_footprint=crate_wall_footprint,crate_stances=crate_stances,crate_pulse_safety=crate_pulse_safety,crate_candidate_recovery=crate_candidate_recovery,crate_alignment=crate_alignment,crate_motion=crate_motion,crate18=crate18)
             models[rid] = VisibleWorld(rid, end, pose_source='issued', profile=CRATE,static_walls=static_walls)
             clocks[rid] = v5.IssuedClock()
         i = 0
@@ -455,6 +456,7 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
                 labels[rid].write(json.dumps({
                     't': now, 'sample_id': f"{plan['episode_id']}:{i}:{rid}", 'object_kind': 'heavy_crate',
                     'role': CRATE.role_of(t.end), 'skill': skill, 'done': done, 'teacher_phase': t.phase,
+                    **({'crate18_states': t.settle18_states} if crate18 != 'off' else {}),
                     'clean_teacher_command': clean, 'applied_command': applied, 'handoff': t.handoff,
                     'teacher_compute_s': teacher_compute_s, 'teacher_compute_total_s': timings['teacher'],
                     'teacher_prepare_s': teacher_prepare_s[rid], 'teacher_step_s': teacher_step_s,
@@ -1066,6 +1068,7 @@ def main():
     p.add_argument('--approach-goal-set', choices=('off', 'approach_goal_set_v1'), default='off')
     from sim.crate_approach_recovery import MODES as CRATE_APPROACH_MODES
     p.add_argument('--crate-approach-recovery', choices=CRATE_APPROACH_MODES, default='off')
+    p.add_argument('--crate18', choices=('off','crate18_v1'), default='off')
     p.add_argument('--crate-profile',choices=('off',*PROFILES),default='off')
     p.add_argument('--static-walls',choices=('off','persistent_walls_v1'),default='off')
     p.add_argument('--crate-wall-footprint',choices=('off','crate_footprint_v1'),default='off')
@@ -1091,7 +1094,7 @@ def main():
                          crate_approach_recovery=a.crate_approach_recovery,crate_profile=a.crate_profile,
                          static_walls=a.static_walls,crate_wall_footprint=a.crate_wall_footprint,crate_stances=a.crate_stances,
                          crate_pulse_safety=a.crate_pulse_safety,assignment=a.assignment,release_channel=a.release_channel,
-                         recording_mode=a.recording_mode),
+                         recording_mode=a.recording_mode,crate18=a.crate18),
                      ensure_ascii=False, default=str))
 
 

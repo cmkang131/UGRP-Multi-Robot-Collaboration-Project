@@ -25,7 +25,7 @@ LIFT_WAIT_LIMIT_S = 20.
 class CrateGraspTeacher(VisibleOnlyGraspTeacher):
     def __init__(self, *args, profile=CRATE, crate_lift_pose='off', crate_approach_recovery='off',
                  crate_wall_footprint='off', crate_stances='off', crate_pulse_safety='off', crate_candidate_recovery='off',
-                 crate_alignment='off', crate_motion='off', **kwargs):
+                 crate_alignment='off', crate_motion='off', crate18='off', **kwargs):
         from sim.crate_alignment_v14 import MODE as ALIGNMENT
         if crate_alignment not in ('off', ALIGNMENT):
             raise ValueError('unknown crate alignment')
@@ -36,6 +36,13 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
         from sim.crate_motion_v17 import MODES as MOTION17
         if crate_motion not in ('off', MOTION, MOTION16, *MOTION17):raise ValueError('unknown crate motion')
         if crate_motion != 'off' and crate_alignment == 'off':raise ValueError('crate15 requires crate14 alignment')
+        from sim.crate_settle_v18 import MODE as SETTLE18
+        if crate18 not in ('off', SETTLE18): raise ValueError('unknown crate18 mode')
+        if crate18 != 'off' and crate_motion not in MOTION17: raise ValueError('crate18 requires crate17 motion')
+        self.crate18 = crate18
+        self.settle18_states = None
+        self.settle18_proposal = None
+        self.settle18_history = []
         self.crate_motion = crate_motion
         self.navigation_cache = {}
         self.navigation_t = None
@@ -138,7 +145,18 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
             self.approach_distances = DISTANCES_M
             self.approach_grasp_filter = lambda world, pose: stance_valid(world, self.rid, self.end, pose)
 
+    def _reset_alignment(self):
+        super()._reset_alignment()
+        if getattr(self, 'crate18', 'off') != 'off' and self.stable_since is None:
+            from sim.crate_settle_v18 import settlers
+            self.settlers18 = settlers()
+            self.settle18_states = None
+            self.settle18_proposal = None
+
     def _alignment_bands(self):
+        if self.crate18 != 'off':
+            from sim.crate_settle_v18 import INNER18
+            return INNER18, tuple(1.25*b for b in INNER18)
         if self.crate_alignment == 'off':
             return super()._alignment_bands()
         from sim.crate_alignment_v14 import INNER, OUTER
@@ -148,10 +166,21 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
         if self.crate_alignment == 'off':
             return super()._alignment_settled(truth, errors)
         self.crate15_errors = tuple(errors)
+        if self.crate18 != 'off':
+            from sim.crate_settle_v18 import DELTA
+            self.settle18_states = [p.observe(e,d) for p,e,d in zip(self.settlers18,errors,DELTA)]
+            return all(s['settled'] for s in self.settle18_states) and self.ready_geometry(truth)
         inner, _ = self._alignment_bands()
         return self.ready_geometry(truth) and all(abs(e) <= b for e, b in zip(errors, inner))
 
     def _resume_alignment(self, errors):
+        if self.crate18 != 'off' and self.settle18_states is not None:
+            self.align_active = [not s['settled'] for s in self.settle18_states]
+            if not any(self.align_active):
+                # Quantum acceptance never overrides the exact descent/lift check.
+                axis = max(range(3), key=lambda i: abs(errors[i])/self._alignment_bands()[0][i])
+                self.align_active[axis] = abs(errors[axis]) > 1e-9
+            return
         if self.crate_alignment != 'off' and not any(self.align_active):
             inner, _ = self._alignment_bands()
             axis = max(range(3), key=lambda i: abs(errors[i])/inner[i])
@@ -164,6 +193,14 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
         return super()._wait_ready(truth, now)
 
     def _continuous(self, now, forward, left, turn):
+        if self.crate18 != 'off' and self.phase in ('align', 'ready') and self.crate15_errors is not None:
+            from sim.crate_settle_v18 import pulse
+            axis = next((i for i,v in enumerate((forward,left,turn)) if v), None)
+            if axis is None: return self._hold(now)
+            error = self.crate15_errors[axis]
+            value = pulse(self._hold(now), axis, error)
+            self.settle18_proposal = (axis, error, value)
+            return value
         if self.crate_motion != 'off' and self.phase in ('align', 'ready') and self.crate15_errors is not None:
             from sim.crate_motion_v15 import alignment_pulse
             return alignment_pulse(self._hold(now), (forward,left,turn), self.crate15_errors)
@@ -182,6 +219,9 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
         return value
 
     def _observe_stable(self, world, now):
+        if self.crate18 != 'off' and (world['beam'] is None or world['visibility'][self.rid]['visible_probes'] < 5):
+            from sim.crate_settle_v18 import settlers
+            self.settlers18 = settlers(); self.settle18_states = None; self.settle18_proposal = None
         value = super()._observe_stable(world, now)
         if self.crate_motion == 'off' or value is None or self.phase != 'search' or not self.folded_ready:
             return value
@@ -597,6 +637,10 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
             return True
         if self.crate_alignment != 'off':
             from sim.crate_alignment_v14 import grasp_valid, OUTER
+            if self.crate18 != 'off':
+                from sim.crate_settle_v18 import INNER18
+                OUTER = tuple(1.25*(s['acceptance_band'] if s and s['acceptance_band'] is not None else b)
+                              for s,b in zip(self.settle18_states or [None]*3, INNER18))
             from sim.grasp_act_teacher import wrap
             pose, g, heading, _ = self._geometry(truth)
             x, y = local(pose, g)
@@ -695,8 +739,19 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
             self.navigation_t = None; self.navigation_cache = {}
         if self.local_seen is not None and self.last_command is not None and self.last_tick is not None:
             self.local_seen = propagate_owned(self.local_seen, self.last_command, min(.1, now-self.last_tick))
+        self.settle18_proposal = None
         value, done = self._step(truth, now, permit_pick=permit_pick, permit_lift=permit_lift)
         value = self._check_navigation_pulse(truth, value, now)
+        if self.crate18 != 'off' and self.settle18_proposal is not None:
+            axis, error, proposed = self.settle18_proposal
+            accepted = value == proposed and any(value['wheels'])
+            if accepted:
+                self.settlers18[axis].issued(error)
+            else:
+                # Navigation replacements are not calibrated alignment pulses.
+                value = self._hold(now)
+            self.settle18_history.append(dict(t=now, axis=axis, error=error, issued=accepted,
+                duration_s=value['duration_s'], states=self.settle18_states))
         if self.phase in ('align', 'ready', 'pick', 'closed', 'lift', 'complete'):
             self.progress.reset()
         self.last_command = deepcopy(value)
@@ -753,4 +808,6 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
                 'crate_lift_pose': self.crate_lift_pose, 'lift_pose_selection': self.lift_selection,
                 **({'excluded_stalled_stances': sorted(self.approach_excluded)}
                    if self.crate_lift_pose in CARTESIAN_MODES else {}),
+                **({'crate18': self.crate18, 'crate18_alignment': self.settle18_history,
+                    'crate18_states': self.settle18_states} if self.crate18 != 'off' else {}),
                 'done_semantics': 'own issued close+lift sequence complete after the lift barrier; physical evaluation separate'}
