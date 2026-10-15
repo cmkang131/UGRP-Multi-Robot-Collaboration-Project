@@ -1,8 +1,12 @@
-"""Committed-source Oracle/Azure runner, with finite Azure lifecycle by default.
+"""Committed-source Oracle/Azure/GCP runner, with finite Azure/GCP lifecycle by default.
 
 Usage: remote_run.py [--host azure] WORKTREE NAME -- COMMAND [ARGS...]
 The historical ORACLE_HOST default (oracle) is preserved. Azure waits, fetches
 lite evidence, waits for verified ARM archival, then deallocates when no jobs remain.
+--host gcp1 (opt-in, GCP project ugrp-act-train-1014): starts the VM with gcloud, runs, waits,
+verifies the VM-side SHA256SUMS, fetches lite evidence to outputs/gcp1-runs, records
+outputs/gcp1-lifecycle/<run>.json and stops the VM (disk kept). Raw stays on the persistent
+VM disk; there is no ARM archival for GCP yet. Results from different CPUs are never pooled.
 """
 import argparse
 import json
@@ -19,6 +23,7 @@ if __package__ in (None, ''):
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from scripts.azure_api import AZURE_HOSTS
+from scripts.gcpctl import GCP_HOSTS
 
 PRIMARY = Path('/Users/changmin/projects/ugrp')
 
@@ -29,7 +34,7 @@ def ssh(host, command, **kwargs):
 
 
 def fetch(host, name):
-    target = PRIMARY / 'outputs' / ((host + '-runs') if host in AZURE_HOSTS else 'oracle-runs') / name
+    target = PRIMARY / 'outputs' / ((host + '-runs') if host in AZURE_HOSTS or host in GCP_HOSTS else 'oracle-runs') / name
     target.mkdir(parents=True, exist_ok=True)
     subprocess.run(['rsync', '-aL', '--exclude=*.png', '--exclude=*.jpg', '--exclude=*.jpeg',
         '--exclude=*.mp4', '--exclude=*.gif', '--exclude=*.npz', '--exclude=*.npy',
@@ -51,6 +56,14 @@ def fetch_lifecycle(host='azure'):
 
 
 def finish_lease(host, name, lease, archived, detached=False):
+    if host in GCP_HOSTS:
+        # archived == SHA256SUMS verified on the VM and lite evidence fetched. Otherwise the lease
+        # stays, so gcpctl stop refuses; the VM idle guard and 8 h cap remain the backstops.
+        if archived:
+            ssh(host, f'rm -f {lease}')
+        if not detached:
+            subprocess.run([sys.executable, str(Path(__file__).with_name('gcpctl.py')), 'stop', host])  # 75 = deferred, not an error
+        return
     if host not in AZURE_HOSTS or archived:
         ssh(host, f'rm -f {lease}')
     elif not detached:
@@ -67,6 +80,46 @@ def finish_lease(host, name, lease, archived, detached=False):
     if host in AZURE_HOSTS and not detached:
         # azctl also refuses EXIT-only evidence and failed/stale archival leases.
         subprocess.run([sys.executable, str(Path(__file__).with_name('azctl.py')), 'stop', '--host', host], check=True)
+
+
+def wait_gcp(host, name, root, lease, sha, started_unix):
+    """GCP: wait for EXIT and the finisher, verify SHA256SUMS on the VM, fetch lite, record lifecycle.
+
+    Returns (verified, exit_state). Raw stays on the VM's persistent disk (no ARM archive).
+    """
+    from scripts.azure_shutdown import write_json
+    deadline = time.monotonic() + 7.5 * 3600
+    state = ''
+    while time.monotonic() < deadline:
+        state = ssh(host, f'touch {lease}; test ! -f {root}/EXIT || cat {root}/EXIT', capture_output=True, text=True).stdout.strip()
+        if state:
+            break
+        time.sleep(30)
+    else:
+        raise RuntimeError('Runner deadline exceeded; eight-hour VM guard remains active')
+    # EXIT is written before SHA256SUMS; wait until the wrapper itself has finished.
+    for _ in range(120):
+        done = subprocess.run(['ssh', '-o', 'BatchMode=yes', host, f'! pgrep -f "{name}/[r]un_wrapper\\.sh" >/dev/null'])
+        if done.returncode == 0:
+            break
+        time.sleep(5)
+    verified = subprocess.run(['ssh', '-o', 'BatchMode=yes', host,
+                               f'cd {root} && test -s SHA256SUMS && sha256sum -c --quiet SHA256SUMS']).returncode == 0
+    fetched = fetch(host, name)
+    from scripts.gcpctl import status
+    vm_state, _, machine = status(host)
+    manifest_sha = ssh(host, f'sha256sum {root}/SHA256SUMS | cut -d " " -f1', capture_output=True, text=True).stdout.strip()
+    loadavg = ssh(host, f'cat {root}/LOADAVG', capture_output=True, text=True).stdout.strip()
+    target = PRIMARY / 'outputs' / (host + '-lifecycle')
+    target.mkdir(parents=True, exist_ok=True)
+    write_json(target / (name + '.json'), {
+        'run': name, 'host': host, 'machine_type': machine, 'vm_state_at_finish': vm_state, 'source_sha': sha,
+        'exit': state, 'sha256sums_verified_on_vm': verified, 'sha256sums_file_sha256': manifest_sha,
+        'loadavg_at_start': loadavg, 'started_unix': started_unix, 'finished_unix': time.time(),
+        'raw': f'{host}:~/ugrp-sim/runs/{name}', 'fetched_lite': fetched,
+        'archive': 'none; raw stays on the GCP persistent disk (no ARM archive for GCP yet)'})
+    print('Exit:', state, 'verified:', verified, 'fetch-lite:', fetched, flush=True)
+    return verified, state
 
 
 def ship(host, worktree, sha):
@@ -134,6 +187,17 @@ def main():
             time.sleep(5)
         else:
             raise RuntimeError('Azure VM started but SSH did not become ready; automatic guards remain active')
+    if host in GCP_HOSTS:
+        subprocess.run([sys.executable, str(Path(__file__).with_name('gcpctl.py')), 'start', host], check=True)
+        for attempt in range(24):
+            ready = subprocess.run(['ssh', '-o', 'BatchMode=yes', '-o', 'ConnectTimeout=10',
+                host, 'true'], capture_output=True)
+            if ready.returncode == 0:
+                break
+            time.sleep(5)
+        else:
+            raise RuntimeError('GCP VM started but SSH did not become ready; the VM idle guard and 8 h cap remain active')
+    started_unix = time.time()
     root = f'$HOME/ugrp-sim/runs/{name}'
     lease = f'$HOME/ugrp-sim/leases/{name}'
     if host in AZURE_HOSTS:
@@ -145,6 +209,8 @@ def main():
             ('x86', host, '~/ugrp-sim/runs', args.per_run_mb),
             ('arm', 'oracle-codex', '~/ugrp-archive/runs', args.per_run_mb),
             ('mac', None, str(PRIMARY), min(args.per_run_mb, 16))):
+            if host in GCP_HOSTS and budget_host == 'arm':
+                continue  # GCP raw stays on the VM's persistent disk; no ARM archive
             call = [sys.executable, str(Path(__file__).with_name('storage_budget.py')), '--host', budget_host,
                 '--path', path, '--runs', '1', '--per-run-mb', str(estimate)]
             if budget_ssh:
@@ -162,7 +228,20 @@ def main():
         metadata = json.dumps(metadata)
         # The shell wrapper and command use shlex.quote; $()/backticks stay literal.
         run_command = shlex.join(command)
-        if host in AZURE_HOSTS:
+        if host in GCP_HOSTS:
+            # Same committed finisher as the Oracle path; bash builtin time (no GNU time package needed).
+            finish = f'''TIMEFORMAT='wall=%R cpu=%U+%S'
+{{ time {run_command} ; }} > "$HOME/ugrp-sim/runs/{name}/log.txt" 2>&1
+result=$?
+python3 scripts/remote_run_finish.py --source "$HOME/ugrp-sim/src/{sha}" --run "$HOME/ugrp-sim/runs/{name}" > "$HOME/ugrp-sim/runs/{name}/record-copy.log" 2>&1
+record_result=$?
+if [ "$record_result" -ne 0 ]; then
+  echo "$result" > "$HOME/ugrp-sim/runs/{name}/COMMAND_EXIT"
+  result=70
+fi
+echo "$result" > "$HOME/ugrp-sim/runs/{name}/EXIT"
+find "$HOME/ugrp-sim/runs/{name}" -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > "$HOME/ugrp-sim/runs/{name}/SHA256SUMS"'''
+        elif host in AZURE_HOSTS:
             finish = f'exec python3 /usr/local/lib/ugrp-storage/scripts/remote_run_finish.py --source "$HOME/ugrp-sim/src/{sha}" --run "$HOME/ugrp-sim/runs/{name}" -- {run_command}'
         else:
             # Keep older committed Oracle controller sources compatible.
@@ -190,47 +269,50 @@ ln -s "$HOME/ugrp-sim/runs/{name}" "outputs/{name}"
             f'cat /proc/loadavg > {root}/LOADAVG && '
             f'setsid -f bash {root}/run_wrapper.sh </dev/null >/dev/null 2>&1')
         print(f'Started {name} SHA={sha} host={host}', flush=True)
-        if host not in AZURE_HOSTS or args.detach:
+        if (host not in AZURE_HOSTS and host not in GCP_HOSTS) or args.detach:
             return
-        deadline = time.monotonic() + 7.5 * 3600
-        while time.monotonic() < deadline:
-            state = ssh(host, f'touch {lease}; test ! -f {root}/EXIT || cat {root}/EXIT', capture_output=True, text=True).stdout.strip()
-            fetch_lifecycle(host)
-            if state:
-                print('Exit:', state, 'fetch-lite:', fetch(host, name), flush=True)
-                break
-            time.sleep(30)
+        if host in GCP_HOSTS:
+            archived, state = wait_gcp(host, name, root, lease, sha, started_unix)
         else:
-            raise RuntimeError('Runner deadline exceeded; eight-hour VM guard remains active')
-        # The archive script requires genuine 20-minute source quiescence.
-        archive_deadline = time.monotonic() + 35 * 60
-        while time.monotonic() < archive_deadline:
-            try:
-                ssh(host, f'touch {lease}; UGRP_RUNS=$HOME/ugrp-sim/runs UGRP_ARCHIVE=$HOME/ugrp-sim/arm /usr/local/bin/ugrp-auto-archive')
-            except subprocess.CalledProcessError:
-                print('ARM archive failed; lease retained, retrying', flush=True)
-                try:
-                    fetch_lifecycle(host)
-                except (subprocess.CalledProcessError, RuntimeError):
-                    pass
+            deadline = time.monotonic() + 7.5 * 3600
+            while time.monotonic() < deadline:
+                state = ssh(host, f'touch {lease}; test ! -f {root}/EXIT || cat {root}/EXIT', capture_output=True, text=True).stdout.strip()
+                fetch_lifecycle(host)
+                if state:
+                    print('Exit:', state, 'fetch-lite:', fetch(host, name), flush=True)
+                    break
                 time.sleep(30)
-                continue
-            result = ssh(host, f'test ! -L {root} || readlink {root}', capture_output=True, text=True).stdout.strip()
-            if not result:
-                # Recovery archives retain local originals and publish a separate marker.
-                marker = ssh(host, f'test ! -f $HOME/ugrp-sim/lifecycle/archives/{name}.json || cat $HOME/ugrp-sim/lifecycle/archives/{name}.json',
-                             capture_output=True, text=True).stdout.strip()
-                if marker:
-                    result = json.loads(marker)['path']
-            fetch_lifecycle(host)
-            if result:
-                archived = True
-                print('ARM archive:', result, flush=True)
-                print('Final fetch-lite:', fetch(host, name), flush=True)
-                break
-            time.sleep(30)
-        else:
-            raise RuntimeError('Archive incomplete; raw preserved on persistent Azure disk')
+            else:
+                raise RuntimeError('Runner deadline exceeded; eight-hour VM guard remains active')
+            # The archive script requires genuine 20-minute source quiescence.
+            archive_deadline = time.monotonic() + 35 * 60
+            while time.monotonic() < archive_deadline:
+                try:
+                    ssh(host, f'touch {lease}; UGRP_RUNS=$HOME/ugrp-sim/runs UGRP_ARCHIVE=$HOME/ugrp-sim/arm /usr/local/bin/ugrp-auto-archive')
+                except subprocess.CalledProcessError:
+                    print('ARM archive failed; lease retained, retrying', flush=True)
+                    try:
+                        fetch_lifecycle(host)
+                    except (subprocess.CalledProcessError, RuntimeError):
+                        pass
+                    time.sleep(30)
+                    continue
+                result = ssh(host, f'test ! -L {root} || readlink {root}', capture_output=True, text=True).stdout.strip()
+                if not result:
+                    # Recovery archives retain local originals and publish a separate marker.
+                    marker = ssh(host, f'test ! -f $HOME/ugrp-sim/lifecycle/archives/{name}.json || cat $HOME/ugrp-sim/lifecycle/archives/{name}.json',
+                                 capture_output=True, text=True).stdout.strip()
+                    if marker:
+                        result = json.loads(marker)['path']
+                fetch_lifecycle(host)
+                if result:
+                    archived = True
+                    print('ARM archive:', result, flush=True)
+                    print('Final fetch-lite:', fetch(host, name), flush=True)
+                    break
+                time.sleep(30)
+            else:
+                raise RuntimeError('Archive incomplete; raw preserved on persistent Azure disk')
     finally:
         finish_lease(host, name, lease, archived, args.detach)
     if state != '0':
