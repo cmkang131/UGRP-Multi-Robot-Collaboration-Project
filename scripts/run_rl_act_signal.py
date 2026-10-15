@@ -19,6 +19,7 @@ ROOT=Path(__file__).resolve().parents[1]
 
 
 class BudgetEnd(RuntimeError):pass
+class AdmissionBlock(RuntimeError):pass
 
 
 def write(path,value):
@@ -108,7 +109,7 @@ def main():
                 report['aggregate_sim_s_per_wall_s']=n*.1*len(latencies)/sum(latencies)
                 report['formal_30sim_speed_gate']='not measured by eight-tick correctness probe'
                 if report['wall_per_sim_median']>6.:
-                    raise RuntimeError('PRELIMINARY_SPEED_BLOCK: eight-tick median exceeds6; do not submit learning')
+                    raise AdmissionBlock('PRELIMINARY_SPEED_BLOCK: eight-tick median exceeds6; do not submit learning')
                 # Resource allocation only. Seal a SIM-tick prefix BEFORE any fit
                 # or fresh evaluation. CPU-style wall caps never steer actions.
                 remaining=receipt['deadline_epoch_s']-time.time()-40.
@@ -200,6 +201,8 @@ def main():
                 replay_rows=replay.total,heuristic_reward_sums=dict(terms),individual_policy_effect='unmeasured; joint candidate only',
                 curriculum_resets=resets,privileged_reward_reads=env.training_privileged_reward_reads,
                 privileged_critic_reads=env.training_privileged_critic_reads)
+    except AdmissionBlock as error:
+        report.update(status='BLOCKED',reason=str(error),comparison_complete=False)
     except BudgetEnd as error:
         report.update(status='cap_end',reason=str(error),comparison_complete=False)
     except BaseException as error:
