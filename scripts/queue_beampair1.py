@@ -14,7 +14,7 @@ EXP=ROOT/'experiments/2026-10-15-beampair1'
 def sha(path):return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
-def validate_evidence(report,table,source):
+def validate_evidence(report,table,source,*,expected_bursts=None):
     if not table.is_absolute() or not table.is_file():raise ValueError('existing absolute rejection_table required')
     funnel=json.loads(table.read_text())
     if funnel.get('source_sha')!=source:raise ValueError('rejection_table source mismatch')
@@ -29,7 +29,8 @@ def validate_evidence(report,table,source):
         if r['probe_executed_ticks']['r1']!=r['probe_burst_ticks']['r1']:
             raise ValueError('truncated r1 recovery burst')
         lengths.append(r['probe_executed_ticks']['r1'])
-    if sorted(lengths)!=[1,3,5,8,10,12]:raise ValueError('mixed burst envelope not physically exercised')
+    expected=[1,3,5,8,10,12] if expected_bursts is None else sorted(expected_bursts)
+    if sorted(lengths)!=expected:raise ValueError('frozen burst envelope not physically exercised')
 
 
 def build(source,worktree,evidence,table):

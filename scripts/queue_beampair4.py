@@ -9,9 +9,11 @@ from scripts.queue_beampair2 import build as previous, ROOT
 
 
 def build(source, evidence, table):
-    q=previous(source,evidence,table)
-    report=json.loads(evidence.read_text())
     wanted=[8318620,8318626,8318600,8318604,8318611,8318631]
+    frozen=json.loads(subprocess.check_output(['git','show',source+':experiments/2026-10-15-beampair1/gate-plan.json'],cwd=ROOT))
+    bursts=[next(e['burst_ticks'] for e in frozen['episodes'] if e['seed']==s) for s in wanted]
+    q=previous(source,evidence,table,expected_bursts=bursts)
+    report=json.loads(evidence.read_text())
     if [r['seed'] for r in report['runs']] != wanted:
         raise ValueError('exact failed-seed-first short6 required')
     if any(r['adapter_sha']!=source for r in report['runs']):

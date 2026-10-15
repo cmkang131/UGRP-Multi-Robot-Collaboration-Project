@@ -11,10 +11,10 @@ from scripts.queue_beampair1 import validate_evidence,sha
 ROOT=Path(__file__).resolve().parents[1]
 
 
-def build(source,evidence,table):
+def build(source,evidence,table,*,expected_bursts=None):
     if len(source)!=40 or any(c not in '0123456789abcdef' for c in source):
         raise ValueError('full source SHA required')
-    report=json.loads(evidence.read_text());validate_evidence(report,table,source)
+    report=json.loads(evidence.read_text());validate_evidence(report,table,source,expected_bursts=expected_bursts)
     if report['n']!=6 or report.get('cap_end_N'):
         raise ValueError('all six probes including failed-seed regression must pass')
     if not report['runs'][0]['strict_success']:raise ValueError('first failed-seed probe must pass')
