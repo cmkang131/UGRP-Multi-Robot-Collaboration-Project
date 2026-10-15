@@ -34,6 +34,11 @@ def main():
     p.add_argument('--dense-capacity-v1', action='store_true', help='default OFF: use every-step measured capacity envelope')
     p.add_argument('--record-own-rgb', type=Path, help='recording-only: source assets for a 10Hz own-camera ring, no control feedback')
     p.add_argument('--backend-mode', choices=['baseline', 'box-sat-v1', 'legacy-plane-v1', 'legacy-plane-sat-v1'], default='baseline')
+    p.add_argument('--compiled-reference-v1', type=Path,
+                   help='default OFF: restore exact same-XML MuJoCo3.12 compiled actuator damping')
+    p.add_argument('--damping-ablation-v1', action='store_true',
+                   help='diagnostic only: copy C3.16 damping onto C3.12 to isolate its contribution')
+    p.add_argument('--export-compiled', type=Path, help='export compiled arrays without physics steps')
     a = p.parse_args()
     if not a.enabled or platform.system() != 'Linux':
         p.error('explicit Linux gcp2 opt-in required; Mac physics/render forbidden')
@@ -45,8 +50,16 @@ def main():
         p.error('backend workaround is Warp only')
     import numpy as np
     import mujoco
+    if a.damping_ablation_v1 and (not a.compiled_reference_v1 or mujoco.__version__ != '3.12.0' or a.engine != 'cpu'):
+        p.error('damping ablation requires C3.12 and an explicit C3.16 reference')
     a.out.mkdir(parents=True, exist_ok=False)
     m = mujoco.MjModel.from_xml_path(str(a.fixture/'scene.xml'))
+    from simalt_compiled_compat import apply_reference, export_reference
+    if a.export_compiled:
+        export_reference(m, a.fixture/'scene.xml', mujoco.__version__, a.export_compiled)
+        return
+    compatibility = apply_reference(m, a.fixture/'scene.xml', a.compiled_reference_v1,
+                                   ablation=a.damping_ablation_v1) if a.compiled_reference_v1 else None
     f = np.load(a.fixture/'fixture.npz')
     tape = f[a.case]
     dt = float(m.opt.timestep)
@@ -87,6 +100,7 @@ def main():
     metadata['physics_hashes'] = {k: hashlib.sha256(getattr(m,k).tobytes()).hexdigest() for k in
         ('geom_friction','pair_friction','geom_solref','geom_solimp','body_mass','body_inertia',
          'actuator_gainprm','actuator_biasprm','geom_margin','geom_gap','geom_condim')}
+    metadata['compiled_compatibility'] = compatibility
     def save():
         (a.out/'result.json').write_text(json.dumps(metadata, indent=2, allow_nan=False)+'\n')
     save()
