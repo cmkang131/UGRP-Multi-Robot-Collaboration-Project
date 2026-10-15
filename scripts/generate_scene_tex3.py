@@ -8,6 +8,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import shutil
 from pathlib import Path
 import cv2
 import numpy as np
@@ -20,7 +21,7 @@ SEED = 2026101603
 # Neutral floor restores v1 chroma; cool dark wall has only four HSV S levels.
 # Brightness split is a visual material design, not a segmentation admission gate.
 PALETTES = {'walls': {'h': 112, 's': 4, 'v': [100, 138]},
-            'floor': {'h': 0, 's': 0, 'v': [142, 180]}}
+            'floor': {'h': 0, 's': 0, 'v': [88, 198], 'neutral_v1_floor': True}}
 # Native5–20px requested structures over0.5–3m from measured projection.
 # 3m depth-axis needs0.318–1.272m; other axes need0.004–0.096m.
 SCALES_M = (.01, .03, .1, .32, 1.)
@@ -76,13 +77,16 @@ def generate(output):
               'walls': walls, 'images': {}, 'maps': {str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest() for p in MAPS}}
     for key, (size, span, floor) in sorted(specs.items()):
         path = output/(key+'.png')
-        im = image(key, size, span, floor)
         if floor:
-            indexed = im.convert('P', palette=Image.Palette.ADAPTIVE, colors=256)
-            if not np.array_equal(np.asarray(im), np.asarray(indexed.convert('RGB'))):
-                raise ValueError('indexed floor must preserve every RGB pixel')
-            im = indexed
-        im.save(path, compress_level=9)
+            # R2 JPEG86/88 loses red in two maps. R3 isolates that regression:
+            # reuse every v1 floor pixel AND PNG byte; only wall dressing/filter
+            # remains new. This is a new manifest/source, never pooled withR2.
+            from sim import natural_scene_texture as v1
+            shutil.copyfile(v1.checked_file('floor', v1.manifest(), v1.ASSETS), path)
+            record['floor_origin'] = {'profile': v1.PROFILE, 'manifest_sha256': v1.MANIFEST_SHA256,
+                                      'reason': 'R2 JPEG red-box regression; exact v1 bytes restored'}
+        else:
+            image(key, size, span, floor).save(path, compress_level=9)
         record['images'][key] = dict(file=path.name, width=size[0], height=size[1], span_m=span,
                                     sha256=hashlib.sha256(path.read_bytes()).hexdigest())
     path = output/'manifest.json'

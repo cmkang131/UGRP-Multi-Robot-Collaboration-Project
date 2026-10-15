@@ -19,6 +19,7 @@ class Quality:
     samples: int | None = None
     interpolation: str = 'linear'
     min_filter: str = 'trilinear'
+    texture_scope: str = 'all'
 
 
 # 2x is the user's supersampling example, 8 samples is a requested comparison,
@@ -30,6 +31,7 @@ PROFILES = {
     'cubic_v1': Quality(interpolation='cubic'),
     'mip_nearest_v1': Quality(min_filter='nearest_mip'),
     'no_mip_v1': Quality(min_filter='linear'),
+    'wall_no_mip_v1': Quality(min_filter='linear', texture_scope='walls'),
 }
 
 
@@ -60,7 +62,8 @@ def configure_context(renderer, model, name):
         target = GL.GL_TEXTURE_2D if int(model.tex_type[i]) == 0 else GL.GL_TEXTURE_CUBE_MAP
         GL.glBindTexture(target, int(ctx.texture[i]))
         before = int(GL.glGetTexParameteriv(target, GL.GL_TEXTURE_MIN_FILTER))
-        if q.min_filter != 'trilinear':
+        selected = q.texture_scope == 'all' or model.texture(i).name.startswith(('natural_v1_', 'natural_v2_', 'natural_v3_'))
+        if q.min_filter != 'trilinear' and selected:
             value = GL.GL_LINEAR_MIPMAP_NEAREST if q.min_filter == 'nearest_mip' else GL.GL_LINEAR
             GL.glTexParameteri(target, GL.GL_TEXTURE_MIN_FILTER, value)
         rows.append({'id': i, 'before_min': before,

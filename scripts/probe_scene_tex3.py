@@ -87,8 +87,16 @@ def semantic(bgr, pwm):
 def classify(bgr, palettes):
     hsv = cv2.cvtColor(bgr, cv2.COLOR_BGR2HSV)
     # Authored bounds and the existing all-hue paint S20 lower limit.
-    return {('wall' if k == 'walls' else k): (hsv[..., 1] < 20) &
+    masks = {('wall' if k == 'walls' else k): (hsv[..., 1] < 20) &
             (hsv[..., 2] >= p['v'][0]) & (hsv[..., 2] <= p['v'][1]) for k, p in palettes.items()}
+    if palettes['floor'].get('neutral_v1_floor'):
+        # Authored neutral RGB floor has B-R=0; cool wall has B-R>0.
+        # Channel ordering is a material colour classifier, not a new
+        # acceptance/error threshold or a change to cargo/zone detectors.
+        cool = bgr[..., 0].astype(int) > bgr[..., 2].astype(int)
+        masks['wall'] &= cool
+        masks['floor'] &= ~cool
+    return masks
 
 
 def matching(a, b, ma, mb):
@@ -197,7 +205,7 @@ def run(args):
                                     # Resume only complete same-fixture records after external VM STOP.
                                     # This does not alter sampling, fixture positions or measurements.
                                     # Keep originals immutable; link their media and preserve provenance.
-                                    if args.resume_from is not None:
+                                    if args.resume_from is not None and (args.resume_materials is None or material in args.resume_materials):
                                         from scripts.summarize_scene_tex3 import read
                                         saved_path = args.resume_from/(stem+'.json')
                                         if saved_path.is_file() or saved_path.with_name(saved_path.name+'.zst').is_file():
@@ -306,6 +314,7 @@ def main():
     p.add_argument('--poses', nargs='+', choices=old.POSES+old.POSITIVE_POSES)
     p.add_argument('--execute', action='store_true')
     p.add_argument('--resume-from', type=Path)
+    p.add_argument('--resume-materials', nargs='+', choices=MATERIALS)
     a = p.parse_args()
     if platform.system() != 'Linux' or not a.execute or not platform.node().startswith('ugrp-sim-gcp2'):
         p.error('explicit execution on gcp2 required; Mac rendering forbidden')

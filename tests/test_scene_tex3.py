@@ -70,6 +70,10 @@ def test_v3_png_integrity_and_no_nominal_colour_range_intrusion():
     for key in record['images']:
         rgb = np.asarray(Image.open(t.checked_file(key, record, t.ASSETS)).convert('RGB'))
         hsv = cv2.cvtColor(rgb, cv2.COLOR_RGB2HSV)
+        if key == 'floor':
+            from sim import natural_scene_texture as v1
+            assert t.checked_file(key, record, t.ASSETS).read_bytes() == v1.checked_file('floor', v1.manifest(), v1.ASSETS).read_bytes()
+            continue
         assert hsv[..., 1].max() < 20
         assert hsv[..., 2].min() > .38*255
         assert hsv[..., 2].max() <= 180
