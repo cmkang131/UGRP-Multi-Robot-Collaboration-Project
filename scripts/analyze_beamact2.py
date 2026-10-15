@@ -6,6 +6,7 @@ from pathlib import Path
 from harness.grasp_act_data import read_json, read_rows, sha256, write_json
 from harness.beamact_pair_student import Funnel, STAGES
 from scripts.beamact1_runtime import require_gcp2
+from scripts.grasp_act_training_guard import source_sha
 
 
 def existing(path):
@@ -15,7 +16,7 @@ def existing(path):
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--root',type=Path,required=True)
-    a=p.parse_args();host=require_gcp2(training=False)
+    a=p.parse_args();host=require_gcp2(training=False);analysis_source=source_sha()
     queue=read_json(a.root/'queue.json')
     runs=[];frame_pass=Counter();frame_reject=Counter();cumulative=Counter();reasons=Counter();failure_stages=Counter()
     for seed in range(8329000,8329020):
@@ -70,6 +71,7 @@ def main():
     completed=sum(r['complete'] for r in runs);n=sum(r.get('physical_success',False) for r in runs)
     result=dict(schema='ugrp.beamact2.summary.v1',host=host,n=n,N=20,attempted=sum(r['status']!='NOT_STARTED' for r in runs),
         complete=completed==20,completed=completed,not_started=20-sum(r['status']!='NOT_STARTED' for r in runs),
+        analysis_source_sha=analysis_source,
         verdict='READY' if n==20 and completed==20 else 'NOT_READY',source_sha=queue['source_sha'],
         model_sha256=queue['model_sha256'],runs=runs,reason_distribution=dict(reasons),
         failure_stage_distribution=dict(failure_stages),
