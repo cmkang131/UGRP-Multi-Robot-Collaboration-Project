@@ -71,6 +71,7 @@ def main():
         actor_model_sha256='d90a2b545709df6cd1a5972874db2e20c264007f9a798888f1bdccac22882ed1',
         actor_input='own RGB+issued history+instruction+own chunk/done memory',
         physics_backend='mjwarp',scene='ACT15 frozen6f S1 cyan_1 floor_light_v1; no scene-v5 pooling',
+        shared_scene_seed_v1=plans[0].get('shared_scene_seed_v1'),
         budget=str(a.budget),gpu_deadline_epoch_s=receipt['deadline_epoch_s'])
     write(a.out/'RUN_META.json',dict(**{'class':'dev'},pr=530,branch='claude/rl-act',sha=sha,batch='rl1b-'+a.mode))
     public=(a.out/'actor-inputs.jsonl').open('x');losses=(a.out/'learning.jsonl').open('x')

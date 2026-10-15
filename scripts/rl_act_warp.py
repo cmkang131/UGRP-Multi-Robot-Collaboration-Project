@@ -74,7 +74,8 @@ class Owner:
         for i in range(self.n):self.measure(i,sample=True)
         (self.out/'RUN_META.json').write_text(json.dumps(dict(**{'class':'dev'},task='rl1b',sha=sha,
             branch='claude/rl-act',pr=530,backend='mjwarp',training=training,
-            scene='ACT15 frozen6f floor_light_v1; separate from scene-v5 ACT16w'),indent=2)+'\n')
+            scene='ACT15 frozen6f floor_light_v1; separate from scene-v5 ACT16w',
+            shared_scene_seed_v1=plans[0].get('shared_scene_seed_v1')),indent=2)+'\n')
 
     def context(self, plan, i):
         from sim.grasp_act_scene import make_scene
@@ -88,7 +89,7 @@ class Owner:
         scene=make_scene({**plan,'end_color_scene':'off'})
         # Exact frozen ACT15 reset: sampled poses override scene defaults.
         scene.config['setup_only']['spawns'].update(plan['spawns'])
-        world=build_world(scene,drive_profile=PROFILE,seed=plan['seed'],width=640,height=480,
+        world=build_world(scene,drive_profile=PROFILE,seed=plan.get('shared_scene_seed_v1',plan['seed']),width=640,height=480,
             render=False,warehouse_layout=scene.engine_layout,warehouse_cargo_ids=None,
             roller_collision='mesh',idle_robot_contacts='off')
         for controller in world.controllers.values():bind_camera(controller)

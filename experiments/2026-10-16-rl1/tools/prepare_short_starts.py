@@ -25,6 +25,7 @@ def fingerprint(plan):
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     for name in ('teacher-source','actor-source','out'):p.add_argument('--'+name,type=Path,required=True)
+    p.add_argument('--shared-scene-seed-v1',type=int,default=None,help='defaultOFF: freeze one original scene geometry; keep distinct reset seeds/poses')
     a=p.parse_args();host=gcp2_identity()
     if host['instance']!='ugrp-sim-gcp2':p.error('CPU gcp2 only')
     a.out.mkdir(parents=True,exist_ok=False)
@@ -60,6 +61,14 @@ def main():
     # t=0 uses the same first quartile for ANY positive transition limit; limit3
     # here seals only the first RNG draw for exact-XML compiled asset export.
     startup=curriculum.sample(0,8)
+    if a.shared_scene_seed_v1 is not None:
+        if a.shared_scene_seed_v1!=startup[0]['seed']:
+            raise ValueError('shared scene must be the first precommitted training draw, no outcome-based selection')
+        for rows in groups.values():
+            for row in rows:
+                row['shared_scene_seed_v1']=a.shared_scene_seed_v1
+                row['scene_profile']+=f'_shared_scene_seed{a.shared_scene_seed_v1}'
+                row['setup_fingerprint']=hashlib.sha256((fingerprint(row)+str(a.shared_scene_seed_v1)).encode()).hexdigest()
     for name,rows in (('train-starts',groups['train']),('eval-starts',groups['eval']),
                       ('startup-train',startup),('startup-eval',groups['eval'][:8])):
         (a.out/(name+'.json')).write_text(json.dumps(dict(host=host,episodes=rows,
@@ -71,6 +80,7 @@ def main():
         train_seeds=list(range(919000,919040)),eval_pool=list(range(918000,918040)),
         evaluation_seeds=list(range(918000,918008)),startup_train_seeds=[r['seed'] for r in startup],
         runtime_model_renders=0,physics_steps=0,optimizer_steps=0,
+        shared_scene_seed_v1=a.shared_scene_seed_v1,
         source_sha=__import__('subprocess').check_output(['git','-C',str(ROOT),'rev-parse','HEAD'],text=True).strip())
     (a.out/'setup-funnel.json').write_text(json.dumps(report,indent=2)+'\n')
     print(json.dumps({k:v for k,v in report.items() if k!='rejections'}),flush=True)

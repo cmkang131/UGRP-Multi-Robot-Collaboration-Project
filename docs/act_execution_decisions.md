@@ -167,3 +167,5 @@
 - [SmolVLA](https://huggingface.co/blog/smolvla) (검색 결과 요약만 열람)
 - [allenai vla-evaluation-harness](https://github.com/allenai/vla-evaluation-harness) (검색 결과 요약만 열람)
 - [Opening Articulated Objects: modular vs end-to-end](https://arxiv.org/html/2402.17767v2) (검색 결과 요약만 열람)
+
+- rl1b 초기화에서 시드별 배경 물체 질량/크기로 같은 모델 배치가 거부됐다. 학습/평가 결과0인 시점에 조정자가 기본 off `shared_scene_seed_v1=919015`(첫 사전 고정 훈련 draw의 원래 장면) 조건으로 범위를 더 좁혔다. 물체/물리는 원래 그 시드의 값을 유지하고 새 로봇 시작 자세만 바꾼다. 새 시작 성능과 장면 일반화는 구분한다.
