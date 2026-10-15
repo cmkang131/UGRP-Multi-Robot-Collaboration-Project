@@ -117,3 +117,16 @@ SHA256 `69bdd4f62546e3e38ea024cf94b6bc12b86cef39b8a187ee155b7f11794a1c69`.
 개요 카메라는 평가용이며 제어 입력이 아니다. 0–126.3 SIM초의 개요/양쪽RGB 18프레임과
 문제 r2 world_t34.2/34.3/36.0/36.1/36.2/36.3 6장 직접 확인. 기존 문제 단계0펄스/0반전 정착.
 [결과·원본·보존 해시](../experiments/2026-10-14-e2e18-grasp-rootcause/release20.md).
+
+
+## 2026-10-15 release21 FOV 대안 직접 진단
+
+실행 `46afd8b0`,GCP DEV6 6/6(A3/3·B3/3),관문40 미실행.
+대표110618 A: [저장 자기 RGB 샘플 영상](/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/representative-46afd8b0/release21-46afd8b0-own-rgb-sampled.mp4),
+640×264·32프레임·3.2초/10fps,0–81.3 SIM초의32시각 샘플(연속 영상 아님),top0.
+SHA256 `006ce22b1c87c65048054bcf4952a18bd47b6a58b5870b36a7b326c4119e7b8b`,77,857바이트.
+GCP `/home/ugrp/ugrp-sim/representative-release21-46afd8b0/`에 원본267파일과 함께 milestone 보존,
+같은 영속디스크이며 독립 백업은 아니다. FOV 거부1건→재중심1회→새 RGB yaw sign 확인 후 성공.
+전체6개 각6시각×양쪽RGB72장,문제 구간30.6/31.4/32.3/32.5/33.4/34.1초6장 직접 확인.
+1라운드b75b130f는 코드 감사로 은퇴했고 합산하지 않는다.
+[결과·검증·원본 해시](../experiments/2026-10-14-e2e18-grasp-rootcause/release21.md).

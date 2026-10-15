@@ -1,0 +1,1291 @@
+{
+  "schema": "ugrp.release21.dev.v1",
+  "round": 2,
+  "source_sha": "46afd8b095e74954439f98b28f2aa52af3eaea01",
+  "host": "gcp1",
+  "project": "ugrp-act-train-1014",
+  "pr": 491,
+  "counts": {
+    "completed": 6,
+    "success": 6,
+    "N": 6
+  },
+  "terminal_N": 6,
+  "interrupted_N": 0,
+  "HOST_ERROR_N": 0,
+  "verified": true,
+  "research_result": false,
+  "training_rgb": false,
+  "model_calls": 0,
+  "cap_s": 180,
+  "pooling": "No pooling across rounds, release20, A/B gate cohorts or preflight. DEV6 diagnostic only.",
+  "first30_wall_per_sim_median": 2.853361163595821,
+  "admission": {
+    "max_total": 20,
+    "max_own": 6,
+    "global_limit": 40,
+    "own_limit": 6
+  },
+  "runs": [
+    {
+      "name": "r21d2-00-46afd8b0",
+      "seed": 110618,
+      "candidate": "A",
+      "episode": 0,
+      "source_sha": "46afd8b095e74954439f98b28f2aa52af3eaea01",
+      "status": "complete",
+      "success": true,
+      "outcome": "teacher_done",
+      "sim_s": 84.49999999968706,
+      "wall_s": 267.8643643129981,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 0
+      },
+      "first30": {
+        "sim_s": 30.299999999998953,
+        "wall_s": 81.75183701515198,
+        "wall_per_sim": 2.698080429543063
+      },
+      "metrics": {
+        "line_ibvs_pulses": 5,
+        "fov_recovery_pulses": 9,
+        "yaw_command_reversals": 1,
+        "rho_observed_reversals": 0,
+        "alignments": 4,
+        "settled": 4,
+        "fov_blocked": 1,
+        "alternative_pulses": {
+          "recenter_correction": 1
+        },
+        "alternative_attempts": {
+          "recenter": 1
+        },
+        "reversal_fallback_samples": 0
+      },
+      "source_proofs": [
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round2/lite/r21d2-00-46afd8b0/raw/result.json.zst",
+          "sha256": "1b4c61d7e403cf9d0cd08fbb6aa22a3ccddcefe3d7924a06cc6525c91ddec342",
+          "decoded_sha256": "d6a11cd39828dfaf2d12ad29fe33d0788b744f50a1a4a469da0c84ff78edaf0a"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round2/lite/r21d2-00-46afd8b0/raw/teacher-r1.jsonl.zst",
+          "sha256": "5457fbf7d84b6cee586487250a3d9eacb57fc2e9d0558dc9c7380887c7087690",
+          "decoded_sha256": "14c957e23547e857b1c3202f51cbe1413da6059024da48532aa0896b2def51fe"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round2/lite/r21d2-00-46afd8b0/raw/teacher-r2.jsonl.zst",
+          "sha256": "3d85f6e1bd31598aa8826b71ae55eca48edff80dff88c45989ac156cb527e17b",
+          "decoded_sha256": "3d3f5cbddf3b733719dbb9fedef93359a53bc433a313b36f30e0426ade9a5735"
+        }
+      ],
+      "remote": "gcp1:/home/ugrp/ugrp-sim/runs/r21d2-00-46afd8b0",
+      "local": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round2/lite/r21d2-00-46afd8b0",
+      "manifest_sha256": "04efffda0aec425f8c0adc5aa8876ef9d290269d05e002cd31b1d2f3a58d671a",
+      "remote_manifest_verified": true,
+      "local_verified_files": 18,
+      "visual_review": {
+        "directly_viewed": true,
+        "temporal_samples": 6,
+        "own_camera_frames": 12,
+        "frames": [
+          {
+            "sim_s": 0.0,
+            "path": "raw/eval-own/r1/000000-prefix.jpg",
+            "sha256": "756737ee500b9072ee605494142fed2450b077f2a4454eacc6f20222ae012dfb"
+          },
+          {
+            "sim_s": 0.0,
+            "path": "raw/eval-own/r2/000000-prefix.jpg",
+            "sha256": "d8445bda24b775b40b5e013543bb9c6d901b0fb4fd0749943b89e90cfada0060"
+          },
+          {
+            "sim_s": 15.3,
+            "path": "raw/eval-own/r1/000070-release-lookaround.jpg",
+            "sha256": "5a7d61d85d8de01e2e8fe57e4ff656b083e02ed6b5c1ca9540355250578eed1a"
+          },
+          {
+            "sim_s": 15.3,
+            "path": "raw/eval-own/r2/000070-release-lookaround.jpg",
+            "sha256": "24e8d8b817a2774ba63e19262685ebbe76667adb82ef5d8532f02f69461ef472"
+          },
+          {
+            "sim_s": 32.3,
+            "path": "raw/eval-own/r1/000240-release-line_recheck.jpg",
+            "sha256": "bad3eaf1ac33d9354b30e92d1a03388b39bcba2a924df487998d46d15ff0429d"
+          },
+          {
+            "sim_s": 32.3,
+            "path": "raw/eval-own/r2/000240-release-line_recheck.jpg",
+            "sha256": "b8937d25a310b27dc70291d51cabb2aaf73bb5f1689b6e82cd862baa3ce13e1c"
+          },
+          {
+            "sim_s": 48.3,
+            "path": "raw/eval-own/r1/000400-release-regrasp_check.jpg",
+            "sha256": "62a8d834bca8a2fc436cc349e9b9f0f9c346bce7afbe6f00d90036f49d8d524f"
+          },
+          {
+            "sim_s": 48.3,
+            "path": "raw/eval-own/r2/000400-release-regrasp_check.jpg",
+            "sha256": "f8f62bb731ba559c6fec89064d6efa2cf847e72500ef3966112c556766acf4da"
+          },
+          {
+            "sim_s": 65.3,
+            "path": "raw/eval-own/r1/000570-release-lookaround.jpg",
+            "sha256": "5e8b0046d8da4488c887191e874d5eeeba16f2d3dc26a089b42725f6045c0d10"
+          },
+          {
+            "sim_s": 65.3,
+            "path": "raw/eval-own/r2/000570-release-lookaround.jpg",
+            "sha256": "5989bcd7f57efd006d9ea7ad13366262e84ff84b982bd1ee6f0580a3cd18f6b3"
+          },
+          {
+            "sim_s": 81.3,
+            "path": "raw/eval-own/r1/000730-release-done.jpg",
+            "sha256": "3e871964a1a2c682f6f11305f235beaf1dafb42c603591847886c735c09f6780"
+          },
+          {
+            "sim_s": 81.3,
+            "path": "raw/eval-own/r2/000730-release-done.jpg",
+            "sha256": "1e3a1a45a2f0e6c72555c52bb76de67a924c3ff13217906c41de249d3f487852"
+          }
+        ],
+        "relationship": "Distinct teal/blue ends in selected own-camera frames; no same-end approach or mutual blockage seen. Interior panorama/held images cannot independently show full cargo placement."
+      }
+    },
+    {
+      "name": "r21d2-01-46afd8b0",
+      "seed": 110618,
+      "candidate": "B",
+      "episode": 1,
+      "source_sha": "46afd8b095e74954439f98b28f2aa52af3eaea01",
+      "status": "complete",
+      "success": true,
+      "outcome": "teacher_done",
+      "sim_s": 78.39999999983131,
+      "wall_s": 255.29477832300108,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 0
+      },
+      "first30": {
+        "sim_s": 30.299999999998953,
+        "wall_s": 85.33613610267639,
+        "wall_per_sim": 2.8163741288012982
+      },
+      "metrics": {
+        "line_ibvs_pulses": 1,
+        "fov_recovery_pulses": 9,
+        "yaw_command_reversals": 0,
+        "rho_observed_reversals": 1,
+        "alignments": 4,
+        "settled": 4,
+        "fov_blocked": 0,
+        "alternative_pulses": {},
+        "alternative_attempts": {},
+        "reversal_fallback_samples": 0
+      },
+      "source_proofs": [
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round2/lite/r21d2-01-46afd8b0/raw/result.json.zst",
+          "sha256": "d0db5e1f89af94901f43696096b621a6baa92eb50103f856046d87edfb90898f",
+          "decoded_sha256": "720d8843ea440e4d46eced16b2f379eb58b6c97398bfe308b5883af3928e5e22"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round2/lite/r21d2-01-46afd8b0/raw/teacher-r1.jsonl.zst",
+          "sha256": "25671d3e9311ba436c2f216f25c02bf07a5424a2882052e3abdb6d5808a825c2",
+          "decoded_sha256": "e27b1c2eaecf0815062b71212ec7f7b63a66230935bedd8d370fe6dd6188ff0a"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round2/lite/r21d2-01-46afd8b0/raw/teacher-r2.jsonl.zst",
+          "sha256": "13685ef14f69282164607aa9e42ac4f47ab3f38a9b406c0ffd8e02e25213a142",
+          "decoded_sha256": "8b6a65678bc23ee1d806176bab859f99df54e23751df2917852bce901a8ba56f"
+        }
+      ],
+      "remote": "gcp1:/home/ugrp/ugrp-sim/runs/r21d2-01-46afd8b0",
+      "local": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round2/lite/r21d2-01-46afd8b0",
+      "manifest_sha256": "ea16c7e42fc54d92c323911f506be95fb5a4abe4fa59d55a176ca4a0c799f259",
+      "remote_manifest_verified": true,
+      "local_verified_files": 18,
+      "visual_review": {
+        "directly_viewed": true,
+        "temporal_samples": 6,
+        "own_camera_frames": 12,
+        "frames": [
+          {
+            "sim_s": 0.0,
+            "path": "raw/eval-own/r1/000000-prefix.jpg",
+            "sha256": "756737ee500b9072ee605494142fed2450b077f2a4454eacc6f20222ae012dfb"
+          },
+          {
+            "sim_s": 0.0,
+            "path": "raw/eval-own/r2/000000-prefix.jpg",
+            "sha256": "d8445bda24b775b40b5e013543bb9c6d901b0fb4fd0749943b89e90cfada0060"
+          },
+          {
+            "sim_s": 14.3,
+            "path": "raw/eval-own/r1/000060-release-lookaround.jpg",
+            "sha256": "bec86ab95bf0881661790c629f4e00f86da6a8831231b61049da565e757b2697"
+          },
+          {
+            "sim_s": 14.3,
+            "path": "raw/eval-own/r2/000060-release-lookaround.jpg",
+            "sha256": "2783b1f328cb8690866c4f57860126e593b635ea255fcb5bd8f7cb7aa7d5e1b9"
+          },
+          {
+            "sim_s": 29.3,
+            "path": "raw/eval-own/r1/000210-release-line_recheck.jpg",
+            "sha256": "6a92aa6df7cbe6fd087bebb96cbf1fb66b1f69e995134b14cbabc318d2211c51"
+          },
+          {
+            "sim_s": 29.3,
+            "path": "raw/eval-own/r2/000210-release-line_recheck.jpg",
+            "sha256": "5a684c1a3d995655af87bc9d41705890c1d04ddc42d7063a2f141506a8104798"
+          },
+          {
+            "sim_s": 45.3,
+            "path": "raw/eval-own/r1/000370-release-regrasp_check.jpg",
+            "sha256": "00ac37ccf3105d9bd21ea55a429313e244125c923e33d20d715642e015e34210"
+          },
+          {
+            "sim_s": 45.3,
+            "path": "raw/eval-own/r2/000370-release-regrasp_check.jpg",
+            "sha256": "d2566ac37c502bad8c0112a27db12f73fe9dd4637b4fbbeeb7d59e68af28947e"
+          },
+          {
+            "sim_s": 60.3,
+            "path": "raw/eval-own/r1/000520-release-lookaround.jpg",
+            "sha256": "132c4e2da62ff35af3cdc681a928d5e8d73f9dbec2f2dc9bdee0d32effcad605"
+          },
+          {
+            "sim_s": 60.3,
+            "path": "raw/eval-own/r2/000520-release-lookaround.jpg",
+            "sha256": "d4cf1192a79900c28a1a2b0620869d422ed09a7c86899f53e2c1e464ade96f9c"
+          },
+          {
+            "sim_s": 75.3,
+            "path": "raw/eval-own/r1/000670-release-done.jpg",
+            "sha256": "9d4d3c15a425d1f7e257d87d0ca70f51d28ec7330b208ffb1d06718b6baddc75"
+          },
+          {
+            "sim_s": 75.3,
+            "path": "raw/eval-own/r2/000670-release-done.jpg",
+            "sha256": "f53459856142eb500b62db481f78b25d0ee65ad0bba60af3066b926ebe8804e5"
+          }
+        ],
+        "relationship": "Distinct teal/blue ends in selected own-camera frames; no same-end approach or mutual blockage seen. Interior panorama/held images cannot independently show full cargo placement."
+      }
+    },
+    {
+      "name": "r21d2-02-46afd8b0",
+      "seed": 110613,
+      "candidate": "A",
+      "episode": 2,
+      "source_sha": "46afd8b095e74954439f98b28f2aa52af3eaea01",
+      "status": "complete",
+      "success": true,
+      "outcome": "teacher_done",
+      "sim_s": 129.2999999986277,
+      "wall_s": 404.91570561799745,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 0
+      },
+      "first30": {
+        "sim_s": 30.299999999998953,
+        "wall_s": 84.84081506729126,
+        "wall_per_sim": 2.800026899910699
+      },
+      "metrics": {
+        "line_ibvs_pulses": 4,
+        "fov_recovery_pulses": 16,
+        "yaw_command_reversals": 1,
+        "rho_observed_reversals": 2,
+        "alignments": 8,
+        "settled": 8,
+        "fov_blocked": 0,
+        "alternative_pulses": {},
+        "alternative_attempts": {},
+        "reversal_fallback_samples": 0
+      },
+      "source_proofs": [
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round2/lite/r21d2-02-46afd8b0/raw/result.json.zst",
+          "sha256": "61790f7d35d1fcfd7d052b01f55a5374e2b3291493c4769946ed05b29dc72fe7",
+          "decoded_sha256": "838e16bbce84a51844409181796cc7e29d416364c477f29696dac6cd222c4287"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round2/lite/r21d2-02-46afd8b0/raw/teacher-r1.jsonl.zst",
+          "sha256": "74c1713d679ee30561439593ac98335c20451cdef0f5a92977a79de9ca96f6be",
+          "decoded_sha256": "92ec064f6e4be37b892aafecedb10635524787cb451b205ba5c10b7694d3a843"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round2/lite/r21d2-02-46afd8b0/raw/teacher-r2.jsonl.zst",
+          "sha256": "530775f39f8dd57c717e3b2b57d7723a7f38a51b11f68ee07834daee3ff2bed4",
+          "decoded_sha256": "0be90496a2cdfa88bd16075d1d1d80d0cebe13a3f9f10786cc0a8ef28a667255"
+        }
+      ],
+      "remote": "gcp1:/home/ugrp/ugrp-sim/runs/r21d2-02-46afd8b0",
+      "local": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round2/lite/r21d2-02-46afd8b0",
+      "manifest_sha256": "fdfe8bde84af404e84a200ded8a2db469c898e6222d536b0ea77d7b87317de8c",
+      "remote_manifest_verified": true,
+      "local_verified_files": 18,
+      "visual_review": {
+        "directly_viewed": true,
+        "temporal_samples": 6,
+        "own_camera_frames": 12,
+        "frames": [
+          {
+            "sim_s": 0.0,
+            "path": "raw/eval-own/r1/000000-prefix.jpg",
+            "sha256": "5e4b2b50c63a3f1c06f60faceeb9d0a20c2c69565fc000706a7fcaf6bf3f9e39"
+          },
+          {
+            "sim_s": 0.0,
+            "path": "raw/eval-own/r2/000000-prefix.jpg",
+            "sha256": "98e82256d73d945bd7017914b845453af86217f133f4fe6033c3939f376029ce"
+          },
+          {
+            "sim_s": 24.3,
+            "path": "raw/eval-own/r1/000160-release-lookaround.jpg",
+            "sha256": "1bfc35e37f23fe898287dfa40c2861420e40b5db18668293a79c6746a635c7d4"
+          },
+          {
+            "sim_s": 24.3,
+            "path": "raw/eval-own/r2/000160-release-lookaround.jpg",
+            "sha256": "c81d87a97431d1d612de6936066ca6c0fa5b66ffb05251a9842420b33a5d7a63"
+          },
+          {
+            "sim_s": 50.3,
+            "path": "raw/eval-own/r1/000420-release-regrasp_check.jpg",
+            "sha256": "bfbf956f8b61436727d849e39fc56351b7fd703380f5c574da38145403bf7772"
+          },
+          {
+            "sim_s": 50.3,
+            "path": "raw/eval-own/r2/000420-release-regrasp_check.jpg",
+            "sha256": "aba441367ca2fdb80558e109145fb40eb2b681a96b5c00f3fe71fa3e10a7ee0b"
+          },
+          {
+            "sim_s": 75.3,
+            "path": "raw/eval-own/r1/000670-release-line_recheck.jpg",
+            "sha256": "14196e419741be427d09e12e00d2a81bd3f4f9fbec6ffdf2aa21d0c0ce80c26c"
+          },
+          {
+            "sim_s": 75.3,
+            "path": "raw/eval-own/r2/000670-release-line_recheck.jpg",
+            "sha256": "935713e6044230d35e7add9551ad16c11c873fb3182fc90c0f7f9894b33db410"
+          },
+          {
+            "sim_s": 101.3,
+            "path": "raw/eval-own/r1/000930-release-regrasp_check.jpg",
+            "sha256": "e1ceed38f3870e7905b45361f9d9a837b0f1fda491b97efa15e0a1f8322bf43f"
+          },
+          {
+            "sim_s": 101.3,
+            "path": "raw/eval-own/r2/000930-release-regrasp_check.jpg",
+            "sha256": "a92388663f8edf9793c17411bb577da12469a772ff2d59279a822b284b31b9f5"
+          },
+          {
+            "sim_s": 126.3,
+            "path": "raw/eval-own/r1/001180-release-done.jpg",
+            "sha256": "b6bfc8568faecfad4eaa0b0fbdd245067fe9328442ca15d1451a78207f465846"
+          },
+          {
+            "sim_s": 126.3,
+            "path": "raw/eval-own/r2/001180-release-done.jpg",
+            "sha256": "b18f65b02783f4da3e8258674335ef1ce00d7dfaafaaa991cf702f196046d6c6"
+          }
+        ],
+        "relationship": "Distinct teal/blue ends in selected own-camera frames; no same-end approach or mutual blockage seen. Interior panorama/held images cannot independently show full cargo placement."
+      }
+    },
+    {
+      "name": "r21d2-03-46afd8b0",
+      "seed": 74976,
+      "candidate": "B",
+      "episode": 3,
+      "source_sha": "46afd8b095e74954439f98b28f2aa52af3eaea01",
+      "status": "complete",
+      "success": true,
+      "outcome": "teacher_done",
+      "sim_s": 169.89999999766763,
+      "wall_s": 559.7168375360015,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 0
+      },
+      "first30": {
+        "sim_s": 30.299999999998953,
+        "wall_s": 87.57755041122437,
+        "wall_per_sim": 2.890348198390343
+      },
+      "metrics": {
+        "line_ibvs_pulses": 0,
+        "fov_recovery_pulses": 27,
+        "yaw_command_reversals": 0,
+        "rho_observed_reversals": 0,
+        "alignments": 12,
+        "settled": 12,
+        "fov_blocked": 0,
+        "alternative_pulses": {},
+        "alternative_attempts": {},
+        "reversal_fallback_samples": 0
+      },
+      "source_proofs": [
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round2/lite/r21d2-03-46afd8b0/raw/result.json.zst",
+          "sha256": "ddc16e382e0642db40668134baac7dec7627342b1013256171910bb5e8dd078d",
+          "decoded_sha256": "4c344d8143f00b63d31fb6401b96c75f70923a46ef67b78161040e157d9f5347"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round2/lite/r21d2-03-46afd8b0/raw/teacher-r1.jsonl.zst",
+          "sha256": "ffd8e44a0209a3e13794056c91d5171345a112f2c5d360efeb282ad68484b7d8",
+          "decoded_sha256": "eb7d445bcc4a1d2b7731cd7388b7c88751f159f673785ea0acc6de73715e1bb7"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round2/lite/r21d2-03-46afd8b0/raw/teacher-r2.jsonl.zst",
+          "sha256": "693668c99b2d11fb79516c3cc64f53e83c902de017a2838f32afeb2b1b5bc2f2",
+          "decoded_sha256": "7bba5282c4ff508eded721e2b39282e36cf6da5f11f54f77b2b5a574428c1925"
+        }
+      ],
+      "remote": "gcp1:/home/ugrp/ugrp-sim/runs/r21d2-03-46afd8b0",
+      "local": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round2/lite/r21d2-03-46afd8b0",
+      "manifest_sha256": "5c351a42fa9140d57cf253c8e19c4fa04cf536a8f9eff5cfca37595e04db1e04",
+      "remote_manifest_verified": true,
+      "local_verified_files": 19,
+      "visual_review": {
+        "directly_viewed": true,
+        "temporal_samples": 6,
+        "own_camera_frames": 12,
+        "frames": [
+          {
+            "sim_s": 0.0,
+            "path": "raw/eval-own/r1/000000-prefix.jpg",
+            "sha256": "f638190d750c8732514be4bd3666e457fbbdeec0279b2bb60a48d6f98c4002c9"
+          },
+          {
+            "sim_s": 0.0,
+            "path": "raw/eval-own/r2/000000-prefix.jpg",
+            "sha256": "884b9a11d62a9a263f34ee49fff9cafcd48cfb0a7f1bc7c501bd959cd214a7b0"
+          },
+          {
+            "sim_s": 33.3,
+            "path": "raw/eval-own/r1/000250-release-repick.jpg",
+            "sha256": "5a380c4f4fe307a22761c2b27daa5c49fdbb77fc0353182b0295fc157a079a0d"
+          },
+          {
+            "sim_s": 33.3,
+            "path": "raw/eval-own/r2/000250-release-repick.jpg",
+            "sha256": "f3dc95add97e7321df1489e8d42320dd9abc3bddcff61b2c2f7ff84379fee49e"
+          },
+          {
+            "sim_s": 66.3,
+            "path": "raw/eval-own/r1/000580-release-lookaround.jpg",
+            "sha256": "d54c3991455d750b915da12f551e06181f8c02041d8105f6cb2c38da4dc07713"
+          },
+          {
+            "sim_s": 66.3,
+            "path": "raw/eval-own/r2/000580-release-lookaround.jpg",
+            "sha256": "dfaf4532537c5b4c5f6044dea7c7e272e5c3825aa843758b984f355d4e948db5"
+          },
+          {
+            "sim_s": 100.3,
+            "path": "raw/eval-own/r1/000920-release-shift.jpg",
+            "sha256": "671a9bcb230dd08b881d165af9cbcdc56226e14045d17acb62180336f642b690"
+          },
+          {
+            "sim_s": 100.3,
+            "path": "raw/eval-own/r2/000920-release-shift.jpg",
+            "sha256": "98513a38870326f4fccb15f7179ec1a06bdf6212967ef133be57a96289f66f84"
+          },
+          {
+            "sim_s": 133.3,
+            "path": "raw/eval-own/r1/001250-release-regrasp_check.jpg",
+            "sha256": "6f539da72521017d4e7c57dc3e0e2fc8e7e1be0fe9c526106ac3d35266a5603f"
+          },
+          {
+            "sim_s": 133.3,
+            "path": "raw/eval-own/r2/001250-release-regrasp_check.jpg",
+            "sha256": "b97991bc3622a09ba5a602dc1dcf9c2bfedc31d4066fad0112cc917aa090d36d"
+          },
+          {
+            "sim_s": 167.3,
+            "path": "raw/eval-own/r1/001590-release-done.jpg",
+            "sha256": "8cf370e7fa427eef821521292c6c9a443b44f1cf64b01f8fa15d720b2fc8003f"
+          },
+          {
+            "sim_s": 167.3,
+            "path": "raw/eval-own/r2/001590-release-done.jpg",
+            "sha256": "5bba4213b71e9e388ef060324d8ed29c270cfcbb95a1e7578c782da37c8dff04"
+          }
+        ],
+        "relationship": "Distinct teal/blue ends in selected own-camera frames; no same-end approach or mutual blockage seen. Interior panorama/held images cannot independently show full cargo placement."
+      }
+    },
+    {
+      "name": "r21d2-04-46afd8b0",
+      "seed": 78526,
+      "candidate": "B",
+      "episode": 4,
+      "source_sha": "46afd8b095e74954439f98b28f2aa52af3eaea01",
+      "status": "complete",
+      "success": true,
+      "outcome": "teacher_done",
+      "sim_s": 171.7999999976227,
+      "wall_s": 555.8987901709988,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 0
+      },
+      "first30": {
+        "sim_s": 30.299999999998953,
+        "wall_s": 89.79599952697754,
+        "wall_per_sim": 2.9635643408244436
+      },
+      "metrics": {
+        "line_ibvs_pulses": 10,
+        "fov_recovery_pulses": 24,
+        "yaw_command_reversals": 1,
+        "rho_observed_reversals": 2,
+        "alignments": 12,
+        "settled": 12,
+        "fov_blocked": 0,
+        "alternative_pulses": {},
+        "alternative_attempts": {},
+        "reversal_fallback_samples": 0
+      },
+      "source_proofs": [
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round2/lite/r21d2-04-46afd8b0/raw/result.json.zst",
+          "sha256": "c2f67e111bf5ddd62685e5ec9a72ebdbf443388c7de70972c220d87cb75af2dd",
+          "decoded_sha256": "404f68f73447ca4d9d149f59a7cb03746659f78a1de5bb41791ae3b4ed0aa7f3"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round2/lite/r21d2-04-46afd8b0/raw/teacher-r1.jsonl.zst",
+          "sha256": "b8649e042cbe00626535dcac426eeeeeba54327a6ccc41c3949d70f4fdbfb00d",
+          "decoded_sha256": "a5456101d21ebf416950e1909323e9ba3b531270e0f5d8c225c4a62d3f1882bd"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round2/lite/r21d2-04-46afd8b0/raw/teacher-r2.jsonl.zst",
+          "sha256": "1297e9c3c72271ae66bb5729c12092c42220afc3669318e894d5024c6ba53d5e",
+          "decoded_sha256": "4dbca86771e53ee671e9b88d33c80ceaadc7f60e5db49fbde8956d6a59c71aee"
+        }
+      ],
+      "remote": "gcp1:/home/ugrp/ugrp-sim/runs/r21d2-04-46afd8b0",
+      "local": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round2/lite/r21d2-04-46afd8b0",
+      "manifest_sha256": "775a6cc254d60efe8f401abbef6961240430d8737b2592932d4e4ad4755668ef",
+      "remote_manifest_verified": true,
+      "local_verified_files": 19,
+      "visual_review": {
+        "directly_viewed": true,
+        "temporal_samples": 6,
+        "own_camera_frames": 12,
+        "frames": [
+          {
+            "sim_s": 0.0,
+            "path": "raw/eval-own/r1/000000-prefix.jpg",
+            "sha256": "428c4c3f813177cdc82f62dd4b7990e3205dbb817e02aab001a1149b2a5fbe0b"
+          },
+          {
+            "sim_s": 0.0,
+            "path": "raw/eval-own/r2/000000-prefix.jpg",
+            "sha256": "4f643d57dba2854d4621947d9a6339dbd9a089fa44ec7b67a06c43c0896cc928"
+          },
+          {
+            "sim_s": 33.3,
+            "path": "raw/eval-own/r1/000250-release-repick.jpg",
+            "sha256": "badd004529b5f18712343e04b2ea777ea914c07394884d2445fab4b708de1849"
+          },
+          {
+            "sim_s": 33.3,
+            "path": "raw/eval-own/r2/000250-release-repick.jpg",
+            "sha256": "5e8dab68a4864eb94c2db0131fbe79de6a3716792ed96a633b764a68442c9f71"
+          },
+          {
+            "sim_s": 67.3,
+            "path": "raw/eval-own/r1/000590-release-lookaround.jpg",
+            "sha256": "8fcbcce19ac5cad2e92f8a868d03886a2d665675719233ded57cc0f6a6b75473"
+          },
+          {
+            "sim_s": 67.3,
+            "path": "raw/eval-own/r2/000590-release-lookaround.jpg",
+            "sha256": "6236a8b978ccb049fb33f18dfe5a8d442ffa8a3c6f210c72cff6680b9cc505b6"
+          },
+          {
+            "sim_s": 100.3,
+            "path": "raw/eval-own/r1/000920-release-shift.jpg",
+            "sha256": "dbc9d4d58fa3130a54c4610675258d00d9156566f2b5eef3721fea16f5d836ce"
+          },
+          {
+            "sim_s": 100.3,
+            "path": "raw/eval-own/r2/000920-release-shift.jpg",
+            "sha256": "83c0cfd2f20bb161945a6710eb3957449aafa66a2497a200b3286e7e052a977f"
+          },
+          {
+            "sim_s": 134.3,
+            "path": "raw/eval-own/r1/001260-release-regrasp_check.jpg",
+            "sha256": "87f84a1b7bbc0c53a0d90840755d4fac46656edff7b25983f8c2e39100f1455e"
+          },
+          {
+            "sim_s": 134.3,
+            "path": "raw/eval-own/r2/001260-release-regrasp_check.jpg",
+            "sha256": "a9a360276d36005aa6dc0fa413558b5b851ff8e5e948f4e87d5f6357b482c781"
+          },
+          {
+            "sim_s": 168.3,
+            "path": "raw/eval-own/r1/001600-release-done.jpg",
+            "sha256": "0ac8c670353bb9d7c087e3f2196e08db79c166f1f4a2f41045fc9921a8e2af54"
+          },
+          {
+            "sim_s": 168.3,
+            "path": "raw/eval-own/r2/001600-release-done.jpg",
+            "sha256": "cc6c88f7ffff008545bed88d2de4b9aab79de2a18bee9e5fa51de43cbad96bb9"
+          }
+        ],
+        "relationship": "Distinct teal/blue ends in selected own-camera frames; no same-end approach or mutual blockage seen. Interior panorama/held images cannot independently show full cargo placement."
+      }
+    },
+    {
+      "name": "r21d2-05-46afd8b0",
+      "seed": 110600,
+      "candidate": "A",
+      "episode": 5,
+      "source_sha": "46afd8b095e74954439f98b28f2aa52af3eaea01",
+      "status": "complete",
+      "success": true,
+      "outcome": "teacher_done",
+      "sim_s": 33.90000000007927,
+      "wall_s": 107.31404168099834,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 0
+      },
+      "first30": {
+        "sim_s": 30.299999999998953,
+        "wall_s": 92.209632396698,
+        "wall_per_sim": 3.04322219131027
+      },
+      "metrics": {
+        "line_ibvs_pulses": 0,
+        "fov_recovery_pulses": 0,
+        "yaw_command_reversals": 0,
+        "rho_observed_reversals": 0,
+        "alignments": 0,
+        "settled": 0,
+        "fov_blocked": 0,
+        "alternative_pulses": {},
+        "alternative_attempts": {},
+        "reversal_fallback_samples": 0
+      },
+      "source_proofs": [
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round2/lite/r21d2-05-46afd8b0/raw/result.json.zst",
+          "sha256": "60350c4e78ab63c64258cc999636c9b84003e54c216de924c0a6c55d06affcd5",
+          "decoded_sha256": "94c041a3636bd5c266079335c5815fe978d97b3ffd2941136ca8d0f85539001c"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round2/lite/r21d2-05-46afd8b0/raw/teacher-r1.jsonl.zst",
+          "sha256": "4f79913ebbb4254cd1ea616fc139385e9fa28b2de3e163c0f30e94d8bf62e4fd",
+          "decoded_sha256": "d83d4aed3a2e270941c03768c99b6338e288ded23a102494fa0a983f3a0a7a85"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round2/lite/r21d2-05-46afd8b0/raw/teacher-r2.jsonl.zst",
+          "sha256": "605af3d24520b1da0cb50759da4e0852bf5681f9970ac2dc6e1be097cf9189a9",
+          "decoded_sha256": "4d6b5d6d9b305a278a8afe9626ac71b076f8a06966341ea677e9fc2edd3c7bce"
+        }
+      ],
+      "remote": "gcp1:/home/ugrp/ugrp-sim/runs/r21d2-05-46afd8b0",
+      "local": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round2/lite/r21d2-05-46afd8b0",
+      "manifest_sha256": "080138dbbd69e15848cbb9598c1b267247f479bff2ee29326863977118d00780",
+      "remote_manifest_verified": true,
+      "local_verified_files": 18,
+      "visual_review": {
+        "directly_viewed": true,
+        "temporal_samples": 6,
+        "own_camera_frames": 12,
+        "frames": [
+          {
+            "sim_s": 0.0,
+            "path": "raw/eval-own/r1/000000-prefix.jpg",
+            "sha256": "b0876b1f87a696588fcf21ec1e044b14f8fd4b894e5226b7ede9ff8f2ecd67af"
+          },
+          {
+            "sim_s": 0.0,
+            "path": "raw/eval-own/r2/000000-prefix.jpg",
+            "sha256": "36c9a422a2766ed31bc64a66c6d5e624ea42848ac3e82a3b727064a4761dee80"
+          },
+          {
+            "sim_s": 6.0,
+            "path": "raw/eval-own/r1/000060-prefix.jpg",
+            "sha256": "cd0105c6abec72f8c03a51a55da26559b254f4efa555be53f2761fd4683e0886"
+          },
+          {
+            "sim_s": 6.0,
+            "path": "raw/eval-own/r2/000060-prefix.jpg",
+            "sha256": "06e3787a269edeffb96d7dedc958e289888af3f653d29d692b984d1d41466515"
+          },
+          {
+            "sim_s": 12.3,
+            "path": "raw/eval-own/r1/000040-release-open.jpg",
+            "sha256": "1639d64ccb07df796f9d5565fad9f37fce0d4c1ba33a0fb6009a52e0063a6a47"
+          },
+          {
+            "sim_s": 12.3,
+            "path": "raw/eval-own/r2/000040-release-open.jpg",
+            "sha256": "f07434e9efb26d1c096e48e48f82aba3f03c36dbf785500282b23a810e701a6b"
+          },
+          {
+            "sim_s": 18.3,
+            "path": "raw/eval-own/r1/000100-release-lookaround.jpg",
+            "sha256": "4e6c6dbfdfa756d5e1f8a54a3daaf41058a054d9d112ba2ce4ea1b49b3538bc5"
+          },
+          {
+            "sim_s": 18.3,
+            "path": "raw/eval-own/r2/000100-release-lookaround.jpg",
+            "sha256": "8b8d949365fbc2473a9456fd1c4330fd661eff78601a87720b7f591414b62fb4"
+          },
+          {
+            "sim_s": 25.3,
+            "path": "raw/eval-own/r1/000170-release-lookaround.jpg",
+            "sha256": "e165bcb15c8be08ca6f30224a08d1b88734e99ae1775b57922ec83bc1143db8e"
+          },
+          {
+            "sim_s": 25.3,
+            "path": "raw/eval-own/r2/000170-release-lookaround.jpg",
+            "sha256": "66c1dffa771262cc192971d7661786d9acc8d81db085eb8ed183391aa695b52f"
+          },
+          {
+            "sim_s": 31.3,
+            "path": "raw/eval-own/r1/000230-release-done.jpg",
+            "sha256": "0e6c08bbaf4e972c01d6fb7f0fe6f0535edb14b04096d0eca2d2505d78441819"
+          },
+          {
+            "sim_s": 31.3,
+            "path": "raw/eval-own/r2/000230-release-done.jpg",
+            "sha256": "ec8bdcb66ca196fe266d074de13132cee58e6cbadf82751f5e60167d75c94dbb"
+          }
+        ],
+        "relationship": "Distinct teal/blue ends in selected own-camera frames; no same-end approach or mutual blockage seen. Interior panorama/held images cannot independently show full cargo placement."
+      }
+    }
+  ],
+  "run_class": "dev",
+  "status": "VERIFIED_DEV6_NOT_GATE",
+  "source_worktree": "/Users/changmin/projects/ugrp-wt/grasp-act-probes",
+  "gate_runs_executed": 0,
+  "source_plan_verification": {
+    "episode_N": 6,
+    "all_episode_inputs_unchanged_except_batch": true,
+    "plan_sha256": "58ec6a52701e29065a5125c883800fb3ee3f4d305f9232f0a5fcdceacd0ea6b4",
+    "gate_plan_sha256": "356a2d3a65f823ee4a7a50950c6536539f0a9cd73cca6fcb7950033ce2503e60",
+    "release20_plan_sha256": "29fef22bbe11bc57bfa1561d10fe0b79a08d2957dafee29a0b5a196854029e46"
+  },
+  "representative": {
+    "source_sha": "46afd8b095e74954439f98b28f2aa52af3eaea01",
+    "run": "r21d2-00-46afd8b0",
+    "scope": "32 sampled saved own-RGB pairs across the successful 110618 A; no new physics/render; NOT continuous video",
+    "frame_N": 32,
+    "fps": 10,
+    "first_sim_s": 0.0,
+    "last_sim_s": 81.29999999999895,
+    "duration_s": 3.2,
+    "video": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/representative-46afd8b0/release21-46afd8b0-own-rgb-sampled.mp4",
+    "sha256": "006ce22b1c87c65048054bcf4952a18bd47b6a58b5870b36a7b326c4119e7b8b",
+    "bytes": 77857,
+    "source_frames": [
+      {
+        "path": "raw/eval-own/r1/000000-prefix.jpg",
+        "sha256": "756737ee500b9072ee605494142fed2450b077f2a4454eacc6f20222ae012dfb"
+      },
+      {
+        "path": "raw/eval-own/r2/000000-prefix.jpg",
+        "sha256": "d8445bda24b775b40b5e013543bb9c6d901b0fb4fd0749943b89e90cfada0060"
+      },
+      {
+        "path": "raw/eval-own/r1/000030-prefix.jpg",
+        "sha256": "6fae473c508436fa50fbf193c87a53bdd550e0b7f1eac8457692efdcd3aeb89c"
+      },
+      {
+        "path": "raw/eval-own/r2/000030-prefix.jpg",
+        "sha256": "e0f82da6317a0437e37e49121958e941fa82bbfb5d66ff28ddf1807e03803ba6"
+      },
+      {
+        "path": "raw/eval-own/r1/000050-prefix.jpg",
+        "sha256": "a6df83f25951711419a953bcc556d87d746e58c8dc87529259779f4f35954e5f"
+      },
+      {
+        "path": "raw/eval-own/r2/000050-prefix.jpg",
+        "sha256": "fddfd529abe5b2479da406e25ffc48bc48aeeac6d34ca754399c82e8ae3f1fdc"
+      },
+      {
+        "path": "raw/eval-own/r1/000080-prefix.jpg",
+        "sha256": "ff2040aadcd0806ed821649e817de34c95c25a68b0c0583335d4943f36b9f3c2"
+      },
+      {
+        "path": "raw/eval-own/r2/000080-prefix.jpg",
+        "sha256": "0cca67d87ab206a8c0d4a3967abdce509cee380ae01998964f253c734e504600"
+      },
+      {
+        "path": "raw/eval-own/r1/000020-release-lower.jpg",
+        "sha256": "fa37efbed3b75a2a4e4089594818e084f98de193b3660bc0c981f90f46118fe4"
+      },
+      {
+        "path": "raw/eval-own/r2/000020-release-lower.jpg",
+        "sha256": "5bb9b65d08125ef7b5adfa9d86f60c2de403850f1c19590a3f2c5046001cfac0"
+      },
+      {
+        "path": "raw/eval-own/r1/000040-release-open.jpg",
+        "sha256": "49379fb715c31d3859e0e1d5a6296696b924c4fcc52641f5bdf4e2cd044adcb7"
+      },
+      {
+        "path": "raw/eval-own/r2/000040-release-open.jpg",
+        "sha256": "83b47c02d5c5442ec8f5a76e053b78daedffec2fb49b48ece7e47a9c0da1d620"
+      },
+      {
+        "path": "raw/eval-own/r1/000070-release-lookaround.jpg",
+        "sha256": "5a7d61d85d8de01e2e8fe57e4ff656b083e02ed6b5c1ca9540355250578eed1a"
+      },
+      {
+        "path": "raw/eval-own/r2/000070-release-lookaround.jpg",
+        "sha256": "24e8d8b817a2774ba63e19262685ebbe76667adb82ef5d8532f02f69461ef472"
+      },
+      {
+        "path": "raw/eval-own/r1/000100-release-lookaround.jpg",
+        "sha256": "d2cfe537bedd62f3b4a6563196bd94ac58a0c791a61541312c8ff36df589e0b7"
+      },
+      {
+        "path": "raw/eval-own/r2/000100-release-lookaround.jpg",
+        "sha256": "b04da237101a129ab0e5640110f49d4a54a6f3b90704acb1828a23e3aa7700ef"
+      },
+      {
+        "path": "raw/eval-own/r1/000120-release-observe_back.jpg",
+        "sha256": "e5dc9ad43e34c3f2d5c9c35dd4006eccdd63ed11a21ceffb9706e8b5db0671ca"
+      },
+      {
+        "path": "raw/eval-own/r2/000120-release-observe_back.jpg",
+        "sha256": "62737f70a74f486d410c9835de311229f920086de98b409c02cc32e782af0b7f"
+      },
+      {
+        "path": "raw/eval-own/r1/000150-release-lookaround.jpg",
+        "sha256": "5d286fa06af19bd3c36cb9559bf7e1e106d343800200cce9e5c36d928cd965fc"
+      },
+      {
+        "path": "raw/eval-own/r2/000150-release-lookaround.jpg",
+        "sha256": "9bdc84a344536022070cd3248c52db75606a67bbe977e2f2ad37958eace34307"
+      },
+      {
+        "path": "raw/eval-own/r1/000170-release-lookaround.jpg",
+        "sha256": "3a1875dd5997f2ebd1d38c3f4cb2cc032216bb0d1a9ac38d96f517b22567340e"
+      },
+      {
+        "path": "raw/eval-own/r2/000170-release-lookaround.jpg",
+        "sha256": "6d1a61fb326b1b3ec8b15c7f308bb4b1b3f664a3720e69ddc977bb7c84f5b57c"
+      },
+      {
+        "path": "raw/eval-own/r1/000200-release-line_recheck.jpg",
+        "sha256": "e2c89cca9ad1451b587a0af98a4c2b47e7798f18b1dba8fa5fc38bba70ab745b"
+      },
+      {
+        "path": "raw/eval-own/r2/000200-release-line_recheck.jpg",
+        "sha256": "2c470cdf0f65c1d6675f0248806966cbd00d937d6f4d1f020375f8773b93d4ce"
+      },
+      {
+        "path": "raw/eval-own/r1/000230-release-line_recheck.jpg",
+        "sha256": "324ca38f09e7cb494d80d70d66120b5c122e86d74bb75fa8f1a5bc7b70181168"
+      },
+      {
+        "path": "raw/eval-own/r2/000230-release-line_recheck.jpg",
+        "sha256": "23fc7842f4e1a360f8b42ffdfd8266e15f756858e77b96de5a6f20bbb565a825"
+      },
+      {
+        "path": "raw/eval-own/r1/000250-release-line_recheck.jpg",
+        "sha256": "9049224fb3c2ab7b4744d9aaf4984fef65f2b21b10d7aed81f11c09452bbf624"
+      },
+      {
+        "path": "raw/eval-own/r2/000250-release-line_recheck.jpg",
+        "sha256": "948fde636fc8a9011046861fce636739502f555c8f3d449f354ea07085485d92"
+      },
+      {
+        "path": "raw/eval-own/r1/000280-release-approach.jpg",
+        "sha256": "d311fc1abb0f175674717c4a61e35d3834b62d0353c2c3b4ceaab401c0ff81e4"
+      },
+      {
+        "path": "raw/eval-own/r2/000280-release-approach.jpg",
+        "sha256": "4c2e7bcf67db8b67728ea6ddeddf636bfb0e5d3ff189e2db324ea7d1c077f831"
+      },
+      {
+        "path": "raw/eval-own/r1/000310-release-repick.jpg",
+        "sha256": "3a0a0a05e09db585823a33b0760e62a3e83a96237766e6e2ca2235c7f2771b38"
+      },
+      {
+        "path": "raw/eval-own/r2/000310-release-repick.jpg",
+        "sha256": "9468083503fa3a732a2919f527f5f98a9480254fd7e93fd5f7974786f0591e29"
+      },
+      {
+        "path": "raw/eval-own/r1/000330-release-repick.jpg",
+        "sha256": "26ef8d30e61537921ce07285da817bea8ab453930a9a2653a072b2e0b2bf18e8"
+      },
+      {
+        "path": "raw/eval-own/r2/000330-release-repick.jpg",
+        "sha256": "c437fe615053b26e10ce585f093a846779a4e44ead62c15f426bfe1cfda2e6a8"
+      },
+      {
+        "path": "raw/eval-own/r1/000360-release-regrasp_check.jpg",
+        "sha256": "7c65be2fa8475f34d3ea6dbfc0e20d06028dcb56e1667e7e4dc86eb48bb03645"
+      },
+      {
+        "path": "raw/eval-own/r2/000360-release-regrasp_check.jpg",
+        "sha256": "fea147f524eb9072ff3970dbda46cb1a2e3c9f9d87f4e21971c46da3ee22b6ed"
+      },
+      {
+        "path": "raw/eval-own/r1/000390-release-regrasp_check.jpg",
+        "sha256": "7feb8ea5415e76e6ed97b89d3d28b39f027e48a5c3c65c737afb87c63f699c2e"
+      },
+      {
+        "path": "raw/eval-own/r2/000390-release-regrasp_check.jpg",
+        "sha256": "3e70dcfd9c5a88d523e1cdfe860c71ec747292048b6fe7c4ec6ed954168725c5"
+      },
+      {
+        "path": "raw/eval-own/r1/000410-release-regrasp_check.jpg",
+        "sha256": "5c09af3ad689bc3fca66d8793b4b341982c324144d6335a32bb1dcb8d73931aa"
+      },
+      {
+        "path": "raw/eval-own/r2/000410-release-regrasp_check.jpg",
+        "sha256": "2d0d0a9b220b4941b63b7ea2f5af27b59cc6d84dd49131333ec3e7e310a87923"
+      },
+      {
+        "path": "raw/eval-own/r1/000440-release-regrasp_check.jpg",
+        "sha256": "1305faab6b354056b6d68f224f5c5c82ee505ca3f6b7ae777298dde317eabc5b"
+      },
+      {
+        "path": "raw/eval-own/r2/000440-release-regrasp_check.jpg",
+        "sha256": "a7dffd7524878912c590d4e9f91fb8735cbc8fdb30c4121b93e1b907e83ca1b4"
+      },
+      {
+        "path": "raw/eval-own/r1/000470-release-regrasp_check.jpg",
+        "sha256": "cfbf6e02dd046e40f2ea57a705b7acb80e10343dc9f675f4b33d94c5b84fb57f"
+      },
+      {
+        "path": "raw/eval-own/r2/000470-release-regrasp_check.jpg",
+        "sha256": "27112e7e727a8efaecddf45a0b91f897ae74990319d61773e7e18298e4b3857d"
+      },
+      {
+        "path": "raw/eval-own/r1/000490-release-regrasp_check.jpg",
+        "sha256": "5f69f69be9d93000c569e89396194d0ffbc675dddf6e3df09378857694e07f3c"
+      },
+      {
+        "path": "raw/eval-own/r2/000490-release-regrasp_check.jpg",
+        "sha256": "94de5eb4d8ccfecf2ca62f47f06e83a2b1d396aec80b02dc0ff1380158b181d4"
+      },
+      {
+        "path": "raw/eval-own/r1/000520-release-lower.jpg",
+        "sha256": "b59e6da7d3f68096ae6ea749643c450cb458baa4453ebf5d46d3b98319c3a598"
+      },
+      {
+        "path": "raw/eval-own/r2/000520-release-lower.jpg",
+        "sha256": "6348858f8bfdb943a19ebed9ee7e0dfe286f507b1cf473a9da519fa4d0e5f7d5"
+      },
+      {
+        "path": "raw/eval-own/r1/000540-release-open.jpg",
+        "sha256": "dff72b62367a6ffc1c271f6254f7d8ccb58e4f10f909bbefd51479a49c3120bc"
+      },
+      {
+        "path": "raw/eval-own/r2/000540-release-open.jpg",
+        "sha256": "5d8219d7636705ea6dc80dd1acc8c5c95e305145d1638bf6f2d49b8d5b38e9d1"
+      },
+      {
+        "path": "raw/eval-own/r1/000570-release-lookaround.jpg",
+        "sha256": "5e8b0046d8da4488c887191e874d5eeeba16f2d3dc26a089b42725f6045c0d10"
+      },
+      {
+        "path": "raw/eval-own/r2/000570-release-lookaround.jpg",
+        "sha256": "5989bcd7f57efd006d9ea7ad13366262e84ff84b982bd1ee6f0580a3cd18f6b3"
+      },
+      {
+        "path": "raw/eval-own/r1/000600-release-lookaround.jpg",
+        "sha256": "b87a608191168adfcc053fb8e7b85b47ff8109d67b7ce50dd915f8a950a4b772"
+      },
+      {
+        "path": "raw/eval-own/r2/000600-release-lookaround.jpg",
+        "sha256": "666ddc85ab3ca34c9a94470de8b4d379a993a9b6d64dabd7c15f9132e6527fb6"
+      },
+      {
+        "path": "raw/eval-own/r1/000620-release-observe_back.jpg",
+        "sha256": "bce67336aa93fe65c730ca5c073285cf876b8c790896e75da2eebc667b8f1814"
+      },
+      {
+        "path": "raw/eval-own/r2/000620-release-observe_back.jpg",
+        "sha256": "77c17db7cd86e56204b81c242d329120a98c7344a831a7af5c984813a7692645"
+      },
+      {
+        "path": "raw/eval-own/r1/000650-release-lookaround.jpg",
+        "sha256": "8e6d0fd6bc15d84ef7d15be774217073731986dd0a1243fc2a58abadae65d8c7"
+      },
+      {
+        "path": "raw/eval-own/r2/000650-release-lookaround.jpg",
+        "sha256": "2eb54dee106b3a4b1a14011a92f39f59dca30ff66350ec53b00ac5b9139fcf5e"
+      },
+      {
+        "path": "raw/eval-own/r1/000680-release-observe_move.jpg",
+        "sha256": "ecdf060aadc3ab773f68a9473f67b9446c7047355a23274f560ade44e374b9cb"
+      },
+      {
+        "path": "raw/eval-own/r2/000680-release-observe_move.jpg",
+        "sha256": "9446a9414af5d04cdcd696ef3728eff8001a1305f872e0d423195696fe43f082"
+      },
+      {
+        "path": "raw/eval-own/r1/000700-release-done.jpg",
+        "sha256": "dda8eb6fb61ffcc0275c7ba54b9f3f9d5641915ec2654ad6c064a716c1cb3637"
+      },
+      {
+        "path": "raw/eval-own/r2/000700-release-done.jpg",
+        "sha256": "ccccfc37b91b9e37135dd41d9a3e40741f280d07540b3708997839a476adaeee"
+      },
+      {
+        "path": "raw/eval-own/r1/000730-release-done.jpg",
+        "sha256": "3e871964a1a2c682f6f11305f235beaf1dafb42c603591847886c735c09f6780"
+      },
+      {
+        "path": "raw/eval-own/r2/000730-release-done.jpg",
+        "sha256": "1e3a1a45a2f0e6c72555c52bb76de67a924c3ff13217906c41de249d3f487852"
+      },
+      {
+        "path": "raw/eval-regrasp-input/r1/00000-line_recheck.jpg",
+        "sha256": "d1693b569415704fc73a73c270732b850249df84be0ae698e8aff748ab24f80c"
+      },
+      {
+        "path": "raw/eval-regrasp-input/r1/00004-line_recheck.jpg",
+        "sha256": "0eefcc7844a23a8c4f4aa7de3c91d87ae2421f7e6f95262bb61d0f3b417a53e3"
+      },
+      {
+        "path": "raw/eval-regrasp-input/r1/00005-release21_recenter.jpg",
+        "sha256": "295f0ea2d3a8a46929f4be5c9ba6d3ad2119a01e07269852ac410c223ff092a9"
+      },
+      {
+        "path": "raw/eval-regrasp-input/r1/00006-release21_verify.jpg",
+        "sha256": "8750f6f60fef486735d1b887dafb27358ac86e31f5f9626c029850458bb6a070"
+      },
+      {
+        "path": "raw/eval-regrasp-input/r1/00007-line_recheck.jpg",
+        "sha256": "d1eea7f9092f9f9da8cd7f22faceeae728aba3921c241225cfaf15bf2e541a20"
+      },
+      {
+        "path": "raw/eval-regrasp-input/r1/00012-line_recheck.jpg",
+        "sha256": "b26083c32344114194191fb64d2103270b31074201caba956cd49e96e822f580"
+      }
+    ],
+    "native_frames": [
+      {
+        "robot": "r1",
+        "t": 30.600000000055097,
+        "epoch": 1,
+        "label": "line_recheck",
+        "path": "eval-regrasp-input/r1/00000-line_recheck.jpg",
+        "sha256": "d1693b569415704fc73a73c270732b850249df84be0ae698e8aff748ab24f80c"
+      },
+      {
+        "robot": "r1",
+        "t": 31.400000000058917,
+        "epoch": 1,
+        "label": "line_recheck",
+        "path": "eval-regrasp-input/r1/00004-line_recheck.jpg",
+        "sha256": "0eefcc7844a23a8c4f4aa7de3c91d87ae2421f7e6f95262bb61d0f3b417a53e3"
+      },
+      {
+        "robot": "r1",
+        "t": 32.300000000063214,
+        "epoch": 1,
+        "label": "release21_recenter",
+        "path": "eval-regrasp-input/r1/00005-release21_recenter.jpg",
+        "sha256": "295f0ea2d3a8a46929f4be5c9ba6d3ad2119a01e07269852ac410c223ff092a9"
+      },
+      {
+        "robot": "r1",
+        "t": 32.50000000006417,
+        "epoch": 1,
+        "label": "release21_verify",
+        "path": "eval-regrasp-input/r1/00006-release21_verify.jpg",
+        "sha256": "8750f6f60fef486735d1b887dafb27358ac86e31f5f9626c029850458bb6a070"
+      },
+      {
+        "robot": "r1",
+        "t": 33.40000000006847,
+        "epoch": 1,
+        "label": "line_recheck",
+        "path": "eval-regrasp-input/r1/00007-line_recheck.jpg",
+        "sha256": "d1eea7f9092f9f9da8cd7f22faceeae728aba3921c241225cfaf15bf2e541a20"
+      },
+      {
+        "robot": "r1",
+        "t": 34.10000000007181,
+        "epoch": 1,
+        "label": "line_recheck",
+        "path": "eval-regrasp-input/r1/00012-line_recheck.jpg",
+        "sha256": "b26083c32344114194191fb64d2103270b31074201caba956cd49e96e822f580"
+      }
+    ]
+  },
+  "representative_preservation": {
+    "path": "/home/ugrp/ugrp-sim/representative-release21-46afd8b0",
+    "files": 267,
+    "bytes": 3208170,
+    "manifest_sha256": "a2836831eab2ecc4ee83ca78f001eb93a9d5219256721bee5f5d27c4953294c2",
+    "source_raw_hashes_verified": true,
+    "video_sha256": "006ce22b1c87c65048054bcf4952a18bd47b6a58b5870b36a7b326c4119e7b8b",
+    "video_uploaded": true,
+    "scope": "same GCP persistent filesystem; hardlinked raw original preserved; no independent backup"
+  },
+  "cleanup": [
+    {
+      "run": "r21d1-00-b75b130f",
+      "lease_exists": false,
+      "reservation_status": "released",
+      "exit": "0"
+    },
+    {
+      "run": "r21d1-01-b75b130f",
+      "lease_exists": false,
+      "reservation_status": "released",
+      "exit": "0"
+    },
+    {
+      "run": "r21d1-02-b75b130f",
+      "lease_exists": false,
+      "reservation_status": "released",
+      "exit": "130"
+    },
+    {
+      "run": "r21d1-03-b75b130f",
+      "lease_exists": false,
+      "reservation_status": "released",
+      "exit": "130"
+    },
+    {
+      "run": "r21d1-04-b75b130f",
+      "lease_exists": false,
+      "reservation_status": "released",
+      "exit": "130"
+    },
+    {
+      "run": "r21d1-05-b75b130f",
+      "lease_exists": false,
+      "reservation_status": "released",
+      "exit": "0"
+    },
+    {
+      "run": "r21d2-00-46afd8b0",
+      "lease_exists": false,
+      "reservation_status": "released",
+      "exit": "0"
+    },
+    {
+      "run": "r21d2-01-46afd8b0",
+      "lease_exists": false,
+      "reservation_status": "released",
+      "exit": "0"
+    },
+    {
+      "run": "r21d2-02-46afd8b0",
+      "lease_exists": false,
+      "reservation_status": "released",
+      "exit": "0"
+    },
+    {
+      "run": "r21d2-03-46afd8b0",
+      "lease_exists": false,
+      "reservation_status": "released",
+      "exit": "0"
+    },
+    {
+      "run": "r21d2-04-46afd8b0",
+      "lease_exists": false,
+      "reservation_status": "released",
+      "exit": "0"
+    },
+    {
+      "run": "r21d2-05-46afd8b0",
+      "lease_exists": false,
+      "reservation_status": "released",
+      "exit": "0"
+    }
+  ],
+  "final_census": {
+    "jobs": {
+      "crate18-full-reproduction-77990-487579ea": {
+        "run": "crate18-full-reproduction-77990-487579ea",
+        "slots": 1,
+        "pids": [
+          598165
+        ]
+      },
+      "crate18-full-reproduction-79314-487579ea": {
+        "run": "crate18-full-reproduction-79314-487579ea",
+        "slots": 1,
+        "pids": [
+          599688
+        ]
+      },
+      "crate18-no_clearance-reproduction-79314-487579ea": {
+        "run": "crate18-no_clearance-reproduction-79314-487579ea",
+        "slots": 1,
+        "pids": [
+          601026
+        ]
+      },
+      "crate18-no_clearance-reproduction-79450-487579ea": {
+        "run": "crate18-no_clearance-reproduction-79450-487579ea",
+        "slots": 1,
+        "pids": [
+          604950
+        ]
+      },
+      "crate18-full-reproduction-79451-487579ea": {
+        "run": "crate18-full-reproduction-79451-487579ea",
+        "slots": 1,
+        "pids": [
+          606306
+        ]
+      },
+      "crate18-no_clearance-reproduction-79451-487579ea": {
+        "run": "crate18-no_clearance-reproduction-79451-487579ea",
+        "slots": 1,
+        "pids": [
+          607160
+        ]
+      }
+    },
+    "total": 6,
+    "own": 0,
+    "loadavg": "12.46 17.61 14.68 7/1196 611706\n",
+    "free_bytes": 136011403264,
+    "available_kib": 126147676,
+    "idle_guard": "active",
+    "idle_guard_sha256": "e0f759f6380753b0fcbec2400ed9753e5a223133b58ff755d2a6cdcd5cbbacc3"
+  },
+  "vm_final": {
+    "machineType": "https://www.googleapis.com/compute/v1/projects/ugrp-act-train-1014/zones/asia-northeast3-a/machineTypes/n4-highcpu-64",
+    "scheduling": {
+      "instanceTerminationAction": "STOP",
+      "maxRunDuration": {
+        "nanos": 0,
+        "seconds": "28800"
+      }
+    },
+    "status": "RUNNING"
+  },
+  "budget_stop_attempts": [],
+  "settle_pulse_sha256": "a7167d2bae2b10dc93c02f84e0c5563b48241f6d996825e8b88eadd1bff7fc09"
+}

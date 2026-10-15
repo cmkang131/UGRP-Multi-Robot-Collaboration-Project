@@ -2,7 +2,8 @@
 
 기본 off `release21_v1`(API/CLI `release21`/`--release21`)은 release20 정착 위에만 켠다.
 A=release18+release20+release21, B=동일+release19 완료 look 대기 재사용이다.
-최종 판정과 직접 실행 결과는 아래에 추가한다. 이전 release20 결과와 합산하지 않는다.
+**최종 실행 소스 `46afd8b0`: GCP DEV6 6/6(A3/3·B3/3),FOV 결함 발생1/1 회복,관문40은 미실행.**
+1라운드 `b75b130f`는 코드 감사로 은퇴했고 release20/1라운드와 합산하지 않는다.
 
 ## 원인과 입력 경계
 
@@ -123,3 +124,90 @@ HOST_ERROR0. 종료 코드130·SUPERVISOR_STOP·원본을 보존하고 **1라운
 상세6개 성적·pulse/반전·입력0/0/top0/0·원본/선별 영상 해시는 `release21-round1-summary.json`에 있다.
 첫30 측정은 training-segments의 prefix 원점을 사용했다(teacher trace는 release부터 시작하므로
 첫 행을 전체 원점으로 쓰지 않는다). 중앙 wall/SIM2.5173,관측/명령 기준 기록이며 비용 측정이 아니다.
+
+## 최종 2라운드 — 실행 소스 46afd8b0
+
+실행 SHA `46afd8b095e74954439f98b28f2aa52af3eaea01`,GCP gcp1/n4-highcpu-64,
+프로젝트 `ugrp-act-train-1014`,DEV6 **6/6 성공(A3/3·B3/3)**. 실패/중단/HOST_ERROR0.
+원본 `release_success=true`/`release_outcome=teacher_done` 및 실행 SHA/프로필을 다시 읽어 셌다.
+각180 SIM초 상한,학습RGB off,모델 호출0. 이번 결과는 관문 A/B 각각40회나 ACT 학생 성공이 아니다.
+
+| seed | 후보 | 성공 | FOV 거부 | 재중심/후진/반대 발행 | IBVS 펄스 | yaw 반전 | rho 반전 | 정착 | SIM초 | wall초 |
+|---|---|---|---:|---|---:|---:|---:|---|---:|---:|
+| 110618 | A | 성공 | 1 | 1/0/0 | 5 | 1 | 0 | 4/4 | 84.5 | 267.9 |
+| 110618 | B | 성공 | 0 | 0/0/0 | 1 | 0 | 1 | 4/4 | 78.4 | 255.3 |
+| 110613 | A | 성공 | 0 | 0/0/0 | 4 | 1 | 2 | 8/8 | 129.3 | 404.9 |
+| 74976 | B | 성공 | 0 | 0/0/0 | 0 | 0 | 0 | 12/12 | 169.9 | 559.7 |
+| 78526 | B | 성공 | 0 | 0/0/0 | 10 | 1 | 2 | 12/12 | 171.8 | 555.9 |
+| 110600 | A | 성공 | 0 | 0/0/0 | 0 | 0 | 0 | 0/0 | 33.9 | 107.3 |
+
+**핵심 부분집합: FOV 거부가 실제 발생한110618 A 1/1 회복**,나머지5개는 대안 미사용이다.
+총40/40 정렬 정착,IBVS20펄스+대안1펄스,FOV 병진 회복85펄스,yaw 반전3회,rho 반전5회,
+공통 settler의 연속3반전 fallback0. IBVS 수에는 대안/FOV 병진을 넣지 않았고 각 수를 따로 보고했다.
+yaw 반전은 같은 정렬 안에서 실제 발행 wheels×duration을 적분한 yaw의 부호 변경이다.
+rho 반전은 공통 settler가 실제 명령 뒤 집계한 관측 반전이며 대안/카메라 변경 뒤 초기화한다.
+후진·반대 대안의 실제 선택 성공은0건이므로 그 두 대안의 물리 일반화는 아직 미측정이다.
+카메라 후보를 강제로 막은 저장 특징의 별도 비물리 확인에서는 두 몸 대안도 FOV에 막혀
+각2회 소진 후0 unsafe 펄스/기존 종료를 확인했다. 이를 물리 복구 성공으로 세지 않는다.
+
+110618 A의 world_t31.4 거부→32.3 재중심 새 RGB(여유32px)→같은 최소40ms 보정1회→
+32.5 새 RGB yaw sign `verified`(예측−20.9900px,관측−10.5518px)→hover 복원→
+34.1까지 새 RGB .3초 안정 확인을 원본으로 대조했다. 카메라가 움직인 영상을 몸 yaw로 오인하지 않는다.
+문제 구간 world_t30.6/31.4/32.3/32.5/33.4/34.1의 자기 RGB6장을 직접 봤다.
+기존110613 r2 첫 접근 뒤 재정렬은 계속0펄스/.3초 새 RGB 정착이며 기존 문제의 진동 재발은 없다.
+
+입력 감사6/6 `invisible_measurements=0,held_world_reads=0`,control/evaluation top reads 모두0이다.
+감사 범위는 release 판단 입력이며 정답을 쓰는 장면 준비 prefix는 제외한다. runtime 카운터는
+독립적인 전체 정보 흐름 증명이나 실물 성공을 뜻하지 않는다. 공통 `settle_pulse.py`는 e897b0c2와 바이트 동일,
+SHA256 `a7167d2bae2b10dc93c02f84e0c5563b48241f6d996825e8b88eadd1bff7fc09`다.
+
+첫30 SIM초 원본/자기 RGB는110618 A/B 각각6시각(0/6/12.3/18.3/24.3/30.3초)×r1/r2,
+전체6개는 처음·중간·끝6시각×r1/r2=72장을 직접 봤다(가장 긴 간격34초 이하).
+서로 다른 색 끝을 유지했고 같은 끝 접근/상호 막힘은 선택 영상에서 보이지 않았다.
+자기 영상만으로 최종 화물 전체 배치를 판정하지 않고 별도 기존 평가의 성공을 대조했다.
+첫30 wall/SIM 중앙2.85336,범위2.69808–3.04322. 초기화는 제외하고 저장 영상 mtime를 썼다.
+이번에는 top 평가 촬영도 off이고 공유 부하가 달라 release20과의 속도 개선 비교로 해석하지 않는다.
+가장 늦은78526은171.8초(종료 후 평가2.5초 포함),180초 상한 여유8.2초다. GCP 청구액은 미확인이다.
+
+원본6개 VM SHA256SUMS 전체 검증,로컬 lite 파일110개 및 result/양쪽 teacher 포함 압축 복원 SHA256 검증,
+선별 영상 해시 대조를 완료했다. 원본 위치는 `gcp1:/home/ugrp/ugrp-sim/runs/r21d2-00..05-46afd8b0`,
+회수는 이 worktree의 `outputs/release21/round2/lite/`. 실행별 정확한 경로/전체 해시는
+`release21-summary.json`에 있다. 전체 raw나 독립 원격 백업은 회수하지 않았다.
+
+대표110618 A의 원본267파일/3,208,170바이트는 GCP
+`/home/ugrp/ugrp-sim/representative-release21-46afd8b0/`에 milestone로 hardlink 보존했다.
+원래 dev 메타데이터는 바꾸지 않았다. 같은 영속 디스크의 보존이며 독립 백업이 아니다.
+저장된 자기 RGB32쌍만 10fps로 묶은 영상은640×264,3.2초,77,857바이트,
+0–81.3 SIM초의 **샘플 영상**(연속 촬영 재생 아님)이다. 새 MuJoCo 물리/렌더는 없다.
+Mac 경로는 `outputs/release21/representative-46afd8b0/release21-46afd8b0-own-rgb-sampled.mp4`,
+GCP도 위 보존 폴더에 올려 같은 해시/전체 디코딩을 확인했다.
+영상 SHA256 `006ce22b1c87c65048054bcf4952a18bd47b6a58b5870b36a7b326c4119e7b8b`.
+
+## 관문 큐·재현·종료
+
+큐: `/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-release-gate40-46afd8b0.json`.
+상태 `PREPARED_NOT_APPROVED`,A40/B40+선행110618 A/B→110613 A=83항목.
+관문 원래110600–110639 바이트/해시 그대로이고,두 후보 모두 처음110618→110613부터다.
+A=release21 on,B=release21 on+release19 대기 재사용,전부180초/top off/학습off.
+승인/준비/제출/예약/실행 플래그 전부false,실행 승인 수0,관문 실행0/80.
+83개 argv 확장·83개 프로필 검증,enabled 변조 거부,합성 자체5/6 반례의 `BLOCKED` 강제를 확인했다.
+`release21-queue-verification.json`에 큐 SHA256과 검증 범위를 기록했다.
+
+```sh
+QUEUE=/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-release-gate40-46afd8b0.json
+python3 -m scripts.prepare_release21_queue --verify "$QUEUE"
+python3 -m scripts.prepare_release21_queue --commands "$QUEUE" --source-worktree /path/to/clean-46afd8b0 --candidate A --stage preflight
+```
+
+마지막 명령은 실행하지 않고 GCP argv를 출력한다(B는 `--candidate B`). 실행하려면 깨끗한
+정확한46afd8b0 source checkout·새 run name·공용 admission.lock의 전체≤40/자체≤6 예약이 필요하다.
+직접 실행한6개 원래 argv/cwd는 `release21-reproduction.json`에 고정했다.
+모두 `scripts/remote_run.py --host gcp1 --detach --class dev --pr 491 --per-run-mb 96` 경로다.
+runner cwd는 기존 GCP 지원 `/Users/changmin/projects/ugrp-wt/gcp-sim-host`이며 이 소스의 구형 runner로 바꾸지 않는다.
+후속 기록 커밋은 실행 소스46afd8b0를 대체하지 않는다. 현재 worktree를 reset/전환해서 맞추지 않는다.
+
+모든12개 자기 시도는 종료,임대0/활성 예약0을 확인했다. 종료 census에는 타 작업6개가 남아 VM은
+RUNNING을 유지했고 그 작업을 건드리지 않았다. 전체 제출 예약 최대20/40·자체6/6,
+8h STOP·유휴20분 timer/hash는 유지됐고,오늘 budget-stop 계정의 VM stop 시도는 최종 조회에서도0이다.
+원본/이전 자료 삭제·새 VM·다른 프로젝트·모델 키·Mac MuJoCo 실행은 없었다.
+추가3라운드는 필요하지 않았다. 남은 검증은 별도 승인된 A/B 각각40회와 후진/반대 대안의 실제 선택 사례다.
