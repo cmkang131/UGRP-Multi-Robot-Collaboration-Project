@@ -129,13 +129,18 @@ def detect(hfw, und_bgr, cm, *, params, loaded, state):
     seed=primary.copy() if state.option == RELOC16_OPTION else primary & np.array([not robot[max(0,u-half):min(len(robot),u+half+1)].any() for u in cols])
     remaining=primary.copy();supported_line=np.zeros(n,bool);checks=0
     while np.count_nonzero(seed & remaining)>=2:
-        ids=np.flatnonzero(seed & remaining);best=None
-        for ia,i in enumerate(ids[:-1]):
-            for j in ids[ia+1:]:
-                slope=(scan['vb'][j,0]-scan['vb'][i,0])/(cols[j]-cols[i])
-                residual=abs(scan['vb'][:,0]-(scan['vb'][i,0]+slope*(cols-cols[i])))
-                keep=remaining & (residual<=tol);checks+=1
-                if best is None or keep.sum()>best.sum():best=keep
+        if state.option==RELOC16_OPTION:
+            from harness.reloc16_lines import best_line
+            best,work=best_line(np.column_stack([cols,scan['vb'][:,0]]),remaining,seed,tol)
+            checks+=work
+        else:
+            ids=np.flatnonzero(seed & remaining);best=None
+            for ia,i in enumerate(ids[:-1]):
+                for j in ids[ia+1:]:
+                    slope=(scan['vb'][j,0]-scan['vb'][i,0])/(cols[j]-cols[i])
+                    residual=abs(scan['vb'][:,0]-(scan['vb'][i,0]+slope*(cols-cols[i])))
+                    keep=remaining & (residual<=tol);checks+=1
+                    if best is None or keep.sum()>best.sum():best=keep
         if best is None or best.sum()<p['min_run_columns']:break
         supported_line|=best;remaining[best]=False
     for j in np.flatnonzero(primary & ~supported_line):reasons[j]='NO_UNOCCLUDED_LINE_CONSENSUS'

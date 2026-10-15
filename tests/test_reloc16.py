@@ -59,3 +59,35 @@ def test_null_pending_and_delayed_acceptance_do_not_reset_xy_or_metric_age(monke
     h.observe(np.full((480,640,3),2,np.uint8),3.4,own)
     np.testing.assert_equal(own.x,old);np.testing.assert_equal(own.P,P)
     assert h.last_measurement_t==3.2
+
+
+def test_finite_vectorized_line_hypotheses_and_first_ties_equal_reference():
+    from harness.reloc16_lines import best_line
+    rng=np.random.default_rng(40)
+    for _ in range(12):
+        uv=np.column_stack([np.arange(96),rng.integers(20,80,96)]).astype(float)
+        uv[:40,1]=30+uv[:40,0]/4
+        remaining=rng.random(96)>.1;eligible=rng.random(96)>.2
+        ids=np.flatnonzero(remaining & eligible);best=None;checks=0
+        for ia,i in enumerate(ids[:-1]):
+            for j in ids[ia+1:]:
+                slope=(uv[j,1]-uv[i,1])/(uv[j,0]-uv[i,0])
+                keep=remaining & (abs(uv[:,1]-(uv[i,1]+slope*(uv[:,0]-uv[i,0])))<=1.5)
+                checks+=1
+                if best is None or keep.sum()>best.sum():best=keep
+        got,work=best_line(uv,remaining,eligible,1.5)
+        np.testing.assert_equal(got,best);assert work==checks
+
+
+def test_vectorized_compass_preserves_cross_product_residual_ties():
+    from harness.reloc16_lines import best_line
+    uv=np.column_stack([np.arange(40),np.r_[np.full(20,10.),np.arange(20)%3+9.]])
+    best=np.zeros(len(uv),bool);checks=0
+    for i in range(len(uv)-1):
+        for j in range(i+1,len(uv)):
+            line=np.cross([*uv[i],1.],[*uv[j],1.]);norm=np.linalg.norm(line[:2])
+            keep=abs(np.column_stack([uv,np.ones(len(uv))])@line/norm)<=1.5
+            checks+=1
+            if keep.sum()>best.sum():best=keep
+    got,work=best_line(uv,np.ones(len(uv),bool),np.ones(len(uv),bool),1.5,perpendicular=True)
+    np.testing.assert_equal(got,best);assert work==checks

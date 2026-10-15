@@ -68,14 +68,9 @@ def certify_points(points,K,R,*,residual_px,min_columns,cell_size=(160,120)):
     unknown=dict(status='unknown_static_support',method=OPTION,contact_columns=len(points),
                  truth_inputs=0,null_hypothesis_retained=True,metric_fix_refreshed=False)
     if len(points)<min_columns:return unknown
-    best=np.zeros(len(points),bool);checks=0
-    for i in range(len(points)-1):
-        for j in range(i+1,len(points)):
-            l=np.cross([*points[i],1.],[*points[j],1.]);norm=np.linalg.norm(l[:2])
-            if norm==0:continue
-            keep=abs(np.column_stack([points,np.ones(len(points))])@l/norm)<=residual_px
-            checks+=1
-            if keep.sum()>best.sum():best=keep
+    from harness.reloc16_lines import best_line
+    best,checks=best_line(points,np.ones(len(points),bool),np.ones(len(points),bool),residual_px,perpendicular=True)
+    if best is None:return unknown
     support=points[best];blocks=[]
     if len(support)<min_columns:return unknown
     cells=np.floor_divide(support,cell_size).astype(int)

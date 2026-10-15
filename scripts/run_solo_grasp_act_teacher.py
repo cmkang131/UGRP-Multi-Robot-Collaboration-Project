@@ -505,7 +505,8 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
                 negative_eval['max_clearance_m'] = max(negative_eval['max_clearance_m'], min_z)
                 negative_eval['max_pickup_offset_m'] = max(negative_eval['max_pickup_offset_m'], row['placement_offset'])
             ev.write(json.dumps({'t': now, **row, 'cargo_xyz': pos.tolist(),
-                     'base_xyz': list(map(float, base)), 'visible_n': visible_n, 'probe_N': probe_N,
+                     'base_xyz': list(map(float, base)),
+                     'base_yaw_rad':float(world.robot(rid).base_rpy()[2]), 'visible_n': visible_n, 'probe_N': probe_N,
                      'lookaround_estimate_xy': list(map(float, relook.loc.own.x[:2])) if relook.loc is not None else None})+'\n')
             last_eval_pos, last_eval_t = pos, now
             if tick % 5 == 0:
