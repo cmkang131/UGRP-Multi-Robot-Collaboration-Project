@@ -10,8 +10,12 @@
     },
     {
       "gate": "train_validation_split",
-      "passed": null,
-      "rejected": null
+      "passed": 185,
+      "rejected": 0,
+      "train_seed_N": 166,
+      "validation_seed_N": 19,
+      "train_rows": 60023,
+      "validation_rows": 6908
     },
     {
       "gate": "second_L4_available",
@@ -29,6 +33,12 @@
       "passed": null,
       "rejected": null,
       "not_started": 20
+    },
+    {
+      "gate": "CPU_masked_adapter_serialization",
+      "passed": 1,
+      "rejected": 0,
+      "scope": "random initialized ACT, not L4 training smoke"
     }
   ],
   "rejections": [
@@ -39,6 +49,14 @@
       "minimum_gap_m": null,
       "gap_status": "not_applicable_resource_admission",
       "count": 1
+    },
+    {
+      "category": "student_protocol_not_implemented",
+      "reason": "14d ACT has no explicit READY head; own-command READY/GO/ACK adapter and student pair runner require implementation before heldout20",
+      "blocking_object": "student READY/GO/ACK interface",
+      "minimum_gap_m": null,
+      "gap_status": "not_applicable_protocol_admission",
+      "count": 1
     }
   ],
   "source_raw": "/home/ugrp/ugrp-sim/ops-reviews/beampair8/dataset-v1/dataset.tar.zst",
@@ -47,5 +65,60 @@
   "queue_ready": false,
   "student_success_n": null,
   "student_attempted_N": 0,
-  "student_planned_N": 20
+  "student_planned_N": 20,
+  "row_funnel": [
+    {
+      "gate": "source_selected_rows",
+      "passed": 66931,
+      "rejected": 0,
+      "scope": "original beampair8 hash-linked tensors"
+    },
+    {
+      "gate": "verified_shard_files",
+      "passed": 66931,
+      "rejected": 0,
+      "files": 1480
+    },
+    {
+      "gate": "assigned_training",
+      "passed": 60023,
+      "excluded_as_validation": 6908
+    },
+    {
+      "gate": "training_normalization",
+      "passed": 60023,
+      "rejected": 0
+    },
+    {
+      "gate": "optimizer_input",
+      "passed": 0,
+      "rejected": 0,
+      "not_started": 60023
+    }
+  ],
+  "event_funnel": [
+    {
+      "gate": "second_L4_create_request",
+      "passed": 1,
+      "rejected": 0
+    },
+    {
+      "gate": "GPU_quota_admission",
+      "passed": 0,
+      "rejected": 1
+    },
+    {
+      "gate": "L4_smoke_checkpoint",
+      "passed": null,
+      "rejected": null,
+      "not_started": 1
+    },
+    {
+      "gate": "student_rollout",
+      "passed": null,
+      "rejected": null,
+      "not_started": 20
+    }
+  ],
+  "source_shard_verification_sha256": "224382d1e383be8106c668ba7fd990bf23e77a6b90e329ad753b91ae30e5beb7"
 }

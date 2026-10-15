@@ -1,0 +1,3586 @@
+{
+  "status": "complete",
+  "host": {
+    "project": "ugrp-sim-b-1014",
+    "instance": "ugrp-sim-gcp2",
+    "machine_type": "n4-highcpu-64",
+    "zone": "asia-northeast3-a"
+  },
+  "scope": "offline held-within-recordings validation; no heldout20 or student-visits used",
+  "dataset_manifest_sha256": "a0f5d8a1c6c9b6c4988122ae40bf412c4c705f3c34740d8d7a91c93fef58d6cd",
+  "stages_sha256": "8dd47dc81a7f26c29fb51868e26499a2b347db1d7603146a6e295aa1ca8e9d1a",
+  "model_sha256": null,
+  "ACT_measured": false,
+  "physical_runs": 0,
+  "metrics": {
+    "all_h0": {
+      "all": {
+        "persistence": {
+          "N": 6908,
+          "wheel_mae": 0.02312898263335228,
+          "pulse_mae_ms": 2.961031913757324,
+          "pwm_mae": 8.301765441894531
+        }
+      },
+      "align": {
+        "persistence": {
+          "N": 1142,
+          "wheel_mae": 0.04535901919007301,
+          "pulse_mae_ms": 2.0957558155059814,
+          "pwm_mae": 4.049737453460693
+        }
+      },
+      "approach": {
+        "persistence": {
+          "N": 2968,
+          "wheel_mae": 0.034728772938251495,
+          "pulse_mae_ms": 5.752521991729736,
+          "pwm_mae": 2.4551210403442383
+        }
+      },
+      "complete": {
+        "persistence": {
+          "N": 38,
+          "wheel_mae": 0.0,
+          "pulse_mae_ms": 0.0,
+          "pwm_mae": 0.0
+        }
+      },
+      "pick": {
+        "persistence": {
+          "N": 2166,
+          "wheel_mae": 0.0,
+          "pulse_mae_ms": 0.0,
+          "pwm_mae": 15.189103126525879
+        }
+      },
+      "ready": {
+        "persistence": {
+          "N": 38,
+          "wheel_mae": 0.0,
+          "pulse_mae_ms": 0.0,
+          "pwm_mae": 0.0
+        }
+      },
+      "search": {
+        "persistence": {
+          "N": 556,
+          "wheel_mae": 0.008812949992716312,
+          "pulse_mae_ms": 1.7769261598587036,
+          "pwm_mae": 22.54928207397461
+        }
+      }
+    },
+    "refresh_h0": {
+      "all": {
+        "persistence": {
+          "N": 913,
+          "wheel_mae": 0.02280941791832447,
+          "pulse_mae_ms": 3.383162498474121,
+          "pwm_mae": 8.909309387207031
+        }
+      },
+      "align": {
+        "persistence": {
+          "N": 145,
+          "wheel_mae": 0.03681034594774246,
+          "pulse_mae_ms": 1.6785657405853271,
+          "pwm_mae": 4.547585964202881
+        }
+      },
+      "approach": {
+        "persistence": {
+          "N": 385,
+          "wheel_mae": 0.03295454382896423,
+          "pulse_mae_ms": 5.551906585693359,
+          "pwm_mae": 2.9148051738739014
+        }
+      },
+      "pick": {
+        "persistence": {
+          "N": 304,
+          "wheel_mae": 0.0,
+          "pulse_mae_ms": 0.0,
+          "pwm_mae": 15.409868240356445
+        }
+      },
+      "ready": {
+        "persistence": {
+          "N": 6,
+          "wheel_mae": 0.0,
+          "pulse_mae_ms": 0.0,
+          "pwm_mae": 0.0
+        }
+      },
+      "search": {
+        "persistence": {
+          "N": 73,
+          "wheel_mae": 0.03835616260766983,
+          "pulse_mae_ms": 9.697962760925293,
+          "pwm_mae": 22.849315643310547
+        }
+      }
+    }
+  },
+  "episodes": [
+    {
+      "seed": 8328006,
+      "robot_id": "r1",
+      "metrics": {
+        "all_h0": {
+          "all": {
+            "persistence": {
+              "N": 193,
+              "wheel_mae": 0.019948186352849007,
+              "pulse_mae_ms": 1.9899858236312866,
+              "pwm_mae": 7.074611663818359
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 40,
+              "wheel_mae": 0.03281249850988388,
+              "pulse_mae_ms": 2.1256308555603027,
+              "pwm_mae": 4.62000036239624
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 94,
+              "wheel_mae": 0.026994679123163223,
+              "pulse_mae_ms": 3.1812984943389893,
+              "pwm_mae": 3.23191499710083
+            }
+          },
+          "complete": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 57,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.382455825805664
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          }
+        },
+        "refresh_h0": {
+          "all": {
+            "persistence": {
+              "N": 25,
+              "wheel_mae": 0.020999999716877937,
+              "pulse_mae_ms": 2.0842559337615967,
+              "pwm_mae": 6.26400089263916
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 5,
+              "wheel_mae": 0.07000000029802322,
+              "pulse_mae_ms": 1.2210462093353271,
+              "pwm_mae": 5.3600006103515625
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 12,
+              "wheel_mae": 0.014583333395421505,
+              "pulse_mae_ms": 3.833430051803589,
+              "pwm_mae": 0.5
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 8,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.475003242492676
+            }
+          }
+        }
+      }
+    },
+    {
+      "seed": 8328006,
+      "robot_id": "r2",
+      "metrics": {
+        "all_h0": {
+          "all": {
+            "persistence": {
+              "N": 62,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 14.254837036132812
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 3,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "complete": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 57,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.505263328552246
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          }
+        },
+        "refresh_h0": {
+          "all": {
+            "persistence": {
+              "N": 9,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 13.933332443237305
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 8,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.674999237060547
+            }
+          }
+        }
+      }
+    },
+    {
+      "seed": 8328022,
+      "robot_id": "r1",
+      "metrics": {
+        "all_h0": {
+          "all": {
+            "persistence": {
+              "N": 382,
+              "wheel_mae": 0.015117799863219261,
+              "pulse_mae_ms": 2.0860941410064697,
+              "pwm_mae": 13.742408752441406
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 41,
+              "wheel_mae": 0.04695121943950653,
+              "pulse_mae_ms": 1.9555481672286987,
+              "pwm_mae": 4.556097984313965
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 110,
+              "wheel_mae": 0.02863636240363121,
+              "pulse_mae_ms": 5.184381008148193,
+              "pwm_mae": 3.138181686401367
+            }
+          },
+          "complete": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 57,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 14.561403274536133
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "search": {
+            "persistence": {
+              "N": 172,
+              "wheel_mae": 0.0040697674266994,
+              "pulse_mae_ms": 0.85132896900177,
+              "pwm_mae": 22.602325439453125
+            }
+          }
+        },
+        "refresh_h0": {
+          "all": {
+            "persistence": {
+              "N": 49,
+              "wheel_mae": 0.02857142873108387,
+              "pulse_mae_ms": 3.8784544467926025,
+              "pwm_mae": 13.632652282714844
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 5,
+              "wheel_mae": 0.13999998569488525,
+              "pulse_mae_ms": 8.527588844299316,
+              "pwm_mae": 4.839999198913574
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 14,
+              "wheel_mae": 0.02500000037252903,
+              "pulse_mae_ms": 3.3861658573150635,
+              "pwm_mae": 0.8142858743667603
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 8,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.049999237060547
+            }
+          },
+          "search": {
+            "persistence": {
+              "N": 22,
+              "wheel_mae": 0.015909090638160706,
+              "pulse_mae_ms": 4.545454502105713,
+              "pwm_mae": 23.27272605895996
+            }
+          }
+        }
+      }
+    },
+    {
+      "seed": 8328022,
+      "robot_id": "r2",
+      "metrics": {
+        "all_h0": {
+          "all": {
+            "persistence": {
+              "N": 181,
+              "wheel_mae": 0.008701656945049763,
+              "pulse_mae_ms": 0.9286314845085144,
+              "pwm_mae": 6.667403221130371
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 39,
+              "wheel_mae": 0.031410254538059235,
+              "pulse_mae_ms": 2.013486623764038,
+              "pwm_mae": 4.5538458824157715
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 83,
+              "wheel_mae": 0.004216867499053478,
+              "pulse_mae_ms": 1.0789916515350342,
+              "pwm_mae": 2.00481915473938
+            }
+          },
+          "complete": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 57,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.136842727661133
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          }
+        },
+        "refresh_h0": {
+          "all": {
+            "persistence": {
+              "N": 24,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.532982349395752,
+              "pwm_mae": 9.991665840148926
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 5,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.229015052318573,
+              "pwm_mae": 4.919999599456787
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 11,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 1.0587729215621948,
+              "pwm_mae": 8.399999618530273
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 8,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.35000228881836
+            }
+          }
+        }
+      }
+    },
+    {
+      "seed": 8328024,
+      "robot_id": "r1",
+      "metrics": {
+        "all_h0": {
+          "all": {
+            "persistence": {
+              "N": 220,
+              "wheel_mae": 0.02386363595724106,
+              "pulse_mae_ms": 2.649080991744995,
+              "pwm_mae": 6.0372724533081055
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 39,
+              "wheel_mae": 0.06730769574642181,
+              "pulse_mae_ms": 1.9935821294784546,
+              "pwm_mae": 4.27179479598999
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 122,
+              "wheel_mae": 0.02151639387011528,
+              "pulse_mae_ms": 4.1397385597229,
+              "pwm_mae": 2.357377052307129
+            }
+          },
+          "complete": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 57,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.333333015441895
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          }
+        },
+        "refresh_h0": {
+          "all": {
+            "persistence": {
+              "N": 29,
+              "wheel_mae": 0.01508620660752058,
+              "pulse_mae_ms": 2.24953031539917,
+              "pwm_mae": 6.7862067222595215
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 5,
+              "wheel_mae": 0.07000000029802322,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 4.679999828338623
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 16,
+              "wheel_mae": 0.0054687499068677425,
+              "pulse_mae_ms": 4.077273845672607,
+              "pwm_mae": 3.075000524520874
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 8,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.524998664855957
+            }
+          }
+        }
+      }
+    },
+    {
+      "seed": 8328024,
+      "robot_id": "r2",
+      "metrics": {
+        "all_h0": {
+          "all": {
+            "persistence": {
+              "N": 62,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.067742347717285
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 3,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 8.000000953674316
+            }
+          },
+          "complete": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 57,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.968421936035156
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          }
+        },
+        "refresh_h0": {
+          "all": {
+            "persistence": {
+              "N": 9,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.48888874053955
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 12.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 8,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.92500114440918
+            }
+          }
+        }
+      }
+    },
+    {
+      "seed": 8328049,
+      "robot_id": "r1",
+      "metrics": {
+        "all_h0": {
+          "all": {
+            "persistence": {
+              "N": 221,
+              "wheel_mae": 0.027714932337403297,
+              "pulse_mae_ms": 3.9367005825042725,
+              "pwm_mae": 6.034389019012451
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 41,
+              "wheel_mae": 0.04695121571421623,
+              "pulse_mae_ms": 1.77789306640625,
+              "pwm_mae": 4.721951484680176
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 121,
+              "wheel_mae": 0.03471074253320694,
+              "pulse_mae_ms": 6.587746620178223,
+              "pwm_mae": 2.499173402786255
+            }
+          },
+          "complete": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 57,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 14.694737434387207
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          }
+        },
+        "refresh_h0": {
+          "all": {
+            "persistence": {
+              "N": 29,
+              "wheel_mae": 0.01206896547228098,
+              "pulse_mae_ms": 3.004082441329956,
+              "pwm_mae": 7.1999993324279785
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 5,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.04268646240234375,
+              "pwm_mae": 4.0799994468688965
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 16,
+              "wheel_mae": 0.02187499962747097,
+              "pulse_mae_ms": 5.431560039520264,
+              "pwm_mae": 4.224999904632568
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 8,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.099997520446777
+            }
+          }
+        }
+      }
+    },
+    {
+      "seed": 8328049,
+      "robot_id": "r2",
+      "metrics": {
+        "all_h0": {
+          "all": {
+            "persistence": {
+              "N": 62,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.209677696228027
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 3,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 8.000000953674316
+            }
+          },
+          "complete": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 57,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 16.1228084564209
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          }
+        },
+        "refresh_h0": {
+          "all": {
+            "persistence": {
+              "N": 9,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.600000381469727
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 12.000003814697266
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 8,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 16.049999237060547
+            }
+          }
+        }
+      }
+    },
+    {
+      "seed": 8328063,
+      "robot_id": "r1",
+      "metrics": {
+        "all_h0": {
+          "all": {
+            "persistence": {
+              "N": 228,
+              "wheel_mae": 0.03684210404753685,
+              "pulse_mae_ms": 4.453057289123535,
+              "pwm_mae": 5.867544174194336
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 47,
+              "wheel_mae": 0.06329786777496338,
+              "pulse_mae_ms": 3.428394317626953,
+              "pwm_mae": 4.340425491333008
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 122,
+              "wheel_mae": 0.04446721076965332,
+              "pulse_mae_ms": 7.001332759857178,
+              "pwm_mae": 2.3180325031280518
+            }
+          },
+          "complete": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 57,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 14.929824829101562
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          }
+        },
+        "refresh_h0": {
+          "all": {
+            "persistence": {
+              "N": 30,
+              "wheel_mae": 0.017500000074505806,
+              "pulse_mae_ms": 3.226060152053833,
+              "pwm_mae": 5.166667938232422
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 6,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.4040129482746124,
+              "pwm_mae": 3.9666671752929688
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 16,
+              "wheel_mae": 0.03281249850988388,
+              "pulse_mae_ms": 5.89735746383667,
+              "pwm_mae": 0.5750007629394531
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 8,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.25000286102295
+            }
+          }
+        }
+      }
+    },
+    {
+      "seed": 8328063,
+      "robot_id": "r2",
+      "metrics": {
+        "all_h0": {
+          "all": {
+            "persistence": {
+              "N": 217,
+              "wheel_mae": 0.027419354766607285,
+              "pulse_mae_ms": 3.6405038833618164,
+              "pwm_mae": 6.23410177230835
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 41,
+              "wheel_mae": 0.04695121943950653,
+              "pulse_mae_ms": 1.8930511474609375,
+              "pwm_mae": 4.7414631843566895
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 117,
+              "wheel_mae": 0.03440170735120773,
+              "pulse_mae_ms": 6.0886688232421875,
+              "pwm_mae": 2.3401710987091064
+            }
+          },
+          "complete": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 57,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.519299507141113
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          }
+        },
+        "refresh_h0": {
+          "all": {
+            "persistence": {
+              "N": 28,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 1.22994863986969,
+              "pwm_mae": 6.9714274406433105
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 5,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 5.28000020980835
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 15,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 2.2959041595458984,
+              "pwm_mae": 2.9200000762939453
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 8,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.62499713897705
+            }
+          }
+        }
+      }
+    },
+    {
+      "seed": 8328071,
+      "robot_id": "r1",
+      "metrics": {
+        "all_h0": {
+          "all": {
+            "persistence": {
+              "N": 199,
+              "wheel_mae": 0.02374371886253357,
+              "pulse_mae_ms": 3.6992576122283936,
+              "pwm_mae": 9.339698791503906
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 45,
+              "wheel_mae": 0.04277777671813965,
+              "pulse_mae_ms": 3.612102746963501,
+              "pwm_mae": 2.3822224140167236
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 68,
+              "wheel_mae": 0.030882351100444794,
+              "pulse_mae_ms": 5.7784199714660645,
+              "pwm_mae": 2.8500001430511475
+            }
+          },
+          "complete": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 57,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.035087585449219
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "search": {
+            "persistence": {
+              "N": 27,
+              "wheel_mae": 0.025925925001502037,
+              "pulse_mae_ms": 6.6916728019714355,
+              "pwm_mae": 25.94814682006836
+            }
+          }
+        },
+        "refresh_h0": {
+          "all": {
+            "persistence": {
+              "N": 27,
+              "wheel_mae": 0.03888888657093048,
+              "pulse_mae_ms": 10.202934265136719,
+              "pwm_mae": 11.222223281860352
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 6,
+              "wheel_mae": 0.05833333358168602,
+              "pulse_mae_ms": 7.2042317390441895,
+              "pwm_mae": 4.0
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 9,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 5.730964183807373,
+              "pwm_mae": 4.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 8,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.375000953674316
+            }
+          },
+          "search": {
+            "persistence": {
+              "N": 4,
+              "wheel_mae": 0.17499999701976776,
+              "pulse_mae_ms": 45.168792724609375,
+              "pwm_mae": 30.0000057220459
+            }
+          }
+        }
+      }
+    },
+    {
+      "seed": 8328071,
+      "robot_id": "r2",
+      "metrics": {
+        "all_h0": {
+          "all": {
+            "persistence": {
+              "N": 209,
+              "wheel_mae": 0.020933011546730995,
+              "pulse_mae_ms": 5.2762017250061035,
+              "pwm_mae": 5.830621719360352
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 14,
+              "wheel_mae": 0.02500000037252903,
+              "pulse_mae_ms": 5.628503322601318,
+              "pwm_mae": 3.799999713897705
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 128,
+              "wheel_mae": 0.02871093526482582,
+              "pulse_mae_ms": 7.8255438804626465,
+              "pwm_mae": 1.4875000715255737
+            }
+          },
+          "complete": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 57,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 14.649124145507812
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "search": {
+            "persistence": {
+              "N": 8,
+              "wheel_mae": 0.04374999925494194,
+              "pulse_mae_ms": 2.782184362411499,
+              "pwm_mae": 17.500001907348633
+            }
+          }
+        },
+        "refresh_h0": {
+          "all": {
+            "persistence": {
+              "N": 27,
+              "wheel_mae": 0.01944444328546524,
+              "pulse_mae_ms": 5.331171989440918,
+              "pwm_mae": 5.6370368003845215
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 2,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 8.708624839782715,
+              "pwm_mae": 0.0
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 16,
+              "wheel_mae": 0.03281249850988388,
+              "pulse_mae_ms": 7.907773971557617,
+              "pwm_mae": 1.2499996423721313
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 8,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.024999618530273
+            }
+          },
+          "search": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 12.0
+            }
+          }
+        }
+      }
+    },
+    {
+      "seed": 8328095,
+      "robot_id": "r1",
+      "metrics": {
+        "all_h0": {
+          "all": {
+            "persistence": {
+              "N": 131,
+              "wheel_mae": 0.016030533239245415,
+              "pulse_mae_ms": 1.3617161512374878,
+              "pwm_mae": 7.073281288146973
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 26,
+              "wheel_mae": 0.05384615436196327,
+              "pulse_mae_ms": 2.7848336696624756,
+              "pwm_mae": 1.3153846263885498
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 46,
+              "wheel_mae": 0.015217390842735767,
+              "pulse_mae_ms": 2.303894281387329,
+              "pwm_mae": 1.3043476343154907
+            }
+          },
+          "complete": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 57,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 14.603507995605469
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          }
+        },
+        "refresh_h0": {
+          "all": {
+            "persistence": {
+              "N": 18,
+              "wheel_mae": 0.03888888657093048,
+              "pulse_mae_ms": 3.134730815887451,
+              "pwm_mae": 8.45555305480957
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 3,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 6,
+              "wheel_mae": 0.11666666716337204,
+              "pulse_mae_ms": 9.404192924499512,
+              "pwm_mae": 5.333332538604736
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 8,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.02499771118164
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          }
+        }
+      }
+    },
+    {
+      "seed": 8328095,
+      "robot_id": "r2",
+      "metrics": {
+        "all_h0": {
+          "all": {
+            "persistence": {
+              "N": 62,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 13.841935157775879
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 3,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "complete": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 57,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.056139945983887
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          }
+        },
+        "refresh_h0": {
+          "all": {
+            "persistence": {
+              "N": 9,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 13.555558204650879
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 8,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.25000286102295
+            }
+          }
+        }
+      }
+    },
+    {
+      "seed": 8328106,
+      "robot_id": "r1",
+      "metrics": {
+        "all_h0": {
+          "all": {
+            "persistence": {
+              "N": 144,
+              "wheel_mae": 0.00972222164273262,
+              "pulse_mae_ms": 0.9823359251022339,
+              "pwm_mae": 6.550000190734863
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 30,
+              "wheel_mae": 0.04083333536982536,
+              "pulse_mae_ms": 2.7619049549102783,
+              "pwm_mae": 1.7333332300186157
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 55,
+              "wheel_mae": 0.00318181817419827,
+              "pulse_mae_ms": 1.0654406547546387,
+              "pwm_mae": 0.82909095287323
+            }
+          },
+          "complete": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 57,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 14.835086822509766
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          }
+        },
+        "refresh_h0": {
+          "all": {
+            "persistence": {
+              "N": 19,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.5932422876358032,
+              "pwm_mae": 7.621051788330078
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 4,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.9895317554473877,
+              "pwm_mae": 6.0
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 7,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 1.044782280921936,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 8,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.09999942779541
+            }
+          }
+        }
+      }
+    },
+    {
+      "seed": 8328106,
+      "robot_id": "r2",
+      "metrics": {
+        "all_h0": {
+          "all": {
+            "persistence": {
+              "N": 217,
+              "wheel_mae": 0.025806453078985214,
+              "pulse_mae_ms": 3.8555333614349365,
+              "pwm_mae": 6.390783309936523
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 41,
+              "wheel_mae": 0.029878046363592148,
+              "pulse_mae_ms": 1.736344337463379,
+              "pwm_mae": 4.751218795776367
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 117,
+              "wheel_mae": 0.03739316388964653,
+              "pulse_mae_ms": 6.542397975921631,
+              "pwm_mae": 2.7897439002990723
+            }
+          },
+          "complete": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 57,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.185965538024902
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          }
+        },
+        "refresh_h0": {
+          "all": {
+            "persistence": {
+              "N": 28,
+              "wheel_mae": 0.02500000037252903,
+              "pulse_mae_ms": 3.386850118637085,
+              "pwm_mae": 7.000000953674316
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 5,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 6.2400007247924805
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 15,
+              "wheel_mae": 0.046666666865348816,
+              "pulse_mae_ms": 6.322120666503906,
+              "pwm_mae": 2.77333402633667
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 8,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.400001525878906
+            }
+          }
+        }
+      }
+    },
+    {
+      "seed": 8328107,
+      "robot_id": "r1",
+      "metrics": {
+        "all_h0": {
+          "all": {
+            "persistence": {
+              "N": 139,
+              "wheel_mae": 0.010071942582726479,
+              "pulse_mae_ms": 0.9537981152534485,
+              "pwm_mae": 7.097841262817383
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 31,
+              "wheel_mae": 0.04516128823161125,
+              "pulse_mae_ms": 2.4212117195129395,
+              "pwm_mae": 1.1612902879714966
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 49,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 1.1738855838775635,
+              "pwm_mae": 2.236734390258789
+            }
+          },
+          "complete": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 57,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 14.754385948181152
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          }
+        },
+        "refresh_h0": {
+          "all": {
+            "persistence": {
+              "N": 19,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.4070770740509033,
+              "pwm_mae": 9.12631607055664
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 3,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 12.0
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 7,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 1.1049236059188843,
+              "pwm_mae": 2.3142852783203125
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 8,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.149998664855957
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          }
+        }
+      }
+    },
+    {
+      "seed": 8328107,
+      "robot_id": "r2",
+      "metrics": {
+        "all_h0": {
+          "all": {
+            "persistence": {
+              "N": 62,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 14.22258186340332
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 3,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "complete": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 57,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.470174789428711
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          }
+        },
+        "refresh_h0": {
+          "all": {
+            "persistence": {
+              "N": 9,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 13.88889217376709
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 8,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.625003814697266
+            }
+          }
+        }
+      }
+    },
+    {
+      "seed": 8328113,
+      "robot_id": "r1",
+      "metrics": {
+        "all_h0": {
+          "all": {
+            "persistence": {
+              "N": 213,
+              "wheel_mae": 0.02875586599111557,
+              "pulse_mae_ms": 4.082974910736084,
+              "pwm_mae": 6.4103288650512695
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 43,
+              "wheel_mae": 0.04476743936538696,
+              "pulse_mae_ms": 1.8532966375350952,
+              "pwm_mae": 4.660464763641357
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 111,
+              "wheel_mae": 0.037837836891412735,
+              "pulse_mae_ms": 7.116953372955322,
+              "pwm_mae": 2.4072072505950928
+            }
+          },
+          "complete": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 57,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.750877380371094
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          }
+        },
+        "refresh_h0": {
+          "all": {
+            "persistence": {
+              "N": 28,
+              "wheel_mae": 0.009374999441206455,
+              "pulse_mae_ms": 1.6442557573318481,
+              "pwm_mae": 6.5714287757873535
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 6,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 4.366666793823242
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 14,
+              "wheel_mae": 0.01874999888241291,
+              "pulse_mae_ms": 3.2885115146636963,
+              "pwm_mae": 2.257143020629883
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 8,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.774998664855957
+            }
+          }
+        }
+      }
+    },
+    {
+      "seed": 8328113,
+      "robot_id": "r2",
+      "metrics": {
+        "all_h0": {
+          "all": {
+            "persistence": {
+              "N": 62,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 14.048385620117188
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 3,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "complete": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 57,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.280702590942383
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          }
+        },
+        "refresh_h0": {
+          "all": {
+            "persistence": {
+              "N": 9,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 13.755556106567383
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 8,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.47499942779541
+            }
+          }
+        }
+      }
+    },
+    {
+      "seed": 8328115,
+      "robot_id": "r1",
+      "metrics": {
+        "all_h0": {
+          "all": {
+            "persistence": {
+              "N": 210,
+              "wheel_mae": 0.04416666552424431,
+              "pulse_mae_ms": 5.094098091125488,
+              "pwm_mae": 6.689523696899414
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 42,
+              "wheel_mae": 0.04583333060145378,
+              "pulse_mae_ms": 2.0139169692993164,
+              "pwm_mae": 4.671428203582764
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 109,
+              "wheel_mae": 0.06743118911981583,
+              "pulse_mae_ms": 9.038313865661621,
+              "pwm_mae": 2.722935676574707
+            }
+          },
+          "complete": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 57,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.996491432189941
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          }
+        },
+        "refresh_h0": {
+          "all": {
+            "persistence": {
+              "N": 27,
+              "wheel_mae": 0.022685183212161064,
+              "pulse_mae_ms": 2.4147844314575195,
+              "pwm_mae": 8.007408142089844
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 5,
+              "wheel_mae": 0.07000000029802322,
+              "pulse_mae_ms": 0.6263771653175354,
+              "pwm_mae": 5.239998817443848
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 14,
+              "wheel_mae": 0.01874999888241291,
+              "pulse_mae_ms": 4.433378219604492,
+              "pwm_mae": 4.485714435577393
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 8,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.90000057220459
+            }
+          }
+        }
+      }
+    },
+    {
+      "seed": 8328115,
+      "robot_id": "r2",
+      "metrics": {
+        "all_h0": {
+          "all": {
+            "persistence": {
+              "N": 217,
+              "wheel_mae": 0.04032257944345474,
+              "pulse_mae_ms": 3.6489951610565186,
+              "pwm_mae": 5.917050838470459
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 39,
+              "wheel_mae": 0.12115384638309479,
+              "pulse_mae_ms": 1.8815933465957642,
+              "pwm_mae": 4.005128383636475
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 119,
+              "wheel_mae": 0.03382353112101555,
+              "pulse_mae_ms": 6.037393093109131,
+              "pwm_mae": 2.2436976432800293
+            }
+          },
+          "complete": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 57,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.101754188537598
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          }
+        },
+        "refresh_h0": {
+          "all": {
+            "persistence": {
+              "N": 28,
+              "wheel_mae": 0.04374999925494194,
+              "pulse_mae_ms": 2.9975426197052,
+              "pwm_mae": 5.8714280128479
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 5,
+              "wheel_mae": 0.14000000059604645,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 3.8799993991851807
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 15,
+              "wheel_mae": 0.03500000014901161,
+              "pulse_mae_ms": 5.595412731170654,
+              "pwm_mae": 1.4000004529953003
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 8,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.5
+            }
+          }
+        }
+      }
+    },
+    {
+      "seed": 8328118,
+      "robot_id": "r1",
+      "metrics": {
+        "all_h0": {
+          "all": {
+            "persistence": {
+              "N": 203,
+              "wheel_mae": 0.046551723033189774,
+              "pulse_mae_ms": 3.335944652557373,
+              "pwm_mae": 6.356650352478027
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 39,
+              "wheel_mae": 0.049358971416950226,
+              "pulse_mae_ms": 1.8319427967071533,
+              "pwm_mae": 4.625641345977783
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 105,
+              "wheel_mae": 0.0716666653752327,
+              "pulse_mae_ms": 5.769057273864746,
+              "pwm_mae": 2.47428560256958
+            }
+          },
+          "complete": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 57,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 14.915789604187012
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          }
+        },
+        "refresh_h0": {
+          "all": {
+            "persistence": {
+              "N": 27,
+              "wheel_mae": 0.09074073284864426,
+              "pulse_mae_ms": 5.302015781402588,
+              "pwm_mae": 6.837038040161133
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 4,
+              "wheel_mae": 0.08749999850988388,
+              "pulse_mae_ms": 0.5822114944458008,
+              "pwm_mae": 4.549998760223389
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 14,
+              "wheel_mae": 0.14999999105930328,
+              "pulse_mae_ms": 10.058968544006348,
+              "pwm_mae": 3.1857142448425293
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 8,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.22500228881836
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          }
+        }
+      }
+    },
+    {
+      "seed": 8328118,
+      "robot_id": "r2",
+      "metrics": {
+        "all_h0": {
+          "all": {
+            "persistence": {
+              "N": 223,
+              "wheel_mae": 0.028251122683286667,
+              "pulse_mae_ms": 3.4509458541870117,
+              "pwm_mae": 6.726457118988037
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 43,
+              "wheel_mae": 0.04476743936538696,
+              "pulse_mae_ms": 1.6651802062988281,
+              "pwm_mae": 4.781394958496094
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 121,
+              "wheel_mae": 0.036157023161649704,
+              "pulse_mae_ms": 5.768248558044434,
+              "pwm_mae": 3.2876033782958984
+            }
+          },
+          "complete": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 57,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.729825973510742
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          }
+        },
+        "refresh_h0": {
+          "all": {
+            "persistence": {
+              "N": 29,
+              "wheel_mae": 0.04827586188912392,
+              "pulse_mae_ms": 3.7165162563323975,
+              "pwm_mae": 5.77241325378418
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 5,
+              "wheel_mae": 0.07000000029802322,
+              "pulse_mae_ms": 0.4641088843345642,
+              "pwm_mae": 4.920000076293945
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 16,
+              "wheel_mae": 0.06562499701976776,
+              "pulse_mae_ms": 6.591152191162109,
+              "pwm_mae": 1.0999996662139893
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 8,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.65000057220459
+            }
+          }
+        }
+      }
+    },
+    {
+      "seed": 8328140,
+      "robot_id": "r1",
+      "metrics": {
+        "all_h0": {
+          "all": {
+            "persistence": {
+              "N": 276,
+              "wheel_mae": 0.03170289844274521,
+              "pulse_mae_ms": 2.574965715408325,
+              "pwm_mae": 12.301450729370117
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 39,
+              "wheel_mae": 0.049358971416950226,
+              "pulse_mae_ms": 1.8063510656356812,
+              "pwm_mae": 4.671794891357422
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 95,
+              "wheel_mae": 0.06447368115186691,
+              "pulse_mae_ms": 5.198044300079346,
+              "pwm_mae": 2.793684482574463
+            }
+          },
+          "complete": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 57,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 14.785964012145996
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "search": {
+            "persistence": {
+              "N": 83,
+              "wheel_mae": 0.008433734998106956,
+              "pulse_mae_ms": 1.7641996145248413,
+              "pwm_mae": 25.35903549194336
+            }
+          }
+        },
+        "refresh_h0": {
+          "all": {
+            "persistence": {
+              "N": 37,
+              "wheel_mae": 0.03074324131011963,
+              "pulse_mae_ms": 4.07984733581543,
+              "pwm_mae": 11.524324417114258
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 4,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 4.800000190734863
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 13,
+              "wheel_mae": 0.060576919466257095,
+              "pulse_mae_ms": 3.9195661544799805,
+              "pwm_mae": 4.446153163909912
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 8,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.175000190734863
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "search": {
+            "persistence": {
+              "N": 11,
+              "wheel_mae": 0.03181818127632141,
+              "pulse_mae_ms": 9.090909004211426,
+              "pwm_mae": 20.727272033691406
+            }
+          }
+        }
+      }
+    },
+    {
+      "seed": 8328140,
+      "robot_id": "r2",
+      "metrics": {
+        "all_h0": {
+          "all": {
+            "persistence": {
+              "N": 219,
+              "wheel_mae": 0.027968036010861397,
+              "pulse_mae_ms": 4.397448539733887,
+              "pwm_mae": 6.315068244934082
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 40,
+              "wheel_mae": 0.04593750089406967,
+              "pulse_mae_ms": 1.8079930543899536,
+              "pwm_mae": 4.684999942779541
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 120,
+              "wheel_mae": 0.035729169845581055,
+              "pulse_mae_ms": 7.4226789474487305,
+              "pwm_mae": 2.7300000190734863
+            }
+          },
+          "complete": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 57,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.228070259094238
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          }
+        },
+        "refresh_h0": {
+          "all": {
+            "persistence": {
+              "N": 29,
+              "wheel_mae": 0.02413793094456196,
+              "pulse_mae_ms": 6.731139183044434,
+              "pwm_mae": 5.765517711639404
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 5,
+              "wheel_mae": 0.017500000074505806,
+              "pulse_mae_ms": 5.471056938171387,
+              "pwm_mae": 4.199998378753662
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 15,
+              "wheel_mae": 0.04083333536982536,
+              "pulse_mae_ms": 11.189849853515625,
+              "pwm_mae": 1.5199999809265137
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 8,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.425004005432129
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          }
+        }
+      }
+    },
+    {
+      "seed": 8328144,
+      "robot_id": "r1",
+      "metrics": {
+        "all_h0": {
+          "all": {
+            "persistence": {
+              "N": 227,
+              "wheel_mae": 0.03469163179397583,
+              "pulse_mae_ms": 4.5421953201293945,
+              "pwm_mae": 6.1541852951049805
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 43,
+              "wheel_mae": 0.04476743936538696,
+              "pulse_mae_ms": 1.8280913829803467,
+              "pwm_mae": 4.641860485076904
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 125,
+              "wheel_mae": 0.047600001096725464,
+              "pulse_mae_ms": 7.619763374328613,
+              "pwm_mae": 2.412799835205078
+            }
+          },
+          "complete": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 57,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.715788841247559
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          }
+        },
+        "refresh_h0": {
+          "all": {
+            "persistence": {
+              "N": 30,
+              "wheel_mae": 0.026250001043081284,
+              "pulse_mae_ms": 5.123574733734131,
+              "pwm_mae": 6.239999294281006
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 5,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 4.879999160766602
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 16,
+              "wheel_mae": 0.04921875149011612,
+              "pulse_mae_ms": 9.60670280456543,
+              "pwm_mae": 2.3374991416931152
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 8,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.67500114440918
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          }
+        }
+      }
+    },
+    {
+      "seed": 8328144,
+      "robot_id": "r2",
+      "metrics": {
+        "all_h0": {
+          "all": {
+            "persistence": {
+              "N": 62,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 14.809676170349121
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 3,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 7.999999523162842
+            }
+          },
+          "complete": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 57,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.687719345092773
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          }
+        },
+        "refresh_h0": {
+          "all": {
+            "persistence": {
+              "N": 9,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.422224044799805
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 12.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 8,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.85000228881836
+            }
+          }
+        }
+      }
+    },
+    {
+      "seed": 8328145,
+      "robot_id": "r1",
+      "metrics": {
+        "all_h0": {
+          "all": {
+            "persistence": {
+              "N": 234,
+              "wheel_mae": 0.016452990472316742,
+              "pulse_mae_ms": 3.4982552528381348,
+              "pwm_mae": 7.235042572021484
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 41,
+              "wheel_mae": 0.029878046363592148,
+              "pulse_mae_ms": 2.078446865081787,
+              "pwm_mae": 3.673171043395996
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 108,
+              "wheel_mae": 0.01458333246409893,
+              "pulse_mae_ms": 4.944920063018799,
+              "pwm_mae": 2.225925922393799
+            }
+          },
+          "complete": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 57,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.47368335723877
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "search": {
+            "persistence": {
+              "N": 26,
+              "wheel_mae": 0.04038461297750473,
+              "pulse_mae_ms": 7.666305065155029,
+              "pwm_mae": 16.153846740722656
+            }
+          }
+        },
+        "refresh_h0": {
+          "all": {
+            "persistence": {
+              "N": 30,
+              "wheel_mae": 0.03500000014901161,
+              "pulse_mae_ms": 7.407525539398193,
+              "pwm_mae": 9.873333930969238
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 5,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 3.200000047683716
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 13,
+              "wheel_mae": 0.026923077180981636,
+              "pulse_mae_ms": 7.303824424743652,
+              "pwm_mae": 2.769230842590332
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 8,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.525003433227539
+            }
+          },
+          "search": {
+            "persistence": {
+              "N": 4,
+              "wheel_mae": 0.17499999701976776,
+              "pulse_mae_ms": 31.81900978088379,
+              "pwm_mae": 30.000001907348633
+            }
+          }
+        }
+      }
+    },
+    {
+      "seed": 8328145,
+      "robot_id": "r2",
+      "metrics": {
+        "all_h0": {
+          "all": {
+            "persistence": {
+              "N": 378,
+              "wheel_mae": 0.020370369777083397,
+              "pulse_mae_ms": 2.781299352645874,
+              "pwm_mae": 12.531746864318848
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 43,
+              "wheel_mae": 0.04476743936538696,
+              "pulse_mae_ms": 1.9471232891082764,
+              "pwm_mae": 4.8930230140686035
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 115,
+              "wheel_mae": 0.04413043335080147,
+              "pulse_mae_ms": 7.140664100646973,
+              "pwm_mae": 2.7443480491638184
+            }
+          },
+          "complete": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 57,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 14.649124145507812
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "search": {
+            "persistence": {
+              "N": 161,
+              "wheel_mae": 0.004347825888544321,
+              "pulse_mae_ms": 0.9094942808151245,
+              "pwm_mae": 20.96894645690918
+            }
+          }
+        },
+        "refresh_h0": {
+          "all": {
+            "persistence": {
+              "N": 49,
+              "wheel_mae": 0.02321428433060646,
+              "pulse_mae_ms": 4.173762798309326,
+              "pwm_mae": 13.248979568481445
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 5,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.38916707038879395,
+              "pwm_mae": 5.119999885559082
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 15,
+              "wheel_mae": 0.05249999836087227,
+              "pulse_mae_ms": 6.8379034996032715,
+              "pwm_mae": 3.4266674518585205
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 8,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.024999618530273
+            }
+          },
+          "search": {
+            "persistence": {
+              "N": 21,
+              "wheel_mae": 0.01666666567325592,
+              "pulse_mae_ms": 4.761905193328857,
+              "pwm_mae": 21.5238094329834
+            }
+          }
+        }
+      }
+    },
+    {
+      "seed": 8328154,
+      "robot_id": "r1",
+      "metrics": {
+        "all_h0": {
+          "all": {
+            "persistence": {
+              "N": 213,
+              "wheel_mae": 0.025469481945037842,
+              "pulse_mae_ms": 3.418536901473999,
+              "pwm_mae": 6.126760959625244
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 40,
+              "wheel_mae": 0.05031249672174454,
+              "pulse_mae_ms": 1.7985516786575317,
+              "pwm_mae": 4.59999942779541
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 114,
+              "wheel_mae": 0.02993420884013176,
+              "pulse_mae_ms": 5.756195068359375,
+              "pwm_mae": 2.3947367668151855
+            }
+          },
+          "complete": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 57,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 14.877193450927734
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          }
+        },
+        "refresh_h0": {
+          "all": {
+            "persistence": {
+              "N": 28,
+              "wheel_mae": 0.0031250000465661287,
+              "pulse_mae_ms": 2.843177080154419,
+              "pwm_mae": 5.678571701049805
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 5,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 3.480001211166382
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 15,
+              "wheel_mae": 0.005833333358168602,
+              "pulse_mae_ms": 5.307263374328613,
+              "pwm_mae": 1.333333969116211
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 8,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.200000762939453
+            }
+          }
+        }
+      }
+    },
+    {
+      "seed": 8328154,
+      "robot_id": "r2",
+      "metrics": {
+        "all_h0": {
+          "all": {
+            "persistence": {
+              "N": 221,
+              "wheel_mae": 0.02375565655529499,
+              "pulse_mae_ms": 3.44022274017334,
+              "pwm_mae": 6.0434393882751465
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 43,
+              "wheel_mae": 0.028488369658589363,
+              "pulse_mae_ms": 1.9639722108840942,
+              "pwm_mae": 4.865116596221924
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 119,
+              "wheel_mae": 0.03382353112101555,
+              "pulse_mae_ms": 5.679314613342285,
+              "pwm_mae": 2.1310925483703613
+            }
+          },
+          "complete": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 57,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.312281608581543
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          }
+        },
+        "refresh_h0": {
+          "all": {
+            "persistence": {
+              "N": 29,
+              "wheel_mae": 0.01508620660752058,
+              "pulse_mae_ms": 3.1023731231689453,
+              "pwm_mae": 7.448275089263916
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 6,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.32341182231903076,
+              "pwm_mae": 3.700000047683716
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 15,
+              "wheel_mae": 0.02916666679084301,
+              "pulse_mae_ms": 5.868556499481201,
+              "pwm_mae": 4.666665554046631
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 8,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.47500228881836
+            }
+          }
+        }
+      }
+    },
+    {
+      "seed": 8328164,
+      "robot_id": "r1",
+      "metrics": {
+        "all_h0": {
+          "all": {
+            "persistence": {
+              "N": 222,
+              "wheel_mae": 0.0323198176920414,
+              "pulse_mae_ms": 4.341490745544434,
+              "pwm_mae": 6.159459114074707
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 42,
+              "wheel_mae": 0.04791666194796562,
+              "pulse_mae_ms": 1.8133195638656616,
+              "pwm_mae": 4.742857456207275
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 121,
+              "wheel_mae": 0.04266528785228729,
+              "pulse_mae_ms": 7.335962772369385,
+              "pwm_mae": 2.785123348236084
+            }
+          },
+          "complete": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 57,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 14.582456588745117
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          }
+        },
+        "refresh_h0": {
+          "all": {
+            "persistence": {
+              "N": 29,
+              "wheel_mae": 0.03017241321504116,
+              "pulse_mae_ms": 3.333771228790283,
+              "pwm_mae": 6.2413787841796875
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 5,
+              "wheel_mae": 0.13999998569488525,
+              "pulse_mae_ms": 8.086952209472656,
+              "pwm_mae": 5.0
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 16,
+              "wheel_mae": 0.010937499813735485,
+              "pulse_mae_ms": 3.515287399291992,
+              "pwm_mae": 2.2249996662139893
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 8,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.049999237060547
+            }
+          }
+        }
+      }
+    },
+    {
+      "seed": 8328164,
+      "robot_id": "r2",
+      "metrics": {
+        "all_h0": {
+          "all": {
+            "persistence": {
+              "N": 246,
+              "wheel_mae": 0.009959348477423191,
+              "pulse_mae_ms": 1.4289953708648682,
+              "pwm_mae": 12.13252067565918
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 33,
+              "wheel_mae": 0.037121210247278214,
+              "pulse_mae_ms": 2.5108225345611572,
+              "pwm_mae": 0.969697117805481
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 75,
+              "wheel_mae": 0.00699999975040555,
+              "pulse_mae_ms": 1.6299618482589722,
+              "pwm_mae": 2.239999771118164
+            }
+          },
+          "complete": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 57,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.371930122375488
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "search": {
+            "persistence": {
+              "N": 79,
+              "wheel_mae": 0.008860759437084198,
+              "pulse_mae_ms": 1.85352623462677,
+              "pwm_mae": 24.15696144104004
+            }
+          }
+        },
+        "refresh_h0": {
+          "all": {
+            "persistence": {
+              "N": 32,
+              "wheel_mae": 0.010937499813735485,
+              "pulse_mae_ms": 3.5387842655181885,
+              "pwm_mae": 12.512499809265137
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 4,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.6053522229194641,
+              "pwm_mae": 0.0
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 10,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 1.0819683074951172,
+              "pwm_mae": 5.199999809265137
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 8,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.549999237060547
+            }
+          },
+          "search": {
+            "persistence": {
+              "N": 10,
+              "wheel_mae": 0.03500000014901161,
+              "pulse_mae_ms": 10.000000953674316,
+              "pwm_mae": 22.399999618530273
+            }
+          }
+        }
+      }
+    },
+    {
+      "seed": 8328175,
+      "robot_id": "r1",
+      "metrics": {
+        "all_h0": {
+          "all": {
+            "persistence": {
+              "N": 137,
+              "wheel_mae": 0.010218977928161621,
+              "pulse_mae_ms": 0.8519418835639954,
+              "pwm_mae": 7.1927008628845215
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 29,
+              "wheel_mae": 0.04827586188912392,
+              "pulse_mae_ms": 2.1143577098846436,
+              "pwm_mae": 1.5655174255371094
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 49,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 1.1306054592132568,
+              "pwm_mae": 2.326530694961548
+            }
+          },
+          "complete": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 57,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 14.491228103637695
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          }
+        },
+        "refresh_h0": {
+          "all": {
+            "persistence": {
+              "N": 18,
+              "wheel_mae": 0.01944444328546524,
+              "pulse_mae_ms": 0.6500439047813416,
+              "pwm_mae": 9.288887977600098
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 3,
+              "wheel_mae": 0.11666666716337204,
+              "pulse_mae_ms": 0.8334100246429443,
+              "pwm_mae": 6.66666841506958
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 7,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 1.3143658638000488,
+              "pwm_mae": 3.942857503890991
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 8,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 14.949997901916504
+            }
+          }
+        }
+      }
+    },
+    {
+      "seed": 8328175,
+      "robot_id": "r2",
+      "metrics": {
+        "all_h0": {
+          "all": {
+            "persistence": {
+              "N": 62,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 13.877419471740723
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 3,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "complete": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 57,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.09473705291748
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          }
+        },
+        "refresh_h0": {
+          "all": {
+            "persistence": {
+              "N": 9,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 13.577777862548828
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 8,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.274998664855957
+            }
+          }
+        }
+      }
+    },
+    {
+      "seed": 8328184,
+      "robot_id": "r1",
+      "metrics": {
+        "all_h0": {
+          "all": {
+            "persistence": {
+              "N": 230,
+              "wheel_mae": 0.031956519931554794,
+              "pulse_mae_ms": 4.54988431930542,
+              "pwm_mae": 5.8069562911987305
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 41,
+              "wheel_mae": 0.029878046363592148,
+              "pulse_mae_ms": 1.6982142925262451,
+              "pwm_mae": 4.702438831329346
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 130,
+              "wheel_mae": 0.04711538553237915,
+              "pulse_mae_ms": 7.514204025268555,
+              "pwm_mae": 2.4169232845306396
+            }
+          },
+          "complete": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 57,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 14.536840438842773
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          }
+        },
+        "refresh_h0": {
+          "all": {
+            "persistence": {
+              "N": 30,
+              "wheel_mae": 0.05833332985639572,
+              "pulse_mae_ms": 6.557310581207275,
+              "pwm_mae": 8.313331604003906
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 5,
+              "wheel_mae": 0.13999998569488525,
+              "pulse_mae_ms": 8.377246856689453,
+              "pwm_mae": 4.240000247955322
+            }
+          },
+          "approach": {
+            "persistence": {
+              "N": 17,
+              "wheel_mae": 0.06176470220088959,
+              "pulse_mae_ms": 9.107827186584473,
+              "pwm_mae": 6.388234615325928
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 8,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 14.949997901916504
+            }
+          }
+        }
+      }
+    },
+    {
+      "seed": 8328184,
+      "robot_id": "r2",
+      "metrics": {
+        "all_h0": {
+          "all": {
+            "persistence": {
+              "N": 62,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.161290168762207
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 3,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 12.0
+            }
+          },
+          "complete": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 57,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.859646797180176
+            }
+          },
+          "ready": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            }
+          }
+        },
+        "refresh_h0": {
+          "all": {
+            "persistence": {
+              "N": 9,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.511114120483398
+            }
+          },
+          "align": {
+            "persistence": {
+              "N": 1,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 12.0
+            }
+          },
+          "pick": {
+            "persistence": {
+              "N": 8,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.950003623962402
+            }
+          }
+        }
+      }
+    }
+  ],
+  "validation_seeds": [
+    8328006,
+    8328022,
+    8328024,
+    8328049,
+    8328063,
+    8328071,
+    8328095,
+    8328106,
+    8328107,
+    8328113,
+    8328115,
+    8328118,
+    8328140,
+    8328144,
+    8328145,
+    8328154,
+    8328164,
+    8328175,
+    8328184
+  ],
+  "refresh_definition": "h0 at fixed 8-tick intervals; reset at task/clock gaps; offline proxy",
+  "persistence_definition": "last actual issued command in raw unmasked state; done=false"
+}
