@@ -1,0 +1,15 @@
+{
+  "status": "BEFORE_MATERIAL_CHANGE",
+  "ready": false,
+  "raw_path": "/home/ugrp/ugrp-sim/runs/scenetex2-1e9594a9-static-e",
+  "prior_table": "../2026-10-15-scene-tex2/rejection-table.json",
+  "reason_distribution": [
+    {"category": "DRIVE_INTERIOR_WALL_FEATURE_ABSENT", "count": 13, "denominator": 16, "blocking_object": "visible wall texture / descriptor support", "minimum_gap_m": null, "reason": "PNG/JPEG only3/16 drive frames have wall interior support"},
+    {"category": "JPEG_BOX_SEMANTIC_CHANGED", "count": 6, "denominator": 88, "blocking_object": "JPEG90 / existing color box detector", "minimum_gap_m": null, "reason": "82/88 equality to v1; two_doors red box lost"},
+    {"category": "FLOOR_FEATURE_REGRESSION", "count": 16, "blocking_object": "v2 floor image", "minimum_gap_m": null, "reason": "matched drive16 ORB sum271 to249, median16.5 to13.5; count denotes measured pairs, not16 individually worse"}
+  ],
+  "scene_limits": [{"category": "CARRY_WALL_NOT_VISIBLE", "count": 16, "denominator": 16, "blocking_object": "beam and camera direction", "minimum_gap_m": null, "reason": "wall hidden; not an admission gate, reloc16 scope"}],
+  "minimum_gap_reason": "image-only diagnostic; collision clearance is not applicable",
+  "funnel": [{"stage": "previous_v2_frames", "cumulative_pass_n": 88, "rejected_n": 0}, {"stage": "PNG_box_kind_equal_v1", "cumulative_pass_n": 88, "rejected_n": 0}, {"stage": "JPEG90_box_kind_equal_v1", "cumulative_pass_n": 82, "rejected_n": 6}],
+  "reproduction": "scripts/summarize_scene_tex2_probe.py; before-change.json records exact old source/raw"
+}

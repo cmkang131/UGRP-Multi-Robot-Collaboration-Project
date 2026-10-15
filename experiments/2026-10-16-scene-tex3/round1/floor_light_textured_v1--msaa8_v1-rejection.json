@@ -1,0 +1,51 @@
+{
+  "material": "floor_light_textured_v1",
+  "quality": "msaa8_v1",
+  "stages": [
+    {
+      "stage": "complete_88",
+      "input_n": 88,
+      "cumulative_pass_n": 88,
+      "rejected_n": 0
+    },
+    {
+      "stage": "box_png_and_jpeg90_equal_v1",
+      "input_n": 88,
+      "cumulative_pass_n": 88,
+      "rejected_n": 0
+    },
+    {
+      "stage": "camera_features_at_least_v1",
+      "input_n": 88,
+      "cumulative_pass_n": 88,
+      "rejected_n": 0
+    },
+    {
+      "stage": "consecutive_matches_at_least_v1",
+      "input_n": 88,
+      "cumulative_pass_n": 88,
+      "rejected_n": 0
+    }
+  ],
+  "box_changes": [],
+  "remaining_issues": [
+    {
+      "category": "REAL_FRAME_UNAVAILABLE",
+      "blocking_object": "archived physical RGB missing at recorded paths",
+      "minimum_gap_m": null,
+      "minimum_gap_reason": "image availability, no clearance",
+      "reason": "physical feature/sharpness comparison unverified"
+    }
+  ],
+  "ready": false,
+  "raw_path": "/home/ugrp/ugrp-sim/runs/scenetex3-r1-complete",
+  "reproduction_command": [
+    "combine_scene_tex3",
+    "/home/ugrp/ugrp-sim/runs/scenetex3-r1-resumed/native",
+    "/home/ugrp/ugrp-sim/runs/scenetex3-r1-resumed/ss2_area_v1",
+    "/home/ugrp/ugrp-sim/runs/scenetex3-r1-resumed/msaa8_v1",
+    "/home/ugrp/ugrp-sim/runs/scenetex3-r1-resumed/cubic_v1",
+    "/home/ugrp/ugrp-sim/runs/scenetex3-r1-resumed/mip_nearest_v1",
+    "/home/ugrp/ugrp-sim/runs/scenetex3-r1-resumed/no_mip_v1"
+  ]
+}

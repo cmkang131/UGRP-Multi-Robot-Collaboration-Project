@@ -63,7 +63,7 @@ def test_v3_materials_leave_scene_physics_and_camera_xml_unchanged():
             assert ET.tostring(before.find(tag)) == ET.tostring(after.find(tag))
 
 
-def test_v3_png_integrity_and_no_nominal_colour_range_intrusion():
+def test_v3_pinned_wall_palette_and_exact_v1_floor():
     from PIL import Image
     from sim import natural_scene_texture_v3 as t
     record = t.manifest()
