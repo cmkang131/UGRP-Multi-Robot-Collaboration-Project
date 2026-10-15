@@ -37,13 +37,19 @@ def make_executor(legacy=None, *, self_map_executor='off', **kwargs):
 
 
 class SelfMapExecutor:
-    def __init__(self, robot_id, *, start_time=0., cap_s=180., mapper=None, sweep=None):
+    def __init__(self, robot_id, *, start_time=0., cap_s=180., mapper=None, sweep=None,
+                 bootstrap='off', initial_sweep='off'):
         if not math.isfinite(cap_s) or not 1. <= cap_s <= 300.:
             raise ValueError('FINITE_SELF_MAP_CAP_1_TO_300_REQUIRED')
         self.robot_id, self.started, self.cap_s = robot_id, float(start_time), float(cap_s)
+        if initial_sweep not in ('off', 'required_360_v1'):
+            raise ValueError('UNKNOWN_INITIAL_SWEEP')
+        self.initial_sweep = initial_sweep
+        self.initial_sweep_complete = initial_sweep == 'off'
         self.mapper = mapper if mapper is not None else make_mapper(robot_id=robot_id,
             start_time=start_time, options=Options(self_map_integration=MAP_OPTION,
-                pose_rebuild='refit_history_v1', navigation_support='current_footprint_v1'))
+                pose_rebuild='refit_history_v1', navigation_support='current_footprint_v1',
+                bootstrap=bootstrap))
         if sweep is None:
             # Existing E2E18/egomap arrival -> bounded full-body observation sweep.
             from harness.active_frontier_cycle import CycleNavigator
@@ -99,9 +105,9 @@ class SelfMapExecutor:
         command = None
         # A terminal observation may arrive halfway through a calibrated pulse.
         # Let its <=0.2s interval finish before the normal completion hold.
-        complete = row['complete'] and t >= self.next_control-1e-8
+        complete = row['complete'] and self.initial_sweep_complete and t >= self.next_control-1e-8
         if complete or t-self.started >= self.cap_s-1e-8:
-            self.stop_reason = 'self_map_complete' if row['complete'] else 'sim_time_cap'
+            self.stop_reason = 'self_map_complete' if complete else 'sim_time_cap'
             self.stage = 'stopped'
             command = dict(t=float(t), kind='hold')
         elif t >= self.next_control-1e-8:
@@ -114,7 +120,8 @@ class SelfMapExecutor:
                 self.last_rebuild = row['rebuild_count']
                 self.attempts.clear()  # targets belong to the previous map revision
                 self.visited.clear()
-                self.look(t, 'pose_map_revision')
+                if self.initial_sweep_complete:
+                    self.look(t, 'pose_map_revision')
             if self.stage == 'pan':
                 if t >= self.next_pan-1e-8:
                     if self.pan_index < len(PANS):
@@ -137,10 +144,17 @@ class SelfMapExecutor:
                 command, _ = pulse_command(twist, t, costmap=costmap,
                     pose=pose, motion_model=self.mapper.options.motion_model)
                 if self.sweep.phase != 'sensor_sweep':
-                    self.stage = 'select'
-                    self.event(t, 'lookaround_finished', sweep=self.sweep.events[-1])
+                    receipt = self.sweep.events[-1]
+                    if self.initial_sweep != 'off' and receipt.get('reason') != 'sensor_sweep_completed':
+                        self.look(t, 'incomplete_sweep_retry')
+                    else:
+                        self.initial_sweep_complete = True
+                        self.stage = 'select'
+                        self.event(t, 'lookaround_finished', sweep=receipt)
             elif self.stage in ('select', 'drive'):
-                if not row['map_updated']:
+                if not self.initial_sweep_complete:
+                    self.look(t, 'initial_sweep_required')
+                elif not row['map_updated']:
                     self.look(t, 'visual_pose_unavailable')
                 else:
                     if self.target is None:
@@ -174,5 +188,10 @@ class SelfMapExecutor:
                                     pose=pose, motion_model=self.mapper.options.motion_model,
                                     translation_policy='forward_only_v1')
                                 row['executed_path_m'], row['pulse'] = path, pulse
+        if self.initial_sweep != 'off':
+            row = dict(row, initial_sweep_complete=self.initial_sweep_complete)
+            if not self.initial_sweep_complete:
+                row.update(complete=False, stop_reason=None,
+                           completion_blockers=[*row['completion_blockers'], 'initial_sweep_required'])
         return command, dict(**row, stage=self.stage, executor_stop_reason=self.stop_reason,
                              issued_command=command, frontier_arrivals=len(self.visited))

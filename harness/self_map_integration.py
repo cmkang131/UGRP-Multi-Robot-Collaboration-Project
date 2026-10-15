@@ -32,6 +32,7 @@ class Options:
     required_zones: tuple = ('B',)
     pose_rebuild: str = 'off'
     navigation_support: str = 'off'
+    bootstrap: str = 'off'
 
     def __post_init__(self):
         if self.self_map_integration not in ('off', OPTION):
@@ -47,6 +48,8 @@ class Options:
             raise ValueError('UNKNOWN_POSE_REBUILD')
         if self.navigation_support not in ('off', 'current_footprint_v1'):
             raise ValueError('UNKNOWN_NAVIGATION_SUPPORT')
+        if self.bootstrap not in ('off', 'command_prior_v1'):
+            raise ValueError('UNKNOWN_SELF_MAP_BOOTSTRAP')
 
 
 def make_mapper(legacy=None, *, options=None, **kwargs):
@@ -123,6 +126,11 @@ class SelfMapIntegration:
             raise ValueError('EXPLICIT_SELF_MAP_INTEGRATION_REQUIRED')
         self.robot_id = robot_id
         self.slam = NaturalFloorSLAM(robot_id)
+        if self.options.bootstrap != 'off':
+            from harness.self_map_bootstrap import PriorBootstrapSLAM
+            self.slam = PriorBootstrapSLAM(robot_id,
+                max_sigma_xy_m=self.options.max_sigma_xy_m,
+                max_sigma_yaw_rad=self.options.max_sigma_yaw_rad)
         self.odom = command_odometry(start_time, motion_model=self.options.motion_model)
         self.odom.step_callback = self._motion
         self.delta, self.Q = np.zeros(3), np.zeros((3, 3))
@@ -141,6 +149,7 @@ class SelfMapIntegration:
         self.rebuild_required = False
         self.history, self.rebuilds = [], []
         self.last_rebuild_t = -math.inf
+        self.prior_frames = set()
 
     def planning_grid(self):
         """Current body support only; never changes occupancy/coverage evidence."""
@@ -190,6 +199,7 @@ class SelfMapIntegration:
         if unresolved:
             return receipt
         self.grid = replacement
+        self.prior_frames.clear()
         for record, pose in zip(self.history, poses):
             record['pose'] = pose
         self.rebuild_required = False
@@ -262,7 +272,8 @@ class SelfMapIntegration:
         reasons = []
         if held: reasons.append('commanded_grip_closed')
         if not settled: reasons.append('camera_unsettled')
-        if not (visual or bootstrap): reasons.append('visual_pose_unavailable')
+        prior_insertion = self.options.bootstrap != 'off' and not (visual or bootstrap)
+        if not (visual or bootstrap or prior_insertion): reasons.append('visual_pose_unavailable')
         if sigma_xy > self.options.max_sigma_xy_m or sigma_yaw > self.options.max_sigma_yaw_rad:
             reasons.append('pose_uncertain')
         if self.rebuild_required: reasons.append('pose_revision_requires_rebuild')
@@ -272,9 +283,11 @@ class SelfMapIntegration:
             obs = observe(image, self.servo, body_settling=t-self.odom.servo_since)
             counts = self.grid.insert(frame_id=frame_id, pose=pose, camera=obs['camera'],
                                       segments=obs['segments'], floor_xy=obs['floor_xy'])
+            if prior_insertion:
+                self.prior_frames.add(frame_id)
             if self.options.pose_rebuild != 'off':
                 self.history.append(dict(observation=observation, pose=pose.copy(),
-                    anchor=not self.history and bootstrap,
+                    anchor=not self.history and (bootstrap or prior_insertion),
                     rays=copy.deepcopy({k: obs[k] for k in ('camera', 'segments', 'floor_xy')})))
             self.zones.observe(image, robot_id=robot_id, frame_id=frame_id, t=t,
                                pose=pose, servo=self.servo, profile='camera_v3', settled=True)
@@ -288,6 +301,7 @@ class SelfMapIntegration:
         edges = raw_frontier_count(self.planning_grid(), pose)
         zone_ok = any(track['confirmed_t'] is not None for track in self.zones.tracks)
         blockers = list(reasons)
+        if prior_insertion or self.prior_frames: blockers.append('prior_map_unverified')
         if edges is None or edges: blockers.append('unresolved_observed_boundary')
         if self.stable < self.options.stable_views: blockers.append('map_not_stable')
         if len(self.sectors) < 8: blockers.append('incomplete_view_sweep')
@@ -308,13 +322,19 @@ class SelfMapIntegration:
                       zone_confirmed=zone_ok, observed_cells=len(states),
                       stop_reason='self_map_complete' if complete else None)
         self.events.append(result)
+        if self.options.bootstrap != 'off':
+            result.update(mapping_pose_quality='command_prior' if prior_insertion else 'visual',
+                          prior_map_frames=len(self.prior_frames),
+                          landmark_count=event['landmark_count'],
+                          prior_landmarks_added=event['prior_landmarks_added'],
+                          sigma_yaw_rad=sigma_yaw)
         return result
 
     def snapshot(self):
         nav = self.grid.navigation
         zones = self.zones.snapshot()
         zones['coordinate_frame'] = self.robot_id+'/natural_floor_origin'
-        return dict(schema='ugrp.self_map_integration.v1', robot_id=self.robot_id,
+        result = dict(schema='ugrp.self_map_integration.v1', robot_id=self.robot_id,
                     coordinate_frame=self.robot_id+'/natural_floor_origin', mode='self_only',
                     resolution_m=nav.resolution, support_cells_counted=False,
                     cells=[[int(x), int(y), float(v)] for (x, y), v in sorted(nav.odds.items())],
@@ -322,3 +342,9 @@ class SelfMapIntegration:
                     wall_cells=[[int(v) for v in c] for c in sorted(nav.wall_frames)],
                     rebuild_required=self.rebuild_required, rebuilds=self.rebuilds, zones=zones,
                     slam=self.slam.snapshot(), latest=self.events[-1] if self.events else None)
+        if self.options.bootstrap != 'off':
+            result.update(bootstrap=self.options.bootstrap, prior_frame_ids=sorted(self.prior_frames),
+                prior_cells=[[int(v) for v in c] for c in sorted(set(nav.floor_frames) | set(nav.wall_frames))
+                    if (nav.floor_frames.get(c, set()) | nav.wall_frames.get(c, set())) & self.prior_frames],
+                uncertainty_note='command prior contributions; not independent visual confirmation')
+        return result

@@ -195,6 +195,10 @@ def test_runner_all_10hz_frames_terminal_stop_and_error_preservation(tmp_path, m
                          controller_factory=controller_factory)
     assert result['status'] == 'RECORDED' and result['stop_reason'] == 'sim_time_cap'
     assert result['frames'] == 11 and result['rgb_ledger_verified']
+    assert result['input_audit']['measured']
+    assert result['input_audit']['own_rgb_frames'] == 11
+    assert result['input_audit']['issued_command_records'] > 0
+    assert result['invisible_measurements'] == result['held_world_reads'] == 0
     plant = RecordingPlant.instances[-1]
     assert plant.closed and plant.issued[-1][1] == {'kind': 'hold'}
     assert len(list(out.glob('robots/r3/rgb/*.jpg'))) == 11
@@ -204,6 +208,8 @@ def test_runner_all_10hz_frames_terminal_stop_and_error_preservation(tmp_path, m
     failed = run.acquire(tmp_path/'failed', run.bundle('a'*40, 93511, 1.), RecordingPlant,
                          controller_factory=controller_factory)
     assert failed['status'] == 'HOST_ERROR' and failed['frames'] == 3
+    assert failed['input_audit']['own_rgb_frames'] == 3
+    assert failed['input_audit']['invisible_measurements'] == failed['held_world_reads'] == 0
     assert RecordingPlant.instances[-1].closed
     assert (tmp_path/'failed/result.json').exists() and (tmp_path/'failed/map.json').exists()
 
@@ -214,6 +220,8 @@ def test_top_camera_never_reaches_control(tmp_path, monkeypatch):
                     controller_factory=controller_factory)
     assert r['status'] == 'HOST_ERROR' and r['frames'] == 0
     assert r['failure']['message'] == 'OWN_ROBOT_CAMERA_REQUIRED'
+    assert r['input_audit']['rejected_inputs'] == 1
+    assert r['input_audit']['top_rgb_frames'] == r['input_audit']['own_rgb_frames'] == 0
 
 
 def test_registered_workflow_and_storage_budget():
@@ -268,3 +276,57 @@ def test_large_generated_text_roundtrip_and_manifest(tmp_path):
     assert restored.encode() == content
     manifest = json.loads((tmp_path/'compression-manifest.json').read_text())
     assert manifest[0]['sha256'] == hashlib.sha256(content).hexdigest()
+
+
+def test_required_sweep_blocks_completion_and_retries_incomplete(monkeypatch):
+    mapper, _ = fixture_mapper(monkeypatch)
+    row = receive(mapper, 1)
+    monkeypatch.setattr(mapper, 'receive', lambda **kw: dict(row, complete=True))
+    sweep = Sweep()
+    c = ex.SelfMapExecutor('r1', mapper=mapper, sweep=sweep, initial_sweep='required_360_v1')
+    c.stage = 'select'
+    _, trace = step(c, 2, 2.)
+    assert not c.done and not trace['complete'] and c.stage == 'pan'
+    def incomplete(*args):
+        sweep.phase = None
+        sweep.events.append(dict(reason='sensor_sweep_incomplete'))
+        return dict(t=3., kind='mecanum', forward=0., left=0., turn=0., duration_s=.1)
+    monkeypatch.setattr(sweep, 'command', incomplete)
+    c.stage = 'spin'
+    _, trace = step(c, 3, 3.)
+    assert c.stage == 'pan' and not c.initial_sweep_complete
+    assert c.events[-1]['cause'] == 'incomplete_sweep_retry'
+    c.stage = 'spin'
+    monkeypatch.setattr(sweep, 'command', Sweep.command.__get__(sweep))
+    _, trace = step(c, 4, 4.)
+    assert c.stage == 'select' and c.initial_sweep_complete and not c.done
+    assert step(c, 5, 5.)[0]['kind'] == 'hold' and c.done
+
+
+def test_input_audit_rejects_truth_held_world_and_nested_servo_payloads():
+    from harness.self_map_input_audit import InputAudit
+    audit = InputAudit('r3')
+    calls = []
+    controller = SimpleNamespace(receive=lambda **kw: calls.append(kw), command=calls.append)
+    payload = dict(robot_id='r3', t=0., frame_id=1, rgb=np.zeros((480, 640, 3)), sha256='x')
+    for poison in ('robot_xyz_m', 'held_object_world', 'invisible_measurements'):
+        with pytest.raises(ValueError, match='ALLOWLIST'):
+            audit.receive(controller, camera='robot_cam', payload=dict(payload, **{poison: [1, 2]}))
+    with pytest.raises(ValueError, match='ALLOWLIST'):
+        audit.command(controller, dict(t=0., kind='initial_servo_command', pulses={'world_pose': [1, 2]}))
+    assert not calls and audit.counts['rejected_inputs'] == 4
+    audit.receive(controller, camera='robot_cam', payload=payload)
+    assert len(calls) == 1 and audit.counts['own_rgb_frames'] == 1
+    assert audit.snapshot()['held_world_reads'] == audit.snapshot()['invisible_measurements'] == 0
+
+
+def test_writer_preserves_audit_on_snapshot_failure(tmp_path, monkeypatch):
+    def factory(**kw):
+        c = controller_factory(**kw)
+        monkeypatch.setattr(c.mapper, 'snapshot', lambda: (_ for _ in ()).throw(ValueError('snapshot failed')))
+        return c
+    r = run.acquire(tmp_path/'failed-snapshot', run.bundle('a'*40, 93510, 1.),
+                    RecordingPlant, controller_factory=factory)
+    assert r['status'] == 'HOST_ERROR' and r['artifact_failure'] == 'snapshot failed'
+    saved = json.loads((tmp_path/'failed-snapshot/result.json').read_text())
+    assert saved['input_audit']['own_rgb_frames'] == 11 and saved['held_world_reads'] == 0

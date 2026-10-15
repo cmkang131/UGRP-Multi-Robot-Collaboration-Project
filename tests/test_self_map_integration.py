@@ -164,3 +164,60 @@ def test_completion_requires_closed_boundary_sweep_stability_and_zone(monkeypatc
     mapper.sectors.remove(7)
     result = receive(mapper, 8)
     assert not result['complete'] and 'incomplete_view_sweep' in result['completion_blockers']
+
+
+def test_sparse_bootstrap_breaks_five_landmark_deadlock_without_lowering_gate():
+    from harness.self_map_bootstrap import PriorBootstrapSLAM
+    slam = PriorBootstrapSLAM('r1', max_sigma_xy_m=.15, max_sigma_yaw_rad=.09)
+    rng = np.random.default_rng(73)
+    pts = rng.uniform([.2, -.5], [1., .5], (30, 2))
+    desc = rng.integers(0, 256, (30, 32), dtype=np.uint8)
+    def step(i, n):
+        return slam.step(Observation(i, float(i), pts[:n], desc[:n]),
+                         command_delta=np.zeros(3), command_covariance=np.eye(3)*1e-6)
+    assert step(1, 5)['landmark_count'] == 5
+    second = step(2, 30)
+    assert second['status'] == 'command_only' and second['prior_landmarks_added'] > 0
+    before = slam.covariance.copy()
+    third = step(3, 30)
+    assert third['status'] == 'visual_update' and third['inliers'] >= 8
+    assert slam.options.min_matches == 8 and slam.options.min_inliers == 6
+    assert np.linalg.eigvalsh(slam.covariance-before).min() >= 0
+    slam.covariance = np.eye(3)
+    fresh = rng.integers(0, 256, (30, 32), dtype=np.uint8)
+    rejected = slam.step(Observation(4, 4., pts+1., fresh), command_delta=np.zeros(3),
+                         command_covariance=np.zeros((3, 3)))
+    assert rejected['status'] == 'command_only' and rejected['prior_landmarks_added'] == 0
+
+
+def test_prior_inserts_direct_walls_without_features_but_labels_uncertainty(monkeypatch):
+    from dataclasses import replace
+    from harness.self_map_bootstrap import PriorBootstrapSLAM
+    mapper, state = fixture_mapper(monkeypatch)
+    mapper.options = replace(mapper.options, bootstrap='command_prior_v1')
+    mapper.slam = PriorBootstrapSLAM('r1', max_sigma_xy_m=.15, max_sigma_yaw_rad=.09)
+    state['blank'] = True
+    row = receive(mapper, 1)
+    assert row['map_updated'] and row['hit_cells'] > 0
+    assert row['mapping_pose_quality'] == 'command_prior' and not row['complete']
+    assert 'prior_map_unverified' in row['completion_blockers']
+    snap = json.loads(json.dumps(mapper.snapshot(), allow_nan=False))
+    assert snap['prior_frame_ids'] == [1] and snap['prior_cells']
+    assert not snap['slam']['landmarks']  # wall rays never become ORB features
+    mapper.slam.covariance = np.eye(3)
+    before = mapper.grid.navigation.odds.copy()
+    row = receive(mapper, 2)
+    assert 'pose_uncertain' in row['insertion_blockers'] and not row['map_updated']
+    assert mapper.grid.navigation.odds == before
+
+
+def test_prior_mode_still_blocks_held_and_unsettled_observations(monkeypatch):
+    from dataclasses import replace
+    from harness.self_map_bootstrap import PriorBootstrapSLAM
+    mapper, _ = fixture_mapper(monkeypatch)
+    mapper.options = replace(mapper.options, bootstrap='command_prior_v1')
+    mapper.slam = PriorBootstrapSLAM('r1', max_sigma_xy_m=.15, max_sigma_yaw_rad=.09)
+    mapper.command(dict(t=.9, kind='arm', servo_id=1, pulse=1500))
+    row = receive(mapper, 1)
+    assert not row['map_updated'] and row['features'] == 0
+    assert set(row['insertion_blockers']) >= {'commanded_grip_closed', 'camera_unsettled'}

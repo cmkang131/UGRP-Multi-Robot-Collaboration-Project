@@ -48,3 +48,11 @@ def test_replay_default_off_does_not_read_or_write(tmp_path):
     output = tmp_path/'not-created'
     assert replay(tmp_path/'missing', tmp_path/'missing', 'r1', output, 's2_pulse_v122')['status'] == 'DISABLED'
     assert not output.exists()
+
+
+def test_evaluation_ray_wall_occlusion_without_simulator():
+    import numpy as np
+    from scripts.analyze_self_map_bootstrap import ray_wall_distance
+    walls = [dict(center_m=[1., 0.], half_extents_m=[.1, .5], height_m=.4)]
+    dist = ray_wall_distance(np.array([0., 0., .2]), np.array([[1., 0., 0.], [0., 1., 0.]]), walls)
+    assert dist[0] == pytest.approx(.9) and np.isinf(dist[1])

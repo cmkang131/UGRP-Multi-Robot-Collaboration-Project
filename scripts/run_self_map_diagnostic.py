@@ -16,16 +16,17 @@ import numpy as np
 import cv2
 
 from harness.self_map_executor import OPTION, make_executor
+from harness.self_map_input_audit import InputAudit
 from scripts.offline_self_map import digest, dump, read, rows, score
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def bundle(source, seed, cap_s):
+def bundle(source, seed, cap_s, *, bootstrap='off', initial_sweep='off'):
     from harness.active_camera import SEARCH
     if not math.isfinite(cap_s) or not 1 <= cap_s <= 300 or abs(cap_s*10-round(cap_s*10)) > 1e-8:
         raise ValueError('CAP_MUST_BE_0_1S_GRID_IN_1_TO_300')
-    return dict(schema='ugrp.self_map_diagnostic.v2', execution_bundle_id='selfmap2-frontier-drive-v1',
+    result = dict(schema='ugrp.self_map_diagnostic.v2', execution_bundle_id='selfmap2-frontier-drive-v1',
         source_sha=source, check='selfmap2', case='active-selfmap2',
         map_id='zone_wide_two_doors_final_v3', contact_profile='cargo_noslip_v1',
         task=dict(robot_id='r3', seed=seed, destination='B', pickup_slot='P1-2'),
@@ -41,6 +42,14 @@ def bundle(source, seed, cap_s):
         recording=dict(own_rgb_hz=10, retain='every captured JPEG and ledger row',
             resolution=[640, 480], online_pixels='decoded saved JPEG, identical replay input'),
         scope='single active robot MuJoCo diagnostic, no E2E/real-hardware success claim')
+    if bootstrap != 'off' or initial_sweep != 'off':
+        from harness.self_map_integration import Options
+        Options(bootstrap=bootstrap)  # validate even in prepare-only mode
+        if initial_sweep not in ('off', 'required_360_v1'):
+            raise ValueError('UNKNOWN_INITIAL_SWEEP')
+        result.update(execution_bundle_id='selfmap3-prior-bootstrap-v1', check='selfmap3', case='active-selfmap3')
+        result['options'].update(bootstrap=bootstrap, initial_sweep=initial_sweep)
+    return result
 
 
 def storage_estimate(cap_s):
@@ -102,9 +111,10 @@ def acquire(out, b, backend_factory, *, controller_factory=make_executor, wall_c
     out.mkdir(parents=True, exist_ok=False)
     dump(out/'bundle.json', b)
     dump(out/'RUN_META.json', dict(schema='ugrp.run_meta.v1', **{'class': 'dev'},
-        pr=506, branch='claude/map-selfmap', sha=b['source_sha'], batch='selfmap2'))
+        pr=506, branch='claude/map-selfmap', sha=b['source_sha'], batch=b['check']))
     backend = controller = None
     started = monotonic()
+    audit = InputAudit(b['task']['robot_id'])
     result = dict(status='HOST_ERROR', source_sha=b['source_sha'], seed=b['task']['seed'],
         model_calls=0, complete=False, physical_success_unverified=True, frames=0)
     try:
@@ -121,18 +131,20 @@ def acquire(out, b, backend_factory, *, controller_factory=make_executor, wall_c
         loop_started = monotonic()
         backend.set_deadline(round(start+cap, 9))
         controller = controller_factory(self_map_executor=OPTION, robot_id=robot,
-                                         start_time=start, cap_s=cap)
+            start_time=start, cap_s=cap, bootstrap=b['options'].get('bootstrap', 'off'),
+            initial_sweep=b['options'].get('initial_sweep', 'off'))
         # This is the plant's issued reset-command history, never measured joints.
-        controller.command(dict(t=start, kind='initial_servo_command', pulses=backend.commands[robot]))
+        audit.command(controller, dict(t=start, kind='initial_servo_command', pulses=backend.commands[robot]))
         for action in arm(b['initial_servo']):
             backend.issue(robot, action)
-            controller.command(dict(t=start, **action))
+            audit.command(controller, dict(t=start, **action))
         with (out/'trace.jsonl').open('x') as stream:
             for tick in range(round(cap*10)+1):
                 t = backend.now
                 obs, _ = backend.capture()[robot]
                 # Reject a camera/owner mismatch before giving any pixels to control.
                 if obs['robot_id'] != robot or obs.get('camera', 'robot_cam') != 'robot_cam':
+                    audit.counts['rejected_inputs'] += 1
                     raise ValueError('OWN_ROBOT_CAMERA_REQUIRED')
                 saved = out/f'robots/{robot}/rgb/{tick:05d}.jpg'
                 if digest(saved) != obs['sha256']:
@@ -141,20 +153,22 @@ def acquire(out, b, backend_factory, *, controller_factory=make_executor, wall_c
                 if bgr is None:
                     raise ValueError('LIVE_SAVED_RGB_DECODE_FAILED')
                 rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
-                command, trace = controller.receive(robot_id=robot, t=t,
-                    frame_id=int(obs['frame_id']), rgb=rgb, sha256=obs['sha256'])
+                command, trace = audit.receive(controller, camera=obs.get('camera', 'robot_cam'),
+                    payload=dict(robot_id=robot, t=t, frame_id=int(obs['frame_id']),
+                                 rgb=rgb, sha256=obs['sha256']))
                 stream.write(json.dumps(trace, allow_nan=False)+'\n')
                 stream.flush()
                 result['frames'] = tick+1
                 if command is not None:
                     backend.issue(robot, {k: v for k, v in command.items() if k != 't'})
-                    controller.command(command)
+                    audit.command(controller, command)
                 backend.eval_sample()  # write-only safety supervisor; no success feedback
                 if tick % 100 == 0:
                     progress = dict(elapsed_sim_s=t-start, frames=tick+1,
                         stage=controller.stage,
                         wall_per_sim=(monotonic()-loop_started)/(t-start) if t > start else None,
                         pose_sources=dict(Counter(e['pose_source'] for e in controller.mapper.events)),
+                        input_audit=audit.snapshot(),
                         frontier_arrivals=sum(e['reason'] == 'frontier_arrival' for e in controller.events))
                     dump(out/'progress.json', progress)
                     if tick == 300:
@@ -186,14 +200,20 @@ def acquire(out, b, backend_factory, *, controller_factory=make_executor, wall_c
             except Exception as exc:
                 result.update(status='HOST_ERROR', complete=False, close_failure=str(exc))
         if controller is not None:
-            dump(out/'map.json', controller.mapper.snapshot())
-            dump(out/'executor-events.json', controller.events)
-            dump(out/'sweep-events.json', controller.sweep.events)
-            result.update(frontier_selections=sum(e['reason'] == 'frontier_selected' for e in controller.events),
-                frontier_arrivals=sum(e['reason'] == 'frontier_arrival' for e in controller.events),
-                map_updated_frames=sum(e['map_updated'] for e in controller.mapper.events),
-                pose_sources=dict(Counter(e['pose_source'] for e in controller.mapper.events)))
+            try:
+                dump(out/'map.json', controller.mapper.snapshot())
+                dump(out/'executor-events.json', controller.events)
+                dump(out/'sweep-events.json', controller.sweep.events)
+                result.update(frontier_selections=sum(e['reason'] == 'frontier_selected' for e in controller.events),
+                    frontier_arrivals=sum(e['reason'] == 'frontier_arrival' for e in controller.events),
+                    map_updated_frames=sum(e['map_updated'] for e in controller.mapper.events),
+                    pose_sources=dict(Counter(e['pose_source'] for e in controller.mapper.events)))
+            except Exception as exc:
+                result.update(status='HOST_ERROR', complete=False, artifact_failure=str(exc))
         result['wall_s'] = monotonic()-started
+        result['input_audit'] = audit.snapshot()
+        result['invisible_measurements'] = result['input_audit']['invisible_measurements']
+        result['held_world_reads'] = result['input_audit']['held_world_reads']
         dump(out/'result.json', result)
     return result
 
@@ -207,9 +227,11 @@ def main(argv=None):
     p.add_argument('--execution-host', choices=['gcp1'], default='gcp1')
     p.add_argument('--project', choices=['ugrp-act-train-1014'], default='ugrp-act-train-1014')
     p.add_argument('--self-map-executor', choices=['off', OPTION], default='off')
+    p.add_argument('--bootstrap', choices=['off', 'command_prior_v1'], default='off')
+    p.add_argument('--initial-sweep', choices=['off', 'required_360_v1'], default='off')
     p.add_argument('--execute', action='store_true')
     a = p.parse_args(argv)
-    b = bundle(a.expected_source_sha, a.seed, a.cap_s)
+    b = bundle(a.expected_source_sha, a.seed, a.cap_s, bootstrap=a.bootstrap, initial_sweep=a.initial_sweep)
     if not a.execute or a.self_map_executor == 'off':
         print(json.dumps(dict(status='PREPARED_NOT_EXECUTED', bundle=b, storage=storage_estimate(a.cap_s))))
         return 0
