@@ -53,10 +53,13 @@ class Options:
     reloc14_compute_budget_v1: bool = False
     reloc15_pose_handoff_v1: bool = False
     reloc15_update_budget_v1: bool = False
+    reloc18_innovation_v1: bool = False
     revision_xy_threshold_m: float = .1
     revision_yaw_threshold_rad: float = math.radians(5)
 
     def __post_init__(self):
+        if type(self.reloc18_innovation_v1) is not bool or (self.reloc18_innovation_v1 and self.correction_safety=='off'):
+            raise ValueError('reloc18 requires bool and pre-mutation correction safety')
         for name in ('reloc12_raw_cov_gate_v1', 'reloc12_ransac_hypotheses_v1', 'reloc13_execution_cov_v1', 'reloc13_execution_frame_v1', 'reloc13_live_r7_v1', 'reloc14_continuous_tracking_v1', 'reloc14_compute_budget_v1', 'reloc15_pose_handoff_v1', 'reloc15_update_budget_v1'):
             if type(getattr(self, name)) is not bool or (getattr(self, name) and self.multiframe_registration == 'off'):
                 raise ValueError('reloc12 requires multiframe registration and bool toggles')
@@ -210,6 +213,7 @@ class SelfMapIntegration:
         if self.options.self_map_integration != OPTION:
             raise ValueError('EXPLICIT_SELF_MAP_INTEGRATION_REQUIRED')
         self.robot_id = robot_id
+        self.reloc18_previous_t=float(start_time)
         self.recovery = self.options.recovery_profile != 'off'
         self.registration = None
         if self.recovery:
@@ -278,6 +282,9 @@ class SelfMapIntegration:
         if self.options.correction_safety != 'off':
             from harness.selfmap6_safety import CorrectionGate, GatedFloorSLAM, GatedPriorSLAM
             self.correction_gate = CorrectionGate()
+            if self.options.reloc18_innovation_v1:
+                from harness.reloc18_innovation import InnovationGate
+                self.correction_gate=InnovationGate()
             self.slam = (GatedPriorSLAM(robot_id, max_sigma_xy_m=self.options.max_sigma_xy_m,
                 max_sigma_yaw_rad=self.options.max_sigma_yaw_rad) if self.options.bootstrap != 'off'
                 else GatedFloorSLAM(robot_id))
@@ -500,7 +507,7 @@ class SelfMapIntegration:
             # Retained line frames need one correction-free reference. A SLAM
             # correction changes only the current pose, leaving older buffered
             # poses in the old revision. Own-command odometry has no such jumps.
-            if self.options.reloc14_continuous_tracking_v1 and self.registration.map_from_own is not None:
+            if self.options.reloc18_innovation_v1 or (self.options.reloc14_continuous_tracking_v1 and self.registration.map_from_own is not None):
                 # Baseline command yaw actual/estimated is .995-1.004; mixing LK
                 # delta with command-buffer geometry is a different error source.
                 self.delta = command_delta
@@ -526,6 +533,19 @@ class SelfMapIntegration:
                 # A PF prediction consumes the same command delta as execution.
                 # It must not be fused or renew a visual-fix epoch a second time.
                 static_pose = None
+        if self.options.reloc18_innovation_v1:
+            # Raw command replay residual p95 / 1.96, per SIM second. No
+            # wall deadline or simulator state enters the prediction.
+            dt=t-self.reloc18_previous_t
+            self.reloc18_previous_t=t
+            rate=np.asarray(self.correction_gate.fit['command_covariance_per_sim_s'])
+            a=self.slam.pose[2];c,s=math.cos(a),math.sin(a)
+            local_to_body=np.array([[c,s,0],[-s,c,0],[0,0,1]])
+            self.Q=local_to_body@rate@local_to_body.T*max(0.,dt)
+            anchor=self.registration.map_from_own
+            if anchor is not None:
+                a=anchor[2];c,s=math.cos(a),math.sin(a)
+                self.correction_gate.rotation=np.array([[c,s,0],[-s,c,0],[0,0,1]])
         predicted_covariance = _motion_covariance(self.slam.pose, self.delta, self.slam.covariance, self.Q)
         if self.options.revision_gate != 'off':
             from harness.selfmap5_revision import issued_distance
@@ -558,6 +578,7 @@ class SelfMapIntegration:
                 observation = Observation(frame_id, t, np.empty((0, 2)), np.empty((0, 32), np.uint8), sha256)
             self.slam.reloc14_pf_tracking = self.options.reloc14_continuous_tracking_v1 and self.registration.map_from_own is not None
             self.slam.reloc15_pose_handoff = self.options.reloc15_pose_handoff_v1
+            self.slam.reloc18_only_static = self.options.reloc18_innovation_v1
             self.slam._gate_prediction = predicted_covariance
             # Authored-map fixes are absolute; bootstrap ORB fixes remain correlated.
             self.slam.reloc13_absolute_static = self.options.reloc13_execution_cov_v1 and static_pose is not None

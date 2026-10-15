@@ -40,7 +40,7 @@ class SelfMapExecutor:
     def __init__(self, robot_id, *, start_time=0., cap_s=180., mapper=None, sweep=None,
                  bootstrap='off', initial_sweep='off', recovery_profile='off', static_map=None, revision_gate='off', multiframe_registration='off', correction_safety='off', active_relocalization='off',
                  reloc9_rotation_calibration_v1=False, reloc9_wall_height_guard_v1=False,
-                 reloc10_settle_v1=False, reloc10_registration_v1=False, reloc11_wall_field_v1=False, reloc11_low_contrast_v1=False, reloc12_raw_cov_gate_v1=False, reloc12_ransac_hypotheses_v1=False, reloc13_execution_cov_v1=False, reloc13_execution_frame_v1=False, reloc13_live_r7_v1=False, reloc14_continuous_tracking_v1=False, reloc14_compute_budget_v1=False, reloc15_pose_handoff_v1=False, reloc15_update_budget_v1=False, reloc17_servo_wait_v1=False):
+                 reloc10_settle_v1=False, reloc10_registration_v1=False, reloc11_wall_field_v1=False, reloc11_low_contrast_v1=False, reloc12_raw_cov_gate_v1=False, reloc12_ransac_hypotheses_v1=False, reloc13_execution_cov_v1=False, reloc13_execution_frame_v1=False, reloc13_live_r7_v1=False, reloc14_continuous_tracking_v1=False, reloc14_compute_budget_v1=False, reloc15_pose_handoff_v1=False, reloc15_update_budget_v1=False, reloc17_servo_wait_v1=False, reloc18_innovation_v1=False):
         if not math.isfinite(cap_s) or not 1. <= cap_s <= 300.:
             raise ValueError('FINITE_SELF_MAP_CAP_1_TO_300_REQUIRED')
         if type(reloc10_settle_v1) is not bool:
@@ -73,7 +73,7 @@ class SelfMapExecutor:
                 reloc13_execution_cov_v1=reloc13_execution_cov_v1,
                 reloc13_execution_frame_v1=reloc13_execution_frame_v1, reloc13_live_r7_v1=reloc13_live_r7_v1,
                 reloc14_continuous_tracking_v1=reloc14_continuous_tracking_v1,
-                reloc14_compute_budget_v1=reloc14_compute_budget_v1,reloc15_pose_handoff_v1=reloc15_pose_handoff_v1,reloc15_update_budget_v1=reloc15_update_budget_v1), static_map=static_map)
+                reloc14_compute_budget_v1=reloc14_compute_budget_v1,reloc15_pose_handoff_v1=reloc15_pose_handoff_v1,reloc15_update_budget_v1=reloc15_update_budget_v1,reloc18_innovation_v1=reloc18_innovation_v1), static_map=static_map)
         self.recovery = self.mapper.options.recovery_profile != 'off'
         if sweep is None:
             # Existing E2E18/egomap arrival -> bounded full-body observation sweep.

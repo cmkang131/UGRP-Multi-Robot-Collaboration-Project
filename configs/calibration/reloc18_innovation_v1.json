@@ -1,0 +1,176 @@
+{
+  "schema": "ugrp.reloc18.covariance.v1",
+  "method": "diagonal zero-centered 95-percentile envelope / normal central-95 quantile; no oracle outlier pruning",
+  "fit_scope": "both already-seen DEV seeds, all delivered fresh static PF poses; exploratory calibration, not held-out validation",
+  "measurement_N": 249,
+  "measurement_abs_p95": [
+    0.0833377295756664,
+    0.40339598347754474,
+    0.1332847945392151
+  ],
+  "measurement_covariance_world": [
+    [
+      0.0018079530446644114,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.04236107350915496,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.004624502639377714
+    ]
+  ],
+  "command_rate_N": 600,
+  "command_covariance_per_sim_s": [
+    [
+      9.915173204191431e-05,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      2.8075106374871708e-05,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      4.863361051102931e-05
+    ]
+  ],
+  "alpha": 0.01,
+  "dof": 3,
+  "chi2_threshold": 11.344866730144373,
+  "normal_central95": 1.959963984540054,
+  "measurement_correlation_sim_s": 1.1120486662749125,
+  "correlation_diagnostics": [
+    {
+      "seed": 93584,
+      "axis": 0,
+      "positive_lags": 39,
+      "integrated_sim_s": 0.9721852295130528
+    },
+    {
+      "seed": 93584,
+      "axis": 1,
+      "positive_lags": 21,
+      "integrated_sim_s": 1.0508098473734362
+    },
+    {
+      "seed": 93584,
+      "axis": 2,
+      "positive_lags": 0,
+      "integrated_sim_s": 0.1999999999999993
+    },
+    {
+      "seed": 93583,
+      "axis": 0,
+      "positive_lags": 24,
+      "integrated_sim_s": 1.1120486662749125
+    },
+    {
+      "seed": 93583,
+      "axis": 1,
+      "positive_lags": 22,
+      "integrated_sim_s": 0.96068364663717
+    },
+    {
+      "seed": 93583,
+      "axis": 2,
+      "positive_lags": 0,
+      "integrated_sim_s": 0.20000000000000284
+    }
+  ],
+  "sources": [
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/reloc17-r2-selfmap-93584-47670d14/raw/trace.jsonl.zst",
+      "sha256": "b804114b105b80c9071d9429fb9ef07798c95fa129a8c71601e32040255ed852"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/reloc17-r2-selfmap-93584-47670d14/raw/eval_only/trajectory.jsonl.zst",
+      "sha256": "6e519050b9fd1712cea31ff95ebf330f5fb16039f3a5b2ba61e37ef6e345ee60"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/reloc17-r2-selfmap-93583-47670d14/raw/trace.jsonl.zst",
+      "sha256": "061a947cbc418e4cd525d95033ee17f4936e667e16610717fb6600c29694f71d"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/reloc17-r2-selfmap-93583-47670d14/raw/eval_only/trajectory.jsonl.zst",
+      "sha256": "c4e1678070df4dfbfc8fe47c52ca368ddacd1e34f782c802fb4b24bbfbb4b2ac"
+    }
+  ],
+  "diagnostics": [
+    {
+      "seed": 93584,
+      "command_drift_bins": [
+        {
+          "sim_interval": [
+            0,
+            20
+          ],
+          "N": 100,
+          "xy_p50_m": 0.00026103066721147247,
+          "xy_p95_m": 0.04879780700827264
+        },
+        {
+          "sim_interval": [
+            20,
+            40
+          ],
+          "N": 100,
+          "xy_p50_m": 0.03576574458433533,
+          "xy_p95_m": 0.07366539108048323
+        },
+        {
+          "sim_interval": [
+            40,
+            60
+          ],
+          "N": 100,
+          "xy_p50_m": 0.045184978962303224,
+          "xy_p95_m": 0.06448273699901541
+        }
+      ],
+      "measurement_N": 129
+    },
+    {
+      "seed": 93583,
+      "command_drift_bins": [
+        {
+          "sim_interval": [
+            0,
+            20
+          ],
+          "N": 100,
+          "xy_p50_m": 0.0003126705779793276,
+          "xy_p95_m": 0.05011785053818451
+        },
+        {
+          "sim_interval": [
+            20,
+            40
+          ],
+          "N": 100,
+          "xy_p50_m": 0.045254840848735205,
+          "xy_p95_m": 0.07249648519912603
+        },
+        {
+          "sim_interval": [
+            40,
+            60
+          ],
+          "N": 100,
+          "xy_p50_m": 0.1267958494720997,
+          "xy_p95_m": 0.19325412985692425
+        }
+      ],
+      "measurement_N": 120
+    }
+  ],
+  "limitations": "successive PF posteriors and RGB frames correlated; chi-square false-reject interpretation assumes independent Gaussian prediction/measurement and is only nominal here; fixed covariance envelope does not certify non-Gaussian tails or all seeds"
+}

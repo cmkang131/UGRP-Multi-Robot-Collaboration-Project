@@ -33,7 +33,8 @@ class PreMutationGate:
                 self._admission=decision
                 event=self.step(observation,command_delta=command_delta,command_covariance=command_covariance)
                 if decision['accepted']:
-                    self.pose=np.asarray(pose_override[0]).copy();self.covariance=np.asarray(pose_override[1]).copy()
+                    self.pose=np.asarray(decision.get('posterior_pose',pose_override[0])).copy()
+                    self.covariance=np.asarray(decision.get('posterior_covariance',pose_override[1])).copy()
                     event.update(status='visual_relocalized',reason='visual_relocalized',
                         pose=self.pose.tolist(),covariance=self.covariance.tolist())
                     self.trajectory[-1].update(pose=event['pose'],covariance=event['covariance'],source=event['status'])
@@ -46,6 +47,10 @@ class PreMutationGate:
             self._admit = None; self._override = None
 
     def _fit(self, points, descriptors, prior, frame_id):
+        if getattr(self,'reloc18_only_static',False) and getattr(self,'_override',None) is None:
+            # A bank created from these same command priors is correlated with
+            # prediction. The calibrated candidate fuses authored-map poses.
+            return None, [], dict(matches=0,inliers=0,fit_rms_m=None,spread_m=None,reason='reloc18_command_prediction')
         if getattr(self, '_override', None) is None and getattr(self, 'reloc14_pf_tracking', False):
             # The prior-seeded ORB bank shares its old pose bias. Known-mode PF
             # tracking supplies map corrections; LOST invokes global R7 recovery.
@@ -62,6 +67,9 @@ class PreMutationGate:
             self._admission = self._admit(prior, pose, self._gate_prediction, detail)
             if not self._admission['accepted']:
                 return None, pairs, dict(detail, reason='pose_correction_rejected')
+            if 'posterior_pose' in self._admission:
+                pose=np.asarray(self._admission['posterior_pose'])
+                detail=dict(detail,covariance=np.asarray(self._admission['posterior_covariance']))
         return pose, pairs, detail
 
     def _add_landmarks(self, *args, **kwargs):
