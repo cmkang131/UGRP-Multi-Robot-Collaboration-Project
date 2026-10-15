@@ -1,0 +1,45 @@
+{
+  "schema": "ugrp.rl1.summary.v1",
+  "status": "WAITING_WARP1",
+  "verdict": null,
+  "plan_complete": true,
+  "comparison_complete": false,
+  "training": {
+    "runs": 0,
+    "optimizer_steps": 0,
+    "gpu_hours": 0,
+    "gpu_hours_limit": 6,
+    "first_training_gpu_hours_limit": 2
+  },
+  "evaluation": {
+    "backend": "mjwarp",
+    "baseline_success": null,
+    "baseline_n": 0,
+    "residual_success": null,
+    "residual_n": 0
+  },
+  "prior_evidence": {
+    "source": "/Users/changmin/projects/ugrp-wt/act16-analysis/experiments/2026-10-16-act16a",
+    "backend": "c_mujoco",
+    "host": "gcp2",
+    "success": 0,
+    "n": 40,
+    "not_pooled": true
+  },
+  "mac": {
+    "training": 0,
+    "physics": 0,
+    "render": 0,
+    "GUI": 0
+  },
+  "raw_locations": [],
+  "artifacts": {},
+  "remaining": [
+    "warp1 committed batch actor/reset/RGB API",
+    "RL environment integration and audit",
+    "N64–256 throughput",
+    "training",
+    "paired evaluation and playback",
+    "checkpoint release verification"
+  ]
+}

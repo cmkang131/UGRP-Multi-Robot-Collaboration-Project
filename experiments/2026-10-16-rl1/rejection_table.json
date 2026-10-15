@@ -1,0 +1,378 @@
+{
+  "schema": "ugrp.rl1.rejection.v1",
+  "status": "PRE_IMPLEMENTATION",
+  "new_rl_runs": 0,
+  "new_rl_funnel": [],
+  "prior_evidence": {
+    "source": "/Users/changmin/projects/ugrp-wt/act16-analysis/experiments/2026-10-16-act16a/runs.json",
+    "sha256": "2535a949a7574259af00fc9c922128af73576c3bd8569f3eaea936dac5dc90c2",
+    "host": "gcp2",
+    "backend": "c_mujoco",
+    "pooled_with_rl": false,
+    "funnel": [
+      {
+        "gate": "candidate",
+        "passed": 40,
+        "rejected": 0
+      },
+      {
+        "gate": "approach",
+        "passed": 25,
+        "rejected": 15
+      },
+      {
+        "gate": "alignment",
+        "passed": 3,
+        "rejected": 22
+      },
+      {
+        "gate": "grasp",
+        "passed": 2,
+        "rejected": 1
+      },
+      {
+        "gate": "stable_lift",
+        "passed": 0,
+        "rejected": 2
+      },
+      {
+        "gate": "completion",
+        "passed": 0,
+        "rejected": 0
+      }
+    ],
+    "cap_end": 15,
+    "rejections": [
+      {
+        "category": "alignment",
+        "seed": 91420,
+        "blocking_object": "not_attributed_by_act16a",
+        "minimum_gap_m": null,
+        "minimum_gap_status": "not_measured_no_geometric_cause_claim",
+        "raw_path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91420-b4db8ba2/raw"
+      },
+      {
+        "category": "approach",
+        "seed": 91421,
+        "blocking_object": "not_attributed_by_act16a",
+        "minimum_gap_m": null,
+        "minimum_gap_status": "not_measured_no_geometric_cause_claim",
+        "raw_path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91421-b4db8ba2/raw"
+      },
+      {
+        "category": "alignment",
+        "seed": 91422,
+        "blocking_object": "not_attributed_by_act16a",
+        "minimum_gap_m": null,
+        "minimum_gap_status": "not_measured_no_geometric_cause_claim",
+        "raw_path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91422-b4db8ba2/raw"
+      },
+      {
+        "category": "approach",
+        "seed": 91423,
+        "blocking_object": "not_attributed_by_act16a",
+        "minimum_gap_m": null,
+        "minimum_gap_status": "not_measured_no_geometric_cause_claim",
+        "raw_path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91423-b4db8ba2/raw"
+      },
+      {
+        "category": "lift_confirmation",
+        "seed": 91424,
+        "blocking_object": "not_attributed_by_act16a",
+        "minimum_gap_m": null,
+        "minimum_gap_status": "not_measured_no_geometric_cause_claim",
+        "raw_path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91424-b4db8ba2/raw"
+      },
+      {
+        "category": "approach",
+        "seed": 91425,
+        "blocking_object": "not_attributed_by_act16a",
+        "minimum_gap_m": null,
+        "minimum_gap_status": "not_measured_no_geometric_cause_claim",
+        "raw_path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91425-b4db8ba2/raw"
+      },
+      {
+        "category": "alignment",
+        "seed": 91426,
+        "blocking_object": "not_attributed_by_act16a",
+        "minimum_gap_m": null,
+        "minimum_gap_status": "not_measured_no_geometric_cause_claim",
+        "raw_path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91426-b4db8ba2/raw"
+      },
+      {
+        "category": "approach",
+        "seed": 91427,
+        "blocking_object": "not_attributed_by_act16a",
+        "minimum_gap_m": null,
+        "minimum_gap_status": "not_measured_no_geometric_cause_claim",
+        "raw_path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91427-b4db8ba2/raw"
+      },
+      {
+        "category": "approach",
+        "seed": 91428,
+        "blocking_object": "not_attributed_by_act16a",
+        "minimum_gap_m": null,
+        "minimum_gap_status": "not_measured_no_geometric_cause_claim",
+        "raw_path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91428-b4db8ba2/raw"
+      },
+      {
+        "category": "alignment",
+        "seed": 91429,
+        "blocking_object": "not_attributed_by_act16a",
+        "minimum_gap_m": null,
+        "minimum_gap_status": "not_measured_no_geometric_cause_claim",
+        "raw_path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91429-b4db8ba2/raw"
+      },
+      {
+        "category": "alignment",
+        "seed": 91430,
+        "blocking_object": "not_attributed_by_act16a",
+        "minimum_gap_m": null,
+        "minimum_gap_status": "not_measured_no_geometric_cause_claim",
+        "raw_path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91430-b4db8ba2/raw"
+      },
+      {
+        "category": "alignment",
+        "seed": 91431,
+        "blocking_object": "not_attributed_by_act16a",
+        "minimum_gap_m": null,
+        "minimum_gap_status": "not_measured_no_geometric_cause_claim",
+        "raw_path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91431-b4db8ba2/raw"
+      },
+      {
+        "category": "lift_confirmation",
+        "seed": 91432,
+        "blocking_object": "not_attributed_by_act16a",
+        "minimum_gap_m": null,
+        "minimum_gap_status": "not_measured_no_geometric_cause_claim",
+        "raw_path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91432-b4db8ba2/raw"
+      },
+      {
+        "category": "alignment",
+        "seed": 91433,
+        "blocking_object": "not_attributed_by_act16a",
+        "minimum_gap_m": null,
+        "minimum_gap_status": "not_measured_no_geometric_cause_claim",
+        "raw_path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91433-b4db8ba2/raw"
+      },
+      {
+        "category": "alignment",
+        "seed": 91434,
+        "blocking_object": "not_attributed_by_act16a",
+        "minimum_gap_m": null,
+        "minimum_gap_status": "not_measured_no_geometric_cause_claim",
+        "raw_path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91434-b4db8ba2/raw"
+      },
+      {
+        "category": "alignment",
+        "seed": 91435,
+        "blocking_object": "not_attributed_by_act16a",
+        "minimum_gap_m": null,
+        "minimum_gap_status": "not_measured_no_geometric_cause_claim",
+        "raw_path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91435-b4db8ba2/raw"
+      },
+      {
+        "category": "approach",
+        "seed": 91436,
+        "blocking_object": "not_attributed_by_act16a",
+        "minimum_gap_m": null,
+        "minimum_gap_status": "not_measured_no_geometric_cause_claim",
+        "raw_path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91436-b4db8ba2/raw"
+      },
+      {
+        "category": "alignment",
+        "seed": 91437,
+        "blocking_object": "not_attributed_by_act16a",
+        "minimum_gap_m": null,
+        "minimum_gap_status": "not_measured_no_geometric_cause_claim",
+        "raw_path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91437-b4db8ba2/raw"
+      },
+      {
+        "category": "approach",
+        "seed": 91438,
+        "blocking_object": "not_attributed_by_act16a",
+        "minimum_gap_m": null,
+        "minimum_gap_status": "not_measured_no_geometric_cause_claim",
+        "raw_path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91438-b4db8ba2/raw"
+      },
+      {
+        "category": "alignment",
+        "seed": 91439,
+        "blocking_object": "not_attributed_by_act16a",
+        "minimum_gap_m": null,
+        "minimum_gap_status": "not_measured_no_geometric_cause_claim",
+        "raw_path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91439-b4db8ba2/raw"
+      },
+      {
+        "category": "alignment",
+        "seed": 91500,
+        "blocking_object": "not_attributed_by_act16a",
+        "minimum_gap_m": null,
+        "minimum_gap_status": "not_measured_no_geometric_cause_claim",
+        "raw_path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91500-b4db8ba2/raw"
+      },
+      {
+        "category": "approach",
+        "seed": 91501,
+        "blocking_object": "not_attributed_by_act16a",
+        "minimum_gap_m": null,
+        "minimum_gap_status": "not_measured_no_geometric_cause_claim",
+        "raw_path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91501-b4db8ba2/raw"
+      },
+      {
+        "category": "alignment",
+        "seed": 91502,
+        "blocking_object": "not_attributed_by_act16a",
+        "minimum_gap_m": null,
+        "minimum_gap_status": "not_measured_no_geometric_cause_claim",
+        "raw_path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91502-b4db8ba2/raw"
+      },
+      {
+        "category": "alignment",
+        "seed": 91503,
+        "blocking_object": "not_attributed_by_act16a",
+        "minimum_gap_m": null,
+        "minimum_gap_status": "not_measured_no_geometric_cause_claim",
+        "raw_path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91503-b4db8ba2/raw"
+      },
+      {
+        "category": "alignment",
+        "seed": 91504,
+        "blocking_object": "not_attributed_by_act16a",
+        "minimum_gap_m": null,
+        "minimum_gap_status": "not_measured_no_geometric_cause_claim",
+        "raw_path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91504-b4db8ba2-retry1/raw"
+      },
+      {
+        "category": "approach",
+        "seed": 91505,
+        "blocking_object": "not_attributed_by_act16a",
+        "minimum_gap_m": null,
+        "minimum_gap_status": "not_measured_no_geometric_cause_claim",
+        "raw_path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91505-b4db8ba2/raw"
+      },
+      {
+        "category": "approach",
+        "seed": 91506,
+        "blocking_object": "not_attributed_by_act16a",
+        "minimum_gap_m": null,
+        "minimum_gap_status": "not_measured_no_geometric_cause_claim",
+        "raw_path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91506-b4db8ba2/raw"
+      },
+      {
+        "category": "alignment",
+        "seed": 91507,
+        "blocking_object": "not_attributed_by_act16a",
+        "minimum_gap_m": null,
+        "minimum_gap_status": "not_measured_no_geometric_cause_claim",
+        "raw_path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91507-b4db8ba2-retry1/raw"
+      },
+      {
+        "category": "alignment",
+        "seed": 91508,
+        "blocking_object": "not_attributed_by_act16a",
+        "minimum_gap_m": null,
+        "minimum_gap_status": "not_measured_no_geometric_cause_claim",
+        "raw_path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91508-b4db8ba2-retry1/raw"
+      },
+      {
+        "category": "approach",
+        "seed": 91509,
+        "blocking_object": "not_attributed_by_act16a",
+        "minimum_gap_m": null,
+        "minimum_gap_status": "not_measured_no_geometric_cause_claim",
+        "raw_path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91509-b4db8ba2-retry1/raw"
+      },
+      {
+        "category": "alignment",
+        "seed": 91510,
+        "blocking_object": "not_attributed_by_act16a",
+        "minimum_gap_m": null,
+        "minimum_gap_status": "not_measured_no_geometric_cause_claim",
+        "raw_path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91510-b4db8ba2-retry1/raw"
+      },
+      {
+        "category": "alignment",
+        "seed": 91511,
+        "blocking_object": "not_attributed_by_act16a",
+        "minimum_gap_m": null,
+        "minimum_gap_status": "not_measured_no_geometric_cause_claim",
+        "raw_path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91511-b4db8ba2/raw"
+      },
+      {
+        "category": "approach",
+        "seed": 91512,
+        "blocking_object": "not_attributed_by_act16a",
+        "minimum_gap_m": null,
+        "minimum_gap_status": "not_measured_no_geometric_cause_claim",
+        "raw_path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91512-b4db8ba2-retry1/raw"
+      },
+      {
+        "category": "grasp",
+        "seed": 91513,
+        "blocking_object": "not_attributed_by_act16a",
+        "minimum_gap_m": null,
+        "minimum_gap_status": "not_measured_no_geometric_cause_claim",
+        "raw_path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91513-b4db8ba2/raw"
+      },
+      {
+        "category": "approach",
+        "seed": 91514,
+        "blocking_object": "not_attributed_by_act16a",
+        "minimum_gap_m": null,
+        "minimum_gap_status": "not_measured_no_geometric_cause_claim",
+        "raw_path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91514-b4db8ba2/raw"
+      },
+      {
+        "category": "alignment",
+        "seed": 91515,
+        "blocking_object": "not_attributed_by_act16a",
+        "minimum_gap_m": null,
+        "minimum_gap_status": "not_measured_no_geometric_cause_claim",
+        "raw_path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91515-b4db8ba2-retry1/raw"
+      },
+      {
+        "category": "approach",
+        "seed": 91516,
+        "blocking_object": "not_attributed_by_act16a",
+        "minimum_gap_m": null,
+        "minimum_gap_status": "not_measured_no_geometric_cause_claim",
+        "raw_path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91516-b4db8ba2-retry1/raw"
+      },
+      {
+        "category": "alignment",
+        "seed": 91517,
+        "blocking_object": "not_attributed_by_act16a",
+        "minimum_gap_m": null,
+        "minimum_gap_status": "not_measured_no_geometric_cause_claim",
+        "raw_path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91517-b4db8ba2-retry1/raw"
+      },
+      {
+        "category": "approach",
+        "seed": 91518,
+        "blocking_object": "not_attributed_by_act16a",
+        "minimum_gap_m": null,
+        "minimum_gap_status": "not_measured_no_geometric_cause_claim",
+        "raw_path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91518-b4db8ba2-retry1/raw"
+      },
+      {
+        "category": "alignment",
+        "seed": 91519,
+        "blocking_object": "not_attributed_by_act16a",
+        "minimum_gap_m": null,
+        "minimum_gap_status": "not_measured_no_geometric_cause_claim",
+        "raw_path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91519-b4db8ba2-retry1/raw"
+      }
+    ]
+  },
+  "pending": [
+    {
+      "category": "backend_dependency",
+      "blocking_object": "warp1_batch_actor_api",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_geometric",
+      "reason": "No committed warp1 batch backend at plan registration"
+    }
+  ],
+  "reproduce": "python3 experiments/2026-10-16-rl1/tools/wait_for_warp.py --once"
+}
