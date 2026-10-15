@@ -1,0 +1,17 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [{
+    "id": "solo-carry-to-zone-v1",
+    "version": "0.1.0",
+    "purpose": "기본 off solo v6 목적 구역 운반·놓기 진단",
+    "entry": "scripts/run_solo_grasp_act_teacher.py",
+    "runner": "scripts.run_solo_grasp_act_teacher",
+    "docs": "experiments/2026-10-15-map-carry-zone/carry1.md",
+    "requires": "GCP coordinator approval; frozen pushed SHA; no Mac execution; training RGB off",
+    "output_flag": "--out",
+    "output_kind": "directory",
+    "required_inputs": ["--plan", "--episode", "--execution-host", "--solo-carry-to-zone-v1"],
+    "side_effect": "local_simulation",
+    "adapter": "managed_legacy_cli"
+  }]
+}

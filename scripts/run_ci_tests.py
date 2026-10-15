@@ -25,6 +25,7 @@ from scripts.check_ci_fixtures import check_fixtures
 
 TEST_PATTERNS = (
     "tests/test_grasp_act_contract.py",
+    "tests/test_grasp_act_solo_carry.py",
     "tests/test_grasp_act_contract_v4.py",
     "tests/test_grasp_act_visible_only.py",
     "tests/test_grasp_act_admission.py",

@@ -163,7 +163,8 @@ class SoloTeacher:
     def __init__(self, kind, role, pwm, *, profile='off', held_object_hidden_v1=False,
                  setdown_lookaround_v1=False, lookaround=None, route=None, ops=None,
                  teacher_stability='off', reach_mode='box_station_v1', rgb_lift_mode='off',
-                 solo_lift_negative_probe_v1=False, solo_lift_lookback_margin_v1=False):
+                 solo_lift_negative_probe_v1=False, solo_lift_lookback_margin_v1=False,
+                 solo_carry_to_zone_v1=False, carry=None):
         if profile != PROFILE:
             raise ValueError('solo teacher is opt-in; legacy defaults are unchanged')
         if not held_object_hidden_v1:
@@ -182,6 +183,12 @@ class SoloTeacher:
         if solo_lift_lookback_margin_v1 and (kind not in BOX_KINDS or rgb_lift_mode != 'solo_lift_lookback_v1'):
             raise ValueError('lookback margin requires box cargo and the unchanged lookback judge')
         self.lookback_margin = bool(solo_lift_lookback_margin_v1)
+        if solo_carry_to_zone_v1 and (kind not in BOX_KINDS or carry is None or
+                rgb_lift_mode != 'solo_lift_lookback_v1' or solo_lift_negative_probe_v1):
+            raise ValueError('zone carry requires box, RGB lookback and map controller')
+        self.carry = carry if solo_carry_to_zone_v1 else None
+        self.zone_advance_m = 0.
+        self.zone_visible_t = None
         self.rgb_lift_mode = rgb_lift_mode
         self.teacher_stability, self.reach_mode = teacher_stability, reach_mode
         self.spec = cargo(kind)
@@ -249,7 +256,7 @@ class SoloTeacher:
         self.stable_t = None
         if phase == 'align':
             self._reset_alignment()
-        if phase in ('lower', 'lookback_return') and self.skill != 'release':
+        if phase in ('lower', 'lookback_return', 'zone_place_view') and self.skill != 'release':
             self.skill, self.skill_started = 'release', now
 
     def _hold(self, now):
@@ -333,7 +340,8 @@ class SoloTeacher:
         # Called from an explicit skill instruction, before a perception result.
         return {'skill': self.skill, 'object_kind': self.spec.kind, 'role': self.role,
                 'skill_elapsed_s': max(0., now-self.skill_started) if self.skill_started is not None else 0.,
-                'local_skill_sample': not self.negative_probe and self.phase not in ('start', 'lookaround', 'complete', 'failed')}
+                'local_skill_sample': not self.negative_probe and self.phase not in
+                    ('start', 'lookaround', 'complete', 'failed', 'carry_prepare', 'carry_to_zone')}
 
     def _target(self, measurement, now, dt):
         if self.target is not None and self.previous is not None:
@@ -431,7 +439,8 @@ class SoloTeacher:
         clip = lambda v, lo, hi: max(lo, min(hi, v))
         return self._drive(now, clip(forward, -.05, .08), clip(left, -.06, .06), clip(turn, -.1, .1))
 
-    def step(self, now, *, measurement=None, rgb_holding='unknown', own_rgb=None):
+    def step(self, now, *, measurement=None, rgb_holding='unknown', own_rgb=None,
+             place_visible=False):
         if self.previous_t is not None and not 0 < now-self.previous_t <= .15+1e-8:
             raise ValueError('strictly increasing 10 Hz command clock required')
         dt = 0. if self.previous_t is None else now-self.previous_t
@@ -447,12 +456,14 @@ class SoloTeacher:
             self.lookback_m -= self.ops.delta(self.previous, dt)[0]
         if self.phase == 'lookback_return' and self.previous is not None:
             self.lookback_return_m += self.ops.delta(self.previous, dt)[0]
+        if self.phase == 'zone_place_advance' and self.previous is not None:
+            self.zone_advance_m += self.ops.delta(self.previous, dt)[0]
         self._target(measurement, now, dt)
         idle = self.arm.tick(now)
         value = self._hold(now)
         if self.result is not None:
             pass
-        elif now-self.phase_t > 60:
+        elif now-self.phase_t > (180 if self.phase == 'carry_to_zone' else 60):
             self.result = 'phase_timeout'
             self._set('failed', now)
         elif self.phase == 'fold' and idle:
@@ -523,7 +534,12 @@ class SoloTeacher:
                 if self.phase == 'verify_lift' and now-self.verify_t >= 1.-1e-8:
                     self._set('hold', now)
                 elif self.phase == 'hold' and now-self.phase_t >= 3.-1e-8:
-                    if self.rgb_lift_mode == 'solo_lift_lookback_v1':
+                    if self.carry is not None:
+                        from harness.visual_arm_v3 import forward_grip
+                        self.carry.start(now, forward_grip({1: 1500, **self.low})[:2])
+                        self._queue(self.high, now, .8, .2)
+                        self._set('carry_prepare', now)
+                    elif self.rgb_lift_mode == 'solo_lift_lookback_v1':
                         self._set('lookback_return', now)
                     else:
                         self._queue(self.low, now, .8, .2)
@@ -537,6 +553,33 @@ class SoloTeacher:
                     # No hidden truth recovery or silent scripted retry.
                     self.result = 'rgb_lift_unconfirmed' if self.phase == 'verify_lift' else 'rgb_hold_lost'
                     self._set('failed', now)
+        elif self.phase == 'carry_prepare' and idle:
+            self._set('carry_to_zone', now)
+        elif self.phase == 'carry_to_zone':
+            drive, arrived, failure = self.carry.step(now)
+            if failure:
+                self.result = failure
+                self._set('failed', now)
+            elif arrived:
+                self._set('zone_place_view', now)
+            else:
+                value = self._drive(now, *drive)
+        elif self.phase == 'zone_place_view':
+            self.zone_visible_t = (now if self.zone_visible_t is None else self.zone_visible_t) if place_visible else None
+            if self.zone_visible_t is not None and now-self.zone_visible_t >= .3-1e-8:
+                self.zone_advance_m = 0.
+                self._set('zone_place_advance', now)
+            elif now-self.phase_t >= 3.:
+                self.result = 'destination_floor_not_visible'
+                self._set('failed', now)
+        elif self.phase == 'zone_place_advance':
+            if self.zone_advance_m < self.carry.advance_m:
+                value = self._drive(now, .05)
+            else:
+                # Flat authored zone floor, same body-relative low arm pose.
+                # No held cargo world position or measured arm state is read.
+                self._queue(self.low, now, .8, .2)
+                self._set('lower', now)
         elif self.phase == 'lookback_return':
             if self.lookback_return_m < self.lookback_m:
                 value = self._drive(now, .05)
@@ -585,7 +628,9 @@ class SoloTeacher:
             'negative_probe': self.negative_probe,
             'solo_lift_negative_probe_v1': self.negative_probe,
             'solo_lift_lookback_margin_v1': self.lookback_margin,
-            'gate_eligible': not self.negative_probe,
+            'solo_carry_to_zone_v1': self.carry is not None,
+            'carry': self.carry.record() if self.carry is not None else None,
+            'gate_eligible': not self.negative_probe and self.carry is None,
             'lookback_commanded_backoff_m': self.lookback_m,
             'lookback_commanded_return_m': self.lookback_return_m,
             'lookback_plan': self.lookback_plan,

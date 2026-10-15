@@ -359,3 +359,52 @@ def test_lookback_real_run_loop_records_pre_pick_and_gates_return_lower_open(bac
     else:
         assert not set(phases) & {'lookback_return', 'lower', 'open'}
         assert report['teacher']['command_result'] in ('rgb_lift_unconfirmed', 'rgb_hold_lost')
+
+
+def test_zone_carry_real_runner_with_stub_world_never_uses_held_truth_or_legacy_pose(backend, monkeypatch):
+    import sim.grasp_act_solo_teacher as tm
+    import sim.solo_carry_to_zone as cm
+    import scripts.run_grasp_act_teacher as shared
+    from scripts.make_solo_carry_plan import prepare
+    from harness.zone_final_environment import resolve
+    runner, world, runs = backend
+    monkeypatch.setattr(shared, 'compress_logs', lambda out: None)
+    p = prepare()['episodes'][0]
+    scene = sys.modules['sim.grasp_act_scene'].make_scene({})
+    scene.config['static_map'] = resolve(p['map_id'])[0]
+    scene.config['setup_only']['objects'][p['item_id']] = {'body_name': 'cargo_body'}
+    real = tm.SoloTeacher
+    class CarryTeacher(real):
+        def __init__(self, *a, **kw):
+            super().__init__(*a, **kw)
+            self.low, self.high, self.descent = self._pick_geometry({'xyz': [.203, 0., .024], 'yaw': 0.})
+            self.sink.pwm.update({1: 1500, **self.high})
+            self.arm.commanded.update(self.sink.pwm)
+            # Start at a permitted estimated pose; sensor substitution only.
+            cx, cy = self.carry.region['center_m']
+            self.carry.loc.pose = [cx-.5, cy, 0.]
+            self.carry.loc.last_fix = 0.
+            self.carry.start(0., (.203, 0.))
+            self.carry.loc.pose = [*self.carry.goal, 0.]
+            self.phase, self.phase_t, self.skill_started = 'carry_to_zone', 0., 0.
+            self.holding = True
+    monkeypatch.setattr(tm, 'SoloTeacher', CarryTeacher)
+    monkeypatch.setattr(cm.CarryToZone, 'observe', lambda self, tops, now: setattr(self.loc, 'last_fix', now))
+    monkeypatch.setattr(cm.CarryToZone, 'place_visible', lambda *a: True)
+    out = runs/'carry'
+    report = runner.run(p, out, execution_host='gcp1', profile='solo_visible_only_v1',
+        hidden=True, look=True, cap_s=14., rgb_lift_mode='solo_lift_lookback_v1',
+        solo_truth_free_lookaround_v1=True, solo_carry_to_zone_v1=True)
+    assert report['status'] == 'complete'
+    assert not report['physical_success']  # fixture cargo never actually lifted
+    assert report['destination_zone'] == p['destination_zone']
+    assert report['input_audit']['held_world_reads'] == 0
+    assert report['input_audit']['blocked_held'] > 0
+    assert report['lookaround']['localizer']['truth_free_v1']
+    trace = [json.loads(s) for s in (out/'teacher-commands.jsonl').read_text().splitlines()]
+    assert any(r['map_rgb'] and r['map_rgb']['images'] for r in trace)
+    assert {'zone_place_view', 'zone_place_advance', 'lower', 'open', 'backoff'} <= {r['phase'] for r in trace}
+    assert all(r['visible_target'] is None for r in trace if r['phase'] in
+               ('zone_place_view', 'zone_place_advance', 'lower', 'open'))
+    ev = [json.loads(s) for s in (out/'eval-only.jsonl').read_text().splitlines()]
+    assert all('footprint_xy' in r for r in ev if 'min_z' in r)

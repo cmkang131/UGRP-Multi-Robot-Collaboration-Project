@@ -38,9 +38,9 @@ def camera_config():
 def segment(phase, local_started=False):
     if phase in ('start', 'fold', 'approach', 'align', 'relook'):
         return 'approach' if local_started else 'navigation'
-    if phase in ('lookback', 'lookback_return'):
+    if phase in ('lookback', 'lookback_return', 'carry_prepare', 'carry_to_zone'):
         return 'carry'
-    if phase in ('lower', 'open', 'retract', 'backoff'):
+    if phase in ('zone_place_view', 'zone_place_advance', 'lower', 'open', 'retract', 'backoff'):
         return 'release'
     if phase in ('lookaround', 'complete', 'failed'):
         return 'inspection'
@@ -91,7 +91,8 @@ class SoloRecorder:
         row = {'schema': SCHEMA, 'robot_id': self.plan['robot_id'],
             'sample_id': f"{self.plan['episode_id']}:{self.rows}:{self.plan['robot_id']}",
             't': now, 'skill': skill, 'object_kind': self.plan['kind'], 'role': self.plan['role'],
-            'destination_zone': 'pickup_site' if skill == 'release' else 'none',
+            'destination_zone': (self.plan['destination_zone'] if self.plan.get('solo_carry_to_zone_v1', False)
+                                 else 'pickup_site') if skill == 'release' else 'none',
             'rgb': image_history(list(self.images), now), 'issued': deepcopy(list(self.history)),
             **self.clock.observe(skill, now, previous['pwm'])}
         validate_observation(row)
@@ -111,8 +112,10 @@ class SoloRecorder:
         label = {'sample_id': row['sample_id'], 'skill': row['skill'], 'object_kind': row['object_kind'],
             'done': bool(done), 'terminal_reason': 'command_sequence_complete' if done else None,
             'clean_teacher_command': value, 'teacher_phase': phase, 'phase_after': phase_after,
-            'segment': segment(phase, self.local_started), 'local_skill_sample': bool(self.local_started and
-                phase not in ('start', 'fold', 'lookaround', 'complete', 'failed')),
+            'segment': segment(phase, self.local_started), 'local_skill_sample': bool((self.local_started or
+                (self.plan.get('solo_carry_to_zone_v1', False) and phase in ('zone_place_view', 'zone_place_advance',
+                    'lower', 'open', 'retract', 'backoff'))) and phase not in
+                ('start', 'fold', 'lookaround', 'complete', 'failed', 'carry_prepare', 'carry_to_zone')),
             'handoff_source': 'own_rgb_and_issued_commands', 'handoff_distance_m': distance}
         self.label_file.write(json.dumps(label, allow_nan=False)+'\n')
         self.history.append(deepcopy(value))

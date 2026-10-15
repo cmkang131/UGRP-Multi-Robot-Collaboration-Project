@@ -27,16 +27,19 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
         teacher_stability='off', reach_mode='box_station_v1', rgb_lift_mode='off',
         solo_lift_negative_probe_v1=False, solo_lift_lookback_margin_v1=False,
         training_rgb=False, solo_truth_free_lookaround_v1=False,
-        recording_stage='pilot', recording_approval=None):
+        recording_stage='pilot', recording_approval=None, solo_carry_to_zone_v1=False):
     if platform.system() != 'Linux' or execution_host != 'gcp1':
         raise RuntimeError('Linux gcp1 only; Mac physics/render disabled')
-    if not 0 < cap_s <= 180 or profile != 'solo_visible_only_v1' or not hidden or not look:
+    if not 0 < cap_s <= (300 if solo_carry_to_zone_v1 else 180) or profile != 'solo_visible_only_v1' or not hidden or not look:
         raise ValueError('finite opt-in solo profile with both required toggles')
     if teacher_stability not in ('off', 'align_relook_v1') or reach_mode not in ('box_station_v1', 'pad_window_v2'):
         raise ValueError('unknown solo stability/reach mode')
     if rgb_lift_mode not in ('off', 'solo_rgb_lift_v2', 'solo_rgb_lift_v3', 'solo_lift_lookback_v1'):
         raise ValueError('unknown solo RGB lift mode')
     validate_negative_probe(plan, solo_lift_negative_probe_v1, rgb_lift_mode)
+    validate_carry(plan, enabled=solo_carry_to_zone_v1, training_rgb=training_rgb,
+                   truth_free=solo_truth_free_lookaround_v1, lift=rgb_lift_mode,
+                   negative=solo_lift_negative_probe_v1)
     from harness.grasp_act_solo_recording import validate_recording, camera_config, SoloRecorder, validate_approval
     validate_recording(plan, training_rgb=training_rgb, truth_free_v1=solo_truth_free_lookaround_v1,
         negative=solo_lift_negative_probe_v1, stability=teacher_stability, reach=reach_mode,
@@ -66,7 +69,7 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
     approval = validate_approval(recording_approval, stage=recording_stage, sha=sha, host=host) if training_rgb else None
     out.mkdir(parents=True, exist_ok=False)
     write(out/'plan.json', plan)
-    write(out/'RUN_META.json', {'class': 'dev', 'branch': 'claude/act-solo-teacher',
+    write(out/'RUN_META.json', {'class': 'dev', 'branch': 'claude/map-carry-zone' if solo_carry_to_zone_v1 else 'claude/act-solo-teacher',
           'sha': sha, 'pr': plan.get('pr'), 'batch': plan['batch'],
           'negative_probe': bool(solo_lift_negative_probe_v1)})
     report = {'status': 'running', 'source_sha': sha, 'execution_host': host,
@@ -83,6 +86,10 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
               'gate_eligible': not solo_lift_negative_probe_v1 and not training_rgb,
               'physical_success': None, 'placement_task': 'set down at own picked location',
               'plan_sha256': hashlib.sha256((out/'plan.json').read_bytes()).hexdigest()}
+    if solo_carry_to_zone_v1:
+        report.update(solo_carry_to_zone_v1=True, gate_eligible=False,
+                      placement_task='carry to authored v6 destination zone',
+                      destination_zone=plan['destination_zone'], research_result=False)
     if training_rgb:
         report.update(training_include=False, training_candidate=False, data_admitted=False,
                       training_exclusion_reason='not complete / awaiting qualification and dataset admission')
@@ -146,6 +153,17 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
         initial_xy = data.body(body_name).xpos[:2].copy()  # EVALUATION ONLY
         last_eval_pos, last_eval_t = None, None
         static = scene.config['static_map']
+        carry = None
+        if solo_carry_to_zone_v1:
+            from sim.solo_carry_to_zone import CarryToZone
+            from sim.grasp_act_solo_evaluation import ZoneScore
+            from harness.zone_final_environment import digest
+            if digest(static) != plan['static_map_sha256']:
+                raise ValueError('carry static map/scene hash mismatch')
+            carry = CarryToZone(static, plan['destination_zone'])
+            score = ZoneScore(carry.region)
+            (out/'map-rgb').mkdir()
+            write(out/'carry-static-map.json', static)
         # Legacy look-around used live truth + frozen error as a map estimate.
         # The recording toggle replaces that path with a pose-free own-RGB scan.
         relook = SoloLookaround(static, ops=ops, truth_free_v1=solo_truth_free_lookaround_v1)
@@ -192,7 +210,8 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
                               teacher_stability=teacher_stability, reach_mode=reach_mode,
                               rgb_lift_mode=rgb_lift_mode,
                               solo_lift_negative_probe_v1=solo_lift_negative_probe_v1,
-                              solo_lift_lookback_margin_v1=solo_lift_lookback_margin_v1)
+                              solo_lift_lookback_margin_v1=solo_lift_lookback_margin_v1,
+                              solo_carry_to_zone_v1=solo_carry_to_zone_v1, carry=carry)
         if rgb_lift_mode == 'solo_lift_lookback_v1':
             from sim.grasp_act_solo_lookback import LookbackObserver
             lift_observer = LookbackObserver(plan['kind'])
@@ -286,6 +305,19 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
             # Capture once: recording persists exactly these controller bytes.
             jpg = base64.b64decode(port.capture()['image'])
             bgr = cv2.imdecode(np.frombuffer(jpg, np.uint8), cv2.IMREAD_COLOR)
+            map_evidence = None
+            if carry is not None:
+                if tick:
+                    carry.issue(previous, .1)
+                if tick % 5 == 0:
+                    tops = {c['name']: world.render_team_jpeg(camera=c['name']) for c in static['top_cameras']}
+                    carry.observe(tops, now)
+                    sources = []
+                    for name, raw in tops.items():
+                        path = out/'map-rgb'/f'{tick:06d}-{name}.jpg'
+                        path.write_bytes(raw)
+                        sources.append({'path': str(path.relative_to(out)), 'sha256': hashlib.sha256(raw).hexdigest()})
+                    map_evidence = {'t': now, 'images': sources, **carry.loc.record()}
             if recorder is not None:
                 recorder.observe(now, jpg, bgr, skill=teacher.skill, phase=teacher.phase, previous=previous)
             rgb_result = {'answer': 'unknown'}
@@ -310,14 +342,16 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
                     g = truth_pose(); pose_error = plan['handoff_pose_error']
                     relook.arm([g[0]+pose_error[0], g[1]+pose_error[1], g[2]+pose_error[2]])
                     look_eval['before'] = look_truth(); look_eval['armed_t'] = now
-            if tick % 5 == 0:
+            if tick % 5 == 0 and (carry is None or not teacher.holding):
                 # Currently visible obstacles only (same one-third gate as the target),
                 # refreshed at 2 Hz: it feeds the route planner, never a pose or a label.
                 refresh_obstacles()
             phase_before = teacher.phase
+            place_visible = (carry.place_visible(bgr, teacher.sink.pwm, teacher.low, plan['kind'])
+                             if carry is not None and teacher.phase == 'zone_place_view' else False)
             value, complete = teacher.step(now, measurement=measurement,
                         rgb_holding=rgb_result.get('answer', 'unknown'),
-                        own_rgb=lambda: cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB))
+                        own_rgb=lambda: cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB), place_visible=place_visible)
             if recorder is not None:
                 recorder.target(value, skill_after=teacher.skill, phase_after=teacher.phase, complete=complete)
             views = [e for e in relook.events if e['event'] == 'view']
@@ -344,17 +378,21 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
             previous = value
             trace.write(json.dumps({'t': now, 'phase': teacher.phase, 'command': value,
                                    'visible_target': measurement,
-                'student_context': teacher.context(now), 'rgb_confirmation': rgb_result})+'\n')
+                'student_context': teacher.context(now), 'rgb_confirmation': rgb_result,
+                **({'map_rgb': map_evidence, 'destination_floor_visible': place_visible,
+                    'phase_before': phase_before} if carry is not None else {})})+'\n')
 
             # Full truth owner, written only to eval-only.jsonl / Score.
             body = data.body(body_name); rot = body.xmat.reshape(3, 3)
             min_z = min(bottom_z('cylinder' if model.geom_type[g] == mujoco.mjtGeom.mjGEOM_CYLINDER else 'box',
                                 data.geom_xpos[g], data.geom_xmat[g].reshape(3, 3), model.geom_size[g]) for g in gids)
             forces = [0., 0.]; f = np.zeros(6)
+            finger_contacts = False
             for i in range(data.ncon):
                 g1, g2 = int(data.contact[i].geom1), int(data.contact[i].geom2)
                 finger = g1 if g2 in target_set else g2 if g1 in target_set else None
                 if finger in finger_ids:
+                    finger_contacts = True
                     mujoco.mj_contactForce(model, data, i, f)
                     forces[finger_ids[finger]] += abs(float(f[0]))
             pos = body.xpos.copy()
@@ -365,7 +403,25 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
                 'speed': speed, 'open_issued': value['pwm']['1'] >= 1900,
                 'placement_offset': float(np.linalg.norm(pos[:2]-initial_xy)), 'weld_active': False,
                 'negative_probe': bool(solo_lift_negative_probe_v1)}
-            score.add(now, **{k: v for k, v in row.items() if k != 'negative_probe'})
+            score_row = {k: v for k, v in row.items() if k != 'negative_probe'}
+            if carry is not None:
+                # Full 3-D collision-box corners projected into the zone plane;
+                # COM-inside alone would accept a box straddling the boundary.
+                corners = []
+                for g in gids:
+                    r = data.geom_xmat[g].reshape(3, 3)
+                    for sx in (-1, 1):
+                        for sy in (-1, 1):
+                            for sz in (-1, 1):
+                                p = data.geom_xpos[g]+r@(model.geom_size[g]*[sx, sy, sz])
+                                corners.append(p[:2].tolist())
+                score.add(now, phase=phase_before, footprint_xy=corners, finger_contacts=finger_contacts, **score_row)
+                estimate = carry.loc.pose
+                row.update(footprint_xy=corners, evaluation_phase=phase_before, finger_contacts=finger_contacts,
+                    map_pose_error_xy_m=math.dist(estimate[:2], base[:2]) if estimate is not None else None,
+                    map_pose_error_yaw_rad=wrap(estimate[2]-float(world.robot(rid).base_rpy()[2])) if estimate is not None else None)
+            else:
+                score.add(now, **score_row)
             if solo_lift_negative_probe_v1 and rgb_result.get('evidence') == 'solo_lift_lookback_v1':
                 negative_eval['N'] += 1
                 negative_eval['max_clearance_m'] = max(negative_eval['max_clearance_m'], min_z)
@@ -400,6 +456,8 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
             lift_rgb_evidence_ticks=lift_evidence, **score.record(teacher.result == 'command_complete'))
         if lift_observer is not None:
             report[rgb_lift_mode.removeprefix('solo_')] = lift_observer.record()
+        if carry is not None:
+            report['termination_reason'] = teacher.result or 'sim_cap'
         if solo_lift_negative_probe_v1:
             phases = {e['to'] for e in teacher.events}
             counts = lift_observer.answer_counts
@@ -457,6 +515,29 @@ def validate_negative_probe(plan, enabled, rgb_lift_mode):
             raise ValueError('negative probe requires box cargo and the unchanged lookback judge')
 
 
+def validate_carry(plan, *, enabled, training_rgb, truth_free, lift, negative):
+    if bool(plan.get('solo_carry_to_zone_v1', False)) != bool(enabled):
+        raise ValueError('carry plan requires matching explicit toggle')
+    if not enabled:
+        return
+    from harness.grasp_act_seed_splits import check_range
+    from sim.grasp_act_solo_teacher import BOX_KINDS
+    from harness.zone_environment_registry import load_scenario
+    check_range('solo_carry_diagnostic_v1', plan['seed'], 1)
+    if (training_rgb or negative or not truth_free or lift != 'solo_lift_lookback_v1'
+            or plan.get('split') != 'solo_carry_diagnostic_v1' or plan['kind'] not in BOX_KINDS
+            or not plan['scenario_id'].endswith('_v6') or plan.get('gate_eligible') is not False):
+        raise ValueError('carry diagnostic requires v6 box, truth-free lookaround, RGB lift, training off')
+    scenario = load_scenario(plan['scenario_id'])
+    source = ROOT/'configs/zone_study_scenarios_v6'/f"{plan['scenario_id']}.json"
+    if hashlib.sha256(source.read_bytes()).hexdigest() != plan['scenario_source_sha256']:
+        raise ValueError('carry scenario hash mismatch')
+    placement = next(p for p in scenario['eval']['setup']['placements'] if p['item_id'] == plan['item_id'])
+    order = next(o for o in scenario['orders'] if o['order_id'] == placement['order_id'])
+    if placement['kind'] != plan['kind'] or order['destination_zone'] != plan['destination_zone']:
+        raise ValueError('carry order/box/destination mismatch')
+
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument('--plan', type=Path, required=True)
@@ -475,6 +556,7 @@ def main():
                    help='box-only static retreat margin (150 mm); RGB judgment unchanged')
     p.add_argument('--cap-s', type=float, default=90.)
     p.add_argument('--training-rgb', action='store_true')
+    p.add_argument('--solo-carry-to-zone-v1', action='store_true', help='diagnostic only, default off')
     p.add_argument('--solo-truth-free-lookaround-v1', action='store_true',
                    help='pose-free fixed own-RGB sweep; required for training, default OFF')
     p.add_argument('--recording-stage', choices=('pilot', 'batch'), default='pilot')
@@ -488,7 +570,8 @@ def main():
               solo_lift_negative_probe_v1=a.solo_lift_negative_probe_v1,
               solo_lift_lookback_margin_v1=a.solo_lift_lookback_margin_v1,
               training_rgb=a.training_rgb, solo_truth_free_lookaround_v1=a.solo_truth_free_lookaround_v1,
-              recording_stage=a.recording_stage, recording_approval=a.recording_approval)))
+              recording_stage=a.recording_stage, recording_approval=a.recording_approval,
+              solo_carry_to_zone_v1=a.solo_carry_to_zone_v1)))
 
 
 if __name__ == '__main__':

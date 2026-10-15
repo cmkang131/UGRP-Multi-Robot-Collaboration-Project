@@ -45,10 +45,10 @@ def line_of_sight(start, cargo_xy, rects, others, *, step=.02, clear_m=.05):
     return True
 
 
-def candidates(kind):
+def candidates(kind, scenarios=SCENARIOS):
     out = []
-    for sid in SCENARIOS:
-        path = ROOT/'configs/zone_study_scenarios_v4'/f'{sid}.json'
+    for sid in scenarios:
+        path = ROOT/f"configs/zone_study_scenarios_{sid.rsplit('_', 1)[1]}"/f'{sid}.json'
         scenario = json.loads(path.read_text())
         for placement in scenario['eval']['setup']['placements']:
             if placement['kind'] == kind:
@@ -56,9 +56,9 @@ def candidates(kind):
     return out
 
 
-def episode(i, kind, seed, split):
+def episode(i, kind, seed, split, *, scenarios=SCENARIOS):
     rng = random.Random(seed)
-    pool = candidates(kind)
+    pool = candidates(kind, scenarios)
     rejects = Counter()
     for attempt in range(400):
         sid, path, scenario, placement = pool[(i+attempt) % len(pool)]
