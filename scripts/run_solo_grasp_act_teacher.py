@@ -314,6 +314,7 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
         if not plan.get('reloc10_own_review_only_v1', False):
             (out/'review-top').mkdir()
         origin = float(data.time)
+        reloc10_loop_wall = time.monotonic()
         finished_t = None
         negative_eval = {'N': 0, 'max_clearance_m': 0., 'max_pickup_offset_m': 0.}
         tick = 0
@@ -321,6 +322,10 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
             if (out/'SUPERVISOR_STOP.json').exists():
                 raise KeyboardInterrupt('supervisor stopped this run')
             now = float(data.time)
+            if plan.get('reloc10_own_review_only_v1', False) and now-origin >= 30.-1e-8 and 'first30' not in report:
+                report['first30'] = dict(elapsed_sim_s=now-origin, wall_elapsed_s=time.monotonic()-reloc10_loop_wall,
+                    wall_per_sim=(time.monotonic()-reloc10_loop_wall)/(now-origin), top_capture=False)
+                write(out/'first30.json', report['first30'])
             if data.eq_active.any():
                 raise RuntimeError('WELD_ACTIVE')
             visible_n, probe_N = eyes.region_visible(data, rid, gids)
