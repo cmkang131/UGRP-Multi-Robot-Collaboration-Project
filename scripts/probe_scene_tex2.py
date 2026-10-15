@@ -53,17 +53,27 @@ JPEG_QUALITY = 90
 END_COLOURS = {'band_neg': (.02, .95, .60, 1.), 'band_pos': (.02, .02, .95, 1.)}
 END_COLOUR_SOURCE = '870c0c59f3c2eae556abaa809ac1eddf33dce5ca:sim/grasp_act_scene.py'
 # Coordinator's explicit positive fixture coverage (2026-10-15): four original
-# boxes at .75/.9 m, original beam at .75 m, paint viewed from x-1.5 m. These
+# boxes at .75/.9 m, original beam at .75 m, paint A/B from x-1.5 m and C
+# from y-1.5 m. These
 # are authored evaluation setups, never acceptance thresholds or navigation.
 PALETTE_FORWARD_M = (.75, .9)
 
 
-def poses_for_view(view_index):
-    return POSES + POSITIVE_POSES if view_index == 0 else POSES
+def poses_for_view(view_index, selected=None):
+    available = POSES + POSITIVE_POSES if view_index == 0 else POSES
+    return available if selected is None else tuple(p for p in available if p in selected)
 
 
-def planned_case_count(view_count):
-    return sum(len(poses_for_view(index)) for index in range(view_count))
+def planned_case_count(view_count, selected=None):
+    return sum(len(poses_for_view(index, selected)) for index in range(view_count))
+
+
+def paint_fixture_xyyaw(center, zone):
+    # Explicit evaluation-only view amendment (2026-10-16): coordinator found
+    # the western paint_C fixture occluded by the divider, with 0/8 visibility.
+    # Move the observer, preserving the original region/camera/physics.
+    distance = max(WALL_DISTANCES_M)
+    return (center[0], center[1] - distance, math.pi / 2) if zone == 'C' else (center[0] - distance, center[1], 0.)
 
 
 def pose_pwm_mode(pose):
@@ -391,7 +401,7 @@ def fixture(model, data, scene, view, pose, hardware):
     static = scene.config['static_map']
     if pose.startswith('paint_'):
         center = static['regions']['zone_' + pose[-1]]['center_m']
-        x, y, yaw = center[0] - max(WALL_DISTANCES_M), center[1], 0.
+        x, y, yaw = paint_fixture_xyyaw(center, pose[-1])
     spawns = scene.config['setup_only']['spawns']
     for rid, spawn in spawns.items():
         _free_pose(model, data, rid + '__robot', spawn[:3], spawn[3])
@@ -409,6 +419,8 @@ def fixture(model, data, scene, view, pose, hardware):
     setup['pwm_mode'] = pose_pwm_mode(pose)
     setup['positive_colour_fixture'] = pose in POSITIVE_POSES
     setup['positive_expected_target_masks'] = list(positive_targets(pose))
+    if pose == 'paint_C':
+        setup['paint_evaluation_view'] = 'paint_C_south_1p5m_v1'
     setup['minimum_wall_gap_m'] = center_wall_gap(static, (x, y))
     setup['wall_gap_definition'] = 'horizontal robot/body center to original wall-box boundary; not body collision clearance'
     if pose == 'box_palette':
@@ -652,7 +664,7 @@ def funnel(rows, expected_frames):
             'scope': 'static camera audit, not a teacher gate or task-success funnel'}
 
 
-def run(output, profiles, source_sha, proof):
+def run(output, profiles, source_sha, proof, poses=None):
     import mujoco
     from scripts.generate_scene_textures import MAPS
     from scripts.audit_scene_textures import color_ranges
@@ -688,10 +700,13 @@ def run(output, profiles, source_sha, proof):
                                         '--source-sha', source_sha, '--setup-proof', proof['path'],
                                         '--output', str(output), '--profiles', *profiles]}
     baseline_models, baseline_frames = {}, {}
-    expected_frames = sum(planned_case_count(len(wall_views(json.loads(path.read_text())))) for path in MAPS) * len(ROBOTS) * len(profiles)
+    if poses is not None:
+        summary['reproduction_command'] += ['--poses', *poses]
+    expected_frames = sum(planned_case_count(len(wall_views(json.loads(path.read_text()))), poses) for path in MAPS) * len(ROBOTS) * len(profiles)
     summary['planned_frames'] = expected_frames
-    summary['base_poses'] = list(POSES)
-    summary['positive_poses_at_view0'] = list(POSITIVE_POSES)
+    summary['requested_poses'] = list(poses) if poses is not None else None
+    summary['base_poses'] = [pose for pose in POSES if poses is None or pose in poses]
+    summary['positive_poses_at_view0'] = [pose for pose in POSITIVE_POSES if poses is None or pose in poses]
     abort_remaining = False
     save_summary(output, summary)
     try:
@@ -726,7 +741,7 @@ def run(output, profiles, source_sha, proof):
                     groups = geometry_groups(model, scene)
                     data = mujoco.MjData(model)
                     for vi, view in enumerate(views):
-                        for pose in poses_for_view(vi):
+                        for pose in poses_for_view(vi, poses):
                             pwm, setup = fixture(model, data, scene, view, pose, hardware)
                             for rid in ROBOTS:
                                 case = f'{map_path.stem}--view{vi}--{pose}--{rid}'
@@ -846,6 +861,7 @@ def main(argv=None):
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--source-sha', required=True)
     parser.add_argument('--profiles', nargs='+', choices=PROFILES, default=list(PROFILES))
+    parser.add_argument('--poses', nargs='+', choices=POSES + POSITIVE_POSES, default=None)
     parser.add_argument('--setup-proof', type=Path, required=True)
     parser.add_argument('--execute', action='store_true')
     args = parser.parse_args(argv)
@@ -856,6 +872,8 @@ def main(argv=None):
         parser.error('--execute is required after gcp2setup PASS')
     if len(set(args.profiles)) != len(args.profiles):
         parser.error('duplicate profiles are not allowed')
+    if args.poses is not None and len(set(args.poses)) != len(args.poses):
+        parser.error('duplicate poses are not allowed')
     if args.profiles[0] != 'floor_light_v1':
         parser.error('first profile must be floor_light_v1 for exact baseline comparison')
     if args.output.exists():
@@ -864,7 +882,7 @@ def main(argv=None):
     validate_source(args.source_sha)
     subprocess.run(['zstd', '--version'], check=True, stdout=subprocess.DEVNULL)
     os.chdir(ROOT)  # pinned repository-relative texture paths
-    result = run(args.output.resolve(), args.profiles, args.source_sha, proof)
+    result = run(args.output.resolve(), args.profiles, args.source_sha, proof, poses=args.poses)
     print(json.dumps({'status': result['status'], 'frames': len(result['frames']),
                       'unexecuted': len(result['unexecuted']), 'rejection_table': result['rejection_table'],
                       'sha256_manifest': result['sha256_manifest']}))

@@ -16,11 +16,13 @@ from sim.natural_scene_texture_v2 import CUBE_FACES, wall_key
 SEED = 2026101502
 # C camera montages show the 512-square cube's long wall faces averaging
 # 512 px/m source chips into weak grain (e.g. 6.5 m spans only 512 texels).
-# D authors coarser irregular plaster wear at 64 source px/m, preserving face
-# aspect down to 8 px instead of stretching thin dimensions to 128 px.
+# D's coarse wear did not restore whole wall descriptor support in its drive
+# sample. E restores fine wear and doubles face resolution: a 6.5m face spans
+# 1024 rather than512 texels (6.35 rather than12.7mm/texel before filtering).
 # These are material-design scales, not perception acceptance thresholds.
-WALL_SOURCE_PX_PER_M = 64
+WALL_SOURCE_PX_PER_M = 512
 MIN_SOURCE_FACE_PX = 8
+CUBE_FACE_PX = 1024
 # Material design bounds, not detector acceptance thresholds. The existing
 # all-hue paint mask starts at S=20; white_markers starts at V>180; relative
 # peer-dark's largest possible V is .38*255=96.9. Stay inside that free interval.
@@ -75,19 +77,19 @@ def generate(directory):
     record = {'schema': 'ugrp.natural_surface_assets.v2', 'seed': SEED,
               'generator': 'scripts/generate_scene_tex2.py', 'palettes_hsv': PALETTES,
               'floor_extent_m': [16, 16], 'wall_source_pixels_per_m': WALL_SOURCE_PX_PER_M,
-              'cube_face_pixels': 512, 'wall_texuniform': False, 'minimum_source_face_dimension_px': MIN_SOURCE_FACE_PX, 'walls': walls,
+              'cube_face_pixels': CUBE_FACE_PX, 'wall_texuniform': False, 'minimum_source_face_dimension_px': MIN_SOURCE_FACE_PX, 'walls': walls,
               'maps': {p.relative_to(ROOT).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest() for p in MAPS}, 'images': {}}
     for key, (width, height, floor) in sorted(specs.items()):
         im = texture(key, width, height, floor=floor)
         if not floor:
-            im = im.resize((512, 512), Image.Resampling.LANCZOS)
+            im = im.resize((CUBE_FACE_PX, CUBE_FACE_PX), Image.Resampling.LANCZOS)
             # Resampling RGB can overshoot both V and S. Reapply the authored
             # HSV palette after resampling so the published pixels obey it.
             value = cv2.cvtColor(np.asarray(im), cv2.COLOR_RGB2HSV)[..., 2].astype(float)
             grain_rng = np.random.default_rng(int.from_bytes(hashlib.sha256((key+':grain').encode()).digest()[:8], 'big'))
             value = np.rint(value+grain_rng.normal(0, .8, value.shape)).astype(np.int16)
             p = PALETTES['walls']
-            hsv = np.empty((512, 512, 3), np.uint8)
+            hsv = np.empty((CUBE_FACE_PX, CUBE_FACE_PX, 3), np.uint8)
             hsv[..., 0], hsv[..., 1], hsv[..., 2] = p['h'], p['s'], np.clip(value, *p['v'])
             im = Image.fromarray(cv2.cvtColor(hsv, cv2.COLOR_HSV2RGB))
         path = directory/(key+'.png')

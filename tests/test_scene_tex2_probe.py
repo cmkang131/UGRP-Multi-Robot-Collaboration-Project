@@ -169,3 +169,18 @@ def test_palette_layout_uses_real_extents_and_keeps_four_boxes_separate():
                 continue
             assert (abs(pose_a[0] - pose_b[0]) >= boxes[a][0] + boxes[b][0] or
                     abs(pose_a[1] - pose_b[1]) >= boxes[a][1] + boxes[b][1])
+
+
+def test_paint_c_supplement_selects_only_view_zero_and_plans_24_frames():
+    assert probe.poses_for_view(0, ['paint_C']) == ('paint_C',)
+    assert probe.poses_for_view(1, ['paint_C']) == ()
+    assert probe.planned_case_count(2, ['paint_C']) == 1
+    assert 4 * probe.planned_case_count(2, ['paint_C']) * len(probe.ROBOTS) * len(probe.PROFILES) == 24
+    assert probe.poses_for_view(1, ['paint_C', 'drive']) == ('drive',)
+
+
+def test_paint_c_view_is_south_facing_north_and_ab_remain_west():
+    import math
+    center = (3., 2.)
+    assert probe.paint_fixture_xyyaw(center, 'C') == (3., .5, math.pi / 2)
+    assert probe.paint_fixture_xyyaw(center, 'A') == probe.paint_fixture_xyyaw(center, 'B') == (1.5, 2., 0.)
