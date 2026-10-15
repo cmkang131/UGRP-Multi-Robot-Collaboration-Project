@@ -5,9 +5,11 @@ ACT. Once handed off, a lost target is propagated from issued wheels only;
 the actual base pose cannot steer the gaze until the target is seen again.
 """
 import math
+from collections import Counter
 from copy import deepcopy
 from harness.grasp_act_contract import command,SERVOS,MEMORY_S
 from sim.grasp_act_teacher import GraspTeacher,local,wrap,grasp_poses,STATION_M,XY_TOL_M,YAW_TOL_RAD
+from harness.visual_arm_v3 import tool_pose
 from sim.grasp_act_port import duty_wheels
 from scripts.zone_teacher import FOLDED
 
@@ -69,6 +71,11 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         if self.approach_coordination not in ('off',MODE,OBSERVED_MODE):raise ValueError('unknown approach coordination mode')
         if self.approach_coordination!='off':
             require_baseline(self.teacher_stability,self.teacher_search,self.approach_goal_set,self.nominal_blocked_handoff,self.approach_progress,self.approach_recovery)
+        from sim.grasp_act_search15_modes import MODES, validate
+        self.search15_modes={k:kwargs.pop(k,'off') for k in MODES}
+        validate(self.search15_modes,recovery=self.approach_recovery,coordination=self.approach_coordination)
+        from sim.grasp_act_reobserve import ActiveReobserve
+        self.reobserver=ActiveReobserve();self.sampled_stance=False
         self.peer_wait_since=None;self.peer_wait_ids=set();self.peer_clear_since=None
         self.peer_route=[];self.peer_route_next=0.;self.recovery_log=[]
         self.nominal_handoff_log=[]
@@ -123,7 +130,8 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
             if self.phase in ('align','ready') and (not self.approach_plan_valid or not free(goal,discs,rects,radius)):
                 self._set('approach',now);self._reset_alignment();self.next_plan=now
             if self.phase=='approach' and not self._plan_approach(truth,now):
-                return self._hold(now),False
+                value=self.reobserver.step(truth,self,now)
+                return (value if value is not None else self._hold(now)),False
         pose,g,heading,goal=self._geometry(truth)
         if self.phase=='approach' and math.dist(pose[:2],goal)>.08:
             return self._route(truth,goal,heading,now),False
@@ -419,6 +427,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         return nominal_goal_blocked(world,self.rid,self.end,self.bounds,self.folded_ready)
 
     def _approach_handoff(self,now):
+        if self.reobserver.active:self.reobserver.finish(self,now,'approach_deadline')
         self.outcome='approach_blocked_handoff';self.path=[];self.approach_plan_valid=False
         self.events.append({'t':now,'approach':'all_goals_blocked_handoff',
                             'blocked_s':now-self.approach_blocked_since})
@@ -440,6 +449,21 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
             from sim.grasp_act_recovery import AXIAL_CHOICES
             choices=AXIAL_CHOICES if self.approach_recovery in ('approach_recovery_v2','progress_view_recovery_v3') else None
             selected,checked=select_goal(world,self.rid,self.end,self.bounds,self.folded_ready,self.approach_choice,choices=choices)
+            if self.sampled_stance:
+                from sim.grasp_act_pregrasp import select_sampled_goal
+                selected,checked=select_sampled_goal(world,self.rid,self.end,self.bounds,self.folded_ready,
+                                                     self.sink.pwm,current=self.approach_choice)
+            elif selected is None:
+                from sim.grasp_act_reobserve import remembered_blockers
+                stale=remembered_blockers(world,self.rid,checked,self.folded_ready)
+                if (self.search15_modes['obstacle_reobserve']!='off' and stale
+                        and self.reobserver.used['obstacle']==0):
+                    self.reobserver.begin('obstacle',stale,world,self,now)
+                if self.reobserver.active is None and self.search15_modes['pregrasp_sampling']!='off':
+                    from sim.grasp_act_pregrasp import select_sampled_goal
+                    selected,sampled=select_sampled_goal(world,self.rid,self.end,self.bounds,self.folded_ready,self.sink.pwm)
+                    checked+=sampled
+                    self.sampled_stance=selected is not None
             self.planner_calls+=1;self.next_plan=now+1.;self.path_goal=tuple(goal)
             self.blocked_goal_calls+=int(blocked)
             self.approach_plan_valid=selected is not None
@@ -553,6 +577,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         # One finite encounter budget, independent of motion or visibility flicker.
         if now-self.peer_wait_since>=12.-1e-8:
             self.outcome='approach_blocked_handoff'
+            if self.reobserver.active:self.reobserver.finish(self,now,'peer_wait_deadline')
             self.recovery_log.append({'t':now,'recovery':'peer_wait_deadline_handoff'})
             return self._hold(now)
         if self.approach_recovery=='progress_view_recovery_v3':
@@ -573,7 +598,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
                     'own_best_angle_rad':self.peer_progress.best_angle,
                     'fresh_peer_motion_age_s':now-self.peer_motion_t})
                 return self._hold(now)
-        if not blocked:return self._hold(now)
+        if not blocked:return self._peer_reobserve_hold(world,now)
         changed=not self.peer_route or now>=self.peer_route_next
         if changed:
             self.peer_route=safe_prefix(pose[:2],goal,self.bounds,discs,rects,radius)
@@ -581,13 +606,23 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
             self.recovery_log.append({'t':now,'recovery':'safe_prefix','endpoint':self.peer_route[-1],
                                       'points':len(self.peer_route)})
         target=waypoint(pose[:2],self.peer_route,discs,rects,radius)
-        if target is None or math.dist(pose[:2],self.peer_route[-1])<.025:return self._hold(now)
+        if target is None or math.dist(pose[:2],self.peer_route[-1])<.025:return self._peer_reobserve_hold(world,now)
         value=self._continuous(now,**drive(pose,self.peer_route[-1],target,world['beam']['ends'][self.end]))
         dx,dy,_=command_delta(value,.1);co,si=math.cos(pose[2]),math.sin(pose[2])
         end=(pose[0]+co*dx-si*dy,pose[1]+si*dx+co*dy)
         # Check the actual issued pulse too, not just the ideal route tangent.
         if not segment_free(pose[:2],end,discs,rects,radius):return self._hold(now)
         return value
+
+    def _peer_reobserve_hold(self,world,now):
+        if self.search15_modes['peer_reobserve']!='off':
+            fresh=set(world['visibility'][self.rid]['peers'])
+            targets={r:self.reobserver.hints[r] for r in sorted(self.peer_wait_ids-fresh)
+                     if r in self.reobserver.hints}
+            if targets and self.reobserver.begin('peer',targets,world,self,now):
+                value=self.reobserver.step(world,self,now)
+                if value is not None:return value
+        return self._hold(now)
 
     def _hold(self,now):
         return command({'t':now,'wheels':[0.]*4,'duration_s':[0.]*4,
@@ -639,6 +674,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
 
     def ready_geometry(self,truth):
         if truth['beam'] is None or truth['visibility'][self.rid]['visible_probes']<5:return False
+        if self.reobserver.active is not None:return False
         if self.approach_recovery!='off' and self.peer_wait_since is not None:return False
         if self.nominal_blocked_handoff!='off' and self.approach_recovery not in ('approach_recovery_v2','progress_view_recovery_v3'):
             from sim.grasp_act_goal_set import nominal_goal_blocked
@@ -657,7 +693,19 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         x,y=local(pose,g)
         try:grasp_poses((x,y,g[2]))
         except ValueError:return False
-        return math.dist(pose[:2],goal)<=XY_TOL_M and abs(wrap(heading-pose[2]))<=YAW_TOL_RAD
+        ready=math.dist(pose[:2],goal)<=XY_TOL_M and abs(wrap(heading-pose[2]))<=YAW_TOL_RAD
+        if ready and self.sampled_stance:
+            from sim.grasp_act_pregrasp import jaw_geometry,collision_reason
+            hover,descent=grasp_poses((x,y,g[2]))
+            offset=wrap(pose[2]+math.radians(tool_pose(descent[-1]).yaw_left_deg)-
+                        truth['beam']['pose'][2]-(math.pi if self.end=='blue' else 0.))
+            if not jaw_geometry(offset,descent[-1])['allowed']:return False
+            # The nominal candidate remains centred; actual residuals must pass
+            # the same full swept check immediately before committing the pick.
+            from sim.grasp_act_pregrasp import actual_pick_cloud
+            xyz,radii,contact=actual_pick_cloud(self.sink.pwm,(x,y,g[2]))
+            if collision_reason(truth,self.rid,pose,xyz,radii,contact):return False
+        return ready
 
     def request_coordination(self, world, now):
         return (self.priority_request.observe(self, world, now)
@@ -677,6 +725,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
     def prepare_signal(self,truth,now):
         """Own teacher readiness; only a binary READY crosses the protocol."""
         if self.outcome is not None:return False
+        truth=self.reobserver.planning_world(truth,self.rid)
         if self.priority is not None and self.priority.waiting:return self.priority.signal(self,truth)
         if self.phase in ('approach','align','ready','search','relook') and self._nominal_handoff(truth,now):return False
         if self.phase=='ready' and not self.ready_geometry(truth):
@@ -684,6 +733,10 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         return self.phase in ('ready','pick','complete')
 
     def step(self,truth,now,*,permit_pick=False):
+        before_pwm=dict(self.sink.pwm)
+        if any(v!='off' for v in self.search15_modes.values()):
+            self.reobserver.observe(truth,self.rid)
+            truth=self.reobserver.planning_world(truth,self.rid)
         if self.priority is not None and self.priority.round<2 and permit_pick:
             self.priority.advance(self,now);permit_pick=False
         if self.local_seen is not None and self.last_command is not None and self.last_tick is not None:
@@ -699,6 +752,15 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
             dx,dy,_=command_delta(value,.1);co,si=math.cos(pose[2]),math.sin(pose[2])
             end=(pose[0]+co*dx-si*dy,pose[1]+si*dx+co*dy)
             if not segment_free(pose[:2],end,discs,rects,radius):value=self._hold(now)
+        if self.sampled_stance and self.phase in ('approach','align','ready','search','relook'):
+            from sim.grasp_act_pregrasp import issued_sweep_reason
+            from harness.grasp_act_visible_world import command_delta
+            reason=issued_sweep_reason(truth,self.rid,truth['robots'][self.rid]['pose'],
+                                       before_pwm,self.sink.pwm,command_delta(value,.1))
+            if reason:
+                self.sink.pwm.update(before_pwm);self.arm.commanded.update(before_pwm)
+                value=self._hold(now)
+                self.recovery_log.append({'t':now,'recovery':'sampled_command_sweep_reject','reason':reason})
         # READY waiting belongs to GO/ACK, and fine alignment has its own
         # error-progress checker. A search detour does not erase route debt.
         if self.phase in ('align','ready','pick','complete'):self.progress.reset()
@@ -725,9 +787,10 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
             return self._hold(now),False
         if self.approach_recovery!='off' and self.peer_wait_since is not None and now-self.peer_wait_since>=12.-1e-8:
             self.outcome='approach_blocked_handoff'
+            if self.reobserver.active:self.reobserver.finish(self,now,'peer_wait_deadline')
             self.recovery_log.append({'t':now,'recovery':'peer_wait_deadline_handoff'})
             return self._hold(now),False
-        if (self.approach_blocked_since is not None and truth['beam'] is not None
+        if (self.reobserver.active is None and self.approach_blocked_since is not None and truth['beam'] is not None
                 and truth['visibility'][self.rid]['visible_probes']>=5):
             # A fresh view may recover before the deadline, but only after the
             # complete candidate check (static obstacles, peers and route).
@@ -736,6 +799,21 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         # Losing sight cannot reset a blocked approach's finite deadline.
         if self.approach_blocked_since is not None and now-self.approach_blocked_since>=self.APPROACH_BLOCKED_LIMIT_S-1e-8:
             self._approach_handoff(now);return self._hold(now),False
+        if self.reobserver.active is not None:
+            for rid in self.peer_wait_ids & set(truth['visibility'][self.rid]['peers']):
+                xy=truth['robots'][rid]['pose'][:2]
+                if rid not in self.peer_motion or math.dist(xy,self.peer_motion[rid])>.01:
+                    self.peer_motion[rid]=tuple(xy);self.peer_motion_t=now
+            # Same 6 s peer-progress / 12 s encounter bounds; looking buys no time.
+            if (self.reobserver.active['kind']=='peer' and self.peer_motion_t is not None
+                    and now-self.peer_motion_t>=6.-1e-8
+                    and truth['beam'] is not None
+                    and self.peer_progress.observe_goal(truth['robots'][self.rid]['pose'],
+                        self._geometry(truth)[3],self._geometry(truth)[2],now)=='handoff'):
+                self.reobserver.finish(self,now,'peer_progress_deadline')
+                self.outcome='approach_blocked_handoff';return self._hold(now),False
+            value=self.reobserver.step(truth,self,now)
+            if value is not None:return value,False
         if not self.started:
             self.started=True;self.phase_t=now;self.skill_started=now
             self.arm.queue({**FOLDED,6:self.sink.pwm[6]},now,duration=.5)
@@ -787,6 +865,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         return self._hold(now),False
 
     def diagnostic(self):
+        candidates=[c for row in self.goal_set_log for c in row['candidates']]
         return {**super().diagnostic(),'profile':'visible_only','command_complete':self.command_complete,
                 'ready_revocations':self.ready_revocations,'handoff':self.handoff,
                 'blocked_goal_calls':self.blocked_goal_calls,
@@ -796,7 +875,13 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
                 'nominal_blocked_handoff':self.nominal_blocked_handoff,'nominal_handoff_log':self.nominal_handoff_log,
                 'approach_progress':self.approach_progress,'approach_progress_log':self.progress_log,
                 'approach_recovery':self.approach_recovery,'recovery_log':self.recovery_log,
-                'approach_coordination':self.approach_coordination,
+                'approach_coordination':self.approach_coordination,**self.search15_modes,
+                'reobserve_log':self.reobserver.events,'sampled_stance':self.sampled_stance,
+                'candidate_angle_counts':dict(Counter(str(round(c['offset_deg'],3)) for c in candidates)),
+                'candidate_rejection_counts':dict(Counter(c['reason'] for c in candidates)),
+                'reobserve_pending':None if self.reobserver.active is None else {
+                    'kind':self.reobserver.active['kind'],'start':self.reobserver.active['start'],
+                    'termination':self.outcome or 'still_active'},
                 'coordination_request_log':self.priority_request.events if self.priority_request is not None else [],
                 'coordination_round':self.priority.round if self.priority is not None else None,
                 'coordination_log':self.priority.events if self.priority is not None else [],

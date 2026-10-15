@@ -4,8 +4,9 @@ from pathlib import Path
 
 CRITERIA={'min_z_m':.012,'max_tilt_deg':10.,'hold_s':3.}
 
-def recording_admission(gate,*,source_sha,teacher_profile,gate_plan,execution_host,teacher_stability="off",teacher_search="off",approach_goal_set="off",nominal_blocked_handoff="off",approach_progress="off",approach_recovery="off",approach_coordination="off",handoff_observation="off"):
+def recording_admission(gate,*,source_sha,teacher_profile,gate_plan,execution_host,teacher_stability="off",teacher_search="off",approach_goal_set="off",nominal_blocked_handoff="off",approach_progress="off",approach_recovery="off",approach_coordination="off",handoff_observation="off",pregrasp_sampling="off",obstacle_reobserve="off",peer_reobserve="off"):
     from scripts.grasp_act_host import same_machine
+    from sim.grasp_act_search15_modes import match,MODES
     same_machine(gate.get('execution_host'),execution_host)
     digest=hashlib.sha256(Path(gate_plan).read_bytes()).hexdigest()
     if gate.get('qualified') is not True or gate.get('N',0)<40 or gate.get('n',0)/max(1,gate.get('N',0))<.95:
@@ -21,12 +22,15 @@ def recording_admission(gate,*,source_sha,teacher_profile,gate_plan,execution_ho
     if gate.get('approach_recovery','off')!=approach_recovery:raise ValueError('recording gate approach recovery mode mismatch')
     if gate.get('approach_coordination','off')!=approach_coordination:raise ValueError('recording gate approach coordination mode mismatch')
     if gate.get('handoff_observation','off')!=handoff_observation:raise ValueError('recording gate handoff observation mode mismatch')
+    expected_search15={'peer_reobserve':peer_reobserve,'obstacle_reobserve':obstacle_reobserve,'pregrasp_sampling':pregrasp_sampling}
+    match(gate,expected_search15,'recording gate')
     completed=[r for r in gate.get('rows',[]) if r.get('status')=='complete' and r.get('exit')==0]
     if len(completed)!=gate['N'] or sum(r.get('physical_success') is True for r in completed)!=gate['n']:
         raise ValueError('recording gate denominator mismatch')
     if any(r.get('source_sha')!=source_sha or r.get('teacher_profile')!=teacher_profile for r in completed):
         raise ValueError('recording gate mixed execution source')
     for row in completed:
+        match(row,expected_search15,'recording gate mixed')
         same_machine(row.get('execution_host'),execution_host)
         if row.get('teacher_stability','off')!=teacher_stability:raise ValueError('recording gate mixed stability modes')
         if row.get('teacher_search','off')!=teacher_search:raise ValueError('recording gate mixed search modes')
@@ -37,16 +41,18 @@ def recording_admission(gate,*,source_sha,teacher_profile,gate_plan,execution_ho
         if row.get('approach_coordination','off')!=approach_coordination:raise ValueError('recording gate mixed approach coordination modes')
         if row.get('handoff_observation','off')!=handoff_observation:raise ValueError('recording gate mixed handoff observation modes')
     return {'source_sha':source_sha,'teacher_profile':teacher_profile,'plan_sha256':digest,
-            'teacher_stability':teacher_stability,'teacher_search':teacher_search,'approach_goal_set':approach_goal_set,'nominal_blocked_handoff':nominal_blocked_handoff,'approach_progress':approach_progress,'approach_recovery':approach_recovery,'approach_coordination':approach_coordination,'handoff_observation':handoff_observation,'qualified':True,'n':gate['n'],'N':gate['N'],'criteria':CRITERIA,'execution_host':execution_host}
+            'teacher_stability':teacher_stability,'teacher_search':teacher_search,'approach_goal_set':approach_goal_set,'nominal_blocked_handoff':nominal_blocked_handoff,'approach_progress':approach_progress,'approach_recovery':approach_recovery,'approach_coordination':approach_coordination,'handoff_observation':handoff_observation,'pregrasp_sampling':pregrasp_sampling,'obstacle_reobserve':obstacle_reobserve,'peer_reobserve':peer_reobserve,'qualified':True,'n':gate['n'],'N':gate['N'],'criteria':CRITERIA,'execution_host':execution_host}
 
 def recording_mode_equivalence(gate_rows,recorded_rows):
     """The same starts must pass in both rendering modes before data admission."""
     from scripts.grasp_act_host import same_machine
+    from sim.grasp_act_search15_modes import match,MODES
     baseline={r['index']:r for r in gate_rows if r.get('status')=='complete' and r.get('exit')==0}
     if len(recorded_rows)<3:raise ValueError('at least three paired recording-mode checks required')
     seen=set()
     for row in recorded_rows:
         index=row['index'];old=baseline[index]
+        match(row,old,'paired')
         if index in seen:raise ValueError('distinct paired starts required')
         seen.add(index)
         same_machine(old.get('execution_host'),row.get('execution_host'))
@@ -74,4 +80,5 @@ def recording_mode_equivalence(gate_rows,recorded_rows):
             'approach_recovery':recorded_rows[0].get('approach_recovery','off'),
             'approach_coordination':recorded_rows[0].get('approach_coordination','off'),
             'handoff_observation':recorded_rows[0].get('handoff_observation','off'),
+            **{k:recorded_rows[0].get(k,'off') for k in MODES},
             'execution_host':recorded_rows[0]['execution_host']}

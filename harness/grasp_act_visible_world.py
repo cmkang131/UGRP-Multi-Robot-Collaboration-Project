@@ -56,6 +56,7 @@ class VisibleWorld:
             if m['kind']=='cargo':
                 objects[key]={'xy':m['xyz'][:2],'radius':m['radius'],'top_z_bound_m':m['top_z_bound_m']}
         visibility={'visible_probes':next((m['visible_n'] for m in measurements if m['id']=='band_'+self.end),0),
-                    'objects':[k for k in seen if k in objects],'peers':[k for k in seen if k in robots and k!=self.rid]}
+                    'objects':[k for k in seen if k in objects],'peers':[k for k in seen if k in robots and k!=self.rid],
+                    'observations':deepcopy(self.memory)}
         return {'t':now,'robots':robots,'objects':objects,'walls':walls,'beam':beam,'visibility':{self.rid:visibility},
                 'scope':'visible_only; remembered objects expire at student memory horizon'}
