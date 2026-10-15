@@ -358,6 +358,18 @@ def fixture(model, data, scene, view, pose, hardware):
     return pwm, setup
 
 
+def scene_map_selection(static):
+    """Use the existing preparation-only heldout adapter, never widen the
+    final-provider allow-list just to inspect H1/H2 materials.
+    """
+    from harness import zone_heldout_maps as heldout
+    if static['map_id'] in heldout.IDS:
+        if heldout.load(static['map_id']) != static:
+            raise ValueError('PINNED_HELDOUT_MAP_MISMATCH')
+        return heldout.BASE_ID, static['map_id']
+    return static['map_id'], 'off'
+
+
 def build_model(map_path, profile_name):
     """Compile the registered map with production XML hooks, without reset/step."""
     import mujoco
@@ -371,10 +383,13 @@ def build_model(map_path, profile_name):
     from sim.masterpi_camera_profile import mujoco_pixel_intrinsic
     from sim.render_profile_selection import for_name
     from sim.final_pair_highpose_nearclip import wrap, audit
+    from sim.zone_heldout_scene import install as heldout_install
     static = json.loads(map_path.read_text())
-    scene = FinalV3Scene.from_spec({'map': static['map_id'], 'seed': SEED,
+    base_map, heldout_map = scene_map_selection(static)
+    scene = FinalV3Scene.from_spec({'map': base_map, 'seed': SEED,
                                   'goal': {'A': {'cyan': 1, 'red': 1}, 'B': {'green': 1, 'yellow': 1}},
                                   'extra_boxes': {}, 'team_cargo': []}, 'cargo_noslip_v1')
+    scene = heldout_install(scene, heldout_map=heldout_map)
     if scene.config['static_map'] != static:
         raise ValueError('PINNED_MAP_MISMATCH')
     cargo = instances([{'item_id': 'tex2_beam', 'kind': 'long_beam',

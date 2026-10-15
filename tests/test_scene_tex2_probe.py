@@ -128,3 +128,19 @@ def test_fixture_view_selection_uses_existing_walls_and_audit_distances():
     assert [r['distance_m'] for r in result] == list(probe.WALL_DISTANCES_M)
     assert result[0]['wall'] != result[1]['wall']
     assert all(r['minimum_wall_gap_m'] >= r['distance_m'] - 1e-12 for r in result)
+
+
+def test_all_four_maps_resolve_without_widening_provider_allowlist():
+    import json
+    from scripts.generate_scene_textures import MAPS
+    from harness import zone_final_environment as final, zone_heldout_maps as heldout
+    for path in MAPS:
+        static = json.loads(path.read_text())
+        base, selected = probe.scene_map_selection(static)
+        original, _, _ = final.resolve(base)
+        if selected == 'off':
+            assert original == static
+        else:
+            assert selected in heldout.IDS
+            assert original['map_id'] == heldout.BASE_ID
+            assert heldout.load(selected) == static
