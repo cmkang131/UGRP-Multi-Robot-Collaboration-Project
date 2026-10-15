@@ -14,6 +14,7 @@ def main():
     p.add_argument('--reference',type=Path,required=True)
     p.add_argument('--candidate',type=Path,required=True)
     p.add_argument('--out',type=Path,required=True)
+    p.add_argument('--partial-evidence',action='store_true',help='default OFF: label and compare an incomplete candidate prefix')
     a=p.parse_args()
     from simalt_host import gcp2_identity
     gcp2_identity()
@@ -22,10 +23,13 @@ def main():
     a.out.mkdir(parents=True,exist_ok=False)
     rm=json.loads((a.reference/'result.json').read_text())
     cm=json.loads((a.candidate/'result.json').read_text())
-    if rm['status']!='complete' or cm['status']!='complete':raise RuntimeError('incomplete input')
+    if rm['status']!='complete' or (cm['status']!='complete' and not a.partial_evidence):raise RuntimeError('incomplete input')
     if rm['case']!=cm['case']:raise RuntimeError('case mismatch')
     if rm['fixture_sha256']!=cm['fixture_sha256']:raise RuntimeError('tape mismatch')
-    r=np.load(a.reference/'steps.npz')['records'];c=np.load(a.candidate/'steps.npz')['records']
+    r=np.load(a.reference/'steps.npz')['records'].astype(np.float64);c=np.load(a.candidate/'steps.npz')['records'].astype(np.float64)
+    reference_rows=len(r);candidate_rows=len(c)
+    complete=rm['status']=='complete' and cm['status']=='complete' and reference_rows==candidate_rows
+    if a.partial_evidence:r=r[:min(reference_rows,candidate_rows)];c=c[:len(r)]
     if r.shape!=c.shape:raise RuntimeError('step shape mismatch')
     m=mujoco.MjModel.from_xml_path(str(a.fixture/'scene.xml'))
     nc=len(rm['columns']);dt=rm['dt'];n=len(r)
@@ -50,9 +54,9 @@ def main():
     topology=np.any(r[:,[0,1,3,4,11]]!=c[:,[0,1,3,4,11]],axis=1)
     meta=json.loads((a.fixture/'fixture.json').read_text())
     phases=next(x['phases'] for x in meta['cases'] if x['name']==rm['case'])
-    hold=np.array([i*400+399 for i,s in enumerate(phases) if s=='hold'],dtype=int)
+    hold=np.array([i*400+399 for i,s in enumerate(phases) if s=='hold' and i*400+399<n],dtype=int)
     summary={'reference':str(a.reference),'candidate':str(a.candidate),'case':rm['case'],
-        'steps':n,'dt':dt,'same_MuJoCo_version':rm['mujoco']==cm['mujoco'],
+        'steps':n,'dt':dt,'complete':complete,'reference_rows':reference_rows,'candidate_rows':candidate_rows,'candidate_status':cm['status'],'analysis_script_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'same_MuJoCo_version':rm['mujoco']==cm['mujoco'],
         'C_version':rm['mujoco'],'candidate_MuJoCo':cm['mujoco'],
         'physics_hashes_equal':rm['physics_hashes']==cm['physics_hashes'],
         'first_raw_qpos_difference':first(np.any(r[:,nc:nc+m.nq]!=c[:,nc:nc+m.nq],axis=1)),
@@ -68,7 +72,7 @@ def main():
         'base_endpoint_m':float(bd[-1]),'base_endpoint_deg':float(br[-1]),
         'box_endpoint_m':float(od[-1]),'box_endpoint_deg':float(orr[-1]),
         # User 2026-10-16 exploratory proposals, not new research acceptance constants.
-        'endpoint_pass':bool(bd[-1]<=.005 and br[-1]<=2 and od[-1]<=.005 and orr[-1]<=2),
+        'endpoint_pass':bool(complete and bd[-1]<=.005 and br[-1]<=2 and od[-1]<=.005 and orr[-1]<=2),
         'reproduce':sys.argv,'force_semantics':'contact-frame normal and tangential resultant; force API after noslip; no controller feedback',
         'missing_distance_semantics':'zero if no penetrating contact; consult count before interpreting',
         'max_abs_difference_by_metric':{name:float(np.max(np.abs(r[:,i]-c[:,i]))) for i,name in enumerate(rm['columns'])}}
