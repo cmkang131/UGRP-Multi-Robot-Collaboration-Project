@@ -99,8 +99,8 @@ def student(a):
 def teacher_review(a):
     """Frozen ACT11 success comparison, no training camera/dataset admission.
 
-    Capture wrapper persists the ALREADY captured own JPEG at 10Hz. It never
-    supplies new images/state to the teacher. Legacy overview remains 1Hz.
+    Capture wrapper persists the ALREADY captured own JPEG at 10Hz and an
+    evaluation-only overview. It never supplies new images/state to the teacher.
     """
     host = require_cpu()
     from scripts.run_grasp_act_recovery import dependency_modules
@@ -131,6 +131,8 @@ def teacher_review(a):
             folder = a.output/'review-own-10hz'; folder.mkdir(exist_ok=True)
             jpeg = base64.b64decode(value['image'])
             path = folder/f'{len(index):06d}.jpg'; path.write_bytes(jpeg)
+            top = a.output/'review-top-10hz'; top.mkdir(exist_ok=True)
+            (top/path.name).write_bytes(port._world.render_team_jpeg())
             index.append({'path': str(path), 't': float(port._world.data.time), 'sha256': sha256(path)})
             return value
         grasp_act_port.DutyActPort.capture = saved_capture
