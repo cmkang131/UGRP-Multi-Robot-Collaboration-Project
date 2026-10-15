@@ -1,0 +1,681 @@
+{
+  "schema": "ugrp.release23.dev.v1",
+  "source_sha": "f4f2994d39954c61ad8bf1d337c347d2f8f8cafb",
+  "counts": {
+    "completed": 5,
+    "success": 0,
+    "N": 5
+  },
+  "classification_counts": {
+    "supervisor_stop": 5
+  },
+  "verified": true,
+  "failure_seeds_solved": false,
+  "rejection_table": "/home/ugrp/ugrp-sim/ops-reviews/release23/round2/rejection_table.json",
+  "research_result": false,
+  "training_rgb": false,
+  "student_execution": false,
+  "pooling": "No pooling across old SHA, rounds, A/B, DEV or gate.",
+  "runs": [
+    {
+      "name": "r23d2-00-f4f2994d",
+      "seed": 110622,
+      "source_sha": "f4f2994d39954c61ad8bf1d337c347d2f8f8cafb",
+      "classification": "supervisor_stop",
+      "status": "interrupted",
+      "success": null,
+      "outcome": null,
+      "sim_s": 30.065750000060955,
+      "release_sim_s": null,
+      "wall_s": 61.78485219600043,
+      "first30": {
+        "sim_s": 29.299999999998953,
+        "wall_per_sim": 1.9353648257337617
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 0
+      },
+      "evaluation_position_error": null,
+      "evaluation_settled_s": null,
+      "iterations": null,
+      "shift_steps": null,
+      "execution_profile": {
+        "release_profile": "release18_v1",
+        "release_goal_region": "inside_margins_v1",
+        "command_motion": "yaw_cal_v1",
+        "effective_motion_profile": "lateral_rate_cal_v1",
+        "release20_settle": "release20_settle_v1",
+        "release21": "release21_v1",
+        "margin_common_mode": "margin_common_mode_v1",
+        "release_leg_budget": "release_leg_budget_v1",
+        "lateral_rate_cal": "lateral_rate_cal_v1",
+        "release_yaw_budget": "release_yaw_budget_v1",
+        "release_plan_budget": "compute_budget_v1",
+        "recording_mode": "success_measurement",
+        "weld": "off"
+      },
+      "code_decisions": null,
+      "leg_admissions": [
+        {
+          "t": 29.200000000048412,
+          "accepted": true,
+          "remaining_sim_s": 152.59999999995176,
+          "expected_leg_s": 49.07519379730747,
+          "tail_s": 6.699999999843726,
+          "reason_category": "leg_time_available",
+          "blocking_object": "remaining episode SIM budget",
+          "minimum_gap": 96.82480620280057,
+          "gap_unit": "SIM s"
+        }
+      ],
+      "sweep_checks": [],
+      "rejection_ledger": [
+        {
+          "reason_category": "supervisor_stop_same_defect",
+          "blocking_object": "release23_saved_replay_minimum_shift_boundary_recorrection",
+          "minimum_gap": null,
+          "gap_unit": "nongeometric",
+          "gap_unknown_reason": "artifact failure or supervisory stop; no geometric clearance is inferred"
+        }
+      ],
+      "line_summary": {
+        "N": 2,
+        "done": 1,
+        "events": {
+          "reuse_settled_open": 2,
+          "image": 8,
+          "mode_enter": 2,
+          "recover_fov": 4,
+          "fov_step_result": 4,
+          "release20_settle": 4,
+          "aligned_before_pick": 1
+        },
+        "failures": [],
+        "budget_alternatives": []
+      },
+      "remote_raw": "/home/ugrp/ugrp-sim/runs/r23d2-00-f4f2994d",
+      "raw_result_sha256": "d937bd30aceb50bb0ea85aff03dc3430911849556e8bfaadfb64a74e34336339",
+      "raw_manifest_sha256": "a665775b8de134479443347bc44b08591a21c1a210a8152ed0adef8b80757318",
+      "full_original_manifest_verified": true,
+      "original_file_N": 102,
+      "own_frame_N": 82,
+      "frame_decode_verified_N": 82,
+      "frame_review": [
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-00-f4f2994d/raw/eval-own/r1/000000-prefix.jpg",
+          "sha256": "6f6b6b20689efc9129dfab60fc11e68951a7c1d520925632ed4f4b41fdd12920",
+          "elapsed_sim_s": 0.0
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-00-f4f2994d/raw/eval-own/r2/000000-prefix.jpg",
+          "sha256": "2a54fc5e3fdb2317fab4b1e9e03915aba7c33cce3f179c33d900c9807c6ce03c",
+          "elapsed_sim_s": 0.0
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-00-f4f2994d/raw/eval-own/r1/000060-prefix.jpg",
+          "sha256": "c94f91e67107809e83bae4bc6a3d850174a09021143b54cd172c74ef45fee8ce",
+          "elapsed_sim_s": 6.0
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-00-f4f2994d/raw/eval-own/r2/000060-prefix.jpg",
+          "sha256": "4fba845276a997bfca41befe4d889593bddef87661d2aaad36902355085da9a1",
+          "elapsed_sim_s": 6.0
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-00-f4f2994d/raw/eval-own/r1/000030-release-lower.jpg",
+          "sha256": "5cd8918d1062af0b9d5e6a764c0ae377ed0ab4ef82427721e2e9dda753595c27",
+          "elapsed_sim_s": 11.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-00-f4f2994d/raw/eval-own/r2/000030-release-lower.jpg",
+          "sha256": "e2b774624ad9f04a0c47d79c101997e03341823b18047d794b5a1fc922f632f8",
+          "elapsed_sim_s": 11.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-00-f4f2994d/raw/eval-own/r1/000090-release-lookaround.jpg",
+          "sha256": "35ab30c80f91f92f7bbd43bde10c916fb02d13b8c153af1b200cc2990ed69d0d",
+          "elapsed_sim_s": 17.299999999998953
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-00-f4f2994d/raw/eval-own/r2/000090-release-lookaround.jpg",
+          "sha256": "f04aee9c5917a50dba1bcf4896a7b609eaf7a089f11c2d52e096cb2eef5c27bc",
+          "elapsed_sim_s": 17.299999999998953
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-00-f4f2994d/raw/eval-own/r1/000150-release-lookaround.jpg",
+          "sha256": "a454f2b375bf0255002d667d21e5e980339245181ad167737da754c752313e03",
+          "elapsed_sim_s": 23.299999999998953
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-00-f4f2994d/raw/eval-own/r2/000150-release-lookaround.jpg",
+          "sha256": "6d5fcdadcb76649b5a9c2523100d6086835adbb60fe72d8bd5017d11a2bb3385",
+          "elapsed_sim_s": 23.299999999998953
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-00-f4f2994d/raw/eval-own/r1/000210-release-line_recheck.jpg",
+          "sha256": "505df459d4a33a2eb71c4656238253f4951bef2e7559bf01a8e80b78ad5e2bbe",
+          "elapsed_sim_s": 29.299999999998953
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-00-f4f2994d/raw/eval-own/r2/000210-release-line_recheck.jpg",
+          "sha256": "72062419f212321dc80d7ca5d55cc6c7fb8e252d4cc669c7499730f7a253e4b1",
+          "elapsed_sim_s": 29.299999999998953
+        }
+      ],
+      "montage": {
+        "path": "/home/ugrp/ugrp-sim/ops-reviews/release23/round2/r23d2-00-f4f2994d-montage.jpg",
+        "sha256": "f9de1beb0e1a1e6eae95b87a4ec0eb2b241acf1468a81c6b3cdbb65e7495c10b"
+      }
+    },
+    {
+      "name": "r23d2-01-f4f2994d",
+      "seed": 88639,
+      "source_sha": "f4f2994d39954c61ad8bf1d337c347d2f8f8cafb",
+      "classification": "supervisor_stop",
+      "status": "interrupted",
+      "success": null,
+      "outcome": null,
+      "sim_s": 21.500000000020055,
+      "release_sim_s": null,
+      "wall_s": 48.798754986999484,
+      "first30": {
+        "sim_s": 21.299999999998953,
+        "wall_per_sim": 2.0942258163238265
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 0
+      },
+      "evaluation_position_error": null,
+      "evaluation_settled_s": null,
+      "iterations": null,
+      "shift_steps": null,
+      "execution_profile": {
+        "release_profile": "release19_v1",
+        "release_goal_region": "inside_margins_v1",
+        "command_motion": "yaw_cal_v1",
+        "effective_motion_profile": "lateral_rate_cal_v1",
+        "release20_settle": "release20_settle_v1",
+        "release21": "release21_v1",
+        "margin_common_mode": "margin_common_mode_v1",
+        "release_leg_budget": "release_leg_budget_v1",
+        "lateral_rate_cal": "lateral_rate_cal_v1",
+        "release_yaw_budget": "release_yaw_budget_v1",
+        "release_plan_budget": "compute_budget_v1",
+        "recording_mode": "success_measurement",
+        "weld": "off"
+      },
+      "code_decisions": null,
+      "leg_admissions": null,
+      "sweep_checks": [],
+      "rejection_ledger": [
+        {
+          "reason_category": "supervisor_stop_same_defect",
+          "blocking_object": "release23_saved_replay_minimum_shift_boundary_recorrection",
+          "minimum_gap": null,
+          "gap_unit": "nongeometric",
+          "gap_unknown_reason": "artifact failure or supervisory stop; no geometric clearance is inferred"
+        }
+      ],
+      "line_summary": {
+        "N": 0,
+        "done": 0,
+        "events": {},
+        "failures": [],
+        "budget_alternatives": []
+      },
+      "remote_raw": "/home/ugrp/ugrp-sim/runs/r23d2-01-f4f2994d",
+      "raw_result_sha256": "2e9aea1747b0c3fd3dc0fa99305649e84370cdb537aae9198fb3883be7bd906e",
+      "raw_manifest_sha256": "3a641721f17c5115cf35f8e86ae6f7d5f72360ccc3aa361878b20e67e6e9380d",
+      "full_original_manifest_verified": true,
+      "original_file_N": 72,
+      "own_frame_N": 52,
+      "frame_decode_verified_N": 52,
+      "frame_review": [
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-01-f4f2994d/raw/eval-own/r1/000000-prefix.jpg",
+          "sha256": "22f658679477557b7546046f985c642bea053cf036b7811e72a91698b335aa70",
+          "elapsed_sim_s": 0.0
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-01-f4f2994d/raw/eval-own/r2/000000-prefix.jpg",
+          "sha256": "a15f058087864bb5c3d6611b679b58bd36d9c637204582829ebff9d0ea4ee985",
+          "elapsed_sim_s": 0.0
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-01-f4f2994d/raw/eval-own/r1/000040-prefix.jpg",
+          "sha256": "b781501f44fab7b21914404120d99508df15acd313b09b1c832707b22e841d96",
+          "elapsed_sim_s": 4.0
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-01-f4f2994d/raw/eval-own/r2/000040-prefix.jpg",
+          "sha256": "a62ed91c58b000e66857024dc6943ba59bd5477d743e9cc187c935a56bdd5c7a",
+          "elapsed_sim_s": 4.0
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-01-f4f2994d/raw/eval-own/r1/000000-release-look.jpg",
+          "sha256": "3b9c11861c3cd163854277104d4819b9653b7248dc62f74451bbd52e6da069e5",
+          "elapsed_sim_s": 8.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-01-f4f2994d/raw/eval-own/r2/000000-release-look.jpg",
+          "sha256": "86bc52b16938ebf99238797d676bf9bf1c8870e63dc40b9ca1dee779cf430e0f",
+          "elapsed_sim_s": 8.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-01-f4f2994d/raw/eval-own/r1/000040-release-open.jpg",
+          "sha256": "a4cdf9269628ec0f3760362b7f7aabfb078660446256425d364077f3e6f3afec",
+          "elapsed_sim_s": 12.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-01-f4f2994d/raw/eval-own/r2/000040-release-open.jpg",
+          "sha256": "1a3f0dcb4b1ed64cfc633687488ae0c48f13f0fe3b3b23910ef89c1727daf71d",
+          "elapsed_sim_s": 12.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-01-f4f2994d/raw/eval-own/r1/000090-release-lookaround.jpg",
+          "sha256": "abe22122ab5ab024df11764282b13dcdfd49c259dbb30cba1d916a8200765035",
+          "elapsed_sim_s": 17.299999999998953
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-01-f4f2994d/raw/eval-own/r2/000090-release-lookaround.jpg",
+          "sha256": "147253aa51681dcbea8bc55918a4edc189f6fba9fe78d6ea36a500901b52ff56",
+          "elapsed_sim_s": 17.299999999998953
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-01-f4f2994d/raw/eval-own/r1/000130-release-lookaround.jpg",
+          "sha256": "2fa7978dcbe5fc18d30e69d87c66e49c07326562be68b796f36c55d69f98acc9",
+          "elapsed_sim_s": 21.299999999998953
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-01-f4f2994d/raw/eval-own/r2/000130-release-lookaround.jpg",
+          "sha256": "479d7499f1e96a8dfb40a5d97762bebf9aff29e7b1d6d5dc69eae1ccef67aa8e",
+          "elapsed_sim_s": 21.299999999998953
+        }
+      ],
+      "montage": {
+        "path": "/home/ugrp/ugrp-sim/ops-reviews/release23/round2/r23d2-01-f4f2994d-montage.jpg",
+        "sha256": "51609bade4b0e6014e1854adccaf8c2830bc104e175332a1b1cea5497c5c86c9"
+      }
+    },
+    {
+      "name": "r23d2-02-f4f2994d",
+      "seed": 110622,
+      "source_sha": "f4f2994d39954c61ad8bf1d337c347d2f8f8cafb",
+      "classification": "supervisor_stop",
+      "status": "interrupted",
+      "success": null,
+      "outcome": null,
+      "sim_s": 15.434249999991092,
+      "release_sim_s": null,
+      "wall_s": 35.24502073599979,
+      "first30": {
+        "sim_s": 15.29999999999895,
+        "wall_per_sim": 2.047385624031756
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 0
+      },
+      "evaluation_position_error": null,
+      "evaluation_settled_s": null,
+      "iterations": null,
+      "shift_steps": null,
+      "execution_profile": {
+        "release_profile": "release19_v1",
+        "release_goal_region": "inside_margins_v1",
+        "command_motion": "yaw_cal_v1",
+        "effective_motion_profile": "lateral_rate_cal_v1",
+        "release20_settle": "release20_settle_v1",
+        "release21": "release21_v1",
+        "margin_common_mode": "margin_common_mode_v1",
+        "release_leg_budget": "release_leg_budget_v1",
+        "lateral_rate_cal": "lateral_rate_cal_v1",
+        "release_yaw_budget": "release_yaw_budget_v1",
+        "release_plan_budget": "compute_budget_v1",
+        "recording_mode": "success_measurement",
+        "weld": "off"
+      },
+      "code_decisions": null,
+      "leg_admissions": null,
+      "sweep_checks": [],
+      "rejection_ledger": [
+        {
+          "reason_category": "supervisor_stop_same_defect",
+          "blocking_object": "release23_saved_replay_minimum_shift_boundary_recorrection",
+          "minimum_gap": null,
+          "gap_unit": "nongeometric",
+          "gap_unknown_reason": "artifact failure or supervisory stop; no geometric clearance is inferred"
+        }
+      ],
+      "line_summary": {
+        "N": 0,
+        "done": 0,
+        "events": {},
+        "failures": [],
+        "budget_alternatives": []
+      },
+      "remote_raw": "/home/ugrp/ugrp-sim/runs/r23d2-02-f4f2994d",
+      "raw_result_sha256": "749add871a4a4fa6824661b9fe76baf034e51aad755a3e8373e5da4d87cd5b43",
+      "raw_manifest_sha256": "f8d82f66eb1d5b77d9644eb968ad5ba2bc1f225b92fcb23a0d2189c150c9abb1",
+      "full_original_manifest_verified": true,
+      "original_file_N": 56,
+      "own_frame_N": 36,
+      "frame_decode_verified_N": 36,
+      "frame_review": [
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-02-f4f2994d/raw/eval-own/r1/000000-prefix.jpg",
+          "sha256": "6f6b6b20689efc9129dfab60fc11e68951a7c1d520925632ed4f4b41fdd12920",
+          "elapsed_sim_s": 0.0
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-02-f4f2994d/raw/eval-own/r2/000000-prefix.jpg",
+          "sha256": "2a54fc5e3fdb2317fab4b1e9e03915aba7c33cce3f179c33d900c9807c6ce03c",
+          "elapsed_sim_s": 0.0
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-02-f4f2994d/raw/eval-own/r1/000030-prefix.jpg",
+          "sha256": "ef12b482839254a43861bf4d7705ddf7fda5539532aed996b27bd404abd0247f",
+          "elapsed_sim_s": 3.0
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-02-f4f2994d/raw/eval-own/r2/000030-prefix.jpg",
+          "sha256": "f023f9f605ebc2814c0c5e91168e1c880e44d49b3a9c3d49076e8f55ad93b809",
+          "elapsed_sim_s": 3.0
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-02-f4f2994d/raw/eval-own/r1/000060-prefix.jpg",
+          "sha256": "c94f91e67107809e83bae4bc6a3d850174a09021143b54cd172c74ef45fee8ce",
+          "elapsed_sim_s": 6.0
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-02-f4f2994d/raw/eval-own/r2/000060-prefix.jpg",
+          "sha256": "4fba845276a997bfca41befe4d889593bddef87661d2aaad36902355085da9a1",
+          "elapsed_sim_s": 6.0
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-02-f4f2994d/raw/eval-own/r1/000010-release-lower.jpg",
+          "sha256": "932bc70cccdf10d1983869074b360b1903e580943e7db50bf61fcc58c30d63c4",
+          "elapsed_sim_s": 9.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-02-f4f2994d/raw/eval-own/r2/000010-release-lower.jpg",
+          "sha256": "6592d55a57b3ed92649d6bbcd3622f25c4dad47f14a5e75c70f8342d9da759ee",
+          "elapsed_sim_s": 9.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-02-f4f2994d/raw/eval-own/r1/000040-release-open.jpg",
+          "sha256": "c479642821c957054c39b94902dcaefcc5d9b0a504d7e8ec98e7c59a7f6c5508",
+          "elapsed_sim_s": 12.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-02-f4f2994d/raw/eval-own/r2/000040-release-open.jpg",
+          "sha256": "858a94ed8f24196cbe58e4308e0fe015dac3d61478e422e933f089bd32e63c2d",
+          "elapsed_sim_s": 12.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-02-f4f2994d/raw/eval-own/r1/000070-release-lookaround.jpg",
+          "sha256": "381b9df78f77f83a475ad08e728948d70c8349638dff6508a804f6fce4d70926",
+          "elapsed_sim_s": 15.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-02-f4f2994d/raw/eval-own/r2/000070-release-lookaround.jpg",
+          "sha256": "bbbcc5455bb1c703739f1f6a674b3d53d8c4af1e090cc1b7e1a6c2263f7fbc0a",
+          "elapsed_sim_s": 15.29999999999895
+        }
+      ],
+      "montage": {
+        "path": "/home/ugrp/ugrp-sim/ops-reviews/release23/round2/r23d2-02-f4f2994d-montage.jpg",
+        "sha256": "ee2bebf0983d26a2f89c14a0362d9c3b85e5afb542b07cbc83ede140b0c9fe64"
+      }
+    },
+    {
+      "name": "r23d2-03-f4f2994d",
+      "seed": 88639,
+      "source_sha": "f4f2994d39954c61ad8bf1d337c347d2f8f8cafb",
+      "classification": "supervisor_stop",
+      "status": "interrupted",
+      "success": null,
+      "outcome": null,
+      "sim_s": 8.298499999998954,
+      "release_sim_s": null,
+      "wall_s": 21.026428930001202,
+      "first30": {
+        "sim_s": 8.0,
+        "wall_per_sim": 2.0440784096717834
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 0
+      },
+      "evaluation_position_error": null,
+      "evaluation_settled_s": null,
+      "iterations": null,
+      "shift_steps": null,
+      "execution_profile": {
+        "release_profile": "release18_v1",
+        "release_goal_region": "inside_margins_v1",
+        "command_motion": "yaw_cal_v1",
+        "effective_motion_profile": "lateral_rate_cal_v1",
+        "release20_settle": "release20_settle_v1",
+        "release21": "release21_v1",
+        "margin_common_mode": "margin_common_mode_v1",
+        "release_leg_budget": "release_leg_budget_v1",
+        "lateral_rate_cal": "lateral_rate_cal_v1",
+        "release_yaw_budget": "release_yaw_budget_v1",
+        "release_plan_budget": "compute_budget_v1",
+        "recording_mode": "success_measurement",
+        "weld": "off"
+      },
+      "code_decisions": null,
+      "leg_admissions": null,
+      "sweep_checks": [],
+      "rejection_ledger": [
+        {
+          "reason_category": "supervisor_stop_same_defect",
+          "blocking_object": "release23_saved_replay_minimum_shift_boundary_recorrection",
+          "minimum_gap": null,
+          "gap_unit": "nongeometric",
+          "gap_unknown_reason": "artifact failure or supervisory stop; no geometric clearance is inferred"
+        }
+      ],
+      "line_summary": {
+        "N": 0,
+        "done": 0,
+        "events": {},
+        "failures": [],
+        "budget_alternatives": []
+      },
+      "remote_raw": "/home/ugrp/ugrp-sim/runs/r23d2-03-f4f2994d",
+      "raw_result_sha256": "fb2cf5250cd79e105b4e7b7d150634e076328b96de1d788e77ab131a8947f1e1",
+      "raw_manifest_sha256": "f33e8969d672ceedcfa5b63140bfde804536fe37148d55e43e95c45a4ef3e505",
+      "full_original_manifest_verified": true,
+      "original_file_N": 37,
+      "own_frame_N": 18,
+      "frame_decode_verified_N": 18,
+      "frame_review": [
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-03-f4f2994d/raw/eval-own/r1/000000-prefix.jpg",
+          "sha256": "22f658679477557b7546046f985c642bea053cf036b7811e72a91698b335aa70",
+          "elapsed_sim_s": 0.0
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-03-f4f2994d/raw/eval-own/r2/000000-prefix.jpg",
+          "sha256": "a15f058087864bb5c3d6611b679b58bd36d9c637204582829ebff9d0ea4ee985",
+          "elapsed_sim_s": 0.0
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-03-f4f2994d/raw/eval-own/r1/000020-prefix.jpg",
+          "sha256": "ef472ef1ae30ed7a01f7992122e08a56e7c044decd810da61852e383c42dd2c3",
+          "elapsed_sim_s": 2.0
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-03-f4f2994d/raw/eval-own/r2/000020-prefix.jpg",
+          "sha256": "d2b02650d36d2dabe7deda2839f340b64a4d44eeb27512f61ee9a3ff338f6638",
+          "elapsed_sim_s": 2.0
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-03-f4f2994d/raw/eval-own/r1/000030-prefix.jpg",
+          "sha256": "caeeafdefe6015d863e52f12227795a0e3c27f16706f811cb6fd434b081fde64",
+          "elapsed_sim_s": 3.0
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-03-f4f2994d/raw/eval-own/r2/000030-prefix.jpg",
+          "sha256": "3b55871d80954423aa4238dcc27814f8ba6ec8bdc0dffcedc56488a02e2a51cc",
+          "elapsed_sim_s": 3.0
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-03-f4f2994d/raw/eval-own/r1/000050-prefix.jpg",
+          "sha256": "8dcec8efd63a1a0e069b6019329f3fb1d67aa99e15b37868a73313c91e20100d",
+          "elapsed_sim_s": 5.0
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-03-f4f2994d/raw/eval-own/r2/000050-prefix.jpg",
+          "sha256": "04a18738b1229a076c7457a6c81acf2b10c080b3face12a9bbe14cd51acbd0e7",
+          "elapsed_sim_s": 5.0
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-03-f4f2994d/raw/eval-own/r1/000060-prefix.jpg",
+          "sha256": "89e52604832866fb38a2da85ae8e566588ba249745cb685947d48f676405596a",
+          "elapsed_sim_s": 6.0
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-03-f4f2994d/raw/eval-own/r2/000060-prefix.jpg",
+          "sha256": "fc3f6f0988347d99d17d4dfe26cb05a49675549be023e3e3fdf7fa579ecd6a79",
+          "elapsed_sim_s": 6.0
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-03-f4f2994d/raw/eval-own/r1/000080-prefix.jpg",
+          "sha256": "9cf987190800f420b1f2452e859c44f3562c07844cfa1f4b0da97285bb9b7aef",
+          "elapsed_sim_s": 8.0
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-03-f4f2994d/raw/eval-own/r2/000080-prefix.jpg",
+          "sha256": "0e237fd0033d2ba44e7ca7ce681deceac3b5c546651f81e6c8d3041c8d9233e3",
+          "elapsed_sim_s": 8.0
+        }
+      ],
+      "montage": {
+        "path": "/home/ugrp/ugrp-sim/ops-reviews/release23/round2/r23d2-03-f4f2994d-montage.jpg",
+        "sha256": "45b600253454db0dd43105751d03e867626a1537db13bc2f5ed4280ea2e1192c"
+      }
+    },
+    {
+      "name": "r23d2-04-f4f2994d",
+      "seed": 110618,
+      "source_sha": "f4f2994d39954c61ad8bf1d337c347d2f8f8cafb",
+      "classification": "supervisor_stop",
+      "status": "interrupted",
+      "success": null,
+      "outcome": null,
+      "sim_s": 2.1192499999990027,
+      "release_sim_s": null,
+      "wall_s": 7.5030726909990335,
+      "first30": {
+        "sim_s": 2.0,
+        "wall_per_sim": 1.720178246498108
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 0
+      },
+      "evaluation_position_error": null,
+      "evaluation_settled_s": null,
+      "iterations": null,
+      "shift_steps": null,
+      "execution_profile": {
+        "release_profile": "release18_v1",
+        "release_goal_region": "inside_margins_v1",
+        "command_motion": "yaw_cal_v1",
+        "effective_motion_profile": "lateral_rate_cal_v1",
+        "release20_settle": "release20_settle_v1",
+        "release21": "release21_v1",
+        "margin_common_mode": "margin_common_mode_v1",
+        "release_leg_budget": "release_leg_budget_v1",
+        "lateral_rate_cal": "lateral_rate_cal_v1",
+        "release_yaw_budget": "release_yaw_budget_v1",
+        "release_plan_budget": "compute_budget_v1",
+        "recording_mode": "success_measurement",
+        "weld": "off"
+      },
+      "code_decisions": null,
+      "leg_admissions": null,
+      "sweep_checks": [],
+      "rejection_ledger": [
+        {
+          "reason_category": "supervisor_stop_same_defect",
+          "blocking_object": "release23_saved_replay_minimum_shift_boundary_recorrection",
+          "minimum_gap": null,
+          "gap_unit": "nongeometric",
+          "gap_unknown_reason": "artifact failure or supervisory stop; no geometric clearance is inferred"
+        }
+      ],
+      "line_summary": {
+        "N": 0,
+        "done": 0,
+        "events": {},
+        "failures": [],
+        "budget_alternatives": []
+      },
+      "remote_raw": "/home/ugrp/ugrp-sim/runs/r23d2-04-f4f2994d",
+      "raw_result_sha256": "7a9621ac06819c8e54e258576a9c354cba433d331ff30301bbfb4eb8d642ec31",
+      "raw_manifest_sha256": "2034f8c7f34e9267a1da986e269f5ecd50153b22c07b661595fc2e436aae68cb",
+      "full_original_manifest_verified": true,
+      "original_file_N": 25,
+      "own_frame_N": 6,
+      "frame_decode_verified_N": 6,
+      "frame_review": [
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-04-f4f2994d/raw/eval-own/r1/000000-prefix.jpg",
+          "sha256": "756737ee500b9072ee605494142fed2450b077f2a4454eacc6f20222ae012dfb",
+          "elapsed_sim_s": 0.0
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-04-f4f2994d/raw/eval-own/r2/000000-prefix.jpg",
+          "sha256": "d8445bda24b775b40b5e013543bb9c6d901b0fb4fd0749943b89e90cfada0060",
+          "elapsed_sim_s": 0.0
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-04-f4f2994d/raw/eval-own/r1/000010-prefix.jpg",
+          "sha256": "4262830aacb43ddc88c80f211b46929d350d45e7a4e877c3e005f4481026d018",
+          "elapsed_sim_s": 1.0
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-04-f4f2994d/raw/eval-own/r2/000010-prefix.jpg",
+          "sha256": "79ce2cf5d27fc6041e2f9ab9fc25b15dab7c51dc6be3560e08e8d72f72dfb06c",
+          "elapsed_sim_s": 1.0
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-04-f4f2994d/raw/eval-own/r1/000020-prefix.jpg",
+          "sha256": "42ea40f439b0dfa220d4406f4ac65d3fe73e7e3298b0c3514b3bc630910c70f1",
+          "elapsed_sim_s": 2.0
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d2-04-f4f2994d/raw/eval-own/r2/000020-prefix.jpg",
+          "sha256": "857a7ec6482da770767be54bc15d1d32a00d9b493162b63acb2167098c3b014e",
+          "elapsed_sim_s": 2.0
+        }
+      ],
+      "montage": {
+        "path": "/home/ugrp/ugrp-sim/ops-reviews/release23/round2/r23d2-04-f4f2994d-montage.jpg",
+        "sha256": "776f8718085dc1e06b8ada752caf28fb78591c8480062fe1dcb3d21a1a8e6159"
+      }
+    }
+  ],
+  "planned_N": 6,
+  "submitted_N": 5,
+  "cancelled_before_submission_N": 1,
+  "visual_review_complete": true,
+  "directly_viewed_frames": 54
+}

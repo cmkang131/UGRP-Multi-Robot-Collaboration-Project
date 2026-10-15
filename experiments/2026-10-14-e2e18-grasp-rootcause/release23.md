@@ -31,7 +31,7 @@ FOV 막힘4 이벤트는 회복된 사건이다. 따라서 가장 큰 미해결 
 
 | 인자 | ON 값 | 근거·동작 |
 |---|---|---|
-| `margin_common_mode` | `margin_common_mode_v1` | 같은 observation_epoch의 두 scalar 여유만 투영. clip[-.10,0]은 사용자 후보. 합 잔차 허용 .15m은 감사 .072+3*.027≈.153 후보. 양의/범위밖 잔차는 재관측. `min(corrected-error_bound)>=.04`를 `inside_margins_v1`에도 동일 적용. 최소 필요 이동 구간에서0에 가장 가까운 이동 선택. |
+| `margin_common_mode` | `margin_common_mode_v1` | 같은 observation_epoch의 두 scalar 여유만 투영. clip[-.10,0]은 사용자 후보. 합 잔차 허용 .15m은 감사 .072+3*.027≈.153 후보. 양의/범위밖 잔차는 재관측. `min(corrected-error_bound)>=.04`를 `inside_margins_v1`에도 동일 적용. 구간 안이면 완료하되, 이동이 필요하면 기존 양끝 균형 목표 유지(아래 DEV2 재생 근거). |
 | `release_leg_budget` | `release_leg_budget_v1` | .20→.30m, 5→3회. 감사110/110포화·최대시작거리.797m 근거. 남은 SIM 시간이 회차p95+tail보다 짧으면 재파지 전 cap_end. 발행 전체 translation sweep을 실행 직전 검사. |
 | `lateral_rate_cal` | `lateral_rate_cal_v1` | 감사 .08*1.515=.1212와 별도 pair .123에 맞춘 .122m/s. axial .129, yaw_cal1.05 보존. lateral 계획·teacher belief·issued pose·localizer 전파가 동일 effective profile 사용. |
 | `release_yaw_budget` | `release_yaw_budget_v1` | 다음 펄스가18° cap을 넘으면 lateral-only 개선 후보를 map/FOV/잔여예산으로 검사. 없으면 기존.3초 안정창에 해당하는 fresh RGB3장을 얻고 정확한 사유로 중단. cap 초기화·완료 문턱 완화 없음. `settle_pulse.proportional_pulse` 재사용. |
@@ -79,3 +79,18 @@ Mac에서는 물리·모델 호출을 하지 않는다.
 하는 것뿐이다. 실제 중첩 sweep 원장을 `json.dumps(..., allow_nan=False)`로 검사한다.
 시작/끝은 비어 있지만 중간에서 막히는 얇은 벽 시험도 명시했다.
 다음 DEV2는 같은6장면·같은 토글·새 source SHA로 처음부터 측정하고 DEV1과 합산하지 않는다.
+
+## DEV2 중단과 경계 이동 목표 복원
+
+DEV2 `f4f2994d39954c61ad8bf1d337c347d2f8f8cafb`:5회 제출·감독중단,
+1회 제출 전 취소. DEV1 마지막 자기 scalar 보고를 같은 코드로 gcp1에서
+재생한 결과110618은 보정 하한 .0379564m→최소필요 이동 .00204359m를
+요구했다. 남은55.50 SIM초보다 회차+tail55.7752초가 커서 거부된다.
+이는 최종 저장 실패로 가려진 **제어 재생 반례**이며 물리 성공/실패의 복구 집계가 아니다.
+확인 즉시 제출기·소유 실행을 중단했다. 수정 전에 관문표에 반례·사유·최소틈을 추가했다.
+
+보고서의 최소 필요 이동은 선택 적용안이다. 다음 관측의 경계 재보정을
+유발하므로 이 추가 변경을 거두고 기존 양끝 균형 이동 목표를 유지한다.
+이미 두 하한이4cm 이상이면 같은 목표 영역 판정으로 즉시 완료한다.
+문턱·error_bound·여유 상수·회차/시간 한도는 바꾸지 않는다.
+마지막 DEV3는 같은6장면·같은 후보이며 이후 추가 탐색은 하지 않는다.

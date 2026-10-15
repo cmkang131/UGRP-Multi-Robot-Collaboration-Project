@@ -91,7 +91,12 @@ def pair_choice(reports, robots, now, *, margin_common_mode='off', release_leg_b
             if lo>hi:
                 return dict(action='observe',reason='margin_goal_interval_empty',t=now,**meta,
                             **rejection('margin_goal','both end margin lower bounds',hi-lo))
-            shift=min(max(0.,lo),hi)  # closest point in the feasible goal interval
+            # Preserve the existing balanced-end movement target. DEV1 saved
+            # seed110618: closest-point motion left a 2.04mm lower-bound
+            # deficit on the next observation, requesting an entire new leg.
+            # Acceptance still uses the same 4cm lower bound; no new slack
+            # constant or relaxed threshold is introduced.
+            choice['shift_target']='existing_end_balance'
             choice['admissible_shift_m']=[lo,hi]
         limit=MAX_SHIFT_M if release_leg_budget==LEG else global_obs.MAX_SHIFT_M
         choice['shift_m']=max(-limit,min(limit,shift))

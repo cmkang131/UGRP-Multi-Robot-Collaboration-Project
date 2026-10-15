@@ -74,6 +74,18 @@ def test_budget_uses_sim_cost_and_keeps_three_corrections():
     assert not new.leg_admission(180,3)['accepted']
 
 
+def test_saved_110618_does_not_target_the_noisy_goal_boundary():
+    # Actual saved same-round own-RGB reports (DEV1 epoch2); no truth input.
+    r=reports([.03499901188660859,.6701831683048443])
+    r['r1']['axis_error_rad']=.13952716998704062
+    r['r2']['axis_error_rad']=.12306970585159926
+    c=new.pair_choice(r,('r1','r2'),2.,goal_region=release18.GOAL_REGION,
+        margin_common_mode=new.MARGIN,release_leg_budget=new.LEG)
+    assert c['action']=='shift' and c['shift_target']=='existing_end_balance'
+    assert c['shift_m']==.30  # existing balance target, rather than a 2.04mm leg
+    assert min(c['margin_lower_bounds_m'])<.04  # threshold never relaxed
+
+
 def test_lateral_cal_changes_only_lateral_and_inverse_plans_match_propagation():
     old=rates('yaw_cal_v1');cal=rates(new.LATERAL)
     assert cal==pytest.approx((.129,.122,1.05)) and (cal[0],cal[2])==(old[0],old[2])

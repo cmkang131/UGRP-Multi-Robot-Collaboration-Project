@@ -1,0 +1,139 @@
+{
+  "schema": "ugrp.release23.rejections.v1",
+  "episode_funnel": [
+    {
+      "gate": "planned_queue",
+      "input": 6,
+      "cumulative_passed": 6,
+      "rejected": 0
+    },
+    {
+      "gate": "submitted",
+      "input": 6,
+      "cumulative_passed": 5,
+      "rejected": 1
+    },
+    {
+      "gate": "terminal_original_and_hash",
+      "input": 5,
+      "cumulative_passed": 5,
+      "rejected": 0
+    },
+    {
+      "gate": "input_audit_zero",
+      "input": 5,
+      "cumulative_passed": 5,
+      "rejected": 0
+    },
+    {
+      "gate": "physical_release",
+      "input": 5,
+      "cumulative_passed": 0,
+      "rejected": 5
+    }
+  ],
+  "frame_funnel": [
+    {
+      "gate": "generated_original_own_RGB",
+      "input": 194,
+      "cumulative_passed": 194,
+      "rejected": 0
+    },
+    {
+      "gate": "original_hash_and_JPEG_decode",
+      "input": 194,
+      "cumulative_passed": 194,
+      "rejected": 0
+    }
+  ],
+  "event_funnel": [
+    {
+      "gate": "line_candidates",
+      "input": 2,
+      "cumulative_passed": 2,
+      "rejected": 0
+    },
+    {
+      "gate": "line_alignment_completed",
+      "input": 2,
+      "cumulative_passed": 1,
+      "rejected": 1
+    }
+  ],
+  "event_counts": {
+    "total": 25,
+    "rejection_records": 5
+  },
+  "rejection_reason_table": [
+    {
+      "category": "supervisor_stop_same_defect",
+      "count": 5
+    },
+    {
+      "category": "minimum_motion_boundary_recorrection",
+      "count": 1,
+      "unit": "saved control replay",
+      "blocking_object": "4cm lower bound and remaining SIM leg budget",
+      "minimum_gap": -0.002043588547779661,
+      "gap_unit": "m"
+    }
+  ],
+  "raw_paths": [
+    "/home/ugrp/ugrp-sim/runs/r23d2-00-f4f2994d",
+    "/home/ugrp/ugrp-sim/runs/r23d2-01-f4f2994d",
+    "/home/ugrp/ugrp-sim/runs/r23d2-02-f4f2994d",
+    "/home/ugrp/ugrp-sim/runs/r23d2-03-f4f2994d",
+    "/home/ugrp/ugrp-sim/runs/r23d2-04-f4f2994d"
+  ],
+  "reproduction": "python3 /home/ugrp/ugrp-sim/ops-reviews/release23/analyze_results.py --names [\"r23d2-00-f4f2994d\", \"r23d2-01-f4f2994d\", \"r23d2-02-f4f2994d\", \"r23d2-03-f4f2994d\", \"r23d2-04-f4f2994d\"] --out /home/ugrp/ugrp-sim/ops-reviews/release23/round2",
+  "saved_control_replay": {
+    "scope": "saved scalar control replay; terminal artifact unavailable, not a physical success claim",
+    "raw": "/home/ugrp/ugrp-sim/runs/r23d1-04-4a1809e2/raw",
+    "source_sha": "f4f2994d39954c61ad8bf1d337c347d2f8f8cafb",
+    "choice": {
+      "action": "shift",
+      "shift_m": 0.002043588547779661,
+      "reason": "localized_margin_correction",
+      "t": 126.29999999874373,
+      "margins_m": [
+        0.03795641145222034,
+        0.6731405678704561
+      ],
+      "admissible_shift_m": [
+        0.002043588547779661,
+        0.633140567870456
+      ],
+      "raw_margins_m": [
+        0.03499901188660859,
+        0.6701831683048443
+      ],
+      "corrected_margins_m": [
+        0.08500017031097723,
+        0.720184326729213
+      ],
+      "margin_lower_bounds_m": [
+        0.03795641145222034,
+        0.6731405678704561
+      ],
+      "common_bias_m": -0.05000115842436864,
+      "sum_residual_m": -0.10000231684873728,
+      "error_bound_m": 0.04704375885875689,
+      "observation_epoch": 2
+    },
+    "admission": {
+      "accepted": false,
+      "remaining_sim_s": 55.50000000125645,
+      "expected_leg_s": 49.07519379730747,
+      "tail_s": 6.699999999843726,
+      "reason_category": "insufficient_leg_time",
+      "blocking_object": "remaining episode SIM budget",
+      "minimum_gap": -0.2751937958947437,
+      "gap_unit": "SIM s"
+    },
+    "reason_category": "minimum_motion_boundary_recorrection",
+    "blocking_object": "next observation lower bound .04m plus fixed worst-leg estimate",
+    "minimum_gap": -0.002043588547779661,
+    "gap_unit": "m",
+    "reproduce": "gcp1 saved teacher-r1/r2 final scalar reports and sim.release23.pair_choice/leg_admission"
+  }
+}
