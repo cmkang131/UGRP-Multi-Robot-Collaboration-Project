@@ -18,6 +18,6 @@
 6. 직접 세계별 모델 배열로 합치는 preflight가 `dof_length` 차이를 거부했다. [수정 전 거부표](rejection_table-before-r3.json)를 기록하고, upstream에서 허용하지 않는 필드를 바꾸지 않는 정확한 모델 묶음 경로로 바꿨다. 같은 `WarpTransport`의 graph 제출/완료 단계만 나눴으며 새 physics 구현은 없다.
 7. read-only 분석의 plain `result.json` 존재 검사 때문에 압축된5개 결과를 처음 건너뛰었다. `.zst`도 확인하고16개 전부 재분석했다. CPU 결과 본체·명령 비교·성공 수는 바뀌지 않았다.
 
-Mac에서는 순수 비물리 테스트17개와 문서/AST/해시 검증만 수행했다. 물리·렌더·GUI·학습·모델 호출은0이다. gcp2에서 렌더한 프레임띠를 파일로 읽고 영상 확인에는 ffprobe만 사용했다. 프로젝트 결과는 로컬/GitHub에 보존하고 Drive와 TensorBoard는 사용하지 않았다.
+Mac에서는 순수 비물리 테스트17개와 문서/AST/해시 검증만 수행했다. 물리·렌더·GUI·학습·모델 호출은0이다. gcp2에서 렌더한 프레임띠를 파일로 읽고 영상 확인에는 ffprobe만 사용했다. 프로젝트 결과는 로컬/GitHub에 보존했다.
 
 최종 CPU/L4 점검에서 자기 활성 실행0·자기 임대0을 확인했다. CPU에는 warp1/beampair7/reloc16/gatesv5, L4에는 warp1/rl1b 임대가 남아 두 VM을 정지하지 않았다. L4 첫 임대부터 마지막 read-only 점검까지5160.44초로3시간 이하이다. 마지막 비물리 점검은17 passed/0.29s다. worktree 안에는 가상환경이 없어 첫 상대 경로 호출은 실패했고, 기존 primary의 `.venv-sim-worker-mac` 절대경로를 재사용했다. 중복 환경은 만들지 않았다.
