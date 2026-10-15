@@ -158,6 +158,10 @@ def summarize(root, output):
             ('box_png_and_jpeg90_equal_v1', lambda r: r['case'] in reference and all(
                 r['encodings'][e]['semantic']['box_counts'] == reference[r['case']]['encodings'][e]['semantic']['box_counts']
                 for e in ('png', 'jpeg90'))),
+            ('positive_colour_support_at_least_v1', lambda r: r['case'] in reference and all(
+                r['encodings'][enc]['target_support'].get(label, {}).get(target, 0) >=
+                reference[r['case']]['encodings'][enc]['target_support'].get(label, {}).get(target, 0)
+                for enc in ('png', 'jpeg90') for target, label in compat.target_ranges(r['pose']))),
             ('camera_features_at_least_v1', lambda r: r['case'] in reference and all(
                 r['encodings'][e]['surfaces'][s]['orb20'] >= reference[r['case']]['encodings'][e]['surfaces'][s]['orb20']
                 for e in ('png', 'jpeg90') for s in ('floor', 'wall'))),
@@ -170,7 +174,8 @@ def summarize(root, output):
             rejected = [r for r in alive if not check(r)]
             stages.append({'stage': stage, 'input_n': len(alive), 'cumulative_pass_n': len(passed), 'rejected_n': len(rejected),
                            'rejections': [{'case': r['case'], 'category': stage.upper(),
-                               'blocking_object': 'existing box detector' if stage.startswith('box') else 'floor / zone wall surfaces',
+                               'blocking_object': 'existing box detector' if stage.startswith('box') else
+                                   'existing cargo-end / zone colour support' if stage.startswith('positive') else 'floor / zone wall surfaces',
                                'minimum_gap_m': None, 'minimum_gap_reason': 'static image gate, no collision clearance',
                                'reason': 'paired v1 preservation requirement failed; full per-surface distributions in arm report'}
                                for r in rejected]})
