@@ -21,6 +21,7 @@ def sha(path):
 def read(path):
     if not path.exists():
         path = path.with_name(path.name+'.zst')
+    path = path.resolve()  # zstd deliberately ignores symlink arguments
     data = subprocess.check_output(['zstd', '-dqc', str(path)]) if path.suffix == '.zst' else path.read_bytes()
     return json.loads(data)
 
