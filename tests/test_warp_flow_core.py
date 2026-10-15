@@ -6,7 +6,7 @@ import sys
 from types import ModuleType, SimpleNamespace
 import numpy as np
 import pytest
-from scripts.warp_act_core import control_tape, multi_control_tape, contact_maps
+from scripts.warp_act_core import control_tape, multi_control_tape, contact_maps, exact_model_groups
 from scripts.warp_flow_episode import Lane, compile_function, ADAPTER_SHA, TEACHER_SHA
 
 
@@ -38,6 +38,36 @@ def test_contact_membership_is_world_specific_and_accepts_multi_geom_beam():
     assert targets[1,2] == 1 and targets[0,2] == 0
     assert fingers[:,6].tolist() == [2,2] and fingers[:,0].tolist() == [-1,-1]
     with pytest.raises(ValueError,match='distinct'):contact_maps(10,[[0]],[{0:0}])
+
+
+def test_exact_model_partition_preserves_world_order_without_merging_variants():
+    assert exact_model_groups(['a','b','a','c','b']) == [('a',[0,2]),('b',[1,4]),('c',[3])]
+    groups=exact_model_groups([str(i%6) for i in range(16)])
+    assert [len(ids) for _,ids in groups]==[3,3,3,3,2,2]
+    assert sorted(i for _,ids in groups for i in ids)==list(range(16))
+
+
+def test_group_router_enqueues_every_model_before_readback_and_routes_own_world(monkeypatch,tmp_path):
+    from contextlib import nullcontext
+    monkeypatch.syspath_prepend(str(Path(__file__).resolve().parents[1]/'scripts'))
+    from warp_act_backend import ExactModelGroups
+    events=[]
+    class Fake:
+        wp=SimpleNamespace(ScopedStream=lambda stream:nullcontext())
+        def __init__(self,name):self.name=name
+        def prepare_step(self,contexts,active):events.append((self.name,'prepare',active.tolist()))
+        def launch_step(self):events.append((self.name,'launch'))
+        def finish_step(self,contexts):events.append((self.name,'finish'))
+        def capture(self,index,world,robot):return (self.name,index,robot)
+        def forces(self,index,*a):return (self.name,index)
+    a,b=Fake('a'),Fake('b')
+    router=ExactModelGroups({},'sha','mjwarp_batch_v1',tmp_path)
+    router.groups=[(a,[],np.array([0,2]),None),(b,[],np.array([1]),None)]
+    router.routes={0:(a,0),2:(a,1),1:(b,0)}
+    router.step([],np.array([True,True,False]))
+    assert events==[('a','prepare',[True,False]),('a','launch'),('b','prepare',[True]),('b','launch'),('a','finish'),('b','finish')]
+    assert router.capture(2,None,'r2')==('a',1,'r2')
+    assert router.forces(1,None,None,None,None)==('b',0)
 
 
 def test_lane_globals_and_dynamic_imports_do_not_cross_worlds():

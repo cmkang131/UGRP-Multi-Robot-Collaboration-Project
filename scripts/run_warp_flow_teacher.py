@@ -35,6 +35,8 @@ def parser():
     p.add_argument('--compiled-geometry-312-v1', type=Path)
     p.add_argument('--per-world-model-references-v1', type=Path,
         help='Shared warp1 exact-XML C312 model reference map; required for heterogeneous six-seed batch')
+    p.add_argument('--exact-model-groups-v1', action='store_true',
+        help='Delegate exact XML groups to the shared transport without merging unsupported model fields')
     p.add_argument('--export-compiled-only', action='store_true')
     p.add_argument('--vm-hourly-usd', type=float, required=True)
     return p
@@ -76,7 +78,7 @@ def main():
         p.error('mixed known six require exact per-world model references; geometry/mass may not be pooled')
     import numpy as np
     import mujoco
-    from warp_act_backend import CTransport, WarpTransport
+    from warp_act_backend import CTransport, WarpTransport, ExactModelGroups
     a.out.mkdir(parents=True, exist_ok=False)
     report = dict(schema='ugrp.warp2.batch.v1', status='running', source_sha=source,
         adapter_sha=ADAPTER_SHA, teacher_sha=TEACHER_SHA, physics_backend=a.physics_backend,
@@ -88,7 +90,8 @@ def main():
         reproduce=sys.argv, counts=dict(planned=a.nworld, started=0, completed=0, physical_success=0,
             cap_end=0, HOST_ERROR=0, unstarted=a.nworld))
     write(a.out/'summary.json', report)
-    hooks = (WarpTransport if a.physics_backend == 'mjwarp_batch_v1' else CTransport)(host, source, a.physics_backend, a.out)
+    transport = ExactModelGroups if a.exact_model_groups_v1 else WarpTransport
+    hooks = (transport if a.physics_backend == 'mjwarp_batch_v1' else CTransport)(host, source, a.physics_backend, a.out)
     lanes, bridges, contexts, results = [], [], [], {}
     active = np.ones(a.nworld, dtype=bool)
     ticks = np.zeros(a.nworld, dtype=int)

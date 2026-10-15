@@ -161,3 +161,11 @@ def varying_model_arrays(rows, batchable):
             raise ValueError('unbatchable model difference: '+key)
         out[key]=np.concatenate(values,axis=0)
     return out
+
+
+def exact_model_groups(keys):
+    """Stable world-to-model partition; equality only, no approximate matching."""
+    groups = {}
+    for index, key in enumerate(keys):
+        groups.setdefault(key, []).append(index)
+    return list(groups.items())

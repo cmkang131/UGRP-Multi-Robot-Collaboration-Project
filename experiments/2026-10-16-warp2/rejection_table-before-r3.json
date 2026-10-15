@@ -1,0 +1,33 @@
+{
+  "schema": "ugrp.warp2.pre_r3_rejections.v1",
+  "updated_utc": "2026-10-15T19:05:02.119236+00:00",
+  "model_funnel": [
+    {
+      "stage": "exact_C312_model_export",
+      "input_N": 6,
+      "passed_cumulative_N": 6,
+      "rejected_N": 0
+    },
+    {
+      "stage": "single_model_array_combination",
+      "input_N": 1,
+      "passed_cumulative_N": 0,
+      "rejected_N": 1
+    }
+  ],
+  "rejection_distribution": [
+    {
+      "reason_category": "upstream_nonbatchable_model_field",
+      "blocked_object": "mjw.Model.dof_length",
+      "min_gap_m": null,
+      "gap_scope": "model schema; not a geometric rejection",
+      "count": 1
+    }
+  ],
+  "rollout_physics_steps": 0,
+  "raw": "/home/ugrp/ugrp-sim/runs/warp2/r3-references-14fbdf6a/preflight.log",
+  "source_sha": "14fbdf6a4da4ca2793c9c0b2859be141a8fb6848",
+  "source_argument_correction": "source-pin-correction.json at same remote root",
+  "next_scope": "Group exact XML models and delegate all physics to existing WarpTransport instances. Preserve every unsupported array and original mass/geometry; use CUDA streams for graph launches. No second physics engine.",
+  "reproduce": "run prepare_r3.py at pinned source; inspect fixed upstream types.py:1728 dof_length array(nv,float)"
+}

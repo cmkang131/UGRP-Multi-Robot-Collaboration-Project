@@ -9,7 +9,7 @@ import hashlib
 import time
 from pathlib import Path
 import numpy as np
-from warp_act_core import SERVOS, control_tape, multi_control_tape, model_key, contact_maps, varying_model_arrays
+from warp_act_core import SERVOS, control_tape, multi_control_tape, model_key, contact_maps, varying_model_arrays, exact_model_groups
 
 
 def ports_for(context):
@@ -282,6 +282,12 @@ class WarpTransport(Transport):
         self.lookup=np.asarray(tables)
 
     def step(self, contexts, active):
+        self.prepare_step(contexts, active)
+        self.launch_step()
+        self.finish_step(contexts)
+
+    def prepare_step(self, contexts, active):
+        """Same issued-command tape, separated only to enqueue multiple models."""
         wp,mjw=self.wp,self.mjw
         start=time.perf_counter()
         robot_rows = {}
@@ -315,13 +321,19 @@ class WarpTransport(Transport):
                 w.robot(rid).servo_command_pulses.update(dict(zip(SERVOS,map(int,state['pwm'][i]))))
             w.data.ctrl[:]=tape[-1,i]
         self.seconds['command_decode_upload']+=time.perf_counter()-start
-        start=time.perf_counter()
+        self._physics_started=time.perf_counter()
+
+    def launch_step(self):
+        wp=self.wp
+        self._physics_started=time.perf_counter()
         self.graph_tick.zero_()
         for _ in range(round(.1/self.dt)//16):
             wp.capture_launch(self.graph)
+    def finish_step(self, contexts):
+        wp=self.wp
         wp.synchronize()
         self.tick+=1
-        self.seconds['physics']+=time.perf_counter()-start
+        self.seconds['physics']+=time.perf_counter()-self._physics_started
         if np.any(self.wd.overflow.numpy()):
             raise RuntimeError('MJWarp workspace overflow '+str(self.wd.overflow.numpy().tolist()))
         self.sync_render(contexts)
@@ -371,3 +383,80 @@ class WarpTransport(Transport):
             int(self.m.opt.cone),int(d.njmax),d.contact.frame,d.contact.friction,d.contact.dim,
             d.contact.efc_address,d.contact.adhesion,d.efc.force,self.target_mask,self.finger_map,self.force_out])
         self.contact_forces=self.force_out.numpy()
+
+
+class ExactModelGroups(Transport):
+    """Route unchanged WarpTransport instances, one per exact model.
+
+    No MuJoCo/MJWarp physics implementation lives here. In particular, a
+    differing unbatchable field (e.g. dof_length) is never overwritten. A single
+    Python thread enqueues each model's captured graph on its own CUDA stream,
+    then finishes readback after all model graphs have been submitted.
+    """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.groups, self.routes = [], {}
+
+    def initialize(self, contexts, *, compiled_reference=None, compiled_geometry=None,
+                   per_world_model_references=None):
+        refs = per_world_model_references or {}
+        keys = [hashlib.sha256(c['world'].scene_xml.encode()).hexdigest() for c in contexts]
+        partitions = exact_model_groups(keys)
+        records = []
+        for group_index, (key, ids) in enumerate(partitions):
+            root = self.out/'model-groups'/f'{group_index:02d}-{key[:8]}'
+            root.mkdir(parents=True, exist_ok=False)
+            selected = [contexts[i] for i in ids]
+            assets = refs.get(key)
+            if assets is None and len(partitions) != 1:
+                raise ValueError('missing exact model compiled reference: '+key)
+            transport = WarpTransport(self.host, self.source_sha, self.backend, root)
+            transport.initialize(selected,
+                compiled_reference=Path(assets['actuator']) if assets else compiled_reference,
+                compiled_geometry=Path(assets['geometry']) if assets else compiled_geometry)
+            stream = transport.wp.Stream('cuda:0')
+            self.groups.append((transport, selected, np.asarray(ids), stream))
+            for local, index in enumerate(ids):
+                self.routes[index] = (transport, local)
+            records.append(dict(xml_sha256=key, world_ids=ids, N=len(ids), raw=str(root),
+                model_batch_audit=transport.model_batch_audit, capacities=transport.capacities))
+        first = self.groups[0][0]
+        self.camera = first.camera
+        self.compat = {str(i): g[0].compat for i,g in enumerate(self.groups)}
+        self.capacities = {str(i): g[0].capacities for i,g in enumerate(self.groups)}
+        self.model_batch_audit = dict(mode='exact_xml_groups_v1', groups=records,
+            changing_unbatchable_fields=False, physics_implementation='shared WarpTransport only',
+            stream_execution='enqueue all model graphs before host readback; one Python thread')
+
+    def capture(self, index, world, robot_id='r1'):
+        transport, local = self.routes[index]
+        return transport.capture(local, world, robot_id)
+
+    def forces(self, index, model, data, targets, fingers):
+        transport, local = self.routes[index]
+        return transport.forces(local, model, data, targets, fingers)
+
+    def record_state(self, index, tick, world):
+        transport, local = self.routes[index]
+        transport.record_state(local, tick, world)
+
+    def step(self, contexts, active):
+        start = time.perf_counter()
+        submitted = []
+        for transport, selected, ids, stream in self.groups:
+            mask = active[ids]
+            if not mask.any():
+                continue
+            with transport.wp.ScopedStream(stream):
+                transport.prepare_step(selected, mask)
+                transport.launch_step()
+            submitted.append((transport, selected, stream))
+        for transport, selected, stream in submitted:
+            with transport.wp.ScopedStream(stream):
+                transport.finish_step(selected)
+        self.seconds['shared_transport_step_wall'] += time.perf_counter()-start
+
+    def save_states(self):
+        for transport, _, _, _ in self.groups:
+            transport.save_states()
+        self.seconds['group_timings_inclusive'] = {str(i): dict(g[0].seconds) for i,g in enumerate(self.groups)}
