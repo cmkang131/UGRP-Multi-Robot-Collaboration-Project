@@ -11,6 +11,7 @@ def main():
     p.add_argument('--root', type=Path, required=True)
     p.add_argument('--fixture', type=Path, required=True)
     p.add_argument('--with-geometry-round', action='store_true')
+    p.add_argument('--corrected-native-control', action='store_true')
     a = p.parse_args()
     from simalt_host import gcp2_identity
     gcp2_identity()
@@ -25,6 +26,9 @@ def main():
         paths.update(C316_geometry312=a.root/'c316-geometry312-grip',
                      Warp_geometry312=a.root/'warp-geometry312-grip',
                      C312_port=a.root/'c312-native-port-selfcontrol')
+    if a.corrected_native_control:
+        if not a.with_geometry_round:raise ValueError('corrected controls require the geometry round')
+        paths.update(C316_geometry312=a.root/'c316-native-corrected',C312_port=a.root/'c312-native-corrected')
     meta = {k: json.loads((v/'result.json').read_text()) for k, v in paths.items()}
     nc = len(meta['C312']['columns'])
     arrays = {k: np.load(v/'steps.npz')['records'] for k, v in paths.items()}
@@ -106,7 +110,7 @@ def main():
             step_rows.append({'comparison': key+' vs C312', 'step_1based': i+1, 'SIM_s': (i+1)*dt,
                 'phase': phases[i//400], 'base_error_m': float(np.linalg.norm(values[i, base:base+3]-arrays['C312'][i, base:base+3])),
                 **{m.joint(j).name: float(difference[i, m.jnt_qposadr[j]]) for j in range(m.njnt)}})
-    suffix='-final' if a.with_geometry_round else ''
+    suffix='-corrected' if a.corrected_native_control else ('-final' if a.with_geometry_round else '')
     for name, rows in [('first-joint-divergence'+suffix+'.csv', first_rows), ('joint-step-excerpts'+suffix+'.csv', step_rows)]:
         with (a.root/name).open('x') as stream:
             writer = csv.DictWriter(stream, fieldnames=list(rows[0])); writer.writeheader(); writer.writerows(rows)
