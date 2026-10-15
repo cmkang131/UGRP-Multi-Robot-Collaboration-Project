@@ -29,3 +29,24 @@
 ACT15 평가 소스 `686cccb6`의 `scripts/run_grasp_act_student.py:227` 이후 clearance/tilt/contact와242–245의 target/base 측정은 평가 전용으로 남겨야 한다. GPU contact/pose 평가 owner로 옮기고 actor에는 전달하지 않는 설계다. `scripts/grasp_act_student_worker.py`는 observation+jpegs whitelist만 받는 별도 과정이며 직접 MjData 접근이 없다. `harness/grasp_act_solo_recording.py`는 observe(동작 전 JPEG/과거 발행 명령)/target(이번 발행 명령)을 받는 구조를 유지할 수 있지만, 기존 C 관문 승인 SHA를 새 backend 승인으로 재사용하지 않는다. 현재 CLI는 training_rgb를 켜지 않으며 학생 실행·새 관문 이후 기록 어댑터는 미완료다.
 
 교사 성능 후보의 최종 상태: 명시 sleep 정책 compact 옵션은 pinned MJWarp가 지원하지 않아 최종 CLI에서 제거했다. 서로 다른 source seed는 `dof_length` 차이로 결합을 거부했다. 같은 물리 seed/모델에 기존 source plan의 r1 시작 위치3종만 넣은 진단은 N16에서 초기 qpos/RGB3종을 보존했고, world0 리셋 뒤10개 persistent field의 selected/untouched 검사가 모두 통과했다. 이것은 성공률 표본이 아니다.
+
+## 전체 NumPy 교사로 옮길 배열 계약 (아직 미구현)
+
+현재 scalar frontend를 최종 벡터 교사로 표시하지 않는다. 다음 경계로 옮기며 기존 C 교사와 새 배열 교사는 별도 토글/코호트로 검증한다.
+
+|배열|owner/shape|갱신과 금지|
+|---|---|---|
+|phase, skill, result, active|교사 `[N]` enum/int/bool|SIM tick과 허용 관측 mask로만 전환. Score/contact/성공 정답을 상태 전환에 연결하지 않음|
+|phase_start, skill_start, deadline|교사 `[N]` float64 SIM초|고정 SIM clock. 계획은 frozen40000 노드와 같은 계산량 예산. wall은 VM 자원 감시에만 사용|
+|issued_pwm, servo_target, fractional_pwm, servo_deadline|명령 `[N,5]`|측정 관절이 아닌 발행 상태. 현재 `control_tape`가 N을 벡터화하며400 물리 tick만 고정 루프|
+|issued_wheels, wheel_deadline, relay|명령 `[N,4]`|세계별 lease/정지/reversal 독립. 반환한 명령을 다음 이력에 기록|
+|visible_count, probe_count, holding, measurement_valid|관측 `[N]`|`~holding & probes>0 & visible>=ceil(probes/3)` mask부터 계산. 금지 행의 위치 getter를 호출하지 않음|
+|relative_xyz_yaw|관측 `[M,4]`, M=허용 world 수|전체 `[N]` 정답 배열을 교사에 건네지 않음. 허용 world index와 상대량만 전달. 현재 pure lazy vector helper는 있으나 실제 frontend는 frozen InputAudit 사용|
+|approach/align target, stable_count, last_command|교사 `[N,k]`|각 phase mask에 동일한 frozen 산술을 적용. reset 때 해당 행/이력/RGB buffer를 함께 지워야 하며 현재 physics-only reset과 구분|
+|IK inputs/outputs/validity|교사 `[M,k]`|같은 종류/스킬의 masked 목표를 모아 기존 기구학을 배열식으로 이식. 임의 보간 표나 새 허용 오차를 넣지 않고 기존 solver 입출력과 대조. 현재 scalar IK 유지|
+|RGB history, lookback/localizer state|로봇별 `[N,T,H,W,C]` + 발행 이력|world index를 함께 보존. RGB/명령뿐인 observer와 pose-free lookaround를 유지. 현재 per-world observer 유지|
+|clearance, tilt, speed, finger_force, Score state|평가 `[N,k]`|GPU 상태/접촉 owner. 교사·학생 입력 객체에 넣지 않음. 현재 force 합산 kernel은 배치화, Score는 scalar|
+
+가시 ray는 현재 C kinematic mirror에서 기존 FOV/7-probe/가림 규칙을 유지했다. 다음에는 동일한 ray 원점·끝점·geom group·self 제외를 `[N,K]`로 묶어 pinned MJWarp ray kernel로 옮겨야 한다. ray 결과를 RGB와 동등한 관측이라고 새로 주장하거나 held target 위치를 넘기지 않는다. OpenCV remap/JPEG는 현재 세계별 처리이며, GPU remap로 바꿀 때는 같은 K/D/grid 및 실제 RGB 차이·teacher 결과를 별도 확인한다.
+
+ACT 학습 자체는 물리 엔진을 호출하지 않는다. 새 MJWarp 자체 관문 뒤 생성된 world별 recorder 자료를 같은 학생 관측 계약으로 학습하되 manifest에 backend·scene/model hash·host·teacher/adapter SHA를 붙이고 C 자료와 합산하지 않는다. 학생 평가 runner의 물리 step/RGB/evaluator만 같은 transport로 연결하고, isolated actor의 observation+jpegs whitelist와 TRAIN-only 정규화 계약을 유지하는 것이 후속 이식이다. 이번에는 학습·학생 평가를 실행하거나 완료했다고 표시하지 않는다.

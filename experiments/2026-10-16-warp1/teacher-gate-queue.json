@@ -50,5 +50,16 @@
   ],
   "cohort_rule": "C/GCP1/other numeric or sleep profiles are never pooled; no reserved ACT16 evaluation seeds used",
   "commands": null,
-  "commands_status": "HOLD: executable gate submission intentionally absent until model grouping and scene hashes are frozen"
+  "commands_status": "HOLD: executable gate submission intentionally absent until model grouping and scene hashes are frozen",
+  "backend_options_status": "not frozen; separately qualify native_sleep_policy_compat_v1 before owner selects any gate profile",
+  "pilot_candidates": [
+    {
+      "flag": "native_sleep_policy_compat_v1",
+      "default": "off",
+      "upstream_runtime_policy_mapping": "NEVER→AUTO_NEVER, ALLOWED→AUTO_ALLOWED; INIT rejected",
+      "native_scene": "sleep enabled / active r1 never / other free trees allowed / extra0.4SIM quiet setup",
+      "workspace": "measured52 active,58 robot+target upper bound→nvmax64",
+      "status": "full qualitative pilots running; not admitted to gate"
+    }
+  ]
 }

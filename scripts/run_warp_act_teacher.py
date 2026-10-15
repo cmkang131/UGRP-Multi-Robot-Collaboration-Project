@@ -102,6 +102,8 @@ def main():
         teacher_sha=TEACHER_SHA,host=host,nworld=a.nworld,seed=plan['seed'],
         world_seeds=[p['seed'] for p in world_plans],unique_seeds=len({p['seed'] for p in world_plans}),cap_s=a.cap_s,
         training_rgb=False,training_recording_supported=False,student_evaluation_supported=False,
+        native_sleep_policy_compat_v1=a.native_sleep_policy_compat_v1,
+        float32_solver_default_v1=a.float32_solver_default_v1,
         teacher_vectorized=False,scope='transitional scalar frozen teacher on batched physics/commands/RGB',
         gate_eligible=False,scene_status='HOLD_SCENE',reproduce=sys.argv,
         plan_sha256=hashlib.sha256(a.plan.read_bytes()).hexdigest(),mujoco=mujoco.__version__,
