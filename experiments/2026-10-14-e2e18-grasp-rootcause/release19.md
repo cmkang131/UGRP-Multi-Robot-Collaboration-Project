@@ -74,3 +74,19 @@ python3 -m pytest -q tests/test_release19.py tests/test_release18.py tests/test_
 - `sim/release_global_observation.py:MAX_SHIFT_M`, `sim/grasp_act_release_teacher.py:shift_plan`, `release5.md`: 이동 상한·펄스·과거 누적 드리프트.
 - [ViSP 공식 IBVS 코드](https://github.com/lagadic/visp/blob/master/tutorial/visual-servo/ibvs/tutorial-ibvs-4pts-wireframe-robot-viper.cpp): 매 반복 새 특징 갱신을 확인, 캡처 생략 없이 중복 대기만 재사용.
 - [ROS 2 trajectory controller 공식 문서](https://github.com/ros-controls/ros2_controllers/blob/master/joint_trajectory_controller/doc/userdoc.rst): 명령 시각과 실제 도달 판정의 구분을 확인했다. 이 교사는 측정 관절을 받지 않으므로 도달 판정을 도입하지 않는다. 외부 문서는 프로젝트의 0.8/1.0초 수치를 보증하지 않는다.
+
+## 전달 상태
+
+release19 실행 소스는 **`b2d2d33f1804c1ce35b6a700f9abbc63f88c5859`**, `claude/grasp-act-probes`에 push했다.
+같은 40시드의 `20261015-release-gate40-b2d2d33f.json`은 A=a3bbc90e 40회/B=release19 40회이고 결과 합산 금지다.
+80회 승인·준비·실행 플래그는 모두 false다. 양쪽 계획 hash·시드 동일, 120개 argv 확장을 검증했다(최초 A40 포함).
+
+작업 중 운영 조정자가 단계 1 큐를 승인·23회 제출한 뒤 `NOT_READY_STOPPED_CONTROL_DEFECT`로 바꿨다.
+운영 기록은 seed110613 r2의 최소 yaw 펄스 진동→motion cap을 원인으로 보고하고 동일 결함 실행을 중단했다.
+이 작업은 해당 영상/원장을 독립 재검토하지 않았다. 운영 변경을 보존했고, 대기 재사용은 그 결함을 고치지 않으므로
+새 A/B 큐를 **BLOCKED_KNOWN_BASELINE_ALIGNMENT_DEFECT**로 기록했다. 수정·검토 전 실행 금지다.
+시점·중단 기록 hash·현재 큐 hash는 `release19-queue-verification.json`에 있다. 이 작업의 원격 접속/제출은 0회다.
+
+```sh
+python3 -m scripts.prepare_release_gate40_queue --verify /Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-release-gate40-b2d2d33f.json
+```
