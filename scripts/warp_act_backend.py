@@ -9,7 +9,7 @@ import hashlib
 import time
 from pathlib import Path
 import numpy as np
-from warp_act_core import SERVOS, control_tape, multi_control_tape
+from warp_act_core import SERVOS, control_tape, multi_control_tape, model_key, contact_maps
 
 
 def ports_for(context):
@@ -90,6 +90,8 @@ class WarpTransport(Transport):
         self.contexts = contexts
         self.n = len(contexts)
         self.robot_ids = tuple(ports_for(contexts[0]))
+        if any(tuple(ports_for(c)) != self.robot_ids for c in contexts):
+            raise ValueError('consistent named robot ports across worlds required')
         self.camera_size = tuple(contexts[0].get('camera_size', (640, 480)))
         self.finger_channels = dict(contexts[0]['finger_ids'])
         m, d = contexts[0]['world'].model, contexts[0]['world'].data
@@ -103,12 +105,19 @@ class WarpTransport(Transport):
             self.compat['damping'] = apply_reference(m, xml, compiled_reference)
         if m.opt.noslip_iterations != 10 or np.any(d.eq_active):
             raise ValueError('noslip10 / weld OFF required')
-        # This initial implementation admits replicated SAME-model starts only.
-        # Mixed scene batching requires explicit per-model grouping, not silent sharing.
+        # Free-joint initial poses live in per-world qpos, not shared static geometry.
         for c in contexts[1:]:
             other = c['world']
-            if other.scene_xml != contexts[0]['world'].scene_xml:
-                raise ValueError('same-model batch required; scene XML differs')
+            if model_key(other.scene_xml) != model_key(contexts[0]['world'].scene_xml):
+                raise ValueError('same static model required; group mixed maps/geometry into separate batches')
+            # Match the perception mirror's compiled geometry to the same canonical model.
+            for name in dir(m):
+                if name.startswith(('geom_','mesh_','bvh_')):
+                    value=getattr(m,name)
+                    if isinstance(value,np.ndarray):
+                        target=getattr(other.model,name)
+                        if target.shape!=value.shape:raise ValueError('compiled geometry layout mismatch')
+                        target[:]=value
         wp.init()
         self.wm = mjw.put_model(m)
         self.wm.opt.tolerance.fill_(float(m.opt.tolerance))
@@ -178,24 +187,22 @@ class WarpTransport(Transport):
         @wp.kernel
         def advance(tick:wp.array[int]):
             tick[0]+=1
-        targets = np.zeros(contexts[0]['world'].model.ngeom, dtype=np.int32)
-        targets[contexts[0]['gids']] = 1
-        fingers = np.full(len(targets), -1, dtype=np.int32)
-        for geom, channel in self.finger_channels.items():
-            fingers[geom] = channel
+        targets, fingers = contact_maps(contexts[0]['world'].model.ngeom,
+            [c['gids'] for c in contexts], [c['finger_ids'] for c in contexts])
         self.target_mask = wp.array(targets, dtype=int)
         self.finger_map = wp.array(fingers, dtype=int)
         @wp.kernel
         def evaluate(nacon:wp.array[int],worldid:wp.array[int],geom:wp.array[wp.vec2i],
                      cone:int,njmax:int,frame:wp.array[wp.mat33],friction:wp.array[vec5],
                      condim:wp.array[int],adr:wp.array2d[int],adhesion:wp.array[float],
-                     efc_force:wp.array2d[float],targets:wp.array[int],fingers:wp.array[int],out:wp.array2d[float]):
+                     efc_force:wp.array2d[float],targets:wp.array2d[int],fingers:wp.array2d[int],out:wp.array2d[float]):
             i=wp.tid()
             if i<nacon[0]:
                 a,b=geom[i][0],geom[i][1]
+                w=worldid[i]
                 k=int(-1)
-                if targets[a] != 0:k=fingers[b]
-                elif targets[b] != 0:k=fingers[a]
+                if targets[w,a] != 0:k=fingers[w,b]
+                elif targets[w,b] != 0:k=fingers[w,a]
                 if k>=0:
                     w=worldid[i]
                     force=contact_force_fn(cone,frame,friction,condim,adr,adhesion,efc_force,njmax,nacon,w,i,False)

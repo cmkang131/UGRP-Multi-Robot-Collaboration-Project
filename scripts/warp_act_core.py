@@ -108,3 +108,36 @@ def multi_control_tape(robot_rows, relay_states, bindings, **clock):
             raise ValueError('robots must share world and substep dimensions')
         combined[:, :, columns] = tape[:, :, columns]
     return combined, states
+
+
+def model_key(xml):
+    """Same scene/model excluding only free-body initial pose declarations.
+
+    MuJoCo free-joint qpos stores that pose per world. Static bodies, geometry,
+    dynamics, materials, sensors and camera parameters must remain exact.
+    No approximate numeric model matching or mixed-map batching is admitted.
+    """
+    import hashlib
+    import xml.etree.ElementTree as ET
+    root=ET.fromstring(xml)
+    for body in root.iter('body'):
+        free=body.find('freejoint') is not None or any(j.get('type')=='free' for j in body.findall('joint'))
+        if free:
+            for attr in ('pos','quat','euler','axisangle','xyaxes','zaxis'):
+                body.attrib.pop(attr,None)
+    return hashlib.sha256(ET.tostring(root)).hexdigest()
+
+
+def contact_maps(ngeom, targets, fingers):
+    """Evaluator-only per-world cargo/finger membership, including multi-geoms."""
+    if len(targets) != len(fingers) or not targets:
+        raise ValueError('matching nonempty per-world contact groups required')
+    target_mask = np.zeros((len(targets), ngeom), dtype=np.int32)
+    finger_map = np.full((len(targets), ngeom), -1, dtype=np.int32)
+    for i, (cargo, mapping) in enumerate(zip(targets, fingers)):
+        if not cargo or set(cargo).intersection(mapping):
+            raise ValueError('cargo and fingers must be distinct')
+        target_mask[i, cargo] = 1
+        for geom, channel in mapping.items():
+            finger_map[i, geom] = channel
+    return target_mask, finger_map

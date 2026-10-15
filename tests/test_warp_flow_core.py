@@ -6,7 +6,7 @@ import sys
 from types import ModuleType, SimpleNamespace
 import numpy as np
 import pytest
-from scripts.warp_act_core import control_tape, multi_control_tape
+from scripts.warp_act_core import control_tape, multi_control_tape, contact_maps
 from scripts.warp_flow_episode import Lane, compile_function, ADAPTER_SHA, TEACHER_SHA
 
 
@@ -30,6 +30,14 @@ def test_two_robot_tapes_preserve_each_fractional_servo_and_deadline():
     assert tape[4,0,0] == 0 and tape[4,0,10] < 0
     with pytest.raises(ValueError,match='disjoint'):
         multi_control_tape(values, states, {'r1':bindings['r1'],'r2':bindings['r1']}, **clock)
+
+
+def test_contact_membership_is_world_specific_and_accepts_multi_geom_beam():
+    targets, fingers = contact_maps(10, [[0,1],[2,3]], [{4:0,5:1,6:2,7:3},{4:0,5:1,6:2,7:3}])
+    assert targets[0,0] == 1 and targets[1,0] == 0
+    assert targets[1,2] == 1 and targets[0,2] == 0
+    assert fingers[:,6].tolist() == [2,2] and fingers[:,0].tolist() == [-1,-1]
+    with pytest.raises(ValueError,match='distinct'):contact_maps(10,[[0]],[{0:0}])
 
 
 def test_lane_globals_and_dynamic_imports_do_not_cross_worlds():
