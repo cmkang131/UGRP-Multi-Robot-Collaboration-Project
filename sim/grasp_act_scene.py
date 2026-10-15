@@ -23,7 +23,10 @@ def colors(xml,option):
 
 
 def make_scene(plan):
-    scene=wrap(install(ScenarioFinalV3Scene.from_scenario(plan['scenario_id'],plan['seed']),'floor_light_v1'))
+    from sim.gatesv5_scene import scene_bindings
+    binding=scene_bindings(plan.get('scene_profile','off'))
+    base_scene=ScenarioFinalV3Scene.from_scenario(plan['scenario_id'],plan['seed'])
+    scene=wrap(binding[0](base_scene) if binding is not None else install(base_scene,'floor_light_v1'))
     scene.config['setup_only']['spawns']=plan['spawns']
     original=scene.robot_transform
     def transform(xml,**kwargs):
