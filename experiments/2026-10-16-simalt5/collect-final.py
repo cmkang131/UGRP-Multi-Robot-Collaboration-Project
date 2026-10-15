@@ -80,6 +80,7 @@ write('collected-summary.json',{'id':'2026-10-16-simalt5','decision':'PARITY_FAI
                     'cap_end':sum(x['status']=='cap_end' for x in jobs)},
     'jobs_index':'physics-jobs.json','final_cases':final,'round1':round1,
     'decomposition':decomposition,'model_audit':'full-model-differences-C316-compiled312.json',
+    'native_bit_parity':json.loads((R/'native-corrected-bit-parity.json').read_text()),
     'rejected_native_comparator_runs':sorted(rejected_comparator),
     'beam':{'status':'not_submitted','reason':'small scene endpoint gate failed','attempted':0},
     'throughput':{'status':'not_submitted','N':[16,64,256],'physics':None,'RGB':None,
