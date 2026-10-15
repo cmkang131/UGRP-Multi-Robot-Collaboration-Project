@@ -1,0 +1,5528 @@
+{
+  "status": "NOT_READY",
+  "work_status": "finite pilot work ended; implementation gaps retained",
+  "generated_utc": "2026-10-15T21:49:47.468513+00:00",
+  "physics_backend": "mjwarp_batch_v1",
+  "backend_default": "off",
+  "PR": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/534",
+  "base_sha": "142dbf04c2128c3d7ca1c3ceb03ee3b651d9a7e5",
+  "teacher_sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+  "scope": "batched physics/issued commands/RGB; scalar teacher/IK/raycast; separate evaluator",
+  "nonphysics_tests": 42,
+  "cohorts": [
+    {
+      "backend": "c_pilot_v1",
+      "host": {
+        "project_id": "ugrp-sim-b-1014",
+        "instance": "ugrp-sim-gcp2",
+        "machine_type": "n4-highcpu-64",
+        "zone": "asia-northeast3-a"
+      },
+      "nworld": 1,
+      "native_sleep": false,
+      "sap": false,
+      "runs": [
+        "/home/ugrp/ugrp-sim/runs/warp1/cpu-pilot-index16",
+        "/home/ugrp/ugrp-sim/runs/warp1/cpu-pilot-index4",
+        "/home/ugrp/ugrp-sim/runs/warp1/cpu-pilot-seed0"
+      ],
+      "attempted_worlds": 3,
+      "returned_worlds": 3,
+      "physical_success_worlds": 3,
+      "cap_end_worlds": 0,
+      "supervisor_stop_worlds": 0,
+      "seeds": [
+        8317100,
+        8317101,
+        8317104
+      ],
+      "successful_seeds": [
+        8317100,
+        8317101,
+        8317104
+      ],
+      "unique_seeds": 3,
+      "successful_unique_seeds": 3
+    },
+    {
+      "backend": "c_pilot_v1",
+      "host": {
+        "project_id": "ugrp-sim-b-1014",
+        "instance": "ugrp-act-l4-gcp2",
+        "machine_type": "g2-standard-8",
+        "zone": "asia-northeast3-a"
+      },
+      "nworld": 1,
+      "native_sleep": true,
+      "sap": false,
+      "runs": [
+        "/home/ugrp/ugrp-sim/runs/warp1/policy-c-qual-index0",
+        "/home/ugrp/ugrp-sim/runs/warp1/policy-c-qual-index16",
+        "/home/ugrp/ugrp-sim/runs/warp1/policy-c-qual-index4"
+      ],
+      "attempted_worlds": 3,
+      "returned_worlds": 3,
+      "physical_success_worlds": 3,
+      "cap_end_worlds": 0,
+      "supervisor_stop_worlds": 0,
+      "seeds": [
+        8317100,
+        8317101,
+        8317104
+      ],
+      "successful_seeds": [
+        8317100,
+        8317101,
+        8317104
+      ],
+      "unique_seeds": 3,
+      "successful_unique_seeds": 3
+    },
+    {
+      "backend": "mjwarp_batch_v1",
+      "host": {
+        "project_id": "ugrp-sim-b-1014",
+        "instance": "ugrp-act-l4-gcp2",
+        "machine_type": "g2-standard-8",
+        "zone": "asia-northeast3-a"
+      },
+      "nworld": 1,
+      "native_sleep": true,
+      "sap": false,
+      "runs": [
+        "/home/ugrp/ugrp-sim/runs/warp1/policy-qual-n1-seed0",
+        "/home/ugrp/ugrp-sim/runs/warp1/policy-qual-n1-seed4"
+      ],
+      "attempted_worlds": 2,
+      "returned_worlds": 1,
+      "physical_success_worlds": 1,
+      "cap_end_worlds": 1,
+      "supervisor_stop_worlds": 0,
+      "seeds": [
+        8317100,
+        8317104
+      ],
+      "successful_seeds": [
+        8317100
+      ],
+      "unique_seeds": 2,
+      "successful_unique_seeds": 1
+    },
+    {
+      "backend": "mjwarp_batch_v1",
+      "host": {
+        "project_id": "ugrp-sim-b-1014",
+        "instance": "ugrp-act-l4-gcp2",
+        "machine_type": "g2-standard-8",
+        "zone": "asia-northeast3-a"
+      },
+      "nworld": 16,
+      "native_sleep": true,
+      "sap": false,
+      "runs": [
+        "/home/ugrp/ugrp-sim/runs/warp1/policy-qual-n16-seed0"
+      ],
+      "attempted_worlds": 16,
+      "returned_worlds": 16,
+      "physical_success_worlds": 16,
+      "cap_end_worlds": 0,
+      "supervisor_stop_worlds": 0,
+      "seeds": [
+        8317100
+      ],
+      "successful_seeds": [
+        8317100
+      ],
+      "unique_seeds": 1,
+      "successful_unique_seeds": 1
+    },
+    {
+      "backend": "mjwarp_batch_v1",
+      "host": {
+        "project_id": "ugrp-sim-b-1014",
+        "instance": "ugrp-act-l4-gcp2",
+        "machine_type": "g2-standard-8",
+        "zone": "asia-northeast3-a"
+      },
+      "nworld": 1,
+      "native_sleep": false,
+      "sap": false,
+      "runs": [
+        "/home/ugrp/ugrp-sim/runs/warp1/r2-warp-n1-seed0"
+      ],
+      "attempted_worlds": 1,
+      "returned_worlds": 1,
+      "physical_success_worlds": 1,
+      "cap_end_worlds": 0,
+      "supervisor_stop_worlds": 0,
+      "seeds": [
+        8317100
+      ],
+      "successful_seeds": [
+        8317100
+      ],
+      "unique_seeds": 1,
+      "successful_unique_seeds": 1
+    }
+  ],
+  "throughput": [
+    {
+      "run": "cpu-n16-prefix01",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/cpu-n16-prefix01",
+      "nworld": 16,
+      "world_cap_SIM_s": 0.1,
+      "native_sleep": false,
+      "sap": false,
+      "aggregate_SIM_s": 1.6000000000005343,
+      "wall_s": 5.241169483000704,
+      "loop_wall_s": null,
+      "cold_SIM_s_per_wall_s": 0.30527537893784984,
+      "loop_SIM_s_per_wall_s": null,
+      "estimated_SIM_s_per_USD": 349.4408153183654,
+      "assumed_VM_USD_per_hour": 3.145,
+      "condition": "shared-load; horizon/profile explicitly separate; no intrinsic efficiency verdict"
+    },
+    {
+      "run": "cpu-n16-prefix4",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/cpu-n16-prefix4",
+      "nworld": 16,
+      "world_cap_SIM_s": 4.0,
+      "native_sleep": false,
+      "sap": false,
+      "aggregate_SIM_s": 64.00000000001143,
+      "wall_s": 18.62625716799994,
+      "loop_wall_s": null,
+      "cold_SIM_s_per_wall_s": 3.436009683682664,
+      "loop_SIM_s_per_wall_s": null,
+      "estimated_SIM_s_per_USD": 3933.111243643113,
+      "assumed_VM_USD_per_hour": 3.145,
+      "condition": "shared-load; horizon/profile explicitly separate; no intrinsic efficiency verdict"
+    },
+    {
+      "run": "bench-n16-prefix01",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n16-prefix01",
+      "nworld": 16,
+      "world_cap_SIM_s": 0.1,
+      "native_sleep": false,
+      "sap": false,
+      "aggregate_SIM_s": 1.6000000000000014,
+      "wall_s": 39.873293384000135,
+      "loop_wall_s": 22.151053206000142,
+      "cold_SIM_s_per_wall_s": 0.040127109255590855,
+      "loop_SIM_s_per_wall_s": 0.07223132846643171,
+      "estimated_SIM_s_per_USD": 131.80437346726922,
+      "assumed_VM_USD_per_hour": 1.096,
+      "condition": "shared-load; horizon/profile explicitly separate; no intrinsic efficiency verdict"
+    },
+    {
+      "run": "bench-n16-prefix4",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n16-prefix4",
+      "nworld": 16,
+      "world_cap_SIM_s": 4.0,
+      "native_sleep": false,
+      "sap": false,
+      "aggregate_SIM_s": 64.0,
+      "wall_s": 1574.6521341029998,
+      "loop_wall_s": 1450.7178221480003,
+      "cold_SIM_s_per_wall_s": 0.04064389754023836,
+      "loop_SIM_s_per_wall_s": 0.044116091374157534,
+      "estimated_SIM_s_per_USD": 133.50185323435957,
+      "assumed_VM_USD_per_hour": 1.096,
+      "condition": "shared-load; horizon/profile explicitly separate; no intrinsic efficiency verdict"
+    },
+    {
+      "run": "bench-n256-prefix01",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01",
+      "nworld": 256,
+      "world_cap_SIM_s": 0.1,
+      "native_sleep": false,
+      "sap": false,
+      "aggregate_SIM_s": 25.600000000000023,
+      "wall_s": 114.16336610400049,
+      "loop_wall_s": 63.65848267199999,
+      "cold_SIM_s_per_wall_s": 0.22424005943096445,
+      "loop_SIM_s_per_wall_s": 0.4021459344531332,
+      "estimated_SIM_s_per_USD": 736.5549397367445,
+      "assumed_VM_USD_per_hour": 1.096,
+      "condition": "shared-load; horizon/profile explicitly separate; no intrinsic efficiency verdict"
+    },
+    {
+      "run": "bench-n64-prefix01",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01",
+      "nworld": 64,
+      "world_cap_SIM_s": 0.1,
+      "native_sleep": false,
+      "sap": false,
+      "aggregate_SIM_s": 6.400000000000006,
+      "wall_s": 56.8448992170006,
+      "loop_wall_s": 32.861087757999485,
+      "cold_SIM_s_per_wall_s": 0.11258705861309642,
+      "loop_SIM_s_per_wall_s": 0.19475922547457464,
+      "estimated_SIM_s_per_USD": 369.8115063933824,
+      "assumed_VM_USD_per_hour": 1.096,
+      "condition": "shared-load; horizon/profile explicitly separate; no intrinsic efficiency verdict"
+    },
+    {
+      "run": "bench-native-n16-prefix01",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n16-prefix01",
+      "nworld": 16,
+      "world_cap_SIM_s": 0.1,
+      "native_sleep": true,
+      "sap": false,
+      "aggregate_SIM_s": 1.6000000000000014,
+      "wall_s": 29.633920255000703,
+      "loop_wall_s": 10.938538151998728,
+      "cold_SIM_s_per_wall_s": 0.05399218146745207,
+      "loop_SIM_s_per_wall_s": 0.1462718306383238,
+      "estimated_SIM_s_per_USD": 177.34658146243376,
+      "assumed_VM_USD_per_hour": 1.096,
+      "condition": "shared-load; horizon/profile explicitly separate; no intrinsic efficiency verdict"
+    },
+    {
+      "run": "bench-native-n256-prefix01",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01",
+      "nworld": 256,
+      "world_cap_SIM_s": 0.1,
+      "native_sleep": true,
+      "sap": false,
+      "aggregate_SIM_s": 25.600000000000023,
+      "wall_s": 96.06884857700061,
+      "loop_wall_s": 44.707568818001164,
+      "cold_SIM_s_per_wall_s": 0.2664755576775883,
+      "loop_SIM_s_per_wall_s": 0.5726099780601887,
+      "estimated_SIM_s_per_USD": 875.2846785030272,
+      "assumed_VM_USD_per_hour": 1.096,
+      "condition": "shared-load; horizon/profile explicitly separate; no intrinsic efficiency verdict"
+    },
+    {
+      "run": "bench-native-n64-prefix01",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01",
+      "nworld": 64,
+      "world_cap_SIM_s": 0.1,
+      "native_sleep": true,
+      "sap": false,
+      "aggregate_SIM_s": 6.400000000000006,
+      "wall_s": 44.003692042000694,
+      "loop_wall_s": 18.70315141700121,
+      "cold_SIM_s_per_wall_s": 0.145442341381067,
+      "loop_SIM_s_per_wall_s": 0.34218832202697086,
+      "estimated_SIM_s_per_USD": 477.7303184049645,
+      "assumed_VM_USD_per_hour": 1.096,
+      "condition": "shared-load; horizon/profile explicitly separate; no intrinsic efficiency verdict"
+    }
+  ],
+  "input_audits": [
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/cpu-pilot-index16/world-000/result.json.zst",
+      "run": "cpu-pilot-index16",
+      "backend": "c_pilot_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/cpu-pilot-index4/world-000/result.json.zst",
+      "run": "cpu-pilot-index4",
+      "backend": "c_pilot_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/cpu-pilot-seed0/world-000/result.json.zst",
+      "run": "cpu-pilot-seed0",
+      "backend": "c_pilot_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n16-prefix01/world-000/result.json",
+      "run": "bench-n16-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n16-prefix01/world-001/result.json",
+      "run": "bench-n16-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n16-prefix01/world-002/result.json",
+      "run": "bench-n16-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n16-prefix01/world-003/result.json",
+      "run": "bench-n16-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n16-prefix01/world-004/result.json",
+      "run": "bench-n16-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n16-prefix01/world-005/result.json",
+      "run": "bench-n16-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n16-prefix01/world-006/result.json",
+      "run": "bench-n16-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n16-prefix01/world-007/result.json",
+      "run": "bench-n16-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n16-prefix01/world-008/result.json",
+      "run": "bench-n16-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n16-prefix01/world-009/result.json",
+      "run": "bench-n16-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n16-prefix01/world-010/result.json",
+      "run": "bench-n16-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n16-prefix01/world-011/result.json",
+      "run": "bench-n16-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n16-prefix01/world-012/result.json",
+      "run": "bench-n16-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n16-prefix01/world-013/result.json",
+      "run": "bench-n16-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n16-prefix01/world-014/result.json",
+      "run": "bench-n16-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n16-prefix01/world-015/result.json",
+      "run": "bench-n16-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n16-prefix4/world-000/result.json",
+      "run": "bench-n16-prefix4",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n16-prefix4/world-001/result.json",
+      "run": "bench-n16-prefix4",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n16-prefix4/world-002/result.json",
+      "run": "bench-n16-prefix4",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n16-prefix4/world-003/result.json",
+      "run": "bench-n16-prefix4",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n16-prefix4/world-004/result.json",
+      "run": "bench-n16-prefix4",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n16-prefix4/world-005/result.json",
+      "run": "bench-n16-prefix4",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n16-prefix4/world-006/result.json",
+      "run": "bench-n16-prefix4",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n16-prefix4/world-007/result.json",
+      "run": "bench-n16-prefix4",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n16-prefix4/world-008/result.json",
+      "run": "bench-n16-prefix4",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n16-prefix4/world-009/result.json",
+      "run": "bench-n16-prefix4",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n16-prefix4/world-010/result.json",
+      "run": "bench-n16-prefix4",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n16-prefix4/world-011/result.json",
+      "run": "bench-n16-prefix4",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n16-prefix4/world-012/result.json",
+      "run": "bench-n16-prefix4",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n16-prefix4/world-013/result.json",
+      "run": "bench-n16-prefix4",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n16-prefix4/world-014/result.json",
+      "run": "bench-n16-prefix4",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n16-prefix4/world-015/result.json",
+      "run": "bench-n16-prefix4",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-000/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-001/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-002/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-003/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-004/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-005/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-006/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-007/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-008/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-009/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-010/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-011/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-012/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-013/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-014/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-015/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-016/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-017/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-018/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-019/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-020/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-021/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-022/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-023/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-024/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-025/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-026/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-027/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-028/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-029/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-030/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-031/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-032/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-033/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-034/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-035/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-036/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-037/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-038/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-039/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-040/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-041/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-042/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-043/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-044/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-045/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-046/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-047/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-048/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-049/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-050/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-051/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-052/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-053/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-054/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-055/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-056/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-057/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-058/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-059/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-060/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-061/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-062/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-063/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-064/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-065/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-066/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-067/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-068/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-069/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-070/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-071/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-072/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-073/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-074/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-075/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-076/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-077/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-078/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-079/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-080/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-081/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-082/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-083/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-084/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-085/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-086/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-087/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-088/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-089/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-090/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-091/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-092/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-093/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-094/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-095/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-096/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-097/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-098/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-099/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-100/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-101/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-102/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-103/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-104/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-105/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-106/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-107/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-108/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-109/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-110/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-111/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-112/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-113/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-114/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-115/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-116/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-117/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-118/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-119/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-120/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-121/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-122/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-123/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-124/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-125/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-126/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-127/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-128/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-129/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-130/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-131/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-132/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-133/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-134/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-135/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-136/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-137/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-138/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-139/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-140/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-141/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-142/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-143/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-144/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-145/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-146/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-147/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-148/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-149/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-150/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-151/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-152/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-153/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-154/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-155/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-156/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-157/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-158/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-159/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-160/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-161/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-162/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-163/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-164/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-165/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-166/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-167/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-168/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-169/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-170/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-171/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-172/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-173/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-174/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-175/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-176/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-177/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-178/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-179/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-180/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-181/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-182/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-183/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-184/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-185/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-186/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-187/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-188/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-189/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-190/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-191/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-192/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-193/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-194/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-195/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-196/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-197/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-198/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-199/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-200/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-201/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-202/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-203/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-204/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-205/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-206/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-207/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-208/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-209/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-210/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-211/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-212/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-213/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-214/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-215/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-216/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-217/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-218/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-219/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-220/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-221/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-222/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-223/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-224/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-225/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-226/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-227/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-228/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-229/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-230/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-231/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-232/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-233/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-234/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-235/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-236/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-237/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-238/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-239/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-240/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-241/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-242/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-243/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-244/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-245/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-246/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-247/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-248/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-249/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-250/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-251/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-252/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-253/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-254/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n256-prefix01/world-255/result.json",
+      "run": "bench-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-000/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-001/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-002/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-003/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-004/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-005/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-006/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-007/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-008/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-009/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-010/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-011/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-012/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-013/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-014/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-015/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-016/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-017/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-018/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-019/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-020/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-021/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-022/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-023/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-024/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-025/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-026/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-027/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-028/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-029/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-030/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-031/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-032/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-033/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-034/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-035/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-036/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-037/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-038/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-039/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-040/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-041/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-042/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-043/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-044/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-045/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-046/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-047/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-048/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-049/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-050/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-051/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-052/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-053/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-054/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-055/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-056/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-057/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-058/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-059/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-060/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-061/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-062/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n64-prefix01/world-063/result.json",
+      "run": "bench-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n16-prefix01/world-000/result.json",
+      "run": "bench-native-n16-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n16-prefix01/world-001/result.json",
+      "run": "bench-native-n16-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n16-prefix01/world-002/result.json",
+      "run": "bench-native-n16-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n16-prefix01/world-003/result.json",
+      "run": "bench-native-n16-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n16-prefix01/world-004/result.json",
+      "run": "bench-native-n16-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n16-prefix01/world-005/result.json",
+      "run": "bench-native-n16-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n16-prefix01/world-006/result.json",
+      "run": "bench-native-n16-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n16-prefix01/world-007/result.json",
+      "run": "bench-native-n16-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n16-prefix01/world-008/result.json",
+      "run": "bench-native-n16-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n16-prefix01/world-009/result.json",
+      "run": "bench-native-n16-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n16-prefix01/world-010/result.json",
+      "run": "bench-native-n16-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n16-prefix01/world-011/result.json",
+      "run": "bench-native-n16-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n16-prefix01/world-012/result.json",
+      "run": "bench-native-n16-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n16-prefix01/world-013/result.json",
+      "run": "bench-native-n16-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n16-prefix01/world-014/result.json",
+      "run": "bench-native-n16-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n16-prefix01/world-015/result.json",
+      "run": "bench-native-n16-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-000/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-001/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-002/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-003/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-004/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-005/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-006/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-007/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-008/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-009/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-010/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-011/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-012/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-013/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-014/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-015/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-016/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-017/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-018/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-019/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-020/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-021/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-022/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-023/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-024/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-025/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-026/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-027/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-028/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-029/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-030/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-031/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-032/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-033/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-034/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-035/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-036/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-037/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-038/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-039/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-040/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-041/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-042/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-043/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-044/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-045/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-046/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-047/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-048/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-049/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-050/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-051/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-052/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-053/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-054/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-055/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-056/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-057/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-058/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-059/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-060/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-061/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-062/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-063/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-064/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-065/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-066/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-067/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-068/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-069/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-070/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-071/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-072/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-073/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-074/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-075/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-076/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-077/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-078/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-079/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-080/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-081/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-082/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-083/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-084/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-085/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-086/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-087/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-088/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-089/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-090/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-091/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-092/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-093/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-094/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-095/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-096/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-097/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-098/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-099/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-100/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-101/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-102/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-103/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-104/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-105/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-106/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-107/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-108/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-109/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-110/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-111/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-112/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-113/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-114/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-115/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-116/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-117/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-118/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-119/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-120/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-121/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-122/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-123/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-124/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-125/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-126/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-127/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-128/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-129/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-130/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-131/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-132/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-133/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-134/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-135/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-136/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-137/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-138/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-139/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-140/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-141/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-142/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-143/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-144/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-145/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-146/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-147/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-148/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-149/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-150/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-151/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-152/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-153/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-154/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-155/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-156/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-157/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-158/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-159/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-160/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-161/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-162/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-163/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-164/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-165/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-166/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-167/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-168/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-169/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-170/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-171/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-172/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-173/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-174/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-175/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-176/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-177/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-178/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-179/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-180/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-181/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-182/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-183/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-184/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-185/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-186/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-187/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-188/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-189/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-190/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-191/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-192/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-193/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-194/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-195/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-196/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-197/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-198/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-199/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-200/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-201/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-202/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-203/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-204/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-205/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-206/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-207/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-208/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-209/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-210/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-211/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-212/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-213/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-214/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-215/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-216/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-217/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-218/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-219/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-220/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-221/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-222/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-223/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-224/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-225/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-226/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-227/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-228/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-229/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-230/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-231/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-232/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-233/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-234/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-235/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-236/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-237/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-238/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-239/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-240/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-241/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-242/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-243/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-244/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-245/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-246/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-247/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-248/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-249/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-250/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-251/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-252/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-253/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-254/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n256-prefix01/world-255/result.json",
+      "run": "bench-native-n256-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-000/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-001/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-002/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-003/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-004/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-005/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-006/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-007/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-008/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-009/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-010/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-011/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-012/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-013/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-014/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-015/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-016/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-017/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-018/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-019/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-020/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-021/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-022/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-023/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-024/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-025/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-026/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-027/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-028/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-029/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-030/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-031/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-032/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-033/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-034/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-035/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-036/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-037/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-038/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-039/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-040/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-041/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-042/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-043/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-044/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-045/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-046/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-047/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-048/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-049/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-050/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-051/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-052/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-053/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-054/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-055/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-056/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-057/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-058/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-059/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-060/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-061/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-062/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-native-n64-prefix01/world-063/result.json",
+      "run": "bench-native-n64-prefix01",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/export-osmesa-seed0/world-000/result.json",
+      "run": "export-osmesa-seed0",
+      "backend": "c_pilot_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/final-source-funnel-smoke/world-000/result.json",
+      "run": "final-source-funnel-smoke",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/interruption-ledger-probe/world-000/result.json",
+      "run": "interruption-ledger-probe",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/interruption-ledger-probe-v2/world-000/result.json",
+      "run": "interruption-ledger-probe-v2",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/numeric-ab-float32/world-000/result.json",
+      "run": "numeric-ab-float32",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/numeric-ab-source/world-000/result.json",
+      "run": "numeric-ab-source",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-c-qual-index0/world-000/result.json.zst",
+      "run": "policy-c-qual-index0",
+      "backend": "c_pilot_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-c-qual-index16/world-000/result.json.zst",
+      "run": "policy-c-qual-index16",
+      "backend": "c_pilot_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-c-qual-index4/world-000/result.json.zst",
+      "run": "policy-c-qual-index4",
+      "backend": "c_pilot_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-compact-prefix-n1/world-000/result.json",
+      "run": "policy-compact-prefix-n1",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-distinct-static-n16-reset/world-000/result.json",
+      "run": "policy-distinct-static-n16-reset",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-distinct-static-n16-reset/world-001/result.json",
+      "run": "policy-distinct-static-n16-reset",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-distinct-static-n16-reset/world-002/result.json",
+      "run": "policy-distinct-static-n16-reset",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-distinct-static-n16-reset/world-003/result.json",
+      "run": "policy-distinct-static-n16-reset",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-distinct-static-n16-reset/world-004/result.json",
+      "run": "policy-distinct-static-n16-reset",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-distinct-static-n16-reset/world-005/result.json",
+      "run": "policy-distinct-static-n16-reset",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-distinct-static-n16-reset/world-006/result.json",
+      "run": "policy-distinct-static-n16-reset",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-distinct-static-n16-reset/world-007/result.json",
+      "run": "policy-distinct-static-n16-reset",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-distinct-static-n16-reset/world-008/result.json",
+      "run": "policy-distinct-static-n16-reset",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-distinct-static-n16-reset/world-009/result.json",
+      "run": "policy-distinct-static-n16-reset",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-distinct-static-n16-reset/world-010/result.json",
+      "run": "policy-distinct-static-n16-reset",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-distinct-static-n16-reset/world-011/result.json",
+      "run": "policy-distinct-static-n16-reset",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-distinct-static-n16-reset/world-012/result.json",
+      "run": "policy-distinct-static-n16-reset",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-distinct-static-n16-reset/world-013/result.json",
+      "run": "policy-distinct-static-n16-reset",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-distinct-static-n16-reset/world-014/result.json",
+      "run": "policy-distinct-static-n16-reset",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-distinct-static-n16-reset/world-015/result.json",
+      "run": "policy-distinct-static-n16-reset",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-nxn-matched-prefix-n1/world-000/result.json",
+      "run": "policy-nxn-matched-prefix-n1",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-qual-n1-seed0/world-000/result.json.zst",
+      "run": "policy-qual-n1-seed0",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-qual-n1-seed4/world-000/result.json",
+      "run": "policy-qual-n1-seed4",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-qual-n16-seed0/world-000/result.json.zst",
+      "run": "policy-qual-n16-seed0",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-qual-n16-seed0/world-001/result.json.zst",
+      "run": "policy-qual-n16-seed0",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-qual-n16-seed0/world-002/result.json.zst",
+      "run": "policy-qual-n16-seed0",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-qual-n16-seed0/world-003/result.json.zst",
+      "run": "policy-qual-n16-seed0",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-qual-n16-seed0/world-004/result.json.zst",
+      "run": "policy-qual-n16-seed0",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-qual-n16-seed0/world-005/result.json.zst",
+      "run": "policy-qual-n16-seed0",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-qual-n16-seed0/world-006/result.json.zst",
+      "run": "policy-qual-n16-seed0",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-qual-n16-seed0/world-007/result.json.zst",
+      "run": "policy-qual-n16-seed0",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-qual-n16-seed0/world-008/result.json.zst",
+      "run": "policy-qual-n16-seed0",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-qual-n16-seed0/world-009/result.json.zst",
+      "run": "policy-qual-n16-seed0",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-qual-n16-seed0/world-010/result.json.zst",
+      "run": "policy-qual-n16-seed0",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-qual-n16-seed0/world-011/result.json.zst",
+      "run": "policy-qual-n16-seed0",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-qual-n16-seed0/world-012/result.json.zst",
+      "run": "policy-qual-n16-seed0",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-qual-n16-seed0/world-013/result.json.zst",
+      "run": "policy-qual-n16-seed0",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-qual-n16-seed0/world-014/result.json.zst",
+      "run": "policy-qual-n16-seed0",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-qual-n16-seed0/world-015/result.json.zst",
+      "run": "policy-qual-n16-seed0",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-sap-prefix-n1/world-000/result.json",
+      "run": "policy-sap-prefix-n1",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/r1-warp-n1-seed0/world-000/result.json",
+      "run": "r1-warp-n1-seed0",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/r2-warp-n1-seed0/world-000/result.json.zst",
+      "run": "r2-warp-n1-seed0",
+      "backend": "mjwarp_batch_v1",
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    }
+  ],
+  "records": {
+    "CPU": {
+      "raw_manifest": "/home/ugrp/ugrp-sim/warp1-records/cpu-results-raw-manifest.json",
+      "sha256": "87303652ab0c72da0828a91487dae6181e22456b50af8a75ef73caf191b1f505",
+      "files": 1922
+    },
+    "L4": {
+      "raw_manifest": "/home/ugrp/ugrp-sim/warp1-records/l4-results-raw-manifest.json",
+      "sha256": "97154573dbd4fb188b733742bfb6f77c120b9afad76d1682dd09db0a6427da64",
+      "files": 16148,
+      "snapshot_status": "all_reported_runs_terminal"
+    }
+  },
+  "raw_hash_mismatches": [],
+  "gate_queue": {
+    "status": "HOLD_SCENE",
+    "approved": false,
+    "executed": false,
+    "independent_cases": 40,
+    "training_rgb": false,
+    "rejection_table": "/Users/changmin/projects/ugrp-wt/warp-act/experiments/2026-10-16-warp1/rejection_table.json"
+  },
+  "remaining": [
+    "scene owner must select/freeze scenetex5 profile and exact model refs",
+    "full NumPy teacher/IK/raycast port remains",
+    "training recording admission and ACT student evaluation adapters remain",
+    "heterogeneous source models contain unbatchable dof_length; grouping/layout must be resolved",
+    ">=95%/40 independent MJWarp teacher gate not executed; multiple-seed and steady-state efficiency verification incomplete"
+  ],
+  "prohibitions_observed": {
+    "Mac_physics_render_training_GUI": 0,
+    "model_calls": 0,
+    "training": 0,
+    "student_evaluations": 0,
+    "GCP1_access": 0,
+    "foreign_process_stops": 0
+  },
+  "cost_scope": "VM rates are assumptions from simalt3 plan ($1.096/h L4, $3.145/h n4), not actual billing; overlapping per-run estimates must not be summed",
+  "raw_backup": "VM originals only; local compact results/videos and hashes are not full raw backup"
+}

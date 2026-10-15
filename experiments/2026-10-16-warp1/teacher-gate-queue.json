@@ -38,7 +38,7 @@
     "scalar frozen teacher/IK/raycast loop remains; full NumPy teacher migration unfinished",
     "training recording and ACT student evaluation adapters unfinished",
     "heterogeneous source seeds differ in unbatchable model fields; use exact model cohorts or implement supported layout",
-    "full N1/N16 qualitative and intrinsic throughput must be qualified before any gate submission"
+    "multiple independent MJWarp pilot seeds and steady-state throughput remain unqualified; one native N1 additional seed is resource cap_end"
   ],
   "admission": [
     "scene owner approves and freezes scene/hash",
@@ -59,7 +59,7 @@
       "upstream_runtime_policy_mapping": "NEVER→AUTO_NEVER, ALLOWED→AUTO_ALLOWED; INIT rejected",
       "native_scene": "sleep enabled / active r1 never / other free trees allowed / extra0.4SIM quiet setup",
       "workspace": "measured52 active,58 robot+target upper bound→nvmax64",
-      "status": "full qualitative pilots running; not admitted to gate"
+      "status": "finite pilots ended: N1 one successful seed plus one resource-cap seed; N16 one successful independent seed replicated16 worlds; not admitted to gate"
     }
   ],
   "cases": [
@@ -545,5 +545,6 @@
     }
   ],
   "independent_seed_count": 40,
-  "minimum_successes_first40": 38
+  "minimum_successes_first40": 38,
+  "pilot_results": "summary.json; measured-results.md; rejection_table.json"
 }

@@ -1,43 +1,207 @@
 {
   "status": "NOT_READY",
-  "work_status": "qualitative_running",
+  "work_status": "finite pilot work ended; implementation gaps retained",
+  "generated_utc": "2026-10-15T21:49:47.468513+00:00",
+  "physics_backend": "mjwarp_batch_v1",
+  "backend_default": "off",
+  "PR": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/534",
   "base_sha": "142dbf04c2128c3d7ca1c3ceb03ee3b651d9a7e5",
   "teacher_sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
-  "backend_default": "off",
-  "input_audit_policy": {
-    "invisible_measurements": 0,
-    "held_world_reads": 0
+  "scope": "batched physics/issued commands/RGB; scalar teacher/IK/raycast; separate evaluator",
+  "nonphysics_tests": 42,
+  "records": {
+    "CPU": {
+      "raw_manifest": "/home/ugrp/ugrp-sim/warp1-records/cpu-results-raw-manifest.json",
+      "sha256": "87303652ab0c72da0828a91487dae6181e22456b50af8a75ef73caf191b1f505",
+      "files": 1922
+    },
+    "L4": {
+      "raw_manifest": "/home/ugrp/ugrp-sim/warp1-records/l4-results-raw-manifest.json",
+      "sha256": "97154573dbd4fb188b733742bfb6f77c120b9afad76d1682dd09db0a6427da64",
+      "files": 16148,
+      "snapshot_status": "all_reported_runs_terminal"
+    }
   },
-  "C_matched_teacher": {
-    "success": 3,
-    "attempted": 3,
-    "pool_with_warp": false
-  },
-  "N16_distinct_initial_state_reset": {
-    "worlds": 16,
-    "unique_starts": 3,
-    "fields_pass": 10,
-    "untouched_preserved": true
-  },
-  "MJWarp_full_teacher": "running: no completed success claimed",
+  "raw_hash_mismatches": [],
   "gate_queue": {
     "status": "HOLD_SCENE",
     "approved": false,
     "executed": false,
-    "file": "teacher-gate-queue.json"
+    "independent_cases": 40,
+    "training_rgb": false,
+    "rejection_table": "/Users/changmin/projects/ugrp-wt/warp-act/experiments/2026-10-16-warp1/rejection_table.json"
   },
-  "source_inventory": "mjdata-read-inventory.json",
-  "rejection_table": "/Users/changmin/projects/ugrp-wt/warp-act/experiments/2026-10-16-warp1/rejection_table.json",
-  "records": [
-    "cpu-results.json",
-    "l4-preliminary.json"
-  ],
-  "Mac_physics_render_training_GUI": 0,
   "remaining": [
-    "full N1/N16 qualitative ongoing",
-    "scene approval",
-    "full NumPy teacher state machine/IK/raycast port",
-    "training recorder/student evaluation adapters",
-    "long steady-state performance on qualified teacher"
+    "scene owner must select/freeze scenetex5 profile and exact model refs",
+    "full NumPy teacher/IK/raycast port remains",
+    "training recording admission and ACT student evaluation adapters remain",
+    "heterogeneous source models contain unbatchable dof_length; grouping/layout must be resolved",
+    ">=95%/40 independent MJWarp teacher gate not executed; multiple-seed and steady-state efficiency verification incomplete"
+  ],
+  "prohibitions_observed": {
+    "Mac_physics_render_training_GUI": 0,
+    "model_calls": 0,
+    "training": 0,
+    "student_evaluations": 0,
+    "GCP1_access": 0,
+    "foreign_process_stops": 0
+  },
+  "cost_scope": "VM rates are assumptions from simalt3 plan ($1.096/h L4, $3.145/h n4), not actual billing; overlapping per-run estimates must not be summed",
+  "raw_backup": "VM originals only; local compact results/videos and hashes are not full raw backup",
+  "detail_file": "summary-detail.json",
+  "detail_sha256": "7cc3c42e36e526dd04cb90a6f3dd4632650a69a4402b196ca17b2ac7b919a12c",
+  "format_only_script_sha256": "25c4bd3ff657b2fa244f715bac315faae9880d7f35d4d0853a9458a3d16168db",
+  "operations": "operations.json",
+  "every_run_ledger": "rejection_table.json",
+  "input_audits": {
+    "records": 739,
+    "invisible_measurements": 0,
+    "held_world_reads": 0,
+    "detail": "summary-detail.json input_audits"
+  },
+  "cohorts": [
+    {
+      "backend": "c_pilot_v1",
+      "host": "ugrp-sim-gcp2",
+      "native_sleep": false,
+      "nworld": 1,
+      "attempted_worlds": 3,
+      "returned_worlds": 3,
+      "physical_success_worlds": 3,
+      "cap_end_worlds": 0,
+      "unique_seeds": 3,
+      "successful_unique_seeds": 3
+    },
+    {
+      "backend": "c_pilot_v1",
+      "host": "ugrp-act-l4-gcp2",
+      "native_sleep": true,
+      "nworld": 1,
+      "attempted_worlds": 3,
+      "returned_worlds": 3,
+      "physical_success_worlds": 3,
+      "cap_end_worlds": 0,
+      "unique_seeds": 3,
+      "successful_unique_seeds": 3
+    },
+    {
+      "backend": "mjwarp_batch_v1",
+      "host": "ugrp-act-l4-gcp2",
+      "native_sleep": true,
+      "nworld": 1,
+      "attempted_worlds": 2,
+      "returned_worlds": 1,
+      "physical_success_worlds": 1,
+      "cap_end_worlds": 1,
+      "unique_seeds": 2,
+      "successful_unique_seeds": 1
+    },
+    {
+      "backend": "mjwarp_batch_v1",
+      "host": "ugrp-act-l4-gcp2",
+      "native_sleep": true,
+      "nworld": 16,
+      "attempted_worlds": 16,
+      "returned_worlds": 16,
+      "physical_success_worlds": 16,
+      "cap_end_worlds": 0,
+      "unique_seeds": 1,
+      "successful_unique_seeds": 1
+    },
+    {
+      "backend": "mjwarp_batch_v1",
+      "host": "ugrp-act-l4-gcp2",
+      "native_sleep": false,
+      "nworld": 1,
+      "attempted_worlds": 1,
+      "returned_worlds": 1,
+      "physical_success_worlds": 1,
+      "cap_end_worlds": 0,
+      "unique_seeds": 1,
+      "successful_unique_seeds": 1
+    }
+  ],
+  "throughput": [
+    {
+      "run": "cpu-n16-prefix01",
+      "nworld": 16,
+      "world_cap_SIM_s": 0.1,
+      "aggregate_SIM_s": 1.6000000000005343,
+      "cold_SIM_s_per_wall_s": 0.30527537893784984,
+      "loop_SIM_s_per_wall_s": null,
+      "estimated_SIM_s_per_USD": 349.4408153183654
+    },
+    {
+      "run": "cpu-n16-prefix4",
+      "nworld": 16,
+      "world_cap_SIM_s": 4.0,
+      "aggregate_SIM_s": 64.00000000001143,
+      "cold_SIM_s_per_wall_s": 3.436009683682664,
+      "loop_SIM_s_per_wall_s": null,
+      "estimated_SIM_s_per_USD": 3933.111243643113
+    },
+    {
+      "run": "bench-n16-prefix01",
+      "nworld": 16,
+      "world_cap_SIM_s": 0.1,
+      "aggregate_SIM_s": 1.6000000000000014,
+      "cold_SIM_s_per_wall_s": 0.040127109255590855,
+      "loop_SIM_s_per_wall_s": 0.07223132846643171,
+      "estimated_SIM_s_per_USD": 131.80437346726922
+    },
+    {
+      "run": "bench-n16-prefix4",
+      "nworld": 16,
+      "world_cap_SIM_s": 4.0,
+      "aggregate_SIM_s": 64.0,
+      "cold_SIM_s_per_wall_s": 0.04064389754023836,
+      "loop_SIM_s_per_wall_s": 0.044116091374157534,
+      "estimated_SIM_s_per_USD": 133.50185323435957
+    },
+    {
+      "run": "bench-n256-prefix01",
+      "nworld": 256,
+      "world_cap_SIM_s": 0.1,
+      "aggregate_SIM_s": 25.600000000000023,
+      "cold_SIM_s_per_wall_s": 0.22424005943096445,
+      "loop_SIM_s_per_wall_s": 0.4021459344531332,
+      "estimated_SIM_s_per_USD": 736.5549397367445
+    },
+    {
+      "run": "bench-n64-prefix01",
+      "nworld": 64,
+      "world_cap_SIM_s": 0.1,
+      "aggregate_SIM_s": 6.400000000000006,
+      "cold_SIM_s_per_wall_s": 0.11258705861309642,
+      "loop_SIM_s_per_wall_s": 0.19475922547457464,
+      "estimated_SIM_s_per_USD": 369.8115063933824
+    },
+    {
+      "run": "bench-native-n16-prefix01",
+      "nworld": 16,
+      "world_cap_SIM_s": 0.1,
+      "aggregate_SIM_s": 1.6000000000000014,
+      "cold_SIM_s_per_wall_s": 0.05399218146745207,
+      "loop_SIM_s_per_wall_s": 0.1462718306383238,
+      "estimated_SIM_s_per_USD": 177.34658146243376
+    },
+    {
+      "run": "bench-native-n256-prefix01",
+      "nworld": 256,
+      "world_cap_SIM_s": 0.1,
+      "aggregate_SIM_s": 25.600000000000023,
+      "cold_SIM_s_per_wall_s": 0.2664755576775883,
+      "loop_SIM_s_per_wall_s": 0.5726099780601887,
+      "estimated_SIM_s_per_USD": 875.2846785030272
+    },
+    {
+      "run": "bench-native-n64-prefix01",
+      "nworld": 64,
+      "world_cap_SIM_s": 0.1,
+      "aggregate_SIM_s": 6.400000000000006,
+      "cold_SIM_s_per_wall_s": 0.145442341381067,
+      "loop_SIM_s_per_wall_s": 0.34218832202697086,
+      "estimated_SIM_s_per_USD": 477.7303184049645
+    }
   ]
 }
