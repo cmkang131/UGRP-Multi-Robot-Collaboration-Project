@@ -194,3 +194,10 @@ def test_runtime_sleep_policy_preserves_never_predicate_and_rejects_init():
     assert np.array_equal((source==1)|(source==3),result==1)
     assert result.tolist()==[0,1,2,1,2] and source.tolist()==[0,1,2,3,4]
     with pytest.raises(ValueError,match='reset semantics'):runtime_sleep_policy(np.array([5]),**kwargs)
+
+
+def test_graph_clock_cannot_drop_remainder_physics_ticks():
+    from scripts.warp_act_core import physics_schedule
+    assert physics_schedule(.1,.00025)==(400,16,25)
+    assert physics_schedule(.1,.001)==(100,4,25)
+    with pytest.raises(ValueError,match='integral'):physics_schedule(.1,.0003)

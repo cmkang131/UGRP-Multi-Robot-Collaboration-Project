@@ -166,3 +166,21 @@ def runtime_sleep_policy(policy, *, auto, auto_never, auto_allowed, never, allow
     if not np.isin(source,[auto,auto_never,auto_allowed,never,allowed]).all():
         raise ValueError('unsupported sleep policy with separate reset semantics')
     return np.where(source==never,auto_never,np.where(source==allowed,auto_allowed,source)).astype(source.dtype)
+
+
+def physics_schedule(period_s, timestep_s, graph_chunk=16):
+    """Never silently truncate a control period to a whole graph count.
+
+    The current frozen model uses400 physics ticks per0.1s and chunk16.
+    For any separately approved integral timestep, use an exact divisor of
+    that same implementation chunk. No physics timestep is changed here.
+    """
+    from fractions import Fraction
+    from math import gcd
+    if period_s<=0 or timestep_s<=0 or graph_chunk<=0:
+        raise ValueError('positive physics/control clock required')
+    ratio=Fraction(str(period_s))/Fraction(str(timestep_s))
+    if ratio.denominator!=1:
+        raise ValueError('control period must contain an integral number of physics ticks')
+    steps=int(ratio);chunk=gcd(steps,graph_chunk)
+    return steps,chunk,steps//chunk

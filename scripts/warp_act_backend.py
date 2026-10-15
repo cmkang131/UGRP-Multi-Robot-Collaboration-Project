@@ -12,7 +12,7 @@ import hashlib
 import time
 from pathlib import Path
 import numpy as np
-from warp_act_core import SERVOS, control_tape, model_key, varying_model_arrays, masked_restore, sleep_scene_xml, runtime_sleep_policy
+from warp_act_core import SERVOS, control_tape, model_key, varying_model_arrays, masked_restore, sleep_scene_xml, runtime_sleep_policy, physics_schedule
 
 
 class PerceptionWorld:
@@ -172,6 +172,7 @@ class WarpTransport(Transport):
         self.n = len(contexts)
         m, d = contexts[0]['world'].model, contexts[0]['world'].data
         self.m, self.dt = m, float(m.opt.timestep)
+        self.control_steps,self.graph_chunk,self.graph_repeats=physics_schedule(.1,self.dt)
         xml = self.out/'runtime-scene.xml'
         xml.write_text(contexts[0]['world'].scene_xml)
         self.compat = {}
@@ -257,7 +258,7 @@ class WarpTransport(Transport):
         self.origin = float(d.time)
         self.tick = 0
         self.relay_state = np.zeros((self.n,4), int)
-        self.tape = wp.zeros((round(.1/self.dt),self.n,m.nu),dtype=float)
+        self.tape = wp.zeros((self.control_steps,self.n,m.nu),dtype=float)
         self.graph_tick = wp.zeros(1,dtype=int)
         self.force_out = wp.zeros((self.n,2),dtype=float)
         self.init_kernels(contexts)
@@ -272,7 +273,7 @@ class WarpTransport(Transport):
             compact_basis='pinned io.py1791-1797: max(source tolerance,1e-6)*nv/nvmax_pad; separate compact cohort')
         # Capture exactly the 400 physics ticks, not a host wall budget.
         with wp.ScopedCapture() as capture:
-            for _ in range(16):
+            for _ in range(self.graph_chunk):
                 wp.launch(self.command_kernel, dim=(self.n,m.nu),inputs=[self.tape,self.graph_tick,self.wd.ctrl])
                 mjw.step(self.wm,self.wd)
                 wp.launch(self.advance_kernel,dim=1,inputs=[self.graph_tick])
@@ -288,7 +289,7 @@ class WarpTransport(Transport):
             mount_quat=m.cam_quat[m.camera('r1__robot_cam').id].tolist(),
             remap_sha256=hashlib.sha256(self.mx.tobytes()+self.my.tobytes()).hexdigest(),
             renderer='MJWarp batch RGB; known partial-alpha difference from C remains')
-        self.capacities = dict(nconmax=ncon,njmax=njmax,naconmax=int(self.wd.naconmax),nvmax=int(self.wd.nvmax))
+        self.capacities = dict(nconmax=ncon,njmax=njmax,naconmax=int(self.wd.naconmax),nvmax=int(self.wd.nvmax),control_steps=self.control_steps,graph_chunk=self.graph_chunk,graph_repeats=self.graph_repeats)
         self.build_lookup(contexts[0]['world'].robot('r1'))
         self.sync_render(contexts)
 
@@ -454,7 +455,7 @@ class WarpTransport(Transport):
                 servo_active=[s in p._servo_targets for s in SERVOS],
                 now=self.origin+self.tick*.1,servo_time=p._servo_tick_time))
         params=contexts[0]['world'].drive_parameters
-        tape,state=control_tape(rows,self.relay_state,dt=self.dt,steps=round(.1/self.dt),
+        tape,state=control_tape(rows,self.relay_state,dt=self.dt,steps=self.control_steps,
             lookup=self.lookup,wheel_ids=self.wheel_ids,servo_ids=self.servo_ids,
             start_fraction=params.start_fraction,kinetic_fraction=params.kinetic_fraction,
             torque_cap_nm=params.torque_cap_nm)
@@ -472,7 +473,7 @@ class WarpTransport(Transport):
         self.seconds['command_decode_upload']+=time.perf_counter()-start
         start=time.perf_counter()
         self.graph_tick.zero_()
-        for _ in range(round(.1/self.dt)//16):
+        for _ in range(self.graph_repeats):
             wp.capture_launch(self.graph)
         wp.synchronize()
         self.tick+=1

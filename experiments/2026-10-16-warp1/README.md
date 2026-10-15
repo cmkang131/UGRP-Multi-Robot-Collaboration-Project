@@ -28,10 +28,10 @@ python -m scripts.run_warp_act_teacher --physics-backend mjwarp_batch_v1 \
 
 ## 완료한 검증과 한계
 
-- 비물리 **41 passed**. 실제 CameraRobotPort와400tick fractional PWM·명령 기한을 비교했다. camera port blob은 frozen6f와 같음(`63a44a8f`). Mac 물리·렌더·학습·GUI0.
+- 비물리 **42 passed**. 실제 CameraRobotPort와400tick fractional PWM·명령 기한을 비교했다. camera port blob은 frozen6f와 같음(`63a44a8f`). Mac 물리·렌더·학습·GUI0.
 - C3.12/n4-highcpu-64: 같은 source plan8317100/8317104/8317101 **3/3** 파지·들기·놓기 완료(40.8/44.1/43.8SIM초). 각 실행 `invisible_measurements=0`, `held_world_reads=0`. C 검증을 MJWarp 성공률로 승계하지 않는다.
 - MJWarp N16 진단: 같은 seed/물리 모델, 서로 다른 기존 r1 시작 위치3종의 qpos·첫 RGB를 보존했다. 선택 world0 리셋 뒤10개 persistent field에서 선택값 복원/비선택값 보존을 확인했다. 실제 교사·이력의 중간 reset이나 성공률 표본이 아니다.
-- 전체 교사 N1/N16은 진행 중이다. C/Warp5mm 동등성을 요구하거나 성공으로 대신 세지 않는다.
+- 기본(no-sleep) MJWarp N1 시드8317100은1/1 파지·들기·놓기 완료(40.7SIM초), 두 입력 금지 카운터0이다. 새 native-sleep 후보 N1/N16은 별도로 진행 중이다. C/Warp5mm 동등성을 요구하거나 성공으로 대신 세지 않는다.
 - 새 source의 실제 gcp2 funnel smoke는 cap0.1SIM초에 frame→not-held→visible→measurement **1→1→1→1**, 입력 수를 확인했다. 중단 probe에서 찾은 짧은 로그의 압축 경로 문제를 고쳤다. 새 gcp2 중단 probe는2프레임의2→2→2→2, cap_end1·completed0, 실제 raw 경로와 거부 원장까지 확인했다. 실패/중단에도 같은 파일을 flush한다.
 
 ## RGB 포함 처리량 (짧은 prefix, 공유 L4)
@@ -63,3 +63,6 @@ python -m scripts.run_warp_act_teacher --physics-backend mjwarp_batch_v1 \
 
 
 추가 기본 off 후보 `--native-sleep-policy-compat-v1`는 C3.16과 pinned MJWarp의 실행 predicate에 근거해 컴파일 뒤 NEVER/ALLOWED를 같은 의미의 AUTO_NEVER/AUTO_ALLOWED로 옮긴다(INIT 거부). package75개 Python 파일이 upstream57b4692f와 모두 같은지 git blob hash로 확인했다([환경](environment.json), [75파일 확인](mjw-source-verification.json)). package 자체는 변경하지 않았다. 실제 import52 active DoF, robot+target58→workspace64를 확인했고 N16의 서로 다른 시작/RGB3종과 reset10개 field도 통과했다. 같은 sleep XML의 C/L4 정성3개는3/3 완료했으며 이전 n4/C 코호트와 분리한다. 이 후보의 MJWarp 전체 정성·처리량은 진행 중이다. compact의 upstream scaling `ctol/cls_tol/nvmax_pad`도 실제 값으로 기록하며 기존1e-8 결과와 합산하지 않는다.
+
+
+고정0.1SIM초 제어 구간을 CUDA graph 횟수로 나눌 때 물리 tick을 버리지 않도록 정수 비율/GCD 검사를 넣었다. 현재 frozen timestep0.00025초는400tick=16×25로 기존 실행과 같다. 향후 별도 승인 모델의 timestep이 달라도 남은 tick을 잘라 .096초만 실행하면서 .1초로 보고하는 경로를 막는다. 이 변경은 timestep이나 성공 허용값을 바꾸지 않는다.
