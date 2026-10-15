@@ -111,24 +111,31 @@ try:
         run('export-seed5',c,['--physics-backend','c_pilot_v1','--export-compiled-only','--nworld','1','--episode','5'])
     else:
         assert MODEL_REFS.is_file() and len(json.loads(MODEL_REFS.read_text()))==6
-    for n in ((1,16,64,256) if MODE=='homogeneous_v1' else (16,64,256)):
+    stages=([('n'+str(n),n,60 if n<=16 else 10,False,n<=16) for n in (1,16,64,256)]
+        if MODE=='homogeneous_v1' else
+        [('prefix-n'+str(n),n,1,False,False) for n in (16,64,256)]+[('known-six-n16',16,60,True,True)])
+    for name,n,cap,mixed_six,validation in stages:
         # The six scenes also randomize loose-prop dimensions and masses, so
         # they are six actual models, not just six free-body starts. Never erase
         # those differences to make a batch. This round replicates seed5 only.
         if MODE=='homogeneous_v1':
             reference=OUT/'export-seed5'
         else:
-            reference=MODEL_REFS.parent/('export-0' if n==16 else 'export-5')
+            reference=MODEL_REFS.parent/('export-0' if mixed_six else 'export-5')
         compiled=['--compiled-reference-v1',str(reference/'compiled-312.json'),
                   '--compiled-geometry-312-v1',str(reference/'compiled-geometry312.npz')]
         grouped=['--exact-model-groups-v1','--per-world-model-references-v1',str(MODEL_REFS)] if MODE!='homogeneous_v1' else []
-        mixed=['--mix-known-six'] if MODE!='homogeneous_v1' and n==16 else []
-        result=run('n'+str(n),w,['--physics-backend','mjwarp_batch_v1','--nworld',str(n),
-            '--cap-s','60' if n<=16 else '10','--episode','0' if mixed else '5',*grouped,*mixed,*compiled])
+        mixed=['--mix-known-six'] if mixed_six else []
+        result=run(name,w,['--physics-backend','mjwarp_batch_v1','--nworld',str(n),
+            '--cap-s',str(cap),'--episode','0' if mixed else '5',*grouped,*mixed,*compiled])
         # N64/256 are bounded throughput prefixes, not success trials. The 10
         # SIM second window matches the existing recording-ring span (100
         # native control ticks); cap_end is reported, never called success.
-        if n<=16 and result['counts']['physical_success']!=n:
+        # Final-round prefixes use exactly 4000 existing 0.25ms physics steps
+        # (one SIM second, ten native control ticks). They measure startup and
+        # prefix throughput only; they never qualify grasp success or steady
+        # state performance. The full mixed-six trial follows separately.
+        if validation and result['counts']['physical_success']!=n:
             write(OUT/'STOP.json',dict(reason_category='teacher_probe_failed',blocked_object='frozen_beampair6',min_gap_m=None,
                 gap_scope='requires candidate ledger and playback; no geometric attribution yet',nworld=n))
             break
