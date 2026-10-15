@@ -1,7 +1,7 @@
 {
   "schema": "ugrp.scene_tex2_static_request.v1",
   "task": "scenetex2",
-  "source_sha": "3f5feb73a87423a76685e76855dd515976298c9c",
+  "source_sha": "1e9594a9fececf1c5fa4387ed7ac9f08a8459629",
   "branch": "claude/scene-tex2",
   "pr": 527,
   "host": "gcp2",
@@ -10,34 +10,38 @@
   "instance": "ugrp-sim-gcp2",
   "zone": "asia-northeast3-a",
   "create_vm": false,
-  "status": "WAITING_GCP2SETUP_PASS",
+  "status": "COMPLETED_STATIC_NOT_READY",
   "user_authorized_static_gate_after_PASS": true,
   "execute": false,
   "ready": false,
   "rejection_table": "/Users/changmin/projects/ugrp-wt/scene-tex2/experiments/2026-10-15-scene-tex2/rejection-table.json",
-  "rejection_table_sha256": "9e168f82e0071733ce68859c976486623f6199847a8f2cda2a9e98f37ab47bcb",
+  "rejection_table_sha256": "c9cd9fff64dce745d067e75eb4e5c8586fe2dad8f7057ec349d85c8bd7cd4a87",
   "profiles": [
     "floor_light_v1",
     "floor_light_textured_v1",
     "walls_floor_textured_v2"
   ],
-  "planned_frames": 144,
+  "planned_frames": 264,
   "physics_steps": 0,
   "model_calls": 0,
   "storage_max_mib": 512,
   "setup_poll_seconds": 300,
   "setup_deadline_utc": "2026-10-15T17:11:06Z",
   "command": [
-    "python",
+    "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
     "-m",
     "scripts.probe_scene_tex2",
     "--execute",
     "--source-sha",
-    "3f5feb73a87423a76685e76855dd515976298c9c",
+    "1e9594a9fececf1c5fa4387ed7ac9f08a8459629",
     "--setup-proof",
-    "<copied latest gcp2setup PASS>",
+    "/home/ugrp/ugrp-sim/scenetex2-setup-proof.md",
     "--output",
-    "<new persistent GCP run directory>"
+    "/home/ugrp/ugrp-sim/runs/scenetex2-1e9594a9-static-e",
+    "--profiles",
+    "floor_light_v1",
+    "floor_light_textured_v1",
+    "walls_floor_textured_v2"
   ],
   "guards": [
     "gcp2setup latest line PASS required",
@@ -46,5 +50,9 @@
     "preserve other owners; stop VM only without other active runs",
     "all gcloud explicit account and project"
   ],
-  "pooling": "new scene and host; no mixing"
+  "pooling": "new scene and host; no mixing",
+  "approved": false,
+  "completed_frames": 264,
+  "actual_raw": "/home/ugrp/ugrp-sim/runs/scenetex2-1e9594a9-static-e",
+  "setup_pass_verified": true
 }

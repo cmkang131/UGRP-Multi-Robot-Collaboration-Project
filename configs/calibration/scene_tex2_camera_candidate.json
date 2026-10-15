@@ -1,0 +1,31 @@
+{
+  "schema": "ugrp.scene_tex2_camera_candidate.v1",
+  "render_profile": "walls_floor_textured_v2",
+  "profile_sha256": "edf3a92a41422a10151b9cb95ec7925998f6790485e28b1920d03ce4576cd9a8",
+  "asset_manifest_sha256": "9afa87ec4a04eb230f284b031e4bb57d0ca8ff1a2c6c967b29a9b7da3c3ee396",
+  "enabled": false,
+  "ready": false,
+  "runtime_consumer_connected": false,
+  "measured_source_sha": "1e9594a9fececf1c5fa4387ed7ac9f08a8459629",
+  "colour_detection_candidate": {
+    "input": "lossless native RGB / PNG",
+    "threshold_changes": "none",
+    "basis": "Existing box kind counts matched both baselines in 88/88 PNG cases; JPEG matched 76/88 floor_light_v1 and 82/88 floor_light_textured_v1.",
+    "counterexample": "zone_wide_two_doors_final_v3 view0 box_palette r1 JPEG: old textured profile detects red, v2 misses red.",
+    "scope": "Static component regression only; negative equality is not positive detection. Do not auto-switch a running consumer or model image encoding."
+  },
+  "wall_band_candidate": {
+    "adapter": "harness.scene_tex2_perception",
+    "enabled": false,
+    "calibrated_for_v3": false,
+    "variance_bound_basis": "PNG luminance and B-R ranges; Var(X) <= (max-min)^2/4; no camera tolerance multiplier",
+    "status": "NOT_ADMITTED: only4 column proposals total in16 drive frames for each PNG/JPEG; no calibrated v3 wall/contact accuracy claim."
+  },
+  "required_before_admission": [
+    "Calibrate and validate wall/floor contact observation on the actual v3 camera.",
+    "Verify lossless colour input in the selected consumer, including positive targets and false objects.",
+    "Handle zero wall visibility during carried-beam occlusion without accepting a yaw fix.",
+    "Measure independent localization/task outcomes; static frames do not establish these."
+  ],
+  "evidence": "experiments/2026-10-15-scene-tex2/summary.json"
+}

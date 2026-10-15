@@ -1,50 +1,538 @@
 {
-  "schema": "ugrp.scene_tex2_funnel.v1",
-  "scope": "PNG-level gates plus pending remote gate; no physical success",
-  "stages": [
+  "schema": "ugrp.scene_tex2_funnel.v2",
+  "source_sha": "1e9594a9fececf1c5fa4387ed7ac9f08a8459629",
+  "scope": "PNG/static diagnostics; feature existence is not an admission threshold",
+  "png_funnel": [
     {
-      "stage": "published_pngs",
+      "stage": "published_and_sha_verified",
       "input": 151,
       "cumulative_pass": 151,
       "rejected": 0
     },
     {
-      "stage": "manifest_and_pixel_sha256",
+      "stage": "108_fixed_foreground_ranges_nonoverlap",
       "input": 151,
       "cumulative_pass": 151,
       "rejected": 0
     },
     {
-      "stage": "fixed_foreground_color_nonoverlap",
+      "stage": "native_square_ORB_positive",
       "input": 151,
-      "cumulative_pass": 151,
-      "rejected": 0
-    },
-    {
-      "stage": "nonblank_ORB",
-      "input": 151,
-      "cumulative_pass": 151,
-      "rejected": 0
-    },
-    {
-      "stage": "gcp2setup_pass",
-      "input": 1,
-      "cumulative_pass": 0,
-      "rejected": 0,
-      "pending": 1,
-      "reason_category": "HOST_SETUP_PENDING",
-      "blocking_object": "gcp2setup PASS record",
+      "cumulative_pass": 48,
+      "rejected": 103,
+      "category": "NATIVE_SQUARE_ORB_ZERO",
+      "blocking_object": "103 authored cube-face PNGs",
       "minimum_gap_m": null,
-      "minimum_gap_reason": "host readiness is not geometry"
+      "reason": "Zero recorded; physical aspect differs from square PNG. This diagnostic is not used to claim rendering success."
     }
   ],
-  "prior_rejection_table": "/Users/changmin/projects/ugrp-wt/scene-tex2/experiments/2026-10-15-scene-tex2/prior-rejection-table.json",
-  "raw_path": "/Users/changmin/projects/ugrp-wt/scene-tex2/experiments/2026-10-15-scene-tex2/png-audit-final",
-  "reproduction_command": "python -m scripts.audit_scene_tex2 --output <new-directory>",
-  "source_files_sha256": {
-    "experiments/2026-10-15-scene-tex2/png-audit-final/offline-audit.json": "8e7975a988a4adb6d09bb147480173dd6188f3a0160b7ced16b1e3d1aab04483",
-    "experiments/2026-10-15-scene-tex2/png-audit-final/image-metrics.json": "3dc0a620896977b410fc66d3ee77c2d0830db1dc92f81daff4c16a55a28a2f68",
-    "experiments/2026-10-15-scene-tex2/png-audit-final/color-hits-floor.json": "73a11befd2576aebd898f116a2fcea606cd3c7df8a0405e7cb27ec72fccfdbe7",
-    "experiments/2026-10-15-scene-tex2/png-audit-final/color-hits-walls.json": "ae5345a93493682681d0bec0745b614127252ec443ae90fd011b40f57666baa0"
-  }
+  "static_render_funnel": {
+    "schema": "ugrp.scene_tex2_funnel.v1",
+    "planned_frames": 264,
+    "recorded_frame_events": 264,
+    "stages": [
+      {
+        "stage": "frame_rendered",
+        "input_n": 264,
+        "cumulative_pass_n": 264,
+        "rejected_n": 0,
+        "rejections": []
+      },
+      {
+        "stage": "frame_analysed",
+        "input_n": 264,
+        "cumulative_pass_n": 264,
+        "rejected_n": 0,
+        "rejections": []
+      },
+      {
+        "stage": "physics_identical",
+        "input_n": 264,
+        "cumulative_pass_n": 264,
+        "rejected_n": 0,
+        "rejections": []
+      },
+      {
+        "stage": "camera_identical",
+        "input_n": 264,
+        "cumulative_pass_n": 264,
+        "rejected_n": 0,
+        "rejections": []
+      }
+    ],
+    "scope": "static camera audit, not a teacher gate or task-success funnel",
+    "raw_path": "/home/ugrp/ugrp-sim/runs/scenetex2-1e9594a9-static-e",
+    "reproduction_command": [
+      "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+      "-m",
+      "scripts.probe_scene_tex2",
+      "--execute",
+      "--source-sha",
+      "1e9594a9fececf1c5fa4387ed7ac9f08a8459629",
+      "--setup-proof",
+      "/home/ugrp/ugrp-sim/scenetex2-setup-proof.md",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/scenetex2-1e9594a9-static-e",
+      "--profiles",
+      "floor_light_v1",
+      "floor_light_textured_v1",
+      "walls_floor_textured_v2"
+    ],
+    "unexecuted": []
+  },
+  "wall_feature_funnels": [
+    {
+      "encoding": "png",
+      "scope": "all",
+      "stages": [
+        {
+          "stage": "saved_frame",
+          "cumulative_n": 88,
+          "rejected_n": 0
+        },
+        {
+          "stage": "wall_visible",
+          "cumulative_n": 60,
+          "rejected_n": 28
+        },
+        {
+          "stage": "wall_orb_positive",
+          "cumulative_n": 48,
+          "rejected_n": 12
+        },
+        {
+          "stage": "wall_interior_orb_positive",
+          "cumulative_n": 11,
+          "rejected_n": 37
+        }
+      ],
+      "interpretation": "zero/nonzero describes observed presence only; no ready criterion"
+    },
+    {
+      "encoding": "png",
+      "scope": "drive",
+      "stages": [
+        {
+          "stage": "saved_frame",
+          "cumulative_n": 16,
+          "rejected_n": 0
+        },
+        {
+          "stage": "wall_visible",
+          "cumulative_n": 16,
+          "rejected_n": 0
+        },
+        {
+          "stage": "wall_orb_positive",
+          "cumulative_n": 13,
+          "rejected_n": 3
+        },
+        {
+          "stage": "wall_interior_orb_positive",
+          "cumulative_n": 3,
+          "rejected_n": 10
+        }
+      ],
+      "interpretation": "zero/nonzero describes observed presence only; no ready criterion"
+    },
+    {
+      "encoding": "png",
+      "scope": "drive_map:zone_hardmaps1_h1_final_v3",
+      "stages": [
+        {
+          "stage": "saved_frame",
+          "cumulative_n": 4,
+          "rejected_n": 0
+        },
+        {
+          "stage": "wall_visible",
+          "cumulative_n": 4,
+          "rejected_n": 0
+        },
+        {
+          "stage": "wall_orb_positive",
+          "cumulative_n": 4,
+          "rejected_n": 0
+        },
+        {
+          "stage": "wall_interior_orb_positive",
+          "cumulative_n": 0,
+          "rejected_n": 4
+        }
+      ],
+      "interpretation": "zero/nonzero describes observed presence only; no ready criterion"
+    },
+    {
+      "encoding": "png",
+      "scope": "drive_map:zone_hardmaps1_h2_final_v3",
+      "stages": [
+        {
+          "stage": "saved_frame",
+          "cumulative_n": 4,
+          "rejected_n": 0
+        },
+        {
+          "stage": "wall_visible",
+          "cumulative_n": 4,
+          "rejected_n": 0
+        },
+        {
+          "stage": "wall_orb_positive",
+          "cumulative_n": 4,
+          "rejected_n": 0
+        },
+        {
+          "stage": "wall_interior_orb_positive",
+          "cumulative_n": 3,
+          "rejected_n": 1
+        }
+      ],
+      "interpretation": "zero/nonzero describes observed presence only; no ready criterion"
+    },
+    {
+      "encoding": "png",
+      "scope": "drive_map:zone_wide_corridor_final_v3",
+      "stages": [
+        {
+          "stage": "saved_frame",
+          "cumulative_n": 4,
+          "rejected_n": 0
+        },
+        {
+          "stage": "wall_visible",
+          "cumulative_n": 4,
+          "rejected_n": 0
+        },
+        {
+          "stage": "wall_orb_positive",
+          "cumulative_n": 2,
+          "rejected_n": 2
+        },
+        {
+          "stage": "wall_interior_orb_positive",
+          "cumulative_n": 0,
+          "rejected_n": 2
+        }
+      ],
+      "interpretation": "zero/nonzero describes observed presence only; no ready criterion"
+    },
+    {
+      "encoding": "png",
+      "scope": "drive_map:zone_wide_two_doors_final_v3",
+      "stages": [
+        {
+          "stage": "saved_frame",
+          "cumulative_n": 4,
+          "rejected_n": 0
+        },
+        {
+          "stage": "wall_visible",
+          "cumulative_n": 4,
+          "rejected_n": 0
+        },
+        {
+          "stage": "wall_orb_positive",
+          "cumulative_n": 3,
+          "rejected_n": 1
+        },
+        {
+          "stage": "wall_interior_orb_positive",
+          "cumulative_n": 0,
+          "rejected_n": 3
+        }
+      ],
+      "interpretation": "zero/nonzero describes observed presence only; no ready criterion"
+    },
+    {
+      "encoding": "jpeg",
+      "scope": "all",
+      "stages": [
+        {
+          "stage": "saved_frame",
+          "cumulative_n": 88,
+          "rejected_n": 0
+        },
+        {
+          "stage": "wall_visible",
+          "cumulative_n": 60,
+          "rejected_n": 28
+        },
+        {
+          "stage": "wall_orb_positive",
+          "cumulative_n": 60,
+          "rejected_n": 0
+        },
+        {
+          "stage": "wall_interior_orb_positive",
+          "cumulative_n": 11,
+          "rejected_n": 49
+        }
+      ],
+      "interpretation": "zero/nonzero describes observed presence only; no ready criterion"
+    },
+    {
+      "encoding": "jpeg",
+      "scope": "drive",
+      "stages": [
+        {
+          "stage": "saved_frame",
+          "cumulative_n": 16,
+          "rejected_n": 0
+        },
+        {
+          "stage": "wall_visible",
+          "cumulative_n": 16,
+          "rejected_n": 0
+        },
+        {
+          "stage": "wall_orb_positive",
+          "cumulative_n": 16,
+          "rejected_n": 0
+        },
+        {
+          "stage": "wall_interior_orb_positive",
+          "cumulative_n": 3,
+          "rejected_n": 13
+        }
+      ],
+      "interpretation": "zero/nonzero describes observed presence only; no ready criterion"
+    },
+    {
+      "encoding": "jpeg",
+      "scope": "drive_map:zone_hardmaps1_h1_final_v3",
+      "stages": [
+        {
+          "stage": "saved_frame",
+          "cumulative_n": 4,
+          "rejected_n": 0
+        },
+        {
+          "stage": "wall_visible",
+          "cumulative_n": 4,
+          "rejected_n": 0
+        },
+        {
+          "stage": "wall_orb_positive",
+          "cumulative_n": 4,
+          "rejected_n": 0
+        },
+        {
+          "stage": "wall_interior_orb_positive",
+          "cumulative_n": 0,
+          "rejected_n": 4
+        }
+      ],
+      "interpretation": "zero/nonzero describes observed presence only; no ready criterion"
+    },
+    {
+      "encoding": "jpeg",
+      "scope": "drive_map:zone_hardmaps1_h2_final_v3",
+      "stages": [
+        {
+          "stage": "saved_frame",
+          "cumulative_n": 4,
+          "rejected_n": 0
+        },
+        {
+          "stage": "wall_visible",
+          "cumulative_n": 4,
+          "rejected_n": 0
+        },
+        {
+          "stage": "wall_orb_positive",
+          "cumulative_n": 4,
+          "rejected_n": 0
+        },
+        {
+          "stage": "wall_interior_orb_positive",
+          "cumulative_n": 3,
+          "rejected_n": 1
+        }
+      ],
+      "interpretation": "zero/nonzero describes observed presence only; no ready criterion"
+    },
+    {
+      "encoding": "jpeg",
+      "scope": "drive_map:zone_wide_corridor_final_v3",
+      "stages": [
+        {
+          "stage": "saved_frame",
+          "cumulative_n": 4,
+          "rejected_n": 0
+        },
+        {
+          "stage": "wall_visible",
+          "cumulative_n": 4,
+          "rejected_n": 0
+        },
+        {
+          "stage": "wall_orb_positive",
+          "cumulative_n": 4,
+          "rejected_n": 0
+        },
+        {
+          "stage": "wall_interior_orb_positive",
+          "cumulative_n": 0,
+          "rejected_n": 4
+        }
+      ],
+      "interpretation": "zero/nonzero describes observed presence only; no ready criterion"
+    },
+    {
+      "encoding": "jpeg",
+      "scope": "drive_map:zone_wide_two_doors_final_v3",
+      "stages": [
+        {
+          "stage": "saved_frame",
+          "cumulative_n": 4,
+          "rejected_n": 0
+        },
+        {
+          "stage": "wall_visible",
+          "cumulative_n": 4,
+          "rejected_n": 0
+        },
+        {
+          "stage": "wall_orb_positive",
+          "cumulative_n": 4,
+          "rejected_n": 0
+        },
+        {
+          "stage": "wall_interior_orb_positive",
+          "cumulative_n": 0,
+          "rejected_n": 4
+        }
+      ],
+      "interpretation": "zero/nonzero describes observed presence only; no ready criterion"
+    }
+  ],
+  "box_kind_comparisons": [
+    {
+      "baseline": "floor_light_v1",
+      "encoding": "png",
+      "paired_frames": 88,
+      "same_kind_counts": 88,
+      "changed_by_pose": {}
+    },
+    {
+      "baseline": "floor_light_v1",
+      "encoding": "jpeg",
+      "paired_frames": 88,
+      "same_kind_counts": 76,
+      "changed_by_pose": {
+        "box_palette": 4,
+        "high": 8
+      }
+    },
+    {
+      "baseline": "floor_light_textured_v1",
+      "encoding": "png",
+      "paired_frames": 88,
+      "same_kind_counts": 88,
+      "changed_by_pose": {}
+    },
+    {
+      "baseline": "floor_light_textured_v1",
+      "encoding": "jpeg",
+      "paired_frames": 88,
+      "same_kind_counts": 82,
+      "changed_by_pose": {
+        "box_palette": 4,
+        "high": 2
+      }
+    }
+  ],
+  "rejection_reasons": [
+    {
+      "category": "CARRY_WALL_NOT_VISIBLE",
+      "count": 16,
+      "blocking_object": "cargo_tex2_beam / camera direction in HIGH formation",
+      "minimum_gap_m": null,
+      "minimum_gap_reason": "image visibility, not collision clearance",
+      "reason": "All16 occlusion cases have beam+peer visible and0 wall pixels; texture cannot supply hidden wall observations."
+    },
+    {
+      "category": "DRIVE_INTERIOR_WALL_FEATURE_ABSENT",
+      "count": 13,
+      "blocking_object": "visible wall image / ORB descriptor footprint",
+      "minimum_gap_m": null,
+      "minimum_gap_reason": "image feature support, not collision clearance",
+      "reason": "Only3/16 drive frames retain whole wall descriptor support; no sufficiency threshold or localization success asserted."
+    },
+    {
+      "category": "JPEG_BOX_SEMANTIC_CHANGE",
+      "count": 6,
+      "baseline": "floor_light_textured_v1",
+      "blocking_object": "JPEG90 image / existing box kind detector",
+      "minimum_gap_m": null,
+      "minimum_gap_reason": "encoding/component result, not collision clearance",
+      "reason": "82/88 kind-count equality to old textured baseline; box_palette4 and high2 differ. two_doors view0 box_palette r1 loses red in v2."
+    },
+    {
+      "category": "V3_WALL_GEOMETRY_NOT_CALIBRATED",
+      "blocking_object": "legacy commanded-pose camera FK / nominal-window adapter",
+      "minimum_gap_m": null,
+      "minimum_gap_reason": "calibration, not collision clearance",
+      "reason": "Only4 column proposals total across16 drive frames per encoding. No correct-contact or v3 calibration admission."
+    }
+  ],
+  "raw_paths": [
+    "/home/ugrp/ugrp-sim/runs/scenetex2-1e9594a9-static-e/rejection-table.json",
+    "/Users/changmin/projects/ugrp-wt/scene-tex2/outputs/scene-tex2/gcp-static-e",
+    "/Users/changmin/projects/ugrp-wt/scene-tex2/experiments/2026-10-15-scene-tex2/png-audit-e"
+  ],
+  "reproduction_commands": [
+    [
+      "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+      "-m",
+      "scripts.probe_scene_tex2",
+      "--execute",
+      "--source-sha",
+      "1e9594a9fececf1c5fa4387ed7ac9f08a8459629",
+      "--setup-proof",
+      "/home/ugrp/ugrp-sim/scenetex2-setup-proof.md",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/scenetex2-1e9594a9-static-e",
+      "--profiles",
+      "floor_light_v1",
+      "floor_light_textured_v1",
+      "walls_floor_textured_v2"
+    ],
+    [
+      "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+      "-m",
+      "scripts.summarize_scene_tex2_probe",
+      "--input",
+      "/home/ugrp/ugrp-sim/runs/scenetex2-1e9594a9-static-e",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/scenetex2-1e9594a9-analysis-e"
+    ],
+    [
+      "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+      "/home/ugrp/ugrp-sim/analysis-tools/scenetex2-compatibility.py",
+      "--input",
+      "/home/ugrp/ugrp-sim/runs/scenetex2-1e9594a9-static-e",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/scenetex2-1e9594a9-compat-e",
+      "--reader-script",
+      "/home/ugrp/ugrp-sim/analysis-tools/scenetex2-summary-f6acdbd5.py"
+    ],
+    [
+      "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+      "/home/ugrp/ugrp-sim/analysis-tools/scenetex2-digest.py",
+      "--input",
+      "/home/ugrp/ugrp-sim/runs/scenetex2-1e9594a9-static-e",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/scenetex2-1e9594a9-digest-e",
+      "--reader-script",
+      "/home/ugrp/ugrp-sim/analysis-tools/scenetex2-summary-f6acdbd5.py"
+    ]
+  ],
+  "prior_rejection_tables": [
+    "prior-rejection-table.json",
+    "camera-b-rejection-table.json",
+    "camera-c-rejection-table.json",
+    "camera-d-rejection-table.json"
+  ],
+  "ready": false
 }

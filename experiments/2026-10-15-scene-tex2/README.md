@@ -1,91 +1,112 @@
-# scenetex2 — 벽·바닥 구분 자연 질감 v2
+# scenetex2 — 벽·바닥 자연 질감 v2
 
-`walls_floor_textured_v2`, 기본 off. 사용자 요청에 따라 시각 재질만 바꾸는 새 장면 버전이다. 기존 `floor_light_v1`, `floor_light_textured_v1`, gcp1 결과와 합산하지 않는다. 아래 PNG 측정은 Mac 오프라인 계산이며 실제 자기 카메라/운반/회전 추정 성공을 뜻하지 않는다.
+**최종 판정: NOT_READY.** 기본 off 새 장면 `walls_floor_textured_v2`를 구현하고 gcp2에서 네 지도264/264 정적 프레임을 측정했다. 물리·카메라 동일성12/12와 원본 무결성은 확인했지만, 운반 중 벽이 보이지 않고 주행 특징·JPEG 검출 호환성도 충분하지 않아 연구 실행에 채택하지 않는다. [요약](summary.json), [누적 관문표](rejection-table.json), [미실행 대기열/완료 기록](gcp2-static-request.json).
 
-## 사용자 원문과 범위
+## 사용자 원문과 변경 범위
 
 2026-10-15: “벽에도 넣고, 벽 / 바닥 색 다르게 해. 쉽게 구분할 수 있도록. 그렇게 시뮬 바꾼 뒤에 그 상황에 효율적일 수 있는 알고리즘으로 다시 설계 ㄱ(첨부터 다시는 말고, 이거에 맞는 방식으로 하면 좋을듯)”, “일단, 시뮬 환경 먼저 세팅하고 / 그 환경에 맞춰서 다 병렬처리로 진행하면 좋을듯”. 이전 같은 날: “특징점 부족하면, 맵에 머 질감같은 거 넣어도 됨 … 현실은 그렇게 미끄럽지 않으니까”.
 
-마커·반복 타일을 넣지 않고, 마찰·물리·충돌 형상·카메라/FOV·로봇·화물과 색 표식을 바꾸지 않는다. 사용자 지정 네 지도와 실제 HIGH/가림 자세를 별도 gcp2 정적 렌더 관문에서 비교한다. 정답은 setup/평가에만 쓴다. 제어기 재설계·관문·ACT 데이터 수집은 이 환경 검증 뒤 별도 작업이며, 기존 제어기를 이번 PNG 결과로 채택하지 않는다.
+푸른 저채도 벽과 밝고 따뜻한 회색 바닥에 독립적인 얼룩·마모·입자를 넣었다. 반복 타일·인공 마커·AprilTag는 없다. 바닥3072² PNG1장, 벽1024² cube면150장이다. 마찰·충돌·조명·카메라/FOV·로봇·화물·색 표식을 바꾸지 않는다. 물리/카메라 컴파일 배열도 두 기준 프로필과 비교했다. 교사·학생·지도 실행기는 자동 변경하지 않는다.
 
-## 기존 거부 분포와 변경 근거
+최종 후보 E 소스는 `1e9594a9fececf1c5fa4387ed7ac9f08a8459629`이다. 자산 manifest SHA256은 `9afa87ec4a04eb230f284b031e4bb57d0ca8ff1a2c6c967b29a9b7da3c3ee396`, 프로필은 `edf3a92a41422a10151b9cb95ec7925998f6790485e28b1920d03ce4576cd9a8`이다. 기존 v1·B/C/D/E·다른 호스트 결과는 합산하지 않는다. 생성기 seed는2026101502, 출처·전체 PNG SHA는 자산 manifest에 있다.
 
-기존 PR #511은 균일 벽띠 판독 `max_band_std=3`을 살리려고 벽 밝기를 82–86으로 줄였다. 기존 저장 측정의 벽 150면 전부 ORB=0이다. [직전 거부 표](prior-rejection-table.json)는 해당 저장 JSON의 전체 SHA와 150→0 funnel을 남긴다. 이번 작업은 reloc15 원본 영상/실행을 재분석하지 않았으며, 사용자 제공 “실제 0.221°를 12.474°로 오수용”은 동기로만 인용한다. 새 질감이 그 오류를 고쳤다고 주장하지 않는다.
+## PNG 오프라인 측정
 
-새 재질은 차가운 저채도 벽(H≈112)과 따뜻하고 밝은 바닥(H≈18)이다. S=16 설계는 포괄 페인트 하한 S=20을 피하고, 벽 V98–134/바닥 V146–180은 상대 검정의 최대 V=.38×255=96.9와 고정 흰 표식 V>180을 피한다. 모두 기존 검출식에서 유도한 설계 구간이며 실제 조명 허용 오차로 사용하지 않는다. 입자 크기·밀도는 저자가 만든 재질 설정이며 실물 표면을 측정한 값이 아니다.
-
-## PNG 후보 비교
-
-| 조건 | 벽 ORB 최소/중앙/최대 | 먼 유사 descriptor 중앙/최대 | 동일 32×32 패치 중앙/최대 | 바닥 640×480 ORB |
-|---|---|---|---|---|
-| 기존 v1 저장 기록 | 0/0/0 | descriptor 없음 | 기존 기록 참조 | 657–700 |
-| A: 얼룩·마모 | 18/280/800 | 6.67%/25.10% | 1.17%/14.84% | 800×4 |
-| B: 불규칙 미세 입자 추가 (비교) | 5/168/791 | 0%/2.30% | 0%/0% | 785,738,754,776 |
-| **C: 면 매핑 수정·S8 (새 후보)** | **12/225.5/800** | **0%/1.69%** | **0%/0%** | **793,767,772,793** |
-
-800은 기존 감사와 같은 ORB 검출 상한이다. “충분한 특징”의 새 수용 개수를 임의로 정하지 않았으며 실제 화면/가림 자세에 남는 벽 특징은 GCP에서 판정한다. 원거리 유사 descriptor는 기존 정의 그대로 거리≥64 px·Hamming≤24, 반복 패치는 byte 동일 32×32 비율이다. 이들은 소재 반복 진단이며 매칭 정답률·실제 회전 관측 가능성을 대신하지 않는다. B의 highpass NCC(32/64/128/256 px) 최대는 0.211이다.
-
-비교 B의 manifest SHA256은 `7d65a69a2805af70bd2df4c7a0669ecf0e6210d670a853b8b05c75cdcfe444b5`이다. A 원본 PNG는 로컬 `outputs/scene-tex2/candidate-a-assets/`에 보존했으며 A manifest는 `89bd71ce48cdf983d36d869d2c6f3dae63f486cf712602be339ab2fc1f201d24`이다. [A 측정](png-audit/offline-audit.json), [B 측정](png-audit-final/offline-audit.json)과 각 image-metrics 파일에 모든 151장 SHA/측정이 있다. 생성기는 최종 B를 재현하며 배포한 PNG/manifest 바이트가 버전을 정의한다.
-
-| 색 분리도 (B PNG 원본) | 값 |
+| 항목 | 최종 E |
 |---|---|
-| 벽 HSV | H110–116, S16–18, V98–134 |
-| 바닥 HSV | H16–18, S16–17, V146–180 |
-| 최소 V 간격 | 12 |
-| Lab L 구간 | 벽 101–136 / 바닥 151–183 (OpenCV uint8) |
-| 고정/상위집합 HSV·RGB·PIL 색 범위 | 108개, 바닥 9,437,184·벽 39,321,600 픽셀 모두 겹침 0 |
+| 벽 HSV | H108–114, S8–10, V98–134 |
+| 바닥 HSV | H15–18, S8–10, V146–180 |
+| 벽 ORB 최소/중앙/최대 | 0/0/483, 양수47/150면 |
+| 바닥640×480 ORB | 793/767/772/793 |
+| 먼 유사 descriptor | 유효47면 중앙0·최대2.51%; 나머지103면 descriptor 없음 |
+| byte 동일32×32 패치 | 벽150면·바닥 모두0 |
+| highpass NCC 최대 | 0.8551; 정사각 cube의 비율 영향도 있어 반복 없음의 증거로 쓰지 않음 |
+| 벽–바닥 분리 | V간격12, Lab L구간103–139 / 153–185(OpenCV uint8) |
+| 고정/상위집합 대상 색 범위 | 108개, 바닥9,437,184·벽157,286,400 픽셀 침범0 |
 
-[전체 색 겹침 표](png-audit-final/color-ranges.md), [소스 전수 탐색](png-audit-final/color-source-inventory.md), [외부/직접비교/문맥 조건과 48개 소스 SHA](color_external_sources.json)를 함께 읽는다. 기존 81개 목록에 누락된 `white_markers(S<55,V>180)`·직접 비교·동적 dictionary 범위를 추가했다. PIL HSV는 PIL로 직접 계산했다. 주변 대비 흰 표식·채도 없는 화물 hue 후보·회색 로봇·바닥/VO 지지 마스크는 문맥/지지 조건으로 별도 남겼으며 픽셀 겹침 0을 주장하지 않는다. JPEG·조명 이후 최종 검출기와 원래 대상 지원 유지 여부는 별도 검증한다.
+[전체 측정](png-audit-e/offline-audit.json), [HSV/RGB/PIL 전체 표](png-audit-e/color-ranges.md), [색 소스 전수 탐색](png-audit-e/color-source-inventory.md), [직접 비교·문맥 조건·48소스 SHA](color_external_sources.json)를 함께 읽는다. 기존81개 목록에 누락된 흰 표식·직접 비교·동적 dictionary 범위를 보충했다. 원거리 유사는 기존 정의인 거리≥64px·Hamming≤24, ORB상한800을 유지했다. 새 특징 개수·각도·성공 수용 기준은 넣지 않았다.
 
-## 프로필 전용 벽 판독 후보
+포괄 페인트 S≥20, 상대 검정의 상한 V=.38×255=96.9, 흰 표식 V>180 사이에서 저작 색을 골랐다. 실제 조명 허용 오차로 이 구간을 확대하지 않는다. 문맥/지지 마스크는 색 후보와 다르므로 전체 침범0을 주장하지 않는다. 실제 화면의 PNG/JPEG는 그림자·알파·보간·압축 뒤 범위 침범이 있으며 [상위 분포](camera-e-colour-overlap-top10.json)에 보존했다. 겹치는 범위의 픽셀 합은 고유 픽셀 수나 최종 오검출 수가 아니다.
 
-`harness/scene_tex2_perception.py`는 프로필을 명시해야만 쓸 수 있다. 재질의 명목 V 구간으로 벽/바닥을 나누고, 기존 벽 기하 후보의 std 한도는 PNG 휘도와 B−R의 범위에서 `sqrt(rangeL²+rangeC²)/2`로 계산한다. 범위 [a,b]에 든 변수는 `(X-a)(b-X)≥0`이므로 `Var(X)≤(b-a)²/4`이고, 가로 strip 평균도 같은 구간을 벗어나지 않는다. 단순히 std를 키우면 얼룩을 벽 경계로 받을 수 있으므로 기존 기하·후보 모호성 거부에 **벽→바닥 명목 구간 전이**를 함께 요구한다. 명목 구간 밖 조명·안티앨리어싱·가림은 기권한다. 렌더에 대한 확대 배율·새 각도/개수 수용값은 넣지 않았다.
+## gcp2 실제 자기 카메라 측정
 
-기존 벽띠/`opencv_wall_observation`/`own_image_gates`를 전역 수정하지 않았고 기존 보정의 유효성을 v2로 승계하지 않는다. 이 후보는 아직 PNG 보정이며 실제 카메라에서 올바른 경계·오검출·기권을 비교한 뒤에만 연결한다. 소비자의 scene install/verify_model/nearclip 인자도 새 소스로 연결해야 한다.
+기존 `floor_light_v1`, `floor_light_textured_v1`, v2를 네 지도·벽을 보는0.75/1.5m·r1/r2·주행/HIGH/빔+상대 가림으로 비교했다. 상자4색·빔 끝2색·구역A/B/C 양성 시점도 추가했다. 실제 v3 카메라·fisheye·nearclip을 유지했다. 구역 C는 서쪽 시점이 divider에 가려 남쪽1.5m 시점으로 보완했다. 청록/파랑 끝은 이 checkout에 교사 토글이 없어 pinned 원본 RGBA를 기존 band geom에 평가 setup으로 입혔다. 교사 소비자 통합을 증명하지 않는다.
 
-## 재현과 원격 관문
+| 최종 E v2 | PNG | JPEG90 |
+|---|---|---|
+| 전체 프레임 | 88 | 88 |
+| 벽 ORB 최소/중앙/최대 | 0/1/126 | 0/1.5/136 |
+| 바닥 ORB 최소/중앙/최대 | 0/8/34 | 0/10/33 |
+| 전체 벽 관측 funnel | 88→60가시→48ORB양수→11내부support | 88→60가시→60ORB양수→11내부support |
+| 주행16 벽 내부support 양수 | 3/16 | 3/16 |
+| 운반 가림16 벽 가시/특징 | 0/16·0 | 0/16·0 |
+| 벽/바닥 분할 micro IoU, 전체 | .8659/.8639 | .8556/.8608 |
+| 벽/바닥 분할 micro IoU, 주행 | .9495/.7353 | .9409/.7406 |
+| 상자 종류별 개수 일치, 기존 밝은 바닥 대비 | 88/88 | 76/88 |
+| 상자 종류별 개수 일치, 이전 질감 대비 | 88/88 | 82/88 |
 
-Mac에서는 기존 환경으로 아래 PNG·XML·비물리 시험만 수행한다. MuJoCo 모델 생성/렌더/step·GUI·모델 호출은 하지 않는다.
+ORB 중심이 벽에 있어도 descriptor가 물체·경계에 걸칠 수 있다. 회전된 descriptor 사각형을 감싸는 반지름 `KeyPoint.size×sqrt(2)/2`가 벽 mask 안에 온전히 들어갈 때만 내부support로 센다. 이 양수 여부는 관측 존재의 진단이며 충분한 추정 품질의 관문이 아니다.
+
+JPEG의 구체 반례는 `zone_wide_two_doors_final_v3/view0/box_palette/r1`: 이전 질감은 cyan/red/green/yellow 각1개, v2는 red를 놓쳐3색이다. H1/H2에서는 반대로 red가 늘어나는 차이도 있어 모든 변화가 검출 손실인 것은 아니다. full dictionary에는 수치·debug가 포함되므로 [의미적 개수 비교](camera-e-semantic-counts-0.json)와 구분했다. 원본 및 두 기준별 전체 표는 GCP compat 디렉터리에 있다.
+
+상자4색·끝2색은 각각6/8시점, 구역A/B/C는6/8·5/8·4/8에서 실제 보였다. 미노출은 미검증이다. PNG의 청록/파랑 띠 지원 픽셀은 두 기준과 동일했다. 구역 범위 지원은 기록했지만 완전한 구역 경계 검출기나 컬러 끝 교사 경로를 검증한 것은 아니다. 검정 띠용 legacy beam 검출은 별도 성분 비교다.
+
+[프로필 전용 후보 설정](../../configs/calibration/scene_tex2_camera_candidate.json)은 색 검출에 lossless 원본을 택할 근거와 미승인 벽 설정을 기록한다. `harness.scene_tex2_perception`의 분산 상한은 PNG 휘도·B−R의 범위²/4로 유도했고 벽→바닥 명목 구간 전이를 요구한다. 기존 std≤3·전역 검출기·보정값을 수정하지 않았다. E 주행16프레임에서 PNG/JPEG 각각 컬럼 후보4개만 남았고 v3 위치 정확도는 미검증이므로 연결하지 않는다.
+
+## 직접 본 증거와 검증 경계
+
+GCP ffmpeg으로 만든 [주행/가림24장](review/camera-montage.jpg), [네 지도·두 거리 주행24장](review/drive-all-views.jpg), [상자·끝 띠·구역15장](review/colour-montage.jpg)을 파일로 직접 확인했다. 이전 방사형/가로 늘어짐이 사라졌지만 넓은 벽은 낮은 대비 얼룩이 많고, H2의 두 번째 주행 시점에서만 r1 내부 특징29개가 보였다. HIGH 가림은 빔이 중앙을 채워 벽 자체가 없었다. C 남쪽 시점에서는 원래 보라 구역이 보였다. [명령·원본 SHA](review/SHA256SUMS.json)를 보존한다.
+
+모든 프레임의 SIM시간0, `mj_forward`만 사용했다. 제어기·모델 호출·물리 step·weld는0이다. 실제 운반·SLAM·yaw 추정·ACT 성공을 잰 것이 아니다. reloc15의 “실제0.221°를12.474°로 오수용”은 사용자 제공 동기이며 이번에 원본 영상을 재분석하거나 재현하지 않았다. 동적 실패/성공 영상을 검토했다고 주장하지 않는다. Mac은 PNG/XML/순수 시험만 했고 GUI·카메라 렌더·물리를 사용하지 않았다.
+
+## 원본·무결성·운영 종료
+
+최종 원본은 `/home/ugrp/ugrp-sim/runs/scenetex2-1e9594a9-static-e`에 보존했다. [검증 기록](gcp-static-e-preservation.json): 5,324파일42,951,931bytes 전체 SHA 일치, 압축267기록40,878,655bytes 복원 SHA 일치. 분석·compatibility·digest의 오류는 모두0이다. 대형 JSON은64KiB 초과 시 zstd 무손실 저장 또는 작은 part로 나눴다. Mac은 요약·작은 원장·해시·대표 몽타주만 회수해 검사했고 전체 원본은 회수하지 않았다. 각 실행 RUN_META와 메타데이터 해시를 보존했다.
+
+`gcp2setup: PASS` 뒤 기존VM만 시작했다. 계정 `changmin5781@gmail.com`, 프로젝트 `ugrp-sim-b-1014`, VM `ugrp-sim-gcp2`, zone `asia-northeast3-a`다. 새VM·모델 키·에이전트 자격 증명을 배포하지 않았다. 첫 프로젝트의 예산정지와 사용자 지정 후속 프로젝트를 구분했다. 새 프로젝트 budget-stop 발동은 관찰되지 않았다. 완료 뒤 실행/임대0을 확인하고 VM의 **TERMINATED**를 확인했다([수명주기](vm-lifecycle.json)). 자료는 로컬 프로젝트/GCP 영속 디스크에 보존하며 Drive는 사용하지 않는다.
+
+Mac 표적3파일 시험은 **55 passed in9.32s**다. 자산·기존 v1해시·XML 물리 불변·명시적 프로필·순수 관문 계획을 검사했다. 독립 [읽기 전용 소스 검토](source-review-e.json)에서 확정P0/P1은 없었지만 카메라 채택 판정을 대신하지 않는다.
+
+## 비교 후보와 실패 보존
+
+| 후보/소스 | 범위·결과 | 결정 |
+|---|---|---|
+| v1 PR511 | 벽 대비를82–86으로 낮춰 기존 균일 벽띠를 유지; PNG150면 ORB0 | [직전 분포](prior-rejection-table.json) |
+| A | 불규칙 얼룩, 먼 descriptor 최대25.10%·동일 패치 최대14.84% | 원본 로컬 보존 |
+| B / 7c45215e | 미세 입자·S16·512면·texuniform=true, 144정적 프레임 | 방사형 매핑·JPEG 침범, [거부표](camera-b-rejection-table.json) |
+| C / f6acdbd5 | S8·texuniform=false, 264프레임 | ±X면 축 늘어짐, 내부support PNG9/88; [거부표](camera-c-rejection-table.json) |
+| D / 89b50131 | ±X축수정·큰 마모, 264프레임 | 내부support0/88, 미채택; [거부표](camera-d-rejection-table.json) |
+| E / 1e9594a9 | 축수정·미세마모·1024면, 주행pilot48과 최종264 각각 보존 | 위 최종 정적 결과; NOT_READY |
+
+최초 `3f5feb73`는 H1/H2 provider allow-list 오류로 MODEL_HOST_ERROR·프레임0이었다. 기존 `zone_heldout_scene.install` 준비 어댑터로 수정했고 allow-list는 넓히지 않았다. [실패 기록](host-error-static-a.json)을 보존했으며 이후 완료 수에 섞지 않는다. 원본 경로는 [요약](summary.json)의 remote_runs에 있다. E의 주행pilot48은 최종264와 중복이므로 합산하지 않는다. D의64px/m·31–188mm는 최소8px에 걸리지 않는 면의 명목값이다.
+
+## 재현
+
+Mac의 기존 환경에서 PNG/XML/순수 시험만 한다.
 
 ```sh
-python -m scripts.generate_scene_tex2 --output <새 자산 디렉터리>
-python -m scripts.audit_scene_tex2 --output <새 측정 디렉터리>
+python -m scripts.generate_scene_tex2 --output <new-assets>
+python -m scripts.audit_scene_tex2 --output <new-png-audit>
 python -m pytest -q tests/test_scene_tex2.py tests/test_natural_scene_texture.py tests/test_scene_tex2_probe.py
 ```
 
-정적 관문 실행 소스는 먼저 커밋·push해 고정한다. `/Users/changmin/projects/ugrp/outputs/e2e18-admin/ops-alert.md`의 `gcp2setup: PASS`를 5분 간격, 작업 시작 후 최대 3시간까지 확인한다. PASS 뒤 `gcp2`만 사용한다(계정 `changmin5781@gmail.com`, 프로젝트 `ugrp-sim-b-1014`; 모든 gcloud에 두 인자를 명시). 첫 프로젝트의 23:02 KST 예산 정지와 후속 gcp2 이동 사용자 승인을 구분한다. 새 프로젝트의 budget-stop이 발동하면 즉시 중단하며 VM을 새로 만들지 않는다. 종료 시 다른 소유 작업이 없을 때만 VM을 정지하고 상태를 확인한다.
+GCP는 정확한 소스를 먼저 고정하고 공통 bare를 직접 reference한 새 사본에서 실행한다. 공통 bare/다른 원본을 지우거나 gc/prune하지 않는다. 기존 실행기처럼 소유 세션을 종료한다.
 
-`scripts/probe_scene_tex2.py`는 Linux/PASS 증거/고정 소스를 확인하고 `mj_forward`만 쓰는 정적 평가다. 네 지도×벽을 보는 두 거리×주행/HIGH/가림×r1/r2×기존 두 프로필/v2를 비교한다. 카메라 위치/FOV·실제 fisheye 변환과 nearclip을 유지한다. 운반/가림 setup 좌표와 segmentation 정답은 평가 출력에만 있다. 청록/파랑 끝 색은 이 checkout에 교사 토글 소스가 없어 pinned 외부 색을 기존 band geom에 평가 setup으로 입히며, 실제 소비자 토글 통합을 대신하지 않는다. 프레임·컴파일 물리/카메라 배열·PNG/JPEG 색/ORB·분할·기존/후보 벽 판독과 funnel·전체 SHA를 보존한다. 정적 렌더는 물리 운반·ACT·자기 위치/회전 추정 성공이 아니다.
+```sh
+MUJOCO_GL=osmesa python scripts/ugrp_session.py run <own-session> -- python -m scripts.probe_scene_tex2 --execute --source-sha 1e9594a9fececf1c5fa4387ed7ac9f08a8459629 --setup-proof <copied-gcp2setup-PASS> --output <new-persistent-run>
+python scripts/summarize_scene_tex2_probe.py --input <run> --output <new-analysis>
+python experiments/2026-10-15-scene-tex2/analyze_camera_compatibility.py --input <run> --output <new-compat> --reader-script scripts/summarize_scene_tex2_probe.py
+python experiments/2026-10-15-scene-tex2/digest_camera_results.py --input <run> --output <new-digest> --reader-script scripts/summarize_scene_tex2_probe.py
+python experiments/2026-10-15-scene-tex2/verify_saved_raw.py --input <run> --output <new-preservation.json>
+```
 
-현재 진행/최종 판정·원격 실행 여부·소스 SHA·검증 수는 `summary.json`에서 관리한다. 진행 중·미회수 결과를 완료로 기록하지 않는다. 자료는 로컬 프로젝트에 보존한다.
+분석은 Linux/GCP에서만 실행한다. 실제 실행 명령·스크립트 해시·소스 파일 해시는 각 GCP summary에 있다. `--poses drive`는 별도48프레임 진단, `--poses paint_C`는24프레임이다. 전체264의 재현에는 옵션을 생략한다. 정적 판정이며 새30SIM초·10Hz실패 고리 기록은 적용할 동적 실행을 하지 않았다.
 
-## 참고 자료 (2026-10-15 확인)
+## 참고 자료 (2026-10-15/16 확인)
 
-- [OpenCV 공식 ORB 설명](https://docs.opencv.org/4.13.0/d1/d89/tutorial_py_orb.html): FAST/Harris와 방향 보정 BRIEF, 기본 WTA_K=2의 Hamming 비교를 확인했다. 새 학습 특징점을 도입하지 않고 기존 ORB로 재질을 비교했다.
-- [MuJoCo 공식 XML reference, texture/material](https://mujoco.readthedocs.io/en/stable/XMLreference.html#asset-texture): 각 cube 면의 개별 PNG, `texuniform`과 2d `texrepeat` 매핑 의미를 확인했다. 이 문서는 실제 카메라 이미지의 검증을 대신하지 않는다.
-- [OpenCV 공식 camera geometry](https://docs.opencv.org/4.13.0/d9/d0c/group__calib3d.html): 보정·왜곡 모델의 경계를 확인했다. 이번 작업은 기존 실제 카메라/FOV와 fisheye 변환을 재사용하며 제어기 yaw 수용 상수를 새로 정하지 않는다.
-- 저장소 기존 근거: [v1 PR #511 검토·검출기 감사](../2026-10-15-scene-floor-texture/README.md), 고정 `experiments/2026-09-26-markerless-probe/markerless_probe.py`의 벽띠 알고리즘, `harness/e2e_rgb_gate.py`와 색 소스 목록. 외부 원본 영상은 이번 Mac 작업에서 재생하지 않았다.
-
-## GCP B 결과와 C 수정 (2026-10-16 KST)
-
-`3f5feb73` 첫 시도는 H1/H2 allow-list 오류로 프레임0·MODEL_HOST_ERROR였으며, 원본과 [실패 기록](host-error-static-a.json)을 보존했다. 기존 `zone_heldout_scene.install` 준비 어댑터를 쓰도록 고친 `7c45215e`는 **144/144 정적 조건 완료**, 컴파일 물리·카메라 동일성 12/12, 원본2,921파일과 압축146기록의 복원 SHA를 확인했다. 분포·funnel은 [B 관문표](camera-b-rejection-table.json), [원격 요약](gcp-static-b-summary.json), [실행 funnel](gcp-static-b-funnel.json)에 있다.
-
-GCP에서 ffmpeg으로 만든 24장 비교 몽타주를 파일로 직접 봤다. 네 지도 r1 주행에서 v2 벽 무늬가 중심으로 모이는 방사형 늘어짐을 보였고, 가림 HIGH에서는 빔과 바닥만 보이며 벽이 없었다. 실제 48프레임 중 벽이 보인20, 벽 내부 descriptor support가 있는3이다. 가림16/16에서 빔/상대는 보였지만 벽은0·벽 ORB0이었다. 이 결과는 자세/가림의 관측 한계이며 질감만으로 회전 오류를 해결했다고 할 수 없다.
-
-C는 이 검토 뒤 수정한 **새 해시 후보**다. `texuniform=false`로 개별 면의 unit-box PNG를 매핑하고 재질 채도는 S16→8로 낮췄다. [MuJoCo 3.12.0 공식 렌더 코드](https://github.com/google-deepmind/mujoco/blob/3.12.0/src/render/classic/render_gl3.c#L225)는 true일 때 cube TexGen에 geom size를 곱한다. 얇은 벽에서는 실제 면과 다른 cube 면이 선택돼 방사형 늘어짐이 생긴다. 기존 v1은 재생용으로 그대로 두고 v2만 고쳤다. [C 설계·PNG 결과](candidate-c.json)의 manifest는 `ea58773c500dd9bc5dbf3ede4edf5419535c306d3f9c3c11de935a5089af9858`, 프로필은 `f6d825b6a52b2c86a80b6a02ed697b1337888224d49aad47325691e8d44d710d`다. [C 전체 색 표](png-audit-c/color-ranges.md)는 108범위 겹침0이며 기존 B/C를 합산하지 않는다.
-
-C의 새 정적 비교는 기존144조건에 실제 상자4색·빔 끝2색·구역A/B/C를 보는120조건을 더한264프레임이다. 추가 자세는 FOLDED와 원래 카메라/물리/색을 쓰고 객체 freejoint의 setup 위치만 평가용으로 배치한다. 미노출은 미검증으로 기록한다. 프레임의 full detector dictionary 차이는 추정/debug 수치까지 포함하므로 의미적 색/물체 검출 실패와 구분한다. 아직 실제 C 관문은 실행 전이며 최종 결과는 summary.json에 후속 기록한다.
-
-## C 카메라 검토 뒤 D 비교
-
-C는 264/264 프레임·원본 5,322파일/42,155,049 bytes와 압축267기록의 복원 SHA까지 확인했다. [C 원격 요약](gcp-static-c-summary.json), [분석 요약](gcp-analysis-c-summary.json), [거부 사유](camera-c-rejection-table.json)를 보존한다. C PNG88프레임 중 벽 내부 ORB가 남는 프레임은9, JPEG는8이고, 가림16프레임의 벽은 모두 보이지 않았다. C의 v2 벽띠 adapter도 주행 JPEG16프레임에서 모두 기권해 사용할 수 없다.
-
-직접 본 C 몽타주의 가로 늘어짐은 ±X cube면의 PNG 폭/높이를 Y/Z로 저작한 문제와 일치했다. [Khronos 공식 cube map 규격](https://registry.khronos.org/OpenGL/extensions/ARB/ARB_texture_cube_map.txt)의 ±X면은 s=∓Z, t=−Y이므로 v2만 Z/Y로 고친다. 또한 6.5m 벽 전체를 512 texel로 내리는 동안 4–23mm 반경의 마모가 소실돼, D는 같은 불규칙 마모를 저작64px/m(반경31–188mm)로 비교한다. 실물 치수/수용 기준이 아닌 재질 설계이며 카메라 검증이 필요하다. 기존 v1 자산·축·코드는 유지한다.
-
-D의 정사각 cube면 PNG 원본 ORB는150면 모두0이다. 비율을 복원한 실제 벽 화면과 다르므로 이 0을 숨기거나 충분한 특징으로 판정하지 않는다. 바닥은 C와 바이트 동일(640×480 ORB767–793), 108대상 범위 겹침0이다. D의 GCP 정적 비교 뒤 실제 특징으로 최종 선택한다.
-
-## D 카메라 결과와 E 해상도 비교
-
-D는264/264 완료·분석 오류0이며 실제 벽 내부 ORB는PNG/JPEG88프레임 모두0이다([D 거부표](camera-d-rejection-table.json)). 직접 본 D몽타주에서는 가로늘어짐이 사라져 독립 얼룩으로 보였지만 부드러운 큰 얼룩뿐이었다. 큰 무늬를 택하지 않고 E는면 축수정을 유지하면서512px/m의미세마모로복귀·cube면을1024로높인다(6.5m면12.7→6.35mm/texel). 이는재질저작해상도이며수용값이아니다. [E PNG](png-audit-e/offline-audit.json)는벽150면원본ORB최소0/중앙0/최대483, 바닥767–793,108범위침범0이다. 실제카메라주행시점부터다시비교한다.
-
-C/D의구역C시점은divider벽에가려8/8미노출이었다. 평가시점만구역남쪽1.5m·북향으로보완한다. `--poses`는검사할자세만고르는평가옵션이며기본264조건은그대로다. 물리·카메라·구역페인트를수정하지않는다.
+- [MuJoCo3.12.0 공식 렌더 코드](https://github.com/google-deepmind/mujoco/blob/3.12.0/src/render/classic/render_gl3.c#L225): cube TexGen의 texuniform 실제 치수 배율 확인. 문서만으로 영상 검증을 대신하지 않았다.
+- [Khronos ARB_texture_cube_map 규격](https://registry.khronos.org/OpenGL/extensions/ARB/ARB_texture_cube_map.txt): ±X면 s=∓Z/t=−Y, ±Y면 X/Z, ±Z면 X/Y로 PNG 비율 수정.
+- [MuJoCo 공식 XML texture/material](https://mujoco.readthedocs.io/en/stable/XMLreference.html#asset-texture): 개별 cube면 PNG와 물체/skybox 축 차이 확인.
+- [OpenCV 공식 ORB 설명](https://docs.opencv.org/4.13.0/d1/d89/tutorial_py_orb.html): FAST/Harris·방향 보정 BRIEF·Hamming. 이번 비교는 기존 ORB 설정을 유지한다.
+- [OpenCV 공식 camera geometry](https://docs.opencv.org/4.13.0/d9/d0c/group__calib3d.html): 실제 카메라/왜곡 모델과 보정의 검증 경계를 구분했다.
+- [PR511 기존 질감 검토](../2026-10-15-scene-floor-texture/README.md), `harness/e2e_rgb_gate.py`, 고정 `experiments/2026-09-26-markerless-probe/markerless_probe.py`, [전체 색 소스](color_external_sources.json).

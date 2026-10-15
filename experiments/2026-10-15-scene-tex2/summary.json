@@ -1,54 +1,693 @@
 {
-  "schema": "ugrp.scene_tex2_summary.v1",
-  "status": "PNG_VERIFIED_WAITING_GCP2_SETUP",
+  "schema": "ugrp.scene_tex2_summary.v2",
+  "status": "STATIC_MEASURED_NOT_READY",
   "ready": false,
   "profile": "walls_floor_textured_v2",
-  "asset_manifest_sha256": "7d65a69a2805af70bd2df4c7a0669ecf0e6210d670a853b8b05c75cdcfe444b5",
-  "selected_png_audit": "png-audit-final/offline-audit.json",
-  "candidate_a_png_audit": "png-audit/offline-audit.json",
-  "candidate_a_raw_local": "/Users/changmin/projects/ugrp-wt/scene-tex2/outputs/scene-tex2/candidate-a-assets",
-  "pngs": 151,
-  "wall_orb": {
-    "min": 5,
-    "median": 168,
-    "max": 791
-  },
-  "floor_640x480_orb": [
-    785,
-    738,
-    754,
-    776
+  "default": "off",
+  "source_sha": "1e9594a9fececf1c5fa4387ed7ac9f08a8459629",
+  "asset_manifest_sha256": "9afa87ec4a04eb230f284b031e4bb57d0ca8ff1a2c6c967b29a9b7da3c3ee396",
+  "profile_sha256": "edf3a92a41422a10151b9cb95ec7925998f6790485e28b1920d03ce4576cd9a8",
+  "selected_png_audit": "png-audit-e/offline-audit.json",
+  "png_wall_orb_min_median_max": [
+    0,
+    0,
+    483
   ],
-  "wall_distant_repeat_fraction_max": 0.022988505747126436,
-  "wall_duplicate_32px_patch_fraction_max": 0,
-  "fixed_color_range_count": 108,
-  "fixed_color_overlap_hits": 0,
+  "png_wall_positive_faces": 47,
+  "png_floor_640x480_orb": [
+    793,
+    767,
+    772,
+    793
+  ],
+  "png_fixed_color_ranges": 108,
+  "png_fixed_color_overlap_hits": 0,
+  "png_distant_descriptor_repeat_max_valid_faces": 0.02511415525114155,
+  "png_descriptor_available_wall_faces": 47,
+  "png_duplicate_32px_patch_fraction_max": 0,
+  "png_highpass_NCC_max": 0.8550558939583078,
   "wall_floor_V_gap": 12,
-  "camera_verified": false,
-  "occluded_wall_features": null,
-  "detector_camera_parity_verified": false,
-  "remote_runs": [],
-  "failures": [],
-  "host_errors": [],
+  "static_frames": 264,
+  "v2_frames": 88,
+  "physics_and_camera_identical_models": 12,
+  "scope": "static mj_forward only; no controller, task, yaw estimator or physics step",
+  "model_calls": 0,
+  "physics_steps": 0,
+  "sim_s": 0,
+  "Mac_camera_renders": 0,
+  "Mac_simulation_steps": 0,
+  "camera_surface_metrics": [
+    {
+      "profile": "walls_floor_textured_v2",
+      "encoding": "png",
+      "scope": "all",
+      "surface": "wall",
+      "frames_n": 88,
+      "visible_frames_n": 60,
+      "visible_pixels": {
+        "n": 88,
+        "missing_or_nonfinite_n": 0,
+        "min": 0.0,
+        "median": 30625.0,
+        "max": 252443.0,
+        "sum": 2968997.0,
+        "zero_n": 28
+      },
+      "orb_count": {
+        "n": 88,
+        "missing_or_nonfinite_n": 0,
+        "min": 0.0,
+        "median": 1.0,
+        "max": 126.0,
+        "sum": 1362.0,
+        "zero_n": 40
+      },
+      "interior_orb_count": {
+        "n": 88,
+        "missing_or_nonfinite_n": 0,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 29.0,
+        "sum": 150.0,
+        "zero_n": 77
+      },
+      "classification_micro": {
+        "tp": 2752475,
+        "fp": 209748,
+        "fn": 216522,
+        "iou": 0.8658999070387842,
+        "precision": 0.9291923666786734,
+        "recall": 0.9270723412654173,
+        "classified_frames_n": 88
+      }
+    },
+    {
+      "profile": "walls_floor_textured_v2",
+      "encoding": "png",
+      "scope": "all",
+      "surface": "floor",
+      "frames_n": 88,
+      "visible_frames_n": 81,
+      "visible_pixels": {
+        "n": 88,
+        "missing_or_nonfinite_n": 0,
+        "min": 0.0,
+        "median": 36758.0,
+        "max": 202339.0,
+        "sum": 6382527.0,
+        "zero_n": 7
+      },
+      "orb_count": {
+        "n": 88,
+        "missing_or_nonfinite_n": 0,
+        "min": 0.0,
+        "median": 8.0,
+        "max": 34.0,
+        "sum": 950.0,
+        "zero_n": 11
+      },
+      "interior_orb_count": {
+        "n": 88,
+        "missing_or_nonfinite_n": 0,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 1.0,
+        "sum": 4.0,
+        "zero_n": 84
+      },
+      "classification_micro": {
+        "tp": 5522527,
+        "fp": 10090,
+        "fn": 860000,
+        "iou": 0.8638914234968246,
+        "precision": 0.9981762699279564,
+        "recall": 0.8652571309138214,
+        "classified_frames_n": 88
+      }
+    },
+    {
+      "profile": "walls_floor_textured_v2",
+      "encoding": "png",
+      "scope": "drive",
+      "surface": "wall",
+      "frames_n": 16,
+      "visible_frames_n": 16,
+      "visible_pixels": {
+        "n": 16,
+        "missing_or_nonfinite_n": 0,
+        "min": 26586.0,
+        "median": 46881.5,
+        "max": 129640.0,
+        "sum": 965006.0,
+        "zero_n": 0
+      },
+      "orb_count": {
+        "n": 16,
+        "missing_or_nonfinite_n": 0,
+        "min": 0.0,
+        "median": 16.5,
+        "max": 126.0,
+        "sum": 487.0,
+        "zero_n": 3
+      },
+      "interior_orb_count": {
+        "n": 16,
+        "missing_or_nonfinite_n": 0,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 29.0,
+        "sum": 59.0,
+        "zero_n": 13
+      },
+      "classification_micro": {
+        "tp": 946183,
+        "fp": 31498,
+        "fn": 18823,
+        "iou": 0.9495024606022655,
+        "precision": 0.9677829476076553,
+        "recall": 0.9804944217963412,
+        "classified_frames_n": 16
+      }
+    },
+    {
+      "profile": "walls_floor_textured_v2",
+      "encoding": "png",
+      "scope": "drive",
+      "surface": "floor",
+      "frames_n": 16,
+      "visible_frames_n": 16,
+      "visible_pixels": {
+        "n": 16,
+        "missing_or_nonfinite_n": 0,
+        "min": 15954.0,
+        "median": 36645.5,
+        "max": 122803.0,
+        "sum": 852817.0,
+        "zero_n": 0
+      },
+      "orb_count": {
+        "n": 16,
+        "missing_or_nonfinite_n": 0,
+        "min": 1.0,
+        "median": 13.5,
+        "max": 34.0,
+        "sum": 249.0,
+        "zero_n": 0
+      },
+      "interior_orb_count": {
+        "n": 16,
+        "missing_or_nonfinite_n": 0,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 0.0,
+        "sum": 0.0,
+        "zero_n": 16
+      },
+      "classification_micro": {
+        "tp": 630469,
+        "fp": 4622,
+        "fn": 222348,
+        "iou": 0.7352931228927072,
+        "precision": 0.9927223027881044,
+        "recall": 0.7392781804302682,
+        "classified_frames_n": 16
+      }
+    },
+    {
+      "profile": "walls_floor_textured_v2",
+      "encoding": "jpeg",
+      "scope": "all",
+      "surface": "wall",
+      "frames_n": 88,
+      "visible_frames_n": 60,
+      "visible_pixels": {
+        "n": 88,
+        "missing_or_nonfinite_n": 0,
+        "min": 0.0,
+        "median": 30625.0,
+        "max": 252443.0,
+        "sum": 2968997.0,
+        "zero_n": 28
+      },
+      "orb_count": {
+        "n": 88,
+        "missing_or_nonfinite_n": 0,
+        "min": 0.0,
+        "median": 1.5,
+        "max": 136.0,
+        "sum": 1486.0,
+        "zero_n": 28
+      },
+      "interior_orb_count": {
+        "n": 88,
+        "missing_or_nonfinite_n": 0,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 33.0,
+        "sum": 129.0,
+        "zero_n": 77
+      },
+      "classification_micro": {
+        "tp": 2729933,
+        "fp": 221659,
+        "fn": 239064,
+        "iou": 0.8556024215709873,
+        "precision": 0.9249018834581473,
+        "recall": 0.9194798782215003,
+        "classified_frames_n": 88
+      }
+    },
+    {
+      "profile": "walls_floor_textured_v2",
+      "encoding": "jpeg",
+      "scope": "all",
+      "surface": "floor",
+      "frames_n": 88,
+      "visible_frames_n": 81,
+      "visible_pixels": {
+        "n": 88,
+        "missing_or_nonfinite_n": 0,
+        "min": 0.0,
+        "median": 36758.0,
+        "max": 202339.0,
+        "sum": 6382527.0,
+        "zero_n": 7
+      },
+      "orb_count": {
+        "n": 88,
+        "missing_or_nonfinite_n": 0,
+        "min": 0.0,
+        "median": 10.0,
+        "max": 33.0,
+        "sum": 1028.0,
+        "zero_n": 7
+      },
+      "interior_orb_count": {
+        "n": 88,
+        "missing_or_nonfinite_n": 0,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 3.0,
+        "sum": 12.0,
+        "zero_n": 84
+      },
+      "classification_micro": {
+        "tp": 5502991,
+        "fp": 10162,
+        "fn": 879536,
+        "iou": 0.8608257026112173,
+        "precision": 0.9981567716332197,
+        "recall": 0.8621962742969986,
+        "classified_frames_n": 88
+      }
+    },
+    {
+      "profile": "walls_floor_textured_v2",
+      "encoding": "jpeg",
+      "scope": "drive",
+      "surface": "wall",
+      "frames_n": 16,
+      "visible_frames_n": 16,
+      "visible_pixels": {
+        "n": 16,
+        "missing_or_nonfinite_n": 0,
+        "min": 26586.0,
+        "median": 46881.5,
+        "max": 129640.0,
+        "sum": 965006.0,
+        "zero_n": 0
+      },
+      "orb_count": {
+        "n": 16,
+        "missing_or_nonfinite_n": 0,
+        "min": 1.0,
+        "median": 18.0,
+        "max": 136.0,
+        "sum": 537.0,
+        "zero_n": 0
+      },
+      "interior_orb_count": {
+        "n": 16,
+        "missing_or_nonfinite_n": 0,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 33.0,
+        "sum": 55.0,
+        "zero_n": 13
+      },
+      "classification_micro": {
+        "tp": 935603,
+        "fp": 29327,
+        "fn": 29403,
+        "iou": 0.9409352802330808,
+        "precision": 0.9696071217601276,
+        "recall": 0.9695307593942422,
+        "classified_frames_n": 16
+      }
+    },
+    {
+      "profile": "walls_floor_textured_v2",
+      "encoding": "jpeg",
+      "scope": "drive",
+      "surface": "floor",
+      "frames_n": 16,
+      "visible_frames_n": 16,
+      "visible_pixels": {
+        "n": 16,
+        "missing_or_nonfinite_n": 0,
+        "min": 15954.0,
+        "median": 36645.5,
+        "max": 122803.0,
+        "sum": 852817.0,
+        "zero_n": 0
+      },
+      "orb_count": {
+        "n": 16,
+        "missing_or_nonfinite_n": 0,
+        "min": 2.0,
+        "median": 14.5,
+        "max": 33.0,
+        "sum": 258.0,
+        "zero_n": 0
+      },
+      "interior_orb_count": {
+        "n": 16,
+        "missing_or_nonfinite_n": 0,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 0.0,
+        "sum": 0.0,
+        "zero_n": 16
+      },
+      "classification_micro": {
+        "tp": 635030,
+        "fp": 4619,
+        "fn": 217787,
+        "iou": 0.7406150429886312,
+        "precision": 0.992778852151727,
+        "recall": 0.7446263383586397,
+        "classified_frames_n": 16
+      }
+    }
+  ],
+  "occluded_wall_visible": 0,
+  "occluded_cases": 16,
+  "wall_feature_funnels_all_and_drive": [
+    {
+      "encoding": "png",
+      "scope": "all",
+      "stages": [
+        {
+          "stage": "saved_frame",
+          "cumulative_n": 88,
+          "rejected_n": 0
+        },
+        {
+          "stage": "wall_visible",
+          "cumulative_n": 60,
+          "rejected_n": 28
+        },
+        {
+          "stage": "wall_orb_positive",
+          "cumulative_n": 48,
+          "rejected_n": 12
+        },
+        {
+          "stage": "wall_interior_orb_positive",
+          "cumulative_n": 11,
+          "rejected_n": 37
+        }
+      ],
+      "interpretation": "zero/nonzero describes observed presence only; no ready criterion"
+    },
+    {
+      "encoding": "png",
+      "scope": "drive",
+      "stages": [
+        {
+          "stage": "saved_frame",
+          "cumulative_n": 16,
+          "rejected_n": 0
+        },
+        {
+          "stage": "wall_visible",
+          "cumulative_n": 16,
+          "rejected_n": 0
+        },
+        {
+          "stage": "wall_orb_positive",
+          "cumulative_n": 13,
+          "rejected_n": 3
+        },
+        {
+          "stage": "wall_interior_orb_positive",
+          "cumulative_n": 3,
+          "rejected_n": 10
+        }
+      ],
+      "interpretation": "zero/nonzero describes observed presence only; no ready criterion"
+    },
+    {
+      "encoding": "jpeg",
+      "scope": "all",
+      "stages": [
+        {
+          "stage": "saved_frame",
+          "cumulative_n": 88,
+          "rejected_n": 0
+        },
+        {
+          "stage": "wall_visible",
+          "cumulative_n": 60,
+          "rejected_n": 28
+        },
+        {
+          "stage": "wall_orb_positive",
+          "cumulative_n": 60,
+          "rejected_n": 0
+        },
+        {
+          "stage": "wall_interior_orb_positive",
+          "cumulative_n": 11,
+          "rejected_n": 49
+        }
+      ],
+      "interpretation": "zero/nonzero describes observed presence only; no ready criterion"
+    },
+    {
+      "encoding": "jpeg",
+      "scope": "drive",
+      "stages": [
+        {
+          "stage": "saved_frame",
+          "cumulative_n": 16,
+          "rejected_n": 0
+        },
+        {
+          "stage": "wall_visible",
+          "cumulative_n": 16,
+          "rejected_n": 0
+        },
+        {
+          "stage": "wall_orb_positive",
+          "cumulative_n": 16,
+          "rejected_n": 0
+        },
+        {
+          "stage": "wall_interior_orb_positive",
+          "cumulative_n": 3,
+          "rejected_n": 13
+        }
+      ],
+      "interpretation": "zero/nonzero describes observed presence only; no ready criterion"
+    }
+  ],
+  "box_kind_comparisons": [
+    {
+      "baseline": "floor_light_v1",
+      "encoding": "png",
+      "paired_frames": 88,
+      "same_kind_counts": 88,
+      "changed_by_pose": {}
+    },
+    {
+      "baseline": "floor_light_v1",
+      "encoding": "jpeg",
+      "paired_frames": 88,
+      "same_kind_counts": 76,
+      "changed_by_pose": {
+        "box_palette": 4,
+        "high": 8
+      }
+    },
+    {
+      "baseline": "floor_light_textured_v1",
+      "encoding": "png",
+      "paired_frames": 88,
+      "same_kind_counts": 88,
+      "changed_by_pose": {}
+    },
+    {
+      "baseline": "floor_light_textured_v1",
+      "encoding": "jpeg",
+      "paired_frames": 88,
+      "same_kind_counts": 82,
+      "changed_by_pose": {
+        "box_palette": 4,
+        "high": 2
+      }
+    }
+  ],
+  "camera_colour_overlap": "nonzero in both PNG/JPEG; full distributions in camera-e-colour-overlap-top10.json; range sums overlap and are not unique pixels",
+  "perception_calibrated": false,
+  "task_or_yaw_success_verified": false,
+  "remote_raw": {
+    "schema": "ugrp.scene_tex2_preservation.v1",
+    "raw": "/home/ugrp/ugrp-sim/runs/scenetex2-1e9594a9-static-e",
+    "source_sha": "1e9594a9fececf1c5fa4387ed7ac9f08a8459629",
+    "manifest": "SHA256SUMS.json.zst",
+    "manifest_sha256": "47561abd0b66845f46082468c13f1641aae335c81d3994a76b4caed462741e7d",
+    "file_count": 5324,
+    "bytes": 42951931,
+    "bad_files": [],
+    "compressed_records": 267,
+    "restored_bytes": 40878655,
+    "bad_restores": [],
+    "verification_script_sha256": "3e71f036ba8d40e4c461c40374efb7034b8f00ad45ed602ee3fc6ecc97618194"
+  },
+  "source_analysis_errors": 0,
+  "compatibility_analysis_errors": 0,
+  "digest_source_errors": 0,
   "cap_end": false,
-  "remaining": [
-    "gcp2setup PASS",
-    "gcp2 budget/lifecycle/disk checks",
-    "fixed-source static camera gate",
-    "raw retrieval hashes and visual inspection",
-    "camera detector compatibility decision"
+  "host_errors": [
+    {
+      "source_sha": "3f5feb73a87423a76685e76855dd515976298c9c",
+      "remote_raw": "/home/ugrp/ugrp-sim/runs/scenetex2-3f5feb73-static-a",
+      "local_summary": "/Users/changmin/projects/ugrp-wt/scene-tex2/outputs/scene-tex2/gcp-static-a/summary.json",
+      "hash_verification": {
+        "summary.json": true,
+        "rejection-table.json": true
+      },
+      "category": "MODEL_HOST_ERROR",
+      "reason": "H1/H2 incorrectly passed to final provider allow-list; corrected to existing preparation-only adapter",
+      "frames_rendered": 0,
+      "physics_steps": 0,
+      "not_pooled": true,
+      "next_source_sha": "7c45215ea5d875092dd03a05c2799fd13f75e113"
+    }
+  ],
+  "remote_runs": [
+    {
+      "source": "3f5feb73",
+      "raw": "/home/ugrp/ugrp-sim/runs/scenetex2-3f5feb73-static-a",
+      "frames": 0,
+      "status": "MODEL_HOST_ERROR"
+    },
+    {
+      "source": "7c45215e",
+      "raw": "/home/ugrp/ugrp-sim/runs/scenetex2-7c45215e-static-b",
+      "frames": 144,
+      "status": "MEASURED_COMPARISON_B"
+    },
+    {
+      "source": "f6acdbd5",
+      "raw": "/home/ugrp/ugrp-sim/runs/scenetex2-f6acdbd5-static-c",
+      "frames": 264,
+      "status": "MEASURED_COMPARISON_C"
+    },
+    {
+      "source": "89b50131",
+      "raw": "/home/ugrp/ugrp-sim/runs/scenetex2-89b50131-static-d",
+      "frames": 264,
+      "status": "MEASURED_COMPARISON_D"
+    },
+    {
+      "source": "1e9594a9",
+      "raw": "/home/ugrp/ugrp-sim/runs/scenetex2-1e9594a9-drive-e",
+      "frames": 48,
+      "status": "SEPARATE_DRIVE_PILOT"
+    },
+    {
+      "source": "1e9594a9fececf1c5fa4387ed7ac9f08a8459629",
+      "raw": "/home/ugrp/ugrp-sim/runs/scenetex2-1e9594a9-static-e",
+      "frames": 264,
+      "status": "FINAL_STATIC_COHORT"
+    }
+  ],
+  "remaining_issues": [
+    {
+      "category": "CARRY_WALL_NOT_VISIBLE",
+      "count": 16,
+      "blocking_object": "cargo_tex2_beam / camera direction in HIGH formation",
+      "minimum_gap_m": null,
+      "minimum_gap_reason": "image visibility, not collision clearance",
+      "reason": "All16 occlusion cases have beam+peer visible and0 wall pixels; texture cannot supply hidden wall observations."
+    },
+    {
+      "category": "DRIVE_INTERIOR_WALL_FEATURE_ABSENT",
+      "count": 13,
+      "blocking_object": "visible wall image / ORB descriptor footprint",
+      "minimum_gap_m": null,
+      "minimum_gap_reason": "image feature support, not collision clearance",
+      "reason": "Only3/16 drive frames retain whole wall descriptor support; no sufficiency threshold or localization success asserted."
+    },
+    {
+      "category": "JPEG_BOX_SEMANTIC_CHANGE",
+      "count": 6,
+      "baseline": "floor_light_textured_v1",
+      "blocking_object": "JPEG90 image / existing box kind detector",
+      "minimum_gap_m": null,
+      "minimum_gap_reason": "encoding/component result, not collision clearance",
+      "reason": "82/88 kind-count equality to old textured baseline; box_palette4 and high2 differ. two_doors view0 box_palette r1 loses red in v2."
+    },
+    {
+      "category": "V3_WALL_GEOMETRY_NOT_CALIBRATED",
+      "blocking_object": "legacy commanded-pose camera FK / nominal-window adapter",
+      "minimum_gap_m": null,
+      "minimum_gap_reason": "calibration, not collision clearance",
+      "reason": "Only4 column proposals total across16 drive frames per encoding. No correct-contact or v3 calibration admission."
+    }
   ],
   "rejection_table": "/Users/changmin/projects/ugrp-wt/scene-tex2/experiments/2026-10-15-scene-tex2/rejection-table.json",
-  "pooling": "new scene version; never combine legacy profiles or host cohorts",
-  "source_sha": "3f5feb73a87423a76685e76855dd515976298c9c",
-  "test_result": "49 passed in 4.42s; 3 targeted PNG/XML/pure evaluation files; no Mac models/render/steps",
-  "Mac_simulation_steps": 0,
-  "Mac_camera_renders": 0,
-  "model_calls": 0,
-  "profile_sha256": "594e0e373e771c8a43e69d0f9f386c6480e971fe9d4f057cdab27ca9b61b91a2",
-  "offline_test_log": {
-    "path": "/Users/changmin/projects/ugrp-wt/scene-tex2/outputs/scene-tex2/offline-tests.txt",
-    "sha256": "714cd001d89776c03851592b02da76578445516656470ed6d36b9656e71a2260"
+  "test_result": "55 passed in9.32s;3 targeted PNG/XML/pure files; no Mac model/render/physics",
+  "test_log_sha256": "fa0dc7b0b0e33f9f67adfce324f9d05ad944a2aedce01da4bbf1d88daccf4ee6",
+  "pr": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/527",
+  "pr_state": "draft; no merge",
+  "pooling": "B/C/D/E, legacy profiles and other hosts never pooled",
+  "retrieval": "fetch-lite summaries, hashes, small ledgers and GCP-composed representative montages verified; full original data intentionally remains on persistent GCP disk",
+  "visual_review": {
+    "method": "file-read3 static ffmpeg montages; no Mac GUI; SIM0 is not a robot playback",
+    "source_montages": [
+      {
+        "path": "/Users/changmin/projects/ugrp-wt/scene-tex2/outputs/scene-tex2/gcp-analysis-e/camera-montage.jpg",
+        "sha256": "4bc8313899e53b46b46721a39dbfaf89e3bf7b2486192d691e5b00e67031d2f8"
+      },
+      {
+        "path": "/Users/changmin/projects/ugrp-wt/scene-tex2/outputs/scene-tex2/gcp-analysis-e/colour-montage.jpg",
+        "sha256": "1b8c42ca2e7783a3bdfcf9cc773eae9f0d4f85549c8f7ebfcc03eb11078a96b6"
+      },
+      {
+        "path": "/Users/changmin/projects/ugrp-wt/scene-tex2/outputs/scene-tex2/gcp-digest-e/drive-all-views.jpg",
+        "sha256": "280f2f0443ec826d1e0e75cd8d60eadef343da938d509ddd8136a8f9f1c7afee"
+      }
+    ],
+    "observed": "all4maps/all2drive views: irregular wall mottles without prior radial/axis stretching; HIGH occlusion beam fills view and hides walls; revised south-facing C fixture shows original purple zone."
   },
-  "pr": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/527"
+  "vm_lifecycle": {
+    "instance": "ugrp-sim-gcp2",
+    "zone": "asia-northeast3-a",
+    "project": "ugrp-sim-b-1014",
+    "account": "changmin5781@gmail.com",
+    "status": "TERMINATED",
+    "machine_type": "n4-highcpu-64",
+    "created_vm": false,
+    "stopped_after_work": true,
+    "active_other_project_commands_before_stop": 0,
+    "lease_files_before_stop": 0,
+    "pre_stop_record": "/Users/changmin/projects/ugrp-wt/scene-tex2/outputs/scene-tex2/gcp-pre-stop.json",
+    "pre_stop_record_sha256": "8442b41f056dd72dc2c4123b59dbca8fe85f4747aaceba8be39d87b4e3ed346d",
+    "verified_at_utc": "2026-10-15T15:45:16.885510+00:00",
+    "budget_stop_triggered_in_task_project_observed": false,
+    "note": "Old project budget stop is distinct from user-authorized gcp2 project. No new VM or credential/model key deployment."
+  }
 }
