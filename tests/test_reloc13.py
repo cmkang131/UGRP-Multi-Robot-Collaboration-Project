@@ -62,3 +62,23 @@ def test_xy_reserve_toggle_does_not_change_unfitted_translation_growth():
     c=object.__new__(CarryToZone);c.loc=SimpleNamespace(sigmas=lambda:[.45,.45,.1])
     c.xy_reserve0=False; assert c.needs_budget()
     c.xy_reserve0=True; assert not c.needs_budget()
+
+
+def test_registration_keeps_command_evidence_and_execution_frames_distinct(monkeypatch):
+    from harness.natural_floor_slam import compose
+    static,_=g.static_input();edges,lines=edges_and_lines()
+    raw=np.diag([.03**2,.03**2,math.radians(1)**2])
+    r=g.StaticRegistration(static,multiframe_registration=reg.OPTION,
+        reloc10_registration_v1=True,reloc12_raw_cov_gate_v1=True,
+        reloc13_execution_cov_v1=True,reloc13_execution_frame_v1=True)
+    r.pf.landmark_map.edges=edges
+    monkeypatch.setattr(r.pf,'step',lambda **kw:dict(pose=[0,0,0],covariance=raw.tolist(),
+        updated=True,resolved=True,cluster={'mass':1.},sensor={}))
+    execution=np.array([.02,-.01,.2])
+    for i in range(3):
+        result=r.step(dict(features=lines,segments=[]),[0,0,0],{6:1000+i*300},i,[0,0,0],execution_pose=execution)
+    assert result is not None
+    np.testing.assert_allclose(result[0],execution,atol=1e-12)
+    np.testing.assert_allclose(compose(r.map_from_own,execution),[0,0,0],atol=1e-12)
+    np.testing.assert_allclose(r.command_registration_anchor,[0,0,0])
+    assert not r.execution_handoff  # mapper must still see correction admission

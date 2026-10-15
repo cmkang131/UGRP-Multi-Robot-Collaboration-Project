@@ -47,15 +47,18 @@ class Options:
     reloc12_raw_cov_gate_v1: bool = False
     reloc12_ransac_hypotheses_v1: bool = False
     reloc13_execution_cov_v1: bool = False
+    reloc13_execution_frame_v1: bool = False
     revision_xy_threshold_m: float = .1
     revision_yaw_threshold_rad: float = math.radians(5)
 
     def __post_init__(self):
-        for name in ('reloc12_raw_cov_gate_v1', 'reloc12_ransac_hypotheses_v1', 'reloc13_execution_cov_v1'):
+        for name in ('reloc12_raw_cov_gate_v1', 'reloc12_ransac_hypotheses_v1', 'reloc13_execution_cov_v1', 'reloc13_execution_frame_v1'):
             if type(getattr(self, name)) is not bool or (getattr(self, name) and self.multiframe_registration == 'off'):
                 raise ValueError('reloc12 requires multiframe registration and bool toggles')
         if self.reloc13_execution_cov_v1 and not self.reloc12_raw_cov_gate_v1:
             raise ValueError('reloc13 execution covariance requires raw gate')
+        if self.reloc13_execution_frame_v1 and not self.reloc13_execution_cov_v1:
+            raise ValueError('reloc13 execution frame requires execution covariance')
         from harness.reloc9_rotation import selfmap_model
         from harness.reloc9_wall_guard import validate as validate_wall
         object.__setattr__(self, 'motion_model', selfmap_model(self.motion_model, self.reloc9_rotation_calibration_v1))
@@ -207,6 +210,7 @@ class SelfMapIntegration:
                 reloc12_raw_cov_gate_v1=self.options.reloc12_raw_cov_gate_v1,
                 reloc12_ransac_hypotheses_v1=self.options.reloc12_ransac_hypotheses_v1,
                 reloc13_execution_cov_v1=self.options.reloc13_execution_cov_v1,
+                reloc13_execution_frame_v1=self.options.reloc13_execution_frame_v1,
 
                 correction_safety=self.options.correction_safety,
                 active_relocalization=self.options.active_relocalization)
@@ -269,7 +273,9 @@ class SelfMapIntegration:
             covariance=np.asarray(covariance).copy(),
             slam={k: copy.deepcopy(getattr(self.slam, k)) for k in keys},
             anchor=self.last_visual_frame_id, distance=self.distance_since_visual,
-            attempts=len(self.rebuilds), map_from_own=copy.deepcopy(self.registration.map_from_own))
+            attempts=len(self.rebuilds), map_from_own=copy.deepcopy(self.registration.map_from_own),
+            command_registration_anchor=copy.deepcopy(getattr(self.registration, "command_registration_anchor", None)),
+            execution_handoff=getattr(self.registration, "execution_handoff", False))
         self.rebuild_attempt_offset = len(self.rebuilds)
 
     def release_quarantine(self, t):
@@ -281,6 +287,8 @@ class SelfMapIntegration:
         for key, value in saved['slam'].items():
             setattr(self.slam, key, value)
         self.registration.map_from_own = saved['map_from_own']
+        self.registration.command_registration_anchor = saved['command_registration_anchor']
+        self.registration.execution_handoff = saved['execution_handoff']
         self.registration.confirmations.clear(); self.registration.confirmation_views.clear()
         self.registration.end_sweep()
         self.flow.previous = None
@@ -469,7 +477,8 @@ class SelfMapIntegration:
             registration_reference = (np.asarray(self.odom.pose) if self.options.reloc10_registration_v1
                                       else compose(self.slam.pose, self.delta))
             static_pose = self.registration.step(wall_observation, self.delta, self.servo,
-                                                 t, registration_reference)
+                                                 t, registration_reference,
+                **({"execution_pose": compose(self.slam.pose, self.delta)} if self.options.reloc13_execution_frame_v1 else {}))
             prior = compose(self.slam.pose, self.delta)
         predicted_covariance = _motion_covariance(self.slam.pose, self.delta, self.slam.covariance, self.Q)
         if self.options.revision_gate != 'off':
@@ -508,6 +517,7 @@ class SelfMapIntegration:
                                            correction_gate=admit, pose_override=static_pose)
             if static_pose is not None and event['status'] == 'visual_relocalized':
                 event['reason'] = 'selfmap4_static_lines'
+                self.registration.execution_handoff = True
         else:
             event = self.slam.step(observation, command_delta=self.delta, command_covariance=self.Q)
         if static_pose is not None and self.correction_gate is None:
@@ -554,6 +564,9 @@ class SelfMapIntegration:
                 not self.recovery or self.rebuild_attempts() < 2):
             self.rebuild(t)
         reasons = []
+        if (self.options.reloc13_execution_frame_v1 and self.registration.map_from_own is not None
+                and not self.registration.execution_handoff):
+            reasons.append('static_execution_handoff_pending')
         if held: reasons.append('commanded_grip_closed')
         if not settled: reasons.append('camera_unsettled')
         prior_insertion = self.options.bootstrap != 'off' and not (visual or bootstrap)

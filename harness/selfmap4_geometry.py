@@ -151,7 +151,7 @@ class StaticRegistration:
     Unresolved hypotheses can propose look directions but cannot clip/clear maps
     or lower pose covariance. Registration has to survive three distinct views.
     """
-    def __init__(self, static, *, multiframe_registration='off', correction_safety='off', active_relocalization='off', reloc10_registration_v1=False, reloc11_wall_field_v1=False, reloc12_raw_cov_gate_v1=False, reloc12_ransac_hypotheses_v1=False, reloc13_execution_cov_v1=False):
+    def __init__(self, static, *, multiframe_registration='off', correction_safety='off', active_relocalization='off', reloc10_registration_v1=False, reloc11_wall_field_v1=False, reloc12_raw_cov_gate_v1=False, reloc12_ransac_hypotheses_v1=False, reloc13_execution_cov_v1=False, reloc13_execution_frame_v1=False):
         from harness.e2e_static_rgb_localizer import create
         from harness.self_map_landmark_sensor import Sensor
         if set(static) != {'map_id', 'version', 'frame', 'bounds_m', 'obstacles', 'regions', 'passages'}:
@@ -163,6 +163,11 @@ class StaticRegistration:
                 raise ValueError('reloc12 requires multiframe registration and bool toggles')
         if type(reloc13_execution_cov_v1) is not bool or (reloc13_execution_cov_v1 and not reloc12_raw_cov_gate_v1):
             raise ValueError('reloc13 execution covariance requires raw gate')
+        if type(reloc13_execution_frame_v1) is not bool or (reloc13_execution_frame_v1 and not reloc13_execution_cov_v1):
+            raise ValueError('reloc13 execution frame requires execution covariance')
+        self.execution_frame = reloc13_execution_frame_v1
+        self.command_registration_anchor = None
+        self.execution_handoff = False
         self.execution_cov = reloc13_execution_cov_v1
         self.raw_cov_gate = reloc12_raw_cov_gate_v1
         self.ransac_hypotheses = reloc12_ransac_hypotheses_v1
@@ -237,7 +242,7 @@ class StaticRegistration:
         return bool(rank), dict(supported_floor_lines=len(normals),
             independent_line_axes=bool(rank), max_line_error_m=max(residuals, default=None))
 
-    def step(self, observation, delta, servo, t, own_pose):
+    def step(self, observation, delta, servo, t, own_pose, *, execution_pose=None):
         from harness.self_map_csm import sample_segments
         row = self.pf.step(t=t, points=sample_segments(observation['segments']),
                            delta=delta, servo=servo, features=observation['features'])
@@ -309,7 +314,13 @@ class StaticRegistration:
             self.confirmations.append(anchor)
             self.confirmation_views.add(view)
             if len(self.confirmations) >= 3 and self.map_from_own is None:
-                self.map_from_own = anchor.copy()
+                self.command_registration_anchor = anchor.copy()
+                # R1 GCP: command odometry and the live ORB frame differed by
+                # 11-13deg. Use commands to test R7 anchor stability, but map
+                # the *execution* frame to world at registration. No truth and
+                # no correction-gate bypass; the first local fix has zero jump.
+                self.map_from_own = (compose(row['pose'], inverse(execution_pose))
+                    if self.execution_frame and execution_pose is not None else anchor.copy())
         elif row['updated'] and not reliable:
             self.confirmations.clear(); self.confirmation_views.clear()
         rejection = []
@@ -344,7 +355,10 @@ class StaticRegistration:
                 ransac_hypotheses=self.ransac_hypotheses,
                 reliable_gate_covariance=gate_cov.tolist(),
                 residual_covariance=cov.tolist(),
-                registered_world_pose=None if self.map_from_own is None else compose(self.map_from_own, own_pose).tolist(),
+                registered_world_pose=None if self.map_from_own is None else compose(
+                    self.command_registration_anchor if self.execution_frame else self.map_from_own, own_pose).tolist(),
+                map_from_execution=None if self.map_from_own is None else self.map_from_own.tolist(),
+                execution_frame_v1=self.execution_frame,
                 replay=replay_packet(self.evidence, own_pose, observation, t),
                 rejection=dict(category=rejection[0] if rejection else 'accepted',
                     blocked_object='static_registration_evidence', minimum_gap_m=None,

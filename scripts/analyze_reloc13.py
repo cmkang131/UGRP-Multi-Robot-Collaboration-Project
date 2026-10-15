@@ -55,7 +55,7 @@ def analyze(folder):
         replay = s.get('reloc12', {})
         t = truth.get(round(r['t'], 6))
         if t and registered and replay.get('registered_world_pose') is not None:
-            anchor = compose(replay['registered_world_pose'], inverse(replay['replay']['own_odometry_pose']))
+            anchor = np.asarray(replay['map_from_execution']) if replay.get('execution_frame_v1') else compose(replay['registered_world_pose'], inverse(replay['replay']['own_odometry_pose']))
             p = compose(anchor, r['pose'])
             xy = math.dist(p[:2], t['robot_xyz_m'][:2])
             yaw = abs(math.degrees(math.atan2(math.sin(p[2]-t['robot_yaw_rad']), math.cos(p[2]-t['robot_yaw_rad']))))
@@ -70,7 +70,8 @@ def analyze(folder):
                 category += ':'+str(e['source'])+':'+str(e['visual_reason'])
                 classes[category] += 1; bad.append(e)
             if not prior_registered:
-                events.append(dict(t=r['t'], xy_m=xy, yaw_deg=yaw, false=xy > .1 or yaw > 5))
+                p=np.asarray(s['world_pose']);exy=math.dist(p[:2],t['robot_xyz_m'][:2]);eya=abs(math.degrees(math.atan2(math.sin(p[2]-t['robot_yaw_rad']),math.cos(p[2]-t['robot_yaw_rad']))))
+                events.append(dict(t=r['t'],xy_m=exy,yaw_deg=eya,false=exy>.1 or eya>5))
         prior_registered = registered
         if s.get('updated'):
             geom.append(dict(t=r['t'], geo=s.get('geometry'), inliers=r.get('inliers'), matches=r.get('matches')))
@@ -84,7 +85,8 @@ def analyze(folder):
         bad_errors=dict(N=len(bad), xy_m=distribution([e['xy_m'] for e in bad]), yaw_deg=distribution([e['yaw_deg'] for e in bad]),
                         classification=dict(classes), frames=bad),
         termination=dict(status=result.get('status'), category=result.get('termination_category'),
-                         reason=result.get('stop_reason'), elapsed_sim_s=result.get('elapsed_sim_s'),
+                         reason=result.get('stop_reason') or result.get('error'), elapsed_sim_s=result.get('elapsed_sim_s'),
+                         supervisor_stop=obj(folder/'SUPERVISOR_STOP.json'),
                          code_vs_host='controller_budget_exhaustion' if result.get('stop_reason') == 'selfmap4_relocalization_exhausted' else 'see_reason'),
         first30=obj(raw/'first30.json'), input_audit=result.get('input_audit'),
         final_frame={k:trace[-1].get(k) for k in ('t','stage','executor_stop_reason','insertion_blockers','frontier_reason')} if trace else {},

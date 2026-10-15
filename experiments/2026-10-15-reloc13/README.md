@@ -9,3 +9,11 @@
 질감 주 장면, smooth 기준1회. 첫 라운드는 texture selfmap93571/93585 + smooth93571 + carry93266/93315(미사용 시드) 총5회. 최대3라운드, 각4–6회, gcp1/n4-highcpu-64, 전체40/VM24h STOP·idle20분·budget-stop 유지. 학습/실제 모델0, weld OFF, TOP 제어0. 실행 소스는 먼저 커밋하고 봉인한다. 관문표·평가 정답은 실행 입력에 넣지 않는다.
 
 검색은 기존 RANSAC 최대4096제안·A*40000노드·탐색SIM deadline을 사용하며 wall 시간 예산을 새로 도입하지 않는다. 결과·원본은 실행 완료 후 이 기록에 추가한다. 현재 물리 검증 대기, 큐 미승인이다.
+
+## R1 실행 자세 전달 결함과 R2 수정
+
+R1 texture2회는 첫 등록오류0/2였으나 등록 후149프레임 전부 yaw10–13° 오류였다. 지도 삽입146프레임·주행52프레임이 열렸으므로 covariance만 고친 후보는 채택하지 않는다. 원본을 확인한 즉시 selfmap3회(smooth 포함)를 SIGINT로 중지했다([중지 영수증](stop-r1-selfmap.json), [관문/오류](round1-selfmap.json)). 이 HOST_ERROR는 감독 중지와 원래 reloc12의 복구 소진을 구분한다. CLI에 불필요한 --execute를 붙인 운반2회는 파서 종료2/물리0이며 같은 소스 재제출과 합산하지 않는다.
+
+정적 등록의 R7 앵커 기준은 명령 오도메트리이고, 반환 pose와 지도 셀 기준은 ORB 실행 프레임이었다. 두 프레임 사이11–13° 차이가 있었는데 같은 map_from_own을 썼다. 작은 공분산으로 바꾸자 올바른 정적 보정도 correction_gate에서 NIS14–17로 거부됐다. `reloc13_execution_frame_v1`(기본off, execution_cov 필요)은 명령 프레임을 R7 증거 기준으로 유지하고, 최초 등록의 world_pose와 동시 실행 예측 pose로 실행 프레임의 변환을 따로 고정한다. 따라서 최초 local 정적 보정의 innovation은0이며 기존 correction_gate를 우회하지 않는다. 등록이 끝나도 정적 보정 전달이 수용되기 전에는 `static_execution_handoff_pending`으로 삽입을 막는다. 향후 정적 보정·지도 경계·보기 방향은 동일한 실행 변환을 쓴다. 정답은 평가에만 쓴다.
+
+R2는 질감 selfmap 실패4시드93571/93585/93583/93584로 확인한다. 운반R1의 별도 경로는 계속 관찰한다. 79개 오프라인 검사 통과, Mac 물리/렌더0.
