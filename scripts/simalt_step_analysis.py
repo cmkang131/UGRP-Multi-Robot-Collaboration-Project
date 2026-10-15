@@ -74,7 +74,7 @@ def main():
         'base_endpoint_m':float(bd[-1]),'base_endpoint_deg':float(br[-1]),
         'box_endpoint_m':float(od[-1]),'box_endpoint_deg':float(orr[-1]),
         # User 2026-10-16 exploratory proposals, not new research acceptance constants.
-        'endpoint_pass':bool(complete and bd[-1]<=.005 and br[-1]<=2 and od[-1]<=.005 and orr[-1]<=2),
+        'endpoint_pass':bool(complete and not np.any(c[:,2]) and bd[-1]<=.005 and br[-1]<=2 and od[-1]<=.005 and orr[-1]<=2),
         'reproduce':sys.argv,'force_semantics':'contact-frame normal and tangential resultant; force API after noslip; no controller feedback',
         'missing_distance_semantics':'zero if no penetrating contact; consult count before interpreting',
         'max_abs_difference_by_metric':{name:float(np.max(np.abs(r[:,i]-c[:,i]))) for i,name in enumerate(rm['columns'])}}

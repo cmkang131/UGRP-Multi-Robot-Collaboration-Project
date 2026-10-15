@@ -28,3 +28,15 @@ simalt3 README/summary/rejection_table, 명령 trace 명세, C3.16 대조, conta
 - [공식 Discussions](https://github.com/google-deepmind/mujoco_warp/discussions) 및 grasp/friction/contact 검색: 이번 장면과 같은 파지 해결법을 확인하지 못했다. 일반 MuJoCo의 마찰/condim 변경 조언은 이번 허용 수정 범위 밖이다.
 
 참고 소스의 다운로드 URL·SHA는 `references/sources.json`에 보존한다. upstream 전체 소스 복제본은 결과 코드가 아니며 로컬 outputs와 VM 증거 경로에 둔다.
+
+## 중간 진단에서 확인한 범위
+
+매 스텝 감사의 C3.12/C3.16 재생은 simalt3의10Hz 상태와 각각 전부 비트 일치했다. Warp는 첫10Hz 표본부터 달랐고, 전진/측면/회전의 몸체 위치 차 최대는0.064/0.271/0.118mm, grip 공통14.5초에서는5.021mm였다. 로거 커널 추가 또는 GPU 비결정성의 기여는 분리하지 않았다. 따라서 새 dense replay의57,797번째 스텝(14.44925초) NEFC overflow는 새 코호트에서 확인한 버퍼 부적합이며, 원래 simalt3 실패가 overflow 때문이었다는 증거가 아니다. 초기에 이 현상을 '10Hz 검사에서 놓쳤다'고 표현한 것은 철회한다.
+
+C3.16의 dense 최대nefc129, 새 Warp prefix134 대 njmax128이었다. 이 원본 상한을 다음2의 거듭제곱256으로 올린2라운드는 grip173,600스텝 모두overflow0, 접촉0/30·패드 힘0으로 끝났다. 버퍼 확대가 파지 자체를 해결하지는 않았다.
+
+C3.13 추가 비교는 같은 XML에서 기존44개 모델 배열이C3.12와 같았지만 접촉0/30으로 실패했다(중간 보고의45개는44개의 오기다). 메시 원본4개를 추가한 최종 감사는48개다.3.13 Plane-Mesh 변경을 유력 후보로 두되, 버전 변경 전체의 다른 변경을 모두 배제한 bisect는 아니다.
+
+C3.16은 같은 XML에서도 팔4개 actuator_biasprm[:,2]가 달랐다. 공식3.15의 [dampratio reflected-inertia 변경](https://github.com/google-deepmind/mujoco/commit/b3dd9e617)과 부합한다. 이 감쇠/관절 이득을 수정하거나 원래값으로 덮어쓰지 않았다. C3.13도 실패하므로 이 감쇠 차이를 유일한 파지 원인으로 주장하지 않는다. geom_size/quat 차이는 메시 좌표계 재표현일 수 있어, body-frame vertex Hausdorff를 별도로 기록한다.
+
+로깅 초기4회(Model/Data를 Warp struct로 넘긴 구현 오류), legacy 최초1회(정수 상수 형 추론 오류)는수용physics step0의HOST_ERROR로 보존했다. 정밀 로거의수정 소스4585ac91, 버퍼/기록 옵션과legacy 컴파일 수정5ce41464는각각 새 경로에서 실행했다. 모든 실제 수정 후보에는10Hz·최대100장의기록 전용자기RGB ring을켰다. renderer는제어 경로와별도MjData의 C rasterizer이고Warp RGB 정보동등성 판정이아니다.
