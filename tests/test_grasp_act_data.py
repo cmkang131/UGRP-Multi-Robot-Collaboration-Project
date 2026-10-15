@@ -208,3 +208,33 @@ def test_incomplete_recording_is_not_admitted(tmp_path):
     write_json(raw / 'result.json', result)
     with pytest.raises(ValueError, match='completed successful'):
         convert(tmp_path, protocol(), tmp_path / 'not-ready', seeds=[1])
+
+
+def test_explicit_transport_sha_does_not_relax_teacher_pin(tmp_path):
+    raw, _, _ = episode(tmp_path, 1)
+    (raw.parent / 'SOURCE_SHA').write_text('b' * 40)
+    with pytest.raises(ValueError, match='transport source'):
+        convert(tmp_path, protocol(), tmp_path / 'unmapped', seeds=[1])
+    p = {**protocol(), 'transport_sha_by_seed': {'1': 'b' * 40}, 'run_class': 'dev'}
+    result = convert(tmp_path, p, tmp_path / 'mapped', seeds=[1])
+    assert result['episodes'][0]['source_hashes']['SOURCE_SHA'] == sha256(raw.parent / 'SOURCE_SHA')
+    metadata = json.loads((tmp_path / 'mapped/RUN_META.json').read_text())
+    assert metadata['class'] == 'dev'
+    value = json.loads((raw / 'result.json').read_text()); value['source_sha'] = 'b' * 40
+    write_json(raw / 'result.json', value)
+    with pytest.raises(ValueError, match='completed successful'):
+        convert(tmp_path, p, tmp_path / 'wrong-teacher', seeds=[1])
+
+
+def test_dataset_audit_checks_entire_inventory_and_both_splits(tmp_path):
+    from scripts.audit_grasp_act_dataset import audit
+    for seed in (1, 2):
+        episode(tmp_path, seed)
+    root = tmp_path / 'dataset'
+    convert(tmp_path, protocol(), root)
+    result = audit(root)
+    assert result['files_verified'] == 10
+    assert result['split_rows'] == {'train': 4, 'validation': 4}
+    (root / '2-r1/samples.json').write_text('[]')
+    with pytest.raises(ValueError, match='file hash'):
+        audit(root)

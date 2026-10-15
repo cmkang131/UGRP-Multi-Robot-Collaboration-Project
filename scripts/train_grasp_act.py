@@ -36,11 +36,16 @@ def main():
     p.add_argument('--run-class', choices=('dev', 'milestone'), default='milestone')
     p.add_argument('--profile-timing', action='store_true',
                    help='opt-in CUDA synchronization and pipeline timing; default off')
+    p.add_argument('--checkpoint-every', type=int, default=0,
+                   help='opt-in save interval; 0 keeps smoke100/main500; final always saved; no deletion')
     p.add_argument('--done-loss', choices=DONE_MODES, default='legacy_l1')
     p.add_argument('--done-loss-weight', type=float, default=1.)
     p.add_argument('--command-history-dropout', type=float, default=0.,
                    help='training only: replace whole normalized issued history with train mean; default off')
     a = p.parse_args()
+    if a.checkpoint_every < 0:
+        p.error('checkpoint interval must be nonnegative')
+    checkpoint_every = a.checkpoint_every or (100 if a.stage == 'smoke' else 500)
     validate_history_dropout(a.command_history_dropout)
     if not math.isfinite(a.done_loss_weight) or a.done_loss_weight <= 0:
         p.error('completion loss weight must be finite and positive')
@@ -71,6 +76,7 @@ def main():
         'steps_requested': a.steps, 'steps_completed': 0, 'seed': a.seed,
         'blank_images': a.blank_images, 'done_loss': a.done_loss, 'done_loss_weight': a.done_loss_weight,
         'command_history_dropout': a.command_history_dropout,
+        'checkpoint_every': checkpoint_every,
         'batch_size': 8, 'readback_verified': False,
         'gate_promotion_authorized_if_all_conditions_pass': False,
         'selection': 'fixed final step; validation never selects checkpoint'}
@@ -212,7 +218,7 @@ def main():
                     log.flush()
                     report.update(steps_completed=step, latest=row)
                     write_summary(a.output / 'summary.json', report)
-                if step % (100 if a.stage == 'smoke' else 500) == 0:
+                if step % checkpoint_every == 0:
                     checkpoint()
             checkpoint()
         report['peak_training_gpu_bytes'] = torch.cuda.max_memory_allocated()

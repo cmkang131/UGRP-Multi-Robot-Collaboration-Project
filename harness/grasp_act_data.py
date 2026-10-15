@@ -231,8 +231,12 @@ def convert(runs_root, protocol, output, *, seeds=None):
         for seed in seeds:
             run = Path(runs_root) / protocol['run_pattern'].format(seed=seed)
             raw = run / 'raw'
-            if (run / 'SOURCE_SHA').read_text().strip() != protocol['teacher_sha']:
-                raise ValueError('teacher source SHA mismatch')
+            # Remote runner transport checkout can differ from the pinned teacher.
+            # An explicit per-episode mapping is required; result.source_sha below
+            # must still match the executed teacher. Never rewrite original files.
+            transport_sha = protocol.get('transport_sha_by_seed', {}).get(str(seed), protocol['teacher_sha'])
+            if (run / 'SOURCE_SHA').read_text().strip() != transport_sha:
+                raise ValueError('transport source SHA mismatch')
             result_path = raw / 'result.json.zst' if (raw / 'result.json.zst').exists() else raw / 'result.json'
             result = read_json(result_path)
             if ((run / 'EXIT').read_text().strip() != '0' or result.get('status') != 'complete'
@@ -248,6 +252,9 @@ def convert(runs_root, protocol, output, *, seeds=None):
                         or result.get('input_audit', {}).get('held_world_reads') != 0
                         or result.get('input_audit', {}).get('invisible_measurements') != 0):
                     raise ValueError('unqualified recovery recording')
+                if (protocol.get('rotation_calibration') and
+                        result['recovery'].get('rotation_calibration') != protocol['rotation_calibration']):
+                    raise ValueError('rotation calibration mismatch')
             plan = json.loads((raw / 'plan.json').read_text())
             if plan['seed'] != seed:
                 raise ValueError('plan seed mismatch')
@@ -332,8 +339,10 @@ def convert(runs_root, protocol, output, *, seeds=None):
             report['normalization'] = {'path': 'normalization.json', 'sha256': sha256(output / 'normalization.json')}
         report.update(status='complete' if set(seeds) == set(requested) else 'partial_audit',
                       complete=set(seeds) == set(requested), camera=camera_reference)
-        write_json(output / 'RUN_META.json', {'class': 'milestone', 'scope': 'student tensors and teacher targets',
+        write_json(output / 'RUN_META.json', {'class': protocol.get('run_class', 'milestone'), 'scope': 'student tensors and teacher targets',
                                              'raw_source_retained': True})
+        report['files'] = {str(p.relative_to(output)): sha256(p) for p in sorted(output.rglob('*'))
+                           if p.is_file() and p.name != 'manifest.json'}
     except BaseException as exc:
         report.update(status='HOST_ERROR', error_type=type(exc).__name__, complete=False)
         raise
