@@ -284,8 +284,8 @@ def run(plan, protocol, model, output, *, actor_python, cap_s=60., n_action_step
         report.update(status='complete', complete=True, sim_s=float(world.data.time)-origin,
             done_requested=bool(sequence.done_times), done_times=sequence.done_times,
             **score.record(sequence.done_times, with_release=with_release),
-            inference_latency_s={'n': len(latencies), 'median': float(np.median(latencies)),
-                                 'p95': float(np.percentile(latencies, 95))},
+            inference_latency_s={'n': len(latencies), 'median': float(np.median(latencies)) if latencies else None,
+                                 'p95': float(np.percentile(latencies, 95)) if latencies else None},
             skill_completion_success=None)
         report['cap_end'] = not bool(sequence.done_times) and report['sim_s'] >= cap_s - c.PERIOD_S / 2
         report['termination'] = 'cap_end' if report['cap_end'] else 'student_done'
