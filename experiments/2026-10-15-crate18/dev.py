@@ -81,6 +81,7 @@ def main():
             rows.append(dict(name=name,seed=seed,candidate=candidate,sha=sha,payload=payload(name,candidate,i)))
     save(out/'admission.json',reserve([r['name'] for r in rows],sha));save(out/'plan.json',rows)
     for r in rows:
+        safety(out/(r['name']+'-preflight'))
         # Every runner checks disk and available memory again. Detach does not stop others.
         args=['--host','gcp1','--detach','--class','dev','--pr','500','--per-run-mb','128',str(ROOT),r['name'],'--',*r['payload']]
         sys.argv=['scripts/remote_run.py',*args]

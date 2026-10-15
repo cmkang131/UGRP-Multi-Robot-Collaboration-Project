@@ -38,10 +38,12 @@ def main():
     table=[]
     for (state,axis,width),v in sorted(bins.items()):
         table.append(dict(state=state,axis=axis,width_s=width,n=len(v),median=statistics.median(v),p95=sorted(v)[int((len(v)-1)*.95)],minimum=min(v),maximum=max(v)))
-    pairs=Path('outputs/crate18/calibration-pairs.json');pairs.parent.mkdir(parents=True,exist_ok=True)
-    pairs.write_text(json.dumps(records,separators=(',',':'))+'\n')
+    pairs=Path('outputs/crate18/calibration-pairs.json.zst');pairs.parent.mkdir(parents=True,exist_ok=True)
+    payload=(json.dumps(records,separators=(',',':'))+'\n').encode()
+    pairs.write_bytes(subprocess.check_output(['zstd','-q','-c'],input=payload))
+    assert subprocess.check_output(['zstd','-dc',str(pairs)])==payload
     out=dict(scope='offline calibration, GCP n4-highcpu-64, mass025; eval truth only here',sources=sources,table=table,
-        pairs=dict(path=str(pairs.resolve()),sha256=hashlib.sha256(pairs.read_bytes()).hexdigest(),n=len(records)),
+        pairs=dict(path=str(pairs.resolve()),sha256=hashlib.sha256(pairs.read_bytes()).hexdigest(),decoded_sha256=hashlib.sha256(payload).hexdigest(),n=len(records)),
         policy=dict(state_models={'unladen':{'minimum_duration_s':[.025,.025,.018],'delta':[.003071185,.001041256,.021610194],'response_quantile':'empirical p95, upper response used in quantum policy and inverse model together'},'held':{'status':'unavailable','n':0,'runtime_use':False}},
         selection='minimum sampled duration with N>=20 and >=75% absolute motion >0.5mm (translation)/0.005rad (yaw); aggregate phase/contact mix, not an isolated bench',
         unladen_only='crate18 pre-grasp alignment only; carrying/release path unchanged'))

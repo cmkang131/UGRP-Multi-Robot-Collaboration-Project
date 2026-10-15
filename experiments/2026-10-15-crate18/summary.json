@@ -1,0 +1,137 @@
+{
+  "schema": "ugrp.crate18.result.v1",
+  "verdict": "BLOCKED",
+  "execution_source_sha": "9cb9686a5a45941261160de56fc0da9ea422a44b",
+  "branch": "claude/act-crate-teacher",
+  "pr": 500,
+  "host": {
+    "provider": "gcp",
+    "project_id": "ugrp-act-train-1014",
+    "instance": "ugrp-sim-gcp1",
+    "machine_type": "n4-highcpu-64",
+    "zone": "asia-northeast3-a",
+    "cpu_count": 64,
+    "schema": "ugrp.grasp_act.host.v1"
+  },
+  "self_check": {
+    "successes": 5,
+    "attempts": 6,
+    "criterion": "paired grasp/lift own-command completion + own RGB authorization + evaluation physical hold; pipeline completion separately counted",
+    "full_completion": 0,
+    "required": 6,
+    "tested_execution_sha": "9cb9686a5a45941261160de56fc0da9ea422a44b"
+  },
+  "by_candidate": {
+    "full": {
+      "attempts": 3,
+      "physical_hold": 2,
+      "full_completion": 0
+    },
+    "no_clearance": {
+      "attempts": 3,
+      "physical_hold": 3,
+      "full_completion": 0
+    }
+  },
+  "both_robots_ever_READY": 6,
+  "pair_pick_permitted": 5,
+  "pair_lift_permitted": 5,
+  "first30": {
+    "N": 6,
+    "median_wall_per_sim": 3.526228141784668,
+    "warning_above3_5": true,
+    "block_above6": false
+  },
+  "tests": {
+    "common_pass": 27,
+    "crate_pass": 52,
+    "total_pass": 79,
+    "off_replay_matched": 4050,
+    "off_replay_N": 4050,
+    "Mac_physics": false,
+    "Mac_render": false
+  },
+  "input_audit": {
+    "invisible_measurements": 0,
+    "held_world_reads": 0,
+    "top_camera_reads": 0,
+    "runs": 6
+  },
+  "model_calls": 0,
+  "training": false,
+  "verification": {
+    "full_remote_manifests": 6,
+    "local_text_files": 108,
+    "decoded_files": 24,
+    "own_frames_directly_viewed": 72,
+    "top_frames": 0
+  },
+  "remaining": [
+    "full79314: READY immediately revoked; 60 SIMs, no pick/lift",
+    "five release_timeout at27.5-second release cap; no full release completion",
+    "held lateral/yaw calibration unavailable; carried forward minimum breakaway not identified"
+  ],
+  "rounds": [
+    {
+      "round": 1,
+      "source_sha": "e3a61c40",
+      "complete_failed": 1,
+      "supervisor_interrupted": 5,
+      "record": "round1.json"
+    },
+    {
+      "round": 2,
+      "source_sha": "37835a11",
+      "complete": 6,
+      "physical_hold": 4,
+      "full_completion": 0,
+      "record": "round2.json"
+    },
+    {
+      "round": 3,
+      "source_sha": "9cb9686a5a45941261160de56fc0da9ea422a44b",
+      "complete": 6,
+      "physical_hold": 5,
+      "full_completion": 0,
+      "record": "round3.json"
+    }
+  ],
+  "pooling": "all rounds/candidates/old crate16/17/source/hosts separate; paired DEV, not an independent95% gate",
+  "stop": {
+    "max_rounds_reached": 3,
+    "round3_cause_confirmed_remaining_live": 0,
+    "no_further_physics": true,
+    "owned_reservations_leases_processes": 0,
+    "vm_stop": "deferred75; other leases/processes; idle20/8h/budget-stop unchanged"
+  },
+  "prior_report": {
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/crate17-4eb7d472.json",
+    "sha256": "f92e2fcd5412b5d24a816547099caf0bf486f1ffbbf87d88d530b5e022718afa"
+  },
+  "artifacts": {
+    "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/crate18/round3-9cb9686a/summary.json": "9b6e5e31f357a04d338e5f9b48acdd826dc5687221a0263d91c9ec7348212978",
+    "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/crate18/round3-9cb9686a/plan.json": "08c91d4db5f8435dba221933370d633278b50baa8d26c79061a5e6cefd24ed5d",
+    "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/crate18/round3-9cb9686a/lifecycle.json": "abe6df7389a2562d28e97dc2503fced83772445dfc701eddb87d0d822fa2461f",
+    "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/crate18/round3-9cb9686a/crate18-r3-no_clearance-79314-9cb9686a-submit.log": "808018a3f9c6ffab9dad28a7bda0892cbd3f12a33c3442f3d0c1032c9370f6be",
+    "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/crate18/round3-9cb9686a/speed.json": "5b14425f5052957286470f16304bd28e3aa9bfc3925f434bc1b3873887986620",
+    "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/crate18/round3-9cb9686a/crate18-r3-full-79314-9cb9686a-submit.log": "b783184ace3a01ae490ec4f14a19ac98f5aab808b8564a0442d8f74b5c9a2a1b",
+    "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/crate18/round3-9cb9686a/crate18-r3-full-79317-9cb9686a-submit.log": "64e48d78f281d09115db786ee013ff3a724394e386a1b455e72538c830e027e6",
+    "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/crate18/round3-9cb9686a/crate18-r3-no_clearance-79317-9cb9686a-submit.log": "cbe45d759c162fc423269cf21bfb60deff65ff81f05985ee6d2246b7029f2f34",
+    "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/crate18/round3-9cb9686a/verification.json": "be444eef49125fa031ae194bfd6f7eeb7a7f4b689d1df894f8b231b7ea8809ec",
+    "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/crate18/round3-9cb9686a/stop-record.json": "45c304e1ed25cd5f01b213b1ac6da477c5631c8c0ba7dc726d55675d6aa01dc4",
+    "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/crate18/round3-9cb9686a/cost-safety.json": "a142e0738af34bc2954ed0bf65b66a938c14788ab39445ae3b87e1402343abde",
+    "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/crate18/round3-9cb9686a/crate18-r3-full-77990-9cb9686a-submit.log": "8007a82186a91947e3cd0ec85dc109e2020fcbae4815d8f41ff3d7b4652d89ff",
+    "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/crate18/round3-9cb9686a/crate18-r3-no_clearance-77990-9cb9686a-submit.log": "095d8748caa2f274881a27de4d564eeee2e1782cf011c185214ad2311f55773d",
+    "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/crate18/round3-9cb9686a/admission.json": "76de043b057016fbee9ad0fdc60ac2de716ed899ca136dc54b3b24707af5baa7"
+  },
+  "raw_locations": [
+    "gcp1:/home/ugrp/ugrp-sim/runs/crate18-r3-full-77990-9cb9686a",
+    "gcp1:/home/ugrp/ugrp-sim/runs/crate18-r3-no_clearance-77990-9cb9686a",
+    "gcp1:/home/ugrp/ugrp-sim/runs/crate18-r3-full-79314-9cb9686a",
+    "gcp1:/home/ugrp/ugrp-sim/runs/crate18-r3-no_clearance-79314-9cb9686a",
+    "gcp1:/home/ugrp/ugrp-sim/runs/crate18-r3-full-79317-9cb9686a",
+    "gcp1:/home/ugrp/ugrp-sim/runs/crate18-r3-no_clearance-79317-9cb9686a"
+  ],
+  "queue_path_template": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-crate18-diag-<record-sha8>.json",
+  "queue_source_scope": "record commit; controller/runtime and both plans byte-identical to tested execution SHA; verified in queue writer"
+}

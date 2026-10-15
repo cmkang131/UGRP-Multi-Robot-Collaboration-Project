@@ -1,5 +1,10 @@
 # crate18 — 최소 유효 펄스 정착, 기본 off
 
+**최종 NOT_READY/BLOCKED. 실행 소스9cb9686a: 파지·실제 들기5/6(full2/3, no_clearance3/3),
+전체 내려놓기 완료0/6. full79314의 READY 유지 실패가 남아3라운드에서 종료했다.**
+입력 감사6/6 inv0/held0/top0, 전체 manifest6·압축복원24·직접 자기 RGB72장을 확인했다.
+관문·학습 실행0이며 crate16/17 또는 앞 라운드와 합산하지 않는다. [summary.json](summary.json).
+
 기준 crate17 `4eb7d472`, PR #500. `--crate18 crate18_v1`은 `crate17_v1`(full)과
 `crate17_no_clearance_v1`(no_clearance)에만 조합한다. 끄면 crate17 경로다.
 교사 정렬만 변경하고 학생·물리·카메라·질량·접촉·배정은 유지한다.
@@ -91,7 +96,7 @@ full77990 r1의 t25.2/31.7에서 기존 alternating_error_sign_4가 새 공통 �
 풀리면서 .3초 정착이 유지되지 않았다. 예: r2 forward min25ms 반응은 같은 저장군에서
 중앙1.321mm, p95 3.071mm다. 전자의 허용.7926mm는 큰 반응의 절반보다 작다.
 6원본의 전체 manifest·압축복원·72자기 RGB를 확인했다. 다른 끝 유지, 감사0/0/top0.
-[round2.json](round2.json)에 실패·펄스분포·반전·원본/해시·종료를 남겼다.
+[round2.json](round2.json.zst)에 실패·펄스분포·반전·원본/해시·종료를 남겼다.
 
 ## 3라운드 최종 모형
 
@@ -104,3 +109,49 @@ full77990 r1의 t25.2/31.7에서 기존 alternating_error_sign_4가 새 공통 �
 새 inner27/27 기하 통과, 반전2δ 범위는9/27만 통과하므로 나머지18/27은
 READY/집기 직전의 exact geometry가 거부한다([geometry-p95.json](geometry-p95.json)).
 마지막 같은6회 이후 같은 결함이 남으면 추가 실행하지 않는다.
+
+## 최종 3라운드 9cb9686a — 종료·대기열 BLOCKED
+
+6회 모두 자연 종료, 양쪽 READY 기록6/6·파지 허가5/6·들기 허가5/6·평가 hold5/6.
+full은2/3, no_clearance는3/3 파지·실제 들기다. 들기5회 모두 자기 RGB 승인 뒤 release에
+진입했지만27.5초 release 진단 상한으로 `release_timeout`, 전체 완료0/6이다. 내려놓기 성공으로
+해석하지 않는다. first30은 grasp/release 원장 시각과 자기 RGB mtime으로 맞춰6/6 확인,
+중앙 **3.526228 wall/SIM**, 초기화 제외·파일 기록 시각/보간 오차를 포함한다. 경고만이며6.0 미만이다.
+
+| 후보·시드 | 정렬 펄스 r1/r2 | 실제 hold | 전체 완료 |
+|---|---:|---:|---:|
+| full77990 |20/36|예|아니오, release_timeout|
+| no_clearance77990 |21/28|예|아니오, release_timeout|
+| full79314 |26/91|아니오|아니오, grasp60초 초과|
+| no_clearance79314 |22/26|예|아니오, release_timeout|
+| full79317 |19/18|예|아니오, release_timeout|
+| no_clearance79317 |19/18|예|아니오, release_timeout|
+
+원본 펄스 폭은18–100ms(전후/좌우 최소25ms), 분포·반전·소스/압축/복원 SHA는
+[round3.json](round3.json.zst)과 로컬 상세 원장에 있다. 반전 수는 같은 align/ready 구간 안에서만 센다.
+
+남은 반례([remaining-counterexample.json](remaining-counterexample.json)): full79314 r2
+world_t56.5–61.5에25ms 전후 펄스12회, 펄스 뒤0.1초 실제 전진 중앙1.627mm이나
+5초 순이동은1.640mm이고 자기 가시 x 오차2.364→2.337mm로 거의 유지됐다.
+57.4/58.7/59.6/60.1초에 READY 진입, 바로 다음0.1초마다 취소됐다.
+실제 단기 이동이 있으므로 이를 단순한 정지 마찰로 확정하지 않는다. 정착 후 유지·GO/ACK
+대기 중 재취소의 결함이 남았다는 범위까지만 확인했다. 세 번째에도 남아 더 돌리거나
+교사 코드를 추가 수정하지 않았다. 원인 확인 시 같은 소스 진행/대기 실행은 이미0이었다.
+
+18회 원본 전체 manifest, 회수 텍스트·압축복원 해시, 라운드별72장(총216장) 자기 RGB를
+직접 확인했다. 모든 검토에서 각자 청록/파랑 손잡이를 유지했다. 자기 임대·예약·시뮬레이션
+프로세스0. VM 정상 정지는 타 임대/프로세스 때문에 exit75로 보류됐으며 타 작업은 건드리지 않았다.
+8h STOP·유휴20분·budget-stop 유지. 비용 로그 costAmount0은 지연 집계값이며 실제 비용0 보장은 아니다.
+
+대기열은 `outputs/e2e18-admin/vm3-queue/20261015-crate18-diag-<record-sha8>.json`에
+후보별 재현5+신규10, 총30행으로 저장한다. 알려진77990·79314·79317을 먼저 배치하고
+max_parallel16·전체40·승인/준비/제출/실행 플래그 모두false다. 자체 파지·들기5/6이므로
+**BLOCKED**, 관문·학습·후속 물리 실행을 승인하지 않는다. 큐의 기록 SHA와 실제 실행 SHA를
+구분하고, runtime 디렉터리/두 계획이9cb9686a와 동일한지 diff로 확인한다.
+
+읽기 전용 결과 재집계(새 물리 실행 없음):
+```sh
+python3 experiments/2026-10-15-crate18/analyze.py outputs/crate18/round3-9cb9686a
+```
+발행 직전 controller/runtime 변경은 없고 관련 시험은 **79 PASS**, OFF4,050/4,050이다.
+운반 중 회전·좌우 최소 펄스 보정과 전후 breakaway 최소는 여전히 미확인이다.

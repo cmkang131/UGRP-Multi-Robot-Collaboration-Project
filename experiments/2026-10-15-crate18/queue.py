@@ -21,6 +21,9 @@ def build(sha,summary):
    'No pooling with crate16/17, other source/profile/host, or earlier crate18 tuning rounds.',
    'No top camera, no training RGB, no VM model key; inputs audit0/0.'],
   plan_sha256={f:digest(HERE/f) for f in ['reproduction-plan.json','diagnostic-plan.json']})
+ q['excluded_starts']['path']=str(HERE/'diagnostic-plan.json')
+ q['plan_sha256']['diagnostic-plan-rejected-starts.json.zst']=digest(HERE/'diagnostic-plan-rejected-starts.json.zst')
+ q['coordinator_approval']['required_before']='separate admission of these30 queued rows; DEV approval not inherited'
  q['admission']['available_slots']='max(0, min(16 - crate_running, 40 - total_running))'
  q['criteria']['top_camera_capture']=False;q['criteria']['denominators']='candidate reproduction5 and fresh10 separate; prior profiles/rounds never pooled'
  for r in q['runs']:
@@ -33,7 +36,13 @@ def build(sha,summary):
 def main():
  import argparse
  p=argparse.ArgumentParser();p.add_argument('--sha',required=True);a=p.parse_args();summary=json.loads((HERE/'summary.json').read_text())
+ tested=summary['execution_source_sha']
+ head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
+ if head!=a.sha or subprocess.check_output(['git','status','--porcelain'],cwd=ROOT):raise ValueError('clean exact current SHA required')
+ runtime_paths=['sim','harness','scripts','configs','maps','experiments/2026-10-15-crate18/reproduction-plan.json','experiments/2026-10-15-crate18/diagnostic-plan.json']
+ subprocess.run(['git','diff','--exit-code',tested,a.sha,'--',*runtime_paths],cwd=ROOT,check=True,stdout=subprocess.PIPE)
  before={str(p):digest(p) for p in QUEUE.glob('*.json')};q=build(a.sha,summary['self_check']);q['previous_queues_sha256']=before
+ q['tested_execution_sha']=tested;q['runtime_files_identical_to_tested_sha']={'verified':True,'paths':runtime_paths,'method':'git diff --exit-code tested queue-sha -- paths; only records/offline drivers differ'}
  out=QUEUE/f'20261015-crate18-diag-{a.sha[:8]}.json'
  with out.open('x') as f:json.dump(q,f,ensure_ascii=False,separators=(',',':'));f.write('\n')
  assert all(digest(Path(p))==h for p,h in before.items());assert json.loads(out.read_text())==q
