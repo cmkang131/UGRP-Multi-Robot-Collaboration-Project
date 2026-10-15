@@ -39,7 +39,17 @@ def processes():
 
 assert not LEASE.exists(), 'own task lease already exists; inspect it'
 OUT.mkdir(parents=True,exist_ok=False)
-started=time.time();deadline=started+LIMIT
+started=time.time()
+allocation=ROOT/'runs/warp2/allocation.json'
+if not allocation.exists():
+    first=ROOT/'runs/warp2/r1-70553d2f/admission.json'
+    if first.exists():
+        old=json.loads(json.loads(first.read_text())['leases']['warp2.json'])
+        allocation_start=datetime.datetime.fromisoformat(old['started_utc']).timestamp()
+    else:allocation_start=started
+    write(allocation,dict(started_unix=allocation_start,max_wall_s=LIMIT,
+        source='first warp2 L4 lease; later rounds do not reset the three hour cap'))
+deadline=json.loads(allocation.read_text())['started_unix']+LIMIT
 write(LEASE,dict(task='warp2',pid=os.getpid(),started_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),
     expected_end=datetime.datetime.fromtimestamp(deadline,datetime.timezone.utc).isoformat(),source=sys.argv[1],round=ROUND))
 env={**os.environ,'MUJOCO_GL':'osmesa','LP_NUM_THREADS':'1','OMP_NUM_THREADS':'1',
@@ -93,12 +103,19 @@ try:
         return result
     c=ROOT/'runs/simalt3/c-env/bin/python'
     w=ROOT/'runs/simalt3/warp-env/bin/python'
-    run('export',c,['--physics-backend','c_pilot_v1','--export-compiled-only','--nworld','1'])
-    compiled=['--compiled-reference-v1',str(OUT/'export/compiled-312.json'),
-              '--compiled-geometry-312-v1',str(OUT/'export/compiled-geometry312.npz')]
+    run('export-seed5',c,['--physics-backend','c_pilot_v1','--export-compiled-only','--nworld','1','--episode','5'])
     for n in (1,16,64,256):
+        # The six scenes also randomize loose-prop dimensions and masses, so
+        # they are six actual models, not just six free-body starts. Never erase
+        # those differences to make a batch. This round replicates seed5 only.
+        reference='export-seed5'
+        compiled=['--compiled-reference-v1',str(OUT/reference/'compiled-312.json'),
+                  '--compiled-geometry-312-v1',str(OUT/reference/'compiled-geometry312.npz')]
         result=run('n'+str(n),w,['--physics-backend','mjwarp_batch_v1','--nworld',str(n),
-            '--cap-s','60' if n<=16 else '30',*(['--mix-known-six'] if n==16 else []),*compiled])
+            '--cap-s','60' if n<=16 else '10','--episode','5',*compiled])
+        # N64/256 are bounded throughput prefixes, not success trials. The 10
+        # SIM second window matches the existing recording-ring span (100
+        # native control ticks); cap_end is reported, never called success.
         if n<=16 and result['counts']['physical_success']!=n:
             write(OUT/'STOP.json',dict(reason_category='teacher_probe_failed',blocked_object='frozen_beampair6',min_gap_m=None,
                 gap_scope='requires candidate ledger and playback; no geometric attribution yet',nworld=n))
