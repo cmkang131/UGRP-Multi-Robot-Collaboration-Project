@@ -8,7 +8,9 @@ import numpy as np
 
 ROOT=Path('/home/ugrp/ugrp-sim/runs/simalt4')
 OLD=ROOT.parent/'simalt3'
-REV=ROOT/'revf8'
+REV=Path(__file__).resolve().parents[2]
+SOURCE_SHA=(REV/'SOURCE_SHA').read_text().strip()
+LABEL='capacity-r2'
 PY=OLD/'warp-env/bin/python'
 
 def result(name):
@@ -18,7 +20,7 @@ while result('warp-v2-grip')['status']=='running':
     time.sleep(5)
 
 for case in ('side','turn','grip'):
-    if result('warp-v2-'+case)['status']!='complete':
+    if (ROOT/('backend-'+case)/'summary.json').exists() or result('warp-v2-'+case)['status']!='complete':
         continue
     cmd=[str(PY),str(ROOT/'scripts/simalt_step_analysis.py'),'--fixture',str(OLD/'fixture'),
          '--reference',str(ROOT/('c316-'+case)),'--candidate',str(ROOT/('warp-v2-'+case)),
@@ -31,24 +33,26 @@ for case in ('forward','side','turn','grip'):
     data=np.load(ROOT/f'c316-{case}/steps.npz')['records']
     cases.append({'name':case,'max_ncon':int(data[:,0].max()),
                   'max_nefc':int(data[:,1].max()),'raw_path':str(ROOT/f'c316-{case}/steps.npz')})
-(ROOT/'dense-capacity.json').write_text(json.dumps({'dense_envelope':True,
+warp=np.load(ROOT/'warp-v2-grip/steps.npz')['records']
+cases.append({'name':'Warp partial grip','max_ncon':int(warp[:,0].max()),'max_nefc':int(warp[:,1].max()),'raw_path':str(ROOT/'warp-v2-grip/steps.npz')})
+(REV/'dense-capacity.json').write_text(json.dumps({'dense_envelope':True,
     'basis':'every C3.16 physics step, allocator rounds observed maxima to power of two',
     'cases':cases},indent=2)+'\n')
 
 rejections=json.loads((REV/'experiments/2026-10-16-simalt4/rejection_table.json').read_text())
 rejections['same_version_backend']=[json.loads(p.read_text()) for p in sorted(ROOT.glob('backend-*/summary.json'))]
 rejections['baseline_GPU_run_statuses']={case:result('warp-v2-'+case)['status'] for case in ('forward','side','turn','grip')}
-(ROOT/'rejection-before-round2.json').write_text(json.dumps(rejections,indent=2)+'\n')
+(REV/'rejection-before-round2.json').write_text(json.dumps(rejections,indent=2)+'\n')
 
 commands=[]
 for case in ('forward','side','turn','grip'):
     commands.append([str(PY),'-u',str(REV/'scripts/simalt_step_probe.py'),'--enabled',
-        '--fixture',str(OLD/'fixture'),'--out',str(ROOT/f'legacy-{case}'),'--engine','warp',
-        '--case',case,'--sha','f8f0bdf7','--capacity-reference',str(ROOT/'dense-capacity.json'),
-        '--dense-capacity-v1','--backend-mode','legacy-plane-v1','--record-own-rgb',str(OLD/'runtime/source')])
-plan={'rejection_table':str(ROOT/'rejection-before-round2.json'),'round':2,
-      'commands':commands,'source_sha':'f8f0bdf7','physics_overrides':{}}
-(ROOT/'round2-plan.json').write_text(json.dumps(plan,indent=2)+'\n')
+        '--fixture',str(OLD/'fixture'),'--out',str(ROOT/f'{LABEL}-{case}'),'--engine','warp',
+        '--case',case,'--sha',SOURCE_SHA,'--capacity-reference',str(REV/'dense-capacity.json'),
+        '--dense-capacity-v1','--backend-mode','baseline','--record-own-rgb',str(OLD/'runtime/source')])
+plan={'rejection_table':str(REV/'rejection-before-round2.json'),'round':2,
+      'commands':commands,'source_sha':SOURCE_SHA,'physics_overrides':{}}
+(REV/'round2-plan.json').write_text(json.dumps(plan,indent=2)+'\n')
 assert Path(plan['rejection_table']).is_file()
 for cmd in commands:
     out=Path(cmd[cmd.index('--out')+1])

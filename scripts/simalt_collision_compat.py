@@ -35,11 +35,11 @@ def install_legacy_plane(m):
             edges=convex.graphadr+2
             globals_=edges+count
             neighbors=globals_+count
-            local_best=0
+            local_best=int(0)
             maximum=wp.dot(direction,convex.vert[convex.vertadr+convex.graph[globals_]])
             change=int(1)
             while change>0:
-                change=0
+                change=int(0)
                 edge=convex.graph[edges+local_best]
                 while convex.graph[neighbors+edge]>=0:
                     neighbor=convex.graph[neighbors+edge]
