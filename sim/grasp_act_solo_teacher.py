@@ -489,6 +489,12 @@ class SoloTeacher:
             rear = (x-.15*math.cos(a), y-.15*math.sin(a))
             if not segment_free((x, y), rear, self.carry.obstacles.discs(now),
                                 self.carry.rects, self.carry.radius):
+                from harness.reloc12_ledger import segment_rejection_context
+                context=segment_rejection_context((x,y),rear,self.carry.obstacles.discs(now),
+                    self.carry.rects,self.carry.radius,names=[o['id'] for o in self.carry.static['obstacles']],
+                    disc_names=[f"own_rgb:{o['kind']}:{o.get('id',i)}" for i,o in enumerate(self.carry.obstacles.tracks)])
+                self.carry.rejection_context=context
+                self.events.append(dict(t=now,event='rejection',reason='carry_recovery_setdown_envelope_blocked',**context))
                 self.result = 'carry_recovery_setdown_envelope_blocked'
                 self._set('failed', now)
             else:

@@ -82,3 +82,48 @@ def test_registration_keeps_command_evidence_and_execution_frames_distinct(monke
     np.testing.assert_allclose(compose(r.map_from_own,execution),[0,0,0],atol=1e-12)
     np.testing.assert_allclose(r.command_registration_anchor,[0,0,0])
     assert not r.execution_handoff  # mapper must still see correction admission
+
+
+def test_setdown_rejection_uses_same_escape_geometry_as_safety_check():
+    from harness.reloc12_ledger import segment_rejection_context
+    from sim.grasp_act_visible_route import segment_free
+    rects=[(.5,0,.05,1,0)]
+    start,end=(0,0),(.6,0)
+    assert not segment_free(start,end,[],rects,.17)
+    r=segment_rejection_context(start,end,[],rects,.17,names=['wall_mid'])
+    assert r['blocked_object']=='wall_mid' and r['minimum_gap_m']<0
+    # An already inflated margin permits escape; the ledger must agree.
+    start,end=(.3,0),(.1,0)
+    assert segment_free(start,end,[],rects,.17)
+    r=segment_rejection_context(start,end,[],rects,.17,names=['wall_mid'])
+    assert r['minimum_gap_m']>=0
+
+
+def test_queue_requires_real_rejection_table_and_blocks_unverified_carry(tmp_path):
+    from scripts.prepare_reloc13_queues import queues
+    with pytest.raises(ValueError,match='REJECTION_TABLE_REQUIRED'):
+        queues('a'*40,tmp_path,tmp_path/'absent',[],[])
+    table=tmp_path/'funnel.json';table.write_text('{}')
+    for q in queues('a'*40,tmp_path,table,[],[]):
+        assert q['rejection_table']==str(table) and q['status']=='BLOCKED'
+        assert q['max_parallel']==16 and q['aggregate_max_parallel']==40
+        assert all(not r['approved'] and not r['execute'] for r in q['runs'])
+
+
+def test_live_r7_invalidates_on_new_rejected_measurement_but_not_stale_frame(monkeypatch):
+    static,_=g.static_input();edges,lines=edges_and_lines()
+    r=g.StaticRegistration(static,multiframe_registration=reg.OPTION,reloc10_registration_v1=True,
+        reloc12_raw_cov_gate_v1=True,reloc13_execution_cov_v1=True,
+        reloc13_execution_frame_v1=True,reloc13_live_r7_v1=True)
+    r.pf.landmark_map.edges=edges
+    state=dict(pose=[0,0,0],covariance=np.diag([.03**2,.03**2,.01**2]).tolist(),
+        updated=True,resolved=True,cluster={'mass':1.},sensor={})
+    monkeypatch.setattr(r.pf,'step',lambda **kw:state.copy())
+    for i in range(3):r.step(dict(features=lines,segments=[]),[0,0,0],{6:1000+i*300},i,[0,0,0],execution_pose=[0,0,0])
+    assert r.execution_r7_admitted
+    state['updated']=False
+    r.step(dict(features=lines,segments=[]),[0,0,0],{6:1600},3,[0,0,0],execution_pose=[0,0,0])
+    assert r.execution_r7_admitted
+    state.update(updated=True,resolved=False)
+    assert r.step(dict(features=lines,segments=[]),[0,0,0],{6:1800},4,[0,0,0],execution_pose=[0,0,0]) is None
+    assert not r.execution_r7_admitted

@@ -151,7 +151,7 @@ class StaticRegistration:
     Unresolved hypotheses can propose look directions but cannot clip/clear maps
     or lower pose covariance. Registration has to survive three distinct views.
     """
-    def __init__(self, static, *, multiframe_registration='off', correction_safety='off', active_relocalization='off', reloc10_registration_v1=False, reloc11_wall_field_v1=False, reloc12_raw_cov_gate_v1=False, reloc12_ransac_hypotheses_v1=False, reloc13_execution_cov_v1=False, reloc13_execution_frame_v1=False):
+    def __init__(self, static, *, multiframe_registration='off', correction_safety='off', active_relocalization='off', reloc10_registration_v1=False, reloc11_wall_field_v1=False, reloc12_raw_cov_gate_v1=False, reloc12_ransac_hypotheses_v1=False, reloc13_execution_cov_v1=False, reloc13_execution_frame_v1=False, reloc13_live_r7_v1=False):
         from harness.e2e_static_rgb_localizer import create
         from harness.self_map_landmark_sensor import Sensor
         if set(static) != {'map_id', 'version', 'frame', 'bounds_m', 'obstacles', 'regions', 'passages'}:
@@ -165,6 +165,10 @@ class StaticRegistration:
             raise ValueError('reloc13 execution covariance requires raw gate')
         if type(reloc13_execution_frame_v1) is not bool or (reloc13_execution_frame_v1 and not reloc13_execution_cov_v1):
             raise ValueError('reloc13 execution frame requires execution covariance')
+        if type(reloc13_live_r7_v1) is not bool or (reloc13_live_r7_v1 and not reloc13_execution_frame_v1):
+            raise ValueError('live R7 requires the execution frame')
+        self.live_r7 = reloc13_live_r7_v1
+        self.execution_r7_admitted = False
         self.execution_frame = reloc13_execution_frame_v1
         self.command_registration_anchor = None
         self.execution_handoff = False
@@ -323,6 +327,11 @@ class StaticRegistration:
                     if self.execution_frame and execution_pose is not None else anchor.copy())
         elif row['updated'] and not reliable:
             self.confirmations.clear(); self.confirmation_views.clear()
+        if self.live_r7 and row['updated'] and self.map_from_own is not None:
+            # R2: sigma remained small after R7 became unresolved; execution
+            # drift reached .762m. Reuse the existing R7 geometry/agreement/
+            # three-view rule after registration too; no new numeric cutoff.
+            self.execution_r7_admitted = bool(reliable and len(self.confirmations) >= 3)
         rejection = []
         if self.reloc10_registration:
             checks = dict(no_sensor_update=not row['updated'], pf_unresolved=not row['resolved'],
@@ -335,6 +344,7 @@ class StaticRegistration:
             rejection = [k for k, failed in checks.items() if failed]
         self.last = dict(updated=row['updated'], resolved=bool(reliable),
             confirmations=len(self.confirmations), registered=self.map_from_own is not None,
+            execution_r7_admitted=self.execution_r7_admitted if self.live_r7 else None,
             world_pose=row['pose'], covariance=row['covariance'], cluster=row['cluster'],
             feature_count=len(observation['features']), geometry=geometry)
         if self.reloc10_registration:
@@ -368,7 +378,7 @@ class StaticRegistration:
                 pf_particles=self.pf.n, sensor_landmarks='off',
                 wall_points=len(sample_segments(observation['segments'])),
                 geometry_and_covariance_gates='unchanged', input='own_RGB_wall_floor_segments')
-        if reliable and self.map_from_own is not None:
+        if reliable and self.map_from_own is not None and (not self.live_r7 or self.execution_r7_admitted):
             local = compose(inverse(self.map_from_own), row['pose'])
             c, s = math.cos(self.map_from_own[2]), math.sin(self.map_from_own[2])
             R = np.array([[c, s, 0], [-s, c, 0], [0, 0, 1]])

@@ -408,6 +408,7 @@ class CarryToZone:
                 'self_pose': self.loc.record(), 'carry_started_t': self.started,
                 'map_arrival_estimated_t': self.arrived, 'failure': self.failure,
                 'path': self.path, 'static_route_only': False, 'obstacles': self.obstacles.record(),
+                'rejection_context': self.rejection_context,
                 'held_world_reads': 0, 'physical_success': None,
                 **({'reloc12_carry_reacquire_v1': True, 'reacquire_turn_rad': self.reacquire_turn_rad}
                    if self.reloc12_reacquire else {}),

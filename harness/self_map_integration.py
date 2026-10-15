@@ -48,17 +48,20 @@ class Options:
     reloc12_ransac_hypotheses_v1: bool = False
     reloc13_execution_cov_v1: bool = False
     reloc13_execution_frame_v1: bool = False
+    reloc13_live_r7_v1: bool = False
     revision_xy_threshold_m: float = .1
     revision_yaw_threshold_rad: float = math.radians(5)
 
     def __post_init__(self):
-        for name in ('reloc12_raw_cov_gate_v1', 'reloc12_ransac_hypotheses_v1', 'reloc13_execution_cov_v1', 'reloc13_execution_frame_v1'):
+        for name in ('reloc12_raw_cov_gate_v1', 'reloc12_ransac_hypotheses_v1', 'reloc13_execution_cov_v1', 'reloc13_execution_frame_v1', 'reloc13_live_r7_v1'):
             if type(getattr(self, name)) is not bool or (getattr(self, name) and self.multiframe_registration == 'off'):
                 raise ValueError('reloc12 requires multiframe registration and bool toggles')
         if self.reloc13_execution_cov_v1 and not self.reloc12_raw_cov_gate_v1:
             raise ValueError('reloc13 execution covariance requires raw gate')
         if self.reloc13_execution_frame_v1 and not self.reloc13_execution_cov_v1:
             raise ValueError('reloc13 execution frame requires execution covariance')
+        if self.reloc13_live_r7_v1 and not self.reloc13_execution_frame_v1:
+            raise ValueError('live R7 requires execution frame')
         from harness.reloc9_rotation import selfmap_model
         from harness.reloc9_wall_guard import validate as validate_wall
         object.__setattr__(self, 'motion_model', selfmap_model(self.motion_model, self.reloc9_rotation_calibration_v1))
@@ -211,6 +214,7 @@ class SelfMapIntegration:
                 reloc12_ransac_hypotheses_v1=self.options.reloc12_ransac_hypotheses_v1,
                 reloc13_execution_cov_v1=self.options.reloc13_execution_cov_v1,
                 reloc13_execution_frame_v1=self.options.reloc13_execution_frame_v1,
+                reloc13_live_r7_v1=self.options.reloc13_live_r7_v1,
 
                 correction_safety=self.options.correction_safety,
                 active_relocalization=self.options.active_relocalization)
@@ -289,6 +293,8 @@ class SelfMapIntegration:
         self.registration.map_from_own = saved['map_from_own']
         self.registration.command_registration_anchor = saved['command_registration_anchor']
         self.registration.execution_handoff = saved['execution_handoff']
+        if self.options.reloc13_live_r7_v1:
+            self.registration.execution_r7_admitted = False
         self.registration.confirmations.clear(); self.registration.confirmation_views.clear()
         self.registration.end_sweep()
         self.flow.previous = None
@@ -567,6 +573,9 @@ class SelfMapIntegration:
         if (self.options.reloc13_execution_frame_v1 and self.registration.map_from_own is not None
                 and not self.registration.execution_handoff):
             reasons.append('static_execution_handoff_pending')
+        if (self.options.reloc13_live_r7_v1 and self.registration.map_from_own is not None
+                and not self.registration.execution_r7_admitted):
+            reasons.append('registered_r7_unconfirmed')
         if held: reasons.append('commanded_grip_closed')
         if not settled: reasons.append('camera_unsettled')
         prior_insertion = self.options.bootstrap != 'off' and not (visual or bootstrap)
