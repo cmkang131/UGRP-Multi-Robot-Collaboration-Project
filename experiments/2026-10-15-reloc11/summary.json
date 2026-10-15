@@ -1,0 +1,1474 @@
+{
+  "schema": "ugrp.reloc11.summary.v1",
+  "status": "BLOCKED",
+  "recorded_at": "2026-10-15T19:08:13.160261+09:00",
+  "execution": {
+    "host": "gcp1",
+    "project": "ugrp-act-train-1014",
+    "machine": "n4-highcpu-64",
+    "rounds_executed": 2,
+    "rounds_attempted": 3,
+    "started_runs": 7,
+    "retrieved_and_hash_verified_runs": 7,
+    "recorded": 3,
+    "HOST_ERROR": 4,
+    "third_round_started": 0,
+    "third_round_submission_error": 1,
+    "third_round_not_submitted": 2,
+    "local_dirty_tree_rejection_before_retry": 1,
+    "max_owned_parallel": 4,
+    "max_observed_global_pre_submission": 17,
+    "cap_sim_s": 90
+  },
+  "research_verdict": "NOT_READY_NO_STATIC_REGISTRATION; collection counts are not pooled task success rates",
+  "scene_conditions_separate": true,
+  "smooth_reference_runs": 1,
+  "control_input_audit": {
+    "invisible_measurements": 0,
+    "held_world_reads": 0,
+    "top_rgb_frames": 0
+  },
+  "mac_physics": 0,
+  "mac_render": 0,
+  "model_calls": 0,
+  "own_rgb_review_frames": 42,
+  "raw_backup": "all raw and RGB retained on GCP persistent disk; text + six own JPEGs per run retrieved locally; full RGB not backed up",
+  "remaining": [
+    "static registration0 in every executed run",
+    "wall-only likelihood field GCP trial not executed",
+    "shared host24h runtime cap conflicts with task8h; no change made to host guard",
+    "carry API patch not applied due conflicting allowed path scope; no clarification received",
+    "carry upstream search/reobservation no-progress defect recorded by separate owner"
+  ],
+  "queues": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-selfmap9-8e5a0a82.json",
+      "sha256": "0a4367104113945dd37fd67f23e850132d1257b2d65d317ce500ea9d6587a661",
+      "status": "BLOCKED",
+      "runs": 5,
+      "source_sha": "8e5a0a82d6e7e55a774f00a5795b59445c836369"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-solo-carry-tex-987d033f.json",
+      "sha256": "a36db0363cb179f3eaac5278b2ef20aebf81d92539b242fcd63b844fe6d2e5c8",
+      "status": "BLOCKED",
+      "runs": 23,
+      "source_sha": "987d033f28b40aa6182c1cde0dff2982e1d546d6"
+    }
+  ],
+  "runs": [
+    {
+      "run": "reloc11-r1-smooth-93571-4d3335c8",
+      "source_sha": "4d3335c887f2021c9f180999e8ee47fbbe8074f2",
+      "result": {
+        "status": "HOST_ERROR",
+        "source_sha": "4d3335c887f2021c9f180999e8ee47fbbe8074f2",
+        "seed": 93571,
+        "model_calls": 0,
+        "complete": false,
+        "physical_success_unverified": true,
+        "frames": 456,
+        "scene_version": "floor_light_v1",
+        "render_profile": "floor_light_v1",
+        "revision_gate": "selfmap4_revision_gate_v2",
+        "multiframe_registration": "selfmap4_multiframe_registration_v1",
+        "pool_with_previous_results": false,
+        "correction_safety": "selfmap6_correction_safety_v1",
+        "active_relocalization": "reloc8_active_vision_v1",
+        "authored_static_map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b",
+        "elapsed_sim_s": 45.5,
+        "stop_reason": "selfmap4_relocalization_exhausted",
+        "rgb_ledger_verified": true,
+        "frontier_selections": 1,
+        "frontier_arrivals": 0,
+        "map_updated_frames": 289,
+        "pose_sources": {
+          "bootstrap": 4,
+          "command_only": 399,
+          "visual_update": 53
+        },
+        "wall_s": 312.3451122380029,
+        "input_audit": {
+          "schema": "ugrp.selfmap_input_audit.v1",
+          "measured": true,
+          "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+          "own_rgb_frames": 456,
+          "issued_command_records": 235,
+          "top_rgb_frames": 0,
+          "peer_rgb_frames": 0,
+          "truth_pose_inputs": 0,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "rejected_inputs": 0,
+          "authored_static_map_inputs": 1
+        },
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "frame_N": 456,
+      "features": {
+        "N": 456,
+        "min": 0.0,
+        "median": 34.0,
+        "p90": 64.0,
+        "max": 86.0
+      },
+      "matches": {
+        "N": 456,
+        "min": 0.0,
+        "median": 4.0,
+        "p90": 11.0,
+        "max": 20.0
+      },
+      "inliers": {
+        "N": 456,
+        "min": 0.0,
+        "median": 0.0,
+        "p90": 7.0,
+        "max": 16.0
+      },
+      "static_features": {
+        "N": 456,
+        "min": 0.0,
+        "median": 4.0,
+        "p90": 4.0,
+        "max": 4.0
+      },
+      "pf_resolved_N": 341,
+      "registered_N": 0,
+      "pf_resolved_error": {
+        "N": 341,
+        "xy_m": {
+          "N": 341,
+          "min": 0.6524040432915583,
+          "median": 1.0300948448468528,
+          "p90": 1.0825687301738867,
+          "max": 1.1346814698519363
+        },
+        "yaw_deg": {
+          "N": 341,
+          "min": 0.05183691288716045,
+          "median": 2.5102513545120257,
+          "p90": 5.389443166934269,
+          "max": 7.936254133236679
+        },
+        "within_10cm_5deg": 0
+      },
+      "first30_counts": {
+        "frame_N": 301,
+        "features": {
+          "N": 301,
+          "min": 0.0,
+          "median": 34.0,
+          "p90": 64.0,
+          "max": 79.0
+        },
+        "matches": {
+          "N": 301,
+          "min": 0.0,
+          "median": 3.0,
+          "p90": 10.0,
+          "max": 20.0
+        },
+        "inliers": {
+          "N": 301,
+          "min": 0.0,
+          "median": 0.0,
+          "p90": 9.0,
+          "max": 16.0
+        },
+        "registered_N": 0
+      },
+      "first30": {
+        "elapsed_sim_s": 30.0,
+        "frames": 301,
+        "stage": "active_reloc8",
+        "wall_per_sim": 6.983334894933311,
+        "pose_sources": {
+          "bootstrap": 4,
+          "command_only": 255,
+          "visual_update": 42
+        },
+        "input_audit": {
+          "schema": "ugrp.selfmap_input_audit.v1",
+          "measured": true,
+          "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+          "own_rgb_frames": 301,
+          "issued_command_records": 157,
+          "top_rgb_frames": 0,
+          "peer_rgb_frames": 0,
+          "truth_pose_inputs": 0,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "rejected_inputs": 0,
+          "authored_static_map_inputs": 1
+        },
+        "frontier_arrivals": 0,
+        "timing": {
+          "seconds": {
+            "capture": 33.228705772995454,
+            "plane_flow": 6.279382000022451,
+            "pf": 2.489763445995777,
+            "registration": 25.33215151001059,
+            "feature_tracking": 1.371497898031521,
+            "control": 109.89399010499983,
+            "evaluation": 0.42250572602279135,
+            "physics_advance": 65.48313430700364,
+            "feature_extract": 1.9557742729703023,
+            "structure_extract": 24.23484592002569
+          },
+          "calls": {
+            "capture": 301,
+            "plane_flow": 301,
+            "pf": 301,
+            "registration": 301,
+            "feature_tracking": 301,
+            "control": 301,
+            "evaluation": 301,
+            "physics_advance": 300,
+            "feature_extract": 274,
+            "structure_extract": 274
+          },
+          "pf_particles": 2000,
+          "nested_categories": true,
+          "note": "control includes feature/PF/geometry; registration includes PF and evidence"
+        }
+      },
+      "rejection_reasons": {
+        "no_sensor_update": 391,
+        "pf_unresolved": 115,
+        "xy_covariance": 418,
+        "yaw_covariance": 426,
+        "geometry": 125,
+        "ambiguity_pending_upstream": 456,
+        "cluster_mass": 30
+      }
+    },
+    {
+      "run": "reloc11-r1-texture-93571-4d3335c8",
+      "source_sha": "4d3335c887f2021c9f180999e8ee47fbbe8074f2",
+      "result": {
+        "status": "RECORDED",
+        "source_sha": "4d3335c887f2021c9f180999e8ee47fbbe8074f2",
+        "seed": 93571,
+        "model_calls": 0,
+        "complete": false,
+        "physical_success_unverified": true,
+        "frames": 901,
+        "scene_version": "floor_light_textured_v1",
+        "render_profile": "floor_light_textured_v1",
+        "revision_gate": "selfmap4_revision_gate_v2",
+        "multiframe_registration": "selfmap4_multiframe_registration_v1",
+        "pool_with_previous_results": false,
+        "correction_safety": "selfmap6_correction_safety_v1",
+        "active_relocalization": "reloc8_active_vision_v1",
+        "authored_static_map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b",
+        "elapsed_sim_s": 90.0,
+        "stop_reason": "sim_time_cap",
+        "rgb_ledger_verified": true,
+        "frontier_selections": 3,
+        "frontier_arrivals": 1,
+        "map_updated_frames": 754,
+        "pose_sources": {
+          "bootstrap": 4,
+          "visual_update": 84,
+          "command_only": 813
+        },
+        "wall_s": 632.7397085170014,
+        "input_audit": {
+          "schema": "ugrp.selfmap_input_audit.v1",
+          "measured": true,
+          "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+          "own_rgb_frames": 901,
+          "issued_command_records": 457,
+          "top_rgb_frames": 0,
+          "peer_rgb_frames": 0,
+          "truth_pose_inputs": 0,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "rejected_inputs": 0,
+          "authored_static_map_inputs": 1
+        },
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "evaluation": {
+          "scope": "static geometry only; all predicted occupied cells scored against wall surfaces",
+          "occupancy_iou": 0.13987138263665594,
+          "occupancy_intersection": 87,
+          "occupancy_union": 622,
+          "predicted_occupied": 427,
+          "truth_occupied": 282,
+          "false_occupied_outside_domain": 192,
+          "free_coverage_n": 1888,
+          "free_coverage_N": 2773,
+          "free_coverage": 0.6808510638297872,
+          "reachable_free_coverage_n": 1888,
+          "reachable_free_coverage_N": 2773,
+          "known_coverage_n": 2226,
+          "known_coverage_N": 3055,
+          "wall_error_rmse_m": 0.2728143933307605,
+          "wall_error_predicted_N": 427,
+          "all_wall_to_prediction_p95_m": 1.268461874884218,
+          "all_wall_samples_N": 544,
+          "origin_eval_only": [
+            3.249976477482823,
+            0.750001565403524,
+            3.141588922613524
+          ],
+          "pose_error_N": 901,
+          "trace_N": 901,
+          "pose_rmse_m": 0.03878273691647437,
+          "yaw_rmse_rad": 0.15466278812093454
+        }
+      },
+      "frame_N": 901,
+      "features": {
+        "N": 901,
+        "min": 0.0,
+        "median": 16.0,
+        "p90": 49.0,
+        "max": 80.0
+      },
+      "matches": {
+        "N": 901,
+        "min": 0.0,
+        "median": 2.0,
+        "p90": 8.0,
+        "max": 14.0
+      },
+      "inliers": {
+        "N": 901,
+        "min": 0.0,
+        "median": 0.0,
+        "p90": 0.0,
+        "max": 14.0
+      },
+      "static_features": {
+        "N": 901,
+        "min": 0.0,
+        "median": 4.0,
+        "p90": 4.0,
+        "max": 4.0
+      },
+      "pf_resolved_N": 756,
+      "registered_N": 0,
+      "pf_resolved_error": {
+        "N": 756,
+        "xy_m": {
+          "N": 756,
+          "min": 0.028958417010642657,
+          "median": 0.10580530474835628,
+          "p90": 0.16378384119481307,
+          "max": 0.3716243244432751
+        },
+        "yaw_deg": {
+          "N": 756,
+          "min": 0.004594075468122512,
+          "median": 0.905773500599178,
+          "p90": 5.310283231052807,
+          "max": 14.469566684901311
+        },
+        "within_10cm_5deg": 262
+      },
+      "first30_counts": {
+        "frame_N": 301,
+        "features": {
+          "N": 301,
+          "min": 0.0,
+          "median": 32.0,
+          "p90": 56.0,
+          "max": 80.0
+        },
+        "matches": {
+          "N": 301,
+          "min": 0.0,
+          "median": 4.0,
+          "p90": 11.0,
+          "max": 14.0
+        },
+        "inliers": {
+          "N": 301,
+          "min": 0.0,
+          "median": 0.0,
+          "p90": 10.0,
+          "max": 14.0
+        },
+        "registered_N": 0
+      },
+      "first30": {
+        "elapsed_sim_s": 30.0,
+        "frames": 301,
+        "stage": "active_reloc8",
+        "wall_per_sim": 6.819869637066707,
+        "pose_sources": {
+          "bootstrap": 4,
+          "visual_update": 78,
+          "command_only": 219
+        },
+        "input_audit": {
+          "schema": "ugrp.selfmap_input_audit.v1",
+          "measured": true,
+          "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+          "own_rgb_frames": 301,
+          "issued_command_records": 157,
+          "top_rgb_frames": 0,
+          "peer_rgb_frames": 0,
+          "truth_pose_inputs": 0,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "rejected_inputs": 0,
+          "authored_static_map_inputs": 1
+        },
+        "frontier_arrivals": 0,
+        "timing": {
+          "seconds": {
+            "capture": 33.30211145400972,
+            "plane_flow": 6.973611482990236,
+            "pf": 2.4779125500281225,
+            "registration": 19.0877253679937,
+            "feature_tracking": 2.1931314609937544,
+            "control": 100.71090080800786,
+            "evaluation": 0.4178423619996465,
+            "physics_advance": 64.56392062398663,
+            "feature_extract": 1.9225559150218032,
+            "structure_extract": 21.776601495013892
+          },
+          "calls": {
+            "capture": 301,
+            "plane_flow": 301,
+            "pf": 301,
+            "registration": 301,
+            "feature_tracking": 301,
+            "control": 301,
+            "evaluation": 301,
+            "physics_advance": 300,
+            "feature_extract": 278,
+            "structure_extract": 278
+          },
+          "pf_particles": 2000,
+          "nested_categories": true,
+          "note": "control includes feature/PF/geometry; registration includes PF and evidence"
+        }
+      },
+      "rejection_reasons": {
+        "no_sensor_update": 794,
+        "pf_unresolved": 145,
+        "xy_covariance": 897,
+        "yaw_covariance": 869,
+        "geometry": 261,
+        "ambiguity_pending_upstream": 901,
+        "cluster_mass": 77
+      }
+    },
+    {
+      "run": "reloc11-r1-texture-93581-4d3335c8",
+      "source_sha": "4d3335c887f2021c9f180999e8ee47fbbe8074f2",
+      "result": {
+        "status": "RECORDED",
+        "source_sha": "4d3335c887f2021c9f180999e8ee47fbbe8074f2",
+        "seed": 93581,
+        "model_calls": 0,
+        "complete": false,
+        "physical_success_unverified": true,
+        "frames": 901,
+        "scene_version": "floor_light_textured_v1",
+        "render_profile": "floor_light_textured_v1",
+        "revision_gate": "selfmap4_revision_gate_v2",
+        "multiframe_registration": "selfmap4_multiframe_registration_v1",
+        "pool_with_previous_results": false,
+        "correction_safety": "selfmap6_correction_safety_v1",
+        "active_relocalization": "reloc8_active_vision_v1",
+        "authored_static_map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b",
+        "elapsed_sim_s": 90.0,
+        "stop_reason": "sim_time_cap",
+        "rgb_ledger_verified": true,
+        "frontier_selections": 2,
+        "frontier_arrivals": 0,
+        "map_updated_frames": 868,
+        "pose_sources": {
+          "bootstrap": 4,
+          "visual_update": 87,
+          "command_only": 810
+        },
+        "wall_s": 616.3482699779997,
+        "input_audit": {
+          "schema": "ugrp.selfmap_input_audit.v1",
+          "measured": true,
+          "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+          "own_rgb_frames": 901,
+          "issued_command_records": 457,
+          "top_rgb_frames": 0,
+          "peer_rgb_frames": 0,
+          "truth_pose_inputs": 0,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "rejected_inputs": 0,
+          "authored_static_map_inputs": 1
+        },
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "evaluation": {
+          "scope": "static geometry only; all predicted occupied cells scored against wall surfaces",
+          "occupancy_iou": 0.11937716262975778,
+          "occupancy_intersection": 69,
+          "occupancy_union": 578,
+          "predicted_occupied": 365,
+          "truth_occupied": 282,
+          "false_occupied_outside_domain": 196,
+          "free_coverage_n": 1378,
+          "free_coverage_N": 2773,
+          "free_coverage": 0.4969347277316985,
+          "reachable_free_coverage_n": 1378,
+          "reachable_free_coverage_N": 2773,
+          "known_coverage_n": 1641,
+          "known_coverage_N": 3055,
+          "wall_error_rmse_m": 0.3850880525531506,
+          "wall_error_predicted_N": 365,
+          "all_wall_to_prediction_p95_m": 3.1808359854872705,
+          "all_wall_samples_N": 544,
+          "origin_eval_only": [
+            3.2499770273975765,
+            0.7500011231412926,
+            3.1415883853441153
+          ],
+          "pose_error_N": 901,
+          "trace_N": 901,
+          "pose_rmse_m": 0.06614955765202067,
+          "yaw_rmse_rad": 0.0738857246156901
+        }
+      },
+      "frame_N": 901,
+      "features": {
+        "N": 901,
+        "min": 0.0,
+        "median": 11.0,
+        "p90": 48.0,
+        "max": 78.0
+      },
+      "matches": {
+        "N": 901,
+        "min": 0.0,
+        "median": 1.0,
+        "p90": 8.0,
+        "max": 16.0
+      },
+      "inliers": {
+        "N": 901,
+        "min": 0.0,
+        "median": 0.0,
+        "p90": 0.0,
+        "max": 13.0
+      },
+      "static_features": {
+        "N": 901,
+        "min": 0.0,
+        "median": 4.0,
+        "p90": 4.0,
+        "max": 4.0
+      },
+      "pf_resolved_N": 851,
+      "registered_N": 0,
+      "pf_resolved_error": {
+        "N": 851,
+        "xy_m": {
+          "N": 851,
+          "min": 0.010179337167309458,
+          "median": 0.12182027933065259,
+          "p90": 0.3920475083942871,
+          "max": 0.4189572247119325
+        },
+        "yaw_deg": {
+          "N": 851,
+          "min": 0.004038653789998482,
+          "median": 7.527028966897726,
+          "p90": 8.914833727544206,
+          "max": 11.71417686436256
+        },
+        "within_10cm_5deg": 107
+      },
+      "first30_counts": {
+        "frame_N": 301,
+        "features": {
+          "N": 301,
+          "min": 0.0,
+          "median": 32.0,
+          "p90": 57.0,
+          "max": 78.0
+        },
+        "matches": {
+          "N": 301,
+          "min": 0.0,
+          "median": 4.0,
+          "p90": 10.0,
+          "max": 13.0
+        },
+        "inliers": {
+          "N": 301,
+          "min": 0.0,
+          "median": 0.0,
+          "p90": 9.0,
+          "max": 12.0
+        },
+        "registered_N": 0
+      },
+      "first30": {
+        "elapsed_sim_s": 30.0,
+        "frames": 301,
+        "stage": "active_reloc8",
+        "wall_per_sim": 6.500738703600049,
+        "pose_sources": {
+          "bootstrap": 4,
+          "visual_update": 66,
+          "command_only": 231
+        },
+        "input_audit": {
+          "schema": "ugrp.selfmap_input_audit.v1",
+          "measured": true,
+          "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+          "own_rgb_frames": 301,
+          "issued_command_records": 157,
+          "top_rgb_frames": 0,
+          "peer_rgb_frames": 0,
+          "truth_pose_inputs": 0,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "rejected_inputs": 0,
+          "authored_static_map_inputs": 1
+        },
+        "frontier_arrivals": 0,
+        "timing": {
+          "seconds": {
+            "capture": 31.858335819000786,
+            "plane_flow": 6.959816032063827,
+            "pf": 2.454814953973255,
+            "registration": 15.935003148988471,
+            "feature_tracking": 1.8480400129701593,
+            "control": 98.4325249289941,
+            "evaluation": 0.43044595597166335,
+            "physics_advance": 63.826536297008715,
+            "feature_extract": 1.9409250379831064,
+            "structure_extract": 21.498436359990592
+          },
+          "calls": {
+            "capture": 301,
+            "plane_flow": 301,
+            "pf": 301,
+            "registration": 301,
+            "feature_tracking": 301,
+            "control": 301,
+            "evaluation": 301,
+            "physics_advance": 300,
+            "feature_extract": 278,
+            "structure_extract": 278
+          },
+          "pf_particles": 2000,
+          "nested_categories": true,
+          "note": "control includes feature/PF/geometry; registration includes PF and evidence"
+        }
+      },
+      "rejection_reasons": {
+        "no_sensor_update": 792,
+        "pf_unresolved": 50,
+        "xy_covariance": 811,
+        "yaw_covariance": 830,
+        "geometry": 262,
+        "ambiguity_pending_upstream": 901
+      }
+    },
+    {
+      "run": "reloc11-r1-texture-93582-4d3335c8",
+      "source_sha": "4d3335c887f2021c9f180999e8ee47fbbe8074f2",
+      "result": {
+        "status": "HOST_ERROR",
+        "source_sha": "4d3335c887f2021c9f180999e8ee47fbbe8074f2",
+        "seed": 93582,
+        "model_calls": 0,
+        "complete": false,
+        "physical_success_unverified": true,
+        "frames": 480,
+        "scene_version": "floor_light_textured_v1",
+        "render_profile": "floor_light_textured_v1",
+        "revision_gate": "selfmap4_revision_gate_v2",
+        "multiframe_registration": "selfmap4_multiframe_registration_v1",
+        "pool_with_previous_results": false,
+        "correction_safety": "selfmap6_correction_safety_v1",
+        "active_relocalization": "reloc8_active_vision_v1",
+        "authored_static_map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b",
+        "elapsed_sim_s": 47.900000000000006,
+        "stop_reason": "selfmap4_relocalization_exhausted",
+        "rgb_ledger_verified": true,
+        "frontier_selections": 3,
+        "frontier_arrivals": 0,
+        "map_updated_frames": 451,
+        "pose_sources": {
+          "bootstrap": 4,
+          "visual_update": 78,
+          "command_only": 398
+        },
+        "wall_s": 331.9983822710019,
+        "input_audit": {
+          "schema": "ugrp.selfmap_input_audit.v1",
+          "measured": true,
+          "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+          "own_rgb_frames": 480,
+          "issued_command_records": 247,
+          "top_rgb_frames": 0,
+          "peer_rgb_frames": 0,
+          "truth_pose_inputs": 0,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "rejected_inputs": 0,
+          "authored_static_map_inputs": 1
+        },
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "frame_N": 480,
+      "features": {
+        "N": 480,
+        "min": 0.0,
+        "median": 27.5,
+        "p90": 53.0,
+        "max": 78.0
+      },
+      "matches": {
+        "N": 480,
+        "min": 0.0,
+        "median": 3.0,
+        "p90": 10.0,
+        "max": 15.0
+      },
+      "inliers": {
+        "N": 480,
+        "min": 0.0,
+        "median": 0.0,
+        "p90": 9.0,
+        "max": 13.0
+      },
+      "static_features": {
+        "N": 480,
+        "min": 0.0,
+        "median": 4.0,
+        "p90": 4.0,
+        "max": 4.0
+      },
+      "pf_resolved_N": 326,
+      "registered_N": 0,
+      "pf_resolved_error": {
+        "N": 326,
+        "xy_m": {
+          "N": 326,
+          "min": 0.0409576551425341,
+          "median": 0.1005735579716842,
+          "p90": 0.22297885779380808,
+          "max": 0.38200291946917414
+        },
+        "yaw_deg": {
+          "N": 326,
+          "min": 0.02497889651260474,
+          "median": 3.389208569506003,
+          "p90": 9.67334283814522,
+          "max": 10.016070192933155
+        },
+        "within_10cm_5deg": 99
+      },
+      "first30_counts": {
+        "frame_N": 301,
+        "features": {
+          "N": 301,
+          "min": 0.0,
+          "median": 33.0,
+          "p90": 55.0,
+          "max": 78.0
+        },
+        "matches": {
+          "N": 301,
+          "min": 0.0,
+          "median": 4.0,
+          "p90": 10.0,
+          "max": 15.0
+        },
+        "inliers": {
+          "N": 301,
+          "min": 0.0,
+          "median": 0.0,
+          "p90": 9.0,
+          "max": 13.0
+        },
+        "registered_N": 0
+      },
+      "first30": {
+        "elapsed_sim_s": 30.0,
+        "frames": 301,
+        "stage": "active_reloc8",
+        "wall_per_sim": 6.747881450333322,
+        "pose_sources": {
+          "bootstrap": 4,
+          "visual_update": 77,
+          "command_only": 220
+        },
+        "input_audit": {
+          "schema": "ugrp.selfmap_input_audit.v1",
+          "measured": true,
+          "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+          "own_rgb_frames": 301,
+          "issued_command_records": 157,
+          "top_rgb_frames": 0,
+          "peer_rgb_frames": 0,
+          "truth_pose_inputs": 0,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "rejected_inputs": 0,
+          "authored_static_map_inputs": 1
+        },
+        "frontier_arrivals": 0,
+        "timing": {
+          "seconds": {
+            "capture": 33.70189904600193,
+            "plane_flow": 6.819223150017933,
+            "pf": 2.4963390049779264,
+            "registration": 17.835054794002644,
+            "feature_tracking": 2.3750339989637723,
+            "control": 101.50107469199429,
+            "evaluation": 0.4301936920128355,
+            "physics_advance": 66.32403540000814,
+            "feature_extract": 1.9544206529972143,
+            "structure_extract": 21.707069077994674
+          },
+          "calls": {
+            "capture": 301,
+            "plane_flow": 301,
+            "pf": 301,
+            "registration": 301,
+            "feature_tracking": 301,
+            "control": 301,
+            "evaluation": 301,
+            "physics_advance": 300,
+            "feature_extract": 274,
+            "structure_extract": 274
+          },
+          "pf_particles": 2000,
+          "nested_categories": true,
+          "note": "control includes feature/PF/geometry; registration includes PF and evidence"
+        }
+      },
+      "rejection_reasons": {
+        "no_sensor_update": 411,
+        "pf_unresolved": 154,
+        "xy_covariance": 423,
+        "yaw_covariance": 474,
+        "geometry": 146,
+        "ambiguity_pending_upstream": 480,
+        "cluster_mass": 8
+      }
+    },
+    {
+      "run": "reloc11-r2-texture-93571-41c0104b",
+      "source_sha": "41c0104b7bf122fbe0c5462f2973921af24a778c",
+      "result": {
+        "status": "HOST_ERROR",
+        "source_sha": "41c0104b7bf122fbe0c5462f2973921af24a778c",
+        "seed": 93571,
+        "model_calls": 0,
+        "complete": false,
+        "physical_success_unverified": true,
+        "frames": 430,
+        "scene_version": "floor_light_textured_v1",
+        "render_profile": "floor_light_textured_v1",
+        "revision_gate": "selfmap4_revision_gate_v2",
+        "multiframe_registration": "selfmap4_multiframe_registration_v1",
+        "pool_with_previous_results": false,
+        "correction_safety": "selfmap6_correction_safety_v1",
+        "active_relocalization": "reloc8_active_vision_v1",
+        "authored_static_map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b",
+        "elapsed_sim_s": 85.8,
+        "stop_reason": "selfmap4_relocalization_exhausted",
+        "rgb_ledger_verified": true,
+        "frontier_selections": 3,
+        "frontier_arrivals": 0,
+        "map_updated_frames": 286,
+        "pose_sources": {
+          "bootstrap": 3,
+          "visual_update": 152,
+          "command_only": 275
+        },
+        "wall_s": 360.9403906609987,
+        "input_audit": {
+          "schema": "ugrp.selfmap_input_audit.v1",
+          "measured": true,
+          "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+          "own_rgb_frames": 430,
+          "issued_command_records": 436,
+          "top_rgb_frames": 0,
+          "peer_rgb_frames": 0,
+          "truth_pose_inputs": 0,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "rejected_inputs": 0,
+          "authored_static_map_inputs": 1
+        },
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "frame_N": 430,
+      "features": {
+        "N": 430,
+        "min": 0.0,
+        "median": 191.5,
+        "p90": 330.0,
+        "max": 403.0
+      },
+      "matches": {
+        "N": 430,
+        "min": 0.0,
+        "median": 11.0,
+        "p90": 26.0,
+        "max": 57.0
+      },
+      "inliers": {
+        "N": 430,
+        "min": 0.0,
+        "median": 0.0,
+        "p90": 20.0,
+        "max": 51.0
+      },
+      "static_features": {
+        "N": 430,
+        "min": 0.0,
+        "median": 4.0,
+        "p90": 4.0,
+        "max": 4.0
+      },
+      "pf_resolved_N": 313,
+      "registered_N": 0,
+      "pf_resolved_error": {
+        "N": 313,
+        "xy_m": {
+          "N": 313,
+          "min": 0.0073913765937373655,
+          "median": 0.10597350337031135,
+          "p90": 0.15194482084290095,
+          "max": 0.4163876719152174
+        },
+        "yaw_deg": {
+          "N": 313,
+          "min": 0.01667371612788931,
+          "median": 3.266253368139605,
+          "p90": 21.87466848574561,
+          "max": 24.003920226884983
+        },
+        "within_10cm_5deg": 116
+      },
+      "first30_counts": {
+        "frame_N": 151,
+        "features": {
+          "N": 151,
+          "min": 0.0,
+          "median": 275.0,
+          "p90": 359.0,
+          "max": 403.0
+        },
+        "matches": {
+          "N": 151,
+          "min": 0.0,
+          "median": 14.0,
+          "p90": 34.0,
+          "max": 46.0
+        },
+        "inliers": {
+          "N": 151,
+          "min": 0.0,
+          "median": 13.0,
+          "p90": 33.0,
+          "max": 44.0
+        },
+        "registered_N": 0
+      },
+      "first30": {
+        "elapsed_sim_s": 30.0,
+        "frames": 151,
+        "stage": "active_reloc8",
+        "wall_per_sim": 4.00451800626676,
+        "pose_sources": {
+          "bootstrap": 3,
+          "visual_update": 89,
+          "command_only": 59
+        },
+        "input_audit": {
+          "schema": "ugrp.selfmap_input_audit.v1",
+          "measured": true,
+          "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+          "own_rgb_frames": 151,
+          "issued_command_records": 157,
+          "top_rgb_frames": 0,
+          "peer_rgb_frames": 0,
+          "truth_pose_inputs": 0,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "rejected_inputs": 0,
+          "authored_static_map_inputs": 1
+        },
+        "frontier_arrivals": 0,
+        "timing": {
+          "seconds": {
+            "capture": 14.058698841010482,
+            "plane_flow": 2.737917964976077,
+            "pf": 1.155770040997595,
+            "registration": 4.63231960799385,
+            "feature_tracking": 3.652483994974318,
+            "control": 46.961599510981614,
+            "evaluation": 0.1815966299873253,
+            "physics_advance": 54.38964058901183,
+            "feature_extract": 1.1922703130003356,
+            "structure_extract": 13.680098728000303
+          },
+          "calls": {
+            "capture": 151,
+            "plane_flow": 151,
+            "pf": 151,
+            "registration": 151,
+            "feature_tracking": 151,
+            "control": 151,
+            "evaluation": 151,
+            "physics_advance": 150,
+            "feature_extract": 139,
+            "structure_extract": 139
+          },
+          "pf_particles": 2000,
+          "nested_categories": true,
+          "note": "control includes feature/PF/geometry; registration includes PF and evidence"
+        }
+      },
+      "rejection_reasons": {
+        "no_sensor_update": 314,
+        "pf_unresolved": 117,
+        "xy_covariance": 421,
+        "yaw_covariance": 426,
+        "geometry": 113,
+        "ambiguity_pending_upstream": 429,
+        "geometric_ambiguity": 1
+      }
+    },
+    {
+      "run": "reloc11-r2-texture-93583-41c0104b",
+      "source_sha": "41c0104b7bf122fbe0c5462f2973921af24a778c",
+      "result": {
+        "status": "HOST_ERROR",
+        "source_sha": "41c0104b7bf122fbe0c5462f2973921af24a778c",
+        "seed": 93583,
+        "model_calls": 0,
+        "complete": false,
+        "physical_success_unverified": true,
+        "frames": 322,
+        "scene_version": "floor_light_textured_v1",
+        "render_profile": "floor_light_textured_v1",
+        "revision_gate": "selfmap4_revision_gate_v2",
+        "multiframe_registration": "selfmap4_multiframe_registration_v1",
+        "pool_with_previous_results": false,
+        "correction_safety": "selfmap6_correction_safety_v1",
+        "active_relocalization": "reloc8_active_vision_v1",
+        "authored_static_map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b",
+        "elapsed_sim_s": 64.2,
+        "stop_reason": "selfmap4_relocalization_exhausted",
+        "rgb_ledger_verified": true,
+        "frontier_selections": 3,
+        "frontier_arrivals": 0,
+        "map_updated_frames": 256,
+        "pose_sources": {
+          "bootstrap": 3,
+          "visual_update": 163,
+          "command_only": 156
+        },
+        "wall_s": 255.68289528899913,
+        "input_audit": {
+          "schema": "ugrp.selfmap_input_audit.v1",
+          "measured": true,
+          "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+          "own_rgb_frames": 322,
+          "issued_command_records": 328,
+          "top_rgb_frames": 0,
+          "peer_rgb_frames": 0,
+          "truth_pose_inputs": 0,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "rejected_inputs": 0,
+          "authored_static_map_inputs": 1
+        },
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "frame_N": 322,
+      "features": {
+        "N": 322,
+        "min": 0.0,
+        "median": 173.0,
+        "p90": 338.90000000000003,
+        "max": 423.0
+      },
+      "matches": {
+        "N": 322,
+        "min": 0.0,
+        "median": 13.0,
+        "p90": 29.0,
+        "max": 43.0
+      },
+      "inliers": {
+        "N": 322,
+        "min": 0.0,
+        "median": 8.0,
+        "p90": 27.900000000000034,
+        "max": 41.0
+      },
+      "static_features": {
+        "N": 322,
+        "min": 0.0,
+        "median": 4.0,
+        "p90": 4.0,
+        "max": 4.0
+      },
+      "pf_resolved_N": 245,
+      "registered_N": 0,
+      "pf_resolved_error": {
+        "N": 245,
+        "xy_m": {
+          "N": 245,
+          "min": 0.01235581048644975,
+          "median": 0.06459130111909575,
+          "p90": 0.10774073951621634,
+          "max": 0.3290353999304361
+        },
+        "yaw_deg": {
+          "N": 245,
+          "min": 0.028160740081996486,
+          "median": 0.9165236893814216,
+          "p90": 3.445070492481089,
+          "max": 8.936510772616089
+        },
+        "within_10cm_5deg": 204
+      },
+      "first30_counts": {
+        "frame_N": 151,
+        "features": {
+          "N": 151,
+          "min": 0.0,
+          "median": 282.0,
+          "p90": 350.0,
+          "max": 423.0
+        },
+        "matches": {
+          "N": 151,
+          "min": 0.0,
+          "median": 15.0,
+          "p90": 33.0,
+          "max": 43.0
+        },
+        "inliers": {
+          "N": 151,
+          "min": 0.0,
+          "median": 13.0,
+          "p90": 33.0,
+          "max": 41.0
+        },
+        "registered_N": 0
+      },
+      "first30": {
+        "elapsed_sim_s": 30.0,
+        "frames": 151,
+        "stage": "active_reloc8",
+        "wall_per_sim": 3.920460940733392,
+        "pose_sources": {
+          "bootstrap": 3,
+          "visual_update": 92,
+          "command_only": 56
+        },
+        "input_audit": {
+          "schema": "ugrp.selfmap_input_audit.v1",
+          "measured": true,
+          "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+          "own_rgb_frames": 151,
+          "issued_command_records": 157,
+          "top_rgb_frames": 0,
+          "peer_rgb_frames": 0,
+          "truth_pose_inputs": 0,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "rejected_inputs": 0,
+          "authored_static_map_inputs": 1
+        },
+        "frontier_arrivals": 0,
+        "timing": {
+          "seconds": {
+            "capture": 14.64201052800854,
+            "plane_flow": 2.7747683499874256,
+            "pf": 1.1038681300124153,
+            "registration": 4.762214647977089,
+            "feature_tracking": 3.8857402929716045,
+            "control": 48.21258174701143,
+            "evaluation": 0.18348929098283406,
+            "physics_advance": 54.341650722999475,
+            "feature_extract": 1.1648656800098252,
+            "structure_extract": 13.62362734098133
+          },
+          "calls": {
+            "capture": 151,
+            "plane_flow": 151,
+            "pf": 151,
+            "registration": 151,
+            "feature_tracking": 151,
+            "control": 151,
+            "evaluation": 151,
+            "physics_advance": 150,
+            "feature_extract": 139,
+            "structure_extract": 139
+          },
+          "pf_particles": 2000,
+          "nested_categories": true,
+          "note": "control includes feature/PF/geometry; registration includes PF and evidence"
+        }
+      },
+      "rejection_reasons": {
+        "no_sensor_update": 243,
+        "pf_unresolved": 77,
+        "xy_covariance": 321,
+        "yaw_covariance": 322,
+        "geometry": 114,
+        "ambiguity_pending_upstream": 322,
+        "cluster_mass": 8
+      }
+    },
+    {
+      "run": "reloc11-r2-texture-93584-8c7586c0",
+      "source_sha": "8c7586c01dc48ad50941aaf89bc740c29f4638a8",
+      "result": {
+        "status": "RECORDED",
+        "source_sha": "8c7586c01dc48ad50941aaf89bc740c29f4638a8",
+        "seed": 93584,
+        "model_calls": 0,
+        "complete": false,
+        "physical_success_unverified": true,
+        "frames": 451,
+        "scene_version": "floor_light_textured_v1",
+        "render_profile": "floor_light_textured_v1",
+        "revision_gate": "selfmap4_revision_gate_v2",
+        "multiframe_registration": "selfmap4_multiframe_registration_v1",
+        "pool_with_previous_results": false,
+        "correction_safety": "selfmap6_correction_safety_v1",
+        "active_relocalization": "reloc8_active_vision_v1",
+        "authored_static_map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b",
+        "elapsed_sim_s": 90.0,
+        "stop_reason": "sim_time_cap",
+        "rgb_ledger_verified": true,
+        "frontier_selections": 3,
+        "frontier_arrivals": 0,
+        "map_updated_frames": 399,
+        "pose_sources": {
+          "bootstrap": 3,
+          "visual_update": 184,
+          "command_only": 264
+        },
+        "wall_s": 404.0453719859979,
+        "input_audit": {
+          "schema": "ugrp.selfmap_input_audit.v1",
+          "measured": true,
+          "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+          "own_rgb_frames": 451,
+          "issued_command_records": 457,
+          "top_rgb_frames": 0,
+          "peer_rgb_frames": 0,
+          "truth_pose_inputs": 0,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "rejected_inputs": 0,
+          "authored_static_map_inputs": 1
+        },
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "evaluation": {
+          "scope": "static geometry only; all predicted occupied cells scored against wall surfaces",
+          "occupancy_iou": 0.1655773420479303,
+          "occupancy_intersection": 76,
+          "occupancy_union": 459,
+          "predicted_occupied": 253,
+          "truth_occupied": 282,
+          "false_occupied_outside_domain": 137,
+          "free_coverage_n": 1287,
+          "free_coverage_N": 2773,
+          "free_coverage": 0.46411828344752976,
+          "reachable_free_coverage_n": 1287,
+          "reachable_free_coverage_N": 2773,
+          "known_coverage_n": 1489,
+          "known_coverage_N": 3055,
+          "wall_error_rmse_m": 0.2105188395801711,
+          "wall_error_predicted_N": 253,
+          "all_wall_to_prediction_p95_m": 3.2249999999999996,
+          "all_wall_samples_N": 544,
+          "origin_eval_only": [
+            3.2499766047465033,
+            0.7500016612373989,
+            3.1415899617371092
+          ],
+          "pose_error_N": 451,
+          "trace_N": 451,
+          "pose_rmse_m": 0.1678804183086466,
+          "yaw_rmse_rad": 0.13156630666811533
+        }
+      },
+      "frame_N": 451,
+      "features": {
+        "N": 451,
+        "min": 0.0,
+        "median": 174.0,
+        "p90": 331.0,
+        "max": 419.0
+      },
+      "matches": {
+        "N": 451,
+        "min": 0.0,
+        "median": 9.0,
+        "p90": 21.0,
+        "max": 44.0
+      },
+      "inliers": {
+        "N": 451,
+        "min": 0.0,
+        "median": 0.0,
+        "p90": 18.0,
+        "max": 44.0
+      },
+      "static_features": {
+        "N": 451,
+        "min": 0.0,
+        "median": 4.0,
+        "p90": 4.0,
+        "max": 4.0
+      },
+      "pf_resolved_N": 365,
+      "registered_N": 0,
+      "pf_resolved_error": {
+        "N": 365,
+        "xy_m": {
+          "N": 365,
+          "min": 0.029034103172369066,
+          "median": 0.0951950041282087,
+          "p90": 0.1339720690473536,
+          "max": 0.3725818223682369
+        },
+        "yaw_deg": {
+          "N": 365,
+          "min": 0.0020622591928263693,
+          "median": 0.49068926602596674,
+          "p90": 2.0938894905840577,
+          "max": 9.560771952335104
+        },
+        "within_10cm_5deg": 201
+      },
+      "first30_counts": {
+        "frame_N": 151,
+        "features": {
+          "N": 151,
+          "min": 0.0,
+          "median": 273.0,
+          "p90": 357.0,
+          "max": 419.0
+        },
+        "matches": {
+          "N": 151,
+          "min": 0.0,
+          "median": 13.0,
+          "p90": 33.0,
+          "max": 44.0
+        },
+        "inliers": {
+          "N": 151,
+          "min": 0.0,
+          "median": 12.0,
+          "p90": 31.0,
+          "max": 44.0
+        },
+        "registered_N": 0
+      },
+      "first30": {
+        "elapsed_sim_s": 30.0,
+        "frames": 151,
+        "stage": "active_reloc8",
+        "wall_per_sim": 4.524246055666663,
+        "pose_sources": {
+          "bootstrap": 3,
+          "visual_update": 85,
+          "command_only": 63
+        },
+        "input_audit": {
+          "schema": "ugrp.selfmap_input_audit.v1",
+          "measured": true,
+          "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+          "own_rgb_frames": 151,
+          "issued_command_records": 157,
+          "top_rgb_frames": 0,
+          "peer_rgb_frames": 0,
+          "truth_pose_inputs": 0,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "rejected_inputs": 0,
+          "authored_static_map_inputs": 1
+        },
+        "frontier_arrivals": 0,
+        "timing": {
+          "seconds": {
+            "capture": 15.860327790978772,
+            "plane_flow": 3.0185843350081996,
+            "pf": 1.3110542930080555,
+            "registration": 4.707727137978509,
+            "feature_tracking": 3.939738818004116,
+            "control": 51.1902913830163,
+            "evaluation": 0.1977125749872357,
+            "physics_advance": 63.732790553000086,
+            "feature_extract": 1.2941871760085633,
+            "structure_extract": 14.465762621999602
+          },
+          "calls": {
+            "capture": 151,
+            "plane_flow": 151,
+            "pf": 151,
+            "registration": 151,
+            "feature_tracking": 151,
+            "control": 151,
+            "evaluation": 151,
+            "physics_advance": 150,
+            "feature_extract": 139,
+            "structure_extract": 139
+          },
+          "pf_particles": 2000,
+          "nested_categories": true,
+          "note": "control includes feature/PF/geometry; registration includes PF and evidence"
+        }
+      },
+      "rejection_reasons": {
+        "no_sensor_update": 368,
+        "pf_unresolved": 86,
+        "xy_covariance": 415,
+        "yaw_covariance": 408,
+        "geometry": 112,
+        "ambiguity_pending_upstream": 451,
+        "cluster_mass": 5
+      }
+    }
+  ],
+  "artifacts": {
+    "round1.json": "62c441e7d96760c5e1f6dc6da7d7111d8a4695b466d33f0e24dc7d07d73910d9",
+    "round2.json": "8780b4465dbaaf478642312677490ba8a10342090a0ad3844982ba1cc53573a6",
+    "round3-not-started.json": "609233dbf18e80e7fd16f81c9395cd261c657a60a276061b5a3fdd7d7e18a6e5",
+    "gcp-commands.json": "9c5780b6b982fd6798137033708e709be36c6a7f8d68e9bc7949c4dfe96a38b5",
+    "validation.json": "bb728c32d72cc4d50ec8232e6a879de8868e5aba03836f8a7e12cbabe66bf519",
+    "review.json": "5fb0832d8009819fda902631b2dd5c172bdc871ca35650b4e2bde4f67e1c63cd",
+    "runtime-equivalence.json": "9da392ddf64566cb159300ec3667d5b5c041593b87eab8acb59b9d52f6433416",
+    "r3-vm-safety.json": "c0221f8189ac47eb3c5016d40c701454e574c837e8adf3cc5d9e74755d3e74a3",
+    "r3-vm-events.json": "9cc144e33ca6c9e2fcd4b6d58cd4bbf33e6203b01caa69d40833da079cd722b5",
+    "budget.json": "f17ac45aed4e16ecbd5cd1ba12b1352dfd44bcc897ff4110db653d5b8e88475e",
+    "gcp-final-state.json": "03679250d5f0dae694489738ec307b21b96e428ff9d4393aebbdddefd9912bdf",
+    "README.md": "59b35ce7a71b7c8743d47d937f99858c86756328602851faf5dbb02335a378e2",
+    "carry-handoff.json": "fef4999b61627277fa05912065fb44152b80d7c69f31c236368ad1dbfc47209e"
+  },
+  "own_processes_at_final_check": 0,
+  "own_leases_at_final_check": 0,
+  "shared_vm_left_running_for_other_owner": true
+}

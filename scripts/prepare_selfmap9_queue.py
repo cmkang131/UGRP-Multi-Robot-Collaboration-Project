@@ -24,7 +24,7 @@ def make_queue(sha, *, registered, measured_runs, half_rate=True, low_contrast=T
                          stage='reproduction' if not runs else 'fresh_four',execution_argument_after_approval='--execute',
                          command=['python3','scripts/remote_run.py','--host','gcp1','--detach','--class','dev','--pr','506','--per-run-mb','256',str(ROOT),name,'--',*args]))
     q=dict(schema='ugrp.selfmap9.queue.reloc11',source_sha=sha,sha=sha,pr=506,branch='claude/map-selfmap',source_worktree=str(ROOT),runner_cwd=str(ROOT),
-           host='gcp1',project='ugrp-act-train-1014',machine_type='n4-highcpu-64',max_parallel=16,run_count=len(runs),runs=runs,
+           host='gcp1',project='ugrp-act-train-1014',machine_type='n4-highcpu-64',runs_enabled=False,max_parallel=16,run_count=len(runs),runs=runs,
            scene_version='floor_light_textured_v1',previous_results_combinable=False,automatic_promotion=False,
            status='BLOCKED' if not registered else 'prepared_not_submitted',blocker='NO_STATIC_REGISTRATION_IN_DIRECT_GCP_CHECK' if not registered else None,
            direct_check=dict(registered_frames=registered,measured_runs=measured_runs,research_success=False),
