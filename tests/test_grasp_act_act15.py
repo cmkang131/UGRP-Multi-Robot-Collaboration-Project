@@ -16,6 +16,16 @@ def test_decode_boundary_is_visible_in_error_metrics():
     assert distribution([errors])['wheel_mae']['p95'] == .35
 
 
+def test_done_request_cannot_hide_cap_before_settle_finishes():
+    from harness.grasp_act_rollout import SoloSequence
+    from scripts.run_grasp_act_student import reached_cap
+    sequence=SoloSequence()
+    assert not sequence.update(89.9,True)
+    assert sequence.done_times and reached_cap(90.,90.,sequence_finished=False)
+    assert not reached_cap(89.,90.,sequence_finished=False)
+    assert not reached_cap(90.,90.,sequence_finished=True)
+
+
 def test_initial_coverage_does_not_admit_exogenous_actions(tmp_path):
     from tests.test_grasp_act_data import episode
     from harness.grasp_act_data import paired_segments

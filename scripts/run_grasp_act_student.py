@@ -52,6 +52,12 @@ def response(process, timeout=120.):
     return json.loads(line)
 
 
+def reached_cap(sim_s, cap_s, *, sequence_finished):
+    # Preserve the existing half-control-tick timestamp comparison. A done
+    # request alone does not complete SoloSequence's existing settle window.
+    return not sequence_finished and sim_s >= cap_s-c.PERIOD_S/2
+
+
 def run(plan, protocol, model, output, *, actor_python, cap_s=60., n_action_steps=c.CHUNK,
         temporal_ensemble_coeff=None, actor_threads=1, teacher_start_v1=False,
         diagnostic_observer_factory=None, actor_server_url=None):
@@ -185,6 +191,7 @@ def run(plan, protocol, model, output, *, actor_python, cap_s=60., n_action_step
         gids = [g for g in range(world.model.ngeom) if world.model.geom_bodyid[g] == body and world.model.geom_contype[g]]
         fingers = {world.model.geom(rid + '__' + side + '_finger').id: i for i, side in enumerate(('left', 'right'))}
         origin, tick = float(world.data.time), 0
+        sequence_finished = False
         with (output / 'student-inputs.jsonl').open('x') as inputs, (output / 'commands.jsonl').open('x') as commands, (output / 'eval-only.jsonl').open('x') as evaluations:
             while float(world.data.time) - origin < cap_s - 1e-8:
                 if (output / 'SUPERVISOR_STOP.json').exists():
@@ -279,6 +286,7 @@ def run(plan, protocol, model, output, *, actor_python, cap_s=60., n_action_step
                 # Student done + fixed clock window are the ONLY phase/stop inputs.
                 # Evaluation truth never enters the sequence or the worker.
                 if sequence.update(now, done):
+                    sequence_finished = True
                     break
                 tick += 1
                 until = origin + tick * c.PERIOD_S
@@ -293,7 +301,7 @@ def run(plan, protocol, model, output, *, actor_python, cap_s=60., n_action_step
             inference_latency_s={'n': len(latencies), 'median': float(np.median(latencies)) if latencies else None,
                                  'p95': float(np.percentile(latencies, 95)) if latencies else None},
             skill_completion_success=None)
-        report['cap_end'] = not bool(sequence.done_times) and report['sim_s'] >= cap_s - c.PERIOD_S / 2
+        report['cap_end'] = reached_cap(report['sim_s'], cap_s, sequence_finished=sequence_finished)
         report['termination'] = 'cap_end' if report['cap_end'] else 'student_done'
         if teacher_start_v1:
             missing = next((s for s in ('approach', 'alignment', 'grasp', 'lift_confirmation') if s not in first_pass), None)
