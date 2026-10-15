@@ -24,12 +24,14 @@ def metadata(url, headers):
 def identity(execution_host):
     if platform.system() != 'Linux':
         raise ValueError('grasp physics requires an admitted Linux execution host')
-    if execution_host == 'gcp1':
+    if execution_host in ('gcp1','gcp2'):
         base = 'http://169.254.169.254/computeMetadata/v1/'
         get = lambda key: metadata(base + key, {'Metadata-Flavor': 'Google'})
         project = get('project/project-id')
-        if project != GCP_PROJECT:
+        if project != (GCP_PROJECT if execution_host=='gcp1' else 'ugrp-sim-b-1014'):
             raise ValueError('unapproved GCP project')
+        if execution_host=='gcp2' and get('instance/name')!='ugrp-sim-gcp2':
+            raise ValueError('gcp2 VM required')
         row = {'provider': 'gcp', 'project_id': project, 'instance': get('instance/name'),
                'machine_type': get('instance/machine-type').rsplit('/', 1)[-1],
                'zone': get('instance/zone').rsplit('/', 1)[-1]}

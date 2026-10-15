@@ -28,7 +28,7 @@ class ColourBoundaryState:
         self.last_result = None
 
 
-def surface_masks(bgr, calibration):
+def surface_masks(bgr, calibration, *, expanded_wall_value=False):
     lab = cv2.cvtColor(bgr, cv2.COLOR_BGR2LAB).astype(float)
     axis = np.asarray(calibration['axis_ab'])
     score = lab[..., 1:] @ axis
@@ -39,7 +39,9 @@ def surface_masks(bgr, calibration):
         masks[surface] = ((lab >= lo) & (lab <= hi)).all(-1)
     if 'wall_hsv' in calibration:
         hsv=cv2.cvtColor(bgr,cv2.COLOR_BGR2HSV)
-        bounds=calibration['wall_hsv']
+        bounds={key:list(value) for key,value in calibration['wall_hsv'].items()}
+        if expanded_wall_value:
+            bounds['p01'][2]=calibration['wall_value_v2']['p00'];bounds['p99'][2]=calibration['wall_value_v2']['p100']
         masks['wall'] &= ((hsv>=bounds['p01']) & (hsv<=bounds['p99'])).all(-1)
     masks['wall'] &= score > split
     masks['floor'] &= score < split
@@ -50,7 +52,7 @@ def detect(hfw, und_bgr, cm, *, params, loaded, state):
     if not isinstance(state, ColourBoundaryState):
         raise ValueError('EXPLICIT_SCENE_COLOUR_STATE_REQUIRED')
     p = {**hfw.PARAMS, **params}
-    masks, score = surface_masks(und_bgr, state.calibration)
+    masks, score = surface_masks(und_bgr, state.calibration,expanded_wall_value=state.option==RELOC16_OPTION)
     cols = np.asarray(cm.columns, int)
     n, k = len(cols), int(p['candidates'])
     scan = {key: np.full((n, k), np.nan) for key in ('vb', 'vt', 'h', 'h_lb', 'c', 's', 'r', 'b')}
@@ -95,6 +97,10 @@ def detect(hfw, und_bgr, cm, *, params, loaded, state):
             lum=np.median(grey[:,sl],axis=1)
             edges=np.arange(max(0,v-window),min(len(lum)-1,v+window+1))
             row=float(edges[np.argmax(abs(lum[edges+1]-lum[edges]))])
+            if state.option==RELOC16_OPTION:
+                # Report the first floor-side row of the measured pixel step,
+                # matching v1's row convention (e.g. paint_A87 vs edge86.5).
+                row+=1
             if row >= top[j]-p['self_margin_px']-1: continue
             ts = cm.t_of_row(np.full(n, row)); t = float(ts[j])
             if not np.isfinite(t): continue

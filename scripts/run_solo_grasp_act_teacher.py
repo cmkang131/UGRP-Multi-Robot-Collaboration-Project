@@ -27,9 +27,9 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
         teacher_stability='off', reach_mode='box_station_v1', rgb_lift_mode='off',
         solo_lift_negative_probe_v1=False, solo_lift_lookback_margin_v1=False,
         training_rgb=False, solo_truth_free_lookaround_v1=False,
-        recording_stage='pilot', recording_approval=None, solo_carry_to_zone_v1=False, failure_rgb_buffer=False):
-    if platform.system() != 'Linux' or execution_host != 'gcp1':
-        raise RuntimeError('Linux gcp1 only; Mac physics/render disabled')
+        recording_stage='pilot', recording_approval=None, solo_carry_to_zone_v1=False, failure_rgb_buffer=False, review_playback=False):
+    if platform.system() != 'Linux' or execution_host != 'gcp2':
+        raise RuntimeError('Linux gcp2 only; Mac physics/render disabled')
     if not 0 < cap_s <= (300 if solo_carry_to_zone_v1 else 180) or profile != 'solo_visible_only_v1' or not hidden or not look:
         raise ValueError('finite opt-in solo profile with both required toggles')
     if teacher_stability not in ('off', 'align_relook_v1') or reach_mode not in ('box_station_v1', 'pad_window_v2'):
@@ -115,7 +115,10 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
         world = build_world(scene, drive_profile=PROFILE, seed=plan['seed'], width=sampling['width'],
                             height=sampling['height'], render=True, warehouse_layout=scene.engine_layout,
                             warehouse_cargo_ids=None, roller_collision='mesh', idle_robot_contacts='off')
-        if plan.get('render_profile') == 'floor_light_textured_v1':
+        from sim.reloc16_scene import configure_world
+        scene_audit=configure_world(world,plan.get('render_profile'))
+        if scene_audit is not None:write(out/'reloc16-scene.json',scene_audit)
+        if plan.get('render_profile') in ('floor_light_textured_v1','walls_floor_contrast_v5_indigo110_s80'):
             from sim.grasp_act_scene import audit_render
             write(out/'texture-audit.json',audit_render(world.model,plan))
         for controller in world.controllers.values():
@@ -160,6 +163,8 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
         initial_xy = data.body(body_name).xpos[:2].copy()  # EVALUATION ONLY
         last_eval_pos, last_eval_t = None, None
         static = scene.config['static_map']
+        from harness.reloc16_playback import PlaybackRecorder
+        playback=PlaybackRecorder(out/'playback',world,top_camera=static['top_cameras'][0]['name']) if review_playback else None
         carry = None
         if solo_carry_to_zone_v1:
             from sim.solo_carry_to_zone import CarryToZone
@@ -186,6 +191,8 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
                                 reloc15_heading_10hz_v1=plan.get('reloc15_heading_10hz_v1', False),
                                 reloc15_dense_yaw_v1=plan.get('reloc15_dense_yaw_v1', False),
                                 reloc15_heading_quality_v1=plan.get('reloc15_heading_quality_v1', False),
+                                reloc16_wall_compass_v1=plan.get('reloc16_wall_compass_v1',False),
+                                reloc16_active_view_v1=plan.get('reloc16_active_view_v1',False),
                                 carry_pose_budget_xy_reserve0_v1=plan.get('carry_pose_budget_xy_reserve0_v1', False))
             if carry.loc.drive_model_enabled:
                 ops.delta = carry.loc.cached_delta
@@ -364,6 +371,7 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
             measurement = audit.measure(teacher.phase, visible_n=visible_n, probe_N=probe_N,
                                         holding=teacher.holding, read_relative=read_relative)
             # Capture once: recording persists exactly these controller bytes.
+            if playback is not None:playback.observe(now)
             jpg = base64.b64decode(port.capture()['image'])
             bgr = cv2.imdecode(np.frombuffer(jpg, np.uint8), cv2.IMREAD_COLOR)
             if failure_frames is not None:
@@ -615,10 +623,10 @@ def validate_carry(plan, *, enabled, training_rgb, truth_free, lift, negative):
         raise ValueError('unknown carry5 profile')
     if plan.get('carry5_profile') == 'carry5_active_localization_v1' and plan.get('drive_model_deadband_v1') is not True:
         raise ValueError('carry5 requires the merged shared drive_model_deadband_v1')
-    if plan.get('render_profile','floor_light_v1') not in ('floor_light_v1','floor_light_textured_v1'):
+    if plan.get('render_profile','floor_light_v1') not in ('floor_light_v1','floor_light_textured_v1','walls_floor_contrast_v5_indigo110_s80'):
         raise ValueError('unknown carry render profile')
     for option in ('carry5_rank_aware_views_v1', 'carry5_trim_yaw_calibration_v1', 'carry7_robust_recovery_v1',
-                   'reloc9_rotation_calibration_v1', 'reloc9_wall_height_guard_v1', 'reloc9_reacquisition_v1', 'reloc10_rotation_calibration_v1', 'reloc10_own_review_only_v1', 'reloc12_carry_reacquire_v1', 'carry_pose_budget_recal_v1', 'carry_pose_budget_xy_reserve0_v1', 'reloc14_carry_budget_v1', 'reloc14_compute_budget_v1', 'reloc14_scene_v7', 'reloc14_carry_tracking_v1', 'reloc15_rgb_heading_v1', 'reloc15_heading_10hz_v1', 'reloc15_dense_yaw_v1', 'reloc15_heading_quality_v1'):
+                   'reloc9_rotation_calibration_v1', 'reloc9_wall_height_guard_v1', 'reloc9_reacquisition_v1', 'reloc10_rotation_calibration_v1', 'reloc10_own_review_only_v1', 'reloc12_carry_reacquire_v1', 'carry_pose_budget_recal_v1', 'carry_pose_budget_xy_reserve0_v1', 'reloc14_carry_budget_v1', 'reloc14_compute_budget_v1', 'reloc14_scene_v7', 'reloc14_carry_tracking_v1', 'reloc15_rgb_heading_v1', 'reloc15_heading_10hz_v1', 'reloc15_dense_yaw_v1', 'reloc15_heading_quality_v1','reloc16_wall_compass_v1','reloc16_active_view_v1'):
         if type(plan.get(option, False)) is not bool:
             raise ValueError(option+' must be bool')
         if plan.get(option) and plan.get('carry5_profile') != 'carry5_active_localization_v1':
@@ -652,7 +660,8 @@ def main():
     p.add_argument('--plan', type=Path, required=True)
     p.add_argument('--episode', type=int, required=True)
     p.add_argument('--out', type=Path, required=True)
-    p.add_argument('--execution-host', choices=('gcp1',), required=True)
+    p.add_argument('--review-playback',action='store_true',help='record-only 2Hz overview/r1/r2/r3')
+    p.add_argument('--execution-host', choices=('gcp2',), required=True)
     p.add_argument('--teacher-profile', choices=('off', 'solo_visible_only_v1'), default='off')
     p.add_argument('--held-object-hidden-v1', action='store_true')
     p.add_argument('--setdown-lookaround-v1', action='store_true')
@@ -681,7 +690,7 @@ def main():
               solo_lift_lookback_margin_v1=a.solo_lift_lookback_margin_v1,
               training_rgb=a.training_rgb, solo_truth_free_lookaround_v1=a.solo_truth_free_lookaround_v1,
               recording_stage=a.recording_stage, recording_approval=a.recording_approval,
-              failure_rgb_buffer=a.failure_rgb_buffer,
+              failure_rgb_buffer=a.failure_rgb_buffer,review_playback=a.review_playback,
               solo_carry_to_zone_v1=a.solo_carry_to_zone_v1)))
 
 

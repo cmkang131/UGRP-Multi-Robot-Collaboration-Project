@@ -35,6 +35,12 @@ def main(out):
                 if state is not None:
                     rr['signals'][e]['wall_LK']=track(before[...,::-1].copy(),after[...,::-1].copy(),cal)
                     rr['signals'][e]['wall_LK'].pop('before_uv',None);rr['signals'][e]['wall_LK'].pop('after_uv',None)
+                    from harness.reloc16_compass import contacts,certify_points
+                    from harness.reloc15_heading import commanded_rotation
+                    from harness.active_wall_vision import modules
+                    mp,hfw,_=modules()
+                    uv=contacts(mp.undistort(before),cal,mp.column_positions(96,2),hfw.PARAMS)
+                    rr['signals'][e]['compass']=certify_points(uv,np.linalg.inv(mp.K_INV),commanded_rotation(pwm),residual_px=cal['line_residual_px_p95'],min_columns=hfw.PARAMS['min_run_columns'])
             rows_out.append(rr)
             print('scored',raw.name,r['case'],flush=True)
         results[raw.name]=rows_out
@@ -49,7 +55,7 @@ def main(out):
         report[e]=dict(columns=cols,error_px=errors,existing_detector_equal=equal,N=88,qualified_N=len(pairs),
             false_columns=sum(a['false_columns'] for a,b in pairs),baseline_false_columns=sum(b['false_columns'] for a,b in pairs),reasons=dict(reasons),
             wall_tracks=compare([a['wall_LK']['wall_tracks'] for a,b in pairs],[b['LK_tracks'] for a,b in pairs]),
-            floor_channel_unchanged=True)
+            floor_channel_unchanged=True,compass_status=dict(collections.Counter(r['signals'][e]['compass']['status'] for r in candidate)))
     write(out/'cases.json',results);write(out/'summary.json',dict(report=report,sources=sources,calibration_sha256=sha(Path('experiments/2026-10-16-reloc16/colour-calibration.json')),
         ready=all(r['columns']['pass'] and r['error_px']['pass'] and r['existing_detector_equal']==88 for r in report.values()),
         scope='88 same static poses; wall tracks distinct from floor metric VO; no motion/localization success'))

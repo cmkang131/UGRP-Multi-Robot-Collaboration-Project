@@ -18,7 +18,7 @@ def track(before,after,calibration):
     valid=(mp.undistort(np.full_like(images[0],255))==255).all(-1)
     masks=[]
     for im in images:
-        mask=surface_masks(im,calibration)[0]['wall'] & valid
+        mask=surface_masks(im,calibration,expanded_wall_value=True)[0]['wall'] & valid
         # Inherited floor LK erosion/block size7; window21, pyramid3, FB1px.
         masks.append(cv2.erode(mask.astype(np.uint8)*255,np.ones((7,7),np.uint8)))
     gray=[cv2.cvtColor(im,cv2.COLOR_BGR2GRAY) for im in images]

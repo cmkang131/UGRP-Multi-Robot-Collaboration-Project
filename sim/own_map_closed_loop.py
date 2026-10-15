@@ -5,6 +5,11 @@ from sim.active_wall_map import PhysicsBackend as Base
 class PhysicsBackend(Base):
     def __init__(self, bundle, out, *, seed):
         super().__init__(bundle, out, seed=seed)
+        from sim.reloc16_scene import configure_world
+        self.reloc16_scene_audit=configure_world(self.world,bundle['options'].get('render_profile'))
+        if self.reloc16_scene_audit is not None:
+            from scripts.offline_self_map import dump
+            dump(self.out/'reloc16-scene.json',self.reloc16_scene_audit)
         if bundle['options'].get('render_profile') == 'floor_light_textured_v1':
             from sim.render_profile_selection import for_name
             try:

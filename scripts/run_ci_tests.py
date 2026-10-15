@@ -29,6 +29,7 @@ TEST_PATTERNS = (
     "tests/test_reloc13.py",
     "tests/test_reloc14.py",
     "tests/test_reloc15.py",
+    "tests/test_reloc16.py",
     "tests/test_reloc10_*.py",
     "tests/test_reloc9_shared.py",
     "tests/test_reloc9_selfmap.py",

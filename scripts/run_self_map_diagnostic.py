@@ -65,7 +65,7 @@ def bundle(source, seed, cap_s, *, bootstrap='off', initial_sweep='off', recover
                       supplied_map_to_controller=True, authored_static_map_sha256=sha)
         result['options'].update(recovery_profile=recovery_profile)
         result['controller_inputs'].append('authored_static_geometry')
-    if render_profile not in ('floor_light_v1', 'floor_light_textured_v1'):
+    if render_profile not in ('floor_light_v1', 'floor_light_textured_v1','walls_floor_contrast_v5_indigo110_s80'):
         raise ValueError('UNKNOWN_SELFMAP_RENDER_PROFILE')
     if revision_gate != 'off' or multiframe_registration != 'off' or render_profile != 'floor_light_v1':
         result.update(execution_bundle_id='selfmap5-opt-in-v1', check='selfmap5', case='active-selfmap5',
@@ -197,6 +197,7 @@ def acquire(out, b, backend_factory, *, controller_factory=make_executor, wall_c
         pr=506, branch='claude/map-selfmap', sha=b['source_sha'], batch=b['check']))
     backend = controller = None
     timing = None
+    playback = None
     from harness.failure_rgb_buffer import FailureRGBBuffer
     failure_frames=FailureRGBBuffer(out/'failure-rgb') if b['recording'].get('failure_rgb_buffer') else None
     restores = []
@@ -229,6 +230,9 @@ def acquire(out, b, backend_factory, *, controller_factory=make_executor, wall_c
             manifest()
         backend = backend_factory(b, out, seed=b['task']['seed'])
         backend.reset(5.)
+        if b['recording'].get('review_playback'):
+            from harness.reloc16_playback import PlaybackRecorder
+            playback=PlaybackRecorder(out/'playback',backend.world,top_camera='cctv_top')
         if hasattr(backend, 'texture_audit'):
             dump(out/'texture-audit.json', backend.texture_audit)
         start, cap, robot = backend.now, b['case_cap_s'], b['task']['robot_id']
@@ -292,6 +296,7 @@ def acquire(out, b, backend_factory, *, controller_factory=make_executor, wall_c
                 if command is not None:
                     backend.issue(robot, {k: v for k, v in command.items() if k != 't'})
                     audit.command(controller, command)
+                if playback is not None:playback.observe(backend.now)
                 backend.eval_sample()  # write-only safety supervisor; no success feedback
                 if tick % progress_every == 0:
                     progress = dict(elapsed_sim_s=t-start, frames=tick+1,
@@ -316,6 +321,7 @@ def acquire(out, b, backend_factory, *, controller_factory=make_executor, wall_c
                     # natural-floor RANSAC uses that ID as a seed.
                     from harness.failure_rgb_buffer import record_backend_frame
                     record_backend_frame(failure_frames,backend,robot)
+                    if playback is not None:playback.observe(backend.now)
                 backend.advance_to(round(start+(tick+1)*interval, 9))
         result.update(status='HOST_ERROR' if controller.stop_reason == 'selfmap4_relocalization_exhausted' else 'RECORDED', elapsed_sim_s=backend.now-start,
             termination_category='cap_end' if controller.stop_reason == 'sim_time_cap' else controller.stop_reason,
@@ -370,8 +376,8 @@ def main(argv=None):
     p.add_argument('--expected-source-sha', required=True)
     p.add_argument('--seed', type=int, required=True)
     p.add_argument('--cap-s', type=float, default=180.)
-    p.add_argument('--execution-host', choices=['gcp1'], default='gcp1')
-    p.add_argument('--project', choices=['ugrp-act-train-1014'], default='ugrp-act-train-1014')
+    p.add_argument('--execution-host', choices=['gcp2'], default='gcp2')
+    p.add_argument('--project', choices=['ugrp-sim-b-1014'], default='ugrp-sim-b-1014')
     p.add_argument('--self-map-executor', choices=['off', OPTION], default='off')
     p.add_argument('--bootstrap', choices=['off', 'command_prior_v1'], default='off')
     p.add_argument('--initial-sweep', choices=['off', 'required_360_v1'], default='off')
@@ -382,6 +388,7 @@ def main(argv=None):
     p.add_argument('--active-relocalization', choices=['off', 'reloc8_active_vision_v1'], default='off')
     p.add_argument('--reloc15-update-budget-v1', action='store_true')
     p.add_argument('--reloc15-pose-handoff-v1', action='store_true')
+    p.add_argument('--review-playback',action='store_true',help='record-only 2Hz overview/r1/r2/r3')
     p.add_argument('--failure-rgb-buffer', action='store_true', help='record-only 10Hz last 10 SIM seconds')
     p.add_argument('--reloc14-compute-budget-v1', action='store_true')
     p.add_argument('--reloc14-continuous-tracking-v1', action='store_true')
@@ -398,7 +405,7 @@ def main(argv=None):
     p.add_argument('--reloc10-registration-v1', action='store_true')
     p.add_argument('--reloc9-rotation-calibration-v1', action='store_true')
     p.add_argument('--reloc9-wall-height-guard-v1', action='store_true')
-    p.add_argument('--render-profile', choices=['floor_light_v1', 'floor_light_textured_v1'], default='floor_light_v1')
+    p.add_argument('--render-profile', choices=['floor_light_v1', 'floor_light_textured_v1','walls_floor_contrast_v5_indigo110_s80'], default='floor_light_v1')
     p.add_argument('--execute', action='store_true')
     a = p.parse_args(argv)
     b = bundle(a.expected_source_sha, a.seed, a.cap_s, bootstrap=a.bootstrap, initial_sweep=a.initial_sweep,
@@ -439,7 +446,11 @@ def main(argv=None):
     signal.signal(signal.SIGALRM, timeout)
     signal.setitimer(signal.ITIMER_REAL, 1800.)
     try:
+        from scripts.grasp_act_host import identity
+        b['execution_host']=identity(a.execution_host)
+        if b['execution_host']['project_id']!=a.project:raise ValueError('PROJECT_IDENTITY_MISMATCH')
         b['recording']['failure_rgb_buffer'] = a.failure_rgb_buffer
+        b['recording']['review_playback']=a.review_playback
         result = acquire(a.output, b, PhysicsBackend)
     finally:
         signal.setitimer(signal.ITIMER_REAL, 0)
