@@ -1,0 +1,45 @@
+{
+  "decision": "PENDING",
+  "pr": 527,
+  "baseline_source": "c85ec54aea4820d0f31c3e3686860e6867b848ca",
+  "start_gate": {
+    "first_check": "2026-10-15T17:00:26Z",
+    "pass_check": "2026-10-15T17:05:54Z",
+    "scenetex3_judgement": "NOT_READY",
+    "scenetex3b_codex_ended": true,
+    "poll_interval_s": 300,
+    "maximum_wait_s": 3600
+  },
+  "before_change": [
+    {
+      "candidate": "v3/native",
+      "stages": [
+        88,
+        88,
+        87,
+        30,
+        30
+      ],
+      "largest_rejection": "camera_features_at_least_v1:57"
+    },
+    {
+      "candidate": "v3/wall_no_mip_v1",
+      "stages": [
+        88,
+        88,
+        87,
+        40,
+        34
+      ],
+      "largest_rejection": "camera_features_at_least_v1:47"
+    }
+  ],
+  "raw_sources": [
+    "/home/ugrp/ugrp-sim/runs/scenetex3-r3-complete"
+  ],
+  "reproduction_commands": [
+    "python -m scripts.score_scene_tex4 --input <same-pose-raw> --output <new-analysis>"
+  ],
+  "physics_steps": 0,
+  "model_calls": 0
+}
