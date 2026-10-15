@@ -116,6 +116,14 @@ def test_search19_toggles_reach_each_child_and_result(tmp_path,fake_children):
         assert command[command.index('--'+key.replace('_','-'))+1]==mode
 
 
+def test_search23_mode_reaches_each_child(tmp_path,fake_children):
+    fake_children[0].update({0:(0,SUCCESS,0)})
+    rows,reason,killed=run_wave(tmp_path,fake_children,search23='search23_v1')
+    command=json.loads((tmp_path/'wave/episode-000/PROCESS.json').read_text())['command']
+    assert command[command.index('--search23')+1]=='search23_v1'
+    assert reason is None and killed==[]
+
+
 def test_second_shared_failure_stops_only_unfinished_children(tmp_path,fake_children):
     fake_children[0].update({0:(0,failure(),0),1:(1,failure(),0),2:(3,SUCCESS,0)})
     rows,reason,killed=run_wave(tmp_path,fake_children)

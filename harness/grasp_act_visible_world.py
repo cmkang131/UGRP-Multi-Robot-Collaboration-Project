@@ -24,11 +24,14 @@ def command_delta(issued,dt,*,mode='off'):
 
 
 class VisibleWorld:
-    def __init__(self,rid,end,*,pose_source='issued',odometry='off',search22='off'):
+    def __init__(self,rid,end,*,pose_source='issued',odometry='off',search22='off',search23='off'):
         if pose_source not in ('issued','perfect_self_comparison'):raise ValueError('explicit pose source required')
         if odometry not in ('off','search17_fixed_v1'):raise ValueError('unknown search17 odometry')
         if odometry!='off' and pose_source!='issued':raise ValueError('search17 requires issued pose')
         if search22 not in ('off','search22_v1'):raise ValueError('unknown search22 mode')
+        if search23 not in ('off','search23_v1'):raise ValueError('unknown search23 mode')
+        if search23!='off' and search22=='off':raise ValueError('search23 requires search22')
+        self.search23=search23
         self.search22=search22
         self.rid=rid;self.end=end;self.pose_source=pose_source;self.odometry=odometry
         self.pose=[0.,0.,0.];self.memory={};self.previous=None;self.previous_t=None
@@ -61,6 +64,9 @@ class VisibleWorld:
                 q['uncertainty']['frame_yaw']=self.pose[2]
             self.memory[m['id']]=q;seen.add(m['id'])
         self.memory={k:v for k,v in self.memory.items() if now-v['seen_t']<=MEMORY_S or (self.search22!='off' and v['kind'] in ('cargo','wall','robot'))}
+        if self.search23!='off':
+            from sim.grasp_act_search23 import PEER_TTL_S
+            self.memory={k:m for k,m in self.memory.items() if m['kind']!='robot' or now-m['seen_t']<=PEER_TTL_S}
         band=self.memory.get('band_'+self.end);beam=None
         if band is not None:
             x,y,z=band['xyz'];a=band['yaw'];offset=-.27 if self.end=='teal' else .27

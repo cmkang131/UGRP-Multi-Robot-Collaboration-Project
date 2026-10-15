@@ -60,6 +60,8 @@ class FreeSpace:
         self.ghosts={};self.since={};self.cleared={};self.events=[];self.last_status={}
 
     def update(self,world,teacher,now):
+        from sim.grasp_act_search23 import enabled, expire_peer_state
+        if enabled(teacher):return expire_peer_state(teacher,world,now)
         rid=teacher.rid;vis=world['visibility'][rid];obs=vis.get('observations',{})
         for k,m in obs.items():
             if m['kind']=='robot' and m['seen_t']>=now-1e-8:

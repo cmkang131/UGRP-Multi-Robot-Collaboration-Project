@@ -77,6 +77,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         self.search18_space=FreeSpace();self.search18_log=[]
         self.search19_log=[];self.search19_body_active=False
         from collections import OrderedDict
+        self.search23_log=[]
         self.search22_log=[];self.search22_targets={};self.search22_cleared={};self.search22_since={}
         self.search21_recovery=None;self.search21_encounters=0;self.search21_log=[]
         self.search20_cache=OrderedDict();self.search20_budget=None;self.search20_log=[];self.search20_compute={}
@@ -397,6 +398,8 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         if self.search19_body_active:
             from sim.grasp_act_search21 import enabled as search21, BodyNavigation as Search21Navigation
             from sim.grasp_act_search22 import enabled as search22, BodyNavigation as Search22Navigation
+            from sim.grasp_act_search23 import enabled as search23, BodyNavigation as Search23Navigation
+            if search23(self):return Search23Navigation(self,world)
             if search22(self):return Search22Navigation(self,world)
             if search21(self):return Search21Navigation(self,world)
             from sim.grasp_act_search20 import enabled, BodyNavigation as Search20Navigation
@@ -1015,7 +1018,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
                 'approach_progress':self.approach_progress,'approach_progress_log':self.progress_log,
                 'approach_recovery':self.approach_recovery,'recovery_log':self.recovery_log,
                 'approach_coordination':self.approach_coordination,**self.search15_modes,
-                'search17_log':self.search17_log,'search18_log':self.search18_log,'search19_log':self.search19_log,'search22_log':self.search22_log,'search21_log':self.search21_log,'search20_log':self.search20_log,'search20_compute':self.search20_compute,'free_space_log':self.search18_space.events,'reobserve_log':self.reobserver.events,'sampled_stance':self.sampled_stance,
+                'search17_log':self.search17_log,'search18_log':self.search18_log,'search19_log':self.search19_log,'search23_log':self.search23_log,'search22_log':self.search22_log,'search21_log':self.search21_log,'search20_log':self.search20_log,'search20_compute':self.search20_compute,'free_space_log':self.search18_space.events,'reobserve_log':self.reobserver.events,'sampled_stance':self.sampled_stance,
                 'candidate_angle_counts':dict(Counter(str(round(c['offset_deg'],3)) for c in candidates)),
                 'candidate_rejection_counts':dict(Counter(c['reason'] for c in candidates)),
                 'reobserve_pending':None if self.reobserver.active is None else {

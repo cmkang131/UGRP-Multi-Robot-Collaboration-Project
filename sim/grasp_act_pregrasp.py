@@ -205,6 +205,8 @@ def select_sampled_goal(world, rid, end, bounds, folded, previous, *, current=No
                 if navigation is not None and hasattr(navigation,'path_for_goal') else
                 [tuple(start), goal] if segment_free(start, goal, discs, rects, radius) else
                 plan_path(start, goal, bounds, discs, rects=rects, radius=radius))
+        if navigation is not None and hasattr(navigation,'last_path_audit'):
+            row['path_audit']=navigation.last_path_audit
         if not path:row['reason'] = 'no_path';continue
         points = [tuple(start), *path]
         if not all(segment_free(a, b, discs, rects, radius) for a, b in zip(points, points[1:])):
@@ -231,7 +233,12 @@ def select_sampled_goal(world, rid, end, bounds, folded, previous, *, current=No
                 xy = tuple(a[k]+(b[k]-a[k])*i/n for k in range(2))
                 yaw = math.atan2(point[1]-xy[1], point[0]-xy[0])
                 count, after = band_view(world, rid, end, (*xy,yaw), before)
-                if count < 5:reason='connector_band_not_visible';break
+                if count < 5:
+                    if navigation is not None and hasattr(navigation,'last_path_audit'):
+                        row['connector_visibility_failure']={'visible_probes':count,'required':5,
+                            'pose':[*xy,yaw],'segment_index':route.index(a),'fraction':i/n,
+                            'offset_deg':math.degrees(choice[0]),'pwm':dict(after)}
+                    reason='connector_band_not_visible';break
                 co, si = math.cos(prior[2]), math.sin(prior[2])
                 dx, dy = xy[0]-prior[0], xy[1]-prior[1]
                 delta = (co*dx+si*dy, -si*dx+co*dy, wrap(yaw-prior[2]))

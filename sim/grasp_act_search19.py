@@ -45,6 +45,8 @@ def body_pulse_free(teacher, world, value):
     nav = Search20Navigation(teacher, world) if enabled(teacher) else BodyNavigation(teacher, world)
     from sim.grasp_act_search22 import enabled as search22, BodyNavigation as Search22Navigation
     if search22(teacher):nav=Search22Navigation(teacher,world)
+    from sim.grasp_act_search23 import enabled as search23, BodyNavigation as Search23Navigation
+    if search23(teacher):nav=Search23Navigation(teacher,world)
     for mode in ('off', teacher.search15_modes['search17_odometry']):
         pose = tuple(nav.pose)
         times = sorted({0., .1, *(max(0., min(.1, d)) for d in value['duration_s'])})
