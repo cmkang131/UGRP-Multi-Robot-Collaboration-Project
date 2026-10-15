@@ -69,8 +69,11 @@ def test_every_collision_resolves_to_dependency_and_cached_act_is_restored(archi
         with adapter.dependency_modules(root):
             for row in inventory['files']:
                 path=Path(row['path'])
-                blob=(ROOT/path).read_bytes()
-                assert hashlib.sha1(f'blob {len(blob)}\0'.encode()+blob).hexdigest()==row['act_blob']
+                # ACT7 act_blob is historical candidate evidence. Subsequent
+                # ACT edits may change it; the scoped dependency must still
+                # match the immutable teacher blob and resolve to that file.
+                blob=(root/path).read_bytes()
+                assert hashlib.sha1(f'blob {len(blob)}\0'.encode()+blob).hexdigest()==row['teacher_blob']
                 if path.suffix!='.py':continue
                 name='.'.join(path.with_suffix('').parts)
                 if path.name=='__init__.py':name='.'.join(path.parent.parts)
@@ -99,7 +102,7 @@ def test_every_collision_resolves_to_dependency_and_cached_act_is_restored(archi
     assert importlib.import_module('scripts.zone_teacher') is old
 
 
-@pytest.mark.parametrize('recovery_mode',[adapter.MODE,adapter.PULSE_MODE])
+@pytest.mark.parametrize('recovery_mode',[adapter.MODE,adapter.PULSE_MODE,adapter.PERTURB_MODE])
 def test_real_adapter_and_teacher_reach_scene_setup_before_world(archived_dependency,monkeypatch,tmp_path,record_property,recovery_mode):
     pytest.importorskip('mujoco')
     root=archived_dependency;original=adapter.dependency_modules;seen={}
@@ -155,9 +158,9 @@ def test_real_adapter_and_teacher_reach_scene_setup_before_world(archived_depend
     monkeypatch.setattr(adapter,'source_sha',lambda:'a'*40)
     before=modules();search=sys.path[:]
     plan=json.loads((RECORD/'act6-gate-plan.json').read_text())['episodes'][0]
+    noise_path=RECORD/('act9-noise.json' if recovery_mode==adapter.PERTURB_MODE else 'act6-noise.json')
     with pytest.raises(BeforeWorld):
-        adapter.run(plan,tmp_path/'run/raw',dependency_root=root,noise_path=RECORD/'act6-noise.json',
-                    mode=recovery_mode)
+        adapter.run(plan,tmp_path/'run/raw',dependency_root=root,noise_path=noise_path,mode=recovery_mode)
     assert seen['teacher_constructed'] and seen['world_kwargs']['seed']==8316600
     assert seen['scene'].config['setup_only']['spawns']==plan['spawns']
     assert seen['imports']['scripts.zone_teacher']=='scripts/zone_teacher.py'
@@ -167,7 +170,7 @@ def test_real_adapter_and_teacher_reach_scene_setup_before_world(archived_depend
     assert modules()==before and sys.path==search
     assert (tmp_path/'run/recovery-commands.jsonl').read_text()==''
     evaluation=tmp_path/'run/recovery-eval-only.jsonl'
-    assert evaluation.exists() is (recovery_mode==adapter.PULSE_MODE)
+    assert evaluation.exists() is (recovery_mode in (adapter.PULSE_MODE,adapter.PERTURB_MODE))
     if evaluation.exists():assert evaluation.read_text()==''
 
 

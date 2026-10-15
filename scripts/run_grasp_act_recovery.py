@@ -15,10 +15,11 @@ import platform
 import subprocess
 import sys
 
-from harness.grasp_act_data import read_json, sha256, write_json
+from harness.grasp_act_data import read_json, read_rows, sha256, write_json
 from harness.grasp_act_dart import MODE, PULSE_MODE, MODES, WheelNoise, recovery_hooks
 from harness.grasp_act_recovery_gate import verify_gate
 from harness.grasp_act_recovery_audit import evaluation_hook
+from harness.grasp_act_perturb import PERTURB_MODE, RecoveryPerturb, recovery_statistics
 from scripts.grasp_act_training_guard import source_sha
 
 TEACHER_SHA='6f057f7e97c1a3aec9e8c398b8d9068e27b25df8'
@@ -84,17 +85,18 @@ def run(plan, out, *, dependency_root, noise_path, mode='off', training_rgb=Fals
         if training_rgb:
             if gate_receipt is None:raise ValueError('38/40 gate required before any training RGB')
             approval=verify_gate(gate_receipt,source=source,dependency=TEACHER_SHA,
-                noise_hash=noise_hash,host=host,recording_seeds=[plan['seed']])
+                noise_hash=noise_hash,host=host,recording_seeds=[plan['seed']],recovery_mode=mode)
         teacher=importlib.import_module('sim.grasp_act_solo_teacher')
         recording=importlib.import_module('harness.grasp_act_solo_recording')
         runner=importlib.import_module('scripts.run_solo_grasp_act_teacher')
         actuator=importlib.import_module('scripts.run_grasp_act_teacher')
-        noise=WheelNoise(model,seed=plan['seed'],mode=mode)
+        noise=(RecoveryPerturb(model,seed=plan['seed']) if mode==PERTURB_MODE
+               else WheelNoise(model,seed=plan['seed'],mode=mode))
         out=Path(out)
         if out.exists():raise FileExistsError(out)
         out.parent.mkdir(parents=True,exist_ok=True)
         ledger_path=out.parent/'recovery-commands.jsonl'
-        evaluation_path=out.parent/'recovery-eval-only.jsonl' if mode==PULSE_MODE else None
+        evaluation_path=out.parent/'recovery-eval-only.jsonl' if mode in (PULSE_MODE,PERTURB_MODE) else None
         report=None
         try:
             from contextlib import ExitStack
@@ -120,6 +122,9 @@ def run(plan, out, *, dependency_root, noise_path, mode='off', training_rgb=Fals
                     recovery={'mode':mode,'seed':plan['seed'],'applied_history_clean_targets':mode!= 'off',
                               'ledger':str(ledger_path),'sha256':sha256(ledger_path)},
                     recovery_gate=approval,data_admitted=False)
+                if mode==PERTURB_MODE:
+                    report['recovery']['audit']=recovery_statistics(read_rows(ledger_path))
+                    report['recovery']['perturbation_targets_excluded']=True
                 if evaluation_path:
                     report['recovery']['evaluation_only']={'path':str(evaluation_path),'sha256':sha256(evaluation_path),
                         'scope':'10 Hz command boundary contacts and wheel/base GT; never returned to teacher'}

@@ -152,6 +152,8 @@ def paired_segments(observations, labels, *, done_label='teacher_v1'):
         if (label['skill'] != obs['skill'] or label['object_kind'] != obs['object_kind']
                 or type(label['done']) is not bool or type(label['local_skill_sample']) is not bool):
             raise ValueError('teacher label mismatch')
+        if label.get('perturbation_interval', False) and label['local_skill_sample']:
+            raise ValueError('perturbation interval cannot be a training target')
         target = c.command(label['clean_teacher_command'])
         if abs(target['t'] - obs['t']) > 1e-6:
             raise ValueError('teacher command time mismatch')
@@ -262,6 +264,9 @@ def convert(runs_root, protocol, output, *, seeds=None):
                 robot = student.name.split('.')[0].removeprefix('student-')
                 teacher = raw / student.name.replace('student-', 'teacher-', 1)
                 observations, labels = read_rows(student), read_rows(teacher)
+                if protocol.get('recovery_mode') == 'recovery_perturb_v1':
+                    from harness.grasp_act_perturb import verified_recovery_audit, validate_recorded_labels
+                    validate_recorded_labels(labels, verified_recovery_audit(result, result_path))
                 if any(o['robot_id'] != robot for o in observations):
                     raise ValueError('mixed actor in file')
                 groups = paired_segments(observations, labels, done_label=done_label)

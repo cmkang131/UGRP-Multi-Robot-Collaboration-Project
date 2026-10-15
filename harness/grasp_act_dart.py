@@ -11,10 +11,11 @@ import json
 import numpy as np
 
 from harness import grasp_act_contract as c
+from harness.grasp_act_perturb import PERTURB_MODE, annotate_label
 
 MODE = 'dart_wheels_v1'
 PULSE_MODE = 'dart_effort_pulses_v2'
-MODES = ('off', MODE, PULSE_MODE)
+MODES = ('off', MODE, PULSE_MODE, PERTURB_MODE)
 PHASES = ('approach', 'align')
 
 
@@ -46,7 +47,7 @@ def fit_diagonal(rows, *, expected_ids=None):
 
 class WheelNoise:
     def __init__(self, model=None, *, seed=0, mode='off'):
-        if mode not in MODES:raise ValueError('unknown recovery mode')
+        if mode not in ('off', MODE, PULSE_MODE):raise ValueError('unknown recovery mode')
         self.mode=mode
         if mode=='off':self.rng=None;return
         if model.get('schema')!='ugrp.act6.dart.v1' or model.get('mode')!=MODE:
@@ -130,17 +131,44 @@ def recovery_hooks(teacher_module, recording_module, noise, ledger):
     class RecoveryTeacher(Teacher):
         def step(self, now, **kwargs):
             before=self.phase
+            perturb = noise.mode == PERTURB_MODE
+            visible = kwargs.get('measurement') is not None
+            if perturb and noise.active:
+                # Let the original teacher advance its strict command clock,
+                # but freeze the task phase while the external yaw is applied.
+                kwargs = {**kwargs, 'measurement': None}
             clean,complete=super().step(now,**kwargs)
-            applied,diagnostic=noise.apply(clean,phase_before=before,phase_after=self.phase,holding=self.holding)
+            arguments = dict(phase_before=before,phase_after=self.phase,holding=self.holding)
+            if perturb:arguments['visible'] = visible
+            applied,diagnostic=noise.apply(clean,**arguments)
+            if perturb and diagnostic is not None:
+                self.sink.pwm.update({int(s): v for s, v in applied['pwm'].items()})
+                self.arm.commanded.update(self.sink.pwm)
+                # The recovery starts with fresh visible observations. No
+                # pre-perturbation target memory or alignment integral survives.
+                self.target = self.seen_t = self.stable_t = None
+                self._reset_alignment()
             self.remember_applied(applied)
-            state.update(clean=deepcopy(clean),applied=deepcopy(applied))
+            state.update(clean=deepcopy(clean),applied=deepcopy(applied),
+                         perturbation_interval=perturb and diagnostic is not None)
             ledger.write(json.dumps({'t':now,'phase_before':before,'phase_after':self.phase,
-                'clean_teacher_command':clean,'applied_command':applied,'disturbance':diagnostic},allow_nan=False)+'\n')
+                'clean_teacher_command':clean,'applied_command':applied,'disturbance':diagnostic,
+                **({'target_visible':visible, 'perturbation_interval':state['perturbation_interval']}
+                   if perturb else {})},allow_nan=False)+'\n')
             return applied,complete
     class RecoveryRecorder(Recorder):
         def target(self, value, **kwargs):
             if value!=state.get('applied'):raise ValueError('applied/label alignment mismatch')
-            super().target(state['clean'],**kwargs)
+            if noise.mode == PERTURB_MODE:
+                original = self.label_file
+                class AnnotatedWriter:
+                    def write(_, text):
+                        label = annotate_label(json.loads(text), perturbation_interval=state['perturbation_interval'])
+                        return original.write(json.dumps(label,allow_nan=False)+'\n')
+                self.label_file = AnnotatedWriter()
+                try:super().target(state['clean'],**kwargs)
+                finally:self.label_file = original
+            else:super().target(state['clean'],**kwargs)
             self.history[-1]=deepcopy(c.command(value))
     if noise.mode=='off':
         yield
