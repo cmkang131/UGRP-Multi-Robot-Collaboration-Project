@@ -172,6 +172,22 @@ class SoloLookaround:
                 self.loc.own.P = np.diag(np.square(self.command_pose.sigmas()))
             try:
                 rec = self.loc.observe(at, own_rgb(), dict(servo))
+                if self.command_pose is not None and getattr(self.command_pose,'reloc18_innovation',False):
+                    from harness.reloc18_innovation import fuse
+                    fit=self.command_pose.reloc18_fit
+                    # Geometry/rank/mode checks remain prerequisites. The
+                    # proposed posterior is correlated with the same prior;
+                    # its full P plus empirical residual floor is retained.
+                    if rec.get('fix_acceptance',{}).get('accepted'):
+                        d=fuse(prior_x,self.loc.own.x,prior_P,self.loc.own.P+np.asarray(fit['full_pose_covariance_world']),threshold=11.344866730144373)
+                        rec['reloc18_innovation']=d
+                        rec['fix_acceptance']['accepted']=d['accepted']
+                        self.loc.own.x=np.asarray(d['posterior_pose']);self.loc.own.P=np.asarray(d['posterior_covariance'])
+                    elif rec.get('partial_update',{}).get('applied'):
+                        # Full SE(2) calibration does not justify updating an
+                        # unobserved direction through a partial-pose port.
+                        rec['partial_update'].update(applied=False,reason='reloc18_partial_uncalibrated')
+                        self.loc.own.x,self.loc.own.P=prior_x,prior_P
             except Exception:
                 if self.command_pose is not None:
                     self.loc.own.x, self.loc.own.P = prior_x, prior_P

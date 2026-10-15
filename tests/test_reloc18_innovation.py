@@ -57,3 +57,44 @@ def test_default_off_and_explicit_bundle_delivery():
 @pytest.mark.parametrize('bad',[float('nan'),-1])
 def test_invalid_covariance_is_rejected(bad):
     with pytest.raises(ValueError):fuse([0,0,0],[0,0,0],np.diag([bad,1,1]),np.eye(3),threshold=11.3)
+
+def test_heading_has_one_dof_and_small_prior_is_not_overwritten():
+    from harness.reloc18_innovation import fuse_heading
+    low=fuse_heading([0,0,0],.03,np.eye(3)*1e-6,.01)
+    assert low['dof']==1 and low['accepted'] and low['posterior_pose'][2]<.00001
+    assert not fuse_heading([0,0,0],1.3,np.eye(3)*.001,.001)['accepted']
+
+def test_carry_pf_catastrophic_jump_is_rejected_and_epoch_not_refreshed(monkeypatch):
+    from types import SimpleNamespace
+    from sim.solo_carry_pose import CommandPose,task_start
+    from harness.selfmap4_geometry import static_input
+    from harness.reloc18_innovation import carry_calibration
+    static,_=static_input();cp=CommandPose(task_start(static),now=94.2)
+    # Original 93315 t94.2: pose jumped 1.24m/77deg despite concentrated PF.
+    cp.own.x=np.array([1.126,-1.907,.407]);cp.own.P=np.diag([.02,.02,.001])
+    cp.reloc18_innovation=True;cp.reloc18_fit=carry_calibration()
+    before=cp.own.x.copy();P=cp.own.P.copy()
+    cp.tracker=SimpleNamespace(last={},observe=lambda *a:(np.array([-.087,-2.138,-.938]),np.diag([.0005,.0004,.00116])))
+    cp.observe_own(np.zeros((480,640,3),np.uint8),94.2,camera='r1/robot_cam')
+    assert not cp.tracker.last['accepted'] and cp.fixes==0 and cp.last_fix is None
+    np.testing.assert_array_equal(before,cp.own.x);np.testing.assert_array_equal(P,cp.own.P)
+
+def test_command_only_wrapper_restores_fix_epochs_as_well_as_pose(monkeypatch):
+    import importlib.util
+    from pathlib import Path
+    from sim.solo_carry_pose import CommandPose,task_start
+    from harness.selfmap4_geometry import static_input
+    from sim.lookaround_localization import LookaroundLocalizer
+    from types import SimpleNamespace
+    spec=importlib.util.spec_from_file_location('reloc18_runner',Path(__file__).resolve().parents[1]/'experiments/2026-10-16-reloc18/run_round.py')
+    mod=importlib.util.module_from_spec(spec);spec.loader.exec_module(mod)
+    # Register restoration before the explicit ablation modifies these methods.
+    for name in ('__init__','issue','record','observe_own'):monkeypatch.setattr(CommandPose,name,getattr(CommandPose,name))
+    monkeypatch.setattr(LookaroundLocalizer,'observe',LookaroundLocalizer.observe)
+    mod.instrument(True)
+    static,_=static_input();cp=CommandPose(task_start(static),now=1)
+    cp.distance_since_fix=1.;cp.turn_since_fix=.2
+    cp.tracker=SimpleNamespace(observe=lambda *a:(np.array([1,2,3]),np.eye(3)),last={})
+    before=cp.own.x.copy();cp.observe_own(np.zeros((480,640,3),np.uint8),1,camera='r1/robot_cam')
+    np.testing.assert_array_equal(cp.own.x,before)
+    assert cp.fixes==0 and cp.last_fix is None and cp.distance_since_fix==1. and cp.turn_since_fix==.2

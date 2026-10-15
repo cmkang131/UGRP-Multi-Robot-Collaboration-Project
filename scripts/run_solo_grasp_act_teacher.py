@@ -195,6 +195,10 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
                                 reloc16_active_view_v1=plan.get('reloc16_active_view_v1',False),
                                 scene_wall_tracking_v1=plan.get('scene_wall_tracking_v1',False),
                                 carry_pose_budget_xy_reserve0_v1=plan.get('carry_pose_budget_xy_reserve0_v1', False))
+            if plan.get('reloc18_innovation_v1',False):
+                from harness.reloc18_innovation import carry_calibration
+                carry.loc.reloc18_innovation=True
+                carry.loc.reloc18_fit=carry_calibration()
             if carry.loc.drive_model_enabled:
                 ops.delta = carry.loc.cached_delta
                 ops.propagate = carry.loc.propagate_point
@@ -627,7 +631,7 @@ def validate_carry(plan, *, enabled, training_rgb, truth_free, lift, negative):
         raise ValueError('carry5 requires the merged shared drive_model_deadband_v1')
     if plan.get('render_profile','floor_light_v1') not in ('floor_light_v1','floor_light_textured_v1','walls_floor_contrast_v5_indigo110_s80'):
         raise ValueError('unknown carry render profile')
-    for option in ('carry5_rank_aware_views_v1', 'carry5_trim_yaw_calibration_v1', 'carry7_robust_recovery_v1',
+    for option in ('reloc18_innovation_v1','carry5_rank_aware_views_v1', 'carry5_trim_yaw_calibration_v1', 'carry7_robust_recovery_v1',
                    'reloc9_rotation_calibration_v1', 'reloc9_wall_height_guard_v1', 'reloc9_reacquisition_v1', 'reloc10_rotation_calibration_v1', 'reloc10_own_review_only_v1', 'reloc12_carry_reacquire_v1', 'carry_pose_budget_recal_v1', 'carry_pose_budget_xy_reserve0_v1', 'reloc14_carry_budget_v1', 'reloc14_compute_budget_v1', 'reloc14_scene_v7', 'reloc14_carry_tracking_v1', 'reloc15_rgb_heading_v1', 'reloc15_heading_10hz_v1', 'reloc15_dense_yaw_v1', 'reloc15_heading_quality_v1','reloc16_wall_compass_v1','reloc16_active_view_v1','scene_wall_tracking_v1'):
         if type(plan.get(option, False)) is not bool:
             raise ValueError(option+' must be bool')

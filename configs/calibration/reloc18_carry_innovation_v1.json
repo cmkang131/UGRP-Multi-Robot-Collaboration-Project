@@ -1,0 +1,384 @@
+{
+  "schema": "ugrp.reloc18.carry_covariance.v1",
+  "fit_scope": "original two reloc17 R2 carry DEV trajectories; no truth-based pruning",
+  "command_covariance_per_sim_s": [
+    [
+      0.0002813257016191483,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.00148119584362874,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0019442557401235967
+    ]
+  ],
+  "command_N": 2998,
+  "heading_N": 107,
+  "heading_abs_p95_rad": 0.00548510637575474,
+  "heading_variance": 7.832022509591524e-06,
+  "full_pose_N": 5,
+  "full_pose_covariance_world": [
+    [
+      0.009848601013672647,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.005180987548111848,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.005311503863774905
+    ]
+  ],
+  "tracker_N": 69,
+  "tracker_abs_p95": [
+    1.707371078566727,
+    1.5601235510231684,
+    1.581659922429716
+  ],
+  "tracker_covariance_world": [
+    [
+      0.02420289415685799,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.14313638964381312,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.18607366568413358
+    ]
+  ],
+  "tracker_abs_p50": [
+    0.10493225479738144,
+    0.25518220377370715,
+    0.2909496312131825
+  ],
+  "tracker_method": "robust zero-centered absolute residual median / normal central50 quantile; all 69 raw candidates, no truth pruning; AMCL hit-core plus outlier-mixture motivation; p95 heavy tails recorded separately, not Gaussian variance inflation",
+  "sources": [
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/reloc17-r2-carry-93266-47670d14/raw/teacher-commands.jsonl.zst",
+      "sha256": "17c0b71901029a05d98286245278320d37571b1faffd5e691143ddba31239a0e"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/reloc17-r2-carry-93266-47670d14/raw/eval-only.jsonl.zst",
+      "sha256": "126d49e31b0da8364758c9a5fee619b8a10d06cda7f8199647a8250f91f5f15e"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/reloc17-r2-carry-93266-47670d14/raw/result.json.zst",
+      "sha256": "4ad80dc77261c1bd0134fb3fd63a53afe8dccd22a09b2b983c9ee0b3a7e765ff"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/reloc17-r2-carry-93315-47670d14/raw/teacher-commands.jsonl.zst",
+      "sha256": "32e4775a5ee0f04cc97896382e798a9a2ebaac4c7ce8949df2dc29130314159b"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/reloc17-r2-carry-93315-47670d14/raw/eval-only.jsonl.zst",
+      "sha256": "71fb69e9a3f6aba5707ae0dbba2881a2eba080a304046e69a9bf608523994dc9"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/reloc17-r2-carry-93315-47670d14/raw/result.json.zst",
+      "sha256": "cde895a197fc885c020806ffdaa4a0e8f39b094239b9299522b21483c2a4e063"
+    }
+  ],
+  "reports": [
+    {
+      "seed": 93266,
+      "scope": "command-only integration on original visual-controlled trajectory; evaluation only",
+      "errors": {
+        "command_xy": {
+          "N": 1500,
+          "p50": 0.4929638604705968,
+          "p95": 0.7245979125990056,
+          "end": 0.4254198524445226
+        },
+        "command_yaw": {
+          "N": 1500,
+          "p50": 8.698872390933921,
+          "p95": 34.77413409287705,
+          "end": 40.614454457462074
+        },
+        "visual_xy": {
+          "N": 1500,
+          "p50": 0.22369142098275727,
+          "p95": 0.30971615793313423,
+          "end": 0.20650273589305856
+        },
+        "visual_yaw": {
+          "N": 1500,
+          "p50": 2.359150714811081,
+          "p95": 14.643775183914935,
+          "end": 0.4740451119610064
+        }
+      },
+      "bins": [
+        {
+          "sim_interval": [
+            0,
+            50
+          ],
+          "errors": {
+            "command_xy": {
+              "N": 500,
+              "p50": 0.2759411889636646,
+              "p95": 0.49254494186541525,
+              "end": 0.46029368992176317
+            },
+            "command_yaw": {
+              "N": 500,
+              "p50": 8.84226942311466,
+              "p95": 16.83114141622822,
+              "end": 17.11235576552033
+            },
+            "visual_xy": {
+              "N": 500,
+              "p50": 0.19916325387371525,
+              "p95": 0.3088629063193501,
+              "end": 0.3009725811043927
+            },
+            "visual_yaw": {
+              "N": 500,
+              "p50": 2.598004475377699,
+              "p95": 5.002482664509172,
+              "end": 5.283697013801282
+            }
+          }
+        },
+        {
+          "sim_interval": [
+            50,
+            100
+          ],
+          "errors": {
+            "command_xy": {
+              "N": 501,
+              "p50": 0.7107637703288805,
+              "p95": 0.7382229156634937,
+              "end": 0.711680467728196
+            },
+            "command_yaw": {
+              "N": 501,
+              "p50": 8.705698466306826,
+              "p95": 17.471392599915248,
+              "end": 1.1553443983621745
+            },
+            "visual_xy": {
+              "N": 501,
+              "p50": 0.2990602216367346,
+              "p95": 0.3162966768720908,
+              "end": 0.22470551930725938
+            },
+            "visual_yaw": {
+              "N": 501,
+              "p50": 2.7362700744533672,
+              "p95": 7.128084820465856,
+              "end": 1.7021263780507092
+            }
+          }
+        },
+        {
+          "sim_interval": [
+            100,
+            150
+          ],
+          "errors": {
+            "command_xy": {
+              "N": 499,
+              "p50": 0.6203120408606706,
+              "p95": 0.7110256131742061,
+              "end": 0.4254198524445226
+            },
+            "command_yaw": {
+              "N": 499,
+              "p50": 7.8471489742429466,
+              "p95": 38.89017318272543,
+              "end": 40.614454457462074
+            },
+            "visual_xy": {
+              "N": 499,
+              "p50": 0.19053914567038055,
+              "p95": 0.22405104323796055,
+              "end": 0.20650273589305856
+            },
+            "visual_yaw": {
+              "N": 499,
+              "p50": 2.050173449944213,
+              "p95": 22.01095682947924,
+              "end": 0.4740451119610064
+            }
+          }
+        }
+      ],
+      "heading_N": 64,
+      "tracker_N": 25,
+      "relook_keys": [
+        "option",
+        "plan",
+        "views",
+        "odometry_profile",
+        "final_estimate",
+        "final_sigma",
+        "constants",
+        "own_image_gates_sha256",
+        "scope"
+      ],
+      "relook_views_N": 2
+    },
+    {
+      "seed": 93315,
+      "scope": "command-only integration on original visual-controlled trajectory; evaluation only",
+      "errors": {
+        "command_xy": {
+          "N": 1500,
+          "p50": 0.17673844062531552,
+          "p95": 0.25760994999465037,
+          "end": 0.21105070513765933
+        },
+        "command_yaw": {
+          "N": 1500,
+          "p50": 16.429595566337298,
+          "p95": 46.097798696025215,
+          "end": 16.101929943337083
+        },
+        "visual_xy": {
+          "N": 1500,
+          "p50": 0.11375668167473324,
+          "p95": 1.3600126651708802,
+          "end": 1.299768053820875
+        },
+        "visual_yaw": {
+          "N": 1500,
+          "p50": 7.574273161889076,
+          "p95": 78.0686391601728,
+          "end": 77.65150643290593
+        }
+      },
+      "bins": [
+        {
+          "sim_interval": [
+            0,
+            50
+          ],
+          "errors": {
+            "command_xy": {
+              "N": 500,
+              "p50": 0.06203572509899817,
+              "p95": 0.29599902334080036,
+              "end": 0.2773872610407675
+            },
+            "command_yaw": {
+              "N": 500,
+              "p50": 1.210068507344058,
+              "p95": 1.8906138474204104,
+              "end": 0.8881405655219038
+            },
+            "visual_xy": {
+              "N": 500,
+              "p50": 0.04424873603483348,
+              "p95": 0.2042895531752515,
+              "end": 0.1801178471683
+            },
+            "visual_yaw": {
+              "N": 500,
+              "p50": 1.2793021353000176,
+              "p95": 2.1364362366923126,
+              "end": 1.0230240289961101
+            }
+          }
+        },
+        {
+          "sim_interval": [
+            50,
+            100
+          ],
+          "errors": {
+            "command_xy": {
+              "N": 501,
+              "p50": 0.1545652829901424,
+              "p95": 0.2035920060708697,
+              "end": 0.20755887459635014
+            },
+            "command_yaw": {
+              "N": 501,
+              "p50": 33.64363140757516,
+              "p95": 48.21126182033332,
+              "end": 18.205486938692903
+            },
+            "visual_xy": {
+              "N": 501,
+              "p50": 0.09892240913681392,
+              "p95": 1.3939483286551058,
+              "end": 1.359508791926289
+            },
+            "visual_yaw": {
+              "N": 501,
+              "p50": 7.6220569445080235,
+              "p95": 83.4384861114459,
+              "end": 72.93637620843229
+            }
+          }
+        },
+        {
+          "sim_interval": [
+            100,
+            150
+          ],
+          "errors": {
+            "command_xy": {
+              "N": 499,
+              "p50": 0.21138308129840302,
+              "p95": 0.21257414727959215,
+              "end": 0.21105070513765933
+            },
+            "command_yaw": {
+              "N": 499,
+              "p50": 16.433900221622423,
+              "p95": 16.524999852987882,
+              "end": 16.101929943337083
+            },
+            "visual_xy": {
+              "N": 499,
+              "p50": 1.30288976082975,
+              "p95": 1.3567864112230585,
+              "end": 1.299768053820875
+            },
+            "visual_yaw": {
+              "N": 499,
+              "p50": 77.82772209532452,
+              "p95": 78.06881748112558,
+              "end": 77.65150643290593
+            }
+          }
+        }
+      ],
+      "heading_N": 43,
+      "tracker_N": 44,
+      "relook_keys": [
+        "option",
+        "plan",
+        "views",
+        "odometry_profile",
+        "final_estimate",
+        "final_sigma",
+        "constants",
+        "own_image_gates_sha256",
+        "scope"
+      ],
+      "relook_views_N": 3
+    }
+  ]
+}

@@ -132,6 +132,7 @@ class CommandPose:
             from harness.reloc15_heading import Heading
             self.heading = Heading(sample_s=.1 if reloc15_heading_10hz_v1 else .2,dense_v1=reloc15_dense_yaw_v1,quality_v1=reloc15_heading_quality_v1)
         self.last_dt = None
+        self.reloc18_innovation=False
 
     @property
     def pose(self):
@@ -159,6 +160,9 @@ class CommandPose:
         self.last_delta = (dx, dy, da)
         self.last_command_key = self.command_key(issued, dt)
         self.own.propagate(dx, dy, da, k_trans=0., k_rot=0.)
+        if self.reloc18_innovation:
+            import numpy as np
+            self.own.P+=np.asarray(self.reloc18_fit['command_covariance_per_sim_s'])*dt
         self.distance_since_fix += math.hypot(dx, dy)
         self.turn_since_fix += abs(da)
         self.last_dt = float(dt)
@@ -208,10 +212,27 @@ class CommandPose:
             # decoder. selfmap's detector accepts RGB: convert exactly once.
             fix=self.tracker.observe(frame[...,::-1].copy(),now)
             if fix is not None:
+                if self.reloc18_innovation:
+                    import numpy as np
+                    from harness.reloc18_innovation import fuse
+                    d=fuse(self.own.x,fix[0],self.own.P,fix[1]+np.asarray(self.reloc18_fit['tracker_covariance_world']),threshold=11.344866730144373)
+                    self.tracker.last['reloc18_innovation']=d
+                    self.tracker.last['accepted']=d['accepted']
+                    fix=(np.asarray(d['posterior_pose']),np.asarray(d['posterior_covariance'])) if d['accepted'] else None
+            if fix is not None:
                 self.own.x,self.own.P=fix
                 self.accepted_fix(now)
         if self.heading is not None:
+            if self.reloc18_innovation:
+                prior_x,prior_P=self.own.x.copy(),self.own.P.copy()
             self.heading.observe(frame[...,::-1].copy(),now,self.own)
+            if self.reloc18_innovation and self.heading.last.get('status')=='accepted' and self.heading.last.get('exposure_sim_t')==now:
+                import numpy as np
+                from harness.reloc18_innovation import fuse_heading
+                h=self.heading.last
+                d=fuse_heading(prior_x,h['observed_yaw_rad'],prior_P,max(self.reloc18_fit['heading_variance'],h['sigma_yaw']**2))
+                self.own.x,self.own.P=np.asarray(d['posterior_pose']),np.asarray(d['posterior_covariance'])
+                h.update(reloc18_innovation=d,status='accepted' if d['accepted'] else 'chi2_rejected')
         # A captured image alone is not a metric fix; only admitted PF updates reset the epoch.
 
     def accept_amcl(self, report, now):
@@ -254,6 +275,8 @@ class CommandPose:
 
     def sigmas(self):
         base = [math.sqrt(max(0., float(self.own.P[i, i]))) for i in range(3)]
+        if self.reloc18_innovation:
+            return base
         distance, turn = self.distance_since_fix, self.turn_since_fix
         if self.partial_epoch is not None:
             distance -= self.partial_epoch[0]; turn -= self.partial_epoch[1]
@@ -288,6 +311,7 @@ class CommandPose:
                 'amcl_option': self.amcl_option, 'localization_verified': False,
                 'motion_error': MOTION_ERROR,
                 'carry_pose_budget_recal_v1': self.budget_recal,
+                **({'reloc18_innovation_v1':True,'covariance_semantics':'empirical DEV command covariance plus Joseph posterior; calibration is not held-out'} if self.reloc18_innovation else {}),
                 'reloc14_carry_budget_v1': self.budget14,
                 **({'reloc15_heading':self.heading.last} if self.heading is not None else {}),
                 **({'reloc14_tracking':self.tracker.last} if self.tracker is not None else {}),

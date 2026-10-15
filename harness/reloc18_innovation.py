@@ -18,6 +18,23 @@ OPTION='reloc18_innovation_v1'
 def calibration():
     return json.loads((Path(__file__).resolve().parents[1]/'configs/calibration/reloc18_innovation_v1.json').read_text())
 
+def carry_calibration():
+    return json.loads((Path(__file__).resolve().parents[1]/'configs/calibration/reloc18_carry_innovation_v1.json').read_text())
+
+def fuse_heading(prior,observed,P,variance):
+    """One observed yaw -> DOF=1, chi2(.99,1), preserving yaw null branches upstream."""
+    x=np.asarray(prior,float).copy();P=np.asarray(P,float)
+    nu=wrap(observed-x[2]);S=float(P[2,2]+variance)
+    if not np.isfinite(P).all() or not np.isfinite([nu,S,variance]).all() or variance<=0 or S<=0:
+        raise ValueError('FINITE_POSITIVE_HEADING_VARIANCE_REQUIRED')
+    threshold=6.6348966010212145  # scipy chi2.ppf(.99,1), same nominal alpha=.01
+    nis=nu*nu/S;accepted=nis<=threshold;K=P[:,2]/S if accepted else np.zeros(3)
+    x+=K*nu;x[2]=wrap(x[2]);H=np.array([[0.,0.,1.]]);I=np.eye(3)-K[:,None]@H
+    posterior=I@P@I.T+np.outer(K,K)*variance
+    return dict(accepted=accepted,reason='within_chi2_gate' if accepted else 'chi2_rejected',nis=nis,dof=1,alpha=.01,
+        chi2_threshold=threshold,kalman_gain=K.tolist(),innovation_rad=nu,posterior_pose=x.tolist(),posterior_covariance=posterior.tolist(),
+        category='heading_innovation',blocked_object='own_rgb_wall_axis',minimum_gap_m=None,gap_scope='not_applicable_localization_gate')
+
 def fuse(prior,candidate,P,R,*,threshold):
     prior,candidate=np.asarray(prior,float),np.asarray(candidate,float)
     P,R=np.asarray(P,float),np.asarray(R,float)
