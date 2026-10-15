@@ -17,6 +17,7 @@ if str(Path(__file__).resolve().parents[1]) not in sys.path:
 from harness.grasp_act_data import GraspDataset, assert_tensor_keys, sha256, write_json, write_summary
 from scripts.grasp_act_training_guard import authorize_main, require_gcp, source_sha
 from harness.grasp_act_loss import DONE_MODES, completion_priors, policy_loss
+from harness.grasp_act_input import drop_command_history, validate_history_dropout
 
 
 def main():
@@ -33,7 +34,10 @@ def main():
     p.add_argument('--blank-images', action='store_true')
     p.add_argument('--done-loss', choices=DONE_MODES, default='legacy_l1')
     p.add_argument('--done-loss-weight', type=float, default=1.)
+    p.add_argument('--command-history-dropout', type=float, default=0.,
+                   help='training only: replace whole normalized issued history with train mean; default off')
     a = p.parse_args()
+    validate_history_dropout(a.command_history_dropout)
     if not math.isfinite(a.done_loss_weight) or a.done_loss_weight <= 0:
         p.error('completion loss weight must be finite and positive')
     if not 1 <= a.max_wall_s <= 7 * 3600 or not 1 <= a.steps <= 100000:
@@ -50,15 +54,18 @@ def main():
                 or smoke.get('source_sha') != source or not smoke.get('readback_verified')
                 or smoke.get('blank_images') != a.blank_images
                 or smoke.get('done_loss', 'legacy_l1') != a.done_loss
-                or smoke.get('done_loss_weight', 1.) != a.done_loss_weight):
+                or smoke.get('done_loss_weight', 1.) != a.done_loss_weight
+                or smoke.get('command_history_dropout', 0.) != a.command_history_dropout):
             raise ValueError('completed matching smoke with checkpoint readback required')
         authorize_main(a.approval, source=source, dataset_hash=dataset_hash,
-                       smoke_hash=smoke_hash, steps=a.steps, blank=a.blank_images)
+                       smoke_hash=smoke_hash, steps=a.steps, blank=a.blank_images,
+                       command_history_dropout=a.command_history_dropout)
     a.output.mkdir(parents=True, exist_ok=False)
     report = {'status': 'running', 'complete': False, 'stage': a.stage,
         'source_sha': source, 'dataset_manifest_sha256': dataset_hash, 'host': host,
         'steps_requested': a.steps, 'steps_completed': 0, 'seed': a.seed,
         'blank_images': a.blank_images, 'done_loss': a.done_loss, 'done_loss_weight': a.done_loss_weight,
+        'command_history_dropout': a.command_history_dropout,
         'batch_size': 8, 'readback_verified': False,
         'gate_promotion_authorized_if_all_conditions_pass': False,
         'selection': 'fixed final step; validation never selects checkpoint'}
@@ -91,8 +98,10 @@ def main():
             resume = json.loads((a.resume / 'resume.json').read_text())
             for k, v in {'source_sha': source, 'dataset_manifest_sha256': dataset_hash,
                          'blank_images': a.blank_images, 'seed': a.seed,
+                         'command_history_dropout': a.command_history_dropout,
                          'done_loss': a.done_loss, 'done_loss_weight': a.done_loss_weight}.items():
-                if resume.get(k, {'done_loss': 'legacy_l1', 'done_loss_weight': 1.}.get(k)) != v:
+                if resume.get(k, {'done_loss': 'legacy_l1', 'done_loss_weight': 1.,
+                                  'command_history_dropout': 0.}.get(k)) != v:
                     raise ValueError('resume provenance mismatch: ' + k)
             if sha256(a.resume / 'optimizer.pt') != resume['optimizer_sha256']:
                 raise ValueError('resume optimizer hash mismatch')
@@ -128,6 +137,7 @@ def main():
             folder.mkdir()
             provenance = {'source_sha': source, 'dataset_manifest_sha256': dataset_hash,
                           'blank_images': a.blank_images, 'seed': a.seed, 'step': step,
+                          'command_history_dropout': a.command_history_dropout,
                           'done_loss': a.done_loss, 'done_loss_weight': a.done_loss_weight,
                           'done_class_counts': priors}
             save_actor(policy, folder / 'actor', data.stats, provenance, blank=a.blank_images, done_mode=a.done_loss)
@@ -149,6 +159,7 @@ def main():
                 batch = torch.utils.data.default_collate([data[i] for i in indices])
                 assert_tensor_keys(batch, training=True)
                 batch = {k: v.to('cuda') for k, v in batch.items()}
+                batch = drop_command_history(batch, a.command_history_dropout)
                 policy.train()
                 optimizer.zero_grad(set_to_none=True)
                 # Existing upstream-compatible activation checkpoint helper.

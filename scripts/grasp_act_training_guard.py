@@ -33,7 +33,8 @@ def require_gcp(*, training):
     return {'project': project, 'instance': instance, 'machine_type': machine, 'zone': zone}
 
 
-def authorize_main(approval, *, source, dataset_hash, smoke_hash, steps, blank):
+def authorize_main(approval, *, source, dataset_hash, smoke_hash, steps, blank,
+                   command_history_dropout=0.):
     data = json.loads(Path(approval).read_text()) if approval else {}
     expected = {'approved': True, 'stage': 'main', 'source_sha': source,
                 'dataset_manifest_sha256': dataset_hash, 'smoke_summary_sha256': smoke_hash,
@@ -41,4 +42,8 @@ def authorize_main(approval, *, source, dataset_hash, smoke_hash, steps, blank):
                 'gate_promotion_authorized_if_all_conditions_pass': False}
     if not smoke_hash or any(data.get(k) != v for k, v in expected.items()):
         raise ValueError('main training requires coordinator approval tied to source/data/smoke')
+    from harness.grasp_act_input import validate_history_dropout
+    validate_history_dropout(command_history_dropout)
+    if data.get('command_history_dropout', 0.) != command_history_dropout:
+        raise ValueError('main approval command history dropout mismatch')
     return data
