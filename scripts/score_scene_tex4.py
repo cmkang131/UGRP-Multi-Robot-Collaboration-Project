@@ -6,6 +6,7 @@ not fitted acceptance thresholds. No detector constants are changed here.
 """
 from __future__ import annotations
 import argparse
+import ast
 from collections import Counter, defaultdict
 from pathlib import Path
 import platform
@@ -104,7 +105,14 @@ def score(inputs, output, cached_analysis=None):
     if cached_analysis is not None:
         cached_summary = read(cached_analysis/'summary.json')
         if cached_summary['analysis_sha256'] != sha(Path(__file__)):
-            raise ValueError('CACHED_ANALYSIS_SOURCE_MISMATCH')
+            snapshot = cached_analysis/'analysis-source.py'
+            if not snapshot.exists() or sha(snapshot) != cached_summary['analysis_sha256']:
+                raise ValueError('CACHED_ANALYSIS_SOURCE_MISSING')
+            def signal_functions(path):
+                return [ast.dump(n, include_attributes=False) for n in ast.parse(path.read_text()).body
+                        if isinstance(n, ast.FunctionDef) and n.name in ('selfmap_metrics', 'colour_partition')]
+            if signal_functions(snapshot) != signal_functions(Path(__file__)):
+                raise ValueError('CACHED_SIGNAL_ALGORITHM_CHANGED')
         cache = {(r['raw_root'], r['case'], r['material'], r['quality']): r
                  for r in read(cached_analysis/'scored-rows.json')}
     allrows, sources, modelrows = [], [], []
@@ -182,10 +190,18 @@ def score(inputs, output, cached_analysis=None):
                     for surface, n in surfaces.items():
                         old = benc['intrusions'].get(label, {}).get(surface, 0)
                         if n > old: intrusions.append([e, label, surface, old, n])
-                for label, targets in benc['target_support'].items():
-                    for target, n in targets.items():
-                        new = aenc['target_support'].get(label, {}).get(target, 0)
-                        if new < n: support.append([e, label, target, n, new])
+                # Only the target's existing intended colour range is positive
+                # support. E.g. an orange mask on a yellow zone is off-target;
+                # its reduction must not be reported as loss of the target.
+                from importlib.util import spec_from_file_location, module_from_spec
+                spec = spec_from_file_location('scene_tex2_compat', Path(__file__).resolve().parents[1]/
+                    'experiments/2026-10-15-scene-tex2/analyze_camera_compatibility.py')
+                compat = module_from_spec(spec)
+                spec.loader.exec_module(compat)
+                for target, label in compat.target_ranges(r['pose']):
+                    n = benc['target_support'].get(label, {}).get(target, 0)
+                    new = aenc['target_support'].get(label, {}).get(target, 0)
+                    if new < n: support.append([e, label, target, n, new])
                 for f in ('orb20', 'orb7', 'interior20', 'interior7'):
                     a, v = aenc['surfaces']['floor'][f], benc['surfaces']['floor'][f]
                     if a < v: floor_features.append([e, f, v, a])
@@ -234,6 +250,7 @@ def score(inputs, output, cached_analysis=None):
         rejection.append({'material': material, 'quality': quality, 'stages': stages,
                           'independent_failures': report['regression_frames'], 'details': name+'-cases.json'})
     write(output/'scored-rows.json', allrows)
+    (output/'analysis-source.py').write_bytes(Path(__file__).read_bytes())
     write(output/'rejection-table.json', {'arms': rejection, 'sources': sources,
           'reproduction_command': [sys.executable, '-m', 'scripts.score_scene_tex4', *sys.argv[1:]],
           'threshold_basis': 'user 2026-10-16: v1 zero floor regression; columns median/p10 >= v1; error distribution <= v1; no new slack',
