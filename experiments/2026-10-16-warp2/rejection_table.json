@@ -1,0 +1,60 @@
+{
+  "schema": "ugrp.warp2.rejection_table.v1",
+  "updated_utc": "2026-10-15T18:08:44.911144+00:00",
+  "stage": "A",
+  "funnel": [
+    {
+      "population": "source_files",
+      "stage": "git_show_exact_sha",
+      "input_N": 57,
+      "passed_cumulative_N": 57,
+      "rejected_N": 0,
+      "raw": "source-manifest.json",
+      "reproduce": "git show <source-manifest.files.sha>:<source-manifest.files.path>"
+    },
+    {
+      "population": "source_files",
+      "stage": "AST_parse",
+      "input_N": 57,
+      "passed_cumulative_N": 57,
+      "rejected_N": 0,
+      "raw": "access-inventory.csv",
+      "reproduce": "python3 ast.parse on the exact git-show source bytes"
+    },
+    {
+      "population": "flows",
+      "stage": "manual_boundary_classification",
+      "input_N": 5,
+      "passed_cumulative_N": 5,
+      "rejected_N": 0,
+      "raw": "inventory.md",
+      "reproduce": "filter access-inventory.csv by flow and inspect functions at the pinned SHA"
+    },
+    {
+      "population": "fresh_physical_runs",
+      "stage": "B_not_started",
+      "input_N": 0,
+      "passed_cumulative_N": 0,
+      "rejected_N": 0,
+      "raw": "summary.json",
+      "reproduce": "no execution yet"
+    }
+  ],
+  "rejections": [
+    {
+      "reason_category": "dependency_not_yet_integrated",
+      "blocked_object": "warp1_committed_backend_API",
+      "min_gap_m": null,
+      "gap_scope": "software dependency; geometric gap not applicable",
+      "count": 1,
+      "status": "backend commit observed; inspect before implementation"
+    }
+  ],
+  "cap_end_N": 0,
+  "HOST_ERROR_N": 0,
+  "known_seed_results": [],
+  "throughput_results": [],
+  "queue_status": "HOLD_SCENE",
+  "queue_approved": false,
+  "queue_submitted": false
+}
