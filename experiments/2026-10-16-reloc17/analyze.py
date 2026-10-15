@@ -71,6 +71,10 @@ def main(queuefile,output=None):
             base=selfmap(folder);extra=analysis(folder)
             (folder/'analysis-full.json').write_text(json.dumps(dict(base=base,extra=extra),indent=2)+'\n')
             r.update({k:base[k] for k in ('drive_errors','registered_errors','false_registration_events','registration_frame_funnel','known_mode_measurement_funnel','first30','input_audit','termination')})
+            fixes=base['drift']['fix_frames']
+            r['static_pose_admissions']=dict(N=len(fixes),yaw_false_over5_N=sum(e['yaw_deg']>5 for e in fixes),
+                xy_false_over10cm_N=sum(e['xy_m']>.1 for e in fixes),yaw_deg=distribution([e['yaw_deg'] for e in fixes]),
+                scope='first global registration plus actual static visual_relocalized execution frames; evaluator-only error')
             r.update({k:v for k,v in extra.items() if k not in ('fresh_pose_evaluation','residual_frames')})
             r['fresh_pose_error']=errors([e['pf_error'] for e in extra['fresh_pose_evaluation']])
         elif t['kind']=='carry' and result['status']=='complete':r.update(carry(folder,result))

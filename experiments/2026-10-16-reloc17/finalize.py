@@ -20,7 +20,7 @@ def main(count):
             assert r['status'] not in ('running','UNRETRIEVED')
             assert r['integrity']['verified'],r['name']
             raw=Path(r['raw']);name=r['name']
-            keep=('name','kind','condition','seed','source_sha','raw','status','termination','first30','drive_errors','registered_errors','registered_frames','false_registration_events','fresh_pose_error','command_only_replay','command_only_same_drive_frames','local_execution_drift','floor_line_residuals','camera_pan_evaluation','registration_frame_funnel','known_mode_measurement_funnel','place_verified','sim_s','all_pose_error','input_audit','failure')
+            keep=('name','kind','condition','seed','source_sha','raw','status','termination','first30','drive_errors','registered_errors','registered_frames','false_registration_events','static_pose_admissions','fresh_pose_error','command_only_replay','command_only_same_drive_frames','local_execution_drift','floor_line_residuals','camera_pan_evaluation','registration_frame_funnel','known_mode_measurement_funnel','place_verified','sim_s','all_pose_error','input_audit','failure')
             row={k:r[k] for k in keep if k in r};row['stage']=stage
             if row.get('first30'):row['first30']={k:v for k,v in row['first30'].items() if k in ('wall_per_sim','sim_s','elapsed_sim_s','frames')}
             for key in ('drive_errors','registered_errors','fresh_pose_error','command_only_replay','command_only_same_drive_frames','local_execution_drift'):
