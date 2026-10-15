@@ -1,7 +1,50 @@
 # rl1 — 고정 ACT 위 잔차 강화학습
 
-Refs #523. 상태: PLAN_READY, MJWarp warp1 대기. 개선 여부는 아직 미측정이다.
+Refs #523. 상태: rl1b WAITING_BACKEND, 개선 여부는 아직 미측정이다.
 이 문서는 2026-10-16 사용자 승인에 따른 유한 DEV 시험의 사전 계획이다.
+
+## 현행 범위: rl1b (아래 원래 rl1 계획보다 우선)
+
+2026-10-16 사용자의 "너가 좀 휴리스틱을 주면 안돼?", "자고 올테니까 너가 알아서 계속 진행해줘!"에
+따른 범위 축소다. act16w의 MJWarp ACT 추가 학습을 우선하고, 본 RL은 ACT16 위의 rl2로 미룬다.
+이번에는 **고정 ACT15 + 제한 잔차의 신호 확인만**, GPU 준비/JIT/측정/학습/평가 합계 **최대1시간**이다.
+기존 아래 2h/6h·N64→256 probe·전체40 평가 계획은 이번 예산에 적용하지 않는다.
+
+- 새 시작918000–918039 중 첫8개(결과를 보기 전 고정)를 기준 ACT15와 짝 비교한다.
+  모델은 예산 안 마지막 체크포인트로 고정한다. 단계 진척만 증가하면 완료 신호와 구분한다.
+- h1–h3와 h4를 명시적으로 ON. 학습 신호만 사용하며 정책 관측과 GT 종료 가드는 추가하지 않는다.
+  h5 DAgger는 act16w/후속 ACT 작업이며 이번에는 OFF다.
+- h1: 실제 자기 왜곡 RGB에서 가림까지 확인한 대상 중심의 정규화 좌표를 사용한다.
+  `1 - norm(x,y)/sqrt(2)`(화면 밖/가림은−1)을 900틱으로 나눈다. ACT15의90초에서 최대 절댓값1인
+  학습 계수다. 중앙 영역을 나누는 임의 문턱은 없다. 성공 교사의 마지막 화면 밖 구간도 벌할 수 있다.
+- h2: 안정 들기 전 **처음 발행한** done에−10(기존 성공 보상10과 동일한 학습 척도).
+  GT로 done을 거부/지연하지 않는다. done 잔차 한도0의 제약을 그대로 보고한다.
+- h3: `Phi_angle=-clip(abs(error)/pi,0,1)`의 signed discounted potential 차분.
+  양수만 남겨 진동에 보상하지 않는다. 기존 기본 potential의 각도 항과 추가 가중됨을 명시한다.
+- h4: 훈련 manifest의 거리·정면 각도 순위를 합쳐 난도를 고정하고, 전이 예산의 첫1/3은 쉬운25%,
+  다음1/3은50%, 마지막1/3은 전체를 사용한다. 분포 사분위/예산 분할이며 성공 판정 문턱이 아니다.
+  평가 manifest는 별도 고정하고 이 스케줄을 적용하지 않는다.
+- 휴리스틱별 ON/OFF 보상 항을 같은 전이에 남긴다. 독립 재학습 ablation이 없으면
+  정책에 대한 개별 효과는 `unmeasured`다. h4 효과도 성공률 변화로 추정해 채우지 않는다.
+
+재사용 모듈: `scripts/rl_act_reward.py`, `scripts/rl_act_curriculum.py`, `scripts/rl_act_env.py`.
+현재 env는 backend 주입용 계약 래퍼이며 **실제 MJWarp binding/부분 reset은 미검증**이다.
+기존 미커밋 env/reward 원형은 `outputs/rl1b/imported-originals/`에 보존했다(실행하지 않음).
+짧은 비물리 시험: `tests/test_rl_act_signal.py` 11개 통과; 평가에서 privileged read0,
+GT 변경 시 actor 입력 불변, h2 중복 벌점 방지, 부분 reset의 래퍼 이력 격리를 검사했다.
+이는 실제 GPU reset·actor 출력 바이트·물리 성공 검증이 아니다.
+
+의존성은5분 간격·재시작부터최대8시간 확인한다. 예전 watcher는 warp Python 파일 추가만으로
+신호를 냈으므로 수정했다. 이제 커밋의 reset+step API 또는 warp1 보고 줄이 있어야 trigger이며,
+trigger 자체는 runtime admission이 아니다. 다른 작업의 worktree나 VM은 갱신·정지하지 않는다.
+
+추가 확인한1차 자료(2026-10-16): [ResFiT 본문§III](https://arxiv.org/html/2509.19301v1),
+[Ng1999 원문](https://ai.stanford.edu/~ang/papers/shaping-icml99.pdf),
+[DAgger PMLR](https://proceedings.mlr.press/v15/ross11a.html),
+[Reverse Curriculum 초록](https://arxiv.org/abs/1707.05300).
+h1/h2 계수와 h4의 간단한 순위 스케줄은 이 논문이 입증한 값이 아니라 이번 pilot 설계다.
+
+## 원래 rl1 계획 (이력; 위 rl1b 예산/평가 축소가 우선)
 
 ## 사용자 결정과 입력 경계
 

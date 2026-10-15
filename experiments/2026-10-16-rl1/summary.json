@@ -1,6 +1,6 @@
 {
   "schema": "ugrp.rl1.summary.v1",
-  "status": "WAITING_WARP1",
+  "status": "RL1B_WAITING_BACKEND",
   "verdict": null,
   "plan_complete": true,
   "comparison_complete": false,
@@ -8,15 +8,69 @@
     "runs": 0,
     "optimizer_steps": 0,
     "gpu_hours": 0,
-    "gpu_hours_limit": 6,
-    "first_training_gpu_hours_limit": 2
+    "gpu_hours_limit": 1,
+    "first_training_gpu_hours_limit": 1,
+    "total_gpu_accounting": "setup+JIT+probe+train+evaluation combined"
   },
   "evaluation": {
     "backend": "mjwarp",
     "baseline_success": null,
     "baseline_n": 0,
     "residual_success": null,
-    "residual_n": 0
+    "residual_n": 0,
+    "seeds": [
+      918000,
+      918001,
+      918002,
+      918003,
+      918004,
+      918005,
+      918006,
+      918007
+    ],
+    "source_seed_pool": [
+      918000,
+      918001,
+      918002,
+      918003,
+      918004,
+      918005,
+      918006,
+      918007,
+      918008,
+      918009,
+      918010,
+      918011,
+      918012,
+      918013,
+      918014,
+      918015,
+      918016,
+      918017,
+      918018,
+      918019,
+      918020,
+      918021,
+      918022,
+      918023,
+      918024,
+      918025,
+      918026,
+      918027,
+      918028,
+      918029,
+      918030,
+      918031,
+      918032,
+      918033,
+      918034,
+      918035,
+      918036,
+      918037,
+      918038,
+      918039
+    ],
+    "comparison_complete": false
   },
   "prior_evidence": {
     "source": "/Users/changmin/projects/ugrp-wt/act16-analysis/experiments/2026-10-16-act16a",
@@ -35,11 +89,41 @@
   "raw_locations": [],
   "artifacts": {},
   "remaining": [
-    "warp1 committed batch actor/reset/RGB API",
-    "RL environment integration and audit",
-    "N64–256 throughput",
-    "training",
-    "paired evaluation and playback",
-    "checkpoint release verification"
-  ]
+    "warp1 completion or committed actor/reset/RGB API",
+    "real backend binding and distinct-start/partial-reset audit",
+    "<=1 GPU hour short training",
+    "paired new-start evaluation and playback",
+    "checkpoint release verification if produced"
+  ],
+  "scope": "ACT15 short signal only; ACT16w first, RL2 later",
+  "updated_utc": "2026-10-15T18:16:39.547165+00:00",
+  "heuristics": {
+    "h1": {
+      "enabled_for_pilot": true,
+      "policy_effect": "unmeasured"
+    },
+    "h2": {
+      "enabled_for_pilot": true,
+      "policy_effect": "unmeasured"
+    },
+    "h3": {
+      "enabled_for_pilot": true,
+      "policy_effect": "unmeasured"
+    },
+    "h4": {
+      "enabled_for_pilot": true,
+      "policy_effect": "unmeasured"
+    },
+    "h5": {
+      "enabled_for_pilot": false,
+      "policy_effect": "unmeasured"
+    }
+  },
+  "verification": {
+    "non_physics_tests": 11,
+    "actual_warp_binding": false,
+    "actual_partial_reset": false,
+    "actual_actor_output_byte_invariance": false,
+    "evaluation_wrapper_privileged_reads": 0
+  }
 }
