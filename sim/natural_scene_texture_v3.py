@@ -15,7 +15,7 @@ from sim.wall_texture import walls_from_xml
 PROFILE = 'walls_floor_textured_v3'
 ASSETS = Path(__file__).resolve().parent / 'assets' / PROFILE
 TEXTURE_DIR = Path('sim/assets') / PROFILE  # relative to the repository scene root
-MANIFEST_SHA256 = '00dc4f11f3215e8dd24a125be5173529e81a5280e45c65d5e0d07278848a1089'
+MANIFEST_SHA256 = '684b21351bdfb92d840cd841b204f99641eaf7e2b2e69bae19348fbf40914a5d'
 FLOOR_SIZE = (8., 8., .1)
 
 

@@ -76,7 +76,13 @@ def generate(output):
               'walls': walls, 'images': {}, 'maps': {str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest() for p in MAPS}}
     for key, (size, span, floor) in sorted(specs.items()):
         path = output/(key+'.png')
-        image(key, size, span, floor).save(path, compress_level=9)
+        im = image(key, size, span, floor)
+        if floor:
+            indexed = im.convert('P', palette=Image.Palette.ADAPTIVE, colors=256)
+            if not np.array_equal(np.asarray(im), np.asarray(indexed.convert('RGB'))):
+                raise ValueError('indexed floor must preserve every RGB pixel')
+            im = indexed
+        im.save(path, compress_level=9)
         record['images'][key] = dict(file=path.name, width=size[0], height=size[1], span_m=span,
                                     sha256=hashlib.sha256(path.read_bytes()).hexdigest())
     path = output/'manifest.json'
