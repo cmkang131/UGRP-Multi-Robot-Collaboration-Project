@@ -78,11 +78,14 @@ class LineAlign(release18.LineAlign):
         w,d,_ = release17.yaw_pulse_for(*motion, self.teacher.odometry_profile)
         actual = odometry([a*b/.1 for a,b in zip(w,d)], .1, self.teacher.odometry_profile)
         if not release15.inside(release15.project_motion(f['points'], self.camera, self.teacher.pwm, actual)):
-            return dict(step, kind='fov_blocked', aligned=False)
+            return self.blocked_step(f, step, motion, actual)
         # Base tick checks the realized command against map clearance and caps.
         # Mark history at the actual wheel callback, not on a rejected proposal.
         self._pending_errors = error.tolist()
         return dict(step, aligned=False, left=float(motion[1]), yaw=float(motion[2]))
+
+    def blocked_step(self, f, step, motion, actual):
+        return dict(step, kind='fov_blocked', aligned=False)
 
     def tick(self, now, capture, schedule):
         original = self.wheel_command
