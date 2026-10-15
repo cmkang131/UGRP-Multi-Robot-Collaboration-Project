@@ -10,7 +10,10 @@ Two independent default-off toggles under one profile, ``release17_v1``:
 * ``command_motion='yaw_cal_v1'`` (A2): calibrated yaw sign/magnitude profile
   (sim/visible_belief.ODOMETRY_PROFILES). Here only its own-RGB sign check is
   implemented: after the first decisive yaw pulse the stationary beam must
-  move in the image the way a counter-clockwise (Y>0) turn moves it.
+  move in the image the way a counter-clockwise (Y>0) turn moves it. Every
+  yaw-bearing pulse also keeps a 40 ms / level-0.35 floor (``yaw_pulse_for``):
+  shorter wheel pulses fall under the wheel relay start threshold (act8 lost
+  39.7% of commands; release16 74976: 31 ms pulses moved 0.8 mm).
 
 Perception, map clearance, FOV prediction and every other limit are release16's.
 Inputs are own RGB, issued commands, the fixed camera model and the static map.
@@ -42,6 +45,8 @@ SIGN_OBSERVED_PX = 6.   # observed opposite shift needed to call a mismatch (JPE
 SIGN_YAW_DOMINANCE = 2.  # yaw term must exceed this multiple of the lateral term in the model
 EDGE_MIN_PX = 6.         # an unclipped box edge must be predicted to move this far to count as evidence
 CLIP_SAMPLE_PX = 3       # pixels beyond a box edge probed for the usable-region (undistortion) boundary
+YAW_FLOOR_S = .04        # shortest wheel pulse sent in a yaw-bearing command (act8 01a892fa '.35, 40-100 ms')
+YAW_DEADBAND_S = .02     # a wheel needing less than this is dropped when another wheel moves; else raised to the floor
 
 
 def validate(profile, record_training, options, plan):
@@ -60,6 +65,36 @@ def validate(profile, record_training, options, plan):
     # profile is the only other value this profile may use.
     release16.validate(release16.PROFILE, record_training,
                        {**options, 'command_motion': 'native_yaw_v1'}, plan)
+
+
+def floor_pulse(wheels, durations, floor=YAW_FLOOR_S, deadband=YAW_DEADBAND_S):
+    """Raise every nonzero wheel pulse to ``floor``; a wheel under ``deadband`` is dropped if another one moves.
+
+    If every wheel is under ``deadband`` the command is one ``floor`` pulse
+    on the wheels needing at least half the largest request (the next image
+    verifies it). Returns (wheels, durations, info).
+    """
+    d = np.array(durations, float)
+    moving = d >= .001
+    info = dict(requested_s=[float(v) for v in d], floor_s=floor, deadband_s=deadband)
+    if not moving.any():
+        return list(wheels), [0.]*len(d), dict(info, mode='none')
+    if (d >= deadband).any():
+        out = np.where(d >= deadband, np.maximum(d, floor), 0.)
+        mode = 'floor' if (out != np.where(moving, d, 0.)).any() else 'unchanged'
+    else:
+        out = np.where(d >= .5*d.max(), floor, 0.)
+        mode = 'single_pulse'
+    kept = [float(w) if v > 0 else 0. for w, v in zip(wheels, out)]
+    return kept, [float(v) for v in out], dict(info, mode=mode, applied_s=[float(v) for v in out])
+
+
+def yaw_pulse_for(dx, dy, yaw, profile):
+    """release14.pulse_for, plus the 40 ms floor for yaw-bearing pulses under yaw_cal_v1 only."""
+    wheels, durations = release14.pulse_for(dx, dy, yaw, profile)
+    if profile != YAW_CAL or abs(yaw) <= 1e-9:
+        return wheels, durations, None
+    return floor_pulse(wheels, durations)
 
 
 def recovery_pulse(dx, dy, profile, period):
@@ -301,16 +336,18 @@ class LineAlign(release16.LineAlign):
         one_pulse = self.fov_step != 'off' and step['kind'] == 'recover_fov'
         if step['merit'] < self.best-.1: self.best = step['merit']; self.progress = now
         elif now-self.progress >= 3.: return self.fail('no_'+self.mode+'_progress_3s')
+        floor = None
         if one_pulse:
             w, d = step['wheels'], step['durations']
         else:
-            w, d = release14.pulse_for(step['forward'], step['left'], step['yaw'], self.teacher.odometry_profile)
+            w, d, floor = yaw_pulse_for(step['forward'], step['left'], step['yaw'], self.teacher.odometry_profile)
         actual = np.array(odometry([a*b/.1 for a, b in zip(w, d)], .1, self.teacher.odometry_profile))
         if np.any(self.motion+abs(actual) > np.array([.10, .10, math.radians(18)])+1e-9): return self.fail('motion_cap')
         if not self.clearance(*actual): return self.fail('map_motion_clearance')
         self.motion += abs(actual)
         self.wheel_command(rid, w, d, now)
         self.records.append(dict(t=now, event=step['kind'], wheels=w, durations=d,
+                                 **({'yaw_floor': dict(floor, realized_motion=[float(v) for v in actual])} if floor else {}),
                                  **{k: v for k, v in step.items() if k not in ('wheels', 'durations')}))
         if one_pulse and step['merit'] > 0. and f.get('visible_box_px'):
             self.pending = dict(merit=step['merit'], predicted_merit=step['predicted_merit'], period=step['period'],
@@ -319,7 +356,9 @@ class LineAlign(release16.LineAlign):
         if (self.sign_state == 'unchecked' and abs(step['yaw']) > 1e-9 and step['kind'] != 'recover_fov'
                 and f.get('center_error') is not None):
             try:
-                expected, yaw_px, lateral_px = yaw_expected_shift_px(self.camera, self.teacher.pwm, step['left'], step['yaw'])
+                # the floored pulse turns more than requested: predict from what was issued
+                left, yaw = (float(actual[1]), float(actual[2])) if floor else (step['left'], step['yaw'])
+                expected, yaw_px, lateral_px = yaw_expected_shift_px(self.camera, self.teacher.pwm, left, yaw)
             except (ValueError, np.linalg.LinAlgError):
                 expected = None
             if expected is not None:

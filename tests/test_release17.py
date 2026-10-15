@@ -145,6 +145,56 @@ def test_toggle_off_keeps_release16_micro_pulse_behaviour():
     assert a.failure is None and a.sign_state == 'not_applicable'
 
 
+def test_yaw_pulses_never_shorter_than_40ms_under_yaw_cal_only():
+    for yaw in (.014, -.014, .02, .025, -.025, .03):
+        for left in (0., .004, -.004):
+            w, d, info = new.yaw_pulse_for(0., left, yaw, 'yaw_cal_v1')
+            assert all(v == 0. or v >= .04-1e-12 for v in d) and any(d) and max(d) <= .15
+            assert all(abs(x) in (0., .35) for x in w) and all((x == 0.) == (v == 0.) for x, v in zip(w, d))
+            assert info['mode'] in ('floor', 'single_pulse', 'unchanged')
+    # smaller than the dead band on every wheel: exactly one 40 ms pulse, in the requested turn direction
+    w, d, info = new.yaw_pulse_for(0., 0., .014, 'yaw_cal_v1')
+    assert d == [.04]*4 and info['mode'] == 'single_pulse' and w == [-.35, .35, -.35, .35]
+    assert odometry([a*b/.1 for a, b in zip(w, d)], .1, 'yaw_cal_v1')[2] == pytest.approx(.042)
+    # one wheel pair under the dead band while the other moves: dropped, not raised
+    w, d, info = new.floor_pulse([.35, .35, .35, .35], [.1, .1, .01, .01])
+    assert d == [.1, .1, 0., 0.] and w[2:] == [0., 0.] and info['mode'] == 'floor'
+    # lateral-only pulses and every other profile are untouched
+    assert new.yaw_pulse_for(0., .004, 0., 'yaw_cal_v1')[2] is None
+    assert new.yaw_pulse_for(0., .004, .025, 'native_yaw_v1')[2] is None
+    assert new.yaw_pulse_for(0., 0., .025, 'native_yaw_v1')[:2] == release14.pulse_for(0., 0., .025, 'native_yaw_v1')
+
+
+def test_line_align_issues_floored_yaw_pulse_and_sign_check_uses_realized_turn(monkeypatch):
+    a, t, issued, tick = aligner(profile='yaw_cal_v1')
+    step = dict(kind='line_ibvs', forward=0., left=0., yaw=.006, aligned=False, merit=5., error=[0., 0.])
+    monkeypatch.setattr(release15, 'line_step', lambda *args, **kwargs: dict(step))
+    monkeypatch.setattr(a, 'features', lambda frame: dict(valid=True, center_error=.1, points=[], line=None, visible_box_px=None))
+    tick(2.6, top_fragment())
+    assert a.failure is None
+    event = [r for r in a.records if r.get('event') == 'line_ibvs'][-1]
+    assert event['durations'] == [.04]*4 and event['yaw_floor']['mode'] == 'single_pulse'
+    assert event['yaw_floor']['realized_motion'][2] == pytest.approx(.042)
+    # the sign check predicts from the 0.042 rad actually issued, not the 0.006 rad requested
+    want = new.yaw_expected_shift_px(Camera(), t.pwm, 0., .042)[0]
+    assert a.sign_pending['expected_px'] == pytest.approx(want, rel=1e-6)
+    a2, t2, issued2, tick2 = aligner(profile='native_yaw_v1')
+    monkeypatch.setattr(a2, 'features', lambda frame: dict(valid=True, center_error=.1, points=[], line=None, visible_box_px=None))
+    tick2(2.6, top_fragment())
+    event2 = [r for r in a2.records if r.get('event') == 'line_ibvs'][-1]
+    assert 'yaw_floor' not in event2 and event2['durations'][0] < .04     # native: the old micro pulse, unchanged
+
+
+def test_rotate_plan_tail_is_dropped_or_40ms_under_yaw_cal_and_native_unchanged():
+    rate = rates('yaw_cal_v1')[2]
+    assert rotate_plan(.01, 'yaw_cal_v1') == []                    # < 20 ms of turning: dead band
+    assert [p[1][0] for p in rotate_plan(.03, 'yaw_cal_v1')] == [.04]
+    for deg in (3, 7, 20, 45, 90):
+        durations = [p[1][0] for p in rotate_plan(math.radians(deg), 'yaw_cal_v1')]
+        assert all(v >= .04-1e-12 for v in durations) and sum(durations)*rate == pytest.approx(math.radians(deg), abs=.0225)
+    assert [p[1][0] for p in rotate_plan(.01, 'native_yaw_v1')] == [.04]   # native floor is the old one, byte-for-byte
+
+
 def test_yaw_sign_verdict_dead_bands():
     v = new.yaw_sign_verdict
     assert v(40., 40., 0., 30.) == 'verified' and v(40., 40., 0., -30.) == 'mismatch'

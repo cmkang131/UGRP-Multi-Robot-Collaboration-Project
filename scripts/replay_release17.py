@@ -147,12 +147,22 @@ def yaw_pulse_durations(root):
             for e in lc['events']:
                 if e.get('event') in ('line_ibvs', 'recover_direction') and abs(e.get('yaw', 0.)) > 1e-9:
                     w, d = release14.pulse_for(e.get('forward', 0.), e['left'], e['yaw'], 'yaw_cal_v1')
-                    durations.append(dict(run=run, requested_yaw=e['yaw'], longest_wheel_s=max(d), shortest_active_s=min(x for x in d if x)))
+                    fw, fd, info = release17.yaw_pulse_for(e.get('forward', 0.), e['left'], e['yaw'], 'yaw_cal_v1')
+                    realized = odometry([a*b/.1 for a, b in zip(fw, fd)], .1, 'yaw_cal_v1')[2]
+                    durations.append(dict(run=run, requested_yaw=e['yaw'], longest_wheel_s=max(d), shortest_active_s=min(x for x in d if x),
+                                          floored_mode=info['mode'], floored_shortest_active_s=min(x for x in fd if x),
+                                          floored_realized_yaw=float(realized), floored_over_requested=float(realized/e['yaw'])))
     if not durations:
         return dict(N=0)
     longest = [x['longest_wheel_s'] for x in durations]
     return dict(N=len(durations), longest_wheel_s_min=min(longest), longest_wheel_s_median=statistics.median(longest),
                 longest_wheel_s_max=max(longest), under_40ms=sum(v < .04 for v in longest),
+                floored=dict(shortest_active_s_min=min(x['floored_shortest_active_s'] for x in durations),
+                             under_40ms=sum(x['floored_shortest_active_s'] < .04-1e-12 for x in durations),
+                             modes={m: sum(x['floored_mode'] == m for x in durations) for m in {x['floored_mode'] for x in durations}},
+                             realized_over_requested_min=min(x['floored_over_requested'] for x in durations),
+                             realized_over_requested_median=statistics.median(x['floored_over_requested'] for x in durations),
+                             realized_over_requested_max=max(x['floored_over_requested'] for x in durations)),
                 stored_native_longest_median=None,
                 note='native_yaw_v1 would have issued these same requests as 3x longer pulses; shortest stored yaw pulse was ~40 ms')
 

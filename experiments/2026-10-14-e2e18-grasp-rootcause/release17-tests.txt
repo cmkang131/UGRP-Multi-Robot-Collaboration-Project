@@ -6,3 +6,4 @@ python3 -m pytest tests/test_release17.py -q -x
   -> 16 passed in 58.65s
 Replay: python3 -m scripts.replay_release17 --root /Users/changmin/projects/ugrp/outputs/gcp1-runs --out release17-replay.json (stored ledgers only, 0 simulator calls)
 160 passed (9 files) + 16 passed (release17 re-run); physical effect unverified
+Follow-up (yaw 40 ms floor): pytest tests/test_release17.py tests/test_lookaround_localization.py tests/test_release_setdown_lookaround.py tests/test_release_nbv_observation.py tests/test_release16.py -> 64 passed; replay re-run, 0 simulator calls

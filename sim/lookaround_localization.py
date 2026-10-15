@@ -531,7 +531,9 @@ def rotate_plan(angle, odometry_profile='off'):
     while remaining > 1e-6:
         on = min(.1, remaining); plan.append(([-level, level, -level, level], [min(PULSE_MAX_S, on)]*4)); remaining -= on
     if plan and plan[-1][1][0] < .04:
-        plan[-1] = (plan[-1][0], [.04]*4)
+        # yaw_cal_v1: a tail under 20 ms is dropped (dead band, <= 0.021 rad); else one 40 ms pulse, never shorter
+        plan[-1] = (plan[-1][0], [.04]*4) if odometry_profile != 'yaw_cal_v1' or plan[-1][1][0] >= .02 else None
+        plan = [p for p in plan if p is not None]
     return plan
 
 
