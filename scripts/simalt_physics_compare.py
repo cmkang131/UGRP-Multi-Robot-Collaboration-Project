@@ -161,7 +161,7 @@ def run(a):
         wp.init()
         wm=mjw.put_model(m)
         report['warp_version']=wp.__version__
-        report['backend_solver_tolerance']=float(wm.opt.tolerance)
+        report['backend_solver_tolerance']=float(wm.opt.tolerance.numpy().item())
         if wm.opt.noslip_iterations != 10:
             raise RuntimeError('noslip ignored')
         # Canonical reference maxima size buffers; round to a power of 2 for
