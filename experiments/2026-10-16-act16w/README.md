@@ -115,3 +115,6 @@ RESOURCE_CAP 대신 SUPERVISOR_STOP으로 구분하도록 보고 분류를 바�
 실행 명령은 없다. 장면 결정은 받았지만 대기열의 장면 미승인 문구는 아직 갱신되지
 않았으므로 장면 적용 완료로 간주하지 않는다. 초기 preflight 표는
 `preflight-initial.json`, 현재 상태는 `rejection_table.json`에 구분했다.
+
+06:50 KST: [draft PR #539](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/539) 생성.
+준비 코드 검토용이며 교사·학습·새40평가·Release는 미실행이다.
