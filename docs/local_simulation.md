@@ -98,7 +98,7 @@ bash scripts/open_simulation.command dispatch \
 bash scripts/open_simulation.command dispatch --plan-replay outputs/my-run/committed-plan.json
 ```
 
-`dispatch`는 **기존** `run_dispatch_e2e.py --executor skills`의 진입점이다. 세 로봇의 자기 RGB·공용 TOP·자기 명령 이력·허용 정적 지도·동료 메시지로 계획을 협상하고, 동일 plan ID/hash에 전원 합의해야 `SkillBindings`가 로봇별 프로그램을 만든다. 담당 물체, 운반 파트너, 경로, 목적지, 선행 작업은 plan에서 가져온다. pair RGB 접근·파지·운반과 solo box 스킬을 공통 물리 시계에서 진행하며, 공동 동작·점유 자원·선행 작업의 기존 허가를 유지한다. 별도 프로세스 세 개의 실시간 분산 제어를 뜻하지 않는다.
+`dispatch`는 **기존** `run_dispatch_e2e.py --executor skills`의 진입점이다. 세 로봇의 자기 RGB·자기 명령 이력·허용 정적 지도·동료 메시지로 계획을 협상하고, 동일 plan ID/hash에 전원 합의해야 `SkillBindings`가 로봇별 프로그램을 만든다. 공용 top 카메라는 평가·검토 영상 전용이며 제어·지도 만들기·위치 추정·교사 행동 결정에 쓰지 않는다(2026-10-03 사용자 결정, [#366](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/366); 사용자 원문: "공용(위) 카메라는 쓰지 않는다. 지도 만들기나 위치 추정에 쓰지 않는다."). 담당 물체, 운반 파트너, 경로, 목적지, 선행 작업은 plan에서 가져온다. pair RGB 접근·파지·운반과 solo box 스킬을 공통 물리 시계에서 진행하며, 공동 동작·점유 자원·선행 작업의 기존 허가를 유지한다. 별도 프로세스 세 개의 실시간 분산 제어를 뜻하지 않는다.
 
 `--live-view` 관찰 창 왼쪽 아래에서 최근 동료 메시지와 발신·수신 로봇을 볼 수 있다. 계산 후 재생 창도 왼쪽 아래 `TEAM TALK`에 그 SIM 시각까지 보낸 최근 동료 메시지 3개(30 SIM초 이내)를 보여 준다. 재생 표시는 출력의 대화 기록을 읽는 관찰 전용이며 제어 입력이 아니다. 전체 대화는 출력 폴더의 `team/conversation.jsonl`과 터미널 `peer_delivery` 행에 남는다. 현재 새 자연어 대화는 주로 계획 협상에서 발생하며, 저장 계획 재생과 RGB 운반 중에는 새 대화가 없을 수 있다. [대화 관찰·원문 기록](communication_observer.md)을 참고한다.
 
@@ -125,7 +125,7 @@ bash scripts/open_simulation.command dispatch --plan-replay outputs/my-run/commi
 
 주요 옵션은 `--variant open|shared_crossing|north_blocked|narrow_south|rough_south`, `--seed`, `--max-wall-s`(기본 1200초), `--timeout`(요청당 기본 60초), `--planning-rounds`(합의 시도당 기본 8라운드), `--max-replans`(실행 전 적합성 재협상 기본 2회), `--max-input-tokens`다. 기존 실행기의 나머지 옵션도 전달할 수 있다. headless는 `--headless`, 재생 속도는 `--realtime-factor`로 바꾼다. 속도는 물리 timestep이나 제어기를 바꾸지 않는다.
 
-표준 `dispatch`는 pair 판단에 쓰지 않는 카메라 촬영을 생략한다. 로봇이 실제로 받은 자기·TOP 영상과 연속 기록 영상의 조건은 유지한다. 합의한 계획이 열린 맵의 독립된 경로·자원을 사용하면 기존 병렬 운반 경로도 자동 선택한다. 선행 작업이나 공유 경로가 있으면 직렬 실행을 유지하고, 병렬 실행에서도 공용 하역 구역은 한 팀씩 사용한다. 실제 선택과 이유는 `skill-bindings.json`과 `result.json`의 `overlap_selection`에 남는다. 계획의 역할·경로·선행 조건은 자동 수정하지 않는다.
+표준 `dispatch`는 pair 판단에 쓰지 않는 카메라 촬영을 생략한다. 자기 영상과 연속 기록 영상의 조건은 유지하되, TOP 영상은 로봇 입력에서 제외하고 평가·검토 전용으로 보존한다. 합의한 계획이 열린 맵의 독립된 경로·자원을 사용하면 기존 병렬 운반 경로도 자동 선택한다. 선행 작업이나 공유 경로가 있으면 직렬 실행을 유지하고, 병렬 실행에서도 공용 하역 구역은 한 팀씩 사용한다. 실제 선택과 이유는 `skill-bindings.json`과 `result.json`의 `overlap_selection`에 남는다. 계획의 역할·경로·선행 조건은 자동 수정하지 않는다.
 
 이전 촬영·자원 일정과 비교하려면 `dispatch --full-capture --serial-route`를 사용한다. 연구 실행기 `run_dispatch_e2e.py`와 `dispatch-skills` workflow의 기본값은 그대로이며 새 자동 선택은 `--auto-route-overlap`, 촬영 최적화는 `--efficient-capture`로 명시한다. 기본 병렬 진입은 봉의 운반 명령 이후이고, `--overlap-start grasp`는 파지부터 겹치는 별도 조건이다. 창의 배속, 렌더 처리량, 계획 협상 시간, 실제 동시 운반 시간은 각각 구분해 측정한다.
 
@@ -201,7 +201,7 @@ from sim.session_config import load_config
 config = load_config("configs/simulation/local.json")
 with Simulation(config, render=True) as sim:
     sim.reset()                         # 같은 설정 재현; seed 변경은 새 Simulation
-    observation = sim.observe("r1")     # 자기 JPEG + 공용 top JPEG + 자기 발행 명령
+    observation = sim.observe("r1")     # 자기 JPEG + 공용 top JPEG(평가·검토 전용) + 자기 발행 명령
     sim.apply("r1", {"kind": "drive", "forward": .12, "turn": 0, "duration_s": .5})
     sim.step(100)                       # 정확히 100개의 엔진 tick
     next_observation = sim.observe("r1")
@@ -213,7 +213,7 @@ with Simulation(config, render=True) as sim:
 
 `sim.launch_viewer()`로 같은 세계에 기본 창을 붙이고 `sim.sync_viewer()`를 호출해 갱신한다. reset은 model/data 객체를 유지해 창의 참조가 유효하다. [실행 가능한 Python 예제](../examples/simulation_session.py)는 두 에피소드를 실행한다. `python -m examples.simulation_session`, Mac에서 창을 붙이려면 `mjpython -m examples.simulation_session --viewer`를 사용한다. 세션은 한 소유 스레드에서 순차 사용하며 병렬 제어기는 명령을 소유 스레드에 전달한다.
 
-`observe()`는 `render=True`일 때 기존 보정·왜곡을 적용한 자기 RGB와 공용 top RGB를 반환한다. 네이티브 고정 카메라 미리보기는 MuJoCo 투영이며 이 보정 RGB와 픽셀 단위로 동일하지 않다. 실제 모델 입력은 `observe()` 결과를 사용한다. 초기 위치·평가 좌표·관절 측정·접촉·성공 판정은 관측에 포함하지 않는다. `evaluation_state()`는 별도 평가 전용이며 제어기에 전달하지 않는다. 창을 사용하는 사람이 물체를 조작해도 이 경계가 자동으로 연구 프로토콜을 보장하는 것은 아니다.
+`observe()`는 `render=True`일 때 기존 보정·왜곡을 적용한 자기 RGB와 공용 top RGB를 반환한다. 네이티브 고정 카메라 미리보기는 MuJoCo 투영이며 이 보정 RGB와 픽셀 단위로 동일하지 않다. 실제 모델 입력은 `observe()` 결과 중 허용된 자기 RGB와 자기 발행 명령 이력만 사용해야 한다. 공용 top 카메라는 평가·검토 영상 전용이며 제어·지도 만들기·위치 추정·교사 행동 결정에 쓰지 않는다(2026-10-03 사용자 결정, [#366](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/366); 사용자 원문: "공용(위) 카메라는 쓰지 않는다. 지도 만들기나 위치 추정에 쓰지 않는다."). 초기 위치·평가 좌표·관절 측정·접촉·성공 판정은 관측에 포함하지 않는다. `evaluation_state()`는 별도 평가 전용이며 제어기에 전달하지 않는다. 창을 사용하는 사람이 물체를 조작해도 이 경계가 자동으로 연구 프로토콜을 보장하는 것은 아니다.
 
 ## 기록과 코드 위치
 

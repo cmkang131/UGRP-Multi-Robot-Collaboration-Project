@@ -52,7 +52,7 @@
 
 기존 연구 XML 변환은 공유 모듈 `sim/research_scene_xml.py`에서 재사용한다.
 engine → 장면 XML/초기화 adapter → Simulation → CLI 순으로 구성하고,
-제어기는 자기 RGB·TOP·자기 명령만 받는다. 지도/초기화/평가 원문은 실행기 기록에만 남는다.
+제어기는 자기 RGB·자기 명령만 받는다. 공용 top 카메라는 평가·검토 영상 전용이며 제어·지도 만들기·위치 추정·교사 행동 결정에 쓰지 않는다(2026-10-03 사용자 결정, [#366](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/366); 사용자 원문: "공용(위) 카메라는 쓰지 않는다. 지도 만들기나 위치 추정에 쓰지 않는다."). 지도/초기화/평가 원문은 실행기 기록에만 남는다.
 과거 실행기의 global monkeypatch는 호환 경로로 유지하며, 새 Simulation은 인스턴스별 XML hook을 쓴다.
 
 ## 남은 연구·확장 범위

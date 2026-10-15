@@ -1,6 +1,6 @@
 # 구역 화물 종류 인식 (TOP RGB, 프로필 `top_cargo_v1`·`top_cargo_v2`)
 
-> **연동에는 `top_cargo_v2`를 쓴다.** v1은 평행 빔 병합과 틀 안쪽 상자 억제 결함이 있어 평가 기준으로만 바이트 그대로 남긴다. v2의 차이는 [아래 절](#top_cargo_v2)과 [v2 실험 기록](../experiments/2026-09-25-zone-cargo-perception-v2/README.md)을 따른다.
+> **`top_cargo_v2`는 평가·검토용으로만 쓴다.** 공용 top 카메라는 평가·검토 영상 전용이며 제어·지도 만들기·위치 추정·교사 행동 결정에 쓰지 않는다(2026-10-03 사용자 결정, [#366](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/366); 사용자 원문: "공용(위) 카메라는 쓰지 않는다. 지도 만들기나 위치 추정에 쓰지 않는다."). TOP에서 만든 물체 라벨·좌표도 제어 입력으로 전달하지 않는다. v1은 평행 빔 병합과 틀 안쪽 상자 억제 결함이 있어 평가 기준으로만 바이트 그대로 남긴다. v2의 차이는 [아래 절](#top_cargo_v2)과 [v2 실험 기록](../experiments/2026-09-25-zone-cargo-perception-v2/README.md)을 따른다.
 
 2026-09-25 요청: [화물 목록](zone_cargo.md)의 새 종류(can·tile·long_beam·heavy_crate·tri_frame)를 TOP RGB에서 알아보게 해 LLM 로봇이 볼 수 있게 한다. **이 문서는 인식기와 출력 계약만 다룬다.** 제어기·프롬프트 연결은 팀 운반 연동 담당이 한다. 평가 수치는 [실험 기록](../experiments/2026-09-25-zone-cargo-perception/README.md)에 있다.
 

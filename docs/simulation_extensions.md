@@ -53,7 +53,7 @@ def build_scene(*, seed, params):
 
 factory 계약은 `create_controller(*, robot_id, seed, params) -> object`다. 반환 객체의 `act(observation)`이 명령 dict 하나를 반환한다. 매 reset마다 새 객체를 생성하므로 상태는 모듈 전역 대신 객체에 보관한다. 호출은 SIM 0초부터 `period_s`마다 해당 시각에 도달한 첫 물리 tick에 이루어진다. 실행은 한 소유 스레드에서 동기식이며 느린 제어기는 전체 시뮬레이션의 실제 시간을 늦춘다. 비협조적인 외부 호출의 중단/timeout은 제어기에서 구현해야 한다. CLI의 wall limit은 호출을 강제 선점하지 않는다.
 
-입력은 자기 보정 RGB JPEG(base64 `image`), 공용 top JPEG(`top_rgb.image`), 자기 발행 상태(`actuator_state`), 현재 에피소드의 자기 `command_history`, 에피소드/SIM 시간이다. 장면 좌표·측정 관절·접촉·성공 판정·다른 로봇의 명령은 전달하지 않는다. 관측 dict는 복사본이다. 공장 함수에도 전체 환경 설정이나 세계 객체를 전달하지 않는다. 자기 명령은 실제 이동 성공이나 측정 관절을 뜻하지 않는다.
+제어 입력은 자기 보정 RGB JPEG(base64 `image`), 자기 발행 상태(`actuator_state`), 현재 에피소드의 자기 `command_history`, 에피소드/SIM 시간이다. 공용 top JPEG(`top_rgb.image`)는 평가·검토 전용이다. 공용 top 카메라는 평가·검토 영상 전용이며 제어·지도 만들기·위치 추정·교사 행동 결정에 쓰지 않는다(2026-10-03 사용자 결정, [#366](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/366); 사용자 원문: "공용(위) 카메라는 쓰지 않는다. 지도 만들기나 위치 추정에 쓰지 않는다."). 장면 좌표·측정 관절·접촉·성공 판정·다른 로봇의 명령은 전달하지 않는다. 관측 dict는 복사본이다. 공장 함수에도 전체 환경 설정이나 세계 객체를 전달하지 않는다. 자기 명령은 실제 이동 성공이나 측정 관절을 뜻하지 않는다.
 
 제어기가 있으면 RGB 렌더링을 자동 활성화하고 CLI는 매 호출의 실제 입력·응답·오류를 `controller-decisions.jsonl`에 보존한다. 긴 실행은 RGB 로그가 커질 수 있다. 외부 API를 호출하는 제어기의 비용·모델 호출 수는 자동 계측하지 않으며 `controller_calls`와 구분한다. Linux headless RGB는 `MUJOCO_GL=osmesa`로 실행할 수 있다.
 
