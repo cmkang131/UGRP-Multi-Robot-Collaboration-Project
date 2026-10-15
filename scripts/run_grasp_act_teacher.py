@@ -287,6 +287,10 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
                 timings['rgb']+=time.monotonic()-at
                 write(out/'progress.json',{'sim_s':now-origin,'wall_s':time.monotonic()-start,
                     'phases':{rid:t.phase for rid,t in teachers.items()},'sample':i,'timings_s':timings})
+                if search23!='off':
+                    write(out/'diagnostic-snapshot.json',{'sim_s':now-origin,'source_sha':sha,
+                        'input_audit':report['input_audit'],'teachers':{rid:t.diagnostic() for rid,t in teachers.items()},
+                        'scope':'periodic unfinished diagnostic; never final acceptance'})
                 for stream in streams:stream.flush()
             both=all(min(truth['contacts'][rid])>=.5 for rid in plan['roles']) and truth['beam']['min_z']>=.012
             if strict:both=both and truth['beam']['tilt_deg']<=10.

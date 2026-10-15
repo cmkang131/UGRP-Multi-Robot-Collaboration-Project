@@ -12,7 +12,7 @@ from sim.grasp_act_search15_modes import add_arguments, options, validate, match
 from sim.grasp_act_search18 import body_clearance
 from sim.grasp_act_search20 import PlanningBudget, PlanningBudgetExceeded
 from sim.grasp_act_search22 import BodyNavigation as Previous, uncertainty
-from sim.grasp_act_search23 import BodyNavigation, PEER_TTL_S, enabled
+from sim.grasp_act_search23 import BodyNavigation, PEER_TTL_S, K, enabled
 from tests.test_grasp_act_search22 import teacher as old_teacher, measurement, FIX
 
 
@@ -85,6 +85,21 @@ def test_batched_geometry_matches_exact_existing_footprint():
         assert gaps[i,:len(nav.discs)]==pytest.approx([body_clearance((*p[i],[0.,.2][i]),[d],[]) for d in nav.discs])
 
 
+def test_vectorized_view_wall_samples_and_cached_pick_cloud_preserve_the_original_checks():
+    from sim.grasp_act_visible_route import segment_free
+    from sim.grasp_act_pregrasp import band_view,actual_pick_cloud
+    t,w=maze();nav=BodyNavigation(t,w);rng=np.random.default_rng(2303)
+    for a,b in rng.uniform((-.7,-.8),(1.7,.8),(100,2,2)):
+        assert nav.wall_segment_free(a,b,.005)==segment_free(a,b,[],w['walls'],.005)
+    w=deepcopy(FIX['world']);nav=BodyNavigation(teacher(),w,admission=True)
+    p=w['robots']['r1']['pose'];before=nav.pwm
+    count,view=band_view(w,'r1','blue',p,before)
+    assert band_view(w,'r1','blue',p,before,navigation=nav)==(count,view)
+    z=w['beam']['ends']['blue'][2]
+    actual=actual_pick_cloud(view,(.203,0.,z));cached=nav.pick_cloud(view,.203,z)
+    assert all(np.array_equal(a,b) for a,b in zip(actual,cached))
+
+
 def test_blocked_start_and_timeout_are_distinguished_and_auditable():
     t,w=maze();nav=BodyNavigation(t,w)
     assert nav.plan_path((.5,0.),(1.,0.),t.bounds,[]) is None
@@ -115,4 +130,5 @@ def test_dynamic_peer_grows_expires_reappears_and_old_mode_is_unchanged():
     clean=t.search18_space.update(w,t,w['t'])
     assert 'r2' not in clean['robots'] and not t.search18_space.ghosts and not t.reobserver.hints
     w=dynamic.observe([m],3.);assert 'r2' in w['robots']
-    nav=BodyNavigation(t,w);assert next(d for d in nav.details if d['id']=='r2')['margin_m']==.005
+    nav=BodyNavigation(t,w);d=next(d for d in nav.details if d['id']=='r2')
+    assert d['margin_m']==pytest.approx(.005+K*d['sigma_m'])

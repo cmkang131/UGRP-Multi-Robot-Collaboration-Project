@@ -7,9 +7,11 @@ visible end; completeness is on that finite graph, subject to the step budget.
 """
 import heapq
 import math
+from functools import lru_cache
+from collections import OrderedDict
 import numpy as np
 
-from sim.grasp_act_search22 import BodyNavigation as Previous, K
+from sim.grasp_act_search22 import BodyNavigation as Previous, K, uncertainty
 from sim.grasp_act_search21 import FRESH_MARGIN_M
 from sim.grasp_act_search18 import HALF_X, HALF_Y
 from sim.grasp_act_search20 import PlanningBudgetExceeded
@@ -20,6 +22,20 @@ HEURISTIC_WEIGHT = 2.0
 COST_MULTIPLIER = 1.0  # Smac 2D's documented speed-oriented setting
 PEER_TTL_S = 2.0
 PEER_SIGMA_RATE_M_S = .05  # design assumption, not fitted to evaluation truth
+
+_PICK_CLOUDS=OrderedDict()
+
+
+@lru_cache(maxsize=1024)
+def cached_capsules(items):
+    from sim.grasp_act_pregrasp import capsules
+    return capsules(dict(items))
+
+
+@lru_cache(maxsize=512)
+def cached_camera(items):
+    from sim.grasp_act_gaze import camera_extrinsics
+    return camera_extrinsics(dict(items))
 
 
 def enabled(t):
@@ -72,14 +88,23 @@ class BodyNavigation(Previous):
         self.blocked = {}; self.expanded = 0
         for detail in self.details:
             m=self.world_observations.get(detail['id'])
+            if detail['sigma_m'] is not None:
+                detail['margin_m']=FRESH_MARGIN_M+K*detail['sigma_m']
             if m is not None and m['kind']=='robot' and not detail['fresh']:
                 age=max(0.,world['t']-m['seen_t'])
-                sigma=math.hypot(detail['sigma_m'] or 0.,PEER_SIGMA_RATE_M_S*age)
+                base_sigma=(detail['sigma_m'] if detail['sigma_m'] is not None else
+                            max(0.,detail['margin_m']-FRESH_MARGIN_M)/K)
+                sigma=math.hypot(base_sigma,PEER_SIGMA_RATE_M_S*age)
                 detail.update(sigma_m=sigma,margin_m=FRESH_MARGIN_M+K*sigma,
                               dynamic=True,age_s=age,expires_s=PEER_TTL_S)
         self.disc_margins=[d['margin_m'] for d in self.details]
+        for i,r in enumerate(self.rects):
+            m=next((m for m in self.world_observations.values() if m['kind']=='wall'
+                and tuple((*m['xyz'][:2],*m['half_extents'],m['yaw']))==tuple(r)),None)
+            info=uncertainty(m,self.pose) if m else None
+            if info:self.rect_margins[i]=FRESH_MARGIN_M+K*info['sigma_m']
         self.audit_details=[*self.details,
-            *[{'id':self._wall_name(r,i),'fresh':m==FRESH_MARGIN_M,
+            *[{'id':self._wall_name(r,i),'fresh':self.world_observations.get(self._wall_name(r,i),{}).get('seen_t',-math.inf)>=world['t']-1e-8,
                 'margin_m':m} for i,(r,m) in enumerate(zip(self.rects,self.rect_margins))],
             {'id':'bounds','fresh':True,'margin_m':FRESH_MARGIN_M}]
 
@@ -146,7 +171,7 @@ class BodyNavigation(Previous):
         from sim.grasp_act_teacher import wrap
         key=(tuple(prior),tuple(sorted(before.items())),tuple(xy),yaw)
         if key not in self.connector_cache:
-            count,after=band_view(self.world,self.rid,self.end,(*xy,yaw),before)
+            count,after=band_view(self.world,self.rid,self.end,(*xy,yaw),before,navigation=self)
             reason=None
             if count>=5:
                 c,s=math.cos(prior[2]),math.sin(prior[2]);dx,dy=xy[0]-prior[0],xy[1]-prior[1]
@@ -155,6 +180,39 @@ class BodyNavigation(Previous):
                     (c*dx+s*dy,-s*dx+c*dy,da))
             self.connector_cache[key]=(count,after,reason)
         return self.connector_cache[key]
+
+    def camera_extrinsics(self,pwm):
+        return cached_camera(tuple(sorted(pwm.items())))
+
+    def wall_segment_free(self,start,end,radius):
+        # SAME 1cm samples and margin-escape limits as visible_route.segment_free.
+        from scripts.zone_teacher import _wall_limits
+        dx,dy=end[0]-start[0],end[1]-start[1]
+        n=max(1,math.ceil(math.sqrt(dx*dx+dy*dy)/.01));i=np.arange(n+1)
+        x=start[0]+dx*i/n;y=start[1]+dy*i/n
+        for (cx,cy,hx,hy,a),limit in _wall_limits(start,self.rects,radius):
+            u,v=x-cx,y-cy
+            if a:
+                c,s=math.cos(a),math.sin(a);u,v=c*u+s*v,-s*u+c*v
+            if not np.all(np.hypot(np.maximum(np.abs(u)-hx,0.),
+                                   np.maximum(np.abs(v)-hy,0.))>=limit):return False
+        return True
+
+    def pick_cloud(self,view,distance,z):
+        from sim.grasp_act_teacher import grasp_poses
+        from sim.grasp_act_pregrasp import actual_pick_cloud
+        hover,descent=grasp_poses((distance,0.,z))
+        states=[view,{**view,**hover,1:2000}]
+        states.extend({**states[-1],**p,1:2000} for p in descent)
+        states.extend([{**states[-1],1:1500},{**states[-1],**hover,1:1500}])
+        # Equivalent IK commands, not rounded distance/height, identify a cloud.
+        key=tuple(tuple(sorted(p.items())) for p in states);self.check_budget()
+        if key not in _PICK_CLOUDS:
+            _PICK_CLOUDS[key]=actual_pick_cloud(view,(distance,0.,z),check_budget=self.check_budget,
+                capsule_fn=lambda p:cached_capsules(tuple(sorted(p.items()))))
+            if len(_PICK_CLOUDS)>32:_PICK_CLOUDS.popitem(last=False)
+        _PICK_CLOUDS.move_to_end(key)
+        return _PICK_CLOUDS[key]
 
     def path_for_goal(self,start,goal,discs,rects,radius):
         # Every replan searches the current inflated map. No static route family.

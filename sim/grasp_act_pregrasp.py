@@ -81,7 +81,8 @@ def swept_cloud(start_items, distance, z):
     return actual_pick_cloud(dict(start_items),(distance,0.,z))
 
 
-def actual_pick_cloud(start,target,*,check_budget=None):
+def actual_pick_cloud(start,target,*,check_budget=None,capsule_fn=None):
+    capsule_fn=capsules if capsule_fn is None else capsule_fn
     hover, descent = grasp_poses(target)
     # Exactly the issued pick sequence: folded -> hover/open -> descent -> close -> lift.
     states = [start, {**start, **hover, 1: 2000}]
@@ -93,7 +94,7 @@ def actual_pick_cloud(start,target,*,check_budget=None):
         for i in range(n+1):
             if check_budget is not None:check_budget()
             p = {k: a[k]+(b[k]-a[k])*i/n for k in a}
-            xyz, radii, fingers = capsules(p)
+            xyz, radii, fingers = capsule_fn(p)
             # Only intended pad/assigned-beam contact during closure/lift is excluded.
             chunks.append((xyz, radii, fingers & (stage >= 9)))
     return tuple(np.concatenate([c[i] for c in chunks]) for i in range(3))
@@ -137,14 +138,15 @@ def collision_reason(world, rid, base, xyz, radii, pad_contact):
     return None
 
 
-def band_view(world, rid, end, base, previous):
+def band_view(world, rid, end, base, previous, *, navigation=None):
     """At least five of 15 known top-band probes in the conservative view cone."""
     from sim.grasp_act_visible_gaze import gaze_pose
     from sim.grasp_act_gaze import camera_extrinsics
     point = world['beam']['ends'][end]
     x, y = local(base, point)
     view = gaze_pose((x, y, point[2]+.009), previous)
-    origin, axes = camera_extrinsics(view)
+    origin, axes = (navigation.camera_extrinsics(view) if hasattr(navigation,'camera_extrinsics')
+                    else camera_extrinsics(view))
     a = world['beam']['pose'][2]
     co, si = math.cos(base[2]), math.sin(base[2])
     count = 0
@@ -165,7 +167,9 @@ def band_view(world, rid, end, base, previous):
                 u = max(0., min(1., ((center[0]-eye[0])*dx+(center[1]-eye[1])*dy)/max(dx*dx+dy*dy, 1e-12)))
                 if 0 < u < 1 and math.dist((eye[0]+u*dx, eye[1]+u*dy), center) < radius+.005 and eye[2]+u*(q[2]-eye[2]) <= top+.005:
                     clear = False;break
-            if clear and segment_free(eye[:2], q[:2], [], world.get('walls', []), .005):
+            wall_clear=(navigation.wall_segment_free(eye[:2],q[:2],.005) if hasattr(navigation,'wall_segment_free')
+                        else segment_free(eye[:2],q[:2],[],world.get('walls',[]),.005)) if clear else False
+            if clear and wall_clear:
                 count += 1
     return count, view
 
@@ -214,10 +218,12 @@ def select_sampled_goal(world, rid, end, bounds, folded, previous, *, current=No
         if not all(segment_free(a, b, discs, rects, radius) for a, b in zip(points, points[1:])):
             row['reason'] = 'unsafe_body_sweep';continue
         base = (*goal, heading)
-        visible, view = band_view(world, rid, end, base, previous)
+        visible, view = band_view(world, rid, end, base, previous, navigation=navigation)
         row['predicted_visible_probes'] = visible
         if visible < 5:row['reason'] = 'band_not_visible';continue
-        if navigation is not None and hasattr(navigation,'check_budget'):
+        if hasattr(navigation,'pick_cloud'):
+            xyz,radii,allowed=navigation.pick_cloud(view,choice[1],point[2])
+        elif navigation is not None and hasattr(navigation,'check_budget'):
             xyz,radii,allowed=bounded_swept_cloud(tuple(sorted(view.items())),choice[1],point[2],navigation.check_budget)
         else:
             xyz, radii, allowed = swept_cloud(tuple(sorted(view.items())), choice[1], point[2])
