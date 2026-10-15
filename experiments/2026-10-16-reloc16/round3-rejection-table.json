@@ -1,0 +1,164 @@
+{
+  "round": 3,
+  "unit": "ordered frames/events; not independent trial success rate",
+  "runs": [
+    {
+      "run": "reloc16-r3-selfmap-93584-v5-df8115a5",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc16-r3-selfmap-93584-v5-df8115a5/raw",
+      "cumulative": {
+        "frames": 301,
+        "sensor_update": 124,
+        "pf_resolved": 0,
+        "dominant_mode": 0,
+        "raw_covariance": 0,
+        "independent_axes": 0,
+        "global_unique": 0,
+        "three_views": 0,
+        "registered": 0
+      },
+      "rejections": [
+        {
+          "category": "sensor_update",
+          "N": 177,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "pf_resolved",
+          "N": 124,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        }
+      ]
+    },
+    {
+      "run": "reloc16-r3-selfmap-93583-v5-df8115a5",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc16-r3-selfmap-93583-v5-df8115a5/raw",
+      "cumulative": {
+        "frames": 301,
+        "sensor_update": 108,
+        "pf_resolved": 0,
+        "dominant_mode": 0,
+        "raw_covariance": 0,
+        "independent_axes": 0,
+        "global_unique": 0,
+        "three_views": 0,
+        "registered": 0
+      },
+      "rejections": [
+        {
+          "category": "sensor_update",
+          "N": 193,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "pf_resolved",
+          "N": 108,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        }
+      ]
+    },
+    {
+      "run": "reloc16-r3-carry-93266-v5-df8115a5",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc16-r3-carry-93266-v5-df8115a5/raw",
+      "cumulative": {
+        "exposures": 750,
+        "accepted": 8,
+        "scorable": 8,
+        "correct": 8
+      },
+      "rejections": [
+        {
+          "category": "unknown_servo_settle",
+          "N": 108,
+          "blocked_object": "own_rgb_static_background",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "unknown_yaw_observability",
+          "N": 349,
+          "blocked_object": "own_rgb_static_background",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "unknown_static_support",
+          "N": 182,
+          "blocked_object": "own_rgb_static_background",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "unknown_spatial_revalidation",
+          "N": 100,
+          "blocked_object": "own_rgb_static_background",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "pending_next_rgb",
+          "N": 3,
+          "blocked_object": "own_rgb_static_background",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        }
+      ]
+    },
+    {
+      "run": "reloc16-r3-carry-93315-v5-df8115a5",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc16-r3-carry-93315-v5-df8115a5/raw",
+      "cumulative": {
+        "exposures": 750,
+        "accepted": 28,
+        "scorable": 28,
+        "correct": 28
+      },
+      "rejections": [
+        {
+          "category": "unknown_servo_settle",
+          "N": 89,
+          "blocked_object": "own_rgb_static_background",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "unknown_yaw_observability",
+          "N": 389,
+          "blocked_object": "own_rgb_static_background",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "unknown_static_support",
+          "N": 190,
+          "blocked_object": "own_rgb_static_background",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "pending_next_rgb",
+          "N": 8,
+          "blocked_object": "own_rgb_static_background",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "unknown_spatial_revalidation",
+          "N": 46,
+          "blocked_object": "own_rgb_static_background",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        }
+      ]
+    }
+  ],
+  "source_queue": "/home/ugrp/ugrp-sim/runs/reloc16-round3/queue.json",
+  "reproduction": "PYTHONPATH=. python -m scripts.analyze_reloc16 --round 3"
+}

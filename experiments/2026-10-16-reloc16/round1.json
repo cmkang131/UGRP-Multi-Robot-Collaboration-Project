@@ -1086,6 +1086,7 @@
         "carry_recover_restore": 22,
         "carry_reacquire": 88
       },
+      "placement_rejections": [],
       "recovery": null
     },
     {
@@ -1486,7 +1487,24 @@
         "carry_reacquire": 33,
         "failed": 1
       },
-      "recovery": null
+      "placement_rejections": [
+        {
+          "t": 122.09999999884069,
+          "event": "rejection",
+          "reason": "carry_recovery_setdown_envelope_blocked",
+          "category": "route",
+          "blocked_object": "own_rgb:can:1",
+          "minimum_gap_m": -0.13720547594723184,
+          "gap_scope": "same margin-escape limits and wall samples as segment_free",
+          "blockers": [
+            {
+              "blocked_object": "own_rgb:can:1",
+              "minimum_gap_m": -0.13720547594723184
+            }
+          ]
+        }
+      ],
+      "recovery": "carry_recovery_setdown_envelope_blocked"
     },
     {
       "run": "reloc16-r1-selfmap-93584-v1-93635d6e",

@@ -1,0 +1,60 @@
+{
+  "raw_sources": [
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/scenetex5-r1-v1-native",
+      "index_sha256": "7e4a7b0893733ceb6115a4264508fd8b41b09f349a946bf472279cf741345bc8"
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/scenetex5-r3-indigo110_s80",
+      "index_sha256": "0ac1f4930f928018e427be11fbe2b558040883b475b6bf0a380f8ca95d0f2e06"
+    }
+  ],
+  "reproduction": [
+    "python",
+    "-m",
+    "scripts.score_reloc16_static",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/reloc16-static-r3"
+  ],
+  "stages": [
+    {
+      "encoding": "png",
+      "candidates": 88,
+      "qualified": 56,
+      "colour_columns": 5376,
+      "accepted": 4691,
+      "reasons": {
+        "COLOUR_TRANSITION": 4691,
+        "NO_VISIBLE_WALL_FLOOR_TRANSITION": 523,
+        "NO_NEIGHBOUR_CONTINUITY": 81,
+        "NO_UNOCCLUDED_LINE_CONSENSUS": 81
+      }
+    },
+    {
+      "encoding": "jpeg90",
+      "candidates": 88,
+      "qualified": 56,
+      "colour_columns": 5376,
+      "accepted": 4588,
+      "reasons": {
+        "COLOUR_TRANSITION": 4588,
+        "NO_VISIBLE_WALL_FLOOR_TRANSITION": 620,
+        "NO_UNOCCLUDED_LINE_CONSENSUS": 56,
+        "NO_NEIGHBOUR_CONTINUITY": 112
+      }
+    },
+    {
+      "encoding": "pil82",
+      "candidates": 88,
+      "qualified": 56,
+      "colour_columns": 5376,
+      "accepted": 4537,
+      "reasons": {
+        "COLOUR_TRANSITION": 4537,
+        "NO_VISIBLE_WALL_FLOOR_TRANSITION": 696,
+        "NO_UNOCCLUDED_LINE_CONSENSUS": 58,
+        "NO_NEIGHBOUR_CONTINUITY": 85
+      }
+    }
+  ]
+}

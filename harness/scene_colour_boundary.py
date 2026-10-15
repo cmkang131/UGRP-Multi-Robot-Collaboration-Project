@@ -91,8 +91,8 @@ def detect(hfw, und_bgr, cm, *, params, loaded, state):
                 support=lambda a: len(a)>=window and np.any(np.convolve(a.astype(int),np.ones(window,int),'valid')>window/2)
                 if not support(wa) or not support(fb): continue
             elif not np.median(w[max(0,v-int(p['band_px'])):above+1]) or not f[below]: continue
-            # Linear interpolation of the scalar colour crossing. This is a
-            # measured subpixel edge, not a snapped GT boundary or line fill.
+            # Use the observed colour crossing to locate a luminance step.
+            # No GT snapping, line filling or extrapolation is performed.
             # Brightness is deliberately separated in scene-v5: choose the
             # strongest local luminance step, within the inherited support
             # window. Preserve the legacy integer-row convention (GT scores
@@ -136,9 +136,9 @@ def detect(hfw, und_bgr, cm, *, params, loaded, state):
                 if not np.isfinite(row) or min(abs(row-v) for v in observed_rows[j])>tol:continue
                 for key in scan:scan[key][j,0]=legacy[key][j,k]
                 reasons[j]='COLOUR_VALIDATED_LEGACY_EDGE';break
-    # Deterministic RANSAC, seeded ONLY by columns without orange. Observed
-    # transitions through a robot's open gaps may join a background wall line;
-    # a robot silhouette cannot seed its own wall. No missing column is filled.
+    # v1 excludes orange from line seeds; v2 uses all colour-supported edges.
+    # Orange A is not a recognized robot silhouette. Missing columns are never
+    # filled; each returned column still needs its own observed transition.
     # Tolerance = v1/native original boundary-error p95 (all encodings:1.5px),
     # frozen raw manifest/source in the calibration, not a new admission slack.
     tol=float(state.calibration['line_residual_px_p95'])

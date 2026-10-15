@@ -102,3 +102,10 @@ SHA256 `384ad6944cf42b44e0238cb3650b82af413c75b97f87cebc72d20c220915c84c`;
 SHA256 `69bdd4f62546e3e38ea024cf94b6bc12b86cef39b8a187ee155b7f11794a1c69`.
 후보722개 중 확인0·관문 실패로 새 물리0, 성공영상 없음. 회색벽/청록문은 평가용GT, 제어입력 아님.
 - 2026-10-06 S2 v117 `ef820ab2` / s1042: REAL pre-grasp 확인 뒤 hover 하강·SIM lifted=true, pickup-site ROI clipped/unknown으로 probe gate 미통과. own-RGB4배속 영상 `/Users/changmin/projects/ugrp/outputs/s2-realism-ef820ab2-analysis/views/s1042-probe/execution.mp4` (34.05s,681frames,sha256 `5ed6f0714aaab173ece3a9630964dfcb76252969e6f08fdd0ec35b0425ad2041`). full/실물 성공 증거 아님. 기록: `experiments/2026-10-06-s2-realism/completed-v117.json`.
+
+
+## reloc16 확정 v5 장면 자기 위치 추정 (2026-10-16)
+
+|버전·소스|case|결과|영상·원본|검토 범위·한계|
+|---|---|---|---|---|
+|reloc16 R3 · `df8115a53c01af2d1974c0e8777fdb4853252eaf`|gcp2 CPU, selfmap93584,60SIM초|전역등록0/301·cap_end·NOT_READY|[4배속 대표 실패](../experiments/2026-10-16-reloc16/videos/representative-selfmap93584-r3-failure.mp4), 42289bytes, SHA256 `22ba87bff21c065c2d07d9cb86a086e6c22c44462437befa40762bdb79c9cc3c`; raw `/home/ugrp/ugrp-sim/runs/reloc16-r3-selfmap-93584-v5-df8115a5/raw`|실패가 전형적(두 selfmap 모두 등록0). 전체2Hz+직전10초10Hz 직접검토, 개요는 평가전용·제어r3 자기RGB. 이전장면 동일시드 gcp2 비교는 [기록](../experiments/2026-10-16-reloc16/README.md). 완주/ACT/실물 성공 아님; 부모milestone 원본 보존·전체백업없음.|

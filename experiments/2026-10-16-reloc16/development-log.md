@@ -1,0 +1,52 @@
+# reloc16 — 확정 v5 장면의 자기 RGB 위치 추정
+
+진행 중. reloc15 `644289a755ee60df99e916224931c2dec80298eb` 위에 PR #527 `f0ad75304cca6a785ad473a7cf31ffb4ab61df9a`를 병합했다. main·reloc15 원본은 변경하지 않는다. 확정 장면은 `walls_floor_contrast_v5_indigo110_s80` + v1 바닥 + `no_mip_v1`. 새 후보는 기본 off, 이전 장면/호스트 결과와 합산하지 않는다.
+
+## 수정 전 원본 분포
+
+`rejection-before.json`은 gcp2의 scenetex5-r3-indigo110_s80 저장 원본 88자세(기존 경계 카메라 자격 56)×3인코딩을 원래 검출기로 다시 계산했다. PNG 총 5376컬럼: 반환4279, 색 지지741, 직선 합의301, 연결55. 색 지지741 세분은 바닥 한 행 클래스425, 벽 밴드127, 범위93, 색 교차 없음96이다. JPEG90은 바닥345/벽277, PIL82는 바닥351/벽436이다. 분포를 먼저 기록하고 가장 큰 한 행 지지·주황 시드 결함부터 고친다. 기존 RGB 비교판(실패 paint B/C와 정상 drive)을 파일로 직접 보았다. 정적 판은 동적 재생 검토를 대신하지 않는다.
+
+## 예산과 경계
+
+gcp2 CPU만, 자기 동시≤8·전체≤40, 실패 시드 selfmap93584/93583, carry93266/93315 먼저. 폐루프 최대3라운드. 한 실행 cap은 selfmap60/carry150 SIM초이며 시간 상한 종료는 cap_end로 구분한다. 렌더/분석은 gcp2만; Mac은 텍스트·요약·실패 몽타주·≤8MB 영상만 회수한다. 예산 raw8×0.5GiB + 분석/사본/최대3라운드 임시8GiB =20GiB, Mac회수≤64MiB; 시작 여유 gcp2328GiB/메모리123GiB, Mac37GiB. 모든 원본은 dev·영속디스크 보존, 별도 전체 백업 없음. 임대 reloc16.json 생성, warp1 임대 보존, 다른 임대가 있으면 VM정지 금지. 모델/학습0, weldOFF, 평가정답은 controller와 분리.
+
+## 설계와 참고 자료
+
+- 사용자 지정 reloc15 README/summary/rejection-table/carry-yaw/quality-admission-audit 및 `outputs/e2e18-admin/research/carryyaw.md`를 읽었다. 누적/증분 오차·단독 상자/공동 빔·gcp1/gcp2를 구분한다. reloc15의 0.221°→12.474° 반례는 gcp1 디스크에 접근하지 않으며 회수 요약만 사용한다.
+- scene-tex5 README와 coverage-diagnosis: 주황 규칙은 로봇 인식기가 아니다. 학습된 별도 로봇 마스크라고 취급하지 않는다. 벽/바닥 색 지지는 자기 RGB와 고정 calibration만 사용한다.
+- [OpenCV tracking API](https://docs.opencv.org/4.13.0/dc/d6b/group__video__track.html), 2026-10-16 원문: LK의 피라미드·마스크·ECC 양쪽 유효 영역을 구분한다. LK 벽 점은 바닥 계량 VO로 융합하지 않는다.
+- [Liao et al., GlobustVP, CVPR2025](https://arxiv.org/html/2505.04788v1), 원문 §3–4: 이미지 선의 투영 평면과 Manhattan 방향 제약을 참고한다. 기존 구조에 색으로 확인한 벽–바닥 선의 수평 방향만 추가하며 SDP 전체를 이식했다고 주장하지 않는다. 축의 90°/180° 모호성과 명목 카메라 회전 오차를 유지한다.
+- [Olson & Agarwal, RSS2012](https://www.roboticsproceedings.org/rss08/p40.pdf), 원문: 오관측 null 가설을 보존한다. 독립 노이즈가 검증되지 않은 절대/증분 covariance를 임의로 Kalman융합하지 않는다. 공간 재검증·다음 실제 RGB 확인 전에는 명령 예측을 유지한다.
+
+실제 새 장면 폐루프 성능·배포 완료·실물 성공은 아직 주장하지 않는다.
+
+R1 저장 RGB 후보(8a005c7d): 주황 시드 제거·이웃 지지 후 PNG 컬럼78/59.5→81/69.5, 오차.5/1.5·색검출88/88 유지. v1/native88/73.5보다 아직 낮아 폐루프에 내지 않았다. 새 진단은 실제 접점 누락 중111개가 어두운 벽의 V<p01,304개가 명목6m 범위 밖,64개가 후보/합의임을 분리했다. 새 V범위는 같은 원본88×3인코딩 wall V p00/p100=21/233(히스토그램 별첨); hue/S와Lab/chroma 경계는 유지한다. 계량 범위6m는 바꾸지 않는다. 강도 차분 i→i+1의 첫 바닥 행 i+1을 반환하도록 v2의 행 규약을 맞춘다(v1 paint_A=87, 평가 접점86.5, 이전v2=86); 선/GT로 누락 픽셀을 채우지 않는다.
+
+R2도 정적 컬럼 관문 미달: PNG82/72.5, JPEG90 82/70.5, PIL82 80.5/68.5; 오차중앙/p95 .5/1.5, 기존 검출88/88, 실제 접점 없는 반환0. 기존v1은 인코딩별96/98/96개의 실제 접점 없는 컬럼을 포함한다. 이 수를 재현해 관문을 맞추지 않는다. 6m 계량 범위도 완화하지 않는다. DEV 폐루프는 미해결 컬럼을 명시한 진단이며 승격/후속 성공 관문 큐가 아니다. Compass R2는 짧은 셀마다 끝점 오차를 전체 방향 불확실도로 전용해2/88만 관측 가능했다. R3는 전체 관측 선의 endpoint/pitch 민감도와 영역을 뺀 재적합·그 영역의 p95 픽셀 예측을 분리한다. 새로운 허용 오차는 없고, p95=1.5px 원본 근거를 유지한다.
+
+폐루프 R1은 새 장면 selfmap93584/93583+carry93266/93315와 같은gcp2·같은제어옵션 이전장면selfmap2회, 총6회다. carry의 알려진 잘못된 dense수용을 성공률 분모 확보용으로 재제출하지 않는다. gcp1 과거 운반은 회수 요약과 시드별 기술적 비교만 한다. 실제 동일호스트 장면 짝 비교와 혼동하지 않는다.
+
+gcp2 실행 의존성 누락으로 R1 selfmap4회는0프레임 HOST_ERROR였다. 기존 `.venv-sim`에 matplotlib3.11.2, 시스템g++를 설치했고 numpy2.5.2/scipy1.17.1은 유지했다. 동일93635d6e·시드·설정의 hostretry1로 원본을 분리했다. R1 새selfmap 첫30 wall/SIM8.037/7.804로 다음 제출을 보류했다. 모든 진행 실행은 기록을 유지한다. Python의 모든2점 가설 순회가 있는 색 경계/compass 계산은 같은 가설·순서·동점·픽셀 문턱을 유지하는 배열 연산으로 변경하고, 저장 RGB 출력 일치·CPU 비용을 gcp2에서 검증한 뒤 다음 제출을 결정한다. 속도 때문에 색/기록 해상도·주기·물리를 낮추지 않는다.
+
+## R1 종료와 R2 직전 원장
+
+R1 실제6회 완료와0프레임HOST_ERROR4회를 모두 `round1.json`/`round1-rejection-table.json`에 남겼다. 새selfmap 두 시드는 등록0/301이며, 이를 주행오류0/0 개선으로 읽지 않는다. 같은gcp2 이전장면93584 주행오류6/45(위치p50/p95 .0444/.1082m),93583 29/33(.0853/.1102m)이다. 새 운반93266은 cap_end150SIM초,93315는120.8초 setdown_envelope_blocked, place0/2. yaw 절대/증분 수용은 각각66/66과20/20을 평가했고 >5° 오수용0이었다. **닫힌 집게로 운반 중의 수용은 두 실행 모두0**이며, 내려놓고 실제 둘러보는 구간의 yaw 관측이다. 가림을 정밀한 yaw로 포장하지 않는다. 입력감사 invisible_measurements/held_world_reads는0, 원본hash검증은 실행별 결과에 있다.
+
+R1 가장 큰 신규 병목은 특징점 부족이 아니라 바닥색 랜드마크의 평면 혼동이다. 벽H133이 기존C H143.077±12·S20..150에 들어간다. 새93584 floor_line841개(이전196), 등록시간256.9초(이전31.5), 전역유일성 첫거부85프레임·등록0이다. R1 검토(실패 selfmap93584/운반93315, 이전장면93584 정상 등록/주행 구간)를 먼저 보고 아래 저장RGB 감사를 했다. 정상 비교도 전체임무성공은 아니며 cap_end였다.
+
+`landmark-audit.json`: 기존56카메라자격자세×3인코딩의 벽을 바닥선으로 읽은 수 PNG88/JPEG99/PIL105→0/0/0. 벽RGB class를 컬러 바닥 랜드마크의 clear에만 뺀다. RGB·바닥LK·문관측·학생 입력은 바꾸지 않는다. 혼합 경계의 실제 바닥 label픽셀62/25/15(각5,482,362개)도 unknown으로 제외하므로 바닥픽셀100% 보존이라고 주장하지 않는다. 원래 LK 마스크/추적 경로는 그대로다. pixel1.5p95→2반경 erosion 진단은 바닥손실0이나 JPEG/PIL의 벽 오인29/57을 남겨 **채택하지 않았다**. 문턱 조정 대신 RGB 평면을 분리한다. 토글 `UGRP_RELOC16_FLOOR_LANDMARK_MASK=scene_floor_landmark_mask_v1`, 기본off, 고정v5+경계v2가 없으면 차단한다. [OpenCV HSV 구간 분할 공식 설명](https://docs.opencv.org/4.13.0/da/d97/tutorial_threshold_inRange.html)(2026-10-16 원문 열람), 기존 frozen landmark 구현의 실제 범위가 근거다.
+
+선 계산 벡터화는 같은168원본에서 경계/compass 출력 각168/168 완전일치였다. process CPU 중앙(초/프레임)은 경계.1003→.0757, compass.1446→.00792다. 이는 폐루프 속도가 아니다. selfmap 지연의 대부분은 오인한 컬러 바닥선이 누적된 registration에서 생겼으므로 R2는 이 평면 분리를 함께 검증한다. R2는 기존 실패4시드만(동시4)이며 이전장면/라운드와 합산하지 않는다.
+
+## 경계 후보 추가 진단: 기존 RGB edge 제안의 색 재검증
+
+계량6m 상한이나 누락 보간을 바꾸지 않고, **이미 원래 검출기가 관측한** edge를 색 전이와 교차 확인하는 기본off `UGRP_RELOC16_BOUNDARY_PROPOSALS=legacy_rgb_v1`를 따로 준비한다. 순수 색 검출에서 실제 색 전이가 관측됐지만 geometry/range 등으로 반환되지 않은 컬럼만 본다. 원래 검출기의 반환 row가 관측한 색/밝기 edge에서 원본v1오차p95=1.5px 이내일 때만 같은 컬럼의 실측 후보로 쓴다. 선이나정답으로 채우지 않는다. hue·채도·거리·이웃 문턱은 그대로다. 저장88자세에서 분포/오차를 확인하기 전에는 폐루프에 켜지 않는다. R2 진행 소스5f8b3eb2에는 이 후보가 없다.
+
+
+## R2 종료와 마지막 R3의 가설
+
+R2 네 원본의 전체 파일 hash가 모두 일치했다. 바닥색/벽 분리 후 등록은219/301·221/301로 복구했으나 정확도 개선 관문은 실패했다. 93584 주행오류62/63, xy p50/p95 .1015/.1056m, yaw9.996/10.466°; 93583 주행오류54/75, xy .0933/.1563m, yaw1.817/6.779°다. 93583 최초등록xy .1309m로 기존.1m 기준 오등록1건이다. 운반은 두 시드 모두cap_end150·place0/2. yaw 절대/증분>5° 오수용은93266 0/58·93315 0/39, 닫힘 명령 중 수용은13/58·0/39다. 명령닫힘은 실제접촉 판정이 아니다. 정확한 경로·종료·순차funnel은 round2.json과 round2-rejection-table.json에 있다. 첫30 wall/SIM은6.042/5.609/4.124/4.015, 중앙4.866로 기록전용 경고이고 제출 차단6 초과 중앙은 아니다.
+
+기존RGB edge 색 재검증 후보는 저장88자세의3인코딩에서 추가반환0, 오차/컬럼도 같았다(legacy-proposals-rejected.json). 관문 미달을 그대로 두고 **폐루프에서 켜지 않는다**.
+
+R3는 마지막 물리 비교다. 새 추정기를 만들지 않고 기존 reloc11 `static_walls_v1` AMCL likelihood field 선택만 켠다. 자기RGB 벽–바닥 접점은 지도 벽 거리장에 평가하고, 색 바닥선은 기존 독립 공간검증 기록에 남기되 PF 가중치에 곱하지 않는다. selfmap은 기존 --reloc11-wall-field-v1, 운반은 새 기본off UGRP_RELOC16_CARRY_WALL_FIELD=static_walls_v1이다. 운반 selector는 고정v5+경계v2+floor mask 없으면 차단한다. 기존2000입자·운동문턱·미지모드·분산/공간 관문·loaded 계량금지 모두 유지한다. 새 수치 상수0. [Nav2 AMCL likelihood field 원본](https://github.com/ros-navigation/navigation2/blob/main/nav2_amcl/src/sensors/laser/likelihood_field_model_prob.cpp)과 고정 local vendor를 참고했다. R2 오차의 확정 원인이라고 주장하지 않고, 색 likelihood 중복/편향을 배제하는 반증 비교다. R3 이후 추가 물리 라운드는 내지 않는다.

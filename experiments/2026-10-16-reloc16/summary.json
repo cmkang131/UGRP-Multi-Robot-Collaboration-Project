@@ -1,0 +1,1795 @@
+{
+  "schema": "ugrp.reloc16.summary.v1",
+  "created": "2026-10-15T20:18:39.379162+00:00",
+  "verdict": "NOT_READY",
+  "pr": 532,
+  "base_sha": "644289a755ee60df99e916224931c2dec80298eb",
+  "scene_pr": 527,
+  "scene_merge_sha": "f0ad75304cca6a785ad473a7cf31ffb4ab61df9a",
+  "tested_final_source": "df8115a53c01af2d1974c0e8777fdb4853252eaf",
+  "scene": "walls_floor_contrast_v5_indigo110_s80 + v1 floor + no_mip_v1",
+  "backend": "GCP2 CPU MuJoCo; no GCP1 access",
+  "rounds": 3,
+  "physical_runs": 14,
+  "host_errors": 4,
+  "static": {
+    "report": {
+      "png": {
+        "columns": {
+          "pass": false,
+          "candidate": {
+            "n": 56,
+            "valid_n": 56,
+            "zero_n": 1,
+            "min": 0.0,
+            "p05": 67.5,
+            "p25": 78.0,
+            "median": 82.0,
+            "p75": 96.0,
+            "p95": 96.0,
+            "max": 96.0,
+            "sum": 4691.0,
+            "p10": 72.5
+          },
+          "v1": {
+            "n": 56,
+            "valid_n": 56,
+            "zero_n": 0,
+            "min": 32.0,
+            "p05": 71.5,
+            "p25": 80.0,
+            "median": 88.0,
+            "p75": 96.0,
+            "p95": 96.0,
+            "max": 96.0,
+            "sum": 4838.0,
+            "p10": 73.5
+          },
+          "quantiles": [
+            10,
+            50
+          ],
+          "direction": ">="
+        },
+        "error_px": {
+          "pass": true,
+          "candidate": {
+            "n": 4691,
+            "valid_n": 4691,
+            "zero_n": 0,
+            "min": 0.5,
+            "p05": 0.5,
+            "p25": 0.5,
+            "median": 0.5,
+            "p75": 0.5,
+            "p95": 1.5,
+            "max": 9.5,
+            "sum": 3098.5,
+            "p10": 0.5
+          },
+          "v1": {
+            "n": 4742,
+            "valid_n": 4742,
+            "zero_n": 0,
+            "min": 0.5,
+            "p05": 0.5,
+            "p25": 0.5,
+            "median": 0.5,
+            "p75": 0.5,
+            "p95": 1.5,
+            "max": 28.5,
+            "sum": 3493.0,
+            "p10": 0.5
+          },
+          "quantiles": [
+            50,
+            95
+          ],
+          "direction": "<="
+        },
+        "existing_detector_equal": 88,
+        "N": 88,
+        "qualified_N": 56,
+        "false_columns": 0,
+        "baseline_false_columns": 96,
+        "reasons": {
+          "COLOUR_TRANSITION": 4691,
+          "NO_VISIBLE_WALL_FLOOR_TRANSITION": 523,
+          "NO_NEIGHBOUR_CONTINUITY": 81,
+          "NO_UNOCCLUDED_LINE_CONSENSUS": 81
+        },
+        "wall_tracks": {
+          "pass": false,
+          "candidate": {
+            "n": 56,
+            "valid_n": 56,
+            "zero_n": 0,
+            "min": 28.0,
+            "p05": 35.25,
+            "p25": 38.0,
+            "median": 49.5,
+            "p75": 52.5,
+            "p95": 65.0,
+            "max": 67.0,
+            "sum": 2650.0,
+            "p10": 36.5
+          },
+          "v1": {
+            "n": 56,
+            "valid_n": 56,
+            "zero_n": 6,
+            "min": 0.0,
+            "p05": 0.0,
+            "p25": 15.0,
+            "median": 80.0,
+            "p75": 136.0,
+            "p95": 136.0,
+            "max": 136.0,
+            "sum": 4266.0,
+            "p10": 4.0
+          },
+          "quantiles": [
+            10,
+            50
+          ],
+          "direction": ">="
+        },
+        "floor_channel_unchanged": true,
+        "compass_status": {
+          "measured": 20,
+          "unknown_yaw_observability": 37,
+          "unknown_static_support": 29,
+          "unknown_spatial_revalidation": 2
+        }
+      },
+      "jpeg90": {
+        "columns": {
+          "pass": false,
+          "candidate": {
+            "n": 56,
+            "valid_n": 56,
+            "zero_n": 1,
+            "min": 0.0,
+            "p05": 64.0,
+            "p25": 73.75,
+            "median": 82.0,
+            "p75": 96.0,
+            "p95": 96.0,
+            "max": 96.0,
+            "sum": 4588.0,
+            "p10": 70.5
+          },
+          "v1": {
+            "n": 56,
+            "valid_n": 56,
+            "zero_n": 0,
+            "min": 34.0,
+            "p05": 70.75,
+            "p25": 80.0,
+            "median": 88.0,
+            "p75": 96.0,
+            "p95": 96.0,
+            "max": 96.0,
+            "sum": 4833.0,
+            "p10": 72.5
+          },
+          "quantiles": [
+            10,
+            50
+          ],
+          "direction": ">="
+        },
+        "error_px": {
+          "pass": true,
+          "candidate": {
+            "n": 4588,
+            "valid_n": 4588,
+            "zero_n": 0,
+            "min": 0.5,
+            "p05": 0.5,
+            "p25": 0.5,
+            "median": 0.5,
+            "p75": 0.5,
+            "p95": 1.5,
+            "max": 3.5,
+            "sum": 2781.0,
+            "p10": 0.5
+          },
+          "v1": {
+            "n": 4735,
+            "valid_n": 4735,
+            "zero_n": 0,
+            "min": 0.5,
+            "p05": 0.5,
+            "p25": 0.5,
+            "median": 0.5,
+            "p75": 0.5,
+            "p95": 1.5,
+            "max": 47.5,
+            "sum": 3854.5,
+            "p10": 0.5
+          },
+          "quantiles": [
+            50,
+            95
+          ],
+          "direction": "<="
+        },
+        "existing_detector_equal": 88,
+        "N": 88,
+        "qualified_N": 56,
+        "false_columns": 0,
+        "baseline_false_columns": 98,
+        "reasons": {
+          "COLOUR_TRANSITION": 4588,
+          "NO_VISIBLE_WALL_FLOOR_TRANSITION": 620,
+          "NO_UNOCCLUDED_LINE_CONSENSUS": 56,
+          "NO_NEIGHBOUR_CONTINUITY": 112
+        },
+        "wall_tracks": {
+          "pass": false,
+          "candidate": {
+            "n": 56,
+            "valid_n": 56,
+            "zero_n": 0,
+            "min": 2.0,
+            "p05": 2.0,
+            "p25": 4.0,
+            "median": 6.0,
+            "p75": 11.0,
+            "p95": 16.0,
+            "max": 17.0,
+            "sum": 408.0,
+            "p10": 2.0
+          },
+          "v1": {
+            "n": 56,
+            "valid_n": 56,
+            "zero_n": 6,
+            "min": 0.0,
+            "p05": 0.0,
+            "p25": 12.0,
+            "median": 93.0,
+            "p75": 155.0,
+            "p95": 155.0,
+            "max": 170.0,
+            "sum": 4915.0,
+            "p10": 3.5
+          },
+          "quantiles": [
+            10,
+            50
+          ],
+          "direction": ">="
+        },
+        "floor_channel_unchanged": true,
+        "compass_status": {
+          "measured": 20,
+          "unknown_yaw_observability": 38,
+          "unknown_static_support": 29,
+          "unknown_spatial_revalidation": 1
+        }
+      },
+      "pil82": {
+        "columns": {
+          "pass": false,
+          "candidate": {
+            "n": 56,
+            "valid_n": 56,
+            "zero_n": 1,
+            "min": 0.0,
+            "p05": 63.75,
+            "p25": 72.0,
+            "median": 80.5,
+            "p75": 96.0,
+            "p95": 96.0,
+            "max": 96.0,
+            "sum": 4537.0,
+            "p10": 68.5
+          },
+          "v1": {
+            "n": 56,
+            "valid_n": 56,
+            "zero_n": 0,
+            "min": 32.0,
+            "p05": 71.5,
+            "p25": 80.0,
+            "median": 87.0,
+            "p75": 96.0,
+            "p95": 96.0,
+            "max": 96.0,
+            "sum": 4820.0,
+            "p10": 72.5
+          },
+          "quantiles": [
+            10,
+            50
+          ],
+          "direction": ">="
+        },
+        "error_px": {
+          "pass": true,
+          "candidate": {
+            "n": 4537,
+            "valid_n": 4537,
+            "zero_n": 0,
+            "min": 0.5,
+            "p05": 0.5,
+            "p25": 0.5,
+            "median": 0.5,
+            "p75": 0.5,
+            "p95": 1.5,
+            "max": 3.5,
+            "sum": 2770.5,
+            "p10": 0.5
+          },
+          "v1": {
+            "n": 4724,
+            "valid_n": 4724,
+            "zero_n": 0,
+            "min": 0.5,
+            "p05": 0.5,
+            "p25": 0.5,
+            "median": 0.5,
+            "p75": 0.5,
+            "p95": 1.5,
+            "max": 31.5,
+            "sum": 3823.0,
+            "p10": 0.5
+          },
+          "quantiles": [
+            50,
+            95
+          ],
+          "direction": "<="
+        },
+        "existing_detector_equal": 88,
+        "N": 88,
+        "qualified_N": 56,
+        "false_columns": 0,
+        "baseline_false_columns": 96,
+        "reasons": {
+          "COLOUR_TRANSITION": 4537,
+          "NO_VISIBLE_WALL_FLOOR_TRANSITION": 696,
+          "NO_UNOCCLUDED_LINE_CONSENSUS": 58,
+          "NO_NEIGHBOUR_CONTINUITY": 85
+        },
+        "wall_tracks": {
+          "pass": false,
+          "candidate": {
+            "n": 56,
+            "valid_n": 56,
+            "zero_n": 0,
+            "min": 4.0,
+            "p05": 4.75,
+            "p25": 6.75,
+            "median": 8.0,
+            "p75": 10.25,
+            "p95": 15.0,
+            "max": 15.0,
+            "sum": 489.0,
+            "p10": 6.0
+          },
+          "v1": {
+            "n": 56,
+            "valid_n": 56,
+            "zero_n": 6,
+            "min": 0.0,
+            "p05": 0.0,
+            "p25": 10.0,
+            "median": 111.0,
+            "p75": 163.0,
+            "p95": 163.0,
+            "max": 190.0,
+            "sum": 5447.0,
+            "p10": 3.0
+          },
+          "quantiles": [
+            10,
+            50
+          ],
+          "direction": ">="
+        },
+        "floor_channel_unchanged": true,
+        "compass_status": {
+          "measured": 20,
+          "unknown_yaw_observability": 38,
+          "unknown_static_support": 29,
+          "unknown_spatial_revalidation": 1
+        }
+      }
+    },
+    "sources": [
+      {
+        "raw": "/home/ugrp/ugrp-sim/runs/scenetex5-r1-v1-native",
+        "index_sha256": "7e4a7b0893733ceb6115a4264508fd8b41b09f349a946bf472279cf741345bc8"
+      },
+      {
+        "raw": "/home/ugrp/ugrp-sim/runs/scenetex5-r3-indigo110_s80",
+        "index_sha256": "0ac1f4930f928018e427be11fbe2b558040883b475b6bf0a380f8ca95d0f2e06"
+      }
+    ],
+    "calibration_sha256": "a37cf96551abbfb8b38df3efc1cd61f3f357ac9eb3a1dcd0b4d9947242e4e24f",
+    "ready": false,
+    "scope": "88 same static poses; wall tracks distinct from floor metric VO; no motion/localization success"
+  },
+  "pairs": [
+    {
+      "seed": 93584,
+      "old": {
+        "N": 45,
+        "bad_N": 6,
+        "within15cm5_N": 44,
+        "within30cm10_N": 45,
+        "xy_m": {
+          "N": 45,
+          "min": 0.021852080016158553,
+          "p50": 0.044363363319251,
+          "p90": 0.1046317871562352,
+          "p95": 0.10819088664945783,
+          "p99": 0.11319360074945815,
+          "max": 0.1145125959041183
+        },
+        "yaw_deg": {
+          "N": 45,
+          "min": 0.0056115257385627665,
+          "p50": 1.4294013142696773,
+          "p90": 1.8589726342114634,
+          "p95": 2.0266814660948596,
+          "p99": 4.368931897859764,
+          "max": 5.425359881316601
+        }
+      },
+      "new": {
+        "N": 0,
+        "bad_N": 0,
+        "within15cm5_N": 0,
+        "within30cm10_N": 0,
+        "xy_m": {
+          "N": 0
+        },
+        "yaw_deg": {
+          "N": 0
+        }
+      },
+      "old_raw": "/home/ugrp/ugrp-sim/runs/reloc16-r1-selfmap-93584-v1-93635d6e-hostretry1/raw",
+      "new_raw": "/home/ugrp/ugrp-sim/runs/reloc16-r3-selfmap-93584-v5-df8115a5/raw",
+      "scope": "same GCP2 CPU and seed; different scene/control path, no pooled rate"
+    },
+    {
+      "seed": 93583,
+      "old": {
+        "N": 33,
+        "bad_N": 29,
+        "within15cm5_N": 6,
+        "within30cm10_N": 33,
+        "xy_m": {
+          "N": 33,
+          "min": 0.020091518216865282,
+          "p50": 0.085303109645373,
+          "p90": 0.10761410648137704,
+          "p95": 0.1102046720556556,
+          "p99": 0.11166491413936618,
+          "max": 0.1119585144412966
+        },
+        "yaw_deg": {
+          "N": 33,
+          "min": 0.7889166219103098,
+          "p50": 6.616113094259244,
+          "p90": 7.685088816545958,
+          "p95": 7.8668007335152215,
+          "p99": 7.949271188019638,
+          "max": 7.958381622065224
+        }
+      },
+      "new": {
+        "N": 0,
+        "bad_N": 0,
+        "within15cm5_N": 0,
+        "within30cm10_N": 0,
+        "xy_m": {
+          "N": 0
+        },
+        "yaw_deg": {
+          "N": 0
+        }
+      },
+      "old_raw": "/home/ugrp/ugrp-sim/runs/reloc16-r1-selfmap-93583-v1-93635d6e-hostretry1/raw",
+      "new_raw": "/home/ugrp/ugrp-sim/runs/reloc16-r3-selfmap-93583-v5-df8115a5/raw",
+      "scope": "same GCP2 CPU and seed; different scene/control path, no pooled rate"
+    }
+  ],
+  "runs": [
+    {
+      "round": 1,
+      "run": "reloc16-r1-selfmap-93584-v5-93635d6e",
+      "kind": "selfmap",
+      "seed": 93584,
+      "scene": "v5",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc16-r1-selfmap-93584-v5-93635d6e/raw",
+      "source_sha": "93635d6ecd47226138c433603a15dd362ff10f11",
+      "host_retry_of": null,
+      "integrity": {
+        "verified": true,
+        "files": 5,
+        "missing": [],
+        "bad": [],
+        "kind": "selfmap"
+      },
+      "status": "HOST_ERROR",
+      "failure": {
+        "type": "RuntimeError",
+        "message": "MISSING_EXISTING_ENV_DEPENDENCIES: matplotlib,c++"
+      },
+      "physical_frames": 0,
+      "first30_wall_per_sim": null
+    },
+    {
+      "round": 1,
+      "run": "reloc16-r1-selfmap-93583-v5-93635d6e",
+      "kind": "selfmap",
+      "seed": 93583,
+      "scene": "v5",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc16-r1-selfmap-93583-v5-93635d6e/raw",
+      "source_sha": "93635d6ecd47226138c433603a15dd362ff10f11",
+      "host_retry_of": null,
+      "integrity": {
+        "verified": true,
+        "files": 5,
+        "missing": [],
+        "bad": [],
+        "kind": "selfmap"
+      },
+      "status": "HOST_ERROR",
+      "failure": {
+        "type": "RuntimeError",
+        "message": "MISSING_EXISTING_ENV_DEPENDENCIES: matplotlib,c++"
+      },
+      "physical_frames": 0,
+      "first30_wall_per_sim": null
+    },
+    {
+      "round": 1,
+      "run": "reloc16-r1-carry-93266-v5-93635d6e",
+      "kind": "carry",
+      "seed": 93266,
+      "scene": "v5",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc16-r1-carry-93266-v5-93635d6e/raw",
+      "source_sha": "93635d6ecd47226138c433603a15dd362ff10f11",
+      "host_retry_of": null,
+      "integrity": {
+        "verified": true,
+        "files": 1618,
+        "missing": [],
+        "bad": [],
+        "kind": "carry"
+      },
+      "status": "complete",
+      "sim_s": 149.9999999981502,
+      "termination_category": "cap_end",
+      "termination_reason": "sim_cap",
+      "place_verified": false,
+      "all_pose_error": {
+        "xy_m": {
+          "N": 1500,
+          "p50": 0.32137693032842274,
+          "p95": 0.5190278847526274,
+          "max": 0.608813431555978
+        },
+        "yaw_deg": {
+          "N": 1500,
+          "p50": 4.504430497819539,
+          "p95": 14.09883113772419,
+          "max": 15.592804561719127
+        }
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 827,
+        "blocked_held": 367,
+        "measurements_by_phase": {
+          "pickup_search": 1,
+          "approach": 278,
+          "align": 21,
+          "hover": 4,
+          "carry_reacquire": 1,
+          "carry_reobserve": 1
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "first30_wall_per_sim": 4.9206267557571035,
+      "heading": {
+        "exposures": 750,
+        "statuses": {
+          "unknown_servo_settle": 116,
+          "unknown_yaw_observability": 279,
+          "unknown_static_support": 205,
+          "unknown_spatial_revalidation": 78,
+          "pending_next_rgb": 6,
+          "accepted": 66
+        },
+        "accepted": 66,
+        "scorable_absolute": 66,
+        "excluded_absolute": 0,
+        "absolute_false_over5_N": 0,
+        "absolute_error_deg": {
+          "N": 66,
+          "p50": 0.15005700241761571,
+          "p95": 0.3385917301084765,
+          "max": 0.40582798270355025
+        },
+        "scorable_delta": 66,
+        "delta_false_over5_N": 0,
+        "delta_error_deg": {
+          "N": 66,
+          "p50": 0.06715440281366455,
+          "p95": 0.34023418931254445,
+          "max": 0.3798387885335714
+        },
+        "accepted_while_command_closed": 0,
+        "truth_scope": "direct evaluator base yaw if present; R1 reconstruction excludes simultaneous lookaround capture ticks"
+      }
+    },
+    {
+      "round": 1,
+      "run": "reloc16-r1-carry-93315-v5-93635d6e",
+      "kind": "carry",
+      "seed": 93315,
+      "scene": "v5",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc16-r1-carry-93315-v5-93635d6e/raw",
+      "source_sha": "93635d6ecd47226138c433603a15dd362ff10f11",
+      "host_retry_of": null,
+      "integrity": {
+        "verified": true,
+        "files": 1331,
+        "missing": [],
+        "bad": [],
+        "kind": "carry"
+      },
+      "status": "complete",
+      "sim_s": 120.79999999884068,
+      "termination_category": "carry_recovery_setdown_envelope_blocked",
+      "termination_reason": "carry_recovery_setdown_envelope_blocked",
+      "place_verified": false,
+      "all_pose_error": {
+        "xy_m": {
+          "N": 1209,
+          "p50": 0.24807789836509722,
+          "p95": 1.5178783341720354,
+          "max": 1.7149186532294967
+        },
+        "yaw_deg": {
+          "N": 1209,
+          "p50": 2.6410889128414223,
+          "p95": 6.342855469472387,
+          "max": 7.100399862577438
+        }
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 348,
+        "blocked_held": 732,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "pickup_search": 1,
+          "approach": 68,
+          "align": 45,
+          "hover": 7,
+          "carry_reacquire": 1
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "first30_wall_per_sim": 4.342803622758191,
+      "heading": {
+        "exposures": 605,
+        "statuses": {
+          "unknown_servo_settle": 114,
+          "unknown_yaw_observability": 121,
+          "unknown_static_support": 341,
+          "pending_next_rgb": 2,
+          "accepted": 20,
+          "unknown_spatial_revalidation": 7
+        },
+        "accepted": 20,
+        "scorable_absolute": 20,
+        "excluded_absolute": 0,
+        "absolute_false_over5_N": 0,
+        "absolute_error_deg": {
+          "N": 20,
+          "p50": 0.17017400551816375,
+          "p95": 0.3821518528270034,
+          "max": 0.5066470515803964
+        },
+        "scorable_delta": 20,
+        "delta_false_over5_N": 0,
+        "delta_error_deg": {
+          "N": 20,
+          "p50": 0.18839931617604644,
+          "p95": 0.7709099520726166,
+          "max": 0.7712276801204444
+        },
+        "accepted_while_command_closed": 0,
+        "truth_scope": "direct evaluator base yaw if present; R1 reconstruction excludes simultaneous lookaround capture ticks"
+      }
+    },
+    {
+      "round": 1,
+      "run": "reloc16-r1-selfmap-93584-v1-93635d6e",
+      "kind": "selfmap",
+      "seed": 93584,
+      "scene": "v1",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc16-r1-selfmap-93584-v1-93635d6e/raw",
+      "source_sha": "93635d6ecd47226138c433603a15dd362ff10f11",
+      "host_retry_of": null,
+      "integrity": {
+        "verified": true,
+        "files": 5,
+        "missing": [],
+        "bad": [],
+        "kind": "selfmap"
+      },
+      "status": "HOST_ERROR",
+      "failure": {
+        "type": "RuntimeError",
+        "message": "MISSING_EXISTING_ENV_DEPENDENCIES: matplotlib,c++"
+      },
+      "physical_frames": 0,
+      "first30_wall_per_sim": null
+    },
+    {
+      "round": 1,
+      "run": "reloc16-r1-selfmap-93583-v1-93635d6e",
+      "kind": "selfmap",
+      "seed": 93583,
+      "scene": "v1",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc16-r1-selfmap-93583-v1-93635d6e/raw",
+      "source_sha": "93635d6ecd47226138c433603a15dd362ff10f11",
+      "host_retry_of": null,
+      "integrity": {
+        "verified": true,
+        "files": 5,
+        "missing": [],
+        "bad": [],
+        "kind": "selfmap"
+      },
+      "status": "HOST_ERROR",
+      "failure": {
+        "type": "RuntimeError",
+        "message": "MISSING_EXISTING_ENV_DEPENDENCIES: matplotlib,c++"
+      },
+      "physical_frames": 0,
+      "first30_wall_per_sim": null
+    },
+    {
+      "round": 1,
+      "run": "reloc16-r1-selfmap-93584-v5-93635d6e-hostretry1",
+      "kind": "selfmap",
+      "seed": 93584,
+      "scene": "v5",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc16-r1-selfmap-93584-v5-93635d6e-hostretry1/raw",
+      "source_sha": "93635d6ecd47226138c433603a15dd362ff10f11",
+      "host_retry_of": "reloc16-r1-selfmap-93584-v5-93635d6e",
+      "integrity": {
+        "verified": true,
+        "files": 919,
+        "missing": [],
+        "bad": [],
+        "kind": "selfmap"
+      },
+      "status": "RECORDED",
+      "termination": "cap_end",
+      "false_registration_events": 0,
+      "funnel": {
+        "fresh_static_fix_independent": 0,
+        "frames": 301,
+        "frames_independent": 301,
+        "registered": 0,
+        "registered_independent": 0,
+        "execution_pose_delivered": 0,
+        "execution_pose_delivered_independent": 0,
+        "map_inserted": 0,
+        "map_inserted_independent": 283,
+        "control_drive_used": 0,
+        "control_drive_used_independent": 107
+      },
+      "registered_errors": {
+        "N": 0,
+        "bad_N": 0,
+        "xy_m": {
+          "N": 0
+        },
+        "yaw_deg": {
+          "N": 0
+        }
+      },
+      "drive_errors": {
+        "N": 0,
+        "bad_N": 0,
+        "within15cm5_N": 0,
+        "within30cm10_N": 0,
+        "xy_m": {
+          "N": 0
+        },
+        "yaw_deg": {
+          "N": 0
+        }
+      },
+      "input_audit": {
+        "schema": "ugrp.selfmap_input_audit.v1",
+        "measured": true,
+        "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+        "own_rgb_frames": 301,
+        "issued_command_records": 307,
+        "top_rgb_frames": 0,
+        "peer_rgb_frames": 0,
+        "truth_pose_inputs": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "rejected_inputs": 0,
+        "authored_static_map_inputs": 1
+      },
+      "first30_wall_per_sim": 8.037209573333318
+    },
+    {
+      "round": 1,
+      "run": "reloc16-r1-selfmap-93583-v5-93635d6e-hostretry1",
+      "kind": "selfmap",
+      "seed": 93583,
+      "scene": "v5",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc16-r1-selfmap-93583-v5-93635d6e-hostretry1/raw",
+      "source_sha": "93635d6ecd47226138c433603a15dd362ff10f11",
+      "host_retry_of": "reloc16-r1-selfmap-93583-v5-93635d6e",
+      "integrity": {
+        "verified": true,
+        "files": 919,
+        "missing": [],
+        "bad": [],
+        "kind": "selfmap"
+      },
+      "status": "RECORDED",
+      "termination": "cap_end",
+      "false_registration_events": 0,
+      "funnel": {
+        "fresh_static_fix_independent": 0,
+        "frames": 301,
+        "frames_independent": 301,
+        "registered": 0,
+        "registered_independent": 0,
+        "execution_pose_delivered": 0,
+        "execution_pose_delivered_independent": 0,
+        "map_inserted": 0,
+        "map_inserted_independent": 288,
+        "control_drive_used": 0,
+        "control_drive_used_independent": 90
+      },
+      "registered_errors": {
+        "N": 0,
+        "bad_N": 0,
+        "xy_m": {
+          "N": 0
+        },
+        "yaw_deg": {
+          "N": 0
+        }
+      },
+      "drive_errors": {
+        "N": 0,
+        "bad_N": 0,
+        "within15cm5_N": 0,
+        "within30cm10_N": 0,
+        "xy_m": {
+          "N": 0
+        },
+        "yaw_deg": {
+          "N": 0
+        }
+      },
+      "input_audit": {
+        "schema": "ugrp.selfmap_input_audit.v1",
+        "measured": true,
+        "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+        "own_rgb_frames": 301,
+        "issued_command_records": 307,
+        "top_rgb_frames": 0,
+        "peer_rgb_frames": 0,
+        "truth_pose_inputs": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "rejected_inputs": 0,
+        "authored_static_map_inputs": 1
+      },
+      "first30_wall_per_sim": 7.804291962599988
+    },
+    {
+      "round": 1,
+      "run": "reloc16-r1-selfmap-93584-v1-93635d6e-hostretry1",
+      "kind": "selfmap",
+      "seed": 93584,
+      "scene": "v1",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc16-r1-selfmap-93584-v1-93635d6e-hostretry1/raw",
+      "source_sha": "93635d6ecd47226138c433603a15dd362ff10f11",
+      "host_retry_of": "reloc16-r1-selfmap-93584-v1-93635d6e",
+      "integrity": {
+        "verified": true,
+        "files": 919,
+        "missing": [],
+        "bad": [],
+        "kind": "selfmap"
+      },
+      "status": "RECORDED",
+      "termination": "cap_end",
+      "false_registration_events": 0,
+      "funnel": {
+        "fresh_static_fix_independent": 133,
+        "frames": 301,
+        "frames_independent": 301,
+        "registered": 216,
+        "registered_independent": 216,
+        "execution_pose_delivered": 216,
+        "execution_pose_delivered_independent": 216,
+        "map_inserted": 209,
+        "map_inserted_independent": 284,
+        "control_drive_used": 45,
+        "control_drive_used_independent": 45
+      },
+      "registered_errors": {
+        "N": 216,
+        "bad_N": 73,
+        "xy_m": {
+          "N": 216,
+          "min": 0.008007285290340973,
+          "p50": 0.07143649148543786,
+          "p90": 0.1142972649877522,
+          "p95": 0.11980903767576767,
+          "p99": 0.12900750067821806,
+          "max": 0.1334167318553234
+        },
+        "yaw_deg": {
+          "N": 216,
+          "min": 0.0056115257385627665,
+          "p50": 1.1963231736724245,
+          "p90": 6.180454768593047,
+          "p95": 8.747899288497381,
+          "p99": 9.858102577176497,
+          "max": 10.09305917523236
+        }
+      },
+      "drive_errors": {
+        "N": 45,
+        "bad_N": 6,
+        "within15cm5_N": 44,
+        "within30cm10_N": 45,
+        "xy_m": {
+          "N": 45,
+          "min": 0.021852080016158553,
+          "p50": 0.044363363319251,
+          "p90": 0.1046317871562352,
+          "p95": 0.10819088664945783,
+          "p99": 0.11319360074945815,
+          "max": 0.1145125959041183
+        },
+        "yaw_deg": {
+          "N": 45,
+          "min": 0.0056115257385627665,
+          "p50": 1.4294013142696773,
+          "p90": 1.8589726342114634,
+          "p95": 2.0266814660948596,
+          "p99": 4.368931897859764,
+          "max": 5.425359881316601
+        }
+      },
+      "input_audit": {
+        "schema": "ugrp.selfmap_input_audit.v1",
+        "measured": true,
+        "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+        "own_rgb_frames": 301,
+        "issued_command_records": 307,
+        "top_rgb_frames": 0,
+        "peer_rgb_frames": 0,
+        "truth_pose_inputs": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "rejected_inputs": 0,
+        "authored_static_map_inputs": 1
+      },
+      "first30_wall_per_sim": 5.857697469199987
+    },
+    {
+      "round": 1,
+      "run": "reloc16-r1-selfmap-93583-v1-93635d6e-hostretry1",
+      "kind": "selfmap",
+      "seed": 93583,
+      "scene": "v1",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc16-r1-selfmap-93583-v1-93635d6e-hostretry1/raw",
+      "source_sha": "93635d6ecd47226138c433603a15dd362ff10f11",
+      "host_retry_of": "reloc16-r1-selfmap-93583-v1-93635d6e",
+      "integrity": {
+        "verified": true,
+        "files": 919,
+        "missing": [],
+        "bad": [],
+        "kind": "selfmap"
+      },
+      "status": "RECORDED",
+      "termination": "cap_end",
+      "false_registration_events": 0,
+      "funnel": {
+        "fresh_static_fix_independent": 105,
+        "frames": 301,
+        "frames_independent": 301,
+        "registered": 219,
+        "registered_independent": 219,
+        "execution_pose_delivered": 219,
+        "execution_pose_delivered_independent": 219,
+        "map_inserted": 154,
+        "map_inserted_independent": 226,
+        "control_drive_used": 33,
+        "control_drive_used_independent": 33
+      },
+      "registered_errors": {
+        "N": 219,
+        "bad_N": 91,
+        "xy_m": {
+          "N": 219,
+          "min": 0.005185816078535539,
+          "p50": 0.06505687373707685,
+          "p90": 0.08808583261190733,
+          "p95": 0.09648950734762259,
+          "p99": 0.10934595111568676,
+          "max": 0.1119585144412966
+        },
+        "yaw_deg": {
+          "N": 219,
+          "min": 0.03277932370869485,
+          "p50": 1.737783305083582,
+          "p90": 7.537495932138707,
+          "p95": 8.242275323981369,
+          "p99": 10.101813378318537,
+          "max": 10.114514310840258
+        }
+      },
+      "drive_errors": {
+        "N": 33,
+        "bad_N": 29,
+        "within15cm5_N": 6,
+        "within30cm10_N": 33,
+        "xy_m": {
+          "N": 33,
+          "min": 0.020091518216865282,
+          "p50": 0.085303109645373,
+          "p90": 0.10761410648137704,
+          "p95": 0.1102046720556556,
+          "p99": 0.11166491413936618,
+          "max": 0.1119585144412966
+        },
+        "yaw_deg": {
+          "N": 33,
+          "min": 0.7889166219103098,
+          "p50": 6.616113094259244,
+          "p90": 7.685088816545958,
+          "p95": 7.8668007335152215,
+          "p99": 7.949271188019638,
+          "max": 7.958381622065224
+        }
+      },
+      "input_audit": {
+        "schema": "ugrp.selfmap_input_audit.v1",
+        "measured": true,
+        "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+        "own_rgb_frames": 301,
+        "issued_command_records": 307,
+        "top_rgb_frames": 0,
+        "peer_rgb_frames": 0,
+        "truth_pose_inputs": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "rejected_inputs": 0,
+        "authored_static_map_inputs": 1
+      },
+      "first30_wall_per_sim": 5.339954776133315
+    },
+    {
+      "round": 2,
+      "run": "reloc16-r2-selfmap-93584-v5-5f8b3eb2",
+      "kind": "selfmap",
+      "seed": 93584,
+      "scene": "v5",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc16-r2-selfmap-93584-v5-5f8b3eb2/raw",
+      "source_sha": "5f8b3eb283ce79f59a69331993575a49b5c101bd",
+      "host_retry_of": null,
+      "integrity": {
+        "verified": true,
+        "files": 919,
+        "missing": [],
+        "bad": [],
+        "kind": "selfmap"
+      },
+      "status": "RECORDED",
+      "termination": "cap_end",
+      "false_registration_events": 0,
+      "funnel": {
+        "fresh_static_fix_independent": 40,
+        "frames": 301,
+        "frames_independent": 301,
+        "registered": 219,
+        "registered_independent": 219,
+        "execution_pose_delivered": 219,
+        "execution_pose_delivered_independent": 219,
+        "map_inserted": 142,
+        "map_inserted_independent": 214,
+        "control_drive_used": 63,
+        "control_drive_used_independent": 63
+      },
+      "registered_errors": {
+        "N": 219,
+        "bad_N": 175,
+        "xy_m": {
+          "N": 219,
+          "min": 0.007290352591669168,
+          "p50": 0.09998351717548556,
+          "p90": 0.10644277904322437,
+          "p95": 0.12804585188049797,
+          "p99": 0.14758462013419243,
+          "max": 0.15024658088610332
+        },
+        "yaw_deg": {
+          "N": 219,
+          "min": 0.11395405622773296,
+          "p50": 9.90308010614764,
+          "p90": 10.802613839986847,
+          "p95": 10.887835376646887,
+          "p99": 11.189292336005751,
+          "max": 11.50277057341664
+        }
+      },
+      "drive_errors": {
+        "N": 63,
+        "bad_N": 62,
+        "within15cm5_N": 1,
+        "within30cm10_N": 33,
+        "xy_m": {
+          "N": 63,
+          "min": 0.019347480804450947,
+          "p50": 0.10152842858162031,
+          "p90": 0.1048405343889943,
+          "p95": 0.10556714134696026,
+          "p99": 0.10619974311283545,
+          "max": 0.10635167867757088
+        },
+        "yaw_deg": {
+          "N": 63,
+          "min": 0.5829705338308399,
+          "p50": 9.996176428016208,
+          "p90": 10.337864252055331,
+          "p95": 10.465820107156635,
+          "p99": 10.698991712561664,
+          "max": 10.745168881991345
+        }
+      },
+      "input_audit": {
+        "schema": "ugrp.selfmap_input_audit.v1",
+        "measured": true,
+        "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+        "own_rgb_frames": 301,
+        "issued_command_records": 307,
+        "top_rgb_frames": 0,
+        "peer_rgb_frames": 0,
+        "truth_pose_inputs": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "rejected_inputs": 0,
+        "authored_static_map_inputs": 1
+      },
+      "first30_wall_per_sim": 6.042416422133344
+    },
+    {
+      "round": 2,
+      "run": "reloc16-r2-selfmap-93583-v5-5f8b3eb2",
+      "kind": "selfmap",
+      "seed": 93583,
+      "scene": "v5",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc16-r2-selfmap-93583-v5-5f8b3eb2/raw",
+      "source_sha": "5f8b3eb283ce79f59a69331993575a49b5c101bd",
+      "host_retry_of": null,
+      "integrity": {
+        "verified": true,
+        "files": 919,
+        "missing": [],
+        "bad": [],
+        "kind": "selfmap"
+      },
+      "status": "RECORDED",
+      "termination": "cap_end",
+      "false_registration_events": 1,
+      "funnel": {
+        "fresh_static_fix_independent": 81,
+        "frames": 301,
+        "frames_independent": 301,
+        "registered": 221,
+        "registered_independent": 221,
+        "execution_pose_delivered": 221,
+        "execution_pose_delivered_independent": 221,
+        "map_inserted": 180,
+        "map_inserted_independent": 250,
+        "control_drive_used": 75,
+        "control_drive_used_independent": 75
+      },
+      "registered_errors": {
+        "N": 221,
+        "bad_N": 148,
+        "xy_m": {
+          "N": 221,
+          "min": 0.014353367807138246,
+          "p50": 0.10513407712134656,
+          "p90": 0.13194784294037146,
+          "p95": 0.15638183631407435,
+          "p99": 0.1858029833216965,
+          "max": 0.18604233497501
+        },
+        "yaw_deg": {
+          "N": 221,
+          "min": 0.012203975307616705,
+          "p50": 2.2241049809060547,
+          "p90": 3.989302041094543,
+          "p95": 5.771937228625265,
+          "p99": 7.283058219820246,
+          "max": 7.890683285896876
+        }
+      },
+      "drive_errors": {
+        "N": 75,
+        "bad_N": 54,
+        "within15cm5_N": 51,
+        "within30cm10_N": 75,
+        "xy_m": {
+          "N": 75,
+          "min": 0.02007830210893652,
+          "p50": 0.09328587484405836,
+          "p90": 0.11543062005195427,
+          "p95": 0.15629628539220614,
+          "p99": 0.16691176956449114,
+          "max": 0.1669866374153491
+        },
+        "yaw_deg": {
+          "N": 75,
+          "min": 0.012203975307616705,
+          "p50": 1.8174528284047688,
+          "p90": 6.201718777142474,
+          "p95": 6.779272383263512,
+          "p99": 7.722832713098839,
+          "max": 7.890683285896876
+        }
+      },
+      "input_audit": {
+        "schema": "ugrp.selfmap_input_audit.v1",
+        "measured": true,
+        "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+        "own_rgb_frames": 301,
+        "issued_command_records": 307,
+        "top_rgb_frames": 0,
+        "peer_rgb_frames": 0,
+        "truth_pose_inputs": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "rejected_inputs": 0,
+        "authored_static_map_inputs": 1
+      },
+      "first30_wall_per_sim": 5.60898228983333
+    },
+    {
+      "round": 2,
+      "run": "reloc16-r2-carry-93266-v5-5f8b3eb2",
+      "kind": "carry",
+      "seed": 93266,
+      "scene": "v5",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc16-r2-carry-93266-v5-5f8b3eb2/raw",
+      "source_sha": "5f8b3eb283ce79f59a69331993575a49b5c101bd",
+      "host_retry_of": null,
+      "integrity": {
+        "verified": true,
+        "files": 1621,
+        "missing": [],
+        "bad": [],
+        "kind": "carry"
+      },
+      "status": "complete",
+      "sim_s": 149.9999999981502,
+      "termination_category": "cap_end",
+      "termination_reason": "sim_cap",
+      "place_verified": false,
+      "all_pose_error": {
+        "xy_m": {
+          "N": 1500,
+          "p50": 0.22369142098275727,
+          "p95": 0.30971615793313423,
+          "max": 0.32333293955838266
+        },
+        "yaw_deg": {
+          "N": 1500,
+          "p50": 2.359150714811081,
+          "p95": 14.643775183914935,
+          "max": 27.029747682792717
+        }
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 412,
+        "blocked_held": 759,
+        "measurements_by_phase": {
+          "pickup_search": 1,
+          "approach": 278,
+          "align": 41,
+          "hover": 8,
+          "carry_reacquire": 1
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "first30_wall_per_sim": 4.123501433291984,
+      "heading": {
+        "exposures": 750,
+        "statuses": {
+          "unknown_servo_settle": 162,
+          "unknown_yaw_observability": 113,
+          "unknown_static_support": 358,
+          "unknown_spatial_revalidation": 52,
+          "pending_next_rgb": 6,
+          "accepted": 58,
+          "unknown_repeated_rgb": 1
+        },
+        "accepted": 58,
+        "scorable_absolute": 58,
+        "excluded_absolute": 0,
+        "absolute_false_over5_N": 0,
+        "absolute_error_deg": {
+          "N": 58,
+          "p50": 0.08939878477538465,
+          "p95": 0.23015105518641374,
+          "max": 0.29626432143698805
+        },
+        "scorable_delta": 58,
+        "delta_false_over5_N": 0,
+        "delta_error_deg": {
+          "N": 58,
+          "p50": 0.03222166075525826,
+          "p95": 0.1435606067050288,
+          "max": 0.2401076670816609
+        },
+        "accepted_while_command_closed": 13,
+        "truth_scope": "direct evaluator base yaw if present; R1 reconstruction excludes simultaneous lookaround capture ticks"
+      }
+    },
+    {
+      "round": 2,
+      "run": "reloc16-r2-carry-93315-v5-5f8b3eb2",
+      "kind": "carry",
+      "seed": 93315,
+      "scene": "v5",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc16-r2-carry-93315-v5-5f8b3eb2/raw",
+      "source_sha": "5f8b3eb283ce79f59a69331993575a49b5c101bd",
+      "host_retry_of": null,
+      "integrity": {
+        "verified": true,
+        "files": 1618,
+        "missing": [],
+        "bad": [],
+        "kind": "carry"
+      },
+      "status": "complete",
+      "sim_s": 149.9999999981502,
+      "termination_category": "cap_end",
+      "termination_reason": "sim_cap",
+      "place_verified": false,
+      "all_pose_error": {
+        "xy_m": {
+          "N": 1500,
+          "p50": 0.11375668167473324,
+          "p95": 1.3600126651708802,
+          "max": 1.4023286341934322
+        },
+        "yaw_deg": {
+          "N": 1500,
+          "p50": 7.574273161889076,
+          "p95": 78.0686391601728,
+          "max": 84.66625926945723
+        }
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 1046,
+        "blocked_held": 366,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "pickup_search": 1,
+          "approach": 60,
+          "align": 16,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "first30_wall_per_sim": 4.0147139370588505,
+      "heading": {
+        "exposures": 750,
+        "statuses": {
+          "unknown_servo_settle": 204,
+          "unknown_yaw_observability": 313,
+          "unknown_static_support": 164,
+          "pending_next_rgb": 4,
+          "accepted": 39,
+          "unknown_spatial_revalidation": 26
+        },
+        "accepted": 39,
+        "scorable_absolute": 39,
+        "excluded_absolute": 0,
+        "absolute_false_over5_N": 0,
+        "absolute_error_deg": {
+          "N": 39,
+          "p50": 0.14518489071958762,
+          "p95": 0.36830181007557994,
+          "max": 0.41588796473602563
+        },
+        "scorable_delta": 39,
+        "delta_false_over5_N": 0,
+        "delta_error_deg": {
+          "N": 39,
+          "p50": 0.08603521675849386,
+          "p95": 0.22516878526196785,
+          "max": 0.2365563510186182
+        },
+        "accepted_while_command_closed": 0,
+        "truth_scope": "direct evaluator base yaw if present; R1 reconstruction excludes simultaneous lookaround capture ticks"
+      }
+    },
+    {
+      "round": 3,
+      "run": "reloc16-r3-selfmap-93584-v5-df8115a5",
+      "kind": "selfmap",
+      "seed": 93584,
+      "scene": "v5",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc16-r3-selfmap-93584-v5-df8115a5/raw",
+      "source_sha": "df8115a53c01af2d1974c0e8777fdb4853252eaf",
+      "host_retry_of": null,
+      "integrity": {
+        "verified": true,
+        "files": 919,
+        "missing": [],
+        "bad": [],
+        "kind": "selfmap"
+      },
+      "status": "RECORDED",
+      "termination": "cap_end",
+      "false_registration_events": 0,
+      "funnel": {
+        "fresh_static_fix_independent": 0,
+        "frames": 301,
+        "frames_independent": 301,
+        "registered": 0,
+        "registered_independent": 0,
+        "execution_pose_delivered": 0,
+        "execution_pose_delivered_independent": 0,
+        "map_inserted": 0,
+        "map_inserted_independent": 283,
+        "control_drive_used": 0,
+        "control_drive_used_independent": 107
+      },
+      "registered_errors": {
+        "N": 0,
+        "bad_N": 0,
+        "xy_m": {
+          "N": 0
+        },
+        "yaw_deg": {
+          "N": 0
+        }
+      },
+      "drive_errors": {
+        "N": 0,
+        "bad_N": 0,
+        "within15cm5_N": 0,
+        "within30cm10_N": 0,
+        "xy_m": {
+          "N": 0
+        },
+        "yaw_deg": {
+          "N": 0
+        }
+      },
+      "input_audit": {
+        "schema": "ugrp.selfmap_input_audit.v1",
+        "measured": true,
+        "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+        "own_rgb_frames": 301,
+        "issued_command_records": 307,
+        "top_rgb_frames": 0,
+        "peer_rgb_frames": 0,
+        "truth_pose_inputs": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "rejected_inputs": 0,
+        "authored_static_map_inputs": 1
+      },
+      "first30_wall_per_sim": 6.076265154033293
+    },
+    {
+      "round": 3,
+      "run": "reloc16-r3-selfmap-93583-v5-df8115a5",
+      "kind": "selfmap",
+      "seed": 93583,
+      "scene": "v5",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc16-r3-selfmap-93583-v5-df8115a5/raw",
+      "source_sha": "df8115a53c01af2d1974c0e8777fdb4853252eaf",
+      "host_retry_of": null,
+      "integrity": {
+        "verified": true,
+        "files": 919,
+        "missing": [],
+        "bad": [],
+        "kind": "selfmap"
+      },
+      "status": "RECORDED",
+      "termination": "cap_end",
+      "false_registration_events": 0,
+      "funnel": {
+        "fresh_static_fix_independent": 0,
+        "frames": 301,
+        "frames_independent": 301,
+        "registered": 0,
+        "registered_independent": 0,
+        "execution_pose_delivered": 0,
+        "execution_pose_delivered_independent": 0,
+        "map_inserted": 0,
+        "map_inserted_independent": 287,
+        "control_drive_used": 0,
+        "control_drive_used_independent": 140
+      },
+      "registered_errors": {
+        "N": 0,
+        "bad_N": 0,
+        "xy_m": {
+          "N": 0
+        },
+        "yaw_deg": {
+          "N": 0
+        }
+      },
+      "drive_errors": {
+        "N": 0,
+        "bad_N": 0,
+        "within15cm5_N": 0,
+        "within30cm10_N": 0,
+        "xy_m": {
+          "N": 0
+        },
+        "yaw_deg": {
+          "N": 0
+        }
+      },
+      "input_audit": {
+        "schema": "ugrp.selfmap_input_audit.v1",
+        "measured": true,
+        "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+        "own_rgb_frames": 301,
+        "issued_command_records": 307,
+        "top_rgb_frames": 0,
+        "peer_rgb_frames": 0,
+        "truth_pose_inputs": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "rejected_inputs": 0,
+        "authored_static_map_inputs": 1
+      },
+      "first30_wall_per_sim": 5.72567558623335
+    },
+    {
+      "round": 3,
+      "run": "reloc16-r3-carry-93266-v5-df8115a5",
+      "kind": "carry",
+      "seed": 93266,
+      "scene": "v5",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc16-r3-carry-93266-v5-df8115a5/raw",
+      "source_sha": "df8115a53c01af2d1974c0e8777fdb4853252eaf",
+      "host_retry_of": null,
+      "integrity": {
+        "verified": true,
+        "files": 1618,
+        "missing": [],
+        "bad": [],
+        "kind": "carry"
+      },
+      "status": "complete",
+      "sim_s": 149.9999999981502,
+      "termination_category": "cap_end",
+      "termination_reason": "sim_cap",
+      "place_verified": false,
+      "all_pose_error": {
+        "xy_m": {
+          "N": 1500,
+          "p50": 0.36558286231092413,
+          "p95": 0.6520226876336728,
+          "max": 0.652312089188994
+        },
+        "yaw_deg": {
+          "N": 1500,
+          "p50": 10.086107500257814,
+          "p95": 22.92548745108329,
+          "max": 24.202462840854828
+        }
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 883,
+        "blocked_held": 323,
+        "measurements_by_phase": {
+          "pickup_search": 1,
+          "approach": 271,
+          "align": 18,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "first30_wall_per_sim": 4.500791541357918,
+      "heading": {
+        "exposures": 750,
+        "statuses": {
+          "unknown_servo_settle": 108,
+          "unknown_yaw_observability": 349,
+          "unknown_static_support": 182,
+          "unknown_spatial_revalidation": 100,
+          "pending_next_rgb": 3,
+          "accepted": 8
+        },
+        "accepted": 8,
+        "scorable_absolute": 8,
+        "excluded_absolute": 0,
+        "absolute_false_over5_N": 0,
+        "absolute_error_deg": {
+          "N": 8,
+          "p50": 0.0831784160584347,
+          "p95": 0.23454349315853393,
+          "max": 0.2635609001050955
+        },
+        "scorable_delta": 8,
+        "delta_false_over5_N": 0,
+        "delta_error_deg": {
+          "N": 8,
+          "p50": 0.13712166271997295,
+          "p95": 0.3201926671863443,
+          "max": 0.3386988898785225
+        },
+        "accepted_while_command_closed": 0,
+        "truth_scope": "direct evaluator base yaw if present; R1 reconstruction excludes simultaneous lookaround capture ticks"
+      }
+    },
+    {
+      "round": 3,
+      "run": "reloc16-r3-carry-93315-v5-df8115a5",
+      "kind": "carry",
+      "seed": 93315,
+      "scene": "v5",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc16-r3-carry-93315-v5-df8115a5/raw",
+      "source_sha": "df8115a53c01af2d1974c0e8777fdb4853252eaf",
+      "host_retry_of": null,
+      "integrity": {
+        "verified": true,
+        "files": 1618,
+        "missing": [],
+        "bad": [],
+        "kind": "carry"
+      },
+      "status": "complete",
+      "sim_s": 149.9999999981502,
+      "termination_category": "cap_end",
+      "termination_reason": "sim_cap",
+      "place_verified": false,
+      "all_pose_error": {
+        "xy_m": {
+          "N": 1500,
+          "p50": 0.16415738962516976,
+          "p95": 0.21921451744299458,
+          "max": 0.24473145075702124
+        },
+        "yaw_deg": {
+          "N": 1500,
+          "p50": 2.2259770335314784,
+          "p95": 9.827680520207826,
+          "max": 16.850819696518602
+        }
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 1090,
+        "blocked_held": 318,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "pickup_search": 1,
+          "approach": 62,
+          "align": 16,
+          "hover": 4,
+          "carry_reacquire": 1,
+          "carry_reobserve": 1
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "first30_wall_per_sim": 4.4557529802579605,
+      "heading": {
+        "exposures": 750,
+        "statuses": {
+          "unknown_servo_settle": 89,
+          "unknown_yaw_observability": 389,
+          "unknown_static_support": 190,
+          "pending_next_rgb": 8,
+          "accepted": 28,
+          "unknown_spatial_revalidation": 46
+        },
+        "accepted": 28,
+        "scorable_absolute": 28,
+        "excluded_absolute": 0,
+        "absolute_false_over5_N": 0,
+        "absolute_error_deg": {
+          "N": 28,
+          "p50": 0.12387795582366376,
+          "p95": 0.3825281840895054,
+          "max": 0.42098939513704825
+        },
+        "scorable_delta": 28,
+        "delta_false_over5_N": 0,
+        "delta_error_deg": {
+          "N": 28,
+          "p50": 0.09781792155728807,
+          "p95": 0.3786584267279217,
+          "max": 0.5819151240719471
+        },
+        "accepted_while_command_closed": 0,
+        "truth_scope": "direct evaluator base yaw if present; R1 reconstruction excludes simultaneous lookaround capture ticks"
+      }
+    }
+  ],
+  "final_place": {
+    "N": 2,
+    "verified": 0
+  },
+  "final_first30_median_wall_per_sim": 5.113233563795633,
+  "blockers": [
+    "boundary column median/p10 below v1",
+    "no reliable drive improvement for both seeds",
+    "place gate not passed"
+  ],
+  "video_review": "See playback-review.md for actual reviewed ranges and successful-mission availability",
+  "scope": {
+    "mac_physics": 0,
+    "mac_render": 0,
+    "mac_gui": 0,
+    "models": 0,
+    "training": 0,
+    "weld": false,
+    "all_new_options_default_off": true,
+    "teacher_student_success_not_claimed": true,
+    "full_raw_retrieval": false,
+    "full_raw_backup": false,
+    "raw_verification": "all files checked on GCP2 before aggregation; inventory.json links stored result/manifest hashes",
+    "previous_carry": "GCP1 recovered summary only; 0.221deg vs12.474deg example is not same-frame replay on GCP2"
+  },
+  "records": {
+    "rounds": [
+      "round1.json",
+      "round2.json",
+      "round3.json"
+    ],
+    "inventory": "inventory.json",
+    "rejections": "rejection_table.md",
+    "playback": "playback-review.md",
+    "tests": "pytest-final.txt"
+  },
+  "analysis": {
+    "script": "/home/ugrp/ugrp-sim/analysis-tools/reloc16-finalize.py",
+    "sha256": "b908e0b22a29816fde87367e3a627bc0eb009da77139ee5cba3b708691cc622b"
+  }
+}
