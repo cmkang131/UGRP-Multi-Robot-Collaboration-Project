@@ -16,3 +16,7 @@ carry worktree 수정은 사용자 범위 확인 대기 중이며 기존987d033f
 
 - [PR #511](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/511): 공식 자연 질감 profile/nearclip API와 고정 이미지.
 - reloc10 원본: `/Users/changmin/projects/ugrp-wt/map-carry-zone/experiments/2026-10-15-reloc10/README.md`, `registration-diagnostics.json`, `original-diagnosis.json`.
+
+## 속도 옵션
+
+R1 첫30초 texture93571 wall/SIM6.820. 같은 구간 특징 추출1.923s·PF2.478s(2000입자)·렌더/capture33.302s·물리64.564s·전체 제어100.711s(중첩 포함)다. PF 축소보다 영상·제어 호출 빈도 영향이 크다. `--reloc11-half-rate-v1`은 별도 5Hz 진단 조건이며 기본off(기존10Hz), 원본 선정 주기의 모든 JPEG·원장·제어 입력을 유지한다. 학생 학습 자료가 아니며 10Hz와 행동/성능 동등성을 주장하지 않는다. LK 허용 간격0.25s 안인0.2s를 사용한다. Fake-clock·실제 제어기 단위시험에서 종료시각·6/6 프레임·0/0 감사를 확인했다(관련19통과).

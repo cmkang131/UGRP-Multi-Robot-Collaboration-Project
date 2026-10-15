@@ -30,3 +30,17 @@ def test_timing_bundle_is_default_off_and_does_not_change_control_options():
     timed = bundle('a'*40, 93571, 90, reloc11_timing_v1=True)
     assert timed['options'].pop('reloc11_timing_v1') is True
     assert timed == old
+
+
+def test_half_rate_keeps_every_selected_frame_and_terminal_time(tmp_path):
+    from scripts.run_self_map_diagnostic import bundle, acquire
+    from test_self_map_executor import RecordingPlant, controller_factory
+    old = bundle('a'*40, 93571, 1.)
+    assert old == bundle('a'*40, 93571, 1., reloc11_half_rate_v1=False)
+    b = bundle('a'*40, 93571, 1., reloc11_half_rate_v1=True)
+    assert b['capture_s'] == .2 and b['recording']['own_rgb_hz'] == 5
+    result = acquire(tmp_path/'5hz', b, RecordingPlant, controller_factory=controller_factory)
+    assert result['status'] == 'RECORDED' and result['stop_reason'] == 'sim_time_cap'
+    assert result['frames'] == result['input_audit']['own_rgb_frames'] == 6
+    assert result['rgb_ledger_verified'] and RecordingPlant.instances[-1].now == 2.3
+    assert result['invisible_measurements'] == result['held_world_reads'] == 0

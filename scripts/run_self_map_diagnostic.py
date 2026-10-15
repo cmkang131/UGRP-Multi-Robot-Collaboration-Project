@@ -25,7 +25,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def bundle(source, seed, cap_s, *, bootstrap='off', initial_sweep='off', recovery_profile='off',
            revision_gate='off', multiframe_registration='off', render_profile='floor_light_v1', correction_safety='off', active_relocalization='off',
            reloc9_rotation_calibration_v1=False, reloc9_wall_height_guard_v1=False,
-           reloc10_settle_v1=False, reloc10_registration_v1=False, reloc11_timing_v1=False):
+           reloc10_settle_v1=False, reloc10_registration_v1=False, reloc11_timing_v1=False, reloc11_half_rate_v1=False):
     from harness.active_camera import SEARCH
     if not math.isfinite(cap_s) or not 1 <= cap_s <= 300 or abs(cap_s*10-round(cap_s*10)) > 1e-8:
         raise ValueError('CAP_MUST_BE_0_1S_GRID_IN_1_TO_300')
@@ -103,6 +103,16 @@ def bundle(source, seed, cap_s, *, bootstrap='off', initial_sweep='off', recover
         raise ValueError('reloc11 timing must be bool')
     if reloc11_timing_v1:
         result['options']['reloc11_timing_v1'] = True
+    if type(reloc11_half_rate_v1) is not bool:
+        raise ValueError('reloc11 half rate must be bool')
+    if reloc11_half_rate_v1:
+        if abs(cap_s*5-round(cap_s*5)) > 1e-8:
+            raise ValueError('HALF_RATE_REQUIRES_0_2S_CAP_GRID')
+        result['options']['reloc11_half_rate_v1'] = True
+        result.update(execution_bundle_id='selfmap9-reloc11-5hz-v1',capture_s=.2,
+                      pool_with_previous_results=False)
+        result['recording']['own_rgb_hz'] = 5
+        result['recording']['rate_condition'] = '5Hz DEV comparison; no training data or equivalence claim'
     return result
 
 
@@ -233,8 +243,10 @@ def acquire(out, b, backend_factory, *, controller_factory=make_executor, wall_c
         for action in arm(b['initial_servo']):
             backend.issue(robot, action)
             audit.command(controller, dict(t=start, **action))
+        interval = b['capture_s']
+        progress_every = round(10/interval)
         with (out/'trace.jsonl').open('x') as stream:
-            for tick in range(round(cap*10)+1):
+            for tick in range(round(cap/interval)+1):
                 t = backend.now
                 obs, _ = backend.capture()[robot]
                 # Reject a camera/owner mismatch before giving any pixels to control.
@@ -258,7 +270,7 @@ def acquire(out, b, backend_factory, *, controller_factory=make_executor, wall_c
                     backend.issue(robot, {k: v for k, v in command.items() if k != 't'})
                     audit.command(controller, command)
                 backend.eval_sample()  # write-only safety supervisor; no success feedback
-                if tick % 100 == 0:
+                if tick % progress_every == 0:
                     progress = dict(elapsed_sim_s=t-start, frames=tick+1,
                         stage=controller.stage,
                         wall_per_sim=(monotonic()-loop_started)/(t-start) if t > start else None,
@@ -269,19 +281,19 @@ def acquire(out, b, backend_factory, *, controller_factory=make_executor, wall_c
                     if timing is not None:
                         progress['timing'] = timing.snapshot(controller.mapper)
                         dump(out/'progress.json', progress)
-                    if tick == 300:
+                    if tick == 3*progress_every:
                         dump(out/'first30.json', progress)
                 if controller.done:
                     break
                 if monotonic()-started > wall_cap_s:
                     raise TimeoutError('SELF_MAP_HOST_TIME_CAP')
-                backend.advance_to(round(start+(tick+1)*.1, 9))
+                backend.advance_to(round(start+(tick+1)*interval, 9))
         result.update(status='HOST_ERROR' if controller.stop_reason == 'selfmap4_relocalization_exhausted' else 'RECORDED', elapsed_sim_s=backend.now-start,
             stop_reason=controller.stop_reason, complete=controller.stop_reason == 'self_map_complete')
         ledger, _ = rows(out/f'robots/{robot}/frames.jsonl')
         if len(ledger) != result['frames'] or any(
-            abs(r['sim_time']-(start+i*.1)) > 1e-7 for i, r in enumerate(ledger)):
-            raise ValueError('INCOMPLETE_10HZ_FRAME_LEDGER')
+            abs(r['sim_time']-(start+i*interval)) > 1e-7 for i, r in enumerate(ledger)):
+            raise ValueError('INCOMPLETE_10HZ_FRAME_LEDGER' if interval == .1 else 'INCOMPLETE_5HZ_FRAME_LEDGER')
         result['rgb_ledger_verified'] = True
     except (Exception, KeyboardInterrupt) as exc:
         result.update(status='PHYSICAL_FAILURE' if type(exc).__name__ == 'PhysicalStop' else 'HOST_ERROR',
@@ -336,6 +348,7 @@ def main(argv=None):
     p.add_argument('--multiframe-registration', choices=['off', 'selfmap4_multiframe_registration_v1'], default='off')
     p.add_argument('--correction-safety', choices=['off', 'selfmap6_correction_safety_v1'], default='off')
     p.add_argument('--active-relocalization', choices=['off', 'reloc8_active_vision_v1'], default='off')
+    p.add_argument('--reloc11-half-rate-v1', action='store_true')
     p.add_argument('--reloc11-timing-v1', action='store_true')
     p.add_argument('--reloc10-settle-v1', action='store_true')
     p.add_argument('--reloc10-registration-v1', action='store_true')
@@ -349,7 +362,7 @@ def main(argv=None):
                multiframe_registration=a.multiframe_registration, render_profile=a.render_profile,
                correction_safety=a.correction_safety, active_relocalization=a.active_relocalization,
                reloc10_settle_v1=a.reloc10_settle_v1, reloc10_registration_v1=a.reloc10_registration_v1,
-               reloc11_timing_v1=a.reloc11_timing_v1,
+               reloc11_timing_v1=a.reloc11_timing_v1, reloc11_half_rate_v1=a.reloc11_half_rate_v1,
                reloc9_rotation_calibration_v1=a.reloc9_rotation_calibration_v1,
                reloc9_wall_height_guard_v1=a.reloc9_wall_height_guard_v1)
     if not a.execute or a.self_map_executor == 'off':
