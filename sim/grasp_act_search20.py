@@ -38,7 +38,7 @@ class PlanningBudget:
 
     def check(self):
         if self.started is None:self.started=time.perf_counter()
-        if self.checks >= self.max_checks or self.elapsed() >= self.max_s:
+        if self.checks >= self.max_checks or (self.max_s is not None and self.elapsed() >= self.max_s):
             self.exhausted = True
             raise PlanningBudgetExceeded('search20 planning budget')
         self.checks += 1

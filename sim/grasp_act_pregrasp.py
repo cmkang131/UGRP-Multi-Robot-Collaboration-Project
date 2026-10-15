@@ -100,30 +100,41 @@ def actual_pick_cloud(start,target,*,check_budget=None,capsule_fn=None):
     return tuple(np.concatenate([c[i] for c in chunks]) for i in range(3))
 
 
-def collision_reason(world, rid, base, xyz, radii, pad_contact):
+def collision_reason(world, rid, base, xyz, radii, pad_contact, *, audit=None):
     co, si = math.cos(base[2]), math.sin(base[2])
     points = xyz.copy()
     points[:, 0] = base[0]+co*xyz[:, 0]-si*xyz[:, 1]
     points[:, 1] = base[1]+si*xyz[:, 0]+co*xyz[:, 1]
+    def rejected(reason, name, gaps):
+        if audit is not None:
+            audit.append({'reason':reason,'id':name,'gap_m':float(np.min(gaps)),
+                          'category':'current_geometry','gap_scope':'arm_surface_signed_clearance'})
+        return reason
     # Floor contact is not allowed for arm primitives.
     if np.any(points[:, 2] < radii):
-        return 'arm_floor_sweep'
+        return rejected('arm_floor_sweep','floor',points[:,2]-radii)
     for key, o in world['objects'].items():
         if key == 'beam_1':continue
         hit = (np.linalg.norm(points[:, :2]-o['xy'], axis=1) < o['radius']+radii)
         if np.any(hit & (points[:, 2]-radii <= o['top_z_bound_m'])):
-            return 'arm_cargo_sweep:'+key
+            eligible=points[:,2]-radii<=o['top_z_bound_m']
+            return rejected('arm_cargo_sweep:'+key,key,(np.linalg.norm(points[:,:2]-o['xy'],axis=1)-o['radius']-radii)[eligible])
     for key, r in world['robots'].items():
         if key == rid:continue
         hit = np.linalg.norm(points[:, :2]-r['pose'][:2], axis=1) < .17+radii
         if np.any(hit & (points[:, 2]-radii <= r.get('top_z_bound_m', .32))):
-            return 'arm_peer_sweep:'+key
+            eligible=points[:,2]-radii<=r.get('top_z_bound_m',.32)
+            return rejected('arm_peer_sweep:'+key,key,(np.linalg.norm(points[:,:2]-r['pose'][:2],axis=1)-.17-radii)[eligible])
     # Walls are conservatively full-height, consistent with the existing planner.
-    for x, y, hx, hy, a in world.get('walls', []):
+    for wi,(x, y, hx, hy, a) in enumerate(world.get('walls', [])):
         dx, dy = points[:, 0]-x, points[:, 1]-y
         rx = np.maximum(0, np.abs(math.cos(a)*dx+math.sin(a)*dy)-hx)
         ry = np.maximum(0, np.abs(-math.sin(a)*dx+math.cos(a)*dy)-hy)
-        if np.any(np.hypot(rx, ry) < radii):return 'arm_wall_sweep'
+        if np.any(np.hypot(rx, ry) < radii):
+            name=next((k for k,m in world['visibility'][rid].get('observations',{}).items()
+                if m['kind']=='wall' and tuple((*m['xyz'][:2],*m['half_extents'],m['yaw']))==(x,y,hx,hy,a)),
+                'static_wall:'+str(wi)) if audit is not None else 'wall'
+            return rejected('arm_wall_sweep',name,np.hypot(rx,ry)-radii)
     if world['beam'] is not None:
         x, y, a = world['beam']['pose']
         dx, dy = points[:, 0]-x, points[:, 1]-y
@@ -134,7 +145,7 @@ def collision_reason(world, rid, base, xyz, radii, pad_contact):
         z = next(iter(world['beam']['ends'].values()))[2]-.008
         rz = np.maximum(0, np.abs(points[:, 2]-z)-HANDLE_HEIGHT_M/2)
         if np.any((np.sqrt(rx*rx+ry*ry+rz*rz) < radii) & ~pad_contact):
-            return 'arm_beam_sweep'
+            return rejected('arm_beam_sweep','beam_1',(np.sqrt(rx*rx+ry*ry+rz*rz)-radii)[~pad_contact])
     return None
 
 
@@ -150,6 +161,8 @@ def band_view(world, rid, end, base, previous, *, navigation=None):
     a = world['beam']['pose'][2]
     co, si = math.cos(base[2]), math.sin(base[2])
     count = 0
+    audit=[] if hasattr(navigation,'teacher') and navigation.teacher.search15_modes.get('search24_irm','off')!='off' else None
+    if audit is not None:navigation.visibility_audit=audit
     for along in (-.0144, 0., .0144):
         for across in (-.0164, -.0082, 0., .0082, .0164):
             q = (point[0]+along*math.cos(a)-across*math.sin(a),
@@ -157,20 +170,26 @@ def band_view(world, rid, end, base, previous, *, navigation=None):
             x, y = local(base, q)
             optical = np.array(axes)@(np.array([x, y, q[2]])-origin)
             if optical[2] <= 0 or np.linalg.norm(optical[:2])/optical[2] > math.tan(math.radians(18)):
+                if audit is not None:audit.append({'id':'camera_view_cone','gap_m':float(optical[2]*math.tan(math.radians(18))-np.linalg.norm(optical[:2])),
+                    'category':'visibility','gap_scope':'signed optical cone clearance; not body gap'})
                 continue
             eye = (base[0]+co*origin[0]-si*origin[1], base[1]+si*origin[0]+co*origin[1], origin[2])
-            ds = [(o['xy'], o['radius'], o['top_z_bound_m']) for k, o in world['objects'].items() if k != 'beam_1']
-            ds += [(r['pose'][:2], .17, r.get('top_z_bound_m', .32)) for k, r in world['robots'].items() if k != rid]
+            ds = [(k,o['xy'], o['radius'], o['top_z_bound_m']) for k, o in world['objects'].items() if k != 'beam_1']
+            ds += [(k,r['pose'][:2], .17, r.get('top_z_bound_m', .32)) for k, r in world['robots'].items() if k != rid]
             clear = True
-            for center, radius, top in ds:
+            for name, center, radius, top in ds:
                 dx, dy = q[0]-eye[0], q[1]-eye[1]
                 u = max(0., min(1., ((center[0]-eye[0])*dx+(center[1]-eye[1])*dy)/max(dx*dx+dy*dy, 1e-12)))
                 if 0 < u < 1 and math.dist((eye[0]+u*dx, eye[1]+u*dy), center) < radius+.005 and eye[2]+u*(q[2]-eye[2]) <= top+.005:
+                    if audit is not None:audit.append({'id':name,'gap_m':math.dist((eye[0]+u*dx,eye[1]+u*dy),center)-radius,
+                        'category':'visibility','gap_scope':'sight ray to occluder surface'})
                     clear = False;break
             wall_clear=(navigation.wall_segment_free(eye[:2],q[:2],.005) if hasattr(navigation,'wall_segment_free')
                         else segment_free(eye[:2],q[:2],[],world.get('walls',[]),.005)) if clear else False
             if clear and wall_clear:
                 count += 1
+            elif clear and audit is not None and hasattr(navigation,'last_wall_blocker'):
+                audit.append(navigation.last_wall_blocker)
     return count, view
 
 
@@ -205,6 +224,7 @@ def select_sampled_goal(world, rid, end, bounds, folded, previous, *, current=No
         if not clear:row['reason']='blocked_goal';continue
         retreat = (goal[0]-.06*math.cos(heading), goal[1]-.06*math.sin(heading))
         if not (x0+radius <= retreat[0] <= x1-radius and y0+radius <= retreat[1] <= y1-radius) or not segment_free(goal, retreat, discs, rects, radius):
+            if hasattr(navigation,'last_blockers'):row['failure_audit']=list(navigation.last_blockers)
             row['reason'] = 'blocked_retreat';continue
         endpoint_only=getattr(navigation,'endpoint_only',False)
         path = ([tuple(start)] if endpoint_only else navigation.path_for_goal(start,goal,discs,rects,radius)
@@ -216,18 +236,23 @@ def select_sampled_goal(world, rid, end, bounds, folded, previous, *, current=No
         if not path:row['reason'] = 'no_path';continue
         points = [tuple(start), *path]
         if not all(segment_free(a, b, discs, rects, radius) for a, b in zip(points, points[1:])):
+            if hasattr(navigation,'last_blockers'):row['failure_audit']=list(navigation.last_blockers)
             row['reason'] = 'unsafe_body_sweep';continue
         base = (*goal, heading)
         visible, view = band_view(world, rid, end, base, previous, navigation=navigation)
         row['predicted_visible_probes'] = visible
-        if visible < 5:row['reason'] = 'band_not_visible';continue
+        if visible < 5:
+            if hasattr(navigation,'visibility_audit'):row['failure_audit']=list(navigation.visibility_audit)
+            row['reason'] = 'band_not_visible';continue
         if hasattr(navigation,'pick_cloud'):
             xyz,radii,allowed=navigation.pick_cloud(view,choice[1],point[2])
         elif navigation is not None and hasattr(navigation,'check_budget'):
             xyz,radii,allowed=bounded_swept_cloud(tuple(sorted(view.items())),choice[1],point[2],navigation.check_budget)
         else:
             xyz, radii, allowed = swept_cloud(tuple(sorted(view.items())), choice[1], point[2])
-        reason = collision_reason(world, rid, base, xyz, radii, allowed)
+        arm_audit=[] if hasattr(navigation,'teacher') and navigation.teacher.search15_modes.get('search24_irm','off')!='off' else None
+        reason = collision_reason(world, rid, base, xyz, radii, allowed,audit=arm_audit)
+        if arm_audit:row['failure_audit']=arm_audit
         if reason:row['reason'] = reason;continue
         if endpoint_only:
             row['reason']='endpoint_feasible'
@@ -248,6 +273,7 @@ def select_sampled_goal(world, rid, end, bounds, folded, previous, *, current=No
                     count,after,cached_reason=navigation.connector_sample(prior,before,xy,yaw)
                 else:count,after=band_view(world, rid, end, (*xy,yaw), before)
                 if count < 5:
+                    if hasattr(navigation,'visibility_audit'):row['failure_audit']=list(navigation.visibility_audit)
                     if navigation is not None and hasattr(navigation,'last_path_audit'):
                         row['connector_visibility_failure']={'visible_probes':count,'required':5,
                             'pose':[*xy,yaw],'segment_index':route.index(a),'fraction':i/n,
@@ -258,6 +284,8 @@ def select_sampled_goal(world, rid, end, bounds, folded, previous, *, current=No
                 delta = (co*dx+si*dy, -si*dx+co*dy, wrap(yaw-prior[2]))
                 reason = (cached_reason if hasattr(navigation,'connector_sample') else
                           issued_sweep_reason(world,rid,prior,before,after,delta))
+                if reason and hasattr(navigation,'connector_collision_audit'):
+                    row['failure_audit']=list(navigation.connector_collision_audit)
                 if reason:break
                 before=after;prior=(*xy,yaw)
             if reason:break
@@ -268,7 +296,7 @@ def select_sampled_goal(world, rid, end, bounds, folded, previous, *, current=No
     return (min(feasible, key=lambda p: p['cost']) if feasible else None), checked
 
 
-def issued_sweep_reason(world, rid, pose, before, after, delta):
+def issued_sweep_reason(world, rid, pose, before, after, delta, *, audit=None):
     """Check the actual next pulse plus camera/arm PWM interpolation."""
     dx, dy, da = delta
     n = max(1, math.ceil(max(abs(after[k]-before[k]) for k in before)/5),
@@ -279,7 +307,7 @@ def issued_sweep_reason(world, rid, pose, before, after, delta):
         pwm = {k:before[k]+u*(after[k]-before[k]) for k in before}
         xyz, radii, fingers = capsules(pwm)
         base = (pose[0]+u*(co*dx-si*dy), pose[1]+u*(si*dx+co*dy), pose[2]+u*da)
-        reason = collision_reason(world, rid, base, xyz, radii, np.zeros_like(fingers))
+        reason = collision_reason(world, rid, base, xyz, radii, np.zeros_like(fingers),audit=audit)
         if reason:return reason
     return None
 

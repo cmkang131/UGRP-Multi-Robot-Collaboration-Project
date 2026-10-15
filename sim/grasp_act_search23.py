@@ -172,14 +172,16 @@ class BodyNavigation(Previous):
         key=(tuple(prior),tuple(sorted(before.items())),tuple(xy),yaw)
         if key not in self.connector_cache:
             count,after=band_view(self.world,self.rid,self.end,(*xy,yaw),before,navigation=self)
-            reason=None
+            reason=None;audit=[]
             if count>=5:
                 c,s=math.cos(prior[2]),math.sin(prior[2]);dx,dy=xy[0]-prior[0],xy[1]-prior[1]
                 da=wrap(yaw-prior[2])
                 reason=issued_sweep_reason(self.world,self.rid,prior,before,after,
-                    (c*dx+s*dy,-s*dx+c*dy,da))
-            self.connector_cache[key]=(count,after,reason)
-        return self.connector_cache[key]
+                    (c*dx+s*dy,-s*dx+c*dy,da),audit=audit if self.teacher.search15_modes.get('search24_irm','off')!='off' else None)
+            self.connector_cache[key]=(count,after,reason,list(getattr(self,'visibility_audit',[])),audit)
+        count,after,reason,visibility,collision=self.connector_cache[key]
+        self.visibility_audit=visibility;self.connector_collision_audit=collision
+        return count,after,reason
 
     def camera_extrinsics(self,pwm):
         return cached_camera(tuple(sorted(pwm.items())))
@@ -190,12 +192,15 @@ class BodyNavigation(Previous):
         dx,dy=end[0]-start[0],end[1]-start[1]
         n=max(1,math.ceil(math.sqrt(dx*dx+dy*dy)/.01));i=np.arange(n+1)
         x=start[0]+dx*i/n;y=start[1]+dy*i/n
-        for (cx,cy,hx,hy,a),limit in _wall_limits(start,self.rects,radius):
+        for wi,((cx,cy,hx,hy,a),limit) in enumerate(_wall_limits(start,self.rects,radius)):
             u,v=x-cx,y-cy
             if a:
                 c,s=math.cos(a),math.sin(a);u,v=c*u+s*v,-s*u+c*v
-            if not np.all(np.hypot(np.maximum(np.abs(u)-hx,0.),
-                                   np.maximum(np.abs(v)-hy,0.))>=limit):return False
+            gap=np.hypot(np.maximum(np.abs(u)-hx,0.),np.maximum(np.abs(v)-hy,0.))
+            if not np.all(gap>=limit):
+                self.last_wall_blocker={'id':self._wall_name(self.rects[wi],wi),'gap_m':float(gap.min()),
+                    'category':'visibility','gap_scope':'sampled sight ray to wall surface'}
+                return False
         return True
 
     def pick_cloud(self,view,distance,z):
@@ -207,8 +212,16 @@ class BodyNavigation(Previous):
         states.extend([{**states[-1],1:1500},{**states[-1],**hover,1:1500}])
         # Equivalent IK commands, not rounded distance/height, identify a cloud.
         key=tuple(tuple(sorted(p.items())) for p in states);self.check_budget()
+        from sim.grasp_act_search24 import compute_budget
+        deterministic=compute_budget(self.teacher)
+        if deterministic:
+            # Charge the SAME logical samples on cold and warm global caches.
+            # Cache warmth may change runtime, never budget admission/results.
+            for a,b in zip(states,states[1:]):
+                n=max(1,math.ceil(max(abs(a[k]-b[k]) for k in a)/5))
+                for _ in range(n+1):self.check_budget()
         if key not in _PICK_CLOUDS:
-            _PICK_CLOUDS[key]=actual_pick_cloud(view,(distance,0.,z),check_budget=self.check_budget,
+            _PICK_CLOUDS[key]=actual_pick_cloud(view,(distance,0.,z),check_budget=None if deterministic else self.check_budget,
                 capsule_fn=lambda p:cached_capsules(tuple(sorted(p.items()))))
             if len(_PICK_CLOUDS)>32:_PICK_CLOUDS.popitem(last=False)
         _PICK_CLOUDS.move_to_end(key)
@@ -322,6 +335,8 @@ def fallback(t,world,now,choices):
     from sim.grasp_act_pregrasp import select_sampled_goal
     from sim.grasp_act_search22 import record_candidates
     nav=BodyNavigation(t,world,admission=True);nav.endpoint_only=True
+    from sim.grasp_act_search24 import enabled as irm, choices_for_world
+    if irm(t):choices=choices_for_world(t,world)
     t.search22_targets={};rows=[]
     try:
         _,rows=select_sampled_goal(world,t.rid,t.end,t.bounds,t.folded_ready,

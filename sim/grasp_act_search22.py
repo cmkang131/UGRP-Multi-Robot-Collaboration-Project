@@ -145,6 +145,15 @@ def record_candidates(t,world,rows,now):
             'memory_margin' if blockers and all(d['category']=='memory_margin' for d in blockers) else
             'current_geometry' if reason in ('blocked_goal','blocked_retreat','unsafe_body_sweep') or 'sweep' in reason else reason)
         row['rejection_category']=category;counts[category]+=1
+        if t.search15_modes.get('search24_irm','off')!='off' or t.search15_modes.get('search24_budget','off')!='off':
+            evidence=(row.get('failure_audit') or blockers or
+                      (row.get('path_audit') or {}).get('blocked_obstacles',[]))
+            gaps=[d for d in evidence if d.get('gap_m') is not None]
+            nearest=min(gaps,key=lambda d:d['gap_m']) if gaps else None
+            row.update(blocked_object=nearest['id'] if nearest else 'none:'+reason,
+                min_gap_m=nearest['gap_m'] if nearest else None,
+                gap_scope=nearest.get('gap_scope','body_surface_clearance') if nearest else
+                    'no_geometric_blocker; '+reason)
         if category=='memory_margin':
             targets.update({d['id']:deepcopy(obs[d['id']]) for d in blockers if d['id'] in obs})
     t.search22_targets.update(targets)

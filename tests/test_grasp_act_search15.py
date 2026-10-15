@@ -151,7 +151,7 @@ def test_arm_sweep_rejects_high_obstruction_despite_free_body():
 def test_visibility_and_ik_filters_cannot_be_bypassed(monkeypatch):
     import sim.grasp_act_pregrasp as g
     w=world()
-    monkeypatch.setattr(g,'band_view',lambda *a:(0,FOLDED))
+    monkeypatch.setattr(g,'band_view',lambda *a,**kw:(0,FOLDED))
     selected,rows=g.select_sampled_goal(w,'r1','teal',(-2,2,-2,2),True,FOLDED)
     assert selected is None and 'band_not_visible' in {r['reason'] for r in rows}
     monkeypatch.setattr(g,'grasp_poses',lambda *a:(_ for _ in ()).throw(ValueError('no IK')))
