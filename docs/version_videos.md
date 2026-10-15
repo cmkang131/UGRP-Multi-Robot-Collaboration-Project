@@ -137,3 +137,8 @@ tail은 원촬영202장이다. [원본·해시·검토](../experiments/2026-10-1
 ## 2026-10-16 beampair7 — 현재 보이는 빔의 상대 목적 자세 예약
 
 실행 소스 `ef284e92510ca4283f1db5de9aecd1dac5c17b0b`, 의존성 `26f84d0f0ada1c33473c83cca2d3415ce51bd247`, gcp2/n4-highcpu-64/C MuJoCo3.12. 기본 off `beampair_peer_yield_v1`. 새 장면 `walls_floor_contrast_v5_indigo110_s80`+v1 바닥+no_mip. 실패8318711의 수정 후 짧은 검증은46.4 SIM초에 공동3초 유지 성공. [대표 영상](../experiments/2026-10-16-beampair7/representative-8318711.mp4)은 개요(평가용)+r1/r2 자기 카메라3배속,390806B,SHA256 `cde6bf6cc4095dba7f671398ed0cf37d1d9183f30114978cf426847ddc10a4c1`. 전체0–46.4초2Hz94시점을 직접 확인했으며 자기 화면은 저장 qpos 재렌더다. [검토·ffprobe·출처](../experiments/2026-10-16-beampair7/playback-short-summary.json). 짧은5/5를 새 gate40·학생·운반·실물 성공으로 합산하지 않는다.
+
+
+## 2026-10-16 beampair7 R2 — 깊은 예약 시작점의 연속 연결
+
+실행 소스 `835ccef26aa84b08cc8f7e256fd0f43aa1583ef9`, gcp2/C MuJoCo3.12, 같은 확정 장면·기본 off 토글이다. [8318728 대표 영상](../experiments/2026-10-16-beampair7/representative-r2-8318728.mp4)309130B,SHA256 `c763b8b87f2d67f3537af9850051a36a3475326276a875de3d55991f3e630861`. 전체0–38.9초2Hz79시점을 직접 보았다. 예약 자리에서 뒤로 빠져나온 뒤 다른 끝으로 접근·정렬·공동파지한다. 개요는 평가용,자기 화면은 저장 qpos 재렌더이며 원촬영10Hz가 아니다. [출처/ffprobe/검토](../experiments/2026-10-16-beampair7/playback-short-r2-8318728.json). 짧은5/5와 새로운 gate40 결과는 분리한다.

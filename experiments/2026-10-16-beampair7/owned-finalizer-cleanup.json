@@ -1,0 +1,190 @@
+{
+  "owned_pid": 185414,
+  "command": "timeout --signal=INT 8h /home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python -c import json,sys;from pathlib import Path;plan=json.loads(Path(sys.argv[1]).read_text())[\"episodes\"][int(sys.argv[2])];from scripts.run_beampair1 import run;run(plan,Path(sys.argv[3]),sys.argv[4],mode=\"beampair1_v1\",candidate=\"baseline\",cap_s=60,rendezvous=\"peer_rendezvous_v2\",approach_repair=\"beampair_approach_v2\",wall_layer=\"beampair_wall_clear_v1\",failure_tail=True,peer_yield=\"beampair_peer_yield_v1\") /home/ugrp/ugrp-sim/ops-reviews/beampair7/gate-plan.json 23 /home/ugrp/ugrp-sim/runs/beampair7-gate-r1-8318723-ef284e92/raw /home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247 ",
+  "signal": "SIGTERM",
+  "reason": "Owned supervisor-stopped run remained in renderer futex after SIGINT for over3min; interrupted result exists but adapter not finalized",
+  "preserved_files": [
+    {
+      "path": "SUPERVISOR_STOP.json",
+      "bytes": 199,
+      "sha256": "dc3bfed2d8a32d014f83fd44f22e133b0060784cc29f1c2b5d48ee3eb23d2b36"
+    },
+    {
+      "path": "PROCESS.json",
+      "bytes": 1210,
+      "sha256": "4d58a63dd81b34f73ac53c9b42b96e89eeeda3d4ad237a6809051cb6c234e1ae"
+    },
+    {
+      "path": "log.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "RUN_META.json",
+      "bytes": 183,
+      "sha256": "791f5c185b47c8f11fe5631029a2bf17a30fecbddadca475f23073aad08d924e"
+    },
+    {
+      "path": "raw/progress.json",
+      "bytes": 313,
+      "sha256": "de7a7186bff4a8e3c69f3de094a58982621e8e97e9529302497147da3c2555fa"
+    },
+    {
+      "path": "raw/result.json",
+      "bytes": 20819,
+      "sha256": "9a55488adfaf3b0cac065a2dead700b73881a98716d3aed67f8b4f4f011c8a9f"
+    },
+    {
+      "path": "raw/plan.json",
+      "bytes": 1740,
+      "sha256": "2d7aafcdf3e6a969b9fd3bbba5e3cac75bd95fef82e3f7babe9f427411f2a22f"
+    },
+    {
+      "path": "raw/eval-only.jsonl",
+      "bytes": 704465,
+      "sha256": "704b7b1b1135ab2445f7e4218f301cf22b0dc3927e542eb4a785c77598b00bd0"
+    },
+    {
+      "path": "raw/camera-runtime.json",
+      "bytes": 1009,
+      "sha256": "0e3e26679926b58acf4471e2686aaab7ef5b1c5ec8e452e18d998db145558c6d"
+    },
+    {
+      "path": "raw/diagnostic-snapshot.json",
+      "bytes": 16399,
+      "sha256": "37ad77097a1add8013495e2807d052a98d2cb75ee433fc4e44461c22f4051cf0"
+    },
+    {
+      "path": "raw/scene.json",
+      "bytes": 4747,
+      "sha256": "2dbc94244fc23d1309e897deb4432069f21ea5833d4ecc1eb072c67b682cb4ec"
+    },
+    {
+      "path": "raw/scene.xml",
+      "bytes": 506515,
+      "sha256": "84e31555530ce86c13be3bf7e4f4cf53c545adc76202433718cbe00c9c9641f6"
+    },
+    {
+      "path": "raw/teacher-r2.jsonl",
+      "bytes": 121137,
+      "sha256": "1a77c79dd93dcb8c015da346dc6b69663f0385b2c4ab7ef3fa8985319766dce4"
+    },
+    {
+      "path": "raw/RUN_META.json",
+      "bytes": 162,
+      "sha256": "d3b2100da92c8c41843cffa0f8fc039d22bb5adb654ac68df9bf2385b78d3d51"
+    },
+    {
+      "path": "raw/teacher-r1.jsonl",
+      "bytes": 117643,
+      "sha256": "e02a9ae772e66e2a6170a51be7c674e275cd013324162be8ea7f1a798acf91e9"
+    },
+    {
+      "path": "raw/scene-quality.json",
+      "bytes": 4436,
+      "sha256": "d43bfb11d4a1ba13dca89a75ff18ace26ab27d404c7fa7ef88782772e4d5670c"
+    },
+    {
+      "path": "raw/eval-own/r2/000060.jpg",
+      "bytes": 8248,
+      "sha256": "0621410f55a92a6714d2718fb98289ece46d1597b8058c2ade36b283a5611e0f"
+    },
+    {
+      "path": "raw/eval-own/r2/000030.jpg",
+      "bytes": 5321,
+      "sha256": "9f57039269f7ed78271945919f2be5e977bfe2aa9eaccf0f1eb03cd0d5fb2547"
+    },
+    {
+      "path": "raw/eval-own/r2/000000.jpg",
+      "bytes": 6332,
+      "sha256": "8afdc94b48a89507dd6ed23e2965e8204b8286ac45730ef22933344436e914c7"
+    },
+    {
+      "path": "raw/eval-own/r2/000090.jpg",
+      "bytes": 8540,
+      "sha256": "ec4d4781f68545b7c9274bab1dcdedcc169cdcfcdd707b078bb9c203e6b521d2"
+    },
+    {
+      "path": "raw/eval-own/r2/000050.jpg",
+      "bytes": 7953,
+      "sha256": "519221541dea9f7da3a87e2de6494bd2123a292f30e78536eb1492040c719b10"
+    },
+    {
+      "path": "raw/eval-own/r2/000040.jpg",
+      "bytes": 7676,
+      "sha256": "84a3a754e613cb50bffdde2c9c167f2f30e9327fd5f48353050a5f83bbe31731"
+    },
+    {
+      "path": "raw/eval-own/r2/000010.jpg",
+      "bytes": 5162,
+      "sha256": "527a91c827c355014ec38ffc16b1efe69fceac5b934fd87bc1f8d0287a69e2d7"
+    },
+    {
+      "path": "raw/eval-own/r2/000080.jpg",
+      "bytes": 8684,
+      "sha256": "9d56ffb38dd76fe6a5b3fd276c765a877ce47c4dacf1f30e300e05d807616977"
+    },
+    {
+      "path": "raw/eval-own/r2/000020.jpg",
+      "bytes": 5234,
+      "sha256": "289c223650dd06e503f2be6e74ae03916a8566499f8bed3d16aff9ec25c4d099"
+    },
+    {
+      "path": "raw/eval-own/r2/000070.jpg",
+      "bytes": 8527,
+      "sha256": "1879ecb36f358c1228241ab8798829e75345cf4662ed9aadc68a27a120706559"
+    },
+    {
+      "path": "raw/eval-own/r1/000060.jpg",
+      "bytes": 5720,
+      "sha256": "32f61329ec2b9babb424826a7c7ec12db27aca4363ab7a8e2e3cdafde96ad576"
+    },
+    {
+      "path": "raw/eval-own/r1/000030.jpg",
+      "bytes": 5343,
+      "sha256": "883814fc22a74029877dd5cd96dbb14dfdb99a811a342d921ccb96b3c4ba9bdc"
+    },
+    {
+      "path": "raw/eval-own/r1/000000.jpg",
+      "bytes": 7343,
+      "sha256": "1f62efbb2ec66995e39a3a7f276f4d5e0590d2067b6bd0fce8ae52c74e2e0cf6"
+    },
+    {
+      "path": "raw/eval-own/r1/000090.jpg",
+      "bytes": 5617,
+      "sha256": "1f62995177e4b7e43ad6e1ad78a29430d9f2614e90b55c4286507466888f5e02"
+    },
+    {
+      "path": "raw/eval-own/r1/000050.jpg",
+      "bytes": 5469,
+      "sha256": "5f72c9f188d68cdd7d7405297a0ae46f47b857cf71c2d4d5471ed7e9fa4c8fff"
+    },
+    {
+      "path": "raw/eval-own/r1/000040.jpg",
+      "bytes": 5263,
+      "sha256": "61fa5370749ddee30d434aadb7327c64c876b92fed6114e15f0d5c2711c62724"
+    },
+    {
+      "path": "raw/eval-own/r1/000010.jpg",
+      "bytes": 7390,
+      "sha256": "2c12fb25d25bd329e9f5258807c76be3e971d19fb44d5c2f890db1f1be49f47c"
+    },
+    {
+      "path": "raw/eval-own/r1/000080.jpg",
+      "bytes": 5220,
+      "sha256": "a420205e27dd31bfe491097b7ae9fb0519d73fb5d8827bbd7898837bb07ba454"
+    },
+    {
+      "path": "raw/eval-own/r1/000020.jpg",
+      "bytes": 7360,
+      "sha256": "11ee570f4e2e012e9a3ff44d6bfb99f949f09dc1966674e83f4be6d1bb161d04"
+    },
+    {
+      "path": "raw/eval-own/r1/000070.jpg",
+      "bytes": 6967,
+      "sha256": "700a60e74116765ee693a08709f733f5dded7c53838a511e70ab7cf4b3de4328"
+    }
+  ],
+  "reported_status": "interrupted",
+  "action_time": 1792094772.788644
+}

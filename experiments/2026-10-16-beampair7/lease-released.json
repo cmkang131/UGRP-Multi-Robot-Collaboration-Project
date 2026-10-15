@@ -1,0 +1,60 @@
+{
+  "task": "beampair7",
+  "time_utc": "2026-10-15T20:41:55.563170+00:00",
+  "own_lease_before_release": {
+    "task": "beampair7",
+    "pid": 220222,
+    "pid_scope": "completed batch; analysis reservation",
+    "started": "2026-10-15T20:32:55.226988+00:00",
+    "expected_end": "analysis and final retrieval",
+    "concurrency": 0,
+    "source_sha": "835ccef26aa84b08cc8f7e256fd0f43aa1583ef9"
+  },
+  "other_leases": {
+    "reloc17.json": {
+      "task": "reloc17",
+      "pid": 230883,
+      "started": "2026-10-15T20:27:17.283565+00:00",
+      "expected_end": "2026-10-16T04:00:00Z; finite investigation + max3 rounds",
+      "concurrency": 8,
+      "owner": "Mac Codex reloc17; supervisor PID updated on launch",
+      "source_sha": "1b683ba2896e069c1ab859e3501db3ff13c64dac",
+      "stage": "decomposition",
+      "pids": [
+        230969,
+        230970,
+        230972,
+        230973,
+        230975,
+        230977,
+        230979,
+        230981
+      ]
+    },
+    "release25.json": {
+      "task": "release25",
+      "pid": 237768,
+      "started": "2026-10-15T20:34:27.518031+00:00",
+      "expected_end": "finite queue; per-run8h cap",
+      "concurrency": 6,
+      "source_sha": "08cf9d0ab69c47a2f4b61ffdeeb9c197f933a019"
+    }
+  },
+  "other_or_unknown_runtime_processes": [
+    {
+      "pid": 237768,
+      "command": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python /home/ugrp/ugrp-sim/ops-reviews/release25/queue.py /home/ugrp/ugrp-sim/ops-reviews/release25/short-config.json "
+    },
+    {
+      "pid": 237841,
+      "command": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python -c import json,sys;from pathlib import Path;plan=json.loads(Path(sys.argv[1]).read_text())[\"episodes\"][int(sys.argv[2])];\nimport time\nfrom scripts import run_grasp_act_release as runner\noriginal=runner.snapshot\nat=time.monotonic();first_t=None;saved=False;ledger=None\ndef snapshot(world,*a,**kw):\n global first_t,saved,ledger\n value=original(world,*a,**kw)\n now=float(world.data.time)\n if ledger is None:ledger=(Path(sys.argv[3])/'evaluator-snapshots.jsonl').open('w',buffering=1)\n ledger.write(json.dumps(dict(t=now,truth=value,qpos=world.data.qpos.tolist()))+'\\n')\n if first_t is None:\n  first_t=now\n  camera={}\n  for i in range(world.model.ncam):\n   c=world.model.camera(i)\n   camera[c.name]={k:getattr(world.model,'cam_'+k)[i].tolist() for k in ('pos','quat','intrinsic','resolution')}\n  (Path(sys.argv[3])/'camera-runtime-evaluator.json').write_text(json.dumps(camera))\n elapsed=now-first_t\n if not saved and elapsed>=30-1e-7:\n  saved=True;wall=time"
+    },
+    {
+      "pid": 237844,
+      "command": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python -c import json,sys;from pathlib import Path;plan=json.loads(Path(sys.argv[1]).read_text())[\"episodes\"][int(sys.argv[2])];\nimport time\nfrom scripts import run_grasp_act_release as runner\noriginal=runner.snapshot\nat=time.monotonic();first_t=None;saved=False;ledger=None\ndef snapshot(world,*a,**kw):\n global first_t,saved,ledger\n value=original(world,*a,**kw)\n now=float(world.data.time)\n if ledger is None:ledger=(Path(sys.argv[3])/'evaluator-snapshots.jsonl').open('w',buffering=1)\n ledger.write(json.dumps(dict(t=now,truth=value,qpos=world.data.qpos.tolist()))+'\\n')\n if first_t is None:\n  first_t=now\n  camera={}\n  for i in range(world.model.ncam):\n   c=world.model.camera(i)\n   camera[c.name]={k:getattr(world.model,'cam_'+k)[i].tolist() for k in ('pos','quat','intrinsic','resolution')}\n  (Path(sys.argv[3])/'camera-runtime-evaluator.json').write_text(json.dumps(camera))\n elapsed=now-first_t\n if not saved and elapsed>=30-1e-7:\n  saved=True;wall=time"
+    }
+  ],
+  "stop_allowed": false,
+  "vm_stop_attempted": false,
+  "own_lease_removed": true
+}
