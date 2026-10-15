@@ -1,42 +1,79 @@
-# simalt4 — MJWarp 파지 동등성 진단
+# simalt4 — MJWarp 파지 회복, 전체 동등성 미통과
 
-진행 중. simalt3 완료 신호를 2026-10-15 15:38:49 UTC, 5분 간격 다섯 번째 확인에서 읽었다(25분 대기). 기존 물리값과 운영 backend는 유지한다. 이번의 원격 호스트는 gcp2 프로젝트 `ugrp-sim-b-1014`의 기존 `ugrp-act-l4-gcp2`뿐이다. L4 사용 상한 3시간, 자원 상한 종료는 `cap_end`, 비용 정지 발동이면 즉시 중단한다.
+**PARITY_FAIL / ready=false.** 기본 off인 `legacy-plane-v1`로 파지 유지 **30/30 표본**, 높이 차 **0.01584mm**, 무부하 끝점 **3/3 통과**까지 회복했다. 그러나 전체 파지·놓기·후퇴 trace 뒤 몸체 끝점 차이가 **11.508mm > 5mm**여서 확대하지 않았다. 물리값과 운영 backend는 바꾸지 않았다.
 
-## 고치기 전 근거
+[요약](summary.json) · [거부 분포·관문](rejection_table.json) · [스텝 표 발췌](step-comparison-excerpts.csv) · [전체 25개 스텝 표 위치·SHA](evidence/remote/step-tables.json) · [영상 타임라인](playback-review.md) · [재현](reproduce.md).
 
-simalt3 README/summary/rejection_table, 명령 trace 명세, C3.16 대조, contact-distribution, playback-review를 읽었다. C3.12의 파지 유지 30/30은 독립 30회가 아닌 10Hz 평가 표본이다. 같은 tape를 C3.16도 실패했으므로 GPU 단정은 금지한다. 실패 Warp grip/turn과 양성 C3.12 grip의 기존 전체 2Hz 및 dense 10Hz 프레임 띠 총14장을 직접 다시 읽었다. grip 전체 0.5–43.0초, 실패 직전 15.2–25.1초, 성공 끝 33.5–43.4초, turn 전체 0.1–4.0초다. 20.5초 이후 Warp 상자가 화면 위로 커지며 올라오지만 C는 화면 아래 띠만 남는다. 듬성한 hold 위치 정지만으로 잡힘을 판단할 수 없다. 큰 왕복 진동은 turn 띠에서 보이지 않았다. 기존 MP4는 ffprobe 검증 기록과 SHA가 있으며 새로 GUI 재생하지 않았다. r2는 축소 장면에 없다.
+## 결과
 
-## 사전 계획
+같은 L4의 C3.12/C3.13/C3.16과 고정 개발 MJWarp를 비교했다. 30은 같은 명령 trace의 3초를 10Hz로 평가한 표본 수이며 독립 30회 성공률이 아니다. 5mm/2°/2mm는 사용자의 원인 탐색 제안값이다. 완화하거나 기존 임무 성공 기준으로 승격하지 않았다.
 
-1. 동결 scene.xml/fixture.npz(교사 `6f057f7e`) 재사용. C3.12·C3.16·MJWarp 개발 `57b4692f`를 같은 L4 CPU/GPU에서 실행한다.
-2. 새 evaluator `scripts/simalt_step_probe.py`로 모든 physics step의 접촉 수/버퍼/overflow/최소 거리/법선·접선 힘/패드 관절/qpos·qvel을 저장한다. 제어 입력은 기존 tape뿐이다. C3.16 대 Warp를 먼저 비교하고 C3.12 대 C3.16을 분리한다. 원본은 VM에 두고 표·요약만 회수한다.
-3. 수정 전에 분포/첫 분기 표를 생성한다. 마찰·solref/solimp·질량·dt·noslip_iterations·관절 이득은 바꾸지 않는다. 최대3라운드, 같은 원인이3회 남으면 종료한다. 변경은 기본off 실행 모드뿐이다.
-4. 작은 장면의 주행4구간/close-hold-release, 3초 양쪽 접촉30/30·높이 차2mm·끝점5mm/2°(모두 사용자의 탐색 제안값)를 통과해야 두 로봇+빔3초로 확장한다. 이후 N16/64/256 재측정한다. 실패 시 확대/속도 측정은 미제출로 기록한다.
+| 조건 | 양쪽 접촉 / 30 | 최소 들림 | grip overflow | 판정 범위 |
+|---|---:|---:|---:|---|
+| C3.12 양성 기준 | 30 | 70.8346mm | 해당 없음 | 원래 trace 재현 |
+| C3.13 버전 대조 | 0 | 사실상 0 | 해당 없음 | C3.12와 감사 배열 48개 동일 |
+| C3.16 같은 버전 대조 | 0 | 사실상 0 | 해당 없음 | 버전 변경 자체도 실패 |
+| R1 Warp, njmax128 | 미측정 | hold 미도달 | 204스텝 | 14.5 SIM초에 HOST_ERROR |
+| R2 Warp, njmax256 | 0 | 0.00015mm | 0/173,600스텝 | 버퍼 확대만으로 파지 회복 안 됨 |
+| R3 Warp, njmax256 + legacy Plane–Mesh | **30** | **70.8505mm** | **0/173,600스텝** | 파지 회복, 전체 끝점 불통과 |
 
-원본 예상 신규쓰기 ≤2GiB, Mac 요약/몽타주 ≤100MiB. 기존 L4 영속 디스크 여유 약76GiB, Mac41GiB(실행 직전 재확인). raw 외부 백업 및 실물 검증은 이번 범위가 아니다. 모델 호출/학습 없음.
+R3 양쪽 패드 최소 법선력은 **5.2024N / 5.2021N**, C3.12는 5.2030N / 5.2026N이다. 높이 차 최대는 0.01584mm로 2mm 제안값을 통과한다.
 
-## 참고 자료 (2026-10-16 KST 확인)
+| R3 대 C3.12 | 몸체 끝점 위치 차 | 몸체 각도 차 | 제안값 |
+|---|---:|---:|---|
+| 전진·정지 | 0.0063mm | 0.0015° | 통과 |
+| 측면·정지 | 0.0143mm | 0.0147° | 통과 |
+| 회전·정지 | 0.1259mm | 0.0931° | 통과 |
+| 전체 grip trace | **11.5082mm** | 0.2420° | **불통과** |
 
-- [공식 MJWarp 문서](https://mujoco.readthedocs.io/en/latest/mjwarp/index.html): nconmax는 world당 기대값, naconmax는 전체 상한, njmax는 world당 제약 상한. XML size 값은 읽지 않는다. overflow는 undefined behavior이며 `Data.overflow`를 검사한다. 작은 N 지연과 큰 배치 처리량은 구분한다.
-- [고정 개발 README](https://github.com/google-deepmind/mujoco_warp/blob/57b4692f4d3cdf4d27d916b4b8c4759ba36e9148/README.md#MuJoCo-API-Compatibility): IMPLICITFAST midpoint, PGS, plugin actuator/sensor 미지원; flex 실험적. noslip은 discrete integrator에서 미지원이며 현재 실행의 noslip10 지원 여부는 실제 모델·호출에서 검사한다. 오래된 정식 tag의 noslip 미지원과 혼동하지 않는다.
-- [고정 io.py](https://github.com/google-deepmind/mujoco_warp/blob/57b4692f4d3cdf4d27d916b4b8c4759ba36e9148/mujoco_warp/_src/io.py#L433): float32를 위해 tolerance를 최소1e-6으로 바꾼다. simalt3처럼 C의1e-8을 복원한다. cone/solver/integrator는 put_model이 C opt에서 복사하며 임의 기본값을 추가하지 않는다. condim·margin·gap도 그대로 복사/접촉 생성한다. 이 고정판에 전체 float64 실행 토글이 있는지는 미확인이다.
-- [고정 충돌 분기](https://github.com/google-deepmind/mujoco_warp/blob/57b4692f4d3cdf4d27d916b4b8c4759ba36e9148/mujoco_warp/_src/collision_driver.py#L47): plane/mesh는 primitive plane-convex, box/box·mesh/mesh·box/mesh는 convex CCD. primitive box/box SAT 대안 코드도 존재한다. 형상과 contact parameter를 바꾸지 않는 파이프라인 후보이며 효과는 미측정이다.
-- [MuJoCo3.13 변경 기록](https://mujoco.readthedocs.io/en/stable/changelog.html#version-3-13-0-september-8-2026), [Plane-Mesh rewrite 67562d95f](https://github.com/google-deepmind/mujoco/commit/67562d95f), [C3.12 원본](https://github.com/google-deepmind/mujoco/blob/3.12.0/src/engine/engine_collision_convex.c#L1001), [C3.16 원본](https://github.com/google-deepmind/mujoco/blob/3.16.0/src/engine/engine_collision_convex.c#L1091): C3.12는 support vertex와 graph 이웃, C3.16은 support face polygon의 최대4점. 실제 실패 원인인지는 첫 분기와 대조로 확인해야 한다.
-- [이슈1546](https://github.com/google-deepmind/mujoco_warp/issues/1546): world 좌표 float32 GJK/EPA에서 접촉 제약이 사라지는 재현, pair-local 좌표 수정 PR1613으로 해결됐다는 maintainer 답변. 현재 고정 소스 포함 여부·이번 재현 관련성은 별도 확인한다. margin/gap을 바꾸는 해결은 이번에 금지다.
-- [이슈1635](https://github.com/google-deepmind/mujoco_warp/issues/1635): Warp 자체 deterministic 모드의 convex 접촉 누락 사례. overflow가0이어도 접촉이 빠질 수 있었다. maintainer는 해당 Warp deterministic 기능을 지원하지 않는다고 답했다. 현재 설정을 기록한다.
-- [이슈87 noslip](https://github.com/google-deepmind/mujoco_warp/issues/87), [이슈1517 작은 마찰 NaN](https://github.com/google-deepmind/mujoco_warp/issues/1517), [이슈926 버퍼 메모리](https://github.com/google-deepmind/mujoco_warp/issues/926): 각각 noslip 후처리, 저마찰 퇴화, 할당/메모리 사례다. nconmax/njmax 넘침이 이번 파지 미끄러짐을 직접 설명한다는 사례는 검색에서 확인하지 못했다.
-- [공식 Discussions](https://github.com/google-deepmind/mujoco_warp/discussions) 및 grasp/friction/contact 검색: 이번 장면과 같은 파지 해결법을 확인하지 못했다. 일반 MuJoCo의 마찰/condim 변경 조언은 이번 허용 수정 범위 밖이다.
+grip의 상자 끝점은 3.2691mm / 0.3166°다. 남은 몸체 위치 차이는 하강 단계 **48,834스텝 / 12.2085 SIM초**에 처음 5mm를 넘고, hold 끝 6.737mm, 전체 끝 11.508mm다. 후퇴 이후만의 문제로 좁힐 수 없다. [단계별 오차](evidence/remote/residual-location.json).
 
-참고 소스의 다운로드 URL·SHA는 `references/sources.json`에 보존한다. upstream 전체 소스 복제본은 결과 코드가 아니며 로컬 outputs와 VM 증거 경로에 둔다.
+3라운드 한도에서 종료했다. **두 로봇+빔과 N16/64/256 처리량은 미제출**이며, 수정 전 simalt3의 속도·비용 배율을 이번 후보에 재사용하지 않는다. 관측 RGB의 부분 투명도 문제도 이번에 해결한 것으로 보고하지 않는다.
 
-## 중간 진단에서 확인한 범위
+## 확인한 원인과 남은 경계
 
-매 스텝 감사의 C3.12/C3.16 재생은 simalt3의10Hz 상태와 각각 전부 비트 일치했다. Warp는 첫10Hz 표본부터 달랐고, 전진/측면/회전의 몸체 위치 차 최대는0.064/0.271/0.118mm, grip 공통14.5초에서는5.021mm였다. 로거 커널 추가 또는 GPU 비결정성의 기여는 분리하지 않았다. 따라서 새 dense replay의57,797번째 스텝(14.44925초) NEFC overflow는 새 코호트에서 확인한 버퍼 부적합이며, 원래 simalt3 실패가 overflow 때문이었다는 증거가 아니다. 초기에 이 현상을 '10Hz 검사에서 놓쳤다'고 표현한 것은 철회한다.
+1. **Plane–Mesh 접촉 선택 변경의 기여를 확인했다.** C3.12와 C3.13은 감사한 모델 배열 48개가 같아도 같은 tape에서 파지 30/30 대 0/30이었다. 공식 3.13 변경 기록은 Plane–Mesh 재작성을 명시한다. Warp만 C3.12의 support vertex·graph 이웃 선택으로 바꾸자 무부하 응답과 파지가 회복됐다. 원래 `maxplanemesh=3`, `tolplanemesh=.3`을 그대로 옮겼으며 새로 맞춘 상수가 아니다. 첫 Plane–Mesh 접촉 수 4개, 전진/측면 최대 8/6개도 C3.12와 맞았다. 모든 버전 변경을 bisect한 유일 원인 증명은 아니다.
+2. **새 dense replay에서 버퍼 부적합을 확인했다.** 첫 NEFC overflow는 57,797스텝 / 14.44925초, 당시 nefc131 대 상한128이었다. C3.16 전체 최대129, Warp prefix 최대134를 근거로 다음 2의 거듭제곱256을 썼다. nconmax32는 유지했다. R2/R3의 모든 grip 스텝에서 overflow0을 확인했다.
+3. **원래 simalt3의 실패를 overflow 탓으로 단정하지 않는다.** 이번 C 재생은 simalt3의 10Hz 상태와 전부 비트 일치했다. Warp는 첫 표본부터 달랐고 grip 공통14.5초에서 몸체 위치 차 최대5.021mm였다. 로거 추가와 GPU 비결정성의 기여를 분리하지 않았다. 따라서 초기에 쓴 “이전 10Hz 검사에서 넘침을 놓쳤다”는 표현은 철회한다. [이전/새 재생 대조](evidence/remote/inherited-vs-dense-detailed.json).
+4. **같은 XML의 관절 감쇠가 버전 사이에서 달랐다.** C3.16의 팔 4개 `actuator_biasprm[:,2]`가 C3.12와 다르며, 공식 3.15 `dampratio` 계산 변경과 부합한다. 이 값을 수정하거나 원래 값으로 덮어쓰지 않았다. geom size/quaternion/mesh vertex 차이의 body-frame Hausdorff 최대는 8.883e-10m로 기록했다. [모델 감사](evidence/remote/model-version-differences.json), [감쇠 값](evidence/remote/joint-damping-drift.json).
 
-C3.16의 dense 최대nefc129, 새 Warp prefix134 대 njmax128이었다. 이 원본 상한을 다음2의 거듭제곱256으로 올린2라운드는 grip173,600스텝 모두overflow0, 접촉0/30·패드 힘0으로 끝났다. 버퍼 확대가 파지 자체를 해결하지는 않았다.
+남은 11.508mm 오차가 감쇠 차이만으로 생겼다고 확정하지 않는다. solver 수렴·float32의 잔여 기여도 미분리다. 관절 이득을 맞추거나 물리값을 바꾸려면 **C와 Warp에 공통으로 고정한 별도 물리 프로필과 새 기준 검증**이 필요하며, 이번에는 만들지 않았다. 현재 판정은 “파지 회복, 엄격한 전체 동등성 실패”다.
 
-C3.13 추가 비교는 같은 XML에서 기존44개 모델 배열이C3.12와 같았지만 접촉0/30으로 실패했다(중간 보고의45개는44개의 오기다). 메시 원본4개를 추가한 최종 감사는48개다.3.13 Plane-Mesh 변경을 유력 후보로 두되, 버전 변경 전체의 다른 변경을 모두 배제한 bisect는 아니다.
+## 구현·검증 범위
 
-C3.16은 같은 XML에서도 팔4개 actuator_biasprm[:,2]가 달랐다. 공식3.15의 [dampratio reflected-inertia 변경](https://github.com/google-deepmind/mujoco/commit/b3dd9e617)과 부합한다. 이 감쇠/관절 이득을 수정하거나 원래값으로 덮어쓰지 않았다. C3.13도 실패하므로 이 감쇠 차이를 유일한 파지 원인으로 주장하지 않는다. geom_size/quat 차이는 메시 좌표계 재표현일 수 있어, body-frame vertex Hausdorff를 별도로 기록한다.
+- `scripts/simalt_step_probe.py`: `--enabled` 필수, Linux gcp2 호스트 확인 후에만 simulator를 import한다. 모든 물리 스텝의 패드–상자 접촉 수, 접촉/제약 버퍼 사용, overflow, 최소 접촉 거리, 법선/접선 힘, 패드 관절, qpos/qvel을 기록한다. 접촉은 해당 step의 force 평가 시점, qpos는 적분 직후 값이며 두 엔진에 같은 방식을 썼다.
+- `--dense-capacity-v1`, `--backend-mode legacy-plane-v1`는 **기본 off**다. 이전 옵션은 baseline이다. 마찰·solref/solimp·질량·dt·noslip10·관절 이득을 변경하지 않는다. mesh rbound와 norm(size)의 정확한 일치를 확인하지 못하면 호환 경로를 거부한다.
+- 기록 전용 `--record-own-rgb`를 R2/R3에 켰다. C rasterizer가 별도 MjData에서 자기 카메라를 10Hz·최대100장 ring으로 기록하며 제어는 읽지 않는다. 각 grip 종료 ring은 100장/약1.89MB다. 실패 시점 검토에는 보존한 4kHz 상태의 C 사후 복원도 사용했다. Warp RGB 정보 동등성과 구분한다.
+- `scripts/simalt_step_analysis.py`: 같은 MuJoCo3.16 C 대 Warp와 C3.12/3.13/3.16 버전 대조를 분리한다. **25개 표, 합계 1,387,600행**을 zstd 복원 전체 SHA 확인 후 보존했다. 원본은 VM에, 발췌만 Mac/Git에 둔다.
+- 비물리 검사 **13개 고유 검사 통과**(5+8, 중복 재실행 제외), L4의 legacy kernel **컴파일 전용 검사 통과·physics step0**, 구문 검사·`git diff --check` 통과. PR은 Draft이며 CI 실행 결과는 없다.
+- 진단 호출26개: 완료20, HOST_ERROR6, cap_end0. HOST_ERROR는 초기 로거 형식 오류4개(step0), legacy 최초 컴파일 오류1개(step0), 새 R1 NEFC overflow1개다. 추가 설치/검토 도구 오류는 이 파지 표본과 합산하지 않았다. [전체 호출](evidence/remote/jobs.json).
 
-로깅 초기4회(Model/Data를 Warp struct로 넘긴 구현 오류), legacy 최초1회(정수 상수 형 추론 오류)는수용physics step0의HOST_ERROR로 보존했다. 정밀 로거의수정 소스4585ac91, 버퍼/기록 옵션과legacy 컴파일 수정5ce41464는각각 새 경로에서 실행했다. 모든 실제 수정 후보에는10Hz·최대100장의기록 전용자기RGB ring을켰다. renderer는제어 경로와별도MjData의 C rasterizer이고Warp RGB 정보동등성 판정이아니다.
+## 고정 입력·소스
+
+- 교사/장면 `6f057f7e97c1a3aec9e8c398b8d9068e27b25df8`; scene.xml SHA `ad46cd87ef4188daa9a4dbebd79c470fac6f1b3fcb5e5a1fe0d9dfa3c2261849`, fixture.npz SHA `d3548742053aa18ee526297baa2611bb37b32f923b504097dc5a0c17f4184577`.
+- native C 로거 `e2c2a4c4f6df401da003e79563eb6c3ef06d11d9`, dense Warp 로거 `4585ac9178d44784f00cce8c6ffb13270e92a56c`, R2/R3 실행 코드 `5ce41464efe3d3687aeecf8ebd7a76dcbeb9dfce`. 각 result에 실제 script/fixture/XML SHA와 argv가 있다. 실행 중 해당 소스 사본을 변경하지 않았다.
+- simalt3 설치 재사용: 기록된 MJWarp dev `57b4692f4d3cdf4d27d916b4b8c4759ba36e9148`, MuJoCo3.16.0, Warp1.15.0. io.py SHA는 고정 upstream과 일치했다. 설치의 direct_url commit metadata는 없어서 이번에 패키지 전체 소스 SHA를 새로 확인했다고 주장하지 않는다.
+- 발행 명령 tape만 재생했다. 정답·접촉은 평가/검토 전용, 모델 호출·학습·실물 검증0, weld OFF다. 계획/탐색 자체가 없고 실행량은 정수 physics tick/SIM 시간으로 제한했다. wall 상한은 사용자 자원3시간 전용이다.
+
+## 보존·회수·종료
+
+시작 신호를5분 간격으로 확인해25분 뒤 `simalt3:` 줄을 읽고 선행 기록부터 검토했다. 계정 `changmin5781@gmail.com`, 프로젝트 `ugrp-sim-b-1014`, 기존 `ugrp-act-l4-gcp2` 한 대만 사용했다. 첫 프로젝트 API/SSH, 새 VM 생성, Mac 물리·렌더·화면 앱 실행0이다.
+
+원본 `/home/ugrp/ugrp-sim/runs/simalt4/`의 **1,690/1,690 SHA256 PASS**를 모든 writer 종료 뒤 확인했다. [최종 검증](evidence/remote/raw-verification-final.json), [최종 목록](evidence/remote/SHA256SUMS-final). collector가 자기 완료 로그를 쓴 뒤 생기는 차이를 제외한 최종 감사이며, 앞선 provisional 목록은 기록으로 남겼다. raw는 정지한 L4 영속 디스크에 있고 전체 외부 백업이 아니다. 모델 감사는 항목을 확장한 파생 기록이며 초기 44개 검사 결과는 스텝 metadata와 함께 보존한다.
+
+Mac lite308,700bytes SHA, 요약27파일, 검토30파일, 대형 JSON3개의 전체 복원 SHA를 확인했다. [회수 검증](local-transfer-verification.json). 영상은 파일당8MB 이하이며 검토는 [전체2Hz·직전10초10Hz 프레임 띠](playback-review.md)로 직접 했고 MP4 형식/길이는 원격 ffprobe로만 확인했다. 결과는 로컬 프로젝트와 Git에 보존한다.
+
+L4 **TERMINATED** 확인. 실제 시작~정지 **3,092.024초 = 0.85890h**, 사용자/이전 simalt3의 $1.096/h 가정으로 **VM 정가 추정 $0.94135**다. 실제 청구·크레딧 잔액·디스크·네트워크·세금은 미확인이다. 8h STOP·idle20분·Mac의 유한3h 감시는 유지했고 작업 후 감시도 종료했다. 이번 gcp2 사용 중 budget-stop 발동은 없었다. [호스트 증거](evidence/final-host-status.json).
+
+## 참고 자료
+
+- [공식 MJWarp 문서](https://mujoco.readthedocs.io/en/latest/mjwarp/index.html): nconmax/world, naconmax/전체, njmax/world의 구분과 overflow의 undefined behavior. XML size 값 대신 put_data 인자로 용량을 지정한다.
+- [고정 README 기능 차이](https://github.com/google-deepmind/mujoco_warp/blob/57b4692f4d3cdf4d27d916b4b8c4759ba36e9148/README.md#MuJoCo-API-Compatibility): IMPLICITFAST midpoint/PGS/plugin actuator·sensor 미지원, flex 실험적, noslip은 discrete integrator에서 미지원. 현재 implicitfast·noslip10 경로와 구분한다.
+- [공식 XML 옵션](https://mujoco.readthedocs.io/en/latest/XMLreference.html?highlight=touch), [고정 io.py](https://github.com/google-deepmind/mujoco_warp/blob/57b4692f4d3cdf4d27d916b4b8c4759ba36e9148/mujoco_warp/_src/io.py#L433): 기본 Euler/Newton/pyramidal. 실제 장면은 implicitfast/Newton/elliptic, dt.00025, 80/50 반복, tolerance1e-8, noslip10/tolerance1e-6이다. upstream float32용1e-6 clamp를 원래1e-8로 복원했다. margin/gap은0, geom condim3(465개)/4(4개), 패드–상자는3이다. 전역 float64 실행 토글은 고정 API에서 확인하지 못해 미측정이다.
+- [충돌 분기](https://github.com/google-deepmind/mujoco_warp/blob/57b4692f4d3cdf4d27d916b4b8c4759ba36e9148/mujoco_warp/_src/collision_driver.py#L47): plane/mesh primitive, box/mesh·mesh/mesh·box/box convex CCD. primitive box SAT 대안은 조사했으나 이번 선택 후보에는 쓰지 않았다.
+- [C3.13 Plane–Mesh 변경 기록](https://mujoco.readthedocs.io/en/stable/changelog.html#version-3-13-0-september-8-2026), [C3.12 원본·상수](https://github.com/google-deepmind/mujoco/blob/3.12.0/src/engine/engine_collision_convex.c#L966), [C3.16 원본](https://github.com/google-deepmind/mujoco/blob/3.16.0/src/engine/engine_collision_convex.c#L1091).
+- [C3.15 dampratio 변경 b3dd9e617](https://github.com/google-deepmind/mujoco/commit/b3dd9e617): 다관절 체인의 반사 관성 계산 변경과 낮아질 수 있는 감쇠.
+- [이슈1546](https://github.com/google-deepmind/mujoco_warp/issues/1546): float32 world 좌표 GJK/EPA 접촉 누락과 pair-local 해결. [고정 convex 소스](https://github.com/google-deepmind/mujoco_warp/blob/57b4692f4d3cdf4d27d916b4b8c4759ba36e9148/mujoco_warp/_src/collision_convex.py#L842)에 이미 들어 있어 새로 적용하지 않았다.
+- [이슈1635](https://github.com/google-deepmind/mujoco_warp/issues/1635): Warp 자체 deterministic 모드에서 convex 접촉이 사라지는 사례. maintainer의 미지원 답변을 확인했고 해당 모드는 켜지 않았다.
+- [이슈87 noslip](https://github.com/google-deepmind/mujoco_warp/issues/87), [이슈1517 작은 마찰 NaN](https://github.com/google-deepmind/mujoco_warp/issues/1517), [이슈926 할당/메모리](https://github.com/google-deepmind/mujoco_warp/issues/926). 이번과 같은 파지 미끄러짐을 nconmax/njmax 증설만으로 해결한 사례는 확인하지 못했다.
+- [공식 Discussions](https://github.com/google-deepmind/mujoco_warp/discussions)와 grasp/friction/contact 검색에서 같은 장면의 검증된 해결법은 찾지 못했다. 미확인을 “사례 없음”으로 일반화하지 않는다. 다운로드 URL·SHA는 [sources.json](references/sources.json), 진행 메모는 [work-log.md](work-log.md)에 남겼다.

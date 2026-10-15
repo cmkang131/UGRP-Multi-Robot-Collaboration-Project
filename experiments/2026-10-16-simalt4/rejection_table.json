@@ -1,69 +1,294 @@
 {
-  "stage": "before_any_physics_workaround",
-  "raw_paths": [
-    "/home/ugrp/ugrp-sim/runs/simalt4/c312-grip",
-    "/home/ugrp/ugrp-sim/runs/simalt4/c316-grip",
-    "/home/ugrp/ugrp-sim/runs/simalt4/warp-v2-forward"
+  "decision": "PARITY_FAIL",
+  "funnel": [
+    {
+      "round": 1,
+      "candidate": "warp-v2",
+      "command_cases_entered": 4,
+      "command_cases_completed": 3,
+      "command_cases_rejected": 1,
+      "C312_endpoint_cases_passed": 3,
+      "hold_10Hz_samples": null,
+      "source_paths": [
+        "/home/ugrp/ugrp-sim/runs/simalt4/warp-v2-forward/result.json",
+        "/home/ugrp/ugrp-sim/runs/simalt4/warp-v2-grip/result.json",
+        "/home/ugrp/ugrp-sim/runs/simalt4/warp-v2-side/result.json",
+        "/home/ugrp/ugrp-sim/runs/simalt4/warp-v2-turn/result.json"
+      ]
+    },
+    {
+      "round": 2,
+      "candidate": "capacity-r2",
+      "command_cases_entered": 4,
+      "command_cases_completed": 4,
+      "command_cases_rejected": 0,
+      "C312_endpoint_cases_passed": 1,
+      "hold_10Hz_samples": {
+        "samples": 30,
+        "reference_bilateral": 30,
+        "candidate_bilateral": 0,
+        "reference_min_bottom_m": 0.07072687483198156,
+        "candidate_min_bottom_m": -0.00010760331880479632,
+        "initial_support_bottom_m": -0.00010775542026314477,
+        "reference_min_lift_clearance_m": 0.0708346302522447,
+        "candidate_min_lift_clearance_m": 1.5210145834845812e-07,
+        "max_abs_height_difference_m": 0.07083796398191974,
+        "reference_pad_force_min_N": [
+          5.203036893381455,
+          5.202633280279191
+        ],
+        "candidate_pad_force_min_N": [
+          0.0,
+          0.0
+        ],
+        "height_proposal_pass": false
+      },
+      "source_paths": [
+        "/home/ugrp/ugrp-sim/runs/simalt4/capacity-r2-forward/result.json",
+        "/home/ugrp/ugrp-sim/runs/simalt4/capacity-r2-grip/result.json",
+        "/home/ugrp/ugrp-sim/runs/simalt4/capacity-r2-side/result.json",
+        "/home/ugrp/ugrp-sim/runs/simalt4/capacity-r2-turn/result.json"
+      ]
+    },
+    {
+      "round": 3,
+      "candidate": "legacy-r3",
+      "command_cases_entered": 4,
+      "command_cases_completed": 4,
+      "command_cases_rejected": 0,
+      "C312_endpoint_cases_passed": 3,
+      "hold_10Hz_samples": {
+        "samples": 30,
+        "reference_bilateral": 30,
+        "candidate_bilateral": 30,
+        "reference_min_bottom_m": 0.07072687483198156,
+        "candidate_min_bottom_m": 0.07074271301537449,
+        "initial_support_bottom_m": -0.00010775542026314477,
+        "reference_min_lift_clearance_m": 0.0708346302522447,
+        "candidate_min_lift_clearance_m": 0.07085046843563764,
+        "max_abs_height_difference_m": 1.5838183392929972e-05,
+        "reference_pad_force_min_N": [
+          5.203036893381455,
+          5.202633280279191
+        ],
+        "candidate_pad_force_min_N": [
+          5.202431678771973,
+          5.202112197875977
+        ],
+        "height_proposal_pass": true
+      },
+      "source_paths": [
+        "/home/ugrp/ugrp-sim/runs/simalt4/legacy-r3-forward/result.json",
+        "/home/ugrp/ugrp-sim/runs/simalt4/legacy-r3-grip/result.json",
+        "/home/ugrp/ugrp-sim/runs/simalt4/legacy-r3-side/result.json",
+        "/home/ugrp/ugrp-sim/runs/simalt4/legacy-r3-turn/result.json"
+      ]
+    }
   ],
   "distribution": [
     {
-      "category": "version_collision_topology",
-      "count": 173600,
-      "unit": "physics step in C312/C316 grip",
-      "reason": "plane-mesh multiplicity differs from step1; C316 also fails loaded hold, causal contribution not isolated",
-      "blocking_object": "floor / r1__v3_wheel_*_roller_*_body_contact",
+      "category": "diagnostic_implementation_HOST_ERROR",
+      "count": 1,
+      "unit": "diagnostic invocation",
+      "run": "legacy-forward",
+      "reason": "Error while parsing function \"primitive_narrowphase\" at /home/ugrp/ugrp-sim/runs/simalt3/warp-env/lib/python3.12/site-packages/mujoco_warp/_src/collision_primitive.py:1446:\n        nacon_out,\n;Error while parsing function \"plane_convex_wrapper\" at /home/ugrp/ugrp-sim/runs/simalt3/warp-env/lib/python3.12/site-packages/mujoco_warp/_src/collision_primitive.py:806:\n  dist, pos, normal = plane_convex(plane.normal, plane.pos, convex, margin + gap)\n;Error while parsing function \"legacy_plane_convex\" at /home/ugrp/ugrp-sim/runs/simalt4/revf8/scripts/simalt_collision_compat.py:49:\n                edge+=1\n;Error mutating a constant local_best inside a dynamic loop, use the following syntax: pi = float(3.141) to declare a dynamic variable",
+      "blocking_object": "legacy-forward",
       "minimum_gap_m": null,
-      "minimum_gap_status": "penetration recorded per step in raw table"
+      "minimum_gap_status": "not_geometric",
+      "raw_path": "/home/ugrp/ugrp-sim/runs/simalt4/legacy-forward/result.json"
     },
     {
-      "category": "compiled_actuator_damping_drift",
+      "category": "diagnostic_implementation_HOST_ERROR",
+      "count": 1,
+      "unit": "diagnostic invocation",
+      "run": "warp-forward",
+      "reason": "Unrecognized type '<class 'mujoco_warp._src.types.Model'>'",
+      "blocking_object": "warp-forward",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_geometric",
+      "raw_path": "/home/ugrp/ugrp-sim/runs/simalt4/warp-forward/result.json"
+    },
+    {
+      "category": "diagnostic_implementation_HOST_ERROR",
+      "count": 1,
+      "unit": "diagnostic invocation",
+      "run": "warp-grip",
+      "reason": "Unrecognized type '<class 'mujoco_warp._src.types.Model'>'",
+      "blocking_object": "warp-grip",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_geometric",
+      "raw_path": "/home/ugrp/ugrp-sim/runs/simalt4/warp-grip/result.json"
+    },
+    {
+      "category": "diagnostic_implementation_HOST_ERROR",
+      "count": 1,
+      "unit": "diagnostic invocation",
+      "run": "warp-side",
+      "reason": "Unrecognized type '<class 'mujoco_warp._src.types.Model'>'",
+      "blocking_object": "warp-side",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_geometric",
+      "raw_path": "/home/ugrp/ugrp-sim/runs/simalt4/warp-side/result.json"
+    },
+    {
+      "category": "diagnostic_implementation_HOST_ERROR",
+      "count": 1,
+      "unit": "diagnostic invocation",
+      "run": "warp-turn",
+      "reason": "Unrecognized type '<class 'mujoco_warp._src.types.Model'>'",
+      "blocking_object": "warp-turn",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_geometric",
+      "raw_path": "/home/ugrp/ugrp-sim/runs/simalt4/warp-turn/result.json"
+    },
+    {
+      "category": "constraint_buffer_overflow",
+      "count": 1,
+      "unit": "diagnostic invocation",
+      "run": "warp-v2-grip",
+      "reason": "capacity overflow",
+      "blocking_object": "MJWarp constraint workspace",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_geometric",
+      "raw_path": "/home/ugrp/ugrp-sim/runs/simalt4/warp-v2-grip/result.json"
+    },
+    {
+      "category": "loaded_hold_bilateral_contact_absent",
+      "count": 30,
+      "unit": "10Hz samples, not independent episodes",
+      "comparison": "final-r2-c312-grip",
+      "reason": "frozen tape did not retain both pad-box contacts",
+      "blocking_object": "cargo_cyan_2 / r1__left_finger / r1__right_finger",
+      "minimum_gap_m": -0.0034007159993052483,
+      "minimum_gap_status": "see per-step signed pad distance; not path-clearance rejection",
+      "raw_path": "/home/ugrp/ugrp-sim/runs/simalt4/final-r2-c312-grip/every-step.csv.zst"
+    },
+    {
+      "category": "version_compiled_actuator_damping",
       "count": 4,
-      "unit": "arm actuator",
-      "reason": "same XML produces different actuator_biasprm[:,2] in C312/C316; official 3.15 dampratio breaking change b3dd9e617; changing gains forbidden",
+      "unit": "actuator velocity bias entry",
+      "reason": "MuJoCo3.15 dampratio compiler change b3dd9e617; no gains modified in these experiments",
       "blocking_object": "r1 arm position actuators",
       "minimum_gap_m": null,
       "minimum_gap_status": "not_geometric"
     },
     {
-      "category": "capacity_underestimate",
+      "category": "endpoint_response_mismatch",
+      "count": 3,
+      "unit": "command case",
+      "round": 2,
+      "reason": "unchanged user proposed5mm/2deg endpoint limits exceeded; no tolerance relaxed",
+      "blocking_object": "r1__robot / cargo_cyan_2",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "response metric, not path clearance",
+      "cases": [
+        {
+          "case": "side",
+          "base_endpoint_m": 0.007441812024245314,
+          "base_endpoint_deg": 1.0648398499604137,
+          "box_endpoint_m": 4.805571046297544e-08,
+          "raw_table": "/home/ugrp/ugrp-sim/runs/simalt4/final-r2-c312-side/every-step.csv.zst"
+        },
+        {
+          "case": "turn",
+          "base_endpoint_m": 0.002937433290273505,
+          "base_endpoint_deg": 2.410900924542476,
+          "box_endpoint_m": 4.805571046297544e-08,
+          "raw_table": "/home/ugrp/ugrp-sim/runs/simalt4/final-r2-c312-turn/every-step.csv.zst"
+        },
+        {
+          "case": "grip",
+          "base_endpoint_m": 0.06964771510588616,
+          "base_endpoint_deg": 11.59413949891918,
+          "box_endpoint_m": 0.021708374315305493,
+          "raw_table": "/home/ugrp/ugrp-sim/runs/simalt4/final-r2-c312-grip/every-step.csv.zst"
+        }
+      ]
+    },
+    {
+      "category": "endpoint_response_mismatch",
       "count": 1,
-      "unit": "C316 grip envelope",
-      "reason": "dense maximum nefc129 exceeds simalt3 njmax128 allocation; Warp impact not yet measured",
-      "blocking_object": "MJWarp constraint buffer",
+      "unit": "command case",
+      "round": 3,
+      "reason": "unchanged user proposed5mm/2deg endpoint limits exceeded; no tolerance relaxed",
+      "blocking_object": "r1__robot / cargo_cyan_2",
       "minimum_gap_m": null,
-      "minimum_gap_status": "not_geometric"
-    },
-    {
-      "category": "backend_topology_difference",
-      "count": 3490,
-      "unit": "physics step in same-version forward",
-      "reason": "first count split at step421/0.10525 SIM s; endpoint only44.5um; do not equate count split to task failure",
-      "blocking_object": "plane-mesh contact set",
-      "minimum_gap_m": null,
-      "minimum_gap_status": "per-step minimum_dist in raw table"
+      "minimum_gap_status": "response metric, not path clearance",
+      "cases": [
+        {
+          "case": "grip",
+          "base_endpoint_m": 0.01150817243489539,
+          "base_endpoint_deg": 0.2419625488715239,
+          "box_endpoint_m": 0.0032691179499632988,
+          "raw_table": "/home/ugrp/ugrp-sim/runs/simalt4/final-r3-c312-grip/every-step.csv.zst"
+        }
+      ]
     }
   ],
-  "funnel": [
+  "physical_identity_gate": {
+    "reference": "C3.12 compiled model",
+    "passed": false,
+    "blocking_field": "actuator_biasprm[:,2]",
+    "reason": "same XML is not the same compiled joint damping across these MuJoCo versions; no value overwritten",
+    "new_profile_required_before_adoption": true
+  },
+  "units_must_not_be_added": true,
+  "raw_paths": [
+    "/home/ugrp/ugrp-sim/runs/simalt4"
+  ],
+  "expansion": {
+    "pair_beam_3s": "not_submitted",
+    "N16_64_256_throughput": "not_submitted",
+    "reason": "small-scene physical identity / loaded-hold parity has not passed"
+  },
+  "reproduction": "exact argv and input hashes in each result.json and every comparison summary",
+  "largest_original_cause": "plane-mesh version response: legacy C312 collider selection restores unloaded response and bilateral grip; remaining full-trace endpoint cause not isolated",
+  "candidate_funnel": [
     {
-      "gate": "C312 dense grip complete",
+      "gate": "round1 replay complete and finite",
       "entered": 1,
-      "passed": 1,
-      "rejected": 0
-    },
-    {
-      "gate": "C316 dense grip complete",
-      "entered": 1,
-      "passed": 1,
-      "rejected": 0
-    },
-    {
-      "gate": "C316 loaded hold",
-      "entered": 30,
       "passed": 0,
-      "rejected": 30,
-      "unit": "10Hz samples"
+      "rejected": 1,
+      "reason": "NEFC overflow in new dense replay"
+    },
+    {
+      "gate": "round2 overflow-free all4 cases",
+      "entered": 1,
+      "passed": 1,
+      "rejected": 0
+    },
+    {
+      "gate": "round2 all4 endpoints",
+      "entered": 1,
+      "passed": 0,
+      "rejected": 1
+    },
+    {
+      "gate": "round3 overflow-free all4 cases",
+      "entered": 1,
+      "passed": 1,
+      "rejected": 0
+    },
+    {
+      "gate": "round3 all4 endpoints",
+      "entered": 1,
+      "passed": 0,
+      "rejected": 1
+    },
+    {
+      "gate": "two-robot beam3s admission",
+      "entered": 0,
+      "passed": 0,
+      "rejected": 0,
+      "blocked": 1
+    },
+    {
+      "gate": "N16/64/256 throughput admission",
+      "entered": 0,
+      "passed": 0,
+      "rejected": 0,
+      "blocked": 3
     }
   ],
-  "reproduce": "scripts/simalt_step_analysis.py; exact argv in evidence summaries",
-  "largest_measured_group": "version_collision_topology; units kept separate, not an additive episode count"
+  "scope_note": "diagnostic measurements after a rejected gate are listed separately and are not accepted research cohorts"
 }

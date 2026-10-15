@@ -1,0 +1,605 @@
+{
+  "id": "2026-10-16-simalt4",
+  "status": "complete",
+  "decision": "PARITY_FAIL",
+  "ready": false,
+  "execution_host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "physics_overrides": {},
+  "model_calls": 0,
+  "training": false,
+  "Mac_physics_or_render": false,
+  "GUI_apps_opened": false,
+  "jobs": {
+    "complete": 20,
+    "HOST_ERROR": 6
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "candidate": "warp-v2",
+      "command_cases_entered": 4,
+      "command_cases_completed": 3,
+      "command_cases_rejected": 1,
+      "C312_endpoint_cases_passed": 3,
+      "hold_10Hz_samples": null,
+      "source_paths": [
+        "/home/ugrp/ugrp-sim/runs/simalt4/warp-v2-forward/result.json",
+        "/home/ugrp/ugrp-sim/runs/simalt4/warp-v2-grip/result.json",
+        "/home/ugrp/ugrp-sim/runs/simalt4/warp-v2-side/result.json",
+        "/home/ugrp/ugrp-sim/runs/simalt4/warp-v2-turn/result.json"
+      ]
+    },
+    {
+      "round": 2,
+      "candidate": "capacity-r2",
+      "command_cases_entered": 4,
+      "command_cases_completed": 4,
+      "command_cases_rejected": 0,
+      "C312_endpoint_cases_passed": 1,
+      "hold_10Hz_samples": {
+        "samples": 30,
+        "reference_bilateral": 30,
+        "candidate_bilateral": 0,
+        "reference_min_bottom_m": 0.07072687483198156,
+        "candidate_min_bottom_m": -0.00010760331880479632,
+        "initial_support_bottom_m": -0.00010775542026314477,
+        "reference_min_lift_clearance_m": 0.0708346302522447,
+        "candidate_min_lift_clearance_m": 1.5210145834845812e-07,
+        "max_abs_height_difference_m": 0.07083796398191974,
+        "reference_pad_force_min_N": [
+          5.203036893381455,
+          5.202633280279191
+        ],
+        "candidate_pad_force_min_N": [
+          0.0,
+          0.0
+        ],
+        "height_proposal_pass": false
+      },
+      "source_paths": [
+        "/home/ugrp/ugrp-sim/runs/simalt4/capacity-r2-forward/result.json",
+        "/home/ugrp/ugrp-sim/runs/simalt4/capacity-r2-grip/result.json",
+        "/home/ugrp/ugrp-sim/runs/simalt4/capacity-r2-side/result.json",
+        "/home/ugrp/ugrp-sim/runs/simalt4/capacity-r2-turn/result.json"
+      ]
+    },
+    {
+      "round": 3,
+      "candidate": "legacy-r3",
+      "command_cases_entered": 4,
+      "command_cases_completed": 4,
+      "command_cases_rejected": 0,
+      "C312_endpoint_cases_passed": 3,
+      "hold_10Hz_samples": {
+        "samples": 30,
+        "reference_bilateral": 30,
+        "candidate_bilateral": 30,
+        "reference_min_bottom_m": 0.07072687483198156,
+        "candidate_min_bottom_m": 0.07074271301537449,
+        "initial_support_bottom_m": -0.00010775542026314477,
+        "reference_min_lift_clearance_m": 0.0708346302522447,
+        "candidate_min_lift_clearance_m": 0.07085046843563764,
+        "max_abs_height_difference_m": 1.5838183392929972e-05,
+        "reference_pad_force_min_N": [
+          5.203036893381455,
+          5.202633280279191
+        ],
+        "candidate_pad_force_min_N": [
+          5.202431678771973,
+          5.202112197875977
+        ],
+        "height_proposal_pass": true
+      },
+      "source_paths": [
+        "/home/ugrp/ugrp-sim/runs/simalt4/legacy-r3-forward/result.json",
+        "/home/ugrp/ugrp-sim/runs/simalt4/legacy-r3-grip/result.json",
+        "/home/ugrp/ugrp-sim/runs/simalt4/legacy-r3-side/result.json",
+        "/home/ugrp/ugrp-sim/runs/simalt4/legacy-r3-turn/result.json"
+      ]
+    }
+  ],
+  "comparisons": [
+    "final-r2-c312-forward",
+    "final-r2-c312-side",
+    "final-r2-c312-turn",
+    "final-r2-c312-grip",
+    "final-r2-c316-forward",
+    "final-r2-c316-side",
+    "final-r2-c316-turn",
+    "final-r2-c316-grip",
+    "final-r3-c312-forward",
+    "final-r3-c312-side",
+    "final-r3-c312-turn",
+    "final-r3-c312-grip",
+    "final-r3-c316-forward",
+    "final-r3-c316-side",
+    "final-r3-c316-turn",
+    "final-r3-c316-grip",
+    "version-forward",
+    "version-grip",
+    "version-side",
+    "version-turn",
+    "version313-grip",
+    "backend-forward",
+    "backend-grip-partial",
+    "backend-side",
+    "backend-turn"
+  ],
+  "model_audit": "model-version-differences.json",
+  "originals_location": "/home/ugrp/ugrp-sim/runs/simalt4",
+  "originals_backup": "L4 persistent disk only; not an external backup",
+  "lifecycle": {
+    "status": "TERMINATED",
+    "started": "2026-10-15T08:42:47.494000-07:00",
+    "stopped": "2026-10-15T09:34:19.518000-07:00",
+    "L4_usage_seconds": 3092.024,
+    "L4_usage_hours": 0.8588955555555555,
+    "hourly_USD_assumption": 1.096,
+    "estimated_VM_USD": 0.9413495288888889,
+    "actual_bill_verified": false,
+    "excludes": [
+      "disk",
+      "network",
+      "tax"
+    ],
+    "resource_cap_seconds": 10800,
+    "within_cap": true,
+    "budget_stop_during_task": false
+  },
+  "rejection_table": "/Users/changmin/projects/ugrp-wt/simalt-pilot/experiments/2026-10-16-simalt4/rejection_table.json",
+  "source_summary_sha256": "111ba04c08607b89f0b2b04803214ec6fde997a2c3246b7d2701aafb005f7bd6",
+  "source_shas": {
+    "native_probe": "e2c2a4c4f6df401da003e79563eb6c3ef06d11d9",
+    "dense_Warp_probe": "4585ac9178d44784f00cce8c6ffb13270e92a56c",
+    "round2_and_round3_probe": "5ce41464efe3d3687aeecf8ebd7a76dcbeb9dfce"
+  },
+  "mjwarp_installation": {
+    "recorded_dev_commit": "57b4692f4d3cdf4d27d916b4b8c4759ba36e9148",
+    "reused_from": "simalt3",
+    "direct_url_commit_metadata": null,
+    "upstream_io_sha256_verified": true,
+    "full_package_source_reaudit": false
+  },
+  "final_C312_comparison": {
+    "endpoints_passed": 3,
+    "cases": [
+      {
+        "reference": "/home/ugrp/ugrp-sim/runs/simalt4/c312-forward",
+        "candidate": "/home/ugrp/ugrp-sim/runs/simalt4/legacy-r3-forward",
+        "case": "forward",
+        "steps": 16000,
+        "dt": 0.00025,
+        "complete": true,
+        "reference_rows": 16000,
+        "candidate_rows": 16000,
+        "candidate_status": "complete",
+        "analysis_script_sha256": "77f050404a7f34127d6b54f3d0c7aa6ed801f189fc42fe73cd7941cf959fee40",
+        "same_MuJoCo_version": false,
+        "C_version": "3.12.0",
+        "candidate_MuJoCo": "3.16.0",
+        "physics_hashes_equal": false,
+        "first_raw_qpos_difference": {
+          "step_1based": 1,
+          "SIM_s": 0.00025
+        },
+        "first_contact_or_constraint_count_difference": {
+          "step_1based": 2,
+          "SIM_s": 0.0005
+        },
+        "topology_count_different_steps": 4225,
+        "first_pad_contact_presence_difference": null,
+        "first_reference_pad_contact": null,
+        "first_candidate_pad_contact": null,
+        "reference_max_ncon": 12,
+        "candidate_max_ncon": 12,
+        "reference_max_nefc": 74,
+        "candidate_max_nefc": 74,
+        "candidate_overflow_steps": 0,
+        "candidate_capacities": {
+          "nconmax": 32,
+          "njmax": 256,
+          "naconmax": 32
+        },
+        "base_endpoint_m": 6.258227650351537e-06,
+        "base_endpoint_deg": 0.001478631448153373,
+        "box_endpoint_m": 4.805571046297544e-08,
+        "box_endpoint_deg": 0.0,
+        "endpoint_pass": true,
+        "reproduce": [
+          "/home/ugrp/ugrp-sim/runs/simalt4/scripts/simalt_step_analysis.py",
+          "--fixture",
+          "/home/ugrp/ugrp-sim/runs/simalt3/fixture",
+          "--reference",
+          "/home/ugrp/ugrp-sim/runs/simalt4/c312-forward",
+          "--candidate",
+          "/home/ugrp/ugrp-sim/runs/simalt4/legacy-r3-forward",
+          "--out",
+          "/home/ugrp/ugrp-sim/runs/simalt4/final-r3-c312-forward"
+        ],
+        "force_semantics": "contact-frame normal and tangential resultant; force API after noslip; no controller feedback",
+        "missing_distance_semantics": "zero if no penetrating contact; consult count before interpreting",
+        "max_abs_difference_by_metric": {
+          "ncon": 1.0,
+          "nefc": 3.0,
+          "overflow": 0.0,
+          "left_contacts": 0.0,
+          "right_contacts": 0.0,
+          "left_min_dist": 0.0,
+          "right_min_dist": 0.0,
+          "left_normal_N": 0.0,
+          "right_normal_N": 0.0,
+          "left_tangent_N": 0.0,
+          "right_tangent_N": 0.0,
+          "plane_mesh_contacts": 1.0,
+          "minimum_dist": 7.123087624574635e-06,
+          "left_joint": 2.1687071643488355e-06,
+          "right_joint": 2.217943059104007e-06,
+          "left_condim": 0.0,
+          "right_condim": 0.0
+        },
+        "every_step_table": {
+          "path": "/home/ugrp/ugrp-sim/runs/simalt4/final-r3-c312-forward/every-step.csv.zst",
+          "uncompressed_sha256": "8126b1cd761f8512f32a0eed266d79cbcf248f8d308be706a23caebd11dd3fbc",
+          "compressed_sha256": "7b60ee09f08abf9fc7a3b31a3b732041c20f61b08d771658574c212d29bd950c",
+          "rows": 16000,
+          "restored_hash_verified": true
+        }
+      },
+      {
+        "reference": "/home/ugrp/ugrp-sim/runs/simalt4/c312-side",
+        "candidate": "/home/ugrp/ugrp-sim/runs/simalt4/legacy-r3-side",
+        "case": "side",
+        "steps": 16000,
+        "dt": 0.00025,
+        "complete": true,
+        "reference_rows": 16000,
+        "candidate_rows": 16000,
+        "candidate_status": "complete",
+        "analysis_script_sha256": "77f050404a7f34127d6b54f3d0c7aa6ed801f189fc42fe73cd7941cf959fee40",
+        "same_MuJoCo_version": false,
+        "C_version": "3.12.0",
+        "candidate_MuJoCo": "3.16.0",
+        "physics_hashes_equal": false,
+        "first_raw_qpos_difference": {
+          "step_1based": 1,
+          "SIM_s": 0.00025
+        },
+        "first_contact_or_constraint_count_difference": {
+          "step_1based": 338,
+          "SIM_s": 0.0845
+        },
+        "topology_count_different_steps": 3347,
+        "first_pad_contact_presence_difference": null,
+        "first_reference_pad_contact": null,
+        "first_candidate_pad_contact": null,
+        "reference_max_ncon": 10,
+        "candidate_max_ncon": 10,
+        "reference_max_nefc": 68,
+        "candidate_max_nefc": 68,
+        "candidate_overflow_steps": 0,
+        "candidate_capacities": {
+          "nconmax": 32,
+          "njmax": 256,
+          "naconmax": 32
+        },
+        "base_endpoint_m": 1.4272931512033365e-05,
+        "base_endpoint_deg": 0.014711714079520516,
+        "box_endpoint_m": 4.805571046297544e-08,
+        "box_endpoint_deg": 0.0,
+        "endpoint_pass": true,
+        "reproduce": [
+          "/home/ugrp/ugrp-sim/runs/simalt4/scripts/simalt_step_analysis.py",
+          "--fixture",
+          "/home/ugrp/ugrp-sim/runs/simalt3/fixture",
+          "--reference",
+          "/home/ugrp/ugrp-sim/runs/simalt4/c312-side",
+          "--candidate",
+          "/home/ugrp/ugrp-sim/runs/simalt4/legacy-r3-side",
+          "--out",
+          "/home/ugrp/ugrp-sim/runs/simalt4/final-r3-c312-side"
+        ],
+        "force_semantics": "contact-frame normal and tangential resultant; force API after noslip; no controller feedback",
+        "missing_distance_semantics": "zero if no penetrating contact; consult count before interpreting",
+        "max_abs_difference_by_metric": {
+          "ncon": 1.0,
+          "nefc": 4.0,
+          "overflow": 0.0,
+          "left_contacts": 0.0,
+          "right_contacts": 0.0,
+          "left_min_dist": 0.0,
+          "right_min_dist": 0.0,
+          "left_normal_N": 0.0,
+          "right_normal_N": 0.0,
+          "left_tangent_N": 0.0,
+          "right_tangent_N": 0.0,
+          "plane_mesh_contacts": 1.0,
+          "minimum_dist": 6.146538968759656e-06,
+          "left_joint": 1.5492304561914575e-06,
+          "right_joint": 1.8136284009232748e-06,
+          "left_condim": 0.0,
+          "right_condim": 0.0
+        },
+        "every_step_table": {
+          "path": "/home/ugrp/ugrp-sim/runs/simalt4/final-r3-c312-side/every-step.csv.zst",
+          "uncompressed_sha256": "253d218613105fb1b183db909a1f195cf28f8875e7fc0518e915ed99d50b753f",
+          "compressed_sha256": "01e274281178850bc32c8edd02c217e6e8820e07ffad7788fa294bc63a7b40b1",
+          "rows": 16000,
+          "restored_hash_verified": true
+        }
+      },
+      {
+        "reference": "/home/ugrp/ugrp-sim/runs/simalt4/c312-turn",
+        "candidate": "/home/ugrp/ugrp-sim/runs/simalt4/legacy-r3-turn",
+        "case": "turn",
+        "steps": 16000,
+        "dt": 0.00025,
+        "complete": true,
+        "reference_rows": 16000,
+        "candidate_rows": 16000,
+        "candidate_status": "complete",
+        "analysis_script_sha256": "77f050404a7f34127d6b54f3d0c7aa6ed801f189fc42fe73cd7941cf959fee40",
+        "same_MuJoCo_version": false,
+        "C_version": "3.12.0",
+        "candidate_MuJoCo": "3.16.0",
+        "physics_hashes_equal": false,
+        "first_raw_qpos_difference": {
+          "step_1based": 1,
+          "SIM_s": 0.00025
+        },
+        "first_contact_or_constraint_count_difference": {
+          "step_1based": 217,
+          "SIM_s": 0.05425
+        },
+        "topology_count_different_steps": 3322,
+        "first_pad_contact_presence_difference": null,
+        "first_reference_pad_contact": null,
+        "first_candidate_pad_contact": null,
+        "reference_max_ncon": 10,
+        "candidate_max_ncon": 10,
+        "reference_max_nefc": 68,
+        "candidate_max_nefc": 68,
+        "candidate_overflow_steps": 0,
+        "candidate_capacities": {
+          "nconmax": 32,
+          "njmax": 256,
+          "naconmax": 32
+        },
+        "base_endpoint_m": 0.0001258659890497338,
+        "base_endpoint_deg": 0.09311864586976988,
+        "box_endpoint_m": 4.805571046297544e-08,
+        "box_endpoint_deg": 0.0,
+        "endpoint_pass": true,
+        "reproduce": [
+          "/home/ugrp/ugrp-sim/runs/simalt4/scripts/simalt_step_analysis.py",
+          "--fixture",
+          "/home/ugrp/ugrp-sim/runs/simalt3/fixture",
+          "--reference",
+          "/home/ugrp/ugrp-sim/runs/simalt4/c312-turn",
+          "--candidate",
+          "/home/ugrp/ugrp-sim/runs/simalt4/legacy-r3-turn",
+          "--out",
+          "/home/ugrp/ugrp-sim/runs/simalt4/final-r3-c312-turn"
+        ],
+        "force_semantics": "contact-frame normal and tangential resultant; force API after noslip; no controller feedback",
+        "missing_distance_semantics": "zero if no penetrating contact; consult count before interpreting",
+        "max_abs_difference_by_metric": {
+          "ncon": 1.0,
+          "nefc": 4.0,
+          "overflow": 0.0,
+          "left_contacts": 0.0,
+          "right_contacts": 0.0,
+          "left_min_dist": 0.0,
+          "right_min_dist": 0.0,
+          "left_normal_N": 0.0,
+          "right_normal_N": 0.0,
+          "left_tangent_N": 0.0,
+          "right_tangent_N": 0.0,
+          "plane_mesh_contacts": 1.0,
+          "minimum_dist": 5.05240955866711e-06,
+          "left_joint": 2.741500544753581e-06,
+          "right_joint": 2.049319943901494e-06,
+          "left_condim": 0.0,
+          "right_condim": 0.0
+        },
+        "every_step_table": {
+          "path": "/home/ugrp/ugrp-sim/runs/simalt4/final-r3-c312-turn/every-step.csv.zst",
+          "uncompressed_sha256": "8c17be2b4628ae725cd60f45fbf55175b27db74b2256fbb68f443343583b79fb",
+          "compressed_sha256": "ecb5435f6c308a0785fb2de1b8dc8f1ca16b67a4905b651d289e5953f0eecd62",
+          "rows": 16000,
+          "restored_hash_verified": true
+        }
+      },
+      {
+        "reference": "/home/ugrp/ugrp-sim/runs/simalt4/c312-grip",
+        "candidate": "/home/ugrp/ugrp-sim/runs/simalt4/legacy-r3-grip",
+        "case": "grip",
+        "steps": 173600,
+        "dt": 0.00025,
+        "complete": true,
+        "reference_rows": 173600,
+        "candidate_rows": 173600,
+        "candidate_status": "complete",
+        "analysis_script_sha256": "77f050404a7f34127d6b54f3d0c7aa6ed801f189fc42fe73cd7941cf959fee40",
+        "same_MuJoCo_version": false,
+        "C_version": "3.12.0",
+        "candidate_MuJoCo": "3.16.0",
+        "physics_hashes_equal": false,
+        "first_raw_qpos_difference": {
+          "step_1based": 1,
+          "SIM_s": 0.00025
+        },
+        "first_contact_or_constraint_count_difference": {
+          "step_1based": 8,
+          "SIM_s": 0.002
+        },
+        "topology_count_different_steps": 123221,
+        "first_pad_contact_presence_difference": {
+          "step_1based": 53626,
+          "SIM_s": 13.4065
+        },
+        "first_reference_pad_contact": {
+          "step_1based": 53626,
+          "SIM_s": 13.4065
+        },
+        "first_candidate_pad_contact": {
+          "step_1based": 54079,
+          "SIM_s": 13.51975
+        },
+        "reference_max_ncon": 16,
+        "candidate_max_ncon": 17,
+        "reference_max_nefc": 84,
+        "candidate_max_nefc": 87,
+        "candidate_overflow_steps": 0,
+        "candidate_capacities": {
+          "nconmax": 32,
+          "njmax": 256,
+          "naconmax": 32
+        },
+        "base_endpoint_m": 0.01150817243489539,
+        "base_endpoint_deg": 0.2419625488715239,
+        "box_endpoint_m": 0.0032691179499632988,
+        "box_endpoint_deg": 0.316557746715572,
+        "endpoint_pass": false,
+        "reproduce": [
+          "/home/ugrp/ugrp-sim/runs/simalt4/scripts/simalt_step_analysis.py",
+          "--fixture",
+          "/home/ugrp/ugrp-sim/runs/simalt3/fixture",
+          "--reference",
+          "/home/ugrp/ugrp-sim/runs/simalt4/c312-grip",
+          "--candidate",
+          "/home/ugrp/ugrp-sim/runs/simalt4/legacy-r3-grip",
+          "--out",
+          "/home/ugrp/ugrp-sim/runs/simalt4/final-r3-c312-grip"
+        ],
+        "force_semantics": "contact-frame normal and tangential resultant; force API after noslip; no controller feedback",
+        "missing_distance_semantics": "zero if no penetrating contact; consult count before interpreting",
+        "max_abs_difference_by_metric": {
+          "ncon": 5.0,
+          "nefc": 15.0,
+          "overflow": 0.0,
+          "left_contacts": 3.0,
+          "right_contacts": 4.0,
+          "left_min_dist": 0.00017154642998517807,
+          "right_min_dist": 0.0005697615425706799,
+          "left_normal_N": 0.386508237193071,
+          "right_normal_N": 0.9585676011225646,
+          "left_tangent_N": 6.44106665706205,
+          "right_tangent_N": 6.737159847723202,
+          "plane_mesh_contacts": 3.0,
+          "minimum_dist": 0.00025552780709924873,
+          "left_joint": 0.0002659700360982849,
+          "right_joint": 0.0007932985751932407,
+          "left_condim": 3.0,
+          "right_condim": 3.0
+        },
+        "hold": {
+          "samples": 30,
+          "reference_bilateral": 30,
+          "candidate_bilateral": 30,
+          "reference_min_bottom_m": 0.07072687483198156,
+          "candidate_min_bottom_m": 0.07074271301537449,
+          "initial_support_bottom_m": -0.00010775542026314477,
+          "reference_min_lift_clearance_m": 0.0708346302522447,
+          "candidate_min_lift_clearance_m": 0.07085046843563764,
+          "max_abs_height_difference_m": 1.5838183392929972e-05,
+          "reference_pad_force_min_N": [
+            5.203036893381455,
+            5.202633280279191
+          ],
+          "candidate_pad_force_min_N": [
+            5.202431678771973,
+            5.202112197875977
+          ],
+          "height_proposal_pass": true
+        },
+        "every_step_table": {
+          "path": "/home/ugrp/ugrp-sim/runs/simalt4/final-r3-c312-grip/every-step.csv.zst",
+          "uncompressed_sha256": "571ed2e061e6f629c865a03cc60ed54bdfc0575a9d14f305f291ce51eba7ae88",
+          "compressed_sha256": "b310aeb32697bb5b4473976f8aad19822d44c03573981932c65b39484a53e38d",
+          "rows": 173600,
+          "restored_hash_verified": true
+        }
+      }
+    ]
+  },
+  "hold": {
+    "samples": 30,
+    "reference_bilateral": 30,
+    "candidate_bilateral": 30,
+    "reference_min_bottom_m": 0.07072687483198156,
+    "candidate_min_bottom_m": 0.07074271301537449,
+    "initial_support_bottom_m": -0.00010775542026314477,
+    "reference_min_lift_clearance_m": 0.0708346302522447,
+    "candidate_min_lift_clearance_m": 0.07085046843563764,
+    "max_abs_height_difference_m": 1.5838183392929972e-05,
+    "reference_pad_force_min_N": [
+      5.203036893381455,
+      5.202633280279191
+    ],
+    "candidate_pad_force_min_N": [
+      5.202431678771973,
+      5.202112197875977
+    ],
+    "height_proposal_pass": true
+  },
+  "strict_parity_passed": false,
+  "small_scene_behavior_gate_passed": false,
+  "two_robot_beam": {
+    "status": "not_submitted",
+    "reason": "small-scene grip endpoint11.508mm > user proposed5mm"
+  },
+  "throughput": {
+    "N16": null,
+    "N64": null,
+    "N256": null,
+    "SIM_s_per_USD_vs_n4": null,
+    "status": "not_submitted_small_scene_parity_fail",
+    "old_simalt3_rates_not_reused": true
+  },
+  "validation": {
+    "nonphysics_unique_tests_passed": 13,
+    "commands": [
+      "pytest -q tests/test_simalt_step_probe.py tests/test_simalt_pilot.py",
+      "pytest -q tests/test_simalt_step_probe.py tests/test_simalt_host.py tests/test_simalt_numeric_audit.py"
+    ],
+    "native_GPU_compile_only": {
+      "passed": true,
+      "physics_steps": 0
+    },
+    "raw_integrity": {
+      "files": 1690,
+      "passed": 1690,
+      "failed": [],
+      "canonical": true,
+      "writers_active": 0,
+      "supersedes": "collector pre-completion-log snapshot raw-verification.json",
+      "changed_since_collector_snapshot": [
+        "/home/ugrp/ugrp-sim/runs/simalt4/collector.log"
+      ],
+      "manifest": {
+        "stored": "/home/ugrp/ugrp-sim/runs/simalt4/final-evidence/raw-manifest-final.json.zst",
+        "uncompressed_sha256": "a6bd51bad0c476d281af36ed466707d547df497310c8e5a4afb87ee336966e0a",
+        "stored_sha256": "06317bd352792ed739b58a5637811b26fb454bd5158c7d8da56015ed11276e0a",
+        "restored_hash_verified": true
+      }
+    },
+    "local_transfer": {
+      "archive_sha256": "44c296c562c90db434cff6faa5187073f7a3790775f55fe3f9689a46cf0b5bcf",
+      "lite_files_passed": 27,
+      "playback_files_passed": 30,
+      "failed": [],
+      "compressed_restore_verified": [
+        "comparisons.json.zst",
+        "raw-manifest.json.zst",
+        "raw-manifest-final.json.zst"
+      ],
+      "positive_C312_video_sha256_pass": true
+    },
+    "CI": "Draft PR checks not run"
+  }
+}
