@@ -314,9 +314,10 @@ def test_lateral_recovery_regrasp_pwm_setdown_and_reobserve(tmp_path,fake_backen
     assert all(len(v['evaluation']['sweeps'])==2 for v in result['lookaround_result'].values())
 
 
-@pytest.mark.parametrize('failure_robot', ('r1', 'r2', None))
+@pytest.mark.parametrize('failure_robot', ('r1', 'r2', None, 'once_r2'))
 @pytest.mark.parametrize('motion', ('lateral', 'axis'))
-def test_rgb_regrasp_barrier_real_runner(tmp_path,fake_backend,monkeypatch,failure_robot,motion):
+@pytest.mark.parametrize('realign', (False,True))
+def test_rgb_regrasp_barrier_real_runner(tmp_path,fake_backend,monkeypatch,failure_robot,motion,realign):
     from sim import release_global_observation as active
     from sim import release_regrasp as check
     import math
@@ -337,33 +338,65 @@ def test_rgb_regrasp_barrier_real_runner(tmp_path,fake_backend,monkeypatch,failu
     current={}
     def tick(self,*args):
         current['rid']=self.rid
+        current['attempt']=self.attempts[self.rid]
         return original(self,*args)
     monkeypatch.setattr(check.RegraspBarrier,'tick',tick)
     monkeypatch.setattr(check,'lift_evidence',lambda *args:dict(
-        answer='no' if current['rid']==failure_robot else 'yes',reason='fixture_own_rgb'))
+        answer='no' if (current['rid']==failure_robot or
+            (failure_robot=='once_r2' and current['rid']=='r2' and current['attempt']==1)) else 'yes',reason='fixture_own_rgb'))
     monkeypatch.setattr(check,'continuity',lambda *args:dict(answer='yes',reason='fixture_retained'))
+    from sim import release_regrasp_recovery as recovery
+    if realign:
+        original_recovery_tick=recovery.RealignRecovery.tick
+        active_recovery={}
+        def retry_tick(self,*args):
+            active_recovery['value']=self
+            return original_recovery_tick(self,*args)
+        monkeypatch.setattr(recovery.RealignRecovery,'tick',retry_tick)
+        def image_feature(frame):
+            # Deterministic synthetic image receipt exercises the ACTUAL pulse,
+            # scheduler, audit and sequential barrier; pixel extraction tested separately.
+            r=active_recovery['value'];j,goal=recovery.image_jacobian(r.camera,r.teacher.pwm)
+            if not any(e['event']=='image' for e in r.records):
+                goal=goal+j@np.array([.015,0.] if motion=='lateral' else [0.,.10])
+            return dict(valid=True,unclipped=True,center_error=float(goal[0]),slope_error=float(goal[1]),reason='fixture_pixels')
+        monkeypatch.setattr(recovery,'shaft_features',image_feature)
     def forbidden(*a,**kw):raise AssertionError('truth-derived perception')
     monkeypatch.setattr(runner.Eyes,'classify',forbidden)
     plans=json.loads((runner.ROOT/'experiments/2026-10-14-e2e18-grasp-rootcause/release9-diagnostic-plan.json').read_text())
     result=runner.run(plans['episodes'][0],tmp_path/'checked',cap_s=180.,
-        **plans['execution_profile'],regrasp_check=check.OPTION)
+        **plans['execution_profile'],regrasp_check=check.OPTION,
+        regrasp_recovery=recovery.OPTION if realign else 'off')
     assert result['input_audit']['held_world_reads']==result['input_audit']['invisible_measurements']==0
     verification=result['regrasp_verification'][0]
     assert result['regrasp_input_frames'] and verification['samples']
-    if failure_robot:
+    if failure_robot in ('r1','r2'):
         assert result['shift_steps']==0 and not result.get('lateral_motion_commands')
         assert not result.get('axis_motion_commands')
         assert result['release_outcome']==f'regrasp_attempt_cap:{failure_robot}:fixture_own_rgb'
         assert verification['attempts'][failure_robot]==3
         other=next(r for r in ('r1','r2') if r!=failure_robot)
         assert verification['attempts'][other]==1
+        if realign:
+            retried=verification['realign_recoveries']
+            assert len(retried)==2 and all(r['state']=='done' for r in retried)
+            assert all(r['robot']==failure_robot for r in retried)
+            assert all(any(e['event']=='align_pulse' for e in r['events']) for r in retried)
+            assert all(r['events'][0]['event']=='open_then_hover' for r in retried)
     else:
         assert result['release_outcome']=='teacher_done' and result['shift_steps']==1
         assert all(verification['confirmed'].values())
-        assert verification['attempts']=={'r1':1,'r2':1}
+        assert verification['attempts']=={'r1':1,'r2':2 if failure_robot=='once_r2' else 1}
         motion_t=result['lateral_motion_commands' if motion=='lateral' else 'axis_motion_commands'][0]['t']
         confirmed_t=max(r['t'] for r in verification['events'] if r['event']=='confirmed')
         assert motion_t>=confirmed_t+.1-1e-8
+        if realign:
+            if failure_robot=='once_r2':
+                assert len(verification['realign_recoveries'])==1
+                confirmed=[e for e in verification['events'] if e['event']=='confirmed']
+                assert [e['robot'] for e in confirmed]==['r1','r2','r1']
+                assert confirmed[-1]['t']>verification['realign_recoveries'][0]['events'][-1]['t']
+            else:assert verification['realign_recoveries']==[]
 
 
 def test_nbv_runs_after_legacy_budget_then_uses_only_new_own_rgb(tmp_path,fake_backend,monkeypatch):

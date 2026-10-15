@@ -317,9 +317,12 @@ class ReleaseTeacher:
     def reach_mid(self):
         return PAD_MID_M if self.reach_mode == 'pad_window_v2' else REACH_MID_M
 
-    def pick_schedule(self, now):
+    def pick_schedule(self, now, *, xy=None):
         """Re-grasp the own band (visible band preferred): hover, descent, close, lift."""
-        (x, y), _ = self.pick_target(now)
+        # RGB realignment supplies only the fixed issued-command station after
+        # fresh image centering. The legacy target path stays byte-equivalent.
+        if xy is None: (x, y), _ = self.pick_target(now)
+        else: x, y = xy
         grip = solve_grip_site_ik((x, y, GRASP_Z_M)); pitch = tool_pose(grip).pitch_deg
         seq = [(0., {**{k: int(v) for k, v in solve_grip_site_ik((x, y, .095), preferred_pitch_deg=pitch).items() if k in (3, 4, 5, 6)}, 1: 2000})]
         t = 1.2

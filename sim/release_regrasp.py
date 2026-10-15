@@ -72,10 +72,11 @@ class RegraspBarrier:
     """Bounded sequential challenge/retry; only scalar receipts leave it.
 
     capture(rid, now, label) returns the fresh own BGR frame and saves its hash.
-    schedule(rid, sequence, now) issues only that robot's arm commands. All base
-    motion is forbidden by the caller until the epoch's two code ACKs arrive.
+    schedule(rid, sequence, now) issues only that robot's arm commands. Loaded
+    shared motion waits for both code ACKs. An opt-in failed-grip recovery may
+    move only the opened robot, with peer commands fixed and confirmations reset.
     """
-    def __init__(self, teachers, epoch, now, *, wheel_commands):
+    def __init__(self, teachers, epoch, now, *, wheel_commands, recovery_factory=None):
         self.teachers = teachers
         self.robots = tuple(teachers)
         self.epoch = epoch
@@ -93,6 +94,9 @@ class RegraspBarrier:
         self.rid = self.robots[0]
         self.until = now
         self.failure = None
+        self.recovery_factory = recovery_factory
+        self.recovery = None
+        self.recoveries = []
 
     def command(self, rid, now):
         return dict(t=now, pwm=dict(self.teachers[rid].pwm), wheels=list(self.wheel_commands(rid)))
@@ -127,6 +131,23 @@ class RegraspBarrier:
             self.state = 'failed'
             return
         self.attempts[rid] += 1
+        if self.recovery_factory is not None:
+            # Individual open-grip recovery is distinct from shared loaded
+            # transport. Any previous peer confirmation must be tested afresh.
+            self.confirmed = {r:False for r in self.robots}
+            for t in self.teachers.values():t.holding = False
+            self.peer_commands = {r:dict(t.pwm) for r,t in self.teachers.items() if r!=rid}
+            try:
+                self.recovery = self.recovery_factory(self.teachers[rid], now)
+            except ValueError as error:
+                self.failure = f'regrasp_realign_unreachable:{rid}:{error}'
+                self.state = 'failed'
+                return
+            self.recoveries.append(self.recovery)
+            self.records.append(dict(t=now,robot=rid,epoch=self.epoch,
+                attempt=self.attempts[rid],event='retry_realign',reason=reason))
+            self.state = 'realign'
+            return
         try:
             seq, duration = self.teachers[rid].pick_schedule(now)
         except ValueError:
@@ -144,6 +165,30 @@ class RegraspBarrier:
             return 'failed'
         if self.state == 'ready':
             return 'ready'
+        if self.state == 'realign':
+            if any(any(self.wheel_commands(r)) or self.teachers[r].pwm!=p
+                   for r,p in self.peer_commands.items()):
+                self.failure = 'regrasp_partner_command_during_realign'
+                self.state = 'failed'
+                return 'failed'
+            status = self.recovery.tick(now,capture,schedule)
+            if status == 'failed':
+                self.failure = self.recovery.failure+':'+rid
+                self.state = 'failed'
+                return 'failed'
+            if status == 'ready':
+                if any(any(self.wheel_commands(r)) for r in self.robots):
+                    self.failure = 'regrasp_base_command_before_retry'
+                    self.state = 'failed'
+                    return 'failed'
+                try:seq,duration = self.teachers[rid].pick_schedule(now,xy=self.recovery.xy)
+                except ValueError:
+                    self.failure = f'regrasp_retry_unreachable:{rid}'
+                    self.state = 'failed'
+                    return 'failed'
+                schedule(rid,seq,now)
+                self.state,self.until = 'retry_wait',now+duration
+            return 'pending'
         if any(any(self.wheel_commands(r)) for r in self.robots):
             self.failure = 'regrasp_base_command_during_verification'
             self.state = 'failed'
@@ -224,4 +269,5 @@ class RegraspBarrier:
         return dict(epoch=self.epoch, attempts=dict(self.attempts), confirmed=dict(self.confirmed),
             failure=self.failure, events=copy.deepcopy(self.records), samples=copy.deepcopy(self.samples),
             answer_counts=dict(self.answers), rejection_reasons=dict(self.rejections),
+            **({'realign_recoveries':[r.record() for r in self.recoveries]} if self.recovery_factory else {}),
             physical_validation='unverified; own RGB hypothesis only')

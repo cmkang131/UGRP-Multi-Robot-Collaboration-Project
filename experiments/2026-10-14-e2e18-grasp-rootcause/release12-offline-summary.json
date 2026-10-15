@@ -1,0 +1,164 @@
+{
+  "source_parent": "c9ba20a605c1c4117d553550268c20fa6ac2c3a3",
+  "scope": "offline; no physics/render/remote-host access or submission",
+  "tests": {
+    "files": 2,
+    "passed": 46,
+    "failures": 0,
+    "errors": 0,
+    "seconds": 63.579,
+    "junit": "outputs/release12-review/tests.xml",
+    "junit_sha256": "d742a9e27331f6f3864e9f61b16859d57f7c809097d831a00fd46e50c252866b"
+  },
+  "input_audit": {
+    "scope": "clock-only actual runner with truth-perception forbidden; physical audit not rerun",
+    "invisible_measurements": 0,
+    "held_world_reads": 0
+  },
+  "replay": {
+    "success74940": {
+      "mode": "saved RGB verdict and issued command receipt replay",
+      "epochs": 3,
+      "robot_checks": 6,
+      "behavior_changes": 0,
+      "recovery_calls": 0,
+      "missing_input_jpegs": 96,
+      "pixel_classifier_rerun": false
+    },
+    "failure74963": {
+      "mode": "original own JPEG + issued command replay to first branch",
+      "verified_input_jpegs": 72,
+      "branch_world_sim_s": 39.7,
+      "post_branch_physics": "unmeasured"
+    }
+  },
+  "visual_review": {
+    "seed": 74963,
+    "frames": 33,
+    "overview_own_times": 8,
+    "regrasp_inputs": 9,
+    "world_sim_range": [
+      10.1,
+      67.1
+    ]
+  },
+  "prior_physical_runs": [
+    {
+      "seed": 74940,
+      "sha": "c9ba20a605c1c4117d553550268c20fa6ac2c3a3",
+      "success": true,
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release11-diag-00-c9ba20a6/raw",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      }
+    },
+    {
+      "seed": 74963,
+      "sha": "c9ba20a605c1c4117d553550268c20fa6ac2c3a3",
+      "success": false,
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release11-diag-01-c9ba20a6/raw",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      }
+    }
+  ],
+  "source_hashes": {
+    "sim/release_regrasp.py": "81b7b72d3fff7743d4669bf3e374996f3c25b7dbde0e097fc5754ddd6c599d03",
+    "sim/release_regrasp_recovery.py": "c3d289f149723cbf9fa6543d3326076eb6fbbf66b4c5cb9b758f2b0f2fb9f4fc",
+    "sim/grasp_act_release_teacher.py": "5684d9df13a6a2d02a242fe9165dd353f9fcfa88387018b9b21de05567cccbc0",
+    "scripts/run_grasp_act_release.py": "cef72637982bbfd3ac0d68376f4ef76683f5a9efc679499fd86e721e7ec74503",
+    "tests/test_release_regrasp.py": "a60779376f5377d93d63621c9e7766bbda025f38e049f21912e83bfcc5819f15",
+    "tests/test_grasp_act_release_run.py": "99985abf9019637ba396cae01b96c5b85a15a178ebdd3aa4f37fadd2ce5efd67",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/analyze_release12.py": "40642a4ed55c6fb17e8d01bef2058d8d37c9e4154c401188c9ed07ceedae9883",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/register_release12_queue.py": "77cfa8a594de66ed54b9c712e0c6ed2db4854a01cffdb624df22e717676a3386",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/release12-diagnostic-plan.json": "9f4c922443c65615bf56537b7f871815b7f8ebff6fea8b2d5b46920551c3a1d7",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/release12-gate-plan.json": "136e2ceaaaef5b26546ecf4d1527743eaad8f768dd3bbdaef61fd7fdace81c9a",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/release12-replay.json": "a615d2b88d4be77b9d42bd1860876b7231e2549e0ba73800ccb97db477cf82e3",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/release12-seed-reservation.json": "3ec304bc3c28dad9d7b9780d28f52eab4112c339e4d391761e041076f6f5e7d6",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/release12.md": "d503aac9b6e5127d9683399444906d2c500d6bba4f0af859393cf28d888a56bb"
+  },
+  "new_runs": [],
+  "pending": [
+    "74940 original JPEG pixel replay",
+    "candidate reproduction2",
+    "fresh7",
+    "coordinator gate40 approval"
+  ],
+  "endpoint_alert_check": "local last-alerts.json and check-failures.json absent at task start; no model batch",
+  "queue": {
+    "reproduce": [
+      74940,
+      74963
+    ],
+    "fresh": [
+      74980,
+      74981,
+      74982,
+      74983,
+      74984,
+      74985,
+      74986
+    ],
+    "gate": [
+      74200,
+      74201,
+      74202,
+      74203,
+      74204,
+      74205,
+      74206,
+      74207,
+      74208,
+      74209,
+      74210,
+      74211,
+      74212,
+      74213,
+      74214,
+      74215,
+      74216,
+      74217,
+      74218,
+      74219,
+      74220,
+      74221,
+      74222,
+      74223,
+      74224,
+      74225,
+      74226,
+      74227,
+      74228,
+      74229,
+      74230,
+      74231,
+      74232,
+      74233,
+      74234,
+      74235,
+      74236,
+      74237,
+      74238,
+      74239
+    ],
+    "gate_promotion_authorized_if_all_conditions_pass": false
+  },
+  "test_history": [
+    {
+      "tests": 36,
+      "passed": 35,
+      "failed": 1,
+      "note": "static-image fixture reached motion cap before no-progress cap; smaller static error fixture isolates no-progress path"
+    },
+    {
+      "tests": 42,
+      "passed": 42
+    },
+    {
+      "tests": 46,
+      "passed": 46
+    }
+  ]
+}
