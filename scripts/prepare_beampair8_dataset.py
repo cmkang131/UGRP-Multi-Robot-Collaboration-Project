@@ -75,6 +75,8 @@ def audit_run(run):
             local_rows=sum(len(g) for g in groups),segments=len(groups),
             perturbation_rows_excluded=sum(l['perturbation_interval'] for l in labels),
             completion_targets=sum(l['done'] for l in labels),max_period_error_s=max_error,
+            full_issued_history_exact=True,rgb_lag_selection_exact=True,
+            frame_sha_resolution_clock_verified=True,forbidden_student_fields=0,
             first_t=observations[0]['t'],last_t=observations[-1]['t'],visibility=dict(vis),
             visibility_by_phase={k:dict(v) for k,v in by_phase.items()}))
     return dict(seed=plan['seed'],path=str(run),actors=totals,success=True),montage
@@ -176,6 +178,22 @@ def main():
         del loaded
         report['dataset']['archive']=archive_dataset(a.output/'dataset')
         report['dataset']['path']=report['dataset']['archive']['path']
+    # First dataset and the raw sources actually used by it are milestone
+    # evidence. Change only outer administrative metadata, never raw manifests.
+    # Parent milestone protects nested native dev markers in evidence_prune.
+    retained=[]
+    representatives={8328015,8328010,8328003}
+    for row in done['completed']:
+        if not row['admitted'] and row['seed'] not in representatives:continue
+        path=Path(row['path'])/'RUN_META.json';before=read_json(path)
+        old_sha=sha256(path)
+        after={**before,'class':'milestone','execution_class':before.get('class'),
+            'preservation_reason':'first ACT beam-pair dataset source' if row['admitted'] else 'representative failed teacher video',
+            'dataset_root':str(a.output)}
+        write_json(path,after)
+        retained.append(dict(path=str(path),before=before,before_sha256=old_sha,after_sha256=sha256(path)))
+    write_json(a.output/'evidence-retention.json',dict(raw_content_modified=False,outer_meta_promotions=retained,
+        scope='all accepted first-dataset sources + two inspected failures; other run class remains dev'))
     # Unique-inode footprint separates hardlinked images from logical bytes.
     seen=set();physical=0;logical=0;manifest=[]
     roots=[Path(r['path']) for r in done['completed']]

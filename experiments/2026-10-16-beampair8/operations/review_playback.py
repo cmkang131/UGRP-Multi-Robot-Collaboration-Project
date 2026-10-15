@@ -142,7 +142,7 @@ def review(raw, out):
             selected = items[start:start + 24]
             sheet = Image.new('RGB', (1920, 44 + 136 * 6))
             draw = ImageDraw.Draw(sheet)
-            draw.text((5, 5), f'{raw.parent.name} {name} {hz}Hz | saved qpos / calibrated own cameras | evaluation only', fill='white')
+            draw.text((5, 5), f'{raw.parent.name} {name} {hz}Hz | native own RGB + EVAL qpos overview', fill='white')
             for j, (t, canvas) in enumerate(selected):
                 sheet.paste(canvas.resize((480, 136)), ((j % 4) * 480, 44 + (j // 4) * 136))
             path = out / f'{name}-{page + 1:02d}.jpg'
@@ -159,7 +159,8 @@ def review(raw, out):
         sources.append(p if p.exists() else Path(str(p)+'.zst'))
     result = dict(raw=str(raw), seed=plan['seed'], roles=plan['roles'],
         original_own_rgb_frames_used=original_used,
-        original_failure_tail_root=str(ring_root) if originals else None,
+        original_failure_tail_root=str(ring_root) if ring['frames'] else None,
+        original_student_rgb_root=str(raw/'rgb'),
         assignment_source=plan['assignment_source'], origin_world_t=origin,
         duration_sim_s=duration, saved_eval_rows=len(rows), max_body_xyz_error_m=max_body_error,
         video=str(video), video_bytes=video.stat().st_size, ffprobe=probe,
