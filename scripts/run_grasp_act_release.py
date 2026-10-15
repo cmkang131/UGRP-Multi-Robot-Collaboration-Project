@@ -167,8 +167,12 @@ def own_end_world(world,inst,end):
 
 
 def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe_mode='gaze_v2',render_dr='off',
-        zone_slots='floor',reach_mode='calibrated_mid_v1',held_object='visible_v0',lookaround='off',pose_anchor='legacy_truth_v0',placement='margin_v0',lateral_recovery='off',active_recovery='off',command_motion='off',localization_support='off',regrasp_check='off',regrasp_recovery='off',release_profile='off',release_fov_step='off',release_settle_reuse='off',release_goal_region='off',release20_settle='off',release21='off',review_top='on',record_training=False):
-    release21_control.validate(release_profile,record_training,locals(),plan)
+        zone_slots='floor',reach_mode='calibrated_mid_v1',held_object='visible_v0',lookaround='off',pose_anchor='legacy_truth_v0',placement='margin_v0',lateral_recovery='off',active_recovery='off',command_motion='off',localization_support='off',regrasp_check='off',regrasp_recovery='off',release_profile='off',release_fov_step='off',release_settle_reuse='off',release_goal_region='off',release20_settle='off',release21='off',review_top='on',record_training=False,recording_adapter='off'):
+    from harness.grasp_act_release_recording import validate as validate_recording
+    # The legacy flag is deliberately still rejected by release14. The explicit
+    # observation adapter validates separately, then uses the unchanged gate.
+    release21_control.validate(release_profile,record_training if recording_adapter=='off' else False,locals(),plan)
+    validate_recording(recording_adapter,record_training,locals())
     if review_top not in ('on', 'off'):raise ValueError('unknown review_top')
     release19_enabled=release_profile==release19.PROFILE
     release18_enabled=release_profile in (release18.PROFILE,release19.PROFILE)
@@ -242,7 +246,9 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
         'loadavg_at_start':os.getloadavg(),'release_success':None,'prefix_held':None}
     if not line_guard:
         report.pop('release_profile');report.pop('training_exclusions')
-    write(out/'result.json',report);world=None;start=time.monotonic();streams=[];origin=0.
+    if record_training:
+        report.update(training_rgb=True,recording_mode='training',training_include=False)
+    write(out/'result.json',report);world=None;start=time.monotonic();streams=[];origin=0.;recorder=None
     try:
         os.environ['UGRP_SIM_OBSERVER_WIDTH']='320';os.environ['UGRP_SIM_OBSERVER_HEIGHT']='240'
         scene=make_scene(plan)
@@ -281,7 +287,9 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
         object_bodies={c.item_id:c.body for c in scene.cargo if c.item_id!='beam_1'}
         object_bodies.update({i:c['body_name'] for i,c in scene.config['setup_only']['objects'].items()})
         ev=(out/'eval-only.jsonl').open('w');streams.append(ev)
-        labels={rid:(out/f'teacher-{rid}.jsonl').open('w') for rid in roles};streams+=labels.values()
+        label_root=out/'teacher-raw' if record_training else out
+        label_root.mkdir(exist_ok=True)
+        labels={rid:(label_root/f'teacher-{rid}.jsonl').open('w') for rid in roles};streams+=labels.values()
         (out/'eval-overview').mkdir()
         for rid in roles:(out/'eval-own'/rid).mkdir(parents=True)
         def frames(i,tag):
@@ -502,9 +510,13 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
             return RealignRecovery(teacher,now,camera=loc[teacher.rid].camera,
                 undistort=loc[teacher.rid].vl.mp.undistort,
                 wheel_command=lambda rid,w,d,at:wheels[rid].command(w,d,at))
+        if record_training:
+            from harness.grasp_act_release_recording import ReleaseRecorder
+            recorder=ReleaseRecorder(out,plan,rel,wheels,float(world.data.time))
         k=0;outcome=None;done_at=None
         while float(world.data.time)-origin<cap_s:
             now=float(world.data.time);tick_t=now;ph=st['phase'];age=now-st['since']
+            training_images=recorder.capture(world) if recorder is not None else None
             track_commands(now)
             fine=ph in ('look','observe')
             for rid,t in rel.items():t.phase=ph;t.perceive(observe(rid,now,fine),now)
@@ -794,7 +806,12 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
                     st.update(phase='done',since=now);done_at=now
             elif ph=='done':
                 run_sched(now)
-                if age>=DELIVERY_WAIT_S:outcome='teacher_done';break
+                if age>=DELIVERY_WAIT_S:
+                    if recorder is not None:
+                        recorder.target(now,training_images,phase=ph,phase_after=st['phase'],teachers=rel,wheels=wheels,complete=True)
+                    outcome='teacher_done';break
+            if recorder is not None:
+                recorder.target(now,training_images,phase=ph,phase_after=st['phase'],teachers=rel,wheels=wheels)
             for rid,t in rel.items():
                 labels[rid].write(json.dumps({'t':now,'skill':'release','object_kind':'long_beam','role':roles[rid],
                     **({'training_eligible':False,'training_exclusion':('measurement_only_release' if fov_guard else 'measurement_only_release_prefix_excluded')} if line_guard else {}),
@@ -823,6 +840,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
                 'robots':{r:truth['robots'][r] for r in roles}})+'\n')
         steps=st['steps']
         report['release_outcome']=outcome or 'release_timeout'
+        if outcome is None:report['termination']='cap_end'
         # ---------------- evaluation (truth) ----------------
         checks=[]
         for j in range(int((SUCCESS['settle_s']+.5)/.1)):
@@ -872,6 +890,9 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
         report.update(status='HOST_ERROR' if not isinstance(error,KeyboardInterrupt) else 'interrupted',error_type=type(error).__name__,error=str(error))
         raise
     finally:
+        if recorder is not None:
+            recorder.close();report['recording']=recorder.record()
+            write(out/'recording-manifest.json',report['recording'])
         report['wall_s']=time.monotonic()-start;report['sim_s']=None if world is None else float(world.data.time)-origin
         report['loadavg_at_end']=os.getloadavg();report['input_audit']={**audit.record(),**top_audit.record()}
         if line_guard:
@@ -902,7 +923,8 @@ def main():
     p.add_argument('--release-goal-region',choices=release18.GOAL_MODES,default='off',help='inside_margins_v1 (release18/release19 only): stop extra centering when both RGB margin reports satisfy the existing 4 cm inside condition')
     p.add_argument('--release-settle-reuse',choices=release18.REUSE_MODES,default='off',help='settled_command_v1 (release18/release19 only): reuse unchanged open/hover commands after reapproach; fresh RGB alignment remains mandatory')
     p.add_argument('--release-fov-step',choices=release17.FOV_STEPS,default='off',help='release_fov_step_pulse_v1 (release17/18 profile only): FOV recovery by one 0.1 s level-0.35 pulse, one 0.15 s escalation, then fail')
-    p.add_argument('--record-training',action='store_true',help='fail closed: safe profile and future verified gate/writer required')
+    p.add_argument('--record-training',action='store_true',help='native ACT12 observation-only writer; requires explicit recording adapter')
+    p.add_argument('--recording-adapter',choices=('off','act12_observer_v1'),default='off')
     p.add_argument('--own-pose-source',choices=('commands','truth_comparison'),default='commands')
     p.add_argument('--pose-anchor',choices=POSE_ANCHOR_MODES,default='legacy_truth_v0',help='command_relative_v1: no truth handoff anchor; map pose unknown, own-command sweep only')
     p.add_argument('--placement',choices=PLACEMENT_MODES,default='margin_v0',help='zone_center_rgb_v1: local RGB rectangle centering; no world anchor')
@@ -920,5 +942,5 @@ def main():
     p.add_argument('--lookaround',choices=LOOKAROUND_MODES,default='off',help='setdown_lookaround_v1: after the backoff step, look toward static-map landmarks chosen from the own pose estimate (640x480 own camera)');a=p.parse_args()
     if not 0<a.cap_s<=180:raise ValueError('finite cap required')
     plan=json.loads(a.plan.read_text())['episodes'][a.episode]
-    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,own_pose_source=a.own_pose_source,observe_mode=a.observe_mode,render_dr=a.render_dr,zone_slots=a.zone_slots,reach_mode=a.reach_mode,held_object=a.held_object,lookaround=a.lookaround,pose_anchor=a.pose_anchor,placement=a.placement,lateral_recovery=a.lateral_recovery,active_recovery=a.active_recovery,command_motion=a.command_motion,localization_support=a.localization_support,regrasp_check=a.regrasp_check,regrasp_recovery=a.regrasp_recovery,release_profile=a.release_profile,release_fov_step=a.release_fov_step,release_settle_reuse=a.release_settle_reuse,release_goal_region=a.release_goal_region,release20_settle=a.release20_settle,release21=a.release21,review_top=a.review_top,record_training=a.record_training),ensure_ascii=False,default=str))
+    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,own_pose_source=a.own_pose_source,observe_mode=a.observe_mode,render_dr=a.render_dr,zone_slots=a.zone_slots,reach_mode=a.reach_mode,held_object=a.held_object,lookaround=a.lookaround,pose_anchor=a.pose_anchor,placement=a.placement,lateral_recovery=a.lateral_recovery,active_recovery=a.active_recovery,command_motion=a.command_motion,localization_support=a.localization_support,regrasp_check=a.regrasp_check,regrasp_recovery=a.regrasp_recovery,release_profile=a.release_profile,release_fov_step=a.release_fov_step,release_settle_reuse=a.release_settle_reuse,release_goal_region=a.release_goal_region,release20_settle=a.release20_settle,release21=a.release21,review_top=a.review_top,record_training=a.record_training,recording_adapter=a.recording_adapter),ensure_ascii=False,default=str))
 if __name__=='__main__':main()

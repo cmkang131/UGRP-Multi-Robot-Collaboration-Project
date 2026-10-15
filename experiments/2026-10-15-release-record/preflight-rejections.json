@@ -1,0 +1,29 @@
+{
+  "schema": "ugrp.rel22adapt.preflight_rejections.v1",
+  "source": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/rel22rec-record-46afd8b0-preflight.json",
+  "attempted_simulations": 0,
+  "counts": [
+    {
+      "category": "missing_command",
+      "blocked_runs": 60,
+      "blocker_name": "queue.jobs[].runs[].command",
+      "minimum_gap_m": null,
+      "gap_reason": "not a spatial rejection"
+    },
+    {
+      "category": "adapter_unimplemented",
+      "blocked_runs": 60,
+      "blocker_name": "recording_adapter",
+      "minimum_gap_m": null,
+      "gap_reason": "not a spatial rejection"
+    },
+    {
+      "category": "legacy_record_training_guard",
+      "blocked_runs": 60,
+      "blocker_name": "sim/release14.py:validate",
+      "minimum_gap_m": null,
+      "gap_reason": "not a spatial rejection"
+    }
+  ],
+  "overlap": "same 60 runs; categories are not additive"
+}
