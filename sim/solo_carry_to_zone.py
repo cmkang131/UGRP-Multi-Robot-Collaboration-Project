@@ -154,7 +154,7 @@ class RGBCommandPose:
 class CarryToZone:
     def __init__(self, static, zone, *, start=None, now=0., robot_id='r1', amcl_option='off', recovery_profile='off', drive_model_deadband_v1=False,
                  carry5_rank_aware_views_v1=False, carry5_trim_yaw_calibration_v1=False, trim_calibration=None,
-                 carry7_robust_recovery_v1=False):
+                 carry7_robust_recovery_v1=False, reloc9_rotation_calibration_v1=False):
         if recovery_profile not in ('off', 'carry5_active_localization_v1'):
             raise ValueError('unknown carry recovery profile')
         self.recovery_profile = recovery_profile
@@ -195,7 +195,8 @@ class CarryToZone:
                                map_sha256=self.map_sha256, amcl_option=amcl_option,
                                drive_model_deadband_v1=drive_model_deadband_v1,
                                carry5_trim_yaw_calibration_v1=carry5_trim_yaw_calibration_v1,
-                               trim_calibration=trim_calibration)
+                               trim_calibration=trim_calibration,
+                               reloc9_rotation_calibration_v1=reloc9_rotation_calibration_v1)
 
     def issue(self, issued, dt):
         self.loc.issue(issued, dt)

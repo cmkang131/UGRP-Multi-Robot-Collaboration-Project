@@ -167,7 +167,8 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
                                 carry5_rank_aware_views_v1=plan.get('carry5_rank_aware_views_v1', False),
                                 carry5_trim_yaw_calibration_v1=plan.get('carry5_trim_yaw_calibration_v1', False),
                                 trim_calibration=plan.get('trim_calibration'),
-                                carry7_robust_recovery_v1=plan.get('carry7_robust_recovery_v1', False))
+                                carry7_robust_recovery_v1=plan.get('carry7_robust_recovery_v1', False),
+                                reloc9_rotation_calibration_v1=plan.get('reloc9_rotation_calibration_v1', False))
             if carry.loc.drive_model_enabled:
                 ops.delta = carry.loc.cached_delta
                 ops.propagate = carry.loc.propagate_point
@@ -180,7 +181,8 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
                                 carry5=carry is not None and carry.active_recovery,
                                 carry5_rank_aware_views_v1=plan.get('carry5_rank_aware_views_v1', False),
                                 carry7_robust_recovery_v1=plan.get('carry7_robust_recovery_v1', False),
-                                active_relocalization=plan.get('active_relocalization', 'off'))
+                                active_relocalization=plan.get('active_relocalization', 'off'),
+                                reloc9_wall_height_guard_v1=plan.get('reloc9_wall_height_guard_v1', False))
         look_eval = {'views': []}
 
         def truth_pose():
@@ -241,7 +243,8 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
                               rgb_lift_mode=rgb_lift_mode,
                               solo_lift_negative_probe_v1=solo_lift_negative_probe_v1,
                               solo_lift_lookback_margin_v1=solo_lift_lookback_margin_v1,
-                              solo_carry_to_zone_v1=solo_carry_to_zone_v1, carry=carry)
+                              solo_carry_to_zone_v1=solo_carry_to_zone_v1, carry=carry,
+                              reloc9_reacquisition_v1=plan.get('reloc9_reacquisition_v1', False))
         if rgb_lift_mode == 'solo_lift_lookback_v1':
             from sim.grasp_act_solo_lookback import LookbackObserver
             lift_observer = LookbackObserver(plan['kind'], propagate=ops.propagate) if carry is not None and carry.active_recovery else LookbackObserver(plan['kind'])
@@ -580,13 +583,16 @@ def validate_carry(plan, *, enabled, training_rgb, truth_free, lift, negative):
         raise ValueError('unknown carry5 profile')
     if plan.get('carry5_profile') == 'carry5_active_localization_v1' and plan.get('drive_model_deadband_v1') is not True:
         raise ValueError('carry5 requires the merged shared drive_model_deadband_v1')
-    for option in ('carry5_rank_aware_views_v1', 'carry5_trim_yaw_calibration_v1', 'carry7_robust_recovery_v1'):
+    for option in ('carry5_rank_aware_views_v1', 'carry5_trim_yaw_calibration_v1', 'carry7_robust_recovery_v1',
+                   'reloc9_rotation_calibration_v1', 'reloc9_wall_height_guard_v1', 'reloc9_reacquisition_v1'):
         if type(plan.get(option, False)) is not bool:
             raise ValueError(option+' must be bool')
         if plan.get(option) and plan.get('carry5_profile') != 'carry5_active_localization_v1':
             raise ValueError(option+' requires carry5 recovery')
     if plan.get('carry7_robust_recovery_v1') and plan.get('carry5_rank_aware_views_v1') is not True:
         raise ValueError('carry7 requires carry6 rank-aware views')
+    if plan.get('reloc9_reacquisition_v1') and not plan.get('carry7_robust_recovery_v1'):
+        raise ValueError('reloc9 search requires carry7 safety')
     from harness.active_relocalization import validate
     validate(plan.get('active_relocalization', 'off'))
     if plan.get('active_relocalization', 'off') != 'off' and plan.get('carry7_robust_recovery_v1') is not True:

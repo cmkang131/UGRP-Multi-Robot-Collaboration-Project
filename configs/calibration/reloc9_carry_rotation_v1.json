@@ -1,0 +1,174 @@
+{
+  "schema": "ugrp.reloc9_rotation.v1",
+  "yaw_scale": 0.5752851596541013,
+  "drive_model_sha256": "801e23200b6942d51345b2c13ddc6e8a322c2ceab240b6d23206579a19810720",
+  "calibration_ids": [
+    "solo-carry-93261-8c6f219c:39.5-54.2",
+    "solo-carry-93261-8c6f219c:58.0-65.6",
+    "solo-carry-93261-8c6f219c:69.5-77.1",
+    "solo-carry-93261-8c6f219c:81.0-95.7",
+    "solo-carry-93261-8c6f219c:97.8-105.4",
+    "solo-carry-93261-8c6f219c:109.3-116.9",
+    "solo-carry-93261-8c6f219c:119.0-133.7",
+    "solo-carry-93261-8c6f219c:137.6-145.2",
+    "solo-carry-93261-8c6f219c:149.1-156.7",
+    "solo-carry-93261-8c6f219c:160.6-175.3",
+    "solo-carry-93261-8c6f219c:177.4-185.0",
+    "solo-carry-93261-8c6f219c:188.9-196.5",
+    "solo-carry-93261-0459c03c:39.5-43.6",
+    "solo-carry-93261-0459c03c:45.6-49.7",
+    "solo-carry-93261-0459c03c:51.7-55.8",
+    "solo-carry-93261-0459c03c:57.8-65.4",
+    "solo-carry-93261-0459c03c:69.5-77.1",
+    "solo-carry-93261-0459c03c:79.2-83.3",
+    "solo-carry-93261-0459c03c:85.4-93.0",
+    "solo-carry-93261-0459c03c:95.1-102.7",
+    "solo-carry-93261-0459c03c:104.8-108.9",
+    "solo-carry-93261-0459c03c:111.0-118.6",
+    "solo-carry-93261-0459c03c:122.8-123.5",
+    "solo-carry-93261-0459c03c:151.0-158.6",
+    "solo-carry-93261-0459c03c:160.7-168.3",
+    "solo-carry-93261-0459c03c:170.4-178.0",
+    "solo-carry-93261-0459c03c:180.1-187.7"
+  ],
+  "validation_ids": [
+    "solo-carry-93262-0459c03c:26.5-34.1",
+    "solo-carry-93262-0459c03c:36.1-40.2",
+    "solo-carry-93262-0459c03c:82.6-90.2",
+    "solo-carry-93262-0459c03c:92.3-99.9",
+    "solo-carry-93262-0459c03c:102.0-109.6",
+    "solo-carry-93262-0459c03c:111.7-126.4",
+    "solo-carry-93262-0459c03c:130.5-137.6",
+    "solo-carry-93262-0459c03c:140.2-142.0",
+    "solo-carry-93262-0459c03c:143.3-147.0",
+    "solo-carry-93262-0459c03c:148.3-150.0",
+    "solo-carry-93266-d9e0073f:24.4-32.0",
+    "solo-carry-93266-d9e0073f:34.0-41.6",
+    "solo-carry-93266-d9e0073f:42.6-48.9",
+    "solo-carry-93266-d9e0073f:50.9-58.5",
+    "solo-carry-93266-d9e0073f:60.4-62.6"
+  ],
+  "method": "zero-intercept least squares on signed pure-turn segment yaw; no RGB fix in segment",
+  "scope": "v7 steady-state carry pure equal-duration turn only; mixed/XY unchanged; holdout is replay, not new physics",
+  "residual_rotation_fraction": 0.4920507586142564,
+  "sources": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93261-8c6f219c/raw/result.json.zst",
+      "sha256": "1617d3cd5cd6ebe686365cd7dd33721d252dbb44ed4fae00ce5da5b5e726d484",
+      "decoded_sha256": "562310b8ac3ea00a4a4cdb46142508d6d4bce0742fc687a2033797a0e7c7f631"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93261-0459c03c/raw/result.json",
+      "sha256": "86e3322b00ee9e49225056b3571d0da71408586aa64e2eacc916a798136ce6df",
+      "decoded_sha256": "86e3322b00ee9e49225056b3571d0da71408586aa64e2eacc916a798136ce6df"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93262-0459c03c/raw/result.json.zst",
+      "sha256": "d945ebe24dd9d7301cf4bb2f923c5c2707f1b2dd41b9e7aa746753c77a3dbcb1",
+      "decoded_sha256": "493b7bfbb9163b4c6eb5f122e03233ad1fb12091c5bb63c43e20e5fbe50f50ad"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93266-d9e0073f/raw/result.json",
+      "sha256": "ceeb4a7b4d35324d0d4db956b59ca271837650e2042d57e858508e37cd0f552e",
+      "decoded_sha256": "ceeb4a7b4d35324d0d4db956b59ca271837650e2042d57e858508e37cd0f552e"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93261-8c6f219c/raw/teacher-commands.jsonl.zst",
+      "sha256": "b2dfed941ad66619091c8ddfc5d5a68b0e6d22978b76c4fcbdff901790c2fbbc",
+      "decoded_sha256": "2339933b771a4305e92e21cecb593fc5fe23c311aea7cc091d5f3e44cd3d077c"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93261-8c6f219c/raw/eval-only.jsonl.zst",
+      "sha256": "4c99a24fd6c77f9ec531393226fde13c7d479237344c8f24b1ddd9d4f91d1001",
+      "decoded_sha256": "143f2b3b381911663d35d70d1310ab10564b7738c1891c860307180e5d108495"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93261-0459c03c/raw/teacher-commands.jsonl.zst",
+      "sha256": "78660690f9a40ecaac31fb2a09b38164989a2f03af00c788669a32ed4bbd486b",
+      "decoded_sha256": "b331e80b1219d39d7b87c4297e7b5d3dc76156a7295de9b68159b696f8fb8a70"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93261-0459c03c/raw/eval-only.jsonl.zst",
+      "sha256": "4e325650f1efe121918405737ba81a49e9fcbf3e92ffc8618ed73750437a0a34",
+      "decoded_sha256": "dfeabbf060a691cc597921c3c38477968e99aee522ce34e7eabe27d9fd82bd27"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93262-0459c03c/raw/teacher-commands.jsonl.zst",
+      "sha256": "504af1a3aaf5cf6870cf37f5a43071b54e5db3ad3f67a2033ff5624cc7e86d4b",
+      "decoded_sha256": "3766b9580bf3c8cd73c06b821200e056590d1687a070ba8ccedfe70483eb7f5b"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93262-0459c03c/raw/eval-only.jsonl.zst",
+      "sha256": "1dca8256a151f45dacc7b4048bbb52adefcd758b66753e280bec23be201b190c",
+      "decoded_sha256": "f79f431280430e02ea8a9a5c4e3daaca693409ebbe704c2237d5f9152fda7e5f"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93266-d9e0073f/raw/teacher-commands.jsonl.zst",
+      "sha256": "2fd156f09e4402343577a5e5849e06f8f4f7740e3062e96a20b5ac90cdba06f6",
+      "decoded_sha256": "e77cae8b8bfe59500a9a2534a33a639135ddf195aac160bfc939a4e8d1a75acf"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93266-d9e0073f/raw/eval-only.jsonl.zst",
+      "sha256": "2a85e781f22fca01332c7adda9841b6fed810cbe5c8059f23715c1d59f57d3f3",
+      "decoded_sha256": "b6cab5338fe6ce9f080725e36fffe6d55b5e7cf2684de12182158ce4aa0c3cd2"
+    }
+  ],
+  "source_runs": [
+    {
+      "run": "solo-carry-93261-8c6f219c",
+      "source_sha": "8c6f219cb39595a877fc0af487b3ea7e9fefb27f",
+      "status": "complete",
+      "host": {
+        "provider": "gcp",
+        "project_id": "ugrp-act-train-1014",
+        "instance": "ugrp-sim-gcp1",
+        "machine_type": "n4-highcpu-64",
+        "zone": "asia-northeast3-a",
+        "cpu_count": 64,
+        "schema": "ugrp.grasp_act.host.v1"
+      }
+    },
+    {
+      "run": "solo-carry-93261-0459c03c",
+      "source_sha": "0459c03c15dfad0ab7016fa2a15050ffc2d3ccd7",
+      "status": "interrupted",
+      "host": {
+        "provider": "gcp",
+        "project_id": "ugrp-act-train-1014",
+        "instance": "ugrp-sim-gcp1",
+        "machine_type": "n4-highcpu-64",
+        "zone": "asia-northeast3-a",
+        "cpu_count": 64,
+        "schema": "ugrp.grasp_act.host.v1"
+      }
+    },
+    {
+      "run": "solo-carry-93262-0459c03c",
+      "source_sha": "0459c03c15dfad0ab7016fa2a15050ffc2d3ccd7",
+      "status": "complete",
+      "host": {
+        "provider": "gcp",
+        "project_id": "ugrp-act-train-1014",
+        "instance": "ugrp-sim-gcp1",
+        "machine_type": "n4-highcpu-64",
+        "zone": "asia-northeast3-a",
+        "cpu_count": 64,
+        "schema": "ugrp.grasp_act.host.v1"
+      }
+    },
+    {
+      "run": "solo-carry-93266-d9e0073f",
+      "source_sha": "d9e0073f5db51cde78f571aeb1ce91ad44d23eaa",
+      "status": "complete",
+      "host": {
+        "provider": "gcp",
+        "project_id": "ugrp-act-train-1014",
+        "instance": "ugrp-sim-gcp1",
+        "machine_type": "n4-highcpu-64",
+        "zone": "asia-northeast3-a",
+        "cpu_count": 64,
+        "schema": "ugrp.grasp_act.host.v1"
+      }
+    }
+  ]
+}

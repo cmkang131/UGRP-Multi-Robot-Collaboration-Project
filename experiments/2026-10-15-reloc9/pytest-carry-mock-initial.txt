@@ -1,0 +1,67 @@
+......F...                                                               [100%]
+=================================== FAILURES ===================================
+_________ test_rotation_check_mock_clock_truth_cannot_change_commands __________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x106d6af90>
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/map-carry-zone/tmp/pytest-reloc9-carry-final/test_rotation_check_mock_clock0')
+
+    def test_rotation_check_mock_clock_truth_cannot_change_commands(monkeypatch,tmp_path):
+        """No MuJoCo construction/step: adversarial evaluator yaw is output-only."""
+        import json
+        from types import SimpleNamespace
+        import scripts.run_reloc9_rotation_check as check
+        import scripts.grasp_act_host as host
+        import sim.grasp_act_scene as scene_module
+        import sim.masterpi_drive_friction_v7 as drive_module
+        import sim.grasp_act_port as port_module
+        from scripts.prepare_reloc9_carry_queue import PLAN,ROOT
+        monkeypatch.setattr(check.platform,'system',lambda:'Linux')
+        monkeypatch.setattr(host,'identity',lambda name:None)
+        monkeypatch.setattr(host,'require_run_root',lambda path:None)
+        monkeypatch.setattr(check.subprocess,'check_output',lambda args,**kw:b'' if 'status' in args else 'a'*40)
+        evaluator={'yaw':0.}
+        class World:
+            def __init__(self):self.data=SimpleNamespace(time=0.);self.closed=False
+            def robot(self,rid):return SimpleNamespace(base_rpy=lambda:[0.,0.,evaluator['yaw']])
+            def _physics_step_for(self,robot):self.data.time+=.01
+            def close(self):self.closed=True
+        worlds=[]
+        def build(*args,**kw):
+            assert kw['render'] is False
+            w=World();worlds.append(w);return w
+        monkeypatch.setattr(drive_module,'build_world',build)
+        monkeypatch.setattr(scene_module,'make_scene',lambda p:SimpleNamespace(
+            config={'setup_only':{'spawns':{}}},engine_layout={},setup=lambda world:None))
+        monkeypatch.setattr(port_module,'DutyActPort',lambda *a,**kw:SimpleNamespace(
+            apply=lambda *a:None,tick=lambda *a:None,stop=lambda:None))
+        ledgers=[]
+        for i,yaw in enumerate((0.,2.9)):
+            evaluator['yaw']=yaw
+            path=tmp_path/str(i)
+>           result=check.run(ROOT/PLAN,path,'a'*40)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_reloc9_carry.py:142:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts/run_reloc9_rotation_check.py:102: in run
+    write(out/'result.json',report); compress_logs(out)
+                                     ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+out = PosixPath('/Users/changmin/projects/ugrp-wt/map-carry-zone/tmp/pytest-reloc9-carry-final/test_rotation_check_mock_clock0/0')
+
+    def compress_logs(out):
+        manifest={}
+        for path in sorted(out.rglob('*')):
+            if not path.is_file():continue
+            b=path.read_bytes();entry={'sha256':hashlib.sha256(b).hexdigest(),'bytes':len(b)}
+            if path.suffix in ('.json','.jsonl') and len(b)>65536:
+                z=subprocess.check_output(['zstd','-q','-c'],input=b)
+>               assert subprocess.check_output(['zstd','-qdc'],input=z)==b
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E               AssertionError
+
+scripts/run_grasp_act_teacher.py:67: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_reloc9_carry.py::test_rotation_check_mock_clock_truth_cannot_change_commands
+1 failed, 9 passed in 5.52s

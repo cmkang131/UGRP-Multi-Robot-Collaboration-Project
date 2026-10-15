@@ -19,7 +19,7 @@ class SoloLookaround:
     def __init__(self, static, *, ops, odometry_profile='off',
                  localizer_factory=None, runner_factory=None, truth_free_v1=False, command_pose=None, carry5=False,
                  carry5_rank_aware_views_v1=False, carry7_robust_recovery_v1=False,
-                 active_relocalization='off'):
+                 active_relocalization='off', reloc9_wall_height_guard_v1=False):
         if localizer_factory is None or runner_factory is None:
             from sim.lookaround_localization import LookaroundLocalizer, ScriptRunner
             localizer_factory = localizer_factory or LookaroundLocalizer
@@ -46,6 +46,9 @@ class SoloLookaround:
         if active_relocalization != 'off' and not self.robust_recovery_v1:
             raise ValueError('RELOC8_REQUIRES_CARRY7_SAFETY')
         self.active_relocalization = active_relocalization
+        from harness.reloc9_wall_guard import validate as validate_wall
+        validate_wall(reloc9_wall_height_guard_v1)
+        self.wall_height_guard = reloc9_wall_height_guard_v1
         self.active_replans = 0
         self.accepted_ready = False
         self.deadline = None
@@ -80,6 +83,7 @@ class SoloLookaround:
                 # One belief, propagated once by carry.issue; never a scene pose.
                 self.loc.own = self.command_pose.own
                 self.loc.require_fix_acceptance = True
+                self.loc.reloc9_wall_height_guard_v1 = self.wall_height_guard
             return
         self.loc = self.make_localizer(self.static, [float(v) for v in estimate],
                                        odometry_profile=self.profile)

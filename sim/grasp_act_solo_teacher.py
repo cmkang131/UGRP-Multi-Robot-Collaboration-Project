@@ -164,7 +164,7 @@ class SoloTeacher:
                  setdown_lookaround_v1=False, lookaround=None, route=None, ops=None,
                  teacher_stability='off', reach_mode='box_station_v1', rgb_lift_mode='off',
                  solo_lift_negative_probe_v1=False, solo_lift_lookback_margin_v1=False,
-                 solo_carry_to_zone_v1=False, carry=None):
+                 solo_carry_to_zone_v1=False, carry=None, reloc9_reacquisition_v1=False):
         if profile != PROFILE:
             raise ValueError('solo teacher is opt-in; legacy defaults are unchanged')
         if not held_object_hidden_v1:
@@ -188,6 +188,9 @@ class SoloTeacher:
             raise ValueError('zone carry requires box, RGB lookback and map controller')
         self.carry = carry if solo_carry_to_zone_v1 else None
         self.robust_recovery_v1 = bool(self.carry is not None and getattr(self.carry,'robust_recovery_v1',False))
+        if type(reloc9_reacquisition_v1) is not bool or (reloc9_reacquisition_v1 and not self.robust_recovery_v1):
+            raise ValueError('reloc9 reacquisition requires carry7 and bool toggle')
+        self.reloc9_reacquisition_v1 = reloc9_reacquisition_v1
         self.recovery_world = None
         self.reacquirer = None
         self.recovery_started = None
@@ -585,6 +588,8 @@ class SoloTeacher:
             self._reset_alignment()
             if self.robust_recovery_v1:
                 from sim.solo_carry7 import CargoReacquirer
+                if self.reloc9_reacquisition_v1:
+                    from sim.solo_carry9_search import CargoSearch as CargoReacquirer
                 if self.recovery_world is None:
                     self.result = 'carry_reacquire_memory_unavailable'
                     self._set('failed', now)
@@ -601,7 +606,11 @@ class SoloTeacher:
                 self.recovery_started = None
                 self._set(self.recovery_return, now)
             elif self.robust_recovery_v1:
-                turn, pwm = self.reacquirer.tick(now,self.carry.loc.pose,self.sink.pwm)
+                kwargs = {}
+                if self.reloc9_reacquisition_v1 and own_rgb is not None:
+                    from sim.solo_carry9_search import edge_cue
+                    kwargs['edge_u'] = edge_cue(own_rgb(), self.spec.kind)
+                turn, pwm = self.reacquirer.tick(now,self.carry.loc.pose,self.sink.pwm, **kwargs)
                 self.sink.pwm.update(pwm); self.arm.commanded.update(pwm)
                 value = self._drive(now,turn=turn)
                 if self.reacquirer.failure:

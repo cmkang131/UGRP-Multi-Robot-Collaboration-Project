@@ -1,0 +1,285 @@
+{
+  "schema": "ugrp.reloc9_summary.v1",
+  "flow": "carry",
+  "source_revision": "commit containing this record; full SHA in local disabled carry queue / PR comment",
+  "baseline_sha": "0459c03c15dfad0ab7016fa2a15050ffc2d3ccd7",
+  "defaults": "all reloc9 runtime toggles false",
+  "new_physics_runs": 0,
+  "render_calls": 0,
+  "model_calls": 0,
+  "remote_connections": 0,
+  "previous_results_combinable": false,
+  "selfmap_queue_created": false,
+  "ready": false,
+  "remaining": [
+    "fresh GCP 90L/180R check",
+    "same-seed three-candidate carry comparison",
+    "native 640x480 recovery frames and real reacquisition",
+    "selfmap coordinator waits for 93571 result"
+  ],
+  "selfmap6_regression": {
+    "proposals_N": 123,
+    "accepted_N": 113,
+    "rejected_N": 10,
+    "evidence_scope": "unchanged selfmap6 gate regression ONLY; excluded from reloc8 efficacy",
+    "absolute_5deg_10cm_exceedance_N": 11,
+    "normalized_worsened_N": 53,
+    "xy_worsened_N": 61,
+    "yaw_worsened_N": 52
+  },
+  "rotation": {
+    "method": "offline zero-intercept LS; separated seed93261 fit and seeds93262/93266 holdout, same gcp1 n4-highcpu-64",
+    "scale": 0.5752851596541013,
+    "calibration_N": 27,
+    "validation_before": {
+      "N": 15,
+      "median": 0.6193963633090438,
+      "p10": 0.5091336077019617,
+      "p90": 0.6689311868385666,
+      "within_0_9_to_1_1_N": 0,
+      "outside_0_9_to_1_1_N": 15,
+      "median_in_target": false
+    },
+    "validation_after": {
+      "N": 15,
+      "median": 1.0766771103246693,
+      "p10": 0.8850108492422885,
+      "p90": 1.1627819275587976,
+      "within_0_9_to_1_1_N": 8,
+      "outside_0_9_to_1_1_N": 7,
+      "median_in_target": true
+    },
+    "uncertainty_fraction": 0.4920507586142564
+  },
+  "wall": {
+    "frames": 67,
+    "before": {
+      "N": 4921,
+      "on_actual_wall_5cm_N": 3237,
+      "on_checker_line_2cm_N": 621
+    },
+    "after": {
+      "N": 4529,
+      "on_actual_wall_5cm_N": 2849,
+      "on_checker_line_2cm_N": 606
+    },
+    "frames_with_actual_wall_supported_top": 63,
+    "scope": "settled commanded -7.5deg saved OWN frames only; 320x240 previews resized for frozen 640x480 detector; NOT native full-bank recall",
+    "limitation": "392 removed points include388 actual-wall matches; checker proximity621->606 is small and can overlap actual walls"
+  },
+  "carry_queue": {
+    "path_template": "/Users/changmin/projects/ugrp-wt/map-carry-zone/tmp/20261015-solo-carry-<sha8>.json",
+    "runs": 34,
+    "rotation_checks": 1,
+    "reproduction_layouts": 3,
+    "fresh_layouts": 8,
+    "candidates": [
+      "rotation",
+      "rotation_wall",
+      "rotation_wall_search"
+    ],
+    "max_parallel": 1,
+    "all_approval_execution_flags": false
+  },
+  "runs": [
+    {
+      "run": "solo-carry-93261-8c6f219c",
+      "status": "complete",
+      "source_sha": "8c6f219cb39595a877fc0af487b3ea7e9fefb27f",
+      "views_N": 28,
+      "evaluation_rows_N": 28,
+      "full": {
+        "accepted_N": 0,
+        "dangerous_accepted_N": 0,
+        "legacy_dangerous_accepted_N": 0,
+        "worsened_accepted_N": 0,
+        "xy_worsened_accepted_N": 0,
+        "yaw_worsened_accepted_N": 0
+      },
+      "applied_including_partial": {
+        "accepted_N": 0,
+        "dangerous_accepted_N": 0,
+        "legacy_dangerous_accepted_N": 0,
+        "worsened_accepted_N": 0,
+        "xy_worsened_accepted_N": 0,
+        "yaw_worsened_accepted_N": 0
+      }
+    },
+    {
+      "run": "solo-carry-93261-0459c03c",
+      "status": "interrupted",
+      "source_sha": "0459c03c15dfad0ab7016fa2a15050ffc2d3ccd7",
+      "views_N": 0,
+      "evaluation_rows_N": 0,
+      "full": {
+        "accepted_N": 0,
+        "dangerous_accepted_N": 0,
+        "legacy_dangerous_accepted_N": 0,
+        "worsened_accepted_N": 0,
+        "xy_worsened_accepted_N": 0,
+        "yaw_worsened_accepted_N": 0
+      },
+      "applied_including_partial": {
+        "accepted_N": 0,
+        "dangerous_accepted_N": 0,
+        "legacy_dangerous_accepted_N": 0,
+        "worsened_accepted_N": 0,
+        "xy_worsened_accepted_N": 0,
+        "yaw_worsened_accepted_N": 0
+      }
+    },
+    {
+      "run": "solo-carry-93262-0459c03c",
+      "status": "complete",
+      "source_sha": "0459c03c15dfad0ab7016fa2a15050ffc2d3ccd7",
+      "views_N": 8,
+      "evaluation_rows_N": 8,
+      "full": {
+        "accepted_N": 2,
+        "dangerous_accepted_N": 2,
+        "legacy_dangerous_accepted_N": 1,
+        "worsened_accepted_N": 0,
+        "xy_worsened_accepted_N": 0,
+        "yaw_worsened_accepted_N": 0
+      },
+      "applied_including_partial": {
+        "accepted_N": 3,
+        "dangerous_accepted_N": 3,
+        "legacy_dangerous_accepted_N": 2,
+        "worsened_accepted_N": 0,
+        "xy_worsened_accepted_N": 1,
+        "yaw_worsened_accepted_N": 0
+      }
+    },
+    {
+      "run": "solo-carry-93266-d9e0073f",
+      "status": "complete",
+      "source_sha": "d9e0073f5db51cde78f571aeb1ce91ad44d23eaa",
+      "views_N": 6,
+      "evaluation_rows_N": 6,
+      "full": {
+        "accepted_N": 2,
+        "dangerous_accepted_N": 2,
+        "legacy_dangerous_accepted_N": 2,
+        "worsened_accepted_N": 0,
+        "xy_worsened_accepted_N": 1,
+        "yaw_worsened_accepted_N": 0
+      },
+      "applied_including_partial": {
+        "accepted_N": 4,
+        "dangerous_accepted_N": 4,
+        "legacy_dangerous_accepted_N": 4,
+        "worsened_accepted_N": 1,
+        "xy_worsened_accepted_N": 2,
+        "yaw_worsened_accepted_N": 1
+      }
+    }
+  ],
+  "calibration_source_runs": [
+    {
+      "run": "solo-carry-93261-8c6f219c",
+      "source_sha": "8c6f219cb39595a877fc0af487b3ea7e9fefb27f",
+      "status": "complete",
+      "host": {
+        "provider": "gcp",
+        "project_id": "ugrp-act-train-1014",
+        "instance": "ugrp-sim-gcp1",
+        "machine_type": "n4-highcpu-64",
+        "zone": "asia-northeast3-a",
+        "cpu_count": 64,
+        "schema": "ugrp.grasp_act.host.v1"
+      }
+    },
+    {
+      "run": "solo-carry-93261-0459c03c",
+      "source_sha": "0459c03c15dfad0ab7016fa2a15050ffc2d3ccd7",
+      "status": "interrupted",
+      "host": {
+        "provider": "gcp",
+        "project_id": "ugrp-act-train-1014",
+        "instance": "ugrp-sim-gcp1",
+        "machine_type": "n4-highcpu-64",
+        "zone": "asia-northeast3-a",
+        "cpu_count": 64,
+        "schema": "ugrp.grasp_act.host.v1"
+      }
+    },
+    {
+      "run": "solo-carry-93262-0459c03c",
+      "source_sha": "0459c03c15dfad0ab7016fa2a15050ffc2d3ccd7",
+      "status": "complete",
+      "host": {
+        "provider": "gcp",
+        "project_id": "ugrp-act-train-1014",
+        "instance": "ugrp-sim-gcp1",
+        "machine_type": "n4-highcpu-64",
+        "zone": "asia-northeast3-a",
+        "cpu_count": 64,
+        "schema": "ugrp.grasp_act.host.v1"
+      }
+    },
+    {
+      "run": "solo-carry-93266-d9e0073f",
+      "source_sha": "d9e0073f5db51cde78f571aeb1ce91ad44d23eaa",
+      "status": "complete",
+      "host": {
+        "provider": "gcp",
+        "project_id": "ugrp-act-train-1014",
+        "instance": "ugrp-sim-gcp1",
+        "machine_type": "n4-highcpu-64",
+        "zone": "asia-northeast3-a",
+        "cpu_count": 64,
+        "schema": "ugrp.grasp_act.host.v1"
+      }
+    }
+  ],
+  "related_tests": {
+    "initial_suite_passed": 129,
+    "initial_log": "pytest-carry.txt",
+    "final_targeted_log": "pytest-carry-final.txt",
+    "initial_mock_test_failure": "global subprocess monkeypatch intercepted zstd; test isolated to module namespace, then rerun",
+    "mock_is_physics": false,
+    "final_targeted_passed": 10,
+    "initial_mock_failure_raw": {
+      "path": "/Users/changmin/projects/ugrp-wt/map-carry-zone/tmp/reloc9-pytest-carry-mock-initial-raw.txt",
+      "sha256": "269ca60a8c30ab4660eef752a90de30fe22adf0b214a4fe24e49a2e82e3362ee",
+      "tracked_log_normalization": "trailing whitespace only"
+    }
+  },
+  "artifacts": [
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/map-carry-zone/experiments/2026-10-15-reloc9/rotation-replay.json",
+      "sha256": "232645117ad97867c66bdf77028e6a969d4477ad317f3fff3a7b3ff2de2535f7"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/map-carry-zone/experiments/2026-10-15-reloc9/wall-replay.json",
+      "sha256": "35b449904b99d347406c1ca55a1db8a988ac16955eb10f549705a3d4038407d3"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/map-carry-zone/experiments/2026-10-15-reloc9/correction-replay.json",
+      "sha256": "572e5be7a60ca251dc829856df0c6a93f42a0be5c4b69b2a849a628749db6288"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/map-carry-zone/experiments/2026-10-15-reloc9/diagnostic-plan.json",
+      "sha256": "c8c4085f95db4a3912dc7e120ab570c9c5e2940489a45ada73faa4e0616e494c"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/map-carry-zone/experiments/2026-10-15-reloc9/pytest-carry.txt",
+      "sha256": "485f280a799c1e2b00b1a3b588b6311f83e6db1f906488e741a6b93dca4fe1fe"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/map-carry-zone/experiments/2026-10-15-reloc9/pytest-carry-final.txt",
+      "sha256": "c98ae22391fc9797fb63bfb2e40c620ab595f1358f90185a4d07cd2a46d5ed50"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/map-carry-zone/experiments/2026-10-15-reloc9/pytest-carry-mock-initial.txt",
+      "sha256": "ed0b2e8f31de85e871fb728ae21982e756070a1eb28eddeb070dade350747657"
+    }
+  ],
+  "shared_source_sha256": {
+    "harness/reloc9_rotation.py": "b7a3f81c88751c09e3bee81b01eaf046922ded0a63a45b5802e808f2ffb56040",
+    "harness/reloc9_wall_guard.py": "7dedaa8ec348e34bc90cbc75a1a1246f295d6d9f153206d996f100cdfd2d2acb",
+    "scripts/reloc9_metrics.py": "9403282f56031f8a35a5dbe35baf7a06015f3ec196a8ecd50812e96dbd1ed520",
+    "tests/test_reloc9_shared.py": "72dd0ea91742fe2953903bba271575552efaac17648497b85308b43f5fb645a9"
+  }
+}

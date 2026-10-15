@@ -271,6 +271,9 @@ class LookaroundLocalizer:
                                    mp.column_positions(DETECTOR['columns'], int(DETECTOR['strip_half_px'])))   # same columns as the PF
         bgr = np.ascontiguousarray(cv2.cvtColor(raw_rgb, cv2.COLOR_RGB2BGR))
         obs = observations(self.vl, bgr, cm, self.gates['values'])
+        if getattr(self, 'reloc9_wall_height_guard_v1', False):
+            from harness.reloc9_wall_guard import filter_observation
+            obs, rec['wall_height_guard'] = filter_observation(obs, mp.undistort(bgr), cm, True)
         walls = endpoints(cm, obs)
         und = mp.undistort(bgr)
         yy, xx = np.indices((HEIGHT, WIDTH))
