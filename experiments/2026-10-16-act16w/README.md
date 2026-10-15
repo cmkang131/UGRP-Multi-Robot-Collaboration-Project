@@ -51,3 +51,22 @@ L4 합계 최대 8시간(교사/기록/학습/평가의 GPU 점유 모두 포함
   범위를 넓히는 표집의 근거. 실제 난이도 구간은 TRAIN 분포에서만 정한다.
 
 검증된 실행 결과와 학습 곡선은 실행 후 추가한다. 과거 gcp1 데이터는 접근하지 않는다.
+
+
+## 대기 중 준비한 코드
+
+- `scripts/act16w_prerequisites.py`: 5분 확인·최대10시간, 조건을 발견해도
+  자동 실행하지 않고 실제 대기열 검토 단계로만 넘긴다.
+- `scripts/act16w_input.py`: 기본 off, TRAIN 평균 wheel/pulse 마스크를 훈련과
+  추론에 공통 적용한다. v3 adapter는 기본 ACT 로더에서 거부된다.
+- `scripts/act16w_runtime.py`: gcp2 실제 metadata와 고정 ACT 소스,
+  교사 관문·장면·데이터 감사 파일의 해시를 검증한다.
+- `scripts/train_act16w.py`: 기존 ACT 라이브러리 `3f99d58c`를 별도 source에서
+  재사용하는 유한 학습 실행기. CUDA 실제 학습·저장·로딩 검증은 아직 안 했다.
+- `scripts/act16w_curriculum.py`: TRAIN 시작 거리·절대 각도의 종류별 경험
+  백분위 순위를 합해 쉬운 에피소드부터 연다. optimizer 진행률에 따라 허용
+  에피소드 수를 선형으로 늘리는 조정자 설계다. 기존 표집은 기본값이다.
+
+03:22 KST: 원격 `claude/act16w` push 확인. 기반 `claude/warp-act`가 아직
+원격에 없어 해당 base의 draft PR 생성은 실패했다(Branch not found).
+warp1이 기반 브랜치를 게시한 뒤 다시 만든다. 다른 작업의 브랜치는 push하지 않는다.

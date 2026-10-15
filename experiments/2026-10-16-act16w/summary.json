@@ -37,9 +37,10 @@
     "assets": []
   },
   "checks": {
-    "nonphysics_passed": 10,
+    "nonphysics_passed": 14,
     "skipped": 1,
-    "skip_reason": "torch not installed on Mac; no environment created"
+    "skip_reason": "torch not installed on Mac; no environment created",
+    "trainer_syntax_and_cli_help": "PASS; CUDA execution not tested"
   },
   "rejection_table": "experiments/2026-10-16-act16w/rejection_table.json",
   "remaining": [
@@ -51,5 +52,11 @@
     "new40 evaluation and playback",
     "Release hash/loading verification",
     "PR final results"
-  ]
+  ],
+  "publication": {
+    "commit": "9d78bfc50148a42ea0be8bb78836c4e23f592bca",
+    "push_verified": true,
+    "pr": null,
+    "pr_blocker": "base claude/warp-act absent on remote at 03:22 KST"
+  }
 }

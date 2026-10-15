@@ -79,6 +79,6 @@ def training_admission(path, *, source, dataset, act_source):
         if not item.get('path') or sha256(item['path']) != item.get('sha256'):
             raise ValueError('missing/hash-mismatched admission evidence: ' + name)
     manifest = json.loads((Path(dataset) / 'manifest.json').read_text())
-    if not manifest.get('complete') or not data.get('valid_future_action_targets_verified'):
+    if manifest.get('complete') is not True or data.get('valid_future_action_targets_verified') is not True:
         raise ValueError('completed dataset with valid future action supervision required')
     return data
