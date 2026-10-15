@@ -9,6 +9,8 @@
   "stages": ["all-float-array audit and official provenance", "safe unused-sentinel conversion if justified", "one robot and box same-command physics comparison", "N1 then N16 then N64 and optional N128 throughput"],
   "stop": ["non-sentinel numerical overflow", "NaN", "contact/constraint capacity overflow", "noslip ignored", "physics-changing workaround", "budget-stop", "resource cap_end"],
   "physics_overrides": {},
+  "exploratory_comparison_only": {"endpoint_translation_m": 0.005, "endpoint_rotation_deg": 2, "slip_3s_extra_m": 0.002, "throughput_multiplier": 2},
+  "comparison_threshold_basis": "Unchanged simalt1 protocol proposal_only and research/simalt.md section 6; exploratory DEV diagnostics, not new task-success or physical hardware thresholds.",
   "merge_with_cpu_results": false,
   "gcp1_reference": {"machine": "n4-highcpu-64", "concurrency": 16, "usd_per_hour": 3.145, "sim_seconds_per_hour": 23167, "source": "docs/gcp_simulation.md historical measured throughput; user-specified price"},
   "L4_reference_usd_per_hour": 0.908,

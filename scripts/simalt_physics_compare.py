@@ -247,6 +247,8 @@ def run(a):
             report['completed']+=1
             write(a.out/'result.json',report)
         report['status']='complete'
+    except KeyboardInterrupt:
+        report.update(status='cap_end',cap_end=True,error='supervised resource/time cap or interrupt')
     except Exception as e:
         report.update(status='rejected',failure=1,error_type=type(e).__name__,error=str(e),traceback=traceback.format_exc())
     finally:
