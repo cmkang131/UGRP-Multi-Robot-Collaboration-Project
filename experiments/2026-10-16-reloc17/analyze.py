@@ -16,10 +16,17 @@ def errors(es):
 def analysis(folder):
     raw=folder/'raw';trace=rows(raw/'trace.jsonl');truth={round(r['t'],6):r for r in rows(raw/'eval_only/trajectory.jsonl')}
     actual0=None;command=[];local=[];drivecmd=[];registered=0;matches=[];angles=[];scored=[];fresh=[]
+    servos={round(r['t'],6):r for r in rows(raw/'eval_only/servo.jsonl')}
+    frames={round(r['sim_time'],6):r for r in rows(raw/'robots/r3/frames.jsonl')};pan=[];pan_updated=[]
     static,_=static_input();mapped=MapFeatures(static)
     for r in trace:
         gt=truth.get(round(r['t'],6));s=r.get('static_registration',{});packet=s.get('reloc12',{}).get('replay',{})
         if gt is None:continue
+        sr=servos.get(round(r['t'],6));fr=frames.get(round(r['t'],6))
+        if sr is not None and fr is not None:
+            pe=abs((float(fr['commanded_servo']['6'])-1500)*.09-math.degrees(sr['joints']['6']['q_rad']))
+            pan.append(pe)
+            if s.get('updated'):pan_updated.append(pe)
         actual=np.array([*gt['robot_xyz_m'][:2],gt['robot_yaw_rad']])
         if actual0 is None:actual0=actual
         def err(p):return [float(np.linalg.norm(p[:2]-actual[:2])),abs(math.degrees(wrap(p[2]-actual[2])))]
@@ -47,6 +54,7 @@ def analysis(folder):
                 d,a=min(candidates);matches.append(d);angles.append(a)
                 scored.append(dict(t=r['t'],distance_m=d,normal_error_deg=a))
     return dict(command_only_replay=errors(command),local_execution_drift=errors(local),command_only_same_drive_frames=errors(drivecmd),
+        camera_pan_evaluation=dict(all_deg=distribution(pan),PF_updates_deg=distribution(pan_updated),PF_updates_over5deg=sum(x>5 for x in pan_updated),scope='evaluation-only actual joint; no controller feedback'),
         evaluation_alignment='initial evaluator world pose used ONLY for analysis alignment, never supplied to controller; local drift and absolute registered error are separate',registered_frames=registered,
         floor_line_residuals=dict(distance_m=distribution(matches),normal_deg=distribution(angles),scope='all same-hue features; no truth-based outlier exclusion; nearest finite edge in evaluator'),
         fresh_pose_evaluation=fresh,residual_frames=scored)
