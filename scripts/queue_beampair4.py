@@ -23,16 +23,23 @@ def build(source, evidence, table):
         r['command']=[v.replace(old,r['name']).replace('peer_rendezvous_v1','peer_rendezvous_v2') for v in r['command']]
         idx=r['command'].index('--per-run-mb')+1;r['command'][idx]='256'
         r['command'] += ['--approach-repair','beampair_approach_v2','--failure-tail']
+        r['command'][1]='/Users/changmin/projects/ugrp-wt/gcp-sim-host/scripts/remote_run.py'
+        r['command'][r['command'].index('--host')+1]='gcp2'
     q['runs'].sort(key=lambda r:(0 if r['seed']==8318620 else 1 if r['seed']==8318626 else 2,r['episode']))
-    for p in ('harness/beampair_approach.py','harness/failure_rgb_tail.py','scripts/review_beampair3.py',
+    for p in ('harness/beampair_approach.py','harness/beampair_host.py','harness/failure_rgb_tail.py','scripts/review_beampair3.py',
               'scripts/queue_beampair4.py','scripts/analyze_beampair4.py'):
         q['source_hashes'][p]=hashlib.sha256(subprocess.check_output(['git','show',source+':'+p],cwd=ROOT)).hexdigest()
     q.update(schema='ugrp.beampair4.gate40_queue.v1',owner='beampair4',
+        status='HOLD_SCENE',ready=False,approved=False,submitted=False,
+        host='gcp2',project_id='ugrp-sim-b-1014',account='changmin5781@gmail.com',
+        scene_approved=False,scene_profile='beampair3: cargo_v7 / grasp_act_teal_blue_v1 / floor_light_v1',
+        scene_approval_owner='coordinator',
         first_two_seeds=wanted[:2],max_parallel=16,approach_repair='beampair_approach_v2',
         peer_rendezvous='peer_rendezvous_v2',failure_tail_recording=True,
         held_object_hidden_v1=True,training_rgb=False,
         cohort_scope='Fresh all40 beampair4; no beampair1/2/3 or short6 outcomes pooled',
         required_before_start=[
+            'HOLD_SCENE: coordinator must choose and approve the scene profile before activation; no wall texture v2/v3.',
             'Coordinator verifies clean pin, source/dependency SHA and every source hash.',
             'Absolute rejection_table/evidence files must exist and match SHA256; ready/approved/submitted stay false here.',
             '8318620 then8318626; remeasure40 from zero. Gate measured N=0.',

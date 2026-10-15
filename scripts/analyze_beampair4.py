@@ -24,9 +24,9 @@ def quantiles(values):
                 p95=q(.95), max=values[-1])
 
 
-def analyze(root, out):
+def analyze(root, out, *, pattern='beampair3-gate-*-e645b34b/raw', host='gcp1', planned_n=40):
     if sys.platform != 'linux':
-        raise RuntimeError('Analysis must run on gcp1')
+        raise RuntimeError('Analysis must run on GCP Linux')
     import harness
     harness.__path__.append('/home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247/harness')
     from harness.grasp_act_visible_world import command_delta
@@ -35,7 +35,7 @@ def analyze(root, out):
     all_runs, failures, approach_rows = [], [], []
     reasons = Counter()
     blocker_counts = Counter()
-    for raw in sorted(root.glob('beampair3-gate-*-e645b34b/raw')):
+    for raw in sorted(root.glob(pattern)):
         result = read(raw/'result.json')
         plan = read(raw/'plan.json')
         ev = [json.loads(x) for x in read_bytes(raw/'eval-only.jsonl')[0].splitlines()]
@@ -154,23 +154,23 @@ def analyze(root, out):
                     beam_displacement_m=math.dist(a['evaluator_beam_xy'],b['evaluator_beam_xy']))
             failures.append(dict(seed=plan['seed'],last6=last6))
     groups={}
-    for name, rs in [('success30', [r for r in approach_rows if r['success']]),
-                     ('failure2', [r for r in approach_rows if not r['success']])]:
+    for name, rs in [('success_runs', [r for r in approach_rows if r['success']]),
+                     ('failure_runs', [r for r in approach_rows if not r['success']])]:
         groups[name]=dict(N=len(rs),
             command_actual_cosine=quantiles([r['command_actual_cosine'] for r in rs if r['command_actual_cosine'] is not None]),
             observed_distance_m=quantiles([r['observed_distance_m'] for r in rs if r['observed_distance_m'] is not None]),
             direction_opposed_N=sum((r['command_actual_cosine'] or 0)<0 for r in rs),
             command_away_band_N=sum(r['command_toward_band_m']<0 for r in rs),
             actual_away_band_N=sum(r['actual_toward_band_m']<0 for r in rs))
-    dump(out/'rejection-table.json', dict(analysis_host='gcp1', baseline_source_sha='e645b34beb4fa693ab4ddedfe77045ae26b46388',
+    dump(out/'rejection-table.json', dict(analysis_host=host, baseline_source_sha='e645b34beb4fa693ab4ddedfe77045ae26b46388',
         source_scope='pre-edit beampair3; no new gate measurement',
-        episode_funnel=[dict(gate='submitted',entered=40,cumulative_passed=len(all_runs),rejected=40-len(all_runs)),
+        episode_funnel=[dict(gate='submitted',entered=planned_n,cumulative_passed=len(all_runs),rejected=planned_n-len(all_runs)),
             dict(gate='both_align_and_joint_hold',entered=len(all_runs),cumulative_passed=sum(r['success'] for r in all_runs),rejected=sum(not r['success'] for r in all_runs))],
         candidate_first_rejections=dict(reasons),
         blocker_occurrences=[dict(reason=k[0],category=k[1],blocked_object=k[2],N=v) for k,v in blocker_counts.most_common()],
         approach_frame_distributions=groups, failures=failures, runs=all_runs,
         note='blocker occurrences may overlap within a candidate; directions per issued pulse and subsequent saved-state interval; qpos contacts are geometric snapshots only',
-        reproduce=f'PYTHONPATH={Path(__file__).resolve().parents[1]} python3 {Path(__file__).resolve()} --root {root} --out NEW_OUTPUT',
+        reproduce=f'PYTHONPATH={Path(__file__).resolve().parents[1]} python3 {Path(__file__).resolve()} --root {root} --out NEW_OUTPUT --pattern {pattern!r} --host {host} --planned-n {planned_n}',
         analysis_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest()))
     print(json.dumps(dict(N=len(all_runs),n=sum(r['success'] for r in all_runs),groups=groups,failures=failures)))
 
@@ -178,4 +178,7 @@ def analyze(root, out):
 if __name__ == '__main__':
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--root', type=Path, required=True);p.add_argument('--out', type=Path, required=True)
-    a=p.parse_args();analyze(a.root,a.out)
+    p.add_argument('--pattern', default='beampair3-gate-*-e645b34b/raw')
+    p.add_argument('--host', choices=['gcp1','gcp2'], default='gcp2')
+    p.add_argument('--planned-n', type=int, default=40)
+    a=p.parse_args();analyze(a.root,a.out,pattern=a.pattern,host=a.host,planned_n=a.planned_n)

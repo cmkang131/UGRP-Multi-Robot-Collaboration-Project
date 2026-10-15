@@ -27,6 +27,26 @@ def test_gcp2_host_port_preserves_real_metadata_and_restores_pinned_admission(mo
     assert mod.GCP_PROJECT == 'ugrp-act-train-1014'
 
 
+def test_gate_queue_stays_held_for_scene_and_targets_only_gcp2(tmp_path, monkeypatch):
+    import scripts.queue_beampair4 as queue
+    import subprocess
+    source = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
+    seeds = [8318620, 8318626, 8318600, 8318604, 8318611, 8318631]
+    evidence = tmp_path/'summary.json'
+    evidence.write_text(json.dumps(dict(runs=[dict(seed=s,adapter_sha=source) for s in seeds])))
+    def previous(*args, **kwargs):
+        return dict(source_hashes={}, runs=[dict(name=f'beampair2-{s}',seed=s,episode=i,
+            command=['python3','scripts/remote_run.py','--host','gcp1','--per-run-mb','128'])
+            for i,s in enumerate(seeds)])
+    monkeypatch.setattr(queue,'previous',previous)
+    q = queue.build(source,evidence,tmp_path/'table.json')
+    assert q['status']=='HOLD_SCENE' and not any(q[k] for k in ('ready','approved','submitted','scene_approved'))
+    assert q['host']=='gcp2' and q['project_id']=='ugrp-sim-b-1014'
+    assert [r['seed'] for r in q['runs'][:2]]==seeds[:2]
+    assert all(r['command'][r['command'].index('--host')+1]=='gcp2' for r in q['runs'])
+    assert q['max_parallel']==16 and not q['training_rgb']
+
+
 def test_named_reobserve_includes_stale_geometric_wall_but_excludes_held_cargo():
     teacher=SimpleNamespace(rid='r2', goal_set_log=[dict(candidates=[dict(collision_audit=[
         dict(id=k,blocked=True,gap_m=0.) for k in ('north','west','beam_1','fresh')])])])
