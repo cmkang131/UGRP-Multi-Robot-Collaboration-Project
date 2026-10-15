@@ -1,0 +1,2206 @@
+{
+  "schema": "ugrp.grasp_act.plan.v1",
+  "episodes": [
+    {
+      "episode_id": "teacher_gate-315700",
+      "batch": "grasp-act-teacher_gate-315700",
+      "seed": 315700,
+      "split": "teacher_gate",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        1.2446144346220602,
+        -1.5702759296482078,
+        0.41128434121901253
+      ],
+      "spawns": {
+        "r1": [
+          1.6191520848177527,
+          -0.8669276410966402,
+          0.032355118817659255,
+          -2.3037977869726087
+        ],
+        "r2": [
+          1.678170073564322,
+          -1.3811767283242276,
+          0.032355118817659255,
+          -2.7303083123707808
+        ],
+        "r3": [
+          -0.01008247708849852,
+          -0.04559155981490415,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "other_end",
+      "initial_pan": {
+        "r1": 552,
+        "r2": 2232
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "visible_start": true,
+      "proposal_attempts": 2,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0
+    },
+    {
+      "episode_id": "teacher_gate-315701",
+      "batch": "grasp-act-teacher_gate-315700",
+      "seed": 315701,
+      "split": "teacher_gate",
+      "scenario_id": "s3_late_rendezvous_v4",
+      "scenario_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        -0.10663130657792974,
+        0.762483820176076,
+        0.9490036428855174
+      ],
+      "spawns": {
+        "r1": [
+          0.02231922681266202,
+          0.0353521263755745,
+          0.032355118817659255,
+          0.7403805793396749
+        ],
+        "r2": [
+          -0.3627771730438553,
+          -0.1513528567770791,
+          0.032355118817659255,
+          1.297512046781649
+        ],
+        "r3": [
+          0.5219167816490546,
+          -1.3166843047039796,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "approaching",
+      "initial_pan": {
+        "r1": 1823,
+        "r2": 2450
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "visible_start": true,
+      "proposal_attempts": 1,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0
+    },
+    {
+      "episode_id": "teacher_gate-315702",
+      "batch": "grasp-act-teacher_gate-315700",
+      "seed": 315702,
+      "split": "teacher_gate",
+      "scenario_id": "s6_novel_relation_v4",
+      "scenario_source_sha256": "fb2596bbbe76d360bd7c481e750bfea0683e95770d60617af26fbc114a820986",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "beam_pose": [
+        1.519149538894056,
+        0.24703099544503315,
+        1.2552345752452114
+      ],
+      "spawns": {
+        "r1": [
+          0.8390731745759266,
+          0.7242614060471323,
+          0.032355118817659255,
+          -0.15314991501114228
+        ],
+        "r2": [
+          1.73484390527364,
+          -0.3736875633466826,
+          0.032355118817659255,
+          1.9052345752452116
+        ],
+        "r3": [
+          3.4501100120882264,
+          0.3087608572026519,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "near_own",
+      "initial_pan": {
+        "r1": 1544,
+        "r2": 2015
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "visible_start": true,
+      "proposal_attempts": 1,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0
+    },
+    {
+      "episode_id": "teacher_gate-315703",
+      "batch": "grasp-act-teacher_gate-315700",
+      "seed": 315703,
+      "split": "teacher_gate",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        -0.14725480356621412,
+        -0.6662663477944726,
+        2.043234498862561
+      ],
+      "spawns": {
+        "r1": [
+          0.3830333282951587,
+          0.3842850045159807,
+          0.032355118817659255,
+          -2.501400634698174
+        ],
+        "r2": [
+          0.0679879776110395,
+          -1.0874546016087034,
+          0.032355118817659255,
+          2.043234498862561
+        ],
+        "r3": [
+          3.3690630311442873,
+          -2.3717386609616398,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "other_end",
+      "initial_pan": {
+        "r1": 824,
+        "r2": 1937
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "visible_start": true,
+      "proposal_attempts": 2,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0
+    },
+    {
+      "episode_id": "teacher_gate-315704",
+      "batch": "grasp-act-teacher_gate-315700",
+      "seed": 315704,
+      "split": "teacher_gate",
+      "scenario_id": "s3_late_rendezvous_v4",
+      "scenario_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        0.4972524821392615,
+        -0.14304866730980859,
+        2.4925328865400007
+      ],
+      "spawns": {
+        "r1": [
+          1.122782511143571,
+          -1.3051737333326476,
+          0.032355118817659255,
+          1.7688343661067916
+        ],
+        "r2": [
+          1.2771227732778134,
+          -0.002751589695219603,
+          0.032355118817659255,
+          -2.9635985508340092
+        ],
+        "r3": [
+          -0.32127682532432145,
+          -1.464532430550821,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "approaching",
+      "initial_pan": {
+        "r1": 538,
+        "r2": 772
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "visible_start": true,
+      "proposal_attempts": 2,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0
+    },
+    {
+      "episode_id": "teacher_gate-315705",
+      "batch": "grasp-act-teacher_gate-315700",
+      "seed": 315705,
+      "split": "teacher_gate",
+      "scenario_id": "s6_novel_relation_v4",
+      "scenario_source_sha256": "fb2596bbbe76d360bd7c481e750bfea0683e95770d60617af26fbc114a820986",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "beam_pose": [
+        0.9840331069111394,
+        0.23601176886348085,
+        2.62222212157405
+      ],
+      "spawns": {
+        "r1": [
+          -0.36480407782607527,
+          0.8027976220295354,
+          0.032355118817659255,
+          0.22456435027840677
+        ],
+        "r2": [
+          0.1324304093418518,
+          0.12413025218796908,
+          0.032355118817659255,
+          0.13062946798425798
+        ],
+        "r3": [
+          2.169644453931892,
+          -2.6311189612815418,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "near_own",
+      "initial_pan": {
+        "r1": 1469,
+        "r2": 2158
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "visible_start": true,
+      "proposal_attempts": 2,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0
+    },
+    {
+      "episode_id": "teacher_gate-315706",
+      "batch": "grasp-act-teacher_gate-315700",
+      "seed": 315706,
+      "split": "teacher_gate",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        0.08195269348057477,
+        -0.623890901629641,
+        3.5095334997489136
+      ],
+      "spawns": {
+        "r1": [
+          1.0128340850239752,
+          0.4888274261810237,
+          0.032355118817659255,
+          -1.7672349489943056
+        ],
+        "r2": [
+          -0.3593894119307596,
+          -0.7940265709970333,
+          0.032355118817659255,
+          0.3679408461591202
+        ],
+        "r3": [
+          0.876712627441306,
+          -0.3525721738812506,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "other_end",
+      "initial_pan": {
+        "r1": 2174,
+        "r2": 927
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "visible_start": true,
+      "proposal_attempts": 1,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0
+    },
+    {
+      "episode_id": "teacher_gate-315707",
+      "batch": "grasp-act-teacher_gate-315700",
+      "seed": 315707,
+      "split": "teacher_gate",
+      "scenario_id": "s3_late_rendezvous_v4",
+      "scenario_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        0.9286514480902011,
+        -0.3618189431195491,
+        4.15321261820717
+      ],
+      "spawns": {
+        "r1": [
+          1.9722578090463536,
+          -1.8747118341793885,
+          0.032355118817659255,
+          2.609894041449789
+        ],
+        "r2": [
+          0.6253657102169111,
+          -0.9993262781928822,
+          0.032355118817659255,
+          1.1267469503882477
+        ],
+        "r3": [
+          -0.0753741335483954,
+          -1.872663643570844,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "approaching",
+      "initial_pan": {
+        "r1": 1571,
+        "r2": 846
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "visible_start": true,
+      "proposal_attempts": 2,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0
+    },
+    {
+      "episode_id": "teacher_gate-315708",
+      "batch": "grasp-act-teacher_gate-315700",
+      "seed": 315708,
+      "split": "teacher_gate",
+      "scenario_id": "s6_novel_relation_v4",
+      "scenario_source_sha256": "fb2596bbbe76d360bd7c481e750bfea0683e95770d60617af26fbc114a820986",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "beam_pose": [
+        0.7207555684585336,
+        0.08325073697073337,
+        4.401290317063256
+      ],
+      "spawns": {
+        "r1": [
+          -0.6092534875519957,
+          1.1545816062481484,
+          0.032355118817659255,
+          -1.012243610313108
+        ],
+        "r2": [
+          0.377390154288296,
+          1.0573336499238581,
+          0.032355118817659255,
+          -1.2318949901163312
+        ],
+        "r3": [
+          2.8425690671484074,
+          -1.5840911115067309,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "near_own",
+      "initial_pan": {
+        "r1": 1851,
+        "r2": 1137
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "visible_start": true,
+      "proposal_attempts": 1,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0
+    },
+    {
+      "episode_id": "teacher_gate-315709",
+      "batch": "grasp-act-teacher_gate-315700",
+      "seed": 315709,
+      "split": "teacher_gate",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        0.1751104502344381,
+        -0.3493818731915641,
+        4.887028542988699
+      ],
+      "spawns": {
+        "r1": [
+          -0.3623791031168336,
+          0.37030148995044687,
+          0.032355118817659255,
+          -0.7711736150393234
+        ],
+        "r2": [
+          0.09292518946193985,
+          0.11642343260878463,
+          0.032355118817659255,
+          -1.3961567641908883
+        ],
+        "r3": [
+          2.800698443902037,
+          -0.46438343630136014,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "other_end",
+      "initial_pan": {
+        "r1": 506,
+        "r2": 915
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "visible_start": true,
+      "proposal_attempts": 4,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0
+    },
+    {
+      "episode_id": "teacher_gate-315710",
+      "batch": "grasp-act-teacher_gate-315700",
+      "seed": 315710,
+      "split": "teacher_gate",
+      "scenario_id": "s3_late_rendezvous_v4",
+      "scenario_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        0.5299414235902453,
+        -1.600916559746042,
+        5.64722725371484
+      ],
+      "spawns": {
+        "r1": [
+          0.2502673284718045,
+          -0.12624229287757727,
+          0.032355118817659255,
+          -1.8676854620144008
+        ],
+        "r2": [
+          0.06408286032344485,
+          -0.9276496535876753,
+          0.032355118817659255,
+          -0.9655020134106976
+        ],
+        "r3": [
+          4.665118499608255,
+          -2.881942408186227,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "approaching",
+      "initial_pan": {
+        "r1": 1025,
+        "r2": 1637
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "visible_start": true,
+      "proposal_attempts": 7,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0
+    },
+    {
+      "episode_id": "teacher_gate-315711",
+      "batch": "grasp-act-teacher_gate-315700",
+      "seed": 315711,
+      "split": "teacher_gate",
+      "scenario_id": "s6_novel_relation_v4",
+      "scenario_source_sha256": "fb2596bbbe76d360bd7c481e750bfea0683e95770d60617af26fbc114a820986",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "beam_pose": [
+        -0.004550796906657606,
+        -1.8864060936869453,
+        5.791344601199399
+      ],
+      "spawns": {
+        "r1": [
+          -0.8082671354280101,
+          -1.7144529580363557,
+          0.032355118817659255,
+          0.6027717996442927
+        ],
+        "r2": [
+          1.183128855471021,
+          -1.6969814324320458,
+          0.032355118817659255,
+          -2.9834333595699816
+        ],
+        "r3": [
+          3.8378710230839927,
+          -0.07133954465760795,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "near_own",
+      "initial_pan": {
+        "r1": 2306,
+        "r2": 1623
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "visible_start": true,
+      "proposal_attempts": 2,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0
+    },
+    {
+      "episode_id": "teacher_gate-315712",
+      "batch": "grasp-act-teacher_gate-315700",
+      "seed": 315712,
+      "split": "teacher_gate",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        0.5767567216279019,
+        0.5584970331443615,
+        0.23407266084746609
+      ],
+      "spawns": {
+        "r1": [
+          1.2181244995951306,
+          1.079463475431179,
+          0.032355118817659255,
+          -1.822756210420222
+        ],
+        "r2": [
+          1.0368579395227824,
+          0.6682051426515797,
+          0.032355118817659255,
+          -2.907519992742327
+        ],
+        "r3": [
+          0.061239961440824664,
+          -1.3210934450745846,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "other_end",
+      "initial_pan": {
+        "r1": 772,
+        "r2": 1126
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "visible_start": true,
+      "proposal_attempts": 1,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0
+    },
+    {
+      "episode_id": "teacher_gate-315713",
+      "batch": "grasp-act-teacher_gate-315700",
+      "seed": 315713,
+      "split": "teacher_gate",
+      "scenario_id": "s3_late_rendezvous_v4",
+      "scenario_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        0.86525850563439,
+        -1.6183421186798521,
+        0.563940997434513
+      ],
+      "spawns": {
+        "r1": [
+          1.3607472530069766,
+          -2.6636719104535436,
+          0.032355118817659255,
+          2.23161173870045
+        ],
+        "r2": [
+          1.623479365167138,
+          -1.7702338933755117,
+          0.032355118817659255,
+          2.9438831157693164
+        ],
+        "r3": [
+          -0.7444737376442401,
+          -1.5840906989752719,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "approaching",
+      "initial_pan": {
+        "r1": 1198,
+        "r2": 1003
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "visible_start": true,
+      "proposal_attempts": 2,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0
+    },
+    {
+      "episode_id": "teacher_gate-315714",
+      "batch": "grasp-act-teacher_gate-315700",
+      "seed": 315714,
+      "split": "teacher_gate",
+      "scenario_id": "s6_novel_relation_v4",
+      "scenario_source_sha256": "fb2596bbbe76d360bd7c481e750bfea0683e95770d60617af26fbc114a820986",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "beam_pose": [
+        -0.33199078634286205,
+        0.8105681078438205,
+        1.153382383467559
+      ],
+      "spawns": {
+        "r1": [
+          -0.40680817760202836,
+          -0.9460344013055078,
+          0.032355118817659255,
+          2.0161899372991745
+        ],
+        "r2": [
+          -0.14728253257201582,
+          0.030790049582395507,
+          0.032355118817659255,
+          1.8033823834675589
+        ],
+        "r3": [
+          1.1366753289627134,
+          -2.0392776378965247,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "near_own",
+      "initial_pan": {
+        "r1": 862,
+        "r2": 1175
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "visible_start": true,
+      "proposal_attempts": 5,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0
+    },
+    {
+      "episode_id": "teacher_gate-315715",
+      "batch": "grasp-act-teacher_gate-315700",
+      "seed": 315715,
+      "split": "teacher_gate",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        0.6205360860595537,
+        -0.4783600018767902,
+        1.872401490065774
+      ],
+      "spawns": {
+        "r1": [
+          0.006245901050000224,
+          -0.49183428559401277,
+          0.032355118817659255,
+          0.8039146317503746
+        ],
+        "r2": [
+          0.7610422952262067,
+          -0.9300092077718263,
+          0.032355118817659255,
+          1.8724014900657735
+        ],
+        "r3": [
+          5.187563138805547,
+          -1.3006518445596806,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "other_end",
+      "initial_pan": {
+        "r1": 658,
+        "r2": 788
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "visible_start": true,
+      "proposal_attempts": 6,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0
+    },
+    {
+      "episode_id": "teacher_gate-315716",
+      "batch": "grasp-act-teacher_gate-315700",
+      "seed": 315716,
+      "split": "teacher_gate",
+      "scenario_id": "s3_late_rendezvous_v4",
+      "scenario_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        -0.3976153132768973,
+        -1.866053262936423,
+        2.1681659502836856
+      ],
+      "spawns": {
+        "r1": [
+          0.10897624849846171,
+          -1.755157473542997,
+          0.032355118817659255,
+          -2.0752865339745212
+        ],
+        "r2": [
+          -0.4129274113607899,
+          -2.6956285209643926,
+          0.032355118817659255,
+          1.5523406660161354
+        ],
+        "r3": [
+          4.809061747842398,
+          0.6663417610485003,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "approaching",
+      "initial_pan": {
+        "r1": 676,
+        "r2": 726
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "visible_start": true,
+      "proposal_attempts": 5,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0
+    },
+    {
+      "episode_id": "teacher_gate-315717",
+      "batch": "grasp-act-teacher_gate-315700",
+      "seed": 315717,
+      "split": "teacher_gate",
+      "scenario_id": "s6_novel_relation_v4",
+      "scenario_source_sha256": "fb2596bbbe76d360bd7c481e750bfea0683e95770d60617af26fbc114a820986",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "beam_pose": [
+        1.2127564911147513,
+        -0.28940928453251713,
+        3.0878746990740766
+      ],
+      "spawns": {
+        "r1": [
+          0.9388635070237821,
+          -0.7683292562842794,
+          0.032355118817659255,
+          0.17881423489608783
+        ],
+        "r2": [
+          0.3320061202243728,
+          -0.8871679675749689,
+          0.032355118817659255,
+          0.596282045484283
+        ],
+        "r3": [
+          -0.4837896949384143,
+          -2.4247010861174427,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "near_own",
+      "initial_pan": {
+        "r1": 1964,
+        "r2": 1965
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "visible_start": true,
+      "proposal_attempts": 4,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 1
+    },
+    {
+      "episode_id": "teacher_gate-315718",
+      "batch": "grasp-act-teacher_gate-315700",
+      "seed": 315718,
+      "split": "teacher_gate",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        -0.29264180455938105,
+        -0.9123344191438574,
+        3.4850751786999403
+      ],
+      "spawns": {
+        "r1": [
+          -0.1911294184377682,
+          -0.3055627864369156,
+          0.032355118817659255,
+          -2.2088540222568027
+        ],
+        "r2": [
+          -0.7380127269923022,
+          -1.0716257919524588,
+          0.032355118817659255,
+          0.3434825251101471
+        ],
+        "r3": [
+          3.2934469766709484,
+          0.979999768521576,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "other_end",
+      "initial_pan": {
+        "r1": 1739,
+        "r2": 1875
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "visible_start": true,
+      "proposal_attempts": 3,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0
+    },
+    {
+      "episode_id": "teacher_gate-315719",
+      "batch": "grasp-act-teacher_gate-315700",
+      "seed": 315719,
+      "split": "teacher_gate",
+      "scenario_id": "s3_late_rendezvous_v4",
+      "scenario_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        0.41125913259799124,
+        -0.07302374250683075,
+        4.167694362345472
+      ],
+      "spawns": {
+        "r1": [
+          1.3118567879696883,
+          0.1769131740211246,
+          0.032355118817659255,
+          -2.6402042012866564
+        ],
+        "r2": [
+          0.6451804041613189,
+          0.7719540012413854,
+          0.032355118817659255,
+          -1.840869763172597
+        ],
+        "r3": [
+          5.079906117417881,
+          -0.8552339790509276,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "approaching",
+      "initial_pan": {
+        "r1": 1162,
+        "r2": 1932
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "visible_start": true,
+      "proposal_attempts": 4,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0
+    },
+    {
+      "episode_id": "teacher_gate-315720",
+      "batch": "grasp-act-teacher_gate-315700",
+      "seed": 315720,
+      "split": "teacher_gate",
+      "scenario_id": "s6_novel_relation_v4",
+      "scenario_source_sha256": "fb2596bbbe76d360bd7c481e750bfea0683e95770d60617af26fbc114a820986",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "beam_pose": [
+        0.007717244055307715,
+        -2.247724308700043,
+        4.4195516253568945
+      ],
+      "spawns": {
+        "r1": [
+          -0.7690669128806535,
+          -2.3757590138037803,
+          0.032355118817659255,
+          1.1673767745872559
+        ],
+        "r2": [
+          -0.2817398378936601,
+          -1.4720471432430564,
+          0.032355118817659255,
+          -1.2136336818226927
+        ],
+        "r3": [
+          5.122445749318265,
+          -1.7582162935188335,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "near_own",
+      "initial_pan": {
+        "r1": 897,
+        "r2": 692
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "visible_start": true,
+      "proposal_attempts": 2,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0
+    },
+    {
+      "episode_id": "teacher_gate-315721",
+      "batch": "grasp-act-teacher_gate-315700",
+      "seed": 315721,
+      "split": "teacher_gate",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        0.09378032625335692,
+        -1.1224259369025131,
+        4.82616942138627
+      ],
+      "spawns": {
+        "r1": [
+          0.37188606125782053,
+          -0.13304047931419527,
+          0.032355118817659255,
+          -2.2430901994444383
+        ],
+        "r2": [
+          0.04007822404179065,
+          -0.6524843615784539,
+          0.032355118817659255,
+          -1.4570158857933166
+        ],
+        "r3": [
+          -0.8307026241645349,
+          -2.647118812446964,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "other_end",
+      "initial_pan": {
+        "r1": 1814,
+        "r2": 2388
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "visible_start": true,
+      "proposal_attempts": 3,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0
+    },
+    {
+      "episode_id": "teacher_gate-315722",
+      "batch": "grasp-act-teacher_gate-315700",
+      "seed": 315722,
+      "split": "teacher_gate",
+      "scenario_id": "s3_late_rendezvous_v4",
+      "scenario_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        1.449011437782278,
+        -1.5573171965802008,
+        5.5263052947314
+      ],
+      "spawns": {
+        "r1": [
+          1.293971286296155,
+          -2.437547044682068,
+          0.032355118817659255,
+          1.9181920205519636
+        ],
+        "r2": [
+          0.5850139954111858,
+          -1.2353785770787944,
+          0.032355118817659255,
+          -0.3566782895707308
+        ],
+        "r3": [
+          2.749252645078196,
+          0.5268766096132804,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "approaching",
+      "initial_pan": {
+        "r1": 1938,
+        "r2": 1331
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "visible_start": true,
+      "proposal_attempts": 1,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0
+    },
+    {
+      "episode_id": "teacher_gate-315723",
+      "batch": "grasp-act-teacher_gate-315700",
+      "seed": 315723,
+      "split": "teacher_gate",
+      "scenario_id": "s6_novel_relation_v4",
+      "scenario_source_sha256": "fb2596bbbe76d360bd7c481e750bfea0683e95770d60617af26fbc114a820986",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "beam_pose": [
+        1.07211787521894,
+        -0.04764435958183855,
+        6.035296133054433
+      ],
+      "spawns": {
+        "r1": [
+          0.16816291616160028,
+          0.35006746277138323,
+          0.032355118817659255,
+          -0.8173917925542036
+        ],
+        "r2": [
+          1.7162140985851906,
+          0.22627919435024424,
+          0.032355118817659255,
+          -2.7394818277149455
+        ],
+        "r3": [
+          3.1454223390603246,
+          -2.7749982477406303,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "near_own",
+      "initial_pan": {
+        "r1": 2377,
+        "r2": 1860
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "visible_start": true,
+      "proposal_attempts": 1,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0
+    },
+    {
+      "episode_id": "teacher_gate-315724",
+      "batch": "grasp-act-teacher_gate-315700",
+      "seed": 315724,
+      "split": "teacher_gate",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        0.3006345716777053,
+        -2.043599538663424,
+        0.39626555154485715
+      ],
+      "spawns": {
+        "r1": [
+          1.339574595787482,
+          -1.3756377647212448,
+          0.032355118817659255,
+          -1.7323406463628237
+        ],
+        "r2": [
+          0.7369812486225429,
+          -1.8610329000921955,
+          0.032355118817659255,
+          -2.745327102044936
+        ],
+        "r3": [
+          1.192615264680267,
+          0.29261114962783763,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "other_end",
+      "initial_pan": {
+        "r1": 1163,
+        "r2": 1334
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "visible_start": true,
+      "proposal_attempts": 1,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0
+    },
+    {
+      "episode_id": "teacher_gate-315725",
+      "batch": "grasp-act-teacher_gate-315700",
+      "seed": 315725,
+      "split": "teacher_gate",
+      "scenario_id": "s3_late_rendezvous_v4",
+      "scenario_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        0.9784221469322538,
+        0.26341495273562776,
+        0.9744804491220752
+      ],
+      "spawns": {
+        "r1": [
+          2.484780917025794,
+          -0.28446914725572203,
+          0.032355118817659255,
+          2.877079677208246
+        ],
+        "r2": [
+          1.8757606513940026,
+          0.33532377924750656,
+          0.032355118817659255,
+          -3.0616278574035145
+        ],
+        "r3": [
+          3.312889856436248,
+          -2.4842184941989944,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "approaching",
+      "initial_pan": {
+        "r1": 1476,
+        "r2": 2009
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "visible_start": true,
+      "proposal_attempts": 3,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0
+    },
+    {
+      "episode_id": "teacher_gate-315726",
+      "batch": "grasp-act-teacher_gate-315700",
+      "seed": 315726,
+      "split": "teacher_gate",
+      "scenario_id": "s6_novel_relation_v4",
+      "scenario_source_sha256": "fb2596bbbe76d360bd7c481e750bfea0683e95770d60617af26fbc114a820986",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "beam_pose": [
+        1.1774815094095714,
+        -0.18833280574942224,
+        1.4615589337456092
+      ],
+      "spawns": {
+        "r1": [
+          0.033405230686760934,
+          -1.5496084422260323,
+          0.032355118817659255,
+          0.1681360877311373
+        ],
+        "r2": [
+          1.678906541543291,
+          -1.0233916265691512,
+          0.032355118817659255,
+          2.1115589337456093
+        ],
+        "r3": [
+          0.4384304088149511,
+          0.22649811232296324,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "near_own",
+      "initial_pan": {
+        "r1": 2408,
+        "r2": 2188
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "visible_start": true,
+      "proposal_attempts": 3,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0
+    },
+    {
+      "episode_id": "teacher_gate-315727",
+      "batch": "grasp-act-teacher_gate-315700",
+      "seed": 315727,
+      "split": "teacher_gate",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        0.9116652674938244,
+        -1.6616122434773821,
+        1.983102080698607
+      ],
+      "spawns": {
+        "r1": [
+          1.9519179184018647,
+          -0.35541591804853945,
+          0.032355118817659255,
+          -2.0757479644796692
+        ],
+        "r2": [
+          1.1012072093278766,
+          -2.0949745079695465,
+          0.032355118817659255,
+          1.9831020806986075
+        ],
+        "r3": [
+          0.21879124582572707,
+          -2.0053633064978755,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "other_end",
+      "initial_pan": {
+        "r1": 1783,
+        "r2": 1451
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "visible_start": true,
+      "proposal_attempts": 1,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0
+    },
+    {
+      "episode_id": "teacher_gate-315728",
+      "batch": "grasp-act-teacher_gate-315700",
+      "seed": 315728,
+      "split": "teacher_gate",
+      "scenario_id": "s3_late_rendezvous_v4",
+      "scenario_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        -0.07043265721256192,
+        0.590880614395362,
+        2.2315886461116285
+      ],
+      "spawns": {
+        "r1": [
+          0.7876983403718829,
+          -1.0758870470950885,
+          0.032355118817659255,
+          1.1047701627384963
+        ],
+        "r2": [
+          1.0413560645792395,
+          0.2587251717587492,
+          0.032355118817659255,
+          2.8512759721994794
+        ],
+        "r3": [
+          -0.5664320490602421,
+          -0.8617304745901433,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "approaching",
+      "initial_pan": {
+        "r1": 2069,
+        "r2": 1561
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "visible_start": true,
+      "proposal_attempts": 2,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0
+    },
+    {
+      "episode_id": "teacher_gate-315729",
+      "batch": "grasp-act-teacher_gate-315700",
+      "seed": 315729,
+      "split": "teacher_gate",
+      "scenario_id": "s6_novel_relation_v4",
+      "scenario_source_sha256": "fb2596bbbe76d360bd7c481e750bfea0683e95770d60617af26fbc114a820986",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "beam_pose": [
+        1.4575318458078175,
+        0.3979993999733309,
+        2.9903663697451024
+      ],
+      "spawns": {
+        "r1": [
+          0.8416595073307531,
+          0.27747129309412244,
+          0.032355118817659255,
+          1.0697776011353815
+        ],
+        "r2": [
+          0.2730334177960976,
+          -0.24721026813631808,
+          0.032355118817659255,
+          0.49877371615530885
+        ],
+        "r3": [
+          2.781217345924385,
+          -1.193820961915147,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "near_own",
+      "initial_pan": {
+        "r1": 2481,
+        "r2": 900
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "visible_start": true,
+      "proposal_attempts": 2,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0
+    },
+    {
+      "episode_id": "teacher_gate-315730",
+      "batch": "grasp-act-teacher_gate-315700",
+      "seed": 315730,
+      "split": "teacher_gate",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        0.9441169116793222,
+        0.24224827914142955,
+        3.548005458184857
+      ],
+      "spawns": {
+        "r1": [
+          1.4040803457990354,
+          0.49237734566194236,
+          0.032355118817659255,
+          -2.374592016878918
+        ],
+        "r2": [
+          0.5096452172285512,
+          0.05526339547144979,
+          0.032355118817659255,
+          0.4064128045950638
+        ],
+        "r3": [
+          4.576572737620619,
+          -0.8172486753100676,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "other_end",
+      "initial_pan": {
+        "r1": 1796,
+        "r2": 591
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "visible_start": true,
+      "proposal_attempts": 1,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0
+    },
+    {
+      "episode_id": "teacher_gate-315731",
+      "batch": "grasp-act-teacher_gate-315700",
+      "seed": 315731,
+      "split": "teacher_gate",
+      "scenario_id": "s3_late_rendezvous_v4",
+      "scenario_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        1.2204749251654738,
+        -1.5296695606683774,
+        3.809400601367202
+      ],
+      "spawns": {
+        "r1": [
+          1.2959174931841693,
+          -2.2631772722076606,
+          0.032355118817659255,
+          0.6590834196303128
+        ],
+        "r2": [
+          0.1572603938748105,
+          -2.255418442664609,
+          0.032355118817659255,
+          0.5989515380480249
+        ],
+        "r3": [
+          1.4745339397457053,
+          -0.20161524696284294,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "approaching",
+      "initial_pan": {
+        "r1": 950,
+        "r2": 1994
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "visible_start": true,
+      "proposal_attempts": 1,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0
+    },
+    {
+      "episode_id": "teacher_gate-315732",
+      "batch": "grasp-act-teacher_gate-315700",
+      "seed": 315732,
+      "split": "teacher_gate",
+      "scenario_id": "s6_novel_relation_v4",
+      "scenario_source_sha256": "fb2596bbbe76d360bd7c481e750bfea0683e95770d60617af26fbc114a820986",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "beam_pose": [
+        1.0330336332131669,
+        -0.20044126455761324,
+        4.269822929511048
+      ],
+      "spawns": {
+        "r1": [
+          0.47771804455111433,
+          0.5468477237913644,
+          0.032355118817659255,
+          -1.9529755642666795
+        ],
+        "r2": [
+          0.7967819616192193,
+          0.9221009559480537,
+          0.032355118817659255,
+          -1.363362377668539
+        ],
+        "r3": [
+          4.35338809610349,
+          -1.4912830598585995,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "near_own",
+      "initial_pan": {
+        "r1": 1935,
+        "r2": 556
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "visible_start": true,
+      "proposal_attempts": 1,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0
+    },
+    {
+      "episode_id": "teacher_gate-315733",
+      "batch": "grasp-act-teacher_gate-315700",
+      "seed": 315733,
+      "split": "teacher_gate",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        -0.24189468629059502,
+        -1.669717976850976,
+        4.787485211833564
+      ],
+      "spawns": {
+        "r1": [
+          0.7567858887916414,
+          -1.4969461009592233,
+          0.032355118817659255,
+          -3.467096776801162
+        ],
+        "r2": [
+          -0.2773818271838434,
+          -1.1980510786789476,
+          0.032355118817659255,
+          -1.4957000953460222
+        ],
+        "r3": [
+          2.482459639357834,
+          0.5280958920004326,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "other_end",
+      "initial_pan": {
+        "r1": 2306,
+        "r2": 2030
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "visible_start": true,
+      "proposal_attempts": 1,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0
+    },
+    {
+      "episode_id": "teacher_gate-315734",
+      "batch": "grasp-act-teacher_gate-315700",
+      "seed": 315734,
+      "split": "teacher_gate",
+      "scenario_id": "s3_late_rendezvous_v4",
+      "scenario_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        -0.13813391393821417,
+        0.5274441877352336,
+        5.550802030233389
+      ],
+      "spawns": {
+        "r1": [
+          1.4330572493910423,
+          0.8653358482638033,
+          0.032355118817659255,
+          -3.143994702418606
+        ],
+        "r2": [
+          -0.26395063682575853,
+          -0.4241974991923396,
+          0.032355118817659255,
+          1.4393484870806215
+        ],
+        "r3": [
+          3.1685749624056823,
+          -1.1080460232969658,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "approaching",
+      "initial_pan": {
+        "r1": 2068,
+        "r2": 790
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "visible_start": true,
+      "proposal_attempts": 4,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0
+    },
+    {
+      "episode_id": "teacher_gate-315735",
+      "batch": "grasp-act-teacher_gate-315700",
+      "seed": 315735,
+      "split": "teacher_gate",
+      "scenario_id": "s6_novel_relation_v4",
+      "scenario_source_sha256": "fb2596bbbe76d360bd7c481e750bfea0683e95770d60617af26fbc114a820986",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "beam_pose": [
+        0.47381840908157086,
+        0.16643449699859092,
+        6.023164073788907
+      ],
+      "spawns": {
+        "r1": [
+          -0.6722571787417928,
+          0.6680572632976366,
+          0.032355118817659255,
+          -0.164092683582037
+        ],
+        "r2": [
+          1.0890631649271394,
+          0.4193186069830975,
+          0.032355118817659255,
+          -2.7516138869804725
+        ],
+        "r3": [
+          5.150846561455694,
+          -2.2941048000620823,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "near_own",
+      "initial_pan": {
+        "r1": 2341,
+        "r2": 2094
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "visible_start": true,
+      "proposal_attempts": 1,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0
+    },
+    {
+      "episode_id": "teacher_gate-315736",
+      "batch": "grasp-act-teacher_gate-315700",
+      "seed": 315736,
+      "split": "teacher_gate",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        1.1237849229890384,
+        -1.314236512306312,
+        0.5013203828350317
+      ],
+      "spawns": {
+        "r1": [
+          0.4045804833131401,
+          -1.4813938639963178,
+          0.032355118817659255,
+          0.9790137697188432
+        ],
+        "r2": [
+          1.538581692064203,
+          -1.086920344019046,
+          0.032355118817659255,
+          -2.6402722707547617
+        ],
+        "r3": [
+          -0.8428381403069204,
+          -1.8951682491469528,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "other_end",
+      "initial_pan": {
+        "r1": 1842,
+        "r2": 1186
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "visible_start": true,
+      "proposal_attempts": 6,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0
+    },
+    {
+      "episode_id": "teacher_gate-315737",
+      "batch": "grasp-act-teacher_gate-315700",
+      "seed": 315737,
+      "split": "teacher_gate",
+      "scenario_id": "s3_late_rendezvous_v4",
+      "scenario_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        0.4185106712214313,
+        0.3480930482170539,
+        0.6079242854566703
+      ],
+      "spawns": {
+        "r1": [
+          0.5932269942748714,
+          -1.3819243125917655,
+          0.032355118817659255,
+          1.1418194306304081
+        ],
+        "r2": [
+          -0.7792710904249955,
+          -0.3646271810979894,
+          0.032355118817659255,
+          0.5367596317812162
+        ],
+        "r3": [
+          4.30500586822699,
+          0.37975234167855776,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "approaching",
+      "initial_pan": {
+        "r1": 2410,
+        "r2": 1283
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "visible_start": true,
+      "proposal_attempts": 2,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0
+    },
+    {
+      "episode_id": "teacher_gate-315738",
+      "batch": "grasp-act-teacher_gate-315700",
+      "seed": 315738,
+      "split": "teacher_gate",
+      "scenario_id": "s6_novel_relation_v4",
+      "scenario_source_sha256": "fb2596bbbe76d360bd7c481e750bfea0683e95770d60617af26fbc114a820986",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "beam_pose": [
+        -0.07230097830066917,
+        0.5051493792085124,
+        1.2966134541831706
+      ],
+      "spawns": {
+        "r1": [
+          -0.5493460804803096,
+          -0.07478675089601827,
+          0.032355118817659255,
+          1.8913622252975304
+        ],
+        "r2": [
+          0.3618632079022646,
+          -0.5951965926745832,
+          0.032355118817659255,
+          1.9466134541831712
+        ],
+        "r3": [
+          3.093079856726292,
+          -0.13388390199407185,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "near_own",
+      "initial_pan": {
+        "r1": 1379,
+        "r2": 1678
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "visible_start": true,
+      "proposal_attempts": 4,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0
+    },
+    {
+      "episode_id": "teacher_gate-315739",
+      "batch": "grasp-act-teacher_gate-315700",
+      "seed": 315739,
+      "split": "teacher_gate",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        1.3861137235751526,
+        -2.0305125266128954,
+        1.6904110881470766
+      ],
+      "spawns": {
+        "r1": [
+          1.651208544536023,
+          -1.5192924351515458,
+          0.032355118817659255,
+          -2.7897361978107535
+        ],
+        "r2": [
+          1.442556685940258,
+          -2.50013279022963,
+          0.032355118817659255,
+          1.690411088147076
+        ],
+        "r3": [
+          2.5362194493323904,
+          -2.389015614285639,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "other_end",
+      "initial_pan": {
+        "r1": 2028,
+        "r2": 1301
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "visible_start": true,
+      "proposal_attempts": 2,
+      "near_wall": false,
+      "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+      "nominal_goal_rejected_proposals": 0
+    }
+  ],
+  "rejected_proposals": {
+    "robot_other_cargo": 8,
+    "beam_other_cargo": 13,
+    "robot_wall": 32,
+    "start_wall_blocks_end": 3,
+    "start_nominal_goal_blocked": 1,
+    "robot_overlap": 2
+  },
+  "distribution": {
+    "beam_yaw_deg": [
+      0,
+      360
+    ],
+    "robot_center_distance_m": [
+      0.5,
+      2.0
+    ],
+    "robot_axis_bearing_deg": [
+      0,
+      360
+    ],
+    "robot_heading_error_deg": [
+      -60,
+      60
+    ],
+    "initial_pan_pwm": [
+      500,
+      2500
+    ],
+    "ends": "50:50 by index",
+    "fixed": [
+      "floor_light_v1",
+      "camera review v3",
+      "native v7",
+      "cargo_noslip_v1",
+      "weld off"
+    ],
+    "start_visibility": "static wall must not block the line from each spawn to its assigned end (episode generation only)",
+    "limits": "static rejection alters accepted strata; accepted plan is the source of actual coverage. Intermediate placed objects and moving work peers are a later collection stage.",
+    "start_nominal_goal_feasible": "both assigned nominal goals must clear static walls/bounds; exclusions and original-plan fraction in nominal_goal_filter"
+  },
+  "criteria": {
+    "teacher_target_rate": 0.95,
+    "minimum_episodes": 40,
+    "single_end": "bilateral >=0.5N each and end rise >=12mm for >=1s",
+    "pair": "both bilateral + whole beam lower surface >=12mm above floor for >=1s",
+    "first_attempt": "no teacher regrasp in this gate",
+    "phase_cap_s": 60,
+    "episode_cap_s": 60,
+    "target_pair_sim_s": 40
+  },
+  "stage_order": [
+    "long_beam",
+    "solo boxes/can/tile grasp and release",
+    "heavy_crate",
+    "tri_frame"
+  ],
+  "student_evaluation": false,
+  "start_nominal_goal_feasible": "start_nominal_goal_feasible_v1",
+  "nominal_goal_filter": {
+    "mode": "start_nominal_goal_feasible_v1",
+    "original_planned_N": 40,
+    "original_blocked_n": 1,
+    "original_blocked_rate": 0.025,
+    "original_blocked_starts": [
+      {
+        "seed": 315717,
+        "roles": [
+          "r2"
+        ]
+      }
+    ],
+    "original_episodes_sha256": "b19d28c8bfdb2aa90b62fbc6ef4c1062fcb30bcda24900710011da2ef692e70d",
+    "accepted_N": 40,
+    "rejected_proposals_n": 1,
+    "nominal_tested_proposals_N": 41,
+    "rejected_proposals_rate": 0.024390243902439025,
+    "all_proposals_N": 99,
+    "criterion": "same nominal_goal_blocked(static_map_only=True), folded planner clearance; walls/bounds only",
+    "scope": "map-to-teacher handoff distribution; excludes static-blocked nominal stances, not a wide-start gate; no physical outcomes used"
+  }
+}

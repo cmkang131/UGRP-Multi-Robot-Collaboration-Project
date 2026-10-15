@@ -1,0 +1,110 @@
+{
+  "time": "2026-10-15T02:27:19.722089+00:00",
+  "baseline_sha": "c0a8875b1ff71fbf4f92f7f7c0b7f8d140ec8147",
+  "reader_implementation_sha": "fcd13939dd253222a73faa46413441f0976ddf76",
+  "final_execution_sha_location": "new SHA-bound gate queue sha/coordinator_approval.source_sha",
+  "scope": "offline reader/supervisor tests, local raw reaggregation and frozen plans; execution-host connections/physics/render/model calls/new frame reviews 0",
+  "tests": {
+    "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_grasp_act_batch.py tests/test_grasp_act_resume.py",
+    "passed": 22,
+    "failed": 0,
+    "seconds": 0.49,
+    "coverage": [
+      "real zstd complete/EXIT0 including handoff denominator",
+      "compressed repeated cause: two episodes stop only unfinished child",
+      "plain/compressed byte equality",
+      "compressed and decoded SHA mismatch rejection",
+      "compressed manifest proof",
+      "pending manifest before exit; required after exit",
+      "existing resume byte-equivalence guard"
+    ]
+  },
+  "operator_diagnostic": {
+    "source": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/search15-diagnostic-c0a8875b.json",
+      "sha256": "90494faeb9ac03811f6f7a1a6d3ee25ce2eb93bf7b786a343bf573f6edab3e1b"
+    },
+    "counts": {
+      "normal6": {
+        "n": 6,
+        "N": 6
+      },
+      "old_failure6": {
+        "n": 3,
+        "N": 6
+      },
+      "hard1": {
+        "n": 0,
+        "N": 1
+      },
+      "novel6": {
+        "n": 6,
+        "N": 6
+      }
+    },
+    "complete_EXIT0": 19,
+    "HOST_ERROR": 0,
+    "interrupted": 0,
+    "input_audit": "0/0",
+    "frames_viewed_by_operator": 342,
+    "frames_viewed_in_this_task": 0
+  },
+  "local_reader_reaggregation": {
+    "source": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/search16-local-reader-audit.json",
+      "sha256": "1989e2b79f38d943a22f8787c76f39fd4319baaeea92bebcd1c904a5b06e94f0"
+    },
+    "groups": {
+      "normal": {
+        "n": 6,
+        "N": 6
+      },
+      "old_failure_plus_hard": {
+        "n": 3,
+        "N": 7
+      },
+      "novel": {
+        "n": 6,
+        "N": 6
+      }
+    },
+    "complete_EXIT0": 19,
+    "HOST_ERROR": 0,
+    "interrupted": 0,
+    "compressed_episodes_verified": [
+      6,
+      7,
+      11
+    ]
+  },
+  "execution_equivalence": {
+    "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/experiments/2026-10-14-e2e18-grasp-rootcause/search16-execution-sha256.json",
+    "sha256": "36cf38e2d88ef87fd5cc5499fcb163f32424bf27fcf461f419d5c91b228ad6a8"
+  },
+  "plans": {
+    "speed16": {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/experiments/2026-10-14-e2e18-grasp-rootcause/teacher-search16-speed16-plan.json",
+      "sha256": "f93c0b0a607a76569f61631dfb7b391e0b4922929a8103f9069b8e524112740c"
+    },
+    "gate40": {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/experiments/2026-10-14-e2e18-grasp-rootcause/teacher-search16-gate40-plan.json",
+      "sha256": "075b534aa640b8e1c6712883d4a827a33f4ffde025910ef6b7bebd0f7fcc03d2"
+    }
+  },
+  "seed_inventory": {
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/search16-seed-local-inventory.json",
+    "sha256": "6a92b606fa9a6e7bed7632fd7d531a0608cf8a7a92948a686d4b6fd43c8415e6"
+  },
+  "stage_status": {
+    "speed16": "approved by user request; not submitted; operator seed/resource checks pending",
+    "gate40": "approved by user request; not submitted; fresh speed16 pass and operator seed/resource checks pending"
+  },
+  "gate_acceptance": {
+    "planned_N": 40,
+    "required_success": 38,
+    "handoff_is_failure": true,
+    "HOST_ERROR_separate": true,
+    "all_40_new_seeds_required": true,
+    "gate_promotion_authorized_if_all_conditions_pass": false
+  }
+}
