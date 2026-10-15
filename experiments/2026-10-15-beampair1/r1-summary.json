@@ -86,7 +86,55 @@
         }
       ],
       "strict_success": true,
+      "saved_command_phases": {
+        "r1": {
+          "last_phase": "complete",
+          "phase_counts": {
+            "approach": 129,
+            "search": 24,
+            "align": 41,
+            "ready": 100,
+            "pick": 57,
+            "complete": 23
+          },
+          "path": "/home/ugrp/ugrp-sim/runs/beampair1-r1-cdbdc4b0/probes/diagnostic/episode-000/raw/teacher-r1.jsonl.zst",
+          "sha256": "fce3b434da376cad33292d08c8931016cf58b0bf0438283c6616b9b4e5c3f2f2"
+        },
+        "r2": {
+          "last_phase": "complete",
+          "phase_counts": {
+            "approach": 203,
+            "search": 46,
+            "align": 43,
+            "ready": 6,
+            "pick": 57,
+            "complete": 19
+          },
+          "path": "/home/ugrp/ugrp-sim/runs/beampair1-r1-cdbdc4b0/probes/diagnostic/episode-000/raw/teacher-r2.jsonl.zst",
+          "sha256": "6cf39e3e6599ffc61afac93a1d1ea8311cd2237367205fd49a8be856d276e30e"
+        }
+      },
       "visible_eligible": true,
+      "frame_funnel": [
+        {
+          "gate": "any_assigned_probe",
+          "entered": 748,
+          "passed": 531,
+          "rejected": 217
+        },
+        {
+          "gate": "meaningful_region_5_of_15",
+          "entered": 531,
+          "passed": 529,
+          "rejected": 2
+        },
+        {
+          "gate": "measurement_admitted_not_held",
+          "entered": 529,
+          "passed": 529,
+          "rejected": 0
+        }
+      ],
       "adapter_sha": "cdbdc4b0163725ccf0da4bdcb37900496acf8f49",
       "dependency_sha": "26f84d0f0ada1c33473c83cca2d3415ce51bd247",
       "candidate": "baseline",
@@ -104,7 +152,7 @@
       "adapter_manifest_verified_files": 2,
       "candidate_populations": {},
       "montage": {
-        "path": "/home/ugrp/ugrp-sim/outputs/beampair1-r1-analysis/episode-000.jpg",
+        "path": "/home/ugrp/ugrp-sim/outputs/beampair1-r1-analysis-v2/episode-000.jpg",
         "sha256": "c18c7a72250ee3c167e937985fccad21deab6998fd9138a824774dd3824b39bb",
         "frames": [
           {
@@ -186,7 +234,27 @@
         "both_ready": true,
         "both_pick": true,
         "both_command_complete": true
-      }
+      },
+      "event_funnel": [
+        {
+          "gate": "own_ready",
+          "entered": 2,
+          "passed": 2,
+          "rejected": 0
+        },
+        {
+          "gate": "own_pick_after_go_ack",
+          "entered": 2,
+          "passed": 2,
+          "rejected": 0
+        },
+        {
+          "gate": "own_command_complete",
+          "entered": 2,
+          "passed": 2,
+          "rejected": 0
+        }
+      ]
     },
     {
       "raw": "/home/ugrp/ugrp-sim/runs/beampair1-r1-cdbdc4b0/probes/diagnostic/episode-001/raw",
@@ -258,7 +326,54 @@
         }
       ],
       "strict_success": true,
+      "saved_command_phases": {
+        "r1": {
+          "last_phase": "complete",
+          "phase_counts": {
+            "approach": 123,
+            "align": 41,
+            "ready": 108,
+            "pick": 57,
+            "complete": 22
+          },
+          "path": "/home/ugrp/ugrp-sim/runs/beampair1-r1-cdbdc4b0/probes/diagnostic/episode-001/raw/teacher-r1.jsonl.zst",
+          "sha256": "5ff611e3f54b79caa12814afc6820a01608d836cdcdc6673bd6456eaaf2e4abf"
+        },
+        "r2": {
+          "last_phase": "complete",
+          "phase_counts": {
+            "approach": 194,
+            "search": 34,
+            "align": 42,
+            "ready": 5,
+            "pick": 57,
+            "complete": 19
+          },
+          "path": "/home/ugrp/ugrp-sim/runs/beampair1-r1-cdbdc4b0/probes/diagnostic/episode-001/raw/teacher-r2.jsonl.zst",
+          "sha256": "9c8162835deaa5d04fc988a90d82be08e651f763a21ff4d09eadc40cbc1f301d"
+        }
+      },
       "visible_eligible": true,
+      "frame_funnel": [
+        {
+          "gate": "any_assigned_probe",
+          "entered": 702,
+          "passed": 529,
+          "rejected": 173
+        },
+        {
+          "gate": "meaningful_region_5_of_15",
+          "entered": 529,
+          "passed": 527,
+          "rejected": 2
+        },
+        {
+          "gate": "measurement_admitted_not_held",
+          "entered": 527,
+          "passed": 527,
+          "rejected": 0
+        }
+      ],
       "adapter_sha": "cdbdc4b0163725ccf0da4bdcb37900496acf8f49",
       "dependency_sha": "26f84d0f0ada1c33473c83cca2d3415ce51bd247",
       "candidate": "baseline",
@@ -276,7 +391,7 @@
       "adapter_manifest_verified_files": 2,
       "candidate_populations": {},
       "montage": {
-        "path": "/home/ugrp/ugrp-sim/outputs/beampair1-r1-analysis/episode-001.jpg",
+        "path": "/home/ugrp/ugrp-sim/outputs/beampair1-r1-analysis-v2/episode-001.jpg",
         "sha256": "09515cc5c2c119bb326c17f161d27a08a38bc02a413ed5ad25be109b4d13afb8",
         "frames": [
           {
@@ -358,7 +473,27 @@
         "both_ready": true,
         "both_pick": true,
         "both_command_complete": true
-      }
+      },
+      "event_funnel": [
+        {
+          "gate": "own_ready",
+          "entered": 2,
+          "passed": 2,
+          "rejected": 0
+        },
+        {
+          "gate": "own_pick_after_go_ack",
+          "entered": 2,
+          "passed": 2,
+          "rejected": 0
+        },
+        {
+          "gate": "own_command_complete",
+          "entered": 2,
+          "passed": 2,
+          "rejected": 0
+        }
+      ]
     },
     {
       "raw": "/home/ugrp/ugrp-sim/runs/beampair1-r1-cdbdc4b0/probes/diagnostic/episode-002/raw",
@@ -430,7 +565,55 @@
         }
       ],
       "strict_success": true,
+      "saved_command_phases": {
+        "r1": {
+          "last_phase": "complete",
+          "phase_counts": {
+            "approach": 122,
+            "search": 44,
+            "align": 30,
+            "ready": 2,
+            "pick": 57,
+            "complete": 25
+          },
+          "path": "/home/ugrp/ugrp-sim/runs/beampair1-r1-cdbdc4b0/probes/diagnostic/episode-002/raw/teacher-r1.jsonl.zst",
+          "sha256": "6649112ee8857aaa7cc3d179257c1c823923abab2fdb214b45f763643d44bfa4"
+        },
+        "r2": {
+          "last_phase": "complete",
+          "phase_counts": {
+            "approach": 7,
+            "search": 9,
+            "align": 4,
+            "ready": 184,
+            "pick": 57,
+            "complete": 19
+          },
+          "path": "/home/ugrp/ugrp-sim/runs/beampair1-r1-cdbdc4b0/probes/diagnostic/episode-002/raw/teacher-r2.jsonl.zst",
+          "sha256": "6d6ab7b070c344288507d703671e69e7ea2494f9c1677e3ca20662a28de9d0a4"
+        }
+      },
       "visible_eligible": true,
+      "frame_funnel": [
+        {
+          "gate": "any_assigned_probe",
+          "entered": 560,
+          "passed": 351,
+          "rejected": 209
+        },
+        {
+          "gate": "meaningful_region_5_of_15",
+          "entered": 351,
+          "passed": 348,
+          "rejected": 3
+        },
+        {
+          "gate": "measurement_admitted_not_held",
+          "entered": 348,
+          "passed": 348,
+          "rejected": 0
+        }
+      ],
       "adapter_sha": "cdbdc4b0163725ccf0da4bdcb37900496acf8f49",
       "dependency_sha": "26f84d0f0ada1c33473c83cca2d3415ce51bd247",
       "candidate": "baseline",
@@ -448,7 +631,7 @@
       "adapter_manifest_verified_files": 2,
       "candidate_populations": {},
       "montage": {
-        "path": "/home/ugrp/ugrp-sim/outputs/beampair1-r1-analysis/episode-002.jpg",
+        "path": "/home/ugrp/ugrp-sim/outputs/beampair1-r1-analysis-v2/episode-002.jpg",
         "sha256": "9350112f68f102bbb4c2eb7e911ca5ecb4d47c221c76f10600aaf7b38467ef89",
         "frames": [
           {
@@ -530,7 +713,27 @@
         "both_ready": true,
         "both_pick": true,
         "both_command_complete": true
-      }
+      },
+      "event_funnel": [
+        {
+          "gate": "own_ready",
+          "entered": 2,
+          "passed": 2,
+          "rejected": 0
+        },
+        {
+          "gate": "own_pick_after_go_ack",
+          "entered": 2,
+          "passed": 2,
+          "rejected": 0
+        },
+        {
+          "gate": "own_command_complete",
+          "entered": 2,
+          "passed": 2,
+          "rejected": 0
+        }
+      ]
     },
     {
       "raw": "/home/ugrp/ugrp-sim/runs/beampair1-r1-cdbdc4b0/probes/diagnostic/episode-003/raw",
@@ -602,7 +805,55 @@
         }
       ],
       "strict_success": true,
+      "saved_command_phases": {
+        "r1": {
+          "last_phase": "complete",
+          "phase_counts": {
+            "approach": 129,
+            "search": 92,
+            "align": 27,
+            "ready": 2,
+            "pick": 57,
+            "complete": 27
+          },
+          "path": "/home/ugrp/ugrp-sim/runs/beampair1-r1-cdbdc4b0/probes/diagnostic/episode-003/raw/teacher-r1.jsonl.zst",
+          "sha256": "96669c6b1f34ada70f52bcca7c5e93eca5966f3b28179059b5df2152024767f5"
+        },
+        "r2": {
+          "last_phase": "complete",
+          "phase_counts": {
+            "approach": 7,
+            "search": 3,
+            "align": 4,
+            "ready": 244,
+            "pick": 57,
+            "complete": 19
+          },
+          "path": "/home/ugrp/ugrp-sim/runs/beampair1-r1-cdbdc4b0/probes/diagnostic/episode-003/raw/teacher-r2.jsonl.zst",
+          "sha256": "e861cc7b0d5835fdcc47dfb57f283eaeed102cba86094f74af35bef93b91a2e1"
+        }
+      },
       "visible_eligible": true,
+      "frame_funnel": [
+        {
+          "gate": "any_assigned_probe",
+          "entered": 668,
+          "passed": 414,
+          "rejected": 254
+        },
+        {
+          "gate": "meaningful_region_5_of_15",
+          "entered": 414,
+          "passed": 412,
+          "rejected": 2
+        },
+        {
+          "gate": "measurement_admitted_not_held",
+          "entered": 412,
+          "passed": 412,
+          "rejected": 0
+        }
+      ],
       "adapter_sha": "cdbdc4b0163725ccf0da4bdcb37900496acf8f49",
       "dependency_sha": "26f84d0f0ada1c33473c83cca2d3415ce51bd247",
       "candidate": "baseline",
@@ -620,7 +871,7 @@
       "adapter_manifest_verified_files": 2,
       "candidate_populations": {},
       "montage": {
-        "path": "/home/ugrp/ugrp-sim/outputs/beampair1-r1-analysis/episode-003.jpg",
+        "path": "/home/ugrp/ugrp-sim/outputs/beampair1-r1-analysis-v2/episode-003.jpg",
         "sha256": "a401f0a77e3500246c776b141d2374b90c42c4f8ea41b8eff80c73f8c5ce0232",
         "frames": [
           {
@@ -702,7 +953,27 @@
         "both_ready": true,
         "both_pick": true,
         "both_command_complete": true
-      }
+      },
+      "event_funnel": [
+        {
+          "gate": "own_ready",
+          "entered": 2,
+          "passed": 2,
+          "rejected": 0
+        },
+        {
+          "gate": "own_pick_after_go_ack",
+          "entered": 2,
+          "passed": 2,
+          "rejected": 0
+        },
+        {
+          "gate": "own_command_complete",
+          "entered": 2,
+          "passed": 2,
+          "rejected": 0
+        }
+      ]
     },
     {
       "raw": "/home/ugrp/ugrp-sim/runs/beampair1-r1-cdbdc4b0/probes/diagnostic/episode-004/raw",
@@ -774,7 +1045,55 @@
         }
       ],
       "strict_success": true,
+      "saved_command_phases": {
+        "r1": {
+          "last_phase": "complete",
+          "phase_counts": {
+            "approach": 147,
+            "search": 2,
+            "align": 29,
+            "ready": 2,
+            "pick": 57,
+            "complete": 26
+          },
+          "path": "/home/ugrp/ugrp-sim/runs/beampair1-r1-cdbdc4b0/probes/diagnostic/episode-004/raw/teacher-r1.jsonl.zst",
+          "sha256": "61e75de697862acdd38197de4585749b3cd7218d3b405322a9ede44d56d8b793"
+        },
+        "r2": {
+          "last_phase": "complete",
+          "phase_counts": {
+            "approach": 118,
+            "search": 22,
+            "align": 32,
+            "ready": 15,
+            "pick": 57,
+            "complete": 19
+          },
+          "path": "/home/ugrp/ugrp-sim/runs/beampair1-r1-cdbdc4b0/probes/diagnostic/episode-004/raw/teacher-r2.jsonl.zst",
+          "sha256": "1d372db6ce62d4f774bf8bcc05d1ddc17ddf6435cfc2ca730f035f254cd6e1a7"
+        }
+      },
       "visible_eligible": true,
+      "frame_funnel": [
+        {
+          "gate": "any_assigned_probe",
+          "entered": 526,
+          "passed": 351,
+          "rejected": 175
+        },
+        {
+          "gate": "meaningful_region_5_of_15",
+          "entered": 351,
+          "passed": 350,
+          "rejected": 1
+        },
+        {
+          "gate": "measurement_admitted_not_held",
+          "entered": 350,
+          "passed": 350,
+          "rejected": 0
+        }
+      ],
       "adapter_sha": "cdbdc4b0163725ccf0da4bdcb37900496acf8f49",
       "dependency_sha": "26f84d0f0ada1c33473c83cca2d3415ce51bd247",
       "candidate": "baseline",
@@ -792,7 +1111,7 @@
       "adapter_manifest_verified_files": 2,
       "candidate_populations": {},
       "montage": {
-        "path": "/home/ugrp/ugrp-sim/outputs/beampair1-r1-analysis/episode-004.jpg",
+        "path": "/home/ugrp/ugrp-sim/outputs/beampair1-r1-analysis-v2/episode-004.jpg",
         "sha256": "2cfcaeeadddeaebabc91d129d83a8a686c56ba50ff14f0499ae645df9102ea48",
         "frames": [
           {
@@ -874,7 +1193,27 @@
         "both_ready": true,
         "both_pick": true,
         "both_command_complete": true
-      }
+      },
+      "event_funnel": [
+        {
+          "gate": "own_ready",
+          "entered": 2,
+          "passed": 2,
+          "rejected": 0
+        },
+        {
+          "gate": "own_pick_after_go_ack",
+          "entered": 2,
+          "passed": 2,
+          "rejected": 0
+        },
+        {
+          "gate": "own_command_complete",
+          "entered": 2,
+          "passed": 2,
+          "rejected": 0
+        }
+      ]
     },
     {
       "raw": "/home/ugrp/ugrp-sim/runs/beampair1-r1-cdbdc4b0/probes/diagnostic/episode-005/raw",
@@ -946,7 +1285,55 @@
         }
       ],
       "strict_success": true,
+      "saved_command_phases": {
+        "r1": {
+          "last_phase": "complete",
+          "phase_counts": {
+            "approach": 150,
+            "search": 20,
+            "align": 43,
+            "ready": 2,
+            "pick": 57,
+            "complete": 27
+          },
+          "path": "/home/ugrp/ugrp-sim/runs/beampair1-r1-cdbdc4b0/probes/diagnostic/episode-005/raw/teacher-r1.jsonl.zst",
+          "sha256": "d07b4588d331c5ee8e82043a4a6621d3e5b6d059c54a213fc7e65b6826d30bc0"
+        },
+        "r2": {
+          "last_phase": "complete",
+          "phase_counts": {
+            "approach": 7,
+            "search": 3,
+            "align": 4,
+            "ready": 209,
+            "pick": 57,
+            "complete": 19
+          },
+          "path": "/home/ugrp/ugrp-sim/runs/beampair1-r1-cdbdc4b0/probes/diagnostic/episode-005/raw/teacher-r2.jsonl.zst",
+          "sha256": "219130c9eaa531413f109666ba060ded2e5f359c1b60a40436f7754eed0a9b08"
+        }
+      },
       "visible_eligible": true,
+      "frame_funnel": [
+        {
+          "gate": "any_assigned_probe",
+          "entered": 598,
+          "passed": 424,
+          "rejected": 174
+        },
+        {
+          "gate": "meaningful_region_5_of_15",
+          "entered": 424,
+          "passed": 422,
+          "rejected": 2
+        },
+        {
+          "gate": "measurement_admitted_not_held",
+          "entered": 422,
+          "passed": 422,
+          "rejected": 0
+        }
+      ],
       "adapter_sha": "cdbdc4b0163725ccf0da4bdcb37900496acf8f49",
       "dependency_sha": "26f84d0f0ada1c33473c83cca2d3415ce51bd247",
       "candidate": "baseline",
@@ -964,7 +1351,7 @@
       "adapter_manifest_verified_files": 2,
       "candidate_populations": {},
       "montage": {
-        "path": "/home/ugrp/ugrp-sim/outputs/beampair1-r1-analysis/episode-005.jpg",
+        "path": "/home/ugrp/ugrp-sim/outputs/beampair1-r1-analysis-v2/episode-005.jpg",
         "sha256": "6175b75f9a9edf12966aefbf890f9e0efeb20dc0002e6a42c0a3c26f5ebde9e3",
         "frames": [
           {
@@ -1046,8 +1433,28 @@
         "both_ready": true,
         "both_pick": true,
         "both_command_complete": true
-      }
+      },
+      "event_funnel": [
+        {
+          "gate": "own_ready",
+          "entered": 2,
+          "passed": 2,
+          "rejected": 0
+        },
+        {
+          "gate": "own_pick_after_go_ack",
+          "entered": 2,
+          "passed": 2,
+          "rejected": 0
+        },
+        {
+          "gate": "own_command_complete",
+          "entered": 2,
+          "passed": 2,
+          "rejected": 0
+        }
+      ]
     }
   ],
-  "reproduce": "python -m scripts.analyze_beampair1 /home/ugrp/ugrp-sim/runs/beampair1-r1-cdbdc4b0/probes --out /home/ugrp/ugrp-sim/outputs/beampair1-r1-analysis"
+  "reproduce": "python -m scripts.analyze_beampair1 /home/ugrp/ugrp-sim/runs/beampair1-r1-cdbdc4b0/probes --out /home/ugrp/ugrp-sim/outputs/beampair1-r1-analysis-v2"
 }

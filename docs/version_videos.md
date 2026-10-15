@@ -102,3 +102,7 @@ SHA256 `384ad6944cf42b44e0238cb3650b82af413c75b97f87cebc72d20c220915c84c`;
 SHA256 `69bdd4f62546e3e38ea024cf94b6bc12b86cef39b8a187ee155b7f11794a1c69`.
 후보722개 중 확인0·관문 실패로 새 물리0, 성공영상 없음. 회색벽/청록문은 평가용GT, 제어입력 아님.
 - 2026-10-06 S2 v117 `ef820ab2` / s1042: REAL pre-grasp 확인 뒤 hover 하강·SIM lifted=true, pickup-site ROI clipped/unknown으로 probe gate 미통과. own-RGB4배속 영상 `/Users/changmin/projects/ugrp/outputs/s2-realism-ef820ab2-analysis/views/s1042-probe/execution.mp4` (34.05s,681frames,sha256 `5ed6f0714aaab173ece3a9630964dfcb76252969e6f08fdd0ec35b0425ad2041`). full/실물 성공 증거 아님. 기록: `experiments/2026-10-06-s2-realism/completed-v117.json`.
+
+## 2026-10-15 beampair1 long_beam 근거리 교사
+
+`d79f04a39e3eec9d418e5c44929182e0ec79f51c` + dependency `26f84d0f0ada1c33473c83cca2d3415ce51bd247`, gcp1/n4-highcpu-64, v7·청록/파랑 끝·weld OFF. 짧은 탐색6/6 공동 들기(3초), 정식40회 관문 미실행. 대표 seed71001 own r1/r2 1Hz 검토 영상은 gcp1 `/home/ugrp/ugrp-sim/outputs/beampair1-r3-analysis-v2/representative/beampair1-d79f04a3-71001.mp4` (SHA256 `dd4c7644280bd101e4a0ef6bb3670a34ec31581b9f0cc71c41b573a9b0f81b2c`). [프레임/원본/인코더 기록](../experiments/2026-10-15-beampair1/representative.json). 근거리 접근·정렬·집기·들기만이며 운반·놓기·학생·실물 성공이 아니다. Mac에는 영상 원본을 회수하지 않았다.
