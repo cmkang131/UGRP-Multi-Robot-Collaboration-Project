@@ -1,7 +1,11 @@
 {
   "schema": "ugrp.reloc10.summary.v1",
-  "state": "round3_pending",
+  "state": "bounded_validation_finished_not_ready",
   "ready": false,
+  "rounds_submitted": 3,
+  "rounds_allowed": 3,
+  "raw_runs_retrieved": 11,
+  "additional_rounds_submitted": 0,
   "previous_results_combinable": false,
   "host": {
     "host": "gcp1",
@@ -15,7 +19,6 @@
       "source_sha": "0fb980e62bd1a9ceab124bc73eaaf5325f213115",
       "exit": 130,
       "status": "interrupted",
-      "complete": null,
       "frames": null,
       "elapsed_sim_s": null,
       "physical_success": null,
@@ -23,7 +26,7 @@
       "placement_success": null,
       "drop_samples": null,
       "termination": "",
-      "ledger": {
+      "metrics": {
         "rows": 542,
         "last_t": 55.40000000017351,
         "last_phase": "carry_reobserve"
@@ -44,18 +47,22 @@
         "scope": "decision input boundary only; evaluation excluded"
       },
       "raw_vm": "gcp1:/home/ugrp/ugrp-sim/runs/reloc10-r1-carry-93261-0fb980e6/raw",
-      "raw_local": "/Users/changmin/projects/ugrp-wt/map-carry-zone/tmp/reloc10/round1/reloc10-r1-carry-93261-0fb980e6/raw",
-      "sha256": {
-        "result.json": "a6cf980e45736f658121532c060abc27df43e74f87cd78dc8c96e4a1dcf045fc",
+      "raw_local": "/Users/changmin/projects/ugrp-wt/map-carry-zone/outputs/reloc10-gcp/round1/reloc10-r1-carry-93261-0fb980e6/raw",
+      "result": {
+        "path": "/Users/changmin/projects/ugrp-wt/map-carry-zone/outputs/reloc10-gcp/round1/reloc10-r1-carry-93261-0fb980e6/raw/result.json",
+        "sha256": "a6cf980e45736f658121532c060abc27df43e74f87cd78dc8c96e4a1dcf045fc",
+        "decoded_sha256": "a6cf980e45736f658121532c060abc27df43e74f87cd78dc8c96e4a1dcf045fc"
+      },
+      "ledger_sha256": {
         "teacher-commands.jsonl.zst": "17f98b10cfba07977ae0e33030281eccb5df03c3dc3bc942e224d1f022b8fd6f",
         "eval-only.jsonl.zst": "e68c82b715e06d0f331b4c885fdb71f449a79567a696983fda6d5ea2814e37f2",
-        "scene.xml": "12af5f7ef456c3c7cbaf79e65db1549f16d1b7ec9edc10e60751b219db15fde3"
+        "scene.xml": "12af5f7ef456c3c7cbaf79e65db1549f16d1b7ec9edc10e60751b219db15fde3",
+        "SUPERVISOR_STOP.json": "68779c7497f9c6b9f8c5f927958507baa5c3777ff615e62c46edfba4cb09c557"
       },
       "manifest_sha256": "cc9257c3d080636d2eef266c68c4690cfa313ec77e79f1cea98db0890211a5a4",
       "vm_sha256sums_verified": true,
-      "local_text_files_verified": 19,
+      "local_original_files_verified": 19,
       "selected_own_frames_reviewed": 6,
-      "raw_rgb_backup": "GCP persistent disk; only selected own frames fetched",
       "first30": null
     },
     {
@@ -64,7 +71,6 @@
       "source_sha": "0fb980e62bd1a9ceab124bc73eaaf5325f213115",
       "exit": 0,
       "status": "complete",
-      "complete": true,
       "frames": null,
       "elapsed_sim_s": 76.3999999998906,
       "physical_success": null,
@@ -72,7 +78,7 @@
       "placement_success": null,
       "drop_samples": null,
       "termination": null,
-      "ledger": [
+      "metrics": [
         {
           "target_deg": 90.0,
           "actual_yaw_rad": 1.5776347025009572,
@@ -112,16 +118,19 @@
       ],
       "audit": null,
       "raw_vm": "gcp1:/home/ugrp/ugrp-sim/runs/reloc10-r1-rotation-0fb980e6/raw",
-      "raw_local": "/Users/changmin/projects/ugrp-wt/map-carry-zone/tmp/reloc10/round1/reloc10-r1-rotation-0fb980e6/raw",
-      "sha256": {
-        "result.json": "af407bc31003c5990ca0768991b30653c3d1368ef6f1a8cb0fda21f90afbcefc",
+      "raw_local": "/Users/changmin/projects/ugrp-wt/map-carry-zone/outputs/reloc10-gcp/round1/reloc10-r1-rotation-0fb980e6/raw",
+      "result": {
+        "path": "/Users/changmin/projects/ugrp-wt/map-carry-zone/outputs/reloc10-gcp/round1/reloc10-r1-rotation-0fb980e6/raw/result.json",
+        "sha256": "af407bc31003c5990ca0768991b30653c3d1368ef6f1a8cb0fda21f90afbcefc",
+        "decoded_sha256": "af407bc31003c5990ca0768991b30653c3d1368ef6f1a8cb0fda21f90afbcefc"
+      },
+      "ledger_sha256": {
         "rotation-ledger.jsonl.zst": "764262729ea857d10e5bcaad0e8fdd24552338f741040cbfa006ff9458129418"
       },
       "manifest_sha256": "52b66ed07f14302cb93304940f7e6e3706cb98bb29d0d0ca21ccbdd73af69184",
       "vm_sha256sums_verified": true,
-      "local_text_files_verified": 12,
+      "local_original_files_verified": 12,
       "selected_own_frames_reviewed": 6,
-      "raw_rgb_backup": "GCP persistent disk; only selected own frames fetched",
       "first30": 2.151677195129068
     },
     {
@@ -130,7 +139,6 @@
       "source_sha": "442f94eb744b5b3ca2c0a974d25e4e3eba2743ac",
       "exit": 1,
       "status": "HOST_ERROR",
-      "complete": false,
       "frames": 189,
       "elapsed_sim_s": null,
       "physical_success": null,
@@ -141,7 +149,7 @@
         "type": "KeyboardInterrupt",
         "message": "owned diagnostic interrupted"
       },
-      "ledger": {
+      "metrics": {
         "frames": 189,
         "static_registered_N": 0,
         "static_resolved_N": 0,
@@ -150,6 +158,7 @@
         "last20_sign_reversals": 0,
         "observed_views": 0,
         "settled_N": 0,
+        "max_within_target_reversals": 0,
         "rejections": {
           "no_sensor_update": 163,
           "pf_unresolved": 115,
@@ -164,21 +173,6 @@
           "insufficient_matches": 155,
           "visual_update": 27,
           "no_rigid_consensus": 3
-        },
-        "natural_matches": {
-          "0": 28,
-          "5": 32,
-          "2": 15,
-          "12": 3,
-          "7": 23,
-          "10": 11,
-          "9": 5,
-          "11": 3,
-          "8": 8,
-          "1": 15,
-          "3": 34,
-          "4": 8,
-          "6": 4
         }
       },
       "audit": {
@@ -196,19 +190,23 @@
         "authored_static_map_inputs": 1
       },
       "raw_vm": "gcp1:/home/ugrp/ugrp-sim/runs/reloc10-r1-selfmap-93571-442f94eb/raw",
-      "raw_local": "/Users/changmin/projects/ugrp-wt/map-carry-zone/tmp/reloc10/round1/reloc10-r1-selfmap-93571-442f94eb/raw",
-      "sha256": {
-        "result.json": "aadeb8e6c417b273de3b1e1789003c11d6bbfb7b19e7867de064c866b0197c48",
+      "raw_local": "/Users/changmin/projects/ugrp-wt/map-carry-zone/outputs/reloc10-gcp/round1/reloc10-r1-selfmap-93571-442f94eb/raw",
+      "result": {
+        "path": "/Users/changmin/projects/ugrp-wt/map-carry-zone/outputs/reloc10-gcp/round1/reloc10-r1-selfmap-93571-442f94eb/raw/result.json",
+        "sha256": "aadeb8e6c417b273de3b1e1789003c11d6bbfb7b19e7867de064c866b0197c48",
+        "decoded_sha256": "aadeb8e6c417b273de3b1e1789003c11d6bbfb7b19e7867de064c866b0197c48"
+      },
+      "ledger_sha256": {
         "trace.jsonl.zst": "4cca0c4ebd0731e261b5051f16101cfc86e64175b3bd9da35b50d0374ff45830",
         "robots/r3/commands.jsonl": "eede2a1cbe74680609d028bf07fc2a344e9862e10fed10800f4cd1e0ea3133b3",
         "robots/r3/frames.jsonl.zst": "034d3e63d5bd0906dec34d05f6c22e56d5a4f7918bc7ab8011d0841b8f234a78",
-        "scene.xml": "c8be415bf6575a0d3d96e6feefd0aac52a08ccb95e0b941190e8cb248d6e877d"
+        "scene.xml": "c8be415bf6575a0d3d96e6feefd0aac52a08ccb95e0b941190e8cb248d6e877d",
+        "SUPERVISOR_STOP.json": "7a59e04f0f7b7d1bae320e94ee71fafa9aabd67bad146c7372f0cfaae18b49a4"
       },
       "manifest_sha256": "555c3d75d68eeec98074831d4ec43877877ab2d465b4a1e3ea567b7e0cb3fa29",
       "vm_sha256sums_verified": true,
-      "local_text_files_verified": 41,
+      "local_original_files_verified": 41,
       "selected_own_frames_reviewed": 6,
-      "raw_rgb_backup": "GCP persistent disk; only selected own frames fetched",
       "first30": null
     },
     {
@@ -217,7 +215,6 @@
       "source_sha": "e55d7a8d89484c0ecdf79ec595dc492a14130361",
       "exit": 0,
       "status": "complete",
-      "complete": null,
       "frames": null,
       "elapsed_sim_s": 60.000000000201666,
       "physical_success": false,
@@ -225,7 +222,7 @@
       "placement_success": false,
       "drop_samples": 0,
       "termination": "sim_cap",
-      "ledger": {
+      "metrics": {
         "rows": 600,
         "last_t": 61.20000000020121,
         "last_phase": "carry_reobserve"
@@ -246,18 +243,21 @@
         "scope": "decision input boundary only; evaluation excluded"
       },
       "raw_vm": "gcp1:/home/ugrp/ugrp-sim/runs/reloc10-r2-carry-93261-e55d7a8d/raw",
-      "raw_local": "/Users/changmin/projects/ugrp-wt/map-carry-zone/tmp/reloc10/round2/reloc10-r2-carry-93261-e55d7a8d/raw",
-      "sha256": {
-        "result.json.zst": "d9cfed140c9b81e548a2866b14bf3449bc4f95f504a6e4d3186533845bb2eb34",
+      "raw_local": "/Users/changmin/projects/ugrp-wt/map-carry-zone/outputs/reloc10-gcp/round2/reloc10-r2-carry-93261-e55d7a8d/raw",
+      "result": {
+        "path": "/Users/changmin/projects/ugrp-wt/map-carry-zone/outputs/reloc10-gcp/round2/reloc10-r2-carry-93261-e55d7a8d/raw/result.json.zst",
+        "sha256": "d9cfed140c9b81e548a2866b14bf3449bc4f95f504a6e4d3186533845bb2eb34",
+        "decoded_sha256": "e3e0b1f82073e9d37ab46e2a4b58403b5a924c5e723f61ba9e5da8d4da3c6586"
+      },
+      "ledger_sha256": {
         "teacher-commands.jsonl.zst": "65d96ee3d7be95311c75119896b8338c65c2c6ce3047730fc252bd20bc1f4360",
         "eval-only.jsonl.zst": "119906ed051fe68673245309335f8627eba019f096e43b735f6550609b27b1aa",
         "scene.xml": "f2a0ac6111a0a61306d3407796ea48fc223f85660e5bf42f6d72c283c0f84afa"
       },
       "manifest_sha256": "7535f6b0b5ebd2b9ca578c3f43db476d31a4a2a04a8c20f39aad1b5459ff7364",
       "vm_sha256sums_verified": true,
-      "local_text_files_verified": 18,
+      "local_original_files_verified": 18,
       "selected_own_frames_reviewed": 6,
-      "raw_rgb_backup": "GCP persistent disk; only selected own frames fetched",
       "first30": null
     },
     {
@@ -266,7 +266,6 @@
       "source_sha": "e55d7a8d89484c0ecdf79ec595dc492a14130361",
       "exit": 0,
       "status": "complete",
-      "complete": true,
       "frames": null,
       "elapsed_sim_s": 76.3999999998906,
       "physical_success": null,
@@ -274,7 +273,7 @@
       "placement_success": null,
       "drop_samples": null,
       "termination": null,
-      "ledger": [
+      "metrics": [
         {
           "target_deg": 90.0,
           "actual_yaw_rad": 1.5776347025009572,
@@ -314,16 +313,19 @@
       ],
       "audit": null,
       "raw_vm": "gcp1:/home/ugrp/ugrp-sim/runs/reloc10-r2-rotation-e55d7a8d/raw",
-      "raw_local": "/Users/changmin/projects/ugrp-wt/map-carry-zone/tmp/reloc10/round2/reloc10-r2-rotation-e55d7a8d/raw",
-      "sha256": {
-        "result.json": "2015a25547d784501ffe46df1bd6dc168f5ceb3353a4dc400e05f90d77aae57f",
+      "raw_local": "/Users/changmin/projects/ugrp-wt/map-carry-zone/outputs/reloc10-gcp/round2/reloc10-r2-rotation-e55d7a8d/raw",
+      "result": {
+        "path": "/Users/changmin/projects/ugrp-wt/map-carry-zone/outputs/reloc10-gcp/round2/reloc10-r2-rotation-e55d7a8d/raw/result.json",
+        "sha256": "2015a25547d784501ffe46df1bd6dc168f5ceb3353a4dc400e05f90d77aae57f",
+        "decoded_sha256": "2015a25547d784501ffe46df1bd6dc168f5ceb3353a4dc400e05f90d77aae57f"
+      },
+      "ledger_sha256": {
         "rotation-ledger.jsonl.zst": "ecd1f9ebd2e3b7ef7b6a3db5e6d0aecd906f57188a7ed4ba84046f4ddfaecc8b"
       },
       "manifest_sha256": "4652fd177d5c3a415093da7d84e38b84c6e0c1fbaefa42a36e9358ed64cb826b",
       "vm_sha256sums_verified": true,
-      "local_text_files_verified": 12,
+      "local_original_files_verified": 12,
       "selected_own_frames_reviewed": 6,
-      "raw_rgb_backup": "GCP persistent disk; only selected own frames fetched",
       "first30": 2.139724517362585
     },
     {
@@ -332,7 +334,6 @@
       "source_sha": "44f7f7e1de8236df37fdbce6c3e28a283c5f6169",
       "exit": 1,
       "status": "HOST_ERROR",
-      "complete": false,
       "frames": 456,
       "elapsed_sim_s": 45.5,
       "physical_success": null,
@@ -340,7 +341,7 @@
       "placement_success": null,
       "drop_samples": null,
       "termination": "selfmap4_relocalization_exhausted",
-      "ledger": {
+      "metrics": {
         "frames": 456,
         "static_registered_N": 0,
         "static_resolved_N": 0,
@@ -349,6 +350,7 @@
         "last20_sign_reversals": 3,
         "observed_views": 6,
         "settled_N": 6,
+        "max_within_target_reversals": 0,
         "rejections": {
           "no_sensor_update": 391,
           "pf_unresolved": 115,
@@ -363,28 +365,6 @@
           "insufficient_matches": 357,
           "visual_update": 53,
           "no_rigid_consensus": 42
-        },
-        "natural_matches": {
-          "0": 59,
-          "5": 46,
-          "2": 48,
-          "12": 11,
-          "7": 45,
-          "10": 17,
-          "9": 11,
-          "11": 12,
-          "8": 19,
-          "1": 47,
-          "3": 63,
-          "4": 24,
-          "6": 29,
-          "17": 6,
-          "18": 5,
-          "20": 3,
-          "19": 5,
-          "14": 4,
-          "15": 1,
-          "13": 1
         }
       },
       "audit": {
@@ -402,9 +382,13 @@
         "authored_static_map_inputs": 1
       },
       "raw_vm": "gcp1:/home/ugrp/ugrp-sim/runs/reloc10-r2-selfmap-93571-44f7f7e1/raw",
-      "raw_local": "/Users/changmin/projects/ugrp-wt/map-carry-zone/tmp/reloc10/round2/reloc10-r2-selfmap-93571-44f7f7e1/raw",
-      "sha256": {
-        "result.json": "36fe2b1ca0706a40d60569de62e5802d8ba09ce81a41d2a671a37c15cdbc628b",
+      "raw_local": "/Users/changmin/projects/ugrp-wt/map-carry-zone/outputs/reloc10-gcp/round2/reloc10-r2-selfmap-93571-44f7f7e1/raw",
+      "result": {
+        "path": "/Users/changmin/projects/ugrp-wt/map-carry-zone/outputs/reloc10-gcp/round2/reloc10-r2-selfmap-93571-44f7f7e1/raw/result.json",
+        "sha256": "36fe2b1ca0706a40d60569de62e5802d8ba09ce81a41d2a671a37c15cdbc628b",
+        "decoded_sha256": "36fe2b1ca0706a40d60569de62e5802d8ba09ce81a41d2a671a37c15cdbc628b"
+      },
+      "ledger_sha256": {
         "trace.jsonl.zst": "57544335066680ece5198bd25365752c59d7283a07c3d0dc226bedd6fdeb8766",
         "robots/r3/commands.jsonl": "322c1d30ecdadfe3eddd93d2528f2e42c0cc04253b602b95b0e2ebae8330134a",
         "robots/r3/frames.jsonl.zst": "49df59ff68c7184d60390e15732a2a0d63b4f568275676bdbf10fc685d1b981b",
@@ -414,9 +398,8 @@
       },
       "manifest_sha256": "c79c2325ef9e69c6e0a928f7b36d6a733b3bca7d6ea173d921c79725cafb209c",
       "vm_sha256sums_verified": true,
-      "local_text_files_verified": 41,
+      "local_original_files_verified": 41,
       "selected_own_frames_reviewed": 6,
-      "raw_rgb_backup": "GCP persistent disk; only selected own frames fetched",
       "first30": {
         "elapsed_sim_s": 30.0,
         "frames": 301,
@@ -450,7 +433,6 @@
       "source_sha": "44f7f7e1de8236df37fdbce6c3e28a283c5f6169",
       "exit": 1,
       "status": "HOST_ERROR",
-      "complete": false,
       "frames": 0,
       "elapsed_sim_s": null,
       "physical_success": null,
@@ -461,7 +443,7 @@
         "type": "ValueError",
         "message": "unknown render profile 'floor_light_textured_v1'; choose from ['floor_light_v1', 'noshadow_bright_v1', 'noshadow_v1', 'shadows_v1']"
       },
-      "ledger": null,
+      "metrics": null,
       "audit": {
         "schema": "ugrp.selfmap_input_audit.v1",
         "measured": true,
@@ -476,16 +458,376 @@
         "rejected_inputs": 0
       },
       "raw_vm": "gcp1:/home/ugrp/ugrp-sim/runs/reloc10-r2-selfmap-texture-93571-44f7f7e1/raw",
-      "raw_local": "/Users/changmin/projects/ugrp-wt/map-carry-zone/tmp/reloc10/round2/reloc10-r2-selfmap-texture-93571-44f7f7e1/raw",
-      "sha256": {
-        "result.json": "1b1d8ce0e22944bf4eaef432e618c166aca7c495e1aad013051635b60a4c484c"
+      "raw_local": "/Users/changmin/projects/ugrp-wt/map-carry-zone/outputs/reloc10-gcp/round2/reloc10-r2-selfmap-texture-93571-44f7f7e1/raw",
+      "result": {
+        "path": "/Users/changmin/projects/ugrp-wt/map-carry-zone/outputs/reloc10-gcp/round2/reloc10-r2-selfmap-texture-93571-44f7f7e1/raw/result.json",
+        "sha256": "1b1d8ce0e22944bf4eaef432e618c166aca7c495e1aad013051635b60a4c484c",
+        "decoded_sha256": "1b1d8ce0e22944bf4eaef432e618c166aca7c495e1aad013051635b60a4c484c"
       },
+      "ledger_sha256": {},
       "manifest_sha256": "524eb4a7f0f9162999b6660bf0936be768fe19dbd86aae0dd14db27590f57e39",
       "vm_sha256sums_verified": true,
-      "local_text_files_verified": 13,
+      "local_original_files_verified": 13,
       "selected_own_frames_reviewed": 0,
-      "raw_rgb_backup": "GCP persistent disk; only selected own frames fetched",
+      "first30": null
+    },
+    {
+      "round": 3,
+      "run": "reloc10-r3-carry-93261-96712d69",
+      "source_sha": "96712d69f4bac4e5a8b52c958706abfcef717cb0",
+      "exit": 0,
+      "status": "complete",
+      "frames": null,
+      "elapsed_sim_s": 60.000000000201666,
+      "physical_success": false,
+      "lift_success": true,
+      "placement_success": false,
+      "drop_samples": 0,
+      "termination": "sim_cap",
+      "metrics": {
+        "rows": 600,
+        "last_t": 61.20000000020121,
+        "last_phase": "carry_reobserve"
+      },
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 294,
+        "blocked_held": 188,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "pickup_search": 1,
+          "approach": 91,
+          "align": 16,
+          "hover": 3
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "raw_vm": "gcp1:/home/ugrp/ugrp-sim/runs/reloc10-r3-carry-93261-96712d69/raw",
+      "raw_local": "/Users/changmin/projects/ugrp-wt/map-carry-zone/outputs/reloc10-gcp/round3/reloc10-r3-carry-93261-96712d69/raw",
+      "result": {
+        "path": "/Users/changmin/projects/ugrp-wt/map-carry-zone/outputs/reloc10-gcp/round3/reloc10-r3-carry-93261-96712d69/raw/result.json.zst",
+        "sha256": "06159da639d481325e8afbb8bff9ab43c8b5cd482d3302594c07f822a98d86a1",
+        "decoded_sha256": "8c351a76a902b0a6412a596b4ab33f387e3cc61103c16bdd936aca6bf1692ed3"
+      },
+      "ledger_sha256": {
+        "teacher-commands.jsonl.zst": "65d96ee3d7be95311c75119896b8338c65c2c6ce3047730fc252bd20bc1f4360",
+        "eval-only.jsonl.zst": "119906ed051fe68673245309335f8627eba019f096e43b735f6550609b27b1aa",
+        "first30.json": "06be814c8be4feafba4715549b5e3b93ccddc81add7bca1cb60db61226d799b4",
+        "scene.xml": "f619ba26804f5c6782c063c62f9938cb9f4a18ba03af9fa7785e5374fa32b887"
+      },
+      "manifest_sha256": "2303e029c438d170353c131c108fdbce83e9ccb45bb33d8f92c8a4d82bdff2a9",
+      "vm_sha256sums_verified": true,
+      "local_original_files_verified": 19,
+      "selected_own_frames_reviewed": 6,
+      "first30": {
+        "elapsed_sim_s": 30.00000000005842,
+        "wall_elapsed_s": 115.66117818800194,
+        "wall_per_sim": 3.85537261739253,
+        "top_capture": false
+      }
+    },
+    {
+      "round": 3,
+      "run": "reloc10-r3-rotation-96712d69",
+      "source_sha": "96712d69f4bac4e5a8b52c958706abfcef717cb0",
+      "exit": 0,
+      "status": "complete",
+      "frames": null,
+      "elapsed_sim_s": 76.3999999998906,
+      "physical_success": null,
+      "lift_success": null,
+      "placement_success": null,
+      "drop_samples": null,
+      "termination": null,
+      "metrics": [
+        {
+          "target_deg": 90.0,
+          "actual_yaw_rad": 1.5776347025009572,
+          "estimated_rad": 1.5452185974233754,
+          "actual_over_estimated": 1.0209783296238053,
+          "N": 141,
+          "initial_yaw_source": "authored spawn, evaluator only; pre-first settling yaw absent",
+          "reported_estimate_difference": 0.0
+        },
+        {
+          "target_deg": -90.0,
+          "actual_yaw_rad": -1.4681798053104094,
+          "estimated_rad": -1.546268644654889,
+          "actual_over_estimated": 0.9494985301458349,
+          "N": 127,
+          "initial_yaw_source": "previous segment evaluator final",
+          "reported_estimate_difference": 0.0
+        },
+        {
+          "target_deg": 180.0,
+          "actual_yaw_rad": 3.247675640163905,
+          "estimated_rad": 3.1165234825915773,
+          "actual_over_estimated": 1.0420828395181116,
+          "N": 262,
+          "initial_yaw_source": "previous segment evaluator final",
+          "reported_estimate_difference": 0.0
+        },
+        {
+          "target_deg": -180.0,
+          "actual_yaw_rad": -2.9480262514249187,
+          "estimated_rad": -3.115860547222026,
+          "actual_over_estimated": 0.9461354918637994,
+          "N": 234,
+          "initial_yaw_source": "previous segment evaluator final",
+          "reported_estimate_difference": 0.0
+        }
+      ],
+      "audit": null,
+      "raw_vm": "gcp1:/home/ugrp/ugrp-sim/runs/reloc10-r3-rotation-96712d69/raw",
+      "raw_local": "/Users/changmin/projects/ugrp-wt/map-carry-zone/outputs/reloc10-gcp/round3/reloc10-r3-rotation-96712d69/raw",
+      "result": {
+        "path": "/Users/changmin/projects/ugrp-wt/map-carry-zone/outputs/reloc10-gcp/round3/reloc10-r3-rotation-96712d69/raw/result.json",
+        "sha256": "5e0c47d563e90fecf46b50ca0baa9d81fdd2bcabf926cc146841d277575d3e01",
+        "decoded_sha256": "5e0c47d563e90fecf46b50ca0baa9d81fdd2bcabf926cc146841d277575d3e01"
+      },
+      "ledger_sha256": {
+        "rotation-ledger.jsonl.zst": "e9576900bac8aabf622c8a586af467ea592fee28b0e35d861a8a83ee047528b1"
+      },
+      "manifest_sha256": "6bfc967e3abb4ba4e152587045c8389a60083902b16bf7a3463cb00f59e984a6",
+      "vm_sha256sums_verified": true,
+      "local_original_files_verified": 12,
+      "selected_own_frames_reviewed": 6,
+      "first30": 2.2905410064621075
+    },
+    {
+      "round": 3,
+      "run": "reloc10-r3-selfmap-93571-f7c052f0",
+      "source_sha": "f7c052f07638196b0858483f79370ce402dda3a6",
+      "exit": 1,
+      "status": "HOST_ERROR",
+      "frames": 456,
+      "elapsed_sim_s": 45.5,
+      "physical_success": null,
+      "lift_success": null,
+      "placement_success": null,
+      "drop_samples": null,
+      "termination": "selfmap4_relocalization_exhausted",
+      "metrics": {
+        "frames": 456,
+        "static_registered_N": 0,
+        "static_resolved_N": 0,
+        "static_updates_N": 65,
+        "last20_turns": 51,
+        "last20_sign_reversals": 3,
+        "observed_views": 6,
+        "settled_N": 6,
+        "max_within_target_reversals": 0,
+        "rejections": {
+          "no_sensor_update": 391,
+          "pf_unresolved": 115,
+          "xy_covariance": 418,
+          "yaw_covariance": 426,
+          "geometry": 125,
+          "ambiguity_pending_upstream": 456,
+          "cluster_mass": 30
+        },
+        "visual_reason": {
+          "empty_map_origin": 4,
+          "insufficient_matches": 357,
+          "visual_update": 53,
+          "no_rigid_consensus": 42
+        }
+      },
+      "audit": {
+        "schema": "ugrp.selfmap_input_audit.v1",
+        "measured": true,
+        "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+        "own_rgb_frames": 456,
+        "issued_command_records": 235,
+        "top_rgb_frames": 0,
+        "peer_rgb_frames": 0,
+        "truth_pose_inputs": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "rejected_inputs": 0,
+        "authored_static_map_inputs": 1
+      },
+      "raw_vm": "gcp1:/home/ugrp/ugrp-sim/runs/reloc10-r3-selfmap-93571-f7c052f0/raw",
+      "raw_local": "/Users/changmin/projects/ugrp-wt/map-carry-zone/outputs/reloc10-gcp/round3/reloc10-r3-selfmap-93571-f7c052f0/raw",
+      "result": {
+        "path": "/Users/changmin/projects/ugrp-wt/map-carry-zone/outputs/reloc10-gcp/round3/reloc10-r3-selfmap-93571-f7c052f0/raw/result.json",
+        "sha256": "0633ea6f0adf0bd95bb5aecbecaad75d98ae7cec1a884201f7fdf7d08124f075",
+        "decoded_sha256": "0633ea6f0adf0bd95bb5aecbecaad75d98ae7cec1a884201f7fdf7d08124f075"
+      },
+      "ledger_sha256": {
+        "trace.jsonl.zst": "ee89a41a1326a5b61b304d2309ce5f143298d719c768f12f890a031217cd4329",
+        "robots/r3/commands.jsonl": "322c1d30ecdadfe3eddd93d2528f2e42c0cc04253b602b95b0e2ebae8330134a",
+        "robots/r3/frames.jsonl.zst": "49df59ff68c7184d60390e15732a2a0d63b4f568275676bdbf10fc685d1b981b",
+        "eval_only/trajectory.jsonl.zst": "cda9c7165f60234ef90d15ce64102b59b7ce5919ebb3bd3a6ddd749bb89065f6",
+        "first30.json": "270153ef198a8e7f72987fed10e1e84bc4e503e137fdec1ce888ed110ea08907",
+        "scene.xml": "5ba26535647c661f0c99285a029b2fe5ff6226a3a897baf4ee3f29118cb13d01"
+      },
+      "manifest_sha256": "a86e3be9dd1e96dfa41324d08616712ea562bcdc54145c4d2d9841f75a59829c",
+      "vm_sha256sums_verified": true,
+      "local_original_files_verified": 41,
+      "selected_own_frames_reviewed": 6,
+      "first30": {
+        "elapsed_sim_s": 30.0,
+        "frames": 301,
+        "stage": "active_reloc8",
+        "wall_per_sim": 7.183075581166607,
+        "pose_sources": {
+          "bootstrap": 4,
+          "command_only": 255,
+          "visual_update": 42
+        },
+        "input_audit": {
+          "schema": "ugrp.selfmap_input_audit.v1",
+          "measured": true,
+          "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+          "own_rgb_frames": 301,
+          "issued_command_records": 157,
+          "top_rgb_frames": 0,
+          "peer_rgb_frames": 0,
+          "truth_pose_inputs": 0,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "rejected_inputs": 0,
+          "authored_static_map_inputs": 1
+        },
+        "frontier_arrivals": 0
+      }
+    },
+    {
+      "round": 3,
+      "run": "reloc10-r3-selfmap-texture-93571-f7c052f0",
+      "source_sha": "f7c052f07638196b0858483f79370ce402dda3a6",
+      "exit": 1,
+      "status": "HOST_ERROR",
+      "frames": 0,
+      "elapsed_sim_s": null,
+      "physical_success": null,
+      "lift_success": null,
+      "placement_success": null,
+      "drop_samples": null,
+      "termination": {
+        "type": "TypeError",
+        "message": "audit() got an unexpected keyword argument 'base_profile'"
+      },
+      "metrics": null,
+      "audit": {
+        "schema": "ugrp.selfmap_input_audit.v1",
+        "measured": true,
+        "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+        "own_rgb_frames": 0,
+        "issued_command_records": 0,
+        "top_rgb_frames": 0,
+        "peer_rgb_frames": 0,
+        "truth_pose_inputs": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "rejected_inputs": 0
+      },
+      "raw_vm": "gcp1:/home/ugrp/ugrp-sim/runs/reloc10-r3-selfmap-texture-93571-f7c052f0/raw",
+      "raw_local": "/Users/changmin/projects/ugrp-wt/map-carry-zone/outputs/reloc10-gcp/round3/reloc10-r3-selfmap-texture-93571-f7c052f0/raw",
+      "result": {
+        "path": "/Users/changmin/projects/ugrp-wt/map-carry-zone/outputs/reloc10-gcp/round3/reloc10-r3-selfmap-texture-93571-f7c052f0/raw/result.json",
+        "sha256": "14c25e70db9f455f9158208997a84b7e3838e1755d6476c1a69d01af725557bf",
+        "decoded_sha256": "14c25e70db9f455f9158208997a84b7e3838e1755d6476c1a69d01af725557bf"
+      },
+      "ledger_sha256": {},
+      "manifest_sha256": "948d6fd0db32cfc3a3a220df9b89941b0abb099abd185eda46d1afcc5f412e48",
+      "vm_sha256sums_verified": true,
+      "local_original_files_verified": 13,
+      "selected_own_frames_reviewed": 0,
       "first30": null
     }
+  ],
+  "local_tests": {
+    "carry": 10,
+    "selfmap": 13,
+    "physics_executed_on_mac": false,
+    "native_imports_blocked": true,
+    "ci_new_tests_registered": true
+  },
+  "operations": {
+    "preflight": [
+      {
+        "active_count": 2,
+        "active_paths": {
+          "/home/ugrp/ugrp-sim/runs/r20d2-01-e897b0c2/raw": [
+            "373103"
+          ],
+          "/home/ugrp/ugrp-sim/runs/r20d2-02-e897b0c2/raw": [
+            "379263"
+          ]
+        },
+        "load": "3.48 10.88 13.36 4/852 395903\n",
+        "budget_stop_events": [],
+        "project": "ugrp-act-train-1014",
+        "own_max_parallel": 3
+      },
+      {
+        "active_count": 0,
+        "active_paths": {},
+        "load": "2.49 6.89 10.66 1/723 413723\n",
+        "budget_stop_events": [],
+        "project": "ugrp-act-train-1014",
+        "own_max_parallel": 4
+      },
+      {
+        "active_count": 2,
+        "active_paths": {
+          "/home/ugrp/ugrp-sim/runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-000/raw": [
+            "428024",
+            "428171"
+          ],
+          "/home/ugrp/ugrp-sim/runs/grasp-search22-r2-short6-gcp-645acabd/diagnostic/episode-001/raw": [
+            "428025",
+            "428174"
+          ]
+        },
+        "load": "10.88 6.43 7.39 18/1616 439036\n",
+        "budget_stop_state": {
+          "name": "projects/ugrp-act-train-1014/locations/us-central1/functions/budget-stop",
+          "state": "ACTIVE"
+        },
+        "checked_at_utc": "2026-10-15T08:51:54.542660+00:00",
+        "budget_stop_events": [],
+        "project": "ugrp-act-train-1014",
+        "own_max_parallel": 4
+      }
+    ],
+    "final_host": {
+      "active_count": 0,
+      "active": {},
+      "own_running": [],
+      "own_leases": [],
+      "idle_guard": "active"
+    },
+    "final_vm": {
+      "machineType": "https://www.googleapis.com/compute/v1/projects/ugrp-act-train-1014/zones/asia-northeast3-a/machineTypes/n4-highcpu-64",
+      "scheduling": {
+        "automaticRestart": true,
+        "instanceTerminationAction": "STOP",
+        "maxRunDuration": {
+          "nanos": 0,
+          "seconds": "28800"
+        },
+        "onHostMaintenance": "MIGRATE",
+        "preemptible": false,
+        "provisioningModel": "STANDARD"
+      },
+      "status": "RUNNING"
+    },
+    "leases": {
+      "all_lease_count": 547,
+      "own_lease_count": 0
+    },
+    "stop_attempt_exit": 75,
+    "stop_result": "deferred by existing lease/process gate; no override; own runs and leases zero"
+  },
+  "limitations": [
+    "Registration still0; texture failed before camera loop; carry60s capped with no placement. No promotion.",
+    "Raw stays on GCP persistent disk. All text and selected own RGB retrieved; full raw RGB not backed up on Mac.",
+    "Rotation repeated same authored scene/seed; neither fresh-seed nor all-loads generalization.",
+    "No pooling between rounds/sources/scenes or older queues."
   ]
 }

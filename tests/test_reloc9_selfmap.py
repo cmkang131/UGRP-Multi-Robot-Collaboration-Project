@@ -35,6 +35,8 @@ def test_wall_guard_missing_top_cannot_insert_wall_or_clear_from_false_wall(monk
         return value
     monkeypatch.setattr(hfw,'detect',scan)
     static,_=static_input();sensor=Sensor(MapFeatures(static).hues)
+    # This test isolates the wall-column guard, not the CAD self-shadow sensor.
+    monkeypatch.setattr(sensor,'measure',lambda *args,**kwargs: [])
     from harness.active_relocalization import LOOK
     image=np.full((480,640,3),100,np.uint8)
     guarded=observe(image,LOOK,sensor,reloc9_wall_height_guard_v1=True)

@@ -59,13 +59,24 @@ def test_bundle_toggles_off_unchanged_and_on_recorded():
 
 def test_texture_adapter_is_instance_local_and_restores_factory(monkeypatch,tmp_path):
     from types import SimpleNamespace
-    from sim import own_map_closed_loop as module, active_wall_map as host, natural_scene_texture as texture
+    import importlib.util, sys, types, sim
+    from pathlib import Path
+    from sim import natural_scene_texture as texture
+    host=types.ModuleType('sim.active_wall_map')
+    class Base:
+        def __init__(self,*args,**kwargs): pass
+        def close(self): pass
+    host.PhysicsBackend=Base
+    monkeypatch.setitem(sys.modules,'sim.active_wall_map',host)
+    monkeypatch.setattr(sim,'active_wall_map',host,raising=False)
+    spec=importlib.util.spec_from_file_location('_reloc10_mock_backend',Path(__file__).resolve().parents[1]/'sim/own_map_closed_loop.py')
+    module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
     calls=[]
     scene=SimpleNamespace(transform=lambda xml: xml,manifest={})
     def original(bundle,seed):
         assert bundle['options']['render_profile']=='floor_light_v1'
         return scene
-    monkeypatch.setattr(host,'make_scene',original)
+    monkeypatch.setattr(host,'make_scene',original,raising=False)
     monkeypatch.setattr(texture,'manifest',lambda: {})
     monkeypatch.setattr(texture,'apply',lambda xml: (calls.append('apply') or xml))
     monkeypatch.setattr(texture,'verify_model',lambda model: dict(checked=True))
