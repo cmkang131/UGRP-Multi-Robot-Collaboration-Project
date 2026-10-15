@@ -166,7 +166,7 @@ def run(a):
         if not a.gcp2_v1 or a.engine!='warp':
             raise RuntimeError('batch render is explicit gcp2 Warp diagnostic only')
         from sim import masterpi_camera_review_v3 as camera
-        from sim.masterpi_camera_profile import raw_fisheye_remap
+        from sim.masterpi_camera_profile import raw_fisheye_remap, scaled_camera_matrix, CAMERA_FISHEYE_D
         import cv2
         cid=m.camera('r1__robot_cam').id
         m.cam_pos[cid]=camera.POSITION_M;m.cam_quat[cid]=camera.QUAT_WXYZ
@@ -174,6 +174,12 @@ def run(a):
             gid=mujoco.mj_name2id(m,mujoco.mjtObj.mjOBJ_GEOM,'r1__'+name)
             if gid>=0:m.geom_group[gid]=5
         mx,my=raw_fisheye_remap(640,480)
+        report['camera']={'name':'r1__robot_cam','resolution':[640,480],
+            'mount_pos_m':m.cam_pos[cid].tolist(),'mount_quat_wxyz':m.cam_quat[cid].tolist(),
+            'intrinsic':m.cam_intrinsic[cid].tolist(),'sensorsize':m.cam_sensorsize[cid].tolist(),
+            'K':scaled_camera_matrix(640,480).tolist(),'D':list(CAMERA_FISHEYE_D),
+            'raw_fisheye_map_sha256':hashlib.sha256(mx.tobytes()+my.tobytes()).hexdigest(),
+            'post_integration_transforms':True,'enabled_geom_groups':[0,1,2,3]}
         report['renderer']='MJWarp batch RGB640x480 at10Hz, readback+OpenCV fisheye; no policy/training/JPEG time'
     if a.engine=='warp':
         import warp as wp
