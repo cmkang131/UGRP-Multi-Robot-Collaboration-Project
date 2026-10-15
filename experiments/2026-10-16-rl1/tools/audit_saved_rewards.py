@@ -92,8 +92,13 @@ def failure(seed, out, sources):
 def teacher(out, sources):
     root = Path('/home/ugrp/ugrp-sim/runs/act16a-teacher-91434-b4db8ba2/raw')
     evaluations = read(root, 'eval-only.jsonl', sources)
-    score, first_success_t = StableLift(), None
+    score, first_success_t, annotations = StableLift(), None, 0
     for ev in evaluations:
+        if 'min_z' not in ev:
+            if ev.get('kind') != 'lookaround_view':
+                raise ValueError('unknown teacher evaluation row schema')
+            annotations += 1
+            continue
         old = score.success
         score.add(ev['t'], ev['min_z']-ev['support_z'], ev['tilt_deg'],
                   ev['finger_forces'], ev['weld_active'])
@@ -102,9 +107,9 @@ def teacher(out, sources):
     return dict(seed=91434, role='teacher', backend='c_mujoco', saved_only=True,
         includes_release=True, stable_lift=score.success, first_success_t=first_success_t,
         success_bonus=10. if score.success else 0.,
-        max_stable_s=score.max_stable_s,
+        max_stable_s=score.max_stable_s, skipped_lookaround_annotations=annotations,
         h1_actual='unmeasured: no target-instance masks',
-        h1_undiscounted_bounds=[-len(evaluations)/900., len(evaluations)/900.],
+        h1_undiscounted_bounds=[-(len(evaluations)-annotations)/900., (len(evaluations)-annotations)/900.],
         h2='not applicable: teacher has no student done token',
         h3='unmeasured: exact station/yaw trace unavailable in this ledger',
         total_return_comparison='not computable without missing annotations; no imputation')
@@ -137,6 +142,11 @@ def main():
                      'teacher ACT done label', 'independent heuristic policy ablations'])
         (a.output/'saved-reward-audit.json').write_text(json.dumps(report, indent=2)+'\n')
         print(json.dumps({k: v for k,v in report.items() if k != 'sources'}), flush=True)
+    except BaseException as error:
+        (a.output/'analysis-error.json').write_text(json.dumps(dict(status='ANALYSIS_ERROR',
+            error_type=type(error).__name__, error=str(error), sources=sources,
+            physics_runs=0, training_runs=0, gpu_seconds=0), indent=2)+'\n')
+        raise
     finally:
         if lease.exists() and json.loads(lease.read_text()) == token:
             lease.unlink()
