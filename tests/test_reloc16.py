@@ -108,3 +108,11 @@ def test_scene_floor_mask_removes_wall_signature_preserves_floor_and_default(mon
     np.testing.assert_equal(actual,[[False,True,True,True,True]])
     assert clear.all() and not audit['floor_lk_changed'] and not audit['doors_clear_changed']
     with pytest.raises(ValueError):floor_clear(image,clear,state=SimpleNamespace(profile='other',option=RELOC16_OPTION),option=OPTION)
+
+
+def test_legacy_edge_proposals_require_explicit_v2_and_boolean():
+    from harness.scene_colour_boundary import ColourBoundaryState
+    with pytest.raises(ValueError,match='LEGACY_PROPOSALS_REQUIRE_BOUNDARY_V2'):
+        ColourBoundaryState('unselected',{},legacy_proposals_v1=True)
+    with pytest.raises(ValueError,match='LEGACY_PROPOSALS_REQUIRE_BOUNDARY_V2'):
+        ColourBoundaryState('unselected',{},legacy_proposals_v1='yes')

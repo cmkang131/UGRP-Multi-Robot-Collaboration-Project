@@ -57,7 +57,7 @@ def main(round_no,launch):
                 '--rgb-lift-mode','solo_lift_lookback_v1','--solo-lift-lookback-margin-v1','--solo-truth-free-lookaround-v1',
                 '--solo-carry-to-zone-v1','--cap-s','150','--failure-rgb-buffer','--review-playback']
         queue.append(dict(name=name,kind=kind,seed=seed,scene='v5' if on else 'v1',source_sha=sha,command=cmd,
-                          environment={k:v for k,v in env.items() if k.startswith(('UGRP_SCENE_','UGRP_RELOC16_'))},raw=str(out),rejection_table=str(rejection),ready=False,dev_only=True))
+                          environment={k:env[k] for k in ('UGRP_SCENE_COLOUR_BOUNDARY','UGRP_SCENE_RENDER_PROFILE','UGRP_SCENE_COLOUR_CALIBRATION','UGRP_SCENE_COLOUR_CALIBRATION_SHA256','UGRP_RELOC16_FLOOR_LANDMARK_MASK','UGRP_RELOC16_BOUNDARY_PROPOSALS') if k in env},raw=str(out),rejection_table=str(rejection),ready=False,dev_only=True))
         (folder/'RUN_META.json').write_text(json.dumps(dict(task='reloc16',pr=532,branch='claude/reloc16',sha=sha,**{'class':'dev'})))
         (folder/'launch-env.json').write_text(json.dumps(queue[-1]['environment'],indent=2))
         if launch:

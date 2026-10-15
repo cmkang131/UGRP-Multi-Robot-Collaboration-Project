@@ -11,7 +11,7 @@ from harness.zone_pair_highpose import HIGH
 from harness.scene_colour_boundary import ColourBoundaryState,RELOC16_OPTION
 from harness.reloc16_wall_tracking import track
 
-def main(out):
+def main(out,*,legacy_proposals_v1=False):
     if not platform.node().startswith('ugrp-sim-gcp2'):raise RuntimeError('gcp2 only')
     cv2.setNumThreads(1);out.mkdir(parents=True,exist_ok=False)
     root=Path('/home/ugrp/ugrp-sim/runs');raws=[root/'scenetex5-r1-v1-native',root/'scenetex5-r3-indigo110_s80']
@@ -29,7 +29,7 @@ def main(out):
             for e in ('png','jpeg90','pil82'):
                 path=raw/r['encodings'][e]['file'];assert sha(path)==r['encodings'][e]['sha256'] if 'sha256' in r['encodings'][e] else path.is_file()
                 before=cv2.imread(str(path));after=nxt if e=='png' else jpeg(nxt,90 if e=='jpeg90' else 82,pil=e=='pil82')[0]
-                state=ColourBoundaryState(r['material'],cal,option=RELOC16_OPTION) if raw==raws[1] else None
+                state=ColourBoundaryState(r['material'],cal,option=RELOC16_OPTION,legacy_proposals_v1=legacy_proposals_v1) if raw==raws[1] else None
                 rr['signals'][e]=signal(before,after,pwm,masks,state)
                 rr['semantics'][e]=semantic(r,e);rr['files'][e]=dict(path=str(path),sha256=sha(path))
                 if state is not None:
@@ -60,7 +60,7 @@ def main(out):
         ready=all(r['columns']['pass'] and r['error_px']['pass'] and r['existing_detector_equal']==88 for r in report.values()),
         scope='88 same static poses; wall tracks distinct from floor metric VO; no motion/localization success'))
     write(out/'rejection-table.json',dict(raw_sources=sources,reproduction=['python','-m','scripts.score_reloc16_static','--output',str(out)],
-        stages=[dict(encoding=e,candidates=88,qualified=r['qualified_N'],colour_columns=sum(r['reasons'].values()),accepted=r['reasons'].get('COLOUR_TRANSITION',0),reasons=r['reasons']) for e,r in report.items()]))
+        stages=[dict(encoding=e,candidates=88,qualified=r['qualified_N'],colour_columns=sum(r['reasons'].values()),accepted=r['reasons'].get('COLOUR_TRANSITION',0)+r['reasons'].get('COLOUR_VALIDATED_LEGACY_EDGE',0),reasons=r['reasons']) for e,r in report.items()]))
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--output',type=Path,required=True);a=p.parse_args();main(a.output)
+    p=argparse.ArgumentParser();p.add_argument('--output',type=Path,required=True);p.add_argument('--legacy-proposals-v1',action='store_true');a=p.parse_args();main(a.output,legacy_proposals_v1=a.legacy_proposals_v1)

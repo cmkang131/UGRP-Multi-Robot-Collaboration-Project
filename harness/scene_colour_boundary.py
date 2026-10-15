@@ -15,7 +15,9 @@ RELOC16_OPTION = 'scene_colour_transition_v2'
 
 
 class ColourBoundaryState:
-    def __init__(self, profile, calibration, *, option=OPTION):
+    def __init__(self, profile, calibration, *, option=OPTION,legacy_proposals_v1=False):
+        if type(legacy_proposals_v1) is not bool or legacy_proposals_v1 and option!=RELOC16_OPTION:raise ValueError("LEGACY_PROPOSALS_REQUIRE_BOUNDARY_V2")
+        self.legacy_proposals_v1=legacy_proposals_v1
         if option not in (OPTION, RELOC16_OPTION): raise ValueError("UNKNOWN_SCENE_COLOUR_BOUNDARY")
         self.option = option
         from sim.scene_contrast_v5 import resolve, profile_record
@@ -65,6 +67,7 @@ def detect(hfw, und_bgr, cm, *, params, loaded, state):
     strips = hfw.ColumnStrips(und_bgr, cols, half)
     grey=cv2.cvtColor(und_bgr,cv2.COLOR_BGR2GRAY).astype(float)
     reasons = []
+    observed_rows=[[] for _ in cols]
     for j, u in enumerate(cols):
         sl = slice(max(0, u-half), min(und_bgr.shape[1], u+half+1))
         # Median over the existing five-pixel strip = majority vote, no new
@@ -101,6 +104,7 @@ def detect(hfw, und_bgr, cm, *, params, loaded, state):
                 # Report the first floor-side row of the measured pixel step,
                 # matching v1's row convention (e.g. paint_A87 vs edge86.5).
                 row+=1
+            observed_rows[j].append(row)
             if row >= top[j]-p['self_margin_px']-1: continue
             ts = cm.t_of_row(np.full(n, row)); t = float(ts[j])
             if not np.isfinite(t): continue
@@ -119,6 +123,19 @@ def detect(hfw, und_bgr, cm, *, params, loaded, state):
             if h is not None: scan['h_lb' if vt <= p['top_edge_px'] else 'h'][j,0] = h
             found = True; break
         reasons.append('COLOUR_TRANSITION' if found else 'NO_VISIBLE_WALL_FLOOR_TRANSITION')
+    if state.legacy_proposals_v1 and not np.isfinite(scan['vb'][:,0]).all():
+        # The original detector supplies another OBSERVED RGB edge. It cannot
+        # fill a missing colour transition: an independently observed colour
+        # edge must be within original v1 boundary p95=1.5px. Same6m geometry,
+        # no line/GT projection and no new pixel or acceptance tolerance.
+        legacy=hfw.detect(und_bgr,cm,params=params,loaded=loaded)
+        tol=float(state.calibration['line_residual_px_p95'])
+        for j in np.flatnonzero(~np.isfinite(scan['vb'][:,0])):
+            if not observed_rows[j]:continue
+            for k,row in enumerate(legacy['vb'][j]):
+                if not np.isfinite(row) or min(abs(row-v) for v in observed_rows[j])>tol:continue
+                for key in scan:scan[key][j,0]=legacy[key][j,k]
+                reasons[j]='COLOUR_VALIDATED_LEGACY_EDGE';break
     # Deterministic RANSAC, seeded ONLY by columns without orange. Observed
     # transitions through a robot's open gaps may join a background wall line;
     # a robot silhouette cannot seed its own wall. No missing column is filled.
@@ -153,7 +170,7 @@ def detect(hfw, und_bgr, cm, *, params, loaded, state):
     for arr in scan.values(): arr[~supported] = np.nan
     state.last_result = {'option':state.option,'scene_profile':state.profile,'column_reasons':reasons,
                          'work_budget':{'columns':n,'rows_per_column':und_bgr.shape[0],'line_pair_checks':checks},
-                         'truth_inputs':0,'interpolated_missing_columns':0}
+                         'truth_inputs':0,'interpolated_missing_columns':0,'legacy_rgb_proposals_v1':state.legacy_proposals_v1}
     return scan
 
 
@@ -176,7 +193,9 @@ def configured_backend(hfw):
     if not path.is_file() or len(digest)!=64:raise ValueError('EXPLICIT_FROZEN_COLOUR_CALIBRATION_REQUIRED')
     raw=path.read_bytes()
     if hashlib.sha256(raw).hexdigest()!=digest:raise ValueError('COLOUR_CALIBRATION_HASH_MISMATCH')
-    state=ColourBoundaryState(profile,json.loads(raw),option=option)
+    proposal=os.environ.get('UGRP_RELOC16_BOUNDARY_PROPOSALS','off')
+    if proposal not in ('off','legacy_rgb_v1'):raise ValueError('UNKNOWN_SCENE_BOUNDARY_PROPOSAL')
+    state=ColourBoundaryState(profile,json.loads(raw),option=option,legacy_proposals_v1=proposal=='legacy_rgb_v1')
     def dispatch(und_bgr,cm,params=None,self_top=None,loaded=True,*,wall_detector='off',contact_rule='off'):
         if self_top is not None or wall_detector!='off' or contact_rule!='off':
             raise ValueError('SCENE_COLOUR_BACKEND_REQUIRES_UNMODIFIED_CONTACT_INTERFACE')

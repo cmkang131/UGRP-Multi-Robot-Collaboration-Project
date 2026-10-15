@@ -37,3 +37,7 @@ R1 가장 큰 신규 병목은 특징점 부족이 아니라 바닥색 랜드마
 `landmark-audit.json`: 기존56카메라자격자세×3인코딩의 벽을 바닥선으로 읽은 수 PNG88/JPEG99/PIL105→0/0/0. 벽RGB class를 컬러 바닥 랜드마크의 clear에만 뺀다. RGB·바닥LK·문관측·학생 입력은 바꾸지 않는다. 혼합 경계의 실제 바닥 label픽셀62/25/15(각5,482,362개)도 unknown으로 제외하므로 바닥픽셀100% 보존이라고 주장하지 않는다. 원래 LK 마스크/추적 경로는 그대로다. pixel1.5p95→2반경 erosion 진단은 바닥손실0이나 JPEG/PIL의 벽 오인29/57을 남겨 **채택하지 않았다**. 문턱 조정 대신 RGB 평면을 분리한다. 토글 `UGRP_RELOC16_FLOOR_LANDMARK_MASK=scene_floor_landmark_mask_v1`, 기본off, 고정v5+경계v2가 없으면 차단한다. [OpenCV HSV 구간 분할 공식 설명](https://docs.opencv.org/4.13.0/da/d97/tutorial_threshold_inRange.html)(2026-10-16 원문 열람), 기존 frozen landmark 구현의 실제 범위가 근거다.
 
 선 계산 벡터화는 같은168원본에서 경계/compass 출력 각168/168 완전일치였다. process CPU 중앙(초/프레임)은 경계.1003→.0757, compass.1446→.00792다. 이는 폐루프 속도가 아니다. selfmap 지연의 대부분은 오인한 컬러 바닥선이 누적된 registration에서 생겼으므로 R2는 이 평면 분리를 함께 검증한다. R2는 기존 실패4시드만(동시4)이며 이전장면/라운드와 합산하지 않는다.
+
+## 경계 후보 추가 진단: 기존 RGB edge 제안의 색 재검증
+
+계량6m 상한이나 누락 보간을 바꾸지 않고, **이미 원래 검출기가 관측한** edge를 색 전이와 교차 확인하는 기본off `UGRP_RELOC16_BOUNDARY_PROPOSALS=legacy_rgb_v1`를 따로 준비한다. 순수 색 검출에서 실제 색 전이가 관측됐지만 geometry/range 등으로 반환되지 않은 컬럼만 본다. 원래 검출기의 반환 row가 관측한 색/밝기 edge에서 원본v1오차p95=1.5px 이내일 때만 같은 컬럼의 실측 후보로 쓴다. 선이나정답으로 채우지 않는다. hue·채도·거리·이웃 문턱은 그대로다. 저장88자세에서 분포/오차를 확인하기 전에는 폐루프에 켜지 않는다. R2 진행 소스5f8b3eb2에는 이 후보가 없다.
