@@ -41,6 +41,7 @@ class Options:
     active_relocalization: str = 'off'
     reloc9_rotation_calibration_v1: bool = False
     reloc9_wall_height_guard_v1: bool = False
+    reloc10_registration_v1: bool = False
     revision_xy_threshold_m: float = .1
     revision_yaw_threshold_rad: float = math.radians(5)
 
@@ -49,6 +50,8 @@ class Options:
         from harness.reloc9_wall_guard import validate as validate_wall
         object.__setattr__(self, 'motion_model', selfmap_model(self.motion_model, self.reloc9_rotation_calibration_v1))
         validate_wall(self.reloc9_wall_height_guard_v1)
+        if type(self.reloc10_registration_v1) is not bool or (self.reloc10_registration_v1 and self.multiframe_registration == 'off'):
+            raise ValueError('reloc10 registration requires multiframe registration')
         if self.reloc9_wall_height_guard_v1 and self.recovery_profile == 'off':
             raise ValueError('RELOC9_WALL_GUARD_REQUIRES_RECOVERY')
         if self.self_map_integration not in ('off', OPTION):
@@ -185,6 +188,7 @@ class SelfMapIntegration:
                 raise ValueError('SELFMAP4_AUTHORED_STATIC_MAP_REQUIRED')
             self.registration = StaticRegistration(static_map,
                 multiframe_registration=self.options.multiframe_registration,
+                reloc10_registration_v1=self.options.reloc10_registration_v1,
                 correction_safety=self.options.correction_safety,
                 active_relocalization=self.options.active_relocalization)
             self.flow = PlaneFlow()

@@ -151,7 +151,7 @@ class StaticRegistration:
     Unresolved hypotheses can propose look directions but cannot clip/clear maps
     or lower pose covariance. Registration has to survive three distinct views.
     """
-    def __init__(self, static, *, multiframe_registration='off', correction_safety='off', active_relocalization='off'):
+    def __init__(self, static, *, multiframe_registration='off', correction_safety='off', active_relocalization='off', reloc10_registration_v1=False):
         from harness.e2e_static_rgb_localizer import create
         from harness.self_map_landmark_sensor import Sensor
         if set(static) != {'map_id', 'version', 'frame', 'bounds_m', 'obstacles', 'regions', 'passages'}:
@@ -169,6 +169,7 @@ class StaticRegistration:
         self.active_relocalization = active_relocalization
         self.active_hypotheses = []
         self.command_anchor = None
+        self.reloc10_registration = reloc10_registration_v1
         if multiframe_registration != 'off':
             from harness.selfmap5_registration import OPTION, RecoveryPolicy, MultiFrameEvidence
             if multiframe_registration != OPTION:
@@ -176,6 +177,7 @@ class StaticRegistration:
             self.pf.policy = RecoveryPolicy()
             self.evidence = MultiFrameEvidence()
             self.evidence.trace_edge_ids = correction_safety != 'off'
+            self.evidence.rolling = reloc10_registration_v1
 
     def begin_sweep(self, t):
         if self.evidence is not None:
@@ -276,10 +278,26 @@ class StaticRegistration:
                 self.map_from_own = anchor.copy()
         elif row['updated'] and not reliable:
             self.confirmations.clear(); self.confirmation_views.clear()
+        rejection = []
+        if self.reloc10_registration:
+            checks = dict(no_sensor_update=not row['updated'], pf_unresolved=not row['resolved'],
+                cluster_mass=row['cluster']['mass'] < .9,
+                xy_covariance=np.linalg.eigvalsh(cov[:2, :2]).max() > .15**2,
+                yaw_covariance=cov[2, 2] > math.radians(5)**2,
+                geometry=not supported,
+                ambiguity=self.correction_safety != 'off' and not geometry.get('ambiguity', {}).get('unique', False))
+            rejection = [k for k, failed in checks.items() if failed]
         self.last = dict(updated=row['updated'], resolved=bool(reliable),
             confirmations=len(self.confirmations), registered=self.map_from_own is not None,
             world_pose=row['pose'], covariance=row['covariance'], cluster=row['cluster'],
             feature_count=len(observation['features']), geometry=geometry)
+        if self.reloc10_registration:
+            from collections import Counter
+            self.last['reloc10_diagnostics'] = dict(rejection_reasons=rejection,
+                feature_kinds=dict(Counter(f['kind'] for f in observation['features'])),
+                wall_segments=len(observation['segments']), raw_columns=observation.get('raw_columns'),
+                fitted_columns=observation.get('fitted_columns'),
+                wall_guard=observation.get('wall_height_guard'), sensor_reason=row.get('reason'))
         if self.evidence is not None:
             self.last.update(pf_resolved=bool(row['resolved']), raw_covariance=row['covariance'],
                 covariance=cov.tolist(), pf_sensor=row['sensor'],

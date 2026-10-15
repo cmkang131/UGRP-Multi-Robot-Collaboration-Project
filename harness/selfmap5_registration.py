@@ -64,17 +64,25 @@ class MultiFrameEvidence:
         self.frames = []
         self.started = None
         self.trace_edge_ids = False
+        self.rolling = False
 
     def begin(self, t):
-        self.active = True; self.frames.clear(); self.started = float(t)
+        self.active = True
+        if not self.rolling:
+            self.frames.clear()
+        self.started = float(t)
 
     def end(self):
-        self.active = False; self.frames.clear()
+        self.active = False
+        if not self.rolling:
+            self.frames.clear()
 
     def add(self, observation, own_pose, t):
-        if not self.active:
+        if not self.active and not self.rolling:
             return
-        if t-self.started > 30.+1e-8:
+        if self.rolling:
+            self.frames = [f for f in self.frames if t-f['t'] <= 30.+1e-8]
+        elif t-self.started > 30.+1e-8:
             self.end(); return
         lines = [copy.deepcopy(f) for f in observation['features'] if f['kind'] == 'floor_line']
         if lines:

@@ -39,9 +39,14 @@ def make_executor(legacy=None, *, self_map_executor='off', **kwargs):
 class SelfMapExecutor:
     def __init__(self, robot_id, *, start_time=0., cap_s=180., mapper=None, sweep=None,
                  bootstrap='off', initial_sweep='off', recovery_profile='off', static_map=None, revision_gate='off', multiframe_registration='off', correction_safety='off', active_relocalization='off',
-                 reloc9_rotation_calibration_v1=False, reloc9_wall_height_guard_v1=False):
+                 reloc9_rotation_calibration_v1=False, reloc9_wall_height_guard_v1=False,
+                 reloc10_settle_v1=False, reloc10_registration_v1=False):
         if not math.isfinite(cap_s) or not 1. <= cap_s <= 300.:
             raise ValueError('FINITE_SELF_MAP_CAP_1_TO_300_REQUIRED')
+        if type(reloc10_settle_v1) is not bool:
+            raise ValueError('reloc10 settle must be bool')
+        self.reloc10_settle = reloc10_settle_v1
+        self.turn_settler = None
         self.robot_id, self.started, self.cap_s = robot_id, float(start_time), float(cap_s)
         if initial_sweep not in ('off', 'required_360_v1'):
             raise ValueError('UNKNOWN_INITIAL_SWEEP')
@@ -54,7 +59,8 @@ class SelfMapExecutor:
                 revision_gate=revision_gate, multiframe_registration=multiframe_registration,
                 correction_safety=correction_safety, active_relocalization=active_relocalization,
                 reloc9_rotation_calibration_v1=reloc9_rotation_calibration_v1,
-                reloc9_wall_height_guard_v1=reloc9_wall_height_guard_v1), static_map=static_map)
+                reloc9_wall_height_guard_v1=reloc9_wall_height_guard_v1,
+                reloc10_registration_v1=reloc10_registration_v1), static_map=static_map)
         self.recovery = self.mapper.options.recovery_profile != 'off'
         if sweep is None:
             # Existing E2E18/egomap arrival -> bounded full-body observation sweep.
@@ -144,13 +150,24 @@ class SelfMapExecutor:
             self.active_view = next_view(reg.static, world, covariance,
                 hypotheses=reg.active_hypotheses, previous_headings=self.active_headings)
             self.active_target = float(self.mapper.odom.pose[2])+math.radians(self.active_view['body_yaw_deg'])
+            if self.reloc10_settle:
+                from sim.settle_pulse import PulseSettler
+                self.turn_settler = PulseSettler(math.radians(2))
             self.active_stage = 'turn'
             self.event(t, 'reloc8_view_planned', view=self.active_view)
             self.active_until = t+.8
             return dict(t=float(t), kind='look', pan_pulse=self.active_view['pan_pulse'])
         if self.active_stage == 'turn':
             error = float(wrap(self.active_target-self.mapper.odom.pose[2]))
-            if abs(error) > math.radians(2):
+            if self.reloc10_settle:
+                from harness.reloc10_settle import settle_turn
+                command, receipt = settle_turn(self.turn_settler, error, t,
+                    costmap=self.costmap(pose, spin=True), pose=pose,
+                    motion_model=self.mapper.options.motion_model)
+                self.event(t, 'reloc10_settle', **receipt)
+                if not receipt['settled']:
+                    return command
+            elif abs(error) > math.radians(2):
                 costmap = self.costmap(pose, spin=True)
                 command, _ = pulse_command(np.array([0., 0., math.copysign(.35, error)]), t,
                     costmap=costmap, pose=pose, motion_model=self.mapper.options.motion_model)
