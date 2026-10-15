@@ -1,0 +1,66 @@
+{
+  "schema": "ugrp.release23.saved_ablations.v1",
+  "scope": "Saved same-round input decision replay only. Does not simulate changed trajectories; no physical causal attribution.",
+  "paired_observations": 194,
+  "profiles": {
+    "baseline": {
+      "options": {},
+      "choices": {
+        "lower:localized_margins_inside": 78,
+        "shift:localized_margin_correction": 110,
+        "shift:localized_lateral_correction": 6
+      },
+      "changed_vs_baseline": 0
+    },
+    "margin_only": {
+      "options": {
+        "margin_common_mode": "margin_common_mode_v1"
+      },
+      "choices": {
+        "lower:localized_margins_inside": 78,
+        "shift:localized_margin_correction": 110,
+        "shift:localized_lateral_correction": 6
+      },
+      "changed_vs_baseline": 0
+    },
+    "leg_only": {
+      "options": {
+        "release_leg_budget": "release_leg_budget_v1"
+      },
+      "choices": {
+        "lower:localized_margins_inside": 78,
+        "shift:localized_margin_correction": 110,
+        "shift:localized_lateral_correction": 6
+      },
+      "changed_vs_baseline": 110
+    },
+    "margin_plus_leg": {
+      "options": {
+        "margin_common_mode": "margin_common_mode_v1",
+        "release_leg_budget": "release_leg_budget_v1"
+      },
+      "choices": {
+        "lower:localized_margins_inside": 78,
+        "shift:localized_margin_correction": 110,
+        "shift:localized_lateral_correction": 6
+      },
+      "changed_vs_baseline": 110
+    }
+  },
+  "lateral_only": {
+    "old_rate_m_s": 0.08,
+    "new_rate_m_s": 0.122,
+    "yaw_rate_preserved_rad_s": 1.05,
+    "validation": "test_lateral_cal_changes_only_lateral_and_inverse_plans_match_propagation"
+  },
+  "yaw_only": {
+    "saved_seed": 88639,
+    "validation": "test_saved_88639_keeps_cap_and_evaluates_lateral_then_fresh_rgb",
+    "physical_success": false
+  },
+  "compute_only": {
+    "validation": "No wall time in active planning modules; finite authored sweep check count"
+  },
+  "reproduce": "cd /home/ugrp/ugrp-sim/src/8d24a525fc3e2d480050dc08788befd8f3d4fde4 && .venv-sim/bin/python /home/ugrp/ugrp-sim/ops-reviews/release23/ablate_saved.py",
+  "source_sha": "8d24a525fc3e2d480050dc08788befd8f3d4fde4"
+}

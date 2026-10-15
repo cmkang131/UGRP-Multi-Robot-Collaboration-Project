@@ -1,0 +1,1688 @@
+{
+  "schema": "ugrp.release23.dev.v1",
+  "source_sha": "8d24a525fc3e2d480050dc08788befd8f3d4fde4",
+  "counts": {
+    "completed": 6,
+    "success": 5,
+    "N": 6
+  },
+  "classification_counts": {
+    "success": 5,
+    "failure": 1
+  },
+  "verified": true,
+  "failure_seeds_solved": false,
+  "rejection_table": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release23-8d24a525/rejection_table.json",
+  "research_result": false,
+  "training_rgb": false,
+  "student_execution": false,
+  "pooling": "No pooling across old SHA, rounds, A/B, DEV or gate.",
+  "runs": [
+    {
+      "name": "r23d3-00-8d24a525",
+      "seed": 110622,
+      "source_sha": "8d24a525fc3e2d480050dc08788befd8f3d4fde4",
+      "classification": "success",
+      "status": "complete",
+      "success": true,
+      "physical_evaluation_success": true,
+      "outcome": "teacher_done",
+      "sim_s": 177.9999999974761,
+      "release_sim_s": 163.0999999976332,
+      "wall_s": 409.8060868039993,
+      "first30": {
+        "sim_s": 30.299999999998953,
+        "wall_per_sim": 1.999606220635713
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 0
+      },
+      "evaluation_position_error": {
+        "center_offset_m": [
+          0.1443174700372527,
+          -0.10051126988320735
+        ],
+        "center_distance_m": 0.17586940476242102,
+        "yaw_error_deg": -5.390319264514924,
+        "min_end_margin_m": 0.12750049962632753,
+        "zone_long_axis": "y"
+      },
+      "evaluation_settled_s": 2.5,
+      "iterations": 3,
+      "shift_steps": 3,
+      "execution_profile": {
+        "release_profile": "release18_v1",
+        "release_goal_region": "inside_margins_v1",
+        "command_motion": "yaw_cal_v1",
+        "effective_motion_profile": "lateral_rate_cal_v1",
+        "release20_settle": "release20_settle_v1",
+        "release21": "release21_v1",
+        "margin_common_mode": "margin_common_mode_v1",
+        "release_leg_budget": "release_leg_budget_v1",
+        "lateral_rate_cal": "lateral_rate_cal_v1",
+        "release_yaw_budget": "release_yaw_budget_v1",
+        "release_plan_budget": "compute_budget_v1",
+        "recording_mode": "success_measurement",
+        "weld": "off"
+      },
+      "code_decisions": [
+        {
+          "action": "lower",
+          "lo": null,
+          "hi": null,
+          "evidence": [
+            "none",
+            "none"
+          ],
+          "exact": {
+            "r1": false,
+            "r2": false
+          },
+          "t": 10.899999999997272
+        },
+        {
+          "action": "shift",
+          "shift_m": 0.3,
+          "reason": "localized_margin_correction",
+          "t": 29.200000000048412,
+          "margins_m": [
+            -0.3846619386634061,
+            1.0942931938414713
+          ],
+          "shift_target": "existing_end_balance",
+          "admissible_shift_m": [
+            0.42466193866340607,
+            1.0542931938414712
+          ],
+          "raw_margins_m": [
+            -0.36605577734220573,
+            1.1128993551626716
+          ],
+          "corrected_margins_m": [
+            -0.3376181798046492,
+            1.1413369527002282
+          ],
+          "margin_lower_bounds_m": [
+            -0.3846619386634061,
+            1.0942931938414713
+          ],
+          "common_bias_m": -0.028437597537556536,
+          "sum_residual_m": -0.05687519507511307,
+          "error_bound_m": 0.04704375885875689,
+          "observation_epoch": 0
+        },
+        {
+          "action": "shift",
+          "shift_m": 0.0,
+          "lateral_shift_m": -0.1,
+          "lateral_interval_m": [
+            -0.42802331389417136,
+            -0.015095645683004727
+          ],
+          "reason": "localized_lateral_correction",
+          "t": 77.19999999990243,
+          "raw_margins_m": [
+            -0.0610240996762641,
+            0.802581498522585
+          ],
+          "corrected_margins_m": [
+            -0.030026752447665284,
+            0.8335788457511838
+          ],
+          "margin_lower_bounds_m": [
+            -0.07707051130642217,
+            0.7865350868924269
+          ],
+          "common_bias_m": -0.030997347228598815,
+          "sum_residual_m": -0.06199469445719763,
+          "error_bound_m": 0.04704375885875689,
+          "observation_epoch": 1
+        },
+        {
+          "action": "shift",
+          "shift_m": 0.3,
+          "reason": "localized_margin_correction",
+          "t": 123.89999999879812,
+          "margins_m": [
+            -0.07679192333171786,
+            0.7861532920588548
+          ],
+          "shift_target": "existing_end_balance",
+          "admissible_shift_m": [
+            0.11679192333171787,
+            0.7461532920588547
+          ],
+          "raw_margins_m": [
+            -0.06271807669098872,
+            0.8002271386995838
+          ],
+          "corrected_margins_m": [
+            -0.02974816447296097,
+            0.8331970509176116
+          ],
+          "margin_lower_bounds_m": [
+            -0.07679192333171786,
+            0.7861532920588548
+          ],
+          "common_bias_m": -0.03296991221802775,
+          "sum_residual_m": -0.0659398244360555,
+          "error_bound_m": 0.04704375885875689,
+          "observation_epoch": 2
+        },
+        {
+          "action": "lower",
+          "reason": "localized_margins_inside",
+          "t": 173.19999999763235,
+          "margins_m": [
+            0.23547458443223934,
+            0.4718834477278465
+          ],
+          "release_goal_region": "inside_margins_v1",
+          "raw_margins_m": [
+            0.24546789420508397,
+            0.48187675750069114
+          ],
+          "corrected_margins_m": [
+            0.28251834329099623,
+            0.5189272065866034
+          ],
+          "margin_lower_bounds_m": [
+            0.23547458443223934,
+            0.4718834477278465
+          ],
+          "common_bias_m": -0.03705044908591226,
+          "sum_residual_m": -0.07410089817182453,
+          "error_bound_m": 0.04704375885875689,
+          "observation_epoch": 3
+        }
+      ],
+      "leg_admissions": [
+        {
+          "t": 29.200000000048412,
+          "accepted": true,
+          "remaining_sim_s": 152.59999999995176,
+          "expected_leg_s": 49.07519379730747,
+          "tail_s": 6.699999999843726,
+          "reason_category": "leg_time_available",
+          "blocking_object": "remaining episode SIM budget",
+          "minimum_gap": 96.82480620280057,
+          "gap_unit": "SIM s"
+        },
+        {
+          "t": 77.19999999990243,
+          "accepted": true,
+          "remaining_sim_s": 104.60000000009775,
+          "expected_leg_s": 49.07519379730747,
+          "tail_s": 6.699999999843726,
+          "reason_category": "leg_time_available",
+          "blocking_object": "remaining episode SIM budget",
+          "minimum_gap": 48.824806202946554,
+          "gap_unit": "SIM s"
+        },
+        {
+          "t": 123.89999999879812,
+          "accepted": true,
+          "remaining_sim_s": 57.90000000120206,
+          "expected_leg_s": 49.07519379730747,
+          "tail_s": 6.699999999843726,
+          "reason_category": "leg_time_available",
+          "blocking_object": "remaining episode SIM budget",
+          "minimum_gap": 2.124806204050863,
+          "gap_unit": "SIM s"
+        }
+      ],
+      "final_acceptance_evaluation": [
+        {
+          "decision_t": 173.19999999763235,
+          "eval_t": 173.19999999763235,
+          "sample_delta_s": 0.0,
+          "fit": true,
+          "scope": "evaluation-only label; never fed back"
+        }
+      ],
+      "false_final_accepts": 0,
+      "sweep_checks": [
+        {
+          "t": 56.30000000017781,
+          "accepted": true,
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_east",
+          "minimum_gap": 0.2089467211595517,
+          "gap_unit": "m",
+          "computation_checks": 28,
+          "computation_budget": 28,
+          "budget_basis": "finite issued-plan convex hull and authored obstacle count"
+        },
+        {
+          "t": 104.2999999992616,
+          "accepted": true,
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_east",
+          "minimum_gap": 0.21652730969698197,
+          "gap_unit": "m",
+          "computation_checks": 28,
+          "computation_budget": 28,
+          "budget_basis": "finite issued-plan convex hull and authored obstacle count"
+        },
+        {
+          "t": 152.19999999812893,
+          "accepted": true,
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_east",
+          "minimum_gap": 0.28760324283334615,
+          "gap_unit": "m",
+          "computation_checks": 28,
+          "computation_budget": 28,
+          "budget_basis": "finite issued-plan convex hull and authored obstacle count"
+        }
+      ],
+      "rejection_ledger": [],
+      "line_summary": {
+        "N": 12,
+        "done": 12,
+        "events": {
+          "reuse_settled_open": 6,
+          "image": 80,
+          "mode_enter": 18,
+          "recover_fov": 24,
+          "fov_step_result": 24,
+          "release20_settle": 56,
+          "aligned_before_pick": 12,
+          "reuse_settled_open_hover": 6,
+          "line_ibvs": 4,
+          "yaw_sign_check": 3
+        },
+        "failures": [],
+        "budget_alternatives": []
+      },
+      "remote_raw": "/home/ugrp/ugrp-sim/runs/r23d3-00-8d24a525",
+      "raw_result_sha256": "5b06cb42b942598574d2691a226f0fd4f1f9ddd87d9eae693a2061fc65b9a96e",
+      "raw_manifest_sha256": "c57166bed6930b773134c2cff81909c85dbb303f0ee45b9dd8877870cc314cf4",
+      "full_original_manifest_verified": true,
+      "original_file_N": 598,
+      "own_frame_N": 578,
+      "frame_decode_verified_N": 578,
+      "montage": {
+        "path": "/home/ugrp/ugrp-sim/ops-reviews/release23/round3/r23d3-00-8d24a525-montage.jpg",
+        "sha256": "69f7291ce7dbaf518a950cc14d9505b61b772999dc3d2b00c338e2298da07485"
+      },
+      "visual_review": {
+        "directly_viewed": true,
+        "own_frames": 12,
+        "elapsed_sim_s": [
+          0.0,
+          34.29999999999895,
+          69.29999999999895,
+          105.29999999999895,
+          140.29999999999896,
+          175.29999999999896
+        ],
+        "relationship": "opposite teal/blue ends where visible; no same-end approach or mutual blocking seen in sampled views",
+        "limits": "interior and panorama views alone do not certify cargo pose"
+      }
+    },
+    {
+      "name": "r23d3-01-8d24a525",
+      "seed": 88639,
+      "source_sha": "8d24a525fc3e2d480050dc08788befd8f3d4fde4",
+      "classification": "success",
+      "status": "complete",
+      "success": true,
+      "physical_evaluation_success": true,
+      "outcome": "teacher_done",
+      "sim_s": 126.19999999870099,
+      "release_sim_s": 111.2999999988581,
+      "wall_s": 300.9567606119999,
+      "first30": {
+        "sim_s": 30.299999999998953,
+        "wall_per_sim": 2.099621201505828
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 0
+      },
+      "evaluation_position_error": {
+        "center_offset_m": [
+          -0.019813720608576446,
+          -0.09503088546929023
+        ],
+        "center_distance_m": 0.09707446995699788,
+        "yaw_error_deg": 6.017328980718847,
+        "min_end_margin_m": 0.24873750456804994,
+        "zone_long_axis": "y"
+      },
+      "evaluation_settled_s": 2.5,
+      "iterations": 2,
+      "shift_steps": 2,
+      "execution_profile": {
+        "release_profile": "release19_v1",
+        "release_goal_region": "inside_margins_v1",
+        "command_motion": "yaw_cal_v1",
+        "effective_motion_profile": "lateral_rate_cal_v1",
+        "release20_settle": "release20_settle_v1",
+        "release21": "release21_v1",
+        "margin_common_mode": "margin_common_mode_v1",
+        "release_leg_budget": "release_leg_budget_v1",
+        "lateral_rate_cal": "lateral_rate_cal_v1",
+        "release_yaw_budget": "release_yaw_budget_v1",
+        "release_plan_budget": "compute_budget_v1",
+        "recording_mode": "success_measurement",
+        "weld": "off"
+      },
+      "code_decisions": [
+        {
+          "action": "lower",
+          "lo": null,
+          "hi": null,
+          "evidence": [
+            "none",
+            "none"
+          ],
+          "exact": {
+            "r1": false,
+            "r2": false
+          },
+          "t": 10.899999999997272
+        },
+        {
+          "action": "shift",
+          "shift_m": -0.3,
+          "reason": "localized_margin_correction",
+          "t": 27.600000000040772,
+          "margins_m": [
+            1.0865687751162278,
+            -0.3793097275260316
+          ],
+          "shift_target": "existing_end_balance",
+          "admissible_shift_m": [
+            -1.0465687751162278,
+            -0.4193097275260316
+          ],
+          "raw_margins_m": [
+            1.0794724937606424,
+            -0.386406008881617
+          ],
+          "corrected_margins_m": [
+            1.1336125339749847,
+            -0.3322659686672747
+          ],
+          "margin_lower_bounds_m": [
+            1.0865687751162278,
+            -0.3793097275260316
+          ],
+          "common_bias_m": -0.05414004021434232,
+          "sum_residual_m": -0.10828008042868464,
+          "error_bound_m": 0.04704375885875689,
+          "observation_epoch": 0
+        },
+        {
+          "action": "shift",
+          "shift_m": -0.3,
+          "reason": "localized_margin_correction",
+          "t": 74.49999999996628,
+          "margins_m": [
+            0.7831230081544808,
+            -0.07492515342260853
+          ],
+          "shift_target": "existing_end_balance",
+          "admissible_shift_m": [
+            -0.7431230081544807,
+            -0.11492515342260853
+          ],
+          "raw_margins_m": [
+            0.7751116726849867,
+            -0.08293648889210259
+          ],
+          "corrected_margins_m": [
+            0.8301667670132377,
+            -0.027881394563851636
+          ],
+          "margin_lower_bounds_m": [
+            0.7831230081544808,
+            -0.07492515342260853
+          ],
+          "common_bias_m": -0.05505509432825095,
+          "sum_residual_m": -0.1101101886565019,
+          "error_bound_m": 0.04704375885875689,
+          "observation_epoch": 1
+        },
+        {
+          "action": "lower",
+          "reason": "localized_margins_inside",
+          "t": 121.39999999885724,
+          "margins_m": [
+            0.470022778033372,
+            0.23806469178624662
+          ],
+          "release_goal_region": "inside_margins_v1",
+          "raw_margins_m": [
+            0.4726455086841016,
+            0.24068742243697622
+          ],
+          "corrected_margins_m": [
+            0.5170665368921289,
+            0.2851084506450035
+          ],
+          "margin_lower_bounds_m": [
+            0.470022778033372,
+            0.23806469178624662
+          ],
+          "common_bias_m": -0.04442102820802729,
+          "sum_residual_m": -0.08884205641605458,
+          "error_bound_m": 0.04704375885875689,
+          "observation_epoch": 2
+        }
+      ],
+      "leg_admissions": [
+        {
+          "t": 27.600000000040772,
+          "accepted": true,
+          "remaining_sim_s": 154.1999999999594,
+          "expected_leg_s": 49.07519379730747,
+          "tail_s": 6.699999999843726,
+          "reason_category": "leg_time_available",
+          "blocking_object": "remaining episode SIM budget",
+          "minimum_gap": 98.42480620280821,
+          "gap_unit": "SIM s"
+        },
+        {
+          "t": 74.49999999996628,
+          "accepted": true,
+          "remaining_sim_s": 107.3000000000339,
+          "expected_leg_s": 49.07519379730747,
+          "tail_s": 6.699999999843726,
+          "reason_category": "leg_time_available",
+          "blocking_object": "remaining episode SIM budget",
+          "minimum_gap": 51.52480620288271,
+          "gap_unit": "SIM s"
+        }
+      ],
+      "final_acceptance_evaluation": [
+        {
+          "decision_t": 121.39999999885724,
+          "eval_t": 121.39999999885724,
+          "sample_delta_s": 0.0,
+          "fit": true,
+          "scope": "evaluation-only label; never fed back"
+        }
+      ],
+      "false_final_accepts": 0,
+      "sweep_checks": [
+        {
+          "t": 55.20000000017256,
+          "accepted": true,
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_east",
+          "minimum_gap": 0.40949796472349487,
+          "gap_unit": "m",
+          "computation_checks": 28,
+          "computation_budget": 28,
+          "budget_basis": "finite issued-plan convex hull and authored obstacle count"
+        },
+        {
+          "t": 101.99999999931599,
+          "accepted": true,
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_north",
+          "minimum_gap": 0.3459177013031338,
+          "gap_unit": "m",
+          "computation_checks": 28,
+          "computation_budget": 28,
+          "budget_basis": "finite issued-plan convex hull and authored obstacle count"
+        }
+      ],
+      "rejection_ledger": [],
+      "line_summary": {
+        "N": 8,
+        "done": 8,
+        "events": {
+          "reuse_settled_open": 4,
+          "image": 54,
+          "mode_enter": 12,
+          "recover_fov": 16,
+          "fov_step_result": 16,
+          "release20_settle": 38,
+          "line_ibvs": 3,
+          "yaw_sign_check": 2,
+          "aligned_before_pick": 8,
+          "reuse_settled_open_hover": 4
+        },
+        "failures": [],
+        "budget_alternatives": []
+      },
+      "remote_raw": "/home/ugrp/ugrp-sim/runs/r23d3-01-8d24a525",
+      "raw_result_sha256": "7673221ee86cab1457c18ab5147985d89cbc940d14a19f0b8b895c2565f47b62",
+      "raw_manifest_sha256": "93f93330a6e73d0b76b31bc6fdc3d21baf81e6d41bdd014eeeed53ec520ac41a",
+      "full_original_manifest_verified": true,
+      "original_file_N": 423,
+      "own_frame_N": 404,
+      "frame_decode_verified_N": 404,
+      "montage": {
+        "path": "/home/ugrp/ugrp-sim/ops-reviews/release23/round3/r23d3-01-8d24a525-montage.jpg",
+        "sha256": "9dc77088ab4409de814ccf2b5741992f3de518735c05d121847f54f670d9b728"
+      },
+      "visual_review": {
+        "directly_viewed": true,
+        "own_frames": 12,
+        "elapsed_sim_s": [
+          0.0,
+          24.299999999998953,
+          49.29999999999895,
+          73.29999999999895,
+          98.29999999999895,
+          123.29999999999895
+        ],
+        "relationship": "opposite teal/blue ends where visible; no same-end approach or mutual blocking seen in sampled views",
+        "limits": "interior and panorama views alone do not certify cargo pose"
+      }
+    },
+    {
+      "name": "r23d3-02-8d24a525",
+      "seed": 110622,
+      "source_sha": "8d24a525fc3e2d480050dc08788befd8f3d4fde4",
+      "classification": "failure",
+      "status": "complete",
+      "success": false,
+      "physical_evaluation_success": false,
+      "outcome": "release_iteration_cap",
+      "sim_s": 168.49999999770074,
+      "release_sim_s": 160.19999999770178,
+      "wall_s": 382.41608143099984,
+      "first30": {
+        "sim_s": 30.299999999998953,
+        "wall_per_sim": 1.9817573559953727
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 0
+      },
+      "evaluation_position_error": {
+        "center_offset_m": [
+          0.11025584740732697,
+          -0.4255066426086399
+        ],
+        "center_distance_m": 0.43955915960378367,
+        "yaw_error_deg": -1.0774689707477147,
+        "min_end_margin_m": -0.025453597818004714,
+        "zone_long_axis": "y"
+      },
+      "evaluation_settled_s": 0.0,
+      "iterations": 3,
+      "shift_steps": 3,
+      "execution_profile": {
+        "release_profile": "release19_v1",
+        "release_goal_region": "inside_margins_v1",
+        "command_motion": "yaw_cal_v1",
+        "effective_motion_profile": "lateral_rate_cal_v1",
+        "release20_settle": "release20_settle_v1",
+        "release21": "release21_v1",
+        "margin_common_mode": "margin_common_mode_v1",
+        "release_leg_budget": "release_leg_budget_v1",
+        "lateral_rate_cal": "lateral_rate_cal_v1",
+        "release_yaw_budget": "release_yaw_budget_v1",
+        "release_plan_budget": "compute_budget_v1",
+        "recording_mode": "success_measurement",
+        "weld": "off"
+      },
+      "code_decisions": [
+        {
+          "action": "lower",
+          "lo": null,
+          "hi": null,
+          "evidence": [
+            "none",
+            "none"
+          ],
+          "exact": {
+            "r1": false,
+            "r2": false
+          },
+          "t": 10.899999999997272
+        },
+        {
+          "action": "shift",
+          "shift_m": 0.3,
+          "reason": "localized_margin_correction",
+          "t": 27.600000000040772,
+          "margins_m": [
+            -0.38602199741624615,
+            1.0953806256555527
+          ],
+          "shift_target": "existing_end_balance",
+          "admissible_shift_m": [
+            0.42602199741624613,
+            1.0553806256555527
+          ],
+          "raw_margins_m": [
+            -0.3685572639441492,
+            1.1128453591276497
+          ],
+          "corrected_margins_m": [
+            -0.33897823855748926,
+            1.1424243845143096
+          ],
+          "margin_lower_bounds_m": [
+            -0.38602199741624615,
+            1.0953806256555527
+          ],
+          "common_bias_m": -0.029579025386659963,
+          "sum_residual_m": -0.059158050773319926,
+          "error_bound_m": 0.04704375885875689,
+          "observation_epoch": 0
+        },
+        {
+          "action": "shift",
+          "shift_m": 0.0,
+          "lateral_shift_m": -0.1,
+          "lateral_interval_m": [
+            -0.43489301690423754,
+            -0.017675209468470038
+          ],
+          "reason": "localized_lateral_correction",
+          "t": 73.9999999999781,
+          "raw_margins_m": [
+            -0.062436411573023154,
+            0.8023548222053947
+          ],
+          "corrected_margins_m": [
+            -0.03082913595361292,
+            0.8339620978248049
+          ],
+          "margin_lower_bounds_m": [
+            -0.07787289481236981,
+            0.786918338966048
+          ],
+          "common_bias_m": -0.031607275619410236,
+          "sum_residual_m": -0.06321455123882047,
+          "error_bound_m": 0.04704375885875689,
+          "observation_epoch": 1
+        },
+        {
+          "action": "axis_correct",
+          "reason": "release_axis_unaligned",
+          "t": 120.59999999887616,
+          "axis_errors_rad": [
+            -0.09868371979729718,
+            -0.21120158752940177
+          ],
+          "axis_turn_rad": 0.08726646259971647
+        },
+        {
+          "action": "shift",
+          "shift_m": 0.3,
+          "reason": "localized_margin_correction",
+          "t": 167.79999999776004,
+          "margins_m": [
+            -0.08112831308420138,
+            0.7885966082999865
+          ],
+          "shift_target": "existing_end_balance",
+          "admissible_shift_m": [
+            0.12112831308420138,
+            0.7485966082999864
+          ],
+          "raw_margins_m": [
+            -0.07458766424397567,
+            0.7951372571402122
+          ],
+          "corrected_margins_m": [
+            -0.034084554225444486,
+            0.8356403671587433
+          ],
+          "margin_lower_bounds_m": [
+            -0.08112831308420138,
+            0.7885966082999865
+          ],
+          "common_bias_m": -0.040503110018531185,
+          "sum_residual_m": -0.08100622003706237,
+          "error_bound_m": 0.04704375885875689,
+          "observation_epoch": 3
+        }
+      ],
+      "leg_admissions": [
+        {
+          "t": 27.600000000040772,
+          "accepted": true,
+          "remaining_sim_s": 154.1999999999594,
+          "expected_leg_s": 49.07519379730747,
+          "tail_s": 6.699999999843726,
+          "reason_category": "leg_time_available",
+          "blocking_object": "remaining episode SIM budget",
+          "minimum_gap": 98.42480620280821,
+          "gap_unit": "SIM s"
+        },
+        {
+          "t": 73.9999999999781,
+          "accepted": true,
+          "remaining_sim_s": 107.80000000002208,
+          "expected_leg_s": 49.07519379730747,
+          "tail_s": 6.699999999843726,
+          "reason_category": "leg_time_available",
+          "blocking_object": "remaining episode SIM budget",
+          "minimum_gap": 52.024806202870884,
+          "gap_unit": "SIM s"
+        },
+        {
+          "t": 120.59999999887616,
+          "accepted": true,
+          "remaining_sim_s": 61.200000001124025,
+          "expected_leg_s": 49.07519379730747,
+          "tail_s": 6.699999999843726,
+          "reason_category": "leg_time_available",
+          "blocking_object": "remaining episode SIM budget",
+          "minimum_gap": 5.424806203972828,
+          "gap_unit": "SIM s"
+        },
+        {
+          "t": 167.79999999776004,
+          "accepted": false,
+          "reason_category": "correction_count",
+          "blocking_object": "release correction budget",
+          "minimum_gap": 0,
+          "gap_unit": "legs"
+        }
+      ],
+      "final_acceptance_evaluation": [],
+      "false_final_accepts": 0,
+      "sweep_checks": [
+        {
+          "t": 54.70000000017017,
+          "accepted": true,
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_east",
+          "minimum_gap": 0.21137463448873461,
+          "gap_unit": "m",
+          "computation_checks": 28,
+          "computation_budget": 28,
+          "budget_basis": "finite issued-plan convex hull and authored obstacle count"
+        },
+        {
+          "t": 102.5999999993018,
+          "accepted": true,
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_east",
+          "minimum_gap": 0.2158530675559609,
+          "gap_unit": "m",
+          "computation_checks": 28,
+          "computation_budget": 28,
+          "budget_basis": "finite issued-plan convex hull and authored obstacle count"
+        }
+      ],
+      "rejection_ledger": [
+        {
+          "t": 122.59999999882886,
+          "event": "release21_fov_blocked",
+          "count": 1,
+          "proposed_motion": [
+            0.0,
+            0.002886405232081574,
+            -0.02416558537112147
+          ],
+          "attempts": {
+            "recenter": 0,
+            "backoff": 0,
+            "reverse": 0
+          },
+          "robot": "r1",
+          "reason_category": "release21_fov_blocked",
+          "blocking_object": "own camera FOV boundary",
+          "minimum_gap": null,
+          "gap_unit": "pixel",
+          "gap_unknown_reason": "not observable from permitted input"
+        },
+        {
+          "t": 167.79999999776004,
+          "accepted": false,
+          "reason_category": "correction_count",
+          "blocking_object": "release correction budget",
+          "minimum_gap": 0,
+          "gap_unit": "legs"
+        }
+      ],
+      "line_summary": {
+        "N": 12,
+        "done": 12,
+        "events": {
+          "reuse_settled_open": 6,
+          "image": 86,
+          "mode_enter": 18,
+          "recover_fov": 25,
+          "fov_step_result": 25,
+          "release20_settle": 61,
+          "aligned_before_pick": 12,
+          "reuse_settled_open_hover": 6,
+          "line_ibvs": 7,
+          "yaw_sign_check": 4,
+          "release21_fov_blocked": 1,
+          "release21_alternative": 1,
+          "release21_view": 1,
+          "release21_pulse": 1,
+          "release21_recenter_result": 1,
+          "release21_verify_view": 1
+        },
+        "failures": [],
+        "budget_alternatives": []
+      },
+      "remote_raw": "/home/ugrp/ugrp-sim/runs/r23d3-02-8d24a525",
+      "raw_result_sha256": "a0e9b229d7eedfb6cffebd315f7490935e22898b16827421f3b34e540bb2c037",
+      "raw_manifest_sha256": "d066249bd04750f20b2a37415da619d10d8356ae302f79b0d97f2f5ed3cd6a83",
+      "full_original_manifest_verified": true,
+      "original_file_N": 586,
+      "own_frame_N": 566,
+      "frame_decode_verified_N": 566,
+      "montage": {
+        "path": "/home/ugrp/ugrp-sim/ops-reviews/release23/round3/r23d3-02-8d24a525-montage.jpg",
+        "sha256": "00e2e46b54db90a84d35cd3fe39f6ff1b9005b684a8f8f6ce0e0588e47a3550e"
+      },
+      "visual_review": {
+        "directly_viewed": true,
+        "own_frames": 12,
+        "elapsed_sim_s": [
+          0.0,
+          32.29999999999895,
+          65.29999999999895,
+          99.29999999999895,
+          132.29999999999896,
+          165.29999999999896
+        ],
+        "relationship": "opposite teal/blue ends where visible; no same-end approach or mutual blocking seen in sampled views",
+        "limits": "interior and panorama views alone do not certify cargo pose"
+      }
+    },
+    {
+      "name": "r23d3-03-8d24a525",
+      "seed": 88639,
+      "source_sha": "8d24a525fc3e2d480050dc08788befd8f3d4fde4",
+      "classification": "success",
+      "status": "complete",
+      "success": true,
+      "physical_evaluation_success": true,
+      "outcome": "teacher_done",
+      "sim_s": 130.9999999985875,
+      "release_sim_s": 116.0999999987446,
+      "wall_s": 307.2081124409997,
+      "first30": {
+        "sim_s": 30.299999999998953,
+        "wall_per_sim": 2.0861619140449466
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 0
+      },
+      "evaluation_position_error": {
+        "center_offset_m": [
+          -0.021485080995207184,
+          -0.09565834307771631
+        ],
+        "center_distance_m": 0.09804145707681362,
+        "yaw_error_deg": 5.827429728873244,
+        "min_end_margin_m": 0.24805514684644353,
+        "zone_long_axis": "y"
+      },
+      "evaluation_settled_s": 2.5,
+      "iterations": 2,
+      "shift_steps": 2,
+      "execution_profile": {
+        "release_profile": "release18_v1",
+        "release_goal_region": "inside_margins_v1",
+        "command_motion": "yaw_cal_v1",
+        "effective_motion_profile": "lateral_rate_cal_v1",
+        "release20_settle": "release20_settle_v1",
+        "release21": "release21_v1",
+        "margin_common_mode": "margin_common_mode_v1",
+        "release_leg_budget": "release_leg_budget_v1",
+        "lateral_rate_cal": "lateral_rate_cal_v1",
+        "release_yaw_budget": "release_yaw_budget_v1",
+        "release_plan_budget": "compute_budget_v1",
+        "recording_mode": "success_measurement",
+        "weld": "off"
+      },
+      "code_decisions": [
+        {
+          "action": "lower",
+          "lo": null,
+          "hi": null,
+          "evidence": [
+            "none",
+            "none"
+          ],
+          "exact": {
+            "r1": false,
+            "r2": false
+          },
+          "t": 10.899999999997272
+        },
+        {
+          "action": "shift",
+          "shift_m": -0.3,
+          "reason": "localized_margin_correction",
+          "t": 29.200000000048412,
+          "margins_m": [
+            1.0889816116915398,
+            -0.3814188688623501
+          ],
+          "shift_target": "existing_end_balance",
+          "admissible_shift_m": [
+            -1.0489816116915398,
+            -0.4214188688623501
+          ],
+          "raw_margins_m": [
+            1.0934481419550126,
+            -0.37695233859887733
+          ],
+          "corrected_margins_m": [
+            1.1360253705502967,
+            -0.3343751100035932
+          ],
+          "margin_lower_bounds_m": [
+            1.0889816116915398,
+            -0.3814188688623501
+          ],
+          "common_bias_m": -0.04257722859528412,
+          "sum_residual_m": -0.08515445719056824,
+          "error_bound_m": 0.04704375885875689,
+          "observation_epoch": 0
+        },
+        {
+          "action": "shift",
+          "shift_m": -0.3,
+          "reason": "localized_margin_correction",
+          "t": 77.69999999989061,
+          "margins_m": [
+            0.7730920775390158,
+            -0.06452255769257043
+          ],
+          "shift_target": "existing_end_balance",
+          "admissible_shift_m": [
+            -0.7330920775390157,
+            -0.10452255769257043
+          ],
+          "raw_margins_m": [
+            0.7756816178771857,
+            -0.06193301735440049
+          ],
+          "corrected_margins_m": [
+            0.8201358363977727,
+            -0.017478798833813536
+          ],
+          "margin_lower_bounds_m": [
+            0.7730920775390158,
+            -0.06452255769257043
+          ],
+          "common_bias_m": -0.04445421852058695,
+          "sum_residual_m": -0.0889084370411739,
+          "error_bound_m": 0.04704375885875689,
+          "observation_epoch": 1
+        },
+        {
+          "action": "lower",
+          "reason": "localized_margins_inside",
+          "t": 126.19999999874373,
+          "margins_m": [
+            0.4671394799325901,
+            0.24139089066401387
+          ],
+          "release_goal_region": "inside_margins_v1",
+          "raw_margins_m": [
+            0.4727482949327839,
+            0.24699970566420765
+          ],
+          "corrected_margins_m": [
+            0.514183238791347,
+            0.28843464952277076
+          ],
+          "margin_lower_bounds_m": [
+            0.4671394799325901,
+            0.24139089066401387
+          ],
+          "common_bias_m": -0.04143494385856311,
+          "sum_residual_m": -0.08286988771712622,
+          "error_bound_m": 0.04704375885875689,
+          "observation_epoch": 2
+        }
+      ],
+      "leg_admissions": [
+        {
+          "t": 29.200000000048412,
+          "accepted": true,
+          "remaining_sim_s": 152.59999999995176,
+          "expected_leg_s": 49.07519379730747,
+          "tail_s": 6.699999999843726,
+          "reason_category": "leg_time_available",
+          "blocking_object": "remaining episode SIM budget",
+          "minimum_gap": 96.82480620280057,
+          "gap_unit": "SIM s"
+        },
+        {
+          "t": 77.69999999989061,
+          "accepted": true,
+          "remaining_sim_s": 104.10000000010957,
+          "expected_leg_s": 49.07519379730747,
+          "tail_s": 6.699999999843726,
+          "reason_category": "leg_time_available",
+          "blocking_object": "remaining episode SIM budget",
+          "minimum_gap": 48.32480620295838,
+          "gap_unit": "SIM s"
+        }
+      ],
+      "final_acceptance_evaluation": [
+        {
+          "decision_t": 126.19999999874373,
+          "eval_t": 126.19999999874373,
+          "sample_delta_s": 0.0,
+          "fit": true,
+          "scope": "evaluation-only label; never fed back"
+        }
+      ],
+      "false_final_accepts": 0,
+      "sweep_checks": [
+        {
+          "t": 56.8000000001802,
+          "accepted": true,
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_east",
+          "minimum_gap": 0.4125218628853027,
+          "gap_unit": "m",
+          "computation_checks": 28,
+          "computation_budget": 28,
+          "budget_basis": "finite issued-plan convex hull and authored obstacle count"
+        },
+        {
+          "t": 105.19999999924032,
+          "accepted": true,
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_north",
+          "minimum_gap": 0.34686256576485663,
+          "gap_unit": "m",
+          "computation_checks": 28,
+          "computation_budget": 28,
+          "budget_basis": "finite issued-plan convex hull and authored obstacle count"
+        }
+      ],
+      "rejection_ledger": [],
+      "line_summary": {
+        "N": 8,
+        "done": 8,
+        "events": {
+          "reuse_settled_open": 4,
+          "image": 54,
+          "mode_enter": 12,
+          "recover_fov": 16,
+          "fov_step_result": 16,
+          "release20_settle": 38,
+          "line_ibvs": 3,
+          "yaw_sign_check": 2,
+          "aligned_before_pick": 8,
+          "reuse_settled_open_hover": 4
+        },
+        "failures": [],
+        "budget_alternatives": []
+      },
+      "remote_raw": "/home/ugrp/ugrp-sim/runs/r23d3-03-8d24a525",
+      "raw_result_sha256": "ecd49ab575b390fe91dba6720795e2407047e2f7acf9538fd364ad87dabc1cd9",
+      "raw_manifest_sha256": "9b20a963cfdac62037ebad5a3e6a58af575f00f1776bea34669f6a8e9a9d482e",
+      "full_original_manifest_verified": true,
+      "original_file_N": 433,
+      "own_frame_N": 414,
+      "frame_decode_verified_N": 414,
+      "montage": {
+        "path": "/home/ugrp/ugrp-sim/ops-reviews/release23/round3/r23d3-03-8d24a525-montage.jpg",
+        "sha256": "53eb3b73a47955214b66580f57d8120f21d3dd3827c2397f01027f2bad1d8dd6"
+      },
+      "visual_review": {
+        "directly_viewed": true,
+        "own_frames": 12,
+        "elapsed_sim_s": [
+          0.0,
+          25.299999999998953,
+          51.29999999999895,
+          76.29999999999895,
+          102.29999999999895,
+          128.29999999999896
+        ],
+        "relationship": "opposite teal/blue ends where visible; no same-end approach or mutual blocking seen in sampled views",
+        "limits": "interior and panorama views alone do not certify cargo pose"
+      }
+    },
+    {
+      "name": "r23d3-04-8d24a525",
+      "seed": 110618,
+      "source_sha": "8d24a525fc3e2d480050dc08788befd8f3d4fde4",
+      "classification": "success",
+      "status": "complete",
+      "success": true,
+      "physical_evaluation_success": true,
+      "outcome": "teacher_done",
+      "sim_s": 85.49999999966342,
+      "release_sim_s": 70.59999999982053,
+      "wall_s": 199.1523940570005,
+      "first30": {
+        "sim_s": 30.299999999998953,
+        "wall_per_sim": 2.0307993180681687
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 0
+      },
+      "evaluation_position_error": {
+        "center_offset_m": [
+          0.12022449203960672,
+          -0.13698594855614998
+        ],
+        "center_distance_m": 0.18226101774106726,
+        "yaw_error_deg": 5.476918345808967,
+        "min_end_margin_m": 0.15114208339937124,
+        "zone_long_axis": "y"
+      },
+      "evaluation_settled_s": 2.5,
+      "iterations": 1,
+      "shift_steps": 1,
+      "execution_profile": {
+        "release_profile": "release18_v1",
+        "release_goal_region": "inside_margins_v1",
+        "command_motion": "yaw_cal_v1",
+        "effective_motion_profile": "lateral_rate_cal_v1",
+        "release20_settle": "release20_settle_v1",
+        "release21": "release21_v1",
+        "margin_common_mode": "margin_common_mode_v1",
+        "release_leg_budget": "release_leg_budget_v1",
+        "lateral_rate_cal": "lateral_rate_cal_v1",
+        "release_yaw_budget": "release_yaw_budget_v1",
+        "release_plan_budget": "compute_budget_v1",
+        "recording_mode": "success_measurement",
+        "weld": "off"
+      },
+      "code_decisions": [
+        {
+          "action": "lower",
+          "lo": null,
+          "hi": null,
+          "evidence": [
+            "none",
+            "none"
+          ],
+          "exact": {
+            "r1": false,
+            "r2": false
+          },
+          "t": 10.899999999997272
+        },
+        {
+          "action": "shift",
+          "shift_m": 0.3,
+          "reason": "localized_margin_correction",
+          "t": 29.200000000048412,
+          "margins_m": [
+            -0.09709475944787022,
+            0.8056904280870238
+          ],
+          "shift_target": "existing_end_balance",
+          "admissible_shift_m": [
+            0.13709475944787022,
+            0.7656904280870238
+          ],
+          "raw_margins_m": [
+            -0.09175861037782407,
+            0.81102657715707
+          ],
+          "corrected_margins_m": [
+            -0.050051000589113326,
+            0.8527341869457807
+          ],
+          "margin_lower_bounds_m": [
+            -0.09709475944787022,
+            0.8056904280870238
+          ],
+          "common_bias_m": -0.04170760978871074,
+          "sum_residual_m": -0.08341521957742148,
+          "error_bound_m": 0.04704375885875689,
+          "observation_epoch": 0
+        },
+        {
+          "action": "lower",
+          "reason": "localized_margins_inside",
+          "t": 80.69999999981967,
+          "margins_m": [
+            0.2133715283329825,
+            0.49596890092391477
+          ],
+          "release_goal_region": "inside_margins_v1",
+          "raw_margins_m": [
+            0.2154762265527319,
+            0.4980735991436641
+          ],
+          "corrected_margins_m": [
+            0.2604152871917394,
+            0.5430126597826717
+          ],
+          "margin_lower_bounds_m": [
+            0.2133715283329825,
+            0.49596890092391477
+          ],
+          "common_bias_m": -0.04493906063900749,
+          "sum_residual_m": -0.08987812127801498,
+          "error_bound_m": 0.04704375885875689,
+          "observation_epoch": 1
+        }
+      ],
+      "leg_admissions": [
+        {
+          "t": 29.200000000048412,
+          "accepted": true,
+          "remaining_sim_s": 152.59999999995176,
+          "expected_leg_s": 49.07519379730747,
+          "tail_s": 6.699999999843726,
+          "reason_category": "leg_time_available",
+          "blocking_object": "remaining episode SIM budget",
+          "minimum_gap": 96.82480620280057,
+          "gap_unit": "SIM s"
+        }
+      ],
+      "final_acceptance_evaluation": [
+        {
+          "decision_t": 80.69999999981967,
+          "eval_t": 80.69999999981967,
+          "sample_delta_s": 0.0,
+          "fit": true,
+          "scope": "evaluation-only label; never fed back"
+        }
+      ],
+      "false_final_accepts": 0,
+      "sweep_checks": [
+        {
+          "t": 59.700000000194045,
+          "accepted": true,
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_east",
+          "minimum_gap": 0.2970867704958833,
+          "gap_unit": "m",
+          "computation_checks": 28,
+          "computation_budget": 28,
+          "budget_basis": "finite issued-plan convex hull and authored obstacle count"
+        }
+      ],
+      "rejection_ledger": [
+        {
+          "t": 31.400000000058917,
+          "event": "release21_fov_blocked",
+          "count": 1,
+          "proposed_motion": [
+            0.0,
+            0.00037984057896992256,
+            -0.007691902679208801
+          ],
+          "attempts": {
+            "recenter": 0,
+            "backoff": 0,
+            "reverse": 0
+          },
+          "robot": "r1",
+          "reason_category": "release21_fov_blocked",
+          "blocking_object": "own camera FOV boundary",
+          "minimum_gap": null,
+          "gap_unit": "pixel",
+          "gap_unknown_reason": "not observable from permitted input"
+        }
+      ],
+      "line_summary": {
+        "N": 4,
+        "done": 4,
+        "events": {
+          "reuse_settled_open": 2,
+          "image": 32,
+          "mode_enter": 6,
+          "recover_fov": 9,
+          "fov_step_result": 9,
+          "release20_settle": 23,
+          "release21_fov_blocked": 1,
+          "release21_alternative": 1,
+          "release21_view": 1,
+          "release21_pulse": 1,
+          "release21_recenter_result": 1,
+          "release21_verify_view": 1,
+          "yaw_sign_check": 4,
+          "line_ibvs": 6,
+          "aligned_before_pick": 4,
+          "reuse_settled_open_hover": 2
+        },
+        "failures": [],
+        "budget_alternatives": []
+      },
+      "remote_raw": "/home/ugrp/ugrp-sim/runs/r23d3-04-8d24a525",
+      "raw_result_sha256": "8ab52d33c8b0be0bd8a630a5c783087574a0dc2a92d59801b0c2cb07426559b4",
+      "raw_manifest_sha256": "5c6d19837fa092a51410c0373825d92a815adb2886142ddf518ea649a8ad880c",
+      "full_original_manifest_verified": true,
+      "original_file_N": 277,
+      "own_frame_N": 258,
+      "frame_decode_verified_N": 258,
+      "montage": {
+        "path": "/home/ugrp/ugrp-sim/ops-reviews/release23/round3/r23d3-04-8d24a525-montage.jpg",
+        "sha256": "0aa8d3022ad1c47573c0787d31277cd1a04db88d30944d43996bf579482c20cd"
+      },
+      "visual_review": {
+        "directly_viewed": true,
+        "own_frames": 12,
+        "elapsed_sim_s": [
+          0.0,
+          16.299999999998953,
+          32.29999999999895,
+          49.29999999999895,
+          65.29999999999895,
+          82.29999999999895
+        ],
+        "relationship": "opposite teal/blue ends where visible; no same-end approach or mutual blocking seen in sampled views",
+        "limits": "interior and panorama views alone do not certify cargo pose"
+      }
+    },
+    {
+      "name": "r23d3-05-8d24a525",
+      "seed": 110618,
+      "source_sha": "8d24a525fc3e2d480050dc08788befd8f3d4fde4",
+      "classification": "success",
+      "status": "complete",
+      "success": true,
+      "physical_evaluation_success": true,
+      "outcome": "teacher_done",
+      "sim_s": 79.19999999981239,
+      "release_sim_s": 64.2999999999695,
+      "wall_s": 188.97778249300063,
+      "first30": {
+        "sim_s": 30.299999999998953,
+        "wall_per_sim": 2.0754475876837213
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 0
+      },
+      "evaluation_position_error": {
+        "center_offset_m": [
+          0.12071604714201989,
+          -0.1366638909106384
+        ],
+        "center_distance_m": 0.18234413375929934,
+        "yaw_error_deg": 5.383895939794219,
+        "min_end_margin_m": 0.15113540642047613,
+        "zone_long_axis": "y"
+      },
+      "evaluation_settled_s": 2.5,
+      "iterations": 1,
+      "shift_steps": 1,
+      "execution_profile": {
+        "release_profile": "release19_v1",
+        "release_goal_region": "inside_margins_v1",
+        "command_motion": "yaw_cal_v1",
+        "effective_motion_profile": "lateral_rate_cal_v1",
+        "release20_settle": "release20_settle_v1",
+        "release21": "release21_v1",
+        "margin_common_mode": "margin_common_mode_v1",
+        "release_leg_budget": "release_leg_budget_v1",
+        "lateral_rate_cal": "lateral_rate_cal_v1",
+        "release_yaw_budget": "release_yaw_budget_v1",
+        "release_plan_budget": "compute_budget_v1",
+        "recording_mode": "success_measurement",
+        "weld": "off"
+      },
+      "code_decisions": [
+        {
+          "action": "lower",
+          "lo": null,
+          "hi": null,
+          "evidence": [
+            "none",
+            "none"
+          ],
+          "exact": {
+            "r1": false,
+            "r2": false
+          },
+          "t": 10.899999999997272
+        },
+        {
+          "action": "shift",
+          "shift_m": 0.3,
+          "reason": "localized_margin_correction",
+          "t": 27.600000000040772,
+          "margins_m": [
+            -0.09369687116359204,
+            0.8024035351750383
+          ],
+          "shift_target": "existing_end_balance",
+          "admissible_shift_m": [
+            0.13369687116359205,
+            0.7624035351750382
+          ],
+          "raw_margins_m": [
+            -0.08845686339067182,
+            0.8076435429479585
+          ],
+          "corrected_margins_m": [
+            -0.046653112304835154,
+            0.8494472940337952
+          ],
+          "margin_lower_bounds_m": [
+            -0.09369687116359204,
+            0.8024035351750383
+          ],
+          "common_bias_m": -0.04180375108583667,
+          "sum_residual_m": -0.08360750217167334,
+          "error_bound_m": 0.04704375885875689,
+          "observation_epoch": 0
+        },
+        {
+          "action": "lower",
+          "reason": "localized_margins_inside",
+          "t": 74.39999999996864,
+          "margins_m": [
+            0.21435624671435388,
+            0.49488765225447784
+          ],
+          "release_goal_region": "inside_margins_v1",
+          "raw_margins_m": [
+            0.216509538079675,
+            0.497040943619799
+          ],
+          "corrected_margins_m": [
+            0.26140000557311077,
+            0.5419314111132347
+          ],
+          "margin_lower_bounds_m": [
+            0.21435624671435388,
+            0.49488765225447784
+          ],
+          "common_bias_m": -0.04489046749343578,
+          "sum_residual_m": -0.08978093498687156,
+          "error_bound_m": 0.04704375885875689,
+          "observation_epoch": 1
+        }
+      ],
+      "leg_admissions": [
+        {
+          "t": 27.600000000040772,
+          "accepted": true,
+          "remaining_sim_s": 154.1999999999594,
+          "expected_leg_s": 49.07519379730747,
+          "tail_s": 6.699999999843726,
+          "reason_category": "leg_time_available",
+          "blocking_object": "remaining episode SIM budget",
+          "minimum_gap": 98.42480620280821,
+          "gap_unit": "SIM s"
+        }
+      ],
+      "final_acceptance_evaluation": [
+        {
+          "decision_t": 74.39999999996864,
+          "eval_t": 74.39999999996864,
+          "sample_delta_s": 0.0,
+          "fit": true,
+          "scope": "evaluation-only label; never fed back"
+        }
+      ],
+      "false_final_accepts": 0,
+      "sweep_checks": [
+        {
+          "t": 55.10000000017208,
+          "accepted": true,
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_east",
+          "minimum_gap": 0.2858550320250153,
+          "gap_unit": "m",
+          "computation_checks": 28,
+          "computation_budget": 28,
+          "budget_basis": "finite issued-plan convex hull and authored obstacle count"
+        }
+      ],
+      "rejection_ledger": [],
+      "line_summary": {
+        "N": 4,
+        "done": 4,
+        "events": {
+          "reuse_settled_open": 2,
+          "image": 26,
+          "mode_enter": 6,
+          "recover_fov": 9,
+          "fov_step_result": 9,
+          "release20_settle": 17,
+          "aligned_before_pick": 4,
+          "reuse_settled_open_hover": 2,
+          "line_ibvs": 1,
+          "yaw_sign_check": 1
+        },
+        "failures": [],
+        "budget_alternatives": []
+      },
+      "remote_raw": "/home/ugrp/ugrp-sim/runs/r23d3-05-8d24a525",
+      "raw_result_sha256": "8de74a7b080e0e6f1aec84a7e17271e8b5179fc49e3f1fe916a21b8dab6eb40a",
+      "raw_manifest_sha256": "68b0a0fc46b7258fbe672ba0c25e2a90e14354f99faa929a61f7aa2b0d4a4e01",
+      "full_original_manifest_verified": true,
+      "original_file_N": 257,
+      "own_frame_N": 238,
+      "frame_decode_verified_N": 238,
+      "montage": {
+        "path": "/home/ugrp/ugrp-sim/ops-reviews/release23/round3/r23d3-05-8d24a525-montage.jpg",
+        "sha256": "5ed2d3e030ba7057d7f763f24a5eb03306c0c0c5aa792b90ebff5ffb78ce78e8"
+      },
+      "visual_review": {
+        "directly_viewed": true,
+        "own_frames": 12,
+        "elapsed_sim_s": [
+          0.0,
+          14.29999999999895,
+          30.299999999998953,
+          45.29999999999895,
+          61.29999999999895,
+          76.29999999999895
+        ],
+        "relationship": "opposite teal/blue ends where visible; no same-end approach or mutual blocking seen in sampled views",
+        "limits": "interior and panorama views alone do not certify cargo pose"
+      }
+    }
+  ],
+  "status": "NOT_READY",
+  "gate40_queue_created": false,
+  "gate40_executed": false,
+  "round": 3,
+  "max_rounds": 3,
+  "rejection_table_sha256": "17f8aa6794877af540ec0d40e881ea922cab8dce873880388cdc8627aac217d6",
+  "subset_results": {
+    "110622": {
+      "A": "success",
+      "B": "release_iteration_cap",
+      "n": 1,
+      "N": 2
+    },
+    "88639": {
+      "n": 2,
+      "N": 2
+    },
+    "110618": {
+      "n": 2,
+      "N": 2
+    }
+  },
+  "first30_wall_per_sim_median": 2.053123452875945,
+  "input_audit_scope": "release decision inputs only; prefix preparation remains evaluation-based and excluded",
+  "false_final_accepts": 0,
+  "visual_review": {
+    "directly_viewed_own_frames": 72,
+    "cameras": [
+      "r1",
+      "r2"
+    ],
+    "temporal_samples_per_run": 6,
+    "all_gaps_under_60_sim_s": true
+  },
+  "full_evidence": {
+    "remote": "gcp1:/home/ugrp/ugrp-sim/ops-reviews/release23/round3/summary.json.zst",
+    "sha256": "55d4c0095526ef9972fffd73ee715db7ad2cb13124d4ab7a02bc4c61e2762a41",
+    "local": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release23-8d24a525/summary-full.json.zst"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "source_sha": "4a1809e2584840499be48e7baff99024c8bd35c1",
+      "submitted": 6,
+      "HOST_ERROR": 3,
+      "supervisor_stop": 3,
+      "success_not_reconstructed": true
+    },
+    {
+      "round": 2,
+      "source_sha": "f4f2994d39954c61ad8bf1d337c347d2f8f8cafb",
+      "submitted": 5,
+      "supervisor_stop": 5,
+      "cancelled_before_submission": 1
+    },
+    {
+      "round": 3,
+      "source_sha": "8d24a525fc3e2d480050dc08788befd8f3d4fde4",
+      "submitted": 6,
+      "success": 5,
+      "failure": 1,
+      "cap_end": 0,
+      "HOST_ERROR": 0
+    }
+  ],
+  "remaining_issue": {
+    "run": "r23d3-02-8d24a525",
+    "seed": 110622,
+    "candidate": "B",
+    "at_sim_s": 120.59999999887616,
+    "estimated_axis_errors_rad": [
+      -0.09868371979729718,
+      -0.21120158752940177
+    ],
+    "evaluation_beam_axis_error_rad": -0.11867733349593279,
+    "axis_limit_rad": 0.17453292519943295,
+    "axis_correction_consumed_sim_s": 47.19999999888388,
+    "terminal_min_end_margin_m": -0.025453597818004714,
+    "diagnosis": "r2 end-axis estimate triggers an extra full axis-correction leg while evaluation beam yaw is within the existing 10deg axis criterion; terminal axial shift never executes. Exact estimator/command-memory contribution remains unseparated.",
+    "truth_boundary": "evaluation only; never used to override control"
+  },
+  "concurrency": {
+    "max_owned": 6,
+    "max_global_on_own_admission": 22,
+    "limit_global": 40,
+    "owned_active_final": 0
+  },
+  "stored_own_rgb_files_verified": 2458,
+  "physical_robot_verified": false,
+  "recording_or_training_started": false,
+  "publication": {
+    "code_branch": "claude/grasp-act-probes",
+    "pr": 491,
+    "promotion_authorized": false
+  }
+}

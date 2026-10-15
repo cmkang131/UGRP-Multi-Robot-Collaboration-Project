@@ -94,7 +94,7 @@ def analyze(out, runs=Path('/home/ugrp/ugrp-sim/runs')):
         episode_funnel=[dict(gate=k,cumulative_passed=episode[k],rejected=episode['attempted']-episode[k]) for k in ('attempted','audit_zero','success')],
         observation_funnel=[dict(gate='same_round_localized_pair',cumulative_passed=len(samples),rejected=0),dict(gate='common_mode_residual_domain',cumulative_passed=len(valid),rejected=len(samples)-len(valid))],
         event_funnel=dict(line), raw_sources=sources,
-        reproduce='ssh gcp1 /home/ugrp/ugrp-sim/src/46afd8b095e74954439f98b28f2aa52af3eaea01/.venv-sim/bin/python /home/ugrp/ugrp-sim/ops-reviews/release23/analyze_baseline.py --out /home/ugrp/ugrp-sim/ops-reviews/release23')
+        reproduce="ssh gcp1 'cd /home/ugrp/ugrp-sim/src/46afd8b095e74954439f98b28f2aa52af3eaea01 && PYTHONPATH=. .venv-sim/bin/python /home/ugrp/ugrp-sim/ops-reviews/release23/analyze_baseline.py --out /home/ugrp/ugrp-sim/ops-reviews/release23'")
     summary['false_accepts_after_bound']=sum(min(v-bound for v in r['corrected_m'])>=.04 and min(r['truth_m'])<.04 for r in valid)
     out.mkdir(parents=True,exist_ok=True)
     for name,value in [('calibration.json',summary),('samples.json',samples),('cycle-costs.json',costs)]:

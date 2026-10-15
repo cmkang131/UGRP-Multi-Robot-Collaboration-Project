@@ -1,0 +1,284 @@
+{
+  "schema": "ugrp.release23.rejections.v1",
+  "episode_funnel": [
+    {
+      "gate": "queued_candidate",
+      "input": 6,
+      "cumulative_passed": 6,
+      "rejected": 0
+    },
+    {
+      "gate": "terminal_original_and_hash",
+      "input": 6,
+      "cumulative_passed": 6,
+      "rejected": 0
+    },
+    {
+      "gate": "input_audit_zero",
+      "input": 6,
+      "cumulative_passed": 6,
+      "rejected": 0
+    },
+    {
+      "gate": "physical_release",
+      "input": 6,
+      "cumulative_passed": 5,
+      "rejected": 1
+    }
+  ],
+  "frame_funnel": [
+    {
+      "gate": "generated_original_own_RGB",
+      "input": 2458,
+      "cumulative_passed": 2458,
+      "rejected": 0
+    },
+    {
+      "gate": "original_hash_and_JPEG_decode",
+      "input": 2458,
+      "cumulative_passed": 2458,
+      "rejected": 0
+    }
+  ],
+  "event_funnel": [
+    {
+      "gate": "line_candidates",
+      "input": 48,
+      "cumulative_passed": 48,
+      "rejected": 0
+    },
+    {
+      "gate": "line_alignment_completed",
+      "input": 48,
+      "cumulative_passed": 48,
+      "rejected": 0
+    }
+  ],
+  "event_counts": {
+    "total": 983,
+    "rejection_records": 3
+  },
+  "rejection_reason_table": [
+    {
+      "category": "release21_fov_blocked",
+      "count": 2,
+      "blocking_object": "own camera FOV boundary",
+      "minimum_gap": -1.3124367348250985,
+      "gap_unit": "pixel",
+      "scope": "nominal-plane prediction from saved own RGB and issued commands; both events recovered"
+    },
+    {
+      "category": "correction_count",
+      "count": 1,
+      "blocking_object": "three-correction budget",
+      "minimum_gap": 0,
+      "gap_unit": "legs"
+    }
+  ],
+  "raw_paths": [
+    "/home/ugrp/ugrp-sim/runs/r23d3-00-8d24a525",
+    "/home/ugrp/ugrp-sim/runs/r23d3-01-8d24a525",
+    "/home/ugrp/ugrp-sim/runs/r23d3-02-8d24a525",
+    "/home/ugrp/ugrp-sim/runs/r23d3-03-8d24a525",
+    "/home/ugrp/ugrp-sim/runs/r23d3-04-8d24a525",
+    "/home/ugrp/ugrp-sim/runs/r23d3-05-8d24a525"
+  ],
+  "reproduction": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python /home/ugrp/ugrp-sim/ops-reviews/release23/analyze_results.py --names '[\"r23d3-00-8d24a525\", \"r23d3-01-8d24a525\", \"r23d3-02-8d24a525\", \"r23d3-03-8d24a525\", \"r23d3-04-8d24a525\", \"r23d3-05-8d24a525\"]' --out /home/ugrp/ugrp-sim/ops-reviews/release23/round3",
+  "candidate_funnel": [
+    {
+      "gate": "paired_release_candidate",
+      "input": 18,
+      "cumulative_passed": 18,
+      "rejected": 0
+    },
+    {
+      "gate": "same_round_localized_geometry",
+      "input": 18,
+      "cumulative_passed": 18,
+      "rejected": 0
+    },
+    {
+      "gate": "axis_alignment",
+      "input": 18,
+      "cumulative_passed": 17,
+      "rejected": 1
+    },
+    {
+      "gate": "lateral_clearance",
+      "input": 17,
+      "cumulative_passed": 15,
+      "rejected": 2
+    },
+    {
+      "gate": "margin_sum_consistency",
+      "input": 15,
+      "cumulative_passed": 15,
+      "rejected": 0
+    },
+    {
+      "gate": "inside_both_margin_lower_bounds",
+      "input": 15,
+      "cumulative_passed": 5,
+      "rejected": 10
+    }
+  ],
+  "decision_reason_counts": {
+    "localized_margin_correction": 10,
+    "localized_lateral_correction": 2,
+    "localized_margins_inside": 5,
+    "release_axis_unaligned": 1
+  },
+  "sweep_funnel": [
+    {
+      "gate": "whole_sweep_static_constraints",
+      "input": 308,
+      "cumulative_passed": 308,
+      "rejected": 0
+    },
+    {
+      "gate": "positive_static_clearance",
+      "input": 308,
+      "cumulative_passed": 308,
+      "rejected": 0
+    }
+  ],
+  "alternative_funnel": [
+    {
+      "gate": "budget_alternatives_proposed",
+      "input": 0,
+      "cumulative_passed": 0,
+      "rejected": 0
+    },
+    {
+      "gate": "safe_and_improving_or_fresh_reobserve",
+      "input": 0,
+      "cumulative_passed": 0,
+      "rejected": 0
+    }
+  ],
+  "interpretation": "Lateral/axial correction rejections are progress alternatives, not failed episodes; frame/line/constraint funnels have different units and are never summed.",
+  "fov_gap_records": [
+    {
+      "run": "r23d3-02-8d24a525",
+      "robot": "r1",
+      "t": 122.59999999882886,
+      "reason_category": "release21_fov_blocked",
+      "blocking_object": "own camera FOV boundary",
+      "minimum_gap": -1.3124367348250985,
+      "gap_unit": "pixel",
+      "basis": "nominal-plane predicted feature pixels from own RGB + issued PWM and floored proposed pulse",
+      "source_sha": "8d24a525fc3e2d480050dc08788befd8f3d4fde4",
+      "raw": "/home/ugrp/ugrp-sim/runs/r23d3-02-8d24a525/raw/result.json.zst"
+    },
+    {
+      "run": "r23d3-04-8d24a525",
+      "robot": "r1",
+      "t": 31.400000000058917,
+      "reason_category": "release21_fov_blocked",
+      "blocking_object": "own camera FOV boundary",
+      "minimum_gap": -0.702800794070086,
+      "gap_unit": "pixel",
+      "basis": "nominal-plane predicted feature pixels from own RGB + issued PWM and floored proposed pulse",
+      "source_sha": "8d24a525fc3e2d480050dc08788befd8f3d4fde4",
+      "raw": "/home/ugrp/ugrp-sim/runs/r23d3-04-8d24a525/raw/result.json.zst"
+    }
+  ],
+  "termination_reason_table": [
+    {
+      "category": "teacher_done",
+      "count": 5
+    },
+    {
+      "category": "release_iteration_cap",
+      "count": 1,
+      "blocking_object": "three-correction budget",
+      "minimum_gap": 0,
+      "gap_unit": "legs"
+    },
+    {
+      "category": "cap_end",
+      "count": 0
+    },
+    {
+      "category": "HOST_ERROR",
+      "count": 0
+    }
+  ],
+  "failure_timeline": {
+    "source_sha": "8d24a525fc3e2d480050dc08788befd8f3d4fde4",
+    "raw": "/home/ugrp/ugrp-sim/runs/r23d3-02-8d24a525/raw",
+    "evaluation_only": true,
+    "decisions": [
+      {
+        "t": 27.600000000040772,
+        "eval_t": 27.600000000040772,
+        "action": "shift",
+        "reason": "localized_margin_correction",
+        "estimated_axis_errors_rad": null,
+        "evaluation_beam_yaw_error_rad": -0.11232528192266766,
+        "evaluation_beam_pose": [
+          4.773640702826127,
+          -0.3254829831270898,
+          1.458471044872229
+        ],
+        "estimated_margin_lower_bounds_m": [
+          -0.38602199741624615,
+          1.0953806256555527
+        ]
+      },
+      {
+        "t": 73.9999999999781,
+        "eval_t": 73.9999999999781,
+        "action": "shift",
+        "reason": "localized_lateral_correction",
+        "estimated_axis_errors_rad": null,
+        "evaluation_beam_yaw_error_rad": -0.11233071852893262,
+        "evaluation_beam_pose": [
+          4.808302986560828,
+          -0.011588625080057435,
+          1.458465608265964
+        ],
+        "estimated_margin_lower_bounds_m": [
+          -0.07787289481236981,
+          0.786918338966048
+        ]
+      },
+      {
+        "t": 120.59999999887616,
+        "eval_t": 120.59999999887616,
+        "action": "axis_correct",
+        "reason": "release_axis_unaligned",
+        "estimated_axis_errors_rad": [
+          -0.09868371979729718,
+          -0.21120158752940177
+        ],
+        "evaluation_beam_yaw_error_rad": -0.11867733349593279,
+        "evaluation_beam_pose": [
+          4.709702677970636,
+          -0.023425330732639228,
+          1.4521189932989638
+        ],
+        "estimated_margin_lower_bounds_m": null
+      },
+      {
+        "t": 167.79999999776004,
+        "eval_t": 167.79999999776004,
+        "action": "shift",
+        "reason": "localized_margin_correction",
+        "estimated_axis_errors_rad": null,
+        "evaluation_beam_yaw_error_rad": -0.01880538112762209,
+        "evaluation_beam_pose": [
+          4.710255847407327,
+          -0.025506642608639885,
+          1.5519909456672745
+        ],
+        "estimated_margin_lower_bounds_m": [
+          -0.08112831308420138,
+          0.7885966082999865
+        ]
+      }
+    ],
+    "stored_inputs": "own RGB + issued commands only; evaluation never fed back",
+    "reproduce": "GCP: decode raw/result.json.zst and eval-only.jsonl.zst, nearest SIM tick to code_decisions t"
+  }
+}

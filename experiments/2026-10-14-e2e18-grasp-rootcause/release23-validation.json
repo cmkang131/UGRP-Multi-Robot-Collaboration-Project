@@ -1,0 +1,26 @@
+{
+  "nonphysics": true,
+  "physics_on_mac": false,
+  "tests": [
+    {
+      "command": "pytest tests/test_release23.py tests/test_release21.py tests/test_release18.py tests/test_release17.py tests/test_settle_pulse.py tests/test_release19.py tests/test_grasp_act_release_run.py tests/test_grasp_act_release_teacher.py tests/test_lookaround_localization.py -q",
+      "passed": 171,
+      "scope": "development tree before final fixes; not a pinned execution"
+    },
+    {
+      "command": "pytest tests/test_release23.py -q",
+      "passed": 17,
+      "source_sha_of_identical_relevant_files": "8d24a525fc3e2d480050dc08788befd8f3d4fde4"
+    }
+  ],
+  "logs": [
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release23/tests.txt",
+      "sha256": "2982200a6f20c20029828a11701f854c61fc7885ddfe9be11a629a893b6690a3"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release23/tests-round3.txt",
+      "sha256": "0b39cbccf3fbd2c991412716df428ec4f587778b149fb557056c3829b2c1b33b"
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "source_sha": "8d24a525fc3e2d480050dc08788befd8f3d4fde4",
+  "raw": "/home/ugrp/ugrp-sim/runs/r23d3-02-8d24a525/raw",
+  "evaluation_only": true,
+  "decisions": [
+    {
+      "t": 27.600000000040772,
+      "eval_t": 27.600000000040772,
+      "action": "shift",
+      "reason": "localized_margin_correction",
+      "estimated_axis_errors_rad": null,
+      "evaluation_beam_yaw_error_rad": -0.11232528192266766,
+      "evaluation_beam_pose": [
+        4.773640702826127,
+        -0.3254829831270898,
+        1.458471044872229
+      ],
+      "estimated_margin_lower_bounds_m": [
+        -0.38602199741624615,
+        1.0953806256555527
+      ]
+    },
+    {
+      "t": 73.9999999999781,
+      "eval_t": 73.9999999999781,
+      "action": "shift",
+      "reason": "localized_lateral_correction",
+      "estimated_axis_errors_rad": null,
+      "evaluation_beam_yaw_error_rad": -0.11233071852893262,
+      "evaluation_beam_pose": [
+        4.808302986560828,
+        -0.011588625080057435,
+        1.458465608265964
+      ],
+      "estimated_margin_lower_bounds_m": [
+        -0.07787289481236981,
+        0.786918338966048
+      ]
+    },
+    {
+      "t": 120.59999999887616,
+      "eval_t": 120.59999999887616,
+      "action": "axis_correct",
+      "reason": "release_axis_unaligned",
+      "estimated_axis_errors_rad": [
+        -0.09868371979729718,
+        -0.21120158752940177
+      ],
+      "evaluation_beam_yaw_error_rad": -0.11867733349593279,
+      "evaluation_beam_pose": [
+        4.709702677970636,
+        -0.023425330732639228,
+        1.4521189932989638
+      ],
+      "estimated_margin_lower_bounds_m": null
+    },
+    {
+      "t": 167.79999999776004,
+      "eval_t": 167.79999999776004,
+      "action": "shift",
+      "reason": "localized_margin_correction",
+      "estimated_axis_errors_rad": null,
+      "evaluation_beam_yaw_error_rad": -0.01880538112762209,
+      "evaluation_beam_pose": [
+        4.710255847407327,
+        -0.025506642608639885,
+        1.5519909456672745
+      ],
+      "estimated_margin_lower_bounds_m": [
+        -0.08112831308420138,
+        0.7885966082999865
+      ]
+    }
+  ],
+  "stored_inputs": "own RGB + issued commands only; evaluation never fed back",
+  "reproduce": "GCP: decode raw/result.json.zst and eval-only.jsonl.zst, nearest SIM tick to code_decisions t"
+}

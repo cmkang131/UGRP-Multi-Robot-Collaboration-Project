@@ -79,7 +79,7 @@
     "done": 470,
     "events": 9384
   },
-  "reproduce": "ssh gcp1 /home/ugrp/ugrp-sim/src/46afd8b095e74954439f98b28f2aa52af3eaea01/.venv-sim/bin/python /home/ugrp/ugrp-sim/ops-reviews/release23/analyze_baseline.py --out /home/ugrp/ugrp-sim/ops-reviews/release23",
+  "reproduce": "ssh gcp1 'cd /home/ugrp/ugrp-sim/src/46afd8b095e74954439f98b28f2aa52af3eaea01 && PYTHONPATH=. .venv-sim/bin/python /home/ugrp/ugrp-sim/ops-reviews/release23/analyze_baseline.py --out /home/ugrp/ugrp-sim/ops-reviews/release23'",
   "false_accepts_after_bound": 0,
   "full_calibration": {
     "remote": "gcp1:/home/ugrp/ugrp-sim/ops-reviews/release23/calibration.json.zst",
