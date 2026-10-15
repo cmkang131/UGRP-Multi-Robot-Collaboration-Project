@@ -9,7 +9,7 @@ import hashlib
 import time
 from pathlib import Path
 import numpy as np
-from warp_act_core import SERVOS, control_tape
+from warp_act_core import SERVOS, control_tape, model_key, varying_model_arrays
 
 
 class Transport:
@@ -72,7 +72,7 @@ class CTransport(Transport):
 
 
 class WarpTransport(Transport):
-    def initialize(self, contexts, *, compiled_reference=None, compiled_geometry=None):
+    def initialize(self, contexts, *, compiled_reference=None, compiled_geometry=None, per_world_model_references=None):
         import mujoco
         import warp as wp
         import mujoco_warp as mjw
@@ -88,20 +88,40 @@ class WarpTransport(Transport):
         xml = self.out/'runtime-scene.xml'
         xml.write_text(contexts[0]['world'].scene_xml)
         self.compat = {}
-        if compiled_geometry:
-            self.compat['geometry'] = apply_geometry(m, xml, compiled_geometry)
-        if compiled_reference:
-            self.compat['damping'] = apply_reference(m, xml, compiled_reference)
-        if m.opt.noslip_iterations != 10 or np.any(d.eq_active):
-            raise ValueError('noslip10 / weld OFF required')
-        # This initial implementation admits replicated SAME-model starts only.
-        # Mixed scene batching requires explicit per-model grouping, not silent sharing.
-        for c in contexts[1:]:
-            other = c['world']
-            if other.scene_xml != contexts[0]['world'].scene_xml:
-                raise ValueError('same-model batch required; scene XML differs')
+        refs = per_world_model_references or {}
+        models=[]
+        for index,c in enumerate(contexts):
+            model=c['world'].model
+            scene_xml=self.out/f'world-{index:03d}'/'scene.xml'
+            xml_hash=hashlib.sha256(scene_xml.read_bytes()).hexdigest()
+            if index==0 or c['world'].scene_xml==contexts[0]['world'].scene_xml:
+                actuator_asset,geometry_asset=compiled_reference,compiled_geometry
+            elif refs:
+                ref=refs.get(xml_hash)
+                if ref is None:raise ValueError('missing exact-XML C312 per-world reference: '+xml_hash)
+                actuator_asset,geometry_asset=Path(ref['actuator']),Path(ref['geometry'])
+            elif model_key(c['world'].scene_xml)==model_key(contexts[0]['world'].scene_xml):
+                # Existing same-model mode: only free-joint initial poses vary.
+                actuator_asset=geometry_asset=None
+                for name in dir(m):
+                    if name.startswith(('geom_','mesh_','bvh_')):
+                        value=getattr(m,name)
+                        if isinstance(value,np.ndarray):getattr(model,name)[:]=value
+            else:
+                raise ValueError('same static model required; use explicit per-world compiled references')
+            compat={}
+            if geometry_asset:compat['geometry']=apply_geometry(model,scene_xml,geometry_asset)
+            if actuator_asset:compat['damping']=apply_reference(model,scene_xml,actuator_asset)
+            if model.opt.noslip_iterations!=10 or np.any(c['world'].data.eq_active):
+                raise ValueError('noslip10 / weld OFF required in every world')
+            self.compat[str(index)]=compat
+            models.append(model)
         wp.init()
-        self.wm = mjw.put_model(m)
+        if refs:
+            self.wm,self.model_batch_audit=self.combine_models(models)
+        else:
+            self.wm=mjw.put_model(m)
+            self.model_batch_audit={'mode':'same_static_model','varying_fields':[]}
         self.wm.opt.tolerance.fill_(float(m.opt.tolerance))
         if self.wm.opt.noslip_iterations != 10:
             raise RuntimeError('noslip lost in Warp conversion')
@@ -112,8 +132,7 @@ class WarpTransport(Transport):
         njmax = 1 << (max(256, int(d.nefc))-1).bit_length()
         with unused_efm(m, d):
             self.wd = mjw.put_data(m,d,nworld=self.n,nconmax=ncon,njmax=njmax)
-        wp.copy(self.wd.qpos, wp.array(np.stack([c['world'].data.qpos for c in contexts]).astype(np.float32), dtype=float))
-        wp.copy(self.wd.qvel, wp.array(np.stack([c['world'].data.qvel for c in contexts]).astype(np.float32), dtype=float))
+        self.copy_initial_state(contexts)
         self.origin = float(d.time)
         self.tick = 0
         self.relay_state = np.zeros((self.n,4), int)
@@ -121,9 +140,14 @@ class WarpTransport(Transport):
         self.graph_tick = wp.zeros(1,dtype=int)
         self.force_out = wp.zeros((self.n,2),dtype=float)
         self.init_kernels(contexts)
+        # Compile once, then discard the warm-up state before any rollout.
+        mjw.step(self.wm,self.wd); wp.synchronize()
+        with unused_efm(m,d):
+            self.wd = mjw.put_data(m,d,nworld=self.n,nconmax=ncon,njmax=njmax)
+        self.copy_initial_state(contexts)
         # Capture exactly the 400 physics ticks, not a host wall budget.
         with wp.ScopedCapture() as capture:
-            for _ in range(round(.1/self.dt)):
+            for _ in range(16):
                 wp.launch(self.command_kernel, dim=(self.n,m.nu),inputs=[self.tape,self.graph_tick,self.wd.ctrl])
                 mjw.step(self.wm,self.wd)
                 wp.launch(self.advance_kernel,dim=1,inputs=[self.graph_tick])
@@ -143,6 +167,56 @@ class WarpTransport(Transport):
         self.build_lookup(contexts[0]['world'].robot('r1'))
         self.sync_render(contexts)
 
+    def copy_initial_state(self, contexts):
+        wp=self.wp
+        # mjSTATE_INTEGRATION owners; derived contacts/kinematics are recomputed.
+        for name in ('qpos','qvel','act','ctrl','qacc_warmstart','qfrc_applied',
+                     'xfrc_applied','mocap_pos','mocap_quat','eq_active','time'):
+            target=getattr(self.wd,name,None)
+            if target is None or not isinstance(target,wp.array):continue
+            values=np.stack([np.asarray(getattr(c['world'].data,name)) for c in contexts])
+            if values.size:wp.copy(target,wp.array(values,dtype=target.dtype))
+
+    def combine_models(self, models):
+        """Use the pinned API's '*' fields, including nested model statistics.
+
+        Every differing converted array must explicitly support batching. Scalar
+        or topology differences fail closed; no hidden object mass is discarded.
+        """
+        import dataclasses
+        from mujoco_warp._src import warp_util
+        wp,mjw=self.wp,self.mjw
+        converted=[mjw.put_model(model) for model in models]
+        arrays=[];batchable=set();objects=[];scalars=[]
+        def flatten(obj,prefix='',result=None,locations=None,scalar=None):
+            result={} if result is None else result
+            locations={} if locations is None else locations
+            scalar={} if scalar is None else scalar
+            for field in dataclasses.fields(obj):
+                value=getattr(obj,field.name)
+                name=prefix+field.name
+                if dataclasses.is_dataclass(value):
+                    flatten(value,name+'.',result,locations,scalar)
+                elif isinstance(value,wp.array):
+                    result[name]=value.numpy();locations[name]=(obj,field.name,value.dtype)
+                    if getattr(field.type,'shape',())[:1]==('*',):batchable.add(name)
+                elif isinstance(value,(int,float,bool,str,type(None))):scalar[name]=value
+            return result,locations,scalar
+        for obj in converted:
+            arr,loc,scalar=flatten(obj);arrays.append(arr);objects.append(loc);scalars.append(scalar)
+        if any(scalar!=scalars[0] for scalar in scalars[1:]):
+            raise ValueError('converted model scalar/topology/options differ')
+        changed=varying_model_arrays(arrays,batchable)
+        result=converted[0]
+        for name,values in changed.items():
+            obj,field,dtype=objects[0][name]
+            setattr(obj,field,wp.array(values,dtype=dtype))
+        warp_util.mark_batched(result)
+        return result,{'mode':'per_world_model_v1','varying_fields':sorted(changed),
+            'worlds':len(models),'all_unsupported_arrays_exact':True,
+            'world_array_sha256':{k:hashlib.sha256(v.tobytes()).hexdigest() for k,v in changed.items()},
+            'basis':'pinned MJWarp io.put_model batchable * fields; no parameter approximation'}
+
     def init_kernels(self, contexts):
         # No state/force is passed into command decoding or teacher objects.
         wp = self.wp
@@ -155,19 +229,21 @@ class WarpTransport(Transport):
         @wp.kernel
         def advance(tick:wp.array[int]):
             tick[0]+=1
-        target = wp.constant(contexts[0]['gids'][0])
-        if len(contexts[0]['gids']) != 1:
+        if any(len(c['gids']) != 1 for c in contexts):
             raise ValueError('warp1 evaluator currently supports the single box collision geom only')
-        fingers = sorted(contexts[0]['finger_ids'],key=contexts[0]['finger_ids'].get)
-        left,right=wp.constant(fingers[0]),wp.constant(fingers[1])
+        self.target_ids=wp.array([c['gids'][0] for c in contexts],dtype=int)
+        self.finger_ids=wp.array([sorted(c['finger_ids'],key=c['finger_ids'].get) for c in contexts],dtype=int)
         @wp.kernel
         def evaluate(nacon:wp.array[int],worldid:wp.array[int],geom:wp.array[wp.vec2i],
                      cone:int,njmax:int,frame:wp.array[wp.mat33],friction:wp.array[vec5],
                      condim:wp.array[int],adr:wp.array2d[int],adhesion:wp.array[float],
-                     efc_force:wp.array2d[float],out:wp.array2d[float]):
+                     efc_force:wp.array2d[float],targets:wp.array[int],fingers:wp.array2d[int],out:wp.array2d[float]):
             i=wp.tid()
             if i<nacon[0]:
                 a,b=geom[i][0],geom[i][1]
+                w=worldid[i]
+                target=targets[w]
+                left,right=fingers[w,0],fingers[w,1]
                 k=int(-1)
                 if a==target or b==target:
                     if a==left or b==left:k=0
@@ -223,7 +299,8 @@ class WarpTransport(Transport):
         self.seconds['command_decode_upload']+=time.perf_counter()-start
         start=time.perf_counter()
         self.graph_tick.zero_()
-        wp.capture_launch(self.graph)
+        for _ in range(round(.1/self.dt)//16):
+            wp.capture_launch(self.graph)
         wp.synchronize()
         self.tick+=1
         self.seconds['physics']+=time.perf_counter()-start
@@ -233,6 +310,8 @@ class WarpTransport(Transport):
 
     def sync_render(self, contexts):
         import cv2
+        import io
+        from PIL import Image
         import mujoco
         wp,mjw=self.wp,self.mjw
         start=time.perf_counter()
@@ -252,9 +331,9 @@ class WarpTransport(Transport):
         self.rgb=[]
         for i,c in enumerate(contexts):
             rgb=cv2.remap(image[i],self.mx,self.my,cv2.INTER_LINEAR,borderMode=cv2.BORDER_CONSTANT)
-            ok,jpg=cv2.imencode('.jpg',cv2.cvtColor(rgb,cv2.COLOR_RGB2BGR))
-            if not ok:raise RuntimeError('JPEG encode failed')
-            self.rgb.append(jpg.tobytes())
+            buffer=io.BytesIO()
+            Image.fromarray(rgb).save(buffer,format='JPEG',quality=82)  # frozen World.render_jpeg default
+            self.rgb.append(buffer.getvalue())
             d=c['world'].data
             d.qpos[:]=qpos[i];d.qvel[:]=qvel[i];d.time=self.origin+self.tick*.1
             # Perception mirror only, no C physics or C contact-force reconstruction.
@@ -265,5 +344,5 @@ class WarpTransport(Transport):
         d=self.wd
         wp.launch(self.eval_kernel,dim=d.naconmax,inputs=[d.nacon,d.contact.worldid,d.contact.geom,
             int(self.m.opt.cone),int(d.njmax),d.contact.frame,d.contact.friction,d.contact.dim,
-            d.contact.efc_address,d.contact.adhesion,d.efc.force,self.force_out])
+            d.contact.efc_address,d.contact.adhesion,d.efc.force,self.target_ids,self.finger_ids,self.force_out])
         self.contact_forces=self.force_out.numpy()

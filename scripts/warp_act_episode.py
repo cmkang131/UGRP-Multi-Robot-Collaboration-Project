@@ -20,8 +20,6 @@ import sys
 import time
 
 ROOT = Path(__file__).resolve().parents[1]
-if str(ROOT) not in sys.path:
-    sys.path.insert(0, str(ROOT))
 
 
 def episode(plan, out, *, hooks, world_index, execution_host, profile='off', hidden=False, look=False, cap_s=90.,
@@ -66,7 +64,7 @@ def episode(plan, out, *, hooks, world_index, execution_host, profile='off', hid
     approval = validate_approval(recording_approval, stage=recording_stage, sha=sha, host=host) if training_rgb else None
     out.mkdir(parents=True, exist_ok=False)
     write(out/'plan.json', plan)
-    write(out/'RUN_META.json', {'class': 'dev', 'branch': 'claude/act-solo-teacher',
+    write(out/'RUN_META.json', {'class': 'dev', 'branch': 'claude/warp-act', 'physics_backend': hooks.backend,
           'sha': sha, 'pr': plan.get('pr'), 'batch': plan['batch'],
           'negative_probe': bool(solo_lift_negative_probe_v1)})
     report = {'status': 'running', 'source_sha': sha, 'execution_host': host,
@@ -81,7 +79,7 @@ def episode(plan, out, *, hooks, world_index, execution_host, profile='off', hid
               'rgb_lift_mode': rgb_lift_mode,
               'negative_probe': bool(solo_lift_negative_probe_v1),
               'solo_lift_lookback_margin_v1': bool(solo_lift_lookback_margin_v1),
-              'gate_eligible': not solo_lift_negative_probe_v1 and not training_rgb,
+              'gate_eligible': False,  # unapproved warp1 pilot, not a teacher gate
               'physical_success': None, 'placement_task': 'set down at own picked location',
               'plan_sha256': hashlib.sha256((out/'plan.json').read_bytes()).hexdigest()}
     if training_rgb:
@@ -177,14 +175,30 @@ def episode(plan, out, *, hooks, world_index, execution_host, profile='off', hid
         port = DutyActPort(world, rid, allow_reverse=True, allow_mecanum=True)
         pwm = {s: int(port._servo_pulses[s]) for s in (1, 3, 4, 5, 6)}
         observed_discs, observed_rects = [], []
+        disc_names, rect_names, route_rejections = [], [], []
+        route_counts = {'entered': 0, 'passed': 0, 'rejected': 0}
+        input_funnel = {'frames': 0, 'not_held': 0, 'visible_not_held': 0, 'measurements': 0}
 
         def route(goal, context):
             # Current visible wall measurements remain in the body frame;
             # an uncertain map prior cannot fabricate a registered self pose.
+            route_counts['entered'] += 1
             path = plan_path((0., 0.), goal[:2], (-2., 2., -2., 2.), observed_discs,
                              rects=observed_rects, radius=.17)
             if not path:
+                from harness.static_keepouts import rect_distance
+                route_counts['rejected'] += 1
+                gaps = [(math.hypot(goal[0]-x,goal[1]-y)-r-.17,n)
+                        for (x,y,r),n in zip(observed_discs,disc_names)]
+                gaps += [(rect_distance(goal[:2],rect)-.17,n) for rect,n in zip(observed_rects,rect_names)]
+                gap,name = min(gaps) if gaps else (None,'none_observed')
+                route_rejections.append({'t': float(data.time), 'category': 'no_visible_route',
+                    'reason': 'frozen A* returned no path within its existing40000-node budget',
+                    'blocking_object': name, 'minimum_gap_m': gap,
+                    'minimum_gap_scope': 'nearest currently visible object at requested goal; not unique blocker attribution',
+                    'goal_relative': list(goal), 'search_budget_nodes': 40000})
                 return 0., 0., 0.
+            route_counts['passed'] += 1
             point = next((p for p in path if math.hypot(*p) >= .06), goal[:2])
             cmd = proportional_drive((0., 0., 0.), goal[:2], point, goal[2])
             return cmd['forward'], cmd['left'], cmd['turn']
@@ -215,7 +229,7 @@ def episode(plan, out, *, hooks, world_index, execution_host, profile='off', hid
         lift_evidence = {}
         look_state = {'last_view_n': 0}
         def refresh_obstacles():
-            observed_discs.clear()
+            observed_discs.clear(); disc_names.clear()
             base = world.robot(rid).base_xyz()
             a = float(world.robot(rid).base_rpy()[2]); c, s = math.cos(a), math.sin(a)
             for other in ('r1', 'r2', 'r3'):
@@ -225,7 +239,7 @@ def episode(plan, out, *, hooks, world_index, execution_host, profile='off', hid
                 n, total = eyes.region_visible(data, rid, eyes._body_geoms(obid))
                 if total and n >= math.ceil(total/3):
                     xy = data.body(other+'__robot').xpos[:2]-base[:2]
-                    observed_discs.append((c*xy[0]+s*xy[1], -s*xy[0]+c*xy[1], .17))
+                    observed_discs.append((c*xy[0]+s*xy[1], -s*xy[0]+c*xy[1], .17)); disc_names.append(other+'__robot')
             # Every other cargo and visible wall uses the same current gate.
             bodies = {x.item_id: x.body for x in scene.cargo}
             bodies.update({i: x['body_name'] for i, x in scene.config['setup_only']['objects'].items()})
@@ -239,8 +253,8 @@ def episode(plan, out, *, hooks, world_index, execution_host, profile='off', hid
                     xy = data.body(name).xpos[:2]-base[:2]
                     radius = max((float(np.linalg.norm(data.geom_xpos[g, :2]-data.body(name).xpos[:2]))
                                   + float(model.geom_rbound[g]) for g in og), default=.2)
-                    observed_discs.append((c*xy[0]+s*xy[1], -s*xy[0]+c*xy[1], radius))
-            observed_rects.clear()
+                    observed_discs.append((c*xy[0]+s*xy[1], -s*xy[0]+c*xy[1], radius)); disc_names.append(name)
+            observed_rects.clear(); rect_names.clear()
             for g in range(model.ngeom):
                 if 'wall' not in (model.geom(g).name or ''):
                     continue
@@ -250,6 +264,7 @@ def episode(plan, out, *, hooks, world_index, execution_host, profile='off', hid
                     rot = data.geom_xmat[g].reshape(3, 3)
                     observed_rects.append((c*xy[0]+s*xy[1], -s*xy[0]+c*xy[1],
                         *map(float, model.geom_size[g, :2]), wrap(math.atan2(rot[1, 0], rot[0, 0])-a)))
+                    rect_names.append(model.geom(g).name)
 
         previous = teacher._hold(float(data.time))
         trace = (out/('teacher-raw/commands.jsonl' if training_rgb else 'teacher-commands.jsonl')).open('x'); streams.append(trace)
@@ -286,8 +301,12 @@ def episode(plan, out, *, hooks, world_index, execution_host, profile='off', hid
                 return {'xyz': [float(c*dx+s*dy), float(-s*dx+c*dy), float(point[2])],
                         'yaw': wrap(math.atan2(rot[1, 0], rot[0, 0])-a)}
 
+            input_funnel['frames'] += 1
+            input_funnel['not_held'] += int(not teacher.holding)
+            input_funnel['visible_not_held'] += int(not teacher.holding and visible)
             measurement = audit.measure(teacher.phase, visible_n=visible_n, probe_N=probe_N,
                                         holding=teacher.holding, read_relative=read_relative)
+            input_funnel['measurements'] += int(measurement is not None)
             # Capture once: recording persists exactly these controller bytes.
             jpg = hooks.capture(world_index, world)
             recent.append((tick, jpg))
@@ -375,7 +394,7 @@ def episode(plan, out, *, hooks, world_index, execution_host, profile='off', hid
                      'base_xyz': list(map(float, base)), 'visible_n': visible_n, 'probe_N': probe_N,
                      'lookaround_estimate_xy': list(map(float, relook.loc.own.x[:2])) if relook.loc is not None else None})+'\n')
             last_eval_pos, last_eval_t = pos, now
-            if tick % 10 == 0:
+            if tick % 5 == 0:  # recording-only 2 Hz full timeline, 10 Hz terminal ring
                 cv2.imwrite(str(out/'review-own'/f'{tick:06d}.jpg'), cv2.resize(bgr, (320, 240)))
                 # Overview is reconstructed on gcp2 from recorded states; never a control input.
                 write(out/'progress.json', {'sim_s': now-origin, 'phase': teacher.phase, 'source_sha': sha})
@@ -392,6 +411,10 @@ def episode(plan, out, *, hooks, world_index, execution_host, profile='off', hid
                     break
             tick += 1
             yield {'kind': 'step', 'world': world, 'port': port, 'command': value}
+        write(out/'input-funnel.json', {'counts': input_funnel, 'raw': str(out/'teacher-commands.jsonl'),
+            'scope': 'frames→not-held→currently-visible→lazy relative measurement'})
+        write(out/'route-rejections.json', {'counts': route_counts, 'rows': route_rejections,
+            'budget_basis': 'frozen scripts.zone_teacher.plan_path default40000 nodes; no wall-clock planning cap'})
         report.update(status='cap_end' if teacher.result is None else 'complete',
             cap_end=teacher.result is None, sim_s=float(data.time)-origin, wall_s=time.monotonic()-start,
             teacher=teacher.diagnostic(), input_audit=audit.record(), visibility=visibility_stats.record(),
@@ -421,6 +444,10 @@ def episode(plan, out, *, hooks, world_index, execution_host, profile='off', hid
             report['training_candidate'] = bool(report['physical_success'] and recorder.local_started and approval)
             report['training_exclusion_reason'] = 'pending independent dataset admission' if report['training_candidate'] else 'pilot / failure / unqualified source or absent own-RGB handoff'
         write(out/'result.json', report)
+    except GeneratorExit:
+        report.update(status='setup_export_only' if not recent else 'supervisor_stop',
+                      physical_success=None, gate_eligible=False)
+        raise
     except BaseException as error:
         report.update(status='interrupted' if isinstance(error, KeyboardInterrupt) else 'HOST_ERROR',
                       error_type=type(error).__name__, error=str(error), wall_s=time.monotonic()-start,
