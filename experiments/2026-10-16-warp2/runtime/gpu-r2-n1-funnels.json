@@ -1,0 +1,97 @@
+{
+  "schema": "ugrp.warp2.flow_recount.v1",
+  "raw": "/home/ugrp/ugrp-sim/runs/warp2/r2-54563a38/n1",
+  "reports": [
+    {
+      "job": "/home/ugrp/ugrp-sim/runs/warp2/r2-54563a38/n1",
+      "world": {
+        "world": 0,
+        "seed": 8318631,
+        "physical_success": true,
+        "cap_end": false,
+        "sim_s": 27.700000000000003,
+        "joint_held": true,
+        "input_audit": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 661,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false
+        }
+      },
+      "candidate_populations": {
+        "rendezvous_wait_candidates": {
+          "N": 0,
+          "ordered_funnel": [
+            {
+              "gate": "current_and_predicted_clear_path",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            },
+            {
+              "gate": "nonrepeated_selected_wait",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            }
+          ]
+        }
+      },
+      "frame_funnel": [
+        {
+          "gate": "any_assigned_probe",
+          "entered": 556,
+          "passed": 273,
+          "rejected": 283
+        },
+        {
+          "gate": "meaningful_region_5_of_15",
+          "entered": 273,
+          "passed": 266,
+          "rejected": 7
+        },
+        {
+          "gate": "measurement_admitted_not_held",
+          "entered": 266,
+          "passed": 266,
+          "rejected": 0
+        }
+      ],
+      "event_funnel": [
+        {
+          "gate": "own_ready",
+          "entered": 2,
+          "passed": 2,
+          "rejected": 0
+        },
+        {
+          "gate": "own_pick_after_go_ack",
+          "entered": 2,
+          "passed": 2,
+          "rejected": 0
+        },
+        {
+          "gate": "own_command_complete",
+          "entered": 2,
+          "passed": 2,
+          "rejected": 0
+        }
+      ],
+      "held_world_reads": 0,
+      "hidden_measurement_ticks": 82,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp2/r2-54563a38/n1/world-000/raw"
+    }
+  ],
+  "reason_distribution": {},
+  "blocked_object_distribution": {},
+  "sha256_check": {
+    "files": 79,
+    "mismatches": []
+  },
+  "full_rejections": "/home/ugrp/ugrp-sim/runs/warp2/analysis/r2-success/rejections-full.json",
+  "full_rejections_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+  "scope": "original frozen beampair6 reason definitions and sequential populations; successful or capped worlds do not remove rejected candidates",
+  "reproduce": "python3 /home/ugrp/ugrp-sim/runs/warp2-analyze-flows.py /home/ugrp/ugrp-sim/src/warp2-08f12921 /home/ugrp/ugrp-sim/runs/warp2/r2-54563a38/n1 /home/ugrp/ugrp-sim/runs/warp2/analysis/r2-success"
+}
