@@ -11,7 +11,7 @@ from sim import masterpi_camera_review_v3 as camera
 from sim.masterpi_drive_friction_v7 import build_world
 from sim.s2_real_output import RealPrimitivePort
 from sim.final_pair_highpose_nearclip import audit,wrap
-from sim.render_profile import install
+from sim.render_profile_selection import for_name
 from scripts.run_wall_parallax_strafe import write
 
 class PhysicalStop(RuntimeError):pass
@@ -50,7 +50,8 @@ def make_scene(bundle,seed):
             return ET.tostring(root,encoding='unicode')
     scene=StrafeScene.from_spec(dict(map=bundle['map_id'],seed=seed,goal={'B':{'cyan':1}},
         extra_boxes={},team_cargo=[]),base_profile(bundle['contact_profile']))
-    scene=wrap(install(scene,'floor_light_v1'))
+    profile=bundle.get('options',{}).get('render_profile','floor_light_v1')
+    scene=wrap(for_name(profile).install(scene,profile))
     transform=scene.robot_transform
     scene.robot_transform=lambda xml,**kw:camera.transform_xml(transform(xml,**kw),profile_id=camera.PROFILE_ID)
     return scene
@@ -70,7 +71,9 @@ class PhysicsBackend(Base):
                 for controller in self.world.controllers.values():bind_camera(controller)
             self.dt=float(self.world.model.opt.timestep)
             assert abs(.05/self.dt-round(.05/self.dt))<1e-7
-            self.nearclip_audit=audit(self.world.model)
+            profile=bundle.get('options',{}).get('render_profile','floor_light_v1')
+            self.nearclip_audit=(audit(self.world.model) if profile=='floor_light_v1'
+                                 else audit(self.world.model,base_profile=profile))
             self._ports()
         except Exception:
             self.close()

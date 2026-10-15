@@ -1,0 +1,82 @@
+{
+  "schema": "ugrp.reloc14.v7_budget_diagnostic.v1",
+  "analysis_host": "gcp1",
+  "runtime_applied": false,
+  "physical_validation": false,
+  "ready": false,
+  "features": [
+    "intercept",
+    "issued_distance_m",
+    "issued_turn_rad",
+    "issued_closed_gripper_distance_m",
+    "issued_closed_gripper_turn_rad",
+    "since_full_RGB_fix_SIM_s"
+  ],
+  "fits": {
+    "xy_m": {
+      "coefficients": [
+        0.2441483288935395,
+        0.0,
+        0.0025013778977926444,
+        0.6684783567543711,
+        0.0,
+        0.0
+      ],
+      "scores": [
+        {
+          "run": "reloc14-r3-carry-texture-93266-f3d06408",
+          "role": "out_of_fit_already_inspected",
+          "N": 2441,
+          "covered_N": 2262,
+          "positive_N": 0,
+          "trigger_recall": null
+        },
+        {
+          "run": "reloc14-r3-carry-texture-93315-f3d06408",
+          "role": "fit",
+          "N": 1245,
+          "covered_N": 1245,
+          "positive_N": 182,
+          "trigger_recall": 1.0
+        }
+      ]
+    },
+    "yaw_deg": {
+      "coefficients": [
+        6.5680625485737965,
+        0.0,
+        5.12562089897357,
+        28.277200318023503,
+        0.0,
+        0.0
+      ],
+      "scores": [
+        {
+          "run": "reloc14-r3-carry-texture-93266-f3d06408",
+          "role": "out_of_fit_already_inspected",
+          "N": 2441,
+          "covered_N": 2305,
+          "positive_N": 0,
+          "trigger_recall": null
+        },
+        {
+          "run": "reloc14-r3-carry-texture-93315-f3d06408",
+          "role": "fit",
+          "N": 1245,
+          "covered_N": 1245,
+          "positive_N": 106,
+          "trigger_recall": 1.0
+        }
+      ]
+    }
+  },
+  "scope": "93315 fit; 93266 out-of-fit but already inspected and interrupted; cannot claim blind holdout or closed-loop recall",
+  "partial_epoch": "full-fix epoch retained; partial updates cannot erase correlated unobserved load error",
+  "sources": {
+    "/home/ugrp/ugrp-sim/runs/reloc14-r3-carry-texture-93266-f3d06408/raw/teacher-commands.jsonl.zst": "ff58963e49fee050706824e2f5f1e4c1452dd06f6ab8e9fc8687af29e3702adc",
+    "/home/ugrp/ugrp-sim/runs/reloc14-r3-carry-texture-93266-f3d06408/raw/eval-only.jsonl.zst": "01c88f7e6dad030e4045accf60e52786c37a37b74f4674e6c4e4f3765377ea77",
+    "/home/ugrp/ugrp-sim/runs/reloc14-r3-carry-texture-93315-f3d06408/raw/teacher-commands.jsonl.zst": "0019262e00daea12ee7f7b14c92a96264491611b7e5922b96a094a8a31d2c5f5",
+    "/home/ugrp/ugrp-sim/runs/reloc14-r3-carry-texture-93315-f3d06408/raw/eval-only.jsonl.zst": "4a47439bc6e0ad243310e67aa3936d69dc7db240730b4b2ab9061d6b82ede6c9"
+  },
+  "reproduce": "PYTHONPATH=. .venv-sim/bin/python /tmp/fit_reloc14_budget.py --output <file>"
+}

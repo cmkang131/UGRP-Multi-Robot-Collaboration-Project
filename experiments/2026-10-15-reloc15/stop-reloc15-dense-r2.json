@@ -1,0 +1,82 @@
+[
+  {
+    "run": "reloc15-r2-carry-93266-candidate-e44b4987",
+    "owner": "reloc15",
+    "at_unix": 1792071420.986001,
+    "reason": "confirmed dense yaw accepts ill-conditioned alignment: 93315 t29.7 75deg with FB82px and sigma7.8deg; do not apply measurements exceeding existing5deg task precision; add opt-in quality admission",
+    "pids": [
+      {
+        "pid": 533642,
+        "argv": [
+          ".venv-sim/bin/python",
+          "-m",
+          "scripts.run_solo_grasp_act_teacher",
+          "--plan",
+          "experiments/2026-10-15-reloc15/carry-dense-plan.json",
+          "--episode",
+          "2",
+          "--out",
+          "/home/ugrp/ugrp-sim/runs/reloc15-r2-carry-93266-candidate-e44b4987/raw",
+          "--execution-host",
+          "gcp1",
+          "--teacher-profile",
+          "solo_visible_only_v1",
+          "--held-object-hidden-v1",
+          "--setdown-lookaround-v1",
+          "--teacher-stability",
+          "align_relook_v1",
+          "--reach-mode",
+          "pad_window_v2",
+          "--rgb-lift-mode",
+          "solo_lift_lookback_v1",
+          "--solo-lift-lookback-margin-v1",
+          "--solo-truth-free-lookaround-v1",
+          "--solo-carry-to-zone-v1",
+          "--cap-s",
+          "150",
+          "--failure-rgb-buffer"
+        ]
+      }
+    ]
+  },
+  {
+    "run": "reloc15-r2-carry-93315-candidate-e44b4987",
+    "owner": "reloc15",
+    "at_unix": 1792071420.9957545,
+    "reason": "confirmed dense yaw accepts ill-conditioned alignment: 93315 t29.7 75deg with FB82px and sigma7.8deg; do not apply measurements exceeding existing5deg task precision; add opt-in quality admission",
+    "pids": [
+      {
+        "pid": 529610,
+        "argv": [
+          ".venv-sim/bin/python",
+          "-m",
+          "scripts.run_solo_grasp_act_teacher",
+          "--plan",
+          "experiments/2026-10-15-reloc15/carry-dense-plan.json",
+          "--episode",
+          "8",
+          "--out",
+          "/home/ugrp/ugrp-sim/runs/reloc15-r2-carry-93315-candidate-e44b4987/raw",
+          "--execution-host",
+          "gcp1",
+          "--teacher-profile",
+          "solo_visible_only_v1",
+          "--held-object-hidden-v1",
+          "--setdown-lookaround-v1",
+          "--teacher-stability",
+          "align_relook_v1",
+          "--reach-mode",
+          "pad_window_v2",
+          "--rgb-lift-mode",
+          "solo_lift_lookback_v1",
+          "--solo-lift-lookback-margin-v1",
+          "--solo-truth-free-lookaround-v1",
+          "--solo-carry-to-zone-v1",
+          "--cap-s",
+          "150",
+          "--failure-rgb-buffer"
+        ]
+      }
+    ]
+  }
+]

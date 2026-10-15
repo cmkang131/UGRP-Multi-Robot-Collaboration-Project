@@ -1,0 +1,146 @@
+[
+  {
+    "run": "reloc15-r1-carry-93266-candidate-9607de16",
+    "source_sha": "9607de16cfeac0a5ae1308732bab33604b8db7e7",
+    "category": "cap_end",
+    "reason": "sim_cap"
+  },
+  {
+    "run": "reloc15-r1-carry-93315-baseline-9607de16",
+    "source_sha": "9607de16cfeac0a5ae1308732bab33604b8db7e7",
+    "category": "carry_recovery_setdown_envelope_blocked",
+    "reason": "carry_recovery_setdown_envelope_blocked"
+  },
+  {
+    "run": "reloc15-r1-carry-93315-candidate-9607de16",
+    "source_sha": "9607de16cfeac0a5ae1308732bab33604b8db7e7",
+    "category": "carry_recovery_setdown_envelope_blocked",
+    "reason": "carry_recovery_setdown_envelope_blocked"
+  },
+  {
+    "run": "reloc15-r1-selfmap-93583-candidate-9607de16",
+    "source_sha": "9607de16cfeac0a5ae1308732bab33604b8db7e7",
+    "status": "HOST_ERROR",
+    "category": "selfmap4_relocalization_exhausted",
+    "reason": "selfmap4_relocalization_exhausted",
+    "elapsed_sim_s": 46.6,
+    "supervisor_stop": {},
+    "code_vs_host": "controller_budget_exhaustion"
+  },
+  {
+    "run": "reloc15-r1-selfmap-93584-baseline-9607de16",
+    "source_sha": "9607de16cfeac0a5ae1308732bab33604b8db7e7",
+    "status": "RECORDED",
+    "category": "cap_end",
+    "reason": "sim_time_cap",
+    "elapsed_sim_s": 60.0,
+    "supervisor_stop": {},
+    "code_vs_host": "see_reason"
+  },
+  {
+    "run": "reloc15-r1-selfmap-93584-candidate-9607de16",
+    "source_sha": "9607de16cfeac0a5ae1308732bab33604b8db7e7",
+    "status": "RECORDED",
+    "category": "cap_end",
+    "reason": "sim_time_cap",
+    "elapsed_sim_s": 60.0,
+    "supervisor_stop": {},
+    "code_vs_host": "see_reason"
+  },
+  {
+    "run": "reloc15-r2-carry-93266-candidate-e44b4987",
+    "source_sha": "e44b49873caf903a7bbcdf8aa054aabf88456c2e",
+    "category": "supervisor_stop",
+    "reason": "confirmed dense yaw accepts ill-conditioned alignment: 93315 t29.7 75deg with FB82px and sigma7.8deg; do not apply measurements exceeding existing5deg task precision; add opt-in quality admission"
+  },
+  {
+    "run": "reloc15-r2-carry-93315-baseline-e44b4987",
+    "source_sha": "e44b49873caf903a7bbcdf8aa054aabf88456c2e",
+    "category": "supervisor_stop",
+    "reason": "confirmed fixed-image-border consensus defect in sparse RGB yaw; stop this owned baseline and use preserved R1 comparator; dense fix only for further carry"
+  },
+  {
+    "run": "reloc15-r2-carry-93315-candidate-e44b4987",
+    "source_sha": "e44b49873caf903a7bbcdf8aa054aabf88456c2e",
+    "category": "supervisor_stop",
+    "reason": "confirmed dense yaw accepts ill-conditioned alignment: 93315 t29.7 75deg with FB82px and sigma7.8deg; do not apply measurements exceeding existing5deg task precision; add opt-in quality admission"
+  },
+  {
+    "run": "reloc15-r2-selfmap-93583-candidate-44ba1bc6",
+    "source_sha": "44ba1bc6d7aaeb8cbd9408e8dcf02f9d2d56f262",
+    "status": "RECORDED",
+    "category": "cap_end",
+    "reason": "sim_time_cap",
+    "elapsed_sim_s": 60.0,
+    "supervisor_stop": {},
+    "code_vs_host": "see_reason"
+  },
+  {
+    "run": "reloc15-r2-selfmap-93584-baseline-44ba1bc6",
+    "source_sha": "44ba1bc6d7aaeb8cbd9408e8dcf02f9d2d56f262",
+    "status": "RECORDED",
+    "category": "cap_end",
+    "reason": "sim_time_cap",
+    "elapsed_sim_s": 60.0,
+    "supervisor_stop": {},
+    "code_vs_host": "see_reason"
+  },
+  {
+    "run": "reloc15-r2-selfmap-93584-candidate-44ba1bc6",
+    "source_sha": "44ba1bc6d7aaeb8cbd9408e8dcf02f9d2d56f262",
+    "status": "RECORDED",
+    "category": "cap_end",
+    "reason": "sim_time_cap",
+    "elapsed_sim_s": 60.0,
+    "supervisor_stop": {},
+    "code_vs_host": "see_reason"
+  },
+  {
+    "run": "reloc15-r3-carry-93266-candidate-1d7d5b26",
+    "source_sha": "1d7d5b2639d3af413e5e2442a6b16c42bad68c30",
+    "category": "supervisor_stop",
+    "reason": "R3 confirmed false accepted RGB yaw: seed93266 t59.5 actual0.221deg versus measured12.474deg despite predicted3sigma4.837deg; shared uncertainty/admission undercoverage; three authorized rounds exhausted, stop all own same-defect carry runs"
+  },
+  {
+    "run": "reloc15-r3-carry-93313-candidate-1d7d5b26",
+    "source_sha": "1d7d5b2639d3af413e5e2442a6b16c42bad68c30",
+    "category": "supervisor_stop",
+    "reason": "R3 confirmed false accepted RGB yaw: seed93266 t59.5 actual0.221deg versus measured12.474deg despite predicted3sigma4.837deg; shared uncertainty/admission undercoverage; three authorized rounds exhausted, stop all own same-defect carry runs"
+  },
+  {
+    "run": "reloc15-r3-carry-93315-candidate-1d7d5b26",
+    "source_sha": "1d7d5b2639d3af413e5e2442a6b16c42bad68c30",
+    "category": "supervisor_stop",
+    "reason": "R3 confirmed false accepted RGB yaw: seed93266 t59.5 actual0.221deg versus measured12.474deg despite predicted3sigma4.837deg; shared uncertainty/admission undercoverage; three authorized rounds exhausted, stop all own same-defect carry runs"
+  },
+  {
+    "run": "reloc15-r3-selfmap-93571-candidate-e44b4987",
+    "source_sha": "e44b49873caf903a7bbcdf8aa054aabf88456c2e",
+    "status": "RECORDED",
+    "category": "cap_end",
+    "reason": "sim_time_cap",
+    "elapsed_sim_s": 60.0,
+    "supervisor_stop": {},
+    "code_vs_host": "see_reason"
+  },
+  {
+    "run": "reloc15-r3-selfmap-93583-baseline-e44b4987",
+    "source_sha": "e44b49873caf903a7bbcdf8aa054aabf88456c2e",
+    "status": "HOST_ERROR",
+    "category": "selfmap4_relocalization_exhausted",
+    "reason": "selfmap4_relocalization_exhausted",
+    "elapsed_sim_s": 46.6,
+    "supervisor_stop": {},
+    "code_vs_host": "controller_budget_exhaustion"
+  },
+  {
+    "run": "reloc15-r3-selfmap-93585-candidate-e44b4987",
+    "source_sha": "e44b49873caf903a7bbcdf8aa054aabf88456c2e",
+    "status": "RECORDED",
+    "category": "cap_end",
+    "reason": "sim_time_cap",
+    "elapsed_sim_s": 60.0,
+    "supervisor_stop": {},
+    "code_vs_host": "see_reason"
+  }
+]

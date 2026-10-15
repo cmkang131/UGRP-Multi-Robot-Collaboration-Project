@@ -1,0 +1,287 @@
+{
+  "schema": "ugrp.reloc9_summary.v1",
+  "flow": "selfmap",
+  "source_revision": "commit containing this record; full SHA in local disabled carry queue / PR comment",
+  "baseline_sha": "66928f23c45f7b430b4467dd07d55e0916d271f1",
+  "defaults": "all reloc9 runtime toggles false",
+  "new_physics_runs": 0,
+  "render_calls": 0,
+  "model_calls": 0,
+  "remote_connections": 0,
+  "previous_results_combinable": false,
+  "selfmap_queue_created": false,
+  "ready": false,
+  "remaining": [
+    "fresh GCP 90L/180R check",
+    "same-seed three-candidate carry comparison",
+    "native 640x480 recovery frames and real reacquisition",
+    "selfmap coordinator waits for 93571 result"
+  ],
+  "selfmap6_regression": {
+    "proposals_N": 123,
+    "accepted_N": 113,
+    "rejected_N": 10,
+    "evidence_scope": "unchanged selfmap6 gate regression ONLY; excluded from reloc8 efficacy",
+    "absolute_5deg_10cm_exceedance_N": 11,
+    "normalized_worsened_N": 53,
+    "xy_worsened_N": 61,
+    "yaw_worsened_N": 52
+  },
+  "related_tests": {
+    "initial_suite_passed": 89,
+    "initial_log": "pytest-selfmap.txt",
+    "final_targeted_passed": 36,
+    "final_log": "pytest-selfmap-final.txt"
+  },
+  "runs": [
+    {
+      "seed": 93560,
+      "trace_N": 301,
+      "old_accepted_N": 52,
+      "new_accepted_N": 52,
+      "rejected_N": 0,
+      "dangerous_accepted_N": 0,
+      "correction_criteria": {
+        "accepted_N": 52,
+        "dangerous_accepted_N": 0,
+        "legacy_dangerous_accepted_N": 0,
+        "worsened_accepted_N": 19,
+        "xy_worsened_accepted_N": 29,
+        "yaw_worsened_accepted_N": 19
+      },
+      "evidence_scope": "unchanged selfmap6 gate replay; NOT reloc8 effectiveness evidence",
+      "registered_N": 0,
+      "ORB": {
+        "features": {
+          "min": 0,
+          "median": 35.0,
+          "max": 79
+        },
+        "matches": {
+          "min": 0,
+          "median": 5.0,
+          "max": 17
+        },
+        "inliers": {
+          "min": 0,
+          "median": 0.0,
+          "max": 13
+        }
+      },
+      "independent_axes": {
+        "0": 151,
+        "1": 59,
+        "2": 91
+      },
+      "first_uncertain_t": 31.3,
+      "first_uncertain_elapsed_s": 30.0,
+      "first_counterfactual_view": {
+        "body_yaw_deg": 0.0,
+        "pan_deg": 0.0,
+        "pan_pulse": 1500,
+        "servo": {
+          "1": 2000,
+          "3": 858,
+          "4": 2320,
+          "5": 1320,
+          "6": 1500
+        },
+        "expected_signature": [
+          [
+            "door",
+            5,
+            6
+          ],
+          [
+            "wall",
+            0,
+            6
+          ],
+          [
+            "wall",
+            1,
+            5
+          ],
+          [
+            "wall",
+            1,
+            6
+          ],
+          [
+            "wall",
+            2,
+            5
+          ],
+          [
+            "wall",
+            3,
+            5
+          ],
+          [
+            "wall",
+            4,
+            5
+          ],
+          [
+            "wall",
+            4,
+            6
+          ],
+          [
+            "zone:0.7,0.2,0.8",
+            1,
+            2
+          ],
+          [
+            "zone:0.7,0.2,0.8",
+            4,
+            2
+          ]
+        ],
+        "predicted_points": 23,
+        "uncertainty_support": 1.0,
+        "hypothesis_entropy_nats": -0.0,
+        "heading_rad": -1.497901453989898,
+        "profile": "reloc8_active_vision_v1",
+        "feasible": true,
+        "predicted_only": true,
+        "hypothesis_count": 1,
+        "sigma_samples": 7,
+        "motion": "in_place_only"
+      }
+    },
+    {
+      "seed": 93561,
+      "trace_N": 580,
+      "old_accepted_N": 61,
+      "new_accepted_N": 61,
+      "rejected_N": 10,
+      "dangerous_accepted_N": 11,
+      "correction_criteria": {
+        "accepted_N": 61,
+        "dangerous_accepted_N": 11,
+        "legacy_dangerous_accepted_N": 0,
+        "worsened_accepted_N": 34,
+        "xy_worsened_accepted_N": 32,
+        "yaw_worsened_accepted_N": 33
+      },
+      "evidence_scope": "unchanged selfmap6 gate replay; NOT reloc8 effectiveness evidence",
+      "registered_N": 0,
+      "ORB": {
+        "features": {
+          "min": 0,
+          "median": 32.0,
+          "max": 82
+        },
+        "matches": {
+          "min": 0,
+          "median": 3.0,
+          "max": 17
+        },
+        "inliers": {
+          "min": 0,
+          "median": 0.0,
+          "max": 15
+        }
+      },
+      "independent_axes": {
+        "0": 210,
+        "1": 102,
+        "2": 268
+      },
+      "first_uncertain_t": 30.1,
+      "first_uncertain_elapsed_s": 28.8,
+      "first_counterfactual_view": {
+        "body_yaw_deg": 0.0,
+        "pan_deg": 45.0,
+        "pan_pulse": 2000,
+        "servo": {
+          "1": 2000,
+          "3": 858,
+          "4": 2320,
+          "5": 1320,
+          "6": 2000
+        },
+        "expected_signature": [
+          [
+            "wall",
+            1,
+            6
+          ],
+          [
+            "wall",
+            2,
+            6
+          ],
+          [
+            "wall",
+            3,
+            5
+          ],
+          [
+            "wall",
+            3,
+            6
+          ],
+          [
+            "wall",
+            4,
+            5
+          ],
+          [
+            "wall",
+            4,
+            6
+          ],
+          [
+            "wall",
+            5,
+            6
+          ],
+          [
+            "zone:0.2,0.4,0.9",
+            1,
+            5
+          ],
+          [
+            "zone:0.7,0.2,0.8",
+            2,
+            2
+          ]
+        ],
+        "predicted_points": 25,
+        "uncertainty_support": 1.0,
+        "hypothesis_entropy_nats": -0.0,
+        "heading_rad": -1.3653555495862566,
+        "profile": "reloc8_active_vision_v1",
+        "feasible": true,
+        "predicted_only": true,
+        "hypothesis_count": 1,
+        "sigma_samples": 7,
+        "motion": "in_place_only"
+      }
+    }
+  ],
+  "rotation": "same reloc9 toggle explicitly selects existing s2_pulse_v122_rotL_v1; no carry gain or double application",
+  "wall": "same byte-identical guard applied before segment fitting, floor clearing and landmark wall-column adapter",
+  "artifacts": [
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/map-selfmap/experiments/2026-10-15-reloc9/selfmap6-regression.json",
+      "sha256": "9b03b46ec56fcc2429d4faee30a4800cbf6fbca1324fbd8bcffc65f1076fc88b"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/map-selfmap/experiments/2026-10-15-reloc9/pytest-selfmap.txt",
+      "sha256": "400daf350d5ad705031a24a1fb5ab7bab62718db0ba263e9cc1f3a4c2884420b"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/map-selfmap/experiments/2026-10-15-reloc9/pytest-selfmap-final.txt",
+      "sha256": "66e589b4123559af8fef9b726d2f419ecf68e2250b4f0a22a29d6d2f177c9a29"
+    }
+  ],
+  "shared_source_sha256": {
+    "harness/reloc9_rotation.py": "b7a3f81c88751c09e3bee81b01eaf046922ded0a63a45b5802e808f2ffb56040",
+    "harness/reloc9_wall_guard.py": "7dedaa8ec348e34bc90cbc75a1a1246f295d6d9f153206d996f100cdfd2d2acb",
+    "scripts/reloc9_metrics.py": "9403282f56031f8a35a5dbe35baf7a06015f3ec196a8ecd50812e96dbd1ed520",
+    "tests/test_reloc9_shared.py": "72dd0ea91742fe2953903bba271575552efaac17648497b85308b43f5fb645a9"
+  }
+}

@@ -29,7 +29,9 @@ class PhysicsBackend(old.PhysicsBackend):
                 for controller in self.world.controllers.values():old.old.bind_camera(controller)
             self.dt=float(self.world.model.opt.timestep)
             assert abs(.05/self.dt-round(.05/self.dt))<1e-7
-            self.nearclip_audit=old.old.audit(self.world.model)
+            profile=bundle.get('options',{}).get('render_profile','floor_light_v1')
+            self.nearclip_audit=(old.old.audit(self.world.model) if profile=='floor_light_v1'
+                                 else old.old.audit(self.world.model,base_profile=profile))
             self._ports()
         except Exception:
             self.close()

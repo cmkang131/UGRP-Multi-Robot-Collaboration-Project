@@ -3,6 +3,17 @@ from sim.active_wall_map import PhysicsBackend as Base
 
 
 class PhysicsBackend(Base):
+    def __init__(self, bundle, out, *, seed):
+        super().__init__(bundle, out, seed=seed)
+        if bundle['options'].get('render_profile') == 'floor_light_textured_v1':
+            from sim.render_profile_selection import for_name
+            try:
+                self.texture_audit = for_name('floor_light_textured_v1').verify_model(
+                    self.world.model, 'floor_light_textured_v1')
+            except Exception:
+                self.close()
+                raise
+
     def eval_sample(self):
         import mujoco
         m,d=self.world.model,self.world.data

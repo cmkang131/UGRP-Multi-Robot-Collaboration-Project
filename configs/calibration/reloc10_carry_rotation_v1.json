@@ -1,0 +1,19 @@
+{
+  "schema": "ugrp.reloc10.rotation.v1",
+  "left_scale": 0.5865230029942908,
+  "right_scale": 0.6586960959874627,
+  "drive_model_sha256": "801e23200b6942d51345b2c13ddc6e8a322c2ceab240b6d23206579a19810720",
+  "residual_rotation_fraction": 0.4920507586142564,
+  "calibration_ids": [
+    "solo-carry-rotation-check-05e3e61f:90L",
+    "solo-carry-rotation-check-05e3e61f:180R"
+  ],
+  "validation_policy": "fresh 90L/90R/180L/180R, all ratios 0.9-1.1; holdout never fitted",
+  "sources": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-rotation-check-05e3e61f/raw/result.json",
+      "sha256": "d2dc09dbe000a7c812ede9cb947334f4d78e37e1a4c7ba3d5f3a64ea7ce62956"
+    }
+  ],
+  "scope": "pure equal-duration duty rotation; stopping tail included in fit; no online truth"
+}

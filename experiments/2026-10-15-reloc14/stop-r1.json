@@ -1,0 +1,80 @@
+[
+  {
+    "run": "reloc14-r1-carry-texture-93266-6c9fa728",
+    "owner": "reloc14",
+    "at_unix": 1792065620.026218,
+    "reason": "confirmed recurring tracking_evidence_lost and v7 carry envelope undercoverage; repair known-mode partial observability and fit v7 epochs before continuation",
+    "pids": [
+      {
+        "pid": 338205,
+        "argv": [
+          ".venv-sim/bin/python",
+          "-m",
+          "scripts.run_solo_grasp_act_teacher",
+          "--plan",
+          "experiments/2026-10-15-reloc14/carry-texture-v7-plan.json",
+          "--episode",
+          "2",
+          "--out",
+          "/home/ugrp/ugrp-sim/runs/reloc14-r1-carry-texture-93266-6c9fa728/raw",
+          "--execution-host",
+          "gcp1",
+          "--teacher-profile",
+          "solo_visible_only_v1",
+          "--held-object-hidden-v1",
+          "--setdown-lookaround-v1",
+          "--teacher-stability",
+          "align_relook_v1",
+          "--reach-mode",
+          "pad_window_v2",
+          "--rgb-lift-mode",
+          "solo_lift_lookback_v1",
+          "--solo-lift-lookback-margin-v1",
+          "--solo-truth-free-lookaround-v1",
+          "--solo-carry-to-zone-v1",
+          "--cap-s",
+          "300"
+        ]
+      }
+    ]
+  },
+  {
+    "run": "reloc14-r1-carry-texture-93315-6c9fa728",
+    "owner": "reloc14",
+    "at_unix": 1792065620.034438,
+    "reason": "confirmed recurring tracking_evidence_lost and v7 carry envelope undercoverage; repair known-mode partial observability and fit v7 epochs before continuation",
+    "pids": [
+      {
+        "pid": 339741,
+        "argv": [
+          ".venv-sim/bin/python",
+          "-m",
+          "scripts.run_solo_grasp_act_teacher",
+          "--plan",
+          "experiments/2026-10-15-reloc14/carry-texture-v7-plan.json",
+          "--episode",
+          "8",
+          "--out",
+          "/home/ugrp/ugrp-sim/runs/reloc14-r1-carry-texture-93315-6c9fa728/raw",
+          "--execution-host",
+          "gcp1",
+          "--teacher-profile",
+          "solo_visible_only_v1",
+          "--held-object-hidden-v1",
+          "--setdown-lookaround-v1",
+          "--teacher-stability",
+          "align_relook_v1",
+          "--reach-mode",
+          "pad_window_v2",
+          "--rgb-lift-mode",
+          "solo_lift_lookback_v1",
+          "--solo-lift-lookback-margin-v1",
+          "--solo-truth-free-lookaround-v1",
+          "--solo-carry-to-zone-v1",
+          "--cap-s",
+          "300"
+        ]
+      }
+    ]
+  }
+]

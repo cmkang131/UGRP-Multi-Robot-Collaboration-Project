@@ -1,0 +1,168 @@
+[
+  {
+    "run": "reloc12-r1-raw-texture-93571-eff716cb",
+    "analysis_host": "gcp1",
+    "source_sha": "eff716cba275059c72b78ca0c95d992d3e66b1b6",
+    "frame_N": 430,
+    "status": "HOST_ERROR",
+    "termination_category": "selfmap4_relocalization_exhausted",
+    "elapsed_sim_s": 85.8,
+    "stop_reason": "selfmap4_relocalization_exhausted",
+    "first30": {
+      "elapsed_sim_s": 30.0,
+      "frames": 151,
+      "stage": "active_reloc8",
+      "wall_per_sim": 3.1216951614999973,
+      "pose_sources": {
+        "bootstrap": 3,
+        "visual_update": 89,
+        "command_only": 59
+      },
+      "input_audit": {
+        "schema": "ugrp.selfmap_input_audit.v1",
+        "measured": true,
+        "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+        "own_rgb_frames": 151,
+        "issued_command_records": 157,
+        "top_rgb_frames": 0,
+        "peer_rgb_frames": 0,
+        "truth_pose_inputs": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "rejected_inputs": 0,
+        "authored_static_map_inputs": 1
+      },
+      "frontier_arrivals": 0,
+      "timing": {
+        "seconds": {
+          "capture": 10.358996053000055,
+          "plane_flow": 2.457757032999325,
+          "pf": 1.0715705750014877,
+          "registration": 4.070432965000691,
+          "feature_tracking": 3.189428910000288,
+          "control": 38.53526810300082,
+          "evaluation": 0.13532758299970737,
+          "physics_advance": 40.56214536399989,
+          "feature_extract": 1.012264096000763,
+          "structure_extract": 11.31579075000036
+        },
+        "calls": {
+          "capture": 151,
+          "plane_flow": 151,
+          "pf": 151,
+          "registration": 151,
+          "feature_tracking": 151,
+          "control": 151,
+          "evaluation": 151,
+          "physics_advance": 150,
+          "feature_extract": 139,
+          "structure_extract": 139
+        },
+        "pf_particles": 2000,
+        "nested_categories": true,
+        "note": "control includes feature/PF/geometry; registration includes PF and evidence"
+      }
+    },
+    "gates": {
+      "sensor_update_pass": 116,
+      "sensor_update_cumulative": 116,
+      "pf_resolved_pass": 313,
+      "pf_resolved_cumulative": 95,
+      "cluster_mass_pass": 430,
+      "cluster_mass_cumulative": 95,
+      "xy_covariance_pass": 411,
+      "xy_covariance_cumulative": 95,
+      "yaw_covariance_pass": 353,
+      "yaw_covariance_cumulative": 95,
+      "geometry_pass": 317,
+      "geometry_cumulative": 78,
+      "unique_solution_pass": 0,
+      "unique_solution_cumulative": 0,
+      "reliable_pass": 0,
+      "reliable_cumulative": 0
+    },
+    "rejections": {
+      "no_sensor_update": 314,
+      "pf_unresolved": 117,
+      "xy_covariance": 19,
+      "yaw_covariance": 77,
+      "geometry": 113,
+      "ambiguity_pending_upstream": 352,
+      "geometric_ambiguity": 78
+    },
+    "candidate_count_distribution": {
+      "not_evaluated": 352,
+      "0": 78
+    },
+    "confirmation_length_distribution": {
+      "0": 430
+    },
+    "max_confirmations": 0,
+    "registered_N": 0,
+    "registration_events": [],
+    "registration_event_errors": {
+      "N": 0,
+      "correct_N": 0,
+      "false_N": 0,
+      "xy_m": {
+        "N": 0
+      },
+      "yaw_deg": {
+        "N": 0
+      }
+    },
+    "registered_frame_errors": {
+      "N": 0,
+      "correct_N": 0,
+      "false_N": 0,
+      "xy_m": {
+        "N": 0
+      },
+      "yaw_deg": {
+        "N": 0
+      }
+    },
+    "pf_error": {
+      "N": 313,
+      "correct_N": 116,
+      "false_N": 197,
+      "xy_m": {
+        "N": 313,
+        "min": 0.0073913765937373655,
+        "median": 0.10597350337031135,
+        "p90": 0.15194482084290095,
+        "max": 0.4163876719152174
+      },
+      "yaw_deg": {
+        "N": 313,
+        "min": 0.01667371612788931,
+        "median": 3.266253368139605,
+        "p90": 21.87466848574561,
+        "max": 24.003920226884983
+      }
+    },
+    "replay_packets": 430,
+    "input_audit": {
+      "schema": "ugrp.selfmap_input_audit.v1",
+      "measured": true,
+      "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+      "own_rgb_frames": 430,
+      "issued_command_records": 436,
+      "top_rgb_frames": 0,
+      "peer_rgb_frames": 0,
+      "truth_pose_inputs": 0,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "rejected_inputs": 0,
+      "authored_static_map_inputs": 1
+    },
+    "invisible_measurements": 0,
+    "held_world_reads": 0,
+    "failures_to_review": [],
+    "raw_sha256": {
+      "raw/result.json": "edf9ff014254ad7aba692a4d3ddda00c7305993c88bda2d6aa391cbd2abbcf44",
+      "raw/trace.jsonl.zst": "fb97275428e06bfc398d5752ebb7994e02a9634ffd1db2eeaa9f0bc315e0f15c",
+      "raw/eval_only/trajectory.jsonl.zst": "fffed8a5979b89f48dc765c66e93a9905c6498fc86abfc20f4e81306ad64fc65"
+    }
+  }
+]

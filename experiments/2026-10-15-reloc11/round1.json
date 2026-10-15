@@ -1,0 +1,1267 @@
+[
+  {
+    "run": "reloc11-r1-smooth-93571-4d3335c8",
+    "source_sha": "4d3335c887f2021c9f180999e8ee47fbbe8074f2",
+    "result": {
+      "status": "HOST_ERROR",
+      "source_sha": "4d3335c887f2021c9f180999e8ee47fbbe8074f2",
+      "seed": 93571,
+      "model_calls": 0,
+      "complete": false,
+      "physical_success_unverified": true,
+      "frames": 456,
+      "scene_version": "floor_light_v1",
+      "render_profile": "floor_light_v1",
+      "revision_gate": "selfmap4_revision_gate_v2",
+      "multiframe_registration": "selfmap4_multiframe_registration_v1",
+      "pool_with_previous_results": false,
+      "correction_safety": "selfmap6_correction_safety_v1",
+      "active_relocalization": "reloc8_active_vision_v1",
+      "authored_static_map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b",
+      "elapsed_sim_s": 45.5,
+      "stop_reason": "selfmap4_relocalization_exhausted",
+      "rgb_ledger_verified": true,
+      "frontier_selections": 1,
+      "frontier_arrivals": 0,
+      "map_updated_frames": 289,
+      "pose_sources": {
+        "bootstrap": 4,
+        "command_only": 399,
+        "visual_update": 53
+      },
+      "wall_s": 312.3451122380029,
+      "input_audit": {
+        "schema": "ugrp.selfmap_input_audit.v1",
+        "measured": true,
+        "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+        "own_rgb_frames": 456,
+        "issued_command_records": 235,
+        "top_rgb_frames": 0,
+        "peer_rgb_frames": 0,
+        "truth_pose_inputs": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "rejected_inputs": 0,
+        "authored_static_map_inputs": 1
+      },
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    "first30": {
+      "elapsed_sim_s": 30.0,
+      "frames": 301,
+      "stage": "active_reloc8",
+      "wall_per_sim": 6.983334894933311,
+      "pose_sources": {
+        "bootstrap": 4,
+        "command_only": 255,
+        "visual_update": 42
+      },
+      "input_audit": {
+        "schema": "ugrp.selfmap_input_audit.v1",
+        "measured": true,
+        "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+        "own_rgb_frames": 301,
+        "issued_command_records": 157,
+        "top_rgb_frames": 0,
+        "peer_rgb_frames": 0,
+        "truth_pose_inputs": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "rejected_inputs": 0,
+        "authored_static_map_inputs": 1
+      },
+      "frontier_arrivals": 0,
+      "timing": {
+        "seconds": {
+          "capture": 33.228705772995454,
+          "plane_flow": 6.279382000022451,
+          "pf": 2.489763445995777,
+          "registration": 25.33215151001059,
+          "feature_tracking": 1.371497898031521,
+          "control": 109.89399010499983,
+          "evaluation": 0.42250572602279135,
+          "physics_advance": 65.48313430700364,
+          "feature_extract": 1.9557742729703023,
+          "structure_extract": 24.23484592002569
+        },
+        "calls": {
+          "capture": 301,
+          "plane_flow": 301,
+          "pf": 301,
+          "registration": 301,
+          "feature_tracking": 301,
+          "control": 301,
+          "evaluation": 301,
+          "physics_advance": 300,
+          "feature_extract": 274,
+          "structure_extract": 274
+        },
+        "pf_particles": 2000,
+        "nested_categories": true,
+        "note": "control includes feature/PF/geometry; registration includes PF and evidence"
+      }
+    },
+    "frame_N": 456,
+    "features": {
+      "N": 456,
+      "min": 0.0,
+      "median": 34.0,
+      "p90": 64.0,
+      "max": 86.0
+    },
+    "matches": {
+      "N": 456,
+      "min": 0.0,
+      "median": 4.0,
+      "p90": 11.0,
+      "max": 20.0
+    },
+    "inliers": {
+      "N": 456,
+      "min": 0.0,
+      "median": 0.0,
+      "p90": 7.0,
+      "max": 16.0
+    },
+    "static_features": {
+      "N": 456,
+      "min": 0.0,
+      "median": 4.0,
+      "p90": 4.0,
+      "max": 4.0
+    },
+    "pf_resolved_N": 341,
+    "registered_N": 0,
+    "reliable_N": 0,
+    "sensor_updates": 65,
+    "rejection_reasons": {
+      "no_sensor_update": 391,
+      "pf_unresolved": 115,
+      "xy_covariance": 418,
+      "yaw_covariance": 426,
+      "geometry": 125,
+      "ambiguity_pending_upstream": 456,
+      "cluster_mass": 30
+    },
+    "visual_reason": {
+      "empty_map_origin": 4,
+      "insufficient_matches": 357,
+      "visual_update": 53,
+      "no_rigid_consensus": 42
+    },
+    "pf_error": {
+      "N": 456,
+      "xy_m": {
+        "N": 456,
+        "min": 0.6524040432915583,
+        "median": 1.0347017194317527,
+        "p90": 1.1372881273500957,
+        "max": 2.0498619038742847
+      },
+      "yaw_deg": {
+        "N": 456,
+        "min": 0.022168690386843746,
+        "median": 1.3860108761073247,
+        "p90": 5.262247295693708,
+        "max": 171.91421258188498
+      },
+      "within_10cm_5deg": 0
+    },
+    "pf_resolved_error": {
+      "N": 341,
+      "xy_m": {
+        "N": 341,
+        "min": 0.6524040432915583,
+        "median": 1.0300948448468528,
+        "p90": 1.0825687301738867,
+        "max": 1.1346814698519363
+      },
+      "yaw_deg": {
+        "N": 341,
+        "min": 0.05183691288716045,
+        "median": 2.5102513545120257,
+        "p90": 5.389443166934269,
+        "max": 7.936254133236679
+      },
+      "within_10cm_5deg": 0
+    },
+    "registered_error": {
+      "N": 0,
+      "xy_m": {
+        "N": 0
+      },
+      "yaw_deg": {
+        "N": 0
+      },
+      "within_10cm_5deg": 0
+    },
+    "timing": {
+      "seconds": {
+        "capture": 48.8764552599896,
+        "plane_flow": 9.851663728029962,
+        "pf": 3.7157201179834374,
+        "registration": 51.25621158200738,
+        "feature_tracking": 2.2134635700458603,
+        "control": 159.6628611769993,
+        "evaluation": 0.6398606959955941,
+        "physics_advance": 98.7634862829982,
+        "feature_extract": 2.721389833961439,
+        "structure_extract": 33.13723556705372
+      },
+      "calls": {
+        "capture": 456,
+        "plane_flow": 456,
+        "pf": 456,
+        "registration": 456,
+        "feature_tracking": 456,
+        "control": 456,
+        "evaluation": 456,
+        "physics_advance": 455,
+        "feature_extract": 425,
+        "structure_extract": 425
+      },
+      "pf_particles": 2000,
+      "nested_categories": true,
+      "note": "control includes feature/PF/geometry; registration includes PF and evidence"
+    },
+    "retrieval": "text + selected own RGB; all RGB retained on GCP persistent disk",
+    "text_sha256": {
+      "COMMAND": "e0197cb137d2c7088d5d75a190b75a6160a812f6d7513910f90070219b981108",
+      "EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "LOADAVG": "cc11083c59f75bb29f30518d32cb200e4ea2511e4e4176b8f0850d9f47496b54",
+      "RUN_META.json": "6a115a53180803938900058572759498b9574ab0a56a2487fcea7c56222ddcf9",
+      "SHA256SUMS": "86ad31eae978ff8576bb2cd85b03c47fddad6000debf4b8ea7f96aef1bd77f25",
+      "SOURCE_SHA": "fdd6ad22768ee050d4b8711bf749e2694f8faaa51f58274af27dc0c8eef7a961",
+      "log.txt": "cd4190c145b4de26fd68c4898510090d3e46c24af8c0df2195a8a462d4646951",
+      "raw/RUN_META.json": "85a104a5d026a0778b605bd7aca8da2b86a694b31ed39ed56e5287909c8789ad",
+      "raw/artifacts.sha256.json": "26316ad9eaa8fd0c6cae65d6ecc673f0f31e271605b2e9ebc7ab7093376d8f27",
+      "raw/bundle.json": "bb8d9690c685331a5359dc05b477c2c949eefb498ad6fcbdf80932807f01aaab",
+      "raw/camera-render.json": "5a415b3b69ca6c898b7743c89ddfb1d1e0f8d57baa4ab8b4206455836040517c",
+      "raw/compression-manifest.json": "572fc621d60478149cc88e799a3a18ebdf6e9904f77f04f59aab1f5a7bf2652c",
+      "raw/controller-speedups.json": "674c3bc3af5428965f3089b9295c8b82ebda5917f52873fab406088c0450a780",
+      "raw/eval_only/applied.json": "49342e406f3177991b696b1c4081e16101e5b7ff2e43302f3e35f9cf26b6e052",
+      "raw/eval_only/camera-v3.json": "15dd046403528419a5b70ed3131a04968ba189c4f75d0e19edc6b1fc158f5a40",
+      "raw/eval_only/camera.jsonl.zst": "cea52878ba0816dc285e1322874544ce6ec12674342b7997e17db853af55e738",
+      "raw/eval_only/contact-audit.jsonl": "e5ee640a286e4e4ff5f97dd3bd261ece89470d26a4cbc1f6ac4b114ba2b0f83a",
+      "raw/eval_only/contacts.jsonl.zst": "a0a309915a5ddb7c715e0c22c40d448b62d623a66809f730d5acbf87d80b12a6",
+      "raw/eval_only/drive-v7.json": "556d2a7447d48e4176d5931c562cb1f7b2d96ffc534152a572b6d7a9bcf4353e",
+      "raw/eval_only/render.json": "bd2466f7798392309e9a3409c02c8e595b6e1e67c79e13c056b2914e7249a4cb",
+      "raw/eval_only/render_nearclip.json": "b2ca064ee638f897c28e8774757388581359d1214c04a53e8f9ab72104caab6b",
+      "raw/eval_only/servo.jsonl.zst": "9a26fbdb104077e00d5346b180a7b263acc3582b2f434a00c08e3ac4d4ee83d9",
+      "raw/eval_only/setup.json": "8eecfb67c1ccd43d159122d2fdccba1d3c99454df1900d8af1a28df1e02effdc",
+      "raw/eval_only/trajectory.jsonl.zst": "cda9c7165f60234ef90d15ce64102b59b7ce5919ebb3bd3a6ddd749bb89065f6",
+      "raw/executor-events.json": "691f3b9371f70dcda721c90671517340faeaa24d5236d7917bd1ebc5794c9249",
+      "raw/first30.json": "0de3dc5a351354e2a3a9868bd37188a6cac36c036da65f3d2675c11e17a8b14d",
+      "raw/inputs/static_map.json": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b",
+      "raw/map.json.zst": "15169b94629ed7f3e80c31ff7617d9e3d22ec667b382440a851e97017e8236d2",
+      "raw/progress.json": "f5b1a336935b97af201dea88d4f03eb89df199cdbe0a4dd5a5f3032573bdfb2b",
+      "raw/result.json": "e07caf48e375c6ad4c811dce0752c43c061276c8dd3628310e97cb32de5c0c0e",
+      "raw/robots/r1/commands.jsonl": "59ef962b8289ac4164dd6eb6aa75514b8235ca1e2a8e6b6ecfdda043c7970f23",
+      "raw/robots/r2/commands.jsonl": "59ef962b8289ac4164dd6eb6aa75514b8235ca1e2a8e6b6ecfdda043c7970f23",
+      "raw/robots/r3/commands.jsonl": "322c1d30ecdadfe3eddd93d2528f2e42c0cc04253b602b95b0e2ebae8330134a",
+      "raw/robots/r3/frames.jsonl.zst": "49df59ff68c7184d60390e15732a2a0d63b4f568275676bdbf10fc685d1b981b",
+      "raw/runtime-bundle.json": "9f8d2b9948d43a40668c007c04702e6ae79aa2b72bbdbbf0da64d9b9b0330c72",
+      "raw/scene.json": "4398daa932355ec06ba4b7ec9b198657cb1d57bd15279989560ff27331241954",
+      "raw/scene.xml": "4301a77e477b5d5f8164c5ceabccf50ee9fa8cd4eb7fd18eac321fc088ad04e4",
+      "raw/sweep-events.json": "c32b8e85ea43cdcf5a8cebdef6a7627d33cb5210e072f17a15e7aac216e48834",
+      "raw/timing.json": "14850b6a7aaf0e4150d916ed2949d78e5a7bd449b8f4cca26fd5db8b27a0afc5",
+      "raw/trace.jsonl.zst": "ee89a41a1326a5b61b304d2309ce5f143298d719c768f12f890a031217cd4329",
+      "raw/v7-speedups.json": "b40aca6710cfb55cad041fc4aa7df4d7a849eba87fde9ee02f88a9f88d497f42",
+      "record-copy.log": "eb3edb1e2c1b9e3d05abf9f43af61e5711d98147c79f588e45bac558859a28a5",
+      "retrieval-verified.json": "e5d2dd7a48a4651cfd0000507579d71b119dfee80e8394bff73521f9d924bff0",
+      "review-selection.txt": "bb34998aa8e2b1aef3659b2284784418d97b36be744bf2ee67d8e254427ab82a",
+      "run_wrapper.sh": "55c9ca264307ce8bf0b3720d6b766e35de34ca066a5e06099087bf414cfe0976"
+    },
+    "first30_counts": {
+      "frame_N": 301,
+      "features": {
+        "N": 301,
+        "min": 0.0,
+        "median": 34.0,
+        "p90": 64.0,
+        "max": 79.0
+      },
+      "matches": {
+        "N": 301,
+        "min": 0.0,
+        "median": 3.0,
+        "p90": 10.0,
+        "max": 20.0
+      },
+      "inliers": {
+        "N": 301,
+        "min": 0.0,
+        "median": 0.0,
+        "p90": 9.0,
+        "max": 16.0
+      },
+      "registered_N": 0
+    }
+  },
+  {
+    "run": "reloc11-r1-texture-93571-4d3335c8",
+    "source_sha": "4d3335c887f2021c9f180999e8ee47fbbe8074f2",
+    "result": {
+      "status": "RECORDED",
+      "source_sha": "4d3335c887f2021c9f180999e8ee47fbbe8074f2",
+      "seed": 93571,
+      "model_calls": 0,
+      "complete": false,
+      "physical_success_unverified": true,
+      "frames": 901,
+      "scene_version": "floor_light_textured_v1",
+      "render_profile": "floor_light_textured_v1",
+      "revision_gate": "selfmap4_revision_gate_v2",
+      "multiframe_registration": "selfmap4_multiframe_registration_v1",
+      "pool_with_previous_results": false,
+      "correction_safety": "selfmap6_correction_safety_v1",
+      "active_relocalization": "reloc8_active_vision_v1",
+      "authored_static_map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b",
+      "elapsed_sim_s": 90.0,
+      "stop_reason": "sim_time_cap",
+      "rgb_ledger_verified": true,
+      "frontier_selections": 3,
+      "frontier_arrivals": 1,
+      "map_updated_frames": 754,
+      "pose_sources": {
+        "bootstrap": 4,
+        "visual_update": 84,
+        "command_only": 813
+      },
+      "wall_s": 632.7397085170014,
+      "input_audit": {
+        "schema": "ugrp.selfmap_input_audit.v1",
+        "measured": true,
+        "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+        "own_rgb_frames": 901,
+        "issued_command_records": 457,
+        "top_rgb_frames": 0,
+        "peer_rgb_frames": 0,
+        "truth_pose_inputs": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "rejected_inputs": 0,
+        "authored_static_map_inputs": 1
+      },
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "evaluation": {
+        "scope": "static geometry only; all predicted occupied cells scored against wall surfaces",
+        "occupancy_iou": 0.13987138263665594,
+        "occupancy_intersection": 87,
+        "occupancy_union": 622,
+        "predicted_occupied": 427,
+        "truth_occupied": 282,
+        "false_occupied_outside_domain": 192,
+        "free_coverage_n": 1888,
+        "free_coverage_N": 2773,
+        "free_coverage": 0.6808510638297872,
+        "reachable_free_coverage_n": 1888,
+        "reachable_free_coverage_N": 2773,
+        "known_coverage_n": 2226,
+        "known_coverage_N": 3055,
+        "wall_error_rmse_m": 0.2728143933307605,
+        "wall_error_predicted_N": 427,
+        "all_wall_to_prediction_p95_m": 1.268461874884218,
+        "all_wall_samples_N": 544,
+        "origin_eval_only": [
+          3.249976477482823,
+          0.750001565403524,
+          3.141588922613524
+        ],
+        "pose_error_N": 901,
+        "trace_N": 901,
+        "pose_rmse_m": 0.03878273691647437,
+        "yaw_rmse_rad": 0.15466278812093454
+      }
+    },
+    "first30": {
+      "elapsed_sim_s": 30.0,
+      "frames": 301,
+      "stage": "active_reloc8",
+      "wall_per_sim": 6.819869637066707,
+      "pose_sources": {
+        "bootstrap": 4,
+        "visual_update": 78,
+        "command_only": 219
+      },
+      "input_audit": {
+        "schema": "ugrp.selfmap_input_audit.v1",
+        "measured": true,
+        "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+        "own_rgb_frames": 301,
+        "issued_command_records": 157,
+        "top_rgb_frames": 0,
+        "peer_rgb_frames": 0,
+        "truth_pose_inputs": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "rejected_inputs": 0,
+        "authored_static_map_inputs": 1
+      },
+      "frontier_arrivals": 0,
+      "timing": {
+        "seconds": {
+          "capture": 33.30211145400972,
+          "plane_flow": 6.973611482990236,
+          "pf": 2.4779125500281225,
+          "registration": 19.0877253679937,
+          "feature_tracking": 2.1931314609937544,
+          "control": 100.71090080800786,
+          "evaluation": 0.4178423619996465,
+          "physics_advance": 64.56392062398663,
+          "feature_extract": 1.9225559150218032,
+          "structure_extract": 21.776601495013892
+        },
+        "calls": {
+          "capture": 301,
+          "plane_flow": 301,
+          "pf": 301,
+          "registration": 301,
+          "feature_tracking": 301,
+          "control": 301,
+          "evaluation": 301,
+          "physics_advance": 300,
+          "feature_extract": 278,
+          "structure_extract": 278
+        },
+        "pf_particles": 2000,
+        "nested_categories": true,
+        "note": "control includes feature/PF/geometry; registration includes PF and evidence"
+      }
+    },
+    "frame_N": 901,
+    "features": {
+      "N": 901,
+      "min": 0.0,
+      "median": 16.0,
+      "p90": 49.0,
+      "max": 80.0
+    },
+    "matches": {
+      "N": 901,
+      "min": 0.0,
+      "median": 2.0,
+      "p90": 8.0,
+      "max": 14.0
+    },
+    "inliers": {
+      "N": 901,
+      "min": 0.0,
+      "median": 0.0,
+      "p90": 0.0,
+      "max": 14.0
+    },
+    "static_features": {
+      "N": 901,
+      "min": 0.0,
+      "median": 4.0,
+      "p90": 4.0,
+      "max": 4.0
+    },
+    "pf_resolved_N": 756,
+    "registered_N": 0,
+    "reliable_N": 0,
+    "sensor_updates": 107,
+    "rejection_reasons": {
+      "no_sensor_update": 794,
+      "pf_unresolved": 145,
+      "xy_covariance": 897,
+      "yaw_covariance": 869,
+      "geometry": 261,
+      "ambiguity_pending_upstream": 901,
+      "cluster_mass": 77
+    },
+    "visual_reason": {
+      "empty_map_origin": 4,
+      "visual_update": 84,
+      "insufficient_matches": 805,
+      "no_rigid_consensus": 8
+    },
+    "pf_error": {
+      "N": 901,
+      "xy_m": {
+        "N": 901,
+        "min": 0.028958417010642657,
+        "median": 0.11489238073522888,
+        "p90": 0.5266374944219756,
+        "max": 1.928511219452373
+      },
+      "yaw_deg": {
+        "N": 901,
+        "min": 0.004594075468122512,
+        "median": 0.9854452357324778,
+        "p90": 6.193346066499109,
+        "max": 171.91421258188498
+      },
+      "within_10cm_5deg": 262
+    },
+    "pf_resolved_error": {
+      "N": 756,
+      "xy_m": {
+        "N": 756,
+        "min": 0.028958417010642657,
+        "median": 0.10580530474835628,
+        "p90": 0.16378384119481307,
+        "max": 0.3716243244432751
+      },
+      "yaw_deg": {
+        "N": 756,
+        "min": 0.004594075468122512,
+        "median": 0.905773500599178,
+        "p90": 5.310283231052807,
+        "max": 14.469566684901311
+      },
+      "within_10cm_5deg": 262
+    },
+    "registered_error": {
+      "N": 0,
+      "xy_m": {
+        "N": 0
+      },
+      "yaw_deg": {
+        "N": 0
+      },
+      "within_10cm_5deg": 0
+    },
+    "timing": {
+      "seconds": {
+        "capture": 82.41439729402919,
+        "plane_flow": 20.09310838894089,
+        "pf": 6.178780509988428,
+        "registration": 102.16314631496789,
+        "feature_tracking": 3.0331931359760347,
+        "control": 355.2005073670698,
+        "evaluation": 1.1863450869932421,
+        "physics_advance": 180.42329869895184,
+        "feature_extract": 4.603929855933529,
+        "structure_extract": 51.316772593978385
+      },
+      "calls": {
+        "capture": 901,
+        "plane_flow": 901,
+        "pf": 901,
+        "registration": 901,
+        "feature_tracking": 901,
+        "control": 901,
+        "evaluation": 901,
+        "physics_advance": 900,
+        "feature_extract": 856,
+        "structure_extract": 856
+      },
+      "pf_particles": 2000,
+      "nested_categories": true,
+      "note": "control includes feature/PF/geometry; registration includes PF and evidence"
+    },
+    "retrieval": "text + selected own RGB; all RGB retained on GCP persistent disk",
+    "text_sha256": {
+      "COMMAND": "6798edd498daf7c6cca1fbae529fc172bc73afc5f313996240fb49a28e336ec5",
+      "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "LOADAVG": "190e0500915842cf97e7ee5bee50385d7051f98b46631c53a1090b7469f17d87",
+      "RUN_META.json": "a2fa161a8689a528754f4d6b33ca509f643be7e1dc147c1616db7eee3c388433",
+      "SHA256SUMS": "97bddc49d6d3f34a19d73858fd33b80af790ddb27154b08ecebf08ffed51ce6f",
+      "SOURCE_SHA": "fdd6ad22768ee050d4b8711bf749e2694f8faaa51f58274af27dc0c8eef7a961",
+      "log.txt": "8a296d2f5ffc3e25e67b2cb59dbfc8473ff4178625991f0ccb4a8f88ecd73351",
+      "raw/RUN_META.json": "85a104a5d026a0778b605bd7aca8da2b86a694b31ed39ed56e5287909c8789ad",
+      "raw/artifact-manifest-receipt.json": "c0122945c485ec2f76feb4b712669b9a3741537874008c8c36cf7147f8742ae8",
+      "raw/artifacts.sha256.json.zst": "9502083d1ddc0eb62b21aa691bb88b97e211ea4692f35dd8a9a0e7ee9a034288",
+      "raw/bundle.json": "18b5cd2d3f7a4455a1cda72d3a74616e67ffa9761b81e86e025ab4264590ba2a",
+      "raw/camera-render.json": "f30c1fb605aeee0fdbb63a8144c4798b27102264f10cdfae682f60aee185ed6d",
+      "raw/compression-manifest.json": "7a3dfdd10e2db9f8aef6ac75eea43c2cceee1b40f9b0a0de570dcdf420205322",
+      "raw/controller-speedups.json": "674c3bc3af5428965f3089b9295c8b82ebda5917f52873fab406088c0450a780",
+      "raw/eval_only/applied.json": "e0136786c55e5cf838788bad0bd4f5e2dcab84e61cd0ea542f74a0f0300adb01",
+      "raw/eval_only/camera-v3.json": "15dd046403528419a5b70ed3131a04968ba189c4f75d0e19edc6b1fc158f5a40",
+      "raw/eval_only/camera.jsonl.zst": "e2968c0e06feab9948c65a62d23733a412f9bb38bb54b5f9b9f178cf98656124",
+      "raw/eval_only/contact-audit.jsonl": "bc200efa568ec018eb7a0d4d1d7f90492015b266e1d339bd439e962a1656f1e1",
+      "raw/eval_only/contacts.jsonl.zst": "29eb0d7cb3b1628b8785ff6d83910ddcd02f6dfc28155600ca10a0ef7f7f0f0f",
+      "raw/eval_only/drive-v7.json": "ac3e3166ef04218964857ba99f4da30782f74ff3cf243ab847cc0df4fcfd3733",
+      "raw/eval_only/render.json": "fe06776ec5db6d6f98bb2b94c383be58714e02eb4d6432d5a74defb06e37d56c",
+      "raw/eval_only/render_nearclip.json": "5f9c85224381e47a8893e82d13a6292c16e13621df4d3238494b089f0a41858e",
+      "raw/eval_only/selfmap-metrics.json": "2d62837b648a582f01b0931e1e1be74b3e55da5bb7b79ab05a2f3bcc58138728",
+      "raw/eval_only/servo.jsonl.zst": "d6a263be0f742150c5d520b5ac9e140df7c0ae28a5daf86737ada0c643e2c5c0",
+      "raw/eval_only/setup.json": "8eecfb67c1ccd43d159122d2fdccba1d3c99454df1900d8af1a28df1e02effdc",
+      "raw/eval_only/trajectory.jsonl.zst": "efbc3f1d0c72e26c3824c2a98f02bc7b4b5bd410f1f0e7a4f4e0576315410e12",
+      "raw/executor-events.json": "798f2c92a254384c8ad33a91fa71aa8e5bc980d2fff21e31779771a0e6f8cf2a",
+      "raw/first30.json": "cddc4571b3323dea51141215b916e6a344298537ee186605cb69c41a4d6122f9",
+      "raw/inputs/static_map.json": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b",
+      "raw/map.json.zst": "fdfacecdc7bdc6531ec4ef5c78b81b331657135638cf785df7ffb1b02abe5a49",
+      "raw/progress.json": "68fabf9f64533208126b4d3e624e8f7d98c685c3adf954e282d4117c3305f151",
+      "raw/result.json": "f1304220377656c6a4ad33efbce2e9eed6b953a626fc0030e9f314cfdbf231dd",
+      "raw/robots/r1/commands.jsonl": "59ef962b8289ac4164dd6eb6aa75514b8235ca1e2a8e6b6ecfdda043c7970f23",
+      "raw/robots/r2/commands.jsonl": "59ef962b8289ac4164dd6eb6aa75514b8235ca1e2a8e6b6ecfdda043c7970f23",
+      "raw/robots/r3/commands.jsonl": "e403e03f20b12377de034cff00a91bde14f67e07e04a295f82bfea07b132d125",
+      "raw/robots/r3/frames.jsonl.zst": "cebe1e5fe08478847eeb028233b72ae6578e222b848700050350767d6d06e98a",
+      "raw/runtime-bundle.json": "553cfa9cfedf6c294d9037906b84a1172772a8482cea276ad03896e26e5d4912",
+      "raw/scene.json": "177b48a5351730e0aad86dde4c54d534680184f8befd686981b102d8b862054a",
+      "raw/scene.xml": "f16c8c0b8ee2d9e03a6e339bb9fad5860f7f92241354f226fcb63763f8ef8e44",
+      "raw/sweep-events.json": "a936e253bd609f9b7ff2ab56fef21989e2f177eff86cd010d64fb3ff99649f61",
+      "raw/texture-audit.json": "fe06776ec5db6d6f98bb2b94c383be58714e02eb4d6432d5a74defb06e37d56c",
+      "raw/timing.json": "fc3fb28c1f2e94c81d54eea004b8237f0114073074eefabf6fe4beb8518e4653",
+      "raw/trace.jsonl.zst": "4b6ebbea1d5915db9430e46aeff1070e7d48c76f75f8b12767a6db06bd258c55",
+      "raw/v7-speedups.json": "b40aca6710cfb55cad041fc4aa7df4d7a849eba87fde9ee02f88a9f88d497f42",
+      "record-copy.log": "eb3edb1e2c1b9e3d05abf9f43af61e5711d98147c79f588e45bac558859a28a5",
+      "retrieval-verified.json": "092afeb3e3ee3cac3029cc7dfc26d15c74c514cf53f4eb5e5ca75ce231c1146b",
+      "review-selection.txt": "05d0ff2b4d55966ff477c454e072d422be92b6acd45c7601d75396cc6c0df824",
+      "run_wrapper.sh": "7991590b1f02ab64e88a166e37640e763d98724e02c19f3333ed32d1f2869545"
+    },
+    "first30_counts": {
+      "frame_N": 301,
+      "features": {
+        "N": 301,
+        "min": 0.0,
+        "median": 32.0,
+        "p90": 56.0,
+        "max": 80.0
+      },
+      "matches": {
+        "N": 301,
+        "min": 0.0,
+        "median": 4.0,
+        "p90": 11.0,
+        "max": 14.0
+      },
+      "inliers": {
+        "N": 301,
+        "min": 0.0,
+        "median": 0.0,
+        "p90": 10.0,
+        "max": 14.0
+      },
+      "registered_N": 0
+    }
+  },
+  {
+    "run": "reloc11-r1-texture-93581-4d3335c8",
+    "source_sha": "4d3335c887f2021c9f180999e8ee47fbbe8074f2",
+    "result": {
+      "status": "RECORDED",
+      "source_sha": "4d3335c887f2021c9f180999e8ee47fbbe8074f2",
+      "seed": 93581,
+      "model_calls": 0,
+      "complete": false,
+      "physical_success_unverified": true,
+      "frames": 901,
+      "scene_version": "floor_light_textured_v1",
+      "render_profile": "floor_light_textured_v1",
+      "revision_gate": "selfmap4_revision_gate_v2",
+      "multiframe_registration": "selfmap4_multiframe_registration_v1",
+      "pool_with_previous_results": false,
+      "correction_safety": "selfmap6_correction_safety_v1",
+      "active_relocalization": "reloc8_active_vision_v1",
+      "authored_static_map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b",
+      "elapsed_sim_s": 90.0,
+      "stop_reason": "sim_time_cap",
+      "rgb_ledger_verified": true,
+      "frontier_selections": 2,
+      "frontier_arrivals": 0,
+      "map_updated_frames": 868,
+      "pose_sources": {
+        "bootstrap": 4,
+        "visual_update": 87,
+        "command_only": 810
+      },
+      "wall_s": 616.3482699779997,
+      "input_audit": {
+        "schema": "ugrp.selfmap_input_audit.v1",
+        "measured": true,
+        "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+        "own_rgb_frames": 901,
+        "issued_command_records": 457,
+        "top_rgb_frames": 0,
+        "peer_rgb_frames": 0,
+        "truth_pose_inputs": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "rejected_inputs": 0,
+        "authored_static_map_inputs": 1
+      },
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "evaluation": {
+        "scope": "static geometry only; all predicted occupied cells scored against wall surfaces",
+        "occupancy_iou": 0.11937716262975778,
+        "occupancy_intersection": 69,
+        "occupancy_union": 578,
+        "predicted_occupied": 365,
+        "truth_occupied": 282,
+        "false_occupied_outside_domain": 196,
+        "free_coverage_n": 1378,
+        "free_coverage_N": 2773,
+        "free_coverage": 0.4969347277316985,
+        "reachable_free_coverage_n": 1378,
+        "reachable_free_coverage_N": 2773,
+        "known_coverage_n": 1641,
+        "known_coverage_N": 3055,
+        "wall_error_rmse_m": 0.3850880525531506,
+        "wall_error_predicted_N": 365,
+        "all_wall_to_prediction_p95_m": 3.1808359854872705,
+        "all_wall_samples_N": 544,
+        "origin_eval_only": [
+          3.2499770273975765,
+          0.7500011231412926,
+          3.1415883853441153
+        ],
+        "pose_error_N": 901,
+        "trace_N": 901,
+        "pose_rmse_m": 0.06614955765202067,
+        "yaw_rmse_rad": 0.0738857246156901
+      }
+    },
+    "first30": {
+      "elapsed_sim_s": 30.0,
+      "frames": 301,
+      "stage": "active_reloc8",
+      "wall_per_sim": 6.500738703600049,
+      "pose_sources": {
+        "bootstrap": 4,
+        "visual_update": 66,
+        "command_only": 231
+      },
+      "input_audit": {
+        "schema": "ugrp.selfmap_input_audit.v1",
+        "measured": true,
+        "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+        "own_rgb_frames": 301,
+        "issued_command_records": 157,
+        "top_rgb_frames": 0,
+        "peer_rgb_frames": 0,
+        "truth_pose_inputs": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "rejected_inputs": 0,
+        "authored_static_map_inputs": 1
+      },
+      "frontier_arrivals": 0,
+      "timing": {
+        "seconds": {
+          "capture": 31.858335819000786,
+          "plane_flow": 6.959816032063827,
+          "pf": 2.454814953973255,
+          "registration": 15.935003148988471,
+          "feature_tracking": 1.8480400129701593,
+          "control": 98.4325249289941,
+          "evaluation": 0.43044595597166335,
+          "physics_advance": 63.826536297008715,
+          "feature_extract": 1.9409250379831064,
+          "structure_extract": 21.498436359990592
+        },
+        "calls": {
+          "capture": 301,
+          "plane_flow": 301,
+          "pf": 301,
+          "registration": 301,
+          "feature_tracking": 301,
+          "control": 301,
+          "evaluation": 301,
+          "physics_advance": 300,
+          "feature_extract": 278,
+          "structure_extract": 278
+        },
+        "pf_particles": 2000,
+        "nested_categories": true,
+        "note": "control includes feature/PF/geometry; registration includes PF and evidence"
+      }
+    },
+    "frame_N": 901,
+    "features": {
+      "N": 901,
+      "min": 0.0,
+      "median": 11.0,
+      "p90": 48.0,
+      "max": 78.0
+    },
+    "matches": {
+      "N": 901,
+      "min": 0.0,
+      "median": 1.0,
+      "p90": 8.0,
+      "max": 16.0
+    },
+    "inliers": {
+      "N": 901,
+      "min": 0.0,
+      "median": 0.0,
+      "p90": 0.0,
+      "max": 13.0
+    },
+    "static_features": {
+      "N": 901,
+      "min": 0.0,
+      "median": 4.0,
+      "p90": 4.0,
+      "max": 4.0
+    },
+    "pf_resolved_N": 851,
+    "registered_N": 0,
+    "reliable_N": 0,
+    "sensor_updates": 109,
+    "rejection_reasons": {
+      "no_sensor_update": 792,
+      "pf_unresolved": 50,
+      "xy_covariance": 811,
+      "yaw_covariance": 830,
+      "geometry": 262,
+      "ambiguity_pending_upstream": 901
+    },
+    "visual_reason": {
+      "empty_map_origin": 4,
+      "visual_update": 87,
+      "insufficient_matches": 797,
+      "no_rigid_consensus": 13
+    },
+    "pf_error": {
+      "N": 901,
+      "xy_m": {
+        "N": 901,
+        "min": 0.010179337167309458,
+        "median": 0.12286115392604392,
+        "p90": 0.410293394711044,
+        "max": 1.9285111738369638
+      },
+      "yaw_deg": {
+        "N": 901,
+        "min": 0.004038653789998482,
+        "median": 7.527028966897726,
+        "p90": 9.021037420826215,
+        "max": 171.91429309975004
+      },
+      "within_10cm_5deg": 107
+    },
+    "pf_resolved_error": {
+      "N": 851,
+      "xy_m": {
+        "N": 851,
+        "min": 0.010179337167309458,
+        "median": 0.12182027933065259,
+        "p90": 0.3920475083942871,
+        "max": 0.4189572247119325
+      },
+      "yaw_deg": {
+        "N": 851,
+        "min": 0.004038653789998482,
+        "median": 7.527028966897726,
+        "p90": 8.914833727544206,
+        "max": 11.71417686436256
+      },
+      "within_10cm_5deg": 107
+    },
+    "registered_error": {
+      "N": 0,
+      "xy_m": {
+        "N": 0
+      },
+      "yaw_deg": {
+        "N": 0
+      },
+      "within_10cm_5deg": 0
+    },
+    "timing": {
+      "seconds": {
+        "capture": 74.73956828900918,
+        "plane_flow": 20.473991363051027,
+        "pf": 6.046072066917986,
+        "registration": 98.09789708695098,
+        "feature_tracking": 3.1754224710130075,
+        "control": 352.01624256796276,
+        "evaluation": 1.214708333965973,
+        "physics_advance": 180.452076399004,
+        "feature_extract": 4.51895176497419,
+        "structure_extract": 50.11347024796123
+      },
+      "calls": {
+        "capture": 901,
+        "plane_flow": 901,
+        "pf": 901,
+        "registration": 901,
+        "feature_tracking": 901,
+        "control": 901,
+        "evaluation": 901,
+        "physics_advance": 900,
+        "feature_extract": 868,
+        "structure_extract": 868
+      },
+      "pf_particles": 2000,
+      "nested_categories": true,
+      "note": "control includes feature/PF/geometry; registration includes PF and evidence"
+    },
+    "retrieval": "text + selected own RGB; all RGB retained on GCP persistent disk",
+    "text_sha256": {
+      "COMMAND": "4ad7452135635ca68d29c423e1c530a5c9bdb67a021ac3612d77d0df20588313",
+      "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "LOADAVG": "7017f667961608354487c095e51502dfb0f866b2d4f7ed5f936f1b9292e80859",
+      "RUN_META.json": "b2c513712ee8dcf9e67f3c09907a30129f61f1ba5d076526b39e91da63e27bbe",
+      "SHA256SUMS": "3335ae0069b94432eec45637a8fcce6023245204b7b40749dca317430a25e8b4",
+      "SOURCE_SHA": "fdd6ad22768ee050d4b8711bf749e2694f8faaa51f58274af27dc0c8eef7a961",
+      "log.txt": "7b48b7c0f5e373a002e217b8202a74930ead21834288d3bf1fcdaeeb1575d8ac",
+      "raw/RUN_META.json": "85a104a5d026a0778b605bd7aca8da2b86a694b31ed39ed56e5287909c8789ad",
+      "raw/artifact-manifest-receipt.json": "20f1726a574164b26bf9256cd85551474eae7cb15ba673569886af63585f2055",
+      "raw/artifacts.sha256.json.zst": "b3ecf065f1b18ef13b1a2ed9f3d8a162e36ae5c81f3406e505b8c0dee0b6eb6f",
+      "raw/bundle.json": "9747ae2c5c92142f2fcc7eac279f268d306fe85be7062b3ee528bc71d0daa19f",
+      "raw/camera-render.json": "7d7f9f97fa4fbaf44683ad144635e29ca1646f43914b0754b2bc14dcb10d818c",
+      "raw/compression-manifest.json": "b42a17ec17bd684fc62f097053addf4befd64dfe4670d1123c372050aa9cec87",
+      "raw/controller-speedups.json": "674c3bc3af5428965f3089b9295c8b82ebda5917f52873fab406088c0450a780",
+      "raw/eval_only/applied.json": "f69018bc12b99b912e7bfc375a559a51fdbcabe4a88e9ab94bcfbf25ca67bc25",
+      "raw/eval_only/camera-v3.json": "15dd046403528419a5b70ed3131a04968ba189c4f75d0e19edc6b1fc158f5a40",
+      "raw/eval_only/camera.jsonl.zst": "f435dc0e15aac2e70e055d88aad02f21c9306e445f3d7f109624db7da871967d",
+      "raw/eval_only/contact-audit.jsonl": "bc200efa568ec018eb7a0d4d1d7f90492015b266e1d339bd439e962a1656f1e1",
+      "raw/eval_only/contacts.jsonl.zst": "41ee4cc5584ea81cd1fd8496e846972fbe5d57d41b9e4c9e3312f4c35ba2daa5",
+      "raw/eval_only/drive-v7.json": "f8443e92fea0fdaa07c9f4ef047d36f9ad20c8483cf217ba7def7165f00f7ba2",
+      "raw/eval_only/render.json": "fe06776ec5db6d6f98bb2b94c383be58714e02eb4d6432d5a74defb06e37d56c",
+      "raw/eval_only/render_nearclip.json": "5f9c85224381e47a8893e82d13a6292c16e13621df4d3238494b089f0a41858e",
+      "raw/eval_only/selfmap-metrics.json": "c41f07e6f72872b85cebec15c5dfd24aab7dd4bf8a7ee153121fef87fca27af8",
+      "raw/eval_only/servo.jsonl.zst": "c458b9f43f2eabb7fa9a202a67ecb0341ab9264f6ba8403f86e939ba2e023db4",
+      "raw/eval_only/setup.json": "58e2e3fabb026eddd0256b5a82c4f2bf21cca12dc30a33224f79a214e71534d2",
+      "raw/eval_only/trajectory.jsonl.zst": "85f10c938f130877b9141d3dbcb5414091036b3ae0e88003e5e8bd8c07261a68",
+      "raw/executor-events.json.zst": "c579a9cf29907bf79a54c0108b67bb2d9840ea16bc08b7409d0a08d1b34a1f33",
+      "raw/first30.json": "aac2a6be97a2dde339f1472c960451f41e8b0e7d7f0ea7fdb959708a59a3025c",
+      "raw/inputs/static_map.json": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b",
+      "raw/map.json.zst": "2db0fa777262d27b31bc72f2e80992f796489db3ea077c2bb238f8fd245506d7",
+      "raw/progress.json": "e3f213140d880268ab5d3d5c279ec168e403a1feb72fee0593f5f384f56440fa",
+      "raw/result.json": "f5b47cbc17d942737288ba3345ea27859cea55667c82c0b5d6005bb45f9bb8c4",
+      "raw/robots/r1/commands.jsonl": "59ef962b8289ac4164dd6eb6aa75514b8235ca1e2a8e6b6ecfdda043c7970f23",
+      "raw/robots/r2/commands.jsonl": "59ef962b8289ac4164dd6eb6aa75514b8235ca1e2a8e6b6ecfdda043c7970f23",
+      "raw/robots/r3/commands.jsonl": "25c872c0a535521f12b2879184ca3dffca49bbf025e678b1f829aeb73d91b005",
+      "raw/robots/r3/frames.jsonl.zst": "24927a4d530e36b8d3449b7ae9691f115f1e1d4e9d4454e79d83f2b311f2785a",
+      "raw/runtime-bundle.json": "bdbac2d53250e99506b67052f710f4548251e3a3abec15dfa5770ffa88700b16",
+      "raw/scene.json": "bc3eb48523fbfb38bc49c29ac81afe6732c915699fc6d727e6780f4d6a0ce24b",
+      "raw/scene.xml": "9415bef31e4ebd9fca3099e312fdfdb4d04fe115ed1dad5693f129309c88b6bc",
+      "raw/sweep-events.json": "c32b8e85ea43cdcf5a8cebdef6a7627d33cb5210e072f17a15e7aac216e48834",
+      "raw/texture-audit.json": "fe06776ec5db6d6f98bb2b94c383be58714e02eb4d6432d5a74defb06e37d56c",
+      "raw/timing.json": "e2cb1a79145c17f80f386f9fb7617501af5fcaa0d00c455d6072fedda5d7a71b",
+      "raw/trace.jsonl.zst": "75539d09abf7621f48b97fd8fbd2ac18df7699c5274cfaf65bce43e0be988451",
+      "raw/v7-speedups.json": "b40aca6710cfb55cad041fc4aa7df4d7a849eba87fde9ee02f88a9f88d497f42",
+      "record-copy.log": "eb3edb1e2c1b9e3d05abf9f43af61e5711d98147c79f588e45bac558859a28a5",
+      "retrieval-verified.json": "cf57e9dcbfe8229f90338b73974034e7def4f1d44cd66086a9690df55d901e39",
+      "review-selection.txt": "05d0ff2b4d55966ff477c454e072d422be92b6acd45c7601d75396cc6c0df824",
+      "run_wrapper.sh": "e2747dde398b92a87b6a80ff36ba56add0a592ccf9a416dfa76e9834446ea407"
+    },
+    "first30_counts": {
+      "frame_N": 301,
+      "features": {
+        "N": 301,
+        "min": 0.0,
+        "median": 32.0,
+        "p90": 57.0,
+        "max": 78.0
+      },
+      "matches": {
+        "N": 301,
+        "min": 0.0,
+        "median": 4.0,
+        "p90": 10.0,
+        "max": 13.0
+      },
+      "inliers": {
+        "N": 301,
+        "min": 0.0,
+        "median": 0.0,
+        "p90": 9.0,
+        "max": 12.0
+      },
+      "registered_N": 0
+    }
+  },
+  {
+    "run": "reloc11-r1-texture-93582-4d3335c8",
+    "source_sha": "4d3335c887f2021c9f180999e8ee47fbbe8074f2",
+    "result": {
+      "status": "HOST_ERROR",
+      "source_sha": "4d3335c887f2021c9f180999e8ee47fbbe8074f2",
+      "seed": 93582,
+      "model_calls": 0,
+      "complete": false,
+      "physical_success_unverified": true,
+      "frames": 480,
+      "scene_version": "floor_light_textured_v1",
+      "render_profile": "floor_light_textured_v1",
+      "revision_gate": "selfmap4_revision_gate_v2",
+      "multiframe_registration": "selfmap4_multiframe_registration_v1",
+      "pool_with_previous_results": false,
+      "correction_safety": "selfmap6_correction_safety_v1",
+      "active_relocalization": "reloc8_active_vision_v1",
+      "authored_static_map_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b",
+      "elapsed_sim_s": 47.900000000000006,
+      "stop_reason": "selfmap4_relocalization_exhausted",
+      "rgb_ledger_verified": true,
+      "frontier_selections": 3,
+      "frontier_arrivals": 0,
+      "map_updated_frames": 451,
+      "pose_sources": {
+        "bootstrap": 4,
+        "visual_update": 78,
+        "command_only": 398
+      },
+      "wall_s": 331.9983822710019,
+      "input_audit": {
+        "schema": "ugrp.selfmap_input_audit.v1",
+        "measured": true,
+        "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+        "own_rgb_frames": 480,
+        "issued_command_records": 247,
+        "top_rgb_frames": 0,
+        "peer_rgb_frames": 0,
+        "truth_pose_inputs": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "rejected_inputs": 0,
+        "authored_static_map_inputs": 1
+      },
+      "invisible_measurements": 0,
+      "held_world_reads": 0
+    },
+    "first30": {
+      "elapsed_sim_s": 30.0,
+      "frames": 301,
+      "stage": "active_reloc8",
+      "wall_per_sim": 6.747881450333322,
+      "pose_sources": {
+        "bootstrap": 4,
+        "visual_update": 77,
+        "command_only": 220
+      },
+      "input_audit": {
+        "schema": "ugrp.selfmap_input_audit.v1",
+        "measured": true,
+        "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+        "own_rgb_frames": 301,
+        "issued_command_records": 157,
+        "top_rgb_frames": 0,
+        "peer_rgb_frames": 0,
+        "truth_pose_inputs": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "rejected_inputs": 0,
+        "authored_static_map_inputs": 1
+      },
+      "frontier_arrivals": 0,
+      "timing": {
+        "seconds": {
+          "capture": 33.70189904600193,
+          "plane_flow": 6.819223150017933,
+          "pf": 2.4963390049779264,
+          "registration": 17.835054794002644,
+          "feature_tracking": 2.3750339989637723,
+          "control": 101.50107469199429,
+          "evaluation": 0.4301936920128355,
+          "physics_advance": 66.32403540000814,
+          "feature_extract": 1.9544206529972143,
+          "structure_extract": 21.707069077994674
+        },
+        "calls": {
+          "capture": 301,
+          "plane_flow": 301,
+          "pf": 301,
+          "registration": 301,
+          "feature_tracking": 301,
+          "control": 301,
+          "evaluation": 301,
+          "physics_advance": 300,
+          "feature_extract": 274,
+          "structure_extract": 274
+        },
+        "pf_particles": 2000,
+        "nested_categories": true,
+        "note": "control includes feature/PF/geometry; registration includes PF and evidence"
+      }
+    },
+    "frame_N": 480,
+    "features": {
+      "N": 480,
+      "min": 0.0,
+      "median": 27.5,
+      "p90": 53.0,
+      "max": 78.0
+    },
+    "matches": {
+      "N": 480,
+      "min": 0.0,
+      "median": 3.0,
+      "p90": 10.0,
+      "max": 15.0
+    },
+    "inliers": {
+      "N": 480,
+      "min": 0.0,
+      "median": 0.0,
+      "p90": 9.0,
+      "max": 13.0
+    },
+    "static_features": {
+      "N": 480,
+      "min": 0.0,
+      "median": 4.0,
+      "p90": 4.0,
+      "max": 4.0
+    },
+    "pf_resolved_N": 326,
+    "registered_N": 0,
+    "reliable_N": 0,
+    "sensor_updates": 69,
+    "rejection_reasons": {
+      "no_sensor_update": 411,
+      "pf_unresolved": 154,
+      "xy_covariance": 423,
+      "yaw_covariance": 474,
+      "geometry": 146,
+      "ambiguity_pending_upstream": 480,
+      "cluster_mass": 8
+    },
+    "visual_reason": {
+      "empty_map_origin": 4,
+      "visual_update": 78,
+      "insufficient_matches": 371,
+      "no_rigid_consensus": 26,
+      "pose_correction_rejected": 1
+    },
+    "pf_error": {
+      "N": 480,
+      "xy_m": {
+        "N": 480,
+        "min": 0.0409576551425341,
+        "median": 0.12014242268857836,
+        "p90": 0.41036332571345746,
+        "max": 1.9285112889398137
+      },
+      "yaw_deg": {
+        "N": 480,
+        "min": 0.02497889651260474,
+        "median": 6.138398181269164,
+        "p90": 9.853222073878037,
+        "max": 171.91426674303628
+      },
+      "within_10cm_5deg": 99
+    },
+    "pf_resolved_error": {
+      "N": 326,
+      "xy_m": {
+        "N": 326,
+        "min": 0.0409576551425341,
+        "median": 0.1005735579716842,
+        "p90": 0.22297885779380808,
+        "max": 0.38200291946917414
+      },
+      "yaw_deg": {
+        "N": 326,
+        "min": 0.02497889651260474,
+        "median": 3.389208569506003,
+        "p90": 9.67334283814522,
+        "max": 10.016070192933155
+      },
+      "within_10cm_5deg": 99
+    },
+    "registered_error": {
+      "N": 0,
+      "xy_m": {
+        "N": 0
+      },
+      "yaw_deg": {
+        "N": 0
+      },
+      "within_10cm_5deg": 0
+    },
+    "timing": {
+      "seconds": {
+        "capture": 48.194574348981405,
+        "plane_flow": 11.101522389017191,
+        "pf": 3.755237719986326,
+        "registration": 44.67820419300551,
+        "feature_tracking": 2.806584514957649,
+        "control": 173.74180272701778,
+        "evaluation": 0.674560787021619,
+        "physics_advance": 102.30754182899545,
+        "feature_extract": 2.843991995014221,
+        "structure_extract": 31.36903078799878
+      },
+      "calls": {
+        "capture": 480,
+        "plane_flow": 480,
+        "pf": 480,
+        "registration": 480,
+        "feature_tracking": 480,
+        "control": 480,
+        "evaluation": 480,
+        "physics_advance": 479,
+        "feature_extract": 451,
+        "structure_extract": 451
+      },
+      "pf_particles": 2000,
+      "nested_categories": true,
+      "note": "control includes feature/PF/geometry; registration includes PF and evidence"
+    },
+    "retrieval": "text + selected own RGB; all RGB retained on GCP persistent disk",
+    "text_sha256": {
+      "COMMAND": "540c03ccd35531e335629087b151b4071458e9506a4c0337b7c2dfb621bb80b3",
+      "EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "LOADAVG": "97e070e6f07a669527a0663fc0ad227830208d8a6a22b211fda127c331d8da6e",
+      "RUN_META.json": "01dbab76abf5a4bb30949f2fdff85e26d14465e017a729103396aee0d679f669",
+      "SHA256SUMS": "0247d3b084696687c4453e52da4f76adfb3833821ad2c7a39567839eea261eeb",
+      "SOURCE_SHA": "fdd6ad22768ee050d4b8711bf749e2694f8faaa51f58274af27dc0c8eef7a961",
+      "log.txt": "a20506779dcbbb4c706ac23d13e4e4ef0c973046fd810c159158c008b6aa5567",
+      "raw/RUN_META.json": "85a104a5d026a0778b605bd7aca8da2b86a694b31ed39ed56e5287909c8789ad",
+      "raw/artifacts.sha256.json": "c77f8784571b15a0b685009556e0f341abc18f87210b4feadcebc8d949729291",
+      "raw/bundle.json": "a072cd7099a4ca4d04a56fcf3e7ded4a5ba078e794e11d1d6f421e47e925d0a6",
+      "raw/camera-render.json": "9d05a78678740076934cf0147e2079e06a42f6577534575707253294494404d2",
+      "raw/compression-manifest.json": "7d467eeeb31fc2b494abeb64b0409c5a8d42ebec031b6c1cad411379056d8df1",
+      "raw/controller-speedups.json": "674c3bc3af5428965f3089b9295c8b82ebda5917f52873fab406088c0450a780",
+      "raw/eval_only/applied.json": "2b408ff3a787a8f94d2b28b59338dc35a5f95c477b31171fec0a640f88133a20",
+      "raw/eval_only/camera-v3.json": "15dd046403528419a5b70ed3131a04968ba189c4f75d0e19edc6b1fc158f5a40",
+      "raw/eval_only/camera.jsonl.zst": "7c71dad1ca0604e16ac6bf1b0db99f02a180c06e9ef8b8069f756fbb9cfc838e",
+      "raw/eval_only/contact-audit.jsonl": "194d724fadbdb784ca6eea65cf67ea9333f7b110dd4cedf73c6a57fc959301c8",
+      "raw/eval_only/contacts.jsonl.zst": "d407031352ec9ac42c88bb7ac5bec273e73c3cbfad7b2baf8a8025ade966e9f3",
+      "raw/eval_only/drive-v7.json": "05372337576d40659740bc1c6a971fa00b6da336a13a24e323c6a1b2e1f5e287",
+      "raw/eval_only/render.json": "fe06776ec5db6d6f98bb2b94c383be58714e02eb4d6432d5a74defb06e37d56c",
+      "raw/eval_only/render_nearclip.json": "5f9c85224381e47a8893e82d13a6292c16e13621df4d3238494b089f0a41858e",
+      "raw/eval_only/servo.jsonl.zst": "1db9d3f8ca1070e641d775da892c80223368d7c69aa2147f97c655d0d2cb1a19",
+      "raw/eval_only/setup.json": "f2c851060500701eafaa3148aefbad0938549b655cf60791643f824c11577189",
+      "raw/eval_only/trajectory.jsonl.zst": "48b17a23bc8eb13bd068a1de5db2146aaa25149de05172c44e78abfab5d7c373",
+      "raw/executor-events.json": "265c140e3b9aab66cba9e4141387864dc7033bdd14e2a7a200ec8684c66ba4de",
+      "raw/first30.json": "3e3e05606d2c3fe556b01a1a85e5e9288779da179a885d32f291a9c3206dc17e",
+      "raw/inputs/static_map.json": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b",
+      "raw/map.json.zst": "ca79d88dc136fcdc82f5fbdd65341bbdd3178f7a21cb90fb67a4369b54b7e88b",
+      "raw/progress.json": "05cd27e72261093a0af752317b0a3b88a78b2d6e901b7051b223792b098a5301",
+      "raw/result.json": "137a21f2d8fd6ed19b0b51e47771dfeeb741f4382d0e2f3838306fed89a57bee",
+      "raw/robots/r1/commands.jsonl": "59ef962b8289ac4164dd6eb6aa75514b8235ca1e2a8e6b6ecfdda043c7970f23",
+      "raw/robots/r2/commands.jsonl": "59ef962b8289ac4164dd6eb6aa75514b8235ca1e2a8e6b6ecfdda043c7970f23",
+      "raw/robots/r3/commands.jsonl": "38f72421adcf85554e4821dc4a0141d345dc972e9fe5c1b7fbacd53eab887524",
+      "raw/robots/r3/frames.jsonl.zst": "5a7d54d24802ba58f6e1026fa3547cc0aaf9fb7935205d526932a49a71ec29cf",
+      "raw/runtime-bundle.json": "9cc18d41605240f7c1aa247990c9ac2879a18355f15923eb95ebd8c7df95e91a",
+      "raw/scene.json": "323bf7b072b00a56ab81aa1ac976b3cff812af0ed0918146d14aa9e8eea66b57",
+      "raw/scene.xml": "75eaf5f714185af42991e9366040d78b01c88ee4ba8fbab08638c652468c789f",
+      "raw/sweep-events.json": "c32b8e85ea43cdcf5a8cebdef6a7627d33cb5210e072f17a15e7aac216e48834",
+      "raw/texture-audit.json": "fe06776ec5db6d6f98bb2b94c383be58714e02eb4d6432d5a74defb06e37d56c",
+      "raw/timing.json": "e14afd451ddf71eaa77dd353065f71c050f89570ec6bedd46d83857e9f323c98",
+      "raw/trace.jsonl.zst": "9adb5ec7f7fa907c1fde2bbb947436df6c6a6b1275e3d3d916b073649e0292d4",
+      "raw/v7-speedups.json": "b40aca6710cfb55cad041fc4aa7df4d7a849eba87fde9ee02f88a9f88d497f42",
+      "record-copy.log": "eb3edb1e2c1b9e3d05abf9f43af61e5711d98147c79f588e45bac558859a28a5",
+      "retrieval-verified.json": "815cdd3c404a6ffef83d6cc2e1691ea53932f483794824fe40b096cfdb833783",
+      "review-selection.txt": "7249e238eb032cf61c23806e6174db4dfbec3d3e625217faf6fa274535a4cf3f",
+      "run_wrapper.sh": "e9218e67a9eae264c564b2924222eb357887f656d3c4b432a9338886426e2185"
+    },
+    "first30_counts": {
+      "frame_N": 301,
+      "features": {
+        "N": 301,
+        "min": 0.0,
+        "median": 33.0,
+        "p90": 55.0,
+        "max": 78.0
+      },
+      "matches": {
+        "N": 301,
+        "min": 0.0,
+        "median": 4.0,
+        "p90": 10.0,
+        "max": 15.0
+      },
+      "inliers": {
+        "N": 301,
+        "min": 0.0,
+        "median": 0.0,
+        "p90": 9.0,
+        "max": 13.0
+      },
+      "registered_N": 0
+    }
+  }
+]

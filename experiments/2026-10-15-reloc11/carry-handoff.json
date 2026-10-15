@@ -1,0 +1,37 @@
+{
+  "status": "BLOCKED",
+  "reason": "conflicting path scope; explicit clarification remains unanswered",
+  "applied": false,
+  "source_sha": "987d033f28b40aa6182c1cde0dff2982e1d546d6",
+  "patch": {
+    "path": "carry-texture-api.patch",
+    "sha256": "db8eaa26348c6df58b1683647e0ebe57e5f188cf471acaebc1118c65e74b36b3",
+    "git_apply_check": true,
+    "tests_on_carry_branch": false
+  },
+  "plan": {
+    "path": "carry-texture-plan.json",
+    "sha256": "d888b674b9f1d6264dba71dc84520b8f72360e837eba8ac5f6ac785b371afafa",
+    "episodes": 22,
+    "candidates": [
+      "rotation",
+      "rotation_wall_search"
+    ],
+    "reproduction": 3,
+    "fresh": 8
+  },
+  "queue": {
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-solo-carry-tex-987d033f.json",
+    "sha256": "a36db0363cb179f3eaac5278b2ef20aebf81d92539b242fcd63b844fe6d2e5c8",
+    "run_count": 23,
+    "all_flags_false": true,
+    "upstream_result_metadata_removed": true
+  },
+  "not_edited": [
+    "carry worktree",
+    "existing smooth queue",
+    "existing carry runs"
+  ],
+  "official_dependency": "merge origin/main with PR511 before applying patch; no module copies",
+  "recorded_at": "2026-10-15T18:51:55.195719+09:00"
+}

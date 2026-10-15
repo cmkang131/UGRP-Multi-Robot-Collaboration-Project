@@ -1,0 +1,371 @@
+{
+  "schema": "ugrp.selfmap5_summary.v1",
+  "base_sha": "d8a7530a9f3f6f11d77d0ea7d06838db1486d296",
+  "status": "OFFLINE_VERIFIED_NOT_SUBMITTED",
+  "source_sha_authority": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-selfmap5-s1-s2.json",
+  "source_files": {
+    "harness/self_map_executor.py": "5bf1bcaa378a59c45545135728c14533f5a6a701c27ca010d17866699462b65c",
+    "harness/self_map_integration.py": "6db37f4e686b5b031acf5363516e99fd91e039a5636d0a40f3d2d4da4598e254",
+    "harness/selfmap4_geometry.py": "0f42700f3c78e3209c5884b4061d7cf3c960200c3ce5300937c9b1479350c817",
+    "harness/selfmap5_revision.py": "5296bd89b968a231344fdf3c16bff4788b701ee1964b8ea723c5d9d3121722a8",
+    "harness/selfmap5_registration.py": "50d4e2629dc6e45dd82f44dba19fdd46239007f29d10b90fe56f6bdbfd3358ed",
+    "scripts/run_self_map_diagnostic.py": "ed5cf2c0e7e485f04603327d991c922381f5f7ca8c14e620bf5eeaa629cd421e",
+    "scripts/run_ci_tests.py": "da4da1230cb41d33a7981195e7a5f7d98a8e75d7fe7c728b302642a7c0abea27",
+    "scripts/analyze_selfmap5.py": "02a2200e40e8230fbac216f374773142bfaf1ed797f99286bb8bd34513ecb13b",
+    "scripts/prepare_selfmap5_queue.py": "dd23314bb5396dfce1ee7f0da6ccf7a73574cfcacf53b5357b94f5ebe38db61d",
+    "sim/active_wall_map.py": "54ef317d4264ed135d0fc8b636fef52b0ce0acf8c1f0ca0f71903ac9ead9fafd",
+    "sim/solo_cyan_v106.py": "751598cb9835d326f095e492022bef06f3207ec5e96f710d4d407802f55b862f",
+    "sim/wall_parallax_strafe.py": "bbc62c1d1ec2104c145ede12fa83ba36a0993555d58aaf9ba4335f5db1bad85d",
+    "tests/test_selfmap5.py": "7b09617ae3a0cc64e90548d8759d8fb7ba9909d341e9d49afbf07aae00538c5a"
+  },
+  "inputs": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/selfmap-93531-d8a7530a/raw/trace.jsonl.zst",
+      "sha256": "16adc13e8b940fac8ec7a7eae2c2a28892160f73c84fa7376290099128843849"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/selfmap-93531-d8a7530a/raw/robots/r3/commands.jsonl",
+      "sha256": "8162aa6dafb9e717034ed347f3f951cacfafce08b82889f625d17894216e1d2b"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/selfmap-93531-d8a7530a/raw/robots/r3/frames.jsonl.zst",
+      "sha256": "e7af6c654636df347b9454d94a44b4dcc3d4349b0f07ed3411053f3b0b428b0a"
+    }
+  ],
+  "analysis_sources": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/relocalization-carry5-selfmap4/report.md",
+      "sha256": "065dbbc14ca4e6ad7e191af7aec23c8b00fbc06810dca2c3420dd69deb056c02",
+      "bytes": 30496
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/relocalization-carry5-selfmap4/scripts/selfmap4_rebuild_refit.py",
+      "sha256": "11879b6fa17461309d449b4f289e162bec94c47abd95320d8ff1c70eb5fa438c",
+      "bytes": 2522
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/relocalization-carry5-selfmap4/scripts/selfmap4_slam_error.py",
+      "sha256": "e6cb62ac93e29737fde3417727c3f4ce9120f73c285122e39788f35cbe765d39",
+      "bytes": 1904
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/relocalization-carry5-selfmap4/scripts/selfmap4_table.py",
+      "sha256": "ee465ef8546a1b1b87d035e2310a0d863d04aca233d2013e3ca6140a702837c6",
+      "bytes": 2774
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/relocalization-carry5-selfmap4/logs/selfmap4_rebuild_refit.txt",
+      "sha256": "d34ba92e877c95ebe80432ca6cb70b5c46abbc9fe1d2b07bde66328bb7242239",
+      "bytes": 721
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/relocalization-carry5-selfmap4/logs/selfmap4_slam_error.txt",
+      "sha256": "ba01d00552daac919142c3302d735334238d2b6522a26674a32aba6af78f1e92",
+      "bytes": 1835
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/selfmap5-analysis/offline-v2.json",
+      "sha256": "a7cdae0884ce3b733cee66ae1519b567cf5afae12c565e25f292a14f4059b7b4",
+      "bytes": 66157
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/selfmap5-analysis/tests-final-clean.txt",
+      "sha256": "ccda88a146dd0887df33eb96777d721b74b3f963af027153cbc10b21aa0eef56",
+      "bytes": 99
+    }
+  ],
+  "tests": {
+    "passed": 58,
+    "failed": 0,
+    "line": "58 passed in 4.87s",
+    "files": [
+      "tests/test_selfmap5.py",
+      "tests/test_selfmap4.py",
+      "tests/test_self_map_integration.py",
+      "tests/test_self_map_executor.py"
+    ],
+    "pytest_max_parallel": 1,
+    "scope": "synthetic own-observation numerical, scheduler, fake backend and AST contracts; no plant/render"
+  },
+  "S1": {
+    "trace_frames": 432,
+    "visual_updates": 51,
+    "old_required_times": [
+      24.5
+    ],
+    "new_required_times": [],
+    "innovation_at_24_5": {
+      "t": 24.5,
+      "frame_id": 233,
+      "legacy_fixed_gate": true,
+      "required": false,
+      "mahalanobis": 1.9373340720613659,
+      "threshold_sigma": 3.0,
+      "nullspace_innovation": false,
+      "innovation": [
+        0.041714994134778534,
+        -0.0038487472984704485,
+        -0.11141114280807107
+      ],
+      "predicted_covariance": [
+        [
+          0.0033890750001681624,
+          -0.0010738567879894636,
+          0.0007611661592442443
+        ],
+        [
+          -0.0010738567879894645,
+          0.004070438058914584,
+          -0.002655075936710248
+        ],
+        [
+          0.0007611661592442443,
+          -0.002655075936710248,
+          0.005819655730806982
+        ]
+      ],
+      "innovation_covariance": [
+        [
+          0.00340248831916977,
+          -0.0010888586100386555,
+          0.0007749989643892188
+        ],
+        [
+          -0.0010888586100386564,
+          0.004115025891469431,
+          -0.0026893964562292047
+        ],
+        [
+          0.0007749989643892188,
+          -0.0026893964562292047,
+          0.005851301824023079
+        ]
+      ]
+    },
+    "forced_partial_rebuilds": [
+      {
+        "t": 24.5,
+        "anchor_frame_id": 141,
+        "prior": [
+          -0.04006862206708695,
+          -0.0024215006466563683,
+          0.3855916806417272
+        ],
+        "corrected": [
+          0.0016463720676915816,
+          -0.006270247945126817,
+          0.27418053783365615
+        ],
+        "distance": 0.8997101521028615,
+        "endpoint_frame_id": 233,
+        "success": true,
+        "reason": null,
+        "corrected_frame_ids": [
+          142,
+          143,
+          144,
+          145,
+          146,
+          147,
+          148,
+          149,
+          150,
+          151,
+          152,
+          153,
+          154,
+          155,
+          156,
+          157,
+          158,
+          159,
+          160,
+          161,
+          162,
+          163,
+          164,
+          165,
+          166,
+          167,
+          168,
+          169,
+          170,
+          171,
+          172,
+          173,
+          174,
+          175,
+          176,
+          177,
+          178,
+          179,
+          180,
+          181,
+          182,
+          183,
+          184,
+          185,
+          186,
+          187,
+          188,
+          189,
+          190,
+          191,
+          192,
+          193,
+          194,
+          195,
+          196,
+          197,
+          198,
+          199,
+          200,
+          201,
+          202,
+          203,
+          204,
+          205,
+          206,
+          207,
+          208,
+          209,
+          210,
+          211,
+          212,
+          213,
+          214,
+          215,
+          216,
+          217,
+          218,
+          219,
+          220,
+          221,
+          222,
+          223,
+          224,
+          225,
+          226,
+          227,
+          228,
+          229,
+          230,
+          231,
+          232
+        ],
+        "corrected_N": 91,
+        "preserved_N": 122,
+        "history_N": 213,
+        "raster_verified": false
+      }
+    ],
+    "actual_93531_raster_verified": false,
+    "rebuild_cooldown_s": 5,
+    "recovery_deadline_s": 80,
+    "actual_live_improvement_verified": false
+  },
+  "S2": {
+    "rgb_available_N": 6,
+    "trace_N": 432,
+    "max_independent_axis_count": 1,
+    "full_sweep_evidence_complete": false,
+    "pf_rerun": false,
+    "sweep_rgb_N": 2,
+    "two_axis_support_N": 0,
+    "sweep_two_axis_support_N": 0
+  },
+  "planned_runs": [
+    {
+      "scene": "floor_light_v1",
+      "stage": "first30",
+      "seed": 93550,
+      "cap_sim_s": 30,
+      "status": "NOT_SUBMITTED",
+      "approved": false,
+      "enabled": false,
+      "ready": false,
+      "stage_ready": false
+    },
+    {
+      "scene": "floor_light_v1",
+      "stage": "diagnostic180_1",
+      "seed": 93551,
+      "cap_sim_s": 180,
+      "status": "NOT_SUBMITTED",
+      "approved": false,
+      "enabled": false,
+      "ready": false,
+      "stage_ready": false
+    },
+    {
+      "scene": "floor_light_v1",
+      "stage": "diagnostic180_2",
+      "seed": 93552,
+      "cap_sim_s": 180,
+      "status": "NOT_SUBMITTED",
+      "approved": false,
+      "enabled": false,
+      "ready": false,
+      "stage_ready": false
+    },
+    {
+      "scene": "floor_light_textured_v1",
+      "stage": "first30",
+      "seed": 93550,
+      "cap_sim_s": 30,
+      "status": "NOT_SUBMITTED",
+      "approved": false,
+      "enabled": false,
+      "ready": false,
+      "stage_ready": false
+    },
+    {
+      "scene": "floor_light_textured_v1",
+      "stage": "diagnostic180_1",
+      "seed": 93551,
+      "cap_sim_s": 180,
+      "status": "NOT_SUBMITTED",
+      "approved": false,
+      "enabled": false,
+      "ready": false,
+      "stage_ready": false
+    },
+    {
+      "scene": "floor_light_textured_v1",
+      "stage": "diagnostic180_2",
+      "seed": 93552,
+      "cap_sim_s": 180,
+      "status": "NOT_SUBMITTED",
+      "approved": false,
+      "enabled": false,
+      "ready": false,
+      "stage_ready": false
+    }
+  ],
+  "texture_dependency": {
+    "pr": 511,
+    "state_verified": "OPEN",
+    "source_sha": "6a73c3aab305f250d0ecd9591922b160b9c709ab",
+    "integrated": false,
+    "revised_source_sha_required_before_execution": true
+  },
+  "previous_queue_read_only_receipt": {
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-selfmap-d8a7530a.json",
+    "sha256": "d2c7876432ba75c4015567909414bde6c2805723f4691add378ce756fd137bb7",
+    "bytes": 17869
+  },
+  "limits": [
+    "fixed recorded trajectory, not closed-loop success",
+    "six locally retained RGB only; full segment ray raster and full multi-frame sweep unavailable",
+    "PF bias cause and reinjection effectiveness unverified; covariance factor 6 is a conservative diagnostic setting",
+    "forced partial rebuild counts corrected poses, not ORB refits or a verified occupancy map"
+  ],
+  "physics_calls": 0,
+  "render_calls": 0,
+  "training_calls": 0,
+  "remote_server_connections": 0,
+  "model_calls": 0,
+  "pool_with_previous_results": false
+}

@@ -90,7 +90,9 @@ class Relocalizer:
             c, s = math.cos(self.odom[2]), math.sin(self.odom[2])
             self.odom += [c*delta[0]-s*delta[1], s*delta[0]+c*delta[1], delta[2]]
         change = None if self.anchor is None else self.odom-self.anchor
-        changed = change is None or motion.moved(change)
+        limits=getattr(self,'reloc15_update_budget',None)
+        changed = change is None or (motion.moved(change) if limits is None else
+            np.any(abs(change[:2])>limits['distance_m']) or abs(math.atan2(math.sin(change[2]),math.cos(change[2])))>limits['yaw_rad'])
         use_landmarks = self.sensor_landmarks != 'off'
         features = (features or []) if use_landmarks else []
         update = bool((len(points) or len(features)) and (changed or self.policy.new_view(servo)))

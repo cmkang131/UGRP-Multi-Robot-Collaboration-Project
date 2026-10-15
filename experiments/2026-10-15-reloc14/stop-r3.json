@@ -1,0 +1,41 @@
+[
+  {
+    "run": "reloc14-r3-carry-texture-93266-f3d06408",
+    "owner": "reloc14",
+    "at_unix": 1792067305.3252296,
+    "reason": "confirmed carry budget undercoverage: seed93315 actual yaw>=20deg 106 ticks, trigger1, 105 missed carry_to_zone ticks, maximum67.76deg; stop remaining runs sharing the same fitted budget. Three rounds exhausted; no fourth submission",
+    "pids": [
+      {
+        "pid": 379555,
+        "argv": [
+          ".venv-sim/bin/python",
+          "-m",
+          "scripts.run_solo_grasp_act_teacher",
+          "--plan",
+          "experiments/2026-10-15-reloc14/carry-texture-v7-plan-r2.json",
+          "--episode",
+          "2",
+          "--out",
+          "/home/ugrp/ugrp-sim/runs/reloc14-r3-carry-texture-93266-f3d06408/raw",
+          "--execution-host",
+          "gcp1",
+          "--teacher-profile",
+          "solo_visible_only_v1",
+          "--held-object-hidden-v1",
+          "--setdown-lookaround-v1",
+          "--teacher-stability",
+          "align_relook_v1",
+          "--reach-mode",
+          "pad_window_v2",
+          "--rgb-lift-mode",
+          "solo_lift_lookback_v1",
+          "--solo-lift-lookback-margin-v1",
+          "--solo-truth-free-lookaround-v1",
+          "--solo-carry-to-zone-v1",
+          "--cap-s",
+          "300"
+        ]
+      }
+    ]
+  }
+]

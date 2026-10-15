@@ -1,0 +1,69 @@
+{
+  "schema": "ugrp.selfmap2_preparation.v1",
+  "status": "PREPARED_NOT_EXECUTED",
+  "branch": "claude/map-selfmap",
+  "pr": 506,
+  "base_sha": "b136297833b8c2241505e31c4e025f0e6310f12a",
+  "source_file_sha256": {
+    "harness/self_map_executor.py": "fc1dc6ff9752e2c20cb8373edc46c98cebb2ad35c1178743c3ad15fa54a65877",
+    "harness/self_map_integration.py": "95c2962a47a752f4621d7801ca44efed37a752f316372387a9a1157ff1110bf8",
+    "scripts/run_self_map_diagnostic.py": "b5f8dd2cd2c021a69b1a676c71db13f85a87321528d4aa718eb0c22ddef68d7b",
+    "scripts/offline_self_map.py": "b71450c08ed5e23f85581350d065b8023ab7fb2747b15f2846a4e132445432f1",
+    "scripts/run_ci_tests.py": "6fe17c83411b8351a2a746ebde484028c4e075017d4dbb01f2cb6cc49cc25d22",
+    "configs/simulation_workflows.json": "b359207bb800dbc25d73c3a65179c73948a6027f1a5434d088b0657dc2f10a50",
+    "tests/test_self_map_executor.py": "5b08667a5ebad34ae238ecb4129a09e1133407444a91a5562b54317d515ade86",
+    "tests/test_self_map_integration.py": "7412b2f54dd685f11e55350ee169d0f833035a0a43db7d28828e982c2bf2cdcb",
+    "tests/test_offline_self_map.py": "373e853748604ac1a1f9360020a5186a8f24093f91f75b9674ed43aa52d3121a",
+    "experiments/2026-10-15-self-map/rgb-inspection.json": "f986acf0e6b0b2041b14c7d2391776ef5abe2917d25f00428ba6319177a1d3bd"
+  },
+  "final_source_receipt": "/Users/changmin/projects/ugrp/outputs/selfmap2-validation/source-receipt.json",
+  "validation": {
+    "scope": "offline related files only; no physics/render",
+    "tests": 29,
+    "failures": 0,
+    "errors": 0,
+    "seconds": 18.368,
+    "junit_path": "/Users/changmin/projects/ugrp/outputs/selfmap2-validation/pytest.xml",
+    "junit_sha256": "b184d56d3db1b8a128d3dd79429e6a6966989f4b59478fef1088f6877aa28cc6"
+  },
+  "physical_runs": [],
+  "remote_runs": [],
+  "model_calls": 0,
+  "planned_runs": [
+    {
+      "seed": 93510,
+      "cap_sim_s": 30,
+      "status": "NOT_STARTED",
+      "enabled": false
+    },
+    {
+      "seed": 93511,
+      "cap_sim_s": 180,
+      "status": "NOT_STARTED",
+      "enabled": false
+    },
+    {
+      "seed": 93512,
+      "cap_sim_s": 180,
+      "status": "NOT_STARTED",
+      "enabled": false
+    }
+  ],
+  "saved_rgb_diagnosis": {
+    "n": 126,
+    "reason_counts": {
+      "empty_map_origin": 3,
+      "insufficient_matches": 99,
+      "visual_update": 14,
+      "no_rigid_consensus": 10
+    },
+    "record": "rgb-inspection.json",
+    "qualified": "sparse recorded v1 behavior, not selfmap2 performance"
+  },
+  "remaining": [
+    "coordinator source/seed/environment/storage/budget approval",
+    "same-machine first30 speed and continuous RGB inspection",
+    "frontier physical arrival and internal completion measurement",
+    "post-run IoU/coverage/pose error and hash retrieval; VM stop verification"
+  ]
+}

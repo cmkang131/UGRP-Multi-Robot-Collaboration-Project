@@ -1,0 +1,32 @@
+{
+  "round": 3,
+  "source_sha": "8e5a0a82d6e7e55a774f00a5795b59445c836369",
+  "status": "BLOCKED_VM_RUNTIME_GUARD_MISMATCH",
+  "submission_attempts": 1,
+  "started_runs": 0,
+  "failed_submission": {
+    "name": "reloc11-r3-texture-93571-8e5a0a82",
+    "status": "SOURCE_TRANSFER_HOST_ERROR",
+    "frames": 0,
+    "log": "outputs/reloc11/reloc11-r3-texture-93571-8e5a0a82.submit.log",
+    "sha256": "06eb8ad5652aa70d7491ef9f77cf1d57f809ed8f3d0e85e6b5d9be38fb977298"
+  },
+  "not_submitted": [
+    {
+      "seed": 93585,
+      "scene": "floor_light_textured_v1"
+    },
+    {
+      "seed": 93586,
+      "scene": "floor_light_textured_v1"
+    }
+  ],
+  "expected_max_run_s": 28800,
+  "observed_max_run_s": 86400,
+  "budget_stop_fired": false,
+  "own_lease_removed_after_no_run_check": true,
+  "source_partial_retained": true,
+  "wall_field_GCP_validation": false,
+  "reason": "deferredStop interrupted source transfer; restarted shared VM now has24h cap; no new submission under this task8h condition",
+  "recorded_at": "2026-10-15T19:07:09.633111+09:00"
+}

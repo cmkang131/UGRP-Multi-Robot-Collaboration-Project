@@ -1,0 +1,67 @@
+--- a/sim/grasp_act_scene.py
++++ b/sim/grasp_act_scene.py
+@@ -2,7 +2,7 @@
+ import hashlib
+ import xml.etree.ElementTree as ET
+ from sim.zone_scenario_scene import ScenarioFinalV3Scene
+-from sim.render_profile import install
++from sim.render_profile_selection import for_name
+ from sim.final_pair_highpose_nearclip import wrap
+ from sim import masterpi_camera_review_v3 as camera
+ from sim.s2_servo_stiffness import transform_xml as stiffness
+@@ -23,7 +23,8 @@
+ 
+ 
+ def make_scene(plan):
+-    scene=wrap(install(ScenarioFinalV3Scene.from_scenario(plan['scenario_id'],plan['seed']),'floor_light_v1'))
++    profile=plan.get('render_profile','floor_light_v1')
++    scene=wrap(for_name(profile).install(ScenarioFinalV3Scene.from_scenario(plan['scenario_id'],plan['seed']),profile))
+     scene.config['setup_only']['spawns']=plan['spawns']
+     original=scene.robot_transform
+     def transform(xml,**kwargs):
+@@ -37,3 +38,12 @@
+         return after
+     scene.robot_transform=transform
+     return scene
++
++
++def audit_render(model, plan):
++    """Compiled texture/nearclip checks; only called for the explicit scene."""
++    from sim.final_pair_highpose_nearclip import audit
++    profile=plan.get('render_profile','floor_light_v1')
++    return dict(render=for_name(profile).verify_model(model,profile),
++                nearclip=audit(model,base_profile=profile),scene_version=profile,
++                pool_with_previous_results=False)
+--- a/scripts/run_solo_grasp_act_teacher.py
++++ b/scripts/run_solo_grasp_act_teacher.py
+@@ -111,6 +111,9 @@
+         world = build_world(scene, drive_profile=PROFILE, seed=plan['seed'], width=sampling['width'],
+                             height=sampling['height'], render=True, warehouse_layout=scene.engine_layout,
+                             warehouse_cargo_ids=None, roller_collision='mesh', idle_robot_contacts='off')
++        if plan.get('render_profile') == 'floor_light_textured_v1':
++            from sim.grasp_act_scene import audit_render
++            write(out/'texture-audit.json',audit_render(world.model,plan))
+         for controller in world.controllers.values():
+             bind_camera(controller)
+         scene.setup(world)
+@@ -591,6 +594,8 @@
+         raise ValueError('unknown carry5 profile')
+     if plan.get('carry5_profile') == 'carry5_active_localization_v1' and plan.get('drive_model_deadband_v1') is not True:
+         raise ValueError('carry5 requires the merged shared drive_model_deadband_v1')
++    if plan.get('render_profile','floor_light_v1') not in ('floor_light_v1','floor_light_textured_v1'):
++        raise ValueError('unknown carry render profile')
+     for option in ('carry5_rank_aware_views_v1', 'carry5_trim_yaw_calibration_v1', 'carry7_robust_recovery_v1',
+                    'reloc9_rotation_calibration_v1', 'reloc9_wall_height_guard_v1', 'reloc9_reacquisition_v1', 'reloc10_rotation_calibration_v1', 'reloc10_own_review_only_v1'):
+         if type(plan.get(option, False)) is not bool:
+--- a/scripts/run_reloc10_rotation_check.py
++++ b/scripts/run_reloc10_rotation_check.py
+@@ -42,6 +42,9 @@
+     try:
+         world = build_world(scene,drive_profile=PROFILE,seed=episode['seed'],render=True,
+             warehouse_layout=scene.engine_layout,warehouse_cargo_ids=None,roller_collision='mesh',idle_robot_contacts='off')
++        if episode.get('render_profile') == 'floor_light_textured_v1':
++            from sim.grasp_act_scene import audit_render
++            write(out/'texture-audit.json',audit_render(world.model,episode))
+         scene.setup(world)
+         port = DutyActPort(world,episode['robot_id'],allow_reverse=True,allow_mecanum=True)
+         now = float(world.data.time)

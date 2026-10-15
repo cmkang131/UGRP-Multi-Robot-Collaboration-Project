@@ -1,0 +1,1032 @@
+[
+  {
+    "run": "reloc12-r2-ransac-texture-93571-ff1ccf27",
+    "analysis_host": "gcp1",
+    "source_sha": "ff1ccf27a43fe73d9b49dac82caf26a4584060d0",
+    "frame_N": 220,
+    "status": "HOST_ERROR",
+    "termination_category": "selfmap4_relocalization_exhausted",
+    "elapsed_sim_s": 43.800000000000004,
+    "stop_reason": "selfmap4_relocalization_exhausted",
+    "first30": {
+      "elapsed_sim_s": 30.0,
+      "frames": 151,
+      "stage": "active_reloc8",
+      "wall_per_sim": 4.459578531633345,
+      "pose_sources": {
+        "bootstrap": 3,
+        "visual_update": 81,
+        "command_only": 65,
+        "visual_relocalized": 2
+      },
+      "input_audit": {
+        "schema": "ugrp.selfmap_input_audit.v1",
+        "measured": true,
+        "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+        "own_rgb_frames": 151,
+        "issued_command_records": 157,
+        "top_rgb_frames": 0,
+        "peer_rgb_frames": 0,
+        "truth_pose_inputs": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "rejected_inputs": 0,
+        "authored_static_map_inputs": 1
+      },
+      "frontier_arrivals": 0,
+      "timing": {
+        "seconds": {
+          "capture": 13.003548064996266,
+          "plane_flow": 2.569048121996275,
+          "pf": 1.1490816349955821,
+          "registration": 30.51491503299758,
+          "feature_tracking": 3.204129099999136,
+          "control": 68.15763248099984,
+          "evaluation": 0.16024519200254872,
+          "physics_advance": 48.2231770259973,
+          "feature_extract": 1.0768428979972668,
+          "structure_extract": 12.847442872000556
+        },
+        "calls": {
+          "capture": 151,
+          "plane_flow": 151,
+          "pf": 151,
+          "registration": 151,
+          "feature_tracking": 151,
+          "control": 151,
+          "evaluation": 151,
+          "physics_advance": 150,
+          "feature_extract": 139,
+          "structure_extract": 139
+        },
+        "pf_particles": 2000,
+        "nested_categories": true,
+        "note": "control includes feature/PF/geometry; registration includes PF and evidence"
+      }
+    },
+    "gates": {
+      "sensor_update_pass": 59,
+      "sensor_update_cumulative": 59,
+      "pf_resolved_pass": 154,
+      "pf_resolved_cumulative": 50,
+      "cluster_mass_pass": 220,
+      "cluster_mass_cumulative": 50,
+      "xy_covariance_pass": 201,
+      "xy_covariance_cumulative": 50,
+      "yaw_covariance_pass": 194,
+      "yaw_covariance_cumulative": 50,
+      "geometry_pass": 154,
+      "geometry_cumulative": 40,
+      "unique_solution_pass": 27,
+      "unique_solution_cumulative": 27,
+      "reliable_pass": 16,
+      "reliable_cumulative": 16
+    },
+    "rejections": {
+      "no_sensor_update": 161,
+      "pf_unresolved": 66,
+      "xy_covariance": 19,
+      "yaw_covariance": 26,
+      "geometry": 66,
+      "ambiguity_pending_upstream": 180,
+      "geometric_ambiguity": 13
+    },
+    "candidate_count_distribution": {
+      "not_evaluated": 180,
+      "0": 2,
+      "2": 11,
+      "1": 27
+    },
+    "confirmation_length_distribution": {
+      "0": 156,
+      "1": 6,
+      "2": 4,
+      "3": 4,
+      "4": 23,
+      "5": 4,
+      "6": 4,
+      "7": 14,
+      "8": 5
+    },
+    "max_confirmations": 8,
+    "registered_N": 82,
+    "registration_events": [
+      {
+        "t": 28.9,
+        "xy_m": 0.03489058519625268,
+        "yaw_deg": 0.09715659840179158,
+        "within_10cm_5deg": true
+      }
+    ],
+    "registration_event_errors": {
+      "N": 1,
+      "correct_N": 1,
+      "false_N": 0,
+      "xy_m": {
+        "N": 1,
+        "min": 0.03489058519625268,
+        "median": 0.03489058519625268,
+        "p90": 0.03489058519625268,
+        "max": 0.03489058519625268
+      },
+      "yaw_deg": {
+        "N": 1,
+        "min": 0.09715659840179158,
+        "median": 0.09715659840179158,
+        "p90": 0.09715659840179158,
+        "max": 0.09715659840179158
+      }
+    },
+    "registered_frame_errors": {
+      "N": 82,
+      "correct_N": 59,
+      "false_N": 23,
+      "xy_m": {
+        "N": 82,
+        "min": 0.015052997674863369,
+        "median": 0.042838993824346555,
+        "p90": 0.06463530017897004,
+        "max": 0.07764990557607825
+      },
+      "yaw_deg": {
+        "N": 82,
+        "min": 0.09715659840179158,
+        "median": 2.561926727493642,
+        "p90": 56.92933856572904,
+        "max": 57.20545598443472
+      }
+    },
+    "command_odometry_anchor_error": {
+      "N": 82,
+      "correct_N": 82,
+      "false_N": 0,
+      "xy_m": {
+        "N": 82,
+        "min": 0.03489058519625257,
+        "median": 0.050514177387058906,
+        "p90": 0.06422274543127181,
+        "max": 0.0681086454515065
+      },
+      "yaw_deg": {
+        "N": 82,
+        "min": 0.016203852881434676,
+        "median": 0.25900772256141635,
+        "p90": 0.9183362039280513,
+        "max": 1.2927119393475928
+      }
+    },
+    "pf_error": {
+      "N": 154,
+      "correct_N": 115,
+      "false_N": 39,
+      "xy_m": {
+        "N": 154,
+        "min": 0.0073913765937373655,
+        "median": 0.06534831123462986,
+        "p90": 0.225048732996093,
+        "max": 0.4163876719152174
+      },
+      "yaw_deg": {
+        "N": 154,
+        "min": 0.02582309301101725,
+        "median": 1.186365870418894,
+        "p90": 3.5346372019990953,
+        "max": 7.685621924330453
+      }
+    },
+    "registered_frame_error_definition": "map_from_own composed with actual emitted controller pose; separate from projected command odometry",
+    "replay_packets": 220,
+    "input_audit": {
+      "schema": "ugrp.selfmap_input_audit.v1",
+      "measured": true,
+      "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+      "own_rgb_frames": 220,
+      "issued_command_records": 226,
+      "top_rgb_frames": 0,
+      "peer_rgb_frames": 0,
+      "truth_pose_inputs": 0,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "rejected_inputs": 0,
+      "authored_static_map_inputs": 1
+    },
+    "invisible_measurements": 0,
+    "held_world_reads": 0,
+    "failures_to_review": [
+      {
+        "t": 45.1,
+        "xy_m": 0.05548610614105236,
+        "yaw_deg": 56.830384290321916,
+        "within_10cm_5deg": false
+      },
+      {
+        "t": 44.9,
+        "xy_m": 0.05548489643480643,
+        "yaw_deg": 56.83095346087525,
+        "within_10cm_5deg": false
+      },
+      {
+        "t": 44.7,
+        "xy_m": 0.05548359494307347,
+        "yaw_deg": 56.83152469972554,
+        "within_10cm_5deg": false
+      },
+      {
+        "t": 44.5,
+        "xy_m": 0.055483497368591754,
+        "yaw_deg": 56.83236535611576,
+        "within_10cm_5deg": false
+      },
+      {
+        "t": 44.1,
+        "xy_m": 0.05464237022479479,
+        "yaw_deg": 56.932684197367514,
+        "within_10cm_5deg": false
+      },
+      {
+        "t": 43.9,
+        "xy_m": 0.05463520918355371,
+        "yaw_deg": 56.97182292012317,
+        "within_10cm_5deg": false
+      }
+    ],
+    "raw_sha256": {
+      "raw/result.json": "0be4a07898f6147cfece0eeec5b7fee73f86d6074dd9968913a960d60975bfaf",
+      "raw/trace.jsonl.zst": "73ed7cbbfb9f2fb2a58386a3467639ce4079aac9d110af1f18a3c69d2ef574de"
+    }
+  },
+  {
+    "run": "reloc12-r2-ransac-texture-93583-ff1ccf27",
+    "analysis_host": "gcp1",
+    "source_sha": "ff1ccf27a43fe73d9b49dac82caf26a4584060d0",
+    "frame_N": 218,
+    "status": "HOST_ERROR",
+    "termination_category": "selfmap4_relocalization_exhausted",
+    "elapsed_sim_s": 43.400000000000006,
+    "stop_reason": "selfmap4_relocalization_exhausted",
+    "first30": {
+      "elapsed_sim_s": 30.0,
+      "frames": 151,
+      "stage": "active_reloc8",
+      "wall_per_sim": 4.034334941433341,
+      "pose_sources": {
+        "bootstrap": 3,
+        "visual_update": 100,
+        "command_only": 41,
+        "visual_relocalized": 7
+      },
+      "input_audit": {
+        "schema": "ugrp.selfmap_input_audit.v1",
+        "measured": true,
+        "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+        "own_rgb_frames": 151,
+        "issued_command_records": 157,
+        "top_rgb_frames": 0,
+        "peer_rgb_frames": 0,
+        "truth_pose_inputs": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "rejected_inputs": 0,
+        "authored_static_map_inputs": 1
+      },
+      "frontier_arrivals": 0,
+      "timing": {
+        "seconds": {
+          "capture": 12.559048564998648,
+          "plane_flow": 2.5552351350042954,
+          "pf": 1.0841487930010771,
+          "registration": 26.820842026999344,
+          "feature_tracking": 3.2463617110011,
+          "control": 58.777439600998605,
+          "evaluation": 0.16016008900442102,
+          "physics_advance": 49.19075574199769,
+          "feature_extract": 1.0708033579976473,
+          "structure_extract": 12.745230651002203
+        },
+        "calls": {
+          "capture": 151,
+          "plane_flow": 151,
+          "pf": 151,
+          "registration": 151,
+          "feature_tracking": 151,
+          "control": 151,
+          "evaluation": 151,
+          "physics_advance": 150,
+          "feature_extract": 139,
+          "structure_extract": 139
+        },
+        "pf_particles": 2000,
+        "nested_categories": true,
+        "note": "control includes feature/PF/geometry; registration includes PF and evidence"
+      }
+    },
+    "gates": {
+      "sensor_update_pass": 58,
+      "sensor_update_cumulative": 58,
+      "pf_resolved_pass": 139,
+      "pf_resolved_cumulative": 44,
+      "cluster_mass_pass": 210,
+      "cluster_mass_cumulative": 44,
+      "xy_covariance_pass": 157,
+      "xy_covariance_cumulative": 44,
+      "yaw_covariance_pass": 183,
+      "yaw_covariance_cumulative": 44,
+      "geometry_pass": 149,
+      "geometry_cumulative": 37,
+      "unique_solution_pass": 33,
+      "unique_solution_cumulative": 33,
+      "reliable_pass": 21,
+      "reliable_cumulative": 21
+    },
+    "rejections": {
+      "no_sensor_update": 160,
+      "pf_unresolved": 79,
+      "xy_covariance": 61,
+      "yaw_covariance": 35,
+      "geometry": 69,
+      "ambiguity_pending_upstream": 181,
+      "cluster_mass": 8,
+      "geometric_ambiguity": 4
+    },
+    "candidate_count_distribution": {
+      "not_evaluated": 181,
+      "1": 33,
+      "2": 3,
+      "0": 1
+    },
+    "confirmation_length_distribution": {
+      "0": 142,
+      "1": 14,
+      "2": 6,
+      "3": 15,
+      "4": 11,
+      "5": 7,
+      "6": 11,
+      "7": 2,
+      "8": 2,
+      "9": 2,
+      "10": 6
+    },
+    "max_confirmations": 10,
+    "registered_N": 133,
+    "registration_events": [
+      {
+        "t": 18.3,
+        "xy_m": 0.09848961027675933,
+        "yaw_deg": 2.482575009653851,
+        "within_10cm_5deg": true
+      }
+    ],
+    "registration_event_errors": {
+      "N": 1,
+      "correct_N": 1,
+      "false_N": 0,
+      "xy_m": {
+        "N": 1,
+        "min": 0.09848961027675933,
+        "median": 0.09848961027675933,
+        "p90": 0.09848961027675933,
+        "max": 0.09848961027675933
+      },
+      "yaw_deg": {
+        "N": 1,
+        "min": 2.482575009653851,
+        "median": 2.482575009653851,
+        "p90": 2.482575009653851,
+        "max": 2.482575009653851
+      }
+    },
+    "registered_frame_errors": {
+      "N": 133,
+      "correct_N": 61,
+      "false_N": 72,
+      "xy_m": {
+        "N": 133,
+        "min": 0.051450638829473955,
+        "median": 0.09923956018732583,
+        "p90": 0.10568691839839661,
+        "max": 0.10892679008379431
+      },
+      "yaw_deg": {
+        "N": 133,
+        "min": 0.012976698206061501,
+        "median": 1.2345115776271511,
+        "p90": 9.118873660000737,
+        "max": 9.933644196562655
+      }
+    },
+    "command_odometry_anchor_error": {
+      "N": 133,
+      "correct_N": 28,
+      "false_N": 105,
+      "xy_m": {
+        "N": 133,
+        "min": 0.07610035968795135,
+        "median": 0.12944907251532053,
+        "p90": 0.15436037333709157,
+        "max": 0.1558414048239143
+      },
+      "yaw_deg": {
+        "N": 133,
+        "min": 2.0629002919923396,
+        "median": 3.1745047289759616,
+        "p90": 4.074245389275465,
+        "max": 4.306248189901516
+      }
+    },
+    "pf_error": {
+      "N": 139,
+      "correct_N": 69,
+      "false_N": 70,
+      "xy_m": {
+        "N": 139,
+        "min": 0.035358605201298424,
+        "median": 0.08814884540805533,
+        "p90": 0.1573490381524712,
+        "max": 0.3290353999304361
+      },
+      "yaw_deg": {
+        "N": 139,
+        "min": 0.0751155267741705,
+        "median": 1.5138180970727073,
+        "p90": 8.858940866817498,
+        "max": 11.118688396337186
+      }
+    },
+    "registered_frame_error_definition": "map_from_own composed with actual emitted controller pose; separate from projected command odometry",
+    "replay_packets": 218,
+    "input_audit": {
+      "schema": "ugrp.selfmap_input_audit.v1",
+      "measured": true,
+      "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+      "own_rgb_frames": 218,
+      "issued_command_records": 224,
+      "top_rgb_frames": 0,
+      "peer_rgb_frames": 0,
+      "truth_pose_inputs": 0,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "rejected_inputs": 0,
+      "authored_static_map_inputs": 1
+    },
+    "invisible_measurements": 0,
+    "held_world_reads": 0,
+    "failures_to_review": [
+      {
+        "t": 33.3,
+        "xy_m": 0.10892679008379431,
+        "yaw_deg": 9.093789344745959,
+        "within_10cm_5deg": false
+      },
+      {
+        "t": 36.1,
+        "xy_m": 0.10889747787453449,
+        "yaw_deg": 8.652008423247935,
+        "within_10cm_5deg": false
+      },
+      {
+        "t": 33.7,
+        "xy_m": 0.10860642636677342,
+        "yaw_deg": 8.977191947895127,
+        "within_10cm_5deg": false
+      },
+      {
+        "t": 34.1,
+        "xy_m": 0.10844854244937441,
+        "yaw_deg": 9.05798087333141,
+        "within_10cm_5deg": false
+      },
+      {
+        "t": 33.5,
+        "xy_m": 0.10758842705537437,
+        "yaw_deg": 8.812060217376832,
+        "within_10cm_5deg": false
+      },
+      {
+        "t": 35.9,
+        "xy_m": 0.10757735282674398,
+        "yaw_deg": 8.659739634121163,
+        "within_10cm_5deg": false
+      }
+    ],
+    "raw_sha256": {
+      "raw/result.json": "a935a2f67bd2159b0210e1ae03d323de788061ac7241f3c91b53570e64147243",
+      "raw/trace.jsonl.zst": "8e200128f5e779bb3cf77f3decd91e715ac39b5f011c05243ded291dd22ad30e"
+    }
+  },
+  {
+    "run": "reloc12-r2-ransac-texture-93584-ff1ccf27",
+    "analysis_host": "gcp1",
+    "source_sha": "ff1ccf27a43fe73d9b49dac82caf26a4584060d0",
+    "frame_N": 234,
+    "status": "HOST_ERROR",
+    "termination_category": "selfmap4_relocalization_exhausted",
+    "elapsed_sim_s": 46.6,
+    "stop_reason": "selfmap4_relocalization_exhausted",
+    "first30": {
+      "elapsed_sim_s": 30.0,
+      "frames": 151,
+      "stage": "active_reloc8",
+      "wall_per_sim": 4.48014140126667,
+      "pose_sources": {
+        "bootstrap": 3,
+        "visual_update": 98,
+        "command_only": 44,
+        "visual_relocalized": 6
+      },
+      "input_audit": {
+        "schema": "ugrp.selfmap_input_audit.v1",
+        "measured": true,
+        "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+        "own_rgb_frames": 151,
+        "issued_command_records": 157,
+        "top_rgb_frames": 0,
+        "peer_rgb_frames": 0,
+        "truth_pose_inputs": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "rejected_inputs": 0,
+        "authored_static_map_inputs": 1
+      },
+      "frontier_arrivals": 0,
+      "timing": {
+        "seconds": {
+          "capture": 12.849030835999656,
+          "plane_flow": 2.582781436996356,
+          "pf": 1.1676432590015793,
+          "registration": 34.824502918000235,
+          "feature_tracking": 3.264223850003873,
+          "control": 67.71226294299913,
+          "evaluation": 0.1723064770021665,
+          "physics_advance": 53.32906264300209,
+          "feature_extract": 1.0917465170000469,
+          "structure_extract": 12.756203528000242
+        },
+        "calls": {
+          "capture": 151,
+          "plane_flow": 151,
+          "pf": 151,
+          "registration": 151,
+          "feature_tracking": 151,
+          "control": 151,
+          "evaluation": 151,
+          "physics_advance": 150,
+          "feature_extract": 139,
+          "structure_extract": 139
+        },
+        "pf_particles": 2000,
+        "nested_categories": true,
+        "note": "control includes feature/PF/geometry; registration includes PF and evidence"
+      }
+    },
+    "gates": {
+      "sensor_update_pass": 64,
+      "sensor_update_cumulative": 64,
+      "pf_resolved_pass": 163,
+      "pf_resolved_cumulative": 53,
+      "cluster_mass_pass": 229,
+      "cluster_mass_cumulative": 53,
+      "xy_covariance_pass": 215,
+      "xy_covariance_cumulative": 53,
+      "yaw_covariance_pass": 203,
+      "yaw_covariance_cumulative": 53,
+      "geometry_pass": 137,
+      "geometry_cumulative": 38,
+      "unique_solution_pass": 32,
+      "unique_solution_cumulative": 32,
+      "reliable_pass": 22,
+      "reliable_cumulative": 22
+    },
+    "rejections": {
+      "no_sensor_update": 170,
+      "pf_unresolved": 71,
+      "xy_covariance": 19,
+      "yaw_covariance": 31,
+      "geometry": 97,
+      "ambiguity_pending_upstream": 196,
+      "cluster_mass": 5,
+      "geometric_ambiguity": 6
+    },
+    "candidate_count_distribution": {
+      "not_evaluated": 196,
+      "2": 6,
+      "1": 32
+    },
+    "confirmation_length_distribution": {
+      "0": 155,
+      "1": 17,
+      "2": 6,
+      "3": 7,
+      "4": 9,
+      "5": 7,
+      "6": 4,
+      "7": 13,
+      "8": 2,
+      "9": 2,
+      "10": 12
+    },
+    "max_confirmations": 10,
+    "registered_N": 147,
+    "registration_events": [
+      {
+        "t": 18.7,
+        "xy_m": 0.0872464921839517,
+        "yaw_deg": 1.5622440455496116,
+        "within_10cm_5deg": true
+      }
+    ],
+    "registration_event_errors": {
+      "N": 1,
+      "correct_N": 1,
+      "false_N": 0,
+      "xy_m": {
+        "N": 1,
+        "min": 0.0872464921839517,
+        "median": 0.0872464921839517,
+        "p90": 0.0872464921839517,
+        "max": 0.0872464921839517
+      },
+      "yaw_deg": {
+        "N": 1,
+        "min": 1.5622440455496116,
+        "median": 1.5622440455496116,
+        "p90": 1.5622440455496116,
+        "max": 1.5622440455496116
+      }
+    },
+    "registered_frame_errors": {
+      "N": 147,
+      "correct_N": 111,
+      "false_N": 36,
+      "xy_m": {
+        "N": 147,
+        "min": 0.04743435460378265,
+        "median": 0.08201920316302197,
+        "p90": 0.09041256579731853,
+        "max": 0.10779759566277823
+      },
+      "yaw_deg": {
+        "N": 147,
+        "min": 0.02559937441235322,
+        "median": 1.425152299499785,
+        "p90": 8.276106421774777,
+        "max": 10.54582500570188
+      }
+    },
+    "command_odometry_anchor_error": {
+      "N": 147,
+      "correct_N": 42,
+      "false_N": 105,
+      "xy_m": {
+        "N": 147,
+        "min": 0.0638844713736714,
+        "median": 0.11688348287244116,
+        "p90": 0.14443901263066766,
+        "max": 0.14684914386629627
+      },
+      "yaw_deg": {
+        "N": 147,
+        "min": 0.797829499382699,
+        "median": 1.8463959842554254,
+        "p90": 2.6201640346936603,
+        "max": 2.9363764613928556
+      }
+    },
+    "pf_error": {
+      "N": 163,
+      "correct_N": 102,
+      "false_N": 61,
+      "xy_m": {
+        "N": 163,
+        "min": 0.020819144429395486,
+        "median": 0.07020199655244438,
+        "p90": 0.18455824394984766,
+        "max": 0.3725818223682369
+      },
+      "yaw_deg": {
+        "N": 163,
+        "min": 0.0008219423678844748,
+        "median": 1.0165704647638323,
+        "p90": 7.567666968157101,
+        "max": 10.896145804552306
+      }
+    },
+    "registered_frame_error_definition": "map_from_own composed with actual emitted controller pose; separate from projected command odometry",
+    "replay_packets": 234,
+    "input_audit": {
+      "schema": "ugrp.selfmap_input_audit.v1",
+      "measured": true,
+      "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+      "own_rgb_frames": 234,
+      "issued_command_records": 240,
+      "top_rgb_frames": 0,
+      "peer_rgb_frames": 0,
+      "truth_pose_inputs": 0,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "rejected_inputs": 0,
+      "authored_static_map_inputs": 1
+    },
+    "invisible_measurements": 0,
+    "held_world_reads": 0,
+    "failures_to_review": [
+      {
+        "t": 37.1,
+        "xy_m": 0.10779759566277823,
+        "yaw_deg": 0.8844586548401443,
+        "within_10cm_5deg": false
+      },
+      {
+        "t": 37.5,
+        "xy_m": 0.10654616636476408,
+        "yaw_deg": 1.027244127576888,
+        "within_10cm_5deg": false
+      },
+      {
+        "t": 37.9,
+        "xy_m": 0.10568015698342012,
+        "yaw_deg": 1.3457797640995042,
+        "within_10cm_5deg": false
+      },
+      {
+        "t": 37.7,
+        "xy_m": 0.10458231872450885,
+        "yaw_deg": 0.9886861936558168,
+        "within_10cm_5deg": false
+      },
+      {
+        "t": 33.7,
+        "xy_m": 0.10367841072524606,
+        "yaw_deg": 10.54582500570188,
+        "within_10cm_5deg": false
+      },
+      {
+        "t": 33.5,
+        "xy_m": 0.10117644707029526,
+        "yaw_deg": 10.316984397032561,
+        "within_10cm_5deg": false
+      }
+    ],
+    "raw_sha256": {
+      "raw/result.json": "1e35416978e1ee934a6a3f5c4d60166f760b2ce38b779a60d8ee139f60b46ece",
+      "raw/trace.jsonl.zst": "8da891407126473f52e0dba9942ef360e2c257cb381b5f87351d4af5fb146857",
+      "raw/eval_only/trajectory.jsonl.zst": "18e0cf8515d34b4f2a1bd123a6d50c2979091e136a2e52938d2f09c95eaa1011"
+    }
+  },
+  {
+    "run": "reloc12-r2-ransac-texture-93585-ff1ccf27",
+    "analysis_host": "gcp1",
+    "source_sha": "ff1ccf27a43fe73d9b49dac82caf26a4584060d0",
+    "frame_N": 220,
+    "status": "HOST_ERROR",
+    "termination_category": "selfmap4_relocalization_exhausted",
+    "elapsed_sim_s": 43.800000000000004,
+    "stop_reason": "selfmap4_relocalization_exhausted",
+    "first30": {
+      "elapsed_sim_s": 30.0,
+      "frames": 151,
+      "stage": "active_reloc8",
+      "wall_per_sim": 4.1831949068666745,
+      "pose_sources": {
+        "bootstrap": 3,
+        "visual_update": 88,
+        "command_only": 57,
+        "visual_relocalized": 3
+      },
+      "input_audit": {
+        "schema": "ugrp.selfmap_input_audit.v1",
+        "measured": true,
+        "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+        "own_rgb_frames": 151,
+        "issued_command_records": 157,
+        "top_rgb_frames": 0,
+        "peer_rgb_frames": 0,
+        "truth_pose_inputs": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "rejected_inputs": 0,
+        "authored_static_map_inputs": 1
+      },
+      "frontier_arrivals": 0,
+      "timing": {
+        "seconds": {
+          "capture": 12.53983567000023,
+          "plane_flow": 2.558978598999147,
+          "pf": 1.138067539999156,
+          "registration": 26.038350464000814,
+          "feature_tracking": 3.270730632003506,
+          "control": 63.83692908899866,
+          "evaluation": 0.16021370300086346,
+          "physics_advance": 48.60997316699968,
+          "feature_extract": 1.0807756940021136,
+          "structure_extract": 12.602589380003337
+        },
+        "calls": {
+          "capture": 151,
+          "plane_flow": 151,
+          "pf": 151,
+          "registration": 151,
+          "feature_tracking": 151,
+          "control": 151,
+          "evaluation": 151,
+          "physics_advance": 150,
+          "feature_extract": 139,
+          "structure_extract": 139
+        },
+        "pf_particles": 2000,
+        "nested_categories": true,
+        "note": "control includes feature/PF/geometry; registration includes PF and evidence"
+      }
+    },
+    "gates": {
+      "sensor_update_pass": 58,
+      "sensor_update_cumulative": 58,
+      "pf_resolved_pass": 150,
+      "pf_resolved_cumulative": 49,
+      "cluster_mass_pass": 220,
+      "cluster_mass_cumulative": 49,
+      "xy_covariance_pass": 203,
+      "xy_covariance_cumulative": 49,
+      "yaw_covariance_pass": 186,
+      "yaw_covariance_cumulative": 49,
+      "geometry_pass": 144,
+      "geometry_cumulative": 39,
+      "unique_solution_pass": 29,
+      "unique_solution_cumulative": 29,
+      "reliable_pass": 16,
+      "reliable_cumulative": 16
+    },
+    "rejections": {
+      "no_sensor_update": 162,
+      "pf_unresolved": 70,
+      "xy_covariance": 17,
+      "yaw_covariance": 34,
+      "geometry": 76,
+      "ambiguity_pending_upstream": 181,
+      "geometric_ambiguity": 10
+    },
+    "candidate_count_distribution": {
+      "not_evaluated": 181,
+      "1": 29,
+      "2": 10
+    },
+    "confirmation_length_distribution": {
+      "0": 146,
+      "1": 16,
+      "2": 4,
+      "3": 13,
+      "4": 4,
+      "5": 14,
+      "6": 10,
+      "7": 7,
+      "8": 6
+    },
+    "max_confirmations": 8,
+    "registered_N": 84,
+    "registration_events": [
+      {
+        "t": 28.5,
+        "xy_m": 0.05257653624724788,
+        "yaw_deg": 0.5170979168403717,
+        "within_10cm_5deg": true
+      }
+    ],
+    "registration_event_errors": {
+      "N": 1,
+      "correct_N": 1,
+      "false_N": 0,
+      "xy_m": {
+        "N": 1,
+        "min": 0.05257653624724788,
+        "median": 0.05257653624724788,
+        "p90": 0.05257653624724788,
+        "max": 0.05257653624724788
+      },
+      "yaw_deg": {
+        "N": 1,
+        "min": 0.5170979168403717,
+        "median": 0.5170979168403717,
+        "p90": 0.5170979168403717,
+        "max": 0.5170979168403717
+      }
+    },
+    "registered_frame_errors": {
+      "N": 84,
+      "correct_N": 68,
+      "false_N": 16,
+      "xy_m": {
+        "N": 84,
+        "min": 0.0038534599408092253,
+        "median": 0.048556942050792744,
+        "p90": 0.07112452363453772,
+        "max": 0.10139232556749363
+      },
+      "yaw_deg": {
+        "N": 84,
+        "min": 0.09815792945355456,
+        "median": 3.333064906845921,
+        "p90": 57.525114766685995,
+        "max": 57.73295285027182
+      }
+    },
+    "command_odometry_anchor_error": {
+      "N": 84,
+      "correct_N": 84,
+      "false_N": 0,
+      "xy_m": {
+        "N": 84,
+        "min": 0.04940334885466018,
+        "median": 0.0604737450370709,
+        "p90": 0.06884123426593108,
+        "max": 0.06930418557609296
+      },
+      "yaw_deg": {
+        "N": 84,
+        "min": 0.00726884215832237,
+        "median": 2.5122061562706937,
+        "p90": 3.47600497749756,
+        "max": 3.511356564232821
+      }
+    },
+    "pf_error": {
+      "N": 150,
+      "correct_N": 88,
+      "false_N": 62,
+      "xy_m": {
+        "N": 150,
+        "min": 0.03483490011386232,
+        "median": 0.07896645645160114,
+        "p90": 0.2620805361846268,
+        "max": 0.4151562390811155
+      },
+      "yaw_deg": {
+        "N": 150,
+        "min": 0.05597670714105624,
+        "median": 0.9723534011834574,
+        "p90": 5.380473961745985,
+        "max": 9.185712847719428
+      }
+    },
+    "registered_frame_error_definition": "map_from_own composed with actual emitted controller pose; separate from projected command odometry",
+    "replay_packets": 220,
+    "input_audit": {
+      "schema": "ugrp.selfmap_input_audit.v1",
+      "measured": true,
+      "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+      "own_rgb_frames": 220,
+      "issued_command_records": 226,
+      "top_rgb_frames": 0,
+      "peer_rgb_frames": 0,
+      "truth_pose_inputs": 0,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "rejected_inputs": 0,
+      "authored_static_map_inputs": 1
+    },
+    "invisible_measurements": 0,
+    "held_world_reads": 0,
+    "failures_to_review": [
+      {
+        "t": 32.5,
+        "xy_m": 0.10139232556749363,
+        "yaw_deg": 0.4138860756942212,
+        "within_10cm_5deg": false
+      },
+      {
+        "t": 44.1,
+        "xy_m": 0.02853785826880033,
+        "yaw_deg": 57.531905784586414,
+        "within_10cm_5deg": false
+      },
+      {
+        "t": 44.3,
+        "xy_m": 0.028410675045050106,
+        "yaw_deg": 57.52789185281278,
+        "within_10cm_5deg": false
+      },
+      {
+        "t": 44.5,
+        "xy_m": 0.028392691605921193,
+        "yaw_deg": 57.52725141710179,
+        "within_10cm_5deg": false
+      },
+      {
+        "t": 44.7,
+        "xy_m": 0.028391846663174587,
+        "yaw_deg": 57.52643136735864,
+        "within_10cm_5deg": false
+      },
+      {
+        "t": 44.9,
+        "xy_m": 0.028390691441353175,
+        "yaw_deg": 57.52536377952347,
+        "within_10cm_5deg": false
+      }
+    ],
+    "raw_sha256": {
+      "raw/result.json": "332bbcf0d48f7882b2b25acb251b12fe7533e642c97aa399527d575e3d54dcf5",
+      "raw/trace.jsonl.zst": "aef65189efc2482215c8f215e99a1b99a4df2e39408533aab76ca03801a1074d",
+      "raw/eval_only/trajectory.jsonl.zst": "1147d6824a59b4c8bbc2ddd29f2618de73575e74e36a4add6c97ec75525911c7"
+    }
+  }
+]

@@ -1,0 +1,199 @@
+{
+  "schema": "ugrp.grasp_act.seed_splits.v1",
+  "registered": "2026-10-14, claude/grasp-act-release (PR #491 on #484). Ranges are inclusive. Never reuse a range for another split; add new ranges instead.",
+  "ranges": {
+    "grasp_gate_078": [
+      [
+        71000,
+        71039
+      ]
+    ],
+    "grasp_gate_v2": [
+      [
+        72000,
+        72039
+      ]
+    ],
+    "grasp_gate_v3": [
+      [
+        73000,
+        73039
+      ]
+    ],
+    "release_gate": [
+      [
+        74000,
+        74039
+      ]
+    ],
+    "release_diagnostic": [
+      [
+        74900,
+        74999
+      ]
+    ],
+    "carry_probe": [
+      [
+        75000,
+        75999
+      ]
+    ],
+    "solo_gate": [
+      [
+        78000,
+        78039
+      ]
+    ],
+    "solo_diagnostic": [
+      [
+        76900,
+        76999
+      ]
+    ],
+    "solo_rgb_lift_v2_gate": [
+      [
+        79500,
+        79539
+      ]
+    ],
+    "solo_box_gate_v1": [
+      [
+        79700,
+        79739
+      ]
+    ],
+    "solo_lift_negative_probe": [
+      [
+        79790,
+        79797
+      ]
+    ],
+    "solo_carry_diagnostic_v1": [
+      [
+        93200,
+        93207
+      ],
+      [
+        93210,
+        93217
+      ],
+      [
+        93220,
+        93227
+      ],
+      [
+        93240,
+        93247
+      ],
+      [
+        93260,
+        93266
+      ],
+      [
+        93280,
+        93287
+      ],
+      [
+        93290,
+        93297
+      ],
+      [
+        93310,
+        93317
+      ]
+    ],
+    "train": [
+      [
+        80000,
+        89999
+      ]
+    ],
+    "development": [
+      [
+        90000,
+        90999
+      ]
+    ],
+    "heldout_start": [
+      [
+        91000,
+        91999
+      ]
+    ],
+    "heldout_map": [
+      [
+        92000,
+        92999
+      ]
+    ]
+  },
+  "gate_seeds_never_train": [
+    "grasp_gate_078",
+    "grasp_gate_v2",
+    "grasp_gate_v3",
+    "release_gate",
+    "release_diagnostic",
+    "carry_probe",
+    "solo_gate",
+    "solo_diagnostic",
+    "solo_rgb_lift_v2_gate",
+    "solo_box_gate_v1",
+    "solo_lift_negative_probe",
+    "solo_carry_diagnostic_v1"
+  ],
+  "heldout_maps": [
+    "zone_wide_corridor_final_v3"
+  ],
+  "reservations": {
+    "reloc8_20261015": {
+      "split": "solo_carry_diagnostic_v1",
+      "seeds": [
+        93290,
+        93297
+      ],
+      "pr": 505,
+      "reproduction": [
+        93261,
+        93262,
+        93266
+      ],
+      "purpose": "reloc8: exact carry7 layouts plus fresh8; remote-unused unverified; all execution flags false"
+    },
+    "solo_carry7_20261015": {
+      "split": "solo_carry_diagnostic_v1",
+      "seeds": [
+        93280,
+        93287
+      ],
+      "pr": 505,
+      "reproduction": [
+        93261,
+        93262,
+        93266
+      ],
+      "purpose": "carry7 robust recovery: three exact carry6 reproductions plus eight fresh seeds; remote-unused unverified; disabled queue only"
+    },
+    "solo_record_20261015": {
+      "split": "train",
+      "seeds": [
+        86000,
+        86049
+      ],
+      "pr": 502,
+      "purpose": "two recording pilots then explicit coordinator approval for 48; local preparation only; remote-unused check pending"
+    }
+  },
+  "notes": {
+    "solo_carry_diagnostic_v1": "2026-10-15 PR505: 93200-93207 used/reserved (first failed, seven blocked); carry3 reserves fresh 93210-93217 for the same eight start conditions; carry4 reserves fresh 93220-93227 with regenerated parking; carry5 reserves fresh 93240-93247 with separate profile; diagnostic only",
+    "grasp_gate_078": "teacher 078cbb45 gate 36/40 (seen)",
+    "grasp_gate_v2": "observable_v2 3a451048 gate, stopped 27/32 (seen)",
+    "grasp_gate_v3": "Codex new grasp gate, reserved in PR #484 comment",
+    "solo_gate": "single-robot cargo teacher gate (claude/act-solo-teacher): 40 fresh seeds, mixed kinds",
+    "solo_diagnostic": "single-robot cargo teacher diagnostics (cyan, can, tile), seen/tunable",
+    "solo_rgb_lift_v2_gate": "PR 502 RGB lift v2: fresh mixed-cargo gate after 6/6 diagnostic; reserved against main and all 17 open PRs on 2026-10-14",
+    "solo_box_gate_v1": "PR 502: new 40-seed gate, four box colours x10; old 20/20 subset is not the final gate",
+    "solo_lift_negative_probe": "PR 502: intentional miss diagnostics, four box colours x2; never gate or training data",
+    "carry_probe": "loaded-motion probes (G1 rotation, G7 carry, G2/G6 set-down-look), claude/grasp-act-release",
+    "heldout_maps": "s4_narrow_door_standoff_v4 map, HELDOUT in scripts/make_grasp_act_plan.py"
+  }
+}

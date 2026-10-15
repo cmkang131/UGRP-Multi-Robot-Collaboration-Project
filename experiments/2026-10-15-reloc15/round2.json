@@ -1,0 +1,1078 @@
+{
+  "runs": [
+    {
+      "run": "reloc15-r2-carry-93266-candidate-e44b4987",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r2-carry-93266-candidate-e44b4987/raw",
+      "source_sha": "e44b49873caf903a7bbcdf8aa054aabf88456c2e",
+      "status": "interrupted",
+      "termination_category": "supervisor_stop",
+      "termination_reason": "confirmed dense yaw accepts ill-conditioned alignment: 93315 t29.7 75deg with FB82px and sigma7.8deg; do not apply measurements exceeding existing5deg task precision; add opt-in quality admission",
+      "sim_s": null,
+      "first30": {
+        "elapsed_sim_s": 30.00000000005842,
+        "wall_elapsed_s": 85.1530883359992,
+        "wall_per_sim": 2.8384362868944564,
+        "top_capture": false
+      },
+      "physical_success": null,
+      "funnel": {
+        "pickup_seen": 1,
+        "aligned": 1,
+        "lifted_controller": 1,
+        "zone_place_view": 0,
+        "release": 0
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 83,
+        "blocked_held": 169,
+        "measurements_by_phase": {
+          "pickup_search": 1,
+          "approach": 270,
+          "align": 18,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "pose_error": {
+        "N": 544,
+        "xy_m": {
+          "N": 544,
+          "min": 0.012827186793623794,
+          "p50": 0.22897888778202374,
+          "p90": 0.3135999395764207,
+          "p95": 0.31396175556557704,
+          "p99": 0.3149309950753465,
+          "max": 0.31589449893712296
+        },
+        "yaw_deg": {
+          "N": 544,
+          "min": 0.0002705680547237996,
+          "p50": 1.0388728355714631,
+          "p90": 5.58530871859696,
+          "p95": 7.138766193794112,
+          "p99": 70.24164511887592,
+          "max": 92.97927628230302
+        },
+        "true_yaw_over20_N": 16,
+        "trigger_recall": 0.0,
+        "max_untriggered_yaw_deg": 92.97927628230302,
+        "missed_over20_by_phase": {
+          "carry_to_zone": 16
+        }
+      },
+      "sha256": {
+        "raw/result.json": "e5f3ebbf238b4a74762afdf55890ae915299f3d4523957fd0e20592413ad02aa",
+        "raw/teacher-commands.jsonl.zst": "92388128d8bb2445897812ec0ad68c00c1206a6b4bda273920b931414df23ea7",
+        "raw/eval-only.jsonl.zst": "58321e2659c6fdedc3a74b85f89c70c8c2af67ff7066db247554cca0248337d8",
+        "EXIT": "f5bde7eb9f6c71611dc5726e8aca3eb4eba3e386da49e0a4ed5c295a90a73a0d"
+      },
+      "heading_observation_counts": {
+        "servo_unsettled_or_no_pair": 211,
+        "relative_rgb_yaw": 61
+      },
+      "held_cargo_yaw": {
+        "N": 156,
+        "p50_p95_max_deg": [
+          3.779216171098166,
+          42.16113821986062,
+          92.97927628230302
+        ],
+        "over20_N": 16
+      },
+      "failure_rgb_buffer": {
+        "reason": "interrupted",
+        "recording_only": true,
+        "training_rgb": false,
+        "hz": 10,
+        "span_sim_s": 10,
+        "frame_N": 101,
+        "bytes": 1149578
+      },
+      "result_status": "interrupted"
+    },
+    {
+      "run": "reloc15-r2-carry-93315-baseline-e44b4987",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r2-carry-93315-baseline-e44b4987/raw",
+      "source_sha": "e44b49873caf903a7bbcdf8aa054aabf88456c2e",
+      "status": "interrupted",
+      "termination_category": "supervisor_stop",
+      "termination_reason": "confirmed fixed-image-border consensus defect in sparse RGB yaw; stop this owned baseline and use preserved R1 comparator; dense fix only for further carry",
+      "sim_s": null,
+      "first30": {},
+      "physical_success": null,
+      "funnel": {
+        "pickup_seen": 1,
+        "aligned": 0,
+        "lifted_controller": 0,
+        "zone_place_view": 0,
+        "release": 0
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 0,
+        "blocked_held": 0,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "pickup_search": 1,
+          "approach": 60,
+          "align": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "pose_error": {
+        "N": 72,
+        "xy_m": {
+          "N": 72,
+          "min": 0.012546639813297223,
+          "p50": 0.059994332806245346,
+          "p90": 0.06727096113453268,
+          "p95": 0.07033308685138276,
+          "p99": 0.07033396787997187,
+          "max": 0.07033415198836035
+        },
+        "yaw_deg": {
+          "N": 72,
+          "min": 0.8765254007656614,
+          "p50": 1.7153572227890463,
+          "p90": 2.0617643590237726,
+          "p95": 2.113794813050615,
+          "p99": 2.153678548035509,
+          "max": 2.1739178680538886
+        },
+        "true_yaw_over20_N": 0,
+        "trigger_recall": null,
+        "max_untriggered_yaw_deg": 2.1739178680538886,
+        "missed_over20_by_phase": {}
+      },
+      "sha256": {
+        "raw/result.json": "12a6e25c6961909497b2b9dd8dc2abf2210730d9c66426303e1a60536c02310c",
+        "raw/teacher-commands.jsonl.zst": "23639fe12a78a207bd1850a35dd57b0f13fa5a9371064ded018cfedc00f59458",
+        "raw/eval-only.jsonl.zst": "8c364484388f398fad9f1adb25199cc223e1e8a48f1250253815fc671a8b4d91",
+        "EXIT": "f5bde7eb9f6c71611dc5726e8aca3eb4eba3e386da49e0a4ed5c295a90a73a0d"
+      },
+      "heading_observation_counts": {
+        "servo_unsettled_or_no_pair": 36
+      },
+      "held_cargo_yaw": {
+        "N": 0,
+        "p50_p95_max_deg": [],
+        "over20_N": 0
+      },
+      "failure_rgb_buffer": {
+        "reason": "interrupted",
+        "recording_only": true,
+        "training_rgb": false,
+        "hz": 10,
+        "span_sim_s": 10,
+        "frame_N": 72,
+        "bytes": 1093665
+      },
+      "result_status": "interrupted"
+    },
+    {
+      "run": "reloc15-r2-carry-93315-candidate-e44b4987",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r2-carry-93315-candidate-e44b4987/raw",
+      "source_sha": "e44b49873caf903a7bbcdf8aa054aabf88456c2e",
+      "status": "interrupted",
+      "termination_category": "supervisor_stop",
+      "termination_reason": "confirmed dense yaw accepts ill-conditioned alignment: 93315 t29.7 75deg with FB82px and sigma7.8deg; do not apply measurements exceeding existing5deg task precision; add opt-in quality admission",
+      "sim_s": null,
+      "first30": {
+        "elapsed_sim_s": 30.00000000005842,
+        "wall_elapsed_s": 140.8440775880008,
+        "wall_per_sim": 4.694802599124173,
+        "top_capture": false
+      },
+      "physical_success": null,
+      "funnel": {
+        "pickup_seen": 1,
+        "aligned": 1,
+        "lifted_controller": 1,
+        "zone_place_view": 0,
+        "release": 0
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 531,
+        "blocked_held": 192,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "pickup_search": 1,
+          "approach": 68,
+          "align": 21,
+          "hover": 4,
+          "carry_reacquire": 1,
+          "carry_reobserve": 1
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "pose_error": {
+        "N": 826,
+        "xy_m": {
+          "N": 826,
+          "min": 0.0023316059215324207,
+          "p50": 0.09515537920982547,
+          "p90": 0.1290586980445431,
+          "p95": 0.1318858589895305,
+          "p99": 0.17160493358140688,
+          "max": 0.20938562982680242
+        },
+        "yaw_deg": {
+          "N": 826,
+          "min": 0.007628060807482324,
+          "p50": 1.9238835389704534,
+          "p90": 18.934727342564578,
+          "p95": 94.736978819392,
+          "p99": 94.86208949708306,
+          "max": 95.28180230882516
+        },
+        "true_yaw_over20_N": 69,
+        "trigger_recall": 0.0,
+        "max_untriggered_yaw_deg": 95.28180230882516,
+        "missed_over20_by_phase": {
+          "carry_to_zone": 4,
+          "carry_recover_lower": 10,
+          "carry_recover_open": 7,
+          "carry_recover_retract": 18,
+          "carry_recover_backoff": 25,
+          "carry_reobserve": 5
+        }
+      },
+      "sha256": {
+        "raw/result.json": "f22cce318fe4a81a7ac638e40b466b54b961e9076080d212879da2423c2af53b",
+        "raw/teacher-commands.jsonl.zst": "68d7f5cfb1133b0beb369666930fb8b2218b0da0ea575c5dafe34873ccb8c260",
+        "raw/eval-only.jsonl.zst": "fe626cafb02be3d694f74ef01e43e0a1ae05bd59b588ad7ff40eddf66f5b7374",
+        "EXIT": "f5bde7eb9f6c71611dc5726e8aca3eb4eba3e386da49e0a4ed5c295a90a73a0d"
+      },
+      "heading_observation_counts": {
+        "servo_unsettled_or_no_pair": 348,
+        "relative_rgb_yaw": 65
+      },
+      "held_cargo_yaw": {
+        "N": 170,
+        "p50_p95_max_deg": [
+          16.45459801735754,
+          69.0329863252292,
+          94.91255575405206
+        ],
+        "over20_N": 13
+      },
+      "failure_rgb_buffer": {
+        "reason": "interrupted",
+        "recording_only": true,
+        "training_rgb": false,
+        "hz": 10,
+        "span_sim_s": 10,
+        "frame_N": 101,
+        "bytes": 1463142
+      },
+      "result_status": "interrupted"
+    },
+    {
+      "run": "reloc15-r2-selfmap-93583-candidate-44ba1bc6",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r2-selfmap-93583-candidate-44ba1bc6/raw",
+      "source_sha": "44ba1bc6d7aaeb8cbd9408e8dcf02f9d2d56f262",
+      "funnel": {
+        "fresh_static_fix_independent": 105,
+        "frames": 301,
+        "frames_independent": 301,
+        "registered": 219,
+        "registered_independent": 219,
+        "execution_pose_delivered": 219,
+        "execution_pose_delivered_independent": 219,
+        "map_inserted": 154,
+        "map_inserted_independent": 226,
+        "control_drive_used": 33,
+        "control_drive_used_independent": 33
+      },
+      "registration_events": [
+        {
+          "t": 17.7,
+          "xy_m": 0.08870212201002829,
+          "yaw_deg": 0.8550332926620899,
+          "false": false
+        }
+      ],
+      "false_registration_events": 0,
+      "registered_errors": {
+        "N": 219,
+        "bad_N": 91,
+        "xy_m": {
+          "N": 219,
+          "min": 0.005185816078535539,
+          "p50": 0.06505687373707685,
+          "p90": 0.08808583261190733,
+          "p95": 0.09648950734762259,
+          "p99": 0.10934595111568676,
+          "max": 0.1119585144412966
+        },
+        "yaw_deg": {
+          "N": 219,
+          "min": 0.03277932370869485,
+          "p50": 1.737783305083582,
+          "p90": 7.537495932138707,
+          "p95": 8.242275323981369,
+          "p99": 10.101813378318537,
+          "max": 10.114514310840258
+        }
+      },
+      "map_inserted_errors": {
+        "N": 154,
+        "bad_N": 59,
+        "within15cm5_N": 97,
+        "within30cm10_N": 150,
+        "xy_m": {
+          "N": 154,
+          "min": 0.005185816078535539,
+          "p50": 0.07177311778141252,
+          "p90": 0.09292337308530407,
+          "p95": 0.10160673670364295,
+          "p99": 0.11030224522390158,
+          "max": 0.1119585144412966
+        },
+        "yaw_deg": {
+          "N": 154,
+          "min": 0.03277932370869485,
+          "p50": 1.7539456341011093,
+          "p90": 7.702479005723459,
+          "p95": 9.385146768550984,
+          "p99": 10.101949626042737,
+          "max": 10.114514310840258
+        }
+      },
+      "drive_errors": {
+        "N": 33,
+        "bad_N": 29,
+        "within15cm5_N": 6,
+        "within30cm10_N": 33,
+        "xy_m": {
+          "N": 33,
+          "min": 0.020091518216865282,
+          "p50": 0.085303109645373,
+          "p90": 0.10761410648137704,
+          "p95": 0.1102046720556556,
+          "p99": 0.11166491413936618,
+          "max": 0.1119585144412966
+        },
+        "yaw_deg": {
+          "N": 33,
+          "min": 0.7889166219103098,
+          "p50": 6.616113094259244,
+          "p90": 7.685088816545958,
+          "p95": 7.8668007335152215,
+          "p99": 7.949271188019638,
+          "max": 7.958381622065224
+        }
+      },
+      "termination": {
+        "status": "RECORDED",
+        "category": "cap_end",
+        "reason": "sim_time_cap",
+        "elapsed_sim_s": 60.0,
+        "supervisor_stop": {},
+        "code_vs_host": "see_reason"
+      },
+      "first30": {
+        "elapsed_sim_s": 30.0,
+        "frames": 151,
+        "stage": "active_reloc8",
+        "wall_per_sim": 4.260444034466673,
+        "pose_sources": {
+          "bootstrap": 3,
+          "visual_update": 66,
+          "command_only": 31,
+          "visual_relocalized": 51
+        },
+        "input_audit": {
+          "schema": "ugrp.selfmap_input_audit.v1",
+          "measured": true,
+          "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+          "own_rgb_frames": 151,
+          "issued_command_records": 157,
+          "top_rgb_frames": 0,
+          "peer_rgb_frames": 0,
+          "truth_pose_inputs": 0,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "rejected_inputs": 0,
+          "authored_static_map_inputs": 1
+        },
+        "frontier_arrivals": 0,
+        "timing": {
+          "seconds": {
+            "capture": 8.2265733029908,
+            "plane_flow": 2.691909669994857,
+            "pf": 1.477540123007202,
+            "registration": 17.6520133829963,
+            "feature_tracking": 2.451660737995553,
+            "control": 58.52788822799084,
+            "evaluation": 0.17251456998747017,
+            "physics_advance": 52.40615828299451,
+            "feature_extract": 1.1633833990035782,
+            "structure_extract": 13.350898142994993
+          },
+          "calls": {
+            "capture": 151,
+            "plane_flow": 151,
+            "pf": 151,
+            "registration": 151,
+            "feature_tracking": 151,
+            "control": 151,
+            "evaluation": 151,
+            "physics_advance": 300,
+            "feature_extract": 138,
+            "structure_extract": 138
+          },
+          "pf_particles": 2000,
+          "nested_categories": true,
+          "note": "control includes feature/PF/geometry; registration includes PF and evidence"
+        }
+      },
+      "input_audit": {
+        "schema": "ugrp.selfmap_input_audit.v1",
+        "measured": true,
+        "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+        "own_rgb_frames": 301,
+        "issued_command_records": 307,
+        "top_rgb_frames": 0,
+        "peer_rgb_frames": 0,
+        "truth_pose_inputs": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "rejected_inputs": 0,
+        "authored_static_map_inputs": 1
+      },
+      "sha256": {
+        "raw/result.json": "645e109964b669c384ba0cca9110b14239efcf85480d031d38063b5d2c9f8a2c",
+        "raw/trace.jsonl.zst": "e62b1410d58dfd76aa77e02b85c5eed7877d167eb01b8113f34f5d85a196f59f",
+        "raw/eval_only/trajectory.jsonl.zst": "8db485494ff1ce6b892925f8507230726a49f837e13b69f0f4f2d90adeac134d",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "registration_frame_funnel": {
+        "unit": "ordered global/relocalization frames, not independent trials",
+        "cumulative": {
+          "frames": 144,
+          "sensor_update": 72,
+          "pf_resolved": 55,
+          "dominant_mode": 55,
+          "raw_covariance": 55,
+          "independent_axes": 55,
+          "global_unique": 30,
+          "three_views": 2,
+          "registered": 2
+        },
+        "first_rejections": [
+          {
+            "category": "sensor_update",
+            "N": 72,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "three_views",
+            "N": 28,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "global_unique",
+            "N": 25,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "pf_resolved",
+            "N": 17,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          }
+        ]
+      },
+      "known_mode_measurement_funnel": {
+        "unit": "known-mode frames; prediction frames stop at sensor_update and are not failed absolute measurements",
+        "cumulative": {
+          "frames": 157,
+          "sensor_update": 103,
+          "covariance": 103,
+          "partial_geometry": 103,
+          "live_tracking": 103,
+          "execution_correction": 103,
+          "map_inserted": 103
+        },
+        "first_rejections": [
+          {
+            "category": "sensor_update",
+            "N": 54,
+            "blocked_object": "own_rgb_tracking_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          }
+        ]
+      },
+      "correction_reason_counts": {
+        "within_innovation_gate": 105,
+        "not_evaluated": 114
+      },
+      "actual_measurement_t_unique_N": 105,
+      "failure_rgb_buffer": {
+        "reason": "sim_time_cap",
+        "recording_only": true,
+        "training_rgb": false,
+        "hz": 10,
+        "span_sim_s": 10,
+        "frame_N": 101,
+        "bytes": 1517579
+      },
+      "result_status": "RECORDED"
+    },
+    {
+      "run": "reloc15-r2-selfmap-93584-baseline-44ba1bc6",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r2-selfmap-93584-baseline-44ba1bc6/raw",
+      "source_sha": "44ba1bc6d7aaeb8cbd9408e8dcf02f9d2d56f262",
+      "funnel": {
+        "fresh_static_fix_independent": 22,
+        "frames": 301,
+        "frames_independent": 301,
+        "registered": 214,
+        "registered_independent": 214,
+        "execution_pose_delivered": 214,
+        "execution_pose_delivered_independent": 214,
+        "map_inserted": 132,
+        "map_inserted_independent": 209,
+        "control_drive_used": 45,
+        "control_drive_used_independent": 45
+      },
+      "registration_events": [
+        {
+          "t": 18.7,
+          "xy_m": 0.0872464921839517,
+          "yaw_deg": 1.5622440455496178,
+          "false": false
+        }
+      ],
+      "false_registration_events": 0,
+      "registered_errors": {
+        "N": 214,
+        "bad_N": 152,
+        "xy_m": {
+          "N": 214,
+          "min": 0.01472325584590518,
+          "p50": 0.12479315058194061,
+          "p90": 0.16043513648122498,
+          "p95": 0.169906495906672,
+          "p99": 0.17384835051584716,
+          "max": 0.17405741559588764
+        },
+        "yaw_deg": {
+          "N": 214,
+          "min": 0.111337516242484,
+          "p50": 2.6780682756674454,
+          "p90": 4.456428903195553,
+          "p95": 9.22710145048534,
+          "p99": 11.979818492491924,
+          "max": 12.046511346432732
+        }
+      },
+      "map_inserted_errors": {
+        "N": 132,
+        "bad_N": 81,
+        "within15cm5_N": 117,
+        "within30cm10_N": 132,
+        "xy_m": {
+          "N": 132,
+          "min": 0.01886681150981301,
+          "p50": 0.09992992455743849,
+          "p90": 0.1279135816035725,
+          "p95": 0.1289951931501897,
+          "p99": 0.12929796645626343,
+          "max": 0.12979929111627708
+        },
+        "yaw_deg": {
+          "N": 132,
+          "min": 0.31276815222349413,
+          "p50": 2.4501666204630794,
+          "p90": 6.16758789513913,
+          "p95": 9.003720495344831,
+          "p99": 9.278720930790136,
+          "max": 9.293856081573022
+        }
+      },
+      "drive_errors": {
+        "N": 45,
+        "bad_N": 43,
+        "within15cm5_N": 45,
+        "within30cm10_N": 45,
+        "xy_m": {
+          "N": 45,
+          "min": 0.09738266668852165,
+          "p50": 0.12712519413804374,
+          "p90": 0.12908898213444894,
+          "p95": 0.1291280534961876,
+          "p99": 0.12961169727138636,
+          "max": 0.12979929111627708
+        },
+        "yaw_deg": {
+          "N": 45,
+          "min": 1.3716821660665695,
+          "p50": 2.4115387007870352,
+          "p90": 2.986236901694376,
+          "p95": 3.331507079931459,
+          "p99": 3.895561029675648,
+          "max": 4.009042909399063
+        }
+      },
+      "termination": {
+        "status": "RECORDED",
+        "category": "cap_end",
+        "reason": "sim_time_cap",
+        "elapsed_sim_s": 60.0,
+        "supervisor_stop": {},
+        "code_vs_host": "see_reason"
+      },
+      "first30": {
+        "elapsed_sim_s": 30.0,
+        "frames": 151,
+        "stage": "active_reloc8",
+        "wall_per_sim": 4.394903695133325,
+        "pose_sources": {
+          "bootstrap": 3,
+          "visual_update": 68,
+          "command_only": 58,
+          "visual_relocalized": 22
+        },
+        "input_audit": {
+          "schema": "ugrp.selfmap_input_audit.v1",
+          "measured": true,
+          "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+          "own_rgb_frames": 151,
+          "issued_command_records": 157,
+          "top_rgb_frames": 0,
+          "peer_rgb_frames": 0,
+          "truth_pose_inputs": 0,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "rejected_inputs": 0,
+          "authored_static_map_inputs": 1
+        },
+        "frontier_arrivals": 0,
+        "timing": {
+          "seconds": {
+            "capture": 8.337345792990163,
+            "plane_flow": 2.7243206939983793,
+            "pf": 1.2799464320105471,
+            "registration": 16.960116382993874,
+            "feature_tracking": 2.7898837470074795,
+            "control": 56.975908191996496,
+            "evaluation": 0.1728462479841255,
+            "physics_advance": 57.875114881006084,
+            "feature_extract": 1.1289492369978689,
+            "structure_extract": 13.31646868999087
+          },
+          "calls": {
+            "capture": 151,
+            "plane_flow": 151,
+            "pf": 151,
+            "registration": 151,
+            "feature_tracking": 151,
+            "control": 151,
+            "evaluation": 151,
+            "physics_advance": 300,
+            "feature_extract": 139,
+            "structure_extract": 139
+          },
+          "pf_particles": 2000,
+          "nested_categories": true,
+          "note": "control includes feature/PF/geometry; registration includes PF and evidence"
+        }
+      },
+      "input_audit": {
+        "schema": "ugrp.selfmap_input_audit.v1",
+        "measured": true,
+        "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+        "own_rgb_frames": 301,
+        "issued_command_records": 307,
+        "top_rgb_frames": 0,
+        "peer_rgb_frames": 0,
+        "truth_pose_inputs": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "rejected_inputs": 0,
+        "authored_static_map_inputs": 1
+      },
+      "sha256": {
+        "raw/result.json": "2978dcf2eabbcc288a6606ba5959ffa468f0c66ce13590518bc1cafd002e6f61",
+        "raw/trace.jsonl.zst": "af009ca93a15bd4bf29cda0e61121681c34e297291028e6479cabad4ad9f5734",
+        "raw/eval_only/trajectory.jsonl.zst": "41f873f75d6dde2e8db8515a39f8826e9c245c23bb7e9027b1a8415c2c9b923d",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "registration_frame_funnel": {
+        "unit": "ordered global/relocalization frames, not independent trials",
+        "cumulative": {
+          "frames": 156,
+          "sensor_update": 45,
+          "pf_resolved": 31,
+          "dominant_mode": 31,
+          "raw_covariance": 31,
+          "independent_axes": 31,
+          "global_unique": 17,
+          "three_views": 2,
+          "registered": 2
+        },
+        "first_rejections": [
+          {
+            "category": "sensor_update",
+            "N": 111,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "three_views",
+            "N": 15,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "pf_resolved",
+            "N": 14,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "global_unique",
+            "N": 14,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          }
+        ]
+      },
+      "known_mode_measurement_funnel": {
+        "unit": "known-mode frames; prediction frames stop at sensor_update and are not failed absolute measurements",
+        "cumulative": {
+          "frames": 145,
+          "sensor_update": 34,
+          "covariance": 32,
+          "partial_geometry": 32,
+          "live_tracking": 32,
+          "execution_correction": 19,
+          "map_inserted": 19
+        },
+        "first_rejections": [
+          {
+            "category": "sensor_update",
+            "N": 111,
+            "blocked_object": "own_rgb_tracking_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "execution_correction",
+            "N": 13,
+            "blocked_object": "own_rgb_tracking_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "covariance",
+            "N": 2,
+            "blocked_object": "own_rgb_tracking_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          }
+        ]
+      },
+      "correction_reason_counts": {
+        "within_innovation_gate": 22,
+        "not_evaluated": 178,
+        "outlier_pending": 7,
+        "competing_hypotheses": 7
+      },
+      "actual_measurement_t_unique_N": 22,
+      "failure_rgb_buffer": {
+        "reason": "sim_time_cap",
+        "recording_only": true,
+        "training_rgb": false,
+        "hz": 10,
+        "span_sim_s": 10,
+        "frame_N": 101,
+        "bytes": 1240831
+      },
+      "result_status": "RECORDED"
+    },
+    {
+      "run": "reloc15-r2-selfmap-93584-candidate-44ba1bc6",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r2-selfmap-93584-candidate-44ba1bc6/raw",
+      "source_sha": "44ba1bc6d7aaeb8cbd9408e8dcf02f9d2d56f262",
+      "funnel": {
+        "fresh_static_fix_independent": 133,
+        "frames": 301,
+        "frames_independent": 301,
+        "registered": 216,
+        "registered_independent": 216,
+        "execution_pose_delivered": 216,
+        "execution_pose_delivered_independent": 216,
+        "map_inserted": 209,
+        "map_inserted_independent": 284,
+        "control_drive_used": 45,
+        "control_drive_used_independent": 45
+      },
+      "registration_events": [
+        {
+          "t": 18.3,
+          "xy_m": 0.07742289174194673,
+          "yaw_deg": 1.1874822850172955,
+          "false": false
+        }
+      ],
+      "false_registration_events": 0,
+      "registered_errors": {
+        "N": 216,
+        "bad_N": 73,
+        "xy_m": {
+          "N": 216,
+          "min": 0.008007285290340973,
+          "p50": 0.07143649148543786,
+          "p90": 0.1142972649877522,
+          "p95": 0.11980903767576767,
+          "p99": 0.12900750067821806,
+          "max": 0.1334167318553234
+        },
+        "yaw_deg": {
+          "N": 216,
+          "min": 0.0056115257385627665,
+          "p50": 1.1963231736724245,
+          "p90": 6.180454768593047,
+          "p95": 8.747899288497381,
+          "p99": 9.858102577176497,
+          "max": 10.09305917523236
+        }
+      },
+      "map_inserted_errors": {
+        "N": 209,
+        "bad_N": 69,
+        "within15cm5_N": 170,
+        "within30cm10_N": 209,
+        "xy_m": {
+          "N": 209,
+          "min": 0.008007285290340973,
+          "p50": 0.06963332090260442,
+          "p90": 0.11306186516201001,
+          "p95": 0.11805157847769175,
+          "p99": 0.12911154783413015,
+          "max": 0.1334167318553234
+        },
+        "yaw_deg": {
+          "N": 209,
+          "min": 0.0056115257385627665,
+          "p50": 1.187482285017289,
+          "p90": 6.081612221909693,
+          "p95": 8.608954020854567,
+          "p99": 9.840480214769416,
+          "max": 9.91180904751419
+        }
+      },
+      "drive_errors": {
+        "N": 45,
+        "bad_N": 6,
+        "within15cm5_N": 44,
+        "within30cm10_N": 45,
+        "xy_m": {
+          "N": 45,
+          "min": 0.021852080016158553,
+          "p50": 0.044363363319251,
+          "p90": 0.1046317871562352,
+          "p95": 0.10819088664945783,
+          "p99": 0.11319360074945815,
+          "max": 0.1145125959041183
+        },
+        "yaw_deg": {
+          "N": 45,
+          "min": 0.0056115257385627665,
+          "p50": 1.4294013142696773,
+          "p90": 1.8589726342114634,
+          "p95": 2.0266814660948596,
+          "p99": 4.368931897859764,
+          "max": 5.425359881316601
+        }
+      },
+      "termination": {
+        "status": "RECORDED",
+        "category": "cap_end",
+        "reason": "sim_time_cap",
+        "elapsed_sim_s": 60.0,
+        "supervisor_stop": {},
+        "code_vs_host": "see_reason"
+      },
+      "first30": {
+        "elapsed_sim_s": 30.0,
+        "frames": 151,
+        "stage": "active_reloc8",
+        "wall_per_sim": 4.774603769399983,
+        "pose_sources": {
+          "bootstrap": 3,
+          "visual_update": 66,
+          "command_only": 36,
+          "visual_relocalized": 46
+        },
+        "input_audit": {
+          "schema": "ugrp.selfmap_input_audit.v1",
+          "measured": true,
+          "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+          "own_rgb_frames": 151,
+          "issued_command_records": 157,
+          "top_rgb_frames": 0,
+          "peer_rgb_frames": 0,
+          "truth_pose_inputs": 0,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "rejected_inputs": 0,
+          "authored_static_map_inputs": 1
+        },
+        "frontier_arrivals": 0,
+        "timing": {
+          "seconds": {
+            "capture": 8.30375605199879,
+            "plane_flow": 2.622996021013023,
+            "pf": 1.4947239060074935,
+            "registration": 25.008894753000277,
+            "feature_tracking": 2.6197429209914844,
+            "control": 66.24270854200222,
+            "evaluation": 0.1718832989990915,
+            "physics_advance": 56.151363835004304,
+            "feature_extract": 1.1574716619907122,
+            "structure_extract": 13.126568756992128
+          },
+          "calls": {
+            "capture": 151,
+            "plane_flow": 151,
+            "pf": 151,
+            "registration": 151,
+            "feature_tracking": 151,
+            "control": 151,
+            "evaluation": 151,
+            "physics_advance": 300,
+            "feature_extract": 139,
+            "structure_extract": 139
+          },
+          "pf_particles": 2000,
+          "nested_categories": true,
+          "note": "control includes feature/PF/geometry; registration includes PF and evidence"
+        }
+      },
+      "input_audit": {
+        "schema": "ugrp.selfmap_input_audit.v1",
+        "measured": true,
+        "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+        "own_rgb_frames": 301,
+        "issued_command_records": 307,
+        "top_rgb_frames": 0,
+        "peer_rgb_frames": 0,
+        "truth_pose_inputs": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "rejected_inputs": 0,
+        "authored_static_map_inputs": 1
+      },
+      "sha256": {
+        "raw/result.json": "73e66c19ac3715da8707ded784a3028bc414bc54dd781ef8ecc7d16d3bd1366e",
+        "raw/trace.jsonl.zst": "97fd36f13cb2f8a98ca44e4ff1a8cda623c8a09afcfd8626c679225e47f70372",
+        "raw/eval_only/trajectory.jsonl.zst": "ff32fd62192e29e7e8fbb083469e9dfb8cab7f473048cd118f4e333177d857a1",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "registration_frame_funnel": {
+        "unit": "ordered global/relocalization frames, not independent trials",
+        "cumulative": {
+          "frames": 90,
+          "sensor_update": 43,
+          "pf_resolved": 34,
+          "dominant_mode": 34,
+          "raw_covariance": 34,
+          "independent_axes": 34,
+          "global_unique": 29,
+          "three_views": 2,
+          "registered": 2
+        },
+        "first_rejections": [
+          {
+            "category": "sensor_update",
+            "N": 47,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "three_views",
+            "N": 27,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "pf_resolved",
+            "N": 9,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "global_unique",
+            "N": 5,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          }
+        ]
+      },
+      "known_mode_measurement_funnel": {
+        "unit": "known-mode frames; prediction frames stop at sensor_update and are not failed absolute measurements",
+        "cumulative": {
+          "frames": 211,
+          "sensor_update": 131,
+          "covariance": 131,
+          "partial_geometry": 131,
+          "live_tracking": 131,
+          "execution_correction": 131,
+          "map_inserted": 131
+        },
+        "first_rejections": [
+          {
+            "category": "sensor_update",
+            "N": 80,
+            "blocked_object": "own_rgb_tracking_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          }
+        ]
+      },
+      "correction_reason_counts": {
+        "within_innovation_gate": 133,
+        "not_evaluated": 83
+      },
+      "actual_measurement_t_unique_N": 133,
+      "failure_rgb_buffer": {
+        "reason": "sim_time_cap",
+        "recording_only": true,
+        "training_rgb": false,
+        "hz": 10,
+        "span_sim_s": 10,
+        "frame_N": 101,
+        "bytes": 1546493
+      },
+      "result_status": "RECORDED"
+    }
+  ],
+  "original_full_analysis": "/home/ugrp/ugrp-sim/outputs/reloc15/round2-full.json"
+}

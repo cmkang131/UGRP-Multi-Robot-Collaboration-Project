@@ -1,0 +1,60 @@
+{
+  "task": "reloc12",
+  "verdict": "NOT_READY",
+  "start_sha": "3c4af5b3a8131d4d1154a47719af5aa9792bfdf4",
+  "execution_source_sha": "ff1ccf27a43fe73d9b49dac82caf26a4584060d0",
+  "physical_round_N": 2,
+  "physical_run_N": 6,
+  "texture_run_N": 5,
+  "smooth_run_N": 1,
+  "raw_cov_only": {
+    "texture_registered_events": 0,
+    "smooth_registered_events": 0
+  },
+  "ransac": {
+    "texture_runs": 4,
+    "first_registration_correct_N": 4,
+    "first_registration_false_N": 0,
+    "registered_frames": 446,
+    "registered_controller_error_frames": 147,
+    "success_definition": "10cm and5deg, evaluator only",
+    "HOST_ERROR_N": 4,
+    "HOST_ERROR_reason": "selfmap4_relocalization_exhausted",
+    "wall_per_sim_first30_median": 4.321386719250009
+  },
+  "cap_end_N": 1,
+  "carry": {
+    "default_off_toggle": "reloc12_carry_reacquire_v1",
+    "regression": "search preempted on spent pose budget, same search resumes, fresh visibility still required",
+    "new_carry_physics_runs": 0
+  },
+  "tests": {
+    "passed": 58,
+    "mac_physics": 0,
+    "mac_render": 0,
+    "model_calls": 0
+  },
+  "remaining": [
+    "Enlarged diagnostic covariance still returned to live pose: all446 registered frames blocked by pose_uncertain.",
+    "Actual emitted controller pose outside10cm/5deg on147/446 registered frames; first installation0/4 false is a different metric.",
+    "Carry recovery fix has numerical/state-machine evidence only; physical reproduction93266 not submitted."
+  ],
+  "queues": [
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-reloc12-selfmap-ff1ccf27.json",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-reloc12-carry-texture-ff1ccf27.json"
+  ],
+  "queue_status": "BLOCKED; all execution/approval flags false; previous queues untouched",
+  "originals": "GCP persistent disk only, full manifest6/6 verified; Mac summaries, montages and selected36 own RGB only",
+  "direct_review_N": 36,
+  "third_physical_round": "not executed; requested five texture and one smooth physical checks consumed",
+  "smooth_offline_replay": {
+    "evaluated": 83,
+    "candidate_counts": {
+      "0": 57,
+      "1": 18,
+      "2": 8
+    },
+    "PF_agree_accept_N": 0,
+    "scope": "saved-buffer replay only; no additional smooth physics"
+  }
+}

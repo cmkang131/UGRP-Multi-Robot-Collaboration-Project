@@ -1,0 +1,66 @@
+{
+  "schema": "ugrp.reloc15.constant_basis.v1",
+  "runtime_physics_changed": false,
+  "entries": [
+    {
+      "name": "reloc15_update_budget_v1",
+      "values": {
+        "distance_m": 0.05,
+        "yaw_deg": 2.5
+      },
+      "basis": "half of existing10cm/5deg task target; user-provided loc.md priority1 candidate; opportunity hypothesis only",
+      "scope": "default-off per-filter; stationary frames not remeasured",
+      "validation": "R2 matched93584 drive43/45 ->6/45; other seeds errors remain"
+    },
+    {
+      "name": "heading sample interval",
+      "values": {
+        "default_sim_s": 0.2,
+        "optional_sim_s": 0.1
+      },
+      "basis": "existing5Hz carry observation and native10Hz command/recording clocks; measured failure p95/max16.87/17.99deg/s",
+      "validation": "10Hz option prepared, not physically executed; do not infer efficacy"
+    },
+    {
+      "name": "dense support radius",
+      "value_px": 80,
+      "basis": "existing LK window21 and pyramid3: (21-1)/2 *2**3; full support inside real pixels",
+      "validation": "saved failure35/39 inliers lie at fixed border; no new empirical border cutoff"
+    },
+    {
+      "name": "ECC iterations",
+      "value_each": 50,
+      "basis": "OpenCV official findTransformECC default COUNT50; forward and reverse each fixed count; no wall deadline",
+      "url": "https://docs.opencv.org/5.0/main_modules/video_track.html"
+    },
+    {
+      "name": "dense rank",
+      "value": 8,
+      "basis": "homography8 free parameters; numpy matrix_rank machine precision; not tuned eigen threshold"
+    },
+    {
+      "name": "yaw uncertainty",
+      "basis": "existing S2 1px feature error, common pitch2.8deg and differential pitch.9deg; all cheirality-valid solutions plus forward/backward residual",
+      "validation": "FAILED coverage onR3: predicted3sigma4.837deg but actualmeasurement error12.253deg; correlation/pair dependence not calibrated"
+    },
+    {
+      "name": "heading quality",
+      "values": {
+        "confidence_multiplier": 3,
+        "task_precision_deg": 5
+      },
+      "basis": "existing S2 confidence3 and existing task heading5deg; default-off; unknown must not mutate pose/P/fix age",
+      "validation": "NOT_READY; R3 false accept remains; no promotion"
+    },
+    {
+      "name": "failure recording",
+      "values": {
+        "hz": 10,
+        "sim_s": 10,
+        "full_review_hz": 2
+      },
+      "basis": "explicit user common rules8/10; not a control tolerance",
+      "validation": "buffers verified18/18; selfmap frame-id side effect fixed after physical rounds, nonphysics regression only"
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "basis": "nonnegative linear upper envelope, all recorded phases including partial epochs; fit seed93266; seed93315 holdout; scoring-only truth",
+  "fits": {
+    "xy_m": {
+      "coefficients": [
+        0.260783545418116,
+        0.09953783447277453,
+        0.0,
+        0.0
+      ],
+      "features": [
+        "intercept",
+        "issued_distance_m",
+        "issued_turn_rad",
+        "since_rgb_fix_s"
+      ],
+      "scores": [
+        {
+          "run": "reloc13-r1-carry-texture-93266-aa1f4661-retry1",
+          "N": 3000,
+          "covered_N": 3000,
+          "positive_N": 0,
+          "trigger_recall": null
+        },
+        {
+          "run": "reloc13-r1-carry-texture-93315-aa1f4661-retry1",
+          "N": 940,
+          "covered_N": 940,
+          "positive_N": 0,
+          "trigger_recall": null
+        }
+      ]
+    },
+    "yaw_deg": {
+      "coefficients": [
+        4.522386263900104,
+        0.0,
+        20.584161983501907,
+        0.0
+      ],
+      "features": [
+        "intercept",
+        "issued_distance_m",
+        "issued_turn_rad",
+        "since_rgb_fix_s"
+      ],
+      "scores": [
+        {
+          "run": "reloc13-r1-carry-texture-93266-aa1f4661-retry1",
+          "N": 3000,
+          "covered_N": 3000,
+          "positive_N": 835,
+          "trigger_recall": 1.0
+        },
+        {
+          "run": "reloc13-r1-carry-texture-93315-aa1f4661-retry1",
+          "N": 940,
+          "covered_N": 940,
+          "positive_N": 0,
+          "trigger_recall": null
+        }
+      ]
+    }
+  }
+}

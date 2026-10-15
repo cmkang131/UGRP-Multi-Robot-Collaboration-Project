@@ -24,6 +24,14 @@ from scripts import agent_lock
 from scripts.check_ci_fixtures import check_fixtures
 
 TEST_PATTERNS = (
+    "tests/test_reloc11_*.py",
+    "tests/test_reloc12*.py",
+    "tests/test_reloc13.py",
+    "tests/test_reloc14.py",
+    "tests/test_reloc15.py",
+    "tests/test_reloc10_*.py",
+    "tests/test_reloc9_shared.py",
+    "tests/test_reloc9_selfmap.py",
     "tests/test_e2e18.py",
     "tests/test_e2e18_beam_axis.py",
     "tests/test_e2e18_cadence.py",
@@ -57,6 +65,13 @@ TEST_PATTERNS = (
     "tests/test_goal_route_continuous.py",
     "tests/test_own_traversal_graph.py",
     "tests/test_self_odom_grid.py",
+    "tests/test_natural_floor_slam.py",
+    "tests/test_self_map_integration.py",
+    "tests/test_self_map_executor.py",
+    "tests/test_selfmap4.py",
+    "tests/test_selfmap5.py",
+    "tests/test_selfmap6.py",
+    "tests/test_offline_self_map.py",
     "tests/test_self_map_csm.py",
     "tests/test_self_map_csm_v2.py",
     "tests/test_self_map_prob.py",

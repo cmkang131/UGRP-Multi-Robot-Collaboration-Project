@@ -1,0 +1,33 @@
+{
+  "passed": 58,
+  "skipped": 0,
+  "mac_physics": 0,
+  "mac_render": 0,
+  "simulator_import_blocked": true,
+  "model_calls": 0,
+  "test_command": "PYTHONPATH=.:tests /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-15-reloc12/run_offline_tests.py -q tests/test_reloc12.py tests/test_selfmap4.py tests/test_selfmap5.py tests/test_selfmap6.py tests/test_reloc11_timing.py",
+  "log_path": "/Users/changmin/projects/ugrp-wt/map-selfmap/outputs/reloc12/pytest-final.txt",
+  "log_sha256": "6c20439126039b096c46b4763d518ea80aa88261fb82ef22ace445e88635d526",
+  "full_CI": "not run locally",
+  "live_concurrency_before_submission": [
+    5,
+    0,
+    5,
+    4,
+    4,
+    4
+  ],
+  "conservative_admission_upper_bounds": [
+    34,
+    30,
+    35,
+    35,
+    37,
+    36
+  ],
+  "first30_ransac_wall_per_sim_median": 4.321386719250009,
+  "aggregate_cap": 40,
+  "vm_cap_s": 86400,
+  "owned_queue_max_parallel": 16,
+  "physical_candidate_concurrency": 4
+}

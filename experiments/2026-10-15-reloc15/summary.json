@@ -1,0 +1,271 @@
+{
+  "schema": "ugrp.reloc15.summary.v1",
+  "status": "NOT_READY",
+  "ready": false,
+  "round_count": 3,
+  "round_sizes": [
+    6,
+    6,
+    6
+  ],
+  "physical_run_N": 18,
+  "source_shas": [
+    "1d7d5b2639d3af413e5e2442a6b16c42bad68c30",
+    "44ba1bc6d7aaeb8cbd9408e8dcf02f9d2d56f262",
+    "9607de16cfeac0a5ae1308732bab33604b8db7e7",
+    "e44b49873caf903a7bbcdf8aa054aabf88456c2e"
+  ],
+  "post_round3_code_sha": "accff49147e149591898daf2e6eba5e14376ec13",
+  "post_round3_selfmap_recording_fix_physics_N": 0,
+  "baseline_original_carry_run_N": 13,
+  "baseline_carry_with_logs_N": 11,
+  "baseline_missing_logs_HOST_ERROR_N": 2,
+  "findings": {
+    "physical": "exact replay: held red30g box not dragging; contact with other floor beam, plausible torque scale; simulator defect not established",
+    "physics_parameters_changed": false,
+    "sparse_rgb_yaw": "stationary image-border inliers dominate homography; true floor outliers",
+    "dense_rgb_yaw": "masked ECC detects saved pairs but false admitted rotations remain; uncertainty undercovers",
+    "selfmap_93584_matched": {
+      "baseline_bad": 152,
+      "baseline_N": 214,
+      "update_candidate_bad": 73,
+      "update_candidate_N": 216,
+      "baseline_drive_bad": 43,
+      "candidate_drive_bad": 6,
+      "drive_N": 45,
+      "scope": "same recording-condition comparison only; not qualified post-recording-fix source"
+    },
+    "final_false_acceptance": {
+      "seed": 93266,
+      "t": 59.5,
+      "actual_yaw_deg": 0.22099640533918188,
+      "observed_yaw_deg": 12.473796121192155,
+      "predicted_3sigma_deg": 4.8366458104426115
+    }
+  },
+  "destination_release_verified_N": 0,
+  "input_audit_zero": true,
+  "original_manifests_verified_N": 18,
+  "first30": [
+    {
+      "round": 1,
+      "kind": "selfmap",
+      "measured_N": 3,
+      "N": 3,
+      "median": 4.193439997400007,
+      "max": 4.303174596100022,
+      "scope": "one sparse baseline intentionally stopped before30; no speed conclusion for it"
+    },
+    {
+      "round": 1,
+      "kind": "carry",
+      "measured_N": 3,
+      "N": 3,
+      "median": 2.741785970094676,
+      "max": 2.839981262094491,
+      "scope": "one sparse baseline intentionally stopped before30; no speed conclusion for it"
+    },
+    {
+      "round": 2,
+      "kind": "selfmap",
+      "measured_N": 3,
+      "N": 3,
+      "median": 4.394903695133325,
+      "max": 4.774603769399983,
+      "scope": "one sparse baseline intentionally stopped before30; no speed conclusion for it"
+    },
+    {
+      "round": 2,
+      "kind": "carry",
+      "measured_N": 2,
+      "N": 3,
+      "median": 3.7666194430093145,
+      "max": 4.694802599124173,
+      "scope": "one sparse baseline intentionally stopped before30; no speed conclusion for it"
+    },
+    {
+      "round": 3,
+      "kind": "selfmap",
+      "measured_N": 3,
+      "N": 3,
+      "median": 4.6468346529332845,
+      "max": 4.760573284433364,
+      "scope": "one sparse baseline intentionally stopped before30; no speed conclusion for it"
+    },
+    {
+      "round": 3,
+      "kind": "carry",
+      "measured_N": 3,
+      "N": 3,
+      "median": 3.6145725842262686,
+      "max": 5.6512625219556565,
+      "scope": "one sparse baseline intentionally stopped before30; no speed conclusion for it"
+    }
+  ],
+  "max_admission_conservative_upper": 33,
+  "max_own_candidate_parallel": 6,
+  "planned16_same_cohort_replay_verified": false,
+  "host_guard_s": 86400,
+  "budget_stop_state": "ACTIVE",
+  "validation": {
+    "mac_nonphysics_pytest_passed": 31,
+    "gcp_saved_image_regression_direct_passed": 1,
+    "gcp_pytest_available": false,
+    "github_ci": "pending after push",
+    "scope": "32 distinct offline checks; one GCP test function executed directly; no Mac physics/render/model"
+  },
+  "own_processes_remaining": 0,
+  "own_leases_remaining": 0,
+  "own_reservations_remaining": 0,
+  "model_calls": 0,
+  "training_runs": 0,
+  "weld": "off",
+  "google_drive_used": false,
+  "media_root": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/reloc15",
+  "rejection_table": "/Users/changmin/projects/ugrp-wt/map-selfmap/experiments/2026-10-15-reloc15/rejection-table.json",
+  "followup_queues_submitted": false,
+  "blockers": [
+    "selfmap pose errors remain across seeds",
+    "false accepted carry yaw despite nominal precision bound",
+    "no destination release verified",
+    "post-round3 control-frame-preserving recording fix lacks physics",
+    "same-condition carry success video absent"
+  ],
+  "original_storage": "GCP persistent disk; no separate full backup",
+  "diagnostic_replays": {
+    "exact_completed": 4,
+    "failed_attempts": 2,
+    "failures": [
+      "EGL import before physics, retried OSMesa",
+      "scene XML byte mismatch after setup, rerun from exact original source"
+    ]
+  },
+  "runs": [
+    {
+      "run": "reloc15-r1-carry-93266-candidate-9607de16",
+      "round": 1,
+      "source_sha": "9607de16cfeac0a5ae1308732bab33604b8db7e7",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r1-carry-93266-candidate-9607de16/raw",
+      "summary": "round1.json"
+    },
+    {
+      "run": "reloc15-r1-carry-93315-baseline-9607de16",
+      "round": 1,
+      "source_sha": "9607de16cfeac0a5ae1308732bab33604b8db7e7",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r1-carry-93315-baseline-9607de16/raw",
+      "summary": "round1.json"
+    },
+    {
+      "run": "reloc15-r1-carry-93315-candidate-9607de16",
+      "round": 1,
+      "source_sha": "9607de16cfeac0a5ae1308732bab33604b8db7e7",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r1-carry-93315-candidate-9607de16/raw",
+      "summary": "round1.json"
+    },
+    {
+      "run": "reloc15-r1-selfmap-93583-candidate-9607de16",
+      "round": 1,
+      "source_sha": "9607de16cfeac0a5ae1308732bab33604b8db7e7",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r1-selfmap-93583-candidate-9607de16/raw",
+      "summary": "round1.json"
+    },
+    {
+      "run": "reloc15-r1-selfmap-93584-baseline-9607de16",
+      "round": 1,
+      "source_sha": "9607de16cfeac0a5ae1308732bab33604b8db7e7",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r1-selfmap-93584-baseline-9607de16/raw",
+      "summary": "round1.json"
+    },
+    {
+      "run": "reloc15-r1-selfmap-93584-candidate-9607de16",
+      "round": 1,
+      "source_sha": "9607de16cfeac0a5ae1308732bab33604b8db7e7",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r1-selfmap-93584-candidate-9607de16/raw",
+      "summary": "round1.json"
+    },
+    {
+      "run": "reloc15-r2-carry-93266-candidate-e44b4987",
+      "round": 2,
+      "source_sha": "e44b49873caf903a7bbcdf8aa054aabf88456c2e",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r2-carry-93266-candidate-e44b4987/raw",
+      "summary": "round2.json"
+    },
+    {
+      "run": "reloc15-r2-carry-93315-baseline-e44b4987",
+      "round": 2,
+      "source_sha": "e44b49873caf903a7bbcdf8aa054aabf88456c2e",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r2-carry-93315-baseline-e44b4987/raw",
+      "summary": "round2.json"
+    },
+    {
+      "run": "reloc15-r2-carry-93315-candidate-e44b4987",
+      "round": 2,
+      "source_sha": "e44b49873caf903a7bbcdf8aa054aabf88456c2e",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r2-carry-93315-candidate-e44b4987/raw",
+      "summary": "round2.json"
+    },
+    {
+      "run": "reloc15-r2-selfmap-93583-candidate-44ba1bc6",
+      "round": 2,
+      "source_sha": "44ba1bc6d7aaeb8cbd9408e8dcf02f9d2d56f262",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r2-selfmap-93583-candidate-44ba1bc6/raw",
+      "summary": "round2.json"
+    },
+    {
+      "run": "reloc15-r2-selfmap-93584-baseline-44ba1bc6",
+      "round": 2,
+      "source_sha": "44ba1bc6d7aaeb8cbd9408e8dcf02f9d2d56f262",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r2-selfmap-93584-baseline-44ba1bc6/raw",
+      "summary": "round2.json"
+    },
+    {
+      "run": "reloc15-r2-selfmap-93584-candidate-44ba1bc6",
+      "round": 2,
+      "source_sha": "44ba1bc6d7aaeb8cbd9408e8dcf02f9d2d56f262",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r2-selfmap-93584-candidate-44ba1bc6/raw",
+      "summary": "round2.json"
+    },
+    {
+      "run": "reloc15-r3-carry-93266-candidate-1d7d5b26",
+      "round": 3,
+      "source_sha": "1d7d5b2639d3af413e5e2442a6b16c42bad68c30",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r3-carry-93266-candidate-1d7d5b26/raw",
+      "summary": "round3.json"
+    },
+    {
+      "run": "reloc15-r3-carry-93313-candidate-1d7d5b26",
+      "round": 3,
+      "source_sha": "1d7d5b2639d3af413e5e2442a6b16c42bad68c30",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r3-carry-93313-candidate-1d7d5b26/raw",
+      "summary": "round3.json"
+    },
+    {
+      "run": "reloc15-r3-carry-93315-candidate-1d7d5b26",
+      "round": 3,
+      "source_sha": "1d7d5b2639d3af413e5e2442a6b16c42bad68c30",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r3-carry-93315-candidate-1d7d5b26/raw",
+      "summary": "round3.json"
+    },
+    {
+      "run": "reloc15-r3-selfmap-93571-candidate-e44b4987",
+      "round": 3,
+      "source_sha": "e44b49873caf903a7bbcdf8aa054aabf88456c2e",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r3-selfmap-93571-candidate-e44b4987/raw",
+      "summary": "round3.json"
+    },
+    {
+      "run": "reloc15-r3-selfmap-93583-baseline-e44b4987",
+      "round": 3,
+      "source_sha": "e44b49873caf903a7bbcdf8aa054aabf88456c2e",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r3-selfmap-93583-baseline-e44b4987/raw",
+      "summary": "round3.json"
+    },
+    {
+      "run": "reloc15-r3-selfmap-93585-candidate-e44b4987",
+      "round": 3,
+      "source_sha": "e44b49873caf903a7bbcdf8aa054aabf88456c2e",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r3-selfmap-93585-candidate-e44b4987/raw",
+      "summary": "round3.json"
+    }
+  ]
+}
