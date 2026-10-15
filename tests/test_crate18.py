@@ -20,8 +20,8 @@ def test_floor_and_single_axis(axis,error):
     assert all(MIN_DURATION[axis]<=v<=.1 for v in c['duration_s'])
     assert all(abs(w)==.35 for w in c['wheels'])
 
-@pytest.mark.parametrize('dx,dy,da',list(product(*[(-2*d,0,2*d) for d in DELTA])))
-def test_quantum_reversal_envelope_preserves_exact_grasp_geometry(dx,dy,da):
+@pytest.mark.parametrize('dx,dy,da',list(product(*[(-b,0,b) for b in INNER18])))
+def test_quantum_deadband_envelope_preserves_exact_grasp_geometry(dx,dy,da):
     x=.1974+dx;y=dy;a=-da;c=math.cos(a);s=math.sin(a)
     pose=(-c*x+s*y,-s*x-c*y,a)
     w={'beam':{'ends':{'teal':(0,0,.02396)},'pose':(0,0,0)},'visibility':{'r1':{'visible_probes':15}}}
@@ -48,10 +48,10 @@ def test_latched_settle_survives_fresh_stability_but_missing_view_resets():
 def test_three_reversals_and_geometry_guard():
     t=make();w=empty();t.phase='align';t.approach_plan_valid=True;t.folded_ready=True
     # Only policy sees these yaw observations; the fixed visible world is valid.
-    for e in (.01,-.01,.01):
+    for e in (.018,-.018,.018):
         assert not t._alignment_settled(w,(0.,0.,e))
         t.settlers18[2].issued(e)
-    assert t._alignment_settled(w,(0.,0.,-.01))
+    assert t._alignment_settled(w,(0.,0.,-.018))
     assert t.settle18_states[2]['reason']=='consecutive_reversals'
     w['beam']['ends']['teal'][2]=-.5
     assert not t._alignment_settled(w,(0.,0.,0.))
@@ -76,3 +76,17 @@ def test_legacy_selection_reversals_do_not_preempt_issued_pulse_policy():
     t.align_sign=[1,-1,1];t.align_flips=[3,3,3]
     t._resume_alignment((.01,.01,-.01))
     assert t.align_sign==t.align_flips==[0,0,0]
+
+
+def test_wide_reversal_latch_cannot_override_infeasible_pick_and_lift():
+    t=make();t.phase='align';t.approach_plan_valid=True;t.folded_ready=True
+    t.settle18_states=[dict(acceptance_band=2*d,settled=True) for d in DELTA]
+    rejected=0
+    for dx,dy,da in product(*[(-2*d,0,2*d) for d in DELTA]):
+        x=.1974+dx;y=dy;a=-da;c=math.cos(a);s=math.sin(a)
+        w=empty();w['beam']['pose']=[0.,0.,0.];w['beam']['ends']['teal']=[0.,0.,.02396]
+        w['robots']['r1']['pose']=[-c*x+s*y,-s*x-c*y,a]
+        if not grasp_valid(w,'r1','teal',w['robots']['r1']['pose']):
+            rejected+=1
+            assert not t.ready_geometry(w)
+    assert rejected>0

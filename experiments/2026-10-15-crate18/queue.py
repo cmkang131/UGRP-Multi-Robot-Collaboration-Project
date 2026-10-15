@@ -8,7 +8,7 @@ def build(sha,summary):
  spec=importlib.util.spec_from_file_location('queue17',HERE.parent/'2026-10-15-crate17/queue.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
  q=m.build(sha,{})
  q.update(owner='codex-crate18',status='BLOCKED' if summary['successes']!=6 else 'awaiting_diagnostic_admission',
-  max_parallel=16,stage_max_parallel={'reproduction':16,'diagnostic':16},
+  max_parallel=16,max_parallel_per_stage=16,stage_max_parallel={'reproduction':16,'diagnostic':16},
   crate18='crate18_v1',self_check=summary,candidates={c:{'crate_profile':p,'crate18':'crate18_v1'} for c,p in [('full','crate17_v1'),('no_clearance','crate17_no_clearance_v1')]},
   candidate_record={'record':str(HERE/'README.md'),'summary':str(HERE/'summary.json')},
   source_worktree=str(ROOT),runner_cwd=str(ROOT),
@@ -21,6 +21,7 @@ def build(sha,summary):
    'No pooling with crate16/17, other source/profile/host, or earlier crate18 tuning rounds.',
    'No top camera, no training RGB, no VM model key; inputs audit0/0.'],
   plan_sha256={f:digest(HERE/f) for f in ['reproduction-plan.json','diagnostic-plan.json']})
+ q['admission']['available_slots']='max(0, min(16 - crate_running, 40 - total_running))'
  q['criteria']['top_camera_capture']=False;q['criteria']['denominators']='candidate reproduction5 and fresh10 separate; prior profiles/rounds never pooled'
  for r in q['runs']:
   r['name']=r['name'].replace('crate17-','crate18-');r['max_parallel']=16;r['maximum_sim_s_per_episode']=90;r['crate18']='crate18_v1';r['status']=q['status']

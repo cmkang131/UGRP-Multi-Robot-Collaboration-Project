@@ -22,18 +22,24 @@ def summarize(folder):
    _,s=data(raw/p);sources.append(s)
   for rid in ['r1','r2']:
    ts=lines(raw/f'teacher-{rid}.jsonl');dist=Counter();signs=[];alignment=[];quantum=[]
+   epoch=0;in_alignment=False
    for t in ts:
-    if t.get('crate18_states'):quantum.append(t['crate18_states'])
+    active=t['teacher_phase'] in ('align','ready')
+    if active and not in_alignment:epoch+=1
+    in_alignment=active
+    if active and t.get('crate18_states'):quantum.append(t['crate18_states'])
     if 'applied_command' not in t:continue
     c=t['applied_command']
     if t['teacher_phase'] not in ('align','ready') or not any(c['wheels']):continue
     dist.update(round(d,3) for w,d in zip(c['wheels'],c['duration_s']) if w)
     w=c['wheels'];v=(sum(w),-w[0]+w[1]+w[2]-w[3],-w[0]+w[1]-w[2]+w[3]);axis=max(range(3),key=lambda i:abs(v[i]))
-    alignment.append(dict(t=t['t'],axis=axis,sign=math.copysign(1,v[axis]),duration_s=c['duration_s']))
+    alignment.append(dict(epoch=epoch,t=t['t'],axis=axis,sign=math.copysign(1,v[axis]),duration_s=c['duration_s']))
    reversals=Counter()
    prev={}
    for t in alignment:
     axis=t['axis'];sg=t['sign']
+    if prev.get('epoch')!=t['epoch']:prev={}
+    prev['epoch']=t['epoch']
     reversals[axis]+=int(axis in prev and prev[axis]!=sg);prev[axis]=sg
    pulses[rid]={'N':len(alignment),'wheel_width_histogram':dict(sorted(dist.items())),'axis_reversals':dict(reversals),'trace':alignment,
     'max_policy_reversals':[max((s[i]['total_reversals'] for s in quantum),default=0) for i in range(3)],

@@ -10,12 +10,14 @@ from sim.settle_pulse import PulseSettler, proportional_pulse
 from sim.crate_alignment_v14 import INNER
 
 MODE = 'crate18_v1'
-# (issued duration, measured effect median), frozen offline on GCP n4-highcpu-64.
-# The runtime treats these as an own-command model; no measured state is read.
+# (issued duration, measured effect empirical p95), frozen offline on GCP n4-highcpu-64.
+# Use the upper response quantum so median response does not undersize the
+# deadband in a plant with variable breakaway response. This empirical p95 is
+# no population guarantee. The runtime reads no measured state.
 KNOTS = (
-    ((.025, .001321), (.040, .004561)),
-    ((.025, .000824), (.040, .004697)),
-    ((.018, .012432), (.028, .024868), (.040, .040170), (.046, .048492)),
+    ((.025, .003071185), (.040, .005704642)),
+    ((.025, .001041256), (.040, .005472836)),
+    ((.018, .021610194), (.028, .032647034), (.040, .046344350), (.046, .053508111)),
 )
 MIN_DURATION = tuple(k[0][0] for k in KNOTS)
 DELTA = tuple(k[0][1] for k in KNOTS)
