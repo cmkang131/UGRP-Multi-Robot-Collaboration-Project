@@ -16,7 +16,10 @@ def launch(n):
     assert not subprocess.check_output(['git','status','--porcelain','--untracked-files=no'])
     rejection=(ROOT/'experiments/2026-10-16-reloc19/prior-rejection-table.json' if n==1 else RUNS/f'reloc19-round{n-1}/rejection-table.json')
     assert rejection.is_file()
-    if n>1:assert (RUNS/f'reloc19-round{n-1}/DONE').exists()
+    if n>1:
+        previous=RUNS/f'reloc19-round{n-1}'
+        assert (previous/'DONE').exists()
+        assert json.loads((previous/'speed-gate.json').read_text())['status']=='PASS'
     batch=RUNS/f'reloc19-round{n}';batch.mkdir(exist_ok=False)
     prior=json.loads((RUNS/'reloc18-round3/queue.json').read_text())['runs'];tasks=[]
     for old in prior:

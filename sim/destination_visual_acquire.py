@@ -15,7 +15,7 @@ OPTION = 'destination_visual_acquire_v1'
 CHI2_XY_95 = 5.991464547107979  # chi-square, 2 DOF, 95% contour (not calibrated coverage).
 
 
-def floor_patch(bgr, pwm, zone, half_extents, *, excluded=None):
+def floor_patch(bgr, pwm, zone, half_extents, *, excluded=None, clear=None):
     """Largest destination-colour ground hypothesis, excluding held pixels.
 
     Hue/S/V are the unchanged CarryToZone.place_visible limits. Minimum600
@@ -30,6 +30,8 @@ def floor_patch(bgr, pwm, zone, half_extents, *, excluded=None):
     lo, hi = PAINT_HUE[zone]
     mask = ((hsv[...,0] >= lo-5) & (hsv[...,0] <= hi+5)
             & (hsv[...,1] >= 30) & (hsv[...,2] >= 30) & _usable_region(w,h))
+    if clear is not None:
+        mask &= clear
     if excluded is not None:
         mask &= ~excluded
     n, labels, stats, _ = cv2.connectedComponentsWithStats(mask.astype(np.uint8), 8)
@@ -85,6 +87,38 @@ def ellipse_candidates(pose, covariance, half_extents):
     return [(x,y) for _,x,y in sorted(out)]
 
 
+def information_views(static,pose,P,pwm):
+    """Existing static-landmark/Fisher view planner, actual issued loaded camera.
+
+    Reuse15degree sampling, K=3 and MIN_GAIN from setdown_lookaround_v1;
+    predicted visibility never counts as an observed landmark or accepted fix.
+    """
+    from sim.lookaround_localization import map_landmarks, wall_rects, _segment_hits_rect
+    from sim.active_lookaround import plan_views, PANS_DEG, BODY_YAWS_DEG
+    from sim.grasp_act_solo_lookback import project
+    landmarks=map_landmarks(static);rects=wall_rects(static)
+    yaws=[0.]+sorted({float(((p+y+180)%360)-180) for p in PANS_DEG for y in BODY_YAWS_DEG}-{0.})
+    _,cam=transforms(pwm)
+    def visible(x,yaw,pan,lm):
+        a=x[2]+math.radians(yaw);c,ss=math.cos(a),math.sin(a)
+        dx,dy=lm['xy'][0]-x[0],lm['xy'][1]-x[1]
+        body=(c*dx+ss*dy,-ss*dx+c*dy,0.)
+        if math.hypot(dx,dy)>lm['range']:return False
+        cw=(x[0]+c*cam[0,3]-ss*cam[1,3],x[1]+ss*cam[0,3]+c*cam[1,3])
+        lx,ly=lm['xy']
+        if not lm.get('two_sided') and (cw[0]-lx)*lm['normal'][0]+(cw[1]-ly)*lm['normal'][1]<=0:return False
+        uv,front=project([body],pwm)
+        # Same12px field margin as the existing landmark visibility predictor.
+        if not front[0] or not (12<=uv[0,0]<628 and 12<=uv[0,1]<468):return False
+        L=math.dist(cw,(lx,ly))
+        if L<=np.finfo(float).eps:return False
+        end=(lx-.03*(lx-cw[0])/L,ly-.03*(ly-cw[1])/L)
+        return not any(_segment_hits_rect(cw,end,r) for r in rects)
+    plan=plan_views(pose,P,landmarks,visible,pans=(0.,),body_yaws=yaws)
+    # plan_views prefers current yaw when informative, and uses body yaws otherwise.
+    return plan
+
+
 class DestinationAcquire:
     def __init__(self, carry):
         self.carry=carry; self.started=None; self.acquired=None; self.confirmed=None
@@ -92,9 +126,19 @@ class DestinationAcquire:
         self.points=[]; self.point=None; self.path=None; self.failure=None; self.valid_since=None
         self.views=0; self.last_fix_count=0; self.relocalizations=0; self.reloc_anchor=None
         self.reloc_t=None; self.reloc_scan=False; self.reloc_done=False
+        self.reloc_views=[];self.reloc_view=None;self.reloc_settle=None;self.reloc_counts=0
+        self._floor_cache=None
 
     def event(self,now,event,**kw):
         self.events.append(dict(t=now,event=event,**kw))
+
+    def floor_clear(self,bgr):
+        """Reuse reloc16's frozen scene RGB wall exclusion, no new thresholds."""
+        if self._floor_cache is None or self._floor_cache[0] is not bgr:
+            from harness.reloc16_floor_mask import floor_clear
+            clear,audit=floor_clear(bgr,np.ones(bgr.shape[:2],bool))
+            self._floor_cache=(bgr,clear,audit)
+        return self._floor_cache[1],self._floor_cache[2]
 
     def issue(self,delta):
         self.turn += float(delta[2])
@@ -108,13 +152,11 @@ class DestinationAcquire:
         self.event(now,'destination_acquire_start',ellipse_candidates=len(self.points),
             covariance=c.loc.own.P.tolist(),expected_bearing_rad=math.atan2(c.region['center_m'][1]-c.loc.pose[1],c.region['center_m'][0]-c.loc.pose[0]))
 
-    def relocalize_step(self,now):
-        """Held body sweep at a route view before destination arrival.
+    def relocalize_step(self,now,pwm=None):
+        """Information-ranked held views, else existing setdown/lookaround.
 
-        Trigger:95% XY contour exceeds the smaller destination half width.
-        Try once per translated footprint width; retain actual posterior and
-        fall back to the existing setdown recovery if its hard budget fails.
-        No covariance reset, accepted fix, or progress is fabricated.
+        Trigger and spatial retry interval derive from the destination width.
+        The same existing observer consumes real RGB; no posterior is invented.
         """
         c=self.carry
         if c.started is None or c.goal is None:return None
@@ -123,14 +165,34 @@ class DestinationAcquire:
         if not self.reloc_scan:
             if radius <= width:return None
             if self.reloc_anchor is not None and math.dist(c.loc.pose[:2],self.reloc_anchor) < 2*width:return None
-            self.reloc_scan=True; self.reloc_anchor=c.loc.pose[:2]; self.scan_start=self.turn
-            self.reloc_t=now; self.last_fix_count=c.loc.fixes; self.relocalizations+=1
-            self.event(now,'held_relocalization_start',radius95_m=radius,zone_half_width_m=width)
-        # Same existing .1rad/s loaded chassis turn limit. Full scan =2pi radians.
-        if abs(self.turn-self.scan_start) < 2*math.pi:
-            return (0.,0.,.1)
-        self.reloc_scan=False; self.reloc_done=True
-        self.event(now,'held_relocalization_end',sim_s=now-self.reloc_t,
+            self.reloc_anchor=c.loc.pose[:2];self.reloc_t=now;self.last_fix_count=c.loc.fixes
+            self.relocalizations+=1;self.reloc_counts=0
+            plan=information_views(c.static,c.loc.pose,c.loc.own.P,pwm) if pwm is not None else dict(views=[])
+            self.event(now,'held_relocalization_start',radius95_m=radius,zone_half_width_m=width,plan=plan)
+            views=plan.get('views',[])
+            if not views:
+                self.event(now,'rejection',category='view_observability',reason='loaded_camera_no_informative_view',
+                    blocked_object='static_landmarks_outside_issued_camera_fov',minimum_gap_m=None,
+                    gap_scope='not_applicable_expected_view_information',fallback='existing_setdown_lookaround_v1')
+                c.request_recovery(now,'reloc19_unobservable_loaded_view')
+                return (0.,0.,0.)
+            # Angles are relative to the current command epoch, unaffected by
+            # any subsequent global pose correction while executing the view.
+            self.reloc_views=[self.turn+math.radians(v['body_yaw_deg']) for v in views]
+            self.reloc_scan=True;self.reloc_view=None;self.reloc_settle=None
+        if self.reloc_view is None and self.reloc_views:
+            self.reloc_view=self.reloc_views.pop(0);self.reloc_settle=None
+        if self.reloc_view is not None:
+            error=self.reloc_view-self.turn
+            if abs(error)>.04:  # unchanged carry arrival yaw tolerance
+                return (0.,0.,max(-.1,min(.1,.6*error)))
+            if self.reloc_settle is None:self.reloc_settle=now
+            # Existing lookaround VIEW_SETTLE_S=.8; actual RGB observer runs10Hz.
+            if now-self.reloc_settle<.8-1e-8:return (0.,0.,0.)
+            self.reloc_counts+=1;self.reloc_view=None
+            if self.reloc_views:return (0.,0.,0.)
+        self.reloc_scan=False;self.reloc_done=True
+        self.event(now,'held_relocalization_end',sim_s=now-self.reloc_t,actual_dwelled_views=self.reloc_counts,
                    new_fixes=c.loc.fixes-self.last_fix_count,posterior=c.loc.own.P.tolist())
         return (0.,0.,0.)
 
@@ -140,11 +202,15 @@ class DestinationAcquire:
         from harness.reloc12_ledger import route_context
         c=self.carry
         if self.started is None:self.start(now)
-        centre, rec=floor_patch(bgr,pwm,c.zone,c.region['half_extents_m'],
+        clear,wall_audit=self.floor_clear(bgr)
+        centre, rec=floor_patch(bgr,pwm,c.zone,c.region['half_extents_m'],clear=clear,
             excluded=held_mask(kind,{1:1500,**low},pwm,(bgr.shape[1],bgr.shape[0])))
-        self.views+=1; self.last=dict(t=now,**rec)
+        self.views+=1; self.last=dict(t=now,scene_floor_mask=wall_audit,**rec)
         # Unchanged existing full-footprint RGB/FK gate and .3s stable evidence.
-        if c.place_visible(bgr,pwm,low,kind):
+        self.last['place_gate']=c.place_visible(bgr,pwm,low,kind)
+        if self.last['place_gate']:
+            if self.acquired is None:
+                self.acquired=now;self.event(now,'destination_colour_acquired',sim_s=now-self.started,source='unchanged_full_footprint_gate')
             self.valid_since=now if self.valid_since is None else self.valid_since
             if now-self.valid_since >= .3-1e-8:
                 self.confirmed=now; self.mode='confirmed'; self.event(now,'destination_confirmed')
@@ -174,6 +240,9 @@ class DestinationAcquire:
                     p=self.points.pop(0)
                     path=c.plan_path(c.loc.pose[:2],p,c.static['bounds_m'],c.obstacles.discs(now),rects=c.rects,radius=c.radius)
                     if path:self.point=p;self.path=path;break
+                    context=route_context(c.loc.pose[:2],p,c.obstacles.discs(now),c.rects,c.radius,
+                        names=[o['id'] for o in c.static['obstacles']],bounds=c.static['bounds_m'])
+                    self.event(now,'rejection',category='route',reason='ellipse_waypoint_no_path',**context)
                 if self.point is None:
                     self.failure='destination_visual_search_exhausted'; self.mode='failed'
                     self.event(now,'rejection',category='visual_acquisition',reason=self.failure,

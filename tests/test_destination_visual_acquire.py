@@ -48,14 +48,38 @@ def test_default_has_no_acquisition_and_command_issue_only_counts_turn():
     assert c.loc.pose==before and q.record()['truth_inputs']==0
 
 
-def test_held_scan_never_fabricates_fix_or_shrinks_covariance():
+def test_held_scan_never_fabricates_fix_or_shrinks_covariance(monkeypatch):
+    import sim.destination_visual_acquire as m
     static,_=static_input();c=CarryToZone(static,'A',start=task_start(static))
     c.started=0;c.goal=(1,1);c.loc.own.P=np.eye(3)
+    monkeypatch.setattr(m,'information_views',lambda *a:dict(views=[dict(body_yaw_deg=90)]))
     q=DestinationAcquire(c);P=c.loc.own.P.copy();fix=c.loc.fixes
-    assert q.relocalize_step(1)==(0,0,.1)
-    q.issue([0,0,2*math.pi]);assert q.relocalize_step(64)==(0,0,0)
+    assert q.relocalize_step(1,{})==(0,0,.1)
+    q.issue([0,0,math.pi/2]);assert q.relocalize_step(2,{})==(0,0,0)
+    assert q.relocalize_step(2.8,{})==(0,0,0)
     np.testing.assert_array_equal(P,c.loc.own.P);assert c.loc.fixes==fix
-    assert q.relocalize_step(65) is None and q.relocalizations==1
+    assert q.relocalize_step(3,{}) is None and q.relocalizations==1
+    assert q.events[-1]['actual_dwelled_views']==1
+
+
+def test_unobservable_loaded_view_requests_existing_setdown(monkeypatch):
+    import sim.destination_visual_acquire as m
+    static,_=static_input();c=CarryToZone(static,'A',start=task_start(static),recovery_profile='carry5_active_localization_v1')
+    c.started=0;c.goal=(1,1);c.loc.own.P=np.eye(3)
+    monkeypatch.setattr(m,'information_views',lambda *a:dict(views=[],expected_gain_nats=0))
+    q=DestinationAcquire(c);assert q.relocalize_step(1,{})==(0,0,0)
+    assert c.recovery_reason=='reloc19_unobservable_loaded_view'
+    assert q.events[-1]['blocked_object']=='static_landmarks_outside_issued_camera_fov'
+
+
+def test_information_planner_uses_actual_loaded_camera_and_no_predicted_fix(monkeypatch):
+    import sim.grasp_act_solo_lookback as look
+    from sim.destination_visual_acquire import information_views
+    static,_=static_input()
+    monkeypatch.setattr(look,'project',lambda *a:(np.array([[-100,-100]]),np.array([True])))
+    pwm={1:1500,3:777,4:2053,5:1646,6:1500}
+    plan=information_views(static,[0,0,0],np.eye(3),pwm)
+    assert plan['views']==[] and plan['expected_gain_nats']==0
 
 @pytest.mark.parametrize('enabled',[False,True])
 def test_teacher_arrival_enters_acquisition_only_when_opted_in(enabled):
@@ -73,3 +97,19 @@ def test_teacher_arrival_enters_acquisition_only_when_opted_in(enabled):
         c.destination_acquire.step=lambda *a:((0,0,0),True,None)
         t.step(1.1,own_rgb=lambda:np.zeros((480,640,3),np.uint8))
         assert t.phase=='zone_place_view' and t.holding
+
+
+def test_scene_wall_pixels_cannot_become_destination_floor():
+    from harness.reloc16_floor_mask import floor_clear,OPTION,PROFILE
+    from harness.scene_colour_boundary import ColourBoundaryState,RELOC16_OPTION
+    from pathlib import Path
+    import json
+    calibration=json.loads((Path(__file__).resolve().parents[1]/'experiments/2026-10-16-reloc16/colour-calibration.json').read_text())
+    state=ColourBoundaryState(PROFILE,calibration,option=RELOC16_OPTION)
+    # Original wall class H133 aliases C's inherited133..155 band.
+    frame=cv2.cvtColor(np.full((480,640,3),(133,80,88),np.uint8),cv2.COLOR_HSV2BGR)
+    clear,audit=floor_clear(frame,np.ones((480,640),bool),state=state,option=OPTION)
+    assert audit['excluded_visible_pixels']==480*640
+    pwm={1:1500,3:777,4:2053,5:1646,6:1500}
+    xy,r=floor_patch(frame,pwm,'C',(.3,.7),clear=clear)
+    assert xy is None and r['pixels']==0

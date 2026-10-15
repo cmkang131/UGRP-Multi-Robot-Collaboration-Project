@@ -471,7 +471,12 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
                 **({'map_pose': map_evidence, 'destination_floor_visible': place_visible,
                     'pickup_search': teacher.pickup_search.record(),
                     'carry_obstacles': carry.obstacles.record(),
-                    'phase_before': phase_before} if carry is not None else {})})+'\n')
+                    'phase_before': phase_before,
+                    **({'destination_acquisition':dict(mode=carry.destination_acquire.mode,
+                        last=carry.destination_acquire.last,started_t=carry.destination_acquire.started,
+                        acquired_t=carry.destination_acquire.acquired,confirmed_t=carry.destination_acquire.confirmed,
+                        relocalizations=carry.destination_acquire.relocalizations)}
+                       if carry.destination_acquire is not None else {})} if carry is not None else {})})+'\n')
 
             # Full truth owner, written only to eval-only.jsonl / Score.
             body = data.body(body_name); rot = body.xmat.reshape(3, 3)

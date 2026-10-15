@@ -761,7 +761,7 @@ class SoloTeacher:
         elif self.phase == 'carry_prepare' and idle:
             self._set('carry_to_zone', now)
         elif self.phase == 'carry_to_zone':
-            recovery_drive = (self.carry.destination_acquire.relocalize_step(now)
+            recovery_drive = (self.carry.destination_acquire.relocalize_step(now,self.sink.pwm)
                 if getattr(self.carry,'carry_relocalize_v1',False) else None)
             drive, arrived, failure = (self.carry.step(now) if recovery_drive is None
                                       else (recovery_drive, False, None))

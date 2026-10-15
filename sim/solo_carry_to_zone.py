@@ -430,6 +430,9 @@ class CarryToZone:
         hsv = cv2.cvtColor(bgr, cv2.COLOR_BGR2HSV)[roi]
         lo, hi = PAINT_HUE[self.zone]
         painted = (hsv[:, 0] >= lo-5) & (hsv[:, 0] <= hi+5) & (hsv[:, 1] >= 30) & (hsv[:, 2] >= 30)
+        if self.destination_acquire is not None:
+            clear,_ = self.destination_acquire.floor_clear(bgr)
+            painted &= clear[roi]
         return bool(np.mean(painted) >= .6)
 
     def record(self):

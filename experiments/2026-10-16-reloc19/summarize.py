@@ -46,13 +46,23 @@ def main(n):
                     he=None if de is None else abs(math.degrees(math.atan2(math.sin(de),math.cos(de))))
                     headings[key]=dict(t=key,status=h.get('status'),decision=h.get('reloc18_innovation'),error_yaw_deg=he)
             phases=collections.Counter(x['phase'] for x in c);teacher=d.get('teacher',{});carry=teacher.get('carry',{})
+            acquisition_frames={}
+            for x in c:
+                a=x.get('destination_acquisition',{}).get('last',{})
+                if a.get('t') is not None:acquisition_frames[a['t']]=a
+            observed=list(acquisition_frames.values())
+            frame_funnel=dict(recorded_acquisition_frames=len(observed),
+                colour_component_or_footprint=sum(x.get('pixels',0)>=600 or x.get('place_gate',False) for x in observed),
+                nominal_ground_or_footprint=sum('patch_xy' in x or x.get('place_gate',False) for x in observed),
+                full_footprint_rgb_gate=sum(bool(x.get('place_gate')) for x in observed))
+            frame_rejections=dict(collections.Counter(x.get('reason','missing_reason') for x in observed if not x.get('place_gate')))
             reasons=collections.Counter(e.get('reason',e.get('event','missing_original_reason')) for e in carry.get('recovery_events',[]))
             terminal_rejections=[e for e in teacher.get('events',[]) if e.get('event')=='rejection']
             final=next((e for e in reversed(ev) if 'footprint_xy' in e),{})
             region=obj(raw/'carry-static-map.json')['regions']['zone_'+d.get('destination_zone',obj(raw/'plan.json')['destination_zone'])]
             cx,cy=region['center_m'];hx,hy=region['half_extents_m']
             margin=min((min(hx-abs(x-cx),hy-abs(y-cy)) for x,y in final.get('footprint_xy',[])),default=None)
-            r.update(destination_acquisition=carry.get('destination_visual_acquire'),place_success=d.get('zone_placement_success') is True,lift=d.get('lift_success'),phase=teacher.get('phase'),sim_s=d.get('sim_s'),first30=d.get('first30'),
+            r.update(acquisition_frame_funnel=frame_funnel,acquisition_frame_rejections=frame_rejections,destination_acquisition=carry.get('destination_visual_acquire'),place_success=d.get('zone_placement_success') is True,lift=d.get('lift_success'),phase=teacher.get('phase'),sim_s=d.get('sim_s'),first30=d.get('first30'),
                 input_audit=d.get('input_audit'),phases=dict(phases),gate_reasons=dict(reasons),
                 gate_cumulative=dict(started=1,lift_success=int(d.get('lift_success') is True),travel_entered=int(phases['carry_to_zone']>0),
                     authored_arrival=int(carry.get('map_arrival_estimated_t') is not None),place_view=int(phases['zone_place_view']>0),
@@ -79,7 +89,7 @@ def main(n):
         reports.append(r)
     result=dict(round=n,analysis_host='gcp2',runs=reports,reproduce=f'PYTHONPATH=. python {__file__} --round {n}',scope='DEV; invalid and predetermined failure-window diagnostics excluded from adoption')
     (batch/'summary.json').write_text(json.dumps(result,indent=2)+'\n')
-    rejection=dict(source_queue=str(batch/'queue.json'),reproduce=result['reproduce'],runs=[dict(run=r['name'],raw=r['raw'],valid=r.get('valid_for_comparison',False),cumulative=r.get('gate_cumulative',r.get('registration_frame_funnel')),rejections=[dict(category=k,N=v,blocked_object='pose_uncertainty_budget' if 'budget' in k else 'own_rgb_or_route_evidence',minimum_gap_m=None,gap_scope='not_applicable_localization_or_original_gap_missing') for k,v in r.get('gate_reasons',{}).items()]+r.get('terminal_rejections',[])) for r in reports])
+    rejection=dict(source_queue=str(batch/'queue.json'),reproduce=result['reproduce'],runs=[dict(run=r['name'],raw=r['raw'],valid=r.get('valid_for_comparison',False),cumulative=r.get('gate_cumulative',r.get('registration_frame_funnel')),frame_funnel=r.get('acquisition_frame_funnel'),frame_rejection_distribution=r.get('acquisition_frame_rejections'),rejections=[dict(category=k,N=v,blocked_object='pose_uncertainty_budget' if 'budget' in k else 'own_rgb_or_route_evidence',minimum_gap_m=None,gap_scope='not_applicable_localization_or_original_gap_missing') for k,v in r.get('gate_reasons',{}).items()]+r.get('terminal_rejections',[])) for r in reports])
     (batch/'rejection-table.json').write_text(json.dumps(rejection,indent=2)+'\n')
     print(json.dumps([{k:v for k,v in r.items() if k in ('name','status','termination','valid_for_comparison','phase','sim_s','place_success','errors','tracker','drive_errors')} for r in reports],indent=2))
 if __name__=='__main__':
