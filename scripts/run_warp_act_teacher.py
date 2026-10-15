@@ -38,6 +38,7 @@ def parser():
     p.add_argument('--out',type=Path,required=True)
     p.add_argument('--compiled-reference-v1',type=Path)
     p.add_argument('--compiled-geometry-312-v1',type=Path)
+    p.add_argument('--per-world-model-references-v1',type=Path,help='default OFF: XMLsha→exact C312 assets; preserve batchable per-world model fields')
     p.add_argument('--export-compiled-only',action='store_true')
     p.add_argument('--vm-hourly-usd',type=float,required=True)
     return p
@@ -114,8 +115,9 @@ def main():
             return
         if a.physics_backend=='mjwarp_batch_v1':
             hooks.initialize(contexts,compiled_reference=a.compiled_reference_v1,
-                compiled_geometry=a.compiled_geometry_312_v1)
-            report.update(camera=hooks.camera,compatibility=hooks.compat,capacities=hooks.capacities)
+                compiled_geometry=a.compiled_geometry_312_v1,
+                per_world_model_references=json.loads(a.per_world_model_references_v1.read_text()) if a.per_world_model_references_v1 else None)
+            report.update(camera=hooks.camera,compatibility=hooks.compat,capacities=hooks.capacities,model_batch=hooks.model_batch_audit)
         report['setup_compile_s']=time.perf_counter()-start
         loop_start=time.perf_counter()
         while active.any():

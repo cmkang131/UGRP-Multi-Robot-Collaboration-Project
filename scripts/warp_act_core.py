@@ -99,3 +99,23 @@ def model_key(xml):
             for attr in ('pos','quat','euler','axisangle','xyaxes','zaxis'):
                 body.attrib.pop(attr,None)
     return hashlib.sha256(ET.tostring(root)).hexdigest()
+
+
+def varying_model_arrays(rows, batchable):
+    """Exact converted-model array audit; no unsupported field is shared.
+
+    Leading singleton dimensions come from pinned MJWarp put_model. Concatenate
+    supported fields in world order; return only differing arrays to upload.
+    """
+    if not rows or any(set(row)!=set(rows[0]) for row in rows):
+        raise ValueError('matching converted model fields required')
+    out={}
+    for key,first in rows[0].items():
+        values=[np.asarray(row[key]) for row in rows]
+        if any(v.shape!=values[0].shape or v.dtype!=values[0].dtype for v in values):
+            raise ValueError('model layout differs: '+key)
+        if all(np.array_equal(values[0],v) for v in values[1:]):continue
+        if key not in batchable or not values[0].ndim or values[0].shape[0]!=1:
+            raise ValueError('unbatchable model difference: '+key)
+        out[key]=np.concatenate(values,axis=0)
+    return out
