@@ -116,3 +116,16 @@ def test_legacy_edge_proposals_require_explicit_v2_and_boolean():
         ColourBoundaryState('unselected',{},legacy_proposals_v1=True)
     with pytest.raises(ValueError,match='LEGACY_PROPOSALS_REQUIRE_BOUNDARY_V2'):
         ColourBoundaryState('unselected',{},legacy_proposals_v1='yes')
+
+
+def test_carry_wall_field_is_explicit_and_does_not_bypass_scene_admission(monkeypatch):
+    from sim.reloc14_carry_tracking import CarryTracker
+    from harness.selfmap4_geometry import static_input
+    from sim.solo_carry_pose import task_start
+    static,_=static_input()
+    from harness.active_wall_vision import modules
+    monkeypatch.setenv('UGRP_SCENE_COLOUR_BOUNDARY','off');modules.cache_clear()
+    monkeypatch.setenv('UGRP_RELOC16_CARRY_WALL_FIELD','unknown')
+    with pytest.raises(ValueError,match='UNKNOWN_CARRY_WALL_FIELD'):CarryTracker(static,task_start(static))
+    monkeypatch.setenv('UGRP_RELOC16_CARRY_WALL_FIELD','static_walls_v1')
+    with pytest.raises(ValueError,match='CARRY_WALL_FIELD_REQUIRES_FIXED_V5'):CarryTracker(static,task_start(static))

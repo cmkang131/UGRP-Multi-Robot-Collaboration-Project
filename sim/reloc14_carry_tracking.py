@@ -5,6 +5,7 @@ Nav2's known-initial-pose Gaussian PF initialization is followed by unchanged
 .25m/.2rad motion/new-pan measurement updates. No cargo state or top input.
 """
 import math
+import os
 import numpy as np
 from harness.natural_floor_slam import compose
 
@@ -15,7 +16,22 @@ class CarryTracker:
         from harness.self_map_landmark_sensor import Sensor
         allowed={'map_id','version','frame','bounds_m','obstacles','regions','passages'}
         self.static={k:static[k] for k in allowed}
-        self.pf=create(self.static,option='static_landmarks_v1',seed=5064)
+        choice=os.environ.get('UGRP_RELOC16_CARRY_WALL_FIELD','off')
+        if choice not in ('off','static_walls_v1'):raise ValueError('UNKNOWN_CARRY_WALL_FIELD')
+        if choice!='off':
+            from harness.active_wall_vision import modules
+            from harness.reloc16_floor_mask import PROFILE,ENV,OPTION
+            from harness.scene_colour_boundary import RELOC16_OPTION
+            state=getattr(modules()[1],'scene_colour_state',None)
+            if state is None or state.profile!=PROFILE or state.option!=RELOC16_OPTION or os.environ.get(ENV,'off')!=OPTION:raise ValueError('CARRY_WALL_FIELD_REQUIRES_FIXED_V5')
+        self.wall_field=choice!='off'
+        self.pf=create(self.static,option='static_walls_v1' if self.wall_field else 'static_landmarks_v1',seed=5064)
+        if self.wall_field:
+            # Existing Nav2/Probabilistic Robotics wall likelihood field. Keep
+            # the colour map for observed feature records; sensor_landmarks=off
+            # means those colours are not multiplied into particle weights.
+            from harness.own_map_amcl_vendor.landmarks import MapFeatures
+            self.pf.landmark_map=MapFeatures(self.static)
         sigma=[start['sigma_xy_m']]*2+[start['sigma_yaw_rad']]
         self.pf.px=np.asarray(start['pose_m_rad'])+self.pf.rng.normal(size=(self.pf.n,3))*sigma
         self.sensor=Sensor(self.pf.landmark_map.hues)
@@ -45,7 +61,7 @@ class CarryTracker:
         P=np.asarray(row['covariance'])
         accepted=bool(settled and row['updated'] and row['resolved'] and row['cluster']['mass']>=.9 and
             np.linalg.eigvalsh(P[:2,:2]).max()<=.15**2 and P[2,2]<=math.radians(5)**2)
-        self.last=dict(state='TRACKING' if accepted else 'prediction_or_unresolved',
+        self.last=dict(**({'reloc16_wall_field':'static_walls_v1','colour_likelihood_used':False} if self.wall_field else {}),state='TRACKING' if accepted else 'prediction_or_unresolved',
             updated=row['updated'],accepted=accepted,pose=row['pose'],covariance=row['covariance'],
             cluster=row['cluster'],sensor_updates=row['updates'],feature_N=len(packet['features']),
             input='own_rgb_static_geometry_issued_commands',budget_kind='2000_particles_motion_gate',settled=settled,

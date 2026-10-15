@@ -41,3 +41,12 @@ R1 가장 큰 신규 병목은 특징점 부족이 아니라 바닥색 랜드마
 ## 경계 후보 추가 진단: 기존 RGB edge 제안의 색 재검증
 
 계량6m 상한이나 누락 보간을 바꾸지 않고, **이미 원래 검출기가 관측한** edge를 색 전이와 교차 확인하는 기본off `UGRP_RELOC16_BOUNDARY_PROPOSALS=legacy_rgb_v1`를 따로 준비한다. 순수 색 검출에서 실제 색 전이가 관측됐지만 geometry/range 등으로 반환되지 않은 컬럼만 본다. 원래 검출기의 반환 row가 관측한 색/밝기 edge에서 원본v1오차p95=1.5px 이내일 때만 같은 컬럼의 실측 후보로 쓴다. 선이나정답으로 채우지 않는다. hue·채도·거리·이웃 문턱은 그대로다. 저장88자세에서 분포/오차를 확인하기 전에는 폐루프에 켜지 않는다. R2 진행 소스5f8b3eb2에는 이 후보가 없다.
+
+
+## R2 종료와 마지막 R3의 가설
+
+R2 네 원본의 전체 파일 hash가 모두 일치했다. 바닥색/벽 분리 후 등록은219/301·221/301로 복구했으나 정확도 개선 관문은 실패했다. 93584 주행오류62/63, xy p50/p95 .1015/.1056m, yaw9.996/10.466°; 93583 주행오류54/75, xy .0933/.1563m, yaw1.817/6.779°다. 93583 최초등록xy .1309m로 기존.1m 기준 오등록1건이다. 운반은 두 시드 모두cap_end150·place0/2. yaw 절대/증분>5° 오수용은93266 0/58·93315 0/39, 닫힘 명령 중 수용은13/58·0/39다. 명령닫힘은 실제접촉 판정이 아니다. 정확한 경로·종료·순차funnel은 round2.json과 round2-rejection-table.json에 있다. 첫30 wall/SIM은6.042/5.609/4.124/4.361(실제 네 값은 JSON 우선), 중앙 약4.99로 기록전용 경고이고 제출 차단6 초과 중앙은 아니다.
+
+기존RGB edge 색 재검증 후보는 저장88자세의3인코딩에서 추가반환0, 오차/컬럼도 같았다(legacy-proposals-rejected.json). 관문 미달을 그대로 두고 **폐루프에서 켜지 않는다**.
+
+R3는 마지막 물리 비교다. 새 추정기를 만들지 않고 기존 reloc11 `static_walls_v1` AMCL likelihood field 선택만 켠다. 자기RGB 벽–바닥 접점은 지도 벽 거리장에 평가하고, 색 바닥선은 기존 독립 공간검증 기록에 남기되 PF 가중치에 곱하지 않는다. selfmap은 기존 --reloc11-wall-field-v1, 운반은 새 기본off UGRP_RELOC16_CARRY_WALL_FIELD=static_walls_v1이다. 운반 selector는 고정v5+경계v2+floor mask 없으면 차단한다. 기존2000입자·운동문턱·미지모드·분산/공간 관문·loaded 계량금지 모두 유지한다. 새 수치 상수0. [Nav2 AMCL likelihood field 원본](https://github.com/ros-navigation/navigation2/blob/main/nav2_amcl/src/sensors/laser/likelihood_field_model_prob.cpp)과 고정 local vendor를 참고했다. R2 오차의 확정 원인이라고 주장하지 않고, 색 likelihood 중복/편향을 배제하는 반증 비교다. R3 이후 추가 물리 라운드는 내지 않는다.

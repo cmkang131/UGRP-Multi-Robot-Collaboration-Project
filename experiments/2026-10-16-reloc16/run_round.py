@@ -41,8 +41,10 @@ def main(round_no,launch):
                 UGRP_SCENE_COLOUR_CALIBRATION=str(cal),UGRP_SCENE_COLOUR_CALIBRATION_SHA256=hashlib.sha256(cal.read_bytes()).hexdigest())
         else:env['UGRP_SCENE_COLOUR_BOUNDARY']='off'
         if round_no>=2 and on:env['UGRP_RELOC16_FLOOR_LANDMARK_MASK']='scene_floor_landmark_mask_v1'
+        if round_no==3 and on:env['UGRP_RELOC16_CARRY_WALL_FIELD']='static_walls_v1'
         if kind=='selfmap':
             cmd=selfcmd.copy()
+            if round_no==3:cmd+=['--reloc11-wall-field-v1']
             for flag,value in [('--output',out),('--seed',seed),('--expected-source-sha',sha),('--render-profile',PROFILE if on else 'floor_light_textured_v1')]:
                 cmd[cmd.index(flag)+1]=str(value)
         else:
@@ -58,7 +60,7 @@ def main(round_no,launch):
                 '--rgb-lift-mode','solo_lift_lookback_v1','--solo-lift-lookback-margin-v1','--solo-truth-free-lookaround-v1',
                 '--solo-carry-to-zone-v1','--cap-s','150','--failure-rgb-buffer','--review-playback']
         queue.append(dict(name=name,kind=kind,seed=seed,scene='v5' if on else 'v1',source_sha=sha,command=cmd,
-                          environment={k:env[k] for k in ('UGRP_SCENE_COLOUR_BOUNDARY','UGRP_SCENE_RENDER_PROFILE','UGRP_SCENE_COLOUR_CALIBRATION','UGRP_SCENE_COLOUR_CALIBRATION_SHA256','UGRP_RELOC16_FLOOR_LANDMARK_MASK','UGRP_RELOC16_BOUNDARY_PROPOSALS') if k in env},raw=str(out),rejection_table=str(rejection),ready=False,dev_only=True))
+                          environment={k:env[k] for k in ('UGRP_SCENE_COLOUR_BOUNDARY','UGRP_SCENE_RENDER_PROFILE','UGRP_SCENE_COLOUR_CALIBRATION','UGRP_SCENE_COLOUR_CALIBRATION_SHA256','UGRP_RELOC16_FLOOR_LANDMARK_MASK','UGRP_RELOC16_BOUNDARY_PROPOSALS','UGRP_RELOC16_CARRY_WALL_FIELD') if k in env},raw=str(out),rejection_table=str(rejection),ready=False,dev_only=True))
         (folder/'RUN_META.json').write_text(json.dumps(dict(task='reloc16',pr=532,branch='claude/reloc16',sha=sha,**{'class':'dev'})))
         (folder/'launch-env.json').write_text(json.dumps(queue[-1]['environment'],indent=2))
         if launch:
