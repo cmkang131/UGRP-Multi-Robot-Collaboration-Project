@@ -10,6 +10,7 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--root', type=Path, required=True)
     p.add_argument('--fixture', type=Path, required=True)
+    p.add_argument('--with-geometry-round', action='store_true')
     a = p.parse_args()
     from simalt_host import gcp2_identity
     gcp2_identity()
@@ -20,6 +21,9 @@ def main():
              'Warp316': prev/'legacy-r3-grip', 'Warp312': a.root/'warp-compiled312-grip',
              'C312_damping316': a.root/'c312-damping316-grip',
              'C316_damping312': a.root/'c316-damping312-grip'}
+    if a.with_geometry_round:
+        paths.update(C316_geometry312=a.root/'c316-geometry312-grip',
+                     Warp_geometry312=a.root/'warp-geometry312-grip')
     meta = {k: json.loads((v/'result.json').read_text()) for k, v in paths.items()}
     nc = len(meta['C312']['columns'])
     arrays = {k: np.load(v/'steps.npz')['records'] for k, v in paths.items()}
@@ -47,8 +51,30 @@ def main():
         'C316_raw_norm_m': float(np.linalg.norm(end['C316']-end['C312'])),
         'C316_restored_damping_norm_m': float(np.linalg.norm(end['C316_damping312']-end['C312'])),
         'interpretation': 'C316 raw also changes Plane–Mesh; do not call its entire error damping or Warp. Reciprocal damping ablation isolates the intervention on each engine.'}
+    if a.with_geometry_round:
+        geometry=end['Warp312']-end['Warp_geometry312']
+        version=end['C316_geometry312']-end['C312']
+        backend=end['Warp_geometry312']-end['C316_geometry312']
+        final_residual=end['Warp_geometry312']-end['C312']
+        decomposition['final_round']={
+            'geometry_intervention_vector_m':geometry.tolist(),
+            'geometry_intervention_norm_m':float(np.linalg.norm(geometry)),
+            'compiled_matched_C316_version_vector_m':version.tolist(),
+            'compiled_matched_C316_version_norm_m':float(np.linalg.norm(version)),
+            'same_version_Warp_vector_m':backend.tolist(),
+            'same_version_Warp_norm_m':float(np.linalg.norm(backend)),
+            'final_Warp_residual_vector_m':final_residual.tolist(),
+            'final_Warp_residual_norm_m':float(np.linalg.norm(final_residual)),
+            'telescoping_original_error_components':{
+                'damping_m':damping.tolist(),'geometry_m':geometry.tolist(),
+                'native_version_m':version.tolist(),'Warp_backend_m':backend.tolist()},
+            'original_error_projection_fractions':{
+                label:float(vector@total/(total@total)) for label,vector in
+                [('damping',damping),('geometry',geometry),('native_version',version),('Warp_backend',backend)]},
+            'note':'Ordered vector interventions include interactions; norms cannot be added or interpreted as independent causal percentages.'}
     first_rows = []
     step_rows = []
+    crossings={}
     phases = next(x['phases'] for x in json.loads((a.fixture/'fixture.json').read_text())['cases'] if x['name'] == 'grip')
     indices = set(range(20)) | {len(phases)*400-1}
     indices |= {(i+1)*400-1 for i in range(len(phases)) if i == len(phases)-1 or phases[i] != phases[i+1]}
@@ -56,6 +82,11 @@ def main():
         if key == 'C312':
             continue
         difference = values[:, nc:nc+m.nq]-arrays['C312'][:, nc:nc+m.nq]
+        errors=np.linalg.norm(values[:,base:base+3]-arrays['C312'][:,base:base+3],axis=1)
+        ids=np.flatnonzero(errors>.005)  # User-proposed endpoint5mm, descriptive crossing only.
+        crossings[key]={'first_over_5mm_step':int(ids[0]+1) if len(ids) else None,
+            'first_over_5mm_SIM_s':float((ids[0]+1)*dt) if len(ids) else None,
+            'peak_m':float(errors.max()),'endpoint_m':float(errors[-1])}
         for j in range(m.njnt):
             start = int(m.jnt_qposadr[j]); stop = int(m.jnt_qposadr[j+1]) if j+1 < m.njnt else m.nq
             ids = np.flatnonzero(np.any(difference[:, start:stop] != 0, axis=1))
@@ -71,14 +102,15 @@ def main():
             step_rows.append({'comparison': key+' vs C312', 'step_1based': i+1, 'SIM_s': (i+1)*dt,
                 'phase': phases[i//400], 'base_error_m': float(np.linalg.norm(values[i, base:base+3]-arrays['C312'][i, base:base+3])),
                 **{m.joint(j).name: float(difference[i, m.jnt_qposadr[j]]) for j in range(m.njnt)}})
-    for name, rows in [('first-joint-divergence.csv', first_rows), ('joint-step-excerpts.csv', step_rows)]:
+    suffix='-final' if a.with_geometry_round else ''
+    for name, rows in [('first-joint-divergence'+suffix+'.csv', first_rows), ('joint-step-excerpts'+suffix+'.csv', step_rows)]:
         with (a.root/name).open('x') as stream:
             writer = csv.DictWriter(stream, fieldnames=list(rows[0])); writer.writeheader(); writer.writerows(rows)
-    result = {'decomposition': decomposition, 'endpoints': {k: v.tolist() for k, v in end.items()},
+    result = {'decomposition': decomposition, 'crossings':crossings, 'endpoints': {k: v.tolist() for k, v in end.items()},
         'raw': {k: {'path': str(paths[k]/'steps.npz'), 'sha256': hashlib.sha256((paths[k]/'steps.npz').read_bytes()).hexdigest()} for k in paths},
         'note': 'Exact first difference is descriptive, includes float32 rounding, and is not an acceptance threshold.',
         'source_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}
-    (a.root/'version-decomposition.json').write_text(json.dumps(result, indent=2)+'\n')
+    (a.root/('version-decomposition'+suffix+'.json')).write_text(json.dumps(result, indent=2)+'\n')
     print(json.dumps(decomposition, indent=2))
 
 
