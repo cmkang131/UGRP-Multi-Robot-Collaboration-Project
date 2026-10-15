@@ -1,0 +1,48 @@
+{
+  "schema": "ugrp.rel22adapt.queue_handoff.v1",
+  "source_sha": "f476338533b7608bab25422b360491d5795f6fde",
+  "observed_queue_sha256": "e1c505e68c80b027bd72947603247a0da31e04ca850fc77c39308fa730d959d6",
+  "queue_status": "awaiting_coordinator_approval",
+  "current_flags": {
+    "approved": true,
+    "enabled": true,
+    "ready": true,
+    "stage_ready": true,
+    "submitted": false,
+    "scheduled": false,
+    "executed": false
+  },
+  "coordinator_approval": {
+    "approved": true,
+    "approval_receipt": null,
+    "scope": "recording only; execution by operations after coordinator approval; no automatic promotion or training",
+    "enabled": true,
+    "ready": true,
+    "stage_ready": true,
+    "approved_by": "coordinator",
+    "time": "2026-10-15T20:23:42+09:00",
+    "source_sha": "f476338533b7608bab25422b360491d5795f6fde",
+    "max_parallel": 16,
+    "basis": "release21 gate passed A39/40 B39/40 (raw recount); recorder f4763385 observer-only (diff reviewed: control path unchanged), off/on command hashes identical (equivalence.json ede472bf)",
+    "conditions": [
+      "recording only, candidate B, same scene/camera as act12",
+      "gcp1 total concurrency <=40",
+      "submit all planned runs up to max_parallel on gcp1 (already running, no new VM); stop same-defect runs at once on a confirmed physical/control defect, do not fill the denominator",
+      "per run: input audit, >=6 frames first/middle/end for every failure, result hashes",
+      "speed record-only (warn >3.5, block >6.0/incomplete/HOST_ERROR)",
+      "RECORDING approved for source f476338533b7608bab25422b360491d5795f6fde. Training NOT approved here"
+    ],
+    "credit_and_price": {
+      "remaining_credit": "UNVERIFIED (billing out of agent scope)",
+      "decision": "proceed on running gcp1; budget-stop (net >=1,000 KRW -> stop all VMs) is the binding guard; if it fires submit nothing new and alert coordinator"
+    },
+    "gate_promotion_authorized_if_all_conditions_pass": false,
+    "review_passed": true,
+    "review_detail": "REVIEW_SKIPPED_BY_USER (run-first); coordinator read diff 46afd8b0..f4763385",
+    "recording_authorized": true
+  },
+  "prepared_snapshot": "queue-verification.json",
+  "prepared_snapshot_queue_sha256": "b01e02b32f61cd012e917c41d0c6844aa1c1b94ab1ef02e181145a1ae31187d4",
+  "change_owner": "external coordinator update observed after rel22adapt wrote/verified awaiting_coordinator_approval; no approval flags changed by rel22adapt after that verification",
+  "recording_batch_submitted_by_rel22adapt": false
+}

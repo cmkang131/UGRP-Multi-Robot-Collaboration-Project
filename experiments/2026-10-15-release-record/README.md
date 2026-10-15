@@ -100,3 +100,8 @@ coordinator_approval은 이전 SHA의 승인 이력 그대로 보존하고, 현�
 status=awaiting_coordinator_approval이다. `rejection_table` 원래 값·해시를 유지했다.
 공유 gcp1 VM은 현재 24h 상한이며 대기열 요구8h와 다르므로 bulk 전 운영 확인이 남아 있다.
 우리 실행·예약·lease만 종료했고 다른 작업/공유 VM은 유지했다. Draft PR #521.
+
+인계 갱신: 위 내용은 준비 시점의 검증 기록이다.2026-10-15 20:23:42 KST에 별도 조정자가
+동일 f4763385의 기록 재승인을 추가한 것을 최종 확인에서 관측했다. 현재 approved/ready는 true,
+status 문자열은 awaiting_coordinator_approval 그대로이며 submitted=false다. 변경을 덮어쓰지 않고
+`queue-handoff.json`에 별도로 보존했다. 본 기록 배치는 이 작업에서 제출하지 않았다.
