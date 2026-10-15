@@ -276,12 +276,17 @@ class LookaroundLocalizer:
                    features=copy.deepcopy(floors+doors))
         if len(walls)+len(floors)+len(doors):
             prior, covariance = self.own.x.copy(), self.own.P.copy()
+            if getattr(self, 'robust_recovery_v1', False):
+                # Preserve sufficient input for exact offline association replay.
+                rec['wall_endpoints'] = np.asarray(walls).reshape(-1, 2).tolist()
             self._grid_update(walls, floors+doors, rec)
             if self.require_fix_acceptance:
                 rec['fix_acceptance'] = self.fix_acceptance(walls, floors, doors, prior, covariance)
                 if not rec['fix_acceptance']['accepted']:
                     partial = None
-                    if getattr(self, 'rank_aware_v1', False):
+                    if (getattr(self, 'rank_aware_v1', False) and
+                            rec['fix_acceptance'].get('robust_gate', {}).get('accepted',
+                                not getattr(self, 'robust_recovery_v1', False))):
                         from sim.solo_carry6 import partial_posterior
                         partial = partial_posterior(prior, covariance, self.own.x, self.own.P,
                                                     self._acceptance_rows, rec['fix_acceptance'])
@@ -364,10 +369,16 @@ class LookaroundLocalizer:
         fraction = sum(e <= GATE_CHI2_1 for e in errors)/max(1, len(errors))
         accepted = (finite and len(errors) >= 3 and len(groups) >= 2 and rank == 3
                     and fraction >= .8 and chi2 <= 11.345 and gain >= MIN_GAIN)
+        extra = {}
+        if getattr(self, 'robust_recovery_v1', False):
+            from sim.solo_carry7 import correction_gate
+            robust = correction_gate(prior, covariance, self.own.x, getattr(self, '_sensor_modes', None))
+            accepted = accepted and robust['accepted']
+            extra['robust_gate'] = robust
         return {'accepted': bool(accepted), 'residual_count': len(errors), 'inlier_fraction': fraction,
                 'groups': sorted(groups), 'pose_rank': rank, 'innovation_chi2': chi2,
                 'innovation_chi2_limit': 11.345, 'residual_chi2_limit': GATE_CHI2_1,
-                'information_gain': gain, 'minimum_information_gain': MIN_GAIN}
+                'information_gain': gain, 'minimum_information_gain': MIN_GAIN, **extra}
 
     def _grid_update(self, walls, features, rec):
         from harness.zone_solo_cyan_landmarks import landmark_likelihood
@@ -390,6 +401,27 @@ class LookaroundLocalizer:
         if features:
             like = like*landmark_likelihood(self.mapped, px, features)
         logw = logw+np.log(np.maximum(like, 1e-300))
+        if getattr(self, 'robust_recovery_v1', False):
+            from sim.solo_carry7 import sensor_modes, global_sensor_grid, refine_global_grid
+            # Separate sensor evidence from the prior: a narrow prior must not
+            # hide a repeated-wall alternative. Bounded coarse global branch.
+            sensor = logw+.5*np.einsum('ni,ij,nj->n', D, Pi, D)
+            if not hasattr(self, '_global_sensor_grid'):
+                self._global_sensor_grid = global_sensor_grid(self.static)
+            global_px = self._global_sensor_grid
+            def sensor_score(poses):
+                score = np.zeros(len(poses))
+                if len(walls): score += wall_loglik(self.field, poses, walls)
+                if features:
+                    score += np.log(np.maximum(landmark_likelihood(self.mapped, poses, features), 1e-300))
+                return score
+            global_score = sensor_score(global_px)
+            refined = refine_global_grid(global_px,global_score)
+            refined_score = sensor_score(refined)
+            self._sensor_modes = sensor_modes(np.concatenate((px, global_px, refined)), np.r_[sensor, global_score, refined_score])
+            self._sensor_modes.update(global_coarse_poses=len(global_px),global_refined_poses=len(refined),
+                                      global_coverage_certified=False)
+            rec['sensor_modes'] = self._sensor_modes
         w = np.exp(logw-logw.max()); w /= w.sum()
         mean_d = w@D; dd = D-mean_d
         cov = (w[:, None]*dd).T@dd+np.diag([step_xy**2/12]*2+[step_t**2/12])

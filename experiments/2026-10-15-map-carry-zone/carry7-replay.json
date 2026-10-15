@@ -1,0 +1,1989 @@
+{
+  "schema": "ugrp.carry7_offline.v1",
+  "research_result": false,
+  "student_execution": false,
+  "new_simulation_runs": 0,
+  "source_baseline": "d9e0073f5db51cde78f571aeb1ce91ad44d23eaa",
+  "scope": "proposal decisions conditioned on carry6 priors; not counterfactual trajectory replay or transport success",
+  "missing": "old wall endpoints/raw capture images/uncollapsed mode weights unavailable locally; ambiguity unknown, fail closed. Sampled review images are not localisation captures.",
+  "pooling_previous_results": false,
+  "runs": [
+    {
+      "seed": 93261,
+      "status": "complete",
+      "termination": "carry_reacquire_unconfirmed",
+      "source_sha": "d9e0073f5db51cde78f571aeb1ce91ad44d23eaa",
+      "proposals": [
+        {
+          "seed": 93261,
+          "t": 55.10000000017208,
+          "prior": [
+            0.05843552453685074,
+            -1.0022571219359409,
+            -3.1155806172450546
+          ],
+          "prior_sigma": [
+            0.41984662692539,
+            0.4330665336360421,
+            0.982239737990337
+          ],
+          "proposal": [
+            -0.16635357307151027,
+            -1.7377157741768676,
+            -2.3510571951063994
+          ],
+          "old_full": false,
+          "old_partial": false,
+          "carry7": {
+            "prediction_nis": 3.776565336099451,
+            "limit": 9.0,
+            "axis_sigma": [
+              0.5354076541105754,
+              1.6982578775274775,
+              0.7783470700369652
+            ],
+            "delta_m_m_rad": [
+              -0.22478909760836102,
+              -0.7354586522409268,
+              0.7645234221386552
+            ],
+            "covariance": "prediction_only",
+            "accepted": false,
+            "reasons": [
+              "hypotheses_unavailable"
+            ],
+            "modes": null,
+            "additional_view_required": true
+          },
+          "old_innovation_chi2": 1.2026573899680666,
+          "wall_endpoint_replay_available": false,
+          "evaluation_only": {
+            "prior_error": {
+              "xy_m": 0.09401564544579809,
+              "yaw_deg": -86.83353129773722
+            },
+            "old_applied_error": {
+              "xy_m": 0.09401564544579809,
+              "yaw_deg": -86.83353129773722
+            },
+            "rejected_proposal_error": {
+              "xy_m": 0.8557669297118953,
+              "yaw_deg": -43.02956587029368
+            },
+            "rollback_error": {
+              "xy_m": 0.09401564544579809,
+              "yaw_deg": -86.83353129773722
+            }
+          }
+        },
+        {
+          "seed": 93261,
+          "t": 56.00000000017638,
+          "prior": [
+            0.05843552453685074,
+            -1.0022571219359409,
+            -3.1155806172450546
+          ],
+          "prior_sigma": [
+            0.41984662692539,
+            0.4330665336360421,
+            0.982239737990337
+          ],
+          "proposal": [
+            -0.3846543118880219,
+            -1.0030990625254386,
+            1.9504543925673188
+          ],
+          "old_full": false,
+          "old_partial": false,
+          "carry7": {
+            "prediction_nis": 2.649303744955896,
+            "limit": 9.0,
+            "axis_sigma": [
+              1.05536119146579,
+              0.0019441368106391196,
+              1.2391580693502606
+            ],
+            "delta_m_m_rad": [
+              -0.44308983642487265,
+              -0.0008419405894977139,
+              -1.217150297367212
+            ],
+            "covariance": "prediction_only",
+            "accepted": false,
+            "reasons": [
+              "hypotheses_unavailable"
+            ],
+            "modes": null,
+            "additional_view_required": true
+          },
+          "old_innovation_chi2": 2.6037049805391814,
+          "wall_endpoint_replay_available": false,
+          "evaluation_only": {
+            "prior_error": {
+              "xy_m": 0.09382058202696182,
+              "yaw_deg": -86.80102165552888
+            },
+            "old_applied_error": {
+              "xy_m": 0.09382058202696182,
+              "yaw_deg": -86.80102165552888
+            },
+            "rejected_proposal_error": {
+              "xy_m": 0.44178105707177334,
+              "yaw_deg": -156.5385967277633
+            },
+            "rollback_error": {
+              "xy_m": 0.09382058202696182,
+              "yaw_deg": -86.80102165552888
+            }
+          }
+        },
+        {
+          "seed": 93261,
+          "t": 56.900000000180675,
+          "prior": [
+            0.05843552453685074,
+            -1.0022571219359409,
+            -3.1155806172450546
+          ],
+          "prior_sigma": [
+            0.41984662692539,
+            0.4330665336360421,
+            0.982239737990337
+          ],
+          "proposal": [
+            -0.5662376466253475,
+            -1.0031002387192711,
+            1.3901785179247845
+          ],
+          "old_full": false,
+          "old_partial": true,
+          "carry7": {
+            "prediction_nis": 5.488256089002931,
+            "limit": 9.0,
+            "axis_sigma": [
+              1.4878604021110964,
+              0.0019468527762961224,
+              1.8095645118638366
+            ],
+            "delta_m_m_rad": [
+              -0.6246731711621982,
+              -0.0008431167833302666,
+              -1.777426172009747
+            ],
+            "covariance": "prediction_only",
+            "accepted": false,
+            "reasons": [
+              "hypotheses_unavailable"
+            ],
+            "modes": null,
+            "additional_view_required": true
+          },
+          "old_innovation_chi2": 5.403717339766649,
+          "wall_endpoint_replay_available": false,
+          "evaluation_only": {
+            "prior_error": {
+              "xy_m": 0.09371692603941152,
+              "yaw_deg": -86.79818648516007
+            },
+            "old_applied_error": {
+              "xy_m": 0.620389340755475,
+              "yaw_deg": 171.3627954625875
+            },
+            "rejected_proposal_error": {
+              "xy_m": 0.6205163340472085,
+              "yaw_deg": 171.3627954625875
+            },
+            "rollback_error": {
+              "xy_m": 0.09371692603941152,
+              "yaw_deg": -86.79818648516007
+            }
+          }
+        },
+        {
+          "seed": 93261,
+          "t": 66.50000000015545,
+          "prior": [
+            -0.5662376466253474,
+            -1.0022571219359409,
+            -0.1569850081769415
+          ],
+          "prior_sigma": [
+            0.047363131982952396,
+            0.4330665336360421,
+            0.46171699489476437
+          ],
+          "proposal": [
+            -0.4856629507861061,
+            -2.2837350206781712,
+            -0.6454748888803943
+          ],
+          "old_full": false,
+          "old_partial": false,
+          "carry7": {
+            "prediction_nis": 12.769599197931834,
+            "limit": 9.0,
+            "axis_sigma": [
+              1.7012113106929423,
+              2.959078569251002,
+              1.0579854891734937
+            ],
+            "delta_m_m_rad": [
+              0.08057469583924126,
+              -1.2814778987422304,
+              -0.4884898807034528
+            ],
+            "covariance": "prediction_only",
+            "accepted": false,
+            "reasons": [
+              "prediction_3sigma",
+              "hypotheses_unavailable"
+            ],
+            "modes": null,
+            "additional_view_required": true
+          },
+          "old_innovation_chi2": 11.509803637263948,
+          "wall_endpoint_replay_available": false,
+          "evaluation_only": {
+            "prior_error": {
+              "xy_m": 0.6266641726329423,
+              "yaw_deg": 143.5844694900317
+            },
+            "old_applied_error": {
+              "xy_m": 0.6266641726329423,
+              "yaw_deg": 143.5844694900317
+            },
+            "rejected_proposal_error": {
+              "xy_m": 1.4559896762555153,
+              "yaw_deg": 115.59606099087476
+            },
+            "rollback_error": {
+              "xy_m": 0.6266641726329423,
+              "yaw_deg": 143.5844694900317
+            }
+          }
+        },
+        {
+          "seed": 93261,
+          "t": 67.40000000013417,
+          "prior": [
+            -0.5662376466253474,
+            -1.0022571219359409,
+            -0.1569850081769415
+          ],
+          "prior_sigma": [
+            0.047363131982952396,
+            0.4330665336360421,
+            0.46171699489476437
+          ],
+          "proposal": [
+            -0.5624275819695104,
+            -2.2939801001900046,
+            -0.6777783419588754
+          ],
+          "old_full": true,
+          "old_partial": false,
+          "carry7": {
+            "prediction_nis": 10.175452489102952,
+            "limit": 9.0,
+            "axis_sigma": [
+              0.08044368048144218,
+              2.9827356258834214,
+              1.1279492406395706
+            ],
+            "delta_m_m_rad": [
+              0.0038100646558369977,
+              -1.2917229782540638,
+              -0.5207933337819339
+            ],
+            "covariance": "prediction_only",
+            "accepted": false,
+            "reasons": [
+              "prediction_3sigma",
+              "hypotheses_unavailable"
+            ],
+            "modes": null,
+            "additional_view_required": true
+          },
+          "old_innovation_chi2": 10.124623416746749,
+          "wall_endpoint_replay_available": false,
+          "evaluation_only": {
+            "prior_error": {
+              "xy_m": 0.626700200129631,
+              "yaw_deg": 143.5688840149491
+            },
+            "old_applied_error": {
+              "xy_m": 1.4956992854255347,
+              "yaw_deg": 113.72962399069633
+            },
+            "rejected_proposal_error": {
+              "xy_m": 1.4956992854255347,
+              "yaw_deg": 113.72962399069633
+            },
+            "rollback_error": {
+              "xy_m": 0.626700200129631,
+              "yaw_deg": 143.5688840149491
+            }
+          }
+        },
+        {
+          "seed": 93261,
+          "t": 71.20000000004431,
+          "prior": [
+            -0.5624275819695104,
+            -2.2939801001900046,
+            -0.20289057792993592
+          ],
+          "prior_sigma": [
+            0.04527045699024913,
+            0.018424204616598803,
+            0.169339426549248
+          ],
+          "proposal": [
+            -0.6590232334815386,
+            -2.2939833098746383,
+            0.27342164217841747
+          ],
+          "old_full": false,
+          "old_partial": false,
+          "carry7": {
+            "prediction_nis": 12.46452540543957,
+            "limit": 9.0,
+            "axis_sigma": [
+              2.133745889351947,
+              0.00017421021424935223,
+              2.8127662282464994
+            ],
+            "delta_m_m_rad": [
+              -0.0965956515120282,
+              -3.209684633631582e-06,
+              0.4763122201083534
+            ],
+            "covariance": "prediction_only",
+            "accepted": false,
+            "reasons": [
+              "prediction_3sigma",
+              "hypotheses_unavailable"
+            ],
+            "modes": null,
+            "additional_view_required": true
+          },
+          "old_innovation_chi2": 11.682606475792381,
+          "wall_endpoint_replay_available": false,
+          "evaluation_only": {
+            "prior_error": {
+              "xy_m": 1.508991452174787,
+              "yaw_deg": 127.11370358625143
+            },
+            "old_applied_error": {
+              "xy_m": 1.508991452174787,
+              "yaw_deg": 127.11370358625143
+            },
+            "rejected_proposal_error": {
+              "xy_m": 1.5515908458269982,
+              "yaw_deg": 154.40438352896635
+            },
+            "rollback_error": {
+              "xy_m": 1.508991452174787,
+              "yaw_deg": 127.11370358625143
+            }
+          }
+        }
+      ],
+      "phases": [
+        {
+          "t": 1.3000000000000178,
+          "phase": "fold",
+          "pan_pulse": 1500
+        },
+        {
+          "t": 1.9000000000002182,
+          "phase": "pickup_search",
+          "pan_pulse": 1500
+        },
+        {
+          "t": 2.0000000000002514,
+          "phase": "approach",
+          "pan_pulse": 1500
+        },
+        {
+          "t": 11.099999999996806,
+          "phase": "align",
+          "pan_pulse": 1492
+        },
+        {
+          "t": 12.699999999993077,
+          "phase": "hover",
+          "pan_pulse": 1495
+        },
+        {
+          "t": 13.699999999990746,
+          "phase": "descent",
+          "pan_pulse": 1509
+        },
+        {
+          "t": 15.299999999987017,
+          "phase": "close",
+          "pan_pulse": 1509
+        },
+        {
+          "t": 16.399999999987294,
+          "phase": "lift",
+          "pan_pulse": 1509
+        },
+        {
+          "t": 17.899999999994456,
+          "phase": "lift_settle",
+          "pan_pulse": 1509
+        },
+        {
+          "t": 21.100000000009736,
+          "phase": "lookback_pose",
+          "pan_pulse": 1509
+        },
+        {
+          "t": 22.200000000014988,
+          "phase": "lookback",
+          "pan_pulse": 1509
+        },
+        {
+          "t": 24.700000000026925,
+          "phase": "lookback_settle",
+          "pan_pulse": 1509
+        },
+        {
+          "t": 25.200000000029313,
+          "phase": "verify_lift",
+          "pan_pulse": 1509
+        },
+        {
+          "t": 26.300000000034565,
+          "phase": "hold",
+          "pan_pulse": 1509
+        },
+        {
+          "t": 29.30000000004889,
+          "phase": "carry_prepare",
+          "pan_pulse": 1509
+        },
+        {
+          "t": 30.300000000053664,
+          "phase": "carry_to_zone",
+          "pan_pulse": 1509
+        },
+        {
+          "t": 32.40000000006369,
+          "phase": "carry_recover_lower",
+          "pan_pulse": 1509
+        },
+        {
+          "t": 33.40000000006847,
+          "phase": "carry_recover_open",
+          "pan_pulse": 1509
+        },
+        {
+          "t": 34.10000000007181,
+          "phase": "carry_recover_retract",
+          "pan_pulse": 1509
+        },
+        {
+          "t": 35.900000000080404,
+          "phase": "carry_recover_backoff",
+          "pan_pulse": 1500
+        },
+        {
+          "t": 38.40000000009234,
+          "phase": "carry_reobserve",
+          "pan_pulse": 1500
+        },
+        {
+          "t": 71.20000000004431,
+          "phase": "carry_recover_restore",
+          "pan_pulse": 2500
+        },
+        {
+          "t": 72.3000000000183,
+          "phase": "carry_reacquire",
+          "pan_pulse": 1509
+        },
+        {
+          "t": 82.39999999977947,
+          "phase": "failed",
+          "pan_pulse": 500
+        }
+      ],
+      "old_full_fixes": 1,
+      "old_partial_updates": 1,
+      "prediction_gate_rejects": 1,
+      "carry7_full_adoptions": 0,
+      "reacquire_ticks": 101,
+      "reacquire_visible_ticks": 0,
+      "reacquire_pan_range": [
+        500,
+        1509
+      ],
+      "reacquire_body_motion_ticks": 0,
+      "reobserve_elapsed_s": 32.699999999954336,
+      "scan_starts": [
+        {
+          "t": 38.40000000009234,
+          "views": [
+            {
+              "body_yaw_deg": 180.0,
+              "pan_deg": -30.0,
+              "pan_pulse": 1167,
+              "expected": [
+                "pickup:e3"
+              ]
+            },
+            {
+              "body_yaw_deg": 180.0,
+              "pan_deg": 45.0,
+              "pan_pulse": 2000,
+              "expected": [
+                "pickup:e3"
+              ]
+            },
+            {
+              "body_yaw_deg": 180.0,
+              "pan_deg": 60.0,
+              "pan_pulse": 2167,
+              "expected": [
+                "pickup:e3"
+              ]
+            }
+          ],
+          "robust": false
+        },
+        {
+          "t": 56.900000000180675,
+          "views": [
+            {
+              "body_yaw_deg": -90.0,
+              "pan_deg": -75.0,
+              "pan_pulse": 667,
+              "expected": [
+                "pickup:e3"
+              ]
+            },
+            {
+              "body_yaw_deg": -90.0,
+              "pan_deg": -60.0,
+              "pan_pulse": 833,
+              "expected": [
+                "pickup:e3"
+              ]
+            },
+            {
+              "body_yaw_deg": -90.0,
+              "pan_deg": 90.0,
+              "pan_pulse": 2500,
+              "expected": [
+                "pickup:e3"
+              ]
+            }
+          ],
+          "robust": false
+        }
+      ],
+      "visual_review": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-d9e0073f-ops/solo-carry-93261-d9e0073f-review/top/000000.jpg",
+          "sha256": "3d84bf5e618d6b85059d7b5ab7ec26defdc4018908ce9852ad8570198e4e4fff",
+          "sim_s": 0.0,
+          "camera": "top",
+          "evaluation_only": true
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-d9e0073f-ops/solo-carry-93261-d9e0073f-review/own/000000.jpg",
+          "sha256": "4463cf9fa7898a6a650f15e74e815d617d1b3866bf3887f22e9f39086268811e",
+          "sim_s": 0.0,
+          "camera": "own",
+          "evaluation_only": false
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-d9e0073f-ops/solo-carry-93261-d9e0073f-review/top/000160.jpg",
+          "sha256": "282ab5a434ff4315553a9fb9109e7101d4897c343ae4888475cd269befd55f50",
+          "sim_s": 16.0,
+          "camera": "top",
+          "evaluation_only": true
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-d9e0073f-ops/solo-carry-93261-d9e0073f-review/own/000160.jpg",
+          "sha256": "19ac7c8b7580213ce8a10772ffe3e8abbc867876bb5dcd2d43bcb034db41c6b6",
+          "sim_s": 16.0,
+          "camera": "own",
+          "evaluation_only": false
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-d9e0073f-ops/solo-carry-93261-d9e0073f-review/top/000320.jpg",
+          "sha256": "7c72ba1d70e7e6d63f7d34a739deebf12d35876d725dcc7f410c21cf580c9fd5",
+          "sim_s": 32.0,
+          "camera": "top",
+          "evaluation_only": true
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-d9e0073f-ops/solo-carry-93261-d9e0073f-review/own/000320.jpg",
+          "sha256": "f3861ae3cc268f63c9116c86ca0c914cf101050a8504c84c7c38ed9cb98f1555",
+          "sim_s": 32.0,
+          "camera": "own",
+          "evaluation_only": false
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-d9e0073f-ops/solo-carry-93261-d9e0073f-review/top/000490.jpg",
+          "sha256": "aaee2f845fb5ba3904461f8590d6cd67fecadb8e07dace7d0b99018867ede31d",
+          "sim_s": 49.0,
+          "camera": "top",
+          "evaluation_only": true
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-d9e0073f-ops/solo-carry-93261-d9e0073f-review/own/000490.jpg",
+          "sha256": "621769c6ba34923ede0bf71cd426582ac1278a4e36fb8cf613a6f168b1d53ea8",
+          "sim_s": 49.0,
+          "camera": "own",
+          "evaluation_only": false
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-d9e0073f-ops/solo-carry-93261-d9e0073f-review/top/000600.jpg",
+          "sha256": "63bf9a5eede83e988ba7a9d4c5c900c57b93d1f1b683e2d96fd643e8572514b0",
+          "sim_s": 60.0,
+          "camera": "top",
+          "evaluation_only": true
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-d9e0073f-ops/solo-carry-93261-d9e0073f-review/own/000600.jpg",
+          "sha256": "8d367b8fd7d1a3ee0a6b790697e63ee1b73436a0d6fbd18e44edd53231e8903c",
+          "sim_s": 60.0,
+          "camera": "own",
+          "evaluation_only": false
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-d9e0073f-ops/solo-carry-93261-d9e0073f-review/top/000650.jpg",
+          "sha256": "a6ded5ffbb644d960e91cf450564c090b4f4717a0ce8fdb267eb16b9caa4c4fc",
+          "sim_s": 65.0,
+          "camera": "top",
+          "evaluation_only": true
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-d9e0073f-ops/solo-carry-93261-d9e0073f-review/own/000650.jpg",
+          "sha256": "282508d345a20ccad87e9978a95eb098cce01695c00ce0d8e8fecfc6005de73b",
+          "sim_s": 65.0,
+          "camera": "own",
+          "evaluation_only": false
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-d9e0073f-ops/solo-carry-93261-d9e0073f-review/top/000810.jpg",
+          "sha256": "138b9c6ea88cf8ab7edf85625172db4e3381c19a5382f0c579a2b14bef7d9677",
+          "sim_s": 81.0,
+          "camera": "top",
+          "evaluation_only": true
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-d9e0073f-ops/solo-carry-93261-d9e0073f-review/own/000810.jpg",
+          "sha256": "e411a08d34ba630e3c58a79a64f478149659b8c216d0db917c02ecebc9ffcb5c",
+          "sim_s": 81.0,
+          "camera": "own",
+          "evaluation_only": false
+        }
+      ],
+      "visual_findings": "7 timestamps start/middle/end; no peer blocks r1 in selected overview frames; cargo stays on floor; own late views floor/wall. r2 own RGB unavailable.",
+      "eval_rows": 818
+    },
+    {
+      "seed": 93262,
+      "status": "complete",
+      "termination": "phase_timeout",
+      "source_sha": "d9e0073f5db51cde78f571aeb1ce91ad44d23eaa",
+      "proposals": [
+        {
+          "seed": 93262,
+          "t": 42.10000000011001,
+          "prior": [
+            -0.7212245880491548,
+            0.3977947876186766,
+            -2.9196256929236784
+          ],
+          "prior_sigma": [
+            0.4009750884878175,
+            0.36871604783425554,
+            1.0157185933587227
+          ],
+          "proposal": [
+            -0.6033298559965454,
+            0.5171392675198679,
+            -2.443247862454999
+          ],
+          "old_full": false,
+          "old_partial": false,
+          "carry7": {
+            "prediction_nis": 0.4111802349887457,
+            "limit": 9.0,
+            "axis_sigma": [
+              0.2940200911164367,
+              0.3236758492129391,
+              0.4690057202688584
+            ],
+            "delta_m_m_rad": [
+              0.11789473205260936,
+              0.11934447990119135,
+              0.47637783046867943
+            ],
+            "covariance": "prediction_only",
+            "accepted": false,
+            "reasons": [
+              "hypotheses_unavailable"
+            ],
+            "modes": null,
+            "additional_view_required": true
+          },
+          "old_innovation_chi2": 0.2981394973423716,
+          "wall_endpoint_replay_available": false,
+          "evaluation_only": {
+            "prior_error": {
+              "xy_m": 0.2542403048925886,
+              "yaw_deg": -50.36318953924858
+            },
+            "old_applied_error": {
+              "xy_m": 0.2542403048925886,
+              "yaw_deg": -50.36318953924858
+            },
+            "rejected_proposal_error": {
+              "xy_m": 0.3352119997792468,
+              "yaw_deg": -23.068750399794613
+            },
+            "rollback_error": {
+              "xy_m": 0.2542403048925886,
+              "yaw_deg": -50.36318953924858
+            }
+          }
+        },
+        {
+          "seed": 93262,
+          "t": 43.000000000114305,
+          "prior": [
+            -0.7212245880491548,
+            0.3977947876186766,
+            -2.9196256929236784
+          ],
+          "prior_sigma": [
+            0.4009750884878175,
+            0.36871604783425554,
+            1.0157185933587227
+          ],
+          "proposal": [
+            -0.588515498937027,
+            0.4361404772804632,
+            -2.2073216847397665
+          ],
+          "old_full": false,
+          "old_partial": true,
+          "carry7": {
+            "prediction_nis": 0.6121488446017518,
+            "limit": 9.0,
+            "axis_sigma": [
+              0.3309659201338633,
+              0.10399788641427307,
+              0.7012808595228172
+            ],
+            "delta_m_m_rad": [
+              0.13270908911212775,
+              0.038345689661786586,
+              0.7123040081839118
+            ],
+            "covariance": "prediction_only",
+            "accepted": false,
+            "reasons": [
+              "hypotheses_unavailable"
+            ],
+            "modes": null,
+            "additional_view_required": true
+          },
+          "old_innovation_chi2": 0.47446012804766247,
+          "wall_endpoint_replay_available": false,
+          "evaluation_only": {
+            "prior_error": {
+              "xy_m": 0.25449558046831117,
+              "yaw_deg": -50.210705144829475
+            },
+            "old_applied_error": {
+              "xy_m": 0.21557894927200705,
+              "yaw_deg": -9.398691745639281
+            },
+            "rejected_proposal_error": {
+              "xy_m": 0.25392232623535876,
+              "yaw_deg": -9.398691745639281
+            },
+            "rollback_error": {
+              "xy_m": 0.25449558046831117,
+              "yaw_deg": -50.210705144829475
+            }
+          }
+        },
+        {
+          "seed": 93262,
+          "t": 52.60000000016014,
+          "prior": [
+            -0.588515498937027,
+            0.3977947876186766,
+            2.5287000963380972
+          ],
+          "prior_sigma": [
+            0.16091447899644934,
+            0.36871604783425554,
+            0.9475427029427038
+          ],
+          "proposal": [
+            -0.6098560069601535,
+            0.42529468398591813,
+            -3.076033473334432
+          ],
+          "old_full": true,
+          "old_partial": false,
+          "carry7": {
+            "prediction_nis": 0.5358235854698512,
+            "limit": 9.0,
+            "axis_sigma": [
+              0.1326201853072362,
+              0.07458285726582542,
+              0.7160117801551809
+            ],
+            "delta_m_m_rad": [
+              -0.02134050802312648,
+              0.02749989636724154,
+              0.6784517375070571
+            ],
+            "covariance": "prediction_only",
+            "accepted": false,
+            "reasons": [
+              "hypotheses_unavailable"
+            ],
+            "modes": null,
+            "additional_view_required": true
+          },
+          "old_innovation_chi2": 0.5348344180592993,
+          "wall_endpoint_replay_available": false,
+          "evaluation_only": {
+            "prior_error": {
+              "xy_m": 0.24752041597280922,
+              "yaw_deg": -40.04106453223258
+            },
+            "old_applied_error": {
+              "xy_m": 0.27611859499508856,
+              "yaw_deg": -1.1686433697606329
+            },
+            "rejected_proposal_error": {
+              "xy_m": 0.27611859499508856,
+              "yaw_deg": -1.1686433697606329
+            },
+            "rollback_error": {
+              "xy_m": 0.24752041597280922,
+              "yaw_deg": -40.04106453223258
+            }
+          }
+        },
+        {
+          "seed": 93262,
+          "t": 57.300000000182585,
+          "prior": [
+            -0.6098560069601535,
+            0.42529468398591813,
+            2.5281229106090963
+          ],
+          "prior_sigma": [
+            0.05512323462923873,
+            0.020181895171877417,
+            0.24648312299164488
+          ],
+          "proposal": [
+            -0.6126323073941231,
+            0.42762707976062403,
+            2.8111827204109936
+          ],
+          "old_full": true,
+          "old_partial": false,
+          "carry7": {
+            "prediction_nis": 1.3347022301866256,
+            "limit": 9.0,
+            "axis_sigma": [
+              0.050365339636599865,
+              0.11556871913377038,
+              1.1483942850378939
+            ],
+            "delta_m_m_rad": [
+              -0.002776300433969592,
+              0.0023323957747058977,
+              0.28305980980189727
+            ],
+            "covariance": "prediction_only",
+            "accepted": false,
+            "reasons": [
+              "hypotheses_unavailable"
+            ],
+            "modes": null,
+            "additional_view_required": true
+          },
+          "old_innovation_chi2": 1.2921403641882168,
+          "wall_endpoint_replay_available": false,
+          "evaluation_only": {
+            "prior_error": {
+              "xy_m": 0.27715222434423087,
+              "yaw_deg": -18.07645528689351
+            },
+            "old_applied_error": {
+              "xy_m": 0.2797651689720265,
+              "yaw_deg": -1.8583228354689865
+            },
+            "rejected_proposal_error": {
+              "xy_m": 0.2797651689720265,
+              "yaw_deg": -1.8583228354689865
+            },
+            "rollback_error": {
+              "xy_m": 0.27715222434423087,
+              "yaw_deg": -18.07645528689351
+            }
+          }
+        },
+        {
+          "seed": 93262,
+          "t": 60.20000000019643,
+          "prior": [
+            -0.6126323073941231,
+            0.42762707976062403,
+            2.528633667326414
+          ],
+          "prior_sigma": [
+            0.04060282834549422,
+            0.014785296748426623,
+            0.12158485446632863
+          ],
+          "proposal": [
+            -0.5979173975779442,
+            0.42752669830599377,
+            2.704668903844448
+          ],
+          "old_full": false,
+          "old_partial": true,
+          "carry7": {
+            "prediction_nis": 2.2276241933283503,
+            "limit": 9.0,
+            "axis_sigma": [
+              0.36241095548733865,
+              0.006789275611998974,
+              1.4478385263584364
+            ],
+            "delta_m_m_rad": [
+              0.014714909816178956,
+              -0.0001003814546302606,
+              0.1760352365180342
+            ],
+            "covariance": "prediction_only",
+            "accepted": false,
+            "reasons": [
+              "hypotheses_unavailable"
+            ],
+            "modes": null,
+            "additional_view_required": true
+          },
+          "old_innovation_chi2": 2.11568718674074,
+          "wall_endpoint_replay_available": false,
+          "evaluation_only": {
+            "prior_error": {
+              "xy_m": 0.28433030451346475,
+              "yaw_deg": -10.521026928733308
+            },
+            "old_applied_error": {
+              "xy_m": 0.28323623461702435,
+              "yaw_deg": -0.4349508306627224
+            },
+            "rejected_proposal_error": {
+              "xy_m": 0.28313597142424735,
+              "yaw_deg": -0.4349508306627224
+            },
+            "rollback_error": {
+              "xy_m": 0.28433030451346475,
+              "yaw_deg": -10.521026928733308
+            }
+          }
+        },
+        {
+          "seed": 93262,
+          "t": 76.89999999990953,
+          "prior": [
+            -0.5979173975779442,
+            0.42762707976062403,
+            -0.4139124264873075
+          ],
+          "prior_sigma": [
+            0.026386432621670255,
+            0.014785296748426623,
+            0.8230970781624827
+          ],
+          "proposal": [
+            -0.5528671766566405,
+            0.42521145439877367,
+            -2.8211307533031302
+          ],
+          "old_full": true,
+          "old_partial": false,
+          "carry7": {
+            "prediction_nis": 11.494856619631394,
+            "limit": 9.0,
+            "axis_sigma": [
+              1.7073251836364363,
+              0.16338024207105742,
+              2.9245861644774642
+            ],
+            "delta_m_m_rad": [
+              0.04505022092130362,
+              -0.00241562536185036,
+              -2.4072183268158227
+            ],
+            "covariance": "prediction_only",
+            "accepted": false,
+            "reasons": [
+              "prediction_3sigma",
+              "hypotheses_unavailable"
+            ],
+            "modes": null,
+            "additional_view_required": true
+          },
+          "old_innovation_chi2": 9.816427101782324,
+          "wall_endpoint_replay_available": false,
+          "evaluation_only": {
+            "prior_error": {
+              "xy_m": 0.25217299803961235,
+              "yaw_deg": -63.01629610395321
+            },
+            "old_applied_error": {
+              "xy_m": 0.2591772263103931,
+              "yaw_deg": 159.06025340295648
+            },
+            "rejected_proposal_error": {
+              "xy_m": 0.2591772263103931,
+              "yaw_deg": 159.06025340295648
+            },
+            "rollback_error": {
+              "xy_m": 0.25217299803961235,
+              "yaw_deg": -63.01629610395321
+            }
+          }
+        }
+      ],
+      "phases": [
+        {
+          "t": 1.3000000000000178,
+          "phase": "fold",
+          "pan_pulse": 1500
+        },
+        {
+          "t": 1.9000000000002182,
+          "phase": "pickup_search",
+          "pan_pulse": 1500
+        },
+        {
+          "t": 8.7000000000024,
+          "phase": "approach",
+          "pan_pulse": 2101
+        },
+        {
+          "t": 25.400000000030268,
+          "phase": "carry_reobserve",
+          "pan_pulse": 2161
+        },
+        {
+          "t": 85.49999999970616,
+          "phase": "failed",
+          "pan_pulse": 833
+        }
+      ],
+      "old_full_fixes": 3,
+      "old_partial_updates": 2,
+      "prediction_gate_rejects": 1,
+      "carry7_full_adoptions": 0,
+      "reacquire_ticks": 0,
+      "reacquire_visible_ticks": 0,
+      "reacquire_pan_range": null,
+      "reacquire_body_motion_ticks": 0,
+      "reobserve_elapsed_s": 59.99999999967826,
+      "scan_starts": [
+        {
+          "t": 25.400000000030268,
+          "views": [
+            {
+              "body_yaw_deg": 180.0,
+              "pan_deg": -90.0,
+              "pan_pulse": 500,
+              "expected": []
+            },
+            {
+              "body_yaw_deg": 180.0,
+              "pan_deg": -30.0,
+              "pan_pulse": 1167,
+              "expected": []
+            },
+            {
+              "body_yaw_deg": 180.0,
+              "pan_deg": 45.0,
+              "pan_pulse": 2000,
+              "expected": [
+                "wall_west:e"
+              ]
+            }
+          ],
+          "robust": false
+        },
+        {
+          "t": 43.000000000114305,
+          "views": [
+            {
+              "body_yaw_deg": -90.0,
+              "pan_deg": -75.0,
+              "pan_pulse": 667,
+              "expected": [
+                "pickup:e3"
+              ]
+            },
+            {
+              "body_yaw_deg": -90.0,
+              "pan_deg": -60.0,
+              "pan_pulse": 833,
+              "expected": [
+                "pickup:e3"
+              ]
+            },
+            {
+              "body_yaw_deg": -90.0,
+              "pan_deg": 75.0,
+              "pan_pulse": 2333,
+              "expected": [
+                "wall_west:e"
+              ]
+            }
+          ],
+          "robust": false
+        },
+        {
+          "t": 60.20000000019643,
+          "views": [
+            {
+              "body_yaw_deg": 180.0,
+              "pan_deg": -60.0,
+              "pan_pulse": 833,
+              "expected": [
+                "pickup:e3"
+              ]
+            },
+            {
+              "body_yaw_deg": 180.0,
+              "pan_deg": 75.0,
+              "pan_pulse": 2333,
+              "expected": []
+            },
+            {
+              "body_yaw_deg": 180.0,
+              "pan_deg": 90.0,
+              "pan_pulse": 2500,
+              "expected": [
+                "pickup:e3"
+              ]
+            }
+          ],
+          "robust": false
+        }
+      ],
+      "visual_review": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-d9e0073f-ops/solo-carry-93262-d9e0073f-review/top/000000.jpg",
+          "sha256": "9cc6079bdcedef653b4268475978f911f87ba07d432282ec3d1140d92bc20b54",
+          "sim_s": 0.0,
+          "camera": "top",
+          "evaluation_only": true
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-d9e0073f-ops/solo-carry-93262-d9e0073f-review/own/000000.jpg",
+          "sha256": "4ffddf52275b6a091a98a5b6a0bd6f6b6b32cb18ddebf16ab0ef3b80472e6d4b",
+          "sim_s": 0.0,
+          "camera": "own",
+          "evaluation_only": false
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-d9e0073f-ops/solo-carry-93262-d9e0073f-review/top/000170.jpg",
+          "sha256": "349cce36419e450c23920b6a82a48a5cc751990dc63ce26a86152ece0f5bb106",
+          "sim_s": 17.0,
+          "camera": "top",
+          "evaluation_only": true
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-d9e0073f-ops/solo-carry-93262-d9e0073f-review/own/000170.jpg",
+          "sha256": "ea2cd987c21c103462ac8ab32006e094db367b690197d52fcad85b3f235cf99b",
+          "sim_s": 17.0,
+          "camera": "own",
+          "evaluation_only": false
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-d9e0073f-ops/solo-carry-93262-d9e0073f-review/top/000340.jpg",
+          "sha256": "349cce36419e450c23920b6a82a48a5cc751990dc63ce26a86152ece0f5bb106",
+          "sim_s": 34.0,
+          "camera": "top",
+          "evaluation_only": true
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-d9e0073f-ops/solo-carry-93262-d9e0073f-review/own/000340.jpg",
+          "sha256": "5c59c4c582fe276820d730962e471184db7b0a9ab152100b88a203d592845f74",
+          "sim_s": 34.0,
+          "camera": "own",
+          "evaluation_only": false
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-d9e0073f-ops/solo-carry-93262-d9e0073f-review/top/000500.jpg",
+          "sha256": "349cce36419e450c23920b6a82a48a5cc751990dc63ce26a86152ece0f5bb106",
+          "sim_s": 50.0,
+          "camera": "top",
+          "evaluation_only": true
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-d9e0073f-ops/solo-carry-93262-d9e0073f-review/own/000500.jpg",
+          "sha256": "c143dc542daadff43272ff955769ab8203cc9163b4d8239e40a10f390d96260e",
+          "sim_s": 50.0,
+          "camera": "own",
+          "evaluation_only": false
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-d9e0073f-ops/solo-carry-93262-d9e0073f-review/top/000600.jpg",
+          "sha256": "349cce36419e450c23920b6a82a48a5cc751990dc63ce26a86152ece0f5bb106",
+          "sim_s": 60.0,
+          "camera": "top",
+          "evaluation_only": true
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-d9e0073f-ops/solo-carry-93262-d9e0073f-review/own/000600.jpg",
+          "sha256": "ad515f0de5a24b86e3edb76caaf4f2a14c72f2552088143dabfbc01b3d473ef5",
+          "sim_s": 60.0,
+          "camera": "own",
+          "evaluation_only": false
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-d9e0073f-ops/solo-carry-93262-d9e0073f-review/top/000670.jpg",
+          "sha256": "349cce36419e450c23920b6a82a48a5cc751990dc63ce26a86152ece0f5bb106",
+          "sim_s": 67.0,
+          "camera": "top",
+          "evaluation_only": true
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-d9e0073f-ops/solo-carry-93262-d9e0073f-review/own/000670.jpg",
+          "sha256": "9ca0f7d0cfaabbca69186fd1c2a754d60914143c2ca4174ddd1af8e47773cf0d",
+          "sim_s": 67.0,
+          "camera": "own",
+          "evaluation_only": false
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-d9e0073f-ops/solo-carry-93262-d9e0073f-review/top/000840.jpg",
+          "sha256": "349cce36419e450c23920b6a82a48a5cc751990dc63ce26a86152ece0f5bb106",
+          "sim_s": 84.0,
+          "camera": "top",
+          "evaluation_only": true
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-d9e0073f-ops/solo-carry-93262-d9e0073f-review/own/000840.jpg",
+          "sha256": "dd9cd00786e9204ad97d405bceebe88db48f8be9f02efbc727541c07f9a4fe17",
+          "sim_s": 84.0,
+          "camera": "own",
+          "evaluation_only": false
+        }
+      ],
+      "visual_findings": "7 timestamps start/middle/end; no peer blocks r1 in selected overview frames; cargo stays on floor; own late views floor/wall. r2 own RGB unavailable.",
+      "eval_rows": 849
+    },
+    {
+      "seed": 93266,
+      "status": "complete",
+      "termination": "carry_reacquire_unconfirmed",
+      "source_sha": "d9e0073f5db51cde78f571aeb1ce91ad44d23eaa",
+      "proposals": [
+        {
+          "seed": 93266,
+          "t": 32.90000000006608,
+          "prior": [
+            -0.13792048570880325,
+            0.2347081352711428,
+            -1.4520078935416243
+          ],
+          "prior_sigma": [
+            0.40030727389892823,
+            0.38265748993359144,
+            0.6045999591029111
+          ],
+          "proposal": [
+            -0.6156385112492048,
+            0.18812225875456728,
+            3.0678269368531295
+          ],
+          "old_full": false,
+          "old_partial": true,
+          "carry7": {
+            "prediction_nis": 9.945280187926784,
+            "limit": 9.0,
+            "axis_sigma": [
+              1.1933783288210207,
+              0.12174301494702294,
+              2.9165573868070456
+            ],
+            "delta_m_m_rad": [
+              -0.47771802554040155,
+              -0.0465858765165755,
+              -1.763350476784833
+            ],
+            "covariance": "prediction_only",
+            "accepted": false,
+            "reasons": [
+              "prediction_3sigma",
+              "hypotheses_unavailable"
+            ],
+            "modes": null,
+            "additional_view_required": true
+          },
+          "old_innovation_chi2": 8.80496135462402,
+          "wall_endpoint_replay_available": false,
+          "evaluation_only": {
+            "prior_error": {
+              "xy_m": 0.20938751001110134,
+              "yaw_deg": -27.53644909301799
+            },
+            "old_applied_error": {
+              "xy_m": 0.5502089414306588,
+              "yaw_deg": -128.5689892151704
+            },
+            "rejected_proposal_error": {
+              "xy_m": 0.5344359442351239,
+              "yaw_deg": -128.56898921517038
+            },
+            "rollback_error": {
+              "xy_m": 0.20938751001110134,
+              "yaw_deg": -27.53644909301799
+            }
+          }
+        },
+        {
+          "seed": 93266,
+          "t": 42.50000000011192,
+          "prior": [
+            -0.615638511249205,
+            0.2347081352711428,
+            1.520663410751406
+          ],
+          "prior_sigma": [
+            0.07427994826197905,
+            0.38265748993359144,
+            0.6646228155407674
+          ],
+          "proposal": [
+            -0.47983835537963576,
+            0.4329521276322694,
+            2.7804823354314365
+          ],
+          "old_full": true,
+          "old_partial": false,
+          "carry7": {
+            "prediction_nis": 7.203860689728659,
+            "limit": 9.0,
+            "axis_sigma": [
+              1.8282209270072947,
+              0.5180716373682664,
+              1.8955396884095594
+            ],
+            "delta_m_m_rad": [
+              0.13580015586956923,
+              0.19824399236112664,
+              1.2598189246800304
+            ],
+            "covariance": "prediction_only",
+            "accepted": false,
+            "reasons": [
+              "hypotheses_unavailable"
+            ],
+            "modes": null,
+            "additional_view_required": true
+          },
+          "old_innovation_chi2": 5.562031705182186,
+          "wall_endpoint_replay_available": false,
+          "evaluation_only": {
+            "prior_error": {
+              "xy_m": 0.586781738364485,
+              "yaw_deg": -168.9299889447782
+            },
+            "old_applied_error": {
+              "xy_m": 0.5763236920356185,
+              "yaw_deg": -96.74768160990271
+            },
+            "rejected_proposal_error": {
+              "xy_m": 0.5763236920356185,
+              "yaw_deg": -96.74768160990271
+            },
+            "rollback_error": {
+              "xy_m": 0.586781738364485,
+              "yaw_deg": -168.9299889447782
+            }
+          }
+        },
+        {
+          "seed": 93266,
+          "t": 49.800000000146774,
+          "prior": [
+            -0.47983835537963576,
+            0.4329521276322694,
+            1.5208187553087384
+          ],
+          "prior_sigma": [
+            0.05471880800807379,
+            0.032282337417417296,
+            0.39749218286784876
+          ],
+          "proposal": [
+            -0.4421851409830981,
+            0.43286833988533885,
+            2.0694591963234963
+          ],
+          "old_full": false,
+          "old_partial": true,
+          "carry7": {
+            "prediction_nis": 2.3786215423159662,
+            "limit": 9.0,
+            "axis_sigma": [
+              0.6881219779309141,
+              0.0025954671697771413,
+              1.3802546682966095
+            ],
+            "delta_m_m_rad": [
+              0.03765321439653768,
+              -8.378774693057478e-05,
+              0.5486404410147578
+            ],
+            "covariance": "prediction_only",
+            "accepted": false,
+            "reasons": [
+              "hypotheses_unavailable"
+            ],
+            "modes": null,
+            "additional_view_required": true
+          },
+          "old_innovation_chi2": 1.894359970519846,
+          "wall_endpoint_replay_available": false,
+          "evaluation_only": {
+            "prior_error": {
+              "xy_m": 0.5945738792926331,
+              "yaw_deg": -121.56171529981991
+            },
+            "old_applied_error": {
+              "xy_m": 0.5679591706584075,
+              "yaw_deg": -90.12693355947809
+            },
+            "rejected_proposal_error": {
+              "xy_m": 0.5678985473106437,
+              "yaw_deg": -90.12693355947809
+            },
+            "rollback_error": {
+              "xy_m": 0.5945738792926331,
+              "yaw_deg": -121.56171529981991
+            }
+          }
+        },
+        {
+          "seed": 93266,
+          "t": 59.40000000019261,
+          "prior": [
+            -0.4421851409830981,
+            0.4329521276322694,
+            0.5222956702217676
+          ],
+          "prior_sigma": [
+            0.02146131106591102,
+            0.032282337417417296,
+            0.5621872277899197
+          ],
+          "proposal": [
+            -0.437458406831316,
+            0.43291525818998333,
+            -0.46134401880606823
+          ],
+          "old_full": false,
+          "old_partial": false,
+          "carry7": {
+            "prediction_nis": 3.1098388465542635,
+            "limit": 9.0,
+            "axis_sigma": [
+              0.22024442669255212,
+              0.0011420933313893,
+              1.7496656636877672
+            ],
+            "delta_m_m_rad": [
+              0.004726734151782097,
+              -3.686944228609157e-05,
+              -0.9836396890278358
+            ],
+            "covariance": "prediction_only",
+            "accepted": false,
+            "reasons": [
+              "hypotheses_unavailable"
+            ],
+            "modes": null,
+            "additional_view_required": true
+          },
+          "old_innovation_chi2": 3.054569516807089,
+          "wall_endpoint_replay_available": false,
+          "evaluation_only": {
+            "prior_error": {
+              "xy_m": 0.5699078912986367,
+              "yaw_deg": -117.50572977244862
+            },
+            "old_applied_error": {
+              "xy_m": 0.5699078912986367,
+              "yaw_deg": -117.50572977244862
+            },
+            "rejected_proposal_error": {
+              "xy_m": 0.5666843035410385,
+              "yaw_deg": -173.86413251530436
+            },
+            "rollback_error": {
+              "xy_m": 0.5699078912986367,
+              "yaw_deg": -117.50572977244862
+            }
+          }
+        },
+        {
+          "seed": 93266,
+          "t": 60.30000000019691,
+          "prior": [
+            -0.4421851409830981,
+            0.4329521276322694,
+            0.5222956702217676
+          ],
+          "prior_sigma": [
+            0.02146131106591102,
+            0.032282337417417296,
+            0.5621872277899197
+          ],
+          "proposal": [
+            -0.4391596788695278,
+            0.4586877685762627,
+            0.8729857224034623
+          ],
+          "old_full": true,
+          "old_partial": false,
+          "carry7": {
+            "prediction_nis": 1.0445304085581975,
+            "limit": 9.0,
+            "axis_sigma": [
+              0.14097284663917478,
+              0.7972050044340383,
+              0.6237958367719124
+            ],
+            "delta_m_m_rad": [
+              0.0030254621135702986,
+              0.025735640943993277,
+              0.3506900521816947
+            ],
+            "covariance": "prediction_only",
+            "accepted": false,
+            "reasons": [
+              "hypotheses_unavailable"
+            ],
+            "modes": null,
+            "additional_view_required": true
+          },
+          "old_innovation_chi2": 0.8571172171668214,
+          "wall_endpoint_replay_available": false,
+          "evaluation_only": {
+            "prior_error": {
+              "xy_m": 0.5694534887503918,
+              "yaw_deg": -117.88223624644361
+            },
+            "old_applied_error": {
+              "xy_m": 0.5866564293688921,
+              "yaw_deg": -97.78917633920989
+            },
+            "rejected_proposal_error": {
+              "xy_m": 0.5866564293688921,
+              "yaw_deg": -97.78917633920989
+            },
+            "rollback_error": {
+              "xy_m": 0.5694534887503918,
+              "yaw_deg": -117.88223624644361
+            }
+          }
+        },
+        {
+          "seed": 93266,
+          "t": 63.50000000021219,
+          "prior": [
+            -0.4391596788695278,
+            0.4586877685762627,
+            0.5224897586200221
+          ],
+          "prior_sigma": [
+            0.020320118675386495,
+            0.018794941488042092,
+            0.13257739051706244
+          ],
+          "proposal": [
+            -0.4358917312455313,
+            0.4531374887561949,
+            0.7651317414055039
+          ],
+          "old_full": false,
+          "old_partial": false,
+          "carry7": {
+            "prediction_nis": 3.462670493952717,
+            "limit": 9.0,
+            "axis_sigma": [
+              0.16082325483437668,
+              0.29530710822372275,
+              1.8301912704659415
+            ],
+            "delta_m_m_rad": [
+              0.003267947623996459,
+              -0.005550279820067783,
+              0.24264198278548177
+            ],
+            "covariance": "prediction_only",
+            "accepted": false,
+            "reasons": [
+              "hypotheses_unavailable"
+            ],
+            "modes": null,
+            "additional_view_required": true
+          },
+          "old_innovation_chi2": 3.231056313868972,
+          "wall_endpoint_replay_available": false,
+          "evaluation_only": {
+            "prior_error": {
+              "xy_m": 0.5958260673984079,
+              "yaw_deg": -105.49158352279666
+            },
+            "old_applied_error": {
+              "xy_m": 0.5958260673984079,
+              "yaw_deg": -105.49158352279666
+            },
+            "rejected_proposal_error": {
+              "xy_m": 0.5894850617467687,
+              "yaw_deg": -91.58922197650257
+            },
+            "rollback_error": {
+              "xy_m": 0.5958260673984079,
+              "yaw_deg": -105.49158352279666
+            }
+          }
+        }
+      ],
+      "phases": [
+        {
+          "t": 1.3000000000000178,
+          "phase": "fold",
+          "pan_pulse": 1500
+        },
+        {
+          "t": 1.9000000000002182,
+          "phase": "pickup_search",
+          "pan_pulse": 1500
+        },
+        {
+          "t": 7.700000000003665,
+          "phase": "approach",
+          "pan_pulse": 1860
+        },
+        {
+          "t": 23.30000000002024,
+          "phase": "carry_reobserve",
+          "pan_pulse": 2040
+        },
+        {
+          "t": 63.50000000021219,
+          "phase": "carry_recover_restore",
+          "pan_pulse": 2500
+        },
+        {
+          "t": 64.60000000020038,
+          "phase": "carry_reacquire",
+          "pan_pulse": 2040
+        },
+        {
+          "t": 74.69999999996155,
+          "phase": "failed",
+          "pan_pulse": 2128
+        }
+      ],
+      "old_full_fixes": 2,
+      "old_partial_updates": 2,
+      "prediction_gate_rejects": 1,
+      "carry7_full_adoptions": 0,
+      "reacquire_ticks": 101,
+      "reacquire_visible_ticks": 0,
+      "reacquire_pan_range": [
+        2040,
+        2128
+      ],
+      "reacquire_body_motion_ticks": 0,
+      "reobserve_elapsed_s": 40.10000000019147,
+      "scan_starts": [
+        {
+          "t": 23.30000000002024,
+          "views": [
+            {
+              "body_yaw_deg": -90.0,
+              "pan_deg": -45.0,
+              "pan_pulse": 1000,
+              "expected": [
+                "pickup:e3"
+              ]
+            },
+            {
+              "body_yaw_deg": -90.0,
+              "pan_deg": -30.0,
+              "pan_pulse": 1167,
+              "expected": [
+                "pickup:e3"
+              ]
+            },
+            {
+              "body_yaw_deg": -90.0,
+              "pan_deg": 60.0,
+              "pan_pulse": 2167,
+              "expected": []
+            }
+          ],
+          "robust": false
+        },
+        {
+          "t": 32.90000000006608,
+          "views": [
+            {
+              "body_yaw_deg": -90.0,
+              "pan_deg": -45.0,
+              "pan_pulse": 1000,
+              "expected": []
+            },
+            {
+              "body_yaw_deg": -90.0,
+              "pan_deg": 60.0,
+              "pan_pulse": 2167,
+              "expected": [
+                "wall_west:e"
+              ]
+            },
+            {
+              "body_yaw_deg": -90.0,
+              "pan_deg": 90.0,
+              "pan_pulse": 2500,
+              "expected": [
+                "wall_west:e"
+              ]
+            }
+          ],
+          "robust": false
+        },
+        {
+          "t": 49.800000000146774,
+          "views": [
+            {
+              "body_yaw_deg": -90.0,
+              "pan_deg": -90.0,
+              "pan_pulse": 500,
+              "expected": []
+            },
+            {
+              "body_yaw_deg": -90.0,
+              "pan_deg": 60.0,
+              "pan_pulse": 2167,
+              "expected": [
+                "pickup:e2",
+                "pickup:e3"
+              ]
+            },
+            {
+              "body_yaw_deg": -90.0,
+              "pan_deg": 90.0,
+              "pan_pulse": 2500,
+              "expected": []
+            }
+          ],
+          "robust": false
+        }
+      ],
+      "visual_review": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-d9e0073f-ops/solo-carry-93266-d9e0073f-review/top/000000.jpg",
+          "sha256": "882be2997b85228446d8b659df83a72dcb5ffd7bf3119a583c40787dc534957d",
+          "sim_s": 0.0,
+          "camera": "top",
+          "evaluation_only": true
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-d9e0073f-ops/solo-carry-93266-d9e0073f-review/own/000000.jpg",
+          "sha256": "9e8fd4f4f57749c23c8a3bf8e7f929082aea607129b0fb3f7af2bba04819e037",
+          "sim_s": 0.0,
+          "camera": "own",
+          "evaluation_only": false
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-d9e0073f-ops/solo-carry-93266-d9e0073f-review/top/000150.jpg",
+          "sha256": "349cce36419e450c23920b6a82a48a5cc751990dc63ce26a86152ece0f5bb106",
+          "sim_s": 15.0,
+          "camera": "top",
+          "evaluation_only": true
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-d9e0073f-ops/solo-carry-93266-d9e0073f-review/own/000150.jpg",
+          "sha256": "441f38dc1eb55efeacd909c01ad1fdf355020fa1e7af80c22b13f3a7f914e4b1",
+          "sim_s": 15.0,
+          "camera": "own",
+          "evaluation_only": false
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-d9e0073f-ops/solo-carry-93266-d9e0073f-review/top/000290.jpg",
+          "sha256": "349cce36419e450c23920b6a82a48a5cc751990dc63ce26a86152ece0f5bb106",
+          "sim_s": 29.0,
+          "camera": "top",
+          "evaluation_only": true
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-d9e0073f-ops/solo-carry-93266-d9e0073f-review/own/000290.jpg",
+          "sha256": "8cf927ccc124ce2bcd1bb25a58ca86bd5715384c14ea56c8ac009460641f7574",
+          "sim_s": 29.0,
+          "camera": "own",
+          "evaluation_only": false
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-d9e0073f-ops/solo-carry-93266-d9e0073f-review/top/000440.jpg",
+          "sha256": "349cce36419e450c23920b6a82a48a5cc751990dc63ce26a86152ece0f5bb106",
+          "sim_s": 44.0,
+          "camera": "top",
+          "evaluation_only": true
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-d9e0073f-ops/solo-carry-93266-d9e0073f-review/own/000440.jpg",
+          "sha256": "8a1143f07ed9485fd473582176c29b5710bf0431754acbb2fa2be6c97e97bc9a",
+          "sim_s": 44.0,
+          "camera": "own",
+          "evaluation_only": false
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-d9e0073f-ops/solo-carry-93266-d9e0073f-review/top/000580.jpg",
+          "sha256": "349cce36419e450c23920b6a82a48a5cc751990dc63ce26a86152ece0f5bb106",
+          "sim_s": 58.0,
+          "camera": "top",
+          "evaluation_only": true
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-d9e0073f-ops/solo-carry-93266-d9e0073f-review/own/000580.jpg",
+          "sha256": "a03bb796956b13880e6cdd2b1e81e38c2c86aa96f83dc5c742354973e624c5c0",
+          "sim_s": 58.0,
+          "camera": "own",
+          "evaluation_only": false
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-d9e0073f-ops/solo-carry-93266-d9e0073f-review/top/000600.jpg",
+          "sha256": "349cce36419e450c23920b6a82a48a5cc751990dc63ce26a86152ece0f5bb106",
+          "sim_s": 60.0,
+          "camera": "top",
+          "evaluation_only": true
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-d9e0073f-ops/solo-carry-93266-d9e0073f-review/own/000600.jpg",
+          "sha256": "1912d7668b0681f1c4f8236c7d62860133c31c498548f821921b804f0ce625a2",
+          "sim_s": 60.0,
+          "camera": "own",
+          "evaluation_only": false
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-d9e0073f-ops/solo-carry-93266-d9e0073f-review/top/000730.jpg",
+          "sha256": "349cce36419e450c23920b6a82a48a5cc751990dc63ce26a86152ece0f5bb106",
+          "sim_s": 73.0,
+          "camera": "top",
+          "evaluation_only": true
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-d9e0073f-ops/solo-carry-93266-d9e0073f-review/own/000730.jpg",
+          "sha256": "37c3ebf01cfd8cf078a526e6bbc74d4e2e8435226bee7fc72bc826b9193ba828",
+          "sim_s": 73.0,
+          "camera": "own",
+          "evaluation_only": false
+        }
+      ],
+      "visual_findings": "7 timestamps start/middle/end; no peer blocks r1 in selected overview frames; cargo stays on floor; own late views floor/wall. r2 own RGB unavailable.",
+      "eval_rows": 741
+    }
+  ],
+  "inputs": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93261-d9e0073f/raw/result.json.zst",
+      "sha256": "bd62bc47c40c7c258b97871ce95ab366ef0d84cdb8c49de81bc9b58dd8de7acc",
+      "decompressed_sha256": "66eae42c0dee7a8ea2f32cad8a6153f1ce3ca9aa258098d2e67d3e896efe21d2",
+      "original_manifest_verified": true
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93261-d9e0073f/raw/teacher-commands.jsonl.zst",
+      "sha256": "2341c26518c591d033b86104bab26a15f30627891579f9b161f7e0c4f9583423",
+      "decompressed_sha256": "040164d761ebcc6830d6f2829a46257eae81f91ec1d961c0f46fde569e8fd807",
+      "original_manifest_verified": true
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93261-d9e0073f/raw/eval-only.jsonl.zst",
+      "sha256": "9089d0abefd41b3c362a483484903c802819a8ee413f61c08ac23f7a49b68c2a",
+      "decompressed_sha256": "20e7528c0eff54b8d7ee519e8eeeb42616375666df9714f14925e49c9944b4ac",
+      "original_manifest_verified": true
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93261-d9e0073f/raw/carry-static-map.json",
+      "sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b",
+      "decompressed_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b",
+      "original_manifest_verified": true
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93262-d9e0073f/raw/result.json",
+      "sha256": "dd3c0cacfcb336037957bcea1d4ac822a5e4b250f43043955a77735bf615138d",
+      "decompressed_sha256": "dd3c0cacfcb336037957bcea1d4ac822a5e4b250f43043955a77735bf615138d",
+      "original_manifest_verified": true
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93262-d9e0073f/raw/teacher-commands.jsonl.zst",
+      "sha256": "ae693f0b62090d4ffa19a3fd7cff13c14fafad0e078eeb68f2c007d7b41ce5fc",
+      "decompressed_sha256": "24b253f1f279a863111d303ca6d5df945d26d4852a4d3d01482aa8c8bda69c99",
+      "original_manifest_verified": true
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93262-d9e0073f/raw/eval-only.jsonl.zst",
+      "sha256": "5c48e92485bc3caa1a82b30406502c160007487d4c31c35bb3f515af33b83377",
+      "decompressed_sha256": "993505cddf85c10269aa0af7ddc1a5cfbffcd731ea3567efea0b9d5ef60f352d",
+      "original_manifest_verified": true
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93262-d9e0073f/raw/carry-static-map.json",
+      "sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b",
+      "decompressed_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b",
+      "original_manifest_verified": true
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93266-d9e0073f/raw/result.json",
+      "sha256": "ceeb4a7b4d35324d0d4db956b59ca271837650e2042d57e858508e37cd0f552e",
+      "decompressed_sha256": "ceeb4a7b4d35324d0d4db956b59ca271837650e2042d57e858508e37cd0f552e",
+      "original_manifest_verified": true
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93266-d9e0073f/raw/teacher-commands.jsonl.zst",
+      "sha256": "2fd156f09e4402343577a5e5849e06f8f4f7740e3062e96a20b5ac90cdba06f6",
+      "decompressed_sha256": "e77cae8b8bfe59500a9a2534a33a639135ddf195aac160bfc939a4e8d1a75acf",
+      "original_manifest_verified": true
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93266-d9e0073f/raw/eval-only.jsonl.zst",
+      "sha256": "2a85e781f22fca01332c7adda9841b6fed810cbe5c8059f23715c1d59f57d3f3",
+      "decompressed_sha256": "b6cab5338fe6ce9f080725e36fffe6d55b5e7cf2684de12182158ce4aa0c3cd2",
+      "original_manifest_verified": true
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93266-d9e0073f/raw/carry-static-map.json",
+      "sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b",
+      "decompressed_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b",
+      "original_manifest_verified": true
+    }
+  ]
+}

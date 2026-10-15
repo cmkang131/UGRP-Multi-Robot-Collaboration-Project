@@ -187,6 +187,10 @@ class SoloTeacher:
                 rgb_lift_mode != 'solo_lift_lookback_v1' or solo_lift_negative_probe_v1):
             raise ValueError('zone carry requires box, RGB lookback and map controller')
         self.carry = carry if solo_carry_to_zone_v1 else None
+        self.robust_recovery_v1 = bool(self.carry is not None and getattr(self.carry,'robust_recovery_v1',False))
+        self.recovery_world = None
+        self.reacquirer = None
+        self.recovery_started = None
         self.recovery_return = None
         self.recovery_fixes = 0
         self.recovery_site = None
@@ -453,6 +457,13 @@ class SoloTeacher:
         self.recovery_fixes = self.carry.loc.fixes
         self.recovery_pwm = dict(self.sink.pwm)
         self.recovery_site = None if self.target is None else tuple(self.target['xyz'])
+        if self.robust_recovery_v1:
+            from sim.solo_carry7 import world_point
+            self.recovery_started = now
+            self.reacquirer = None
+            self.recovery_world = (world_point(self.carry.loc.pose, self.recovery_site)
+                                   if not self.holding and self.recovery_site is not None else None)
+            self.recovery_memory_source = 'previous_own_visible_target'
         if self.holding:
             from harness.visual_arm_v3 import forward_grip
             self.recovery_site = tuple(forward_grip({1: 1500, **self.low}))
@@ -511,7 +522,11 @@ class SoloTeacher:
         value = self._hold(now)
         if self.result is not None:
             pass
-        elif now-self.phase_t > (180 if self.phase == 'carry_to_zone' else 60):
+        elif (self.robust_recovery_v1 and self.recovery_started is not None
+              and self.phase == 'carry_reobserve' and now-self.recovery_started > 240.):
+            self.result = 'carry_relocalization_unconfirmed'
+            self._set('failed', now)
+        elif now-self.phase_t > self._phase_limit():
             self.result = 'phase_timeout'
             self._set('failed', now)
         elif (self.carry is not None and self.carry.active_recovery
@@ -523,6 +538,11 @@ class SoloTeacher:
             self._set('carry_recover_open', now)
         elif self.phase == 'carry_recover_open' and idle:
             self.holding = False
+            if self.robust_recovery_v1:
+                from sim.solo_carry7 import world_point
+                from harness.visual_arm_v3 import forward_grip
+                self.recovery_world = world_point(self.carry.loc.pose, forward_grip({1:2000, **self.low}))
+                self.recovery_memory_source = 'issued_setdown_geometry_after_open'
             self._queue(self.high, now, .8)
             self._queue(self.ops.folded, now, .8)
             self._set('carry_recover_retract', now)
@@ -542,6 +562,11 @@ class SoloTeacher:
             self.arm.commanded.update(self.sink.pwm)
             if self.carry.loc.fixes > old_fixes or (self.carry.rank_aware_v1 and old_pose != self.carry.loc.pose):
                 self.carry.obstacles.reanchor(old_pose, self.carry.loc.pose)
+                if self.robust_recovery_v1 and self.recovery_world is not None:
+                    # The map-frame correction applies to the remembered site
+                    # just as to own-observed obstacle tracks, never a GT read.
+                    from sim.solo_carry7 import world_point, body_point
+                    self.recovery_world = world_point(self.carry.loc.pose, body_point(old_pose,self.recovery_world))
             if done:
                 if self.carry.finish_recovery(now, self.recovery_fixes):
                     # Return camera to the previously issued target-view posture.
@@ -558,11 +583,30 @@ class SoloTeacher:
             self.verify_t = None; self.stable_t = None
             self.lookback_m = self.lookback_return_m = 0.
             self._reset_alignment()
-            self._set('carry_reacquire', now)
+            if self.robust_recovery_v1:
+                from sim.solo_carry7 import CargoReacquirer
+                if self.recovery_world is None:
+                    self.result = 'carry_reacquire_memory_unavailable'
+                    self._set('failed', now)
+                else:
+                    self.reacquirer = CargoReacquirer(self.carry.loc.pose,self.recovery_world,now,
+                        self.sink.pwm,self.ops,source=self.recovery_memory_source)
+                    self._set('carry_reacquire', now)
+            else:
+                self._set('carry_reacquire', now)
         elif self.phase == 'carry_reacquire':
             if measurement is not None:
                 self.recovery_site = None
+                self.recovery_world = None
+                self.recovery_started = None
                 self._set(self.recovery_return, now)
+            elif self.robust_recovery_v1:
+                turn, pwm = self.reacquirer.tick(now,self.carry.loc.pose,self.sink.pwm)
+                self.sink.pwm.update(pwm); self.arm.commanded.update(pwm)
+                value = self._drive(now,turn=turn)
+                if self.reacquirer.failure:
+                    self.result = self.reacquirer.failure
+                    self._set('failed', now)
             elif now-self.phase_t >= 10.:
                 self.result = 'carry_reacquire_unconfirmed'
                 self._set('failed', now)
@@ -740,6 +784,16 @@ class SoloTeacher:
         self.previous, self.previous_t = deepcopy(value), now
         return value, self.result == 'command_complete'
 
+    def _phase_limit(self):
+        if self.robust_recovery_v1:
+            if self.phase == 'carry_reobserve':
+                # The scan runner enforces its computed budget; the whole
+                # recovery also has a 240 s cap. A replan is not a new 60 s phase.
+                return 250.
+            if self.phase == 'carry_reacquire' and self.reacquirer is not None:
+                return self.reacquirer.budget_s+1.
+        return 180. if self.phase == 'carry_to_zone' else 60.
+
     def diagnostic(self):
         return {'profile': PROFILE, 'phase': self.phase, 'command_result': self.result,
             'holding_belief': self.holding, 'ik_rejections': self.ik_rejections,
@@ -760,5 +814,8 @@ class SoloTeacher:
             'events': self.events, 'held_object_hidden_v1': True,
             'held_interval': 'close command through completed open command',
             'setdown_lookaround_v1': self.lookaround is not None,
+            **({'carry7_robust_recovery_v1': True,
+                'reacquisition': self.reacquirer.record() if self.reacquirer else None}
+               if self.robust_recovery_v1 else {}),
             'student_execution': False, 'physical_success': None,
             'done_semantics': 'own command sequence and RGB confirmation only; separate evaluator scores physics'}

@@ -166,7 +166,8 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
                                 drive_model_deadband_v1=plan.get('drive_model_deadband_v1', False),
                                 carry5_rank_aware_views_v1=plan.get('carry5_rank_aware_views_v1', False),
                                 carry5_trim_yaw_calibration_v1=plan.get('carry5_trim_yaw_calibration_v1', False),
-                                trim_calibration=plan.get('trim_calibration'))
+                                trim_calibration=plan.get('trim_calibration'),
+                                carry7_robust_recovery_v1=plan.get('carry7_robust_recovery_v1', False))
             if carry.loc.drive_model_enabled:
                 ops.delta = carry.loc.cached_delta
                 ops.propagate = carry.loc.propagate_point
@@ -177,7 +178,8 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
         relook = SoloLookaround(static, ops=ops, truth_free_v1=solo_truth_free_lookaround_v1,
                                 command_pose=carry.loc if carry is not None else None,
                                 carry5=carry is not None and carry.active_recovery,
-                                carry5_rank_aware_views_v1=plan.get('carry5_rank_aware_views_v1', False))
+                                carry5_rank_aware_views_v1=plan.get('carry5_rank_aware_views_v1', False),
+                                carry7_robust_recovery_v1=plan.get('carry7_robust_recovery_v1', False))
         look_eval = {'views': []}
 
         def truth_pose():
@@ -577,11 +579,13 @@ def validate_carry(plan, *, enabled, training_rgb, truth_free, lift, negative):
         raise ValueError('unknown carry5 profile')
     if plan.get('carry5_profile') == 'carry5_active_localization_v1' and plan.get('drive_model_deadband_v1') is not True:
         raise ValueError('carry5 requires the merged shared drive_model_deadband_v1')
-    for option in ('carry5_rank_aware_views_v1', 'carry5_trim_yaw_calibration_v1'):
+    for option in ('carry5_rank_aware_views_v1', 'carry5_trim_yaw_calibration_v1', 'carry7_robust_recovery_v1'):
         if type(plan.get(option, False)) is not bool:
             raise ValueError(option+' must be bool')
         if plan.get(option) and plan.get('carry5_profile') != 'carry5_active_localization_v1':
             raise ValueError(option+' requires carry5 recovery')
+    if plan.get('carry7_robust_recovery_v1') and plan.get('carry5_rank_aware_views_v1') is not True:
+        raise ValueError('carry7 requires carry6 rank-aware views')
     if plan.get('carry5_trim_yaw_calibration_v1'):
         from sim.solo_carry6 import validate_calibration
         validate_calibration(plan.get('trim_calibration'))

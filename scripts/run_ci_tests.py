@@ -29,6 +29,7 @@ TEST_PATTERNS = (
     "tests/test_solo_carry4.py",
     "tests/test_solo_carry5.py",
     "tests/test_solo_carry6.py",
+    "tests/test_solo_carry7.py",
     "tests/test_grasp_act_contract_v4.py",
     "tests/test_grasp_act_visible_only.py",
     "tests/test_grasp_act_admission.py",

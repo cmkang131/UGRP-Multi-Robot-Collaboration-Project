@@ -1,0 +1,141 @@
+{
+  "schema": "ugrp.carry7_summary.v1",
+  "baseline_source_sha": "d9e0073f5db51cde78f571aeb1ce91ad44d23eaa",
+  "research_result": false,
+  "candidate_status": "implemented_offline_verified_not_submitted",
+  "default_toggle": "carry7_robust_recovery_v1=false",
+  "baseline_counts": {
+    "planned": 8,
+    "submitted": 8,
+    "retrieved": 8,
+    "completed": 3,
+    "confirmed_success": 0,
+    "completed_failures": 3,
+    "supervisor_interrupted": 5,
+    "HOST_ERROR": 0,
+    "unsubmitted": 0
+  },
+  "baseline_full_fixes": 9,
+  "baseline_full_fix_abs_yaw_ge90": 7,
+  "baseline_report": {
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-d9e0073f.json",
+    "sha256": "275dd02b849e684ac8f41e40ec92b7a6ade42d1f6d73bcfcccd14a3ad5f32f1e"
+  },
+  "baseline_runs": [
+    {
+      "seed": 93240,
+      "status": "interrupted",
+      "reason": "KeyboardInterrupt",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93240-d9e0073f",
+      "result_sha256_reported": "2d1c6bcc46f3e8a70cb323155139a9f998cd52c18f2aecc6f800c1a924bcd53a",
+      "directly_replayed": false
+    },
+    {
+      "seed": 93260,
+      "status": "interrupted",
+      "reason": "KeyboardInterrupt",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93260-d9e0073f",
+      "result_sha256_reported": "027165907452f4024fd664a4bdeea3db96b49c92058735e1ccaa73dd470794ec",
+      "directly_replayed": false
+    },
+    {
+      "seed": 93261,
+      "status": "complete",
+      "reason": "carry_reacquire_unconfirmed",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93261-d9e0073f",
+      "result_sha256_reported": "66eae42c0dee7a8ea2f32cad8a6153f1ce3ca9aa258098d2e67d3e896efe21d2",
+      "directly_replayed": true
+    },
+    {
+      "seed": 93262,
+      "status": "complete",
+      "reason": "phase_timeout",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93262-d9e0073f",
+      "result_sha256_reported": "dd3c0cacfcb336037957bcea1d4ac822a5e4b250f43043955a77735bf615138d",
+      "directly_replayed": true
+    },
+    {
+      "seed": 93263,
+      "status": "interrupted",
+      "reason": "KeyboardInterrupt",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93263-d9e0073f",
+      "result_sha256_reported": "d08d1a0ca3baf08870d1b87d6018c30979c5ebd8fea619377a171334b7a55d85",
+      "directly_replayed": false
+    },
+    {
+      "seed": 93264,
+      "status": "interrupted",
+      "reason": "KeyboardInterrupt",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93264-d9e0073f",
+      "result_sha256_reported": "ac7b53b1929c15c2025026e88a7bd093abf76d2625ba8becae2e0c9efc98a42b",
+      "directly_replayed": false
+    },
+    {
+      "seed": 93265,
+      "status": "interrupted",
+      "reason": "KeyboardInterrupt",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93265-d9e0073f",
+      "result_sha256_reported": "1cea5e34152a22d87b9fcf4686f4523cb5889459dfff749f8a1862c52433fe19",
+      "directly_replayed": false
+    },
+    {
+      "seed": 93266,
+      "status": "complete",
+      "reason": "carry_reacquire_unconfirmed",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93266-d9e0073f",
+      "result_sha256_reported": "ceeb4a7b4d35324d0d4db956b59ca271837650e2042d57e858508e37cd0f552e",
+      "directly_replayed": true
+    }
+  ],
+  "offline_replay": {
+    "path": "experiments/2026-10-15-map-carry-zone/carry7-replay.json",
+    "sha256": "0a9da28197dcb6bc8fd57b279a84bad78472434fb962ef3cb5406375c89340ef",
+    "proposals": 18,
+    "previous_full_adoptions": 6,
+    "previous_partial_adoptions": 5,
+    "definite_prediction_gate_rejects": 3,
+    "mode_replay": "unavailable in old ledgers; missing hypotheses reject all six full adoptions",
+    "counterfactual_trajectory_verified": false,
+    "new_transport_success_verified": false
+  },
+  "tests": {
+    "files": 7,
+    "passed": 82,
+    "failed": 0,
+    "seconds": 37.36,
+    "log": "experiments/2026-10-15-map-carry-zone/offline-tests-carry7.txt",
+    "sha256": "74cd748ca34694d0781f8da6e34370168e7aa1f2ae47b624285f5d5be5450d45"
+  },
+  "queued_plan": {
+    "path": "experiments/2026-10-15-map-carry-zone/diagnostic-plan-v7.json",
+    "sha256": "3ce19b48e5b72f97e9837d6fc56cd2d5713f9e677579b51a99fbe8dfd786549b",
+    "reproduction": [
+      93261,
+      93262,
+      93266
+    ],
+    "fresh": [
+      93280,
+      93281,
+      93282,
+      93283,
+      93284,
+      93285,
+      93286,
+      93287
+    ],
+    "approved": false,
+    "enabled": false,
+    "submitted": false,
+    "remote_unused_verified": false,
+    "previous_results_combinable": false
+  },
+  "new_simulation_runs": 0,
+  "remote_connections": 0,
+  "model_calls": 0,
+  "remaining": [
+    "GCP 3 reproductions and fresh8 after explicit exact-SHA approval; first30, modes, reacquisition and whole transport require new raw evidence",
+    "Global coarse/refined hypothesis search has no completeness certificate; thresholds and command uncertainty uncalibrated",
+    "No new host throughput, physical transport success, retrieval or VM stop verification"
+  ]
+}

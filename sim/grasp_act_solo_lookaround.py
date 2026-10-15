@@ -18,7 +18,7 @@ from __future__ import annotations
 class SoloLookaround:
     def __init__(self, static, *, ops, odometry_profile='off',
                  localizer_factory=None, runner_factory=None, truth_free_v1=False, command_pose=None, carry5=False,
-                 carry5_rank_aware_views_v1=False):
+                 carry5_rank_aware_views_v1=False, carry7_robust_recovery_v1=False):
         if localizer_factory is None or runner_factory is None:
             from sim.lookaround_localization import LookaroundLocalizer, ScriptRunner
             localizer_factory = localizer_factory or LookaroundLocalizer
@@ -37,6 +37,11 @@ class SoloLookaround:
         self.command_pose = command_pose
         self.carry5 = bool(carry5)
         self.rank_aware_v1 = carry5_rank_aware_views_v1
+        if type(carry7_robust_recovery_v1) is not bool or (carry7_robust_recovery_v1 and not self.rank_aware_v1):
+            raise ValueError('carry7 requires rank-aware command-pose recovery')
+        self.robust_recovery_v1 = carry7_robust_recovery_v1
+        self.accepted_ready = False
+        self.deadline = None
         self.rank_retry = 0
         self.partial_replans = 0
         self.replan_pending = False
@@ -83,6 +88,7 @@ class SoloLookaround:
         if not continuation:
             self.partial_replans = 0
             self.partial_budget_exhausted = False
+        self.accepted_ready = False
         if self.truth_free_v1 and self.command_pose is None:
             if not self.armed:
                 raise ValueError('look-around start before scan was armed')
@@ -107,9 +113,18 @@ class SoloLookaround:
         if self.rank_aware_v1:
             self.loc.rank_aware_v1 = True
             self.loc.rank_retry = self.rank_retry
+        if self.robust_recovery_v1:
+            self.loc.robust_recovery_v1 = True
         plan = self.loc.make_plan(int(pan_pulse))
         self.runner = (Carry5ViewRunner(plan, self.command_pose, self.ops, now) if self.carry5
                        else self.make_runner(self.loc.script(), now))
+        if self.robust_recovery_v1:
+            import math
+            from sim.solo_carry7 import TURN_RATE_FLOOR
+            headings = [0., *[v['body_yaw_deg'] for v in plan['views']]]
+            angle = sum(abs(math.radians(b-a)) for a,b in zip(headings,headings[1:]))
+            # Each plan/continuation has its own finite rotation+slew budget.
+            self.deadline = now+angle/TURN_RATE_FLOOR+len(plan['views'])*5.+10.
         self.events.append({'t': now, 'event': 'start', 'views': len(plan['views']),
                             'rotated': plan['rotated'],
                             **({'rank_aware': plan['rank_aware'], 'plan_views': plan['views']}
@@ -153,6 +168,10 @@ class SoloLookaround:
             if self.command_pose is not None:
                 if rec.get('fix_acceptance', {}).get('accepted') is True:
                     self.command_pose.accepted_fix(at)
+                    if self.robust_recovery_v1:
+                        import math
+                        s = self.command_pose.sigmas()
+                        self.accepted_ready = (max(s[:2]) < .4 and s[2] < math.radians(16.))
                 elif rec.get('partial_update', {}).get('applied') is True:
                     self.command_pose.partial_fix()
                     if self.partial_replans < 2:
@@ -172,6 +191,11 @@ class SoloLookaround:
 
         self.runner.tick(now, set_servo=set_servo, set_wheels=set_wheels,
                          wheels_idle=lambda: not self.pulses, capture=capture)
+        if self.robust_recovery_v1 and (self.accepted_ready or now >= self.deadline):
+            self.runner.done = True
+            self.pulses.clear()
+            self.replan_pending = False
+            self.events.append(dict(t=now,event='accepted_ready_stop' if self.accepted_ready else 'scan_budget_exhausted'))
         if self.partial_budget_exhausted:
             self.runner.done = True
         if self.replan_pending:

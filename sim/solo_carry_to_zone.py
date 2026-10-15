@@ -153,7 +153,8 @@ class RGBCommandPose:
 
 class CarryToZone:
     def __init__(self, static, zone, *, start=None, now=0., robot_id='r1', amcl_option='off', recovery_profile='off', drive_model_deadband_v1=False,
-                 carry5_rank_aware_views_v1=False, carry5_trim_yaw_calibration_v1=False, trim_calibration=None):
+                 carry5_rank_aware_views_v1=False, carry5_trim_yaw_calibration_v1=False, trim_calibration=None,
+                 carry7_robust_recovery_v1=False):
         if recovery_profile not in ('off', 'carry5_active_localization_v1'):
             raise ValueError('unknown carry recovery profile')
         self.recovery_profile = recovery_profile
@@ -161,6 +162,9 @@ class CarryToZone:
         if type(carry5_rank_aware_views_v1) is not bool or (carry5_rank_aware_views_v1 and not self.active_recovery):
             raise ValueError('rank-aware views require carry5 recovery and bool toggle')
         self.rank_aware_v1 = carry5_rank_aware_views_v1
+        if type(carry7_robust_recovery_v1) is not bool or (carry7_robust_recovery_v1 and not self.rank_aware_v1):
+            raise ValueError('carry7 requires carry6 rank-aware recovery and bool toggle')
+        self.robust_recovery_v1 = carry7_robust_recovery_v1
         self.recovery_reason = None
         self.recovery_events = []
         self.recovery_count = 0
@@ -374,6 +378,7 @@ class CarryToZone:
                 'map_arrival_estimated_t': self.arrived, 'failure': self.failure,
                 'path': self.path, 'static_route_only': False, 'obstacles': self.obstacles.record(),
                 'held_world_reads': 0, 'physical_success': None,
+                **({'carry7_robust_recovery_v1': True} if self.robust_recovery_v1 else {}),
                 **({'carry5_rank_aware_views_v1': True, 'recovery_count': self.recovery_count}
                    if self.rank_aware_v1 else {}),
                 **({'recovery_profile': self.recovery_profile, 'recovery_reason': self.recovery_reason,

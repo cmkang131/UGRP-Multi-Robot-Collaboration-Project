@@ -73,6 +73,7 @@ def partial_posterior(prior, covariance, posterior, post_covariance, rows, recei
     Rank-3 ambiguous scenes and poor-inlier scenes always roll back.
     """
     if (not all(math.isfinite(receipt[k]) for k in ('inlier_fraction', 'innovation_chi2', 'information_gain'))
+            or receipt.get('robust_gate', {}).get('accepted', True) is not True
             or receipt['accepted'] or receipt['pose_rank'] != 2 or receipt['residual_count'] < 2
             or receipt['inlier_fraction'] < .8 or receipt['innovation_chi2'] > 11.345
             or receipt['information_gain'] < receipt['minimum_information_gain']

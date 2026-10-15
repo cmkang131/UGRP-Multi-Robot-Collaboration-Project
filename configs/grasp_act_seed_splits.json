@@ -13,7 +13,7 @@
     "solo_rgb_lift_v2_gate": [[79500, 79539]],
     "solo_box_gate_v1": [[79700, 79739]],
     "solo_lift_negative_probe": [[79790, 79797]],
-    "solo_carry_diagnostic_v1": [[93200, 93207], [93210, 93217], [93220, 93227], [93240, 93247], [93260, 93266]],
+    "solo_carry_diagnostic_v1": [[93200, 93207], [93210, 93217], [93220, 93227], [93240, 93247], [93260, 93266], [93280, 93287]],
     "train": [[80000, 89999]],
     "development": [[90000, 90999]],
     "heldout_start": [[91000, 91999]],
@@ -22,6 +22,11 @@
   "gate_seeds_never_train": ["grasp_gate_078", "grasp_gate_v2", "grasp_gate_v3", "release_gate", "release_diagnostic", "carry_probe", "solo_gate", "solo_diagnostic", "solo_rgb_lift_v2_gate", "solo_box_gate_v1", "solo_lift_negative_probe", "solo_carry_diagnostic_v1"],
   "heldout_maps": ["zone_wide_corridor_final_v3"],
   "reservations": {
+    "solo_carry7_20261015": {
+      "split": "solo_carry_diagnostic_v1", "seeds": [93280, 93287], "pr": 505,
+      "reproduction": [93261, 93262, 93266],
+      "purpose": "carry7 robust recovery: three exact carry6 reproductions plus eight fresh seeds; remote-unused unverified; disabled queue only"
+    },
     "solo_record_20261015": {
       "split": "train", "seeds": [86000, 86049], "pr": 502,
       "purpose": "two recording pilots then explicit coordinator approval for 48; local preparation only; remote-unused check pending"
