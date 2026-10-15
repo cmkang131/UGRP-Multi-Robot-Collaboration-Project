@@ -158,6 +158,13 @@ def record_candidates(t,world,rows,now):
                 min_gap_m=nearest['gap_m'] if nearest else None,
                 gap_scope=nearest.get('gap_scope','body_surface_clearance') if nearest else
                     'no_geometric_blocker; '+reason)
+        from sim.grasp_act_search27 import enabled as search27,digest
+        if search27(t,'search_dependency_cache') and reason not in ('feasible','endpoint_feasible'):
+            row['failure_certificate']={'candidate':[row.get('offset_deg'),row.get('distance_m'),row.get('goal')],
+                'edge':row.get('connector_visibility_failure',{}).get('pose'),
+                'stage':reason,'dependency_input':digest(dict(world)),
+                'dependencies_scope':'exact visible geometry/freshness/PWM; checker cache excludes irrelevant absolute t',
+                'blocker':row.get('blocked_object','none:'+reason),'gap_m':row.get('min_gap_m')}
         if category=='memory_margin':
             targets.update({d['id']:deepcopy(obs[d['id']]) for d in blockers if d['id'] in obs})
     t.search22_targets.update(targets)

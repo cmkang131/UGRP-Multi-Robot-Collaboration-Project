@@ -13,7 +13,8 @@ from sim.grasp_act_search23 import MODES as SEARCH23_MODES
 from sim.grasp_act_search24 import MODES as SEARCH24_MODES
 from sim.grasp_act_search25 import MODES as SEARCH25_MODES
 from sim.grasp_act_search26 import MODES as SEARCH26_MODES
-ALL_MODES = {**SEARCH26_MODES, **SEARCH25_MODES, **SEARCH24_MODES, **SEARCH23_MODES, **SEARCH22_MODES, **MODES, **SEARCH17_MODES, **SEARCH18_MODES, **SEARCH19_MODES, **SEARCH20_MODES, **SEARCH21_MODES}
+from sim.grasp_act_search27 import MODES as SEARCH27_MODES
+ALL_MODES = {**SEARCH27_MODES, **SEARCH26_MODES, **SEARCH25_MODES, **SEARCH24_MODES, **SEARCH23_MODES, **SEARCH22_MODES, **MODES, **SEARCH17_MODES, **SEARCH18_MODES, **SEARCH19_MODES, **SEARCH20_MODES, **SEARCH21_MODES}
 
 
 def validate(values, *, recovery, profile='visible_only', pose_source='issued', coordination='off'):
@@ -51,6 +52,12 @@ def validate(values, *, recovery, profile='visible_only', pose_source='issued', 
     if any(values.get(k,'off')!='off' for k in SEARCH26_MODES):
         if values.get('search25_inflation','off')!='search25_soft_v1' or values.get('search25_budget','off')!='search25_checks_v1':
             raise ValueError('search26 requires search25 soft footprint and compute budget')
+
+    if any(values.get(k,'off')!='off' for k in SEARCH27_MODES):
+        if (values.get('search23','off')!='search23_v1'
+                or values.get('search25_budget','off')!='search25_checks_v1'
+                or values.get('search25_inflation','off')!='search25_soft_v1'):
+            raise ValueError('search27 requires search23, search25 soft footprint and compute budget')
 
 def add_arguments(parser):
     for key, mode in ALL_MODES.items():

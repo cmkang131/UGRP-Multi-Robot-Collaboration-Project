@@ -41,6 +41,12 @@ class BodyNavigation(Navigation):
 
 
 def body_pulse_free(teacher, world, value, *, audit=None):
+    from sim.grasp_act_search27 import enabled as search27,command_check
+    if search27(teacher):
+        before=getattr(teacher,'search27_before_pwm',dict(teacher.sink.pwm))
+        ok,checks=command_check(teacher,world,value,before,after=dict(teacher.sink.pwm))
+        if audit is not None:audit.extend(checks)
+        return ok
     from sim.grasp_act_search20 import enabled, BodyNavigation as Search20Navigation
     nav = Search20Navigation(teacher, world) if enabled(teacher) else BodyNavigation(teacher, world)
     from sim.grasp_act_search22 import enabled as search22, BodyNavigation as Search22Navigation

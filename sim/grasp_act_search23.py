@@ -110,6 +110,10 @@ class BodyNavigation(Previous):
             {'id':'bounds','fresh':True,'margin_m':FRESH_MARGIN_M}]
         from sim.grasp_act_search25 import configure
         configure(self)
+        from sim.grasp_act_search27 import enabled as search27,dependencies
+        if search27(t,'search_dependency_cache'):
+            self.body_dependency=dependencies(self)
+            self.connector_dependency=dependencies(self,connector=True)
 
     def _wall_name(self,r,i):
         return next((k for k,m in self.world_observations.items() if m['kind']=='wall'
@@ -117,6 +121,22 @@ class BodyNavigation(Previous):
 
     def measure(self,xy,yaw=None):
         self.check_budget()
+        from sim.grasp_act_search27 import enabled, memo, dependencies
+        if not enabled(self.teacher,'search_dependency_cache'):
+            return self._measure(xy,yaw)
+        query=(tuple(np.asarray(xy,dtype=float).reshape(-1)),
+               None if yaw is None else tuple(np.asarray(yaw,dtype=float).reshape(-1)))
+        def compute():
+            result=self._measure(xy,yaw)
+            return result,self.last_inflation_slack,self.last_blockers
+        result,soft,blockers=memo(self.teacher,getattr(self,'check_stage','body_grid'),self.body_dependency,query,compute)
+        self.last_inflation_slack=soft;self.last_blockers=blockers
+        for row in blockers:
+            old=self.blocked.get(row['id'])
+            if old is None or row['slack_m']<old['slack_m']:self.blocked[row['id']]=row
+        return result
+
+    def _measure(self,xy,yaw=None):
         xy=np.asarray(xy,dtype=float).reshape(-1,2)
         if yaw is None:
             yaw=(np.full(len(xy),self.pose[2]) if self.target is None else
@@ -166,7 +186,9 @@ class BodyNavigation(Previous):
         n=max(1,math.ceil(math.dist(a[:2],b[:2])/.002),math.ceil(abs(da)/math.radians(.5)))
         u=np.linspace(0.,1.,n+1)
         xy=np.asarray(a[:2])+u[:,None]*(np.asarray(b[:2])-a[:2])
-        _,slack=self.measure(xy,a[2]+u*da)
+        self.check_stage='body_edge'
+        try:_,slack=self.measure(xy,a[2]+u*da)
+        finally:self.check_stage='body_grid'
         self.last_segment_gap=float((slack+np.array([d['margin_m'] for d in self.audit_details])).min())
         if self.inflation_soft:
             from sim.grasp_act_search25 import segment_envelope
@@ -183,6 +205,18 @@ class BodyNavigation(Previous):
         return bool(self.fresh_target and (slack>=0).all())
 
     def connector_sample(self,prior,before,xy,yaw):
+        from sim.grasp_act_search27 import enabled,memo,dependencies
+        if not enabled(self.teacher,'search_dependency_cache'):
+            return self._connector_sample(prior,before,xy,yaw)
+        query=(tuple(prior),tuple(sorted(before.items())),tuple(xy),yaw)
+        def compute():
+            result=self._connector_sample(prior,before,xy,yaw)
+            return result,list(getattr(self,'visibility_audit',[])),list(getattr(self,'connector_collision_audit',[]))
+        result,view,arm=memo(self.teacher,'connector_view_arm',self.connector_dependency,query,compute)
+        self.visibility_audit=view;self.connector_collision_audit=arm
+        return result
+
+    def _connector_sample(self,prior,before,xy,yaw):
         """Exact snapshot cache of the unchanged view and issued-arm checks."""
         from sim.grasp_act_pregrasp import band_view,issued_sweep_reason
         from sim.grasp_act_teacher import wrap
@@ -233,6 +267,10 @@ class BodyNavigation(Previous):
         states.extend([{**states[-1],1:1500},{**states[-1],**hover,1:1500}])
         # Equivalent IK commands, not rounded distance/height, identify a cloud.
         key=tuple(tuple(sorted(p.items())) for p in states);self.check_budget()
+        from sim.grasp_act_search27 import enabled as search27,stats
+        if search27(self.teacher,'search_dependency_cache'):
+            count=stats(self.teacher,'pick_cloud');count['calls']+=1
+            count['cache_hits' if key in _PICK_CLOUDS else 'computed']+=1
         from sim.grasp_act_search24 import compute_budget
         deterministic=compute_budget(self.teacher)
         if deterministic:

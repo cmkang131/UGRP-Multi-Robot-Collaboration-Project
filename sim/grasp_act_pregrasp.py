@@ -158,6 +158,12 @@ def band_view(world, rid, end, base, previous, *, navigation=None):
     view = gaze_pose((x, y, point[2]+.009), previous)
     from sim.grasp_act_search26 import observed_band
     observed=observed_band(navigation)
+    from sim.grasp_act_search27 import enabled as search27
+    evidence=hasattr(navigation,'teacher') and search27(navigation.teacher,'search_view_evidence')
+    if evidence:
+        navigation.current_view_evidence={'admitted_count':observed,'target':'band_'+end,'rgb':world['visibility'][rid].get('own_rgb'),
+            'observation':world['visibility'][rid].get('observations',{}).get('band_'+end),
+            'actual_next_observation':None,'actual_next_scope':'pending next RGB; never a prediction'}
     if observed is not None:
         navigation.visibility_audit=[]
         navigation.teacher.search23_log.append({'t':world['t'],'event':'observed_band_priority',
@@ -180,6 +186,9 @@ def band_view(world, rid, end, base, previous, *, navigation=None):
             optical = np.array(axes)@(np.array([x, y, q[2]])-origin)
             from sim.grasp_act_search25 import enabled as search25, in_frame, frame_clearance
             rectangular=(hasattr(navigation,'teacher') and search25(navigation.teacher,'search25_view'))
+            if hasattr(navigation,'teacher') and search27(navigation.teacher,'search27_frame'):
+                from sim.grasp_act_search27 import in_frame,frame_clearance
+                rectangular=True
             accepted=in_frame(optical) if rectangular else (optical[2]>0 and np.linalg.norm(optical[:2])/optical[2]<=math.tan(math.radians(18)))
             if not accepted:
                 if audit is not None:audit.append({'id':'camera_frame' if rectangular else 'camera_view_cone',
@@ -223,6 +232,7 @@ def select_sampled_goal(world, rid, end, bounds, folded, previous, *, current=No
         if navigation is not None and hasattr(navigation, 'check_budget'):navigation.check_budget()
         pose, point, heading, goal = geometry(world, rid, end, choice)
         row = {'offset_deg': math.degrees(choice[0]), 'distance_m': choice[1], 'goal': goal}
+        if hasattr(navigation,'body_dependency'):row['checker_dependencies']={'body':navigation.body_dependency,'connector':navigation.connector_dependency}
         checked.append(row)
         try:
             if hasattr(navigation,'teacher') and navigation.teacher.search15_modes.get('search24_irm','off')!='off':
@@ -252,11 +262,22 @@ def select_sampled_goal(world, rid, end, bounds, folded, previous, *, current=No
             row['path_audit']=navigation.last_path_audit
         if not path:row['reason'] = 'no_path';continue
         points = [tuple(start), *path]
-        if not all(segment_free(a, b, discs, rects, radius) for a, b in zip(points, points[1:])):
+        from sim.grasp_act_search27 import enabled as search27
+        command_feasible=hasattr(navigation,'teacher') and search27(navigation.teacher)
+        # Endpoint enumeration has NO connector yet. Checking a duplicate
+        # start->start with target-facing yaw here spuriously rejects every
+        # endpoint before the actual route is even constructed (315709).
+        if not (endpoint_only and command_feasible) and not all(segment_free(a, b, discs, rects, radius) for a, b in zip(points, points[1:])):
             if hasattr(navigation,'last_blockers'):row['failure_audit']=list(navigation.last_blockers)
             row['reason'] = 'unsafe_body_sweep';continue
         base = (*goal, heading)
         visible, view = band_view(world, rid, end, base, previous, navigation=navigation)
+        from sim.grasp_act_search26 import observed_band
+        if hasattr(navigation,'current_view_evidence'):
+            row['current_admitted_observation']=navigation.current_view_evidence
+            row['future_visibility_prediction']={'count':None if observed_band(navigation) is not None else visible,
+                'scope':'not evaluated; current admission priority' if observed_band(navigation) is not None else 'geometric prediction',
+                'pose':list(base)}
         row['predicted_visible_probes'] = visible
         if visible < 5:
             if hasattr(navigation,'visibility_audit'):row['failure_audit']=list(navigation.visibility_audit)
@@ -307,6 +328,14 @@ def select_sampled_goal(world, rid, end, bounds, folded, previous, *, current=No
                 before=after;prior=(*xy,yaw)
             if reason:break
         if reason:row['reason'] = 'connector_'+reason;continue
+        if command_feasible:
+            from sim.grasp_act_search27 import first_command
+            ok,certificate=first_command(navigation,path,goal,point,previous)
+            row['first_command_certificate']=certificate
+            if not ok:
+                row['reason']='first_command_invalid'
+                row['failure_audit']=[d for c in certificate.get('checks',[]) for d in c.get('blockers',[])]
+                continue
         cost = sum(math.dist(a, b) for a, b in zip(points, points[1:]))+.06+.02*abs(wrap(heading-pose[2]))
         row.update(reason='feasible', cost=cost, arm_sweep=True, body_sweep=True, retreat=retreat)
         feasible.append({'choice': choice, 'goal': goal, 'heading': heading, 'path': path, 'cost': cost})

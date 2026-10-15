@@ -440,6 +440,8 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         return True
 
     def _uses_goal_set(self,world):
+        from sim.grasp_act_search27 import enabled as search27
+        if search27(self):return True
         # Keep the alternative implementation for the OFF comparison. With
         # map handoff enabled, every clear nominal case uses the original law.
         if self.nominal_blocked_handoff!='off' and self.approach_recovery not in ('approach_recovery_v2','progress_view_recovery_v3'):return False
@@ -468,6 +470,9 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
             self._nominal_handoff(world,now)
             return False
         from sim.grasp_act_search20 import enabled, plan_active
+        from sim.grasp_act_search27 import enabled as search27
+        if search27(self):
+            self.search19_body_active=True;self.sampled_stance=True
         if enabled(self) and self.search19_body_active:return plan_active(self,world,now)
         from sim.grasp_act_goal_set import select_goal
         from sim.grasp_act_visible_route import constraints,free,waypoint
@@ -853,7 +858,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
             b=self.search20_budget
             self.search20_compute={'t':now,'elapsed_s':time.perf_counter()-started,
                 'body_planning_s':b.elapsed(),'checks':b.checks,'cache_hits':b.hits,'cache_size':len(self.search20_cache),
-                'budget_exhausted':b.exhausted}
+                'budget_exhausted':b.exhausted,'last_stage':getattr(self,'search27_stage',None)}
             self.search20_compute.update(budget_kind='checks' if deterministic else 'checks_and_wall',
                 max_checks=b.max_checks,max_wall_s=b.max_s,max_wall_safety_s=b.safety_s)
             self.search20_budget=None
@@ -866,6 +871,14 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         if any(v!='off' for v in self.search15_modes.values()):
             self.reobserver.observe(truth,self.rid)
             truth=self.reobserver.planning_world(truth,self.rid)
+        from sim.grasp_act_search27 import enabled as search27,start_state
+        self.search27_before_pwm=before_pwm
+        if (search27(self) and truth['beam'] is not None
+                and self.phase in ('approach','align','ready','search','relook') and self.outcome is None):
+            recovery=start_state(self,truth,before_pwm)
+            if recovery is not None:
+                self.last_command=deepcopy(recovery);self.last_tick=now
+                return recovery,False
         if self.priority is not None and self.priority.round<2 and permit_pick:
             self.priority.advance(self,now);permit_pick=False
         if self.local_seen is not None and self.last_command is not None and self.last_tick is not None:
@@ -935,6 +948,16 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         if self.phase in ('align','ready','pick','complete'):self.progress.reset()
         from sim.grasp_act_search26 import remember_issued
         remember_issued(self,value)
+        if search27(self) and truth['beam'] is not None and self.phase in ('approach','align','ready','search','relook'):
+            from sim.grasp_act_search27 import command_check,event,provenance
+            ok,checks=command_check(self,truth,value,before_pwm,after=dict(self.sink.pwm))
+            if not ok:
+                event(self,now,'command_feasibility_reject','final_command_invalid',checks)
+                self.sink.pwm.update(before_pwm);self.arm.commanded.update(before_pwm)
+                value=self._hold(now)
+            else:
+                self.search27_last_safe={'t':now,'command':deepcopy(value),
+                    'snapshot':provenance(self._navigation(truth))}
         self.last_command=deepcopy(value);self.last_tick=now
         return value,done
 
@@ -1047,7 +1070,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
                 'approach_progress':self.approach_progress,'approach_progress_log':self.progress_log,
                 'approach_recovery':self.approach_recovery,'recovery_log':self.recovery_log,
                 'approach_coordination':self.approach_coordination,**self.search15_modes,
-                'search17_log':self.search17_log,'search18_log':self.search18_log,'search19_log':self.search19_log,'search23_log':self.search23_log,'search22_log':self.search22_log,'search21_log':self.search21_log,'search20_log':self.search20_log,'search20_compute':self.search20_compute,'free_space_log':self.search18_space.events,'reobserve_log':self.reobserver.events,'sampled_stance':self.sampled_stance,
+                'search17_log':self.search17_log,'search18_log':self.search18_log,'search19_log':self.search19_log,'search23_log':self.search23_log,'search22_log':self.search22_log,'search21_log':self.search21_log,'search20_log':self.search20_log,'search20_compute':self.search20_compute,'search27_stats':getattr(self,'search27_stats',{}),'free_space_log':self.search18_space.events,'reobserve_log':self.reobserver.events,'sampled_stance':self.sampled_stance,
                 'candidate_angle_counts':dict(Counter(str(round(c['offset_deg'],3)) for c in candidates)),
                 'candidate_rejection_counts':dict(Counter(c['reason'] for c in candidates)),
                 'reobserve_pending':None if self.reobserver.active is None else {
