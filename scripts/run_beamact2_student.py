@@ -123,6 +123,10 @@ def run(plan, output, dependency, model, actor_python, *, mode='off', cap_s=60.)
             (output/'scene.xml').write_text(world.scene_xml)
             write_json(output/'scene.json',scene.manifest)
             ports={r:DutyActPort(world,r,allow_reverse=True,allow_mecanum=True) for r in plan['roles']}
+            write_json(output/'camera-runtime.json',dict(scope='evaluation-only runtime camera verification',
+                cameras={rid:{key:getattr(world.model,'cam_'+key)[world.controllers[rid].robot_cam_cid].tolist()
+                    for key in ('pos','quat','intrinsic','resolution')} for rid in ports},
+                own_rgb_size=[640,480],control_hz=10,review_hz=2,failure_tail_hz=10))
             for rid,port in ports.items():
                 port.apply(dict(kind='look',pan_pulse=plan['initial_pan'][rid]),float(world.data.time))
             def advance(until):

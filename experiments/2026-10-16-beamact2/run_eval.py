@@ -68,7 +68,9 @@ def main():
                 if not admission():break
                 index=pending.pop(0);seed=episodes[index]['seed']
                 out=a.output/f'seed-{seed}'
-                command=[str(PY),'-m','scripts.sim_cli','workflow','run','beamact2-student','--',
+                command=[str(PY),'-m','scripts.sim_cli','workflow','run','beamact2-student',
+                    '--input',str(plan),'--input',str(a.model),
+                    '--input',str(BASE/'src/26f84d0f0ada1c33473c83cca2d3415ce51bd247'),'--',
                     '--plan',str(plan),'--episode',str(index),
                     '--dependency-root',str(BASE/'src/26f84d0f0ada1c33473c83cca2d3415ce51bd247'),
                     '--model',str(a.model),'--actor-python','/home/ugrp/ugrp-act-cpu-env/bin/python',
