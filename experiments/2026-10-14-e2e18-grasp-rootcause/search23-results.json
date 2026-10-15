@@ -1,0 +1,296 @@
+{
+  "schema": "ugrp.grasp_act.search23.summary.v1",
+  "status": "BLOCKED_HOST_INTERRUPTED_SHORT6",
+  "execution_source_sha": "0205485e4ef95b836bc87630a4ab94bde9b1db4b",
+  "rounds": [
+    {
+      "round": 1,
+      "source_sha": "ba9ab93b65dfdc5a090c501258aef2ed2ac588dc",
+      "n_confirmed": 2,
+      "N": 6,
+      "unknown_outcomes_N": 0,
+      "host_errors": 0,
+      "interrupted": 4,
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search23-r1-short6-gcp-ba9ab93b",
+      "detail": "experiments/2026-10-14-e2e18-grasp-rootcause/search23-r1-results.json",
+      "detail_sha256": "dbdc3ca00ab68b33507518d9720db2156772aad15296cea927e063b581f4e141",
+      "rows": [
+        {
+          "episode": "episode-000",
+          "seed": 8311709,
+          "cargo_scene": "off",
+          "status": "interrupted",
+          "success": false,
+          "candidate_trials_by_category": {},
+          "candidate_trials_by_reason": {}
+        },
+        {
+          "episode": "episode-001",
+          "seed": 8311709,
+          "cargo_scene": "cargo_v6",
+          "status": "interrupted",
+          "success": false,
+          "candidate_trials_by_category": {},
+          "candidate_trials_by_reason": {}
+        },
+        {
+          "episode": "episode-002",
+          "seed": 315709,
+          "cargo_scene": "cargo_v6",
+          "status": "interrupted",
+          "success": false,
+          "candidate_trials_by_category": {},
+          "candidate_trials_by_reason": {}
+        },
+        {
+          "episode": "episode-003",
+          "seed": 315709,
+          "cargo_scene": "off",
+          "status": "interrupted",
+          "success": false,
+          "candidate_trials_by_category": {},
+          "candidate_trials_by_reason": {}
+        },
+        {
+          "episode": "episode-004",
+          "seed": 8312300,
+          "cargo_scene": "off",
+          "status": "complete",
+          "success": true,
+          "candidate_trials_by_category": {},
+          "candidate_trials_by_reason": {}
+        },
+        {
+          "episode": "episode-005",
+          "seed": 8312301,
+          "cargo_scene": "off",
+          "status": "complete",
+          "success": true,
+          "candidate_trials_by_category": {},
+          "candidate_trials_by_reason": {}
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "source_sha": "497ffb5ff78eda9f36a20198fcb880698bc2f85f",
+      "n_confirmed": 2,
+      "N": 6,
+      "unknown_outcomes_N": 0,
+      "host_errors": 1,
+      "interrupted": 0,
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search23-r2-short6-gcp-497ffb5f",
+      "detail": "experiments/2026-10-14-e2e18-grasp-rootcause/search23-r2-results.json",
+      "detail_sha256": "c9b9cb52d24fb74900c248cfd0602f7a8229ff853205bbb005101d54d45a3541",
+      "rows": [
+        {
+          "episode": "episode-000",
+          "seed": 8311709,
+          "cargo_scene": "off",
+          "status": "complete",
+          "success": false,
+          "candidate_trials_by_category": {
+            "current_geometry": 408,
+            "IK": 986,
+            "planning_budget": 272,
+            "gripper_angle": 1972
+          },
+          "candidate_trials_by_reason": {
+            "blocked_goal": 408,
+            "ik_unreachable": 986,
+            "planning_budget": 272,
+            "gripper_angle": 1972
+          }
+        },
+        {
+          "episode": "episode-001",
+          "seed": 8311709,
+          "cargo_scene": "cargo_v6",
+          "status": "complete",
+          "success": false,
+          "candidate_trials_by_category": {
+            "current_geometry": 408,
+            "IK": 986,
+            "planning_budget": 272,
+            "gripper_angle": 1972
+          },
+          "candidate_trials_by_reason": {
+            "blocked_goal": 408,
+            "ik_unreachable": 986,
+            "planning_budget": 272,
+            "gripper_angle": 1972
+          }
+        },
+        {
+          "episode": "episode-002",
+          "seed": 315709,
+          "cargo_scene": "cargo_v6",
+          "status": "complete",
+          "success": false,
+          "candidate_trials_by_category": {
+            "planning_budget": 11,
+            "IK": 3016,
+            "connector_connector_band_not_visible": 241,
+            "current_geometry": 832,
+            "gripper_angle": 6032,
+            "memory_margin": 976,
+            "endpoint_feasible": 18,
+            "feasible": 2
+          },
+          "candidate_trials_by_reason": {
+            "planning_budget": 11,
+            "ik_unreachable": 3016,
+            "connector_connector_band_not_visible": 241,
+            "blocked_goal": 1808,
+            "gripper_angle": 6032,
+            "endpoint_feasible": 18,
+            "feasible": 2
+          }
+        },
+        {
+          "episode": "episode-003",
+          "seed": 315709,
+          "cargo_scene": "off",
+          "status": "HOST_ERROR",
+          "success": false,
+          "candidate_trials_by_category": {},
+          "candidate_trials_by_reason": {}
+        },
+        {
+          "episode": "episode-004",
+          "seed": 8312300,
+          "cargo_scene": "off",
+          "status": "complete",
+          "success": true,
+          "candidate_trials_by_category": {},
+          "candidate_trials_by_reason": {}
+        },
+        {
+          "episode": "episode-005",
+          "seed": 8312301,
+          "cargo_scene": "off",
+          "status": "complete",
+          "success": true,
+          "candidate_trials_by_category": {},
+          "candidate_trials_by_reason": {}
+        }
+      ]
+    },
+    {
+      "round": 3,
+      "source_sha": "0205485e4ef95b836bc87630a4ab94bde9b1db4b",
+      "n_confirmed": 0,
+      "N": 6,
+      "unknown_outcomes_N": 6,
+      "host_errors": 0,
+      "interrupted": 6,
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search23-r3-short6-gcp-0205485e",
+      "detail": "experiments/2026-10-14-e2e18-grasp-rootcause/search23-r3-results.json",
+      "detail_sha256": "1437bbb30e028cc84fcb3685ba5facefc735b51e3ff6c91c379c74392f12991d",
+      "rows": [
+        {
+          "episode": "episode-000",
+          "seed": 8311709,
+          "cargo_scene": "off",
+          "status": "HOST_INTERRUPTED",
+          "success": null,
+          "candidate_trials_by_category": {
+            "current_geometry": 16,
+            "IK": 29,
+            "endpoint_feasible": 3,
+            "feasible": 1,
+            "gripper_angle": 58
+          },
+          "candidate_trials_by_reason": {
+            "blocked_goal": 16,
+            "ik_unreachable": 29,
+            "endpoint_feasible": 3,
+            "feasible": 1,
+            "gripper_angle": 58
+          }
+        },
+        {
+          "episode": "episode-001",
+          "seed": 8311709,
+          "cargo_scene": "cargo_v6",
+          "status": "HOST_INTERRUPTED",
+          "success": null,
+          "candidate_trials_by_category": {
+            "current_geometry": 12,
+            "IK": 29,
+            "endpoint_feasible": 7,
+            "gripper_angle": 58,
+            "feasible": 1
+          },
+          "candidate_trials_by_reason": {
+            "blocked_goal": 12,
+            "ik_unreachable": 29,
+            "endpoint_feasible": 7,
+            "gripper_angle": 58,
+            "feasible": 1
+          }
+        },
+        {
+          "episode": "episode-002",
+          "seed": 315709,
+          "cargo_scene": "cargo_v6",
+          "status": "HOST_INTERRUPTED",
+          "success": null,
+          "candidate_trials_by_category": {},
+          "candidate_trials_by_reason": {}
+        },
+        {
+          "episode": "episode-003",
+          "seed": 315709,
+          "cargo_scene": "off",
+          "status": "HOST_INTERRUPTED",
+          "success": null,
+          "candidate_trials_by_category": {},
+          "candidate_trials_by_reason": {}
+        },
+        {
+          "episode": "episode-004",
+          "seed": 8312300,
+          "cargo_scene": "off",
+          "status": "HOST_INTERRUPTED",
+          "success": null,
+          "candidate_trials_by_category": {},
+          "candidate_trials_by_reason": {}
+        },
+        {
+          "episode": "episode-005",
+          "seed": 8312301,
+          "cargo_scene": "off",
+          "status": "HOST_INTERRUPTED",
+          "success": null,
+          "candidate_trials_by_category": {},
+          "candidate_trials_by_reason": {}
+        }
+      ]
+    }
+  ],
+  "max_submissions": 3,
+  "submitted_rounds": 3,
+  "additional_submission": false,
+  "pooling": false,
+  "tests": {
+    "passed": 76,
+    "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest tests/test_grasp_act_search23.py tests/test_grasp_act_search22.py tests/test_grasp_act_search21.py tests/test_grasp_act_search20.py tests/test_grasp_act_batch.py tests/test_grasp_act_visible_only.py tests/test_grasp_act_admission.py -q",
+    "physics_executed_on_mac": false,
+    "render_executed_on_mac": false
+  },
+  "queue": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-grasp-search23-0205485e-diag.json",
+  "queue_sha256": "bc4c5eed4897ed0b2271805fb4e4b66dd7dfe66c3b43a5a39b5e9e130265965e",
+  "frame_reviewed_N": 156,
+  "final_results_unknown_N": 6,
+  "final_input_audit_verified_N": 0,
+  "final_snapshot_input_audit": {
+    "invisible_measurements": 0,
+    "held_world_reads": 0,
+    "scope": "saved unfinished interval only"
+  },
+  "model_calls": 0,
+  "model_tokens": 0,
+  "vm_model_keys_transferred": 0,
+  "references_record": "experiments/2026-10-14-e2e18-grasp-rootcause/search23.md"
+}

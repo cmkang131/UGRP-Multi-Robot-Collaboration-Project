@@ -20,7 +20,7 @@
 ## 참고 자료
 
 - Hart, Nilsson & Raphael (1968), A Formal Basis for the Heuristic Determination of Minimum Cost Paths. 원문 PDF 열람: https://www.cs.auckland.ac.nz/courses/compsci709s2c/resources/Mike.d/astarNilsson.pdf .
-- 요청 URL https://docs.nav2.org/configuration/packages/configuring-smac-planner.html 열기 실패. 이전된 공식 문서 본문 확인: https://docs.nav2.org/jazzy/configuration_and_development/configuration_guide/planners_plugins/smac/ 및 smac/smac_2d/configuring_smac_2d/ .
+- 요청 URL https://docs.nav2.org/configuration/packages/configuring-smac-planner.html 열기 실패. 이전된 공식 문서 본문 확인: https://docs.nav2.org/jazzy/configuration_and_development/configuration_guide/planners_plugins/smac/ 및 https://docs.nav2.org/jazzy/configuration_and_development/configuration_guide/planners_plugins/smac/smac_2d/configuring_smac_2d/ .
 - Nav2 inflation 공식 본문 확인: https://docs.nav2.org/jazzy/configuration_and_development/configuration_guide/core_servers/costmap_2d/costmap_plugins/inflation/ .
 - 읽기 전용 분석: /private/tmp/claude-501/-Users-changmin-projects-ugrp/4e56a99a-0106-48c9-b04d-d1cd272ae60e/scratchpad/search22_reach_verdict.md 및 사용자 지정 reach/ . 분석 도구·정답은 제어 입력에 넣지 않는다.
 
@@ -77,3 +77,30 @@ endpoint의 IK·각도·목표/후퇴·팔 검사를 먼저 모두 수행한 뒤
 가장 큰 계산 원인에 따라 벽 시선 검사의 **기존1cm 표본·같은 margin-escape 한계**를 NumPy로 묶었다. 카메라 FK·팔 capsules는 정확한 PWM으로, pick cloud는 거리/높이를 반올림하지 않고 실제 생성된 전체 IK/PWM 명령열로 캐시한다. 문턱5·팔 표본·기하 판정은 유지한다. 순수 fixture에서 벡터/기존 가시성 및 벽 검사100개·pick cloud 전체 배열의 동일성을 확인했다. 끝 색/FOV/카메라 장착을 바꾸지 않는다.
 
 요구식 검토에서 r1/r2 구현은 현재 관측에 search22의5mm만 남긴 예외가 있었다. 마지막 후보는 **현재/기억 모두 기하 패딩+k·sigma**로 맞추며 기억 peer는 추가 시간 확산·만료를 계속 쓴다. 이는 여유를 줄이는 수정이 아니다. 이 차이 때문에 r1/r2를 마지막 후보와 합산하지 않는다.1초마다 unfinished 진단 snapshot을 남겨 강제 종료 때도 마지막으로 저장된 후보 원장을 구분해 회수한다.
+
+### 최종 라운드3 0205485e — BLOCKED_HOST_INTERRUPTED_SHORT6
+
+GCP 실행 wrapper는10:03:01 UTC에 시작했고 VM은10:03:54 UTC에 정지했다. VM 시작은02:02:57 UTC로 정지까지 약8시간이며 기존 상한 발동과 부합한다(원인 이벤트 자체는 미확인). 마지막 budget-stop 비용 보고는09:48:30 UTC cost0 KRW/limit1000 KRW, 함수 ACTIVE였으며 비용 발동을 확인한 것은 아니다. **새 실행·네 번째 제출·재실행은 하지 않았다.**
+
+VM 정지 후10:04:14 UTC setScheduling 이벤트와 현재 최대86400초(24시간) 변경이 확인됐다. 이 작업에서는 setScheduling을 호출하지 않았다. 이후 외부 작업으로 VM이 RUNNING이 되어 기존 잔존 파일만 읽어 회수했다. 공유 VM을 이 작업에서 재시작하거나 상한을 바꾸지 않았다. 새 실행 전 사용자 지정8시간 조건의 재확인이 필요하다.
+
+|사례|저장된 SIM초까지|기억 여유|현재 기하|IK|각도|no_path|가시성|완전 승인 후보|
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+|episode-000|4.0|0|16|29|58|0|0|1|
+|episode-001|4.0|0|12|29|58|0|0|1|
+|episode-002|3.0|0|0|0|0|0|0|0|
+|episode-003|3.0|0|0|0|0|0|0|0|
+|episode-004|5.0|0|0|0|0|0|0|0|
+|episode-005|5.0|0|0|0|0|0|0|0|
+
+**이 표는 저장된 미완성 snapshot만** 집계한다. 두8311709는 각각 첫1개 승인 후보·격자 경로를 기록했지만 아직 물리 성공이 아니다. 확인 완료 성공0/6, 실제 성공 여부는6/6 모두 미확정, HOST_INTERRUPTED6, 완료0이다. 실제 단계의 결과 파일은 모두 initial running 상태이고 최종 EXIT/SHA256SUMS가 생성되지 않았다. 첫30초 속도·최종 입력 감사도6회 모두 미검증이다. snapshot에 기록된 invisible_measurements/held_world_reads는 합계0/0이나 최종 감사0/0으로 확대하지 않는다.
+
+정지 후 남은 원본 152파일의 VM 측 해시 목록을 새로 읽어 로컬 바이트와 대조했다(불일치0, 미회수 0파일). 이는 정상 종료 manifest 검증이 아니라 **정지 후 잔존본 검증**이다. 자기 RGB60장을 직접 봤고 모든 사례가6장 이상이다. 마지막 snapshot의 초기 검색·접근만 보이며 들기/완주 결과는 없다. r1/r2 실패·중단 프레임48+48장과 합쳐 이번 직접 검토156장이다. 자기 소유 worker0 확인 후 own lease 제거·6슬롯 해제; 다른 실행·임대는 건드리지 않았다. 정지 명령의 결과는 outputs/search23/gcp-stop-final.txt에 남긴다.
+
+실제 라운드2 connector 가시성 실패 각도별 시험 수: {-15: 241}. 모두 문턱5 유지. −15도 규칙을 바꾼 별도 토글은 만들지 않았다. 기본 off는 search22를 유지한다. 최종 관련 오프라인76통과, Mac 물리/렌더0·모델 호출/토큰0·VM 모델 키 전송0·top 렌더/열람0. 호스트/프로필/라운드를 합산한 성공률은 산출하지 않는다.
+
+최종 실행 소스0205485e의6/6을 확인하지 못했으므로32회 대기열은 BLOCKED다. base/cargo_v6 각각 재현4+신규12, 알려진 실패 우선, 전역max_parallel16, 모든 실행/승격/합산 플래그false. 32회는 제출하지 않았다. 재현 명령은 `bash experiments/2026-10-14-e2e18-grasp-rootcause/search23-reproduce.sh`이며 이번 작업에서 실행하지 않았다. 세 라운드 한도 이후 제출하려면 별도 실행 결정과 비용·8시간·유휴·전체40이하 확인이 필요하다.
+
+원장 해석 주의: lazy 재계획으로 같은 후보가 나중에 feasible이 되면 이전 connector_visibility_failure 필드가 남을 수 있다. 실제 가시성 실패는 reason이 connector_connector_band_not_visible인 행만 집계했다(R2 241회, 모두−15도). 원본 필드는 수정하지 않았다.
+
+최종 기록: `search23-results.json`과 라운드별 결과 JSON, `search23-queue.json`에 전체18회 제출 슬롯의 완료/중단/미확정 상태와 원본 위치·해시를 보존했다. round3의 성공 미확정6회를 물리 실패6회나 성공0회 확정으로 해석하지 않는다. queue 외부 파일과 검토 사본 바이트 일치, 코드13파일 해시·동결 계획·base/v6 각16·실행 플래그false·max16 검증 완료. 공유 VM에는 다른 임대가 있어 안전 정지가75로 유예됐고 이 작업 소유 worker0·임대 제거·6슬롯 해제를 확인했다. 이 작업에서는 main 병합/기본 checkout 변경을 하지 않는다.
