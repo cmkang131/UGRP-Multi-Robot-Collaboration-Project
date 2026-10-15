@@ -1,0 +1,70 @@
+{
+  "checked_at": "2026-10-15T14:28:07.268273+00:00",
+  "status": "PASS",
+  "line": "gcp2setup: HOST_READY | 장치 시험 RUNNING→STOPPING 9.019s→TERMINATED 55.517s·시험VM/디스크 삭제확인 | VM ugrp-sim-gcp2 TERMINATED(n4-highcpu-64/400GB/24h) | wall/SIM 중앙2.938·최대3.242(16/16; gcp1 2.35–2.66, 동일소스2.486보다18.2% 느림) | 렌더 바이트 JPEG16/16 SHA동일 | PR https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/526",
+  "interpretation": "HOST_READY records actual budget-stop PASS via RUNNING -> STOPPING -> TERMINATED; confirmed PR526 and test observations",
+  "test_observations": [
+    {
+      "elapsed_s": 1.349,
+      "status": "RUNNING"
+    },
+    {
+      "elapsed_s": 5.171,
+      "status": "RUNNING"
+    },
+    {
+      "elapsed_s": 9.019,
+      "status": "STOPPING"
+    },
+    {
+      "elapsed_s": 12.852,
+      "status": "STOPPING"
+    },
+    {
+      "elapsed_s": 16.872,
+      "status": "STOPPING"
+    },
+    {
+      "elapsed_s": 20.711,
+      "status": "STOPPING"
+    },
+    {
+      "elapsed_s": 24.798,
+      "status": "STOPPING"
+    },
+    {
+      "elapsed_s": 28.674,
+      "status": "STOPPING"
+    },
+    {
+      "elapsed_s": 32.494,
+      "status": "STOPPING"
+    },
+    {
+      "elapsed_s": 36.25,
+      "status": "STOPPING"
+    },
+    {
+      "elapsed_s": 40.077,
+      "status": "STOPPING"
+    },
+    {
+      "elapsed_s": 43.891,
+      "status": "STOPPING"
+    },
+    {
+      "elapsed_s": 47.711,
+      "status": "STOPPING"
+    },
+    {
+      "elapsed_s": 51.508,
+      "status": "STOPPING"
+    },
+    {
+      "elapsed_s": 55.517,
+      "status": "TERMINATED"
+    }
+  ],
+  "test_observations_sha256": "174a559a22a689d0e8f19767d89c3bce1a8b142c5555ee6a45c7aa7f702fb839",
+  "gcp1_access": 0
+}
