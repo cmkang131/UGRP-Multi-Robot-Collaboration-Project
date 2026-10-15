@@ -9,6 +9,7 @@ import sys
 import time
 
 r=Path('/home/ugrp/ugrp-sim');sha=sys.argv[1];source=r/'src'/('warp2-'+sha[:8])
+assert subprocess.check_output(['git','-C',str(source),'rev-parse','HEAD'],text=True).strip()==sha, 'full source SHA mismatch'
 out=r/'runs/warp2'/('r3-references-'+sha[:8]);out.mkdir(exist_ok=False)
 lease=r/'leases/warp2-prepare.json';assert not lease.exists()
 deadline=json.loads((r/'runs/warp2/allocation.json').read_text())['started_unix']+10800

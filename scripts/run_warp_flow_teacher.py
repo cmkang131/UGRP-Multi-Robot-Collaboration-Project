@@ -37,6 +37,8 @@ def parser():
         help='Shared warp1 exact-XML C312 model reference map; required for heterogeneous six-seed batch')
     p.add_argument('--exact-model-groups-v1', action='store_true',
         help='Delegate exact XML groups to the shared transport without merging unsupported model fields')
+    p.add_argument('--transport-preflight-only', action='store_true',
+        help='Initialize model groups and cameras, then stop before teacher/transport rollout')
     p.add_argument('--export-compiled-only', action='store_true')
     p.add_argument('--vm-hourly-usd', type=float, required=True)
     return p
@@ -123,6 +125,10 @@ def main():
                     if a.per_world_model_references_v1 else None)
             report.update(camera=hooks.camera, compatibility=hooks.compat, capacities=hooks.capacities,
                 model_batch_audit=hooks.model_batch_audit)
+            if a.transport_preflight_only:
+                report.update(status='transport_preflight_only', rollout_physics_steps=0,
+                    discarded_gpu_warmup_steps=len(hooks.groups) if a.exact_model_groups_v1 else 1)
+                return
         report['setup_compile_s'] = time.perf_counter()-start
         loop_start = time.perf_counter()
         while active.any():
@@ -184,6 +190,11 @@ def main():
             rejections=[dict(reason_category=k, blocked_object='software:'+k if report['status']=='HOST_ERROR' else 'none:unattributed',
                 min_gap_m=None, gap_scope='no geometric cause attributed; inspect frozen candidate ledger', count=v)
                 for k, v in rejections.items()])
+        if report['status'] in ('compiled_export_only','transport_preflight_only'):
+            table.update(population='initialization_only_not_teacher_trials',funnel=[
+                dict(stage='requested_setup',passed_cumulative_N=a.nworld,rejected_N=0),
+                dict(stage='constructed',passed_cumulative_N=len(contexts),rejected_N=a.nworld-len(contexts))])
+        report['counts']['teacher_rollouts_started'] = a.nworld if loop_start is not None else 0
         write(a.out/'rejection_table.json', table)
         report['rejection_table'] = str(a.out/'rejection_table.json')
         report['sha256'] = {str(f.relative_to(a.out)): hashlib.sha256(f.read_bytes()).hexdigest()

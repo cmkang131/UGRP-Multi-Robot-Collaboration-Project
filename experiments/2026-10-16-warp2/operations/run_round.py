@@ -11,7 +11,11 @@ import time
 
 ROOT=Path('/home/ugrp/ugrp-sim')
 SOURCE=ROOT/'src'/('warp2-'+sys.argv[1][:8])
+assert subprocess.check_output(['git','-C',str(SOURCE),'rev-parse','HEAD'],text=True).strip()==sys.argv[1], 'full source SHA mismatch'
 ROUND=sys.argv[2]
+MODE=sys.argv[3] if len(sys.argv)>3 else 'homogeneous_v1'
+assert MODE in ('homogeneous_v1','final_exact_groups_v1')
+MODEL_REFS=Path(sys.argv[4]) if MODE=='final_exact_groups_v1' else None
 OUT=ROOT/'runs'/'warp2'/ROUND
 LEASE=ROOT/'leases'/'warp2.json'
 LIMIT=10800  # user B: maximum three L4 hours, including this coordinator's setup
@@ -103,16 +107,24 @@ try:
         return result
     c=ROOT/'runs/simalt3/c-env/bin/python'
     w=ROOT/'runs/simalt3/warp-env/bin/python'
-    run('export-seed5',c,['--physics-backend','c_pilot_v1','--export-compiled-only','--nworld','1','--episode','5'])
-    for n in (1,16,64,256):
+    if MODE=='homogeneous_v1':
+        run('export-seed5',c,['--physics-backend','c_pilot_v1','--export-compiled-only','--nworld','1','--episode','5'])
+    else:
+        assert MODEL_REFS.is_file() and len(json.loads(MODEL_REFS.read_text()))==6
+    for n in ((1,16,64,256) if MODE=='homogeneous_v1' else (16,64,256)):
         # The six scenes also randomize loose-prop dimensions and masses, so
         # they are six actual models, not just six free-body starts. Never erase
         # those differences to make a batch. This round replicates seed5 only.
-        reference='export-seed5'
-        compiled=['--compiled-reference-v1',str(OUT/reference/'compiled-312.json'),
-                  '--compiled-geometry-312-v1',str(OUT/reference/'compiled-geometry312.npz')]
+        if MODE=='homogeneous_v1':
+            reference=OUT/'export-seed5'
+        else:
+            reference=MODEL_REFS.parent/('export-0' if n==16 else 'export-5')
+        compiled=['--compiled-reference-v1',str(reference/'compiled-312.json'),
+                  '--compiled-geometry-312-v1',str(reference/'compiled-geometry312.npz')]
+        grouped=['--exact-model-groups-v1','--per-world-model-references-v1',str(MODEL_REFS)] if MODE!='homogeneous_v1' else []
+        mixed=['--mix-known-six'] if MODE!='homogeneous_v1' and n==16 else []
         result=run('n'+str(n),w,['--physics-backend','mjwarp_batch_v1','--nworld',str(n),
-            '--cap-s','60' if n<=16 else '10','--episode','5',*compiled])
+            '--cap-s','60' if n<=16 else '10','--episode','0' if mixed else '5',*grouped,*mixed,*compiled])
         # N64/256 are bounded throughput prefixes, not success trials. The 10
         # SIM second window matches the existing recording-ring span (100
         # native control ticks); cap_end is reported, never called success.
