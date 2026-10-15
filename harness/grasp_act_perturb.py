@@ -12,17 +12,23 @@ from pathlib import Path
 import subprocess
 
 from harness import grasp_act_contract as c
+from harness.grasp_act_search import SEARCH_MODE
 
 PERTURB_MODE = 'recovery_perturb_v1'
+PERTURB_MODES = (PERTURB_MODE, SEARCH_MODE)
+LOSS_ATTRIBUTION_S = 1.
 PHASES = ('approach', 'align')
 
 
 class RecoveryPerturb:
     mode = PERTURB_MODE
 
-    def __init__(self, model, *, seed):
+    def __init__(self, model, *, seed, mode=PERTURB_MODE):
+        if mode not in PERTURB_MODES:
+            raise ValueError('unknown recovery perturb mode')
+        self.mode = mode
         if (model.get('schema') != 'ugrp.act9.perturb.v1'
-                or model.get('mode') != PERTURB_MODE or model.get('default') != 'off'):
+                or model.get('mode') != mode or model.get('default') != 'off'):
             raise ValueError('recovery perturb schema mismatch')
         if any(model.get(k) != v for k, v in {
                 'wheel_duty': .35, 'pulse_s': .1, 'max_injections_per_run': 1,
@@ -97,17 +103,20 @@ def recovery_statistics(rows):
 
     Visibility is the existing own-camera input gate, not evaluation pose or
     physical success. A reacquisition during the exogenous burst does not count.
-    Unresolved loss at phase exit/end is a recovery failure, once per probe.
+    Loss must start during the probe or within 1 s of its last command tick.
+    Later unrelated losses are not attributed. Once lost, reacquisition can
+    take longer. Unresolved loss at phase exit/end fails once per probe.
     """
     episodes = []
     current = None
     perturbed = 0
+    last_injection_t = None
     for row in rows:
         visible = row['target_visible']
         if type(visible) is not bool:
             raise ValueError('boolean own-camera visibility required')
         diagnostic = row['disturbance']
-        injection = diagnostic is not None and diagnostic.get('mode') == PERTURB_MODE
+        injection = diagnostic is not None and diagnostic.get('mode') in PERTURB_MODES
         if row['perturbation_interval'] is not injection:
             raise ValueError('perturbation label/command mismatch')
         perturbed += injection
@@ -117,6 +126,11 @@ def recovery_statistics(rows):
             current = {'episode_id': diagnostic['episode_id'], 'start_t': row['t'],
                        'lost_t': None, 'reacquired_t': None, 'failure': False}
             episodes.append(current)
+        if injection:
+            last_injection_t = row['t']
+        if (current is not None and current['lost_t'] is None and not injection
+                and row['t']-last_injection_t > LOSS_ATTRIBUTION_S+1e-8):
+            current = None
         if current is not None:
             if not visible and current['lost_t'] is None:
                 current['lost_t'] = row['t']

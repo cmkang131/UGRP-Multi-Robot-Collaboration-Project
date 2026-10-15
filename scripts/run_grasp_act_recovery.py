@@ -19,7 +19,7 @@ from harness.grasp_act_data import read_json, read_rows, sha256, write_json
 from harness.grasp_act_dart import MODE, PULSE_MODE, MODES, WheelNoise, recovery_hooks
 from harness.grasp_act_recovery_gate import verify_gate
 from harness.grasp_act_recovery_audit import evaluation_hook
-from harness.grasp_act_perturb import PERTURB_MODE, RecoveryPerturb, recovery_statistics
+from harness.grasp_act_perturb import PERTURB_MODE, PERTURB_MODES, RecoveryPerturb, recovery_statistics
 from scripts.grasp_act_training_guard import source_sha
 
 TEACHER_SHA='6f057f7e97c1a3aec9e8c398b8d9068e27b25df8'
@@ -90,13 +90,13 @@ def run(plan, out, *, dependency_root, noise_path, mode='off', training_rgb=Fals
         recording=importlib.import_module('harness.grasp_act_solo_recording')
         runner=importlib.import_module('scripts.run_solo_grasp_act_teacher')
         actuator=importlib.import_module('scripts.run_grasp_act_teacher')
-        noise=(RecoveryPerturb(model,seed=plan['seed']) if mode==PERTURB_MODE
+        noise=(RecoveryPerturb(model,seed=plan['seed'],mode=mode) if mode in PERTURB_MODES
                else WheelNoise(model,seed=plan['seed'],mode=mode))
         out=Path(out)
         if out.exists():raise FileExistsError(out)
         out.parent.mkdir(parents=True,exist_ok=True)
         ledger_path=out.parent/'recovery-commands.jsonl'
-        evaluation_path=out.parent/'recovery-eval-only.jsonl' if mode in (PULSE_MODE,PERTURB_MODE) else None
+        evaluation_path=out.parent/'recovery-eval-only.jsonl' if mode in (PULSE_MODE,*PERTURB_MODES) else None
         report=None
         try:
             from contextlib import ExitStack
@@ -122,7 +122,7 @@ def run(plan, out, *, dependency_root, noise_path, mode='off', training_rgb=Fals
                     recovery={'mode':mode,'seed':plan['seed'],'applied_history_clean_targets':mode!= 'off',
                               'ledger':str(ledger_path),'sha256':sha256(ledger_path)},
                     recovery_gate=approval,data_admitted=False)
-                if mode==PERTURB_MODE:
+                if mode in PERTURB_MODES:
                     report['recovery']['audit']=recovery_statistics(read_rows(ledger_path))
                     report['recovery']['perturbation_targets_excluded']=True
                 if evaluation_path:

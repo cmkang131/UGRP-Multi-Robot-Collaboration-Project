@@ -264,7 +264,8 @@ def convert(runs_root, protocol, output, *, seeds=None):
                 robot = student.name.split('.')[0].removeprefix('student-')
                 teacher = raw / student.name.replace('student-', 'teacher-', 1)
                 observations, labels = read_rows(student), read_rows(teacher)
-                if protocol.get('recovery_mode') == 'recovery_perturb_v1':
+                from harness.grasp_act_perturb import PERTURB_MODES
+                if protocol.get('recovery_mode') in PERTURB_MODES:
                     from harness.grasp_act_perturb import verified_recovery_audit, validate_recorded_labels
                     validate_recorded_labels(labels, verified_recovery_audit(result, result_path))
                 if any(o['robot_id'] != robot for o in observations):

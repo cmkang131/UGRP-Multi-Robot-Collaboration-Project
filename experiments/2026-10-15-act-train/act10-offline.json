@@ -1,0 +1,422 @@
+{
+  "schema": "ugrp.act10.offline.v1",
+  "baseline_source": "ec0bd628",
+  "training_rgb": false,
+  "data_admitted": false,
+  "simulation_executed": false,
+  "runs": [
+    {
+      "seed": 8316900,
+      "physical_success": true,
+      "command_ticks": 507,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 174,
+        "blocked_held": 184,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 112,
+          "align": 26,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "recovery_audit": {
+        "schema": "ugrp.act9.recovery_audit.v1",
+        "command_ticks": 507,
+        "perturbation_ticks": 9,
+        "perturbation_fraction": 0.01775147928994083,
+        "perturbation_times": [
+          3.299999999999531,
+          3.3999999999994754,
+          3.49999999999942,
+          3.5999999999993646,
+          3.699999999999309,
+          3.7999999999992538,
+          3.8999999999991983,
+          3.999999999999143,
+          4.099999999999265
+        ],
+        "lost_N": 1,
+        "reacquired_N": 1,
+        "recovery_scene_N": 1,
+        "recovery_failure_N": 0,
+        "perturbation_no_loss_N": 0,
+        "episodes": [
+          {
+            "episode_id": 1,
+            "start_t": 3.299999999999531,
+            "lost_t": 3.699999999999309,
+            "reacquired_t": 7.200000000003054,
+            "failure": false
+          }
+        ],
+        "scope": "own-camera visibility gate; reacquisition is not task success"
+      },
+      "search_disabled_commands_equal": true,
+      "search_disabled_ledger_equal": true,
+      "off_comparison_scope": "ec0bd628 vs current adapter; saved clean teacher decisions/visibility, not a world rerun",
+      "raw": {
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316900-ec0bd628/raw/result.json.zst",
+          "sha256": "beeb649b7b65bb7fe192d9dc054fa6da237b9ece259d5e2a042d88c83c731734"
+        },
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316900-ec0bd628/recovery-commands.jsonl.zst",
+          "sha256": "d06319c9e7f6bb3050e8b8d802397d8a2cc03e493dec022c5f4241254875f732"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316900-ec0bd628/raw/teacher-commands.jsonl.zst",
+          "sha256": "6328b2794bf15e5867f6f7cb9e65649907566f38fff910a1e37b605e6eaf29a1"
+        },
+        "base_evaluation": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316900-ec0bd628/recovery-eval-only.jsonl.zst",
+          "sha256": "0f854129fc541f7e30c22ab68af72ba040f97b08a713efb17291edb11a3b2a61"
+        },
+        "cargo_evaluation": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316900-ec0bd628/raw/eval-only.jsonl.zst",
+          "sha256": "960d967e089660fe33b8d9d058405a348bb72f0c548f3e86a3226dda4792f4c7"
+        }
+      },
+      "retrieval": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act9-ec0bd628-ops/act9-gate-8316900-ec0bd628-retrieval.json",
+        "sha256": "11b0b40c2c70d3d34c3544ad892f7c9dc5da70b7c33848c4a216d412180ff023"
+      },
+      "hidden_bearing": {
+        "N": 35,
+        "median_deg": 9.97993474354432,
+        "p95_deg": 10.189060671852396,
+        "max_deg": 12.324209009989358,
+        "first": {
+          "t": 3.699999999999309,
+          "visible": false,
+          "xyz": [
+            0.5390136245547097,
+            0.3231357879030606,
+            0.023892244579734396
+          ],
+          "error_deg": 2.278288247417006
+        },
+        "last": {
+          "t": 7.1000000000029315,
+          "visible": false,
+          "xyz": [
+            0.19702401029578176,
+            0.5967696073413131,
+            0.023892244579734396
+          ],
+          "error_deg": 10.01124077258427
+        }
+      },
+      "bearing_trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act10-offline-20261015-v4/8316900-bearing-eval.jsonl",
+        "sha256": "6f6d46cad1e81b11e34379d7144661e84e299b8cd3b6ee1a32a60fb5b0e1eb72"
+      }
+    },
+    {
+      "seed": 8316901,
+      "physical_success": true,
+      "command_ticks": 487,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 162,
+        "blocked_held": 184,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 108,
+          "align": 22,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "recovery_audit": {
+        "schema": "ugrp.act9.recovery_audit.v1",
+        "command_ticks": 487,
+        "perturbation_ticks": 9,
+        "perturbation_fraction": 0.018480492813141684,
+        "perturbation_times": [
+          4.499999999999754,
+          4.599999999999876,
+          4.699999999999998,
+          4.800000000000121,
+          4.900000000000243,
+          5.000000000000365,
+          5.100000000000487,
+          5.2000000000006095,
+          5.300000000000732
+        ],
+        "lost_N": 1,
+        "reacquired_N": 1,
+        "recovery_scene_N": 1,
+        "recovery_failure_N": 0,
+        "perturbation_no_loss_N": 0,
+        "episodes": [
+          {
+            "episode_id": 1,
+            "start_t": 4.499999999999754,
+            "lost_t": 4.800000000000121,
+            "reacquired_t": 7.1000000000029315,
+            "failure": false
+          }
+        ],
+        "scope": "own-camera visibility gate; reacquisition is not task success"
+      },
+      "search_disabled_commands_equal": true,
+      "search_disabled_ledger_equal": true,
+      "off_comparison_scope": "ec0bd628 vs current adapter; saved clean teacher decisions/visibility, not a world rerun",
+      "raw": {
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316901-ec0bd628/raw/result.json.zst",
+          "sha256": "35ead40ab68ce4fdb2b59f66151218a1062b0b36101daed9c5250cfc1679d108"
+        },
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316901-ec0bd628/recovery-commands.jsonl.zst",
+          "sha256": "47120c2416a14cbf139cf4c43d26e44a7da014d603517e8b4494b5b7b8d58603"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316901-ec0bd628/raw/teacher-commands.jsonl.zst",
+          "sha256": "cc396df5d9b7acf20b54d09f39ae6d8fc1f31a2fbba29cad4135ac2ad14bf8eb"
+        },
+        "base_evaluation": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316901-ec0bd628/recovery-eval-only.jsonl.zst",
+          "sha256": "8c55cd64e7c89aae90eadceeebb9989f48f6f31201cb8c276c0d4a858ede6a8c"
+        },
+        "cargo_evaluation": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316901-ec0bd628/raw/eval-only.jsonl.zst",
+          "sha256": "645dd0909fb0703e327db469c8faa619e5b975db852bec08c1f1a6806fa1fb45"
+        }
+      },
+      "retrieval": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act9-ec0bd628-ops/act9-gate-8316901-ec0bd628-retrieval.json",
+        "sha256": "4bf68c289f2fb4ba40398843cf0557fd2c3ffab7b2f0387ea1198dec62dbe730"
+      },
+      "hidden_bearing": {
+        "N": 23,
+        "median_deg": 11.904158186954609,
+        "p95_deg": 12.09549104426403,
+        "max_deg": 14.06276891060089,
+        "first": {
+          "t": 4.800000000000121,
+          "visible": false,
+          "xyz": [
+            0.6488696327583772,
+            0.39874631992246856,
+            0.02389224457978367
+          ],
+          "error_deg": 1.995332915784303
+        },
+        "last": {
+          "t": 7.000000000002809,
+          "visible": false,
+          "xyz": [
+            0.12549044661171563,
+            0.7511874438360209,
+            0.02389224457978367
+          ],
+          "error_deg": 11.895900749628591
+        }
+      },
+      "bearing_trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act10-offline-20261015-v4/8316901-bearing-eval.jsonl",
+        "sha256": "abf0db9fd2f558cb2ac1dbb281410b32ad29694bc8edc227a39d7f1d37639da7"
+      }
+    },
+    {
+      "seed": 8316902,
+      "physical_success": false,
+      "command_ticks": 607,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 575,
+        "blocked_held": 0,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 25
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "recovery_audit": {
+        "schema": "ugrp.act9.recovery_audit.v1",
+        "command_ticks": 607,
+        "perturbation_ticks": 9,
+        "perturbation_fraction": 0.014827018121911038,
+        "perturbation_times": [
+          3.999999999999143,
+          4.099999999999265,
+          4.199999999999387,
+          4.2999999999995095,
+          4.399999999999632,
+          4.499999999999754,
+          4.599999999999876,
+          4.699999999999998,
+          4.800000000000121
+        ],
+        "lost_N": 1,
+        "reacquired_N": 0,
+        "recovery_scene_N": 0,
+        "recovery_failure_N": 1,
+        "perturbation_no_loss_N": 0,
+        "episodes": [
+          {
+            "episode_id": 1,
+            "start_t": 3.999999999999143,
+            "lost_t": 4.499999999999754,
+            "reacquired_t": null,
+            "failure": true
+          }
+        ],
+        "scope": "own-camera visibility gate; reacquisition is not task success"
+      },
+      "search_disabled_commands_equal": true,
+      "search_disabled_ledger_equal": true,
+      "off_comparison_scope": "ec0bd628 vs current adapter; saved clean teacher decisions/visibility, not a world rerun",
+      "raw": {
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316902-ec0bd628/raw/result.json",
+          "sha256": "966914e8699d2666bcc5ad92b6054c5ff7968f132435764ae75c6cb41bb4479f"
+        },
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316902-ec0bd628/recovery-commands.jsonl.zst",
+          "sha256": "15a0f942d30789cf4974b86c342516542b66afe102468330cd970ffced374560"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316902-ec0bd628/raw/teacher-commands.jsonl.zst",
+          "sha256": "953231a87fa8f15a302c303f4645bf284bd92f0a329c54c5490c6f2b0088645d"
+        },
+        "base_evaluation": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316902-ec0bd628/recovery-eval-only.jsonl.zst",
+          "sha256": "e03a9fc28c220d2b1d0562fe4a2748322179cda046b40f9cd35a7120014a6435"
+        },
+        "cargo_evaluation": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316902-ec0bd628/raw/eval-only.jsonl.zst",
+          "sha256": "b108bdd96686a73b77b4ecc1ea8d327ffb4b22c746d72d4e7a7f7de372e8c272"
+        }
+      },
+      "retrieval": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act9-ec0bd628-ops/act9-gate-8316902-ec0bd628-retrieval.json",
+        "sha256": "08b8604ba0be4ac9401caf1c7f0e7898f4c86a676dd1e682eea6e2b82adffbc4"
+      },
+      "hidden_bearing": {
+        "N": 575,
+        "median_deg": 7.968117281154454,
+        "p95_deg": 8.827821569782815,
+        "max_deg": 9.949416034651035,
+        "first": {
+          "t": 4.499999999999754,
+          "visible": false,
+          "xyz": [
+            0.5813998828327706,
+            -0.38151683033048556,
+            0.023892244579738472
+          ],
+          "error_deg": 1.9560605893467562
+        },
+        "last": {
+          "t": 61.90000000020455,
+          "visible": false,
+          "xyz": [
+            0.28392499958031847,
+            -0.6347972197455624,
+            0.023892244579738472
+          ],
+          "error_deg": 8.740961611043069
+        }
+      },
+      "counterfactual_search": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act10-offline-20261015-v4/8316902-counterfactual-search.jsonl",
+        "sha256": "495b8e37baf66db13b8e5b40e7e0b24a67ff7f293e04330285997e42a01b0dbd",
+        "search_s": 20.00000000000009,
+        "commanded_body_scan_deg": 360.0,
+        "stages": [
+          "body_scan",
+          "orient",
+          "pan_scan"
+        ],
+        "range_m": 0.6953998242618269,
+        "range_matched_pwm": {
+          "1": 2000,
+          "3": 720,
+          "4": 2320,
+          "5": 1320,
+          "6": 1500
+        },
+        "optical_axis_elevation_deg": -19.880000000000052,
+        "baseline12_optical_axis_elevation_deg": -55.88000000000005,
+        "scope": "command/FK only, fixed no-visibility input; not executed or a recovery success"
+      },
+      "bearing_trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act10-offline-20261015-v4/8316902-bearing-eval.jsonl",
+        "sha256": "3b552e376785d223d821d8d1ff4b905cafc5ee27cf4cdbf1e5890df6a7fa9136"
+      }
+    }
+  ],
+  "scope": "saved ledger/FK replay; evaluator truth only for bearing error; no new physical gate result",
+  "validation": {
+    "tests": 84,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "command": "PYTHONDONTWRITEBYTECODE=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_grasp_act_act10.py tests/test_grasp_act_act9.py tests/test_grasp_act_act8.py tests/test_grasp_act_act7.py tests/test_grasp_act_act6.py tests/test_grasp_act_data.py",
+    "junit": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act10-offline-20261015-v4/targeted-tests.xml",
+      "sha256": "a850d12b9340eda3304f2e3e78f984286b1ad7e46f06f7485dc8fb82f6868d66"
+    },
+    "warnings": "4 pre-existing record_property/xunit2 serialization warnings; no physics/render calls"
+  },
+  "source_files": [
+    {
+      "path": "harness/grasp_act_search.py",
+      "sha256": "f79207110765d6877879e8e211b295c30f35e1260c647b85b4ab9888493b34aa"
+    },
+    {
+      "path": "harness/grasp_act_dart.py",
+      "sha256": "69d18dc8c8f6c84f1844407df44b478b0bee323048ee9ea4b7a1e9fd549114a5"
+    },
+    {
+      "path": "harness/grasp_act_perturb.py",
+      "sha256": "823a391b8fd8dbf59d4098e70ad1270254155b794d1e5ec612b4117079918c90"
+    },
+    {
+      "path": "harness/grasp_act_recovery_gate.py",
+      "sha256": "8ee6729d8394c201934595dff822b51104d8a4b9bf43a953355f12c0e4dcf539"
+    },
+    {
+      "path": "scripts/run_grasp_act_recovery.py",
+      "sha256": "6a302d2454e39411b9740bbc3af39aba4b90a46add76db4b14a930d8b0483cff"
+    },
+    {
+      "path": "scripts/audit_grasp_act_act10.py",
+      "sha256": "39fa2e965a6e9be08a57fa2316baeb7957c08a6f38bd55afc25bbb03e30429a0"
+    },
+    {
+      "path": "scripts/queue_grasp_act_act10.py",
+      "sha256": "13f038a1a38a090ae6f501481dafa00c2e56cbe80bc552503e89fad09d91a866"
+    }
+  ],
+  "viewed_frames": {
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act9-ec0bd628-ops/act9-gate-8316902-ec0bd628-failure.jpg",
+    "own_sim_s": [
+      0,
+      12,
+      24,
+      36,
+      48,
+      60
+    ],
+    "evaluation_top_sim_s": [
+      0,
+      12,
+      24,
+      36,
+      48,
+      60
+    ],
+    "scope": "directly inspected montage, evaluation only; never a control input"
+  }
+}

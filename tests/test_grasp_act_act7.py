@@ -102,7 +102,7 @@ def test_every_collision_resolves_to_dependency_and_cached_act_is_restored(archi
     assert importlib.import_module('scripts.zone_teacher') is old
 
 
-@pytest.mark.parametrize('recovery_mode',[adapter.MODE,adapter.PULSE_MODE,adapter.PERTURB_MODE])
+@pytest.mark.parametrize('recovery_mode',[adapter.MODE,adapter.PULSE_MODE,*adapter.PERTURB_MODES])
 def test_real_adapter_and_teacher_reach_scene_setup_before_world(archived_dependency,monkeypatch,tmp_path,record_property,recovery_mode):
     pytest.importorskip('mujoco')
     root=archived_dependency;original=adapter.dependency_modules;seen={}
@@ -136,6 +136,23 @@ def test_real_adapter_and_teacher_reach_scene_setup_before_world(archived_depend
                     ops=ops,teacher_stability='align_relook_v1',reach_mode='pad_window_v2',
                     rgb_lift_mode='solo_lift_lookback_v1',solo_lift_lookback_margin_v1=True)
                 assert instance.phase=='start'
+                if recovery_mode == 'recovery_active_search_v1':
+                    # Exercise the real teacher clock, sink and overridden seek,
+                    # with synthetic permitted observations and no world.
+                    measurement={'xyz':[.7,-.3,.024],'yaw':0.}
+                    for i in range(9):instance.step(i*.1,measurement=measurement)
+                    assert instance.phase=='approach'
+                    value,_=instance.step(.9,measurement=None)
+                    assert instance.search_diagnostic['stage']=='orient' and any(value['wheels'])
+                    value,_=instance.step(1.,measurement=measurement)
+                    assert instance.recovery_search.started is None
+                    assert instance.search_diagnostic is None and instance.phase=='approach'
+                    # Far-range command-space FK points higher than the
+                    # baseline downward scan; camera hardware stays unchanged.
+                    from sim.grasp_act_gaze import camera_extrinsics
+                    pose=ops.gaze([.7,0.,.024],ops.folded,visible=False)
+                    near=ops.gaze([.2,0.,.024],ops.folded,visible=False)
+                    assert camera_extrinsics(pose)[1][2,2] > camera_extrinsics(near)[1][2,2]
                 seen['teacher_constructed']=True
                 for name,module in modules().items():
                     file=getattr(module,'__file__',None)
@@ -158,7 +175,8 @@ def test_real_adapter_and_teacher_reach_scene_setup_before_world(archived_depend
     monkeypatch.setattr(adapter,'source_sha',lambda:'a'*40)
     before=modules();search=sys.path[:]
     plan=json.loads((RECORD/'act6-gate-plan.json').read_text())['episodes'][0]
-    noise_path=RECORD/('act9-noise.json' if recovery_mode==adapter.PERTURB_MODE else 'act6-noise.json')
+    noise_path=RECORD/({'recovery_perturb_v1':'act9-noise.json',
+                        'recovery_active_search_v1':'act10-noise.json'}.get(recovery_mode,'act6-noise.json'))
     with pytest.raises(BeforeWorld):
         adapter.run(plan,tmp_path/'run/raw',dependency_root=root,noise_path=noise_path,mode=recovery_mode)
     assert seen['teacher_constructed'] and seen['world_kwargs']['seed']==8316600
@@ -168,9 +186,12 @@ def test_real_adapter_and_teacher_reach_scene_setup_before_world(archived_depend
     record_property('teacher_imports',json.dumps(seen['imports'],sort_keys=True))
     record_property('physics_steps',0)
     assert modules()==before and sys.path==search
-    assert (tmp_path/'run/recovery-commands.jsonl').read_text()==''
+    ledger=(tmp_path/'run/recovery-commands.jsonl').read_text()
+    if recovery_mode == 'recovery_active_search_v1':
+        assert len(ledger.splitlines())==11  # synthetic own inputs above, still no world
+    else:assert ledger==''
     evaluation=tmp_path/'run/recovery-eval-only.jsonl'
-    assert evaluation.exists() is (recovery_mode in (adapter.PULSE_MODE,adapter.PERTURB_MODE))
+    assert evaluation.exists() is (recovery_mode in (adapter.PULSE_MODE,*adapter.PERTURB_MODES))
     if evaluation.exists():assert evaluation.read_text()==''
 
 

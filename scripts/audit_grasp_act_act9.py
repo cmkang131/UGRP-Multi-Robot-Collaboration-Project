@@ -22,6 +22,7 @@ def act8_verifier_fixture(source):
     proof = {'approved': True, 'gate_promotion_authorized_if_all_conditions_pass': False,
         **expected, 'fresh_seeds': [r['seed'] for r in source['runs']],
         'seed_inventory_sha256': source['gate_plan']['sha256'],
+        'queue': {'path': source['queue'], 'sha256': sha256(source['queue'])},
         'runs': [{'path':r['result_file'],'sha256':r['result_sha256']} for r in source['runs']]}
     with tempfile.TemporaryDirectory(prefix='act9-act8-verifier-fixture-') as folder:
         receipt = Path(folder)/'temporary-test-fixture.json'

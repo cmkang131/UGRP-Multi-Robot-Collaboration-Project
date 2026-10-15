@@ -15,12 +15,12 @@ RECORD = 'experiments/2026-10-15-act-train'
 SEEDS = list(range(8316900, 8316940))
 
 
-def seed_inventory(queue_dir):
+def seed_inventory(queue_dir, *, proposed_seeds=SEEDS, exclude_tag='act9'):
     # Intentionally restricted to prior queue/plan JSONs. No git grep, branch
     # search, run-tree walk or remote inventory request belongs here.
     paths = set(Path(queue_dir).glob('*.json'))
     paths.update((ROOT/RECORD).glob('*plan*.json'))
-    paths = {p for p in paths if 'act9' not in p.name}
+    paths = {p for p in paths if exclude_tag not in p.name}
     for p in list(paths):
         def plan_paths(value):
             if isinstance(value, dict):
@@ -42,10 +42,10 @@ def seed_inventory(queue_dir):
     for p in sorted(paths):
         data = json.loads(p.read_text()); used.update(integers(data))
         entries.append({'path': str(p.resolve()), 'sha256': sha256(p)})
-    overlap = sorted(set(SEEDS) & used)
-    if overlap: raise ValueError(f'ACT9 seeds already in prior queues/plans: {overlap}')
+    overlap = sorted(set(proposed_seeds) & used)
+    if overlap: raise ValueError(f'{exclude_tag.upper()} seeds already in prior queues/plans: {overlap}')
     return {'schema': 'ugrp.act9.local_seed_inventory.v1', 'files': entries,
-        'proposed_seeds': SEEDS, 'overlap': overlap, 'local_inventory_checked': True,
+        'proposed_seeds': proposed_seeds, 'overlap': overlap, 'local_inventory_checked': True,
         'remote_inventory_verified': False, 'scope': 'prior local queue/plan JSON values only'}
 
 
@@ -88,7 +88,7 @@ def build_queue(source):
     gate.update(stage='act9-recovery-teacher-gate40', minimum_success=38,
         minimum_recovery_runs=20, recovery_definition='successful run with >=1 probe-attributed lost -> reacquired episode',
         required_run_audit=['recovery_scene_N','perturbation_fraction','recovery_failure_N'],
-        training_rgb=False, max_parallel=1)
+        training_rgb=False, max_parallel=40)
     for i, (run, seed) in enumerate(zip(gate['runs'], SEEDS)):
         old = run['name']; name = f'act9-gate-{seed}-{short}'
         run.update(name=name, seed=seed, source_sha=source, SOURCE_SHA_file=source)
@@ -100,6 +100,7 @@ def build_queue(source):
     q['required_before_start'] = [
         'Explicit approval and fresh preflight required; all execution/admission flags false. No automatic promotion.',
         'Recheck live seed inventory before activation: local queue/plan overlap is zero; remote non-use is unverified.',
+        'Concurrency is min(40 measured n4-highcpu-64 capacity, free admitted slots); review first30 before filling remaining slots. Never assume an idle VM.',
         'Require >=38/40 success AND >=20/40 successful runs each with >=1 lost -> reacquired episode. Recount hash-bound ledgers.',
         'Review first30 raw and >=6 evenly spaced frames (long runs >=1 per60 SIMs); actual loss and recovery must be visible.',
         'Fixed .35-duty 0.9s yaw magnitude is a project probe, independent of GT. Stop and fix on a confirmed defect; do not finish a defective gate.',

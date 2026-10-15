@@ -11,11 +11,12 @@ import json
 import numpy as np
 
 from harness import grasp_act_contract as c
-from harness.grasp_act_perturb import PERTURB_MODE, annotate_label
+from harness.grasp_act_perturb import PERTURB_MODE, PERTURB_MODES, annotate_label
+from harness.grasp_act_search import SEARCH_MODE, CommandSearch
 
 MODE = 'dart_wheels_v1'
 PULSE_MODE = 'dart_effort_pulses_v2'
-MODES = ('off', MODE, PULSE_MODE, PERTURB_MODE)
+MODES = ('off', MODE, PULSE_MODE, *PERTURB_MODES)
 PHASES = ('approach', 'align')
 
 
@@ -129,15 +130,48 @@ def recovery_hooks(teacher_module, recording_module, noise, ledger):
     Teacher,Recorder=teacher_module.SoloTeacher,recording_module.SoloRecorder
     state={}
     class RecoveryTeacher(Teacher):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.recovery_search = CommandSearch() if noise.mode == SEARCH_MODE else None
+            self.search_diagnostic = None
+
+        def _search_or_resume(self, parent, measurement, now):
+            if self.recovery_search is None or measurement is not None or self.holding:
+                return parent(measurement, now)
+            if noise.active:
+                return self._hold(now)
+            value, exhausted, self.search_diagnostic = self.recovery_search.action(
+                now, self._hold(now), self.ops.gaze, self.ops.slew)
+            self.sink.pwm.update({int(k): v for k, v in value['pwm'].items()})
+            self.arm.commanded.update(self.sink.pwm)
+            self.stable_t = None
+            if exhausted:
+                self.result = 'recovery_search_exhausted'
+                self._set('failed', now)
+            return value
+
+        def _seek(self, measurement, now):
+            return self._search_or_resume(super()._seek, measurement, now)
+
+        def _relook(self, measurement, now):
+            return self._search_or_resume(super()._relook, measurement, now)
+
         def step(self, now, **kwargs):
             before=self.phase
-            perturb = noise.mode == PERTURB_MODE
+            perturb = noise.mode in PERTURB_MODES
             visible = kwargs.get('measurement') is not None
+            if self.recovery_search is not None:
+                self.search_diagnostic = None
+                self.recovery_search.observe(now, kwargs.get('measurement'), self.previous,
+                    holding=self.holding, eligible=before in ('start','fold',*PHASES,'relook'))
             if perturb and noise.active:
                 # Let the original teacher advance its strict command clock,
                 # but freeze the task phase while the external yaw is applied.
                 kwargs = {**kwargs, 'measurement': None}
             clean,complete=super().step(now,**kwargs)
+            if self.recovery_search is not None and self.holding:
+                self.recovery_search.point = self.recovery_search.seen_t = None
+                self.recovery_search.reset_search()
             arguments = dict(phase_before=before,phase_after=self.phase,holding=self.holding)
             if perturb:arguments['visible'] = visible
             applied,diagnostic=noise.apply(clean,**arguments)
@@ -154,12 +188,13 @@ def recovery_hooks(teacher_module, recording_module, noise, ledger):
             ledger.write(json.dumps({'t':now,'phase_before':before,'phase_after':self.phase,
                 'clean_teacher_command':clean,'applied_command':applied,'disturbance':diagnostic,
                 **({'target_visible':visible, 'perturbation_interval':state['perturbation_interval']}
-                   if perturb else {})},allow_nan=False)+'\n')
+                   if perturb else {}),
+                **({'active_search': self.search_diagnostic} if noise.mode == SEARCH_MODE else {})},allow_nan=False)+'\n')
             return applied,complete
     class RecoveryRecorder(Recorder):
         def target(self, value, **kwargs):
             if value!=state.get('applied'):raise ValueError('applied/label alignment mismatch')
-            if noise.mode == PERTURB_MODE:
+            if noise.mode in PERTURB_MODES:
                 original = self.label_file
                 class AnnotatedWriter:
                     def write(_, text):

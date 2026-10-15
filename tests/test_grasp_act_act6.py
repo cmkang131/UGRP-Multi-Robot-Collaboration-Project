@@ -94,6 +94,10 @@ def gate_fixture(tmp_path):
     host={'instance':'gcp1'};expected={'source_sha':'a'*40,'teacher_dependency_sha':'b'*40,'noise_sha256':'c'*64}
     proof={'approved':True,'gate_promotion_authorized_if_all_conditions_pass':False,**expected,
            'seed_inventory_sha256':'d'*64,'fresh_seeds':list(range(40)),'runs':[]}
+    queue=tmp_path/'queue.json'
+    queue.write_text(json.dumps({'source_sha':expected['source_sha'],
+        'jobs':[{'N':40,'training_rgb':False,'runs':[{'seed':i} for i in range(40)]}]}))
+    proof['queue']={'path':str(queue),'sha256':sha256(queue)}
     for seed in range(40):
         r={'status':'complete','training_rgb':False,'recording_mode':'success_measurement','weld':'off',
            'student_execution':False,'execution_host':host,'gate_eligible':True,**expected,
