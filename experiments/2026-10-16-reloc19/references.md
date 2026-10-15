@@ -17,3 +17,5 @@ R2벽제외는 `harness.reloc16_floor_mask.floor_clear`의기존고정v5 RGB분�
 R3 추가후보 `destination_camera_pan_v1`(기본off): 기존pan끝500/2500을발행서보로훑고원래pan으로복귀한다. 카메라배치·FOV·장면은바꾸지않는다. 2000pulse/s와.3SIM초settle은기존lookaround의서보이동계약이다. 차체2π회전대신관측자세를바꾸고,원래자세에서다시기존RGB가시성을확인한다. 팬중검출한바닥점의기억은기존SoloTeacher.MEMORY_S=5.2초까지만자기명령으로전파하며새RGB없이는나이를갱신하지않는다. 원래pan복귀전에는place수용하지않는다. R1에서차체회전중yaw p95가165–176도로커진것과반복한48.3SIM초sweep3회의new_fixes=0이근거다.
 
 R3 B는기존 `CarryTracker`가 `loaded_or_unknown_prediction_only`로알리는경우XY metric fix가금지됨을그대로따른다. 정보량예측과관측수용은별개이므로이상태에서는기존내려놓기/둘러보기로즉시전환한다. 새로운측정상수나집게폐쇄관문완화는없다. 이기존카메라자격제약으로들고있는상태의XY재위치는여전히미지원이다.
+
+후속 방향 보존 후보 `destination_direction_preserve_v1`(기본 off, 물리 미실행): R2의 안전한 waypoint 선분210개가 전후/좌우 독립 clip 뒤에는 한 틱 검사에서210/210 거부됐다. 같은 전후+.08/−.05·좌우.06m/s 한도 중 가장 작은 공통 배율을 두 성분에 같이 곱하면 방향을 보존한다. 실제 후보 함수로210/210이 **동일한 기존** segment_free를 통과했다. clearance·색·SIM 시간·성공 수용 수치는 바꾸지 않았다. 이것은 저장 추정 상태의 기하 재생이며 실제 주행·place 성공은 아니다. 3라운드 상한을 지켜 추가 물리 실행은 내지 않았다. [실제 반례](direction-counterexample.json), [후속 함수 재생](direction-candidate-replay-summary.json). 이 후보의 재생 결과와 물리 R3의 source SHA를 분리한다.

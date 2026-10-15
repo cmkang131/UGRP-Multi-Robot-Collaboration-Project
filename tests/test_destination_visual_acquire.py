@@ -146,3 +146,38 @@ def test_xy_relocalization_respects_existing_loaded_metric_admission(monkeypatch
     q=DestinationAcquire(c);assert q.relocalize_step(1,{})==(0,0,0)
     assert c.recovery_reason=='reloc19_loaded_metric_camera_unqualified'
     assert q.events[-1]['blocked_object']=='issued_loaded_camera_metric_fk_unqualified'
+
+
+def test_recorded_safe_waypoint_direction_survives_speed_bounds():
+    import json
+    from pathlib import Path
+    from sim.destination_visual_acquire import direction_drive,bounded_translation
+    from sim.grasp_act_visible_route import segment_free
+    x=json.loads((Path(__file__).resolve().parents[1]/'experiments/2026-10-16-reloc19/direction-counterexample.json').read_text())['case']
+    p=x['pose'];v=direction_drive(p,x['target']);c,s=math.cos(p[2]),math.sin(p[2])
+    end=(p[0]+.1*(c*v[0]-s*v[1]),p[1]+.1*(s*v[0]+c*v[1]))
+    assert segment_free(p[:2],x['target'],x['discs'],x['rects'],x['radius'])
+    assert not segment_free(p[:2],x['original_endpoint'],x['discs'],x['rects'],x['radius'])
+    assert segment_free(p[:2],end,x['discs'],x['rects'],x['radius'])
+    for f,l in ((2,1),(-2,1),(2,-1),(-2,-1),(0,0)):
+        a,b=bounded_translation(f,l)
+        assert -.05<=a<=.08 and abs(b)<=.06
+        assert abs(a*l-b*f)<1e-12  # algebraic test tolerance, not a control gate
+
+@pytest.mark.parametrize('preserve',[False,True])
+def test_recorded_guard_in_actual_acquisition_step_keeps_direction_toggle_off_by_default(preserve):
+    import json
+    from pathlib import Path
+    x=json.loads((Path(__file__).resolve().parents[1]/'experiments/2026-10-16-reloc19/direction-counterexample.json').read_text())['case']
+    static,_=static_input();c=CarryToZone(static,'A',start=task_start(static))
+    c.loc.own.x=np.asarray(x['pose']);c.rects=x['rects'];c.radius=x['radius'];c.grip_xy=(.2,0);c.slot=c.region['center_m']
+    c.obstacles.discs=lambda now:x['discs']
+    q=DestinationAcquire(c,direction_preserve=preserve);c.destination_acquire=q
+    q.started=0.;q.mode='expand';q.point=x['search_goal'];q.path=[x['target']]
+    pwm={1:1500,3:777,4:2053,5:1646,6:1500}
+    drive,confirmed,failure=q.step(1.,np.zeros((480,640,3),np.uint8),pwm,pwm,'red')
+    assert not confirmed and failure is None
+    if preserve:
+        assert drive[2]==0 and q.last['reason']!='destination_motion_blocked'
+    else:
+        assert q.last['reason']=='destination_motion_blocked'

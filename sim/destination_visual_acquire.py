@@ -119,8 +119,27 @@ def information_views(static,pose,P,pwm):
     return plan
 
 
+def bounded_translation(forward,left):
+    """One common scale preserves a safe ray under the EXISTING speed bounds.
+
+    Independent clipping rotates a diagonal command. R2 frozen replay210/210
+    safe-waypoint prefixes were then rejected. No clearance/acceptance bound
+    is changed; the existing segment_free veto still checks the result.
+    """
+    scale=min(1.,(.08 if forward>=0 else .05)/abs(forward) if forward else math.inf,
+              .06/abs(left) if left else math.inf)
+    return forward*scale,left*scale
+
+
+def direction_drive(pose,target):
+    x,y,a=pose;dx,dy=target[0]-x,target[1]-y
+    f,l=bounded_translation(.9*(math.cos(a)*dx+math.sin(a)*dy),
+                            .9*(-math.sin(a)*dx+math.cos(a)*dy))
+    return (f,l,0.)
+
+
 class DestinationAcquire:
-    def __init__(self, carry, *, camera_pan=False):
+    def __init__(self, carry, *, camera_pan=False, direction_preserve=False):
         self.carry=carry; self.started=None; self.acquired=None; self.confirmed=None
         self.mode='inactive'; self.last={}; self.events=[]; self.turn=0.; self.scan_start=0.
         self.points=[]; self.point=None; self.path=None; self.failure=None; self.valid_since=None
@@ -128,7 +147,7 @@ class DestinationAcquire:
         self.reloc_t=None; self.reloc_scan=False; self.reloc_done=False
         self.reloc_views=[];self.reloc_view=None;self.reloc_settle=None;self.reloc_counts=0
         self._floor_cache=None
-        self.camera_pan=camera_pan;self.pan_origin=None;self.pan_targets=[]
+        self.camera_pan=camera_pan;self.direction_preserve=direction_preserve;self.pan_origin=None;self.pan_targets=[]
         self.desired_pan=None;self.pan_ready=0.;self.memory_target=None;self.memory_t=None
 
     def event(self,now,event,**kw):
@@ -266,6 +285,7 @@ class DestinationAcquire:
             target=centre-np.array([c.grip_xy[0]+c.advance_m,c.grip_xy[1]])
             # Body-relative patch error, independent of global-pose XY/yaw.
             f=max(-.05,min(.08,.9*float(target[0]))); l=max(-.06,min(.06,.9*float(target[1])))
+            if self.direction_preserve:f,l=bounded_translation(.9*float(target[0]),.9*float(target[1]))
             drive=(f,l,0.)
         elif self.camera_pan and self.mode=='pan_scan':
             if self.pan_targets:
@@ -277,6 +297,7 @@ class DestinationAcquire:
             if self.memory_target is not None and now-self.memory_t<=MEMORY_S:
                 target=self.memory_target-np.array([c.grip_xy[0]+c.advance_m,c.grip_xy[1]])
                 drive=(max(-.05,min(.08,.9*float(target[0]))),max(-.06,min(.06,.9*float(target[1]))),0.)
+                if self.direction_preserve:drive=(*bounded_translation(.9*float(target[0]),.9*float(target[1])),0.)
                 self.mode='servo_memory'
                 self.last.update(reason='issued_history_visible_patch_memory',memory_age_s=now-self.memory_t)
             else:
@@ -312,7 +333,8 @@ class DestinationAcquire:
                 else:self.mode='scan';self.scan_start=self.turn;drive=(0.,0.,.1)
             else:
                 target=waypoint(c.loc.pose[:2],self.path,c.obstacles.discs(now),c.rects,c.radius)
-                drive=c.heading_drive(c.loc.pose,target,c.loc.pose[2]) if target is not None else (0.,0.,0.)
+                drive=((direction_drive(c.loc.pose,target) if self.direction_preserve else c.heading_drive(c.loc.pose,target,c.loc.pose[2]))
+                       if target is not None else (0.,0.,0.))
         # Every translation retains static/RGB obstacle veto using a single tick
         # at current10Hz. A rejected candidate never gets silently executed.
         dt=.1; x,y,a=c.loc.pose
@@ -327,7 +349,7 @@ class DestinationAcquire:
         return drive,False,None
 
     def record(self):
-        return dict(toggle=OPTION,destination_camera_pan_v1=self.camera_pan,desired_pan=self.desired_pan,mode=self.mode,started_t=self.started,acquired_t=self.acquired,
+        return dict(toggle=OPTION,destination_direction_preserve_v1=self.direction_preserve,destination_camera_pan_v1=self.camera_pan,desired_pan=self.desired_pan,mode=self.mode,started_t=self.started,acquired_t=self.acquired,
             confirmed_t=self.confirmed,acquisition_sim_s=None if self.acquired is None else self.acquired-self.started,
             views=self.views,last=self.last,events=self.events,relocalizations=self.relocalizations,
             failure=self.failure,truth_inputs=0,held_world_reads=0)
