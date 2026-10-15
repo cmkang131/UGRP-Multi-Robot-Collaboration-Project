@@ -7,9 +7,66 @@ from scripts.azure_speed_gate import verdict,SpeedWarning,kill_group,write,posit
 from scripts.grasp_act_host import identity,require_run_root,same_machine,measured_speed_baseline
 
 
-def read(path):
-    try:return json.loads(path.read_text())
-    except (OSError,ValueError):return {}
+def json_bytes(path):
+    """Read without changing originals; duplicate representations must agree."""
+    path=Path(path)
+    if path.suffix=='.zst':path=path.with_suffix('')
+    try:plain=path.read_bytes()
+    except FileNotFoundError:plain=None
+    try:compressed=Path(str(path)+'.zst').read_bytes()
+    except FileNotFoundError:compressed=None
+    if compressed is not None:
+        decoded=subprocess.check_output(['zstd','-q','-d','-c'],input=compressed)
+        if plain is not None and plain!=decoded:
+            raise ValueError('plain/compressed bytes disagree: '+str(path))
+        return decoded,compressed
+    if plain is None:raise FileNotFoundError(path)
+    return plain,None
+
+
+def verify_hashes(data,compressed,entry):
+    if (not isinstance(entry,dict) or entry.get('sha256')!=hashlib.sha256(compressed).hexdigest()
+            or entry.get('decoded_sha256')!=hashlib.sha256(data).hexdigest()):
+        raise ValueError('compressed or decoded sha256 mismatch')
+
+
+def read(path,*,finalized=False):
+    """One reader for monitoring, repeated causes, finalization and summaries.
+
+    A teacher publishes its manifest last. While the child is finalizing,
+    missing proof is pending; after exit, compressed results require both hashes.
+    """
+    path=Path(path)
+    if path.suffix=='.zst':path=path.with_suffix('')
+    try:
+        data,compressed=json_bytes(path)
+        if compressed is not None and path.name=='result.json':
+            manifest_path=path.parent/'manifest.json'
+            if manifest_path.exists() or Path(str(manifest_path)+'.zst').exists():
+                manifest,packed_manifest=json_bytes(manifest_path)
+                if packed_manifest is not None:
+                    proof_path=path.parent/'manifest-compression.json'
+                    if proof_path.exists():
+                        proof=json.loads(json_bytes(proof_path)[0])
+                        verify_hashes(manifest,packed_manifest,proof)
+                    elif finalized:
+                        raise ValueError('compressed manifest missing sha256 proof')
+                entries=json.loads(manifest)
+                if not isinstance(entries,dict):raise ValueError('manifest object required')
+                entry=entries.get('result.json.zst',{})
+                verify_hashes(data,compressed,entry)
+            elif finalized:
+                raise ValueError('compressed result missing manifest proof')
+        result=json.loads(data)
+        if not isinstance(result,dict):raise ValueError('JSON object required')
+        if path.name=='result.json':
+            result['result_sha256']=hashlib.sha256(data).hexdigest()
+            if compressed is not None:
+                result['result_compressed_sha256']=hashlib.sha256(compressed).hexdigest()
+        return result
+    except FileNotFoundError:return {}
+    except (OSError,ValueError,subprocess.SubprocessError) as error:
+        return {'status':'HOST_ERROR','error':'result reader: '+str(error)} if path.name=='result.json' else {}
 
 
 def execution_tree(source):
@@ -152,9 +209,9 @@ def wave(root,plan,indices,cap,*,probe,limit,complete_frozen_cohort=False,teache
             now=time.monotonic();states=[]
             for index,target,proc,_,at,warning in jobs:
                 code=proc.poll()
-                result=read(target/'raw/result.json');progress=read(target/'raw/progress.json')
+                result=read(target/'raw/result.json',finalized=code is not None);progress=read(target/'raw/progress.json')
                 states.append({'index':index,'exit':code,'progress':progress,'status':result.get('status')})
-                if code not in (None,0):reason='CHILD_HOST_ERROR';break
+                if code not in (None,0) or result.get('status')=='HOST_ERROR':reason='CHILD_HOST_ERROR';break
                 if not probe and not complete_frozen_cohort and failure_stop.observe(index,result):
                     reason='PHYSICAL_TEACHER_FAILURE';break
                 if code is None and now-at > (max(300.,30*limit*3) if probe else max(600.,cap*limit*3)):
@@ -182,12 +239,11 @@ def wave(root,plan,indices,cap,*,probe,limit,complete_frozen_cohort=False,teache
             try:code=proc.wait(timeout=45)
             except subprocess.TimeoutExpired:kill_group(proc,signal.SIGKILL);code=proc.wait()
             log.close();(target/'EXIT').write_text(str(code)+'\n')
-            result=read(target/'raw/result.json') or {'status':'HOST_ERROR','error':'missing result'}
+            result=read(target/'raw/result.json',finalized=True) or {'status':'HOST_ERROR','error':'missing result'}
             # Preserve each standard workflow record as well as the raw episode.
             from scripts.remote_run_finish import collect
             collect(Path(__file__).resolve().parents[1],target)
             result.update(index=index,exit=code,raw=str(target/'raw'))
-            if (target/'raw/result.json').is_file():result['result_sha256']=hashlib.sha256((target/'raw/result.json').read_bytes()).hexdigest()
             rows.append(result)
     write(root/'wave.json',{'reason':reason,'rows':rows,'failure_stop':failure_stop.diagnostic()})
     return rows,reason

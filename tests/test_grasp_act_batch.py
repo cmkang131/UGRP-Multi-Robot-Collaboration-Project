@@ -1,5 +1,8 @@
 """Supervisor control flow with fake subprocesses; no simulation or network."""
 import json
+import hashlib
+import shutil
+import subprocess
 from pathlib import Path
 import pytest
 from scripts import run_grasp_act_batch as batch
@@ -40,7 +43,7 @@ def test_handoff_with_independent_failure_is_counted():
 @pytest.fixture
 def fake_children(monkeypatch):
     import scripts.remote_run_finish as finish
-    clock=[0];schedule={};killed=[]
+    clock=[0];schedule={};killed=[];real_popen=subprocess.Popen
     class Process:
         def __init__(self,command,**kwargs):
             self.index=int(command[command.index('--episode')+1])
@@ -49,7 +52,10 @@ def fake_children(monkeypatch):
         def poll(self):
             at,result,code=schedule[self.index]
             if self.code is None and clock[0]>=at:
-                batch.write(self.raw/'result.json',result);self.code=code
+                batch.write(self.raw/'result.json',result)
+                if result.get('_fixture_compressed'):
+                    compressed_fixture(self.raw/'result.json')
+                self.code=code
             return self.code
         def wait(self,timeout=None):
             assert self.poll() is not None
@@ -58,7 +64,8 @@ def fake_children(monkeypatch):
         if proc.poll() is None:
             killed.append(proc.index);proc.code=130
             batch.write(proc.raw/'result.json',{'status':'interrupted'})
-    monkeypatch.setattr(batch.subprocess,'Popen',Process)
+    monkeypatch.setattr(batch.subprocess,'Popen',lambda command,**kw:
+                        Process(command,**kw) if '--episode' in command else real_popen(command,**kw))
     monkeypatch.setattr(batch,'kill_group',kill)
     monkeypatch.setattr(batch.time,'monotonic',lambda:clock[0])
     monkeypatch.setattr(batch.time,'sleep',lambda seconds:clock.__setitem__(0,clock[0]+1))
@@ -160,3 +167,81 @@ def test_diagnostic18_limits_concurrency_and_carries_failure_causes_across_waves
     rows,reason=batch.diagnostic_waves(tmp_path,tmp_path/'plan.json',list(range(18)),60.,
                                       concurrency=15,failure_stop=stop)
     assert len(calls)==1 and len(rows)==15 and reason=='PHYSICAL_TEACHER_FAILURE'
+
+
+def compressed_fixture(path,*,keep_plain=False,pack_manifest=False):
+    """Real zstd bytes with the production writer's two SHA-256 fields."""
+    if not shutil.which('zstd'):pytest.skip('zstd CLI required')
+    data=path.read_bytes()
+    compressed=subprocess.check_output(['zstd','-q','-c'],input=data)
+    Path(str(path)+'.zst').write_bytes(compressed)
+    if not keep_plain:path.unlink()
+    entry={'sha256':hashlib.sha256(compressed).hexdigest(),
+           'decoded_sha256':hashlib.sha256(data).hexdigest(),'bytes':len(compressed)}
+    manifest=path.parent/'manifest.json'
+    batch.write(manifest,{path.name+'.zst':entry})
+    if pack_manifest:
+        manifest_data=manifest.read_bytes()
+        packed=subprocess.check_output(['zstd','-q','-c'],input=manifest_data)
+        Path(str(manifest)+'.zst').write_bytes(packed);manifest.unlink()
+        proof={'sha256':hashlib.sha256(packed).hexdigest(),
+               'decoded_sha256':hashlib.sha256(manifest_data).hexdigest()}
+        batch.write(path.parent/'manifest-compression.json',proof)
+    return entry
+
+
+def test_compressed_complete_exit0_keeps_full_denominator(tmp_path,fake_children):
+    fake_children[0].update({0:(0,{**SUCCESS,'_fixture_compressed':True},0),
+                            1:(1,{**HANDOFF,'_fixture_compressed':True},0),
+                            2:(2,SUCCESS,0)})
+    rows,reason,killed=run_wave(tmp_path,fake_children)
+    summary=batch.summarize(rows,3)
+    assert reason is None and killed==[]
+    assert (summary['n'],summary['N'],summary['host_errors'],summary['interrupted'])==(2,3,0,0)
+    for row in rows[:2]:
+        path=Path(row['raw'])/'result.json'
+        proof=json.loads((path.parent/'manifest.json').read_text())['result.json.zst']
+        assert not path.exists() and row['status']=='complete' and row['exit']==0
+        assert row['result_sha256']==proof['decoded_sha256']
+        assert row['result_compressed_sha256']==proof['sha256']
+
+
+def test_compressed_repeated_cause_stops_only_unfinished_children(tmp_path,fake_children):
+    fake_children[0].update({0:(0,{**failure(),'_fixture_compressed':True},0),
+                            1:(1,{**failure(),'_fixture_compressed':True},0),
+                            2:(3,SUCCESS,0)})
+    rows,reason,killed=run_wave(tmp_path,fake_children)
+    assert reason=='PHYSICAL_TEACHER_FAILURE' and killed==[2]
+    summary=batch.summarize(rows,3)
+    assert (summary['N'],summary['host_errors'],summary['interrupted'])==(2,0,1)
+    stop=json.loads((tmp_path/'wave/SUPERVISOR_STOP.json').read_text())
+    assert stop['failure_stop']['causes'][0]['episode_indices']==[0,1]
+
+
+@pytest.mark.parametrize('pack_manifest',[False,True])
+def test_both_result_representations_must_match(tmp_path,pack_manifest):
+    path=tmp_path/'result.json';batch.write(path,SUCCESS)
+    compressed_fixture(path,keep_plain=True,pack_manifest=pack_manifest)
+    assert batch.read(path,finalized=True)['status']=='complete'
+    assert batch.read(Path(str(path)+'.zst'),finalized=True)['status']=='complete'
+    batch.write(path,HANDOFF)
+    result=batch.read(path,finalized=True)
+    assert result['status']=='HOST_ERROR' and 'disagree' in result['error']
+
+
+@pytest.mark.parametrize('field',['sha256','decoded_sha256'])
+def test_compressed_result_rejects_bad_hash(tmp_path,field):
+    path=tmp_path/'result.json';batch.write(path,SUCCESS)
+    compressed_fixture(path)
+    manifest=tmp_path/'manifest.json';value=json.loads(manifest.read_text())
+    value['result.json.zst'][field]='0'*64;batch.write(manifest,value)
+    result=batch.read(path,finalized=True)
+    assert result['status']=='HOST_ERROR' and 'sha256 mismatch' in result['error']
+
+
+def test_compression_proof_is_pending_until_child_exits(tmp_path):
+    path=tmp_path/'result.json';batch.write(path,SUCCESS)
+    compressed_fixture(path);(tmp_path/'manifest.json').unlink()
+    assert batch.read(path)['status']=='complete'
+    result=batch.read(path,finalized=True)
+    assert result['status']=='HOST_ERROR' and 'missing manifest proof' in result['error']
