@@ -95,10 +95,18 @@ def boundary_ok(rows, reference, enc):
             'v1_false_columns': sum(r['false_columns'] for r in bb)}
 
 
-def score(inputs, output):
+def score(inputs, output, cached_analysis=None):
     from harness.zone_pair_highpose import HIGH
     from scripts.zone_teacher import FOLDED
     output.mkdir(parents=True, exist_ok=False)
+    cv2.setNumThreads(1)
+    cache = {}
+    if cached_analysis is not None:
+        cached_summary = read(cached_analysis/'summary.json')
+        if cached_summary['analysis_sha256'] != sha(Path(__file__)):
+            raise ValueError('CACHED_ANALYSIS_SOURCE_MISMATCH')
+        cache = {(r['raw_root'], r['case'], r['material'], r['quality']): r
+                 for r in read(cached_analysis/'scored-rows.json')}
     allrows, sources, modelrows = [], [], []
     seen = set()
     for root in inputs:
@@ -120,6 +128,14 @@ def score(inputs, output):
             seen.add(key)
             row = read(root/item['record'])
             row['raw_root'] = str(root)
+            cache_key = (str(root), row['case'], row['material'], row['quality'])
+            if cache_key in cache:
+                cached = cache[cache_key]
+                if row['qpos_sha256'] != cached['qpos_sha256'] or any(
+                        row['encodings'][e]['sha256'] != cached['encodings'][e]['sha256'] for e in ENCODINGS):
+                    raise ValueError('CACHED_RGB_OR_POSE_MISMATCH')
+                allrows.append(cached)
+                continue
             stem = row['case']+'--'+row['material']+'--'+row['quality']
             masks = {s: cv2.imread(str(root/(stem+'--mask-'+s+'.png')), 0)>0 for s in ('floor', 'wall')}
             after = cv2.imread(str(root/(stem+'--next.png')))
@@ -217,6 +233,7 @@ def score(inputs, output):
         reports.append(report)
         rejection.append({'material': material, 'quality': quality, 'stages': stages,
                           'independent_failures': report['regression_frames'], 'details': name+'-cases.json'})
+    write(output/'scored-rows.json', allrows)
     write(output/'rejection-table.json', {'arms': rejection, 'sources': sources,
           'reproduction_command': [sys.executable, '-m', 'scripts.score_scene_tex4', *sys.argv[1:]],
           'threshold_basis': 'user 2026-10-16: v1 zero floor regression; columns median/p10 >= v1; error distribution <= v1; no new slack',
@@ -224,7 +241,8 @@ def score(inputs, output):
     write(output/'summary.json', {'schema': 'ugrp.scenetex4.static.v1', 'status': 'MEASURED', 'sources': sources,
           'frames': len(allrows), 'encoded_frames': len(allrows)*3, 'reports': reports,
           'physics_steps': 0, 'model_calls': 0, 'scope': 'static SIM0 fixtures plus one-pixel-angle yaw pairs; no localization/task/physical success',
-          'analysis_sha256': sha(Path(__file__)), 'classifier': 'colour_partition: identical channel-order rule for all arms; not a controller',
+          'analysis_sha256': sha(Path(__file__)), 'opencv_threads': 1, 'cached_analysis': str(cached_analysis) if cached_analysis else None,
+          'classifier': 'colour_partition: identical channel-order rule for all arms; not a controller',
           'decision': 'READY' if any(r['ready'] for r in reports if r['material'].startswith('walls_floor_contrast_v4_')) else 'NOT_READY'})
     # Same poses in every column; generated on gcp2, fetched as image files only.
     select = [r for r in allrows if (r['material'], r['quality']) == BASE and r['robot']=='r1' and r['view']==0
@@ -248,6 +266,7 @@ if __name__ == '__main__':
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--inputs', nargs='+', type=Path, required=True)
     p.add_argument('--output', type=Path, required=True)
+    p.add_argument('--cached-analysis', type=Path)
     a = p.parse_args()
     if not platform.node().startswith('ugrp-sim-gcp2'): p.error('gcp2 saved-image analysis only')
-    score(a.inputs, a.output)
+    score(a.inputs, a.output, a.cached_analysis)
