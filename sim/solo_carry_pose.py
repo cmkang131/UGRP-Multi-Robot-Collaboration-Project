@@ -42,7 +42,7 @@ def task_start(static):
 class CommandPose:
     def __init__(self, start, *, now=0., robot_id='r1', map_sha256='', amcl_option='off', drive_model_deadband_v1=False,
                  carry5_trim_yaw_calibration_v1=False, trim_calibration=None,
-                 reloc9_rotation_calibration_v1=False, reloc10_rotation_calibration_v1=False, carry_pose_budget_recal_v1=False, reloc14_carry_budget_v1=False, reloc14_carry_tracking_v1=False, tracking_static=None, reloc15_rgb_heading_v1=False, reloc15_heading_10hz_v1=False, reloc15_dense_yaw_v1=False, reloc15_heading_quality_v1=False, reloc16_wall_compass_v1=False, reloc16_active_view_v1=False):
+                 reloc9_rotation_calibration_v1=False, reloc10_rotation_calibration_v1=False, carry_pose_budget_recal_v1=False, reloc14_carry_budget_v1=False, reloc14_carry_tracking_v1=False, tracking_static=None, reloc15_rgb_heading_v1=False, reloc15_heading_10hz_v1=False, reloc15_dense_yaw_v1=False, reloc15_heading_quality_v1=False, reloc16_wall_compass_v1=False, reloc16_active_view_v1=False, scene_wall_tracking_v1=False):
         if amcl_option not in ('off', 'report_v1'):
             raise ValueError('unknown carry AMCL report option')
         if (set(start) != START_KEYS
@@ -126,7 +126,8 @@ class CommandPose:
         self.heading = None
         if reloc16_wall_compass_v1:
             from harness.reloc16_compass import CompassHeading
-            self.heading=CompassHeading()
+            if type(scene_wall_tracking_v1) is not bool:raise ValueError('wall tracking toggle must be bool')
+            self.heading=CompassHeading(wall_tracking_v1=scene_wall_tracking_v1)
         if reloc15_rgb_heading_v1:
             from harness.reloc15_heading import Heading
             self.heading = Heading(sample_s=.1 if reloc15_heading_10hz_v1 else .2,dense_v1=reloc15_dense_yaw_v1,quality_v1=reloc15_heading_quality_v1)

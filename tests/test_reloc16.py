@@ -40,7 +40,7 @@ def test_null_pending_and_delayed_acceptance_do_not_reset_xy_or_metric_age(monke
     # Isolate temporal fusion contract from the real image/calibration detector.
     h=object.__new__(CompassHeading)
     h.sample_s=.2;h.servo={1:1500};h.servo_since=0.;h.last_t=None;h.last_hash=None
-    h.pending=None;h.command_total=0.;h.accepted=0;h.last_measurement_t=None
+    h.pending=None;h.command_total=0.;h.accepted=0;h.last_measurement_t=None;h.wall_tracking_v1=False
     h.mp=SimpleNamespace(undistort=lambda x:x,column_positions=lambda *a:np.arange(96),K_INV=np.eye(3))
     h.p={'min_run_columns':6};h.calibration={'line_residual_px_p95':1.5}
     monkeypatch.setattr(m,'contacts',lambda *a:np.zeros((96,2)))

@@ -93,28 +93,39 @@ def certify_points(points,K,R,*,residual_px,min_columns,cell_size=(160,120)):
     if centre is None:return {**unknown,'status':'unknown_yaw_observability'}
     intervals=[]
     pitch_bound=math.radians(PITCH['pitch_common_bound_deg']+PITCH['pitch_independent_bound_deg'])
-    for cell,subset,line in blocks:
-        # Perturb both fitted endpoints by the measured pixel bound, including
-        # opposite signs (slope uncertainty), and nominal pitch nuisance.
-        ends=subset[[subset[:,0].argmin(),subset[:,0].argmax()]]
-        angles=[]
-        for e0 in (-residual_px,residual_px):
-            for e1 in (-residual_px,residual_px):
-                edge=ends.copy();edge[:,1]+=[e0,e1]
-                l=np.cross([*edge[0],1.],[*edge[1],1.])
-                for pitch in (-pitch_bound,0.,pitch_bound):
-                    c,s=math.cos(pitch),math.sin(pitch)
-                    Rp=R@np.array([[1,0,0],[0,c,-s],[0,s,c]])
-                    angle=line_axis(l,K,Rp)
-                    if angle is None:return {**unknown,'status':'unknown_yaw_observability'}
-                    angles.append(centre+axis_wrap(angle-centre))
-        intervals.append([min(angles),max(angles)])
-    # Check every block nominal direction in the others' uncertainty envelope.
-    nominal=[centre+axis_wrap(line_axis(l,K,R)-centre) for _,_,l in blocks]
-    spatial_ok=all(lo<=a<=hi for a in nominal for lo,hi in intervals)
-    lo=min(i[0] for i in intervals);hi=max(i[1] for i in intervals)
+    # Propagate the whole line's observed endpoints; refitting a short cell's
+    # endpoints as if they were the full line inflated the yaw bound (R2:
+    # measurable2/88). Spatial verification is held-out prediction, not an
+    # unjustified iid point-count covariance reduction.
+    ends=support[[support[:,0].argmin(),support[:,0].argmax()]]
+    angles=[]
+    for e0 in (-residual_px,residual_px):
+        for e1 in (-residual_px,residual_px):
+            edge=ends.copy();edge[:,1]+=[e0,e1]
+            l=np.cross([*edge[0],1.],[*edge[1],1.])
+            for pitch in (-pitch_bound,0.,pitch_bound):
+                c,s=math.cos(pitch),math.sin(pitch)
+                Rp=R@np.array([[1,0,0],[0,c,-s],[0,s,c]])
+                angle=line_axis(l,K,Rp)
+                if angle is None:return {**unknown,'status':'unknown_yaw_observability'}
+                angles.append(centre+axis_wrap(angle-centre))
+    spatial_errors=[];nominal=[]
+    for cell,held,line in blocks:
+        other=support[~(cells==cell).all(1)]
+        fit=fit_line(other)
+        if fit is None:return {**unknown,'status':'unknown_spatial_revalidation'}
+        residual=abs(np.column_stack([held,np.ones(len(held))])@fit)
+        # The source calibration names p95=1.5px. Test the same percentile on
+        # the excluded region; no uncalibrated agreement angle is introduced.
+        spatial_errors.append(float(np.percentile(residual,95)))
+        a=line_axis(fit,K,R)
+        if a is None:return {**unknown,'status':'unknown_yaw_observability'}
+        nominal.append(centre+axis_wrap(a-centre))
+    spatial_ok=all(e<=residual_px for e in spatial_errors)
+    lo=min([*angles,*nominal]);hi=max([*angles,*nominal])
     radius=max(abs(centre-lo),abs(hi-centre))
-    detail=dict(**unknown,axis_yaw_rad=centre,spatial_yaws_rad=nominal,spatial_intervals_rad=intervals,
+    detail=dict(**unknown,axis_yaw_rad=centre,spatial_yaws_rad=nominal,
+                heldout_residual_p95_px=spatial_errors,uncertainty_interval_rad=[lo,hi],
                 uncertainty_bound_rad=radius,sigma_yaw=radius/YAW['confidence_sigma'],
                 spatial_consistent=spatial_ok,command_extrinsics_only=True)
     if not spatial_ok:return {**detail,'status':'unknown_spatial_revalidation'}
@@ -123,7 +134,7 @@ def certify_points(points,K,R,*,residual_px,min_columns,cell_size=(160,120)):
 
 
 class CompassHeading:
-    def __init__(self,*,calibration=None,sample_s=.2):
+    def __init__(self,*,calibration=None,sample_s=.2,wall_tracking_v1=False):
         from harness.active_wall_vision import modules
         mp,hfw,_=modules()
         if calibration is None:
@@ -134,12 +145,13 @@ class CompassHeading:
         self.mp,self.calibration,self.p=mp,calibration,hfw.PARAMS
         self.sample_s=sample_s;self.servo=None;self.servo_since=None
         self.last_t=None;self.last_hash=None;self.pending=None;self.command_total=0.
+        self.wall_tracking_v1=wall_tracking_v1;self.previous_rgb=None
         self.accepted=0;self.last_measurement_t=None
         self.last=dict(category='no_pair',option=OPTION)
 
     def issue(self,issued,delta):
         pwm={int(k):int(v) for k,v in issued['pwm'].items()}
-        if pwm!=self.servo:self.servo_since=issued['t'];self.pending=None
+        if pwm!=self.servo:self.servo_since=issued['t'];self.pending=None;self.previous_rgb=None
         self.servo=pwm;self.command_total+=delta[2]
 
     def observe(self,rgb,now,own):
@@ -155,6 +167,12 @@ class CompassHeading:
         digest=hashlib.sha256(rgb.tobytes()).hexdigest()
         if digest==self.last_hash:self.last['status']='unknown_repeated_rgb';return
         self.last_hash=digest
+        if self.wall_tracking_v1 and self.previous_rgb is not None:
+            from harness.reloc16_wall_tracking import track
+            wall=track(self.previous_rgb,rgb,self.calibration)
+            wall.pop('before_uv',None);wall.pop('after_uv',None)
+            self.last['wall_tracking']=wall
+        self.previous_rgb=rgb.copy()
         und=self.mp.undistort(cv2.cvtColor(rgb,cv2.COLOR_RGB2BGR))
         points=contacts(und,self.calibration,self.mp.column_positions(96,2),self.p)
         observation=certify_points(points,np.linalg.inv(self.mp.K_INV),commanded_rotation(self.servo),
