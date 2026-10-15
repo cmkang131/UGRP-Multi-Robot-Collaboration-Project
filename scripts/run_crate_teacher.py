@@ -25,7 +25,7 @@ from scripts.run_grasp_act_release import (HeldAudit, HELD_OBJECT_MODES, Eyes, d
 from sim.grasp_act_release_teacher import OBSERVE_MODES, REACH_MODES
 from sim.cargo_teacher_profile import CRATE
 
-from sim.crate_observation_v12 import PROFILE as CRATE12, CRATE13, CRATE14, CRATE15, PROFILES, ASSIGNMENT, LOOKAROUND as OWN_LOOKAROUND, RELEASE
+from sim.crate_observation_v12 import PROFILE as CRATE12, CRATE13, CRATE14, CRATE15, CRATE16, PROFILES, ASSIGNMENT, LOOKAROUND as OWN_LOOKAROUND, RELEASE
 LOOKAROUND_MODES = ('off', 'setdown_lookaround_v1', OWN_LOOKAROUND)
 RGB_LIFT_MODES = ('off', 'crate_rgb_lift_v1', 'crate_rgb_lift_v2', 'crate_rgb_lift_v3')
 from sim.cargo_scene_version import VERSIONS as CARGO_SCENE_VERSIONS
@@ -170,14 +170,16 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
     if static_walls not in ('off','persistent_walls_v1'):raise ValueError('unknown static wall mode')
     if assignment not in ('off',ASSIGNMENT):raise ValueError('unknown assignment mode')
     if release_channel not in ('legacy',RELEASE):raise ValueError('unknown release channel')
-    if crate_profile in (CRATE13, CRATE14, CRATE15) and observe_mode != 'backoff_v3':
-        raise ValueError('crate13/crate14/crate15 requires backoff_v3 for inspection setdown')
-    if crate_profile in (CRATE13, CRATE14, CRATE15):
+    if crate_profile in (CRATE13, CRATE14, CRATE15, CRATE16) and observe_mode != 'backoff_v3':
+        raise ValueError('crate13/crate14/crate15/crate16 requires backoff_v3 for inspection setdown')
+    if crate_profile in (CRATE13, CRATE14, CRATE15, CRATE16):
         crate_candidate_recovery = 'crate_candidates_v1'
-    if crate_profile in (CRATE14, CRATE15):
+    if crate_profile in (CRATE14, CRATE15, CRATE16):
         crate_alignment = 'crate_alignment_v14'
     if crate_profile == CRATE15:
         crate_motion = 'crate_motion_v15'
+    if crate_profile == CRATE16:
+        crate_motion = 'crate_motion_v16'
     strict=crate_profile in PROFILES
     if release_channel==RELEASE and not strict:raise ValueError('fixed release requires crate12_v1 provenance profile')
     if lookaround==OWN_LOOKAROUND and not strict:raise ValueError('own lookaround requires crate12_v1 provenance profile')
@@ -186,7 +188,7 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
     modes['crate_candidate_recovery'] = crate_candidate_recovery
     modes['crate_alignment'] = crate_alignment
     modes['crate_motion'] = crate_motion
-    modes['inspection_return_mode'] = 'crate_inspection_return_v1' if crate_profile in (CRATE13, CRATE14, CRATE15) else 'off'
+    modes['inspection_return_mode'] = 'crate_inspection_return_v1' if crate_profile in (CRATE13, CRATE14, CRATE15, CRATE16) else 'off'
     modes['value_provenance']='value_sources_v1' if strict else 'off'
     from sim.crate_approach_recovery import MODES as CRATE_APPROACH_MODES
     if crate_approach_recovery not in CRATE_APPROACH_MODES:
@@ -413,7 +415,12 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
             if held is None and held_s >= HOLD_S:
                 held = now
                 lugs_at_hold = held_lugs(world, inst, roles)
-            ready = {rid: t.prepare_signal(perceived[rid], now) for rid, t in teachers.items()}
+            ready = {}; teacher_prepare_s = {}
+            for rid, t in teachers.items():
+                at = time.monotonic()
+                ready[rid] = t.prepare_signal(perceived[rid], now)
+                teacher_prepare_s[rid] = time.monotonic()-at
+                timings['teacher'] += teacher_prepare_s[rid]
             permits = start_sync.tick(ready, now)
             lift_permits = lift_sync.tick({rid: t.lift_ready() for rid, t in teachers.items()}, now)
             for rid, t in teachers.items():
@@ -422,14 +429,16 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
                 elapsed = clocks[rid].observe((skill, t.end, t.handoff), now, previous[rid]['pwm'])
                 t.skill_started = now-elapsed['skill_elapsed_s']
                 clean, done = t.step(perceived[rid], now, permit_pick=permits[rid], permit_lift=lift_permits[rid])
-                timings['teacher'] += time.monotonic()-at
+                teacher_step_s = time.monotonic()-at
+                timings['teacher'] += teacher_step_s
+                teacher_compute_s = teacher_prepare_s[rid]+teacher_step_s
                 applied = json.loads(json.dumps(clean))
                 v5.command(applied)
                 apply(ports[rid], applied, now, previous[rid])
                 previous[rid] = applied
                 models[rid].issue(applied)
                 t.remember_applied(applied)
-                if crate_profile in (CRATE13, CRATE14, CRATE15):
+                if crate_profile in (CRATE13, CRATE14, CRATE15, CRATE16):
                     if t.phase == 'closed' and rid not in closed_commands:
                         closed_commands[rid] = dict(applied['pwm'])
                     if rid in closed_commands:
@@ -445,6 +454,8 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
                     't': now, 'sample_id': f"{plan['episode_id']}:{i}:{rid}", 'object_kind': 'heavy_crate',
                     'role': CRATE.role_of(t.end), 'skill': skill, 'done': done, 'teacher_phase': t.phase,
                     'clean_teacher_command': clean, 'applied_command': applied, 'handoff': t.handoff,
+                    'teacher_compute_s': teacher_compute_s, 'teacher_compute_total_s': timings['teacher'],
+                    'teacher_prepare_s': teacher_prepare_s[rid], 'teacher_step_s': teacher_step_s,
                     'skill_elapsed_s': elapsed['skill_elapsed_s'], 'pwm_elapsed_s': elapsed['pwm_elapsed_s'],
                     'assignment_source': plan['assignment_source'],
                     'skill_instruction_source': 'GO_ACK_code_messages; demo own READY; runtime LLM skill'})+'\n')
@@ -547,7 +558,7 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
         code = PairReleaseCode(R,channel=release_channel,input_audit=boundary_audit)
         from sim.crate_inspection_return import reverse_lift, inspection_choice
         return_paths = ({rid: reverse_lift(closed_commands[rid], rel[rid].pwm, lift_command_history[rid])
-                         if rid in closed_commands else None for rid in roles} if crate_profile in (CRATE13, CRATE14, CRATE15) else {})
+                         if rid in closed_commands else None for rid in roles} if crate_profile in (CRATE13, CRATE14, CRATE15, CRATE16) else {})
         release_t0 = float(world.data.time)
         st = {'phase': 'look', 'since': release_t0, 'iter': 0, 'steps': 0, 'search': 0, 'sched': {}, 'plan': {}, 'go': None,
               'after_visible': False, 'choice': None, 'inspection_used': False}
@@ -685,7 +696,7 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
             elif ph == 'await_look' and ready_to('look', now):
                 choice = code.decide(now, require_seen=False)
                 st['choice'] = choice
-                if (crate_profile in (CRATE13, CRATE14, CRATE15) and inspection_choice(choice, return_paths,
+                if (crate_profile in (CRATE13, CRATE14, CRATE15, CRATE16) and inspection_choice(choice, return_paths,
                         used=st['inspection_used'], after_visible=st['after_visible']) == 'return_to_pickup_for_observation'):
                     start_inspection_return(now)
                 elif release_channel==RELEASE and (choice['action'] in ('observe','handoff') or st['steps']>=8):
@@ -745,7 +756,7 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
             elif ph == 'observe' and age >= .6:
                 reports = {rid: t.report(now, 'observe') for rid, t in rel.items()}
                 blind = ([rid for rid, t in rel.items() if t.fixed_message('observe', now).value['signal'] == 'UNKNOWN']
-                         if crate_profile in (CRATE13, CRATE14, CRATE15) else [rid for rid, r in reports.items() if r['kind'] == 'prior'])
+                         if crate_profile in (CRATE13, CRATE14, CRATE15, CRATE16) else [rid for rid, r in reports.items() if r['kind'] == 'prior'])
                 if blind and st['search'] < 4:
                     st['search'] += 1
                     offset = (250, -250, 500, -500)[st['search']-1]
@@ -842,7 +853,7 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
                     'teacher_phase': st['phase'], 'wheels': list(wheels[rid].levels), 'wheel_until': list(wheels[rid].until),
                     'pwm': {str(s): t.pwm[s] for s in v5.SERVOS}, 'holding_belief': t.holding,
                     'done': st['phase'] == 'done', 'report': t.last_report,
-                    **({'observation': release_inputs[rid], 'phase_before': ph} if crate_profile in (CRATE13, CRATE14, CRATE15) else {})})+'\n')
+                    **({'observation': release_inputs[rid], 'phase_before': ph} if crate_profile in (CRATE13, CRATE14, CRATE15, CRATE16) else {})})+'\n')
             if k % 10 == 0:
                 frames(k, 'release-'+st['phase'])
             issued = {rid: (list(wheels[rid].levels),

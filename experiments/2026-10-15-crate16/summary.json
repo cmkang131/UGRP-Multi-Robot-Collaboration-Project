@@ -1,0 +1,243 @@
+{
+  "scope": "offline saved inputs only; opt-in timings use teacher-forced ORIGINAL issued history; no rollout/success claim",
+  "baseline_matched": 1424,
+  "baseline_total": 1424,
+  "all_teacher_compute_s": {
+    "n": 1424,
+    "min": 3.3125048503279686e-05,
+    "p50": 0.0014145420864224434,
+    "p95": 0.07271149998996407,
+    "max": 0.23041970701888204,
+    "sum": 12.292902193497866
+  },
+  "route_retests": 196,
+  "routes_found": 196,
+  "route_minimum_gap_mm": {
+    "n": 196,
+    "min": 15.549614636541707,
+    "p50": 18.906348792052594,
+    "p95": 28.718044268088516,
+    "max": 28.728013618267777,
+    "sum": 3747.291123582712
+  },
+  "preferred_pad_counts": {
+    "0.015": 196
+  },
+  "unreachable_goal": {
+    "path_found": false,
+    "path_s": 0.028776791063137352,
+    "stats": {
+      "expansions": 192,
+      "segment_calls": 316,
+      "segment_cache_hits": 0,
+      "budget_exhausted": 2,
+      "path_pads_m": []
+    }
+  },
+  "ci_baseline_d3571214": "CI 미실행",
+  "physical_runs": 0,
+  "render_calls": 0,
+  "remote_connections": 0,
+  "model_calls": 0,
+  "source_base_sha": "d35712148d2acd8039c3e31ef466f551ba23fac1",
+  "tests": {
+    "passed": 104,
+    "processes": 1,
+    "final_queue_and_safety_recheck_passed": 12
+  },
+  "runs": [
+    {
+      "run": "crate-reproduction-77990-8007db00",
+      "total_ticks": 290,
+      "changed_command_ticks": 142,
+      "teacher_compute_s": {
+        "n": 290,
+        "min": 4.416704177856445e-05,
+        "p50": 0.002203957992605865,
+        "p95": 0.07832620793487877,
+        "max": 0.23041970701888204,
+        "sum": 9.980227249092422
+      },
+      "teacher_forced_outcomes": {
+        "r1": {
+          "phase": "approach",
+          "outcome": null
+        },
+        "r2": {
+          "phase": "approach",
+          "outcome": "approach_blocked_handoff"
+        }
+      }
+    },
+    {
+      "run": "crate-reproduction-79314-8007db00",
+      "total_ticks": 282,
+      "changed_command_ticks": 137,
+      "teacher_compute_s": {
+        "n": 282,
+        "min": 3.866699989885092e-05,
+        "p50": 0.00010570697486400604,
+        "p95": 0.0034909159876406193,
+        "max": 0.052987499977461994,
+        "sum": 0.44189384835772216
+      },
+      "teacher_forced_outcomes": {
+        "r1": {
+          "phase": "search",
+          "outcome": null
+        },
+        "r2": {
+          "phase": "approach",
+          "outcome": "approach_blocked_handoff"
+        }
+      }
+    },
+    {
+      "run": "crate-reproduction-79317-8007db00",
+      "total_ticks": 232,
+      "changed_command_ticks": 53,
+      "teacher_compute_s": {
+        "n": 232,
+        "min": 6.204191595315933e-05,
+        "p50": 0.002314292942173779,
+        "p95": 0.007218707934953272,
+        "max": 0.08810054208151996,
+        "sum": 0.7407256934093311
+      },
+      "teacher_forced_outcomes": {
+        "r1": {
+          "phase": "align",
+          "outcome": "alignment_no_progress"
+        },
+        "r2": {
+          "phase": "approach",
+          "outcome": null
+        }
+      }
+    },
+    {
+      "run": "crate-diag-79450-8007db00",
+      "total_ticks": 346,
+      "changed_command_ticks": 43,
+      "teacher_compute_s": {
+        "n": 346,
+        "min": 3.3125048503279686e-05,
+        "p50": 0.0007299990393221378,
+        "p95": 0.0029139999533072114,
+        "max": 0.007705749943852425,
+        "sum": 0.38590366940479726
+      },
+      "teacher_forced_outcomes": {
+        "r1": {
+          "phase": "align",
+          "outcome": "alignment_no_progress"
+        },
+        "r2": {
+          "phase": "ready",
+          "outcome": null
+        }
+      }
+    },
+    {
+      "run": "crate-diag-79451-8007db00",
+      "total_ticks": 274,
+      "changed_command_ticks": 62,
+      "teacher_compute_s": {
+        "n": 274,
+        "min": 6.099895108491182e-05,
+        "p50": 0.0021448329789564013,
+        "p95": 0.008216458023525774,
+        "max": 0.02800816809758544,
+        "sum": 0.7441517332335934
+      },
+      "teacher_forced_outcomes": {
+        "r1": {
+          "phase": "align",
+          "outcome": null
+        },
+        "r2": {
+          "phase": "align",
+          "outcome": "alignment_no_progress"
+        }
+      }
+    }
+  ],
+  "input_audit": {
+    "crate-reproduction-77990-8007db00": {
+      "held_world_reads": 0,
+      "invisible_measurements": 0
+    },
+    "crate-reproduction-79314-8007db00": {
+      "held_world_reads": 0,
+      "invisible_measurements": 0
+    },
+    "crate-reproduction-79317-8007db00": {
+      "held_world_reads": 0,
+      "invisible_measurements": 0
+    },
+    "crate-diag-79450-8007db00": {
+      "held_world_reads": 0,
+      "invisible_measurements": 0
+    },
+    "crate-diag-79451-8007db00": {
+      "held_world_reads": 0,
+      "invisible_measurements": 0
+    }
+  },
+  "final_artifacts": {
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/crate16-d3571214-final/verification.json": "f0b62ad3f0eaa34bb4d1ae5570a89ccb6074a8c1c33fc5fcdb02718456271e9f",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/crate16-d3571214-final/ticks.jsonl": "9214b798d42956fc5020a4e75eb6707c0110689724bdbf691fdf5535f9bd141f",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/crate16-d3571214-final/route-retests.json": "9e53de9638141ef35c12e01eae37d674aa6745d26c09a48430fe1d5658efa426",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/crate16-d3571214-final/pytest.xml": "85c19c6591411eb7376fe8259918994548454334bb707c3afe38a5b1f798160a",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/crate16-d3571214-final/pytest-queue-final.xml": "922fa1cf97f9ed6c846bbab4a195dacd878b94bc8b9d2d5bdc0848a03a951a65"
+  },
+  "source_file_sha256": {
+    "sim/crate_motion_v16.py": "55c822a14c52f72f6d377949239f373029c0575446ec8316fb0bf3dff6094b2f",
+    "sim/crate_grasp_teacher.py": "a814d5e04d5c487fc9ab492f19f458103fba5d5a9e12eca116342b3d2ee83f16",
+    "scripts/run_crate_teacher.py": "f160c8c2d0d62defcbd4c10fcc38125fc646a14f8c7e0c85c287e93771be1eab",
+    "sim/crate_observation_v12.py": "02b60c225beadf2123db09c895c98876e12157fca3febc319932fb9eb4c2f4f3",
+    "scripts/run_ci_tests.py": "a2fe2412fc95ff76b2c9d024838277189a363e8efde4afb687641c62f22ede15",
+    "configs/grasp_act_seed_splits.json": "9284163bf81fb51663d75fcf3e6a76b84b5b005c2ca55a822b630c4ee5212667",
+    "tests/test_crate16.py": "a43b31b2f69135fc52e98c8d8f0b41d88dc43ddd63c75e856238d31f788251e5",
+    "experiments/2026-10-15-crate16/queue.py": "df027911ba5a26711fb000b191c4a0a2e44364e39fac3cea35a34c380312a1c6"
+  },
+  "regression_fixtures": {
+    "77990_r2_ticks": [
+      45,
+      70
+    ],
+    "nonzero_search_rotation": true,
+    "side_view_paths_each": 7
+  },
+  "queue": {
+    "reproduction_seeds": [
+      77990,
+      79314,
+      79317,
+      79450,
+      79451
+    ],
+    "diagnostic_seeds": [
+      79900,
+      79901,
+      79902,
+      79903,
+      79904,
+      79905,
+      79906,
+      79907,
+      79910,
+      79911
+    ],
+    "execution_approved": false,
+    "gate_approved": false,
+    "training_approved": false
+  },
+  "limitations": [
+    "saved original histories only, not counterfactual physical success",
+    "step+prepare compute, warm exact IK/lift memoization from the existing replay helper",
+    "saved prefixes cover only 11.5-17.2 SIM seconds; actual VM first30 remains unmeasured",
+    "raw local originals are not a remote backup",
+    "live remote seed inventory not checked"
+  ]
+}

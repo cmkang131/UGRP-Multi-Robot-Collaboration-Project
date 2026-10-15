@@ -32,9 +32,18 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
         if crate_alignment != 'off' and (crate_candidate_recovery == 'off' or crate_stances == 'off'):
             raise ValueError('crate14 alignment requires crate13 staging and stances')
         from sim.crate_motion_v15 import MODE as MOTION
-        if crate_motion not in ('off', MOTION):raise ValueError('unknown crate motion')
+        from sim.crate_motion_v16 import MODE as MOTION16
+        if crate_motion not in ('off', MOTION, MOTION16):raise ValueError('unknown crate motion')
         if crate_motion != 'off' and crate_alignment == 'off':raise ValueError('crate15 requires crate14 alignment')
         self.crate_motion = crate_motion
+        self.navigation_cache = {}
+        self.navigation_t = None
+        self.navigation_budget = None
+        self.motion_blocked_since = None
+        self.motion_recovery_at = None
+        self.motion_blocked_origin = None
+        self.teacher_compute_s = 0.
+        self.teacher_compute_total_s = 0.
         self.crate15_errors = None
         self.search_view_origin = None
         self.search_view_key = None
@@ -214,6 +223,14 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
         return self.peer_elapsed_s >= 12.-1e-8
 
     def _peer_route(self, world, goal, now):
+        if self.crate_motion == 'crate_motion_v16':
+            nav = self._navigation(world)
+            pose = world['robots'][self.rid]['pose']
+            target = nav.waypoint(pose[:2], self.path, nav.focus or goal)
+            if not nav.free(goal, nav.heading_at(goal, pose[2])) or target is None:
+                self._motion_blocked(world, now)
+                return self._hold(now)
+            return None
         if self.crate_motion != 'off':
             # Peer footprints already constrain every goal, route and pulse.
             # Do not reintroduce the old circular peer-wait gate here.
@@ -237,18 +254,65 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
         self.staging_clock_t = now
 
     def _staging_expired(self, now):
+        if self.crate_motion == 'crate_motion_v16':
+            # Wall time in SIM seconds includes all peer pauses. At 12 s the
+            # step-level recovery retreats/relooks; at 24 s it hands off.
+            return self.motion_blocked_since is not None and now-self.motion_blocked_since >= 24.-1e-8
         if self.crate_alignment == 'off':
             return self.staging_since is not None and now-self.staging_since >= 12.-1e-8
         self._staging_clock(now)
         return self.staging_elapsed_s >= 12.-1e-8
 
     def _navigation(self, world):
+        if self.crate_motion == 'crate_motion_v16':
+            from sim.crate_motion_v16 import Navigation, MAX_TICK_EXPANSIONS
+            if self.navigation_t != world['t']:
+                self.navigation_cache = {}
+                self.navigation_t = world['t']
+                self.navigation_budget = {'remaining': MAX_TICK_EXPANSIONS}
+            snapshot = {k: world[k] for k in ('t', 'robots', 'beam', 'visibility', 'objects', 'walls')}
+            search = self.phase in ('search', 'relook')
+            key = (self.folded_ready, search, repr(snapshot))
+            if key not in self.navigation_cache:
+                self.navigation_cache[key] = Navigation(snapshot, self.rid, self.folded_ready,
+                    self.cargo_profile, self.bounds, end=self.end, search=search, budget=self.navigation_budget)
+            return self.navigation_cache[key]
         if self.crate_motion != 'off':
             from sim.crate_motion_v15 import Navigation
             return Navigation(world,self.rid,self.folded_ready,self.cargo_profile,self.bounds,end=self.end)
         if self.crate_wall_footprint=='off':return None
         from sim.crate_navigation_v12 import WallFootprint
         return WallFootprint(world,self.rid,self.folded_ready,self.cargo_profile,self.bounds)
+
+    def _motion_blocked(self, world, now):
+        if self.motion_blocked_since is None:
+            self.motion_blocked_since = now
+            self.motion_blocked_origin = tuple(world['robots'][self.rid]['pose'][:2])
+
+    def _motion_timeout(self, world, now):
+        if self.motion_blocked_since is None:
+            return None
+        elapsed = now-self.motion_blocked_since
+        if elapsed >= 24.-1e-8:
+            self.outcome = 'approach_blocked_handoff'
+            self.crate_recovery_log.append({'t': now, 'recovery': 'crate16_blocked_24s_handoff'})
+            return self._hold(now)
+        if elapsed >= 12.-1e-8 and self.motion_recovery_at is None:
+            self.motion_recovery_at = now
+            if self.search_view_key is not None:
+                self.search_view_visited.add(self.search_view_key)
+            self.search_view_key = None; self.search_view_progress = None
+            self.staging_since = None; self.staging_peer_blocked = False
+            self.path = []; self.path_goal = None; self.next_plan = now
+            self._begin_relook(now, 'crate16_blocked_12s_backoff_relook')
+            self.crate_recovery_log.append({'t': now, 'recovery': 'crate16_blocked_12s_backoff_relook',
+                                            'next_action': 'checked_backoff_then_other_view', 'elapsed_s': elapsed})
+        if self.motion_recovery_at is not None and now-self.motion_recovery_at < 1.-1e-8:
+            # This proposal still passes the ordinary SE(2) pulse check. If
+            # retreat is obstructed, the arm/body scan supplies reobservation.
+            self.arm.tick(now)
+            return self._continuous(now, -.05, 0., 0.)
+        return None
 
     def _uses_goal_set(self, world):
         if self.crate_wall_footprint!='off' or self.crate_stances!='off':return True
@@ -293,6 +357,13 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
     def _plan_approach(self, world, now):
         old_path, old_goal, old_choice = list(self.path), self.path_goal, self.approach_choice
         valid = super()._plan_approach(world, now)
+        if self.crate_motion == 'crate_motion_v16':
+            if not valid:
+                self._motion_blocked(world, now)
+            elif (self.motion_blocked_origin is not None and
+                  math.dist(world['robots'][self.rid]['pose'][:2], self.motion_blocked_origin) >= .05):
+                self.motion_blocked_since = None; self.motion_recovery_at = None
+                self.motion_blocked_origin = None
         if self.crate_motion != 'off' and not valid and old_path and old_choice not in self.approach_excluded:
             nav=self._navigation(world);pose,g,heading,goal=self._geometry(world)
             nearest=min(range(len(old_path)),key=lambda i:math.dist(pose[:2],old_path[i]))
@@ -376,6 +447,17 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
         if self.crate_motion != 'off' and self.phase in ('approach','align','ready','search','relook'):
             nav=self._navigation(truth)
             if nav.pulse_safe(value):return value
+            if self.crate_motion == 'crate_motion_v16':
+                # Preserve search yaw or escape from an admitted margin; never
+                # bypass collision checks when a combined pulse is rejected.
+                from harness.grasp_act_visible_world import command_delta
+                turn = command_delta(value, .1)[2]
+                attempts = (self._continuous(now, 0., 0., math.copysign(.15, turn)),
+                            self._continuous(now, -.05, 0., 0.))
+                for candidate in attempts:
+                    if any(candidate['wheels']) and nav.pulse_safe(candidate):
+                        self.crate_recovery_log.append({'t': now, 'recovery': 'crate16_safe_escape_pulse'})
+                        return candidate
             self.crate_recovery_log.append({'t':now,'recovery':'crate15_unsafe_pulse_hold_replan'})
             self.next_plan=now
             return self._hold(now)
@@ -519,6 +601,11 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
         # Same own-command propagation as the parent, but with the extra permit.
         from sim.grasp_act_teacher_v3 import propagate_owned
         from copy import deepcopy
+        import time
+        at = time.perf_counter()
+        if self.crate_motion == 'crate_motion_v16':
+            # No cached visible cargo survives across ticks or into holding.
+            self.navigation_t = None; self.navigation_cache = {}
         if self.local_seen is not None and self.last_command is not None and self.last_tick is not None:
             self.local_seen = propagate_owned(self.local_seen, self.last_command, min(.1, now-self.last_tick))
         value, done = self._step(truth, now, permit_pick=permit_pick, permit_lift=permit_lift)
@@ -527,11 +614,17 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
             self.progress.reset()
         self.last_command = deepcopy(value)
         self.last_tick = now
+        self.teacher_compute_s = time.perf_counter()-at
+        self.teacher_compute_total_s += self.teacher_compute_s
         return value, done
 
     def _step(self, truth, now, *, permit_pick, permit_lift=False):
         if self.outcome is not None:
             return self._hold(now), False
+        if self.crate_motion == 'crate_motion_v16' and self.phase in ('approach', 'align', 'ready', 'search', 'relook'):
+            recovery = self._motion_timeout(truth, now)
+            if recovery is not None:
+                return recovery, False
         if (self.crate_candidate_recovery != 'off' and self.staging_since is not None
                 and self.phase in ('approach', 'search', 'relook') and self._staging_expired(now)):
             self.outcome = 'approach_blocked_handoff'
@@ -565,6 +658,7 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
                 'crate_stances': self.crate_stances, 'crate_pulse_safety': self.crate_pulse_safety,
                 'crate_candidate_recovery': self.crate_candidate_recovery, 'crate_recovery_log': self.crate_recovery_log,
                 'crate_alignment': self.crate_alignment, 'crate_motion': self.crate_motion,
+                'teacher_compute_s': self.teacher_compute_s, 'teacher_compute_total_s': self.teacher_compute_total_s,
                 'staging_clock': {'elapsed_s': self.staging_elapsed_s, 'peer_paused_s': self.staging_paused_s,
                                   'peer_blocked': self.staging_peer_blocked},
                 'closed_at': self.closed_at, 'lift_done': self.lift_done,
