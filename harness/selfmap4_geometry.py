@@ -163,6 +163,7 @@ class StaticRegistration:
                 raise ValueError('reloc12 requires multiframe registration and bool toggles')
         self.raw_cov_gate = reloc12_raw_cov_gate_v1
         self.ransac_hypotheses = reloc12_ransac_hypotheses_v1
+        self.hypothesis_cache = None
         self.wall_field = reloc11_wall_field_v1
         self.pf = create(static, option='static_walls_v1' if self.wall_field else 'static_landmarks_v1', seed=5064)
         if self.wall_field:
@@ -259,10 +260,21 @@ class StaticRegistration:
                 raise ValueError('INVALID_SELFMAP6_REGISTRATION')
             if self.ransac_hypotheses:
                 from harness.reloc12_registration import ransac_hypotheses as registration_hypotheses
+            def search_now():
+                if self.ransac_hypotheses and not row['updated'] and self.hypothesis_cache is not None:
+                    from harness.active_relocalization import relative_candidates
+                    saved, previous_own = self.hypothesis_cache
+                    return dict(saved, candidates=[p.tolist() for p in relative_candidates(
+                        saved['candidates'], previous_own, own_pose)] if saved['candidates'] else [], refresh='command_propagation_between_PF_updates')
+                found = registration_hypotheses(self.evidence, self.pf.landmark_map.edges, own_pose, cov)
+                if self.ransac_hypotheses:
+                    found['refresh'] = 'fresh_PF_update'
+                    self.hypothesis_cache = (dict(found), np.asarray(own_pose).copy())
+                return found
             search = None
             ambiguity = dict(candidate_count=0, unique=False, candidates=[], evaluated=False)
             if reliable:
-                ambiguity = registration_hypotheses(self.evidence, self.pf.landmark_map.edges, own_pose, cov)
+                ambiguity = search_now()
                 search = ambiguity
                 ambiguity['evaluated'] = True
                 unique_pose = np.asarray(ambiguity['candidates'][0]) if ambiguity['unique'] else None
@@ -271,7 +283,7 @@ class StaticRegistration:
             geometry['ambiguity'] = ambiguity
             if self.active_relocalization != 'off':
                 from harness.active_relocalization import conditioned_modes, relative_candidates
-                search = search if search is not None else registration_hypotheses(self.evidence, self.pf.landmark_map.edges, own_pose, cov)
+                search = search if search is not None else search_now()
                 candidates = search['candidates'] or [row['pose']]
                 if self.command_anchor is not None:
                     previous_world, previous_own = self.command_anchor

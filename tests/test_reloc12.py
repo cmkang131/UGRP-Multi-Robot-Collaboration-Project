@@ -101,3 +101,19 @@ def test_route_rejection_names_wall_and_signed_minimum_gap():
  r=route_context((0,0),(1,0),[],[(.5,0,.05,1,0)],.17,names=['wall_mid'])
  assert r['blocked_object']=='wall_mid' and r['minimum_gap_m']==pytest.approx(-.17)
  assert r['diagnostic_checks']==101
+
+
+def test_ransac_refreshes_on_pf_update_and_propagates_other_frames(monkeypatch):
+ import harness.reloc12_registration as rr
+ static,_=g.static_input();r=g.StaticRegistration(static,multiframe_registration=reg.OPTION,
+  correction_safety='selfmap6_correction_safety_v1',active_relocalization='reloc8_active_vision_v1',
+  reloc10_registration_v1=True,reloc12_raw_cov_gate_v1=True,reloc12_ransac_hypotheses_v1=True)
+ calls=[]
+ monkeypatch.setattr(rr,'ransac_hypotheses',lambda *a:(calls.append(1) or dict(candidate_count=0,unique=False,candidates=[],search_complete=True)))
+ update=[True]
+ monkeypatch.setattr(r.pf,'step',lambda **kw:dict(pose=[0,0,0],covariance=np.eye(3).tolist(),updated=update[0],resolved=False,cluster={'mass':0.},sensor={}))
+ r.step(dict(features=[],segments=[]),[0,0,0],{6:1500},0,[0,0,0]);update[0]=False
+ r.step(dict(features=[],segments=[]),[0,0,0],{6:1500},.2,[.01,0,0])
+ assert len(calls)==1 and not r.last['resolved']
+ update[0]=True;r.step(dict(features=[],segments=[]),[0,0,0],{6:1500},.4,[.01,0,0])
+ assert len(calls)==2
