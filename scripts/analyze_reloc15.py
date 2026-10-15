@@ -83,6 +83,16 @@ def analyze(folder):
             command_distance_m=sum(e['command_distance_m'] for e in es),
             actual_xy_m=sum(e['actual_xy_m'] for e in es),
             min_cargo_z_m=min(e['min_z_m'] for e in es)))
+    observed={(g['held_eval'],g['command_mode']) for g in summaries}
+    for held in (False,True):
+        for mode in ('idle','translation','rotation','mixed'):
+            if (held,mode) not in observed:
+                summaries.append(dict(held_eval=held,command_mode=mode,N=0,sim_s=0.,
+                    command_abs_yaw_deg=0.,actual_abs_yaw_deg=0.,actual_net_yaw_deg=0.,
+                    actual_over_command_abs=None,ratio_status='no_samples',
+                    zero_command_actual_abs_yaw_deg=0.,residual_abs_yaw_p50_p95_max_deg=None,
+                    command_distance_m=0.,actual_xy_m=0.,min_cargo_z_m=None))
+    summaries.sort(key=lambda g:(g['held_eval'],g['command_mode']))
     high=max((r for r in commands if r.get('map_pose') and round(r['t'],5) in truth and
         truth[round(r['t'],5)].get('map_pose_error_yaw_rad') is not None),
         key=lambda r:abs(truth[round(r['t'],5)]['map_pose_error_yaw_rad']),default=None)
@@ -97,22 +107,23 @@ def analyze(folder):
 
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True);p.add_argument('--out',type=Path,required=True);a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True);p.add_argument('--out',type=Path,required=True);p.add_argument('--pattern',default='reloc*-carry*');a=p.parse_args()
     a.out.mkdir(parents=True,exist_ok=True)
-    results=[analyze(f) for f in sorted(a.root.glob('reloc*-carry*'))]
+    results=[analyze(f) for f in sorted(a.root.glob(a.pattern))]
     full=dict(schema='ugrp.reloc15.carry_yaw.v1',analysis_host='gcp1',truth_scope='offline evaluation only',runs=results,
-        held_definition='finger_contacts and cargo min_z above support; issued closure recorded separately',
+        input_pattern=a.pattern,command_yaw_definition='calibrated issued-command drive model; zero raw duty yaw may retain a modeled stop tail; command classes use integrated wheel duties',held_definition='finger_contacts and cargo min_z above support; issued closure recorded separately',
         limitation='saved error reconstruction excludes fix boundaries; exact physical replay required for causal contact attribution')
     (a.out/'carry-yaw-full.json').write_text(json.dumps(full,indent=2)+'\n')
     summary={**full,'runs':[{k:v for k,v in r.items() if k!='intervals'} for r in results]}
     (a.out/'carry-yaw.json').write_text(json.dumps(summary,indent=2)+'\n')
+    fmt=lambda x: f'{x:.5f}' if x is not None else 'n/a'
     lines=['# reloc15 수정 전 운반 yaw 분포', '', '정답은 GCP 오프라인 평가에만 사용. 0 명령 yaw의 비는 정의하지 않음.', '',
         '|원본|held 평가|명령|N|명령 abs °|실제 abs °|실제/명령|순회전 °|최소 화물 z m|',
         '|---|---|---|---:|---:|---:|---:|---:|---:|']
     for r in results:
         for g in r.get('groups',[]):
-            ratio=g['actual_over_command_abs'];ratio=f'{ratio:.3f}' if ratio is not None else 'undefined'
-            lines.append(f"|{r['run']}|{g['held_eval']}|{g['command_mode']}|{g['N']}|{g['command_abs_yaw_deg']:.3f}|{g['actual_abs_yaw_deg']:.3f}|{ratio}|{g['actual_net_yaw_deg']:.3f}|{g['min_cargo_z_m']:.5f}|")
+            ratio=g['actual_over_command_abs'];ratio=f'{ratio:.3f}' if ratio is not None else g['ratio_status']
+            lines.append(f"|{r['run']}|{g['held_eval']}|{g['command_mode']}|{g['N']}|{g['command_abs_yaw_deg']:.3f}|{g['actual_abs_yaw_deg']:.3f}|{ratio}|{g['actual_net_yaw_deg']:.3f}|{fmt(g['min_cargo_z_m'])}|")
     (a.out/'carry-yaw.md').write_text('\n'.join(lines)+'\n')
     print(json.dumps(dict(runs=len(results),scored=sum(r['status']=='scored' for r in results),maxima=[(r['run'],r.get('max_error')) for r in results])))
 

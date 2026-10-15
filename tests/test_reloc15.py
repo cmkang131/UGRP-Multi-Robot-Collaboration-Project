@@ -105,3 +105,18 @@ def test_unresolvable_dense_yaw_never_mutates_pose_or_renews_fix(monkeypatch):
     h.observe(image,3.,own);h.observe(image,3.2,own)
     np.testing.assert_allclose(own.x,[2.,3.,.1]);np.testing.assert_allclose(own.P,np.eye(3)*.01)
     assert h.last['status']=='unknown_yaw_precision' and h.last_measurement_t is None
+
+
+def test_record_only_midpoint_does_not_consume_control_frame_id(tmp_path):
+    from harness.failure_rgb_buffer import FailureRGBBuffer,record_backend_frame
+    class Port:
+        frame_id=7
+        def capture(self):
+            self.frame_id+=1
+            raise AssertionError('recorder used control camera port')
+    port=Port();calls=[]
+    def render(**kw):calls.append(kw);return b'jpeg'
+    backend=SimpleNamespace(now=1.1,world=SimpleNamespace(render_jpeg=render),ports={'r3':port})
+    b=FailureRGBBuffer(tmp_path/'frames');record_backend_frame(b,backend,'r3')
+    assert port.frame_id==7 and calls==[dict(robot_id='r3',camera='robot_cam')]
+    assert b.flush('test')['frames'][0]['t']==1.1

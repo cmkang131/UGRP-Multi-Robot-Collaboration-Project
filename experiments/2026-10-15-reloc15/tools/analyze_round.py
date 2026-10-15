@@ -23,7 +23,7 @@ for p in sorted(R.glob(f'runs/reloc15-r{round_id}-*')):
   report['actual_measurement_t_unique_N']=len({r.get('last_measurement_t') for r in trace if r.get('last_measurement_t') is not None})
  else:
   report=carry(p);trace=rows(raw/'teacher-commands.jsonl');truth={round(r['t'],5):r for r in rows(raw/'eval-only.jsonl') if 'map_pose_error_yaw_rad' in r}
-  held=[truth[round(r['t'],5)] for r in trace if round(r['t'],5) in truth and truth[round(r['t'],5)].get('finger_contacts') and truth[round(r['t'],5)]['min_z']>.05]
+  held=[truth[round(r['t'],5)] for r in trace if round(r['t'],5) in truth and truth[round(r['t'],5)].get('finger_contacts') and truth[round(r['t'],5)]['min_z']>truth[round(r['t'],5)].get('support_z',0.)]
   yaw=[abs(math.degrees(r['map_pose_error_yaw_rad'])) for r in held if r['map_pose_error_yaw_rad'] is not None]
   unique={r['map_pose'].get('reloc15_heading',{}).get('exposure_sim_t'):r['map_pose'].get('reloc15_heading',{}) for r in trace}
   report['heading_observation_counts']=dict(Counter(h.get('category','off') for h in unique.values()))

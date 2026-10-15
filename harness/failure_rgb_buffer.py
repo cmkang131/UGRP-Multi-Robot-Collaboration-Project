@@ -23,3 +23,9 @@ class FailureRGBBuffer:
             frame_N=len(records),bytes=sum(r['bytes'] for r in records),frames=records)
         (self.out/'manifest.json').write_text(json.dumps(value,indent=2)+'\n')
         return value
+
+
+def record_backend_frame(buffer,backend,robot):
+    """Render a recorder-owned frame, leaving the control port ID untouched."""
+    jpeg=backend.world.render_jpeg(robot_id=robot,camera='robot_cam')
+    buffer.add(backend.now,jpeg,camera=robot+'/robot_cam')

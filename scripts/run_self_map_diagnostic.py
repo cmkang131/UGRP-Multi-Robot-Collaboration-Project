@@ -311,10 +311,11 @@ def acquire(out, b, backend_factory, *, controller_factory=make_executor, wall_c
                 if monotonic()-started > wall_cap_s:
                     raise TimeoutError('SELF_MAP_HOST_TIME_CAP')
                 if failure_frames is not None and interval > .1:
-                    import base64
                     backend.advance_to(round(t+.1,9))
-                    packet=backend.ports[robot].capture()
-                    failure_frames.add(backend.now,base64.b64decode(packet['image']),camera=robot+'/robot_cam')
+                    # Recording must not increment the control port frame_id:
+                    # natural-floor RANSAC uses that ID as a seed.
+                    from harness.failure_rgb_buffer import record_backend_frame
+                    record_backend_frame(failure_frames,backend,robot)
                 backend.advance_to(round(start+(tick+1)*interval, 9))
         result.update(status='HOST_ERROR' if controller.stop_reason == 'selfmap4_relocalization_exhausted' else 'RECORDED', elapsed_sim_s=backend.now-start,
             termination_category='cap_end' if controller.stop_reason == 'sim_time_cap' else controller.stop_reason,
