@@ -7,13 +7,22 @@ def make_scene(plan):
     # the appearance installer. Applying a second lighting transform afterward
     # would multiply illumination twice, so assemble once at this boundary.
     from sim.zone_scenario_scene import ScenarioFinalV3Scene
-    from sim.final_pair_highpose_nearclip import wrap
+    from sim import final_pair_highpose_nearclip as nearclip
     from sim import masterpi_camera_review_v3 as camera
     from sim.s2_servo_stiffness import transform_xml as stiffness
     from sim.grasp_act_scene import colors
     from sim.scene_contrast_v5 import install, profile_record
     import hashlib
-    scene = wrap(install(ScenarioFinalV3Scene.from_scenario(plan['scenario_id'], plan['seed']), SCENE))
+    scene = install(ScenarioFinalV3Scene.from_scenario(plan['scenario_id'], plan['seed']), SCENE)
+    visual_transform = scene.transform
+    def transform_visual(xml):
+        before = visual_transform(xml)
+        after = nearclip.apply_xml(before)
+        scene.manifest['render_nearclip'] = {**nearclip.record(), 'base_profile': SCENE,
+            'scene_xml_sha256_before_nearclip': hashlib.sha256(before.encode()).hexdigest(),
+            'scene_xml_sha256_after_nearclip': hashlib.sha256(after.encode()).hexdigest()}
+        return after
+    scene.transform = transform_visual
     scene.config['setup_only']['spawns'] = plan['spawns']
     original = scene.robot_transform
     def transform(xml, **kwargs):
