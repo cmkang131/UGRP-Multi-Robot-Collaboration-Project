@@ -27,6 +27,15 @@ def analyze(folder):
         drive_model_deadband_v1=first.get('drive_model_deadband_v1', False),
         reloc9_rotation_calibration_v1=first.get('reloc9_rotation_calibration_v1', False),
         reloc10_rotation_calibration_v1=first.get('reloc10_rotation_calibration_v1', False))
+    unsafe_t={a['t'] for a,b in zip(commands,commands[1:])
+        if a.get('map_pose',{}).get('rgb_fixes') != b.get('map_pose',{}).get('rgb_fixes')}
+    # The evaluator may see a relook correction issued after map_pose logging.
+    # Exclude both adjacent intervals, including a terminal corrected row when
+    # its evaluator-only post-step estimate differs from the logged estimate.
+    for r in commands:
+        e=truth.get(round(r['t'],5),{});post=e.get('lookaround_estimate_xy')
+        if post is not None and not np.array_equal(post,r['map_pose']['pose_estimate'][:2]):
+            unsafe_t.add(r['t'])
     groups = defaultdict(list)
     intervals = []
     excluded = defaultdict(int)
@@ -43,7 +52,7 @@ def analyze(folder):
         # Eval yaw errors are scored after teacher.step; a same-t relook may
         # change the estimate after map_pose was captured. Exclude BOTH sides
         # of fix-count changes from this saved-log reconstruction.
-        if ma['rgb_fixes'] != mb['rgb_fixes']:
+        if old['t'] in unsafe_t or current['t'] in unsafe_t or ma['rgb_fixes'] != mb['rgb_fixes']:
             excluded['fix_boundary'] += 1
             continue
         ya = ma['pose_estimate'][2]-a['map_pose_error_yaw_rad']
