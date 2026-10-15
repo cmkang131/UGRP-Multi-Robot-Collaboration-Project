@@ -1,0 +1,27 @@
+{
+  "cohort": "same planned80; frozen source a41781dd and scene/host/profile unchanged",
+  "camera_hook_error": {
+    "started": 16,
+    "HOST_ERROR": 16,
+    "rerun_same_seeds": true,
+    "fix": "model.cam_* arrays; API11 checked"
+  },
+  "capacity_abort": {
+    "success_preserved": 20,
+    "started_interrupted": 14,
+    "not_started": 46,
+    "finalization_incomplete_HOST_ERROR": 4,
+    "finalized_supervisor_stop": 10,
+    "fix": "Admission denial waits, pending removed after launch; managed worker inventory; SIGINT sent once to Python child; pending and interrupted rows retained"
+  },
+  "same_cohort_resume": {
+    "carried_forward_verified": 20,
+    "resubmitted_or_new": 60,
+    "no_source_or_condition_pooling": true
+  },
+  "regressions": {
+    "capacity_cases_pass": 5,
+    "single_SIGINT_finalization_pass": true
+  },
+  "counts_scope": "These are operational attempts, separate from one qualified outcome per planned source/seed/candidate case"
+}
