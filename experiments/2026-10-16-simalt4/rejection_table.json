@@ -1,0 +1,69 @@
+{
+  "stage": "before_any_physics_workaround",
+  "raw_paths": [
+    "/home/ugrp/ugrp-sim/runs/simalt4/c312-grip",
+    "/home/ugrp/ugrp-sim/runs/simalt4/c316-grip",
+    "/home/ugrp/ugrp-sim/runs/simalt4/warp-v2-forward"
+  ],
+  "distribution": [
+    {
+      "category": "version_collision_topology",
+      "count": 173600,
+      "unit": "physics step in C312/C316 grip",
+      "reason": "plane-mesh multiplicity differs from step1; C316 also fails loaded hold, causal contribution not isolated",
+      "blocking_object": "floor / r1__v3_wheel_*_roller_*_body_contact",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "penetration recorded per step in raw table"
+    },
+    {
+      "category": "compiled_actuator_damping_drift",
+      "count": 4,
+      "unit": "arm actuator",
+      "reason": "same XML produces different actuator_biasprm[:,2] in C312/C316; official 3.15 dampratio breaking change b3dd9e617; changing gains forbidden",
+      "blocking_object": "r1 arm position actuators",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_geometric"
+    },
+    {
+      "category": "capacity_underestimate",
+      "count": 1,
+      "unit": "C316 grip envelope",
+      "reason": "dense maximum nefc129 exceeds simalt3 njmax128 allocation; Warp impact not yet measured",
+      "blocking_object": "MJWarp constraint buffer",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_geometric"
+    },
+    {
+      "category": "backend_topology_difference",
+      "count": 3490,
+      "unit": "physics step in same-version forward",
+      "reason": "first count split at step421/0.10525 SIM s; endpoint only44.5um; do not equate count split to task failure",
+      "blocking_object": "plane-mesh contact set",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "per-step minimum_dist in raw table"
+    }
+  ],
+  "funnel": [
+    {
+      "gate": "C312 dense grip complete",
+      "entered": 1,
+      "passed": 1,
+      "rejected": 0
+    },
+    {
+      "gate": "C316 dense grip complete",
+      "entered": 1,
+      "passed": 1,
+      "rejected": 0
+    },
+    {
+      "gate": "C316 loaded hold",
+      "entered": 30,
+      "passed": 0,
+      "rejected": 30,
+      "unit": "10Hz samples"
+    }
+  ],
+  "reproduce": "scripts/simalt_step_analysis.py; exact argv in evidence summaries",
+  "largest_measured_group": "version_collision_topology; units kept separate, not an additive episode count"
+}

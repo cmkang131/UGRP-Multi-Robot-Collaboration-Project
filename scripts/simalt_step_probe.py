@@ -31,7 +31,9 @@ def main():
     p.add_argument('--case', choices=['forward', 'side', 'turn', 'grip'], required=True)
     p.add_argument('--sha', required=True)
     p.add_argument('--capacity-reference', type=Path, required=True)
-    p.add_argument('--backend-mode', choices=['baseline', 'box-sat-v1'], default='baseline')
+    p.add_argument('--dense-capacity-v1', action='store_true', help='default OFF: use every-step measured capacity envelope')
+    p.add_argument('--record-own-rgb', type=Path, help='recording-only: source assets for a 10Hz own-camera ring, no control feedback')
+    p.add_argument('--backend-mode', choices=['baseline', 'box-sat-v1', 'legacy-plane-v1', 'legacy-plane-sat-v1'], default='baseline')
     a = p.parse_args()
     if not a.enabled or platform.system() != 'Linux':
         p.error('explicit Linux gcp2 opt-in required; Mac physics/render forbidden')
@@ -62,6 +64,8 @@ def main():
             bid = int(m.body_parentid[bid])
         joints.append(int(m.jnt_qposadr[m.body_jntadr[bid]]))
     ref = json.loads(a.capacity_reference.read_text())
+    if ref.get('dense_envelope') and not a.dense_capacity_v1:
+        raise RuntimeError('dense capacity envelope requires explicit --dense-capacity-v1')
     # Workspace allocation only: observed C trace + actual import maximum,
     # rounded to a power of two as in simalt3. Overflow checked each step.
     ncon = 1 << (max(int(d.ncon), max(c['max_ncon'] for c in ref['cases']))-1).bit_length()
@@ -90,6 +94,34 @@ def main():
     records = np.zeros((total, len(COLUMNS)+m.nq+m.nv), dtype=np.float64)
     started = time.perf_counter()
     done = 0
+    renderer=None;rgb_ring=[]
+    if a.record_own_rgb:
+        # Evaluator-only C rasterizer on a separate MjData. No native window,
+        # no controller reads, no change to the stepping model or camera FOV.
+        sys.path.insert(0,str(a.record_own_rgb))
+        import cv2
+        from sim import masterpi_camera_review_v3 as camera
+        from sim.masterpi_camera_profile import raw_fisheye_remap
+        rm=mujoco.MjModel.from_xml_path(str(a.fixture/'scene.xml'))
+        rd=mujoco.MjData(rm)
+        cid=rm.camera('r1__robot_cam').id
+        rm.cam_pos[cid]=camera.POSITION_M;rm.cam_quat[cid]=camera.QUAT_WXYZ
+        for name in ('camera_bracket','camera_body','camera_lens_visual'):
+            gid=mujoco.mj_name2id(rm,mujoco.mjtObj.mjOBJ_GEOM,'r1__'+name)
+            if gid>=0:rm.geom_group[gid]=5
+        mx,my=raw_fisheye_remap(640,480)
+        renderer=mujoco.Renderer(rm,height=480,width=640)
+        own=mujoco.MjvOption();own.geomgroup[:]=1;own.geomgroup[4:]=0
+        def capture_rgb(qpos,qvel,sim_t):
+            rd.qpos[:]=qpos;rd.qvel[:]=qvel;rd.time=sim_t
+            mujoco.mj_forward(rm,rd)
+            renderer.update_scene(rd,camera='r1__robot_cam',scene_option=own)
+            rgb=cv2.remap(renderer.render().copy(),mx,my,cv2.INTER_LINEAR,borderMode=cv2.BORDER_CONSTANT)
+            ok,encoded=cv2.imencode('.jpg',cv2.cvtColor(rgb,cv2.COLOR_RGB2BGR))
+            if not ok:raise RuntimeError('RGB recording encode failed')
+            rgb_ring.append((sim_t,encoded.tobytes()))
+            if len(rgb_ring)>100:rgb_ring.pop(0)
+        metadata['recording_RGB_renderer']='C rasterizer on current engine state, evaluator only; not Warp render parity'
     try:
         if a.engine == 'cpu':
             for t in range(total):
@@ -109,6 +141,7 @@ def main():
                                 r[15+k]=max(r[15+k],c.dim)
                 r[len(COLUMNS):] = np.r_[d.qpos,d.qvel]
                 done=t+1
+                if renderer and done%400==0:capture_rgb(d.qpos,d.qvel,done*dt)
                 if done % 4000 == 0:
                     metadata.update(steps_done=done, sim_s=done*dt);save()
         else:
@@ -124,7 +157,10 @@ def main():
             # Pinned upstream io.py:433 adjusts to 1e-6 for float32. Match C's
             # original solver configuration; this does not change m.opt.
             wm.opt.tolerance.fill_(float(m.opt.tolerance))
-            if a.backend_mode == 'box-sat-v1':
+            if a.backend_mode.startswith('legacy-plane'):
+                from simalt_collision_compat import install_legacy_plane
+                metadata['collision_adapter']=install_legacy_plane(m)
+            if a.backend_mode in ('box-sat-v1','legacy-plane-sat-v1'):
                 # Pinned collision_driver.py routes BOX/BOX through CCD by default.
                 # The upstream primitive SAT collider is an available alternate
                 # collision pipeline, not a change to friction/contact parameters.
@@ -199,6 +235,7 @@ def main():
             for begin in range(0,total,400):
                 for _ in range(25):wp.capture_launch(cap.graph)
                 wp.synchronize();done=begin+400
+                if renderer:capture_rgb(wd.qpos.numpy()[0],wd.qvel.numpy()[0],done*dt)
                 if np.any(wd.overflow.numpy()):raise RuntimeError('capacity overflow')
                 if done % 4000==0:
                     metadata.update(steps_done=done,sim_s=done*dt);save()
@@ -213,13 +250,21 @@ def main():
         metadata.update(status='HOST_ERROR',error=str(error),traceback=traceback.format_exc())
         if a.engine=='warp' and 'out' in locals():records=out.numpy()
     finally:
+        if renderer:
+            folder=a.out/'own-RGB-ring';folder.mkdir(exist_ok=False)
+            for t,blob in rgb_ring:(folder/f'{t:.1f}.jpg').write_bytes(blob)
+            metadata['own_RGB_ring']={'frames':len(rgb_ring),'Hz':10,'max_frames':100,
+                'bytes':sum(len(blob) for _,blob in rgb_ring),
+                'first_SIM_s':rgb_ring[0][0] if rgb_ring else None,
+                'last_SIM_s':rgb_ring[-1][0] if rgb_ring else None}
+            renderer.close()
         np.savez_compressed(a.out/'steps.npz',records=records[:done])
         # 10Hz evaluator state ring, for C post-hoc rendering, never control input.
         values=records[399:done:400,len(COLUMNS):]
         np.savez_compressed(a.out/'states.npz',**{a.case:values})
         metadata.update(steps_done=done,sim_s=done*dt,wall_s=time.perf_counter()-started,
                         steps_sha256=digest(a.out/'steps.npz'),
-                        recording_only=True, online_RGB_ring=False,
+                        recording_only=True, online_RGB_ring=bool(a.record_own_rgb),
                         recording_bytes=(a.out/'steps.npz').stat().st_size)
         save()
     print(json.dumps(metadata,indent=2))
