@@ -23,6 +23,9 @@ def write(name,value):
     (R/name).write_text(json.dumps(value,indent=2,allow_nan=False)+'\n')
 
 
+for required in ('native-corrected-bit-parity.json','version-decomposition-corrected.json',
+                 'analysis-corrected-native-backend/summary.json','review-geometry312/review.json'):
+    assert (R/required).is_file(),'final dependency incomplete: '+required
 audit=json.loads(subprocess.check_output(['python3',str(R/'simalt_lease_audit.py'),'simalt5']))
 assert not [p for p in audit['processes'] if p['owned'] and p['pid']!=os.getpid()], 'own writers still running'
 write('writer-exit-audit.json',audit)
@@ -91,7 +94,9 @@ write('collected-summary.json',{'id':'2026-10-16-simalt5','decision':'PARITY_FAI
     'nonphysics_rejections':[{'reason':'native analysis read running Warp; rejected incomplete input','log':str(R/'native-controls.log')},
         {'reason':'direct C312 MJWarp API lacks mjINT_DISCRETE','record':str(R/'direct312-import.json')},
         {'reason':'initial filtered-reference source materialization and network reference clone failures',
-         'logs':['source-materialize.log','clone-510.log']}],
+         'logs':['source-materialize.log','clone-510.log']},
+        {'reason':'first collector started before native bit-parity artifact existed; no final manifest produced',
+         'log':str(R/'collect-final-incomplete.log')}],
     'rejection_table':str(R/'rejection_table.json'),'raw_root':str(R),
     'originals_backup':'L4 persistent disk only; no external full backup'})
 # All outputs above are now stable. The collector's own log and manifests are
