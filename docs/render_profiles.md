@@ -1,6 +1,46 @@
 # 렌더 프로필
 
-`sim.render_profile.install(scene, name)`은 기존 프로필의 이름·정의 해시·전후 XML 해시를 장면 manifest에 남긴다. 이 파일은 P03 고정 자산이므로 main과 바이트 동일하게 유지한다. 새 소비자는 `sim.render_profile_selection.for_name(name)`으로 모듈을 선택한다. `floor_light_textured_v1`을 요청할 때만 별도 `sim.render_profile_textured`를 불러오며 기존 registry를 수정하지 않는다. 생략/`shadows_v1`은 원래 XML 바이트를 유지한다. `floor_light_v1`은 기존 밝은 바둑판이며 기본 동작을 바꾸지 않는다.
+`sim.render_profile.install(scene, name)`은 기존 프로필의 이름·정의 해시·전후 XML 해시를 장면 manifest에 남긴다. 이 파일은 P03 고정 자산이므로 main과 바이트 동일하게 유지한다. 새 소비자는 `sim.render_profile_selection.for_name(name)`으로 모듈을 선택한다. `floor_light_textured_v1` 또는 `walls_floor_textured_v2`를 요청할 때만 별도 `sim.render_profile_textured`를 불러오며 기존 registry를 수정하지 않는다. 생략/`shadows_v1`은 원래 XML 바이트를 유지한다. `floor_light_v1`은 기존 밝은 바둑판이며 기본 동작을 바꾸지 않는다.
+
+## 벽·바닥 대비 후보 v4 (기본 off, NOT_READY)
+
+2026-10-16 사용자 “이거는 방식을 바꿔야 할듯”, “벽과 바닥 색을 좀 더 구분되게 하던가”에 따라 벽 ORB 증가보다 기존 selfmap 경계와 바닥 입력을 보존하는 후보를 비교했다. 프로필은 `walls_floor_contrast_v4_dark`, `walls_floor_contrast_v4_light`, `walls_floor_contrast_v4_skirt`, `walls_floor_contrast_v4_luma`, `walls_floor_contrast_v4_flat`이다. 모두 명시 선택만 가능하며 **채택 후보는 없다**. v1/v2/v3 및 후보·화질 결과를 합산하지 않는다.
+
+v1 바닥 PNG·재질/매핑을 그대로 재사용한다. dark/light는 균일 벽, skirt는 기존 cube면에8cm 보통 걸레받이를 칠한 후보다. luma는 기존 v1 벽 PNG/매핑의 RGB에(-1,0,+3)를 더해 저작 회색조를 보존하고, flat은 그 평균에 가까운 균일 색이다. 색/띠 크기는 재질 설계값이며 실측 규격이나 수용 상수가 아니다. 새 형상·마찰·물리·카메라 변경은 없다. `scene_contrast_v4.py`가 자산 manifest·PNG 해시와 v1 floor compiled pixel histogram을 확인한다. 일반/걸레받이 manifest는 `afe9bfd45ed707d5147dea59d333cb06920dc5fd525310d5169816c91c0c929d`, luma는 `68897b78feebfd391586d201dd179a62fa43f8013b34b63611fdafb4d3c078d8`이다.
+
+gcp2에서 최대3라운드를 마쳤다. 완결10조건×88자세=880자세, 각 조건은PNG/JPEG90/PIL82의264 RGB다. 후보×지도 물리·카메라 동일40/40, 기존 상자 종류 검출은 모든 조건·인코딩88/88이었다. `luma/native`만 PNG/JPEG 경계 컬럼 중앙88·하위10%73.5/72.5와 위치 오차 분포를 v1 이상으로 보존했고 LK 회귀도0이었다. 그러나 바닥 특징·연속 매칭 회귀가각16/88자세, 새 색 범위 히트와 실제 양성 지원 손실이 남아 **NOT_READY**다. no-mip의 바닥 총량 증가로 회귀 자세를 상쇄하지 않는다. 기존 의미 색 검출기 범위와 selfmap 코드는 바꾸지 않았다. 새 색 분할은 평가 전용이다.
+
+[실험·funnel·모든 분포·원본/해시·같은 자세 몽타주](../experiments/2026-10-16-scene-tex4/README.md)를 따른다. 기존 소비자의 기본 장면·ACT/교사·위치 추정에 연결하지 않는다. 정적 카메라 관문이며 실제 주행/운반/실물 성공 검증이 아니다.
+
+## 벽·바닥 구분 자연 질감: walls_floor_textured_v2 (기본 off)
+
+2026-10-15 사용자: “벽에도 넣고, 벽 / 바닥 색 다르게 해. 쉽게 구분할 수 있도록. 그렇게 시뮬 바꾼 뒤에 그 상황에 효율적일 수 있는 알고리즘으로 다시 설계 ㄱ(첨부터 다시는 말고, 이거에 맞는 방식으로 하면 좋을듯)”, “일단, 시뮬 환경 먼저 세팅하고 / 그 환경에 맞춰서 다 병렬처리로 진행하면 좋을듯”. 별도 장면 버전이며 기존 v1·다른 호스트 결과와 합산하지 않는다.
+
+낮은 채도의 푸른 회색 벽과 밝은 따뜻한 회색 바닥에 독립적인 얼룩·마모·입자를 넣었다. 반복 타일·인공 마커·AprilTag는 없다. 기존 조명, 충돌 형상·마찰·카메라/FOV·로봇·화물·색 표식은 유지한다. 바닥3072² PNG 한 장, 벽1024² cube면150장을 SHA로 고정했다. 최종 비교 E의 자산 manifest는 `9afa87ec4a04eb230f284b031e4bb57d0ca8ff1a2c6c967b29a9b7da3c3ee396`, 프로필 해시는 `edf3a92a41422a10151b9cb95ec7925998f6790485e28b1920d03ce4576cd9a8`이다.
+
+| PNG 원본 | 벽 | 바닥 |
+|---|---|---|
+| 실제 HSV 범위 (OpenCV) | H108–114 / S8–10 / V98–134 | H15–18 / S8–10 / V146–180 |
+| ORB (nfeatures=800) | 최소0·중앙0·최대483, 양수47/150면 | 640×480 창4개: 793/767/772/793 |
+| 먼 descriptor 유사 비율 | descriptor가 있는47면 중 중앙0·최대2.51%; 103면은 미측정 | 창4개 모두0 |
+| byte 동일32×32 패치 | 150면 모두0 | 0 |
+
+명목 V간격12, Lab L범위 벽103–139/바닥153–185(OpenCV uint8)다. 기존 포괄 페인트 S≥20, 상대 검정 상한 V=.38×255=96.9, 흰 표식 V>180을 피했다. PNG의 **108개 고정/상위집합 HSV·RGB·PIL 범위는 겹침0**이다. 문맥/지지 마스크·조명/압축 후 픽셀에는 이0건을 확대하지 않는다. [전체 표·한계](../experiments/2026-10-15-scene-tex2/png-audit-e/color-ranges.md)를 따른다.
+
+GCP 검토에서 얇은 벽의 `texuniform=true` 방사형 늘어짐과 ±X면의 잘못된 PNG 축을 발견해 v2만 고쳤다. `texuniform=false`이며 ±X면은 PNG폭Z/높이Y, ±Y면은 X/Z, ±Z면은 X/Y다. [MuJoCo3.12.0 렌더 코드](https://github.com/google-deepmind/mujoco/blob/3.12.0/src/render/classic/render_gl3.c#L225), [Khronos cube-map 규격](https://registry.khronos.org/OpenGL/extensions/ARB/ARB_texture_cube_map.txt)에 근거한다. 기존 v1의 코드·자산·해시는 유지한다. 정사각 cube PNG의 비율과 실제 벽면 화면은 달라 각각 측정했으며, 원본의0 ORB도 그대로 보존했다.
+
+**최종 정적 관문 판정은 NOT_READY다.** 소스 `1e9594a9fececf1c5fa4387ed7ac9f08a8459629`로 gcp2 네 지도264/264프레임, 물리/카메라 동일성12/12와 원본 해시를 확인했다. 벽 내부 ORB는 전체 v2 PNG/JPEG 각각11/88프레임에만 있고, 운반 가림16/16에서는 벽이 보이지 않아0이다. PNG 상자종류 검출은 두 기준과88/88 일치했지만 JPEG는 밝은 바닥 기준76/88, 이전 질감 기준82/88이다. 새 질감이 운반 회전 추정을 해결하거나 기존 검출기와 완전 호환된다고 보지 않는다.
+
+`harness.scene_tex2_perception`은 명시적 v2 전용 PNG 명목 보정 후보다. 기존 벽띠 std≤3을 전역 수정하지 않는다. 새 분산 상한은 PNG 휘도·B−R 범위의 범위²/4로 계산하고 벽→바닥 구간 전이를 요구한다. 실제 주행16프레임에서 PNG/JPEG 각각 컬럼 후보4개만 남았고 위치 정확도는 미검증이어서 **미승인** 상태다. 프로필 전용 [후보 설정](../configs/calibration/scene_tex2_camera_candidate.json)은 색 검출의 lossless 원본 경로와 벽 판독 비활성 상태를 기록하며 자동으로 소비자를 변경하지 않는다. 기존 보정의 v3 유효성·기존 실행기의 연결·새 조건 위치 추정은 별도 검증이 필요하다.
+
+```python
+from sim.render_profile_selection import for_name
+name = 'walls_floor_textured_v2'
+scene = for_name(name).install(scene, name)
+# 기존 HIGH 경로에서는 같은 nearclip wrapper와 verify_model을 사용한다.
+```
+
+이 선택기 연결은 고정 실행기를 자동 변경하지 않는다. 소비자의 첫 install/실제 모델 audit에 요청 프로필을 연결하고 새 소스·번들을 고정해야 한다. [실험·원본·funnel·재현](../experiments/2026-10-15-scene-tex2/README.md)을 따른다. Mac에서는 PNG/XML/순수 테스트만 했고 렌더·물리·GUI는 사용하지 않았다.
 
 ## 자연 질감: floor_light_textured_v1 (기본 off)
 
@@ -46,3 +86,19 @@ nearclip_audit = audit(model, base_profile=profile)
 - Rublee, Rabaud, Konolige, Bradski, *ORB: An efficient alternative to SIFT or SURF*, ICCV 2011, pp. 2564–2571, DOI [10.1109/ICCV.2011.6126544](https://doi.org/10.1109/ICCV.2011.6126544). [OpenCV 공식 ORB 설명](https://docs.opencv.org/4.13.0/d1/d89/tutorial_py_orb.html)에서 서지와 FAST/방향 보정 BRIEF·Hamming 사용을 확인했다. IEEE 원문은 접근 확인 화면에 막혀 읽지 못했다.
 - [*Robust RGB-D SLAM Using Point and Line Features for Low Textured Scene*, Sensors 20(17), 4984 (2020)](https://www.mdpi.com/1424-8220/20/17/4984), DOI 10.3390/s20174984. 출판사/PMC 검색 본문의 실험 설명에서 ORB-SLAM2가 `fr3_str_ntex_far/near`에서 실패한 사례를 확인했다. 전체 페이지/PDF 열람은 차단되어 표의 수치를 인용하지 않았다. RGB-D 사례이며 이번 자기 RGB 장면의 성공 근거가 아니다.
 - [MuJoCo 공식 XML reference: texture/material](https://mujoco.readthedocs.io/en/stable/XMLreference.html#asset-texture): PNG/cube 면·`texrepeat`·`texuniform` 규칙을 확인했다. GCP 실행 MuJoCo 버전에서의 실제 바인딩/영상은 별도 관문이다.
+
+## scenetex5 — 장면과 경계 단계의 동시 후보 (2026-10-16, NOT_READY)
+
+벽색/밝기를 바꾸고 v1 바닥/no_mip_v1을 유지하는 별도 기본 off 프로필과
+scene_colour_transition_v1 경계를 추가했다. 중간 채도 남보라, Lab/HSV 분할,
+컬럼별 첫 전이, 유한 2점 직선 합의가 대상이다. 96컬럼/strip2·기존 연결·PlaneFlow는 유지한다.
+
+[3라운드 결과](../experiments/2026-10-16-scene-tex5/README.md)는 NOT_READY다.
+대표 s80의 오차 중앙/p95는 .5/1.5px, 바닥 특징·매칭 분포는 통과했지만
+PNG 경계 컬럼 중앙88→78, LK 하위 분포가 미달이다. 주황 구역 A가 기존 주황 컬럼
+마스크에 걸려 직선 시드가 사라지는 반례와 s65/PIL82의 실제 벽 B 패치 오검출2개를 보존했다.
+
+공통 modules()->hfw.detect 선택 facade는 기존 API를 유지하며 기본 off에서
+원래 모듈 객체를 반환한다. 켤 때는 정확한 장면 이름·고정 보정 파일·SHA를 함께 요구한다.
+기존 소비자의 장면/화질 바인딩을 자동으로 바꾸지 않는다. 현재 후보는 재현용이며
+기존 실행기·장면·ACT 기본값에 채택하지 않는다.

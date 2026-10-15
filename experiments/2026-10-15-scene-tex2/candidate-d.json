@@ -1,0 +1,42 @@
+{
+  "schema": "ugrp.scene_tex2_candidate.v1",
+  "candidate": "D",
+  "asset_manifest_sha256": "9d986b0a4dffd681c2049ebce621893dd86f25c16f863d97d748280a36cf48cd",
+  "source_scale_px_per_m": 64,
+  "cube_face_axes": {
+    "right_left": [
+      "Z",
+      "Y"
+    ],
+    "up_down": [
+      "X",
+      "Z"
+    ],
+    "front_back": [
+      "X",
+      "Y"
+    ]
+  },
+  "reason_table": "camera-c-rejection-table.json",
+  "prior_source_sha": "f6acdbd53551290f61ca07b6dc5af152cdafb117",
+  "native_square_wall_ORB": [
+    0,
+    0,
+    0
+  ],
+  "interpretation": "Per-face aspect is encoded in square cube assets; 512-square ORB is not a physical-aspect camera view. Native zero retained, not renamed a pass. Actual camera comparison is required.",
+  "floor_ORB": [
+    793,
+    767,
+    772,
+    793
+  ],
+  "fixed_ranges": 108,
+  "fixed_hits": 0,
+  "render_pending": true,
+  "source_references": [
+    "https://registry.khronos.org/OpenGL/extensions/ARB/ARB_texture_cube_map.txt",
+    "https://github.com/google-deepmind/mujoco/blob/3.12.0/src/render/classic/render_gl3.c#L225"
+  ],
+  "test_log_sha256": "0d3fc30234c8c0f06baef852dc23edb701e7f4187b8df014e681ffa8b901c8f2"
+}

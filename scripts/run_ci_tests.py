@@ -180,6 +180,7 @@ TEST_PATTERNS = (
     "tests/test_zone_final_env.py", "tests/test_zone_study_scenarios_v3.py", "tests/test_zone_study_scenarios_v4.py",
     "tests/test_zone_study_scenarios_v5.py",
     "tests/test_zone_study_scenarios_v6.py",
+    "tests/test_zone_study_scenarios_v7.py",
     "tests/test_zone_environment_registry.py",
     "tests/test_zone_scenario_scene.py",
     "tests/test_zone_final_environment_runnable.py",
@@ -345,6 +346,9 @@ TEST_PATTERNS = (
     "tests/test_v6h_classifier_properties.py",  # 10,000 seeded evidence chains; no physics
     "tests/test_render_pair_probe_video.py",  # stage-probe report video renderer (reads saved cases only)
     "tests/test_natural_scene_texture.py",  # pinned PNG, pure XML; no renderer
+    "tests/test_scene_tex2.py",  # v2 assets and explicit perception; no simulator
+    "tests/test_scene_tex2_probe.py",  # static gate pure scoring only
+    "tests/test_scene_tex5.py",  # XML/PNG and boundary ABI only, no renderer
     "tests/test_render_profile.py",  # opt-in shadow/reflection render profiles (default path unchanged)
     "tests/test_carry_relocalization_b1.py",  # 2026-09-29: offline B1 relocalization measurement (pure arithmetic/thresholds)
     "tests/test_stall_detector_d1.py",  # offline D1 draft reference: NumPy frames only, no controller/simulator

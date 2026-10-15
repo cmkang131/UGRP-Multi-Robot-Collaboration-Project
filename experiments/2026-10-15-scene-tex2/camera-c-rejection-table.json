@@ -1,0 +1,48 @@
+{
+  "schema": "ugrp.scene_tex2_rejection_analysis.v1",
+  "source_sha": "f6acdbd53551290f61ca07b6dc5af152cdafb117",
+  "status": "MEASURED_ONLY_NOT_READY",
+  "raw": "/home/ugrp/ugrp-sim/runs/scenetex2-f6acdbd5-static-c",
+  "analysis": "/home/ugrp/ugrp-sim/runs/scenetex2-f6acdbd5-analysis-c",
+  "frames": 264,
+  "v2_frames": 88,
+  "png_wall_interior_ORB_positive_frames": 9,
+  "jpeg_wall_interior_ORB_positive_frames": 8,
+  "occluded_frames": 16,
+  "occluded_wall_visible": 0,
+  "reasons": [
+    {
+      "category": "WALL_NOT_VISIBLE_WHILE_CARRYING",
+      "blocking_object": "cargo_tex2_beam / actual camera direction",
+      "minimum_gap_m": null,
+      "reason": "All 16 HIGH occlusion fixtures show beam+peer but no wall pixels; texture cannot recover hidden surfaces."
+    },
+    {
+      "category": "WALL_TEXTURE_FACE_ASPECT",
+      "blocking_object": "v2 right/left PNG authoring axes",
+      "minimum_gap_m": null,
+      "reason": "C montage has horizontal stretched grain. OpenGL +/-X faces use width Z and height Y, but inherited authoring used Y/Z."
+    },
+    {
+      "category": "MATERIAL_FEATURE_SCALE",
+      "blocking_object": "512-square texture face",
+      "minimum_gap_m": null,
+      "reason": "C at 512 source px/m makes chips 4-23 mm before 6.5m-face downsampling; D uses 64 source px/m (31-188 mm authored radius) plus correct aspect."
+    },
+    {
+      "category": "WALL_BAND_ADAPTER_ABSTAINS",
+      "blocking_object": "legacy FK / v2 nominal windows",
+      "minimum_gap_m": null,
+      "reason": "Both robots drive JPEG adapter candidates zero; not admitted as calibrated v3 wall geometry."
+    },
+    {
+      "category": "PAINT_C_FIXTURE_OCCLUDED",
+      "blocking_object": "divider wall between centerX-1.5 observer and paint_zone_C",
+      "minimum_gap_m": null,
+      "reason": "C positive-support table: visible paint_C=0/8 in all3profiles. A 6/8 and B5/8 visible. Supplemental static evaluation changes only the observer pose to south of C; no profile acceptance credit from zero-visibility pairs."
+    }
+  ],
+  "minimum_gap_reason": "pixel visibility/material calibration failures are not collision-clearance failures",
+  "reproduction_command": "python scripts/summarize_scene_tex2_probe.py --input /home/ugrp/ugrp-sim/runs/scenetex2-f6acdbd5-static-c --output <new-output>",
+  "pooling": "C is a comparison candidate; never pool with D or legacy"
+}

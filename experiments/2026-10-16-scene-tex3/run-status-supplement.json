@@ -1,0 +1,76 @@
+{
+  "excluded_runs": [
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/scenetex3-r1-cb8ba009",
+      "status": "HOST_ERROR",
+      "reason": "NumPy int64 JSON serialization; completed ledger0",
+      "source_declared_status": "HOST_ERROR",
+      "recorded_frames": 0,
+      "not_pooled": true,
+      "summary_sha256": "d9d7a877e528690ea272ec45e6d686c1ca1b90c9fc37537f6e2585644c0391e8"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/scenetex3-r1b-41bcc86a",
+      "status": "SUPERVISOR_STOP",
+      "reason": "parallel arm split; old writer MEASURED was incomplete64/1584",
+      "source_declared_status": "MEASURED",
+      "recorded_frames": 64,
+      "not_pooled": true,
+      "summary_sha256": "aa67930d2632180c6fcda25e92a159c1f46bc5896db526a12268677f83b5687f"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/scenetex3-r1/native",
+      "status": "EXTERNAL_VM_STOP_INCOMPLETE",
+      "source_sha": "2eaafdf754ff0f2a976fa5bd8a1e0ce9580abbbc",
+      "not_pooled": true,
+      "recovery": "complete records only linked with qpos/image hash checks into separate resumed arm; missing poses rerendered"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/scenetex3-r1/ss2_area_v1",
+      "status": "EXTERNAL_VM_STOP_INCOMPLETE",
+      "source_sha": "2eaafdf754ff0f2a976fa5bd8a1e0ce9580abbbc",
+      "not_pooled": true,
+      "recovery": "complete records only linked with qpos/image hash checks into separate resumed arm; missing poses rerendered"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/scenetex3-r1/msaa8_v1",
+      "status": "EXTERNAL_VM_STOP_INCOMPLETE",
+      "source_sha": "2eaafdf754ff0f2a976fa5bd8a1e0ce9580abbbc",
+      "not_pooled": true,
+      "recovery": "complete records only linked with qpos/image hash checks into separate resumed arm; missing poses rerendered"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/scenetex3-r1/cubic_v1",
+      "status": "EXTERNAL_VM_STOP_INCOMPLETE",
+      "source_sha": "2eaafdf754ff0f2a976fa5bd8a1e0ce9580abbbc",
+      "not_pooled": true,
+      "recovery": "complete records only linked with qpos/image hash checks into separate resumed arm; missing poses rerendered"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/scenetex3-r1/mip_nearest_v1",
+      "status": "EXTERNAL_VM_STOP_INCOMPLETE",
+      "source_sha": "2eaafdf754ff0f2a976fa5bd8a1e0ce9580abbbc",
+      "not_pooled": true,
+      "recovery": "complete records only linked with qpos/image hash checks into separate resumed arm; missing poses rerendered"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/scenetex3-r1/no_mip_v1",
+      "status": "EXTERNAL_VM_STOP_INCOMPLETE",
+      "source_sha": "2eaafdf754ff0f2a976fa5bd8a1e0ce9580abbbc",
+      "not_pooled": true,
+      "recovery": "complete records only linked with qpos/image hash checks into separate resumed arm; missing poses rerendered"
+    }
+  ],
+  "source_transfer_failures": {
+    "count": 2,
+    "category": "SOURCE_TRANSFER_PREREQUISITE",
+    "rendered_frames": 0,
+    "reason": "bundle missing named ref/prerequisite doc commit; corrected before render"
+  },
+  "analysis_only_errors": [
+    "zstd ignores symlink arguments: resolved source path before reading",
+    "loaded-camera FK refuses HIGH:32 cases retained as UNQUALIFIED, guard unchanged"
+  ],
+  "rounds_used": 3,
+  "new_render_after_round3": 0
+}

@@ -1,0 +1,26 @@
+{
+  "round": 3,
+  "rejection_table": "/home/ugrp/ugrp-sim/runs/scenetex5-r2-analysis/rejection-table.json",
+  "maximum_rounds": 3,
+  "largest_reasons": {
+    "ROBOT_OR_ORANGE_OCCLUSION_PNG_columns": 1032,
+    "NO_VISIBLE_TRANSITION_PNG_columns": 346,
+    "NO_VISIBLE_TRANSITION_PIL_columns": 1312,
+    "LK_one_extra_zero": "corridor/view0/paint_A/r1 old12 -> new0"
+  },
+  "evidence": "round2 saved boundary plate; paint B/C false boundary repaired (median/p95 .5/.5 PNG), coverage70/p1044.5 below88/73.5",
+  "changes": [
+    "HSV wall support across inherited band10 rather than single row3 affected by JPEG chroma mixtures",
+    "finite all-pair RANSAC seeded by non-orange columns; validate only actually observed transitions; never fill occluded columns",
+    "line residual tolerance1.5px from v1/native original p95, no new admission slack",
+    "two new moderate-saturation wall variants to retain unchanged PlaneFlow S<=100 mask; no tracking code changes"
+  ],
+  "profiles": [
+    "walls_floor_contrast_v5_indigo110_s80",
+    "walls_floor_contrast_v5_indigo125_s65",
+    "walls_floor_contrast_v5_indigo100 (reuse R2 frozen RGB to isolate algorithm)"
+  ],
+  "round2_legacy_audit_host_error": "HIGH commanded-camera qualification raises; preserve incomplete audit and repeat with explicit unqualified status, not fabricated negative detections",
+  "physics_steps": 0,
+  "model_calls": 0
+}

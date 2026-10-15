@@ -1,0 +1,39 @@
+{
+  "task": "scenetex4",
+  "round": 3,
+  "status": "COMPLETE_STATIC_AUDIT_NOT_READY",
+  "rejection_table": "/Users/changmin/projects/ugrp-wt/scene-tex2/experiments/2026-10-16-scene-tex4/rejection-table.json",
+  "host": "gcp2",
+  "project": "ugrp-sim-b-1014",
+  "account": "changmin5781@gmail.com",
+  "own_concurrency": 4,
+  "host_concurrency_limit": 40,
+  "profiles": [
+    "walls_floor_contrast_v4_luma",
+    "walls_floor_contrast_v4_flat"
+  ],
+  "qualities": [
+    "native",
+    "no_mip_v1"
+  ],
+  "poses_per_arm": 88,
+  "encoded_frames_per_arm": 264,
+  "class": "dev",
+  "pr": 527,
+  "physics_steps": 0,
+  "model_calls": 0,
+  "Mac_render": 0,
+  "tests": "29 passed in 10.06s",
+  "source_sha": "e7b90b7f934abf77a6b9b8e03279018249ff1679",
+  "raw_batch": "/home/ugrp/ugrp-sim/runs/scenetex4-r2-batch.json",
+  "analysis": "/home/ugrp/ugrp-sim/runs/scenetex4-r2-analysis",
+  "round1_rejection": "/Users/changmin/projects/ugrp-wt/scene-tex2/experiments/2026-10-16-scene-tex4/round1-binding-rejection.json",
+  "reason": "R2 error distribution and per-frame floor regression; preserve v1 nominal wall gray and split chroma",
+  "raw_budget_mib": 2048,
+  "decision": "NOT_READY",
+  "ready_for_research_use": false,
+  "execute": false,
+  "enabled": false,
+  "approved": false,
+  "final_analysis": "round3/summary.json.zst"
+}

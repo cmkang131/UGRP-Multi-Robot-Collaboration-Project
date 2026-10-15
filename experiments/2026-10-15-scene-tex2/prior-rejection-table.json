@@ -1,0 +1,30 @@
+{
+  "schema": "ugrp.rejection_funnel.v1",
+  "stage": "prior_published_v1_png_baseline",
+  "source": "experiments/2026-10-15-scene-floor-texture/image-metrics.json",
+  "source_sha256": "6ce5c4fc07db50ec26cb493800cd51853c71bcb66649ceab1a718780a3d6be00",
+  "reproduce": "python -m scripts.audit_scene_textures --output <new path>/offline-audit.json",
+  "scope": "published prior PNG evidence; no failure video or new camera render inspected",
+  "funnel": [
+    {
+      "gate": "all_wall_pngs",
+      "cumulative": 150,
+      "rejected": 0
+    },
+    {
+      "gate": "has_any_ORB_keypoint",
+      "cumulative": 0,
+      "rejected": 150
+    }
+  ],
+  "rejection_distribution": [
+    {
+      "category": "wall_texture_contrast_removed_for_legacy_uniform_band",
+      "count": 150,
+      "blocked_object": "all 150 wall face PNGs",
+      "minimum_gap_m": null,
+      "minimum_gap_reason": "image feature audit; no geometric clearance query"
+    }
+  ],
+  "camera_verified": false
+}

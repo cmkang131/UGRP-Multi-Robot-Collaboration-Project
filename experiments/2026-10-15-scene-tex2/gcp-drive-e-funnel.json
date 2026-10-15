@@ -1,0 +1,56 @@
+{
+  "schema": "ugrp.scene_tex2_funnel.v1",
+  "planned_frames": 48,
+  "recorded_frame_events": 48,
+  "stages": [
+    {
+      "stage": "frame_rendered",
+      "input_n": 48,
+      "cumulative_pass_n": 48,
+      "rejected_n": 0,
+      "rejections": []
+    },
+    {
+      "stage": "frame_analysed",
+      "input_n": 48,
+      "cumulative_pass_n": 48,
+      "rejected_n": 0,
+      "rejections": []
+    },
+    {
+      "stage": "physics_identical",
+      "input_n": 48,
+      "cumulative_pass_n": 48,
+      "rejected_n": 0,
+      "rejections": []
+    },
+    {
+      "stage": "camera_identical",
+      "input_n": 48,
+      "cumulative_pass_n": 48,
+      "rejected_n": 0,
+      "rejections": []
+    }
+  ],
+  "scope": "static camera audit, not a teacher gate or task-success funnel",
+  "raw_path": "/home/ugrp/ugrp-sim/runs/scenetex2-1e9594a9-drive-e",
+  "reproduction_command": [
+    "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+    "-m",
+    "scripts.probe_scene_tex2",
+    "--execute",
+    "--source-sha",
+    "1e9594a9fececf1c5fa4387ed7ac9f08a8459629",
+    "--setup-proof",
+    "/home/ugrp/ugrp-sim/scenetex2-setup-proof.md",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/scenetex2-1e9594a9-drive-e",
+    "--profiles",
+    "floor_light_v1",
+    "floor_light_textured_v1",
+    "walls_floor_textured_v2",
+    "--poses",
+    "drive"
+  ],
+  "unexecuted": []
+}

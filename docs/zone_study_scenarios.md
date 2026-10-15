@@ -149,3 +149,17 @@ pickup bay/slot은 지도의 `regions.pickup`에서 패키지 A가 결정론적�
 ## 시나리오 v6: tile·can을 작은 상자로 교체 (2026-10-14)
 
 사용자: "걍 타일같은 건 빼는 게 어떄? 보라 캔도 연구 목적과 상관없는 거 같아". "빠진 자리는 어떻게 할까요?"에 "같은 상자로 대체 (Recommended)"를 선택했다. `configs/zone_study_scenarios_v6/`는 v5의 can 4개·tile 3개를 기존 작은 상자로 바꾸고 화물 수·위치·목적 구역·이벤트를 유지한다. 미사용 색부터, 모두 쓰이면 가장 적은 색부터 고르며 동률은 cyan→red→green→yellow다. 기본값은 유지하고 `_v6` ID를 레지스트리와 `ScenarioFinalV3Scene.from_scenario`에 명시한다. **v6 결과는 이전 버전과 합산하지 않는다.** 대응표·같은 색/구역 중복(새 1, 기존 4)·입력 경계·오프라인 검증은 [v6 기록](../experiments/2026-10-14-scenario-v6/README.md)에 있다. 1대 교사의 v6 종류는 `BOX_KINDS`(cyan/red/green/yellow)뿐이며, 물리 운반은 미검증이다.
+
+## 시나리오 v7 — heavy_crate 제외 (2026-10-15)
+
+사용자: "무거운 상자나, 긴 빔이나 둘 다 2명이서 들어야 한다는 건 똑같아서 버려도 돼" ([규칙 PR #518](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/518)). `configs/zone_study_scenarios_v7/`는 v6 여덟 종을 복사한 선택 버전이다. 실제 v6 heavy_crate는 **s2·s7·s8에 각각 하나**다. 세 주문의 `crate_1`을 `beam_1`/`long_beam`(`required_robots: 2`)으로 바꾼다.
+
+| 시나리오 | 주문 | 유지한 슬롯·중심(m) | 빔 yaw(rad) | 목적 구역 |
+|---|---|---|---|---|
+| s2_unmapped_blockage_v7 | order-3 | P2-1 · (1.275, -2.15) | 1.5708 | B |
+| s7_pair_with_solo_v7 | order-1 | P2-1 · (1.275, -2.15) | 1.5708 | B |
+| s8_mixed_tiers_v7 | order-3 | P1-1 · (0.125, -2.15) | 1.5708 | B |
+
+기존 빔의 남북 축 배치·슬롯 형식을 따른다. 주문 수·화물 수·필요 로봇 수·목적 구역·사건·예산·24개 seed는 유지한다. v6 파일과 기본 시나리오 목록은 그대로다. 레지스트리 `load_scenario('s2_unmapped_blockage_v7')` 또는 `ScenarioFinalV3Scene.from_scenario`에 `_v7` ID를 명시한다. 기존 통합 workflow는 같은 경로를 사용하므로 별도 실행기나 기본값 전환은 없다. v7 입력 종류는 작은 상자 네 색과 long_beam으로 제한하고, 이전 종류의 코드·설정은 재생용으로 보존한다.
+
+시나리오 ID·설정 해시·resolved scene 해시가 v6과 구분된다. **v7 결과는 v6 및 이전 버전과 합산하지 않는다.** 정적 검사·XML fixture·네 통신 조건의 입력 검증과 제한은 [v7 기록](../experiments/2026-10-15-scenario-v7/README.md)을 따른다. 정적 적합성은 실제 경로 통과·파지·운반 성공을 뜻하지 않는다.

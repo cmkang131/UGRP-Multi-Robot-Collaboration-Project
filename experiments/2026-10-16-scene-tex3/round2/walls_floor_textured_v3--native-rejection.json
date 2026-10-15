@@ -1,0 +1,114 @@
+{
+  "material": "walls_floor_textured_v3",
+  "quality": "native",
+  "stages": [
+    {
+      "stage": "complete_88",
+      "input_n": 88,
+      "cumulative_pass_n": 88,
+      "rejected_n": 0
+    },
+    {
+      "stage": "box_png_and_jpeg90_equal_v1",
+      "input_n": 88,
+      "cumulative_pass_n": 86,
+      "rejected_n": 2
+    },
+    {
+      "stage": "camera_features_at_least_v1",
+      "input_n": 86,
+      "cumulative_pass_n": 46,
+      "rejected_n": 40
+    },
+    {
+      "stage": "consecutive_matches_at_least_v1",
+      "input_n": 46,
+      "cumulative_pass_n": 36,
+      "rejected_n": 10
+    }
+  ],
+  "box_changes": [
+    {
+      "case": "zone_wide_corridor_final_v3--view0--box_palette--r1",
+      "encoding": "jpeg90",
+      "category": "BOX_SEMANTIC_CHANGED",
+      "blocking_object": "existing color box detector",
+      "minimum_gap_m": null,
+      "minimum_gap_reason": "image/component gate, no collision clearance",
+      "reason": "kind counts differ from native v1",
+      "candidate": {
+        "cyan": 1,
+        "green": 1,
+        "yellow": 1
+      },
+      "v1": {
+        "cyan": 1,
+        "green": 1,
+        "red": 1,
+        "yellow": 1
+      }
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--box_palette--r1",
+      "encoding": "jpeg90",
+      "category": "BOX_SEMANTIC_CHANGED",
+      "blocking_object": "existing color box detector",
+      "minimum_gap_m": null,
+      "minimum_gap_reason": "image/component gate, no collision clearance",
+      "reason": "kind counts differ from native v1",
+      "candidate": {
+        "cyan": 1,
+        "green": 1,
+        "yellow": 1
+      },
+      "v1": {
+        "cyan": 1,
+        "green": 1,
+        "red": 1,
+        "yellow": 1
+      }
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view1--drive--r1",
+      "encoding": "pil82",
+      "category": "BOX_SEMANTIC_CHANGED",
+      "blocking_object": "existing color box detector",
+      "minimum_gap_m": null,
+      "minimum_gap_reason": "image/component gate, no collision clearance",
+      "reason": "kind counts differ from native v1",
+      "candidate": {},
+      "v1": {
+        "yellow": 1
+      }
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view1--drive--r1",
+      "encoding": "pil82",
+      "category": "BOX_SEMANTIC_CHANGED",
+      "blocking_object": "existing color box detector",
+      "minimum_gap_m": null,
+      "minimum_gap_reason": "image/component gate, no collision clearance",
+      "reason": "kind counts differ from native v1",
+      "candidate": {},
+      "v1": {
+        "yellow": 1
+      }
+    }
+  ],
+  "remaining_issues": [
+    {
+      "category": "REAL_FRAME_UNAVAILABLE",
+      "blocking_object": "archived physical RGB missing at recorded paths",
+      "minimum_gap_m": null,
+      "minimum_gap_reason": "image availability, no clearance",
+      "reason": "physical feature/sharpness comparison unverified"
+    }
+  ],
+  "ready": false,
+  "raw_path": "/home/ugrp/ugrp-sim/runs/scenetex3-r2-complete",
+  "reproduction_command": [
+    "combine_scene_tex3",
+    "/home/ugrp/ugrp-sim/runs/scenetex3-r2/native",
+    "/home/ugrp/ugrp-sim/runs/scenetex3-r2/cubic_v1"
+  ]
+}
