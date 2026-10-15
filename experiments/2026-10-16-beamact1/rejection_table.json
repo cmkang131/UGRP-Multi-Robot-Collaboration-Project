@@ -1,0 +1,51 @@
+{
+  "task": "beamact1",
+  "stage": "resource_and_data_admission",
+  "funnel": [
+    {
+      "gate": "beampair8_recordings",
+      "passed": 185,
+      "rejected": 15,
+      "N": 200
+    },
+    {
+      "gate": "train_validation_split",
+      "passed": null,
+      "rejected": null
+    },
+    {
+      "gate": "second_L4_available",
+      "passed": 0,
+      "rejected": 1
+    },
+    {
+      "gate": "smoke_readback",
+      "passed": 0,
+      "rejected": 0,
+      "not_started": 1
+    },
+    {
+      "gate": "student_heldout20",
+      "passed": null,
+      "rejected": null,
+      "not_started": 20
+    }
+  ],
+  "rejections": [
+    {
+      "category": "cloud_gpu_quota",
+      "reason": "GPUS_ALL_REGIONS limit1; preferred2 denied",
+      "blocking_object": "GCP compute.googleapis.com/gpus_all_regions",
+      "minimum_gap_m": null,
+      "gap_status": "not_applicable_resource_admission",
+      "count": 1
+    }
+  ],
+  "source_raw": "/home/ugrp/ugrp-sim/ops-reviews/beampair8/dataset-v1/dataset.tar.zst",
+  "source_recordings": "experiments/2026-10-16-beampair8/cohort-rejection_table.json.zst",
+  "reproduce": "gcloud compute project-info describe --account changmin5781@gmail.com --project ugrp-sim-b-1014 --format=json",
+  "queue_ready": false,
+  "student_success_n": null,
+  "student_attempted_N": 0,
+  "student_planned_N": 20
+}
