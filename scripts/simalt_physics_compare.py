@@ -15,6 +15,7 @@ import math
 from pathlib import Path
 import platform
 import socket
+import subprocess
 import sys
 import time
 import traceback
@@ -160,6 +161,20 @@ def run(a):
         raise RuntimeError('noslip=10 and weld OFF required')
     report['options']={k:float(getattr(m.opt,k)) for k in ('timestep','iterations','ls_iterations','noslip_iterations','noslip_tolerance','tolerance','integrator','cone','solver')}
     report['physics_hashes']={k:hashlib.sha256(getattr(m,k).tobytes()).hexdigest() for k in ('geom_friction','pair_friction','body_mass','body_inertia','geom_solref','geom_solimp')}
+    rgb_recent=deque(maxlen=100)
+    if a.batch_render_v1:
+        if not a.gcp2_v1 or a.engine!='warp':
+            raise RuntimeError('batch render is explicit gcp2 Warp diagnostic only')
+        from sim import masterpi_camera_review_v3 as camera
+        from sim.masterpi_camera_profile import raw_fisheye_remap
+        import cv2
+        cid=m.camera('r1__robot_cam').id
+        m.cam_pos[cid]=camera.POSITION_M;m.cam_quat[cid]=camera.QUAT_WXYZ
+        for name in ('camera_bracket','camera_body','camera_lens_visual'):
+            gid=mujoco.mj_name2id(m,mujoco.mjtObj.mjOBJ_GEOM,'r1__'+name)
+            if gid>=0:m.geom_group[gid]=5
+        mx,my=raw_fisheye_remap(640,480)
+        report['renderer']='MJWarp batch RGB640x480 at10Hz, readback+OpenCV fisheye; no policy/training/JPEG time'
     if a.engine=='warp':
         import warp as wp
         import mujoco_warp as mjw
@@ -175,6 +190,12 @@ def run(a):
             report['backend_solver_tolerance']=float(wm.opt.tolerance.numpy().item())
         if wm.opt.noslip_iterations != 10:
             raise RuntimeError('noslip ignored')
+        if a.batch_render_v1:
+            rc=mjw.create_render_context(m,nworld=a.nworld,cam_res=(640,480),
+                render_rgb=True,render_depth=False,render_seg=False,
+                use_textures=True,use_shadows=True,enabled_geom_groups=[0,1,2,3],
+                cam_active=['r1__robot_cam'])
+            rgb=wp.zeros((a.nworld,480,640),dtype=wp.vec3)
         # Canonical reference maxima size buffers; round to a power of 2 for
         # allocation only. This is not an accepted-contact or physics threshold.
         ref=json.loads(a.reference.read_text())
@@ -217,6 +238,8 @@ def run(a):
                 report.update(status='compiling_first_step',put_data_passed=True)
                 write(a.out/'result.json',report)
                 mjw.step(wm,wd);wp.synchronize();check(wd)
+                if a.batch_render_v1:
+                    mjw.refit_bvh(wm,wd,rc);mjw.render(wm,wd,rc);mjw.get_rgb(rc,0,rgb);wp.synchronize()
                 report.update(status='first_step_pass_only',first_step_passed=True)
                 write(a.out/'result.json',report)
                 # Warm-up is recorded separately, and discarded before the trace.
@@ -233,6 +256,7 @@ def run(a):
                 graph=capture.graph
             cr={'name':name,'status':'running','max_ncon':int(d.ncon),'max_nefc':int(d.nefc),
                 'physics_wall_s':0.,'evaluator_wall_s':0.,
+                'batch_render_wall_s':0.,'readback_fisheye_wall_s':0.,'RGB_frames':0,
                 'sim_s':0.,'wall_s':0.,'sample_count':0}
             report['cases'].append(cr)
             values=[];contacts=[];forces=[]
@@ -247,6 +271,17 @@ def run(a):
                     for j in range(25):wp.capture_launch(graph)
                     wp.synchronize()
                 cr['physics_wall_s']+=time.perf_counter()-ps
+                if a.batch_render_v1:
+                    rs=time.perf_counter()
+                    mjw.refit_bvh(wm,wd,rc);mjw.render(wm,wd,rc);mjw.get_rgb(rc,0,rgb);wp.synchronize()
+                    cr['batch_render_wall_s']+=time.perf_counter()-rs
+                    rs=time.perf_counter()
+                    raw=np.clip(rgb.numpy()*255,0,255).astype(np.uint8)
+                    for w in range(a.nworld):
+                        frame=cv2.remap(raw[w],mx,my,cv2.INTER_LINEAR,borderMode=cv2.BORDER_CONSTANT)
+                        if w==0:rgb_recent.append(((begin+400)*dt,frame.copy()))
+                    cr['readback_fisheye_wall_s']+=time.perf_counter()-rs
+                    cr['RGB_frames']+=a.nworld
                 es=time.perf_counter()
                 if a.engine=='warp':
                     check(wd)
@@ -272,6 +307,7 @@ def run(a):
                 if (begin//400)%10==0:write(a.out/'result.json',report)
             cr.update(status='complete',wall_s=time.perf_counter()-cs,
                       physics_only_SIM_s_per_wall_s=len(tape)*dt*a.nworld/cr['physics_wall_s'],
+                      physics_plus_RGB_SIM_s_per_wall_s=(len(tape)*dt*a.nworld/(cr['physics_wall_s']+cr['batch_render_wall_s']+cr['readback_fisheye_wall_s'])) if a.batch_render_v1 else None,
                       total_sim_seconds_per_wall_second=len(tape)*dt*a.nworld/(time.perf_counter()-cs),
                       per_world_sim_seconds_per_wall_second=len(tape)*dt/(time.perf_counter()-cs))
             states[name]=np.asarray(values)
@@ -286,6 +322,17 @@ def run(a):
         report.update(status='rejected',failure=1,error_type=type(e).__name__,error=str(e),traceback=traceback.format_exc())
     finally:
         np.savez_compressed(a.out/'states.npz',**states)
+        if rgb_recent:
+            # Recording-only ring: world0 final10 SIM seconds, independent of control/training.
+            folder=a.out/'own-RGB-ring';folder.mkdir(exist_ok=True)
+            for i,(t,frame) in enumerate(rgb_recent):
+                cv2.imwrite(str(folder/f'{i:03d}-{t:.1f}.jpg'),cv2.cvtColor(frame,cv2.COLOR_RGB2BGR))
+            report['RGB_ring']={'path':str(folder),'hz':10,'max_frames':100,'saved_frames':len(rgb_recent),
+                'world':0,'bytes':sum(p.stat().st_size for p in folder.iterdir()),'recording_only':True}
+        if a.engine=='warp':
+            try:
+                report['gpu_memory_end']=subprocess.check_output(['nvidia-smi','--query-gpu=memory.used,memory.total,utilization.gpu','--format=csv,noheader,nounits'],text=True).strip()
+            except Exception as e:report['gpu_memory_query_error']=str(e)
         write(a.out/'state-ring-buffer.json',{'hz':10,'max_frames':100,'frames':list(recent),
               'note':'No online renderer. Evaluator poses permit later rendering; not a saved RGB buffer.'})
         report['wall_s']=time.perf_counter()-start
@@ -314,6 +361,7 @@ def main():
     p.add_argument('--enabled',action='store_true')
     p.add_argument('--gcp2-v1',action='store_true')
     p.add_argument('--unused-efm-v1',action='store_true',help='explicit inactive-workspace adapter opt-in for simalt3')
+    p.add_argument('--batch-render-v1',action='store_true',help='default OFF: batched own RGB diagnostic including readback/fisheye')
     a=p.parse_args()
     if a.gcp2_v1:
         from simalt_host import gcp2_identity
