@@ -43,6 +43,19 @@ def test_failed_connector_reused_and_any_input_change_invalidates():
     assert connector_cache(t,w)=={} and connector_cache(t,w) is not cache
 
 
+def test_failed_connector_sample_is_not_recomputed_across_navigation_instances():
+    from sim.grasp_act_search23 import BodyNavigation
+    t,w=scene();t.search15_modes.update(MODES)
+    nav=BodyNavigation(t,w);before=dict(t.sink.pwm)
+    with patch('sim.grasp_act_pregrasp.band_view',return_value=(3,before)) as predict:
+        assert nav.connector_sample((0.,0.,0.),before,(0.,0.),0.)[0]==3
+        assert BodyNavigation(t,w).connector_sample((0.,0.,0.),before,(0.,0.),0.)[0]==3
+        assert predict.call_count==1
+        w['objects']['box']['xy'][0]+=.0000001
+        assert BodyNavigation(t,w).connector_sample((0.,0.,0.),before,(0.,0.),0.)[0]==3
+        assert predict.call_count==2
+
+
 def setup_alignment(point,heading,distance):
     t,w=scene();t.search15_modes.update(MODES);t.phase='align';t.staging_distance=distance
     t._geometry=lambda *_:((0.,0.,0.),point,heading,
