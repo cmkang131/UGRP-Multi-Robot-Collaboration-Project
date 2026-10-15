@@ -33,17 +33,17 @@ NEAR_MAX_M = .005
 PREVIOUS = {'znear_rel': .002, 'near_m_at_extent_11_112': .02222}
 
 
-def _canon():
-    return json.dumps({'schema': SCHEMA, 'id': ID, 'base_profile': BASE_PROFILE,
+def _canon(base_profile=BASE_PROFILE):
+    return json.dumps({'schema': SCHEMA, 'id': ID, 'base_profile': base_profile,
                        'xml_ops': [{'op': 'visual_map_znear', 'value': ZNEAR_REL}]}, sort_keys=True, separators=(',', ':'))
 
 
-def sha256():
-    return hashlib.sha256(_canon().encode()).hexdigest()
+def sha256(base_profile=BASE_PROFILE):
+    return hashlib.sha256(_canon(base_profile).encode()).hexdigest()
 
 
-def record():
-    return {'schema': SCHEMA, 'id': ID, 'sha256': sha256(), 'base_profile': BASE_PROFILE,
+def record(base_profile=BASE_PROFILE):
+    return {'schema': SCHEMA, 'id': ID, 'sha256': sha256(base_profile), 'base_profile': base_profile,
             'xml_ops': [{'op': 'visual_map_znear', 'value': ZNEAR_REL}], 'near_max_m': NEAR_MAX_M,
             'previous': PREVIOUS, 'changes_images': True, 'changes_physics': False,
             'reason': 'near plane 22.2 mm clipped the beam 13 mm under the HIGH camera (floor seen through cargo)',
@@ -66,14 +66,20 @@ def apply_xml(xml):
 def wrap(scene):
     if getattr(scene, '_nearclip_id', None) == ID:
         return scene
-    if getattr(scene, '_render_profile_name', None) != BASE_PROFILE:
+    base_profile = getattr(scene, '_render_profile_name', None)
+    if base_profile not in (BASE_PROFILE, 'floor_light_textured_v1', 'walls_floor_textured_v2', 'walls_floor_textured_v3',
+                            'walls_floor_contrast_v4_dark', 'walls_floor_contrast_v4_light', 'walls_floor_contrast_v4_skirt',
+                            'walls_floor_contrast_v4_luma', 'walls_floor_contrast_v4_flat',
+                            'walls_floor_contrast_v5_violet150','walls_floor_contrast_v5_violet175','walls_floor_contrast_v5_violet195',
+                'walls_floor_contrast_v5_indigo100','walls_floor_contrast_v5_indigo85','walls_floor_contrast_v5_indigo100_flat',
+                'walls_floor_contrast_v5_indigo110_s80','walls_floor_contrast_v5_indigo125_s65'):
         raise ValueError(f'{ID} needs a {BASE_PROFILE} scene, got {getattr(scene, "_render_profile_name", None)!r}')
     inner = scene.transform
 
     def transform(xml):
         before = inner(xml)
         after = apply_xml(before)
-        scene.manifest['render_nearclip'] = {**record(),
+        scene.manifest['render_nearclip'] = {**record(base_profile),
             'scene_xml_sha256_before_nearclip': hashlib.sha256(before.encode()).hexdigest(),
             'scene_xml_sha256_after_nearclip': hashlib.sha256(after.encode()).hexdigest()}
         return after
@@ -97,13 +103,13 @@ def scenes():
             module.make_scene = original
 
 
-def audit(model):
+def audit(model, base_profile=BASE_PROFILE):
     """Fail closed unless the compiled model uses the profile's near plane (MuJoCo stores it as float32)."""
     znear, extent = float(model.vis.map.znear), float(model.stat.extent)
     near_m = znear * extent
     if abs(znear - float(ZNEAR_REL)) > 1e-8 or not 0 < near_m <= NEAR_MAX_M:
         raise RuntimeError(f'{ID} requested but the compiled model has znear {znear} x extent {extent} = {near_m} m')
-    return {**record(), 'compiled_znear_rel': znear, 'extent_m': extent, 'near_m': near_m}
+    return {**record(base_profile), 'compiled_znear_rel': znear, 'extent_m': extent, 'near_m': near_m}
 
 
 class NearClip:
