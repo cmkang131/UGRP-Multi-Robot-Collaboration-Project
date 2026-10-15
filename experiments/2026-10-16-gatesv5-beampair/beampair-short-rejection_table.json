@@ -1,0 +1,579 @@
+{
+  "schema": "ugrp.beampair1.funnel.v1",
+  "source_sha": "0b5faa4cfdc52f87df0fdf49e7b254bafc5b8bc0",
+  "raw_root": "/home/ugrp/ugrp-sim/ops-reviews/gatesv5/beampair-short-input",
+  "episode_funnel": [
+    {
+      "gate": "started",
+      "entered": 6,
+      "passed": 6,
+      "rejected": 0
+    },
+    {
+      "gate": "both_align",
+      "entered": 6,
+      "passed": 6,
+      "rejected": 0
+    },
+    {
+      "gate": "both_ready",
+      "entered": 6,
+      "passed": 6,
+      "rejected": 0
+    },
+    {
+      "gate": "both_pick",
+      "entered": 6,
+      "passed": 6,
+      "rejected": 0
+    },
+    {
+      "gate": "both_command_complete",
+      "entered": 6,
+      "passed": 6,
+      "rejected": 0
+    },
+    {
+      "gate": "joint_hold_3s",
+      "entered": 6,
+      "passed": 6,
+      "rejected": 0
+    },
+    {
+      "gate": "input_eligible_success",
+      "entered": 6,
+      "passed": 6,
+      "rejected": 0
+    }
+  ],
+  "reason_distribution": {
+    "peer_goal": 178,
+    "cargo_goal": 2
+  },
+  "blocked_objects": {
+    "r2": 74,
+    "r1": 104,
+    "beam_1": 2
+  },
+  "candidate_populations": {
+    "/home/ugrp/ugrp-sim/ops-reviews/gatesv5/beampair-short-input/diagnostic/episode-000/raw": {
+      "rendezvous_wait_candidates": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "current_and_predicted_clear_path",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "nonrepeated_selected_wait",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      }
+    },
+    "/home/ugrp/ugrp-sim/ops-reviews/gatesv5/beampair-short-input/diagnostic/episode-001/raw": {
+      "rendezvous_wait_candidates": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "current_and_predicted_clear_path",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "nonrepeated_selected_wait",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      }
+    },
+    "/home/ugrp/ugrp-sim/ops-reviews/gatesv5/beampair-short-input/diagnostic/episode-002/raw": {
+      "rendezvous_wait_candidates": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "current_and_predicted_clear_path",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "nonrepeated_selected_wait",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      }
+    },
+    "/home/ugrp/ugrp-sim/ops-reviews/gatesv5/beampair-short-input/diagnostic/episode-003/raw": {
+      "rendezvous_wait_candidates": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "current_and_predicted_clear_path",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "nonrepeated_selected_wait",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      }
+    },
+    "/home/ugrp/ugrp-sim/ops-reviews/gatesv5/beampair-short-input/diagnostic/episode-004/raw": {
+      "rendezvous_wait_candidates": {
+        "N": 2,
+        "ordered_funnel": [
+          {
+            "gate": "current_and_predicted_clear_path",
+            "entered": 2,
+            "passed": 1,
+            "rejected": 1
+          },
+          {
+            "gate": "nonrepeated_selected_wait",
+            "entered": 1,
+            "passed": 1,
+            "rejected": 0
+          }
+        ]
+      }
+    },
+    "/home/ugrp/ugrp-sim/ops-reviews/gatesv5/beampair-short-input/diagnostic/episode-005/raw": {
+      "rendezvous_wait_candidates": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "current_and_predicted_clear_path",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "nonrepeated_selected_wait",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      }
+    }
+  },
+  "frame_populations": {
+    "/home/ugrp/ugrp-sim/ops-reviews/gatesv5/beampair-short-input/diagnostic/episode-000/raw": [
+      {
+        "gate": "any_assigned_probe",
+        "entered": 762,
+        "passed": 545,
+        "rejected": 217
+      },
+      {
+        "gate": "meaningful_region_5_of_15",
+        "entered": 545,
+        "passed": 543,
+        "rejected": 2
+      },
+      {
+        "gate": "measurement_admitted_not_held",
+        "entered": 543,
+        "passed": 543,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/ops-reviews/gatesv5/beampair-short-input/diagnostic/episode-001/raw": [
+      {
+        "gate": "any_assigned_probe",
+        "entered": 1118,
+        "passed": 781,
+        "rejected": 337
+      },
+      {
+        "gate": "meaningful_region_5_of_15",
+        "entered": 781,
+        "passed": 773,
+        "rejected": 8
+      },
+      {
+        "gate": "measurement_admitted_not_held",
+        "entered": 773,
+        "passed": 773,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/ops-reviews/gatesv5/beampair-short-input/diagnostic/episode-002/raw": [
+      {
+        "gate": "any_assigned_probe",
+        "entered": 626,
+        "passed": 424,
+        "rejected": 202
+      },
+      {
+        "gate": "meaningful_region_5_of_15",
+        "entered": 424,
+        "passed": 422,
+        "rejected": 2
+      },
+      {
+        "gate": "measurement_admitted_not_held",
+        "entered": 422,
+        "passed": 422,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/ops-reviews/gatesv5/beampair-short-input/diagnostic/episode-003/raw": [
+      {
+        "gate": "any_assigned_probe",
+        "entered": 968,
+        "passed": 620,
+        "rejected": 348
+      },
+      {
+        "gate": "meaningful_region_5_of_15",
+        "entered": 620,
+        "passed": 618,
+        "rejected": 2
+      },
+      {
+        "gate": "measurement_admitted_not_held",
+        "entered": 618,
+        "passed": 618,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/ops-reviews/gatesv5/beampair-short-input/diagnostic/episode-004/raw": [
+      {
+        "gate": "any_assigned_probe",
+        "entered": 962,
+        "passed": 673,
+        "rejected": 289
+      },
+      {
+        "gate": "meaningful_region_5_of_15",
+        "entered": 673,
+        "passed": 659,
+        "rejected": 14
+      },
+      {
+        "gate": "measurement_admitted_not_held",
+        "entered": 659,
+        "passed": 659,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/ops-reviews/gatesv5/beampair-short-input/diagnostic/episode-005/raw": [
+      {
+        "gate": "any_assigned_probe",
+        "entered": 560,
+        "passed": 274,
+        "rejected": 286
+      },
+      {
+        "gate": "meaningful_region_5_of_15",
+        "entered": 274,
+        "passed": 267,
+        "rejected": 7
+      },
+      {
+        "gate": "measurement_admitted_not_held",
+        "entered": 267,
+        "passed": 267,
+        "rejected": 0
+      }
+    ]
+  },
+  "event_populations": {
+    "/home/ugrp/ugrp-sim/ops-reviews/gatesv5/beampair-short-input/diagnostic/episode-000/raw": [
+      {
+        "gate": "own_ready",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      },
+      {
+        "gate": "own_pick_after_go_ack",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      },
+      {
+        "gate": "own_command_complete",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/ops-reviews/gatesv5/beampair-short-input/diagnostic/episode-001/raw": [
+      {
+        "gate": "own_ready",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      },
+      {
+        "gate": "own_pick_after_go_ack",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      },
+      {
+        "gate": "own_command_complete",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/ops-reviews/gatesv5/beampair-short-input/diagnostic/episode-002/raw": [
+      {
+        "gate": "own_ready",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      },
+      {
+        "gate": "own_pick_after_go_ack",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      },
+      {
+        "gate": "own_command_complete",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/ops-reviews/gatesv5/beampair-short-input/diagnostic/episode-003/raw": [
+      {
+        "gate": "own_ready",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      },
+      {
+        "gate": "own_pick_after_go_ack",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      },
+      {
+        "gate": "own_command_complete",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/ops-reviews/gatesv5/beampair-short-input/diagnostic/episode-004/raw": [
+      {
+        "gate": "own_ready",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      },
+      {
+        "gate": "own_pick_after_go_ack",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      },
+      {
+        "gate": "own_command_complete",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/ops-reviews/gatesv5/beampair-short-input/diagnostic/episode-005/raw": [
+      {
+        "gate": "own_ready",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      },
+      {
+        "gate": "own_pick_after_go_ack",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      },
+      {
+        "gate": "own_command_complete",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      }
+    ]
+  },
+  "rendezvous_event_populations": {
+    "/home/ugrp/ugrp-sim/ops-reviews/gatesv5/beampair-short-input/diagnostic/episode-000/raw": [
+      {
+        "gate": "deadline_replanned",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      },
+      {
+        "gate": "own_align_after_retry",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      },
+      {
+        "gate": "own_complete_after_retry",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      },
+      {
+        "gate": "joint_hold_3s_after_retry",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/ops-reviews/gatesv5/beampair-short-input/diagnostic/episode-001/raw": [
+      {
+        "gate": "deadline_replanned",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      },
+      {
+        "gate": "own_align_after_retry",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      },
+      {
+        "gate": "own_complete_after_retry",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      },
+      {
+        "gate": "joint_hold_3s_after_retry",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/ops-reviews/gatesv5/beampair-short-input/diagnostic/episode-002/raw": [
+      {
+        "gate": "deadline_replanned",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      },
+      {
+        "gate": "own_align_after_retry",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      },
+      {
+        "gate": "own_complete_after_retry",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      },
+      {
+        "gate": "joint_hold_3s_after_retry",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/ops-reviews/gatesv5/beampair-short-input/diagnostic/episode-003/raw": [
+      {
+        "gate": "deadline_replanned",
+        "entered": 1,
+        "passed": 1,
+        "rejected": 0
+      },
+      {
+        "gate": "own_align_after_retry",
+        "entered": 1,
+        "passed": 1,
+        "rejected": 0
+      },
+      {
+        "gate": "own_complete_after_retry",
+        "entered": 1,
+        "passed": 1,
+        "rejected": 0
+      },
+      {
+        "gate": "joint_hold_3s_after_retry",
+        "entered": 1,
+        "passed": 1,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/ops-reviews/gatesv5/beampair-short-input/diagnostic/episode-004/raw": [
+      {
+        "gate": "deadline_replanned",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      },
+      {
+        "gate": "own_align_after_retry",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      },
+      {
+        "gate": "own_complete_after_retry",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      },
+      {
+        "gate": "joint_hold_3s_after_retry",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/ops-reviews/gatesv5/beampair-short-input/diagnostic/episode-005/raw": [
+      {
+        "gate": "deadline_replanned",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      },
+      {
+        "gate": "own_align_after_retry",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      },
+      {
+        "gate": "own_complete_after_retry",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      },
+      {
+        "gate": "joint_hold_3s_after_retry",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      }
+    ]
+  },
+  "analysis_script_sha256": "1d602385e411ca5df0a3ae0679d9ebe323f2e3813871604912763f5c4a923f28",
+  "missing_rejection_audit_N": 0,
+  "reproduce": "cd /home/ugrp/ugrp-sim/src/0b5faa4cfdc52f87df0fdf49e7b254bafc5b8bc0 && PYTHONPATH=. /home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python /home/ugrp/ugrp-sim/src/0b5faa4cfdc52f87df0fdf49e7b254bafc5b8bc0/scripts/analyze_beampair1.py /home/ugrp/ugrp-sim/ops-reviews/gatesv5/beampair-short-input --out /home/ugrp/ugrp-sim/ops-reviews/gatesv5/beampair-short-analysis"
+}

@@ -1,0 +1,22 @@
+{
+  "stage": "scene_binding_round1",
+  "reason_category": "HOST_ERROR_scene_profile_allowlist",
+  "blocked_object": "none:profile_contract",
+  "min_gap_m": null,
+  "scope": "before model/physics",
+  "reason": "Pinned nearclip wrapper accepted floor_light_v1 only; PR527 wrapper extension was missing",
+  "runs_started": 6,
+  "rejected": 6,
+  "passed": 0,
+  "reproduction": "beampair-short-config.json with source ffb85bbc; full stderr preserved on gcp2",
+  "round2_release": {
+    "reason_category": "HOST_ERROR_missing_wall_texture_geometry",
+    "blocked_object": "zone_wall_divider_1_250_14750_2000",
+    "min_gap_m": null,
+    "scope": "model creation, before physics",
+    "N": 6,
+    "passed": 0,
+    "rejected": 6,
+    "reason": "release24 uses zone_wide_door_geometry_v3, outside PR527 texture manifest maps"
+  }
+}
