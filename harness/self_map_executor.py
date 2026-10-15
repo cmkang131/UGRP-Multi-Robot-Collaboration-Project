@@ -164,7 +164,8 @@ class SelfMapExecutor:
                 command, receipt = settle_turn(self.turn_settler, error, t,
                     costmap=self.costmap(pose, spin=True), pose=pose,
                     motion_model=self.mapper.options.motion_model)
-                self.event(t, 'reloc10_settle', **receipt)
+                self.event(t, 'reloc10_settle', settle_reason=receipt.get('reason'),
+                           **{k:v for k,v in receipt.items() if k != 'reason'})
                 if not receipt['settled']:
                     return command
             elif abs(error) > math.radians(2):

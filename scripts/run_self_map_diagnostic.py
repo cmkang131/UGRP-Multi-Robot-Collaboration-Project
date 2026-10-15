@@ -71,9 +71,9 @@ def bundle(source, seed, cap_s, *, bootstrap='off', initial_sweep='off', recover
         result.update(execution_bundle_id='selfmap5-opt-in-v1', check='selfmap5', case='active-selfmap5',
             pool_with_previous_results=False, scene_version=render_profile,
             dependencies=([dict(pr=511, branch='claude/scene-floor-texture',
-                source_sha='6a73c3aab305f250d0ecd9591922b160b9c709ab',
-                required='render_profile + natural_scene_texture assets + nearclip API',
-                merged_verified=False)] if render_profile == 'floor_light_textured_v1' else []))
+                source_sha='db0a6858f6387e9048d4a37e78bc8eefd2ead484',
+                required='natural_scene_texture exact assets, own-map scene instance adapter',
+                merged_verified=True)] if render_profile == 'floor_light_textured_v1' else []))
         result['options'].update(revision_gate=revision_gate, multiframe_registration=multiframe_registration,
                                  render_profile=render_profile)
     if correction_safety != 'off':
@@ -185,10 +185,12 @@ def acquire(out, b, backend_factory, *, controller_factory=make_executor, wall_c
         from scripts.run_wall_servo_stiffness import arm
         if backend_factory.__module__.startswith('sim.') and b['options'].get('render_profile') == 'floor_light_textured_v1':
             # Fail closed before constructing the plant when PR511 is absent.
-            from sim.render_profile import profile_record
-            profile_record('floor_light_textured_v1')
+            from sim.natural_scene_texture import manifest
+            manifest()
         backend = backend_factory(b, out, seed=b['task']['seed'])
         backend.reset(5.)
+        if hasattr(backend, 'texture_audit'):
+            dump(out/'texture-audit.json', backend.texture_audit)
         start, cap, robot = backend.now, b['case_cap_s'], b['task']['robot_id']
         loop_started = monotonic()
         backend.set_deadline(round(start+cap, 9))

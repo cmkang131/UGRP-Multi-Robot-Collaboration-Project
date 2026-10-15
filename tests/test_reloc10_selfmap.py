@@ -54,3 +54,40 @@ def test_bundle_toggles_off_unchanged_and_on_recorded():
     assert a==bundle('a'*40,93571,60,**kw,reloc10_settle_v1=False,reloc10_registration_v1=False)
     b=bundle('a'*40,93571,60,**kw,reloc10_settle_v1=True,reloc10_registration_v1=True)
     assert b['options']['reloc10_settle_v1'] and b['options']['reloc10_registration_v1']
+
+
+def test_texture_adapter_is_instance_local_and_restores_factory(monkeypatch,tmp_path):
+    from types import SimpleNamespace
+    from sim import own_map_closed_loop as module, active_wall_map as host, natural_scene_texture as texture
+    calls=[]
+    scene=SimpleNamespace(transform=lambda xml: xml,manifest={})
+    original=lambda *a,**kw: scene
+    monkeypatch.setattr(host,'make_scene',original)
+    monkeypatch.setattr(texture,'manifest',lambda: {})
+    monkeypatch.setattr(texture,'apply',lambda xml: (calls.append('apply') or xml))
+    monkeypatch.setattr(texture,'verify_model',lambda model: dict(checked=True))
+    def build(self,bundle,out,*,seed):
+        self.world=SimpleNamespace(model=object())
+        self.scene=host.make_scene(bundle,seed)
+        self.scene.transform('<root/>')
+    monkeypatch.setattr(module.Base,'__init__',build)
+    x=module.PhysicsBackend(dict(options=dict(render_profile='floor_light_textured_v1')),tmp_path,seed=1)
+    assert calls==['apply'] and host.make_scene is original
+    assert x.texture_audit==dict(checked=True)
+    assert x.scene.manifest['natural_scene_texture']['source_commit']=='db0a6858f6387e9048d4a37e78bc8eefd2ead484'
+
+
+def test_executor_settle_receipt_reaches_dwell_and_records_reason(monkeypatch):
+    from harness.self_map_executor import SelfMapExecutor
+    from test_self_map_integration import fixture_mapper
+    from test_self_map_executor import Sweep
+    mapper,_=fixture_mapper(monkeypatch)
+    c=SelfMapExecutor('r1',mapper=mapper,sweep=Sweep(),reloc10_settle_v1=True)
+    c.active_stage='turn'; c.active_view=dict(heading_rad=0.)
+    c.active_target=float(mapper.odom.pose[2])+.05
+    c.active_until=0.; c.turn_settler=PulseSettler(math.radians(2))
+    monkeypatch.setattr(c,'costmap',lambda *a,**kw: Clear())
+    assert c.active_look(1.,np.zeros(3))['kind']=='hold'
+    assert c.active_stage=='dwell'
+    assert c.events[-1]['reason']=='reloc10_settle'
+    assert c.events[-1]['settle_reason']=='quantum_deadband'
