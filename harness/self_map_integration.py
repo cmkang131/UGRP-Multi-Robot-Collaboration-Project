@@ -44,10 +44,15 @@ class Options:
     reloc10_registration_v1: bool = False
     reloc11_wall_field_v1: bool = False
     reloc11_low_contrast_v1: bool = False
+    reloc12_raw_cov_gate_v1: bool = False
+    reloc12_ransac_hypotheses_v1: bool = False
     revision_xy_threshold_m: float = .1
     revision_yaw_threshold_rad: float = math.radians(5)
 
     def __post_init__(self):
+        for name in ('reloc12_raw_cov_gate_v1', 'reloc12_ransac_hypotheses_v1'):
+            if type(getattr(self, name)) is not bool or (getattr(self, name) and self.multiframe_registration == 'off'):
+                raise ValueError('reloc12 requires multiframe registration and bool toggles')
         from harness.reloc9_rotation import selfmap_model
         from harness.reloc9_wall_guard import validate as validate_wall
         object.__setattr__(self, 'motion_model', selfmap_model(self.motion_model, self.reloc9_rotation_calibration_v1))
@@ -196,6 +201,9 @@ class SelfMapIntegration:
                 multiframe_registration=self.options.multiframe_registration,
                 reloc10_registration_v1=self.options.reloc10_registration_v1,
                 reloc11_wall_field_v1=self.options.reloc11_wall_field_v1,
+                reloc12_raw_cov_gate_v1=self.options.reloc12_raw_cov_gate_v1,
+                reloc12_ransac_hypotheses_v1=self.options.reloc12_ransac_hypotheses_v1,
+
                 correction_safety=self.options.correction_safety,
                 active_relocalization=self.options.active_relocalization)
             self.flow = PlaneFlow()

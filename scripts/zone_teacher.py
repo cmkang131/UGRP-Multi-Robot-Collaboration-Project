@@ -723,3 +723,21 @@ class ZoneTeacherExecutor:
         if routes:
             self.resolve_passages(now)
         self.resolve_blocks(now)
+
+
+def proportional_drive(pose, goal, target, heading):
+    """The existing zone teacher's continuous approach law, shared without tuning."""
+    x, y, yaw = pose
+    dist = math.hypot(goal[0]-x, goal[1]-y)
+    wx, wy = target[0]-x, target[1]-y
+    norm = max(math.hypot(wx, wy), 1e-9)
+    speed = min(1., dist/.25)
+    vx, vy = wx/norm*speed, wy/norm*speed
+    want = heading if dist < .6 else math.atan2(wy, wx)
+    err = _wrap(want-yaw)
+    fwd = math.cos(yaw)*vx + math.sin(yaw)*vy
+    left = -math.sin(yaw)*vx + math.cos(yaw)*vy
+    scale = 1. if abs(err) < .5 else .3
+    return {'forward': float(np.clip(.15*fwd*scale, -.05, .15)),
+            'left': float(np.clip(.10*left*scale, -.10, .10)),
+            'turn': float(np.clip(.6*err, -.15, .15))}

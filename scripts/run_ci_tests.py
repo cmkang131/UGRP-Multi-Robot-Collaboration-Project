@@ -25,6 +25,7 @@ from scripts.check_ci_fixtures import check_fixtures
 
 TEST_PATTERNS = (
     "tests/test_reloc11_*.py",
+    "tests/test_reloc12*.py",
     "tests/test_reloc10_*.py",
     "tests/test_reloc9_shared.py",
     "tests/test_reloc9_selfmap.py",

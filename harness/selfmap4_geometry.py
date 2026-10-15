@@ -151,13 +151,18 @@ class StaticRegistration:
     Unresolved hypotheses can propose look directions but cannot clip/clear maps
     or lower pose covariance. Registration has to survive three distinct views.
     """
-    def __init__(self, static, *, multiframe_registration='off', correction_safety='off', active_relocalization='off', reloc10_registration_v1=False, reloc11_wall_field_v1=False):
+    def __init__(self, static, *, multiframe_registration='off', correction_safety='off', active_relocalization='off', reloc10_registration_v1=False, reloc11_wall_field_v1=False, reloc12_raw_cov_gate_v1=False, reloc12_ransac_hypotheses_v1=False):
         from harness.e2e_static_rgb_localizer import create
         from harness.self_map_landmark_sensor import Sensor
         if set(static) != {'map_id', 'version', 'frame', 'bounds_m', 'obstacles', 'regions', 'passages'}:
             raise ValueError('SELFMAP4_STATIC_GEOMETRY_ALLOWLIST')
         if type(reloc11_wall_field_v1) is not bool:
             raise ValueError('reloc11 wall field must be bool')
+        for value in (reloc12_raw_cov_gate_v1, reloc12_ransac_hypotheses_v1):
+            if type(value) is not bool or (value and multiframe_registration == 'off'):
+                raise ValueError('reloc12 requires multiframe registration and bool toggles')
+        self.raw_cov_gate = reloc12_raw_cov_gate_v1
+        self.ransac_hypotheses = reloc12_ransac_hypotheses_v1
         self.wall_field = reloc11_wall_field_v1
         self.pf = create(static, option='static_walls_v1' if self.wall_field else 'static_landmarks_v1', seed=5064)
         if self.wall_field:
@@ -243,17 +248,22 @@ class StaticRegistration:
             supported = supported and any(f['kind'] == 'floor_line' for f in observation['features'])
         else:
             supported, geometry = self.geometry_supported(observation, row['pose'])
+        gate_cov = np.asarray(row['covariance']) if self.raw_cov_gate else cov
         reliable = (row['updated'] and row['resolved'] and row['cluster']['mass'] >= .9
-                    and np.linalg.eigvalsh(cov[:2, :2]).max() <= .15**2
-                    and cov[2, 2] <= math.radians(5)**2
+                    and np.linalg.eigvalsh(gate_cov[:2, :2]).max() <= .15**2
+                    and gate_cov[2, 2] <= math.radians(5)**2
                     and supported)
         if self.correction_safety != 'off':
             from harness.selfmap6_safety import OPTION, registration_hypotheses
             if self.correction_safety != OPTION or self.evidence is None:
                 raise ValueError('INVALID_SELFMAP6_REGISTRATION')
+            if self.ransac_hypotheses:
+                from harness.reloc12_registration import ransac_hypotheses as registration_hypotheses
+            search = None
             ambiguity = dict(candidate_count=0, unique=False, candidates=[], evaluated=False)
             if reliable:
                 ambiguity = registration_hypotheses(self.evidence, self.pf.landmark_map.edges, own_pose, cov)
+                search = ambiguity
                 ambiguity['evaluated'] = True
                 unique_pose = np.asarray(ambiguity['candidates'][0]) if ambiguity['unique'] else None
                 reliable = (unique_pose is not None and np.linalg.norm(unique_pose[:2]-np.asarray(row['pose'])[:2]) <= .15
@@ -261,7 +271,7 @@ class StaticRegistration:
             geometry['ambiguity'] = ambiguity
             if self.active_relocalization != 'off':
                 from harness.active_relocalization import conditioned_modes, relative_candidates
-                search = registration_hypotheses(self.evidence, self.pf.landmark_map.edges, own_pose, cov)
+                search = search if search is not None else registration_hypotheses(self.evidence, self.pf.landmark_map.edges, own_pose, cov)
                 candidates = search['candidates'] or [row['pose']]
                 if self.command_anchor is not None:
                     previous_world, previous_own = self.command_anchor
@@ -291,8 +301,8 @@ class StaticRegistration:
         if self.reloc10_registration:
             checks = dict(no_sensor_update=not row['updated'], pf_unresolved=not row['resolved'],
                 cluster_mass=row['cluster']['mass'] < .9,
-                xy_covariance=np.linalg.eigvalsh(cov[:2, :2]).max() > .15**2,
-                yaw_covariance=cov[2, 2] > math.radians(5)**2,
+                xy_covariance=np.linalg.eigvalsh(gate_cov[:2, :2]).max() > .15**2,
+                yaw_covariance=gate_cov[2, 2] > math.radians(5)**2,
                 geometry=not supported,
                 ambiguity_pending_upstream=self.correction_safety != 'off' and not geometry.get('ambiguity', {}).get('evaluated', False),
                 geometric_ambiguity=geometry.get('ambiguity', {}).get('evaluated', False) and not geometry['ambiguity']['unique'])
@@ -313,6 +323,17 @@ class StaticRegistration:
             self.last.update(pf_resolved=bool(row['resolved']), raw_covariance=row['covariance'],
                 covariance=cov.tolist(), pf_sensor=row['sensor'],
                 multiframe_registration=self.multiframe_registration)
+        if self.raw_cov_gate or self.ransac_hypotheses:
+            from harness.reloc12_registration import replay_packet
+            self.last['reloc12'] = dict(raw_cov_gate=self.raw_cov_gate,
+                ransac_hypotheses=self.ransac_hypotheses,
+                reliable_gate_covariance=gate_cov.tolist(),
+                residual_covariance=cov.tolist(),
+                registered_world_pose=None if self.map_from_own is None else compose(self.map_from_own, own_pose).tolist(),
+                replay=replay_packet(self.evidence, own_pose, observation, t),
+                rejection=dict(category=rejection[0] if rejection else 'accepted',
+                    blocked_object='static_registration_evidence', minimum_gap_m=None,
+                    gap_status='not_applicable_localization_gate'))
         if self.wall_field:
             self.last['reloc11_wall_field'] = dict(model='AMCL_likelihood_field',
                 pf_particles=self.pf.n, sensor_landmarks='off',
