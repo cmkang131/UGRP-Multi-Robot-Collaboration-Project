@@ -59,7 +59,7 @@ def robust_segment(points):
     return ends
 
 
-def observe(rgb, servo, sensor):
+def observe(rgb, servo, sensor, *, reloc9_wall_height_guard_v1=False):
     """Fit wall-floor lines in metric ground plane; reuse zone/door observations."""
     mp, hfw, _ = modules()
     origin, rotation = camera_transform(servo)
@@ -68,6 +68,15 @@ def observe(rgb, servo, sensor):
     und = mp.undistort(cv2.cvtColor(rgb, cv2.COLOR_RGB2BGR))
     params = dict(floor_patch_max_m=.81, run_step_window=3, top_edge_px=4)
     scan = hfw.detect(und, cm, params=params, loaded=False)
+    from harness.reloc9_wall_guard import validate, supported_columns
+    validate(reloc9_wall_height_guard_v1)
+    wall_audit = None
+    if reloc9_wall_height_guard_v1:
+        keep, wall_audit = supported_columns(und, cm, scan['vb'][:, 0], scan['vt'][:, 0])
+        scan = copy.deepcopy(scan)
+        for value in scan.values():
+            if isinstance(value, np.ndarray) and value.shape[:1] == keep.shape:
+                value[~keep] = np.nan
     contacts = cm.floor_point(cm.t_of_row(scan['vb'][:, 0]))
     segments, accepted_columns = [], []
     for line in hfw.link_segments(scan, params):
@@ -102,7 +111,8 @@ def observe(rgb, servo, sensor):
     features = sensor.measure(cv2.cvtColor(rgb, cv2.COLOR_RGB2BGR), servo,
         dict(columns=columns, uv=np.c_[cm.columns[columns], scan['vb'][columns, 0]]))
     return dict(camera=origin[:2].tolist(), segments=segments, floor_xy=floor.tolist(),
-                features=features, raw_columns=len(columns), fitted_columns=len(accepted_columns))
+                features=features, raw_columns=len(columns), fitted_columns=len(accepted_columns),
+                **({'wall_height_guard': wall_audit} if wall_audit is not None else {}))
 
 
 class PlaneFlow:

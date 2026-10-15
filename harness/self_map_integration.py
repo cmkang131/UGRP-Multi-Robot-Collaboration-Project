@@ -39,10 +39,18 @@ class Options:
     multiframe_registration: str = 'off'
     correction_safety: str = 'off'
     active_relocalization: str = 'off'
+    reloc9_rotation_calibration_v1: bool = False
+    reloc9_wall_height_guard_v1: bool = False
     revision_xy_threshold_m: float = .1
     revision_yaw_threshold_rad: float = math.radians(5)
 
     def __post_init__(self):
+        from harness.reloc9_rotation import selfmap_model
+        from harness.reloc9_wall_guard import validate as validate_wall
+        object.__setattr__(self, 'motion_model', selfmap_model(self.motion_model, self.reloc9_rotation_calibration_v1))
+        validate_wall(self.reloc9_wall_height_guard_v1)
+        if self.reloc9_wall_height_guard_v1 and self.recovery_profile == 'off':
+            raise ValueError('RELOC9_WALL_GUARD_REQUIRES_RECOVERY')
         if self.self_map_integration not in ('off', OPTION):
             raise ValueError('UNKNOWN_SELF_MAP_INTEGRATION')
         if any(not math.isfinite(v) or v <= 0 for v in
@@ -188,7 +196,9 @@ class SelfMapIntegration:
             self.slam = PriorBootstrapSLAM(robot_id,
                 max_sigma_xy_m=self.options.max_sigma_xy_m,
                 max_sigma_yaw_rad=self.options.max_sigma_yaw_rad)
-        self.odom = command_odometry(start_time, motion_model=self.options.motion_model)
+        from harness.reloc9_rotation import selfmap_model
+        self.odom = command_odometry(start_time, motion_model=selfmap_model(
+            self.options.motion_model, self.options.reloc9_rotation_calibration_v1))
         self.odom.step_callback = self._motion
         self.delta, self.Q = np.zeros(3), np.zeros((3, 3))
         self.servo = {}
@@ -423,7 +433,8 @@ class SelfMapIntegration:
                 settled and not held, self.delta, self.Q)
             if settled and not held:
                 from harness.selfmap4_geometry import observe
-                wall_observation = observe(image, self.servo, self.registration.sensor)
+                kwargs = ({'reloc9_wall_height_guard_v1': True} if self.options.reloc9_wall_height_guard_v1 else {})
+                wall_observation = observe(image, self.servo, self.registration.sensor, **kwargs)
             else:
                 wall_observation = dict(camera=[0., 0.], segments=[], floor_xy=[], features=[])
             static_pose = self.registration.step(wall_observation, self.delta, self.servo,
@@ -585,6 +596,11 @@ class SelfMapIntegration:
                           rebuild_cooldown_s=self.rebuild_cooldown())
         if self.options.multiframe_registration != 'off':
             result['multiframe_registration'] = self.options.multiframe_registration
+        if self.options.reloc9_wall_height_guard_v1 and wall_observation is not None:
+            result['wall_height_guard'] = wall_observation.get('wall_height_guard')
+        if self.options.reloc9_rotation_calibration_v1:
+            result['rotation_calibration'] = dict(option='reloc9_rotation_calibration_v1',
+                motion_model=self.options.motion_model, carry_gain_applied=False)
         if self.correction_gate is not None:
             result.update(correction_safety=self.options.correction_safety,
                           correction_admission=event.get('correction_gate'),

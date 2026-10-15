@@ -24,6 +24,8 @@ from scripts import agent_lock
 from scripts.check_ci_fixtures import check_fixtures
 
 TEST_PATTERNS = (
+    "tests/test_reloc9_shared.py",
+    "tests/test_reloc9_selfmap.py",
     "tests/test_e2e18.py",
     "tests/test_e2e18_beam_axis.py",
     "tests/test_e2e18_cadence.py",

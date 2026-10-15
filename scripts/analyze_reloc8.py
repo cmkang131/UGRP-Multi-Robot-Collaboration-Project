@@ -14,6 +14,7 @@ import subprocess
 import cv2
 import numpy as np
 from harness.active_relocalization import next_view
+from scripts.reloc9_metrics import correction_metrics, counts
 
 BASE = Path('/Users/changmin/projects/ugrp/outputs')
 REPORTS = BASE/'e2e18-admin/gcp-reports'
@@ -109,10 +110,7 @@ def carry(sources):
     truth = {t:e['truth'] for t,e in evaluation.items()}
     for d in decisions:
         g = truth[round(d['t'], 6)]
-        xy = math.dist(d['proposal'][:2], g[:2])
-        yaw = abs(math.degrees((d['proposal'][2]-g[2]+math.pi)%(2*math.pi)-math.pi))
-        d['evaluation_only'] = dict(proposal_xy_error_m=xy, proposal_yaw_error_deg=yaw,
-            dangerous=xy > .15 or yaw > 10.)
+        d['evaluation_only'] = correction_metrics(d['prior'], d['proposal'], g)
         e=evaluation[round(d['t'],6)]
         d['evaluation_only'].update({k:e[k] for k in ('error_xy_m','error_yaw_deg',
             'camera_fk_origin_error_m','camera_fk_axis_error_deg')})
@@ -142,6 +140,7 @@ def carry(sources):
         old_ambiguous_N=sum(d['old_modes']['ambiguous'] for d in decisions),
         new_ambiguous_N=sum(d['new_modes']['ambiguous'] for d in decisions),
         dangerous_accepted_N=sum(d['new_acceptance']['accepted'] and d['evaluation_only']['dangerous'] for d in decisions),
+        correction_criteria=counts(decisions, lambda d:d['new_acceptance']['accepted']),
         decisions=decisions, first_counterfactual_view=nbv,
         limitation='fixed recorded priors and endpoint/features; not a causal trajectory or new-view RGB replay; interrupted93262/93266 lack final view ledger')
 
@@ -168,7 +167,7 @@ def selfmap(sources):
             candidate[2]=(candidate[2]+math.pi)%(2*math.pi)-math.pi
             d=gate.consider(prior, candidate, a['predicted_covariance'], a['measurement_covariance'],
                 t=row['t'],frame_id=row['frame_id'],source=a['source'],view=a['view'],evidence_ids=a['evidence_ids'])
-            admissions.append(dict(t=row['t'],old_accepted=a['accepted'],new=d,candidate=candidate.tolist()))
+            admissions.append(dict(t=row['t'],old_accepted=a['accepted'],new=d,prior=prior.tolist(),candidate=candidate.tolist()))
         # Evaluation only, after the complete admission replay.
         from harness.natural_floor_slam import compose
         from harness.selfmap4_geometry import inverse
@@ -178,9 +177,7 @@ def selfmap(sources):
         for a in admissions:
             g=truth_by_t[round(a['t'],6)]
             local=compose(inverse(origin),[*g['robot_xyz_m'][:2],g['robot_yaw_rad']])
-            xy=math.dist(a['candidate'][:2],local[:2])
-            yaw=abs(math.degrees((a['candidate'][2]-local[2]+math.pi)%(2*math.pi)-math.pi))
-            a['evaluation_only']=dict(candidate_xy_error_m=xy,candidate_yaw_error_deg=yaw,dangerous=xy>.15 or yaw>10.)
+            a['evaluation_only']=correction_metrics(a['prior'], a['candidate'], local)
         sensor=Sensor(MapFeatures(static).hues); detections=[]
         for f in frames:
             candidates=list((REPORTS/'selfmap6-c8d9b6e5-ops').glob(f'*{seed}*/'+f['path']))
@@ -200,12 +197,14 @@ def selfmap(sources):
             old_accepted_N=sum(a['old_accepted'] for a in admissions),new_accepted_N=sum(a['new']['accepted'] for a in admissions),
             rejected_N=sum(not a['new']['accepted'] for a in admissions),
             dangerous_accepted_N=sum(a['new']['accepted'] and a['evaluation_only']['dangerous'] for a in admissions),
+            correction_criteria=counts(admissions, lambda a:a['new']['accepted']),
+            evidence_scope='unchanged selfmap6 gate replay; NOT reloc8 effectiveness evidence',
             registered_N=sum(r['static_registration']['registered'] for r in trace),
             ORB={k:dict(min=min(r[k] for r in trace),median=float(np.median([r[k] for r in trace])),max=max(r[k] for r in trace))
                  for k in ('features','matches','inliers')},
             independent_axes=Counter(str(r['static_registration']['geometry'].get('independent_axis_count')) for r in trace),
             first_uncertain_t=uncertain['t'],first_uncertain_elapsed_s=uncertain['t']-trace[0]['t'],first_counterfactual_view=nbv))
-    return dict(runs=output,limitation='unchanged precommit safety replay and selected RGB detection; new-view pixels and full RGB bank unavailable')
+    return dict(runs=output,evidence_scope='selfmap6 unchanged gate regression ONLY, not reloc8 evidence',limitation='unchanged precommit safety replay and selected RGB detection; new-view pixels and full RGB bank unavailable')
 
 
 def main():

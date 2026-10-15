@@ -23,7 +23,8 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def bundle(source, seed, cap_s, *, bootstrap='off', initial_sweep='off', recovery_profile='off',
-           revision_gate='off', multiframe_registration='off', render_profile='floor_light_v1', correction_safety='off', active_relocalization='off'):
+           revision_gate='off', multiframe_registration='off', render_profile='floor_light_v1', correction_safety='off', active_relocalization='off',
+           reloc9_rotation_calibration_v1=False, reloc9_wall_height_guard_v1=False):
     from harness.active_camera import SEARCH
     if not math.isfinite(cap_s) or not 1 <= cap_s <= 300 or abs(cap_s*10-round(cap_s*10)) > 1e-8:
         raise ValueError('CAP_MUST_BE_0_1S_GRID_IN_1_TO_300')
@@ -53,7 +54,9 @@ def bundle(source, seed, cap_s, *, bootstrap='off', initial_sweep='off', recover
     from harness.self_map_integration import Options
     Options(recovery_profile=recovery_profile, revision_gate=revision_gate,
             multiframe_registration=multiframe_registration, correction_safety=correction_safety,
-            active_relocalization=active_relocalization)
+            active_relocalization=active_relocalization,
+            reloc9_rotation_calibration_v1=reloc9_rotation_calibration_v1,
+            reloc9_wall_height_guard_v1=reloc9_wall_height_guard_v1)
     if recovery_profile != 'off':
         from harness.selfmap4_geometry import static_input
         _, sha = static_input()
@@ -78,6 +81,15 @@ def bundle(source, seed, cap_s, *, bootstrap='off', initial_sweep='off', recover
     if active_relocalization != 'off':
         result.update(execution_bundle_id='selfmap7-reloc8-v1', check='selfmap7', case='active-selfmap7')
         result['options']['active_relocalization'] = active_relocalization
+    if reloc9_rotation_calibration_v1 or reloc9_wall_height_guard_v1:
+        result.update(execution_bundle_id='selfmap-reloc9-v1', check='selfmap7', case='active-selfmap-reloc9')
+        result.setdefault('scene_version', render_profile)
+        for key, value in dict(render_profile=render_profile, revision_gate=revision_gate,
+                multiframe_registration=multiframe_registration, correction_safety=correction_safety,
+                active_relocalization=active_relocalization).items():
+            result['options'].setdefault(key, value)
+        result['options'].update(reloc9_rotation_calibration_v1=reloc9_rotation_calibration_v1,
+                                 reloc9_wall_height_guard_v1=reloc9_wall_height_guard_v1)
     return result
 
 
@@ -183,6 +195,9 @@ def acquire(out, b, backend_factory, *, controller_factory=make_executor, wall_c
         for option in ('revision_gate', 'multiframe_registration', 'correction_safety', 'active_relocalization'):
             if b['options'].get(option, 'off') != 'off':
                 extra[option] = b['options'][option]
+        for option in ('reloc9_rotation_calibration_v1', 'reloc9_wall_height_guard_v1'):
+            if b['options'].get(option, False):
+                extra[option] = True
         controller = controller_factory(self_map_executor=OPTION, robot_id=robot,
             start_time=start, cap_s=cap, bootstrap=b['options'].get('bootstrap', 'off'),
             initial_sweep=b['options'].get('initial_sweep', 'off'), **extra)
@@ -287,13 +302,17 @@ def main(argv=None):
     p.add_argument('--multiframe-registration', choices=['off', 'selfmap4_multiframe_registration_v1'], default='off')
     p.add_argument('--correction-safety', choices=['off', 'selfmap6_correction_safety_v1'], default='off')
     p.add_argument('--active-relocalization', choices=['off', 'reloc8_active_vision_v1'], default='off')
+    p.add_argument('--reloc9-rotation-calibration-v1', action='store_true')
+    p.add_argument('--reloc9-wall-height-guard-v1', action='store_true')
     p.add_argument('--render-profile', choices=['floor_light_v1', 'floor_light_textured_v1'], default='floor_light_v1')
     p.add_argument('--execute', action='store_true')
     a = p.parse_args(argv)
     b = bundle(a.expected_source_sha, a.seed, a.cap_s, bootstrap=a.bootstrap, initial_sweep=a.initial_sweep,
                recovery_profile=a.recovery_profile, revision_gate=a.revision_gate,
                multiframe_registration=a.multiframe_registration, render_profile=a.render_profile,
-               correction_safety=a.correction_safety, active_relocalization=a.active_relocalization)
+               correction_safety=a.correction_safety, active_relocalization=a.active_relocalization,
+               reloc9_rotation_calibration_v1=a.reloc9_rotation_calibration_v1,
+               reloc9_wall_height_guard_v1=a.reloc9_wall_height_guard_v1)
     if not a.execute or a.self_map_executor == 'off':
         print(json.dumps(dict(status='PREPARED_NOT_EXECUTED', bundle=b, storage=storage_estimate(a.cap_s))))
         return 0
