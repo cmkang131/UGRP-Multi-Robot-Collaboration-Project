@@ -15,8 +15,16 @@ from harness.natural_floor_slam import compose
 
 def track(reg, row, observation, own_pose, t):
     from harness.selfmap4_geometry import inverse
-    supported, geometry=reg.geometry_supported(observation,row['pose'])
     cov=np.asarray(row['covariance'])
+    # AMCL tracking may constrain only one direction in a view. R1 lost all
+    # four modes by reapplying global two-axis observability to every update
+    # (one valid line at seed93583). Reuse the existing NIS<=9 line matcher on
+    # ONE current frame and raw P; retain two-axis/three-view checks for GLOBAL.
+    from harness.selfmap5_registration import MultiFrameEvidence
+    evidence=MultiFrameEvidence();evidence.trace_edge_ids=True
+    evidence.frames=[dict(t=t,pose=np.asarray(own_pose),lines=[f for f in observation['features'] if f['kind']=='floor_line'])]
+    _,geometry=evidence.supported(reg.pf.landmark_map.edges,row['pose'],own_pose,cov)
+    supported=geometry['supported_floor_lines']>0
     good=(row['resolved'] and row['cluster']['mass']>=.9 and
         np.linalg.eigvalsh(cov[:2,:2]).max()<=.15**2 and cov[2,2]<=math.radians(5)**2 and supported)
     # Fresh invalid evidence causes LOST, never a renewed global confirmation

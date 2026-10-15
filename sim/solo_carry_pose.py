@@ -42,7 +42,7 @@ def task_start(static):
 class CommandPose:
     def __init__(self, start, *, now=0., robot_id='r1', map_sha256='', amcl_option='off', drive_model_deadband_v1=False,
                  carry5_trim_yaw_calibration_v1=False, trim_calibration=None,
-                 reloc9_rotation_calibration_v1=False, reloc10_rotation_calibration_v1=False, carry_pose_budget_recal_v1=False, reloc14_carry_budget_v1=False):
+                 reloc9_rotation_calibration_v1=False, reloc10_rotation_calibration_v1=False, carry_pose_budget_recal_v1=False, reloc14_carry_budget_v1=False, reloc14_carry_tracking_v1=False, tracking_static=None):
         if amcl_option not in ('off', 'report_v1'):
             raise ValueError('unknown carry AMCL report option')
         if (set(start) != START_KEYS
@@ -103,6 +103,12 @@ class CommandPose:
         self.own_frame = None
         self.fixes = 0
         self.distance_since_fix = self.turn_since_fix = 0.
+        self.tracker = None
+        if type(reloc14_carry_tracking_v1) is not bool:
+            raise ValueError("carry tracking toggle must be bool")
+        if reloc14_carry_tracking_v1:
+            from sim.reloc14_carry_tracking import CarryTracker
+            self.tracker = CarryTracker(tracking_static,start)
         self.last_dt = None
 
     @property
@@ -124,6 +130,8 @@ class CommandPose:
         if self.trim_calibration is not None:
             from sim.solo_carry6 import calibrated_trim_delta
             dx, dy, da = calibrated_trim_delta(issued, (dx, dy, da), self.trim_calibration)
+        if self.tracker is not None:
+            self.tracker.issue(issued,(dx,dy,da))
         self.last_delta = (dx, dy, da)
         self.last_command_key = self.command_key(issued, dt)
         self.own.propagate(dx, dy, da, k_trans=0., k_rot=0.)
@@ -171,7 +179,12 @@ class CommandPose:
         if not math.isfinite(now) or abs(now-self.now) > .15+1e-8:
             raise ValueError('own RGB timestamp does not match command estimate')
         self.own_frame = {'camera': camera, 't': now, 'sha256': hashlib.sha256(frame.tobytes()).hexdigest()}
-        # Seeing an image or matching floor colour is not a metric pose fix.
+        if self.tracker is not None:
+            fix=self.tracker.observe(frame,now)
+            if fix is not None:
+                self.own.x,self.own.P=fix
+                self.accepted_fix(now)
+        # A captured image alone is not a metric fix; only admitted PF updates reset the epoch.
 
     def accept_amcl(self, report, now):
         if self.amcl_option == 'off':
@@ -248,6 +261,7 @@ class CommandPose:
                 'motion_error': MOTION_ERROR,
                 'carry_pose_budget_recal_v1': self.budget_recal,
                 'reloc14_carry_budget_v1': self.budget14,
+                **({'reloc14_tracking':self.tracker.last} if self.tracker is not None else {}),
                 'budget_limits': {'yaw_rad': self.yaw_budget_limit(), 'xy_m': MOTION_ERROR['max_xy_m']}, 'last_dt_s': self.last_dt,
                 'error_bound_semantics': 'covariance sigma plus correlated command bias; not calibrated sigma',
                 'issued_distance_since_fix_m': self.distance_since_fix,

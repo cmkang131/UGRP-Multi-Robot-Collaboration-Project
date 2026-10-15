@@ -23,3 +23,13 @@ GCP에서 `scripts/analyze_reloc14.py`로 reloc13 전체 원본을 채점했다.
 [ORB-SLAM2 Tracking::Track](https://github.com/raulmur/ORB_SLAM2/blob/master/src/Tracking.cc): 정상 추적과 LOST 상태의 Relocalization을 구분한다. 이 작업은 이 상태 분리를 적용하며 ORB-SLAM 전체 성능을 주장하지 않는다.
 
 Mac에서는 비물리 단위 회귀만 실행한다. 원본 분석·물리·렌더는 gcp1/n4-highcpu-64에서 수행하며 Mac에는 요약·몽타주·실패 선택 프레임만 회수한다. 모델/학습/공용TOP제어0, weld OFF. 모든 실패/HOST_ERROR/cap_end를 보존한다.
+
+## R2 수정 근거와 범위
+
+R1은 지도4회 모두42.8–46.6 SIM초에 복구 상한을 소진했다. `registered_r7_unconfirmed`는 40/129/131/80프레임(원본 재집계 표 참조). 추적에 전역의2축 요건을 매번 요구했고, 93583은 유효선1개·3.83cm 잔차에도 LOST였다. R2는 현재프레임의 기존 NIS≤9 선 매칭과 raw P를 사용하며, 알려진 모드의 부분 관측을 허용한다. 두축/3뷰는 전역 획득·재획득에 유지한다. Nav2 PF는 관측이 매번 모든 SE(2)축을 직접 결정해야 한다고 요구하지 않는다는 구현에 따른 상태 분리다. 현재프레임 정보가 없는 것을 새 fix로 세지 않는다. 새 숫자 상수 없음.
+
+R1 v7 carry93266은 첫 RGB fix 전에2.23m 명령 이동/0.424rad 회전 뒤 실제오차60.4cm/23.18°였다. v6로 맞춘 예산은 v7에서 일반화하지 못했고, 단순 상계 확대만으로는 자세 추정을 고치지 못한다. `reloc14_carry_tracking_v1`(기본off)은 기존 **명시된 task_start** Gaussian prior로 PF를 초기화하고, 자기RGB/자기발행delta/정적기하로 갱신한다. 자기RGB는5Hz,카메라안정화는기존.25/held2.25 SIM초, PF2000입자·.25m/.2rad 관문과기존질량.9/rawcov .15m/5°를재사용한다. 성공/접촉/화물좌표/측정관절/TOP는받지않는다. 이연속추적은새기록조건이며R1/v6와합산하지않는다. 기존원본예산은검증대상으로유지하며새폐루프의드리프트를분리한다.
+
+저장R3 관측에 국소선refit도 오프라인 진단했으나 일부 yaw/위치p95가 나빠져 실행에 넣지 않았다([진단](local-fit-probe.json)). 연구코드 보정상수로 승격하지 않았다.
+
+참고 구현을 열람한 정확한 revision: Nav2 `b58a7573f44a984fdc5f3eaa80c4b62ac529ab9d`, ORB-SLAM2 `f2e6f51cdc8d067655d90a78c06261378e07e8f3`.

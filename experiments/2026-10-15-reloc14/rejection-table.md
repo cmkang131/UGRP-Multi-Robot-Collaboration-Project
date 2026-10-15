@@ -688,3 +688,26 @@
 
 전체 분석·원본 해시·재현 명령: baseline-summary.json. R1은 실행 프레임 분리 전이므로 등록/드리프트의 원본 오류149/149를 reloc13 표에서 별도 유지(새 실행 프레임 오차 산식은 적용 불가).
 위치 관문 막은 대상=static_registration_or_map_evidence, 물리 최소 틈=null(해당 없음). 운반 기존 최대 원인은 pose_budget/재탐색 및 own_rgb:heavy_crate:4(최소 틈 -0.07273354264836535m).
+
+## R1: 첫 폐루프 (6c9fa728)
+
+|실행|등록→전달→삽입→주행|10cm/5° 오류|종료|
+|---|---|---|---|
+|reloc14-r1-selfmap-texture-93571-6c9fa728|77→77→37→3|0/77|selfmap4_relocalization_exhausted|
+|reloc14-r1-selfmap-texture-93583-6c9fa728|149→149→20→0|39/149|selfmap4_relocalization_exhausted|
+|reloc14-r1-selfmap-texture-93584-6c9fa728|147→147→16→0|89/147|selfmap4_relocalization_exhausted|
+|reloc14-r1-selfmap-texture-93585-6c9fa728|95→95→15→3|55/95|selfmap4_relocalization_exhausted|
+
+|거부 범주(단위별 중복 가능)|수|
+|---|---:|
+|registered:not_yet_registered|446|
+|insertion:registered_r7_unconfirmed|379|
+|map_inserted:registered_r7_unconfirmed|367|
+|control_drive_used:stage:active_reloc8|74|
+|insertion:camera_unsettled|13|
+|map_inserted:registered_r7_unconfirmed;camera_unsettled|12|
+|control_drive_used:stage:spin|6|
+|control_drive_used:stage:select|2|
+|map_inserted:camera_unsettled|1|
+
+지도4회는 code recovery 상한 소진. 운반2회는 같은 후보 결함 확인 뒤 소유PID에 SIGINT·supervisor_stop(미완료, physical_success=null). 전체6회 원본 manifest 검증. v7 장면의 warehouse_wood_crate는 공통 고정 소품이며 제거 대상 team cargo heavy_crate와 다르다. cargo_*crate 몸체0, v7정의 SHA 대조로 확인한다. R1 최초 audit의 전체 crate 문자열 검색은 이 고정 소품까지 세었으므로 이후 audit에서 분리했다.
