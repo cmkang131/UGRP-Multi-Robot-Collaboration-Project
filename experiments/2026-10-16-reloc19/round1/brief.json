@@ -1,0 +1,314 @@
+{
+  "status": "NOT_READY",
+  "round": 1,
+  "source_sha": "3da9f8d97240a211edfc0baf9522ef4dcc72c59a",
+  "host": "gcp2",
+  "carry_place": {
+    "A": "0/2",
+    "AB": "0/2"
+  },
+  "verified_destination_acquisition": "0/4",
+  "detector_acquisition": "1/4; wall false positive A93315",
+  "raw_files_verified": 13105,
+  "hash_mismatches": 0,
+  "notes": [
+    "R1 lacks per-acquisition-frame telemetry; total views and events exist, no reconstructed 10Hz funnel claimed. R2 adds it.",
+    "Errors are full run durations with different paths; do not infer improvement from shorter/failed routes."
+  ],
+  "runs": [
+    {
+      "name": "reloc19-r1-carry-A-93266-3da9f8d9",
+      "seed": 93266,
+      "kind": "carry",
+      "condition": "A",
+      "status": "complete",
+      "termination": "cap_end",
+      "place_success": false,
+      "sim_s": 299.9999999946032,
+      "errors": {
+        "xy": {
+          "N": 3000,
+          "p50": 1.7834361742171696,
+          "p95": 2.8814946624057565,
+          "end": 2.7248598993886746
+        },
+        "yaw": {
+          "N": 3000,
+          "p50": 27.63302774487424,
+          "p95": 175.57946935602223,
+          "end": 38.58047982985352
+        },
+        "command_xy": {
+          "N": 3000,
+          "p50": 1.5274591346411215,
+          "p95": 1.9021999091262003,
+          "end": 1.4943061625606842
+        },
+        "command_yaw": {
+          "N": 3000,
+          "p50": 28.866159197709102,
+          "p95": 157.79118822329556,
+          "end": 158.6154533497848
+        }
+      },
+      "tracker": {
+        "candidates": 14,
+        "accepted": 14,
+        "accepted_raw_yaw_over5": 8,
+        "accepted_applied_yaw_over5": 8,
+        "reasons": {
+          "within_chi2_gate": 14
+        }
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 84,
+        "blocked_held": 2622,
+        "measurements_by_phase": {
+          "pickup_search": 1,
+          "approach": 270,
+          "align": 19,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r1-carry-A-93266-3da9f8d9/raw"
+    },
+    {
+      "name": "reloc19-r1-carry-AB-93266-3da9f8d9",
+      "seed": 93266,
+      "kind": "carry",
+      "condition": "AB",
+      "status": "complete",
+      "termination": "phase_timeout",
+      "place_success": false,
+      "sim_s": 232.79999999619224,
+      "errors": {
+        "xy": {
+          "N": 2329,
+          "p50": 0.6374546020107573,
+          "p95": 1.6213187526629853,
+          "end": 1.6881874439516371
+        },
+        "yaw": {
+          "N": 2329,
+          "p50": 56.616425822966,
+          "p95": 166.6970805386319,
+          "end": 151.8752562972338
+        },
+        "command_xy": {
+          "N": 2329,
+          "p50": 0.6728921010921606,
+          "p95": 1.5001680885540474,
+          "end": 1.5586843066655511
+        },
+        "command_yaw": {
+          "N": 2329,
+          "p50": 61.15331270317273,
+          "p95": 164.97494786312149,
+          "end": 163.6695762272236
+        }
+      },
+      "tracker": {
+        "candidates": 14,
+        "accepted": 14,
+        "accepted_raw_yaw_over5": 8,
+        "accepted_applied_yaw_over5": 8,
+        "reasons": {
+          "within_chi2_gate": 14
+        }
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 84,
+        "blocked_held": 1951,
+        "measurements_by_phase": {
+          "pickup_search": 1,
+          "approach": 270,
+          "align": 19,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r1-carry-AB-93266-3da9f8d9/raw"
+    },
+    {
+      "name": "reloc19-r1-carry-A-93315-3da9f8d9",
+      "seed": 93315,
+      "kind": "carry",
+      "condition": "A",
+      "status": "complete",
+      "termination": "destination_floor_not_visible",
+      "place_success": false,
+      "sim_s": 211.49999999669592,
+      "errors": {
+        "xy": {
+          "N": 2116,
+          "p50": 0.6771383679488375,
+          "p95": 1.3526134281987354,
+          "end": 0.7469232975587202
+        },
+        "yaw": {
+          "N": 2116,
+          "p50": 69.21633653301923,
+          "p95": 176.0853219123031,
+          "end": 179.8426889022778
+        },
+        "command_xy": {
+          "N": 2116,
+          "p50": 0.7102242689936112,
+          "p95": 1.3779622007804297,
+          "end": 0.5325474783435904
+        },
+        "command_yaw": {
+          "N": 2116,
+          "p50": 69.48110911589437,
+          "p95": 171.17679856281381,
+          "end": 177.4510637041267
+        }
+      },
+      "tracker": {
+        "candidates": 3,
+        "accepted": 3,
+        "accepted_raw_yaw_over5": 0,
+        "accepted_applied_yaw_over5": 0,
+        "reasons": {
+          "within_chi2_gate": 3
+        }
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 22,
+        "blocked_held": 2006,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "pickup_search": 1,
+          "approach": 60,
+          "align": 16,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r1-carry-A-93315-3da9f8d9/raw"
+    },
+    {
+      "name": "reloc19-r1-carry-AB-93315-3da9f8d9",
+      "seed": 93315,
+      "kind": "carry",
+      "condition": "AB",
+      "status": "complete",
+      "termination": "phase_timeout",
+      "place_success": false,
+      "sim_s": 206.19999999682125,
+      "errors": {
+        "xy": {
+          "N": 2063,
+          "p50": 1.016015984281116,
+          "p95": 1.8143900806679345,
+          "end": 1.7584368270479356
+        },
+        "yaw": {
+          "N": 2063,
+          "p50": 63.550867300529745,
+          "p95": 165.75981208887072,
+          "end": 80.64985409440443
+        },
+        "command_xy": {
+          "N": 2063,
+          "p50": 1.037455736043623,
+          "p95": 1.8330724483958187,
+          "end": 1.7782027017540507
+        },
+        "command_yaw": {
+          "N": 2063,
+          "p50": 63.63375490684001,
+          "p95": 165.8719633354289,
+          "end": 80.98211362989105
+        }
+      },
+      "tracker": {
+        "candidates": 3,
+        "accepted": 3,
+        "accepted_raw_yaw_over5": 0,
+        "accepted_applied_yaw_over5": 0,
+        "reasons": {
+          "within_chi2_gate": 3
+        }
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 22,
+        "blocked_held": 1953,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "pickup_search": 1,
+          "approach": 60,
+          "align": 16,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r1-carry-AB-93315-3da9f8d9/raw"
+    },
+    {
+      "name": "reloc19-r1-selfmap-short_regression-93584-3da9f8d9",
+      "seed": 93584,
+      "kind": "selfmap",
+      "condition": "short_regression",
+      "status": "HOST_ERROR",
+      "termination": "selfmap4_relocalization_exhausted",
+      "place_success": null,
+      "sim_s": null,
+      "errors": null,
+      "tracker": null,
+      "input_audit": {
+        "schema": "ugrp.selfmap_input_audit.v1",
+        "measured": true,
+        "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+        "own_rgb_frames": 578,
+        "issued_command_records": 584,
+        "top_rgb_frames": 0,
+        "peer_rgb_frames": 0,
+        "truth_pose_inputs": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "rejected_inputs": 0,
+        "authored_static_map_inputs": 1
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r1-selfmap-short_regression-93584-3da9f8d9/raw"
+    },
+    {
+      "name": "reloc19-r1-selfmap-short_regression-93583-3da9f8d9",
+      "seed": 93583,
+      "kind": "selfmap",
+      "condition": "short_regression",
+      "status": "HOST_ERROR",
+      "termination": "selfmap4_relocalization_exhausted",
+      "place_success": null,
+      "sim_s": null,
+      "errors": null,
+      "tracker": null,
+      "input_audit": {
+        "schema": "ugrp.selfmap_input_audit.v1",
+        "measured": true,
+        "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+        "own_rgb_frames": 518,
+        "issued_command_records": 524,
+        "top_rgb_frames": 0,
+        "peer_rgb_frames": 0,
+        "truth_pose_inputs": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "rejected_inputs": 0,
+        "authored_static_map_inputs": 1
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r1-selfmap-short_regression-93583-3da9f8d9/raw"
+    }
+  ]
+}
