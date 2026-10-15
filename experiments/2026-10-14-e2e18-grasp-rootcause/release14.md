@@ -2,6 +2,7 @@
 
 기준 `97942a8285b498a2e7896dc8dccc88e067b77cc7`, 측정 기록 `024d1ca4`.
 `release13.md` 전체와 `outputs/e2e18-admin/gt-leak-audits/gt-leak-audit-97942a82.md`를 먼저 읽었다.
+구현 커밋 **`f5068586800d6c03b2cc3246cfef6b881bbd9b83`**. 실행 큐는 이 코드와 최종 기록을 포함한 push HEAD에 고정한다.
 이 worktree의 `claude/grasp-act-probes`에서만 수정했다. PR #491의 head는 별도 브랜치다.
 새 선택은 **`--release-profile release14_line_v1`**, 기본 `off`다. 기존 옵션 기본값·구형 제어 경로는 유지한다.
 [진단 계획](release14-diagnostic-plan.json), [요약·해시](release14-summary.json),
@@ -102,6 +103,7 @@
 재현 **74963·74976(개발 분모 2)** → 검토 → **76000–76006(새 진단 분모 7)** 순서다.
 main과 열린 PR 22개 head, 로컬 VM3 큐에서 새 7 seed 사용 흔적 0건이다. 원격 실행 이력은 조정자 점검이 남는다.
 `coordinator_approval.approved=false`, 모든 `ready=false`, **관문40 미승인·미등록**이며 자동 승격하지 않는다.
+생성 후 SHA·원격 HEAD·기존 큐 무변경 검증 영수증은 로컬 `outputs/release14/delivery.json`에 보존한다.
 기존 큐는 수정하지 않는다. 실행 예산은 9×96 MiB, 공용 자원·디스크·유휴/상한 장치는 제출 전 점검한다.
 
 Mac 물리·시뮬레이터 렌더·원격 제출·모델 호출 0. 새 물리 효과, 새 7개 시드 결과,
