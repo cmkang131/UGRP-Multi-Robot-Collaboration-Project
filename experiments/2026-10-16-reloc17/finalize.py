@@ -6,6 +6,9 @@ ROOT=Path('/home/ugrp/ugrp-sim/runs')
 def read(p):return json.loads(Path(p).read_text())
 def write(p,x):Path(p).write_text(json.dumps(x,indent=2,ensure_ascii=False,allow_nan=False)+'\n')
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+def short_errors(value):
+    return {k:({a:b for a,b in v.items() if a in ('N','p50','p95','max')} if isinstance(v,dict) else v)
+            for k,v in value.items() if k in ('N','bad_N','xy_m','yaw_deg')}
 def main(count):
     assert platform.node().startswith('ugrp-sim-gcp2')
     out=ROOT/'reloc17-delivery';out.mkdir(exist_ok=True)
@@ -19,6 +22,10 @@ def main(count):
             raw=Path(r['raw']);name=r['name']
             keep=('name','kind','condition','seed','source_sha','raw','status','termination','first30','drive_errors','registered_errors','registered_frames','false_registration_events','fresh_pose_error','command_only_replay','command_only_same_drive_frames','local_execution_drift','floor_line_residuals','camera_pan_evaluation','registration_frame_funnel','known_mode_measurement_funnel','place_verified','sim_s','all_pose_error','input_audit','failure')
             row={k:r[k] for k in keep if k in r};row['stage']=stage
+            if row.get('first30'):row['first30']={k:v for k,v in row['first30'].items() if k in ('wall_per_sim','sim_s','elapsed_sim_s','frames')}
+            for key in ('drive_errors','registered_errors','fresh_pose_error','command_only_replay','command_only_same_drive_frames','local_execution_drift'):
+                if key in row:row[key]=short_errors(row[key])
+            row.pop('floor_line_residuals',None)
             if 'heading' in r:row['heading']={k:v for k,v in r['heading'].items() if k not in ('admissions','increments')}
             lite.append(row)
             manifests=[p for p in (raw/'result.json',raw/'artifacts.sha256.json',raw/'artifacts.sha256.json.zst',raw/'manifest.json',raw/'manifest.json.zst') if p.is_file()]
@@ -42,7 +49,7 @@ def main(count):
     pairs=[]
     for r in ss:
         b=next(x for x in baseline if x['kind']=='selfmap' and x['seed']==r['seed'])
-        pairs.append(dict(seed=r['seed'],old_R2=b['drive_errors'],candidate=r['drive_errors'],old_raw=b['raw'],new_raw=r['raw']))
+        pairs.append(dict(seed=r['seed'],old_R2=short_errors(b['drive_errors']),candidate=r['drive_errors'],old_raw=b['raw'],new_raw=r['raw']))
     verdict='READY' if all(r.get('place_verified') for r in carry) and len(carry)==2 and all(r['drive_errors']['N']>0 for r in ss) and len(ss)==2 and all(p['candidate'][a][q]<=p['old_R2'][a][q] for p in pairs for a in ('xy_m','yaw_deg') for q in ('p50','p95')) else 'NOT_READY'
     summary=dict(schema='ugrp.reloc17.summary.v1',verdict=verdict,created=datetime.datetime.now(datetime.timezone.utc).isoformat(),pr=536,parent_pr=532,base_sha='5f63909becb63edc633ab3ad243a4b694fb38846',candidate_source_sha=final[0]['source_sha'],
         scene='walls_floor_contrast_v5_indigo110_s80 + v1 floor + no_mip_v1',host='gcp2 / ugrp-sim-b-1014 / n4-highcpu-64 / C MuJoCo CPU',
