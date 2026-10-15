@@ -24,13 +24,16 @@ def main():
     a.out.mkdir(parents=True,exist_ok=False)
     xml=(a.fixture/'scene.xml').read_text().replace('/tmp/simalt1/source/',str(a.source.resolve())+'/')
     m=mujoco.MjModel.from_xml_string(xml);d=mujoco.MjData(m)
+    for name in ('camera_bracket','camera_body','camera_lens_visual'):
+        gid=mujoco.mj_name2id(m,mujoco.mjtObj.mjOBJ_GEOM,'r1__'+name)
+        if gid>=0:m.geom_group[gid]=5
     cid=m.camera('r1__robot_cam').id
     m.cam_pos[cid]=camera.POSITION_M;m.cam_quat[cid]=camera.QUAT_WXYZ
     samples=np.load(a.run/'states.npz')[a.case]
     mx,my=raw_fisheye_remap(640,480)
     renderer=mujoco.Renderer(m,height=480,width=640)
     native=mujoco.MjvOption();native.geomgroup[:]=1
-    own=mujoco.MjvOption();own.geomgroup[3:]=0  # same sensor-scene groups as the parent controller
+    own=mujoco.MjvOption();own.geomgroup[:]=1;own.geomgroup[4:]=0  # parent multi_masterpi_production controller
     top=mujoco.MjvCamera();top.type=mujoco.mjtCamera.mjCAMERA_FREE
     top.lookat[:]=[-.05,-2.4,0.];top.distance=1.5;top.azimuth=90;top.elevation=-65
     full=list(range(4,len(samples),5))  # 2Hz, at SIM .5,1.0,...
