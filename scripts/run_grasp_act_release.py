@@ -21,7 +21,7 @@ from sim.release_global_observation import LATERAL_MODES
 from sim.release_nbv_observation import MODES as ACTIVE_RECOVERY_MODES
 from sim.release_regrasp import MODES as REGRASP_CHECK_MODES
 from sim.release_regrasp_recovery import MODES as REGRASP_RECOVERY_MODES
-from sim import release14
+from sim import release14, release15
 ZONE_SLOT_MODES=("floor","zone")   # zone: destination slot squares (static map, inside the zone) read as zone
 # User 2026-10-14: "빔을 들고 옮길 때에도 빔의 위치를 아나? ... 그럴 때에는 모르게 하는 게 어때".
 # hidden_v1: while the own gripper holds the cargo, its world pose never enters teacher/map-code inputs.
@@ -73,7 +73,10 @@ class HeldAudit:
         # Across phase boundaries, keep the continuous streak as well.
         self.blind[rid]=0. if visible else self.blind.get(rid,0.)+dt
         self.longest[rid]=max(self.longest.get(rid,0.),self.blind[rid])
-    def pick(self,phase,rid,now,teacher):
+    def pick(self,phase,rid,now,teacher,*,xy=None):
+        if xy is not None:
+            self.picks.append({'phase':phase,'robot':rid,'t':now,'source':'commanded_station','xy':list(xy),'age_s':0.})
+            return
         item=teacher.belief.get('band',now) or teacher.belief.get('released_band',now)
         self.picks.append({'phase':phase,'robot':rid,'t':now,'source':item['source'],'age_s':now-item['seen_t']})
     def read(self,holding,site):
@@ -164,8 +167,10 @@ def own_end_world(world,inst,end):
 
 def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe_mode='gaze_v2',render_dr='off',
         zone_slots='floor',reach_mode='calibrated_mid_v1',held_object='visible_v0',lookaround='off',pose_anchor='legacy_truth_v0',placement='margin_v0',lateral_recovery='off',active_recovery='off',command_motion='off',localization_support='off',regrasp_check='off',regrasp_recovery='off',release_profile='off',record_training=False):
-    release14.validate(release_profile,record_training,locals(),plan)
-    line_guard=release_profile==release14.PROFILE
+    release15.validate(release_profile,record_training,locals(),plan)
+    line_guard=release_profile in (release14.PROFILE, release15.PROFILE)
+    fov_guard=release_profile==release15.PROFILE
+    line_control=release15 if fov_guard else release14
     if observe_mode not in OBSERVE_MODES:raise ValueError(observe_mode)
     if lookaround not in LOOKAROUND_MODES:raise ValueError(lookaround)
     if lookaround!='off' and observe_mode!='backoff_v3':raise ValueError('lookaround runs after the backoff_v3 step back')
@@ -228,6 +233,8 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
         'training_exclusions':{'prefix':{'included':False,'reason':'truth contact/height termination; scene preparation only'},
             'release':{'included':False,'reason':'success measurement; no student writer or gate admission'}},
         'loadavg_at_start':os.getloadavg(),'release_success':None,'prefix_held':None}
+    if not line_guard:
+        report.pop('release_profile');report.pop('training_exclusions')
     write(out/'result.json',report);world=None;start=time.monotonic();streams=[];origin=0.
     try:
         os.environ['UGRP_SIM_OBSERVER_WIDTH']='320';os.environ['UGRP_SIM_OBSERVER_HEIGHT']='240'
@@ -305,8 +312,9 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
             i+=1;advance(origin+i*.1)
         report['prefix_held']=held is not None
         report['prefix']={'held_sim_s':None if held is None else held-origin,'outcomes':{r:t.outcome for r,t in teachers.items()}}
-        report['training_exclusions']['prefix'].update(start_world_t=origin,end_world_t=float(world.data.time))
-        write(out/'training-segments.json',report['training_exclusions'])
+        if line_guard:
+            report['training_exclusions']['prefix'].update(start_world_t=origin,end_world_t=float(world.data.time))
+            write(out/'training-segments.json',report['training_exclusions'])
         if held is None:
             report.update(status='complete',release_success=None,release_outcome='prefix_not_held');return report
         # ---------------- release: visible_only teacher ----------------
@@ -460,10 +468,11 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
                 path=str(path.relative_to(out)),sha256=hashlib.sha256(jpeg).hexdigest()))
             return np.asarray(Image.open(io.BytesIO(jpeg)).convert('RGB'))[:,:,::-1].copy()
         def line_factory(teacher,now):
-            guard=release14.LineAlign(teacher,now,camera=loc[teacher.rid].camera,
+            guard=line_control.LineAlign(teacher,now,camera=loc[teacher.rid].camera,
                 undistort=loc[teacher.rid].vl.mp.undistort,
                 wheel_command=lambda rid,w,d,at:wheels[rid].command(w,d,at),
-                clearance=lambda dx,dy,da:release14.map_motion_clear(loc[teacher.rid],dx,dy,da))
+                clearance=lambda dx,dy,da:line_control.map_motion_clear(loc[teacher.rid],dx,dy,da),
+                **({'pick_audit':lambda at,t,xy:audit.pick('line_aligned_station',t.rid,at,t,xy=xy)} if fov_guard else {}))
             guard.peer_commands={r:dict(t.pwm) for r,t in rel.items() if r!=teacher.rid}
             return guard
         def regrasp_recovery_factory(teacher,now):
@@ -573,7 +582,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
                         schedule(rid,[(0.,t.gaze_target(now))],now)
                     if line_guard and st.get('pre_backoff'):
                         for rid,t in rel.items():
-                            st['plan'][rid],receipt=release14.backoff_plan(loc[rid],t)
+                            st['plan'][rid],receipt=line_control.backoff_plan(loc[rid],t)
                             backoff_checks.append(dict(t=now,robot=rid,**receipt))
                         st.update(phase='observe_back',since=now,go=now+ARM_MOVE_BACK_S,settle=None,pre_backoff=False)
                     else:st.update(phase='observe_move',since=now,end=now+ARM_MOVE_BACK_S)
@@ -685,14 +694,16 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
                 run_sched(now)
                 peer=[r for r in R if r!=line_check.teacher.rid]
                 if any(any(wheels[r].levels) or rel[r].pwm!=line_check.peer_commands[r] for r in peer):
-                    outcome='release14_peer_motion_during_alignment';break
+                    outcome=('release15' if fov_guard else 'release14')+'_peer_motion_during_alignment';break
                 status=line_check.tick(now,regrasp_capture,schedule)
                 if status=='failed':outcome=line_check.failure;break
                 if status=='ready':
                     if line_pending:
                         line_check=line_factory(rel[line_pending.pop(0)],now);line_checks.append(line_check)
                     elif line_stage=='before_approach':
-                        try:st['plan']={rid:release14.approach_plan(loc[rid],t,now) for rid,t in rel.items()}
+                        if fov_guard:
+                            for rid,t in rel.items():audit.pick('approach',rid,now,t)
+                        try:st['plan']={rid:line_control.approach_plan(loc[rid],t,now) for rid,t in rel.items()}
                         except ValueError as error:outcome=str(error);break
                         moving=any(st['plan'].values())
                         st.update(phase='approach',since=now,go=now+.2,settle=None,moving=moving)
@@ -701,6 +712,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
                         try:
                             for rid,t in rel.items():
                                 xy=(MOUNT_X_M+t.reach_mid(),0.)
+                                if fov_guard:audit.pick('repick',rid,now,t,xy=xy)
                                 seq,d=t.pick_schedule(now,xy=xy);schedule(rid,seq,now+.2);dur=max(dur,d)
                         except ValueError as error:
                             report['repick_error']=str(error);outcome='repick_unreachable';break
@@ -712,7 +724,8 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
                         from sim.release_regrasp import RegraspBarrier
                         barrier=RegraspBarrier(rel,st['iter'],now,wheel_commands=lambda r:list(wheels[r].levels),
                             recovery_factory=regrasp_recovery_factory if regrasp_recovery!='off' else None,
-                            assigned_end_evidence=line_guard)
+                            assigned_end_evidence=line_guard,
+                            **({'colour_profile':release15.PROFILE} if fov_guard else {}))
                         regrasp_barriers.append(barrier)
                         for t in rel.values():t.holding=False
                         st.update(phase='regrasp_check',since=now)
@@ -753,7 +766,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
                 if age>=DELIVERY_WAIT_S:outcome='teacher_done';break
             for rid,t in rel.items():
                 labels[rid].write(json.dumps({'t':now,'skill':'release','object_kind':'long_beam','role':roles[rid],
-                    'training_eligible':False,'training_exclusion':'measurement_only_release_prefix_excluded',
+                    **({'training_eligible':False,'training_exclusion':('measurement_only_release' if fov_guard else 'measurement_only_release_prefix_excluded')} if line_guard else {}),
                     'teacher_phase':st['phase'],'wheels':list(wheels[rid].levels),'wheel_until':list(wheels[rid].until),
                     'pwm':{str(s):t.pwm[s] for s in SERVOS},'holding_belief':t.holding,'done':st['phase']=='done','report':t.last_report})+'\n')
             if k%10==0:frames(k,'release-'+st['phase'])
@@ -851,7 +864,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
 def main():
     p=argparse.ArgumentParser();p.add_argument('--plan',type=Path,required=True);p.add_argument('--episode',type=int,default=0)
     p.add_argument('--out',type=Path,required=True);p.add_argument('--cap-s',type=float,default=90.)
-    p.add_argument('--release-profile',choices=release14.PROFILES,default='off')
+    p.add_argument('--release-profile',choices=release15.PROFILES,default='off')
     p.add_argument('--record-training',action='store_true',help='fail closed: safe profile and future verified gate/writer required')
     p.add_argument('--own-pose-source',choices=('commands','truth_comparison'),default='commands')
     p.add_argument('--pose-anchor',choices=POSE_ANCHOR_MODES,default='legacy_truth_v0',help='command_relative_v1: no truth handoff anchor; map pose unknown, own-command sweep only')

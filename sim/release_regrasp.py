@@ -33,7 +33,7 @@ def beam_mask(frame):
             & _usable_region(frame.shape[1], frame.shape[0]))
 
 
-def assigned_beam_mask(frame, end=None):
+def assigned_beam_mask(frame, end=None, *, colour_profile=None):
     """release14: shaft OR assigned end colour, never the partner's band.
 
     HSV bounds are the existing grasp_act_teal_blue_v1 probe calibration.
@@ -45,42 +45,47 @@ def assigned_beam_mask(frame, end=None):
     from harness.zone_own_perception import _usable_region
     bounds = {'teal': ((70,120,90),(90,255,255)),
               'blue': ((110,120,60),(130,255,255))}
+    if colour_profile == 'release15_fov_v1':
+        # Scene teal RGB (.02,.95,.60) is OpenCV H~79; cyan boxes H=90.
+        # Narrow ONLY the new profile. Saved-JPEG hue audit: release15.md.
+        bounds['teal'] = ((70,120,90),(83,255,255))
     lo, hi = bounds[end]
     band = cv2.inRange(cv2.cvtColor(frame, cv2.COLOR_BGR2HSV), np.array(lo), np.array(hi)) > 0
     return beam_mask(frame) | (band & _usable_region(frame.shape[1], frame.shape[0]))
 
 
-def near_grip(frame, end=None):
+def near_grip(frame, end=None, *, colour_profile=None):
     """Reject the distant/edge shaft seen by the empty r1 wrist in release10.
 
     A central shaft is necessary, never sufficient: a sequential lift challenge
     and a fresh sustained comparison are also mandatory. No camera/FOV change.
     """
-    mask = assigned_beam_mask(frame, end)
+    mask = assigned_beam_mask(frame, end, colour_profile=colour_profile)
     h, w = mask.shape
     fraction = float(mask[h//5:4*h//5, w//4:3*w//4].mean())
     return dict(qualified=fraction >= .60, central_fraction=fraction,
                 threshold=.60, scope='provisional own wrist near-field shaft')
 
 
-def lift_evidence(before, after, settled, commands, *, end=None):
+def lift_evidence(before, after, settled, commands, *, end=None, colour_profile=None):
     record = confirm_parts_v3(before, after, commands=commands,
-        masks=lambda frame: (assigned_beam_mask(frame, end),), names=('beam',),
+        masks=lambda frame: (assigned_beam_mask(frame, end, colour_profile=colour_profile),), names=('beam',),
         settled=settled, rule=OPTION)
-    proximity = [near_grip(f, end) for f in (before, after, settled)]
+    proximity = [near_grip(f, end, colour_profile=colour_profile) for f in (before, after, settled)]
     record['near_grip'] = proximity
     if end is not None:
         record.update(colour_profile='assigned_end_union_v1', assigned_end=end)
+        if colour_profile is not None: record['colour_profile'] = colour_profile
     if not all(p['qualified'] for p in proximity):
         record.update(verdict='not_confirmed', reason='own_grip_shaft_not_framed')
     record['answer'] = {'confirmed':'yes', 'not_confirmed':'no', 'undetermined':'unknown'}[record['verdict']]
     return record
 
 
-def continuity(reference, frame, *, end=None):
+def continuity(reference, frame, *, end=None, colour_profile=None):
     """Fresh retention check, usable only AFTER that robot's own challenge."""
-    b, a = shape(assigned_beam_mask(reference, end)), shape(assigned_beam_mask(frame, end))
-    ok = (near_grip(frame, end)['qualified'] and a is not None and b is not None
+    b, a = (shape(assigned_beam_mask(f, end, colour_profile=colour_profile)) for f in (reference, frame))
+    ok = (near_grip(frame, end, colour_profile=colour_profile)['qualified'] and a is not None and b is not None
           and .70 <= a['fraction']/b['fraction'] <= 1.40
           and max(abs(x-y) for x,y in zip(a['center'], b['center'])) <= .06
           and max(abs(x-y) for x,y in zip(a['extent'], b['extent'])) <= .10)
@@ -95,7 +100,7 @@ class RegraspBarrier:
     shared motion waits for both code ACKs. An opt-in failed-grip recovery may
     move only the opened robot, with peer commands fixed and confirmations reset.
     """
-    def __init__(self, teachers, epoch, now, *, wheel_commands, recovery_factory=None, assigned_end_evidence=False):
+    def __init__(self, teachers, epoch, now, *, wheel_commands, recovery_factory=None, assigned_end_evidence=False, colour_profile=None):
         self.teachers = teachers
         self.robots = tuple(teachers)
         self.epoch = epoch
@@ -117,9 +122,13 @@ class RegraspBarrier:
         self.recovery = None
         self.recoveries = []
         self.assigned_end_evidence = assigned_end_evidence
+        self.colour_profile = colour_profile
 
     def evidence_options(self, rid):
-        return {'end': self.teachers[rid].end} if self.assigned_end_evidence else {}
+        options = {'end': self.teachers[rid].end} if self.assigned_end_evidence else {}
+        if self.assigned_end_evidence and self.colour_profile is not None:
+            options['colour_profile'] = self.colour_profile
+        return options
 
     def command(self, rid, now):
         return dict(t=now, pwm=dict(self.teachers[rid].pwm), wheels=list(self.wheel_commands(rid)))

@@ -63,6 +63,7 @@ def fake_backend(monkeypatch):
 
     class Port:
         def __init__(self, world, rid, **kwargs):
+            self.rid = rid
             # Arm commands from the ff8f11ef crash ledgers, never measured joints.
             self._servo_pulses = {1: 1500, 3: 811, 4: 1905, 5: 2183, 6: 1500}
             self._motor_commands = (0.,)*4
@@ -86,6 +87,10 @@ def fake_backend(monkeypatch):
             pass
 
         def capture(self):
+            if hasattr(world, 'own_image'):
+                data = io.BytesIO()
+                Image.fromarray(world.own_image(self.rid, world.data.time, self._servo_pulses)[:, :, ::-1]).save(data, format='PNG')
+                return {'image': base64.b64encode(data.getvalue()).decode()}
             return {'image': base64.b64encode(jpeg).decode()}
 
     class Prefix:
