@@ -1,0 +1,112 @@
+{
+  "schema": "ugrp.solo_carry_preparation.v1",
+  "status": "prepared_not_submitted",
+  "implementation_sha": "5b1fe9246bda0609019bee869f181ace9d67fe33",
+  "base_teacher_sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+  "main_sha": "c72a2b50628e549fee8032378f4c7cf709fe688c",
+  "merge_sha": "4e387d39",
+  "offline_validation": {
+    "passed": 77,
+    "test_files": 3,
+    "seconds": 33.91,
+    "physics": false,
+    "render": false,
+    "training": false
+  },
+  "physical_runs_completed": 0,
+  "planned_N": 8,
+  "research_result": false,
+  "source_hashes": {
+    "sim/solo_carry_to_zone.py": "e7d0841f6ef2754a3210cbf1f387f4a6bad51c5390031d24ee1fa0d75c97ea2c",
+    "sim/grasp_act_solo_teacher.py": "e2b487da76f34826446585fc496dcd6df54fc92fab90ac4009521d23aba84263",
+    "sim/grasp_act_solo_evaluation.py": "785e2cb71c2818e4a99898889c6e29400834edd88946f92f59038ae090b41255",
+    "scripts/run_solo_grasp_act_teacher.py": "e55475d88a64ea87fd6b630611bea37be0000d205a486d74995178aeab7de1bb",
+    "scripts/make_solo_carry_plan.py": "5404874f21d4ebb97059e172a7cf728e0b139d2e04de8b5efc0e58457c99f94b",
+    "harness/grasp_act_solo_recording.py": "131e65b7b9b5e24e7c7a341b0de96081d26eb1abd7e0c82b10da9b385615d1a0",
+    "experiments/2026-10-15-map-carry-zone/diagnostic-plan.json": "99334f4531c21ba346034020f0d9aa037530ae9133ff7046b598de0b1b213b3e",
+    "experiments/2026-10-15-map-carry-zone/offline-tests.txt": "65f10c6490b32ce9e4c15050b1117ef2a019770722549365e2ee4cfb601db58b"
+  },
+  "runs": [
+    {
+      "seed": 93200,
+      "kind": "cyan",
+      "destination_zone": "B",
+      "status": "queued_for_coordinator_approval",
+      "raw_location": null,
+      "raw_sha256": null,
+      "physical_success": null
+    },
+    {
+      "seed": 93201,
+      "kind": "red",
+      "destination_zone": "B",
+      "status": "queued_for_coordinator_approval",
+      "raw_location": null,
+      "raw_sha256": null,
+      "physical_success": null
+    },
+    {
+      "seed": 93202,
+      "kind": "green",
+      "destination_zone": "C",
+      "status": "queued_for_coordinator_approval",
+      "raw_location": null,
+      "raw_sha256": null,
+      "physical_success": null
+    },
+    {
+      "seed": 93203,
+      "kind": "yellow",
+      "destination_zone": "C",
+      "status": "queued_for_coordinator_approval",
+      "raw_location": null,
+      "raw_sha256": null,
+      "physical_success": null
+    },
+    {
+      "seed": 93204,
+      "kind": "cyan",
+      "destination_zone": "A",
+      "status": "queued_for_coordinator_approval",
+      "raw_location": null,
+      "raw_sha256": null,
+      "physical_success": null
+    },
+    {
+      "seed": 93205,
+      "kind": "red",
+      "destination_zone": "B",
+      "status": "queued_for_coordinator_approval",
+      "raw_location": null,
+      "raw_sha256": null,
+      "physical_success": null
+    },
+    {
+      "seed": 93206,
+      "kind": "green",
+      "destination_zone": "C",
+      "status": "queued_for_coordinator_approval",
+      "raw_location": null,
+      "raw_sha256": null,
+      "physical_success": null
+    },
+    {
+      "seed": 93207,
+      "kind": "yellow",
+      "destination_zone": "C",
+      "status": "queued_for_coordinator_approval",
+      "raw_location": null,
+      "raw_sha256": null,
+      "physical_success": null
+    }
+  ],
+  "seed_check": {
+    "local_queue_exact_seed_collisions": [],
+    "remote_unused_verified": false
+  },
+  "training_rgb": false,
+  "coordinator_approval": {
+    "approved": false
+  },
+  "gate_promotion_authorized_if_all_conditions_pass": false
+}
