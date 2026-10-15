@@ -13,3 +13,7 @@ B는 원본 위치추정기로 실제 RGB를 계속 처리한다. fix 수나 공
 R2는기존 `sim.active_lookaround`의정보량(logdet),15도후보격자·최대3뷰·MIN_GAIN, `sim.lookaround_localization`의정적지형지물·12px영상여유·.03m벽끝절단·.8SIM초settle을재사용한다. 현재닫힌집게의발행PWM에서명목fisheye투영을계산한다. 유효시점이없으면기존내려놓기/둘러보기복구를요청한다. 현재경로위치에서의뷰선택이며미래경로전체에대한정보이득최적화는미구현이다.
 
 R2벽제외는 `harness.reloc16_floor_mask.floor_clear`의기존고정v5 RGB분류를그대로재사용한다. H133벽이C의H143±(기존band5포함)와겹치는원본오검출이근거다. 새색상수/분할상수는없다. 모델정답segmentation이나실시간물체좌표를제어입력으로쓰지않는다.
+
+R3 추가후보 `destination_camera_pan_v1`(기본off): 기존pan끝500/2500을발행서보로훑고원래pan으로복귀한다. 카메라배치·FOV·장면은바꾸지않는다. 2000pulse/s와.3SIM초settle은기존lookaround의서보이동계약이다. 차체2π회전대신관측자세를바꾸고,원래자세에서다시기존RGB가시성을확인한다. 팬중검출한바닥점의기억은기존SoloTeacher.MEMORY_S=5.2초까지만자기명령으로전파하며새RGB없이는나이를갱신하지않는다. 원래pan복귀전에는place수용하지않는다. R1에서차체회전중yaw p95가165–176도로커진것과반복한48.3SIM초sweep3회의new_fixes=0이근거다.
+
+R3 B는기존 `CarryTracker`가 `loaded_or_unknown_prediction_only`로알리는경우XY metric fix가금지됨을그대로따른다. 정보량예측과관측수용은별개이므로이상태에서는기존내려놓기/둘러보기로즉시전환한다. 새로운측정상수나집게폐쇄관문완화는없다. 이기존카메라자격제약으로들고있는상태의XY재위치는여전히미지원이다.

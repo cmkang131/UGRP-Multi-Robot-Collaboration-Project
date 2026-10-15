@@ -113,3 +113,36 @@ def test_scene_wall_pixels_cannot_become_destination_floor():
     pwm={1:1500,3:777,4:2053,5:1646,6:1500}
     xy,r=floor_patch(frame,pwm,'C',(.3,.7),clear=clear)
     assert xy is None and r['pixels']==0
+
+
+def test_pan_search_slews_restores_and_never_spins_chassis():
+    static,_=static_input();c=CarryToZone(static,'A',start=task_start(static))
+    c.grip_xy=(.2,0);c.slot=c.region['center_m']
+    q=DestinationAcquire(c,camera_pan=True);c.destination_acquire=q
+    pwm={1:1500,3:777,4:2053,5:1646,6:1500};low={3:777,4:2053,5:1646,6:1500}
+    blank=np.zeros((480,640,3),np.uint8)
+    assert q.step(0,blank,pwm,low,'red')==((0,0,0),False,None)
+    assert q.desired_pan==500 and q.mode=='pan_scan'
+    pwm[6]=500
+    assert q.step(.4,blank,pwm,low,'red')==((0,0,0),False,None)
+    q.step(.8,blank,pwm,low,'red');assert q.desired_pan==2500
+    pwm[6]=2500;q.step(2.1,blank,pwm,low,'red');assert q.desired_pan==1500
+    pwm[6]=1500;q.step(2.9,blank,pwm,low,'red');assert q.mode=='expand' and q.turn==0
+
+
+def test_recent_rgb_patch_memory_moves_only_by_issued_commands():
+    static,_=static_input();c=CarryToZone(static,'A',start=task_start(static))
+    q=DestinationAcquire(c,camera_pan=True);q.memory_target=np.array([1.,0.]);q.memory_t=1.
+    q.issue([.1,0,math.pi/2]);np.testing.assert_allclose(q.memory_target,[0,-.9],atol=1e-10)
+    assert q.memory_t==1.  # Commands never refresh image age.
+
+
+def test_xy_relocalization_respects_existing_loaded_metric_admission(monkeypatch):
+    import sim.destination_visual_acquire as m
+    static,_=static_input();c=CarryToZone(static,'A',start=task_start(static),recovery_profile='carry5_active_localization_v1')
+    c.started=0;c.goal=(1,1);c.loc.own.P=np.eye(3)
+    c.loc.tracker=SimpleNamespace(last=dict(camera_admission='loaded_or_unknown_prediction_only'))
+    monkeypatch.setattr(m,'information_views',lambda *a:pytest.fail('unqualified loaded metric camera cannot provide XY fix'))
+    q=DestinationAcquire(c);assert q.relocalize_step(1,{})==(0,0,0)
+    assert c.recovery_reason=='reloc19_loaded_metric_camera_unqualified'
+    assert q.events[-1]['blocked_object']=='issued_loaded_camera_metric_fk_unqualified'

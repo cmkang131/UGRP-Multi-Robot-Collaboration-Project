@@ -120,7 +120,7 @@ def information_views(static,pose,P,pwm):
 
 
 class DestinationAcquire:
-    def __init__(self, carry):
+    def __init__(self, carry, *, camera_pan=False):
         self.carry=carry; self.started=None; self.acquired=None; self.confirmed=None
         self.mode='inactive'; self.last={}; self.events=[]; self.turn=0.; self.scan_start=0.
         self.points=[]; self.point=None; self.path=None; self.failure=None; self.valid_since=None
@@ -128,6 +128,8 @@ class DestinationAcquire:
         self.reloc_t=None; self.reloc_scan=False; self.reloc_done=False
         self.reloc_views=[];self.reloc_view=None;self.reloc_settle=None;self.reloc_counts=0
         self._floor_cache=None
+        self.camera_pan=camera_pan;self.pan_origin=None;self.pan_targets=[]
+        self.desired_pan=None;self.pan_ready=0.;self.memory_target=None;self.memory_t=None
 
     def event(self,now,event,**kw):
         self.events.append(dict(t=now,event=event,**kw))
@@ -142,13 +144,31 @@ class DestinationAcquire:
 
     def issue(self,delta):
         self.turn += float(delta[2])
+        if self.memory_target is not None:
+            dx,dy,da=delta;x,y=self.memory_target-np.array([dx,dy])
+            self.memory_target=np.array([math.cos(da)*x+math.sin(da)*y,-math.sin(da)*x+math.cos(da)*y])
 
-    def start(self,now):
+    def reset_pan(self):
+        # Existing setdown pan endpoints500/2500, always restore issued origin.
+        self.pan_targets=[self.pan_origin,500,2500,self.pan_origin]
+        self.desired_pan=None;self.mode='pan_scan'
+
+    def request_pan(self,target,now,pwm):
+        self.desired_pan=int(target)
+        # Existing2000pulse/s slew +.3s settle; no camera/FOV/model edit.
+        self.pan_ready=now+abs(pwm[6]-target)/2000.+(.3 if pwm[6]!=target else 0.)
+
+    def pan_settled(self,now,pwm):
+        return pwm[6]==self.desired_pan and now>=self.pan_ready-1e-8
+
+    def start(self,now,pwm=None):
         c=self.carry; self.started=now; self.mode='scan_align'; self.scan_start=self.turn
         bearing=math.atan2(c.region['center_m'][1]-c.loc.pose[1],c.region['center_m'][0]-c.loc.pose[0])
         self.scan_target=self.turn+math.atan2(math.sin(bearing-c.loc.pose[2]),math.cos(bearing-c.loc.pose[2]))
         self.points=ellipse_candidates(c.loc.pose,c.loc.own.P,c.region['half_extents_m'])
         self.last_fix_count=c.loc.fixes
+        if self.camera_pan:
+            self.pan_origin=int(pwm[6]);self.reset_pan()
         self.event(now,'destination_acquire_start',ellipse_candidates=len(self.points),
             covariance=c.loc.own.P.tolist(),expected_bearing_rad=math.atan2(c.region['center_m'][1]-c.loc.pose[1],c.region['center_m'][0]-c.loc.pose[0]))
 
@@ -167,6 +187,15 @@ class DestinationAcquire:
             if self.reloc_anchor is not None and math.dist(c.loc.pose[:2],self.reloc_anchor) < 2*width:return None
             self.reloc_anchor=c.loc.pose[:2];self.reloc_t=now;self.last_fix_count=c.loc.fixes
             self.relocalizations+=1;self.reloc_counts=0
+            # Actual full-pose observer explicitly rejects loaded metric FK.
+            # Its admission tag is allowed controller metadata, not plant truth.
+            tracker=getattr(c.loc,'tracker',None)
+            if tracker is not None and tracker.last.get('camera_admission')=='loaded_or_unknown_prediction_only':
+                context=dict(blocked_object='issued_loaded_camera_metric_fk_unqualified',minimum_gap_m=None,
+                    gap_scope='not_applicable_camera_calibration')
+                self.event(now,'rejection',category='camera_qualification',reason='loaded_metric_fix_unavailable',**context)
+                c.rejection_context=context;c.request_recovery(now,'reloc19_loaded_metric_camera_unqualified')
+                return (0.,0.,0.)
             plan=information_views(c.static,c.loc.pose,c.loc.own.P,pwm) if pwm is not None else dict(views=[])
             self.event(now,'held_relocalization_start',radius95_m=radius,zone_half_width_m=width,plan=plan)
             views=plan.get('views',[])
@@ -201,13 +230,20 @@ class DestinationAcquire:
         from sim.grasp_act_visible_route import segment_free, waypoint
         from harness.reloc12_ledger import route_context
         c=self.carry
-        if self.started is None:self.start(now)
+        if self.started is None:self.start(now,pwm)
+        if self.camera_pan and self.mode=='pan_scan':
+            if self.desired_pan is None and self.pan_targets:
+                self.request_pan(self.pan_targets.pop(0),now,pwm)
+            if not self.pan_settled(now,pwm):return (0.,0.,0.),False,None
+        elif self.camera_pan and self.mode=='pan_restore':
+            if not self.pan_settled(now,pwm):return (0.,0.,0.),False,None
+            self.mode='servo_memory'
         clear,wall_audit=self.floor_clear(bgr)
         centre, rec=floor_patch(bgr,pwm,c.zone,c.region['half_extents_m'],clear=clear,
             excluded=held_mask(kind,{1:1500,**low},pwm,(bgr.shape[1],bgr.shape[0])))
         self.views+=1; self.last=dict(t=now,scene_floor_mask=wall_audit,**rec)
         # Unchanged existing full-footprint RGB/FK gate and .3s stable evidence.
-        self.last['place_gate']=c.place_visible(bgr,pwm,low,kind)
+        self.last['place_gate']=bool((not self.camera_pan or pwm[6]==self.pan_origin) and c.place_visible(bgr,pwm,low,kind))
         if self.last['place_gate']:
             if self.acquired is None:
                 self.acquired=now;self.event(now,'destination_colour_acquired',sim_s=now-self.started,source='unchanged_full_footprint_gate')
@@ -218,6 +254,12 @@ class DestinationAcquire:
             return (0.,0.,0.),False,None
         self.valid_since=None
         if centre is not None:
+            self.memory_target=centre.copy();self.memory_t=now
+            if self.camera_pan and pwm[6]!=self.pan_origin:
+                if self.acquired is None:
+                    self.acquired=now;self.event(now,'destination_colour_acquired',sim_s=now-self.started)
+                self.request_pan(self.pan_origin,now,pwm);self.mode='pan_restore'
+                return (0.,0.,0.),False,None
             if self.acquired is None:
                 self.acquired=now; self.event(now,'destination_colour_acquired',sim_s=now-self.started)
             self.mode='servo'
@@ -225,6 +267,20 @@ class DestinationAcquire:
             # Body-relative patch error, independent of global-pose XY/yaw.
             f=max(-.05,min(.08,.9*float(target[0]))); l=max(-.06,min(.06,.9*float(target[1])))
             drive=(f,l,0.)
+        elif self.camera_pan and self.mode=='pan_scan':
+            if self.pan_targets:
+                self.request_pan(self.pan_targets.pop(0),now,pwm)
+                return (0.,0.,0.),False,None
+            self.mode='expand';self.desired_pan=self.pan_origin;drive=(0.,0.,0.)
+        elif self.camera_pan and self.mode in ('servo','servo_memory'):
+            from sim.grasp_act_solo_teacher import MEMORY_S
+            if self.memory_target is not None and now-self.memory_t<=MEMORY_S:
+                target=self.memory_target-np.array([c.grip_xy[0]+c.advance_m,c.grip_xy[1]])
+                drive=(max(-.05,min(.08,.9*float(target[0]))),max(-.06,min(.06,.9*float(target[1]))),0.)
+                self.mode='servo_memory'
+                self.last.update(reason='issued_history_visible_patch_memory',memory_age_s=now-self.memory_t)
+            else:
+                self.reset_pan();drive=(0.,0.,0.)
         elif self.mode=='servo':
             self.mode='scan'; self.scan_start=self.turn; drive=(0.,0.,.1)
         elif self.mode=='scan_align':
@@ -251,7 +307,9 @@ class DestinationAcquire:
                 self.event(now,'ellipse_search_waypoint',xy=list(self.point))
             self.mode='expand'
             if math.dist(c.loc.pose[:2],self.point) <= .025: # inherited map arrival tolerance
-                self.point=None;self.mode='scan';self.scan_start=self.turn;drive=(0.,0.,.1)
+                self.point=None
+                if self.camera_pan:self.reset_pan();drive=(0.,0.,0.)
+                else:self.mode='scan';self.scan_start=self.turn;drive=(0.,0.,.1)
             else:
                 target=waypoint(c.loc.pose[:2],self.path,c.obstacles.discs(now),c.rects,c.radius)
                 drive=c.heading_drive(c.loc.pose,target,c.loc.pose[2]) if target is not None else (0.,0.,0.)
@@ -265,11 +323,11 @@ class DestinationAcquire:
                 names=[o['id'] for o in c.static['obstacles']],bounds=c.static['bounds_m'])
             self.last.update(reason='destination_motion_blocked',**context)
             # Rotation is inside the same circular loaded envelope.
-            drive=(0.,0.,.1) if segment_free((x,y),(x,y),c.obstacles.discs(now),c.rects,c.radius) else (0.,0.,0.)
+            drive=(0.,0.,.1) if not self.camera_pan and segment_free((x,y),(x,y),c.obstacles.discs(now),c.rects,c.radius) else (0.,0.,0.)
         return drive,False,None
 
     def record(self):
-        return dict(toggle=OPTION,mode=self.mode,started_t=self.started,acquired_t=self.acquired,
+        return dict(toggle=OPTION,destination_camera_pan_v1=self.camera_pan,desired_pan=self.desired_pan,mode=self.mode,started_t=self.started,acquired_t=self.acquired,
             confirmed_t=self.confirmed,acquisition_sim_s=None if self.acquired is None else self.acquired-self.started,
             views=self.views,last=self.last,events=self.events,relocalizations=self.relocalizations,
             failure=self.failure,truth_inputs=0,held_world_reads=0)

@@ -776,6 +776,10 @@ class SoloTeacher:
             import cv2
             frame = cv2.cvtColor(own_rgb(), cv2.COLOR_RGB2BGR)
             drive, confirmed, failure = self.carry.destination_acquire.step(now,frame,self.sink.pwm,self.low,self.spec.kind)
+            pan=self.carry.destination_acquire.desired_pan
+            if idle and pan is not None and self.sink.pwm[6]!=pan:
+                self.carry.destination_acquire.pan_ready=now+abs(self.sink.pwm[6]-pan)/2000.+.3
+                self._queue({6:pan},now,abs(self.sink.pwm[6]-pan)/2000.,.3)
             if failure:
                 self.result=failure
                 self._set('failed',now)

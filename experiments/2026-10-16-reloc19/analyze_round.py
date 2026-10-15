@@ -13,7 +13,7 @@ def main(n,media=False):
  for t in q['runs']:
   raw=Path(t['raw']);d=obj(raw/'result.json');a=d.get('teacher',{}).get('carry',{}).get('destination_visual_acquire',{})
   r=dict(run=t['name'],raw=str(raw),source_sha=t['source_sha'],integrity=verify(raw),input_audit=d.get('input_audit'),destination=a)
-  if t['kind']=='carry':
+  if (raw/'failure-rgb/manifest.json').exists() or (raw/'failure-rgb/manifest.json.zst').exists():
    frames=obj(raw/'failure-rgb/manifest.json')['frames'];out=b/'media'/t['name'];out.mkdir(parents=True,exist_ok=True)
    six=[]
    for i in range(6):
@@ -21,7 +21,7 @@ def main(n,media=False):
     dest=out/f'failure-{i:02d}.jpg';shutil.copyfile(p,dest);six.append(dict(t=f['t'],raw=str(p),path=str(dest),sha256=h))
    subprocess.run(['ffmpeg','-hide_banner','-loglevel','error','-y','-threads','1','-framerate','1','-i',str(out/'failure-%02d.jpg'),'-vf','scale=320:240,tile=3x2:nb_frames=6','-frames:v','1',str(out/'failure-six.jpg')],check=True)
    r['failure_six']=six
-   if media:review.make(raw.parent,out/'playback')
+   if media and (raw/'playback/manifest.json').exists() and not (out/'playback').exists():review.make(raw.parent,out/'playback')
   records.append(r)
  (b/'integrity.json').write_text(json.dumps(dict(runs=records,verified=all(x['integrity']['verified'] for x in records)),indent=2)+'\n')
  manifest={str(p.relative_to(b)):dict(bytes=p.stat().st_size,sha256=hashlib.sha256(p.read_bytes()).hexdigest()) for p in b.rglob('*') if p.is_file()}

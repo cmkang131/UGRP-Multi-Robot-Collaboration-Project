@@ -360,7 +360,7 @@ class CarryToZone:
             self.stalled_recoveries = 0
         self.recovery_anchor = self.loc.pose[:2]
         self.recovery_events.append({'t': now, 'event': 'stop_reobserve', 'reason': reason,
-                                     **(dict(category='localization' if reason == 'pose_budget' else 'route',
+                                     **(dict(category='localization' if reason == 'pose_budget' or reason.startswith('reloc19_') else 'route',
                                         **(self.rejection_context or dict(blocked_object='pose_uncertainty_budget',
                                             minimum_gap_m=None, gap_scope='not_applicable_localization_gate')))
                                         if self.reloc12_reacquire else {}),

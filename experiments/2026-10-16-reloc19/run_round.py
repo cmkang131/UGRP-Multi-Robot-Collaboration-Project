@@ -25,11 +25,12 @@ def launch(n):
     for old in prior:
         if old['condition'] not in ('candidate','map_odom'):continue
         for condition in (('A','AB') if old['kind']=='carry' else ('short_regression',)):
+            if n==3 and old['kind']=='carry':condition+='_pan'
             kind=old['kind'];seed=old['seed'];name=f'reloc19-r{n}-{kind}-{condition}-{seed}-{sha[:8]}'
             folder=RUNS/name;folder.mkdir(exist_ok=False);cmd=old['command'].copy();cmd[0]=PY
             if kind=='carry':
                 plan=json.loads(Path(cmd[cmd.index('--plan')+1]).read_text());ep=plan['episodes'][0]
-                ep.update(batch=f'reloc19-r{n}',destination_visual_acquire_v1=True,carry_relocalize_v1=condition=='AB')
+                ep.update(batch=f'reloc19-r{n}',destination_visual_acquire_v1=True,carry_relocalize_v1=condition.startswith('AB'),destination_camera_pan_v1=n==3)
                 p=folder/'input-plan.json';p.write_text(json.dumps(plan,indent=2)+'\n')
                 cmd[cmd.index('--plan')+1]=str(p);cmd[cmd.index('--out')+1]=str(folder/'raw')
             else:
