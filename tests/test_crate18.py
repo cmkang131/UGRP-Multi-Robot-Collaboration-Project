@@ -69,3 +69,10 @@ def test_rejected_pulse_does_not_count_as_issued():
 def test_toggle_requires_crate17():
     with pytest.raises(ValueError,match='crate17'):
         make_grasp_teacher('r1','teal',FOLDED,crate18=MODE)
+
+
+def test_legacy_selection_reversals_do_not_preempt_issued_pulse_policy():
+    t=make();t.settle18_states=[dict(settled=False) for _ in range(3)]
+    t.align_sign=[1,-1,1];t.align_flips=[3,3,3]
+    t._resume_alignment((.01,.01,-.01))
+    assert t.align_sign==t.align_flips==[0,0,0]

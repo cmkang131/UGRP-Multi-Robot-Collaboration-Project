@@ -1,0 +1,1735 @@
+{
+  "round": 1,
+  "source_sha": "e3a61c404b0cc296d9da8417a64c3a75cb070536",
+  "attempts": 6,
+  "completed_failed": 1,
+  "interrupted": 5,
+  "successes": 0,
+  "both_aligned": 4,
+  "pick_entered": 2,
+  "lift_permitted": 1,
+  "runs": [
+    {
+      "name": "crate18-r1-full-77990-e3a61c40",
+      "seed": 77990,
+      "candidate": "full",
+      "sha": "e3a61c404b0cc296d9da8417a64c3a75cb070536",
+      "status": "complete",
+      "success": false,
+      "prefix_held": false,
+      "release_success": null,
+      "release_outcome": "lift_not_confirmed_by_own_inputs",
+      "outcomes": {
+        "r1": "alignment_no_progress",
+        "r2": "episode_timeout"
+      },
+      "source_sha": "e3a61c404b0cc296d9da8417a64c3a75cb070536",
+      "host": {
+        "provider": "gcp",
+        "project_id": "ugrp-act-train-1014",
+        "instance": "ugrp-sim-gcp1",
+        "machine_type": "n4-highcpu-64",
+        "zone": "asia-northeast3-a",
+        "cpu_count": 64,
+        "schema": "ugrp.grasp_act.host.v1"
+      },
+      "sim_s": 29.900000000060164,
+      "wall_s": 145.65856073000032,
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "held_world_reads": 0,
+        "held_world_reads_by_site": {},
+        "invisible_measurements": 0,
+        "measurements_by_phase": {
+          "grasp": {
+            "band_teal": {
+              "n": 216,
+              "invisible": 0
+            },
+            "band_blue": {
+              "n": 299,
+              "invisible": 0
+            },
+            "crate_1": {
+              "n": 440,
+              "invisible": 0
+            },
+            "r2": {
+              "n": 100,
+              "invisible": 0
+            },
+            "zone_wall_east": {
+              "n": 21,
+              "invisible": 0
+            },
+            "r1": {
+              "n": 14,
+              "invisible": 0
+            }
+          }
+        },
+        "pick_target_uses": [],
+        "scope": "grasp and release decision inputs; GT hold and handoff distances evaluation only",
+        "top_camera_reads": 0,
+        "teacher_boundary": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 0,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false,
+          "admitted_source_tags": {
+            "clock": 600,
+            "issued_commands": 3000,
+            "known_shape": 2049,
+            "visible_teacher_measurement": 2649,
+            "static_map": 600,
+            "fixed_rule": 600
+          }
+        },
+        "grasp_stage_inputs": "VisibleWorld(visible relative measurements + issued commands); no world crate pose",
+        "release_map_prior": "disabled without verified map localization"
+      },
+      "phases": {
+        "r1": {
+          "approach": 108,
+          "search": 94,
+          "relook": 14,
+          "align": 82,
+          "ready": 2
+        },
+        "r2": {
+          "approach": 244,
+          "align": 6,
+          "search": 50
+        }
+      },
+      "pulses": {
+        "r1": {
+          "N": 68,
+          "wheel_width_histogram": {
+            "0.018": 76,
+            "0.019": 4,
+            "0.025": 60,
+            "0.027": 16,
+            "0.028": 20,
+            "0.029": 8,
+            "0.03": 4,
+            "0.031": 4,
+            "0.034": 4,
+            "0.04": 8,
+            "0.041": 4,
+            "0.05": 4,
+            "0.054": 4,
+            "0.057": 4,
+            "0.058": 8,
+            "0.074": 4,
+            "0.079": 4,
+            "0.096": 4,
+            "0.1": 32
+          },
+          "axis_reversals": {
+            "2": 14,
+            "1": 2,
+            "0": 4
+          },
+          "max_policy_reversals": [
+            9,
+            1,
+            14
+          ],
+          "max_policy_pulses": [
+            15,
+            12,
+            17
+          ],
+          "settle_observations": 15,
+          "final_states": [
+            {
+              "settled": false,
+              "reason": null,
+              "error": 0.0008191988198634759,
+              "delta": 0.001321,
+              "tolerance": 0.0007926,
+              "acceptance_band": null,
+              "consecutive_reversals": 1,
+              "total_reversals": 9,
+              "pulses": 15
+            },
+            {
+              "settled": false,
+              "reason": null,
+              "error": 0.003976757714737968,
+              "delta": 0.000824,
+              "tolerance": 0.002,
+              "acceptance_band": null,
+              "consecutive_reversals": 0,
+              "total_reversals": 0,
+              "pulses": 12
+            },
+            {
+              "settled": false,
+              "reason": null,
+              "error": 0.010728460952504904,
+              "delta": 0.012432,
+              "tolerance": 0.0074592,
+              "acceptance_band": null,
+              "consecutive_reversals": 0,
+              "total_reversals": 14,
+              "pulses": 17
+            }
+          ]
+        },
+        "r2": {
+          "N": 6,
+          "wheel_width_histogram": {
+            "0.1": 24
+          },
+          "axis_reversals": {
+            "2": 0
+          },
+          "max_policy_reversals": [
+            0,
+            0,
+            0
+          ],
+          "max_policy_pulses": [
+            0,
+            0,
+            5
+          ],
+          "settle_observations": 0,
+          "final_states": [
+            {
+              "settled": false,
+              "reason": null,
+              "error": -0.03175979864634271,
+              "delta": 0.001321,
+              "tolerance": 0.0007926,
+              "acceptance_band": null,
+              "consecutive_reversals": 0,
+              "total_reversals": 0,
+              "pulses": 0
+            },
+            {
+              "settled": false,
+              "reason": null,
+              "error": 0.0068435745580765345,
+              "delta": 0.000824,
+              "tolerance": 0.002,
+              "acceptance_band": null,
+              "consecutive_reversals": 0,
+              "total_reversals": 0,
+              "pulses": 0
+            },
+            {
+              "settled": false,
+              "reason": null,
+              "error": -0.343098762630125,
+              "delta": 0.012432,
+              "tolerance": 0.0074592,
+              "acceptance_band": null,
+              "consecutive_reversals": 0,
+              "total_reversals": 0,
+              "pulses": 5
+            }
+          ]
+        }
+      },
+      "pick_permits": 0,
+      "lift_permits": 0,
+      "aligned": {
+        "r1": true,
+        "r2": false
+      },
+      "sources": [
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/gcp1-runs/crate18-r1-full-77990-e3a61c40/raw/result.json.zst",
+          "sha256": "e02e4fd9f101b7395b298f6d383f4f2930a32f9c91fb77cfbe750a48947356fa",
+          "decoded_sha256": "d84b0c0759acff71de98364b02a8818f15ca2fa9d9f5277577db686214cc6d7d"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/gcp1-runs/crate18-r1-full-77990-e3a61c40/raw/eval-only.jsonl.zst",
+          "sha256": "017281a8b62084b6e154b1546952251edd7f00aa901556f8b7ab66b7c3bf6c8b",
+          "decoded_sha256": "1f48ecb8e28ef5219c398af088708a81dc743a8e3b55c51bb3289394424fcabc"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/gcp1-runs/crate18-r1-full-77990-e3a61c40/raw/teacher-r1.jsonl.zst",
+          "sha256": "a2e9f1fa967fc78aa989bd6dff0a2df9735bef0bca877f5baeda435ed70c2c28",
+          "decoded_sha256": "a8e25f4e3e4f4212c9e08f501f33f22ec5474dba12208c15c50f18025b54b5f6"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/gcp1-runs/crate18-r1-full-77990-e3a61c40/raw/teacher-r2.jsonl.zst",
+          "sha256": "d52cf572fd6e7ee767ec205f262ad27ebb93db7f22f594162e9024434f02ec48",
+          "decoded_sha256": "729f8bf8ed898f32a91fc2591c3349d70aec26deb4cbdd5cffa3ac640fb88d9f"
+        }
+      ],
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/crate18-r1-full-77990-e3a61c40"
+    },
+    {
+      "name": "crate18-r1-no_clearance-77990-e3a61c40",
+      "seed": 77990,
+      "candidate": "no_clearance",
+      "sha": "e3a61c404b0cc296d9da8417a64c3a75cb070536",
+      "status": "interrupted",
+      "success": null,
+      "prefix_held": true,
+      "release_success": null,
+      "release_outcome": null,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "source_sha": "e3a61c404b0cc296d9da8417a64c3a75cb070536",
+      "host": {
+        "provider": "gcp",
+        "project_id": "ugrp-act-train-1014",
+        "instance": "ugrp-sim-gcp1",
+        "machine_type": "n4-highcpu-64",
+        "zone": "asia-northeast3-a",
+        "cpu_count": 64,
+        "schema": "ugrp.grasp_act.host.v1"
+      },
+      "sim_s": 53.81800000017437,
+      "wall_s": 214.92844192799748,
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "held_world_reads": 0,
+        "held_world_reads_by_site": {},
+        "invisible_measurements": 0,
+        "measurements_by_phase": {
+          "grasp": {
+            "band_teal": {
+              "n": 196,
+              "invisible": 0
+            },
+            "band_blue": {
+              "n": 257,
+              "invisible": 0
+            },
+            "crate_1": {
+              "n": 414,
+              "invisible": 0
+            },
+            "r2": {
+              "n": 58,
+              "invisible": 0
+            },
+            "zone_wall_east": {
+              "n": 8,
+              "invisible": 0
+            }
+          },
+          "observe_back": {
+            "own_band_pose": {
+              "n": 20,
+              "invisible": 0
+            },
+            "scan_point": {
+              "n": 55,
+              "invisible": 0
+            }
+          },
+          "observe_move": {
+            "scan_point": {
+              "n": 94,
+              "invisible": 0
+            },
+            "own_band_pose": {
+              "n": 6,
+              "invisible": 0
+            }
+          },
+          "observe": {
+            "scan_point": {
+              "n": 660,
+              "invisible": 0
+            },
+            "own_band_pose": {
+              "n": 12,
+              "invisible": 0
+            }
+          },
+          "await_observe": {
+            "scan_point": {
+              "n": 21,
+              "invisible": 0
+            },
+            "own_band_pose": {
+              "n": 2,
+              "invisible": 0
+            }
+          },
+          "lookaround": {
+            "scan_point": {
+              "n": 216,
+              "invisible": 0
+            },
+            "own_band_pose": {
+              "n": 4,
+              "invisible": 0
+            }
+          }
+        },
+        "pick_target_uses": [],
+        "scope": "grasp and release decision inputs; GT hold and handoff distances evaluation only",
+        "top_camera_reads": 0,
+        "teacher_boundary": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 0,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false,
+          "admitted_source_tags": {
+            "clock": 646,
+            "issued_commands": 3670,
+            "known_shape": 2496,
+            "visible_teacher_measurement": 3142,
+            "static_map": 646,
+            "fixed_rule": 646
+          }
+        },
+        "grasp_stage_inputs": "VisibleWorld(visible relative measurements + issued commands); no world crate pose",
+        "release_map_prior": "disabled without verified map localization"
+      },
+      "phases": {
+        "r1": {
+          "approach": 102,
+          "search": 25,
+          "align": 33,
+          "ready": 51,
+          "pick": 40,
+          "closed": 12,
+          "lift": 29,
+          "complete": 31,
+          "look": 6,
+          "await_look": 1,
+          "lower": 32,
+          "await_open": 1,
+          "open": 14,
+          "observe_back": 23,
+          "observe_move": 8,
+          "observe": 6,
+          "await_observe": 1,
+          "lookaround": 125
+        },
+        "r2": {
+          "approach": 160,
+          "align": 45,
+          "relook": 4,
+          "ready": 12,
+          "pick": 40,
+          "closed": 2,
+          "lift": 29,
+          "complete": 31,
+          "look": 6,
+          "await_look": 1,
+          "lower": 32,
+          "await_open": 1,
+          "open": 14,
+          "observe_back": 23,
+          "observe_move": 8,
+          "observe": 6,
+          "await_observe": 1,
+          "lookaround": 125
+        }
+      },
+      "pulses": {
+        "r1": {
+          "N": 26,
+          "wheel_width_histogram": {
+            "0.018": 24,
+            "0.024": 4,
+            "0.025": 8,
+            "0.028": 4,
+            "0.038": 4,
+            "0.043": 4,
+            "0.047": 8,
+            "0.064": 4,
+            "0.077": 4,
+            "0.078": 4,
+            "0.085": 4,
+            "0.1": 32
+          },
+          "axis_reversals": {
+            "2": 3,
+            "1": 0,
+            "0": 0
+          },
+          "max_policy_reversals": [
+            2,
+            1,
+            4
+          ],
+          "max_policy_pulses": [
+            5,
+            8,
+            13
+          ],
+          "settle_observations": 170,
+          "final_states": [
+            {
+              "settled": true,
+              "reason": "quantum_deadband",
+              "error": -0.0009161372779076526,
+              "delta": 0.001321,
+              "tolerance": 0.0007926,
+              "acceptance_band": 0.0007926,
+              "consecutive_reversals": 1,
+              "total_reversals": 2,
+              "pulses": 5
+            },
+            {
+              "settled": true,
+              "reason": "quantum_deadband",
+              "error": -0.00017985370235817227,
+              "delta": 0.000824,
+              "tolerance": 0.002,
+              "acceptance_band": 0.002,
+              "consecutive_reversals": 1,
+              "total_reversals": 1,
+              "pulses": 8
+            },
+            {
+              "settled": true,
+              "reason": "quantum_deadband",
+              "error": -0.005074032216241697,
+              "delta": 0.012432,
+              "tolerance": 0.0074592,
+              "acceptance_band": 0.0074592,
+              "consecutive_reversals": 0,
+              "total_reversals": 4,
+              "pulses": 13
+            }
+          ]
+        },
+        "r2": {
+          "N": 41,
+          "wheel_width_histogram": {
+            "0.018": 40,
+            "0.022": 4,
+            "0.024": 4,
+            "0.025": 12,
+            "0.028": 4,
+            "0.029": 8,
+            "0.031": 4,
+            "0.034": 4,
+            "0.035": 4,
+            "0.04": 4,
+            "0.041": 4,
+            "0.043": 4,
+            "0.048": 4,
+            "0.053": 4,
+            "0.058": 4,
+            "0.071": 4,
+            "0.078": 4,
+            "0.085": 4,
+            "0.094": 4,
+            "0.1": 40
+          },
+          "axis_reversals": {
+            "2": 8,
+            "1": 1,
+            "0": 3
+          },
+          "max_policy_reversals": [
+            2,
+            0,
+            4
+          ],
+          "max_policy_pulses": [
+            7,
+            7,
+            14
+          ],
+          "settle_observations": 118,
+          "final_states": [
+            {
+              "settled": true,
+              "reason": "quantum_deadband",
+              "error": 0.0004728018893243313,
+              "delta": 0.001321,
+              "tolerance": 0.0007926,
+              "acceptance_band": 0.0007926,
+              "consecutive_reversals": 2,
+              "total_reversals": 2,
+              "pulses": 3
+            },
+            {
+              "settled": true,
+              "reason": "quantum_deadband",
+              "error": -0.002306081867998369,
+              "delta": 0.000824,
+              "tolerance": 0.002,
+              "acceptance_band": 0.002,
+              "consecutive_reversals": 0,
+              "total_reversals": 0,
+              "pulses": 3
+            },
+            {
+              "settled": true,
+              "reason": "consecutive_reversals",
+              "error": -0.00549102378525681,
+              "delta": 0.012432,
+              "tolerance": 0.0074592,
+              "acceptance_band": 0.011198620639028678,
+              "consecutive_reversals": 3,
+              "total_reversals": 4,
+              "pulses": 6
+            }
+          ]
+        }
+      },
+      "pick_permits": 81,
+      "lift_permits": 1,
+      "aligned": {
+        "r1": true,
+        "r2": true
+      },
+      "sources": [
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/gcp1-runs/crate18-r1-no_clearance-77990-e3a61c40/raw/result.json.zst",
+          "sha256": "dc3fda1950f8dc142c41af925495679cd943740d76a5e0d9fc4aabf6df0b5701",
+          "decoded_sha256": "35ef0396a3533b1d901e8398aad82173219d4f43a37f9fc13ca8ba1c93174157"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/gcp1-runs/crate18-r1-no_clearance-77990-e3a61c40/raw/eval-only.jsonl.zst",
+          "sha256": "623503b87fe3aa29e7a44b7da7002afddaddb86ef87e3f50cc00cecef98bb9e8",
+          "decoded_sha256": "5b7f188bd524c015648e9e137a097774f8ca06c5b23fb857f5cbff61bc4e0abc"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/gcp1-runs/crate18-r1-no_clearance-77990-e3a61c40/raw/teacher-r1.jsonl.zst",
+          "sha256": "b52243ee40f66e6c22968e1e6099c5f6200bbeccaddd20c4397335a5c2d985fa",
+          "decoded_sha256": "fe3d9d78ca32f42a31a05b28ca00766cb5e69999981145b70fd2782575781093"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/gcp1-runs/crate18-r1-no_clearance-77990-e3a61c40/raw/teacher-r2.jsonl.zst",
+          "sha256": "ad546aa4f9202301ed62a560a2a90fd6f9b952e5980f9e7b58eb716c7a71aaff",
+          "decoded_sha256": "20d2d3eb61d7fbb6b3996ff8ce7072848ea65e8671997a93b82ce52b944a4076"
+        }
+      ],
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/crate18-r1-no_clearance-77990-e3a61c40"
+    },
+    {
+      "name": "crate18-r1-full-79314-e3a61c40",
+      "seed": 79314,
+      "candidate": "full",
+      "sha": "e3a61c404b0cc296d9da8417a64c3a75cb070536",
+      "status": "interrupted",
+      "success": null,
+      "prefix_held": null,
+      "release_success": null,
+      "release_outcome": null,
+      "outcomes": {},
+      "source_sha": "e3a61c404b0cc296d9da8417a64c3a75cb070536",
+      "host": {
+        "provider": "gcp",
+        "project_id": "ugrp-act-train-1014",
+        "instance": "ugrp-sim-gcp1",
+        "machine_type": "n4-highcpu-64",
+        "zone": "asia-northeast3-a",
+        "cpu_count": 64,
+        "schema": "ugrp.grasp_act.host.v1"
+      },
+      "sim_s": 49.527250000153884,
+      "wall_s": 206.5588797849996,
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "held_world_reads": 0,
+        "held_world_reads_by_site": {},
+        "invisible_measurements": 0,
+        "measurements_by_phase": {
+          "grasp": {
+            "zone_wall_east": {
+              "n": 13,
+              "invisible": 0
+            },
+            "r1": {
+              "n": 54,
+              "invisible": 0
+            },
+            "r3": {
+              "n": 8,
+              "invisible": 0
+            },
+            "zone_wall_divider_2": {
+              "n": 8,
+              "invisible": 0
+            },
+            "band_blue": {
+              "n": 497,
+              "invisible": 0
+            },
+            "crate_1": {
+              "n": 847,
+              "invisible": 0
+            },
+            "r2": {
+              "n": 39,
+              "invisible": 0
+            },
+            "band_teal": {
+              "n": 368,
+              "invisible": 0
+            }
+          }
+        },
+        "pick_target_uses": [],
+        "scope": "grasp and release decision inputs; GT hold and handoff distances evaluation only",
+        "top_camera_reads": 0,
+        "teacher_boundary": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 0,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false,
+          "admitted_source_tags": {
+            "clock": 992,
+            "issued_commands": 4960,
+            "known_shape": 3334,
+            "visible_teacher_measurement": 4326,
+            "static_map": 992,
+            "fixed_rule": 992
+          }
+        },
+        "grasp_stage_inputs": "VisibleWorld(visible relative measurements + issued commands); no world crate pose",
+        "release_map_prior": "disabled without verified map localization"
+      },
+      "phases": {
+        "r1": {
+          "approach": 208,
+          "search": 144,
+          "align": 34,
+          "ready": 110
+        },
+        "r2": {
+          "approach": 267,
+          "search": 38,
+          "align": 187,
+          "relook": 4
+        }
+      },
+      "pulses": {
+        "r1": {
+          "N": 31,
+          "wheel_width_histogram": {
+            "0.018": 20,
+            "0.028": 12,
+            "0.035": 4,
+            "0.039": 4,
+            "0.058": 4,
+            "0.059": 4,
+            "0.06": 4,
+            "0.081": 4,
+            "0.089": 4,
+            "0.092": 4,
+            "0.098": 4,
+            "0.1": 56
+          },
+          "axis_reversals": {
+            "2": 2,
+            "1": 1,
+            "0": 0
+          },
+          "max_policy_reversals": [
+            0,
+            2,
+            3
+          ],
+          "max_policy_pulses": [
+            5,
+            8,
+            11
+          ],
+          "settle_observations": 113,
+          "final_states": [
+            {
+              "settled": true,
+              "reason": "quantum_deadband",
+              "error": -0.00031352239969517637,
+              "delta": 0.001321,
+              "tolerance": 0.0007926,
+              "acceptance_band": 0.0007926,
+              "consecutive_reversals": 0,
+              "total_reversals": 0,
+              "pulses": 5
+            },
+            {
+              "settled": true,
+              "reason": "quantum_deadband",
+              "error": -2.109625003547666e-05,
+              "delta": 0.000824,
+              "tolerance": 0.002,
+              "acceptance_band": 0.002,
+              "consecutive_reversals": 0,
+              "total_reversals": 2,
+              "pulses": 8
+            },
+            {
+              "settled": true,
+              "reason": "quantum_deadband",
+              "error": -0.004368843134991529,
+              "delta": 0.012432,
+              "tolerance": 0.0074592,
+              "acceptance_band": 0.0074592,
+              "consecutive_reversals": 2,
+              "total_reversals": 3,
+              "pulses": 11
+            }
+          ]
+        },
+        "r2": {
+          "N": 101,
+          "wheel_width_histogram": {
+            "0.018": 100,
+            "0.025": 208,
+            "0.026": 4,
+            "0.027": 4,
+            "0.028": 4,
+            "0.046": 4,
+            "0.051": 4,
+            "0.053": 4,
+            "0.073": 4,
+            "0.075": 4,
+            "0.092": 4,
+            "0.094": 4,
+            "0.1": 56
+          },
+          "axis_reversals": {
+            "2": 4,
+            "1": 1,
+            "0": 1
+          },
+          "max_policy_reversals": [
+            51,
+            0,
+            16
+          ],
+          "max_policy_pulses": [
+            56,
+            2,
+            24
+          ],
+          "settle_observations": 86,
+          "final_states": [
+            {
+              "settled": true,
+              "reason": "quantum_deadband",
+              "error": 0.0006653263227571482,
+              "delta": 0.001321,
+              "tolerance": 0.0007926,
+              "acceptance_band": 0.0007926,
+              "consecutive_reversals": 1,
+              "total_reversals": 51,
+              "pulses": 56
+            },
+            {
+              "settled": true,
+              "reason": "quantum_deadband",
+              "error": 0.0016209019611527972,
+              "delta": 0.000824,
+              "tolerance": 0.002,
+              "acceptance_band": 0.002,
+              "consecutive_reversals": 0,
+              "total_reversals": 0,
+              "pulses": 1
+            },
+            {
+              "settled": true,
+              "reason": "quantum_deadband",
+              "error": 0.0065061492903104355,
+              "delta": 0.012432,
+              "tolerance": 0.0074592,
+              "acceptance_band": 0.0074592,
+              "consecutive_reversals": 1,
+              "total_reversals": 16,
+              "pulses": 24
+            }
+          ]
+        }
+      },
+      "pick_permits": 0,
+      "lift_permits": 0,
+      "aligned": {
+        "r1": true,
+        "r2": false
+      },
+      "sources": [
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/gcp1-runs/crate18-r1-full-79314-e3a61c40/raw/result.json",
+          "sha256": "ea42e3d48ba378bb3ac72077a3c932b6b6ce12f1ebed252d74d5511b2224f889",
+          "decoded_sha256": "ea42e3d48ba378bb3ac72077a3c932b6b6ce12f1ebed252d74d5511b2224f889"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/gcp1-runs/crate18-r1-full-79314-e3a61c40/raw/eval-only.jsonl.zst",
+          "sha256": "b5d34942ca0a03551b7e29e3bfa8d494aca787d5d2ac14220bbd04c5d5288abe",
+          "decoded_sha256": "80b7c504d98cee2c099ed8eb0b9865c6dad08414794d891452ed0a56b079412c"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/gcp1-runs/crate18-r1-full-79314-e3a61c40/raw/teacher-r1.jsonl.zst",
+          "sha256": "a0f88883e0f2b2b2d55cf0dc7411855bfc3655e9394632dff21036b005a615a3",
+          "decoded_sha256": "78d84a94b84b9b703ef5bf456e498ef37aa3b80c48e3a4ba75c7b2a92c8eda58"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/gcp1-runs/crate18-r1-full-79314-e3a61c40/raw/teacher-r2.jsonl.zst",
+          "sha256": "a846be64143af518be4d38a9fa9f7bdeb53654cc75ee357d63b3a5a7361f77d7",
+          "decoded_sha256": "89d83334c005bc4b4a4ccd342711718868ecc043b85934f809a9ec73ad5ad665"
+        }
+      ],
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/crate18-r1-full-79314-e3a61c40"
+    },
+    {
+      "name": "crate18-r1-no_clearance-79314-e3a61c40",
+      "seed": 79314,
+      "candidate": "no_clearance",
+      "sha": "e3a61c404b0cc296d9da8417a64c3a75cb070536",
+      "status": "interrupted",
+      "success": null,
+      "prefix_held": null,
+      "release_success": null,
+      "release_outcome": null,
+      "outcomes": {},
+      "source_sha": "e3a61c404b0cc296d9da8417a64c3a75cb070536",
+      "host": {
+        "provider": "gcp",
+        "project_id": "ugrp-act-train-1014",
+        "instance": "ugrp-sim-gcp1",
+        "machine_type": "n4-highcpu-64",
+        "zone": "asia-northeast3-a",
+        "cpu_count": 64,
+        "schema": "ugrp.grasp_act.host.v1"
+      },
+      "sim_s": 46.700000000140385,
+      "wall_s": 198.6519883990004,
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "held_world_reads": 0,
+        "held_world_reads_by_site": {},
+        "invisible_measurements": 0,
+        "measurements_by_phase": {
+          "grasp": {
+            "zone_wall_east": {
+              "n": 8,
+              "invisible": 0
+            },
+            "r1": {
+              "n": 43,
+              "invisible": 0
+            },
+            "r3": {
+              "n": 15,
+              "invisible": 0
+            },
+            "zone_wall_divider_2": {
+              "n": 13,
+              "invisible": 0
+            },
+            "band_blue": {
+              "n": 398,
+              "invisible": 0
+            },
+            "crate_1": {
+              "n": 676,
+              "invisible": 0
+            },
+            "r2": {
+              "n": 18,
+              "invisible": 0
+            },
+            "band_teal": {
+              "n": 311,
+              "invisible": 0
+            }
+          }
+        },
+        "pick_target_uses": [],
+        "scope": "grasp and release decision inputs; GT hold and handoff distances evaluation only",
+        "top_camera_reads": 0,
+        "teacher_boundary": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 0,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false,
+          "admitted_source_tags": {
+            "clock": 935,
+            "issued_commands": 4675,
+            "known_shape": 3109,
+            "visible_teacher_measurement": 4044,
+            "static_map": 935,
+            "fixed_rule": 935
+          }
+        },
+        "grasp_stage_inputs": "VisibleWorld(visible relative measurements + issued commands); no world crate pose",
+        "release_map_prior": "disabled without verified map localization"
+      },
+      "phases": {
+        "r1": {
+          "approach": 130,
+          "search": 174,
+          "align": 30,
+          "ready": 133
+        },
+        "r2": {
+          "approach": 172,
+          "search": 102,
+          "align": 192,
+          "ready": 1
+        }
+      },
+      "pulses": {
+        "r1": {
+          "N": 26,
+          "wheel_width_histogram": {
+            "0.018": 12,
+            "0.025": 12,
+            "0.027": 4,
+            "0.032": 4,
+            "0.033": 4,
+            "0.053": 4,
+            "0.055": 4,
+            "0.057": 4,
+            "0.075": 4,
+            "0.085": 4,
+            "0.097": 4,
+            "0.098": 4,
+            "0.1": 40
+          },
+          "axis_reversals": {
+            "2": 2,
+            "1": 0,
+            "0": 3
+          },
+          "max_policy_reversals": [
+            4,
+            0,
+            3
+          ],
+          "max_policy_pulses": [
+            8,
+            6,
+            12
+          ],
+          "settle_observations": 137,
+          "final_states": [
+            {
+              "settled": true,
+              "reason": "consecutive_reversals",
+              "error": -0.0012074176611595044,
+              "delta": 0.001321,
+              "tolerance": 0.0007926,
+              "acceptance_band": 0.001229272300239198,
+              "consecutive_reversals": 3,
+              "total_reversals": 4,
+              "pulses": 8
+            },
+            {
+              "settled": true,
+              "reason": "quantum_deadband",
+              "error": 0.00028297170635999125,
+              "delta": 0.000824,
+              "tolerance": 0.002,
+              "acceptance_band": 0.002,
+              "consecutive_reversals": 0,
+              "total_reversals": 0,
+              "pulses": 6
+            },
+            {
+              "settled": true,
+              "reason": "quantum_deadband",
+              "error": 0.0025021764814092684,
+              "delta": 0.012432,
+              "tolerance": 0.0074592,
+              "acceptance_band": 0.0074592,
+              "consecutive_reversals": 2,
+              "total_reversals": 3,
+              "pulses": 12
+            }
+          ]
+        },
+        "r2": {
+          "N": 155,
+          "wheel_width_histogram": {
+            "0.018": 168,
+            "0.025": 200,
+            "0.026": 4,
+            "0.027": 40,
+            "0.028": 60,
+            "0.029": 16,
+            "0.03": 12,
+            "0.031": 12,
+            "0.032": 16,
+            "0.035": 4,
+            "0.036": 4,
+            "0.051": 4,
+            "0.061": 4,
+            "0.071": 4,
+            "0.075": 4,
+            "0.093": 4,
+            "0.097": 4,
+            "0.1": 60
+          },
+          "axis_reversals": {
+            "2": 4,
+            "1": 14,
+            "0": 27
+          },
+          "max_policy_reversals": [
+            40,
+            6,
+            19
+          ],
+          "max_policy_pulses": [
+            58,
+            42,
+            48
+          ],
+          "settle_observations": 38,
+          "final_states": [
+            {
+              "settled": true,
+              "reason": "quantum_deadband",
+              "error": 0.0006229237411823629,
+              "delta": 0.001321,
+              "tolerance": 0.0007926,
+              "acceptance_band": 0.0007926,
+              "consecutive_reversals": 1,
+              "total_reversals": 40,
+              "pulses": 58
+            },
+            {
+              "settled": true,
+              "reason": "quantum_deadband",
+              "error": 0.0024771115631608,
+              "delta": 0.000824,
+              "tolerance": 0.002,
+              "acceptance_band": 0.002,
+              "consecutive_reversals": 0,
+              "total_reversals": 6,
+              "pulses": 42
+            },
+            {
+              "settled": true,
+              "reason": "quantum_deadband",
+              "error": 0.0011449838394941062,
+              "delta": 0.012432,
+              "tolerance": 0.0074592,
+              "acceptance_band": 0.0074592,
+              "consecutive_reversals": 1,
+              "total_reversals": 19,
+              "pulses": 48
+            }
+          ]
+        }
+      },
+      "pick_permits": 0,
+      "lift_permits": 0,
+      "aligned": {
+        "r1": true,
+        "r2": true
+      },
+      "sources": [
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/gcp1-runs/crate18-r1-no_clearance-79314-e3a61c40/raw/result.json",
+          "sha256": "28322a50e567f9cfd830ae0f7ea49558743cf84e4db8f181dd601c1967e8776b",
+          "decoded_sha256": "28322a50e567f9cfd830ae0f7ea49558743cf84e4db8f181dd601c1967e8776b"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/gcp1-runs/crate18-r1-no_clearance-79314-e3a61c40/raw/eval-only.jsonl.zst",
+          "sha256": "7f0ce62ef514b114f5ea1a14f045c66928fe61e86656a652eb778757a92b639c",
+          "decoded_sha256": "d7f0f37ec67ebcf438f0ff7593149bee47af469b0bda5d638eeb70e69e7ad1b4"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/gcp1-runs/crate18-r1-no_clearance-79314-e3a61c40/raw/teacher-r1.jsonl.zst",
+          "sha256": "ab3bf9ca33f638760770505b9d97dd785fb0f0da082c0842dc4f156e28eaa9c6",
+          "decoded_sha256": "d007e17b62bccd2f818e87d01054d8161653c48a2d1b24798ae50dbab088758a"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/gcp1-runs/crate18-r1-no_clearance-79314-e3a61c40/raw/teacher-r2.jsonl.zst",
+          "sha256": "da7ca25c5407d2b4e2570c61b6aa140d64bfac7618b0ffef695282b4898492a8",
+          "decoded_sha256": "348e16f2d0fd595099e15af220a6f3ca5e8ceddffd5a3537e19fad194036bf5c"
+        }
+      ],
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/crate18-r1-no_clearance-79314-e3a61c40"
+    },
+    {
+      "name": "crate18-r1-full-79317-e3a61c40",
+      "seed": 79317,
+      "candidate": "full",
+      "sha": "e3a61c404b0cc296d9da8417a64c3a75cb070536",
+      "status": "interrupted",
+      "success": null,
+      "prefix_held": null,
+      "release_success": null,
+      "release_outcome": null,
+      "outcomes": {},
+      "source_sha": "e3a61c404b0cc296d9da8417a64c3a75cb070536",
+      "host": {
+        "provider": "gcp",
+        "project_id": "ugrp-act-train-1014",
+        "instance": "ugrp-sim-gcp1",
+        "machine_type": "n4-highcpu-64",
+        "zone": "asia-northeast3-a",
+        "cpu_count": 64,
+        "schema": "ugrp.grasp_act.host.v1"
+      },
+      "sim_s": 42.80000000012176,
+      "wall_s": 190.88930668600005,
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "held_world_reads": 0,
+        "held_world_reads_by_site": {},
+        "invisible_measurements": 0,
+        "measurements_by_phase": {
+          "grasp": {
+            "band_blue": {
+              "n": 453,
+              "invisible": 0
+            },
+            "crate_1": {
+              "n": 771,
+              "invisible": 0
+            },
+            "cyan_1": {
+              "n": 8,
+              "invisible": 0
+            },
+            "r2": {
+              "n": 8,
+              "invisible": 0
+            },
+            "zone_wall_divider_1": {
+              "n": 8,
+              "invisible": 0
+            },
+            "r1": {
+              "n": 141,
+              "invisible": 0
+            },
+            "r3": {
+              "n": 7,
+              "invisible": 0
+            },
+            "zone_wall_east": {
+              "n": 10,
+              "invisible": 0
+            },
+            "band_teal": {
+              "n": 365,
+              "invisible": 0
+            }
+          }
+        },
+        "pick_target_uses": [],
+        "scope": "grasp and release decision inputs; GT hold and handoff distances evaluation only",
+        "top_camera_reads": 0,
+        "teacher_boundary": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 0,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false,
+          "admitted_source_tags": {
+            "clock": 856,
+            "issued_commands": 4280,
+            "known_shape": 2853,
+            "visible_teacher_measurement": 3709,
+            "static_map": 856,
+            "fixed_rule": 856
+          }
+        },
+        "grasp_stage_inputs": "VisibleWorld(visible relative measurements + issued commands); no world crate pose",
+        "release_map_prior": "disabled without verified map localization"
+      },
+      "phases": {
+        "r1": {
+          "approach": 46,
+          "search": 85,
+          "align": 27,
+          "relook": 4,
+          "ready": 244,
+          "pick": 22
+        },
+        "r2": {
+          "approach": 145,
+          "align": 276,
+          "relook": 4,
+          "ready": 3
+        }
+      },
+      "pulses": {
+        "r1": {
+          "N": 24,
+          "wheel_width_histogram": {
+            "0.018": 36,
+            "0.02": 4,
+            "0.029": 4,
+            "0.034": 4,
+            "0.036": 4,
+            "0.037": 4,
+            "0.07": 4,
+            "0.09": 4,
+            "0.1": 32
+          },
+          "axis_reversals": {
+            "2": 5,
+            "1": 0,
+            "0": 0
+          },
+          "max_policy_reversals": [
+            0,
+            0,
+            5
+          ],
+          "max_policy_pulses": [
+            2,
+            5,
+            12
+          ],
+          "settle_observations": 269,
+          "final_states": [
+            {
+              "settled": true,
+              "reason": "quantum_deadband",
+              "error": -0.00012408936207819465,
+              "delta": 0.001321,
+              "tolerance": 0.0007926,
+              "acceptance_band": 0.0007926,
+              "consecutive_reversals": 0,
+              "total_reversals": 0,
+              "pulses": 2
+            },
+            {
+              "settled": true,
+              "reason": "quantum_deadband",
+              "error": -0.001790232685897647,
+              "delta": 0.000824,
+              "tolerance": 0.002,
+              "acceptance_band": 0.002,
+              "consecutive_reversals": 0,
+              "total_reversals": 0,
+              "pulses": 0
+            },
+            {
+              "settled": true,
+              "reason": "quantum_deadband",
+              "error": -0.0031655965842909417,
+              "delta": 0.012432,
+              "tolerance": 0.0074592,
+              "acceptance_band": 0.0074592,
+              "consecutive_reversals": 0,
+              "total_reversals": 0,
+              "pulses": 4
+            }
+          ]
+        },
+        "r2": {
+          "N": 188,
+          "wheel_width_histogram": {
+            "0.018": 76,
+            "0.025": 260,
+            "0.026": 28,
+            "0.027": 136,
+            "0.028": 176,
+            "0.03": 4,
+            "0.032": 8,
+            "0.035": 4,
+            "0.038": 4,
+            "0.039": 4,
+            "0.041": 4,
+            "0.043": 4,
+            "0.049": 4,
+            "0.05": 4,
+            "0.057": 4,
+            "0.067": 4,
+            "0.072": 4,
+            "0.075": 4,
+            "0.083": 4,
+            "0.099": 4,
+            "0.1": 12
+          },
+          "axis_reversals": {
+            "2": 4,
+            "1": 1,
+            "0": 28
+          },
+          "max_policy_reversals": [
+            61,
+            0,
+            7
+          ],
+          "max_policy_pulses": [
+            72,
+            84,
+            17
+          ],
+          "settle_observations": 91,
+          "final_states": [
+            {
+              "settled": true,
+              "reason": "quantum_deadband",
+              "error": 0.0007469095687742955,
+              "delta": 0.001321,
+              "tolerance": 0.0007926,
+              "acceptance_band": 0.0007926,
+              "consecutive_reversals": 1,
+              "total_reversals": 61,
+              "pulses": 72
+            },
+            {
+              "settled": false,
+              "reason": null,
+              "error": 0.0026981147511383335,
+              "delta": 0.000824,
+              "tolerance": 0.002,
+              "acceptance_band": null,
+              "consecutive_reversals": 0,
+              "total_reversals": 0,
+              "pulses": 84
+            },
+            {
+              "settled": true,
+              "reason": "quantum_deadband",
+              "error": -0.006314052512542023,
+              "delta": 0.012432,
+              "tolerance": 0.0074592,
+              "acceptance_band": 0.0074592,
+              "consecutive_reversals": 1,
+              "total_reversals": 7,
+              "pulses": 17
+            }
+          ]
+        }
+      },
+      "pick_permits": 1,
+      "lift_permits": 0,
+      "aligned": {
+        "r1": true,
+        "r2": true
+      },
+      "sources": [
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/gcp1-runs/crate18-r1-full-79317-e3a61c40/raw/result.json",
+          "sha256": "f24a2731b9b0cadb231339a80e024fc56beed346084db851c99be405946b87a8",
+          "decoded_sha256": "f24a2731b9b0cadb231339a80e024fc56beed346084db851c99be405946b87a8"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/gcp1-runs/crate18-r1-full-79317-e3a61c40/raw/eval-only.jsonl.zst",
+          "sha256": "32643b1a9f6f496c2c8bbb9b1533a22ee095eee959ab99a44dedc24e004aea48",
+          "decoded_sha256": "879aaf25abe381936024345ad5bd583c80b20ea946da2956be117336b5bc662a"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/gcp1-runs/crate18-r1-full-79317-e3a61c40/raw/teacher-r1.jsonl.zst",
+          "sha256": "26f4dcc5a5d0ea8b221145e2b0050a25aef382ce6310eb4ffedbb08c48415990",
+          "decoded_sha256": "4679c69783c3a1b3475852aece6d2129b343f0688717aaf10812cd0949cf6150"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/gcp1-runs/crate18-r1-full-79317-e3a61c40/raw/teacher-r2.jsonl.zst",
+          "sha256": "ece119e43ee028352e054005390cd33cffc17c5811acbc9d117f136422370907",
+          "decoded_sha256": "5e672828c3166599c884ff610d9033f4db70336344d4d2c9079eba9e115d6d8b"
+        }
+      ],
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/crate18-r1-full-79317-e3a61c40"
+    },
+    {
+      "name": "crate18-r1-no_clearance-79317-e3a61c40",
+      "seed": 79317,
+      "candidate": "no_clearance",
+      "sha": "e3a61c404b0cc296d9da8417a64c3a75cb070536",
+      "status": "interrupted",
+      "success": null,
+      "prefix_held": null,
+      "release_success": null,
+      "release_outcome": null,
+      "outcomes": {},
+      "source_sha": "e3a61c404b0cc296d9da8417a64c3a75cb070536",
+      "host": {
+        "provider": "gcp",
+        "project_id": "ugrp-act-train-1014",
+        "instance": "ugrp-sim-gcp1",
+        "machine_type": "n4-highcpu-64",
+        "zone": "asia-northeast3-a",
+        "cpu_count": 64,
+        "schema": "ugrp.grasp_act.host.v1"
+      },
+      "sim_s": 40.4625000001106,
+      "wall_s": 183.01364614500199,
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "held_world_reads": 0,
+        "held_world_reads_by_site": {},
+        "invisible_measurements": 0,
+        "measurements_by_phase": {
+          "grasp": {
+            "band_blue": {
+              "n": 430,
+              "invisible": 0
+            },
+            "crate_1": {
+              "n": 731,
+              "invisible": 0
+            },
+            "cyan_1": {
+              "n": 8,
+              "invisible": 0
+            },
+            "r2": {
+              "n": 8,
+              "invisible": 0
+            },
+            "zone_wall_divider_1": {
+              "n": 8,
+              "invisible": 0
+            },
+            "r1": {
+              "n": 141,
+              "invisible": 0
+            },
+            "r3": {
+              "n": 7,
+              "invisible": 0
+            },
+            "zone_wall_east": {
+              "n": 10,
+              "invisible": 0
+            },
+            "band_teal": {
+              "n": 357,
+              "invisible": 0
+            }
+          }
+        },
+        "pick_target_uses": [],
+        "scope": "grasp and release decision inputs; GT hold and handoff distances evaluation only",
+        "top_camera_reads": 0,
+        "teacher_boundary": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 0,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false,
+          "admitted_source_tags": {
+            "clock": 810,
+            "issued_commands": 4050,
+            "known_shape": 2715,
+            "visible_teacher_measurement": 3525,
+            "static_map": 810,
+            "fixed_rule": 810
+          }
+        },
+        "grasp_stage_inputs": "VisibleWorld(visible relative measurements + issued commands); no world crate pose",
+        "release_map_prior": "disabled without verified map localization"
+      },
+      "phases": {
+        "r1": {
+          "approach": 46,
+          "search": 85,
+          "align": 27,
+          "relook": 4,
+          "ready": 243
+        },
+        "r2": {
+          "approach": 145,
+          "align": 255,
+          "relook": 4,
+          "ready": 1
+        }
+      },
+      "pulses": {
+        "r1": {
+          "N": 24,
+          "wheel_width_histogram": {
+            "0.018": 36,
+            "0.02": 4,
+            "0.029": 4,
+            "0.034": 4,
+            "0.036": 4,
+            "0.037": 4,
+            "0.07": 4,
+            "0.09": 4,
+            "0.1": 32
+          },
+          "axis_reversals": {
+            "2": 5,
+            "1": 0,
+            "0": 0
+          },
+          "max_policy_reversals": [
+            0,
+            0,
+            5
+          ],
+          "max_policy_pulses": [
+            2,
+            5,
+            12
+          ],
+          "settle_observations": 246,
+          "final_states": [
+            {
+              "settled": true,
+              "reason": "quantum_deadband",
+              "error": -0.0001235715859264075,
+              "delta": 0.001321,
+              "tolerance": 0.0007926,
+              "acceptance_band": 0.0007926,
+              "consecutive_reversals": 0,
+              "total_reversals": 0,
+              "pulses": 2
+            },
+            {
+              "settled": true,
+              "reason": "quantum_deadband",
+              "error": -0.0017899842155917126,
+              "delta": 0.000824,
+              "tolerance": 0.002,
+              "acceptance_band": 0.002,
+              "consecutive_reversals": 0,
+              "total_reversals": 0,
+              "pulses": 0
+            },
+            {
+              "settled": true,
+              "reason": "quantum_deadband",
+              "error": -0.0031643476840086393,
+              "delta": 0.012432,
+              "tolerance": 0.0074592,
+              "acceptance_band": 0.0074592,
+              "consecutive_reversals": 0,
+              "total_reversals": 0,
+              "pulses": 4
+            }
+          ]
+        },
+        "r2": {
+          "N": 175,
+          "wheel_width_histogram": {
+            "0.018": 72,
+            "0.025": 220,
+            "0.026": 28,
+            "0.027": 136,
+            "0.028": 168,
+            "0.03": 4,
+            "0.032": 8,
+            "0.035": 4,
+            "0.038": 4,
+            "0.039": 4,
+            "0.041": 4,
+            "0.043": 4,
+            "0.049": 4,
+            "0.05": 4,
+            "0.057": 4,
+            "0.067": 4,
+            "0.072": 4,
+            "0.075": 4,
+            "0.083": 4,
+            "0.099": 4,
+            "0.1": 12
+          },
+          "axis_reversals": {
+            "2": 4,
+            "1": 1,
+            "0": 20
+          },
+          "max_policy_reversals": [
+            52,
+            0,
+            6
+          ],
+          "max_policy_pulses": [
+            62,
+            83,
+            16
+          ],
+          "settle_observations": 81,
+          "final_states": [
+            {
+              "settled": true,
+              "reason": "quantum_deadband",
+              "error": -0.00047043561375498255,
+              "delta": 0.001321,
+              "tolerance": 0.0007926,
+              "acceptance_band": 0.0007926,
+              "consecutive_reversals": 0,
+              "total_reversals": 52,
+              "pulses": 62
+            },
+            {
+              "settled": true,
+              "reason": "quantum_deadband",
+              "error": -0.0019090402060544104,
+              "delta": 0.000824,
+              "tolerance": 0.002,
+              "acceptance_band": 0.002,
+              "consecutive_reversals": 0,
+              "total_reversals": 0,
+              "pulses": 83
+            },
+            {
+              "settled": true,
+              "reason": "quantum_deadband",
+              "error": 0.0026473013819323654,
+              "delta": 0.012432,
+              "tolerance": 0.0074592,
+              "acceptance_band": 0.0074592,
+              "consecutive_reversals": 0,
+              "total_reversals": 6,
+              "pulses": 16
+            }
+          ]
+        }
+      },
+      "pick_permits": 0,
+      "lift_permits": 0,
+      "aligned": {
+        "r1": true,
+        "r2": true
+      },
+      "sources": [
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/gcp1-runs/crate18-r1-no_clearance-79317-e3a61c40/raw/result.json",
+          "sha256": "00b3473e7cc20f62da4b001ca4256110b65cc711035e004d45e99e3ebae37998",
+          "decoded_sha256": "00b3473e7cc20f62da4b001ca4256110b65cc711035e004d45e99e3ebae37998"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/gcp1-runs/crate18-r1-no_clearance-79317-e3a61c40/raw/eval-only.jsonl.zst",
+          "sha256": "364bb1ad02aa2177b8226b8eb508b8a53c8f621eba84e24dee1a0bcd03ce6e49",
+          "decoded_sha256": "d0bf1bf3da2665aa737009a8457ab9e689d2b0d922c67c79e2baeb41721c67d9"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/gcp1-runs/crate18-r1-no_clearance-79317-e3a61c40/raw/teacher-r1.jsonl.zst",
+          "sha256": "3038424b8e3b2132941155ce5c7b00e88dbf67a9098885bc08ac227ce738d2ae",
+          "decoded_sha256": "a68907cedecd957753849aed71fd9d7331bb4f38aa472f29c3bed1f027f7cb8b"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/gcp1-runs/crate18-r1-no_clearance-79317-e3a61c40/raw/teacher-r2.jsonl.zst",
+          "sha256": "fd84df22d7f5f4a533c318adca4e710788e4f69ef00bd6c6e494b1bac4455e5e",
+          "decoded_sha256": "343f11b5dae3b68094c8188afed815a990b3d2d6d0f484ff58a6e40599d5bfff"
+        }
+      ],
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/crate18-r1-no_clearance-79317-e3a61c40"
+    }
+  ],
+  "artifacts": {
+    "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/crate18/round1-e3a61c40/summary.json": "1733496c3d19d963bd7eea2bb0fffce89d4b11ac528295284a847d747a7ee42c",
+    "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/crate18/round1-e3a61c40/crate18-r1-no_clearance-79314-e3a61c40-submit.log": "2ea108f6a777c5c32c31f6fb77d5d8f6eddfcdc486b8b9be64ecff426eeddbcf",
+    "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/crate18/round1-e3a61c40/plan.json": "cdea890fcce07c3d6f5207c2246081ccc655b4b5c82e62c46b52d50647fdfedd",
+    "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/crate18/round1-e3a61c40/crate18-r1-no_clearance-79317-e3a61c40-submit.log": "fa89111df5fa98632abfd6fed734529190737064746d811f1b6ff4600ef8d975",
+    "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/crate18/round1-e3a61c40/crate18-r1-full-79317-e3a61c40-submit.log": "213fac654cd50b1aa9643d8a89746fbaae60ec2a97eefb105c7e16d723dd2afd",
+    "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/crate18/round1-e3a61c40/crate18-r1-full-79314-e3a61c40-submit.log": "9668f4cb983d97fcce8e3e2b4c7d3fc131b9862dfad7c8f5a16360d2d94d206c",
+    "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/crate18/round1-e3a61c40/lifecycle.json": "d40e690b8672e47f8583b3635b2fd0563fead18f24a5248a36d2d5751e19ac68",
+    "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/crate18/round1-e3a61c40/speed.json": "8cf7ccb34eba02e9c4296fe3542a5d8420162f88934133e3ff1ffaa38acd47fd",
+    "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/crate18/round1-e3a61c40/crate18-r1-no_clearance-77990-e3a61c40-submit.log": "b65a66d12b18e0eb280d8a0e8092d04a90d603c9c0c83d3d97fd60416e18749a",
+    "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/crate18/round1-e3a61c40/verification.json": "f9ba426e57588fbf91e2cd54ab5281e3f67f7024174f2f9aff75ac1cd94d9b71",
+    "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/crate18/round1-e3a61c40/stop-record.json": "7b32f4cb8b26a81ecc026d8f48c2f7fc2b30f40dd6e756041fdeeea7722969c9",
+    "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/crate18/round1-e3a61c40/crate18-r1-full-77990-e3a61c40-submit.log": "ee60eec68caaee96a53ba5bb0f9caf2a4ec95cf0e602f86df9a6f5029e82349c",
+    "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/crate18/round1-e3a61c40/cost-safety.json": "fd26ab70f1b35a726b9ed8a5c4913de12a2cafe5a53c21a39068aed7243b0410",
+    "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/crate18/round1-e3a61c40/admission.json": "10b4acc12ff586e55d9500eb2f31748dcf75710601ec1004f76a096411c0f2af"
+  },
+  "fix": "crate18 disables legacy selection-sign guard; unchanged PulseSettler alone counts issued reversals"
+}

@@ -1,0 +1,527 @@
+{
+  "scope": "mass025 GCP prior successful hold episodes; held_belief + nonzero release wheels",
+  "runs_checked": 23,
+  "sources": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77960-5644e3dd/raw/result.json",
+      "sha256": "f723a99fa9ca834984d427c488024ddfd28106776d8bce236df3258d83ed584c",
+      "decoded_sha256": "f723a99fa9ca834984d427c488024ddfd28106776d8bce236df3258d83ed584c"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77960-5644e3dd/raw/eval-only.jsonl.zst",
+      "sha256": "1f7e6ff82cb13f3e4fd49600b1507b4d571c20e2d01fc424787d2430283023b7",
+      "decoded_sha256": "c959b17afa62145ed313b505ffae13e0e6c4c29900f53fba9fac708a253f4476"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77960-5644e3dd/raw/teacher-r1.jsonl.zst",
+      "sha256": "fb07a0bb3a3f30e29c77c1cb456fb7ebd628dbf10ed9ccd3f9f3fc54219e8b9f",
+      "decoded_sha256": "7ee2431ae904ff19ba2df16f6405707fbe36600f4e265d64fe3a9b47e952af13"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77960-5644e3dd/raw/teacher-r2.jsonl.zst",
+      "sha256": "3c896dc827c7d7ff04dc9b85933ad4e79f249e1bdcb9afcc8f6963751c685640",
+      "decoded_sha256": "842be85f61e4ce485c44fc4fa6ee9aad25fc7a4001f2857bc434e83a8816f79c"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77961-5644e3dd/raw/result.json",
+      "sha256": "e60fd77004c9ff46b1747750d122244c800b450bad543bc206a37a8d2b4d2f90",
+      "decoded_sha256": "e60fd77004c9ff46b1747750d122244c800b450bad543bc206a37a8d2b4d2f90"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77961-5644e3dd/raw/eval-only.jsonl.zst",
+      "sha256": "ff4f3135bf77e38bf054287ba51611c78d62f1454b5f083a425a0bc221a4f4e5",
+      "decoded_sha256": "d6a58f121569800a7024efd8a5147a40332e76f65e1543a861ad7aa5961f6aaa"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77961-5644e3dd/raw/teacher-r1.jsonl.zst",
+      "sha256": "49cd92ac03fecd19bb7d8e1dc2016754a31d8e566a38bc6d3725d4b19c4defe2",
+      "decoded_sha256": "8e30641ed6f4e93bda70d411c813cf1657754d3f137aeedb6882861f0388e22c"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77961-5644e3dd/raw/teacher-r2.jsonl.zst",
+      "sha256": "0ffd1d5e93c314e89eaa0c0d790658859b2b8982ec8813a87101003a33e1095d",
+      "decoded_sha256": "6d6cf95fae66480dadf6da89e4ad7075aa10a9737147b843d6046ebea7ec0005"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77963-5644e3dd/raw/result.json",
+      "sha256": "562f51775307a41b0ceed981e38da060a7ff256a515a728293e5840c5799236c",
+      "decoded_sha256": "562f51775307a41b0ceed981e38da060a7ff256a515a728293e5840c5799236c"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77963-5644e3dd/raw/eval-only.jsonl.zst",
+      "sha256": "c6f0a4752b8a20af3c620e9eb63f16fcc7e699a6e5b97b9cf5773aeb5dc23557",
+      "decoded_sha256": "84e50cc67600e56e1f4f044dc09176054d6422743fc32ae04c0d518c18a0ad9f"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77963-5644e3dd/raw/teacher-r1.jsonl.zst",
+      "sha256": "10f43954f00d198f737828dad4ccfe61677b51a2bd95f9212bca804360e74dcb",
+      "decoded_sha256": "98711786a994c2280d79068ddc568bd68791b4ff45a63806e0b3562797b13f41"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77963-5644e3dd/raw/teacher-r2.jsonl.zst",
+      "sha256": "b2052d2141d791007a8ee33dfb6e1cfb6b3a29e153ee946c6c6061594230f72a",
+      "decoded_sha256": "4fa59078896d08d690f39b372c7ee0cd3e28219ee0a3b4d9a7a62d19cda0b01a"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77964-5644e3dd/raw/result.json",
+      "sha256": "65577ec6075d4fb8ab3504d885267807c12b0db93391ddf8ca3cc14b00701739",
+      "decoded_sha256": "65577ec6075d4fb8ab3504d885267807c12b0db93391ddf8ca3cc14b00701739"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77964-5644e3dd/raw/eval-only.jsonl.zst",
+      "sha256": "966feed4ad9731a5d99717b9ecc6963253713cc4497fac797d924724cd75ecb2",
+      "decoded_sha256": "05c455a573bb5364b3295a3a6c0e6c4a96390e4417428596c92c7e6177a74722"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77964-5644e3dd/raw/teacher-r1.jsonl.zst",
+      "sha256": "17364695eeefedcbef33c6c333d02e9e0bc98e18914a638b336d70944b096867",
+      "decoded_sha256": "d79cda5c699d9dde71fb5e5ffe30f94f75c193147527ae5211694d663fba7ea1"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77964-5644e3dd/raw/teacher-r2.jsonl.zst",
+      "sha256": "908e6552735849eb7f5f1585f86343017f43aafb1948ce77a7b9db5aeeb4ae14",
+      "decoded_sha256": "0bfd9186870faa683203a8fbaf8391b268a1f8e8cbaf874800a5ad3b15952315"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77967-5644e3dd/raw/result.json.zst",
+      "sha256": "bea8aa99a6ba87ae872c79d5cf555dd09bdfe686db498fea8e75e57a0d27d913",
+      "decoded_sha256": "7f4aea060187adcee88bd98c8c18919bf97cc70c360f34eb9128870aa8370112"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77967-5644e3dd/raw/eval-only.jsonl.zst",
+      "sha256": "23333079f5d702650e7c442f7e847a038c4fc790c74d994ca2a48a2ba1ed230c",
+      "decoded_sha256": "769e187dfa7210ef4a0bc3251458f41c16ad5da21e68500df3f1a4bcf8760a90"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77967-5644e3dd/raw/teacher-r1.jsonl.zst",
+      "sha256": "5d7a9be83b2eccd117f4b65019befda324e667e6863953abb7694de76a5ce547",
+      "decoded_sha256": "dbf99cb35a5f272c751ef63394e634d6e1a6fb66da3ef384ac023abd8cedd8ba"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77967-5644e3dd/raw/teacher-r2.jsonl.zst",
+      "sha256": "d9b8475dbd4f98f10aacffe3d62d8cd03d177bdf4c48e3d14d7917c621cc6207",
+      "decoded_sha256": "223a1107efa3c62a8a8827118eb052892c1a7084d5d58ba9903f0b4d8df8ba7e"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77970-bf31840f/raw/result.json",
+      "sha256": "e6cb03da10dbf4d17bf2742c419ea42664623cedd828a6c8fdca7afaa50b3a1c",
+      "decoded_sha256": "e6cb03da10dbf4d17bf2742c419ea42664623cedd828a6c8fdca7afaa50b3a1c"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77970-bf31840f/raw/eval-only.jsonl.zst",
+      "sha256": "7b53141d71258bdad1897c2df006b3ebd2c252b5f8bbfa2524de5d03ed3015a1",
+      "decoded_sha256": "7f6cb79098206f7e76ebf2324397fe9f931d0ed83bf6c1bb188be9b0a22e7632"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77970-bf31840f/raw/teacher-r1.jsonl.zst",
+      "sha256": "bcdff7ef6ac0ef066893876b40f6ec0f4ef1470bda2f879e3ed8426e37393886",
+      "decoded_sha256": "86d7bf6fff9f943af53d11eecdf463b33aa72c8d3a2dffa0f98298f618f4ca2b"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77970-bf31840f/raw/teacher-r2.jsonl.zst",
+      "sha256": "774136440786d7d72eb947933f07ba3409e38352dc010d0985ef4e734105ddb2",
+      "decoded_sha256": "4707d8fa8947e2adac6b9c576d9834218a1fe7737c6789cbc5aa4f9c1369a51b"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77971-bf31840f/raw/result.json",
+      "sha256": "00a60aa42c22db7c8abfc4c2ba4187330fedd41c09ea037d7a6a636fa452344c",
+      "decoded_sha256": "00a60aa42c22db7c8abfc4c2ba4187330fedd41c09ea037d7a6a636fa452344c"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77971-bf31840f/raw/eval-only.jsonl.zst",
+      "sha256": "d7673f0ed7c7dcde97adf72f2d0a0f50450452f3b979f0107b0259ab5960a49b",
+      "decoded_sha256": "5a0cc30fd94de87e293bf85663d533f789f556f4a5c26fbc62acbbe67d4eec70"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77971-bf31840f/raw/teacher-r1.jsonl.zst",
+      "sha256": "ec562f31cc066a877ea51d8fe2cea68f0b4c77b123f3dacf822a54b862d22947",
+      "decoded_sha256": "52fad59e3db50b767191ae216764de2ee0f9dff369ee6959a515c6ac8ba8f991"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77971-bf31840f/raw/teacher-r2.jsonl.zst",
+      "sha256": "c37201c8f5632401dc08c26ab7e828954900649076a450e00511a8cdf0075bc4",
+      "decoded_sha256": "80a653f946984ee6c015acf5924fb28c86ecdab0c3c579d2c37e341d57551495"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77972-bf31840f/raw/result.json",
+      "sha256": "c7050116b9d4ac71a18dadc0f3a392627ce88b92d55fa31cc35fcb79d6db4b78",
+      "decoded_sha256": "c7050116b9d4ac71a18dadc0f3a392627ce88b92d55fa31cc35fcb79d6db4b78"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77972-bf31840f/raw/eval-only.jsonl.zst",
+      "sha256": "aa9f7ec3e3581c1e4c2a090d8ca2625b38f1d12f88b3693e831dfb734cc9225f",
+      "decoded_sha256": "a3f65f6601d524e053f50fea7821824667f4e136a710d79292939b26a1e45e32"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77972-bf31840f/raw/teacher-r1.jsonl.zst",
+      "sha256": "e5c667dd30f38a870f20ceddcb5e5c811c10362c7a7562a09b3c0583c2658981",
+      "decoded_sha256": "b29441b84720f689738ea47cc42ff2ebb6bcd49dd6aa29e5af9ae0fd58c6fc00"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77972-bf31840f/raw/teacher-r2.jsonl.zst",
+      "sha256": "0c779316a79c8cfccc591708a424a3c59ea7684616543f7f7a3ffef1a0e78b24",
+      "decoded_sha256": "608afffcb9c050f9ab76b092ee84e6465d9d0d39d77ae92757f81d8158a8347b"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77973-bf31840f/raw/result.json.zst",
+      "sha256": "86c16ff97de57f726070ae7f17573a9e3b171cc212ed9e687b6e89d6bc4857a4",
+      "decoded_sha256": "e10eac1b8eab401265a28c6abfedff4c7c3426b0b6a74dede48a97882e87ebbb"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77973-bf31840f/raw/eval-only.jsonl.zst",
+      "sha256": "60022550a70489ac4cfcb9c4528687e4a4922fd62939650b11a133f551086ed0",
+      "decoded_sha256": "5ff41dd66bbafc8b54183a6f40845616cf245b32e7b5e40c1b40c6688c03394c"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77973-bf31840f/raw/teacher-r1.jsonl.zst",
+      "sha256": "77529c830feedbe5b0fcd45e10903ddd26974cc1d1ba53df56b39d89f2c8a6e3",
+      "decoded_sha256": "443e15f8514cc23909c98f555cca6f989d0ee15d40666a68c02443a6e34085f0"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77973-bf31840f/raw/teacher-r2.jsonl.zst",
+      "sha256": "f3f2150caa26e67bc9ba1884794cb5da36f12dbb074b8c2145a82dcf20ca6950",
+      "decoded_sha256": "020e673827c5c5a0816a669ebad7fe20f0a3ac3a45fd6706e636ba7c055e88c5"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77974-bf31840f/raw/result.json",
+      "sha256": "ceab72a03cede52cf0727e24e84b5c3155c43a22df6fde3fd01a23bd85844dff",
+      "decoded_sha256": "ceab72a03cede52cf0727e24e84b5c3155c43a22df6fde3fd01a23bd85844dff"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77974-bf31840f/raw/eval-only.jsonl.zst",
+      "sha256": "91b2293205eaf955311b128be525e74573746825fbb7fdbb038e9d6efcac203a",
+      "decoded_sha256": "26600b7cec7fcea704f613766d99ffb5eaffc0422560d1d7a23d1ce39e0d8dcd"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77974-bf31840f/raw/teacher-r1.jsonl.zst",
+      "sha256": "6f8c98dd239494f2fda40293e5f1e158028355164eaa9efd725895e9fb5015ea",
+      "decoded_sha256": "9df9f5700e659b2282a2b82dab4a9794dc4da848b42a71b641e945f2a11ed946"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77974-bf31840f/raw/teacher-r2.jsonl.zst",
+      "sha256": "837bdaeb4d951747a0320d431118afc9eb693e2330dfc3c3fc2e9d770c1a9ac5",
+      "decoded_sha256": "1aaac3d5d0284a9837d6a02150ee6a4bb193f24259fbb245538bc813d3545eca"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77975-bf31840f/raw/result.json.zst",
+      "sha256": "690b7a4a4be75caec4cbf5d899acadb370265cec057e530f61c5d97f28320ae4",
+      "decoded_sha256": "284aee69bd8a6eaa87ad1dbe5036826d2e1816b57b7005786d09743a9a1f754e"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77975-bf31840f/raw/eval-only.jsonl.zst",
+      "sha256": "0af87c2b5aaff87eb6ec3e0bd9f5f316e300c0b86d7d902c53d43fbf6121e449",
+      "decoded_sha256": "1a7ca4afc23ad41fb5d1be209f10664d4dcb8c370bee62a29a4454ab685cea16"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77975-bf31840f/raw/teacher-r1.jsonl.zst",
+      "sha256": "4bf7530cdb3d31d1fb61806a630e5a5a5941e26a99455a4aa9642c2cc52c41dc",
+      "decoded_sha256": "4e0490a4821c77319a04d9f756e57186eecf47c786b99f544b7248a54e0e8bb1"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77975-bf31840f/raw/teacher-r2.jsonl.zst",
+      "sha256": "075e1b588e0331ddf0a278f302b611dde19fb9a7a28a5613e553116e7aaaed23",
+      "decoded_sha256": "6cc1bf8d34fc334b5518ceb7853ae55eed2572bf0e80522d5f0617aed4f82825"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77976-bf31840f/raw/result.json.zst",
+      "sha256": "151252890d21b91e5baf3e188ee121462dea57a475d7f498e5d20d5247d0d0b6",
+      "decoded_sha256": "452f2c1ed633c923c7d6836d9eed1489361e4a4ff488706fcdf356b6a5e2041f"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77976-bf31840f/raw/eval-only.jsonl.zst",
+      "sha256": "fd9d7d4219a62c3f712159c33c4b68a8528678bcab92df7bf2a4450a1372ee98",
+      "decoded_sha256": "507c8575e96529c0b1f42fc52d76a6f244828e203463a10558daa1ede14e4cc8"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77976-bf31840f/raw/teacher-r1.jsonl.zst",
+      "sha256": "8abe3cd7dc5b8de0fdd991be030c60d3a74730cdc1cf3b7f9f045e10fe3d43f9",
+      "decoded_sha256": "3032a2a2f28217569bac4168ba51a106da34b639db2ccd330d9c9d158a83afd7"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77976-bf31840f/raw/teacher-r2.jsonl.zst",
+      "sha256": "f6c6a2c9587f24a95e6618c8b0a721aaceef877bce29d6a67cb5e3054a615500",
+      "decoded_sha256": "4764e1e14200dd77d2f33e43485c7ba620673ed3b1d612150ca62b3a50682ddb"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77977-bf31840f/raw/result.json.zst",
+      "sha256": "01bf6f8b7a7a8b2887137b5545c1d0419fe0d623c097c75b60e338423c843b7e",
+      "decoded_sha256": "f8d20b8888fe311532d6caeb9874b2ef4ded26e1fc1d765a5893fe2d75ef1688"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77977-bf31840f/raw/eval-only.jsonl.zst",
+      "sha256": "b05477fc1ce1c2d7d2fcd3ef2f23ef458299fb698fce76aeae07d2116ad1b759",
+      "decoded_sha256": "a5bb9b7fbd871568fdeaeb4542e2a1b405615d201e85e203299cd3e63c0cf94f"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77977-bf31840f/raw/teacher-r1.jsonl.zst",
+      "sha256": "d573cdc95947fc0fbeaf954cd0c7ad60d4ff84dee300ad97ec515ed4985f883a",
+      "decoded_sha256": "26fc673d339324d89de36ac5e0d1f2e1854c3a7a69a5bda61400e043be40f712"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77977-bf31840f/raw/teacher-r2.jsonl.zst",
+      "sha256": "d26f4e9061283f475fe94976f2ac4e37b1337238a69b8b2e60d63532a4931690",
+      "decoded_sha256": "c2acc32df5aaffbcf04a947cb7bc0d28d4f2144ef054e0ae378f9667c5cfbbec"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77980-49d11b8e/raw/result.json",
+      "sha256": "33d8816eb34bfe96b20fc61894a421280e42a60a7d6a91ec87aaaf10d85485ec",
+      "decoded_sha256": "33d8816eb34bfe96b20fc61894a421280e42a60a7d6a91ec87aaaf10d85485ec"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77980-49d11b8e/raw/eval-only.jsonl.zst",
+      "sha256": "a09c0b519b330797f777227bfb98861c145c8539248adfed8d0c974d60759260",
+      "decoded_sha256": "00905b4d56a84f74f09a73c8093e1c67e292875e5751d9f9077b1833761babe3"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77980-49d11b8e/raw/teacher-r1.jsonl.zst",
+      "sha256": "6dc0f7cfea3437079ceb20392bd9cb919fd586f383679058a44336738c69554d",
+      "decoded_sha256": "9f7e535a9fa8b5c1bf7bd96a364d937c922c281d0cd5173e1aa276d8811aaf7e"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77980-49d11b8e/raw/teacher-r2.jsonl.zst",
+      "sha256": "ce150d329abb357f990ca2088d02ab471344f294cee4c10d7039428e8777f430",
+      "decoded_sha256": "83fa3279aec336a853f444a6665c3bf096756fa716db01fc8879b5053ec27f13"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77983-49d11b8e/raw/result.json.zst",
+      "sha256": "ed5d59aff2be2a8c6c2fc92e80d23b9c4d0836dba3cee4827718637ec59c073a",
+      "decoded_sha256": "b662423a59f88900bd7adcabff49e18aa8575980296d84cf1480c77ab1a0325f"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77983-49d11b8e/raw/eval-only.jsonl.zst",
+      "sha256": "5e00c97e8f3ca4572ba2389624ad32fd986334f71764ac7fee97fbb23c80960c",
+      "decoded_sha256": "514a7e57215f85e570334f6ec4d4b2c865d2195cf1b0a51c9fdcf50baa905c10"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77983-49d11b8e/raw/teacher-r1.jsonl.zst",
+      "sha256": "c996dfb46c89bfbd039de4272b50daa565442922321dc082fd68b11a940b7f1b",
+      "decoded_sha256": "5b7b55742eb257b67ef4b6ff4f08c639160ebcb3d550d70dd2320addb9d14a56"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77983-49d11b8e/raw/teacher-r2.jsonl.zst",
+      "sha256": "4008ded4c1ca01c8b18a4f5eeec8ac5c54557126a0de9c05a7dbd487ded93cb8",
+      "decoded_sha256": "341d7e1b7ca18f7cc1cf0b0e09bb939f54ad3b92cc8fadbcb62434ec0c725d4b"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77984-49d11b8e/raw/result.json",
+      "sha256": "f7903063a4dc1db43d3426265a38aa034b7a48011322dbac11dbc423a3609012",
+      "decoded_sha256": "f7903063a4dc1db43d3426265a38aa034b7a48011322dbac11dbc423a3609012"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77984-49d11b8e/raw/eval-only.jsonl.zst",
+      "sha256": "2731618b4de3e3562e5abfd16e949aa392d76118a1593e6ae93e6e37872a3d8f",
+      "decoded_sha256": "3443f4a562a1e0bffdaa01e81a7db50a0ccd37b53e07a86cfd04f4139dda8304"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77984-49d11b8e/raw/teacher-r1.jsonl.zst",
+      "sha256": "e5bd254c5d92c459004c59a1b69e8189ad6b0327ae92cc4c668c9feb7181acae",
+      "decoded_sha256": "42be5d28bfc534e542ed7464c8e81ddf95e7edb88ad3c9d9fc52d8a105769ffd"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77984-49d11b8e/raw/teacher-r2.jsonl.zst",
+      "sha256": "f0ac4773c5b5554f7dad816a5e70007654e905fb7ed2113f4bc19f7101072b0f",
+      "decoded_sha256": "713be394e45917d2c27ea2ccd7efe60b7d97c3f561dfbcedf049e9bd40746c69"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77985-49d11b8e/raw/result.json.zst",
+      "sha256": "667efe659c4eb5d51183db1707fd4b4517619162798140a9a35a435bf05e2f4a",
+      "decoded_sha256": "6a40d94c8bb3ea19a8fa6a1eb0618d792454737cdcf3c320c1d568157f0ff54d"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77985-49d11b8e/raw/eval-only.jsonl.zst",
+      "sha256": "5a5857a7437f4d42807f4541cad40875ec0f003994779ab3bbfd402074802c0c",
+      "decoded_sha256": "c24fbc3404196dfabde99681317600c4b0903f11bf6bf2a89a19e5bc7d82b537"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77985-49d11b8e/raw/teacher-r1.jsonl.zst",
+      "sha256": "5968f26098a61063cc0955b39c975219252bf109b503c757c8345f9c0b995ad4",
+      "decoded_sha256": "524b04e83c8462fe95f2a22001a72d3b2e1e20339c1643dd2dbd9adaeef9a76d"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77985-49d11b8e/raw/teacher-r2.jsonl.zst",
+      "sha256": "052bc98008a08ca7dcde39946984efdd21d82662cf60d73e3a4405c12524c23e",
+      "decoded_sha256": "ce68e13baa2d11e05640c511689e0a13a7f1a4af60c88aee07144d5907d1f5f0"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77986-49d11b8e/raw/result.json.zst",
+      "sha256": "0f723a436d0f3774ec8e9c31b6ce1baaa75df9cd1dc2e8dbab9c7d7bb0ae5e8e",
+      "decoded_sha256": "61934d7a58543cc61f6fa7020bd205eb9f2bb80adb5caaad1ea8e525e7ea70cd"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77986-49d11b8e/raw/eval-only.jsonl.zst",
+      "sha256": "2f69ecbc3bd676b258fa651b32cb11e8851633871381d6a39d29697412941112",
+      "decoded_sha256": "9037127bf0d23d64c8fc99a1d175d5bd8b0c35766dec76ccef1885767d6ef033"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77986-49d11b8e/raw/teacher-r1.jsonl.zst",
+      "sha256": "1a912d2dc617ec4ddb260cbe41d43d14dba5f2761cd690e564882d56cbda0c77",
+      "decoded_sha256": "c96b1b7ec6253e0990a6bda332bb57111e903d555fde53ccc0c96a5b292b343b"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77986-49d11b8e/raw/teacher-r2.jsonl.zst",
+      "sha256": "2320328bd96830eebeb3a2ec0284c992f54cfc5ef1291f42e4a3ec57343bedd6",
+      "decoded_sha256": "b7fe62a9c6ee0f549098126decee2490af1e6aca14d3cec086888d9b82d3355d"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77987-49d11b8e/raw/result.json.zst",
+      "sha256": "9db8a44883fb7682ffb87921559a1b58c4b8d935e285dcf02bad38757c8644e8",
+      "decoded_sha256": "4f2bd712bea643cbe5d7cd07f0fdc53546f298743d00712f1d2fb59c4df17238"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77987-49d11b8e/raw/eval-only.jsonl.zst",
+      "sha256": "b6062d839126a7d64dc44440f5252104d177a01ad8e4953c5d1f740566f5c0f5",
+      "decoded_sha256": "1526bc7a78968d1863ad46509e42649dfe71efc89297f2b130d5a5be0ffdb890"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77987-49d11b8e/raw/teacher-r1.jsonl.zst",
+      "sha256": "1518f4fd8d7db418580533449c0830bebe4ade952f55e79f33caf620591befff",
+      "decoded_sha256": "01c09716fc975cd95a4aed4992472d4c01ed44a0a37d67ce1e43a937f5d02ea8"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77987-49d11b8e/raw/teacher-r2.jsonl.zst",
+      "sha256": "b8949441d2f821421d2e149132d060440c22bbcfe87b2fbd01f60ca22b22d744",
+      "decoded_sha256": "40823fed1f9a28b4d0a731e06f4f4e8e17c1980dc5d81d0e48a1d14046c0941c"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-79315-727de2af/raw/result.json",
+      "sha256": "8be7895a63b4e34c7bdb00bc21af5d03a8ee1aca1b772ac29c23eca498144737",
+      "decoded_sha256": "8be7895a63b4e34c7bdb00bc21af5d03a8ee1aca1b772ac29c23eca498144737"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-79315-727de2af/raw/eval-only.jsonl.zst",
+      "sha256": "59a156e98a6311d8ff9eb3c0415c51c025983264e1f3680105c59713a7bba9d0",
+      "decoded_sha256": "5ad46c414c911b51f9970a78534bef916b840ef769480b7598cc85c52d15e5fa"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-79315-727de2af/raw/teacher-r1.jsonl.zst",
+      "sha256": "f8a8f83cb287f33390025d3442163fa88d7d25a1733cadd4f1a77b0e13069690",
+      "decoded_sha256": "b572dfacab9533ed79166e0c0356bb0cb5a70d32190adba6e1b92a0e00479210"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-79315-727de2af/raw/teacher-r2.jsonl.zst",
+      "sha256": "6bedf15af93c240e2dbee6bcc516bffb72a42bd40e43cb9e9e736a26ca5e85be",
+      "decoded_sha256": "5fb9751b53607d3d5d137e366ad59ad17ca295e1f30cabc02554323fb79804d5"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77981-727de2af/raw/result.json",
+      "sha256": "0cf0bb8ad5832c51e1d2448858e796d356f8144d70ffb9dc905bd8c51145434b",
+      "decoded_sha256": "0cf0bb8ad5832c51e1d2448858e796d356f8144d70ffb9dc905bd8c51145434b"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77981-727de2af/raw/eval-only.jsonl.zst",
+      "sha256": "eccfb644f41ae731d6e5abe1dfcbe015a08c38d4ae2a3232bff79d3c298e0c9b",
+      "decoded_sha256": "2c2da9c7c6381c3cb26e260c5d01e4e531c5561bca5d6f08fcd19e84b60edd23"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77981-727de2af/raw/teacher-r1.jsonl.zst",
+      "sha256": "6e3c4d0286780abba4386e47627e1c5b93d0cbcfd1c95bb6cd2e858b8cb78b27",
+      "decoded_sha256": "a602bd73c58cc4568111aa225e7e5e9a3e2380c378c95d574a5afeddaa019a8b"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77981-727de2af/raw/teacher-r2.jsonl.zst",
+      "sha256": "6e1f4e2bdbfd655f8364db34d603796ddf4609cf27c387504900ff41c6901e90",
+      "decoded_sha256": "4e999aaafeaaa8f07ab11a3564b2ffec054aa9b782b5b05df5230e787ea47dc9"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77981-fd724191/raw/result.json",
+      "sha256": "5c5a9a41160beca194451399b9d0ee78dbf2587114792787170a17c0c4bb9d77",
+      "decoded_sha256": "5c5a9a41160beca194451399b9d0ee78dbf2587114792787170a17c0c4bb9d77"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77981-fd724191/raw/eval-only.jsonl.zst",
+      "sha256": "abc8d926a85ddfbc32478470bb2b1e17180f20ddf8d63abf3591e554c2f5d7e7",
+      "decoded_sha256": "7ff7d3e4e049978df6ded4df7cf402a260d964b944533fe90026fa792e74dc76"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77981-fd724191/raw/teacher-r1.jsonl.zst",
+      "sha256": "98884cbff3f8277bcf04ecc0353d39e4c6435e80fe685ac354ae1d594758c743",
+      "decoded_sha256": "0ce74b8b7f78f48479da25008af22227d7dfd95b67aafde3b91acc9ff3e123d8"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77981-fd724191/raw/teacher-r2.jsonl.zst",
+      "sha256": "c7f9b160dcd6d11abddd1bbe4e67be8b05824fcdc3557811361397d2a80e9e30",
+      "decoded_sha256": "480af8691cc322295b51eb7c2f2797866abb13e0a1e21bd7c1bded1f699ccd23"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77982-fd724191/raw/result.json",
+      "sha256": "737e328327c404f47dce8746ed2d7ef03dcbcfc74c452a70bf8d54bdbd44e1e0",
+      "decoded_sha256": "737e328327c404f47dce8746ed2d7ef03dcbcfc74c452a70bf8d54bdbd44e1e0"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77982-fd724191/raw/eval-only.jsonl.zst",
+      "sha256": "ead54c6d09331234f3ad96b66291f50d7e9b6c0febbd79a7decefe78e1ad3cef",
+      "decoded_sha256": "4a275dca743e56162a64656731a1b77d402cc0850443dc079a33cc62e00dd92b"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77982-fd724191/raw/teacher-r1.jsonl.zst",
+      "sha256": "7db4f47a2c8bec5879cd9dbea8f5c6bf8aba5216645fb188f0b9ba6cfb2b0f93",
+      "decoded_sha256": "89dd702cdd0fc1b188e2a0435a639a5e24c9b376b2394ac64cde3a376dc5eafd"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77982-fd724191/raw/teacher-r2.jsonl.zst",
+      "sha256": "2541397201cec89728d0d369f2bd41788a7dadd3f743f16cdba4d0b5f2acd2f6",
+      "decoded_sha256": "a629d5c9fb158c3b3fea9ee2b1ca6681ea507f0be9d6ef8d65ae99f531822e46"
+    }
+  ],
+  "table": [
+    {
+      "axis": "forward",
+      "width_s": 0.04,
+      "n": 8,
+      "median": 0.010633965449904257
+    },
+    {
+      "axis": "forward",
+      "width_s": 0.046,
+      "n": 4,
+      "median": 0.010530942774334534
+    },
+    {
+      "axis": "forward",
+      "width_s": 0.062,
+      "n": 2,
+      "median": 0.012075614207941614
+    },
+    {
+      "axis": "forward",
+      "width_s": 0.065,
+      "n": 2,
+      "median": 0.012035102806537377
+    },
+    {
+      "axis": "forward",
+      "width_s": 0.078,
+      "n": 2,
+      "median": 0.01299092489925929
+    },
+    {
+      "axis": "forward",
+      "width_s": 0.081,
+      "n": 2,
+      "median": 0.013250602611049444
+    },
+    {
+      "axis": "forward",
+      "width_s": 0.084,
+      "n": 2,
+      "median": 0.013050962732643463
+    },
+    {
+      "axis": "forward",
+      "width_s": 0.1,
+      "n": 106,
+      "median": 0.013112969675768846
+    }
+  ],
+  "identifiability": {
+    "forward": "only40ms+ samples during already-moving carry; breakaway minimum not identified",
+    "lateral": "no samples",
+    "yaw": "no samples",
+    "runtime_use": false
+  },
+  "pairs": {
+    "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/crate18/held-inventory.json",
+    "sha256": "490e0f0a9dae01525534a43985de20bff1bdf4c57170911d7b4f1857283dc818",
+    "n": 128
+  }
+}

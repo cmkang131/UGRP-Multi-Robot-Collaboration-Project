@@ -175,6 +175,9 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
 
     def _resume_alignment(self, errors):
         if self.crate18 != 'off' and self.settle18_states is not None:
+            # The legacy four-sign guard counts selections across intervening
+            # axes. Only PulseSettler may judge actual issued-pulse reversals.
+            self.align_sign = [0]*3; self.align_flips = [0]*3
             self.align_active = [not s['settled'] for s in self.settle18_states]
             if not any(self.align_active):
                 # Quantum acceptance never overrides the exact descent/lift check.
