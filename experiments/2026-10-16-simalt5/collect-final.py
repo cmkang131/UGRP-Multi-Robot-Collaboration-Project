@@ -95,8 +95,8 @@ write('collected-summary.json',{'id':'2026-10-16-simalt5','decision':'PARITY_FAI
         {'reason':'direct C312 MJWarp API lacks mjINT_DISCRETE','record':str(R/'direct312-import.json')},
         {'reason':'initial filtered-reference source materialization and network reference clone failures',
          'logs':['source-materialize.log','clone-510.log']},
-        {'reason':'first collector started before native bit-parity artifact existed; no final manifest produced',
-         'log':str(R/'collect-final-incomplete.log')}],
+        {'reason':'bit-parity artifact was initially written one directory above the run root; two collectors refused missing dependency and produced no final manifest',
+         'logs':[str(R/'collect-final-incomplete.log'),str(R/'collect-final-incomplete-2.log')]}],
     'rejection_table':str(R/'rejection_table.json'),'raw_root':str(R),
     'originals_backup':'L4 persistent disk only; no external full backup'})
 # All outputs above are now stable. The collector's own log and manifests are
