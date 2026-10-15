@@ -18,7 +18,7 @@ v6와 동일한 두 변경(schema v6, pickup_site 토큰)을 반영했다. relea
 
 추가 렌더는 기존 SnapshotRenderBroker의 복사 렌더 방식을 따라 별도 mjModel/mjData에서 한다.
 기존 broker의 기본 mount 재설정은 적용하지 않고 bound v3 카메라 배열을 그대로 복사한다.
-렌더마다 전체 live mjData 배열·model 카메라 배열·mjSTATE_INTEGRATION 및 Python/NumPy/world/controller RNG의
+렌더마다 정의된 기구학 출력(카메라 포함)·model 카메라 배열·mjSTATE_INTEGRATION 및 Python/NumPy/world/controller RNG의
 바이트 해시가 동일한지 검사한다. 복구하거나 상태를 제어기에 전달하지 않는다.
 기록은 SIM 단계·명령·제어 관측 주기를 바꾸지 않지만 렌더/I/O로 wall 비용은 증가한다.
 새 탐색/수용 상수는 없다. 기록 주기 허용 편차 0.002초는 ACT12 그대로다.
@@ -52,3 +52,10 @@ Mac 물리/렌더 0. 원본은 gcp1 영속 디스크, Mac에는 요약과 해시
 직접 render_jpeg가 live 카메라 캐시를 갱신해 FK 진단값 48곳이 달랐다. 결과 JSON의
 정확한 동일성은 실패로 보존했다. 분포를 먼저 기록한 뒤 복사 렌더로 수정했다.
 원본: gcp1:/home/ugrp/ugrp-sim/ops-reviews/rel22adapt-round1-rejections.json.
+
+2라운드(`7fcbe7c9`): off 2회 성공, on 2회 HOST_ERROR. 전체 mjData 배열을 무차별
+해시한 감사가 비활성 arena efm_* 3필드를 읽어 오탐했다. GCP에서 물리 단계 0·렌더 전
+연속 두 읽기만으로도 동일 필드가 달라짐을 확인했다. 공식 mjSTATE_INTEGRATION과
+정의된 기구학/카메라 출력으로 감사 범위를 명시했다(허용 오차 추가 없음).
+MuJoCo 문서상 efm_*는 implicit effective metric이 활성일 때 계산되는 arena 자료다.
+원본: gcp1:/home/ugrp/ugrp-sim/ops-reviews/rel22adapt-round2-guard-diagnostic.json.

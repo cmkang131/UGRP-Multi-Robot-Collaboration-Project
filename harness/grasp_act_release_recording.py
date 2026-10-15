@@ -21,6 +21,13 @@ from harness.grasp_act_solo_recording import SoloRecorder
 
 MODE = 'act12_observer_v1'
 MODES = ('off', MODE)
+# Defined kinematic outputs used by perception/evaluation. Unlike the official
+# integration state, inactive arena workspaces (e.g. efm_* in MuJoCo 3.12) have
+# uninitialised storage. Round2's no-op repeated reads changed those three
+# fields without physics/render. Never hash arbitrary dir(mjData) memory.
+# https://mujoco.readthedocs.io/en/stable/APIreference/APItypes.html#mjdata
+DERIVED = ('xpos', 'xquat', 'xmat', 'xipos', 'ximat', 'geom_xpos', 'geom_xmat',
+           'site_xpos', 'site_xmat', 'cam_xpos', 'cam_xmat')
 
 
 class IsolatedCamera:
@@ -110,10 +117,9 @@ class RenderAudit:
             if isinstance(rng, np.random.Generator):
                 rngs.append(rng.bit_generator.state)
         h = hashlib.sha256(values.tobytes()+pickle.dumps(rngs))
-        # Round1 found camera FK diagnostics differ while integration state is
-        # identical. Audit every live data array, including derived cam_xpos /
-        # cam_xmat, plus model camera arrays; do not hide this by tolerances.
-        for obj, names in ((world.data, dir(world.data)), (world.model, [n for n in dir(world.model) if n.startswith('cam_')])):
+        # Round1: camera FK diagnostics changed with identical integration
+        # state. Include defined kinematic outputs, with exact equality.
+        for obj, names in ((world.data, DERIVED), (world.model, [n for n in dir(world.model) if n.startswith('cam_')])):
             for name in names:
                 value = getattr(obj, name)
                 if isinstance(value, np.ndarray):
@@ -131,7 +137,7 @@ class RenderAudit:
 
     def record(self):
         return dict(calls=self.calls, integration_or_rng_changes=self.changes,
-                    comparison='all live mjData arrays + integration state + model cameras + Python/NumPy/world/controller RNG, exact SHA256')
+                    comparison='integration state + defined kinematic outputs + model cameras + Python/NumPy/world/controller RNG, exact SHA256')
 
 
 class ReleaseRecorder:

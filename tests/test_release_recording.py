@@ -53,6 +53,27 @@ def test_render_audit_rejects_mutation_without_restoring_it(monkeypatch):
     assert world.value == 1 and audit.calls == 0 and audit.changes == 1
 
 
+def test_guard_covers_camera_cache_and_avoids_uninitialised_arena(monkeypatch):
+    import sys
+    from harness.grasp_act_release_recording import DERIVED
+    fake = SimpleNamespace(mjtState=SimpleNamespace(mjSTATE_INTEGRATION=1),
+        mj_stateSize=lambda model,spec:1,
+        mj_getState=lambda model,data,values,spec:values.__setitem__(0,data.time))
+    monkeypatch.setitem(sys.modules,'mujoco',fake)
+    class Data:
+        time = 0.
+        @property
+        def efm_c(self):raise AssertionError('inactive arena must never be read')
+    data = Data()
+    for name in DERIVED:setattr(data,name,np.zeros((1,3)))
+    world = SimpleNamespace(model=SimpleNamespace(cam_pos=np.zeros((1,3))),data=data,controllers={})
+    guard = RenderAudit()
+    a = guard.state(world)
+    assert guard.state(world)==a
+    data.cam_xpos[0,0]=1.
+    assert guard.state(world)!=a
+
+
 def test_native_clock_rejects_dropped_frame(tmp_path):
     from harness.grasp_act_solo_recording import SoloRecorder
     initial = dict(t=0., wheels=[0.]*4, duration_s=[0.]*4,
@@ -65,6 +86,49 @@ def test_native_clock_rejects_dropped_frame(tmp_path):
     with pytest.raises(ValueError, match='period mismatch'):
         writer.observe(.2, b'jpeg', frame, skill='release', phase='open', previous=initial)
     writer.close()
+
+
+def test_isolated_camera_forwards_only_copy_and_keeps_bound_mount(monkeypatch):
+    """Stub MuJoCo/GL entirely: verify ownership, native encoding and optics."""
+    import copy
+    import sys
+    import threading
+    from harness.grasp_act_release_recording import IsolatedCamera
+    class Model:
+        cam_pos = np.array([[.052982, 0., .028152]])
+        cam_quat = np.array([[.4545, .5417, -.5417, -.4545]])
+        cam_fovy = np.array([42.1489])
+        def __copy__(self):
+            result = Model()
+            for n in ('cam_pos','cam_quat','cam_fovy'):setattr(result,n,getattr(self,n).copy())
+            return result
+    live = SimpleNamespace(qpos=np.array([1.]), cam_xpos=np.array([[2.,3.,4.]]))
+    forwarded = []
+    def copy_data(target, model, source):
+        target.qpos = source.qpos.copy(); target.cam_xpos = source.cam_xpos.copy()
+    def forward(model, data):
+        assert data is not live
+        data.cam_xpos[:] = 100.; forwarded.append(data)
+    class Renderer:
+        def __init__(self, model, height, width):self.size = (height,width)
+        def update_scene(self, data, **kw):assert data is forwarded[-1]
+        def render(self):return np.zeros((*self.size,3), dtype=np.uint8)
+        def close(self):pass
+    fake = SimpleNamespace(MjData=lambda model:SimpleNamespace(),Renderer=Renderer,
+                           mj_copyData=copy_data,mj_forward=forward)
+    monkeypatch.setitem(sys.modules,'mujoco',fake)
+    robot = SimpleNamespace(robot_cam_cid=0,_n=lambda camera:'r1__'+camera,
+                            _robot_sensor_scene_option=None,_robot_fisheye_map=None)
+    world = SimpleNamespace(model=Model(),data=live,height=480,width=640,
+                            physics_lock=threading.Lock(),robot=lambda rid:robot)
+    before = copy.deepcopy(live)
+    camera = IsolatedCamera(world)
+    jpeg = camera.jpeg(world,'r1'); camera.close()
+    assert np.array_equal(live.qpos,before.qpos) and np.array_equal(live.cam_xpos,before.cam_xpos)
+    assert camera.model is not world.model and camera.data is not live
+    assert camera.mounts['r1']['position_m']==world.model.cam_pos[0].tolist()
+    assert camera.mounts['r1']['quat_wxyz']==world.model.cam_quat[0].tolist()
+    with Image.open(io.BytesIO(jpeg)) as im:assert im.size==(640,480) and im.format=='JPEG'
 
 
 @pytest.mark.parametrize('change', [dict(review_top='on'), dict(render_dr='on_v1'),
