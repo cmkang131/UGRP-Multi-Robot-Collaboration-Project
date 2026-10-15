@@ -441,8 +441,13 @@ class SelfMapIntegration:
                 wall_observation = observe(image, self.servo, self.registration.sensor, **kwargs)
             else:
                 wall_observation = dict(camera=[0., 0.], segments=[], floor_xy=[], features=[])
+            # Retained line frames need one correction-free reference. A SLAM
+            # correction changes only the current pose, leaving older buffered
+            # poses in the old revision. Own-command odometry has no such jumps.
+            registration_reference = (np.asarray(self.odom.pose) if self.options.reloc10_registration_v1
+                                      else compose(self.slam.pose, self.delta))
             static_pose = self.registration.step(wall_observation, self.delta, self.servo,
-                                                 t, compose(self.slam.pose, self.delta))
+                                                 t, registration_reference)
             prior = compose(self.slam.pose, self.delta)
         predicted_covariance = _motion_covariance(self.slam.pose, self.delta, self.slam.covariance, self.Q)
         if self.options.revision_gate != 'off':

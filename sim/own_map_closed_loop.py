@@ -15,7 +15,8 @@ class PhysicsBackend(Base):
         import hashlib
         original = host.make_scene
         def textured(*args, **kwargs):
-            scene = original(*args, **kwargs)
+            base = {**args[0], 'options': {**args[0]['options'], 'render_profile':'floor_light_v1'}}
+            scene = original(base, *args[1:], **kwargs)
             inner = scene.transform
             def transform(xml):
                 before = inner(xml)

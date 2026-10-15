@@ -285,7 +285,8 @@ class StaticRegistration:
                 xy_covariance=np.linalg.eigvalsh(cov[:2, :2]).max() > .15**2,
                 yaw_covariance=cov[2, 2] > math.radians(5)**2,
                 geometry=not supported,
-                ambiguity=self.correction_safety != 'off' and not geometry.get('ambiguity', {}).get('unique', False))
+                ambiguity_pending_upstream=self.correction_safety != 'off' and not geometry.get('ambiguity', {}).get('evaluated', False),
+                geometric_ambiguity=geometry.get('ambiguity', {}).get('evaluated', False) and not geometry['ambiguity']['unique'])
             rejection = [k for k, failed in checks.items() if failed]
         self.last = dict(updated=row['updated'], resolved=bool(reliable),
             confirmations=len(self.confirmations), registered=self.map_from_own is not None,
@@ -294,6 +295,7 @@ class StaticRegistration:
         if self.reloc10_registration:
             from collections import Counter
             self.last['reloc10_diagnostics'] = dict(rejection_reasons=rejection,
+                evidence_reference='issued_command_odometry',
                 feature_kinds=dict(Counter(f['kind'] for f in observation['features'])),
                 wall_segments=len(observation['segments']), raw_columns=observation.get('raw_columns'),
                 fitted_columns=observation.get('fitted_columns'),

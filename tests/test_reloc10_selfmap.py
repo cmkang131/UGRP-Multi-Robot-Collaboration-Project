@@ -1,4 +1,5 @@
 import math
+import pytest
 import numpy as np
 from sim.settle_pulse import PulseSettler
 from harness.reloc10_settle import settle_turn, turn_quantum
@@ -61,7 +62,9 @@ def test_texture_adapter_is_instance_local_and_restores_factory(monkeypatch,tmp_
     from sim import own_map_closed_loop as module, active_wall_map as host, natural_scene_texture as texture
     calls=[]
     scene=SimpleNamespace(transform=lambda xml: xml,manifest={})
-    original=lambda *a,**kw: scene
+    def original(bundle,seed):
+        assert bundle['options']['render_profile']=='floor_light_v1'
+        return scene
     monkeypatch.setattr(host,'make_scene',original)
     monkeypatch.setattr(texture,'manifest',lambda: {})
     monkeypatch.setattr(texture,'apply',lambda xml: (calls.append('apply') or xml))
@@ -91,3 +94,29 @@ def test_executor_settle_receipt_reaches_dwell_and_records_reason(monkeypatch):
     assert c.active_stage=='dwell'
     assert c.events[-1]['reason']=='reloc10_settle'
     assert c.events[-1]['settle_reason']=='quantum_deadband'
+
+
+def test_registration_buffer_uses_one_command_frame_across_slam_corrections(monkeypatch):
+    from test_self_map_integration import fixture_mapper,receive
+    from harness import self_map_integration as sm, selfmap4_geometry as g
+    from harness.self_map_integration import Options
+    fixture,_=fixture_mapper(monkeypatch)
+    static,_=g.static_input()
+    opts=Options(self_map_integration=sm.OPTION,bootstrap='command_prior_v1',
+        recovery_profile=g.PROFILE,multiframe_registration='selfmap4_multiframe_registration_v1',
+        reloc10_registration_v1=True)
+    m=sm.SelfMapIntegration('r1',options=opts,static_map=static)
+    m.zones=fixture.zones
+    m.command(dict(t=0.,kind='initial_servo_command',pulses=fixture.servo))
+    m.slam.pose=np.array([3.,-2.,.4])  # synthetic independent SLAM revision
+    observed=[]
+    monkeypatch.setattr(g,'observe',lambda *a,**kw:dict(camera=[0.,0.],segments=[],floor_xy=[],features=[]))
+    def captured(*args):
+        observed.append(np.array(args[-1]))
+        raise RuntimeError('captured registration boundary')
+    monkeypatch.setattr(m.registration,'step',captured)
+    monkeypatch.setattr(m.flow,'step',lambda rgb,servo,t,settled,delta,Q:(delta,Q,{}))
+    with pytest.raises(RuntimeError,match='captured registration boundary'):
+        receive(m,1)
+    np.testing.assert_allclose(observed[0],m.odom.pose)
+    assert not np.allclose(observed[0],[3.,-2.,.4])
