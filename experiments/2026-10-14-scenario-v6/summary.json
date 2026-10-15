@@ -1,0 +1,92 @@
+{
+  "schema": "ugrp.scenario_v6.offline_summary.v1",
+  "status": "passed",
+  "source_base_sha": "580e9100fad670fe85460872dc010cec541024fa",
+  "source_branch": "claude/scenario-v6-boxes",
+  "verification_scope": "offline configs/routing/order sheet/prompts/candidate input only",
+  "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_zone_study_scenarios_v5.py tests/test_zone_study_scenarios_v6.py",
+  "tests": {
+    "passed": 78,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "duration_s": 8.142,
+    "timestamp": "2026-10-15T00:04:42.349934+09:00"
+  },
+  "scenarios": 8,
+  "cargo_before": 33,
+  "cargo_after": 33,
+  "replaced_can": 4,
+  "replaced_tile": 3,
+  "same_colour_same_destination_groups": {
+    "new": 1,
+    "existing": 4,
+    "total": 5
+  },
+  "previous_scenario_files_unchanged": true,
+  "physics_runs": 0,
+  "render_runs": 0,
+  "remote_server_connections": 0,
+  "model_calls": 0,
+  "raw": {
+    "path": "/Users/changmin/projects/ugrp/outputs/scenario-v6-boxes/pytest-20261015-final.xml",
+    "sha256": "a77e696735eceb72f31fce2e274969aaafeb01c7fec8945d3c6af6b7f2de4999"
+  },
+  "files_sha256": {
+    "configs/zone_study_scenarios_v5/s1_normal_mixed_v5.json": "919fd8642f8ca9c5dad3701b2dee670bd9a7457a3cd6efbc8331519225ab91ba",
+    "configs/zone_study_scenarios_v5/s2_unmapped_blockage_v5.json": "1c290dc8abdb261707490c988ec20439456b4fb467804a9c302b89fc82b8eb64",
+    "configs/zone_study_scenarios_v5/s3_late_rendezvous_v5.json": "251d61f682af52ebf240ad44faeb7e89e245390ec9a9ed32f2af176a270d7e60",
+    "configs/zone_study_scenarios_v5/s4_narrow_door_standoff_v5.json": "cd552f47c7a0e0d2b894c27b999a6608f4c0b0343e6846beddd6a76516138003",
+    "configs/zone_study_scenarios_v5/s5_moved_dropped_item_v5.json": "c6f111b5b7317af968ed5b3cb25abe144f4716dcab5a3974a5588750d0c9a447",
+    "configs/zone_study_scenarios_v5/s6_novel_relation_v5.json": "b57e41b9ac0985f63dc063df28cde769afac59c77f2bb738ad717eb1b7bf454a",
+    "configs/zone_study_scenarios_v5/s7_pair_with_solo_v5.json": "dd01842bfda589e544e656e488aacbaa75601ab5f1c109155309bd93807d3a9d",
+    "configs/zone_study_scenarios_v5/s8_mixed_tiers_v5.json": "906b8bc382c0fc4de7c3f974053e9c412f7ac17f7b1c719dd25d8ae1a24df8cf",
+    "configs/zone_study_scenarios_v6/s1_normal_mixed_v6.json": "60658759233af5b76d1556e376d4f058d759291200574aea150777165e764db1",
+    "configs/zone_study_scenarios_v6/s2_unmapped_blockage_v6.json": "4b90fcbfe271806eb96374be6011fa6ffd6b7592d018199f68780fb286362882",
+    "configs/zone_study_scenarios_v6/s3_late_rendezvous_v6.json": "94d65065ed819bee3ccb68050bef5d5cc560b416b5db8acf5ba8b3a7ec8154ef",
+    "configs/zone_study_scenarios_v6/s4_narrow_door_standoff_v6.json": "344f536e11d56969239cecb3ed44ab94a062abe1e4b71eea965899bcf4850404",
+    "configs/zone_study_scenarios_v6/s5_moved_dropped_item_v6.json": "cd4b4050d07cd3587a91e5e4456e43fbdaeff4af6cf75c7ec43d3496c3da32f5",
+    "configs/zone_study_scenarios_v6/s6_novel_relation_v6.json": "51080fd635fbc57dab266f885187d8db8ba8f466215926a1257c260732ea3aaf",
+    "configs/zone_study_scenarios_v6/s7_pair_with_solo_v6.json": "09ec8d239029fffe899f325f3dc98f619a0e8f0f625c3835a1b979f09808c45a",
+    "configs/zone_study_scenarios_v6/s8_mixed_tiers_v6.json": "cc06bf1bd37049c68e46cd3abd4fda06a5a1d94d64fbd8fbf191a669b62c36d1",
+    "experiments/2026-10-14-scenario-v6/replacements.json": "924841ce934512eebe6fd0a97e801682f99dc5d587603c5527a743cc9d5010f7",
+    "experiments/2026-10-14-scenario-v6/build_v6.py": "60d54e89bbb98d2bc253026cf7c4cc676271db8f3f621877819cdeebd3a8b8ab",
+    "harness/zone_study_inputs.py": "9a2688212b2cc5a521086f685f1560ccd807cc4d31943dbee47b9b0571d1027f",
+    "harness/zone_environment_registry.py": "022ad5bdf3b5143b9b2b2d5b7a47dda85ffb8f65f192cde21bfe4ba9c70064a5",
+    "sim/zone_scenario_scene.py": "9778c8ee6b4bd93f2c04ad53c192c8e9543759da5ebc7ad180c7d04676f3034b",
+    "tests/test_zone_study_scenarios_v5.py": "39b9b6bd3739fed99f106ca71936ba34a7a97671f7867347dcb295ef159de4ee",
+    "tests/test_zone_study_scenarios_v6.py": "3b2707fc41a9ba04e896c2d622413203646448f08f69cfca98754cd3304699f1"
+  },
+  "remaining": [
+    "physical approach/transport of v6 cargo not measured",
+    "solo teacher integration is in separate PR #502"
+  ],
+  "verification_runs": [
+    {
+      "revision": "initial offline check",
+      "passed": 78,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "duration_s": 8.191,
+      "timestamp": "2026-10-15T00:02:40.612691+09:00",
+      "raw": {
+        "path": "/Users/changmin/projects/ugrp/outputs/scenario-v6-boxes/pytest-20261015.xml",
+        "sha256": "05ca163d0904b86038290fd942c78ad24cd071fffe6c7aa77d624a7b09ac3903"
+      }
+    },
+    {
+      "revision": "final private label consistency fix",
+      "passed": 78,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "duration_s": 8.142,
+      "timestamp": "2026-10-15T00:04:42.349934+09:00",
+      "raw": {
+        "path": "/Users/changmin/projects/ugrp/outputs/scenario-v6-boxes/pytest-20261015-final.xml",
+        "sha256": "a77e696735eceb72f31fce2e274969aaafeb01c7fec8945d3c6af6b7f2de4999"
+      }
+    }
+  ]
+}

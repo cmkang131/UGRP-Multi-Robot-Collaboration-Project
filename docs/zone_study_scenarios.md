@@ -128,3 +128,24 @@ pickup bay/slot은 지도의 `regions.pickup`에서 패키지 A가 결정론적�
 `configs/zone_study_scenarios_v4/`는 v3 여덟 종에서 `scenario_id`(`_v4`), `map_id`, `eval.setup.map_file_sha256`만 바꾼 것이다. 지도는 최종 로봇 v3 지도로 바뀐다: `zone_wide_door_geometry_v3`(s1·s3·s5), `zone_wide_two_doors_final_v3`(s2·s6·s7·s8), `zone_wide_corridor_final_v3`(s4). 이 지도들은 이전 지도와 기하가 같고 id·`robot_model`·`version`·부모 해시만 다르다. 주문·배치·사건·예산·seed는 v3와 같으며, v2·v3 파일은 바꾸지 않는다. 생성은 `experiments/2026-10-05-scenarios-v4/build_v4.py`, 시험은 `tests/test_zone_study_scenarios_v4.py`다.
 
 **검증하지 않은 것:** 물리 실행, `harness/zone_final_env.py`의 `FINAL_MAPS`·시나리오 레지스트리에 지도 v3 연결(지금은 옛 지도만 등록), s7·s8의 연구 포함 여부(사전 등록 소유자 결정), 3대·크레이트 자기 카메라 실행기. 연구 시나리오 기준은 이제 v4다([E2E 격차 문서](../experiments/2026-10-05-scenario-e2e-gap/README.md) 5절).
+
+## 시나리오 v5: 3대 공동 운반 화물 제외 (2026-10-14)
+
+사용자 요청(2026-10-14): "3명이서 하는 짐은 뺴주라". 로봇은 3대 그대로이고, 3대가 함께 드는 화물(`tri_frame`)만 연구에서 뺀다. 아래 구체안은 조정자 결정이며 사용자 확인 전이다. 연구 시나리오 기준은 v4에서 v5로 바뀐다(위 v4 절의 "기준은 이제 v4"는 이 절 이전의 기록이다).
+
+`configs/zone_study_scenarios_v5/`는 v4 여덟 종에서 다음만 바꾼 것이다. v4 파일은 바이트 그대로 둔다.
+
+| 파일 | 바뀐 점 |
+|---|---|
+| s1–s6 `_v5` | `scenario_id`만 `_v5`로 바뀐다(내용 동일) |
+| `s7_pair_with_solo_v5` (v4 `s7_trio_rendezvous_v4`) | order-1 `tri_frame`(3대)을 같은 슬롯 P2-1·같은 자리의 `heavy_crate`(`crate_1`, 2대)로 바꾼다. 단독 주문 둘(cyan, tile)은 그대로. 2대가 크레이트를 드는 동안 남은 1대가 단독 주문을 맡는 구조이고, 시나리오 이름과 설명을 이에 맞췄다. seed 661–663 유지 |
+| `s8_mixed_tiers_v5` | order-4 `tri_frame`과 그 배치만 뺀다. 1대·2대 화물만 남는다. seed·예산 유지 |
+
+- 모든 v5 주문의 `required_robots`는 2 이하다. `sim/zone_cargo.py`의 `tri_frame` 정의와 `harness/`의 인식·교사 코드는 과거 결과 재현을 위해 그대로 둔다(v5 장면이 쓰지 않을 뿐이다).
+- **v4와 v5 결과는 합치지 않는다.** s1–s6은 내용이 같지만 이름이 다르며, 합산 여부는 사전 등록 소유자가 정한다.
+- **사용법:** 기본값은 바꾸지 않았다. 새 실행은 시나리오 ID에 `_v5`를 붙인 것(예: `s7_pair_with_solo_v5`)을 `harness.zone_environment_registry.load_scenario`에 주면 `configs/zone_study_scenarios_v5/`에서 읽는다. 생성은 `experiments/2026-10-14-drop-triframe/build_v5.py`, 시험은 `tests/test_zone_study_scenarios_v5.py`다.
+- **검증하지 않은 것:** 물리 실행(2대 크레이트를 자기 카메라로 운반해 B 구역까지 가는 것은 s7 v5에서 아직 한 번도 실행하지 않았다), s7 v5 연구 포함 여부(사전 등록 소유자 결정). 검증한 것: 시나리오 검증(`validate`)·경로 여유(`evaluate`, s7·s8 모든 물건 feasible)·레지스트리 경로 연결.
+
+## 시나리오 v6: tile·can을 작은 상자로 교체 (2026-10-14)
+
+사용자: "걍 타일같은 건 빼는 게 어떄? 보라 캔도 연구 목적과 상관없는 거 같아". "빠진 자리는 어떻게 할까요?"에 "같은 상자로 대체 (Recommended)"를 선택했다. `configs/zone_study_scenarios_v6/`는 v5의 can 4개·tile 3개를 기존 작은 상자로 바꾸고 화물 수·위치·목적 구역·이벤트를 유지한다. 미사용 색부터, 모두 쓰이면 가장 적은 색부터 고르며 동률은 cyan→red→green→yellow다. 기본값은 유지하고 `_v6` ID를 레지스트리와 `ScenarioFinalV3Scene.from_scenario`에 명시한다. **v6 결과는 이전 버전과 합산하지 않는다.** 대응표·같은 색/구역 중복(새 1, 기존 4)·입력 경계·오프라인 검증은 [v6 기록](../experiments/2026-10-14-scenario-v6/README.md)에 있다. 1대 교사의 v6 종류는 `BOX_KINDS`(cyan/red/green/yellow)뿐이며, 물리 운반은 미검증이다.
