@@ -99,3 +99,56 @@ R3는 invalid-start 복구 뒤에만 기존 cardinal .025 펄스로 yaw blocker 
 평소 자기 검토 프레임은 기존 주기 그대로다. 시야 예측 행동은 바꾸지 않는다.
 
 R3 추가: issued-arm sweep의 동일 PWM 기구학 cloud는 기존 cached_capsules를 재사용한다. 같은 입력의 거부·틈 동등성을 비물리 검사한다.
+
+## R3 최종 — NOT_READY, 32회 대기열 없음
+
+실행 **38dbd82e7ea5872452435c8142f9bf17e6534d7c**, 원본
+`gcp1:/home/ugrp/ugrp-sim/runs/search27-r3-short6-38dbd82e`.
+수정 소스9개는 이 실행 SHA와 바이트가 같다. 이후 변경은 분석/결과 기록뿐이다.
+확정 완료5/6: **성공2, 교사실패2, SIM60초 cap_end1**; 나머지1은 감독 중단이다.
+HOST_ERROR0이며 미완료를 성공/실패 분모에 소급하지 않는다. 외곽 EXIT0은 판정이 아니다.
+
+|seed|장면|결과|SIM초|
+|---|---|---|---:|
+|315709|base|60SIM초 cap_end, episode_timeout|60.0|
+|315709|cargo_v6|alignment_no_progress|47.1|
+|8311709|base|approach_blocked_handoff|32.9|
+|8311709|cargo_v6|repeated-cause 감독 중단, 최종 판정 없음|마지막 snapshot38.0|
+|8312300|base|성공|22.5|
+|8312300|cargo_v6|성공|22.6|
+
+315709 base의37.3s 음수 틈 **−0.240247mm →37.4s +2.032812mm**를
+발행 명령/보이는 대상만 재구성해 확인했다. 양 모형 body/arm 검사를 통과한 뒤로
+최소 이탈 펄스1회를 발행했고, 이후 같은 음수 시작 상태의 반복 재탐색은 없었다.
+이는 관측 기하 복구 결과이며 물리 접촉 해소/파지 성공 판정이 아니다.
+같은 틱 원본 자기 RGB를 별도 보존·회수·해시 확인했다.
+추가 yaw connector는 이번 물리 실행에서 발행되지 않았다(비물리 검사만 통과).
+
+남은 문제: 그 뒤 실제 첫 발행 펄스가 band_blue 몸체 sweep에117회 거부돼
+시간 안에 접근/파지를 끝내지 못했다. 98304 계산 예산 소진도53행 기록됐다.
+v6는 정렬 무진전이다. 8311709 base는 후보가 blocked_goal/unsafe_body_sweep에
+막혀 접근 인계, v6의 미완료 snapshot도 같은 기하 거부가 많다.
+R3 전체 행(미완료 snapshot 포함): blocked_goal6214, unsafe_body_sweep2146,
+first_command_invalid245, blocked_retreat130, planning_budget53, budget_incomplete1.
+endpoint_feasible3042/feasible15는 거부가 아니며 독립 에피소드 수도 아니다.
+단계별 실제 누적 통과·거부 수, 원본/재현 명령은
+`search27-r3-rejection-table.json` 및 읽기 쉬운 `.md`, 상세는 `search27-r3-failure-causes.json`.
+
+현재 관측/미래 예측은 원장만 분리했다. 새 NBV 행동·ready/jaw/IK 완화는 하지 않았다.
+실패4장면 몽타주48개 자기 영상 표본을 직접 확인했다. 끝 색은 서로 다르며,
+영상만으로 충돌/성공을 재판정하지 않았다. R3 회수 몽타주/실패 프레임52항목,
+별도 최초 음수 RGB1장의 해시를 확인했다. R2 65항목도 확인했다.
+GCP 세 라운드 전체 원본 manifest를 각각 검증했다. Mac에는 요약/몽타주/실패 프레임만 있다.
+원본은 GCP 영속 디스크에 보존되며 호스트 밖 전체 raw 백업을 뜻하지 않는다.
+
+입력 감사: 최종5건 invisible_measurements=0·held_world_reads=0,
+감독중단1건은 unfinished snapshot까지0/0이다. GT 자기위치 비교off.
+첫30SIM초 측정4건 wall/SIM 중앙3.538879(3.5 초과 기록 경고,6.0 미만).
+성공2건은30초 전에 끝나 동시6 전체의 완전한 첫30 측정은 아니다.
+비물리23통과, Mac 물리/렌더0·모델 호출0·학습RGB/ACT학습0·실물검증0.
+
+**4/6 및315709 최소1성공 조건 모두 미달.** 3라운드를 소진해 추가 탐색을 내지 않는다.
+32회 대기열·교사40회 관문·학습·기본 전환은 없음. 실험 결과를 이전 프로필이나
+base/v6와 합치지 않는다. 최종 구조화 기록은 `search27-results.json`이다.
+
+자기 search27 worker0·자기 임대3개 제거 확인. 공유VM 정지는 gcpctl의 다른 임대/프로세스 보호로 보류됐고 타 작업은 건드리지 않았다. 원본 삭제 없음. `search27-cleanup.json` 참조.

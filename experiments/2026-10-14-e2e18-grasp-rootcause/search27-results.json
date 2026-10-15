@@ -1,0 +1,102 @@
+{
+  "schema": "ugrp.search27.results.v1",
+  "status": "NOT_READY",
+  "execution_source_sha": "38dbd82e7ea5872452435c8142f9bf17e6534d7c",
+  "source_hashes": {
+    "sim/grasp_act_search27.py": "c7cfa50d12ff66133eaa1e1e60493d0d27a89323bd86aedbcdcf04bdf82bf494",
+    "sim/grasp_act_search15_modes.py": "b10d7bffd8dd2f666c030b093fbdb534270d7548ae2aebf4d46e9bf502bb9f14",
+    "sim/grasp_act_search19.py": "85d24d3ccc223cc035274bca9d66b7b7fece6d64d54b1ca86677ec6370300ce0",
+    "sim/grasp_act_search22.py": "3dbc9bef9409941a68da19d9dd8a075a7c53c4069bff31da082f00314aaae77d",
+    "sim/grasp_act_search23.py": "40910d0b9be728bf3fa7446e0ba1585c1ca1f764e3c2ca399e47748c470dc866",
+    "sim/grasp_act_teacher_v3.py": "c5b511d7fd35d6b9f582482173547d5cc86a20b6a56afc85d89b8ebfb6fa4d2b",
+    "sim/grasp_act_pregrasp.py": "21e63b204acc06eecf4da17834daddf5dfbd0eee039f42909faefdbf1eb61e92",
+    "scripts/run_grasp_act_teacher.py": "e2223238d6f552305e083b65bfa696968a5ea1b343f39c936f1d20524fe6605a",
+    "scripts/run_grasp_act_batch.py": "753409faf81e899d5a76f80cdf9830387589344ba66cfc3c9dec34f8fffab599"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "source_sha": "41f8b652e1726a85d2b0b90876226c9ff473bc57",
+      "counts": {
+        "supervisor_stop": 5,
+        "HOST_ERROR": 1
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/search27-r1-short6-41f8b652",
+      "remote_full_manifest_verified": true,
+      "rejection_table": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/experiments/2026-10-14-e2e18-grasp-rootcause/search27-r1-rejection-table.json",
+      "rejection_table_sha256": "2d488eab21609e529467de6d2699f9fb1c752037a8148d6cbcd963bc08af74fe"
+    },
+    {
+      "round": 2,
+      "source_sha": "83479cc4f9caad813d53eec8077ce64ca36f4a44",
+      "counts": {
+        "cap_end": 1,
+        "teacher_failure": 3,
+        "supervisor_stop": 1,
+        "success": 1
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/search27-r2-short6-83479cc4",
+      "remote_full_manifest_verified": true,
+      "rejection_table": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/experiments/2026-10-14-e2e18-grasp-rootcause/search27-r2-rejection-table.json",
+      "rejection_table_sha256": "ed62e11e6e8daf1fe97e30569079cb9340b5304264281f6cec2076e17b1773e4"
+    },
+    {
+      "round": 3,
+      "source_sha": "38dbd82e7ea5872452435c8142f9bf17e6534d7c",
+      "counts": {
+        "cap_end": 1,
+        "teacher_failure": 2,
+        "supervisor_stop": 1,
+        "success": 2
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/search27-r3-short6-38dbd82e",
+      "remote_full_manifest_verified": true,
+      "rejection_table": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/experiments/2026-10-14-e2e18-grasp-rootcause/search27-r3-rejection-table.json",
+      "rejection_table_sha256": "1ceb1ea132b2337431d0e842f5471c54f7fae294dfc9e07e11870a592e376606"
+    }
+  ],
+  "round_limit": 3,
+  "rounds_used": 3,
+  "comparison32_created": false,
+  "comparison32_submitted": false,
+  "qualification": {
+    "success_n": 2,
+    "planned_N": 6,
+    "required_success_n": 4,
+    "required_seed315709_success_n": 1,
+    "seed315709_success_n": 0,
+    "qualified": false
+  },
+  "R3_first30": {
+    "measured_N": 4,
+    "median_wall_per_sim": 3.5388792980928594,
+    "warning_above3_5": true,
+    "block_above6": false,
+    "early_success_before30_N": 2
+  },
+  "R3_audit": {
+    "final_zero_N": 5,
+    "unfinished_snapshot_zero_N": 1,
+    "invisible_measurements": 0,
+    "held_world_reads": 0,
+    "scope": "five final ledgers; one supervisor snapshot only"
+  },
+  "retrieval": {
+    "R2_hashed_items": 65,
+    "R3_hashed_items": 52,
+    "first_invalid_RGB_sha256": "e7246db03ac08b25418f8f4f539d4d5780438e18fe2b591c5ada2887d3aecf69",
+    "full_raw_retrieved": false,
+    "raw_on_gcp_persistent_disk": true
+  },
+  "remaining": [
+    "315709 base: valid start after monotone retreat, first-command body sweep against band_blue rejected117 times; 60SIM cap_end",
+    "315709 cargo_v6: alignment_no_progress",
+    "8311709 base: approach_blocked_handoff; v6 interrupted by repeated-cause supervisor; no final verdict"
+  ],
+  "model_calls": 0,
+  "training_RGB_recording": false,
+  "ACT_training": false,
+  "Mac_physics_or_render": false,
+  "physical_robot_validation": false,
+  "pool_between_scenes_or_rounds": false
+}

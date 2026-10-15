@@ -1,0 +1,611 @@
+{
+  "analysis_script_sha256": "6f8708fb2dd76cab34a6f82af38af92ebea6816e966d177d260a7e2d324d59bf",
+  "source_sha": "38dbd82e7ea5872452435c8142f9bf17e6534d7c",
+  "raw_root": "/home/ugrp/ugrp-sim/runs/search27-r3-short6-38dbd82e",
+  "host": "gcp1",
+  "planned": 6,
+  "counts": {
+    "cap_end": 1,
+    "teacher_failure": 2,
+    "supervisor_stop": 1,
+    "success": 2
+  },
+  "reasons": {
+    "blocked_goal": 6214,
+    "endpoint_feasible": 3042,
+    "unsafe_body_sweep": 2146,
+    "first_command_invalid": 245,
+    "blocked_retreat": 130,
+    "planning_budget": 53,
+    "feasible": 15,
+    "budget_incomplete": 1
+  },
+  "reproduce": "cd /home/ugrp/ugrp-sim/src/38dbd82e7ea5872452435c8142f9bf17e6534d7c && .venv-sim/bin/python /home/ugrp/ugrp-sim/outputs/search27-report.py /home/ugrp/ugrp-sim/runs/search27-r3-short6-38dbd82e /home/ugrp/ugrp-sim/outputs/search27-r3-report",
+  "no_pooling_between_scenes": true,
+  "run_funnel": [
+    {
+      "gate": "planned",
+      "cumulative_pass": 6,
+      "rejected_here": null
+    },
+    {
+      "gate": "started",
+      "cumulative_pass": 6,
+      "rejected_here": 0
+    },
+    {
+      "gate": "final_complete",
+      "cumulative_pass": 5,
+      "rejected_here": 1
+    },
+    {
+      "gate": "not_cap_end",
+      "cumulative_pass": 4,
+      "rejected_here": 1
+    },
+    {
+      "gate": "physical_success",
+      "cumulative_pass": 2,
+      "rejected_here": 2
+    }
+  ],
+  "remote_full_manifest_verified": true,
+  "rows": [
+    {
+      "index": 0,
+      "seed": 315709,
+      "scene": "off",
+      "category": "cap_end",
+      "status": "complete",
+      "exit": 0,
+      "sim_s": 60.00000000020389,
+      "wall_per_sim": 2.774612138307263,
+      "first30": {
+        "sim_s": 30.00000000006064,
+        "wall_s": 87.53831617900141,
+        "scope": "first 30 SIM seconds including initialization; recording only",
+        "wall_per_sim": 2.917943872627482
+      },
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 2338,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "input_audit_is_final": true,
+      "population_source": "/home/ugrp/ugrp-sim/runs/search27-r3-short6-38dbd82e/diagnostic/episode-000/raw/result.json",
+      "outcomes": {
+        "r1": "episode_timeout",
+        "r2": "episode_timeout"
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/search27-r3-short6-38dbd82e/diagnostic/episode-000/raw",
+      "result_sha256": "4b3b3e670f83cd2240d901af4a3f4dedfc80d3d1f154f12cbb38816d471c606e",
+      "reasons": {
+        "endpoint_feasible": 299,
+        "blocked_goal": 143,
+        "blocked_retreat": 117,
+        "first_command_invalid": 117,
+        "planning_budget": 53,
+        "feasible": 4
+      },
+      "cache_stats": {
+        "r1": {
+          "body_grid": {
+            "calls": 6631,
+            "cache_hits": 4683,
+            "computed": 1948,
+            "wall_s": 1.1878530729882186,
+            "cpu_s": 1.187586336999658
+          },
+          "capsule_kinematics": {
+            "calls": 36922,
+            "cache_hits": 29632,
+            "computed": 7290,
+            "wall_s": 0.0,
+            "cpu_s": 0.0
+          },
+          "body_edge": {
+            "calls": 12045,
+            "cache_hits": 5903,
+            "computed": 6142,
+            "wall_s": 4.419268783882217,
+            "cpu_s": 4.419761859999291
+          },
+          "pick_cloud": {
+            "calls": 487,
+            "cache_hits": 474,
+            "computed": 13,
+            "wall_s": 0.0,
+            "cpu_s": 0.0
+          },
+          "connector_view_arm": {
+            "calls": 6777,
+            "cache_hits": 4227,
+            "computed": 2550,
+            "wall_s": 3.4791019910644536,
+            "cpu_s": 3.479620537000038
+          }
+        },
+        "r2": {
+          "body_grid": {
+            "calls": 589,
+            "cache_hits": 0,
+            "computed": 589,
+            "wall_s": 0.15228774399838585,
+            "cpu_s": 0.15254073200003226
+          },
+          "capsule_kinematics": {
+            "calls": 3600,
+            "cache_hits": 3560,
+            "computed": 40,
+            "wall_s": 0.0,
+            "cpu_s": 0.0
+          },
+          "body_edge": {
+            "calls": 1178,
+            "cache_hits": 589,
+            "computed": 589,
+            "wall_s": 0.1459142730000167,
+            "cpu_s": 0.14583505700000376
+          }
+        }
+      }
+    },
+    {
+      "index": 1,
+      "seed": 315709,
+      "scene": "cargo_v6",
+      "category": "teacher_failure",
+      "status": "complete",
+      "exit": 0,
+      "sim_s": 47.100000000142295,
+      "wall_per_sim": 2.72631210517224,
+      "first30": {
+        "sim_s": 30.00000000006064,
+        "wall_s": 88.19952291200025,
+        "scope": "first 30 SIM seconds including initialization; recording only",
+        "wall_per_sim": 2.9399840970607323
+      },
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1985,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "input_audit_is_final": true,
+      "population_source": "/home/ugrp/ugrp-sim/runs/search27-r3-short6-38dbd82e/diagnostic/episode-001/raw/result.json",
+      "outcomes": {
+        "r1": "alignment_no_progress",
+        "r2": "episode_timeout"
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/search27-r3-short6-38dbd82e/diagnostic/episode-001/raw",
+      "result_sha256": "c97b24d0ea25e2d94c293ed890bc3c46fcf2ef8f563b5f748d4af36dc1e3f153",
+      "reasons": {
+        "endpoint_feasible": 182,
+        "blocked_goal": 78,
+        "blocked_retreat": 13,
+        "feasible": 3
+      },
+      "cache_stats": {
+        "r1": {
+          "body_grid": {
+            "calls": 2211,
+            "cache_hits": 835,
+            "computed": 1376,
+            "wall_s": 0.8080018090095109,
+            "cpu_s": 0.8077063689999164
+          },
+          "capsule_kinematics": {
+            "calls": 33507,
+            "cache_hits": 23932,
+            "computed": 9575,
+            "wall_s": 0.0,
+            "cpu_s": 0.0
+          },
+          "body_edge": {
+            "calls": 9210,
+            "cache_hits": 4118,
+            "computed": 5092,
+            "wall_s": 3.263220134005678,
+            "cpu_s": 3.2638381219999424
+          },
+          "pick_cloud": {
+            "calls": 199,
+            "cache_hits": 184,
+            "computed": 15,
+            "wall_s": 0.0,
+            "cpu_s": 0.0
+          },
+          "connector_view_arm": {
+            "calls": 1568,
+            "cache_hits": 42,
+            "computed": 1526,
+            "wall_s": 3.0489677119894623,
+            "cpu_s": 3.049375180999963
+          }
+        },
+        "r2": {
+          "body_grid": {
+            "calls": 461,
+            "cache_hits": 0,
+            "computed": 461,
+            "wall_s": 0.12071578200266231,
+            "cpu_s": 0.1205137539999992
+          },
+          "capsule_kinematics": {
+            "calls": 2832,
+            "cache_hits": 2790,
+            "computed": 42,
+            "wall_s": 0.0,
+            "cpu_s": 0.0
+          },
+          "body_edge": {
+            "calls": 922,
+            "cache_hits": 461,
+            "computed": 461,
+            "wall_s": 0.11574185300014506,
+            "cpu_s": 0.1156920439999718
+          }
+        }
+      }
+    },
+    {
+      "index": 2,
+      "seed": 8311709,
+      "scene": "off",
+      "category": "teacher_failure",
+      "status": "complete",
+      "exit": 0,
+      "sim_s": 32.90000000007449,
+      "wall_per_sim": 4.20515765710295,
+      "first30": {
+        "sim_s": 30.00000000006064,
+        "wall_s": 124.13323497400052,
+        "scope": "first 30 SIM seconds including initialization; recording only",
+        "wall_per_sim": 4.137774499124987
+      },
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1503,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "input_audit_is_final": true,
+      "population_source": "/home/ugrp/ugrp-sim/runs/search27-r3-short6-38dbd82e/diagnostic/episode-002/raw/result.json",
+      "outcomes": {
+        "r1": "approach_blocked_handoff",
+        "r2": "peer_approach_handoff"
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/search27-r3-short6-38dbd82e/diagnostic/episode-002/raw",
+      "result_sha256": "e55f747710c92538a4b03b48d772b0aceb8c5e2c74ced251e6d74d7aa7583e38",
+      "reasons": {
+        "blocked_goal": 2990,
+        "endpoint_feasible": 1196,
+        "unsafe_body_sweep": 1080,
+        "feasible": 4
+      },
+      "cache_stats": {
+        "r1": {
+          "body_grid": {
+            "calls": 33455,
+            "cache_hits": 26178,
+            "computed": 7277,
+            "wall_s": 3.100629485941681,
+            "cpu_s": 3.1013189569996467
+          },
+          "capsule_kinematics": {
+            "calls": 43196,
+            "cache_hits": 32969,
+            "computed": 10227,
+            "wall_s": 0.0,
+            "cpu_s": 0.0
+          },
+          "body_edge": {
+            "calls": 34902,
+            "cache_hits": 19552,
+            "computed": 15350,
+            "wall_s": 8.213162507016023,
+            "cpu_s": 8.215907546999597
+          },
+          "pick_cloud": {
+            "calls": 1230,
+            "cache_hits": 1217,
+            "computed": 13,
+            "wall_s": 0.0,
+            "cpu_s": 0.0
+          },
+          "connector_view_arm": {
+            "calls": 2740,
+            "cache_hits": 34,
+            "computed": 2706,
+            "wall_s": 4.331975553966913,
+            "cpu_s": 4.332727162000117
+          }
+        },
+        "r2": {
+          "body_grid": {
+            "calls": 320,
+            "cache_hits": 0,
+            "computed": 320,
+            "wall_s": 0.04860576401006256,
+            "cpu_s": 0.048466870000082984
+          },
+          "capsule_kinematics": {
+            "calls": 1920,
+            "cache_hits": 1913,
+            "computed": 7,
+            "wall_s": 0.0,
+            "cpu_s": 0.0
+          },
+          "body_edge": {
+            "calls": 640,
+            "cache_hits": 320,
+            "computed": 320,
+            "wall_s": 0.045923632991616614,
+            "cpu_s": 0.0458526369998955
+          }
+        }
+      }
+    },
+    {
+      "index": 3,
+      "seed": 8311709,
+      "scene": "cargo_v6",
+      "category": "supervisor_stop",
+      "status": "running",
+      "exit": 130,
+      "sim_s": null,
+      "wall_per_sim": null,
+      "first30": {
+        "sim_s": 30.00000000006064,
+        "wall_s": 126.84451875500054,
+        "scope": "first 30 SIM seconds including initialization; recording only",
+        "wall_per_sim": 4.228150625158138
+      },
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1460,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "input_audit_is_final": false,
+      "population_source": "/home/ugrp/ugrp-sim/runs/search27-r3-short6-38dbd82e/diagnostic/episode-003/raw/diagnostic-snapshot.json",
+      "outcomes": {
+        "r1": null,
+        "r2": null
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/search27-r3-short6-38dbd82e/diagnostic/episode-003/raw",
+      "result_sha256": "173cde341000d3275299270509b9d1999b903fbe00968aca3c48dde9c10440fe",
+      "reasons": {
+        "blocked_goal": 3003,
+        "endpoint_feasible": 1365,
+        "unsafe_body_sweep": 1066,
+        "first_command_invalid": 128,
+        "feasible": 4,
+        "budget_incomplete": 1
+      },
+      "cache_stats": {
+        "r1": {
+          "body_grid": {
+            "calls": 38066,
+            "cache_hits": 30492,
+            "computed": 7574,
+            "wall_s": 3.2525333489156765,
+            "cpu_s": 3.2526057570000333
+          },
+          "capsule_kinematics": {
+            "calls": 46154,
+            "cache_hits": 36150,
+            "computed": 10004,
+            "wall_s": 0.0,
+            "cpu_s": 0.0
+          },
+          "body_edge": {
+            "calls": 38681,
+            "cache_hits": 22210,
+            "computed": 16471,
+            "wall_s": 8.839076362090054,
+            "cpu_s": 8.841600304000464
+          },
+          "pick_cloud": {
+            "calls": 1517,
+            "cache_hits": 1504,
+            "computed": 13,
+            "wall_s": 0.0,
+            "cpu_s": 0.0
+          },
+          "connector_view_arm": {
+            "calls": 7139,
+            "cache_hits": 3493,
+            "computed": 3646,
+            "wall_s": 4.886565100910957,
+            "cpu_s": 4.887429343000189
+          }
+        },
+        "r2": {
+          "body_grid": {
+            "calls": 310,
+            "cache_hits": 0,
+            "computed": 310,
+            "wall_s": 0.04884569500609359,
+            "cpu_s": 0.048694281999962286
+          },
+          "capsule_kinematics": {
+            "calls": 1856,
+            "cache_hits": 1849,
+            "computed": 7,
+            "wall_s": 0.0,
+            "cpu_s": 0.0
+          },
+          "body_edge": {
+            "calls": 618,
+            "cache_hits": 309,
+            "computed": 309,
+            "wall_s": 0.04515283799082681,
+            "cpu_s": 0.045065597000017554
+          }
+        }
+      }
+    },
+    {
+      "index": 4,
+      "seed": 8312300,
+      "scene": "off",
+      "category": "success",
+      "status": "complete",
+      "exit": 0,
+      "sim_s": 22.50000000002483,
+      "wall_per_sim": 2.28328947804191,
+      "first30": null,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 645,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "input_audit_is_final": true,
+      "population_source": "/home/ugrp/ugrp-sim/runs/search27-r3-short6-38dbd82e/diagnostic/episode-004/raw/result.json",
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/search27-r3-short6-38dbd82e/diagnostic/episode-004/raw",
+      "result_sha256": "fde1751dc5e8c5d399ad8b2e67d0ffe4ceb1e6afacc844f2d8564ab54bb24519",
+      "reasons": {},
+      "cache_stats": {
+        "r1": {
+          "body_grid": {
+            "calls": 147,
+            "cache_hits": 0,
+            "computed": 147,
+            "wall_s": 0.042737309995573014,
+            "cpu_s": 0.04267420000000843
+          },
+          "capsule_kinematics": {
+            "calls": 3196,
+            "cache_hits": 2773,
+            "computed": 423,
+            "wall_s": 0.0,
+            "cpu_s": 0.0
+          },
+          "body_edge": {
+            "calls": 1070,
+            "cache_hits": 12,
+            "computed": 1058,
+            "wall_s": 0.24369230097727268,
+            "cpu_s": 0.24379678699999907
+          }
+        },
+        "r2": {
+          "body_grid": {
+            "calls": 140,
+            "cache_hits": 0,
+            "computed": 140,
+            "wall_s": 0.016491853009938495,
+            "cpu_s": 0.01646648099999304
+          },
+          "capsule_kinematics": {
+            "calls": 880,
+            "cache_hits": 855,
+            "computed": 25,
+            "wall_s": 0.0,
+            "cpu_s": 0.0
+          },
+          "body_edge": {
+            "calls": 278,
+            "cache_hits": 139,
+            "computed": 139,
+            "wall_s": 0.015469820998987416,
+            "cpu_s": 0.015452232000000343
+          }
+        }
+      }
+    },
+    {
+      "index": 5,
+      "seed": 8312300,
+      "scene": "cargo_v6",
+      "category": "success",
+      "status": "complete",
+      "exit": 0,
+      "sim_s": 22.600000000025307,
+      "wall_per_sim": 2.2692241761035996,
+      "first30": null,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 652,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "input_audit_is_final": true,
+      "population_source": "/home/ugrp/ugrp-sim/runs/search27-r3-short6-38dbd82e/diagnostic/episode-005/raw/result.json",
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/search27-r3-short6-38dbd82e/diagnostic/episode-005/raw",
+      "result_sha256": "4cfc925a6f3b78f6ae6f8fa4947942079ca968a398d529fa15028aaa55774583",
+      "reasons": {},
+      "cache_stats": {
+        "r1": {
+          "body_grid": {
+            "calls": 148,
+            "cache_hits": 0,
+            "computed": 148,
+            "wall_s": 0.0429563780035096,
+            "cpu_s": 0.04289875999999193
+          },
+          "capsule_kinematics": {
+            "calls": 3224,
+            "cache_hits": 2794,
+            "computed": 430,
+            "wall_s": 0.0,
+            "cpu_s": 0.0
+          },
+          "body_edge": {
+            "calls": 1088,
+            "cache_hits": 12,
+            "computed": 1076,
+            "wall_s": 0.2531458160301554,
+            "cpu_s": 0.2532802449999547
+          }
+        },
+        "r2": {
+          "body_grid": {
+            "calls": 141,
+            "cache_hits": 0,
+            "computed": 141,
+            "wall_s": 0.016578180006035836,
+            "cpu_s": 0.016559086000042633
+          },
+          "capsule_kinematics": {
+            "calls": 886,
+            "cache_hits": 861,
+            "computed": 25,
+            "wall_s": 0.0,
+            "cpu_s": 0.0
+          },
+          "body_edge": {
+            "calls": 280,
+            "cache_hits": 140,
+            "computed": 140,
+            "wall_s": 0.015481220998481149,
+            "cpu_s": 0.015468415999984941
+          }
+        }
+      }
+    }
+  ]
+}
