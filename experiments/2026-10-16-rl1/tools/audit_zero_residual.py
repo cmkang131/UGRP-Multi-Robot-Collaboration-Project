@@ -65,21 +65,29 @@ def main():
             canary.write_text(json.dumps(dict(fake_world_xy=[repeat*1000,-repeat*1000],
                 stable_lift=bool(repeat),note='audit-only copy; never supplied to actor'))+'\n')
             actor=FrozenACT(a.source,a.checkpoint,1,device='cpu')
-            commands=hashlib.sha256();features_hash=hashlib.sha256()
-            mismatches=[]
+            commands=hashlib.sha256();features_hash=hashlib.sha256();expected_hash=hashlib.sha256()
+            mismatches=[];mismatch_count=0;byte_matches=0
             for index,(obs,baseline) in enumerate(zip(observations,expected)):
-                item=SimpleNamespace(observation=obs,jpegs=tuple((a.run/r['path']).read_bytes() for r in obs['rgb']))
+                actor.c.validate_observation(obs)
+                paths=[(a.run/r['path']).resolve() for r in obs['rgb']]
+                for path in paths:path.relative_to(a.run.resolve())
+                item=SimpleNamespace(observation=obs,jpegs=tuple(path.read_bytes() for path in paths))
                 features,raw=actor.prepare([item])
                 issued,_=actor.issue([item],raw,np.zeros((1,14)),np.zeros(14))
                 actual=issued[0]
                 expected_row=dict(command=baseline['command'],done=baseline['done_requested'])
                 if actual!=expected_row:
+                    mismatch_count+=1
                     if len(mismatches)<5:mismatches.append(dict(index=index,actual=actual,expected=expected_row))
-                commands.update(json.dumps(actual,sort_keys=True,separators=(',',':')).encode())
+                actual_bytes=json.dumps(actual,sort_keys=True,separators=(',',':')).encode()
+                expected_bytes=json.dumps(expected_row,sort_keys=True,separators=(',',':')).encode()
+                byte_matches+=int(actual_bytes==expected_bytes)
+                commands.update(actual_bytes);expected_hash.update(expected_bytes)
                 features_hash.update(features.tobytes())
             passes.append(dict(repeat=repeat,requests=len(observations),
                 command_sha256=commands.hexdigest(),features_sha256=features_hash.hexdigest(),
-                matches_saved=len(observations) if not mismatches else None,first_mismatches=mismatches))
+                matches_saved=len(observations)-mismatch_count,canonical_byte_matches=byte_matches,
+                expected_command_sha256=expected_hash.hexdigest(),first_mismatches=mismatches))
             del actor
         report=dict(schema='ugrp.rl1b.zero-residual-audit.v1',status='complete',host=host,
             source_sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
