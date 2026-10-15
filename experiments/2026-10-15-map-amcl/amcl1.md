@@ -34,7 +34,23 @@ python -m scripts.sim_cli workflow run map-amcl-replay -- \
   --extract-saved-rgb --map-amcl amcl_v1 --output /path/to/new-replay
 ```
 
-기준 재검산·입력 재고·AMCL 상태는 뒤이어 `summary.json`에 기록한다. RGB가 없으면 후보 통과 수는 0이 아닌 미측정(null)이다. 개선을 확인하기 전에는 주행 진단을 신청하지 않는다. 원격 실행은 조정자 승인 대기 JSON으로만 전달한다.
+## 저장 기록 결과
+
+실행 소스 `9ade6baf`(전체 SHA는 `summary.json`)를 커밋·push했다. 공통 관리 경로 `map-amcl-replay`의 실제 프로세스 종료 코드 0·`process_completed`를 확인했다. **이는 기준 재검산/재고 조사 종료이며 AMCL 비교 완료가 아니다.** 원본은 `/Users/changmin/projects/ugrp-wt/e2e18/outputs/azure3-runs/`, 출력은 이 worktree의 `outputs/map-amcl-replay-9ade6baf/`다. 전체 원본/프레임별 출력 SHA는 `offline-replay.json.zst`에 있고 짧은 요약은 `summary.json`이다. 원본은 로컬 보관이며 원격 백업을 새로 검증하지 않았다.
+
+| 후보 | 평가 / 요청 구간 | 위치 중앙값 | 방향 중앙값 | 5cm·5° | 거리비도 포함 |
+|---|---:|---:|---:|---:|---:|
+| fused odom 기준 | 80 / 80 | 9.5148cm | 11.2121° | 3 / 80 | 3 / 80 |
+| AMCL 벽 + 명령 | 0 / 80 | 미측정 | 미측정 | 미측정 | 미측정 |
+| AMCL 벽 + fused | 0 / 80 | 미측정 | 미측정 | 미측정 | 미측정 |
+| AMCL 벽·바닥 + 명령 | 0 / 80 | 미측정 | 미측정 | 미측정 | 미측정 |
+| AMCL 벽·바닥 + fused | 0 / 80 | 미측정 | 미측정 | 미측정 | 미측정 |
+
+기준 거리비 중앙값 **1.0582658**. #480의 구간별 위치/방향/거리비와 최대 차이 **2.54e-13**으로 같은 결과를 재현했다. 명령 대비 잔차 5cm/5° 이내인 프레임 전이는 **37,094/37,492**, 초과 표식은 **398/37,492**다. 이 표식은 명령과 다른 추정 갱신을 찾는 지표이지 실제 물리 점프 판정은 아니다. 원본 fusion 분류는 command_kept 18,392 / fused 11,300 / vo_replaced 7,880이며 초음파 zero 분기는 **0**으로 확인했다.
+
+필요한 JPEG **37,572장 중 로컬 존재 0장**이다. 80구간 모두 frames/ownmap/평가 텍스트는 있으나 RGB 폴더는 비어 있다. 누락을 빈 관측으로 대체하지 않았고 AMCL 실패나 통과 0/80으로 세지 않았다. 따라서 개선 여부는 미측정이며 **짧은 주행 진단 요청은 만들지 않았다**.
+
+대신 기존 JPEG 회수·특징 추출·동일 80구간 비교 요청만 `/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-map-amcl-9ade6baf.json`에 저장하고 복사본 해시를 검증했다(`gcp-feature-queue.json`, `queue-receipt.json`). `coordinator_approval.approved=false`, `gate_promotion_authorized_if_all_conditions_pass=false`이다. 현재 원격 JPEG 가용성은 미확인이다. 조정자가 원본 SHA가 맞는 자료를 준비하고 승인하기 전 실행하지 않는다. 이번 작업의 물리·렌더·학습·모델 호출은 모두 0회다.
 
 ## 참고 자료
 

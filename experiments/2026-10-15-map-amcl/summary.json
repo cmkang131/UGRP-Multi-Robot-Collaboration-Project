@@ -1,0 +1,96 @@
+{
+  "status": "baseline_reproduced_amcl_blocked_missing_saved_rgb",
+  "source_sha": "9ade6bafa1f56bc48d31d20a997f89a0d864f3b0",
+  "expected_intervals": 80,
+  "baseline": {
+    "expected_N": 80,
+    "evaluated_N": 80,
+    "unavailable_N": 0,
+    "passed_pose_n": 3,
+    "passed_pr480_n": 3,
+    "median": {
+      "xy_median_m": 0.09514754940326389,
+      "yaw_median_deg": 11.212115430044046,
+      "path_ratio": 1.0582657957265997
+    },
+    "jump_acceptable_n": 37094,
+    "jump_N": 37492
+  },
+  "baseline_max_metric_difference_from_pr480": 2.540190280342358e-13,
+  "candidates": {
+    "amcl_landmarks_v1+command_delta": {
+      "expected_N": 80,
+      "evaluated_N": 0,
+      "unavailable_N": 80,
+      "passed_pose_n": null,
+      "passed_pr480_n": null,
+      "median": null,
+      "jump_acceptable_n": 0,
+      "jump_N": 0
+    },
+    "amcl_landmarks_v1+fused_delta": {
+      "expected_N": 80,
+      "evaluated_N": 0,
+      "unavailable_N": 80,
+      "passed_pose_n": null,
+      "passed_pr480_n": null,
+      "median": null,
+      "jump_acceptable_n": 0,
+      "jump_N": 0
+    },
+    "amcl_walls_v1+command_delta": {
+      "expected_N": 80,
+      "evaluated_N": 0,
+      "unavailable_N": 80,
+      "passed_pose_n": null,
+      "passed_pr480_n": null,
+      "median": null,
+      "jump_acceptable_n": 0,
+      "jump_N": 0
+    },
+    "amcl_walls_v1+fused_delta": {
+      "expected_N": 80,
+      "evaluated_N": 0,
+      "unavailable_N": 80,
+      "passed_pose_n": null,
+      "passed_pr480_n": null,
+      "median": null,
+      "jump_acceptable_n": 0,
+      "jump_N": 0
+    }
+  },
+  "rgb": {
+    "available": 0,
+    "expected": 37572
+  },
+  "tests": {
+    "files": 3,
+    "passed": 14,
+    "initial_failed_test_corrected": 1
+  },
+  "raw_root": "/Users/changmin/projects/ugrp-wt/e2e18/outputs/azure3-runs",
+  "replay_raw": "/Users/changmin/projects/ugrp-wt/map-amcl/outputs/map-amcl-replay-9ade6baf",
+  "replay_summary_sha256": "188634aec0569dff3783957a1b089f9996ae78987590f88fb6808858e6afb6ff",
+  "committed_report": "experiments/2026-10-15-map-amcl/offline-replay.json.zst",
+  "committed_report_sha256": "807333f9a23af54632ec3d19216cfaa1e0ea9c72443e6b50fadfbf78b295efab",
+  "managed_workflow": {
+    "path": "/Users/changmin/projects/ugrp-wt/map-amcl/outputs/simulation-runs/20261015-112317-map-amcl-replay-064d0b8e/manifest.json",
+    "sha256": "603980a37a9eebc2a86061b80ce087f53753e3431be2bc0a79656857eab6565d",
+    "status": "process_completed",
+    "exit_code": 0,
+    "source_dirty": false
+  },
+  "historical_fusion_counts": {
+    "command_kept": 18392,
+    "fused": 11300,
+    "vo_replaced": 7880,
+    "us_zero": 0
+  },
+  "physical_runs": 0,
+  "render_runs": 0,
+  "training_runs": 0,
+  "model_calls": 0,
+  "comparison_complete": false,
+  "short_drive_queue_created": false,
+  "gate_promotion_authorized_if_all_conditions_pass": false
+}

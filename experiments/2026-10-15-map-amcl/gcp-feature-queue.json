@@ -1,0 +1,79 @@
+{
+  "schema": "ugrp.coordinator_queue.v1",
+  "task": "map-amcl-pr480-saved-rgb-replay",
+  "status": "awaiting_coordinator_approval",
+  "host": "gcp1",
+  "project": "ugrp-act-train-1014",
+  "branch": "claude/map-amcl",
+  "source_sha": "9ade6bafa1f56bc48d31d20a997f89a0d864f3b0",
+  "requires_coordinator_approval": true,
+  "coordinator_approval": {
+    "approved": false,
+    "source_sha": null,
+    "stage": "saved_rgb_feature_extraction_and_offline_replay",
+    "approved_by": null,
+    "approved_at": null
+  },
+  "gate_promotion_authorized_if_all_conditions_pass": false,
+  "physical_execution_authorized": false,
+  "rendering_authorized": false,
+  "training_authorized": false,
+  "model_calls_authorized": false,
+  "requested_action": "Stage original saved JPEGs and text logs by original SHA256, extract the existing own-RGB measurements, run the frozen 80-interval comparison; never substitute reconstructed images silently",
+  "input": {
+    "cohort": "experiments/2026-10-15-map-amcl/cohort.json",
+    "cohort_sha256": "8aef53895d2559c3d0c1f801cea13b230b6c09c6452f2099dd2d2aa38002702f",
+    "expected_intervals": 80,
+    "expected_rgb_frames": 37572,
+    "destination": "/mnt/ugrp-map-amcl/pr480-runs",
+    "original_location": "azure3:/home/ugrp/ugrp-sim/runs/{cohort.run}/raw",
+    "original_location_current_availability": "unverified; coordinator must locate retained archive without starting an alternate host",
+    "local_verified_text_root": "/Users/changmin/projects/ugrp-wt/e2e18/outputs/azure3-runs",
+    "missing_local_rgb": 37572,
+    "required_receipt": "Original per-frame JPEG sha256 from frames.jsonl; static_map.json and ownmap/commands/eval-only hashes. Evaluator records never enter feature extraction."
+  },
+  "command": [
+    ".venv-sim/bin/python",
+    "-m",
+    "scripts.sim_cli",
+    "workflow",
+    "run",
+    "map-amcl-replay",
+    "--",
+    "--raw-root",
+    "/mnt/ugrp-map-amcl/pr480-runs",
+    "--feature-root",
+    "/mnt/ugrp-map-amcl/features-9ade6baf",
+    "--extract-saved-rgb",
+    "--map-amcl",
+    "amcl_v1",
+    "--output",
+    "/mnt/ugrp-map-amcl/replay-9ade6baf"
+  ],
+  "limits": {
+    "max_parallel_jobs": 1,
+    "max_wall_s": 7200,
+    "max_new_disk_bytes": 4294967296,
+    "max_return_bytes": 402653184,
+    "vm_max_run_duration": "8h",
+    "idle_shutdown_minutes": 20
+  },
+  "preconditions": [
+    "Coordinator approved=true with this exact source SHA and input receipt before execution",
+    "GCP credit stop remains active; if triggered stop and notify user, no host failover",
+    "Use existing GCP CPU environment, no new model keys or training; every gcloud call --project=ugrp-act-train-1014",
+    "Verify original machine/render provenance; missing JPEG means blocked, not synthesized RGB or empty measurements",
+    "Stop owned job on HOST_ERROR; preserve original failed artifacts; no automatic retries over another source"
+  ],
+  "return_required": [
+    "summary.json for all 80 intervals x 4 candidates and baseline, including missing/HOST_ERROR",
+    "feature manifests and compressed per-frame traces with all sha256s",
+    "re-read numeric metrics, matched n/N, absolute map errors, unresolved frames, jump residuals before reporting",
+    "after job stop owned VM and verify TERMINATED; do not claim completion before receipt hashes verify"
+  ],
+  "short_drive": {
+    "requested": false,
+    "reason": "No measured AMCL improvement yet; a separate request follows only after complete paired offline comparison and review of absolute errors"
+  },
+  "notes": "No remote connection or VM operation performed by the author; no gate promotion even if every test passes."
+}
