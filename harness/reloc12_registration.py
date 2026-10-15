@@ -43,7 +43,7 @@ def ransac_hypotheses(evidence, edges, own_pose, covariance, *, max_proposals=MA
     result=dict(candidate_count=0, unique=False, candidates=[], search_complete=True,
         method='deterministic_line_ransac_v1', min_inliers=MIN_INLIERS,
         min_fraction=MIN_FRACTION, line_count=len(lines), proposals=0,
-        budget_kind='proposal_count', max_proposals=max_proposals, support=[])
+        budget_kind='proposal_count', max_proposals=max_proposals, refit_iterations=3, support=[])
     if len(lines)<MIN_INLIERS: return dict(result, reason='insufficient_lines')
     # Cover distinct lines throughout the buffer instead of privileging lines[0].
     distinct={}
@@ -63,7 +63,7 @@ def ransac_hypotheses(evidence, edges, own_pose, covariance, *, max_proposals=MA
     def bearing(n): return math.atan2(n[1],n[0])
     def support(pose,R):
         world=ends@R.T+pose[:2]; fits=np.zeros(len(lines),bool)
-        matched=np.full(len(lines),-1,int)
+        matched=np.full(len(lines),-1,int);best=np.full(len(lines),np.inf)
         offset=world-pose[:2]; J=np.zeros((len(lines),2,2,3))
         J[:,:,0,0]=1;J[:,:,1,1]=1;J[:,:,0,2]=-offset[:,:,1];J[:,:,1,2]=offset[:,:,0]
         S=J@covariance@np.swapaxes(J,-1,-2)+np.eye(2)*(.05/3)**2
@@ -74,11 +74,14 @@ def ransac_hypotheses(evidence, edges, own_pose, covariance, *, max_proposals=MA
             a,b=np.asarray(e['a']),np.asarray(e['b']);v=b-a
             error=world-a-np.clip((world-a)@v/(v@v),0,1)[:,:,None]*v
             nis=np.einsum('nki,nkij,nkj->nk',error,inv,error).max(axis=1)
-            good=compatible&(nis<=9.); matched[good&~fits]=k;fits|=good
+            da=(bearing(e['normal'])-bearings-pose[2]+np.pi)%(2*np.pi)-np.pi
+            score=nis+(da/angle_tol)**2
+            good=compatible&(nis<=9.)
+            improve=good&(score<best);matched[improve]=k;best[improve]=score[improve];fits|=good
         ns=normals[fits]
         rank=len(ns)>=2 and np.linalg.eigvalsh(ns.T@ns).min()>=.5
         return dict(inliers=int(fits.sum()),total=len(lines),independent_axes=bool(rank),
-                    distinct_map_edges=len(set(matched[fits].tolist())))
+                    distinct_map_edges=len(set(matched[fits].tolist()))),fits,matched
     for i,j in combinations(ids,2):
         first,second=lines[i],lines[j]
         if abs(np.linalg.det([first['normal'],second['normal']]))<.5:continue
@@ -95,8 +98,20 @@ def ransac_hypotheses(evidence, edges, own_pose, covariance, *, max_proposals=MA
                 result['proposals']+=1
                 b=[np.asarray(e['normal'])@(np.asarray(e['a'])-R@np.mean(l['endpoints'],axis=0)) for e,l in [(e1,first),(e2,second)]]
                 pose=np.r_[np.linalg.solve(A,b),yaw]
+                fit,mask,matched=support(pose,R)
+                # Standard RANSAC consensus refit: pair noise must not fabricate
+                # two modes in one broad NIS basin. No PF prior or GT is used.
+                for _ in range(3):
+                    if fit['inliers']<MIN_INLIERS or not fit['independent_axes']:break
+                    chosen=[edges[k] for k in matched[mask]]
+                    angles=np.asarray([bearing(e['normal']) for e in chosen])-bearings[mask]
+                    yaw=math.atan2(float(np.sin(angles).sum()),float(np.cos(angles).sum()))
+                    c,s=math.cos(yaw),math.sin(yaw);R=np.array([[c,-s],[s,c]])
+                    A=np.asarray([e['normal'] for e in chosen])
+                    b=np.asarray([np.asarray(e['normal'])@np.asarray(e['a']) for e in chosen])-np.einsum('ni,ni->n',A,np.mean(ends[mask],axis=1)@R.T)
+                    pose=np.r_[np.linalg.lstsq(A,b,rcond=None)[0],yaw]
+                    fit,mask,matched=support(pose,R)
                 if any(np.linalg.norm(pose[:2]-np.asarray(p)[:2])<.15 and abs(wrap(pose[2]-p[2]))<math.radians(10) for p in result['candidates']):continue
-                fit=support(pose,R)
                 if fit['inliers']<max(MIN_INLIERS,math.ceil(MIN_FRACTION*len(lines))) or not fit['independent_axes'] or fit['distinct_map_edges']<2:continue
                 result['candidates'].append(pose.tolist());result['support'].append(fit);result['candidate_count']+=1
                 if result['candidate_count']>=2:
