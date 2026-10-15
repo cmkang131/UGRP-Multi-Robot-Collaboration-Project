@@ -69,6 +69,24 @@ def test_proportional_magnitude_floor_and_cap():
     assert proportional_pulse(.2, .04) == .1
     assert proportional_pulse(-2., .04, maximum=.15) == -.15
     with pytest.raises(ValueError): proportional_pulse(float('nan'), .04)
+    assert proportional_pulse(.01, .04, quantize=False) == .005
+
+
+def test_saved_78526_coupled_pulse_is_not_quantized_twice():
+    import json
+    from pathlib import Path
+    from sim.lookaround_localization import Camera
+    from tests.test_release_regrasp import teachers
+    d=json.loads((Path(__file__).parent/'fixtures/release20_quantization.json').read_text())
+    t=teachers()['r1'];t.pwm={int(k):v for k,v in d['pwm'].items()};t.odometry_profile='yaw_cal_v1'
+    a=release20.LineAlign(t,122.7,camera=Camera(),undistort=lambda f:f,wheel_command=lambda *args:None,
+                          clearance=lambda *args:True,fov_step=release17.FOV_STEP)
+    old=release17.line_step(d['feature'],Camera(),t.pwm,clearance=lambda *args:True,profile='yaw_cal_v1')
+    step=a.choose_step(d['feature'],.1,122.7)
+    assert not step['aligned'] and step['kind']=='line_ibvs'
+    assert [step['left'],step['yaw']]==pytest.approx([old['left'],old['yaw']],abs=1e-12)
+    w,d,_=release17.yaw_pulse_for(0.,step['left'],step['yaw'],'yaw_cal_v1')
+    assert w==[-.35,.35,.35,-.35] and d==[.04]*4  # pure lateral, no introduced yaw
 
 
 def test_release_adapter_keeps_wait_and_fresh_stability_and_resets_on_missing():

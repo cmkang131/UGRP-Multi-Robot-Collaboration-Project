@@ -1,0 +1,1550 @@
+{
+  "schema": "ugrp.release20.results.v1",
+  "source_sha": "c76bd99e13c7f8b70c92f4a687fffee92c01cadb",
+  "status": "NOT_READY_NEW_CONTROL_DEFECT",
+  "scope": "GCP n4-highcpu-64 DEV diagnostics; A2/B2, no gate or cross-release pooling",
+  "counts": {
+    "completed": 4,
+    "success": 3,
+    "N": 4
+  },
+  "runs": [
+    {
+      "name": "r20d1-00-c76bd99e",
+      "seed": 110613,
+      "candidate": "A",
+      "source_sha": "c76bd99e13c7f8b70c92f4a687fffee92c01cadb",
+      "status": "complete",
+      "success": true,
+      "release_outcome": "teacher_done",
+      "failure_reasons": [],
+      "sim_s": 129.2999999986277,
+      "release_sim_s": 114.39999999878479,
+      "wall_s": 392.8708855260011,
+      "wall_sim": 3.0384445903338806,
+      "first30_wall_sim": 2.8062706182441253,
+      "first30_sample_sim_s": [
+        0.0,
+        30.300000000062074
+      ],
+      "first30_scope": "saved evaluation JPEG mtimes versus SIM labels; startup excluded, model calls=0",
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 512,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "alignment_checks": [
+        {
+          "index": 0,
+          "robot": "r1",
+          "state": "done",
+          "failure": null,
+          "pulses": 0,
+          "yaw_sign_reversals": 0,
+          "settle_declared": true,
+          "reversal_settles": 0,
+          "fov_pulses": 4,
+          "settle_last": {
+            "t": 31.70000000006035,
+            "event": "release20_settle",
+            "axes": [
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.0018932148738431548,
+                "delta": 0.03302802955983121,
+                "tolerance": 0.025,
+                "acceptance_band": 0.025,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              },
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.0009891488360950463,
+                "delta": 0.001679429411351255,
+                "tolerance": 0.06,
+                "acceptance_band": 0.06,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              }
+            ],
+            "aligned": true,
+            "source": "own RGB polar line and issued-wheel model"
+          }
+        },
+        {
+          "index": 1,
+          "robot": "r2",
+          "state": "done",
+          "failure": null,
+          "pulses": 0,
+          "yaw_sign_reversals": 0,
+          "settle_declared": true,
+          "reversal_settles": 0,
+          "fov_pulses": 4,
+          "settle_last": {
+            "t": 34.300000000072764,
+            "event": "release20_settle",
+            "axes": [
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": -0.019423022420015278,
+                "delta": 0.0,
+                "tolerance": 0.025,
+                "acceptance_band": 0.025,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              },
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": -0.0015556119160342267,
+                "delta": 0.0,
+                "tolerance": 0.06,
+                "acceptance_band": 0.06,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              }
+            ],
+            "aligned": true,
+            "source": "own RGB polar line and issued-wheel model"
+          }
+        },
+        {
+          "index": 2,
+          "robot": "r1",
+          "state": "done",
+          "failure": null,
+          "pulses": 0,
+          "yaw_sign_reversals": 0,
+          "settle_declared": true,
+          "reversal_settles": 0,
+          "fov_pulses": 0,
+          "settle_last": {
+            "t": 35.900000000080404,
+            "event": "release20_settle",
+            "axes": [
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": -0.0026023549541681484,
+                "delta": 0.02489792286379564,
+                "tolerance": 0.025,
+                "acceptance_band": 0.025,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              },
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": -0.001367148964930459,
+                "delta": 0.012684679532081812,
+                "tolerance": 0.06,
+                "acceptance_band": 0.06,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              }
+            ],
+            "aligned": true,
+            "source": "own RGB polar line and issued-wheel model"
+          }
+        },
+        {
+          "index": 3,
+          "robot": "r2",
+          "state": "done",
+          "failure": null,
+          "pulses": 0,
+          "yaw_sign_reversals": 0,
+          "settle_declared": true,
+          "reversal_settles": 0,
+          "fov_pulses": 0,
+          "settle_last": {
+            "t": 36.30000000008231,
+            "event": "release20_settle",
+            "axes": [
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": -0.03173078032374874,
+                "delta": 0.057925952423626845,
+                "tolerance": 0.034755571454176105,
+                "acceptance_band": 0.034755571454176105,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              },
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.008059527883032366,
+                "delta": 0.011005250120730557,
+                "tolerance": 0.06,
+                "acceptance_band": 0.06,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              }
+            ],
+            "aligned": true,
+            "source": "own RGB polar line and issued-wheel model"
+          }
+        },
+        {
+          "index": 4,
+          "robot": "r1",
+          "state": "done",
+          "failure": null,
+          "pulses": 1,
+          "yaw_sign_reversals": 0,
+          "settle_declared": true,
+          "reversal_settles": 0,
+          "fov_pulses": 4,
+          "settle_last": {
+            "t": 79.0999999998575,
+            "event": "release20_settle",
+            "axes": [
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.015191136180566299,
+                "delta": 0.03302802955983121,
+                "tolerance": 0.025,
+                "acceptance_band": 0.025,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 1
+              },
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": -9.117115840288458e-05,
+                "delta": 0.001679429411351255,
+                "tolerance": 0.06,
+                "acceptance_band": 0.06,
+                "consecutive_reversals": 1,
+                "total_reversals": 1,
+                "pulses": 1
+              }
+            ],
+            "aligned": true,
+            "source": "own RGB polar line and issued-wheel model"
+          }
+        },
+        {
+          "index": 5,
+          "robot": "r2",
+          "state": "done",
+          "failure": null,
+          "pulses": 0,
+          "yaw_sign_reversals": 0,
+          "settle_declared": true,
+          "reversal_settles": 0,
+          "fov_pulses": 4,
+          "settle_last": {
+            "t": 81.69999999979602,
+            "event": "release20_settle",
+            "axes": [
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.02695978304774204,
+                "delta": 0.03302802955983121,
+                "tolerance": 0.025,
+                "acceptance_band": 0.025,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              },
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.0036272488495426784,
+                "delta": 0.001679429411351255,
+                "tolerance": 0.06,
+                "acceptance_band": 0.06,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              }
+            ],
+            "aligned": true,
+            "source": "own RGB polar line and issued-wheel model"
+          }
+        },
+        {
+          "index": 6,
+          "robot": "r1",
+          "state": "done",
+          "failure": null,
+          "pulses": 2,
+          "yaw_sign_reversals": 1,
+          "settle_declared": true,
+          "reversal_settles": 0,
+          "fov_pulses": 0,
+          "settle_last": {
+            "t": 83.69999999974873,
+            "event": "release20_settle",
+            "axes": [
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": -0.0164318066023968,
+                "delta": 0.057925952423626845,
+                "tolerance": 0.034755571454176105,
+                "acceptance_band": 0.034755571454176105,
+                "consecutive_reversals": 0,
+                "total_reversals": 1,
+                "pulses": 2
+              },
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.000432604159777463,
+                "delta": 0.011005250120730557,
+                "tolerance": 0.06,
+                "acceptance_band": 0.06,
+                "consecutive_reversals": 2,
+                "total_reversals": 2,
+                "pulses": 2
+              }
+            ],
+            "aligned": true,
+            "source": "own RGB polar line and issued-wheel model"
+          }
+        },
+        {
+          "index": 7,
+          "robot": "r2",
+          "state": "done",
+          "failure": null,
+          "pulses": 1,
+          "yaw_sign_reversals": 0,
+          "settle_declared": true,
+          "reversal_settles": 0,
+          "fov_pulses": 0,
+          "settle_last": {
+            "t": 84.29999999973454,
+            "event": "release20_settle",
+            "axes": [
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": -0.028523471416080103,
+                "delta": 0.057925952423626845,
+                "tolerance": 0.034755571454176105,
+                "acceptance_band": 0.034755571454176105,
+                "consecutive_reversals": 1,
+                "total_reversals": 1,
+                "pulses": 1
+              },
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.005568025614095052,
+                "delta": 0.011005250120730557,
+                "tolerance": 0.06,
+                "acceptance_band": 0.06,
+                "consecutive_reversals": 1,
+                "total_reversals": 1,
+                "pulses": 1
+              }
+            ],
+            "aligned": true,
+            "source": "own RGB polar line and issued-wheel model"
+          }
+        }
+      ],
+      "pulses": 4,
+      "yaw_sign_reversals": 1,
+      "settle_checks": "8/8",
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20d1-00-c76bd99e/raw",
+      "lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20d1-00-c76bd99e/raw",
+      "result_file_sha256": "0c3a5c5203ca89dd5e2a871e5310cc347ab487c2b5c2ab14d50a81636f173242",
+      "result_decoded_sha256": "5f07fe06e91146d584a36abaf78f7639573c40301b3ff3804f46889b0a738c72",
+      "vm_manifest_sha256": "6cc5ee3b070f1f9b661167f115c92585d9ceb913f68bbddda75bd04a5665f206",
+      "lite_files_verified": 19,
+      "decoded_files_verified": [],
+      "evidence_path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release20/r20d1-00-c76bd99e/evidence.json.zst",
+      "evidence_sha256": "f5b852add7f5e4a262b1a30337f3c4f11d51f88c9dd8b4bb042b29d5ddd746dc",
+      "visual_review": {
+        "frames": [
+          0.0,
+          25.3,
+          50.3,
+          75.3,
+          101.3,
+          126.3
+        ],
+        "frame_count": 18,
+        "montage": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release20/r20d1-00-c76bd99e/montage.jpg",
+        "directly_viewed": true
+      }
+    },
+    {
+      "name": "r20d1-01-c76bd99e",
+      "seed": 74976,
+      "candidate": "B",
+      "source_sha": "c76bd99e13c7f8b70c92f4a687fffee92c01cadb",
+      "status": "complete",
+      "success": true,
+      "release_outcome": "teacher_done",
+      "failure_reasons": [],
+      "sim_s": 169.89999999766763,
+      "release_sim_s": 154.99999999782474,
+      "wall_s": 578.766295483998,
+      "wall_sim": 3.4065114508060224,
+      "first30_wall_sim": 2.8123102251001537,
+      "first30_sample_sim_s": [
+        0.0,
+        30.300000000062074
+      ],
+      "first30_scope": "saved evaluation JPEG mtimes versus SIM labels; startup excluded, model calls=0",
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 676,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "alignment_checks": [
+        {
+          "index": 0,
+          "robot": "r1",
+          "state": "done",
+          "failure": null,
+          "pulses": 0,
+          "yaw_sign_reversals": 0,
+          "settle_declared": true,
+          "reversal_settles": 0,
+          "fov_pulses": 5,
+          "settle_last": {
+            "t": 30.300000000053664,
+            "event": "release20_settle",
+            "axes": [
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": -0.0058729419830892485,
+                "delta": 0.02489792286379564,
+                "tolerance": 0.025,
+                "acceptance_band": 0.025,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              },
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.005606530382112529,
+                "delta": 0.012684679532081812,
+                "tolerance": 0.06,
+                "acceptance_band": 0.06,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              }
+            ],
+            "aligned": true,
+            "source": "own RGB polar line and issued-wheel model"
+          }
+        },
+        {
+          "index": 1,
+          "robot": "r2",
+          "state": "done",
+          "failure": null,
+          "pulses": 0,
+          "yaw_sign_reversals": 0,
+          "settle_declared": true,
+          "reversal_settles": 0,
+          "fov_pulses": 5,
+          "settle_last": {
+            "t": 33.100000000067034,
+            "event": "release20_settle",
+            "axes": [
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": -0.0023793318079473116,
+                "delta": 0.0,
+                "tolerance": 0.025,
+                "acceptance_band": 0.025,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              },
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.0005028097760876046,
+                "delta": 0.0,
+                "tolerance": 0.06,
+                "acceptance_band": 0.06,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              }
+            ],
+            "aligned": true,
+            "source": "own RGB polar line and issued-wheel model"
+          }
+        },
+        {
+          "index": 2,
+          "robot": "r1",
+          "state": "done",
+          "failure": null,
+          "pulses": 0,
+          "yaw_sign_reversals": 0,
+          "settle_declared": true,
+          "reversal_settles": 0,
+          "fov_pulses": 0,
+          "settle_last": {
+            "t": 34.600000000074196,
+            "event": "release20_settle",
+            "axes": [
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": -0.004534401726355289,
+                "delta": 0.02489792286379564,
+                "tolerance": 0.025,
+                "acceptance_band": 0.025,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              },
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.006082008258999304,
+                "delta": 0.012684679532081812,
+                "tolerance": 0.06,
+                "acceptance_band": 0.06,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              }
+            ],
+            "aligned": true,
+            "source": "own RGB polar line and issued-wheel model"
+          }
+        },
+        {
+          "index": 3,
+          "robot": "r2",
+          "state": "done",
+          "failure": null,
+          "pulses": 0,
+          "yaw_sign_reversals": 0,
+          "settle_declared": true,
+          "reversal_settles": 0,
+          "fov_pulses": 0,
+          "settle_last": {
+            "t": 35.000000000076106,
+            "event": "release20_settle",
+            "axes": [
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.005186418876167095,
+                "delta": 0.057925952423626845,
+                "tolerance": 0.034755571454176105,
+                "acceptance_band": 0.034755571454176105,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              },
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": -0.0007310557254464377,
+                "delta": 0.011005250120730557,
+                "tolerance": 0.06,
+                "acceptance_band": 0.06,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              }
+            ],
+            "aligned": true,
+            "source": "own RGB polar line and issued-wheel model"
+          }
+        },
+        {
+          "index": 4,
+          "robot": "r1",
+          "state": "done",
+          "failure": null,
+          "pulses": 0,
+          "yaw_sign_reversals": 0,
+          "settle_declared": true,
+          "reversal_settles": 0,
+          "fov_pulses": 5,
+          "settle_last": {
+            "t": 76.19999999992608,
+            "event": "release20_settle",
+            "axes": [
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": -0.001582691332735385,
+                "delta": 0.03302802955983121,
+                "tolerance": 0.025,
+                "acceptance_band": 0.025,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              },
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.00031311970587098904,
+                "delta": 0.001679429411351255,
+                "tolerance": 0.06,
+                "acceptance_band": 0.06,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              }
+            ],
+            "aligned": true,
+            "source": "own RGB polar line and issued-wheel model"
+          }
+        },
+        {
+          "index": 5,
+          "robot": "r2",
+          "state": "done",
+          "failure": null,
+          "pulses": 0,
+          "yaw_sign_reversals": 0,
+          "settle_declared": true,
+          "reversal_settles": 0,
+          "fov_pulses": 4,
+          "settle_last": {
+            "t": 78.7999999998646,
+            "event": "release20_settle",
+            "axes": [
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": -0.0038359419066817113,
+                "delta": 0.03302802955983121,
+                "tolerance": 0.025,
+                "acceptance_band": 0.025,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              },
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": -0.00171215312335659,
+                "delta": 0.001679429411351255,
+                "tolerance": 0.06,
+                "acceptance_band": 0.06,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              }
+            ],
+            "aligned": true,
+            "source": "own RGB polar line and issued-wheel model"
+          }
+        },
+        {
+          "index": 6,
+          "robot": "r1",
+          "state": "done",
+          "failure": null,
+          "pulses": 0,
+          "yaw_sign_reversals": 0,
+          "settle_declared": true,
+          "reversal_settles": 0,
+          "fov_pulses": 0,
+          "settle_last": {
+            "t": 80.39999999982676,
+            "event": "release20_settle",
+            "axes": [
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.0019694776354447496,
+                "delta": 0.03302802955983121,
+                "tolerance": 0.025,
+                "acceptance_band": 0.025,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              },
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.0009149500630363606,
+                "delta": 0.001679429411351255,
+                "tolerance": 0.06,
+                "acceptance_band": 0.06,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              }
+            ],
+            "aligned": true,
+            "source": "own RGB polar line and issued-wheel model"
+          }
+        },
+        {
+          "index": 7,
+          "robot": "r2",
+          "state": "done",
+          "failure": null,
+          "pulses": 0,
+          "yaw_sign_reversals": 0,
+          "settle_declared": true,
+          "reversal_settles": 0,
+          "fov_pulses": 0,
+          "settle_last": {
+            "t": 80.7999999998173,
+            "event": "release20_settle",
+            "axes": [
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.004456505023988332,
+                "delta": 0.03302802955983121,
+                "tolerance": 0.025,
+                "acceptance_band": 0.025,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              },
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.00019896777665269353,
+                "delta": 0.001679429411351255,
+                "tolerance": 0.06,
+                "acceptance_band": 0.06,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              }
+            ],
+            "aligned": true,
+            "source": "own RGB polar line and issued-wheel model"
+          }
+        },
+        {
+          "index": 8,
+          "robot": "r1",
+          "state": "done",
+          "failure": null,
+          "pulses": 0,
+          "yaw_sign_reversals": 0,
+          "settle_declared": true,
+          "reversal_settles": 0,
+          "fov_pulses": 4,
+          "settle_last": {
+            "t": 121.89999999884542,
+            "event": "release20_settle",
+            "axes": [
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.022823594383690245,
+                "delta": 0.03302802955983121,
+                "tolerance": 0.025,
+                "acceptance_band": 0.025,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              },
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.004229298091658175,
+                "delta": 0.001679429411351255,
+                "tolerance": 0.06,
+                "acceptance_band": 0.06,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              }
+            ],
+            "aligned": true,
+            "source": "own RGB polar line and issued-wheel model"
+          }
+        },
+        {
+          "index": 9,
+          "robot": "r2",
+          "state": "done",
+          "failure": null,
+          "pulses": 0,
+          "yaw_sign_reversals": 0,
+          "settle_declared": true,
+          "reversal_settles": 0,
+          "fov_pulses": 4,
+          "settle_last": {
+            "t": 124.49999999878393,
+            "event": "release20_settle",
+            "axes": [
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.012430719596439752,
+                "delta": 0.03302802955983121,
+                "tolerance": 0.025,
+                "acceptance_band": 0.025,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              },
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.0015803302848834246,
+                "delta": 0.001679429411351255,
+                "tolerance": 0.06,
+                "acceptance_band": 0.06,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              }
+            ],
+            "aligned": true,
+            "source": "own RGB polar line and issued-wheel model"
+          }
+        },
+        {
+          "index": 10,
+          "robot": "r1",
+          "state": "done",
+          "failure": null,
+          "pulses": 0,
+          "yaw_sign_reversals": 0,
+          "settle_declared": true,
+          "reversal_settles": 0,
+          "fov_pulses": 0,
+          "settle_last": {
+            "t": 126.0999999987461,
+            "event": "release20_settle",
+            "axes": [
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.03126462709753462,
+                "delta": 0.057925952423626845,
+                "tolerance": 0.034755571454176105,
+                "acceptance_band": 0.034755571454176105,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              },
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": -0.005397702257120201,
+                "delta": 0.011005250120730557,
+                "tolerance": 0.06,
+                "acceptance_band": 0.06,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              }
+            ],
+            "aligned": true,
+            "source": "own RGB polar line and issued-wheel model"
+          }
+        },
+        {
+          "index": 11,
+          "robot": "r2",
+          "state": "done",
+          "failure": null,
+          "pulses": 0,
+          "yaw_sign_reversals": 0,
+          "settle_declared": true,
+          "reversal_settles": 0,
+          "fov_pulses": 0,
+          "settle_last": {
+            "t": 126.49999999873664,
+            "event": "release20_settle",
+            "axes": [
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.006862707915990578,
+                "delta": 0.02489792286379564,
+                "tolerance": 0.025,
+                "acceptance_band": 0.025,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              },
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": -0.002386101491262424,
+                "delta": 0.012684679532081812,
+                "tolerance": 0.06,
+                "acceptance_band": 0.06,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              }
+            ],
+            "aligned": true,
+            "source": "own RGB polar line and issued-wheel model"
+          }
+        }
+      ],
+      "pulses": 0,
+      "yaw_sign_reversals": 0,
+      "settle_checks": "12/12",
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20d1-01-c76bd99e/raw",
+      "lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20d1-01-c76bd99e/raw",
+      "result_file_sha256": "fc014ebf5f563dc13a17da0b926168286daa171af54431509fe3287a19464710",
+      "result_decoded_sha256": "120fe0f5d8fdf5e1e7027f6366ba8a9760f19dfc318f375607dc7becae013210",
+      "vm_manifest_sha256": "e2c086e0d00be8079b1a950d5eddaf3232ed157f6d26583be6e2afdf65bae1d7",
+      "lite_files_verified": 19,
+      "decoded_files_verified": [],
+      "evidence_path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release20/r20d1-01-c76bd99e/evidence.json.zst",
+      "evidence_sha256": "9fae63bf4d40db6aa1624699a2a21d2860d801fa2f0a9335b356558c3c8522fa",
+      "visual_review": {
+        "frames": [
+          0.0,
+          33.3,
+          67.3,
+          100.3,
+          134.3,
+          167.3
+        ],
+        "frame_count": 18,
+        "montage": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release20/r20d1-01-c76bd99e/montage.jpg",
+        "directly_viewed": true
+      }
+    },
+    {
+      "name": "r20d1-02-c76bd99e",
+      "seed": 78526,
+      "candidate": "B",
+      "source_sha": "c76bd99e13c7f8b70c92f4a687fffee92c01cadb",
+      "status": "complete",
+      "success": false,
+      "release_outcome": "axis_correction_heading_disagreement",
+      "failure_reasons": [
+        "axis_correction_heading_disagreement"
+      ],
+      "sim_s": 170.0999999976629,
+      "release_sim_s": 161.79999999766395,
+      "wall_s": 595.7040582059999,
+      "wall_sim": 3.5020814709828607,
+      "first30_wall_sim": 2.9235313434352093,
+      "first30_sample_sim_s": [
+        0.0,
+        30.300000000062074
+      ],
+      "first30_scope": "saved evaluation JPEG mtimes versus SIM labels; startup excluded, model calls=0",
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 676,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "alignment_checks": [
+        {
+          "index": 0,
+          "robot": "r1",
+          "state": "done",
+          "failure": null,
+          "pulses": 0,
+          "yaw_sign_reversals": 0,
+          "settle_declared": true,
+          "reversal_settles": 0,
+          "fov_pulses": 4,
+          "settle_last": {
+            "t": 30.10000000005271,
+            "event": "release20_settle",
+            "axes": [
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.027881739500509966,
+                "delta": 0.03302802955983121,
+                "tolerance": 0.025,
+                "acceptance_band": 0.025,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              },
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.002313087218150819,
+                "delta": 0.001679429411351255,
+                "tolerance": 0.06,
+                "acceptance_band": 0.06,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              }
+            ],
+            "aligned": true,
+            "source": "own RGB polar line and issued-wheel model"
+          }
+        },
+        {
+          "index": 1,
+          "robot": "r2",
+          "state": "done",
+          "failure": null,
+          "pulses": 1,
+          "yaw_sign_reversals": 0,
+          "settle_declared": true,
+          "reversal_settles": 0,
+          "fov_pulses": 4,
+          "settle_last": {
+            "t": 32.90000000006608,
+            "event": "release20_settle",
+            "axes": [
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.01433677788930831,
+                "delta": 0.03302802955983121,
+                "tolerance": 0.025,
+                "acceptance_band": 0.025,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 1
+              },
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": -0.008245778238577108,
+                "delta": 0.001679429411351255,
+                "tolerance": 0.06,
+                "acceptance_band": 0.06,
+                "consecutive_reversals": 1,
+                "total_reversals": 1,
+                "pulses": 1
+              }
+            ],
+            "aligned": true,
+            "source": "own RGB polar line and issued-wheel model"
+          }
+        },
+        {
+          "index": 2,
+          "robot": "r1",
+          "state": "done",
+          "failure": null,
+          "pulses": 1,
+          "yaw_sign_reversals": 0,
+          "settle_declared": true,
+          "reversal_settles": 0,
+          "fov_pulses": 0,
+          "settle_last": {
+            "t": 34.700000000074674,
+            "event": "release20_settle",
+            "axes": [
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": -0.015089762100690761,
+                "delta": 0.057925952423626845,
+                "tolerance": 0.034755571454176105,
+                "acceptance_band": 0.034755571454176105,
+                "consecutive_reversals": 1,
+                "total_reversals": 1,
+                "pulses": 1
+              },
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.0015570723476576022,
+                "delta": 0.011005250120730557,
+                "tolerance": 0.06,
+                "acceptance_band": 0.06,
+                "consecutive_reversals": 1,
+                "total_reversals": 1,
+                "pulses": 1
+              }
+            ],
+            "aligned": true,
+            "source": "own RGB polar line and issued-wheel model"
+          }
+        },
+        {
+          "index": 3,
+          "robot": "r2",
+          "state": "done",
+          "failure": null,
+          "pulses": 0,
+          "yaw_sign_reversals": 0,
+          "settle_declared": true,
+          "reversal_settles": 0,
+          "fov_pulses": 0,
+          "settle_last": {
+            "t": 35.100000000076584,
+            "event": "release20_settle",
+            "axes": [
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.012707275549550222,
+                "delta": 0.02489792286379564,
+                "tolerance": 0.025,
+                "acceptance_band": 0.025,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              },
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": -0.013902731439472642,
+                "delta": 0.012684679532081812,
+                "tolerance": 0.06,
+                "acceptance_band": 0.06,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              }
+            ],
+            "aligned": true,
+            "source": "own RGB polar line and issued-wheel model"
+          }
+        },
+        {
+          "index": 4,
+          "robot": "r1",
+          "state": "done",
+          "failure": null,
+          "pulses": 0,
+          "yaw_sign_reversals": 0,
+          "settle_declared": true,
+          "reversal_settles": 0,
+          "fov_pulses": 4,
+          "settle_last": {
+            "t": 76.09999999992844,
+            "event": "release20_settle",
+            "axes": [
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": -0.008091294841081752,
+                "delta": 0.09095398198345805,
+                "tolerance": 0.05457238919007483,
+                "acceptance_band": 0.05457238919007483,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              },
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.000682314176061668,
+                "delta": 0.009325820709379302,
+                "tolerance": 0.06,
+                "acceptance_band": 0.06,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              }
+            ],
+            "aligned": true,
+            "source": "own RGB polar line and issued-wheel model"
+          }
+        },
+        {
+          "index": 5,
+          "robot": "r2",
+          "state": "done",
+          "failure": null,
+          "pulses": 3,
+          "yaw_sign_reversals": 0,
+          "settle_declared": true,
+          "reversal_settles": 0,
+          "fov_pulses": 4,
+          "settle_last": {
+            "t": 79.49999999984804,
+            "event": "release20_settle",
+            "axes": [
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.021089030996696068,
+                "delta": 0.057925952423626845,
+                "tolerance": 0.034755571454176105,
+                "acceptance_band": 0.034755571454176105,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 3
+              },
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": -0.011155731747619527,
+                "delta": 0.011005250120730557,
+                "tolerance": 0.06,
+                "acceptance_band": 0.06,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 3
+              }
+            ],
+            "aligned": true,
+            "source": "own RGB polar line and issued-wheel model"
+          }
+        },
+        {
+          "index": 6,
+          "robot": "r1",
+          "state": "done",
+          "failure": null,
+          "pulses": 0,
+          "yaw_sign_reversals": 0,
+          "settle_declared": true,
+          "reversal_settles": 0,
+          "fov_pulses": 0,
+          "settle_last": {
+            "t": 81.09999999981021,
+            "event": "release20_settle",
+            "axes": [
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": -0.0046193443194815775,
+                "delta": 0.02489792286379564,
+                "tolerance": 0.025,
+                "acceptance_band": 0.025,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              },
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.0017183564024742491,
+                "delta": 0.012684679532081812,
+                "tolerance": 0.06,
+                "acceptance_band": 0.06,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              }
+            ],
+            "aligned": true,
+            "source": "own RGB polar line and issued-wheel model"
+          }
+        },
+        {
+          "index": 7,
+          "robot": "r2",
+          "state": "done",
+          "failure": null,
+          "pulses": 0,
+          "yaw_sign_reversals": 0,
+          "settle_declared": true,
+          "reversal_settles": 0,
+          "fov_pulses": 0,
+          "settle_last": {
+            "t": 81.49999999980075,
+            "event": "release20_settle",
+            "axes": [
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.012516666996791888,
+                "delta": 0.02489792286379564,
+                "tolerance": 0.025,
+                "acceptance_band": 0.025,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              },
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": -0.018078473482163977,
+                "delta": 0.012684679532081812,
+                "tolerance": 0.06,
+                "acceptance_band": 0.06,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              }
+            ],
+            "aligned": true,
+            "source": "own RGB polar line and issued-wheel model"
+          }
+        },
+        {
+          "index": 8,
+          "robot": "r1",
+          "state": "done",
+          "failure": null,
+          "pulses": 10,
+          "yaw_sign_reversals": 0,
+          "settle_declared": true,
+          "reversal_settles": 0,
+          "fov_pulses": 5,
+          "settle_last": {
+            "t": 125.09999999876975,
+            "event": "release20_settle",
+            "axes": [
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": -0.03835463899572398,
+                "delta": 0.057925952423626845,
+                "tolerance": 0.034755571454176105,
+                "acceptance_band": 0.034755571454176105,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 8
+              },
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.01147852857879118,
+                "delta": 0.011005250120730557,
+                "tolerance": 0.06,
+                "acceptance_band": 0.06,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 8
+              }
+            ],
+            "aligned": true,
+            "source": "own RGB polar line and issued-wheel model"
+          }
+        },
+        {
+          "index": 9,
+          "robot": "r2",
+          "state": "done",
+          "failure": null,
+          "pulses": 2,
+          "yaw_sign_reversals": 0,
+          "settle_declared": true,
+          "reversal_settles": 0,
+          "fov_pulses": 4,
+          "settle_last": {
+            "t": 128.19999999869646,
+            "event": "release20_settle",
+            "axes": [
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": -0.0033458715316561013,
+                "delta": 0.03302802955983121,
+                "tolerance": 0.025,
+                "acceptance_band": 0.025,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 2
+              },
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.001047165496652,
+                "delta": 0.001679429411351255,
+                "tolerance": 0.06,
+                "acceptance_band": 0.06,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 2
+              }
+            ],
+            "aligned": true,
+            "source": "own RGB polar line and issued-wheel model"
+          }
+        },
+        {
+          "index": 10,
+          "robot": "r1",
+          "state": "done",
+          "failure": null,
+          "pulses": 2,
+          "yaw_sign_reversals": 0,
+          "settle_declared": true,
+          "reversal_settles": 0,
+          "fov_pulses": 0,
+          "settle_last": {
+            "t": 130.39999999864443,
+            "event": "release20_settle",
+            "axes": [
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.008370945291171557,
+                "delta": 0.02489792286379564,
+                "tolerance": 0.025,
+                "acceptance_band": 0.025,
+                "consecutive_reversals": 0,
+                "total_reversals": 1,
+                "pulses": 2
+              },
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": -0.0023845941681775507,
+                "delta": 0.012684679532081812,
+                "tolerance": 0.06,
+                "acceptance_band": 0.06,
+                "consecutive_reversals": 1,
+                "total_reversals": 1,
+                "pulses": 2
+              }
+            ],
+            "aligned": true,
+            "source": "own RGB polar line and issued-wheel model"
+          }
+        },
+        {
+          "index": 11,
+          "robot": "r2",
+          "state": "done",
+          "failure": null,
+          "pulses": 0,
+          "yaw_sign_reversals": 0,
+          "settle_declared": true,
+          "reversal_settles": 0,
+          "fov_pulses": 0,
+          "settle_last": {
+            "t": 130.79999999863497,
+            "event": "release20_settle",
+            "axes": [
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.024780899703232974,
+                "delta": 0.03302802955983121,
+                "tolerance": 0.025,
+                "acceptance_band": 0.025,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              },
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.003382439348294656,
+                "delta": 0.001679429411351255,
+                "tolerance": 0.06,
+                "acceptance_band": 0.06,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              }
+            ],
+            "aligned": true,
+            "source": "own RGB polar line and issued-wheel model"
+          }
+        }
+      ],
+      "pulses": 19,
+      "yaw_sign_reversals": 0,
+      "settle_checks": "12/12",
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20d1-02-c76bd99e/raw",
+      "lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20d1-02-c76bd99e/raw",
+      "result_file_sha256": "4bd37996525a85efcc140005f16a0f989dd2f9df132cba8f35120bf645de0bcc",
+      "result_decoded_sha256": "9204182877d5bbcd45b48c54d1403d40b02a9976f0bbb936f1a7b2c7ab51a82f",
+      "vm_manifest_sha256": "f9eb639d9f5e59f10157ec4c44779006eaea2b3abe3d82e84a6b54f0a3f342fa",
+      "lite_files_verified": 19,
+      "decoded_files_verified": [],
+      "evidence_path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release20/r20d1-02-c76bd99e/evidence.json.zst",
+      "evidence_sha256": "b54687d8ce3c78484431f3e30b80529cf5055cc359543d425d7e0511cecd536b",
+      "visual_review": {
+        "frames": [
+          0.0,
+          33.3,
+          67.3,
+          100.3,
+          134.3,
+          167.3
+        ],
+        "frame_count": 18,
+        "montage": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release20/r20d1-02-c76bd99e/montage.jpg",
+        "directly_viewed": true
+      },
+      "failure_diagnosis": "Opposite ends maintained in 18 reviewed frames. At world_t122.7, pre-scaling the continuous coupled command before its existing deadband changed a pure lateral four-wheel pulse into two-wheel yaw. Ten same-sign requests preceded the final own-RGB localization heading disagreement (.2246 vs .0307 rad). The heading safety refusal remains mandatory; do not relax it."
+    },
+    {
+      "name": "r20d1-03-c76bd99e",
+      "seed": 110600,
+      "candidate": "A",
+      "source_sha": "c76bd99e13c7f8b70c92f4a687fffee92c01cadb",
+      "status": "complete",
+      "success": true,
+      "release_outcome": "teacher_done",
+      "failure_reasons": [],
+      "sim_s": 33.90000000007927,
+      "release_sim_s": 19.100000000049278,
+      "wall_s": 102.7507657410024,
+      "wall_sim": 3.0309960395505056,
+      "first30_wall_sim": 2.9412398401206414,
+      "first30_sample_sim_s": [
+        0.0,
+        30.300000000062074
+      ],
+      "first30_scope": "saved evaluation JPEG mtimes versus SIM labels; startup excluded, model calls=0",
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 132,
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+      },
+      "alignment_checks": [],
+      "pulses": 0,
+      "yaw_sign_reversals": 0,
+      "settle_checks": "0/0",
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/r20d1-03-c76bd99e/raw",
+      "lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r20d1-03-c76bd99e/raw",
+      "result_file_sha256": "98e71253cce70b36e40f44b327f05286ca646df3fe0cee9eccaa0b21f588aaaa",
+      "result_decoded_sha256": "516546ba936b9ecf84beb295590583c2969e208cfcdf86627d8ff284c146ab80",
+      "vm_manifest_sha256": "7c5390b07e1ed6cb408dbf3564de90a806327a1b61a3865fab3a4cef0ca0de8a",
+      "lite_files_verified": 18,
+      "decoded_files_verified": [],
+      "evidence_path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release20/r20d1-03-c76bd99e/evidence.json.zst",
+      "evidence_sha256": "01dc702ffaf2290a928c407c869181f80fef7c2cbec49897ed362e98d616bfb4",
+      "visual_review": {
+        "frames": [
+          0.0,
+          6.0,
+          12.3,
+          18.3,
+          25.3,
+          31.3
+        ],
+        "frame_count": 18,
+        "montage": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release20/r20d1-03-c76bd99e/montage.jpg",
+        "directly_viewed": true
+      }
+    }
+  ],
+  "gate_executed": false,
+  "gate_ready": false,
+  "round": 1
+}

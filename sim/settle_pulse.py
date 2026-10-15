@@ -11,11 +11,16 @@ from __future__ import annotations
 import math
 
 
-def proportional_pulse(error, delta, *, gain=.5, maximum=math.inf):
-    """Signed correction in error units; retain the actuator's minimum pulse."""
-    if not all(math.isfinite(v) for v in (error, delta, gain)) or delta <= 0 or gain <= 0 or maximum < delta:
+def proportional_pulse(error, delta, *, gain=.5, maximum=math.inf, quantize=True):
+    """Signed correction; quantize once, here OR in a coupled wheel allocator.
+
+    With ``quantize=False`` keep the continuous proportional direction. Raising
+    its magnitude before an existing wheel deadband can change which wheels
+    survive, so the allocator alone must enforce the minimum in that case.
+    """
+    if not all(math.isfinite(v) for v in (error, delta, gain)) or delta < 0 or (quantize and delta == 0) or gain <= 0 or maximum < delta:
         raise ValueError('invalid pulse model')
-    return math.copysign(min(maximum, max(delta, gain*abs(error))), error) if error else 0.
+    return math.copysign(min(maximum, max(delta if quantize else 0., gain*abs(error))), error) if error else 0.
 
 
 class PulseSettler:

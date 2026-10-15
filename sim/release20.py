@@ -47,7 +47,10 @@ class LineAlign(release18.LineAlign):
         # SAME wheel allocator/floor and command odometry as the real scheduler.
         w, d = release14.pulse_for(0., step['left'], step['yaw'], self.teacher.odometry_profile)
         if max(d) > 0:
-            ratio = release17.YAW_FLOOR_S/max(d)
+            # Never enlarge an already sub-floor request before the deadband:
+            # that can drop a different wheel pair and turn a lateral pulse
+            # into yaw (round1 seed78526, world_t122.7).
+            ratio = min(1., release17.YAW_FLOOR_S/max(d))
             w, d, _ = release17.floor_pulse(w, [v*ratio for v in d])
             actual = odometry([a*b/.1 for a,b in zip(w,d)], .1, self.teacher.odometry_profile)
             quantum = np.abs(model@np.array(actual[1:]))
@@ -64,14 +67,13 @@ class LineAlign(release18.LineAlign):
                                  source='own RGB polar line and issued-wheel model'))
         if aligned:
             return dict(step, aligned=True, left=0., yaw=0.)
-        # Existing IBVS is proportional and bounded. Use the common pulse law
-        # for its magnitude; the wheel floor remains mandatory. Never enlarge
-        # beyond the old 4 mm / 0.025 rad command bounds or bypass FOV checks.
+        # Quantize ONCE in the coupled wheel allocator. Applying a feature
+        # quantum as a continuous gain first can change the deadband's active
+        # wheel set. Keep the same proportional IBVS direction and bounds.
         error = np.array(step['error'])
-        dominant = int(np.argmax(np.abs(error)/np.maximum(quantum, 1e-9)))
-        q = float(quantum[dominant])
-        scale = abs(proportional_pulse(float(error[dominant]), q)/(.5*error[dominant])) if q > 1e-9 and error[dominant] else 1.
-        motion = np.array([0., step['left'], step['yaw']])*scale
+        correction = np.array([proportional_pulse(float(e),float(q),quantize=False) for e,q in zip(error,quantum)])
+        delta = -np.linalg.solve(model, correction)
+        motion = np.array([0., *delta])
         motion /= max(1., abs(motion[1])/.004, abs(motion[2])/.025)
         w,d,_ = release17.yaw_pulse_for(*motion, self.teacher.odometry_profile)
         actual = odometry([a*b/.1 for a,b in zip(w,d)], .1, self.teacher.odometry_profile)
