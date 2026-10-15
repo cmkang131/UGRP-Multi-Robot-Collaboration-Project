@@ -2,6 +2,16 @@
 
 `sim.render_profile.install(scene, name)`은 기존 프로필의 이름·정의 해시·전후 XML 해시를 장면 manifest에 남긴다. 이 파일은 P03 고정 자산이므로 main과 바이트 동일하게 유지한다. 새 소비자는 `sim.render_profile_selection.for_name(name)`으로 모듈을 선택한다. `floor_light_textured_v1` 또는 `walls_floor_textured_v2`를 요청할 때만 별도 `sim.render_profile_textured`를 불러오며 기존 registry를 수정하지 않는다. 생략/`shadows_v1`은 원래 XML 바이트를 유지한다. `floor_light_v1`은 기존 밝은 바둑판이며 기본 동작을 바꾸지 않는다.
 
+## 벽·바닥 대비 후보 v4 (기본 off, NOT_READY)
+
+2026-10-16 사용자 “이거는 방식을 바꿔야 할듯”, “벽과 바닥 색을 좀 더 구분되게 하던가”에 따라 벽 ORB 증가보다 기존 selfmap 경계와 바닥 입력을 보존하는 후보를 비교했다. 프로필은 `walls_floor_contrast_v4_dark`, `walls_floor_contrast_v4_light`, `walls_floor_contrast_v4_skirt`, `walls_floor_contrast_v4_luma`, `walls_floor_contrast_v4_flat`이다. 모두 명시 선택만 가능하며 **채택 후보는 없다**. v1/v2/v3 및 후보·화질 결과를 합산하지 않는다.
+
+v1 바닥 PNG·재질/매핑을 그대로 재사용한다. dark/light는 균일 벽, skirt는 기존 cube면에8cm 보통 걸레받이를 칠한 후보다. luma는 기존 v1 벽 PNG/매핑의 RGB에(-1,0,+3)를 더해 저작 회색조를 보존하고, flat은 그 평균에 가까운 균일 색이다. 색/띠 크기는 재질 설계값이며 실측 규격이나 수용 상수가 아니다. 새 형상·마찰·물리·카메라 변경은 없다. `scene_contrast_v4.py`가 자산 manifest·PNG 해시와 v1 floor compiled pixel histogram을 확인한다. 일반/걸레받이 manifest는 `afe9bfd45ed707d5147dea59d333cb06920dc5fd525310d5169816c91c0c929d`, luma는 `68897b78feebfd391586d201dd179a62fa43f8013b34b63611fdafb4d3c078d8`이다.
+
+gcp2에서 최대3라운드를 마쳤다. 완결10조건×88자세=880자세, 각 조건은PNG/JPEG90/PIL82의264 RGB다. 후보×지도 물리·카메라 동일40/40, 기존 상자 종류 검출은 모든 조건·인코딩88/88이었다. `luma/native`만 PNG/JPEG 경계 컬럼 중앙88·하위10%73.5/72.5와 위치 오차 분포를 v1 이상으로 보존했고 LK 회귀도0이었다. 그러나 바닥 특징·연속 매칭 회귀가각16/88자세, 새 색 범위 히트와 실제 양성 지원 손실이 남아 **NOT_READY**다. no-mip의 바닥 총량 증가로 회귀 자세를 상쇄하지 않는다. 기존 의미 색 검출기 범위와 selfmap 코드는 바꾸지 않았다. 새 색 분할은 평가 전용이다.
+
+[실험·funnel·모든 분포·원본/해시·같은 자세 몽타주](../experiments/2026-10-16-scene-tex4/README.md)를 따른다. 기존 소비자의 기본 장면·ACT/교사·위치 추정에 연결하지 않는다. 정적 카메라 관문이며 실제 주행/운반/실물 성공 검증이 아니다.
+
 ## 벽·바닥 구분 자연 질감: walls_floor_textured_v2 (기본 off)
 
 2026-10-15 사용자: “벽에도 넣고, 벽 / 바닥 색 다르게 해. 쉽게 구분할 수 있도록. 그렇게 시뮬 바꾼 뒤에 그 상황에 효율적일 수 있는 알고리즘으로 다시 설계 ㄱ(첨부터 다시는 말고, 이거에 맞는 방식으로 하면 좋을듯)”, “일단, 시뮬 환경 먼저 세팅하고 / 그 환경에 맞춰서 다 병렬처리로 진행하면 좋을듯”. 별도 장면 버전이며 기존 v1·다른 호스트 결과와 합산하지 않는다.
