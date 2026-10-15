@@ -294,3 +294,5 @@ fisheye의 대상 중심 투영을 쓴다. 화면 경계/근평면/카메라 보
 GPU reset은 설치된 공개 `mujoco_warp.reset_data(..., reset=world_mask)`를 사용한다.
 다른 세계의 integration state와 RGB 바이트가 즉시 같은지 검사한다. 다음 틱 동역학의 완전한
 비트 동등성은 이 짧은 인수에 포함하지 않으며, 채택/장기 rl2 관문으로 남긴다.
+
+- 관리 실행기 종료 여유45초는 Client.close의30초 대기+10초 terminate와 감독자 정리5초를 합친 자원 상한이다. 임무 판정 상수가 아니다.
