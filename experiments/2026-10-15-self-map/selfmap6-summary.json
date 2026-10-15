@@ -1,0 +1,137 @@
+{
+  "schema": "ugrp.selfmap6_summary.v1",
+  "base_sha": "cfbab2afed755777383c45347062b593175a7cc5",
+  "verdict": "OFFLINE_POLICY_VERIFIED_LIVE_UNVERIFIED",
+  "pool_with_previous_results": false,
+  "runs": [
+    {
+      "name": "selfmap5-smooth-93550-cfbab2af",
+      "status": "RECORDED",
+      "elapsed_sim_s": 30,
+      "first30_review": "passed, mapping not complete",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/selfmap5-smooth-93550-cfbab2af/raw",
+      "result_sha256": "8c9efa6013f8d749887f782da819275023e1b718d1654937040eee86f9cf3b72"
+    },
+    {
+      "name": "selfmap5-smooth-93551-cfbab2af",
+      "status": "HOST_ERROR",
+      "elapsed_sim_s": 57.5,
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/selfmap5-smooth-93551-cfbab2af/raw",
+      "result_sha256": "9789c3898bc59bee9a4b2917fa2e1dc439f8f8a32a0eac7664d9bb46eeb0182e"
+    },
+    {
+      "name": "selfmap5-smooth-93552-cfbab2af",
+      "status": "NOT_SUBMITTED_AFTER_FAILURE"
+    }
+  ],
+  "raw_sources": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/selfmap5-smooth-93551-cfbab2af/raw/trace.jsonl.zst",
+      "sha256": "5f2a2226b10ee05592ccd742c2f6b28f670e37636815f3b046a24769b05b1f6e"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/selfmap5-smooth-93551-cfbab2af/raw/robots/r3/frames.jsonl.zst",
+      "sha256": "f41a988e8c5aa0e6fcabf5f6e950f276b095d725e49fa4d1204fa0106c810760"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/selfmap5-smooth-93551-cfbab2af/raw/map.json.zst",
+      "sha256": "681193b2b6abf528e8cb7e811826abc31cd7bc69bcf11d37648a0d707abbd9e5"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/selfmap5-smooth-93551-cfbab2af/raw/eval_only/trajectory.jsonl.zst",
+      "sha256": "c04553e8254a7e4db9c426b579a5bb958b54b73319a56c554ded1e0eefa84449"
+    }
+  ],
+  "trace_N": 576,
+  "visual_proposals_N": 97,
+  "recovered_rgb_N": 6,
+  "trigger_rgb_recovered": false,
+  "trigger": {
+    "frame_id": 254,
+    "elapsed_sim_s": 25.3,
+    "innovation_yaw_deg": 44.27881185890391,
+    "mahalanobis": 11.239332501859277,
+    "accepted": false
+  },
+  "trigger_score_eval_only": {
+    "frame_id": 254,
+    "t": 26.6,
+    "truth_local": [
+      0.0007261850848473162,
+      0.0007710519892709655,
+      0.6822293630586334
+    ],
+    "pose_xy_error_m": 0.03802981122246125,
+    "pose_yaw_error_deg": 45.09313168237552,
+    "pf_xy_error_m": 1.008392750294193,
+    "pf_yaw_error_deg": 2.1707856260757947,
+    "pf_raw_sigma_xy_m": 0.06204470213951756,
+    "pf_raw_sigma_yaw_deg": 1.661569846964074,
+    "prior_xy_error_m": 0.01864534132367822,
+    "prior_yaw_error_deg": 0.8143198234716159
+  },
+  "registered_N": 0,
+  "legacy_rebuilds": {
+    "at_t": [
+      26.6,
+      31.6
+    ],
+    "attempts": 2,
+    "commits": 0,
+    "reason": "zero_command_distance",
+    "history_N": 218,
+    "last_inserted_frame": 237,
+    "anchor_frame": 241,
+    "eligible_history_N": 0
+  },
+  "forced_legacy_quarantine_release": {
+    "t": 31.7,
+    "elapsed_sim_s": 30.4,
+    "since_revision_s": 5.099999999999998,
+    "failed_attempts": 2,
+    "reason": "last_consistent_state_rollback",
+    "complete": false,
+    "scope": "forced legacy quarantine; actual selfmap6 gate rejects initial correction"
+  },
+  "offline_artifact": {
+    "path": "/Users/changmin/projects/ugrp/outputs/selfmap6-analysis/offline-sealed.json.zst",
+    "sha256": "9003302eae6858f8ff376b354d43303272eedd98761c90ec8c834c0fa8cb6965",
+    "decoded_sha256": "15a1cbc4b3dc9ef45f6e1337a9ddd89755aebff22564386a176c3a46b0d9836f",
+    "compression_manifest": "/Users/changmin/projects/ugrp/outputs/selfmap6-analysis/compression-manifest.json"
+  },
+  "implementation_sha256": {
+    "harness/selfmap6_safety.py": "4ff60b1d38f91649511e705944e102015c5a67c864ea05973c4612bee19eb4cf",
+    "harness/self_map_integration.py": "b294f258591a4155f633aa54e387cf709a2d103651136fb794fba2137f81ddd5",
+    "harness/selfmap4_geometry.py": "c4834e4a35058efc4106064644adbdf13ba9453087f8595be77623f69d2bc649",
+    "scripts/analyze_selfmap6.py": "190cb56e8a13e153435e45a4b8e74bf41ca293e8c9bccf47da8888b4ec85c72a"
+  },
+  "tests": [
+    {
+      "scope": "final selfmap6/5/4 + integration + executor",
+      "result": "73 passed",
+      "path": "/Users/changmin/projects/ugrp/outputs/selfmap6-analysis/pytest-related-final.txt",
+      "sha256": "efe05250d97bee3ab246c493308c3d3bb9e128dbbb904800aaff1ca3ef6db00d"
+    }
+  ],
+  "queue": {
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-selfmap6-safety-smooth.json",
+    "source_pin": "generated from committed HEAD after this record",
+    "planned_N": 3,
+    "max_parallel": 1,
+    "approved": false,
+    "enabled": false,
+    "execute": false,
+    "texture_included": false
+  },
+  "unfinished": [
+    "frame254 RGB and full bank/correspondence replay unavailable",
+    "full sweep ambiguity and PF bias improvement unverified",
+    "preexisting pose_uncertain remains possible",
+    "GCP first30 and two 180s runs not submitted; texture awaits PR511"
+  ],
+  "physics_calls": 0,
+  "render_calls": 0,
+  "training_calls": 0,
+  "model_calls": 0,
+  "remote_server_connections": 0
+}

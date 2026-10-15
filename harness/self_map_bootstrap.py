@@ -34,7 +34,7 @@ class PriorBootstrapSLAM(NaturalFloorSLAM):
         bounded = (np.linalg.eigvalsh(self.covariance[:2, :2]).max() <= self.max_sigma_xy_m**2
                    and self.covariance[2, 2] <= self.max_sigma_yaw_rad**2)
         added = 0
-        if event['status'] == 'command_only' and bounded:
+        if event['status'] == 'command_only' and bounded and event['reason'] != 'pose_correction_rejected':
             points, descriptors = observation.checked()
             previous = set(self.landmarks)
             added = self._add_landmarks(points, descriptors, self.pose, observation.frame_id, set())

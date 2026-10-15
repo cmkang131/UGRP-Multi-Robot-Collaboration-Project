@@ -23,7 +23,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def bundle(source, seed, cap_s, *, bootstrap='off', initial_sweep='off', recovery_profile='off',
-           revision_gate='off', multiframe_registration='off', render_profile='floor_light_v1'):
+           revision_gate='off', multiframe_registration='off', render_profile='floor_light_v1', correction_safety='off'):
     from harness.active_camera import SEARCH
     if not math.isfinite(cap_s) or not 1 <= cap_s <= 300 or abs(cap_s*10-round(cap_s*10)) > 1e-8:
         raise ValueError('CAP_MUST_BE_0_1S_GRID_IN_1_TO_300')
@@ -52,7 +52,7 @@ def bundle(source, seed, cap_s, *, bootstrap='off', initial_sweep='off', recover
         result['options'].update(bootstrap=bootstrap, initial_sweep=initial_sweep)
     from harness.self_map_integration import Options
     Options(recovery_profile=recovery_profile, revision_gate=revision_gate,
-            multiframe_registration=multiframe_registration)
+            multiframe_registration=multiframe_registration, correction_safety=correction_safety)
     if recovery_profile != 'off':
         from harness.selfmap4_geometry import static_input
         _, sha = static_input()
@@ -71,6 +71,9 @@ def bundle(source, seed, cap_s, *, bootstrap='off', initial_sweep='off', recover
                 merged_verified=False)] if render_profile == 'floor_light_textured_v1' else []))
         result['options'].update(revision_gate=revision_gate, multiframe_registration=multiframe_registration,
                                  render_profile=render_profile)
+    if correction_safety != 'off':
+        result.update(execution_bundle_id='selfmap6-opt-in-v1', check='selfmap6', case='active-selfmap6')
+        result['options']['correction_safety'] = correction_safety
     return result
 
 
@@ -139,10 +142,12 @@ def acquire(out, b, backend_factory, *, controller_factory=make_executor, wall_c
     audit = InputAudit(b['task']['robot_id'])
     result = dict(status='HOST_ERROR', source_sha=b['source_sha'], seed=b['task']['seed'],
         model_calls=0, complete=False, physical_success_unverified=True, frames=0)
-    if b.get('check') == 'selfmap5':
+    if b.get('check') in ('selfmap5', 'selfmap6'):
         result.update(scene_version=b['scene_version'], render_profile=b['options']['render_profile'],
             revision_gate=b['options']['revision_gate'],
             multiframe_registration=b['options']['multiframe_registration'], pool_with_previous_results=False)
+        if b.get('check') == 'selfmap6':
+            result['correction_safety'] = b['options']['correction_safety']
     try:
         if backend_factory.__module__.startswith('sim.'):
             missing = [name for name in ('scipy', 'matplotlib', 'mujoco')
@@ -169,7 +174,7 @@ def acquire(out, b, backend_factory, *, controller_factory=make_executor, wall_c
             extra = dict(recovery_profile=b['options']['recovery_profile'],
                          static_map=audit.static_map(static, sha))
             result['authored_static_map_sha256'] = sha
-        for option in ('revision_gate', 'multiframe_registration'):
+        for option in ('revision_gate', 'multiframe_registration', 'correction_safety'):
             if b['options'].get(option, 'off') != 'off':
                 extra[option] = b['options'][option]
         controller = controller_factory(self_map_executor=OPTION, robot_id=robot,
@@ -274,12 +279,14 @@ def main(argv=None):
     p.add_argument('--recovery-profile', choices=['off', 'selfmap4_recovery_v1'], default='off')
     p.add_argument('--revision-gate', choices=['off', 'selfmap4_revision_gate_v2'], default='off')
     p.add_argument('--multiframe-registration', choices=['off', 'selfmap4_multiframe_registration_v1'], default='off')
+    p.add_argument('--correction-safety', choices=['off', 'selfmap6_correction_safety_v1'], default='off')
     p.add_argument('--render-profile', choices=['floor_light_v1', 'floor_light_textured_v1'], default='floor_light_v1')
     p.add_argument('--execute', action='store_true')
     a = p.parse_args(argv)
     b = bundle(a.expected_source_sha, a.seed, a.cap_s, bootstrap=a.bootstrap, initial_sweep=a.initial_sweep,
                recovery_profile=a.recovery_profile, revision_gate=a.revision_gate,
-               multiframe_registration=a.multiframe_registration, render_profile=a.render_profile)
+               multiframe_registration=a.multiframe_registration, render_profile=a.render_profile,
+               correction_safety=a.correction_safety)
     if not a.execute or a.self_map_executor == 'off':
         print(json.dumps(dict(status='PREPARED_NOT_EXECUTED', bundle=b, storage=storage_estimate(a.cap_s))))
         return 0

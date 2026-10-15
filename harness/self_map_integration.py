@@ -37,6 +37,7 @@ class Options:
     recovery_profile: str = 'off'
     revision_gate: str = 'off'
     multiframe_registration: str = 'off'
+    correction_safety: str = 'off'
     revision_xy_threshold_m: float = .1
     revision_yaw_threshold_rad: float = math.radians(5)
 
@@ -67,6 +68,11 @@ class Options:
             raise ValueError('UNKNOWN_MULTIFRAME_REGISTRATION')
         if (self.revision_gate != 'off' or self.multiframe_registration != 'off') and self.recovery_profile == 'off':
             raise ValueError('SELFMAP5_REQUIRES_RECOVERY_PROFILE')
+        from harness.selfmap6_safety import OPTION as SAFETY
+        if self.correction_safety not in ('off', SAFETY):
+            raise ValueError('UNKNOWN_CORRECTION_SAFETY')
+        if self.correction_safety != 'off' and (self.revision_gate != REVISION or self.multiframe_registration != MULTIFRAME):
+            raise ValueError('SELFMAP6_REQUIRES_REVISION_AND_MULTIFRAME')
 
 
 def make_mapper(legacy=None, *, options=None, **kwargs):
@@ -165,7 +171,8 @@ class SelfMapIntegration:
             if static_map is None:
                 raise ValueError('SELFMAP4_AUTHORED_STATIC_MAP_REQUIRED')
             self.registration = StaticRegistration(static_map,
-                multiframe_registration=self.options.multiframe_registration)
+                multiframe_registration=self.options.multiframe_registration,
+                correction_safety=self.options.correction_safety)
             self.flow = PlaneFlow()
         elif static_map is not None:
             raise ValueError('STATIC_MAP_REQUIRES_SELFMAP4_PROFILE')
@@ -198,6 +205,56 @@ class SelfMapIntegration:
         self.pending_revision = None
         self.last_visual_frame_id = -1
         self.distance_since_visual = 0.
+        self.correction_gate = None
+        self.revision_checkpoint = None
+        self.rebuild_attempt_offset = 0
+        self.quarantine_release = None
+        if self.options.correction_safety != 'off':
+            from harness.selfmap6_safety import CorrectionGate, GatedFloorSLAM, GatedPriorSLAM
+            self.correction_gate = CorrectionGate()
+            self.slam = (GatedPriorSLAM(robot_id, max_sigma_xy_m=self.options.max_sigma_xy_m,
+                max_sigma_yaw_rad=self.options.max_sigma_yaw_rad) if self.options.bootstrap != 'off'
+                else GatedFloorSLAM(robot_id))
+
+    def rebuild_attempts(self):
+        return len(self.rebuilds)-self.rebuild_attempt_offset
+
+    def checkpoint_revision(self, t, prior, covariance):
+        if self.revision_checkpoint is not None:
+            return
+        # The gate calls this BEFORE pose, bank, keyframes or occupancy mutate.
+        keys = ['landmarks', 'keyframes', '_next_landmark']
+        if hasattr(self.slam, 'prior_landmark_ids'):
+            keys.append('prior_landmark_ids')
+        self.revision_checkpoint = dict(t=float(t), pose=np.asarray(prior).copy(),
+            covariance=np.asarray(covariance).copy(),
+            slam={k: copy.deepcopy(getattr(self.slam, k)) for k in keys},
+            anchor=self.last_visual_frame_id, distance=self.distance_since_visual,
+            attempts=len(self.rebuilds), map_from_own=copy.deepcopy(self.registration.map_from_own))
+        self.rebuild_attempt_offset = len(self.rebuilds)
+
+    def release_quarantine(self, t):
+        from harness.selfmap6_safety import release_due
+        saved = self.revision_checkpoint
+        if saved is None or not release_due(saved['t'], t, len(self.rebuilds)-saved['attempts']):
+            return None
+        self.slam.pose, self.slam.covariance = saved['pose'], saved['covariance']
+        for key, value in saved['slam'].items():
+            setattr(self.slam, key, value)
+        self.registration.map_from_own = saved['map_from_own']
+        self.registration.confirmations.clear(); self.registration.confirmation_views.clear()
+        self.registration.end_sweep()
+        self.flow.previous = None
+        self.last_visual_frame_id, self.distance_since_visual = saved['anchor'], saved['distance']
+        self.rebuild_required = False; self.rebuild_cause = None; self.pending_revision = None
+        self.stable, self.last_states = 0, None
+        self.correction_gate.hypotheses.clear()
+        self.revision_checkpoint = None
+        self.rebuild_attempt_offset = len(self.rebuilds)
+        self.quarantine_release = dict(t=float(t), reason='last_consistent_state_rollback',
+            elapsed_s=t-saved['t'], failed_attempts=len(self.rebuilds)-saved['attempts'],
+            checkpoint_pose=self.slam.pose.tolist(), map_preserved=True, complete=False)
+        return self.quarantine_release
 
     def planning_grid(self):
         """Current body support only; never changes occupancy/coverage evidence."""
@@ -222,7 +279,7 @@ class SelfMapIntegration:
         landmark-bank refitting, not a claim of global pose-graph optimization.
         """
         cooldown = self.rebuild_cooldown()
-        if self.recovery and (len(self.rebuilds) >= 2 or t-self.last_rebuild_t < cooldown):
+        if self.recovery and (self.rebuild_attempts() >= 2 or t-self.last_rebuild_t < cooldown):
             return dict(t=float(t), committed=False, deferred=True,
                         reason='selfmap4_rebuild_budget_or_cooldown')
         if self.recovery and self.rebuild_cause == 'static_frame_correction':
@@ -302,6 +359,7 @@ class SelfMapIntegration:
                 record['pose'] = pose
             # Distributed command poses remain priors; do not certify completion.
             self.rebuild_required = False; self.rebuild_cause = None; self.pending_revision = None
+            self.revision_checkpoint = None
             self.stable, self.last_states = 0, None
             self.zones.tracks.clear(); self.sectors.clear()
             if self.registration is not None and self.registration.evidence is not None:
@@ -345,6 +403,7 @@ class SelfMapIntegration:
         if image.shape != (480, 640, 3) or image.dtype != np.uint8:
             raise ValueError('SELF_MAP_REQUIRES_640X480_RGB')
         self.odom.advance(t)
+        self.quarantine_release = None
         held = self.servo.get(1, 2000) <= 1600  # conservative issued-command state
         settled = bool(self.servo) and t-self.odom.servo_since >= (.25 if not held else 2.25)
         if settled and not held:
@@ -368,8 +427,40 @@ class SelfMapIntegration:
         if self.options.revision_gate != 'off':
             from harness.selfmap5_revision import issued_distance
             self.distance_since_visual += issued_distance(self.delta)
-        event = self.slam.step(observation, command_delta=self.delta, command_covariance=self.Q)
-        if static_pose is not None:
+        if self.revision_checkpoint is not None:
+            saved = self.revision_checkpoint
+            saved['covariance'] = _motion_covariance(saved['pose'], self.delta, saved['covariance'], self.Q)
+            saved['pose'] = compose(saved['pose'], self.delta)
+            saved['distance'] += issued_distance(self.delta)
+            if self.release_quarantine(t) is not None:
+                prior = self.slam.pose.copy(); predicted_covariance = self.slam.covariance.copy()
+                # The saved state has already consumed this frame's motion.
+                self.delta, self.Q = np.zeros(3), np.zeros((3, 3))
+                static_pose = None
+        if self.correction_gate is not None:
+            def admit(p, q, P, detail):
+                from harness.active_camera import transform as camera
+                rot = camera(self.servo)[1]
+                view = [*p[:2], p[2]+math.atan2(rot[1, 2], rot[0, 2])]
+                ids = ([f'orb:{lm}' for _, lm in detail['matched']] if static_pose is None else
+                       self.registration.last.get('geometry', {}).get('fresh_evidence_edge_ids', []))
+                decision = self.correction_gate.consider(p, q, P, detail['covariance'], t=t,
+                    frame_id=frame_id, source='visual' if static_pose is None else 'static',
+                    view=view, evidence_ids=ids)
+                if decision['confirmed_outlier'] and self.grid.navigation.seen:
+                    self.checkpoint_revision(t, p, P)
+                return decision
+            # While rolling back, do not immediately re-adopt the rejected bank.
+            if self.quarantine_release is not None:
+                observation = Observation(frame_id, t, np.empty((0, 2)), np.empty((0, 32), np.uint8), sha256)
+            self.slam._gate_prediction = predicted_covariance
+            event = self.slam.guarded_step(observation, command_delta=self.delta, command_covariance=self.Q,
+                                           correction_gate=admit, pose_override=static_pose)
+            if static_pose is not None and event['status'] == 'visual_relocalized':
+                event['reason'] = 'selfmap4_static_lines'
+        else:
+            event = self.slam.step(observation, command_delta=self.delta, command_covariance=self.Q)
+        if static_pose is not None and self.correction_gate is None:
             self.slam.pose, self.slam.covariance = static_pose
             event.update(status='visual_relocalized', reason='selfmap4_static_lines',
                          pose=self.slam.pose.tolist(), covariance=self.slam.covariance.tolist())
@@ -386,7 +477,10 @@ class SelfMapIntegration:
         innovation = np.linalg.norm(pose[:2]-prior[:2])
         yaw_jump = abs((pose[2]-prior[2]+math.pi) % (2*math.pi)-math.pi)
         revision_detail = None
-        if self.options.revision_gate != 'off':
+        if self.correction_gate is not None:
+            revision_detail = event.get('correction_gate')
+            revision_required = bool(revision_detail and revision_detail['confirmed_outlier'])
+        elif self.options.revision_gate != 'off':
             from harness.selfmap5_revision import revision_test
             # PriorBootstrap retains P + R already; do not double count P.
             measurement_covariance = (cov-predicted_covariance
@@ -407,7 +501,7 @@ class SelfMapIntegration:
                     endpoint_frame_id=frame_id, t=float(t))
         if self.rebuild_required and self.options.pose_rebuild == 'refit_history_v1' and (
                 visual and t-self.last_rebuild_t >= self.rebuild_cooldown()) and (
-                not self.recovery or len(self.rebuilds) < 2):
+                not self.recovery or self.rebuild_attempts() < 2):
             self.rebuild(t)
         reasons = []
         if held: reasons.append('commanded_grip_closed')
@@ -485,6 +579,10 @@ class SelfMapIntegration:
                           rebuild_cooldown_s=self.rebuild_cooldown())
         if self.options.multiframe_registration != 'off':
             result['multiframe_registration'] = self.options.multiframe_registration
+        if self.correction_gate is not None:
+            result.update(correction_safety=self.options.correction_safety,
+                          correction_admission=event.get('correction_gate'),
+                          quarantine_release=self.quarantine_release)
         self.events.append(result)
         if self.options.bootstrap != 'off':
             result.update(mapping_pose_quality='command_prior' if prior_insertion else 'visual',
@@ -496,7 +594,7 @@ class SelfMapIntegration:
             result.update(recovery_profile=self.options.recovery_profile,
                 plane_flow=flow_row, static_registration=self.registration.last,
                 rebuild_commits=sum(r['committed'] for r in self.rebuilds),
-                rebuild_budget_remaining=max(0, 2-len(self.rebuilds)),
+                rebuild_budget_remaining=max(0, 2-self.rebuild_attempts()),
                 frontier_reason=frontier_reason, geometric_candidate_count=len(geometric),
                 reachable_footprint_cells=int(reach.sum()),
                 recovery_candidate=dict(skill='relocalize',

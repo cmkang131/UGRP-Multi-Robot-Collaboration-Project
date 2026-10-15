@@ -141,7 +141,7 @@ class StaticRegistration:
     Unresolved hypotheses can propose look directions but cannot clip/clear maps
     or lower pose covariance. Registration has to survive three distinct views.
     """
-    def __init__(self, static, *, multiframe_registration='off'):
+    def __init__(self, static, *, multiframe_registration='off', correction_safety='off'):
         from harness.e2e_static_rgb_localizer import create
         from harness.self_map_landmark_sensor import Sensor
         if set(static) != {'map_id', 'version', 'frame', 'bounds_m', 'obstacles', 'regions', 'passages'}:
@@ -155,12 +155,14 @@ class StaticRegistration:
         self.multiframe_registration = multiframe_registration
         self.evidence = None
         self.confirmation_views = set()
+        self.correction_safety = correction_safety
         if multiframe_registration != 'off':
             from harness.selfmap5_registration import OPTION, RecoveryPolicy, MultiFrameEvidence
             if multiframe_registration != OPTION:
                 raise ValueError('UNKNOWN_MULTIFRAME_REGISTRATION')
             self.pf.policy = RecoveryPolicy()
             self.evidence = MultiFrameEvidence()
+            self.evidence.trace_edge_ids = correction_safety != 'off'
 
     def begin_sweep(self, t):
         if self.evidence is not None:
@@ -221,6 +223,18 @@ class StaticRegistration:
                     and np.linalg.eigvalsh(cov[:2, :2]).max() <= .15**2
                     and cov[2, 2] <= math.radians(5)**2
                     and supported)
+        if self.correction_safety != 'off':
+            from harness.selfmap6_safety import OPTION, registration_hypotheses
+            if self.correction_safety != OPTION or self.evidence is None:
+                raise ValueError('INVALID_SELFMAP6_REGISTRATION')
+            ambiguity = dict(candidate_count=0, unique=False, candidates=[], evaluated=False)
+            if reliable:
+                ambiguity = registration_hypotheses(self.evidence, self.pf.landmark_map.edges, own_pose, cov)
+                ambiguity['evaluated'] = True
+                unique_pose = np.asarray(ambiguity['candidates'][0]) if ambiguity['unique'] else None
+                reliable = (unique_pose is not None and np.linalg.norm(unique_pose[:2]-np.asarray(row['pose'])[:2]) <= .15
+                    and abs(math.atan2(math.sin(unique_pose[2]-row['pose'][2]), math.cos(unique_pose[2]-row['pose'][2]))) <= math.radians(10))
+            geometry['ambiguity'] = ambiguity
         view = (tuple(sorted(servo.items())), int(math.floor(own_pose[2]/math.radians(10))))
         if reliable and (self.evidence is None or view not in self.confirmation_views):
             anchor = compose(row['pose'], inverse(own_pose))

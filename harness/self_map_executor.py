@@ -38,7 +38,7 @@ def make_executor(legacy=None, *, self_map_executor='off', **kwargs):
 
 class SelfMapExecutor:
     def __init__(self, robot_id, *, start_time=0., cap_s=180., mapper=None, sweep=None,
-                 bootstrap='off', initial_sweep='off', recovery_profile='off', static_map=None, revision_gate='off', multiframe_registration='off'):
+                 bootstrap='off', initial_sweep='off', recovery_profile='off', static_map=None, revision_gate='off', multiframe_registration='off', correction_safety='off'):
         if not math.isfinite(cap_s) or not 1. <= cap_s <= 300.:
             raise ValueError('FINITE_SELF_MAP_CAP_1_TO_300_REQUIRED')
         self.robot_id, self.started, self.cap_s = robot_id, float(start_time), float(cap_s)
@@ -50,7 +50,8 @@ class SelfMapExecutor:
             start_time=start_time, options=Options(self_map_integration=MAP_OPTION,
                 pose_rebuild='refit_history_v1', navigation_support='current_footprint_v1',
                 bootstrap=bootstrap, recovery_profile=recovery_profile,
-                revision_gate=revision_gate, multiframe_registration=multiframe_registration), static_map=static_map)
+                revision_gate=revision_gate, multiframe_registration=multiframe_registration,
+                correction_safety=correction_safety), static_map=static_map)
         self.recovery = self.mapper.options.recovery_profile != 'off'
         if sweep is None:
             # Existing E2E18/egomap arrival -> bounded full-body observation sweep.
@@ -120,6 +121,10 @@ class SelfMapExecutor:
         if self.done:
             return dict(t=float(t), kind='hold'), dict(stage='stopped', stop_reason=self.stop_reason)
         row = self.mapper.receive(robot_id=robot_id, t=t, frame_id=frame_id, rgb=rgb, sha256=sha256)
+        if row.get('quarantine_release') is not None:
+            self.recovery_started = None; self.recovery_attempts = 0; self.recovery_pans = None
+            self.target = None; self.stage = 'select'
+            self.event(t, 'selfmap6_quarantine_released', receipt=row['quarantine_release'])
         pose = np.asarray(row['pose'])
         command = None
         if self.recovery and self.recovery_started is not None:

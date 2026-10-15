@@ -63,6 +63,7 @@ class MultiFrameEvidence:
         self.active = False
         self.frames = []
         self.started = None
+        self.trace_edge_ids = False
 
     def begin(self, t):
         self.active = True; self.frames.clear(); self.started = float(t)
@@ -83,14 +84,14 @@ class MultiFrameEvidence:
     def supported(self, edges, world_pose, own_pose, covariance):
         from harness.selfmap4_geometry import inverse
         anchor = compose(world_pose, inverse(own_pose))
-        normals, errors, used_frames = [], [], set()
+        normals, errors, used_frames, edge_ids, fresh_ids = [], [], set(), set(), set()
         for i, frame in enumerate(self.frames):
             pose = compose(anchor, frame['pose'])
             for line in frame['lines']:
                 ends = transform(line['endpoints'], pose)
                 angle = math.atan2(line['normal'][1], line['normal'][0])+pose[2]
                 candidates = []
-                for edge in edges:
+                for edge_id, edge in enumerate(edges):
                     hd = abs(edge['hue']-line['hue']); hd = min(hd, 180-hd)
                     da = abs(math.atan2(math.sin(angle-math.atan2(*edge['normal'][::-1])),
                                         math.cos(angle-math.atan2(*edge['normal'][::-1]))))
@@ -108,14 +109,20 @@ class MultiFrameEvidence:
                         S = J@covariance@J.T+np.eye(2)*(.05/3)**2
                         nis.append(float(error@np.linalg.solve(S, error)))
                     if max(nis) <= 9.:
-                        candidates.append((max(nis), edge['normal'], float(np.linalg.norm(residual, axis=1).max())))
+                        candidates.append((max(nis), edge['normal'], float(np.linalg.norm(residual, axis=1).max()), edge_id))
                 if candidates:
-                    _, normal, error = min(candidates, key=lambda r:r[0])
+                    _, normal, error, edge_id = min(candidates, key=lambda r:r[0])
                     normals.append(normal); errors.append(error); used_frames.add(i)
+                    edge_ids.add(f'static:{edge_id}')
+                    if i == len(self.frames)-1:
+                        fresh_ids.add(f'static:{edge_id}')
         values = np.linalg.eigvalsh(np.asarray(normals).T@np.asarray(normals)) if normals else np.zeros(2)
         axes = int(np.count_nonzero(values >= .5))
-        return axes == 2, dict(supported_floor_lines=len(normals), independent_line_axes=axes == 2,
+        detail = dict(supported_floor_lines=len(normals), independent_line_axes=axes == 2,
             independent_axis_count=axes, information_eigenvalues=values.tolist(),
             max_line_error_m=max(errors, default=None), evidence_frames=len(used_frames),
             buffered_frames=len(self.frames), sweep_active=self.active,
             residual_gate='PF_covariance_3sigma', sigma_scale=SIGMA_SCALE)
+        if self.trace_edge_ids:
+            detail.update(evidence_edge_ids=sorted(edge_ids), fresh_evidence_edge_ids=sorted(fresh_ids))
+        return axes == 2, detail
