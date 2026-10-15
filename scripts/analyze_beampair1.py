@@ -4,6 +4,8 @@ from collections import Counter
 import hashlib
 import json
 from pathlib import Path
+import shlex
+import sys
 
 from scripts.audit_beampair1 import read, read_bytes, dump, recount, ordered_funnel
 
@@ -58,6 +60,12 @@ def candidate_funnels(result):
             'no_path','unsafe_body_sweep','band_not_visible','arm','endpoint_feasible',
             'connector','planning_budget','feasible')
     out={}
+    waits=[e for t in result.get('teachers',{}).values() for e in t.get('rendezvous_log',[])
+           if e['event']=='wait_candidate']
+    out['rendezvous_wait_candidates']=dict(N=len(waits),
+        ordered_funnel=ordered_funnel(len(waits),[
+            ('current_and_predicted_clear_path',sum(e.get('accepted',False) or e.get('reason_category')=='unchanged_choice_3' for e in waits)),
+            ('nonrepeated_selected_wait',sum(e.get('accepted',False) for e in waits))]))
     for group,counts in groups.items():
         # These are original first-failure stages; terminal endpoint passes
         # leave this population and are never added to full-connector trials.
@@ -133,6 +141,16 @@ def analyze(root,out):
         entry['event_funnel']=ordered_funnel(2,[('own_ready',sum(e['ready'] for e in per_role)),
             ('own_pick_after_go_ack',sum(e['pick'] for e in per_role)),
             ('own_command_complete',sum(e['command_complete'] for e in per_role))])
+        retries=[(rid,e['t']) for rid,t in result.get('teachers',{}).items()
+            for e in t.get('rendezvous_log',[]) if e['event'] in ('encounter_deadline_replan','peer_no_progress_replan')]
+        after_align=sum(any(e.get('to') in ('align','ready','pick','complete') and e['t']>=when
+            for e in result['teachers'][rid]['events']) for rid,when in retries)
+        after_complete=sum(any(e.get('to')=='complete' and e['t']>=when
+            for e in result['teachers'][rid]['events']) for rid,when in retries)
+        entry['rendezvous_event_funnel']=ordered_funnel(len(retries),[
+            ('deadline_replanned',len(retries)),('own_align_after_retry',after_align),
+            ('own_complete_after_retry',after_complete),
+            ('joint_hold_3s_after_retry',after_complete if entry['strict_success'] else 0)])
         episodes.append(entry)
     passed=sum(e['legacy_success'] and e['strict_success'] and e.get('visible_eligible')
         and e['held_object_hidden_v1'] and e['held_world_reads']==0 for e in episodes)
@@ -149,7 +167,9 @@ def analyze(root,out):
         held_world_reads=sum(e['held_world_reads'] for e in episodes),
         invisible_measurements=sum((e.get('audit') or {}).get('invisible_measurements',0) for e in episodes),
         missing_rejection_audit_N=missing,reason_distribution=dict(reasons),blocked_object_distribution=dict(blocker_counts),
-        runs=episodes,reproduce=f'python -m scripts.analyze_beampair1 {root} --out {out}')
+        runs=episodes,analysis_script_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        reproduce=f'cd {shlex.quote(str(Path.cwd()))} && PYTHONPATH=. '+shlex.join([
+            sys.executable,str(Path(__file__).resolve()),str(root),'--out',str(out)]))
     out.mkdir(parents=True,exist_ok=True)
     dump(out/'summary.json',report)
     dump(out/'rejection-table.json',dict(schema='ugrp.beampair1.funnel.v1',source_sha=batch['source_sha'],
@@ -157,6 +177,8 @@ def analyze(root,out):
         candidate_populations={e['raw']:e['candidate_populations'] for e in episodes},
         frame_populations={e['raw']:e['frame_funnel'] for e in episodes},
         event_populations={e['raw']:e['event_funnel'] for e in episodes},
+        rendezvous_event_populations={e['raw']:e['rendezvous_event_funnel'] for e in episodes},
+        analysis_script_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         missing_rejection_audit_N=missing,reproduce=report['reproduce']))
     dump(out/'candidate-rejections.json',all_rejections)
     print(json.dumps({k:v for k,v in report.items() if k!='runs'}))

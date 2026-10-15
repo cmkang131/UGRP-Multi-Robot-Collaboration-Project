@@ -106,3 +106,8 @@ SHA256 `69bdd4f62546e3e38ea024cf94b6bc12b86cef39b8a187ee155b7f11794a1c69`.
 ## 2026-10-15 beampair1 long_beam 근거리 교사
 
 `d79f04a39e3eec9d418e5c44929182e0ec79f51c` + dependency `26f84d0f0ada1c33473c83cca2d3415ce51bd247`, gcp1/n4-highcpu-64, v7·청록/파랑 끝·weld OFF. 짧은 탐색6/6 공동 들기(3초), 정식40회 관문 미실행. 대표 seed71001 own r1/r2 1Hz 검토 영상은 gcp1 `/home/ugrp/ugrp-sim/outputs/beampair1-r3-analysis-v2/representative/beampair1-d79f04a3-71001.mp4` (SHA256 `dd4c7644280bd101e4a0ef6bb3670a34ec31581b9f0cc71c41b573a9b0f81b2c`). [프레임/원본/인코더 기록](../experiments/2026-10-15-beampair1/representative.json). 근거리 접근·정렬·집기·들기만이며 운반·놓기·학생·실물 성공이 아니다. Mac에는 영상 원본을 회수하지 않았다.
+
+
+## 2026-10-15 beampair2 peer rendezvous
+
+`f84b2c8a436feff9775758876248c3054ff3553b` + dependency `26f84d0f0ada1c33473c83cca2d3415ce51bd247`, gcp1/n4-highcpu-64, v7·색 끝·weld OFF·기본 off peer_rendezvous_v1. 짧은 탐색R2 6/6 공동 들기3초, 40회 재시작 큐 미제출. 대표 실패복구seed8318604 own r1/r2 1Hz 영상: gcp1 `/home/ugrp/ugrp-sim/outputs/beampair2/representative-f84b2c8a/beampair2-f84b2c8a-8318604.mp4`, SHA256 `57aff4d304d3a8dec9c9e869480f5dade0e23c7dc222474c961cbaad061abe6b`. [프레임·인코더·보존 기록](../experiments/2026-10-15-beampair2/representative.json). Mac에는 요약·몽타주만 회수. 근거리 교사 탐색이며 학생·운반·놓기·실물 성공은 아니다.

@@ -1,0 +1,25 @@
+{
+  "first_seed": 8318604,
+  "runs": [
+    "/home/ugrp/ugrp-sim/runs/beampair2-r1-33e0e8c9/probe/diagnostic/episode-000/raw",
+    "/home/ugrp/ugrp-sim/runs/beampair2-r2-f84b2c8a/probe/diagnostic/episode-000/raw"
+  ],
+  "same_machine_type": "n4-highcpu-64",
+  "comparisons": [
+    {
+      "robot": "r1",
+      "N": 487,
+      "second_N": 487,
+      "command_phase_done_mismatch_N": 0,
+      "command_sha256": "8856dfcf01b750bce314846e4c58a04d4c6580d976dcac5ba753a507f5f17e44"
+    },
+    {
+      "robot": "r2",
+      "N": 487,
+      "second_N": 487,
+      "command_phase_done_mismatch_N": 0,
+      "command_sha256": "38ce36f6f248def7f40bbaee57538f006d8bfb9c8e900c171cb785cf14100045"
+    }
+  ],
+  "scope": "R1/R2 saved commands and phase/done exact; these were single first probes, not16-concurrent reproducibility"
+}

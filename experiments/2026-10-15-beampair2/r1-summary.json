@@ -155,7 +155,25 @@
         "r2": 8
       },
       "adapter_manifest_verified_files": 2,
-      "candidate_populations": {},
+      "candidate_populations": {
+        "rendezvous_wait_candidates": {
+          "N": 0,
+          "ordered_funnel": [
+            {
+              "gate": "current_and_predicted_clear_path",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            },
+            {
+              "gate": "nonrepeated_selected_wait",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            }
+          ]
+        }
+      },
       "montage": {
         "path": "/home/ugrp/ugrp-sim/outputs/beampair2/r1/episode-000.jpg",
         "sha256": "9fb2b225f8d965bfd78851e5c6499a9a788f59a26c1cac56a67c20f98728cb58",
@@ -257,6 +275,32 @@
           "gate": "own_command_complete",
           "entered": 2,
           "passed": 2,
+          "rejected": 0
+        }
+      ],
+      "rendezvous_event_funnel": [
+        {
+          "gate": "deadline_replanned",
+          "entered": 1,
+          "passed": 1,
+          "rejected": 0
+        },
+        {
+          "gate": "own_align_after_retry",
+          "entered": 1,
+          "passed": 1,
+          "rejected": 0
+        },
+        {
+          "gate": "own_complete_after_retry",
+          "entered": 1,
+          "passed": 1,
+          "rejected": 0
+        },
+        {
+          "gate": "joint_hold_3s_after_retry",
+          "entered": 1,
+          "passed": 1,
           "rejected": 0
         }
       ]

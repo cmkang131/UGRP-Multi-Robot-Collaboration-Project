@@ -53,7 +53,25 @@
     "r2": 74
   },
   "candidate_populations": {
-    "/home/ugrp/ugrp-sim/runs/beampair2-r1-33e0e8c9/probe/diagnostic/episode-000/raw": {}
+    "/home/ugrp/ugrp-sim/runs/beampair2-r1-33e0e8c9/probe/diagnostic/episode-000/raw": {
+      "rendezvous_wait_candidates": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "current_and_predicted_clear_path",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "nonrepeated_selected_wait",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      }
+    }
   },
   "frame_populations": {
     "/home/ugrp/ugrp-sim/runs/beampair2-r1-33e0e8c9/probe/diagnostic/episode-000/raw": [
@@ -99,6 +117,35 @@
       }
     ]
   },
+  "rendezvous_event_populations": {
+    "/home/ugrp/ugrp-sim/runs/beampair2-r1-33e0e8c9/probe/diagnostic/episode-000/raw": [
+      {
+        "gate": "deadline_replanned",
+        "entered": 1,
+        "passed": 1,
+        "rejected": 0
+      },
+      {
+        "gate": "own_align_after_retry",
+        "entered": 1,
+        "passed": 1,
+        "rejected": 0
+      },
+      {
+        "gate": "own_complete_after_retry",
+        "entered": 1,
+        "passed": 1,
+        "rejected": 0
+      },
+      {
+        "gate": "joint_hold_3s_after_retry",
+        "entered": 1,
+        "passed": 1,
+        "rejected": 0
+      }
+    ]
+  },
+  "analysis_script_sha256": "ad1099a93eebc6be67c062324edfd7181c843d968e5684b9c21c830a21907a58",
   "missing_rejection_audit_N": 0,
   "reproduce": "python -m scripts.analyze_beampair1 /home/ugrp/ugrp-sim/runs/beampair2-r1-33e0e8c9/probe --out /home/ugrp/ugrp-sim/outputs/beampair2/r1"
 }

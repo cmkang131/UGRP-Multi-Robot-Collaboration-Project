@@ -68,3 +68,56 @@ search24/25의98304 검사 예산과 기존 A* 노드 예산을 사용하고 wal
 cap_end/HOST_ERROR/입력위반0. 실행기 barrier가 압축된 adapter 결과를 못 읽어
 성공을 first_seed_failed로 잘못 표시했다(원본 batch 기록은 보존). 원본 physical_success와
 3초 유지 재계산은 모두 성공이며 압축 결과를 판독하도록 고친 R2에서6회 다시 잰다.
+
+## 최종 R2 결과와 전달
+
+실행 소스 **`f84b2c8a436feff9775758876248c3054ff3553b`**,
+의존성 **`26f84d0f0ada1c33473c83cca2d3415ce51bd247`**.
+[원본 재집계](r2-summary.json), [후보·프레임·이벤트 순차 관문표](r2-rejection-table.json),
+[첫30·시간·held 차단](r2-runtime.json), [정리·보존 확인](lifecycle.json).
+탐색은2라운드로 끝냈다. R1의1/1과 R2의6/6은 합산하지 않는다.
+
+|R2 관문|누적 통과/시작|거부|
+|---|---:|---:|
+|시작|6/6|0|
+|both_align|6/6|0|
+|both_ready|6/6|0|
+|both_pick|6/6|0|
+|both_command_complete|6/6|0|
+|whole beam 3초 유지|6/6|0|
+|입력 적합|6/6|0|
+
+완료 실패·중단·HOST_ERROR·cap_end·누락 거부 원장·입력 위반 모두0.
+`held_world_reads=0`, `invisible_measurements=0`; held 차단92/102/106/106/90/108틱.
+r1 교란5/1/3/8/10/12틱 전부 완수. r2는8/0/10/5/0/1틱 발행했다.
+두0은 시야/단계 조건상 버스트가 시작되지 않은 경우이며 r2의 전 길이 관문은 아니다.
+SIM30.1–48.6초, wall/SIM 중앙2.359.
+실제 실행은 첫1개 완료 후5개 동시(예약6자리, 제출 직전 호스트 총10자리)다.
+동시16 성능이나 부하 재생을 검증했다고 해석하지 않는다.
+
+[실패시드 반복](first-seed-repeat.json): R1/R2에서 각각r1/r2 487명령,
+합974개 발행 명령·phase·done 불일치0. 각 run의 원본 SHA256SUMS 전체 검사 통과.
+저장 원본은 gcp1 영속 디스크이며 ARM 별도 백업은 하지 않았다.
+[영상 검토 기록](visual-review.json): R2 각6시각×2로봇×6실행=72프레임,
+전체0–30/31/34/34/36/48 SIM초를 직접 보았다(첫30과 처음·중간·끝).
+접근 후 근접 색 띠가 보이는 구간에서 각자 맡은 청록/파랑 끝으로 갔다.
+프레임 표본 검토이며 연속 영상 전체 검토나 물리 접촉 거리 측정은 아니다.
+[대표 영상·원본98프레임 해시](representative.json)는 gcp1에만 보존한다.
+R1·R2 첫 성공 원본은 하위milestone 메타데이터로 보존하며 기존 해시 목록은 덮어쓰지 않았다.
+
+[새40회 대기열](gate40-queue.json): 전체 SHA·소스 해시·기존40개 frozen setup,
+8318604 맨 앞, 새 run 이름, 새 실행 토글, 절대경로 rejection_table을 연결했다.
+운영 사본은 `/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-beampair2-f84b2c8a.json`.
+`approved=false`, `submitted=false`, `ready=false`, `gate_measured_N=0`.
+**조정자가 pinned worktree를 만든다.** 예상 경로는
+`/Users/changmin/projects/ugrp-wt/beam-pair-gate-f84b2c8a`.
+기존d79 결과·R1/R2 탐색 성공은40회 결과에 더하지 않는다. 모든40개를 처음부터 다시 잰다.
+
+남은 활성화 전 조건: clean pin/전체해시,16동시 첫30 속도·원본 확인,
+VM8시간 상한 확인(이번 live VM scheduling은24시간이었고 본 작업 명령은별도8시간 timeout),
+비용·유휴·메모리·디스크·호스트40 이하 재확인이다.
+비용정지 함수budget-stop은ACTIVE, 최근KRW 순비용 payload0/1000 확인.
+다른 작업 때문에 VM은 끄지 않았고 본 작업 worker0·lease/예약 해제를 확인했다.
+양보 위치 재선택은 구현했지만 이번6개에서 분기가 실행되지 않았다(후보0).
+측정된 복구는 moving_peer_replan1건이다. 독립40회·데이터·ACT 학습·학생·운반·놓기·실물은미검증.
+로컬 관련 비물리 검사는18개 통과하고 새 시험을CI 목록에도 등록했다.

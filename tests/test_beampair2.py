@@ -68,3 +68,11 @@ def test_batch_accepts_a_compressed_final_adapter(tmp_path,monkeypatch):
     assert final_adapter_result(path)==expected
     packed.unlink()
     assert final_adapter_result(path) is None
+
+
+def test_candidate_and_event_populations_are_explicit_even_without_a_yield():
+    from scripts.analyze_beampair1 import candidate_funnels
+    assert candidate_funnels({'teachers':{}})['rendezvous_wait_candidates']=={
+        'N':0,'ordered_funnel':[
+            {'gate':'current_and_predicted_clear_path','entered':0,'passed':0,'rejected':0},
+            {'gate':'nonrepeated_selected_wait','entered':0,'passed':0,'rejected':0}]}
