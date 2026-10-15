@@ -7,7 +7,8 @@ from sim.grasp_act_search17 import MODES as SEARCH17_MODES
 from sim.grasp_act_search18 import MODES as SEARCH18_MODES
 from sim.grasp_act_search19 import MODES as SEARCH19_MODES
 from sim.grasp_act_search20 import MODES as SEARCH20_MODES
-ALL_MODES = {**MODES, **SEARCH17_MODES, **SEARCH18_MODES, **SEARCH19_MODES, **SEARCH20_MODES}
+from sim.grasp_act_search21 import MODES as SEARCH21_MODES
+ALL_MODES = {**MODES, **SEARCH17_MODES, **SEARCH18_MODES, **SEARCH19_MODES, **SEARCH20_MODES, **SEARCH21_MODES}
 
 
 def validate(values, *, recovery, profile='visible_only', pose_source='issued', coordination='off'):
@@ -27,6 +28,9 @@ def validate(values, *, recovery, profile='visible_only', pose_source='issued', 
         if any(values.get(k, 'off') != v for k, v in SEARCH19_MODES.items()):
             raise ValueError('search20 requires both search19 modes')
 
+
+    if values.get('search21', 'off') != 'off' and values.get('search20', 'off') == 'off':
+        raise ValueError('search21 requires search20')
 
 def add_arguments(parser):
     for key, mode in ALL_MODES.items():

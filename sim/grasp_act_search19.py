@@ -66,6 +66,8 @@ def body_fallback(teacher, world, now):
     from sim.grasp_act_recovery import AXIAL_CHOICES
     from sim.grasp_act_search17 import expanded_choices
     choices = [(math.radians(a), d) for a in ANGLES_DEG for _, d in AXIAL_CHOICES]
+    from sim.grasp_act_search21 import enabled as search21, fallback
+    if search21(teacher):return fallback(teacher,world,now,list(dict.fromkeys([*choices,*expanded_choices()])))
     selected, checked = select_sampled_goal(
         world, teacher.rid, teacher.end, teacher.bounds, teacher.folded_ready,
         teacher.sink.pwm, choices=_fallback_choices(teacher, [*choices, *expanded_choices()]),
@@ -148,6 +150,8 @@ def project_motion(teacher, world, value, before, now):
 
 
 def _fallback_navigation(teacher, world):
+    from sim.grasp_act_search21 import enabled as search21, BodyNavigation as Search21Navigation
+    if search21(teacher):return Search21Navigation(teacher,world,admission=True)
     from sim.grasp_act_search20 import enabled, BodyNavigation as Search20Navigation
     return Search20Navigation(teacher, world, admission=True) if enabled(teacher) else BodyNavigation(teacher, world)
 

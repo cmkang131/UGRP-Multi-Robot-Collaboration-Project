@@ -77,6 +77,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         self.search18_space=FreeSpace();self.search18_log=[]
         self.search19_log=[];self.search19_body_active=False
         from collections import OrderedDict
+        self.search21_recovery=None;self.search21_encounters=0;self.search21_log=[]
         self.search20_cache=OrderedDict();self.search20_budget=None;self.search20_log=[];self.search20_compute={}
         self.peer_wait_since=None;self.peer_wait_ids=set();self.peer_clear_since=None
         self.peer_route=[];self.peer_route_next=0.;self.recovery_log=[]
@@ -523,6 +524,8 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
                 self.approach_blocked_since=None
                 row['selected']={k:v for k,v in selected.items() if k!='path'}
             self.goal_set_log.append(row)
+        from sim.grasp_act_search21 import schedule
+        if not self.approach_plan_valid:schedule(self,world,now)
         if self.approach_blocked_since is not None and now-self.approach_blocked_since>=self.APPROACH_BLOCKED_LIMIT_S-1e-8:
             self._approach_handoff(now)
         return self.approach_plan_valid
@@ -802,7 +805,8 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         if not enabled(self):return self._search20_step(truth,now,permit_pick=permit_pick)
         import time
         started=time.perf_counter();before=dict(self.sink.pwm)
-        self.search20_budget=PlanningBudget()
+        from sim.grasp_act_search21 import enabled as search21
+        self.search20_budget=PlanningBudget(max_checks=98304,max_s=3.) if search21(self) else PlanningBudget()
         try:
             return self._search20_step(truth,now,permit_pick=permit_pick)
         except PlanningBudgetExceeded:
@@ -831,7 +835,10 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
             self.priority.advance(self,now);permit_pick=False
         if self.local_seen is not None and self.last_command is not None and self.last_tick is not None:
             self.local_seen=propagate_owned(self.local_seen,self.last_command,min(.1,now-self.last_tick),mode=self.search15_modes['search17_odometry'])
-        value,done=self._step(truth,now,permit_pick=permit_pick)
+        if self.search21_recovery is not None:
+            from sim.grasp_act_search21 import recovery_step
+            value,done=recovery_step(self,truth,now,before_pwm)
+        else:value,done=self._step(truth,now,permit_pick=permit_pick)
         # Once the body fallback is active, failed replanning must not disable
         # the full sampled arm/connector checks on this or the next command.
         if self.search19_body_active:self.sampled_stance=True
@@ -993,7 +1000,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
                 'approach_progress':self.approach_progress,'approach_progress_log':self.progress_log,
                 'approach_recovery':self.approach_recovery,'recovery_log':self.recovery_log,
                 'approach_coordination':self.approach_coordination,**self.search15_modes,
-                'search17_log':self.search17_log,'search18_log':self.search18_log,'search19_log':self.search19_log,'search20_log':self.search20_log,'search20_compute':self.search20_compute,'free_space_log':self.search18_space.events,'reobserve_log':self.reobserver.events,'sampled_stance':self.sampled_stance,
+                'search17_log':self.search17_log,'search18_log':self.search18_log,'search19_log':self.search19_log,'search21_log':self.search21_log,'search20_log':self.search20_log,'search20_compute':self.search20_compute,'free_space_log':self.search18_space.events,'reobserve_log':self.reobserver.events,'sampled_stance':self.sampled_stance,
                 'candidate_angle_counts':dict(Counter(str(round(c['offset_deg'],3)) for c in candidates)),
                 'candidate_rejection_counts':dict(Counter(c['reason'] for c in candidates)),
                 'reobserve_pending':None if self.reobserver.active is None else {

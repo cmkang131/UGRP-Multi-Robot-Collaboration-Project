@@ -27,7 +27,8 @@ def enabled(teacher):
 
 
 class PlanningBudget:
-    def __init__(self):
+    def __init__(self, *, max_checks=MAX_CHECKS, max_s=MAX_PLANNING_S):
+        self.max_checks=max_checks;self.max_s=max_s
         self.started = None
         self.checks = self.hits = 0
         self.exhausted = False
@@ -37,7 +38,7 @@ class PlanningBudget:
 
     def check(self):
         if self.started is None:self.started=time.perf_counter()
-        if self.checks >= MAX_CHECKS or self.elapsed() >= MAX_PLANNING_S:
+        if self.checks >= self.max_checks or self.elapsed() >= self.max_s:
             self.exhausted = True
             raise PlanningBudgetExceeded('search20 planning budget')
         self.checks += 1
@@ -184,6 +185,8 @@ def plan_active(teacher, world, now):
             'reasons':dict(Counter(c['reason'] for c in checked))})
         if teacher.approach_blocked_since is None:teacher.approach_blocked_since=now
     teacher.goal_set_log.append(row)
+    from sim.grasp_act_search21 import schedule
+    if selected is None:schedule(teacher,world,now)
     if teacher.approach_blocked_since is not None and now-teacher.approach_blocked_since>=teacher.APPROACH_BLOCKED_LIMIT_S-1e-8:
         teacher._approach_handoff(now)
     return teacher.approach_plan_valid
