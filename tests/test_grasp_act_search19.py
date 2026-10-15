@@ -83,6 +83,17 @@ def test_search19_cannot_silently_enable_the_rejected_footprint():
                                **{**BASE, **MODES, 'search18_footprint': 'search18_footprint_v1'})
 
 
+def test_failed_replan_cannot_unlatch_arm_sweep_checks(monkeypatch):
+    t, x = teacher()
+    t.search19_body_active = True
+    def failed_replan(world, now, *, permit_pick):
+        t.sampled_stance = False
+        return t._hold(now), False
+    monkeypatch.setattr(t, '_step', failed_replan)
+    t.step(x['world'], x['world']['t'])
+    assert t.sampled_stance
+
+
 @pytest.mark.parametrize('seed,feasible', [(8311709, True), (8311723, False)])
 def test_fallback_separates_saved_disc_false_rejection_from_real_cargo_overlap(seed, feasible):
     x = DATA['blocked'][str(seed)]

@@ -1205,11 +1205,11 @@
     "search19": 0
   },
   "source": {
-    "head": "0d0f120a93e2b0f3161b4f2b40557a4e544d1cc7",
+    "head": "32437b9fec4264d49ea46471a065b21684d37ef5",
     "dirty": true,
     "sha256": {
       "sim/grasp_act_search19.py": "e6cbc9c9e58f908f4054238d4f427188c343f8af49e7c65697a070e69e78530c",
-      "sim/grasp_act_teacher_v3.py": "d77492a1d66528f5595dc2f3222b69c1afe42922f6885eb5ee7479788a32a827",
+      "sim/grasp_act_teacher_v3.py": "69c75c834763123c0a4a75e28168500c685834e2526aad1d117c71da457e6f1e",
       "sim/grasp_act_search15_modes.py": "b04725d760d322d5643471d3dbe38ff685a8503cec0d0a3b3741541b70d8804f",
       "scripts/replay_grasp_act_search19.py": "0ca80432f839c152630c9f2f7155b20738191b7376ea11720183e05ee8446335",
       "scripts/run_grasp_act_teacher.py": "21139bc2137e5d876df71e4ddcae1aa46977acf18f9d49614081acf69e03a134",
@@ -1217,7 +1217,7 @@
       "harness/grasp_act_admission.py": "103a7df6124ee59677f3a11149454f71140791e58c92f51483dd3b7e635384b7"
     }
   },
-  "candidate_table": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/beam-search19-00620d7a/candidate-clearance.csv",
+  "candidate_table": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/beam-search19-00620d7a/arm-latch-analysis/candidate-clearance.csv",
   "verification_counts": {
     "verified": 152,
     "missing": 0,
@@ -1232,35 +1232,31 @@
   "physical_success_remeasured": false,
   "remote_host_access": false,
   "new_remote_execution": false,
-  "pytest": {
-    "passed": 32,
-    "failed": 0,
-    "junit_path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/beam-search19-00620d7a/pytest.xml",
-    "sha256": "0fbed32cbc40908810157bc8a7d441ee8d693e1ad25975a234c5ac87509c5706"
-  },
   "ci_shard_inventory": {
     "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/beam-search19-00620d7a/ci-shards.json",
     "new_test_occurrences": 1
   },
-  "final_replay": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/beam-search19-00620d7a/postcommit-replay/summary.json",
+  "final_replay": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/beam-search19-00620d7a/arm-latch-replay/summary.json",
+  "final_analysis": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/beam-search19-00620d7a/arm-latch-analysis",
+  "pytest": {
+    "passed": 33,
+    "failed": 0,
+    "junit_path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/beam-search19-00620d7a/pytest-arm-latch.xml",
+    "sha256": "d29a0143be45d50b62e95ef4b1234683c86287b3ef98313a35e73295afe327d3"
+  },
+  "additional_invariant": "active body recovery preserves full sampled arm/connector checks after a failed replan",
   "artifact_compression_manifest": {
     "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/beam-search19-00620d7a/compression-manifest.json",
-    "sha256": "a522bedeaa5724dcb40fe02a7a7ce7ec99bde1b9159cb4507611b4a587f1fb6b",
-    "scope": "newly generated derivative JSON only; input originals unchanged"
+    "sha256": "751065aa0edc34adea2c2b248ed4c3e0b13bf7aaef2f507cd45dbae9b22e5055",
+    "scope": "new derivative JSON only; input originals unchanged"
   },
   "analysis_artifacts": {
-    "relationship-eval-only.json": "ea9d6f02641f5026f4ac7590e90f8064ab2f92f8823f9ee820ee9fece1b1ecd2",
-    "prior-queues-sha256.json": "2435989d30c14ca6c569e89c693f0676c0b1ca7bbfdc28448697db7dd1e31b8a",
-    "candidate-margin-sweep.json": "01f566a1c950250aaf4d3b700953314faa2d6c70e374377474251c965e681d16",
-    "build_queue.py": "b7b1be952d5d7432f6385b4e14ab9e1afd2d489d976774ead712987e8fda1520",
-    "seed-inventory.json": "b7dfb548ba3dda9b4ba1362ffbe26491c3a0216dc845221a906d00bfcf6f299a",
-    "report.md": "515082b5e312ff3dbe33bc5bed7eae29670784d272c7d062e6cbec10f2acd732",
-    "eof-bytecode-equivalence.json": "68a8579e8f2bc01473e126bc4eb5fd2187f14c53da8c5396c9000b54d7999150",
-    "compression-manifest.json": "a522bedeaa5724dcb40fe02a7a7ce7ec99bde1b9159cb4507611b4a587f1fb6b",
-    "candidate-clearance.csv": "3cfef3a005cb85aa3edadef5f913108283e43aff097b86d217dcae27d7d63d88",
-    "pytest.xml": "0fbed32cbc40908810157bc8a7d441ee8d693e1ad25975a234c5ac87509c5706",
-    "local-verification.json": "985e0dec208223e2540aacf1e8a4751d894623d5b41a0b3959b414e41d81ee79",
-    "ci-shards.json": "2a6f81011f5ae9e5ea8960852dd7152b14464d799e49c41785719cf72056bf1c",
-    "failure-review.json": "b55a873ccffab12b2df8aa09df2602680b7ca356fee1a1fe87c5a1c7828e0abe"
+    "arm-latch-analysis/relationship-eval-only.json": "ea9d6f02641f5026f4ac7590e90f8064ab2f92f8823f9ee820ee9fece1b1ecd2",
+    "arm-latch-analysis/summary.json": "b132f6a64b719cc1b0dd6800895a24fc065fed660f1e3f7b62b58af9667b044f",
+    "arm-latch-analysis/candidate-margin-sweep.json": "01f566a1c950250aaf4d3b700953314faa2d6c70e374377474251c965e681d16",
+    "arm-latch-analysis/report.md": "515082b5e312ff3dbe33bc5bed7eae29670784d272c7d062e6cbec10f2acd732",
+    "arm-latch-analysis/candidate-clearance.csv": "3cfef3a005cb85aa3edadef5f913108283e43aff097b86d217dcae27d7d63d88",
+    "arm-latch-analysis/local-verification.json": "985e0dec208223e2540aacf1e8a4751d894623d5b41a0b3959b414e41d81ee79",
+    "arm-latch-analysis/failure-review.json": "b55a873ccffab12b2df8aa09df2602680b7ca356fee1a1fe87c5a1c7828e0abe"
   }
 }

@@ -462,7 +462,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
             from sim.grasp_act_recovery import AXIAL_CHOICES
             choices=AXIAL_CHOICES if self.approach_recovery in ('approach_recovery_v2','progress_view_recovery_v3') else None
             selected,checked=select_goal(world,self.rid,self.end,self.bounds,self.folded_ready,self.approach_choice,choices=choices,navigation=nav)
-            if self.sampled_stance:
+            if self.sampled_stance or self.search19_body_active:
                 from sim.grasp_act_pregrasp import select_sampled_goal
                 selected,checked=select_sampled_goal(world,self.rid,self.end,self.bounds,self.folded_ready,
                                                      self.sink.pwm,current=self.approach_choice,navigation=nav)
@@ -800,6 +800,9 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         if self.local_seen is not None and self.last_command is not None and self.last_tick is not None:
             self.local_seen=propagate_owned(self.local_seen,self.last_command,min(.1,now-self.last_tick),mode=self.search15_modes['search17_odometry'])
         value,done=self._step(truth,now,permit_pick=permit_pick)
+        # Once the body fallback is active, failed replanning must not disable
+        # the full sampled arm/connector checks on this or the next command.
+        if self.search19_body_active:self.sampled_stance=True
         if self.search15_modes['search19_motion']!='off':
             from sim.grasp_act_search19 import project_motion
             value=project_motion(self,truth,value,before_pwm,now)
