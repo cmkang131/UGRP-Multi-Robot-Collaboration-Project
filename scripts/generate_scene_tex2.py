@@ -17,9 +17,11 @@ SEED = 2026101502
 # Material design bounds, not detector acceptance thresholds. The existing
 # all-hue paint mask starts at S=20; white_markers starts at V>180; relative
 # peer-dark's largest possible V is .38*255=96.9. Stay inside that free interval.
-# Hue differs despite the required low chroma; brightness supplies the large step.
-PALETTES = {'walls': {'h': 112, 's': 16, 'v': [98, 134]},
-            'floor': {'h': 18, 's': 16, 'v': [146, 180]}}
+# B camera JPEG interior S99=24 from authored S16 (error +8), versus paint
+# S>=20. Candidate C uses S8; the new rendered audit still measures all tails.
+# Hue differs despite low chroma; brightness supplies the large step.
+PALETTES = {'walls': {'h': 112, 's': 8, 'v': [98, 134]},
+            'floor': {'h': 18, 's': 8, 'v': [146, 180]}}
 
 
 def texture(key, width, height, *, floor=False):
@@ -65,7 +67,7 @@ def generate(directory):
     record = {'schema': 'ugrp.natural_surface_assets.v2', 'seed': SEED,
               'generator': 'scripts/generate_scene_tex2.py', 'palettes_hsv': PALETTES,
               'floor_extent_m': [16, 16], 'wall_source_pixels_per_m': 512,
-              'cube_face_pixels': 512, 'minimum_source_face_dimension_px': 128, 'walls': walls,
+              'cube_face_pixels': 512, 'wall_texuniform': False, 'minimum_source_face_dimension_px': 128, 'walls': walls,
               'maps': {p.relative_to(ROOT).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest() for p in MAPS}, 'images': {}}
     for key, (width, height, floor) in sorted(specs.items()):
         im = texture(key, width, height, floor=floor)

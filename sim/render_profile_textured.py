@@ -41,7 +41,8 @@ def _definition(name):
     return {'summary': 'Opt-in low-chroma cool walls and warm light floor with unique natural wear; '
                        'visual materials only; camera verification is a separate GCP gate.',
             'xml_ops': [*base.PROFILES['floor_light_v1']['xml_ops'][:-1],
-                        {'op': 'natural_surface_texture_v2', 'manifest_sha256': t.MANIFEST_SHA256}]}
+                        {'op': 'natural_surface_texture_v2', 'manifest_sha256': t.MANIFEST_SHA256,
+                         'wall_texuniform': False}]}
 
 
 def resolve(name):

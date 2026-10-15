@@ -20,11 +20,12 @@
 |---|---|---|---|---|
 | 기존 v1 저장 기록 | 0/0/0 | descriptor 없음 | 기존 기록 참조 | 657–700 |
 | A: 얼룩·마모 | 18/280/800 | 6.67%/25.10% | 1.17%/14.84% | 800×4 |
-| **B: 불규칙 미세 입자 추가 (선택)** | **5/168/791** | **0%/2.30%** | **0%/0%** | **785,738,754,776** |
+| B: 불규칙 미세 입자 추가 (비교) | 5/168/791 | 0%/2.30% | 0%/0% | 785,738,754,776 |
+| **C: 면 매핑 수정·S8 (새 후보)** | **12/225.5/800** | **0%/1.69%** | **0%/0%** | **793,767,772,793** |
 
 800은 기존 감사와 같은 ORB 검출 상한이다. “충분한 특징”의 새 수용 개수를 임의로 정하지 않았으며 실제 화면/가림 자세에 남는 벽 특징은 GCP에서 판정한다. 원거리 유사 descriptor는 기존 정의 그대로 거리≥64 px·Hamming≤24, 반복 패치는 byte 동일 32×32 비율이다. 이들은 소재 반복 진단이며 매칭 정답률·실제 회전 관측 가능성을 대신하지 않는다. B의 highpass NCC(32/64/128/256 px) 최대는 0.211이다.
 
-선택 B의 manifest SHA256은 `7d65a69a2805af70bd2df4c7a0669ecf0e6210d670a853b8b05c75cdcfe444b5`이다. A 원본 PNG는 로컬 `outputs/scene-tex2/candidate-a-assets/`에 보존했으며 A manifest는 `89bd71ce48cdf983d36d869d2c6f3dae63f486cf712602be339ab2fc1f201d24`이다. [A 측정](png-audit/offline-audit.json), [B 측정](png-audit-final/offline-audit.json)과 각 image-metrics 파일에 모든 151장 SHA/측정이 있다. 생성기는 최종 B를 재현하며 배포한 PNG/manifest 바이트가 버전을 정의한다.
+비교 B의 manifest SHA256은 `7d65a69a2805af70bd2df4c7a0669ecf0e6210d670a853b8b05c75cdcfe444b5`이다. A 원본 PNG는 로컬 `outputs/scene-tex2/candidate-a-assets/`에 보존했으며 A manifest는 `89bd71ce48cdf983d36d869d2c6f3dae63f486cf712602be339ab2fc1f201d24`이다. [A 측정](png-audit/offline-audit.json), [B 측정](png-audit-final/offline-audit.json)과 각 image-metrics 파일에 모든 151장 SHA/측정이 있다. 생성기는 최종 B를 재현하며 배포한 PNG/manifest 바이트가 버전을 정의한다.
 
 | 색 분리도 (B PNG 원본) | 값 |
 |---|---|
@@ -64,3 +65,13 @@ python -m pytest -q tests/test_scene_tex2.py tests/test_natural_scene_texture.py
 - [MuJoCo 공식 XML reference, texture/material](https://mujoco.readthedocs.io/en/stable/XMLreference.html#asset-texture): 각 cube 면의 개별 PNG, `texuniform`과 2d `texrepeat` 매핑 의미를 확인했다. 이 문서는 실제 카메라 이미지의 검증을 대신하지 않는다.
 - [OpenCV 공식 camera geometry](https://docs.opencv.org/4.13.0/d9/d0c/group__calib3d.html): 보정·왜곡 모델의 경계를 확인했다. 이번 작업은 기존 실제 카메라/FOV와 fisheye 변환을 재사용하며 제어기 yaw 수용 상수를 새로 정하지 않는다.
 - 저장소 기존 근거: [v1 PR #511 검토·검출기 감사](../2026-10-15-scene-floor-texture/README.md), 고정 `experiments/2026-09-26-markerless-probe/markerless_probe.py`의 벽띠 알고리즘, `harness/e2e_rgb_gate.py`와 색 소스 목록. 외부 원본 영상은 이번 Mac 작업에서 재생하지 않았다.
+
+## GCP B 결과와 C 수정 (2026-10-16 KST)
+
+`3f5feb73` 첫 시도는 H1/H2 allow-list 오류로 프레임0·MODEL_HOST_ERROR였으며, 원본과 [실패 기록](host-error-static-a.json)을 보존했다. 기존 `zone_heldout_scene.install` 준비 어댑터를 쓰도록 고친 `7c45215e`는 **144/144 정적 조건 완료**, 컴파일 물리·카메라 동일성 12/12, 원본2,921파일과 압축146기록의 복원 SHA를 확인했다. 분포·funnel은 [B 관문표](camera-b-rejection-table.json), [원격 요약](gcp-static-b-summary.json), [실행 funnel](gcp-static-b-funnel.json)에 있다.
+
+GCP에서 ffmpeg으로 만든 24장 비교 몽타주를 파일로 직접 봤다. 네 지도 r1 주행에서 v2 벽 무늬가 중심으로 모이는 방사형 늘어짐을 보였고, 가림 HIGH에서는 빔과 바닥만 보이며 벽이 없었다. 실제 48프레임 중 벽이 보인20, 벽 내부 descriptor support가 있는3이다. 가림16/16에서 빔/상대는 보였지만 벽은0·벽 ORB0이었다. 이 결과는 자세/가림의 관측 한계이며 질감만으로 회전 오류를 해결했다고 할 수 없다.
+
+C는 이 검토 뒤 수정한 **새 해시 후보**다. `texuniform=false`로 개별 면의 unit-box PNG를 매핑하고 재질 채도는 S16→8로 낮췄다. [MuJoCo 3.12.0 공식 렌더 코드](https://github.com/google-deepmind/mujoco/blob/3.12.0/src/render/classic/render_gl3.c#L225)는 true일 때 cube TexGen에 geom size를 곱한다. 얇은 벽에서는 실제 면과 다른 cube 면이 선택돼 방사형 늘어짐이 생긴다. 기존 v1은 재생용으로 그대로 두고 v2만 고쳤다. [C 설계·PNG 결과](candidate-c.json)의 manifest는 `ea58773c500dd9bc5dbf3ede4edf5419535c306d3f9c3c11de935a5089af9858`, 프로필은 `f6d825b6a52b2c86a80b6a02ed697b1337888224d49aad47325691e8d44d710d`다. [C 전체 색 표](png-audit-c/color-ranges.md)는 108범위 겹침0이며 기존 B/C를 합산하지 않는다.
+
+C의 새 정적 비교는 기존144조건에 실제 상자4색·빔 끝2색·구역A/B/C를 보는120조건을 더한264프레임이다. 추가 자세는 FOLDED와 원래 카메라/물리/색을 쓰고 객체 freejoint의 setup 위치만 평가용으로 배치한다. 미노출은 미검증으로 기록한다. 프레임의 full detector dictionary 차이는 추정/debug 수치까지 포함하므로 의미적 색/물체 검출 실패와 구분한다. 아직 실제 C 관문은 실행 전이며 최종 결과는 summary.json에 후속 기록한다.

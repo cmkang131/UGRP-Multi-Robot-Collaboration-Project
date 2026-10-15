@@ -15,7 +15,7 @@ from sim.wall_texture import walls_from_xml
 PROFILE = 'walls_floor_textured_v2'
 ASSETS = Path(__file__).resolve().parent / 'assets' / PROFILE
 TEXTURE_DIR = Path('sim/assets') / PROFILE  # relative to the repository scene root
-MANIFEST_SHA256 = '7d65a69a2805af70bd2df4c7a0669ecf0e6210d670a853b8b05c75cdcfe444b5'
+MANIFEST_SHA256 = 'ea58773c500dd9bc5dbf3ede4edf5419535c306d3f9c3c11de935a5089af9858'
 FLOOR_SIZE = (8., 8., .1)
 
 
@@ -75,6 +75,10 @@ def apply(root, *, assets=ASSETS):
     ground.attrib.clear()
     ground.attrib.update(name='ground', type='2d', file=record['images']['floor']['file'])
     # No repeat within the bounded scene. Preserve the collision floor itself.
+    # Cube faces are authored for the unit box. MuJoCo classic render_gl3.c
+    # multiplies TexGen by geom size when texuniform=true, switching faces on
+    # thin boxes and stretching the texture radially; false keeps each face.
+    # Reference: google-deepmind/mujoco tag 3.12.0, src/render/classic/render_gl3.c.
     material.attrib.update(texture='ground', texrepeat='1 1', texuniform='false',
                            rgba='1 1 1 1', specular='0', shininess='0', reflectance='0')
     for wall in walls:
@@ -88,7 +92,7 @@ def apply(root, *, assets=ASSETS):
             faces[attr] = record['images'][k]['file']
         ET.SubElement(asset, 'texture', name=name+'_tex', type='cube', **faces)
         ET.SubElement(asset, 'material', name=name+'_mat', texture=name+'_tex',
-                      texuniform='true', rgba='1 1 1 1', emission='0',
+                      texuniform='false', rgba='1 1 1 1', emission='0',
                       specular='0', shininess='0', reflectance='0')
         geom = root.find(f"worldbody/geom[@name='{wall['name']}']")
         geom.set('material', name+'_mat')
@@ -114,7 +118,7 @@ def verify_model(model):
         matches = [t for t in tids if mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_TEXTURE, t) == expected]
         if len(matches) != 1 or not np.array_equal(model.mat_texrepeat[mid], [1, 1]):
             raise RuntimeError(f'natural surface has wrong texture/repetition: {name}')
-        if bool(model.mat_texuniform[mid]) != (name != 'floor'):
+        if bool(model.mat_texuniform[mid]):
             raise RuntimeError(f'natural surface has wrong mapping: {name}')
         tid = matches[0]
         keys = ['floor'] if name == 'floor' else list(record['walls'][wall_key(name, model.geom_size[i])].values())

@@ -144,3 +144,28 @@ def test_all_four_maps_resolve_without_widening_provider_allowlist():
             assert selected in heldout.IDS
             assert original['map_id'] == heldout.BASE_ID
             assert heldout.load(selected) == static
+
+
+def test_positive_cases_only_extend_view_zero_and_plan_264_frames():
+    assert probe.poses_for_view(0) == probe.POSES + probe.POSITIVE_POSES
+    assert probe.poses_for_view(1) == probe.POSES
+    assert probe.planned_case_count(2) == 11
+    assert 4 * probe.planned_case_count(2) * len(probe.ROBOTS) * len(probe.PROFILES) == 264
+
+
+def test_positive_postures_use_existing_folded_mode():
+    assert all(probe.pose_pwm_mode(pose) == 'FOLDED' for pose in probe.POSITIVE_POSES)
+    assert probe.pose_pwm_mode('drive') == 'FOLDED'
+    assert probe.pose_pwm_mode('high') == probe.pose_pwm_mode('high_beam_peer_occluded') == 'HIGH'
+
+
+def test_palette_layout_uses_real_extents_and_keeps_four_boxes_separate():
+    boxes = {name: [.017, .020, .016] for name in ('cyan', 'red', 'green', 'yellow')}
+    layout = probe.palette_layout((0., 0., 0.), boxes)
+    assert sorted(p[0] for p in layout.values()) == [.75, .75, .9, .9]
+    for a, pose_a in layout.items():
+        for b, pose_b in layout.items():
+            if a == b:
+                continue
+            assert (abs(pose_a[0] - pose_b[0]) >= boxes[a][0] + boxes[b][0] or
+                    abs(pose_a[1] - pose_b[1]) >= boxes[a][1] + boxes[b][1])

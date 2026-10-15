@@ -348,13 +348,12 @@ def surface_hsv_statistics(reader, frames):
     return rows, details, errors
 
 
-def make_montage(reader, output, frames, map_names, profiles):
+def make_montage(reader, output, frames, map_names, profiles, *, poses=('drive', OCCLUDED), filename='camera-montage.jpg'):
     if platform.system() != 'Linux':
         raise RuntimeError('MONTAGE_GCP_LINUX_ONLY')
     # The user's recording rule requires ffmpeg on GCP for review composition.
     # Half-native thumbnails are display-only; measurements use original PNGs.
     width, height, banner = 320, 240, 76
-    poses = ('drive', OCCLUDED)
     command = ['ffmpeg', '-hide_banner', '-loglevel', 'error', '-nostdin',
                '-threads', '1', '-filter_complex_threads', '1']
     chosen, filters, layout = [], [], []
@@ -382,14 +381,14 @@ def make_montage(reader, output, frames, map_names, profiles):
                              f'wallpx={wall["eval_visible_pixels"]} beam={metrics.get("eval_beam_pixels")} peer={metrics.get("eval_partner_pixels")}')
                     chosen.append({'frame': frame['id'], 'source_png': path.relative_to(reader.root).as_posix(),
                                    'source_png_sha256': digest(path), 'metrics_png': label})
-                text = output/f'montage-label-{i:02d}.txt'
+                text = output/f'{Path(filename).stem}-label-{i:02d}.txt'
                 text.write_text(label)
                 filters.append(f"[{i}:v]scale={width}:{height}:flags=lanczos,pad={width}:{height+banner}:0:0:white,"
                                f"drawtext=textfile='{escape(text)}':fontcolor=black:fontsize=10:x=5:y={height+3}[tile{i}]")
                 layout.append(f'{column*width}_{y}')
     labels = ''.join(f'[tile{i}]' for i in range(len(chosen)))
     filters.append(f"{labels}xstack=inputs={len(chosen)}:layout={'|'.join(layout)}[out]")
-    path = output/'camera-montage.jpg'
+    path = output/filename
     args = command+['-filter_complex', ';'.join(filters), '-map', '[out]', '-frames:v', '1',
                     '-threads', '1', '-q:v', '3', '-update', '1', str(path)]
     subprocess.run(args, check=True)
@@ -482,7 +481,13 @@ def run(input_dir, output):
     try:
         montage = make_montage(reader, output, frames, maps, profiles)
         artifacts['montage'] = write_json(output / 'montage.json', montage)
-    except (OSError, ValueError, RuntimeError) as exc:
+        colour_poses = sorted({f['pose'] for f in frames if f['pose'].startswith(('colour_', 'paint_'))
+                               or f['pose'] in ('box_palette', 'beam_end_bands')})
+        if colour_poses:
+            colour_montage = make_montage(reader, output, frames, maps[-1:], profiles,
+                                         poses=colour_poses, filename='colour-montage.jpg')
+            artifacts['colour_montage'] = write_json(output / 'colour-montage.json', colour_montage)
+    except (OSError, ValueError, RuntimeError, subprocess.SubprocessError) as exc:
         host_errors.append({'frame': None, 'category': 'MONTAGE_HOST_ERROR', 'reason': str(exc),
                             'blocking_object': 'saved_image_composition', 'minimum_gap_m': None})
         artifacts['host_errors_csv'] = write_csv(output / 'host-errors.csv', host_errors,

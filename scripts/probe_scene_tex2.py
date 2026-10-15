@@ -35,6 +35,7 @@ if __package__ in (None, ''):
 
 PROFILES = ('floor_light_v1', 'floor_light_textured_v1', 'walls_floor_textured_v2')
 POSES = ('drive', 'high', 'high_beam_peer_occluded')
+POSITIVE_POSES = ('box_palette', 'beam_end_bands', 'paint_A', 'paint_B', 'paint_C')
 ROBOTS = ('r1', 'r2')
 # Native archived camera resolution, unchanged in sim/masterpi_camera_profile.
 WIDTH, HEIGHT = 640, 480
@@ -51,6 +52,62 @@ JPEG_QUALITY = 90
 # claim integration of the absent grasp_act_scene consumer/toggle.
 END_COLOURS = {'band_neg': (.02, .95, .60, 1.), 'band_pos': (.02, .02, .95, 1.)}
 END_COLOUR_SOURCE = '870c0c59f3c2eae556abaa809ac1eddf33dce5ca:sim/grasp_act_scene.py'
+# Coordinator's explicit positive fixture coverage (2026-10-15): four original
+# boxes at .75/.9 m, original beam at .75 m, paint viewed from x-1.5 m. These
+# are authored evaluation setups, never acceptance thresholds or navigation.
+PALETTE_FORWARD_M = (.75, .9)
+
+
+def poses_for_view(view_index):
+    return POSES + POSITIVE_POSES if view_index == 0 else POSES
+
+
+def planned_case_count(view_count):
+    return sum(len(poses_for_view(index)) for index in range(view_count))
+
+
+def pose_pwm_mode(pose):
+    if pose not in POSES + POSITIVE_POSES:
+        raise ValueError('UNKNOWN_STATIC_FIXTURE_POSE:' + pose)
+    return 'FOLDED' if pose == 'drive' or pose in POSITIVE_POSES else 'HIGH'
+
+
+def positive_targets(pose):
+    if pose == 'box_palette':
+        return ('box_cyan', 'box_red', 'box_green', 'box_yellow')
+    if pose == 'beam_end_bands':
+        return ('beam_neg', 'beam_pos')
+    if pose.startswith('paint_'):
+        return ('paint_zone_' + pose[-1],)
+    return ()
+
+
+def palette_layout(xyyaw, box_half_extents):
+    """Four original box centers; spacing derives from their actual geometry."""
+    if len(box_half_extents) != 4:
+        raise ValueError('FOUR_ORIGINAL_PALETTE_BOXES_REQUIRED')
+    x, y, yaw = xyyaw
+    lateral = 2 * max(float(size[1]) for size in box_half_extents.values())
+    result = {}
+    for i, name in enumerate(sorted(box_half_extents)):
+        forward = PALETTE_FORWARD_M[i // 2]
+        left = lateral * (-1 if i % 2 == 0 else 1)
+        result[name] = [x + math.cos(yaw) * forward - math.sin(yaw) * left,
+                        y + math.sin(yaw) * forward + math.cos(yaw) * left, yaw]
+    return result
+
+
+def center_wall_gap(static, xy):
+    gaps = []
+    for wall in static['obstacles']:
+        if not wall['id'].startswith('wall_'):
+            continue
+        yaw = wall.get('yaw_rad', 0.)
+        c, s = math.cos(yaw), math.sin(yaw)
+        dx, dy = np.asarray(xy) - np.asarray(wall['center_m'])
+        local = np.array([c * dx + s * dy, -s * dx + c * dy])
+        gaps.append(float(np.linalg.norm(np.maximum(np.abs(local) - wall['half_extents_m'], 0))))
+    return min(gaps) if gaps else None
 
 
 def sha256(data):
@@ -297,6 +354,12 @@ def _free_pose(model, data, body_name, xyz, yaw):
     data.qvel[address:address + 6] = 0
 
 
+def default_free_z(model, body_name):
+    body = model.body(body_name)
+    joint = int(model.body_jntadr[body.id])
+    return float(model.qpos0[int(model.jnt_qposadr[joint]) + 2])
+
+
 def set_arm(model, data, robot_id, pwm, hardware):
     """Reuse only the pure production pulse conversion; construct no controller."""
     from sim.masterpi_dynamics_v2 import MasterPiDynamicsV2
@@ -318,17 +381,21 @@ def fixture(model, data, scene, view, pose, hardware):
     from sim.zone_cargo import kind
     mujoco.mj_resetData(model, data)
     x, y, yaw = view['xyyaw']
-    if pose == 'high_beam_peer_occluded':
+    if pose == 'high_beam_peer_occluded' or pose in ('box_palette', 'beam_end_bands'):
         # A .75 m wall fixture cannot contain the entire paired formation.
         # Reuse the other already registered view distance (1.5 m) so the real
         # 0.60 m beam/peer remain in the room, rather than crossing a wall.
         backoff = max(WALL_DISTANCES_M) - view['distance_m']
         x -= math.cos(yaw) * backoff
         y -= math.sin(yaw) * backoff
+    static = scene.config['static_map']
+    if pose.startswith('paint_'):
+        center = static['regions']['zone_' + pose[-1]]['center_m']
+        x, y, yaw = center[0] - max(WALL_DISTANCES_M), center[1], 0.
     spawns = scene.config['setup_only']['spawns']
     for rid, spawn in spawns.items():
         _free_pose(model, data, rid + '__robot', spawn[:3], spawn[3])
-    pwm = dict(FOLDED if pose == 'drive' else {**HIGH, 1: 1500})
+    pwm = dict(FOLDED if pose_pwm_mode(pose) == 'FOLDED' else {**HIGH, 1: 1500})
     _free_pose(model, data, 'r1__robot', (x, y, spawns['r1'][2]), yaw)
     # Unloaded partner is the original authored spawn; the occlusion fixture
     # alone installs the symmetric physical long-beam carrying formation.
@@ -339,6 +406,29 @@ def fixture(model, data, scene, view, pose, hardware):
              'source': 'HIGH: harness.zone_pair_highpose; drive: scripts.zone_teacher.FOLDED',
              'contact_or_grasp_success_claimed': False}
     setup['r1_fixture_xyyaw'] = [x, y, yaw]
+    setup['pwm_mode'] = pose_pwm_mode(pose)
+    setup['positive_colour_fixture'] = pose in POSITIVE_POSES
+    setup['positive_expected_target_masks'] = list(positive_targets(pose))
+    setup['minimum_wall_gap_m'] = center_wall_gap(static, (x, y))
+    setup['wall_gap_definition'] = 'horizontal robot/body center to original wall-box boundary; not body collision clearance'
+    if pose == 'box_palette':
+        boxes = scene.config['setup_only']['objects'].values()
+        box_sizes = {item['body_name']: model.geom_size[model.geom(item['body_name'] + '_geom').id].tolist()
+                     for item in boxes}
+        layout = palette_layout((x, y, yaw), box_sizes)
+        for name, (bx, by, byaw) in layout.items():
+            _free_pose(model, data, name, (bx, by, default_free_z(model, name)), byaw)
+        setup['palette_half_extents_m'] = box_sizes
+        setup['palette_layout_xyyaw'] = layout
+        setup['palette_colors_unchanged'] = True
+    if pose == 'beam_end_bands':
+        xyz = (x + PALETTE_FORWARD_M[0] * math.cos(yaw),
+               y + PALETTE_FORWARD_M[0] * math.sin(yaw), default_free_z(model, 'cargo_tex2_beam'))
+        _free_pose(model, data, 'cargo_tex2_beam', xyz, yaw + math.pi / 2)
+        setup['floor_beam_xyz_yaw'] = [*xyz, yaw + math.pi / 2]
+        setup['beam_geometry_and_colour_unchanged'] = True
+    if pose in POSITIVE_POSES:
+        mujoco.mj_forward(model, data)
     if pose == 'high_beam_peer_occluded':
         grip = (data.geom('r1__left_finger').xpos + data.geom('r1__right_finger').xpos) / 2
         grasp = next(g for g in kind('long_beam').grasps if g.role == 'end_neg')
@@ -352,6 +442,11 @@ def fixture(model, data, scene, view, pose, hardware):
         setup['partner_xyz_yaw'] = [*partner, yaw + math.pi]
         setup['occluders'] = ['cargo_tex2_beam', 'r2__robot']
         mujoco.mj_forward(model, data)
+    setup['actual_robot_xyz'] = {rid: data.body(rid + '__robot').xpos.tolist() for rid in spawns}
+    object_names = [item['body_name'] for item in scene.config['setup_only']['objects'].values()] + ['cargo_tex2_beam']
+    setup['actual_object_xyz'] = {name: data.body(name).xpos.tolist() for name in object_names}
+    setup['object_center_wall_gap_m'] = {name: center_wall_gap(static, xyz[:2])
+                                          for name, xyz in setup['actual_object_xyz'].items()}
     if float(data.time) != 0 or np.any(data.eq_active):
         raise RuntimeError('STATIC_STEP0_WELD_OFF_REQUIRED')
     setup['qpos_sha256'] = _array_digest(data.qpos)
@@ -587,12 +682,16 @@ def run(output, profiles, source_sha, proof):
                'limits': ['static fixtures do not establish delivery, localization or physical grasp success',
                           'colour range masks do not replace full detector geometry checks',
                           'grasp_act_scene consumer/toggle absent; exact pinned end RGBA copied into eval fixture only',
-                          'legacy black-band detector is reported independently of the pinned teal/blue HSV masks'],
+                          'legacy black-band detector is reported independently of the pinned teal/blue HSV masks',
+                          'positive targets with zero visible pixels remain unverified; negative detector parity cannot establish positive detection'],
                'reproduction_command': [sys.executable, '-m', 'scripts.probe_scene_tex2', '--execute',
                                         '--source-sha', source_sha, '--setup-proof', proof['path'],
                                         '--output', str(output), '--profiles', *profiles]}
     baseline_models, baseline_frames = {}, {}
-    expected_frames = sum(len(wall_views(json.loads(path.read_text()))) for path in MAPS) * len(POSES) * len(ROBOTS) * len(profiles)
+    expected_frames = sum(planned_case_count(len(wall_views(json.loads(path.read_text())))) for path in MAPS) * len(ROBOTS) * len(profiles)
+    summary['planned_frames'] = expected_frames
+    summary['base_poses'] = list(POSES)
+    summary['positive_poses_at_view0'] = list(POSITIVE_POSES)
     abort_remaining = False
     save_summary(output, summary)
     try:
@@ -627,7 +726,7 @@ def run(output, profiles, source_sha, proof):
                     groups = geometry_groups(model, scene)
                     data = mujoco.MjData(model)
                     for vi, view in enumerate(views):
-                        for pose in POSES:
+                        for pose in poses_for_view(vi):
                             pwm, setup = fixture(model, data, scene, view, pose, hardware)
                             for rid in ROBOTS:
                                 case = f'{map_path.stem}--view{vi}--{pose}--{rid}'
@@ -636,7 +735,8 @@ def run(output, profiles, source_sha, proof):
                                        'pose': pose, 'robot': rid, 'profile': profile,
                                        'physics_identical': model_row['physics_identical'],
                                        'camera_identical': model_row['camera_identical'], 'frame_rendered': False,
-                                       'frame_analysed': False, 'minimum_gap_m': view['minimum_wall_gap_m']}
+                                       'frame_analysed': False, 'minimum_gap_m': setup['minimum_wall_gap_m'],
+                                       'positive_colour_fixture': pose in POSITIVE_POSES}
                                 summary['frames'].append(row)
                                 try:
                                     bgr, masks = render_frame(renderer, model, data, rid, groups)
@@ -669,6 +769,10 @@ def run(output, profiles, source_sha, proof):
                                                    'detectors': detectors, 'colour_ranges': colours,
                                                    'wall_band_detectors': boundary_metrics(image, pwm, masks, profile),
                                                    'eval_beam_pixels': int(masks['beam'].sum()),
+                                                   'eval_target_visible_pixels': {label: int(mask.sum()) for label, mask in masks.items()
+                                                                                if label.startswith(('box_', 'beam_', 'paint_'))},
+                                                   'positive_fixture_expected_target_visible_pixels': {
+                                                       label: int(masks[label].sum()) for label in positive_targets(pose)},
                                                    'eval_partner_pixels': int(masks['peer_' + ('r2' if rid == 'r1' else 'r1')].sum())}
                                         row['metrics'][encoding] = metrics
                                         signatures[encoding] = {'detectors': detectors, 'colours': colours}

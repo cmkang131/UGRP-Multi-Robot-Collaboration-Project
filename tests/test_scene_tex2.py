@@ -35,6 +35,10 @@ def test_v2_changes_only_visual_materials(map_path):
     for tag in ('option', 'actuator'):
         assert ET.tostring(before.find(tag)) == ET.tostring(after.find(tag))
     assert after.find('compiler').get('texturedir') == texture.TEXTURE_DIR.as_posix()
+    # Per-face PNGs describe a complete unit-box face. True scales the cube
+    # direction by thin wall dimensions and selects other faces across it.
+    assert all(m.get('texuniform') == 'false' for m in after.findall('asset/material')
+               if m.get('name', '').startswith('natural_v2_'))
 
 
 def test_pinned_pixels_and_nominal_surface_classes():
