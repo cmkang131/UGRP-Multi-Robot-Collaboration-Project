@@ -8,6 +8,7 @@ Arm sweeps retain the original bounding spheres. No obstacle is removed.
 
 MODE='beampair_box_geometry_v1'
 CHECKS_MODE='beampair_checks_only_v1'
+WORK_MODE='beampair_geometry_work_v1'
 
 
 def navigation_class(original):
@@ -37,6 +38,13 @@ def navigation_class(original):
                         half_extents_m=list(BOX_HALF[:2]),source='zone_arena.BOX_HALF + admitted own-camera observation; retained covariance unchanged'))
 
         def measure(self,xy,yaw=None):
+            b=self.teacher.search20_budget
+            if b is not None and getattr(b,'weighted_work',False):
+                # One scalar pose/obstacle pair is one work unit. The old
+                # counter counted a vector batch as1, regardless of length;
+                # round1 8328152 spent>400s in a single tick's rectangle_gaps.
+                # Bounds are one additional predicate, not a fitted multiplier.
+                b.next_work=len(np.asarray(xy).reshape(-1,2))*(len(self.discs)+len(self.rects)+1)
             if not self.boxes:return super().measure(xy,yaw)
             # Discard parent audit side effects from the superseded spheres;
             # this call still consumes exactly one native planning check.
@@ -69,7 +77,7 @@ def navigation_class(original):
     return BoxNavigation
 
 
-def checks_only_class(original):
+def checks_only_class(original,*,weighted=False):
     class ChecksOnlyBudget(original):
         def __init__(self,*a,**kw):
             # Retain the native 98,304 logical checks. Original8328188 hit the
@@ -77,4 +85,17 @@ def checks_only_class(original):
             # user rule1 require a host-load-independent planning boundary.
             kw.update(max_s=None,safety_s=None)
             super().__init__(*a,**kw)
+            self.weighted_work=weighted;self.next_work=1
+        def check(self):
+            from sim.grasp_act_search20 import PlanningBudgetExceeded
+            work=self.next_work;self.next_work=1
+            if self.weighted_work:
+                # Reuse native98304 as a finite primitive-work budget instead
+                # of98304 arbitrarily large vector calls. This is a stricter
+                # computational candidate, not a new clearance/success bound.
+                if self.checks+work>self.max_checks:
+                    self.exhausted=True
+                    raise PlanningBudgetExceeded('beampair primitive geometry work budget')
+                self.checks+=work-1
+            return super().check()
     return ChecksOnlyBudget

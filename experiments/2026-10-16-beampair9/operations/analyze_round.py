@@ -13,7 +13,7 @@ def main():
     for item in done['completed']:
         raw=Path(item['raw']);entry=recount(raw);result=read(raw/'result.json');adapter=read(raw.parent/'adapter/beampair1-result.json')
         assert adapter['source_sha']==cfg['source_sha'] and adapter['dependency_sha']=='26f84d0f0ada1c33473c83cca2d3415ce51bd247'
-        assert adapter['box_geometry']=='beampair_box_geometry_v1' and adapter['planning_boundary']=='beampair_checks_only_v1'
+        assert adapter['box_geometry']=='beampair_box_geometry_v1' and adapter['planning_boundary']==cfg.get('planning_boundary','beampair_checks_only_v1')
         assert not adapter['training_rgb'] and adapter['held_object_hidden_v1']
         assert adapter['held_world_reads']==0 and result.get('weld')=='off'
         entry.update(seed=item['seed'],category=item['category'],original_category=item['original_category'],

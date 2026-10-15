@@ -38,7 +38,7 @@ def main():
             '--mode','beampair1_v1','--candidate',cfg['candidate'],'--cap-s','60',
             '--rendezvous','peer_rendezvous_v2','--approach-repair','beampair_approach_v2',
             '--wall-layer','beampair_wall_clear_v1','--peer-yield','beampair_peer_yield_v1',
-            '--box-geometry','beampair_box_geometry_v1','--planning-boundary','beampair_checks_only_v1']
+            '--box-geometry','beampair_box_geometry_v1','--planning-boundary',cfg.get('planning_boundary','beampair_geometry_work_v1')]
         log=(d/'log.txt').open('w');p=subprocess.Popen(cmd,cwd=src,env=env,stdout=log,stderr=subprocess.STDOUT,start_new_session=True)
         write(d/'PROCESS.json',dict(pid=p.pid,command=cmd,source_sha=cfg['source_sha'],started=now()))
         write(d/'RUN_META.json',{'class':'dev','task':'beampair9','stage':cfg['batch'],'sha':cfg['source_sha']})

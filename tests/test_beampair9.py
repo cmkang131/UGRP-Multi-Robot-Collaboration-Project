@@ -19,12 +19,13 @@ def navigation(monkeypatch,mode=MODE,observations=None):
     modules(monkeypatch)
     class Native:
         def __init__(self,t,w,*a,**kw):
+            self.teacher=t
             self.details=[dict(id='cyan_1',fresh=True,margin_m=.02),dict(id='unknown_1',fresh=False,margin_m=.04)]
             self.audit_details=self.details;self.blocked={};self.pose=(0,0,0);self.target=None;self.inflation_soft=False
         def measure(self,xy,yaw=None):
             self.blocked['cyan_1']=dict(slack_m=-.05574)
             return np.tile([-.03574,.2],(len(xy),1)),None
-    t=SimpleNamespace(rid='r1',box_geometry=mode,box_geometry_log=[])
+    t=SimpleNamespace(rid='r1',box_geometry=mode,box_geometry_log=[],search20_budget=None)
     obs=observations if observations is not None else dict(cyan_1=dict(kind='cargo',xyz=[1,2,0],yaw=.6))
     w=dict(t=1.,visibility=dict(r1=dict(observations=obs)))
     return navigation_class(Native)(t,w),t
@@ -62,6 +63,21 @@ def test_checks_only_retains_native_count_without_wall_selection():
         def __init__(self,**kw):self.options=kw
     cls=checks_only_class(Budget)
     assert cls(max_checks=98304,max_s=3,safety_s=30).options==dict(max_checks=98304,max_s=None,safety_s=None)
+
+
+def test_vector_work_budget_counts_scalar_pairs_and_fails_before_excess(monkeypatch):
+    m=ModuleType('sim.grasp_act_search20')
+    class Exhausted(RuntimeError):pass
+    m.PlanningBudgetExceeded=Exhausted;monkeypatch.setitem(sys.modules,m.__name__,m)
+    class Native:
+        def __init__(self,**kw):self.max_checks=kw['max_checks'];self.checks=0;self.exhausted=False
+        def check(self):self.checks+=1
+    b=checks_only_class(Native,weighted=True)(max_checks=98304)
+    b.next_work=100*400;b.check();assert b.checks==40000
+    b.next_work=100*400;b.check();assert b.checks==80000
+    b.next_work=100*400
+    with pytest.raises(Exhausted):b.check()
+    assert b.exhausted and b.checks==80000
 
 
 def test_setup_cargo_check_cannot_accept_walls_only_clearance():

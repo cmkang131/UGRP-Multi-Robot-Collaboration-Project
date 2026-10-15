@@ -30,7 +30,7 @@ from harness.beampair_host import gcp2_identity
 from harness.beampair_wall_layer import WallLayer, MODE as WALL_MODE
 from harness.beampair_visible_rays import visible_rays
 from harness.beampair_peer_yield import PeerYieldMixin, MODE as PEER_YIELD_MODE
-from harness.beampair_geometry import navigation_class, checks_only_class, MODE as BOX_MODE, CHECKS_MODE
+from harness.beampair_geometry import navigation_class, checks_only_class, MODE as BOX_MODE, CHECKS_MODE, WORK_MODE
 
 ROOT=Path(__file__).resolve().parents[1]
 EXP=ROOT/'experiments/2026-10-15-beampair1'
@@ -156,7 +156,7 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
     if wall_layer not in ('off',WALL_MODE):raise ValueError('unknown wall layer')
     if peer_yield not in ('off',PEER_YIELD_MODE):raise ValueError('unknown peer yield')
     if box_geometry not in ('off',BOX_MODE):raise ValueError('unknown box geometry')
-    if planning_boundary not in ('off',CHECKS_MODE):raise ValueError('unknown planning boundary')
+    if planning_boundary not in ('off',CHECKS_MODE,WORK_MODE):raise ValueError('unknown planning boundary')
     if record_training and (not recording_proof or recording_proof.get('qualified') is not True):
         raise ValueError('verified beampair7 gate proof required for recording')
     if recording_capture_cache not in ('off','recording_capture_cache_v1'):
@@ -205,8 +205,8 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
         from sim import grasp_act_search20 as budget_module
         original_navigation=navigation_module.BodyNavigation
         original_budget=budget_module.PlanningBudget
-        if box_geometry!='off':navigation_module.BodyNavigation=navigation_class(original_navigation)
-        if planning_boundary!='off':budget_module.PlanningBudget=checks_only_class(original_budget)
+        if box_geometry!='off' or planning_boundary==WORK_MODE:navigation_module.BodyNavigation=navigation_class(original_navigation)
+        if planning_boundary!='off':budget_module.PlanningBudget=checks_only_class(original_budget,weighted=planning_boundary==WORK_MODE)
         original_record_candidates=candidate_record_module.record_candidates
         original_measure=measurements_module.measurements
         original_world=world_module.VisibleWorld
@@ -394,7 +394,7 @@ if __name__=='__main__':
     p.add_argument('--wall-layer',choices=['off',WALL_MODE],default='off')
     p.add_argument('--peer-yield',choices=['off',PEER_YIELD_MODE],default='off')
     p.add_argument('--box-geometry',choices=['off',BOX_MODE],default='off')
-    p.add_argument('--planning-boundary',choices=['off',CHECKS_MODE],default='off')
+    p.add_argument('--planning-boundary',choices=['off',CHECKS_MODE,WORK_MODE],default='off')
     p.add_argument('--failure-tail',action=argparse.BooleanOptionalAction,default=True,
                    help='Recording only: retain last10 SIM seconds own RGB on failure/interruption')
     a=p.parse_args();run(json.loads(a.plan.read_text())['episodes'][a.episode],a.out,a.dependency_root,
