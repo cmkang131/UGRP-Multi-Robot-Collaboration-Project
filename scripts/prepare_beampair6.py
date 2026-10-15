@@ -77,13 +77,15 @@ def generate(seed,output,dependency,mode):
             # 8328183 with0/91 cargo-clear stances. Retain k=91 and the native
             # 5mm envelope; do not tune admission against teacher outcomes.
         check=validity_checker(family,body_clearance,FRESH_MARGIN_M,k,cargo_rects=cargo)
-    prepare(seed,output=output,validity=check,version='beampair9' if mode==CARGO_MODE else 'beampair6')
+    prepare(seed,output=output,validity=check,version='beampair9' if mode==CARGO_MODE else 'beampair6',
+        preserve_role_strata=mode==CARGO_MODE)
     for name in ('gate-plan.json','setup-funnel.json'):
         path=output/name;value=json.loads(path.read_bytes())
         if mode==CARGO_MODE:
             for e in value.get('episodes',[]):e['setup_validity']=mode
         value.update(setup_validity=mode,default='off',k=k,k_basis='v7 initial and authored fixed-event end count minimum',
             cargo_footprints_included=mode==CARGO_MODE,
+            preserve_role_strata=mode==CARGO_MODE,
             census_sha256=hashlib.sha256(report_path.read_bytes()).hexdigest(),dependency_sha=report['dependency_sha'],
             reproduce=f'python -m scripts.prepare_beampair6 --seed {seed} --output {output} --dependency-root {dependency} --setup-validity {mode}',
             scope='setup-only; positions excluded from all action selection; not physical success')

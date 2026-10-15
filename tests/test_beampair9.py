@@ -73,3 +73,27 @@ def test_setup_cargo_check_cannot_accept_walls_only_clearance():
     checked=validity_checker(family,clear,.005,1,cargo_rects=[('cyan_1',(0,0,.017,.02,0))])((0,0,0),static)
     assert not checked['accepted']
     assert checked['ends']['teal']['blocked_object']=='cyan_1'
+
+
+def test_new_setup_mode_preserves_assigned_color_after_rejected_proposal(tmp_path,monkeypatch):
+    import json
+    from scripts import prepare_beampair1 as p
+    monkeypatch.setattr(p,'EXP',tmp_path)
+    scenario=dict(scenario_id='fixture',map_id='fixture',eval=dict(setup=dict(placements=[
+        dict(item_id='cyan_1',kind='cyan',pose_m=[99,99,0])])) )
+    (tmp_path/'scenario-v7.json').write_text(json.dumps(scenario))
+    static=dict(bounds_m=[-10,10,-10,10],regions=dict(pickup=dict(center_m=[0,0],half_extents_m=[1,1])))
+    monkeypatch.setattr(p,'resolve',lambda _: (static,None,None))
+    monkeypatch.setattr(p,'keepout_rects',lambda *a,**kw:[])
+    monkeypatch.setattr(p,'pose_clear',lambda *a,**kw:True)
+    monkeypatch.setattr(p,'kind',lambda _:SimpleNamespace(landing_half_extents_m=[.3,.02],
+        grasps=[SimpleNamespace(grip_xyz=[-.27,0,0]),SimpleNamespace(grip_xyz=[.27,0,0])]))
+    calls=0
+    def validity(*a):
+        nonlocal calls
+        calls+=1
+        return dict(k=1,accepted=calls>1,ends={end:dict(free_goal_N=int(calls>1),
+            blocked_object='cyan_1',min_gap_m=0.) for end in ('teal','blue')})
+    out=tmp_path/'new';p.prepare(123,output=out,validity=validity,preserve_role_strata=True)
+    plans=json.loads((out/'gate-plan.json').read_text())['episodes']
+    assert [e['roles']['r1'] for e in plans]==['teal','blue']*20

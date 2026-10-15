@@ -23,7 +23,7 @@ def segment_hits_rect(a,b,rect):
     return polygons_overlap([a,b],rect_corners(rect))
 
 
-def prepare(seed=8318600, *, output=None, validity=None, version='beampair1'):
+def prepare(seed=8318600, *, output=None, validity=None, version='beampair1',preserve_role_strata=False):
     output=EXP if output is None else Path(output)
     data=(EXP/'scenario-v7.json').read_bytes();scenario=json.loads(data)
     static,_,_=resolve(scenario['map_id']);rects=keepout_rects(static,perimeter=True)
@@ -52,6 +52,10 @@ def prepare(seed=8318600, *, output=None, validity=None, version='beampair1'):
         # choices are not acceptance tolerances. 5000 proposals is the same
         # existing finite computation cap, never a wall-time deadline.
         for attempt in range(5000):
+            # Default-off v3 fixes the old rejection loop's `end` variable
+            # leaking blue into the next proposal. Actual v2 gate40 was19/21
+            # and record200 was92/108 despite the color-balanced annotation.
+            if preserve_role_strata:end='teal' if i%2==0 else 'blue'
             attempts+=1;a=2*math.pi*((i%12+rng.random())/12)
             pose=[rng.uniform(cx-hx+bhx,cx+hx-bhx),rng.uniform(cy-hy+bhy,cy+hy-bhy),a]
             if not pose_clear(pose,footprint,rects,bounds=bounds,margin=0.):
