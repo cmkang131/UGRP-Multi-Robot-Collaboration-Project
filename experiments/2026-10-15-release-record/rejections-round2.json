@@ -1,0 +1,17 @@
+{
+  "source_sha": "7fcbe7c9cab9918914c9dcaa8397b9f380c70ac4",
+  "attempted": 4,
+  "complete": 2,
+  "HOST_ERROR": 2,
+  "categories": [
+    {
+      "category": "audit_inactive_arena_false_positive",
+      "n": 2,
+      "blocker_name": "RenderAudit/data.efm_c,efm_K_rowadr,efm_K_rownnz",
+      "minimum_gap_m": null,
+      "gap_reason": "not a spatial rejection"
+    }
+  ],
+  "evidence": "/home/ugrp/ugrp-sim/ops-reviews/rel22adapt-round2-guard-diagnostic.json",
+  "finding": "three arena field hashes change even across consecutive reads with zero steps and no render; integration, camera and other arrays unchanged"
+}

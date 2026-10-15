@@ -1,0 +1,971 @@
+{
+  "schema": "ugrp.rel22adapt.equivalence.v1",
+  "pairs": [
+    {
+      "passed": true,
+      "off": "/home/ugrp/ugrp-sim/runs/rel22adapt-r3-88600-off-f4763385/raw",
+      "on": "/home/ugrp/ugrp-sim/runs/rel22adapt-r3-88600-on-f4763385/raw",
+      "hashes": {
+        "commands_r1": [
+          "fb803f81e3509719b3a54697658cc0bf07053ad284e823af1054acc3e0134637",
+          "fb803f81e3509719b3a54697658cc0bf07053ad284e823af1054acc3e0134637"
+        ],
+        "commands_r2": [
+          "57fe03e5373d639376ee9dec02ee52c046b129faae33b3fd4d11048759eae170",
+          "57fe03e5373d639376ee9dec02ee52c046b129faae33b3fd4d11048759eae170"
+        ],
+        "eval-only.jsonl": [
+          "3cb3f9d7b1270cc9fdc175cb6ec7da0f281e2aa7396296e81936c283d657335a",
+          "3cb3f9d7b1270cc9fdc175cb6ec7da0f281e2aa7396296e81936c283d657335a"
+        ],
+        "scene.xml": [
+          "0e62413eb4213f4f674678cc21c459d02af9bf843b696b15c3a579ad5919d85e",
+          "0e62413eb4213f4f674678cc21c459d02af9bf843b696b15c3a579ad5919d85e"
+        ],
+        "plan.json": [
+          "473ba5321a6effa48c5c1f6754c1e897ebed7b93049af4709ab2425b987a0723",
+          "473ba5321a6effa48c5c1f6754c1e897ebed7b93049af4709ab2425b987a0723"
+        ],
+        "result_control_evaluation": [
+          "b6f3409eb918486610359ba28b0daa46b7802dc9d8e3a70417e6420f28cceead",
+          "b6f3409eb918486610359ba28b0daa46b7802dc9d8e3a70417e6420f28cceead"
+        ]
+      },
+      "result_ignored_fields": [
+        "loadavg_at_end",
+        "loadavg_at_start",
+        "recording",
+        "recording_mode",
+        "source_sha",
+        "timings_s",
+        "training_include",
+        "training_rgb",
+        "wall_s"
+      ],
+      "off_source_sha": "f476338533b7608bab25422b360491d5795f6fde",
+      "on_source_sha": "f476338533b7608bab25422b360491d5795f6fde",
+      "success": [
+        true,
+        true
+      ],
+      "recording": {
+        "passed": true,
+        "raw": "/home/ugrp/ugrp-sim/runs/rel22adapt-r3-88600-on-f4763385/raw",
+        "source_sha": "f476338533b7608bab25422b360491d5795f6fde",
+        "actors": {
+          "r1": {
+            "rows": 216,
+            "frames": 216,
+            "period_min_s": 0.09999999999976694,
+            "period_max_s": 0.10000000000047748,
+            "first_t": 10.099999999999136,
+            "last_t": 31.60000000005987,
+            "rgb_sha256": "a04833e969f6edd276d169df6d61233058084141943440a0a0e9a3a87293ac2f"
+          },
+          "r2": {
+            "rows": 216,
+            "frames": 216,
+            "period_min_s": 0.09999999999976694,
+            "period_max_s": 0.10000000000047748,
+            "first_t": 10.099999999999136,
+            "last_t": 31.60000000005987,
+            "rgb_sha256": "1d5f291401ea0ffbcf303243b3dd2b3dba97ec93a0ab1b72eb2e5088f9cbfd10"
+          }
+        },
+        "camera": {
+          "width": 640,
+          "height": 480,
+          "period_s": 0.1,
+          "hz": 10.0,
+          "camera": "robot_cam",
+          "pinhole_hfov_deg": 54.5351624215943,
+          "pinhole_vfov_deg": 42.1489488115246,
+          "raw_fisheye_fov": "nonlinear K/D; no single angular FOV",
+          "K": [
+            [
+              619.5194540517232,
+              0.0,
+              287.68910608896766
+            ],
+            [
+              0.0,
+              622.1654884818748,
+              218.69686648455726
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "fisheye_D": [
+            -0.0199819517209417,
+            -0.1707593617153504,
+            -0.2568318201202376,
+            0.9650933421665181
+          ],
+          "mount": "masterpi-camera-user-observation-target-review-v3",
+          "position_m": [
+            0.052982009925558314,
+            0.0,
+            0.028152173913043477
+          ],
+          "quat_wxyz": [
+            0.4545194776720437,
+            0.5416752204197018,
+            -0.5416752204197018,
+            -0.4545194776720437
+          ],
+          "schema": "ugrp.grasp_act.student.v6",
+          "sources": {
+            "sim/masterpi_camera_profile.py": "ec224a88f07b7f1e30b9f306951818ec3907c27554daab1361db6cc8b00f3a1a",
+            "sim/masterpi_camera_review_v3.py": "6d8d739085c44f3196e4b4c514ca7e6c515e82394b1180a712b935df0a1b9362",
+            "sim/s2_realism_camera_binding.py": "86922a48dc7e6a3350f478bf2331a9be114da00ec380b3145e834746ed59bbe0",
+            "harness/grasp_act_contract.py": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056"
+          }
+        },
+        "input_audit": {
+          "held_object": "hidden_v1",
+          "held_world_reads": 0,
+          "held_world_reads_by_site": {},
+          "invisible_measurements": 0,
+          "measurements_by_phase": {
+            "lookaround": {
+              "own_rgb_landmarks": {
+                "n": 905,
+                "invisible": 0
+              }
+            }
+          },
+          "pick_target_uses": [],
+          "assigned_end_visibility_by_phase": {
+            "r1": {
+              "look": {
+                "N": 7,
+                "visible": 0,
+                "visible_fraction": 0.0,
+                "max_blind_s": 0.7
+              },
+              "await_look": {
+                "N": 1,
+                "visible": 0,
+                "visible_fraction": 0.0,
+                "max_blind_s": 0.1
+              },
+              "lower": {
+                "N": 24,
+                "visible": 0,
+                "visible_fraction": 0.0,
+                "max_blind_s": 2.400000000000001
+              },
+              "await_open": {
+                "N": 1,
+                "visible": 0,
+                "visible_fraction": 0.0,
+                "max_blind_s": 0.1
+              },
+              "open": {
+                "N": 15,
+                "visible": 0,
+                "visible_fraction": 0.0,
+                "max_blind_s": 1.5000000000000002
+              },
+              "observe_back": {
+                "N": 36,
+                "visible": 19,
+                "visible_fraction": 0.5277777777777778,
+                "max_blind_s": 1.0999999999999999
+              },
+              "lookaround": {
+                "N": 74,
+                "visible": 2,
+                "visible_fraction": 0.02702702702702703,
+                "max_blind_s": 3.5000000000000018
+              },
+              "observe_move": {
+                "N": 10,
+                "visible": 9,
+                "visible_fraction": 0.9,
+                "max_blind_s": 0.1
+              },
+              "observe": {
+                "N": 6,
+                "visible": 6,
+                "visible_fraction": 1.0,
+                "max_blind_s": 0.0
+              },
+              "await_observe": {
+                "N": 1,
+                "visible": 1,
+                "visible_fraction": 1.0,
+                "max_blind_s": 0.0
+              },
+              "done": {
+                "N": 40,
+                "visible": 2,
+                "visible_fraction": 0.05,
+                "max_blind_s": 3.800000000000002
+              }
+            },
+            "r2": {
+              "look": {
+                "N": 7,
+                "visible": 0,
+                "visible_fraction": 0.0,
+                "max_blind_s": 0.7
+              },
+              "await_look": {
+                "N": 1,
+                "visible": 0,
+                "visible_fraction": 0.0,
+                "max_blind_s": 0.1
+              },
+              "lower": {
+                "N": 24,
+                "visible": 0,
+                "visible_fraction": 0.0,
+                "max_blind_s": 2.400000000000001
+              },
+              "await_open": {
+                "N": 1,
+                "visible": 0,
+                "visible_fraction": 0.0,
+                "max_blind_s": 0.1
+              },
+              "open": {
+                "N": 15,
+                "visible": 0,
+                "visible_fraction": 0.0,
+                "max_blind_s": 1.5000000000000002
+              },
+              "observe_back": {
+                "N": 36,
+                "visible": 24,
+                "visible_fraction": 0.6666666666666666,
+                "max_blind_s": 1.0999999999999999
+              },
+              "lookaround": {
+                "N": 74,
+                "visible": 11,
+                "visible_fraction": 0.14864864864864866,
+                "max_blind_s": 3.5000000000000018
+              },
+              "observe_move": {
+                "N": 10,
+                "visible": 10,
+                "visible_fraction": 1.0,
+                "max_blind_s": 0.0
+              },
+              "observe": {
+                "N": 6,
+                "visible": 6,
+                "visible_fraction": 1.0,
+                "max_blind_s": 0.0
+              },
+              "await_observe": {
+                "N": 1,
+                "visible": 1,
+                "visible_fraction": 1.0,
+                "max_blind_s": 0.0
+              },
+              "done": {
+                "N": 40,
+                "visible": 1,
+                "visible_fraction": 0.025,
+                "max_blind_s": 3.900000000000002
+              }
+            }
+          },
+          "max_assigned_end_blind_s": {
+            "r1": 5.999999999999995,
+            "r2": 5.999999999999995
+          },
+          "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check",
+          "control_top_camera_reads": 0,
+          "evaluation_top_camera_reads": 0,
+          "top_camera_counter_scope": "guarded world.render_team_jpeg, from world creation through cleanup; private renderer APIs excluded",
+          "visibility_by_phase": {
+            "r1": {
+              "look": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 8
+              },
+              "await_look": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 1
+              },
+              "lower": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 24
+              },
+              "await_open": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 1
+              },
+              "open": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 15
+              },
+              "observe_back": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 36
+              },
+              "lookaround": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 74
+              },
+              "observe_move": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 10
+              },
+              "observe": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 6
+              },
+              "await_observe": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 1
+              },
+              "done": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 40
+              }
+            },
+            "r2": {
+              "look": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 8
+              },
+              "await_look": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 1
+              },
+              "lower": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 24
+              },
+              "await_open": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 1
+              },
+              "open": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 15
+              },
+              "observe_back": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 36
+              },
+              "lookaround": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 74
+              },
+              "observe_move": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 10
+              },
+              "observe": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 6
+              },
+              "await_observe": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 1
+              },
+              "done": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 40
+              }
+            }
+          },
+          "max_destination_blind_s_by_phase": {
+            "r1": {
+              "look": 0.7999999999999999,
+              "await_look": 0.8999999999999999,
+              "lower": 3.3000000000000016,
+              "await_open": 3.4000000000000017,
+              "open": 4.899999999999999,
+              "observe_back": 12.199999999999973,
+              "lookaround": 15.89999999999996,
+              "observe_move": 16.89999999999997,
+              "observe": 17.49999999999998,
+              "await_observe": 17.59999999999998,
+              "done": 21.600000000000037
+            },
+            "r2": {
+              "look": 0.7999999999999999,
+              "await_look": 0.8999999999999999,
+              "lower": 3.3000000000000016,
+              "await_open": 3.4000000000000017,
+              "open": 4.899999999999999,
+              "observe_back": 12.199999999999973,
+              "lookaround": 15.89999999999996,
+              "observe_move": 16.89999999999997,
+              "observe": 17.49999999999998,
+              "await_observe": 17.59999999999998,
+              "done": 21.600000000000037
+            }
+          }
+        },
+        "render_audit": {
+          "calls": 432,
+          "integration_or_rng_changes": 0,
+          "comparison": "integration state + defined kinematic outputs + model cameras + Python/NumPy/world/controller RNG, exact SHA256"
+        },
+        "result_sha256": "ac698e51ac9027651ec071e8c1dbd26fa6b79c6f594864af4f2e4811963b8cd0",
+        "logical_bytes": 8109390,
+        "training_include": false
+      }
+    },
+    {
+      "passed": true,
+      "off": "/home/ugrp/ugrp-sim/runs/rel22adapt-r3-88601-off-f4763385/raw",
+      "on": "/home/ugrp/ugrp-sim/runs/rel22adapt-r3-88601-on-f4763385/raw",
+      "hashes": {
+        "commands_r1": [
+          "10dd8b8019909e3f5f94c6d2e161f6304c417fbd877bb21b8ed4ac17d6926634",
+          "10dd8b8019909e3f5f94c6d2e161f6304c417fbd877bb21b8ed4ac17d6926634"
+        ],
+        "commands_r2": [
+          "7b47c4e6f941e0f1d92220cb64ec84f8ed8e4ffaba7fdbe076b5a287664db43d",
+          "7b47c4e6f941e0f1d92220cb64ec84f8ed8e4ffaba7fdbe076b5a287664db43d"
+        ],
+        "eval-only.jsonl": [
+          "9cfc0ddca17b68394efb52c827dc35eda5461758423fc4b8b1229de1eae3f0fb",
+          "9cfc0ddca17b68394efb52c827dc35eda5461758423fc4b8b1229de1eae3f0fb"
+        ],
+        "scene.xml": [
+          "4d1b203bb847ee01de5ea0fddd03a28e95746470d45b41db00d8d419729173bd",
+          "4d1b203bb847ee01de5ea0fddd03a28e95746470d45b41db00d8d419729173bd"
+        ],
+        "plan.json": [
+          "bd7c518a8fed8bfa3e5cb76328ec8d88448ecac0b8b72b0e64920d42172ea18a",
+          "bd7c518a8fed8bfa3e5cb76328ec8d88448ecac0b8b72b0e64920d42172ea18a"
+        ],
+        "result_control_evaluation": [
+          "55ee00c9bcd3ddc44831e0f3228577ffdefd54f58532ebe6edd558f34ae079b4",
+          "55ee00c9bcd3ddc44831e0f3228577ffdefd54f58532ebe6edd558f34ae079b4"
+        ]
+      },
+      "result_ignored_fields": [
+        "loadavg_at_end",
+        "loadavg_at_start",
+        "recording",
+        "recording_mode",
+        "source_sha",
+        "timings_s",
+        "training_include",
+        "training_rgb",
+        "wall_s"
+      ],
+      "off_source_sha": "f476338533b7608bab25422b360491d5795f6fde",
+      "on_source_sha": "f476338533b7608bab25422b360491d5795f6fde",
+      "success": [
+        true,
+        true
+      ],
+      "recording": {
+        "passed": true,
+        "raw": "/home/ugrp/ugrp-sim/runs/rel22adapt-r3-88601-on-f4763385/raw",
+        "source_sha": "f476338533b7608bab25422b360491d5795f6fde",
+        "actors": {
+          "r1": {
+            "rows": 216,
+            "frames": 216,
+            "period_min_s": 0.09999999999976694,
+            "period_max_s": 0.10000000000047748,
+            "first_t": 10.099999999999136,
+            "last_t": 31.60000000005987,
+            "rgb_sha256": "302827351098b26620542e893a04d8de099875ed2b76a99b3bf6057c26b0e820"
+          },
+          "r2": {
+            "rows": 216,
+            "frames": 216,
+            "period_min_s": 0.09999999999976694,
+            "period_max_s": 0.10000000000047748,
+            "first_t": 10.099999999999136,
+            "last_t": 31.60000000005987,
+            "rgb_sha256": "61ee4cda107a3e85e4f62319221a2cdffb6d16fa10984a52743bbb3e59891937"
+          }
+        },
+        "camera": {
+          "width": 640,
+          "height": 480,
+          "period_s": 0.1,
+          "hz": 10.0,
+          "camera": "robot_cam",
+          "pinhole_hfov_deg": 54.5351624215943,
+          "pinhole_vfov_deg": 42.1489488115246,
+          "raw_fisheye_fov": "nonlinear K/D; no single angular FOV",
+          "K": [
+            [
+              619.5194540517232,
+              0.0,
+              287.68910608896766
+            ],
+            [
+              0.0,
+              622.1654884818748,
+              218.69686648455726
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "fisheye_D": [
+            -0.0199819517209417,
+            -0.1707593617153504,
+            -0.2568318201202376,
+            0.9650933421665181
+          ],
+          "mount": "masterpi-camera-user-observation-target-review-v3",
+          "position_m": [
+            0.052982009925558314,
+            0.0,
+            0.028152173913043477
+          ],
+          "quat_wxyz": [
+            0.4545194776720437,
+            0.5416752204197018,
+            -0.5416752204197018,
+            -0.4545194776720437
+          ],
+          "schema": "ugrp.grasp_act.student.v6",
+          "sources": {
+            "sim/masterpi_camera_profile.py": "ec224a88f07b7f1e30b9f306951818ec3907c27554daab1361db6cc8b00f3a1a",
+            "sim/masterpi_camera_review_v3.py": "6d8d739085c44f3196e4b4c514ca7e6c515e82394b1180a712b935df0a1b9362",
+            "sim/s2_realism_camera_binding.py": "86922a48dc7e6a3350f478bf2331a9be114da00ec380b3145e834746ed59bbe0",
+            "harness/grasp_act_contract.py": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056"
+          }
+        },
+        "input_audit": {
+          "held_object": "hidden_v1",
+          "held_world_reads": 0,
+          "held_world_reads_by_site": {},
+          "invisible_measurements": 0,
+          "measurements_by_phase": {
+            "lookaround": {
+              "own_rgb_landmarks": {
+                "n": 987,
+                "invisible": 0
+              }
+            }
+          },
+          "pick_target_uses": [],
+          "assigned_end_visibility_by_phase": {
+            "r1": {
+              "look": {
+                "N": 7,
+                "visible": 0,
+                "visible_fraction": 0.0,
+                "max_blind_s": 0.7
+              },
+              "await_look": {
+                "N": 1,
+                "visible": 0,
+                "visible_fraction": 0.0,
+                "max_blind_s": 0.1
+              },
+              "lower": {
+                "N": 24,
+                "visible": 0,
+                "visible_fraction": 0.0,
+                "max_blind_s": 2.400000000000001
+              },
+              "await_open": {
+                "N": 1,
+                "visible": 0,
+                "visible_fraction": 0.0,
+                "max_blind_s": 0.1
+              },
+              "open": {
+                "N": 15,
+                "visible": 0,
+                "visible_fraction": 0.0,
+                "max_blind_s": 1.5000000000000002
+              },
+              "observe_back": {
+                "N": 36,
+                "visible": 19,
+                "visible_fraction": 0.5277777777777778,
+                "max_blind_s": 1.0999999999999999
+              },
+              "lookaround": {
+                "N": 74,
+                "visible": 2,
+                "visible_fraction": 0.02702702702702703,
+                "max_blind_s": 3.5000000000000018
+              },
+              "observe_move": {
+                "N": 10,
+                "visible": 9,
+                "visible_fraction": 0.9,
+                "max_blind_s": 0.1
+              },
+              "observe": {
+                "N": 6,
+                "visible": 6,
+                "visible_fraction": 1.0,
+                "max_blind_s": 0.0
+              },
+              "await_observe": {
+                "N": 1,
+                "visible": 1,
+                "visible_fraction": 1.0,
+                "max_blind_s": 0.0
+              },
+              "done": {
+                "N": 40,
+                "visible": 2,
+                "visible_fraction": 0.05,
+                "max_blind_s": 3.800000000000002
+              }
+            },
+            "r2": {
+              "look": {
+                "N": 7,
+                "visible": 0,
+                "visible_fraction": 0.0,
+                "max_blind_s": 0.7
+              },
+              "await_look": {
+                "N": 1,
+                "visible": 0,
+                "visible_fraction": 0.0,
+                "max_blind_s": 0.1
+              },
+              "lower": {
+                "N": 24,
+                "visible": 0,
+                "visible_fraction": 0.0,
+                "max_blind_s": 2.400000000000001
+              },
+              "await_open": {
+                "N": 1,
+                "visible": 0,
+                "visible_fraction": 0.0,
+                "max_blind_s": 0.1
+              },
+              "open": {
+                "N": 15,
+                "visible": 0,
+                "visible_fraction": 0.0,
+                "max_blind_s": 1.5000000000000002
+              },
+              "observe_back": {
+                "N": 36,
+                "visible": 19,
+                "visible_fraction": 0.5277777777777778,
+                "max_blind_s": 1.0999999999999999
+              },
+              "lookaround": {
+                "N": 74,
+                "visible": 2,
+                "visible_fraction": 0.02702702702702703,
+                "max_blind_s": 3.5000000000000018
+              },
+              "observe_move": {
+                "N": 10,
+                "visible": 9,
+                "visible_fraction": 0.9,
+                "max_blind_s": 0.1
+              },
+              "observe": {
+                "N": 6,
+                "visible": 6,
+                "visible_fraction": 1.0,
+                "max_blind_s": 0.0
+              },
+              "await_observe": {
+                "N": 1,
+                "visible": 1,
+                "visible_fraction": 1.0,
+                "max_blind_s": 0.0
+              },
+              "done": {
+                "N": 40,
+                "visible": 2,
+                "visible_fraction": 0.05,
+                "max_blind_s": 3.800000000000002
+              }
+            }
+          },
+          "max_assigned_end_blind_s": {
+            "r1": 5.999999999999995,
+            "r2": 5.999999999999995
+          },
+          "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check",
+          "control_top_camera_reads": 0,
+          "evaluation_top_camera_reads": 0,
+          "top_camera_counter_scope": "guarded world.render_team_jpeg, from world creation through cleanup; private renderer APIs excluded",
+          "visibility_by_phase": {
+            "r1": {
+              "look": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 8
+              },
+              "await_look": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 1
+              },
+              "lower": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 24
+              },
+              "await_open": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 1
+              },
+              "open": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 15
+              },
+              "observe_back": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 36
+              },
+              "lookaround": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 74
+              },
+              "observe_move": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 10
+              },
+              "observe": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 6
+              },
+              "await_observe": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 1
+              },
+              "done": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 40
+              }
+            },
+            "r2": {
+              "look": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 8
+              },
+              "await_look": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 1
+              },
+              "lower": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 24
+              },
+              "await_open": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 1
+              },
+              "open": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 15
+              },
+              "observe_back": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 36
+              },
+              "lookaround": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 74
+              },
+              "observe_move": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 10
+              },
+              "observe": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 6
+              },
+              "await_observe": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 1
+              },
+              "done": {
+                "destination": 0,
+                "end_area": 0,
+                "own_band": 0,
+                "partner": 0,
+                "N": 40
+              }
+            }
+          },
+          "max_destination_blind_s_by_phase": {
+            "r1": {
+              "look": 0.7999999999999999,
+              "await_look": 0.8999999999999999,
+              "lower": 3.3000000000000016,
+              "await_open": 3.4000000000000017,
+              "open": 4.899999999999999,
+              "observe_back": 12.199999999999973,
+              "lookaround": 15.89999999999996,
+              "observe_move": 16.89999999999997,
+              "observe": 17.49999999999998,
+              "await_observe": 17.59999999999998,
+              "done": 21.600000000000037
+            },
+            "r2": {
+              "look": 0.7999999999999999,
+              "await_look": 0.8999999999999999,
+              "lower": 3.3000000000000016,
+              "await_open": 3.4000000000000017,
+              "open": 4.899999999999999,
+              "observe_back": 12.199999999999973,
+              "lookaround": 15.89999999999996,
+              "observe_move": 16.89999999999997,
+              "observe": 17.49999999999998,
+              "await_observe": 17.59999999999998,
+              "done": 21.600000000000037
+            }
+          }
+        },
+        "render_audit": {
+          "calls": 432,
+          "integration_or_rng_changes": 0,
+          "comparison": "integration state + defined kinematic outputs + model cameras + Python/NumPy/world/controller RNG, exact SHA256"
+        },
+        "result_sha256": "59789c67832eda09a09e61130dbb817416e1d724d3472cc26428355904cc9754",
+        "logical_bytes": 7996973,
+        "training_include": false
+      }
+    }
+  ],
+  "passed": true,
+  "scope": "two-seed observer equivalence; no gate promotion or data admission"
+}

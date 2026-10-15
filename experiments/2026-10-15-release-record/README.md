@@ -59,3 +59,44 @@ Mac 물리/렌더 0. 원본은 gcp1 영속 디스크, Mac에는 요약과 해시
 정의된 기구학/카메라 출력으로 감사 범위를 명시했다(허용 오차 추가 없음).
 MuJoCo 문서상 efm_*는 implicit effective metric이 활성일 때 계산되는 arena 자료다.
 원본: gcp1:/home/ugrp/ugrp-sim/ops-reviews/rel22adapt-round2-guard-diagnostic.json.
+
+## 최종 검증 (3라운드, 2026-10-15 gcp1)
+
+실행 소스: `f476338533b7608bab25422b360491d5795f6fde`.
+고정 worktree: `/Users/changmin/projects/ugrp-wt/release22-src-f4763385` (clean).
+후속 기록/CI 목록 커밋은 실행 소스와 구분하며, 이 소스를 바꾸거나 과거 결과를 승계하지 않는다.
+
+| seed | off/on 성공 | 명령·물리 원장·제어/평가 결과 해시 | on RGB | off/on wall/SIM |
+|---|---|---|---|---|
+| 88600 | 2/2 | 동일 | r1 216 + r2 216 | 2.569 / 3.294 |
+| 88601 | 2/2 | 동일 | r1 216 + r2 216 | 2.555 / 3.250 |
+
+최종 864프레임 모두 JPEG 640×480·10Hz, 실제 주기 0.099999999999767–0.100000000000477초.
+관측/라벨 짝·이전 발행 명령·자기 로봇 참조·전체 이미지 SHA를 검사했다.
+SIM t=10.1–31.6의 release만 기록하고 prefix는 제외했다. 추가 렌더 864회에서
+공식 통합 상태·정의된 기구학/카메라 출력·카메라 설정·RNG 변화 0, 입력 감사 0/0.
+
+원격 원본은 `gcp1:/home/ugrp/ugrp-sim/runs/rel22adapt-r{1,2,3}-<seed>-<off|on>-<sha>/raw`.
+`summary.json`에 12회 전부(완료 성공10, HOST_ERROR2)를 소스별로 구분했다.
+서로 다른 소스를 성공률로 합산하지 않는다. 전체 파일 해시 12/12 통과.
+1라운드 비교 0/2와 2라운드 HOST_ERROR2를 최종 2/2 인수 근거에 합치지 않았다.
+실패 HOST_ERROR 두 실행은 prefix 각 로봇 6프레임(각 실행12장), 처음·중간·끝을
+몽타주로 확인했다. r1/r2가 반대 끝을 보고 있었고, release 기록 전 감사에서 종료됐다.
+Montage 원본/시각·해시는 `frame-review-round2.json`에 있다. Mac 물리/렌더·모델 호출0.
+
+카메라는 ACT12 실제 원본의 MJCF 광학 인자·runtime 장착/해상도와 정확히 일치한다.
+`student-camera.json`의 명목 vfov 42.1489488115246°와 MuJoCo intrinsic 카메라의
+cam_fovy 42.18818654076867°는 기존 파이프라인의 서로 다른 값이다. 이를 바꾸지 않았고
+두 값을 같다고 보고하지 않는다. 비교는 `camera-compatibility.json`에 있다.
+
+오프라인: 관련 3파일 **32 passed** (MuJoCo/GL stub 포함). CI 목록에도 3파일을 등록했다.
+`equivalence.json`은 wall/load/기록 메타데이터만 제외하고 제어·평가 결과 전체를 비교한다.
+기록/수용은 별도이며 training_include=false다. 최종 on 2회는 대기열 pilot2와 같은
+시드를 쓴 진단 원본이므로, 조정자가 원본을 검토해 pilot으로 수용할 수 있으나 자동 재사용·학습 수용하지 않는다.
+
+대기열 `/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-rel22rec-record-46afd8b0.json`:
+명령60/60, 고정 소스·adapter 파일 해시·동일성 결과·funnel 연결, pilot2→remaining48→reserve10 유지.
+coordinator_approval은 이전 SHA의 승인 이력 그대로 보존하고, 현재 승인/ready/실행 플래그는 false,
+status=awaiting_coordinator_approval이다. `rejection_table` 원래 값·해시를 유지했다.
+공유 gcp1 VM은 현재 24h 상한이며 대기열 요구8h와 다르므로 bulk 전 운영 확인이 남아 있다.
+우리 실행·예약·lease만 종료했고 다른 작업/공유 VM은 유지했다. Draft PR #521.

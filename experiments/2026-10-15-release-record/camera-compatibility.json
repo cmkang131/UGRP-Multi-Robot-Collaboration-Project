@@ -1,0 +1,85 @@
+{
+  "passed": true,
+  "act12_raw": "/home/ugrp/ugrp-sim/runs/act12-record-86820-1fce1155/raw",
+  "release_raw": "/home/ugrp/ugrp-sim/runs/rel22adapt-r3-88600-on-f4763385/raw",
+  "act12_camera_mjcf": {
+    "fovy": null,
+    "focal": null,
+    "focalpixel": "619.519454051723 622.165488481875",
+    "principal": null,
+    "principalpixel": "32.310893911032 21.303133515443",
+    "sensorsize": "640 480",
+    "resolution": "640 480"
+  },
+  "release_camera_mjcf": {
+    "fovy": null,
+    "focal": null,
+    "focalpixel": "619.519454051723 622.165488481875",
+    "principal": null,
+    "principalpixel": "32.310893911032 21.303133515443",
+    "sensorsize": "640 480",
+    "resolution": "640 480"
+  },
+  "act12_runtime": {
+    "pos": [
+      0.052982009925558314,
+      0.0,
+      0.028152173913043477
+    ],
+    "quat": [
+      0.4545194776720437,
+      0.5416752204197018,
+      -0.5416752204197018,
+      -0.4545194776720437
+    ],
+    "intrinsic": [
+      619.5194702148438,
+      622.1654663085938,
+      32.31089401245117,
+      21.303133010864258
+    ],
+    "resolution": [
+      640,
+      480
+    ],
+    "scope": "runtime camera configuration only; excluded from student observations"
+  },
+  "release_runtime": {
+    "r1": {
+      "position_m": [
+        0.052982009925558314,
+        0.0,
+        0.028152173913043477
+      ],
+      "quat_wxyz": [
+        0.4545194776720437,
+        0.5416752204197018,
+        -0.5416752204197018,
+        -0.4545194776720437
+      ],
+      "pinhole_vfov_deg": 42.18818654076867,
+      "width": 640,
+      "height": 480,
+      "camera": "robot_cam"
+    },
+    "r2": {
+      "position_m": [
+        0.052982009925558314,
+        0.0,
+        0.028152173913043477
+      ],
+      "quat_wxyz": [
+        0.4545194776720437,
+        0.5416752204197018,
+        -0.5416752204197018,
+        -0.4545194776720437
+      ],
+      "pinhole_vfov_deg": 42.18818654076867,
+      "width": 640,
+      "height": 480,
+      "camera": "robot_cam"
+    }
+  },
+  "student_nominal_pinhole_vfov_deg": 42.1489488115246,
+  "note": "student metadata nominal pinhole FOV and compiled MuJoCo cam_fovy differ in the existing intrinsic-camera pipeline; MJCF optics and runtime mount/resolution match ACT12 exactly; no optics changed"
+}

@@ -1,0 +1,206 @@
+{
+  "schema": "ugrp.rel22adapt.funnel.v1",
+  "source_sha": "f476338533b7608bab25422b360491d5795f6fde",
+  "original_gate_rejection_table": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release21-46afd8b0.json",
+  "source_files": [
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/rel22adapt/summary.json",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/rel22adapt/equivalence.json",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/rel22adapt/rejections-round1.json",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/rel22adapt/rejections-round2.json"
+  ],
+  "rounds": [
+    {
+      "round": 1,
+      "source_sha": "9df35e4940be18231d14ac5acb6a48dafbaade33",
+      "runs": [
+        {
+          "gate": "attempted",
+          "entered": 4,
+          "passed": 4,
+          "rejected": 0
+        },
+        {
+          "gate": "completed_without_HOST_ERROR",
+          "entered": 4,
+          "passed": 4,
+          "rejected": 0
+        },
+        {
+          "gate": "teacher_success",
+          "entered": 4,
+          "passed": 4,
+          "rejected": 0
+        }
+      ],
+      "pair_full_equivalence": {
+        "entered": 2,
+        "passed": 0,
+        "rejected": 2
+      },
+      "rejection_table": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/rel22adapt/rejections-round1.json",
+      "reproduction_commands": [
+        ".venv-sim/bin/python scripts/run_release_recording.py --episode 0 --out /home/ugrp/ugrp-sim/runs/rel22adapt-r1-88600-off-9df35e49/raw",
+        ".venv-sim/bin/python scripts/run_release_recording.py --episode 0 --record-training --out /home/ugrp/ugrp-sim/runs/rel22adapt-r1-88600-on-9df35e49/raw",
+        ".venv-sim/bin/python scripts/run_release_recording.py --episode 1 --out /home/ugrp/ugrp-sim/runs/rel22adapt-r1-88601-off-9df35e49/raw",
+        ".venv-sim/bin/python scripts/run_release_recording.py --episode 1 --record-training --out /home/ugrp/ugrp-sim/runs/rel22adapt-r1-88601-on-9df35e49/raw"
+      ]
+    },
+    {
+      "round": 2,
+      "source_sha": "7fcbe7c9cab9918914c9dcaa8397b9f380c70ac4",
+      "runs": [
+        {
+          "gate": "attempted",
+          "entered": 4,
+          "passed": 4,
+          "rejected": 0
+        },
+        {
+          "gate": "completed_without_HOST_ERROR",
+          "entered": 4,
+          "passed": 2,
+          "rejected": 2
+        },
+        {
+          "gate": "teacher_success",
+          "entered": 2,
+          "passed": 2,
+          "rejected": 0
+        }
+      ],
+      "pair_full_equivalence": {
+        "entered": 2,
+        "passed": 0,
+        "rejected": 2
+      },
+      "rejection_table": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/rel22adapt/rejections-round2.json",
+      "reproduction_commands": [
+        ".venv-sim/bin/python scripts/run_release_recording.py --episode 0 --out /home/ugrp/ugrp-sim/runs/rel22adapt-r2-88600-off-7fcbe7c9/raw",
+        ".venv-sim/bin/python scripts/run_release_recording.py --episode 0 --record-training --out /home/ugrp/ugrp-sim/runs/rel22adapt-r2-88600-on-7fcbe7c9/raw",
+        ".venv-sim/bin/python scripts/run_release_recording.py --episode 1 --out /home/ugrp/ugrp-sim/runs/rel22adapt-r2-88601-off-7fcbe7c9/raw",
+        ".venv-sim/bin/python scripts/run_release_recording.py --episode 1 --record-training --out /home/ugrp/ugrp-sim/runs/rel22adapt-r2-88601-on-7fcbe7c9/raw"
+      ]
+    },
+    {
+      "round": 3,
+      "source_sha": "f476338533b7608bab25422b360491d5795f6fde",
+      "runs": [
+        {
+          "gate": "attempted",
+          "entered": 4,
+          "passed": 4,
+          "rejected": 0
+        },
+        {
+          "gate": "completed_without_HOST_ERROR",
+          "entered": 4,
+          "passed": 4,
+          "rejected": 0
+        },
+        {
+          "gate": "teacher_success",
+          "entered": 4,
+          "passed": 4,
+          "rejected": 0
+        }
+      ],
+      "pair_full_equivalence": {
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      },
+      "rejection_table": null,
+      "reproduction_commands": [
+        ".venv-sim/bin/python scripts/run_release_recording.py --episode 0 --out /home/ugrp/ugrp-sim/runs/rel22adapt-r3-88600-off-f4763385/raw",
+        ".venv-sim/bin/python scripts/run_release_recording.py --episode 0 --record-training --out /home/ugrp/ugrp-sim/runs/rel22adapt-r3-88600-on-f4763385/raw",
+        ".venv-sim/bin/python scripts/run_release_recording.py --episode 1 --out /home/ugrp/ugrp-sim/runs/rel22adapt-r3-88601-off-f4763385/raw",
+        ".venv-sim/bin/python scripts/run_release_recording.py --episode 1 --record-training --out /home/ugrp/ugrp-sim/runs/rel22adapt-r3-88601-on-f4763385/raw"
+      ]
+    }
+  ],
+  "final_recording_frames": [
+    {
+      "gate": "native_JPEG_640x480",
+      "entered": 864,
+      "passed": 864,
+      "rejected": 0
+    },
+    {
+      "gate": "sha256_verified",
+      "entered": 864,
+      "passed": 864,
+      "rejected": 0
+    },
+    {
+      "gate": "own_actor_allowlist",
+      "entered": 864,
+      "passed": 864,
+      "rejected": 0
+    },
+    {
+      "gate": "paired_teacher_target",
+      "entered": 864,
+      "passed": 864,
+      "rejected": 0
+    },
+    {
+      "gate": "0.1s_SIM_clock",
+      "entered": 864,
+      "passed": 864,
+      "rejected": 0
+    },
+    {
+      "gate": "previous_issued_history",
+      "entered": 864,
+      "passed": 864,
+      "rejected": 0
+    }
+  ],
+  "final_pairs": [
+    {
+      "gate": "same_seed_and_source",
+      "entered": 2,
+      "passed": 2,
+      "rejected": 0
+    },
+    {
+      "gate": "command_trajectory_hash",
+      "entered": 2,
+      "passed": 2,
+      "rejected": 0
+    },
+    {
+      "gate": "physics_evaluation_hash",
+      "entered": 2,
+      "passed": 2,
+      "rejected": 0
+    },
+    {
+      "gate": "control_evaluation_result_hash",
+      "entered": 2,
+      "passed": 2,
+      "rejected": 0
+    },
+    {
+      "gate": "student_recording_audit",
+      "entered": 2,
+      "passed": 2,
+      "rejected": 0
+    }
+  ],
+  "raw_locations": [
+    "gcp1:/home/ugrp/ugrp-sim/runs/rel22adapt-r1-88600-off-9df35e49/raw",
+    "gcp1:/home/ugrp/ugrp-sim/runs/rel22adapt-r1-88600-on-9df35e49/raw",
+    "gcp1:/home/ugrp/ugrp-sim/runs/rel22adapt-r1-88601-off-9df35e49/raw",
+    "gcp1:/home/ugrp/ugrp-sim/runs/rel22adapt-r1-88601-on-9df35e49/raw",
+    "gcp1:/home/ugrp/ugrp-sim/runs/rel22adapt-r2-88600-off-7fcbe7c9/raw",
+    "gcp1:/home/ugrp/ugrp-sim/runs/rel22adapt-r2-88600-on-7fcbe7c9/raw",
+    "gcp1:/home/ugrp/ugrp-sim/runs/rel22adapt-r2-88601-off-7fcbe7c9/raw",
+    "gcp1:/home/ugrp/ugrp-sim/runs/rel22adapt-r2-88601-on-7fcbe7c9/raw",
+    "gcp1:/home/ugrp/ugrp-sim/runs/rel22adapt-r3-88600-off-f4763385/raw",
+    "gcp1:/home/ugrp/ugrp-sim/runs/rel22adapt-r3-88600-on-f4763385/raw",
+    "gcp1:/home/ugrp/ugrp-sim/runs/rel22adapt-r3-88601-off-f4763385/raw",
+    "gcp1:/home/ugrp/ugrp-sim/runs/rel22adapt-r3-88601-on-f4763385/raw"
+  ],
+  "audit_reproduction": ".venv-sim/bin/python scripts/audit_release_recording.py --pair <seed88600 off/raw> <seed88600 on/raw> --pair <seed88601 off/raw> <seed88601 on/raw> --output <equivalence.json>"
+}
