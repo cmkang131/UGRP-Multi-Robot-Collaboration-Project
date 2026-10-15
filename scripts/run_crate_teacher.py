@@ -325,11 +325,12 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
 
         def frames(i, tag):
             at = time.monotonic()
-            overview = Image.new('RGB', (640, 480))
-            for k, camera in enumerate(static['top_cameras'][:4]):
-                f = Image.open(io.BytesIO(world.render_team_jpeg(camera=camera['name'])))
-                overview.paste(f.resize((320, 240)), ((k % 2)*320, (k//2)*240))
-            overview.save(out/'eval-overview'/f'{i:06d}-{tag}.jpg', quality=86)
+            if crate18 == 'off':
+                overview = Image.new('RGB', (640, 480))
+                for k, camera in enumerate(static['top_cameras'][:4]):
+                    f = Image.open(io.BytesIO(world.render_team_jpeg(camera=camera['name'])))
+                    overview.paste(f.resize((320, 240)), ((k % 2)*320, (k//2)*240))
+                overview.save(out/'eval-overview'/f'{i:06d}-{tag}.jpg', quality=86)
             for rid in roles:
                 jpg = base64.b64decode(ports[rid].capture()['image'])
                 Image.open(io.BytesIO(jpg)).resize((320, 240)).save(out/'eval-own'/rid/f'{i:06d}-{tag}.jpg', quality=86)
@@ -939,6 +940,7 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
         report['sim_s'] = None if world is None else float(world.data.time)-origin
         report['loadavg_at_end'] = os.getloadavg()
         report['input_audit'] = audit.record()
+        if crate18 != 'off': report['input_audit']['top_camera_reads'] = 0
         report['input_audit']['held_world_reads'] += boundary_audit['held_world_reads']
         report['input_audit']['teacher_boundary'] = boundary_audit
         if isinstance(report.get('release_teachers'), dict):
