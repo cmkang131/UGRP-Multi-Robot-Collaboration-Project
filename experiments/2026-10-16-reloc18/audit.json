@@ -1,0 +1,2324 @@
+{
+  "analysis_host": "gcp2",
+  "scope": "evaluation only; stage counts are ticks, not independent success trials",
+  "runs": [
+    {
+      "run": "reloc16-r1-carry-93266-v5-93635d6e",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc16-r1-carry-93266-v5-93635d6e/raw",
+      "seed": 93266,
+      "source_sha": "93635d6ecd47226138c433603a15dd362ff10f11",
+      "termination": "cap_end",
+      "sim_s": 149.9999999981502,
+      "phases": {
+        "fold": 6,
+        "pickup_search": 59,
+        "approach": 279,
+        "align": 21,
+        "hover": 9,
+        "descent": 16,
+        "close": 11,
+        "lift": 15,
+        "lift_settle": 32,
+        "lookback_pose": 11,
+        "lookback": 25,
+        "lookback_settle": 5,
+        "verify_lift": 11,
+        "hold": 30,
+        "carry_prepare": 10,
+        "carry_to_zone": 198,
+        "carry_recover_lower": 11,
+        "carry_recover_open": 8,
+        "carry_recover_retract": 19,
+        "carry_recover_backoff": 25,
+        "carry_reobserve": 589,
+        "carry_recover_restore": 22,
+        "carry_reacquire": 88
+      },
+      "timeline": [
+        {
+          "t": 1.3000000000000178,
+          "phase": "fold"
+        },
+        {
+          "t": 1.9000000000002182,
+          "phase": "pickup_search"
+        },
+        {
+          "t": 7.800000000003787,
+          "phase": "approach"
+        },
+        {
+          "t": 34.90000000007563,
+          "phase": "align"
+        },
+        {
+          "t": 36.8000000000847,
+          "phase": "hover"
+        },
+        {
+          "t": 37.700000000089,
+          "phase": "descent"
+        },
+        {
+          "t": 39.30000000009664,
+          "phase": "close"
+        },
+        {
+          "t": 40.40000000010189,
+          "phase": "lift"
+        },
+        {
+          "t": 41.90000000010905,
+          "phase": "lift_settle"
+        },
+        {
+          "t": 45.10000000012433,
+          "phase": "lookback_pose"
+        },
+        {
+          "t": 46.200000000129585,
+          "phase": "lookback"
+        },
+        {
+          "t": 48.70000000014152,
+          "phase": "lookback_settle"
+        },
+        {
+          "t": 49.20000000014391,
+          "phase": "verify_lift"
+        },
+        {
+          "t": 50.30000000014916,
+          "phase": "hold"
+        },
+        {
+          "t": 53.300000000163486,
+          "phase": "carry_prepare"
+        },
+        {
+          "t": 54.30000000016826,
+          "phase": "carry_to_zone"
+        },
+        {
+          "t": 74.09999999997574,
+          "phase": "carry_recover_lower"
+        },
+        {
+          "t": 75.19999999994972,
+          "phase": "carry_recover_open"
+        },
+        {
+          "t": 75.99999999993081,
+          "phase": "carry_recover_retract"
+        },
+        {
+          "t": 77.89999999988588,
+          "phase": "carry_recover_backoff"
+        },
+        {
+          "t": 80.39999999982676,
+          "phase": "carry_reobserve"
+        },
+        {
+          "t": 96.69999999944132,
+          "phase": "carry_recover_restore"
+        },
+        {
+          "t": 97.7999999994153,
+          "phase": "carry_reacquire"
+        },
+        {
+          "t": 103.69999999927579,
+          "phase": "carry_reobserve"
+        },
+        {
+          "t": 132.2999999985995,
+          "phase": "carry_recover_restore"
+        },
+        {
+          "t": 133.3999999985735,
+          "phase": "carry_reacquire"
+        },
+        {
+          "t": 136.29999999850492,
+          "phase": "approach"
+        },
+        {
+          "t": 137.099999998486,
+          "phase": "align"
+        },
+        {
+          "t": 137.29999999848127,
+          "phase": "carry_reobserve"
+        }
+      ],
+      "cumulative": {
+        "ticks": 1500,
+        "pickup_ticks": 88,
+        "travel_ticks": 198,
+        "place_view_ticks": 0,
+        "place_advance_ticks": 0,
+        "final_lower_ticks": 0,
+        "final_open_ticks": 0,
+        "place_success": 0
+      },
+      "rejection_reasons": {
+        "scene_wall_unobservable_pose_budget": 3,
+        "accepted_replan": 2
+      },
+      "place_predicates": {
+        "lift_success": true,
+        "zone_placement_success": false,
+        "release_success": false,
+        "no_drop_during_carry": true,
+        "final_footprint_inside_zone": false,
+        "criteria": {
+          "min_clearance_m": 0.012,
+          "max_tilt_deg": 10.0,
+          "lift_hold_s": 3.0,
+          "finger_min_n": 0.5,
+          "release_settle_s": 2.0,
+          "release_speed_m_s": 0.01,
+          "release_max_tilt_deg": 3.0,
+          "release_clearance_m": 0.005,
+          "weld": "off",
+          "placement": "every collision-box corner inside destination zone",
+          "retention": "every 10 Hz carry sample: clearance >=12 mm and both fingers >=0.5 N",
+          "detached": "no cargo/finger contact and open command",
+          "scope": "evaluation only; sub-100 ms drops not resolved"
+        }
+      },
+      "final": {
+        "phase": "carry_reobserve",
+        "goal": [
+          4.149324487551099,
+          0.3956877072540613
+        ],
+        "slot": [
+          4.5,
+          0.4
+        ],
+        "arrival": null,
+        "failure": null,
+        "zone_margin_min_m": -2.8938798742717857,
+        "cargo_xyz": [
+          1.4245507629046852,
+          -0.5238388827002498,
+          0.015892244579783926
+        ],
+        "base_xyz": [
+          1.1735237855703555,
+          -0.46778648021994124,
+          0.03192166995424694
+        ],
+        "xy_error_m": 0.2456797023697228,
+        "yaw_error_deg": -5.582614539592185,
+        "clearance_m": -0.00010775542080826775,
+        "tilt_deg": 3.52019892386405e-06,
+        "speed": 1.51695765302647e-11,
+        "open_issued": true
+      },
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/reloc16-r1-carry-93266-v5-93635d6e/raw/result.json.zst": "70c221d00dfc78b699468db12ed552e32030b8d182d61f3af5449af599974343",
+        "/home/ugrp/ugrp-sim/runs/reloc16-r1-carry-93266-v5-93635d6e/raw/teacher-commands.jsonl.zst": "f62b21afd6cf735c767191ac25037052452ad6be7c5b7303778656f0cbbfb4ba",
+        "/home/ugrp/ugrp-sim/runs/reloc16-r1-carry-93266-v5-93635d6e/raw/eval-only.jsonl.zst": "796cf98b539378c150ec3b02718e8166aed788ac40cbeba8ef99e26d5053db5c"
+      }
+    },
+    {
+      "run": "reloc16-r1-carry-93315-v5-93635d6e",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc16-r1-carry-93315-v5-93635d6e/raw",
+      "seed": 93315,
+      "source_sha": "93635d6ecd47226138c433603a15dd362ff10f11",
+      "termination": "carry_recovery_setdown_envelope_blocked",
+      "sim_s": 120.79999999884068,
+      "phases": {
+        "fold": 6,
+        "pickup_search": 1,
+        "approach": 68,
+        "align": 45,
+        "hover": 20,
+        "descent": 32,
+        "close": 24,
+        "lift": 32,
+        "lift_settle": 64,
+        "lookback_pose": 23,
+        "lookback": 50,
+        "lookback_settle": 10,
+        "verify_lift": 22,
+        "hold": 60,
+        "carry_prepare": 21,
+        "carry_to_zone": 409,
+        "carry_recover_lower": 10,
+        "carry_recover_open": 7,
+        "carry_recover_retract": 18,
+        "carry_recover_backoff": 25,
+        "carry_reobserve": 217,
+        "carry_recover_restore": 11,
+        "carry_reacquire": 33,
+        "failed": 1
+      },
+      "timeline": [
+        {
+          "t": 1.3000000000000178,
+          "phase": "fold"
+        },
+        {
+          "t": 1.9000000000002182,
+          "phase": "pickup_search"
+        },
+        {
+          "t": 2.0000000000002514,
+          "phase": "approach"
+        },
+        {
+          "t": 8.00000000000403,
+          "phase": "align"
+        },
+        {
+          "t": 9.600000000000302,
+          "phase": "hover"
+        },
+        {
+          "t": 10.599999999997971,
+          "phase": "descent"
+        },
+        {
+          "t": 12.199999999994242,
+          "phase": "close"
+        },
+        {
+          "t": 13.399999999991445,
+          "phase": "lift"
+        },
+        {
+          "t": 14.999999999987716,
+          "phase": "lift_settle"
+        },
+        {
+          "t": 18.19999999999589,
+          "phase": "lookback_pose"
+        },
+        {
+          "t": 19.30000000000114,
+          "phase": "lookback"
+        },
+        {
+          "t": 21.80000000001308,
+          "phase": "lookback_settle"
+        },
+        {
+          "t": 22.300000000015466,
+          "phase": "verify_lift"
+        },
+        {
+          "t": 23.400000000020718,
+          "phase": "hold"
+        },
+        {
+          "t": 26.400000000035043,
+          "phase": "carry_prepare"
+        },
+        {
+          "t": 27.400000000039817,
+          "phase": "carry_to_zone"
+        },
+        {
+          "t": 47.000000000133404,
+          "phase": "carry_recover_lower"
+        },
+        {
+          "t": 48.00000000013818,
+          "phase": "carry_recover_open"
+        },
+        {
+          "t": 48.70000000014152,
+          "phase": "carry_recover_retract"
+        },
+        {
+          "t": 50.500000000150116,
+          "phase": "carry_recover_backoff"
+        },
+        {
+          "t": 53.00000000016205,
+          "phase": "carry_reobserve"
+        },
+        {
+          "t": 74.69999999996155,
+          "phase": "carry_recover_restore"
+        },
+        {
+          "t": 75.79999999993554,
+          "phase": "carry_reacquire"
+        },
+        {
+          "t": 79.0999999998575,
+          "phase": "approach"
+        },
+        {
+          "t": 79.89999999983858,
+          "phase": "align"
+        },
+        {
+          "t": 82.79999999977001,
+          "phase": "hover"
+        },
+        {
+          "t": 83.79999999974636,
+          "phase": "descent"
+        },
+        {
+          "t": 85.39999999970853,
+          "phase": "close"
+        },
+        {
+          "t": 86.59999999968015,
+          "phase": "lift"
+        },
+        {
+          "t": 88.19999999964232,
+          "phase": "lift_settle"
+        },
+        {
+          "t": 91.39999999956665,
+          "phase": "lookback_pose"
+        },
+        {
+          "t": 92.59999999953827,
+          "phase": "lookback"
+        },
+        {
+          "t": 95.09999999947915,
+          "phase": "lookback_settle"
+        },
+        {
+          "t": 95.59999999946733,
+          "phase": "verify_lift"
+        },
+        {
+          "t": 96.69999999944132,
+          "phase": "hold"
+        },
+        {
+          "t": 99.69999999937038,
+          "phase": "carry_prepare"
+        },
+        {
+          "t": 100.79999999934437,
+          "phase": "carry_to_zone"
+        },
+        {
+          "t": 122.09999999884069,
+          "phase": "failed"
+        }
+      ],
+      "cumulative": {
+        "ticks": 1209,
+        "pickup_ticks": 180,
+        "travel_ticks": 409,
+        "place_view_ticks": 0,
+        "place_advance_ticks": 0,
+        "final_lower_ticks": 0,
+        "final_open_ticks": 0,
+        "place_success": 0
+      },
+      "rejection_reasons": {
+        "scene_wall_unobservable_pose_budget": 2,
+        "accepted_replan": 1
+      },
+      "place_predicates": {
+        "lift_success": true,
+        "zone_placement_success": false,
+        "release_success": false,
+        "no_drop_during_carry": true,
+        "final_footprint_inside_zone": false,
+        "criteria": {
+          "min_clearance_m": 0.012,
+          "max_tilt_deg": 10.0,
+          "lift_hold_s": 3.0,
+          "finger_min_n": 0.5,
+          "release_settle_s": 2.0,
+          "release_speed_m_s": 0.01,
+          "release_max_tilt_deg": 3.0,
+          "release_clearance_m": 0.005,
+          "weld": "off",
+          "placement": "every collision-box corner inside destination zone",
+          "retention": "every 10 Hz carry sample: clearance >=12 mm and both fingers >=0.5 N",
+          "detached": "no cargo/finger contact and open command",
+          "scope": "evaluation only; sub-100 ms drops not resolved"
+        }
+      },
+      "final": {
+        "phase": "failed",
+        "goal": [
+          2.6464157143062437,
+          -1.3504881557363877
+        ],
+        "slot": [
+          3.0,
+          -1.3499999999999999
+        ],
+        "arrival": null,
+        "failure": null,
+        "zone_margin_min_m": -1.3242639605595337,
+        "cargo_xyz": [
+          1.3962190673208381,
+          -1.8189379641366665,
+          0.08648719622374182
+        ],
+        "base_xyz": [
+          1.1933953146419074,
+          -1.7796894941825196,
+          0.032008888353859274
+        ],
+        "xy_error_m": 1.7023419963923239,
+        "yaw_error_deg": 6.352094235894181,
+        "clearance_m": 0.07042683573401162,
+        "tilt_deg": 0.13223612646102348,
+        "speed": 0.07598185069776918,
+        "open_issued": false
+      },
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/reloc16-r1-carry-93315-v5-93635d6e/raw/result.json.zst": "71b5ee13b56285048c08f81c7ffc05d408e1b52cb73794f74d37bce5a10a5be3",
+        "/home/ugrp/ugrp-sim/runs/reloc16-r1-carry-93315-v5-93635d6e/raw/teacher-commands.jsonl.zst": "2d6570f356066e497777349a587bb78ffcb1de2891a38dc704374146476c4978",
+        "/home/ugrp/ugrp-sim/runs/reloc16-r1-carry-93315-v5-93635d6e/raw/eval-only.jsonl.zst": "60b89e7cae4d66782416b025af422d014d2e625a4ad33a5ebe1092c21c9d0470"
+      }
+    },
+    {
+      "run": "reloc16-r2-carry-93266-v5-5f8b3eb2",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc16-r2-carry-93266-v5-5f8b3eb2/raw",
+      "seed": 93266,
+      "source_sha": "5f8b3eb283ce79f59a69331993575a49b5c101bd",
+      "termination": "cap_end",
+      "sim_s": 149.9999999981502,
+      "phases": {
+        "fold": 6,
+        "pickup_search": 59,
+        "approach": 278,
+        "align": 41,
+        "hover": 19,
+        "descent": 32,
+        "close": 23,
+        "lift": 31,
+        "lift_settle": 64,
+        "lookback_pose": 23,
+        "lookback": 50,
+        "lookback_settle": 10,
+        "verify_lift": 22,
+        "hold": 60,
+        "carry_prepare": 21,
+        "carry_to_zone": 417,
+        "carry_recover_lower": 22,
+        "carry_recover_open": 16,
+        "carry_recover_retract": 38,
+        "carry_recover_backoff": 50,
+        "carry_reobserve": 172,
+        "carry_recover_restore": 11,
+        "carry_reacquire": 35
+      },
+      "timeline": [
+        {
+          "t": 1.3000000000000178,
+          "phase": "fold"
+        },
+        {
+          "t": 1.9000000000002182,
+          "phase": "pickup_search"
+        },
+        {
+          "t": 7.800000000003787,
+          "phase": "approach"
+        },
+        {
+          "t": 34.90000000007563,
+          "phase": "align"
+        },
+        {
+          "t": 36.70000000008422,
+          "phase": "hover"
+        },
+        {
+          "t": 37.60000000008852,
+          "phase": "descent"
+        },
+        {
+          "t": 39.20000000009616,
+          "phase": "close"
+        },
+        {
+          "t": 40.30000000010141,
+          "phase": "lift"
+        },
+        {
+          "t": 41.800000000108575,
+          "phase": "lift_settle"
+        },
+        {
+          "t": 45.000000000123855,
+          "phase": "lookback_pose"
+        },
+        {
+          "t": 46.10000000012911,
+          "phase": "lookback"
+        },
+        {
+          "t": 48.600000000141044,
+          "phase": "lookback_settle"
+        },
+        {
+          "t": 49.10000000014343,
+          "phase": "verify_lift"
+        },
+        {
+          "t": 50.200000000148684,
+          "phase": "hold"
+        },
+        {
+          "t": 53.20000000016301,
+          "phase": "carry_prepare"
+        },
+        {
+          "t": 54.20000000016778,
+          "phase": "carry_to_zone"
+        },
+        {
+          "t": 74.59999999996391,
+          "phase": "carry_recover_lower"
+        },
+        {
+          "t": 75.6999999999379,
+          "phase": "carry_recover_open"
+        },
+        {
+          "t": 76.49999999991898,
+          "phase": "carry_recover_retract"
+        },
+        {
+          "t": 78.39999999987405,
+          "phase": "carry_recover_backoff"
+        },
+        {
+          "t": 80.89999999981494,
+          "phase": "carry_reobserve"
+        },
+        {
+          "t": 91.89999999955482,
+          "phase": "carry_recover_restore"
+        },
+        {
+          "t": 92.99999999952881,
+          "phase": "carry_reacquire"
+        },
+        {
+          "t": 96.49999999944605,
+          "phase": "approach"
+        },
+        {
+          "t": 97.1999999994295,
+          "phase": "align"
+        },
+        {
+          "t": 99.4999999993751,
+          "phase": "hover"
+        },
+        {
+          "t": 100.49999999935146,
+          "phase": "descent"
+        },
+        {
+          "t": 102.09999999931362,
+          "phase": "close"
+        },
+        {
+          "t": 103.29999999928525,
+          "phase": "lift"
+        },
+        {
+          "t": 104.89999999924741,
+          "phase": "lift_settle"
+        },
+        {
+          "t": 108.09999999917174,
+          "phase": "lookback_pose"
+        },
+        {
+          "t": 109.29999999914337,
+          "phase": "lookback"
+        },
+        {
+          "t": 111.79999999908425,
+          "phase": "lookback_settle"
+        },
+        {
+          "t": 112.29999999907243,
+          "phase": "verify_lift"
+        },
+        {
+          "t": 113.39999999904641,
+          "phase": "hold"
+        },
+        {
+          "t": 116.39999999897547,
+          "phase": "carry_prepare"
+        },
+        {
+          "t": 117.49999999894946,
+          "phase": "carry_to_zone"
+        },
+        {
+          "t": 138.7999999984458,
+          "phase": "carry_recover_lower"
+        },
+        {
+          "t": 139.8999999984198,
+          "phase": "carry_recover_open"
+        },
+        {
+          "t": 140.69999999840087,
+          "phase": "carry_recover_retract"
+        },
+        {
+          "t": 142.59999999835594,
+          "phase": "carry_recover_backoff"
+        },
+        {
+          "t": 145.09999999829682,
+          "phase": "carry_reobserve"
+        }
+      ],
+      "cumulative": {
+        "ticks": 1500,
+        "pickup_ticks": 178,
+        "travel_ticks": 417,
+        "place_view_ticks": 0,
+        "place_advance_ticks": 0,
+        "final_lower_ticks": 0,
+        "final_open_ticks": 0,
+        "place_success": 0
+      },
+      "rejection_reasons": {
+        "scene_wall_unobservable_pose_budget": 1,
+        "accepted_replan": 1,
+        "pose_budget": 1
+      },
+      "place_predicates": {
+        "lift_success": true,
+        "zone_placement_success": false,
+        "release_success": false,
+        "no_drop_during_carry": true,
+        "final_footprint_inside_zone": false,
+        "criteria": {
+          "min_clearance_m": 0.012,
+          "max_tilt_deg": 10.0,
+          "lift_hold_s": 3.0,
+          "finger_min_n": 0.5,
+          "release_settle_s": 2.0,
+          "release_speed_m_s": 0.01,
+          "release_max_tilt_deg": 3.0,
+          "release_clearance_m": 0.005,
+          "weld": "off",
+          "placement": "every collision-box corner inside destination zone",
+          "retention": "every 10 Hz carry sample: clearance >=12 mm and both fingers >=0.5 N",
+          "detached": "no cargo/finger contact and open command",
+          "scope": "evaluation only; sub-100 ms drops not resolved"
+        }
+      },
+      "final": {
+        "phase": "carry_reobserve",
+        "goal": [
+          4.151428609176203,
+          0.39621995881913613
+        ],
+        "slot": [
+          4.5,
+          0.4
+        ],
+        "arrival": null,
+        "failure": null,
+        "zone_margin_min_m": -2.3324383793405454,
+        "cargo_xyz": [
+          1.9890902812711078,
+          -1.595023829446731,
+          0.0158922445797838
+        ],
+        "base_xyz": [
+          1.666378786896242,
+          -1.6541952492749816,
+          0.031971113911570655
+        ],
+        "xy_error_m": 0.20650273589305856,
+        "yaw_error_deg": -0.4740451119610064,
+        "clearance_m": -0.0001077554205499813,
+        "tilt_deg": 1.7075472925031877e-06,
+        "speed": 1.9939507234378522e-11,
+        "open_issued": true
+      },
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/reloc16-r2-carry-93266-v5-5f8b3eb2/raw/result.json.zst": "cd13dc919f339f78af745580b92e743fcd26c2824c9f9fa5b721e8dfb36befa5",
+        "/home/ugrp/ugrp-sim/runs/reloc16-r2-carry-93266-v5-5f8b3eb2/raw/teacher-commands.jsonl.zst": "17c0b71901029a05d98286245278320d37571b1faffd5e691143ddba31239a0e",
+        "/home/ugrp/ugrp-sim/runs/reloc16-r2-carry-93266-v5-5f8b3eb2/raw/eval-only.jsonl.zst": "126d49e31b0da8364758c9a5fee619b8a10d06cda7f8199647a8250f91f5f15e"
+      }
+    },
+    {
+      "run": "reloc16-r2-carry-93315-v5-5f8b3eb2",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc16-r2-carry-93315-v5-5f8b3eb2/raw",
+      "seed": 93315,
+      "source_sha": "5f8b3eb283ce79f59a69331993575a49b5c101bd",
+      "termination": "cap_end",
+      "sim_s": 149.9999999981502,
+      "phases": {
+        "fold": 6,
+        "pickup_search": 1,
+        "approach": 60,
+        "align": 16,
+        "hover": 10,
+        "descent": 16,
+        "close": 12,
+        "lift": 16,
+        "lift_settle": 32,
+        "lookback_pose": 11,
+        "lookback": 25,
+        "lookback_settle": 5,
+        "verify_lift": 11,
+        "hold": 30,
+        "carry_prepare": 10,
+        "carry_to_zone": 197,
+        "carry_recover_lower": 10,
+        "carry_recover_open": 7,
+        "carry_recover_retract": 18,
+        "carry_recover_backoff": 25,
+        "carry_reobserve": 382,
+        "carry_recover_restore": 11,
+        "carry_reacquire": 589
+      },
+      "timeline": [
+        {
+          "t": 1.3000000000000178,
+          "phase": "fold"
+        },
+        {
+          "t": 1.9000000000002182,
+          "phase": "pickup_search"
+        },
+        {
+          "t": 2.0000000000002514,
+          "phase": "approach"
+        },
+        {
+          "t": 8.00000000000403,
+          "phase": "align"
+        },
+        {
+          "t": 9.600000000000302,
+          "phase": "hover"
+        },
+        {
+          "t": 10.599999999997971,
+          "phase": "descent"
+        },
+        {
+          "t": 12.199999999994242,
+          "phase": "close"
+        },
+        {
+          "t": 13.399999999991445,
+          "phase": "lift"
+        },
+        {
+          "t": 14.999999999987716,
+          "phase": "lift_settle"
+        },
+        {
+          "t": 18.19999999999589,
+          "phase": "lookback_pose"
+        },
+        {
+          "t": 19.30000000000114,
+          "phase": "lookback"
+        },
+        {
+          "t": 21.80000000001308,
+          "phase": "lookback_settle"
+        },
+        {
+          "t": 22.300000000015466,
+          "phase": "verify_lift"
+        },
+        {
+          "t": 23.400000000020718,
+          "phase": "hold"
+        },
+        {
+          "t": 26.400000000035043,
+          "phase": "carry_prepare"
+        },
+        {
+          "t": 27.400000000039817,
+          "phase": "carry_to_zone"
+        },
+        {
+          "t": 47.10000000013388,
+          "phase": "carry_recover_lower"
+        },
+        {
+          "t": 48.10000000013866,
+          "phase": "carry_recover_open"
+        },
+        {
+          "t": 48.800000000142,
+          "phase": "carry_recover_retract"
+        },
+        {
+          "t": 50.600000000150594,
+          "phase": "carry_recover_backoff"
+        },
+        {
+          "t": 53.10000000016253,
+          "phase": "carry_reobserve"
+        },
+        {
+          "t": 91.29999999956901,
+          "phase": "carry_recover_restore"
+        },
+        {
+          "t": 92.399999999543,
+          "phase": "carry_reacquire"
+        }
+      ],
+      "cumulative": {
+        "ticks": 1500,
+        "pickup_ticks": 90,
+        "travel_ticks": 197,
+        "place_view_ticks": 0,
+        "place_advance_ticks": 0,
+        "final_lower_ticks": 0,
+        "final_open_ticks": 0,
+        "place_success": 0
+      },
+      "rejection_reasons": {
+        "scene_wall_unobservable_pose_budget": 1,
+        "accepted_replan": 1
+      },
+      "place_predicates": {
+        "lift_success": true,
+        "zone_placement_success": false,
+        "release_success": false,
+        "no_drop_during_carry": true,
+        "final_footprint_inside_zone": false,
+        "criteria": {
+          "min_clearance_m": 0.012,
+          "max_tilt_deg": 10.0,
+          "lift_hold_s": 3.0,
+          "finger_min_n": 0.5,
+          "release_settle_s": 2.0,
+          "release_speed_m_s": 0.01,
+          "release_max_tilt_deg": 3.0,
+          "release_clearance_m": 0.005,
+          "weld": "off",
+          "placement": "every collision-box corner inside destination zone",
+          "retention": "every 10 Hz carry sample: clearance >=12 mm and both fingers >=0.5 N",
+          "detached": "no cargo/finger contact and open command",
+          "scope": "evaluation only; sub-100 ms drops not resolved"
+        }
+      },
+      "final": {
+        "phase": "carry_reacquire",
+        "goal": [
+          2.5468745337995466,
+          -0.8478096468979931
+        ],
+        "slot": [
+          2.9,
+          -0.85
+        ],
+        "arrival": null,
+        "failure": null,
+        "zone_margin_min_m": -1.237265464027046,
+        "cargo_xyz": [
+          1.4805844294489998,
+          -1.7933387525451732,
+          0.01589224457978388
+        ],
+        "base_xyz": [
+          1.226862218457099,
+          -1.7533894196019435,
+          0.03192521766626434
+        ],
+        "xy_error_m": 1.299768053820875,
+        "yaw_error_deg": -77.65150643290593,
+        "clearance_m": -0.0001077554207546752,
+        "tilt_deg": 3.4150945850063763e-06,
+        "speed": 2.1649917976758976e-11,
+        "open_issued": true
+      },
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/reloc16-r2-carry-93315-v5-5f8b3eb2/raw/result.json.zst": "a576bde780ed3241c573e169cf6ffdd1475905b9e0e6d47cf7ac2a50967bbbc2",
+        "/home/ugrp/ugrp-sim/runs/reloc16-r2-carry-93315-v5-5f8b3eb2/raw/teacher-commands.jsonl.zst": "32e4775a5ee0f04cc97896382e798a9a2ebaac4c7ce8949df2dc29130314159b",
+        "/home/ugrp/ugrp-sim/runs/reloc16-r2-carry-93315-v5-5f8b3eb2/raw/eval-only.jsonl.zst": "71fb69e9a3f6aba5707ae0dbba2881a2eba080a304046e69a9bf608523994dc9"
+      }
+    },
+    {
+      "run": "reloc16-r3-carry-93266-v5-df8115a5",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc16-r3-carry-93266-v5-df8115a5/raw",
+      "seed": 93266,
+      "source_sha": "df8115a53c01af2d1974c0e8777fdb4853252eaf",
+      "termination": "cap_end",
+      "sim_s": 149.9999999981502,
+      "phases": {
+        "fold": 6,
+        "pickup_search": 57,
+        "approach": 271,
+        "align": 18,
+        "hover": 9,
+        "descent": 16,
+        "close": 11,
+        "lift": 15,
+        "lift_settle": 32,
+        "lookback_pose": 11,
+        "lookback": 25,
+        "lookback_settle": 5,
+        "verify_lift": 11,
+        "hold": 30,
+        "carry_prepare": 10,
+        "carry_to_zone": 154,
+        "carry_recover_lower": 11,
+        "carry_recover_open": 8,
+        "carry_recover_retract": 19,
+        "carry_recover_backoff": 25,
+        "carry_reobserve": 650,
+        "carry_recover_restore": 22,
+        "carry_reacquire": 84
+      },
+      "timeline": [
+        {
+          "t": 1.3000000000000178,
+          "phase": "fold"
+        },
+        {
+          "t": 1.9000000000002182,
+          "phase": "pickup_search"
+        },
+        {
+          "t": 7.600000000003543,
+          "phase": "approach"
+        },
+        {
+          "t": 34.700000000074674,
+          "phase": "align"
+        },
+        {
+          "t": 36.50000000008327,
+          "phase": "hover"
+        },
+        {
+          "t": 37.400000000087566,
+          "phase": "descent"
+        },
+        {
+          "t": 39.000000000095206,
+          "phase": "close"
+        },
+        {
+          "t": 40.10000000010046,
+          "phase": "lift"
+        },
+        {
+          "t": 41.60000000010762,
+          "phase": "lift_settle"
+        },
+        {
+          "t": 44.8000000001229,
+          "phase": "lookback_pose"
+        },
+        {
+          "t": 45.90000000012815,
+          "phase": "lookback"
+        },
+        {
+          "t": 48.40000000014009,
+          "phase": "lookback_settle"
+        },
+        {
+          "t": 48.90000000014248,
+          "phase": "verify_lift"
+        },
+        {
+          "t": 50.00000000014773,
+          "phase": "hold"
+        },
+        {
+          "t": 53.00000000016205,
+          "phase": "carry_prepare"
+        },
+        {
+          "t": 54.00000000016683,
+          "phase": "carry_to_zone"
+        },
+        {
+          "t": 69.40000000008688,
+          "phase": "carry_recover_lower"
+        },
+        {
+          "t": 70.50000000006087,
+          "phase": "carry_recover_open"
+        },
+        {
+          "t": 71.30000000004195,
+          "phase": "carry_recover_retract"
+        },
+        {
+          "t": 73.19999999999702,
+          "phase": "carry_recover_backoff"
+        },
+        {
+          "t": 75.6999999999379,
+          "phase": "carry_reobserve"
+        },
+        {
+          "t": 100.5999999993491,
+          "phase": "carry_recover_restore"
+        },
+        {
+          "t": 101.69999999932308,
+          "phase": "carry_reacquire"
+        },
+        {
+          "t": 106.09999999921904,
+          "phase": "carry_reobserve"
+        },
+        {
+          "t": 141.39999999838432,
+          "phase": "carry_recover_restore"
+        },
+        {
+          "t": 142.4999999983583,
+          "phase": "carry_reacquire"
+        },
+        {
+          "t": 146.49999999826372,
+          "phase": "carry_reobserve"
+        }
+      ],
+      "cumulative": {
+        "ticks": 1500,
+        "pickup_ticks": 88,
+        "travel_ticks": 154,
+        "place_view_ticks": 0,
+        "place_advance_ticks": 0,
+        "final_lower_ticks": 0,
+        "final_open_ticks": 0,
+        "place_success": 0
+      },
+      "rejection_reasons": {
+        "scene_wall_unobservable_pose_budget": 3,
+        "accepted_replan": 2
+      },
+      "place_predicates": {
+        "lift_success": true,
+        "zone_placement_success": false,
+        "release_success": false,
+        "no_drop_during_carry": true,
+        "final_footprint_inside_zone": false,
+        "criteria": {
+          "min_clearance_m": 0.012,
+          "max_tilt_deg": 10.0,
+          "lift_hold_s": 3.0,
+          "finger_min_n": 0.5,
+          "release_settle_s": 2.0,
+          "release_speed_m_s": 0.01,
+          "release_max_tilt_deg": 3.0,
+          "release_clearance_m": 0.005,
+          "weld": "off",
+          "placement": "every collision-box corner inside destination zone",
+          "retention": "every 10 Hz carry sample: clearance >=12 mm and both fingers >=0.5 N",
+          "detached": "no cargo/finger contact and open command",
+          "scope": "evaluation only; sub-100 ms drops not resolved"
+        }
+      },
+      "final": {
+        "phase": "carry_reobserve",
+        "goal": [
+          4.147821085254404,
+          0.39637128575783814
+        ],
+        "slot": [
+          4.5,
+          0.4
+        ],
+        "arrival": null,
+        "failure": null,
+        "zone_margin_min_m": -3.0688574621076308,
+        "cargo_xyz": [
+          1.2543773606043016,
+          0.03700145170250786,
+          0.01589224457978394
+        ],
+        "base_xyz": [
+          0.9876341599919413,
+          -0.10615726027684717,
+          0.031935809872101345
+        ],
+        "xy_error_m": 0.09232220170814583,
+        "yaw_error_deg": -10.143982773342074,
+        "clearance_m": -0.0001077554208299622,
+        "tilt_deg": 0.0,
+        "speed": 1.6291490871658773e-11,
+        "open_issued": true
+      },
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/reloc16-r3-carry-93266-v5-df8115a5/raw/result.json.zst": "10b374395f61b26f0689137c78e43d535646f689744baa838983380527247d5e",
+        "/home/ugrp/ugrp-sim/runs/reloc16-r3-carry-93266-v5-df8115a5/raw/teacher-commands.jsonl.zst": "961cde854e4b6ef0781bfb729c2fc44228e2be3a801171a9cffdf04495e863db",
+        "/home/ugrp/ugrp-sim/runs/reloc16-r3-carry-93266-v5-df8115a5/raw/eval-only.jsonl.zst": "5c19ba4cf9a9431f9619bdcb075528acb3dc7d0486b4a9ab4e8a6a2699f2b03b"
+      }
+    },
+    {
+      "run": "reloc16-r3-carry-93315-v5-df8115a5",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc16-r3-carry-93315-v5-df8115a5/raw",
+      "seed": 93315,
+      "source_sha": "df8115a53c01af2d1974c0e8777fdb4853252eaf",
+      "termination": "cap_end",
+      "sim_s": 149.9999999981502,
+      "phases": {
+        "fold": 6,
+        "pickup_search": 1,
+        "approach": 62,
+        "align": 16,
+        "hover": 10,
+        "descent": 16,
+        "close": 12,
+        "lift": 16,
+        "lift_settle": 32,
+        "lookback_pose": 11,
+        "lookback": 25,
+        "lookback_settle": 5,
+        "verify_lift": 11,
+        "hold": 30,
+        "carry_prepare": 10,
+        "carry_to_zone": 149,
+        "carry_recover_lower": 10,
+        "carry_recover_open": 7,
+        "carry_recover_retract": 18,
+        "carry_recover_backoff": 25,
+        "carry_reobserve": 879,
+        "carry_recover_restore": 33,
+        "carry_reacquire": 116
+      },
+      "timeline": [
+        {
+          "t": 1.3000000000000178,
+          "phase": "fold"
+        },
+        {
+          "t": 1.9000000000002182,
+          "phase": "pickup_search"
+        },
+        {
+          "t": 2.0000000000002514,
+          "phase": "approach"
+        },
+        {
+          "t": 8.00000000000403,
+          "phase": "align"
+        },
+        {
+          "t": 9.600000000000302,
+          "phase": "hover"
+        },
+        {
+          "t": 10.599999999997971,
+          "phase": "descent"
+        },
+        {
+          "t": 12.199999999994242,
+          "phase": "close"
+        },
+        {
+          "t": 13.399999999991445,
+          "phase": "lift"
+        },
+        {
+          "t": 14.999999999987716,
+          "phase": "lift_settle"
+        },
+        {
+          "t": 18.19999999999589,
+          "phase": "lookback_pose"
+        },
+        {
+          "t": 19.30000000000114,
+          "phase": "lookback"
+        },
+        {
+          "t": 21.80000000001308,
+          "phase": "lookback_settle"
+        },
+        {
+          "t": 22.300000000015466,
+          "phase": "verify_lift"
+        },
+        {
+          "t": 23.400000000020718,
+          "phase": "hold"
+        },
+        {
+          "t": 26.400000000035043,
+          "phase": "carry_prepare"
+        },
+        {
+          "t": 27.400000000039817,
+          "phase": "carry_to_zone"
+        },
+        {
+          "t": 42.30000000011096,
+          "phase": "carry_recover_lower"
+        },
+        {
+          "t": 43.30000000011574,
+          "phase": "carry_recover_open"
+        },
+        {
+          "t": 44.00000000011908,
+          "phase": "carry_recover_retract"
+        },
+        {
+          "t": 45.800000000127675,
+          "phase": "carry_recover_backoff"
+        },
+        {
+          "t": 48.30000000013961,
+          "phase": "carry_reobserve"
+        },
+        {
+          "t": 78.7999999998646,
+          "phase": "carry_recover_restore"
+        },
+        {
+          "t": 79.89999999983858,
+          "phase": "carry_reacquire"
+        },
+        {
+          "t": 84.29999999973454,
+          "phase": "carry_reobserve"
+        },
+        {
+          "t": 102.69999999929944,
+          "phase": "carry_recover_restore"
+        },
+        {
+          "t": 103.79999999927342,
+          "phase": "carry_reacquire"
+        },
+        {
+          "t": 106.99999999919775,
+          "phase": "approach"
+        },
+        {
+          "t": 107.19999999919303,
+          "phase": "carry_reobserve"
+        },
+        {
+          "t": 125.39999999876265,
+          "phase": "carry_recover_restore"
+        },
+        {
+          "t": 126.49999999873664,
+          "phase": "carry_reacquire"
+        },
+        {
+          "t": 130.49999999864207,
+          "phase": "carry_reobserve"
+        }
+      ],
+      "cumulative": {
+        "ticks": 1500,
+        "pickup_ticks": 90,
+        "travel_ticks": 149,
+        "place_view_ticks": 0,
+        "place_advance_ticks": 0,
+        "final_lower_ticks": 0,
+        "final_open_ticks": 0,
+        "place_success": 0
+      },
+      "rejection_reasons": {
+        "scene_wall_unobservable_pose_budget": 3,
+        "accepted_replan": 3,
+        "pickup_no_route": 1
+      },
+      "place_predicates": {
+        "lift_success": true,
+        "zone_placement_success": false,
+        "release_success": false,
+        "no_drop_during_carry": true,
+        "final_footprint_inside_zone": false,
+        "criteria": {
+          "min_clearance_m": 0.012,
+          "max_tilt_deg": 10.0,
+          "lift_hold_s": 3.0,
+          "finger_min_n": 0.5,
+          "release_settle_s": 2.0,
+          "release_speed_m_s": 0.01,
+          "release_max_tilt_deg": 3.0,
+          "release_clearance_m": 0.005,
+          "weld": "off",
+          "placement": "every collision-box corner inside destination zone",
+          "retention": "every 10 Hz carry sample: clearance >=12 mm and both fingers >=0.5 N",
+          "detached": "no cargo/finger contact and open command",
+          "scope": "evaluation only; sub-100 ms drops not resolved"
+        }
+      },
+      "final": {
+        "phase": "carry_reobserve",
+        "goal": [
+          2.5468745337995466,
+          -0.8478096468979931
+        ],
+        "slot": [
+          2.9,
+          -0.85
+        ],
+        "arrival": null,
+        "failure": null,
+        "zone_margin_min_m": -1.6123037493753798,
+        "cargo_xyz": [
+          1.1059646931369458,
+          -1.6132931752983912,
+          0.015892244579783922
+        ],
+        "base_xyz": [
+          0.7570110450479092,
+          -1.6036357638163907,
+          0.03196797495149803
+        ],
+        "xy_error_m": 0.1950506469888727,
+        "yaw_error_deg": 1.7088689305729203,
+        "clearance_m": -0.00010775542084323284,
+        "tilt_deg": 3.306651113363206e-06,
+        "speed": 1.764261483215598e-11,
+        "open_issued": true
+      },
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/reloc16-r3-carry-93315-v5-df8115a5/raw/result.json.zst": "f78759171c16fbc18239e77951eb4a88aa2df38bffe48c3813cbaa06d24d6f56",
+        "/home/ugrp/ugrp-sim/runs/reloc16-r3-carry-93315-v5-df8115a5/raw/teacher-commands.jsonl.zst": "05d8d5b9448368588f40992cb94952afe0984fad64ab0024b969b233a819b857",
+        "/home/ugrp/ugrp-sim/runs/reloc16-r3-carry-93315-v5-df8115a5/raw/eval-only.jsonl.zst": "c2039a1e19eadc9564eee2ffc6bbfbf183ef8f2628a9b49fd163a31dba7b9514"
+      }
+    },
+    {
+      "run": "reloc17-r1-carry-93266-47670d14",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc17-r1-carry-93266-47670d14/raw",
+      "seed": 93266,
+      "source_sha": "47670d1428abfbb09756627c1a2be31caf650465",
+      "termination": "cap_end",
+      "sim_s": 149.9999999981502,
+      "phases": {
+        "fold": 6,
+        "pickup_search": 57,
+        "approach": 271,
+        "align": 18,
+        "hover": 9,
+        "descent": 16,
+        "close": 11,
+        "lift": 15,
+        "lift_settle": 32,
+        "lookback_pose": 11,
+        "lookback": 25,
+        "lookback_settle": 5,
+        "verify_lift": 11,
+        "hold": 30,
+        "carry_prepare": 10,
+        "carry_to_zone": 154,
+        "carry_recover_lower": 11,
+        "carry_recover_open": 8,
+        "carry_recover_retract": 19,
+        "carry_recover_backoff": 25,
+        "carry_reobserve": 650,
+        "carry_recover_restore": 22,
+        "carry_reacquire": 84
+      },
+      "timeline": [
+        {
+          "t": 1.3000000000000178,
+          "phase": "fold"
+        },
+        {
+          "t": 1.9000000000002182,
+          "phase": "pickup_search"
+        },
+        {
+          "t": 7.600000000003543,
+          "phase": "approach"
+        },
+        {
+          "t": 34.700000000074674,
+          "phase": "align"
+        },
+        {
+          "t": 36.50000000008327,
+          "phase": "hover"
+        },
+        {
+          "t": 37.400000000087566,
+          "phase": "descent"
+        },
+        {
+          "t": 39.000000000095206,
+          "phase": "close"
+        },
+        {
+          "t": 40.10000000010046,
+          "phase": "lift"
+        },
+        {
+          "t": 41.60000000010762,
+          "phase": "lift_settle"
+        },
+        {
+          "t": 44.8000000001229,
+          "phase": "lookback_pose"
+        },
+        {
+          "t": 45.90000000012815,
+          "phase": "lookback"
+        },
+        {
+          "t": 48.40000000014009,
+          "phase": "lookback_settle"
+        },
+        {
+          "t": 48.90000000014248,
+          "phase": "verify_lift"
+        },
+        {
+          "t": 50.00000000014773,
+          "phase": "hold"
+        },
+        {
+          "t": 53.00000000016205,
+          "phase": "carry_prepare"
+        },
+        {
+          "t": 54.00000000016683,
+          "phase": "carry_to_zone"
+        },
+        {
+          "t": 69.40000000008688,
+          "phase": "carry_recover_lower"
+        },
+        {
+          "t": 70.50000000006087,
+          "phase": "carry_recover_open"
+        },
+        {
+          "t": 71.30000000004195,
+          "phase": "carry_recover_retract"
+        },
+        {
+          "t": 73.19999999999702,
+          "phase": "carry_recover_backoff"
+        },
+        {
+          "t": 75.6999999999379,
+          "phase": "carry_reobserve"
+        },
+        {
+          "t": 100.5999999993491,
+          "phase": "carry_recover_restore"
+        },
+        {
+          "t": 101.69999999932308,
+          "phase": "carry_reacquire"
+        },
+        {
+          "t": 106.09999999921904,
+          "phase": "carry_reobserve"
+        },
+        {
+          "t": 141.39999999838432,
+          "phase": "carry_recover_restore"
+        },
+        {
+          "t": 142.4999999983583,
+          "phase": "carry_reacquire"
+        },
+        {
+          "t": 146.49999999826372,
+          "phase": "carry_reobserve"
+        }
+      ],
+      "cumulative": {
+        "ticks": 1500,
+        "pickup_ticks": 88,
+        "travel_ticks": 154,
+        "place_view_ticks": 0,
+        "place_advance_ticks": 0,
+        "final_lower_ticks": 0,
+        "final_open_ticks": 0,
+        "place_success": 0
+      },
+      "rejection_reasons": {
+        "scene_wall_unobservable_pose_budget": 3,
+        "accepted_replan": 2
+      },
+      "place_predicates": {
+        "lift_success": true,
+        "zone_placement_success": false,
+        "release_success": false,
+        "no_drop_during_carry": true,
+        "final_footprint_inside_zone": false,
+        "criteria": {
+          "min_clearance_m": 0.012,
+          "max_tilt_deg": 10.0,
+          "lift_hold_s": 3.0,
+          "finger_min_n": 0.5,
+          "release_settle_s": 2.0,
+          "release_speed_m_s": 0.01,
+          "release_max_tilt_deg": 3.0,
+          "release_clearance_m": 0.005,
+          "weld": "off",
+          "placement": "every collision-box corner inside destination zone",
+          "retention": "every 10 Hz carry sample: clearance >=12 mm and both fingers >=0.5 N",
+          "detached": "no cargo/finger contact and open command",
+          "scope": "evaluation only; sub-100 ms drops not resolved"
+        }
+      },
+      "final": {
+        "phase": "carry_reobserve",
+        "goal": [
+          4.147821085254404,
+          0.39637128575783814
+        ],
+        "slot": [
+          4.5,
+          0.4
+        ],
+        "arrival": null,
+        "failure": null,
+        "zone_margin_min_m": -3.0688574621076308,
+        "cargo_xyz": [
+          1.2543773606043016,
+          0.03700145170250786,
+          0.01589224457978394
+        ],
+        "base_xyz": [
+          0.9876341599919413,
+          -0.10615726027684717,
+          0.031935809872101345
+        ],
+        "xy_error_m": 0.09232220170814583,
+        "yaw_error_deg": -10.143982773342074,
+        "clearance_m": -0.0001077554208299622,
+        "tilt_deg": 0.0,
+        "speed": 1.6291490871658773e-11,
+        "open_issued": true
+      },
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/reloc17-r1-carry-93266-47670d14/raw/result.json.zst": "c607bbc6c230610012e7de4506d64db8e63a45481050079c7e0bf2ba3e1f88ee",
+        "/home/ugrp/ugrp-sim/runs/reloc17-r1-carry-93266-47670d14/raw/teacher-commands.jsonl.zst": "961cde854e4b6ef0781bfb729c2fc44228e2be3a801171a9cffdf04495e863db",
+        "/home/ugrp/ugrp-sim/runs/reloc17-r1-carry-93266-47670d14/raw/eval-only.jsonl.zst": "5c19ba4cf9a9431f9619bdcb075528acb3dc7d0486b4a9ab4e8a6a2699f2b03b"
+      }
+    },
+    {
+      "run": "reloc17-r1-carry-93315-47670d14",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc17-r1-carry-93315-47670d14/raw",
+      "seed": 93315,
+      "source_sha": "47670d1428abfbb09756627c1a2be31caf650465",
+      "termination": "cap_end",
+      "sim_s": 149.9999999981502,
+      "phases": {
+        "fold": 6,
+        "pickup_search": 1,
+        "approach": 62,
+        "align": 16,
+        "hover": 10,
+        "descent": 16,
+        "close": 12,
+        "lift": 16,
+        "lift_settle": 32,
+        "lookback_pose": 11,
+        "lookback": 25,
+        "lookback_settle": 5,
+        "verify_lift": 11,
+        "hold": 30,
+        "carry_prepare": 10,
+        "carry_to_zone": 149,
+        "carry_recover_lower": 10,
+        "carry_recover_open": 7,
+        "carry_recover_retract": 18,
+        "carry_recover_backoff": 25,
+        "carry_reobserve": 879,
+        "carry_recover_restore": 33,
+        "carry_reacquire": 116
+      },
+      "timeline": [
+        {
+          "t": 1.3000000000000178,
+          "phase": "fold"
+        },
+        {
+          "t": 1.9000000000002182,
+          "phase": "pickup_search"
+        },
+        {
+          "t": 2.0000000000002514,
+          "phase": "approach"
+        },
+        {
+          "t": 8.00000000000403,
+          "phase": "align"
+        },
+        {
+          "t": 9.600000000000302,
+          "phase": "hover"
+        },
+        {
+          "t": 10.599999999997971,
+          "phase": "descent"
+        },
+        {
+          "t": 12.199999999994242,
+          "phase": "close"
+        },
+        {
+          "t": 13.399999999991445,
+          "phase": "lift"
+        },
+        {
+          "t": 14.999999999987716,
+          "phase": "lift_settle"
+        },
+        {
+          "t": 18.19999999999589,
+          "phase": "lookback_pose"
+        },
+        {
+          "t": 19.30000000000114,
+          "phase": "lookback"
+        },
+        {
+          "t": 21.80000000001308,
+          "phase": "lookback_settle"
+        },
+        {
+          "t": 22.300000000015466,
+          "phase": "verify_lift"
+        },
+        {
+          "t": 23.400000000020718,
+          "phase": "hold"
+        },
+        {
+          "t": 26.400000000035043,
+          "phase": "carry_prepare"
+        },
+        {
+          "t": 27.400000000039817,
+          "phase": "carry_to_zone"
+        },
+        {
+          "t": 42.30000000011096,
+          "phase": "carry_recover_lower"
+        },
+        {
+          "t": 43.30000000011574,
+          "phase": "carry_recover_open"
+        },
+        {
+          "t": 44.00000000011908,
+          "phase": "carry_recover_retract"
+        },
+        {
+          "t": 45.800000000127675,
+          "phase": "carry_recover_backoff"
+        },
+        {
+          "t": 48.30000000013961,
+          "phase": "carry_reobserve"
+        },
+        {
+          "t": 78.7999999998646,
+          "phase": "carry_recover_restore"
+        },
+        {
+          "t": 79.89999999983858,
+          "phase": "carry_reacquire"
+        },
+        {
+          "t": 84.29999999973454,
+          "phase": "carry_reobserve"
+        },
+        {
+          "t": 102.69999999929944,
+          "phase": "carry_recover_restore"
+        },
+        {
+          "t": 103.79999999927342,
+          "phase": "carry_reacquire"
+        },
+        {
+          "t": 106.99999999919775,
+          "phase": "approach"
+        },
+        {
+          "t": 107.19999999919303,
+          "phase": "carry_reobserve"
+        },
+        {
+          "t": 125.39999999876265,
+          "phase": "carry_recover_restore"
+        },
+        {
+          "t": 126.49999999873664,
+          "phase": "carry_reacquire"
+        },
+        {
+          "t": 130.49999999864207,
+          "phase": "carry_reobserve"
+        }
+      ],
+      "cumulative": {
+        "ticks": 1500,
+        "pickup_ticks": 90,
+        "travel_ticks": 149,
+        "place_view_ticks": 0,
+        "place_advance_ticks": 0,
+        "final_lower_ticks": 0,
+        "final_open_ticks": 0,
+        "place_success": 0
+      },
+      "rejection_reasons": {
+        "scene_wall_unobservable_pose_budget": 3,
+        "accepted_replan": 3,
+        "pickup_no_route": 1
+      },
+      "place_predicates": {
+        "lift_success": true,
+        "zone_placement_success": false,
+        "release_success": false,
+        "no_drop_during_carry": true,
+        "final_footprint_inside_zone": false,
+        "criteria": {
+          "min_clearance_m": 0.012,
+          "max_tilt_deg": 10.0,
+          "lift_hold_s": 3.0,
+          "finger_min_n": 0.5,
+          "release_settle_s": 2.0,
+          "release_speed_m_s": 0.01,
+          "release_max_tilt_deg": 3.0,
+          "release_clearance_m": 0.005,
+          "weld": "off",
+          "placement": "every collision-box corner inside destination zone",
+          "retention": "every 10 Hz carry sample: clearance >=12 mm and both fingers >=0.5 N",
+          "detached": "no cargo/finger contact and open command",
+          "scope": "evaluation only; sub-100 ms drops not resolved"
+        }
+      },
+      "final": {
+        "phase": "carry_reobserve",
+        "goal": [
+          2.5468745337995466,
+          -0.8478096468979931
+        ],
+        "slot": [
+          2.9,
+          -0.85
+        ],
+        "arrival": null,
+        "failure": null,
+        "zone_margin_min_m": -1.6123037493753798,
+        "cargo_xyz": [
+          1.1059646931369458,
+          -1.6132931752983912,
+          0.015892244579783922
+        ],
+        "base_xyz": [
+          0.7570110450479092,
+          -1.6036357638163907,
+          0.03196797495149803
+        ],
+        "xy_error_m": 0.1950506469888727,
+        "yaw_error_deg": 1.7088689305729203,
+        "clearance_m": -0.00010775542084323284,
+        "tilt_deg": 3.306651113363206e-06,
+        "speed": 1.764261483215598e-11,
+        "open_issued": true
+      },
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/reloc17-r1-carry-93315-47670d14/raw/result.json.zst": "7e2d63b5d189edc6fef9224a5880e20d3b51c66610281f1654a0e847a8890386",
+        "/home/ugrp/ugrp-sim/runs/reloc17-r1-carry-93315-47670d14/raw/teacher-commands.jsonl.zst": "05d8d5b9448368588f40992cb94952afe0984fad64ab0024b969b233a819b857",
+        "/home/ugrp/ugrp-sim/runs/reloc17-r1-carry-93315-47670d14/raw/eval-only.jsonl.zst": "c2039a1e19eadc9564eee2ffc6bbfbf183ef8f2628a9b49fd163a31dba7b9514"
+      }
+    },
+    {
+      "run": "reloc17-r2-carry-93266-47670d14",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc17-r2-carry-93266-47670d14/raw",
+      "seed": 93266,
+      "source_sha": "47670d1428abfbb09756627c1a2be31caf650465",
+      "termination": "cap_end",
+      "sim_s": 149.9999999981502,
+      "phases": {
+        "fold": 6,
+        "pickup_search": 59,
+        "approach": 278,
+        "align": 41,
+        "hover": 19,
+        "descent": 32,
+        "close": 23,
+        "lift": 31,
+        "lift_settle": 64,
+        "lookback_pose": 23,
+        "lookback": 50,
+        "lookback_settle": 10,
+        "verify_lift": 22,
+        "hold": 60,
+        "carry_prepare": 21,
+        "carry_to_zone": 417,
+        "carry_recover_lower": 22,
+        "carry_recover_open": 16,
+        "carry_recover_retract": 38,
+        "carry_recover_backoff": 50,
+        "carry_reobserve": 172,
+        "carry_recover_restore": 11,
+        "carry_reacquire": 35
+      },
+      "timeline": [
+        {
+          "t": 1.3000000000000178,
+          "phase": "fold"
+        },
+        {
+          "t": 1.9000000000002182,
+          "phase": "pickup_search"
+        },
+        {
+          "t": 7.800000000003787,
+          "phase": "approach"
+        },
+        {
+          "t": 34.90000000007563,
+          "phase": "align"
+        },
+        {
+          "t": 36.70000000008422,
+          "phase": "hover"
+        },
+        {
+          "t": 37.60000000008852,
+          "phase": "descent"
+        },
+        {
+          "t": 39.20000000009616,
+          "phase": "close"
+        },
+        {
+          "t": 40.30000000010141,
+          "phase": "lift"
+        },
+        {
+          "t": 41.800000000108575,
+          "phase": "lift_settle"
+        },
+        {
+          "t": 45.000000000123855,
+          "phase": "lookback_pose"
+        },
+        {
+          "t": 46.10000000012911,
+          "phase": "lookback"
+        },
+        {
+          "t": 48.600000000141044,
+          "phase": "lookback_settle"
+        },
+        {
+          "t": 49.10000000014343,
+          "phase": "verify_lift"
+        },
+        {
+          "t": 50.200000000148684,
+          "phase": "hold"
+        },
+        {
+          "t": 53.20000000016301,
+          "phase": "carry_prepare"
+        },
+        {
+          "t": 54.20000000016778,
+          "phase": "carry_to_zone"
+        },
+        {
+          "t": 74.59999999996391,
+          "phase": "carry_recover_lower"
+        },
+        {
+          "t": 75.6999999999379,
+          "phase": "carry_recover_open"
+        },
+        {
+          "t": 76.49999999991898,
+          "phase": "carry_recover_retract"
+        },
+        {
+          "t": 78.39999999987405,
+          "phase": "carry_recover_backoff"
+        },
+        {
+          "t": 80.89999999981494,
+          "phase": "carry_reobserve"
+        },
+        {
+          "t": 91.89999999955482,
+          "phase": "carry_recover_restore"
+        },
+        {
+          "t": 92.99999999952881,
+          "phase": "carry_reacquire"
+        },
+        {
+          "t": 96.49999999944605,
+          "phase": "approach"
+        },
+        {
+          "t": 97.1999999994295,
+          "phase": "align"
+        },
+        {
+          "t": 99.4999999993751,
+          "phase": "hover"
+        },
+        {
+          "t": 100.49999999935146,
+          "phase": "descent"
+        },
+        {
+          "t": 102.09999999931362,
+          "phase": "close"
+        },
+        {
+          "t": 103.29999999928525,
+          "phase": "lift"
+        },
+        {
+          "t": 104.89999999924741,
+          "phase": "lift_settle"
+        },
+        {
+          "t": 108.09999999917174,
+          "phase": "lookback_pose"
+        },
+        {
+          "t": 109.29999999914337,
+          "phase": "lookback"
+        },
+        {
+          "t": 111.79999999908425,
+          "phase": "lookback_settle"
+        },
+        {
+          "t": 112.29999999907243,
+          "phase": "verify_lift"
+        },
+        {
+          "t": 113.39999999904641,
+          "phase": "hold"
+        },
+        {
+          "t": 116.39999999897547,
+          "phase": "carry_prepare"
+        },
+        {
+          "t": 117.49999999894946,
+          "phase": "carry_to_zone"
+        },
+        {
+          "t": 138.7999999984458,
+          "phase": "carry_recover_lower"
+        },
+        {
+          "t": 139.8999999984198,
+          "phase": "carry_recover_open"
+        },
+        {
+          "t": 140.69999999840087,
+          "phase": "carry_recover_retract"
+        },
+        {
+          "t": 142.59999999835594,
+          "phase": "carry_recover_backoff"
+        },
+        {
+          "t": 145.09999999829682,
+          "phase": "carry_reobserve"
+        }
+      ],
+      "cumulative": {
+        "ticks": 1500,
+        "pickup_ticks": 178,
+        "travel_ticks": 417,
+        "place_view_ticks": 0,
+        "place_advance_ticks": 0,
+        "final_lower_ticks": 0,
+        "final_open_ticks": 0,
+        "place_success": 0
+      },
+      "rejection_reasons": {
+        "scene_wall_unobservable_pose_budget": 1,
+        "accepted_replan": 1,
+        "pose_budget": 1
+      },
+      "place_predicates": {
+        "lift_success": true,
+        "zone_placement_success": false,
+        "release_success": false,
+        "no_drop_during_carry": true,
+        "final_footprint_inside_zone": false,
+        "criteria": {
+          "min_clearance_m": 0.012,
+          "max_tilt_deg": 10.0,
+          "lift_hold_s": 3.0,
+          "finger_min_n": 0.5,
+          "release_settle_s": 2.0,
+          "release_speed_m_s": 0.01,
+          "release_max_tilt_deg": 3.0,
+          "release_clearance_m": 0.005,
+          "weld": "off",
+          "placement": "every collision-box corner inside destination zone",
+          "retention": "every 10 Hz carry sample: clearance >=12 mm and both fingers >=0.5 N",
+          "detached": "no cargo/finger contact and open command",
+          "scope": "evaluation only; sub-100 ms drops not resolved"
+        }
+      },
+      "final": {
+        "phase": "carry_reobserve",
+        "goal": [
+          4.151428609176203,
+          0.39621995881913613
+        ],
+        "slot": [
+          4.5,
+          0.4
+        ],
+        "arrival": null,
+        "failure": null,
+        "zone_margin_min_m": -2.3324383793405454,
+        "cargo_xyz": [
+          1.9890902812711078,
+          -1.595023829446731,
+          0.0158922445797838
+        ],
+        "base_xyz": [
+          1.666378786896242,
+          -1.6541952492749816,
+          0.031971113911570655
+        ],
+        "xy_error_m": 0.20650273589305856,
+        "yaw_error_deg": -0.4740451119610064,
+        "clearance_m": -0.0001077554205499813,
+        "tilt_deg": 1.7075472925031877e-06,
+        "speed": 1.9939507234378522e-11,
+        "open_issued": true
+      },
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/reloc17-r2-carry-93266-47670d14/raw/result.json.zst": "4ad80dc77261c1bd0134fb3fd63a53afe8dccd22a09b2b983c9ee0b3a7e765ff",
+        "/home/ugrp/ugrp-sim/runs/reloc17-r2-carry-93266-47670d14/raw/teacher-commands.jsonl.zst": "17c0b71901029a05d98286245278320d37571b1faffd5e691143ddba31239a0e",
+        "/home/ugrp/ugrp-sim/runs/reloc17-r2-carry-93266-47670d14/raw/eval-only.jsonl.zst": "126d49e31b0da8364758c9a5fee619b8a10d06cda7f8199647a8250f91f5f15e"
+      }
+    },
+    {
+      "run": "reloc17-r2-carry-93315-47670d14",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc17-r2-carry-93315-47670d14/raw",
+      "seed": 93315,
+      "source_sha": "47670d1428abfbb09756627c1a2be31caf650465",
+      "termination": "cap_end",
+      "sim_s": 149.9999999981502,
+      "phases": {
+        "fold": 6,
+        "pickup_search": 1,
+        "approach": 60,
+        "align": 16,
+        "hover": 10,
+        "descent": 16,
+        "close": 12,
+        "lift": 16,
+        "lift_settle": 32,
+        "lookback_pose": 11,
+        "lookback": 25,
+        "lookback_settle": 5,
+        "verify_lift": 11,
+        "hold": 30,
+        "carry_prepare": 10,
+        "carry_to_zone": 197,
+        "carry_recover_lower": 10,
+        "carry_recover_open": 7,
+        "carry_recover_retract": 18,
+        "carry_recover_backoff": 25,
+        "carry_reobserve": 382,
+        "carry_recover_restore": 11,
+        "carry_reacquire": 589
+      },
+      "timeline": [
+        {
+          "t": 1.3000000000000178,
+          "phase": "fold"
+        },
+        {
+          "t": 1.9000000000002182,
+          "phase": "pickup_search"
+        },
+        {
+          "t": 2.0000000000002514,
+          "phase": "approach"
+        },
+        {
+          "t": 8.00000000000403,
+          "phase": "align"
+        },
+        {
+          "t": 9.600000000000302,
+          "phase": "hover"
+        },
+        {
+          "t": 10.599999999997971,
+          "phase": "descent"
+        },
+        {
+          "t": 12.199999999994242,
+          "phase": "close"
+        },
+        {
+          "t": 13.399999999991445,
+          "phase": "lift"
+        },
+        {
+          "t": 14.999999999987716,
+          "phase": "lift_settle"
+        },
+        {
+          "t": 18.19999999999589,
+          "phase": "lookback_pose"
+        },
+        {
+          "t": 19.30000000000114,
+          "phase": "lookback"
+        },
+        {
+          "t": 21.80000000001308,
+          "phase": "lookback_settle"
+        },
+        {
+          "t": 22.300000000015466,
+          "phase": "verify_lift"
+        },
+        {
+          "t": 23.400000000020718,
+          "phase": "hold"
+        },
+        {
+          "t": 26.400000000035043,
+          "phase": "carry_prepare"
+        },
+        {
+          "t": 27.400000000039817,
+          "phase": "carry_to_zone"
+        },
+        {
+          "t": 47.10000000013388,
+          "phase": "carry_recover_lower"
+        },
+        {
+          "t": 48.10000000013866,
+          "phase": "carry_recover_open"
+        },
+        {
+          "t": 48.800000000142,
+          "phase": "carry_recover_retract"
+        },
+        {
+          "t": 50.600000000150594,
+          "phase": "carry_recover_backoff"
+        },
+        {
+          "t": 53.10000000016253,
+          "phase": "carry_reobserve"
+        },
+        {
+          "t": 91.29999999956901,
+          "phase": "carry_recover_restore"
+        },
+        {
+          "t": 92.399999999543,
+          "phase": "carry_reacquire"
+        }
+      ],
+      "cumulative": {
+        "ticks": 1500,
+        "pickup_ticks": 90,
+        "travel_ticks": 197,
+        "place_view_ticks": 0,
+        "place_advance_ticks": 0,
+        "final_lower_ticks": 0,
+        "final_open_ticks": 0,
+        "place_success": 0
+      },
+      "rejection_reasons": {
+        "scene_wall_unobservable_pose_budget": 1,
+        "accepted_replan": 1
+      },
+      "place_predicates": {
+        "lift_success": true,
+        "zone_placement_success": false,
+        "release_success": false,
+        "no_drop_during_carry": true,
+        "final_footprint_inside_zone": false,
+        "criteria": {
+          "min_clearance_m": 0.012,
+          "max_tilt_deg": 10.0,
+          "lift_hold_s": 3.0,
+          "finger_min_n": 0.5,
+          "release_settle_s": 2.0,
+          "release_speed_m_s": 0.01,
+          "release_max_tilt_deg": 3.0,
+          "release_clearance_m": 0.005,
+          "weld": "off",
+          "placement": "every collision-box corner inside destination zone",
+          "retention": "every 10 Hz carry sample: clearance >=12 mm and both fingers >=0.5 N",
+          "detached": "no cargo/finger contact and open command",
+          "scope": "evaluation only; sub-100 ms drops not resolved"
+        }
+      },
+      "final": {
+        "phase": "carry_reacquire",
+        "goal": [
+          2.5468745337995466,
+          -0.8478096468979931
+        ],
+        "slot": [
+          2.9,
+          -0.85
+        ],
+        "arrival": null,
+        "failure": null,
+        "zone_margin_min_m": -1.237265464027046,
+        "cargo_xyz": [
+          1.4805844294489998,
+          -1.7933387525451732,
+          0.01589224457978388
+        ],
+        "base_xyz": [
+          1.226862218457099,
+          -1.7533894196019435,
+          0.03192521766626434
+        ],
+        "xy_error_m": 1.299768053820875,
+        "yaw_error_deg": -77.65150643290593,
+        "clearance_m": -0.0001077554207546752,
+        "tilt_deg": 3.4150945850063763e-06,
+        "speed": 2.1649917976758976e-11,
+        "open_issued": true
+      },
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/reloc17-r2-carry-93315-47670d14/raw/result.json.zst": "cde895a197fc885c020806ffdaa4a0e8f39b094239b9299522b21483c2a4e063",
+        "/home/ugrp/ugrp-sim/runs/reloc17-r2-carry-93315-47670d14/raw/teacher-commands.jsonl.zst": "32e4775a5ee0f04cc97896382e798a9a2ebaac4c7ce8949df2dc29130314159b",
+        "/home/ugrp/ugrp-sim/runs/reloc17-r2-carry-93315-47670d14/raw/eval-only.jsonl.zst": "71fb69e9a3f6aba5707ae0dbba2881a2eba080a304046e69a9bf608523994dc9"
+      }
+    }
+  ],
+  "reproduce": "python /home/ugrp/ugrp-sim/analysis-tools/reloc18-audit.py"
+}
