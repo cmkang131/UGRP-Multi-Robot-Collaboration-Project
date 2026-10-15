@@ -1,0 +1,1004 @@
+{
+  "schema": "ugrp.act14.funnel.v3",
+  "source_sha": "8a43837598504e774532df463ff67836785958d6",
+  "definitions": "Functional gates: nominal pose OR observed bilateral contact; stable lift logically implies earlier gates. Student completion/no-cap separate. All truth evaluation only. Frame counts are cumulative evidence checkpoints, not current visibility. Contact names/gaps are observations, not causal attribution.",
+  "arms": {
+    "p0": {
+      "unique_run_events": [
+        {
+          "gate": "approach",
+          "received": 20,
+          "passed": 12,
+          "rejected": 8
+        },
+        {
+          "gate": "alignment",
+          "received": 12,
+          "passed": 2,
+          "rejected": 10
+        },
+        {
+          "gate": "grasp",
+          "received": 2,
+          "passed": 2,
+          "rejected": 0
+        },
+        {
+          "gate": "lift_confirmation",
+          "received": 2,
+          "passed": 1,
+          "rejected": 1
+        }
+      ],
+      "frame_events": [
+        {
+          "gate": "approach",
+          "received": 10571,
+          "passed": 4402,
+          "rejected": 6169
+        },
+        {
+          "gate": "alignment",
+          "received": 4402,
+          "passed": 420,
+          "rejected": 3982
+        },
+        {
+          "gate": "grasp",
+          "received": 420,
+          "passed": 420,
+          "rejected": 0
+        },
+        {
+          "gate": "lift_confirmation",
+          "received": 420,
+          "passed": 358,
+          "rejected": 62
+        }
+      ],
+      "frame_event_counts": {
+        "evaluation_frames": 10571,
+        "approach": 4402,
+        "alignment": 420,
+        "grasp": 420,
+        "lift_confirmation": 358
+      },
+      "completion_gate": {
+        "received": 1,
+        "passed": 1,
+        "rejected": 0
+      },
+      "observed_contact_objects_not_causal": {
+        "none_observed": 14,
+        "cargo_yellow_2_geom": 1,
+        "cargo_green_1_geom": 1,
+        "cargo_red_1_geom": 2,
+        "cargo_cyan_2_geom": 1
+      },
+      "rejection_distribution": {
+        "alignment_not_passed": 10,
+        "approach_not_passed": 8,
+        "lift_confirmation_not_passed": 1
+      },
+      "runs": [
+        {
+          "run": "act14-main-p0-91438-8a438375",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act14-main-p0-91438-8a438375/raw",
+          "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/retrieved/act14-main-p0-91438-8a438375/analysis.json.zst",
+          "analysis_sha256": "884ae9a360fca78dbd2a9d016ac252c3d8da25c15f402ef7ea3abd1aa46598a1",
+          "counts": {
+            "evaluation_frames": 760,
+            "approach": 153
+          },
+          "first_pass_sim_t": {
+            "approach": 23.30000000002024
+          },
+          "rejection": {
+            "category": "alignment_not_passed",
+            "blocking_object": "none_observed",
+            "target_object": "green_1",
+            "minimum_gap_m": null,
+            "target_finger_min_gap_m": 0.052034326216352955,
+            "scope": "minimum observed non-floor external contact gap; target gap separate; no collision cause inferred"
+          },
+          "reproduce": "python -m scripts.analyze_grasp_act_act14 --root /home/ugrp/ugrp-sim/runs/act14-main-p0-91438-8a438375 --output NEW_DIR"
+        },
+        {
+          "run": "act14-main-p0-91430-8a438375",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act14-main-p0-91430-8a438375/raw",
+          "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/retrieved/act14-main-p0-91430-8a438375/analysis.json.zst",
+          "analysis_sha256": "3cb3984bfa8a049e8ff2d1190e47dc90395b9090bedc57fc42191e17a584f541",
+          "counts": {
+            "evaluation_frames": 900,
+            "approach": 842
+          },
+          "first_pass_sim_t": {
+            "approach": 7.1000000000029315
+          },
+          "rejection": {
+            "category": "alignment_not_passed",
+            "blocking_object": "none_observed",
+            "target_object": "green_1",
+            "minimum_gap_m": null,
+            "target_finger_min_gap_m": 0.026020128925373975,
+            "scope": "minimum observed non-floor external contact gap; target gap separate; no collision cause inferred"
+          },
+          "reproduce": "python -m scripts.analyze_grasp_act_act14 --root /home/ugrp/ugrp-sim/runs/act14-main-p0-91430-8a438375 --output NEW_DIR"
+        },
+        {
+          "run": "act14-main-p0-91439-8a438375",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act14-main-p0-91439-8a438375/raw",
+          "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/retrieved/act14-main-p0-91439-8a438375/analysis.json.zst",
+          "analysis_sha256": "cc6549c60372729c145cd24602a001393e39816443699f06a835ac47e565998d",
+          "counts": {
+            "evaluation_frames": 365
+          },
+          "first_pass_sim_t": {},
+          "rejection": {
+            "category": "approach_not_passed",
+            "blocking_object": "none_observed",
+            "target_object": "yellow_1",
+            "minimum_gap_m": null,
+            "target_finger_min_gap_m": 0.19660537030129394,
+            "scope": "minimum observed non-floor external contact gap; target gap separate; no collision cause inferred"
+          },
+          "reproduce": "python -m scripts.analyze_grasp_act_act14 --root /home/ugrp/ugrp-sim/runs/act14-main-p0-91439-8a438375 --output NEW_DIR"
+        },
+        {
+          "run": "act14-main-p0-91427-8a438375",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act14-main-p0-91427-8a438375/raw",
+          "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/retrieved/act14-main-p0-91427-8a438375/analysis.json",
+          "analysis_sha256": "b3bdf51776798672c11d63d5bc4c8e5e3b3f1cae3ec1705e2e7bf2906d01302b",
+          "counts": {
+            "evaluation_frames": 303,
+            "approach": 185
+          },
+          "first_pass_sim_t": {
+            "approach": 9.200000000001234
+          },
+          "rejection": {
+            "category": "alignment_not_passed",
+            "blocking_object": "cargo_yellow_2_geom",
+            "target_object": "yellow_2",
+            "minimum_gap_m": -0.0023249732011970895,
+            "target_finger_min_gap_m": -0.002324973201197102,
+            "scope": "minimum observed non-floor external contact gap; target gap separate; no collision cause inferred"
+          },
+          "reproduce": "python -m scripts.analyze_grasp_act_act14 --root /home/ugrp/ugrp-sim/runs/act14-main-p0-91427-8a438375 --output NEW_DIR"
+        },
+        {
+          "run": "act14-main-p0-91428-8a438375",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act14-main-p0-91428-8a438375/raw",
+          "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/retrieved/act14-main-p0-91428-8a438375/analysis.json",
+          "analysis_sha256": "e86080eeccc40c0ee78e0c7ee42f7d203c642bd22c06514c876178fa30ddcd50",
+          "counts": {
+            "evaluation_frames": 279
+          },
+          "first_pass_sim_t": {},
+          "rejection": {
+            "category": "approach_not_passed",
+            "blocking_object": "none_observed",
+            "target_object": "cyan_2",
+            "minimum_gap_m": null,
+            "target_finger_min_gap_m": 0.6906546872567919,
+            "scope": "minimum observed non-floor external contact gap; target gap separate; no collision cause inferred"
+          },
+          "reproduce": "python -m scripts.analyze_grasp_act_act14 --root /home/ugrp/ugrp-sim/runs/act14-main-p0-91428-8a438375 --output NEW_DIR"
+        },
+        {
+          "run": "act14-main-p0-91420-8a438375",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act14-main-p0-91420-8a438375/raw",
+          "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/retrieved/act14-main-p0-91420-8a438375/analysis.json.zst",
+          "analysis_sha256": "9054afeefee25cb0a0069312b6e94976d9312813ac30e0ef53331079efa9bad9",
+          "counts": {
+            "evaluation_frames": 347,
+            "approach": 234
+          },
+          "first_pass_sim_t": {
+            "approach": 8.900000000001933
+          },
+          "rejection": {
+            "category": "alignment_not_passed",
+            "blocking_object": "none_observed",
+            "target_object": "cyan_1",
+            "minimum_gap_m": null,
+            "target_finger_min_gap_m": 0.005956087056623205,
+            "scope": "minimum observed non-floor external contact gap; target gap separate; no collision cause inferred"
+          },
+          "reproduce": "python -m scripts.analyze_grasp_act_act14 --root /home/ugrp/ugrp-sim/runs/act14-main-p0-91420-8a438375 --output NEW_DIR"
+        },
+        {
+          "run": "act14-main-p0-91431-8a438375",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act14-main-p0-91431-8a438375/raw",
+          "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/retrieved/act14-main-p0-91431-8a438375/analysis.json.zst",
+          "analysis_sha256": "8950274354836759b1ba1a048b837569f91d64eef57b0810a164ec96fe11b1d9",
+          "counts": {
+            "evaluation_frames": 900
+          },
+          "first_pass_sim_t": {},
+          "rejection": {
+            "category": "approach_not_passed",
+            "blocking_object": "none_observed",
+            "target_object": "yellow_2",
+            "minimum_gap_m": null,
+            "target_finger_min_gap_m": 0.22741981852478815,
+            "scope": "minimum observed non-floor external contact gap; target gap separate; no collision cause inferred"
+          },
+          "reproduce": "python -m scripts.analyze_grasp_act_act14 --root /home/ugrp/ugrp-sim/runs/act14-main-p0-91431-8a438375 --output NEW_DIR"
+        },
+        {
+          "run": "act14-main-p0-91422-8a438375",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act14-main-p0-91422-8a438375/raw",
+          "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/retrieved/act14-main-p0-91422-8a438375/analysis.json.zst",
+          "analysis_sha256": "1bfb353fb79678e0467f429e8d52c2ad5637d067909da028dd3cf13e1eb81a61",
+          "counts": {
+            "evaluation_frames": 900
+          },
+          "first_pass_sim_t": {},
+          "rejection": {
+            "category": "approach_not_passed",
+            "blocking_object": "none_observed",
+            "target_object": "green_1",
+            "minimum_gap_m": null,
+            "target_finger_min_gap_m": 0.13761339532060926,
+            "scope": "minimum observed non-floor external contact gap; target gap separate; no collision cause inferred"
+          },
+          "reproduce": "python -m scripts.analyze_grasp_act_act14 --root /home/ugrp/ugrp-sim/runs/act14-main-p0-91422-8a438375 --output NEW_DIR"
+        },
+        {
+          "run": "act14-main-p0-91433-8a438375",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act14-main-p0-91433-8a438375/raw",
+          "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/retrieved/act14-main-p0-91433-8a438375/analysis.json",
+          "analysis_sha256": "44476f8570a317f81a7bf6a8aab5fc65f58d6c6aac2391015576c6c5a08aba9f",
+          "counts": {
+            "evaluation_frames": 192,
+            "approach": 88
+          },
+          "first_pass_sim_t": {
+            "approach": 7.50000000000342
+          },
+          "rejection": {
+            "category": "alignment_not_passed",
+            "blocking_object": "none_observed",
+            "target_object": "red_1",
+            "minimum_gap_m": null,
+            "target_finger_min_gap_m": 0.004395008608237069,
+            "scope": "minimum observed non-floor external contact gap; target gap separate; no collision cause inferred"
+          },
+          "reproduce": "python -m scripts.analyze_grasp_act_act14 --root /home/ugrp/ugrp-sim/runs/act14-main-p0-91433-8a438375 --output NEW_DIR"
+        },
+        {
+          "run": "act14-main-p0-91426-8a438375",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act14-main-p0-91426-8a438375/raw",
+          "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/retrieved/act14-main-p0-91426-8a438375/analysis.json.zst",
+          "analysis_sha256": "034f1cd1bc4bcda36668128a6d1dc228a4bbf667d171442aaef84169288dc21c",
+          "counts": {
+            "evaluation_frames": 307,
+            "approach": 196,
+            "alignment": 22,
+            "grasp": 22
+          },
+          "first_pass_sim_t": {
+            "approach": 8.900000000001933,
+            "alignment": 15.299999999987017,
+            "grasp": 15.299999999987017
+          },
+          "rejection": {
+            "category": "lift_confirmation_not_passed",
+            "blocking_object": "cargo_green_1_geom",
+            "target_object": "green_1",
+            "minimum_gap_m": -0.0006603199668909352,
+            "target_finger_min_gap_m": -0.0006603199668908287,
+            "scope": "minimum observed non-floor external contact gap; target gap separate; no collision cause inferred"
+          },
+          "reproduce": "python -m scripts.analyze_grasp_act_act14 --root /home/ugrp/ugrp-sim/runs/act14-main-p0-91426-8a438375 --output NEW_DIR"
+        },
+        {
+          "run": "act14-main-p0-91437-8a438375",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act14-main-p0-91437-8a438375/raw",
+          "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/retrieved/act14-main-p0-91437-8a438375/analysis.json.zst",
+          "analysis_sha256": "d24d457f4d2df5061cf1609f6a7be42a8dadac482e14557cbe95c5778479abff",
+          "counts": {
+            "evaluation_frames": 900,
+            "approach": 831
+          },
+          "first_pass_sim_t": {
+            "approach": 8.200000000003564
+          },
+          "rejection": {
+            "category": "alignment_not_passed",
+            "blocking_object": "cargo_red_1_geom",
+            "target_object": "red_1",
+            "minimum_gap_m": -0.002207812640802524,
+            "target_finger_min_gap_m": -0.002207812640802552,
+            "scope": "minimum observed non-floor external contact gap; target gap separate; no collision cause inferred"
+          },
+          "reproduce": "python -m scripts.analyze_grasp_act_act14 --root /home/ugrp/ugrp-sim/runs/act14-main-p0-91437-8a438375 --output NEW_DIR"
+        },
+        {
+          "run": "act14-main-p0-91421-8a438375",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act14-main-p0-91421-8a438375/raw",
+          "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/retrieved/act14-main-p0-91421-8a438375/analysis.json.zst",
+          "analysis_sha256": "960454ce944ef7081fd2da1628ff9be5dce4d38a29c0341b4783784dfd902229",
+          "counts": {
+            "evaluation_frames": 900
+          },
+          "first_pass_sim_t": {},
+          "rejection": {
+            "category": "approach_not_passed",
+            "blocking_object": "none_observed",
+            "target_object": "red_2",
+            "minimum_gap_m": null,
+            "target_finger_min_gap_m": 0.599705942152374,
+            "scope": "minimum observed non-floor external contact gap; target gap separate; no collision cause inferred"
+          },
+          "reproduce": "python -m scripts.analyze_grasp_act_act14 --root /home/ugrp/ugrp-sim/runs/act14-main-p0-91421-8a438375 --output NEW_DIR"
+        },
+        {
+          "run": "act14-main-p0-91436-8a438375",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act14-main-p0-91436-8a438375/raw",
+          "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/retrieved/act14-main-p0-91436-8a438375/analysis.json.zst",
+          "analysis_sha256": "ee77b6dced883591e1fd8d8ea03b10841641078a87c215ac48cfdee226fd8013",
+          "counts": {
+            "evaluation_frames": 900,
+            "approach": 823
+          },
+          "first_pass_sim_t": {
+            "approach": 9.0000000000017
+          },
+          "rejection": {
+            "category": "alignment_not_passed",
+            "blocking_object": "none_observed",
+            "target_object": "cyan_1",
+            "minimum_gap_m": null,
+            "target_finger_min_gap_m": 0.021070424761724108,
+            "scope": "minimum observed non-floor external contact gap; target gap separate; no collision cause inferred"
+          },
+          "reproduce": "python -m scripts.analyze_grasp_act_act14 --root /home/ugrp/ugrp-sim/runs/act14-main-p0-91436-8a438375 --output NEW_DIR"
+        },
+        {
+          "run": "act14-main-p0-91424-8a438375",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act14-main-p0-91424-8a438375/raw",
+          "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/retrieved/act14-main-p0-91424-8a438375/analysis.json",
+          "analysis_sha256": "dd8e3fea4102812ac31b0a1bf0dde1e99d2c3a9a4589ac1c131b6328561e21d8",
+          "counts": {
+            "evaluation_frames": 280,
+            "approach": 171
+          },
+          "first_pass_sim_t": {
+            "approach": 8.7000000000024
+          },
+          "rejection": {
+            "category": "alignment_not_passed",
+            "blocking_object": "none_observed",
+            "target_object": "cyan_2",
+            "minimum_gap_m": null,
+            "target_finger_min_gap_m": 0.0035760280773808263,
+            "scope": "minimum observed non-floor external contact gap; target gap separate; no collision cause inferred"
+          },
+          "reproduce": "python -m scripts.analyze_grasp_act_act14 --root /home/ugrp/ugrp-sim/runs/act14-main-p0-91424-8a438375 --output NEW_DIR"
+        },
+        {
+          "run": "act14-main-p0-91423-8a438375",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act14-main-p0-91423-8a438375/raw",
+          "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/retrieved/act14-main-p0-91423-8a438375/analysis.json",
+          "analysis_sha256": "52ed513f00695cb1916bdef553430f9e953a79aa32bc32acb6673cd804a40bb1",
+          "counts": {
+            "evaluation_frames": 281
+          },
+          "first_pass_sim_t": {},
+          "rejection": {
+            "category": "approach_not_passed",
+            "blocking_object": "none_observed",
+            "target_object": "yellow_2",
+            "minimum_gap_m": null,
+            "target_finger_min_gap_m": 0.6048140966326654,
+            "scope": "minimum observed non-floor external contact gap; target gap separate; no collision cause inferred"
+          },
+          "reproduce": "python -m scripts.analyze_grasp_act_act14 --root /home/ugrp/ugrp-sim/runs/act14-main-p0-91423-8a438375 --output NEW_DIR"
+        },
+        {
+          "run": "act14-main-p0-91429-8a438375",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act14-main-p0-91429-8a438375/raw",
+          "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/retrieved/act14-main-p0-91429-8a438375/analysis.json.zst",
+          "analysis_sha256": "99e778ec6f9fd2b64176b17b599b957df1a2c3099a39630b988920fce72fad55",
+          "counts": {
+            "evaluation_frames": 407
+          },
+          "first_pass_sim_t": {},
+          "rejection": {
+            "category": "approach_not_passed",
+            "blocking_object": "none_observed",
+            "target_object": "red_1",
+            "minimum_gap_m": null,
+            "target_finger_min_gap_m": 0.1769521442026609,
+            "scope": "minimum observed non-floor external contact gap; target gap separate; no collision cause inferred"
+          },
+          "reproduce": "python -m scripts.analyze_grasp_act_act14 --root /home/ugrp/ugrp-sim/runs/act14-main-p0-91429-8a438375 --output NEW_DIR"
+        },
+        {
+          "run": "act14-main-p0-91425-8a438375",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act14-main-p0-91425-8a438375/raw",
+          "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/retrieved/act14-main-p0-91425-8a438375/analysis.json.zst",
+          "analysis_sha256": "b06cf04e8558f04fafcffc4f386be9d8adef7fc9f44bb04921e764d1ccbc4d88",
+          "counts": {
+            "evaluation_frames": 381,
+            "approach": 287
+          },
+          "first_pass_sim_t": {
+            "approach": 7.1000000000029315
+          },
+          "rejection": {
+            "category": "alignment_not_passed",
+            "blocking_object": "cargo_red_1_geom",
+            "target_object": "red_1",
+            "minimum_gap_m": -0.00016779153600756096,
+            "target_finger_min_gap_m": -0.00016779153600761466,
+            "scope": "minimum observed non-floor external contact gap; target gap separate; no collision cause inferred"
+          },
+          "reproduce": "python -m scripts.analyze_grasp_act_act14 --root /home/ugrp/ugrp-sim/runs/act14-main-p0-91425-8a438375 --output NEW_DIR"
+        },
+        {
+          "run": "act14-main-p0-91434-8a438375",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act14-main-p0-91434-8a438375/raw",
+          "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/retrieved/act14-main-p0-91434-8a438375/analysis.json.zst",
+          "analysis_sha256": "629540ae9ed287f3ebf0b35e54db995e7e41926a5be128ffb49944e23ae4f9fa",
+          "counts": {
+            "evaluation_frames": 519,
+            "approach": 453,
+            "alignment": 398,
+            "grasp": 398,
+            "lift_confirmation": 358
+          },
+          "first_pass_sim_t": {
+            "approach": 7.900000000003909,
+            "alignment": 13.399999999991445,
+            "grasp": 13.399999999991445,
+            "lift_confirmation": 17.39999999999207
+          },
+          "rejection": null,
+          "reproduce": "python -m scripts.analyze_grasp_act_act14 --root /home/ugrp/ugrp-sim/runs/act14-main-p0-91434-8a438375 --output NEW_DIR"
+        },
+        {
+          "run": "act14-main-p0-91432-8a438375",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act14-main-p0-91432-8a438375/raw",
+          "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/retrieved/act14-main-p0-91432-8a438375/analysis.json",
+          "analysis_sha256": "fb31286df10bbcc93b81849d59a584a0e3d1322b7f1cb84b073cb4f70c40cc02",
+          "counts": {
+            "evaluation_frames": 224,
+            "approach": 139
+          },
+          "first_pass_sim_t": {
+            "approach": 6.000000000001587
+          },
+          "rejection": {
+            "category": "alignment_not_passed",
+            "blocking_object": "cargo_cyan_2_geom",
+            "target_object": "cyan_2",
+            "minimum_gap_m": -0.002558888510447939,
+            "target_finger_min_gap_m": -0.002558888510447936,
+            "scope": "minimum observed non-floor external contact gap; target gap separate; no collision cause inferred"
+          },
+          "reproduce": "python -m scripts.analyze_grasp_act_act14 --root /home/ugrp/ugrp-sim/runs/act14-main-p0-91432-8a438375 --output NEW_DIR"
+        },
+        {
+          "run": "act14-main-p0-91435-8a438375",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act14-main-p0-91435-8a438375/raw",
+          "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/retrieved/act14-main-p0-91435-8a438375/analysis.json.zst",
+          "analysis_sha256": "8310a3cda3e6eccf7b5ad03006c619b9bfbc2f18225fb4deacc6903894a730bb",
+          "counts": {
+            "evaluation_frames": 526
+          },
+          "first_pass_sim_t": {},
+          "rejection": {
+            "category": "approach_not_passed",
+            "blocking_object": "none_observed",
+            "target_object": "yellow_2",
+            "minimum_gap_m": null,
+            "target_finger_min_gap_m": 0.07056387519433378,
+            "scope": "minimum observed non-floor external contact gap; target gap separate; no collision cause inferred"
+          },
+          "reproduce": "python -m scripts.analyze_grasp_act_act14 --root /home/ugrp/ugrp-sim/runs/act14-main-p0-91435-8a438375 --output NEW_DIR"
+        }
+      ]
+    },
+    "p02": {
+      "unique_run_events": [
+        {
+          "gate": "approach",
+          "received": 20,
+          "passed": 12,
+          "rejected": 8
+        },
+        {
+          "gate": "alignment",
+          "received": 12,
+          "passed": 1,
+          "rejected": 11
+        },
+        {
+          "gate": "grasp",
+          "received": 1,
+          "passed": 1,
+          "rejected": 0
+        },
+        {
+          "gate": "lift_confirmation",
+          "received": 1,
+          "passed": 1,
+          "rejected": 0
+        }
+      ],
+      "frame_events": [
+        {
+          "gate": "approach",
+          "received": 10905,
+          "passed": 6812,
+          "rejected": 4093
+        },
+        {
+          "gate": "alignment",
+          "received": 6812,
+          "passed": 807,
+          "rejected": 6005
+        },
+        {
+          "gate": "grasp",
+          "received": 807,
+          "passed": 763,
+          "rejected": 44
+        },
+        {
+          "gate": "lift_confirmation",
+          "received": 763,
+          "passed": 728,
+          "rejected": 35
+        }
+      ],
+      "frame_event_counts": {
+        "evaluation_frames": 10905,
+        "approach": 6812,
+        "alignment": 807,
+        "grasp": 763,
+        "lift_confirmation": 728
+      },
+      "completion_gate": {
+        "received": 1,
+        "passed": 0,
+        "rejected": 1
+      },
+      "observed_contact_objects_not_causal": {
+        "none_observed": 15,
+        "cargo_cyan_1_geom": 1,
+        "cargo_yellow_1_geom": 1,
+        "cargo_red_1_geom": 1,
+        "cargo_cyan_2_geom": 1
+      },
+      "rejection_distribution": {
+        "alignment_not_passed": 11,
+        "approach_not_passed": 8,
+        "cap_end_after_stable_lift_no_student_done": 1
+      },
+      "runs": [
+        {
+          "run": "act14-main-p02-91438-8a438375",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act14-main-p02-91438-8a438375/raw",
+          "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/retrieved/act14-main-p02-91438-8a438375/analysis.json.zst",
+          "analysis_sha256": "b7a421cc4d2ece54d6a2fad085e70f33249c90934e882b1bdfe1b55bdabd9051",
+          "counts": {
+            "evaluation_frames": 900,
+            "approach": 821
+          },
+          "first_pass_sim_t": {
+            "approach": 9.200000000001234
+          },
+          "rejection": {
+            "category": "alignment_not_passed",
+            "blocking_object": "none_observed",
+            "target_object": "green_1",
+            "minimum_gap_m": null,
+            "target_finger_min_gap_m": 0.0091264830179726,
+            "scope": "minimum observed non-floor external contact gap; target gap separate; no collision cause inferred"
+          },
+          "reproduce": "python -m scripts.analyze_grasp_act_act14 --root /home/ugrp/ugrp-sim/runs/act14-main-p02-91438-8a438375 --output NEW_DIR"
+        },
+        {
+          "run": "act14-main-p02-91430-8a438375",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act14-main-p02-91430-8a438375/raw",
+          "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/retrieved/act14-main-p02-91430-8a438375/analysis.json.zst",
+          "analysis_sha256": "67fbfc6ea801d0008299e9648aa4e37e890998e12a5fa4af5b11fc4ef65f889e",
+          "counts": {
+            "evaluation_frames": 900,
+            "approach": 838
+          },
+          "first_pass_sim_t": {
+            "approach": 7.50000000000342
+          },
+          "rejection": {
+            "category": "alignment_not_passed",
+            "blocking_object": "none_observed",
+            "target_object": "green_1",
+            "minimum_gap_m": null,
+            "target_finger_min_gap_m": 0.00973650364010065,
+            "scope": "minimum observed non-floor external contact gap; target gap separate; no collision cause inferred"
+          },
+          "reproduce": "python -m scripts.analyze_grasp_act_act14 --root /home/ugrp/ugrp-sim/runs/act14-main-p02-91430-8a438375 --output NEW_DIR"
+        },
+        {
+          "run": "act14-main-p02-91439-8a438375",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act14-main-p02-91439-8a438375/raw",
+          "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/retrieved/act14-main-p02-91439-8a438375/analysis.json",
+          "analysis_sha256": "f824464225fc5cbb504b7643c2e44d35790a48274175cef5a9aacefecce7b54e",
+          "counts": {
+            "evaluation_frames": 211,
+            "approach": 128
+          },
+          "first_pass_sim_t": {
+            "approach": 9.600000000000302
+          },
+          "rejection": {
+            "category": "alignment_not_passed",
+            "blocking_object": "none_observed",
+            "target_object": "yellow_1",
+            "minimum_gap_m": null,
+            "target_finger_min_gap_m": 0.04283471486588586,
+            "scope": "minimum observed non-floor external contact gap; target gap separate; no collision cause inferred"
+          },
+          "reproduce": "python -m scripts.analyze_grasp_act_act14 --root /home/ugrp/ugrp-sim/runs/act14-main-p02-91439-8a438375 --output NEW_DIR"
+        },
+        {
+          "run": "act14-main-p02-91427-8a438375",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act14-main-p02-91427-8a438375/raw",
+          "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/retrieved/act14-main-p02-91427-8a438375/analysis.json",
+          "analysis_sha256": "e0e78fa8e6a8a9124f5c7dd16f157b50a9ba94972bdc6876d64bda420a092e56",
+          "counts": {
+            "evaluation_frames": 35
+          },
+          "first_pass_sim_t": {},
+          "rejection": {
+            "category": "approach_not_passed",
+            "blocking_object": "none_observed",
+            "target_object": "yellow_2",
+            "minimum_gap_m": null,
+            "target_finger_min_gap_m": 0.7225313251512283,
+            "scope": "minimum observed non-floor external contact gap; target gap separate; no collision cause inferred"
+          },
+          "reproduce": "python -m scripts.analyze_grasp_act_act14 --root /home/ugrp/ugrp-sim/runs/act14-main-p02-91427-8a438375 --output NEW_DIR"
+        },
+        {
+          "run": "act14-main-p02-91428-8a438375",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act14-main-p02-91428-8a438375/raw",
+          "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/retrieved/act14-main-p02-91428-8a438375/analysis.json",
+          "analysis_sha256": "12be5eab60ae4bbf2dd7b935a213a0494de7baa521d9ceacfb4429fbed729644",
+          "counts": {
+            "evaluation_frames": 156
+          },
+          "first_pass_sim_t": {},
+          "rejection": {
+            "category": "approach_not_passed",
+            "blocking_object": "none_observed",
+            "target_object": "cyan_2",
+            "minimum_gap_m": null,
+            "target_finger_min_gap_m": 0.6378938811554647,
+            "scope": "minimum observed non-floor external contact gap; target gap separate; no collision cause inferred"
+          },
+          "reproduce": "python -m scripts.analyze_grasp_act_act14 --root /home/ugrp/ugrp-sim/runs/act14-main-p02-91428-8a438375 --output NEW_DIR"
+        },
+        {
+          "run": "act14-main-p02-91420-8a438375",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act14-main-p02-91420-8a438375/raw",
+          "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/retrieved/act14-main-p02-91420-8a438375/analysis.json.zst",
+          "analysis_sha256": "a761d7cff93b6c09f6c34f05eb9b4c61d0a84ba4a89685fb34e4adfcf22e4077",
+          "counts": {
+            "evaluation_frames": 620,
+            "approach": 544
+          },
+          "first_pass_sim_t": {
+            "approach": 8.900000000001933
+          },
+          "rejection": {
+            "category": "alignment_not_passed",
+            "blocking_object": "cargo_cyan_1_geom",
+            "target_object": "cyan_1",
+            "minimum_gap_m": -0.00025816762871323133,
+            "target_finger_min_gap_m": -0.00025816762871326223,
+            "scope": "minimum observed non-floor external contact gap; target gap separate; no collision cause inferred"
+          },
+          "reproduce": "python -m scripts.analyze_grasp_act_act14 --root /home/ugrp/ugrp-sim/runs/act14-main-p02-91420-8a438375 --output NEW_DIR"
+        },
+        {
+          "run": "act14-main-p02-91431-8a438375",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act14-main-p02-91431-8a438375/raw",
+          "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/retrieved/act14-main-p02-91431-8a438375/analysis.json",
+          "analysis_sha256": "1734fa546e1a7193b2e442f8b3ec940f07c7cb5f7b79a2aa1e1f15391d8358ea",
+          "counts": {
+            "evaluation_frames": 134
+          },
+          "first_pass_sim_t": {},
+          "rejection": {
+            "category": "approach_not_passed",
+            "blocking_object": "none_observed",
+            "target_object": "yellow_2",
+            "minimum_gap_m": null,
+            "target_finger_min_gap_m": 0.4718076867635432,
+            "scope": "minimum observed non-floor external contact gap; target gap separate; no collision cause inferred"
+          },
+          "reproduce": "python -m scripts.analyze_grasp_act_act14 --root /home/ugrp/ugrp-sim/runs/act14-main-p02-91431-8a438375 --output NEW_DIR"
+        },
+        {
+          "run": "act14-main-p02-91422-8a438375",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act14-main-p02-91422-8a438375/raw",
+          "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/retrieved/act14-main-p02-91422-8a438375/analysis.json.zst",
+          "analysis_sha256": "e7641c30a61a22cebd504fff4f8d83d283e354419825a13c037dff183599e511",
+          "counts": {
+            "evaluation_frames": 900,
+            "approach": 832
+          },
+          "first_pass_sim_t": {
+            "approach": 8.100000000003797
+          },
+          "rejection": {
+            "category": "alignment_not_passed",
+            "blocking_object": "none_observed",
+            "target_object": "green_1",
+            "minimum_gap_m": null,
+            "target_finger_min_gap_m": 0.010990886577599255,
+            "scope": "minimum observed non-floor external contact gap; target gap separate; no collision cause inferred"
+          },
+          "reproduce": "python -m scripts.analyze_grasp_act_act14 --root /home/ugrp/ugrp-sim/runs/act14-main-p02-91422-8a438375 --output NEW_DIR"
+        },
+        {
+          "run": "act14-main-p02-91433-8a438375",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act14-main-p02-91433-8a438375/raw",
+          "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/retrieved/act14-main-p02-91433-8a438375/analysis.json.zst",
+          "analysis_sha256": "30e070d54d07e7e57c5d1ff9ab1833aca5a2919e255cef7da2ca861875697214",
+          "counts": {
+            "evaluation_frames": 748
+          },
+          "first_pass_sim_t": {},
+          "rejection": {
+            "category": "approach_not_passed",
+            "blocking_object": "none_observed",
+            "target_object": "red_1",
+            "minimum_gap_m": null,
+            "target_finger_min_gap_m": 0.08575272203826076,
+            "scope": "minimum observed non-floor external contact gap; target gap separate; no collision cause inferred"
+          },
+          "reproduce": "python -m scripts.analyze_grasp_act_act14 --root /home/ugrp/ugrp-sim/runs/act14-main-p02-91433-8a438375 --output NEW_DIR"
+        },
+        {
+          "run": "act14-main-p02-91426-8a438375",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act14-main-p02-91426-8a438375/raw",
+          "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/retrieved/act14-main-p02-91426-8a438375/analysis.json.zst",
+          "analysis_sha256": "805527e3a88720ee020c00f6a456ff1cdda04066eb92aa971dd9f6c876f39e40",
+          "counts": {
+            "evaluation_frames": 900,
+            "approach": 824,
+            "alignment": 807,
+            "grasp": 763,
+            "lift_confirmation": 728
+          },
+          "first_pass_sim_t": {
+            "approach": 8.900000000001933,
+            "alignment": 10.599999999997971,
+            "grasp": 14.999999999987716,
+            "lift_confirmation": 18.49999999999732
+          },
+          "rejection": null,
+          "reproduce": "python -m scripts.analyze_grasp_act_act14 --root /home/ugrp/ugrp-sim/runs/act14-main-p02-91426-8a438375 --output NEW_DIR"
+        },
+        {
+          "run": "act14-main-p02-91437-8a438375",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act14-main-p02-91437-8a438375/raw",
+          "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/retrieved/act14-main-p02-91437-8a438375/analysis.json",
+          "analysis_sha256": "a7d70fb11bf02392b3d2ebdc6a54389c6e717ab1e2a73244a48319cf53017c66",
+          "counts": {
+            "evaluation_frames": 236,
+            "approach": 125
+          },
+          "first_pass_sim_t": {
+            "approach": 8.600000000002632
+          },
+          "rejection": {
+            "category": "alignment_not_passed",
+            "blocking_object": "none_observed",
+            "target_object": "red_1",
+            "minimum_gap_m": null,
+            "target_finger_min_gap_m": 0.0052585576405988245,
+            "scope": "minimum observed non-floor external contact gap; target gap separate; no collision cause inferred"
+          },
+          "reproduce": "python -m scripts.analyze_grasp_act_act14 --root /home/ugrp/ugrp-sim/runs/act14-main-p02-91437-8a438375 --output NEW_DIR"
+        },
+        {
+          "run": "act14-main-p02-91421-8a438375",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act14-main-p02-91421-8a438375/raw",
+          "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/retrieved/act14-main-p02-91421-8a438375/analysis.json.zst",
+          "analysis_sha256": "ab4df3a10d1cc9b06e80a60ac0aa11315c1f64795b4ee2380d03ebbeb028a9c6",
+          "counts": {
+            "evaluation_frames": 649
+          },
+          "first_pass_sim_t": {},
+          "rejection": {
+            "category": "approach_not_passed",
+            "blocking_object": "none_observed",
+            "target_object": "red_2",
+            "minimum_gap_m": null,
+            "target_finger_min_gap_m": 0.6565405203169014,
+            "scope": "minimum observed non-floor external contact gap; target gap separate; no collision cause inferred"
+          },
+          "reproduce": "python -m scripts.analyze_grasp_act_act14 --root /home/ugrp/ugrp-sim/runs/act14-main-p02-91421-8a438375 --output NEW_DIR"
+        },
+        {
+          "run": "act14-main-p02-91436-8a438375",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act14-main-p02-91436-8a438375/raw",
+          "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/retrieved/act14-main-p02-91436-8a438375/analysis.json",
+          "analysis_sha256": "324c72ed48707de05794e4a9154a78dafe3e24faa99fa3d11d44dc6ccee6d6f4",
+          "counts": {
+            "evaluation_frames": 33
+          },
+          "first_pass_sim_t": {},
+          "rejection": {
+            "category": "approach_not_passed",
+            "blocking_object": "none_observed",
+            "target_object": "cyan_1",
+            "minimum_gap_m": null,
+            "target_finger_min_gap_m": 0.7093416688095684,
+            "scope": "minimum observed non-floor external contact gap; target gap separate; no collision cause inferred"
+          },
+          "reproduce": "python -m scripts.analyze_grasp_act_act14 --root /home/ugrp/ugrp-sim/runs/act14-main-p02-91436-8a438375 --output NEW_DIR"
+        },
+        {
+          "run": "act14-main-p02-91424-8a438375",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act14-main-p02-91424-8a438375/raw",
+          "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/retrieved/act14-main-p02-91424-8a438375/analysis.json.zst",
+          "analysis_sha256": "ffe6c015864796fb0695177a27f9edb4298c3efc855520e4c46f37afebf83a96",
+          "counts": {
+            "evaluation_frames": 900,
+            "approach": 823
+          },
+          "first_pass_sim_t": {
+            "approach": 9.0000000000017
+          },
+          "rejection": {
+            "category": "alignment_not_passed",
+            "blocking_object": "none_observed",
+            "target_object": "cyan_2",
+            "minimum_gap_m": null,
+            "target_finger_min_gap_m": 0.00455781646189921,
+            "scope": "minimum observed non-floor external contact gap; target gap separate; no collision cause inferred"
+          },
+          "reproduce": "python -m scripts.analyze_grasp_act_act14 --root /home/ugrp/ugrp-sim/runs/act14-main-p02-91424-8a438375 --output NEW_DIR"
+        },
+        {
+          "run": "act14-main-p02-91423-8a438375",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act14-main-p02-91423-8a438375/raw",
+          "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/retrieved/act14-main-p02-91423-8a438375/analysis.json.zst",
+          "analysis_sha256": "12c24a9d42e15c0677fb7d3ca27039617fa5027bf1c53302536ae8435a22f4c2",
+          "counts": {
+            "evaluation_frames": 639
+          },
+          "first_pass_sim_t": {},
+          "rejection": {
+            "category": "approach_not_passed",
+            "blocking_object": "cargo_yellow_1_geom",
+            "target_object": "yellow_2",
+            "minimum_gap_m": -0.001216519011626721,
+            "target_finger_min_gap_m": 0.593970524707938,
+            "scope": "minimum observed non-floor external contact gap; target gap separate; no collision cause inferred"
+          },
+          "reproduce": "python -m scripts.analyze_grasp_act_act14 --root /home/ugrp/ugrp-sim/runs/act14-main-p02-91423-8a438375 --output NEW_DIR"
+        },
+        {
+          "run": "act14-main-p02-91429-8a438375",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act14-main-p02-91429-8a438375/raw",
+          "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/retrieved/act14-main-p02-91429-8a438375/analysis.json.zst",
+          "analysis_sha256": "dfe784b7125c3c3fe7f4ecae210b0fa86fae5c296d737731c4fafb5695e73ed0",
+          "counts": {
+            "evaluation_frames": 516,
+            "approach": 80
+          },
+          "first_pass_sim_t": {
+            "approach": 7.600000000003543
+          },
+          "rejection": {
+            "category": "alignment_not_passed",
+            "blocking_object": "none_observed",
+            "target_object": "red_1",
+            "minimum_gap_m": null,
+            "target_finger_min_gap_m": 0.04142089321286611,
+            "scope": "minimum observed non-floor external contact gap; target gap separate; no collision cause inferred"
+          },
+          "reproduce": "python -m scripts.analyze_grasp_act_act14 --root /home/ugrp/ugrp-sim/runs/act14-main-p02-91429-8a438375 --output NEW_DIR"
+        },
+        {
+          "run": "act14-main-p02-91425-8a438375",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act14-main-p02-91425-8a438375/raw",
+          "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/retrieved/act14-main-p02-91425-8a438375/analysis.json.zst",
+          "analysis_sha256": "7cda7700c26df98083b9215a2c02a8d3c3349c5b44258e1d3293d2cbfc83447c",
+          "counts": {
+            "evaluation_frames": 900,
+            "approach": 840
+          },
+          "first_pass_sim_t": {
+            "approach": 7.300000000003176
+          },
+          "rejection": {
+            "category": "alignment_not_passed",
+            "blocking_object": "cargo_red_1_geom",
+            "target_object": "red_1",
+            "minimum_gap_m": -0.0014111241099997924,
+            "target_finger_min_gap_m": -0.0014111241099997488,
+            "scope": "minimum observed non-floor external contact gap; target gap separate; no collision cause inferred"
+          },
+          "reproduce": "python -m scripts.analyze_grasp_act_act14 --root /home/ugrp/ugrp-sim/runs/act14-main-p02-91425-8a438375 --output NEW_DIR"
+        },
+        {
+          "run": "act14-main-p02-91434-8a438375",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act14-main-p02-91434-8a438375/raw",
+          "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/retrieved/act14-main-p02-91434-8a438375/analysis.json.zst",
+          "analysis_sha256": "cff586657cbe29753ae158c73c9f79295f88802ecf5299e906cbb37882d396d8",
+          "counts": {
+            "evaluation_frames": 900,
+            "approach": 832
+          },
+          "first_pass_sim_t": {
+            "approach": 8.100000000003797
+          },
+          "rejection": {
+            "category": "alignment_not_passed",
+            "blocking_object": "none_observed",
+            "target_object": "green_1",
+            "minimum_gap_m": null,
+            "target_finger_min_gap_m": 8.537572123062976e-05,
+            "scope": "minimum observed non-floor external contact gap; target gap separate; no collision cause inferred"
+          },
+          "reproduce": "python -m scripts.analyze_grasp_act_act14 --root /home/ugrp/ugrp-sim/runs/act14-main-p02-91434-8a438375 --output NEW_DIR"
+        },
+        {
+          "run": "act14-main-p02-91432-8a438375",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act14-main-p02-91432-8a438375/raw",
+          "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/retrieved/act14-main-p02-91432-8a438375/analysis.json",
+          "analysis_sha256": "6fc145c2b35fcb1dc5c96592e5dd0fa15bc9d5b4867318af4ddd3d27d5a00410",
+          "counts": {
+            "evaluation_frames": 214,
+            "approach": 125
+          },
+          "first_pass_sim_t": {
+            "approach": 6.100000000001709
+          },
+          "rejection": {
+            "category": "alignment_not_passed",
+            "blocking_object": "cargo_cyan_2_geom",
+            "target_object": "cyan_2",
+            "minimum_gap_m": -0.001427473150722246,
+            "target_finger_min_gap_m": -0.0014274731507222288,
+            "scope": "minimum observed non-floor external contact gap; target gap separate; no collision cause inferred"
+          },
+          "reproduce": "python -m scripts.analyze_grasp_act_act14 --root /home/ugrp/ugrp-sim/runs/act14-main-p02-91432-8a438375 --output NEW_DIR"
+        },
+        {
+          "run": "act14-main-p02-91435-8a438375",
+          "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act14-main-p02-91435-8a438375/raw",
+          "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/retrieved/act14-main-p02-91435-8a438375/analysis.json.zst",
+          "analysis_sha256": "41e888546e616116c5bc31063f5d7471b0e9859467d11d21f70dcdc6efc39d9b",
+          "counts": {
+            "evaluation_frames": 414
+          },
+          "first_pass_sim_t": {},
+          "rejection": {
+            "category": "approach_not_passed",
+            "blocking_object": "none_observed",
+            "target_object": "yellow_2",
+            "minimum_gap_m": null,
+            "target_finger_min_gap_m": 0.05650599296844489,
+            "scope": "minimum observed non-floor external contact gap; target gap separate; no collision cause inferred"
+          },
+          "reproduce": "python -m scripts.analyze_grasp_act_act14 --root /home/ugrp/ugrp-sim/runs/act14-main-p02-91435-8a438375 --output NEW_DIR"
+        }
+      ]
+    }
+  },
+  "raw_index": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/act14eval-summary.json",
+  "raw_index_sha256": "bff17919a8a0735387b75f1bbbb9730c917604a7091ae6db0a6c4dae5d90815f",
+  "reproduce": "cd /home/ugrp/ugrp-sim/src/8a43837598504e774532df463ff67836785958d6 && .venv-sim/bin/python -m scripts.analyze_grasp_act_act14 --root <RUN_ROOT> --output NEW_DIR"
+}

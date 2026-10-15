@@ -656,6 +656,202 @@
         "verification_record": "experiments/2026-10-15-act-train/operations-model-release-verification.json",
         "verification_record_sha256": "cfbb39316c68f8582a8ee06af2f42438a13f789f10905bc26591641fd0ecaa93"
       }
+    },
+    {
+      "id": "grasp-act13-p0-step10000-961aa751",
+      "status": "available",
+      "description": "ACT13 fixed step10000 own-RGB solo boxes, history dropout 0.0; evaluation model, no default adoption",
+      "source_sha": "961aa7517b29f187f6869e2624ed848ee2c32cfd",
+      "training_source_sha": "961aa7517b29f187f6869e2624ed848ee2c32cfd",
+      "release": {
+        "tag": "models-20261015-act13-961aa751",
+        "asset": "grasp-act13-p0-step10000-961aa751.zip",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261015-act13-961aa751/grasp-act13-p0-step10000-961aa751.zip"
+      },
+      "archive": {
+        "bytes": 192496781,
+        "sha256": "b0a902bee56b05252bcef8ddfe4e4cf96aa41958d891683519245c98a432a514"
+      },
+      "files": [
+        {
+          "path": "actor/SHA256.json",
+          "bytes": 265,
+          "sha256": "1a79b25b5e84401150074af9d3b7fa7f79a975e72557470f2f54c37c500c0f56"
+        },
+        {
+          "path": "actor/adapter.json",
+          "bytes": 15287,
+          "sha256": "f5832e9fe6bbfcff0671456ae33457071222c214edefc61e4e58a3c485be3491"
+        },
+        {
+          "path": "actor/config.json",
+          "bytes": 1278,
+          "sha256": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f"
+        },
+        {
+          "path": "actor/model.safetensors",
+          "bytes": 207363320,
+          "sha256": "b617415079a95a4bb4426fefe0d445cb288ea49eef0928278cb268212de02676"
+        },
+        {
+          "path": "evaluation-protocol.json",
+          "bytes": 1651,
+          "sha256": "64364a216d973132b0b5b08985e534a56c943a7118127eb9670bd74055638033"
+        },
+        {
+          "path": "provenance.json",
+          "bytes": 644,
+          "sha256": "db819c339c72175cf657054aa1f60aa0b7113f5e1b293f92b351a47a8396f7a7"
+        },
+        {
+          "path": "requirements-reference-act.txt",
+          "bytes": 330,
+          "sha256": "fa1d4f36fe5cc2eb43c784a41e5b9e754b6a9ca2f53145242e4803a7f904793d"
+        },
+        {
+          "path": "training-summary.json",
+          "bytes": 529559,
+          "sha256": "50367eaaaf1039785fe97431aada9add2f933345207ad37dec223286bb1b0202"
+        },
+        {
+          "path": "validation-summary.json",
+          "bytes": 29965,
+          "sha256": "9c7bc2b5141612784004a217661fced9d189fd7641a725133ffd94a5f49a1c02"
+        }
+      ],
+      "entrypoints": {
+        "act": "actor"
+      },
+      "limitations": [
+        "Own-RGB component evaluation; no navigation/E2E/real-robot or default-controller claim.",
+        "Stable-lift scoring and student completion/cap_end are separate.",
+        "Independent Haiku recount pending.",
+        "Full data and optimizer/RNG remain on original GCP disk."
+      ],
+      "verification_scope": {
+        "fixed_step": 10000,
+        "history_dropout": 0.0,
+        "validation_seeds": [
+          86865,
+          86866,
+          86867,
+          86868,
+          86869
+        ],
+        "release_redownload_verified": true,
+        "release_inventory_files": 9,
+        "release_cpu_load_ready": true,
+        "verification_record": "experiments/2026-10-15-act-train/act14-model-release-verification.json",
+        "verification_record_sha256": "0df4a918ab89457ebb2474cddddd4f29050922a567701a0c146be3c16824ebf1",
+        "closed_loop_recount": "independent Haiku recount pending; no adoption or research promotion",
+        "closed_loop_automated": {
+          "N": 20,
+          "stable_lift": 1,
+          "physical_score_success": 1,
+          "completed": 1,
+          "cap_end": 6,
+          "HOST_ERROR": 0
+        },
+        "evaluation_source_sha": "8a43837598504e774532df463ff67836785958d6"
+      }
+    },
+    {
+      "id": "grasp-act13-p02-step10000-961aa751",
+      "status": "available",
+      "description": "ACT13 fixed step10000 own-RGB solo boxes, history dropout 0.2; evaluation model, no default adoption",
+      "source_sha": "961aa7517b29f187f6869e2624ed848ee2c32cfd",
+      "training_source_sha": "961aa7517b29f187f6869e2624ed848ee2c32cfd",
+      "release": {
+        "tag": "models-20261015-act13-961aa751",
+        "asset": "grasp-act13-p02-step10000-961aa751.zip",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261015-act13-961aa751/grasp-act13-p02-step10000-961aa751.zip"
+      },
+      "archive": {
+        "bytes": 192499073,
+        "sha256": "07c9143edc8a19a9a9960b1422b89ceff15fabedfb22b0f4d9bfebebecb64657"
+      },
+      "files": [
+        {
+          "path": "actor/SHA256.json",
+          "bytes": 265,
+          "sha256": "b2b4589abdfafaba3f75b98ab8742a182f5d8a0202e549e421f8a1d107bea81d"
+        },
+        {
+          "path": "actor/adapter.json",
+          "bytes": 15287,
+          "sha256": "f094630df3d53f61aa67e10885281a3443c6ca0b4cd08b7e818fcec8cc10fd41"
+        },
+        {
+          "path": "actor/config.json",
+          "bytes": 1278,
+          "sha256": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f"
+        },
+        {
+          "path": "actor/model.safetensors",
+          "bytes": 207363320,
+          "sha256": "b55a72bc8cbd01fec553313375b59686bc8297ea62944283fccedd38cff58613"
+        },
+        {
+          "path": "evaluation-protocol.json",
+          "bytes": 1651,
+          "sha256": "64364a216d973132b0b5b08985e534a56c943a7118127eb9670bd74055638033"
+        },
+        {
+          "path": "provenance.json",
+          "bytes": 648,
+          "sha256": "d81d86f905dcf3b1405bdcedf3eb935b190b67d163f76b2712aa90920e379cd4"
+        },
+        {
+          "path": "requirements-reference-act.txt",
+          "bytes": 330,
+          "sha256": "fa1d4f36fe5cc2eb43c784a41e5b9e754b6a9ca2f53145242e4803a7f904793d"
+        },
+        {
+          "path": "training-summary.json",
+          "bytes": 529610,
+          "sha256": "97d329c255acf91065bc32ebfb54743070fc37e372aa44b301b1783fb14416e4"
+        },
+        {
+          "path": "validation-summary.json",
+          "bytes": 29965,
+          "sha256": "9c7bc2b5141612784004a217661fced9d189fd7641a725133ffd94a5f49a1c02"
+        }
+      ],
+      "entrypoints": {
+        "act": "actor"
+      },
+      "limitations": [
+        "Own-RGB component evaluation; no navigation/E2E/real-robot or default-controller claim.",
+        "Stable-lift scoring and student completion/cap_end are separate.",
+        "Independent Haiku recount pending.",
+        "Full data and optimizer/RNG remain on original GCP disk."
+      ],
+      "verification_scope": {
+        "fixed_step": 10000,
+        "history_dropout": 0.2,
+        "validation_seeds": [
+          86865,
+          86866,
+          86867,
+          86868,
+          86869
+        ],
+        "release_redownload_verified": true,
+        "release_inventory_files": 9,
+        "release_cpu_load_ready": true,
+        "verification_record": "experiments/2026-10-15-act-train/act14-model-release-verification.json",
+        "verification_record_sha256": "0df4a918ab89457ebb2474cddddd4f29050922a567701a0c146be3c16824ebf1",
+        "closed_loop_recount": "independent Haiku recount pending; no adoption or research promotion",
+        "closed_loop_automated": {
+          "N": 20,
+          "stable_lift": 1,
+          "physical_score_success": 1,
+          "completed": 0,
+          "cap_end": 7,
+          "HOST_ERROR": 0
+        },
+        "evaluation_source_sha": "8a43837598504e774532df463ff67836785958d6"
+      }
     }
   ]
 }
