@@ -17,3 +17,9 @@
 판정은 C 5mm 동등성이 아닌 MJWarp 자체 ≥95%·최소40회 관문이다. 본 파일럿/처리량과 관문은 별도이며 C·gcp1 결과와 합산하지 않는다. 신규 성공 허용 상수는 넣지 않고 frozen Score를 쓴다. 시간 제한은 SIM tick이며 wall은 L4 자원4시간 감시 전용이다.
 
 현 ACT 장면: `grasp_act_scene_v1`, `floor_light_v1`, camera review v3 runtime binding, `real_v1` servo stiffness, native v7, mesh roller, idle contacts off, end_color_scene off (solo), weld off. scenetex5는 미적용이며 조정자 결정 대기다.
+
+초기화 보강: 동일 plan은 C setup을 한 번만 하고 native `MjData.__copy__`로 세계별 초기 버퍼를 만든다. qpos/qvel/ctrl/act/warmstart/applied-force 배열은 값 일치와 memory 비공유를 실제 런타임에서 검사한다. controller의 motor 배열·PWM dict도 분리하고, C perception mirror의 physics step은 예외로 차단한다. 다른 plan의 모델을 이 cache로 섞지 않는다. 따로 다른 모델을 묶을 때만 exact-XML C312 자산 + `per_world_model_references_v1`의 변환 필드 감사를 쓴다.
+
+조정자가 지적한 warmup 뒤 첫 world state로 덮이는 위험은 `2fd1490a`부터 두 번째 put_data 뒤에도 모든 integration state를 다시 복사하도록 고쳤다. 새 실행은 첫 teacher action 전 expected/actual world qpos 해시와 첫 RGB 해시를 저장한다. `--reset-check-v1`는 서로 다른 시작을 넣은 별도 진단에서 world0만 다른 시작으로 바꿨다가 원래 integration state로 reset하고, 선택하지 않은 세계의 모든 persistent state가 그대로인지 검사한다. 이 진단은 실제 teacher rollout/성공률이 아니며 mid-episode teacher/이력 reset 구현을 뜻하지 않는다.
+
+현재 계획은 ACT11 frozen source의 v4 scenario ID와 floor_light_v1을 사용한다. v6/v7 또는 scenetex5 승계를 주장하지 않는다. 현재와 다른 승인 장면으로 바꾸면 모델 자산과 관문을 다시 만든다.

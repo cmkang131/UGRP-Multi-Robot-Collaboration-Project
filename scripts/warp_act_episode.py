@@ -102,12 +102,9 @@ def episode(plan, out, *, hooks, world_index, execution_host, profile='off', hid
         os.environ['UGRP_SIM_OBSERVER_WIDTH'] = '320'
         os.environ['UGRP_SIM_OBSERVER_HEIGHT'] = '240'
         sampling = camera_config() if training_rgb else {'width': 640, 'height': 480}
-        world = build_world(scene, drive_profile=PROFILE, seed=plan['seed'], width=sampling['width'],
+        world,scene = hooks.make_world(plan,scene,build_world,bind_camera,drive_profile=PROFILE, seed=plan['seed'], width=sampling['width'],
                             height=sampling['height'], render=hooks.native_render, warehouse_layout=scene.engine_layout,
                             warehouse_cargo_ids=None, roller_collision='mesh', idle_robot_contacts='off')
-        for controller in world.controllers.values():
-            bind_camera(controller)
-        scene.setup(world)
         (out/'scene.xml').write_text(world.scene_xml)
         write(out/'scene.json', scene.manifest)
         rid, item = plan['robot_id'], plan['item_id']

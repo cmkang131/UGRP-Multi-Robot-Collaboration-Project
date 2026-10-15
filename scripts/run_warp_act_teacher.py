@@ -39,6 +39,7 @@ def parser():
     p.add_argument('--compiled-reference-v1',type=Path)
     p.add_argument('--compiled-geometry-312-v1',type=Path)
     p.add_argument('--per-world-model-references-v1',type=Path,help='default OFF: XMLsha→exact C312 assets; preserve batchable per-world model fields')
+    p.add_argument('--reset-check-v1',action='store_true',help='diagnostic only: reset selected initial state; no teacher rollout or gate')
     p.add_argument('--export-compiled-only',action='store_true')
     p.add_argument('--vm-hourly-usd',type=float,required=True)
     return p
@@ -52,6 +53,8 @@ def main():
         p.error('finite <=90 SIM seconds and positive explicit price required')
     if a.physics_backend=='mjwarp_batch_v1' and (not a.compiled_reference_v1 or not a.compiled_geometry_312_v1):
         p.error('warp1 profile requires explicit same-XML compiled312 damping and geometry assets')
+    if a.reset_check_v1 and (a.physics_backend!='mjwarp_batch_v1' or a.nworld<2):
+        p.error('reset diagnostic requires a multi-world Warp batch')
     # Check real metadata before importing any simulator or executing source code.
     from simalt_host import gcp2_identity
     host=gcp2_identity()
@@ -118,6 +121,21 @@ def main():
                 compiled_geometry=a.compiled_geometry_312_v1,
                 per_world_model_references=json.loads(a.per_world_model_references_v1.read_text()) if a.per_world_model_references_v1 else None)
             report.update(camera=hooks.camera,compatibility=hooks.compat,capacities=hooks.capacities,model_batch=hooks.model_batch_audit)
+            initial=hooks.initial_state_proof(contexts)
+            write(a.out/'initial-world-state.json',initial)
+            report['initial_world_state']=initial
+            if a.reset_check_v1:
+                if initial['expected_unique_qpos']<2:
+                    raise ValueError('distinct starts required for the reset diagnostic')
+                qpos=hooks.wd.qpos.numpy();qpos[0]=qpos[1]
+                hooks.wp.copy(hooks.wd.qpos,hooks.wp.array(qpos,dtype=hooks.wd.qpos.dtype))
+                mask=np.zeros(a.nworld,dtype=bool);mask[0]=True
+                reset=hooks.reset_physics_worlds(mask)
+                hooks.sync_render(contexts)
+                after=hooks.initial_state_proof(contexts)
+                write(a.out/'reset-proof.json',dict(reset=reset,initial=initial,after=after))
+                report.update(status='reset_diagnostic_complete',reset_proof=reset,physics_rollout_steps=0)
+                return
         report['setup_compile_s']=time.perf_counter()-start
         loop_start=time.perf_counter()
         while active.any():
@@ -148,6 +166,9 @@ def main():
     finally:
         for gen in generators:gen.close()
         hooks.save_states()
+        report['prototype_reset']={'unique_plans':len(hooks.prototypes),'cache_hits':hooks.prototype_hits,
+            'scope':'exact-plan initial MjData copy; per-world native buffers/command arrays are independent'}
+        hooks.close()
         wall=time.perf_counter()-start
         sim=sum(r.get('sim_s',0.) for r in reports.values())
         loop_wall=time.perf_counter()-loop_start if loop_start else None

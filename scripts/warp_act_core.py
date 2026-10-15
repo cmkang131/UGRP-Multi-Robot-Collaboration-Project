@@ -119,3 +119,17 @@ def varying_model_arrays(rows, batchable):
             raise ValueError('unbatchable model difference: '+key)
         out[key]=np.concatenate(values,axis=0)
     return out
+
+
+def masked_restore(current, initial, mask):
+    """Restore selected integration rows; preserve every untouched row exactly."""
+    selected=np.asarray(mask)
+    if selected.dtype!=np.bool_ or selected.ndim!=1 or set(current)!=set(initial):
+        raise ValueError('boolean world mask and matching integration fields required')
+    out={}
+    for name,value in current.items():
+        value=np.asarray(value);start=np.asarray(initial[name])
+        if value.shape!=start.shape or value.dtype!=start.dtype or not value.ndim or value.shape[0]!=len(selected):
+            raise ValueError('integration reset layout mismatch: '+name)
+        restored=value.copy();restored[selected]=start[selected];out[name]=restored
+    return out

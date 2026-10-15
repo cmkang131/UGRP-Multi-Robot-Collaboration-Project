@@ -5,11 +5,53 @@ and RGB are batched. C MjData is a kinematic/raycast perception mirror only;
 GPU contact forces have a separate evaluator-only channel.
 """
 from collections import defaultdict
+import copy
+import json
+import threading
 import hashlib
 import time
 from pathlib import Path
 import numpy as np
-from warp_act_core import SERVOS, control_tape, model_key, varying_model_arrays
+from warp_act_core import SERVOS, control_tape, model_key, varying_model_arrays, masked_restore
+
+
+class PerceptionWorld:
+    """Independent C kinematic mirror; no C step/render capability.
+
+    Native MjData.__copy__ copies state buffers. A runtime alias check also
+    verifies that assumption on the installed binding before any rollout.
+    Static model/indices are shared only for the exact same setup plan.
+    """
+    def __init__(self, prototype):
+        self.model=prototype.model
+        self.data=copy.copy(prototype.data)
+        self.drive_parameters=prototype.drive_parameters
+        self.scene_xml=prototype.scene_xml
+        self.seed=prototype.seed
+        self.physics_lock=threading.RLock()
+        for name in ('qpos','qvel','ctrl','act','qacc_warmstart','qfrc_applied','xfrc_applied'):
+            a,b=getattr(prototype.data,name,None),getattr(self.data,name,None)
+            if isinstance(a,np.ndarray) and a.size and np.shares_memory(a,b):
+                raise RuntimeError('per-world MjData alias: '+name)
+            if isinstance(a,np.ndarray) and not np.array_equal(a,b):
+                raise RuntimeError('native initial-state copy differs: '+name)
+        self.controllers={}
+        for rid,original in prototype.controllers.items():
+            controller=copy.copy(original)
+            controller.model=self.model;controller.data=self.data;controller._owner=self
+            for name,value in vars(original).items():
+                if isinstance(value,np.ndarray):setattr(controller,name,value.copy())
+            controller.servo_command_pulses=dict(original.servo_command_pulses)
+            self.controllers[rid]=controller
+
+    def robot(self,rid='r1'):
+        return self.controllers[rid]
+
+    def _physics_step_for(self,*args,**kwargs):
+        raise RuntimeError('C physics forbidden in the GPU perception mirror')
+
+    def close(self):
+        pass  # shared immutable model belongs to the prototype owner
 
 
 class Transport:
@@ -21,6 +63,30 @@ class Transport:
         self.samples = []
         self.rgb = []
         self.contact_forces = None
+        self.prototypes={}
+        self.prototype_hits=0
+
+    def make_world(self, plan, scene, factory, bind_camera, **kwargs):
+        if self.native_render:
+            world=factory(scene,**kwargs)
+            for controller in world.controllers.values():bind_camera(controller)
+            scene.setup(world)
+            return world,scene
+        key=hashlib.sha256(json.dumps(plan,sort_keys=True).encode()).hexdigest()
+        if key not in self.prototypes:
+            prototype=factory(scene,**kwargs)
+            for controller in prototype.controllers.values():bind_camera(controller)
+            scene.setup(prototype)
+            self.prototypes[key]=(prototype,copy.deepcopy(scene))
+        else:self.prototype_hits+=1
+        prototype,saved_scene=self.prototypes[key]
+        world=PerceptionWorld(prototype)
+        # Refresh the copied controller closures against its own native data.
+        for controller in world.controllers.values():bind_camera(controller)
+        return world,copy.deepcopy(saved_scene)
+
+    def close(self):
+        for world,scene in self.prototypes.values():world.close()
 
     def capture(self, index, world):
         if self.native_render:
@@ -169,13 +235,54 @@ class WarpTransport(Transport):
 
     def copy_initial_state(self, contexts):
         wp=self.wp
+        self.initial_state={}
         # mjSTATE_INTEGRATION owners; derived contacts/kinematics are recomputed.
         for name in ('qpos','qvel','act','ctrl','qacc_warmstart','qfrc_applied',
                      'xfrc_applied','mocap_pos','mocap_quat','eq_active','time'):
             target=getattr(self.wd,name,None)
             if target is None or not isinstance(target,wp.array):continue
             values=np.stack([np.asarray(getattr(c['world'].data,name)) for c in contexts])
-            if values.size:wp.copy(target,wp.array(values,dtype=target.dtype))
+            if values.size:
+                converted=wp.array(values,dtype=target.dtype)
+                wp.copy(target,converted)
+                self.initial_state[name]=converted.numpy().copy()
+
+    def initial_state_proof(self, contexts):
+        expected=self.initial_state['qpos']
+        actual=self.wd.qpos.numpy()
+        if not np.array_equal(actual,expected):
+            raise RuntimeError('P1: world-specific initial qpos lost after warmup')
+        rows=[]
+        folder=self.out/'first-rgb';folder.mkdir(exist_ok=True)
+        for i,jpg in enumerate(self.rgb):
+            (folder/f'world-{i:03d}.jpg').write_bytes(jpg)
+            rows.append(dict(world=i,qpos_match=True,
+                expected_qpos_sha256=hashlib.sha256(expected[i].tobytes()).hexdigest(),
+                actual_qpos_sha256=hashlib.sha256(actual[i].tobytes()).hexdigest(),
+                first_rgb_sha256=hashlib.sha256(jpg).hexdigest()))
+        return dict(stage='after warmup reset and first batch RGB, before any teacher action',
+            expected_unique_qpos=len({r['expected_qpos_sha256'] for r in rows}),
+            measured_unique_qpos=len({r['actual_qpos_sha256'] for r in rows}),
+            first_rgb_unique=len({r['first_rgb_sha256'] for r in rows}),rows=rows)
+
+    def reset_physics_worlds(self, mask):
+        # Frontend teacher/history resets are a separate caller responsibility.
+        # This method is used only by the explicit pre-rollout diagnostic here.
+        wp=self.wp
+        current={name:getattr(self.wd,name).numpy() for name in self.initial_state}
+        restored=masked_restore(current,self.initial_state,np.asarray(mask))
+        checks={}
+        for name,value in restored.items():
+            target=getattr(self.wd,name)
+            wp.copy(target,wp.array(value,dtype=target.dtype))
+            after=target.numpy()
+            checks[name]=dict(selected_match=bool(np.array_equal(after[mask],self.initial_state[name][mask])),
+                untouched_match=bool(np.array_equal(after[~mask],current[name][~mask])))
+        self.relay_state[mask]=0
+        if not all(c['selected_match'] and c['untouched_match'] for c in checks.values()):
+            raise RuntimeError('per-world reset changed untouched integration state')
+        return dict(mask=np.asarray(mask).tolist(),fields=checks,
+            scope='persistent physics integration + relay state only; no mid-episode teacher reset claim')
 
     def combine_models(self, models):
         """Use the pinned API's '*' fields, including nested model statistics.
@@ -186,7 +293,10 @@ class WarpTransport(Transport):
         import dataclasses
         from mujoco_warp._src import warp_util
         wp,mjw=self.wp,self.mjw
-        converted=[mjw.put_model(model) for model in models]
+        converted_cache={}
+        for model in models:
+            if id(model) not in converted_cache:converted_cache[id(model)]=mjw.put_model(model)
+        converted=[converted_cache[id(model)] for model in models]
         arrays=[];batchable=set();objects=[];scalars=[]
         def flatten(obj,prefix='',result=None,locations=None,scalar=None):
             result={} if result is None else result

@@ -110,3 +110,48 @@ def test_heterogeneous_models_preserve_world_order_and_reject_structural_changes
     rows[1]['index']=np.array([1,0])
     with pytest.raises(ValueError,match='unbatchable model difference: index'):
         varying_model_arrays(rows,{'mass'})
+
+
+def test_resource_guard_owns_output_not_shared_adapter_source():
+    from pathlib import Path
+    import runpy
+    ns=runpy.run_path(str(Path(__file__).resolve().parents[1]/'experiments/2026-10-16-warp1/resource_guard_v2.py'))
+    own=ns['owned_output'];root='/home/ugrp/ugrp-sim/runs/warp1'
+    assert own(['python','--teacher-source',root,'--out','/home/ugrp/ugrp-sim/runs/warp2/run']) is None
+    assert own(['python','--out',root+'/run'])==root+'/run'
+    assert own(['python','--out',root+'-foreign/run']) is None
+    assert own(['ffmpeg','-i',root+'/input.mp4','/home/ugrp/ugrp-sim/runs/warp2/output.mp4']) is None
+
+
+def test_masked_reset_preserves_unselected_world_state():
+    from scripts.warp_act_core import masked_restore
+    current={'qpos':np.array([[9.,8.],[7.,6.],[5.,4.]]),'eq':np.array([[True],[False],[True]])}
+    initial={'qpos':np.array([[1.,2.],[3.,4.],[5.,6.]]),'eq':np.array([[False],[False],[False]])}
+    mask=np.array([True,False,True])
+    restored=masked_restore(current,initial,mask)
+    assert restored['qpos'].tolist()==[[1.,2.],[7.,6.],[5.,6.]]
+    assert restored['eq'].tolist()==[[False],[False],[False]]
+    assert current['qpos'][0,0]==9.
+    with pytest.raises(ValueError):masked_restore(current,initial,[0,2])
+
+
+def test_cached_perception_world_has_independent_buffers_and_commands(monkeypatch):
+    import copy
+    from pathlib import Path
+    from types import SimpleNamespace
+    monkeypatch.syspath_prepend(str(Path(__file__).resolve().parents[1]/'scripts'))
+    from warp_act_backend import PerceptionWorld
+    class Data:
+        def __init__(self):self.qpos=np.array([1.,2.]);self.ctrl=np.array([3.,4.])
+        def __copy__(self):
+            obj=Data();obj.qpos=self.qpos.copy();obj.ctrl=self.ctrl.copy();return obj
+    data=Data();controller=SimpleNamespace(model=object(),data=data,motor_command=np.zeros(4),
+        servo_command_pulses={1:1500})
+    proto=SimpleNamespace(model=controller.model,data=data,drive_parameters=object(),scene_xml='<mujoco/>',
+        seed=1,controllers={'r1':controller})
+    a,b=PerceptionWorld(proto),PerceptionWorld(proto)
+    a.data.qpos[0]=99.;a.controllers['r1'].motor_command[0]=1.;a.controllers['r1'].servo_command_pulses[1]=2000
+    assert b.data.qpos[0]==data.qpos[0]==1.
+    assert b.controllers['r1'].motor_command[0]==controller.motor_command[0]==0.
+    assert b.controllers['r1'].servo_command_pulses[1]==controller.servo_command_pulses[1]==1500
+    with pytest.raises(RuntimeError,match='C physics forbidden'):a._physics_step_for(None)
