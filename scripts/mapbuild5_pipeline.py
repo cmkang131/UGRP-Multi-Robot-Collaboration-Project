@@ -38,7 +38,7 @@ def main():
             subprocess.run(list(map(str,cmd)),cwd=a.source,check=True)
     except subprocess.CalledProcessError as e:
         status('HOST_ERROR',reason=repr(e),command=e.cmd);return 1
-    status('POSTPROCESSING_COMPLETE',summary=str(a.output/'summary.json'),manifest=str(a.input/'manifest.json'))
+    status('POSTPROCESSING_COMPLETE',summary=str(a.output/'evaluation/summary.json'),manifest=str(a.input/'manifest.json'))
     return 0
 
 

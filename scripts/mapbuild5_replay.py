@@ -211,4 +211,10 @@ if __name__=='__main__':
     if hashlib.sha256(a.calibration.read_bytes()).hexdigest()!=queue['calibration_sha256']:
         raise ValueError('PINNED_PRIOR_DISTRIBUTION_REQUIRED')
     rows,events=replay(a.input,a.vision,a.calibration,a.output)
-    evaluate(a.input,a.vision,a.output,rows,events)
+    # The actor imported its own sim package. Evaluation must use the frozen
+    # scene package in a fresh interpreter; changing sys.path cannot replace
+    # already cached modules. The child verifies the prediction seal first.
+    import subprocess
+    subprocess.run(list(map(str,[sys.executable,ROOT/'scripts/mapbuild5_evaluate.py',
+        '--input',a.input,'--vision',a.vision,'--prediction',a.output,
+        '--output',a.output/'evaluation','--queue',a.queue])),check=True)
