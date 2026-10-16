@@ -12,6 +12,7 @@ import subprocess
 import sys
 import time
 import traceback
+import urllib.request
 
 
 def digest(path):
@@ -25,6 +26,11 @@ def main():
     p.add_argument('--deadline-utc',required=True)
     a=p.parse_args()
     if sys.platform!='linux':p.error('gcp2 only; no Mac rendering')
+    def metadata(key):
+        request=urllib.request.Request('http://metadata.google.internal/computeMetadata/v1/'+key,
+                                       headers={'Metadata-Flavor':'Google'})
+        return urllib.request.urlopen(request,timeout=5).read().decode().rsplit('/',1)[-1]
+    if metadata('project/project-id')!='ugrp-sim-b-1014':p.error('gcp2 project only')
     deadline=datetime.datetime.fromisoformat(a.deadline_utc.replace('Z','+00:00')).timestamp()
     report=dict(status='running',run=str(a.run),scope='one DEV ACT15 case; not held-out cohort or teacher gate',
                 postprocessor_sha256=digest(__file__))
@@ -46,7 +52,7 @@ def main():
         scores=result.get('student_scores',[])
         world_results=[json.loads(x.read_text()) for x in (a.run/'owner').glob('world-*/result.json')]
         report.update(api_completed=completed,raw_status=result.get('status'),
-            physical_n=sum(x['physical_success'] for x in scores),physical_N=len(scores) if completed else 0,
+            physical_n=sum(x['physical_success'] for x in scores) if completed else 0,physical_N=len(scores) if completed else 0,
             cap_end=sum(x.get('cap_end',False) for x in world_results),
             HOST_ERROR=int(result.get('status')=='HOST_ERROR'),student_scores=scores,
             actual_policy_steps=len(result.get('actions',[])),summary_sha256=digest(a.run/'summary.json'))
