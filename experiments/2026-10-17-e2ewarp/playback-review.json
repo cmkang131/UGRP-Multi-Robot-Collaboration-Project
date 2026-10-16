@@ -1,0 +1,41 @@
+{
+  "reviewer": "e2ewarp",
+  "method": "file image inspection; no GUI player; video ffprobe only",
+  "runs": [
+    {
+      "id": "r2",
+      "range_sim": [
+        0,
+        22.1
+      ],
+      "whole_saved_hz": 1,
+      "tail_range_sim": [
+        12.1,
+        22.1
+      ],
+      "tail_hz": 10,
+      "viewed": "r1/r2 whole+tail strips; r1/r2/r3 six overview samples",
+      "timeline": "same frontal view retained; no valid LLM choice; no transport"
+    },
+    {
+      "id": "r3",
+      "worlds": [
+        0,
+        1
+      ],
+      "range_sim": [
+        0,
+        30
+      ],
+      "whole_saved_hz": 2,
+      "tail_range_sim": [
+        20,
+        30
+      ],
+      "tail_hz": 10,
+      "viewed": "both worlds r1/r2 whole+tail strips, world0 r1/r2/r3 six overview samples",
+      "timeline": "front at0; lateral sweeps through6; centered/opposite by12/18; new scan after20; centered around24/30; no grasp/carry"
+    }
+  ],
+  "limitations": "small strip frames show gross pan sequence; no physical success/pose-accuracy claim; overview is six sparse times, strips show intermediate pan movement"
+}

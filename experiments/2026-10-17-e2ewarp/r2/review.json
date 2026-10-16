@@ -1,0 +1,289 @@
+{
+  "raw": "/home/ugrp/ugrp-sim/runs/e2ewarp-r2",
+  "source_sha": "fb651f59ce86c1f5ab4296d2815af8ecc5e19710",
+  "status": "SUPERVISOR_STOP",
+  "analysis_source_sha256": "8908ad71265993b2009bce58af60952df228f999c58047a22cba559b4f66452a",
+  "inspected_sim_range": [
+    0,
+    22.1
+  ],
+  "worlds": 1,
+  "client_requests": 9,
+  "model_calls": 0,
+  "accepted": 0,
+  "prompt_tokens": 0,
+  "prompt_tokens_per_call": [],
+  "median_prompt_tokens": null,
+  "total_tokens": 0,
+  "tokens_per_sim_world_s": 0.0,
+  "tokens_per_batch_sim_s": 0.0,
+  "cached_tokens": 0,
+  "cache_ratio": null,
+  "http_429": 0,
+  "upstream_429": 0,
+  "upstream_attempts": 0,
+  "format_errors": 0,
+  "median_response_wall_s": 0.07888749899996128,
+  "image_raw_sha_verified": 9,
+  "image_raw_sha_checks": 9,
+  "cache_order_checks": 9,
+  "cache_order_total": 9,
+  "reported_cost_usd": 0,
+  "cost_missing": 9,
+  "selections": {
+    "None": 9
+  },
+  "timeline": [
+    {
+      "world": 0,
+      "robot": "r1",
+      "sim_s": 0.0,
+      "act": null,
+      "reason": {
+        "category": "llm",
+        "reason_category": "llm",
+        "reason": "llm_http_400",
+        "blocked_object": "not_observed",
+        "minimum_gap_m": null,
+        "gap_status": "not_measured"
+      }
+    },
+    {
+      "world": 0,
+      "robot": "r2",
+      "sim_s": 0.0,
+      "act": null,
+      "reason": {
+        "category": "llm",
+        "reason_category": "llm",
+        "reason": "llm_http_400",
+        "blocked_object": "not_observed",
+        "minimum_gap_m": null,
+        "gap_status": "not_measured"
+      }
+    },
+    {
+      "world": 0,
+      "robot": "r3",
+      "sim_s": 0.0,
+      "act": null,
+      "reason": {
+        "category": "llm",
+        "reason_category": "llm",
+        "reason": "llm_http_400",
+        "blocked_object": "not_observed",
+        "minimum_gap_m": null,
+        "gap_status": "not_measured"
+      }
+    },
+    {
+      "world": 0,
+      "robot": "r1",
+      "sim_s": 10.0,
+      "act": null,
+      "reason": {
+        "category": "llm",
+        "reason_category": "llm",
+        "reason": "llm_http_400",
+        "blocked_object": "not_observed",
+        "minimum_gap_m": null,
+        "gap_status": "not_measured"
+      }
+    },
+    {
+      "world": 0,
+      "robot": "r2",
+      "sim_s": 10.0,
+      "act": null,
+      "reason": {
+        "category": "llm",
+        "reason_category": "llm",
+        "reason": "llm_http_400",
+        "blocked_object": "not_observed",
+        "minimum_gap_m": null,
+        "gap_status": "not_measured"
+      }
+    },
+    {
+      "world": 0,
+      "robot": "r3",
+      "sim_s": 10.0,
+      "act": null,
+      "reason": {
+        "category": "llm",
+        "reason_category": "llm",
+        "reason": "llm_http_400",
+        "blocked_object": "not_observed",
+        "minimum_gap_m": null,
+        "gap_status": "not_measured"
+      }
+    },
+    {
+      "world": 0,
+      "robot": "r1",
+      "sim_s": 20.0,
+      "act": null,
+      "reason": {
+        "category": "llm",
+        "reason_category": "llm",
+        "reason": "llm_http_400",
+        "blocked_object": "not_observed",
+        "minimum_gap_m": null,
+        "gap_status": "not_measured"
+      }
+    },
+    {
+      "world": 0,
+      "robot": "r2",
+      "sim_s": 20.0,
+      "act": null,
+      "reason": {
+        "category": "llm",
+        "reason_category": "llm",
+        "reason": "llm_http_400",
+        "blocked_object": "not_observed",
+        "minimum_gap_m": null,
+        "gap_status": "not_measured"
+      }
+    },
+    {
+      "world": 0,
+      "robot": "r3",
+      "sim_s": 20.0,
+      "act": null,
+      "reason": {
+        "category": "llm",
+        "reason_category": "llm",
+        "reason": "llm_http_400",
+        "blocked_object": "not_observed",
+        "minimum_gap_m": null,
+        "gap_status": "not_measured"
+      }
+    }
+  ],
+  "stops": {
+    "issued_command_rows": 665,
+    "zero_wheels": 665,
+    "interpretation": "issued stop intent only; no actual motion inference"
+  },
+  "localization": {
+    "bootstrap": 3,
+    "unknown_commanded_camera_settling": 66,
+    "measured": 596
+  },
+  "rejections": {
+    "llm_http_400": 9
+  },
+  "runtime_applied": {
+    "flow": "e2e_llm",
+    "stack_values": {
+      "physics_backend": "mjwarp_batch_v1",
+      "contact_profile": "warp_native_contact_v1",
+      "noslip_iterations": 0,
+      "scene_profile": "walls_floor_contrast_v5_indigo110_s80",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "cargo_version": "v6",
+      "scenario_version": "v7",
+      "heavy_crate": false,
+      "localization_path": "own_gauge_LK_diagnostic",
+      "rbpf": "off",
+      "localization_engine": "OpenCV",
+      "setdown_lookaround_v1": false,
+      "held_object_hidden_v1": true,
+      "held_world_reads": 0,
+      "nearfield_executor": "dependency_wait",
+      "weld": false,
+      "top_camera_control": false,
+      "planner_model": "google/gemma-4-31b-it",
+      "planner_provider": "CoreWeave",
+      "planner_quantization": "fp4",
+      "planner_fallbacks": false,
+      "planner_own_rgb_count": 1,
+      "planner_cache_order": [
+        "system",
+        "static",
+        "dynamic",
+        "image"
+      ],
+      "heading_mode": "on",
+      "ultrasonic_front": "off",
+      "wall_cap": null,
+      "speed_gate": "record_only",
+      "speed_metric": "wall_s/(sim_s*nworld)",
+      "gcp_host": "ugrp-act-l4-gcp6",
+      "gcp_guards": {
+        "idle_minutes": 20,
+        "budget_stop": true,
+        "credentials_on_vm": false
+      },
+      "no_pooling": true,
+      "planning_cap_basis": "compute_or_sim",
+      "rejection_ledger": [
+        "reason_category",
+        "blocked_object",
+        "minimum_gap_m"
+      ],
+      "cap_end_label": "cap_end",
+      "gcp_project": "ugrp-sim-f-1016",
+      "gcp_account": "kcm5781kcm5781@gmail.com"
+    },
+    "stack_deviations": [
+      {
+        "id": "nearfield_executor",
+        "reason": "first30 diagnostic; incomplete component blocked; no transport/student success",
+        "approval": {
+          "authority": "user",
+          "evidence": "2026-10-17 e2ewarp request §3(b): marked substitutions permitted for first30; pending parts interface/toggle only"
+        }
+      },
+      {
+        "id": "localization_path",
+        "reason": "first30 diagnostic; incomplete component blocked; no transport/student success",
+        "approval": {
+          "authority": "user",
+          "evidence": "2026-10-17 e2ewarp request §3(b): marked substitutions permitted for first30; pending parts interface/toggle only"
+        }
+      },
+      {
+        "id": "setdown_lookaround_v1",
+        "reason": "first30 diagnostic; incomplete component blocked; no transport/student success",
+        "approval": {
+          "authority": "user",
+          "evidence": "2026-10-17 e2ewarp request §3(b): marked substitutions permitted for first30; pending parts interface/toggle only"
+        }
+      }
+    ],
+    "host": {
+      "instance": "ugrp-act-l4-gcp6",
+      "project_id": "ugrp-sim-f-1016",
+      "account": "kcm5781kcm5781@gmail.com"
+    },
+    "contact_profile": {
+      "profile": "warp_native_contact_v1",
+      "noslip_iterations": 0
+    },
+    "gpu_noslip_iterations": 0,
+    "camera": {
+      "robots": [
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "resolution": [
+        640,
+        480
+      ],
+      "hz": 10,
+      "top_control": false
+    },
+    "cpu_physics_steps": 0,
+    "cpu_render_calls": 0,
+    "legacy_equivalence_shims": false,
+    "xml_sha256": [
+      "eaadd459eeb6d77ae480969400fde4f3ac5c32511e31f255400e342d5adb64b1"
+    ]
+  },
+  "success_scope": "first30 integration diagnostic; no independent ACT/actual transport success",
+  "compatible_CPU_first30_baseline": null,
+  "baseline_limit": "No same scene/provider/initial-state CPU first30 supplied. Historical results not pooled."
+}

@@ -1,0 +1,43 @@
+{
+  "source_sha": "e0e1244839d993424cd232836c55357e49ac7d51",
+  "evidence": [
+    "r3/rejection_table.json",
+    "r3/review.json"
+  ],
+  "reasons": [
+    {
+      "reason": "bootstrap_previous_rgb_unavailable",
+      "count": 6,
+      "reason_category": "camera_qualification",
+      "blocked_object": "not_observed",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "reason": "unknown_servo_change",
+      "count": 90,
+      "reason_category": "camera_qualification",
+      "blocked_object": "not_observed",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "reason": "unknown_commanded_camera_settling",
+      "count": 1662,
+      "reason_category": "camera_qualification",
+      "blocked_object": "not_observed",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "reason": "legacy_modulo_keyframe_admission_missed_qualified_frames",
+      "count": 48,
+      "reason_category": "map_keyframe_scheduler",
+      "blocked_object": "not_observed",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    }
+  ],
+  "dominant": "camera qualification1758/1806; keep inherited2.25s gate unchanged pending owner/native qualification",
+  "code_fix": "post-R3 default-off elapsed_sim_v1; no fourth physical round"
+}

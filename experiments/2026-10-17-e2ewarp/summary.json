@@ -1,0 +1,131 @@
+{
+  "schema": "ugrp.e2ewarp.experiment.v1",
+  "status": "DEV_SCOPE_FINISHED_NOT_READY",
+  "E2E_success": false,
+  "readiness": "NOT_READY",
+  "no_pooling": true,
+  "attempts": [
+    {
+      "id": "r1",
+      "source_sha": "b8270d07baf3f25d1ed1dbea1b5d667dc698eb30",
+      "status": "HOST_ERROR",
+      "sim_s": 0,
+      "worlds": 1,
+      "client_requests": 0,
+      "model_calls": 0,
+      "raw": "gcp6:/home/ugrp/ugrp-sim/runs/e2ewarp-r1"
+    },
+    {
+      "id": "r2",
+      "source_sha": "fb651f59ce86c1f5ab4296d2815af8ecc5e19710",
+      "status": "SUPERVISOR_STOP",
+      "sim_s": 22.1,
+      "worlds": 1,
+      "client_requests": 9,
+      "model_calls": 0,
+      "raw": "gcp6:/home/ugrp/ugrp-sim/runs/e2ewarp-r2",
+      "note": "old result model_calls9 counts client requests; raw relay errors and independent inspector establish actual upstream0"
+    },
+    {
+      "id": "r3",
+      "source_sha": "e0e1244839d993424cd232836c55357e49ac7d51",
+      "status": "cap_end",
+      "worlds": 2,
+      "condition": "peer_ko",
+      "raw": "gcp6:/home/ugrp/ugrp-sim/runs/e2ewarp-r3",
+      "sim_s": 30,
+      "client_requests": 18,
+      "model_calls": 18,
+      "accepted": 18,
+      "cache_ratio": 0.45490522807748385,
+      "token_total": 77084,
+      "reported_model_cost_usd": 0.00777272,
+      "summary_retrieved": true,
+      "raw_retrieval_complete": false
+    }
+  ],
+  "validation": {
+    "Mac_nonphysics_tests": 24,
+    "vendor_files": 334,
+    "vendor_hash_mismatch": 0,
+    "Mac_physics_steps": 0,
+    "Mac_render_calls": 0,
+    "physical_rounds": 3
+  },
+  "pending": [
+    "ACT selected checkpoint and coverage",
+    "mapbuild8 loaded camera FK qualification",
+    "mapbuild8 prior-window own/static map correction and actual-route LK/RBPF gate",
+    "warp8f release_reloc_selfmap_v1 correction and physical gate"
+  ],
+  "stopping_condition_met": false,
+  "runtime_verified_source": "e0e1244839d993424cd232836c55357e49ac7d51",
+  "latest_code_validation_scope": "post-R3 mission composition, elapsed-SIM keyframe candidate, English channels and mandatory own/static map correction; compile/24 nonphysics tests only",
+  "vm": {
+    "lastStopTimestamp": "2026-10-16T10:05:09.532-07:00",
+    "status": "TERMINATED",
+    "checked_utc": "2026-10-16T17:05:22.059872+00:00"
+  },
+  "actual_selfmap_keyframes": 0,
+  "physical_transport_success": false,
+  "ACT_student_executed": false,
+  "raw_originals_integrity": [
+    {
+      "run": "r1",
+      "declared_files": 16,
+      "mismatch": [],
+      "raw": "/home/ugrp/ugrp-sim/runs/e2ewarp-r1",
+      "packed_files_checked_by_decompression": true
+    },
+    {
+      "run": "r2",
+      "declared_files": 410,
+      "mismatch": [],
+      "raw": "/home/ugrp/ugrp-sim/runs/e2ewarp-r2",
+      "packed_files_checked_by_decompression": true
+    },
+    {
+      "run": "r3",
+      "declared_files": 1030,
+      "mismatch": [],
+      "raw": "/home/ugrp/ugrp-sim/runs/e2ewarp-r3",
+      "packed_files_checked_by_decompression": true
+    }
+  ],
+  "raw_manifest_sha256": {
+    "/home/ugrp/ugrp-sim/runs/e2ewarp-r1/sha256.json": "c3c799de7368f43c32eac545302d86f78b8651c9a045d7bcd5d44801132a022a",
+    "/home/ugrp/ugrp-sim/runs/e2ewarp-r2/sha256.json": "536687e5e25c809e21d6aa7f0baf0b5abeca50c51aeda7ebf53004ef853eb8dd",
+    "/home/ugrp/ugrp-sim/runs/e2ewarp-r3/sha256.json": "d2cbabf8da67b41c306b9e19254e0adee66a4e2d4eee2a706fa9da746556b42d",
+    "/home/ugrp/ugrp-sim/ops-reviews/e2ewarp/sealed-files.json": "b13f9bc13d2bca20f58eedb32e872649bce55ba409bb63a29db3d8f6a6ee2b97",
+    "/home/ugrp/ugrp-sim/ops-reviews/e2ewarp/packing.json": "ca0a5cfe0504f7cc85c58240ce329d07356f6bf62765931ca62631f9dc016806"
+  },
+  "code_sha256": {
+    "harness/e2e_warp_runtime.py": "1eff93e8b5dd000931e791051f4131c4adf852849f4cec9509ad99d638a45d69",
+    "harness/e2e_warp_components.py": "9a5fdd906ea43c4576498979b2f66ef7eae4093e973ec3a9de2919e28d350be3",
+    "harness/e2e_warp_mission.py": "b9a810747733c1908c13a8d2832bfde3afa3f5ca303af72d71d8d52718d651d3",
+    "scripts/run_e2e_warp.py": "5d29d74c90e3a71208dd190fc19625e0b7cdcd11596996685bdd8c013081ad03",
+    "scripts/e2e_warp_physics.py": "d4ba3c32efe89a96fcd81a4b19d38cd7125de0827341857754375ca3310c5543",
+    "scripts/e2e_warp_relay.py": "d8b64618f882d266a668a6d02801cd20ed1efa1a7beea192e5a08f8dfe3b1a41",
+    "scripts/e2e_warp_inspect.py": "8908ad71265993b2009bce58af60952df228f999c58047a22cba559b4f66452a"
+  },
+  "retrieval": {
+    "lite_complete": true,
+    "full_raw": false,
+    "raw_host": "gcp6 persistent disk"
+  },
+  "cleanup": {
+    "gcp6": "TERMINATED",
+    "mac_relay_listening": false,
+    "own_tunnel_closed": true,
+    "other_worktrees_modified": false
+  },
+  "latest_policy": {
+    "stackaudit_source_sha": "45623168348b9a8fc0711820a0355ef21f2e2823",
+    "dialogue_language": "en",
+    "selfmap_map_correction": "on",
+    "R3_latest_compliant": false,
+    "R3_historical_policy": "8fc1b1bc39d0b47a59d180f7b282c6da731d8b3c",
+    "latest_declaration_only_pass": true,
+    "physical_rerun": false
+  }
+}
