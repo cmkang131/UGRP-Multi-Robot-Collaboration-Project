@@ -123,6 +123,8 @@ def main():
     models={'original':{k:model(a.root/k,a.assets) for k in ('box','beam','drive')}}
     if (a.root/'primitive-v1').exists():
         models['primitive-v1']={k:model(a.root/'primitive-v1'/k,a.assets) for k in ('box','beam','drive')}
+        if (a.root/'primitive-v1/drive-clear-v1').exists():
+            models['primitive-v1']['drive-clear-v1']=model(a.root/'primitive-v1/drive-clear-v1',a.assets)
     def protocol(report):return 'primitive-v1' if '/primitive-v1/' in report.get('fixture','') else 'original'
     results=[];rejections=[];thresholds={};sample_funnels=[]
     folders=sorted(a.root.glob('R*/**/result.json'))
@@ -152,8 +154,10 @@ def main():
         kind='box' if 'box' in folder.name else 'beam' if 'beam' in folder.name else 'drive'
         row['kind']=kind;row['case']=case;row['protocol']=protocol(r)
         row['cohort_repeat']=2 if '/R2-box-repeat2/' in str(folder) else 1
+        row['drive_scene']='clear-overlap-v1' if '/drive-clear-v1/' in r.get('fixture','') else 'initial-overlap'
         if r.get('completed') and not r.get('cap_end'):
-            m,meta,f=models[row['protocol']][kind]
+            key='drive-clear-v1' if kind=='drive' and row['drive_scene']=='clear-overlap-v1' else kind
+            m,meta,f=models[row['protocol']][key]
             if kind in ('box','beam'):
                 worlds,points=grip(folder,m,meta);row['worlds']=worlds;ref=thresholds.get(row['protocol']+'/'+kind)
                 row['threshold']=ref
@@ -185,7 +189,8 @@ def main():
             else:
                 row['pulses']=drive(folder,m,meta,case)
                 row['valid_for_odom_calibration']=False
-                row['fixture_limit']='unchanged drivecheck initial chassis/cargo_box_00 overlap; causal fix owned by drivecheck'
+                row['fixture_limit']=('PR564 setup-only blocker relocation, fixed short pulses; not a new odometry calibration' if row['drive_scene']=='clear-overlap-v1' else
+                    'unchanged drivecheck initial chassis/cargo_box_00 overlap; causal fix owned by drivecheck')
         if not r.get('completed'):
             error=r.get('error','incomplete')
             # Pinned OverflowType.LS_ITERATIONS=1024. Historical benchmark

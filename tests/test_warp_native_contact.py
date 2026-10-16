@@ -41,3 +41,36 @@ def test_recording_preserves_short_pulse_boundaries():
     assert all(round(t/.00025) in ticks for t in (1,1.06,1.25,2.06,2.25))
     assert all((b-a)%10==0 for a,b in zip(ticks,ticks[1:]))
     assert ticks[0]==0 and ticks[-1]==24000
+
+
+def test_thirty_lifts_are_not_thirty_frames_and_reference_quantiles_pass(tmp_path, monkeypatch):
+    import json
+    import os
+    import sys
+    from scripts import warpfit_report
+    ref=dict(height_p05_m=.07,slip_p95_m=.000002)
+    def run(n,repeat):
+        worlds=[dict(world=w,hold_samples=30,all_finger_samples=30,loaded_contact_samples=30,
+            height_m=dict(min=.069,p05=.07),slip_m=dict(p95=.000002),tilt_deg=dict(max=0),
+            # Percentile bounds naturally exclude some individual frames even
+            # when the trajectory exactly equals the reference distribution.
+            pass_samples=27) for w in range(n)]
+        return dict(path=f'/R{2 if n==16 else 3}/repeat{repeat}',protocol='primitive-v1',engine='warp',
+            round=2 if n==16 else 3,nworld=n,profile='warp_native_contact_v1',kind='box',case='tape',
+            status='complete',completed=1,HOST_ERROR=0,cap_end=False,cohort_repeat=repeat,
+            threshold=ref,worlds=worlds)
+    analysis=tmp_path/'analysis';analysis.mkdir();output=tmp_path/'report'
+    # Deliberately unordered input: selection must use recorded repeat/world
+    # order, including all16 initial lifts before the next14.
+    (analysis/'rows.json').write_text(json.dumps([run(16,2),run(64,1),run(16,1)]))
+    (analysis/'thresholds.json').write_text(json.dumps(ref))
+    actual=os.uname()
+    monkeypatch.setattr(warpfit_report.os,'uname',lambda: os.uname_result(
+        (actual.sysname,'ugrp-sim-gcp2-test',actual.release,actual.version,actual.machine)))
+    monkeypatch.setattr(sys,'argv',['warpfit_report','--analysis',str(analysis),'--output',str(output)])
+    warpfit_report.main()
+    result=json.loads((output/'summary.json').read_text())
+    assert all(r['selected']==r['loaded_retained']==r['C_reference_quantile_pass']==30 for r in result['box30'])
+    selections=json.loads((output/'box30-selection.json').read_text())
+    first=next(r for r in selections if r['nworld']==16)['selection']
+    assert [(r['repeat'],r['world']) for r in first]==[(1,w) for w in range(16)]+[(2,w) for w in range(14)]

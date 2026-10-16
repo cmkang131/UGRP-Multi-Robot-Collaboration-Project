@@ -28,12 +28,13 @@
   "default_changes": 0,
   "trial_scope": "N16 two16world batches32 trajectories; N64 one64world batch. Use first30 in fixed batch/world index order; same initial condition, not random-seed generalization.",
   "acceptance": "derive slip p95 and clearance p5 from C3.12 fixed reference; never use arbitrary extra-mm allowance",
-  "drivecheck": "reuse unchanged fixture-v3 and pulse definitions; no duplicate C-vs-Warp cause experiment",
-  "paired_batch_jobs": 32,
+  "drivecheck": "reuse PR564 exact setup intervention and three registered short pulses; preserve original N16 eighteen-pulse diagnostic separately",
+  "paired_batch_jobs": 36,
   "box_batches": {
     "N16": 2,
     "N64": 1
   },
   "requested_box_trajectories": 30,
-  "box_hold": "30 temporal10Hz samples per trajectory over3s, distinct from30 lift attempts"
+  "box_hold": "30 temporal10Hz samples per trajectory over3s, distinct from30 lift attempts",
+  "primary_batch_jobs": 28
 }

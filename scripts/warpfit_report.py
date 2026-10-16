@@ -22,7 +22,8 @@ def main():
     for r in selected:
         entry={k:r.get(k) for k in ('path','round','nworld','kind','case','profile','status','completed','HOST_ERROR','cap_end',
             'sim_s','physical_gpu_ms_per_step','wall_per_sim_s','amortized_wall_per_world_sim_s','runtime_wall_s','setup_jit_s',
-            'loaded_contact_rate','fully_retained_worlds','hold_contact_rate','acceptance_sample_rate','slip_p95_mm','max_ncon','max_nefc','error','rejection_category','cohort_repeat')}
+            'loaded_contact_rate','fully_retained_worlds','hold_contact_rate','acceptance_sample_rate','slip_p95_mm','max_ncon','max_nefc','error','rejection_category','cohort_repeat','drive_scene')}
+        entry['comparison_role']='initial-overlap diagnostic' if r['kind']=='drive' and r.get('drive_scene')!='clear-overlap-v1' else 'primary'
         if r.get('worlds'):
             entry['height_min_mm']=min(w['height_m']['min'] for w in r['worlds'])*1000
             entry['tilt_max_deg']=max(w['tilt_deg']['max'] for w in r['worlds'])
@@ -38,6 +39,7 @@ def main():
             prediction=valid[0]['v122_delta']
             ratios=[v['actual_over_prediction'] for v in valid if v['actual_over_prediction'] is not None]
             pulses.append(dict(nworld=r['nworld'],profile=r['profile'],case=case,phase=phase,world_replicas=len(valid),
+                drive_scene=r.get('drive_scene'),
                 translation_mm_p50=med([v['translation_mm'] for v in valid]),
                 translation_mm_min=min(v['translation_mm'] for v in valid),translation_mm_max=max(v['translation_mm'] for v in valid),
                 yaw_deg_p50=med([v['yaw_deg'] for v in valid]),
@@ -47,7 +49,7 @@ def main():
                 prediction_sample_time_s=valid[0].get('prediction_sample_time_s'),
                 prediction_tail_endpoint_held=valid[0].get('prediction_tail_endpoint_held'),
                 tilt_deg_p95=med([v['tilt_deg']['p95'] for v in valid]),tilt_deg_max=max(v['tilt_deg']['max'] for v in valid),
-                calibration_valid=False,fixture_limit='original chassis/cargo_box_00 interpenetration; see drivecheck'))
+                calibration_valid=False,fixture_limit=r.get('fixture_limit')))
         if r['kind']=='drive':
             valid=[v for v in r.get('pulses',[]) if 'translation_mm' in v]
             entry['tilt_max_deg']=max((v['tilt_deg']['max'] for v in valid),default=None)
@@ -78,10 +80,11 @@ def main():
                 C_reference_quantile_definition='all fingers retained; temporal heightP05 >= C heightP05 and slipP95 <= C slipP95; no extra margin',
                 slip_p95_mm=None if not chosen else float(np.percentile([w['slip_m']['p95']*1000 for w in chosen],95)),
                 scope='same fixed initial condition, separate batch worlds; not independent random-seed trials'))
-    terminal=len(selected)==32 and all(r['status'] in ('complete','HOST_ERROR') for r in selected)
+    terminal=len(selected)==36 and all(r['status'] in ('complete','HOST_ERROR') for r in selected)
     errors=sum(bool(r['HOST_ERROR']) for r in selected)
     summary=dict(status=('comparison_complete_with_rejections' if errors else 'complete') if terminal else 'partial',
-        expected_paired_jobs=32,recorded_paired_jobs=len(selected),completed_paired_jobs=sum(bool(r['completed']) for r in selected),
+        expected_paired_jobs=36,expected_primary_jobs=28,expected_initial_overlap_diagnostics=8,
+        recorded_paired_jobs=len(selected),completed_paired_jobs=sum(bool(r['completed']) for r in selected),
         rejected_paired_jobs=errors,
         box30=[{k:v for k,v in row.items() if k!='selection'} for row in box30],
         box30_selection_file='box30-selection.json',
@@ -112,7 +115,8 @@ def main():
             actual,num(r.get('tilt_max_deg'))])+'|')
     table+=['','유지는 양쪽(빔은 네) 접촉력 양수와 기존 교사12mm 들기 조건이다. 미끄럼 열은 세계별 시간 P95의 세계간 P95다.',
         '상자는 세계당30표본·3초, 빔은3표본·0.3초 유지다. 별도 box30에는 N16 두 배치32궤적 중 순서상 처음30, N64 처음30궤적의 결과를 싣는다. 같은 초기 조건이며 독립 일반화 성공률이 아니다.',
-        '주행 요약은group16/group64 전진100ms, tail2 횡60ms 뒤1초 정지다. 전체18펄스·회전각·펄스 끝/정지 후는drive-table.csv에 있다. 초기 관통 때문에 보정에 쓸 수 없다.',
+        '주행 요약은clear3/group16 전진100ms, tail2 횡60ms 뒤1초 정지다. clear3은PR564의 초기 상자 관통 제거 진단 장면, group16/tail2는 원래 관통 장면이다. 조건을 합산하지 않는다.',
+        '본 비교는양N의clear3이고, 원래N16의18펄스는별도진단이다. 모든회전각·펄스끝/정지후는drive-table.csv에보존하며새보정값으로채택하지않는다.',
         'v122는 등록된 짧은 펄스만 쓰며,1초 정지 뒤 비교에는 등록곡선0.2초 끝값을 유지한다.0.2초 이후 drift를 예측한 값은 아니다.',
         'C 분포의 높이 P05/미끄럼 P95 동시 비교는 별도 JSON에 있으며 유지 판정과 혼동하지 않는다. 기본값·채택 변경0이다.']
     (a.output/'timing-table.md').write_text('\n'.join(table)+'\n')

@@ -27,12 +27,15 @@ def main():
     p.add_argument('--resume',action='store_true',help='continue unsubmitted jobs; never rerun attempted jobs')
     p.add_argument('--acknowledged-error',action='append',default=[],help='exact prior error output reviewed before continuation')
     p.add_argument('--box-repeat2',action='store_true',help='second N16 box batch, same round2 and unchanged physical inputs')
+    p.add_argument('--drive-clear-v1',action='store_true',help='reuse PR564 cleared setup for the three registered short pulses')
     a=p.parse_args()
     if not a.enabled:p.error('--enabled required')
     host();root=a.root.resolve();source=a.source.resolve()
     if a.box_repeat2 and (a.round!=2 or a.reference_only or a.attempt_tag or a.fixture_version!='primitive-v1'):
         p.error('box repeat2 is only a primitive-v1 round2 batch')
-    phase=root/('R2-box-repeat2' if a.box_repeat2 else (f'R{a.round}-Cref' if a.reference_only else f'R{a.round}')+
+    if a.drive_clear_v1 and (a.round==1 or a.reference_only or a.attempt_tag or a.box_repeat2 or a.fixture_version!='primitive-v1'):
+        p.error('cleared drive setup requires primitive-v1 round2 or3')
+    phase=root/('R2-drive-clear-v1' if a.drive_clear_v1 and a.round==2 else 'R2-box-repeat2' if a.box_repeat2 else (f'R{a.round}-Cref' if a.reference_only else f'R{a.round}')+
                 ('-'+a.attempt_tag if a.attempt_tag else ''))
     phase.mkdir(exist_ok=a.resume)
     fixtures=root if a.fixture_version=='original' else root/a.fixture_version
@@ -43,6 +46,7 @@ def main():
     queue=dict(enabled=True,round=a.round,source=str(source),root=str(root),rejection_table=str(rejection),
         fixture_version=a.fixture_version,
         box_repeat=2 if a.box_repeat2 else 1,
+        drive_clear_v1=a.drive_clear_v1,
         maximum_sim_s_per_case=None,profiles=PROFILES,models=0,planning_limit_kind='fixed physics ticks',
         resource_watchdog_s=10800,resource_watchdog_basis='user target 2-3h; host-only, never selects robot actions')
     if a.resume:
@@ -74,21 +78,26 @@ def main():
     jobs=([('baseline_noslip10','box','tape'),('baseline_noslip10','beam','tape')] if a.reference_only
           else [(pr,kind,case) for kind,case in cases for pr in (PROFILES if a.round!=3 else list(reversed(PROFILES)))])
     if a.box_repeat2:jobs=[(pr,'box','tape') for pr in PROFILES]
+    if a.drive_clear_v1:
+        jobs=[(pr,kind,case) for kind,case in ([('drive','clear3')] if a.round==2 else
+              [('box','tape'),('beam','tape'),('drive','clear3')])
+              for pr in (PROFILES if a.round==2 else list(reversed(PROFILES)))]
     results=prior;started=time.monotonic()
     for pr,kind,case in jobs:
         out=phase/f'{kind}-{case}-{pr}'
         if any(r['output']==str(out) for r in results):continue
         n=1 if a.reference_only or a.round==1 else 16 if a.round==2 else 64
         exe=cpu if a.reference_only else warp
+        fixture=fixtures/('drive-clear-v1' if a.drive_clear_v1 and kind=='drive' else kind)
         cmd=[exe,'-m','scripts.sim_cli','workflow','run','warpfit','--record',str(out)+'-managed',
-            '--input',str(fixtures/kind),'--input',str(phase/'queue.json'),'--',
-            '--enabled','--fixture',str(fixtures/kind),'--output',str(out),'--queue',str(phase/'queue.json'),
+            '--input',str(fixture),'--input',str(phase/'queue.json'),'--',
+            '--enabled','--fixture',str(fixture),'--output',str(out),'--queue',str(phase/'queue.json'),
             '--profile',pr,'--nworld',str(n),'--round',str(a.round),'--case',case,
             '--engine','cpu' if a.reference_only else 'warp']
         if not a.reference_only:
             reference=(root/f'R1-Cref/{kind}-tape-baseline_noslip10/result.json' if kind!='drive'
                        else root/'drive-capacity-reference.json')
-            measured=root/f'{kind}-capacity-reference.json'
+            measured=root/('drive-clear-capacity-reference.json' if a.drive_clear_v1 and kind=='drive' else f'{kind}-capacity-reference.json')
             if measured.is_file():reference=measured
             if reference.is_file():cmd+=['--capacity-reference',str(reference)]
             if a.round==1:cmd+=['--max-sim-s','.1','--nconmax','128','--njmax','512']
