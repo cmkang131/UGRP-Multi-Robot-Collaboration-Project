@@ -21,9 +21,17 @@ def finish(root):
     for name in ('box','beam','drive'):
         folder=root/name;meta=json.loads((folder/'fixture.json').read_text())
         os.chdir(meta['asset_cwd'])
-        m=mujoco.MjModel.from_xml_path(str(folder/'scene.xml'))
-        export_geometry(m,folder/'scene.xml',mujoco.__version__,folder/'geometry312.npz')
-        export_reference(m,folder/'scene.xml',mujoco.__version__,folder/'actuator312.json')
+        m=mujoco.MjModel.from_xml_string((folder/'scene.xml').read_text())
+        geometry=folder/'geometry312.npz';actuator=folder/'actuator312.json'
+        if geometry.exists():
+            ref=json.loads(Path(str(geometry)+'.json').read_text())
+            if ref['xml_sha256']!=digest(folder/'scene.xml') or ref['npz_sha256']!=digest(geometry):
+                raise ValueError('existing preparation geometry does not match input')
+        else:export_geometry(m,folder/'scene.xml',mujoco.__version__,geometry)
+        if actuator.exists():
+            if json.loads(actuator.read_text())['xml_sha256']!=digest(folder/'scene.xml'):
+                raise ValueError('existing preparation actuator does not match input')
+        else:export_reference(m,folder/'scene.xml',mujoco.__version__,actuator)
     drive=root/'drive';archive=np.load(drive/'fixture.npz');arrays={k:archive[k] for k in archive.files}
     meta=json.loads((drive/'fixture.json').read_text());groups=[meta['cases'][:9],meta['cases'][9:]]
     for i,group in enumerate(groups):
@@ -32,7 +40,8 @@ def finish(root):
     np.savez_compressed(drive/'fixture-batched.npz',**arrays)
     # Preserve the original generated archive while making the finalized input
     # explicit. No benchmark has consumed it before this preparation finishes.
-    (drive/'fixture-unbatched.npz').write_bytes((drive/'fixture.npz').read_bytes())
+    if not (drive/'fixture-unbatched.npz').exists():
+        (drive/'fixture-unbatched.npz').write_bytes((drive/'fixture.npz').read_bytes())
     (drive/'fixture.npz').write_bytes((drive/'fixture-batched.npz').read_bytes())
     meta['groups']={f'group{i}':[r['id'] for r in group] for i,group in enumerate(groups)}
     dump(drive/'fixture.json',meta)
