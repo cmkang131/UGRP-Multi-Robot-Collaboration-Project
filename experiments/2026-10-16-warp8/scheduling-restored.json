@@ -1,0 +1,51 @@
+{
+  "utc": "2026-10-16T08:39:15.283284+00:00",
+  "authority": "warp8 explicit user instruction: 8h maintained",
+  "initial_conflict": "maxRunDuration and instanceTerminationAction absent",
+  "running_update_error": "Max run duration cannot be changed while the instance is running",
+  "restoration": {
+    "scheduling": {
+      "automaticRestart": true,
+      "instanceTerminationAction": "STOP",
+      "maxRunDuration": {
+        "nanos": 0,
+        "seconds": "28800"
+      },
+      "onHostMaintenance": "TERMINATE",
+      "preemptible": false,
+      "provisioningModel": "STANDARD"
+    },
+    "status": "TERMINATED"
+  },
+  "other_gcp3_leases_before_stop": [],
+  "GPU_clients_before_stop": [],
+  "original_cleanup_deadline": "2026-10-16T14:05:00+00:00",
+  "gcp2_unchanged": true,
+  "scope": "restored28800s/STOP; R2 submitted under unchanged14:05UTC task deadline",
+  "restarted": {
+    "lastStartTimestamp": "2026-10-16T01:37:25.799-07:00",
+    "networkInterfaces": [
+      {
+        "accessConfigs": [
+          {
+            "natIP": "34.50.42.121"
+          }
+        ]
+      }
+    ],
+    "scheduling": {
+      "automaticRestart": true,
+      "instanceTerminationAction": "STOP",
+      "maxRunDuration": {
+        "nanos": 0,
+        "seconds": "28800"
+      },
+      "onHostMaintenance": "TERMINATE",
+      "preemptible": false,
+      "provisioningModel": "STANDARD"
+    },
+    "status": "RUNNING"
+  },
+  "idle_timer": "ugrp-idle-guard.timer active",
+  "hidden_claim_file": ".warp9-claim.lock retained; nonblocking exclusive lock acquired and released, no active holder"
+}

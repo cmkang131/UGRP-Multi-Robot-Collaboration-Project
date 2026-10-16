@@ -1,1 +1,1 @@
-warp8: R1 HOST_ERROR | 빔40: 완료성공1·cap_end0·미완료39, step226 world008 NVMAX128(활성156/할당128) | CUDA700 미재현 | full nv222 기본off 수정 후보·비물리30PASS | R2/release 미제출 | 대표 성공1/HOST중단1 native 동기화·Mac SHA/ffprobe 검증 | 8h VM필드 제거 발견·정책 확인 중, 자체14:05UTC 정리 유지 | PR#557 DRAFT
+warp8: 빔40 R2실행중(08:38:49UTC,175281c89,full nv222,실패seed8318706먼저) | R1성공완료1/cap_end0/HOST_ERROR39:NVMAX128<156 | CUDA700 단독환경미재현 | release미제출 | gcp3단독·8hSTOP복원·기존14:05UTC정리유지 | 대표성공1/HOST중단1 native동기화·Mac SHA/ffprobe검증 | PR#557 DRAFT

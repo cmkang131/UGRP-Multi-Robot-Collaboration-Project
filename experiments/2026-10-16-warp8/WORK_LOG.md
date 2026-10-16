@@ -1,7 +1,7 @@
 # warp8 실행 인수 기록 (진행 중)
 
 - worktree `/Users/changmin/projects/ugrp-wt/warp4`, branch `codex/warp6`, PR #557 DRAFT/base `claude/warp4`. COORDINATOR_NOTE.md는 원래 untracked 파일이므로 보존하고 커밋하지 않는다.
-- gcp3 VM `ugrp-act-l4-gcp3`, project `ugrp-sim-c-1016`, zone `asia-northeast3-a`, account `changmin5781@gmail.com`. 모든 gcloud에 account/project를 명시한다. gcp1 금지, gcp2 L4 무변경. 8h STOP·idle20·budget-stop ACTIVE/target을 조회했다. 06:35UTC 시작, 정리 deadline14:05UTC. 호스트 설정 변경0.
+- gcp3 VM `ugrp-act-l4-gcp3`, project `ugrp-sim-c-1016`, zone `asia-northeast3-a`, account `changmin5781@gmail.com`. 모든 gcloud에 account/project를 명시한다. gcp1 금지, gcp2 L4 무변경. 8h STOP·idle20·budget-stop ACTIVE/target을 조회했다. 06:35UTC 시작, 정리 deadline14:05UTC. 시작 시 설정 변경0; 이후8h 필드 제거 발견과 복원은 아래 후속 기록이 우선한다.
 - SSH 기본 gcp3 proxy는 부팅 직후 connection refused였다. 실제 승인 IP를 조회하고 저장 host key `HostKeyAlias=gcp3`로 직접 접속했다. 접속 주소는 매번 gcloud로 갱신한다. 키는 Mac에만 있다.
 - gcp3 `/home/ugrp/ugrp-sim/src/f75e3442957e8e00c4ed894056b3e06ee32399f0`가 빔40 관문 고정 소스다. clone은 `/home/ugrp/ugrp-sim/git-shared.git`을 직접 reference했다. gc/prune/사슬 reference 없음. 본 실행 PID5614, 드라이버5611. lease `leases/warp8-beam40-r1.json`. 원래 generic warp8.json은 종료한 releaseA40 export lease여서 종료 receipt 확인 후 ops에 보존하고 지웠다.
 - `runs/warp8/beam40-c312` 참조 내보내기40/40 accepted, refs40, exit0. `beam40-r1` 실제 MJWarp40세계는 원래 graph/NoSlip10/400substeps/학습RGBoff/weldOFF로 실행 중이다. 소스는 바꾸지 않는다. 판정 분모는 SIM×40 그대로다. 먼저 완료한 세계를 보정한 실제 작업 처리량은 별도 계산한다.
@@ -13,3 +13,7 @@
 - 모든 자기 배치가 끝나면 종료receipt→원본SHA 전수→큰 JSON/JSONL lossless zstd+해제SHA→요약/거부표/대표영상 SHA 확인→자기 leases 제거→타 lease/PID/GPU client 부재 확인→gcp3 stop→TERMINATED 확인. gcp2는 타 lease가 있으므로 정지하지 않는다. 진행 중/미회수 결과를 완료로 보고하지 않는다.
 
 07:17UTC checkpoint: 빔9.3SIM/40 active/완료0, 중간 환산3.8746. 첫30 미완료다. 두 알려진 실패 시드의 새 prefix +0–7SIM 전체2Hz 각15장(30장)을 CPU에서 만들고 Mac 몽타주로 직접 봤다. 종료·들기/실패·원인 증거로 쓰지 않는다. `playback-review.md`, `prefix-playback-verification.json`에 범위/경로/ffprobe·해시를 기록했다. prefix 영상 자체는 Mac으로 회수하지 않았다.
+
+08:38UTC 후속 기록: R1은08:02:57UTC에 NVMAX128/active156로 exit1. 성공완료1·cap_end0·HOST_ERROR39. 위 실행 중 checkpoint와 release 구소스 지시는 역사적 기록이다. R2는175281c8922453465f8bf32707e22988e78b8812를 사용한다. 새 실패seed8318706 먼저, 원래 canonical XML 명시, full-active-dof-workspace-v1 ON(정확한nv222), 비물리30PASS. R1 lease는 종료receipt/PID부재 확인 후 제거했다.8h VM필드 제거를 발견했고 실행 중 복원은API가 거부했다. 타 lease/GPU client 부재에서gcp3만 정지→28800초 STOP복원→재시작한다. 자체정리14:05UTC는 그대로다. gcp2 무변경.
+
+08:38:49UTC R2 제출: driver1743/child1745,40세계, seed8318706 첫번째, 원래canonical XML+40참조, full nv222. 숨김 .warp9-claim.lock은0바이트·미보유였고 fcntl 비차단잠금 아래 타 JSONlease/GPU client부재를 확인했다. 파일은 보존했다. idle timer 정확한 이름은ugrp-idle-guard.timer이며active. 처음 잘못된이름을 조회한 단계에서는set-e로제출전중단됐으므로 중복실행없다.

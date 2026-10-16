@@ -1,4 +1,4 @@
-# warp8 — gcp3 빔 짝·release MJWarp 관문 (R1 HOST_ERROR, 수정 후보 준비)
+# warp8 — gcp3 빔 짝·release MJWarp 관문 (R1 HOST_ERROR, R2 실행 중)
 
 warp6와 같은 `codex/warp6`, PR #557 DRAFT에서 이어간다. gcp2 R3의 CUDA700은
 gcp3 단독·MPS off·원래 graph 25.3 SIM초에서 **단독 환경에서 미재현**이었다.
@@ -44,12 +44,14 @@ NVMAX bit128로 중단됐다. 완료 성공1(world028, task17.4SIM), cap_end0, �
 dt, 접촉·마찰·m.opt solver 설정과 행동 경로는 유지한다. upstream compact 정규화의 pad/ctol은
 할당 크기에 따라 바뀌므로 기록하며 바이트 동등성을 주장하지 않는다. 관련 비물리30PASS다.
 R2는 새 실패seed8318706을 맨 앞에 놓고 원래 canonical XML과40건의 참조를 재사용한다.
-R1과 R2는 합산하지 않는다. R2 및 release의 실제 제출·완료 결과는 아직 없다.
+R1과 R2는 합산하지 않는다. R2는08:38:49UTC 제출했고 아직 완료되지 않았다. release는 미제출이다. R2 고정 소스는 `175281c8922453465f8bf32707e22988e78b8812`다.
 
 성공1개·HOST_ERROR1개의 원본 재계수와 대표 영상을 회수했다. full2Hz의 초기0.5SIM 동기화 오류는
 native NPZ로 고쳐 중복174/221행 qpos가 비트 일치함을 확인했다. 수정본 전체2Hz36/46장과
 마지막10SIM/10Hz 각100장을 전부 봤다. [대표 영상·검증](representative-native-sync.json),
 [영상 검토](playback-review.md). 원래 파생본은 보존하고 수정본을 최종 대표 영상으로 쓴다.
 
-R2 제출 전 실제 VM scheduling에서8h 필드가 외부에서 제거된 것을 확인했다. VM 설정은 아직
-변경하지 않았고, 이 작업 자체의 기존 정리 시한14:05UTC는 유지한다. 사용자에게 충돌 정책을 물었다.
+R2 제출 전 실제 VM scheduling에서8h 필드가 제거된 것을 확인했다. warp8의 명시적8h 유지 지시에 따라
+타 lease/GPU client 부재 확인 후 gcp3만 정지했고, maxRunDuration28800/STOP을 복원·조회했다.
+재시작으로 VM 상한 기준 시각이 바뀌어도 이 작업의 기존 정리 시한14:05UTC는 연장하지 않는다.
+[설정 복원 기록](scheduling-restored.json). gcp2는 변경하지 않았다.
