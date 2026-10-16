@@ -30,6 +30,8 @@ def main():
         raise ValueError('matching fixed final20000 model required')
     if not table.is_file():raise ValueError('missing rejection_table')
     plan=BASE/'ops-reviews/beampair8/heldout-plan.json'
+    if sha256(plan)!='5b04be7e5fa2102545666b0464ae0e162ec7a175de8df304b8e6b56ca53828f7':
+        raise ValueError('heldout20 immutable plan SHA mismatch')
     episodes=read_json(plan)['episodes']
     if [e['seed'] for e in episodes]!=list(range(8329000,8329020)):
         raise ValueError('heldout20 plan mismatch')

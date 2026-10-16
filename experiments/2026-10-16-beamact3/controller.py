@@ -185,8 +185,9 @@ print(json.dumps(dict(pid=p.pid,source=src,argv={argv!r})))
 
 def final_training(arm):
     armstate=state['arms'].setdefault(arm,{})
-    if arm=='B':launch(arm,'smoke',1)
-    started=time.monotonic();smoke=wait_stage(arm,'smoke',1)
+    if armstate.get('model'):return
+    if arm=='B' and not any(e.get('kind')=='stage_launch' and e.get('arm')==arm and e.get('stage')=='smoke' for e in state['events']):launch(arm,'smoke',1)
+    smoke=armstate.get('smoke') or wait_stage(arm,'smoke',1)
     if not(smoke.get('complete') and smoke.get('readback_verified') and smoke['steps_completed']==300):
         raise RuntimeError('matching smoke incomplete')
     armstate['smoke']=smoke
@@ -194,9 +195,16 @@ def final_training(arm):
     armstate['smoke_managed_overhead_s']=max(0.,sup['wall_s']-smoke['wall_s'])
     event('smoke_readback_pass',arm=arm,steps=300,wall_s=smoke['wall_s'])
     checkpoint=smoke['checkpoint'];smokepath=OUT+'/'+arm+'/smoke-attempt1/summary.json'
-    attempt=1;total_wall=0.
+    launches=[e['attempt'] for e in state['events'] if e.get('kind')=='stage_launch' and e.get('arm')==arm and e.get('stage')=='main']
+    completed=armstate.get('main_attempts',[])
+    total_wall=sum(r.get('wall_s') or 0. for r in completed)
+    attempt=max(launches,default=1)
+    last=completed[-1] if completed else None
+    if last and last.get('attempt')==attempt:
+        checkpoint=last['checkpoint'];attempt+=1
+    launched=attempt in launches
     while True:
-        launch(arm,'main',attempt,resume=checkpoint,smoke=smokepath)
+        if not launched:launch(arm,'main',attempt,resume=checkpoint,smoke=smokepath)
         result=wait_stage(arm,'main',attempt)
         if result['status']=='HOST_LIFETIME_INTERRUPTION':
             event('HOST_ERROR',arm=arm,stage='main',attempt=attempt,reason='configured8h host lifetime; incomplete attempt excluded')
@@ -208,7 +216,8 @@ for p in r.glob('main-attempt*/step-*/resume.json'):
 print(json.dumps(dict(latest=max(rows) if rows else None)))
 ''')
             if recovered['latest']:checkpoint=recovered['latest'][1]
-            attempt+=1;continue
+            attempt+=1;launched=False;continue
+        result['attempt']=attempt
         armstate.setdefault('main_attempts',[]).append(result);total_wall+=result.get('wall_s') or 0.
         if total_wall>7*3600:raise RuntimeError('one-arm finite cumulative training budget exhausted')
         if result.get('complete') and result.get('readback_verified') and result['steps_completed']==20000:
@@ -217,12 +226,28 @@ print(json.dumps(dict(latest=max(rows) if rows else None)))
             return
         if result.get('status') not in ('WALL_CAP','interrupted') or not result.get('readback_verified'):
             raise RuntimeError('incomplete main without verified restart checkpoint')
-        checkpoint=result['checkpoint'];attempt+=1
+        checkpoint=result['checkpoint'];attempt+=1;launched=False
         event('resource_window_checkpoint',arm=arm,checkpoint=checkpoint,step=result['steps_completed'])
 
 
-def transfer(arm):
+def ensure_cpu():
     budget(force=True)
+    current=cloud(['compute','instances','describe','ugrp-sim-gcp2','--zone',ZONE])
+    if current['status']=='TERMINATED':
+        cloud(['compute','instances','start','ugrp-sim-gcp2','--zone',ZONE,'--quiet'])
+        event('cpu_start_for_authorized_stage',previous_status='TERMINATED')
+    elif current['status'] not in ('RUNNING','STAGING','PROVISIONING'):
+        raise RuntimeError('CPU host not available; no stop or lifecycle override')
+    for _ in range(12):
+        try:
+            query('cpu',"import json;print(json.dumps({'ssh_ready':True}))")
+            return
+        except (subprocess.CalledProcessError,subprocess.TimeoutExpired):time.sleep(10)
+    raise RuntimeError('CPU SSH did not become ready')
+
+
+def transfer(arm):
+    ensure_cpu()
     target=OUT+'/'+arm+'/model-v1';model=state['arms'][arm]['model']
     # Only model+adapter, streamed through Mac memory; no dataset/raw transfer.
     run([*ssh('cpu'),'mkdir -p '+shlex.quote(OUT+'/'+arm)+' && test ! -e '+shlex.quote(target)+' && mkdir '+shlex.quote(target)])
@@ -245,7 +270,7 @@ print(json.dumps(dict(files=len(h),model_sha256=h['model.safetensors'])))
 
 
 def evaluate_cpu(arm):
-    budget(force=True)
+    ensure_cpu()
     src=state['analysis_cpu_source'];model=state['arms'][arm]['cpu_model'];dest=OUT+'/'+arm+'/heldout20-v1'
     command='cd '+shlex.quote(src)+' && PYTHONPATH=. '+BASE+'/ugrp/.venv-sim/bin/python experiments/2026-10-16-beamact3/run_eval.py --arm '+arm+' --model '+shlex.quote(model)+' --output '+shlex.quote(dest)
     log=(HERE/(arm+'-cpu-supervisor.log')).open('x')
@@ -255,6 +280,7 @@ def evaluate_cpu(arm):
 
 
 def offline(arm):
+    if state['arms'][arm].get('offline_summary'):return
     # Same frozen head module; analysis source adds only paired role probes.
     launch(arm,'offline',1,model=state['arms'][arm]['model'],source=state['analysis_gpu_sha'])
     result=wait_stage(arm,'offline',1)
@@ -264,7 +290,13 @@ def offline(arm):
 
 
 def main():
-    p=__import__('argparse').ArgumentParser();p.add_argument('--analysis-sha',required=True);a=p.parse_args()
+    global state,initial
+    p=__import__('argparse').ArgumentParser();p.add_argument('--analysis-sha',required=True);p.add_argument('--resume',action='store_true');a=p.parse_args()
+    if a.resume:
+        previous=json.loads(RECORD.read_text())
+        if previous.get('status')=='BUDGET':raise RuntimeError('BUDGET state cannot be automatically resumed')
+        state=previous;state['status']='running'
+        initial=time.monotonic()-(datetime.now(timezone.utc)-datetime.fromisoformat(state['started'])).total_seconds()
     state['analysis_gpu_sha']=a.analysis_sha;state['analysis_cpu_source']=BASE+'/src/'+a.analysis_sha
     save();budget(force=True);instance(force=True)
     cpu_jobs=[]
