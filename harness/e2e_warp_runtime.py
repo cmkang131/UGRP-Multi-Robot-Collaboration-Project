@@ -197,14 +197,18 @@ class DiagnosticTask:
     """
     def __init__(self, orders):
         from harness.active_camera import SEARCH
+        from harness.e2e_rgb_vo import PARAMS
         self.pwm = {str(k): int(v) for k, v in SEARCH.items()}
         self.pwm['1'] = 2000
         self.orders, self.target, self.scan_start = orders, None, 0.
         self.command_history = []
+        # Reuse the existing maximum issued-camera settle interval plus one
+        #10Hz frame. Diagnostic schedule only; native FK accuracy is unqualified.
+        self.view_dwell_s = max(PARAMS['settle_s']) + .1
 
     def candidates(self):
         return [dict(id=f'inspect_order_{i}', skill='scan_surroundings', order=o,
-                     expected_cost='three own-camera views; no global localization yet')
+                     expected_cost='three settled own-camera views; no global localization yet')
                 for i, o in enumerate(self.orders)] + [dict(id='wait', skill='wait',
                      expected_cost='wait for qualified navigation/ACT dependencies')]
 
@@ -214,10 +218,8 @@ class DiagnosticTask:
     def command(self, now):
         pwm = self.pwm.copy()
         if self.target and self.target.startswith('inspect_order_'):
-            # Diagnostic view schedule: existing SEARCH yaw1500, +/-500PWM
-            # within hardware500..2500. One second/view allocates the user30s
-            # inspection budget; no completion/acceptance is inferred from it.
-            pwm['6'] = (1000, 1500, 2000)[int(now-self.scan_start) % 3]
+            # SEARCH yaw1500 +/-500PWM within the existing hardware range.
+            pwm['6'] = (1000, 1500, 2000)[int((now-self.scan_start)/self.view_dwell_s) % 3]
         command = dict(t=now, wheels=[0.]*4, duration_s=[0.]*4, pwm=pwm)
         self.command_history.append(command)
         return command

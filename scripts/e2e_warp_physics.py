@@ -207,16 +207,25 @@ def own_map(frame, state):
     """mapbuild6 qualified LK, own gauge only. No pretend static registration."""
     import cv2
     from harness.servo_camera_fk import transform_from_commands
-    from harness.e2e_rgb_vo import ground_pair, compose
+    from harness.e2e_rgb_vo import ground_pair, compose, PARAMS
+    from harness.self_odom_grid import OdomGrid, transform
+    from harness.mapbuild_rbpf import virtual_scan
+    from harness.scene_colour_boundary import ColourBoundaryState, RELOC16_OPTION
+    import json
     rgb = cv2.cvtColor(cv2.imdecode(np.frombuffer(frame.jpeg, np.uint8), cv2.IMREAD_COLOR), cv2.COLOR_BGR2RGB)
     pwm = {int(k): v for k, v in frame.issued[-1]['pwm'].items()}
     camera, reason = transform_from_commands(pwm, camera_pose='servo_fk_v1')
     flow = dict(status='bootstrap')
+    if state.get('pwm') != pwm:
+        state['servo_changed_s'] = frame.sim_s
+    settled = frame.sim_s-state['servo_changed_s'] >= max(PARAMS['settle_s'])
     if state.get('rgb') is not None:
         if state['pwm'] != pwm:
             flow = dict(status='unknown_servo_change')
         elif camera is None:
             flow = dict(status='unknown_'+reason)
+        elif not settled:
+            flow = dict(status='unknown_commanded_camera_settling')
         else:
             flow = ground_pair(state['rgb'], rgb, pwm)
     pose = state.get('pose', np.zeros(3))
@@ -225,6 +234,27 @@ def own_map(frame, state):
     # No wheel commands are issued in the diagnostic. Unknown remains unknown;
     # do not convert stationary intent into a measured zero or a global fix.
     state.update(rgb=rgb, pwm=pwm, pose=pose)
+    if 'grid' not in state:
+        calibration=ROOT/'experiments/2026-10-17-e2ewarp/vendor-data/colour-calibration.json'
+        if hashlib.sha256(calibration.read_bytes()).hexdigest() != 'a37cf96551abbfb8b38df3efc1cd61f3f357ac9eb3a1dcd0b4d9947242e4e24f':
+            raise ValueError('FROZEN_COLOUR_CALIBRATION_REQUIRED')
+        state['colour'] = ColourBoundaryState('walls_floor_contrast_v5_indigo110_s80',
+            json.loads(calibration.read_text()), option=RELOC16_OPTION)
+        state['grid'] = OdomGrid(frame.robot_id, profiles={})
+    scan_status, hits, inserted = 'unknown_commanded_camera_settling', 0, False
+    if camera is not None and settled:
+        scan = virtual_scan(rgb, pwm, state['colour'])
+        hits = sum(c['status'] == 'hit' for c in scan['columns'])
+        scan_status = 'observed_wall_contacts' if hits else 'unknown_wall_contact'
+        # Use the frozen LK-only map insertion from mapbuild5_replay; RBPF stays
+        # off pending its owner comparison. This map remains in the own gauge.
+        if scan['segments'] and frame.tick % 10 == 0:
+            state['grid'].insert(transform([scan['camera']], pose)[0],
+                                 [transform(s, pose) for s in scan['segments']])
+            inserted = True
     return dict(own_gauge_pose=pose.tolist(), static_map_registered=False, qualified_navigation=False,
                 status=flow['status'], fk_status=reason, flow=flow,
+                self_map=dict(frame='own_start', occupied_cells=sum(v>0 for v in state['grid'].cells.values()),
+                              known_cells=len(state['grid'].cells), wall_columns=hits, scan_status=scan_status,
+                              inserted=inserted, rbpf='off'),
                 dependency_wait=['loaded_fk', 'static_map_registration', 'selected_ACT', 'release_relocalization'])
