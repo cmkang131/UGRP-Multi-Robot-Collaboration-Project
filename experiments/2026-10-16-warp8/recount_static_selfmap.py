@@ -13,7 +13,9 @@ def read(p):
     return json.loads(p.read_text() if p.exists() else subprocess.check_output(['zstd','-qdc',str(p)+'.zst']))
 
 
-def sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()
+def sha(p):
+    data = p.read_bytes() if p.exists() else subprocess.check_output(['zstd','-qdc',str(p)+'.zst'])
+    return hashlib.sha256(data).hexdigest()
 
 
 if __name__=='__main__':
