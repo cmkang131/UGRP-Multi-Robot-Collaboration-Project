@@ -1,0 +1,37 @@
+{
+  "unit": "scaling_configuration",
+  "stages": [
+    {
+      "stage": "authored_sizes",
+      "cumulative_pass_n": 4,
+      "rejected_n": 0
+    },
+    {
+      "stage": "source_and_nonphysics_checks",
+      "cumulative_pass_n": 4,
+      "rejected_n": 0
+    },
+    {
+      "stage": "exclusive_GPU_admission",
+      "cumulative_pass_n": 0,
+      "rejected_n": 4
+    },
+    {
+      "stage": "measured_profiles",
+      "cumulative_pass_n": 0,
+      "rejected_n": 0
+    }
+  ],
+  "rejections": [
+    {
+      "category": "resource_wait",
+      "reason": "foreign_exclusive_lease_and_GPU_process",
+      "blocked_object": "warp8-beam40-r1 / GPU PID5614",
+      "minimum_gap_m": null,
+      "gap_scope": "host_resource_not_physical_gap",
+      "n": 4
+    }
+  ],
+  "raw": "/home/ugrp/ugrp-sim/runs/warp9/profile-r1/last-resource-check.json",
+  "reproduction": "python experiments/2026-10-16-warp9/launch_profile.py --wait --output <new absolute path on gcp3>"
+}
