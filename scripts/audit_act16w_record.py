@@ -70,7 +70,7 @@ def audit(root):
             if result['input_audit'][key]!=0:raise ValueError('teacher input boundary violation')
         rows.append(dict(world=i,seed=entry['seed'],frames=len(frames),paired_targets=len(labels),
                 exact_controller_jpegs=len(frames),unique_jpeg_hashes=len(unique),issued_pwm_transitions=pwm_transitions,
-                done_targets=sum(x['done'] for x in labels),physical_success=result['physical_success'],
+                done_targets=sum(x['done'] for x in labels),command_complete=labels[-1]['phase_after']=='complete',done_by_skill={skill:sum(x['done'] for x in labels if x['skill']==skill) for skill in sorted({x['skill'] for x in labels})},physical_success=result['physical_success'],
                 lift_success=result['lift_success'],release_success=result['release_success'],cap_end=result['cap_end'],
                 input_audit=result['input_audit'],duration_sim_s=len(frames)*.1,
                 native_camera=camera,source=str(original),original_result_sha256=digest(original/'result.json') if (original/'result.json').exists() else digest(original/'result.json.zst')))

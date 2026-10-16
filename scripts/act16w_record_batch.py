@@ -24,7 +24,7 @@ def write(p,v):
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--enabled',action='store_true')
-    for k in ['root','references','groups','approval','capacity-receipt']:p.add_argument('--'+k,type=Path,required=True)
+    for k in ['root','references','groups','approval','capacity-receipt','selection']:p.add_argument('--'+k,type=Path,required=True)
     p.add_argument('--max-worlds',type=int,default=24);p.add_argument('--foreign-cpu-worlds',type=int,required=True)
     p.add_argument('--deadline-utc',required=True);p.add_argument('--speed-gate-override',default='');a=p.parse_args()
     if not a.enabled or not 1<=a.max_worlds<=40 or not 0<=a.foreign_cpu_worlds<=40:p.error('explicit opt-in and finite capacity required')
@@ -37,11 +37,13 @@ def main():
         audit=read(Path(item['path']))
         if not audit['passed'] or any(not w['physical_success'] or w['duration_sim_s']<30 or w['cap_end'] for w in audit['worlds']):raise ValueError('inspected complete successful native pilot required')
     a.root.mkdir(parents=True,exist_ok=False);inventory=read(a.references/'inventory.json');plans=read(a.references/'plans.json')
-    groups=[[i for i in g['indices'] if i not in (1,2)] for g in read(a.groups/'model-groups.json')['groups']]
+    selection=read(a.selection);selected=selection['selected_indices']
+    if len(selected)!=len(set(selected)) or len(selected)<40 or not {1,2}<=set(selected):raise ValueError('unique predeclared >=40 recording starts required')
+    groups=[[i for i in g['indices'] if i in selected and i not in (1,2)] for g in read(a.groups/'model-groups.json')['groups']]
     pending=sorted([(j,g) for j,g in enumerate(groups) if g],key=lambda x:(-len(x[1]),x[0]));running={};finished=[];start=time.monotonic();deadline=datetime.fromisoformat(a.deadline_utc).timestamp()
     # First task GPU use05:47Z; eight-hour user cap, regardless of VM reboot.
     if deadline>datetime.fromisoformat('2026-10-16T13:47:00.019842+00:00').timestamp():raise ValueError('task8h cap cannot be extended by reboot')
-    lease=B/'leases/act16w-record.json';report=dict(status='running',source_sha=source,host=host,started_utc=datetime.now(timezone.utc).isoformat(),groups_total=len(pending),planned_fresh_seeds=50,pilots_excluded_from_dispatch=[86821,86822],speed_gate_override=a.speed_gate_override or None,deadline=a.deadline_utc,complete=False)
+    lease=B/'leases/act16w-record.json';report=dict(status='running',source_sha=source,host=host,started_utc=datetime.now(timezone.utc).isoformat(),groups_total=len(pending),planned_fresh_seeds=len(selected),selection_sha256=sha256(a.selection),pilots_excluded_from_dispatch=[86821,86822],speed_gate_override=a.speed_gate_override or None,deadline=a.deadline_utc,complete=False)
     with lease.open('x') as f:json.dump(dict(task='act16w-record',pid=os.getpid(),start=datetime.now(timezone.utc).isoformat(),expected_end=a.deadline_utc,concurrency=0),f)
     stop={'requested':False,'cap_end':False};signal.signal(signal.SIGINT,lambda *_:stop.update(requested=True));signal.signal(signal.SIGTERM,lambda *_:stop.update(requested=True))
     def foreign():
