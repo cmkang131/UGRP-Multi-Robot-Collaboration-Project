@@ -84,7 +84,7 @@ def instance(force=False):
 
 
 def ssh(host):
-    if host=='gpu':return ['ssh','-o','BatchMode=yes','-o','ConnectTimeout=15','-i','/Users/changmin/.ssh/ugrp_gcp2','ugrp@'+gpu_ip]
+    if host=='gpu':return ['ssh','-o','BatchMode=yes','-o','ConnectTimeout=15','-i','/Users/changmin/.ssh/ugrp_gcp2','-o','HostKeyAlias=34.64.52.225','-o','StrictHostKeyChecking=yes','ugrp@'+gpu_ip]
     return ['ssh','-o','BatchMode=yes','-o','ConnectTimeout=15','gcp2']
 
 
@@ -164,6 +164,13 @@ def launch(arm,stage,attempt,*,resume=None,smoke=None,model=None,source=TRAIN_SO
         smoke_wall=state['arms'][arm]['smoke']['wall_s']
         margin=math.ceil(smoke_wall+state['arms'][arm]['smoke_managed_overhead_s'])
         limit=min(21600,math.floor(remaining-margin))
+        if stage=='main':
+            # User's8h per-condition bound, not a new7h cumulative cap.
+            # Each individual process still has the existing <=7h guard.
+            used=sum(r.get('wall_s') or 0. for r in state['arms'][arm].get('main_attempts',[]))
+            condition_left=8*3600-used-smoke_wall
+            if condition_left<=margin:raise TimeoutError('condition8h training budget exhausted')
+            limit=min(limit,math.floor(condition_left-margin))
         if limit<margin:
             event('wait_existing_VM_lifetime',arm=arm,remaining_s=remaining,measured_finalization_margin_s=margin)
             while instance(force=True)['status']=='RUNNING':budget();time.sleep(30)
@@ -219,7 +226,7 @@ print(json.dumps(dict(latest=max(rows) if rows else None)))
             attempt+=1;launched=False;continue
         result['attempt']=attempt
         armstate.setdefault('main_attempts',[]).append(result);total_wall+=result.get('wall_s') or 0.
-        if total_wall>7*3600:raise RuntimeError('one-arm finite cumulative training budget exhausted')
+        if total_wall+smoke['wall_s']>8*3600:raise RuntimeError('one-arm explicit8h training budget exhausted')
         if result.get('complete') and result.get('readback_verified') and result['steps_completed']==20000:
             armstate['model']=result['checkpoint']+'/actor';armstate['training_summary']=OUT+'/'+arm+'/main-attempt'+str(attempt)+'/summary.json'
             event('fixed20000_complete',arm=arm,model=armstate['model'],attempts=attempt,train_wall_s=total_wall)

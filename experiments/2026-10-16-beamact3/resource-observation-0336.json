@@ -1,0 +1,137 @@
+{
+  "at": "2026-10-16T03:36:58.473609+00:00",
+  "steps": 4290,
+  "latest": {
+    "step": 4290,
+    "loss": 0.43506184220314026,
+    "legacy_l1_loss": 0.5837579369544983,
+    "movement_l1_loss": 0.09367547277361155,
+    "done_bce_loss": 0.01190489623695612,
+    "kld_loss": 0.027274955064058304,
+    "wheel_ce_loss": 0.0567319393157959,
+    "wheel_l1_removed": 0.007854036055505276,
+    "gradient_norm": 26.359529495239258,
+    "wall_s": 3992.8503374210013,
+    "steps_per_s": 0.9992861396796449,
+    "peak_gpu_bytes": 1548142592
+  },
+  "timing": {
+    "step_s": {
+      "all": {
+        "N": 3990,
+        "median": 1.0148825774995203,
+        "p90": 1.2585902419996273,
+        "mean": 0.9813685199153052
+      },
+      "last300": {
+        "N": 300,
+        "median": 1.358124651000253,
+        "p90": 1.7063109230002738,
+        "mean": 1.4460478383133644
+      },
+      "first300": {
+        "N": 300,
+        "median": 0.8018981450004503,
+        "p90": 0.8088147779999417,
+        "mean": 0.8008397000467267
+      }
+    },
+    "batch_load_s": {
+      "all": {
+        "N": 3990,
+        "median": 0.05909419299860019,
+        "p90": 0.10621133299719077,
+        "mean": 0.06337743144337166
+      },
+      "last300": {
+        "N": 300,
+        "median": 0.1103481929985719,
+        "p90": 0.14975187799791456,
+        "mean": 0.11365148033004516
+      },
+      "first300": {
+        "N": 300,
+        "median": 0.039711046001684736,
+        "p90": 0.04050077400097507,
+        "mean": 0.04003516604339287
+      }
+    }
+  },
+  "leases": {
+    "beamact3-A.json": {
+      "task": "beamact3-A",
+      "pid": 50591,
+      "start": "2026-10-16T02:28:07.668823+00:00",
+      "expected_end": "2026-10-16T05:50:53.668823+00:00",
+      "source_sha": "4747c4144a972e348a9ae4c7bbcc769ad116106d",
+      "stage": "main",
+      "concurrency": 0,
+      "gpu_shared": true
+    },
+    "warp4.json": {
+      "task": "warp4",
+      "pid": 68340,
+      "pids": [
+        65833,
+        65834,
+        65835,
+        67323,
+        67324,
+        68342,
+        68343
+      ],
+      "started_at": "2026-10-16T03:32:00.001795+00:00",
+      "expected_end": "2026-10-16T05:57:25+00:00",
+      "source_sha": "cdc17f481",
+      "stage": "release run-first R3 after exact SciPy addition; beam R2 retained; finite existing-host deadline",
+      "concurrency": 12,
+      "gpu_shared": true
+    },
+    "warp3.json": {
+      "task": "warp3",
+      "pid": 54448,
+      "start": "2026-10-15T22:02:08.673132+00:00",
+      "expected_end": "2026-10-16T05:59:25.154+00:00",
+      "source_sha": "f0db6b1abb842ea65b71c433738210254f300a7c",
+      "stage": "teacher R1 remaining4 exact groups/11 worlds all active; existing beamact3-A GPU task preserved",
+      "pids": [
+        7804,
+        8648,
+        8649,
+        8650,
+        8651,
+        8652,
+        8653
+      ],
+      "remaining_not_submitted": 0,
+      "paused_pids": [],
+      "active_pids": [
+        8648,
+        8651,
+        8652,
+        8653
+      ],
+      "scheduling_note": "all remaining exact model groups active after resource audit",
+      "scheduler_pid": 54448,
+      "pid_scope": "finite stage2 gate scheduler; active/paused worker PIDs listed separately"
+    },
+    "warp5.json": {
+      "task": "warp5",
+      "pid": 66903,
+      "start": "2026-10-16T03:02:17.853725+00:00",
+      "expected_end": "2026-10-16T05:50:00Z",
+      "stage": "static88 r3 GL texture modulation hypothesis",
+      "concurrency": 0,
+      "gpu_shared": true,
+      "source_sha": "b7478205693a2b0d7db63710a7bd515889b468a9"
+    }
+  },
+  "free_bytes": 28366884864,
+  "loadavg": [
+    9.10595703125,
+    8.41357421875,
+    7.09716796875
+  ],
+  "gpu": "memory.used [MiB], utilization.gpu [%], power.draw [W], clocks.current.sm [MHz], clocks.current.memory [MHz]\n8062 MiB, 100 %, 43.60 W, 2040 MHz, 6251 MHz\n",
+  "processes": "pid, used_gpu_memory [MiB], process_name\n8653, 796 MiB, /home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python\n8652, 798 MiB, /home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python\n8648, 828 MiB, /home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python\n8651, 832 MiB, /home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python\n51159, 2308 MiB, /home/ugrp/ugrp-rl1b-act-env/bin/python\n65833, 828 MiB, /home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python\n68343, 796 MiB, /home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python\n68342, 830 MiB, /home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python\n"
+}
