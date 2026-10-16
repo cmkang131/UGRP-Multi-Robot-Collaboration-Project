@@ -2,6 +2,7 @@
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path
 import sys
 
@@ -30,6 +31,9 @@ def main():
     expected=hashlib.sha256(model.read_bytes()).hexdigest()
     plans = json.loads(a.plans.read_text())['episodes']
     meta=json.loads((a.checkpoint/'adapter.json').read_text())
+    native=bool(os.environ.get('UGRP_ACT16W_NATIVE_GATE'))
+    if native != (meta['provenance'].get('contact_profile')=='warp_native_contact_v1'):
+        raise ValueError('native physics/model provenance mismatch; noslip10 and native models stay separate')
     evaluation_seed_guard(meta['provenance'],[x['seed'] for x in plans],split=a.split,
         protocol=json.loads(a.protocol.read_text()),model_sha256=expected,
         selection=json.loads(a.selection.read_text()) if a.selection else None)
@@ -47,6 +51,7 @@ def main():
         on_reset=lambda indices: [chunks[i].reset() for i in indices])
     report = dict(status='running', complete=False,api_checks_passed=False, source_sha=source,host=host,checkpoint_sha256=expected,resource_cap_end=False,
                   split=a.split,scope='ACT16 full grasp/release evaluation, post-action truth scoring')
+    report['contact_profile']='warp_native_contact_v1' if native else 'baseline_noslip10'
     try:
         client.reset(plans)
         actions_log = [];inputs_log=(a.out/'actor-inputs.jsonl').open('x')

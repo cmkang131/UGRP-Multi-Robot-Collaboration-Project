@@ -24,11 +24,23 @@ def write(p,v):p.write_text(json.dumps(v,indent=2)+'\n')
 def main():
     p=argparse.ArgumentParser()
     for k in ['root','batch','selection','protocol','act-source']:p.add_argument('--'+k,type=Path,required=True)
-    p.add_argument('--enabled',action='store_true');a=p.parse_args()
+    p.add_argument('--enabled',action='store_true')
+    p.add_argument('--native-gate',type=Path,help='explicit separate native-contact gate; excludes historical noslip pilots')
+    a=p.parse_args()
     if not a.enabled:p.error('dataset admission default OFF')
     require_gcp2();source=frozen_source(Path(__file__).resolve().parents[1]);frozen_source(a.act_source,ACT_SHA)
     selection=read(a.selection);protocol=read(a.protocol);wanted=set(selection['selected_seeds']);a.root.mkdir(parents=True,exist_ok=False)
-    roots=[B/'runs/act16w-resume2-pilot-86821',B/'runs/act16w-resume2-pilot-86822']+sorted(a.batch.glob('group-*'))
+    native=None
+    if a.native_gate:
+        native=read(a.native_gate)
+        if (not native.get('passed') or native.get('N')!=40 or native.get('n',0)<38
+                or native.get('contact_profile')!='warp_native_contact_v1'
+                or native.get('training_rgb') is not False or native.get('input_audit_violations')!=0
+                or protocol.get('contact_profile')!='warp_native_contact_v1'):
+            raise ValueError('new camera-off native40 gate required')
+        for item in native['raw_results']+native['runtime_profiles']:
+            if sha256(item['path'])!=item['sha256']:raise ValueError('native gate evidence changed')
+    roots=([] if native else [B/'runs/act16w-resume2-pilot-86821',B/'runs/act16w-resume2-pilot-86822'])+sorted(a.batch.glob('group-*'))
     rows=[];seen=set();transport={};views=a.root/'views';views.mkdir()
     for root in roots:
         capture=root/'capture';controller=root/'controller'
@@ -39,6 +51,10 @@ def main():
         if not audit_path.exists():
             subprocess.run([str(B/'runs/simalt3/warp-env/bin/python'),str(Path(__file__).with_name('audit_act16w_record.py')),str(root),'--out',str(audit_path)],check=True)
         audit=read(audit_path)
+        if native:
+            physical=read(controller/'native-contact.json')
+            if physical.get('gpu_noslip')!=0 or any(physical.get('cpu_noslip',[1])) or physical.get('cpu_impratio')!=5:
+                raise ValueError('native record runtime physics differs from gate')
         capture_source=summary.get('record_api_source',API)
         for w in audit['worlds']:
             seed=w['seed']
@@ -71,8 +87,9 @@ def main():
     n=sum(r['success'] for r in rows);N=len(wanted);missing=sorted(wanted-seen)
     gate=dict(n=n,N=N,complete=not missing,passed=not missing and N>=40 and n/N>=.95,missing=missing,rows=rows,source_sha=Q,training_rgb=True,independent_of_warp1_debugging=True,old_debug_seed_range=[8317100,8317139],heldout_excluded=[91620,91659],scope='fresh recording-stage independent confirmation; separate from camera-off bootstrap40/40')
     write(a.root/'fresh-recording-gate.json',gate)
-    funnel=[dict(gate='prepared_starts',passed=50,rejected=0),dict(gate='predeclared_budget_model_subset',passed=N,rejected=50-N),dict(gate='recorded_native_streams',passed=len(seen),rejected=len(missing)),dict(gate='physical_teacher_complete',passed=n,rejected=len(seen)-n)]
-    rejections=[dict(category='budget_model_subset',reason=selection['reason'],count=50-N,blocking_object='not_applicable_compute_admission',minimum_gap_m=None,minimum_gap_status='not_applicable_non_geometric')]+[dict(category='teacher_recording_failed',reason=r['reason'],count=1,seed=r['seed'],target_object='see original plan.json',blocking_object='not_attributed_before_playback',minimum_gap_m=None,minimum_gap_status='not measured; no geometric cause claim') for r in rows if not r['success']]
+    prepared=N if native else 50
+    funnel=[dict(gate='prepared_starts',passed=prepared,rejected=0),dict(gate='predeclared_model_subset',passed=N,rejected=prepared-N),dict(gate='recorded_native_streams',passed=len(seen),rejected=len(missing)),dict(gate='physical_teacher_complete',passed=n,rejected=len(seen)-n)]
+    rejections=([dict(category='budget_model_subset',reason=selection['reason'],count=50-N,blocking_object='not_applicable_compute_admission',minimum_gap_m=None,minimum_gap_status='not_applicable_non_geometric')] if not native else [])+[dict(category='teacher_recording_failed',reason=r['reason'],count=1,seed=r['seed'],target_object='see original plan.json',blocking_object='not_attributed_before_playback',minimum_gap_m=None,minimum_gap_status='not measured; no geometric cause claim') for r in rows if not r['success']]
     write(a.root/'rejection_table.json',dict(funnel=funnel,rejections=rejections,missing=missing,raw=[str(x) for x in roots],reproduce=sys.argv))
     if not gate['passed']:raise ValueError('fresh recording-stage gate not passed')
     admitted={r['seed'] for r in rows if r['success']}
@@ -81,10 +98,14 @@ def main():
     sys.path.insert(0,str(a.act_source))
     from harness.grasp_act_data import convert
     manifest=convert(views,conversion,a.root/'dataset')
+    if native:
+        manifest['contact_profile']='warp_native_contact_v1'
+        manifest['native_gate']=dict(path=str(a.native_gate),sha256=sha256(a.native_gate))
+        write(a.root/'dataset/manifest.json',manifest)
     from harness.grasp_act_data import GraspDataset
     from harness.grasp_act_loss import completion_priors
     data=GraspDataset(a.root/'dataset','train');priors=completion_priors(data)
-    write(a.root/'dataset-audit.json',dict(passed=True,complete=manifest['complete'],valid_future_action_targets_verified=True,teacher_input_fields_in_tensor_whitelist=0,train_seeds=conversion['train_seeds'],validation_seeds=conversion['validation_seeds'],done_priors=priors,manifest_sha256=sha256(a.root/'dataset/manifest.json'),source_sha=source,originals_unchanged=True,input_keys=sorted(data[0]),original_gate_is_not_independent=True))
+    write(a.root/'dataset-audit.json',dict(passed=True,complete=manifest['complete'],valid_future_action_targets_verified=True,teacher_input_fields_in_tensor_whitelist=0,train_seeds=conversion['train_seeds'],validation_seeds=conversion['validation_seeds'],done_priors=priors,manifest_sha256=sha256(a.root/'dataset/manifest.json'),source_sha=source,originals_unchanged=True,input_keys=sorted(data[0]),original_gate_is_not_independent=not bool(native)))
     print(json.dumps(dict(status='complete',fresh_teacher_n=n,fresh_teacher_N=N,dataset=str(a.root/'dataset'),rows=len(data),research_training_steps=0)))
 
 if __name__=='__main__':main()

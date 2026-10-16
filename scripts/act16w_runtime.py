@@ -136,4 +136,23 @@ def training_admission(path, *, source, dataset, act_source):
     manifest = json.loads((Path(dataset) / 'manifest.json').read_text())
     if manifest.get('complete') is not True or data.get('valid_future_action_targets_verified') is not True:
         raise ValueError('completed dataset with valid future action supervision required')
+    if manifest.get('contact_profile')=='warp_native_contact_v1' or data.get('contact_profile')=='warp_native_contact_v1':
+        item=data.get('native_gate',{})
+        if (manifest.get('contact_profile')!=data.get('contact_profile') or not item.get('path')
+                or manifest.get('native_gate')!=item or sha256(item['path'])!=item.get('sha256')):
+            raise ValueError('native dataset cannot use historical noslip gate admission')
+        gate=json.loads(Path(item['path']).read_text())
+        if (gate.get('contact_profile')!='warp_native_contact_v1' or gate.get('training_rgb') is not False
+                or gate.get('passed') is not True or gate.get('N')!=40 or gate.get('n',0)<38
+                or gate.get('input_audit_violations')!=0 or len(gate.get('raw_results',[]))!=40
+                or len({r['path'] for r in gate['raw_results']})!=40 or not gate.get('runtime_profiles')
+                or {r['seed'] for r in gate.get('rows',[])} & set(seeds)
+                or any(86820<=s<=86869 for s in seeds)):
+            raise ValueError('actual camera-off native40 teacher gate required')
+        for receipt in gate['raw_results']+gate['runtime_profiles']:
+            if sha256(receipt['path'])!=receipt['sha256']:raise ValueError('native raw gate receipt changed')
+        for receipt in gate['runtime_profiles']:
+            profile=json.loads(Path(receipt['path']).read_text())
+            if profile.get('gpu_noslip')!=0 or any(profile.get('cpu_noslip',[1])) or profile.get('cpu_impratio')!=5:
+                raise ValueError('native gate runtime profile mismatch')
     return data

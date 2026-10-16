@@ -2,6 +2,7 @@
 import argparse
 from datetime import datetime
 import json
+import os
 from pathlib import Path
 import sys
 import time
@@ -15,6 +16,7 @@ def main():
     p=argparse.ArgumentParser();p.add_argument('--enabled',action='store_true');p.add_argument('--interface-probe-only',action='store_true')
     for k in ('physics-python','qualified-source','teacher-source','qualification','references','compiled-reference','compiled-geometry','plans','actor-source','out'):p.add_argument('--'+k,type=Path,required=True)
     p.add_argument('--checkpoint',type=Path);p.add_argument('--dagger-starts',type=Path)
+    p.add_argument('--native-protocol',type=Path)
     a=p.parse_args()
     if not a.enabled:p.error('DAgger collection default OFF')
     host=require_gcp2(training=True);source=frozen_source(ROOT);frozen_source(a.actor_source,ACT_SHA)
@@ -24,10 +26,13 @@ def main():
     else:
         if a.checkpoint is None or a.dagger_starts is None:p.error('trained ACT checkpoint and preregistered TRAIN starts required')
         seeds=[x['seed'] for x in plans];registered=json.loads(a.dagger_starts.read_text())['seeds']
-        if len(seeds)!=len(set(seeds)) or not set(seeds)<=set(registered) or any(not 86820<=s<=86864 for s in seeds):
+        allowed=(json.loads(a.native_protocol.read_text())['train_seeds'] if a.native_protocol else list(range(86820,86865)))
+        if len(seeds)!=len(set(seeds)) or not set(seeds)<=set(registered) or not set(seeds)<=set(allowed):
             raise ValueError('DAgger visits must use preregistered D0 TRAIN starts')
         meta=json.loads((a.checkpoint/'adapter.json').read_text());prov=meta['provenance']
         if prov.get('synthetic_only') or prov.get('step')!=10000:raise ValueError('completed fixed10000-step research checkpoint required')
+        if bool(a.native_protocol) != bool(os.environ.get('UGRP_ACT16W_NATIVE_GATE')) or bool(a.native_protocol) != (prov.get('contact_profile')=='warp_native_contact_v1'):
+            raise ValueError('native DAgger model/protocol/physics must all match')
     sys.path.insert(0,str(a.actor_source))
     from harness.grasp_act_contract import validate_observation
     if not a.interface_probe_only:

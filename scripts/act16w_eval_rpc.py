@@ -1,5 +1,6 @@
 """Own-only public transport; extra same-kind metrics stay in private files."""
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -20,6 +21,10 @@ class EvaluationClient(Client):
         path.write_text(json.dumps(dict(episodes=plans), indent=2)+'\n')
         argv = [self.python, '-u', str(Path(__file__).with_name('act16w_eval_owner.py')),
                 '--enabled', '--plans', str(path), '--out', str(self.out/'owner')]
+        if os.environ.get('UGRP_ACT16W_NATIVE_GATE'):
+            argv = [self.python, '-u', str(Path(__file__).with_name('act16w_native_run.py')),
+                    '--enabled', '--mode', 'eval-owner', '--native-gate', os.environ['UGRP_ACT16W_NATIVE_GATE'],
+                    '--', *argv[3:]]
         for key, value in self.options.items():
             argv += ['--'+key.replace('_', '-'), str(value)]
         self.stderr = (self.out/'owner.stderr.log').open('x')

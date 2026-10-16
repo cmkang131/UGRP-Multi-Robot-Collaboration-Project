@@ -66,3 +66,22 @@ def test_native_recount_uses_all_original_results_and_requires_zero_audit(tmp_pa
     (controller/'world-039/result.json').unlink()
     r = recount(out, refs, [(0,list(range(40)))])
     assert r['N'] == 40 and not r['complete'] and not r['passed']
+
+
+def test_native_dataset_cannot_reuse_noslip_training_admission(tmp_path, monkeypatch):
+    monkeypatch.syspath_prepend(str(ROOT/'scripts'))
+    from act16w_runtime import training_admission, sha256, PROJECT
+    dataset=tmp_path/'dataset';dataset.mkdir()
+    manifest=dict(complete=True,contact_profile='warp_native_contact_v1')
+    (dataset/'manifest.json').write_text(json.dumps(manifest))
+    data=dict(approved=True,source_sha='source',act_source_sha='act',
+        dataset_manifest_sha256=sha256(dataset/'manifest.json'),backend='mjwarp_batch_v1',project_id=PROJECT,
+        training_rgb_during_gate=False,teacher_success_n=40,teacher_attempts_N=40,
+        input_audit_violations=0,valid_future_action_targets_verified=True,
+        fresh_record_confirmation=dict(n=40,N=40,seeds=list(range(87420,87460)),independent_of_warp1_debugging=True))
+    for key in ('gate_summary','fresh_recording_gate','rejection_table','scene_decision','dataset_audit'):
+        file=tmp_path/(key+'.json');file.write_text('{}');data[key]=dict(path=str(file),sha256=sha256(file))
+    admission=tmp_path/'admission.json';admission.write_text(json.dumps(data))
+    import pytest
+    with pytest.raises(ValueError,match='native dataset'):
+        training_admission(admission,source='source',dataset=dataset,act_source='act')

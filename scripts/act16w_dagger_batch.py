@@ -36,12 +36,13 @@ def main():
     for key in ('checkpoint', 'starts', 'references-root', 'groups', 'capacity-receipt', 'out'):
         parser.add_argument('--'+key, type=Path, required=True)
     parser.add_argument('--max-worlds', type=int, default=20)
+    parser.add_argument('--native-protocol', type=Path)
     args = parser.parse_args()
     if not args.enabled or not 1 <= args.max_worlds <= 40:
         parser.error('explicit finite TRAIN collection required')
     host, source = require_gcp2(training=True), frozen_source(ROOT)
     seeds = read(args.starts)['seeds']
-    protocol = read(ROOT/'experiments/2026-10-16-act16w/resume2/comparison-protocol-v2.json')
+    protocol = read(args.native_protocol or ROOT/'experiments/2026-10-16-act16w/resume2/comparison-protocol-v2.json')
     if len(seeds) != 20 or len(set(seeds)) != 20 or not set(seeds) <= set(protocol['train_seeds']):
         raise ValueError('exact registered20 unique TRAIN starts required')
     provenance = read(args.checkpoint/'adapter.json')['provenance']
@@ -108,6 +109,7 @@ def main():
                     '--compiled-reference',first['actuator'],'--compiled-geometry',first['geometry'],
                     '--plans',str(plan),'--actor-source',str(ACT),'--checkpoint',str(args.checkpoint),
                     '--dagger-starts',str(args.starts),'--out',str(out)]
+                if args.native_protocol:argv+=['--native-protocol',str(args.native_protocol)]
                 log=(root/'collection.log').open('x')
                 child=subprocess.Popen(argv,cwd=Q,stdin=subprocess.DEVNULL,stdout=log,stderr=subprocess.STDOUT,
                     start_new_session=True,env={**os.environ,'PYTHONDONTWRITEBYTECODE':'1',

@@ -66,6 +66,8 @@ def main():
         'curriculum_starts_sha256': sha256(a.curriculum_starts_v1) if a.curriculum_starts_v1 else None,
         'done_loss': 'balanced_bce_v1', 'batch_size': 8, 'chunk': 8, 'period_s': .1,
         'schedule_steps': a.schedule_steps, 'lerobot_act_sha256': LEROBOT_ACT_SHA256}
+    if admission.get('contact_profile'):
+        configuration['contact_profile']=admission['contact_profile']
     if a.stage == 'main':
         smoke = json.loads(a.smoke_summary.read_text()) if a.smoke_summary else {}
         if (smoke.get('stage') != 'smoke' or not smoke.get('complete') or not smoke.get('readback_verified')

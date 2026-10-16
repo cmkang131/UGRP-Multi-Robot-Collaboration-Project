@@ -1,5 +1,6 @@
 """Keep privileged teacher labels out of the inherited own-RGB actor client."""
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -13,6 +14,10 @@ class DaggerClient(Client):
             raise ValueError('private DAgger client: one fresh whole episode batch only')
         p=self.out/'initial-plans.json';p.write_text(json.dumps(dict(episodes=plans),indent=2)+'\n')
         argv=[self.python,'-u',str(Path(__file__).with_name('act16w_dagger_owner.py')),'--enabled','--training','--plans',str(p),'--out',str(self.out/'owner')]
+        if os.environ.get('UGRP_ACT16W_NATIVE_GATE'):
+            argv=[self.python,'-u',str(Path(__file__).with_name('act16w_native_run.py')),
+                  '--enabled','--mode','dagger-owner','--native-gate',os.environ['UGRP_ACT16W_NATIVE_GATE'],
+                  '--',*argv[3:]]
         for k,v in self.options.items():argv+=['--'+k.replace('_','-'),str(v)]
         self.stderr=(self.out/'owner.stderr.log').open('x')
         self.proc=subprocess.Popen(argv,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=self.stderr,text=True,bufsize=1)

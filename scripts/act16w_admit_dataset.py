@@ -14,13 +14,17 @@ B=Path('/home/ugrp/ugrp-sim')
 def main():
     p=argparse.ArgumentParser();p.add_argument('--approve-reviewed-records',action='store_true')
     for k in ('dataset-root','record-plans','out'):p.add_argument('--'+k,type=Path,required=True)
+    p.add_argument('--native-gate',type=Path)
     a=p.parse_args()
     if not a.approve_reviewed_records:p.error('explicit concrete reviewed-data approval required')
     require_gcp2(training=True);source=frozen_source(ROOT)
     sys.path.insert(0,str(B/'src/0362037280c6cbc4677f70366db43b9892b23690/scripts'))
     from warp_act_api import admit,QUALIFIED
-    bootstrap_path=B/'runs/warp3/teacher-gate-qualification-r1.json'
-    bootstrap=admit(bootstrap_path,B/'src'/QUALIFIED,B/'src/warp1-teacher-snapshot-6f057f7e')
+    bootstrap_path=a.native_gate or B/'runs/warp3/teacher-gate-qualification-r1.json'
+    bootstrap=json.loads(bootstrap_path.read_text()) if a.native_gate else admit(bootstrap_path,B/'src'/QUALIFIED,B/'src/warp1-teacher-snapshot-6f057f7e')
+    if a.native_gate and (not bootstrap.get('passed') or bootstrap.get('training_rgb') is not False
+            or bootstrap.get('contact_profile')!='warp_native_contact_v1' or bootstrap.get('input_audit_violations')!=0):
+        raise ValueError('camera-off native gate required')
     fresh_path=a.dataset_root/'fresh-recording-gate.json';fresh=json.loads(fresh_path.read_text())
     audit_path=a.dataset_root/'dataset-audit.json';audit=json.loads(audit_path.read_text())
     if not fresh['passed'] or not fresh['complete'] or not audit['passed'] or not audit['valid_future_action_targets_verified']:
@@ -35,6 +39,10 @@ def main():
         bootstrap_independent=False,input_audit_violations=violations,valid_future_action_targets_verified=True,
         fresh_record_confirmation=dict(n=fresh['n'],N=fresh['N'],seeds=sorted(r['seed'] for r in fresh['rows']),independent_of_warp1_debugging=True,training_rgb=True),
         scope='camera-off bootstrap plus separately confirmed fresh recording cohort; no student success claim')
+    if a.native_gate:
+        proof.update(contact_profile='warp_native_contact_v1',bootstrap_independent=True,
+            native_gate=dict(path=str(a.native_gate),sha256=sha256(a.native_gate)),
+            scope='new native contact camera-off40 gate plus separate fresh native recording40; noslip10 data excluded')
     for key,path in [('gate_summary',bootstrap_path),('fresh_recording_gate',fresh_path),('rejection_table',a.dataset_root/'rejection_table.json'),('scene_decision',scene),('dataset_audit',audit_path)]:
         proof[key]=dict(path=str(path),sha256=sha256(path))
     a.out.mkdir(parents=True,exist_ok=False)
