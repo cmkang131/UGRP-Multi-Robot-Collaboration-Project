@@ -66,23 +66,8 @@ def main():
         robot=[i for i in range(m.ngeom) if m.body(int(m.geom_bodyid[i])).name.startswith('r1__')]
         radius=max(float(np.linalg.norm(d.geom_xpos[i,:2]-d.qpos[adr:adr+2]))+float(m.geom_rbound[i]) for i in robot)
         spacing=2*radius
-        offsets=sorted(((x,y) for x in range(-2,3) for y in range(-2,3)),key=lambda xy:(xy[0]**2+xy[1]**2,xy))
-        for index,(x,y) in enumerate(offsets):
-            d.qpos[:]=original;d.qpos[adr:adr+2]+=spacing*np.array([x,y]);d.qvel[:]=0
-            result=check(m,d,**sets,option=OPTION)
-            records.append(dict(pose=pose,candidate=f'lattice-{index}',offset_cells=[x,y],spacing_m=spacing,**result))
-            dump(a.output/'spawn-rejection-table.json',dict(raw=str(a.output),reproduction=sys.argv,rows=records,
-                stages=[dict(stage='tested_starts',cumulative_pass_n=len(records),rejected_n=0),
-                        dict(stage='nonpenetrating',cumulative_pass_n=sum(r['accepted'] for r in records),rejected_n=sum(not r['accepted'] for r in records))]))
-            if result['accepted']:
-                d.ctrl[:]=0
-                for i in range(m.nu):
-                    if '__servo_' in m.actuator(i).name:d.ctrl[i]=d.qpos[int(m.jnt_qposadr[int(m.actuator_trnid[i,0])])]
-                arrays[pose+'_qpos']=d.qpos.copy();arrays[pose+'_ctrl']=d.ctrl.copy()
-                selected[pose]=dict(pwm=pwm,setup=setup,offset_cells=[x,y],spacing_m=spacing,
-                    original_xy=original[adr:adr+2].tolist(),selected_xy=d.qpos[adr:adr+2].tolist(),admission=result)
-                break
-        else:raise ValueError('NO_CLEAN_START_WITHIN_25_CHECKS')
+        selected[pose]=dict(spacing_m=spacing,original_xy=original[adr:adr+2].tolist())
+    offsets=sorted(((x,y) for x in range(-2,3) for y in range(-2,3)),key=lambda xy:(xy[0]**2+xy[1]**2,xy))
     # Require the same start for FOLDED/HIGH: otherwise arm-condition tracking
     # would be confounded by viewpoint. Use the larger geometry-derived lattice.
     common_spacing=max(v['spacing_m'] for v in selected.values())
