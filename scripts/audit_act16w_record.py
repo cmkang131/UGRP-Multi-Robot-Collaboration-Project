@@ -11,6 +11,11 @@ from pathlib import Path
 import subprocess
 import sys
 
+# Frozen ACT3f99 grasp_act_policy.ChunkExecutor.step resets a chunk when the
+# own clock differs from PERIOD_S by >1e-5. The record audit uses that same
+# input contract tolerance, rather than accepting jitter deployment rejects.
+CLOCK_TOLERANCE_S = 1e-5
+
 
 def digest(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
@@ -46,7 +51,7 @@ def audit(root):
         if controller['camera']['resolution']!=[640,480] or controller['camera']['K']!=camera['K'] or controller['camera']['D']!=camera['fisheye_D'] or controller['camera']['mount_pos']!=camera['position_m'] or controller['camera']['mount_quat']!=camera['quat_wxyz']:
             raise ValueError('recorded and qualified camera differ')
         if camera['sources']['harness/grasp_act_contract.py']!=digest(Path(contract.__file__)):raise ValueError('recorded student input contract drift')
-        previous=observations[0]['issued'];unique=set();pwm_transitions=0
+        previous=observations[0]['issued'];unique=set();pwm_transitions=0;max_period_error=0.
         for j,(obs,label,frame,command) in enumerate(zip(observations,labels,frames,commands)):
             contract.validate_observation(obs)
             if not (obs['t']==frame['t']==command['t']==label['clean_teacher_command']['t']
@@ -56,8 +61,10 @@ def audit(root):
                     and label['clean_teacher_command']==command['command']
                     and label['phase_after']==command['phase']):
                 raise ValueError('capture before command / own history / phase pairing mismatch')
-            if j and abs(obs['t']-observations[j-1]['t']-.1)>.002:
-                raise ValueError('native10Hz clock mismatch')
+            if j:
+                error=abs(obs['t']-observations[j-1]['t']-contract.PERIOD_S)
+                max_period_error=max(max_period_error,error)
+                if error>CLOCK_TOLERANCE_S:raise ValueError('native10Hz/deployment clock mismatch')
             saved=root/'capture'/f'world-{i:03d}'/obs['rgb'][-1]['path']
             source=Path(frame['path'])
             if digest(saved)!=digest(source) or digest(saved)!=frame['sha256'] or frame['sha256']!=obs['rgb'][-1]['sha256']:
@@ -72,7 +79,9 @@ def audit(root):
                 exact_controller_jpegs=len(frames),unique_jpeg_hashes=len(unique),issued_pwm_transitions=pwm_transitions,
                 done_targets=sum(x['done'] for x in labels),command_complete=labels[-1]['phase_after']=='complete',done_by_skill={skill:sum(x['done'] for x in labels if x['skill']==skill) for skill in sorted({x['skill'] for x in labels})},physical_success=result['physical_success'],
                 lift_success=result['lift_success'],release_success=result['release_success'],cap_end=result['cap_end'],
-                input_audit=result['input_audit'],duration_sim_s=len(frames)*.1,
+                input_audit=result['input_audit'],duration_sim_s=frames[-1]['t']-frames[0]['t'],
+                recorded_sample_coverage_s=len(frames)*contract.PERIOD_S,max_period_error_s=max_period_error,
+                clock_tolerance_s=CLOCK_TOLERANCE_S,
                 native_camera=camera,source=str(original),original_result_sha256=digest(original/'result.json') if (original/'result.json').exists() else digest(original/'result.json.zst')))
     return dict(status='complete',passed=True,raw=str(root),controller_source=wrapper['controller_source'],
                 adapter_sha256=wrapper['adapter_sha256'],training_include=False,data_admitted=False,worlds=rows,
