@@ -1,6 +1,7 @@
 """gcp2 CPU preview of an unfinished prefix; never a success/failure verdict."""
 import argparse
 import datetime as dt
+import hashlib
 import importlib.util
 import json
 import os
@@ -17,6 +18,8 @@ def main():
     p.add_argument('--snapshot', type=Path, required=True)
     p.add_argument('--receive', action='store_true')
     p.add_argument('--label', default='v1')
+    p.add_argument('--worlds', default='0,1')
+    p.add_argument('--terminal', action='store_true')
     a = p.parse_args()
     assert a.snapshot.is_absolute() and a.snapshot.parent == ROOT / 'runs'
     lease = ROOT / 'leases/warp8-prefix-playback.json'
@@ -36,10 +39,13 @@ def main():
         import mujoco
         original = a.snapshot / 'beam40-r1'
         source_summary = json.loads((original/'summary.json').read_text())
-        for world_id in (0, 1):
+        for world_id in map(int,a.worlds.split(',')):
             world = original / f'world-{world_id:03d}'
             rows = []
-            for line in (world/'raw/eval-only.jsonl').read_text().splitlines():
+            eval_path=world/'raw/eval-only.jsonl'
+            text=eval_path.read_text() if eval_path.exists() else subprocess.check_output(
+                ['zstd','-qdc',str(eval_path)+'.zst'],text=True)
+            for line in text.splitlines():
                 try:
                     rows.append(json.loads(line))
                 except json.JSONDecodeError:
@@ -68,7 +74,19 @@ def main():
             # qvel is unused by mj_kinematics and rendering. No C step is called.
             summary = dict(source_summary, native_initialization_only_sim_s=[origin])
             (derived/'summary.json').write_text(json.dumps(summary))
-            (folder/'tail-10hz.json').write_text('[]')
+            terminal_rows=[]
+            ring=world/'tail-ring-10hz'
+            if a.terminal:
+                for line in (ring/'journal.jsonl').read_text().splitlines():
+                    record=json.loads(line);files={}
+                    for rid,item in record['files'].items():
+                        image=ring/Path(item['path']).name
+                        if image.exists() and hashlib.sha256(image.read_bytes()).hexdigest()==item['sha256']:
+                            files[rid]=str(image)
+                    if len(files)==len(record['files']) and round(record['world_t']*10) in index:
+                        terminal_rows.append(dict(world_t=record['world_t'],files=files))
+                assert len(terminal_rows)==100, 'terminal last10 SIM/10Hz evidence incomplete'
+            (folder/'tail-10hz.json').write_text(json.dumps(terminal_rows))
             playback = ROOT/'ops-reviews/warp8/playback'/a.snapshot.name/f'{a.label}-world-{world_id:03d}'
             subprocess.run([str(ROOT/'ugrp/.venv-sim/bin/python'),
                 str(ROOT/'ops-reviews/warp6/make_playback.py'), '--run',str(derived),
@@ -80,6 +98,37 @@ def main():
                 original_world=world_id, source_snapshot=str(original), simulation_host='gcp3', analysis_host='gcp2_CPU',
                 reconstruction='exact evaluator joints/qpos at matching times; qvel=0 unused by renderer',
                 terminal_10hz_scope='not included in this nonterminal preview; native recording rings remain on gcp3')
+            if a.terminal:
+                counter_path=ROOT/'ops-reviews/warp8-collect_gate.py'
+                spec=importlib.util.spec_from_file_location('counter',counter_path)
+                counter=importlib.util.module_from_spec(spec);spec.loader.exec_module(counter)
+                raw=counter.data(world/'raw/result.json')
+                assert raw['status']=='complete'
+                recount=counter.beam_recount(raw,world/'raw')
+                assert recount['agrees'], recount
+                # Early full frames are2Hz, terminal native frames10Hz. Display
+                # at3x, holding early samples on a30fps output; no new evidence.
+                full_times=info['sim_world_range'][0]
+                prefix=[path for i,path in enumerate(sorted((playback/'full').glob('*.jpg')))
+                        if full_times+i*.5 < terminal_rows[0]['world_t']-1e-8]
+                concat=playback/'full-tail.ffconcat'
+                lines=['ffconcat version 1.0']
+                for image in prefix:
+                    lines += ["file '"+str(image)+"'",'duration '+str(.5/3)]
+                for image in sorted((playback/'tail').glob('*.jpg')):
+                    lines += ["file '"+str(image)+"'",'duration '+str(.1/3)]
+                concat.write_text('\n'.join(lines)+'\n')
+                video=playback/'playback-full-tail-3x.mp4'
+                subprocess.run(['ffmpeg','-y','-loglevel','error','-f','concat','-safe','0','-i',str(concat),
+                    '-r','30','-fps_mode','cfr','-c:v','libx264','-crf','30','-pix_fmt','yuv420p',str(video)],check=True)
+                assert video.stat().st_size<=8_000_000
+                probe=json.loads(subprocess.check_output(['ffprobe','-v','quiet','-show_format','-show_streams','-of','json',str(video)]))
+                info.update(scope='completed individual beam teacher world; whole40-world gate still pending; evaluator-only reconstruction, no physics step',
+                    recount=recount,counter_sha256=hashlib.sha256(counter_path.read_bytes()).hexdigest(),
+                    terminal_10hz_scope='100 hash-verified native JPEG pairs at exact evaluator times',
+                    representative_video=dict(path=str(video),bytes=video.stat().st_size,
+                        sha256=hashlib.sha256(video.read_bytes()).hexdigest(),ffprobe=probe),
+                    display_sampling='full prefix2Hz then terminal10Hz,3x playback; early images held on30fps display')
             meta.write_text(json.dumps(info,indent=2)+'\n')
             print(str(playback),flush=True)
     finally:
