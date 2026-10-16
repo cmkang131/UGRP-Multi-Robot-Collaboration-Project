@@ -9,6 +9,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 import json
 import os
+import subprocess
 import time
 
 import numpy as np
@@ -19,6 +20,24 @@ from harness.grasp_act_data import read_json, read_rows, sha256, write_json
 
 def existing(p):
     return p if p.exists() else p.with_name(p.name + '.zst')
+
+
+def dataset_view(root, output):
+    """Read compressed artifacts through a new metadata-only view, preserving raw."""
+    if (root/'manifest.json').exists():
+        return root
+    view=output/'dataset-view';view.mkdir(exist_ok=True)
+    manifest=read_json(existing(root/'manifest.json'))
+    paths=['manifest.json','normalization.json']
+    paths.extend(str(Path(e['path'])/n) for e in manifest['episodes'] for n in e['files'])
+    for rel in paths:
+        dest=view/rel
+        if dest.exists():continue
+        dest.parent.mkdir(parents=True,exist_ok=True)
+        src=root/rel
+        if src.exists():dest.symlink_to(src)
+        else:dest.write_bytes(subprocess.check_output(['zstd','-qdc',str(existing(src))]))
+    return view
 
 
 def arrays(root, split=None):
@@ -259,6 +278,7 @@ def main():
     from scripts.beamact1_runtime import require_gcp2
     require_gcp2(training=a.mode=='infer')
     a.output.mkdir(parents=True,exist_ok=True)
+    a.dataset=dataset_view(a.dataset,a.output)
     lease=Path('/home/ugrp/ugrp-sim/leases/actdiag.json')
     info=read_json(lease);info.update(pid=os.getpid(),mode=a.mode);write_json(lease,info)
     globals()[a.mode](a)
