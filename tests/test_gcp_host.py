@@ -1,4 +1,5 @@
 from unittest.mock import patch
+import subprocess
 
 import pytest
 
@@ -50,6 +51,19 @@ def test_gcp3_stop_is_blocked_by_an_unwrapped_python_or_ffmpeg_job():
     assert "pgrep -u ugrp -x 'python[0-9.]*|mujoco|ffmpeg'" in probe
     assert 'test -d ~/ugrp-sim/leases' in probe
     assert gcpctl.GCP_HOSTS['gcp3']['identity_file'] == '~/.ssh/ugrp_gcp3'
+
+
+@pytest.mark.parametrize('busy', [False, True])
+def test_idle_backstop_still_stops_after_twenty_minutes_without_processes(tmp_path, busy):
+    guard = gcpctl.STARTUP.read_text().split("<<'G'\n", 1)[1].split('\nG\n', 1)[0]
+    state = tmp_path / 'idle-since'
+    state.write_text('0')
+    guard = guard.replace('/run/ugrp-idle-since', str(state))
+    # Shell functions isolate every host/process/shutdown operation; no real shutdown.
+    stubs = "date() { echo 1300; }; logger() { :; }; shutdown() { echo STOP_REQUESTED; }; "
+    stubs += f"pgrep() {{ return {0 if busy else 1}; }}; "
+    result = subprocess.run(['bash', '-c', stubs + guard], capture_output=True, text=True, check=True)
+    assert ('STOP_REQUESTED' in result.stdout) is not busy
 
 
 def test_stop_defers_while_leases_or_simulations_exist():
