@@ -1,0 +1,19 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "mapbuild2-issued-diagnostic",
+      "purpose": "기본 off gcp2 L4 shared 자기 RGB 지도 후보의 실제 명령 주행 진단; 고정 장면·별도 평가·초음파 OFF/ON",
+      "entry": "scripts/mapbuild2_capture.py",
+      "docs": "experiments/2026-10-16-mapbuild2/README.md",
+      "requires": "Linux ugrp-act-l4-gcp2 only; own lease; pinned source and renderer; existing absolute rejection_table; no wall deadline",
+      "version": "0.1.0",
+      "runner": "scripts.mapbuild2_capture",
+      "output_flag": "--output",
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": ["--execute", "--queue", "--renderer-source"],
+      "output_kind": "directory"
+    }
+  ]
+}

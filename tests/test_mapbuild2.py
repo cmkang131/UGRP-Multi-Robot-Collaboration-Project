@@ -56,3 +56,12 @@ def test_increment_covariance_does_not_repeat_cumulative_pose_uncertainty():
     assert np.count_nonzero(rows['drive-off',0]['command_covariance'])==0
     assert np.trace(rows['drive-off',12]['command_covariance'])>0
     assert np.count_nonzero(rows['drive-off',40]['command_covariance'])==0
+
+
+def test_evaluation_heading_includes_roll_pitch_coupling():
+    from scripts.mapbuild2_capture import quaternion_heading
+    yaw,pitch,roll=.7,.3,.4
+    cy,sy=np.cos(yaw/2),np.sin(yaw/2);cp,sp=np.cos(pitch/2),np.sin(pitch/2);cr,sr=np.cos(roll/2),np.sin(roll/2)
+    q=[cy*cp*cr+sy*sp*sr,cy*cp*sr-sy*sp*cr,sy*cp*sr+cy*sp*cr,sy*cp*cr-cy*sp*sr]
+    import pytest
+    assert quaternion_heading(q)==pytest.approx(yaw)

@@ -31,6 +31,12 @@ def sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
+def quaternion_heading(q):
+    """Yaw of the projected body x axis; exact quaternion rotation formula."""
+    w,x,y,z=q
+    return math.atan2(2*(w*z+x*y),1-2*(y*y+z*z))
+
+
 def stimulus(t):
     # Diagnostic coverage reuses v122's calibrated command magnitudes/durations;
     # it is not a success threshold. Stop tails are part of those profiles.
@@ -63,6 +69,8 @@ def run(a):
         raise ValueError('DISK_FLOOR_8GIB')
     a.output.mkdir(parents=True,exist_ok=False)
     dump(a.output/'queue.json',q);dump(a.output/'leases-start.json',leases)
+    dump(a.output/'RUN_META.json',dict(schema='ugrp.run_meta.v1',**{'class':'dev'},pr=556,
+        branch='codex/mapbuild1',sha=q['source_sha'],batch='mapbuild2'))
     sys.path.insert(0,str(a.renderer_source));sys.path.insert(1,str(a.renderer_source/'scripts'))
     os.chdir(a.renderer_source)
     import cv2
@@ -147,7 +155,7 @@ def run(a):
             if centi%10==0:
                 qpos=wd.qpos.numpy();qvel=wd.qvel.numpy()
                 if np.any(wd.overflow.numpy()) or not np.isfinite(qpos).all():raise RuntimeError('CAPACITY_OR_NONFINITE')
-                angles=2*np.arctan2(qpos[:,adr+6],qpos[:,adr+3])
+                angles=np.asarray([quaternion_heading(row[adr+3:adr+7]) for row in qpos])
                 absolute=np.column_stack((qpos[:,adr:adr+2],angles))
                 if origins is None:origins=absolute.copy()
                 images=rc.render();tick=centi//10
@@ -207,6 +215,8 @@ def run(a):
         dump(a.output/'rejection-table.json',dict(raw=str(a.output),reproduction=sys.argv,stages=[
             dict(stage='requested_own_frames',cumulative_pass_n=164,rejected_n=0),
             dict(stage='recorded_own_frames',cumulative_pass_n=len(own),rejected_n=164-len(own))],reasons=[] if error is None else [error]))
+        dump(a.output/'recording-progress.json',dict(status='HOST_ERROR' if error else 'cap_end',
+            own_frames=len(own),physics_steps=steps))
         dump(a.output/'SHA256SUMS.json',{str(p.relative_to(a.output)):sha(p) for p in a.output.rglob('*') if p.is_file()})
 
 
