@@ -41,7 +41,15 @@
     "n": 40,
     "N": 40,
     "complete": true,
-    "passed": true
+    "passed": true,
+    "includes": {
+      "bulk": 38,
+      "pilot": 2,
+      "pilot_seeds": [
+        86821,
+        86822
+      ]
+    }
   },
   "recorded_admitted_episodes": 40,
   "optimizer_steps": "live per-arm summaries; actual research optimization in progress",
@@ -164,5 +172,14 @@
     "qualified_probe_2plus_n": 3,
     "proof": "record-start-instance-audit.json",
     "scope": "exact native recording starts only; no student evaluation"
-  }
+  },
+  "dataset_rows": {
+    "rows_total": 17706,
+    "rows_selected": 14546,
+    "TRAIN_optimizer_population": 12734,
+    "VAL_only": 1812,
+    "proof": "dataset-row-accounting.json"
+  },
+  "student_kind_stratification_required": true,
+  "analysis_host": "owned gcp2 L4 CPU; CPU VM not started or used"
 }

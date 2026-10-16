@@ -4,12 +4,19 @@
 native JPEG·발행 이력·교사 표적17,706/17,706쌍이 정합했다. 입력 감사는 invisible/held0/0이며,
 기존 ACT와 같은1e-5초 주기 허용치로 전체40회를 재감사했다
 ([전체 감사](resume2/strict-audits-final40.json), [기록 관문](resume2/fresh-recording-gate.json)).
+독립40회는 본 기록38회와 파일럿2회(86821·86822)를 합한 분모다.
 D0는35TRAIN/5VAL이며 재부팅 후162개 파일의 해시를 확인해 재사용했다.
+17,706쌍은 변환 전 `rows_total`이다. 변환된 `rows_selected`는14,546행으로,
+optimizer 모집단 TRAIN12,734행과 검증 전용 VAL1,812행으로 나뉜다.
+release의 비근거리 lookaround2,360행·complete800행은 제외됐다.
+TRAIN은 cyan9/green11/red4/yellow11회로 red 대표성이 작으므로 학생 결과를 종류별 n/N으로도 낸다
+([정의·계수](resume2/dataset-row-accounting.json)).
 A/B는 동일 초기화·10000스텝으로 학습 중이며, 학생 성공률·h4·h5·최종40회는 미측정이다.
 두 파일럿 전체2Hz·끝10SIM초10Hz와 본 기록 첫30초를 직접 검토했다.
 앞선3SIM초 warm2회(cap_end,60쌍)는 학습에서 제외했다.
 사용자가 상한을 해제했고 조정자가 VM 설정을 적용했다([결정](resume2/cap-decision.json)).
 작업자 wall 종료 시각을 없앴으며 유휴20분·budget-stop은 유지한다.
+후속 지시에 따라 분석과 가능한 C CPU 비교도 소유 gcp2 L4에서 수행하며, 별도 CPU VM은 시작하지 않는다.
 학습 전 고정한 비교 protocol/manifest는 바이트 그대로 보존한다. 그 안의 과거8시간 항목은
 `cap-decision.json`의 사용자 후속 결정이 대체하며 데이터·시드·스텝·입력 조건은 유지한다.
 [2회차 요약](resume2/summary.json), [warm 원본 해시/감사](resume2/warm-receipts.json),
