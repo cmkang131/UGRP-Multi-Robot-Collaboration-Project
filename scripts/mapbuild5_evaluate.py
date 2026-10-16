@@ -73,8 +73,22 @@ def run(a):
     os.chdir(a.vision)
     model, scene, hardware, xml, audit = tools.build_model(MAPS[0], 'walls_floor_contrast_v5_indigo110_s80')
     recording = json.loads((a.input/'summary.json').read_text())
+    # Match the recorder's owner-provided XML transformation byte for byte.
+    # This changes no geometry and runs no physics; checking the resulting XML
+    # also catches accidentally evaluating the retired noslip10 model.
+    import importlib.util
+    owner = ROOT/'experiments/2026-10-16-mapbuild4/vendor/warp_native_contact.py'
+    if sha(owner) != 'a5c8d370755034b9f9615f66a94b87883327b7d7ecc4e13082eac2c2d4751c6a':
+        raise ValueError('WARPFIT_MODULE_CHANGED')
+    spec = importlib.util.spec_from_file_location('warpfit_contact', owner)
+    contact = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(contact)
+    if recording['contact_profile']['profile'] != 'warp_native_contact_v1':
+        raise ValueError('NATIVE_V1_RECORDING_REQUIRED')
+    xml = contact.apply(xml, 'warp_native_contact_v1')
     if hashlib.sha256(xml.encode()).hexdigest() != recording['scene_xml_sha256']:
         raise ValueError('RECORDING_XML_MISMATCH')
+    model = mujoco.MjModel.from_xml_string(xml)
     a.output.mkdir(parents=True, exist_ok=False)
     # Hard links avoid duplicate large scans.  Neither evaluator modifies them.
     for name in seal['predictions']:
@@ -82,7 +96,7 @@ def run(a):
     rows = json.loads((a.prediction/'trajectory.json').read_text())
     events = json.loads((a.prediction/'events.json').read_text())
     from mapbuild5_replay import evaluate
-    evaluate(a.input, a.vision, a.output, rows, events)
+    evaluate(a.input, a.vision, a.output, rows, events, model=model, scene=scene)
 
     own = json.loads((a.input/'own.json').read_text())['frames']
     qpos = np.load(a.input/'eval-state.npz')['qpos']

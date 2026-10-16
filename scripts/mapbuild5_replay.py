@@ -99,7 +99,7 @@ def replay(root,vision,calibration,output):
     return rows,events
 
 
-def evaluate(root,vision,output,rows,events):
+def evaluate(root,vision,output,rows,events,*,model=None,scene=None):
     import numpy as np
     from mapbuild2_map_eval import raster
     from score_mapbuild1 import score
@@ -143,7 +143,8 @@ def evaluate(root,vision,output,rows,events):
     from scripts import probe_scene_tex2 as tools
     from scripts.generate_scene_textures import MAPS
     os.chdir(vision)
-    model,scene,*_=tools.build_model(MAPS[0],'walls_floor_contrast_v5_indigo110_s80')
+    if model is None:
+        model,scene,*_=tools.build_model(MAPS[0],'walls_floor_contrast_v5_indigo110_s80')
     states=np.load(root/'eval-state.npz')['qpos'];data=mujoco.MjData(model)
     roots={model.body(item['body_name']).id for item in scene.config['setup_only']['objects'].values()}
     roots.add(model.body('cargo_tex2_beam').id)
