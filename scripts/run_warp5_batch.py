@@ -70,7 +70,7 @@ def run(a):
     hooks=Batch(host,sha,'mjwarp_batch_v1',a.output)
     hooks.warp5_native_visual_v1=q.get('warp5_native_visual_v1',False)
     hooks.warp5_native_visual_v2=q.get('warp5_native_visual_v2',False)
-    lanes=[];bridges=[];contexts=[];active=np.ones(len(q['runs']),bool)
+    lanes=[];bridges=[];contexts=[];groups=[];active=np.ones(len(q['runs']),bool)
     started=time.perf_counter()
     try:
         for i,t in enumerate(q['runs']):
@@ -89,9 +89,13 @@ def run(a):
             report.update(status='SETUP_ONLY',physics_steps=0);return
         from scripts.warp_act_core import model_key
         keys={model_key(c['world'].scene_xml) for c in contexts}
-        if len(keys)!=1:raise ValueError('exact model topology group required; canonical model dependency must be supplied')
-        hooks.initialize(contexts)
-        report.update(camera=hooks.camera,compatibility=hooks.compat,capacities=hooks.capacities)
+        for key in sorted(keys):
+            indices=np.array([i for i,c in enumerate(contexts) if model_key(c['world'].scene_xml)==key])
+            folder=a.output/'groups'/key;folder.mkdir(parents=True)
+            transport=Batch(host,sha,'mjwarp_batch_v1',folder)
+            transport.warp5_native_visual_v1=hooks.warp5_native_visual_v1;transport.warp5_native_visual_v2=hooks.warp5_native_visual_v2
+            cc=[contexts[i] for i in indices];groups.append((indices,cc,transport));transport.initialize(cc)
+        report.update(model_groups=[dict(worlds=ii.tolist(),camera=h.camera,compatibility=h.compat,capacities=h.capacities) for ii,cc,h in groups])
         loop=time.perf_counter()
         targets=np.array([c['origin'] for c in contexts],float)
         while active.any():
@@ -106,13 +110,15 @@ def run(a):
                 except StopIteration as done:
                     active[i]=False;result=done.value
                     report['worlds'].append(dict(world=int(i),seed=q['runs'][i]['seed'],result=result))
-            if active.any():hooks.step(contexts,active)
-            elapsed=hooks.tick*.1
-            write(a.output/'progress.json',dict(sim_s=elapsed,active=int(active.sum()),completed=len(report['worlds']),wall_s=time.perf_counter()-loop,timing=dict(hooks.seconds)))
+            if active.any():
+                for indices,cc,transport in groups:
+                    if active[indices].any():transport.step(cc,active[indices])
+            elapsed=max(h.tick*.1 for ii,cc,h in groups)
+            write(a.output/'progress.json',dict(sim_s=elapsed,active=int(active.sum()),completed=len(report['worlds']),wall_s=time.perf_counter()-loop,timing=[dict(h.seconds) for ii,cc,h in groups]))
             if elapsed>=30 and not (a.output/'first30.json').exists():
                 ratio=(time.perf_counter()-loop)/elapsed
                 write(a.output/'first30.json',dict(sim_s=elapsed,wall_per_sim=ratio,shared_load=True,status='SPEED_GATE_FAIL' if ratio>6 else 'PASS'))
-        report.update(status='COMPLETE',batch_sim_s=hooks.tick*.1)
+        report.update(status='COMPLETE',batch_sim_s=elapsed)
     except BaseException as exc:
         report.update(status='HOST_ERROR',errors=[dict(category='HOST_ERROR',reason=repr(exc),blocked_object='batch_adapter',minimum_gap_m=None,gap_status='not_measured',traceback=traceback.format_exc())])
         raise
@@ -120,7 +126,9 @@ def run(a):
         for lane in lanes:
             try:lane.close()
             except BaseException as exc:report['errors'].append(dict(category='HOST_ERROR',reason=repr(exc),blocked_object='finalizer',minimum_gap_m=None))
-        hooks.close();report['wall_s']=time.perf_counter()-started
+        hooks.close()
+        for ii,cc,h in groups:h.close()
+        report['wall_s']=time.perf_counter()-started
         write(a.output/'summary.json',report)
         write(a.output/'rejection-table.json',dict(stages=[dict(stage='requested',cumulative_pass_n=len(q['runs']),rejected_n=0),dict(stage='setup',cumulative_pass_n=len(contexts),rejected_n=len(q['runs'])-len(contexts)),dict(stage='completed',cumulative_pass_n=len(report['worlds']),rejected_n=len(q['runs'])-len(report['worlds']))],errors=report['errors'],raw=str(a.output),reproduction=sys.argv))
         write(a.output/'SHA256SUMS.json',{str(p.relative_to(a.output)):hashlib.sha256(p.read_bytes()).hexdigest() for p in a.output.rglob('*') if p.is_file() and p.name!='SHA256SUMS.json'})
