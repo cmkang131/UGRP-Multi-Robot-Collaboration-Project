@@ -1,0 +1,41 @@
+{
+  "schema": "ugrp.reloc20_yaw_gain.v1",
+  "prefix_end_sim_s": 180,
+  "calibration_seed": 93266,
+  "validation_seed": 93315,
+  "gains": {
+    "left": {
+      "N": 620,
+      "scale": 0.3142035984950677,
+      "method": "origin constrained least squares body delta on ODE delta; pure equal-duration held travel rotation only"
+    },
+    "right": {
+      "N": 222,
+      "scale": 0.6057996161034802,
+      "method": "origin constrained least squares body delta on ODE delta; pure equal-duration held travel rotation only"
+    }
+  },
+  "scores": {
+    "93266": {
+      "N": 842,
+      "role": "calibration",
+      "raw_local_yaw_p95_deg": 0.4903343225155981,
+      "corrected_local_yaw_p95_deg": 0.208878040220728,
+      "raw_signed_yaw_residual_deg": 85.91007139246983,
+      "corrected_signed_yaw_residual_deg": 23.134616943344287,
+      "wheel_body_local_yaw_p95_deg": 0.015907831200716097
+    },
+    "93315": {
+      "N": 634,
+      "role": "validation_not_fitted",
+      "raw_local_yaw_p95_deg": 0.4973556890931995,
+      "corrected_local_yaw_p95_deg": 0.502601590142515,
+      "raw_signed_yaw_residual_deg": 1.728028591836946,
+      "corrected_signed_yaw_residual_deg": -55.54498362725863,
+      "wheel_body_local_yaw_p95_deg": 0.029541087022006297
+    }
+  },
+  "scope": "retrospective DEV own-command mean fit; evaluator truth/contact only in offline sample selection and response. Runtime uses issued pure-turn commands and held command state only; no hardware or contact-point slip claim.",
+  "adopted": false,
+  "rejection_reason": "other seed local p95 and signed cumulative residual worsen"
+}

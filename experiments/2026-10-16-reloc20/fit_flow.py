@@ -1,3 +1,5 @@
+import platform
+assert platform.node().startswith("ugrp-sim-gcp2"), "gcp2-only analysis"
 import sys,json,subprocess,collections
 from pathlib import Path
 import numpy as np,cv2

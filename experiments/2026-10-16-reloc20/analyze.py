@@ -81,8 +81,8 @@ def main(n,media=False):
     for (x,e),(nx,ne) in zip(pairs,pairs[1:]):
      wa,ww=wb.get(round(x['t'],5)),wb.get(round(nx['t'],5))
      if wa is None or ww is None:continue
-     a,b,cw,dw=np.array(ww['wheel_qpos_rad'])-np.array(wa['wheel_qpos_rad'])
-     wd=.0325*np.array([a+b+cw+dw,-a+b+cw-dw,(-a+b-cw+dw)/.12435])/4
+     fl,fr,rl,rr=np.array(ww['wheel_qpos_rad'])-np.array(wa['wheel_qpos_rad'])
+     wd=.0325*np.array([fl+fr+rl+rr,-fl+fr+rl-rr,(-fl+fr-rl+rr)/.12435])/4
      yaw=e['base_yaw_rad'];rot=np.array([[math.cos(yaw),math.sin(yaw)],[-math.sin(yaw),math.cos(yaw)]])
      xy=rot@(np.array(ne['base_xyz'][:2])-np.array(e['base_xyz'][:2]));da=(ne['base_yaw_rad']-yaw+np.pi)%(2*np.pi)-np.pi
      measurements.append(dict(t=x['t'],phase=x.get('phase_before',x['phase']),wheel_xy_m=float(np.linalg.norm(wd[:2])),body_xy_m=float(np.linalg.norm(xy)),wheel_body_residual_m=float(np.linalg.norm(wd[:2]-xy)),wheel_yaw_deg=float(np.degrees(wd[2])),body_yaw_deg=float(np.degrees(da))))

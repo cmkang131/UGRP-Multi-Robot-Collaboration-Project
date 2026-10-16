@@ -99,3 +99,37 @@ def test_both_required_transport_scenarios_have_hash_bound_map_declarations():
         row=d['scenarios'][name]
         assert hashlib.sha256((root/row['scenario_source']).read_bytes()).hexdigest()==row['scenario_source_sha256']
         assert row['obstacles'][0]['id']=='cargo_beam_1'
+
+
+def test_wall_mask_fragments_do_not_become_new_obstacles():
+    from sim.solo_carry_obstacles import wall_component_filter
+    from harness.zone_own_perception import _components
+    raw=np.zeros((100,100),np.uint8);raw[10:60,10:60]=255;raw[70:80,70:80]=255
+    wall=np.zeros_like(raw,dtype=bool);wall[10:50,10:60]=True
+    cut=raw.copy();cut[wall]=0
+    old,_=_components(cut,6.);parents,_=_components(raw,6.)
+    assert len(old)==2  # the wall's unclassified fringe becomes a phantom
+    new=wall_component_filter(parents,wall)
+    assert len(new)==1 and new[0]['bbox']==(70,70,10,10)
+
+
+def test_turn_density_conserves_requested_on_time_and_emits_full_control_ticks():
+    from harness.reloc20_motion import TurnDensity
+    d=TurnDensity(.1);wheel=[-.35,.35,-.35,.35]
+    for i in range(1000):
+        w,t=d.apply(wheel,[.018571428571428576]*4,i*.1)
+        assert w==wheel or w==[0.]*4
+        assert t==[.1]*4 or t==[0.]*4
+    assert 0<=d.requested-d.emitted<d.period
+    assert d.requested-d.emitted==pytest.approx(d.debt)
+
+
+def test_turn_density_cannot_execute_old_turn_after_stop_or_direction_change():
+    from harness.reloc20_motion import TurnDensity
+    d=TurnDensity(.1);left=[-.35,.35,-.35,.35]
+    for i in range(4):d.apply(left,[.02]*4,i*.1)
+    assert d.apply([0.]*4,[0.]*4,.4)==([0.]*4,[0.]*4)
+    assert d.apply(left,[.02]*4,.5)==([0.]*4,[0.]*4)
+    for i in range(3):d.apply(left,[.02]*4,.6+i*.1)
+    assert d.apply([.35,-.35,.35,-.35],[.02]*4,.9)==([0.]*4,[0.]*4)
+    assert d.debt==pytest.approx(.02)

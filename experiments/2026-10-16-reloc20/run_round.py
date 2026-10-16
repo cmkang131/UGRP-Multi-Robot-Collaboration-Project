@@ -38,16 +38,18 @@ def launch(n):
     prior=json.loads((RUNS/'reloc19-round3/queue.json').read_text())['runs'];tasks=[]
     for old in prior:
         if old['kind']=='carry' and old['condition']!='A_pan':continue
-        for condition in ((('baseline','candidate') if n==1 else ('candidate',)) if old['kind']=='carry' else ('short_regression',)):
+        for condition in ((('baseline','candidate') if n==1 else ('candidate','density') if n==3 else ('candidate',)) if old['kind']=='carry' else ('short_regression',)):
             kind=old['kind'];seed=old['seed'];name=f'reloc20-r{n}-{kind}-{condition}-{seed}-{sha[:8]}'
             folder=RUNS/name;folder.mkdir(exist_ok=False);cmd=old['command'].copy();cmd[0]=PY
             if kind=='carry':
                 plan=json.loads(Path(cmd[cmd.index('--plan')+1]).read_text());ep=plan['episodes'][0]
                 ep.update(batch=f'reloc20-r{n}',destination_visual_acquire_v1=True,carry_relocalize_v1=False,destination_camera_pan_v1=True)
-                candidate=condition=='candidate'
+                candidate=condition in ('candidate','density')
                 ep.update({key:candidate for key in ('reloc20_heading_forward_v1','reloc20_loaded_footprint_v1','reloc20_visual_stall_v1','reloc20_contact_ode_v1','destination_direction_preserve_v1','destination_search_replan_v1','reloc20_obstacle_wall_mask_v1')})
                 ep['pr']=543
                 ep['reloc20_drive_eval_v1']=True
+                ep['reloc20_obstacle_wall_component_v1']=candidate and n==3
+                ep['reloc20_turn_density_v1']=condition=='density'
                 p=folder/'input-plan.json';p.write_text(json.dumps(plan,indent=2)+'\n')
                 cmd[cmd.index('--plan')+1]=str(p);cmd[cmd.index('--out')+1]=str(folder/'raw')
             else:

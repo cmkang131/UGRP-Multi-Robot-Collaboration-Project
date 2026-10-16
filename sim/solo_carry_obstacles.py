@@ -21,6 +21,21 @@ PEER_DISC_MAX_M = math.hypot(.15, .15)+.06+.08*4.+.20
 MAHALANOBIS_GATE_2D = 9.21  # chi-square 99%, 2 DoF; assumed errors, not calibrated
 
 
+def wall_component_filter(components, wall):
+    """Reject a wall-labelled parent contour before masking can fragment it.
+
+    No dilation/kernel/acceptance value is added. One known-wall pixel in the
+    original colour component makes that component a surface ambiguity. The
+    fixed wall remains a map obstacle; this is not evidence of empty floor.
+    """
+    accepted=[]
+    for comp in components:
+        x,y,w,h=comp['bbox'];mask=np.zeros((h,w),np.uint8)
+        cv2.drawContours(mask,[comp['contour']-np.array([[[x,y]]])],-1,1,-1)
+        if not np.any(wall[y:y+h,x:x+w] & (mask>0)):accepted.append(comp)
+    return accepted
+
+
 def held_mask(kind, grasp_pwm, pwm, size=(640, 480)):
     from sim.grasp_act_solo_teacher import cargo
     obj = object_transform(kind, grasp_pwm, pwm)
@@ -32,7 +47,7 @@ def held_mask(kind, grasp_pwm, pwm, size=(640, 480)):
     return cv2.dilate(mask.astype(np.uint8), np.ones((9, 9), np.uint8)).astype(bool)
 
 
-def detections(bgr, pwm, *, held_kind=None, grasp_pwm=None, managed=False, wall_mask=False):
+def detections(bgr, pwm, *, held_kind=None, grasp_pwm=None, managed=False, wall_mask=False, wall_component=False, diagnostics=None):
     if bgr.shape != (480, 640, 3) or bgr.dtype != np.uint8:
         raise ValueError('native own RGB required for obstacle detection')
     _, cam = transforms(pwm)
@@ -40,6 +55,7 @@ def detections(bgr, pwm, *, held_kind=None, grasp_pwm=None, managed=False, wall_
     hsv = cv2.cvtColor(bgr, cv2.COLOR_BGR2HSV)
     reference = _frame_reference(hsv)
     excluded = held_mask(held_kind, grasp_pwm, pwm) if held_kind is not None else np.zeros((480, 640), bool)
+    held_excluded=excluded.copy()
     held_count=int(excluded.sum())
     if wall_mask:
         # Same frozen scene-v5 class already used for destination floor and
@@ -54,8 +70,15 @@ def detections(bgr, pwm, *, held_kind=None, grasp_pwm=None, managed=False, wall_
                   {'footprint_m': (.30, .30), 'height_m': .12}))
     out = []
     for kind, raw, spec in masks:
-        raw = raw.copy(); raw[excluded] = 0
+        raw = raw.copy(); raw[held_excluded if wall_component else excluded] = 0
         comps, _ = _components(raw, 6. if kind != 'robot' else 20.)
+        if wall_component:
+            if not wall_mask:raise ValueError('wall component qualification requires fixed scene wall mask')
+            before=len(comps);comps=wall_component_filter(comps,~clear)
+            if diagnostics is not None:
+                diagnostics['area_components']=diagnostics.get('area_components',0)+before
+                diagnostics['surface_clear']=diagnostics.get('surface_clear',0)+len(comps)
+                diagnostics['wall_parent_rejections']=diagnostics.get('wall_parent_rejections',0)+before-len(comps)
         for comp in comps:
             x, y, w, h = comp['bbox']
             if x < 3 or y < 3 or x+w >= 637 or y+h >= 477:
@@ -91,6 +114,7 @@ def detections(bgr, pwm, *, held_kind=None, grasp_pwm=None, managed=False, wall_
                 continue  # floor paint is much larger than catalogue geometry
             out.append({'kind': kind, 'xy': xy.tolist(), 'radius': math.hypot(hx, hy),
                         'range_error_m': .06+.08*distance, 'pixel_bbox': [x, y, w, h]})
+    if diagnostics is not None:diagnostics['geometry_qualified']=len(out)
     return out, held_count
 
 
@@ -133,8 +157,15 @@ class RGBObstacleMemory:
         self.last_t = float(now)
 
     def observe(self, bgr, pwm, pose, now, *, holding, kind, grasp_pwm, pose_sigma=(0., 0., 0.)):
+        diagnostics={} if getattr(self,'reloc20_wall_component',False) else None
         obs, masked = detections(bgr, pwm, held_kind=kind if holding else None, grasp_pwm=grasp_pwm, managed=self.managed,
-                                 wall_mask=getattr(self,'reloc20_wall_mask',False))
+                                 wall_mask=getattr(self,'reloc20_wall_mask',False),
+                                 wall_component=getattr(self,'reloc20_wall_component',False),diagnostics=diagnostics)
+        if diagnostics is not None:
+            from collections import Counter
+            if not hasattr(self,'reloc20_surface_counts'):self.reloc20_surface_counts=Counter()
+            self.reloc20_surface_counts.update(diagnostics)
+            self.reloc20_surface_last=dict(t=now,**diagnostics)
         from harness.visual_arm_v3 import forward_grip
         grip = forward_grip(grasp_pwm)[:2] if grasp_pwm is not None else None
         self.update(obs, pose, now, holding=holding, kind=kind, grip_xy=grip, pose_sigma=pose_sigma,
@@ -260,6 +291,13 @@ class RGBObstacleMemory:
     def record(self):
         return {'profile': PROFILE, 'frames': self.frames, 'last_t': self.last_t,
                 **({'reloc20_obstacle_wall_mask_v1':True} if getattr(self,'reloc20_wall_mask',False) else {}),
+                **({'reloc20_obstacle_wall_component_v1':True,
+                    'surface_funnel':dict(getattr(self,'reloc20_surface_counts',{})),
+                    'surface_last':getattr(self,'reloc20_surface_last',None),
+                    'surface_rejection_context':dict(category='rgb_surface_qualification',
+                        reason='parent_colour_component_contains_calibrated_wall_pixels',
+                        blocked_object='calibrated_v5_wall_surface',minimum_gap_m=None,
+                        gap_scope='not_applicable_pixel_classification')} if getattr(self,'reloc20_wall_component',False) else {}),
                 'held_mask_pixels': self.masked_pixels, 'tracks': self.tracks,
                 'source': 'own_rgb_issued_camera_fk_command_pose', 'truth_reads': 0,
                 'range_calibrated': False, 'unseen_is_free': False,

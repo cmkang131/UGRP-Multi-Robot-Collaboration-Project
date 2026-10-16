@@ -44,6 +44,39 @@ def heading_forward(pose, target):
     return (min(.08, .9*distance), 0., 0.)
 
 
+class TurnDensity:
+    """First-order pulse density accumulator for pure navigation turns.
+
+    Quantum is the EXISTING 10Hz control period, not a fitted minimum pulse.
+    The existing .35 breakaway effort is unchanged. Constant-sign requested
+    on-time is conserved to within one quantum; stopping/direction changes
+    discard the residual rather than executing an obsolete turn later.
+    """
+    def __init__(self, period):
+        self.period=period;self.debt=0.;self.direction=0
+        self.requested=0.;self.emitted=0.;self.discarded=0.;self.bursts=0;self.last={}
+
+    def reset(self):
+        self.discarded+=self.debt;self.debt=0.;self.direction=0
+
+    def apply(self,wheels,durations,now):
+        from harness.reloc9_rotation import pure_turn
+        if not pure_turn(dict(wheels=wheels,duration_s=durations)):
+            self.reset();return wheels,durations
+        direction=1 if wheels[1]>0 else -1
+        if self.direction and direction!=self.direction:self.reset()
+        self.direction=direction;self.debt+=durations[0];self.requested+=durations[0]
+        emit=self.debt>=self.period
+        if emit:
+            self.debt-=self.period;self.emitted+=self.period;self.bursts+=1
+        self.last=dict(t=now,requested_on_s=durations[0],emitted_on_s=self.period if emit else 0.,residual_on_s=self.debt)
+        return (list(wheels),[self.period]*4) if emit else ([0.]*4,[0.]*4)
+
+    def record(self):
+        return dict(quantum_s=self.period,requested_on_s=self.requested,emitted_on_s=self.emitted,
+                    discarded_on_stop_or_reversal_s=self.discarded,bursts=self.bursts,last=self.last)
+
+
 class LoadedRoute:
     def __init__(self, static):
         self.static = static
@@ -124,7 +157,7 @@ class LoadedRoute:
         # Origin at the exact start avoids an unchecked snap from an inflated
         # margin to a grid point. Goal is checked by its final connecting edge.
         def point(c):return (start[0]+c[0]*GRID_M,start[1]+c[1]*GRID_M)
-        frontier=[(math.dist(start,goal),0.,(0,0))];cost={(0,0):0.};came={(0,0):None};visits=0;last=context
+        frontier=[(math.dist(start,goal),0.,(0,0))];cost={(0,0):0.};came={(0,0):None};visits=0;last=context;blocked={}
         while frontier and visits<BUDGET:
             _,g,c=heapq.heappop(frontier)
             if g!=cost[c]:continue
@@ -141,10 +174,17 @@ class LoadedRoute:
                 if ng>=cost.get(nc,math.inf):continue
                 if not (x0+r<=q[0]<=x1-r and y0+r<=q[1]<=y1-r):continue
                 ok,last=self.segment(p,q,discs,r)
-                if not ok:continue
+                if not ok:
+                    name=last['blocked_object'];row=blocked.setdefault(name,dict(blocked_object=name,N=0,minimum_gap_m=math.inf))
+                    row['N']+=1;row['minimum_gap_m']=min(row['minimum_gap_m'],last['minimum_gap_m'])
+                    continue
                 cost[nc]=ng;came[nc]=c;heapq.heappush(frontier,(ng+math.dist(q,goal),ng,nc))
         self.plan_funnel['rejected_search']+=1
-        self.reject(dict(last,reason='node_budget_exhausted' if visits>=BUDGET else 'no_enclosure_route',nodes=visits))
+        blockers=sorted(blocked.values(),key=lambda x:-x['N'])
+        self.reject(dict(category='loaded_footprint',reason='node_budget_exhausted' if visits>=BUDGET else 'no_enclosure_route',nodes=visits,
+            blocked_object='multiple:'+','.join(x['blocked_object'] for x in blockers) if blockers else context['blocked_object'],
+            minimum_gap_m=min((x['minimum_gap_m'] for x in blockers),default=context['minimum_gap_m']),blockers=blockers,
+            gap_scope='minimum over rejected search edges; not a unique bottleneck or physical collision proof'))
         return None
 
     def record(self):
@@ -212,16 +252,25 @@ class VisualStall:
 
 def install(carry,plan):
     """Called once before any integration; every feature is default off."""
-    for key in ('reloc20_heading_forward_v1','reloc20_loaded_footprint_v1','reloc20_visual_stall_v1','reloc20_contact_ode_v1','reloc20_obstacle_wall_mask_v1'):
+    for key in ('reloc20_heading_forward_v1','reloc20_loaded_footprint_v1','reloc20_visual_stall_v1','reloc20_contact_ode_v1','reloc20_obstacle_wall_mask_v1','reloc20_obstacle_wall_component_v1','reloc20_turn_density_v1'):
         if type(plan.get(key,False)) is not bool:raise ValueError(key+' must be bool')
     carry.reloc20_heading=plan.get('reloc20_heading_forward_v1',False)
     carry.reloc20_route=LoadedRoute(carry.static) if plan.get('reloc20_loaded_footprint_v1',False) else None
     carry.reloc20_stall=None
+    carry.reloc20_turn_density=None
+    if plan.get('reloc20_turn_density_v1',False):
+        if not plan.get('reloc20_heading_forward_v1',False) or not plan.get('reloc20_contact_ode_v1',False):
+            raise ValueError('turn density requires heading drive and command ODE')
+        from sim.grasp_act_solo_teacher import PERIOD_S
+        carry.reloc20_turn_density=TurnDensity(PERIOD_S)
     if plan.get('reloc20_obstacle_wall_mask_v1',False):
         import os
         from harness.reloc16_floor_mask import ENV,OPTION
         if os.environ.get(ENV,'off')!=OPTION:raise ValueError('obstacle wall mask requires fixed v5 floor mask')
         carry.obstacles.reloc20_wall_mask=True
+    if plan.get('reloc20_obstacle_wall_component_v1',False):
+        if not plan.get('reloc20_obstacle_wall_mask_v1',False):raise ValueError('wall component requires wall mask')
+        carry.obstacles.reloc20_wall_component=True
     if plan.get('reloc20_visual_stall_v1',False):
         fit=json.loads((ROOT/'experiments/2026-10-16-reloc20/flow-fit.json').read_text())
         carry.reloc20_stall=VisualStall(fit);carry.loc.reloc20_stall=carry.reloc20_stall

@@ -465,7 +465,8 @@ class CarryToZone:
         return {'toggle': OPTION, 'destination_zone': self.zone, 'slot_xy': self.slot,
                 **({'reloc20_motion':dict(heading_forward=getattr(self,'reloc20_heading',False),
                     footprint=None if getattr(self,'reloc20_route',None) is None else self.reloc20_route.record(),
-                    stall=None if getattr(self,'reloc20_stall',None) is None else self.reloc20_stall.record())}
+                    stall=None if getattr(self,'reloc20_stall',None) is None else self.reloc20_stall.record(),
+                    turn_density=None if getattr(self,'reloc20_turn_density',None) is None else self.reloc20_turn_density.record())}
                    if any((getattr(self,'reloc20_heading',False),getattr(self,'reloc20_route',None),getattr(self,'reloc20_stall',None))) else {}),
                 'stand_off_xy': self.goal, 'radius_m': self.radius, 'map_sha256': self.map_sha256,
                 'self_pose': self.loc.record(), 'carry_started_t': self.started,
