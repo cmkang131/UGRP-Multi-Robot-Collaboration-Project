@@ -63,3 +63,16 @@ def test_multigeom_contact_map_keeps_four_fingers_and_worlds_separate():
     assert targets[0].sum()==3 and targets[1].sum()==2
     assert fingers[0,4]==0 and fingers[1,4]==-1
     assert fingers[0,7]==3 and fingers[1,7]==2
+
+
+def test_jpeg_ring_survives_missing_finalizer_and_partial_slot_write(tmp_path):
+    from scripts.warp_flow_recording import DiskRing
+    ring=DiskRing(tmp_path/'ring')
+    for i in range(105):ring.add(i/10,{'r1':str(i).encode(),'r2':('peer'+str(i)).encode()})
+    # Recover with no Python finally/close call, as after a native segfault.
+    rows=DiskRing.recover(ring.root)
+    assert [r['sequence'] for r in rows]==list(range(5,105))
+    (ring.root/'050-r1.jpg').write_bytes(b'partial-next-slot')
+    with (ring.root/'journal.jsonl').open('a') as f:f.write('{incomplete')
+    recovered=DiskRing.recover(ring.root)
+    assert len(recovered)==99 and all(r['sequence']!=50 for r in recovered)

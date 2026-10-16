@@ -90,6 +90,7 @@ def main():
     import mujoco
     from warp_act_backend import WarpTransport,CFlowTransport
     from warp_flow_model import model_arrays_equal
+    from warp_flow_recording import DiskRing
     if a.physics_backend=='c_pilot_v1' and (len(indices)!=1 or host['instance']!='ugrp-sim-gcp2'):
         p.error('CPU comparison is one process/world on existing gcp2 CPU host')
     transport=WarpTransport if a.physics_backend=='mjwarp_batch_v1' else CFlowTransport
@@ -110,6 +111,7 @@ def main():
         price_basis='inherited regional VM estimate; billing unverified',reproduce=sys.argv)
     write(a.out/'summary.json',report)
     lanes=[];bridges=[];contexts=[];results={};recent=[deque(maxlen=100) for _ in indices]
+    disk_rings=[DiskRing(a.out/f'world-{i:03d}'/'tail-ring-10hz') for i in range(len(indices))]
     active=np.ones(len(indices),bool);ticks=0;start=time.perf_counter();loop=None
     try:
         for i,case in enumerate(selected):
@@ -160,6 +162,7 @@ def main():
                 sample=dict(world_t=float(contexts[i]['world'].data.time),
                     images={r:hooks.capture(i,contexts[i]['world'],r) for r in contexts[i]['ports']})
                 recent[i].append(sample)
+                disk_rings[i].add(sample['world_t'],sample['images'])
                 if ticks%5==0:
                     for rid,jpg in sample['images'].items():
                         path=a.out/f'world-{i:03d}'/'review-2hz'/rid/f'{ticks:06d}.jpg'
