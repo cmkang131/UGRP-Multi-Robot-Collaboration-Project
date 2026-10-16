@@ -59,3 +59,21 @@ def test_potential_hold_never_calls_oracle_even_if_student_reopens():
     assert boundary.query([closing], forbidden)['query_blocked_by_hold_boundary']
     assert boundary.query([initial], forbidden)['query_blocked_by_hold_boundary']
     assert initial == {'pwm': {'1': 2000}} and closing == {'pwm': {'1': 1999}}
+
+
+def test_oracle_bank_rejects_physics_or_actor_history_mutation(monkeypatch):
+    from pathlib import Path
+    monkeypatch.syspath_prepend(str(Path(__file__).resolve().parents[1]/'scripts'))
+    from act16w_oracle import OracleBank
+    state=np.array([1.,2.]);public=[({'t':1.,'issued':[]},(b'own-jpeg',))]
+    owner=SimpleNamespace(n=1,c=SimpleNamespace(command=lambda x:x),current=public,previous=[{'t':1.}],
+        integration=lambda:{'qpos':state.copy()},read_actor=lambda i:deepcopy(public[i]),write=lambda *x:None)
+    oracle=SimpleNamespace(blocked=lambda:True,query=lambda eyes,cmd:{'label_valid':False},
+        audit=SimpleNamespace(invisible_measurements=0,held_world_reads=0))
+    bank=OracleBank.__new__(OracleBank);bank.owner=owner;bank.oracles=[oracle];bank.eyes=None;bank.queries=0
+    labels,audit=bank.query([{'t':1.}])
+    assert labels==[{'label_valid':False}] and audit['teacher_actions_executed']==0
+    def mutate(eyes,cmd):state[0]+=1;return {'label_valid':False}
+    oracle.query=mutate
+    with pytest.raises(RuntimeError,match='changed physics'):
+        bank.query([{'t':1.}])
