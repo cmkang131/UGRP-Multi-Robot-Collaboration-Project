@@ -9,10 +9,13 @@ import subprocess
 class Client:
     def __init__(self, *, python, qualified_source, teacher_source, qualification,
                  references, compiled_reference, compiled_geometry, out, nworld,
-                 enabled=False, training=False, audit_state=False):
+                 enabled=False, training=False, audit_state=False, on_reset=None,
+                 training_truth_factory=None, require_visible_centre=False):
         if not enabled: raise ValueError('MJWarp client is default OFF')
+        if require_visible_centre: raise NotImplementedError('visible instance-mask centroid is not available; centre heuristic not admitted')
         self.python, self.nworld, self.training = str(python), nworld, training
         self.audit_state = audit_state
+        self.on_reset, self.truth_factory = on_reset, training_truth_factory
         self.options = dict(qualified_source=qualified_source, teacher_source=teacher_source,
                             qualification=qualification, references=references,
                             compiled_reference=compiled_reference, compiled_geometry=compiled_geometry)
@@ -55,8 +58,12 @@ class Client:
             if self.audit_state: argv += ['--audit-state']
             self.stderr = (self.out/'owner.stderr.log').open('x')
             self.proc = subprocess.Popen(argv, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=self.stderr, text=True, bufsize=1)
-            return self.receive()
-        return self.exchange(dict(reset=plans, indices=indices))
+            result = self.receive()
+        else: result = self.exchange(dict(reset=plans, indices=indices))
+        # Policy chunks/RNG live outside the physics process. A consumer binds
+        # its WORLD-LOCAL reset callback; never reset another world's generator.
+        if self.on_reset is not None: self.on_reset(tuple(indices))
+        return result
 
     def read_actor(self, i):
         obs, jpgs = self.current[i]
@@ -70,7 +77,11 @@ class Client:
 
     def read_training(self, i):
         if not self.training: raise RuntimeError('no privileged lane in student evaluation')
-        return self.exchange(dict(read_training=i))
+        truth, critic = self.exchange(dict(read_training=i))
+        if set(truth) != {'distance_m','alignment_rad','target_xy','stable_lift'}:
+            raise ValueError('training truth whitelist mismatch')
+        from types import SimpleNamespace
+        return (self.truth_factory or SimpleNamespace)(**truth), tuple(critic)
 
     def close(self):
         if self.proc is None: return

@@ -79,3 +79,17 @@ def test_instruction_updates_only_named_task_tokens(contract):
     assert owner.current[0][0]['issued'] == before[0][0]['issued']
     assert owner.current[0][1] == before[0][1] and h.index == 1
     with pytest.raises(ValueError): owner.instruct(0, 'go_to_truth_position')
+
+
+def test_client_reset_callback_is_selected_and_after_success(tmp_path):
+    calls = []
+    client = Client.__new__(Client)
+    client.nworld, client.proc = 3, object()
+    client.on_reset = lambda indices: calls.append(indices)
+    client.exchange = lambda request: request
+    assert client.reset([{'seed': 1}], indices=[2]) == {'reset': [{'seed': 1}], 'indices': [2]}
+    assert calls == [(2,)]
+    def reject(request): raise ValueError('rejected by owner')
+    client.exchange = reject
+    with pytest.raises(ValueError): client.reset([{}], indices=[0])
+    assert calls == [(2,)]
