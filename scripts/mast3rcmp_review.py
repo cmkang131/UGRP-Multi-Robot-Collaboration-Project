@@ -32,11 +32,15 @@ def review(prepared, output):
         for j,tile in enumerate(tiles):mosaic[j//columns*120:(j//columns+1)*120,j%columns*160:(j%columns+1)*160]=tile
         cv2.imwrite(str(output/(name+'.jpg')),mosaic)
     command=['ffmpeg','-nostdin','-hide_banner','-loglevel','error',
-        '-framerate','10','-i',str(prepared/'rgb/%08d.png'),'-vf','setpts=PTS/3',
-        '-r','30','-c:v','libx264','-crf','25','-pix_fmt','yuv420p',str(output/'own-3x.mp4')]
+        # Feed 10 Hz source frames directly at 30 Hz. Combining a 1/10 time
+        # base, setpts/3 and -r30 previously duplicated two output frames.
+        '-framerate','30','-i',str(prepared/'rgb/%08d.png'),
+        '-c:v','libx264','-crf','25','-pix_fmt','yuv420p',str(output/'own-3x.mp4')]
     subprocess.run(command,check=True)
     probe=subprocess.check_output(['ffprobe','-v','error','-show_streams','-show_format','-of','json',str(output/'own-3x.mp4')])
     (output/'ffprobe.json').write_bytes(probe)
+    if int(json.loads(probe)['streams'][0]['nb_frames']) != len(frames):
+        raise ValueError('video_frame_count_must_equal_recorded_frames')
     result=dict(frames=len(frames),all_2hz_frames=len(range(0,len(frames),5)),
         final10s_frames=sum(f['t_sim_s']>=frames[-1]['t_sim_s']-10 for f in frames),
         input_receipt_sha256=hashlib.sha256((prepared/'input-receipt.json').read_bytes()).hexdigest(),
