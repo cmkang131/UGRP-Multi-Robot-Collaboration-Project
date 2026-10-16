@@ -1,0 +1,161 @@
+{
+  "raw": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r1",
+  "stages": [
+    {
+      "stage": "frames",
+      "cumulative_pass_n": 277,
+      "rejected_n": 0
+    },
+    {
+      "stage": "visible",
+      "cumulative_pass_n": 134,
+      "rejected_n": 143
+    },
+    {
+      "stage": "scheduled_supported",
+      "cumulative_pass_n": 10,
+      "rejected_n": 124
+    },
+    {
+      "stage": "accepted_correction",
+      "cumulative_pass_n": 0,
+      "rejected_n": 10
+    }
+  ],
+  "distribution": [
+    {
+      "category": "map_correction",
+      "reason": "no_visible_scan",
+      "n": 143,
+      "blocked_object": "own_wall_reference",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "map_correction",
+      "reason": "new_submap_motion_anchor",
+      "n": 2,
+      "blocked_object": "own_wall_reference",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "map_correction",
+      "reason": "sim_keyframe_interval",
+      "n": 116,
+      "blocked_object": "own_wall_reference",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "map_correction",
+      "reason": "search_boundary",
+      "n": 8,
+      "blocked_object": "own_wall_reference",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "map_correction",
+      "reason": "insufficient_near_points",
+      "n": 8,
+      "blocked_object": "own_wall_reference",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    }
+  ],
+  "events": [
+    {
+      "t": 5.8,
+      "event": "prescan",
+      "status": "rejected",
+      "reason": "unobservable_global_SE2",
+      "static_from_own": null,
+      "category": "static_wall_registration",
+      "blocked_object": "authored_wall_geometry",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured",
+      "work": {
+        "candidates": 4258800,
+        "point_checks": 102211200,
+        "wall_seconds_used_as_gate": 0
+      },
+      "truth_inputs": 0,
+      "scale": 1,
+      "points": 24,
+      "best_candidate": [
+        4.4,
+        -2.9000000000000004,
+        0.8552113334772214
+      ],
+      "residual_m": 0.0007330114213196939,
+      "overlap": 1.0,
+      "second_sensor_gap": 3.832654679736258e-16,
+      "hessian_eigenvalues": [
+        48.76167380831403,
+        195.2287072493687,
+        1626.1392251268408
+      ],
+      "observable_rank": 2,
+      "sensor_sigma_min_max_m": [
+        0.08274113809688181,
+        0.0959322037075161
+      ],
+      "source_constants": "unchanged CSMOptions: .05m/1deg, .08m floor + original range pixel variance, overlap .60/.20m, residual .15m, mode .15/.50, rank3 mathematical SE2 requirement"
+    },
+    {
+      "t": 5.8,
+      "event": "body_sweep_start",
+      "command_budget": 159,
+      "basis": "one full revolution / existing6f nominal command yaw increment; no wall budget"
+    },
+    {
+      "t": 21.7,
+      "event": "body_sweep_end",
+      "own_yaw_travel_rad": 3.4506356152887556,
+      "issued_ticks": 159,
+      "command_budget": 159,
+      "reason": "nominal_command_revolution_budget_end",
+      "actual_revolution": "evaluation_only"
+    },
+    {
+      "t": 27.6,
+      "event": "rescan",
+      "status": "rejected",
+      "reason": "ambiguous_modes",
+      "static_from_own": null,
+      "category": "static_wall_registration",
+      "blocked_object": "authored_wall_geometry",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured",
+      "work": {
+        "candidates": 4258800,
+        "point_checks": 166093200,
+        "wall_seconds_used_as_gate": 0
+      },
+      "truth_inputs": 0,
+      "scale": 1,
+      "points": 39,
+      "best_candidate": [
+        -0.05,
+        0.75,
+        -2.3387411976724013
+      ],
+      "residual_m": 0.004075045825594696,
+      "overlap": 1.0,
+      "second_sensor_gap": 0.01622301601581012,
+      "hessian_eigenvalues": [
+        65.24117771703547,
+        713.7902068572888,
+        1069.1581533752717
+      ],
+      "observable_rank": 3,
+      "sensor_sigma_min_max_m": [
+        0.08150955025609785,
+        0.0959322037075161
+      ],
+      "source_constants": "unchanged CSMOptions: .05m/1deg, .08m floor + original range pixel variance, overlap .60/.20m, residual .15m, mode .15/.50, rank3 mathematical SE2 requirement"
+    }
+  ],
+  "reproduction": "cfaf3b52c/scripts/mapbuild7_capture.py --map-correction --body-sweep; argv saved in operations"
+}

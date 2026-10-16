@@ -210,6 +210,14 @@ def run(a):
                     result=try_register(t,stage)
                     if stage=='prescan' and a.body_sweep:
                         stage='body_sweep';sweep_pose=dict(cmd['pwm']);sweep_angle=0.;sweep_ticks=0
+                        if a.sweep_camera_folded:
+                            # Existing drive FOLDED, not new camera geometry:
+                            # command FK gives h=.23086m/pitch18.08deg vs inherited
+                            # look_arm h=.19320m/pitch30.05deg. R1 own RGB10--17s
+                            # had no wall boundary. A fixed folded pose retains
+                            # floor VO while bringing farther wall feet into FOV.
+                            sweep_pose={str(k):v for k,v in FOLDED.items()};stage='sweep_pose'
+                            cmd={**cmd,'pwm':sweep_pose,'wheels':[0.]*4,'duration_s':[0.]*4}
                         action=proportional_drive((0.,0.,0.),(0.,0.),(0.,0.),math.pi/2)
                         w,ds=duty([0.,0.,.65*action['turn']]);probe=dict(wheels=w,duration_s=ds)
                         sweep_budget=math.ceil(2*math.pi/abs(command_delta(probe,.1)[2]))
@@ -223,6 +231,13 @@ def run(a):
                     else:
                         if stage=='rescan' and anchor is None:status='MAP_REGISTRATION_REQUIRED';break
                         stage='pickup';events.append(dict(t=t,event='map_to_teacher_handoff',student=False,navigation_before_handoff=False))
+            elif stage=='sweep_pose':
+                from harness.e2e_rgb_vo import PARAMS
+                cmd=dict(t=t,wheels=[0.]*4,duration_s=[0.]*4,pwm=sweep_pose)
+                # OWN issued ramp targets + inherited unloaded settling gate;
+                # no measured joint, camera pose or physical success feedback.
+                if all(servo[int(k)]==v for k,v in sweep_pose.items()) and t-camera_stream.since+1e-8>=PARAMS['settle_s'][0]:
+                    stage='body_sweep';events.append(dict(t=t,event='fixed_folded_sweep_pose_issued_settled',pwm=sweep_pose))
             elif stage=='body_sweep':
                 sweep_angle+=float(increment[2]);sweep_ticks+=1
                 action=proportional_drive((0.,0.,0.),(0.,0.),(0.,0.),math.pi/2)
@@ -288,4 +303,5 @@ if __name__=='__main__':
     p.add_argument('--record-native-contact',action='store_true',help='recording only; native force evaluator never feeds commands')
     p.add_argument('--map-correction',action='store_true',help='default off selfmap_map_correction_v1; mapbuild8 lease required')
     p.add_argument('--sweep-model',type=Path,help='default off frozen own-VO sweep response; never evaluation data')
+    p.add_argument('--sweep-camera-folded',action='store_true',help='default off; existing FOLDED command pose, settle before body sweep')
     run(p.parse_args())
