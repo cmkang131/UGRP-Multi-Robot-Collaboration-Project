@@ -1,0 +1,326 @@
+{
+  "schema": "ugrp.scenario_v7.offline_summary.v1",
+  "status": "passed",
+  "source_base_sha": "0f92bb93458ae205d417ad557ab0ec585cabb2e4",
+  "source_branch": "codex/scenarios-v7-nocrate",
+  "verification_scope": "offline authored slots/walls/cargo/idle spawns; team start/landing footprint and passage width only; zone/cargo/contact XML with stubbed native robot/dispatch template; four-condition requests and config/resolved hashes",
+  "scenarios": 8,
+  "seeds": 24,
+  "cargo_before": 33,
+  "cargo_after": 33,
+  "required_robot_jobs_before": 40,
+  "required_robot_jobs_after": 40,
+  "heavy_crates_before": 3,
+  "heavy_crates_after": 0,
+  "previous_scenario_files_unchanged": true,
+  "scenario_defaults_unchanged": true,
+  "test_command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_zone_study_scenarios_v7.py",
+  "test_attempts": [
+    {
+      "attempt": "initial",
+      "tests": 3,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "duration_s": 1.171,
+      "timestamp": "2026-10-15T19:12:36.865981+09:00",
+      "note": "test assertion treated vocabulary IDs as cargo kinds; corrected test expectation",
+      "raw": {
+        "path": "/Users/changmin/projects/ugrp/outputs/scenario-v7-nocrate/pytest-initial.xml",
+        "sha256": "45493c6bfb1d45c27aa1af5e930355f194143840579c9491def1c58b64952672"
+      }
+    },
+    {
+      "attempt": "final",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "duration_s": 1.066,
+      "timestamp": "2026-10-15T19:13:17.606782+09:00",
+      "note": "passed",
+      "raw": {
+        "path": "/Users/changmin/projects/ugrp/outputs/scenario-v7-nocrate/pytest-final.xml",
+        "sha256": "2dc66f6f7c3bae88f193d728e2bc49604d9af8541035c3a3e97f8c111e36d26f"
+      }
+    },
+    {
+      "attempt": "verified",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "duration_s": 1.054,
+      "timestamp": "2026-10-15T19:13:58.204371+09:00",
+      "note": "passed; added XML quaternion check",
+      "raw": {
+        "path": "/Users/changmin/projects/ugrp/outputs/scenario-v7-nocrate/pytest-verified.xml",
+        "sha256": "52d4affe63b12f1484206cfe98bbce304db5a229467b4c600c5d4f70516a30e2"
+      }
+    }
+  ],
+  "failure_reason_distribution_before_test_fix": [
+    {
+      "category": "test_vocabulary_expectation",
+      "count": 1,
+      "blocked_object": "not_applicable_test_assertion",
+      "minimum_gap_m": "not_applicable_test_assertion"
+    }
+  ],
+  "static_rejections": [],
+  "scenarios_checked": [
+    {
+      "scenario_id": "s1_normal_mixed_v7",
+      "cargo_count": 7,
+      "required_robot_jobs": 8,
+      "config_sha256": "0db3ef7f496c62f2eafd8f3f55512dd9c7a78216e4ef648d3333b8f21c6b40fa",
+      "v6_config_sha256": "05d9e38403a4445834aed7ba0c5c2908b4de918f221493960303ce15a00e29bb",
+      "resolved_scene_sha256": "dcbc9b93e7f4f432ba97e3e0ba9fc088b6dd86a1b01fdb7d0857e2a2450da904",
+      "v6_resolved_scene_sha256": "f67a340866e87a71079721634266c109525b29b2fcddd039c60d4a9273d9e6b1",
+      "static_validation": "passed"
+    },
+    {
+      "scenario_id": "s2_unmapped_blockage_v7",
+      "cargo_count": 4,
+      "required_robot_jobs": 5,
+      "config_sha256": "a92d3251f9696b250b2e8e728bc17127c9a414eed67050f5525e1aceb72cbe70",
+      "v6_config_sha256": "5d3c97d20caa04598ed1e9780b2174e1ea5fa98aa5ffe4b8d6a2cfb419c09ed0",
+      "resolved_scene_sha256": "9675fc9a80f9ce3e3a9232be1e1e82f93671037ae9a66b44ef71d470e7b1006a",
+      "v6_resolved_scene_sha256": "2acf74f359e1afd66f87c41a82539e2740d304858588e2ece8ab33fec486b4a0",
+      "static_validation": "passed"
+    },
+    {
+      "scenario_id": "s3_late_rendezvous_v7",
+      "cargo_count": 4,
+      "required_robot_jobs": 5,
+      "config_sha256": "a52266dd6314ddbb911667bc233e0cb8e8d5a1b869028469be89bb698843e534",
+      "v6_config_sha256": "bc0bac5f03d630270583fdd34ce3febf14607a8dfc6c94e9155cd1c6be165d6a",
+      "resolved_scene_sha256": "1cd252fb5518c96ab819d20b570cf8beb2173d0ced0d773e8939d82cee677f4a",
+      "v6_resolved_scene_sha256": "612457f0276382c845c4006b91bc3f72380f97628b0b68004214e58e18f6b8e1",
+      "static_validation": "passed"
+    },
+    {
+      "scenario_id": "s4_narrow_door_standoff_v7",
+      "cargo_count": 4,
+      "required_robot_jobs": 5,
+      "config_sha256": "cf246279aeb5673ef151197890725292488ba5b408215e20d3a7aea5de260397",
+      "v6_config_sha256": "eeb9c7de14a863cf679b4af5a9f41fd88ab18bce446470d904737f17060731b9",
+      "resolved_scene_sha256": "3853197f51937cb08716793ab5cf340cc04cd379ce5a8cbedd716273aaed1344",
+      "v6_resolved_scene_sha256": "907d62931a9008f81c7897196bc2a1be9011b70bde93d452e87be5e66f76ee1d",
+      "static_validation": "passed"
+    },
+    {
+      "scenario_id": "s5_moved_dropped_item_v7",
+      "cargo_count": 4,
+      "required_robot_jobs": 4,
+      "config_sha256": "38c812c6c6d51176010fd99745f0a4f1ce0af3be9331ace2df0896f183bd5ffd",
+      "v6_config_sha256": "851b303165545b0e3b03d8800a17b60a30788662259d068707811efc4f835460",
+      "resolved_scene_sha256": "c7ce6e4051908eae35931ae614df119082a34ff66c68862d4b0cf59de3e657b3",
+      "v6_resolved_scene_sha256": "8aad8f18f775f468fb433504217b45c79e7aa29390c6b57216eb200661fd7234",
+      "static_validation": "passed"
+    },
+    {
+      "scenario_id": "s6_novel_relation_v7",
+      "cargo_count": 3,
+      "required_robot_jobs": 4,
+      "config_sha256": "28d682682d0638719836a383fbf107a1a968f867a3a15c9d278b259ef9558c9a",
+      "v6_config_sha256": "b9b8ba004604bd4f5ba79d3de666673c67f480426604894512dfc286741a46e0",
+      "resolved_scene_sha256": "1239ff2c877962819f66c3f445f2aa650c1b1acf1d9f57382c97230d69de1f34",
+      "v6_resolved_scene_sha256": "ae947f2b5451988bffecf29ad08dcbc16f3b4b75c3e0a9e351cdbc4db4cb7750",
+      "static_validation": "passed"
+    },
+    {
+      "scenario_id": "s7_pair_with_solo_v7",
+      "cargo_count": 3,
+      "required_robot_jobs": 4,
+      "config_sha256": "96896eaa9b01163180eb4ddbbbd44bad9855af57a3993eec298f826346ca642e",
+      "v6_config_sha256": "119ad1bac26def359c42526b25606ca731bb5f8c6920a7fdec6091ece95a4970",
+      "resolved_scene_sha256": "0abf45827944168407b54fb4893cf46480e6b06e42e551048b456479c85ddc99",
+      "v6_resolved_scene_sha256": "5f36ad284c9742d4bb3a22c3bfe41e531fd61eb55eae7c4a093fd5478c98c1c9",
+      "static_validation": "passed"
+    },
+    {
+      "scenario_id": "s8_mixed_tiers_v7",
+      "cargo_count": 4,
+      "required_robot_jobs": 5,
+      "config_sha256": "a3d0785d9ec05a18b5175b3af04ef89236f5189baa982ea03a793fcd6586c267",
+      "v6_config_sha256": "2f3a8b9b8ed09670989806fa298f5d0e4117076565399d17f245af72ff617c91",
+      "resolved_scene_sha256": "6a09294be5b3a1f437d5e96bad76edec2d655b6aeb054197b1a6c4325608e74a",
+      "v6_resolved_scene_sha256": "a0953d520488a283398b0ec3d16b02b6512b70f1418c9f0287e37f30850cfe52",
+      "static_validation": "passed"
+    }
+  ],
+  "replacements": [
+    {
+      "scenario_id": "s2_unmapped_blockage_v7",
+      "order_id": "order-3",
+      "old_item_id": "crate_1",
+      "new_item_id": "beam_1",
+      "slot": "P2-1",
+      "pose_m": [
+        1.275,
+        -2.15,
+        1.5708
+      ],
+      "nearest_wall": {
+        "object_name": "wall_south",
+        "minimum_gap_m": 0.675
+      },
+      "nearest_other_cargo": {
+        "object_name": "green_1",
+        "minimum_gap_m": 1.289435
+      },
+      "landing_pose_m": [
+        4.6,
+        -2.1,
+        1.5707963267948966
+      ],
+      "landing_zone": "B",
+      "landing_edge_clearance_xy_m": [
+        0.28,
+        0.4
+      ],
+      "start_and_landing_team_footprint": "passed",
+      "passage_widths": {
+        "door_narrow": {
+          "opening_m": 0.5,
+          "min_footprint_width_m": 0.27,
+          "fits": true,
+          "lanes": 1,
+          "mouth_m": 0.5
+        },
+        "door_wide": {
+          "opening_m": 1.0,
+          "min_footprint_width_m": 0.27,
+          "fits": true,
+          "lanes": 2,
+          "mouth_m": 0.5
+        }
+      }
+    },
+    {
+      "scenario_id": "s7_pair_with_solo_v7",
+      "order_id": "order-1",
+      "old_item_id": "crate_1",
+      "new_item_id": "beam_1",
+      "slot": "P2-1",
+      "pose_m": [
+        1.275,
+        -2.15,
+        1.5708
+      ],
+      "nearest_wall": {
+        "object_name": "wall_south",
+        "minimum_gap_m": 0.675
+      },
+      "nearest_other_cargo": {
+        "object_name": "red_1",
+        "minimum_gap_m": 1.482959
+      },
+      "landing_pose_m": [
+        4.6,
+        -2.1,
+        1.5707963267948966
+      ],
+      "landing_zone": "B",
+      "landing_edge_clearance_xy_m": [
+        0.28,
+        0.4
+      ],
+      "start_and_landing_team_footprint": "passed",
+      "passage_widths": {
+        "door_narrow": {
+          "opening_m": 0.5,
+          "min_footprint_width_m": 0.27,
+          "fits": true,
+          "lanes": 1,
+          "mouth_m": 0.5
+        },
+        "door_wide": {
+          "opening_m": 1.0,
+          "min_footprint_width_m": 0.27,
+          "fits": true,
+          "lanes": 2,
+          "mouth_m": 0.5
+        }
+      }
+    },
+    {
+      "scenario_id": "s8_mixed_tiers_v7",
+      "order_id": "order-3",
+      "old_item_id": "crate_1",
+      "new_item_id": "beam_1",
+      "slot": "P1-1",
+      "pose_m": [
+        0.125,
+        -2.15,
+        1.5708
+      ],
+      "nearest_wall": {
+        "object_name": "wall_south",
+        "minimum_gap_m": 0.675
+      },
+      "nearest_other_cargo": {
+        "object_name": "cyan_1",
+        "minimum_gap_m": 2.537157
+      },
+      "landing_pose_m": [
+        4.6,
+        -2.1,
+        1.5707963267948966
+      ],
+      "landing_zone": "B",
+      "landing_edge_clearance_xy_m": [
+        0.28,
+        0.4
+      ],
+      "start_and_landing_team_footprint": "passed",
+      "passage_widths": {
+        "door_narrow": {
+          "opening_m": 0.5,
+          "min_footprint_width_m": 0.27,
+          "fits": true,
+          "lanes": 1,
+          "mouth_m": 0.5
+        },
+        "door_wide": {
+          "opening_m": 1.0,
+          "min_footprint_width_m": 0.27,
+          "fits": true,
+          "lanes": 2,
+          "mouth_m": 0.5
+        }
+      }
+    }
+  ],
+  "physics_runs": 0,
+  "render_runs": 0,
+  "model_calls": 0,
+  "gcp_runs": 0,
+  "route_search_runs": 0,
+  "files_sha256": {
+    "configs/zone_study_scenarios_v6/s1_normal_mixed_v6.json": "60658759233af5b76d1556e376d4f058d759291200574aea150777165e764db1",
+    "configs/zone_study_scenarios_v7/s1_normal_mixed_v7.json": "c2668a46829d516530c0b31e7d0855c928e78df61e43d9982974cc9fbfc101c9",
+    "configs/zone_study_scenarios_v6/s2_unmapped_blockage_v6.json": "4b90fcbfe271806eb96374be6011fa6ffd6b7592d018199f68780fb286362882",
+    "configs/zone_study_scenarios_v7/s2_unmapped_blockage_v7.json": "5f8547085a01d36de99e7307126bc3a60da9245002a5f8f455e2f83950ab4f07",
+    "configs/zone_study_scenarios_v6/s3_late_rendezvous_v6.json": "94d65065ed819bee3ccb68050bef5d5cc560b416b5db8acf5ba8b3a7ec8154ef",
+    "configs/zone_study_scenarios_v7/s3_late_rendezvous_v7.json": "3134d6691a934f7c6b48e30bb3ea7514d18497cae62f01cad7e57d7912f88af1",
+    "configs/zone_study_scenarios_v6/s4_narrow_door_standoff_v6.json": "344f536e11d56969239cecb3ed44ab94a062abe1e4b71eea965899bcf4850404",
+    "configs/zone_study_scenarios_v7/s4_narrow_door_standoff_v7.json": "3a5140a3a713f36d9f06af39f395652d64f47f7e33072e8b71b7dcb695531136",
+    "configs/zone_study_scenarios_v6/s5_moved_dropped_item_v6.json": "cd4b4050d07cd3587a91e5e4456e43fbdaeff4af6cf75c7ec43d3496c3da32f5",
+    "configs/zone_study_scenarios_v7/s5_moved_dropped_item_v7.json": "cc04434cb80175fb7d5b264012e48f7f098aa606ed8c8ccb2e85cf17a7b271dc",
+    "configs/zone_study_scenarios_v6/s6_novel_relation_v6.json": "51080fd635fbc57dab266f885187d8db8ba8f466215926a1257c260732ea3aaf",
+    "configs/zone_study_scenarios_v7/s6_novel_relation_v7.json": "5088a5b00e2c718b4cd82429996a03b4e937bbf8827297400a8fa7b3a0cc76db",
+    "configs/zone_study_scenarios_v6/s7_pair_with_solo_v6.json": "09ec8d239029fffe899f325f3dc98f619a0e8f0f625c3835a1b979f09808c45a",
+    "configs/zone_study_scenarios_v7/s7_pair_with_solo_v7.json": "6382011a64cc0eea17edbdfe8b44fbd070a54467afc6b4db547c42dbd28df6f7",
+    "configs/zone_study_scenarios_v6/s8_mixed_tiers_v6.json": "cc06bf1bd37049c68e46cd3abd4fda06a5a1d94d64fbd8fbf191a669b62c36d1",
+    "configs/zone_study_scenarios_v7/s8_mixed_tiers_v7.json": "46137e3c3a154d7ce6c05f79ed8adfeb24b231bdd278ca204c2b5001bc8b7c12",
+    "harness/zone_environment_registry.py": "bdccc8f9854cc47203268d5a3a33e4fe255bcc49f6392abce48d5471c5ebf971",
+    "harness/zone_study_inputs.py": "e8c507cff0af361a3931b32e4d221c05f7a98b713eddebd11dca058ab323edb6",
+    "sim/zone_scenario_scene.py": "5e0e2cb1fb4d9328f361e6cb075b71bd9b8fcc806c26ff571c926b53499737d4",
+    "scripts/run_ci_tests.py": "539af5328eed89daa6b7f54b05d9abb3ecf7eb2fb1a27bacb97ee6bf541733c5",
+    "configs/simulation_workflows.json": "2d286bf404b3edbb5eb7157bbabfd5c6e58ef509a35406265fb6940bd94defa2",
+    "tests/test_zone_study_scenarios_v7.py": "59dc2f32cd9b4554e2e481a295443c54027c94b1abcd13c6d81de2c305120653",
+    "experiments/2026-10-15-scenario-v7/build_v7.py": "dd05855022cf6548e55c79590ec6553a09931795b395b5517acfedb0c0ebd075"
+  }
+}

@@ -1,6 +1,6 @@
-"""GCP simulation host lifecycle (project ugrp-act-train-1014 only).
+"""Configured GCP simulation host lifecycle (gcp2 by default).
 
-Every gcloud call names the project. VMs are created with an 8 h hard cap, STOP on
+Every gcloud call names the account and project. Simulation VMs have a 24 h cap, STOP on
 termination, no service account (no cloud credentials on the VM) and the 20-minute
 idle guard from gcp_idle_guard_startup.sh. Stop refuses while a lease or a simulation
 process exists. Cost cut-off: the existing budget -> Pub/Sub -> budget-stop function
@@ -8,34 +8,50 @@ stops every VM in the project; this module does not touch it.
 """
 import argparse
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
 
-PROJECT = 'ugrp-act-train-1014'
-# ssh alias -> (instance, zone, machine type, boot disk type)
-GCP_HOSTS = {'gcp1': ('ugrp-sim-gcp1', 'asia-northeast3-a', 'n4-highcpu-64', 'hyperdisk-balanced')}
-IMAGE = 'ugrp-sim-bench-c1f02ac0'
+CONFIG = Path(os.environ.get('UGRP_GCP_CONFIG', Path(__file__).resolve().parents[1] / 'configs/gcp_hosts.json'))
+SETTINGS = json.loads(CONFIG.read_text())
+GCP_HOSTS = SETTINGS['hosts']
+DEFAULT_HOST = SETTINGS['default_host']
 STARTUP = Path(__file__).with_name('gcp_idle_guard_startup.sh')
 
 
 def target(host):
     if host not in GCP_HOSTS:
         raise ValueError('Unknown GCP host')
-    return GCP_HOSTS[host]
+    cfg = GCP_HOSTS[host]
+    return tuple(cfg[key] for key in ('instance', 'zone', 'machine', 'disk_type'))
 
 
-def gcloud(*args, capture=False):
-    command = ['gcloud', *args, '--project', PROJECT]
+def require_lifecycle(host):
+    target(host)
+    if not GCP_HOSTS[host]['lifecycle_enabled']:
+        raise RuntimeError(f'{host}: lifecycle disabled; preserve the stopped VM and disk after budget stop')
+
+
+def gcloud(*args, capture=False, host=DEFAULT_HOST):
+    cfg = GCP_HOSTS[host]
+    command = ['gcloud', *args, '--account', cfg['account'], '--project', cfg['project']]
     return subprocess.run(command, check=True, capture_output=capture, text=capture)
 
 
-def create_command(host, public_key, machine=None, image=IMAGE):
+def create_command(host, public_key, machine=None, image=None):
+    require_lifecycle(host)
+    cfg = GCP_HOSTS[host]
     name, zone, default_machine, disk = target(host)
-    return ['gcloud', 'compute', 'instances', 'create', name, '--project', PROJECT, '--zone', zone,
-            '--machine-type', machine or default_machine, '--image', image,
-            '--boot-disk-size', '150GB', '--boot-disk-type', disk,
-            '--max-run-duration=8h', '--instance-termination-action=STOP',
+    image_args = ['--image', image or cfg['image']] if image or cfg.get('image') else [
+        '--image-family', cfg['image_family'], '--image-project', cfg['image_project']]
+    # 24h: 2026-10-15 user decision, inherited by gcp2. 400GB: see gcp2setup disk plan.
+    return ['gcloud', 'compute', 'instances', 'create', name, '--account', cfg['account'],
+            '--project', cfg['project'], '--zone', zone,
+            '--machine-type', machine or default_machine, *image_args,
+            '--boot-disk-size', f"{cfg['disk_gb']}GB", '--boot-disk-type', disk,
+            '--provisioning-model=STANDARD',
+            f"--max-run-duration={cfg['max_run_duration']}", '--instance-termination-action=STOP',
             '--no-service-account', '--no-scopes',
             '--metadata-from-file', f'startup-script={STARTUP}',
             '--metadata', f'ssh-keys=ugrp:{public_key},block-project-ssh-keys=true',
@@ -45,7 +61,7 @@ def create_command(host, public_key, machine=None, image=IMAGE):
 def status(host):
     name, zone, *_ = target(host)
     out = gcloud('compute', 'instances', 'describe', name, '--zone', zone,
-                 '--format=json(status,machineType,networkInterfaces[0].accessConfigs[0].natIP)', capture=True).stdout
+                 '--format=json(status,machineType,networkInterfaces[0].accessConfigs[0].natIP)', capture=True, host=host).stdout
     data = json.loads(out)
     nics = data.get('networkInterfaces') or [{}]
     ip = ((nics[0].get('accessConfigs') or [{}])[0]).get('natIP')
@@ -64,13 +80,15 @@ def guest_busy(host):
 
 
 def start(host):
+    require_lifecycle(host)
     name, zone, *_ = target(host)
     if status(host)[0] != 'RUNNING':
-        gcloud('compute', 'instances', 'start', name, '--zone', zone)
+        gcloud('compute', 'instances', 'start', name, '--zone', zone, host=host)
     print(f'{host}: RUNNING ip={external_ip(host)}', flush=True)
 
 
 def stop(host, force=False):
+    require_lifecycle(host)
     name, zone, *_ = target(host)
     state = status(host)[0]
     if state in ('TERMINATED', 'STOPPED'):
@@ -78,10 +96,10 @@ def stop(host, force=False):
         return
     if not force and guest_busy(host):
         # Same contract as azctl stop: never stop under a live job; the VM idle guard and
-        # the 8 h cap remain the backstops.
+        # the configured runtime cap remain the backstops.
         print('Leases or simulation processes present; stop deferred')
         return 75
-    gcloud('compute', 'instances', 'stop', name, '--zone', zone)
+    gcloud('compute', 'instances', 'stop', name, '--zone', zone, host=host)
     print(f'{host}: stopped (disk kept)')
 
 
@@ -114,17 +132,17 @@ def proxy(host, port):
 SSH_CONFIG = """Host {host}
   HostName {host}
   User ugrp
-  IdentityFile ~/.ssh/ugrp_gcp1
+  IdentityFile {identity_file}
   IdentitiesOnly yes
   StrictHostKeyChecking accept-new
-  ProxyCommand python3 {script} proxy {host} %p
+  ProxyCommand env UGRP_GCP_CONFIG={config} python3 {script} proxy {host} %p
 """
 
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('action', choices=['status', 'start', 'stop', 'create', 'proxy', 'ssh-config'])
-    parser.add_argument('host', nargs='?', default='gcp1')
+    parser.add_argument('host', nargs='?', default=DEFAULT_HOST)
     parser.add_argument('port', nargs='?')
     parser.add_argument('--pubkey', type=Path, help='create: public key file (private key stays on the Mac)')
     parser.add_argument('--machine', help='create: override machine type')
@@ -141,7 +159,8 @@ def main(argv=None):
     elif args.action == 'proxy':
         proxy(args.host, args.port or 22)
     else:
-        print(SSH_CONFIG.format(host=args.host, script=Path(__file__).resolve()))
+        print(SSH_CONFIG.format(host=args.host, script=Path(__file__).resolve(),
+                               config=CONFIG.resolve(), identity_file=GCP_HOSTS[args.host]['identity_file']))
 
 
 if __name__ == '__main__':
