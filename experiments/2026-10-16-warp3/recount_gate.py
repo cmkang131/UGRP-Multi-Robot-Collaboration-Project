@@ -4,8 +4,10 @@ from collections import Counter
 import hashlib
 import importlib.util
 import json
+import math
 from pathlib import Path
 import subprocess
+import sys
 
 
 def rows(path):
@@ -19,8 +21,12 @@ def exists(path):
     return path.exists() or Path(str(path)+'.zst').exists()
 
 
+def read_bytes(path):
+    return path.read_bytes() if path.exists() else subprocess.check_output(['zstd','-dc',str(path)+'.zst'])
+
+
 def read_json(path):
-    return json.loads(path.read_bytes() if path.exists() else subprocess.check_output(['zstd','-dc',str(path)+'.zst']))
+    return json.loads(read_bytes(path))
 
 
 def digest(path, root, manifest):
@@ -34,15 +40,26 @@ def digest(path, root, manifest):
 def main():
     p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True)
     p.add_argument('--teacher-source',type=Path,required=True);p.add_argument('--out',type=Path,required=True)
+    p.add_argument('--groups',help='closed group IDs for a partial audit; default all7; never qualifies fewer than40 episodes')
     a=p.parse_args()
+    groups=[int(x) for x in a.groups.split(',')] if a.groups else list(range(7))
+    if not groups or len(set(groups))!=len(groups) or not set(groups)<=set(range(7)):
+        p.error('unique group IDs0..6 required')
     spec=importlib.util.spec_from_file_location('warp3_recount_score',a.teacher_source/'sim/grasp_act_solo_evaluation.py')
     module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
-    results=[];attempts=[];reasons=Counter();kinds={};sources=set();profiles=[];all_groups_complete=True
-    for group in range(7):
+    results=[];attempts=[];reasons=Counter();kinds={};sources=set();profiles=[]
+    all_groups_complete=len(groups)==7;inventory_expected=0;manifests=[]
+    for group in groups:
         root=a.root/f'teacher-r1-group{group}'
         summary=read_json(root/'summary.json');sources.add(summary['source_sha'])
         if summary['status']=='running':raise RuntimeError('unfinished group: '+str(group))
         all_groups_complete &= summary['status']=='complete'
+        inventory_expected+=summary['nworld']
+        for rel,expected in summary['sha256'].items():
+            if hashlib.sha256((root/rel).read_bytes()).hexdigest()!=expected:
+                raise ValueError('final artifact manifest mismatch: '+str(root/rel))
+        manifests.append(dict(group=group,files=len(summary['sha256']),mismatch=0,
+            summary_sha256=hashlib.sha256(read_bytes(root/'summary.json')).hexdigest()))
         if summary['physics_backend']!='mjwarp_batch_v1':raise ValueError('non-Warp cohort')
         if not summary.get('gate_eligible') or summary.get('gate_admission',{}).get('status')!='APPROVED_PINNED':
             raise ValueError('unapproved gate cohort')
@@ -82,6 +99,8 @@ def main():
             fields=('min_z','support_z','tilt_deg','finger_forces','speed','open_issued','placement_offset','weld_active')
             for ev,command in zip(evaluation,commands):
                 if ev['t']!=command['t']:raise ValueError('evaluation/command clock mismatch')
+                numeric=[ev[k] for k in ('t','min_z','support_z','tilt_deg','speed','placement_offset')]+ev['finger_forces']
+                if not all(math.isfinite(value) for value in numeric):raise ValueError('nonfinite evaluation sample')
                 score.add(ev['t'],**{k:ev[k] for k in fields})
             command_complete=any(c['phase']=='complete' for c in commands)
             physical=score.record(command_complete)
@@ -112,12 +131,14 @@ def main():
     cameras=[profile['camera'] for profile in profiles if profile['camera'] is not None]
     if cameras and any(camera!=cameras[0] for camera in cameras[1:]):raise ValueError('mixed camera cohort')
     attempted_seeds=[r['seed'] for r in attempts]
-    if len(attempted_seeds)!=40 or len(set(attempted_seeds))!=40:raise ValueError('attempt inventory must contain40 independent seeds')
+    if len(attempted_seeds)!=inventory_expected or len(set(attempted_seeds))!=inventory_expected:
+        raise ValueError('selected attempt inventory must contain independent seeds')
+    if len(groups)==7 and inventory_expected!=40:raise ValueError('full gate inventory must contain40 seeds')
     seeds=[r['seed'] for r in results]
     if len(seeds)!=len(set(seeds)):raise ValueError('replicated seeds cannot increase N')
     n=sum(r['physical_success'] for r in results);N=len(results)
-    funnel=[dict(gate='requested_independent_seeds',passed=40,rejected=0),
-        dict(gate='completed_valid_ledger',passed=N,rejected=40-N),
+    funnel=[dict(gate='selected_independent_seeds',passed=inventory_expected,rejected=0),
+        dict(gate='completed_valid_ledger',passed=N,rejected=inventory_expected-N),
         dict(gate='visible_only_input_audit',passed=N,rejected=0),
         dict(gate='stable_physical_lift',passed=sum(r['lift_success'] for r in results),rejected=sum(not r['lift_success'] for r in results)),
         dict(gate='stable_setdown_after_lift',passed=sum(r['lift_success'] and r['release_success'] for r in results),
@@ -125,12 +146,15 @@ def main():
         dict(gate='command_complete_and_physical',passed=n,
             rejected=sum(r['lift_success'] and r['release_success'] and not r['command_complete'] for r in results))]
     report=dict(source_sha=next(iter(sources)),n=n,N=N,requested=40,passed=all_groups_complete and N==40 and n/N>=.95,
+        minimum_independent_episodes=40,required_success_rate=.95,
+        selected_groups=groups,selected_requested=inventory_expected,manifests=manifests,
         cap_end=sum(r['cap_end'] for r in results)+sum(bool(r.get('cap_end')) for r in attempts if not r['valid_teacher_episode']),
         behavior_cap_end=sum(r['cap_end'] for r in results),
         resource_cap_end=sum(bool(r.get('cap_end')) for r in attempts if not r['valid_teacher_episode']),
         HOST_ERROR=sum(not r['valid_teacher_episode'] and (r['status']=='HOST_ERROR' or r['group_status']=='HOST_ERROR') for r in attempts),
         per_kind=kinds,reasons=dict(reasons),funnel=funnel,rows=results,attempts=attempts,cohort=profiles[0],
-        scope='raw own-command and GPU evaluation ledger recount; playback review required separately; no C/GCP1 pooling')
+        reproduce=['python3',str(Path(__file__).resolve()),*sys.argv[1:]],
+        scope='raw own-command and GPU evaluation ledger recount; partial groups cannot qualify40 gate; playback review required separately; no C/GCP1 pooling')
     a.out.write_text(json.dumps(report,indent=2)+'\n')
     print(json.dumps({k:v for k,v in report.items() if k not in ('rows','attempts')},indent=2))
 
