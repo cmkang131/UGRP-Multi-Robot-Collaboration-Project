@@ -27,12 +27,24 @@ def main(a):
     X=np.asarray(X); y=np.asarray(yaw); q=np.asarray(translation)
     if len(X)<4 or np.linalg.matrix_rank(X)!=2:
         raise ValueError('OWN_MOTION_DESIGN_RANK_DEFICIENT')
-    a1,a2=nnls(X,y)[0]
+    # Rotation response dispersion comes from the frozen R2 own-RGB repeated
+    # command distribution, not only the optimistic within-frame LK fit noise.
+    command=json.loads(a.command_calibration.read_text())
+    if command['schema']!='ugrp.mapbuild8.own_command_motion.v1':raise ValueError('OWN_REPEAT_CALIBRATION_REQUIRED')
+    mean=np.asarray(command['mean_delta']); P=np.asarray(command['predictive_covariance'])
+    turn=float(mean[2]**2)
+    if turn<=0:raise ValueError('REPEAT_TURN_REQUIRED')
+    a1=float(P[2,2]/turn)
+    a4=float(np.trace(P[:2,:2])/turn)
+    # Translation channels: nonnegative fit to remaining own reported LK
+    # variance. These short rotation recordings do not qualify loaded travel.
+    a2=float(nnls(X[:,1,None],np.maximum(0,y-X[:,0]*a1))[0][0])
     # Var(trans_hat)=alpha3*trans^2+alpha4*(rot1_noise^2+rot2_noise^2).
-    a3,a4=nnls(np.column_stack((X[:,1]/2,X[:,0])),q)[0]
+    a3=float(nnls((X[:,1]/2)[:,None],np.maximum(0,q-X[:,0]*a4))[0][0])
+    sources[str(a.command_calibration)]=hashlib.sha256(a.command_calibration.read_bytes()).hexdigest()
     out=dict(schema='ugrp.mapbuild9.own_amcl_noise.v1',alphas=[a1,a2,a3,a4],truth_inputs=0,
         sources=sources,counts=counts,rows=len(X),design_rank=int(np.linalg.matrix_rank(X)),
-        covariance_scope='NNLS to reported own-LK rigid-fit covariance, not odometry ground-truth residuals; systematic bias not calibrated',
+        covariance_scope='alpha1/4 from R2 raw own-LK repeated-command predictive dispersion divided by mean yaw squared; alpha2/3 nonnegative fit to remaining R1/R2 LK reported variance; no ground-truth residuals or load calibration',
         residual_rms=dict(yaw_variance=float(np.sqrt(np.mean((X@[a1,a2]-y)**2))),
             translation_variance=float(np.sqrt(np.mean((np.column_stack((X[:,1]/2,X[:,0]))@[a3,a4]-q)**2)))),
         scope='R1/R2 calibration; R3 held out; no claim that regression residuals are real motion error',reproduction=__import__('sys').argv)
@@ -41,4 +53,4 @@ def main(a):
 
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--inputs',nargs='+',type=Path,required=True);p.add_argument('--output',type=Path,required=True);main(p.parse_args())
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--inputs',nargs='+',type=Path,required=True);p.add_argument('--command-calibration',type=Path,required=True);p.add_argument('--output',type=Path,required=True);main(p.parse_args())
