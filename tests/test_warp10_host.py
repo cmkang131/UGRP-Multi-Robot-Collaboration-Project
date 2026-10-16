@@ -2,7 +2,7 @@
 from types import SimpleNamespace
 import numpy as np
 import pytest
-from scripts.warp10_host import Readback,device_reads,blend_staged,command_tapes,EvaluationExport
+from scripts.warp10_host import Readback,device_reads,blend_staged,command_tapes,EvaluationExport,destination_recorder
 from scripts.warp5_render import blend_native
 from scripts.warp_act_core import control_tape
 from scripts.warp9_first30 import summarize
@@ -89,6 +89,21 @@ def test_evaluation_reads_each_array_once_for_all_worlds_and_refreshes_next_tick
             np.testing.assert_array_equal(result['one'],result['two'])
     assert len(transfers)==4  # two arrays x two ticks, independent of world count
     assert e.audit()['actor_reads']==0
+
+
+def conditional_export(result,model,d,world_id=0):
+    result.qpos[:]=d.qpos.numpy()[world_id]
+    if model.discrete:result.efm_c[:]=d.efm_c.numpy()[world_id]
+
+
+def test_audit_records_executed_export_destinations_not_unused_copy_workspace():
+    writes=set();fn=destination_recorder(conditional_export,writes.add)
+    d=SimpleNamespace(qpos=Array((1,3)),efm_c=Array((1,3)))
+    result=SimpleNamespace(qpos=np.zeros(3),efm_c=np.ones(3)*999)
+    fn(result,SimpleNamespace(discrete=False),d)
+    assert writes=={('qpos',)} and np.all(result.efm_c==999)
+    fn(result,SimpleNamespace(discrete=True),d)
+    assert writes=={('qpos',),('efm_c',)}
 
 
 def test_per_execution_gate_does_not_drop_batch_measurement():

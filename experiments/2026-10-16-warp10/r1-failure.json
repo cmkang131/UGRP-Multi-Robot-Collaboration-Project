@@ -1,0 +1,77 @@
+{
+  "status": "HOST_ERROR",
+  "source_sha": "5333afaad339446a63697409ad1f86482a4e320b",
+  "errors": [
+    {
+      "category": "HOST_ERROR",
+      "reason": "ValueError('staged evaluator export changed same-state fields')",
+      "blocked_object": "batch_adapter",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/ugrp/ugrp-sim/src/5333afaad-warp10/scripts/run_warp5_batch.py\", line 137, in run\n    transport.initialize(cc,float32_solver_default_v1=q.get('float32_solver_default_v1',False),\n  File \"/home/ugrp/ugrp-sim/src/5333afaad-warp10/scripts/warp5_batch.py\", line 54, in initialize\n    initialize(self,contexts,**kwargs)\n  File \"/home/ugrp/ugrp-sim/src/5333afaad-warp10/scripts/warp7_native_models.py\", line 76, in initialize\n    return namespace['initialize'](transport,contexts,**kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<warp7-native-model-batch>\", line 143, in initialize\n  File \"/home/ugrp/ugrp-sim/src/5333afaad-warp10/scripts/warp5_batch.py\", line 220, in sync_render\n    if not all(row['exact'] for row in self.warp10_export_audit):raise ValueError('staged evaluator export changed same-state fields')\n                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: staged evaluator export changed same-state fields\n"
+    }
+  ],
+  "raw": "/home/ugrp/ugrp-sim/runs/warp10/after-r1/n1",
+  "audit": {
+    "warp10-export-audit.json": [
+      {
+        "world": 0,
+        "checked_arrays": 199,
+        "exact": false,
+        "differences": [
+          "efm_K_rowadr",
+          "efm_K_rownnz",
+          "efm_aid",
+          "efm_ak",
+          "efm_as",
+          "efm_c",
+          "efm_ca",
+          "efm_ck",
+          "efm_diag",
+          "efm_fluid",
+          "efm_sdiag"
+        ]
+      }
+    ],
+    "warp10-rgb-audit.json": [
+      {
+        "camera": "r1",
+        "exact": true,
+        "sha256": "fe8feff64f6cd3412fe92af29205ba1a61d4ee8480d8e2198ef485f7c0bac620",
+        "reference_sha256": "fe8feff64f6cd3412fe92af29205ba1a61d4ee8480d8e2198ef485f7c0bac620"
+      }
+    ]
+  },
+  "sha256": {
+    "/home/ugrp/ugrp-sim/runs/warp10/after-r1/n1/summary.json": "3718a352ba2222464d632b332f6d80a36798b53c96e717422751a195d58c098d",
+    "/home/ugrp/ugrp-sim/runs/warp10/after-r1/n1/groups/52a5c90a90fc5eb4561af2a319cb482d7b8e76e0b40ee7a87b607a3ccf895502/warp10-export-audit.json": "7c84dcffd439f9a88c416ab071287f08d470a2a6414dcfe1110bb6a4ef2de3f6",
+    "/home/ugrp/ugrp-sim/runs/warp10/after-r1/n1/groups/52a5c90a90fc5eb4561af2a319cb482d7b8e76e0b40ee7a87b607a3ccf895502/warp10-rgb-audit.json": "a6fc773b5877c440f5aa01bb600e06b88bc1d46cfcc09e119434dc953f6302ea"
+  },
+  "distribution": [
+    {
+      "category": "audit_scope_unused_efm_workspace",
+      "n": 1,
+      "blocked_object": "MjData copy workspace outside executed get_data_into writes",
+      "minimum_gap_m": null,
+      "gap_scope": "audit_not_physical_gap"
+    }
+  ],
+  "stages": [
+    {
+      "stage": "requested_sizes",
+      "cumulative_pass_n": 4,
+      "rejected_n": 0
+    },
+    {
+      "stage": "submitted_before_stop",
+      "cumulative_pass_n": 1,
+      "rejected_n": 3
+    },
+    {
+      "stage": "initial_same_state_audit",
+      "cumulative_pass_n": 0,
+      "rejected_n": 1
+    }
+  ],
+  "task_valid_trials": 0
+}

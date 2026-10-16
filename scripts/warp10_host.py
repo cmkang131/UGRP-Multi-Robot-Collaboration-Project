@@ -62,6 +62,43 @@ def device_reads(function):
     return sorted(paths),hashlib.sha256(source.encode()).hexdigest()
 
 
+def destination_recorder(function,record):
+    """Track destinations in executed upstream branches, excluding workspaces.
+
+    MjData.__copy__ does not preserve unused EFM workspaces under the ordinary
+    integrator. They are not get_data_into outputs and must not be compared.
+    No tolerance/field-name blacklist replaces this executed-write manifest.
+    """
+    source=textwrap.dedent(inspect.getsource(function));tree=ast.parse(source)
+    parameter=next(iter(inspect.signature(function).parameters))
+    def path(node):
+        while isinstance(node,ast.Subscript):node=node.value
+        parts=[]
+        while isinstance(node,ast.Attribute):parts.append(node.attr);node=node.value
+        return tuple(reversed(parts)) if isinstance(node,ast.Name) and node.id==parameter and parts else None
+    def marked(paths):
+        return [ast.Expr(ast.Call(func=ast.Name(id='__warp10_destination__',ctx=ast.Load()),
+                    args=[ast.Constant(p)],keywords=[])) for p in paths if p]
+    class Writes(ast.NodeTransformer):
+        def visit_Assign(self,node):
+            self.generic_visit(node)
+            return [node,*marked(path(t) for t in node.targets)]
+        def visit_Expr(self,node):
+            self.generic_visit(node)
+            if not isinstance(node.value,ast.Call):return node
+            call=node.value;paths=[path(arg) for arg in call.args]
+            # Upstream's block-factor branch calls mj_factorM, whose outputs
+            # are qLD and qLDiagInv; sparse2dense has no result-array inputs,
+            # while dense2sparse receives its four explicit result outputs.
+            if isinstance(call.func,ast.Attribute) and call.func.attr=='mj_factorM':
+                paths.extend([('qLD',),('qLDiagInv',)])
+            return [node,*marked(paths)]
+    tree=ast.fix_missing_locations(Writes().visit(tree))
+    namespace=dict(function.__globals__,__warp10_destination__=record)
+    exec(compile(tree,'<warp10-executed-export-destinations>','exec'),namespace)
+    return namespace[function.__name__]
+
+
 class EvaluationExport:
     """Same upstream CPU export/contact ordering; no whole-world rereads.
 
@@ -73,6 +110,7 @@ class EvaluationExport:
         self.owner=owner;self.paths,self.source_sha=device_reads(owner.mjw.get_data_into)
         self.readback=Readback(owner.wp,owner,'evaluator');self.values={}
         self.export,self.ast_audit=exporter(owner.mjw.get_data_into,self.read)
+        self.writes=set();self.reference_export=destination_recorder(owner.mjw.get_data_into,self.writes.add)
 
     def read(self,array):
         try:return self.values[id(array)]
@@ -96,23 +134,19 @@ class EvaluationExport:
         rows=[]
         for i,c in enumerate(contexts):
             actual=c['world'].data;reference=copy.copy(actual)
-            self.owner.mjw.get_data_into(reference,c['world'].model,self.owner.wd,world_id=i)
+            self.writes.clear();self.reference_export(reference,c['world'].model,self.owner.wd,world_id=i)
             differences=[];checked=0
-            for name in dir(actual):
-                if name.startswith('_'):continue
-                value=getattr(actual,name)
+            for path in sorted(self.writes):
+                value,other=actual,reference
+                for name in path:value=getattr(value,name);other=getattr(other,name)
                 if isinstance(value,np.ndarray):
-                    other=getattr(reference,name);checked+=1
-                    if value.shape!=other.shape or value.tobytes()!=other.tobytes():differences.append(name)
-            for name in dir(actual.contact):
-                if name.startswith('_'):continue
-                value=getattr(actual.contact,name)
-                if isinstance(value,np.ndarray):
-                    other=getattr(reference.contact,name);checked+=1
-                    if value.shape!=other.shape or value.tobytes()!=other.tobytes():differences.append('contact.'+name)
+                    checked+=1
+                    if value.shape!=other.shape or value.tobytes()!=other.tobytes():differences.append('.'.join(path))
+                elif value!=other:differences.append('.'.join(path))
             for name in ('time','ncon','nefc','nisland','nidof'):
                 if getattr(actual,name)!=getattr(reference,name):differences.append(name)
-            rows.append(dict(world=i,checked_arrays=checked,exact=not differences,differences=differences))
+            rows.append(dict(world=i,checked_arrays=checked,exact=not differences,differences=differences,
+                fields=['.'.join(p) for p in sorted(self.writes)],scope='executed upstream export destinations; no unused MjData workspaces'))
         return rows
 
 
