@@ -1,0 +1,134 @@
+{
+  "cohorts": [
+    {
+      "scope": "original_pair",
+      "raw": [
+        "/home/ugrp/ugrp-sim/runs/drivecheck/cpu312-v2",
+        "/home/ugrp/ugrp-sim/runs/drivecheck/cpu316-v2",
+        "/home/ugrp/ugrp-sim/runs/drivecheck/warp-baseline-v2"
+      ],
+      "stages": [
+        {
+          "stage": "planned_pulses",
+          "cumulative_pass_n": 54,
+          "rejected_n": 0
+        },
+        {
+          "stage": "complete_tapes",
+          "cumulative_pass_n": 54,
+          "rejected_n": 0
+        },
+        {
+          "stage": "initial_nonoverlap",
+          "cumulative_pass_n": 0,
+          "rejected_n": 54
+        }
+      ],
+      "reasons": [
+        {
+          "category": "INITIAL_SCENE_OVERLAP",
+          "reason": "base overlaps cargo before command; diagnostic intentionally reproduces mapbuild2",
+          "blocked_object": "cargo_box_00_geom",
+          "minimum_gap_m": -0.015344881182340743,
+          "basis": "C312 initial original fixture contact record"
+        }
+      ]
+    },
+    {
+      "scope": "clear_overlap_causal",
+      "raw": [
+        "/home/ugrp/ugrp-sim/runs/drivecheck/cpu312-clear-v1",
+        "/home/ugrp/ugrp-sim/runs/drivecheck/cpu316-clear-rgb-v1",
+        "/home/ugrp/ugrp-sim/runs/drivecheck/warp-clear-v2"
+      ],
+      "stages": [
+        {
+          "stage": "planned_pulses",
+          "cumulative_pass_n": 20,
+          "rejected_n": 0
+        },
+        {
+          "stage": "complete_tapes",
+          "cumulative_pass_n": 20,
+          "rejected_n": 0
+        },
+        {
+          "stage": "initial_nonoverlap",
+          "cumulative_pass_n": 20,
+          "rejected_n": 0
+        },
+        {
+          "stage": "no_later_nonfloor_contact",
+          "cumulative_pass_n": 19,
+          "rejected_n": 1
+        }
+      ],
+      "reasons": [
+        {
+          "case": "forward-4",
+          "first_SIM_s": 3.4,
+          "pairs": {
+            "r1__left_finger vs r2__right_finger": 76,
+            "r1__right_finger vs r2__left_finger": 76
+          },
+          "minimum_gap_m": -0.0002943765500998368,
+          "category": "LATER_OBSTACLE_CONTACT",
+          "blocked_object": [
+            "r1__left_finger",
+            "r2__right_finger"
+          ],
+          "reason": "fixed open-loop pulse later reaches another existing robot; not a free-drive calibration trial"
+        }
+      ]
+    },
+    {
+      "scope": "toggle_matrix",
+      "raw": [
+        "/home/ugrp/ugrp-sim/runs/drivecheck/warp-L0D0N0",
+        "/home/ugrp/ugrp-sim/runs/drivecheck/warp-L0D1N0",
+        "/home/ugrp/ugrp-sim/runs/drivecheck/warp-L0D1N1",
+        "/home/ugrp/ugrp-sim/runs/drivecheck/warp-L1D0N0",
+        "/home/ugrp/ugrp-sim/runs/drivecheck/warp-L1D0N1",
+        "/home/ugrp/ugrp-sim/runs/drivecheck/warp-L1D1N0",
+        "/home/ugrp/ugrp-sim/runs/drivecheck/warp-L1D1N1"
+      ],
+      "stages": [
+        {
+          "stage": "planned_pulses",
+          "cumulative_pass_n": 21,
+          "rejected_n": 0
+        },
+        {
+          "stage": "complete_tapes",
+          "cumulative_pass_n": 21,
+          "rejected_n": 0
+        },
+        {
+          "stage": "initial_nonoverlap",
+          "cumulative_pass_n": 0,
+          "rejected_n": 21
+        }
+      ],
+      "reasons": [
+        {
+          "category": "INITIAL_SCENE_OVERLAP",
+          "reason": "base overlaps cargo before command; diagnostic intentionally reproduces mapbuild2",
+          "blocked_object": "cargo_box_00_geom",
+          "minimum_gap_m": -0.015344881182340743,
+          "basis": "C312 initial original fixture contact record"
+        }
+      ]
+    }
+  ],
+  "raw": "/home/ugrp/ugrp-sim/runs/drivecheck",
+  "reproduce": [
+    "/home/ugrp/ugrp-sim/src/drivecheck-analysis/scripts/drivecheck_report.py",
+    "--analysis",
+    "/home/ugrp/ugrp-sim/runs/drivecheck/analysis-final",
+    "--raw",
+    "/home/ugrp/ugrp-sim/runs/drivecheck",
+    "--out",
+    "/home/ugrp/ugrp-sim/runs/drivecheck/review-final"
+  ],
+  "note": "separate cumulative funnels; cap_end means fixed diagnostic tape complete, never task success"
+}

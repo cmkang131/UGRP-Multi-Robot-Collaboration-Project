@@ -33,7 +33,7 @@ def main():
             motor_reference= motor,unit='deg' if row['axis']=='turn' else 'mm',
             min_contact_gap_m=row['min_wheel_floor_contact_gap_m']))
     with (a.out/'pulse-summary.csv').open('w') as f:
-        w=csv.DictWriter(f,fieldnames=list(compact[0]));w.writeheader();w.writerows(compact)
+        w=csv.DictWriter(f,fieldnames=list(compact[0]),lineterminator="\n");w.writeheader();w.writerows(compact)
     contact_columns=['run','case','phase','contact_count_p50_fl_fr_rl_rr','normal_N_p50_fl_fr_rl_rr',
         'tangent_N_p50_fl_fr_rl_rr','contact_slip_p50_m_s','contact_slip_p95_m_s','minimum_wheel_floor_gap_m']
     contact_data=[]

@@ -1,0 +1,163 @@
+{
+  "records": [
+    {
+      "run": "cpu312-clear-v1",
+      "status": "cap_end",
+      "planned_tape_complete": true,
+      "completed_cases": 18,
+      "raw_hash_manifest_checked": true,
+      "errors": []
+    },
+    {
+      "run": "cpu312-v1",
+      "status": "cap_end",
+      "planned_tape_complete": true,
+      "completed_cases": 18,
+      "raw_hash_manifest_checked": true,
+      "errors": []
+    },
+    {
+      "run": "cpu312-v2",
+      "status": "cap_end",
+      "planned_tape_complete": true,
+      "completed_cases": 18,
+      "raw_hash_manifest_checked": true,
+      "errors": []
+    },
+    {
+      "run": "cpu316-clear-rgb-v1",
+      "status": "cap_end",
+      "planned_tape_complete": true,
+      "completed_cases": 1,
+      "raw_hash_manifest_checked": true,
+      "errors": []
+    },
+    {
+      "run": "cpu316-v1",
+      "status": "HOST_ERROR",
+      "planned_tape_complete": false,
+      "completed_cases": 7,
+      "raw_hash_manifest_checked": true,
+      "errors": []
+    },
+    {
+      "run": "cpu316-v2",
+      "status": "cap_end",
+      "planned_tape_complete": true,
+      "completed_cases": 18,
+      "raw_hash_manifest_checked": true,
+      "errors": []
+    },
+    {
+      "run": "warp-L0D0N0",
+      "status": "cap_end",
+      "planned_tape_complete": true,
+      "completed_cases": 3,
+      "raw_hash_manifest_checked": true,
+      "errors": []
+    },
+    {
+      "run": "warp-L0D1N0",
+      "status": "cap_end",
+      "planned_tape_complete": true,
+      "completed_cases": 3,
+      "raw_hash_manifest_checked": true,
+      "errors": []
+    },
+    {
+      "run": "warp-L0D1N1",
+      "status": "cap_end",
+      "planned_tape_complete": true,
+      "completed_cases": 3,
+      "raw_hash_manifest_checked": true,
+      "errors": []
+    },
+    {
+      "run": "warp-L1D0N0",
+      "status": "cap_end",
+      "planned_tape_complete": true,
+      "completed_cases": 3,
+      "raw_hash_manifest_checked": true,
+      "errors": []
+    },
+    {
+      "run": "warp-L1D0N1",
+      "status": "cap_end",
+      "planned_tape_complete": true,
+      "completed_cases": 3,
+      "raw_hash_manifest_checked": true,
+      "errors": []
+    },
+    {
+      "run": "warp-L1D1N0",
+      "status": "cap_end",
+      "planned_tape_complete": true,
+      "completed_cases": 3,
+      "raw_hash_manifest_checked": true,
+      "errors": []
+    },
+    {
+      "run": "warp-L1D1N1",
+      "status": "cap_end",
+      "planned_tape_complete": true,
+      "completed_cases": 3,
+      "raw_hash_manifest_checked": true,
+      "errors": []
+    },
+    {
+      "run": "warp-baseline-v1",
+      "status": "HOST_ERROR",
+      "planned_tape_complete": false,
+      "completed_cases": 0,
+      "raw_hash_manifest_checked": true,
+      "errors": []
+    },
+    {
+      "run": "warp-baseline-v2",
+      "status": "cap_end",
+      "planned_tape_complete": true,
+      "completed_cases": 18,
+      "raw_hash_manifest_checked": true,
+      "errors": []
+    },
+    {
+      "run": "warp-clear-v1",
+      "status": "HOST_ERROR",
+      "planned_tape_complete": false,
+      "completed_cases": 0,
+      "raw_hash_manifest_checked": true,
+      "errors": []
+    },
+    {
+      "run": "warp-clear-v2",
+      "status": "cap_end",
+      "planned_tape_complete": true,
+      "completed_cases": 1,
+      "raw_hash_manifest_checked": true,
+      "errors": []
+    }
+  ],
+  "errors": [],
+  "paired": {
+    "C316_Warp_physics_hashes_equal": true,
+    "fixture_equal": true,
+    "xml_equal": true
+  },
+  "C312_recorder_correction_arrays_equal": {
+    "case": true,
+    "t": true,
+    "qpos": true,
+    "qvel": true,
+    "ncon": true,
+    "nefc": true
+  },
+  "weld_active0_count": 0,
+  "raw": "/home/ugrp/ugrp-sim/runs/drivecheck",
+  "reproduce": [
+    "/home/ugrp/ugrp-sim/src/drivecheck-analysis/scripts/drivecheck_integrity.py",
+    "--raw",
+    "/home/ugrp/ugrp-sim/runs/drivecheck",
+    "--out",
+    "/home/ugrp/ugrp-sim/runs/drivecheck/integrity-retained"
+  ]
+}

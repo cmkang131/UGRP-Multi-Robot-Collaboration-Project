@@ -1,0 +1,45 @@
+{
+  "utc": "2026-10-16T12:02:13.897577+00:00",
+  "scope": "diagnostic_only; no production defaults changed; no Mac physics or model calls",
+  "unit_and_catalog": {
+    "passed": 6,
+    "physics": false,
+    "seconds": 2.98,
+    "tests": [
+      "tests/test_drivecheck.py (4 tests)",
+      "test_simulation_workflow_manager.py::test_catalog_has_registered_workflows_and_distinct_adapters",
+      "test_simulation_workflow_manager.py::test_every_catalog_workflow_has_a_read_only_explicit_plan"
+    ],
+    "evidence": "local pytest exit0, observed before final docs"
+  },
+  "python_compile": "pass (5 diagnostic modules + finalization helper)",
+  "git_diff_check": "pass before final artifact formatting; repeated on commit",
+  "primary_runs": 13,
+  "primary_tapes": 95,
+  "all_primary_complete": true,
+  "final_status": "cap_end, not mission success",
+  "raw_integrity_errors": [],
+  "gpu_raw_transfer": {
+    "files": 264,
+    "bytes": 9786617,
+    "mismatches": [],
+    "source_host": "ugrp-act-l4-gcp5",
+    "destination_host": "ugrp-sim-gcp2",
+    "raw": "/home/ugrp/ugrp-sim/runs/drivecheck",
+    "scope": "all GPU-host payload paths, including nested RGB and retained metadata"
+  },
+  "gcp5_status": "TERMINATED",
+  "gcp2_close": {
+    "utc": "2026-10-16T12:01:30.619389+00:00",
+    "host": "ugrp-sim-gcp2",
+    "own_execution_processes": [],
+    "own_lease_removed": true,
+    "other_leases": [
+      "warpfit-analysis.json"
+    ],
+    "other_execution_processes": [],
+    "stop_vm": false,
+    "reason": "preserve other active lease/process; leave idle20 lifecycle intact"
+  },
+  "CI": "not part of local pass claim; final PR checks pending"
+}

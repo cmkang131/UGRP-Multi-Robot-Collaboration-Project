@@ -5,6 +5,7 @@
 - [S3 s3fix19 정수 tick 운반](2026-10-10-s3-integer-carry/README.md): 관련22시험 통과·20조건 on/off 등록; 디스크 거부/원본 소실/SSH 단절로 물리 판정 미완료.
 - [2026-10-10 S3 공동 운반 v164/v165](2026-10-10-s3-synchronized-carry/README.md): x86 동시10조건 v165 정렬·집기·상승·20mm 운반10/10; pair endpoint1/6, 이후 하강 낙하가드4/6·포즈계약 실패2/6, HOST_ERROR0. 기본 off·미채택.
 # 실험 인덱스
+- [2026-10-16 drivecheck](2026-10-16-drivecheck/README.md): CPU/Warp 95고정 펄스·8토글 진단 완료. 초기 차체–상자15.3mm 관통과 뒤바퀴 부유, 상자 이동 뒤 native/Warp 17.033/17.048mm 회복. 구동 기본값 변경 없음, PR #564 DRAFT.
 - [2026-10-16 ACT16a 실패 분석](2026-10-16-act16a/README.md): 학습0, GCP2 같은40회 관문 재현·RGB 지문240/240. 정렬22/40, 새 추론 persistence 대비 wheel MAE2.96% 감소·교정 때 이전 부호79.4% 유지. history A/B 우선·계획 미승인.
 - [2026-10-15 시나리오 v7 heavy_crate 제외](2026-10-15-scenario-v7/README.md): 선택 버전 8종, s2·s7·s8 crate→2대 long_beam; 화물 33·필요 로봇 작업 수 40 유지, 정적/XML/입력 3시험 통과. 물리·렌더 0, v6 보존·합산 금지.
 - [2026-10-12 PR #405 main 병합 정리](2026-10-12-pr405-main-merge/README.md): 물리0. 충돌2건 합집합, v195 seal 보존 위해 v7 main 바이트 유지·pickle 처리 이전, egomap64/65 재개 계획 퇴역(원본 보존, 재등록 없음).
