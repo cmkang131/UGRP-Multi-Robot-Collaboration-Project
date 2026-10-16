@@ -98,3 +98,25 @@ def resample(poses, weights, rng, uniform_free, injection, minimum=2000, maximum
             break
     return selected[:count], dict(samples=count, occupied_bins=len(occupied),
         kld_limit=limit, capped=count==maximum, injected=int(injected[:count].sum()))
+
+
+def likelihood_product(field, poses, points, sigma_hit, max_beams=60):
+    """Nav2 LikelihoodFieldModelProb::sensorFunction, do_beamskip=false.
+
+    Textbook likelihood-field beam product; upstream ceil(range_count/max_beams)
+    stride, log_p+=log(pz), weight*=exp(log_p) are retained. Unlike the default
+    cubic sum, this model assumes independent beams; RGB correlation remains
+    an explicit qualification risk, not a fitted confidence claim.
+    """
+    points=np.asarray(points,float).reshape(-1,2)
+    if not len(points):return np.ones(len(poses))
+    points=points[::max(1,math.ceil(len(points)/max_beams))]
+    out=np.empty(len(poses))
+    for begin in range(0,len(poses),2048):
+        p=poses[begin:begin+2048];c,s=np.cos(p[:,2,None]),np.sin(p[:,2,None])
+        x=p[:,0,None]+c*points[None,:,0]-s*points[None,:,1]
+        y=p[:,1,None]+s*points[None,:,0]+c*points[None,:,1]
+        z=field.distances(np.stack((x,y),axis=-1))
+        pz=.5*np.exp(-z*z/(2*sigma_hit*sigma_hit))+.5/100.
+        out[begin:begin+len(p)]=np.exp(np.sum(np.log(pz),axis=1))
+    return out

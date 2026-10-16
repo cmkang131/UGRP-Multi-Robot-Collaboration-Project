@@ -78,4 +78,4 @@ def run(a):
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__)
     for k in ('input','saved','output','calibration','requirements','queue','stack-check','command-model'):p.add_argument('--'+k,type=Path,required=True)
-    p.add_argument('--profile',choices=['calibrated_kld_v1','fixed_population_v1','nav2_sigma_fixed_v1'],default='calibrated_kld_v1');p.add_argument('--scan-source',type=Path);p.add_argument('--seed',type=int,default=20261017);run(p.parse_args())
+    p.add_argument('--profile',choices=['calibrated_kld_v1','fixed_population_v1','nav2_sigma_fixed_v1','likelihood_product_v1'],default='calibrated_kld_v1');p.add_argument('--scan-source',type=Path);p.add_argument('--seed',type=int,default=20261017);run(p.parse_args())

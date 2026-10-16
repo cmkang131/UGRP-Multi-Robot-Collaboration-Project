@@ -57,7 +57,7 @@ class StaticAMCL:
             raise ValueError('UNKNOWN_AMCL_OPTION')
         if calibration.get('truth_inputs') != 0:
             raise ValueError('OWN_CALIBRATION_REQUIRED')
-        if profile not in ('calibrated_kld_v1','fixed_population_v1','nav2_sigma_fixed_v1'):
+        if profile not in ('calibrated_kld_v1','fixed_population_v1','nav2_sigma_fixed_v1','likelihood_product_v1'):
             raise ValueError('UNKNOWN_AMCL_PROFILE')
         self.profile=profile
         # Controlled standard settings, not a new matcher: min=max=100000
@@ -154,7 +154,8 @@ class StaticAMCL:
             # Generic adapter (e.g. saved segment-only source): segment ends
             # already observed. No interpolation between separated detections.
             points = np.unique(segments.reshape(-1, 2), axis=0)
-        values = nav2.likelihood(self.field, self.particles, points, self.sigma_hit)
+        sensor=nav2.likelihood_product if self.profile=='likelihood_product_v1' else nav2.likelihood
+        values = sensor(self.field, self.particles, points, self.sigma_hit)
         total = float(self.weights@values); avg = total/len(self.weights)
         self.weights *= values; self.weights /= total
         # Published augmented-MCL defaults in existing UGRP port, .001/.1.
@@ -164,7 +165,7 @@ class StaticAMCL:
         ess = float(1/np.sum(self.weights*self.weights))
         row.update(attempted=True, reason='posterior_unresolved', pre_resample_ess=ess,
             recovery_probability=injection, work=dict(particles=len(self.particles),
-                point_checks=len(self.particles)*len(points[::max(1,(len(points)-1)//59)]), wall_seconds_used_as_gate=0))
+                point_checks=len(self.particles)*len(points[::max(1,math.ceil(len(points)/60) if self.profile=='likelihood_product_v1' else (len(points)-1)//59)]), wall_seconds_used_as_gate=0))
         # Standard adaptive resampling each sensor update, Nav2 interval=1.
         self.particles, stats = nav2.resample(self.particles, self.weights, self.rng,
             self.uniform_free, injection, minimum=self.minimum_particles)

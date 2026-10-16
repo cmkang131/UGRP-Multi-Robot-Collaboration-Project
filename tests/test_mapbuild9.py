@@ -86,3 +86,11 @@ def test_compact_belief_in_failed_profile_is_never_live_handoff_admission(monkey
     assert row['converged']
     assert not row['runtime_qualified'] and not row['ready_for_handoff']
     assert row['adopted_pose'] is None and row['proposal_pose']==[0,0,0]
+
+
+def test_probability_field_uses_upstream_beam_product_and_ceil_stride():
+    f=StaticField(STATIC);p=np.array([[0.,0.,0.],[0.,-.5,0.]])
+    points=np.tile([0.,.9],(96,1))
+    value=n.likelihood_product(f,p,points,.0202)
+    np.testing.assert_allclose(value,[.505**48,.005**48],rtol=1e-12,atol=0)
+    np.testing.assert_array_equal(n.likelihood_product(f,p,[],.0202),[1,1])

@@ -41,3 +41,17 @@ early KLD reduction discards hypotheses. `nav2_sigma_fixed_v1` differs only by
 Nav2's published sigma_hit=.2m. Both are standard documented parameter settings,
 not fitted to new truth or new scan matchers. Candidate calibration profile stays
 separate; an unready candidate is never executed as transport.
+
+## Textbook/official probability model diagnostic
+
+`likelihood_product_v1` retains min=max100000 and sigma .0202m but uses the
+fixed upstream `likelihood_field_model_prob.cpp` do_beamskip=false branch:
+ceil(count/max_beams), sum log(pz), exp(log_p). The additional original file and
+hash are preserved. This is the textbook likelihood-field product, an existing
+Nav2 sensor option; no new scan matcher. Its independence assumption can be
+overconfident for neighboring camera columns, so it does not grant live admission.
+
+Python motion normalizes final heading to S1; the C++ body leaves an unbounded
+heading. Native motion parity is checked modulo 2pi, not raw yaw bytes. This
+coordinate choice can change histogram bins at the yaw seam, so full native
+ROS filter equivalence is not claimed.
