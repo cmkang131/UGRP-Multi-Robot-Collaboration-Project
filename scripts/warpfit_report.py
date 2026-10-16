@@ -63,14 +63,19 @@ def main():
         for profile in sorted({r['profile'] for r in selected}):
             cases=sorted([r for r in selected if r['nworld']==n and r['profile']==profile and r['kind']=='box'],
                          key=lambda r:r.get('cohort_repeat',1))
-            trials=[dict(path=r['path'],repeat=r.get('cohort_repeat',1),**w) for r in cases for w in r.get('worlds',[])]
+            trials=[dict(path=r['path'],repeat=r.get('cohort_repeat',1),
+                C_quantile_pass=(w['all_finger_samples']==w['hold_samples'] and
+                    w['height_m']['p05']>=r['threshold']['height_p05_m'] and
+                    w['slip_m']['p95']<=r['threshold']['slip_p95_m']),**w)
+                for r in cases for w in r.get('worlds',[])]
             # User requested30 contact/lift/hold attempts. Fixed index order,
             # including all first-batch worlds before repeat2, never cherry-pick.
             chosen=trials[:30]
             box30.append(dict(nworld=n,profile=profile,available_world_trajectories=len(trials),requested=30,selected=len(chosen),
                 selection=[dict(repeat=w['repeat'],world=w['world'],raw=w['path']) for w in chosen],
                 loaded_retained=sum(w['loaded_contact_samples']==w['hold_samples'] for w in chosen),
-                strict_C_quantile_retained=sum(w.get('pass_samples',0)==w['hold_samples'] for w in chosen),
+                C_reference_quantile_pass=sum(w['C_quantile_pass'] for w in chosen),
+                C_reference_quantile_definition='all fingers retained; temporal heightP05 >= C heightP05 and slipP95 <= C slipP95; no extra margin',
                 slip_p95_mm=None if not chosen else float(np.percentile([w['slip_m']['p95']*1000 for w in chosen],95)),
                 scope='same fixed initial condition, separate batch worlds; not independent random-seed trials'))
     terminal=len(selected)==32 and all(r['status'] in ('complete','HOST_ERROR') for r in selected)
