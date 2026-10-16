@@ -31,3 +31,7 @@ PYTHONPATH=. /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m sc
 ## CI 전체 회귀 1차
 
 `757632c42` / Actions `38921776177`은 8 shard에서 총 262개 실패했다. [전체 원장](ci-round1-summary.json)과 shard별 사유 분포·원본 로그 SHA-256을 보존했다. 과거 분석기는 과거 Git 소스/legacy 프로필로 검증하고 새 실행 기본은 별도로 검사하도록 테스트 경계를 고쳤다. 동결 판정기·원본 등록/실험은 수정하지 않았다. 실제 수정은 v95 native 프로필 admission 누락과 collection builder의 명시 legacy 인수 전달이며, 오프라인 엔진 선택 의존성과 fake weld OFF 상태도 보완했다. 로컬 물리·추가 pytest는 실행하지 않았으며 전체 확인은 다음 CI에서 한다.
+
+## CI 전체 회귀 2차
+
+`df065c005` / Actions `38929756962`: 나머지 검사는 통과했고 v95 채점용 fixture 9건과 binding fixture 1건이 남았다. [원장](ci-round2-summary.json). 두 fixture도 legacy 프로필/과거 소스를 명시해 동결 판정기의 범위를 보존했다. 물리 기본값은 바꾸지 않았다. 마지막(3차) 전체 CI에서 확인한다. 최종 CI 상태는 PR Checks와 로컬 `outputs/nsoff-ci/final-verification.json`(완료 뒤 생성)으로 기록한다.

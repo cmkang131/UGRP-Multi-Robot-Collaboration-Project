@@ -109,11 +109,13 @@ def test_r2_geometry_has_the_same_mandatory_guard(monkeypatch):
     assert obj.held
 
 
-def test_workflow_routes_new_runner_and_binding_includes_all_gates():
+def test_workflow_routes_new_runner_and_binding_includes_all_gates(tmp_path, monkeypatch):
     from sim import workflow_manager as wm
     row, _ = wm._row(v.previous.ROOT, v.WORKFLOW_ID)
     assert row['runner'] == 'scripts.run_final_pair_new_starts'
     assert row['version'] == '3.7.0'
+    from tests.test_consumer_criterion_b_v95 import use_historical_frozen_root
+    use_historical_frozen_root(tmp_path, monkeypatch)
     b = checker.binding()
     for path in ('harness/kinematic_overlap.py', 'scripts/precheck_heldout_v95.py',
                  'scripts/validate_consumer_criterion_b_v95.py', 'sim/final_pair_new_starts.py'):
