@@ -20,7 +20,7 @@ class FrontierActor:
         self.colour=ColourBoundaryState('walls_floor_contrast_v5_indigo110_s80',calibration,option=RELOC16_OPTION)
         self.paint=paint['paint'];self.grid=ObservedGrid('r1');self.grid.initial_support()
         # Existing finite-grid A* and frontier budgets, no wall-clock planning.
-        self.nav=OwnMapNavigator('r1',NavigationOptions(exploration='own_frontier_v2',partial_planning='own_astar_v2',door_detection='own_gap_v1'))
+        self.nav=OwnMapNavigator('r1',NavigationOptions(exploration='own_frontier_v1',partial_planning='own_astar_v1',door_detection='own_gap_v1'))
         self.footprint=Footprint();self.pose=np.zeros(3);self.anchor=None;self.anchor_t=None
         self.events=[];self.wall=set();self.obstacle=set();self.destination=set();self.target=None
         self.next_command=1.;self.commands=[];self.plan={};self.lost=False;self.motion=motion

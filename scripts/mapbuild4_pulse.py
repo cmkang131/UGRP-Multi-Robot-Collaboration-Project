@@ -60,6 +60,19 @@ def bootstrap(a):
         auto_never=int(en.mjSLEEP_AUTO_NEVER),auto_allowed=int(en.mjSLEEP_AUTO_ALLOWED),
         never=int(en.mjSLEEP_NEVER),allowed=int(en.mjSLEEP_ALLOWED))
     fixture=load_fixture(a.fixture,xml)
+    profile=getattr(a,'contact_profile','baseline_noslip10')
+    if profile!='baseline_noslip10':
+        import importlib.util
+        path=ROOT/'experiments/2026-10-16-mapbuild4/vendor/warp_native_contact.py'
+        # Read-only copy from warpfit 0b5ef498eb152d630c3895edf5ce6097b1008afe.
+        if hashlib.sha256(path.read_bytes()).hexdigest()!='a5c8d370755034b9f9615f66a94b87883327b7d7ecc4e13082eac2c2d4751c6a':
+            raise ValueError('WARPFIT_MODULE_CHANGED')
+        spec=importlib.util.spec_from_file_location('warpfit_contact',path)
+        contact=importlib.util.module_from_spec(spec);spec.loader.exec_module(contact)
+        xml=contact.apply(xml,profile);m=mujoco.MjModel.from_xml_string(xml)
+        m.tree_sleep_policy[:]=runtime_sleep_policy(m.tree_sleep_policy.copy(),auto=int(en.mjSLEEP_AUTO),
+            auto_never=int(en.mjSLEEP_AUTO_NEVER),auto_allowed=int(en.mjSLEEP_AUTO_ALLOWED),
+            never=int(en.mjSLEEP_NEVER),allowed=int(en.mjSLEEP_ALLOWED))
     meta=json.loads((a.fixture/'fixture.json').read_text())
     rows=cases()
     if getattr(a,'case_filter',None):
@@ -96,13 +109,16 @@ def run(a):
     ticks=200 if not a.after_forward else 300
     onset=100 if not a.after_forward else 200
     substeps=round(.01/m.opt.timestep)
-    if substeps*m.opt.timestep!=.01 or m.opt.noslip_iterations!=10:raise ValueError('10MS_NOSLIP10_REQUIRED')
+    if substeps*m.opt.timestep!=.01:raise ValueError('10MS_COMMAND_GRID_REQUIRED')
     t0=time.monotonic();qstates=[];vstates=[];contacts=[]
     if a.backend=='warp':
         import warp as wp
         import mujoco_warp as mjw
         from simalt_physics_compare import unused_efm
-        wp.init();wm=mjw.put_model(m);wm.opt.tolerance.fill_(float(m.opt.tolerance))
+        wp.init();wm=mjw.put_model(m)
+        # Exact warpfit host conversion: baseline preserves 1e-8; the new
+        # profile accepts the installed MJWarp float32 conversion floor.
+        if a.contact_profile=='baseline_noslip10':wm.opt.tolerance.fill_(float(m.opt.tolerance))
         d=mujoco.MjData(m);d.qpos[:]=initial[0];mujoco.mj_forward(m,d)
         def fresh():
             with unused_efm(m,d):wd=mjw.put_data(m,d,nworld=len(rows),nconmax=128,njmax=512)
@@ -162,6 +178,7 @@ def run(a):
             backend=a.backend,worlds=len(rows),sim_s=(len(qs)-1)/100,wall_s=time.monotonic()-t0,
             mujoco=mujoco.__version__,scene_xml_sha256=hashlib.sha256(xml.encode()).hexdigest(),
             noslip_iterations=int(m.opt.noslip_iterations),after_forward=a.after_forward,
+            contact_profile=a.contact_profile,effective_tolerance=float(wm.opt.tolerance.numpy().item()) if a.backend=='warp' else float(m.opt.tolerance),
             physics_steps_per_world=(len(qs)-1)*substeps,torque_nm=drive.torque_cap_nm*(.35-drive.kinetic_fraction),
             input_audit=dict(truth_feedback=0,top_actor_reads=0),command_grid_s=.01))
         dump(a.output/'rejection_table.json',dict(raw=str(a.output),reproduction=sys.argv,
@@ -176,16 +193,17 @@ def run(a):
         from warp5_render import Renderer
         from sim.masterpi_camera_profile import raw_fisheye_remap
         mx,my=raw_fisheye_remap(640,480)
-        rc=Renderer(m,wm,wd,[('r1','r1__robot_cam',(640,480)),('r2','r2__robot_cam',(640,480)),
-            ('overview','cctv_top',(640,480))],enabled=True,texture_after_lighting=True)
         selected=[i for i,r in enumerate(rows) if r['name'] in
             ('drive-left-+1-60','drive-left-+1-400','high-left-+1-60','drive-forward-+1-100')]
+        with unused_efm(m,d):rd=mjw.put_data(m,d,nworld=len(selected),nconmax=128,njmax=512)
+        rc=Renderer(m,wm,rd,[('r1','r1__robot_cam',(640,480)),('r2','r2__robot_cam',(640,480)),
+            ('overview','cctv_top',(640,480))],enabled=True,texture_after_lighting=True)
         for tick in range(0,len(qs),10):
-            wp.copy(wd.qpos,wp.array(qs[tick],dtype=wd.qpos.dtype));images=rc.render()
-            for i in selected:
+            wp.copy(rd.qpos,wp.array(qs[tick,selected],dtype=rd.qpos.dtype));images=rc.render()
+            for j,i in enumerate(selected):
                 folder=a.output/rows[i]['name'];folder.mkdir(exist_ok=True)
                 for camera in ('r1','r2','overview'):
-                    rgb=np.clip(images[camera][0][i],0,255).astype(np.uint8)
+                    rgb=np.clip(images[camera][0][j],0,255).astype(np.uint8)
                     if camera!='overview':rgb=cv2.remap(rgb,mx,my,cv2.INTER_LINEAR,borderMode=cv2.BORDER_CONSTANT)
                     cv2.imwrite(str(folder/f'{camera}-{tick//10:04d}.jpg'),cv2.cvtColor(rgb,cv2.COLOR_RGB2BGR),[cv2.IMWRITE_JPEG_QUALITY,82])
         dump(a.output/'recording.json',dict(hz=10,sim_range=[0,ticks/100],selected=[rows[i]['name'] for i in selected],
@@ -198,6 +216,7 @@ if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__)
     for name in ('renderer-source','renderer-receipt','fixture','queue','output'):p.add_argument('--'+name,type=Path,required=True)
     p.add_argument('--backend',choices=('warp','cpu'),required=True)
+    p.add_argument('--contact-profile',choices=('baseline_noslip10','warp_native_contact_v1'),default='baseline_noslip10')
     p.add_argument('--record',action='store_true');p.add_argument('--after-forward',action='store_true')
     p.add_argument('--case-filter',help='comma-separated exact registered case names; no new stimulus')
     p.add_argument('--mapbuild4-pulse-v1',action='store_true');a=p.parse_args()

@@ -47,10 +47,14 @@ def run(a):
     if any(hashlib.sha256(p.read_bytes()).hexdigest()!=h for p,h in zip(paths,expected)):
         raise ValueError('FROZEN_COLOUR_CALIBRATION_REQUIRED')
     calibration,paint=[json.loads(p.read_text()) for p in paths]
-    motion=PulsePrediction(json.loads(a.motion_calibration.read_text()),option=MOTION)
+    calibrated=json.loads(a.motion_calibration.read_text())
+    if calibrated.get('contact_profile','baseline_noslip10')!=a.contact_profile:
+        raise ValueError('CONTACT_PROFILE_CALIBRATION_MISMATCH')
+    motion=PulsePrediction(calibrated,option=MOTION)
     actor=mod.FrontierActor(cases[0]['pwm'],calibration,paint,motion,option=mod.OPTION)
     a.output.mkdir(parents=True,exist_ok=False);dump(a.output/'queue.json',json.loads(a.queue.read_text()))
-    cv2.setNumThreads(1);wp.init();wm=mjw.put_model(m);wm.opt.tolerance.fill_(float(m.opt.tolerance))
+    cv2.setNumThreads(1);wp.init();wm=mjw.put_model(m)
+    if a.contact_profile=='baseline_noslip10':wm.opt.tolerance.fill_(float(m.opt.tolerance))
     d=mujoco.MjData(m);d.qpos[:]=initial[0];mujoco.mj_forward(m,d)
     def fresh():
         with unused_efm(m,d):wd=mjw.put_data(m,d,nworld=1,nconmax=128,njmax=512)
@@ -114,6 +118,7 @@ def run(a):
             wall_s=time.monotonic()-t0,physics_steps_per_world=max(0,len(states)-1)*substeps,
             frames=len(own),commands=len(actor.commands),known_cells=len(actor.grid.odds),
             camera='FOLDED only; HIGH remains unqualified',option=mod.OPTION,scene_xml_sha256=hashlib.sha256(xml.encode()).hexdigest(),
+            contact_profile=a.contact_profile,effective_tolerance=float(wm.opt.tolerance.numpy().item()),
             recording=dict(hz=10,terminal_ring=list(ring),bytes=sum(p.stat().st_size for p in a.output.glob('*.jpg'))),
             input_audit=dict(top_actor_reads=0,truth_feedback=0,prior_map_reads=0,cpu_physics_steps=0),
             plan_budget='finite observed grid A*, inherited node/grid limits; SIM duration only; no wall deadline'))
@@ -132,6 +137,7 @@ if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__)
     for name in ('renderer-source','renderer-receipt','vision-source','motion-calibration','fixture','queue','output'):p.add_argument('--'+name,type=Path,required=True)
     p.add_argument('--sim-seconds',type=float,default=12.)
+    p.add_argument('--contact-profile',choices=('baseline_noslip10','warp_native_contact_v1'),default='baseline_noslip10')
     p.add_argument('--mapbuild4-frontier-v1',action='store_true');a=p.parse_args()
     if not a.mapbuild4_frontier_v1:p.error('default off: explicit --mapbuild4-frontier-v1 required')
     if a.sim_seconds<=0 or not __import__('math').isfinite(a.sim_seconds):p.error('positive finite SIM budget required')
