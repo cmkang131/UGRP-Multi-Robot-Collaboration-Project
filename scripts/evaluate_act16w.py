@@ -134,6 +134,7 @@ def main():
                     any_same_kind_success=any(value['task_success'] for value in items))
             visibility=json.loads((a.out/'owner/initial-same-kind-visibility.json').read_text())
             report['initial_same_kind_visibility']=visibility
+            report['initial_2plus_same_kind_pixel_n']=sum(x['pixel_visible_count']>=2 for x in visibility['rows'])
             report['initial_2plus_same_kind_any_probe_n']=sum(x['any_probe_visible_count']>=2 for x in visibility['rows'])
             report['initial_2plus_same_kind_qualified_n']=sum(x['qualified_visible_count']>=2 for x in visibility['rows'])
             report['same_kind_visibility_N']=len(plans)

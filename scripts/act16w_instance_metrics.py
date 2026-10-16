@@ -11,6 +11,7 @@ import math
 class InstanceMetrics:
     def __init__(self, owner):
         import numpy as np
+        import cv2
         from warp_act_scene import make_scene
         from warp_act_visibility import BatchVisibility
         self.owner, self.np, self.items, self.last = owner, np, [], {}
@@ -32,6 +33,8 @@ class InstanceMetrics:
                 if len(gids) != 1:
                     raise ValueError('qualified same-kind BOX requires one collision geom')
                 rows.append(dict(item_id=iid, body=bid, gids=gids,
+                                 visible_gids=[g for g in range(model.ngeom)
+                                               if model.geom_bodyid[g] == bid and model.geom_group[g] in (0, 1, 2, 3)],
                                  initial_xy=ctx['world'].data.xpos[bid, :2].copy()))
             if plan['item_id'] not in {row['item_id'] for row in rows}:
                 raise ValueError('assigned item missing from scenario same-kind catalogue')
@@ -49,21 +52,36 @@ class InstanceMetrics:
         eyes = BatchVisibility(owner.hooks, contexts)
         eyes.update({name: getattr(owner.hooks.wd, name).numpy()
                      for name in ('geom_xpos', 'geom_xmat', 'cam_xpos', 'cam_xmat')})
+        h = owner.hooks
+        segmentation = h.mjw.create_render_context(h.m, nworld=owner.n, cam_res=(640, 480),
+            render_rgb=False, render_depth=False, render_seg=True, use_textures=True,
+            use_shadows=True, enabled_geom_groups=[0, 1, 2, 3], cam_active=['r1__robot_cam'])
+        h.mjw.refit_bvh(h.wm, h.wd, segmentation)
+        h.mjw.render(h.wm, h.wd, segmentation)
+        ids = segmentation.seg_data.numpy().reshape(owner.n, 480, 640, 2)
         visibility = []
         for i, rows in enumerate(self.items):
             values = []
             for row in rows:
                 seen, total = eyes.region_visible(i, row['gids'])
+                raw_mask = (np.isin(ids[i, ..., 0], row['visible_gids'])
+                            & (ids[i, ..., 1] == int(h.mjw.ObjType.GEOM))).astype(np.float32)
+                mask = cv2.remap(raw_mask, h.mx, h.my, cv2.INTER_LINEAR,
+                                 borderMode=cv2.BORDER_CONSTANT) > 0
+                yy, xx = np.nonzero(mask)
                 values.append(dict(item_id=row['item_id'], seen_probes=seen, total_probes=total,
+                                   visible_pixels=int(mask.sum()),
+                                   visible_bbox_xyxy=[int(xx.min()), int(yy.min()), int(xx.max()), int(yy.max())] if len(xx) else None,
                                    any_probe_visible=seen > 0,
                                    qualified_visible=total > 0 and seen >= math.ceil(total / 3)))
             visibility.append(dict(seed=owner.plans[i]['seed'], world=i, items=values,
+                pixel_visible_count=sum(x['visible_pixels'] > 0 for x in values),
                 any_probe_visible_count=sum(x['any_probe_visible'] for x in values),
                 qualified_visible_count=sum(x['qualified_visible'] for x in values),
                 own_start_RGB_sha256=owner.current[i][0]['rgb'][-1]['sha256']))
         self.unchanged(before, public)
         owner.write('initial-same-kind-visibility.json', dict(rows=visibility,
-            scope='evaluation-only geometric seven-probe visibility, existing qualified1/3 boundary; any-probe count also retained; not pixel segmentation'))
+            scope='native MJWarp start-frame instance segmentation, same camera/groups/fisheye bilinear footprint, at least1 visible pixel; seven-probe diagnostics retained; scenario catalogue boxes only; evaluation only'))
         self.sample([True] * owner.n)
 
     def unchanged(self, before, public):

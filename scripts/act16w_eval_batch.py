@@ -101,9 +101,10 @@ def main():
         report.update(status='complete' if complete else 'cap_end' if report.get('resource_cap_end') else 'HOST_ERROR' if errors else report.get('submission_stopped','incomplete'),complete=complete,n=sum(r['task_success'] for r in rows),N=len(rows),N_requested=len(requested),rows=rows,teacher_actions_executed=0,selection_tuning_performed=False)
         report.update(n_assigned=report['n'],n_any_same_kind=sum(r['any_same_kind_success'] for r in rows),
             initial_same_kind_visibility=dict(N=len(visibility),
+                pixel_2plus_n=sum(x['pixel_visible_count']>=2 for x in visibility),
                 any_probe_2plus_n=sum(x['any_probe_visible_count']>=2 for x in visibility),
                 qualified_2plus_n=sum(x['qualified_visible_count']>=2 for x in visibility),rows=visibility,
-                scope='geometric probe visibility only; pixel-visible count requires separate saved-frame analysis'))
+                scope='native MJWarp start-frame instance pixels; existing geometric probe diagnostics also retained; evaluation only'))
     except BaseException as error:
         report.update(status='HOST_ERROR',complete=False,error=repr(error))
         write(a.out/'parent-failure.json',dict(category='HOST_ERROR',reason=repr(error),blocking_object='not_applicable_evaluation_dispatch',minimum_gap_m=None,minimum_gap_status='not_applicable_non_geometric'))
