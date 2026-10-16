@@ -21,7 +21,7 @@ def main(a):
         original=nav2.resample;calls=[]
         def observed(poses,weights,*args,**kwargs):
             index=len(calls)
-            # Six is the inherited initial-panorama review size, a RECORDING
+            # Six is the AGENTS minimum review-frame count, a RECORDING
             # bound only; it never gates filter behavior or convergence.
             if index<6:np.savez_compressed(trace/f'{index:02d}-pre.npz',particles=poses,weights=weights)
             result=original(poses,weights,*args,**kwargs)

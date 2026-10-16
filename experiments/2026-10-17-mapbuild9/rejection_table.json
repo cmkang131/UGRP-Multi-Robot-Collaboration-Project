@@ -1,0 +1,1430 @@
+{
+  "scope": "each setting/recording is separate; repeated frames are not pooled",
+  "cohorts": [
+    {
+      "name": "eval-r1-fixed_population_v1",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r1",
+      "prediction": "/home/ugrp/ugrp-sim/runs/mapbuild9/r1-fixed_population_v1",
+      "stages": [
+        {
+          "stage": "recorded",
+          "cumulative_pass_n": 277,
+          "rejected_n": 0
+        },
+        {
+          "stage": "visible_wall",
+          "cumulative_pass_n": 134,
+          "rejected_n": 143
+        },
+        {
+          "stage": "motion_or_camera_update",
+          "cumulative_pass_n": 20,
+          "rejected_n": 114
+        },
+        {
+          "stage": "full_posterior_ready",
+          "cumulative_pass_n": 0,
+          "rejected_n": 20
+        },
+        {
+          "stage": "independent_handoff_error_requirement",
+          "cumulative_pass_n": 0,
+          "rejected_n": 0
+        },
+        {
+          "stage": "OFF_improvement_and_live_admission",
+          "cumulative_pass_n": 0,
+          "rejected_n": 0
+        }
+      ],
+      "source": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r1",
+      "reproduction": [
+        "scripts/mapbuild9_replay.py",
+        "--input",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r1",
+        "--saved",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/executed-r1",
+        "--scan-source",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/replay-r1-v2/scans.json",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/mapbuild9/r1-fixed_population_v1",
+        "--profile",
+        "fixed_population_v1",
+        "--calibration",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/own-noise-command-r1-r2.json",
+        "--requirements",
+        "/home/ugrp/ugrp-sim/src/mapbuild9-profiles-d7cb236f6/experiments/2026-10-17-mapbuild8/requirements.json",
+        "--command-model",
+        "/home/ugrp/ugrp-sim/src/mapbuild9-profiles-d7cb236f6/experiments/2026-10-17-mapbuild8/calibration/own-command-calibration-r2.json",
+        "--queue",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/r1-fixed_population_v1-queue.json",
+        "--stack-check",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/r1-fixed_population_v1-stack.json"
+      ],
+      "distribution": [
+        {
+          "category": "static_amcl",
+          "reason": "no_visible_wall",
+          "n": 143,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "category": "static_amcl",
+          "reason": "posterior_unresolved",
+          "n": 20,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "category": "static_amcl",
+          "reason": "nav2_motion_gate",
+          "n": 114,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        }
+      ]
+    },
+    {
+      "name": "eval-r1-likelihood_product_v1",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r1",
+      "prediction": "/home/ugrp/ugrp-sim/runs/mapbuild9/r1-likelihood_product_v1",
+      "stages": [
+        {
+          "stage": "recorded",
+          "cumulative_pass_n": 277,
+          "rejected_n": 0
+        },
+        {
+          "stage": "visible_wall",
+          "cumulative_pass_n": 134,
+          "rejected_n": 143
+        },
+        {
+          "stage": "motion_or_camera_update",
+          "cumulative_pass_n": 20,
+          "rejected_n": 114
+        },
+        {
+          "stage": "full_posterior_ready",
+          "cumulative_pass_n": 0,
+          "rejected_n": 20
+        },
+        {
+          "stage": "independent_handoff_error_requirement",
+          "cumulative_pass_n": 0,
+          "rejected_n": 0
+        },
+        {
+          "stage": "OFF_improvement_and_live_admission",
+          "cumulative_pass_n": 0,
+          "rejected_n": 0
+        }
+      ],
+      "source": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r1",
+      "reproduction": [
+        "scripts/mapbuild9_replay.py",
+        "--input",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r1",
+        "--saved",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/executed-r1",
+        "--scan-source",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/replay-r1-v2/scans.json",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/mapbuild9/r1-likelihood_product_v1",
+        "--profile",
+        "likelihood_product_v1",
+        "--calibration",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/own-noise-command-r1-r2.json",
+        "--requirements",
+        "/home/ugrp/ugrp-sim/src/mapbuild9-product-3d3050c87/experiments/2026-10-17-mapbuild8/requirements.json",
+        "--command-model",
+        "/home/ugrp/ugrp-sim/src/mapbuild9-product-3d3050c87/experiments/2026-10-17-mapbuild8/calibration/own-command-calibration-r2.json",
+        "--queue",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/r1-likelihood_product_v1-queue.json",
+        "--stack-check",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/r1-likelihood_product_v1-stack.json"
+      ],
+      "distribution": [
+        {
+          "category": "static_amcl",
+          "reason": "no_visible_wall",
+          "n": 143,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "category": "static_amcl",
+          "reason": "posterior_unresolved",
+          "n": 20,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "category": "static_amcl",
+          "reason": "nav2_motion_gate",
+          "n": 114,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        }
+      ]
+    },
+    {
+      "name": "eval-r1-likelihood_product_v1-slots",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r1",
+      "prediction": "/home/ugrp/ugrp-sim/runs/mapbuild9/r1-likelihood_product_v1-slots",
+      "stages": [
+        {
+          "stage": "recorded",
+          "cumulative_pass_n": 277,
+          "rejected_n": 0
+        },
+        {
+          "stage": "visible_wall",
+          "cumulative_pass_n": 134,
+          "rejected_n": 143
+        },
+        {
+          "stage": "motion_or_camera_update",
+          "cumulative_pass_n": 20,
+          "rejected_n": 114
+        },
+        {
+          "stage": "full_posterior_ready",
+          "cumulative_pass_n": 0,
+          "rejected_n": 20
+        },
+        {
+          "stage": "independent_handoff_error_requirement",
+          "cumulative_pass_n": 0,
+          "rejected_n": 0
+        },
+        {
+          "stage": "OFF_improvement_and_live_admission",
+          "cumulative_pass_n": 0,
+          "rejected_n": 0
+        }
+      ],
+      "source": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r1",
+      "reproduction": [
+        "scripts/mapbuild9_replay.py",
+        "--input",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r1",
+        "--saved",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/executed-r1",
+        "--scan-source",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/replay-r1-v2/scans.json",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/mapbuild9/r1-likelihood_product_v1-slots",
+        "--profile",
+        "likelihood_product_v1",
+        "--calibration",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/own-noise-command-r1-r2.json",
+        "--requirements",
+        "/home/ugrp/ugrp-sim/src/mapbuild9-product-slots-v2/experiments/2026-10-17-mapbuild8/requirements.json",
+        "--command-model",
+        "/home/ugrp/ugrp-sim/src/mapbuild9-product-slots-v2/experiments/2026-10-17-mapbuild8/calibration/own-command-calibration-r2.json",
+        "--queue",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/r1-likelihood_product_v1-slots-queue.json",
+        "--stack-check",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/r1-likelihood_product_v1-slots-stack.json"
+      ],
+      "distribution": [
+        {
+          "category": "static_amcl",
+          "reason": "no_visible_wall",
+          "n": 143,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "category": "static_amcl",
+          "reason": "posterior_unresolved",
+          "n": 20,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "category": "static_amcl",
+          "reason": "nav2_motion_gate",
+          "n": 114,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        }
+      ]
+    },
+    {
+      "name": "eval-r1-nav2_sigma_fixed_v1",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r1",
+      "prediction": "/home/ugrp/ugrp-sim/runs/mapbuild9/r1-nav2_sigma_fixed_v1",
+      "stages": [
+        {
+          "stage": "recorded",
+          "cumulative_pass_n": 277,
+          "rejected_n": 0
+        },
+        {
+          "stage": "visible_wall",
+          "cumulative_pass_n": 134,
+          "rejected_n": 143
+        },
+        {
+          "stage": "motion_or_camera_update",
+          "cumulative_pass_n": 20,
+          "rejected_n": 114
+        },
+        {
+          "stage": "full_posterior_ready",
+          "cumulative_pass_n": 0,
+          "rejected_n": 20
+        },
+        {
+          "stage": "independent_handoff_error_requirement",
+          "cumulative_pass_n": 0,
+          "rejected_n": 0
+        },
+        {
+          "stage": "OFF_improvement_and_live_admission",
+          "cumulative_pass_n": 0,
+          "rejected_n": 0
+        }
+      ],
+      "source": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r1",
+      "reproduction": [
+        "scripts/mapbuild9_replay.py",
+        "--input",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r1",
+        "--saved",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/executed-r1",
+        "--scan-source",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/replay-r1-v2/scans.json",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/mapbuild9/r1-nav2_sigma_fixed_v1",
+        "--profile",
+        "nav2_sigma_fixed_v1",
+        "--calibration",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/own-noise-command-r1-r2.json",
+        "--requirements",
+        "/home/ugrp/ugrp-sim/src/mapbuild9-profiles-d7cb236f6/experiments/2026-10-17-mapbuild8/requirements.json",
+        "--command-model",
+        "/home/ugrp/ugrp-sim/src/mapbuild9-profiles-d7cb236f6/experiments/2026-10-17-mapbuild8/calibration/own-command-calibration-r2.json",
+        "--queue",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/r1-nav2_sigma_fixed_v1-queue.json",
+        "--stack-check",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/r1-nav2_sigma_fixed_v1-stack.json"
+      ],
+      "distribution": [
+        {
+          "category": "static_amcl",
+          "reason": "no_visible_wall",
+          "n": 143,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "category": "static_amcl",
+          "reason": "posterior_unresolved",
+          "n": 20,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "category": "static_amcl",
+          "reason": "nav2_motion_gate",
+          "n": 114,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        }
+      ]
+    },
+    {
+      "name": "eval-r1-seed20261017-v1b",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r1",
+      "prediction": "/home/ugrp/ugrp-sim/runs/mapbuild9/r1-seed20261017-v1b",
+      "stages": [
+        {
+          "stage": "recorded",
+          "cumulative_pass_n": 277,
+          "rejected_n": 0
+        },
+        {
+          "stage": "visible_wall",
+          "cumulative_pass_n": 134,
+          "rejected_n": 143
+        },
+        {
+          "stage": "motion_or_camera_update",
+          "cumulative_pass_n": 20,
+          "rejected_n": 114
+        },
+        {
+          "stage": "full_posterior_ready",
+          "cumulative_pass_n": 0,
+          "rejected_n": 20
+        },
+        {
+          "stage": "independent_handoff_error_requirement",
+          "cumulative_pass_n": 0,
+          "rejected_n": 0
+        },
+        {
+          "stage": "OFF_improvement_and_live_admission",
+          "cumulative_pass_n": 0,
+          "rejected_n": 0
+        }
+      ],
+      "source": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r1",
+      "reproduction": [
+        "scripts/mapbuild9_replay.py",
+        "--input",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r1",
+        "--saved",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/executed-r1",
+        "--scan-source",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/replay-r1-v2/scans.json",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/mapbuild9/r1-seed20261017-v1b",
+        "--calibration",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/own-noise-command-r1-r2.json",
+        "--requirements",
+        "/home/ugrp/ugrp-sim/src/mapbuild9-offline-v1/experiments/2026-10-17-mapbuild8/requirements.json",
+        "--command-model",
+        "/home/ugrp/ugrp-sim/src/mapbuild9-offline-v1/experiments/2026-10-17-mapbuild8/calibration/own-command-calibration-r2.json",
+        "--queue",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/r1-queue-v1b.json",
+        "--stack-check",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/r1-stack-v1b.json"
+      ],
+      "distribution": [
+        {
+          "category": "static_amcl",
+          "reason": "no_visible_wall",
+          "n": 143,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "category": "static_amcl",
+          "reason": "posterior_unresolved",
+          "n": 20,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "category": "static_amcl",
+          "reason": "nav2_motion_gate",
+          "n": 114,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        }
+      ]
+    },
+    {
+      "name": "eval-r2-fixed_population_v1",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r2",
+      "prediction": "/home/ugrp/ugrp-sim/runs/mapbuild9/r2-fixed_population_v1",
+      "stages": [
+        {
+          "stage": "recorded",
+          "cumulative_pass_n": 378,
+          "rejected_n": 0
+        },
+        {
+          "stage": "visible_wall",
+          "cumulative_pass_n": 330,
+          "rejected_n": 48
+        },
+        {
+          "stage": "motion_or_camera_update",
+          "cumulative_pass_n": 42,
+          "rejected_n": 288
+        },
+        {
+          "stage": "full_posterior_ready",
+          "cumulative_pass_n": 0,
+          "rejected_n": 42
+        },
+        {
+          "stage": "independent_handoff_error_requirement",
+          "cumulative_pass_n": 0,
+          "rejected_n": 0
+        },
+        {
+          "stage": "OFF_improvement_and_live_admission",
+          "cumulative_pass_n": 0,
+          "rejected_n": 0
+        }
+      ],
+      "source": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r2",
+      "reproduction": [
+        "scripts/mapbuild9_replay.py",
+        "--input",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r2",
+        "--saved",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/executed-r2",
+        "--scan-source",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r2/scans.json",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/mapbuild9/r2-fixed_population_v1",
+        "--profile",
+        "fixed_population_v1",
+        "--calibration",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/own-noise-command-r1-r2.json",
+        "--requirements",
+        "/home/ugrp/ugrp-sim/src/mapbuild9-profiles-d7cb236f6/experiments/2026-10-17-mapbuild8/requirements.json",
+        "--command-model",
+        "/home/ugrp/ugrp-sim/src/mapbuild9-profiles-d7cb236f6/experiments/2026-10-17-mapbuild8/calibration/own-command-calibration-r2.json",
+        "--queue",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/r2-fixed_population_v1-queue.json",
+        "--stack-check",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/r2-fixed_population_v1-stack.json"
+      ],
+      "distribution": [
+        {
+          "category": "static_amcl",
+          "reason": "no_visible_wall",
+          "n": 48,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "category": "static_amcl",
+          "reason": "posterior_unresolved",
+          "n": 42,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "category": "static_amcl",
+          "reason": "nav2_motion_gate",
+          "n": 288,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        }
+      ]
+    },
+    {
+      "name": "eval-r2-likelihood_product_v1",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r2",
+      "prediction": "/home/ugrp/ugrp-sim/runs/mapbuild9/r2-likelihood_product_v1",
+      "stages": [
+        {
+          "stage": "recorded",
+          "cumulative_pass_n": 378,
+          "rejected_n": 0
+        },
+        {
+          "stage": "visible_wall",
+          "cumulative_pass_n": 330,
+          "rejected_n": 48
+        },
+        {
+          "stage": "motion_or_camera_update",
+          "cumulative_pass_n": 42,
+          "rejected_n": 288
+        },
+        {
+          "stage": "full_posterior_ready",
+          "cumulative_pass_n": 2,
+          "rejected_n": 40
+        },
+        {
+          "stage": "independent_handoff_error_requirement",
+          "cumulative_pass_n": 0,
+          "rejected_n": 2
+        },
+        {
+          "stage": "OFF_improvement_and_live_admission",
+          "cumulative_pass_n": 0,
+          "rejected_n": 0
+        }
+      ],
+      "source": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r2",
+      "reproduction": [
+        "scripts/mapbuild9_replay.py",
+        "--input",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r2",
+        "--saved",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/executed-r2",
+        "--scan-source",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r2/scans.json",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/mapbuild9/r2-likelihood_product_v1",
+        "--profile",
+        "likelihood_product_v1",
+        "--calibration",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/own-noise-command-r1-r2.json",
+        "--requirements",
+        "/home/ugrp/ugrp-sim/src/mapbuild9-product-3d3050c87/experiments/2026-10-17-mapbuild8/requirements.json",
+        "--command-model",
+        "/home/ugrp/ugrp-sim/src/mapbuild9-product-3d3050c87/experiments/2026-10-17-mapbuild8/calibration/own-command-calibration-r2.json",
+        "--queue",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/r2-likelihood_product_v1-queue.json",
+        "--stack-check",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/r2-likelihood_product_v1-stack.json"
+      ],
+      "distribution": [
+        {
+          "category": "static_amcl",
+          "reason": "no_visible_wall",
+          "n": 48,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "category": "static_amcl",
+          "reason": "posterior_unresolved",
+          "n": 40,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "category": "static_amcl",
+          "reason": "nav2_motion_gate",
+          "n": 288,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "category": "static_amcl",
+          "reason": "posterior_converged_unqualified",
+          "n": 2,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        }
+      ]
+    },
+    {
+      "name": "eval-r2-likelihood_product_v1-slots",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r2",
+      "prediction": "/home/ugrp/ugrp-sim/runs/mapbuild9/r2-likelihood_product_v1-slots",
+      "stages": [
+        {
+          "stage": "recorded",
+          "cumulative_pass_n": 378,
+          "rejected_n": 0
+        },
+        {
+          "stage": "visible_wall",
+          "cumulative_pass_n": 330,
+          "rejected_n": 48
+        },
+        {
+          "stage": "motion_or_camera_update",
+          "cumulative_pass_n": 42,
+          "rejected_n": 288
+        },
+        {
+          "stage": "full_posterior_ready",
+          "cumulative_pass_n": 2,
+          "rejected_n": 40
+        },
+        {
+          "stage": "independent_handoff_error_requirement",
+          "cumulative_pass_n": 0,
+          "rejected_n": 2
+        },
+        {
+          "stage": "OFF_improvement_and_live_admission",
+          "cumulative_pass_n": 0,
+          "rejected_n": 0
+        }
+      ],
+      "source": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r2",
+      "reproduction": [
+        "scripts/mapbuild9_replay.py",
+        "--input",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r2",
+        "--saved",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/executed-r2",
+        "--scan-source",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r2/scans.json",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/mapbuild9/r2-likelihood_product_v1-slots",
+        "--profile",
+        "likelihood_product_v1",
+        "--calibration",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/own-noise-command-r1-r2.json",
+        "--requirements",
+        "/home/ugrp/ugrp-sim/src/mapbuild9-product-slots-v2/experiments/2026-10-17-mapbuild8/requirements.json",
+        "--command-model",
+        "/home/ugrp/ugrp-sim/src/mapbuild9-product-slots-v2/experiments/2026-10-17-mapbuild8/calibration/own-command-calibration-r2.json",
+        "--queue",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/r2-likelihood_product_v1-slots-queue.json",
+        "--stack-check",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/r2-likelihood_product_v1-slots-stack.json"
+      ],
+      "distribution": [
+        {
+          "category": "static_amcl",
+          "reason": "no_visible_wall",
+          "n": 48,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "category": "static_amcl",
+          "reason": "posterior_unresolved",
+          "n": 40,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "category": "static_amcl",
+          "reason": "nav2_motion_gate",
+          "n": 288,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "category": "static_amcl",
+          "reason": "posterior_converged_unqualified",
+          "n": 2,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        }
+      ]
+    },
+    {
+      "name": "eval-r2-nav2_sigma_fixed_v1",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r2",
+      "prediction": "/home/ugrp/ugrp-sim/runs/mapbuild9/r2-nav2_sigma_fixed_v1",
+      "stages": [
+        {
+          "stage": "recorded",
+          "cumulative_pass_n": 378,
+          "rejected_n": 0
+        },
+        {
+          "stage": "visible_wall",
+          "cumulative_pass_n": 330,
+          "rejected_n": 48
+        },
+        {
+          "stage": "motion_or_camera_update",
+          "cumulative_pass_n": 42,
+          "rejected_n": 288
+        },
+        {
+          "stage": "full_posterior_ready",
+          "cumulative_pass_n": 0,
+          "rejected_n": 42
+        },
+        {
+          "stage": "independent_handoff_error_requirement",
+          "cumulative_pass_n": 0,
+          "rejected_n": 0
+        },
+        {
+          "stage": "OFF_improvement_and_live_admission",
+          "cumulative_pass_n": 0,
+          "rejected_n": 0
+        }
+      ],
+      "source": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r2",
+      "reproduction": [
+        "scripts/mapbuild9_replay.py",
+        "--input",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r2",
+        "--saved",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/executed-r2",
+        "--scan-source",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r2/scans.json",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/mapbuild9/r2-nav2_sigma_fixed_v1",
+        "--profile",
+        "nav2_sigma_fixed_v1",
+        "--calibration",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/own-noise-command-r1-r2.json",
+        "--requirements",
+        "/home/ugrp/ugrp-sim/src/mapbuild9-profiles-d7cb236f6/experiments/2026-10-17-mapbuild8/requirements.json",
+        "--command-model",
+        "/home/ugrp/ugrp-sim/src/mapbuild9-profiles-d7cb236f6/experiments/2026-10-17-mapbuild8/calibration/own-command-calibration-r2.json",
+        "--queue",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/r2-nav2_sigma_fixed_v1-queue.json",
+        "--stack-check",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/r2-nav2_sigma_fixed_v1-stack.json"
+      ],
+      "distribution": [
+        {
+          "category": "static_amcl",
+          "reason": "no_visible_wall",
+          "n": 48,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "category": "static_amcl",
+          "reason": "posterior_unresolved",
+          "n": 42,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "category": "static_amcl",
+          "reason": "nav2_motion_gate",
+          "n": 288,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        }
+      ]
+    },
+    {
+      "name": "eval-r2-seed20261017-v1b",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r2",
+      "prediction": "/home/ugrp/ugrp-sim/runs/mapbuild9/r2-seed20261017-v1b",
+      "stages": [
+        {
+          "stage": "recorded",
+          "cumulative_pass_n": 378,
+          "rejected_n": 0
+        },
+        {
+          "stage": "visible_wall",
+          "cumulative_pass_n": 330,
+          "rejected_n": 48
+        },
+        {
+          "stage": "motion_or_camera_update",
+          "cumulative_pass_n": 42,
+          "rejected_n": 288
+        },
+        {
+          "stage": "full_posterior_ready",
+          "cumulative_pass_n": 0,
+          "rejected_n": 42
+        },
+        {
+          "stage": "independent_handoff_error_requirement",
+          "cumulative_pass_n": 0,
+          "rejected_n": 0
+        },
+        {
+          "stage": "OFF_improvement_and_live_admission",
+          "cumulative_pass_n": 0,
+          "rejected_n": 0
+        }
+      ],
+      "source": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r2",
+      "reproduction": [
+        "scripts/mapbuild9_replay.py",
+        "--input",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r2",
+        "--saved",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/executed-r2",
+        "--scan-source",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r2/scans.json",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/mapbuild9/r2-seed20261017-v1b",
+        "--calibration",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/own-noise-command-r1-r2.json",
+        "--requirements",
+        "/home/ugrp/ugrp-sim/src/mapbuild9-offline-v1/experiments/2026-10-17-mapbuild8/requirements.json",
+        "--command-model",
+        "/home/ugrp/ugrp-sim/src/mapbuild9-offline-v1/experiments/2026-10-17-mapbuild8/calibration/own-command-calibration-r2.json",
+        "--queue",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/r2-queue-v1b.json",
+        "--stack-check",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/r2-stack-v1b.json"
+      ],
+      "distribution": [
+        {
+          "category": "static_amcl",
+          "reason": "no_visible_wall",
+          "n": 48,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "category": "static_amcl",
+          "reason": "posterior_unresolved",
+          "n": 42,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "category": "static_amcl",
+          "reason": "nav2_motion_gate",
+          "n": 288,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        }
+      ]
+    },
+    {
+      "name": "eval-r3-fixed_population_v1",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3",
+      "prediction": "/home/ugrp/ugrp-sim/runs/mapbuild9/r3-fixed_population_v1",
+      "stages": [
+        {
+          "stage": "recorded",
+          "cumulative_pass_n": 389,
+          "rejected_n": 0
+        },
+        {
+          "stage": "visible_wall",
+          "cumulative_pass_n": 341,
+          "rejected_n": 48
+        },
+        {
+          "stage": "motion_or_camera_update",
+          "cumulative_pass_n": 44,
+          "rejected_n": 297
+        },
+        {
+          "stage": "full_posterior_ready",
+          "cumulative_pass_n": 0,
+          "rejected_n": 44
+        },
+        {
+          "stage": "independent_handoff_error_requirement",
+          "cumulative_pass_n": 0,
+          "rejected_n": 0
+        },
+        {
+          "stage": "OFF_improvement_and_live_admission",
+          "cumulative_pass_n": 0,
+          "rejected_n": 0
+        }
+      ],
+      "source": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3",
+      "reproduction": [
+        "scripts/mapbuild9_replay.py",
+        "--input",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3",
+        "--saved",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/executed-r3",
+        "--scan-source",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3/scans.json",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/mapbuild9/r3-fixed_population_v1",
+        "--profile",
+        "fixed_population_v1",
+        "--calibration",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/own-noise-command-r1-r2.json",
+        "--requirements",
+        "/home/ugrp/ugrp-sim/src/mapbuild9-profiles-d7cb236f6/experiments/2026-10-17-mapbuild8/requirements.json",
+        "--command-model",
+        "/home/ugrp/ugrp-sim/src/mapbuild9-profiles-d7cb236f6/experiments/2026-10-17-mapbuild8/calibration/own-command-calibration-r2.json",
+        "--queue",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/r3-fixed_population_v1-queue.json",
+        "--stack-check",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/r3-fixed_population_v1-stack.json"
+      ],
+      "distribution": [
+        {
+          "category": "static_amcl",
+          "reason": "no_visible_wall",
+          "n": 48,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "category": "static_amcl",
+          "reason": "posterior_unresolved",
+          "n": 44,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "category": "static_amcl",
+          "reason": "nav2_motion_gate",
+          "n": 297,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        }
+      ]
+    },
+    {
+      "name": "eval-r3-likelihood_product_v1",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3",
+      "prediction": "/home/ugrp/ugrp-sim/runs/mapbuild9/r3-likelihood_product_v1",
+      "stages": [
+        {
+          "stage": "recorded",
+          "cumulative_pass_n": 389,
+          "rejected_n": 0
+        },
+        {
+          "stage": "visible_wall",
+          "cumulative_pass_n": 341,
+          "rejected_n": 48
+        },
+        {
+          "stage": "motion_or_camera_update",
+          "cumulative_pass_n": 44,
+          "rejected_n": 297
+        },
+        {
+          "stage": "full_posterior_ready",
+          "cumulative_pass_n": 6,
+          "rejected_n": 38
+        },
+        {
+          "stage": "independent_handoff_error_requirement",
+          "cumulative_pass_n": 0,
+          "rejected_n": 6
+        },
+        {
+          "stage": "OFF_improvement_and_live_admission",
+          "cumulative_pass_n": 0,
+          "rejected_n": 0
+        }
+      ],
+      "source": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3",
+      "reproduction": [
+        "scripts/mapbuild9_replay.py",
+        "--input",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3",
+        "--saved",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/executed-r3",
+        "--scan-source",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3/scans.json",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/mapbuild9/r3-likelihood_product_v1",
+        "--profile",
+        "likelihood_product_v1",
+        "--calibration",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/own-noise-command-r1-r2.json",
+        "--requirements",
+        "/home/ugrp/ugrp-sim/src/mapbuild9-product-3d3050c87/experiments/2026-10-17-mapbuild8/requirements.json",
+        "--command-model",
+        "/home/ugrp/ugrp-sim/src/mapbuild9-product-3d3050c87/experiments/2026-10-17-mapbuild8/calibration/own-command-calibration-r2.json",
+        "--queue",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/r3-likelihood_product_v1-queue.json",
+        "--stack-check",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/r3-likelihood_product_v1-stack.json"
+      ],
+      "distribution": [
+        {
+          "category": "static_amcl",
+          "reason": "no_visible_wall",
+          "n": 48,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "category": "static_amcl",
+          "reason": "posterior_unresolved",
+          "n": 38,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "category": "static_amcl",
+          "reason": "nav2_motion_gate",
+          "n": 297,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "category": "static_amcl",
+          "reason": "posterior_converged_unqualified",
+          "n": 6,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        }
+      ]
+    },
+    {
+      "name": "eval-r3-likelihood_product_v1-slots",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3",
+      "prediction": "/home/ugrp/ugrp-sim/runs/mapbuild9/r3-likelihood_product_v1-slots",
+      "stages": [
+        {
+          "stage": "recorded",
+          "cumulative_pass_n": 389,
+          "rejected_n": 0
+        },
+        {
+          "stage": "visible_wall",
+          "cumulative_pass_n": 341,
+          "rejected_n": 48
+        },
+        {
+          "stage": "motion_or_camera_update",
+          "cumulative_pass_n": 44,
+          "rejected_n": 297
+        },
+        {
+          "stage": "full_posterior_ready",
+          "cumulative_pass_n": 4,
+          "rejected_n": 40
+        },
+        {
+          "stage": "independent_handoff_error_requirement",
+          "cumulative_pass_n": 0,
+          "rejected_n": 4
+        },
+        {
+          "stage": "OFF_improvement_and_live_admission",
+          "cumulative_pass_n": 0,
+          "rejected_n": 0
+        }
+      ],
+      "source": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3",
+      "reproduction": [
+        "scripts/mapbuild9_replay.py",
+        "--input",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3",
+        "--saved",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/executed-r3",
+        "--scan-source",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3/scans.json",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/mapbuild9/r3-likelihood_product_v1-slots",
+        "--profile",
+        "likelihood_product_v1",
+        "--calibration",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/own-noise-command-r1-r2.json",
+        "--requirements",
+        "/home/ugrp/ugrp-sim/src/mapbuild9-product-slots-v2/experiments/2026-10-17-mapbuild8/requirements.json",
+        "--command-model",
+        "/home/ugrp/ugrp-sim/src/mapbuild9-product-slots-v2/experiments/2026-10-17-mapbuild8/calibration/own-command-calibration-r2.json",
+        "--queue",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/r3-likelihood_product_v1-slots-queue.json",
+        "--stack-check",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/r3-likelihood_product_v1-slots-stack.json"
+      ],
+      "distribution": [
+        {
+          "category": "static_amcl",
+          "reason": "no_visible_wall",
+          "n": 48,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "category": "static_amcl",
+          "reason": "posterior_unresolved",
+          "n": 40,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "category": "static_amcl",
+          "reason": "nav2_motion_gate",
+          "n": 297,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "category": "static_amcl",
+          "reason": "posterior_converged_unqualified",
+          "n": 4,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        }
+      ]
+    },
+    {
+      "name": "eval-r3-nav2_sigma_fixed_v1",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3",
+      "prediction": "/home/ugrp/ugrp-sim/runs/mapbuild9/r3-nav2_sigma_fixed_v1",
+      "stages": [
+        {
+          "stage": "recorded",
+          "cumulative_pass_n": 389,
+          "rejected_n": 0
+        },
+        {
+          "stage": "visible_wall",
+          "cumulative_pass_n": 341,
+          "rejected_n": 48
+        },
+        {
+          "stage": "motion_or_camera_update",
+          "cumulative_pass_n": 44,
+          "rejected_n": 297
+        },
+        {
+          "stage": "full_posterior_ready",
+          "cumulative_pass_n": 0,
+          "rejected_n": 44
+        },
+        {
+          "stage": "independent_handoff_error_requirement",
+          "cumulative_pass_n": 0,
+          "rejected_n": 0
+        },
+        {
+          "stage": "OFF_improvement_and_live_admission",
+          "cumulative_pass_n": 0,
+          "rejected_n": 0
+        }
+      ],
+      "source": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3",
+      "reproduction": [
+        "scripts/mapbuild9_replay.py",
+        "--input",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3",
+        "--saved",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/executed-r3",
+        "--scan-source",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3/scans.json",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/mapbuild9/r3-nav2_sigma_fixed_v1",
+        "--profile",
+        "nav2_sigma_fixed_v1",
+        "--calibration",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/own-noise-command-r1-r2.json",
+        "--requirements",
+        "/home/ugrp/ugrp-sim/src/mapbuild9-profiles-d7cb236f6/experiments/2026-10-17-mapbuild8/requirements.json",
+        "--command-model",
+        "/home/ugrp/ugrp-sim/src/mapbuild9-profiles-d7cb236f6/experiments/2026-10-17-mapbuild8/calibration/own-command-calibration-r2.json",
+        "--queue",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/r3-nav2_sigma_fixed_v1-queue.json",
+        "--stack-check",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/r3-nav2_sigma_fixed_v1-stack.json"
+      ],
+      "distribution": [
+        {
+          "category": "static_amcl",
+          "reason": "no_visible_wall",
+          "n": 48,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "category": "static_amcl",
+          "reason": "posterior_unresolved",
+          "n": 44,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "category": "static_amcl",
+          "reason": "nav2_motion_gate",
+          "n": 297,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        }
+      ]
+    },
+    {
+      "name": "eval-r3-seed20261017-v1b",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3",
+      "prediction": "/home/ugrp/ugrp-sim/runs/mapbuild9/r3-seed20261017-v1b",
+      "stages": [
+        {
+          "stage": "recorded",
+          "cumulative_pass_n": 389,
+          "rejected_n": 0
+        },
+        {
+          "stage": "visible_wall",
+          "cumulative_pass_n": 341,
+          "rejected_n": 48
+        },
+        {
+          "stage": "motion_or_camera_update",
+          "cumulative_pass_n": 44,
+          "rejected_n": 297
+        },
+        {
+          "stage": "full_posterior_ready",
+          "cumulative_pass_n": 1,
+          "rejected_n": 43
+        },
+        {
+          "stage": "independent_handoff_error_requirement",
+          "cumulative_pass_n": 0,
+          "rejected_n": 1
+        },
+        {
+          "stage": "OFF_improvement_and_live_admission",
+          "cumulative_pass_n": 0,
+          "rejected_n": 0
+        }
+      ],
+      "source": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3",
+      "reproduction": [
+        "scripts/mapbuild9_replay.py",
+        "--input",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3",
+        "--saved",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/executed-r3",
+        "--scan-source",
+        "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3/scans.json",
+        "--output",
+        "/home/ugrp/ugrp-sim/runs/mapbuild9/r3-seed20261017-v1b",
+        "--calibration",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/own-noise-command-r1-r2.json",
+        "--requirements",
+        "/home/ugrp/ugrp-sim/src/mapbuild9-offline-v1/experiments/2026-10-17-mapbuild8/requirements.json",
+        "--command-model",
+        "/home/ugrp/ugrp-sim/src/mapbuild9-offline-v1/experiments/2026-10-17-mapbuild8/calibration/own-command-calibration-r2.json",
+        "--queue",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/r3-queue-v1b.json",
+        "--stack-check",
+        "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/r3-stack-v1b.json"
+      ],
+      "distribution": [
+        {
+          "category": "static_amcl",
+          "reason": "no_visible_wall",
+          "n": 48,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "category": "static_amcl",
+          "reason": "posterior_unresolved",
+          "n": 43,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "category": "static_amcl",
+          "reason": "nav2_motion_gate",
+          "n": 297,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        },
+        {
+          "category": "static_amcl",
+          "reason": "posterior_converged",
+          "n": 1,
+          "blocked_object": "observed_wall_or_global_ambiguity",
+          "minimum_gap_m": null,
+          "gap_status": "not_measured"
+        }
+      ]
+    }
+  ],
+  "gcp3": {
+    "source": "/home/ugrp/ugrp-sim/runs/warp8/selfmap-open-r1",
+    "reproduction": [
+      "scripts/mapbuild9_sparse.py",
+      "--stage",
+      "predict",
+      "--owner",
+      "/home/ugrp/ugrp-sim/src/warp8f-selfmap-0ace43f25",
+      "--input",
+      "/home/ugrp/ugrp-sim/runs/warp8/selfmap-open-r1",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/warp8/mapbuild9-amcl-v1",
+      "--calibration",
+      "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/own-noise-command-r1-r2.json",
+      "--requirements",
+      "/home/ugrp/ugrp-sim/src/mapbuild9-sparse-8eead1464/experiments/2026-10-17-mapbuild8/requirements.json",
+      "--queue",
+      "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/queue.json",
+      "--stack-check",
+      "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/stack.json",
+      "--workers",
+      "4"
+    ],
+    "stages": [
+      {
+        "stage": "saved_views",
+        "cumulative_pass_n": 418,
+        "rejected_n": 0
+      },
+      {
+        "stage": "visible_wall",
+        "cumulative_pass_n": 190,
+        "rejected_n": 228
+      },
+      {
+        "stage": "sensor_update",
+        "cumulative_pass_n": 176,
+        "rejected_n": 14
+      },
+      {
+        "stage": "full_posterior_ready",
+        "cumulative_pass_n": 0,
+        "rejected_n": 176
+      }
+    ],
+    "distribution": [
+      {
+        "category": "static_amcl",
+        "reason": "posterior_unresolved",
+        "n": 176,
+        "blocked_object": "sparse_own_wall_observations",
+        "minimum_gap_m": null,
+        "gap_status": "not_measured"
+      },
+      {
+        "category": "static_amcl",
+        "reason": "no_visible_wall",
+        "n": 228,
+        "blocked_object": "sparse_own_wall_observations",
+        "minimum_gap_m": null,
+        "gap_status": "not_measured"
+      },
+      {
+        "category": "static_amcl",
+        "reason": "nav2_motion_gate",
+        "n": 14,
+        "blocked_object": "sparse_own_wall_observations",
+        "minimum_gap_m": null,
+        "gap_status": "not_measured"
+      }
+    ]
+  },
+  "raw_paths": [
+    "gcp5:/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r1",
+    "gcp5:/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r2",
+    "gcp5:/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3",
+    "gcp3:/home/ugrp/ugrp-sim/runs/warp8/selfmap-open-r1"
+  ],
+  "prior": "prior-rejection_table.json",
+  "reproduction": [
+    "operations/run-gcp5.sh",
+    "operations/run-gcp5-profiles.sh",
+    "operations/run-gcp5-product.sh",
+    "operations/run-gcp5-product-slots.sh",
+    "operations/run-gcp3.sh"
+  ]
+}

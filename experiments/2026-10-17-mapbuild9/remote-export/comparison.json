@@ -1,0 +1,2594 @@
+{
+  "rows": [
+    {
+      "name": "eval-r1-fixed_population_v1",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r1",
+      "prediction": "/home/ugrp/ugrp-sim/runs/mapbuild9/r1-fixed_population_v1",
+      "status": "NOT_READY",
+      "frames": 277,
+      "ready_updates": 0,
+      "wrong_convergence_updates": 0,
+      "convergence_sim_s": null,
+      "convergence_own_estimated_path_m": null,
+      "off": {
+        "frames": 277,
+        "xy_rmse_m": 0.022932261590879605,
+        "xy_p95_m": 0.032817856313308635,
+        "yaw_p95_deg": 3.5354060386641213,
+        "final_xy_m": 0.02513458135994727,
+        "final_yaw_deg": 2.6015865309588495,
+        "handoff_pass_n": 277
+      },
+      "candidate_absolute_diagnostic": {
+        "frames": 273,
+        "xy_rmse_m": 3.0005378292886533,
+        "xy_p95_m": 3.0584803080673777,
+        "yaw_p95_deg": 65.50028334294576,
+        "final_xy_m": 3.073170448495394,
+        "final_yaw_deg": 14.220046258175072,
+        "handoff_pass_n": 0
+      },
+      "after_convergence": {
+        "off": {
+          "frames": 0,
+          "status": "not_recorded"
+        },
+        "amcl": {
+          "frames": 0,
+          "status": "not_recorded"
+        }
+      },
+      "phases": [
+        {
+          "start_sim_s": 0.0,
+          "end_sim_s": 10.0,
+          "off": {
+            "frames": 100,
+            "xy_rmse_m": 0.011220644372841189,
+            "xy_p95_m": 0.024890707676165663,
+            "yaw_p95_deg": 1.8429126268007006,
+            "final_xy_m": 0.02561046413194405,
+            "final_yaw_deg": 1.9399627191466464,
+            "handoff_pass_n": 100
+          },
+          "amcl_candidate_absolute": {
+            "frames": 96,
+            "xy_rmse_m": 2.98173025752827,
+            "xy_p95_m": 3.027663767751778,
+            "yaw_p95_deg": 66.31120076770196,
+            "final_xy_m": 3.0262257601068083,
+            "final_yaw_deg": 41.28556767939837,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        },
+        {
+          "start_sim_s": 10.0,
+          "end_sim_s": 20.0,
+          "off": {
+            "frames": 100,
+            "xy_rmse_m": 0.029960370319190573,
+            "xy_p95_m": 0.03396328901439888,
+            "yaw_p95_deg": 3.552596045206652,
+            "final_xy_m": 0.02618085893898623,
+            "final_yaw_deg": 3.232378804400258,
+            "handoff_pass_n": 100
+          },
+          "amcl_candidate_absolute": {
+            "frames": 100,
+            "xy_rmse_m": 3.0242773174276927,
+            "xy_p95_m": 3.049742845812965,
+            "yaw_p95_deg": 43.67282292055367,
+            "final_xy_m": 2.939664658623669,
+            "final_yaw_deg": 44.401934982299146,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        },
+        {
+          "start_sim_s": 20.0,
+          "end_sim_s": 27.6,
+          "off": {
+            "frames": 77,
+            "xy_rmse_m": 0.02371872054290333,
+            "xy_p95_m": 0.025211144830721958,
+            "yaw_p95_deg": 3.649831309083083,
+            "final_xy_m": 0.02513458135994727,
+            "final_yaw_deg": 2.6015865309588495,
+            "handoff_pass_n": 77
+          },
+          "amcl_candidate_absolute": {
+            "frames": 77,
+            "xy_rmse_m": 2.9929506843533944,
+            "xy_p95_m": 3.073153462038921,
+            "yaw_p95_deg": 44.76682937487341,
+            "final_xy_m": 3.073170448495394,
+            "final_yaw_deg": 14.220046258175072,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        }
+      ],
+      "requirements_sha256": "d9f3c1f3a00273be3aa901613d01386fa493b1ed5edb561e40a58d367360875c",
+      "source_summary_sha256": "45e51e9b91ae9b453f114fe1d0074cce52665f3eb3b9c081040c9fdc0ce5d686",
+      "own_map_frames": 18,
+      "motion_sources": {
+        "nominal_6f_unqualified_native": 277
+      },
+      "full_posterior": {
+        "candidate_pose": [
+          2.721078670390682,
+          -1.7288485602636643,
+          2.914278116341577
+        ],
+        "covariance": [
+          [
+            0.9865614066421229,
+            0.08535186027525321,
+            -0.21436996737788971
+          ],
+          [
+            0.08535186027525321,
+            0.772680101822069,
+            -0.004839744111153184
+          ],
+          [
+            -0.21436996737788966,
+            -0.0048397441111531795,
+            2.0449816321631777
+          ]
+        ],
+        "xy_p95_m": 2.892311374265397,
+        "yaw_p95_rad": 2.911607741977499,
+        "direction_coupled_p95_rad": 5.097612620027254,
+        "ess": 97600.36928810063,
+        "samples": 100000,
+        "converged": false,
+        "ready_for_handoff": false,
+        "circular_resultant": 0.42735984824040635,
+        "post_resample_ess": 99999.99999999994
+      }
+    },
+    {
+      "name": "eval-r1-likelihood_product_v1",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r1",
+      "prediction": "/home/ugrp/ugrp-sim/runs/mapbuild9/r1-likelihood_product_v1",
+      "status": "NOT_READY",
+      "frames": 277,
+      "ready_updates": 0,
+      "wrong_convergence_updates": 0,
+      "convergence_sim_s": null,
+      "convergence_own_estimated_path_m": null,
+      "off": {
+        "frames": 277,
+        "xy_rmse_m": 0.022932261590879605,
+        "xy_p95_m": 0.032817856313308635,
+        "yaw_p95_deg": 3.5354060386641213,
+        "final_xy_m": 0.02513458135994727,
+        "final_yaw_deg": 2.6015865309588495,
+        "handoff_pass_n": 277
+      },
+      "candidate_absolute_diagnostic": {
+        "frames": 273,
+        "xy_rmse_m": 2.466584142189693,
+        "xy_p95_m": 2.6953574357318955,
+        "yaw_p95_deg": 132.74874188282902,
+        "final_xy_m": 2.3150397069290727,
+        "final_yaw_deg": 132.41955580544192,
+        "handoff_pass_n": 0
+      },
+      "after_convergence": {
+        "off": {
+          "frames": 0,
+          "status": "not_recorded"
+        },
+        "amcl": {
+          "frames": 0,
+          "status": "not_recorded"
+        }
+      },
+      "phases": [
+        {
+          "start_sim_s": 0.0,
+          "end_sim_s": 10.0,
+          "off": {
+            "frames": 100,
+            "xy_rmse_m": 0.011220644372841189,
+            "xy_p95_m": 0.024890707676165663,
+            "yaw_p95_deg": 1.8429126268007006,
+            "final_xy_m": 0.02561046413194405,
+            "final_yaw_deg": 1.9399627191466464,
+            "handoff_pass_n": 100
+          },
+          "amcl_candidate_absolute": {
+            "frames": 96,
+            "xy_rmse_m": 2.6160126890356157,
+            "xy_p95_m": 3.0703069279592383,
+            "yaw_p95_deg": 79.92288284560772,
+            "final_xy_m": 2.2927064562093338,
+            "final_yaw_deg": 78.69447737373466,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        },
+        {
+          "start_sim_s": 10.0,
+          "end_sim_s": 20.0,
+          "off": {
+            "frames": 100,
+            "xy_rmse_m": 0.029960370319190573,
+            "xy_p95_m": 0.03396328901439888,
+            "yaw_p95_deg": 3.552596045206652,
+            "final_xy_m": 0.02618085893898623,
+            "final_yaw_deg": 3.232378804400258,
+            "handoff_pass_n": 100
+          },
+          "amcl_candidate_absolute": {
+            "frames": 100,
+            "xy_rmse_m": 2.3940761205005803,
+            "xy_p95_m": 2.6739919524087505,
+            "yaw_p95_deg": 94.87053862829049,
+            "final_xy_m": 2.5837799491981706,
+            "final_yaw_deg": 103.14862247422397,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        },
+        {
+          "start_sim_s": 20.0,
+          "end_sim_s": 27.6,
+          "off": {
+            "frames": 77,
+            "xy_rmse_m": 0.02371872054290333,
+            "xy_p95_m": 0.025211144830721958,
+            "yaw_p95_deg": 3.649831309083083,
+            "final_xy_m": 0.02513458135994727,
+            "final_yaw_deg": 2.6015865309588495,
+            "handoff_pass_n": 77
+          },
+          "amcl_candidate_absolute": {
+            "frames": 77,
+            "xy_rmse_m": 2.3653450224402723,
+            "xy_p95_m": 2.58048763472293,
+            "yaw_p95_deg": 132.93675305533944,
+            "final_xy_m": 2.3150397069290727,
+            "final_yaw_deg": 132.41955580544192,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        }
+      ],
+      "requirements_sha256": "d9f3c1f3a00273be3aa901613d01386fa493b1ed5edb561e40a58d367360875c",
+      "source_summary_sha256": "bb57b62a0974006e279afa63a0c71b26b457da477e97022435aa57b7b1a83be1",
+      "own_map_frames": 18,
+      "motion_sources": {
+        "nominal_6f_unqualified_native": 277
+      },
+      "full_posterior": {
+        "candidate_pose": [
+          1.9890081162066389,
+          -2.2384545008882624,
+          -1.3059365749957308
+        ],
+        "covariance": [
+          [
+            1.5290501647299815,
+            -0.09652498552537914,
+            -0.37525865833055483
+          ],
+          [
+            -0.09652498552537912,
+            0.04319643914491747,
+            0.15813236485759466
+          ],
+          [
+            -0.37525865833055483,
+            0.15813236485759466,
+            0.6150561682456467
+          ]
+        ],
+        "xy_p95_m": 2.4191124065351306,
+        "yaw_p95_rad": 0.8397129596254591,
+        "direction_coupled_p95_rad": 2.986412075049578,
+        "ess": 99152.13027036974,
+        "samples": 100000,
+        "converged": false,
+        "ready_for_handoff": false,
+        "runtime_qualified": false,
+        "circular_resultant": 0.7080147078510212,
+        "post_resample_ess": 99999.99999999994
+      }
+    },
+    {
+      "name": "eval-r1-likelihood_product_v1-slots",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r1",
+      "prediction": "/home/ugrp/ugrp-sim/runs/mapbuild9/r1-likelihood_product_v1-slots",
+      "status": "NOT_READY",
+      "frames": 277,
+      "ready_updates": 0,
+      "wrong_convergence_updates": 0,
+      "convergence_sim_s": null,
+      "convergence_own_estimated_path_m": null,
+      "off": {
+        "frames": 277,
+        "xy_rmse_m": 0.022932261590879605,
+        "xy_p95_m": 0.032817856313308635,
+        "yaw_p95_deg": 3.5354060386641213,
+        "final_xy_m": 0.02513458135994727,
+        "final_yaw_deg": 2.6015865309588495,
+        "handoff_pass_n": 277
+      },
+      "candidate_absolute_diagnostic": {
+        "frames": 273,
+        "xy_rmse_m": 2.5237680385209478,
+        "xy_p95_m": 2.7920022756528313,
+        "yaw_p95_deg": 125.94467613094783,
+        "final_xy_m": 2.4751325509252577,
+        "final_yaw_deg": 127.41366025629137,
+        "handoff_pass_n": 0
+      },
+      "after_convergence": {
+        "off": {
+          "frames": 0,
+          "status": "not_recorded"
+        },
+        "amcl": {
+          "frames": 0,
+          "status": "not_recorded"
+        }
+      },
+      "phases": [
+        {
+          "start_sim_s": 0.0,
+          "end_sim_s": 10.0,
+          "off": {
+            "frames": 100,
+            "xy_rmse_m": 0.011220644372841189,
+            "xy_p95_m": 0.024890707676165663,
+            "yaw_p95_deg": 1.8429126268007006,
+            "final_xy_m": 0.02561046413194405,
+            "final_yaw_deg": 1.9399627191466464,
+            "handoff_pass_n": 100
+          },
+          "amcl_candidate_absolute": {
+            "frames": 96,
+            "xy_rmse_m": 2.61879188734828,
+            "xy_p95_m": 3.0703069279592383,
+            "yaw_p95_deg": 79.92288284560772,
+            "final_xy_m": 2.3034907043028974,
+            "final_yaw_deg": 78.09607801245575,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        },
+        {
+          "start_sim_s": 10.0,
+          "end_sim_s": 20.0,
+          "off": {
+            "frames": 100,
+            "xy_rmse_m": 0.029960370319190573,
+            "xy_p95_m": 0.03396328901439888,
+            "yaw_p95_deg": 3.552596045206652,
+            "final_xy_m": 0.02618085893898623,
+            "final_yaw_deg": 3.232378804400258,
+            "handoff_pass_n": 100
+          },
+          "amcl_candidate_absolute": {
+            "frames": 100,
+            "xy_rmse_m": 2.4151374461234987,
+            "xy_p95_m": 2.790353283692177,
+            "yaw_p95_deg": 93.10922798781066,
+            "final_xy_m": 2.7716542054430184,
+            "final_yaw_deg": 99.39349357354803,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        },
+        {
+          "start_sim_s": 20.0,
+          "end_sim_s": 27.6,
+          "off": {
+            "frames": 77,
+            "xy_rmse_m": 0.02371872054290333,
+            "xy_p95_m": 0.025211144830721958,
+            "yaw_p95_deg": 3.649831309083083,
+            "final_xy_m": 0.02513458135994727,
+            "final_yaw_deg": 2.6015865309588495,
+            "handoff_pass_n": 77
+          },
+          "amcl_candidate_absolute": {
+            "frames": 77,
+            "xy_rmse_m": 2.5410497272333576,
+            "xy_p95_m": 2.7682481022502126,
+            "yaw_p95_deg": 127.41003921856145,
+            "final_xy_m": 2.4751325509252577,
+            "final_yaw_deg": 127.41366025629137,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        }
+      ],
+      "requirements_sha256": "d9f3c1f3a00273be3aa901613d01386fa493b1ed5edb561e40a58d367360875c",
+      "source_summary_sha256": "68e817c61aab9967d69980ff8249ebee1f6e154f751ad7186f81086a5f709ea6",
+      "own_map_frames": 18,
+      "motion_sources": {
+        "nominal_6f_unqualified_native": 277
+      },
+      "full_posterior": {
+        "candidate_pose": [
+          2.1487791753272543,
+          -2.249429569286928,
+          -1.3933059343393375
+        ],
+        "covariance": [
+          [
+            1.7656244148058469,
+            -0.1211195625852491,
+            -0.454222491436636
+          ],
+          [
+            -0.12111956258524911,
+            0.04766145022905772,
+            0.1625662272799028
+          ],
+          [
+            -0.45422249143663596,
+            0.1625662272799028,
+            0.6107396047577398
+          ]
+        ],
+        "xy_p95_m": 2.2731758076989825,
+        "yaw_p95_rad": 0.9305850447336844,
+        "direction_coupled_p95_rad": 3.0612849625416576,
+        "ess": 98922.89627091937,
+        "samples": 100000,
+        "converged": false,
+        "ready_for_handoff": false,
+        "runtime_qualified": false,
+        "circular_resultant": 0.7111767770258967,
+        "post_resample_ess": 99999.99999999994
+      }
+    },
+    {
+      "name": "eval-r1-nav2_sigma_fixed_v1",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r1",
+      "prediction": "/home/ugrp/ugrp-sim/runs/mapbuild9/r1-nav2_sigma_fixed_v1",
+      "status": "NOT_READY",
+      "frames": 277,
+      "ready_updates": 0,
+      "wrong_convergence_updates": 0,
+      "convergence_sim_s": null,
+      "convergence_own_estimated_path_m": null,
+      "off": {
+        "frames": 277,
+        "xy_rmse_m": 0.022932261590879605,
+        "xy_p95_m": 0.032817856313308635,
+        "yaw_p95_deg": 3.5354060386641213,
+        "final_xy_m": 0.02513458135994727,
+        "final_yaw_deg": 2.6015865309588495,
+        "handoff_pass_n": 277
+      },
+      "candidate_absolute_diagnostic": {
+        "frames": 273,
+        "xy_rmse_m": 2.851883950590556,
+        "xy_p95_m": 2.886266598233326,
+        "yaw_p95_deg": 65.64762679001328,
+        "final_xy_m": 2.8568047056564683,
+        "final_yaw_deg": 15.629346742761605,
+        "handoff_pass_n": 0
+      },
+      "after_convergence": {
+        "off": {
+          "frames": 0,
+          "status": "not_recorded"
+        },
+        "amcl": {
+          "frames": 0,
+          "status": "not_recorded"
+        }
+      },
+      "phases": [
+        {
+          "start_sim_s": 0.0,
+          "end_sim_s": 10.0,
+          "off": {
+            "frames": 100,
+            "xy_rmse_m": 0.011220644372841189,
+            "xy_p95_m": 0.024890707676165663,
+            "yaw_p95_deg": 1.8429126268007006,
+            "final_xy_m": 0.02561046413194405,
+            "final_yaw_deg": 1.9399627191466464,
+            "handoff_pass_n": 100
+          },
+          "amcl_candidate_absolute": {
+            "frames": 96,
+            "xy_rmse_m": 2.8736755129258102,
+            "xy_p95_m": 2.8959899719586746,
+            "yaw_p95_deg": 14.993516348069459,
+            "final_xy_m": 2.8652098990612354,
+            "final_yaw_deg": 2.3072268527448716,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        },
+        {
+          "start_sim_s": 10.0,
+          "end_sim_s": 20.0,
+          "off": {
+            "frames": 100,
+            "xy_rmse_m": 0.029960370319190573,
+            "xy_p95_m": 0.03396328901439888,
+            "yaw_p95_deg": 3.552596045206652,
+            "final_xy_m": 0.02618085893898623,
+            "final_yaw_deg": 3.232378804400258,
+            "handoff_pass_n": 100
+          },
+          "amcl_candidate_absolute": {
+            "frames": 100,
+            "xy_rmse_m": 2.8610818978350285,
+            "xy_p95_m": 2.873720971637224,
+            "yaw_p95_deg": 47.32309036250051,
+            "final_xy_m": 2.7933414035250506,
+            "final_yaw_deg": 71.27587944412255,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        },
+        {
+          "start_sim_s": 20.0,
+          "end_sim_s": 27.6,
+          "off": {
+            "frames": 77,
+            "xy_rmse_m": 0.02371872054290333,
+            "xy_p95_m": 0.025211144830721958,
+            "yaw_p95_deg": 3.649831309083083,
+            "final_xy_m": 0.02513458135994727,
+            "final_yaw_deg": 2.6015865309588495,
+            "handoff_pass_n": 77
+          },
+          "amcl_candidate_absolute": {
+            "frames": 77,
+            "xy_rmse_m": 2.8123731031877592,
+            "xy_p95_m": 2.85678558312489,
+            "yaw_p95_deg": 71.22823411854218,
+            "final_xy_m": 2.8568047056564683,
+            "final_yaw_deg": 15.629346742761605,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        }
+      ],
+      "requirements_sha256": "d9f3c1f3a00273be3aa901613d01386fa493b1ed5edb561e40a58d367360875c",
+      "source_summary_sha256": "8c0dd439518f6e9109b5262e63ec34eb8eff0668c1091e6a993ad8598d61ae56",
+      "own_map_frames": 18,
+      "motion_sources": {
+        "nominal_6f_unqualified_native": 277
+      },
+      "full_posterior": {
+        "candidate_pose": [
+          2.3855356963503587,
+          -1.2378678021976772,
+          2.9388750499475638
+        ],
+        "covariance": [
+          [
+            1.2135057253653145,
+            0.028799466416523863,
+            -0.36493076130730573
+          ],
+          [
+            0.02879946641652387,
+            1.275462583716491,
+            -0.13547432257782818
+          ],
+          [
+            -0.3649307613073057,
+            -0.13547432257782815,
+            2.9664040917109267
+          ]
+        ],
+        "xy_p95_m": 2.792139960404905,
+        "yaw_p95_rad": 2.971535707223809,
+        "direction_coupled_p95_rad": 5.1504880424616,
+        "ess": 97791.25353670363,
+        "samples": 100000,
+        "converged": false,
+        "ready_for_handoff": false,
+        "circular_resultant": 0.16888991161743458,
+        "post_resample_ess": 99999.99999999994
+      }
+    },
+    {
+      "name": "eval-r1-seed20261017-v1b",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r1",
+      "prediction": "/home/ugrp/ugrp-sim/runs/mapbuild9/r1-seed20261017-v1b",
+      "status": "NOT_READY",
+      "frames": 277,
+      "ready_updates": 0,
+      "wrong_convergence_updates": 0,
+      "convergence_sim_s": null,
+      "convergence_own_estimated_path_m": null,
+      "off": {
+        "frames": 277,
+        "xy_rmse_m": 0.022932261590879605,
+        "xy_p95_m": 0.032817856313308635,
+        "yaw_p95_deg": 3.5354060386641213,
+        "final_xy_m": 0.02513458135994727,
+        "final_yaw_deg": 2.6015865309588495,
+        "handoff_pass_n": 277
+      },
+      "candidate_absolute_diagnostic": {
+        "frames": 273,
+        "xy_rmse_m": 2.868418383724782,
+        "xy_p95_m": 2.9455218514611894,
+        "yaw_p95_deg": 57.576821283079184,
+        "final_xy_m": 2.9416027662449897,
+        "final_yaw_deg": 28.909699094431485,
+        "handoff_pass_n": 0
+      },
+      "after_convergence": {
+        "off": {
+          "frames": 0,
+          "status": "not_recorded"
+        },
+        "amcl": {
+          "frames": 0,
+          "status": "not_recorded"
+        }
+      },
+      "phases": [
+        {
+          "start_sim_s": 0.0,
+          "end_sim_s": 10.0,
+          "off": {
+            "frames": 100,
+            "xy_rmse_m": 0.011220644372841189,
+            "xy_p95_m": 0.024890707676165663,
+            "yaw_p95_deg": 1.8429126268007006,
+            "final_xy_m": 0.02561046413194405,
+            "final_yaw_deg": 1.9399627191466464,
+            "handoff_pass_n": 100
+          },
+          "amcl_candidate_absolute": {
+            "frames": 96,
+            "xy_rmse_m": 2.8693695750258867,
+            "xy_p95_m": 2.9258516838415423,
+            "yaw_p95_deg": 57.66344762605414,
+            "final_xy_m": 2.863827215875118,
+            "final_yaw_deg": 40.695125421951026,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        },
+        {
+          "start_sim_s": 10.0,
+          "end_sim_s": 20.0,
+          "off": {
+            "frames": 100,
+            "xy_rmse_m": 0.029960370319190573,
+            "xy_p95_m": 0.03396328901439888,
+            "yaw_p95_deg": 3.552596045206652,
+            "final_xy_m": 0.02618085893898623,
+            "final_yaw_deg": 3.232378804400258,
+            "handoff_pass_n": 100
+          },
+          "amcl_candidate_absolute": {
+            "frames": 100,
+            "xy_rmse_m": 2.863160447813903,
+            "xy_p95_m": 2.8866154582900503,
+            "yaw_p95_deg": 43.85283080683384,
+            "final_xy_m": 2.7723848018475192,
+            "final_yaw_deg": 45.566176138456626,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        },
+        {
+          "start_sim_s": 20.0,
+          "end_sim_s": 27.6,
+          "off": {
+            "frames": 77,
+            "xy_rmse_m": 0.02371872054290333,
+            "xy_p95_m": 0.025211144830721958,
+            "yaw_p95_deg": 3.649831309083083,
+            "final_xy_m": 0.02513458135994727,
+            "final_yaw_deg": 2.6015865309588495,
+            "handoff_pass_n": 77
+          },
+          "amcl_candidate_absolute": {
+            "frames": 77,
+            "xy_rmse_m": 2.874048989650094,
+            "xy_p95_m": 2.9463332944172462,
+            "yaw_p95_deg": 50.709765299166165,
+            "final_xy_m": 2.9416027662449897,
+            "final_yaw_deg": 28.909699094431485,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        }
+      ],
+      "requirements_sha256": "d9f3c1f3a00273be3aa901613d01386fa493b1ed5edb561e40a58d367360875c",
+      "source_summary_sha256": "aeb69f4d6a42dcb7810bedcaf0631b8cfd419c3e00c86ae1b146c0f0add1a075",
+      "own_map_frames": 18,
+      "motion_sources": {
+        "nominal_6f_unqualified_native": 277
+      },
+      "full_posterior": {
+        "candidate_pose": [
+          2.5483420422484295,
+          -1.5087988184549237,
+          -3.112524382870412
+        ],
+        "covariance": [
+          [
+            1.9976695350180833,
+            -0.3197146379490166,
+            -0.1125894119611179
+          ],
+          [
+            -0.31971463794901667,
+            1.4316378697135237,
+            -1.1344553720766142
+          ],
+          [
+            -0.1125894119611179,
+            -1.1344553720766142,
+            2.1238939101227285
+          ]
+        ],
+        "xy_p95_m": 2.9494951468932875,
+        "yaw_p95_rad": 2.6659556165905904,
+        "direction_coupled_p95_rad": 4.8557427232539006,
+        "ess": 1946.2531951189394,
+        "samples": 2001,
+        "converged": false,
+        "ready_for_handoff": false,
+        "circular_resultant": 0.2809952942567166,
+        "post_resample_ess": 2001.0
+      }
+    },
+    {
+      "name": "eval-r2-fixed_population_v1",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r2",
+      "prediction": "/home/ugrp/ugrp-sim/runs/mapbuild9/r2-fixed_population_v1",
+      "status": "NOT_READY",
+      "frames": 378,
+      "ready_updates": 0,
+      "wrong_convergence_updates": 0,
+      "convergence_sim_s": null,
+      "convergence_own_estimated_path_m": null,
+      "off": {
+        "frames": 378,
+        "xy_rmse_m": 0.012509007448109288,
+        "xy_p95_m": 0.01798287763684738,
+        "yaw_p95_deg": 2.9932132233522144,
+        "final_xy_m": 0.015748898877834618,
+        "final_yaw_deg": 2.9434428543689237,
+        "handoff_pass_n": 378
+      },
+      "candidate_absolute_diagnostic": {
+        "frames": 374,
+        "xy_rmse_m": 3.046124830596079,
+        "xy_p95_m": 3.364901731546129,
+        "yaw_p95_deg": 170.31129741405584,
+        "final_xy_m": 3.0994520465359936,
+        "final_yaw_deg": 0.35728285081155114,
+        "handoff_pass_n": 0
+      },
+      "after_convergence": {
+        "off": {
+          "frames": 0,
+          "status": "not_recorded"
+        },
+        "amcl": {
+          "frames": 0,
+          "status": "not_recorded"
+        }
+      },
+      "phases": [
+        {
+          "start_sim_s": 0.0,
+          "end_sim_s": 10.0,
+          "off": {
+            "frames": 100,
+            "xy_rmse_m": 0.0054768304922333515,
+            "xy_p95_m": 0.011237600024829807,
+            "yaw_p95_deg": 1.1093891825280247,
+            "final_xy_m": 0.008592280502368028,
+            "final_yaw_deg": 0.747010239443359,
+            "handoff_pass_n": 100
+          },
+          "amcl_candidate_absolute": {
+            "frames": 96,
+            "xy_rmse_m": 2.939753918231017,
+            "xy_p95_m": 3.0199084990768448,
+            "yaw_p95_deg": 67.97797658870076,
+            "final_xy_m": 2.7870313544989,
+            "final_yaw_deg": 76.71341546291198,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        },
+        {
+          "start_sim_s": 10.0,
+          "end_sim_s": 20.0,
+          "off": {
+            "frames": 100,
+            "xy_rmse_m": 0.01203813457625195,
+            "xy_p95_m": 0.018135333643350786,
+            "yaw_p95_deg": 2.3322021529494013,
+            "final_xy_m": 0.01551253513015312,
+            "final_yaw_deg": 2.1998349279009215,
+            "handoff_pass_n": 100
+          },
+          "amcl_candidate_absolute": {
+            "frames": 100,
+            "xy_rmse_m": 3.0115635643553262,
+            "xy_p95_m": 3.37875165626006,
+            "yaw_p95_deg": 170.50689185515307,
+            "final_xy_m": 3.3755015167083835,
+            "final_yaw_deg": 170.58273720097606,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        },
+        {
+          "start_sim_s": 20.0,
+          "end_sim_s": 30.0,
+          "off": {
+            "frames": 100,
+            "xy_rmse_m": 0.015861205993669032,
+            "xy_p95_m": 0.019548976218953965,
+            "yaw_p95_deg": 2.928379890607862,
+            "final_xy_m": 0.011182955349672006,
+            "final_yaw_deg": 2.8822259976485873,
+            "handoff_pass_n": 100
+          },
+          "amcl_candidate_absolute": {
+            "frames": 100,
+            "xy_rmse_m": 3.1407828380207774,
+            "xy_p95_m": 3.324960261919246,
+            "yaw_p95_deg": 171.93407363184517,
+            "final_xy_m": 3.077602926303475,
+            "final_yaw_deg": 0.8591995186906696,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        },
+        {
+          "start_sim_s": 30.0,
+          "end_sim_s": 37.7,
+          "off": {
+            "frames": 78,
+            "xy_rmse_m": 0.014543757963342036,
+            "xy_p95_m": 0.015792844528586782,
+            "yaw_p95_deg": 3.0267352308089808,
+            "final_xy_m": 0.015748898877834618,
+            "final_yaw_deg": 2.9434428543689237,
+            "handoff_pass_n": 78
+          },
+          "amcl_candidate_absolute": {
+            "frames": 78,
+            "xy_rmse_m": 3.095178039501138,
+            "xy_p95_m": 3.099777106385291,
+            "yaw_p95_deg": 0.9540141034242565,
+            "final_xy_m": 3.0994520465359936,
+            "final_yaw_deg": 0.35728285081155114,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        }
+      ],
+      "requirements_sha256": "d9f3c1f3a00273be3aa901613d01386fa493b1ed5edb561e40a58d367360875c",
+      "source_summary_sha256": "db4c921f54ad8c25109f3ce261dfafb1babfc2be735f2b57c653708ed38eef72",
+      "own_map_frames": 37,
+      "motion_sources": {
+        "nominal_6f_unqualified_native": 125,
+        "own_command_motion_v1": 253
+      },
+      "full_posterior": {
+        "candidate_pose": [
+          2.7102854085007175,
+          -1.781961855720203,
+          -1.1737974392538224
+        ],
+        "covariance": [
+          [
+            0.43244305458783694,
+            -0.1836967450466077,
+            0.061398406359667104
+          ],
+          [
+            -0.1836967450466077,
+            0.7879133873651551,
+            -0.24777930648448937
+          ],
+          [
+            0.0613984063596671,
+            -0.24777930648448931,
+            1.2921847379313747
+          ]
+        ],
+        "xy_p95_m": 2.548744302569985,
+        "yaw_p95_rad": 3.130979878910416,
+        "direction_coupled_p95_rad": 5.290122844728817,
+        "ess": 98015.28850060469,
+        "samples": 100000,
+        "converged": false,
+        "ready_for_handoff": false,
+        "circular_resultant": 0.7320757482794594,
+        "post_resample_ess": 99999.99999999994
+      }
+    },
+    {
+      "name": "eval-r2-likelihood_product_v1",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r2",
+      "prediction": "/home/ugrp/ugrp-sim/runs/mapbuild9/r2-likelihood_product_v1",
+      "status": "NOT_READY",
+      "frames": 378,
+      "ready_updates": 2,
+      "wrong_convergence_updates": 2,
+      "convergence_sim_s": 35.7,
+      "convergence_own_estimated_path_m": 0.4709940297462574,
+      "off": {
+        "frames": 378,
+        "xy_rmse_m": 0.012509007448109288,
+        "xy_p95_m": 0.01798287763684738,
+        "yaw_p95_deg": 2.9932132233522144,
+        "final_xy_m": 0.015748898877834618,
+        "final_yaw_deg": 2.9434428543689237,
+        "handoff_pass_n": 378
+      },
+      "candidate_absolute_diagnostic": {
+        "frames": 374,
+        "xy_rmse_m": 2.2053634467155905,
+        "xy_p95_m": 3.4767874342590024,
+        "yaw_p95_deg": 96.92534372868752,
+        "final_xy_m": 1.9070593978713413,
+        "final_yaw_deg": 98.56663578718837,
+        "handoff_pass_n": 0
+      },
+      "after_convergence": {
+        "off": {
+          "frames": 21,
+          "xy_rmse_m": 0.015521391115277436,
+          "xy_p95_m": 0.015748898877834618,
+          "yaw_p95_deg": 3.029488014227945,
+          "final_xy_m": 0.015748898877834618,
+          "final_yaw_deg": 2.9434428543689237,
+          "handoff_pass_n": 21
+        },
+        "amcl": {
+          "frames": 21,
+          "xy_rmse_m": 1.9001628804836614,
+          "xy_p95_m": 1.9071857943120383,
+          "yaw_p95_deg": 98.60518691440527,
+          "final_xy_m": 1.9070593978713413,
+          "final_yaw_deg": 98.56663578718837,
+          "handoff_pass_n": 0
+        }
+      },
+      "phases": [
+        {
+          "start_sim_s": 0.0,
+          "end_sim_s": 10.0,
+          "off": {
+            "frames": 100,
+            "xy_rmse_m": 0.0054768304922333515,
+            "xy_p95_m": 0.011237600024829807,
+            "yaw_p95_deg": 1.1093891825280247,
+            "final_xy_m": 0.008592280502368028,
+            "final_yaw_deg": 0.747010239443359,
+            "handoff_pass_n": 100
+          },
+          "amcl_candidate_absolute": {
+            "frames": 96,
+            "xy_rmse_m": 3.039452283854364,
+            "xy_p95_m": 4.284170356052819,
+            "yaw_p95_deg": 90.47450153136182,
+            "final_xy_m": 1.7852282642175628,
+            "final_yaw_deg": 89.23559647029306,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        },
+        {
+          "start_sim_s": 10.0,
+          "end_sim_s": 20.0,
+          "off": {
+            "frames": 100,
+            "xy_rmse_m": 0.01203813457625195,
+            "xy_p95_m": 0.018135333643350786,
+            "yaw_p95_deg": 2.3322021529494013,
+            "final_xy_m": 0.01551253513015312,
+            "final_yaw_deg": 2.1998349279009215,
+            "handoff_pass_n": 100
+          },
+          "amcl_candidate_absolute": {
+            "frames": 100,
+            "xy_rmse_m": 1.8039420229512164,
+            "xy_p95_m": 1.8897494300019222,
+            "yaw_p95_deg": 88.70135945933578,
+            "final_xy_m": 1.8842033380609686,
+            "final_yaw_deg": 32.835828245064775,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        },
+        {
+          "start_sim_s": 20.0,
+          "end_sim_s": 30.0,
+          "off": {
+            "frames": 100,
+            "xy_rmse_m": 0.015861205993669032,
+            "xy_p95_m": 0.019548976218953965,
+            "yaw_p95_deg": 2.928379890607862,
+            "final_xy_m": 0.011182955349672006,
+            "final_yaw_deg": 2.8822259976485873,
+            "handoff_pass_n": 100
+          },
+          "amcl_candidate_absolute": {
+            "frames": 100,
+            "xy_rmse_m": 1.8034503052133466,
+            "xy_p95_m": 1.8780471272343127,
+            "yaw_p95_deg": 59.50064355251289,
+            "final_xy_m": 1.8868573861889633,
+            "final_yaw_deg": 70.46421387278139,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        },
+        {
+          "start_sim_s": 30.0,
+          "end_sim_s": 37.7,
+          "off": {
+            "frames": 78,
+            "xy_rmse_m": 0.014543757963342036,
+            "xy_p95_m": 0.015792844528586782,
+            "yaw_p95_deg": 3.0267352308089808,
+            "final_xy_m": 0.015748898877834618,
+            "final_yaw_deg": 2.9434428543689237,
+            "handoff_pass_n": 78
+          },
+          "amcl_candidate_absolute": {
+            "frames": 78,
+            "xy_rmse_m": 1.8995914750251504,
+            "xy_p95_m": 1.907200765441086,
+            "yaw_p95_deg": 98.56514143784992,
+            "final_xy_m": 1.9070593978713413,
+            "final_yaw_deg": 98.56663578718837,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 2,
+          "wrong_ready_n": 2
+        }
+      ],
+      "requirements_sha256": "d9f3c1f3a00273be3aa901613d01386fa493b1ed5edb561e40a58d367360875c",
+      "source_summary_sha256": "4b2e3ee7639064b48fc74cfb1e9812afe0e18f17e49e3817fcc7414c780b7b31",
+      "own_map_frames": 37,
+      "motion_sources": {
+        "nominal_6f_unqualified_native": 125,
+        "own_command_motion_v1": 253
+      },
+      "full_posterior": {
+        "candidate_pose": [
+          1.1512500438116635,
+          -3.285938638595496,
+          -2.8878740042467594
+        ],
+        "covariance": [
+          [
+            0.00033603876811759295,
+            7.41735098015513e-05,
+            6.420629184589072e-06
+          ],
+          [
+            7.41735098015513e-05,
+            1.7007886106217473e-05,
+            4.552341643030063e-06
+          ],
+          [
+            6.420629184589071e-06,
+            4.552341643030063e-06,
+            0.00012845547930176852
+          ]
+        ],
+        "xy_p95_m": 0.03327755172978296,
+        "yaw_p95_rad": 0.021395031965925963,
+        "direction_coupled_p95_rad": 0.062201863669499646,
+        "ess": 74.21279591806153,
+        "samples": 100000,
+        "converged": false,
+        "ready_for_handoff": false,
+        "runtime_qualified": false,
+        "circular_resultant": 0.9999357742937905,
+        "post_resample_ess": 99999.99999999994
+      }
+    },
+    {
+      "name": "eval-r2-likelihood_product_v1-slots",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r2",
+      "prediction": "/home/ugrp/ugrp-sim/runs/mapbuild9/r2-likelihood_product_v1-slots",
+      "status": "NOT_READY",
+      "frames": 378,
+      "ready_updates": 2,
+      "wrong_convergence_updates": 2,
+      "convergence_sim_s": 32.3,
+      "convergence_own_estimated_path_m": 0.4691982450616032,
+      "off": {
+        "frames": 378,
+        "xy_rmse_m": 0.012509007448109288,
+        "xy_p95_m": 0.01798287763684738,
+        "yaw_p95_deg": 2.9932132233522144,
+        "final_xy_m": 0.015748898877834618,
+        "final_yaw_deg": 2.9434428543689237,
+        "handoff_pass_n": 378
+      },
+      "candidate_absolute_diagnostic": {
+        "frames": 374,
+        "xy_rmse_m": 2.069167693215997,
+        "xy_p95_m": 3.070302215196993,
+        "yaw_p95_deg": 90.26762386057005,
+        "final_xy_m": 1.5844758292759995,
+        "final_yaw_deg": 86.93465157918656,
+        "handoff_pass_n": 0
+      },
+      "after_convergence": {
+        "off": {
+          "frames": 55,
+          "xy_rmse_m": 0.015383988378205694,
+          "xy_p95_m": 0.015806609740555512,
+          "yaw_p95_deg": 3.0190263121132035,
+          "final_xy_m": 0.015748898877834618,
+          "final_yaw_deg": 2.9434428543689237,
+          "handoff_pass_n": 55
+        },
+        "amcl": {
+          "frames": 55,
+          "xy_rmse_m": 1.5884954614761868,
+          "xy_p95_m": 1.5964143738164744,
+          "yaw_p95_deg": 91.0914652931825,
+          "final_xy_m": 1.5844758292759995,
+          "final_yaw_deg": 86.93465157918656,
+          "handoff_pass_n": 0
+        }
+      },
+      "phases": [
+        {
+          "start_sim_s": 0.0,
+          "end_sim_s": 10.0,
+          "off": {
+            "frames": 100,
+            "xy_rmse_m": 0.0054768304922333515,
+            "xy_p95_m": 0.011237600024829807,
+            "yaw_p95_deg": 1.1093891825280247,
+            "final_xy_m": 0.008592280502368028,
+            "final_yaw_deg": 0.747010239443359,
+            "handoff_pass_n": 100
+          },
+          "amcl_candidate_absolute": {
+            "frames": 96,
+            "xy_rmse_m": 2.8184891607886438,
+            "xy_p95_m": 3.713024010111898,
+            "yaw_p95_deg": 90.34403601401898,
+            "final_xy_m": 1.7662273161317739,
+            "final_yaw_deg": 89.22168283888861,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        },
+        {
+          "start_sim_s": 10.0,
+          "end_sim_s": 20.0,
+          "off": {
+            "frames": 100,
+            "xy_rmse_m": 0.01203813457625195,
+            "xy_p95_m": 0.018135333643350786,
+            "yaw_p95_deg": 2.3322021529494013,
+            "final_xy_m": 0.01551253513015312,
+            "final_yaw_deg": 2.1998349279009215,
+            "handoff_pass_n": 100
+          },
+          "amcl_candidate_absolute": {
+            "frames": 100,
+            "xy_rmse_m": 1.7387775523888935,
+            "xy_p95_m": 1.7788216057667814,
+            "yaw_p95_deg": 88.68744582793133,
+            "final_xy_m": 1.6803950431386996,
+            "final_yaw_deg": 33.758067163510795,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        },
+        {
+          "start_sim_s": 20.0,
+          "end_sim_s": 30.0,
+          "off": {
+            "frames": 100,
+            "xy_rmse_m": 0.015861205993669032,
+            "xy_p95_m": 0.019548976218953965,
+            "yaw_p95_deg": 2.928379890607862,
+            "final_xy_m": 0.011182955349672006,
+            "final_yaw_deg": 2.8822259976485873,
+            "handoff_pass_n": 100
+          },
+          "amcl_candidate_absolute": {
+            "frames": 100,
+            "xy_rmse_m": 1.8348263732020975,
+            "xy_p95_m": 1.8869543608292845,
+            "yaw_p95_deg": 89.59967768044766,
+            "final_xy_m": 1.7035692139361016,
+            "final_yaw_deg": 81.8192838403951,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        },
+        {
+          "start_sim_s": 30.0,
+          "end_sim_s": 37.7,
+          "off": {
+            "frames": 78,
+            "xy_rmse_m": 0.014543757963342036,
+            "xy_p95_m": 0.015792844528586782,
+            "yaw_p95_deg": 3.0267352308089808,
+            "final_xy_m": 0.015748898877834618,
+            "final_yaw_deg": 2.9434428543689237,
+            "handoff_pass_n": 78
+          },
+          "amcl_candidate_absolute": {
+            "frames": 78,
+            "xy_rmse_m": 1.5999120110074168,
+            "xy_p95_m": 1.7058860283031336,
+            "yaw_p95_deg": 91.08971375013279,
+            "final_xy_m": 1.5844758292759995,
+            "final_yaw_deg": 86.93465157918656,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 2,
+          "wrong_ready_n": 2
+        }
+      ],
+      "requirements_sha256": "d9f3c1f3a00273be3aa901613d01386fa493b1ed5edb561e40a58d367360875c",
+      "source_summary_sha256": "50e9a5edfc51ddc1318cc679f8661d6e99cddaa4a4e4e8e7d9296b2227d8e2d1",
+      "own_map_frames": 37,
+      "motion_sources": {
+        "nominal_6f_unqualified_native": 125,
+        "own_command_motion_v1": 253
+      },
+      "full_posterior": {
+        "candidate_pose": [
+          1.1964942911974736,
+          -2.3777633843884978,
+          0.34973422698464446
+        ],
+        "covariance": [
+          [
+            3.324542037888718e-06,
+            1.6317782788880238e-06,
+            6.828508815137842e-06
+          ],
+          [
+            1.6317782788880238e-06,
+            1.8601685036132703e-06,
+            3.7818890196557367e-06
+          ],
+          [
+            6.828508815137842e-06,
+            3.7818890196557367e-06,
+            2.726448042310841e-05
+          ]
+        ],
+        "xy_p95_m": 0.004514553272016934,
+        "yaw_p95_rad": 0.009992059624007343,
+        "direction_coupled_p95_rad": 0.015342273069234897,
+        "ess": 48341.19734567093,
+        "samples": 100000,
+        "converged": false,
+        "ready_for_handoff": false,
+        "runtime_qualified": false,
+        "circular_resultant": 0.9999863678628066,
+        "post_resample_ess": 99999.99999999994
+      }
+    },
+    {
+      "name": "eval-r2-nav2_sigma_fixed_v1",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r2",
+      "prediction": "/home/ugrp/ugrp-sim/runs/mapbuild9/r2-nav2_sigma_fixed_v1",
+      "status": "NOT_READY",
+      "frames": 378,
+      "ready_updates": 0,
+      "wrong_convergence_updates": 0,
+      "convergence_sim_s": null,
+      "convergence_own_estimated_path_m": null,
+      "off": {
+        "frames": 378,
+        "xy_rmse_m": 0.012509007448109288,
+        "xy_p95_m": 0.01798287763684738,
+        "yaw_p95_deg": 2.9932132233522144,
+        "final_xy_m": 0.015748898877834618,
+        "final_yaw_deg": 2.9434428543689237,
+        "handoff_pass_n": 378
+      },
+      "candidate_absolute_diagnostic": {
+        "frames": 374,
+        "xy_rmse_m": 2.8173323906661354,
+        "xy_p95_m": 3.315741208704316,
+        "yaw_p95_deg": 172.86374121765482,
+        "final_xy_m": 2.727200596368893,
+        "final_yaw_deg": 5.93007178703159,
+        "handoff_pass_n": 0
+      },
+      "after_convergence": {
+        "off": {
+          "frames": 0,
+          "status": "not_recorded"
+        },
+        "amcl": {
+          "frames": 0,
+          "status": "not_recorded"
+        }
+      },
+      "phases": [
+        {
+          "start_sim_s": 0.0,
+          "end_sim_s": 10.0,
+          "off": {
+            "frames": 100,
+            "xy_rmse_m": 0.0054768304922333515,
+            "xy_p95_m": 0.011237600024829807,
+            "yaw_p95_deg": 1.1093891825280247,
+            "final_xy_m": 0.008592280502368028,
+            "final_yaw_deg": 0.747010239443359,
+            "handoff_pass_n": 100
+          },
+          "amcl_candidate_absolute": {
+            "frames": 96,
+            "xy_rmse_m": 2.860663433417873,
+            "xy_p95_m": 2.876482196787866,
+            "yaw_p95_deg": 67.91453772920241,
+            "final_xy_m": 2.7562682904150515,
+            "final_yaw_deg": 83.88382264301144,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        },
+        {
+          "start_sim_s": 10.0,
+          "end_sim_s": 20.0,
+          "off": {
+            "frames": 100,
+            "xy_rmse_m": 0.01203813457625195,
+            "xy_p95_m": 0.018135333643350786,
+            "yaw_p95_deg": 2.3322021529494013,
+            "final_xy_m": 0.01551253513015312,
+            "final_yaw_deg": 2.1998349279009215,
+            "handoff_pass_n": 100
+          },
+          "amcl_candidate_absolute": {
+            "frames": 100,
+            "xy_rmse_m": 2.9562604253816707,
+            "xy_p95_m": 3.339199917417011,
+            "yaw_p95_deg": 173.60224268300993,
+            "final_xy_m": 3.3158090069684745,
+            "final_yaw_deg": 171.29922066354527,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        },
+        {
+          "start_sim_s": 20.0,
+          "end_sim_s": 30.0,
+          "off": {
+            "frames": 100,
+            "xy_rmse_m": 0.015861205993669032,
+            "xy_p95_m": 0.019548976218953965,
+            "yaw_p95_deg": 2.928379890607862,
+            "final_xy_m": 0.011182955349672006,
+            "final_yaw_deg": 2.8822259976485873,
+            "handoff_pass_n": 100
+          },
+          "amcl_candidate_absolute": {
+            "frames": 100,
+            "xy_rmse_m": 2.7213908078511535,
+            "xy_p95_m": 3.194456559037152,
+            "yaw_p95_deg": 169.882055545224,
+            "final_xy_m": 2.666120905012995,
+            "final_yaw_deg": 28.438150182659406,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        },
+        {
+          "start_sim_s": 30.0,
+          "end_sim_s": 37.7,
+          "off": {
+            "frames": 78,
+            "xy_rmse_m": 0.014543757963342036,
+            "xy_p95_m": 0.015792844528586782,
+            "yaw_p95_deg": 3.0267352308089808,
+            "final_xy_m": 0.015748898877834618,
+            "final_yaw_deg": 2.9434428543689237,
+            "handoff_pass_n": 78
+          },
+          "amcl_candidate_absolute": {
+            "frames": 78,
+            "xy_rmse_m": 2.6995322553674916,
+            "xy_p95_m": 2.7271829385898587,
+            "yaw_p95_deg": 28.350009604706074,
+            "final_xy_m": 2.727200596368893,
+            "final_yaw_deg": 5.93007178703159,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        }
+      ],
+      "requirements_sha256": "d9f3c1f3a00273be3aa901613d01386fa493b1ed5edb561e40a58d367360875c",
+      "source_summary_sha256": "005f12edc35258304af9a6e9129d63a5e176054e4fec273d96ee7ffd231f7039",
+      "own_map_frames": 37,
+      "motion_sources": {
+        "nominal_6f_unqualified_native": 125,
+        "own_command_motion_v1": 253
+      },
+      "full_posterior": {
+        "candidate_pose": [
+          2.0400163753518354,
+          -0.8564366592545307,
+          -1.064062399582924
+        ],
+        "covariance": [
+          [
+            3.8327008071522237,
+            1.5148595518157595,
+            1.6741198320239554
+          ],
+          [
+            1.5148595518157595,
+            1.5625108811715864,
+            1.7092779068161879
+          ],
+          [
+            1.6741198320239554,
+            1.7092779068161879,
+            4.5836725219536625
+          ]
+        ],
+        "xy_p95_m": 2.9633127849959724,
+        "yaw_p95_rad": 3.1116245624648338,
+        "direction_coupled_p95_rad": 5.3023007362343915,
+        "ess": 98563.1986293067,
+        "samples": 100000,
+        "converged": false,
+        "ready_for_handoff": false,
+        "circular_resultant": 0.0061541949534538514,
+        "post_resample_ess": 99999.99999999994
+      }
+    },
+    {
+      "name": "eval-r2-seed20261017-v1b",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r2",
+      "prediction": "/home/ugrp/ugrp-sim/runs/mapbuild9/r2-seed20261017-v1b",
+      "status": "NOT_READY",
+      "frames": 378,
+      "ready_updates": 0,
+      "wrong_convergence_updates": 0,
+      "convergence_sim_s": null,
+      "convergence_own_estimated_path_m": null,
+      "off": {
+        "frames": 378,
+        "xy_rmse_m": 0.012509007448109288,
+        "xy_p95_m": 0.01798287763684738,
+        "yaw_p95_deg": 2.9932132233522144,
+        "final_xy_m": 0.015748898877834618,
+        "final_yaw_deg": 2.9434428543689237,
+        "handoff_pass_n": 378
+      },
+      "candidate_absolute_diagnostic": {
+        "frames": 374,
+        "xy_rmse_m": 3.2886478818879192,
+        "xy_p95_m": 3.831605179795781,
+        "yaw_p95_deg": 178.11153399666028,
+        "final_xy_m": 3.237992661600821,
+        "final_yaw_deg": 0.363714460703098,
+        "handoff_pass_n": 0
+      },
+      "after_convergence": {
+        "off": {
+          "frames": 0,
+          "status": "not_recorded"
+        },
+        "amcl": {
+          "frames": 0,
+          "status": "not_recorded"
+        }
+      },
+      "phases": [
+        {
+          "start_sim_s": 0.0,
+          "end_sim_s": 10.0,
+          "off": {
+            "frames": 100,
+            "xy_rmse_m": 0.0054768304922333515,
+            "xy_p95_m": 0.011237600024829807,
+            "yaw_p95_deg": 1.1093891825280247,
+            "final_xy_m": 0.008592280502368028,
+            "final_yaw_deg": 0.747010239443359,
+            "handoff_pass_n": 100
+          },
+          "amcl_candidate_absolute": {
+            "frames": 96,
+            "xy_rmse_m": 2.881844811633567,
+            "xy_p95_m": 2.95422185429934,
+            "yaw_p95_deg": 71.47473406586693,
+            "final_xy_m": 2.7515477402712873,
+            "final_yaw_deg": 84.82824316783,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        },
+        {
+          "start_sim_s": 10.0,
+          "end_sim_s": 20.0,
+          "off": {
+            "frames": 100,
+            "xy_rmse_m": 0.01203813457625195,
+            "xy_p95_m": 0.018135333643350786,
+            "yaw_p95_deg": 2.3322021529494013,
+            "final_xy_m": 0.01551253513015312,
+            "final_yaw_deg": 2.1998349279009215,
+            "handoff_pass_n": 100
+          },
+          "amcl_candidate_absolute": {
+            "frames": 100,
+            "xy_rmse_m": 3.314811369514598,
+            "xy_p95_m": 3.803413230798233,
+            "yaw_p95_deg": 172.63190409273182,
+            "final_xy_m": 3.7680174532717525,
+            "final_yaw_deg": 172.70774943855477,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        },
+        {
+          "start_sim_s": 20.0,
+          "end_sim_s": 30.0,
+          "off": {
+            "frames": 100,
+            "xy_rmse_m": 0.015861205993669032,
+            "xy_p95_m": 0.019548976218953965,
+            "yaw_p95_deg": 2.928379890607862,
+            "final_xy_m": 0.011182955349672006,
+            "final_yaw_deg": 2.8822259976485873,
+            "handoff_pass_n": 100
+          },
+          "amcl_candidate_absolute": {
+            "frames": 100,
+            "xy_rmse_m": 3.6382154290740143,
+            "xy_p95_m": 4.0291691319412415,
+            "yaw_p95_deg": 179.8511141932674,
+            "final_xy_m": 3.190547084455871,
+            "final_yaw_deg": 2.639515819896952,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        },
+        {
+          "start_sim_s": 30.0,
+          "end_sim_s": 37.7,
+          "off": {
+            "frames": 78,
+            "xy_rmse_m": 0.014543757963342036,
+            "xy_p95_m": 0.015792844528586782,
+            "yaw_p95_deg": 3.0267352308089808,
+            "final_xy_m": 0.015748898877834618,
+            "final_yaw_deg": 2.9434428543689237,
+            "handoff_pass_n": 78
+          },
+          "amcl_candidate_absolute": {
+            "frames": 78,
+            "xy_rmse_m": 3.2525043666756526,
+            "xy_p95_m": 3.2745728785928447,
+            "yaw_p95_deg": 2.551375241943625,
+            "final_xy_m": 3.237992661600821,
+            "final_yaw_deg": 0.363714460703098,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        }
+      ],
+      "requirements_sha256": "d9f3c1f3a00273be3aa901613d01386fa493b1ed5edb561e40a58d367360875c",
+      "source_summary_sha256": "187e1eafb727df723ab0f88ce2c30130944dff158f0d52560bd3c001683b3152",
+      "own_map_frames": 37,
+      "motion_sources": {
+        "nominal_6f_unqualified_native": 125,
+        "own_command_motion_v1": 253
+      },
+      "full_posterior": {
+        "candidate_pose": [
+          2.6867286106809285,
+          -1.063834002168039,
+          -1.1739096920226337
+        ],
+        "covariance": [
+          [
+            0.9126318930406656,
+            -0.23446768461205694,
+            0.43163603136047407
+          ],
+          [
+            -0.23446768461205694,
+            1.6012813638525536,
+            -0.3920474867193502
+          ],
+          [
+            0.431636031360474,
+            -0.3920474867193502,
+            4.068992560713965
+          ]
+        ],
+        "xy_p95_m": 2.555009768260192,
+        "yaw_p95_rad": 3.1390582522036987,
+        "direction_coupled_p95_rad": 5.298765800835044,
+        "ess": 1966.387455384825,
+        "samples": 2001,
+        "converged": false,
+        "ready_for_handoff": false,
+        "circular_resultant": 0.16638316007573675,
+        "post_resample_ess": 2001.0
+      }
+    },
+    {
+      "name": "eval-r3-fixed_population_v1",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3",
+      "prediction": "/home/ugrp/ugrp-sim/runs/mapbuild9/r3-fixed_population_v1",
+      "status": "NOT_READY",
+      "frames": 389,
+      "ready_updates": 0,
+      "wrong_convergence_updates": 0,
+      "convergence_sim_s": null,
+      "convergence_own_estimated_path_m": null,
+      "off": {
+        "frames": 389,
+        "xy_rmse_m": 0.029769172281536256,
+        "xy_p95_m": 0.044963509863540696,
+        "yaw_p95_deg": 4.4126316981859155,
+        "final_xy_m": 0.043216172651981244,
+        "final_yaw_deg": 3.311160348954784,
+        "handoff_pass_n": 389
+      },
+      "candidate_absolute_diagnostic": {
+        "frames": 385,
+        "xy_rmse_m": 3.75877716572021,
+        "xy_p95_m": 5.065612683742251,
+        "yaw_p95_deg": 179.54446566991723,
+        "final_xy_m": 3.7100171198488345,
+        "final_yaw_deg": 37.075154328130225,
+        "handoff_pass_n": 0
+      },
+      "after_convergence": {
+        "off": {
+          "frames": 0,
+          "status": "not_recorded"
+        },
+        "amcl": {
+          "frames": 0,
+          "status": "not_recorded"
+        }
+      },
+      "phases": [
+        {
+          "start_sim_s": 0.0,
+          "end_sim_s": 10.0,
+          "off": {
+            "frames": 100,
+            "xy_rmse_m": 0.006045600495996693,
+            "xy_p95_m": 0.015504533889637994,
+            "yaw_p95_deg": 1.0944991500468912,
+            "final_xy_m": 0.017393700338133828,
+            "final_yaw_deg": 0.8193865526909748,
+            "handoff_pass_n": 100
+          },
+          "amcl_candidate_absolute": {
+            "frames": 96,
+            "xy_rmse_m": 2.9358066902458737,
+            "xy_p95_m": 3.0318306573819256,
+            "yaw_p95_deg": 69.56571223484211,
+            "final_xy_m": 2.7670586177329177,
+            "final_yaw_deg": 78.57614453552512,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        },
+        {
+          "start_sim_s": 10.0,
+          "end_sim_s": 20.0,
+          "off": {
+            "frames": 100,
+            "xy_rmse_m": 0.02180052016127808,
+            "xy_p95_m": 0.028508760617593727,
+            "yaw_p95_deg": 1.5049217080215,
+            "final_xy_m": 0.025857998302228683,
+            "final_yaw_deg": 1.5601839752342872,
+            "handoff_pass_n": 100
+          },
+          "amcl_candidate_absolute": {
+            "frames": 100,
+            "xy_rmse_m": 3.962665433142688,
+            "xy_p95_m": 5.09505135250781,
+            "yaw_p95_deg": 170.9800416041237,
+            "final_xy_m": 5.095867359134703,
+            "final_yaw_deg": 170.98129855226128,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        },
+        {
+          "start_sim_s": 20.0,
+          "end_sim_s": 30.0,
+          "off": {
+            "frames": 100,
+            "xy_rmse_m": 0.03516926065055556,
+            "xy_p95_m": 0.04196171601218774,
+            "yaw_p95_deg": 4.358865748050261,
+            "final_xy_m": 0.040898741502938894,
+            "final_yaw_deg": 4.310130053588114,
+            "handoff_pass_n": 100
+          },
+          "amcl_candidate_absolute": {
+            "frames": 100,
+            "xy_rmse_m": 4.237742735919464,
+            "xy_p95_m": 5.106614483225348,
+            "yaw_p95_deg": 179.87193292869176,
+            "final_xy_m": 3.728854702772429,
+            "final_yaw_deg": 91.91675293236356,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        },
+        {
+          "start_sim_s": 30.0,
+          "end_sim_s": 38.8,
+          "off": {
+            "frames": 89,
+            "xy_rmse_m": 0.0436873881465368,
+            "xy_p95_m": 0.045497955431223376,
+            "yaw_p95_deg": 4.523669508132662,
+            "final_xy_m": 0.043216172651981244,
+            "final_yaw_deg": 3.311160348954784,
+            "handoff_pass_n": 89
+          },
+          "amcl_candidate_absolute": {
+            "frames": 89,
+            "xy_rmse_m": 3.741504075148321,
+            "xy_p95_m": 3.7549041473116604,
+            "yaw_p95_deg": 91.93626902750616,
+            "final_xy_m": 3.7100171198488345,
+            "final_yaw_deg": 37.075154328130225,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        }
+      ],
+      "requirements_sha256": "d9f3c1f3a00273be3aa901613d01386fa493b1ed5edb561e40a58d367360875c",
+      "source_summary_sha256": "c2d914ff83df5ac2a6ba1fa4a91854d08ee24582519238fcd5ca47d74c1d54d7",
+      "own_map_frames": 39,
+      "motion_sources": {
+        "nominal_6f_unqualified_native": 125,
+        "own_command_motion_v1": 264
+      },
+      "full_posterior": {
+        "candidate_pose": [
+          3.081018930771903,
+          -0.8503027384330623,
+          -1.3011627164070112
+        ],
+        "covariance": [
+          [
+            1.4063481506906397,
+            0.39391758143306993,
+            -0.47454301695102585
+          ],
+          [
+            0.3939175814330698,
+            1.693288043028873,
+            -2.020213581459365
+          ],
+          [
+            -0.4745430169510259,
+            -2.020213581459365,
+            3.243885737195237
+          ]
+        ],
+        "xy_p95_m": 2.127781689633055,
+        "yaw_p95_rad": 2.5163120125446463,
+        "direction_coupled_p95_rad": 4.628494215536877,
+        "ess": 95569.18530048402,
+        "samples": 100000,
+        "converged": false,
+        "ready_for_handoff": false,
+        "circular_resultant": 0.014682853930463367,
+        "post_resample_ess": 99999.99999999994
+      }
+    },
+    {
+      "name": "eval-r3-likelihood_product_v1",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3",
+      "prediction": "/home/ugrp/ugrp-sim/runs/mapbuild9/r3-likelihood_product_v1",
+      "status": "NOT_READY",
+      "frames": 389,
+      "ready_updates": 6,
+      "wrong_convergence_updates": 6,
+      "convergence_sim_s": 34.4,
+      "convergence_own_estimated_path_m": 0.48502354152564686,
+      "off": {
+        "frames": 389,
+        "xy_rmse_m": 0.029769172281536256,
+        "xy_p95_m": 0.044963509863540696,
+        "yaw_p95_deg": 4.4126316981859155,
+        "final_xy_m": 0.043216172651981244,
+        "final_yaw_deg": 3.311160348954784,
+        "handoff_pass_n": 389
+      },
+      "candidate_absolute_diagnostic": {
+        "frames": 385,
+        "xy_rmse_m": 1.8982619935276814,
+        "xy_p95_m": 2.6729806893007813,
+        "yaw_p95_deg": 90.89678797869803,
+        "final_xy_m": 1.6134182400422579,
+        "final_yaw_deg": 91.08649727211571,
+        "handoff_pass_n": 0
+      },
+      "after_convergence": {
+        "off": {
+          "frames": 45,
+          "xy_rmse_m": 0.04400884078295779,
+          "xy_p95_m": 0.04496623762262085,
+          "yaw_p95_deg": 3.775413908255847,
+          "final_xy_m": 0.043216172651981244,
+          "final_yaw_deg": 3.311160348954784,
+          "handoff_pass_n": 45
+        },
+        "amcl": {
+          "frames": 45,
+          "xy_rmse_m": 1.6137445557072987,
+          "xy_p95_m": 1.61643938408242,
+          "yaw_p95_deg": 91.17951973525903,
+          "final_xy_m": 1.6134182400422579,
+          "final_yaw_deg": 91.08649727211571,
+          "handoff_pass_n": 0
+        }
+      },
+      "phases": [
+        {
+          "start_sim_s": 0.0,
+          "end_sim_s": 10.0,
+          "off": {
+            "frames": 100,
+            "xy_rmse_m": 0.006045600495996693,
+            "xy_p95_m": 0.015504533889637994,
+            "yaw_p95_deg": 1.0944991500468912,
+            "final_xy_m": 0.017393700338133828,
+            "final_yaw_deg": 0.8193865526909748,
+            "handoff_pass_n": 100
+          },
+          "amcl_candidate_absolute": {
+            "frames": 96,
+            "xy_rmse_m": 2.4188669523041306,
+            "xy_p95_m": 3.070315414014389,
+            "yaw_p95_deg": 90.42298028210844,
+            "final_xy_m": 1.7131409074015695,
+            "final_yaw_deg": 89.31600780599588,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        },
+        {
+          "start_sim_s": 10.0,
+          "end_sim_s": 20.0,
+          "off": {
+            "frames": 100,
+            "xy_rmse_m": 0.02180052016127808,
+            "xy_p95_m": 0.028508760617593727,
+            "yaw_p95_deg": 1.5049217080215,
+            "final_xy_m": 0.025857998302228683,
+            "final_yaw_deg": 1.5601839752342872,
+            "handoff_pass_n": 100
+          },
+          "amcl_candidate_absolute": {
+            "frames": 100,
+            "xy_rmse_m": 1.7075859458534817,
+            "xy_p95_m": 1.7250276516892324,
+            "yaw_p95_deg": 89.31239294195011,
+            "final_xy_m": 1.666533712022256,
+            "final_yaw_deg": 54.82487564650878,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        },
+        {
+          "start_sim_s": 20.0,
+          "end_sim_s": 30.0,
+          "off": {
+            "frames": 100,
+            "xy_rmse_m": 0.03516926065055556,
+            "xy_p95_m": 0.04196171601218774,
+            "yaw_p95_deg": 4.358865748050261,
+            "final_xy_m": 0.040898741502938894,
+            "final_yaw_deg": 4.310130053588114,
+            "handoff_pass_n": 100
+          },
+          "amcl_candidate_absolute": {
+            "frames": 100,
+            "xy_rmse_m": 1.7402313225658734,
+            "xy_p95_m": 1.801195060645679,
+            "yaw_p95_deg": 77.51128320307964,
+            "final_xy_m": 1.6013334879832863,
+            "final_yaw_deg": 88.02354139210836,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        },
+        {
+          "start_sim_s": 30.0,
+          "end_sim_s": 38.8,
+          "off": {
+            "frames": 89,
+            "xy_rmse_m": 0.0436873881465368,
+            "xy_p95_m": 0.045497955431223376,
+            "yaw_p95_deg": 4.523669508132662,
+            "final_xy_m": 0.043216172651981244,
+            "final_yaw_deg": 3.311160348954784,
+            "handoff_pass_n": 89
+          },
+          "amcl_candidate_absolute": {
+            "frames": 89,
+            "xy_rmse_m": 1.611736845532259,
+            "xy_p95_m": 1.6178318258471498,
+            "yaw_p95_deg": 91.08884350990394,
+            "final_xy_m": 1.6134182400422579,
+            "final_yaw_deg": 91.08649727211571,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 6,
+          "wrong_ready_n": 6
+        }
+      ],
+      "requirements_sha256": "d9f3c1f3a00273be3aa901613d01386fa493b1ed5edb561e40a58d367360875c",
+      "source_summary_sha256": "f7558568d02b37627269acff47aeee8636056a8fcbeb2e9b6b42596204739891",
+      "own_map_frames": 39,
+      "motion_sources": {
+        "nominal_6f_unqualified_native": 125,
+        "own_command_motion_v1": 264
+      },
+      "full_posterior": {
+        "candidate_pose": [
+          1.2140140254118688,
+          -2.2069894496013593,
+          0.9356800788111398
+        ],
+        "covariance": [
+          [
+            0.00011403327160318148,
+            7.187680050909348e-05,
+            8.617767031333416e-05
+          ],
+          [
+            7.187680050909348e-05,
+            0.00011995431676678734,
+            5.347554180026448e-05
+          ],
+          [
+            8.617767031333416e-05,
+            5.3475541800264476e-05,
+            0.00017923964780059307
+          ]
+        ],
+        "xy_p95_m": 0.026977855959089962,
+        "yaw_p95_rad": 0.025186165422865003,
+        "direction_coupled_p95_rad": 0.058020641011098356,
+        "ess": 98886.85639927072,
+        "samples": 100000,
+        "converged": true,
+        "ready_for_handoff": false,
+        "runtime_qualified": false,
+        "circular_resultant": 0.9999103834866409,
+        "post_resample_ess": 99999.99999999994
+      }
+    },
+    {
+      "name": "eval-r3-likelihood_product_v1-slots",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3",
+      "prediction": "/home/ugrp/ugrp-sim/runs/mapbuild9/r3-likelihood_product_v1-slots",
+      "status": "NOT_READY",
+      "frames": 389,
+      "ready_updates": 4,
+      "wrong_convergence_updates": 4,
+      "convergence_sim_s": 35.2,
+      "convergence_own_estimated_path_m": 0.485056246045163,
+      "off": {
+        "frames": 389,
+        "xy_rmse_m": 0.029769172281536256,
+        "xy_p95_m": 0.044963509863540696,
+        "yaw_p95_deg": 4.4126316981859155,
+        "final_xy_m": 0.043216172651981244,
+        "final_yaw_deg": 3.311160348954784,
+        "handoff_pass_n": 389
+      },
+      "candidate_absolute_diagnostic": {
+        "frames": 385,
+        "xy_rmse_m": 2.031501311059866,
+        "xy_p95_m": 3.070317653016876,
+        "yaw_p95_deg": 91.24449158712233,
+        "final_xy_m": 1.8233151291708964,
+        "final_yaw_deg": 91.1488255171476,
+        "handoff_pass_n": 0
+      },
+      "after_convergence": {
+        "off": {
+          "frames": 37,
+          "xy_rmse_m": 0.04383838497752616,
+          "xy_p95_m": 0.044345866857399746,
+          "yaw_p95_deg": 3.7014369453311633,
+          "final_xy_m": 0.043216172651981244,
+          "final_yaw_deg": 3.311160348954784,
+          "handoff_pass_n": 37
+        },
+        "amcl": {
+          "frames": 37,
+          "xy_rmse_m": 1.823498364020847,
+          "xy_p95_m": 1.8239868368043795,
+          "yaw_p95_deg": 91.33398517307035,
+          "final_xy_m": 1.8233151291708964,
+          "final_yaw_deg": 91.1488255171476,
+          "handoff_pass_n": 0
+        }
+      },
+      "phases": [
+        {
+          "start_sim_s": 0.0,
+          "end_sim_s": 10.0,
+          "off": {
+            "frames": 100,
+            "xy_rmse_m": 0.006045600495996693,
+            "xy_p95_m": 0.015504533889637994,
+            "yaw_p95_deg": 1.0944991500468912,
+            "final_xy_m": 0.017393700338133828,
+            "final_yaw_deg": 0.8193865526909748,
+            "handoff_pass_n": 100
+          },
+          "amcl_candidate_absolute": {
+            "frames": 96,
+            "xy_rmse_m": 2.7109034115600146,
+            "xy_p95_m": 3.406550532811876,
+            "yaw_p95_deg": 90.702481038781,
+            "final_xy_m": 1.7676988326651828,
+            "final_yaw_deg": 89.34858327955111,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        },
+        {
+          "start_sim_s": 10.0,
+          "end_sim_s": 20.0,
+          "off": {
+            "frames": 100,
+            "xy_rmse_m": 0.02180052016127808,
+            "xy_p95_m": 0.028508760617593727,
+            "yaw_p95_deg": 1.5049217080215,
+            "final_xy_m": 0.025857998302228683,
+            "final_yaw_deg": 1.5601839752342872,
+            "handoff_pass_n": 100
+          },
+          "amcl_candidate_absolute": {
+            "frames": 100,
+            "xy_rmse_m": 1.6899697802916418,
+            "xy_p95_m": 1.7662001085533792,
+            "yaw_p95_deg": 89.34496841550533,
+            "final_xy_m": 1.68158277987752,
+            "final_yaw_deg": 50.92567571033818,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        },
+        {
+          "start_sim_s": 20.0,
+          "end_sim_s": 30.0,
+          "off": {
+            "frames": 100,
+            "xy_rmse_m": 0.03516926065055556,
+            "xy_p95_m": 0.04196171601218774,
+            "yaw_p95_deg": 4.358865748050261,
+            "final_xy_m": 0.040898741502938894,
+            "final_yaw_deg": 4.310130053588114,
+            "handoff_pass_n": 100
+          },
+          "amcl_candidate_absolute": {
+            "frames": 100,
+            "xy_rmse_m": 1.741178602514758,
+            "xy_p95_m": 1.8047190672632665,
+            "yaw_p95_deg": 48.00688957065625,
+            "final_xy_m": 1.7939764841630728,
+            "final_yaw_deg": 58.98052198117137,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        },
+        {
+          "start_sim_s": 30.0,
+          "end_sim_s": 38.8,
+          "off": {
+            "frames": 89,
+            "xy_rmse_m": 0.0436873881465368,
+            "xy_p95_m": 0.045497955431223376,
+            "yaw_p95_deg": 4.523669508132662,
+            "final_xy_m": 0.043216172651981244,
+            "final_yaw_deg": 3.311160348954784,
+            "handoff_pass_n": 89
+          },
+          "amcl_candidate_absolute": {
+            "frames": 89,
+            "xy_rmse_m": 1.819433938436108,
+            "xy_p95_m": 1.827325794980892,
+            "yaw_p95_deg": 92.56923941037557,
+            "final_xy_m": 1.8233151291708964,
+            "final_yaw_deg": 91.1488255171476,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 4,
+          "wrong_ready_n": 4
+        }
+      ],
+      "requirements_sha256": "d9f3c1f3a00273be3aa901613d01386fa493b1ed5edb561e40a58d367360875c",
+      "source_summary_sha256": "1a4753add3dffd4dac6b4d3fa2336cee0f4303aa13ca0c03039e81d2fa759c3b",
+      "own_map_frames": 39,
+      "motion_sources": {
+        "nominal_6f_unqualified_native": 125,
+        "own_command_motion_v1": 264
+      },
+      "full_posterior": {
+        "candidate_pose": [
+          1.3222314665589026,
+          -2.743115430345308,
+          -2.2449263172961613
+        ],
+        "covariance": [
+          [
+            0.0012400829734520767,
+            0.0012013538524914154,
+            0.0012271250757574003
+          ],
+          [
+            0.0012013538524914156,
+            0.00117104238317055,
+            0.0011971769302166527
+          ],
+          [
+            0.0012271250757574003,
+            0.0011971769302166527,
+            0.0014537797089571938
+          ]
+        ],
+        "xy_p95_m": 0.09731482807785641,
+        "yaw_p95_rad": 0.07723224082647118,
+        "direction_coupled_p95_rad": 0.20609457138584744,
+        "ess": 99999.99999999134,
+        "samples": 100000,
+        "converged": true,
+        "ready_for_handoff": false,
+        "runtime_qualified": false,
+        "circular_resultant": 0.9992733618848028,
+        "post_resample_ess": 99999.99999999994
+      }
+    },
+    {
+      "name": "eval-r3-nav2_sigma_fixed_v1",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3",
+      "prediction": "/home/ugrp/ugrp-sim/runs/mapbuild9/r3-nav2_sigma_fixed_v1",
+      "status": "NOT_READY",
+      "frames": 389,
+      "ready_updates": 0,
+      "wrong_convergence_updates": 0,
+      "convergence_sim_s": null,
+      "convergence_own_estimated_path_m": null,
+      "off": {
+        "frames": 389,
+        "xy_rmse_m": 0.029769172281536256,
+        "xy_p95_m": 0.044963509863540696,
+        "yaw_p95_deg": 4.4126316981859155,
+        "final_xy_m": 0.043216172651981244,
+        "final_yaw_deg": 3.311160348954784,
+        "handoff_pass_n": 389
+      },
+      "candidate_absolute_diagnostic": {
+        "frames": 385,
+        "xy_rmse_m": 3.400217061247698,
+        "xy_p95_m": 3.9297049779935422,
+        "yaw_p95_deg": 179.74909425255515,
+        "final_xy_m": 3.937559754001436,
+        "final_yaw_deg": 178.41522318177306,
+        "handoff_pass_n": 0
+      },
+      "after_convergence": {
+        "off": {
+          "frames": 0,
+          "status": "not_recorded"
+        },
+        "amcl": {
+          "frames": 0,
+          "status": "not_recorded"
+        }
+      },
+      "phases": [
+        {
+          "start_sim_s": 0.0,
+          "end_sim_s": 10.0,
+          "off": {
+            "frames": 100,
+            "xy_rmse_m": 0.006045600495996693,
+            "xy_p95_m": 0.015504533889637994,
+            "yaw_p95_deg": 1.0944991500468912,
+            "final_xy_m": 0.017393700338133828,
+            "final_yaw_deg": 0.8193865526909748,
+            "handoff_pass_n": 100
+          },
+          "amcl_candidate_absolute": {
+            "frames": 96,
+            "xy_rmse_m": 2.853339589570591,
+            "xy_p95_m": 2.870464355075187,
+            "yaw_p95_deg": 79.51767813388186,
+            "final_xy_m": 2.757486792977187,
+            "final_yaw_deg": 92.67415510667452,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        },
+        {
+          "start_sim_s": 10.0,
+          "end_sim_s": 20.0,
+          "off": {
+            "frames": 100,
+            "xy_rmse_m": 0.02180052016127808,
+            "xy_p95_m": 0.028508760617593727,
+            "yaw_p95_deg": 1.5049217080215,
+            "final_xy_m": 0.025857998302228683,
+            "final_yaw_deg": 1.5601839752342872,
+            "handoff_pass_n": 100
+          },
+          "amcl_candidate_absolute": {
+            "frames": 100,
+            "xy_rmse_m": 3.2763298042923927,
+            "xy_p95_m": 3.7840993461633494,
+            "yaw_p95_deg": 173.7214562443528,
+            "final_xy_m": 3.6923875197176024,
+            "final_yaw_deg": 170.71842081236946,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        },
+        {
+          "start_sim_s": 20.0,
+          "end_sim_s": 30.0,
+          "off": {
+            "frames": 100,
+            "xy_rmse_m": 0.03516926065055556,
+            "xy_p95_m": 0.04196171601218774,
+            "yaw_p95_deg": 4.358865748050261,
+            "final_xy_m": 0.040898741502938894,
+            "final_yaw_deg": 4.310130053588114,
+            "handoff_pass_n": 100
+          },
+          "amcl_candidate_absolute": {
+            "frames": 100,
+            "xy_rmse_m": 3.5117828179640487,
+            "xy_p95_m": 3.795986074991043,
+            "yaw_p95_deg": 179.7884842577969,
+            "final_xy_m": 3.845915774580062,
+            "final_yaw_deg": 179.76997848213807,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        },
+        {
+          "start_sim_s": 30.0,
+          "end_sim_s": 38.8,
+          "off": {
+            "frames": 89,
+            "xy_rmse_m": 0.0436873881465368,
+            "xy_p95_m": 0.045497955431223376,
+            "yaw_p95_deg": 4.523669508132662,
+            "final_xy_m": 0.043216172651981244,
+            "final_yaw_deg": 3.311160348954784,
+            "handoff_pass_n": 89
+          },
+          "amcl_candidate_absolute": {
+            "frames": 89,
+            "xy_rmse_m": 3.9132219486041495,
+            "xy_p95_m": 3.934899626873422,
+            "yaw_p95_deg": 179.87499671193743,
+            "final_xy_m": 3.937559754001436,
+            "final_yaw_deg": 178.41522318177306,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        }
+      ],
+      "requirements_sha256": "d9f3c1f3a00273be3aa901613d01386fa493b1ed5edb561e40a58d367360875c",
+      "source_summary_sha256": "93666fbfc0aee82f0b5d1af4d9bcc78fdbe0be33382127385ceb0321d167ef61",
+      "own_map_frames": 39,
+      "motion_sources": {
+        "nominal_6f_unqualified_native": 125,
+        "own_command_motion_v1": 264
+      },
+      "full_posterior": {
+        "candidate_pose": [
+          3.1396860122068917,
+          -0.40994093345355737,
+          2.5151730242810206
+        ],
+        "covariance": [
+          [
+            3.5770478930688028,
+            1.5417016234046605,
+            -0.17996425338917954
+          ],
+          [
+            1.5417016234046605,
+            1.3985115449660845,
+            -0.12906636883461428
+          ],
+          [
+            -0.17996425338917954,
+            -0.12906636883461423,
+            3.1131109071249963
+          ]
+        ],
+        "xy_p95_m": 3.9002815384850096,
+        "yaw_p95_rad": 3.1302498634086438,
+        "direction_coupled_p95_rad": 5.365024409892577,
+        "ess": 98957.4424071092,
+        "samples": 100000,
+        "converged": false,
+        "ready_for_handoff": false,
+        "circular_resultant": 0.3473199576332756,
+        "post_resample_ess": 99999.99999999994
+      }
+    },
+    {
+      "name": "eval-r3-seed20261017-v1b",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3",
+      "prediction": "/home/ugrp/ugrp-sim/runs/mapbuild9/r3-seed20261017-v1b",
+      "status": "NOT_READY",
+      "frames": 389,
+      "ready_updates": 1,
+      "wrong_convergence_updates": 1,
+      "convergence_sim_s": 35.2,
+      "convergence_own_estimated_path_m": 0.485056246045163,
+      "off": {
+        "frames": 389,
+        "xy_rmse_m": 0.029769172281536256,
+        "xy_p95_m": 0.044963509863540696,
+        "yaw_p95_deg": 4.4126316981859155,
+        "final_xy_m": 0.043216172651981244,
+        "final_yaw_deg": 3.311160348954784,
+        "handoff_pass_n": 389
+      },
+      "candidate_absolute_diagnostic": {
+        "frames": 385,
+        "xy_rmse_m": 4.362348595748513,
+        "xy_p95_m": 5.598498591812222,
+        "yaw_p95_deg": 169.57201239031758,
+        "final_xy_m": 4.890865568553232,
+        "final_yaw_deg": 107.77376060735767,
+        "handoff_pass_n": 0
+      },
+      "after_convergence": {
+        "off": {
+          "frames": 37,
+          "xy_rmse_m": 0.04383838497752616,
+          "xy_p95_m": 0.044345866857399746,
+          "yaw_p95_deg": 3.7014369453311633,
+          "final_xy_m": 0.043216172651981244,
+          "final_yaw_deg": 3.311160348954784,
+          "handoff_pass_n": 37
+        },
+        "amcl": {
+          "frames": 37,
+          "xy_rmse_m": 4.734925317826788,
+          "xy_p95_m": 4.890855043738754,
+          "yaw_p95_deg": 107.7717795467491,
+          "final_xy_m": 4.890865568553232,
+          "final_yaw_deg": 107.77376060735767,
+          "handoff_pass_n": 0
+        }
+      },
+      "phases": [
+        {
+          "start_sim_s": 0.0,
+          "end_sim_s": 10.0,
+          "off": {
+            "frames": 100,
+            "xy_rmse_m": 0.006045600495996693,
+            "xy_p95_m": 0.015504533889637994,
+            "yaw_p95_deg": 1.0944991500468912,
+            "final_xy_m": 0.017393700338133828,
+            "final_yaw_deg": 0.8193865526909748,
+            "handoff_pass_n": 100
+          },
+          "amcl_candidate_absolute": {
+            "frames": 96,
+            "xy_rmse_m": 2.931409348255392,
+            "xy_p95_m": 2.9959509308408645,
+            "yaw_p95_deg": 113.55760568242252,
+            "final_xy_m": 2.934900359134297,
+            "final_yaw_deg": 115.03175028612834,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        },
+        {
+          "start_sim_s": 10.0,
+          "end_sim_s": 20.0,
+          "off": {
+            "frames": 100,
+            "xy_rmse_m": 0.02180052016127808,
+            "xy_p95_m": 0.028508760617593727,
+            "yaw_p95_deg": 1.5049217080215,
+            "final_xy_m": 0.025857998302228683,
+            "final_yaw_deg": 1.5601839752342872,
+            "handoff_pass_n": 100
+          },
+          "amcl_candidate_absolute": {
+            "frames": 100,
+            "xy_rmse_m": 4.169684979401779,
+            "xy_p95_m": 5.440812448133252,
+            "yaw_p95_deg": 169.54668377696467,
+            "final_xy_m": 5.441645662543562,
+            "final_yaw_deg": 168.47281624645936,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        },
+        {
+          "start_sim_s": 20.0,
+          "end_sim_s": 30.0,
+          "off": {
+            "frames": 100,
+            "xy_rmse_m": 0.03516926065055556,
+            "xy_p95_m": 0.04196171601218774,
+            "yaw_p95_deg": 4.358865748050261,
+            "final_xy_m": 0.040898741502938894,
+            "final_yaw_deg": 4.310130053588114,
+            "handoff_pass_n": 100
+          },
+          "amcl_candidate_absolute": {
+            "frames": 100,
+            "xy_rmse_m": 5.282573774958176,
+            "xy_p95_m": 5.674350511557676,
+            "yaw_p95_deg": 175.8643475233414,
+            "final_xy_m": 4.700130322302358,
+            "final_yaw_deg": 93.0008553563541,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 0,
+          "wrong_ready_n": 0
+        },
+        {
+          "start_sim_s": 30.0,
+          "end_sim_s": 38.8,
+          "off": {
+            "frames": 89,
+            "xy_rmse_m": 0.0436873881465368,
+            "xy_p95_m": 0.045497955431223376,
+            "yaw_p95_deg": 4.523669508132662,
+            "final_xy_m": 0.043216172651981244,
+            "final_yaw_deg": 3.311160348954784,
+            "handoff_pass_n": 89
+          },
+          "amcl_candidate_absolute": {
+            "frames": 89,
+            "xy_rmse_m": 4.707695760339742,
+            "xy_p95_m": 4.83289691274934,
+            "yaw_p95_deg": 103.34131306102795,
+            "final_xy_m": 4.890865568553232,
+            "final_yaw_deg": 107.77376060735767,
+            "handoff_pass_n": 0
+          },
+          "ready_n": 1,
+          "wrong_ready_n": 1
+        }
+      ],
+      "requirements_sha256": "d9f3c1f3a00273be3aa901613d01386fa493b1ed5edb561e40a58d367360875c",
+      "source_summary_sha256": "09455894bef382f94528e58e0b3fd5d06478df369f8290ee772b9b642df7e4af",
+      "own_map_frames": 39,
+      "motion_sources": {
+        "nominal_6f_unqualified_native": 125,
+        "own_command_motion_v1": 264
+      },
+      "full_posterior": {
+        "candidate_pose": [
+          3.56516818529601,
+          0.7270550032844275,
+          -2.5350861725506677
+        ],
+        "covariance": [
+          [
+            0.44141833778996803,
+            -0.1022330091197798,
+            -0.43612068902925255
+          ],
+          [
+            -0.1022330091197798,
+            0.02435847491549784,
+            0.10092791052939591
+          ],
+          [
+            -0.4361206890292526,
+            0.10092791052939594,
+            0.43689372082143496
+          ]
+        ],
+        "xy_p95_m": 1.2651579357662557,
+        "yaw_p95_rad": 1.2765684093608647,
+        "direction_coupled_p95_rad": 3.165642669710761,
+        "ess": 1609.981794978737,
+        "samples": 2001,
+        "converged": false,
+        "ready_for_handoff": false,
+        "circular_resultant": 0.8048703669807565,
+        "post_resample_ess": 2001.0
+      }
+    }
+  ],
+  "physical_runs": 0,
+  "unique_recordings": 3,
+  "unique_frames": 1044,
+  "all_status": "NOT_READY"
+}

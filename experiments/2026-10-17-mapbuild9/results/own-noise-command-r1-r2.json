@@ -1,0 +1,37 @@
+{
+  "schema": "ugrp.mapbuild9.own_amcl_noise.v1",
+  "alphas": [
+    0.07557234720470504,
+    0.00011271579530478537,
+    0.08122687145768813,
+    0.014193725782265234
+  ],
+  "truth_inputs": 0,
+  "sources": {
+    "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r1/online-trajectory.json": "9c2b3bb051d2423f6132c08b139e7f52447225bde15d21e6a904b12e04ea092b",
+    "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r2/online-trajectory.json": "3eb143295c90d4321d7b58079ef379d7b170ef095572589a5b625de3ae6d007d",
+    "/home/ugrp/ugrp-sim/src/mapbuild9-offline-v1/experiments/2026-10-17-mapbuild8/calibration/own-command-calibration-r2.json": "f69221708442e42be60d1ec5e4619077f220ebcd7b9010a1bb60e9e96be1abbc"
+  },
+  "counts": {
+    "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r1": 220,
+    "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r2": 294
+  },
+  "rows": 514,
+  "design_rank": 2,
+  "covariance_scope": "alpha1/4 from R2 raw own-LK repeated-command predictive dispersion divided by mean yaw squared; alpha2/3 nonnegative fit to remaining R1/R2 LK reported variance; no ground-truth residuals or load calibration",
+  "residual_rms": {
+    "yaw_variance": 0.0019775780689308474,
+    "translation_variance": 0.00037060381091027757
+  },
+  "scope": "R1/R2 calibration; R3 held out; no claim that regression residuals are real motion error",
+  "reproduction": [
+    "/home/ugrp/ugrp-sim/src/mapbuild9-offline-v1/scripts/mapbuild9_calibrate.py",
+    "--inputs",
+    "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r1",
+    "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r2",
+    "--command-calibration",
+    "/home/ugrp/ugrp-sim/src/mapbuild9-offline-v1/experiments/2026-10-17-mapbuild8/calibration/own-command-calibration-r2.json",
+    "--output",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/own-noise-command-r1-r2.json"
+  ]
+}

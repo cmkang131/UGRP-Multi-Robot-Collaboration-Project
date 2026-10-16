@@ -1,0 +1,162 @@
+{
+  "status": "NOT_READY",
+  "raw": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3",
+  "prediction": "/home/ugrp/ugrp-sim/runs/mapbuild9/r3-nav2_sigma_fixed_v1",
+  "physical_success": false,
+  "new_physical_runs": 0,
+  "frames": 389,
+  "reference": "OFF start-only SE2/scale1; AMCL true static frame, no alignment or scale fit",
+  "off_all": {
+    "frames": 389,
+    "xy_rmse_m": 0.029769172281536256,
+    "xy_p95_m": 0.044963509863540696,
+    "yaw_p95_deg": 4.4126316981859155,
+    "final_xy_m": 0.043216172651981244,
+    "final_yaw_deg": 3.311160348954784,
+    "handoff_pass_n": 389
+  },
+  "amcl_candidate_absolute_all": {
+    "frames": 385,
+    "xy_rmse_m": 3.400217061247698,
+    "xy_p95_m": 3.9297049779935422,
+    "yaw_p95_deg": 179.74909425255515,
+    "final_xy_m": 3.937559754001436,
+    "final_yaw_deg": 178.41522318177306,
+    "handoff_pass_n": 0
+  },
+  "since_first_convergence": {
+    "off": {
+      "frames": 0,
+      "status": "not_recorded"
+    },
+    "amcl": {
+      "frames": 0,
+      "status": "not_recorded"
+    }
+  },
+  "ready_updates": 0,
+  "attempted_updates": 44,
+  "wrong_convergence_updates": 0,
+  "wrong_convergence_episodes": 0,
+  "convergence_sim_s": null,
+  "convergence_own_estimated_path_m": null,
+  "convergence_evaluation_path_m": null,
+  "total_evaluation_path_m": 0.2146007817229857,
+  "phases": [
+    {
+      "start_sim_s": 0.0,
+      "end_sim_s": 10.0,
+      "off": {
+        "frames": 100,
+        "xy_rmse_m": 0.006045600495996693,
+        "xy_p95_m": 0.015504533889637994,
+        "yaw_p95_deg": 1.0944991500468912,
+        "final_xy_m": 0.017393700338133828,
+        "final_yaw_deg": 0.8193865526909748,
+        "handoff_pass_n": 100
+      },
+      "amcl_candidate_absolute": {
+        "frames": 96,
+        "xy_rmse_m": 2.853339589570591,
+        "xy_p95_m": 2.870464355075187,
+        "yaw_p95_deg": 79.51767813388186,
+        "final_xy_m": 2.757486792977187,
+        "final_yaw_deg": 92.67415510667452,
+        "handoff_pass_n": 0
+      },
+      "ready_n": 0,
+      "wrong_ready_n": 0
+    },
+    {
+      "start_sim_s": 10.0,
+      "end_sim_s": 20.0,
+      "off": {
+        "frames": 100,
+        "xy_rmse_m": 0.02180052016127808,
+        "xy_p95_m": 0.028508760617593727,
+        "yaw_p95_deg": 1.5049217080215,
+        "final_xy_m": 0.025857998302228683,
+        "final_yaw_deg": 1.5601839752342872,
+        "handoff_pass_n": 100
+      },
+      "amcl_candidate_absolute": {
+        "frames": 100,
+        "xy_rmse_m": 3.2763298042923927,
+        "xy_p95_m": 3.7840993461633494,
+        "yaw_p95_deg": 173.7214562443528,
+        "final_xy_m": 3.6923875197176024,
+        "final_yaw_deg": 170.71842081236946,
+        "handoff_pass_n": 0
+      },
+      "ready_n": 0,
+      "wrong_ready_n": 0
+    },
+    {
+      "start_sim_s": 20.0,
+      "end_sim_s": 30.0,
+      "off": {
+        "frames": 100,
+        "xy_rmse_m": 0.03516926065055556,
+        "xy_p95_m": 0.04196171601218774,
+        "yaw_p95_deg": 4.358865748050261,
+        "final_xy_m": 0.040898741502938894,
+        "final_yaw_deg": 4.310130053588114,
+        "handoff_pass_n": 100
+      },
+      "amcl_candidate_absolute": {
+        "frames": 100,
+        "xy_rmse_m": 3.5117828179640487,
+        "xy_p95_m": 3.795986074991043,
+        "yaw_p95_deg": 179.7884842577969,
+        "final_xy_m": 3.845915774580062,
+        "final_yaw_deg": 179.76997848213807,
+        "handoff_pass_n": 0
+      },
+      "ready_n": 0,
+      "wrong_ready_n": 0
+    },
+    {
+      "start_sim_s": 30.0,
+      "end_sim_s": 38.8,
+      "off": {
+        "frames": 89,
+        "xy_rmse_m": 0.0436873881465368,
+        "xy_p95_m": 0.045497955431223376,
+        "yaw_p95_deg": 4.523669508132662,
+        "final_xy_m": 0.043216172651981244,
+        "final_yaw_deg": 3.311160348954784,
+        "handoff_pass_n": 89
+      },
+      "amcl_candidate_absolute": {
+        "frames": 89,
+        "xy_rmse_m": 3.9132219486041495,
+        "xy_p95_m": 3.934899626873422,
+        "yaw_p95_deg": 179.87499671193743,
+        "final_xy_m": 3.937559754001436,
+        "final_yaw_deg": 178.41522318177306,
+        "handoff_pass_n": 0
+      },
+      "ready_n": 0,
+      "wrong_ready_n": 0
+    }
+  ],
+  "convergence_events": [],
+  "commanded_closed_frames": 0,
+  "carried_transport_verified": false,
+  "requirements_sha256": "d9f3c1f3a00273be3aa901613d01386fa493b1ed5edb561e40a58d367360875c",
+  "prediction_seal_sha256": "e46cb5a29816dff7e80a68c9cda4753391f9dfbdad9d12444c0de7ee5ba5796f",
+  "gt_to_estimator": 0,
+  "spawn_inputs": 0,
+  "scale_fitting": 0,
+  "reproduction": [
+    "scripts/mapbuild9_evaluate.py",
+    "--input",
+    "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r3",
+    "--prediction",
+    "/home/ugrp/ugrp-sim/runs/mapbuild9/r3-nav2_sigma_fixed_v1",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/mapbuild9/eval-r3-nav2_sigma_fixed_v1",
+    "--requirements",
+    "/home/ugrp/ugrp-sim/src/mapbuild9-profiles-d7cb236f6/experiments/2026-10-17-mapbuild8/requirements.json"
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "status": "NOT_READY",
+  "raw": "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r1",
+  "prediction": "/home/ugrp/ugrp-sim/runs/mapbuild9/r1-seed20261017-v1b",
+  "physical_success": false,
+  "new_physical_runs": 0,
+  "frames": 277,
+  "reference": "OFF start-only SE2/scale1; AMCL true static frame, no alignment or scale fit",
+  "off_all": {
+    "frames": 277,
+    "xy_rmse_m": 0.022932261590879605,
+    "xy_p95_m": 0.032817856313308635,
+    "yaw_p95_deg": 3.5354060386641213,
+    "final_xy_m": 0.02513458135994727,
+    "final_yaw_deg": 2.6015865309588495,
+    "handoff_pass_n": 277
+  },
+  "amcl_candidate_absolute_all": {
+    "frames": 273,
+    "xy_rmse_m": 2.868418383724782,
+    "xy_p95_m": 2.9455218514611894,
+    "yaw_p95_deg": 57.576821283079184,
+    "final_xy_m": 2.9416027662449897,
+    "final_yaw_deg": 28.909699094431485,
+    "handoff_pass_n": 0
+  },
+  "since_first_convergence": {
+    "off": {
+      "frames": 0,
+      "status": "not_recorded"
+    },
+    "amcl": {
+      "frames": 0,
+      "status": "not_recorded"
+    }
+  },
+  "ready_updates": 0,
+  "attempted_updates": 20,
+  "wrong_convergence_updates": 0,
+  "wrong_convergence_episodes": 0,
+  "convergence_sim_s": null,
+  "convergence_own_estimated_path_m": null,
+  "convergence_evaluation_path_m": null,
+  "total_evaluation_path_m": 0.17836749630576845,
+  "phases": [
+    {
+      "start_sim_s": 0.0,
+      "end_sim_s": 10.0,
+      "off": {
+        "frames": 100,
+        "xy_rmse_m": 0.011220644372841189,
+        "xy_p95_m": 0.024890707676165663,
+        "yaw_p95_deg": 1.8429126268007006,
+        "final_xy_m": 0.02561046413194405,
+        "final_yaw_deg": 1.9399627191466464,
+        "handoff_pass_n": 100
+      },
+      "amcl_candidate_absolute": {
+        "frames": 96,
+        "xy_rmse_m": 2.8693695750258867,
+        "xy_p95_m": 2.9258516838415423,
+        "yaw_p95_deg": 57.66344762605414,
+        "final_xy_m": 2.863827215875118,
+        "final_yaw_deg": 40.695125421951026,
+        "handoff_pass_n": 0
+      },
+      "ready_n": 0,
+      "wrong_ready_n": 0
+    },
+    {
+      "start_sim_s": 10.0,
+      "end_sim_s": 20.0,
+      "off": {
+        "frames": 100,
+        "xy_rmse_m": 0.029960370319190573,
+        "xy_p95_m": 0.03396328901439888,
+        "yaw_p95_deg": 3.552596045206652,
+        "final_xy_m": 0.02618085893898623,
+        "final_yaw_deg": 3.232378804400258,
+        "handoff_pass_n": 100
+      },
+      "amcl_candidate_absolute": {
+        "frames": 100,
+        "xy_rmse_m": 2.863160447813903,
+        "xy_p95_m": 2.8866154582900503,
+        "yaw_p95_deg": 43.85283080683384,
+        "final_xy_m": 2.7723848018475192,
+        "final_yaw_deg": 45.566176138456626,
+        "handoff_pass_n": 0
+      },
+      "ready_n": 0,
+      "wrong_ready_n": 0
+    },
+    {
+      "start_sim_s": 20.0,
+      "end_sim_s": 27.6,
+      "off": {
+        "frames": 77,
+        "xy_rmse_m": 0.02371872054290333,
+        "xy_p95_m": 0.025211144830721958,
+        "yaw_p95_deg": 3.649831309083083,
+        "final_xy_m": 0.02513458135994727,
+        "final_yaw_deg": 2.6015865309588495,
+        "handoff_pass_n": 77
+      },
+      "amcl_candidate_absolute": {
+        "frames": 77,
+        "xy_rmse_m": 2.874048989650094,
+        "xy_p95_m": 2.9463332944172462,
+        "yaw_p95_deg": 50.709765299166165,
+        "final_xy_m": 2.9416027662449897,
+        "final_yaw_deg": 28.909699094431485,
+        "handoff_pass_n": 0
+      },
+      "ready_n": 0,
+      "wrong_ready_n": 0
+    }
+  ],
+  "convergence_events": [],
+  "commanded_closed_frames": 0,
+  "carried_transport_verified": false,
+  "requirements_sha256": "d9f3c1f3a00273be3aa901613d01386fa493b1ed5edb561e40a58d367360875c",
+  "prediction_seal_sha256": "e254d480b640d40568d5198939d195dcdf4ea307b4e259f04923c44d88303f95",
+  "gt_to_estimator": 0,
+  "spawn_inputs": 0,
+  "scale_fitting": 0,
+  "reproduction": [
+    "scripts/mapbuild9_evaluate.py",
+    "--input",
+    "/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r1",
+    "--prediction",
+    "/home/ugrp/ugrp-sim/runs/mapbuild9/r1-seed20261017-v1b",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/mapbuild9/eval-r1-seed20261017-v1b",
+    "--requirements",
+    "/home/ugrp/ugrp-sim/src/mapbuild9-offline-v1/experiments/2026-10-17-mapbuild8/requirements.json"
+  ]
+}

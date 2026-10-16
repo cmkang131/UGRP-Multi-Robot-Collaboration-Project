@@ -1,5 +1,8 @@
 - [e2e1 입력·상태 계약](2026-10-11-e2e-one-beam/README.md): 기본 off 자기 payload·S3 세 입력 계약과 정적 fallback 차단, 새 빔 한 주문/B .80×1.40m 시나리오; 실제 E2E는 후속 단계.
 
+- [2026-10-17 mapbuild9 표준 정적 AMCL 재생](2026-10-17-mapbuild9/README.md): Nav2 원문 이식·비물리18PASS·원문 수치 대조. 같은 R1–R3의15재생과 별도gcp3 418뷰 모두 NOT_READY, 초기 입자23→0 소실 확인·실제 인계/새 물리0.
+
+
 - [2026-10-16 plannerswap](2026-10-16-plannerswap/README.md) — 새 판단 공급자 CoreWeave fp4; 실제 3/3, 경보 0, E2E 첫 30 SIM초 점검 TODO.
 - [2026-10-10 S3 내려놓기 v166](2026-10-10-s3-setdown/README.md): 기준0/2, A2/2·B2/2·C4/4(공통2/2), 후보 조기 개방·실제 정지·HOST0; 기본 off A 선택, 끝점 오차16–54mm 미해결.
 - [S3 s3fix19 정수 tick 운반](2026-10-10-s3-integer-carry/README.md): 관련22시험 통과·20조건 on/off 등록; 디스크 거부/원본 소실/SSH 단절로 물리 판정 미완료.

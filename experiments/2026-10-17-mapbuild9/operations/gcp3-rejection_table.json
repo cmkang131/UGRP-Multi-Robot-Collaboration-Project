@@ -1,0 +1,72 @@
+{
+  "source": "/home/ugrp/ugrp-sim/runs/warp8/selfmap-open-r1",
+  "reproduction": [
+    "scripts/mapbuild9_sparse.py",
+    "--stage",
+    "predict",
+    "--owner",
+    "/home/ugrp/ugrp-sim/src/warp8f-selfmap-0ace43f25",
+    "--input",
+    "/home/ugrp/ugrp-sim/runs/warp8/selfmap-open-r1",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/warp8/mapbuild9-amcl-v1",
+    "--calibration",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/own-noise-command-r1-r2.json",
+    "--requirements",
+    "/home/ugrp/ugrp-sim/src/mapbuild9-sparse-8eead1464/experiments/2026-10-17-mapbuild8/requirements.json",
+    "--queue",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/queue.json",
+    "--stack-check",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/stack.json",
+    "--workers",
+    "4"
+  ],
+  "stages": [
+    {
+      "stage": "saved_views",
+      "cumulative_pass_n": 418,
+      "rejected_n": 0
+    },
+    {
+      "stage": "visible_wall",
+      "cumulative_pass_n": 190,
+      "rejected_n": 228
+    },
+    {
+      "stage": "sensor_update",
+      "cumulative_pass_n": 176,
+      "rejected_n": 14
+    },
+    {
+      "stage": "full_posterior_ready",
+      "cumulative_pass_n": 0,
+      "rejected_n": 176
+    }
+  ],
+  "distribution": [
+    {
+      "category": "static_amcl",
+      "reason": "posterior_unresolved",
+      "n": 176,
+      "blocked_object": "sparse_own_wall_observations",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "static_amcl",
+      "reason": "no_visible_wall",
+      "n": 228,
+      "blocked_object": "sparse_own_wall_observations",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "static_amcl",
+      "reason": "nav2_motion_gate",
+      "n": 14,
+      "blocked_object": "sparse_own_wall_observations",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    }
+  ]
+}

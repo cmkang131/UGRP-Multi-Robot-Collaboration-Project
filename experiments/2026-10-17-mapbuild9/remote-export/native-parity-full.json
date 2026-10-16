@@ -1,0 +1,156 @@
+{
+  "status": "PASS",
+  "scope": "unchanged upstream motion/KLD numeric bodies in ABI shim; normal variates supplied, sensor bodies in fixture map ABI shim; full ROS runtime not qualified",
+  "motion_cases": [
+    {
+      "delta": [
+        0.3,
+        0.1,
+        0.15
+      ],
+      "particles": 200,
+      "max_absolute_SE2_difference": 4.440892098500626e-16
+    },
+    {
+      "delta": [
+        -0.3,
+        0.1,
+        -0.4
+      ],
+      "particles": 200,
+      "max_absolute_SE2_difference": 2.021286199229721e-15
+    },
+    {
+      "delta": [
+        0.001,
+        0.002,
+        0.3
+      ],
+      "particles": 200,
+      "max_absolute_SE2_difference": 4.440892098500626e-16
+    },
+    {
+      "delta": [
+        0,
+        0,
+        -0.2
+      ],
+      "particles": 200,
+      "max_absolute_SE2_difference": 4.440892098500626e-16
+    },
+    {
+      "delta": [
+        0.2,
+        -0.3,
+        2.9
+      ],
+      "particles": 200,
+      "max_absolute_SE2_difference": 1.5314274795707798e-15
+    }
+  ],
+  "kld_cases": [
+    {
+      "bins": 0,
+      "native": 100000,
+      "python": 100000
+    },
+    {
+      "bins": 1,
+      "native": 100000,
+      "python": 100000
+    },
+    {
+      "bins": 2,
+      "native": 2000,
+      "python": 2000
+    },
+    {
+      "bins": 3,
+      "native": 2000,
+      "python": 2000
+    },
+    {
+      "bins": 5,
+      "native": 2000,
+      "python": 2000
+    },
+    {
+      "bins": 10,
+      "native": 2000,
+      "python": 2000
+    },
+    {
+      "bins": 50,
+      "native": 2000,
+      "python": 2000
+    },
+    {
+      "bins": 100,
+      "native": 2000,
+      "python": 2000
+    },
+    {
+      "bins": 500,
+      "native": 5303,
+      "python": 5303
+    },
+    {
+      "bins": 1000,
+      "native": 10433,
+      "python": 10433
+    },
+    {
+      "bins": 5000,
+      "native": 50980,
+      "python": 50980
+    },
+    {
+      "bins": 10000,
+      "native": 100000,
+      "python": 100000
+    }
+  ],
+  "sensor_cases": [
+    {
+      "probability_model": false,
+      "sparse_nan": false,
+      "max_relative_error": 8.88167761686993e-15
+    },
+    {
+      "probability_model": true,
+      "sparse_nan": false,
+      "max_relative_error": 2.2745156567236134e-13
+    },
+    {
+      "probability_model": false,
+      "sparse_nan": true,
+      "max_relative_error": 4.4408654533079264e-15
+    },
+    {
+      "probability_model": true,
+      "sparse_nan": true,
+      "max_relative_error": 0.0
+    }
+  ],
+  "compiled_body_sha256": [
+    "f9fcea4880e1bd0251cf4bc8f866f45f637b0340c1a3a60f4058bc9a0d3be66f",
+    "6538baa8452ff8600f9829e919b88aa098450a845bcdd98b3e91937bdac36d4b",
+    "c415fba2351060f2648ea7245797067d97459c2c84a304d71f35dc9f7c1cf243",
+    "624635f19fb0c2e8f67dbe0791516481769dde2e83637afbb9c3a6ce9e1b851d",
+    "f167bca08213908df887e3413fc94a78959586985653c34eab847cd73743545a"
+  ],
+  "source_sha256": {
+    "/home/ugrp/ugrp-sim/src/mapbuild9-product-slots-v2/harness/mapbuild_amcl_vendor/upstream/differential_motion_model.cpp": "795d7dde2b932f660569acc5a0722db22ae2c0f631b3a1a9e2258d4324db1ba3",
+    "/home/ugrp/ugrp-sim/src/mapbuild9-product-slots-v2/harness/mapbuild_amcl_vendor/upstream/pf.c": "6699fe3107b141597114de730cd2c9cb64e0703e592e3bb23ad7de6b69c49867"
+  },
+  "generated_shim_sha256": "26d22c2b27847336460d39f6578bcde341e4d3314b2923337551c9b3a58d2738",
+  "compiler": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "reproduction": [
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/mapbuild9_native_parity_full.py",
+    "--source",
+    "/home/ugrp/ugrp-sim/src/mapbuild9-product-slots-v2",
+    "--output",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild9/native-parity-full.json"
+  ],
+  "physics_steps": 0
+}
