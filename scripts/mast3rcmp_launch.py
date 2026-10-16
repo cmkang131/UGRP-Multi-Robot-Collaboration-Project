@@ -19,7 +19,8 @@ def launch(repo,entry,prepared,output):
     output.mkdir(parents=True,exist_ok=False)
     env=os.environ.copy()
     env.update(MAST3RCMP_OUTPUT=str(output/'probe'),MAST3RCMP_INPUT_RECEIPT=str(prepared/'input-receipt.json'),
-               PYTHONUNBUFFERED='1',OMP_NUM_THREADS='1',MKL_NUM_THREADS='1')
+               PYTHONUNBUFFERED='1',OMP_NUM_THREADS='1',MKL_NUM_THREADS='1',
+               PYTHONPATH=str(Path(__file__).resolve().parent))
     import sys
     command=[sys.executable,str(entry),'--dataset',str(prepared/'rgb'),'--config',str(prepared/'config.yaml'),
              '--calib',str(prepared/'intrinsics.yaml'),'--no-viz','--save-as','mast3rcmp-unused']
