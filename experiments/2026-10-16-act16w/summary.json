@@ -11,8 +11,8 @@
     "state": "outputs/act16w-wait/wait-state.json",
     "warp1": "2026-10-15T18:51:49.347269+00:00 warp1: GPU_SHARED_TIMING | L4 warp2 PID9247 발견, warp1 N1은 paused·N16 prefix 측정 진행 | 공유부하 처리량으로 분리, 타 작업 정지/VM 정지 없음 | 독점 여부 사용자 선택 대기",
     "scene_decision": "experiments/2026-10-16-act16w/scene-decision.json",
-    "latest_check": "2026-10-15T23:16:15.323181+00:00",
-    "checks": 62,
+    "latest_check": "2026-10-16T00:11:57.586773+00:00",
+    "checks": 74,
     "queue_status": "predecessor_NOT_READY; awaiting warp3 gate and RECORD_API_READY",
     "queue_receipt": "experiments/2026-10-16-act16w/warp1-queue-receipt.json",
     "warp1_queue_blockers": [
@@ -29,7 +29,7 @@
     "upstream_job": "warp3",
     "upstream_handoff": "upstream-handoff.json",
     "deadline_utc": "2026-10-16T04:14:16.449463+00:00",
-    "latest_upstream_signal": "warp3: TEACHER_GATE RUNNING 0/40 adjudicated | R1 source f0db6b1abb842ea65b71c433738210254f300a7c | 40refs/7 exact model groups; first7 submitted (prior cap seed8317104 first), remaining33 pending first result | APPROVED_PINNED, REVIEW_SKIPPED_BY_USER (10/15 run-first rule), rejection_table linked | NumPy IK240 comparisons; initial GPU/C ray counts7/7 exact (eval-only); runtime native ray/kinematics forbidden | recording/student API not admitted",
+    "latest_upstream_signal": "warp3: TEACHER_GATE RUNNING | 2026-10-16T00:05Z completed0/40; group0 stable physical lift7/7 is partial only, not release/full success | L4 beamact2 foreign lease+GPU PID14151 found/preserved; no stop/pause | free disk14.5GiB, own raw150MiB | gate timings shared+paused, excluded from warm benchmark | controller frozen f0db6b1a",
     "upstream_gate_receipt": "warp3-gate-receipt.json"
   },
   "teacher_gate": {
