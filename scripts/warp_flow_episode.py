@@ -114,6 +114,7 @@ class Bridge:
         self.transforms = []
         self.canonical = None
         self.command_tape = []
+        self.recording_commands = False
 
     def build(self, original, scene, **kwargs):
         from sim import masterpi_drive_friction_v7 as drive
@@ -197,7 +198,8 @@ class Bridge:
         """
         import inspect, textwrap, types
         method = world._physics_step_for
-        tree = ast.parse(textwrap.dedent(inspect.getsource(method.__func__)))
+        text=textwrap.dedent(inspect.getsource(method.__func__))
+        tree = ast.parse(text)
         count = 0
         bridge = self
         class Replace(ast.NodeTransformer):
@@ -211,11 +213,16 @@ class Bridge:
         if count != 1:
             raise ValueError('frozen v7 command decoder mj_step shape changed')
         def record(w):
+            if not bridge.recording_commands:
+                raise RuntimeError('physics call outside frozen command-advance boundary')
             bridge.command_tape.append(w.data.ctrl.copy())
             w.data.time += float(w.model.opt.timestep)
         namespace = {**method.__func__.__globals__, '_record_substep':record}
         exec(compile(ast.fix_missing_locations(tree),'<warp4-command-only>','exec'),namespace)
         world._physics_step_for=types.MethodType(namespace['_physics_step_for'],world)
+        self.transforms.append(dict(kind='v7_command_only',mj_step_replacements=count,
+            source_sha256=hashlib.sha256(text.encode()).hexdigest(),
+            transformed_ast_sha256=hashlib.sha256(ast.dump(tree,include_attributes=False).encode()).hexdigest()))
 
     def execute_runner(self, runner, *args, **kwargs):
         # Change only how the frozen world is advanced and rendered. The original
@@ -270,7 +277,9 @@ class Bridge:
             self.hooks.record_state(self.index, round(float(world.data.time)*10), world)
             before=float(world.data.time)
             self.command_tape=[]
-            command_advance(min(target,before+.1))
+            self.recording_commands=True
+            try:command_advance(min(target,before+.1))
+            finally:self.recording_commands=False
             self.context['command_tape']=self.command_tape
             world.data.time=before
             yield dict(kind='step', target=target)

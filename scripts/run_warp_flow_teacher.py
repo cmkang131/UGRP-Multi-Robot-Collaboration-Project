@@ -198,6 +198,9 @@ def main():
             write(a.out/f'world-{i:03d}'/'tail-10hz.json',rows)
         report.update(worlds=worlds,completed_N=len(worlds),success_n=sum(r['success'] for r in worlds),
             cap_end=sum(r['cap_end'] for r in worlds),wall_s=time.perf_counter()-start,timing=dict(hooks.seconds),
+            source_contract=dict(adapter_sha=ADAPTER_SHA if a.flow=='beampair' else RELEASE_SHA,
+                certification_sha=TEACHER_SHA,teacher_sha=TEACHER_SHA if a.flow=='beampair' else RELEASE_SHA,
+                ast_transforms=[b.transforms for b in bridges]),
             native_initialization_only_sim_s=[float(c['origin']) for c in contexts])
         categories=Counter('cap_end' if r['cap_end'] else 'teacher_failure' for r in worlds if not r['success'])
         if report['HOST_ERROR']:categories[report['error_type']]+=1
