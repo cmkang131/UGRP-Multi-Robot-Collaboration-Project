@@ -85,3 +85,18 @@ def test_native_dataset_cannot_reuse_noslip_training_admission(tmp_path, monkeyp
     import pytest
     with pytest.raises(ValueError,match='native dataset'):
         training_admission(admission,source='source',dataset=dataset,act_source='act')
+
+
+def test_first30_speed_median_counts_worlds_not_model_groups(tmp_path, monkeypatch):
+    monkeypatch.syspath_prepend(str(ROOT/'scripts'))
+    from act16w_native_stage import world_latency_summary
+    for i, latency in enumerate((8., 2., 3.)):
+        folder = tmp_path/f'group-{i:02d}'; folder.mkdir()
+        (folder/'first30.json').write_text(json.dumps(dict(world_latency_wall_per_SIM=latency)))
+    groups = [(0, list(range(38))), (1, [38]), (2, [39])]
+    result = world_latency_summary(tmp_path, groups)
+    assert result['complete'] and result['measured_worlds'] == 40
+    assert result['median_wall_per_SIM'] == 8. and not result['passed']
+    (tmp_path/'group-00/first30.json').unlink()
+    result = world_latency_summary(tmp_path, groups)
+    assert not result['complete'] and not result['passed']

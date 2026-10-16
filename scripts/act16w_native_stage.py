@@ -7,9 +7,11 @@ import argparse
 from collections import Counter
 from datetime import datetime, timezone
 import json
+import math
 import os
 from pathlib import Path
 import signal
+import statistics
 import subprocess
 import sys
 import time
@@ -31,6 +33,28 @@ def write(path, value):
     temporary = path.with_suffix('.tmp')
     temporary.write_text(json.dumps(value, indent=2)+'\n')
     temporary.replace(path)
+
+
+def world_latency_summary(out, groups):
+    """Weight each simultaneous world equally, rather than each model group."""
+    latencies, receipts = [], []
+    for group, indices in groups:
+        path = out/f'group-{group:02d}'/'first30.json'
+        if not path.exists():
+            continue
+        value = read(path)['world_latency_wall_per_SIM']
+        if not math.isfinite(value) or value <= 0:
+            raise ValueError('invalid first30 wall/SIM evidence')
+        latencies.extend([value]*len(indices))
+        receipts.append(dict(path=str(path), sha256=sha256(path), worlds=len(indices)))
+    N = sum(len(indices) for _, indices in groups)
+    median = statistics.median(latencies) if latencies else None
+    # Existing AGENTS GCP/Azure speed boundary; this does not set a new
+    # scientific acceptance threshold or change physical success scoring.
+    return dict(measured_worlds=len(latencies), N=N, median_wall_per_SIM=median,
+        complete=N > 0 and len(latencies) == N, passed=N > 0 and len(latencies) == N and median <= 6.,
+        threshold_source='AGENTS: first30 median>6.0 blocks new submission unless recorded --speed-gate-override',
+        raw_receipts=receipts)
 
 
 def recount(out, references, groups, *, record=False):
@@ -95,6 +119,7 @@ def main():
         parser.add_argument('--'+key, type=Path, required=True)
     parser.add_argument('--baseline', type=Path, required=True)
     parser.add_argument('--native-gate', type=Path)
+    parser.add_argument('--speed-gate-override', default='')
     args = parser.parse_args()
     if not args.enabled or (args.stage == 'record' and not args.native_gate):
         parser.error('explicit native gate/record opt-in and record gate required')
@@ -104,11 +129,12 @@ def main():
     report = dict(status='WAIT_NOSLIP_BASELINE', complete=False, source_sha=source, host=host,
                   started_utc=datetime.now(timezone.utc).isoformat(), wall_cap=None,
                   contact_profile='warp_native_contact_v1', stage=args.stage, final40_accessed=False)
+    report['speed_gate_override'] = args.speed_gate_override or None
     write(args.out/'rejection_table.json', dict(funnel=[dict(gate='requested', passed=40, rejected=0)],
         rejections=[], raw=str(args.out), reproduce=sys.argv))
     write(args.out/'queue.json', dict(source_sha=source, contact_profile='warp_native_contact_v1',
         rejection_table=str(args.out/'rejection_table.json'), references=str(args.references),
-        wall_cap=None, training_rgb=args.stage == 'record'))
+        wall_cap=None, training_rgb=args.stage == 'record', speed_gate_override=args.speed_gate_override or None))
     stop = {'requested': False}; running = {}; finished = []
     signal.signal(signal.SIGINT, lambda *_: stop.update(requested=True))
     signal.signal(signal.SIGTERM, lambda *_: stop.update(requested=True))
@@ -142,6 +168,12 @@ def main():
         groups = [(i, g['indices']) for i,g in enumerate(read(args.out/'exact-groups/model-groups.json')['groups'])]
         if sorted(x for _,indices in groups for x in indices) != list(range(40)):
             raise ValueError('model groups changed requested denominator')
+        if args.stage == 'record':
+            previous = read(args.native_gate.parent/'summary.json')
+            inherited_speed = world_latency_summary(args.native_gate.parent, previous['groups'])
+            report['camera_off_gate_speed'] = inherited_speed
+            if not inherited_speed['passed'] and not args.speed_gate_override:
+                raise ValueError('SPEED_GATE_FAIL: actual native gate speed needs a recorded operational override')
         # Host is assigned exclusively. Never overlap remaining baseline children,
         # reference setup or an unrecognized lease with this 40-world submission.
         while True:
@@ -197,6 +229,8 @@ def main():
             report.update(active=[dict(group=g, pid=j['proc'].pid) for g,j in running.items()], finished=finished)
             publish(); time.sleep(2)
         result = recount(args.out, args.references, groups, record=args.stage == 'record')
+        result['speed'] = world_latency_summary(args.out, groups)
+        result['speed']['override_reason'] = args.speed_gate_override or None
         result.update(source_sha=source, host=host, completed_utc=datetime.now(timezone.utc).isoformat())
         write(args.out/'gate-recount.json', result)
         report.update(status='PASS_REQUIRES_RECORD_REVIEW' if result['passed'] else 'FAIL_REQUIRES_VIDEO_REVIEW',

@@ -1,0 +1,60 @@
+{
+  "task": "act16w4",
+  "branch": "claude/act16w",
+  "PR": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/539",
+  "base": "claude/warp-act",
+  "account": "changmin5781@gmail.com",
+  "project": "ugrp-sim-b-1014",
+  "VM": "ugrp-act-l4-gcp2",
+  "zone": "asia-northeast3-a",
+  "ssh": [
+    "ssh",
+    "-o",
+    "BatchMode=yes",
+    "-o",
+    "ProxyCommand=none",
+    "-o",
+    "HostName=34.64.52.225",
+    "gcp2"
+  ],
+  "warning": "plain gcp2 SSH alias targets stopped CPU VM; never start it",
+  "hard_wall_end": null,
+  "idle_seconds": 1200,
+  "budget_stop": "untouched",
+  "active_gate": {
+    "root": "/home/ugrp/ugrp-sim/runs/act16w-native-gate-r2",
+    "pid": 52916,
+    "source": "e40ff44ce97219d075b1a58eabd48007b6f8b2ac",
+    "references": "/home/ugrp/ugrp-sim/runs/act16w-native-gate-references-r1",
+    "N_requested": 40,
+    "seeds": [
+      87220,
+      87259
+    ]
+  },
+  "native_record_references": "/home/ugrp/ugrp-sim/runs/act16w-native-record-references-r1",
+  "learning_source": "/home/ugrp/ugrp-sim/src/f8bc2c76fcc0b4fe5b898f6bc436bd882a2f5bc9",
+  "qualified_source": "/home/ugrp/ugrp-sim/src/f0db6b1abb842ea65b71c433738210254f300a7c",
+  "teacher_source": "/home/ugrp/ugrp-sim/src/warp1-teacher-snapshot-6f057f7e",
+  "ACT_source": "/home/ugrp/ugrp-sim/src/3f99d58c5ada0862e669ef4065c0ba957f1b4547",
+  "python": {
+    "warp": "/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python",
+    "act": "/home/ugrp/ugrp-rl1b-act-env/bin/python"
+  },
+  "noslip_baseline": {
+    "root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-validation-r1",
+    "complete": true,
+    "A": "0/5",
+    "B": "0/5",
+    "pooled": false
+  },
+  "progress": "first2 native original compressed results PASS; remainder running, do not resubmit",
+  "next": [
+    "Complete native40 raw recount and inspect success/failure full2Hz+last10s10Hz; maximum3 same-defect rounds. Original result files may be .json.zst.",
+    "If>=38/40 and audit0, launch native record stage with refs87420\u201387459; keep training data gate separate; reviewed record receipt required by native_learning dataset stage. Record first30 operational speed override with actual measurements if needed.",
+    "Native_learning stages dataset/train/validate are explicit. A/B same source+data10000 steps; C curriculum only; D1 DAgger same D0 normalization+h0 valid, other7 padded. Models must never mix with noslip.",
+    "Prepare native final40 references only after frozen completed A_B+h4+h5 selection; final91620\u201391659 unopened, no tuning.",
+    "All compared models: distinct native Release, public redownload/full hashes/fresh clone CPU load; no VM credentials; use Mac memory relay only for model archive upload.",
+    "Results/funnel/curves/summary + PR539; actual lease/PID/load check before owned VM stop. No Drive or Mac physics/render/UI."
+  ]
+}
