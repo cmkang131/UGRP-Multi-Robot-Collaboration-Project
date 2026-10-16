@@ -1,4 +1,4 @@
-"""gcp2 CPU only: recount terminal warp8 raw results without simulator calls.
+"""Execution host CPU only: recount terminal warp8 raw results without simulator calls.
 
 Thresholds below are the existing frozen teacher criteria, not new tuning:
 26f84d0f/scripts/run_grasp_act_teacher.py:295-300 and
@@ -11,6 +11,7 @@ import hashlib
 import json
 import math
 from pathlib import Path
+import socket
 import subprocess
 
 READ_ERRORS = []
@@ -208,7 +209,7 @@ def main():
                 dict(stage='physical_success', passed_cumulative_N=success, rejected_N=completed-success)])
         attempts.append(attempt)
     result = dict(utc=dt.datetime.now(dt.timezone.utc).isoformat(), simulation_host='gcp3',
-        analysis_host='gcp2_CPU', project='ugrp-sim-c-1016', CPU_results_pooled=False,
+        analysis_host=socket.gethostname(), project='ugrp-sim-c-1016', CPU_results_pooled=False,
         attempts=attempts, rejection_table=str(a.out / 'rejection_table.json'),
         collector_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         read_errors=READ_ERRORS,

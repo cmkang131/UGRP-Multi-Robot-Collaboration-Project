@@ -1,0 +1,27 @@
+{
+  "utc": "2026-10-16T13:57:35.132735+00:00",
+  "worker": "warp8b",
+  "nocap_ack": true,
+  "nocpu_ack": true,
+  "ownership_ack": true,
+  "source_sha": "175281c8922453465f8bf32707e22988e78b8812",
+  "inherited_running_driver": 1738,
+  "inherited_running_child": 1740,
+  "inherited_cloud_max_run_duration_s": 28800,
+  "inherited_supervisor_deadline": "2026-10-16T21:14:36.683000+00:00",
+  "inherited_cloud_deadline": "2026-10-16T21:44:36.683000+00:00",
+  "action": "preserve A-S1; stop-clear-start at its terminal boundary before the next group; if not ending before21:00Z create a safe boundary before then",
+  "future_supervisor_deadline": null,
+  "future_start_flags": [
+    "no max-run-duration flag",
+    "no instance-termination-action flag"
+  ],
+  "analysis_host": "gcp3 CPU only",
+  "gcp2_operations": 0,
+  "guards_unchanged": [
+    "idle20",
+    "budget-stop"
+  ],
+  "verification": "mock child crossed multiple days, no interrupt, release180SIM cap retained; pytest1PASS",
+  "SSH": "broken configured ProxyCommand; explicit currentIP with saved gcp3 hostkey and StrictHostKeyChecking=yes; no config edited"
+}

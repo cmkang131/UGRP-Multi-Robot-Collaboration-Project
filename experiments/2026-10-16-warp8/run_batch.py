@@ -79,13 +79,13 @@ def main():
     env.update(OMP_NUM_THREADS='1', OPENBLAS_NUM_THREADS='1', MUJOCO_GL='osmesa',
                PYTHONFAULTHANDLER='1', PYTHONUNBUFFERED='1')
     started = dt.datetime.now(dt.timezone.utc)
-    # Resource cleanup deadline only. Planning/task limits remain computation/SIM.
-    deadline = dt.datetime.fromisoformat(json.loads((OPS / 'host-start.json').read_text())['cleanup_deadline'])
+    # User 2026-10-16: remove VM and supervisor wall-time limits. Existing
+    # task SIM caps, the independent idle20 guard and budget-stop stay intact.
     with out.with_suffix('.log').open('w') as log:
         child = subprocess.Popen(cmd, cwd=src, env=env, stdin=subprocess.DEVNULL,
                                  stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
         write(ROOT / 'leases' / ('warp8-' + a.tag + '.json'), dict(task='warp8', pid=os.getpid(), pids=[child.pid],
-              started_at=started.isoformat(), expected_end=deadline.isoformat(),
+              started_at=started.isoformat(), expected_end=None,
               source_sha=a.source_sha, stage=a.tag, concurrency=len(indices), gpu_shared=False))
         write(out.with_suffix('.command.json'), dict(command=cmd, host='gcp3', project='ugrp-sim-c-1016',
               source_sha=a.source_sha, planned_world_N=len(indices),
@@ -94,6 +94,7 @@ def main():
               rejection_table=str(table), rejection_table_sha256=hashlib.sha256(table.read_bytes()).hexdigest(),
               driver_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
               start_utc=started.isoformat(), export_only=a.export,
+              supervisor_wall_deadline=None,
               price_scope='1.096USD/h inherited estimate, not billing'))
         try:
             with out.with_suffix('.resources.jsonl').open('w') as resources:
@@ -104,13 +105,6 @@ def main():
                     resources.write(json.dumps(dict(utc=now.isoformat(), gpu=gpu.stdout.strip(),
                         load=os.getloadavg(), disk_free_bytes=__import__('shutil').disk_usage(ROOT).free)) + '\n')
                     resources.flush()
-                    if now >= deadline:
-                        assert str(out).encode() in Path(f'/proc/{child.pid}/cmdline').read_bytes().split(b'\0')
-                        write(out.with_suffix('.supervisor-stop.json'), dict(status='HOST_ERROR',
-                            reason_category='HOST_RESOURCE_DEADLINE', blocked_object='host:gcp3',
-                            min_gap_m=None, task_cap_end=False, utc=now.isoformat()))
-                        child.send_signal(signal.SIGINT)
-                        break
                     time.sleep(10)
             code = child.wait()
         except BaseException:

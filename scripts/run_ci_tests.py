@@ -24,6 +24,7 @@ from scripts import agent_lock
 from scripts.check_ci_fixtures import check_fixtures
 
 TEST_PATTERNS = (
+    "tests/test_warp8_batch_supervisor.py",  # fake child/clock; no GPU/network
     "tests/test_warp_act*.py",  # array math/admission only; no physics or renderer
     "tests/test_warp_flow_model.py",  # model/admission math only; no simulator
     "tests/test_warp_flow_diagnostics.py",  # fake dispatch; no Warp/CUDA imports

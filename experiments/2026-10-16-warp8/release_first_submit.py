@@ -1,3 +1,5 @@
+raise SystemExit('Historical A-S1 submitter retired: contains obsolete8h policy; use release_next_submit.py after stop-clear-start')
+
 from pathlib import Path
 import datetime as dt,fcntl,hashlib,json,os,socket,subprocess,time
 r=Path('/home/ugrp/ugrp-sim');ops=r/'ops-reviews/warp8';sha='175281c8922453465f8bf32707e22988e78b8812';src=r/'src'/sha

@@ -72,7 +72,7 @@
   "execution_authority": "2026-10-16 user warp8 request",
   "speed_basis": "batch wall / (batch SIM * world count), coordinator decision, user unconfirmed; task duration metric separate",
   "simulation_host": "gcp3",
-  "analysis_host": "gcp2_CPU",
+  "analysis_host": "gcp3_CPU",
   "ready": false,
   "R1": {
     "completed_N": 1,
@@ -85,8 +85,8 @@
   "release_submitted": true,
   "full_active_dof_workspace_v1": true,
   "known_failure_first": 8318706,
-  "cleanup_deadline": "2026-10-16T21:14:36.683000+00:00",
-  "VM_8h_setting": "28800/STOP verified RUNNING; stopped-state external clearing was corrected before submission",
+  "cleanup_deadline": null,
+  "VM_8h_setting": "INHERITED28800/STOP; removal pending safe A-S1 boundary; do not restore",
   "candidate_source_sha": "175281c8922453465f8bf32707e22988e78b8812",
   "initial_source_sha": "f75e3442957e8e00c4ed894056b3e06ee32399f0",
   "R2_first30": {
@@ -136,7 +136,9 @@
     "gate_eligible_source_flag": false,
     "data_admitted": false
   },
-  "cleanup_deadline_scope": "fresh release session started after completed beam/verified VM stop",
-  "current_VM_state": "RUNNING;8h STOP verified after fresh startup",
-  "beam_measurement_complete": true
+  "cleanup_deadline_scope": "removed for future groups by user instruction; inherited A-S1 process retains21:14Z until its safe boundary",
+  "current_VM_state": "RUNNING; A-S1 driver1738/child1740 preserved",
+  "beam_measurement_complete": true,
+  "nocap_ack": true,
+  "nocpu_ack": true
 }
