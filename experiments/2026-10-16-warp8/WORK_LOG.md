@@ -43,3 +43,5 @@
 R2 독립계수 사본의 원래 생성 코드 trailing whitespace가 새 파일 diff 검사에서 발견됐다. 검사 실패 뒤 기록 커밋이 진행된 운영 실수를 바로잡아 공백만 정리하고 AST 동일성을 확인했다. 배포본/메타 SHA도 갱신하며 물리 판정은 바꾸지 않는다.
 
 12:17UTC 보고용 collector 시각 보정: first/last evaluator 시각을 기록하고 첫30 보조 처리량만 실제 per-world 시작 차이로 계산한다. 기존 mixed-clock source 값은 덮어쓰지 않고 경고 범위를 적는다. 원본 물리 성공식/배치 수용식은 불변. gcp2 CPU 기존 immutable snapshot23건 모두 성공·재계수 일치·episode 시각 일치·JSON오류0으로 확인했다(episode-collector-validation-leased.json). 첫 짧은 검증에서 임시 lease 누락을 발견하여 lease 생성/제거 아래 재검증했다. 원래 collector 사본은 보존하고 종료 receiver만 새 명시 경로의 helper를 쓴다.
+
+12:55UTC release XML 전수 상호대조(gcp2 CPU, lease): S1/S3/S6 자기비교3건 accepted, 교차방향6건 모두 free-root names mismatch. S3에는 red_1/tile_1이 있고 S6에는 can_1이 있어 서로 합칠 수 없음도 확인했다. 14/13/13은 메모리 부족이 아니라 현재 backend의 실제 모델 호환성 한계다. release-xml-pairwise.json에 원본 SHA/전체 결과/funnel/재현을 남겼다. gcp2는 타 작업에 의해12:27정지/12:28재시작 후 IP가 바뀌었다. 구IP SSH는 호스트키에서 차단됐으며 변경/우회하지 않고 명시account/project describe로 새IP를 조회해 저장된 gcp2 키로 정상 연결했다. 준비 중 분석 코드 괄호 구문 오류는 CPU 실행 전 compile에서 고쳤다.

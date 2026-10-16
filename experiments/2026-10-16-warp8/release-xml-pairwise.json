@@ -1,0 +1,168 @@
+{
+  "utc": "2026-10-16T12:55:16.238636+00:00",
+  "simulation_source": "gcp3 canonical XML reference exports",
+  "analysis_host": "gcp2_CPU",
+  "source_files": {
+    "s1": {
+      "path": "/home/ugrp/ugrp-sim/runs/warp8/releaseA-s1-c312/canonical-scene.xml",
+      "sha256": "49c3a3874550f2c1fc694de25665ccf0da243bc1190a1aefa6f7b3d0b43a34e5"
+    },
+    "s3": {
+      "path": "/home/ugrp/ugrp-sim/runs/warp8/releaseA-s3-c312/canonical-scene.xml",
+      "sha256": "c10cc6ed8e74c86985b0b22c72dd78aa85085b1f6f89e4bd91bc8f2aa16babef"
+    },
+    "s6": {
+      "path": "/home/ugrp/ugrp-sim/runs/warp8/releaseA-s6-c312/canonical-scene.xml",
+      "sha256": "3052670b76c667ba1708d6d6a24f293f578fa41b5e499a833275e8b86dcc46ce"
+    }
+  },
+  "canonicalizer_sha256": "c81ddd2b5915c407697e344e7edc8f1eb5573057f6e31722db9fa91a152a0059",
+  "results": [
+    {
+      "left": "s1",
+      "right": "s1",
+      "left_only": [],
+      "right_only": [],
+      "accepted": true,
+      "audit": {
+        "profile": "single_model_free_pose_v1",
+        "moved": [],
+        "canonical_xml_sha256": "49c3a3874550f2c1fc694de25665ccf0da243bc1190a1aefa6f7b3d0b43a34e5",
+        "strict_identical_model": true,
+        "world_parameter_differences": [],
+        "mass_size_friction_unchanged": true,
+        "sleep_exception_used": false
+      }
+    },
+    {
+      "left": "s1",
+      "right": "s3",
+      "left_only": [
+        "cargo_can_1",
+        "cargo_cyan_2",
+        "cargo_green_1"
+      ],
+      "right_only": [],
+      "accepted": false,
+      "error": "canonical model free-root names differ"
+    },
+    {
+      "left": "s1",
+      "right": "s6",
+      "left_only": [
+        "cargo_cyan_2",
+        "cargo_green_1",
+        "cargo_red_1",
+        "cargo_tile_1"
+      ],
+      "right_only": [],
+      "accepted": false,
+      "error": "canonical model free-root names differ"
+    },
+    {
+      "left": "s3",
+      "right": "s1",
+      "left_only": [],
+      "right_only": [
+        "cargo_can_1",
+        "cargo_cyan_2",
+        "cargo_green_1"
+      ],
+      "accepted": false,
+      "error": "canonical model free-root names differ"
+    },
+    {
+      "left": "s3",
+      "right": "s3",
+      "left_only": [],
+      "right_only": [],
+      "accepted": true,
+      "audit": {
+        "profile": "single_model_free_pose_v1",
+        "moved": [],
+        "canonical_xml_sha256": "c10cc6ed8e74c86985b0b22c72dd78aa85085b1f6f89e4bd91bc8f2aa16babef",
+        "strict_identical_model": true,
+        "world_parameter_differences": [],
+        "mass_size_friction_unchanged": true,
+        "sleep_exception_used": false
+      }
+    },
+    {
+      "left": "s3",
+      "right": "s6",
+      "left_only": [
+        "cargo_red_1",
+        "cargo_tile_1"
+      ],
+      "right_only": [
+        "cargo_can_1"
+      ],
+      "accepted": false,
+      "error": "canonical model free-root names differ"
+    },
+    {
+      "left": "s6",
+      "right": "s1",
+      "left_only": [],
+      "right_only": [
+        "cargo_cyan_2",
+        "cargo_green_1",
+        "cargo_red_1",
+        "cargo_tile_1"
+      ],
+      "accepted": false,
+      "error": "canonical model free-root names differ"
+    },
+    {
+      "left": "s6",
+      "right": "s3",
+      "left_only": [
+        "cargo_can_1"
+      ],
+      "right_only": [
+        "cargo_red_1",
+        "cargo_tile_1"
+      ],
+      "accepted": false,
+      "error": "canonical model free-root names differ"
+    },
+    {
+      "left": "s6",
+      "right": "s6",
+      "left_only": [],
+      "right_only": [],
+      "accepted": true,
+      "audit": {
+        "profile": "single_model_free_pose_v1",
+        "moved": [],
+        "canonical_xml_sha256": "3052670b76c667ba1708d6d6a24f293f578fa41b5e499a833275e8b86dcc46ce",
+        "strict_identical_model": true,
+        "world_parameter_differences": [],
+        "mass_size_friction_unchanged": true,
+        "sleep_exception_used": false
+      }
+    }
+  ],
+  "scope": "exact existing canonical XML guard only; not physics, model conversion, rollout or memory proof",
+  "executed_helper_sha256": "4a4b38170bf3f157c1f329ec74b0114994a25bafc9afc043381bbf0535e4a70e",
+  "canonicalizer_matches_frozen_175281c8": true,
+  "funnel": [
+    {
+      "stage": "canonical_reference_profiles",
+      "passed_cumulative_N": 3,
+      "rejected_N": 0
+    },
+    {
+      "stage": "ordered_XML_pair_checks_including_self",
+      "passed_cumulative_N": 9,
+      "rejected_N": 0
+    },
+    {
+      "stage": "existing_canonical_guard",
+      "passed_cumulative_N": 3,
+      "rejected_N": 6,
+      "scope": "three self comparisons accepted; all six cross-profile directions rejected; no teacher trials"
+    }
+  ],
+  "reproduce": "Run compare_release_topology.py on gcp2 CPU with stdin JSON {s1/s3/s6:{path,sha256,xml}} from the three source_files; output directory must be new. CPU originals are preserved in /home/ugrp/ugrp-sim/ops-reviews/warp8/release-xml-pairwise/{s1,s3,s6}.xml. No model compilation or physics step."
+}
