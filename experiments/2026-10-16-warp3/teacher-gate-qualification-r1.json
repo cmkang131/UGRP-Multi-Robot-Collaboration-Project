@@ -1,0 +1,1219 @@
+{
+  "source_sha": "f0db6b1abb842ea65b71c433738210254f300a7c",
+  "n": 40,
+  "N": 40,
+  "passed": true,
+  "requested": 40,
+  "cap_end": 0,
+  "HOST_ERROR": 0,
+  "per_kind": {
+    "cyan": {
+      "n": 10,
+      "N": 10,
+      "cap_end": 0
+    },
+    "red": {
+      "n": 10,
+      "N": 10,
+      "cap_end": 0
+    },
+    "green": {
+      "n": 10,
+      "N": 10,
+      "cap_end": 0
+    },
+    "yellow": {
+      "n": 10,
+      "N": 10,
+      "cap_end": 0
+    }
+  },
+  "funnel": [
+    {
+      "gate": "selected_independent_seeds",
+      "passed": 40,
+      "rejected": 0
+    },
+    {
+      "gate": "completed_valid_ledger",
+      "passed": 40,
+      "rejected": 0
+    },
+    {
+      "gate": "visible_only_input_audit",
+      "passed": 40,
+      "rejected": 0
+    },
+    {
+      "gate": "stable_physical_lift",
+      "passed": 40,
+      "rejected": 0
+    },
+    {
+      "gate": "stable_setdown_after_lift",
+      "passed": 40,
+      "rejected": 0
+    },
+    {
+      "gate": "command_complete_and_physical",
+      "passed": 40,
+      "rejected": 0
+    }
+  ],
+  "manifests": [
+    {
+      "group": 0,
+      "files": 1455,
+      "mismatch": 0,
+      "summary_sha256": "373f4f649325700d3ad59d11ad95945be963352e56e27cb19f88b3b05db8bc2c"
+    },
+    {
+      "group": 1,
+      "files": 625,
+      "mismatch": 0,
+      "summary_sha256": "298ff3896e7a67e77dd1c9d2c05bb56ce868ad2e32af320e56467934374f30dd"
+    },
+    {
+      "group": 2,
+      "files": 2465,
+      "mismatch": 0,
+      "summary_sha256": "5623b49dbae72c4b75c63e686db086ce283854360ccc8d59cbf8182fc7301f4a"
+    },
+    {
+      "group": 3,
+      "files": 2032,
+      "mismatch": 0,
+      "summary_sha256": "23e10c8eccf78d70b9c9775910be794e38e7c3870c0756a5c82fefd114864382"
+    },
+    {
+      "group": 4,
+      "files": 1251,
+      "mismatch": 0,
+      "summary_sha256": "bbc8991860f2e99b3d627a5b38fc008585042af4b421102ea2869339aa64d387"
+    },
+    {
+      "group": 5,
+      "files": 213,
+      "mismatch": 0,
+      "summary_sha256": "210d3bdcad3e2aad496062aa3297fe13a95b1c9e91bc16cc98dcacd94c3fe4ad"
+    },
+    {
+      "group": 6,
+      "files": 213,
+      "mismatch": 0,
+      "summary_sha256": "74d046061819c8baa54efffa71bc121ac4ed6718da6d36671b86276235e6e983"
+    }
+  ],
+  "cohort": {
+    "host": {
+      "project_id": "ugrp-sim-b-1014",
+      "instance": "ugrp-act-l4-gcp2",
+      "machine_type": "g2-standard-8",
+      "zone": "asia-northeast3-a"
+    },
+    "teacher_sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+    "numpy_teacher_v1": true,
+    "batch_sleep_v1": true,
+    "native_sleep_policy_compat_v1": true,
+    "float32_solver_default_v1": false,
+    "sap_segmented_v1": false,
+    "camera": {
+      "resolution": [
+        640,
+        480
+      ],
+      "hz": 10,
+      "K": [
+        [
+          619.5194540517232,
+          0.0,
+          287.68910608896766
+        ],
+        [
+          0.0,
+          622.1654884818748,
+          218.69686648455726
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "D": [
+        -0.0199819517209417,
+        -0.1707593617153504,
+        -0.2568318201202376,
+        0.9650933421665181
+      ],
+      "mount_pos": [
+        0.052982009925558314,
+        0.0,
+        0.028152173913043477
+      ],
+      "mount_quat": [
+        0.4545194776720437,
+        0.5416752204197018,
+        -0.5416752204197018,
+        -0.4545194776720437
+      ],
+      "remap_sha256": "eb9b67fbe2cd9323054c779f34e925507caec635b6e74306241469c5d9c32e42",
+      "renderer": "MJWarp batch RGB; known partial-alpha difference from C remains",
+      "quality_requested": "no_mip_v1"
+    },
+    "scene_status": "SELECTED_V5",
+    "runtime_native_ray_kinematics_guard": true,
+    "plan_sha256": "7b5d3190f57c78cceeaa017fb58c39fbd5e2f36f5e2bc86cab2470ac0c4395e9"
+  },
+  "observed_utc": "2026-10-16T04:53:00.743157+00:00",
+  "raw": {
+    "original": "/home/ugrp/ugrp-sim/runs/warp3/teacher-gate-raw-recount-r1.json",
+    "bytes": 153619,
+    "sha256": "a7f0a28cf927f718245c4c1c31bcf4cc760ad5526be5ff62bfe4a5727bd329be",
+    "archive": "/home/ugrp/ugrp-sim/runs/warp3/teacher-gate-raw-recount-r1.json.zst",
+    "archive_bytes": 11997,
+    "archive_sha256": "d7df5a7dbdff800e53b6bbc8bb14b12c1d136d46c2deca88369b17b6bf78fd1d",
+    "lossless_verified": true,
+    "plain_retained_remote": true
+  },
+  "success_playback": {
+    "seed": 8317104,
+    "review": "full0-44SIM2Hz and last10s10Hz directly inspected",
+    "local": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/warp3-g0-w000",
+    "failed_playback": "no completed failed episodes in40 gate"
+  },
+  "rows": [
+    {
+      "seed": 8317104,
+      "group": 0,
+      "world": "world-000",
+      "kind": "cyan",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "cap_end": false,
+      "command_complete": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group0/world-000",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 140,
+        "blocked_held": 185,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 81,
+          "align": 25,
+          "hover": 3
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      }
+    },
+    {
+      "seed": 8317100,
+      "group": 0,
+      "world": "world-001",
+      "kind": "cyan",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "cap_end": false,
+      "command_complete": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group0/world-001",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 139,
+        "blocked_held": 185,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 53,
+          "align": 19,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      }
+    },
+    {
+      "seed": 8317101,
+      "group": 0,
+      "world": "world-002",
+      "kind": "red",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "cap_end": false,
+      "command_complete": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group0/world-002",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 140,
+        "blocked_held": 185,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 75,
+          "align": 24,
+          "hover": 3
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      }
+    },
+    {
+      "seed": 8317117,
+      "group": 0,
+      "world": "world-003",
+      "kind": "red",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "cap_end": false,
+      "command_complete": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group0/world-003",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 139,
+        "blocked_held": 184,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 108,
+          "align": 18,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      }
+    },
+    {
+      "seed": 8317125,
+      "group": 0,
+      "world": "world-004",
+      "kind": "red",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "cap_end": false,
+      "command_complete": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group0/world-004",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 188,
+        "blocked_held": 185,
+        "measurements_by_phase": {
+          "approach": 96,
+          "align": 23,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      }
+    },
+    {
+      "seed": 8317132,
+      "group": 0,
+      "world": "world-005",
+      "kind": "cyan",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "cap_end": false,
+      "command_complete": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group0/world-005",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 189,
+        "blocked_held": 184,
+        "measurements_by_phase": {
+          "approach": 89,
+          "align": 24,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      }
+    },
+    {
+      "seed": 8317136,
+      "group": 0,
+      "world": "world-006",
+      "kind": "cyan",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "cap_end": false,
+      "command_complete": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group0/world-006",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 139,
+        "blocked_held": 187,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 61,
+          "align": 25,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      }
+    },
+    {
+      "seed": 8317116,
+      "group": 1,
+      "world": "world-000",
+      "kind": "cyan",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "cap_end": false,
+      "command_complete": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group1/world-000",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 141,
+        "blocked_held": 185,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 56,
+          "align": 19,
+          "hover": 3
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      }
+    },
+    {
+      "seed": 8317113,
+      "group": 1,
+      "world": "world-001",
+      "kind": "red",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "cap_end": false,
+      "command_complete": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group1/world-001",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 139,
+        "blocked_held": 184,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 117,
+          "align": 19,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      }
+    },
+    {
+      "seed": 8317121,
+      "group": 1,
+      "world": "world-002",
+      "kind": "red",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "cap_end": false,
+      "command_complete": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group1/world-002",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 139,
+        "blocked_held": 184,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 91,
+          "align": 25,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      }
+    },
+    {
+      "seed": 8317102,
+      "group": 2,
+      "world": "world-000",
+      "kind": "green",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "cap_end": false,
+      "command_complete": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group2/world-000",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 139,
+        "blocked_held": 187,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 96,
+          "align": 21,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      }
+    },
+    {
+      "seed": 8317106,
+      "group": 2,
+      "world": "world-001",
+      "kind": "green",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "cap_end": false,
+      "command_complete": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group2/world-001",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 139,
+        "blocked_held": 185,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 94,
+          "align": 25,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      }
+    },
+    {
+      "seed": 8317108,
+      "group": 2,
+      "world": "world-002",
+      "kind": "cyan",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "cap_end": false,
+      "command_complete": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group2/world-002",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 139,
+        "blocked_held": 186,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 65,
+          "align": 23,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      }
+    },
+    {
+      "seed": 8317110,
+      "group": 2,
+      "world": "world-003",
+      "kind": "green",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "cap_end": false,
+      "command_complete": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group2/world-003",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 140,
+        "blocked_held": 187,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 88,
+          "align": 19,
+          "hover": 3
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      }
+    },
+    {
+      "seed": 8317112,
+      "group": 2,
+      "world": "world-004",
+      "kind": "cyan",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "cap_end": false,
+      "command_complete": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group2/world-004",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 139,
+        "blocked_held": 185,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 80,
+          "align": 21,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      }
+    },
+    {
+      "seed": 8317114,
+      "group": 2,
+      "world": "world-005",
+      "kind": "green",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "cap_end": false,
+      "command_complete": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group2/world-005",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 141,
+        "blocked_held": 185,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 41,
+          "align": 21,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      }
+    },
+    {
+      "seed": 8317118,
+      "group": 2,
+      "world": "world-006",
+      "kind": "green",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "cap_end": false,
+      "command_complete": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group2/world-006",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 139,
+        "blocked_held": 186,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 128,
+          "align": 20,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      }
+    },
+    {
+      "seed": 8317122,
+      "group": 2,
+      "world": "world-007",
+      "kind": "green",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "cap_end": false,
+      "command_complete": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group2/world-007",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 139,
+        "blocked_held": 186,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 63,
+          "align": 24,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      }
+    },
+    {
+      "seed": 8317126,
+      "group": 2,
+      "world": "world-008",
+      "kind": "green",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "cap_end": false,
+      "command_complete": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group2/world-008",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 140,
+        "blocked_held": 184,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 102,
+          "align": 18,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      }
+    },
+    {
+      "seed": 8317130,
+      "group": 2,
+      "world": "world-009",
+      "kind": "green",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "cap_end": false,
+      "command_complete": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group2/world-009",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 189,
+        "blocked_held": 185,
+        "measurements_by_phase": {
+          "approach": 78,
+          "align": 19,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      }
+    },
+    {
+      "seed": 8317134,
+      "group": 2,
+      "world": "world-010",
+      "kind": "green",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "cap_end": false,
+      "command_complete": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group2/world-010",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 141,
+        "blocked_held": 185,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 46,
+          "align": 19,
+          "hover": 3
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      }
+    },
+    {
+      "seed": 8317138,
+      "group": 2,
+      "world": "world-011",
+      "kind": "green",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "cap_end": false,
+      "command_complete": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group2/world-011",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 139,
+        "blocked_held": 185,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 90,
+          "align": 21,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      }
+    },
+    {
+      "seed": 8317103,
+      "group": 3,
+      "world": "world-000",
+      "kind": "yellow",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "cap_end": false,
+      "command_complete": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group3/world-000",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 139,
+        "blocked_held": 187,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 66,
+          "align": 25,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      }
+    },
+    {
+      "seed": 8317107,
+      "group": 3,
+      "world": "world-001",
+      "kind": "yellow",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "cap_end": false,
+      "command_complete": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group3/world-001",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 141,
+        "blocked_held": 184,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 44,
+          "align": 25,
+          "hover": 3
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      }
+    },
+    {
+      "seed": 8317111,
+      "group": 3,
+      "world": "world-002",
+      "kind": "yellow",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "cap_end": false,
+      "command_complete": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group3/world-002",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 139,
+        "blocked_held": 186,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 60,
+          "align": 27,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      }
+    },
+    {
+      "seed": 8317115,
+      "group": 3,
+      "world": "world-003",
+      "kind": "yellow",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "cap_end": false,
+      "command_complete": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group3/world-003",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 141,
+        "blocked_held": 185,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 40,
+          "align": 19,
+          "hover": 3
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      }
+    },
+    {
+      "seed": 8317119,
+      "group": 3,
+      "world": "world-004",
+      "kind": "yellow",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "cap_end": false,
+      "command_complete": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group3/world-004",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 139,
+        "blocked_held": 185,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 89,
+          "align": 20,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      }
+    },
+    {
+      "seed": 8317123,
+      "group": 3,
+      "world": "world-005",
+      "kind": "yellow",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "cap_end": false,
+      "command_complete": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group3/world-005",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 139,
+        "blocked_held": 187,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 67,
+          "align": 19,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      }
+    },
+    {
+      "seed": 8317127,
+      "group": 3,
+      "world": "world-006",
+      "kind": "yellow",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "cap_end": false,
+      "command_complete": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group3/world-006",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 140,
+        "blocked_held": 186,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 102,
+          "align": 21,
+          "hover": 3
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      }
+    },
+    {
+      "seed": 8317131,
+      "group": 3,
+      "world": "world-007",
+      "kind": "yellow",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "cap_end": false,
+      "command_complete": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group3/world-007",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 140,
+        "blocked_held": 185,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 83,
+          "align": 22,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      }
+    },
+    {
+      "seed": 8317135,
+      "group": 3,
+      "world": "world-008",
+      "kind": "yellow",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "cap_end": false,
+      "command_complete": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group3/world-008",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 139,
+        "blocked_held": 186,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 88,
+          "align": 25,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      }
+    },
+    {
+      "seed": 8317139,
+      "group": 3,
+      "world": "world-009",
+      "kind": "yellow",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "cap_end": false,
+      "command_complete": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group3/world-009",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 139,
+        "blocked_held": 185,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 77,
+          "align": 17,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      }
+    },
+    {
+      "seed": 8317105,
+      "group": 4,
+      "world": "world-000",
+      "kind": "red",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "cap_end": false,
+      "command_complete": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group4/world-000",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 139,
+        "blocked_held": 185,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 99,
+          "align": 20,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      }
+    },
+    {
+      "seed": 8317109,
+      "group": 4,
+      "world": "world-001",
+      "kind": "red",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "cap_end": false,
+      "command_complete": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group4/world-001",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 140,
+        "blocked_held": 185,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 86,
+          "align": 24,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      }
+    },
+    {
+      "seed": 8317120,
+      "group": 4,
+      "world": "world-002",
+      "kind": "cyan",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "cap_end": false,
+      "command_complete": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group4/world-002",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 140,
+        "blocked_held": 184,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 87,
+          "align": 29,
+          "hover": 3
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      }
+    },
+    {
+      "seed": 8317129,
+      "group": 4,
+      "world": "world-003",
+      "kind": "red",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "cap_end": false,
+      "command_complete": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group4/world-003",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 189,
+        "blocked_held": 185,
+        "measurements_by_phase": {
+          "approach": 100,
+          "align": 18,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      }
+    },
+    {
+      "seed": 8317133,
+      "group": 4,
+      "world": "world-004",
+      "kind": "red",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "cap_end": false,
+      "command_complete": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group4/world-004",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 140,
+        "blocked_held": 187,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 73,
+          "align": 22,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      }
+    },
+    {
+      "seed": 8317137,
+      "group": 4,
+      "world": "world-005",
+      "kind": "red",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "cap_end": false,
+      "command_complete": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group4/world-005",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 140,
+        "blocked_held": 187,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 71,
+          "align": 24,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      }
+    },
+    {
+      "seed": 8317124,
+      "group": 5,
+      "world": "world-000",
+      "kind": "cyan",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "cap_end": false,
+      "command_complete": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group5/world-000",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 140,
+        "blocked_held": 186,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 72,
+          "align": 25,
+          "hover": 3
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      }
+    },
+    {
+      "seed": 8317128,
+      "group": 6,
+      "world": "world-000",
+      "kind": "cyan",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "cap_end": false,
+      "command_complete": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group6/world-000",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 140,
+        "blocked_held": 185,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 76,
+          "align": 23,
+          "hover": 3
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      }
+    }
+  ]
+}
