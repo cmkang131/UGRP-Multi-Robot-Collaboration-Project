@@ -16,6 +16,7 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument('--snapshot', type=Path, required=True)
     p.add_argument('--receive', action='store_true')
+    p.add_argument('--label', default='v1')
     a = p.parse_args()
     assert a.snapshot.is_absolute() and a.snapshot.parent == ROOT / 'runs'
     lease = ROOT / 'leases/warp8-prefix-playback.json'
@@ -47,7 +48,7 @@ def main():
             origin = rows[0]['t']
             # Drop RGB times whose exact saved evaluator row is not yet flushed.
             # Source snapshot stays immutable; derived inputs use symlinks.
-            derived = a.snapshot / f'derived-world-{world_id:03d}'
+            derived = a.snapshot / f'derived-{a.label}-world-{world_id:03d}'
             folder = derived / 'world-000'
             (folder/'review-2hz').mkdir(parents=True, exist_ok=False)
             (folder/'raw').symlink_to(world/'raw', target_is_directory=True)
@@ -57,6 +58,8 @@ def main():
                 for image in sorted((world/'review-2hz'/rid).glob('*.jpg')):
                     if round((origin+int(image.stem)/10)*10) in index:
                         (out/image.name).symlink_to(image)
+            asset = ROOT / 'src/26f84d0f0ada1c33473c83cca2d3415ce51bd247'
+            os.chdir(asset)
             model = mujoco.MjModel.from_xml_string((world/'raw/scene.xml').read_text())
             np.savez_compressed(derived/'world-000-states.npz', ticks=list(index),
                 qpos=[r['joints'] for r in index.values()], qvel=np.zeros((len(index),model.nv)))
@@ -64,8 +67,7 @@ def main():
             summary = dict(source_summary, native_initialization_only_sim_s=[origin])
             (derived/'summary.json').write_text(json.dumps(summary))
             (folder/'tail-10hz.json').write_text('[]')
-            asset = ROOT / 'src/26f84d0f0ada1c33473c83cca2d3415ce51bd247'
-            playback = ROOT/'ops-reviews/warp8/playback'/a.snapshot.name/f'world-{world_id:03d}'
+            playback = ROOT/'ops-reviews/warp8/playback'/a.snapshot.name/f'{a.label}-world-{world_id:03d}'
             subprocess.run([str(ROOT/'ugrp/.venv-sim/bin/python'),
                 str(ROOT/'ops-reviews/warp6/make_playback.py'), '--run',str(derived),
                 '--out',str(playback),'--asset-root',str(asset)], check=True,
