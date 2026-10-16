@@ -63,6 +63,14 @@ def canonical_xml(xml, reference, *, world_parameters=False):
                     if e.tag in ('body','joint','freejoint','geom','actuator')]
         if topology(current)!=topology(target):
             raise ValueError('joint/body/geom topology differs')
+        for row in differences:
+            changed={k for k in set(row.get('left',{}))|set(row.get('right',{}))
+                     if row.get('left',{}).get(k)!=row.get('right',{}).get(k)}
+            # Observed seed-dependent legacy placeholders only (model table).
+            # Camera, material, solver and scene-profile differences must never
+            # silently become another parameterized cohort.
+            if '/geom[warehouse_' not in row['path'] or not changed<={'size','mass'}:
+                raise ValueError('unsupported world parameter difference: '+row['path'])
     return result, dict(profile='single_model_free_pose_v1', moved=moved,
         canonical_xml_sha256=hashlib.sha256(expected.encode()).hexdigest(),
         strict_identical_model=not differences,world_parameter_differences=differences,

@@ -23,6 +23,16 @@ def test_dof_length_is_not_exempted():
     assert audit['differences'][0]['field']=='dof_length'
 
 
+def test_legacy_world_parameters_retained_without_admitting_camera_change():
+    a='<mujoco><option iterations="80"/><worldbody><body name="cargo"><freejoint/><geom name="warehouse_oak_plank_geom" size="1" mass="2"/></body><camera name="r1" fovy="60"/></worldbody></mujoco>'
+    b=a.replace('mass="2"','mass="3"')
+    result,audit=canonical_xml(b,a,world_parameters=True)
+    assert 'mass="3"' in result and not audit['strict_identical_model']
+    for text in [b.replace('fovy="60"','fovy="70"'),b.replace('iterations="80"','iterations="40"')]:
+        with pytest.raises(ValueError,match='unsupported world parameter'):
+            canonical_xml(text,a,world_parameters=True)
+
+
 def test_zero_grasp_support_rejected_before_world_construction():
     from scripts.warp_flow_admission import certify,MODE
     family=[(0.,.2,None,'existing-certificate')]
