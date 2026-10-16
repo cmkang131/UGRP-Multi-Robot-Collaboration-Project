@@ -23,6 +23,7 @@ def main():
     p.add_argument('--host-error', action='store_true')
     p.add_argument('--origin-proof', type=Path)
     p.add_argument('--batch', default='beam40-r1')
+    p.add_argument('--tail-preview', action='store_true')
     a = p.parse_args()
     assert a.snapshot.is_absolute() and a.snapshot.parent == ROOT / 'runs'
     assert a.batch not in ('.', '..') and Path(a.batch).name == a.batch
@@ -100,7 +101,7 @@ def main():
             (derived/'summary.json').write_text(json.dumps(summary))
             terminal_rows=[]
             ring=world/'tail-ring-10hz'
-            if a.terminal:
+            if a.terminal or a.tail_preview:
                 # Existing ring is100 samples=10 SIM seconds at10Hz. Older
                 # identical JPEGs may still hash-match an overwritten slot.
                 for line in (ring/'journal.jsonl').read_text().splitlines()[-100:]:
@@ -120,12 +121,14 @@ def main():
                 cwd=asset, env={**os.environ,'MUJOCO_GL':'osmesa','OMP_NUM_THREADS':'1','OPENBLAS_NUM_THREADS':'1'})
             meta = playback/'playback-meta.json'
             info = json.loads(meta.read_text())
-            info.update(scope='unfinished prefix sanity preview, not failure/success or root-cause evidence; no physics step',
+            info.update(playback_helper_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),scope='unfinished prefix sanity preview, not failure/success or root-cause evidence; no physics step',
                 original_world=world_id, source_snapshot=str(original), simulation_host='gcp3', analysis_host='gcp2_CPU',
                 reconstruction='native NPZ + exact evaluator qpos for missing terminal states; missing qvel=0 unused by renderer',
                 native_state_file=str(native) if native.exists() else None,
                 native_evaluator_overlap_exact_N=overlap,authoritative_backend_origin=origin,
                 terminal_10hz_scope='not included in this nonterminal preview; native recording rings remain on gcp3')
+            if a.tail_preview:
+                info['terminal_10hz_scope']='100 hash-verified native JPEG pairs from live prefix; not a terminal outcome'
             if a.terminal:
                 counter_path=ROOT/'ops-reviews/warp8-collect_gate.py'
                 spec=importlib.util.spec_from_file_location('counter',counter_path)

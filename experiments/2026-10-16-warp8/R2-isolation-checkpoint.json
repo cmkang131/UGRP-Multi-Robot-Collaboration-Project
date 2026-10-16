@@ -1,0 +1,22 @@
+{
+  "utc": "2026-10-16T10:10:30.123617+00:00",
+  "host": "gcp3",
+  "GPU_compute_apps": "1745, /home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python, 956 MiB",
+  "leases": {
+    "warp8-beam40-r2.json": {
+      "task": "warp8",
+      "pid": 1743,
+      "pids": [
+        1745
+      ],
+      "started_at": "2026-10-16T08:38:49.565191+00:00",
+      "expected_end": "2026-10-16T14:05:00+00:00",
+      "source_sha": "175281c8922453465f8bf32707e22988e78b8812",
+      "stage": "beam40-r2",
+      "concurrency": 40,
+      "gpu_shared": false
+    }
+  },
+  "MPS_processes": [],
+  "scope": "live checkpoint; sole GPU client is R2 child1745; no gcp2 GPU query"
+}
