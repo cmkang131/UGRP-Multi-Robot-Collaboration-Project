@@ -17,7 +17,7 @@ def test_carry_is_explicit_and_grip_is_not_camera_ancestor():
         np.testing.assert_array_equal(value[0],opened[0]);np.testing.assert_array_equal(value[1],opened[1])
     assert transform_from_commands(None)==(None,'off')
     with pytest.raises(ValueError):transform_from_commands({**POSE,'qpos':[]},camera_pose=CARRY_OPTION)
-    assert transform_from_commands({**POSE,3:2500},camera_pose=CARRY_OPTION)[0] is None
+    assert transform_from_commands({**POSE,5:500},camera_pose=CARRY_OPTION)[0] is None
 
 
 def test_carry_adapter_has_no_global_mutation_and_supports_closed_floor():
@@ -31,6 +31,8 @@ def test_carry_adapter_has_no_global_mutation_and_supports_closed_floor():
     rng=np.random.default_rng(0);im=np.repeat(rng.integers(30,120,(480,640,1),dtype=np.uint8),3,axis=2)
     result=pair(im,im.copy(),{**POSE,1:1500})
     assert result['status']=='unknown_identical_rgb'
+    moved=np.roll(im,1,axis=1)
+    assert 'status' in pair(im,moved,{**POSE,1:1500})
     assert (vo.ground,vo.floor_mask,vo.image_mask,transform)==old
 
 
