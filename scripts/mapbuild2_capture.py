@@ -49,20 +49,28 @@ def stimulus(t):
 
 
 def run(a):
-    if platform.system()!='Linux' or not platform.node().startswith('ugrp-act-l4-gcp2'):
+    v3=getattr(a,'mapbuild3_v1',False)
+    task='mapbuild3' if v3 else 'mapbuild2'
+    expected_host='ugrp-act-l4-gcp5' if v3 else 'ugrp-act-l4-gcp2'
+    if platform.system()!='Linux' or not platform.node().startswith(expected_host):
         raise ValueError('GCP2_L4_ONLY')
     q=json.loads(a.queue.read_text()); table=Path(q['rejection_table'])
     if not table.is_absolute() or not table.is_file():raise ValueError('EXISTING_ABSOLUTE_FUNNEL_REQUIRED')
-    if q['toggle']!='mapbuild2_v1' or q['enabled'] is not True:raise ValueError('EXPLICIT_CANDIDATE_REQUIRED')
+    if q['toggle']!=task+'_v1' or q['enabled'] is not True:raise ValueError('EXPLICIT_CANDIDATE_REQUIRED')
     for source, expected in ((ROOT,q['source_sha']),(a.renderer_source,RENDERER_SHA)):
+        if v3 and source==ROOT and (source/'SOURCE_SHA').is_file():
+            receipt=json.loads((source/'SOURCE_FILES.json').read_text())
+            if (source/'SOURCE_SHA').read_text().strip()!=expected or any(sha(source/p)!=h for p,h in receipt.items()):
+                raise ValueError('ARCHIVE_SOURCE_HASH_MISMATCH')
+            continue
         if subprocess.check_output(['git','rev-parse','HEAD'],cwd=source,text=True).strip()!=expected:
             raise ValueError('PINNED_SOURCE_REQUIRED')
         if subprocess.check_output(['git','status','--porcelain','--untracked-files=no'],cwd=source):
             raise ValueError('CLEAN_SOURCE_REQUIRED')
     base=Path('/home/ugrp/ugrp-sim')
     leases=[json.loads(p.read_text()) for p in (base/'leases').glob('*.json')]
-    if not any(p.get('task')=='mapbuild2' for p in leases):raise ValueError('OWN_LEASE_REQUIRED')
-    if sum(int(p.get('concurrency',0)) for p in leases if p.get('task')!='mapbuild2')+4>40:
+    if not any(p.get('task')==task for p in leases):raise ValueError('OWN_LEASE_REQUIRED')
+    if sum(int(p.get('concurrency',0)) for p in leases if p.get('task')!=task)+4>40:
         raise ValueError('SHARED_WORLD_LIMIT')
     # Existing x86 persistent-storage floor (AGENTS); resource admission only.
     if os.statvfs(base).f_bavail*os.statvfs(base).f_frsize < 8*1024**3:
@@ -77,7 +85,7 @@ def run(a):
         disk_free_bytes=os.statvfs(base).f_bavail*os.statvfs(base).f_frsize,shared=True,
         gpu=subprocess.check_output(['nvidia-smi','--query-gpu=name,memory.used,memory.total,utilization.gpu','--format=csv,noheader'],text=True)))
     dump(a.output/'RUN_META.json',dict(schema='ugrp.run_meta.v1',**{'class':'dev'},pr=556,
-        branch='codex/mapbuild1',sha=q['source_sha'],batch='mapbuild2'))
+        branch='codex/mapbuild1',sha=q['source_sha'],batch=task))
     sys.path.insert(0,str(a.renderer_source));sys.path.insert(1,str(a.renderer_source/'scripts'))
     os.chdir(a.renderer_source)
     import cv2
@@ -107,9 +115,19 @@ def run(a):
         never=int(enum.mjSLEEP_NEVER),allowed=int(enum.mjSLEEP_ALLOWED))
     d=mujoco.MjData(m);view=scene_tools.wall_views(scene.config['static_map'])[0]
     cases=[];initial=[];ctrl=[];odoms=[]
+    fixture=np.load(a.fixture/'fixture.npz') if v3 else None
+    if v3:
+        from sim.spawn_overlap_check import check,OPTION
+        from mapbuild3_prepare import named_sets
+        classifications=named_sets(m)
     for pose in ('drive','high'):
-        for sensor in ('off','on_v1'):
+        for sensor in (('off',) if v3 else ('off','on_v1')):
             pwm,setup=scene_tools.fixture(m,d,scene,view,pose,hardware)
+            if v3:
+                d.qpos[:]=fixture[pose+'_qpos'];d.qvel[:]=0
+                admission=check(m,d,**classifications,option=OPTION)
+                dump(a.output/(pose+'-spawn-admission.json'),admission)
+                if not admission['accepted']:raise ValueError('SPAWN_OVERLAP_REJECTED')
             d.ctrl[:]=0
             # Set the issued position targets from the commanded fixture, before
             # physics. Subsequent measured joints never alter any command.
@@ -120,15 +138,20 @@ def run(a):
             cases.append(dict(name=pose+'-'+sensor,pwm=pwm,sensor=sensor,setup=setup))
             odom=PulseOdometry();odom.command(dict(kind='initial_servo_command',t=0,pulses=pwm));odoms.append(odom)
     if np.any(d.eq_active) or m.opt.noslip_iterations!=10:raise ValueError('WELD_OFF_NOSLIP10_REQUIRED')
+    worlds=len(cases)
     wm=mjw.put_model(m);wm.opt.tolerance.fill_(float(m.opt.tolerance))
     # Workspace sizing reuses simalt/warp_act allocation minima and rounds
     # observed import contacts up; these are not physics acceptance constants.
     ncon=1<<(max(32,int(d.ncon))-1).bit_length()
     njmax=1<<(max(256,int(d.nefc))-1).bit_length()
+    if v3:
+        # PR564 clean-start native peak78 contacts/345 constraints ->128/512.
+        # Allocation only; overflow remains HOST_ERROR, never physics tuning.
+        ncon=max(ncon,128);njmax=max(njmax,512)
     dump(a.output/'initialization.json',dict(nq=m.nq,nv=m.nv,ncon=int(d.ncon),nefc=int(d.nefc),
         capacities=dict(nconmax=ncon,njmax=njmax),timestep=float(m.opt.timestep),
         basis='warp_act_backend allocation minima and next power of two of native import counts; overflow is HOST_ERROR'))
-    with unused_efm(m,d):wd=mjw.put_data(m,d,nworld=4,nconmax=ncon,njmax=njmax)
+    with unused_efm(m,d):wd=mjw.put_data(m,d,nworld=worlds,nconmax=ncon,njmax=njmax)
     wp.copy(wd.qpos,wp.array(np.stack(initial),dtype=wd.qpos.dtype))
     wp.copy(wd.ctrl,wp.array(np.stack(ctrl),dtype=wd.ctrl.dtype))
     rc=Renderer(m,wm,wd,[('r1','r1__robot_cam',(640,480)),('r2','r2__robot_cam',(640,480)),
@@ -141,7 +164,7 @@ def run(a):
     # fixed-timestep physics, with no clock-dependent action selection.
     mjw.step(wm,wd);wp.synchronize()
     # Compile without retaining its integration as an unissued motion.
-    with unused_efm(m,d):wd=mjw.put_data(m,d,nworld=4,nconmax=ncon,njmax=njmax)
+    with unused_efm(m,d):wd=mjw.put_data(m,d,nworld=worlds,nconmax=ncon,njmax=njmax)
     wp.copy(wd.qpos,wp.array(np.stack(initial),dtype=wd.qpos.dtype))
     wp.copy(wd.ctrl,wp.array(np.stack(ctrl),dtype=wd.ctrl.dtype));rc.wd=wd
     with wp.ScopedCapture() as capture:
@@ -214,14 +237,14 @@ def run(a):
         np.savez_compressed(a.output/'eval-state.npz',qpos=np.asarray(states))
         dump(a.output/'summary.json',dict(status='HOST_ERROR' if error else 'cap_end',source_sha=q['source_sha'],
             renderer_sha=RENDERER_SHA,scene=PROFILE,scene_xml_sha256=hashlib.sha256(xml.encode()).hexdigest(),
-            shared=True,speed_admission=False,physics_steps=steps,worlds=4,frames=len(own),wall_s=time.monotonic()-start,
-            error=error,renderer_audit=rc.audit,sensors='drive/high x OFF/ON; range recorded, no control fusion',
+            shared=True,speed_admission=False,physics_steps=steps,worlds=worlds,frames=len(own),wall_s=time.monotonic()-start,
+            error=error,renderer_audit=rc.audit,sensors='drive/high x OFF only' if v3 else 'drive/high x OFF/ON; range recorded, no control fusion',
             recording=dict(hz=10,terminal_sim_s=10,retained=list(ring),bytes=sum(p.stat().st_size for p in a.output.rglob('*.jpg'))),
             camera_qualification='HIGH closed remains unknown; no claimed load or successful carry',
             capacities=dict(nconmax=ncon,njmax=njmax),input_audit=dict(top_actor_reads=0,truth_feedback=0,cpu_physics_steps=0)))
         dump(a.output/'rejection-table.json',dict(raw=str(a.output),reproduction=sys.argv,stages=[
-            dict(stage='requested_own_frames',cumulative_pass_n=164,rejected_n=0),
-            dict(stage='recorded_own_frames',cumulative_pass_n=len(own),rejected_n=164-len(own))],reasons=[] if error is None else [error]))
+            dict(stage='requested_own_frames',cumulative_pass_n=worlds*41,rejected_n=0),
+            dict(stage='recorded_own_frames',cumulative_pass_n=len(own),rejected_n=worlds*41-len(own))],reasons=[] if error is None else [error]))
         dump(a.output/'recording-progress.json',dict(status='HOST_ERROR' if error else 'cap_end',
             own_frames=len(own),physics_steps=steps))
         dump(a.output/'SHA256SUMS.json',{str(p.relative_to(a.output)):sha(p) for p in a.output.rglob('*') if p.is_file()})
