@@ -1,0 +1,42 @@
+{
+  "attempts": [
+    {
+      "id": "motion-r1",
+      "status": "HOST_ERROR",
+      "reason": "relative texture asset paths; missing renderer cwd",
+      "fixed": "make() chdir to frozen renderer"
+    },
+    {
+      "id": "motion-r2",
+      "status": "COMPLETED",
+      "sha256": "573b602200c36cb7ed0d3d97cb1274644ddb003839070c9f45afb373cf3083e6"
+    },
+    {
+      "id": "practice-r1",
+      "status": "HOST_ERROR",
+      "reason": "incomplete renderer-only closure lacked frozen colour JSON",
+      "fixed": "use existing complete mapbuild4-vision597 closure"
+    },
+    {
+      "id": "practice-r2",
+      "status": "HOST_ERROR",
+      "reason": "practice symlink escaped strict own RGB root",
+      "fixed": "hardlink own JPEGs within practice root; guard unchanged"
+    },
+    {
+      "id": "practice-r3",
+      "status": "COMPLETED",
+      "frames": 41,
+      "inserted_scans": 4,
+      "improved_proposal": 3,
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild5/practice-r3",
+      "scope": "old four-second FOLDED recording, plumbing only; not mapbuild5 result"
+    },
+    {
+      "id": "recording-r1",
+      "status": "RUNNING",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild5/recording-r1",
+      "source_sha": "e57f7db31"
+    }
+  ]
+}

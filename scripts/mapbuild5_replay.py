@@ -30,7 +30,7 @@ def replay(root,vision,calibration,output):
     import harness,sim
     harness.__path__.append(str(vision/'harness'));sim.__path__.append(str(vision/'sim'))
     from harness.mapbuild_rbpf import virtual_scan,MapbuildRBPF,OPTION
-    from harness.e2e_rgb_vo import ground_pair,compose
+    from harness.e2e_rgb_vo import ground_pair,compose,PARAMS
     from harness.scene_colour_boundary import ColourBoundaryState,RELOC16_OPTION
     from harness.self_odom_grid import OdomGrid,transform
     from mapbuild1_replay import read_frame
@@ -53,7 +53,8 @@ def replay(root,vision,calibration,output):
         lk=dict(status='bootstrap')
         if before is not None:
             if frame['t']<=old['t']:raise ValueError('CAUSAL_FRAMES_REQUIRED')
-            lk=ground_pair(before,rgb,servo) if servo==servo_before else dict(status='unknown_servo_change')
+            lk=(dict(status='unknown_stale') if frame['t']-old['t']>PARAMS['max_pair_gap_s'] else
+                ground_pair(before,rgb,servo) if servo==servo_before else dict(status='unknown_servo_change'))
         command_delta,command_cov=intervals[frame['frame_id']]
         delta=np.asarray(lk['delta']) if lk['status']=='measured' else command_delta
         cov=np.asarray(lk['covariance']) if lk['status']=='measured' else command_cov
@@ -83,6 +84,7 @@ def replay(root,vision,calibration,output):
     previous=len(rows);funnel=[]
     for stage,n in staged:funnel.append(dict(stage=stage,cumulative_pass_n=n,rejected_n=previous-n));previous=n
     dump(output/'rejection_table.json',dict(raw=str(root),reproduction=sys.argv,stages=funnel,
+        motion_reasons=dict(Counter(r['lk']['status'] for r in rows)),
         column_funnel=[dict(stage='input_columns',cumulative_pass_n=len(scans)*96,rejected_n=0),
                        dict(stage='returned_contacts',cumulative_pass_n=returned,rejected_n=len(scans)*96-returned)],
         column_reasons=dict(Counter(c['reason'] for s in scans for c in s['columns'])),
@@ -129,14 +131,80 @@ def evaluate(root,vision,output,rows,events):
         return_scan_corrections=updates,input_audit=dict(truth_opened_after_prediction_seal=True),
         limits='single fixed stimulus/scene/host, unloaded FOLDED only; static raster excludes dynamic cargo; no task/arrival success')
     dump(output/'summary.json',result)
+    # Separate full physical-obstacle check after sealing predictions. Reuse
+    # the former mapbuild2 evaluator's cargo-box raster at reset and at end;
+    # mj_forward derives geometry only (no CPU integration or actor feedback).
+    import os,mujoco,scripts
+    scripts.__path__.append(str(vision/'scripts'))
+    from scripts import probe_scene_tex2 as tools
+    from scripts.generate_scene_textures import MAPS
+    os.chdir(vision)
+    model,scene,*_=tools.build_model(MAPS[0],'walls_floor_contrast_v5_indigo110_s80')
+    states=np.load(root/'eval-state.npz')['qpos'];data=mujoco.MjData(model)
+    roots={model.body(item['body_name']).id for item in scene.config['setup_only']['objects'].values()}
+    roots.add(model.body('cargo_tex2_beam').id)
+    extended={}
+    for k,label in [(0,'reset'),(-1,'end')]:
+        data.qpos[:]=states[k];mujoco.mj_forward(model,data);extra=[];excluded=[]
+        for gid in range(model.ngeom):
+            body=int(model.geom_bodyid[gid])
+            while body and body not in roots:body=int(model.body_parentid[body])
+            if body not in roots or not (model.geom_contype[gid] or model.geom_conaffinity[gid]):continue
+            if model.geom_type[gid]!=mujoco.mjtGeom.mjGEOM_BOX:
+                excluded.append(model.geom(gid).name);continue
+            rotation=data.geom_xmat[gid].reshape(3,3)
+            extra.append(dict(id='eval_'+model.geom(gid).name,kind='cargo',center_m=data.geom_xpos[gid,:2].tolist(),
+                half_extents_m=model.geom_size[gid,:2].tolist(),yaw_rad=float(np.arctan2(rotation[1,0],rotation[0,0]))))
+        physical={**static,'obstacles':static['obstacles']+extra}
+        extended[label]=dict(rectangles=extra,excluded_non_box_geoms=excluded,
+            methods={method:score(json.loads((output/(method+'-predicted.json')).read_text()),raster(physical,origin))
+                     for method in ('lk','rbpf')})
+    dump(output/'cargo-map-scores.json',dict(evaluation_only=True,cpu_physics_steps=0,
+        scope='saved MJWarp reset/end collision boxes; endpoint snapshots, not swept dynamic occupancy',snapshots=extended))
+    # Verify re-observed wall identity from evaluation-only nearest wall boxes.
+    from harness.e2e_rgb_vo import compose
+    from harness.self_odom_grid import transform
+    walls=[v for v in static['obstacles'] if v.get('kind')=='wall' or v['id'].startswith('wall_')]
+    identities=[]
+    for scan in json.loads((output/'scans.json').read_text()):
+        xy=np.asarray([s[0] for s in scan['segments']]).reshape(-1,2)
+        if not len(xy):continue
+        world=transform(xy,compose(origin,truth[scan['frame_id']]))
+        distances=[]
+        for wall in walls:
+            angle=wall.get('yaw_rad',0);c,s=np.cos(angle),np.sin(angle)
+            local=(world-wall['center_m'])@np.array([[c,-s],[s,c]])
+            distances.append(np.linalg.norm(np.maximum(abs(local)-wall['half_extents_m'],0),axis=1))
+        distance=np.asarray(distances);ids=np.argmin(distance,axis=0)
+        identities.append(dict(t=scan['t'],nearest_wall_counts=dict(Counter(walls[i]['id'] for i in ids)),
+             nearest_residual_p50_m=float(np.median(distance.min(0))),nearest_residual_max_m=float(distance.min(0).max())))
+    outbound=Counter();returning=Counter()
+    for event in identities:
+        target_counts=outbound if 19<=event['t']<29 else returning if 29<=event['t']<=39 else None
+        if target_counts is not None:target_counts.update(event['nearest_wall_counts'])
+    dump(output/'wall-reobservation.json',dict(evaluation_only=True,frames=identities,
+         outbound_wall_counts=dict(outbound),return_wall_counts=dict(returning),
+         common_nearest_walls=sorted(outbound.keys() & returning.keys()),
+         scope='nearest geometry labels with residuals, no truth acceptance gate or control use'))
     print(json.dumps(result))
 
 
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__)
-    for name in ('input','vision','calibration','output'):p.add_argument('--'+name,type=Path,required=True)
+    for name in ('input','vision','calibration','output','queue'):p.add_argument('--'+name,type=Path,required=True)
     p.add_argument('--mapbuild-rbpf-v1',action='store_true');a=p.parse_args()
     if not a.mapbuild_rbpf_v1 or platform.system()!='Linux' or not platform.node().startswith('ugrp-act-l4-gcp5'):
         p.error('explicit gcp5 offline replay only')
+    receipt=json.loads((ROOT/'SOURCE_FILES.json').read_text())
+    if any(hashlib.sha256((ROOT/p).read_bytes()).hexdigest()!=h for p,h in receipt.items()):
+        raise ValueError('SOURCE_BYTES_CHANGED')
+    queue=json.loads(a.queue.read_text());table=Path(queue['rejection_table'])
+    if not table.is_absolute() or not table.is_file():raise ValueError('EXISTING_ABSOLUTE_FUNNEL_REQUIRED')
+    if queue.get('toggle')!='mapbuild_rbpf_v1' or queue.get('enabled') is not True:
+        raise ValueError('EXPLICIT_RBPF_QUEUE_REQUIRED')
+    if (ROOT/'SOURCE_SHA').read_text().strip()!=queue['source_sha']:
+        raise ValueError('PINNED_SOURCE_REQUIRED')
+    if hashlib.sha256(a.calibration.read_bytes()).hexdigest()!=queue['calibration_sha256']:
+        raise ValueError('PINNED_PRIOR_DISTRIBUTION_REQUIRED')
     rows,events=replay(a.input,a.vision,a.calibration,a.output)
     evaluate(a.input,a.vision,a.output,rows,events)

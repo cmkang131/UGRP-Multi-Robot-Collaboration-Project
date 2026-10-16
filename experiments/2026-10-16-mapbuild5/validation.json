@@ -1,0 +1,21 @@
+{
+  "non_physics_tests": [
+    {
+      "command": "pytest -q tests/test_mapbuild5.py tests/test_rbpf_rejection.py tests/test_rbpf_composition.py tests/test_rbpf_motion_gate.py tests/test_rbpf_insertion.py tests/test_rbpf_manhattan.py",
+      "passed": 36
+    },
+    {
+      "command": "pytest -q tests/test_mapbuild5.py tests/test_mapbuild4.py tests/test_mapbuild2.py tests/test_mapbuild1.py",
+      "passed": 20,
+      "note": "overlapping tests; do not add to claim56unique"
+    }
+  ],
+  "compile": "passed",
+  "diff_check": "passed",
+  "ci_registration": {
+    "shards": 8,
+    "new_test_occurrences": 1
+  },
+  "managed_workflow_plan": "read-only plan succeeded; no managed physical execution",
+  "full_ci": "not_yet_checked"
+}
