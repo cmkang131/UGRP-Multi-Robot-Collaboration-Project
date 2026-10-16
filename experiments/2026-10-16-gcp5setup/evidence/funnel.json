@@ -1,0 +1,169 @@
+{
+  "schema": "ugrp.gcp_setup.funnel.v1",
+  "created_utc": "2026-10-16T09:45:42.896628+00:00",
+  "candidate_pipeline": [
+    {
+      "gate": "project_quota",
+      "entered": 1,
+      "cumulative_pass": 1,
+      "rejected": 0,
+      "reason_category": "none",
+      "blocking_object": "not_applicable_infrastructure",
+      "minimum_gap": "not_measured_infrastructure",
+      "raw": "/Users/changmin/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/global-quota.json",
+      "reproduce": "gcloud compute project-info describe --account changmin5781@gmail.com --project ugrp-sim-e-1016"
+    },
+    {
+      "gate": "budget_stop",
+      "entered": 1,
+      "cumulative_pass": 1,
+      "rejected": 0,
+      "reason_category": "none",
+      "blocking_object": "not_applicable_infrastructure",
+      "minimum_gap": "not_measured_infrastructure",
+      "raw": "/Users/changmin/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/test-observations.json",
+      "reproduce": "Read test_budget.py; destructive replay requires a fresh named trial VM, never the finished setup"
+    },
+    {
+      "gate": "test_vm_disk_deleted",
+      "entered": 1,
+      "cumulative_pass": 1,
+      "rejected": 0,
+      "reason_category": "none",
+      "blocking_object": "not_applicable_infrastructure",
+      "minimum_gap": "not_measured_infrastructure",
+      "raw": "/Users/changmin/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/disks-after-test.json",
+      "reproduce": "gcloud compute disks list --filter=name=ugrp-budget-test-gcp5 --account changmin5781@gmail.com --project ugrp-sim-e-1016"
+    },
+    {
+      "gate": "mjwarp_cuda_step",
+      "entered": 1,
+      "cumulative_pass": 1,
+      "rejected": 0,
+      "reason_category": "none",
+      "blocking_object": "not_applicable_infrastructure",
+      "minimum_gap": "not_measured_infrastructure",
+      "raw": "/Users/changmin/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/smoke-result.json",
+      "reproduce": "ssh gcp5 '/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python /home/ugrp/ugrp-sim/setup/smoke.py /home/ugrp/ugrp-sim/setup/NEW-result.json'"
+    },
+    {
+      "gate": "act_versions_exact",
+      "entered": 1,
+      "cumulative_pass": 1,
+      "rejected": 0,
+      "reason_category": "none",
+      "blocking_object": "not_applicable_infrastructure",
+      "minimum_gap": "not_measured_infrastructure",
+      "raw": "/Users/changmin/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/act-freeze.txt",
+      "reproduce": "Compare set(act-freeze.txt lines) with act-freeze-reference.txt"
+    },
+    {
+      "gate": "act_50_save_reload",
+      "entered": 1,
+      "cumulative_pass": 1,
+      "rejected": 0,
+      "reason_category": "none",
+      "blocking_object": "not_applicable_infrastructure",
+      "minimum_gap": "not_measured_infrastructure",
+      "raw": "/Users/changmin/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/training-summary.json",
+      "reproduce": "ssh gcp5 '/home/ugrp/ugrp-rl1b-act-env/bin/python /home/ugrp/ugrp-sim/setup/training_smoke.py /home/ugrp/ugrp-sim/setup/beamact3-reference /home/ugrp/ugrp-sim/setup/training-smoke-NEW'"
+    },
+    {
+      "gate": "guarded_stop",
+      "entered": 1,
+      "cumulative_pass": 1,
+      "rejected": 0,
+      "reason_category": "none",
+      "blocking_object": "not_applicable_infrastructure",
+      "minimum_gap": "not_measured_infrastructure",
+      "raw": "/Users/changmin/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/verification.json",
+      "reproduce": "python3 scripts/gcpctl.py status gcp5"
+    }
+  ],
+  "file_pipeline": [
+    {
+      "gate": "source_sha",
+      "entered": 1482,
+      "cumulative_pass": 1482,
+      "rejected": 0,
+      "reason_category": "none",
+      "blocking_object": "not_applicable_infrastructure",
+      "minimum_gap": "not_measured_infrastructure",
+      "raw": "/Users/changmin/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/dataset-sha256.json",
+      "reproduce": "Read transfer_dataset.py verification loop; compare all SHA256 without modifying source"
+    },
+    {
+      "gate": "allowlisted_transfer",
+      "entered": 1482,
+      "cumulative_pass": 1482,
+      "rejected": 0,
+      "reason_category": "none",
+      "blocking_object": "not_applicable_infrastructure",
+      "minimum_gap": "not_measured_infrastructure",
+      "raw": "/Users/changmin/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/dataset-sha256.json",
+      "reproduce": "Read transfer_dataset.py verification loop; compare all SHA256 without modifying source"
+    },
+    {
+      "gate": "destination_sha",
+      "entered": 1482,
+      "cumulative_pass": 1482,
+      "rejected": 0,
+      "reason_category": "none",
+      "blocking_object": "not_applicable_infrastructure",
+      "minimum_gap": "not_measured_infrastructure",
+      "raw": "/Users/changmin/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/dataset-sha256.json",
+      "reproduce": "Read transfer_dataset.py verification loop; compare all SHA256 without modifying source"
+    }
+  ],
+  "event_pipeline": [
+    {
+      "gate": "manual_pubsub",
+      "entered": 1,
+      "cumulative_pass": 1,
+      "rejected": 0,
+      "reason_category": "none",
+      "blocking_object": "not_applicable_infrastructure",
+      "minimum_gap": "not_measured_infrastructure",
+      "raw": "/Users/changmin/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/test-observations.json",
+      "reproduce": "Read test-observations.json and test-function-log.json"
+    },
+    {
+      "gate": "function_stop_all",
+      "entered": 1,
+      "cumulative_pass": 1,
+      "rejected": 0,
+      "reason_category": "none",
+      "blocking_object": "not_applicable_infrastructure",
+      "minimum_gap": "not_measured_infrastructure",
+      "raw": "/Users/changmin/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/test-observations.json",
+      "reproduce": "Read test-observations.json and test-function-log.json"
+    },
+    {
+      "gate": "vm_stopping",
+      "entered": 1,
+      "cumulative_pass": 1,
+      "rejected": 0,
+      "reason_category": "none",
+      "blocking_object": "not_applicable_infrastructure",
+      "minimum_gap": "not_measured_infrastructure",
+      "raw": "/Users/changmin/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/test-observations.json",
+      "reproduce": "Read test-observations.json and test-function-log.json"
+    }
+  ],
+  "version_candidates_pipeline": [
+    {
+      "gate": "exact_ACT_freeze",
+      "entered": 2,
+      "cumulative_pass": 1,
+      "rejected": 1,
+      "reason_category": "version_mismatch",
+      "package": "torchcodec",
+      "blocking_object": "not_applicable_infrastructure",
+      "minimum_gap": "not_measured_infrastructure",
+      "raw": "/Users/changmin/projects/ugrp-wt/gcp5setup/experiments/2026-10-16-gcp5setup/evidence/environment-rejection-table.json",
+      "reproduce": "Compare initial PyTorch-index selection and pin_act_codec.sh repair"
+    }
+  ],
+  "frames": 0,
+  "scope": "infrastructure/environment only; not C2 or teacher/student acceptance"
+}

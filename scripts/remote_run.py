@@ -2,7 +2,7 @@
 
 Usage: remote_run.py [--host gcp2] WORKTREE NAME -- COMMAND [ARGS...]
 Optional L4 aliases, including gcp5, resolve through configs/gcp_hosts.json.
-The default host is configured in configs/gcp_hosts.json; gcp3/gcp4 select L4 hosts. Azure waits, fetches
+The default host is configured in configs/gcp_hosts.json; gcp3/gcp4/gcp5 select L4 hosts. Azure waits, fetches
 lite evidence, waits for verified ARM archival, then deallocates when no jobs remain.
 GCP starts the configured VM with gcloud, runs, waits,
 verifies the VM-side SHA256SUMS, fetches lite evidence to outputs/<host>-runs, records
