@@ -126,7 +126,13 @@ class Bridge:
                 text = transform(xml)
                 if self.canonical.get('xml') is None:
                     self.canonical['xml'] = canonical_xml(text,text)[0]
-                text, audit = canonical_xml(text, self.canonical['xml'])
+                try:
+                    text, audit = canonical_xml(text, self.canonical['xml'])
+                except ValueError:
+                    self.output.mkdir(parents=True,exist_ok=True)
+                    (self.output/'incompatible-scene.xml').write_text(text)
+                    (self.output/'canonical-reference.xml').write_text(self.canonical['xml'])
+                    raise
                 self.model_audit = audit
                 return text
             kw['xml_transform'] = final

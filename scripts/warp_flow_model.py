@@ -9,6 +9,19 @@ import xml.etree.ElementTree as ET
 POSE = ('pos', 'quat', 'euler', 'axisangle', 'xyaxes', 'zaxis')
 
 
+def xml_differences(left,right):
+    differences=[]
+    def walk(a,b,path):
+        if a.tag!=b.tag or a.attrib!=b.attrib or (a.text or '').strip()!=(b.text or '').strip():
+            differences.append(dict(path=path,left=dict(a.attrib),right=dict(b.attrib)))
+        if len(a)!=len(b):
+            differences.append(dict(path=path,child_counts=[len(a),len(b)]));return
+        for i,(x,y) in enumerate(zip(a,b)):
+            walk(x,y,path+'/'+x.tag+'['+str(x.get('name',i))+']')
+    walk(left,right,left.tag)
+    return differences
+
+
 def free_roots(root):
     return {b.get('name'): b for b in root.iter('body')
             if b.find('freejoint') is not None or
@@ -38,7 +51,8 @@ def canonical_xml(xml, reference):
     expected = ET.tostring(target, encoding='unicode')
     if result != expected:
         # Never pool a different cargo shape or static obstacle arrangement.
-        raise ValueError('non-pose scene/model difference; separate model required')
+        import json
+        raise ValueError('non-pose scene/model difference; separate model required: '+json.dumps(xml_differences(current,target)))
     return result, dict(profile='single_model_free_pose_v1', moved=moved,
         canonical_xml_sha256=hashlib.sha256(expected.encode()).hexdigest(),
         mass_size_friction_unchanged=True, sleep_exception_used=False)
