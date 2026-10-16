@@ -34,6 +34,15 @@ def main():
             min_contact_gap_m=row['min_wheel_floor_contact_gap_m']))
     with (a.out/'pulse-summary.csv').open('w') as f:
         w=csv.DictWriter(f,fieldnames=list(compact[0]));w.writeheader();w.writerows(compact)
+    contact_columns=['run','case','phase','contact_count_p50_fl_fr_rl_rr','normal_N_p50_fl_fr_rl_rr',
+        'tangent_N_p50_fl_fr_rl_rr','contact_slip_p50_m_s','contact_slip_p95_m_s','minimum_wheel_floor_gap_m']
+    contact_data=[]
+    for r in selected:
+        wheels=r['wheel_floor'];slip=r['contact_point_tangent_slip_m_s']
+        contact_data.append([r['run'],r['case'],r['phase'],*[[(w[key] or {}).get('p50') for w in wheels]
+            for key in ('contact_count','normal_N','tangent_N')],None if slip is None else slip['p50'],
+            None if slip is None else slip['p95'],r['min_wheel_floor_contact_gap_m']])
+    (a.out/'contact-summary.json').write_text(json.dumps(dict(columns=contact_columns,rows=contact_data),separators=(',',':'),allow_nan=False)+'\n')
     reports=[]
     for name in names:
         path=a.raw/name/'result.json'
