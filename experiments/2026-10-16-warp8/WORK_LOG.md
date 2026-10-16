@@ -37,3 +37,5 @@
 공유outputs/e2e18-admin/ops-alert.md에known8318706성공검증·전체미완료·post30성능저하줄을append/readback했다. 기존다른작업줄은보존했다.
 
 기존known-success스냅샷추가CPU진단: 완료23건원본재계수23일치·JSON오류0. 나머지는주로pick/align/approach이며world038/039는33SIM넘는search뒤approach로전환한이력. 영구정지원인으로단정하지않고R2계속.
+
+12:14UTC 종료회수 helper 배포 및 R2 Haiku 독립코드 준비: R1 코드의 배치 경로/태그 literal 두 곳만 r2로 변경하고 AST 확인했다. 물리 판정·상수·감사 로직은 불변이며 실제 재계수는 종료 원본 회수 뒤 실행한다. 준비 중 잘못된 literal 개수 assert(3 대신 실제2)는 쓰기 전 실패하여 고쳤다. gcp2 CPU 현재 다른 warpfit-analysis lease가 있어 정지하지 않는다. PR #557 DRAFT에 알려진 시드 성공·post30 속도 저하와 현재 빔14:05UTC 시한/정상 종료 후 별도 유한 release 세션 조건을 반영했다.
