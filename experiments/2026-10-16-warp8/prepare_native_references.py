@@ -47,6 +47,12 @@ def main():
         folder=a.out/'references'/sha;folder.mkdir(parents=True)
         path=folder/'scene.xml';path.write_text(native)
         model=mujoco.MjModel.from_xml_string(native)
+        # Exact world-constructor visual setup, not contact/physics tuning:
+        # sim/masterpi_dynamics_v2.py hides these three camera housing geoms
+        # in group5 after compilation. The old full-world export includes it.
+        for name in ('camera_bracket','camera_body','camera_lens_visual'):
+            gid=mujoco.mj_name2id(model,mujoco.mjtObj.mjOBJ_GEOM,name)
+            if gid>=0:model.geom_group[gid]=5
         ref=export_reference(model,path,mujoco.__version__,folder/'compiled-312.json')
         geo=export_geometry(model,path,mujoco.__version__,folder/'compiled-geometry312.npz')
         before=json.loads(Path(previous['actuator']).read_text())
