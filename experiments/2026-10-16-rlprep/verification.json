@@ -1,0 +1,38 @@
+{
+  "status": "PASS_NONPHYSICS_ONLY",
+  "base_source_sha": "3c02a1af1ca60a54bf9733c76948c62eafceb018",
+  "tests": {
+    "total": 20,
+    "new": 3,
+    "existing": 17,
+    "failures": 0,
+    "errors": 0,
+    "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_rlprep_contract.py tests/test_rl_act_signal.py --junitxml=outputs/rlprep/pytest.xml",
+    "raw_path": "/Users/changmin/projects/ugrp-wt/rl-act/outputs/rlprep/pytest.xml",
+    "sha256": "2773e0761d232a365efb35210acf4aeb9c8f790056084aae54cf28b8e9161f5a"
+  },
+  "source_sha256": {
+    "scripts/rlprep_contract.py": "c1d09a67be75e7722c805ec0de875e4bf7af57f986dd7969d3fca529720f5b83",
+    "scripts/prepare_rlprep.py": "57cb82aff9515070441aaeadf3fdac18a2627b8b96b19668ed331622fc3244ad",
+    "tests/test_rlprep_contract.py": "aa3a1dcd03c80f72b1f6e43fa4cce6e92760aa76a5ab1730ce25dac0f9fd47fb",
+    "scripts/run_ci_tests.py": "18e41b32fb688afb59cec48e7bfff414655facc1cdcc7ebb3601f301243cb488"
+  },
+  "artifact_sha256": {
+    "README.md": "ed03a180c1d183713e04165fb76af6003292267a754c35c84440901c35458704",
+    "inputs.json": "7398eec02123d2700217c92a22f13b61af315c61b57caa3babfe10dadb82e6b5",
+    "reference-sources.json": "1c2074e0c906527e95d9564d43de8550480537f6bfb9f53179d184132cdb8520",
+    "warp3-record-api-ready.json": "41e76e014f3b10ca2de96b059eb8ee27e092c93d8b1a265c4984f741197cd64c",
+    "plan.json": "36af6664dfe89242659946c313546910a862282c8f09e89e8bcb27b300268aa7",
+    "rejection-table.json": "79a006be13a80a8beedc41a2c3a5bc61e1a5278a8f80b9ee928f55285cf4d616",
+    "summary.json": "e54403ddd11e4473ce77f299991fa10d21bff938ed0fe83542d6bf5ad45cd43c"
+  },
+  "preserved_untracked_unchanged": true,
+  "remote_commands_executed": 0,
+  "not_verified": [
+    "GPU learner/gradient/export",
+    "moving-world partial reset and next dynamics",
+    "real actor process held_world_reads=0",
+    "new-seed success rates",
+    "runtime budget or throughput feasibility"
+  ]
+}

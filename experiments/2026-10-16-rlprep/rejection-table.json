@@ -1,0 +1,85 @@
+{
+  "schema": "ugrp.rlprep.funnel.v1",
+  "counting_unit": "saved base-policy candidates",
+  "source_path": "/Users/changmin/projects/ugrp-wt/rl-act/experiments/2026-10-16-rlprep/inputs.json",
+  "reproduce_command": "python -m scripts.prepare_rlprep",
+  "stages": [
+    {
+      "gate": "warp3_marker_metadata_only",
+      "input": 2,
+      "passed": 2,
+      "rejected": 0,
+      "rejections": []
+    },
+    {
+      "gate": "base_validation_beats_persistence",
+      "input": 2,
+      "passed": 1,
+      "rejected": 1,
+      "rejections": [
+        {
+          "category": "base_below_persistence",
+          "blocking_object": "beamact2",
+          "minimum_gap_m": null,
+          "minimum_gap_status": "not_geometric",
+          "cap_end": false,
+          "detail": "saved candidate evidence; not a new rollout or causal diagnosis"
+        }
+      ]
+    },
+    {
+      "gate": "base_has_closed_loop_success",
+      "input": 1,
+      "passed": 0,
+      "rejected": 1,
+      "rejections": [
+        {
+          "category": "base_zero_closed_loop_success",
+          "blocking_object": "beamact3-A",
+          "minimum_gap_m": null,
+          "minimum_gap_status": "not_geometric",
+          "cap_end": false,
+          "detail": "saved candidate evidence; not a new rollout or causal diagnosis"
+        }
+      ]
+    },
+    {
+      "gate": "runtime_authorization_and_integration",
+      "input": 0,
+      "passed": 0,
+      "rejected": 0,
+      "rejections": []
+    }
+  ],
+  "rejection_distribution": {
+    "base_below_persistence": 1,
+    "base_zero_closed_loop_success": 1
+  },
+  "raw_evidence": [
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/warp-act/experiments/2026-10-16-warp3/RECORD_API_READY.json",
+      "sha256": "41e76e014f3b10ca2de96b059eb8ee27e092c93d8b1a265c4984f741197cd64c",
+      "bytes": 1691
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/rl-act/experiments/2026-10-16-rl1/pilot-result.json",
+      "sha256": "4d071aacc63cf44d54698d0159ac042087d7d8c1fb3d069f744be2d2351093e0",
+      "bytes": 16257
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/beamact1/experiments/2026-10-16-beamact2/README.md",
+      "sha256": "fecc7a2d8e85a2a8eaa01eb143a91bc7d478dcbfbebff982c88e1cccf375afaa",
+      "bytes": 11744
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/beamact3/experiments/2026-10-16-beamact3/README.md",
+      "sha256": "6e2e0053c72d750743039eac3fb6b4e0d028b8215e215d17e633b747250a961d",
+      "bytes": 7086
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/beamact3/experiments/2026-10-16-beamact3/A-student-summary.json",
+      "sha256": "d92d014e071bf2a546d64fbfb8b8672066acd1bc88a41010bb8209fdfad4f97d",
+      "bytes": 45735
+    }
+  ]
+}
