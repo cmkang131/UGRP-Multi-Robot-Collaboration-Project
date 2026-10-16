@@ -79,6 +79,9 @@ def main():
             for i in range(16):
                 raw=root/f'n16/world-{i:03d}/raw';d=read(raw/'result.json')
                 audit.append(dict(round=name,world=i,status=d['status'],input_audit=d.get('input_audit'),
+                    raw_error=d.get('error'),analysis_category='fixed_work_profile_end',
+                    reason='supervisor_completed_0.3_SIM_then_closed_generator_in_finally',
+                    blocked_object='finite_profile_runner',minimum_gap_m=None,gap_scope='diagnostic_end_not_physical_gap',
                     scope='initial start/fold only; no held/carry audit qualification',raw=str(raw),sha256=sha(raw/'result.json')))
         write(a.output/'variants.json',variants);write(a.output/'state-comparison.json',dict(initial_equal=initial_equal,
             physics_settings_equal=config_equal,fields=parity,adopted=False,
@@ -91,7 +94,11 @@ def main():
         stages=[dict(stage='submitted_N16_diagnostic_rounds',cumulative_pass_n=3,rejected_n=0),
             dict(stage='fixed_0.3_SIM_work_complete',cumulative_pass_n=3,rejected_n=0),
             dict(stage='throughput_defect_resolved',cumulative_pass_n=0,rejected_n=3)]
-        rejection=dict(unit='diagnostic_configuration; not task trials',stages=stages,
+        jobs=[dict(round=name,nworld=n,status=collect(root)['rows'][(1,4,16,64).index(n)]['status'])
+            for name,root in runs for n in ((1,4,16,64) if name=='R1' else (16,))]
+        rejection=dict(unit='diagnostic_configuration; not task trials',stages=stages,jobs=jobs,
+            job_funnel=[dict(stage='submitted_configurations',cumulative_pass_n=6,rejected_n=0),
+                dict(stage='fixed_work_complete',cumulative_pass_n=5,rejected_n=1)],
             rejections=[dict(category='throughput',reason='NoSlip dominated physical interval remains after round3',blocked_object='MJWarp NoSlip execution',minimum_gap_m=None,gap_scope='timing_not_physical_gap',n=3),
                 dict(category='HOST_ERROR',reason='N64 kernel global OOM SIGKILL',blocked_object='gcp4 host RAM',minimum_gap_m=None,gap_scope='memory_not_physical_gap',n=1),
                 dict(category='state_comparison',reason='R3 final integration state not bit-identical',blocked_object='R3 scratch/full-period candidate',minimum_gap_m=None,gap_scope='mixed_state_coordinates_not_physical_gap',n=1)],
