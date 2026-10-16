@@ -1,0 +1,54 @@
+{
+  "unit": "previous_diagnostic_job",
+  "source": "experiments/2026-10-16-warp9/resume2/final-v2/rejection-table.json",
+  "distribution": [
+    {
+      "category": "throughput_previous_physics_bundle",
+      "n": 3,
+      "blocked_object": "NoSlip execution",
+      "minimum_gap_m": null
+    },
+    {
+      "category": "HOST_ERROR_OOM",
+      "n": 1,
+      "blocked_object": "gcp4 host RAM",
+      "minimum_gap_m": null
+    },
+    {
+      "category": "state_difference",
+      "n": 1,
+      "blocked_object": "warp9 scratch/fullgraph candidate",
+      "minimum_gap_m": null
+    }
+  ],
+  "ranking_scope": "Previous overlapping diagnostic reasons, not task failures. New host bundle starts R1; physics options held at baseline off.",
+  "phase_ranking_N16": [
+    {
+      "phase": "render_cpu",
+      "seconds": 6.748103
+    },
+    {
+      "phase": "D2H",
+      "seconds": 3.378441,
+      "GB": 7.931691
+    },
+    {
+      "phase": "controller_python",
+      "seconds": 2.577608
+    }
+  ],
+  "stages": [
+    {
+      "stage": "previous_configurations",
+      "cumulative_pass_n": 6,
+      "rejected_n": 0
+    },
+    {
+      "stage": "fixed_work_complete",
+      "cumulative_pass_n": 5,
+      "rejected_n": 1
+    }
+  ],
+  "reproduction": "python -m scripts.analyze_warp9_profile; see warp9 resume2 final-v2",
+  "task_valid_trials": 0
+}

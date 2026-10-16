@@ -50,7 +50,7 @@ def run(a):
         # DEV queue may investigate it only with complete labels/hashes and
         # zero falsely accepted components. Never promote this to E2E-ready.
         admit_render_gate(gate,diagnostic)
-        if len(q['runs'])<16 and not q.get('warp9_profile_v1'):raise ValueError('N16 minimum for run-first batch')
+        if len(q['runs'])<16 and not q.get('warp9_profile_v1') and not q.get('warp10_fixed_work_v1'):raise ValueError('N16 minimum for run-first batch')
     exclusive_host=q.get('warp9_exclusive_host_v1')
     exclusive=q.get('warp9_exclusive_gcp3_v1',False) or exclusive_host is not None
     host=identity(gcp3_exclusive=exclusive,exclusive_host=exclusive_host);a.output.mkdir(parents=True,exist_ok=False)
@@ -59,14 +59,14 @@ def run(a):
         os.environ[key]=str(value)
     base=Path('/home/ugrp/ugrp-sim');leases=[json.loads(p.read_text()) for p in (base/'leases').glob('*.json')]
     task=q.get('task','warp5')
-    if task not in ('warp5','warp7','warp9') or not any(l.get('task')==task for l in leases):raise ValueError('matching task lease required before execution')
+    if task not in ('warp5','warp7','warp9','warp10') or not any(l.get('task')==task for l in leases):raise ValueError('matching task lease required before execution')
     foreign=[l for l in leases if l.get('task')!=task]
     if exclusive and foreign:raise ValueError('exclusive host has foreign leases')
     if exclusive:
         gpu_pids=subprocess.check_output(['nvidia-smi','--query-compute-apps=pid','--format=csv,noheader,nounits'],text=True).strip()
         if gpu_pids:raise ValueError('exclusive host has existing GPU processes: '+gpu_pids)
     # User's explicit N64 scaling diagnostic is not a 64-trial task gate.
-    scaling=q.get('warp9_profile_v1') and exclusive and len(q['runs']) in (1,4,16,64)
+    scaling=(q.get('warp9_profile_v1') or q.get('warp10_fixed_work_v1') or q.get('warp10_first30_only_v1')) and exclusive and len(q['runs']) in (1,4,16,64)
     if not scaling and sum(l.get('concurrency',0) for l in foreign)+len(q['runs'])>40:raise ValueError('shared concurrency exceeds40')
     available=int(next(line for line in Path('/proc/meminfo').read_text().splitlines() if line.startswith('MemAvailable:')).split()[1])*1024
     free=os.statvfs(base).f_bavail*os.statvfs(base).f_frsize
@@ -125,6 +125,8 @@ def run(a):
             transport.batch_sleep_v1=transport.native_model_batch_v1
             transport.warp9_full_period_graph_v1=q.get('warp9_full_period_graph_v1',False)
             transport.warp9_physics_event_trace_v1=q.get('warp9_physics_event_trace_v1',False)
+            for toggle in ('warp10_render_stage_v1','warp10_eval_export_v1','warp10_command_batch_v1','warp10_same_state_audit_v1'):
+                setattr(transport,toggle,q.get(toggle,False))
             if q.get('warp9_profile_v1'):
                 import warp as wp
                 from scripts.warp9_profile import Profile
@@ -170,12 +172,15 @@ def run(a):
                     export_audit=getattr(h,'export_profile_audit',None),**h.warp9_profile.summary()) for ii,cc,h in groups]))
                 # Fixed SIM work from the submitted diagnostic, never a wall
                 # deadline or a changed physics/policy acceptance threshold.
-                if elapsed>=q['profile_sim_s']:
+                if elapsed>=q['profile_sim_s'] and not q.get('warp10_first30_only_v1',False):
                     report.update(status='PROFILE_COMPLETE',batch_sim_s=elapsed,task_outcome='unmeasured')
                     break
+            if q.get('warp10_fixed_work_v1') and elapsed>=q['profile_sim_s']:
+                report.update(status='FIXED_WORK_COMPLETE',batch_sim_s=elapsed,task_outcome='unmeasured');break
             if elapsed>=30 and not (a.output/'first30.json').exists():
                 from scripts.warp9_first30 import summarize
-                first30=summarize(speed_samples,shared_load=not exclusive)
+                first30=summarize(speed_samples,shared_load=not exclusive,nworld=len(q['runs']),
+                    per_execution=q.get('warp10_speed_per_execution_v1',False))
                 first30.update(total_wall_s=time.perf_counter()-loop,intervals=speed_samples)
                 write(a.output/'first30.json',first30)
                 if first30['status']=='SPEED_GATE_FAIL':
@@ -183,6 +188,8 @@ def run(a):
                     report['errors'].append(dict(category='throughput',reason='first30_median_wall_per_sim_above6',
                         blocked_object='batch_pipeline',minimum_gap_m=None,gap_scope='timing_not_physical_gap'))
                     break
+                if q.get('warp10_first30_only_v1'):
+                    report.update(status='FIRST30_COMPLETE',batch_sim_s=elapsed,task_outcome='unmeasured');break
         if report['status']=='RUNNING':report.update(status='COMPLETE',batch_sim_s=elapsed)
         if q.get('warp9_state_snapshot_v1',False):
             # Recording-only comparison of genuine GPU integration state,
@@ -194,6 +201,14 @@ def run(a):
                 dt=h.dt,noslip_iterations=int(h.wm.opt.noslip_iterations),solver=str(h.wm.opt.solver),
                 iterations=int(h.wm.opt.iterations),ls_iterations=int(h.wm.opt.ls_iterations),
                 numerics=h.solver_numerics,capacities=h.capacities) for ii,cc,h in groups]))
+        if task=='warp10':
+            write(a.output/'host-path-audit.json',dict(groups=[dict(worlds=ii.tolist(),
+                render_syncs=getattr(getattr(h,'render_staging',None),'syncs',None),
+                render_bytes=getattr(getattr(h,'render_staging',None),'bytes',None),
+                export=getattr(h,'export_profile_audit',None),
+                rgb_same_state=getattr(h,'warp10_rgb_audit',None),
+                export_same_state=getattr(h,'warp10_export_audit',None),
+                command_input='issued ctrl + own command histories',new_actor_truth_fields=0) for ii,cc,h in groups]))
     except BaseException as exc:
         report.update(status='HOST_ERROR',errors=[dict(category='HOST_ERROR',reason=repr(exc),blocked_object='batch_adapter',minimum_gap_m=None,gap_status='not_measured',traceback=traceback.format_exc())])
         raise

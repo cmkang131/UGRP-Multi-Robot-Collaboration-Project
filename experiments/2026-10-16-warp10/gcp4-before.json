@@ -1,0 +1,49 @@
+{
+  "name": "ugrp-act-l4-gcp4",
+  "status": "TERMINATED",
+  "machineType": "https://www.googleapis.com/compute/v1/projects/ugrp-sim-d-1016/zones/asia-northeast3-a/machineTypes/g2-standard-8",
+  "scheduling": {
+    "automaticRestart": true,
+    "onHostMaintenance": "TERMINATE",
+    "preemptible": false,
+    "provisioningModel": "STANDARD"
+  },
+  "guestAccelerators": [
+    {
+      "acceleratorCount": 1,
+      "acceleratorType": "https://www.googleapis.com/compute/v1/projects/ugrp-sim-d-1016/zones/asia-northeast3-a/acceleratorTypes/nvidia-l4"
+    }
+  ],
+  "disks": [
+    {
+      "autoDelete": true,
+      "boot": true,
+      "deviceName": "persistent-disk-0",
+      "diskSizeGb": "140",
+      "guestOsFeatures": [
+        {
+          "type": "VIRTIO_SCSI_MULTIQUEUE"
+        },
+        {
+          "type": "UEFI_COMPATIBLE"
+        },
+        {
+          "type": "GVNIC"
+        }
+      ],
+      "index": 0,
+      "interface": "NVME",
+      "kind": "compute#attachedDisk",
+      "licenses": [
+        "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-dlvm",
+        "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-gvnic",
+        "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-py310",
+        "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-gpu-common-cu129",
+        "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-ubuntu-2404"
+      ],
+      "mode": "READ_WRITE",
+      "source": "https://www.googleapis.com/compute/v1/projects/ugrp-sim-d-1016/zones/asia-northeast3-a/disks/ugrp-act-l4-gcp4",
+      "type": "PERSISTENT"
+    }
+  ]
+}

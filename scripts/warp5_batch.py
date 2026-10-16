@@ -43,6 +43,9 @@ class Batch(WarpTransport):
         self.camera_cache={}
         self._multi_camera=False
         self.done=np.zeros(len(contexts),bool)
+        # Host candidate starts from authored/issued controls, never an
+        # evaluator readback. GPU ctrl is generated solely from this buffer.
+        self.issued_ctrl=np.stack([c['world'].data.ctrl.copy() for c in contexts])
         for i,c in enumerate(contexts):
             p=self.out/f'world-{i:03d}';p.mkdir(parents=True,exist_ok=True)
             (p/'scene.xml').write_text(c['world'].scene_xml)
@@ -123,10 +126,10 @@ class Batch(WarpTransport):
             self.review_names=review_cameras(self.camera_names,contexts[0]['ports'])
             self.multi_renderer=Renderer(self.m,self.wm,self.wd,actor_names if getattr(self,'camera_demand_v1',False) else self.camera_names,
                 enabled=getattr(self,'warp5_native_visual_v1',False) or getattr(self,'warp5_native_visual_v2',False),
-                texture_after_lighting=getattr(self,'warp5_native_visual_v2',False),profile=getattr(self,'warp9_profile',None))
+                texture_after_lighting=getattr(self,'warp5_native_visual_v2',False),profile=getattr(self,'warp9_profile',None),host_pipeline=getattr(self,'warp10_render_stage_v1',False))
             self.review_renderer=(Renderer(self.m,self.wm,self.wd,self.review_names,
                 enabled=getattr(self,'warp5_native_visual_v1',False) or getattr(self,'warp5_native_visual_v2',False),
-                texture_after_lighting=getattr(self,'warp5_native_visual_v2',False),profile=getattr(self,'warp9_profile',None)) if getattr(self,'camera_demand_v1',False) and self.review_names else None)
+                texture_after_lighting=getattr(self,'warp5_native_visual_v2',False),profile=getattr(self,'warp9_profile',None),host_pipeline=getattr(self,'warp10_render_stage_v1',False)) if getattr(self,'camera_demand_v1',False) and self.review_names else None)
             if getattr(self,'camera_demand_v1',False):
                 self.parity_renderer=Renderer(self.m,self.wm,self.wd,self.camera_names,
                     enabled=getattr(self,'warp5_native_visual_v1',False) or getattr(self,'warp5_native_visual_v2',False),
@@ -134,7 +137,30 @@ class Batch(WarpTransport):
                 self.parity_rows=[];self.parity_motion=False
             self._multi_camera=True
         start=time.perf_counter()
-        rendered=self.multi_renderer.render()
+        if getattr(self,'warp10_render_stage_v1',False):
+            from scripts.warp10_host import Readback
+            if not hasattr(self,'render_staging'):self.render_staging=Readback(wp,self,'render')
+            with phase(self,'render_batch_gpu',device=True):
+                pending=[self.multi_renderer.enqueue_render(self.render_staging)]
+                now=sim_clock(contexts[0]['origin'],self.tick,self.period)
+                if self.review_renderer is not None and review_due(self.camera_cache,self.n,self.review_names,now):
+                    pending.append(self.review_renderer.enqueue_render(self.render_staging))
+                values=self.render_staging.finish()
+            rendered={}
+            for finish in pending:rendered.update(finish(values))
+        else:rendered=self.multi_renderer.render()
+        if getattr(self,'warp10_same_state_audit_v1',False) and not hasattr(self,'warp10_rgb_audit'):
+            # Same GPU state, old reference renderer, no physics between calls.
+            saved=self.multi_renderer.host_pipeline;self.multi_renderer.host_pipeline=False
+            try:reference=self.multi_renderer.render()
+            finally:self.multi_renderer.host_pipeline=saved
+            self.warp10_rgb_audit=[]
+            for rid in reference:
+                aa,bb=(np.clip(x,0,255).astype(np.uint8) for x in (rendered[rid][0],reference[rid][0]))
+                self.warp10_rgb_audit.append(dict(camera=rid,exact=bool(np.array_equal(aa,bb)),
+                    sha256=hashlib.sha256(aa.tobytes()).hexdigest(),reference_sha256=hashlib.sha256(bb.tobytes()).hexdigest()))
+            if not all(row['exact'] for row in self.warp10_rgb_audit):raise ValueError('staged rendering changed same-state RGB')
+            (self.out/'warp10-rgb-audit.json').write_text(json.dumps(self.warp10_rgb_audit,indent=2)+'\n')
         if getattr(self,'camera_demand_v1',False):
             issued=tuple(tuple(p._motor_commands)+tuple(p._servo_applied.values()) for c in contexts for p in c['ports'].values())
             initial=not hasattr(self,'parity_initial_issued')
@@ -149,7 +175,7 @@ class Batch(WarpTransport):
                 (self.out/'camera-demand-parity.json').write_text(json.dumps(dict(scope='same GPU state/full vs demanded own cameras; no CPU reference',rows=self.parity_rows),indent=2)+'\n')
                 if not all(c['exact'] for c in checks):raise ValueError('demand rendering changed actor RGB')
                 if changed:self.parity_motion=True
-        if self.review_renderer is not None:
+        if self.review_renderer is not None and not getattr(self,'warp10_render_stage_v1',False):
             # Same exact2Hz predicate as PlaybackRecorder.observe. Actor RGB
             # stays10Hz; only unconsumed peer/overview render calls are omitted.
             now=sim_clock(contexts[0]['origin'],self.tick,self.period)
@@ -167,7 +193,12 @@ class Batch(WarpTransport):
                 self.camera_cache[(i,rid)]=b.getvalue()
         export=mjw.get_data_into
         profile=getattr(self,'warp9_profile',None)
-        if profile:
+        if getattr(self,'warp10_eval_export_v1',False):
+            from scripts.warp10_host import EvaluationExport
+            if not hasattr(self,'eval_staging'):self.eval_staging=EvaluationExport(self)
+            self.eval_staging.stage();export=self.eval_staging.export
+            self.export_profile_audit=self.eval_staging.audit()
+        elif profile:
             from scripts.warp9_profile import exporter
             export,self.export_profile_audit=exporter(export,lambda a:profile.numpy(a,name='evaluator_d2h'))
         with phase(self,'evaluator_export_total'):
@@ -176,7 +207,12 @@ class Batch(WarpTransport):
                 # Native get_data_into copies GPU contacts/forces. Do not call
                 # mj_forward/mj_step to invent CPU contacts for GPU evaluation.
                 export(c['world'].data,c['world'].model,self.wd,world_id=i)
-                c['world'].data.time=sim_clock(c['origin'],self.tick,self.period)
+        if getattr(self,'warp10_same_state_audit_v1',False) and hasattr(self,'eval_staging') and not hasattr(self,'warp10_export_audit'):
+            self.warp10_export_audit=self.eval_staging.compare(contexts)
+            (self.out/'warp10-export-audit.json').write_text(json.dumps(self.warp10_export_audit,indent=2)+'\n')
+            if not all(row['exact'] for row in self.warp10_export_audit):raise ValueError('staged evaluator export changed same-state fields')
+        for i,c in enumerate(contexts):
+            if not self.done[i]:c['world'].data.time=sim_clock(c['origin'],self.tick,self.period)
         self.rgb=[self.jpeg(i,c.get('rid','r3')) for i,c in enumerate(contexts)]
         self.seconds['render_and_evaluator_export']+=time.perf_counter()-start
 
@@ -185,8 +221,9 @@ class Batch(WarpTransport):
         # Freeze terminal worlds' integration state, including warmstart,
         # command clock/history. Shared derived contact cache is regenerated.
         frozen={name:getattr(self.wd,name).numpy() for name in self.initial_state} if self.done.any() else {}
-        start=time.perf_counter();ctrl=np.stack([c['world'].data.ctrl.copy() for c in contexts])
+        start=time.perf_counter();ctrl=(self.issued_ctrl.copy() if getattr(self,'warp10_command_batch_v1',False) else np.stack([c['world'].data.ctrl.copy() for c in contexts]))
         tapes=[]
+        row_groups=[]
         for rid,(lookup,wheels,servos) in self.robot_tables.items():
             rows=[]
             for i,c in enumerate(contexts):
@@ -198,10 +235,17 @@ class Batch(WarpTransport):
                     servo_active=[active[i] and s in p._servo_targets for s in SERVOS],now=now,servo_time=p._servo_tick_time))
                 if p._command_expires_at is not None and p._command_expires_at<=now+self.period:
                     raise ValueError('sub-tick command revocation needs explicit command-tape event support')
-            params=contexts[0]['world'].drive_parameters
-            tape,state=control_tape(rows,self.relays[rid],dt=self.dt,steps=self.control_steps,
-                lookup=lookup,wheel_ids=wheels,servo_ids=servos,start_fraction=params.start_fraction,
-                kinetic_fraction=params.kinetic_fraction,torque_cap_nm=params.torque_cap_nm)
+            row_groups.append(rows)
+        params=contexts[0]['world'].drive_parameters
+        options=dict(dt=self.dt,steps=self.control_steps,start_fraction=params.start_fraction,
+            kinetic_fraction=params.kinetic_fraction,torque_cap_nm=params.torque_cap_nm)
+        if getattr(self,'warp10_command_batch_v1',False):
+            from scripts.warp10_host import command_tapes
+            outputs=command_tapes(row_groups,list(self.relays.values()),list(self.robot_tables.values()),**options)
+        else:
+            outputs=[control_tape(rows,self.relays[rid],lookup=lookup,wheel_ids=wheels,servo_ids=servos,**options)
+                     for rows,(rid,(lookup,wheels,servos)) in zip(row_groups,self.robot_tables.items())]
+        for (rid,(lookup,wheels,servos)),(tape,state) in zip(self.robot_tables.items(),outputs):
             self.relays[rid][active]=state['relay'][active]
             tapes.append((tape,np.concatenate([wheels,*[np.asarray(s) for s in servos]])))
             for i,c in enumerate(contexts):
@@ -213,11 +257,16 @@ class Batch(WarpTransport):
                 c['world'].robot(rid).servo_command_pulses.update(dict(zip(SERVOS,map(int,state['pwm'][i]))))
         combined=np.repeat(ctrl[None,:,:],self.control_steps,axis=0).astype(np.float32)
         for tape,ids in tapes:combined[:,:,ids]=tape[:,:,ids]
+        if getattr(self,'warp10_command_batch_v1',False):self.issued_ctrl=combined[-1].copy()
         if getattr(self,'warp9_profile',None):
             self.warp9_profile.rows.append(dict(phase='command_python',wall_s=time.perf_counter()-start,
                 submit_s=time.perf_counter()-start,wait_s=0.,device_s=None,bytes=0,implicit_syncs=0,explicit_syncs=0,status='COMPLETE'))
         with phase(self,'command_h2d',device=True,nbytes=combined.nbytes):
-            wp.copy(self.tape,wp.array(combined,dtype=float));self.graph_tick.zero_()
+            if getattr(self,'warp10_command_batch_v1',False):
+                if not hasattr(self,'pinned_tape'):self.pinned_tape=wp.empty(self.tape.shape,dtype=self.tape.dtype,device='cpu',pinned=True)
+                self.pinned_tape.numpy()[:]=combined;wp.copy(self.tape,self.pinned_tape)
+            else:wp.copy(self.tape,wp.array(combined,dtype=float))
+            self.graph_tick.zero_()
         with phase(self,'physics_graph',device=True):
             for _ in range(self.graph_repeats):wp.capture_launch(self.graph)
         with phase(self,'physics_existing_sync',explicit_syncs=1):
