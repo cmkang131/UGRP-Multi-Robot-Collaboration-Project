@@ -6,12 +6,12 @@
 
 2단계 **RUNNING**: 수치 경로 source `f0db6b1abb842ea65b71c433738210254f300a7c`. IK의51 pitch를 NumPy로 옮겼고 기존 SDK240입력의 PWM/거부 결과가 일치했고 실제 L4의 NumPy2.5.2에서도480/480 일치했다. ray는 GPU 묶음, transform은 GPU에서 직접 읽는다. 독립적인 Python 교사 상태 기계는 유지한다(전체 FSM 벡터화라고 보고하지 않는다). rollout에서 C ray/kinematics 호출을 금지한다. 고정 upstream sleep의 단 하나의 dof_length 읽기를 world별 원래 값으로 인덱싱해, 값을 버리거나 근사하지 않는다. 설치된 원본 SHA가 다르면 거부한다.
 
-N16의0.1SIM초 배관 점검은 완료됐으나 성공 관문이 아니다. 새 장면 C312 참조40개를 만들고, 비배치 배열·스칼라가 완전히 같은7그룹으로 나눴다(7/3/12/10/6/1/1). 실패 cap 시드를 첫 순서로 둔40개를 모두 제출했고 현재3그룹29개 world가 실행 중이다. 나머지4그룹11개는 유한 scheduler가 순서대로 재개한다. 초기 qpos40/40 기대=실측과 target 가시성 C/GPU counts40/40 일치는 평가 전용 참고이며 C 물리 동등성 관문이 아니다. [승인 대기열](teacher-gate-queue-r1.json), [누적 통과 표](gate-rejection_table-r1.json), [모델 그룹](model-groups.json). 승인 기록은 `APPROVED_PINNED`, `REVIEW_SKIPPED_BY_USER (10/15 run-first rule)`이다.
+N16의0.1SIM초 배관 점검은 완료됐으나 성공 관문이 아니다. 새 장면 C312 참조40개를 만들고, 비배치 배열·스칼라가 완전히 같은7그룹으로 나눴다(7/3/12/10/6/1/1). 실패 cap 시드를 첫 순서로 둔40개를 모두 제출했고 03:18UTC 기준29개가 완료됐고 원본 재계수29/29 성공·매니페스트5952파일 해시 불일치0을 확인했다. 남은4그룹11개는 모두 실행 중이며 최종40회 관문은 아직 미완료다. 첫 성공 영상의 전체2Hz·종료 전10초10Hz를 직접 검토했고 실제 자기RGB 둘러보기6회를 확인했다(위치 추정 성공은 미검증). [원본 재계수 압축본](recount-closed-0-2-3.json.zst), [성공 영상 검토](success-playback-review.md). 초기 qpos40/40 기대=실측과 target 가시성 C/GPU counts40/40 일치는 평가 전용 참고이며 C 물리 동등성 관문이 아니다. [승인 대기열](teacher-gate-queue-r1.json), [누적 통과 표](gate-rejection_table-r1.json), [모델 그룹](model-groups.json). 승인 기록은 `APPROVED_PINNED`, `REVIEW_SKIPPED_BY_USER (10/15 run-first rule)`이다.
 
 3·4단계는 40회 자체 교사 관문 ≥95%가 확인된 뒤 진행한다. 기록 본실행·학생 평가·warm 처리량은 아직 미실행이다. [후속 API 계약](api-contract.md)은 설계 기록이며 실행 준비 완료가 아니다.
 
-관련 비물리 시험20개 PASS. 실행 소스는 먼저 commit/push했고 원격 사본은 git-shared.git을 직접 reference한다. 공유 객체 저장소의 기존 누락26개 blob은 exact 객체 전송으로 복구했으며 다른 source/원본을 삭제하거나 gc/prune하지 않았다. bootstrap의 nearclip 이름/옛 벽 질감 오류2개는 [별도 사유 표](bootstrap-rejection_table.json)에 남겼다.
+관련 비물리 시험20개 PASS. GitHub CI는 커밋e97464a3에서33/33 PASS([영수증](ci-receipt-e974.json)); 물리 관문과는 별도다. 실행 소스는 먼저 commit/push했고 원격 사본은 git-shared.git을 직접 reference한다. 공유 객체 저장소의 기존 누락26개 blob은 exact 객체 전송으로 복구했으며 다른 source/원본을 삭제하거나 gc/prune하지 않았다. bootstrap의 nearclip 이름/옛 벽 질감 오류2개는 [별도 사유 표](bootstrap-rejection_table.json)에 남겼다.
 
 [참고 문헌·설치본 검증 범위](references.md). 모든 성공·실패·cap_end·HOST_ERROR를 별도로 집계하며 최종 판정은 진행 완료 뒤 갱신한다.
 
-운영: L48시간 상한(2026-10-16T05:59:25Z), idle20분, budget-stop ACTIVE를 확인했다. 00:05UTC 확인 시 `beamact2` GPU 학습 임대/프로세스가 함께 있으며 그대로 보존한다. 현재 gate 벽시계 시간은 공유 부하·SIGSTOP 시간이 포함되어 intrinsic 처리량이 아니다. 디스크 약15GiB 여유, warp3 원본 약150MiB. [복구/운영 기록](operations.json).
+운영: L48시간 상한(2026-10-16T05:59:25Z), idle20분, budget-stop ACTIVE를 확인했다. 03:59UTC 확인 시 다른 작업 임대는 `beamact3-A`이며 그대로 보존한다(직전 warp4/warp5 임대는 해당 작업에서 정리됨). 현재 gate 벽시계 시간은 공유 부하·SIGSTOP 시간이 포함되어 intrinsic 처리량이 아니다. 디스크 약24.5GiB 여유·idle timer active를 확인했다. [복구/운영 기록](operations.json).

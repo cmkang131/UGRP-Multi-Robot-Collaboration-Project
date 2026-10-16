@@ -37,7 +37,7 @@
         32,
         36
       ],
-      "state": "ACTIVE"
+      "state": "COMPLETE"
     },
     {
       "group": 1,
@@ -47,7 +47,7 @@
         13,
         21
       ],
-      "state": "SIGSTOP"
+      "state": "ACTIVE"
     },
     {
       "group": 2,
@@ -66,7 +66,7 @@
         34,
         38
       ],
-      "state": "ACTIVE"
+      "state": "COMPLETE"
     },
     {
       "group": 3,
@@ -83,7 +83,7 @@
         35,
         39
       ],
-      "state": "ACTIVE"
+      "state": "COMPLETE"
     },
     {
       "group": 4,
@@ -96,7 +96,7 @@
         33,
         37
       ],
-      "state": "SIGSTOP"
+      "state": "ACTIVE"
     },
     {
       "group": 5,
@@ -104,7 +104,7 @@
       "indices": [
         24
       ],
-      "state": "SIGSTOP"
+      "state": "ACTIVE"
     },
     {
       "group": 6,
@@ -112,10 +112,10 @@
       "indices": [
         28
       ],
-      "state": "SIGSTOP"
+      "state": "ACTIVE"
     }
   ],
-  "scheduling": "Three largest exact topology groups active; once a group finishes resume the next paused group with SIGCONT, after exact /proc PID/--out ownership check. SIGSTOP preserves SIM/action clock. Do not leave own paused jobs behind.",
+  "scheduling": "Opt-in all unfinished groups since02:51:48UTC after resource audit; remaining4 groups11 worlds active; SIM/controller source unchanged, hard stop05:59:25UTC and graceful drain05:57:25UTC preserved.",
   "admission": {
     "status": "APPROVED_PINNED",
     "review_detail": "REVIEW_SKIPPED_BY_USER (10/15 run-first rule)",
@@ -137,37 +137,42 @@
     "Never stop gcp2 CPU VM with foreign beampair/reloc leases/processes; CPU comparison later requires lease and no shared-load verdict",
     "No Mac physics/render/GUI, no model calls, no Google Drive, no GCP1 operations",
     "COORDINATOR_NOTE.md is preexisting untracked and must remain untouched/uncommitted",
-    "Actual L4 NumPy IK480/480 equal; partial stable lift7/7 in group0 but no full episode complete as of00:05UTC",
-    "Progress JSON reader now supports result.json.zst and max world ticks. Earlier post-completion0 and frozen44SIM displays were reader undercounts, not physics stalls; controller unchanged."
+    "Progress JSON reader now supports result.json.zst and max world ticks. Earlier post-completion0 and frozen44SIM displays were reader undercounts, not physics stalls; controller unchanged.",
+    "03:18UTC foreign beamact3-A/warp4/warp5 leases observed; preserve all foreign tasks. Main L4 is shared and not eligible for warm throughput measurement."
   ],
-  "recorded": "2026-10-16T01:25:57.925731+00:00",
-  "scheduler_pid": 17430,
-  "scheduler_script": "/home/ugrp/ugrp-sim/runs/warp3/gate_schedule.py",
+  "recorded": "2026-10-16T04:00:24.092564+00:00",
+  "scheduler_pid": 54448,
+  "scheduler_script": "/home/ugrp/ugrp-sim/src/e97464a32c7c90b68b0c3a4d19ce630f9ad7abee/experiments/2026-10-16-warp3/gate_schedule.py",
   "scheduler_endUTC": "2026-10-16T05:57:25.154+00:00",
   "budget_stop_verified": "ACTIVE GEN_2, project ugrp-sim-b-1014/topic budget-stop, live 2026-10-15T23:18UTC",
-  "foreign_L4_lease": {
-    "task": "beamact2",
-    "pid": 12199,
-    "gpu_pid": 14151,
-    "started_UTC": "2026-10-15T22:42:54.156320+00:00",
-    "expected_end_UTC": "2026-10-16T05:42:54.156339+00:00",
-    "observed_UTC": "2026-10-16T00:05:15Z",
-    "action": "preserve; never stop VM or foreign task; warm benchmark requires no shared load"
-  },
-  "disk_free_GiB": 14.54,
+  "disk_free_GiB": 24.53473663330078,
   "progress_snapshot": {
-    "utc": "2026-10-16T01:25:28Z",
+    "utc": "2026-10-16T04:00:08Z",
     "active_group_max_SIM": {
-      "0": 47.8,
-      "2": 30.9,
-      "3": 33.3
+      "1": 33.4,
+      "4": 36.7,
+      "5": 29.0,
+      "6": 29.2
     },
-    "completed": 5,
-    "runner_success": 5,
-    "raw_independent_recount_finished": 2,
-    "raw_recount_success": 2,
-    "scope": "full40 cohort and final manifests/playback pending"
+    "completed": 29,
+    "runner_success": 29,
+    "raw_independent_recount_finished": 29,
+    "raw_recount_success": 29,
+    "manifest_hash_checks": 5952,
+    "hash_mismatch": 0,
+    "cap_end": 0,
+    "HOST_ERROR": 0,
+    "scope": "29 closed cases only, full40 not yet complete; group0 success video inspected2Hz+terminal10Hz, no completed failures available"
   },
   "endpoint_alert": "Existing active Gemma4-31B@DeepInfra price alert +50% received; no live price refresh and no LLM calls/batches in warp3",
-  "local_status_helper": "/tmp/ugrp-warp3-status.py"
+  "local_status_helper": "/tmp/ugrp-warp3-status.py",
+  "foreign_L4_leases": [
+    "beamact3-A (GPU training), observed03:59UTC"
+  ],
+  "CI": {
+    "sha": "e97464a32c7c90b68b0c3a4d19ce630f9ad7abee",
+    "passed": 33,
+    "total": 33,
+    "scope": "GitHub CI, separate from MJWarp teacher gate"
+  }
 }
