@@ -7,7 +7,8 @@ BASE=Path('/home/ugrp/ugrp-sim');RUN=BASE/'runs/warp7'
 
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--attempt',default='r1');parser.add_argument('--warp-native-runtime-v1',action='store_true');args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--attempt',default='r1');parser.add_argument('--warp-native-runtime-v1',action='store_true')
+    parser.add_argument('--prior-rejection-table',type=Path);args=parser.parse_args()
     if not re.fullmatch(r'r[1-3][a-z]?',args.attempt):raise ValueError('finite attempt name required')
     name='n16-'+args.attempt
     assert platform.node().startswith('ugrp-act-l4-gcp2')
@@ -42,12 +43,15 @@ def main():
         trial=copy.deepcopy(runs[index]);trial['replica']=1;runs.append(trial)
     assert len(runs)==16 and len({t['seed'] for t in runs})==6
     table=RUN/(name+'-selection-rejection-table.json')
+    if args.prior_rejection_table and (not args.prior_rejection_table.is_absolute() or not args.prior_rejection_table.is_file()):raise ValueError('existing absolute prior rejection table required')
     table.write_text(json.dumps(dict(unit='authored_initial_case',stages=[dict(stage='existing_plans',cumulative_pass_n=11,rejected_n=0),
         dict(stage='existing_static_keepout_catalog',cumulative_pass_n=6,rejected_n=5)],
         rejected=[dict(seed=e['seed'],category='unsupported_authored_scenario',reason='no_explicit_static_floor_declaration',
             blocked_object=e['scenario_id'],minimum_gap_m=None,gap_scope='configuration_not_physical_gap') for e in rejected],
         inherited_table=str(ROOT/'experiments/2026-10-16-warp7/prior-rejection-table.json'),
-        raw=str(ROOT/'experiments/2026-10-15-reloc14/carry-texture-v7-plan-final.json'),reproduction=[sys.executable,__file__,'--attempt',args.attempt]),indent=2)+'\n')
+        previous_controller_table=str(args.prior_rejection_table) if args.prior_rejection_table else None,
+        previous_controller_table_sha256=hashlib.sha256(args.prior_rejection_table.read_bytes()).hexdigest() if args.prior_rejection_table else None,
+        raw=str(ROOT/'experiments/2026-10-15-reloc14/carry-texture-v7-plan-final.json'),reproduction=[sys.executable,__file__,*sys.argv[1:]]),indent=2)+'\n')
     cal=ROOT/'experiments/2026-10-16-warp7/paint-calibration.json'
     env=dict(UGRP_SCENE_COLOUR_BOUNDARY='scene_colour_transition_v2',
         UGRP_SCENE_RENDER_PROFILE='walls_floor_contrast_v5_indigo110_s80',
