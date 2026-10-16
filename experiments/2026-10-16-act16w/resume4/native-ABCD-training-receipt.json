@@ -1,0 +1,44 @@
+{
+  "status": "complete",
+  "arms": {
+    "A": {
+      "steps": 10000,
+      "readback_verified": true,
+      "history": "off",
+      "training_rows": 11860,
+      "manifest_sha256": "3d0a1c4907f0c91a5674d23e52c9fbf339f03952ce3bcf92dee21f7e8ab7dbd2",
+      "main_wall_s": 3164.3540772549986,
+      "source_sha": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48"
+    },
+    "B": {
+      "steps": 10000,
+      "readback_verified": true,
+      "history": "wheel_pulse_train_mean",
+      "training_rows": 11860,
+      "manifest_sha256": "3d0a1c4907f0c91a5674d23e52c9fbf339f03952ce3bcf92dee21f7e8ab7dbd2",
+      "main_wall_s": 3164.6981861019995,
+      "source_sha": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48"
+    },
+    "C": {
+      "steps": 10000,
+      "readback_verified": true,
+      "history": "off",
+      "training_rows": 11860,
+      "manifest_sha256": "3d0a1c4907f0c91a5674d23e52c9fbf339f03952ce3bcf92dee21f7e8ab7dbd2",
+      "main_wall_s": 1680.519566476003,
+      "source_sha": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48"
+    },
+    "D1": {
+      "steps": 10000,
+      "readback_verified": true,
+      "history": "off",
+      "training_rows": 12150,
+      "manifest_sha256": "2c132339c61e433bf914ecff428e7055ff37c531559f205a485758215e892e3d",
+      "main_wall_s": 1788.8525923800007,
+      "source_sha": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48"
+    }
+  },
+  "optimizer_steps_across_four_models": 40000,
+  "wall_scope": "optimizer process wall times; A/B parallel, not summed GPU allocation hours",
+  "physical_success_inferred": false
+}

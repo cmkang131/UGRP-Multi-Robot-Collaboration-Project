@@ -135,4 +135,11 @@ TRAIN87422(전체0–24.5/끝14.6–24.5초)와87431(전체0–30/끝20.1–30�
 ([87422](native-dagger-87422-playback-review.json), [87431](native-dagger-87431-playback-review.json)).
 대상이 화면 아래로 나간 뒤 다시 보이지 않았고, 평가 전용 원장의 양손 하중·안정 들기도0이었다.
 이 TRAIN 예시와14개30SIM prefix cap_end를 최종 성능 분모에 넣지 않는다.
-D1은 동일10000스텝을 학습 중이며 h5 성공률 효과와 최종40은 아직 미측정이다.
+D1도 동일10000스텝과 저장/재로딩 예측 일치를 완료했고 VAL8을 시작했다. h5 성공률 효과와 최종40은 아직 미측정이다.
+
+[네 모델의 완료 학습 곡선](native-abcd-learning-curves.png)은 각10000스텝의 실제 로그다.
+movement L1·KL은 내려갔고 completion BCE의 간헐 급등은 남았다. 임무 성공률은 별도 검증한다.
+[학습 완료 수신](native-ABCD-training-receipt.json)과 [Release 예정 목록](native-release-publication-plan.json)은
+공개 업로드·재다운로드·로딩 확인 전 단계다. 모델 등록/패키지의 비물리11검사가 통과했다.
+최신 warp-act6d680e375와의 녹화 진입점 충돌은 소유자 파일을 byte 그대로 수용해 정리했고
+비물리 계약20검사가 통과했다([인계 병합](warp-act-base-refresh-merge.json)). 실제 연구 실행 소스c27은 고정이다.

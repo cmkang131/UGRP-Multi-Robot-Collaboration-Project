@@ -49,7 +49,7 @@
     "B": "0/5",
     "pooled": false
   },
-  "progress": "DAgger20 complete,5427 pairs ->290 h0 (270 noninitial/7 starts),5137 potentialclose exclusions, audit0/0/0; fresh242 hashes PASS, D0norm same. D1 running5670 asof18:52:41Z; final40 unopened.",
+  "progress": "A/B/C/D1 fixed10000 and exact checkpoint readback COMPLETE; native VAL8 D1 running; final40 unopened. All4 model registry rows staged PENDING; native Release not yet created.",
   "next": [
     "Observe existing orchestrator73402 at /home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1; execution source c27a9d537 unchanged. Never resubmit existing A/B/validation jobs. Summary errors require original diagnosis, no automatic retry.",
     "A/B and C reviews complete/acked. After TRAIN20 collection completes, run actual DAgger coverage helper and optional saved robot-pose distributions against D0 teacher path; inputs/commands unchanged. Hold review-D1/final40 if h5 actual noninitial labels unqualified. D1 train/eval is already scheduled by existing controller; never manually duplicate.",
@@ -174,5 +174,15 @@
   "completed_h5_prefix_reviews": [
     "native-dagger-87422-playback-review.json",
     "native-dagger-87431-playback-review.json"
-  ]
+  ],
+  "native_models": {
+    "tag": "models-20261016-act16w-native-v1",
+    "staged": 4,
+    "uploaded": 0,
+    "public_verified": 0,
+    "loading_verified": 0,
+    "registry_contains_all4": true
+  },
+  "PR_base": "6d680e375f4e4dd4bbdeb231acfd9f1f92688dba",
+  "PR_conflict": "resolved by owner-byte-exact merge49af0c092; MERGEABLE/CIrunning"
 }

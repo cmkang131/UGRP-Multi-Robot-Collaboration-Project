@@ -1,8 +1,8 @@
 {
   "schema": "ugrp.act16w.resume4.v1",
-  "status": "TRAIN_D1",
+  "status": "VALIDATE_D1",
   "complete": false,
-  "updated_utc": "2026-10-16T18:52:41.027105+00:00",
+  "updated_utc": "2026-10-16T19:11:17.772548+00:00",
   "execution_source_sha": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48",
   "orchestration_source_sha": "37a8c833656a58ba25472e2106276f225e95ad26",
   "teacher_library_sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
@@ -84,12 +84,13 @@
       "h5": false
     },
     "D1": {
-      "complete": false,
-      "latest_observed_step": 5670,
+      "complete": true,
+      "steps": 10000,
+      "readback_verified": true,
       "history": "full",
       "h4": true,
       "h5": true,
-      "progress_receipt": "native-D1-progress-receipt.json"
+      "training_receipt": "native-ABCD-training-receipt.json"
     }
   },
   "validation": {
@@ -160,7 +161,7 @@
       "rejection_table": "native-validation-C-rejection_table-enriched.json"
     },
     "D1": {
-      "status": "not_started",
+      "status": "running",
       "n": null,
       "N": null
     }
@@ -205,16 +206,17 @@
     "N": null
   },
   "artifacts": {
-    "curves": "native-abc-learning-curves.png",
+    "curves": "native-abcd-learning-curves.png",
     "matched_montage": "native-A-B-teacher-montage.png",
     "montage_success_row": "teacher reference, not ACT",
-    "native_models_staged": 3,
+    "native_models_staged": 4,
     "native_models_public_verified": 0,
     "native_release_tag": "models-20261016-act16w-native-v1",
     "PR": 539,
     "PR_draft": true,
     "PR_current_CI_verified": false,
-    "PR_mergeability_issue": "github-mergeability-inconsistency.json"
+    "PR_mergeability_issue": "resolved; warp-act-base-refresh-merge.json",
+    "PR_mergeable": true
   },
   "workflow_issues": [
     {
