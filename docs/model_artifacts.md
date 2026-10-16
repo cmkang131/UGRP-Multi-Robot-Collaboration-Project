@@ -82,10 +82,9 @@ python3 -m scripts.sim_cli workflow plan dispatch-skills -- \
 
 ## 이후 모델을 올리는 절차
 
-2026-10-16 `beamact1`은 두 번째 L4 생성에 필요한 GPU 한도 증설이 거절돼 학습을 시작하지 못했다.
-체크포인트·Release asset·재다운로드·모델 배포 검증은 모두 미완료이며 아직 목록에 등록할 가중치가 없다.
-CPU의 임의 초기화 adapter 저장/재로딩 검사는 학습 모델 배포가 아니다.
-[차단 및 데이터 준비 기록](../experiments/2026-10-16-beamact1/README.md)을 따른다.
+2026-10-16 `beamact1`의 두 번째 L4 차단 뒤, `beamact2`에서 기존 L4를 공유해 고정10000step을 학습했다.
+`beamact2-pair-shared-step10000-20261016`은 새 Release 공개 재다운로드·10파일SHA·새 clone CPU 로딩을 확인한 비교 모델이다.
+학생0/20 NOT_READY이며 기본 제어기로 채택하지 않는다. [결과 및 배포 검증](../experiments/2026-10-16-beamact2/README.md)을 따른다.
 
 1. 실험에서 선택/사용한 모델마다 새 ID를 정하고 가중치·config·adapter와 실행에 필요한 자산을 준비한다. 원 학습/실행 SHA, 데이터 출처, 모델 선택 기준, 성공·실패·미검증 범위를 기록한다. 불필요한 중간 체크포인트는 생략할 수 있지만 보고한 비교 모델은 보존한다.
 2. 모델 목록에 파일별 상대 경로·크기·SHA-256과 새 Release URL을 등록한다. 원본이 없으면 `unavailable`과 기대 해시를 남긴다. 파일에는 인증정보와 개인 런타임 설정을 포함하지 않는다.

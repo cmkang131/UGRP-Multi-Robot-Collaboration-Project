@@ -1,8 +1,44 @@
 [
-  {"stage":"L4 source deployment","error":"shared repository was a partial clone; delta bundle had prerequisite commit but some prerequisite blobs were absent","effect":"checkout and nonphysics collection failed; optimizer and physical attempts were zero at that point","fix":"sent only current HEAD tree objects and HEAD commit, no history traversal; index-pack into shared store, restored new inactive clone; remote10pass1skip"},
-  {"stage":"partial clone inventory","error":"batch-check tried promisor fetch; no-lazy-fetch failed closed on absent blob","effect":"read-only inventory failed; no physics/training change","fix":"explicit current tree object pack; never gc/prune shared repository"},
-  {"stage":"workflow planning regression","error":"new workflow lacked explicit read-only plan test arguments","effect":"1 failed25passed locally; no evaluation submitted","fix":"added beamact2-student fixture; rerun26passed"},
-  {"stage":"CPU pinned import preflight","error":"new scene profile resolved within old dependency namespace","effect":"nonphysics preflight import failed; student physics still zero","fix":"resolved scene binding closure before namespace isolation exactly like teacher adapter; gcp2 scene/setup preflight passed"},
-  {"stage":"pre-evaluation protocol inspection","error":"nearest-endpoint close classification could issue partial gripper closing before GO","effect":"no student rollout submitted","fix":"gate any first decreasing gripper PWM, even1PWM; no new acceptance threshold; protocol regressions passed"},
-  {"stage":"delta bundle creation","error":"mistyped full prerequisite SHA","effect":"bundle creation failed; no remote source or results changed","fix":"queried full local SHA and recreated bundle"}
+  {
+    "stage": "L4 source deployment",
+    "error": "shared repository was a partial clone; delta bundle had prerequisite commit but some prerequisite blobs were absent",
+    "effect": "checkout and nonphysics collection failed; optimizer and physical attempts were zero at that point",
+    "fix": "sent only current HEAD tree objects and HEAD commit, no history traversal; index-pack into shared store, restored new inactive clone; remote10pass1skip"
+  },
+  {
+    "stage": "partial clone inventory",
+    "error": "batch-check tried promisor fetch; no-lazy-fetch failed closed on absent blob",
+    "effect": "read-only inventory failed; no physics/training change",
+    "fix": "explicit current tree object pack; never gc/prune shared repository"
+  },
+  {
+    "stage": "workflow planning regression",
+    "error": "new workflow lacked explicit read-only plan test arguments",
+    "effect": "1 failed25passed locally; no evaluation submitted",
+    "fix": "added beamact2-student fixture; rerun26passed"
+  },
+  {
+    "stage": "CPU pinned import preflight",
+    "error": "new scene profile resolved within old dependency namespace",
+    "effect": "nonphysics preflight import failed; student physics still zero",
+    "fix": "resolved scene binding closure before namespace isolation exactly like teacher adapter; gcp2 scene/setup preflight passed"
+  },
+  {
+    "stage": "pre-evaluation protocol inspection",
+    "error": "nearest-endpoint close classification could issue partial gripper closing before GO",
+    "effect": "no student rollout submitted",
+    "fix": "gate any first decreasing gripper PWM, even1PWM; no new acceptance threshold; protocol regressions passed"
+  },
+  {
+    "stage": "delta bundle creation",
+    "error": "mistyped full prerequisite SHA",
+    "effect": "bundle creation failed; no remote source or results changed",
+    "fix": "queried full local SHA and recreated bundle"
+  },
+  {
+    "stage": "Release streaming upload",
+    "error": "gh api --input pipe did not supply the required Content-Length; HTTP400, no asset created",
+    "effect": "first archive upload failed; source, model and evaluations unchanged",
+    "fix": "Mac HTTPS stream with exact191867389B Content-Length; upload digest matched; public redownload/full inventory/CPU load verified; no credentials on VM or model archive on Mac"
+  }
 ]
