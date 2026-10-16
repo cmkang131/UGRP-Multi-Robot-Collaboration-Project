@@ -1,0 +1,1123 @@
+{
+  "raw": "/home/ugrp/ugrp-sim/runs/mapbuild6/recording-r3",
+  "prediction": "/home/ugrp/ugrp-sim/runs/mapbuild6/replay-r3",
+  "reproduction": [
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild7/mapbuild7_diagnose.py",
+    "--input",
+    "/home/ugrp/ugrp-sim/runs/mapbuild6/recording-r3",
+    "--prediction",
+    "/home/ugrp/ugrp-sim/runs/mapbuild6/replay-r3",
+    "--vision",
+    "/home/ugrp/ugrp-sim/src/mapbuild5b-complete-vision597",
+    "--renderer",
+    "/home/ugrp/ugrp-sim/src/drivecheck-renderer-5974a181",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/mapbuild7/diagnosis-r3"
+  ],
+  "frames": 247,
+  "intervals": 246,
+  "distribution": [
+    {
+      "category": "LK_measured_rotation",
+      "n": 39,
+      "xy_residual_sum_m": 0.15543309981911194,
+      "xy_residual_p95_m": 0.0070913453182132975,
+      "camera_rotation_error_p50_p95_deg": [
+        1.0415333643978204,
+        1.21204172094396
+      ],
+      "camera_origin_error_p50_p95_m": [
+        0.0019783642256108614,
+        0.0024187091593756427
+      ],
+      "signed_body_residual_sum": [
+        0.029095485779657992,
+        -0.00585777491523394,
+        -0.0005807194018596223
+      ],
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "feature_rigid_consensus_failure",
+      "n": 26,
+      "xy_residual_sum_m": 0.07659060249775279,
+      "xy_residual_p95_m": 0.004056329662174752,
+      "camera_rotation_error_p50_p95_deg": [
+        1.0222990009152064,
+        1.3151935134232888
+      ],
+      "camera_origin_error_p50_p95_m": [
+        0.0019256476634316967,
+        0.0026739823331729945
+      ],
+      "signed_body_residual_sum": [
+        0.06179665558502421,
+        -0.028172965884417114,
+        0.058433147407163044
+      ],
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "LK_measured_translation_or_rest",
+      "n": 36,
+      "xy_residual_sum_m": 0.06047653947923092,
+      "xy_residual_p95_m": 0.004070748928136668,
+      "camera_rotation_error_p50_p95_deg": [
+        0.9044107229101193,
+        1.6610494949492005
+      ],
+      "camera_origin_error_p50_p95_m": [
+        0.0017121894330229316,
+        0.0042407893759714085
+      ],
+      "signed_body_residual_sum": [
+        -0.008199270664830342,
+        0.014761727183621723,
+        -0.01541599711952526
+      ],
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "servo_change",
+      "n": 51,
+      "xy_residual_sum_m": 0.053666943072956545,
+      "xy_residual_p95_m": 0.004141723205898409,
+      "camera_rotation_error_p50_p95_deg": [
+        2.1206054173014803,
+        7.608729507915802
+      ],
+      "camera_origin_error_p50_p95_m": [
+        0.00504116602719832,
+        0.016559449921741742
+      ],
+      "signed_body_residual_sum": [
+        0.025267468267225267,
+        0.006726825601167604,
+        0.02385236076583897
+      ],
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "loaded_FK_unqualified",
+      "n": 94,
+      "xy_residual_sum_m": 0.051115012806709346,
+      "xy_residual_p95_m": 0.0032104645762560074,
+      "camera_rotation_error_p50_p95_deg": [
+        1.4718687359239717,
+        1.544635402314074
+      ],
+      "camera_origin_error_p50_p95_m": [
+        0.003982542598080558,
+        0.0041316435708924695
+      ],
+      "signed_body_residual_sum": [
+        -0.040347879089692944,
+        0.00018893296529274122,
+        -0.0004100184887647629
+      ],
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    }
+  ],
+  "time_bins": [
+    {
+      "category": "0",
+      "n": 9,
+      "xy_residual_sum_m": 0.013544293640282057,
+      "xy_residual_p95_m": 0.004298640892536325,
+      "camera_rotation_error_p50_p95_deg": [
+        0.9556149084750529,
+        1.2936361714683913
+      ],
+      "camera_origin_error_p50_p95_m": [
+        0.0017617307093792285,
+        0.0024985760449361422
+      ],
+      "signed_body_residual_sum": [
+        0.007884151357156624,
+        -1.318298387257969e-05,
+        -0.00046470284627476565
+      ],
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "1",
+      "n": 10,
+      "xy_residual_sum_m": 0.03168272107415944,
+      "xy_residual_p95_m": 0.005229366604540048,
+      "camera_rotation_error_p50_p95_deg": [
+        1.154361961690944,
+        1.333520937507566
+      ],
+      "camera_origin_error_p50_p95_m": [
+        0.002230018145394178,
+        0.0026226887538641124
+      ],
+      "signed_body_residual_sum": [
+        0.013880503720190207,
+        -0.0006670194874476864,
+        0.0002613107560935693
+      ],
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "2",
+      "n": 10,
+      "xy_residual_sum_m": 0.05079807767788346,
+      "xy_residual_p95_m": 0.0072693799801726985,
+      "camera_rotation_error_p50_p95_deg": [
+        1.0954555544574034,
+        1.2420967667408631
+      ],
+      "camera_origin_error_p50_p95_m": [
+        0.0021191668973099907,
+        0.002360417992731305
+      ],
+      "signed_body_residual_sum": [
+        0.020997711975541594,
+        -0.008157690420365484,
+        0.01783809822691186
+      ],
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "3",
+      "n": 10,
+      "xy_residual_sum_m": 0.03806624836243096,
+      "xy_residual_p95_m": 0.005785714490901071,
+      "camera_rotation_error_p50_p95_deg": [
+        1.0473543309663658,
+        1.1610827103552341
+      ],
+      "camera_origin_error_p50_p95_m": [
+        0.0019398200221019954,
+        0.0022195440905420777
+      ],
+      "signed_body_residual_sum": [
+        0.030426355933334502,
+        -0.0008859108024714931,
+        0.033080857051441884
+      ],
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "4",
+      "n": 10,
+      "xy_residual_sum_m": 0.03305845839964736,
+      "xy_residual_p95_m": 0.0042950611255608015,
+      "camera_rotation_error_p50_p95_deg": [
+        0.9774727576779358,
+        1.231812948440215
+      ],
+      "camera_origin_error_p50_p95_m": [
+        0.0018279822457672318,
+        0.002372712776869339
+      ],
+      "signed_body_residual_sum": [
+        0.007071313247026765,
+        -0.012113046841677688,
+        0.031721362687873844
+      ],
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "5",
+      "n": 10,
+      "xy_residual_sum_m": 0.03528189679600857,
+      "xy_residual_p95_m": 0.0049652463330638955,
+      "camera_rotation_error_p50_p95_deg": [
+        0.9639280794016825,
+        1.0943147896474466
+      ],
+      "camera_origin_error_p50_p95_m": [
+        0.0018384550134619695,
+        0.0021840685297656
+      ],
+      "signed_body_residual_sum": [
+        0.02044391127386012,
+        -0.011831274520144479,
+        0.00133305664795497
+      ],
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "6",
+      "n": 10,
+      "xy_residual_sum_m": 0.03166320805322026,
+      "xy_residual_p95_m": 0.0037381550401647183,
+      "camera_rotation_error_p50_p95_deg": [
+        1.0293743907031798,
+        1.282107694194057
+      ],
+      "camera_origin_error_p50_p95_m": [
+        0.0019227336690317938,
+        0.002606135497149848
+      ],
+      "signed_body_residual_sum": [
+        0.011577509173105873,
+        -0.006018486348255264,
+        -0.012345948777854797
+      ],
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "7",
+      "n": 10,
+      "xy_residual_sum_m": 0.034382503997170466,
+      "xy_residual_p95_m": 0.007440196240836503,
+      "camera_rotation_error_p50_p95_deg": [
+        1.007159606825711,
+        1.2437704003563164
+      ],
+      "camera_origin_error_p50_p95_m": [
+        0.001971453725292863,
+        0.0025454292837070324
+      ],
+      "signed_body_residual_sum": [
+        0.0009859146314212608,
+        0.002069371064243454,
+        -0.00933473962855817
+      ],
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "8",
+      "n": 10,
+      "xy_residual_sum_m": 0.012412015460535695,
+      "xy_residual_p95_m": 0.0033521769174085086,
+      "camera_rotation_error_p50_p95_deg": [
+        0.8731255260211338,
+        0.9311763377148929
+      ],
+      "camera_origin_error_p50_p95_m": [
+        0.0015942039349123994,
+        0.0018207461562344531
+      ],
+      "signed_body_residual_sum": [
+        -0.0018171841651233543,
+        0.003516798377299158,
+        0.01361201494644294
+      ],
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "9",
+      "n": 10,
+      "xy_residual_sum_m": 0.02101534435741843,
+      "xy_residual_p95_m": 0.004106978349956475,
+      "camera_rotation_error_p50_p95_deg": [
+        0.8449687633671125,
+        0.9290236757381093
+      ],
+      "camera_origin_error_p50_p95_m": [
+        0.0016101475029863923,
+        0.0017523787684013675
+      ],
+      "signed_body_residual_sum": [
+        -0.007346496087127287,
+        0.004144262162355683,
+        -0.007865251242071103
+      ],
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "10",
+      "n": 10,
+      "xy_residual_sum_m": 0.009841355569935649,
+      "xy_residual_p95_m": 0.0022607084698596934,
+      "camera_rotation_error_p50_p95_deg": [
+        0.7925392703792977,
+        2.015107618376132
+      ],
+      "camera_origin_error_p50_p95_m": [
+        0.0014979125194215816,
+        0.003700636451379512
+      ],
+      "signed_body_residual_sum": [
+        -0.006027912209820678,
+        0.006143575407827851,
+        -0.016363802985100602
+      ],
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "11",
+      "n": 10,
+      "xy_residual_sum_m": 0.002009767365962519,
+      "xy_residual_p95_m": 0.000877594877807436,
+      "camera_rotation_error_p50_p95_deg": [
+        2.067792272765377,
+        4.129618672756185
+      ],
+      "camera_origin_error_p50_p95_m": [
+        0.005128689869225864,
+        0.009294944953398736
+      ],
+      "signed_body_residual_sum": [
+        0.0014577040983794526,
+        0.0005780668329031874,
+        -0.0017402906814168733
+      ],
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "12",
+      "n": 10,
+      "xy_residual_sum_m": 0.0067683811969545165,
+      "xy_residual_p95_m": 0.0034623321915460232,
+      "camera_rotation_error_p50_p95_deg": [
+        1.1628641564787912,
+        2.339768230115795
+      ],
+      "camera_origin_error_p50_p95_m": [
+        0.003242967503284318,
+        0.00529321345288058
+      ],
+      "signed_body_residual_sum": [
+        0.006639762937091342,
+        1.0592449197574261e-05,
+        -0.01047145202755928
+      ],
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "13",
+      "n": 10,
+      "xy_residual_sum_m": 0.01627440586684668,
+      "xy_residual_p95_m": 0.0035688356473962853,
+      "camera_rotation_error_p50_p95_deg": [
+        7.595385551014113,
+        7.669878239067644
+      ],
+      "camera_origin_error_p50_p95_m": [
+        0.016553114246236535,
+        0.016573427973665702
+      ],
+      "signed_body_residual_sum": [
+        0.008912405193131412,
+        0.006598263802515275,
+        0.04669162692073324
+      ],
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "14",
+      "n": 10,
+      "xy_residual_sum_m": 0.006080474703481131,
+      "xy_residual_p95_m": 0.0014843180717457136,
+      "camera_rotation_error_p50_p95_deg": [
+        7.191212911546849,
+        7.5125153886372695
+      ],
+      "camera_origin_error_p50_p95_m": [
+        0.015772118553139765,
+        0.01648808303725409
+      ],
+      "signed_body_residual_sum": [
+        -0.005442829378440168,
+        0.0019239363017349046,
+        -0.011430947110056877
+      ],
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "15",
+      "n": 10,
+      "xy_residual_sum_m": 0.0034157161561287888,
+      "xy_residual_p95_m": 0.0012527684053332195,
+      "camera_rotation_error_p50_p95_deg": [
+        2.336405607729045,
+        2.487210335902287
+      ],
+      "camera_origin_error_p50_p95_m": [
+        0.005955452206475462,
+        0.006365222885415488
+      ],
+      "signed_body_residual_sum": [
+        -0.0016582640886822135,
+        0.002172293827245364,
+        -0.008001566398888826
+      ],
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "16",
+      "n": 10,
+      "xy_residual_sum_m": 7.444620132446289e-05,
+      "xy_residual_p95_m": 2.2237002849578857e-05,
+      "camera_rotation_error_p50_p95_deg": [
+        1.4715634794256278,
+        1.4742279443631596
+      ],
+      "camera_origin_error_p50_p95_m": [
+        0.0039809209858579775,
+        0.003991929931701108
+      ],
+      "signed_body_residual_sum": [
+        5.673937524261725e-05,
+        -6.941944186391658e-07,
+        0.00032469164580106735
+      ],
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "17",
+      "n": 10,
+      "xy_residual_sum_m": 4.607439041137695e-05,
+      "xy_residual_p95_m": 1.821294426918027e-05,
+      "camera_rotation_error_p50_p95_deg": [
+        1.4700704024768982,
+        1.470574356442486
+      ],
+      "camera_origin_error_p50_p95_m": [
+        0.003975486815929176,
+        0.003977632846048007
+      ],
+      "signed_body_residual_sum": [
+        -4.6071226684350266e-05,
+        5.399269733336262e-07,
+        0.00018542632460594177
+      ],
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "18",
+      "n": 10,
+      "xy_residual_sum_m": 3.822147846221924e-05,
+      "xy_residual_p95_m": 7.739663124084469e-06,
+      "camera_rotation_error_p50_p95_deg": [
+        1.470762045258589,
+        1.4717701410059694
+      ],
+      "camera_origin_error_p50_p95_m": [
+        0.003980074691837147,
+        0.0039833928629570865
+      ],
+      "signed_body_residual_sum": [
+        -3.306337553343048e-05,
+        3.900936802570891e-07,
+        -1.2639909982681268e-05
+      ],
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "19",
+      "n": 10,
+      "xy_residual_sum_m": 0.000159531831741333,
+      "xy_residual_p95_m": 4.9825012683868405e-05,
+      "camera_rotation_error_p50_p95_deg": [
+        1.472939140890829,
+        1.4750074632996526
+      ],
+      "camera_origin_error_p50_p95_m": [
+        0.0039891450244851565,
+        0.003994741809357522
+      ],
+      "signed_body_residual_sum": [
+        0.00012793244947138324,
+        -1.5107906979851667e-06,
+        -0.00014409795403480524
+      ],
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "20",
+      "n": 10,
+      "xy_residual_sum_m": 0.01929950656903147,
+      "xy_residual_p95_m": 0.004668102371484729,
+      "camera_rotation_error_p50_p95_deg": [
+        1.4718444905271824,
+        1.4771829520696513
+      ],
+      "camera_origin_error_p50_p95_m": [
+        0.003714143292055022,
+        0.0039998036949400835
+      ],
+      "signed_body_residual_sum": [
+        -0.019285656511421962,
+        0.000462202291767555,
+        0.007749148178845645
+      ],
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "21",
+      "n": 10,
+      "xy_residual_sum_m": 0.019611602378833103,
+      "xy_residual_p95_m": 0.003398965855151556,
+      "camera_rotation_error_p50_p95_deg": [
+        1.4630100028829034,
+        1.4790336560225112
+      ],
+      "camera_origin_error_p50_p95_m": [
+        0.003690999789945212,
+        0.0038050736195830866
+      ],
+      "signed_body_residual_sum": [
+        -0.019591692377595175,
+        -0.00027638095223665125,
+        -0.00021926080808043653
+      ],
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "22",
+      "n": 10,
+      "xy_residual_sum_m": 0.011593437709751433,
+      "xy_residual_p95_m": 0.0027495857104344024,
+      "camera_rotation_error_p50_p95_deg": [
+        1.497647727651049,
+        1.5282866525409577
+      ],
+      "camera_origin_error_p50_p95_m": [
+        0.00396157086789465,
+        0.0040511026512026925
+      ],
+      "signed_body_residual_sum": [
+        -0.0016435301638860872,
+        -6.911693157445054e-05,
+        -0.0067236656323075294
+      ],
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "23",
+      "n": 10,
+      "xy_residual_sum_m": 0.00012422314885258468,
+      "xy_residual_p95_m": 4.489065589159608e-05,
+      "camera_rotation_error_p50_p95_deg": [
+        1.4712397318077426,
+        1.4744375318842304
+      ],
+      "camera_origin_error_p50_p95_m": [
+        0.003987555057245578,
+        0.003999779000551162
+      ],
+      "signed_body_residual_sum": [
+        6.880812772732147e-06,
+        6.123378573343184e-05,
+        -0.0015840120613574982
+      ],
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "24",
+      "n": 7,
+      "xy_residual_sum_m": 4.028528928756714e-05,
+      "xy_residual_p95_m": 1.7482042312622068e-05,
+      "camera_rotation_error_p50_p95_deg": [
+        1.472686100055123,
+        1.4768664710333022
+      ],
+      "camera_origin_error_p50_p95_m": [
+        0.0039918688889090045,
+        0.0040016561367912235
+      ],
+      "signed_body_residual_sum": [
+        3.636328397302893e-05,
+        -4.670998836119158e-07,
+        -0.00021644216030836108
+      ],
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    }
+  ],
+  "largest_intervals": [
+    {
+      "t": 7.1,
+      "status": "measured",
+      "category": "LK_measured_rotation",
+      "command_rotation": true,
+      "servo_change": false,
+      "xy_residual_m": 0.00778689124007548,
+      "signed_body_residual": [
+        -0.007786501889738876,
+        -7.786851646950771e-05,
+        -0.00029911754766478484
+      ],
+      "truth_delta": [
+        0.009152928006528819,
+        -9.278771608413003e-05,
+        0.002689797431230545
+      ],
+      "used_delta": [
+        0.0013664261167899427,
+        -0.00017065623255363774,
+        0.00239067988356576
+      ],
+      "camera_position_error_m": 0.002085312334371894,
+      "camera_rotation_error_deg": 1.1437422907974324,
+      "camera_interval_origin_change_m": 0.0007649503645148286,
+      "camera_interval_rotation_deg": 0.4498402380799823,
+      "tracks": 55,
+      "inliers": 39,
+      "cells": 11,
+      "wall_update_reason": "no_visible_scan",
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "t": 2.2,
+      "status": "measured",
+      "category": "LK_measured_rotation",
+      "command_rotation": true,
+      "servo_change": false,
+      "xy_residual_m": 0.0074474146421321,
+      "signed_body_residual": [
+        0.006306112833869201,
+        0.00396193460046399,
+        -0.0031689710659174894
+      ],
+      "truth_delta": [
+        0.004003871602529766,
+        -0.00023206643935024494,
+        0.031439244747161865
+      ],
+      "used_delta": [
+        0.010309984436398967,
+        0.0037298681611137446,
+        0.028270273681244375
+      ],
+      "camera_position_error_m": 0.0020020418658351622,
+      "camera_rotation_error_deg": 1.016253415781407,
+      "camera_interval_origin_change_m": 0.00037603858195000677,
+      "camera_interval_rotation_deg": 0.12102346513701179,
+      "tracks": 115,
+      "inliers": 70,
+      "cells": 5,
+      "wall_update_reason": "sim_keyframe_interval",
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "t": 2.9,
+      "status": "measured",
+      "category": "LK_measured_rotation",
+      "command_rotation": true,
+      "servo_change": false,
+      "xy_residual_m": 0.007051782060000096,
+      "signed_body_residual": [
+        0.0054100911031505945,
+        -0.004523112255665339,
+        0.00345343687455062
+      ],
+      "truth_delta": [
+        0.009561623192688173,
+        -4.0959373258951225e-05,
+        0.019956737756729126
+      ],
+      "used_delta": [
+        0.014971714295838767,
+        -0.0045640716289242905,
+        0.023410174631279746
+      ],
+      "camera_position_error_m": 0.0024101722871566387,
+      "camera_rotation_error_deg": 1.2300874879400867,
+      "camera_interval_origin_change_m": 0.0003556445141084473,
+      "camera_interval_rotation_deg": 0.10617768978955959,
+      "tracks": 101,
+      "inliers": 79,
+      "cells": 7,
+      "wall_update_reason": "sim_keyframe_interval",
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "t": 7.3,
+      "status": "measured",
+      "category": "LK_measured_rotation",
+      "command_rotation": true,
+      "servo_change": false,
+      "xy_residual_m": 0.0070164579084333115,
+      "signed_body_residual": [
+        0.00669736968026748,
+        0.0020918702031077906,
+        -0.004482927316012263
+      ],
+      "truth_delta": [
+        0.007376746695969864,
+        -0.0026086121516497368,
+        -0.0029803141951560974
+      ],
+      "used_delta": [
+        0.014074116376237344,
+        -0.0005167419485419462,
+        -0.007463241511168359
+      ],
+      "camera_position_error_m": 0.0017938573328135329,
+      "camera_rotation_error_deg": 0.9724490579042866,
+      "camera_interval_origin_change_m": 0.000849054514401177,
+      "camera_interval_rotation_deg": 0.30110315680830446,
+      "tracks": 54,
+      "inliers": 42,
+      "cells": 5,
+      "wall_update_reason": "no_visible_scan",
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "t": 2.5,
+      "status": "measured",
+      "category": "LK_measured_rotation",
+      "command_rotation": true,
+      "servo_change": false,
+      "xy_residual_m": 0.00652744821940038,
+      "signed_body_residual": [
+        0.006213518515096671,
+        0.001999941979034402,
+        -0.0010990587205541753
+      ],
+      "truth_delta": [
+        0.003889904631382935,
+        -0.00033604887674479507,
+        0.030966907739639282
+      ],
+      "used_delta": [
+        0.010103423146479606,
+        0.001663893102289607,
+        0.029867849019085107
+      ],
+      "camera_position_error_m": 0.0020145925693466895,
+      "camera_rotation_error_deg": 1.0415333643978204,
+      "camera_interval_origin_change_m": 0.00025414726286025275,
+      "camera_interval_rotation_deg": 0.06896606990826938,
+      "tracks": 110,
+      "inliers": 86,
+      "cells": 6,
+      "wall_update_reason": "sim_keyframe_interval",
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "t": 3.3,
+      "status": "measured",
+      "category": "LK_measured_rotation",
+      "command_rotation": true,
+      "servo_change": false,
+      "xy_residual_m": 0.006270519947253647,
+      "signed_body_residual": [
+        0.005543935662180938,
+        0.0029298801652122694,
+        -0.0016820821203516537
+      ],
+      "truth_delta": [
+        0.008974421263753456,
+        3.3135667963822384e-05,
+        0.02632573246955872
+      ],
+      "used_delta": [
+        0.014518356925934395,
+        0.0029630158331760918,
+        0.024643650349207066
+      ],
+      "camera_position_error_m": 0.0019454473445915958,
+      "camera_rotation_error_deg": 1.059975903487002,
+      "camera_interval_origin_change_m": 0.0005692474525976156,
+      "camera_interval_rotation_deg": 0.16788365239116373,
+      "tracks": 91,
+      "inliers": 60,
+      "cells": 6,
+      "wall_update_reason": "high_residual",
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "t": 2.0,
+      "status": "measured",
+      "category": "LK_measured_rotation",
+      "command_rotation": true,
+      "servo_change": false,
+      "xy_residual_m": 0.005689645333968917,
+      "signed_body_residual": [
+        0.00011993342866435013,
+        -0.005688381140451392,
+        0.004640260645321109
+      ],
+      "truth_delta": [
+        0.0031473447376746326,
+        -0.00019590120371888796,
+        0.02406615018844604
+      ],
+      "used_delta": [
+        0.0032672781663389827,
+        -0.00588428234417028,
+        0.02870641083376715
+      ],
+      "camera_position_error_m": 0.0022278683803057704,
+      "camera_rotation_error_deg": 1.1246298014263634,
+      "camera_interval_origin_change_m": 0.0004746899206986574,
+      "camera_interval_rotation_deg": 0.13904405592097077,
+      "tracks": 131,
+      "inliers": 90,
+      "cells": 6,
+      "wall_update_reason": "sim_keyframe_interval",
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "t": 1.2,
+      "status": "measured",
+      "category": "LK_measured_translation_or_rest",
+      "command_rotation": false,
+      "servo_change": false,
+      "xy_residual_m": 0.005556732365699664,
+      "signed_body_residual": [
+        0.005276053064327112,
+        0.0017437140380287906,
+        -0.002022784904214191
+      ],
+      "truth_delta": [
+        0.009799597500081404,
+        3.067161430891051e-05,
+        -0.00034415721893310547
+      ],
+      "used_delta": [
+        0.015075650564408516,
+        0.001774385652337701,
+        -0.0023669421231472965
+      ],
+      "camera_position_error_m": 0.002283853590294304,
+      "camera_rotation_error_deg": 1.1942244714470625,
+      "camera_interval_origin_change_m": 7.597291053116348e-05,
+      "camera_interval_rotation_deg": 0.050182650530776064,
+      "tracks": 166,
+      "inliers": 118,
+      "cells": 8,
+      "wall_update_reason": "sim_keyframe_interval",
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "t": 2.4,
+      "status": "measured",
+      "category": "LK_measured_rotation",
+      "command_rotation": true,
+      "servo_change": false,
+      "xy_residual_m": 0.00553582848594179,
+      "signed_body_residual": [
+        -0.0049996767788203535,
+        -0.0023766844832852976,
+        0.00188673211382466
+      ],
+      "truth_delta": [
+        0.0035379418350310367,
+        -0.0003120664565181006,
+        0.030166447162628174
+      ],
+      "used_delta": [
+        -0.0014617349437893168,
+        -0.0026887509398033985,
+        0.032053179276452834
+      ],
+      "camera_position_error_m": 0.0021708864321221223,
+      "camera_rotation_error_deg": 1.1001347783935371,
+      "camera_interval_origin_change_m": 0.00011027078061773395,
+      "camera_interval_rotation_deg": 0.0676012555385608,
+      "tracks": 121,
+      "inliers": 94,
+      "cells": 6,
+      "wall_update_reason": "sim_keyframe_interval",
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "t": 0.8,
+      "status": "unknown_servo_change",
+      "category": "servo_change",
+      "command_rotation": false,
+      "servo_change": true,
+      "xy_residual_m": 0.005509514520957128,
+      "signed_body_residual": [
+        0.005509157748929395,
+        6.26989158490957e-05,
+        2.771615982055664e-05
+      ],
+      "truth_delta": [
+        0.006743053600070799,
+        -6.26989158490957e-05,
+        -2.771615982055664e-05
+      ],
+      "used_delta": [
+        0.012252211349000194,
+        0.0,
+        0.0
+      ],
+      "camera_position_error_m": 0.0025386632706379617,
+      "camera_rotation_error_deg": 1.3675462162276506,
+      "camera_interval_origin_change_m": 0.0075559186591563745,
+      "camera_interval_rotation_deg": 5.622186410642459,
+      "tracks": null,
+      "inliers": null,
+      "cells": null,
+      "wall_update_reason": "no_visible_scan",
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "t": 20.3,
+      "status": "unknown_loaded_or_unknown_load_not_qualified",
+      "category": "loaded_FK_unqualified",
+      "command_rotation": false,
+      "servo_change": false,
+      "xy_residual_m": 0.005344631766161346,
+      "signed_body_residual": [
+        -0.005344244483478598,
+        6.433985288704318e-05,
+        0.0011159470304846764
+      ],
+      "truth_delta": [
+        -0.002313387609646525,
+        -6.433985288704318e-05,
+        -0.0011159470304846764
+      ],
+      "used_delta": [
+        -0.007657632093125123,
+        0.0,
+        0.0
+      ],
+      "camera_position_error_m": 0.0037242536517082168,
+      "camera_rotation_error_deg": 1.4399047287350313,
+      "camera_interval_origin_change_m": 0.0002743945259465338,
+      "camera_interval_rotation_deg": 0.039542407066704525,
+      "tracks": null,
+      "inliers": null,
+      "cells": null,
+      "wall_update_reason": "no_visible_scan",
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "t": 3.2,
+      "status": "measured",
+      "category": "LK_measured_rotation",
+      "command_rotation": true,
+      "servo_change": false,
+      "xy_residual_m": 0.005193174488692369,
+      "signed_body_residual": [
+        0.0011709809070153676,
+        -0.005059433267215876,
+        0.003508404895393733
+      ],
+      "truth_delta": [
+        0.009592300688591321,
+        0.00012086278741113218,
+        0.012223929166793825
+      ],
+      "used_delta": [
+        0.010763281595606689,
+        -0.0049385704798047434,
+        0.015732334062187558
+      ],
+      "camera_position_error_m": 0.0022785048021850274,
+      "camera_rotation_error_deg": 1.1302028637535457,
+      "camera_interval_origin_change_m": 0.000530562143403344,
+      "camera_interval_rotation_deg": 0.1521971183549032,
+      "tracks": 98,
+      "inliers": 75,
+      "cells": 5,
+      "wall_update_reason": "sim_keyframe_interval",
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    }
+  ],
+  "wall_reasons": {
+    "unsettled": 3,
+    "bootstrap": 1,
+    "sim_keyframe_interval": 55,
+    "no_visible_scan": 182,
+    "improved_proposal": 4,
+    "high_residual": 2
+  },
+  "camera_error": {
+    "position_p50_p95_max_m": [
+      0.00366241923422889,
+      0.01630340612229281,
+      0.01657808746367665
+    ],
+    "rotation_p50_p95_max_deg": [
+      1.4559183815762857,
+      7.307879068684906,
+      7.6939665870653915
+    ]
+  },
+  "interpretation": "Interval residual sums are not additive final SE2 error attribution. Evaluation camera is never estimator input.",
+  "parameter_tuning": 0,
+  "cpu_physics_steps": 0,
+  "truth_feedback": 0,
+  "source_sha256": {
+    "/home/ugrp/ugrp-sim/runs/mapbuild6/recording-r3/own.json": "eb33f724ebbcab6dbf1a6b6c3007c40b7e5f753bd6f49433903421496736be50",
+    "/home/ugrp/ugrp-sim/runs/mapbuild6/recording-r3/eval-state.npz": "f32e420c9eaf270374e1ed9038592d29608023b64b487b0ef44f6efbed0604da",
+    "/home/ugrp/ugrp-sim/runs/mapbuild6/recording-r3/scene.xml": "555b33d7e05b2bf9de013c8b42ecde555613f3af1cb55bd3759ce1fdc6440d0d",
+    "/home/ugrp/ugrp-sim/runs/mapbuild6/replay-r3/prediction-seal.json": "64c1087920ca64307bfa3cf018d2f67ceb16beb3fac503c0cc171f0cec0609bc"
+  }
+}

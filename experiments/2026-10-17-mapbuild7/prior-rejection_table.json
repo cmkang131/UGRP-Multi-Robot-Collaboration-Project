@@ -1,0 +1,145 @@
+{
+  "stages": [
+    {
+      "stage": "recorded",
+      "cumulative_pass_n": 247,
+      "rejected_n": 0
+    },
+    {
+      "stage": "adjacent_intervals",
+      "cumulative_pass_n": 246,
+      "rejected_n": 1
+    },
+    {
+      "stage": "LK_measurement",
+      "cumulative_pass_n": 75,
+      "rejected_n": 171
+    }
+  ],
+  "distribution": [
+    {
+      "category": "LK_measured_rotation",
+      "n": 39,
+      "xy_residual_sum_m": 0.15543309981911194,
+      "xy_residual_p95_m": 0.0070913453182132975,
+      "camera_rotation_error_p50_p95_deg": [
+        1.0415333643978204,
+        1.21204172094396
+      ],
+      "camera_origin_error_p50_p95_m": [
+        0.0019783642256108614,
+        0.0024187091593756427
+      ],
+      "signed_body_residual_sum": [
+        0.029095485779657992,
+        -0.00585777491523394,
+        -0.0005807194018596223
+      ],
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "feature_rigid_consensus_failure",
+      "n": 26,
+      "xy_residual_sum_m": 0.07659060249775279,
+      "xy_residual_p95_m": 0.004056329662174752,
+      "camera_rotation_error_p50_p95_deg": [
+        1.0222990009152064,
+        1.3151935134232888
+      ],
+      "camera_origin_error_p50_p95_m": [
+        0.0019256476634316967,
+        0.0026739823331729945
+      ],
+      "signed_body_residual_sum": [
+        0.06179665558502421,
+        -0.028172965884417114,
+        0.058433147407163044
+      ],
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "LK_measured_translation_or_rest",
+      "n": 36,
+      "xy_residual_sum_m": 0.06047653947923092,
+      "xy_residual_p95_m": 0.004070748928136668,
+      "camera_rotation_error_p50_p95_deg": [
+        0.9044107229101193,
+        1.6610494949492005
+      ],
+      "camera_origin_error_p50_p95_m": [
+        0.0017121894330229316,
+        0.0042407893759714085
+      ],
+      "signed_body_residual_sum": [
+        -0.008199270664830342,
+        0.014761727183621723,
+        -0.01541599711952526
+      ],
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "servo_change",
+      "n": 51,
+      "xy_residual_sum_m": 0.053666943072956545,
+      "xy_residual_p95_m": 0.004141723205898409,
+      "camera_rotation_error_p50_p95_deg": [
+        2.1206054173014803,
+        7.608729507915802
+      ],
+      "camera_origin_error_p50_p95_m": [
+        0.00504116602719832,
+        0.016559449921741742
+      ],
+      "signed_body_residual_sum": [
+        0.025267468267225267,
+        0.006726825601167604,
+        0.02385236076583897
+      ],
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "loaded_FK_unqualified",
+      "n": 94,
+      "xy_residual_sum_m": 0.051115012806709346,
+      "xy_residual_p95_m": 0.0032104645762560074,
+      "camera_rotation_error_p50_p95_deg": [
+        1.4718687359239717,
+        1.544635402314074
+      ],
+      "camera_origin_error_p50_p95_m": [
+        0.003982542598080558,
+        0.0041316435708924695
+      ],
+      "signed_body_residual_sum": [
+        -0.040347879089692944,
+        0.00018893296529274122,
+        -0.0004100184887647629
+      ],
+      "blocked_object": "own_camera_projection_or_command_model",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    }
+  ],
+  "raw": "/home/ugrp/ugrp-sim/runs/mapbuild6/recording-r3",
+  "reproduction": [
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild7/mapbuild7_diagnose.py",
+    "--input",
+    "/home/ugrp/ugrp-sim/runs/mapbuild6/recording-r3",
+    "--prediction",
+    "/home/ugrp/ugrp-sim/runs/mapbuild6/replay-r3",
+    "--vision",
+    "/home/ugrp/ugrp-sim/src/mapbuild5b-complete-vision597",
+    "--renderer",
+    "/home/ugrp/ugrp-sim/src/drivecheck-renderer-5974a181",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/mapbuild7/diagnosis-r3"
+  ]
+}
