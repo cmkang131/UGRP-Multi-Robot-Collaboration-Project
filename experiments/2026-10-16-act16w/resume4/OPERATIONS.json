@@ -110,5 +110,13 @@
     "pid": 84287,
     "scope": "read-only; auto exits WAIT_REVIEW_C/error",
     "progress": "/home/ugrp/ugrp-sim/runs/act16w-native-progress-C.jsonl"
+  },
+  "dagger_coverage_counterfactual": {
+    "file": "native-label-boundary-A-B-counterfactual.json",
+    "observations": 10462,
+    "possible_query_upper_bound": 268,
+    "noninitial_possible_upper_bound": 252,
+    "actual_DAgger_data": false,
+    "interpretation": "noninitial ceiling is nonzero, so initial-only defect is not established; actual C TRAIN label counts/rejections must be measured. Do not relax held-object boundary or change execution based on this validation diagnostic."
   }
 }
