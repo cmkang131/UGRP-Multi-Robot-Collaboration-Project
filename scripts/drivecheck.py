@@ -118,11 +118,26 @@ def load_fixture(a):
     import mujoco
     os.chdir('/home/ugrp/ugrp-sim/src/drivecheck-renderer-5974a181')
     m = mujoco.MjModel.from_xml_string((a.fixture/'scene.xml').read_text())
-    f = np.load(a.fixture/'fixture.npz')
+    archive = np.load(a.fixture/'fixture.npz')
+    f = {name:archive[name] for name in archive.files}
     for field in ('tree_sleep_policy', 'cam_pos', 'cam_quat', 'cam_resolution', 'cam_sensorsize', 'cam_intrinsic'):
         getattr(m, field)[:] = f[field]
     if a.noslip_off_v1:
         m.opt.noslip_iterations = 0  # explicit diagnostic ablation; source value 10.
+    a.fixture_ablation=None
+    if a.clear_overlap_v1:
+        # Evaluator/setup-only causal test, not a proposed collision-disable fix.
+        # Shift the observed blocking box laterally by twice the sum of the
+        # original base/box XY bounding radii. Geometry/contacts remain enabled.
+        d=mujoco.MjData(m);d.qpos[:]=f['qpos'];mujoco.mj_forward(m,d)
+        base=m.geom('r1__base_lower_collision').id;box=m.geom('cargo_box_00_geom').id
+        shift=2*(np.linalg.norm(m.geom_size[base,:2])+np.linalg.norm(m.geom_size[box,:2]))
+        direction=1 if d.geom_xpos[box,1]>=d.geom_xpos[base,1] else -1
+        adr=int(m.jnt_qposadr[m.body_jntadr[m.geom_bodyid[box]]]);before=f['qpos'][adr:adr+3].copy()
+        f['qpos'][adr+1]+=direction*shift
+        a.fixture_ablation=dict(object='cargo_box_00',before_xyz=before.tolist(),after_xyz=f['qpos'][adr:adr+3].tolist(),
+            lateral_shift_m=float(direction*shift),basis='2 * (original base XY bounding radius + original box XY bounding radius)',
+            physical_contacts_disabled=False,production_fix=False)
     meta = json.loads((a.fixture/'fixture.json').read_text())
     cases = [r for r in meta['cases'] if not a.only or r['id'] in a.only.split(',')]
     if not cases:raise ValueError('no selected diagnostic cases')
@@ -144,7 +159,8 @@ def run(a):
         source_sha=source_sha,
         fixture_sha256=sha(a.fixture/'fixture.npz'), xml_sha256=sha(a.fixture/'scene.xml'),
         toggles=dict(legacy_plane_v1=a.legacy_plane_v1, dense_capacity_v1=a.dense_capacity_v1,
-                     noslip_off_v1=a.noslip_off_v1), cases=cases, dt=meta['dt'],
+                     noslip_off_v1=a.noslip_off_v1,clear_overlap_v1=a.clear_overlap_v1), cases=cases, dt=meta['dt'],
+        fixture_ablation=a.fixture_ablation,
         options={k:float(getattr(m.opt,k)) for k in ('timestep','iterations','ls_iterations','noslip_iterations','tolerance','solver','cone','integrator')},
         physics_hashes={key:hashlib.sha256(getattr(m,key).tobytes()).hexdigest() for key in FIELDS},
         control_feedback=dict(truth=0, contacts=0, measured_joints=0, models=0),
@@ -297,6 +313,7 @@ def main():
     b.add_argument('--source-sha',help='original commit of a git archive on a host with shallow shared storage')
     b.add_argument('--legacy-plane-v1',action='store_true');b.add_argument('--dense-capacity-v1',action='store_true')
     b.add_argument('--noslip-off-v1',action='store_true');b.add_argument('--capacity-reference',type=Path)
+    b.add_argument('--clear-overlap-v1',action='store_true',help='default OFF causal setup diagnostic: relocate only the observed blocking box laterally')
     a=p.parse_args()
     if a.action=='prepare':prepare(a)
     elif a.enabled:run(a)
