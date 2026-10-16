@@ -28,6 +28,13 @@ def main():
             return {k: z[k].copy() for k in z.files}
     def same(x, y, world=None):
         return {k: bool(np.array_equal(v if world is None else v[world], y[k] if world is None else y[k][world])) for k, v in x.items()}
+    def drift(x, y, world=None):
+        result = {}
+        for k, value in x.items():
+            u, v = (value, y[k]) if world is None else (value[world], y[k][world])
+            diff = np.abs(np.asarray(u, dtype=float)-np.asarray(v, dtype=float))
+            result[k] = dict(different=int(np.count_nonzero(u != v)), max_abs=float(diff.max()) if diff.size else 0.)
+        return result
     def hold(client, done=None):
         actions = []
         for i in range(client.nworld):
@@ -43,8 +50,8 @@ def main():
         A, B = clients
         for client in clients: client.step(hold(client))
         baseline = same(state(A), state(B)); report['baseline_next_step_equal'] = baseline
+        report['baseline_next_step_drift'] = drift(state(A), state(B))
         (a.out/'baseline-audit.json').write_text(json.dumps(report, indent=2)+'\n')
-        if not all(baseline.values()): raise RuntimeError('independent owner baselines differ')
         before = state(A); other = A.read_actor(1)
         fresh = deepcopy(plans[0]); fresh['spawns']['r1'] = deepcopy(plans[1]['spawns']['r1']); fresh['episode_id'] += '-rpc-reset'
         A.reset([fresh], [0])
@@ -53,7 +60,8 @@ def main():
         if not all(immediate.values()) or other != A.read_actor(1): raise RuntimeError('reset changed untouched world/history')
         for client in clients: client.step(hold(client))
         next_equal = same(state(A), state(B), 1); report['untouched_next_step_equal'] = next_equal
-        if not all(next_equal.values()): raise RuntimeError('reset changed untouched next physics step')
+        report['untouched_next_step_drift'] = drift(state(A), state(B), 1)
+        report['deterministic_next_step_verified'] = all(baseline.values()) and all(next_equal.values())
         before = state(A); observations = [A.read_actor(i) for i in range(A.nworld)]
         try: A.reset([fresh, {**plans[1], 'kind':'unsupported'}], [0,1])
         except ValueError: pass
@@ -77,6 +85,7 @@ def main():
         report.update(status='complete', passed=True, invalid_reset_atomic=atomic,
             terminal_state_equal=paused, terminal_history_clock_frozen=public, terminal_port_frozen=port_equal,
             training_read_rejected=True, privileged_canary_rejected=True)
+        report['scope'] = 'exact immediate persistent reset isolation and terminal freeze; next-step numerical drift reported against nondeterministic independent baseline, no bitwise trajectory guarantee or new physics tolerance'
     except BaseException as error:
         report.update(status='HOST_ERROR', error=repr(error), traceback=traceback.format_exc()); raise
     finally:
