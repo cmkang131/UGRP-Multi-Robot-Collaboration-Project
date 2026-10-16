@@ -49,7 +49,7 @@
     "B": "0/5",
     "pooled": false
   },
-  "progress": "A/B native VAL8 each0/8 raw-recounted, nominal alignment8/8 rejected each; A/off selected. review-A_B.json acknowledged17:26Z. C matched10000 TRAIN curriculum main6870 at17:47Z, no duplicate. Final40 unopened.",
+  "progress": "A/B0/8 each independently recounted and reviewed; C main9600/10000 at17:54Z. Matched teacher87429 full45SIM and terminal10Hz reviewed; actual initial640JPEG+qpos/qvel/camera exactly identical to A/B. Final40 unopened.",
   "next": [
     "Observe existing orchestrator73402 at /home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1; execution source c27a9d537 unchanged. Never resubmit existing A/B/validation jobs. Summary errors require original diagnosis, no automatic retry.",
     "At WAIT_REVIEW_A_B, run independent student raw recount for each validation root with analysis8e5f18480/scripts/audit_act16w_native_student.py. Native A87429 full review exists; B87429 is first30-only and requires full terminal review. Inspect two failures plus one actual student success if available; if none exists explicitly state it, retain clearly labeled teacher reference. Render on L4 using c27 playback; ffprobe only; retrieve only montage/strips/metadata, verify transfer hashes.",
@@ -126,5 +126,11 @@
     "worlds": 16,
     "physics_steps": 0,
     "local": "native-validation-gaps-summary.json"
-  }
+  },
+  "matched_teacher_playback": "native-teacher-87429-playback-review.json",
+  "matched_montage": "native-A-B-teacher-montage.png",
+  "split_annotations": [
+    "native-dataset-split-annotation.json",
+    "native-validation-split-annotation.json"
+  ]
 }

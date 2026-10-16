@@ -89,3 +89,18 @@ B는 이128열을 정규화 좌표의0(=TRAIN 평균)으로 바꾸고, 서보PWM
 - [DAgger, Ross et al. 2011](https://proceedings.mlr.press/v15/ross11a.html): 자기 행동이 후속 관측 분포를 바꾸는 모방학습 문제의 동기. 이번 h5는 TRAIN20 시작의 최대30SIM초 방문 상태를 한 번 재라벨하며 h0만 유효·나머지7표적은 padding이다. 원형 전체 알고리즘이나 이론 보장을 재현했다는 주장은 하지 않는다.
 - [Curriculum Learning, Bengio et al. 2009, ICML 공식 초록](https://icml.cc/Conferences/2009/abstracts.html): 쉬운 예제에서 복잡한 예제로 순서를 넓히는 동기. 이번 h4의 구체적 난도는 TRAIN 시작 거리·절대 yaw의 경험 CDF이며 VAL/최종 시드로 맞추지 않는다. 저자 PDF/ACM 직접 열기는 실패해 공식 학회 초록 확인 범위로 기록한다.
 - [MuJoCo 거리 API](https://mujoco.readthedocs.io/en/stable/APIreference/APIfunctions.html#mj-geomdistance), [모델 형식](https://mujoco.readthedocs.io/en/stable/APIreference/APItypes.html): 저장 자세의 이름 있는 기하 거리 검사만 참고했다. 기존 컴파일 geometry를 복원하고 처음·마지막 프레임의 전수 계산과 대조한다. 거리 상한과 legacy CCD 정확도 한계를 보존하며 C 물리 견고성 시험으로 세지 않는다.
+
+
+[동일 시드87429 비교 몽타주](native-A-B-teacher-montage.png)는 A/B 실패2개와
+기록 단계의 교사 성공 참고1개를 나란히 보여 준다. 교사 성공을 ACT 성공으로 세지 않는다.
+[교사 전체 검토](native-teacher-87429-playback-review.json)는0–45초2Hz와
+끝35.5–45.4초10Hz를 모두 확인했다. A/B/교사는 같은 시작 qpos·qvel·카메라 설정이며,
+실제640×480 첫 JPEG도 바이트까지 같았다([시작 대조](native-initial-87429-comparison.json)).
+교사 검토용320×240 축소 JPEG를 학생640×480 검토 파일과 비교한 차이는 별도 자료 크기 차이였다.
+학습용 원본 비교에서 픽셀 MAE0·최대차0이다. 이 동일성 검사는87429 한 사례 범위다.
+
+원본 기록 plan의 `split=train`은 최종 데이터 소속을 뜻하지 않는다.
+[소속 주석](native-dataset-split-annotation.json)은 실제 manifest의 TRAIN32/VAL8과
+겹침0을 확인했고,87429는 validation으로 분리됐다.
+[A/B 검증 소속](native-validation-split-annotation.json)은 실제8시드가 protocol VAL과 같음을
+확인한다. 원본 plan·학습 자료·평가 원장은 덮어쓰지 않았다.

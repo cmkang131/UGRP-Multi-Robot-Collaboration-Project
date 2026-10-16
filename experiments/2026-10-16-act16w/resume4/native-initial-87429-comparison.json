@@ -1,0 +1,33 @@
+{
+  "status": "complete",
+  "same_seed": 87429,
+  "initial_qpos_exact": true,
+  "initial_qvel_exact": true,
+  "camera_dict_exact": true,
+  "JPEG_bytes_equal": true,
+  "decoded_pixels_exact": true,
+  "pixel_MAE": 0.0,
+  "pixel_max_abs": 0,
+  "different_scalar_fraction": 0.0,
+  "quantization_tables_equal": true,
+  "teacher_size": [
+    640,
+    480
+  ],
+  "actor_size": [
+    640,
+    480
+  ],
+  "teacher_JPEG": {
+    "path": "/home/ugrp/ugrp-sim/runs/act16w-native-record-r1/group-04/capture/world-000/rgb/r1/000000.jpg",
+    "sha256": "8b4dd119f0da533e31e4f514214f6ead608198b2b2e2f37482e6994cd41c2db8"
+  },
+  "actor_JPEG": {
+    "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-A/validation/group-04/evaluation/owner/world-000/review-own/000000.jpg",
+    "sha256": "8b4dd119f0da533e31e4f514214f6ead608198b2b2e2f37482e6994cd41c2db8"
+  },
+  "comparison_image": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/initial-87429-RGB-comparison.jpg",
+  "comparison_sha256": "f2bc961d5d3bf9d9864d829e1170b0797a56e540b9e237d956a1bc4772a0a4b5",
+  "review_only_difference": "teacher review JPEG320x240 is downsized; actual training capture640x480 above is authoritative",
+  "scope": "recorded initial state/camera and actual640x480 JPEG comparison only; no task success attribution"
+}
