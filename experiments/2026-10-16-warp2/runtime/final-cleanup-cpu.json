@@ -1,0 +1,12 @@
+{
+  "checked_utc": "2026-10-15T19:48:12.466963+00:00",
+  "own_active": [],
+  "leases": {
+    "warp1.json": "{\"task\": \"warp1\", \"pid\": 14688, \"owner\": \"Mac orchestration / CPU baseline\", \"started\": \"2026-10-15T18:11:43.472083+00:00\", \"expected_end\": \"2026-10-15T20:00:00Z\", \"concurrency\": 16}",
+    "beampair7.json": "{\n  \"task\": \"beampair7\",\n  \"pid\": 164672,\n  \"started\": \"2026-10-15T19:42:20.667145+00:00\",\n  \"expected_end\": \"finite queue; per-run8h cap\",\n  \"concurrency\": 4,\n  \"source_sha\": \"ef284e92510ca4283f1db5de9aecd1dac5c17b0b\",\n  \"pr\": 533\n}",
+    "reloc16.json": "{\n  \"task\": \"reloc16\",\n  \"pid\": 163522,\n  \"owner\": \"Mac Codex orchestration\",\n  \"started\": \"2026-10-15T18:48:23.990338+00:00\",\n  \"expected_end\": \"2026-10-16T02:00:00Z\",\n  \"concurrency\": 8,\n  \"controller_pid_scope\": \"Mac driver; guest analysis children recorded per run\",\n  \"pids\": [\n    163522,\n    163524,\n    163526,\n    163528\n  ],\n  \"pr\": 532,\n  \"source_sha\": \"5f8b3eb283ce79f59a69331993575a49b5c101bd\"\n}\n",
+    "gatesv5.json": "{\"task\": \"gatesv5\", \"pid\": 41734, \"owner\": \"Mac gatesv5 operator\", \"started\": \"2026-10-15T18:49:15.219340+00:00\", \"expected_end\": \"bounded gate40+gate80; <=8h per command\", \"concurrency\": 0, \"cohorts\": [\"beampair\", \"release\"], \"note\": \"Umbrella metadata only; per-cohort child leases own capacity\"}"
+  },
+  "vm_stop_attempted": false,
+  "reason": "other task leases and execution processes remain; leave shared VM running"
+}
