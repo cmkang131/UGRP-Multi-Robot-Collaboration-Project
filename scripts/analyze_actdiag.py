@@ -253,14 +253,42 @@ def report(a):
             oracle_phase=grouping=='phase_role',per_phase={ph:metrics(p[val['phase']==ph],val['target'][val['phase']==ph]) for ph in sorted(set(val['phase']))},
             train_validation_seed_overlap=len(set(train['seed'])&set(val['seed'])))
     # Aligned query h0 versus neighboring teacher timesteps: same shard only.
-    lag_errors=defaultdict(list)
+    lag_errors=defaultdict(list);deployment=defaultdict(list);dtargets=[]
+    horizon_errors=defaultdict(list);horizon_base=defaultdict(list)
+    effective=defaultdict(list)
     for ep,s,m in arrays(a.dataset,'validation'):
-        p=np.load(a.predictions/(ep['path']+'.npz'))['prediction'][:,0];p=decoded(p)
+        chunks=np.load(a.predictions/(ep['path']+'.npz'))['prediction']
+        p=decoded(chunks[:,0]);base=persistence(s['state']);y=s['action'][:,0]
+        for h in range(c.CHUNK):
+            valid=~s['action_is_pad'][:,h]
+            horizon_errors[h].append(np.abs(decoded(chunks[:,h])[valid]-s['action'][valid,h]))
+            horizon_base[h].append(np.abs(base[valid]-s['action'][valid,h]))
+        grid=refresh_grid(m);start=0;fixed=[];ensemble=[]
+        for i in range(len(m)):
+            if i==0 or abs(m[i]['t']-m[i-1]['t']-.1)>1e-5:start=i
+            origin=i-(i-start)%c.CHUNK
+            fixed.append(chunks[origin,i-origin])
+            origins=list(range(max(start,i-c.CHUNK+1),i+1))
+            weights=np.exp(-.01*np.arange(len(origins))) # original ACT coefficient
+            ensemble.append(np.average([chunks[j,i-j] for j in origins],axis=0,weights=weights))
+        fixed=decoded(fixed);ensemble=decoded(ensemble)
+        for key,value in [('chunk8',fixed),('h0_every_tick',p),('ensemble001',ensemble)]:
+            deployment[key].append(value)
+            impulse=value[:,:4]*value[:,4:8]*1.5
+            truth=y[:,:4]*y[:,4:8]*1.5
+            effective[key].append(np.abs(impulse-truth))
+        effective['persistence'].append(np.abs(base[:,:4]*base[:,4:8]*1.5-y[:,:4]*y[:,4:8]*1.5))
+        dtargets.append(y)
         for lag in range(-8,9):
             ii=np.arange(max(0,-lag),min(len(m),len(m)-lag));jj=ii+lag
             valid=np.array([abs(m[j]['t']-m[i]['t']-lag*.1)<1e-5 for i,j in zip(ii,jj)])
             lag_errors[lag].append(np.abs(p[ii[valid],:4]-s['action'][jj[valid],0,:4]))
     result['lag_sweep']={str(k):dict(N=sum(len(x) for x in v),wheel_mae=float(np.concatenate(v).mean())) for k,v in lag_errors.items()}
+    result['teacher_path_deployment_proxy']={k:metrics(np.concatenate(v),np.concatenate(dtargets)) for k,v in deployment.items()}
+    result['effective_duty_mae']={k:float(np.concatenate(v).mean()) for k,v in effective.items()}
+    result['effective_duty_scope']='wheel * pulse_seconds / 0.1; commanded duty surrogate, never measured speed/displacement'
+    result['horizon_mae']={str(h):{'ACT':metrics(np.concatenate(v),np.zeros_like(np.concatenate(v))),
+        'persistence':metrics(np.concatenate(horizon_base[h]),np.zeros_like(np.concatenate(horizon_base[h])))} for h,v in horizon_errors.items()}
     result['baselines']=basis
     result['scope']='fixed final checkpoint; unique TRAIN/validation h0 rows; no model optimization; oracle-stage results not deployable'
     write_json(a.output/'metrics.json',result)
