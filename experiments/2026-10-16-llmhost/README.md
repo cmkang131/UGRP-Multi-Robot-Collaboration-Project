@@ -20,7 +20,9 @@ Ada(SM89)의 AWQ/GPTQ/Marlin이 있다([지원표](https://docs.vllm.ai/en/v0.25
 [양자화 하드웨어](https://docs.vllm.ai/en/latest/features/quantization/)).
 실제 컨테이너는 Docker Registry에서 조회한 digest로 고정했다:
 `vllm/vllm-openai@sha256:e4f88a835143cd22aee2397a26ec6bb80b3a4a6fe0c882bcbc63822904766089`
-(`v0.25.1` 태그). 이미지 manifest의 존재를 확인했으며 pull·로딩은 미실행이다.
+(`v0.25.1` 태그). 이미지 manifest와 linux/amd64 entrypoint `[vllm, serve]`, CUDA13.0.2, 압축 layer 합계
+8,818,322,020 B를 확인했다. L4 kernel driver는580.178.04이며 런타임 호환성은
+미검증이다. [이미지 메타데이터](vllm-image-metadata.json)를 보존했고 pull·로딩은 미실행이다.
 모델과 모든 파일의 고정 revision·크기·SHA는
 [`configs/llmhost.json`](../../configs/llmhost.json)에 있다.
 
