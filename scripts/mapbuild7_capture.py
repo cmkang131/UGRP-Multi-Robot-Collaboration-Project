@@ -74,6 +74,7 @@ def run(a):
     from warp_act_scene import make_scene
     cv2.setNumThreads(1);plan=json.loads(a.pickup.read_text());plan={**plan,'scenario_id':'s1_normal_mixed_v7','end_color_scene':'off'}
     if plan['kind']!='cyan' or plan['item_id']!='cyan_2':raise ValueError('REGISTERED_CYAN2_ONLY')
+    import sim.grasp_act_solo_teacher
     expected=q['teacher_class_sha256'];module=Path(sys.modules['sim.grasp_act_solo_teacher'].__file__)
     if sha(module)!=expected:raise ValueError('FROZEN_TEACHER_CLASS_REQUIRED')
     scene=make_scene(plan);hardware,_=load_fitted_hardware()
