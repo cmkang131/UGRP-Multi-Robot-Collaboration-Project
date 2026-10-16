@@ -6,6 +6,7 @@ reloc19 HEAD b73e815f6 위 claude/reloc20. locdiag.md/JSON을 먼저 읽고 기�
 |---|---|---|
 |reloc20_heading_forward_v1|off|on: 운반·목적지 횡 펄스 제거|
 |reloc20_loaded_footprint_v1|off|on: 명령 FK 화물 enclosure+정적 초기 빔, strict 경로|
+|reloc20_obstacle_wall_mask_v1|off|R2: 기존 v5 RGB 벽 마스크를 장애물 검출에도 적용|
 |reloc20_contact_ode_v1|off|on: PR510 후속 ODE 별도 모듈|
 |reloc20_visual_stall_v1|off|on: 자기 RGB LK+영상 변화량 불일치, 적분 억제·Q 증가·후퇴|
 |destination_direction_preserve_v1/search_replan_v1|off|on: reloc19 비물리 후속 포함|

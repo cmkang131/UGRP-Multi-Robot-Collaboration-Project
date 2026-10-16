@@ -32,7 +32,7 @@ def held_mask(kind, grasp_pwm, pwm, size=(640, 480)):
     return cv2.dilate(mask.astype(np.uint8), np.ones((9, 9), np.uint8)).astype(bool)
 
 
-def detections(bgr, pwm, *, held_kind=None, grasp_pwm=None, managed=False):
+def detections(bgr, pwm, *, held_kind=None, grasp_pwm=None, managed=False, wall_mask=False):
     if bgr.shape != (480, 640, 3) or bgr.dtype != np.uint8:
         raise ValueError('native own RGB required for obstacle detection')
     _, cam = transforms(pwm)
@@ -40,6 +40,14 @@ def detections(bgr, pwm, *, held_kind=None, grasp_pwm=None, managed=False):
     hsv = cv2.cvtColor(bgr, cv2.COLOR_BGR2HSV)
     reference = _frame_reference(hsv)
     excluded = held_mask(held_kind, grasp_pwm, pwm) if held_kind is not None else np.zeros((480, 640), bool)
+    held_count=int(excluded.sum())
+    if wall_mask:
+        # Same frozen scene-v5 class already used for destination floor and
+        # localization. R1 native replay: the broad purple wall was a 'can'.
+        # No new hue/size/acceptance threshold, and no evaluator segmentation.
+        from harness.reloc16_floor_mask import floor_clear
+        clear,_=floor_clear(bgr,np.ones((480,640),bool))
+        excluded |= ~clear
     masks = [(k, hue_mask(hsv, k, reference=reference), v) for k, v in APPEARANCE.items()]
     # Existing orange robot appearance extended through the yellow chassis band.
     masks.append(('robot', cv2.inRange(hsv, (5, 70, 40), (20 if managed else 42, 255, 255)),
@@ -83,7 +91,7 @@ def detections(bgr, pwm, *, held_kind=None, grasp_pwm=None, managed=False):
                 continue  # floor paint is much larger than catalogue geometry
             out.append({'kind': kind, 'xy': xy.tolist(), 'radius': math.hypot(hx, hy),
                         'range_error_m': .06+.08*distance, 'pixel_bbox': [x, y, w, h]})
-    return out, int(excluded.sum())
+    return out, held_count
 
 
 class RGBObstacleMemory:
@@ -125,7 +133,8 @@ class RGBObstacleMemory:
         self.last_t = float(now)
 
     def observe(self, bgr, pwm, pose, now, *, holding, kind, grasp_pwm, pose_sigma=(0., 0., 0.)):
-        obs, masked = detections(bgr, pwm, held_kind=kind if holding else None, grasp_pwm=grasp_pwm, managed=self.managed)
+        obs, masked = detections(bgr, pwm, held_kind=kind if holding else None, grasp_pwm=grasp_pwm, managed=self.managed,
+                                 wall_mask=getattr(self,'reloc20_wall_mask',False))
         from harness.visual_arm_v3 import forward_grip
         grip = forward_grip(grasp_pwm)[:2] if grasp_pwm is not None else None
         self.update(obs, pose, now, holding=holding, kind=kind, grip_xy=grip, pose_sigma=pose_sigma,
@@ -250,6 +259,7 @@ class RGBObstacleMemory:
 
     def record(self):
         return {'profile': PROFILE, 'frames': self.frames, 'last_t': self.last_t,
+                **({'reloc20_obstacle_wall_mask_v1':True} if getattr(self,'reloc20_wall_mask',False) else {}),
                 'held_mask_pixels': self.masked_pixels, 'tracks': self.tracks,
                 'source': 'own_rgb_issued_camera_fk_command_pose', 'truth_reads': 0,
                 'range_calibrated': False, 'unseen_is_free': False,

@@ -45,7 +45,7 @@ def launch(n):
                 plan=json.loads(Path(cmd[cmd.index('--plan')+1]).read_text());ep=plan['episodes'][0]
                 ep.update(batch=f'reloc20-r{n}',destination_visual_acquire_v1=True,carry_relocalize_v1=False,destination_camera_pan_v1=True)
                 candidate=condition=='candidate'
-                ep.update({key:candidate for key in ('reloc20_heading_forward_v1','reloc20_loaded_footprint_v1','reloc20_visual_stall_v1','reloc20_contact_ode_v1','destination_direction_preserve_v1','destination_search_replan_v1')})
+                ep.update({key:candidate for key in ('reloc20_heading_forward_v1','reloc20_loaded_footprint_v1','reloc20_visual_stall_v1','reloc20_contact_ode_v1','destination_direction_preserve_v1','destination_search_replan_v1','reloc20_obstacle_wall_mask_v1')})
                 ep['pr']=543
                 ep['reloc20_drive_eval_v1']=True
                 p=folder/'input-plan.json';p.write_text(json.dumps(plan,indent=2)+'\n')

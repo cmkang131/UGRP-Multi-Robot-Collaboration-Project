@@ -214,6 +214,7 @@ def install(carry,plan):
     carry.reloc20_heading=plan.get('reloc20_heading_forward_v1',False)
     carry.reloc20_route=LoadedRoute(carry.static) if plan.get('reloc20_loaded_footprint_v1',False) else None
     carry.reloc20_stall=None
+    if plan.get('reloc20_obstacle_wall_mask_v1',False):carry.obstacles.reloc20_wall_mask=True
     if plan.get('reloc20_visual_stall_v1',False):
         fit=json.loads((ROOT/'experiments/2026-10-16-reloc20/flow-fit.json').read_text())
         carry.reloc20_stall=VisualStall(fit);carry.loc.reloc20_stall=carry.reloc20_stall
