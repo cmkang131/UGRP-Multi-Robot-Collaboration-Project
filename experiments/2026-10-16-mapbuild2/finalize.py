@@ -53,7 +53,10 @@ def main():
     for path in sorted(root.rglob('*.json')):
         if path.is_file() and path.stat().st_size>65536:archive(path)
     dump(out/'archive-receipts.json',receipts)
-    dump(out/'remote-file-hashes.json',{str(p.relative_to(root)):sha(p) for p in sorted(root.rglob('*')) if p.is_file()})
+    # Metadata has its own SHA manifest; exclude it here to avoid a circular
+    # hash when the compression receipt gains this payload-manifest archive.
+    dump(out/'remote-file-hashes.json',{str(p.relative_to(root)):sha(p) for p in sorted(root.rglob('*'))
+        if p.is_file() and not p.is_relative_to(out)})
     if (out/'remote-file-hashes.json').stat().st_size>65536:archive(out/'remote-file-hashes.json')
     dump(out/'archive-receipts.json',receipts)
     dump(out/'SHA256SUMS.json',{p.name:sha(p) for p in out.iterdir() if p.is_file()})
