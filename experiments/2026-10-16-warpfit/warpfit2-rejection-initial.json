@@ -1,0 +1,15 @@
+{
+  "stage": "before_runtime_candidates",
+  "basis": "Previous warpfit physical values frozen; runtime audit is not a causal retuning of failed grasps",
+  "previous_funnel": "/Users/changmin/projects/ugrp-wt/gcp6setup/experiments/2026-10-16-warpfit/rejection_table.json",
+  "distribution": [
+    {"category": "solver_line_search_limit", "runs": 2, "reason": "fast10 beam reached LS10; candidate not repeated", "blocked_object": "physics_solver", "minimum_gap_m": null, "gap_status": "not_geometric"},
+    {"category": "HOST_ERROR_initial_import", "runs": 1, "reason": "historical sibling import preparation error", "blocked_object": "runtime", "minimum_gap_m": null, "gap_status": "not_geometric"}
+  ],
+  "new_physics_retuning": 0,
+  "rounds": ["R1 N16 complete envelope and upstream plane pair", "R2 N16 same baseline and measured-capacity pair", "R3 N64 all three unchanged runtime profiles"],
+  "box_trials": "first16 repeat1 + first14 repeat2 atN16; first30 atN64; identical reset replicas, not independent seeds",
+  "warm_stimulus": "original forward100ms, stop1s, original lateral60/400ms, stop1s; cold controls same reset",
+  "acceptance": "existing12mm loaded clearance + all positive fingers; compare native-v1 P05/P95 without fitting a new physical tolerance",
+  "limit": "three rounds; finite physics ticks; no VM or task wall cap"
+}

@@ -142,25 +142,38 @@ def run(a):
                 raise ValueError('pinned MJWarp required: '+url)
             report.update(mjwarp_source=url, warp=wp.__version__)
             wm=mjw.put_model(m)
-            from scripts.simalt_collision_compat import install_legacy_plane
-            report['collision_adapter']=install_legacy_plane(m)
-            report['compatibility_held_constant']='C312 mesh/actuator compilation and legacy plane; every profile'
+            from sim.warp_native_runtime import collision, allocation
+            runtime_profile=getattr(a,'runtime_profile','off')
+            report['runtime_profile']=runtime_profile
+            report['collision_adapter']=collision(runtime_profile,m)
+            report['compatibility_held_constant']='C312 mesh/actuator compilation; plane selected explicitly by runtime profile'
             # Baseline preserves the earlier path's explicit 1e-8 tolerance.
             # Native profiles accept the pinned float32 conversion floor.
             if a.profile == 'baseline_noslip10':
                 wm.opt.tolerance.fill_(float(m.opt.tolerance))
             report['effective_tolerance'] = float(wm.opt.tolerance.numpy().item())
             ref=json.loads(a.capacity_reference.read_text()) if a.capacity_reference else {}
+            if runtime_profile=='warp_measured_capacity_v1' and ref.get('fixture_sha256')!=digest(a.fixture/'fixture.npz'):
+                raise ValueError('capacity envelope fixture mismatch')
             def pow2(x): return 1 << (max(1,int(x))-1).bit_length()
             nc=pow2(max(int(d.ncon),int(ref.get('max_ncon',0)),a.nconmax or 0))
             nf=pow2(max(int(d.nefc),int(ref.get('max_nefc',0)),a.njmax or 0))
             report['capacity']=dict(nconmax=nc,njmax=nf,basis='power-of-two observed C/import maxima; overflow rejects')
+            measured=allocation(runtime_profile,ref,a.nworld,int(d.ncon),int(d.nefc))
+            capacity_kwargs=dict(nconmax=nc,njmax=nf) if measured is None else {k:measured[k] for k in ('naconmax','njmax')}
+            if measured is not None:report['capacity']=measured
             from scripts.simalt_physics_compare import unused_efm
-            with unused_efm(m,d): wd=mjw.put_data(m,d,nworld=a.nworld,nconmax=nc,njmax=nf)
+            with unused_efm(m,d): wd=mjw.put_data(m,d,nworld=a.nworld,**capacity_kwargs)
             mjw.step(wm,wd);wp.synchronize()
             if np.any(wd.overflow.numpy()):
                 raise RuntimeError('warmup CAPACITY_OVERFLOW')
-            with unused_efm(m,d): wd=mjw.put_data(m,d,nworld=a.nworld,nconmax=nc,njmax=nf)
+            with unused_efm(m,d): wd=mjw.put_data(m,d,nworld=a.nworld,**capacity_kwargs)
+            envelope=wp.array([int(d.ncon)*a.nworld,int(d.nefc)],dtype=wp.int32)
+            @wp.kernel
+            def measure(nacon:wp.array[int],nefc:wp.array[int],maximum:wp.array[int]):
+                w=wp.tid()
+                wp.atomic_max(maximum,0,nacon[0])
+                wp.atomic_max(maximum,1,nefc[w])
             if tape.ndim==2:tape=tape[:,None,:]
             wt=wp.array(np.asarray(tape,dtype=np.float32),dtype=wp.float32)
             tick=wp.zeros(1,dtype=wp.int32)
@@ -177,6 +190,8 @@ def run(a):
                 for _ in range(graph_steps):
                     wp.launch(control,dim=(a.nworld,m.nu),inputs=[wt,tick,wd.ctrl])
                     mjw.step(wm,wd)
+                    if getattr(a,'measure_runtime_envelope',False):
+                        wp.launch(measure,dim=a.nworld,inputs=[wd.nacon,wd.nefc,envelope])
                     wp.launch(advance,dim=1,inputs=[tick])
             report['graph_steps']=graph_steps
             first,last=wp.Event(enable_timing=True),wp.Event(enable_timing=True)
@@ -293,6 +308,11 @@ def run(a):
                 finger_force=[s[5] for s in samples])
             np.savez_compressed(a.output/'contacts-world0.npz',contacts=np.array(all_contacts).reshape(-1,5))
         report['max_ncon']=max_nc;report['max_nefc']=max_nf
+        if a.engine=='warp' and getattr(a,'measure_runtime_envelope',False) and 'envelope' in locals():
+            maximum=envelope.numpy()
+            report['every_step_envelope']=dict(max_nacon=int(maximum[0]),max_nefc=int(maximum[1]),nworld=a.nworld,
+                fixed_work_complete=bool(report['completed'] and not report['cap_end']),
+                overflow=wd.overflow.numpy().tolist(),recording_only=True,hz=1/float(m.opt.timestep))
         passed=report['completed']
         dump(a.output/'rejection_table.json',dict(stages=[
             dict(gate='fixed_tape_admitted',cumulative_pass=1,rejected=0),
@@ -322,6 +342,8 @@ def main():
     p.add_argument('--njmax',type=int)
     p.add_argument('--max-sim-s',type=float)
     p.add_argument('--record-own-rgb-ring',action='store_true',help='recording only, no control/physics change; representative world0')
+    p.add_argument('--runtime-profile',choices=('off','warp_upstream_plane_v1','warp_measured_capacity_v1'),default='off')
+    p.add_argument('--measure-runtime-envelope',action='store_true',help='record every-step allocation maxima on GPU; no control feedback')
     a=p.parse_args()
     if not a.enabled:p.error('explicit --enabled required')
     if a.engine=='cpu' and a.nworld!=1:p.error('C distribution is a separate N1 reference')
