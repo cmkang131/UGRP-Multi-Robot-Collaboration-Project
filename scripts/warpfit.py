@@ -194,6 +194,12 @@ def run(a):
                     use_shadows=True,enabled_geom_groups=[0,1,2,3],cam_active=cameras)
                 pixels=wp.zeros((1,480,640),dtype=wp.vec3)
                 mx,my=raw_fisheye_remap(640,480)
+                # Compile recording kernels before the timed fixed work, just
+                # as the discarded physics warm-up above. This separate data
+                # never advances physics or changes the measured world's state.
+                mjw.kinematics(wm,record_data);mjw.camlight(wm,record_data)
+                mjw.refit_bvh(wm,record_data,render_context);mjw.render(wm,record_data,render_context)
+                mjw.get_rgb(render_context,0,pixels);wp.synchronize()
                 report['rgb_recording']=dict(worlds=[0],cameras=cameras,hz=10,terminal_sim_s=10,
                     source='recording-only MJWarp renderer on exact same-step world0 qpos; separate from training/control',
                     other_worlds='full10Hz state; deferred own-camera reconstruction on gcp2',wall_s=0.,frames=0)
