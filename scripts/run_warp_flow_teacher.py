@@ -137,9 +137,10 @@ def main():
         training_rgb=False,model_calls=0,weld='off',cpu_results_pooled=False,
         gcp3_isolated_v1=a.gcp3_isolated_v1,warp_debug_v1=a.warp_debug_v1,
         workspace_trace_v1=a.warp_workspace_trace_v1,
-        gate_eligible=False,shared_load=True,vm_hourly_usd=a.vm_hourly_usd,
+        gate_eligible=False,shared_load=not a.gcp3_isolated_v1,vm_hourly_usd=a.vm_hourly_usd,
         placement_graspable_filter_v1=a.placement_graspable_filter_v1,
-        cuda_runtime_profile='warp4_private_mps_v1' if a.mps_shared_v1 else 'shared_contexts_baseline',
+        cuda_runtime_profile=('gcp3_isolated_no_mps_v1' if a.gcp3_isolated_v1 else
+            'warp4_private_mps_v1' if a.mps_shared_v1 else 'shared_contexts_baseline'),
         price_basis='inherited regional VM estimate; billing unverified',reproduce=sys.argv)
     write(a.out/'summary.json',report)
     lanes=[];bridges=[];contexts=[];results={};recent=[deque(maxlen=100) for _ in indices]
