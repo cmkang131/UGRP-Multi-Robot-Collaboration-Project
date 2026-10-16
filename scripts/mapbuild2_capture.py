@@ -7,7 +7,6 @@ No CPU physics steps, camera/geometry changes, wall deadline or truth feedback.
 from __future__ import annotations
 import argparse
 from collections import deque
-from dataclasses import asdict
 import hashlib
 import json
 import math
@@ -170,7 +169,7 @@ def run(a):
                         # Acquisition-only CPU mj_forward evaluates the existing
                         # transducer model at the actual Warp state. No CPU step.
                         sensor_data.qpos[:]=qpos[i];sensor_data.qvel[:]=qvel[i];mujoco.mj_forward(m,sensor_data)
-                        reading=asdict(us.measure(t));ranges.append(dict(sequence=case['name'],**reading))
+                        reading=us.measure(t).as_dict();ranges.append(dict(sequence=case['name'],**reading))
                 ring.append(dict(t=t,frame_id=tick));print('recorded',t,flush=True)
             if centi==400:break
             u=stimulus(t);effective,relay=drive.command_step(u,relay)

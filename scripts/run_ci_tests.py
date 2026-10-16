@@ -67,6 +67,7 @@ TEST_PATTERNS = (
     "tests/test_own_traversal_graph.py",
     "tests/test_self_odom_grid.py",
     "tests/test_mapbuild1.py",
+    "tests/test_mapbuild2.py",
     "tests/test_self_map_csm.py",
     "tests/test_self_map_csm_v2.py",
     "tests/test_self_map_prob.py",
