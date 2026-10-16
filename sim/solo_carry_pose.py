@@ -323,7 +323,7 @@ class CommandPose:
 
     def record(self):
         return {'pose_estimate': self.pose, 'source': 'task_start_then_issued_commands_own_rgb_relook',
-                **({'reloc20_contact_ode_v1':True,'last_nominal_delta':self.last_nominal_delta} if getattr(self,'reloc20_ode',False) and hasattr(self,'last_nominal_delta') else {}),
+                **({'reloc20_contact_ode_v1':True,'last_nominal_delta':self.last_nominal_delta,'legacy_rotation10_gain_applied':False} if getattr(self,'reloc20_ode',False) and hasattr(self,'last_nominal_delta') else {}),
                 'task_start': self.start, 'sigma_m_m_rad': self.sigmas(),
                 'estimate_t': self.now, 'last_rgb_fix_t': self.last_fix,
                 'rgb_fix_age_s': None if self.last_fix is None else self.now-self.last_fix,
@@ -353,6 +353,6 @@ class CommandPose:
                    if self.trim_calibration is not None else {}),
                 **({'partial_budget_epoch': list(self.partial_epoch), 'partial_is_full_fix': False}
                    if self.partial_epoch is not None else {}),
-                **({'drive_model_deadband_v1': True, 'drive_model': 'shared v7 relay and confirmed damping',
+                **({'drive_model_deadband_v1': True, 'drive_model': 'reloc20_contact_ode_from_7b223e30' if getattr(self,'reloc20_ode',False) else 'shared v7 relay and confirmed damping',
                     'budget_epoch_t': self.started if self.last_fix is None else self.last_fix}
                    if self.drive_model_enabled else {})}

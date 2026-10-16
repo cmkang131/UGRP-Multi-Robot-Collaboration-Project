@@ -11,9 +11,9 @@ old=fm.floor_clear
 fm.floor_clear=lambda bgr,clear:old(bgr,clear,state=state,option=OPTION)
 r=Path('/home/ugrp/ugrp-sim/runs/reloc20-r1-carry-candidate-93266-aede24d6/raw');lines=(r/'teacher-commands.jsonl').read_text().splitlines();c=[json.loads(x) for x in lines];out=[]
 manifest=json.load(open(r/'playback/manifest.json'))['frames']
-for t in (87.8,88.3,89.3,90.3,91.3,92.3):
- f=min(manifest,key=lambda x:abs(x['t']-t));x=min(c,key=lambda x:abs(x['t']-f['t']));pwm={int(k):v for k,v in x['command']['pwm'].items()}
+for t in [f['t'] for f in manifest if 75<=f['t']<=96]:
+ f=min(manifest,key=lambda x:abs(x['t']-t));x=min(c,key=lambda x:abs(x['t']-f['t']));ix=c.index(x);pwm={int(k):v for k,v in c[max(0,ix-1)]['command']['pwm'].items()}
  p=r/'playback'/f['files']['r1'];bgr=cv2.imread(str(p))
  a,_=detections(bgr,pwm,managed=True);b,_=detections(bgr,pwm,managed=True,wall_mask=True)
  out.append(dict(t=f['t'],requested_t=t,source=str(p),sha256=hashlib.sha256(p.read_bytes()).hexdigest(),before=a,after=b))
-p=Path('/home/ugrp/ugrp-sim/runs/reloc20-prior/wall-replay.json');p.write_text(json.dumps(dict(rows=out,scope='saved own RGB; no geometry/GT mask; frozen v5 classifier unchanged'),indent=2)+'\n');print(json.dumps(out,indent=2))
+p=Path('/home/ugrp/ugrp-sim/runs/reloc20-prior/wall-replay.json');p.write_text(json.dumps(dict(rows=out,scope='saved own RGB; no geometry/GT mask; frozen v5 classifier unchanged'),indent=2)+'\n');print(json.dumps([x for x in out if any(z['kind']=='can' for z in x['before'])],indent=2))

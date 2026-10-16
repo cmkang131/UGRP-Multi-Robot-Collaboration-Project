@@ -63,7 +63,7 @@ def launch(n):
     available=int(next(x for x in Path('/proc/meminfo').read_text().splitlines() if x.startswith('MemAvailable:')).split()[1])*1024
     assert available>=6*1024**3
     processes=subprocess.check_output(['ps','-eo','pid,ppid,comm,args'],text=True)
-    actual=sum('scripts.run_solo_grasp_act_teacher' in x or 'scripts.run_self_map_diagnostic' in x for x in processes.splitlines() if 'python' in x)
+    actual=sum(any(marker in x for marker in ('--worker','--execute','scripts.run_solo_grasp_act_teacher','scripts.run_self_map_diagnostic')) for x in processes.splitlines() if 'python' in x and '/home/ugrp/ugrp-sim/' in x)
     assert max(actual,sum(x.get('concurrency',0) for x in leases if x.get('task')!='reloc20'))+6<=40
     queue=dict(round=n,source_sha=sha,rejection_table=str(rejection),admission=dict(leases=leases,own_concurrency=6),runs=tasks)
     (batch/'queue.json').write_text(json.dumps(queue,indent=2)+'\n');lock=threading.Lock()

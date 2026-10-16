@@ -211,10 +211,16 @@ class VisualStall:
 
 def install(carry,plan):
     """Called once before any integration; every feature is default off."""
+    for key in ('reloc20_heading_forward_v1','reloc20_loaded_footprint_v1','reloc20_visual_stall_v1','reloc20_contact_ode_v1','reloc20_obstacle_wall_mask_v1'):
+        if type(plan.get(key,False)) is not bool:raise ValueError(key+' must be bool')
     carry.reloc20_heading=plan.get('reloc20_heading_forward_v1',False)
     carry.reloc20_route=LoadedRoute(carry.static) if plan.get('reloc20_loaded_footprint_v1',False) else None
     carry.reloc20_stall=None
-    if plan.get('reloc20_obstacle_wall_mask_v1',False):carry.obstacles.reloc20_wall_mask=True
+    if plan.get('reloc20_obstacle_wall_mask_v1',False):
+        import os
+        from harness.reloc16_floor_mask import ENV,OPTION
+        if os.environ.get(ENV,'off')!=OPTION:raise ValueError('obstacle wall mask requires fixed v5 floor mask')
+        carry.obstacles.reloc20_wall_mask=True
     if plan.get('reloc20_visual_stall_v1',False):
         fit=json.loads((ROOT/'experiments/2026-10-16-reloc20/flow-fit.json').read_text())
         carry.reloc20_stall=VisualStall(fit);carry.loc.reloc20_stall=carry.reloc20_stall
