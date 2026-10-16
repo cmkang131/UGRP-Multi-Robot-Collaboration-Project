@@ -30,7 +30,7 @@
 ```
 
 - `keep`은 실행 폴더 기준 파일 또는 디렉터리 목록이다. 대표 영상의 입력·구성·재생에 필요한 데이터를 빠짐없이 넣는다. `representative*` 파일·디렉터리도 항상 보존한다. 실제 등급은 결과 수집 전에 정하며 첫 성공은 milestone로 승격한 새 기록을 남긴다. 불리한 study 실패를 dev로 낮추지 않는다.
-- 열린 PR·진행 중 작업·테스트가 쓰는 자료는 보존한다. 사용 중인 자료에 `.IN_USE` 또는 `.TEST_IN_USE`를 두고, RUN_META의 `in_use=true`와 `keep`도 사용할 수 있다. 실제 실행은 `.evidence.lock`을 잡는다. 완료 표시는 `EXIT`다(0뿐 아니라 실패·HOST_ERROR도 포함). EXIT 없는 실행을 압축·아카이브·prune하지 않는다.
+- 열린 PR·진행 중 작업·테스트가 쓰는 자료는 보존한다. 사용 중인 자료에 `.IN_USE` 또는 `.TEST_IN_USE`를 두고, RUN_META의 `in_use=true`와 `keep`도 사용할 수 있다. 실제 실행은 `.evidence.lock`을 잡는다. 완료 표시는 `EXIT`다(0뿐 아니라 실패·HOST_ERROR도 포함). EXIT 없는 실행은 기본적으로 압축·아카이브·prune하지 않는다. 2026-10-16 사용자 승인 예외인 prune의 `--allow-legacy-completed`는 소급 자료를 포함해 **24시간 이상 증거 변경 없음 + 실제 cwd/열린 파일/명령줄 사용 없음**을 확인하고 정리용 완료로 취급한다. EXIT를 생성하거나 실험 완료·성공으로 소급 판정하지 않으며, 영수증에 `completion_basis`를 남긴다. active/in_use·보호 등급·최근 변경 가드는 유지한다.
 - 부모가 study/milestone면 자식 dev도 정리하지 않는다. 중첩 RUN_META가 있는 부모는 통째로 prune하지 않고 자식별로 검토한다. 다른 열린 PR·테스트의 입력으로 재사용하면 해당 자료에 사용 표시를 먼저 남긴다.
 
 ## 3. 배치 제출 전 예산
@@ -91,6 +91,20 @@ python3 scripts/evidence_prune.py --pr <번호> <경로들> --execute \
 - dry-run은 후보 경로·현재 바이트·SHA-256을 stdout JSON으로 보고하고 실행 자료를 쓰거나 삭제하지 않는다. 중복 경로는 한 번만 계산한다. RUN_META가 없는 폴더는 후보 0으로 보존하며 이는 원본이 없다는 뜻이 아니다.
 - execute는 배타 잠금·실제 cwd/열린 파일/실행 명령 검사를 재사용한다. 전체 파일 목록 `ALL-hashes.tsv`, 후보 `PRUNED-hashes.tsv`, `outputs/cleanup-records/`의 계획 영수증을 먼저 저장한다. 그 뒤 파일 불변·완료 상태를 다시 확인하고 처리한 파일을 영수증에 남긴다. 이전 목록·영수증은 보존한다.
 - Mac은 `~/.Trash/ugrp-pr-<번호>-<시각>/`으로 이동한다. 사용자가 휴지통을 비운다. 서버는 해시·기록을 저장한 뒤 후보 파일만 삭제한다. milestone/study·대표 증거·가벼운 파일은 삭제 대상이 아니다. 2026-10-11 사용자 승인 범위의 PR 없는 7일 지난 DEV도 해시·기록 뒤 같은 방식으로 정리한다. raw 등급 변경·그 밖의 삭제는 별도 결정이 필요하다.
+
+모든 종료 PR과 오래된 PR 없는 dev를 한 번의 메타데이터 탐색으로 묶으려면 다음을 쓴다.
+동일 인자로 dry-run 표(`by_pr`: 바이트·파일 수·건너뛴 사유 분포)를 검토한 뒤 `--execute`를 붙인다.
+
+```sh
+caffeinate -i python3 scripts/evidence_prune.py --all-closed-dev \
+  --include-prless-dev-7d --allow-legacy-completed --idle-hours 24 \
+  <기본체크아웃>/outputs --records <기본체크아웃>/outputs/cleanup-records
+```
+
+`retired-worktrees`, `gcp1-runs`, `oracle-runs`, `azure-runs`도 같은 탐색에 포함한다.
+각 중첩 RUN_META는 자기 하위 파일만 소유하며 자식 RUN_META 경계에서 탐색을 끊는다.
+부모의 다른 dev PR은 자식의 PR 판정을 막지 않고, 부모 study/milestone·keep·사용 표시는 계속 보호한다.
+dry-run은 공통 프로세스 스냅샷을 재사용하며 execute는 각 실행을 바꾸기 직전 실제 사용을 다시 검사한다.
 
 ## 6. 공용 실행 경로의 RUN_META 옵션
 

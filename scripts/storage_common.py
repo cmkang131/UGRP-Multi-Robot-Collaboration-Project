@@ -93,10 +93,10 @@ def persistent(path: Path):
             raise ValueError(f'tmpfs/ramfs evidence location: {resolved}')
 
 
-def idle_reason(root: Path) -> str | None:
+def idle_reason(root: Path, *, require_exit=True) -> str | None:
     if has_symlink(root):
         return 'symlink root or ancestor'
-    if not (root / 'EXIT').is_file():
+    if require_exit and not (root / 'EXIT').is_file():
         return 'EXIT absent (unfinished)'
     for parent in (root, *root.parents):
         if any((parent / marker).exists() for marker in ('RUNNING', '.IN_USE', '.TEST_IN_USE')):
@@ -121,9 +121,9 @@ def lock_run(root: Path):
     return lock
 
 
-def inventory(root: Path) -> list[dict]:
+def inventory(root: Path, *, paths=None) -> list[dict]:
     rows = []
-    for path in files(root):
+    for path in files(root) if paths is None else paths:
         if path.name in {'.evidence.lock', 'ALL-hashes.tsv', 'PRUNED-hashes.tsv', 'SHA256SUMS.tsv'}:
             continue
         before = snapshot(path)

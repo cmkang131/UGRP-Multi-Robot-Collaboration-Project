@@ -25,11 +25,12 @@ class Refused(RuntimeError):
     """A safety check failed; nothing was changed."""
 
 
-def processes_using(path: Path) -> list[dict]:
+def processes_using(path: Path, listing=None) -> list[dict]:
     """Processes of this user whose cwd or open files are inside path (via lsof)."""
     # lsof reports kernel (resolved) paths; also accept the path as given.
     targets = {os.path.realpath(path), os.path.abspath(path)}
-    result = subprocess.run(["lsof", "-n", "-P", "-w", "-F", "pcfn"], capture_output=True, text=True)
+    result = listing if listing is not None else subprocess.run(
+        ["lsof", "-n", "-P", "-w", "-F", "pcfn"], capture_output=True, text=True)
     if result.returncode not in (0, 1) or not result.stdout:
         raise Refused(f"cannot inspect open files with lsof (exit {result.returncode}); refusing")
     found: dict[int, dict] = {}
@@ -79,15 +80,16 @@ def names_path(command: str, target: str) -> bool:
     return False
 
 
-def processes_naming(path: Path) -> list[dict]:
+def processes_naming(path: Path, listing=None, ancestry=None) -> list[dict]:
     """Other processes whose command line names path (e.g. a job started with that worktree)."""
     # -ww: unlimited width. procps (Linux) otherwise cuts `command` to 80 columns when
     # stdout is not a terminal, which would hide a worktree path late in the command line.
-    result = subprocess.run(["ps", "-ww", "-Ao", "pid=,command="], capture_output=True, text=True)
+    result = listing if listing is not None else subprocess.run(
+        ["ps", "-ww", "-Ao", "pid=,command="], capture_output=True, text=True)
     if result.returncode != 0:
         raise Refused("cannot list processes with ps; refusing")
     targets = {os.path.realpath(path), os.path.abspath(path)}
-    mine = own_ancestry()
+    mine = own_ancestry() if ancestry is None else ancestry
     found = []
     for line in result.stdout.splitlines():
         fields = line.strip().split(None, 1)
@@ -120,14 +122,23 @@ def recent_activity(path: Path, minutes: float, gitdir: Path | None) -> list[str
     return hits
 
 
-def refuse_if_in_use(path: Path, idle_minutes: float, gitdir: Path | None) -> None:
+def capture_usage():
+    """Read-only batch planning snapshot. Mutations still use fresh live checks."""
+    opened = subprocess.run(["lsof", "-n", "-P", "-w", "-F", "pcfn"], capture_output=True, text=True)
+    commands = subprocess.run(["ps", "-ww", "-Ao", "pid=,command="], capture_output=True, text=True)
+    if opened.returncode not in (0, 1) or not opened.stdout or commands.returncode != 0:
+        raise Refused('cannot capture process usage; refusing')
+    return opened, commands, own_ancestry()
+
+
+def refuse_if_in_use(path: Path, idle_minutes: float, gitdir: Path | None, *, inspection=None) -> None:
     if isinstance(idle_minutes, bool) or not isinstance(idle_minutes, (int, float)) \
             or not math.isfinite(idle_minutes) or idle_minutes < 0:
         raise Refused(f"--idle-minutes must be a finite number >= 0, got {idle_minutes!r}")
-    busy = processes_using(path)
+    busy = processes_using(path, inspection[0]) if inspection else processes_using(path)
     if busy:
         raise Refused("worktree in use: " + "; ".join(f"{p['pid']} {p['command']} {p['files'][:2]}" for p in busy))
-    named = processes_naming(path)
+    named = processes_naming(path, inspection[1], inspection[2]) if inspection else processes_naming(path)
     if named:
         raise Refused("worktree named by a running command: " + "; ".join(f"{p['pid']} {p['command']}" for p in named))
     recent = recent_activity(path, idle_minutes, gitdir)
