@@ -1,0 +1,77 @@
+{
+  "raw": "/home/ugrp/ugrp-sim/runs/mapbuild7/recording-r2",
+  "frames": 334,
+  "sim_s": 33.3,
+  "map_correction": "selfmap_map_correction_v1",
+  "attempts": 9,
+  "accepted": 0,
+  "ambiguous_rejections": 0,
+  "motion_status": {
+    "bootstrap": 1,
+    "unknown_servo_change": 62,
+    "unknown_camera_unsettled": 81,
+    "measured": 185,
+    "unknown_rigid_consensus": 5
+  },
+  "reasons": {
+    "no_visible_scan": 257,
+    "new_submap_motion_anchor": 1,
+    "sim_keyframe_interval": 66,
+    "singular_motion_prior": 4,
+    "insufficient_near_points": 2,
+    "search_boundary": 2,
+    "unobservable": 2
+  },
+  "registration": {
+    "status": "rejected",
+    "reason": "ambiguous_modes",
+    "static_from_own": null,
+    "category": "static_wall_registration",
+    "blocked_object": "authored_wall_geometry",
+    "minimum_gap_m": null,
+    "gap_status": "not_measured",
+    "work": {
+      "candidates": 4258800,
+      "point_checks": 357739200,
+      "wall_seconds_used_as_gate": 0
+    },
+    "truth_inputs": 0,
+    "scale": 1,
+    "points": 84,
+    "best_candidate": [
+      2.7,
+      -2.1,
+      -0.7504915783575616
+    ],
+    "residual_m": 0.020509195796244446,
+    "overlap": 1.0,
+    "second_sensor_gap": 0.013635169013872961,
+    "hessian_eigenvalues": [
+      108.66266333121527,
+      215.7691484264488,
+      937.3999982095024
+    ],
+    "observable_rank": 3,
+    "sensor_sigma_min_max_m": [
+      0.08274113809688181,
+      0.17652401169179932
+    ],
+    "source_constants": "unchanged CSMOptions: .05m/1deg, .08m floor + original range pixel variance, overlap .60/.20m, residual .15m, mode .15/.50, rank3 mathematical SE2 requirement"
+  },
+  "truth_inputs": 0,
+  "scale_fitting": 0,
+  "reproduction": [
+    "/home/ugrp/ugrp-sim/src/mapbuild8-v1/scripts/mapbuild8_replay.py",
+    "--input",
+    "/home/ugrp/ugrp-sim/runs/mapbuild7/recording-r2",
+    "--saved",
+    "/home/ugrp/ugrp-sim/runs/mapbuild7/replay-r2",
+    "--vision",
+    "/home/ugrp/ugrp-sim/src/mapbuild5b-complete-vision597",
+    "--rejection-table",
+    "/home/ugrp/ugrp-sim/runs/mapbuild8/modes-r1/summary.json",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/mapbuild8/inherited-r2-correction-v1"
+  ],
+  "rejection_table": "/home/ugrp/ugrp-sim/runs/mapbuild8/inherited-r2-correction-v1/rejection_table.json"
+}

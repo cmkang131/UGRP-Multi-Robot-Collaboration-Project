@@ -206,6 +206,12 @@ class CorrelativeMatcher:
         V, N = axes[:, observable], axes[:, ~observable]
         projector = V@V.T
         delta = S@projector@D@candidates[best]
+        if prior_window is not None:
+            # Orthogonal observable-subspace projection can increase one box
+            # coordinate. Uniform contraction preserves that subspace while
+            # enforcing the ORIGINAL prior box, without an acceptance margin.
+            nonzero=np.abs(delta)>0
+            if np.any(nonzero):delta*=min(1.,float(np.min(window[nonzero]/np.abs(delta[nonzero]))))
         projected_separation = (candidates-candidates[best])@D@projector
         separated = np.linalg.norm(projected_separation, axis=1) >= o.mode_distance_m-1e-9
         second = int(np.argmin(np.where(separated, sensor, np.inf))) if separated.any() else None

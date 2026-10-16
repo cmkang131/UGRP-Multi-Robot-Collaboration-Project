@@ -83,7 +83,12 @@ class SelfMapCorrection:
             if result['status']=='accepted':chosen=('self_submap',result)
         if self.static_from_own is not None:
             reference=transform(self.registration.reference.reshape(-1,2),inverse(self.static_from_own)).reshape(-1,2,2)
-            result=self._match(points,np.asarray(scan['camera']),reference,self.static_covariance)
+            c,s=np.cos(self.static_from_own[2]),np.sin(self.static_from_own[2]);J=np.eye(3)
+            J[:2,:2]=[[c,s],[-s,c]];J[:2,2]=[-self.pose[1],self.pose[0]]
+            # Registration covariance is expressed in STATIC axes at the own
+            # origin. Rotate it once and propagate its yaw lever arm here.
+            anchor=J@self.static_covariance@J.T
+            result=self._match(points,np.asarray(scan['camera']),reference,anchor)
             event['static_match']=result
             if result['status']=='accepted':chosen=('static_map',result)
         if chosen:

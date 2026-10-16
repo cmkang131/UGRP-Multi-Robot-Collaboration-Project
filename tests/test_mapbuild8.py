@@ -44,3 +44,20 @@ def test_prediction_covariance_rotates_once_and_never_reads_pose_labels():
     p,e=m.step(0,0,[.1,0,0],np.diag([.04,.01,.09]),dict(status='unknown'),dict(segments=[],camera=[0,0]))
     np.testing.assert_allclose(p,[0,.1,np.pi/2],atol=1e-15)
     np.testing.assert_allclose(m.covariance,np.diag([.01,.04,.09]),atol=1e-15)
+
+
+def test_observations_correct_an_injected_command_error_without_truth_input():
+    m=SelfMapCorrection(STATIC,option=OPTION)
+    m.step(0,0,[0,0,0],np.zeros((3,3)),dict(status='bootstrap'),SCAN)
+    # Unmoved sensor still sees the SAME corner. A deliberately erroneous
+    # .1m command prior must be corrected by its immutable past map alone.
+    p,e=m.step(1,1,[.1,0,0],np.diag([.04,.04,.01]),dict(status='unknown'),SCAN)
+    assert e['accepted'] and e['selected']=='self_submap'
+    assert np.linalg.norm(p[:2])<.1 and m.static_from_own is None
+
+
+def test_zero_command_noise_does_not_discard_observed_passive_motion():
+    m=SelfMapCorrection(STATIC)
+    p,e=m.step(0,0,[0,0,0],np.zeros((3,3)),dict(status='measured',delta=[.01,0,0],covariance=np.diag([.001]*3)),dict(segments=[],camera=[0,0]))
+    np.testing.assert_allclose(p,[.01,0,0]);assert e['fusion']=='vo_replaced'
+    np.testing.assert_allclose(m.covariance,np.diag([.001]*3))
