@@ -1,0 +1,214 @@
+{
+  "source_sha": "5894d2d8d7e62caf7ce570a66fc35f6de2ab54d6",
+  "status": "HOST_ERROR",
+  "errors": [
+    {
+      "category": "HOST_ERROR",
+      "reason": "RuntimeError('controller worker 7: IndexError(\\'Invalid index 1072693248. Valid indices from 0 to 1385\\')\\nTraceback (most recent call last):\\n  File \"/home/ugrp/ugrp-sim/src/5894d2d8d-warp10-pool/scripts/warp10_control.py\", line 98, in worker\\n    event=next(lane)\\n          ^^^^^^^^^^\\n  File \"/home/ugrp/ugrp-sim/src/5894d2d8d-warp10-pool/scripts/warp5_episode.py\", line 28, in __next__\\n    def __next__(self):return self.invoke(\\'__next__\\')\\n                              ^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/home/ugrp/ugrp-sim/src/5894d2d8d-warp10-pool/scripts/warp5_episode.py\", line 22, in invoke\\n    return getattr(self.generator,method)()\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"<warp5-scheduling-adapter>\", line 562, in run\\nIndexError: Invalid index 1072693248. Valid indices from 0 to 1385\\n')",
+      "blocked_object": "batch_adapter",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/ugrp/ugrp-sim/src/5894d2d8d-warp10-pool/scripts/run_warp5_batch.py\", line 172, in run\n    response=pool.receive(int(i),contexts[i])\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/5894d2d8d-warp10-pool/scripts/warp10_control.py\", line 137, in receive\n    if result['kind']=='error':raise RuntimeError('controller worker '+str(i)+': '+result['reason']+'\\n'+result['traceback'])\n                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: controller worker 7: IndexError('Invalid index 1072693248. Valid indices from 0 to 1385')\nTraceback (most recent call last):\n  File \"/home/ugrp/ugrp-sim/src/5894d2d8d-warp10-pool/scripts/warp10_control.py\", line 98, in worker\n    event=next(lane)\n          ^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/5894d2d8d-warp10-pool/scripts/warp5_episode.py\", line 28, in __next__\n    def __next__(self):return self.invoke('__next__')\n                              ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/5894d2d8d-warp10-pool/scripts/warp5_episode.py\", line 22, in invoke\n    return getattr(self.generator,method)()\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<warp5-scheduling-adapter>\", line 562, in run\nIndexError: Invalid index 1072693248. Valid indices from 0 to 1385\n\n"
+    }
+  ],
+  "progress": {
+    "sim_s": 11.5,
+    "active": 16,
+    "completed": 0,
+    "wall_s": 1054.134889811,
+    "timing": [
+      {
+        "render_and_evaluator_export": 74.1076350750036,
+        "command_and_physics": 388.03361931000654
+      },
+      {
+        "render_and_evaluator_export": 108.7809060019963,
+        "command_and_physics": 428.85687435499585
+      }
+    ]
+  },
+  "audit": {
+    "mode": "local spawn CPU lanes; same gcp4; no n4 offload",
+    "workers": [
+      {
+        "world": 0,
+        "pid": 15534,
+        "initial_exact": true,
+        "mirror_exact": true,
+        "opencv_threads": 1,
+        "initial_command_exact": true,
+        "ticks": 116,
+        "compute_wall_s": 38.20663505700395
+      },
+      {
+        "world": 1,
+        "pid": 15535,
+        "initial_exact": true,
+        "mirror_exact": true,
+        "opencv_threads": 1,
+        "initial_command_exact": true,
+        "ticks": 116,
+        "compute_wall_s": 32.09730612999192
+      },
+      {
+        "world": 2,
+        "pid": 15536,
+        "initial_exact": true,
+        "mirror_exact": true,
+        "opencv_threads": 1,
+        "initial_command_exact": true,
+        "ticks": 116,
+        "compute_wall_s": 36.99257592100548
+      },
+      {
+        "world": 3,
+        "pid": 15537,
+        "initial_exact": true,
+        "mirror_exact": true,
+        "opencv_threads": 1,
+        "initial_command_exact": true,
+        "ticks": 116,
+        "compute_wall_s": 31.908200597998984
+      },
+      {
+        "world": 4,
+        "pid": 15538,
+        "initial_exact": true,
+        "mirror_exact": true,
+        "opencv_threads": 1,
+        "initial_command_exact": true,
+        "ticks": 116,
+        "compute_wall_s": 36.11431678300414
+      },
+      {
+        "world": 5,
+        "pid": 15539,
+        "initial_exact": true,
+        "mirror_exact": true,
+        "opencv_threads": 1,
+        "initial_command_exact": true,
+        "ticks": 116,
+        "compute_wall_s": 39.39325318899864
+      },
+      {
+        "world": 6,
+        "pid": 15540,
+        "initial_exact": true,
+        "mirror_exact": true,
+        "opencv_threads": 1,
+        "initial_command_exact": true,
+        "ticks": 116,
+        "compute_wall_s": 37.60369635599818
+      },
+      {
+        "world": 7,
+        "pid": 15541,
+        "initial_exact": true,
+        "mirror_exact": true,
+        "opencv_threads": 1,
+        "initial_command_exact": true,
+        "ticks": 115,
+        "compute_wall_s": 31.385481614997843
+      },
+      {
+        "world": 8,
+        "pid": 15542,
+        "initial_exact": true,
+        "mirror_exact": true,
+        "opencv_threads": 1,
+        "initial_command_exact": true,
+        "ticks": 115,
+        "compute_wall_s": 36.99368854000386
+      },
+      {
+        "world": 9,
+        "pid": 15543,
+        "initial_exact": true,
+        "mirror_exact": true,
+        "opencv_threads": 1,
+        "initial_command_exact": true,
+        "ticks": 115,
+        "compute_wall_s": 31.70122224399529
+      },
+      {
+        "world": 10,
+        "pid": 15544,
+        "initial_exact": true,
+        "mirror_exact": true,
+        "opencv_threads": 1,
+        "initial_command_exact": true,
+        "ticks": 115,
+        "compute_wall_s": 36.4596900540073
+      },
+      {
+        "world": 11,
+        "pid": 15545,
+        "initial_exact": true,
+        "mirror_exact": true,
+        "opencv_threads": 1,
+        "initial_command_exact": true,
+        "ticks": 115,
+        "compute_wall_s": 39.28043946499929
+      },
+      {
+        "world": 12,
+        "pid": 15546,
+        "initial_exact": true,
+        "mirror_exact": true,
+        "opencv_threads": 1,
+        "initial_command_exact": true,
+        "ticks": 115,
+        "compute_wall_s": 39.75890407600036
+      },
+      {
+        "world": 13,
+        "pid": 15547,
+        "initial_exact": true,
+        "mirror_exact": true,
+        "opencv_threads": 1,
+        "initial_command_exact": true,
+        "ticks": 115,
+        "compute_wall_s": 30.76751262400103
+      },
+      {
+        "world": 14,
+        "pid": 15548,
+        "initial_exact": true,
+        "mirror_exact": true,
+        "opencv_threads": 1,
+        "initial_command_exact": true,
+        "ticks": 115,
+        "compute_wall_s": 39.068745167004636
+      },
+      {
+        "world": 15,
+        "pid": 15549,
+        "initial_exact": true,
+        "mirror_exact": true,
+        "opencv_threads": 1,
+        "initial_command_exact": true,
+        "ticks": 115,
+        "compute_wall_s": 31.862194458994963
+      }
+    ],
+    "new_actor_fields": 0,
+    "worker_physics_and_render": "blocked after native setup",
+    "observation_contract": "unchanged visible-only teacher InputAudit; evaluator mirror is not an added actor input"
+  },
+  "raw": "/home/ugrp/ugrp-sim/runs/warp10/first30-pool/n16",
+  "sha256": {
+    "/home/ugrp/ugrp-sim/runs/warp10/first30-pool/n16/summary.json": "d04289a2639a5c77777fbd214618f09ef3261f3cae1d95013a57cb6a41207f27",
+    "/home/ugrp/ugrp-sim/runs/warp10/first30-pool/n16/control-pool-audit.json": "2843c97fef50a30b14a73f9898a7c53e76986e0a00662915321c5f15ae37abcc"
+  },
+  "distribution": [
+    {
+      "category": "CPU_evaluation_mirror",
+      "reason": "invalid contact geom index in worker7; dynamic island allocation/order hypothesis pending reproduction",
+      "blocked_object": "worker7 contact table",
+      "minimum_gap_m": null,
+      "gap_scope": "memory_layout_not_gap",
+      "n": 1
+    }
+  ],
+  "first30_complete": false
+}

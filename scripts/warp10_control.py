@@ -46,10 +46,17 @@ def mirror(context,fields):
 def restore(context,packet):
     import mujoco
     w=context['world'];d=w.data;c=packet['counts']
-    if (d.ncon,d.nefc,d.nJ)!=(c['ncon'],c['nefc'],c['nJ']):
-        mujoco._functions._realloc_con_efc(d,ncon=c['ncon'],nefc=c['nefc'],nJ=c['nJ'])
-    if c['nisland']>0 and (d.island_idofadr.shape[0]<c['nisland'] or d.ifrc_smooth.shape[0]<c['nidof']):
+    # This is an evaluator-only CPU receiver, never the GPU simulation.
+    # A growing contact/island arena invalidated a worker contact table at
+    # SIM11.5 (warp10/pool-failure.json). Rebuild from an empty native arena,
+    # rather than infer capacity from NumPy shapes (which follow live counts).
+    # mj_resetData preserves the MjData object's identity for existing lanes.
+    mujoco.mj_resetData(w.model,d)
+    mujoco._functions._realloc_con_efc(d,ncon=c['ncon'],nefc=c['nefc'],nJ=c['nJ'])
+    if c['nisland']>0:
         mujoco._functions._realloc_island(d,nisland=c['nisland'],nidof=c['nidof'])
+    # Counts determine native view dimensions; establish them before arrays.
+    for name,value in c.items():setattr(d,name,value)
     for path,value in packet['values'].items():
         owner=d
         for name in path[:-1]:owner=getattr(owner,name)
@@ -91,7 +98,7 @@ def worker(pipe,spec,source,out,host):
             if message['op']=='close':break
             if message['epoch']!=epoch:raise ValueError('stale controller epoch')
             restore(c,message['mirror']);apply_ports(c,message['ports']);images.clear();images.update(message['images'])
-            exact=packet_exact(c,message['mirror']) if epoch==0 else None
+            exact=packet_exact(c,message['mirror'])
             if exact is False:raise ValueError('controller evaluation mirror changed bytes')
             try:
                 started=time.perf_counter()
@@ -122,7 +129,7 @@ class Controllers:
                 result=pipe.recv()
                 if result.get('kind')!='ready' or result['proof']!=initial_proof(contexts[i]):raise ValueError('spawned controller initial state/model differs: '+str(result))
                 self.audit.append(dict(world=i,pid=self.processes[i].pid,initial_exact=True,mirror_exact=None,
-                    opencv_threads=result['opencv_threads'],initial_command_exact=None,ticks=0,compute_wall_s=0.))
+                    opencv_threads=result['opencv_threads'],initial_command_exact=None,ticks=0,mirror_exact_ticks=0,compute_wall_s=0.))
         except BaseException:
             self.close();raise
 
@@ -140,6 +147,7 @@ class Controllers:
         if result['kind']=='step':
             self.audit[i]['ticks']+=1;self.audit[i]['compute_wall_s']+=result['compute_wall_s']
             if result['mirror_exact'] is not None:self.audit[i]['mirror_exact']=result['mirror_exact']
+            if result['mirror_exact'] is True:self.audit[i]['mirror_exact_ticks']+=1
         return result
 
     def close(self):

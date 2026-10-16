@@ -11,7 +11,7 @@ def context():
         _busy_until=2.2,_command_expires_at=None,_frame_id=72)
     robot=S(servo_command_pulses={1:1500})
     data=S(qpos=np.array([1.,2.]),time=2.,contact=S(pos=np.array([[3.,4.,5.]])),ncon=1,nefc=2,nJ=4,nisland=0,nidof=0)
-    return dict(ports={'r1':p},origin=2.,world=S(data=data,scene_xml='<mujoco/>',robot=lambda rid:robot))
+    return dict(ports={'r1':p},origin=2.,world=S(model=object(),data=data,scene_xml='<mujoco/>',robot=lambda rid:robot))
 
 def test_issued_state_roundtrip_does_not_reset_frame_history_or_alias_commands():
     parent,child=context(),context();parent['ports']['r1']._servo_applied[1]=1510.75
@@ -23,13 +23,26 @@ def test_issued_state_roundtrip_does_not_reset_frame_history_or_alias_commands()
     with pytest.raises(ValueError,match='unregistered'):apply_ports(child,bad)
 
 def test_evaluation_mirror_copies_only_exported_fields_and_preserves_bytes(monkeypatch):
-    monkeypatch.setitem(sys.modules,'mujoco',S())
+    monkeypatch.setitem(sys.modules,'mujoco',S(mj_resetData=lambda m,d:None,
+        _functions=S(_realloc_con_efc=lambda *a,**k:None)))
     parent,child=context(),context();child['world'].data.qpos[:]=0
     packet=mirror(parent,[('qpos',),('time',),('contact','pos')]);restore(child,packet)
     assert packet_exact(child,packet)
     parent['world'].data.qpos[:]=99
     np.testing.assert_array_equal(child['world'].data.qpos,[1.,2.])
     assert set(packet['values'])=={('qpos',),('time',),('contact','pos')}
+
+def test_receiver_resets_native_arena_before_contact_and_island_allocation(monkeypatch):
+    events=[];child=context();child['world'].model=object()
+    def reset(m,d):events.append('reset')
+    def contacts(d,**counts):events.append(('contacts',counts))
+    def islands(d,**counts):events.append(('islands',counts))
+    monkeypatch.setitem(sys.modules,'mujoco',S(mj_resetData=reset,
+        _functions=S(_realloc_con_efc=contacts,_realloc_island=islands)))
+    packet=mirror(child,[('qpos',)]);packet['counts'].update(ncon=3,nefc=12,nJ=24,nisland=1,nidof=2)
+    restore(child,packet)
+    assert events==['reset',('contacts',dict(ncon=3,nefc=12,nJ=24)),('islands',dict(nisland=1,nidof=2))]
+    assert child['world'].data.ncon==3 and packet_exact(child,packet)
 
 def test_initial_handshake_detects_changed_native_setup_or_scene():
     parent,child=context(),context();assert initial_proof(parent)==initial_proof(child)
