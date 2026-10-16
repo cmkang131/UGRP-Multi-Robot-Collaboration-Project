@@ -165,7 +165,14 @@ class StaticAMCL:
         if injection>0:
             self.slow=self.fast=0.
         row['resample']=stats
-        self.current = self.belief(); row.update(self.current)
+        self.current = self.belief()
+        # Post-resample equal weights cannot establish effective sample size:
+        # use the measured posterior BEFORE resampling for the ESS gate.
+        self.current['post_resample_ess']=self.current['ess']
+        self.current['ess']=ess
+        self.current['converged']=bool(self.current['converged'] and ess>=row['work']['particles']/2)
+        self.current['ready_for_handoff']=self.current['converged']
+        row.update(self.current)
         if row['converged']:
             row['reason']='posterior_converged'
             row['adopted_pose']=row['candidate_pose']
