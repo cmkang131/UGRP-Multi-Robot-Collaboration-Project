@@ -29,7 +29,8 @@ def write(path, value):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--enabled', action='store_true')
-    parser.add_argument('--split', choices=('gate', 'record'), required=True)
+    parser.add_argument('--split', choices=('gate', 'record', 'final'), required=True)
+    parser.add_argument('--selection', type=Path, help='frozen completed A/B,h4,h5 selection required before final setup')
     parser.add_argument('--out', type=Path, required=True)
     args = parser.parse_args()
     if not args.enabled:
@@ -38,13 +39,20 @@ def main():
     source = frozen_source(ROOT)
     args.out.mkdir(parents=True, exist_ok=False)
     protocol = ROOT/'experiments/2026-10-16-act16w/resume3/protocol.json'
-    seeds = json.loads(protocol.read_text())[args.split+'_seeds']
+    if args.split == 'final':
+        selected = json.loads(args.selection.read_text()) if args.selection else {}
+        if (selected.get('approved') is not True or selected.get('frozen_before_final') is not True
+                or selected.get('validation_complete') is not True
+                or selected.get('contact_profile') != 'warp_native_contact_v1'
+                or any(selected.get('completed_comparisons', {}).get(k) is not True for k in ('A_B', 'h4', 'h5'))):
+            raise ValueError('final starts remain unopened until completed native comparisons and selection freeze')
+    seeds = json.loads(protocol.read_text())['final_evaluation_seeds' if args.split == 'final' else args.split+'_seeds']
     if len(seeds) != 40 or len(set(seeds)) != 40:
         raise ValueError('exact registered40 starts required')
     lease = B/'leases'/('act16w-native-prepare-'+args.split+'.json')
     report = dict(status='running', complete=False, source_sha=source, host=host,
                   contact_profile='warp_native_contact_v1', protocol_sha256=sha256(protocol),
-                  split=args.split, teacher_rollouts=0, training_rgb=False, final40_accessed=False)
+                  split=args.split, teacher_rollouts=0, training_rgb=False, final40_accessed=args.split == 'final')
     with lease.open('x') as stream:
         json.dump(dict(task='act16w-native-prepare', pid=os.getpid(), concurrency=0,
                        start=datetime.now(timezone.utc).isoformat(), expected_end='40 finite setup references'), stream)
@@ -54,17 +62,18 @@ from collections import Counter
 sys.path.insert(0,sys.argv[1])
 from scripts.make_solo_teacher_plan import episode
 from harness.grasp_act_seed_splits import check_range
-seeds=json.loads(sys.argv[3]);counts=Counter();rows=[]
+seeds=json.loads(sys.argv[3]);counts=Counter();rows=[];split=sys.argv[4]
 for i,seed in enumerate(seeds):
- check_range('train',seed,1)
+ check_range(split,seed,1)
  kind=('cyan','red','green','yellow')[i%4]
- p=episode(counts[kind],kind,seed,'train');counts[kind]+=1
+ p=episode(counts[kind],kind,seed,split);counts[kind]+=1
  p.update(episode_id='act16w-native-'+str(seed),batch='act16w-native-v1',pr=539,
           negative_probe=False,gate_eligible=False,training_eligible=False)
  rows.append(p)
 open(sys.argv[2],'x').write(json.dumps({'episodes':rows},indent=2)+'\\n')
 '''
-        subprocess.run([str(C), '-c', code, str(T), str(args.out/'plans.json'), json.dumps(seeds)], check=True)
+        subprocess.run([str(C), '-c', code, str(T), str(args.out/'plans.json'), json.dumps(seeds),
+                        'heldout_start' if args.split == 'final' else 'train'], check=True)
         def one(index):
             folder = args.out/f'case-{index:02d}'
             command = [str(C), '-u', str(ROOT/'scripts/act16w_native_run.py'), '--enabled', '--mode', 'teacher', '--',

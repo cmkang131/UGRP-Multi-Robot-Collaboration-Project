@@ -1,8 +1,9 @@
 # ACT16w — MJWarp 재기록·학습
 
-현재는 **3회차 native contact 재관문 준비 중**이다.
-[현재 지시·조건·진행 범위](resume3/README.md)를 따른다. 아래2회차는 noslip10 기준값이며
-새 물리의 데이터·모델과 합산하지 않는다.2회차 A/B10000은 끝났고 VAL5×A/B는 계속 둔다.
+현재는 **4회차 인수 후 native contact 교사40 관문 실행 중**이다.
+[현재 검증·인수 상태](resume4/README.md)와 [고정 계획](resume3/README.md)을 따른다.
+2회차 noslip10 VAL5는 원본 재계수 **A0/5, B0/5**로 끝났다.
+아래2회차는 noslip10 기준값이며 새 물리의 데이터·모델과 합산하지 않는다.
 
 2회차 새 독립 시드의 교사 기록40/40이 성공했고,
 native JPEG·발행 이력·교사 표적17,706/17,706쌍이 정합했다. 입력 감사는 invisible/held0/0이며,
@@ -16,7 +17,7 @@ release의 비근거리 lookaround2,360행·complete800행은 제외됐다.
 TRAIN은 cyan9/green11/red4/yellow11회로 red 대표성이 작으므로 학생 결과를 종류별 n/N으로도 낸다
 ([정의·계수](resume2/dataset-row-accounting.json)).
 A/B는 동일 초기화·10000스텝 학습과 저장/재로딩 예측 완전 일치를 마쳤다.
-동일한 VAL5 실행 평가가 진행 중이며 h4·h5·최종40회는 미측정이다.
+동일한 VAL5 실행 평가는 A0/5·B0/5로 종료됐으며 h4·h5·최종40회는 미측정이다.
 [실험 모델 Release](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/tag/models-20261016-act16w-v1)에
 두 모델을 올리고 새 clone의 공개 재다운로드·전체38파일 해시·CPU 로딩을 확인했다
 ([검증](resume2/public-model-verification-ab.json)). 모델 로딩은 학생 임무 성공과 별개다.

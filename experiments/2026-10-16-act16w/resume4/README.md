@@ -1,0 +1,37 @@
+# act16w4 인수 기록
+
+`nativecontact-ack`, `resume-ack`. 원격 원본을 먼저 읽었고 기존 실행은 중복 제출하지 않았다.
+소유 VM은 gcp2 L4 `ugrp-act-l4-gcp2`이며 CPU VM은 시작하지 않는다.
+상한 없음, idle20·budget-stop 유지. Mac에는 요약·몽타주·실패 프레임만 회수한다.
+
+noslip10 VAL5 원본 채점·행동 원장의 재계수는 **A0/5, B0/5**다.
+두 팔 모두 발행 완료5/5 → 안정 들기0/5 → 안정 내려놓기0/5 → 임무0/5이며
+같은 종류 아무 물체 성공도0/5, cap_end0이다. 종류별 cyan0/1, red0/2,
+green0/1, yellow0/1이다. [재계수](noslip-baseline-recount.json)는 저장된 요약의
+physical·lift·release·drop·안정 지속시간 값과 전부 일치했다.
+단 chunk별 done 시각은 과거 원장에 없어 실패 메시지 문구 자체는 독립 재구성하지 않았다.
+noslip10 데이터·모델·Release는 비교용으로 보존하고 native 결과에 합산하지 않는다.
+
+native r1은 모델 그룹 검사에서 `from_xml_path`의 텍스처 상대경로 해석 때문에
+HOST_ERROR로 종료됐다. 교사 rollout0이며 물리 실패로 세지 않는다.
+XML을 바꾸지 않고 원래 world factory와 같은 Q 작업 디렉터리에서
+`from_xml_string`으로 읽게 수정했다. L4의 비물리 로딩 nq243/ngeom1387/noslip0,
+step0 확인 후, 같은 사전 고정40개87220–87259를 r2로 제출했다.
+소스 e40ff44ce, dispatcher52916. [실행 인수](native-r2-launch.json),
+[준비 거부 표](rejection_table.json). 실행 시작은14:41:54Z이며 완료·통과는 아직 미확정이다.
+새 기록 참조87420–87459의 생성은 CPU setup만이며 실제 학습 카메라 기록은 관문 뒤다.
+
+교사 라이브러리6f057f7e → MJWarp controller f0db6b1a → 기록API0362037의
+출처 관계를 유지한다. warpfit df5a1f86a의 프로필 파일 SHA256
+`a5c8d370755034b9f9615f66a94b87883327b7d7ecc4e13082eac2c2d4751c6a`는 byte 그대로다.
+공용 backend·장면 수정0. 후속 native learning dispatcher는 명시적 단계별 호출만 하며
+실패 후 자동 재시도나 최종평가를 시작하지 않는다. h1/h2/h3은 계속 기본off·미구현이다.
+h4 C와 h5 D1은 각각10000스텝 새 초기화로 비교한다.
+
+검증: 수정 접촉/분모/입력경계 관련 비물리5pass; 기존 ACT16 관련36pass1torchskip.
+이는 CUDA 학습·native 관문 성공을 뜻하지 않는다. 최종91620–91659는 미개봉이다.
+
+참고 자료와 사전 계획은 [resume3](../resume3/README.md), [protocol](../resume3/protocol.json),
+[warpfit PR562](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/562),
+[act16a PR528](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/528).
+Refs #523, PR #539 DRAFT.
