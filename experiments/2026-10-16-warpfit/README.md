@@ -1,5 +1,7 @@
 # warpfit — MJWarp 접촉 프로필 비교
 
+후속 **[warpfit2 — CPU 모방15항목 감사·runtime 두 후보](warpfit2.md)** 완료: MJWarp25/25배치, 후보별 상자30/30·빔 짧은 유지. 용량 축소의 속도 이득0.1–1.2%, 공식plane의 빔 slip/속도 퇴행으로 두 후보 기본값 채택 권고 없음. v1 바이트·기본값 보존, gcp6 TERMINATED 확인. 아래는 선행 warpfit의 별도 결과다.
+
 **권고 후보는 `warp_native_contact_v1`이다. 기본값·본 흐름은 변경하지 않았다.** 본 비교28개 배치와 별도 관통 조건 대조8개를 모두 평가했다. 총36개 중34개 고정 명령 완주·fast 빔2개 LS 한도 탈락이다. 모든 흐름의 MJWarp 이관 방향을 유지한다. 채택하면 같은 프로필로 교사 관문을 다시 재고 기존 CPU·다른 프로필/호스트 결과와 합산하지 않는다.
 
 [Draft PR #562](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/562). `codex/warpfit`, base `0936e5609b500fa95d5db07a6441c328e5c4738e`. 물리 실행은 gcp6(g2-standard-8/L4), 초기 분석·영상은 gcp2, 최종 분석·N64 실패 영상은 원본이 있는 gcp6 CPU에서 완료했다(조정자22:17 지침 반영). 같은 입력을 반복한 기계 구간 진단이며 RGB 교사·학생·LLM E2E·실기 성공 검증은 아니다.
