@@ -1,0 +1,41 @@
+{
+  "source": "experiments/2026-10-16-mapbuild3/rejection_table.json",
+  "source_sha256": "39d5484bd9f13151072afb0f7021723742edd81f3ed4a88a365dab73f7a62694",
+  "scope": "historical mapbuild3 only, not new matrix",
+  "reasons": [
+    {
+      "category": "unqualified_camera",
+      "reason": "HIGH command camera not qualified",
+      "n": 40,
+      "blocked_object": "camera_HIGH",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "unobserved_map",
+      "reason": "unknown cells",
+      "n": 2952,
+      "denominator": 2990,
+      "blocked_object": "not_observed",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "unobserved_cargo",
+      "reason": "not reconstructed",
+      "n": 11,
+      "denominator": 11,
+      "blocked_object": "cargo_grid_samples",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "command_prediction_mismatch",
+      "reason": "folded60ms left prediction/actual76.7063; cause unconfirmed",
+      "n": 1,
+      "blocked_object": "wheel_floor_response_unmeasured",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    }
+  ]
+}
