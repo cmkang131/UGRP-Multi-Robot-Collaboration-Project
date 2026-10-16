@@ -21,6 +21,7 @@ def main():
     p.add_argument('--worlds', default='0,1')
     p.add_argument('--terminal', action='store_true')
     p.add_argument('--host-error', action='store_true')
+    p.add_argument('--origin-proof', type=Path)
     a = p.parse_args()
     assert a.snapshot.is_absolute() and a.snapshot.parent == ROOT / 'runs'
     lease = ROOT / 'leases/warp8-prefix-playback.json'
@@ -51,8 +52,27 @@ def main():
                     rows.append(json.loads(line))
                 except json.JSONDecodeError:
                     pass  # Preserve original bytes; only complete rows enter this preview.
-            index = {round(r['t']*10):r for r in rows}
-            origin = rows[0]['t']
+            index = {round(r['t']*10):np.asarray(r['joints']) for r in rows}
+            velocities={};overlap=0
+            native=original/f'world-{world_id:03d}-states.npz'
+            if native.exists():
+                states=np.load(native)
+                for tick,qpos,qvel in zip(states['ticks'],states['qpos'],states['qvel']):
+                    tick=int(tick)
+                    if tick in index:
+                        assert np.array_equal(qpos,index[tick]), 'NPZ/evaluator state disagreement'
+                        overlap+=1
+                    index[tick]=qpos;velocities[tick]=qvel
+            proof=json.loads(a.origin_proof.read_text()) if a.origin_proof else source_summary
+            if a.origin_proof:
+                assert proof['source_sha']==source_summary['source_sha'] and proof['cases_sha256']==source_summary['cases_sha256']
+                assert proof['world_indices']==source_summary['world_indices']
+            if 'native_initialization_only_sim_s' in proof:
+                origin=proof['native_initialization_only_sim_s'][world_id]
+            elif (world/'tail-ring-10hz/journal.jsonl').exists():
+                origin=json.loads((world/'tail-ring-10hz/journal.jsonl').read_text().splitlines()[0])['world_t']
+            else:
+                raise ValueError('authoritative GPU origin required; first evaluator row follows startup commands')
             # Drop RGB times whose exact saved evaluator row is not yet flushed.
             # Source snapshot stays immutable; derived inputs use symlinks.
             derived = a.snapshot / f'derived-{a.label}-world-{world_id:03d}'
@@ -70,8 +90,9 @@ def main():
             asset = ROOT / 'src/835ccef26aa84b08cc8f7e256fd0f43aa1583ef9'
             os.chdir(asset)
             model = mujoco.MjModel.from_xml_string((world/'raw/scene.xml').read_text())
-            np.savez_compressed(derived/'world-000-states.npz', ticks=list(index),
-                qpos=[r['joints'] for r in index.values()], qvel=np.zeros((len(index),model.nv)))
+            order=sorted(index)
+            np.savez_compressed(derived/'world-000-states.npz', ticks=order,
+                qpos=[index[t] for t in order],qvel=[velocities.get(t,np.zeros(model.nv)) for t in order])
             # qvel is unused by mj_kinematics and rendering. No C step is called.
             summary = dict(source_summary, native_initialization_only_sim_s=[origin])
             (derived/'summary.json').write_text(json.dumps(summary))
@@ -99,7 +120,9 @@ def main():
             info = json.loads(meta.read_text())
             info.update(scope='unfinished prefix sanity preview, not failure/success or root-cause evidence; no physics step',
                 original_world=world_id, source_snapshot=str(original), simulation_host='gcp3', analysis_host='gcp2_CPU',
-                reconstruction='exact evaluator joints/qpos at matching times; qvel=0 unused by renderer',
+                reconstruction='native NPZ + exact evaluator qpos for missing terminal states; missing qvel=0 unused by renderer',
+                native_state_file=str(native) if native.exists() else None,
+                native_evaluator_overlap_exact_N=overlap,authoritative_backend_origin=origin,
                 terminal_10hz_scope='not included in this nonterminal preview; native recording rings remain on gcp3')
             if a.terminal:
                 counter_path=ROOT/'ops-reviews/warp8-collect_gate.py'
