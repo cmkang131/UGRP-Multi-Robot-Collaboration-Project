@@ -2575,6 +2575,50 @@
         "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
       },
       "notes": "호스트-프로젝트-계정을 함께 검사. ownership/임대 확인을 대체하지 않음. 모든 gcloud에 --account/--project 명시. gcp1 금지."
+    },
+    {
+      "id": "dialogue_language",
+      "current": "peer_en",
+      "decision_date": "2026-10-11",
+      "source": {
+        "references": [
+          {
+            "sha": "c8dc1e6545124ed69a996618bd11df684d233969",
+            "path": "harness/s4_compact_prompt.py",
+            "lines": [
+              14,
+              31,
+              38
+            ],
+            "note": "peer_ko/peer_nl→peer_en 대응표; 사용자 원문은 2026-10-11 대화(메모리 research-goal-korean-dialogue)"
+          }
+        ],
+        "decision_text": "한국어 평가를 하는 것도 아니니까, 모두 영어로"
+      },
+      "supersedes": [
+        "peer_ko",
+        "leader_ko"
+      ],
+      "flows": [
+        "e2e_llm"
+      ],
+      "verification": {
+        "paths": [
+          "stack_values.dialogue_language",
+          "condition",
+          "comm_condition"
+        ],
+        "method": "natural-language peer condition must be peer_en (leader_en for leader arm); no_comm/structured are other arms, not deviations; peer_ko/leader_ko only as replay with stack_deviations",
+        "source_artifact": "source_confirmed_runtime_separate",
+        "applied_runtime": "확인 안 됨: 입력 manifest/summary별 점검 필요"
+      },
+      "operator": "one_of",
+      "allowed": [
+        "peer_en",
+        "leader_en",
+        "no_comm",
+        "structured"
+      ]
     }
   ]
 }
