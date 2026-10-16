@@ -1,0 +1,1033 @@
+{
+  "schema": "ugrp.drive_model_deadband.offline.v1",
+  "scope": "saved-command open-loop score only; no new behavior/simulation/render/remote",
+  "gt_scope": "evaluation denominators and shared initial pose only; never model input",
+  "metrics": "per-robot medians; full/moving path GT>0.5m separately; final error full GT>0.3m; yaw nominal M1>20deg",
+  "parameters": {
+    "wheel_radius_m": 0.0325,
+    "lx_plus_ly_m": 0.12435,
+    "no_load_rpm": 150.0,
+    "torque_cap_nm": 0.1176798,
+    "no_load_current_a": 0.1,
+    "stall_current_a": 1.2,
+    "start_fraction": 0.325
+  },
+  "confirmed_damping_nm_s": 0.006867418019757396,
+  "unverified": [
+    "extra damping about 0.000624 Nm s is not included",
+    "non-0.35 levels have no saved-motion validation",
+    "closed-loop behavior, contact, loads, transient/coast and hardware"
+  ],
+  "base_sha": "328b4e1d2a4abe245620a58b35ea96ddc1450ef1",
+  "source_state": "working tree identified by code_sha256; final commit recorded in PR",
+  "code_sha256": {
+    "scripts/analyze_drive_model_deadband.py": "424e371f06f57efb21ce6b19aa925fb710e283d4e2365f0198e8814eb0739e38",
+    "harness/drive_model.py": "801e23200b6942d51345b2c13ddc6e8a322c2ceab240b6d23206579a19810720",
+    "harness/grasp_act_visible_world.py": "254515b9af0043ffaa0423a72be49b9372d969f8948f32e1682f7a468d1e7de4",
+    "sim/visible_belief.py": "c7c882a1df625057c003afe8855e21ea6ec7fe9ac249e5b39db1a32be2541012",
+    "experiments/2026-10-15-drive-model-deadband/analysis_helpers/lib.py": "ae0f9c0f16ec46161f5852e47d57c2ad00a06bc436752171c7d9f9c997a38c53",
+    "experiments/2026-10-15-drive-model-deadband/analysis_helpers/an.py": "2ae243c8972824b7637389e31ed398f86d1b470cafa957d70874474db32da4e9",
+    "experiments/2026-10-15-drive-model-deadband/analysis_helpers/flows.py": "d8c594928c10b63856eab13f12fbfd1b2fad092f61d766314daeedbcc41a63d5"
+  },
+  "flows": [
+    {
+      "flow": "beam_gate_752b0cbb",
+      "own_model": "m1",
+      "runs": 40,
+      "robots": 80,
+      "command_levels": [
+        0.35
+      ],
+      "off_byte_comparison": {
+        "ticks": 23664,
+        "mismatches": 0
+      },
+      "off": {
+        "path_ratio": {
+          "n": 59,
+          "median": 1.317652759209877,
+          "min": 1.2708573751111463,
+          "max": 1.5737919666016882
+        },
+        "moving_path_ratio": {
+          "n": 59,
+          "median": 1.3337678050347632,
+          "min": 1.3079771380203826,
+          "max": 1.586227647844521
+        },
+        "final_error_m": {
+          "n": 63,
+          "median": 0.38623986096186674,
+          "min": 0.12860197188072736,
+          "max": 1.2888666925593932
+        },
+        "yaw_ratio": {
+          "n": 64,
+          "median": 1.2934959583329506,
+          "min": 1.0644873350878108,
+          "max": 1.4060861356445986
+        }
+      },
+      "on": {
+        "path_ratio": {
+          "n": 59,
+          "median": 1.0951919037588587,
+          "min": 1.05629703905342,
+          "max": 1.308086829383221
+        },
+        "moving_path_ratio": {
+          "n": 59,
+          "median": 1.1085862275613612,
+          "min": 1.087149829003954,
+          "max": 1.3184229800266145
+        },
+        "final_error_m": {
+          "n": 63,
+          "median": 0.13147475170047682,
+          "min": 0.03816989008496451,
+          "max": 0.9047342013125605
+        },
+        "yaw_ratio": {
+          "n": 64,
+          "median": 1.0850562705111,
+          "min": 0.8929511146716476,
+          "max": 1.1795031662303628
+        }
+      }
+    },
+    {
+      "flow": "release_gate_4a69e6bc",
+      "own_model": "m2",
+      "runs": 40,
+      "robots": 80,
+      "command_levels": [
+        0.35
+      ],
+      "off_byte_comparison": {
+        "ticks": 14186,
+        "mismatches": 0
+      },
+      "off": {
+        "path_ratio": {
+          "n": 28,
+          "median": 0.9209046568614137,
+          "min": 0.8864401689324547,
+          "max": 0.9672935791080863
+        },
+        "moving_path_ratio": {
+          "n": 28,
+          "median": 0.9975344436279066,
+          "min": 0.9619428587600403,
+          "max": 1.0403173537181056
+        },
+        "final_error_m": {
+          "n": 48,
+          "median": 0.012068842690027372,
+          "min": 0.00016907128832302523,
+          "max": 0.028758437610087076
+        },
+        "yaw_ratio": null
+      },
+      "on": {
+        "path_ratio": {
+          "n": 28,
+          "median": 1.0601943611129467,
+          "min": 1.0205170117927052,
+          "max": 1.1135997526674284
+        },
+        "moving_path_ratio": {
+          "n": 28,
+          "median": 1.1484146423524948,
+          "min": 1.107439719162739,
+          "max": 1.1976686011545048
+        },
+        "final_error_m": {
+          "n": 48,
+          "median": 0.03831611099796721,
+          "min": 0.0074336983637962725,
+          "max": 0.09471377564699966
+        },
+        "yaw_ratio": null
+      }
+    },
+    {
+      "flow": "release_command_gate_cdace35e",
+      "own_model": "m2",
+      "runs": 40,
+      "robots": 80,
+      "command_levels": [
+        0.35
+      ],
+      "off_byte_comparison": {
+        "ticks": 42572,
+        "mismatches": 0
+      },
+      "off": {
+        "path_ratio": {
+          "n": 60,
+          "median": 0.8887151645061455,
+          "min": 0.8705297443609654,
+          "max": 0.8964064062854572
+        },
+        "moving_path_ratio": {
+          "n": 60,
+          "median": 0.9712097360736991,
+          "min": 0.9629487912953941,
+          "max": 0.9812665044892492
+        },
+        "final_error_m": {
+          "n": 60,
+          "median": 0.012957009828818488,
+          "min": 0.0005228397247295914,
+          "max": 0.03598261360156806
+        },
+        "yaw_ratio": null
+      },
+      "on": {
+        "path_ratio": {
+          "n": 60,
+          "median": 1.0231361075490502,
+          "min": 1.0022000858352504,
+          "max": 1.0319906736581772
+        },
+        "moving_path_ratio": {
+          "n": 60,
+          "median": 1.1181082405996385,
+          "min": 1.1085978021344083,
+          "max": 1.1296861266334906
+        },
+        "final_error_m": {
+          "n": 60,
+          "median": 0.018831073120201474,
+          "min": 0.0014282817129027585,
+          "max": 0.06823808147750171
+        },
+        "yaw_ratio": null
+      }
+    },
+    {
+      "flow": "release_diagnostics",
+      "own_model": "m2",
+      "runs": 71,
+      "robots": 142,
+      "command_levels": [
+        0.35
+      ],
+      "off_byte_comparison": {
+        "ticks": 68496,
+        "mismatches": 0
+      },
+      "off": {
+        "path_ratio": {
+          "n": 68,
+          "median": 0.8962115445825978,
+          "min": 0.7029352086536511,
+          "max": 0.9672935791080863
+        },
+        "moving_path_ratio": {
+          "n": 68,
+          "median": 0.9676504173949907,
+          "min": 0.8425134474621079,
+          "max": 1.0403173537181056
+        },
+        "final_error_m": {
+          "n": 89,
+          "median": 0.017053881975539902,
+          "min": 0.0006280040684941519,
+          "max": 0.10175383931998082
+        },
+        "yaw_ratio": {
+          "n": 11,
+          "median": 0.3121210552204403,
+          "min": 0.2764616684991986,
+          "max": 0.3215136522665495
+        }
+      },
+      "on": {
+        "path_ratio": {
+          "n": 68,
+          "median": 1.036790059777315,
+          "min": 0.9002896219394771,
+          "max": 1.1529863628430825
+        },
+        "moving_path_ratio": {
+          "n": 68,
+          "median": 1.1172339178623156,
+          "min": 1.0790555143017688,
+          "max": 1.2775301064220717
+        },
+        "final_error_m": {
+          "n": 89,
+          "median": 0.05103058382632843,
+          "min": 0.002965347135964183,
+          "max": 0.14745345088846662
+        },
+        "yaw_ratio": {
+          "n": 11,
+          "median": 1.0650494286400223,
+          "min": 0.943369045923487,
+          "max": 1.0970997499819752
+        }
+      }
+    },
+    {
+      "flow": "r12d",
+      "own_model": "m2",
+      "runs": 2,
+      "robots": 4,
+      "command_levels": [
+        0.35
+      ],
+      "off_byte_comparison": {
+        "ticks": 2868,
+        "mismatches": 0
+      },
+      "off": {
+        "path_ratio": {
+          "n": 2,
+          "median": 0.8505898910893167,
+          "min": 0.8458064158066844,
+          "max": 0.855373366371949
+        },
+        "moving_path_ratio": {
+          "n": 2,
+          "median": 0.9382302538725762,
+          "min": 0.9368941191354475,
+          "max": 0.9395663886097049
+        },
+        "final_error_m": {
+          "n": 4,
+          "median": 0.04640811013369685,
+          "min": 0.015513001927334659,
+          "max": 0.06130893644861766
+        },
+        "yaw_ratio": null
+      },
+      "on": {
+        "path_ratio": {
+          "n": 2,
+          "median": 1.0324982439578112,
+          "min": 1.026728945716727,
+          "max": 1.0382675421988952
+        },
+        "moving_path_ratio": {
+          "n": 2,
+          "median": 1.13888178726883,
+          "min": 1.1372188948333148,
+          "max": 1.140544679704345
+        },
+        "final_error_m": {
+          "n": 4,
+          "median": 0.06584698407558916,
+          "min": 0.015100299788993545,
+          "max": 0.11616989652805002
+        },
+        "yaw_ratio": null
+      }
+    },
+    {
+      "flow": "r14d",
+      "own_model": "m2",
+      "runs": 2,
+      "robots": 4,
+      "command_levels": [
+        0.35
+      ],
+      "off_byte_comparison": {
+        "ticks": 964,
+        "mismatches": 0
+      },
+      "off": {
+        "path_ratio": null,
+        "moving_path_ratio": null,
+        "final_error_m": null,
+        "yaw_ratio": {
+          "n": 2,
+          "median": 0.2925769284640486,
+          "min": 0.2921086665165136,
+          "max": 0.29304519041158356
+        }
+      },
+      "on": {
+        "path_ratio": null,
+        "moving_path_ratio": null,
+        "final_error_m": null,
+        "yaw_ratio": {
+          "n": 2,
+          "median": 0.9983590830609268,
+          "min": 0.9967612346898077,
+          "max": 0.9999569314320458
+        }
+      }
+    },
+    {
+      "flow": "crate_gate_grasp",
+      "own_model": "m1",
+      "runs": 40,
+      "robots": 80,
+      "command_levels": [
+        0.35
+      ],
+      "off_byte_comparison": {
+        "ticks": 49038,
+        "mismatches": 0
+      },
+      "off": {
+        "path_ratio": {
+          "n": 67,
+          "median": 1.3098266746975986,
+          "min": 1.2708118681025165,
+          "max": 2.3776450211895908
+        },
+        "moving_path_ratio": {
+          "n": 67,
+          "median": 1.3308726130664115,
+          "min": 1.3097413977494012,
+          "max": 2.3918047019326236
+        },
+        "final_error_m": {
+          "n": 69,
+          "median": 0.37315700714748723,
+          "min": 0.11707598280167231,
+          "max": 1.195014249205399
+        },
+        "yaw_ratio": {
+          "n": 68,
+          "median": 1.2464190194254918,
+          "min": 0.7769146464717247,
+          "max": 3.1757004280413357
+        }
+      },
+      "on": {
+        "path_ratio": {
+          "n": 67,
+          "median": 1.0886871062421595,
+          "min": 1.0562592150462473,
+          "max": 1.9762244331965424
+        },
+        "moving_path_ratio": {
+          "n": 67,
+          "median": 1.106179834237017,
+          "min": 1.0886162267008006,
+          "max": 1.9879935184894528
+        },
+        "final_error_m": {
+          "n": 69,
+          "median": 0.1311270425576345,
+          "min": 0.03993451770546573,
+          "max": 0.9071861737024998
+        },
+        "yaw_ratio": {
+          "n": 68,
+          "median": 1.0455655187782233,
+          "min": 0.6517191672500525,
+          "max": 2.66395394628985
+        }
+      }
+    },
+    {
+      "flow": "crate_diagnostics_grasp",
+      "own_model": "m1",
+      "runs": 83,
+      "robots": 166,
+      "command_levels": [
+        0.35
+      ],
+      "off_byte_comparison": {
+        "ticks": 73622,
+        "mismatches": 0
+      },
+      "off": {
+        "path_ratio": {
+          "n": 113,
+          "median": 1.3120565835921372,
+          "min": 1.2069537393097862,
+          "max": 2.2683923498596883
+        },
+        "moving_path_ratio": {
+          "n": 107,
+          "median": 1.3296321053345344,
+          "min": 1.2258326074168728,
+          "max": 2.2770721381301464
+        },
+        "final_error_m": {
+          "n": 120,
+          "median": 0.38160369706073094,
+          "min": 0.12993222086773912,
+          "max": 3.0637996625835857
+        },
+        "yaw_ratio": {
+          "n": 135,
+          "median": 1.2390758003411924,
+          "min": 0.8895021880297495,
+          "max": 14.642779442480432
+        }
+      },
+      "on": {
+        "path_ratio": {
+          "n": 113,
+          "median": 1.090540537011646,
+          "min": 1.0031823287769648,
+          "max": 1.8854170180651948
+        },
+        "moving_path_ratio": {
+          "n": 107,
+          "median": 1.1051487628754568,
+          "min": 1.0188738555153225,
+          "max": 1.8926313875367444
+        },
+        "final_error_m": {
+          "n": 120,
+          "median": 0.131467038396864,
+          "min": 0.03511809063165657,
+          "max": 1.1384684232870312
+        },
+        "yaw_ratio": {
+          "n": 135,
+          "median": 1.0394056186549752,
+          "min": 0.7461638519527461,
+          "max": 12.283176881550585
+        }
+      }
+    },
+    {
+      "flow": "crate_gate_release",
+      "own_model": "m2",
+      "runs": 24,
+      "robots": 48,
+      "command_levels": [
+        0.35
+      ],
+      "off_byte_comparison": {
+        "ticks": 49038,
+        "mismatches": 0
+      },
+      "off": {
+        "path_ratio": {
+          "n": 28,
+          "median": 0.892094691680122,
+          "min": 0.8777000018941216,
+          "max": 0.9036645346191108
+        },
+        "moving_path_ratio": {
+          "n": 28,
+          "median": 0.9730237082626096,
+          "min": 0.9664966606023355,
+          "max": 0.9801611486503414
+        },
+        "final_error_m": {
+          "n": 28,
+          "median": 0.011072249205606052,
+          "min": 0.005016256676450119,
+          "max": 0.04816010928210891
+        },
+        "yaw_ratio": null
+      },
+      "on": {
+        "path_ratio": {
+          "n": 28,
+          "median": 1.0270267987583759,
+          "min": 1.0104548672045706,
+          "max": 1.0403466165608872
+        },
+        "moving_path_ratio": {
+          "n": 28,
+          "median": 1.120196581745022,
+          "min": 1.1126822977498443,
+          "max": 1.1284135822732226
+        },
+        "final_error_m": {
+          "n": 28,
+          "median": 0.017723051349057183,
+          "min": 0.0014294540586781272,
+          "max": 0.06907702307927296
+        },
+        "yaw_ratio": null
+      }
+    },
+    {
+      "flow": "crate_diagnostics_release",
+      "own_model": "m2",
+      "runs": 45,
+      "robots": 90,
+      "command_levels": [
+        0.35
+      ],
+      "off_byte_comparison": {
+        "ticks": 73622,
+        "mismatches": 0
+      },
+      "off": {
+        "path_ratio": {
+          "n": 34,
+          "median": 0.8975111826109727,
+          "min": 0.8685347172681736,
+          "max": 0.9158451918997422
+        },
+        "moving_path_ratio": {
+          "n": 34,
+          "median": 0.9712583591715244,
+          "min": 0.964444271789709,
+          "max": 0.9836139452733117
+        },
+        "final_error_m": {
+          "n": 34,
+          "median": 0.011175386565433336,
+          "min": 0.0013910363832692213,
+          "max": 0.042592640975667735
+        },
+        "yaw_ratio": null
+      },
+      "on": {
+        "path_ratio": {
+          "n": 34,
+          "median": 1.033262550851843,
+          "min": 0.9999033046665526,
+          "max": 1.054369636281069
+        },
+        "moving_path_ratio": {
+          "n": 34,
+          "median": 1.1181642180928026,
+          "min": 1.1103194787221138,
+          "max": 1.1323886251644368
+        },
+        "final_error_m": {
+          "n": 34,
+          "median": 0.01659238781598811,
+          "min": 0.002734496447018496,
+          "max": 0.05659677352433813
+        },
+        "yaw_ratio": null
+      }
+    },
+    {
+      "flow": "solo-gate",
+      "own_model": "m1",
+      "runs": 40,
+      "robots": 40,
+      "command_levels": [
+        0.35
+      ],
+      "off_byte_comparison": {
+        "ticks": 17203,
+        "mismatches": 0
+      },
+      "off": {
+        "path_ratio": {
+          "n": 40,
+          "median": 1.3464335100310993,
+          "min": 1.216825927039181,
+          "max": 1.3856544618458497
+        },
+        "moving_path_ratio": {
+          "n": 40,
+          "median": 1.374715815706284,
+          "min": 1.2731975782837501,
+          "max": 1.4262986048540789
+        },
+        "final_error_m": {
+          "n": 40,
+          "median": 0.22103920120986875,
+          "min": 0.11010347288967917,
+          "max": 0.3257919095722248
+        },
+        "yaw_ratio": null
+      },
+      "on": {
+        "path_ratio": {
+          "n": 40,
+          "median": 1.1191135667790952,
+          "min": 1.0113877835130853,
+          "max": 1.1517127994562903
+        },
+        "moving_path_ratio": {
+          "n": 40,
+          "median": 1.1426209377298981,
+          "min": 1.0582421429890907,
+          "max": 1.1854949442942988
+        },
+        "final_error_m": {
+          "n": 40,
+          "median": 0.08236948373639741,
+          "min": 0.030241469291034394,
+          "max": 0.13275259719025786
+        },
+        "yaw_ratio": null
+      }
+    },
+    {
+      "flow": "solo-truth-free-gate",
+      "own_model": "m1",
+      "runs": 40,
+      "robots": 40,
+      "command_levels": [
+        0.35
+      ],
+      "off_byte_comparison": {
+        "ticks": 17606,
+        "mismatches": 0
+      },
+      "off": {
+        "path_ratio": {
+          "n": 40,
+          "median": 1.341767606580384,
+          "min": 1.3163474689614854,
+          "max": 1.3651490082011442
+        },
+        "moving_path_ratio": {
+          "n": 40,
+          "median": 1.3784448207449769,
+          "min": 1.3555422858479673,
+          "max": 1.4110067962826722
+        },
+        "final_error_m": {
+          "n": 40,
+          "median": 0.23949709466568098,
+          "min": 0.10683873252527006,
+          "max": 0.4097479574945199
+        },
+        "yaw_ratio": null
+      },
+      "on": {
+        "path_ratio": {
+          "n": 40,
+          "median": 1.1152354132616176,
+          "min": 1.0941069871887668,
+          "max": 1.1346693055178338
+        },
+        "moving_path_ratio": {
+          "n": 40,
+          "median": 1.145720370489331,
+          "min": 1.1266844973281802,
+          "max": 1.1727848696375456
+        },
+        "final_error_m": {
+          "n": 40,
+          "median": 0.0786765865488249,
+          "min": 0.028858487000243897,
+          "max": 0.17232260789837928
+        },
+        "yaw_ratio": null
+      }
+    },
+    {
+      "flow": "solo7-box-gate",
+      "own_model": "m1",
+      "runs": 40,
+      "robots": 40,
+      "command_levels": [
+        0.35
+      ],
+      "off_byte_comparison": {
+        "ticks": 18498,
+        "mismatches": 0
+      },
+      "off": {
+        "path_ratio": {
+          "n": 40,
+          "median": 1.3459465250500102,
+          "min": 1.2551831655035148,
+          "max": 1.384479900905216
+        },
+        "moving_path_ratio": {
+          "n": 40,
+          "median": 1.372400032091715,
+          "min": 1.2892401328537066,
+          "max": 1.4362643676574802
+        },
+        "final_error_m": {
+          "n": 40,
+          "median": 0.23324064233865086,
+          "min": 0.12740178726003953,
+          "max": 0.38184211544804475
+        },
+        "yaw_ratio": null
+      },
+      "on": {
+        "path_ratio": {
+          "n": 40,
+          "median": 1.1187088000415666,
+          "min": 1.0432691245743497,
+          "max": 1.150736541012127
+        },
+        "moving_path_ratio": {
+          "n": 40,
+          "median": 1.1406961305697365,
+          "min": 1.0715762143199639,
+          "max": 1.1937781757153079
+        },
+        "final_error_m": {
+          "n": 40,
+          "median": 0.08346931949548891,
+          "min": 0.047628079763486875,
+          "max": 0.15206832612818738
+        },
+        "yaw_ratio": null
+      }
+    },
+    {
+      "flow": "solo-diag",
+      "own_model": "m1",
+      "runs": 21,
+      "robots": 21,
+      "command_levels": [
+        0.35
+      ],
+      "off_byte_comparison": {
+        "ticks": 7537,
+        "mismatches": 0
+      },
+      "off": {
+        "path_ratio": {
+          "n": 21,
+          "median": 1.3599943296833656,
+          "min": 1.3190207742461302,
+          "max": 3.1952951444245956
+        },
+        "moving_path_ratio": {
+          "n": 21,
+          "median": 1.3788809833505378,
+          "min": 1.3526263495708444,
+          "max": 3.195311646603026
+        },
+        "final_error_m": {
+          "n": 21,
+          "median": 0.28404012605688633,
+          "min": 0.1339359739209395,
+          "max": 1.1910384582481632
+        },
+        "yaw_ratio": null
+      },
+      "on": {
+        "path_ratio": {
+          "n": 21,
+          "median": 1.1303848973991608,
+          "min": 1.0963289552175626,
+          "max": 2.655829730430832
+        },
+        "moving_path_ratio": {
+          "n": 21,
+          "median": 1.1460828952523947,
+          "min": 1.124260861980961,
+          "max": 2.6558434465271894
+        },
+        "final_error_m": {
+          "n": 21,
+          "median": 0.10392678681345369,
+          "min": 0.038944503896707096,
+          "max": 0.9162979171649462
+        },
+        "yaw_ratio": null
+      }
+    },
+    {
+      "flow": "solo-truth-free-diag",
+      "own_model": "m1",
+      "runs": 4,
+      "robots": 4,
+      "command_levels": [
+        0.35
+      ],
+      "off_byte_comparison": {
+        "ticks": 1823,
+        "mismatches": 0
+      },
+      "off": {
+        "path_ratio": {
+          "n": 4,
+          "median": 1.3489291783423216,
+          "min": 1.3411673757467941,
+          "max": 1.3682177447484483
+        },
+        "moving_path_ratio": {
+          "n": 4,
+          "median": 1.3821623413891784,
+          "min": 1.3686917085555985,
+          "max": 1.4098964077386191
+        },
+        "final_error_m": {
+          "n": 4,
+          "median": 0.3246163491768424,
+          "min": 0.24800257747068935,
+          "max": 0.3439966087903685
+        },
+        "yaw_ratio": null
+      },
+      "on": {
+        "path_ratio": {
+          "n": 4,
+          "median": 1.1211878884923188,
+          "min": 1.1147365201012311,
+          "max": 1.1372199436870216
+        },
+        "moving_path_ratio": {
+          "n": 4,
+          "median": 1.1488102577780177,
+          "min": 1.1376138876306272,
+          "max": 1.1718619492892417
+        },
+        "final_error_m": {
+          "n": 4,
+          "median": 0.1225583163028319,
+          "min": 0.08739064730705177,
+          "max": 0.13194062057376552
+        },
+        "yaw_ratio": null
+      }
+    },
+    {
+      "flow": "solo7-negative",
+      "own_model": "m1",
+      "runs": 8,
+      "robots": 8,
+      "command_levels": [
+        0.35
+      ],
+      "off_byte_comparison": {
+        "ticks": 2270,
+        "mismatches": 0
+      },
+      "off": {
+        "path_ratio": {
+          "n": 8,
+          "median": 1.3684831870074277,
+          "min": 1.362043183316915,
+          "max": 1.401573022686079
+        },
+        "moving_path_ratio": {
+          "n": 8,
+          "median": 1.3849917040155315,
+          "min": 1.3758669826442118,
+          "max": 1.424039929813125
+        },
+        "final_error_m": {
+          "n": 8,
+          "median": 0.22814711701270501,
+          "min": 0.1707801890926386,
+          "max": 0.3436718946644676
+        },
+        "yaw_ratio": null
+      },
+      "on": {
+        "path_ratio": {
+          "n": 8,
+          "median": 1.1374405710191602,
+          "min": 1.132087840678994,
+          "max": 1.1649438110637536
+        },
+        "moving_path_ratio": {
+          "n": 8,
+          "median": 1.1511619358051168,
+          "min": 1.1435777518081758,
+          "max": 1.183617604000519
+        },
+        "final_error_m": {
+          "n": 8,
+          "median": 0.08147256409299723,
+          "min": 0.0631484756558352,
+          "max": 0.1344362830290093
+        },
+        "yaw_ratio": null
+      }
+    },
+    {
+      "flow": "solo-carry-93200-84a1b7b8",
+      "own_model": "m1",
+      "runs": 1,
+      "robots": 1,
+      "command_levels": [],
+      "off_byte_comparison": {
+        "ticks": 606,
+        "mismatches": 0
+      },
+      "off": {
+        "path_ratio": null,
+        "moving_path_ratio": null,
+        "final_error_m": null,
+        "yaw_ratio": null
+      },
+      "on": {
+        "path_ratio": null,
+        "moving_path_ratio": null,
+        "final_error_m": null,
+        "yaw_ratio": null
+      }
+    },
+    {
+      "flow": "solo-carry-93220-870c0c59",
+      "own_model": "m1",
+      "runs": 1,
+      "robots": 1,
+      "command_levels": [
+        0.35
+      ],
+      "off_byte_comparison": {
+        "ticks": 410,
+        "mismatches": 0
+      },
+      "off": {
+        "path_ratio": {
+          "n": 1,
+          "median": 1.3388572914375843,
+          "min": 1.3388572914375843,
+          "max": 1.3388572914375843
+        },
+        "moving_path_ratio": {
+          "n": 1,
+          "median": 1.3505486576620058,
+          "min": 1.3505486576620058,
+          "max": 1.3505486576620058
+        },
+        "final_error_m": {
+          "n": 1,
+          "median": 0.6266996324650939,
+          "min": 0.6266996324650939,
+          "max": 0.6266996324650939
+        },
+        "yaw_ratio": null
+      },
+      "on": {
+        "path_ratio": {
+          "n": 1,
+          "median": 1.1128164500260436,
+          "min": 1.1128164500260436,
+          "max": 1.1128164500260436
+        },
+        "moving_path_ratio": {
+          "n": 1,
+          "median": 1.1225339492255628,
+          "min": 1.1225339492255628,
+          "max": 1.1225339492255628
+        },
+        "final_error_m": {
+          "n": 1,
+          "median": 0.3048101029708062,
+          "min": 0.3048101029708062,
+          "max": 0.3048101029708062
+        },
+        "yaw_ratio": null
+      }
+    }
+  ],
+  "raw_inputs": {
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/drive-model-deadband-v1-verified/inputs.json.zst",
+    "sha256": "5660a6f0378b61125aaeddaad6ecc1b57d8fedbf032ea3d309322695ae2225f6",
+    "decoded_sha256": "3bb12e5fccd67bd77153257f2b4dfa5a13015726f5af528994172a0d90f1ac6c",
+    "decoded_bytes": 588183,
+    "bytes": 107113
+  },
+  "per_robot": {
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/drive-model-deadband-v1-verified/per-robot.json.zst",
+    "sha256": "3a0de5e0723843db3d1d122ff5497ec7783e016ed9cdc92366eca3ce137fe992",
+    "decoded_sha256": "039a09640f295f52bb2fd41b3c0d953422c4a208a79e2aebdaa6baf6ff312a4e",
+    "decoded_bytes": 468524,
+    "bytes": 77111
+  },
+  "run_statuses": {
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/drive-model-deadband-v1-verified/run-statuses.json.zst",
+    "sha256": "7c3cce0e1663a3c32f95291d0e052511426389a185f45ebf2358cb341c0ef7c3",
+    "decoded_sha256": "91cdd44b7bb5fc093f0d80b6bfb96c37f0a96ac7cbe646ff7bf421ee0f546061",
+    "decoded_bytes": 95857,
+    "bytes": 2654
+  }
+}
