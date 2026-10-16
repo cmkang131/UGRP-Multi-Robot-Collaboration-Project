@@ -1,0 +1,101 @@
+{
+  "status": "complete",
+  "passed": true,
+  "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-pilot-86822",
+  "controller_source": "f0db6b1abb842ea65b71c433738210254f300a7c",
+  "adapter_sha256": "dac11004c5278a120e1d989b04389185fd3a794657487ad971d5992a7f518726",
+  "training_include": false,
+  "data_admitted": false,
+  "worlds": [
+    {
+      "world": 0,
+      "seed": 86822,
+      "frames": 424,
+      "paired_targets": 424,
+      "exact_controller_jpegs": 424,
+      "unique_jpeg_hashes": 411,
+      "issued_pwm_transitions": 82,
+      "done_targets": 2,
+      "command_complete": true,
+      "done_by_skill": {
+        "grasp": 1,
+        "release": 1
+      },
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "cap_end": false,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 139,
+        "blocked_held": 185,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 61,
+          "align": 28,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "duration_sim_s": 42.400000000000006,
+      "native_camera": {
+        "width": 640,
+        "height": 480,
+        "period_s": 0.1,
+        "hz": 10.0,
+        "camera": "robot_cam",
+        "pinhole_hfov_deg": 54.5351624215943,
+        "pinhole_vfov_deg": 42.1489488115246,
+        "raw_fisheye_fov": "nonlinear K/D; no single angular FOV",
+        "K": [
+          [
+            619.5194540517232,
+            0.0,
+            287.68910608896766
+          ],
+          [
+            0.0,
+            622.1654884818748,
+            218.69686648455726
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "fisheye_D": [
+          -0.0199819517209417,
+          -0.1707593617153504,
+          -0.2568318201202376,
+          0.9650933421665181
+        ],
+        "mount": "masterpi-camera-user-observation-target-review-v3",
+        "position_m": [
+          0.052982009925558314,
+          0.0,
+          0.028152173913043477
+        ],
+        "quat_wxyz": [
+          0.4545194776720437,
+          0.5416752204197018,
+          -0.5416752204197018,
+          -0.4545194776720437
+        ],
+        "schema": "ugrp.grasp_act.student.v6",
+        "sources": {
+          "sim/masterpi_camera_profile.py": "ec224a88f07b7f1e30b9f306951818ec3907c27554daab1361db6cc8b00f3a1a",
+          "sim/masterpi_camera_review_v3.py": "6d8d739085c44f3196e4b4c514ca7e6c515e82394b1180a712b935df0a1b9362",
+          "sim/s2_realism_camera_binding.py": "86922a48dc7e6a3350f478bf2331a9be114da00ec380b3145e834746ed59bbe0",
+          "harness/grasp_act_contract.py": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056"
+        }
+      },
+      "source": "/home/ugrp/ugrp-sim/runs/act16w-resume2-pilot-86822/controller/world-000",
+      "original_result_sha256": "8ab264266688dd0d794ce66f3c3f8f19a786d323b92f5d059df6dd5e8f22225a"
+    }
+  ],
+  "summary_sha256": "68f3d157ee03accc7477d0f91da95af22366e4affaba362986a9fd8aa454a731",
+  "scope": "exact native JPEG/clock/own issued history and teacher target audit; separate dataset admission required"
+}

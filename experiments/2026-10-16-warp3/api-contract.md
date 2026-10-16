@@ -23,3 +23,5 @@
 학습 전용 critic 실측 추가: [training-lane-r1](training-lane-r1.json), 별도 source dfa8457b0/API source2b99e00d8. 한 실제 물리 step 전후 critic512개·정답4필드를 분리 반환했고 critic 읽기가 actor 관측을 바꾸지 않았다. 원본13파일 SHA 불일치0, RL update0이다.
 
 발행 명령 원장 추가(source7303986fd): 평가 owner는 물리 step 전에 `issued-commands.jsonl`에 world/generation/sample/시간/스킬·입력 RGB의 경로와 SHA·발행 action을 기록한다. 정답은 이 원장에 넣지 않는다. [실제 R3 검증](student-api-smoke-r3-audit.json)에서 명령4/4가 actor 출력과 일치하고 RGB 참조16개를 확인했다. 학습 hot path에서는 이 평가용 원장을 끈다. 중단된 student prefix도 summary에 보존한다.
+
+본기록 승인 스키마: frozen validator는 schema/provider/cpu_count도 요구하지만 warp3 관문 원본은 project_id/instance/machine_type/zone만 기록했다. 이 과거 값을 만들지 않고 `--warp3-host-schema-v1`(act16w alias도 지원)로 기록된4필드를 승인 파일·실제 VM과 일치시킨다. 기존95%/40·truth-free gate·소스 고정·서로 다른 검토 pilot2개 조건을 유지하며 실제 pilot 파일 SHA도 읽어 확인한다. 실제 act16w 승인 파일에 `--admission-check-only --stage batch`를 실행해 [APPROVED_PINNED](record-host-admission-r1.json)를 확인했다. 이 확인은 물리/기록 실행0이며 새 데이터 승인이나 실행 소스 소급 변경이 아니다.

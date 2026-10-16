@@ -17,6 +17,6 @@
 
 기록 API는 통과한 교사를 수정하지 않고 같은 JPEG를 캡처하며 controller SHA와 adapter SHA를 분리한다. 실제 fresh train seed88960의3SIM pilot은 cap_end이며 데이터셋 승인·성공 시연이 아니다. 학생은 실제 ACT15 체크포인트로2step×2world와 부분 chunk reset을 확인했다. **학생 전체 임무 성공률·ACT 학습·기록 본실행은 아직 측정하지 않았다.** reset은 초기화한 고정 모델/seed/task 안의 새 free-body 시작을 지원하며 다른 모델/task는 새 owner가 필요하다. 즉시 경계 보존과 terminal freeze는 검증했으나 다음 물리 궤적의 bitwise 일치는 보장하지 않는다. 실패 probe r1–r4도 원본에 보존한다.
 
-비물리 관련 시험26개 PASS(실제 Mac 기존 환경, 물리/렌더 없음). GitHub CI는 과거 커밋e97464a3에서33/33 PASS([영수증](ci-receipt-e974.json)); 최신 소스 CI는 별도로 확인 중이다. [단계별 누적 통과/거부 표](stage-funnel.json), [운영 기록](operations.json), [참고 문헌·설치본 검증 범위](references.md).
+비물리 관련 시험33개 PASS(실제 Mac 기존 환경, 물리/렌더 없음). GitHub CI는 과거 커밋e97464a3에서33/33 PASS([영수증](ci-receipt-e974.json)); 최신 소스 CI는 별도로 확인 중이다. [단계별 누적 통과/거부 표](stage-funnel.json), [운영 기록](operations.json), [참고 문헌·설치본 검증 범위](references.md).
 
 L4 현 boot의8h 상한14:01:09Z·유휴20분·budget-stop을 유지한다. 다른 작업이 main L4를 다시 시작했으며 warp3는 외부 작업/VM을 중지하지 않았다. 별도 L4 생성은 프로젝트 전체 GPU 한도1로 거절됐고 추가 instance/disk가 남지 않았음을 확인했다. [비용·자원 제한 기록](warm-resource-blocker.json). 현재 대기열은13:59:09Z까지만 기다린다. 원격 소스는 canonical git-shared.git을 직접 reference하고 그 저장소를 gc/prune하지 않는다. 기존 COORDINATOR_NOTE.md는 건드리지 않았다.
