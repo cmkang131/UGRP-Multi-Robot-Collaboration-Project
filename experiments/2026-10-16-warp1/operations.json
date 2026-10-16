@@ -1,7 +1,7 @@
 {
   "task": "warp1",
-  "recorded_utc": "2026-10-15T21:02:33.095756+00:00",
-  "work_status": "running_not_complete",
+  "recorded_utc": "2026-10-15T21:54:13.787558+00:00",
+  "work_status": "finite pilot work ended; NOT_READY implementation gaps remain",
   "branch": "claude/warp-act",
   "base_sha": "142dbf04c2128c3d7ca1c3ceb03ee3b651d9a7e5",
   "teacher_sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
@@ -14,21 +14,8 @@
     "hard_end_utc": "2026-10-15T22:02:37.522+00:00",
     "guard_work_stop_utc": "2026-10-15T22:00:37.522+00:00",
     "maximum_hours": 4,
-    "active_own": [
-      {
-        "pid": 34915,
-        "run": "policy-qual-n16-seed0",
-        "source": "8d157d6c"
-      }
-    ],
-    "paused_own": [
-      {
-        "pid": 34822,
-        "run": "policy-qual-n1-seed0",
-        "paused_utc": "2026-10-15T20:59:00.285795+00:00",
-        "reason": "prioritize N16 full correctness; qualitative wall is not throughput"
-      }
-    ],
+    "active_own": [],
+    "paused_own": [],
     "old_original_N1": {
       "run": "r2-warp-n1-seed0",
       "status": "complete",
@@ -41,7 +28,40 @@
       "status": "supervisor_stop",
       "reason": "superseded by separately measured native policy candidate; not a teacher failure"
     },
-    "stop_policy": "do not stop VM while any foreign lease or ugrp python/mujoco/ffmpeg process remains; final audit required"
+    "stop_policy": "do not stop VM while any foreign lease or ugrp python/mujoco/ffmpeg process remains; final audit required",
+    "own_lease_removed": true,
+    "stop_confirmed": true,
+    "final_state": {
+      "lastStartTimestamp": "2026-10-15T11:02:37.522-07:00",
+      "lastStopTimestamp": "2026-10-15T14:52:49.241-07:00",
+      "machineType": "https://www.googleapis.com/compute/v1/projects/ugrp-sim-b-1014/zones/asia-northeast3-a/machineTypes/g2-standard-8",
+      "name": "ugrp-act-l4-gcp2",
+      "scheduling": {
+        "instanceTerminationAction": "STOP",
+        "maxRunDuration": {
+          "nanos": 0,
+          "seconds": "28800"
+        }
+      },
+      "status": "TERMINATED"
+    },
+    "VM_window_s": 13811.719,
+    "VM_window_hours": 3.836588611111111,
+    "assumed_VM_USD_per_hour": 1.096,
+    "VM_window_cost_estimate_USD": 4.204901117777778,
+    "cost_scope": "whole shared VM start-to-stop window, not actual bill or sum of overlapping run estimates; excludes disk/network/credits",
+    "native_qualitative": {
+      "N1": {
+        "attempted_unique_seeds": 2,
+        "successful_unique_seeds": 1,
+        "cap_end_unique_seeds": 1
+      },
+      "N16": {
+        "attempted_unique_seeds": 1,
+        "successful_unique_seeds": 1,
+        "replicated_worlds_success": 16
+      }
+    }
   },
   "CPU": {
     "instance": "ugrp-sim-gcp2",
@@ -58,11 +78,12 @@
     "Mac physics/render/GUI"
   ],
   "remaining": [
-    "complete or resource-cap own qualitative runs",
-    "remote raw hash verification and compact retrieval",
-    "final rejection_table/summary/playback/queue status",
-    "push and PR body update",
-    "remove own L4 lease and verify process/VM disposition",
-    "final ops-alert line"
-  ]
+    "scene owner selection/freeze",
+    "complete NumPy teacher/IK/raycast port",
+    "training recorder and student evaluation integration",
+    "heterogeneous model grouping",
+    "multiple independent MJWarp seeds and steady-state performance",
+    "unapproved40-case HOLD_SCENE gate"
+  ],
+  "implementation_sha": "90a25999c16faca91667bd54cdd12270f44b8632"
 }

@@ -4,7 +4,7 @@ from pathlib import Path
 if platform.system()!='Linux':raise RuntimeError('gcp2 result analysis only')
 p=argparse.ArgumentParser();p.add_argument('--l4',type=Path,required=True);p.add_argument('--cpu',type=Path,required=True);p.add_argument('--out',type=Path,required=True);a=p.parse_args()
 l4=json.loads(a.l4.read_text());cpu=json.loads(a.cpu.read_text());a.out.mkdir(parents=True,exist_ok=True)
-rows=cpu['runs']+l4['runs'];cohorts={};ledger=[];frame_funnels=[];bench=[];failures=[]
+rows=cpu['runs']+l4['runs'];cohorts={};ledger=[];frame_funnels=[];bench=[];failures=[];audits=[]
 for r in rows:
  if '/worker-' in r['run']:continue # parent preserves CPU concurrency timing; children remain in raw receipts.
  args=r.get('reproduce',[])
@@ -26,6 +26,9 @@ for r in rows:
   sim=r.get('aggregate_completed_sim_s',r.get('aggregate_sim_s',0));wall=r.get('wall_s',r.get('elapsed_s'));rate=r.get('hourly_usd',r.get('vm_hourly_usd'))
   bench.append(dict(run=r['run'],raw=raw,nworld=n,world_cap_SIM_s=r.get('cap_s'),native_sleep=bool(native),sap=bool(sap),aggregate_SIM_s=sim,wall_s=wall,loop_wall_s=r.get('loop_wall_s'),cold_SIM_s_per_wall_s=sim/wall if wall else None,loop_SIM_s_per_wall_s=r.get('sim_s_per_wall_s'),estimated_SIM_s_per_USD=sim/(wall*rate/3600) if wall and rate else None,assumed_VM_USD_per_hour=rate,condition='shared-load; horizon/profile explicitly separate; no intrinsic efficiency verdict'))
  for w in r.get('world_results',[]):
+  if w.get('input_audit'):
+   audit=w['input_audit']
+   audits.append(dict(raw=w['raw'],run=r['run'],backend=r.get('physics_backend'),invisible_measurements=audit.get('invisible_measurements'),held_world_reads=audit.get('held_world_reads')))
   f=w.get('input_funnel')
   if f:
    counts=f['counts'];frame_funnels.append(dict(raw=w['raw'],backend=r.get('physics_backend'),run=r['run'],unit='frames',gates=[dict(gate='frames',entered=counts['frames'],passed=counts['frames'],rejected=0),dict(gate='not_held',entered=counts['frames'],passed=counts['not_held'],rejected=counts['frames']-counts['not_held']),dict(gate='currently_visible',entered=counts['not_held'],passed=counts['visible_not_held'],rejected=counts['not_held']-counts['visible_not_held']),dict(gate='lazy_measurement',entered=counts['visible_not_held'],passed=counts['measurements'],rejected=counts['visible_not_held']-counts['measurements'])],basis=f.get('basis','actual input-funnel.json'),input_audit=w.get('input_audit')))
@@ -40,10 +43,24 @@ rejection=dict(schema='ugrp.warp1.rejection_table.v1',status='NOT_READY',ledger=
  aborted_attempts=[e for e in ledger if e['category'] in ('supervisor_stop','HOST_ERROR')],
  interpretation='All aborted attempts are retained separately; no aborted bootstrap/probe is silently turned into a teacher success. Prefix caps and explicit supervisor/resource stops remain separate; replicas are not independent seeds; no C/MJWarp or scene/numeric/host pooling')
 (a.out/'rejection_table.json').write_text(json.dumps(rejection,ensure_ascii=False,indent=2)+'\n')
-summary=dict(status='NOT_READY',generated_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),physics_backend='mjwarp_batch_v1',backend_default='off',PR='https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/534',base_sha='142dbf04c2128c3d7ca1c3ceb03ee3b651d9a7e5',teacher_sha='6f057f7e97c1a3aec9e8c398b8d9068e27b25df8',scope='batched physics/issued commands/RGB; scalar teacher/IK/raycast; separate evaluator',nonphysics_tests=42,cohorts=list(cohorts.values()),throughput=bench,
+summary=dict(status='NOT_READY',work_status='finite pilot work ended; implementation gaps retained',generated_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),physics_backend='mjwarp_batch_v1',backend_default='off',PR='https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/534',base_sha='142dbf04c2128c3d7ca1c3ceb03ee3b651d9a7e5',teacher_sha='6f057f7e97c1a3aec9e8c398b8d9068e27b25df8',scope='batched physics/issued commands/RGB; scalar teacher/IK/raycast; separate evaluator',nonphysics_tests=42,cohorts=list(cohorts.values()),throughput=bench,input_audits=audits,
  records={'CPU':{'raw_manifest':cpu['raw_manifest'],'sha256':cpu['raw_manifest_sha256'],'files':cpu['raw_files']},'L4':{'raw_manifest':l4['raw_manifest'],'sha256':l4['raw_manifest_sha256'],'files':l4['raw_files'],'snapshot_status':l4.get('snapshot_status')}},
  raw_hash_mismatches=[dict(run=r['run'],files=r['verification']['mismatches']) for r in rows if r.get('verification',{}).get('mismatches')],
  gate_queue=dict(status='HOLD_SCENE',approved=False,executed=False,independent_cases=40,training_rgb=False,rejection_table='/Users/changmin/projects/ugrp-wt/warp-act/experiments/2026-10-16-warp1/rejection_table.json'),
  remaining=['scene owner must select/freeze scenetex5 profile and exact model refs','full NumPy teacher/IK/raycast port remains','training recording admission and ACT student evaluation adapters remain','heterogeneous source models contain unbatchable dof_length; grouping/layout must be resolved','>=95%/40 independent MJWarp teacher gate not executed; multiple-seed and steady-state efficiency verification incomplete'],
  prohibitions_observed=dict(Mac_physics_render_training_GUI=0,model_calls=0,training=0,student_evaluations=0,GCP1_access=0,foreign_process_stops=0),cost_scope='VM rates are assumptions from simalt3 plan ($1.096/h L4, $3.145/h n4), not actual billing; overlapping per-run estimates must not be summed',raw_backup='VM originals only; local compact results/videos and hashes are not full raw backup')
 (a.out/'summary.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2)+'\n')
+lines=['# warp1 측정 결과','', 'gcp2에서 원본 manifest를 확인한 뒤 생성했다. 성공은 시뮬레이션 평가이며 실물·학생 성공이 아니다. 같은 시드의 N개 복제는 독립 표본1개다.','',
+ '|backend / host|native sleep|N|시도 세계|반환 세계|성공 세계|cap_end|시도 독립 시드|전체 완료 성공 시드|',
+ '|---|---:|---:|---:|---:|---:|---:|---:|---:|']
+for c in cohorts.values():
+ lines.append(f"|{c['backend']} / {c['host']['instance']}|{c['native_sleep']}|{c['nworld']}|{c['attempted_worlds']}|{c['returned_worlds']}|{c['physical_success_worlds']}|{c['cap_end_worlds']}|{c['unique_seeds']}|{c['successful_unique_seeds']}|")
+lines+=['','반환 수와 cap_end를 함께 읽는다. 중단된 추가 시드는 성공이나 완료 표본으로 바꾸지 않는다. 서로 다른 코호트를 합산하지 않는다.','',
+ '|run|N|세계당 cap SIM초|aggregate SIM초|cold SIM초/초|loop SIM초/초|초기화 포함 추정 SIM초/$|',
+ '|---|---:|---:|---:|---:|---:|---:|']
+for b in bench:
+ fmt=lambda v:'미측정' if v is None else f'{v:.5f}'
+ lines.append(f"|{b['run']}|{b['nworld']}|{b['world_cap_SIM_s']}|{fmt(b['aggregate_SIM_s'])}|{fmt(b['cold_SIM_s_per_wall_s'])}|{fmt(b['loop_SIM_s_per_wall_s'])}|{fmt(b['estimated_SIM_s_per_USD'])}|")
+lines+=['','공유 부하·짧은 prefix 측정이다. VM 단가 가정은 L4 $1.096/h, n4 $3.145/h이며 실제 청구가 아니다. 중첩 실행 비용을 더하지 않는다. 긴 접촉 구간의 정상 상태 효율·가속 채택은 미확정이다.','',
+ f"원본 해시 불일치: {len(summary['raw_hash_mismatches'])}. 입력 감사 원장: summary.json input_audits ({len(audits)}개). 모든 중단·HOST_ERROR는 rejection_table.json에 보존했다.",'']
+(a.out/'measured-results.md').write_text('\n'.join(lines))

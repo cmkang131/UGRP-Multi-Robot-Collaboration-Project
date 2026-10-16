@@ -1,0 +1,112 @@
+{
+  "utc": "2026-10-16T01:10:00.637108+00:00",
+  "n": 2,
+  "N_finished": 2,
+  "requested": 40,
+  "passed": false,
+  "scope": "finished child raw ledgers recounted; full cohort still running, final group manifests/playback not verified yet",
+  "rows": [
+    {
+      "group": 0,
+      "world": "world-001",
+      "seed": 8317100,
+      "lift_success": true,
+      "release_success": true,
+      "physical_success": true,
+      "max_stable_lift_s": 15.700000000000003,
+      "max_stable_release_s": 12.100000000000001,
+      "criteria": {
+        "min_clearance_m": 0.012,
+        "max_tilt_deg": 10.0,
+        "lift_hold_s": 3.0,
+        "finger_min_n": 0.5,
+        "release_settle_s": 2.0,
+        "release_speed_m_s": 0.01,
+        "release_max_tilt_deg": 3.0,
+        "release_clearance_m": 0.005,
+        "placement_offset_m": 0.05,
+        "weld": "off"
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 139,
+        "blocked_held": 185,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 53,
+          "align": 19,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "rows": 407,
+      "artifacts": {
+        "result.json": {
+          "path": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group0/world-001/result.json.zst",
+          "sha256": "31fed48d2082fb51a3b091be5db4f951792f4285ed424356700c2a7ad3c437d2"
+        },
+        "eval-only.jsonl": {
+          "path": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group0/world-001/eval-only.jsonl.zst",
+          "sha256": "43a4fed1c86e752de61462a13fd769a265a28bfd2578a721486f2997762c855b"
+        },
+        "teacher-commands.jsonl": {
+          "path": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group0/world-001/teacher-commands.jsonl.zst",
+          "sha256": "e4fc9505773d40dd32703317ad69ffd3d729b478c68e1926ded9c103f4d172a7"
+        }
+      }
+    },
+    {
+      "group": 0,
+      "world": "world-006",
+      "seed": 8317136,
+      "lift_success": true,
+      "release_success": true,
+      "physical_success": true,
+      "max_stable_lift_s": 15.800000000000002,
+      "max_stable_release_s": 12.200000000000003,
+      "criteria": {
+        "min_clearance_m": 0.012,
+        "max_tilt_deg": 10.0,
+        "lift_hold_s": 3.0,
+        "finger_min_n": 0.5,
+        "release_settle_s": 2.0,
+        "release_speed_m_s": 0.01,
+        "release_max_tilt_deg": 3.0,
+        "release_clearance_m": 0.005,
+        "placement_offset_m": 0.05,
+        "weld": "off"
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 139,
+        "blocked_held": 187,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 61,
+          "align": 25,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "rows": 423,
+      "artifacts": {
+        "result.json": {
+          "path": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group0/world-006/result.json.zst",
+          "sha256": "a7bbb3023087711d77d776c0d8bfb60a89b6d69aa8ef8c1e8aec798fb3bb9faa"
+        },
+        "eval-only.jsonl": {
+          "path": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group0/world-006/eval-only.jsonl.zst",
+          "sha256": "2f2076435d71944f6da32115050477da593db4071a496886e7fd615bc5557ad3"
+        },
+        "teacher-commands.jsonl": {
+          "path": "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group0/world-006/teacher-commands.jsonl.zst",
+          "sha256": "14f2ea2439a38a508fd13e46844dee534e7dd9cadd43ef1348bfa7495dd9933b"
+        }
+      }
+    }
+  ]
+}

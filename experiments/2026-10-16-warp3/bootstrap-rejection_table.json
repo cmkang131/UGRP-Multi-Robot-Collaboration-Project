@@ -1,0 +1,39 @@
+{
+  "scope": "setup and deployment failures, not teacher episodes",
+  "distribution": [
+    {
+      "category": "nearclip_scene_name_guard",
+      "count": 1,
+      "reason": "frozen wrapper only admits floor_light_v1; compose unchanged XML transform explicitly",
+      "blocking_object": "floor_light_nearclip_v1",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "scene API, not geometry"
+    },
+    {
+      "category": "missing_legacy_wall_texture",
+      "count": 1,
+      "reason": "frozen ACT11 wall half-length1.475 absent from base manifest; reuse release_geometry_v1 extension",
+      "blocking_object": "zone_wall_divider_1_250_14750_2000",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "appearance assets, not blocked route"
+    }
+  ],
+  "raw": "gcp2 L4:/home/ugrp/ugrp-sim/runs/warp3/distinct-export{,-r2}/",
+  "funnel": [
+    {
+      "gate": "setup_attempts",
+      "passed": 2,
+      "rejected": 0
+    },
+    {
+      "gate": "scene_build",
+      "passed": 0,
+      "rejected": 2
+    }
+  ],
+  "deployment_notes": [
+    "shared object store had26 missing current-tree blobs; transferred exact objects, restored only absent files in new task-owned snapshot; shared store not pruned",
+    "initial administrative launcher quote error fixed before any teacher step"
+  ],
+  "reproduce": "initial_job_r3.py in remote warp3 root; exact argv in resulting summaries"
+}

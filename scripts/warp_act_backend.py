@@ -60,12 +60,13 @@ class Transport:
     def __init__(self, host, source_sha, backend, out, *, native_sleep_policy_compat_v1=False):
         self.host, self.source_sha, self.backend, self.out = host, source_sha, backend, Path(out)
         self.seconds = defaultdict(float)
-        self.samples = []
+        self.samples = defaultdict(list)
         self.rgb = []
         self.contact_forces = None
         self.prototypes={}
         self.prototype_hits=0
         self.native_sleep_policy_compat_v1=native_sleep_policy_compat_v1
+        self.scene_v5_v1=False
 
     def make_world(self, plan, scene, factory, bind_camera, **kwargs):
         if self.native_sleep_policy_compat_v1:
@@ -115,8 +116,7 @@ class Transport:
         return self.rgb[index]
 
     def record_state(self, index, tick, world):
-        if index == 0:
-            self.samples.append((tick, world.data.qpos.copy(), world.data.qvel.copy()))
+        self.samples[index].append((tick, world.data.qpos.copy(), world.data.qvel.copy()))
 
     def forces(self, index, model, data, targets, fingers):
         if not self.native_render:
@@ -133,10 +133,11 @@ class Transport:
         return result
 
     def save_states(self):
-        if self.samples:
-            np.savez_compressed(self.out/'world0-states.npz',
-                ticks=[s[0] for s in self.samples], qpos=[s[1] for s in self.samples],
-                qvel=[s[2] for s in self.samples])
+        for index,samples in self.samples.items():
+            path=self.out/f'world-{index:03d}-states.npz'
+            np.savez_compressed(path,ticks=[s[0] for s in samples],qpos=[s[1] for s in samples],qvel=[s[2] for s in samples])
+            if index==0:
+                (self.out/'world0-states.npz').write_bytes(path.read_bytes())
 
 
 class CTransport(Transport):
@@ -221,6 +222,12 @@ class WarpTransport(Transport):
             self.model_batch_audit={'mode':'same_static_model','varying_fields':[]}
         if sap_segmented_v1:
             self.wm.opt.broadphase=mjw.BroadphaseType.SAP_SEGMENTED
+        if getattr(self,'batch_sleep_v1',False):
+            from warp_act_sleep import install
+            lengths=np.concatenate([model.dof_length for model in models]).astype(np.float32)
+            self.wm.dof_length=wp.array(lengths,dtype=float)
+            self.model_batch_audit['world_sleep']=install(int(m.nv),self.out)
+            self.model_batch_audit['world_sleep']['length_sha256']=hashlib.sha256(lengths.tobytes()).hexdigest()
         self.compat['broadphase']={'name':self.wm.opt.broadphase.name,'candidate':sap_segmented_v1,
             'basis':'pinned io.py439 default NXN; types.py124-135 upstream SAP_SEGMENTED; same geometry/contact parameters'}
         upstream_tolerance=float(self.wm.opt.tolerance.numpy().item())
@@ -289,9 +296,21 @@ class WarpTransport(Transport):
             mount_quat=m.cam_quat[m.camera('r1__robot_cam').id].tolist(),
             remap_sha256=hashlib.sha256(self.mx.tobytes()+self.my.tobytes()).hexdigest(),
             renderer='MJWarp batch RGB; known partial-alpha difference from C remains')
+        self.camera['quality_requested']='no_mip_v1' if self.scene_v5_v1 else 'native'
         self.capacities = dict(nconmax=ncon,njmax=njmax,naconmax=int(self.wd.naconmax),nvmax=int(self.wd.nvmax),control_steps=self.control_steps,graph_chunk=self.graph_chunk,graph_repeats=self.graph_repeats)
         self.build_lookup(contexts[0]['world'].robot('r1'))
+        if getattr(self,'numpy_teacher_v1',False):
+            from warp_act_visibility import BatchVisibility
+            self.visibility=BatchVisibility(self,contexts)
         self.sync_render(contexts)
+        if getattr(self,'numpy_teacher_v1',False):
+            rows=[]
+            for i,c in enumerate(contexts):
+                reference=c['visibility_reference']()
+                gpu=self.visibility.region_visible(i,c['gids'])
+                rows.append(dict(world=i,c_reference=list(reference),gpu=list(gpu),exact=reference==gpu))
+            (self.out/'visibility-initial-audit.json').write_text(json.dumps(dict(rows=rows,
+                exact=sum(r['exact'] for r in rows),N=len(rows),scope='evaluation-only initial C/GPU ray definition check; no scalar result enters teacher; no C physics equivalence gate'),indent=2)+'\n')
 
     def copy_initial_state(self, contexts):
         wp=self.wp
@@ -378,6 +397,7 @@ class WarpTransport(Transport):
             return result,locations,scalar
         for obj in converted:
             arr,loc,scalar=flatten(obj);arrays.append(arr);objects.append(loc);scalars.append(scalar)
+            if getattr(self,'batch_sleep_v1',False):arr.pop('dof_length')
         if any(scalar!=scalars[0] for scalar in scalars[1:]):
             raise ValueError('converted model scalar/topology/options differ')
         changed=varying_model_arrays(arrays,batchable)
@@ -504,6 +524,10 @@ class WarpTransport(Transport):
         start=time.perf_counter()
         image=np.clip(self.device_rgb.numpy()*255,0,255).astype(np.uint8)
         qpos,qvel=self.wd.qpos.numpy(),self.wd.qvel.numpy()
+        transforms=None
+        if getattr(self,'numpy_teacher_v1',False):
+            transforms={name:getattr(self.wd,name).numpy() for name in ('xpos','xmat','geom_xpos','geom_xmat','cam_xpos','cam_xmat')}
+            self.visibility.update(transforms)
         if not np.isfinite(qpos).all() or not np.isfinite(qvel).all():
             raise RuntimeError('nonfinite Warp state')
         self.rgb=[]
@@ -515,8 +539,11 @@ class WarpTransport(Transport):
             d=c['world'].data
             d.qpos[:]=qpos[i];d.qvel[:]=qvel[i];d.time=self.origin+self.tick*.1
             # Perception mirror only, no C physics or C contact-force reconstruction.
-            mujoco.mj_kinematics(c['world'].model,d)
-            mujoco.mj_camlight(c['world'].model,d)
+            if transforms is None:
+                mujoco.mj_kinematics(c['world'].model,d)
+                mujoco.mj_camlight(c['world'].model,d)
+            else:
+                for name,value in transforms.items():getattr(d,name)[:]=value[i].reshape(getattr(d,name).shape)
         self.seconds['readback_remap_jpeg_kinematics']+=time.perf_counter()-start
         self.force_out.zero_()
         d=self.wd

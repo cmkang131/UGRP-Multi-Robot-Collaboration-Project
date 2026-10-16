@@ -8,6 +8,7 @@ keys=('status','physics_backend','source_sha','teacher_sha','host','nworld','see
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 for f in sorted(a.root.rglob('summary.json')):
  s=json.loads(f.read_text());root=f.parent;row={'run':str(root.relative_to(a.root)),'raw':str(root),'summary_sha256':sha(f),**{k:s[k] for k in keys if k in s}}
+ if 'mujoco' in s:row['mujoco']=s['mujoco']
  marker=root/'SUPERVISOR_STOP.json'
  if marker.exists():
   stop=json.loads(marker.read_text());row['supervision']=stop

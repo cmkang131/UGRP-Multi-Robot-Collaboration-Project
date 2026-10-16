@@ -45,6 +45,54 @@
       "video_bytes": 11808,
       "ffprobe_duration_s": "1.333333",
       "no_screen_app": true
+    },
+    {
+      "case": "MJWarp native additional seed8317104 resource cap",
+      "local": "warp1-native-cap-seed4",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-qual-n1-seed4",
+      "full_review_hz": 2.0,
+      "full_review_SIM_range": [
+        0.0,
+        17.0
+      ],
+      "full_frames_reviewed": 35,
+      "terminal_10Hz_frames_reviewed": 100,
+      "video_bytes": 28080,
+      "ffprobe_duration_s": "5.833333",
+      "no_screen_app": true
+    },
+    {
+      "case": "MJWarp native N1 success seed8317100",
+      "local": "warp1-native-n1-seed0",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-qual-n1-seed0",
+      "full_review_hz": 2.0,
+      "full_review_SIM_range": [
+        0.0,
+        40.5
+      ],
+      "full_frames_reviewed": 82,
+      "terminal_10Hz_frames_reviewed": 100,
+      "video_bytes": 40500,
+      "ffprobe_duration_s": "13.666667",
+      "no_screen_app": true
+    },
+    {
+      "case": "MJWarp native N16 seed8317100: world0 reviewed",
+      "local": "warp1-native-n16-seed0",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/policy-qual-n16-seed0",
+      "worlds_reviewed": [
+        0
+      ],
+      "full_review_hz": 2.0,
+      "full_review_SIM_range": [
+        0.0,
+        40.5
+      ],
+      "full_frames_reviewed": 82,
+      "terminal_10Hz_frames_reviewed": 100,
+      "video_bytes": 40231,
+      "ffprobe_duration_s": "13.666667",
+      "no_screen_app": true
     }
   ],
   "timeline": [
@@ -82,6 +130,21 @@
       "case": "MJWarp N16 4SIM cap_end prefix",
       "range": "0-3.9SIMs",
       "observation": "continuous approach; cyan box grows and shifts downward; cap_end before grasp, not physical task failure"
+    },
+    {
+      "case": "MJWarp native additional seed8317104 resource cap",
+      "range": "0-17.0SIMs; all2Hz frames and7.1-17.0 at10Hz",
+      "observation": "cyan approaches down own frame during0-11.8; from12SIMs view is blue zone floor during grasp/lift commands. Administrative resource cap at17SIMs; no task failure inferred."
+    },
+    {
+      "case": "MJWarp native N1 success seed8317100",
+      "range": "0-40.6SIMs; all2Hz frames and30.7-40.6 at10Hz",
+      "observation": "cyan approaches down frame0-9;9.5-30 mostly blue zone;30.5 backoff exposes red box;32.9-35.3 actual turn shows wall/floor;36.7-38.1 brief blue-only view then red/cyan edge return. No sustained rapid oscillation established. Separate evaluator supplies task success."
+    },
+    {
+      "case": "MJWarp native N16 seed8317100 world0",
+      "range": "0-40.6SIMs; all2Hz frames and30.7-40.6 at10Hz",
+      "observation": "approach0-9, blue floor9.5-30, backoff30.5, wall/floor scan32.9-35.3, brief blue-only36.7-38.1 and cyan edge return. Same visual sequence as native N1; no sustained oscillation established. Other15 worlds have evaluator/input audits, not full video review."
     }
   ],
   "physical_failure_video_status": "no completed physical task failure yet; setup HOST_ERROR has no rollout to replay. Interruption and prefix caps are not invented physical failures.",

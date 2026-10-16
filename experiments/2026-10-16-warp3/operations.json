@@ -1,0 +1,178 @@
+{
+  "task": "warp3",
+  "worktree": "/Users/changmin/projects/ugrp-wt/warp-act",
+  "branch": "claude/warp-act",
+  "PR": 534,
+  "stage": "2 teacher gate R1 running; do not implement step3 or run step4 before gate passes",
+  "source_sha": "f0db6b1abb842ea65b71c433738210254f300a7c",
+  "L4": {
+    "project": "ugrp-sim-b-1014",
+    "account": "changmin5781@gmail.com",
+    "instance": "ugrp-act-l4-gcp2",
+    "zone": "asia-northeast3-a",
+    "ip": "34.64.52.225",
+    "ssh_identity": "/Users/changmin/.ssh/ugrp_gcp2",
+    "lastStartUTC": "2026-10-15T21:59:25.154+00:00",
+    "hardStopUTC": "2026-10-16T05:59:25.154+00:00",
+    "hourly_USD_estimate": 1.096,
+    "actual_bill_verified": false
+  },
+  "remote_root": "/home/ugrp/ugrp-sim/runs/warp3",
+  "remote_source": "/home/ugrp/ugrp-sim/src/f0db6b1abb842ea65b71c433738210254f300a7c",
+  "teacher_source": "/home/ugrp/ugrp-sim/src/warp1-teacher-snapshot-6f057f7e",
+  "warp_python": "/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python",
+  "C_python": "/home/ugrp/ugrp-sim/runs/simalt3/c-env/bin/python",
+  "local_remote_helper": "/tmp/ugrp-warp3-remote.py",
+  "local_deploy_helper": "/tmp/ugrp-warp3-deploy.py",
+  "groups": [
+    {
+      "group": 0,
+      "pid": 7804,
+      "indices": [
+        4,
+        0,
+        16,
+        17,
+        25,
+        32,
+        36
+      ],
+      "state": "COMPLETE"
+    },
+    {
+      "group": 1,
+      "pid": 8648,
+      "indices": [
+        1,
+        13,
+        21
+      ],
+      "state": "ACTIVE"
+    },
+    {
+      "group": 2,
+      "pid": 8649,
+      "indices": [
+        2,
+        6,
+        8,
+        10,
+        12,
+        14,
+        18,
+        22,
+        26,
+        30,
+        34,
+        38
+      ],
+      "state": "COMPLETE"
+    },
+    {
+      "group": 3,
+      "pid": 8650,
+      "indices": [
+        3,
+        7,
+        11,
+        15,
+        19,
+        23,
+        27,
+        31,
+        35,
+        39
+      ],
+      "state": "COMPLETE"
+    },
+    {
+      "group": 4,
+      "pid": 8651,
+      "indices": [
+        5,
+        9,
+        20,
+        29,
+        33,
+        37
+      ],
+      "state": "ACTIVE"
+    },
+    {
+      "group": 5,
+      "pid": 8652,
+      "indices": [
+        24
+      ],
+      "state": "ACTIVE"
+    },
+    {
+      "group": 6,
+      "pid": 8653,
+      "indices": [
+        28
+      ],
+      "state": "ACTIVE"
+    }
+  ],
+  "scheduling": "Opt-in all unfinished groups since02:51:48UTC after resource audit; remaining4 groups11 worlds active; SIM/controller source unchanged, hard stop05:59:25UTC and graceful drain05:57:25UTC preserved.",
+  "admission": {
+    "status": "APPROVED_PINNED",
+    "review_detail": "REVIEW_SKIPPED_BY_USER (10/15 run-first rule)",
+    "queue": "/home/ugrp/ugrp-sim/runs/warp3/teacher-gate-queue-r1.json",
+    "rejection_table": "/home/ugrp/ugrp-sim/runs/warp3/gate-rejection_table-r1.json",
+    "N": 40,
+    "minimum_n": 38,
+    "max_fix_rounds": 3
+  },
+  "important": [
+    "Stage1 actual distinct16 PASS, montage inspected and transfer hashes verified; older N>1 results excluded",
+    "240 NumPy IK vs frozen SDK comparisons equal; 20 nonphysics tests pass; CI now includes all3 test files",
+    "40 exact reference exports grouped7/3/12/10/6/1/1; initial qpos match40/40 and C/GPU ray counts40/40 (evaluation-only, no C physics equivalence gate)",
+    "runtime C ray/kinematics guard enabled; independent per-world Python teacher state machines remain; do not claim full FSM vectorization",
+    "Runtime/metadata idle guard now recognizes actual Warp teacher; 1200s idle and28800s cap retained; budget-stop unchanged",
+    "gate_status/gate_schedule live. make_playback actual0.1SIM prefix pipeline smoke passed on gcp2 and transfer hashes verified. recount_gate now checks final raw manifest and exact source/host/camera/numeric cohort; full gate recount not yet run.",
+    "Need raw ledger recount, failure1-2 and success1 full2Hz/terminal10Hz review and <=8MB videos fetched to primary outputs/e2e18-admin/playback before claiming cause",
+    "Step3 API contract in api-contract.md; existing rl-act/scripts/rl_act_warp.py is only unverified older same-model baseline, must not claim new reset/pause ready",
+    "Never stop gcp2 CPU VM with foreign beampair/reloc leases/processes; CPU comparison later requires lease and no shared-load verdict",
+    "No Mac physics/render/GUI, no model calls, no Google Drive, no GCP1 operations",
+    "COORDINATOR_NOTE.md is preexisting untracked and must remain untouched/uncommitted",
+    "Progress JSON reader now supports result.json.zst and max world ticks. Earlier post-completion0 and frozen44SIM displays were reader undercounts, not physics stalls; controller unchanged.",
+    "03:18UTC foreign beamact3-A/warp4/warp5 leases observed; preserve all foreign tasks. Main L4 is shared and not eligible for warm throughput measurement."
+  ],
+  "recorded": "2026-10-16T04:00:24.092564+00:00",
+  "scheduler_pid": 54448,
+  "scheduler_script": "/home/ugrp/ugrp-sim/src/e97464a32c7c90b68b0c3a4d19ce630f9ad7abee/experiments/2026-10-16-warp3/gate_schedule.py",
+  "scheduler_endUTC": "2026-10-16T05:57:25.154+00:00",
+  "budget_stop_verified": "ACTIVE GEN_2, project ugrp-sim-b-1014/topic budget-stop, live 2026-10-15T23:18UTC",
+  "disk_free_GiB": 24.53473663330078,
+  "progress_snapshot": {
+    "utc": "2026-10-16T04:00:08Z",
+    "active_group_max_SIM": {
+      "1": 33.4,
+      "4": 36.7,
+      "5": 29.0,
+      "6": 29.2
+    },
+    "completed": 29,
+    "runner_success": 29,
+    "raw_independent_recount_finished": 29,
+    "raw_recount_success": 29,
+    "manifest_hash_checks": 5952,
+    "hash_mismatch": 0,
+    "cap_end": 0,
+    "HOST_ERROR": 0,
+    "scope": "29 closed cases only, full40 not yet complete; group0 success video inspected2Hz+terminal10Hz, no completed failures available"
+  },
+  "endpoint_alert": "Existing active Gemma4-31B@DeepInfra price alert +50% received; no live price refresh and no LLM calls/batches in warp3",
+  "local_status_helper": "/tmp/ugrp-warp3-status.py",
+  "foreign_L4_leases": [
+    "beamact3-A (GPU training), observed03:59UTC"
+  ],
+  "CI": {
+    "sha": "e97464a32c7c90b68b0c3a4d19ce630f9ad7abee",
+    "passed": 33,
+    "total": 33,
+    "scope": "GitHub CI, separate from MJWarp teacher gate"
+  }
+}
