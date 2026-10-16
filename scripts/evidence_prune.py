@@ -230,18 +230,20 @@ def execute(root: Path, number: int | None, records: Path, *, catalog=None, idle
         record['unknown_original_sizes'] = planned['unknown_original_sizes']
         progress = receipt.with_suffix('.progress.jsonl')
         record['progress_journal'] = str(progress)
+        trash = Path.home() / '.Trash' / f'ugrp-pr-{number}-{tag}'
+        record['trash'] = str(trash) if sys.platform == 'darwin' else None
         atomic_text(receipt, json.dumps(record, indent=2) + '\n')
         for row in all_rows:
             if (not safe_path(root / row['path'], root)
                     or snapshot(root / row['path']) != tuple(row['snapshot'])):
                 raise ValueError('run changed after inventory')
-        trash = Path.home() / '.Trash' / f'ugrp-pr-{number}-{tag}'
         # Recheck age once before mutation; own inventory writes are excluded.
         minimum_age = max(idle_hours * 3600, 7 * 86400 if number is None else 0,
                           86400 if planned['completion_basis'] != 'EXIT' else 0)
         if evidence_age(root) < minimum_age:
             raise ValueError('run changed before pruning')
         refuse_if_in_use(root, 0, None)
+        moved_inodes = set()
         for row in planned['candidates']:
             if catalog is not None:
                 from scripts.storage_automation import validate_catalog, catalog_pr
@@ -249,15 +251,24 @@ def execute(root: Path, number: int | None, records: Path, *, catalog=None, idle
                 if number is not None:
                     catalog_pr(catalog, number)
             path = root / row['path']
-            if (not safe_path(path, root) or snapshot(path) != tuple(row['snapshot'])
+            if (not safe_path(path, root)
                     or idle_reason(root, require_exit=planned['completion_basis'] == 'EXIT')):
                 raise ValueError(f'run/file changed before pruning: {path}')
+            current, expected = snapshot(path), tuple(row['snapshot'])
+            if current != expected:
+                # Moving/unlinking one hard link can update the shared inode's
+                # ctime. Accept only our already-moved inode, unchanged size /
+                # mtime / identity, and a fresh matching content hash.
+                if (current[:2] not in moved_inodes or current[:4] != expected[:4]
+                        or sha256(path) != row['sha256'] or snapshot(path) != current):
+                    raise ValueError(f'run/file changed before pruning: {path}')
             if sys.platform == 'darwin':
                 destination = trash / row['path']
                 destination.parent.mkdir(parents=True, exist_ok=True)
                 shutil.move(str(path), str(destination))
             else:
                 path.unlink()
+            moved_inodes.add(expected[:2])
             record['completed'].append(row['path'])
             # Append durable progress; don't rewrite the entire candidate list per frame.
             with progress.open('a') as stream:

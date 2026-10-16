@@ -25,6 +25,7 @@ class LegacyPruneTests(unittest.TestCase):
         self.tmp.cleanup()
 
     def test_legacy_requires_opt_in_age_and_process_check_and_records_basis(self):
+        os.link(self.root / 'frame.jpg', self.root / 'alias.jpg')
         self.assertIn('skipped', prune.plan(self.root, 1))
         records = self.root.parent / 'records'
         with mock.patch.object(prune, 'refuse_if_in_use', side_effect=prune.Refused('busy')):
@@ -34,9 +35,11 @@ class LegacyPruneTests(unittest.TestCase):
                 mock.patch.object(prune, 'pr_info', return_value={'number': 1, 'state': 'MERGED'}), \
                 mock.patch.object(prune.sys, 'platform', 'linux'):
             row = prune.execute(self.root, 1, records, allow_legacy_completed=True)
-        self.assertEqual(row['bytes'], 5)
+        self.assertEqual(row['bytes'], 10)
         receipt = json.loads(next(records.glob('*.json')).read_text())
         self.assertIn('retrospective:true', receipt['completion_basis'])
+        self.assertEqual(receipt['status'], 'done')
+        self.assertEqual(len(receipt['completed']), 2)
         self.assertFalse((self.root / 'EXIT').exists())
         (self.root / 'new.jpg').write_bytes(b'new')
         self.assertIn('skipped', prune.plan(self.root, 1, allow_legacy_completed=True))
