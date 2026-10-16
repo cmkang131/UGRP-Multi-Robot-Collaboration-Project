@@ -1,0 +1,62 @@
+{
+  "status": "PARTIAL_FIXED_WORK_PROFILE",
+  "source_sha": "4476e810cad7160d586cd30a4188b9150fe3bea8",
+  "host": "gcp4",
+  "load": "exclusive",
+  "raw": "/home/ugrp/ugrp-sim/runs/warp9/profile-gcp4-r1",
+  "unit": "phase cost; not task failures",
+  "n1_top": [
+    {
+      "phase": "physics_graph",
+      "wall_s": 6.1667988799999875,
+      "device_event_s": 6.166545288085938,
+      "host_submit_s": 5.646310181999979
+    },
+    {
+      "phase": "controller_python",
+      "wall_s": 0.39131725200002165
+    },
+    {
+      "phase": "render_blend_cpu",
+      "wall_s": 0.22936458199990284
+    },
+    {
+      "phase": "command_python",
+      "wall_s": 0.17087624800001322
+    }
+  ],
+  "n4_top": [
+    {
+      "phase": "physics_graph",
+      "wall_s": 7.327342575999978,
+      "device_event_s": 7.3271796875,
+      "host_submit_s": 6.700367848999974
+    },
+    {
+      "phase": "render_blend_cpu",
+      "wall_s": 0.9356465380000145
+    },
+    {
+      "phase": "controller_python",
+      "wall_s": 0.7208219489999124
+    }
+  ],
+  "sim_s": 0.3,
+  "interpretation": "physics interval largest; host submit overlaps GPU, not exclusive CPU cost. Full-period capture is an untested launch-count hypothesis.",
+  "unmeasured": [
+    16,
+    64
+  ],
+  "funnel": [
+    {
+      "stage": "requested_sizes",
+      "cumulative_pass_n": 4,
+      "rejected_n": 0
+    },
+    {
+      "stage": "completed_sizes_at_edit",
+      "cumulative_pass_n": 2,
+      "rejected_n": 0
+    }
+  ]
+}

@@ -1,10 +1,17 @@
-# warp9 — 조사·계측 준비, 단독 GPU 대기
+# warp9 — gcp4 단독 분리 계측 진행
 
 사용자 "모두 MJWarp로 바꿔서 하게"에 따라 warp7/PR #550(`claude/warp5`)을 이어 간다. 현재 **NOT_READY**. 위치 추정·운반·place·완주·실제 LLM E2E 완료를 주장하지 않는다.
 
 [참고 자료](references.md), [warp7 R3 원본 대기열](warp7-r3-queue.json). R3는 shared gcp2 L4, command+physics97.792s / render+평가복사35.126s, 0.4 SIM초/loop145.099s였다. 순수 물리·렌더 수치로 재해석하지 않는다.
 
-## 진행
+## 재개 2 (2026-10-16)
+
+- 사용자 추가 지시로 gcp4(`ugrp-sim-d-1016` / `ugrp-act-l4-gcp4`)에서 단독 계측을 시작했다. 원본 `/home/ugrp/ugrp-sim/runs/warp9/profile-gcp4-r1`, source `4476e810cad7160d586cd30a4188b9150fe3bea8`, 감독 PID2189. [제출 기록](resume2/dispatch.json). 진행/컴파일을 측정 완료로 세지 않는다.
+- gcp3 PID13017의 정확한 명령·자식 부재·대기 상태를 확인하고 해당 프로세스만 종료했다. warp8 임대 내용 불변, GPU 제출0·VM 정지0. [정리 증거](resume2/gcp3-wait-cleanup.json).
+- gcp4는 기존 임대·GPU PID가 없을 때 자기 임대를 획득했다. [실행 상한 없음](resume2/gcp4-scheduling.json), `ugrp-idle-guard.timer` active 확인. budget-stop·유휴 장치는 변경하지 않았다.
+- 호스트 등록/계측 표기는 기본 off `warp9_exclusive_host_v1=gcp4`로 확장했다. 결과에서 실제 instance를 읽어 shared/exclusive를 표기하며 다른 호스트와 합산하지 않는다. 관련 비물리14 PASS. CoreWeave 공급 감시 경보0(실제 모델 호출0).
+
+## 1회차 진행 기록
 
 - 공식 MJWarp/Warp/Playground 구현을 조사하고 원문·SHA를 보존했다.
 - 기본 off `warp9_profile_v1`에 physics CUDA event, host submit/wait, Python command/controller, render·D2H·평가 export 계측을 넣었다. 실운전 속도는 무계측으로 따로 확인한다.
@@ -20,7 +27,7 @@ gcp3 Compute Engine scheduling 조회에서 `maxRunDuration`·`terminationTime`�
 
 ## 남은 관문
 
-1. warp8 임대 해제 후 gcp3 단독 1·4·16·64세계 분리 계측과 거부/비용 표.
+1. gcp4 단독 1·4·16·64세계 분리 계측 완료와 거부/비용 표(진행 중).
 2. 가장 큰 원인 수정, n4 제어/L4 물리 분리와 무계측 속도 확인. NoSlip·dt·solver 유지.
 3. N16 첫30 SIM초·운반·place·완주, 실패/성공 재생·관문 funnel·입력 감사.
 4. CoreWeave fp4 Mac 중계·ACT 연결·LLM 첫30 점검. 같은 결함3라운드 중단.

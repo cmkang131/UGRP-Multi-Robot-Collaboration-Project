@@ -63,6 +63,12 @@ class Batch(WarpTransport):
                     wp.launch(self.advance_kernel,dim=1,inputs=[self.graph_tick])
             self.graph=capture.graph
             self.capacities.update(control_steps=self.control_steps,graph_chunk=self.graph_chunk,graph_repeats=self.graph_repeats)
+        if getattr(self,'warp9_full_period_graph_v1',False):
+            from scripts.warp9_graph import capture_period
+            self.warp9_graph_audit=capture_period(self)
+        if getattr(self,'warp9_physics_event_trace_v1',False):
+            from scripts.warp9_graph import capture_trace
+            self.warp9_trace_audit=capture_trace(self)
         self.initial_times=np.array([c['world'].data.time for c in contexts])
         # Initial native setup is separately recorded; rollout has no C step.
         def forbidden(*a,**kw):raise RuntimeError('warp5 native physics/render forbidden after setup')
@@ -217,6 +223,9 @@ class Batch(WarpTransport):
         with phase(self,'physics_existing_sync',explicit_syncs=1):
             wp.synchronize()
         self.tick+=1
+        if getattr(self,'warp9_physics_event_trace_v1',False):
+            from scripts.warp9_graph import trace_summary
+            (self.out/'physics-event-trace.json').write_text(json.dumps(trace_summary(self),indent=2)+'\n')
         for name,value in frozen.items():
             current=getattr(self.wd,name).numpy();current[self.done]=value[self.done]
             wp.copy(getattr(self.wd,name),wp.array(current,dtype=getattr(self.wd,name).dtype))

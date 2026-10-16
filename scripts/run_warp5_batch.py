@@ -122,6 +122,8 @@ def run(a):
             transport.camera_demand_v1=q.get('warp7_camera_demand_v1',False)
             transport.native_model_batch_v1=q.get('warp7_native_model_batch_v1',False)
             transport.batch_sleep_v1=transport.native_model_batch_v1
+            transport.warp9_full_period_graph_v1=q.get('warp9_full_period_graph_v1',False)
+            transport.warp9_physics_event_trace_v1=q.get('warp9_physics_event_trace_v1',False)
             if q.get('warp9_profile_v1'):
                 import warp as wp
                 from scripts.warp9_profile import Profile
@@ -129,7 +131,8 @@ def run(a):
             cc=[contexts[i] for i in indices];groups.append((indices,cc,transport));transport.initialize(cc,
                 float32_solver_default_v1=q.get('float32_solver_default_v1',False),sap_segmented_v1=q.get('warp7_sap_segmented_v1',False))
         report.update(model_groups=[dict(worlds=ii.tolist(),camera=h.camera,compatibility=h.compat,capacities=h.capacities,
-            model_batch=h.model_batch_audit,native_model_adapter=getattr(h,'native_model_adapter',None)) for ii,cc,h in groups])
+            model_batch=h.model_batch_audit,native_model_adapter=getattr(h,'native_model_adapter',None),
+            graph_audit=getattr(h,'warp9_graph_audit',None)) for ii,cc,h in groups])
         loop=time.perf_counter()
         interval_start=loop;previous_elapsed=0.;speed_samples=[]
         for ii,cc,h in groups:
