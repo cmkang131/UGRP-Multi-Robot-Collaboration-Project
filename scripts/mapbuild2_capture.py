@@ -107,8 +107,11 @@ def run(a):
     wm=mjw.put_model(m);wm.opt.tolerance.fill_(float(m.opt.tolerance))
     # Workspace sizing reuses simalt/warp_act allocation minima and rounds
     # observed import contacts up; these are not physics acceptance constants.
-    ncon=1<<(max(512,int(d.ncon))-1).bit_length()
-    njmax=1<<(max(2048,int(d.nefc))-1).bit_length()
+    ncon=1<<(max(32,int(d.ncon))-1).bit_length()
+    njmax=1<<(max(256,int(d.nefc))-1).bit_length()
+    dump(a.output/'initialization.json',dict(nq=m.nq,nv=m.nv,ncon=int(d.ncon),nefc=int(d.nefc),
+        capacities=dict(nconmax=ncon,njmax=njmax),timestep=float(m.opt.timestep),
+        basis='warp_act_backend allocation minima and next power of two of native import counts; overflow is HOST_ERROR'))
     with unused_efm(m,d):wd=mjw.put_data(m,d,nworld=4,nconmax=ncon,njmax=njmax)
     wp.copy(wd.qpos,wp.array(np.stack(initial),dtype=wd.qpos.dtype))
     wp.copy(wd.ctrl,wp.array(np.stack(ctrl),dtype=wd.ctrl.dtype))
@@ -170,7 +173,9 @@ def run(a):
                         # transducer model at the actual Warp state. No CPU step.
                         sensor_data.qpos[:]=qpos[i];sensor_data.qvel[:]=qvel[i];mujoco.mj_forward(m,sensor_data)
                         reading=us.measure(t).as_dict();ranges.append(dict(sequence=case['name'],**reading))
-                ring.append(dict(t=t,frame_id=tick));print('recorded',t,flush=True)
+                ring.append(dict(t=t,frame_id=tick))
+                dump(a.output/'recording-progress.json',dict(status='RUNNING',sim_t=t,own_frames=len(own),physics_steps=steps))
+                print('recorded',t,flush=True)
             if centi==400:break
             u=stimulus(t);effective,relay=drive.command_step(u,relay)
             controls=np.stack(ctrl);controls[:,wheel]=drive.torque_cap_nm*effective
