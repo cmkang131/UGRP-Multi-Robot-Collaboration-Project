@@ -67,8 +67,15 @@ def run(a):
     # Existing x86 persistent-storage floor (AGENTS); resource admission only.
     if os.statvfs(base).f_bavail*os.statvfs(base).f_frsize < 8*1024**3:
         raise ValueError('DISK_FLOOR_8GIB')
+    available=int(next(line for line in Path('/proc/meminfo').read_text().splitlines()
+        if line.startswith('MemAvailable:')).split()[1])*1024
+    # Existing project x86 admission floor, separate from behavior budgets.
+    if available<6*1024**3:raise ValueError('MEMORY_FLOOR_6GIB')
     a.output.mkdir(parents=True,exist_ok=False)
     dump(a.output/'queue.json',q);dump(a.output/'leases-start.json',leases)
+    dump(a.output/'resources-start.json',dict(mem_available_bytes=available,load_average=list(os.getloadavg()),
+        disk_free_bytes=os.statvfs(base).f_bavail*os.statvfs(base).f_frsize,shared=True,
+        gpu=subprocess.check_output(['nvidia-smi','--query-gpu=name,memory.used,memory.total,utilization.gpu','--format=csv,noheader'],text=True)))
     dump(a.output/'RUN_META.json',dict(schema='ugrp.run_meta.v1',**{'class':'dev'},pr=556,
         branch='codex/mapbuild1',sha=q['source_sha'],batch='mapbuild2'))
     sys.path.insert(0,str(a.renderer_source));sys.path.insert(1,str(a.renderer_source/'scripts'))
