@@ -27,7 +27,7 @@ def run(a):
     if check.get('ok') is not True:
         raise ValueError('CURRENT_STACK_CHECK_REQUIRED:'+str(check.get('status')))
     a.output.mkdir(parents=True,exist_ok=False)
-    own=read(a.input/'own.json')['frames'];saved=read(a.saved/'trajectory.json');scan_path=a.saved/'scans.json' if (a.saved/'scans.json').is_file() else a.input/'scans.json';scans=read(scan_path)
+    own=read(a.input/'own.json')['frames'];saved=read(a.saved/'trajectory.json');scan_path=a.scan_source or (a.saved/'scans.json' if (a.saved/'scans.json').is_file() else a.input/'scans.json');scans=read(scan_path)
     if len(saved)!=len(own) or len(scans)!=len(own):raise ValueError('FRAME_COUNT_MISMATCH')
     if [r['frame_id'] for r in saved]!=[f['frame_id'] for f in own]:raise ValueError('EXACT_FRAME_JOIN_REQUIRED')
     calibration=read(a.calibration);req=read(a.requirements)
@@ -78,4 +78,4 @@ def run(a):
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__)
     for k in ('input','saved','output','calibration','requirements','queue','stack-check','command-model'):p.add_argument('--'+k,type=Path,required=True)
-    p.add_argument('--seed',type=int,default=20261017);run(p.parse_args())
+    p.add_argument('--scan-source',type=Path);p.add_argument('--seed',type=int,default=20261017);run(p.parse_args())
