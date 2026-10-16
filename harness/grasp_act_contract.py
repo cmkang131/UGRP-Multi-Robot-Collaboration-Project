@@ -8,14 +8,14 @@ from __future__ import annotations
 import math
 from collections.abc import Mapping
 
-SCHEMA = 'ugrp.grasp_act.student.v5'
+SCHEMA = 'ugrp.grasp_act.student.v6'
 SKILLS = ('grasp', 'wait', 'regrasp', 'release')
 KINDS = ('cyan', 'green', 'red', 'yellow', 'can', 'tile', 'long_beam', 'heavy_crate', 'tri_frame')
 ROLES = ('teal', 'blue', 'west', 'east', 'any', 'v0', 'v1', 'v2')
 KIND_ROLES = {**{k: ('west',) for k in ('cyan', 'green', 'red', 'yellow')},
               'can': ('any',), 'tile': ('west', 'east'), 'long_beam': ('teal', 'blue'),
               'heavy_crate': ('west', 'east'), 'tri_frame': ('v0', 'v1', 'v2')}
-DESTINATIONS = ('none','A','B','C')
+DESTINATIONS = ('none','A','B','C','pickup_site')
 SERVOS = (1, 3, 4, 5, 6)
 MEMORY_S = 5.2  # v2 final blind motion minus GT-only verification; recheck v3 gate
 HISTORY = 16

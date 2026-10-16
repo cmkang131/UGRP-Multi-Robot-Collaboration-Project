@@ -1,0 +1,56 @@
+{
+  "stage": "R1/R2 complete; before final compiled geometry transfer",
+  "distribution": [
+    {
+      "reason": "base_endpoint_over_5mm",
+      "count": 1,
+      "blocking_object": "r1__robot / floor",
+      "minimum_gap_m": null,
+      "gap_note": "trajectory discrepancy; not a clearance rejection",
+      "observed_m": 0.010558165514068732
+    },
+    {
+      "reason": "unloaded_endpoint_pass",
+      "count": 3,
+      "blocking_object": "none",
+      "minimum_gap_m": null,
+      "gap_note": "trajectory gate"
+    },
+    {
+      "reason": "compiled_mesh_principal_axis_representation_differs",
+      "count": 1,
+      "blocking_object": "roller mesh geometry and compiled caches",
+      "minimum_gap_m": null,
+      "gap_note": "simalt4 same-shape body-frame Hausdorff maximum8.883e-10m; C312 arrays transferred exactly, no shape tuning"
+    }
+  ],
+  "funnel": [
+    {
+      "gate": "complete corrected tapes",
+      "entered": 4,
+      "passed": 4,
+      "rejected": 0
+    },
+    {
+      "gate": "endpoint_5mm_2deg",
+      "entered": 4,
+      "passed": 3,
+      "rejected": 1
+    },
+    {
+      "gate": "hold_bilateral_time_samples",
+      "entered": 30,
+      "passed": 30,
+      "rejected": 0
+    },
+    {
+      "gate": "small_scene_complete",
+      "entered": 1,
+      "passed": 0,
+      "rejected": 1
+    }
+  ],
+  "raw": "/home/ugrp/ugrp-sim/runs/simalt5/warp-compiled312-grip/steps.npz",
+  "geometry_reference": "/home/ugrp/ugrp-sim/runs/simalt5/compiled-geometry312.npz",
+  "geometry_layout_check": "/home/ugrp/ugrp-sim/runs/simalt5/geometry-layout-check.json"
+}
