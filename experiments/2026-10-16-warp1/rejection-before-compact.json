@@ -1,0 +1,9 @@
+{
+  "stage": "before native sleeping/compact candidate",
+  "distribution": [{"category":"full_scene_physics_cost","count":1,"blocking_object":"full246-DoF scene / only one robot commanded","minimum_gap_m":null,"minimum_gap_status":"performance, not geometric rejection","raw":"/home/ugrp/ugrp-sim/runs/warp1/bench-n16-prefix4/summary.json"}],
+  "tolerance_ab": {"source_physics_s":10.878246774999752,"upstream_float32_physics_s":10.183188599999994,"final_step_iterations_source":7,"final_step_iterations_float32":4,"scope":"one0.1SIMs initial tick, shared GPU; insufficient efficiency verdict"},
+  "candidate_basis":"Official compact-solver documentation: native sleeping, Newton, nvmax sized to actual active DOFs. Existing robot+target static DOF bound and native import active count determine next-power-of2 workspace; no guessed capacity or changed task criterion.",
+  "candidate":"sleep_compact_v1 default OFF; active robot never sleeps, other free bodies native allowed with normal collision wake. Scene/model version separate from original.",
+  "funnel":[{"gate":"C matched teacher completed","entered":3,"passed":3,"rejected":0},{"gate":"N16 original prefix completed","entered":16,"passed":16,"rejected":0}],
+  "sources":["https://mujoco.readthedocs.io/en/latest/mjwarp/index.html#compact-solver", "frozen Scene.setup extra quiet0.4s uses its existing folded-settle duration"]
+}

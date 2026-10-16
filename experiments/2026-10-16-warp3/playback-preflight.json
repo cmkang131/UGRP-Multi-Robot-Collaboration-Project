@@ -1,0 +1,93 @@
+{
+  "checked_UTC": "2026-10-16T00:51:09.898952+00:00",
+  "scope": "offline playback pipeline and overview framing QA only, actual0.0SIM prefix; not a teacher outcome",
+  "raw": "/home/ugrp/ugrp-sim/runs/warp3/playback-actual-smoke-r4",
+  "local": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/warp3-pipeline-smoke-r4",
+  "sha256": {
+    "00001.jpg": "6e64069deb0af04f66fc34553c4696661a05be392afc6cbc4265dbed6bd943d4",
+    "playback-meta.json": "33aa2110141fbd8e372121c623581928dd3059c7c4db90107e3c360d5112813c",
+    "playback-3x.mp4": "c537bd32b4e2aa2815a8ba4a86de621bf79808c223d7caceb4443b0662c6cb40"
+  },
+  "transfer_verified": true,
+  "ffmpeg_ffprobe_pass": true,
+  "direct_view": "00001.jpg: actual r1 and target visible in reframed overview; own RGB from recorded bytes",
+  "funnel": [
+    {
+      "stage": "actual prefix attempts",
+      "passed": 4,
+      "rejected": 0
+    },
+    {
+      "stage": "source state file resolved",
+      "passed": 3,
+      "rejected": 1
+    },
+    {
+      "stage": "ffmpeg/ffprobe",
+      "passed": 3,
+      "rejected": 0
+    },
+    {
+      "stage": "reframe requested",
+      "passed": 2,
+      "rejected": 0,
+      "excluded_original_camera_smoke": 1
+    },
+    {
+      "stage": "reframe applied and directly viewed",
+      "passed": 1,
+      "rejected": 1
+    }
+  ],
+  "rejections": [
+    {
+      "category": "state_file_alias",
+      "reason": "older prefix stores world0-states.npz only; allow explicit world0 alias",
+      "blocking_object": "none:postprocessing file layout",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not geometric"
+    },
+    {
+      "category": "cached_overview_transform",
+      "reason": "MjData retained source static camera transform; assign evaluation-only cam_xpos/xmat after camlight",
+      "blocking_object": "none:review camera",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not geometric"
+    }
+  ],
+  "controls_changed": false,
+  "actor_camera_changed": false,
+  "renderer_physics_steps": 0,
+  "limitations": [
+    {
+      "category": "source_overview_clipping",
+      "reason": "fixed overview can clip negative-coordinate starts; use evaluation-only trajectory geometry bounds",
+      "blocking_object": "none:review camera",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not geometric"
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": "r1",
+      "state_file_pass": false
+    },
+    {
+      "attempt": "r2",
+      "pipeline_pass": true,
+      "reframe_requested": false
+    },
+    {
+      "attempt": "r3",
+      "pipeline_pass": true,
+      "reframe_requested": true,
+      "reframe_applied": false
+    },
+    {
+      "attempt": "r4",
+      "pipeline_pass": true,
+      "reframe_requested": true,
+      "reframe_applied": true
+    }
+  ]
+}

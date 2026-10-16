@@ -1,0 +1,35 @@
+{
+  "recorded_utc": "2026-10-16T06:54:58.425868+00:00",
+  "project": "ugrp-sim-b-1014",
+  "account": "changmin5781@gmail.com",
+  "region": "asia-northeast3",
+  "regional_L4": {
+    "limit": 1,
+    "usage": 1
+  },
+  "GPUS_ALL_REGIONS": {
+    "limit": 1,
+    "usage": 1
+  },
+  "existing_quota_requests": {
+    "preferred": 2,
+    "granted": 1,
+    "state_detail": "Quota request denied",
+    "new_request_submitted": false
+  },
+  "additional_vm_attempt": {
+    "name": "ugrp-act-l4-gcp2b",
+    "machine": "g2-standard-8",
+    "provisioning": "SPOT",
+    "attempt_utc": "2026-10-16T06:24:51Z",
+    "result": "REJECTED",
+    "reason": "GPUS_ALL_REGIONS exceeded limit1",
+    "created": false
+  },
+  "residual_resource_check": {
+    "utc": "2026-10-16T06:49Z",
+    "instances": [],
+    "disks": []
+  },
+  "fallback": "finite wait for no foreign CUDA or same-user research compute on existing main L4; never stop foreign tasks or bypass budget-stop"
+}

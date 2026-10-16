@@ -1,0 +1,49 @@
+{
+  "utc": "2026-10-16T03:38:16.551918+00:00",
+  "foreign_leases": {
+    "beamact3-A.json": {
+      "task": "beamact3-A",
+      "pid": 50591,
+      "start": "2026-10-16T02:28:07.668823+00:00",
+      "expected_end": "2026-10-16T05:50:53.668823+00:00",
+      "source_sha": "4747c4144a972e348a9ae4c7bbcc769ad116106d",
+      "stage": "main",
+      "concurrency": 0,
+      "gpu_shared": true
+    },
+    "warp4.json": {
+      "task": "warp4",
+      "pid": 68340,
+      "pids": [
+        65833,
+        65834,
+        65835,
+        67323,
+        67324,
+        68342,
+        68343
+      ],
+      "started_at": "2026-10-16T03:32:00.001795+00:00",
+      "expected_end": "2026-10-16T05:57:25+00:00",
+      "source_sha": "cdc17f481",
+      "stage": "release run-first R3 after exact SciPy addition; beam R2 retained; finite existing-host deadline",
+      "concurrency": 12,
+      "gpu_shared": true
+    },
+    "warp5.json": {
+      "task": "warp5",
+      "pid": 66903,
+      "start": "2026-10-16T03:02:17.853725+00:00",
+      "expected_end": "2026-10-16T05:50:00Z",
+      "stage": "static88 r3 GL texture modulation hypothesis",
+      "concurrency": 0,
+      "gpu_shared": true,
+      "source_sha": "b7478205693a2b0d7db63710a7bd515889b468a9"
+    }
+  },
+  "gpu_processes": "8653, 796 MiB\n8652, 798 MiB\n8648, 828 MiB\n8651, 832 MiB\n51159, 2308 MiB\n",
+  "own_action": "No scheduling/controller/foreign-process mutation; remaining4 groups all active",
+  "hard_stop_utc": "2026-10-16T05:59:25.154Z",
+  "graceful_drain_utc": "2026-10-16T05:57:25.154Z",
+  "scope": "shared-resource audit only, not warm throughput"
+}

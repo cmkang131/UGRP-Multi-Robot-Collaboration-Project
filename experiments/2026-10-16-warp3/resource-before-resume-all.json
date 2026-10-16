@@ -1,0 +1,47 @@
+{
+  "UTC": "2026-10-16T02:46:16.150367+00:00",
+  "leases": {
+    "beamact3-A.json": {
+      "task": "beamact3-A",
+      "pid": 50591,
+      "start": "2026-10-16T02:28:07.668823+00:00",
+      "expected_end": "2026-10-16T05:50:53.668823+00:00",
+      "source_sha": "4747c4144a972e348a9ae4c7bbcc769ad116106d",
+      "stage": "main",
+      "concurrency": 0,
+      "gpu_shared": true
+    },
+    "warp3.json": {
+      "task": "warp3",
+      "pid": 17430,
+      "start": "2026-10-15T22:02:08.673132+00:00",
+      "expected_end": "2026-10-16T05:59:25.154+00:00",
+      "source_sha": "f0db6b1abb842ea65b71c433738210254f300a7c",
+      "stage": "teacher gate R1: 29 worlds active in groups0/2/3; other11 worlds paused, no terminal results yet",
+      "pids": [
+        7804,
+        8648,
+        8649,
+        8650,
+        8651,
+        8652,
+        8653
+      ],
+      "remaining_not_submitted": 0,
+      "paused_pids": [
+        8653
+      ],
+      "active_pids": [
+        8648,
+        8651,
+        8652
+      ],
+      "scheduling_note": "three largest model groups active; smaller groups paused, source/SIM state preserved",
+      "scheduler_pid": 17430,
+      "pid_scope": "finite stage2 gate scheduler; active/paused worker PIDs listed separately"
+    }
+  },
+  "GPU": "8653, 796 MiB\n8652, 798 MiB\n8648, 828 MiB\n8651, 832 MiB\n51159, 2308 MiB\n",
+  "memory": "16973 MiB, 23034 MiB, 100 %\n",
+  "disk_free": 50625777664
+}

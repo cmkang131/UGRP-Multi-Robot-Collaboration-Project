@@ -1,0 +1,25 @@
+{
+  "reason": "actual run_warp_act_teacher absent from idle recognition; preserve shutdown during true idle",
+  "before_sha256": "a2ff935b713d99fd6c501e53f24da7199bd911db5c4575166cade21a99342cc1",
+  "after_sha256": "44b651717d56e2902ecc0fbb41eb44e305d9048f54e3fe02656a2b36020fc94d",
+  "added_patterns": [
+    "run_warp_act_teacher",
+    "prepare_references.py",
+    "group_models.py"
+  ],
+  "idle_seconds": 1200,
+  "lastStartTimestamp": "2026-10-15T14:59:25.154-07:00",
+  "scheduling": {
+    "automaticRestart": true,
+    "instanceTerminationAction": "STOP",
+    "maxRunDuration": {
+      "nanos": 0,
+      "seconds": "28800"
+    },
+    "onHostMaintenance": "TERMINATE",
+    "preemptible": false,
+    "provisioningModel": "STANDARD"
+  },
+  "installed_guard_updated": true,
+  "budget_stop_unchanged": true
+}

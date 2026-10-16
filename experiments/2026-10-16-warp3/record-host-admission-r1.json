@@ -1,0 +1,33 @@
+{
+  "status": "APPROVED_PINNED",
+  "capture_or_physics_executed": false,
+  "controller_source": "f0db6b1abb842ea65b71c433738210254f300a7c",
+  "gate_raw_sha256": "a7f0a28cf927f718245c4c1c31bcf4cc760ad5526be5ff62bfe4a5727bd329be",
+  "adapter_sha256": "2ec6f83048bed0c37989b090e8697d0fb5cbb2d813a7ea91d74ac0ba3fad6daa",
+  "host_schema": "warp3_recorded_four_fields_v1",
+  "recording_approval": "/home/ugrp/ugrp-sim/runs/act16w-resume2-admission/recording-approval.json",
+  "recording_approval_sha256": "76ce28899a38a0db4cefd38628fec7b1c83540cdb82aa812612c99d53f0ddca4",
+  "executed_source": "176933d75c174ca94380208ba6c629e935fb17b0",
+  "reproduce": [
+    "/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python",
+    "/home/ugrp/ugrp-sim/src/176933d75c174ca94380208ba6c629e935fb17b0/scripts/run_warp_act_record.py",
+    "--enabled",
+    "--warp3-host-schema-v1",
+    "--admission-check-only",
+    "--stage",
+    "batch",
+    "--qualified-source",
+    "/home/ugrp/ugrp-sim/src/f0db6b1abb842ea65b71c433738210254f300a7c",
+    "--teacher-source",
+    "/home/ugrp/ugrp-sim/src/warp1-teacher-snapshot-6f057f7e",
+    "--qualification",
+    "/home/ugrp/ugrp-sim/runs/warp3/teacher-gate-qualification-r1.json",
+    "--runner-args-json",
+    "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-00/runner-args.json",
+    "--recording-approval",
+    "/home/ugrp/ugrp-sim/runs/act16w-resume2-admission/recording-approval.json",
+    "--out",
+    "/home/ugrp/ugrp-sim/runs/warp3/record-host-admission-r1"
+  ],
+  "no_teacher_or_actor_started": true
+}
