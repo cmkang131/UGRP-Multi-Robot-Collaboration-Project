@@ -68,8 +68,15 @@
         "frame_reject": 0
       }
     },
-    "failure_stages": {},
-    "reasons": {}
+    "failure_stages": {
+      "grasp": 1,
+      "alignment": 12,
+      "approach": 7
+    },
+    "reasons": {
+      "cap_end": 19,
+      "alignment": 1
+    }
   },
   "priority": "alignment largest cumulative failure; copycat remains hypothesis",
   "raw": [
