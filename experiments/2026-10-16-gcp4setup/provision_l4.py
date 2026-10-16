@@ -53,6 +53,6 @@ files=[ROOT/n for n in ('setup_guest.sh','smoke.py','audit_guest.py')]
 subprocess.run(['scp',*map(str,files),'gcp4:/home/ugrp/ugrp-sim/setup/'],check=True)
 source={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in files}
 (EVIDENCE/'probe-source.json').write_text(json.dumps(dict(source_sha=sha,files_sha256=source),indent=2)+'\n')
-remote='cd /home/ugrp/ugrp-sim/setup && nohup bash -c '+shlex.quote('bash setup_guest.sh > install.log 2>&1; rc=$?; echo "$rc" > install.EXIT; exit "$rc"')+' </dev/null > launch.log 2>&1 &'
+remote='cd /home/ugrp/ugrp-sim/setup; nohup bash -c '+shlex.quote('bash setup_guest.sh > install.log 2>&1; rc=$?; echo "$rc" > install.EXIT; exit "$rc"')+' </dev/null > launch.log 2>&1 &'
 subprocess.run(['ssh','gcp4',remote],check=True)
 print('Fresh install launched; own lease retained; infrastructure watchdogs unchanged',flush=True)

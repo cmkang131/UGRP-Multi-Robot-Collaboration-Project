@@ -22,6 +22,7 @@ assert not vm.get('serviceAccounts')
 fn=read('function-active')
 assert fn['state']=='ACTIVE' and fn['buildConfig']['entryPoint']=='stop_on_budget'
 assert fn['serviceConfig']['environmentVariables']['TARGET_PROJECT']=='ugrp-sim-d-1016'
+assert any(x.get('jsonPayload',{}).get('stopped')==['ugrp-budget-test-gcp4'] for x in read('test-function-log'))
 budget=read('budget-final')
 assert budget['budgetFilter']['projects']==['projects/298701037365']
 assert budget['budgetFilter']['creditTypesTreatment']=='INCLUDE_ALL_CREDITS'
