@@ -27,7 +27,7 @@ def score(root,out):
     manifest=json.loads((root/'SHA256SUMS.json').read_text())
     mismatches=[n for n,h in manifest.items() if hashlib.sha256((root/n).read_bytes()).hexdigest()!=h]
     if mismatches:raise ValueError('source manifest mismatch: '+repr(mismatches))
-    rows=[];events=[]
+    rows=[];events=[];destination=[]
     for case in json.loads((root/'index.json').read_text()):
         record=json.loads((root/(case+'.json')).read_text())
         bgr=cv2.imread(str(root/(case+'--mjwarp.jpg')))
@@ -57,6 +57,25 @@ def score(root,out):
             pred=accepted==p['component'];label,overlaps=assign(pred)
             events.append(dict(case=case,detector='floor_B',target='paint_zone_B',label=label,
                 correct=label=='paint_zone_B',overlaps=overlaps,pixels=int(pred.sum())))
+        # The carry executor uses this different destination detector. Audit
+        # its actual accepted component and exact rejection reason as well.
+        from sim.destination_visual_acquire import floor_patch
+        from harness.zone_own_perception import PAINT_HUE,_usable_region
+        from scripts.generate_scene_textures import MAPS
+        static=json.loads(next(p for p in MAPS if p.stem==record['map']).read_text())
+        hsv=cv2.cvtColor(bgr,cv2.COLOR_BGR2HSV)
+        for zone in ('A','B','C'):
+            target='paint_zone_'+zone
+            centre,detail=floor_patch(bgr,record['pwm'],zone,static['regions']['zone_'+zone]['half_extents_m'])
+            row=dict(case=case,zone=zone,visible_pixels=int(masks[target].sum()),accepted=centre is not None,detail=detail)
+            if centre is not None:
+                lo,hi=PAINT_HUE[zone];h,w=bgr.shape[:2]
+                mask=((hsv[...,0]>=lo-5)&(hsv[...,0]<=hi+5)&(hsv[...,1]>=30)&(hsv[...,2]>=30)&_usable_region(w,h))
+                n,labels,stats,_=cv2.connectedComponentsWithStats(mask.astype(np.uint8),8)
+                pred=labels==(1+int(np.argmax(stats[1:,cv2.CC_STAT_AREA])))
+                label,overlaps=assign(pred);row.update(label=label,correct=label==target,overlaps=overlaps)
+                events.append(dict(case=case,detector='destination',target=target,label=label,correct=label==target,overlaps=overlaps,pixels=int(pred.sum())))
+            destination.append(row)
         # Positive visibility and recall use the unchanged detector area floor.
         # This includes full-visibility fixtures and labels unexpectedly seen
         # in other poses. Partial silhouettes remain separately measurable.
@@ -80,6 +99,10 @@ def score(root,out):
             detected=sum(v['detected'] for v in positive),missed=sum(v['miss'] for v in positive),
             precision=sum(e['correct'] for e in ee)/len(ee) if ee else None,
             recall=sum(v['detected'] for v in positive)/len(positive) if positive else None)
+    dd=[e for e in events if e['detector']=='destination']
+    totals['destination']=dict(accepted=len(dd),correct=sum(e['correct'] for e in dd),false_positive=sum(not e['correct'] for e in dd),
+        rejection_reasons=dict(Counter(d['detail']['reason'] for d in destination if not d['accepted'])),
+        visible_but_rejected=sum(d['visible_pixels']>0 and not d['accepted'] for d in destination))
     reasons=Counter((e['detector']+'_false_'+e['label']) for e in events if not e['correct'])
     reasons.update(v['target']+'_miss' for r in rows for v in r['visibility'] if v['miss'])
     # Static DEV admission is exact identification of eligible visible labels
@@ -88,8 +111,8 @@ def score(root,out):
     # diagnosis only, and never asserts localization or mission qualification.
     checks=dict(semantic_labels_present=len(rows)==88,hashes_match=not mismatches,
         no_false_components=all(t['false_positive']==0 for t in totals.values()),
-        all_eligible_visible_detected=all(t['missed']==0 for t in totals.values()))
-    write(out/'cases.json',rows);write(out/'events.json',events)
+        all_eligible_visible_detected=all(t.get('missed',0)==0 for t in totals.values()))
+    write(out/'cases.json',rows);write(out/'events.json',events);write(out/'destination.json',destination)
     funnel=dict(unit='frame',stages=[dict(stage='rendered_labelled',cumulative_pass_n=len(rows),rejected_n=0),
         dict(stage='no_false_components',cumulative_pass_n=sum(not any(e['case']==r['case'] and not e['correct'] for e in events) for r in rows),
             rejected_n=sum(any(e['case']==r['case'] and not e['correct'] for e in events) for r in rows))],
@@ -98,6 +121,7 @@ def score(root,out):
     write(out/'rejection-table.json',funnel)
     summary=dict(admitted=all(checks.values()),checks=checks,N=len(rows),totals=totals,
         scope='MJWarp static own-RGB DEV only; geometry labels evaluator-only; no CPU equivalence',
+        scorer_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         raw=str(root),verified_files=len(manifest),hash_mismatches=mismatches,
         rejection_table=str((out/'rejection-table.json').resolve()))
     write(out/'summary.json',summary)
