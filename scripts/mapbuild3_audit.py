@@ -55,6 +55,7 @@ def run(a):
         index=int(path.stem.split('-')[1]);planpath=path.parent/f'world-{index:03d}'/'plan.json'
         if planpath.is_file():states[json.loads(planpath.read_text())['seed']]=path
     for group,base in [('warp8_beam',a.warp_inputs/'beam40-r2'),
+                       ('warp8_beam_R1',a.warp_inputs/'beam40-r1'),
                        *[('warp8_release_A',a.warp_inputs/('releaseA-'+tag+'-c312')) for tag in ('s1','s3','s6')]]:
         for planpath in sorted(base.glob('world-*/raw/plan.json')):
             index=int(planpath.parent.parent.name.split('-')[1]);state=base/f'world-{index:03d}-states.npz'
@@ -84,19 +85,24 @@ def run(a):
         statepath=states.get(seed) if group=='act16w_record' else statepath
         if statepath:
             saved=np.load(statepath)
-            if int(saved['ticks'][0])!=0:raise ValueError('NONZERO_FIRST_SAVED_TICK')
+            expected_tick=0
+            if group=='warp8_beam_R1':
+                batch=xmlpath.parents[2];world_index=int(xmlpath.parent.parent.name.split('-')[1])
+                origin=json.loads((batch/'summary.json').read_text())['native_initialization_only_sim_s'][world_index]
+                expected_tick=round(origin*10)
+            if int(saved['ticks'][0])!=expected_tick:raise ValueError('FIRST_SAVED_TICK_MUST_EQUAL_TASK_ORIGIN')
             if saved['qpos'].shape[1]!=m.nq:raise ValueError('EXACT_STATE_MODEL_DIM_REQUIRED')
             d.qpos[:]=saved['qpos'][0];d.qvel[:]=saved['qvel'][0]
             report=check(m,d,**sets,option=OPTION)
             rows.append(dict(cohort=group,seed=seed,state_scope='saved_task_tick0',original_task_tick0=True,
-                state=str(statepath),plan=str(planpath),xml=str(xmlpath),**report))
+                state=str(statepath),source_tick=int(saved['ticks'][0]),expected_task_origin_tick=expected_tick,plan=str(planpath),xml=str(xmlpath),**report))
             manifest[str(statepath)]=digest(statepath)
         manifest[str(xmlpath)]=digest(xmlpath);manifest[str(planpath)]=digest(planpath)
         write(a.output/'audit-progress.json',dict(completed_seed_n=len({(r['cohort'],r['seed']) for r in rows}),
             overlapping_rows=[dict(cohort=r['cohort'],seed=r['seed'],scope=r['state_scope'],pairs=r['pair_count']) for r in rows if not r['accepted']]))
         print(group,seed,report['status'],report['pair_count'],flush=True)
     counts=[]
-    for group in ('act16w_record','act16w_heldout','warp8_beam','warp8_release_A'):
+    for group in ('act16w_record','act16w_heldout','warp8_beam','warp8_beam_R1','warp8_release_A'):
         expected=40
         for scope in ('authored_reset_before_native_settle','saved_task_tick0'):
             sub=[r for r in rows if r['cohort']==group and r['state_scope']==scope]
