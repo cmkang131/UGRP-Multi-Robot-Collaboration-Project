@@ -1,0 +1,64 @@
+{
+  "scope": "nonphysical entry preflight failures; zero CPU/MJWarp integration and no raw route frames",
+  "physical_rounds_started": 0,
+  "rows": [
+    {
+      "attempt": "r1",
+      "source_sha": "d4cfe26ae",
+      "category": "HOST_ERROR",
+      "reason": "ImportError: runtime_sleep_policy missing from old common source",
+      "blocked_object": "source_dependency_closure",
+      "minimum_gap_m": null,
+      "gap_status": "not_applicable"
+    },
+    {
+      "attempt": "r1b",
+      "source_sha": "079f8dc96",
+      "category": "HOST_ERROR",
+      "reason": "ImportError: proportional_drive missing from current branch planner",
+      "blocked_object": "source_dependency_closure",
+      "minimum_gap_m": null,
+      "gap_status": "not_applicable"
+    },
+    {
+      "attempt": "r1c",
+      "source_sha": "470647d16",
+      "category": "HOST_ERROR",
+      "reason": "KeyError: teacher byte pin inspected before lazy import",
+      "blocked_object": "source_dependency_closure",
+      "minimum_gap_m": null,
+      "gap_status": "not_applicable"
+    },
+    {
+      "attempt": "r1d",
+      "source_sha": "22bec6d0c",
+      "category": "HOST_ERROR",
+      "reason": "FileNotFoundError: frozen scenario loader looked for v7 under v4 directory",
+      "blocked_object": "source_dependency_closure",
+      "minimum_gap_m": null,
+      "gap_status": "not_applicable"
+    },
+    {
+      "attempt": "r1e",
+      "source_sha": "359d66aa1",
+      "category": "HOST_ERROR",
+      "reason": "TypeError: current texture extension mixed with older natural texture implementation",
+      "blocked_object": "source_dependency_closure",
+      "minimum_gap_m": null,
+      "gap_status": "not_applicable"
+    }
+  ],
+  "funnel": [
+    {
+      "gate": "entry_preflight",
+      "cumulative_pass_n": 5,
+      "rejected_n": 0
+    },
+    {
+      "gate": "full_source_closure",
+      "cumulative_pass_n": 0,
+      "rejected_n": 5
+    }
+  ],
+  "procedure_limit": "first five source/import fixes preceded this consolidated saved preflight table; do not claim strict distribution-before-every-fix compliance"
+}
