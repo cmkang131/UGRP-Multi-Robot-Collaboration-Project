@@ -203,6 +203,11 @@ def main():
             dict(stage='success',passed_cumulative_N=report['success_n'],rejected_N=len(worlds)-report['success_n'])],
             rejections=[dict(reason_category=k,blocked_object='software:'+k if report['HOST_ERROR'] else 'none:unattributed',min_gap_m=None,count=v) for k,v in categories.items()])
         write(a.out/'rejection_table.json',table);report['rejection_table']=str(a.out/'rejection_table.json')
+        artifacts={str(f.relative_to(a.out)):dict(bytes=f.stat().st_size,sha256=hashlib.sha256(f.read_bytes()).hexdigest())
+            for f in sorted(a.out.rglob('*')) if f.is_file() and f.name not in ('summary.json','artifact-sha256.json')}
+        write(a.out/'artifact-sha256.json',artifacts)
+        report['artifact_sha256_manifest']=dict(path=str(a.out/'artifact-sha256.json'),
+            sha256=hashlib.sha256((a.out/'artifact-sha256.json').read_bytes()).hexdigest(),files=len(artifacts))
         write(a.out/'summary.json',report)
         hooks.close()
 

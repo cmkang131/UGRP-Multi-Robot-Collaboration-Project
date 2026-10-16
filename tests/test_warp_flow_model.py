@@ -33,3 +33,23 @@ def test_zero_grasp_support_rejected_before_world_construction():
     assert blocked['ends']['teal']['blocked_object']=='cargo'
     assert certify([0,0,0],[],family,lambda *a:1.,0.,mode=MODE)['accepted']
     assert certify([0,0,0],[('cargo',(0,0,1,1,0))],family,lambda *a:-1.,0.)['accepted']
+
+
+def test_default_mjwarp_entry_refuses_mac_before_metadata_or_output(monkeypatch,tmp_path):
+    import sys
+    from scripts import run_warp_flow_teacher as runner
+    monkeypatch.setattr(runner.platform,'system',lambda:'Darwin')
+    monkeypatch.setattr(sys,'argv',['runner','--flow','release','--adapter-source',str(tmp_path),
+        '--cases',str(tmp_path/'absent.json'),'--cap-s','180','--out',str(tmp_path/'output'),
+        '--vm-hourly-usd','1.096'])
+    with pytest.raises(SystemExit,match='2'):runner.main()
+    assert not (tmp_path/'output').exists()
+
+
+def test_multigeom_contact_map_keeps_four_fingers_and_worlds_separate():
+    from scripts.warp_act_core import contact_maps
+    targets,fingers=contact_maps(12,[[0,1,2],[2,3]],
+        [{4:0,5:1,6:2,7:3},{5:0,6:1,7:2,8:3}])
+    assert targets[0].sum()==3 and targets[1].sum()==2
+    assert fingers[0,4]==0 and fingers[1,4]==-1
+    assert fingers[0,7]==3 and fingers[1,7]==2
