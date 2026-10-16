@@ -49,7 +49,7 @@
     "B": "0/5",
     "pooled": false
   },
-  "progress": "A/B VAL8 both0/8 independently recounted; each alignment8/8 rejected, A/off selected per tie. review-A_B.json acknowledged17:26Z. C fresh10000 sameD0 with TRAIN curriculum automatically started, do not duplicate. Final40 unopened.",
+  "progress": "A/B native VAL8 each0/8 raw-recounted, nominal alignment8/8 rejected each; A/off selected. review-A_B.json acknowledged17:26Z. C matched10000 TRAIN curriculum main6870 at17:47Z, no duplicate. Final40 unopened.",
   "next": [
     "Observe existing orchestrator73402 at /home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1; execution source c27a9d537 unchanged. Never resubmit existing A/B/validation jobs. Summary errors require original diagnosis, no automatic retry.",
     "At WAIT_REVIEW_A_B, run independent student raw recount for each validation root with analysis8e5f18480/scripts/audit_act16w_native_student.py. Native A87429 full review exists; B87429 is first30-only and requires full terminal review. Inspect two failures plus one actual student success if available; if none exists explicitly state it, retain clearly labeled teacher reference. Render on L4 using c27 playback; ffprobe only; retrieve only montage/strips/metadata, verify transfer hashes.",
@@ -102,7 +102,7 @@
     ],
     "root": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1"
   },
-  "analysis_source": "/home/ugrp/ugrp-sim/src/8e5f18480fee862e44531eb5643c07ee09fef68c",
+  "analysis_source": "/home/ugrp/ugrp-sim/src/9438a2933be55d44db3779dda981d64b0c4ab2a5",
   "completed_native_provenance_annotations": "/home/ugrp/ugrp-sim/runs/act16w-native-provenance-annotations.json",
   "gap_analysis_source": "/home/ugrp/ugrp-sim/src/82702ea74d641d68377eeb331142298ca4ff49b1",
   "monitor_C": {
@@ -118,5 +118,13 @@
     "noninitial_possible_upper_bound": 252,
     "actual_DAgger_data": false,
     "interpretation": "noninitial ceiling is nonzero, so initial-only defect is not established; actual C TRAIN label counts/rejections must be measured. Do not relax held-object boundary or change execution based on this validation diagnostic."
+  },
+  "dagger_actual_coverage_helper": "/home/ugrp/ugrp-sim/src/9438a2933be55d44db3779dda981d64b0c4ab2a5/scripts/audit_act16w_dagger_coverage.py",
+  "validation_gap_batch": {
+    "root": "/home/ugrp/ugrp-sim/runs/act16w-native-val-gap-audit-r1",
+    "complete": true,
+    "worlds": 16,
+    "physics_steps": 0,
+    "local": "native-validation-gaps-summary.json"
   }
 }
