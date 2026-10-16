@@ -20,7 +20,7 @@ model = mujoco.MjModel.from_xml_string('''<mujoco><option timestep="0.002"/>
 device = wp.get_device('cuda:0')
 with wp.ScopedDevice(device):
     m = mjw.put_model(model)
-    d = mjw.make_data(model, nworld=2)
+    d = mjw.put_data(model, mujoco.MjData(model), nworld=2)
     before = d.qpos.numpy().copy()
     mjw.step(m, d)
     wp.synchronize()
