@@ -31,7 +31,18 @@ step0 확인 후, 같은 사전 고정40개87220–87259를 r2로 제출했다.
 속도 관문FAIL이며 물리 성공과 별개다.40세계가7호환 모델 그룹을 한L4에서 공유한 실제 부하이며,
 사용자가 요구한 MJWarp·카메라·접촉을 유지하고 기록을 계속하는 사유를
 `--speed-gate-override`에 남겼다. 속도 통과·성능 개선으로 보고하지 않는다.
-기록 전체 성공·표적/영상/시계 감사와 데이터 승인은 아직 대기이며 학습0이다.
+기록40/40(종류별10/10), 원시Score40 재계산과8315개 원본 SHA 확인을 마쳤다.
+전체18046 JPEG/이력/표적 쌍이 정합했고, 변환된14886행 중 TRAIN11860행/32회와
+VAL3026행/8회로 나뉜다. [확정 데이터](native-dataset-receipt.json),
+[전체 감사](native-dataset-audit.json), [기록 관문](native-fresh-recording-gate.json).
+A/B300스텝과 저장/재로딩 예측 일치 검사를 통과하고10000 본 학습으로 이어졌다.
+[후속 실행기](native-experiment-launch.json)는 기존 A/B를 재제출하지 않고,
+검증→실제 영상 검토→h4→검토→h5→검토→선택 봉인→최종40 순서로 진행한다.
+학습 실행 소스는c27a9d537로 고정하고 조정 코드37a8c8336과 구분한다.
+
+종료된 자체 소스 사본8개만 sparse checkout으로 줄여 순여유10640805888바이트를
+확보했다. HEAD와 Git clean을 각각 확인했고, 원본·체크포인트·Git 객체는 보존했다
+([복원 명령/공간 기록](native-source-storage.json)).
 
 교사 라이브러리6f057f7e → MJWarp controller f0db6b1a → 기록API0362037의
 출처 관계를 유지한다. warpfit df5a1f86a의 프로필 파일 SHA256

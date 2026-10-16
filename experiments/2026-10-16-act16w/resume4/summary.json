@@ -1,5 +1,5 @@
 {
-  "status": "NATIVE_RECORD_RUNNING",
+  "status": "NATIVE_A_B_TRAINING",
   "complete": false,
   "contact_profile": "warp_native_contact_v1",
   "noslip_baseline": {
@@ -43,13 +43,17 @@
     "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-gate-r2"
   },
   "native_record": {
-    "status": "running",
+    "status": "complete",
     "N_requested": 40,
     "seeds": [
       87420,
       87459
     ],
-    "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-record-r1"
+    "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-record-r1",
+    "n": 40,
+    "N": 40,
+    "independent_score_matches": 40,
+    "manifest_files_verified": 8315
   },
   "new_training_steps": 0,
   "student_evaluation": null,
@@ -60,6 +64,32 @@
   "raw_retrieval": "summaries and montage only; originals retained on L4",
   "rejection_tables": [
     "native-gate-rejection_table.json",
+    "native-record-rejection_table.json",
+    "native-dataset-rejection_table.json",
     "rejection_table.json"
-  ]
+  ],
+  "dataset": {
+    "completed_utc": "2026-10-16T15:42:16.963301+00:00",
+    "teacher_n": 40,
+    "teacher_N": 40,
+    "exact_native_JPEG_history_target_pairs": 18046,
+    "rows_total": 18046,
+    "rows_selected": 14886,
+    "train_rows": 11860,
+    "validation_rows": 3026,
+    "train_episodes": 32,
+    "validation_episodes": 8,
+    "manifest_sha256": "3d0a1c4907f0c91a5674d23e52c9fbf339f03952ce3bcf92dee21f7e8ab7dbd2",
+    "disk_free_bytes": 15001985024,
+    "contact_profile": "warp_native_contact_v1",
+    "source_sha": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48"
+  },
+  "training": {
+    "source_sha": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48",
+    "target_steps_each": 10000,
+    "smoke_steps_each": 300,
+    "smoke_readback_verified": true,
+    "status": "main_running",
+    "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-training-r1"
+  }
 }

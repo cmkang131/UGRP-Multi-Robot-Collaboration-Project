@@ -75,6 +75,27 @@
     "A_pid": 72060,
     "B_pid": 72061,
     "source": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48",
-    "stage": "smoke300 each PASS, resumed fixed10000 main"
+    "stage": "main A/B about4950/10000; keep original jobs, no duplicate submission"
+  },
+  "orchestrator": {
+    "pid": 73402,
+    "orchestration_source": "37a8c833656a58ba25472e2106276f225e95ad26",
+    "execution_source": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48",
+    "argv": [
+      "python3",
+      "-u",
+      "/home/ugrp/ugrp-sim/src/37a8c833656a58ba25472e2106276f225e95ad26/scripts/act16w_native_experiment.py",
+      "--enabled",
+      "--out",
+      "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1"
+    ],
+    "wall_cap": null,
+    "original_A_B_not_resubmitted": true,
+    "review_boundaries": [
+      "A_B",
+      "C",
+      "D1"
+    ],
+    "root": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1"
   }
 }
