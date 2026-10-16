@@ -1,0 +1,898 @@
+{
+  "schema": "ugrp.warp5.summary.v1",
+  "status": "NOT_READY",
+  "recorded_utc": "2026-10-16T03:41:14.558733+00:00",
+  "host": "ugrp-act-l4-gcp2",
+  "project": "ugrp-sim-b-1014",
+  "shared_load": true,
+  "render": [
+    {
+      "run": "render-r1d",
+      "source_sha": "bf918f861aea122bee9c9281448c04bc73e52df0",
+      "N": 88,
+      "admitted": false,
+      "colour_equal_n": 26,
+      "rgb_mae": {
+        "N": 88,
+        "min": 15.142532552083333,
+        "p10": 31.030512152777778,
+        "median": 38.47083875868056,
+        "p95": 48.15052875434028,
+        "max": 51.922093098958335
+      },
+      "reports": {
+        "cpu": {
+          "orb": {
+            "floor": {
+              "fast7": {
+                "N": 88,
+                "min": 0.0,
+                "p10": 2.700000000000001,
+                "median": 107.5,
+                "p95": 348.0,
+                "max": 455.0
+              },
+              "fast20": {
+                "N": 88,
+                "min": 0.0,
+                "p10": 1.0,
+                "median": 14.5,
+                "p95": 58.0,
+                "max": 76.0
+              }
+            },
+            "wall": {
+              "fast7": {
+                "N": 88,
+                "min": 0.0,
+                "p10": 0.0,
+                "median": 2.0,
+                "p95": 41.949999999999974,
+                "max": 92.0
+              },
+              "fast20": {
+                "N": 88,
+                "min": 0.0,
+                "p10": 0.0,
+                "median": 1.0,
+                "p95": 25.299999999999983,
+                "max": 30.0
+              }
+            }
+          },
+          "boundary": {
+            "qualified": 56,
+            "columns": 4087,
+            "false_columns": 0,
+            "per_frame": {
+              "N": 56,
+              "min": 0.0,
+              "p10": 52.0,
+              "median": 76.0,
+              "p95": 96.0,
+              "max": 96.0
+            },
+            "residual_px": {
+              "N": 4087,
+              "min": 0.5,
+              "p10": 0.5,
+              "median": 0.5,
+              "p95": 0.5,
+              "max": 2.5
+            }
+          },
+          "stall_static": {
+            "median_px": {
+              "N": 87,
+              "min": 0.0,
+              "p10": 0.0,
+              "median": 0.0,
+              "p95": 0.0,
+              "max": 0.0
+            },
+            "mean_abs_diff": {
+              "N": 88,
+              "min": 0.0,
+              "p10": 0.0,
+              "median": 0.0,
+              "p95": 0.0,
+              "max": 0.0
+            }
+          },
+          "stall_one_pixel_yaw": {
+            "median_px": {
+              "N": 85,
+              "min": 0.8946173191070557,
+              "p10": 0.9383637189865113,
+              "median": 1.0317485332489014,
+              "p95": 1.276622712612152,
+              "max": 2.479543685913086
+            },
+            "mean_abs_diff": {
+              "N": 88,
+              "min": 0.007668884628397429,
+              "p10": 0.24075238903104285,
+              "median": 0.34187177336306784,
+              "p95": 0.4531803464870388,
+              "max": 0.6458205363530594
+            }
+          }
+        },
+        "mjwarp": {
+          "orb": {
+            "floor": {
+              "fast7": {
+                "N": 88,
+                "min": 0.0,
+                "p10": 1.0,
+                "median": 53.0,
+                "p95": 156.0,
+                "max": 234.0
+              },
+              "fast20": {
+                "N": 88,
+                "min": 0.0,
+                "p10": 1.0,
+                "median": 6.0,
+                "p95": 13.0,
+                "max": 20.0
+              }
+            },
+            "wall": {
+              "fast7": {
+                "N": 88,
+                "min": 0.0,
+                "p10": 0.0,
+                "median": 1.0,
+                "p95": 61.64999999999999,
+                "max": 79.0
+              },
+              "fast20": {
+                "N": 88,
+                "min": 0.0,
+                "p10": 0.0,
+                "median": 1.0,
+                "p95": 25.299999999999983,
+                "max": 34.0
+              }
+            }
+          },
+          "boundary": {
+            "qualified": 56,
+            "columns": 2364,
+            "false_columns": 0,
+            "per_frame": {
+              "N": 56,
+              "min": 0.0,
+              "p10": 16.5,
+              "median": 44.0,
+              "p95": 72.0,
+              "max": 96.0
+            },
+            "residual_px": {
+              "N": 2364,
+              "min": 0.5,
+              "p10": 0.5,
+              "median": 0.5,
+              "p95": 1.5,
+              "max": 4.5
+            }
+          },
+          "stall_static": {
+            "median_px": {
+              "N": 74,
+              "min": 0.0,
+              "p10": 0.0,
+              "median": 0.0,
+              "p95": 0.0,
+              "max": 0.0
+            },
+            "mean_abs_diff": {
+              "N": 78,
+              "min": 0.0,
+              "p10": 0.0,
+              "median": 0.0,
+              "p95": 0.0,
+              "max": 0.0
+            }
+          },
+          "stall_one_pixel_yaw": {
+            "median_px": {
+              "N": 71,
+              "min": 0.2423277199268341,
+              "p10": 0.7731329202651978,
+              "median": 0.9565117061138153,
+              "p95": 1.2873148918151855,
+              "max": 1.3570899963378906
+            },
+            "mean_abs_diff": {
+              "N": 78,
+              "min": 0.010887663403516644,
+              "p10": 0.06522311875210414,
+              "median": 0.19586243954862978,
+              "p95": 0.5240339302544769,
+              "max": 0.870253164556962
+            }
+          }
+        }
+      },
+      "checks": {
+        "rendered88": true,
+        "colour_semantic_counts_identical": false,
+        "no_new_false_boundary_columns": true,
+        "boundary_columns_not_lost": false,
+        "orb7_floor_p10_not_lost": false,
+        "orb7_floor_median_not_lost": false,
+        "orb7_wall_p10_not_lost": true,
+        "orb7_wall_median_not_lost": false
+      },
+      "funnel": [
+        {
+          "stage": "rendered",
+          "cumulative_pass_n": 88,
+          "rejected_n": 0
+        },
+        {
+          "stage": "colour_semantics_equal",
+          "cumulative_pass_n": 26,
+          "rejected_n": 62
+        },
+        {
+          "stage": "no_false_boundary_increase",
+          "cumulative_pass_n": 26,
+          "rejected_n": 0
+        }
+      ],
+      "raw": "/home/ugrp/ugrp-sim/runs/warp5/render-r1d",
+      "gate": "/home/ugrp/ugrp-sim/runs/warp5/render-r1d-gate.json",
+      "gate_sha256": "7c4211262a6dddbaf83a590cf7df069fc7bdccdebbf016c7869b6836da4d66c3",
+      "verified_files": 620,
+      "hash_mismatches": []
+    },
+    {
+      "run": "render-r2",
+      "source_sha": "215df7fad7c686710e4791dc0e92e7e70b1c87c9",
+      "N": 88,
+      "admitted": false,
+      "colour_equal_n": 68,
+      "rgb_mae": {
+        "N": 88,
+        "min": 0.6984396701388889,
+        "p10": 5.1348532986111115,
+        "median": 9.180300021701388,
+        "p95": 18.665751953125,
+        "max": 18.665751953125
+      },
+      "reports": {
+        "cpu": {
+          "orb": {
+            "floor": {
+              "fast7": {
+                "N": 88,
+                "min": 0.0,
+                "p10": 2.700000000000001,
+                "median": 107.5,
+                "p95": 348.0,
+                "max": 455.0
+              },
+              "fast20": {
+                "N": 88,
+                "min": 0.0,
+                "p10": 1.0,
+                "median": 14.5,
+                "p95": 58.0,
+                "max": 76.0
+              }
+            },
+            "wall": {
+              "fast7": {
+                "N": 88,
+                "min": 0.0,
+                "p10": 0.0,
+                "median": 2.0,
+                "p95": 41.949999999999974,
+                "max": 92.0
+              },
+              "fast20": {
+                "N": 88,
+                "min": 0.0,
+                "p10": 0.0,
+                "median": 1.0,
+                "p95": 25.299999999999983,
+                "max": 30.0
+              }
+            }
+          },
+          "boundary": {
+            "qualified": 56,
+            "columns": 4087,
+            "false_columns": 0,
+            "per_frame": {
+              "N": 56,
+              "min": 0.0,
+              "p10": 52.0,
+              "median": 76.0,
+              "p95": 96.0,
+              "max": 96.0
+            },
+            "residual_px": {
+              "N": 4087,
+              "min": 0.5,
+              "p10": 0.5,
+              "median": 0.5,
+              "p95": 0.5,
+              "max": 2.5
+            }
+          },
+          "stall_static": {
+            "median_px": {
+              "N": 87,
+              "min": 0.0,
+              "p10": 0.0,
+              "median": 0.0,
+              "p95": 0.0,
+              "max": 0.0
+            },
+            "mean_abs_diff": {
+              "N": 88,
+              "min": 0.0,
+              "p10": 0.0,
+              "median": 0.0,
+              "p95": 0.0,
+              "max": 0.0
+            }
+          },
+          "stall_one_pixel_yaw": {
+            "median_px": {
+              "N": 85,
+              "min": 0.8946173191070557,
+              "p10": 0.9383637189865113,
+              "median": 1.0317485332489014,
+              "p95": 1.276622712612152,
+              "max": 2.479543685913086
+            },
+            "mean_abs_diff": {
+              "N": 88,
+              "min": 0.007668884628397429,
+              "p10": 0.24075238903104285,
+              "median": 0.34187177336306784,
+              "p95": 0.4531803464870388,
+              "max": 0.6458205363530594
+            }
+          }
+        },
+        "mjwarp": {
+          "orb": {
+            "floor": {
+              "fast7": {
+                "N": 88,
+                "min": 0.0,
+                "p10": 2.0,
+                "median": 135.5,
+                "p95": 353.59999999999997,
+                "max": 475.0
+              },
+              "fast20": {
+                "N": 88,
+                "min": 0.0,
+                "p10": 1.0,
+                "median": 21.0,
+                "p95": 72.0,
+                "max": 88.0
+              }
+            },
+            "wall": {
+              "fast7": {
+                "N": 88,
+                "min": 0.0,
+                "p10": 0.0,
+                "median": 4.0,
+                "p95": 94.94999999999997,
+                "max": 221.0
+              },
+              "fast20": {
+                "N": 88,
+                "min": 0.0,
+                "p10": 0.0,
+                "median": 1.0,
+                "p95": 35.64999999999999,
+                "max": 57.0
+              }
+            }
+          },
+          "boundary": {
+            "qualified": 56,
+            "columns": 239,
+            "false_columns": 0,
+            "per_frame": {
+              "N": 56,
+              "min": 0.0,
+              "p10": 0.0,
+              "median": 0.0,
+              "p95": 18.25,
+              "max": 61.0
+            },
+            "residual_px": {
+              "N": 239,
+              "min": 0.5,
+              "p10": 0.5,
+              "median": 0.5,
+              "p95": 0.5,
+              "max": 1.5
+            }
+          },
+          "stall_static": {
+            "median_px": {
+              "N": 87,
+              "min": 0.0,
+              "p10": 0.0,
+              "median": 0.0,
+              "p95": 0.0,
+              "max": 0.0
+            },
+            "mean_abs_diff": {
+              "N": 88,
+              "min": 0.0,
+              "p10": 0.0,
+              "median": 0.0,
+              "p95": 0.0,
+              "max": 0.0
+            }
+          },
+          "stall_one_pixel_yaw": {
+            "median_px": {
+              "N": 87,
+              "min": 0.8594117164611816,
+              "p10": 0.9147961258888244,
+              "median": 1.0213063955307007,
+              "p95": 1.2824093699455261,
+              "max": 2.065145492553711
+            },
+            "mean_abs_diff": {
+              "N": 88,
+              "min": 0.005968860178415087,
+              "p10": 0.22822480565644934,
+              "median": 0.3285642151272107,
+              "p95": 0.4519563153798497,
+              "max": 0.6308172675452928
+            }
+          }
+        }
+      },
+      "checks": {
+        "rendered88": true,
+        "colour_semantic_counts_identical": false,
+        "no_new_false_boundary_columns": true,
+        "boundary_columns_not_lost": false,
+        "orb7_floor_p10_not_lost": false,
+        "orb7_floor_median_not_lost": true,
+        "orb7_wall_p10_not_lost": true,
+        "orb7_wall_median_not_lost": true
+      },
+      "funnel": [
+        {
+          "stage": "rendered",
+          "cumulative_pass_n": 88,
+          "rejected_n": 0
+        },
+        {
+          "stage": "colour_semantics_equal",
+          "cumulative_pass_n": 68,
+          "rejected_n": 20
+        },
+        {
+          "stage": "no_false_boundary_increase",
+          "cumulative_pass_n": 68,
+          "rejected_n": 0
+        }
+      ],
+      "raw": "/home/ugrp/ugrp-sim/runs/warp5/render-r2",
+      "gate": "/home/ugrp/ugrp-sim/runs/warp5/render-r2-gate.json",
+      "gate_sha256": "d389060217ccccb1f4c74be84802b52667830af8d2e68381e437b3996ccb5cca",
+      "verified_files": 624,
+      "hash_mismatches": []
+    },
+    {
+      "run": "render-r3",
+      "source_sha": "b7478205693a2b0d7db63710a7bd515889b468a9",
+      "N": 88,
+      "admitted": false,
+      "colour_equal_n": 59,
+      "rgb_mae": {
+        "N": 88,
+        "min": 0.27487196180555556,
+        "p10": 0.4416832682291667,
+        "median": 0.8043500434027777,
+        "p95": 2.013195692274305,
+        "max": 2.3453634982638887
+      },
+      "reports": {
+        "cpu": {
+          "orb": {
+            "floor": {
+              "fast7": {
+                "N": 88,
+                "min": 0.0,
+                "p10": 2.700000000000001,
+                "median": 107.5,
+                "p95": 348.0,
+                "max": 455.0
+              },
+              "fast20": {
+                "N": 88,
+                "min": 0.0,
+                "p10": 1.0,
+                "median": 14.5,
+                "p95": 58.0,
+                "max": 76.0
+              }
+            },
+            "wall": {
+              "fast7": {
+                "N": 88,
+                "min": 0.0,
+                "p10": 0.0,
+                "median": 2.0,
+                "p95": 41.949999999999974,
+                "max": 92.0
+              },
+              "fast20": {
+                "N": 88,
+                "min": 0.0,
+                "p10": 0.0,
+                "median": 1.0,
+                "p95": 25.299999999999983,
+                "max": 30.0
+              }
+            }
+          },
+          "boundary": {
+            "qualified": 56,
+            "columns": 4087,
+            "false_columns": 0,
+            "per_frame": {
+              "N": 56,
+              "min": 0.0,
+              "p10": 52.0,
+              "median": 76.0,
+              "p95": 96.0,
+              "max": 96.0
+            },
+            "residual_px": {
+              "N": 4087,
+              "min": 0.5,
+              "p10": 0.5,
+              "median": 0.5,
+              "p95": 0.5,
+              "max": 2.5
+            }
+          },
+          "stall_static": {
+            "median_px": {
+              "N": 87,
+              "min": 0.0,
+              "p10": 0.0,
+              "median": 0.0,
+              "p95": 0.0,
+              "max": 0.0
+            },
+            "mean_abs_diff": {
+              "N": 88,
+              "min": 0.0,
+              "p10": 0.0,
+              "median": 0.0,
+              "p95": 0.0,
+              "max": 0.0
+            }
+          },
+          "stall_one_pixel_yaw": {
+            "median_px": {
+              "N": 85,
+              "min": 0.8946173191070557,
+              "p10": 0.9383637189865113,
+              "median": 1.0317485332489014,
+              "p95": 1.276622712612152,
+              "max": 2.479543685913086
+            },
+            "mean_abs_diff": {
+              "N": 88,
+              "min": 0.007668884628397429,
+              "p10": 0.24075238903104285,
+              "median": 0.34187177336306784,
+              "p95": 0.4531803464870388,
+              "max": 0.6458205363530594
+            }
+          }
+        },
+        "mjwarp": {
+          "orb": {
+            "floor": {
+              "fast7": {
+                "N": 88,
+                "min": 0.0,
+                "p10": 2.700000000000001,
+                "median": 126.5,
+                "p95": 358.59999999999997,
+                "max": 473.0
+              },
+              "fast20": {
+                "N": 88,
+                "min": 0.0,
+                "p10": 1.0,
+                "median": 19.0,
+                "p95": 60.0,
+                "max": 81.0
+              }
+            },
+            "wall": {
+              "fast7": {
+                "N": 88,
+                "min": 0.0,
+                "p10": 0.0,
+                "median": 2.0,
+                "p95": 87.94999999999997,
+                "max": 137.0
+              },
+              "fast20": {
+                "N": 88,
+                "min": 0.0,
+                "p10": 0.0,
+                "median": 1.0,
+                "p95": 32.29999999999998,
+                "max": 38.0
+              }
+            }
+          },
+          "boundary": {
+            "qualified": 56,
+            "columns": 4104,
+            "false_columns": 0,
+            "per_frame": {
+              "N": 56,
+              "min": 0.0,
+              "p10": 54.5,
+              "median": 76.0,
+              "p95": 96.0,
+              "max": 96.0
+            },
+            "residual_px": {
+              "N": 4104,
+              "min": 0.5,
+              "p10": 0.5,
+              "median": 0.5,
+              "p95": 0.5,
+              "max": 2.5
+            }
+          },
+          "stall_static": {
+            "median_px": {
+              "N": 87,
+              "min": 0.0,
+              "p10": 0.0,
+              "median": 0.0,
+              "p95": 0.0,
+              "max": 0.0
+            },
+            "mean_abs_diff": {
+              "N": 88,
+              "min": 0.0,
+              "p10": 0.0,
+              "median": 0.0,
+              "p95": 0.0,
+              "max": 0.0
+            }
+          },
+          "stall_one_pixel_yaw": {
+            "median_px": {
+              "N": 87,
+              "min": 0.8466013073921204,
+              "p10": 0.9047928571701049,
+              "median": 1.014674723148346,
+              "p95": 1.259762167930603,
+              "max": 1.3807860016822815
+            },
+            "mean_abs_diff": {
+              "N": 88,
+              "min": 0.008162445662445662,
+              "p10": 0.19088162350794305,
+              "median": 0.2774900412255028,
+              "p95": 0.44880449534651223,
+              "max": 0.5671465194241767
+            }
+          }
+        }
+      },
+      "checks": {
+        "rendered88": true,
+        "colour_semantic_counts_identical": false,
+        "no_new_false_boundary_columns": true,
+        "boundary_columns_not_lost": true,
+        "orb7_floor_p10_not_lost": true,
+        "orb7_floor_median_not_lost": true,
+        "orb7_wall_p10_not_lost": true,
+        "orb7_wall_median_not_lost": true
+      },
+      "funnel": [
+        {
+          "stage": "rendered",
+          "cumulative_pass_n": 88,
+          "rejected_n": 0
+        },
+        {
+          "stage": "colour_semantics_equal",
+          "cumulative_pass_n": 59,
+          "rejected_n": 29
+        },
+        {
+          "stage": "no_false_boundary_increase",
+          "cumulative_pass_n": 59,
+          "rejected_n": 0
+        }
+      ],
+      "raw": "/home/ugrp/ugrp-sim/runs/warp5/render-r3",
+      "gate": "/home/ugrp/ugrp-sim/runs/warp5/render-r3-gate.json",
+      "gate_sha256": "edb53b7c60db2e13c2a4cfe05375d66e24798f12ff798eec7abdb9e09ee06b67",
+      "verified_files": 624,
+      "hash_mismatches": []
+    }
+  ],
+  "perception_candidates": [
+    {
+      "run": "render-r3-recalibrated",
+      "admitted": false,
+      "colour_equal_n": 59,
+      "checks": {
+        "rendered88": true,
+        "colour_semantic_counts_identical": false,
+        "no_new_false_boundary_columns": true,
+        "boundary_columns_not_lost": true,
+        "orb7_floor_p10_not_lost": true,
+        "orb7_floor_median_not_lost": true,
+        "orb7_wall_p10_not_lost": true,
+        "orb7_wall_median_not_lost": true
+      },
+      "boundary": {
+        "qualified": 56,
+        "columns": 4566,
+        "false_columns": 0,
+        "per_frame": {
+          "N": 56,
+          "min": 0.0,
+          "p10": 69.0,
+          "median": 79.5,
+          "p95": 96.0,
+          "max": 96.0
+        },
+        "residual_px": {
+          "N": 4566,
+          "min": 0.5,
+          "p10": 0.5,
+          "median": 0.5,
+          "p95": 0.5,
+          "max": 4.5
+        }
+      },
+      "gate": "/home/ugrp/ugrp-sim/runs/warp5/render-r3-recalibrated/gate.json",
+      "gate_sha256": "4818f4313787d63059a80c1bb43d9171a3dede62da3a3f85e84fbcdfb32d747d",
+      "verified_files": 90,
+      "hash_mismatches": [],
+      "scope": "same saved88 DEV; no new renderer/physics"
+    },
+    {
+      "run": "render-r3-robot-columns",
+      "admitted": false,
+      "colour_equal_n": 54,
+      "checks": {
+        "rendered88": true,
+        "colour_semantic_counts_identical": false,
+        "no_new_false_boundary_columns": true,
+        "boundary_columns_not_lost": true,
+        "orb7_floor_p10_not_lost": true,
+        "orb7_floor_median_not_lost": true,
+        "orb7_wall_p10_not_lost": true,
+        "orb7_wall_median_not_lost": true
+      },
+      "boundary": {
+        "qualified": 56,
+        "columns": 4566,
+        "false_columns": 0,
+        "per_frame": {
+          "N": 56,
+          "min": 0.0,
+          "p10": 69.0,
+          "median": 79.5,
+          "p95": 96.0,
+          "max": 96.0
+        },
+        "residual_px": {
+          "N": 4566,
+          "min": 0.5,
+          "p10": 0.5,
+          "median": 0.5,
+          "p95": 0.5,
+          "max": 4.5
+        }
+      },
+      "gate": "/home/ugrp/ugrp-sim/runs/warp5/render-r3-robot-columns/gate.json",
+      "gate_sha256": "c693024e391095d4c718cef8fe25db0628afc736fec4a2fdb22866977738fb8b",
+      "verified_files": 90,
+      "hash_mismatches": [],
+      "scope": "same saved88 DEV; no new renderer/physics"
+    }
+  ],
+  "cpu_repeat_rgb_matches": {
+    "render-r2": 88,
+    "render-r3": 88
+  },
+  "static_host_errors": [
+    {
+      "run": "render-r1",
+      "category": "HOST_ERROR",
+      "reason": "EGL library unavailable before initialization",
+      "log": "/home/ugrp/ugrp-sim/runs/warp5/render-r1.log",
+      "sha256": "316a0541af86999085255f24371dc8262b6a4f2f780ead62a941c39aa6b17dce",
+      "blocked_object": "static_render_environment_or_workspace",
+      "minimum_gap_m": null,
+      "gap_status": "not_applicable_static_initialization"
+    },
+    {
+      "run": "render-r1b",
+      "category": "HOST_ERROR",
+      "reason": "static contact allocation smaller than fixture ncon80",
+      "log": "/home/ugrp/ugrp-sim/runs/warp5/render-r1b.log",
+      "sha256": "2d199b7d3f5d16b01d1fe2f49b9dfe0cf74b45e016117fb9e4c0708cec361190",
+      "blocked_object": "static_render_environment_or_workspace",
+      "minimum_gap_m": null,
+      "gap_status": "not_applicable_static_initialization"
+    },
+    {
+      "run": "render-r1c",
+      "category": "HOST_ERROR",
+      "reason": "missing scipy in GPU env; later isolated dependency target",
+      "log": "/home/ugrp/ugrp-sim/runs/warp5/render-r1c.log",
+      "sha256": "26148bb2d210b892159e58406a15647a0a38086d5bed93d9b3412e15f9d88df5",
+      "blocked_object": "static_render_environment_or_workspace",
+      "minimum_gap_m": null,
+      "gap_status": "not_applicable_static_initialization"
+    }
+  ],
+  "control": {
+    "physics_rollout_steps": 0,
+    "attempted": 0,
+    "place_n": null,
+    "place_N": 0,
+    "complete_n": null,
+    "complete_N": 0,
+    "xy_p95_m": null,
+    "yaw_p95_deg": null,
+    "input_audit": "not measured: no control rollout; do not present zero counters as an audit",
+    "cap_end_N": 0,
+    "HOST_ERROR_N": 0
+  },
+  "model_calls": 0,
+  "LLM_batches": 0,
+  "reason": "render colour-component admission failed; observed Mac free16GiB below project submission floor20GiB; no new control batch",
+  "E2E": {
+    "status": "prototype_not_admitted",
+    "rule_physical_gate": "not run",
+    "live": "blocked by Gemma+50% alert",
+    "near_ACT_teacher": "not connected/validated"
+  },
+  "pooling": "CPU and MJWarp never pooled; static rendering only, no localization/physical success",
+  "raw_backup": "persistent gcp2 disk only; selected summaries/montages delivered; no complete external raw backup",
+  "verification": {
+    "nonphysics_tests": 30,
+    "command": "python -m pytest tests/test_warp_act_warp5.py tests/test_warp_act_reloc21_progress.py tests/test_reloc20_motion.py -q",
+    "native_Mac_physics_render_GUI": 0,
+    "workflow_catalog_listed": true,
+    "frozen_floor_goal_source_unchanged_from_reloc20": true,
+    "baseline_failure": "test_active_wall_mapping frozen navigation source hash: same floor_goal.py SHA0c5190fd at reloc20; expected historical1bdf3329. 13 passed/1 baseline failed in that broader selected check; no full CI claim"
+  },
+  "submission_block": {
+    "free_bytes": 16558297088,
+    "floor_bytes": 21474836480,
+    "reason": "Mac expected free below project20GiB floor; new physical submissions withheld; no unrelated data deleted"
+  },
+  "worktree": "/Users/changmin/projects/ugrp-wt/warp5",
+  "PR": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/550"
+}

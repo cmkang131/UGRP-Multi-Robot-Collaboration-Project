@@ -1,0 +1,43 @@
+{
+  "recorded_utc": "2026-10-16T03:42:57.414134+00:00",
+  "own_active_processes": [],
+  "foreign_leases": [
+    {
+      "task": "beamact3-A",
+      "pid": 50591,
+      "stage": "main",
+      "expected_end": "2026-10-16T05:50:53.668823+00:00"
+    },
+    {
+      "task": "warp4",
+      "pid": 73444,
+      "stage": "final run-first R3, private MPS shared-load, beam4 release A/B each4; existing-host deadline",
+      "expected_end": "2026-10-16T05:57:25+00:00"
+    },
+    {
+      "task": "warp3",
+      "pid": 54448,
+      "stage": "teacher R1 remaining4 exact groups/11 worlds all active; existing beamact3-A GPU task preserved",
+      "expected_end": "2026-10-16T05:59:25.154+00:00"
+    }
+  ],
+  "stop_attempted": false,
+  "decision": "preserve GPU VM and all foreign work; leave idle20/budget-stop/8h unchanged",
+  "source_alternates": {
+    "98d6b5cdb45330a2b5c7ff005e40c558107432e0": "/home/ugrp/ugrp-sim/git-shared.git/objects",
+    "bf918f861aea122bee9c9281448c04bc73e52df0": "/home/ugrp/ugrp-sim/git-shared.git/objects",
+    "215df7fad7c686710e4791dc0e92e7e70b1c87c9": "/home/ugrp/ugrp-sim/git-shared.git/objects",
+    "b7478205693a2b0d7db63710a7bd515889b468a9": "/home/ugrp/ugrp-sim/git-shared.git/objects"
+  },
+  "removed_own_lease": {
+    "task": "warp5",
+    "pid": 71728,
+    "start": "2026-10-16T03:02:17.853725+00:00",
+    "expected_end": "2026-10-16T05:50:00Z",
+    "stage": "stored88 RGB peer-column candidate analysis; no new physics",
+    "concurrency": 0,
+    "gpu_shared": true,
+    "source_sha": "b7478205693a2b0d7db63710a7bd515889b468a9"
+  },
+  "own_lease_exists_after": false
+}
