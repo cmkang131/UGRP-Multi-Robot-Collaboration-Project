@@ -761,14 +761,32 @@ class SoloTeacher:
         elif self.phase == 'carry_prepare' and idle:
             self._set('carry_to_zone', now)
         elif self.phase == 'carry_to_zone':
-            drive, arrived, failure = self.carry.step(now)
+            recovery_drive = (self.carry.destination_acquire.relocalize_step(now,self.sink.pwm)
+                if getattr(self.carry,'carry_relocalize_v1',False) else None)
+            drive, arrived, failure = (self.carry.step(now) if recovery_drive is None
+                                      else (recovery_drive, False, None))
             if failure:
                 self.result = failure
                 self._set('failed', now)
             elif arrived:
-                self._set('zone_place_view', now)
+                self._set('destination_acquire' if getattr(self.carry,'destination_acquire',None) is not None else 'zone_place_view', now)
             else:
                 value = self._drive(now, *drive)
+        elif self.phase == 'destination_acquire':
+            import cv2
+            frame = cv2.cvtColor(own_rgb(), cv2.COLOR_RGB2BGR)
+            drive, confirmed, failure = self.carry.destination_acquire.step(now,frame,self.sink.pwm,self.low,self.spec.kind)
+            pan=self.carry.destination_acquire.desired_pan
+            if idle and pan is not None and self.sink.pwm[6]!=pan:
+                self.carry.destination_acquire.pan_ready=now+abs(self.sink.pwm[6]-pan)/2000.+.3
+                self._queue({6:pan},now,abs(self.sink.pwm[6]-pan)/2000.,.3)
+            if failure:
+                self.result=failure
+                self._set('failed',now)
+            elif confirmed:
+                self._set('zone_place_view',now)
+            else:
+                value=self._drive(now,*drive)
         elif self.phase == 'zone_place_view':
             self.zone_visible_t = (now if self.zone_visible_t is None else self.zone_visible_t) if place_visible else None
             if self.zone_visible_t is not None and now-self.zone_visible_t >= .3-1e-8:
@@ -832,7 +850,7 @@ class SoloTeacher:
                 return 250.
             if self.phase == 'carry_reacquire' and self.reacquirer is not None:
                 return self.reacquirer.budget_s+1.
-        return 180. if self.phase == 'carry_to_zone' else 60.
+        return 180. if self.phase in ('carry_to_zone','destination_acquire') else 60.
 
     def diagnostic(self):
         return {'profile': PROFILE, 'phase': self.phase, 'command_result': self.result,

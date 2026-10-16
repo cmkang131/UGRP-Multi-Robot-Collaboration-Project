@@ -183,6 +183,8 @@ class CarryToZone:
         self.recovery_reason = None
         self.recovery_events = []
         self.recovery_count = 0
+        self.destination_acquire=None
+        self.carry_relocalize_v1=False
         self.reloc18_pose_budget_observe_only=False
         self.reloc18_budget_ticks=0
         self.reloc18_budget_first_t=None
@@ -223,6 +225,8 @@ class CarryToZone:
 
     def issue(self, issued, dt):
         self.loc.issue(issued, dt)
+        if self.destination_acquire is not None:
+            self.destination_acquire.issue(self.loc.last_delta)
 
     def observe(self, tops, now):
         raise ValueError('top RGB forbidden for carry control (#366)')
@@ -356,7 +360,7 @@ class CarryToZone:
             self.stalled_recoveries = 0
         self.recovery_anchor = self.loc.pose[:2]
         self.recovery_events.append({'t': now, 'event': 'stop_reobserve', 'reason': reason,
-                                     **(dict(category='localization' if reason == 'pose_budget' else 'route',
+                                     **(dict(category='localization' if reason == 'pose_budget' or reason.startswith('reloc19_') else 'route',
                                         **(self.rejection_context or dict(blocked_object='pose_uncertainty_budget',
                                             minimum_gap_m=None, gap_scope='not_applicable_localization_gate')))
                                         if self.reloc12_reacquire else {}),
@@ -426,6 +430,9 @@ class CarryToZone:
         hsv = cv2.cvtColor(bgr, cv2.COLOR_BGR2HSV)[roi]
         lo, hi = PAINT_HUE[self.zone]
         painted = (hsv[:, 0] >= lo-5) & (hsv[:, 0] <= hi+5) & (hsv[:, 1] >= 30) & (hsv[:, 2] >= 30)
+        if self.destination_acquire is not None:
+            clear,_ = self.destination_acquire.floor_clear(bgr)
+            painted &= clear[roi]
         return bool(np.mean(painted) >= .6)
 
     def record(self):
@@ -436,6 +443,8 @@ class CarryToZone:
                 'path': self.path, 'static_route_only': False, 'obstacles': self.obstacles.record(),
                 'rejection_context': self.rejection_context,
                 'held_world_reads': 0, 'physical_success': None,
+                **({'destination_visual_acquire':self.destination_acquire.record(),
+                    'carry_relocalize_v1':self.carry_relocalize_v1} if self.destination_acquire is not None else {}),
                 **({'reloc18_pose_budget_observe_only_v1':True,'would_stop_pose_budget':dict(
                     N=self.reloc18_budget_ticks,first_t=self.reloc18_budget_first_t,last_t=self.reloc18_budget_last_t,
                     category='pose_uncertainty',blocked_object='own_command_pose_budget',minimum_gap_m=None,

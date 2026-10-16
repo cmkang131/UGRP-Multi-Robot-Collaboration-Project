@@ -1,0 +1,31 @@
+{
+  "observed_at": "2026-10-16T00:21:23.771205+00:00",
+  "source": "/Users/changmin/projects/ugrp/outputs/model-endpoint-alerts/last-alerts.json",
+  "source_mtime_utc": "2026-10-15T23:24:48.642437+00:00",
+  "source_sha256": "8f0dce6a9d8ab2d48e43eb013ff1f6c905cf93e2afc0512749d5c42943083adb",
+  "active_alerts": [
+    {
+      "kind": "price_increase",
+      "model": "google/gemma-4-31b-it",
+      "prices": {
+        "completion": {
+          "baseline": 0.34,
+          "now": 0.51
+        },
+        "input_cache_read": {
+          "baseline": 0.05,
+          "now": 0.075
+        },
+        "prompt": {
+          "baseline": 0.09,
+          "now": 0.135
+        }
+      },
+      "provider": "DeepInfra"
+    }
+  ],
+  "scope": "existing watcher alert checked locally; not a fresh provider price measurement",
+  "llm_calls_in_reloc19": 0,
+  "new_llm_batches_submitted": 0,
+  "model_provider_changed": false
+}

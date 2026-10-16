@@ -1,0 +1,612 @@
+{
+  "runs": [
+    {
+      "run": "reloc19-r3-carry-A_pan-93266-e042139b",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-carry-A_pan-93266-e042139b/raw",
+      "source_sha": "e042139b0930ee7b31eae08a917ff501ee01075f",
+      "integrity": {
+        "verified": true,
+        "files": 3118,
+        "missing": [],
+        "bad": [],
+        "kind": "carry"
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 84,
+        "blocked_held": 2622,
+        "measurements_by_phase": {
+          "pickup_search": 1,
+          "approach": 270,
+          "align": 19,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "destination": {
+        "toggle": "destination_visual_acquire_v1",
+        "destination_camera_pan_v1": true,
+        "desired_pan": 1510,
+        "mode": "expand",
+        "started_t": 142.1999999983654,
+        "acquired_t": null,
+        "confirmed_t": null,
+        "acquisition_sim_s": null,
+        "views": 1535,
+        "last": {
+          "t": 301.19999999460555,
+          "scene_floor_mask": {
+            "option": "scene_floor_landmark_mask_v1",
+            "wall_class_pixels": 11201,
+            "excluded_visible_pixels": 11201,
+            "floor_lk_changed": false,
+            "doors_clear_changed": false,
+            "truth_inputs": 0
+          },
+          "reason": "destination_colour_absent",
+          "pixels": 0,
+          "place_gate": false
+        },
+        "events": [
+          {
+            "t": 142.1999999983654,
+            "event": "destination_acquire_start",
+            "ellipse_candidates": 20,
+            "covariance": [
+              [
+                0.6446486939348876,
+                0.3280583134761701,
+                -0.0020310141548691824
+              ],
+              [
+                0.3280583134761735,
+                0.4504699358354782,
+                0.0007980814095824487
+              ],
+              [
+                -0.0020310141548691824,
+                0.0007980814095824487,
+                0.03779078305244523
+              ]
+            ],
+            "expected_bearing_rad": 0.05148468945872805
+          },
+          {
+            "t": 145.39999999828973,
+            "event": "ellipse_search_waypoint",
+            "xy": [
+              3.6608296914281455,
+              0.017322748116209985
+            ]
+          },
+          {
+            "t": 156.29999999803198,
+            "event": "ellipse_search_waypoint",
+            "xy": [
+              3.7824861135899477,
+              0.857084449402229
+            ]
+          }
+        ],
+        "relocalizations": 0,
+        "failure": null,
+        "truth_inputs": 0,
+        "held_world_reads": 0
+      },
+      "failure_six": [
+        {
+          "t": 291.199999994842,
+          "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-carry-A_pan-93266-e042139b/raw/failure-rgb/0000.jpg",
+          "path": "/home/ugrp/ugrp-sim/runs/reloc19-round3/media/reloc19-r3-carry-A_pan-93266-e042139b/failure-00.jpg",
+          "sha256": "4913b6b6d1c20b3e65d9b14355c65edd5736c3c55245a6efa973ed73e109fa72"
+        },
+        {
+          "t": 293.1999999947947,
+          "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-carry-A_pan-93266-e042139b/raw/failure-rgb/0020.jpg",
+          "path": "/home/ugrp/ugrp-sim/runs/reloc19-round3/media/reloc19-r3-carry-A_pan-93266-e042139b/failure-01.jpg",
+          "sha256": "584c63b51030ea05f305231260d07fd79d46c642c1bb0f0d875cd4337ca0fc87"
+        },
+        {
+          "t": 295.19999999474743,
+          "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-carry-A_pan-93266-e042139b/raw/failure-rgb/0040.jpg",
+          "path": "/home/ugrp/ugrp-sim/runs/reloc19-round3/media/reloc19-r3-carry-A_pan-93266-e042139b/failure-02.jpg",
+          "sha256": "2f9b97e56d4873cd7633515686ea6f4832d027369a7c348bbb78a814c5296d8c"
+        },
+        {
+          "t": 297.19999999470014,
+          "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-carry-A_pan-93266-e042139b/raw/failure-rgb/0060.jpg",
+          "path": "/home/ugrp/ugrp-sim/runs/reloc19-round3/media/reloc19-r3-carry-A_pan-93266-e042139b/failure-03.jpg",
+          "sha256": "47639bd23abf77bf8db6d29ccbd776ff5c011f3f1b9e992119544adcf59de34b"
+        },
+        {
+          "t": 299.19999999465284,
+          "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-carry-A_pan-93266-e042139b/raw/failure-rgb/0080.jpg",
+          "path": "/home/ugrp/ugrp-sim/runs/reloc19-round3/media/reloc19-r3-carry-A_pan-93266-e042139b/failure-04.jpg",
+          "sha256": "9fdf878141223235fde2de3145d4af5bc20549814fc492f37f1be9548814ac2d"
+        },
+        {
+          "t": 301.19999999460555,
+          "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-carry-A_pan-93266-e042139b/raw/failure-rgb/0100.jpg",
+          "path": "/home/ugrp/ugrp-sim/runs/reloc19-round3/media/reloc19-r3-carry-A_pan-93266-e042139b/failure-05.jpg",
+          "sha256": "c08c6dce85860cf9a7100c28bac00be2157c1282bcb9c03c8823a9d5203ce923"
+        }
+      ]
+    },
+    {
+      "run": "reloc19-r3-carry-AB_pan-93266-e042139b",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-carry-AB_pan-93266-e042139b/raw",
+      "source_sha": "e042139b0930ee7b31eae08a917ff501ee01075f",
+      "integrity": {
+        "verified": true,
+        "files": 3124,
+        "missing": [],
+        "bad": [],
+        "kind": "carry"
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 1999,
+        "blocked_held": 634,
+        "measurements_by_phase": {
+          "pickup_search": 1,
+          "approach": 281,
+          "align": 71,
+          "hover": 11,
+          "carry_recover_restore": 1,
+          "carry_reacquire": 2
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "destination": {
+        "toggle": "destination_visual_acquire_v1",
+        "destination_camera_pan_v1": true,
+        "desired_pan": null,
+        "mode": "inactive",
+        "started_t": null,
+        "acquired_t": null,
+        "confirmed_t": null,
+        "acquisition_sim_s": null,
+        "views": 0,
+        "last": {},
+        "events": [
+          {
+            "t": 54.100000000167306,
+            "event": "rejection",
+            "category": "camera_qualification",
+            "reason": "loaded_metric_fix_unavailable",
+            "blocked_object": "issued_loaded_camera_metric_fk_unqualified",
+            "minimum_gap_m": null,
+            "gap_scope": "not_applicable_camera_calibration"
+          },
+          {
+            "t": 112.7999999990606,
+            "event": "rejection",
+            "category": "camera_qualification",
+            "reason": "loaded_metric_fix_unavailable",
+            "blocked_object": "issued_loaded_camera_metric_fk_unqualified",
+            "minimum_gap_m": null,
+            "gap_scope": "not_applicable_camera_calibration"
+          },
+          {
+            "t": 215.2999999966368,
+            "event": "rejection",
+            "category": "camera_qualification",
+            "reason": "loaded_metric_fix_unavailable",
+            "blocked_object": "issued_loaded_camera_metric_fk_unqualified",
+            "minimum_gap_m": null,
+            "gap_scope": "not_applicable_camera_calibration"
+          }
+        ],
+        "relocalizations": 3,
+        "failure": null,
+        "truth_inputs": 0,
+        "held_world_reads": 0
+      },
+      "failure_six": [
+        {
+          "t": 291.199999994842,
+          "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-carry-AB_pan-93266-e042139b/raw/failure-rgb/0000.jpg",
+          "path": "/home/ugrp/ugrp-sim/runs/reloc19-round3/media/reloc19-r3-carry-AB_pan-93266-e042139b/failure-00.jpg",
+          "sha256": "319121575a16e2439ff49fde8d7d2fe99b7f252e584d3463c5a9daac12950447"
+        },
+        {
+          "t": 293.1999999947947,
+          "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-carry-AB_pan-93266-e042139b/raw/failure-rgb/0020.jpg",
+          "path": "/home/ugrp/ugrp-sim/runs/reloc19-round3/media/reloc19-r3-carry-AB_pan-93266-e042139b/failure-01.jpg",
+          "sha256": "367f3e005526deff032b9df5dadcbd26dac20881f3c6ed8885f3cd9980b5137b"
+        },
+        {
+          "t": 295.19999999474743,
+          "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-carry-AB_pan-93266-e042139b/raw/failure-rgb/0040.jpg",
+          "path": "/home/ugrp/ugrp-sim/runs/reloc19-round3/media/reloc19-r3-carry-AB_pan-93266-e042139b/failure-02.jpg",
+          "sha256": "5cb091771802f4b9e4208b3ab2bc90806984ece6b2ba839e63a042fc784518dd"
+        },
+        {
+          "t": 297.19999999470014,
+          "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-carry-AB_pan-93266-e042139b/raw/failure-rgb/0060.jpg",
+          "path": "/home/ugrp/ugrp-sim/runs/reloc19-round3/media/reloc19-r3-carry-AB_pan-93266-e042139b/failure-03.jpg",
+          "sha256": "a9501f2790a5ea06d9201dfefa0b2bec503598cc2d0d78ad8554416657ab4ecc"
+        },
+        {
+          "t": 299.19999999465284,
+          "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-carry-AB_pan-93266-e042139b/raw/failure-rgb/0080.jpg",
+          "path": "/home/ugrp/ugrp-sim/runs/reloc19-round3/media/reloc19-r3-carry-AB_pan-93266-e042139b/failure-04.jpg",
+          "sha256": "2b04a00043c2c358e20ec594ee310cf41996bc947d9ed83d8f9700f6575ea8c3"
+        },
+        {
+          "t": 301.19999999460555,
+          "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-carry-AB_pan-93266-e042139b/raw/failure-rgb/0100.jpg",
+          "path": "/home/ugrp/ugrp-sim/runs/reloc19-round3/media/reloc19-r3-carry-AB_pan-93266-e042139b/failure-05.jpg",
+          "sha256": "16376ee869968b1452395cbcaf103332f9c7f84249129da94dad0efc59f50819"
+        }
+      ]
+    },
+    {
+      "run": "reloc19-r3-carry-A_pan-93315-e042139b",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-carry-A_pan-93315-e042139b/raw",
+      "source_sha": "e042139b0930ee7b31eae08a917ff501ee01075f",
+      "integrity": {
+        "verified": true,
+        "files": 2673,
+        "missing": [],
+        "bad": [],
+        "kind": "carry"
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 22,
+        "blocked_held": 2445,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "pickup_search": 1,
+          "approach": 60,
+          "align": 16,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "destination": {
+        "toggle": "destination_visual_acquire_v1",
+        "destination_camera_pan_v1": true,
+        "desired_pan": 1491,
+        "mode": "expand",
+        "started_t": 76.69999999991425,
+        "acquired_t": null,
+        "confirmed_t": null,
+        "acquisition_sim_s": null,
+        "views": 1772,
+        "last": {
+          "t": 256.5999999956602,
+          "scene_floor_mask": {
+            "option": "scene_floor_landmark_mask_v1",
+            "wall_class_pixels": 0,
+            "excluded_visible_pixels": 0,
+            "floor_lk_changed": false,
+            "doors_clear_changed": false,
+            "truth_inputs": 0
+          },
+          "reason": "destination_motion_blocked",
+          "pixels": 0,
+          "place_gate": false,
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": -0.0017525427311914643,
+          "gap_scope": "101 samples of requested straight corridor; not a proof that no detour exists",
+          "diagnostic_checks": 707
+        },
+        "events": [
+          {
+            "t": 76.69999999991425,
+            "event": "destination_acquire_start",
+            "ellipse_candidates": 36,
+            "covariance": [
+              [
+                0.35221110800609584,
+                -0.19139166333416907,
+                -0.3150552166625036
+              ],
+              [
+                -0.1913916633341706,
+                1.3448692998239262,
+                0.5798615289768843
+              ],
+              [
+                -0.3150552166625036,
+                0.5798615289768843,
+                0.4956799792962836
+              ]
+            ],
+            "expected_bearing_rad": 0.0447295186410398
+          },
+          {
+            "t": 79.89999999983858,
+            "event": "ellipse_search_waypoint",
+            "xy": [
+              1.9535762709956912,
+              -0.9802261204679481
+            ]
+          }
+        ],
+        "relocalizations": 0,
+        "failure": null,
+        "truth_inputs": 0,
+        "held_world_reads": 0
+      },
+      "failure_six": [
+        {
+          "t": 246.6999999958943,
+          "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-carry-A_pan-93315-e042139b/raw/failure-rgb/0000.jpg",
+          "path": "/home/ugrp/ugrp-sim/runs/reloc19-round3/media/reloc19-r3-carry-A_pan-93315-e042139b/failure-00.jpg",
+          "sha256": "650804f8fa40e8d51f1e554364407cc3cd2f296a8d537778e0f851a2ef793fbf"
+        },
+        {
+          "t": 248.699999995847,
+          "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-carry-A_pan-93315-e042139b/raw/failure-rgb/0020.jpg",
+          "path": "/home/ugrp/ugrp-sim/runs/reloc19-round3/media/reloc19-r3-carry-A_pan-93315-e042139b/failure-01.jpg",
+          "sha256": "fefd01a7e5e033eef37af7077981fb58300be88d3108cdcac7a069aded2aa29a"
+        },
+        {
+          "t": 250.69999999579971,
+          "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-carry-A_pan-93315-e042139b/raw/failure-rgb/0040.jpg",
+          "path": "/home/ugrp/ugrp-sim/runs/reloc19-round3/media/reloc19-r3-carry-A_pan-93315-e042139b/failure-02.jpg",
+          "sha256": "98ff6f17328dfb4e2a530f1221e392e191e612536f3dee24b88412e464e7ed73"
+        },
+        {
+          "t": 252.69999999575242,
+          "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-carry-A_pan-93315-e042139b/raw/failure-rgb/0060.jpg",
+          "path": "/home/ugrp/ugrp-sim/runs/reloc19-round3/media/reloc19-r3-carry-A_pan-93315-e042139b/failure-03.jpg",
+          "sha256": "560066be650417ddd8a1ebc183bac81b2f1cae85f5ce933d8bcf07fc83ee38b3"
+        },
+        {
+          "t": 254.69999999570513,
+          "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-carry-A_pan-93315-e042139b/raw/failure-rgb/0080.jpg",
+          "path": "/home/ugrp/ugrp-sim/runs/reloc19-round3/media/reloc19-r3-carry-A_pan-93315-e042139b/failure-04.jpg",
+          "sha256": "d48baf3057c6c92478dcc56b0e7b2c165fb3aa3bf47f9521e928607982856b6b"
+        },
+        {
+          "t": 256.69999999565783,
+          "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-carry-A_pan-93315-e042139b/raw/failure-rgb/0100.jpg",
+          "path": "/home/ugrp/ugrp-sim/runs/reloc19-round3/media/reloc19-r3-carry-A_pan-93315-e042139b/failure-05.jpg",
+          "sha256": "acd1820c4b29a44caf9ade5a0799e8ef8b939e4a0a17f588412edcb48cc32cc8"
+        }
+      ]
+    },
+    {
+      "run": "reloc19-r3-carry-AB_pan-93315-e042139b",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-carry-AB_pan-93315-e042139b/raw",
+      "source_sha": "e042139b0930ee7b31eae08a917ff501ee01075f",
+      "integrity": {
+        "verified": true,
+        "files": 3130,
+        "missing": [],
+        "bad": [],
+        "kind": "carry"
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 1822,
+        "blocked_held": 938,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "pickup_search": 1,
+          "approach": 89,
+          "align": 109,
+          "hover": 17,
+          "carry_recover_restore": 13,
+          "carry_reacquire": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "destination": {
+        "toggle": "destination_visual_acquire_v1",
+        "destination_camera_pan_v1": true,
+        "desired_pan": null,
+        "mode": "inactive",
+        "started_t": null,
+        "acquired_t": null,
+        "confirmed_t": null,
+        "acquisition_sim_s": null,
+        "views": 0,
+        "last": {},
+        "events": [
+          {
+            "t": 27.500000000040295,
+            "event": "rejection",
+            "category": "camera_qualification",
+            "reason": "loaded_metric_fix_unavailable",
+            "blocked_object": "issued_loaded_camera_metric_fk_unqualified",
+            "minimum_gap_m": null,
+            "gap_scope": "not_applicable_camera_calibration"
+          },
+          {
+            "t": 82.09999999978656,
+            "event": "rejection",
+            "category": "camera_qualification",
+            "reason": "loaded_metric_fix_unavailable",
+            "blocked_object": "issued_loaded_camera_metric_fk_unqualified",
+            "minimum_gap_m": null,
+            "gap_scope": "not_applicable_camera_calibration"
+          }
+        ],
+        "relocalizations": 2,
+        "failure": null,
+        "truth_inputs": 0,
+        "held_world_reads": 0
+      },
+      "failure_six": [
+        {
+          "t": 291.199999994842,
+          "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-carry-AB_pan-93315-e042139b/raw/failure-rgb/0000.jpg",
+          "path": "/home/ugrp/ugrp-sim/runs/reloc19-round3/media/reloc19-r3-carry-AB_pan-93315-e042139b/failure-00.jpg",
+          "sha256": "4a052c58b02b1f1130dd77a4d80ba0937aa4f6c2dcb6b65ec70ed267ca9892a3"
+        },
+        {
+          "t": 293.1999999947947,
+          "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-carry-AB_pan-93315-e042139b/raw/failure-rgb/0020.jpg",
+          "path": "/home/ugrp/ugrp-sim/runs/reloc19-round3/media/reloc19-r3-carry-AB_pan-93315-e042139b/failure-01.jpg",
+          "sha256": "676c2898ea00f8ffaac6699e6a691dcb64ee9601eb25fbaf2093be9ad7d895b1"
+        },
+        {
+          "t": 295.19999999474743,
+          "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-carry-AB_pan-93315-e042139b/raw/failure-rgb/0040.jpg",
+          "path": "/home/ugrp/ugrp-sim/runs/reloc19-round3/media/reloc19-r3-carry-AB_pan-93315-e042139b/failure-02.jpg",
+          "sha256": "51de14ab9d3b8be9f228e8f811c76f9f201eef855299c2a76e886d78a79bad2b"
+        },
+        {
+          "t": 297.19999999470014,
+          "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-carry-AB_pan-93315-e042139b/raw/failure-rgb/0060.jpg",
+          "path": "/home/ugrp/ugrp-sim/runs/reloc19-round3/media/reloc19-r3-carry-AB_pan-93315-e042139b/failure-03.jpg",
+          "sha256": "3ecde0a580160bb2c18522eb9e39a59a025b540c6fc74390498bcdd1b7517816"
+        },
+        {
+          "t": 299.19999999465284,
+          "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-carry-AB_pan-93315-e042139b/raw/failure-rgb/0080.jpg",
+          "path": "/home/ugrp/ugrp-sim/runs/reloc19-round3/media/reloc19-r3-carry-AB_pan-93315-e042139b/failure-04.jpg",
+          "sha256": "619abb88ba69ec7b9e1cb07d67282c17685c040182533a30688e30399c83dd9c"
+        },
+        {
+          "t": 301.19999999460555,
+          "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-carry-AB_pan-93315-e042139b/raw/failure-rgb/0100.jpg",
+          "path": "/home/ugrp/ugrp-sim/runs/reloc19-round3/media/reloc19-r3-carry-AB_pan-93315-e042139b/failure-05.jpg",
+          "sha256": "9dfdd3e31795f36cc56598a85b25d56e587e1108f727c16195183138201cc84b"
+        }
+      ]
+    },
+    {
+      "run": "reloc19-r3-selfmap-short_regression-93584-e042139b",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-selfmap-short_regression-93584-e042139b/raw",
+      "source_sha": "e042139b0930ee7b31eae08a917ff501ee01075f",
+      "integrity": {
+        "verified": true,
+        "files": 1639,
+        "missing": [],
+        "bad": [],
+        "kind": "selfmap"
+      },
+      "input_audit": {
+        "schema": "ugrp.selfmap_input_audit.v1",
+        "measured": true,
+        "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+        "own_rgb_frames": 578,
+        "issued_command_records": 584,
+        "top_rgb_frames": 0,
+        "peer_rgb_frames": 0,
+        "truth_pose_inputs": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "rejected_inputs": 0,
+        "authored_static_map_inputs": 1
+      },
+      "destination": {},
+      "failure_six": [
+        {
+          "t": 106.7,
+          "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-selfmap-short_regression-93584-e042139b/raw/failure-rgb/0000.jpg",
+          "path": "/home/ugrp/ugrp-sim/runs/reloc19-round3/media/reloc19-r3-selfmap-short_regression-93584-e042139b/failure-00.jpg",
+          "sha256": "950e04e29244d272e7b090b7ef93f8491bfc22a17632a243ca76c1907d2b9ad9"
+        },
+        {
+          "t": 108.7,
+          "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-selfmap-short_regression-93584-e042139b/raw/failure-rgb/0020.jpg",
+          "path": "/home/ugrp/ugrp-sim/runs/reloc19-round3/media/reloc19-r3-selfmap-short_regression-93584-e042139b/failure-01.jpg",
+          "sha256": "e0aa44c89dbfc835aee2eda8ea383e4cdf5ae2d6402755fdd3d24e365da348c4"
+        },
+        {
+          "t": 110.7,
+          "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-selfmap-short_regression-93584-e042139b/raw/failure-rgb/0040.jpg",
+          "path": "/home/ugrp/ugrp-sim/runs/reloc19-round3/media/reloc19-r3-selfmap-short_regression-93584-e042139b/failure-02.jpg",
+          "sha256": "e6851916762fc8c60267d10a5681e095a23c3b9891a80d9e95710b07d9787b22"
+        },
+        {
+          "t": 112.7,
+          "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-selfmap-short_regression-93584-e042139b/raw/failure-rgb/0060.jpg",
+          "path": "/home/ugrp/ugrp-sim/runs/reloc19-round3/media/reloc19-r3-selfmap-short_regression-93584-e042139b/failure-03.jpg",
+          "sha256": "5a29345d9217072dcc21f9cf39d4fc9ae2fd05d54c65c38f751ff81406e1b81e"
+        },
+        {
+          "t": 114.7,
+          "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-selfmap-short_regression-93584-e042139b/raw/failure-rgb/0080.jpg",
+          "path": "/home/ugrp/ugrp-sim/runs/reloc19-round3/media/reloc19-r3-selfmap-short_regression-93584-e042139b/failure-04.jpg",
+          "sha256": "1fee30ffb30d24c55d2f49e58bcaf7343ccbc7caad75d76392e7bf70c30ae1a1"
+        },
+        {
+          "t": 116.7,
+          "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-selfmap-short_regression-93584-e042139b/raw/failure-rgb/0100.jpg",
+          "path": "/home/ugrp/ugrp-sim/runs/reloc19-round3/media/reloc19-r3-selfmap-short_regression-93584-e042139b/failure-05.jpg",
+          "sha256": "e1db41d4bd169c287d9adf4dcf03d2b97105db6283bcb92e75a381019d9234de"
+        }
+      ]
+    },
+    {
+      "run": "reloc19-r3-selfmap-short_regression-93583-e042139b",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-selfmap-short_regression-93583-e042139b/raw",
+      "source_sha": "e042139b0930ee7b31eae08a917ff501ee01075f",
+      "integrity": {
+        "verified": true,
+        "files": 1483,
+        "missing": [],
+        "bad": [],
+        "kind": "selfmap"
+      },
+      "input_audit": {
+        "schema": "ugrp.selfmap_input_audit.v1",
+        "measured": true,
+        "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+        "own_rgb_frames": 518,
+        "issued_command_records": 524,
+        "top_rgb_frames": 0,
+        "peer_rgb_frames": 0,
+        "truth_pose_inputs": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "rejected_inputs": 0,
+        "authored_static_map_inputs": 1
+      },
+      "destination": {},
+      "failure_six": [
+        {
+          "t": 94.7,
+          "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-selfmap-short_regression-93583-e042139b/raw/failure-rgb/0000.jpg",
+          "path": "/home/ugrp/ugrp-sim/runs/reloc19-round3/media/reloc19-r3-selfmap-short_regression-93583-e042139b/failure-00.jpg",
+          "sha256": "112fe8d8539312df8f01a53c9c9fe790bf8bd3f92e9e04335cbf86f0e0dd6694"
+        },
+        {
+          "t": 96.7,
+          "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-selfmap-short_regression-93583-e042139b/raw/failure-rgb/0020.jpg",
+          "path": "/home/ugrp/ugrp-sim/runs/reloc19-round3/media/reloc19-r3-selfmap-short_regression-93583-e042139b/failure-01.jpg",
+          "sha256": "ce33798808bb2a8bb08f7d7bb15c0c57b34d7d59a30b2a9c95451296782ee2a9"
+        },
+        {
+          "t": 98.7,
+          "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-selfmap-short_regression-93583-e042139b/raw/failure-rgb/0040.jpg",
+          "path": "/home/ugrp/ugrp-sim/runs/reloc19-round3/media/reloc19-r3-selfmap-short_regression-93583-e042139b/failure-02.jpg",
+          "sha256": "d0a4facc61991ddb0b5bbbc98f3223de675334351f29ce14ec8571a1d1eb91e4"
+        },
+        {
+          "t": 100.7,
+          "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-selfmap-short_regression-93583-e042139b/raw/failure-rgb/0060.jpg",
+          "path": "/home/ugrp/ugrp-sim/runs/reloc19-round3/media/reloc19-r3-selfmap-short_regression-93583-e042139b/failure-03.jpg",
+          "sha256": "074a28d858b66b63a4ee0aef3722119cbd2cf1ecf0d0ce171cb7d76353d81b1c"
+        },
+        {
+          "t": 102.7,
+          "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-selfmap-short_regression-93583-e042139b/raw/failure-rgb/0080.jpg",
+          "path": "/home/ugrp/ugrp-sim/runs/reloc19-round3/media/reloc19-r3-selfmap-short_regression-93583-e042139b/failure-04.jpg",
+          "sha256": "4205a3ecedc8c78b24755af88fca9459be2a3b75824dce09e343cacadc75d5fd"
+        },
+        {
+          "t": 104.7,
+          "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r3-selfmap-short_regression-93583-e042139b/raw/failure-rgb/0100.jpg",
+          "path": "/home/ugrp/ugrp-sim/runs/reloc19-round3/media/reloc19-r3-selfmap-short_regression-93583-e042139b/failure-05.jpg",
+          "sha256": "ed53da5e4a866fc36f63afda1293adf786b29eb32fde394efefaf7262a30614b"
+        }
+      ]
+    }
+  ],
+  "verified": true
+}
