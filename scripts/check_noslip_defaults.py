@@ -69,6 +69,8 @@ def main():
     rows,version = audit()
     files = ['sim/execution_contact_profile.py','sim/warp_native_contact.py','sim/zone_cargo_contact.py',
         'scripts/check_noslip_defaults.py','scripts/warp_act_backend.py','scripts/warp_act_episode.py','scripts/warp_flow_episode.py']
+    files += [str(f.relative_to(ROOT)) for f in sorted((ROOT/'sim').glob('masterpi_drive_friction*.py'))]
+    files += ['sim/zone_final_v3_scene.py','sim/zone_scenario_scene.py','sim/zone_cargo_scene.py']
     report = dict(schema='ugrp.noslip_compile_audit.v1',execution_bundle_id=BUNDLE_ID,mujoco=version,
         physics_steps=0,forward_calls=0,renders=0,training=0,vm_used=False,rows=rows,
         source_sha256={f:hashlib.sha256((ROOT/f).read_bytes()).hexdigest() for f in files})

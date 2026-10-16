@@ -1,4 +1,4 @@
-"""Linux/L4-only noslip import-and-step gate; no option overrides or training.
+"""Linux/L4-only selected-profile import-and-step gate; no training.
 
 A failed import, ignored noslip, NaN or overflow stops the probe before batch
 expansion. The reference MjModel XML is loaded intact; a passing import/step
@@ -27,7 +27,9 @@ def main():
     a.out.mkdir(parents=True,exist_ok=False)
     result={'engine':'mjwarp','commit':COMMIT,'attempted':1,'completed':0,'HOST_ERROR':0,
         'failure':0,'status':'running','xml_sha256':hashlib.sha256(a.xml.read_bytes()).hexdigest(),
-        'training':False,'option_overrides':{},'stage':'C0 intact-scene compatibility gate',
+        'training':False,'contact_profile':a.contact_profile,
+        'option_overrides':{} if a.contact_profile in ('legacy_noslip10','cargo_noslip_v1','baseline_noslip10') else 'warp_native_contact_v1 options',
+        'stage':'selected-profile compatibility gate',
         'rejection_table':str(a.out/'rejection_table.json')}
     start=time.perf_counter()
     def save():

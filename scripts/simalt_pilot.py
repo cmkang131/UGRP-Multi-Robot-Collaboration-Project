@@ -144,7 +144,7 @@ def replay(a):
         timer.wrap(obj, key, label)
     world = None
     states, phase_rows, recent = [], [], deque(maxlen=100)
-    report = dict(status='running', engine='mujoco-3.12.0', renderer=a.render_backend,
+    report = dict(status='running', engine='mujoco-3.12.0', renderer=a.render_backend, contact_profile=a.contact_profile,
         host=host, source_teacher_sha=TEACHER_SHA, sha=a.sha, attempted=1, completed=0,
         failure=0, HOST_ERROR=0, training=False, live_teacher=False,
         scope='issued-command trace completion; no task success claim', config_hash=digest(a.plan),

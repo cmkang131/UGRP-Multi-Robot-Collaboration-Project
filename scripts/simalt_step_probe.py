@@ -103,7 +103,7 @@ def main():
                 'xml_sha256': digest(a.fixture/'scene.xml'), 'case': a.case,
                 'dt': dt, 'steps_planned': len(tape), 'columns': COLUMNS,
                 'nq': int(m.nq), 'nv': int(m.nv), 'pad_joint_qpos_indices': joints,
-                'options': {k: float(getattr(m.opt, k)) for k in
+                'contact_profile': a.contact_profile, 'options': {k: float(getattr(m.opt, k)) for k in
                             ('timestep','solver','cone','integrator','iterations','ls_iterations',
                              'tolerance','noslip_iterations','noslip_tolerance','ccd_iterations','ccd_tolerance')},
                 'physics_overrides': {}, 'status': 'running',

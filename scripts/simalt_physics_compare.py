@@ -151,7 +151,8 @@ def run(a):
               'fixture_sha256':sha(a.fixture/'fixture.npz'),'xml_sha256':sha(a.fixture/'scene.xml'),
               'training':False,'renderer':'none; physics-only; state ring buffer for offline rendering',
               'status':'running','attempted':0,'completed':0,'failure':0,'HOST_ERROR':0,'cap_end':False,
-              'steps_accepted':0,'cases':[],'physics_overrides':{},'rejection_table':str(a.out/'rejection_table.json')}
+              'steps_accepted':0,'cases':[],'contact_profile':a.contact_profile,
+              'physics_overrides':{} if a.contact_profile in ('legacy_noslip10','cargo_noslip_v1','baseline_noslip10') else 'warp_native_contact_v1 options','rejection_table':str(a.out/'rejection_table.json')}
     if a.gcp2_v1:
         from simalt_host import gcp2_identity
         report['execution_host']=gcp2_identity()
