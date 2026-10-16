@@ -1,0 +1,385 @@
+{
+  "schema": "ugrp.egojump.summary.v2",
+  "status": "DEV_COMPLETE_DEFAULT_OFF",
+  "source": {
+    "base": "29c0c169bdfd7eff91186bb90af901393340f2a1",
+    "worker": "98ffd82347c764fc6ddcd319d1d383df16d994a5",
+    "workflow": "ego-pose-continuity-dev/1.0.1",
+    "execution_bundle_ids": "egojump-63001..63006-{off,cluster,innovation}-v2",
+    "controller_files_unchanged_since_worker": true
+  },
+  "verdict": "Both candidates remove >20cm map jumps and >5cm command-odom jumps in this DEV cohort; pooled RMSE improves, but seedwise regressions and false arrivals remain. No default promotion.",
+  "jump_thresholds_cm": [
+    5,
+    20,
+    50
+  ],
+  "diagnosis": "diagnosis.md",
+  "references": "references/methods.md",
+  "offline": {
+    "selection_records": 8,
+    "available_main_records": 11,
+    "main_registered_records": 24,
+    "main_frames": 18790,
+    "separate_smoke_records": 1,
+    "unavailable_main_records": 13,
+    "metrics": {
+      "off": {
+        "rmse_m": 0.6634190133394281,
+        "mean_final_error_m": 0.5470400631298964,
+        "map_jumps_gt_cm": [
+          1520,
+          557,
+          63
+        ],
+        "max_map_jump_m": 0.8342080208855123,
+        "control_jumps_gt20cm": 557,
+        "whole_path_worse_runs": 0,
+        "historical_geometry_pass": "6/7"
+      },
+      "rep105": {
+        "rmse_m": 0.6634190133394281,
+        "mean_final_error_m": 0.5470400631298964,
+        "map_jumps_gt_cm": [
+          1520,
+          557,
+          63
+        ],
+        "max_map_jump_m": 0.8342080208855123,
+        "control_jumps_gt20cm": 0,
+        "whole_path_worse_runs": 0,
+        "historical_geometry_pass": "6/7"
+      },
+      "stationary": {
+        "rmse_m": 0.6622562098885169,
+        "mean_final_error_m": 0.5289462154015699,
+        "map_jumps_gt_cm": [
+          1331,
+          444,
+          51
+        ],
+        "max_map_jump_m": 0.8342080208855123,
+        "control_jumps_gt20cm": 444,
+        "whole_path_worse_runs": 7,
+        "historical_geometry_pass": "6/7"
+      },
+      "cluster": {
+        "rmse_m": 0.649576596901435,
+        "mean_final_error_m": 0.4833376625435438,
+        "map_jumps_gt_cm": [
+          168,
+          7,
+          1
+        ],
+        "max_map_jump_m": 0.5654821267178638,
+        "control_jumps_gt20cm": 7,
+        "whole_path_worse_runs": 0,
+        "historical_geometry_pass": "3/7"
+      },
+      "mahalanobis": {
+        "rmse_m": 0.6389106939191197,
+        "mean_final_error_m": 0.4680966618516351,
+        "map_jumps_gt_cm": [
+          152,
+          1,
+          0
+        ],
+        "max_map_jump_m": 0.22702620519581862,
+        "control_jumps_gt20cm": 1,
+        "whole_path_worse_runs": 0,
+        "historical_geometry_pass": "5/7"
+      },
+      "bounded": {
+        "rmse_m": 0.6391272917034618,
+        "mean_final_error_m": 0.4634371386594442,
+        "map_jumps_gt_cm": [
+          159,
+          1,
+          0
+        ],
+        "max_map_jump_m": 0.3025133724726131,
+        "control_jumps_gt20cm": 1,
+        "whole_path_worse_runs": 0,
+        "historical_geometry_pass": "4/7"
+      },
+      "cluster_mahalanobis": {
+        "rmse_m": 0.6408579102873919,
+        "mean_final_error_m": 0.446037105847018,
+        "map_jumps_gt_cm": [
+          21,
+          1,
+          0
+        ],
+        "max_map_jump_m": 0.3030066073668031,
+        "control_jumps_gt20cm": 1,
+        "whole_path_worse_runs": 0,
+        "historical_geometry_pass": "5/7"
+      }
+    },
+    "scope": "fixed posterior and recorded command replay, with duplicated checkpoint prefixes; declarations are only reevaluated at historical times",
+    "segment_caveats": "offline-segment-caveats.json",
+    "availability": "offline-availability.json",
+    "details": "offline-expanded-summary.json.zst"
+  },
+  "azure": {
+    "registered": 18,
+    "measured": 18,
+    "host_errors": 0,
+    "initial_checks_healthy": 18,
+    "seeds": [
+      63001,
+      63002,
+      63003,
+      63004,
+      63005,
+      63006
+    ],
+    "pr": 405,
+    "conditions": {
+      "off": {
+        "registered": 6,
+        "measured": 6,
+        "B": 3,
+        "returned": 0,
+        "B_and_return": 0,
+        "false_B": 1,
+        "false_return": 5,
+        "host_errors": 0,
+        "physical_failures": 1,
+        "full_rmse_m": 0.3615766170400417,
+        "paired_rmse_m": 0.303691703545028,
+        "mean_final_error_m": 0.24285044363475317,
+        "commands": 9279,
+        "wall_s": 16776.024690512,
+        "full_map_jumps_gt_cm": [
+          824,
+          290,
+          9
+        ],
+        "full_control_jumps_gt_cm": [
+          824,
+          290,
+          9
+        ],
+        "full_transitions": 9273,
+        "max_map_jump_m": 0.6881752618505633,
+        "max_control_jump_m": 0.6881752618505633,
+        "paired_map_jumps_gt20cm": 210,
+        "paired_transitions": 6435,
+        "paired_rmse_regressions": []
+      },
+      "cluster": {
+        "registered": 6,
+        "measured": 6,
+        "B": 3,
+        "returned": 4,
+        "B_and_return": 2,
+        "false_B": 0,
+        "false_return": 2,
+        "host_errors": 0,
+        "physical_failures": 0,
+        "full_rmse_m": 0.2586446340741762,
+        "paired_rmse_m": 0.2440618251530945,
+        "mean_final_error_m": 0.19336069837528444,
+        "commands": 9685,
+        "wall_s": 17413.884218509993,
+        "full_map_jumps_gt_cm": [
+          46,
+          0,
+          0
+        ],
+        "full_control_jumps_gt_cm": [
+          0,
+          0,
+          0
+        ],
+        "full_transitions": 9679,
+        "max_map_jump_m": 0.19819238511090864,
+        "max_control_jump_m": 0.012923413773168017,
+        "paired_map_jumps_gt20cm": 0,
+        "paired_transitions": 6435,
+        "paired_rmse_regressions": [
+          {
+            "group": "egojump-63002-98ffd823-r1",
+            "candidate_rmse_m": 0.23246900973223983,
+            "baseline_rmse_m": 0.22214386805790257
+          },
+          {
+            "group": "egojump-63003-98ffd823-r1",
+            "candidate_rmse_m": 0.2845999728034383,
+            "baseline_rmse_m": 0.24783602030979215
+          },
+          {
+            "group": "egojump-63005-98ffd823-r1",
+            "candidate_rmse_m": 0.21864113061892157,
+            "baseline_rmse_m": 0.18644644988043008
+          }
+        ]
+      },
+      "innovation": {
+        "registered": 6,
+        "measured": 6,
+        "B": 4,
+        "returned": 4,
+        "B_and_return": 2,
+        "false_B": 1,
+        "false_return": 2,
+        "host_errors": 0,
+        "physical_failures": 0,
+        "full_rmse_m": 0.2317771588434177,
+        "paired_rmse_m": 0.22869036655956854,
+        "mean_final_error_m": 0.1852994287454449,
+        "commands": 8675,
+        "wall_s": 11634.867504610002,
+        "full_map_jumps_gt_cm": [
+          40,
+          0,
+          0
+        ],
+        "full_control_jumps_gt_cm": [
+          0,
+          0,
+          0
+        ],
+        "full_transitions": 8669,
+        "max_map_jump_m": 0.09006267218406411,
+        "max_control_jump_m": 0.012923413773168116,
+        "paired_map_jumps_gt20cm": 0,
+        "paired_transitions": 6435,
+        "paired_rmse_regressions": [
+          {
+            "group": "egojump-63003-98ffd823-r1",
+            "candidate_rmse_m": 0.27993989843996797,
+            "baseline_rmse_m": 0.24783602030979215
+          },
+          {
+            "group": "egojump-63005-98ffd823-r1",
+            "candidate_rmse_m": 0.2717576434473363,
+            "baseline_rmse_m": 0.18644644988043008
+          }
+        ]
+      }
+    },
+    "comparison": "same-seed fresh DEV; paired RMSE and jumps use the same elapsed camera prefix within each seed, 6441 frames per condition; distinct policy trajectories",
+    "whole_cohort": {
+      "path": "experiments/2026-10-11-ego-pose-continuity/online-summary.json.zst",
+      "sha256": "1f4154726b1474e44323c1297e87ab86e628598abbcab82a2b988536be8071d7",
+      "uncompressed_sha256": "a335b7f9519b98afce12753af15d8801c7ecfbadbbb0a200125ad3a6b9527259",
+      "bytes": 12420,
+      "roundtrip_verified": true
+    },
+    "class": "dev"
+  },
+  "delivery": {
+    "archives": [
+      {
+        "seed": 63001,
+        "azure": "/home/ugrp/ugrp-sim/runs/egojump-63001-98ffd823-r1",
+        "arm": "/home/ubuntu/ugrp-archive/runs/shutdown-egojump-63001-98ffd823-r1",
+        "files": 3349,
+        "bytes": 125719850,
+        "manifest": "/Users/changmin/projects/ugrp/outputs/egojump-online-v2-98ffd823-r1-fastarchive/egojump-63001-98ffd823-r1-archive.json.zst",
+        "manifest_sha256": "8f2a22b8cc640db7d8ae3caf40ffc9bdfbbeb0f1f57f02e9415bc7cd8cb4510d"
+      },
+      {
+        "seed": 63002,
+        "azure": "/home/ugrp/ugrp-sim/runs/egojump-63002-98ffd823-r1",
+        "arm": "/home/ubuntu/ugrp-archive/runs/shutdown-egojump-63002-98ffd823-r1",
+        "files": 4560,
+        "bytes": 157951068,
+        "manifest": "/Users/changmin/projects/ugrp/outputs/egojump-online-v2-98ffd823-pipeline-a-resume1/egojump-63002-98ffd823-r1-archive.json.zst",
+        "manifest_sha256": "f5c6d38dc653b4143f8cc3fd621dc9045479d28009de9d30e95de3048877cea8"
+      },
+      {
+        "seed": 63003,
+        "azure": "/home/ugrp/ugrp-sim/runs/egojump-63003-98ffd823-r1",
+        "arm": "/home/ubuntu/ugrp-archive/runs/shutdown-egojump-63003-98ffd823-r1",
+        "files": 5832,
+        "bytes": 200943351,
+        "manifest": "/Users/changmin/projects/ugrp/outputs/egojump-online-v2-98ffd823-pipeline-b-resume2/egojump-63003-98ffd823-r1-archive.json.zst",
+        "manifest_sha256": "091e043477b1bf8aab3357b6ae2bf62efa5179f41683407538e915e9eb905622"
+      },
+      {
+        "seed": 63004,
+        "azure": "/home/ugrp/ugrp-sim/runs/egojump-63004-98ffd823-r1",
+        "arm": "/home/ubuntu/ugrp-archive/runs/shutdown-egojump-63004-98ffd823-r1",
+        "files": 6780,
+        "bytes": 229064959,
+        "manifest": "/Users/changmin/projects/ugrp/outputs/egojump-online-v2-98ffd823-pipeline-a-resume2/egojump-63004-98ffd823-r1-archive.json.zst",
+        "manifest_sha256": "73bd1773d962d4ebc5bf73f4256e8638ef2568307d93088227bb602558d1b795"
+      },
+      {
+        "seed": 63005,
+        "azure": "/home/ugrp/ugrp-sim/runs/egojump-63005-98ffd823-r1",
+        "arm": "/home/ubuntu/ugrp-archive/runs/shutdown-egojump-63005-98ffd823-r1",
+        "files": 4404,
+        "bytes": 161035169,
+        "manifest": "/Users/changmin/projects/ugrp/outputs/egojump-online-v2-98ffd823-pipeline-c/egojump-63005-98ffd823-r1-archive.json.zst",
+        "manifest_sha256": "c48ddf3e0a5968e2995eb7ed87966f49950a6aad816424243f34fe60d96736bb"
+      },
+      {
+        "seed": 63006,
+        "azure": "/home/ugrp/ugrp-sim/runs/egojump-63006-98ffd823-r1",
+        "arm": "/home/ubuntu/ugrp-archive/runs/shutdown-egojump-63006-98ffd823-r1",
+        "files": 3947,
+        "bytes": 151541906,
+        "manifest": "/Users/changmin/projects/ugrp/outputs/egojump-online-v2-98ffd823-pipeline-d/egojump-63006-98ffd823-r1-archive.json.zst",
+        "manifest_sha256": "4899d43b9928ffda6ed4069535ff99f46b12a0b611c19ae5c7c639f33bac19d6"
+      }
+    ],
+    "full_arm_verified": true,
+    "originals_preserved": true,
+    "mac_lite": {
+      "root": "/Users/changmin/projects/ugrp/outputs/egojump-v2-lite",
+      "verified": true,
+      "files": 180,
+      "bytes": 20314899,
+      "utc": "2026-10-11T16:08:24Z",
+      "scope": "selected text ledgers only; no images, arrays, videos, particle maps or large decision trace",
+      "program_sha256": "d2e615d55a8ba186e4ae2e3da2fe63cc5cedec1133e3410211f954f5d1fa4ac1",
+      "plan_sha256": "54441e41b73c6f242fdf92f545be4c8c2bb57845230868e9c9c4294713c11883",
+      "physics_runs": 0
+    },
+    "independent_numeric_verification": "numeric-verification.json",
+    "representative": {
+      "arm": "/home/ubuntu/ugrp-archive/runs/egojump-v2-representative-63001-cluster/own-rgb.mp4",
+      "mac": "/Users/changmin/projects/ugrp/outputs/egojump-representative-v2/own-rgb.mp4",
+      "sha256": "33e8ba25d3be2b80afa2cb46ad0865aacd4396a1f19dfeabda745ed72ade5c63",
+      "preserved_source_files": 1093,
+      "class": "milestone"
+    },
+    "own_leases_remaining": [],
+    "own_physical_drivers_remaining": [],
+    "cleanup_verified_utc": "2026-10-11T16:07:47Z",
+    "vm_start_stop_calls": 0,
+    "local_compression": {
+      "path": "local-compression.json",
+      "sha256": "e8f783ec9f6bff856754311542caea8d873821534bc4337f49425dfeb17d3ad4",
+      "files": 8,
+      "roundtrip_verified": true
+    },
+    "host_cleanup_receipt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/egojump-final-host-audit.json",
+      "sha256": "5bade991c0065bc8107b24a628bbf12533abcc170977ac3e708fad75cbc8b782"
+    }
+  },
+  "model_calls": 0,
+  "vm_cost": "not measured",
+  "s3": "separate S2 PF; not automatically changed; latest read-only snapshot ec87ee73577a096eae07aeee6c10522238934cdd; s3-scope.json",
+  "validation": "local-validation.json",
+  "history": {
+    "path": "experiments/2026-10-11-ego-pose-continuity/audit-history.json.zst",
+    "sha256": "7724c1c1602b2e9a72fe41de417b769efc91052642f352a1f9a7cd8ef62ae3ea",
+    "uncompressed_sha256": "2b22261d4f58e9c4f0c0719cf7d33a3190a08769da8e7d929649931248b9e6ec",
+    "bytes": 9924,
+    "roundtrip_verified": true
+  },
+  "limits": [
+    "Original egomap70 checkpoints were not replayed online; these are fresh same-seed runs.",
+    "13 historical main runs lack required files in ARM incoming directories; original host SSH timed out; not marked retrieved.",
+    "First 63001 group had a Mesa helper CPU-boundary deviation before system cpuset repair; later groups were kernel-restricted to CPU0-11 from launch.",
+    "Shared host load temporarily exceeded 12.8 after other E2E work arrived; no further submission; wall-time superiority is not claimed.",
+    "Continuous command odometry can drift; global map corrections and arrival errors still exist.",
+    "Full CI is not green; own 11 numeric/runner tests passed; no merge or S3 physical validation."
+  ]
+}

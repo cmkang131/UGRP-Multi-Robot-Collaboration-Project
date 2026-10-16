@@ -1,0 +1,154 @@
+{
+  "source": "experiments/2026-10-11-ego-pose-continuity/offline-expanded-summary.json.zst",
+  "source_sha256": "4d94fc5971e254b5db34abd1464c9a5f12634476f566d5622ece1377a3f84b1d",
+  "scope": "historical t >= result.start_sim_s; all original report bytes preserved",
+  "selection_metric": "whole recorded path RMSE; the shared checkpoint prefix is included",
+  "caveat": "whole-path non-regression does not imply post-resume segment non-regression",
+  "groups": {
+    "main": {
+      "off": {
+        "runs": 11,
+        "worse_after_resume": []
+      },
+      "rep105": {
+        "runs": 11,
+        "worse_after_resume": []
+      },
+      "stationary": {
+        "runs": 11,
+        "worse_after_resume": [
+          {
+            "run": "egomap70-63001-calib",
+            "candidate_rmse_m": 0.31792654900464223,
+            "off_rmse_m": 0.31559413223160065,
+            "difference_m": 0.002332416773041579
+          },
+          {
+            "run": "egomap70-63001-calib_traversed",
+            "candidate_rmse_m": 0.31792654900464223,
+            "off_rmse_m": 0.31559413223160065,
+            "difference_m": 0.002332416773041579
+          },
+          {
+            "run": "egomap70-63001-calib_traversed_zone",
+            "candidate_rmse_m": 0.31792654900464223,
+            "off_rmse_m": 0.31559413223160065,
+            "difference_m": 0.002332416773041579
+          },
+          {
+            "run": "egomap70-63002-calib",
+            "candidate_rmse_m": 0.3216062702975316,
+            "off_rmse_m": 0.3172251910000547,
+            "difference_m": 0.004381079297476886
+          },
+          {
+            "run": "egomap70-63002-calib_traversed",
+            "candidate_rmse_m": 0.46560451774935147,
+            "off_rmse_m": 0.4572099306333585,
+            "difference_m": 0.008394587115992946
+          },
+          {
+            "run": "egomap70-63002-calib_traversed_zone",
+            "candidate_rmse_m": 0.35533606726535066,
+            "off_rmse_m": 0.34431793422145957,
+            "difference_m": 0.011018133043891098
+          },
+          {
+            "run": "egomap70-63003-calib",
+            "candidate_rmse_m": 0.5374451197497645,
+            "off_rmse_m": 0.5356312309578859,
+            "difference_m": 0.001813888791878604
+          }
+        ]
+      },
+      "cluster": {
+        "runs": 11,
+        "worse_after_resume": [
+          {
+            "run": "egomap70-63002-calib_traversed",
+            "candidate_rmse_m": 0.4590348629745029,
+            "off_rmse_m": 0.4572099306333585,
+            "difference_m": 0.0018249323411443918
+          }
+        ]
+      },
+      "mahalanobis": {
+        "runs": 11,
+        "worse_after_resume": []
+      },
+      "bounded": {
+        "runs": 11,
+        "worse_after_resume": []
+      },
+      "cluster_mahalanobis": {
+        "runs": 11,
+        "worse_after_resume": []
+      }
+    },
+    "smoke": {
+      "off": {
+        "runs": 1,
+        "worse_after_resume": []
+      },
+      "rep105": {
+        "runs": 1,
+        "worse_after_resume": []
+      },
+      "stationary": {
+        "runs": 1,
+        "worse_after_resume": [
+          {
+            "run": "egomap70-smoke",
+            "candidate_rmse_m": 0.25962960418490916,
+            "off_rmse_m": 0.2455306382256296,
+            "difference_m": 0.014098965959279564
+          }
+        ]
+      },
+      "cluster": {
+        "runs": 1,
+        "worse_after_resume": [
+          {
+            "run": "egomap70-smoke",
+            "candidate_rmse_m": 0.2710812785737099,
+            "off_rmse_m": 0.2455306382256296,
+            "difference_m": 0.0255506403480803
+          }
+        ]
+      },
+      "mahalanobis": {
+        "runs": 1,
+        "worse_after_resume": [
+          {
+            "run": "egomap70-smoke",
+            "candidate_rmse_m": 0.28239502764559543,
+            "off_rmse_m": 0.2455306382256296,
+            "difference_m": 0.03686438941996584
+          }
+        ]
+      },
+      "bounded": {
+        "runs": 1,
+        "worse_after_resume": [
+          {
+            "run": "egomap70-smoke",
+            "candidate_rmse_m": 0.2822824924462807,
+            "off_rmse_m": 0.2455306382256296,
+            "difference_m": 0.03675185422065108
+          }
+        ]
+      },
+      "cluster_mahalanobis": {
+        "runs": 1,
+        "worse_after_resume": [
+          {
+            "run": "egomap70-smoke",
+            "candidate_rmse_m": 0.30084896964187396,
+            "off_rmse_m": 0.2455306382256296,
+            "difference_m": 0.05531833141624437
+          }
+        ]
+      }
+    }
+  }
+}

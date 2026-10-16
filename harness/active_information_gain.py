@@ -94,10 +94,12 @@ def forecast(grid,path,*,seed=22001):
     """One sampled-map sensor rollout; the real filter/RNG never change."""
     # CloudOdometry proxies __getattr__; allocate its cyclic owner explicitly
     # (Python copy reconstruction probes __setstate__ before driver exists).
-    odom=object.__new__(type(grid.odom))
-    hypothetical=copy.deepcopy(grid,{id(grid.odom):odom})
+    source_odom=getattr(grid.odom,'forecast_odometry',grid.odom)
+    odom=object.__new__(type(source_odom))
+    memo={id(grid.odom):odom,id(source_odom):odom}
+    hypothetical=copy.deepcopy(grid,memo)
     odom.owner=hypothetical
-    odom.driver=copy.deepcopy(grid.odom.driver,{id(grid):hypothetical,id(grid.odom):odom})
+    odom.driver=copy.deepcopy(source_odom.driver,{id(grid):hypothetical,**memo})
     odom.driver.step_callback=hypothetical.propagate
     rng=np.random.default_rng(seed)
     representative=int(rng.choice(len(grid.weights),p=grid.weights))
