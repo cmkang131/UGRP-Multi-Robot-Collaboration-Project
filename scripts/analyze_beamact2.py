@@ -5,6 +5,7 @@ from pathlib import Path
 
 from harness.grasp_act_data import read_json, read_rows, sha256, write_json
 from harness.beamact_pair_student import Funnel, STAGES
+from harness.beamact_pair_score import assigned_forces
 from scripts.beamact1_runtime import require_gcp2
 from scripts.grasp_act_training_guard import source_sha
 
@@ -38,15 +39,20 @@ def main():
             from harness import grasp_act_contract as c
             audit=InputAudit()
             for obs in inputs:audit.accept(obs)
-            f=Funnel();score=LiftScore();done={};counts=Counter()
+            f=Funnel();score=LiftScore();unrestricted=LiftScore();done={};counts=Counter()
+            roles=read_json(out/'plan.json')['roles']
             for cmd in commands:
                 c.command(cmd['command'])
                 if cmd['done']:done.setdefault(cmd['robot'],cmd['t'])
                 counts[cmd['robot']]+=1
             for e in evaluations:
                 truth=e['truth']
-                forces=[v for rid in ('r1','r2') for v in truth['contacts'][rid]]
+                assigned=assigned_forces(e['target_finger_contact_rows'],truth['beam']['ends'],roles)
+                assert assigned==e['assigned_contact_forces']
+                forces=[v for rid in ('r1','r2') for v in assigned[rid]]
                 score.add(e['t'],clearance=truth['beam']['min_z'],tilt=truth['beam']['tilt_deg'],forces=forces,weld=False)
+                unrestricted.add(e['t'],clearance=truth['beam']['min_z'],tilt=truth['beam']['tilt_deg'],
+                    forces=[v for rid in ('r1','r2') for v in truth['contacts'][rid]],weld=False)
                 passed=dict(e['passed']);passed['lift_3s']=score.record()['lift_success']
                 f.add(e['t'],passed)
             success=score.record()['lift_success'] and len(done)==2 and not r['cap_end']
@@ -63,6 +69,7 @@ def main():
                 protocol_replay=protocol_replay,
                 funnel=f.record(),raw_eval_sha256=sha256(raw),commands_sha256=sha256(existing(out/'commands.jsonl')),
                 command_rows=len(commands),max_stable_hold_s=score.max_stable_s,
+                max_unrestricted_stable_hold_s=unrestricted.max_stable_s,
                 final_target_finger_min_gap_m=evaluations[-1]['target_finger_min_gap_m'],
                 raw_independent_stage_frames={s:sum(e['passed'][s] for e in evaluations) for s in STAGES})
         else:
@@ -71,6 +78,7 @@ def main():
     completed=sum(r['complete'] for r in runs);n=sum(r.get('physical_success',False) for r in runs)
     result=dict(schema='ugrp.beamact2.summary.v1',host=host,n=n,N=20,attempted=sum(r['status']!='NOT_STARTED' for r in runs),
         independent_joint_hold_n=sum(r.get('max_stable_hold_s',0.)>=3.-1e-8 for r in runs),
+        unrestricted_joint_hold_n=sum(r.get('max_unrestricted_stable_hold_s',0.)>=3.-1e-8 for r in runs),
         complete=completed==20,completed=completed,not_started=20-sum(r['status']!='NOT_STARTED' for r in runs),
         analysis_source_sha=analysis_source,
         verdict='READY' if n==20 and completed==20 else 'NOT_READY',source_sha=queue['source_sha'],

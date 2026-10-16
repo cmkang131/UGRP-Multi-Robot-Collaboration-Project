@@ -83,6 +83,20 @@ def test_worker_input_rejects_hidden_state_before_inference():
     assert audit.record['forbidden_input_fields']==1
 
 
+def test_evaluator_cannot_count_wrong_end_or_center_contacts_as_assigned_grasp():
+    from harness.beamact_pair_score import assigned_forces
+    ends={'teal':[-.27,0.,.024],'blue':[.27,0.,.024]};roles={'r1':'teal','r2':'blue'}
+    contacts=[dict(robot=r,finger=i,position_xyz=ends[role],normal_force_n=.5)
+        for r,role in roles.items() for i in range(2)]
+    before=deepcopy(contacts)
+    assert assigned_forces(contacts,ends,roles)=={'r1':[.5,.5],'r2':[.5,.5]}
+    assert contacts==before
+    for row in contacts:row['position_xyz']=ends['blue' if roles[row['robot']]=='teal' else 'teal']
+    assert assigned_forces(contacts,ends,roles)=={'r1':[0.,0.],'r2':[0.,0.]}
+    for row in contacts:row['position_xyz']=[0.,0.,.024]
+    assert assigned_forces(contacts,ends,roles)=={'r1':[0.,0.],'r2':[0.,0.]}
+
+
 def test_raw_replay_detects_one_PWM_or_issued_history_tampering():
     import numpy as np
     from harness import grasp_act_contract as c

@@ -17,6 +17,7 @@ from harness.grasp_act_data import sha256, write_json
 from harness.grasp_act_policy import ChunkExecutor
 from harness.grasp_act_rollout import OwnHistory, InputAudit, LiftScore, SoloSequence
 from harness.beamact_pair_student import MODE, StudentBarrier, Funnel
+from harness.beamact_pair_score import assigned_forces
 from harness.beampair_teacher import DEPENDENCY_SHA, validate_plan
 from harness.failure_rgb_tail import FailureRGBTail
 from harness.beampair_recording import install_capture_cache
@@ -63,7 +64,7 @@ def run(plan, output, dependency, model, actor_python, *, mode='off', cap_s=60.)
     tail = FailureRGBTail()
     audits = {r:InputAudit() for r in plan['roles']}
     barriers = {r:StudentBarrier() for r in plan['roles']}
-    funnel, score = Funnel(), LiftScore()
+    funnel, score, unrestricted_score = Funnel(), LiftScore(), LiftScore()
     done_times = {}
     target_gap = None
     latencies = []
@@ -149,6 +150,8 @@ def run(plan, output, dependency, model, actor_python, *, mode='off', cap_s=60.)
             target_geoms=[world.model.geom(inst.geom(p.name)).id for p in inst.spec().parts if p.collision]
             finger_geoms=[world.model.geom(rid+'__'+side+'_finger').id
                 for rid in ports for side in ('left','right')]
+            finger_ids={world.model.geom(rid+'__'+side+'_finger').id:(rid,i)
+                for rid in ports for i,side in enumerate(('left','right'))}
             inputs=(output/'student-inputs.jsonl').open('x')
             commands=(output/'commands.jsonl').open('x')
             evaluations=(output/'eval-only.jsonl').open('x')
@@ -182,9 +185,22 @@ def run(plan, output, dependency, model, actor_python, *, mode='off', cap_s=60.)
                 # Private evaluation truth is created AFTER commands, and never
                 # passed into histories, executor, barrier, worker or sync.
                 truth=snapshot(world,inst,plan['roles'],scene)
-                forces=[f for rid in ports for f in truth['contacts'][rid]]
+                contacts=[];force_buffer=np.zeros(6)
+                for contact_index in range(world.data.ncon):
+                    contact=world.data.contact[contact_index]
+                    a,b=int(contact.geom1),int(contact.geom2)
+                    finger=a if b in target_geoms else b if a in target_geoms else None
+                    if finger in finger_ids:
+                        rid,index=finger_ids[finger]
+                        mujoco.mj_contactForce(world.model,world.data,contact_index,force_buffer)
+                        contacts.append(dict(robot=rid,finger=index,position_xyz=contact.pos.tolist(),
+                            normal_force_n=abs(float(force_buffer[0]))))
+                assigned=assigned_forces(contacts,truth['beam']['ends'],plan['roles'])
+                forces=[f for rid in ports for f in assigned[rid]]
                 score.add(now,clearance=truth['beam']['min_z'],tilt=truth['beam']['tilt_deg'],
                     forces=forces,weld=bool(world.data.eq_active.any()))
+                unrestricted_score.add(now,clearance=truth['beam']['min_z'],tilt=truth['beam']['tilt_deg'],
+                    forces=[f for rid in ports for f in truth['contacts'][rid]],weld=bool(world.data.eq_active.any()))
                 geometry={}
                 for rid,role in plan['roles'].items():
                     pose=truth['robots'][rid]['pose'];end=truth['beam']['ends'][role]
@@ -206,7 +222,9 @@ def run(plan, output, dependency, model, actor_python, *, mode='off', cap_s=60.)
                 target_gap=min(float(mujoco.mj_geomDistance(world.model,world.data,finger,g,
                     float(world.model.stat.extent),None)) for finger in finger_geoms for g in target_geoms)
                 evaluations.write(json.dumps(dict(t=now,sim_s=now-origin,truth=truth,geometry=geometry,
-                    target_finger_min_gap_m=target_gap,passed=passed,score=score.record()))+'\n')
+                    target_finger_contact_rows=contacts,assigned_contact_forces=assigned,
+                    target_finger_min_gap_m=target_gap,passed=passed,score=score.record(),
+                    unrestricted_score=unrestricted_score.record()))+'\n')
                 if tick%5==0:  # user: complete sequence at2Hz; cameras unchanged
                     row=dict(t=now,sim_s=now-origin,own={})
                     top=scene.config['static_map']['top_cameras'][0]['name']
@@ -234,6 +252,8 @@ def run(plan, output, dependency, model, actor_python, *, mode='off', cap_s=60.)
             report.update(status='complete',complete=True,sim_s=sim_s,cap_end=cap_end,
                 termination='cap_end' if cap_end else 'student_done',done_times=done_times,
                 command_complete=len(done_times)==len(ports),**score.record(),
+                unrestricted_lift_success=unrestricted_score.record()['lift_success'],
+                max_unrestricted_stable_lift_s=unrestricted_score.max_stable_s,
                 physical_success=score.record()['lift_success'] and len(done_times)==len(ports) and not cap_end,
                 funnel=funnel.record(),inference_calls=len(latencies),
                 inference_latency_median_s=float(np.median(latencies)) if latencies else None,
