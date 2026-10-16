@@ -1,0 +1,203 @@
+{
+  "schema": "ugrp.warp2.summary.v1",
+  "updated_utc": "2026-10-15T19:49:52.615399+00:00",
+  "stage": "B_STOPPED_NOT_READY",
+  "verdict": "NOT_READY",
+  "research_result": false,
+  "priority": [
+    "beam_pair_teacher",
+    "release24",
+    "reloc_driving",
+    "llm_e2e"
+  ],
+  "not_physics_port": [
+    "stored_rgb_static_reloc"
+  ],
+  "source_files": 57,
+  "syntactic_sites": 753,
+  "source_primary_base": "142dbf04c2128c3d7ca1c3ceb03ee3b651d9a7e5",
+  "warp1_observed_commit": "2fd1490a6f00459a0e32c4e89adc8421a8dba1a4",
+  "model_calls": 0,
+  "training_runs": 0,
+  "mac_physics_runs": 0,
+  "mac_render_runs": 0,
+  "mac_gui_actions": 0,
+  "backend_results_pooled": false,
+  "rounds_used": 3,
+  "rounds_max": 3,
+  "l4_max_wall_s": 10800,
+  "throughput": {
+    "units": "completed teacher SIM seconds / job wall second, native initialization and 0.5 SIM second prelude included in wall only",
+    "gpu_N1": 0.009998781079971096,
+    "gpu_prefix_N16": 0.0592063346045251,
+    "gpu_prefix_N64": null,
+    "gpu_prefix_N256": null
+  },
+  "sim_seconds_per_dollar": {
+    "price_status": "historical unverified hourly estimates; not billing",
+    "gpu_N1": 32.842711576547394,
+    "gpu_prefix_N16": 194.47336183968096,
+    "gpu_prefix_N64": null,
+    "gpu_prefix_N256": null
+  },
+  "gate_queue": {
+    "status": "HOLD_SCENE",
+    "ready": false,
+    "approved": false,
+    "submitted": false,
+    "executed_N": 0,
+    "rejection_table": "/Users/changmin/projects/ugrp-wt/warp-flows/experiments/2026-10-16-warp2/rejection_table.json"
+  },
+  "rejection_table": "/Users/changmin/projects/ugrp-wt/warp-flows/experiments/2026-10-16-warp2/rejection_table.json",
+  "remaining": [
+    "keep beam-pair on C CPU; no further beam GPU trials in this task",
+    "screen exact-model compatibility before release/reloc migration",
+    "improve shared backend startup/physics and original RGB separately",
+    "LLM E2E requires independently verified pause/snapshot/cohort scheduler"
+  ],
+  "pr": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/531",
+  "l4_deadline_utc": "2026-10-15T21:24:38.739602+00:00",
+  "source_runtime_sha": "521f258508ccc7d24d667a158a2b26a1b3740ee9",
+  "pure_nonphysics_tests": {
+    "passed": 17,
+    "files": [
+      "tests/test_warp_act_core.py",
+      "tests/test_warp_flow_core.py"
+    ]
+  },
+  "cohorts": [
+    {
+      "name": "C_mixed6_N16",
+      "status": "complete",
+      "physical_success": 16,
+      "N": 16,
+      "unique_seeds": 6,
+      "evidence": "runtime/cpu-mixed6-analysis.json"
+    },
+    {
+      "name": "C_seed8318631_N16",
+      "status": "complete",
+      "physical_success": 16,
+      "N": 16,
+      "unique_seeds": 1,
+      "evidence": "runtime/cpu-seed8318631-analysis.json"
+    },
+    {
+      "name": "C_prefix_1SIM_N16",
+      "status": "complete",
+      "physical_success": 0,
+      "cap_end": 16,
+      "N": 16,
+      "evidence": "runtime/cpu-prefix1-analysis.json"
+    },
+    {
+      "name": "MJWarp_R1_N1",
+      "status": "supervisor_stop",
+      "HOST_ERROR": 1,
+      "physical_failure_claim": false,
+      "evidence": "runtime/gpu-r1-stop-funnels.json"
+    },
+    {
+      "name": "MJWarp_R2_N1_seed8318631",
+      "status": "complete",
+      "physical_success": 1,
+      "N": 1,
+      "unique_seeds": 1,
+      "evidence": "runtime/gpu-r2-n1-summary.json"
+    },
+    {
+      "name": "MJWarp_six_model_group_preflight",
+      "status": "initialization_complete",
+      "N": 16,
+      "teacher_rollout_steps": 0,
+      "evidence": "runtime/group-preflight-summary.json"
+    },
+    {
+      "name": "C_prefix_1SIM_N64",
+      "status": "complete",
+      "N": 64,
+      "concurrency": 16,
+      "cap_end": 64,
+      "evidence": "runtime/cpu-prefix1-n64-analysis.json"
+    },
+    {
+      "name": "C_prefix_1SIM_N256",
+      "status": "complete",
+      "N": 256,
+      "concurrency": 16,
+      "cap_end": 256,
+      "evidence": "runtime/cpu-prefix1-n256-analysis.json"
+    },
+    {
+      "name": "MJWarp_R3_prefix_N16",
+      "status": "complete",
+      "N": 16,
+      "physical_success": 0,
+      "cap_end": 16,
+      "evidence": "runtime/gpu-prefix-n16-summary.json"
+    },
+    {
+      "name": "MJWarp_R3_prefix_N64",
+      "status": "supervisor_stop",
+      "started": 64,
+      "completed": 0,
+      "raw_HOST_ERROR_jobs": 1,
+      "physical_failure_claim": false,
+      "evidence": "runtime/gpu-prefix-n64-interrupted-summary.json"
+    },
+    {
+      "name": "MJWarp_R3_prefix_N256",
+      "status": "unstarted",
+      "N": 256
+    },
+    {
+      "name": "MJWarp_R3_known_six_N16",
+      "status": "unstarted",
+      "N": 16,
+      "unique_seeds": 6
+    }
+  ],
+  "batchability": "six exact models NOT_BATCHABLE as one shared upstream model; exact-group initialization only, no full mixed-six rollout",
+  "stop_reason": "single_shared_model_not_batchable; measured N16 end-to-end prefix throughput below C and original GPU RGB differs",
+  "physical_failure_claim": false,
+  "gpu_known_seeds": {
+    "physical_success_confirmed": 1,
+    "requested_unique_seeds": 6,
+    "completed_full_trials": 1,
+    "seed": 8318631,
+    "not_validated_unique_seeds": 5
+  },
+  "incomplete": [
+    "GPU N64 prefix interrupted; no completed throughput",
+    "GPU N256 prefix unstarted",
+    "GPU mixed-six N16 full teacher trial unstarted",
+    "full mixed-six async exact-group stepping not validated",
+    "original GPU RGB material difference unresolved",
+    "warp-act remote ref absent; Draft PR stacked on temporary simalt-pilot base"
+  ],
+  "result_delivery": {
+    "status": "local/GitHub draft",
+    "raw_retained_on_gcp2": true,
+    "raw_states_downloaded_to_mac": false,
+    "drive_used": false
+  },
+  "own_experiments_stopped": true,
+  "shared_vms_stopped": false,
+  "cleanup": {
+    "cpu": "runtime/final-cleanup-cpu.json",
+    "l4": "runtime/final-cleanup-l4.json",
+    "own_active_processes": 0,
+    "other_leases_preserved": true,
+    "vm_stop_attempted": false
+  },
+  "l4_elapsed_at_final_audit_s": 5160.439387083054,
+  "l4_three_hour_limit_met": true,
+  "verification": {
+    "nonphysics": "verification/nonphysics-pytest.txt",
+    "passed": 17,
+    "mac_physics_render_gui": 0,
+    "syntax": "all operations Python AST parsed",
+    "diff_check": "git diff --check passed",
+    "playback": "runtime/playback-verification.json"
+  }
+}

@@ -23,7 +23,13 @@ UPSTREAM_ID = 'openrouter_v1'
 ENDPOINT = 'https://openrouter.ai/api/v1/chat/completions'
 MODEL = 'google/gemma-4-31b-it'          # paid; never ':free'
 REGISTERED_MODEL = 'gemma-4-31b-it'      # model name the driver sends
-PROVIDER_ORDER = ('DeepInfra',)
+PROVIDER_ORDER = ('CoreWeave',)
+# OpenRouter endpoints API, 2026-10-16; user approved CoreWeave fp4 (PR #552).
+# DeepInfra remains explicit replay/comparison only; frozen runs use their original source SHA.
+PROFILES = {
+    ('CoreWeave',): ('coreweave_fp4_v1', 'coreweave/fp4'),
+    ('DeepInfra',): ('deepinfra_fp4_replay_v1', 'deepinfra/turbo'),
+}
 SERVICE, ACCOUNT = 'ugrp-openrouter', 'openrouter'
 DROPPED_FIELDS = ('reasoning_effort',)
 RETRY_STATUSES = (429, 500, 502, 503, 504)
@@ -39,7 +45,12 @@ def keychain_key():
 
 
 def config(provider_order=PROVIDER_ORDER):
+    try:
+        profile, tag = PROFILES[tuple(provider_order)]
+    except KeyError:
+        raise ValueError('unregistered_OpenRouter_provider_profile') from None
     return dict(upstream=UPSTREAM_ID, endpoint=ENDPOINT, model=MODEL, provider_order=list(provider_order),
+                profile=profile, provider=provider_order[0], quantization='fp4', quantizations=['fp4'], tag=tag,
                 allow_fallbacks=False, dropped_fields=list(DROPPED_FIELDS), usage_include=True,
                 max_attempts=MAX_ATTEMPTS, retry_statuses=list(RETRY_STATUSES), retry_delay_s=RETRY_DELAY_S,
                 key_location='macOS Keychain: ' + SERVICE)
@@ -53,7 +64,9 @@ def upstream_body(request, provider_order=PROVIDER_ORDER):
     body = {k: v for k, v in request.items() if k not in DROPPED_FIELDS}
     body['model'] = MODEL
     body['usage'] = {'include': True}
-    body['provider'] = {'order': list(provider_order), 'allow_fallbacks': False}
+    pin = config(provider_order)
+    body['provider'] = {'order': pin['provider_order'], 'allow_fallbacks': False,
+                        'quantizations': pin['quantizations']}
     return body
 
 
@@ -71,6 +84,7 @@ class OpenRouter:
     standard = True
 
     def __init__(self, root, *, key=None, send=http_send, sleep=time.sleep, provider_order=PROVIDER_ORDER):
+        self.config = config(provider_order)
         self.root = Path(root); self.root.mkdir(parents=True, exist_ok=True)
         self._key = keychain_key() if key is None else key
         self.send, self.sleep = send, sleep
@@ -122,6 +136,8 @@ class OpenRouter:
         result.update(upstream=UPSTREAM_ID, model=data.get('model') or MODEL, provider=provider,
             ugrp_upstream_forwarded=True, ugrp_upstream_wall_s=wall,
             ugrp_openrouter=dict(requested_model=MODEL, provider_order=list(self.provider_order),
+                profile=self.config['profile'], quantizations=self.config['quantizations'],
+                quantization=self.config['quantization'], tag=self.config['tag'],
                 provider_returned=provider, prompt_tokens=usage.get('prompt_tokens'),
                 completion_tokens=usage.get('completion_tokens'), cost=usage.get('cost'),
                 latency_s=wall, http_status=status, retries=len(attempts) - 1, attempts=attempts))

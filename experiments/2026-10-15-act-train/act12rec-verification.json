@@ -1,0 +1,23 @@
+{
+  "queue_path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-act12-record-da4727b6.json",
+  "queue_sha256": "3be895a07fc02a7b5b21670ecdfc9bc240060d7bcfb8965ab7d5a5dd4fb7d28c",
+  "teacher_source_sha": "1fce11554754d4609470e4fe4b172f9a583bc026",
+  "recording_wrapper_source_sha": "da4727b69b71ccbeae68850a516ce010ac1c657b",
+  "disabled_execution_boolean_count": 455,
+  "only_true_booleans": "training_rgb",
+  "stage_N": [
+    2,
+    48,
+    10
+  ],
+  "max_parallel": 16,
+  "pilot_commands": "exact actual argv match",
+  "training_draft_untouched_sha256": "05818f4223b19aa0a77c147c62400badaa4d2aa7cc031232b5a683b01adfd2a0",
+  "tests": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_grasp_act_act12_record.py tests/test_grasp_act_data.py",
+    "passed": 26,
+    "failed": 0
+  },
+  "independent_recount": "PENDING_SEPARATE_HAIKU",
+  "ready": false
+}

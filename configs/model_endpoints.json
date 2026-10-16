@@ -6,17 +6,17 @@
     {
       "role": "planner",
       "model": "google/gemma-4-31b-it",
-      "provider": "DeepInfra",
-      "tag": "deepinfra/turbo",
+      "provider": "CoreWeave",
+      "tag": "coreweave/fp4",
       "quantization": "fp4",
       "baseline_usd_per_million": {
-        "prompt": 0.09,
+        "prompt": 0.1,
         "completion": 0.34,
-        "input_cache_read": 0.05
+        "input_cache_read": 0.1
       },
-      "recorded": "2026-10-14",
+      "recorded": "2026-10-16",
       "source": "https://openrouter.ai/api/v1/models/google/gemma-4-31b-it/endpoints",
-      "why": "Ling-3.0-Flash-VL hit upstream 429 at ~40 calls/min (Novita 27/40, DeepInfra 2/40); Gemma 4 31B @DeepInfra 40/40 (user choice 2026-10-14)"
+      "why": "User 2026-10-16 after DeepInfra +50% alert: \"대안 찾아줘\" → recommendation \"CoreWeave fp4\" → \"ㄱㄱ\". PR #552 llmalt: CoreWeave fp4 40/40, 429=0, median 2.60 s, >8 s=0, $0.000461/call (-24%), act agreement 36/40 (not task accuracy); DeepInfra fp4 40/40, median 5.18 s, >8 s=5. Model and fp4 unchanged; provider cohorts must remain separate."
     }
   ],
   "retired_endpoints": [
@@ -33,6 +33,23 @@
       "source": "https://openrouter.ai/api/v1/models/inclusionai/ling-3.0-flash-vl/endpoints",
       "retired": "2026-10-14",
       "reason": "upstream 429 shared-pool rate limit at study load"
+    },
+    {
+      "role": "planner",
+      "model": "google/gemma-4-31b-it",
+      "provider": "DeepInfra",
+      "tag": "deepinfra/turbo",
+      "quantization": "fp4",
+      "baseline_usd_per_million": {
+        "prompt": 0.09,
+        "completion": 0.34,
+        "input_cache_read": 0.05
+      },
+      "recorded": "2026-10-14",
+      "source": "https://openrouter.ai/api/v1/models/google/gemma-4-31b-it/endpoints",
+      "why": "Ling-3.0-Flash-VL hit upstream 429 at ~40 calls/min (Novita 27/40, DeepInfra 2/40); Gemma 4 31B @DeepInfra 40/40 (user choice 2026-10-14)",
+      "retired": "2026-10-16",
+      "reason": "+50% price increase 2026-10-15, user switch 2026-10-16: \"대안 찾아줘\" → CoreWeave fp4 recommendation → \"ㄱㄱ\""
     }
   ]
 }

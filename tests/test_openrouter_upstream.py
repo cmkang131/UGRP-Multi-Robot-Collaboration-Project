@@ -8,7 +8,7 @@ from scripts import openrouter_upstream as orp
 REQ = {'model': 'gemma-4-31b-it', 'temperature': .2, 'max_tokens': 800, 'reasoning_effort': 'none',
        'messages': [{'role': 'user', 'content': [{'type': 'text', 'text': 'hi'}]}]}
 RAW = json.dumps(REQ).encode()
-OK = {'id': 'x', 'model': 'google/gemma-4-31b-it', 'provider': 'DeepInfra',
+OK = {'id': 'x', 'model': 'google/gemma-4-31b-it', 'provider': 'CoreWeave',
       'choices': [{'message': {'role': 'assistant', 'content': '{}'}}],
       'usage': {'prompt_tokens': 1586, 'completion_tokens': 40, 'cost': 0.000125}}
 
@@ -30,16 +30,20 @@ def test_request_shape_and_pinning(tmp_path):
     assert payload['model'] == 'google/gemma-4-31b-it' and not payload['model'].endswith(':free')
     assert 'reasoning_effort' not in payload
     assert payload['usage'] == {'include': True}
-    assert payload['provider'] == {'order': ['DeepInfra'], 'allow_fallbacks': False}
+    assert payload['provider'] == {'order': ['CoreWeave'], 'allow_fallbacks': False, 'quantizations': ['fp4']}
     assert payload['messages'] == REQ['messages'] and payload['max_tokens'] == 800
     assert 'SECRET' not in json.dumps(payload)
 
 
 def test_provider_list_is_config(tmp_path):
-    e, calls = engine(tmp_path, [(200, {**OK, 'provider': 'Other'})], provider_order=('Other',))
-    e.complete(RAW, 'cid')
-    assert calls[0][0]['provider']['order'] == ['Other']
-    assert orp.config(('A', 'B'))['provider_order'] == ['A', 'B']
+    e, calls = engine(tmp_path, [(200, {**OK, 'provider': 'DeepInfra'})], provider_order=('DeepInfra',))
+    assert e.complete(RAW, 'cid')[0] == 200
+    assert calls[0][0]['provider'] == {'order': ['DeepInfra'], 'allow_fallbacks': False, 'quantizations': ['fp4']}
+    assert orp.config(('DeepInfra',))['profile'] == 'deepinfra_fp4_replay_v1'
+    assert orp.config(('DeepInfra',))['tag'] == 'deepinfra/turbo'
+    for providers in ((), ('A',), ('CoreWeave', 'DeepInfra')):
+        with pytest.raises(ValueError):
+            orp.config(providers)
 
 
 def test_receipt_fields_and_ledger(tmp_path):
@@ -47,7 +51,8 @@ def test_receipt_fields_and_ledger(tmp_path):
     status, raw, _ = e.complete(RAW, 'cid')
     r = json.loads(raw)['ugrp_openrouter']
     assert (r['provider_returned'], r['prompt_tokens'], r['completion_tokens'], r['cost'],
-            r['http_status'], r['retries']) == ('DeepInfra', 1586, 40, 0.000125, 200, 0)
+            r['http_status'], r['retries']) == ('CoreWeave', 1586, 40, 0.000125, 200, 0)
+    assert r['quantizations'] == ['fp4'] and r['tag'] == 'coreweave/fp4'
     assert r['latency_s'] >= 0 and json.loads(raw)['upstream'] == 'openrouter_v1'
     row = json.loads((tmp_path / 'ledger.jsonl').read_text())
     assert row['upstream'] == 'openrouter_v1' and row['openrouter']['cost'] == 0.000125
@@ -107,6 +112,34 @@ def test_remote_receipt_accepts_only_pinned_openrouter_identity():
         checked_unix=100,valid_for_s=3600,audit_per_post=True,
         authentication='existing_mac_proxy_no_credentials_transferred')
     assert validate_receipt(r,now=101,remote_url=r['remote_url'])==r
-    for field,value in [('allow_fallbacks',True),('provider_order',['Other']),('source_sha256','0'*64)]:
+    for field,value in [('allow_fallbacks',True),('provider_order',['Other']),('source_sha256','0'*64),
+                        ('quantizations',['fp8']),('quantization','fp8'),('tag','coreweave/fp8')]:
         bad={**r,'openrouter_v1':{**r['openrouter_v1'],field:value}}
         with pytest.raises(HostError):validate_receipt(bad,now=101,remote_url=r['remote_url'])
+    legacy = {**r, 'openrouter_v1': dict(orp.config(('DeepInfra',)), source_sha256=sha)}
+    assert validate_receipt(legacy, now=101, remote_url=r['remote_url']) == legacy
+
+
+def test_new_bundle_records_verified_pin_without_mutating_original(tmp_path):
+    import time
+    from pathlib import Path
+    from harness.s4_live_transport import bind_openrouter_bundle
+    from harness.zone_study_llm_driver import HostError
+    sha = hashlib.sha256(Path(orp.__file__).read_bytes()).hexdigest()
+    original = dict(execution_bundle_id='new', source_sha='frozen')
+    path = tmp_path/'receipt.json'
+    for providers in (('CoreWeave',), ('DeepInfra',)):
+        pin = dict(orp.config(providers), source_sha256=sha)
+        receipt = dict(schema='ugrp.s4_ssh_proxy.v1', remote_url='http://127.0.0.1:18391/v1/chat/completions',
+            proxy=dict(source_sha256=sha), driver_profile='study_gemma4_31b_v1', single_model=True,
+            fallback_enabled=False, upstream='openrouter_v1', openrouter_v1=pin,
+            checked_unix=time.time(), valid_for_s=3600, audit_per_post=True,
+            authentication='existing_mac_proxy_no_credentials_transferred')
+        path.write_text(json.dumps(receipt))
+        bound = bind_openrouter_bundle(original, path)
+        assert bound['llm_upstream'] == pin and 'llm_upstream' not in original
+        assert bind_openrouter_bundle(bound, path) == bound
+        with pytest.raises(HostError):
+            bind_openrouter_bundle(dict(original, llm_upstream={}), path)
+    path.write_text(json.dumps({'upstream': 'default'}))
+    assert bind_openrouter_bundle(original, path) is original
