@@ -21,7 +21,7 @@ def write(path, value):
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True)
-    p.add_argument('--deadline-utc',required=True);a=p.parse_args()
+    p.add_argument('--deadline-utc',required=True);p.add_argument('--whole-control-graph-v1',action='store_true');a=p.parse_args()
     sys.path.insert(0,str(API/'scripts'))
     from simalt_host import gcp2_identity
     host=gcp2_identity()
@@ -62,7 +62,9 @@ def main():
               '--native-sleep-policy-compat-v1','--compiled-reference-v1',str(a.root/'reference/compiled-312.json'),
               '--compiled-geometry-312-v1',str(a.root/'reference/compiled-geometry312.npz'),'--out',str(a.root/'controller')]
         write(a.root/'runner-args.json',args)
-        run('record',[str(WARP),'-u',str(API/'scripts/run_warp_act_record.py'),'--enabled',
+        record_script=Path(__file__).resolve().parents[3]/'scripts/act16w_record.py' if a.whole_control_graph_v1 else API/'scripts/run_warp_act_record.py'
+        graph_args=['--whole-control-graph-v1'] if a.whole_control_graph_v1 else []
+        run('record',[str(WARP),'-u',str(record_script),*graph_args,'--enabled',
               '--qualified-source',str(QUALIFIED),'--teacher-source',str(TEACHER),
               '--qualification',str(BASE/'runs/warp3/teacher-gate-qualification-r1.json'),
               '--runner-args-json',str(a.root/'runner-args.json'),'--out',str(a.root/'capture')])
