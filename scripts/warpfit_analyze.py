@@ -115,7 +115,7 @@ def main():
     import numpy as np
     a.output.mkdir(parents=True,exist_ok=False)
     models={k:model(a.root/k,a.assets) for k in ('box','beam','drive')}
-    results=[];rejections=[];thresholds={}
+    results=[];rejections=[];thresholds={};sample_funnels=[]
     folders=sorted(a.root.glob('R*/**/result.json'))
     for rp in folders:
         r=json.loads(rp.read_text());folder=rp.parent
@@ -153,8 +153,26 @@ def main():
                         w['pass_samples']=sum(v['all_fingers'] and v['height_m']>=ref['height_p05_m'] and v['slip_m']<=ref['slip_p95_m'] for v in wp)
                     row['hold_contact_rate']=sum(v['all_fingers'] for v in points)/len(points)
                     row['acceptance_sample_rate']=sum(w['pass_samples'] for w in worlds)/len(points)
+                    contact=[v for v in points if v['all_fingers']]
+                    height=[v for v in contact if v['height_m']>=ref['height_p05_m']]
+                    retained=[v for v in height if v['slip_m']<=ref['slip_p95_m']]
+                    sample_funnels.append(dict(raw=str(folder),unit='world x recorded hold frame; repeated fixture, not independent seeds',
+                        stages=[dict(gate='hold_frames',cumulative_pass=len(points),rejected=0),
+                            dict(gate='all_fingers_positive',cumulative_pass=len(contact),rejected=len(points)-len(contact)),
+                            dict(gate='height_at_least_C_p05',cumulative_pass=len(height),rejected=len(contact)-len(height)),
+                            dict(gate='relative_slip_at_most_C_p95',cumulative_pass=len(retained),rejected=len(height)-len(retained))]))
+                    for category,count in [('grasp_contact_loss',len(points)-len(contact)),
+                                           ('height_below_C_p05',len(contact)-len(height)),
+                                           ('slip_above_C_p95',len(height)-len(retained))]:
+                        if count:
+                            rejections.append(dict(category=category,count=count,reason=category,
+                                blocked_object=meta['target_body'],minimum_gap_m=None,
+                                gap_status='not_measured_per_world; world0 contact distances retained',raw=str(folder)))
                 row['slip_p95_mm']=stats([w['slip_m']['p95']*1000 for w in worlds]) if worlds else None
-            else:row['pulses']=drive(folder,m,meta,case)
+            else:
+                row['pulses']=drive(folder,m,meta,case)
+                row['valid_for_odom_calibration']=False
+                row['fixture_limit']='unchanged drivecheck initial chassis/cargo_box_00 overlap; causal fix owned by drivecheck'
         if not r.get('completed'):
             rejections.append(dict(category='HOST_ERROR',reason=r.get('error','incomplete'),blocked_object='physics_engine',minimum_gap_m=None,gap_status='not_geometric',raw=str(folder)))
         results.append(row)
@@ -163,10 +181,10 @@ def main():
     dump(a.output/'rejection_table.json',dict(stages=[dict(gate='recorded_runs',cumulative_pass=len(results),rejected=0),
         dict(gate='fixed_work_complete',cumulative_pass=sum(bool(r['completed']) for r in results),rejected=sum(not r['completed'] for r in results)),
         dict(gate='full_protocol_not_smoke',cumulative_pass=sum(bool(r['completed']) and not r['cap_end'] for r in results),rejected=sum(bool(r['cap_end']) for r in results))],reasons=rejections,
-        raw=str(a.root),reproduce=sys.argv))
+        sample_funnels=sample_funnels,raw=str(a.root),reproduce=sys.argv))
     dump(a.output/'summary.json',dict(runs=len(results),completed=sum(bool(r['completed']) for r in results),
-        HOST_ERROR=len(rejections),thresholds=thresholds,default_changes=0,source='gcp6 only; gcp2 analysis; C references separate',reproduce=sys.argv))
-    print(json.dumps(dict(runs=len(results),HOST_ERROR=len(rejections),thresholds=thresholds)))
+        HOST_ERROR=sum(r['category']=='HOST_ERROR' for r in rejections),thresholds=thresholds,default_changes=0,source='gcp6 only; gcp2 analysis; C references separate',reproduce=sys.argv))
+    print(json.dumps(dict(runs=len(results),HOST_ERROR=sum(r['category']=='HOST_ERROR' for r in rejections),thresholds=thresholds)))
 
 
 if __name__=='__main__':main()
