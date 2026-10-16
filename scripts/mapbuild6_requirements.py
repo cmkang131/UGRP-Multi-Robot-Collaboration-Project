@@ -41,6 +41,12 @@ def main(a):
         raise ValueError('EXACT_EXISTING_40_LEDGER_REQUIRED')
     xy=np.array([r['relative_xy'] for r in rows]); nominal=np.median(xy,axis=0)
     residual=np.linalg.norm(xy-nominal,axis=1)
+    ranges=np.linalg.norm(xy,axis=1)
+    radial=np.percentile(ranges,[5,50,95])
+    # A heterogeneous start cloud's P95 radius is NOT a localization tolerance.
+    # Use the smaller radial margin about its median, then retain the coupled
+    # facing budget atan2(position error, range-position error)+yaw error.
+    position_margin=float(min(radial[1]-radial[0],radial[2]-radial[1]))
     yaw=np.abs([r['facing_error_rad'] for r in rows])
     injected=np.array([r['handoff_pose_error'] for r in rows])
     static=json.loads(a.static.read_text())
@@ -57,11 +63,12 @@ def main(a):
             native87420_87459='not locally retrieved; fallback existing teacher ledgers authorized by user',
             scope='separate requirement evidence, not pooled performance, not native/student success'),
         handoff=dict(n=40,nominal_relative_xy_m=nominal.tolist(),
-            position_error_m=float(np.percentile(residual,95)),yaw_error_rad=float(np.percentile(yaw,95)),
+            position_error_m=position_margin,yaw_error_rad=float(np.percentile(yaw,95)),
+            nominal_target_range_m=float(radial[1]),target_range_p5_p50_p95_m=radial.tolist(),
             position_quantiles_m={str(q):float(np.percentile(residual,q)) for q in (5,50,95,100)},
             facing_quantiles_deg={str(q):float(np.degrees(np.percentile(yaw,q))) for q in (5,50,95,100)},
-            definition='P95 norm of successful authored handoff-start XY minus median relative XY; P95 absolute yaw minus target bearing',
-            limitation='marginal empirical teacher support only; joint support/student acceptance unverified',
+            definition='XY <= min(P50(range)-P5(range),P95(range)-P50(range)); abs(yaw error)+atan2(XY error,P50(range)-XY error) <= P95(abs(facing error))',
+            limitation='empirical teacher radial/facing envelope; joint support/student acceptance unverified; start-cloud residual P95 is diagnostic only',
             release_injected_pose_p95_m=float(np.percentile(np.linalg.norm(injected[:,:2],axis=1),95)),
             release_injected_yaw_p95_rad=float(np.percentile(abs(injected[:,2]),95))),
         arrival=dict(slot_center_error_m=slot,nearest_slot_identity_error_m=spacing/2,
