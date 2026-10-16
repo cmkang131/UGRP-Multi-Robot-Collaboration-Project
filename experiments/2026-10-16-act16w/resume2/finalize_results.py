@@ -116,6 +116,19 @@ def main():
           run_configuration_receipts=[h for h in hashes if h['path'].endswith(('/launch.json', '/runner-args.json'))],
           raw=progress['raw'], reproduce=progress['reproduce']))
     write('raw-receipts.json', dict(source_sha=source, files=hashes))
+    # Keep finite warm/capped probes, pre-physics HOST_ERROR and synthetic
+    # checks visible without adding them to the fresh40 teacher denominator.
+    diagnostics = []
+    for name in ('warm-receipts.json', 'sap-diagnostic.json',
+                 'bulk-host-schema-host-error.json', 'cuda-preflight.json',
+                 'oracle-interface-probe.json', 'native-policy-interface-probe.json',
+                 'converter-canary.json', 'first30-own-rgb-preview-r1-rejected.json'):
+        path = Path(__file__).with_name(name)
+        diagnostics.append(dict(name=name, **receipt(path)) if path.exists()
+                           else dict(name=name, status='unavailable', path=str(path)))
+    write('diagnostic-receipts.json', dict(separate_from_fresh40=True,
+          scope='original proof files retain failures/cap_end and raw paths; synthetic checks are not research training',
+          records=diagnostics))
     first = datetime.fromisoformat('2026-10-16T05:47:00.019842+00:00')
     hard = datetime.fromisoformat('2026-10-16T13:47:00.019842+00:00')
     now = datetime.now(timezone.utc)
@@ -127,6 +140,7 @@ def main():
           native_audited_teacher_n=progress['confirmed_native_success_n'],
           recording_gate_passed=progress['independent_recording_gate_passed'],
           training_arms=arms, total_actual_optimizer_steps=steps,
+          separate_diagnostic_records='diagnostic-receipts.json',
           student_final_evaluation='see separately verified evaluation receipt; not inferred from training',
           budget=dict(task_first_gpu_utc=first.isoformat(), hard_end_utc=hard.isoformat(),
                       conservative_shared_L4_window_h=conservative_hours,
