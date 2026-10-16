@@ -49,8 +49,19 @@ def run(a):
     if sum(l.get('concurrency',0) for l in leases if l.get('task')!=task)+len(q['runs'])>40:raise ValueError('shared concurrency exceeds40')
     available=int(next(line for line in Path('/proc/meminfo').read_text().splitlines() if line.startswith('MemAvailable:')).split()[1])*1024
     free=os.statvfs(base).f_bavail*os.statvfs(base).f_frsize
-    if available<6*1024**3 or free<15*1024**3:raise ValueError('existing host resource floor not met')
-    write(a.output/'resource-admission.json',dict(leases=leases,available_bytes=available,disk_free_bytes=free,
+    storage=None
+    if q.get('measured_storage_budget_v1',False):
+        from scripts.storage_budget import check
+        budget=q['storage_budget']
+        if budget['per_run_bytes']<=0 or budget['reserved_bytes']<0 or not budget['source']:raise ValueError('measured original storage distribution required')
+        # Project AGENTS/storage_budget's8GiB x86 floor, original decoded peak
+        # x1.25 from both300SIM-second CPU carry recordings, plus explicitly
+        # reserved foreign-stage writes. Legacy unexplained15GiB stays default.
+        storage=check('x86',free,len(q['runs']),budget['per_run_bytes'],budget['reserved_bytes'])
+        if not storage['ok']:raise ValueError('measured persistent storage budget refused')
+    elif free<15*1024**3:raise ValueError('existing host disk floor not met')
+    if available<6*1024**3:raise ValueError('existing host memory floor not met')
+    write(a.output/'resource-admission.json',dict(leases=leases,available_bytes=available,disk_free_bytes=free,storage=storage,
         gpu=subprocess.check_output(['nvidia-smi','--query-gpu=name,memory.used,memory.total,utilization.gpu','--format=csv,noheader'],text=True),shared_load=True))
     write(a.output/'queue.json',q)
     report=dict(status='RUNNING',source_sha=sha,host=host,shared_load=True,model_calls=0,
