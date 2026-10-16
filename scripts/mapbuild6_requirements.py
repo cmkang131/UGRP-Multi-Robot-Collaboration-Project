@@ -23,6 +23,8 @@ def dump(path, data):
 def main(a):
     if not platform.node().startswith('ugrp-act-l4-gcp5'):
         raise ValueError('GCP5_ONLY')
+    if a.output.exists():
+        raise ValueError('NO_REQUIREMENTS_OVERWRITE')
     import numpy as np
     rows=[]
     for plan in sorted(a.ledgers.glob('*/plan.json')):
@@ -75,8 +77,9 @@ def main(a):
             cargo_inside_zone_center_error_m=region-box_half,box_half_m=box_half,
             yaw_error_rad=None,yaw_status='square box/zone has no separate yaw requirement; evaluate rotated footprint geometrically'),
         passage=dict(definition='abs(lateral SE2 error) + a*abs(sin(yaw error))+b*abs(cos(yaw error)) <= width/2',
-            robot_half_length_m=None,robot_half_width_m=None,
-            footprint_status='must derive original folded collision footprint at setup; no guessed robot radius',
+            robot_half_length_m=.120,robot_half_width_m=.105,
+            footprint_source='harness/zone_team_footprint.py: measured folded collision envelope x[-.100,.120],y[-.105,.105]; fixed original millimetre-rounded envelope',
+            footprint_status='chassis baseline only; actual commanded arm/held footprint must also fit, evaluation-only geometry; unknown cannot pass',
             passages=static['passages']),
         static=dict(path=str(a.static),sha256=sha(a.static)),teacher_rows=rows,
         decision=['both meet every applicable task requirement and complete route: LK default, RBPF off',
