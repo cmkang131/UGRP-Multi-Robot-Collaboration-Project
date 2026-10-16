@@ -1,0 +1,48 @@
+|대상|항목|판정|기준|실제 필드/값|
+|---|---|---|---|---|
+|"$"|"physics_backend"|"replay_exception"|"mjwarp_batch_v1"|[]|
+|"$"|"contact_profile"|"replay_exception"|"warp_native_contact_v1"|[{"field":"parent[0].stack_values.contact_profile","value":"warp_native_contact_v1"}]|
+|"$"|"noslip_iterations"|"replay_exception"|0|[{"field":"parent[0].stack_values.noslip_iterations","value":0}]|
+|"$"|"scene_profile"|"replay_exception"|"walls_floor_contrast_v5_indigo110_s80"|[]|
+|"$"|"cargo_version"|"replay_exception"|"v6"|[]|
+|"$"|"scenario_version"|"replay_exception"|"v7"|[]|
+|"$"|"heavy_crate"|"replay_exception"|false|[]|
+|"$"|"localization_path"|"replay_exception"|"texture_self_map_lk"|[]|
+|"$"|"rbpf"|"replay_exception"|"off"|[]|
+|"$"|"localization_engine"|"replay_exception"|"OpenCV"|[]|
+|"$"|"held_object_hidden_v1"|"replay_exception"|true|[]|
+|"$"|"held_world_reads"|"replay_exception"|0|[]|
+|"$"|"weld"|"replay_exception"|false|[]|
+|"$"|"top_camera_control"|"replay_exception"|false|[]|
+|"$"|"heading_mode"|"replay_exception"|"on"|[]|
+|"$"|"ultrasonic_front"|"replay_exception"|"off"|[]|
+|"$"|"wall_cap"|"replay_exception"|null|[]|
+|"$"|"speed_gate"|"replay_exception"|"record_only"|[]|
+|"$"|"speed_metric"|"replay_exception"|"wall_s/(sim_s*nworld)"|[]|
+|"$"|"gcp_host"|"replay_exception"|["ugrp-act-l4-gcp2","ugrp-act-l4-gcp3","ugrp-act-l4-gcp4","ugrp-act-l4-gcp5","ugrp-act-l4-gcp6"]|[]|
+|"$"|"gcp_guards"|"replay_exception"|{"idle_minutes":20,"budget_stop":true,"credentials_on_vm":false}|[]|
+|"$"|"no_pooling"|"replay_exception"|true|[]|
+|"$"|"planning_cap_basis"|"replay_exception"|"compute_or_sim"|[]|
+|"$"|"rejection_ledger"|"replay_exception"|["reason_category","blocked_object","minimum_gap_m"]|[]|
+|"$"|"cap_end_label"|"replay_exception"|"cap_end"|[]|
+|"$"|"gcp_project"|"replay_exception"|["ugrp-sim-b-1014","ugrp-sim-c-1016","ugrp-sim-d-1016","ugrp-sim-e-1016","ugrp-sim-f-1016"]|[{"field":"parent[0].project","value":"ugrp-sim-e-1016"}]|
+|"$"|"gcp_account"|"replay_exception"|["changmin5781@gmail.com","kcm5781kcm5781@gmail.com"]|[{"field":"parent[0].account","value":"changmin5781@gmail.com"}]|
+|"$"|"selfmap_map_correction"|"replay_exception"|"on"|[{"field":"parent[0].stack_values.selfmap_map_correction","value":"on"},{"field":"parent[0].localization.map_correction","value":"on"},{"field":"parent[0].selfmap_map_correction_v1","value":"on"}]|
+{"ok": true, "current_compliant": false, "admission": "historical_replay"}
+Traceback (most recent call last):
+  File "/home/ugrp/ugrp-sim/src/mapbuild9-offline-v1/scripts/mapbuild9_replay.py", line 81, in <module>
+    p.add_argument('--seed',type=int,default=20261017);run(p.parse_args())
+                                                       ^^^^^^^^^^^^^^^^^^^
+  File "/home/ugrp/ugrp-sim/src/mapbuild9-offline-v1/scripts/mapbuild9_replay.py", line 30, in run
+    own=read(a.input/'own.json')['frames'];saved=read(a.saved/'trajectory.json');scan_path=a.saved/'scans.json' if (a.saved/'scans.json').is_file() else a.input/'scans.json';scans=read(scan_path)
+                                                                                                                                                                                    ^^^^^^^^^^^^^^^
+  File "/home/ugrp/ugrp-sim/src/mapbuild9-offline-v1/scripts/mapbuild9_replay.py", line 11, in read
+    def read(p):return json.loads(p.read_text())
+                                  ^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1029, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/ugrp/ugrp-sim/runs/mapbuild8/recording-r1/scans.json'
