@@ -15,6 +15,7 @@ from scripts.warp_act_core import SERVOS, control_tape, physics_schedule
 
 class Batch(WarpTransport):
     def initialize(self, contexts, **kwargs):
+        self.period=getattr(self,'period',.1)
         self.all_contexts=contexts
         self.actor_histories=[{} for _ in contexts]
         self.camera_cache={}
@@ -24,6 +25,17 @@ class Batch(WarpTransport):
             p=self.out/f'world-{i:03d}';p.mkdir(parents=True,exist_ok=True)
             (p/'scene.xml').write_text(c['world'].scene_xml)
         super().initialize(contexts,**kwargs)
+        if self.period!=.1:
+            wp,mjw=self.wp,self.mjw
+            self.control_steps,self.graph_chunk,self.graph_repeats=physics_schedule(self.period,self.dt)
+            self.tape=wp.zeros((self.control_steps,self.n,self.m.nu),dtype=float)
+            with wp.ScopedCapture() as capture:
+                for _ in range(self.graph_chunk):
+                    wp.launch(self.command_kernel,dim=(self.n,self.m.nu),inputs=[self.tape,self.graph_tick,self.wd.ctrl])
+                    mjw.step(self.wm,self.wd)
+                    wp.launch(self.advance_kernel,dim=1,inputs=[self.graph_tick])
+            self.graph=capture.graph
+            self.capacities.update(control_steps=self.control_steps,graph_chunk=self.graph_chunk,graph_repeats=self.graph_repeats)
         self.initial_times=np.array([c['world'].data.time for c in contexts])
         # Initial native setup is separately recorded; rollout has no C step.
         def forbidden(*a,**kw):raise RuntimeError('warp5 native physics/render forbidden after setup')
@@ -73,19 +85,15 @@ class Batch(WarpTransport):
             names={self.m.camera(i).name for i in range(self.m.ncam)}
             tops=sorted(name for name in names if name.startswith('cctv_'))
             self.camera_names += [(name,name,(320,240)) for name in tops]
-            self.rc=mjw.create_render_context(self.m,nworld=self.n,
-                cam_res=[x[2] for x in self.camera_names],render_rgb=True,render_depth=False,
-                render_seg=False,use_textures=True,use_shadows=True,enabled_geom_groups=[0,1,2,3],
-                cam_active=[x[1] for x in self.camera_names])
+            from scripts.warp5_render import Renderer
+            self.multi_renderer=Renderer(self.m,self.wm,self.wd,self.camera_names,
+                enabled=getattr(self,'warp5_native_visual_v1',False))
             self._multi_camera=True
         start=time.perf_counter()
-        mjw.kinematics(self.wm,self.wd);mjw.camlight(self.wm,self.wd)
-        mjw.refit_bvh(self.wm,self.wd,self.rc);mjw.render(self.wm,self.wd,self.rc)
+        rendered=self.multi_renderer.render()
         self.rgb_arrays={}
         for camera,(rid,name,(width,height)) in enumerate(self.camera_names):
-            buf=wp.zeros((self.n,height,width),dtype=wp.vec3)
-            mjw.get_rgb(self.rc,camera,buf);wp.synchronize()
-            values=np.clip(buf.numpy()*255,0,255).astype(np.uint8)
+            values=np.clip(rendered[rid][0],0,255).astype(np.uint8)
             for i,rgb in enumerate(values):
                 if rid in ('r1','r2','r3'):
                     rgb=cv2.remap(rgb,self.mx,self.my,cv2.INTER_LINEAR,borderMode=cv2.BORDER_CONSTANT)
@@ -97,7 +105,7 @@ class Batch(WarpTransport):
             # Native get_data_into copies GPU contacts/forces. Do not call
             # mj_forward/mj_step to invent CPU contacts for GPU evaluation.
             mjw.get_data_into(c['world'].data,c['world'].model,self.wd,world_id=i)
-            c['world'].data.time=round(c['origin']+self.tick*.1,9)
+            c['world'].data.time=round(c['origin']+self.tick*self.period,9)
         self.rgb=[self.jpeg(i,c.get('rid','r3')) for i,c in enumerate(contexts)]
         self.seconds['render_and_evaluator_export']+=time.perf_counter()-start
 
@@ -117,7 +125,7 @@ class Batch(WarpTransport):
                     deadlines=[v or 0. for v in deadline],applied=[p._servo_applied[s] for s in SERVOS],
                     target=[p._servo_targets.get(s,p._servo_applied[s]) for s in SERVOS],
                     servo_active=[active[i] and s in p._servo_targets for s in SERVOS],now=now,servo_time=p._servo_tick_time))
-                if p._command_expires_at is not None and p._command_expires_at<=now+.1:
+                if p._command_expires_at is not None and p._command_expires_at<=now+self.period:
                     raise ValueError('sub-tick command revocation needs explicit command-tape event support')
             params=contexts[0]['world'].drive_parameters
             tape,state=control_tape(rows,self.relays[rid],dt=self.dt,steps=self.control_steps,
@@ -147,7 +155,7 @@ class Batch(WarpTransport):
 
 def transform_runner(text,namespace,bridge,kind):
     """Rewrite only advance scheduling; fail closed on an unexpected source AST."""
-    tree=ast.parse(text);name='run' if kind=='carry' else 'acquire'
+    tree=ast.parse(text);name='acquire' if kind=='selfmap' else 'run'
     function=next(n for n in tree.body if isinstance(n,ast.FunctionDef) and n.name==name)
     counts={'setup':0,'advance':0}
     class Rewrite(ast.NodeTransformer):
@@ -157,7 +165,7 @@ def transform_runner(text,namespace,bridge,kind):
                 return ast.parse("yield {'kind':'step','target':until}").body[0]
             return self.generic_visit(node)
         def visit_Expr(self,node):
-            if kind=='selfmap' and isinstance(node.value,ast.Call) and isinstance(node.value.func,ast.Attribute) and node.value.func.attr=='advance_to':
+            if kind in ('selfmap','e2e') and isinstance(node.value,ast.Call) and isinstance(node.value.func,ast.Attribute) and node.value.func.attr=='advance_to':
                 counts['advance']+=1
                 return ast.Expr(ast.Yield(ast.Dict(keys=[ast.Constant('kind'),ast.Constant('target')],values=[ast.Constant('step'),node.value.args[0]])))
             return self.generic_visit(node)
@@ -178,10 +186,11 @@ def transform_runner(text,namespace,bridge,kind):
             out=super().visit_Expr(node)
             if isinstance(node.value,ast.Call) and isinstance(node.value.func,ast.Attribute) and node.value.func.attr=='reset' and isinstance(node.value.func.value,ast.Name) and node.value.func.value.id=='backend':
                 counts['setup']+=1
-                return [out,*ast.parse("yield __warp5_bridge__.setup_selfmap(backend)").body]
+                setup='setup_e2e' if kind=='e2e' else 'setup_selfmap'
+                return [out,*ast.parse(f"yield __warp5_bridge__.{setup}(backend)").body]
             return out
-    (SelfmapRewrite() if kind=='selfmap' else Rewrite()).visit(function)
-    expected={'setup':1,'advance':1 if kind=='carry' else 2}
+    (SelfmapRewrite() if kind in ('selfmap','e2e') else Rewrite()).visit(function)
+    expected={'setup':1,'advance':2 if kind=='selfmap' else 1}
     if counts!=expected:raise ValueError(f'warp5 frozen scheduling shape changed: {counts} != {expected}')
     namespace=dict(namespace,__warp5_bridge__=bridge)
     module=ast.fix_missing_locations(ast.Module(body=[function],type_ignores=[]))

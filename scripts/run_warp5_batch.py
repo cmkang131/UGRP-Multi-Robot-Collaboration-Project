@@ -33,6 +33,17 @@ def run(a):
         if not gate.get('admitted',False):raise ValueError('MJWarp renderer not qualified; control batch withheld')
         if len(q['runs'])<16:raise ValueError('N16 minimum for run-first batch')
     host=identity();a.output.mkdir(parents=True,exist_ok=False)
+    for key,value in q.get('environment',{}).items():
+        if not key.startswith(('UGRP_SCENE_','UGRP_RELOC','UGRP_WARP5_')):raise ValueError('unapproved simulation environment field')
+        os.environ[key]=str(value)
+    base=Path('/home/ugrp/ugrp-sim');leases=[json.loads(p.read_text()) for p in (base/'leases').glob('*.json')]
+    if not any(l.get('task')=='warp5' for l in leases):raise ValueError('warp5 lease required before execution')
+    if sum(l.get('concurrency',0) for l in leases if l.get('task')!='warp5')+len(q['runs'])>40:raise ValueError('shared concurrency exceeds40')
+    available=int(next(line for line in Path('/proc/meminfo').read_text().splitlines() if line.startswith('MemAvailable:')).split()[1])*1024
+    free=os.statvfs(base).f_bavail*os.statvfs(base).f_frsize
+    if available<6*1024**3 or free<15*1024**3:raise ValueError('existing host resource floor not met')
+    write(a.output/'resource-admission.json',dict(leases=leases,available_bytes=available,disk_free_bytes=free,
+        gpu=subprocess.check_output(['nvidia-smi','--query-gpu=name,memory.used,memory.total,utilization.gpu','--format=csv,noheader'],text=True),shared_load=True))
     write(a.output/'queue.json',q)
     report=dict(status='RUNNING',source_sha=sha,host=host,shared_load=True,model_calls=0,
         physics_backend='mjwarp_batch_v1',pool_with_cpu=False,attempted=len(q['runs']),worlds=[],errors=[])

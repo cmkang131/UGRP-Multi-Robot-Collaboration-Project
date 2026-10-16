@@ -1,0 +1,18 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [{
+    "id": "warp5-batch",
+    "version": "0.1.0",
+    "purpose": "기본 off gcp2 MJWarp 자기 지도·운반·E2E 이식 DEV, 자체 관문 필수",
+    "entry": "scripts/run_warp5_batch.py",
+    "runner": "scripts.run_warp5_batch",
+    "docs": "experiments/2026-10-16-warp5/README.md",
+    "requires": "Linux gcp2 L4; clean pinned source; absolute rejection_table and renderer admission; endpoint alert blocks LLM batches",
+    "output_flag": "--output",
+    "output_kind": "directory",
+    "required_inputs": ["--queue"],
+    "side_effect": "local_simulation",
+    "adapter": "managed_legacy_cli",
+    "shutdown_grace_s": 60
+  }]
+}

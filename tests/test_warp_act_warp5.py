@@ -9,6 +9,7 @@ ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'scripts'))
 from scripts.warp5_render import blend_native
 from scripts.warp5_batch import transform_runner
+from scripts.warp5_e2e import AsyncDecisions
 
 
 def test_native_alpha_keeps_opaque_occluders_and_world_layer_order():
@@ -40,3 +41,37 @@ def test_real_controller_source_has_exact_adapter_barriers(kind,path,name,advanc
 def test_adapter_fails_closed_when_advance_semantics_change():
     with pytest.raises(ValueError,match='scheduling shape changed'):
         transform_runner('def run():\n    tick=0\n    return 2\n',{},None,'carry')
+
+
+def test_legacy_e2e_scheduler_has_isolated_setup_and_005s_barrier():
+    text=(ROOT/'scripts/run_e2e_ownmap_live.py').read_text()
+    fn,audit=transform_runner(text,{},object(),'e2e')
+    assert audit['edits']=={'setup':1,'advance':1}
+    assert fn.__code__.co_flags & 0x20
+
+
+def test_live_alert_rejection_never_submits_a_call():
+    calls=[];broker=AsyncDecisions(lambda request:calls.append(request))
+    try:
+        with pytest.raises(ValueError,match='endpoint alert'):
+            broker.submit(0,'r1',{'own':'rgb'},live=True)
+        assert calls==[] and not broker.pending
+    finally:broker.close()
+
+
+def test_slow_world_does_not_block_peer_and_reset_discards_old_reply():
+    import threading
+    release=threading.Event();fast_done=threading.Event()
+    def call(r):
+        if r['slow']:release.wait(1)
+        else:fast_done.set()
+        return r
+    broker=AsyncDecisions(call,workers=2)
+    try:
+        broker.submit(0,'r1',{'slow':True});broker.submit(1,'r1',{'slow':False})
+        assert fast_done.wait(1)
+        assert broker.poll(1,'r1')=={'slow':False}
+        assert broker.poll(0,'r1') is None
+        broker.reset_world(0);release.set()
+        assert broker.poll(0,'r1') is None
+    finally:release.set();broker.close()

@@ -47,6 +47,13 @@ class Bridge:
         self.context=dict(kind='setup',world=w,ports=backend.ports,port=backend.ports[rid],rid=rid,
             gids=ids[:1],finger_ids=fingers,origin=float(w.data.time),backend=backend)
         return self.context
+    def setup_e2e(self,backend):
+        w=backend.world;m=w.model
+        ids=[i for i in range(m.ngeom) if (m.geom(i).name or '').startswith('cargo_') and m.geom_contype[i]]
+        fingers={m.geom('r1__'+s+'_finger').id:i for i,s in enumerate(('left','right'))}
+        self.context=dict(kind='setup',world=w,ports=backend.ports,port=backend.ports['r1'],rid='r1',
+            gids=ids[:1],finger_ids=fingers,origin=float(w.data.time),backend=backend)
+        return self.context
 
 
 def prepare_modules(host):
