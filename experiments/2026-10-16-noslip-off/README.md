@@ -9,7 +9,7 @@
 - MJWarp CLI `--contact-profile legacy_noslip10`은 과거 재생 전용이다. 새 native와 noslip10, CPU와 MJWarp, 서로 다른 VM 결과는 합산하지 않는다. 물리 성공·속도 개선은 여기서 측정하지 않았다.
 
 [진입점 표](entrypoints.md), [실제 로드 영수증](compile_receipts.json), [관문표](rejection_table.json), [원본 참조 분포](baseline_inventory.md), [전체 요약](summary.json).
-Mac에서 실제 모델 14경로를 컴파일했으며 step/forward/render는 예외로 차단했다. World 초기 reset도 실행하지 않았다. 직접 CLI·GPU 변환·물리 관문은 확인 안 됨으로 표시했다. VM·GUI·모델 호출·학습은 사용하지 않았다.
+Mac에서 실제 모델 15경로를 컴파일했으며 step/forward/render는 예외로 차단했다. World 초기 reset도 실행하지 않았다. 직접 CLI·GPU 변환·물리 관문은 확인 안 됨으로 표시했다. VM·GUI·모델 호출·학습은 사용하지 않았다.
 
 로컬 검증은 변경 모듈 관련 파일만 대상으로 3라운드 안에 마쳤다. 1차 221 passed/3 failed(enum 변환, 소스 해시, 과거 절대경로), 2차 19 passed/1 failed(추가 소스 해시), 3차 해당 회귀 1 passed. 나머지는 PR CI에서 확인한다. `tests/test_zone_cargo.py`의 native/legacy 변경은 CI에서만 실행한다(이 파일의 기존 World 테스트는 Mac 적분을 수반).
 

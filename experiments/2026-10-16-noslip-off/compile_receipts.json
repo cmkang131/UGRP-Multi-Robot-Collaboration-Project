@@ -2,6 +2,7 @@
   "schema": "ugrp.noslip_compile_audit.v1",
   "execution_bundle_id": "noslip-off-v445",
   "mujoco": "3.12.0",
+  "source_commit": "ac5af0817e6a70ea0d3d1de4405bd7d3c4b1a116",
   "physics_steps": 0,
   "forward_calls": 0,
   "renders": 0,
@@ -177,6 +178,20 @@
       "xml_sha256": "bb2035f19ee5b098210665339dddbe0ee656b42c75fb153a9ac5f75ea576532a"
     },
     {
+      "entrypoint": "sim.zone_masterpi_v3_scene.build_world default",
+      "profile": "cargo_native_v1",
+      "options": {
+        "noslip_iterations": 0.0,
+        "cone": 1.0,
+        "integrator": 3.0,
+        "impratio": 5.0,
+        "solver": 2.0,
+        "iterations": 80.0,
+        "ls_iterations": 50.0
+      },
+      "xml_sha256": "a36cf6de660cb0a716bcd89ee21df2800b3f82c4fd2e705285c7a2508060b3bc"
+    },
+    {
       "entrypoint": "CargoZoneScene.from_cargo_config default",
       "profile": "cargo_native_v1",
       "options": {
@@ -209,9 +224,20 @@
     "sim/execution_contact_profile.py": "ee42a0e4b2259605d9318dc6c793aa6fd25197d6a9465d08d6cc344f61409e54",
     "sim/warp_native_contact.py": "a5c8d370755034b9f9615f66a94b87883327b7d7ecc4e13082eac2c2d4751c6a",
     "sim/zone_cargo_contact.py": "03915560f1e74c52a0709f9a74d61b54ad0441868e1087d364c505599e59f029",
-    "scripts/check_noslip_defaults.py": "ecffdce8edfed18dbdf894355ef4cf7cfc7bbc5861c991e1f590fe58e6fb740b",
+    "scripts/check_noslip_defaults.py": "217c6d2f1c706ccaa52b9e81389d5e2caf6184411862cc6c34d4fe7e8ae6f8f1",
     "scripts/warp_act_backend.py": "2635279ab472108d4364088b1785750148251d994506f464ba04610ed9471046",
     "scripts/warp_act_episode.py": "79f286b570f015ad294fc8a9f0599e468d5e03e1044983dfaf9a7bc6c95ca6f4",
-    "scripts/warp_flow_episode.py": "5b75293d2c451b84ec6c248837fde200c28af2bb386fcf28ab74428ed5b9281d"
+    "scripts/warp_flow_episode.py": "5b75293d2c451b84ec6c248837fde200c28af2bb386fcf28ab74428ed5b9281d",
+    "sim/masterpi_drive_friction.py": "c7e02994b7cc49e6a290db9b416d24eaf74f0149099a2d9bc89a4de56386106d",
+    "sim/masterpi_drive_friction_v2.py": "90f57cc24e96423779eefab64a3119c20ff4f4905b5381eb53a140273dc73b0a",
+    "sim/masterpi_drive_friction_v3.py": "a4a096a71fc0f3791948bd2a73008370fdc5f4c3447121a8bac73e3973d199d0",
+    "sim/masterpi_drive_friction_v4.py": "0e04534d9ad0988489bdf092d23f3df708c65bf94d621c90f490551020f46408",
+    "sim/masterpi_drive_friction_v5.py": "f2590246f74c821af5f3c9bd73b1b5a8c7b5a98e6e2c5df04ffa72a8cd8c406b",
+    "sim/masterpi_drive_friction_v5_hard.py": "1d6c647482b276550d3f16ee53b026213a874b1f927acc6fee4a0d381921cdd2",
+    "sim/masterpi_drive_friction_v6.py": "bc13b438abeff99f5798a34656d71c182039d1c5b141d6d832e9e3c74c6e2857",
+    "sim/masterpi_drive_friction_v7.py": "963bde9211d99f37a8b417335e91df5e317fad55016cd9ec169100c3076c66b4",
+    "sim/zone_final_v3_scene.py": "cf306b64a573d578a18abe3aec60d2eedb64b7815050a99b75fb104234ea2c95",
+    "sim/zone_scenario_scene.py": "942c0799bf1655224ba90ef7597348e585ba9e6081541ab82dbbc44b0c5eb6d7",
+    "sim/zone_cargo_scene.py": "e1a24235094592da44c7140684fc0edcc26b769a40dd2c9f0625aac2e4e80cbf"
   }
 }
