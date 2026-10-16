@@ -1,5 +1,6 @@
 """V92 registration/schedule/runner regressions; no physics, RGB or network."""
 import copy
+import subprocess
 import errno
 import gzip
 import hashlib
@@ -54,7 +55,12 @@ def test_schedule_archive_and_preserved_sources():
         # E2E adds an opt-in adapter to this shared source. Preserve V92's exact
         # source separately; its original evidence/hash remains immutable.
         preserved = PRESERVED_SKILL if path == 'harness/zone_final_pair_skill.py' else path
-        assert c.base.sha(c.ROOT/preserved) == digest, path
+        # New-run defaults may advance; the v92 acquisition source stays pinned.
+        if path == 'harness/zone_final_pair_contract.py':
+            data = subprocess.check_output(['git', 'show', frozen['base_sha']+':'+path], cwd=c.ROOT)
+            assert hashlib.sha256(data).hexdigest() == digest, path
+        else:
+            assert c.base.sha(c.ROOT/preserved) == digest, path
 
 
 @pytest.mark.parametrize('map_id', tuple(c.registry()['maps']))

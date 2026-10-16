@@ -99,12 +99,12 @@ def validate_bundle(bundle):
         raise ValueError('v92 case mismatch')
 
 
-def bundle(map_id, check):
+def bundle(map_id, check, *, contact_profile='cargo_native_v1'):
     from harness.python_source_closure import source_closure
     from harness.zone_final_pair_loaded_clearance import path_preflight
     reg = registry()
     measurement = design(check, map_id)
-    value = previous.bundle(MAP_ID, CHECK)
+    value = previous.bundle(MAP_ID, CHECK, contact_profile=contact_profile)
     value.update(schema='ugrp.final_pair_bundle.v92', execution_bundle_id=BUNDLE_ID,
         workflow_id=WORKFLOW_ID, workflow_version=WORKFLOW_VERSION, seed=SEED, **ROLE,
         controller_family='teacher_fixed_schedule', controller_variant='v92-loaded-measurement',

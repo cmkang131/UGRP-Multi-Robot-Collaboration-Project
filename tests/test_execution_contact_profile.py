@@ -44,6 +44,7 @@ def test_actual_model_load_and_profile_validation(profile, monkeypatch):
     'masterpi_drive_friction_v3','masterpi_drive_friction_v4','masterpi_drive_friction_v5',
     'masterpi_drive_friction_v5_hard','masterpi_drive_friction_v6','masterpi_drive_friction_v7'])
 def test_drive_builder_defaults_before_constructor_steps(module, monkeypatch):
+    pytest.importorskip('mujoco')
     factory = importlib.import_module('sim.'+module)
     assert inspect.signature(factory.build_world).parameters['contact_profile'].default == policy.CPU_DEFAULT
 

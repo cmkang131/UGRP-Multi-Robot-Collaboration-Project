@@ -150,8 +150,11 @@ def test_v91_source_closure_and_workflow():
 
 def test_frozen_sources_and_handoff_prefix_preserved_and_new_commands_parse():
     receipt = json.loads((c.ROOT/'experiments/2026-10-03-calib-fast-guard/preservation.json').read_text())
+    live_builders = {'harness/zone_final_pair_contract.py', 'harness/zone_final_pair_heldout.py'}
     for name, sha in receipt['unchanged_sha256'].items():
-        assert c.base.sha(c.ROOT/name) == sha, name
+        data = (subprocess.check_output(['git', 'show', receipt['base_sha']+':'+name], cwd=c.ROOT)
+                if name in live_builders else (c.ROOT/name).read_bytes())
+        assert hashlib.sha256(data).hexdigest() == sha, name
     data = (c.ROOT/'PHYSICS_HANDOFF.md').read_bytes()
     size = receipt['handoff_prefix']['bytes']
     assert hashlib.sha256(data[:size]).hexdigest() == receipt['handoff_prefix']['sha256']

@@ -76,7 +76,7 @@ def validate_bundle(bundle):
         raise ValueError('v91 held-out case mismatch')
 
 
-def bundle(map_id, check):
+def bundle(map_id, check, *, contact_profile='cargo_native_v1'):
     from harness.zone_final_pair_fast_clearance import path_preflight
     from harness import zone_final_pair_heldout as preflight_source
     from harness.python_source_closure import source_closure
@@ -84,7 +84,7 @@ def bundle(map_id, check):
     measurement = design(check, map_id)
     # Copy the authored protocol, not a previous run or its success. The map
     # and source identities below belong to this newly registered acquisition.
-    value = previous.bundle(MAP_ID, check)
+    value = previous.bundle(MAP_ID, check, contact_profile=contact_profile)
     static = previous.resolve(map_id)[0]
     value.update(schema='ugrp.final_pair_bundle.v91', execution_bundle_id=BUNDLE_ID,
         workflow_id=WORKFLOW_ID, workflow_version=WORKFLOW_VERSION,

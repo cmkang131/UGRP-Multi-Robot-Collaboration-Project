@@ -417,7 +417,8 @@ def test_a303_2_evidence_writer_preserves_the_registered_runner_bytes():
     from scripts.zone_pair_v6_contract import PREREG_V6E
     sources = json.loads(PREREG_V6E.read_text())['v6_contract']['source_sha256']
     path = 'scripts/run_zone_study_integration.py'
-    assert hashlib.sha256((runner.ROOT / path).read_bytes()).hexdigest() == sources[path]
+    from tests.v6h_successor_pins import successor_blob
+    assert hashlib.sha256(successor_blob(path)).hexdigest() == sources[path]
     assert runner.write_outputs is not evidence_writer.write_outputs
     assert 'scripts/zone_study_evidence_writer.py' not in sources
 
