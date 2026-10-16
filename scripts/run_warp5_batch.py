@@ -2,6 +2,7 @@
 from __future__ import annotations
 import argparse,datetime,hashlib,json,os,platform,subprocess,sys,time,traceback
 from pathlib import Path
+from contextlib import nullcontext
 import numpy as np
 from scripts.warp5_batch import Batch
 from scripts.warp5_episode import make_carry,make_selfmap
@@ -128,11 +129,15 @@ def run(a):
                 import warp as wp
                 from scripts.warp9_profile import Profile
                 transport.warp9_profile=Profile(wp)
-            cc=[contexts[i] for i in indices];groups.append((indices,cc,transport));transport.initialize(cc,
-                float32_solver_default_v1=q.get('float32_solver_default_v1',False),sap_segmented_v1=q.get('warp7_sap_segmented_v1',False))
+            cc=[contexts[i] for i in indices];groups.append((indices,cc,transport))
+            from scripts.warp9_scratch import scope as scratch_scope
+            with scratch_scope(transport) if q.get('warp9_noslip_scratch_v1',False) else nullcontext():
+                transport.initialize(cc,float32_solver_default_v1=q.get('float32_solver_default_v1',False),
+                    sap_segmented_v1=q.get('warp7_sap_segmented_v1',False))
         report.update(model_groups=[dict(worlds=ii.tolist(),camera=h.camera,compatibility=h.compat,capacities=h.capacities,
             model_batch=h.model_batch_audit,native_model_adapter=getattr(h,'native_model_adapter',None),
-            graph_audit=getattr(h,'warp9_graph_audit',None)) for ii,cc,h in groups])
+            graph_audit=getattr(h,'warp9_graph_audit',None),
+            scratch_audit=getattr(h,'warp9_scratch_audit',None)) for ii,cc,h in groups])
         loop=time.perf_counter()
         interval_start=loop;previous_elapsed=0.;speed_samples=[]
         for ii,cc,h in groups:

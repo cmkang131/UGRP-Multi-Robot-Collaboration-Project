@@ -38,6 +38,7 @@ def main():
     parser.add_argument('--full-period-graph',action='store_true')
     parser.add_argument('--physics-trace',action='store_true')
     parser.add_argument('--state-snapshot',action='store_true')
+    parser.add_argument('--noslip-scratch',action='store_true')
     parser.add_argument('--output',type=Path,required=True)
     args=parser.parse_args()
     if platform.node().split('.')[0]!='ugrp-act-l4-'+args.host:raise ValueError('requested registered L4 only')
@@ -82,6 +83,7 @@ def main():
                 warp9_full_period_graph_v1=args.full_period_graph,
                 warp9_physics_event_trace_v1=args.physics_trace,
                 warp9_state_snapshot_v1=args.state_snapshot,
+                warp9_noslip_scratch_v1=args.noslip_scratch,
                 independent_initial_cases=1,duplicate_isolation_worlds=n-1,
                 interpretation='fixed-work scaling diagnostic, not task qualification')
             # Source-relative calibration paths keep the exact saved hashes.

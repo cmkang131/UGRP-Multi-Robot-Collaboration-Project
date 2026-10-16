@@ -17,3 +17,10 @@
 - `command_python`, `physics_graph`(event/host submit/wait), 렌더 refit·extract·복사·CPU 변환, 평가 export의 D2H 횟수·바이트를 구분한다. setup/JIT/초기 parity 렌더는 본 측정에서 제외한다. 계층 total과 하위 phase를 중복 합산하지 않는다.
 - setup warmup이 물리 상태를 바꾸지 않도록 기존 초기 상태 복원을 유지한다. 재현은 커밋 SHA·queue·임대·host·GPU process 증거와 연결한다. GPU 임대가 없거나 다른 GPU PID가 있으면 시작하지 않는다.
 - 병목 표를 만든 뒤 가장 큰 원인부터 기본 off 후보로 수정한다. 렌더/평가 배열 캐시, graph 크기, 버퍼 변경을 아직 성능 개선으로 주장하지 않는다. n4 제어 + L4 물리 소유자 분리도 별도 대상이다.
+
+## 재개 2 — 추가로 확인한 실행 경계
+
+- [CUDA Graphs 공식 가이드](https://docs.nvidia.com/cuda/cuda-programming-guide/04-special-topics/cuda-graphs.html): 같은 executable graph의 재제출은 순서대로 실행된다. CPU submit 시간과 GPU event 구간은 겹치므로 둘을 더하지 않는다.
+- [NVIDIA Warp runtime](https://github.com/NVIDIA/warp/blob/main/docs/user_guide/runtime.rst): conditional node를 가진 graph는 child graph로 중첩할 수 없다. 따라서 기존 16틱 graph를 25번 중첩하는 우회는 사용하지 않고 동일한 400틱을 직접 capture한다.
+- [설치본 NoSlip 원문](https://github.com/google-deepmind/mujoco_warp/blob/57b4692f4d3cdf4d27d916b4b8c4759ba36e9148/mujoco_warp/_src/solver.py): `noslip_L/Y/A`를 매 호출 `wp.empty`로 할당한다. `warp9_noslip_scratch_v1`은 이 세 할당만 전용 버퍼 조회로 바꾸고 원래 커널·인수·순서·산술을 유지한다. NoSlip 초기화 커널이 소비할 행을 다시 쓰는 범위를 확인했으며 실제 GPU 상태 비교 전에는 동등성·가속을 주장하지 않는다. 런타임 source/AST SHA와 작업공간 크기를 기록한다.
+- Warp 메모리 관리 원문의 stream-ordered pool/graph allocation 설명(위 보존 원문 67–96행)을 적용한다. 기본 pool은 유지한다. 버퍼는 단일 transport/stream에만 속하고 graph 수명 동안 보존하며 설치 파일은 수정하지 않는다.
