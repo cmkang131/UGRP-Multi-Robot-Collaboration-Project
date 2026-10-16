@@ -12,9 +12,9 @@ def main():
     import torch
     torch.set_num_threads(1)
     torch.set_num_interop_threads(1)
-    from harness.beamact_input import BeamActor
+    from harness.beamact3 import load_actor
     from harness.grasp_act_rollout import InputAudit
-    actor = BeamActor.load(a.model, device='cpu')
+    actor = load_actor(a.model, device='cpu')
     audit = InputAudit()
     print(json.dumps({'ready': True}), flush=True)
     for line in sys.stdin:

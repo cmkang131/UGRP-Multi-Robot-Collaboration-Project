@@ -36,6 +36,8 @@ def run(plan, output, dependency, model, actor_python, *, mode='off', cap_s=60.)
     if plan['seed'] not in range(8329000, 8329020):
         raise ValueError('exact reserved20 plan required')
     source = source_sha()
+    model_meta = json.loads((model/'adapter.json').read_text())
+    candidate_arm = model_meta.get('beamact3_v1', 'off')
     output.mkdir(parents=True, exist_ok=False)
     started = time.monotonic()
     report = dict(status='running', complete=False, seed=plan['seed'], mode=mode,
@@ -45,8 +47,11 @@ def run(plan, output, dependency, model, actor_python, *, mode='off', cap_s=60.)
         contact_assignment='nearest authored colored end; ties ambiguous; evaluation only',
         model_sha256=sha256(model/'model.safetensors'), cap_end=False,
         loadavg_at_start=os.getloadavg())
+    if candidate_arm != 'off':
+        report.update(beamact3_v1=candidate_arm,compact_history=model_meta['compact_history'])
     write_json(output/'RUN_META.json', dict(**{'class':'milestone'}, pr=540,
-        branch='codex/beamact1', sha=source, batch='beamact2-heldout20',
+        branch='codex/beamact3' if candidate_arm!='off' else 'codex/beamact1', sha=source,
+        batch='beamact3-'+candidate_arm+'-heldout20' if candidate_arm!='off' else 'beamact2-heldout20',
         keep=['commands.jsonl', 'student-inputs.jsonl', 'eval-only.jsonl', 'review']))
     write_json(output/'plan.json', plan)
     write_json(output/'result.json', report)
