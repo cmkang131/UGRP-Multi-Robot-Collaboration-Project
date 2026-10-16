@@ -49,7 +49,7 @@
     "B": "0/5",
     "pooled": false
   },
-  "progress": "C0/8 independently recounted, geometric align8/8; full C87429 review +real review-C ack18:22:14Z; existing controller now collecting TRAIN20 DAgger; final40 unopened",
+  "progress": "DAgger20 complete,5427 pairs ->290 h0 (270 noninitial/7 starts),5137 potentialclose exclusions, audit0/0/0; fresh242 hashes PASS, D0norm same. D1 running5670 asof18:52:41Z; final40 unopened.",
   "next": [
     "Observe existing orchestrator73402 at /home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1; execution source c27a9d537 unchanged. Never resubmit existing A/B/validation jobs. Summary errors require original diagnosis, no automatic retry.",
     "A/B and C reviews complete/acked. After TRAIN20 collection completes, run actual DAgger coverage helper and optional saved robot-pose distributions against D0 teacher path; inputs/commands unchanged. Hold review-D1/final40 if h5 actual noninitial labels unqualified. D1 train/eval is already scheduled by existing controller; never manually duplicate.",
@@ -102,7 +102,7 @@
     ],
     "root": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1"
   },
-  "analysis_source": "/home/ugrp/ugrp-sim/src/7381482975ae5fac440c7f3dcb22403133df972b",
+  "analysis_source": "/home/ugrp/ugrp-sim/src/34d53cfaadc093ac957bbfffc780a76f372041f9",
   "completed_native_provenance_annotations": "/home/ugrp/ugrp-sim/runs/act16w-native-provenance-annotations.json",
   "gap_analysis_source": "/home/ugrp/ugrp-sim/src/82702ea74d641d68377eeb331142298ca4ff49b1",
   "monitor_C": {
@@ -120,7 +120,7 @@
     "actual_DAgger_data": false,
     "interpretation": "noninitial ceiling is nonzero, so initial-only defect is not established; actual C TRAIN label counts/rejections must be measured. Do not relax held-object boundary or change execution based on this validation diagnostic."
   },
-  "dagger_actual_coverage_helper": "/home/ugrp/ugrp-sim/src/7381482975ae5fac440c7f3dcb22403133df972b/scripts/audit_act16w_dagger_coverage.py",
+  "dagger_actual_coverage_helper": "/home/ugrp/ugrp-sim/src/34d53cfaadc093ac957bbfffc780a76f372041f9/scripts/audit_act16w_dagger_coverage.py",
   "validation_gap_batch": {
     "root": "/home/ugrp/ugrp-sim/runs/act16w-native-val-gap-audit-r1",
     "complete": true,
@@ -155,5 +155,24 @@
     "pid": 94859,
     "log": "/home/ugrp/ugrp-sim/runs/act16w-native-progress-D1.jsonl",
     "scope": "read-only to WAIT_REVIEW_D1/error"
-  }
+  },
+  "dagger_pose_coverage_helper": "/home/ugrp/ugrp-sim/src/34d53cfaadc093ac957bbfffc780a76f372041f9/scripts/audit_act16w_dagger_pose_coverage.py",
+  "dagger_audits_waiter": {
+    "pid": 95055,
+    "script": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/delivery-ops/DAgger-audits-wait.py",
+    "log": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/delivery-ops/DAgger-audits-wait.log",
+    "scope": "after completed20, raw valid/noninitial/afterchangedcommand label audit then evaluation-only robot-pose distributions; no physics; output summaries only to Mac",
+    "status": "complete: coverage20 and robot-pose distributions verified"
+  },
+  "D1_delivery_waiter": {
+    "pid": 98172,
+    "script": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/delivery-ops/D1-delivery-wait.py",
+    "log": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/delivery-ops/D1-delivery-wait.log",
+    "scope": "after existing D1 VAL: first30 ifavailable, full87429 playback, all8 raw recount and saved geometry gap supplement; no physics/no auto review ack"
+  },
+  "completed_h5_data_receipt": "native-h5-data-receipt.json",
+  "completed_h5_prefix_reviews": [
+    "native-dagger-87422-playback-review.json",
+    "native-dagger-87431-playback-review.json"
+  ]
 }

@@ -1,462 +1,252 @@
 {
-  "status": "NATIVE_DAGGER_PREFIX_COLLECTION",
+  "schema": "ugrp.act16w.resume4.v1",
+  "status": "TRAIN_D1",
   "complete": false,
+  "updated_utc": "2026-10-16T18:52:41.027105+00:00",
+  "execution_source_sha": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48",
+  "orchestration_source_sha": "37a8c833656a58ba25472e2106276f225e95ad26",
+  "teacher_library_sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+  "qualified_controller_sha": "f0db6b1abb842ea65b71c433738210254f300a7c",
+  "record_API_sha": "0362037280c6cbc4677f70366db43b9892b23690",
   "contact_profile": "warp_native_contact_v1",
-  "noslip_baseline": {
-    "A": {
-      "n": 0,
-      "N": 5
-    },
-    "B": {
-      "n": 0,
-      "N": 5
-    },
-    "pooled": false,
-    "recount": "noslip-baseline-recount.json"
+  "host": {
+    "project": "ugrp-sim-b-1014",
+    "VM": "ugrp-act-l4-gcp2",
+    "machine": "g2-standard-8"
+  },
+  "noslip10_reference": {
+    "A": "0/5",
+    "B": "0/5",
+    "pooled_with_native": false,
+    "recount": "noslip-baseline-recount.json",
+    "public_model_verification": "../resume2/public-model-verification-ab.json"
   },
   "native_gate": {
     "n": 40,
     "N": 40,
     "kinds": {
-      "cyan": {
-        "n": 10,
-        "N": 10
-      },
-      "red": {
-        "n": 10,
-        "N": 10
-      },
-      "green": {
-        "n": 10,
-        "N": 10
-      },
-      "yellow": {
-        "n": 10,
-        "N": 10
-      }
+      "cyan": "10/10",
+      "red": "10/10",
+      "green": "10/10",
+      "yellow": "10/10"
     },
-    "independent_raw_scores_matched": 40,
-    "manifest_files_verified": 8254,
-    "input_audit_violations": 0,
-    "source": "e40ff44ce97219d075b1a58eabd48007b6f8b2ac",
-    "independent_audit_source": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48",
-    "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-gate-r2"
+    "raw_recount_matches": 40,
+    "source_manifest_files_verified": 8254,
+    "formal_teacher_gate_queue_supplied": false,
+    "original_gate_eligible": false,
+    "coordinator_measured_gate_acceptance": "coordinator-native-gate-recount.md",
+    "provenance_annotation": "native-provenance-annotations.json",
+    "speed_first30_wall_per_SIM_median": 34.2915794728,
+    "speed_gate": "FAIL, recorded explicit override; not a speed pass"
   },
   "native_record": {
-    "status": "complete",
-    "N_requested": 40,
-    "seeds": [
-      87420,
-      87459
-    ],
-    "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-record-r1",
     "n": 40,
     "N": 40,
-    "independent_score_matches": 40,
-    "manifest_files_verified": 8315
-  },
-  "new_training_steps": 30000,
-  "student_evaluation": null,
-  "final40_accessed": false,
-  "wall_cap": null,
-  "host": "ugrp-act-l4-gcp2",
-  "cpu_VM_started": false,
-  "raw_retrieval": "summaries and montage only; originals retained on L4",
-  "rejection_tables": [
-    "native-gate-rejection_table.json",
-    "native-record-rejection_table.json",
-    "native-dataset-rejection_table.json",
-    "rejection_table.json",
-    "native-validation-C-rejection_table-enriched.json"
-  ],
-  "dataset": {
-    "completed_utc": "2026-10-16T15:42:16.963301+00:00",
-    "teacher_n": 40,
-    "teacher_N": 40,
-    "exact_native_JPEG_history_target_pairs": 18046,
-    "rows_total": 18046,
-    "rows_selected": 14886,
-    "train_rows": 11860,
-    "validation_rows": 3026,
-    "train_episodes": 32,
-    "validation_episodes": 8,
+    "raw_recount_matches": 40,
+    "source_manifest_files_verified": 8315,
+    "native_camera_pairs": 18046,
+    "selected_rows": 14886,
+    "TRAIN_rows": 11860,
+    "TRAIN_unique_start_seeds": 32,
+    "VAL_rows": 3026,
+    "VAL_start_seeds": 8,
     "manifest_sha256": "3d0a1c4907f0c91a5674d23e52c9fbf339f03952ce3bcf92dee21f7e8ab7dbd2",
-    "disk_free_bytes": 15001985024,
-    "contact_profile": "warp_native_contact_v1",
-    "source_sha": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48"
+    "receipt": "native-dataset-receipt.json"
   },
   "training": {
-    "source_sha": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48",
+    "same_seed": 20261015,
     "target_steps_each": 10000,
-    "smoke_steps_each": 300,
-    "smoke_readback_verified": true,
-    "status": "A/B/C_10000_complete_readback_verified",
-    "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-training-r1"
-  },
-  "native_learning_status": "A/B/C each0/8 independent recount, all alignment8/8; TRAIN20 DAgger collecting; D1/final40 not started",
-  "native_training_curves": {
-    "path": "native-abc-learning-curves.png",
-    "receipt": "native-abc-learning-curves.json",
-    "reviewed": true,
-    "scope": "actual logged A/B/C losses, no physical performance claim"
-  },
-  "provenance_annotations": {
-    "receipt": "native-provenance-annotations.json",
-    "annotations": 82,
-    "original_files_checked": 253,
-    "originals_unchanged": true,
-    "original_gate_eligible": false,
-    "formal_queue_supplied": false,
-    "coordinator_acceptance": "coordinator-native-gate-recount.md",
-    "actual_contact_profile": "warp_native_contact_v1",
-    "original_scene_label": "cargo_noslip_v1(10), pre-application builder metadata",
-    "first_native_gate_report_class": "milestone"
-  },
-  "native_A_B": {
-    "status": "complete",
-    "arms": {
-      "A": {
-        "n": 0,
-        "N": 8,
-        "kinds": {
-          "cyan": {
-            "n": 0,
-            "N": 2
-          },
-          "red": {
-            "n": 0,
-            "N": 2
-          },
-          "green": {
-            "n": 0,
-            "N": 2
-          },
-          "yellow": {
-            "n": 0,
-            "N": 2
-          }
-        },
-        "stages": {
-          "bilateral_load_observed": 0,
-          "lift_success": 0,
-          "release_success": 0,
-          "issued_sequence_complete": 4,
-          "task_success": 0
-        },
-        "funnel": [
-          {
-            "gate": "requested",
-            "passed": 8,
-            "rejected": 0
-          },
-          {
-            "gate": "sequence_done",
-            "passed": 4,
-            "rejected": 4
-          },
-          {
-            "gate": "stable_lift",
-            "passed": 0,
-            "rejected": 4
-          },
-          {
-            "gate": "stable_release",
-            "passed": 0,
-            "rejected": 0
-          },
-          {
-            "gate": "task_success",
-            "passed": 0,
-            "rejected": 0
-          }
-        ],
-        "cap_end": 4,
-        "HOST_ERROR": 0,
-        "raw_recount_matches": true,
-        "teacher_forced": {
-          "wheel_MAE": 0.04086160785602033,
-          "persistence_wheel_MAE": 0.040185183939219826,
-          "continuous13_MAE": 0.035999165005325386,
-          "transition_h0_wheel_MAE": 0.18249397467601156,
-          "transition_h0_persistence_MAE": 0.3167355317961086,
-          "done_Brier_h0": 0.03626618026373728
-        },
-        "teacher_forced_scope_annotation": {
-          "original_label": "teacher-forced prediction on validation5; not task success, not final40, no checkpoint/policy selection",
-          "actual_validation_seed_N": 8,
-          "reason": "legacy human-readable validation5 text; actual native seed list8 and3026 rows; metrics and source unchanged"
-        }
-      },
-      "B": {
-        "n": 0,
-        "N": 8,
-        "kinds": {
-          "cyan": {
-            "n": 0,
-            "N": 2
-          },
-          "red": {
-            "n": 0,
-            "N": 2
-          },
-          "green": {
-            "n": 0,
-            "N": 2
-          },
-          "yellow": {
-            "n": 0,
-            "N": 2
-          }
-        },
-        "stages": {
-          "bilateral_load_observed": 1,
-          "lift_success": 0,
-          "release_success": 0,
-          "issued_sequence_complete": 2,
-          "task_success": 0
-        },
-        "funnel": [
-          {
-            "gate": "requested",
-            "passed": 8,
-            "rejected": 0
-          },
-          {
-            "gate": "sequence_done",
-            "passed": 2,
-            "rejected": 6
-          },
-          {
-            "gate": "stable_lift",
-            "passed": 0,
-            "rejected": 2
-          },
-          {
-            "gate": "stable_release",
-            "passed": 0,
-            "rejected": 0
-          },
-          {
-            "gate": "task_success",
-            "passed": 0,
-            "rejected": 0
-          }
-        ],
-        "cap_end": 6,
-        "HOST_ERROR": 0,
-        "raw_recount_matches": true,
-        "teacher_forced": {
-          "wheel_MAE": 0.05339614733481375,
-          "persistence_wheel_MAE": 0.040185183939219826,
-          "continuous13_MAE": 0.042904457267351086,
-          "transition_h0_wheel_MAE": 0.14806729075775832,
-          "transition_h0_persistence_MAE": 0.3167355317961086,
-          "done_Brier_h0": 0.02834821810602058
-        },
-        "teacher_forced_scope_annotation": {
-          "original_label": "teacher-forced prediction on validation5; not task success, not final40, no checkpoint/policy selection",
-          "actual_validation_seed_N": 8,
-          "reason": "legacy human-readable validation5 text; actual native seed list8 and3026 rows; metrics and source unchanged"
-        }
-      }
+    "chunk": 8,
+    "period_SIM_s": 0.1,
+    "temporal_ensemble": false,
+    "A": {
+      "complete": true,
+      "steps": 10000,
+      "readback_verified": true,
+      "history": "full",
+      "h4": false,
+      "h5": false
     },
-    "student_success_examples_available": false,
-    "teacher_success_reference_only": "native-teacher-playback-review.json",
-    "matched_failure_playbacks": [
-      "native-A-87429-playback-review.json",
-      "native-B-87429-playback-review.json"
+    "B": {
+      "complete": true,
+      "steps": 10000,
+      "readback_verified": true,
+      "history": "128 wheel/duration columns at TRAIN mean",
+      "h4": false,
+      "h5": false
+    },
+    "C": {
+      "complete": true,
+      "steps": 10000,
+      "readback_verified": true,
+      "history": "full",
+      "h4": true,
+      "h5": false
+    },
+    "D1": {
+      "complete": false,
+      "latest_observed_step": 5670,
+      "history": "full",
+      "h4": true,
+      "h5": true,
+      "progress_receipt": "native-D1-progress-receipt.json"
+    }
+  },
+  "validation": {
+    "A": {
+      "n": 0,
+      "N": 8,
+      "kinds": {
+        "cyan": "0/2",
+        "red": "0/2",
+        "green": "0/2",
+        "yellow": "0/2"
+      },
+      "cap_end": 4,
+      "HOST_ERROR": 0,
+      "alignment_rejections": 8,
+      "stage_counts": {
+        "bilateral_load_observed": 0,
+        "lift_success": 0,
+        "release_success": 0,
+        "issued_sequence_complete": 4,
+        "task_success": 0
+      },
+      "raw_recount_matches": true,
+      "rejection_table": "native-validation-A-rejection_table-enriched.json"
+    },
+    "B": {
+      "n": 0,
+      "N": 8,
+      "kinds": {
+        "cyan": "0/2",
+        "red": "0/2",
+        "green": "0/2",
+        "yellow": "0/2"
+      },
+      "cap_end": 6,
+      "HOST_ERROR": 0,
+      "alignment_rejections": 8,
+      "stage_counts": {
+        "bilateral_load_observed": 1,
+        "lift_success": 0,
+        "release_success": 0,
+        "issued_sequence_complete": 2,
+        "task_success": 0
+      },
+      "raw_recount_matches": true,
+      "rejection_table": "native-validation-B-rejection_table-enriched.json"
+    },
+    "C": {
+      "n": 0,
+      "N": 8,
+      "kinds": {
+        "cyan": "0/2",
+        "red": "0/2",
+        "green": "0/2",
+        "yellow": "0/2"
+      },
+      "cap_end": 3,
+      "HOST_ERROR": 0,
+      "alignment_rejections": 8,
+      "stage_counts": {
+        "bilateral_load_observed": 0,
+        "lift_success": 0,
+        "release_success": 0,
+        "issued_sequence_complete": 5,
+        "task_success": 0
+      },
+      "raw_recount_matches": true,
+      "rejection_table": "native-validation-C-rejection_table-enriched.json"
+    },
+    "D1": {
+      "status": "not_started",
+      "n": null,
+      "N": null
+    }
+  },
+  "A_B_selected_history": "A/off by preregistered n/align tie rule",
+  "h4_observed_success_delta_percentage_points": 0,
+  "h5_data": {
+    "TRAIN_prefixes": 20,
+    "observations": 5427,
+    "valid_h0": 290,
+    "noninitial_after_different_student_command": 270,
+    "noninitial_start_N": 7,
+    "only_initial_label_start_N": 13,
+    "last_valid_SIM_s": 12,
+    "valid_target_visible_N": 221,
+    "future7_padded": true,
+    "prefix_cap_end_N": 14,
+    "input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "teacher_actions_executed": 0
+    },
+    "new_TRAIN_rows": 12150,
+    "TRAIN_sequences": 52,
+    "TRAIN_unique_start_seeds": 32,
+    "VAL_rows_unchanged": 3026,
+    "files_freshly_hashed": 242,
+    "unchanged_D0_shared_files": 161,
+    "D0_normalization_unchanged": true,
+    "receipt": "native-h5-data-receipt.json",
+    "rejection_table": "native-dagger-rejection_table.json",
+    "task_effect": "pending matched D1 VAL8",
+    "full_skill_recovery_expert_qualified": false
+  },
+  "final40": {
+    "status": "unopened",
+    "seed_range": [
+      91620,
+      91659
     ],
-    "final40_accessed": false,
-    "alignment_rejections": {
-      "A": 8,
-      "B": 8
-    },
-    "selected_history": "A/off",
-    "selection_reason": "n0/8 tie, alignment8/8 tie, predeclared A/off on tie",
-    "h4_next": "C fresh10000 sameD0, TRAIN start curriculum only"
+    "n": null,
+    "N": null
   },
-  "native_C_training": {
-    "steps": 10000,
-    "complete": true,
-    "readback_verified": true,
-    "history": "off",
-    "curriculum": true,
-    "same_D0_as_A": true,
-    "validation": "COMPLETE0/8; raw recount matches; kind each0/2",
-    "curve": "native-abc-learning-curves.png",
-    "model": "native-model-C-pending.json"
+  "artifacts": {
+    "curves": "native-abc-learning-curves.png",
+    "matched_montage": "native-A-B-teacher-montage.png",
+    "montage_success_row": "teacher reference, not ACT",
+    "native_models_staged": 3,
+    "native_models_public_verified": 0,
+    "native_release_tag": "models-20261016-act16w-native-v1",
+    "PR": 539,
+    "PR_draft": true,
+    "PR_current_CI_verified": false,
+    "PR_mergeability_issue": "github-mergeability-inconsistency.json"
   },
-  "new_training_steps_scope": "completed A/B/C10000 each, smoke included",
-  "native_h4": {
-    "status": "complete",
-    "comparison": "h4 C vs A",
-    "arms": {
-      "A": {
-        "n": 0,
-        "N": 8,
-        "kinds": {
-          "cyan": {
-            "n": 0,
-            "N": 2
-          },
-          "red": {
-            "n": 0,
-            "N": 2
-          },
-          "green": {
-            "n": 0,
-            "N": 2
-          },
-          "yellow": {
-            "n": 0,
-            "N": 2
-          }
-        },
-        "stages": {
-          "bilateral_load_observed": 0,
-          "lift_success": 0,
-          "release_success": 0,
-          "issued_sequence_complete": 4,
-          "task_success": 0
-        },
-        "funnel": [
-          {
-            "gate": "requested",
-            "passed": 8,
-            "rejected": 0
-          },
-          {
-            "gate": "sequence_done",
-            "passed": 4,
-            "rejected": 4
-          },
-          {
-            "gate": "stable_lift",
-            "passed": 0,
-            "rejected": 4
-          },
-          {
-            "gate": "stable_release",
-            "passed": 0,
-            "rejected": 0
-          },
-          {
-            "gate": "task_success",
-            "passed": 0,
-            "rejected": 0
-          }
-        ],
-        "cap_end": 4,
-        "HOST_ERROR": 0,
-        "raw_recount_matches": true,
-        "teacher_forced": {
-          "wheel_MAE": 0.04086160785602033,
-          "persistence_wheel_MAE": 0.040185183939219826,
-          "continuous13_MAE": 0.035999165005325386,
-          "transition_h0_wheel_MAE": 0.18249397467601156,
-          "transition_h0_persistence_MAE": 0.3167355317961086,
-          "done_Brier_h0": 0.03626618026373728
-        },
-        "teacher_forced_scope_annotation": {
-          "original_label": "teacher-forced prediction on validation5; not task success, not final40, no checkpoint/policy selection",
-          "actual_validation_seed_N": 8,
-          "reason": "legacy human-readable validation5 text; actual native seed list8 and3026 rows; metrics and source unchanged"
-        }
-      },
-      "C": {
-        "n": 0,
-        "N": 8,
-        "kinds": {
-          "cyan": {
-            "n": 0,
-            "N": 2
-          },
-          "red": {
-            "n": 0,
-            "N": 2
-          },
-          "green": {
-            "n": 0,
-            "N": 2
-          },
-          "yellow": {
-            "n": 0,
-            "N": 2
-          }
-        },
-        "stages": {
-          "bilateral_load_observed": 0,
-          "lift_success": 0,
-          "release_success": 0,
-          "issued_sequence_complete": 5,
-          "task_success": 0
-        },
-        "funnel": [
-          {
-            "gate": "requested",
-            "passed": 8,
-            "rejected": 0
-          },
-          {
-            "gate": "sequence_done",
-            "passed": 5,
-            "rejected": 3
-          },
-          {
-            "gate": "stable_lift",
-            "passed": 0,
-            "rejected": 5
-          },
-          {
-            "gate": "stable_release",
-            "passed": 0,
-            "rejected": 0
-          },
-          {
-            "gate": "task_success",
-            "passed": 0,
-            "rejected": 0
-          }
-        ],
-        "cap_end": 3,
-        "HOST_ERROR": 0,
-        "alignment_rejections": 8,
-        "raw_recount_matches": true,
-        "teacher_forced": {
-          "wheel_MAE": 0.044908051495100985,
-          "persistence_wheel_MAE": 0.040185183939219826,
-          "continuous13_MAE": 0.04038212620070632,
-          "transition_h0_wheel_MAE": 0.14939528236829122,
-          "transition_h0_persistence_MAE": 0.3167355317961086,
-          "done_Brier_h0": 0.025115232340674302
-        },
-        "teacher_forced_scope_annotation": {
-          "original_label": "teacher-forced prediction on validation5; not task success, not final40, no checkpoint/policy selection",
-          "actual_validation_seed_N": 8,
-          "rows": 3026,
-          "reason": "legacy validation5 text; actual fixed native8/3026 rows; original retained"
-        }
-      }
+  "workflow_issues": [
+    {
+      "stage": "native gate r1 setup",
+      "category": "HOST_ERROR",
+      "teacher_rollouts": 0,
+      "reason": "texture relative path resolved by from_xml_string in Q cwd; no XML edits",
+      "receipt": "native-r1-summary.json"
     },
-    "only_manipulation": "TRAIN start empirical CDF curriculum; fixed sameD0,seed20261015,10000 steps,chunk8,period0.1,historyoff",
-    "observed_success_delta_percentage_points": 0.0,
-    "interpretation": "No observed task-success improvement in matched VAL8; not proof of zero general effect; no final outcomes used",
-    "student_success_examples_available": false,
-    "failure_playback": "native-C-87429-playback-review.json",
-    "teacher_success_reference_only": "native-teacher-87429-playback-review.json",
-    "rejection_categories": {
-      "student_task_failure": 5,
-      "cap_end": 3
-    },
-    "rejection_reasons": {
-      "lift_not_stable": 5,
-      "grasp_done_not_requested": 3
-    },
-    "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-C",
-    "recount": "native-validation-C-independent.json",
-    "rejection_table": "native-validation-C-rejection_table-enriched.json",
-    "review_ack": "native-review-C.json",
-    "final40_accessed": false,
-    "noslip10_pooled": false
-  }
+    {
+      "stage": "posthoc D1 file audit r1",
+      "category": "ANALYSIS_ERROR",
+      "physics_steps": 0,
+      "reason": "val/validation split-key typo; corrected v2 fresh242-file hash check passed",
+      "receipt": "native-dagger-files-analysis-r1-error.json"
+    }
+  ],
+  "limits": {
+    "wall_cap": null,
+    "idle_seconds": 1200,
+    "budget_stop": "unchanged",
+    "Mac_training_physics_render_GUI": false,
+    "CPU_VM_started": false,
+    "C_CPU_comparison_N": 0,
+    "h1_h2_h3": "off, unimplemented proposals; not evaluated",
+    "raw_evidence": "retained on owned L4, only summaries/montage/review strips retrieved"
+  },
+  "remaining": [
+    "finish D1 fixed10000 and exact readback",
+    "native D1 VAL8 raw recount and direct full2Hz/terminal10Hz review",
+    "freeze selection then evaluate unopened final40 once",
+    "public native model assets plus fresh-clone download/all file hashes/CPU loading",
+    "final curves/funnel/README/PR and verified safe owned-VM stop"
+  ]
 }

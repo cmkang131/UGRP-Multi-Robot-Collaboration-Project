@@ -1,0 +1,1274 @@
+{
+  "status": "complete",
+  "complete": true,
+  "utc": "2026-10-16T18:41:08.100126+00:00",
+  "dataset_manifest_sha256": "2c132339c61e433bf914ecff428e7055ff37c531559f205a485758215e892e3d",
+  "base_manifest_sha256": "3d0a1c4907f0c91a5674d23e52c9fbf339f03952ce3bcf92dee21f7e8ab7dbd2",
+  "files_freshly_hashed": 242,
+  "unchanged_D0_shared_files": 161,
+  "actual_rows": {
+    "train": 12150,
+    "validation": 3026
+  },
+  "actual_episode_counts": {
+    "train": 52,
+    "validation": 8
+  },
+  "new_rows": 290,
+  "new_episodes": 20,
+  "new_rows_by_skill": {
+    "grasp": 290
+  },
+  "h0_valid_future7_padded": true,
+  "D0_normalization_sha256": "bf3caa29012419663820ca13c7e7dd1d6f86199356044d2dbc84be132a923132",
+  "D1_normalization_sha256": "bf3caa29012419663820ca13c7e7dd1d6f86199356044d2dbc84be132a923132",
+  "done_priors_annotation": {
+    "original_dataset_audit_done_priors_are_inherited_D0": {
+      "grasp": {
+        "positive_n": 32,
+        "rows_N": 9055,
+        "positive_fraction": 0.00353395913859746
+      },
+      "release": {
+        "positive_n": 32,
+        "rows_N": 2805,
+        "positive_fraction": 0.01140819964349376
+      }
+    },
+    "actual_D1_training_done_class_counts": {
+      "grasp": {
+        "positive_n": 32,
+        "rows_N": 9345,
+        "positive_fraction": 0.0034242910647405028
+      },
+      "release": {
+        "positive_n": 32,
+        "rows_N": 2805,
+        "positive_fraction": 0.01140819964349376
+      }
+    },
+    "explanation": "unchanged completion_priors algorithm recomputes loss weights from actual D1 TRAIN; original audit file retained; input normalization is byte-identical D0"
+  },
+  "original_D0_manifest_unchanged": true,
+  "source_script": {
+    "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/delivery-ops/audit-dagger-dataset-files-v2.py",
+    "sha256": "760df2437f3688b594ddd378e1de3265da93a1d239a03ee587ba92f753546503"
+  },
+  "reproduce": [
+    "/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/delivery-ops/audit-dagger-dataset-files-v2.py"
+  ],
+  "scope": "dataset files/masks/counts/loss-prior metadata only; no physics/model/policy change",
+  "files": [
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/normalization.json",
+      "sha256": "bf3caa29012419663820ca13c7e7dd1d6f86199356044d2dbc84be132a923132",
+      "bytes": 12856
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/RUN_META.json",
+      "sha256": "c1d56517330e0ebf006ca7cc5d21bf1dc6c670a35e19c38e00caa9f83647b3f2",
+      "bytes": 121
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87424-r1/rgb-provenance.json",
+      "sha256": "3824a556e930c8d2e79dbd6dbadcbd8136205272b060f448bb747d86592ba04d",
+      "bytes": 66350
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87424-r1/images.npy",
+      "sha256": "a721348f5df1c24e7d830a0cb11959c6905518c65cb58f31abe316fd785ae5e8",
+      "bytes": 88012928
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87424-r1/tensors.npz",
+      "sha256": "1bfdc5c2dd291e4c56d79a8800573d7cd76df0d2608704634a38289f5246486e",
+      "bytes": 21899
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87424-r1/samples.json",
+      "sha256": "ac29c200dd89fbd59720e5835763bc245f8e4bebecc9b32653fe7b336ef07e4e",
+      "bytes": 66796
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87459-r1/rgb-provenance.json",
+      "sha256": "1e63df803c583b6594896471afa35458d92df291896075afb6c5c8ec0136e5e7",
+      "bytes": 66177
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87459-r1/images.npy",
+      "sha256": "20c499b5b5abf10993a48628999c38475062cf7156aa6e843c5d236a4dd0e8b7",
+      "bytes": 87782528
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87459-r1/tensors.npz",
+      "sha256": "16c22d204325ff62fba52d86aeb60d14b5f7b16aee2be3c92efaf8ce5e61fa17",
+      "bytes": 20842
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87459-r1/samples.json",
+      "sha256": "00808b21a4ef359cacb304bc511bfedca30c8ef7301dfd46e80c7b3786c0e768",
+      "bytes": 67384
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87447-r1/rgb-provenance.json",
+      "sha256": "b8267537c5da03bba62492795ba03dde3c612c4bf82b4545fab7e22ed3b541c0",
+      "bytes": 60802
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87447-r1/images.npy",
+      "sha256": "e339fb99fcebf8e9a1bcb092d457884ca3af1d02be0e5e1ae18fc8182ce3f930",
+      "bytes": 80640128
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87447-r1/tensors.npz",
+      "sha256": "b9a0bcb2d03d4649d6fde419aefcaa0e18e71d7eedda323270ac4864b2f112b1",
+      "bytes": 19314
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87447-r1/samples.json",
+      "sha256": "b3a89313d0c72ddfb41846607d9ceeb4fc18b6e5269008f5d816a3fcbbd0f8dc",
+      "bytes": 61918
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87440-r1/rgb-provenance.json",
+      "sha256": "364a8c9fc04643bd894f37156448bdfaacc7de7267480f3e147d41a6fd00e4f8",
+      "bytes": 9890
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87440-r1/images.npy",
+      "sha256": "a30e704219b3f2ef7615670415ed3e587476e84538d3eaefed1ab00f20399e79",
+      "bytes": 13132928
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87440-r1/tensors.npz",
+      "sha256": "78ee4fecfdcd8338cba71524464e97fe6c7cca7b3a38a988a047afe83cf4b39e",
+      "bytes": 5533
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87440-r1/samples.json",
+      "sha256": "fd8533e8c3841cad1e2949311481136c57be73c3d75a2a4c77d0ec056f7473d8",
+      "bytes": 13005
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87429-r1/rgb-provenance.json",
+      "sha256": "58a99c42a9cc3f1e255b2811f1cc35e8823d1e05eddbd3de0e98309f0a38b9fd",
+      "bytes": 65310
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87429-r1/images.npy",
+      "sha256": "9047ebcb12de9332e0a9b5a3048c750a2b04e0363edc744b373cda517985d834",
+      "bytes": 86630528
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87429-r1/tensors.npz",
+      "sha256": "4a97004b60ae5e151552cf4a1674f1adcb11fe7893ec7a4d0ff28edf83ab4db4",
+      "bytes": 20279
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87429-r1/samples.json",
+      "sha256": "887036427af02cd19142eb9b9e9ce4305ac6bb8c171231f81e4fffc943ade224",
+      "bytes": 65374
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87423-r1/rgb-provenance.json",
+      "sha256": "42681c69b1b601d32571c37d99c82cc47d7963f94662bad86b8717c2a2613bd6",
+      "bytes": 177
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87423-r1/images.npy",
+      "sha256": "7f174ea5639db56f7f8bf5ddd00459fd017c7f1d1796bfb80a2f39b9fc148105",
+      "bytes": 230528
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87423-r1/tensors.npz",
+      "sha256": "ea4a7d6c8a7059122d5af62d19900d06ba221f4b1e0b93e0a8436daf87655f3f",
+      "bytes": 861
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87423-r1/samples.json",
+      "sha256": "486219a04d4f3bbc0c2798b39eeacae5884268353a3865f1091a0b3110877106",
+      "bytes": 232
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87440-r1/rgb-provenance.json",
+      "sha256": "d21613683cd6a3c71c870f1ea52c614c9bcb8c311a56f079d30e82e418757593",
+      "bytes": 67911
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87440-r1/images.npy",
+      "sha256": "6dc67bf3c03b612e3df5651d661310ab93b49777f1f8898dfff3a64d93419346",
+      "bytes": 90086528
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87440-r1/tensors.npz",
+      "sha256": "88114e2656cdad6a916c3befac46d89e496bf7a5492c8b8d0d993e91de37266e",
+      "bytes": 21959
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87440-r1/samples.json",
+      "sha256": "8e0d1864f9837c897944459f50d566425e26997ffbe4c67607377891ccfa6ab1",
+      "bytes": 68366
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87423-r1/rgb-provenance.json",
+      "sha256": "097c3947f5d8aab8f49a8c1bc8f5cb994883113536850bab10c82abc1827df59",
+      "bytes": 59762
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87423-r1/images.npy",
+      "sha256": "f9de8494bd8468f372a38e8f05ec3e7dae938635138b1cee36e80bc4d0d6d74b",
+      "bytes": 79257728
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87423-r1/tensors.npz",
+      "sha256": "304d723eb2d4fb175e89e088177506923d425cc4cb20867b32fede271d799543",
+      "bytes": 19417
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87423-r1/samples.json",
+      "sha256": "bd9c1df3388c5d0ad85e03f7a5002a0921a601b5057123607abe5a0ff38a0779",
+      "bytes": 60860
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87431-r1/rgb-provenance.json",
+      "sha256": "cabeec702662f01cf455243e8eae850d09e41a52d004d0c24fe39ac8313ecac0",
+      "bytes": 61496
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87431-r1/images.npy",
+      "sha256": "4db24e439ca79237546be4c840198eac8d2c975ddc0a492096c01cf419398c1d",
+      "bytes": 81561728
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87431-r1/tensors.npz",
+      "sha256": "9b553ec9fe571fe236108c0d9a93e7e4c88dd4c547e0deec55905bc510613514",
+      "bytes": 20174
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87431-r1/samples.json",
+      "sha256": "26d54256e5bde4d8ba62baeedc78184311f6ad24f292c23850ccfab2a95aaa6a",
+      "bytes": 62624
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87442-r1/rgb-provenance.json",
+      "sha256": "19c711fa0fbda3429580f700a14d436eff01b9729eb16be91c94dda3fabdfd27",
+      "bytes": 177
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87442-r1/images.npy",
+      "sha256": "8682b4a46a1e107a9d57e381376bdc95035d090483cd6833e294cad7cb6ef1ea",
+      "bytes": 230528
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87442-r1/tensors.npz",
+      "sha256": "315e776fad89afccdcc08ead9ee223d67f90a24f2b52855a924f7975de65aa18",
+      "bytes": 863
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87442-r1/samples.json",
+      "sha256": "9541b0a9ad7d69f1d839edaf47b099394fba4533344c545376eb20ede39d1312",
+      "bytes": 231
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87426-r1/rgb-provenance.json",
+      "sha256": "10d0df58324deb7c755f58e9591d84593426f8892cb78e829be4a5fa28d88556",
+      "bytes": 177
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87426-r1/images.npy",
+      "sha256": "5f972e71d6e1871c449b8f8d69592867719706cb94b6f629d09139e4c3ad46c1",
+      "bytes": 230528
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87426-r1/tensors.npz",
+      "sha256": "315e776fad89afccdcc08ead9ee223d67f90a24f2b52855a924f7975de65aa18",
+      "bytes": 863
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87426-r1/samples.json",
+      "sha256": "5a59fff4467f2500e6859da1e7bb07c1e49e6d1dac5c557c885dba1ec1059218",
+      "bytes": 231
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87437-r1/rgb-provenance.json",
+      "sha256": "19fa4627177adfc449ae0aa2226e68b28521bb3cdf70914cbd300651dbfad5dc",
+      "bytes": 65137
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87437-r1/images.npy",
+      "sha256": "15199503a5c6d83d354fe5daab1bfdfe7a01319d0914d8c5e350f07274e90985",
+      "bytes": 86400128
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87437-r1/tensors.npz",
+      "sha256": "4bbf5f8d698b9780a4622bd93204d47d65260b1fd63417970c9c154c81aff5b3",
+      "bytes": 21351
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87437-r1/samples.json",
+      "sha256": "e7145101142d600b7ccbf2735d3f8bc86c10a80d7e326425f6556ff52c21a6d8",
+      "bytes": 65203
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87451-r1/rgb-provenance.json",
+      "sha256": "49bf503beffc0eae23f3c826ba72988afdece3759651c5b831e21c756744f7ac",
+      "bytes": 64270
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87451-r1/images.npy",
+      "sha256": "8d3eaeb95e85e0a17c466b7611f464413e2472363bce4f6042fe90717f2a2739",
+      "bytes": 85248128
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87451-r1/tensors.npz",
+      "sha256": "269c50899d310d2e4516c77c21f4b320c847ec6270bb3ebf17dad97495280754",
+      "bytes": 20435
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87451-r1/samples.json",
+      "sha256": "de2bf9bf3fcab8593b205b3e3e1ee6054957f85b643de39799e4b3acac466938",
+      "bytes": 65446
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87449-r1/rgb-provenance.json",
+      "sha256": "a8ffd8b0709d19ae68f6c72b77bc37f303d08fc78beb9b556088a156e5ec9c16",
+      "bytes": 66177
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87449-r1/images.npy",
+      "sha256": "7f6d119983202e8df0b3d01a824eea611c7da515bac1794247c9116c280aaa2f",
+      "bytes": 87782528
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87449-r1/tensors.npz",
+      "sha256": "f8506191ced05edee154a0420fe76258f8b1fcf1b3dbb0807258b420204493c2",
+      "bytes": 20634
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87449-r1/samples.json",
+      "sha256": "fe43d118b39d164e55cd5820d10811e08c11b03bd6e10fc734a5ada8082a8a9d",
+      "bytes": 66241
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87446-r1/rgb-provenance.json",
+      "sha256": "d4cd384f1b1613351fba953788e5f84d6ed510d2c57f57ae856e2be24163f416",
+      "bytes": 63403
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87446-r1/images.npy",
+      "sha256": "25befad93995b7c6132228d6e8bb283ab4861bd5cb24236d42a2e252d49c16fa",
+      "bytes": 84096128
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87446-r1/tensors.npz",
+      "sha256": "1a58731d5d9114820f875f8ea6636ab751d970b10a77b0782133cbeb3a3fcc0a",
+      "bytes": 19688
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87446-r1/samples.json",
+      "sha256": "13614ef395d811ceceb8b21d61fc883c0556c3b8a59eebdb12bcc0abb131c38c",
+      "bytes": 64199
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87425-r1/rgb-provenance.json",
+      "sha256": "d8b9a8f515906e3b6273dcdcde642140f5fbb02da2abaada62bd4cad06cdace4",
+      "bytes": 2958
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87425-r1/images.npy",
+      "sha256": "91b1321ce8e20dc0fa7b9ad0760a69c03ee50b42d6137736f0442cde920a2de0",
+      "bytes": 3916928
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87425-r1/tensors.npz",
+      "sha256": "73a9886b849735e93053437aca04eaba91a1b962d600d5f767c33ec48a0faaec",
+      "bytes": 2505
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87425-r1/samples.json",
+      "sha256": "a5f0cbf9a8d72d6456370c12122fedd4b8f17c03826f925f8b1e7dd25bf21079",
+      "bytes": 3856
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87444-r1/rgb-provenance.json",
+      "sha256": "bfbf47f067ff92d538c93a89193531a9d73e5a28bfd1820a13e9ecbcb62e17d6",
+      "bytes": 69645
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87444-r1/images.npy",
+      "sha256": "2d4964dcc4c558a61b8b32984b07d0a84eea0162c8e510bfc032313e74490021",
+      "bytes": 92390528
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87444-r1/tensors.npz",
+      "sha256": "4cb06b2e56c850a17bab0bc78dff418b57e88d4b789ef6f320b028ce0731efc6",
+      "bytes": 24466
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87444-r1/samples.json",
+      "sha256": "67e7151c5e807d6d9903449be011ec6a10026a9b141514cd8fd71af30f18ea48",
+      "bytes": 70110
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87458-r1/rgb-provenance.json",
+      "sha256": "85130d1301e337f767eaa93a51507d12a881cafba2704fd88067dc079a594264",
+      "bytes": 62882
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87458-r1/images.npy",
+      "sha256": "ba47a40c9ec27416bb15978a98d1a52d8d01d40ac8e3d09aa620e3ea61aba926",
+      "bytes": 83404928
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87458-r1/tensors.npz",
+      "sha256": "e4ea6ae6e37a17857ea4be9e6131218ba4d16a270a6c2b2561b69a53dd53cab4",
+      "bytes": 19837
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87458-r1/samples.json",
+      "sha256": "5ad827cde828a4065993d2737ddca18b455db0e3fff463b8f5c1e306f1d6f86f",
+      "bytes": 63672
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87457-r1/rgb-provenance.json",
+      "sha256": "debe01334eaea383a22c7808498252e6ecc064196230236d3a9cb2f8ed9817e1",
+      "bytes": 68605
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87457-r1/images.npy",
+      "sha256": "16527757962d948e1e7e4d3faaaac20210813f7d8621746a82b26842af1707f1",
+      "bytes": 91008128
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87457-r1/tensors.npz",
+      "sha256": "5c1ff653487b552dd5e7c61983efc9bc060cc6a3ddc38a631a3afbdc8042fd71",
+      "bytes": 21378
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87457-r1/samples.json",
+      "sha256": "4d25e00d4cbc09b7d659c44e8dc7e07dc42cba9d838afdb8d61ba5c0bba30453",
+      "bytes": 68671
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87434-r1/rgb-provenance.json",
+      "sha256": "0c63b7004f5d2c50f6c2649303c6e3ec5f4e85221a01bcc7c76b059de0177427",
+      "bytes": 68778
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87434-r1/images.npy",
+      "sha256": "8eb57b26e872b3d0a0042c360b99672c138f307ed9d0200c86aa38b72fc2eed1",
+      "bytes": 91238528
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87434-r1/tensors.npz",
+      "sha256": "eb5ce796a3f03e26f25f80025148bf4adeb30a141912d4936955bac5e4169207",
+      "bytes": 21076
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87434-r1/samples.json",
+      "sha256": "e2805cf7dfe0b0de066b5e4fa10173916f1e11d373ee76c3181daea61f47400b",
+      "bytes": 69634
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87431-r1/rgb-provenance.json",
+      "sha256": "159a9614e0637410f32b9245c93c1620c974767c2be225875c8a4732aced205d",
+      "bytes": 21001
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87431-r1/images.npy",
+      "sha256": "2b53e0cc39f2347d9b280b53135502483fb09e182e4b1584cc520078c52eaa2f",
+      "bytes": 27878528
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87431-r1/tensors.npz",
+      "sha256": "f06bed419d00af5ccc1207ea32178a19531976e421f3ce81ee53ffc080740961",
+      "bytes": 15279
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87431-r1/samples.json",
+      "sha256": "820d6770cbd83abd4f0f0056409c23530f74fb4999f6164982e67a1bdd14e5f5",
+      "bytes": 27920
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87435-r1/rgb-provenance.json",
+      "sha256": "2adb254017b00e48cdcb9d9d3b46638836cc580b126164611de2e43aaf62361c",
+      "bytes": 177
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87435-r1/images.npy",
+      "sha256": "bee24a8ecd90c1476ae1e1ef029e3b3061128ed995aa87532c63a342b93b2725",
+      "bytes": 230528
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87435-r1/tensors.npz",
+      "sha256": "ea4a7d6c8a7059122d5af62d19900d06ba221f4b1e0b93e0a8436daf87655f3f",
+      "bytes": 861
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87435-r1/samples.json",
+      "sha256": "c7de5e560bd68307f4c413eef34923ae03c0f64bfe1d03c2fc555aea4556f45c",
+      "bytes": 232
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87430-r1/rgb-provenance.json",
+      "sha256": "42254a6d9311577d7928791a082e56116f3b99ee87239fde81c07faf49cf8d6c",
+      "bytes": 69472
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87430-r1/images.npy",
+      "sha256": "873d43c9dbaf4068c5e9e7251cdb5ffa01777e7d38855b3c491e9123bdf10b65",
+      "bytes": 92160128
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87430-r1/tensors.npz",
+      "sha256": "4468419559d1f2d88006ce0f5bd879c016645afca71810b181c6dc84e31945de",
+      "bytes": 21762
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87430-r1/samples.json",
+      "sha256": "c7a9f340e5d29182cd6519167052dba0067ce308cc6f47b0a47b7483f0fdeda7",
+      "bytes": 70338
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87438-r1/rgb-provenance.json",
+      "sha256": "d6173c71e0cfcd8653680ceb0f0ab79016d673bf99e1546bbaaa01708be8ecaa",
+      "bytes": 177
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87438-r1/images.npy",
+      "sha256": "b35797d24cf86a22d0795a24ae4e9b7465533b008c5ad3cee59b3d1a731f6c87",
+      "bytes": 230528
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87438-r1/tensors.npz",
+      "sha256": "315e776fad89afccdcc08ead9ee223d67f90a24f2b52855a924f7975de65aa18",
+      "bytes": 863
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87438-r1/samples.json",
+      "sha256": "da83810658dfedd50d870bcaa59eecac68a6b80af28469dcd481042af238d75b",
+      "bytes": 231
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87455-r1/rgb-provenance.json",
+      "sha256": "80ef61fa726ebcf857b74d1e1955ebb807fa682b24f9240226773bc91298bf03",
+      "bytes": 83690
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87455-r1/images.npy",
+      "sha256": "a9ae316d3020aec25097030ee27ccc6423955ac83e85af5bb5463e73627f69a0",
+      "bytes": 111052928
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87455-r1/tensors.npz",
+      "sha256": "47aa53f1f4e90058080953aedfd754a012e936f4e61dabe8b697a55b711e1dd0",
+      "bytes": 32227
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87455-r1/samples.json",
+      "sha256": "ab3337cfdafb790e7d23033d2f0af8aaca970061952261fdd148b28aa37f212b",
+      "bytes": 85200
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87432-r1/rgb-provenance.json",
+      "sha256": "a4a3d2c0833e33bebbe7689585608ec2768f0d5d5040bd63a59190e2c2b4cced",
+      "bytes": 2958
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87432-r1/images.npy",
+      "sha256": "c4baca35eda73823f4db94261e1ef73858e2a195a56ce2a9ffbe5cd75c4590bf",
+      "bytes": 3916928
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87432-r1/tensors.npz",
+      "sha256": "38e049b9d20fd1107b5570f310610d4d16c7e5a7c8a8d5b8fe71c77651e5a70b",
+      "bytes": 2564
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87432-r1/samples.json",
+      "sha256": "aae1bd2f1c1c2fe9ab3a056ca21db7ef47b2bce24aba51eff8556b02b417b36a",
+      "bytes": 3873
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87428-r1/rgb-provenance.json",
+      "sha256": "564ec363a829ca320dc3f792b60199e095bef72ef8ec1e2fd61a168d89354b8d",
+      "bytes": 177
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87428-r1/images.npy",
+      "sha256": "74879e9a0776bff001f556b150a962139b2b52d99324c328a35ca02f18c43d4a",
+      "bytes": 230528
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87428-r1/tensors.npz",
+      "sha256": "28fe39a8b3cd0659e7b2b9fb770b3ec1fb974f4bda6055f734523896b748947a",
+      "bytes": 863
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87428-r1/samples.json",
+      "sha256": "b9a475a95d4a45944c98355f93e4644da987f2c452be4b86d9b64c48d7014528",
+      "bytes": 230
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87427-r1/rgb-provenance.json",
+      "sha256": "86ea7d1214737196bd91de53a21810e370b982d7fcf2231dc7b5c65d1cae7a0c",
+      "bytes": 177
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87427-r1/images.npy",
+      "sha256": "5c5e38cbb3de5c583fd868b66aafed0122cd61e4bee1ccc5b045de131535e840",
+      "bytes": 230528
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87427-r1/tensors.npz",
+      "sha256": "ea4a7d6c8a7059122d5af62d19900d06ba221f4b1e0b93e0a8436daf87655f3f",
+      "bytes": 861
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87427-r1/samples.json",
+      "sha256": "b6db922dfb2b2b948b92d5fd762687c2fd9eacd68f35845ba4efbbe1254c4686",
+      "bytes": 232
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87425-r1/rgb-provenance.json",
+      "sha256": "745823b32a19e09d996da37f361be5da97a3b18eb4bd42186b65117be54539ec",
+      "bytes": 63403
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87425-r1/images.npy",
+      "sha256": "1f9ef93ed0da95248361ae1b5ffb4621cf484405a4d781651858889815bcc571",
+      "bytes": 84096128
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87425-r1/tensors.npz",
+      "sha256": "9051216f94c3c67fe22c09cf7653ca1ffa4c223eeda25bb0f59d34a886c36bfd",
+      "bytes": 20517
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87425-r1/samples.json",
+      "sha256": "490db7dcc3fcad803236e830cca78c28f9db17d2088cce98e07b72c87704c5a8",
+      "bytes": 63469
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87428-r1/rgb-provenance.json",
+      "sha256": "2445bd013bba1741b715701c7494006c0213fc50c00355026898b7d34438cc73",
+      "bytes": 62015
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87428-r1/images.npy",
+      "sha256": "6843d97440ef3c53884c3403f2160a04f062b36293ae0e879d38683c1cb10ab3",
+      "bytes": 82252928
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87428-r1/tensors.npz",
+      "sha256": "68a961d745cce31578e20e3c93646b7d4b18ea91cfbda3d6ecedfd4e9ddd6ab9",
+      "bytes": 19301
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87428-r1/samples.json",
+      "sha256": "c01eafa15dd55fb673b63def26f120ebd533259bdb702cd0976810e5754cc761",
+      "bytes": 62438
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87450-r1/rgb-provenance.json",
+      "sha256": "fed14d79a24f26b0e172d801a7a54a1619dbe4e858585a111a129b4e392c7922",
+      "bytes": 59935
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87450-r1/images.npy",
+      "sha256": "7c96b054b7a1df64a11b78c5091cb3597df6562d0d887448ebf204cc08211765",
+      "bytes": 79488128
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87450-r1/tensors.npz",
+      "sha256": "324d77fdd10a01b44f3db25d4aaad03cc316b00c09f683cc4489fd5622c1a442",
+      "bytes": 20282
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87450-r1/samples.json",
+      "sha256": "e7c0556d2b8eb73ef59f46943f2870508ded746735ffd5820c07374dc34a744e",
+      "bytes": 60691
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87441-r1/rgb-provenance.json",
+      "sha256": "05d2af4ac96ea57dbe984e7a3a9b6d600b171c66b8fc13db675fb3c5b89b0a1c",
+      "bytes": 2958
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87441-r1/images.npy",
+      "sha256": "bc2af4715ded6453e8cef2ffe1242ba012da3f9cf6063f850ebdf9704d23011a",
+      "bytes": 3916928
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87441-r1/tensors.npz",
+      "sha256": "5107ad3b8588c89e67f293b661f0841193ff8658fcb7dc2424f8c06f3210dd24",
+      "bytes": 2532
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87441-r1/samples.json",
+      "sha256": "4f921aa260e2202ca3c5ae5301787f4b251d77aac959f739e28c970024153342",
+      "bytes": 3856
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87448-r1/rgb-provenance.json",
+      "sha256": "cca627b9f6807d09810e410081d636ab4806ccd03e6af9cc7a3dbd32f07c891a",
+      "bytes": 58895
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87448-r1/images.npy",
+      "sha256": "8a056789f0dd4109aa47d8bed2141b3a0a3c6c20e8da99ab02f496db725566f5",
+      "bytes": 78105728
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87448-r1/tensors.npz",
+      "sha256": "5f61fe08bfc152453c2496b79b088fbe80d752f6255b215229e240683df32c5c",
+      "bytes": 19123
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87448-r1/samples.json",
+      "sha256": "5ea946d13d5d75a62c498dfd9d02e94e4349514b90b83ec95e5c88ef5e664fb1",
+      "bytes": 59298
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87439-r1/rgb-provenance.json",
+      "sha256": "dfe82dc652c18f4c56eedf6005fc870605f406ab800fc7347173316c805692fb",
+      "bytes": 65310
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87439-r1/images.npy",
+      "sha256": "25df90c1044098e301919bc4a8272289c97660b63940a9718ec8aeb39acad04c",
+      "bytes": 86630528
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87439-r1/tensors.npz",
+      "sha256": "a7b3d9962431f8292f60b6fb1e66f8fd73145b2e47f3e43a2b2ff970a5963226",
+      "bytes": 20412
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87439-r1/samples.json",
+      "sha256": "cd87f10b7e216d9d2feefc4d43459d5f0c2a3c14fda071ea088742c4e3d1912f",
+      "bytes": 66502
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87421-r1/rgb-provenance.json",
+      "sha256": "690f54dd31850fbe14eca56ea8cc99c6a8711531ca23a0bf893dfe47f9cc6cf8",
+      "bytes": 77621
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87421-r1/images.npy",
+      "sha256": "7414b2c626a2a8f628507c146bf556391f961401d0c8e2e21d71db721c5cceb4",
+      "bytes": 102988928
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87421-r1/tensors.npz",
+      "sha256": "5a842c1cffe2c9b0a4ccd45612580b235505c04d73faac08195fb45e69610af7",
+      "bytes": 26811
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87421-r1/samples.json",
+      "sha256": "4f8f50ab95118868d5285ae6f2fd77c5f48c600a2724c0b747cbef6daff981f5",
+      "bytes": 77685
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87420-r1/rgb-provenance.json",
+      "sha256": "9c5346c8ad9f9262c2160f8623b8a40453b774d12017231db424fe48642159d6",
+      "bytes": 2958
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87420-r1/images.npy",
+      "sha256": "52c8fac3e68c52f4e04ffeed108d217b29f58d6ae504f83a62cab85efa1ea52e",
+      "bytes": 3916928
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87420-r1/tensors.npz",
+      "sha256": "41e2023453d2edad6fa53fd3dfdd5ad7c2ce3bc69fae4c1a28e28734326c7632",
+      "bytes": 2527
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87420-r1/samples.json",
+      "sha256": "7be4858e060a878f6924d3ab0ebae58585715478e554a109529b8db9a0f459be",
+      "bytes": 3873
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87441-r1/rgb-provenance.json",
+      "sha256": "5f1ff22a4ca741175bd0249b12e106b79079b564a326fb46818cc966f603a51c",
+      "bytes": 66004
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87441-r1/images.npy",
+      "sha256": "de4eddae6328aae4a7daf3e3325dcbfb05f345b6a65f41b5d9c6431ab9122fe5",
+      "bytes": 87552128
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87441-r1/tensors.npz",
+      "sha256": "e3bbbe3304eb18f0aa51a22c4dbeb6276ae55e08309615aaecb7c344b5c8274e",
+      "bytes": 21306
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87441-r1/samples.json",
+      "sha256": "9160c0e34eec30ac0ea7b6bba3844bc0c472adb6f29e727e7a9a524fb73f3197",
+      "bytes": 66070
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87427-r1/rgb-provenance.json",
+      "sha256": "ad81b284c62d6451c2c1113a0f63a3f704456cdbe5243936f2671b56ffe34ad5",
+      "bytes": 63749
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87427-r1/images.npy",
+      "sha256": "ac6fb87a5eeaa06934baa77649018868558787962a9e3875fbc196b92bab0cd9",
+      "bytes": 84556928
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87427-r1/tensors.npz",
+      "sha256": "bf97e7ec440a4757e7568e92ce560d5264fac8fa29a48f6e77415ed2466acd0e",
+      "bytes": 19553
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87427-r1/samples.json",
+      "sha256": "6a6befe4b45ce9ddea441f28d952dc5cb797fc521c9b27c21224f38aeeca8928",
+      "bytes": 64916
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87420-r1/rgb-provenance.json",
+      "sha256": "8f96a20350672dcb92b241b6a10749406de360c87338fda9979492e8c3d6e8eb",
+      "bytes": 64270
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87420-r1/images.npy",
+      "sha256": "282e0d089edb2f294b3060bdb913154fbee088eea0a58830e2420ef0722b6f8d",
+      "bytes": 85248128
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87420-r1/tensors.npz",
+      "sha256": "6b7ef48321efa5463ca92b1bf86d572054a581abbe80e278eda3d2ca6d9b836a",
+      "bytes": 20175
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87420-r1/samples.json",
+      "sha256": "3b7b410ec578a16f416763da1ad4a3eb93b9df3125464a83a8c250e3b7758404",
+      "bytes": 64706
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87433-r1/rgb-provenance.json",
+      "sha256": "59df4db619f645fb9e47d39c39c93c9a652030105c8be42346784fc913dd3393",
+      "bytes": 177
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87433-r1/images.npy",
+      "sha256": "6c61ce9639f3f76dbf729a13581571521eea0cf7f5baa229e7d3191a80b60fd5",
+      "bytes": 230528
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87433-r1/tensors.npz",
+      "sha256": "3e15da88578262ebeeafbc0d29b82878447cca3d8e5f2f0a42ee2bf82399aa32",
+      "bytes": 862
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87433-r1/samples.json",
+      "sha256": "da40d0ec72318f3331af169664ca4edcfa8ecb00fdb45cc66b49588fdbd2b2ed",
+      "bytes": 229
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87443-r1/rgb-provenance.json",
+      "sha256": "7c0accb6b2c52557496b85f3944640688cc989c7354e61a03b36565170fad06a",
+      "bytes": 58895
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87443-r1/images.npy",
+      "sha256": "263e74f5acd19f7766323060536526352172d73aa1c88eabd7c86aca8bf75d9c",
+      "bytes": 78105728
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87443-r1/tensors.npz",
+      "sha256": "a9aebd7383f60e0132f073bff5e38d2bfe523832a4958a0fefc365baf8e88bac",
+      "bytes": 18150
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87443-r1/samples.json",
+      "sha256": "2b4845e42c6be711636ef7b54a903907f1f2f9e3e41ad94fd9d5bf1a6328a80d",
+      "bytes": 59976
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87435-r1/rgb-provenance.json",
+      "sha256": "08d86ef5fb35b2783a123b4277ee247749d306cb56aef4b5f36ab5b678c90ec1",
+      "bytes": 62536
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87435-r1/images.npy",
+      "sha256": "2d9651254504d7b6dd44875818468fdb5828155d9ef57f57fce7b64c944cf3ef",
+      "bytes": 82944128
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87435-r1/tensors.npz",
+      "sha256": "08e115698525e3916f6a709f34e98a0d78576932ab31f0473f29ba2217cd7def",
+      "bytes": 20907
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87435-r1/samples.json",
+      "sha256": "e5d367f31caead5b0e7623be940bb091a0cb5165159b747c3064525020314d51",
+      "bytes": 63682
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87437-r1/rgb-provenance.json",
+      "sha256": "c1714a7ac6072fa8d6eb2cf2d70d66c1d402bc731356f19f056d1f766f5f984c",
+      "bytes": 177
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87437-r1/images.npy",
+      "sha256": "7d0795cbd44194d750fc4c8db972c6d80bc0f42b0145691e156502485e7a5b89",
+      "bytes": 230528
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87437-r1/tensors.npz",
+      "sha256": "3e15da88578262ebeeafbc0d29b82878447cca3d8e5f2f0a42ee2bf82399aa32",
+      "bytes": 862
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87437-r1/samples.json",
+      "sha256": "b9264ea81fcafd246fe0a319a280453b6e1cde8dfa8105efae383e3295956cde",
+      "bytes": 229
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87422-r1/rgb-provenance.json",
+      "sha256": "ccb5bfd41272f86ed4403a3bf53a04f681336a7d342cfc54ef87f3889cbf492c",
+      "bytes": 64443
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87422-r1/images.npy",
+      "sha256": "1043114804adf1e9f7429fda1e79a283d0241a2e82982f315b9935162a4a355e",
+      "bytes": 85478528
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87422-r1/tensors.npz",
+      "sha256": "eefe71540105bc20a6b835b80543a7b1d14780c77f67ae2a52325d8c9091f08f",
+      "bytes": 20220
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87422-r1/samples.json",
+      "sha256": "ce680c20c2b5478848733ab2e71fd9ce1f051e6f1968da3f6e0734d0dd806349",
+      "bytes": 65249
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87422-r1/rgb-provenance.json",
+      "sha256": "3ca7ba77ddb04b61d371e615b7f492ca179a0c7881389a504f1621a84c5c93af",
+      "bytes": 177
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87422-r1/images.npy",
+      "sha256": "0896d34e15dddcac1ee5a1fdb37ed08765e9a923b3b1e8c65f05ad97b652bf5f",
+      "bytes": 230528
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87422-r1/tensors.npz",
+      "sha256": "315e776fad89afccdcc08ead9ee223d67f90a24f2b52855a924f7975de65aa18",
+      "bytes": 863
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87422-r1/samples.json",
+      "sha256": "5173b29634beaecb82625b9df9706f4876170b3a7632722b4592e24fab02af53",
+      "bytes": 231
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87456-r1/rgb-provenance.json",
+      "sha256": "368c64a702f1e5b1f4b9c8ae2ba828a28499420eca2a4a96cfe17e2f1d222ac6",
+      "bytes": 58028
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87456-r1/images.npy",
+      "sha256": "29eb7ac1c2b5d25eca981200bf496eb7f3c6ad2bf4c812ea11b2e4dddf4448f0",
+      "bytes": 76953728
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87456-r1/tensors.npz",
+      "sha256": "a44dcb4d95b81ae79e4bfac954a52c867727030868e4b347185167cf692bd0ba",
+      "bytes": 18031
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87456-r1/samples.json",
+      "sha256": "e7c22f2b95586f9a2b7871fd8d4d57f6bb0520ac42104a6fa4ead4ed0c372396",
+      "bytes": 58426
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87421-r1/rgb-provenance.json",
+      "sha256": "a67a3ce2da49dab2b96ca824c0964079be1a76c204c35d3604aa399c55ca0bff",
+      "bytes": 177
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87421-r1/images.npy",
+      "sha256": "6cee222156c707ebec43a55571248875356e82df9d428662fc610a6b75669f4f",
+      "bytes": 230528
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87421-r1/tensors.npz",
+      "sha256": "3e15da88578262ebeeafbc0d29b82878447cca3d8e5f2f0a42ee2bf82399aa32",
+      "bytes": 862
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87421-r1/samples.json",
+      "sha256": "0eaae444cde939820490207bf1cb535e9895372a625cc9852cbe901d8bf327e7",
+      "bytes": 229
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87436-r1/rgb-provenance.json",
+      "sha256": "22f3e1ad4dfcb8236bf570c5862ebd04e642a502116173fba0bb935ad1047a53",
+      "bytes": 177
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87436-r1/images.npy",
+      "sha256": "cec0085860df6ac205e701eca15f6a4b5b703c722842593446858bc624ee6b42",
+      "bytes": 230528
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87436-r1/tensors.npz",
+      "sha256": "28fe39a8b3cd0659e7b2b9fb770b3ec1fb974f4bda6055f734523896b748947a",
+      "bytes": 863
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87436-r1/samples.json",
+      "sha256": "7b6e17acc5840dfa0d3cb0883ace3da1bd7717eaa37fb3615566629a3420c31b",
+      "bytes": 230
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87438-r1/rgb-provenance.json",
+      "sha256": "6568d507dca6c129f36c7252cad30f9275eb6e076d54ff364721482b3b7486c7",
+      "bytes": 62536
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87438-r1/images.npy",
+      "sha256": "082a14682389184e4b39ba9d40dd483e86ba02f975554605491cadbf067b3563",
+      "bytes": 82944128
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87438-r1/tensors.npz",
+      "sha256": "774c6cfbb07021da52a2b22237954f4196752bd079dd12e79344751efe1305d5",
+      "bytes": 20290
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87438-r1/samples.json",
+      "sha256": "5192764522c10fda17fbbc5426ffb93987736be53bb2fab5a4d7d37a67a36af4",
+      "bytes": 63322
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87426-r1/rgb-provenance.json",
+      "sha256": "206722f9a063ad57942ca6997d386069b71fdace5a1ea73dadbdd93ad7bc2d90",
+      "bytes": 60629
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87426-r1/images.npy",
+      "sha256": "fdb242c5aa0c4ea7e8d775765f1210aa60e89d4fec4be40d3511af0aa2b0b027",
+      "bytes": 80409728
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87426-r1/tensors.npz",
+      "sha256": "c86e3bdc574b4928ace07814130a9dbdb06d831d7254440e4c957b5d0db7d9f9",
+      "bytes": 19980
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87426-r1/samples.json",
+      "sha256": "544238c81bd046c1f2ade553462621c91ebbef1554d54c43f022f994e5bfdb8d",
+      "bytes": 61393
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87433-r1/rgb-provenance.json",
+      "sha256": "3f16566b3ca8d7121059fbba17dcd9f3daff04d19d9c2eed052ed2148773faae",
+      "bytes": 68778
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87433-r1/images.npy",
+      "sha256": "1c896e234ff5c9b7d80930875c8b1e59c0f5ceb7631e6f143b4a90608422c220",
+      "bytes": 91238528
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87433-r1/tensors.npz",
+      "sha256": "418a2cb94e899c0798db0d3df2b1d5a191f1c0737009a2fe878724bac8d42f04",
+      "bytes": 20304
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87433-r1/samples.json",
+      "sha256": "228b78a97ca5e060a3b2fc311d153299f21a344d5e973e7763993ed02b63e370",
+      "bytes": 68842
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87453-r1/rgb-provenance.json",
+      "sha256": "0eec6975d5361e207940c1cfb921776dde5e29b996b21b343567a66d3cae8f40",
+      "bytes": 60802
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87453-r1/images.npy",
+      "sha256": "08a55727762d8ab9a9477a51722c337c6008c758537c6e14e53f72ee8ccb6bc2",
+      "bytes": 80640128
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87453-r1/tensors.npz",
+      "sha256": "87132ad1853c8d4cabebc5dff425eff1217c19b37b3cf0dc01d60c9f086c34f6",
+      "bytes": 19917
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87453-r1/samples.json",
+      "sha256": "340b5feb662edc4b0a3f2f6cad6e8845a3a0fddd73da4c54499f29a307964717",
+      "bytes": 60868
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87452-r1/rgb-provenance.json",
+      "sha256": "a939762eee726fd0000a65b7b5144f6d40bb2b3f041c8d6b63579adca31f6c86",
+      "bytes": 62536
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87452-r1/images.npy",
+      "sha256": "117c30acb9b8765b7e16fc6f9806519012162775b6a1fe36f50ab89398f05ff2",
+      "bytes": 82944128
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87452-r1/tensors.npz",
+      "sha256": "8e02c7a26165682e3a8bc03c0811292ce36604cbeebe2301b1400f220e2ec598",
+      "bytes": 19968
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87452-r1/samples.json",
+      "sha256": "6821ae982475f76ab8591c46eaa4fdd9e14baf77b4c075a33c64924605122dc5",
+      "bytes": 62962
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87436-r1/rgb-provenance.json",
+      "sha256": "2fde855baa4f6d868b308235ea68cbdbe0905f7a5f829eae07e7417ad2e7f574",
+      "bytes": 64443
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87436-r1/images.npy",
+      "sha256": "0ecd6425b08d2ff9c5a7b106b1f5b2b8305de9fad30e6aa376910c7db577df1a",
+      "bytes": 85478528
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87436-r1/tensors.npz",
+      "sha256": "5763e1da26174a84219b6aca8e1cab0dfae8a62420c2f4424b520db4ad10a5f1",
+      "bytes": 20926
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87436-r1/samples.json",
+      "sha256": "01286b5d19b7f57ab85b7399298ca58d5889749f8da85d35830946815bbe4922",
+      "bytes": 64878
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87430-r1/rgb-provenance.json",
+      "sha256": "4d7edd8aeddc153ccd844949fe335d449fb72e8facb1423abf7e51efce2eeecb",
+      "bytes": 5387
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87430-r1/images.npy",
+      "sha256": "a50f5fdc78a77f1fe3eba2b5cd4cb1905274f6affd9d21f1566353ae928c70dc",
+      "bytes": 7142528
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87430-r1/tensors.npz",
+      "sha256": "47ad61a1096a1fe0fc23cca07bc6efa60deeacba39bfdf6376f2c7274965bede",
+      "bytes": 4267
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87430-r1/samples.json",
+      "sha256": "81a12aa9f91f0dac783699dac64c7d43883925bfe37ae44d1085608a278f4663",
+      "bytes": 7103
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87443-r1/rgb-provenance.json",
+      "sha256": "42ca5b7f5c81df95e779bfcfec0b7ffdf071c93af836faff3e3b47d77c495baa",
+      "bytes": 177
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87443-r1/images.npy",
+      "sha256": "2c56f05af1d0e5f2563ec9d5b88aa39c2d1c57b745f52ac265a4b12a50fbb5ea",
+      "bytes": 230528
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87443-r1/tensors.npz",
+      "sha256": "ea4a7d6c8a7059122d5af62d19900d06ba221f4b1e0b93e0a8436daf87655f3f",
+      "bytes": 861
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/dagger1-87443-r1/samples.json",
+      "sha256": "e3330a2a968d4b4907d1058287a095fc131c8b51e02d206eb5ad5eb09414709c",
+      "bytes": 232
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87454-r1/rgb-provenance.json",
+      "sha256": "9dd6b2675c73edcd54ad2c214a02ac8c8ff630e91f69cd865e94acedc211b80b",
+      "bytes": 57854
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87454-r1/images.npy",
+      "sha256": "b4f84ee35cb16a1ccc357127b3b2a3b2fb518ba0af716ebd29fb19972cdbc326",
+      "bytes": 76723328
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87454-r1/tensors.npz",
+      "sha256": "01c3cec18a5d82110d1442193272d5bf6e1c82702e6c053a5c9b17db2f021ee8",
+      "bytes": 20039
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87454-r1/samples.json",
+      "sha256": "a3420b19c99c8d361938e1bbda5744049f310e5af163440271ed87656f55efc2",
+      "bytes": 58584
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87432-r1/rgb-provenance.json",
+      "sha256": "f926306ece709d31a7444d38e807e9be27b0dde3f840ac2dc4b589537bb4643c",
+      "bytes": 61496
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87432-r1/images.npy",
+      "sha256": "007f5fdcf22b1adb079aab03de450d453aab6ac50be5a5c94d3e895e9b100972",
+      "bytes": 81561728
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87432-r1/tensors.npz",
+      "sha256": "cb993a794119097189b24e132b0256e1b7a0c826e0dc7b0822a8afa58807bfda",
+      "bytes": 21109
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87432-r1/samples.json",
+      "sha256": "9a22d8e9d7b501abdc6e0dcfd9647bd2c9d8e25472f591a16961679f47f55195",
+      "bytes": 61916
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87442-r1/rgb-provenance.json",
+      "sha256": "78529d24b711e388f338c2c2338e2d3ef51ff98e2a1681b1005f6cf554fabced",
+      "bytes": 58028
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87442-r1/images.npy",
+      "sha256": "62b911ede3b5ae0063b3c4a070e54ebe23a837f9cd2316ba64c9afa2d3f2400e",
+      "bytes": 76953728
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87442-r1/tensors.npz",
+      "sha256": "b1d1c079acba42441fb760f6e66bbf15bd7cac630bd4a030b1152ea7ddb01858",
+      "bytes": 19290
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87442-r1/samples.json",
+      "sha256": "c2779cadd1cc0781811718f5c6ba1887e2a2d2a1458494742c697735ffeccfe4",
+      "bytes": 58760
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87445-r1/rgb-provenance.json",
+      "sha256": "6a37052094ba5ef518330974f3429d743205368e48cbeb499dc156723bdc0873",
+      "bytes": 73634
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87445-r1/images.npy",
+      "sha256": "e78a8172ca96b3b32bbf277ec534d953bf7b025466827c376052f514b224618d",
+      "bytes": 97689728
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87445-r1/tensors.npz",
+      "sha256": "a30e2c0bd61e0988f7c064dc6609b6180a9a376876d63b1fc5d12bdb7f6b7845",
+      "bytes": 23727
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/dagger-dataset/dataset/87445-r1/samples.json",
+      "sha256": "e44c4aa743ec7fda7b1a7e58d286dbdd9c9fb76eb6bbf214978e912fdc66e87d",
+      "bytes": 73698
+    }
+  ]
+}
