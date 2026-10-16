@@ -94,3 +94,12 @@ def test_probability_field_uses_upstream_beam_product_and_ceil_stride():
     value=n.likelihood_product(f,p,points,.0202)
     np.testing.assert_allclose(value,[.505**48,.005**48],rtol=1e-12,atol=0)
     np.testing.assert_array_equal(n.likelihood_product(f,p,[],.0202),[1,1])
+
+
+def test_missing_beam_slots_are_not_packed_before_official_stride():
+    f=StaticField(STATIC);p=np.array([[0.,0.,0.],[0.,-.5,0.]])
+    points=np.full((96,2),np.nan);points[1::2]=[0.,.9]
+    # Original ceil(96/60)=2 selects only unknown even columns. They carry
+    # no evidence. Packing 48 known odd columns would invent a different scan.
+    np.testing.assert_array_equal(n.likelihood_product(f,p,points,.0202),[1,1])
+    assert n.likelihood(f,p,points,.0202)[0]>1

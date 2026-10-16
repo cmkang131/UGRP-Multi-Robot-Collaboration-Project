@@ -47,6 +47,7 @@ def likelihood(field, poses, points, sigma_hit, max_beams=60):
         return np.ones(len(poses))
     step = max(1, (len(points)-1)//(max_beams-1))
     points = points[::step]
+    points = points[np.isfinite(points).all(axis=1)]  # upstream skips NaN AFTER stride
     result = np.empty(len(poses))
     # Chunk is a memory bound only, never a candidate/work truncation.
     for begin in range(0, len(poses), 2048):
@@ -111,6 +112,7 @@ def likelihood_product(field, poses, points, sigma_hit, max_beams=60):
     points=np.asarray(points,float).reshape(-1,2)
     if not len(points):return np.ones(len(poses))
     points=points[::max(1,math.ceil(len(points)/max_beams))]
+    points=points[np.isfinite(points).all(axis=1)]  # keep original beam slots until stride
     out=np.empty(len(poses))
     for begin in range(0,len(poses),2048):
         p=poses[begin:begin+2048];c,s=np.cos(p[:,2,None]),np.sin(p[:,2,None])

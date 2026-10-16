@@ -148,9 +148,12 @@ class StaticAMCL:
         # One endpoint per actually returned bearing; zero invented max range.
         camera = np.asarray(scan.get('camera') or [0., 0.])
         columns = scan.get('columns', [])
+        # Nav2 strides the ORIGINAL scan slots, then skips NaNs. Packing valid
+        # RGB returns first changes which bearings the probability model uses.
         points = np.array([camera+v['range_m']*np.array([math.cos(v['bearing_rad']), math.sin(v['bearing_rad'])])
-            for v in columns if v.get('status')=='hit' and v.get('range_m') is not None], float).reshape(-1, 2)
-        if not len(points):
+            if v.get('status')=='hit' and v.get('range_m') is not None else [np.nan,np.nan]
+            for v in columns], float).reshape(-1, 2)
+        if not columns:
             # Generic adapter (e.g. saved segment-only source): segment ends
             # already observed. No interpolation between separated detections.
             points = np.unique(segments.reshape(-1, 2), axis=0)
@@ -165,7 +168,7 @@ class StaticAMCL:
         ess = float(1/np.sum(self.weights*self.weights))
         row.update(attempted=True, reason='posterior_unresolved', pre_resample_ess=ess,
             recovery_probability=injection, work=dict(particles=len(self.particles),
-                point_checks=len(self.particles)*len(points[::max(1,math.ceil(len(points)/60) if self.profile=='likelihood_product_v1' else (len(points)-1)//59)]), wall_seconds_used_as_gate=0))
+                point_checks=len(self.particles)*int(np.isfinite(points[::max(1,math.ceil(len(points)/60) if self.profile=='likelihood_product_v1' else (len(points)-1)//59)]).all(axis=1).sum()), wall_seconds_used_as_gate=0))
         # Standard adaptive resampling each sensor update, Nav2 interval=1.
         self.particles, stats = nav2.resample(self.particles, self.weights, self.rng,
             self.uniform_free, injection, minimum=self.minimum_particles)
