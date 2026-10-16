@@ -1,0 +1,1 @@
+beampair8: NOT_READY (기록 진행) | 기록on 동일성4/4 정확·JPEG2984/2984 동일 | 교사 관문40/40, 새200회 진행 중 | 디스크 실측48.14MiB/회 예산·변환/타작업 포함 예상158.54GiB 여유 | 데이터 gcp2:/home/ugrp/ugrp-sim/runs/beampair8-record-<seed>-72c0e83d/ | PR https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/537

@@ -1,0 +1,64 @@
+{
+  "at": "2026-10-15T22:30:25.359538+00:00",
+  "own_compute_processes": [],
+  "own_lease_removed": true,
+  "removed_lease": {
+    "task": "beamact1",
+    "pid": 437842,
+    "started": "2026-10-15T22:14:19.090687+00:00",
+    "expected_end": "finite CPU verification + retrieval; GPU quota denied; no scheduled GPU or physical jobs",
+    "concurrency": 3,
+    "stage": "persistence_finalization",
+    "pids": [
+      437842,
+      437843,
+      438080
+    ],
+    "completed_processes": [
+      435282
+    ]
+  },
+  "other_leases": {
+    "reloc18.json": {
+      "task": "reloc18",
+      "pid": 435413,
+      "started": "2026-10-15T21:18:36.408228+00:00",
+      "expected_end": "finite <=3 rounds, <=8 workers; analysis and retrieval",
+      "concurrency": 4,
+      "stage": "round3",
+      "source_sha": "133c12f4cbd5efafba5f94f761d494f45bef075a",
+      "pids": [
+        435441,
+        435440,
+        435443,
+        435442,
+        441959,
+        442248
+      ]
+    },
+    "beampair9.json": {
+      "task": "beampair9",
+      "pid": 438612,
+      "started": "2026-10-15T22:14:01.923605+00:00",
+      "expected_end": "finite analysis + maximum3 run-first rounds + fresh40 gate; <=16 workers; shared <=40",
+      "concurrency": 16,
+      "stage": "round1-267f8ed6",
+      "source_sha": "267f8ed6dbbd32663f7c9a5c392ea12dd44a4920"
+    }
+  },
+  "other_ugrp_compute_processes": [
+    "435413 python          /home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python experiments/2026-10-16-reloc18/run_round.py --round 3",
+    "435445 python          /home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python /home/ugrp/ugrp-sim/src/133c12f4cbd5efafba5f94f761d494f45bef075a/experiments/2026-10-16-reloc18/run_round.py --worker /home/ugrp/ugrp-sim/runs/reloc18-r3-carry-candidate-93266-133c12f4/task.json",
+    "435447 python          /home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python /home/ugrp/ugrp-sim/src/133c12f4cbd5efafba5f94f761d494f45bef075a/experiments/2026-10-16-reloc18/run_round.py --worker /home/ugrp/ugrp-sim/runs/reloc18-r3-carry-command_only-93266-133c12f4/task.json",
+    "438612 python          /home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python experiments/2026-10-16-beampair9/operations/run_round.py /home/ugrp/ugrp-sim/ops-reviews/beampair9/round1-queue.json",
+    "438649 python          /home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python -m scripts.run_beampair1 --plan /home/ugrp/ugrp-sim/ops-reviews/beampair9/run-first-plan.json --episode 6 --out /home/ugrp/ugrp-sim/ops-reviews/beampair9/round1-267f8ed6/diagnostic/episode-006/raw --dependency-root /home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247 --mode beampair1_v1 --candidate baseline --cap-s 60 --rendezvous peer_rendezvous_v2 --approach-repair beampair_approach_v2 --wall-layer beampair_wall_clear_v1 --peer-yield beampair_peer_yield_v1 --box-geometry beampair_box_geometry_v1 --planning-boundary beampair_checks_only_v1",
+    "438660 python          /home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python -m scripts.run_beampair1 --plan /home/ugrp/ugrp-sim/ops-reviews/beampair9/run-first-plan.json --episode 12 --out /home/ugrp/ugrp-sim/ops-reviews/beampair9/round1-267f8ed6/diagnostic/episode-012/raw --dependency-root /home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247 --mode beampair1_v1 --candidate baseline --cap-s 60 --rendezvous peer_rendezvous_v2 --approach-repair beampair_approach_v2 --wall-layer beampair_wall_clear_v1 --peer-yield beampair_peer_yield_v1 --box-geometry beampair_box_geometry_v1 --planning-boundary beampair_checks_only_v1",
+    "438664 python          /home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python -m scripts.run_beampair1 --plan /home/ugrp/ugrp-sim/ops-reviews/beampair9/run-first-plan.json --episode 14 --out /home/ugrp/ugrp-sim/ops-reviews/beampair9/round1-267f8ed6/diagnostic/episode-014/raw --dependency-root /home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247 --mode beampair1_v1 --candidate baseline --cap-s 60 --rendezvous peer_rendezvous_v2 --approach-repair beampair_approach_v2 --wall-layer beampair_wall_clear_v1 --peer-yield beampair_peer_yield_v1 --box-geometry beampair_box_geometry_v1 --planning-boundary beampair_checks_only_v1",
+    "441960 python          /home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python /home/ugrp/ugrp-sim/src/133c12f4cbd5efafba5f94f761d494f45bef075a/experiments/2026-10-16-reloc18/run_round.py --worker /home/ugrp/ugrp-sim/runs/reloc18-r3-selfmap-map_odom-93584-133c12f4/task.json",
+    "442249 python          /home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python /home/ugrp/ugrp-sim/src/133c12f4cbd5efafba5f94f761d494f45bef075a/experiments/2026-10-16-reloc18/run_round.py --worker /home/ugrp/ugrp-sim/runs/reloc18-r3-selfmap-map_odom-93583-133c12f4/task.json"
+  ],
+  "CPU_VM_stop_attempted": false,
+  "reason": "other tasks leases/processes remain; leave gcp2 running and idle guard intact",
+  "second_L4_created": false,
+  "second_L4_stop_required": false
+}

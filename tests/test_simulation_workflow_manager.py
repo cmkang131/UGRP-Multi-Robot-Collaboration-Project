@@ -479,6 +479,18 @@ raise SystemExit(3 if a.fail else 0)
                 e2e18_args[e2e18_args.index('--speed5')+1] = 'lean_v2' if version == 218 else 'lean_v3'
             samples[f'e2e18-v{version}'] = list(e2e18_args)
         samples['e2e-one-beam-ownmap-inputs'] = sha
+        samples['beampair1'] = ['--plan', str(source), '--episode', '0',
+                                 '--dependency-root', str(model), '--mode', 'short']
+        samples['beampair8-record'] = ['--plan', str(source), '--episode', '0',
+                                        '--dependency-root', str(model)]
+        samples['beamact1-data'] = ['--archive', str(source), '--raw-root', str(model)]
+        samples['beamact1-train'] = ['--dataset', str(model), '--stage', 'smoke', '--steps', '300',
+            '--execution-host-profile', 'beamact1_gcp2',
+            '--history-causal-split-v1', 'wheel_pulse_train_mean']
+        samples['beamact1-offline'] = ['--dataset', str(model), '--stages', str(source)]
+        samples['beamact2-student'] = ['--plan', str(source), '--episode', '0',
+            '--dependency-root', str(model), '--model', str(model),
+            '--actor-python', str(source), '--mode', 'beamact2_student_v1']
         # v196 is the preserved HOST_ERROR catalog: it incorrectly required a
         # value for this boolean. Keep its original bytes and the rejection.
         samples['e2e-rpp-lookahead-v196'] = [*e2e_args, '--dev-light']

@@ -1,0 +1,64 @@
+{
+  "checked_utc": "2026-10-16T02:03:27.740684+00:00",
+  "own_running_processes": [],
+  "own_lease": {
+    "task": "actdiag",
+    "pid": 46381,
+    "started_at": "2026-10-16T01:28:26.800825+00:00",
+    "expected_end": "2026-10-16T05:00:00Z",
+    "purpose": "existing checkpoint inference; optimizer0; shared warp3",
+    "mode": "report",
+    "pids": [
+      41358,
+      43739
+    ],
+    "stage": "all-row final inference plus saved-checkpoint probes",
+    "analysis_only": true,
+    "optimizer_steps": 0
+  },
+  "other_leases": {
+    "warp3.json": {
+      "task": "warp3",
+      "pid": 17430,
+      "start": "2026-10-15T22:02:08.673132+00:00",
+      "expected_end": "2026-10-16T05:59:25.154+00:00",
+      "source_sha": "f0db6b1abb842ea65b71c433738210254f300a7c",
+      "stage": "teacher gate R1: 29 worlds active in groups0/2/3; other11 worlds paused, no terminal results yet",
+      "pids": [
+        7804,
+        8648,
+        8649,
+        8650,
+        8651,
+        8652,
+        8653
+      ],
+      "remaining_not_submitted": 0,
+      "paused_pids": [
+        8648,
+        8652,
+        8653
+      ],
+      "active_pids": [
+        8649,
+        8650,
+        8651
+      ],
+      "scheduling_note": "three largest model groups active; smaller groups paused, source/SIM state preserved",
+      "scheduler_pid": 17430,
+      "pid_scope": "finite stage2 gate scheduler; active/paused worker PIDs listed separately"
+    }
+  },
+  "other_processes": [
+    "   8648 python          /home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python -u /home/ugrp/ugrp-sim/src/f0db6b1abb842ea65b71c433738210254f300a7c/scripts/run_warp_act_teacher.py --teacher-source /home/ugrp/ugrp-sim/src/warp1-teacher-snapshot-6f057f7e --plan /home/ugrp/ugrp-sim/src/f0db6b1abb842ea65b71c433738210254f300a7c/experiments/2026-10-16-warp1/all-source-plans.json --physics-backend mjwarp_batch_v1 --scene-v5-v1 --numpy-teacher-v1 --batch-sleep-v1 --native-sleep-policy-compat-v1 --teacher-gate-queue /home/ugrp/ugrp-sim/runs/warp3/teacher-gate-queue-r1.json --per-world-model-references-v1 /home/ugrp/ugrp-sim/runs/warp3/gate-references-r1/per-world-references.json --compiled-reference-v1 /home/ugrp/ugrp-sim/runs/warp3/gate-references-r1/case-01/compiled-312.json --compiled-geometry-312-v1 /home/ugrp/ugrp-sim/runs/warp3/gate-references-r1/case-01/compiled-geometry312.npz --world-episodes 1,13,21 --nworld 3 --cap-s 90 --vm-hourly-usd 1.096 --out /home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group1",
+    "   8649 python          /home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python -u /home/ugrp/ugrp-sim/src/f0db6b1abb842ea65b71c433738210254f300a7c/scripts/run_warp_act_teacher.py --teacher-source /home/ugrp/ugrp-sim/src/warp1-teacher-snapshot-6f057f7e --plan /home/ugrp/ugrp-sim/src/f0db6b1abb842ea65b71c433738210254f300a7c/experiments/2026-10-16-warp1/all-source-plans.json --physics-backend mjwarp_batch_v1 --scene-v5-v1 --numpy-teacher-v1 --batch-sleep-v1 --native-sleep-policy-compat-v1 --teacher-gate-queue /home/ugrp/ugrp-sim/runs/warp3/teacher-gate-queue-r1.json --per-world-model-references-v1 /home/ugrp/ugrp-sim/runs/warp3/gate-references-r1/per-world-references.json --compiled-reference-v1 /home/ugrp/ugrp-sim/runs/warp3/gate-references-r1/case-02/compiled-312.json --compiled-geometry-312-v1 /home/ugrp/ugrp-sim/runs/warp3/gate-references-r1/case-02/compiled-geometry312.npz --world-episodes 2,6,8,10,12,14,18,22,26,30,34,38 --nworld 12 --cap-s 90 --vm-hourly-usd 1.096 --out /home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group2",
+    "   8650 python          /home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python -u /home/ugrp/ugrp-sim/src/f0db6b1abb842ea65b71c433738210254f300a7c/scripts/run_warp_act_teacher.py --teacher-source /home/ugrp/ugrp-sim/src/warp1-teacher-snapshot-6f057f7e --plan /home/ugrp/ugrp-sim/src/f0db6b1abb842ea65b71c433738210254f300a7c/experiments/2026-10-16-warp1/all-source-plans.json --physics-backend mjwarp_batch_v1 --scene-v5-v1 --numpy-teacher-v1 --batch-sleep-v1 --native-sleep-policy-compat-v1 --teacher-gate-queue /home/ugrp/ugrp-sim/runs/warp3/teacher-gate-queue-r1.json --per-world-model-references-v1 /home/ugrp/ugrp-sim/runs/warp3/gate-references-r1/per-world-references.json --compiled-reference-v1 /home/ugrp/ugrp-sim/runs/warp3/gate-references-r1/case-03/compiled-312.json --compiled-geometry-312-v1 /home/ugrp/ugrp-sim/runs/warp3/gate-references-r1/case-03/compiled-geometry312.npz --world-episodes 3,7,11,15,19,23,27,31,35,39 --nworld 10 --cap-s 90 --vm-hourly-usd 1.096 --out /home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group3",
+    "   8651 python          /home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python -u /home/ugrp/ugrp-sim/src/f0db6b1abb842ea65b71c433738210254f300a7c/scripts/run_warp_act_teacher.py --teacher-source /home/ugrp/ugrp-sim/src/warp1-teacher-snapshot-6f057f7e --plan /home/ugrp/ugrp-sim/src/f0db6b1abb842ea65b71c433738210254f300a7c/experiments/2026-10-16-warp1/all-source-plans.json --physics-backend mjwarp_batch_v1 --scene-v5-v1 --numpy-teacher-v1 --batch-sleep-v1 --native-sleep-policy-compat-v1 --teacher-gate-queue /home/ugrp/ugrp-sim/runs/warp3/teacher-gate-queue-r1.json --per-world-model-references-v1 /home/ugrp/ugrp-sim/runs/warp3/gate-references-r1/per-world-references.json --compiled-reference-v1 /home/ugrp/ugrp-sim/runs/warp3/gate-references-r1/case-05/compiled-312.json --compiled-geometry-312-v1 /home/ugrp/ugrp-sim/runs/warp3/gate-references-r1/case-05/compiled-geometry312.npz --world-episodes 5,9,20,29,33,37 --nworld 6 --cap-s 90 --vm-hourly-usd 1.096 --out /home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group4",
+    "   8652 python          /home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python -u /home/ugrp/ugrp-sim/src/f0db6b1abb842ea65b71c433738210254f300a7c/scripts/run_warp_act_teacher.py --teacher-source /home/ugrp/ugrp-sim/src/warp1-teacher-snapshot-6f057f7e --plan /home/ugrp/ugrp-sim/src/f0db6b1abb842ea65b71c433738210254f300a7c/experiments/2026-10-16-warp1/all-source-plans.json --physics-backend mjwarp_batch_v1 --scene-v5-v1 --numpy-teacher-v1 --batch-sleep-v1 --native-sleep-policy-compat-v1 --teacher-gate-queue /home/ugrp/ugrp-sim/runs/warp3/teacher-gate-queue-r1.json --per-world-model-references-v1 /home/ugrp/ugrp-sim/runs/warp3/gate-references-r1/per-world-references.json --compiled-reference-v1 /home/ugrp/ugrp-sim/runs/warp3/gate-references-r1/case-24/compiled-312.json --compiled-geometry-312-v1 /home/ugrp/ugrp-sim/runs/warp3/gate-references-r1/case-24/compiled-geometry312.npz --world-episodes 24 --nworld 1 --cap-s 90 --vm-hourly-usd 1.096 --out /home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group5",
+    "   8653 python          /home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python -u /home/ugrp/ugrp-sim/src/f0db6b1abb842ea65b71c433738210254f300a7c/scripts/run_warp_act_teacher.py --teacher-source /home/ugrp/ugrp-sim/src/warp1-teacher-snapshot-6f057f7e --plan /home/ugrp/ugrp-sim/src/f0db6b1abb842ea65b71c433738210254f300a7c/experiments/2026-10-16-warp1/all-source-plans.json --physics-backend mjwarp_batch_v1 --scene-v5-v1 --numpy-teacher-v1 --batch-sleep-v1 --native-sleep-policy-compat-v1 --teacher-gate-queue /home/ugrp/ugrp-sim/runs/warp3/teacher-gate-queue-r1.json --per-world-model-references-v1 /home/ugrp/ugrp-sim/runs/warp3/gate-references-r1/per-world-references.json --compiled-reference-v1 /home/ugrp/ugrp-sim/runs/warp3/gate-references-r1/case-28/compiled-312.json --compiled-geometry-312-v1 /home/ugrp/ugrp-sim/runs/warp3/gate-references-r1/case-28/compiled-geometry312.npz --world-episodes 28 --nworld 1 --cap-s 90 --vm-hourly-usd 1.096 --out /home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group6",
+    "  17430 python3         python3 /home/ugrp/ugrp-sim/runs/warp3/gate_schedule.py"
+  ],
+  "vm_stop_performed": false,
+  "reason": "shared warp3 lease/processes retained; no VM lifecycle changes",
+  "disk_free_bytes": 13561401344
+}

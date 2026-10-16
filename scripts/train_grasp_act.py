@@ -42,7 +42,13 @@ def main():
     p.add_argument('--done-loss-weight', type=float, default=1.)
     p.add_argument('--command-history-dropout', type=float, default=0.,
                    help='training only: replace whole normalized issued history with train mean; default off')
+    p.add_argument('--history-causal-split-v1', choices=('off', 'wheel_pulse_train_mean'), default='off',
+                   help='ACT16 wheel/pulse history mask, identical at train/deploy; default off')
+    p.add_argument('--execution-host-profile', choices=('legacy', 'beamact1_gcp2'), default='legacy')
     a = p.parse_args()
+    from harness.beamact_input import transform_batch
+    if a.history_causal_split_v1 != 'off' and a.blank_images:
+        p.error('beamact1 history intervention requires own RGB')
     if a.checkpoint_every < 0:
         p.error('checkpoint interval must be nonnegative')
     checkpoint_every = a.checkpoint_every or (100 if a.stage == 'smoke' else 500)
@@ -53,7 +59,12 @@ def main():
         p.error('finite steps and <=7h process budget required')
     if a.stage == 'smoke' and (a.steps > 500 or a.max_wall_s > 1800 or a.resume):
         p.error('smoke: <=500 steps, <=1800s, fresh initialization')
-    host, source = require_gcp(training=True), source_sha()
+    if a.execution_host_profile == 'beamact1_gcp2':
+        from scripts.beamact1_runtime import require_gcp2
+        host = require_gcp2(training=True)
+    else:
+        host = require_gcp(training=True)
+    source = source_sha()
     dataset_hash = sha256(a.dataset / 'manifest.json')
     if a.stage == 'main':
         smoke_hash = sha256(a.smoke_summary) if a.smoke_summary else None
@@ -64,11 +75,13 @@ def main():
                 or smoke.get('blank_images') != a.blank_images
                 or smoke.get('done_loss', 'legacy_l1') != a.done_loss
                 or smoke.get('done_loss_weight', 1.) != a.done_loss_weight
-                or smoke.get('command_history_dropout', 0.) != a.command_history_dropout):
+                or smoke.get('command_history_dropout', 0.) != a.command_history_dropout
+                or smoke.get('history_causal_split_v1', 'off') != a.history_causal_split_v1):
             raise ValueError('completed matching smoke with checkpoint readback required')
         authorize_main(a.approval, source=source, dataset_hash=dataset_hash,
                        smoke_hash=smoke_hash, steps=a.steps, blank=a.blank_images,
-                       command_history_dropout=a.command_history_dropout)
+                       command_history_dropout=a.command_history_dropout,
+                       history_causal_split_v1=a.history_causal_split_v1)
     a.output.mkdir(parents=True, exist_ok=False)
     report = {'status': 'running', 'complete': False, 'stage': a.stage,
         'class': a.run_class, 'research_result': False if a.run_class == 'dev' else None,
@@ -76,13 +89,16 @@ def main():
         'steps_requested': a.steps, 'steps_completed': 0, 'seed': a.seed,
         'blank_images': a.blank_images, 'done_loss': a.done_loss, 'done_loss_weight': a.done_loss_weight,
         'command_history_dropout': a.command_history_dropout,
+        'history_causal_split_v1': a.history_causal_split_v1,
         'checkpoint_every': checkpoint_every,
         'batch_size': 8, 'readback_verified': False,
         'gate_promotion_authorized_if_all_conditions_pass': False,
         'selection': 'fixed final step; validation never selects checkpoint'}
     write_summary(a.output / 'summary.json', report)
     write_json(a.output / 'RUN_META.json', {'class': a.run_class, 'sha': source,
-        'pr': 504, 'branch': 'claude/act-train', 'batch': a.output.name})
+        'pr': None if a.execution_host_profile == 'beamact1_gcp2' else 504,
+        'branch': 'codex/beamact1' if a.execution_host_profile == 'beamact1_gcp2' else 'claude/act-train',
+        'batch': a.output.name})
     started, last_checkpoint = time.monotonic(), None
     stop = {'requested': False}
     def request_stop(signum, frame):
@@ -94,6 +110,10 @@ def main():
         import torch
         from harness.act_training import checkpoint_encoder
         from harness.grasp_act_policy import GraspActor, make_policy, save_actor
+        if a.history_causal_split_v1 != 'off':
+            from functools import partial
+            from harness.beamact_input import BeamActor as GraspActor, save_actor as save_masked_actor
+            save_actor = partial(save_masked_actor, mode=a.history_causal_split_v1)
         if not torch.cuda.is_available() or 'L4' not in torch.cuda.get_device_name(0):
             raise RuntimeError('CUDA NVIDIA L4 required')
         torch.manual_seed(a.seed)
@@ -114,9 +134,10 @@ def main():
             for k, v in {'source_sha': source, 'dataset_manifest_sha256': dataset_hash,
                          'blank_images': a.blank_images, 'seed': a.seed,
                          'command_history_dropout': a.command_history_dropout,
+                         'history_causal_split_v1': a.history_causal_split_v1,
                          'done_loss': a.done_loss, 'done_loss_weight': a.done_loss_weight}.items():
                 if resume.get(k, {'done_loss': 'legacy_l1', 'done_loss_weight': 1.,
-                                  'command_history_dropout': 0.}.get(k)) != v:
+                                  'command_history_dropout': 0., 'history_causal_split_v1': 'off'}.get(k)) != v:
                     raise ValueError('resume provenance mismatch: ' + k)
             if sha256(a.resume / 'optimizer.pt') != resume['optimizer_sha256']:
                 raise ValueError('resume optimizer hash mismatch')
@@ -160,6 +181,7 @@ def main():
             provenance = {'source_sha': source, 'dataset_manifest_sha256': dataset_hash,
                           'blank_images': a.blank_images, 'seed': a.seed, 'step': step,
                           'command_history_dropout': a.command_history_dropout,
+                          'history_causal_split_v1': a.history_causal_split_v1,
                           'done_loss': a.done_loss, 'done_loss_weight': a.done_loss_weight,
                           'done_class_counts': priors}
             if a.run_class == 'dev':
@@ -192,7 +214,7 @@ def main():
                 if a.profile_timing:
                     batch_load_s = time.monotonic() - step_started
                 batch = {k: v.to('cuda') for k, v in batch.items()}
-                batch = drop_command_history(batch, a.command_history_dropout)
+                batch = transform_batch(drop_command_history(batch, a.command_history_dropout), a.history_causal_split_v1)
                 policy.train()
                 optimizer.zero_grad(set_to_none=True)
                 # Existing upstream-compatible activation checkpoint helper.
@@ -233,6 +255,7 @@ def main():
         inputs = {k: torch.from_numpy(v.copy()).unsqueeze(0).to('cuda')
                   for k, v in probe.items() if k.startswith('observation.')}
         assert_tensor_keys(inputs)
+        inputs = transform_batch(inputs, a.history_causal_split_v1)
         if a.profile_timing:
             report['input_audit'] = {'keys': sorted(inputs),
                 'shapes': {k: list(v.shape) for k, v in inputs.items()},

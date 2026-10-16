@@ -1,0 +1,62 @@
+{
+  "scope": "Replay only the saved CPU index generator; no model/optimizer execution.",
+  "seed": 20261015,
+  "steps": 10000,
+  "batch8": 8,
+  "rows": 60023,
+  "draws": 80000,
+  "equivalent_input_row_passes": 1.332822418073072,
+  "unique_input_rows_seen": 44072,
+  "unseen_input_rows": 15951,
+  "unseen_input_fraction": 0.2657481298835446,
+  "count_histogram": {
+    "0": 15951,
+    "2": 14065,
+    "1": 20918,
+    "4": 2105,
+    "3": 6289,
+    "5": 545,
+    "6": 119,
+    "7": 25,
+    "8": 3,
+    "9": 3
+  },
+  "per_phase": {
+    "align": {
+      "rows": 10530,
+      "unseen_input_rows": 2883,
+      "draws": 13889
+    },
+    "approach": {
+      "rows": 26499,
+      "unseen_input_rows": 7015,
+      "draws": 35296
+    },
+    "complete": {
+      "rows": 332,
+      "unseen_input_rows": 91,
+      "draws": 438
+    },
+    "pick": {
+      "rows": 18924,
+      "unseen_input_rows": 4950,
+      "draws": 25453
+    },
+    "ready": {
+      "rows": 352,
+      "unseen_input_rows": 81,
+      "draws": 487
+    },
+    "relook": {
+      "rows": 8,
+      "unseen_input_rows": 4,
+      "draws": 8
+    },
+    "search": {
+      "rows": 3378,
+      "unseen_input_rows": 927,
+      "draws": 4429
+    }
+  },
+  "caveat": "Counts direct observation draws, not future-action target coverage. No optimizer RNG state loaded; reconstructs code seed and contiguous smoke300/main9700 sampler sequence."
+}

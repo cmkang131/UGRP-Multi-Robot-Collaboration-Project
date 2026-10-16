@@ -1,0 +1,454 @@
+{
+  "reference_same20": {
+    "rows": 790,
+    "seed_count": 20,
+    "ACT": {
+      "N": 790,
+      "wheel_mae": 0.1705671508045641,
+      "pulse_mae_ms": 24.302244023126125,
+      "pwm_mae": 46.220000000000006
+    },
+    "persistence": {
+      "N": 790,
+      "wheel_mae": 0.17643519528789606,
+      "pulse_mae_ms": 24.735872456555683,
+      "pwm_mae": 37.65848101265823
+    },
+    "visibility": {
+      "True": {
+        "ACT": {
+          "N": 276,
+          "wheel_mae": 0.1149885191634113,
+          "pulse_mae_ms": 19.7017053069329,
+          "pwm_mae": 28.90724637681159
+        },
+        "persistence": {
+          "N": 276,
+          "wheel_mae": 0.13246259407552008,
+          "pulse_mae_ms": 21.95168055951974,
+          "pwm_mae": 12.691304347826087
+        }
+      },
+      "False": {
+        "ACT": {
+          "N": 514,
+          "wheel_mae": 0.20041092966245935,
+          "pulse_mae_ms": 26.77257220536217,
+          "pwm_mae": 55.516342412451365
+        },
+        "persistence": {
+          "N": 514,
+          "wheel_mae": 0.20004694224240147,
+          "pulse_mae_ms": 26.230886004380427,
+          "pwm_mae": 51.064980544747094
+        }
+      }
+    }
+  },
+  "query_new20": {
+    "rows": 783,
+    "seed_count": 20,
+    "ACT": {
+      "N": 783,
+      "wheel_mae": 0.180707451162809,
+      "pulse_mae_ms": 23.66408106732212,
+      "pwm_mae": 50.163984674329505
+    },
+    "persistence": {
+      "N": 783,
+      "wheel_mae": 0.18556409419797543,
+      "pulse_mae_ms": 23.98519953510442,
+      "pwm_mae": 38.92873563218391
+    },
+    "visibility": {
+      "True": {
+        "ACT": {
+          "N": 228,
+          "wheel_mae": 0.1262681881669651,
+          "pulse_mae_ms": 16.271027982973568,
+          "pwm_mae": 28.521929824561404
+        },
+        "persistence": {
+          "N": 228,
+          "wheel_mae": 0.13536475888635904,
+          "pulse_mae_ms": 17.80061386004939,
+          "pwm_mae": 13.743859649122806
+        }
+      },
+      "False": {
+        "ACT": {
+          "N": 555,
+          "wheel_mae": 0.2030716889340746,
+          "pulse_mae_ms": 26.70122719927072,
+          "pwm_mae": 59.05477477477478
+        },
+        "persistence": {
+          "N": 555,
+          "wheel_mae": 0.20618652383950434,
+          "pulse_mae_ms": 26.525894190802703,
+          "pwm_mae": 49.27495495495496
+        }
+      }
+    }
+  },
+  "status": "complete",
+  "scope": "Existing ACT16a student-visit labels: diagnostic baselines, no optimizer.\n\nReference = original same20 visits, query = separate new20 visits. These are\nnot recovered ACT15 TRAIN data, so the split cannot estimate TRAIN MAE or be\npooled with beam demonstration-validation MAE. Phase is an oracle diagnostic.\n",
+  "baselines": {
+    "mean_phase_oracle": {
+      "metrics": {
+        "N": 783,
+        "wheel_mae": 0.23287503279160185,
+        "pulse_mae_ms": 23.793190940776565,
+        "pwm_mae": 149.2906268791532
+      },
+      "missing_phase_rows": 0,
+      "per_phase": {
+        "align": {
+          "N": 185,
+          "wheel_mae": 0.21551056511056502,
+          "pulse_mae_ms": 20.868288663735164,
+          "pwm_mae": 226.66901228501223
+        },
+        "approach": {
+          "N": 547,
+          "wheel_mae": 0.24857233007572635,
+          "pulse_mae_ms": 25.642188682084463,
+          "pwm_mae": 123.96038467231247
+        },
+        "relook": {
+          "N": 31,
+          "wheel_mae": 0.20976230899830217,
+          "pulse_mae_ms": 23.972835314091682,
+          "pwm_mae": 230.78913412563665
+        },
+        "start": {
+          "N": 20,
+          "wheel_mae": 0.0,
+          "pulse_mae_ms": 0.0,
+          "pwm_mae": 5.551115123125783e-14
+        }
+      }
+    },
+    "median_phase_oracle": {
+      "metrics": {
+        "N": 783,
+        "wheel_mae": 0.2182471264367816,
+        "pulse_mae_ms": 22.721423164481276,
+        "pwm_mae": 129.00306513409961
+      },
+      "missing_phase_rows": 0,
+      "per_phase": {
+        "align": {
+          "N": 185,
+          "wheel_mae": 0.21000000000000005,
+          "pulse_mae_ms": 17.736242331688818,
+          "pwm_mae": 213.62594594594592
+        },
+        "approach": {
+          "N": 547,
+          "wheel_mae": 0.22858775137111517,
+          "pulse_mae_ms": 25.063381181766744,
+          "pwm_mae": 99.43765996343693
+        },
+        "relook": {
+          "N": 31,
+          "wheel_mae": 0.22580645161290328,
+          "pulse_mae_ms": 25.80645161290322,
+          "pwm_mae": 228.90967741935486
+        },
+        "start": {
+          "N": 20,
+          "wheel_mae": 0.0,
+          "pulse_mae_ms": 0.0,
+          "pwm_mae": 0.0
+        }
+      }
+    },
+    "visual_1nn_phase_oracle": {
+      "metrics": {
+        "N": 783,
+        "wheel_mae": 0.21433588761174965,
+        "pulse_mae_ms": 29.840620281638987,
+        "pwm_mae": 133.2554278416347
+      },
+      "missing_phase_rows": 0,
+      "per_phase": {
+        "align": {
+          "N": 185,
+          "wheel_mae": 0.20810810810810812,
+          "pulse_mae_ms": 32.88682148226797,
+          "pwm_mae": 178.7243243243243
+        },
+        "approach": {
+          "N": 547,
+          "wheel_mae": 0.2319469835466179,
+          "pulse_mae_ms": 31.080701474047082,
+          "pwm_mae": 122.4782449725777
+        },
+        "relook": {
+          "N": 31,
+          "wheel_mae": 0.07903225806451611,
+          "pulse_mae_ms": 9.03225806451613,
+          "pwm_mae": 138.04516129032257
+        },
+        "start": {
+          "N": 20,
+          "wheel_mae": 0.0,
+          "pulse_mae_ms": 0.0,
+          "pwm_mae": 0.0
+        }
+      }
+    }
+  },
+  "files": [
+    {
+      "seed": 91426,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91426-b4db8ba2/raw",
+      "valid_rows": 239
+    },
+    {
+      "seed": 91432,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91432-b4db8ba2/raw",
+      "valid_rows": 230
+    },
+    {
+      "seed": 91428,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91428-b4db8ba2/raw",
+      "valid_rows": 252
+    },
+    {
+      "seed": 91422,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91422-b4db8ba2/raw",
+      "valid_rows": 455
+    },
+    {
+      "seed": 91433,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91433-b4db8ba2/raw",
+      "valid_rows": 341
+    },
+    {
+      "seed": 91423,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91423-b4db8ba2/raw",
+      "valid_rows": 599
+    },
+    {
+      "seed": 91425,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91425-b4db8ba2/raw",
+      "valid_rows": 288
+    },
+    {
+      "seed": 91431,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91431-b4db8ba2/raw",
+      "valid_rows": 357
+    },
+    {
+      "seed": 91437,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91437-b4db8ba2/raw",
+      "valid_rows": 353
+    },
+    {
+      "seed": 91427,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91427-b4db8ba2/raw",
+      "valid_rows": 254
+    },
+    {
+      "seed": 91439,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91439-b4db8ba2/raw",
+      "valid_rows": 240
+    },
+    {
+      "seed": 91436,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91436-b4db8ba2/raw",
+      "valid_rows": 268
+    },
+    {
+      "seed": 91430,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91430-b4db8ba2/raw",
+      "valid_rows": 259
+    },
+    {
+      "seed": 91434,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91434-b4db8ba2/raw",
+      "valid_rows": 399
+    },
+    {
+      "seed": 91420,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91420-b4db8ba2/raw",
+      "valid_rows": 315
+    },
+    {
+      "seed": 91421,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91421-b4db8ba2/raw",
+      "valid_rows": 270
+    },
+    {
+      "seed": 91424,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91424-b4db8ba2/raw",
+      "valid_rows": 365
+    },
+    {
+      "seed": 91435,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91435-b4db8ba2/raw",
+      "valid_rows": 328
+    },
+    {
+      "seed": 91429,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91429-b4db8ba2/raw",
+      "valid_rows": 324
+    },
+    {
+      "seed": 91505,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91505-b4db8ba2/raw",
+      "valid_rows": 351
+    },
+    {
+      "seed": 91511,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91511-b4db8ba2/raw",
+      "valid_rows": 200
+    },
+    {
+      "seed": 91513,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91513-b4db8ba2/raw",
+      "valid_rows": 213
+    },
+    {
+      "seed": 91438,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91438-b4db8ba2/raw",
+      "valid_rows": 298
+    },
+    {
+      "seed": 91502,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91502-b4db8ba2/raw",
+      "valid_rows": 358
+    },
+    {
+      "seed": 91501,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91501-b4db8ba2/raw",
+      "valid_rows": 294
+    },
+    {
+      "seed": 91514,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91514-b4db8ba2/raw",
+      "valid_rows": 293
+    },
+    {
+      "seed": 91506,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91506-b4db8ba2/raw",
+      "valid_rows": 294
+    },
+    {
+      "seed": 91503,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91503-b4db8ba2/raw",
+      "valid_rows": 340
+    },
+    {
+      "seed": 91500,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91500-b4db8ba2/raw",
+      "valid_rows": 307
+    },
+    {
+      "seed": 91518,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91518-b4db8ba2-retry1/raw",
+      "valid_rows": 239
+    },
+    {
+      "seed": 91515,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91515-b4db8ba2-retry1/raw",
+      "valid_rows": 364
+    },
+    {
+      "seed": 91508,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91508-b4db8ba2-retry1/raw",
+      "valid_rows": 301
+    },
+    {
+      "seed": 91512,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91512-b4db8ba2-retry1/raw",
+      "valid_rows": 269
+    },
+    {
+      "seed": 91516,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91516-b4db8ba2-retry1/raw",
+      "valid_rows": 251
+    },
+    {
+      "seed": 91509,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91509-b4db8ba2-retry1/raw",
+      "valid_rows": 458
+    },
+    {
+      "seed": 91510,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91510-b4db8ba2-retry1/raw",
+      "valid_rows": 358
+    },
+    {
+      "seed": 91504,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91504-b4db8ba2-retry1/raw",
+      "valid_rows": 314
+    },
+    {
+      "seed": 91507,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91507-b4db8ba2-retry1/raw",
+      "valid_rows": 482
+    },
+    {
+      "seed": 91519,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91519-b4db8ba2-retry1/raw",
+      "valid_rows": 349
+    },
+    {
+      "seed": 91517,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91517-b4db8ba2-retry1/raw",
+      "valid_rows": 307
+    }
+  ],
+  "all_valid_rows_visibility": {
+    "visible": 3923,
+    "not_visible": 8853
+  },
+  "distribution": {
+    "rows": 12776,
+    "wheel_zero_fraction": 0.3035378835316218,
+    "all_wheels_zero_fraction": 0.3024420788979336,
+    "wheel_unique_values": [
+      {
+        "value": -0.35,
+        "N": 13586
+      },
+      {
+        "value": 0.0,
+        "N": 15512
+      },
+      {
+        "value": 0.35,
+        "N": 22006
+      }
+    ],
+    "pulse_unique_values_rounded_us": 2851,
+    "pulse_ms_nonzero": {
+      "min": 1.0034368230365156,
+      "p10": 26.885435933420958,
+      "p25": 40.0,
+      "p50": 40.0,
+      "p75": 63.22941946528482,
+      "p90": 100.00000000000001,
+      "p99": 100.00000000000001,
+      "max": 100.00000000000003
+    },
+    "nonzero_same_sign_run_ticks": {
+      "min": 1.0,
+      "p10": 3.0,
+      "p25": 13.0,
+      "p50": 33.0,
+      "p75": 95.0,
+      "p90": 129.0,
+      "p99": 254.64000000000067,
+      "max": 386.0
+    },
+    "nonzero_run_one_tick_fraction": 0.059967585089141004,
+    "nonzero_runs_N": 617,
+    "run_definition": "same-sign wheel run, reset at shard boundary; ticks*0.1s; separate from within-tick pulse width"
+  },
+  "optimizer_steps": 0,
+  "reference_query_seed_overlap": 0
+}

@@ -1,0 +1,26 @@
+{
+  "checked_utc": "2026-10-16T01:52:51.637930+00:00",
+  "library_file": "/home/ugrp/ugrp-rl1b-act-env/lib/python3.12/site-packages/lerobot/policies/act/modeling_act.py",
+  "library_sha256": "8d622935319af7d03f1efd95d51e726af2921010f7e4f5ec3742f62280493111",
+  "library_file_mtime_utc": "2026-10-15T15:59:08+00:00",
+  "direct_url": {
+    "url": "https://github.com/huggingface/lerobot.git",
+    "vcs_info": {
+      "commit_id": "89236ea0f4f81a81ca566081e20dd1ff5f823cbe",
+      "requested_revision": "89236ea0f4f81a81ca566081e20dd1ff5f823cbe",
+      "vcs": "git"
+    }
+  },
+  "forward_source": "    def forward(self, batch: dict[str, Tensor]) -> tuple[Tensor, dict]:\n        \"\"\"Run the batch through the model and compute the loss for training or validation.\"\"\"\n        if self.config.image_features:\n            batch = dict(batch)  # shallow copy so that adding a key doesn't modify the original\n            batch[OBS_IMAGES] = [batch[key] for key in self.config.image_features]\n\n        actions_hat, (mu_hat, log_sigma_x2_hat) = self.model(batch)\n\n        abs_err = F.l1_loss(batch[ACTION], actions_hat, reduction=\"none\")\n        valid_mask = ~batch[\"action_is_pad\"].unsqueeze(-1)\n        num_valid = valid_mask.sum() * abs_err.shape[-1]\n        l1_loss = (abs_err * valid_mask).sum() / num_valid.clamp_min(1)\n\n        loss_dict = {\"l1_loss\": l1_loss.item()}\n        if self.config.use_vae and log_sigma_x2_hat is not None:\n            # Calculate D\u2096\u2097(latent_pdf || standard_normal). Note: After computing the KL-divergence for\n            # each dimension independently, we sum over the latent dimension to get the total\n            # KL-divergence per batch element, then take the mean over the batch.\n            # (See App. B of https://huggingface.co/papers/1312.6114 for more details).\n            mean_kld = (\n                (-0.5 * (1 + log_sigma_x2_hat - mu_hat.pow(2) - (log_sigma_x2_hat).exp())).sum(-1).mean()\n            )\n            loss_dict[\"kld_loss\"] = mean_kld.item()\n            loss = l1_loss + mean_kld * self.config.kl_weight\n        else:\n            loss = l1_loss\n\n        return loss, loss_dict\n",
+  "predict_source": "    @torch.no_grad()\n    def predict_action_chunk(self, batch: dict[str, Tensor]) -> Tensor:\n        \"\"\"Predict a chunk of actions given environment observations.\"\"\"\n        self.eval()\n\n        if self.config.image_features:\n            batch = dict(batch)  # shallow copy so that adding a key doesn't modify the original\n            batch[OBS_IMAGES] = [batch[key] for key in self.config.image_features]\n\n        actions = self.model(batch)[0]\n        return actions\n",
+  "source_files": {
+    "harness/grasp_act_contract.py": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056",
+    "harness/grasp_act_data.py": "a962d5bc56617ea5521c4e9d0d2e42bfc9cf8d14e287b8e4a7090566bc1b9ef3",
+    "harness/grasp_act_policy.py": "0cfa080f086ea991368e3c686960cf54cab9a8f9796e1077557f17a639f79c6c",
+    "harness/beamact_input.py": "1f0047abcc9e5a3f0f8da862513e98882f82e958ca082e93de6e6b2a917f81d9",
+    "harness/grasp_act_loss.py": "d9dd54c32613f56b63d1f8a641b1156a1e7f925afd36e0c5ff68f3febd53dc52",
+    "scripts/train_grasp_act.py": "b9ae3fa4d3f35e3d6f2c528afe17fdc3c96145a52d2b9411a2c05a85e18d52bf"
+  },
+  "padding_loss_check": "Installed pinned ACT forward divides summed masked absolute error by valid horizons*action_dim; custom done removal valid.mean()/14 uses the same denominator. No padded-denominator defect in this runtime.",
+  "optimizer_steps": 0
+}

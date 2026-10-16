@@ -1,0 +1,219 @@
+{
+  "task": "beamact1",
+  "status": "NOT_READY",
+  "pr": 540,
+  "base_pr": 537,
+  "complete": false,
+  "data_ready": true,
+  "weights": "shared",
+  "dataset_manifest_sha256": "a0f5d8a1c6c9b6c4988122ae40bf412c4c705f3c34740d8d7a91c93fef58d6cd",
+  "train_seed_N": 166,
+  "validation_seed_N": 19,
+  "train_rows": 60023,
+  "validation_rows": 6908,
+  "heldout_reserved_only": [
+    8329000,
+    8329001,
+    8329002,
+    8329003,
+    8329004,
+    8329005,
+    8329006,
+    8329007,
+    8329008,
+    8329009,
+    8329010,
+    8329011,
+    8329012,
+    8329013,
+    8329014,
+    8329015,
+    8329016,
+    8329017,
+    8329018,
+    8329019
+  ],
+  "source_archive_sha256": "739a9faeaf35cd0cf3d8c73b05bdab76ccb8866b1b55dc81d1bb9e9e05fae251",
+  "history_causal_split_v1": "wheel_pulse_train_mean",
+  "command_history_dropout": 0.0,
+  "gpu": {
+    "instance": "ugrp-act-l4-gcp2b",
+    "created": false,
+    "hours": 0,
+    "estimated_VM_cost_USD": 0,
+    "quota_limit": 1,
+    "quota_requested": 2,
+    "request_result": "denied"
+  },
+  "training": {
+    "optimizer_steps": 0,
+    "smoke_completed": false,
+    "main_completed": false
+  },
+  "offline": {
+    "ACT_measured": false,
+    "persistence": {
+      "all_h0": {
+        "all": {
+          "persistence": {
+            "N": 6908,
+            "wheel_mae": 0.02312898263335228,
+            "pulse_mae_ms": 2.961031913757324,
+            "pwm_mae": 8.301765441894531
+          }
+        },
+        "align": {
+          "persistence": {
+            "N": 1142,
+            "wheel_mae": 0.04535901919007301,
+            "pulse_mae_ms": 2.0957558155059814,
+            "pwm_mae": 4.049737453460693
+          }
+        },
+        "approach": {
+          "persistence": {
+            "N": 2968,
+            "wheel_mae": 0.034728772938251495,
+            "pulse_mae_ms": 5.752521991729736,
+            "pwm_mae": 2.4551210403442383
+          }
+        },
+        "complete": {
+          "persistence": {
+            "N": 38,
+            "wheel_mae": 0.0,
+            "pulse_mae_ms": 0.0,
+            "pwm_mae": 0.0
+          }
+        },
+        "pick": {
+          "persistence": {
+            "N": 2166,
+            "wheel_mae": 0.0,
+            "pulse_mae_ms": 0.0,
+            "pwm_mae": 15.189103126525879
+          }
+        },
+        "ready": {
+          "persistence": {
+            "N": 38,
+            "wheel_mae": 0.0,
+            "pulse_mae_ms": 0.0,
+            "pwm_mae": 0.0
+          }
+        },
+        "search": {
+          "persistence": {
+            "N": 556,
+            "wheel_mae": 0.008812949992716312,
+            "pulse_mae_ms": 1.7769261598587036,
+            "pwm_mae": 22.54928207397461
+          }
+        }
+      },
+      "refresh_h0": {
+        "all": {
+          "persistence": {
+            "N": 913,
+            "wheel_mae": 0.02280941791832447,
+            "pulse_mae_ms": 3.383162498474121,
+            "pwm_mae": 8.909309387207031
+          }
+        },
+        "align": {
+          "persistence": {
+            "N": 145,
+            "wheel_mae": 0.03681034594774246,
+            "pulse_mae_ms": 1.6785657405853271,
+            "pwm_mae": 4.547585964202881
+          }
+        },
+        "approach": {
+          "persistence": {
+            "N": 385,
+            "wheel_mae": 0.03295454382896423,
+            "pulse_mae_ms": 5.551906585693359,
+            "pwm_mae": 2.9148051738739014
+          }
+        },
+        "pick": {
+          "persistence": {
+            "N": 304,
+            "wheel_mae": 0.0,
+            "pulse_mae_ms": 0.0,
+            "pwm_mae": 15.409868240356445
+          }
+        },
+        "ready": {
+          "persistence": {
+            "N": 6,
+            "wheel_mae": 0.0,
+            "pulse_mae_ms": 0.0,
+            "pwm_mae": 0.0
+          }
+        },
+        "search": {
+          "persistence": {
+            "N": 73,
+            "wheel_mae": 0.03835616260766983,
+            "pulse_mae_ms": 9.697962760925293,
+            "pwm_mae": 22.849315643310547
+          }
+        }
+      }
+    },
+    "definition": "h0 at fixed 8-tick intervals; reset at task/clock gaps; offline proxy"
+  },
+  "student": {
+    "success_n": null,
+    "attempted_N": 0,
+    "planned_N": 20,
+    "cap_end": 0,
+    "HOST_ERROR": 0,
+    "not_started": 20,
+    "success_rate": null,
+    "funnel": {
+      "approach": null,
+      "alignment": null,
+      "READY": null,
+      "grasp": null,
+      "lift_3s": null
+    },
+    "failure_video_frames": 0,
+    "scope": "NOT_STARTED; never report as0/20"
+  },
+  "release": {
+    "checkpoint_exists": false,
+    "uploaded": false,
+    "redownload_verified": false,
+    "load_verified": false,
+    "complete": false
+  },
+  "rejection_table": "/home/ugrp/ugrp-sim/ops-reviews/beamact1/rejection_table.json",
+  "raw_root": "/home/ugrp/ugrp-sim/ops-reviews/beamact1",
+  "PR": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/540",
+  "verification": {
+    "source": "0757fc157006862a6b05297784c61f204e37098a",
+    "files_verified": 1480,
+    "normalization_exact": true,
+    "reference_file": "verification.json",
+    "retrieval": "retrieval.json"
+  },
+  "raw_locations": {
+    "dataset": "/home/ugrp/ugrp-sim/ops-reviews/beamact1/data-v1/split-v1",
+    "phase_sidecar": "/home/ugrp/ugrp-sim/ops-reviews/beamact1/data-v1/stages.json",
+    "persistence": "/home/ugrp/ugrp-sim/ops-reviews/beamact1/persistence-v1/summary.json"
+  },
+  "cleanup": {
+    "own_processes": 0,
+    "lease_removed": true,
+    "other_leases": [
+      "reloc18.json",
+      "beampair9.json"
+    ],
+    "cpu_vm_stopped": false,
+    "reason": "other tasks leases/processes remain; leave gcp2 running and idle guard intact",
+    "second_L4_VM_and_disk_absent": true
+  },
+  "CI": "no checks reported as of final query; not CI passed"
+}
