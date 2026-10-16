@@ -16,7 +16,7 @@ class VisibleTeacher:
         from audit_grasp_act_visibility import BandVisibility
         from warp_act_numpy import solve_grip_site_ik
         from sim.masterpi_camera_profile import scaled_camera_matrix,CAMERA_FISHEYE_D
-        from zone_teacher import plan_path,proportional_drive
+        from scripts.zone_teacher import plan_path,proportional_drive
         class Eyes(BandVisibility):
             def __init__(self):
                 self.np=np;self.model=m;self.K=scaled_camera_matrix(640,480);self.D=np.array(CAMERA_FISHEYE_D)

@@ -30,10 +30,11 @@ def run(a):
     if not Path(q['rejection_table']).is_file():raise ValueError('PRIOR_FUNNEL_REQUIRED')
     if not Path('/home/ugrp/ugrp-sim/leases/mapbuild7.json').is_file():raise ValueError('OWN_LEASE_REQUIRED')
     vendor=ROOT/'experiments/2026-10-17-mapbuild7/vendor'
-    sys.path[:0]=[str(ROOT),str(ROOT/'scripts'),str(vendor),str(a.teacher_source),str(a.teacher_source/'scripts'),str(a.renderer),str(a.renderer/'scripts')]
+    sys.path[:0]=[str(vendor),str(ROOT),str(a.teacher_source/'scripts'),str(ROOT/'scripts'),str(a.teacher_source),str(a.renderer),str(a.renderer/'scripts')]
     import sim,harness,scripts
     for package,name in ((sim,'sim'),(harness,'harness'),(scripts,'scripts')):
         package.__path__.extend([str(a.teacher_source/name),str(a.renderer/name)])
+    sim.__path__.insert(0,str(a.teacher_source/'sim'));scripts.__path__.insert(0,str(a.teacher_source/'scripts'))
     os.chdir(a.renderer)
     import numpy as np
     import cv2
