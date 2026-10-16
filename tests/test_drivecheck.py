@@ -26,3 +26,10 @@ def test_relative_translation_rotates_into_initial_heading():
     q=[math.cos(math.pi/4),0.,0.,math.sin(math.pi/4)]
     a=np.r_[1.,2.,0.,q];b=np.r_[1.,3.,0.,q]
     np.testing.assert_allclose(delta(a,b),[1.,0.,0.],atol=1e-14)
+
+
+def test_small_tilt_keeps_float32_saved_quaternion_information():
+    angle=math.radians(.01)
+    q=np.array([0,0,0,math.cos(angle/2),math.sin(angle/2),0,0],dtype=np.float32)
+    # Bound comes from one float32 machine epsilon expressed as an angle.
+    assert math.isclose(tilt(q),.01,abs_tol=math.degrees(np.finfo(np.float32).eps))

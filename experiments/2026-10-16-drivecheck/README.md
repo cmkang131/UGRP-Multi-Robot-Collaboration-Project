@@ -18,6 +18,7 @@
 - CPU 기준은 `ugrp-sim-gcp2` / `ugrp-sim-b-1014` / n4-highcpu-64 / MuJoCo3.12.0. 보조 native3.16과 MJWarp3.16/Warp1.15는 `ugrp-act-l4-gcp5` / `ugrp-sim-e-1016` / g2-standard-8·L4에서 돈다. 호스트/버전 결과를 합산하지 않는다.
 - 같은 XML의 C3.12↔3.16 컴파일 결과에서 질량·관성·마찰·solref·dof damping·actuator gain/bias는 동일하다. `geom_quat/geom_size/mesh_vert`의 **컴파일 표현**은 다르므로 C3.12와 Warp의 차이를 곧바로 GPU 단독 결함으로 부르지 않는다. [선택 필드 대조](compiled-comparison.json).
 - 정답 pose·관절·접촉·힘·미끄럼은 평가 출력뿐이다. 명령은 고정되어 어떤 측정도 피드백하지 않는다. 원본 상태/접촉은 10Hz와 모든 펄스 경계에 기록한다. 접촉력은 각 엔진의 실제 force API다. 미끄럼은 저장한 실제 접촉점과 qpos/qvel의 별도 기구학으로 계산한 바닥 접선 상대속도다.
+- 통상 `mj_step`/`mjw.step` 의미대로 접촉/힘은 마지막 solver 계산, qpos/qvel은 그 step 적분 뒤 상태다(간격0.25ms). slip은 이 저장 상태에서 구한 평가값이며 raw 센서나 엄밀한 solver 잔차가 아니다. float32 저장 quaternion은 평가 산술에서 float64로 올려 작은 tilt의 `acos` 상쇄를 줄인다.
 - 전체 10Hz 상태 기록과 별도로 `--record-own-rgb-ring`은 제어와 무관한 기록 전용 옵션이다. 별도 MjData에 자기 RGB640×480 두 카메라를 10Hz, 마지막 10 SIM초까지 보존하고 bytes를 적는다. native3.16 인과 대조에서 44장·1,055,973bytes를 확인했다. 초기 실행은 상태 기록 뒤 필요한 전체 자기 영상을 gcp2에서 재구성했으며, 이를 온라인 원시 RGB와 혼동하지 않는다.
 
 ## 수치가 물리적으로 가능한가

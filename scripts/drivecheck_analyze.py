@@ -10,12 +10,14 @@ import sys
 
 def pose(q):
     import numpy as np
+    q=np.asarray(q,dtype=np.float64)  # evaluate saved float32 state without extra float32 cancellation
     quat=q[3:7]/np.linalg.norm(q[3:7]);w,x,y,z=quat
     return np.array([q[0],q[1],math.atan2(2*(w*z+x*y),1-2*(y*y+z*z))])
 
 
 def tilt(q):
     import numpy as np
+    q=np.asarray(q,dtype=np.float64)  # small tilt needs double arithmetic before acos
     w,x,y,z=q[3:7]/np.linalg.norm(q[3:7])
     return float(np.rad2deg(np.arccos(np.clip(1-2*(x*x+y*y),-1,1))))
 
