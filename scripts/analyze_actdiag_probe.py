@@ -16,22 +16,27 @@ def main():
     require_gcp2(training=True);torch.set_num_threads(4)
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--output',type=Path,required=True);p.add_argument('--inference',type=Path,required=True)
+    p.add_argument('--checkpoint-names',nargs='+',default=['step300','step5000','step10000'])
     a=p.parse_args();a.output.mkdir(exist_ok=False,parents=True)
     base=Path('/home/ugrp/ugrp-sim/ops-reviews/beamact2')
     root=dataset_view(base/'data-v1/split-v1',a.output)
-    data=[];splitnames=[];targets=[]
+    stages={r['sample_id']:r['phase'] for r in read_json(existing(base/'data-v1/stages.json'))}
+    data=[];splitnames=[];targets=[];phases=[]
     for split in ('train','validation'):
         d=GraspDataset(root,split);offset=0
         for ep in (e for e in d.manifest['episodes'] if e['split']==split):
             n=ep['rows_selected']
+            meta=read_json(root/ep['path']/'samples.json')
             for i in sorted({0,n//2,n-1}):
                 item=d[offset+i];data.append(item);splitnames.append(split)
                 targets.append(item['action'][0]*np.asarray(d.stats['action_std'])+d.stats['action_mean'])
+                phases.append(stages[meta[i]['sample_id']])
             offset+=n
-    targets=np.asarray(targets);splitnames=np.asarray(splitnames);result={}
+    targets=np.asarray(targets);splitnames=np.asarray(splitnames);phases=np.asarray(phases);result={}
     models=[('step300',base/'train/smoke/step-000300/actor'),('step5000',base/'train/main/step-005000/actor'),('step10000',base/'train/main/step-010000/actor')]
     begin=time.monotonic()
     for name,model in models:
+        if name not in a.checkpoint_names:continue
         actor=BeamActor.load(model,device='cuda');values=[];role_values=[];image_values=[]
         for start in range(0,len(data),8):
             batch=torch.utils.data.default_collate(data[start:start+8])
@@ -56,7 +61,12 @@ def main():
             for n,v in [('role_swap',role_values),('batch_rgb_roll',image_values)]:
                 v=np.asarray(v);result['posthoc_sensitivity'][n]=dict(h0_raw_change=metrics(v,values),
                     baseline=metrics(decoded(values),targets),changed=metrics(decoded(v),targets),
+                    per_phase={ph:dict(N=int((phases==ph).sum()),h0_raw_change=metrics(v[phases==ph],values[phases==ph]),
+                        baseline=metrics(decoded(values[phases==ph]),targets[phases==ph]),
+                        changed=metrics(decoded(v[phases==ph]),targets[phases==ph])) for ph in sorted(set(phases))},
                     scope='post-hoc OOD input sensitivity, not a retrained causal ablation or deployment candidate')
+            np.savez_compressed(a.output/'sensitivity.npz',original=values,role_swap=role_values,
+                rgb_roll=image_values,target=targets,phase=phases,split=splitnames)
         result[name]['model_sha256']=sha256(model/'model.safetensors')
         del actor;torch.cuda.empty_cache();print(name,'complete',flush=True)
     windows=[]
