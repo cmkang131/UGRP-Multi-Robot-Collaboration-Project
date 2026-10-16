@@ -53,6 +53,9 @@ optimizer = torch.optim.AdamW(policy.get_optim_params(), lr=1e-5, weight_decay=1
 generator = torch.Generator().manual_seed(20261015)
 out = ROOT/'beamact3-environment-smoke'
 out.mkdir(exist_ok=False)
+(out/'RUN_META.json').write_text(json.dumps(dict(
+    **{'class':'dev'},pr=561,branch='codex/gcp6setup',sha=source_manifest['source_sha'],
+    batch='gcp6setup-environment-smoke',research_result=False))+'\n')
 losses = []
 for step in range(1, 51):
     indices = torch.randint(len(data), (8,), generator=generator).tolist()

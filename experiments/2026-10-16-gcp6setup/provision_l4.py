@@ -18,7 +18,10 @@ observations = json.loads((EVIDENCE/'test-observations.json').read_text())
 assert any(x['status']=='STOPPING' for x in observations) and observations[-1]['status']=='TERMINATED'
 assert json.loads((EVIDENCE/'instances-after-test.json').read_text()) == []
 assert json.loads((EVIDENCE/'disks-after-test.json').read_text()) == []
-budget=json.loads((EVIDENCE/'budget-create-resume.json').read_text())
+budget_path=EVIDENCE/'budget-create.json'
+if not budget_path.exists():
+    budget_path=EVIDENCE/'budget-create-resume.json'
+budget=json.loads(budget_path.read_text())
 number=json.loads((EVIDENCE/'project.json').read_text())['projectNumber']
 assert budget['budgetFilter']['projects']==['projects/'+number]
 assert budget['budgetFilter']['creditTypesTreatment']=='INCLUDE_ALL_CREDITS'
