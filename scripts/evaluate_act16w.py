@@ -50,6 +50,7 @@ def main():
     try:
         client.reset(plans)
         actions_log = [];inputs_log=(a.out/'actor-inputs.jsonl').open('x')
+        actions_stream=(a.out/'actor-actions.jsonl').open('x')
         for step in range(900):  # frozen90SIMs /0.1SIMs
             actions = []
             skills = []
@@ -70,8 +71,11 @@ def main():
                 skills.append(obs['skill'])
                 terminal = sequences[i].update(obs['t'], done)
                 actions.append(dict(command=command, done=terminal))
-            client.step(actions); actions_log.append(dict(actions=actions, skills=skills))
-            if step%10==0:(a.out/'progress.json').write_text(json.dumps(dict(step=step,elapsed_SIM=(step+1)*.1,terminal=client.terminal))+'\n')
+            client.step(actions); action_row=dict(actions=actions, skills=skills);actions_log.append(action_row)
+            actions_stream.write(json.dumps(action_row)+'\n')
+            if step%10==0:
+                inputs_log.flush();actions_stream.flush()
+                (a.out/'progress.json').write_text(json.dumps(dict(step=step,elapsed_SIM=(step+1)*.1,terminal=client.terminal))+'\n')
             if all(client.terminal): break
         inputs_log.close()
         try: client.read_training(0)
@@ -145,12 +149,11 @@ def main():
         report.update(status='HOST_ERROR', error=repr(error)); raise
     finally:
         if 'inputs_log' in locals() and not inputs_log.closed:inputs_log.close()
+        if 'actions_stream' in locals() and not actions_stream.closed:actions_stream.close()
         try: client.close('HOST_ERROR' if report['status']=='HOST_ERROR' else 'task_budget_cap_end' if report['resource_cap_end'] else 'evaluation_end' if a.full_evaluation else 'smoke_control_budget_end')
         except BaseException as error: report.update(status='HOST_ERROR', close_error=repr(error), api_checks_passed=False)
         finally:
-            if 'actions' in report:
-                with (a.out/'actor-actions.jsonl').open('x') as f:
-                    for row in report.pop('actions'):f.write(json.dumps(row)+'\n')
+            report.pop('actions',None)  # Live trace already persisted, including HOST_ERROR prefixes.
             if report.get('student_scores'):
                 rows=report['student_scores'];eligible=list(range(len(rows)));counts=[len(rows)]
                 for predicate in [lambda i:'grasp' in sequences[i].done_times,lambda i:rows[i]['lift_success'],lambda i:rows[i]['release_success'],lambda i:rows[i]['task_success']]:

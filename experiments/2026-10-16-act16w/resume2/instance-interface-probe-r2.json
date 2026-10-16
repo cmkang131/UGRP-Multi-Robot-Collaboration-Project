@@ -1,0 +1,68 @@
+{
+  "status": "complete",
+  "source_sha": "d58efc0a6db9f3ef5a6d2d43e48aa38f29f9468f",
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "seed": 86827,
+  "policy_inference": false,
+  "research_optimizer_steps": 0,
+  "task_success_claim": false,
+  "completed_interface_checks": true,
+  "elapsed_SIM_s": 0.1,
+  "repeated_initial_hold_commands": 1,
+  "privileged_actor_inputs": 0,
+  "initial-same-kind-visibility.json": {
+    "rows": [
+      {
+        "seed": 86827,
+        "world": 0,
+        "items": [
+          {
+            "item_id": "yellow_1",
+            "seen_probes": 4,
+            "total_probes": 7,
+            "visible_pixels": 3449,
+            "visible_bbox_xyxy": [
+              505,
+              392,
+              590,
+              451
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          },
+          {
+            "item_id": "yellow_2",
+            "seen_probes": 7,
+            "total_probes": 7,
+            "visible_pixels": 1085,
+            "visible_bbox_xyxy": [
+              200,
+              168,
+              237,
+              199
+            ],
+            "any_probe_visible": true,
+            "qualified_visible": true
+          }
+        ],
+        "pixel_visible_count": 2,
+        "any_probe_visible_count": 2,
+        "qualified_visible_count": 2,
+        "own_start_RGB_sha256": "076bdfac6c7378c93db8ddff0a18c1ca8fee8d6851ce6fec6640855c386c4260"
+      }
+    ],
+    "scope": "native MJWarp start-frame instance segmentation, same camera/groups/fisheye bilinear footprint, at least1 visible pixel; seven-probe diagnostics retained; scenario catalogue boxes only; evaluation only"
+  },
+  "same-kind-evaluation-audit.json": {
+    "samples": 4,
+    "input_and_integration_unchanged_checks": 3,
+    "privileged_actor_inputs": 0,
+    "teacher_actions_executed": 0,
+    "scope": "private evaluation only; assigned forces copied unchanged; other items use exact qualified force kernel"
+  }
+}

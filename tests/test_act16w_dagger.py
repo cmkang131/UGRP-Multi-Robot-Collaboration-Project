@@ -61,13 +61,15 @@ def test_potential_hold_never_calls_oracle_even_if_student_reopens():
     assert initial == {'pwm': {'1': 2000}} and closing == {'pwm': {'1': 1999}}
 
 
-def test_oracle_bank_rejects_physics_or_actor_history_mutation(monkeypatch):
+def test_oracle_bank_rejects_physics_or_actor_history_mutation(monkeypatch, tmp_path):
     from pathlib import Path
     monkeypatch.syspath_prepend(str(Path(__file__).resolve().parents[1]/'scripts'))
     from act16w_oracle import OracleBank
-    state=np.array([1.,2.]);public=[({'t':1.,'issued':[]},(b'own-jpeg',))]
+    # Compact integration workspace can retain NaN payloads. An unchanged
+    # payload must pass, while even a zero sign change must fail.
+    state=np.array([1.,2.,np.nan,0.]);public=[({'t':1.,'issued':[]},(b'own-jpeg',))]
     owner=SimpleNamespace(n=1,c=SimpleNamespace(command=lambda x:x),current=public,previous=[{'t':1.}],
-        integration=lambda:{'qpos':state.copy()},read_actor=lambda i:deepcopy(public[i]),write=lambda *x:None)
+        integration=lambda:{'qpos':state.copy()},read_actor=lambda i:deepcopy(public[i]),write=lambda *x:None,out=tmp_path)
     oracle=SimpleNamespace(blocked=lambda:True,query=lambda eyes,cmd:{'label_valid':False},
         audit=SimpleNamespace(invisible_measurements=0,held_world_reads=0))
     bank=OracleBank.__new__(OracleBank);bank.owner=owner;bank.oracles=[oracle];bank.eyes=None;bank.queries=0
@@ -75,5 +77,12 @@ def test_oracle_bank_rejects_physics_or_actor_history_mutation(monkeypatch):
     assert labels==[{'label_valid':False}] and audit['teacher_actions_executed']==0
     def mutate(eyes,cmd):state[0]+=1;return {'label_valid':False}
     oracle.query=mutate
+    with pytest.raises(RuntimeError,match='changed physics'):
+        bank.query([{'t':1.}])
+    def change_zero_sign(eyes,cmd):state[-1]=-0.;return {'label_valid':False}
+    oracle.query=change_zero_sign
+    with pytest.raises(RuntimeError,match='changed physics'):
+        bank.query([{'t':1.}])
+    oracle.query=lambda eyes,cmd:public[0][0]['issued'].append('not-own-command') or {'label_valid':False}
     with pytest.raises(RuntimeError,match='changed physics'):
         bank.query([{'t':1.}])

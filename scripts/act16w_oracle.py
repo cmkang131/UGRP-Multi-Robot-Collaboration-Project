@@ -136,7 +136,15 @@ class OracleBank:
             self.eyes.update(transforms)
         rows=[o.query(self.eyes,cmd) for o,cmd in zip(self.oracles,selected)]
         after=owner.integration()
-        if any(not np.array_equal(v,after[k]) for k,v in before.items()) or public!=owner.current or previous!=owner.previous:
+        # Strict byte identity also handles unchanged NaN payloads in unused
+        # compact workspace. Numeric array_equal can falsely reject those.
+        changed = [k for k,v in before.items() if v.dtype != after[k].dtype
+                   or v.shape != after[k].shape or v.tobytes() != after[k].tobytes()]
+        if changed or public!=owner.current or previous!=owner.previous:
+            owner.write('oracle-state-diff.json',dict(changed_fields=changed,
+                actor_inputs_equal=public==owner.current,issued_equal=previous==owner.previous))
+            np.savez_compressed(owner.out/'oracle-state-before.npz',**before)
+            np.savez_compressed(owner.out/'oracle-state-after.npz',**after)
             raise RuntimeError('oracle query changed physics or student input history')
         self.queries+=1
         audit=dict(invisible_measurements=sum(o.audit.invisible_measurements for o in self.oracles),held_world_reads=sum(o.audit.held_world_reads for o in self.oracles),teacher_actions_executed=0,queries=self.queries,integration_and_actor_inputs_unchanged=True,scope='pre-hover h0-only training labels; no teacher action applied')
