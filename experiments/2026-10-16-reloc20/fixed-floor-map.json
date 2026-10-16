@@ -1,0 +1,22 @@
+{
+  "schema": "ugrp.authored_floor_keepout.v1",
+  "scenario_id": "s8_mixed_tiers_v7",
+  "scenario_source": "configs/zone_study_scenarios_v7/s8_mixed_tiers_v7.json",
+  "scenario_source_sha256": "46137e3c3a154d7ce6c05f79ed8adfeb24b231bdd278ca204c2b5001bc8b7c12",
+  "scope": "Explicit static initial-placement keepout permitted by reloc20 user; not an observation of the movable beam. Never updated from evaluator/live state.",
+  "obstacles": [
+    {
+      "id": "cargo_beam_1",
+      "center_m": [
+        0.125,
+        -2.15
+      ],
+      "yaw_rad": 1.5708,
+      "half_extents_m": [
+        0.3,
+        0.02
+      ],
+      "geometry_source": "sim/zone_cargo.py long_beam bar 600x40mm"
+    }
+  ]
+}

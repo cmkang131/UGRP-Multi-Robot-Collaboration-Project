@@ -172,6 +172,15 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
             from harness.zone_final_environment import digest
             if digest(static) != plan['static_map_sha256']:
                 raise ValueError('carry static map/scene hash mismatch')
+            if plan.get('reloc20_loaded_footprint_v1',False):
+                from copy import deepcopy
+                static=deepcopy(static)
+                # Explicit pre-authored initial floor keepout. This is not a
+                # live object pose; the controller never reads scenario eval.
+                declaration=json.loads((ROOT/'experiments/2026-10-16-reloc20/fixed-floor-map.json').read_text())
+                if declaration['scenario_id']!=plan['scenario_id'] or declaration['scenario_source_sha256']!=plan['scenario_source_sha256']:
+                    raise ValueError('fixed-floor declaration scenario hash mismatch')
+                static['fixed_floor_keepouts']=declaration['obstacles']
             carry = CarryToZone(static, plan['destination_zone'], start=plan['task_start'],
                                 now=float(data.time), robot_id=rid,
                                 recovery_profile=plan.get('carry5_profile', 'off'),
@@ -195,6 +204,8 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
                                 reloc16_active_view_v1=plan.get('reloc16_active_view_v1',False),
                                 scene_wall_tracking_v1=plan.get('scene_wall_tracking_v1',False),
                                 carry_pose_budget_xy_reserve0_v1=plan.get('carry_pose_budget_xy_reserve0_v1', False))
+            from harness.reloc20_motion import install as install_reloc20
+            install_reloc20(carry,plan)
             if plan.get('destination_visual_acquire_v1',False):
                 from sim.destination_visual_acquire import DestinationAcquire
                 carry.destination_acquire=DestinationAcquire(carry,camera_pan=plan.get('destination_camera_pan_v1',False),
@@ -396,6 +407,9 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
             if carry is not None:
                 if tick:
                     carry.issue(previous, now-float(previous['t']))
+                if carry.reloc20_stall is not None:
+                    carry.reloc20_stall.observe(bgr,now,teacher.sink.pwm,
+                        teacher.holding and teacher.phase in ('carry_to_zone','destination_acquire'))
                 carry.observe_own(bgr, now, camera=rid+'/robot_cam')
                 map_evidence = {'t': now, **carry.loc.record()}
             if recorder is not None:
@@ -473,6 +487,10 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
                 **({'map_pose': map_evidence, 'destination_floor_visible': place_visible,
                     'pickup_search': teacher.pickup_search.record(),
                     'carry_obstacles': carry.obstacles.record(),
+                    **({'reloc20_motion':dict(
+                        footprint=None if carry.reloc20_route is None else carry.reloc20_route.last,
+                        stall=None if carry.reloc20_stall is None else carry.reloc20_stall.last)}
+                        if carry.reloc20_route is not None or carry.reloc20_stall is not None else {}),
                     'phase_before': phase_before,
                     **({'destination_acquisition':dict(mode=carry.destination_acquire.mode,
                         last=carry.destination_acquire.last,started_t=carry.destination_acquire.started,

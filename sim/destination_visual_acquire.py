@@ -349,6 +349,14 @@ class DestinationAcquire:
                         return (0.,0.,0.),False,None
                 drive=((direction_drive(c.loc.pose,target) if self.direction_preserve else c.heading_drive(c.loc.pose,target,c.loc.pose[2]))
                        if target is not None else (0.,0.,0.))
+        if getattr(c,'reloc20_heading',False) and (drive[0] or drive[1]):
+            from harness.reloc20_motion import heading_forward
+            # Reorient toward the same body-relative servo/waypoint ray.
+            # Camera pan carries its own issued FK and must return before place.
+            drive=heading_forward((0.,0.,0.),drive[:2])
+        if getattr(c,'reloc20_route',None) is not None or getattr(c,'reloc20_stall',None) is not None:
+            from harness.reloc20_motion import guard
+            drive=guard(c,drive,now)
         # Every translation retains static/RGB obstacle veto using a single tick
         # at current10Hz. A rejected candidate never gets silently executed.
         dt=.1; x,y,a=c.loc.pose

@@ -149,12 +149,23 @@ class CommandPose:
         if self.rotation_calibration is not None:
             from harness.reloc9_rotation import corrected_delta
             dx, dy, da = corrected_delta(issued, (dx, dy, da), self.rotation_calibration)
-        if self.rotation10 is not None:
+        if self.rotation10 is not None and not getattr(self,'reloc20_ode',False):
             from harness.reloc10_rotation import corrected_delta as corrected10
             dx, dy, da = corrected10(issued, (dx, dy, da), self.rotation10)
         if self.trim_calibration is not None:
             from sim.solo_carry6 import calibrated_trim_delta
             dx, dy, da = calibrated_trim_delta(issued, (dx, dy, da), self.trim_calibration)
+        self.last_nominal_delta=(dx,dy,da)
+        stall=getattr(self,'reloc20_stall',None)
+        if stall is not None:
+            dx,dy,da=stall.issue((dx,dy,da),dt)
+            if stall.suppressed:
+                import numpy as np
+                # Unexecuted command is uncertainty, not evidence of zero
+                # physical motion. Q += e e^T is the lost-motion second moment.
+                c,s=math.cos(self.own.x[2]),math.sin(self.own.x[2])
+                u=np.array(self.last_nominal_delta);u[:2]=np.array([[c,-s],[s,c]])@u[:2]
+                self.own.P+=np.outer(u,u)
         if self.tracker is not None:
             self.tracker.issue(issued,(dx,dy,da))
         if self.heading is not None:
@@ -312,6 +323,7 @@ class CommandPose:
 
     def record(self):
         return {'pose_estimate': self.pose, 'source': 'task_start_then_issued_commands_own_rgb_relook',
+                **({'reloc20_contact_ode_v1':True,'last_nominal_delta':self.last_nominal_delta} if getattr(self,'reloc20_ode',False) and hasattr(self,'last_nominal_delta') else {}),
                 'task_start': self.start, 'sigma_m_m_rad': self.sigmas(),
                 'estimate_t': self.now, 'last_rgb_fix_t': self.last_fix,
                 'rgb_fix_age_s': None if self.last_fix is None else self.now-self.last_fix,

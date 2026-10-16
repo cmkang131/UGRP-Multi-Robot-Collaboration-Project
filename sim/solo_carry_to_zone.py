@@ -235,6 +235,10 @@ class CarryToZone:
         self.loc.observe_own(bgr, now, camera=camera)
 
     def refresh_obstacles(self, bgr, pwm, now, *, holding, kind, grasp_pwm):
+        route=getattr(self,'reloc20_route',None)
+        if route is not None:
+            route.update_load(holding,kind,grasp_pwm,pwm)
+            self.radius=route.radius
         self.obstacles.observe(bgr, pwm, self.loc.pose, now, holding=holding,
                                kind=kind, grasp_pwm=grasp_pwm, pose_sigma=self.loc.sigmas())
         self.last_plan = -math.inf  # a newly visible obstacle invalidates the route
@@ -305,6 +309,9 @@ class CarryToZone:
                 return (0., 0., 0.), False, self.failure
             return (0., 0., 0.), False, 'carry_no_static_route'
         if self.active_recovery:
+            if getattr(self,'reloc20_heading',False) or getattr(self,'reloc20_stall',None) is not None or getattr(self,'reloc20_route',None) is not None:
+                from harness.reloc20_motion import travel_drive,guard
+                return guard(self,travel_drive(self,pose,target),now), False, None
             return self.heading_drive(pose, target, self.travel_heading), False, None
         cmd = proportional_drive(pose, self.goal, target, 0.)
         return (max(-.05, min(.08, cmd['forward'])), max(-.06, min(.06, cmd['left'])),
@@ -437,6 +444,10 @@ class CarryToZone:
 
     def record(self):
         return {'toggle': OPTION, 'destination_zone': self.zone, 'slot_xy': self.slot,
+                **({'reloc20_motion':dict(heading_forward=getattr(self,'reloc20_heading',False),
+                    footprint=None if getattr(self,'reloc20_route',None) is None else self.reloc20_route.record(),
+                    stall=None if getattr(self,'reloc20_stall',None) is None else self.reloc20_stall.record())}
+                   if any((getattr(self,'reloc20_heading',False),getattr(self,'reloc20_route',None),getattr(self,'reloc20_stall',None))) else {}),
                 'stand_off_xy': self.goal, 'radius_m': self.radius, 'map_sha256': self.map_sha256,
                 'self_pose': self.loc.record(), 'carry_started_t': self.started,
                 'map_arrival_estimated_t': self.arrived, 'failure': self.failure,
