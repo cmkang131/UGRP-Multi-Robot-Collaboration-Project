@@ -1,0 +1,734 @@
+{
+  "scope": "retrieved original audit and static geometry only; no new detection replay or physics",
+  "source_parent": "63201b88ce5342d57fa81bc0e141ec2d10beec49",
+  "runs": [
+    {
+      "name": "release5-diagnostic-02-e96386d3",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release5-diagnostic-02-e96386d3/raw",
+      "seed": 74940,
+      "source_sha": "e96386d319fee37cbf109867f55a1b9aefac4229",
+      "outcome": "active_observation_exhausted",
+      "success": false,
+      "position": {
+        "center_offset_m": [
+          0.194838303377467,
+          0.26478964506043434
+        ],
+        "center_distance_m": 0.3287484153486381,
+        "yaw_error_deg": 7.076184552849032,
+        "min_end_margin_m": 0.0682049980024006,
+        "zone_long_axis": "y"
+      },
+      "evaluation_last": {
+        "t": 67.60000000012944,
+        "fit": true,
+        "z": -0.00010775542021616774,
+        "tilt_deg": 7.771848908067734e-09,
+        "contact_n": {
+          "r1": [
+            0.0,
+            0.0
+          ],
+          "r2": [
+            0.0,
+            0.0
+          ]
+        },
+        "grip_to_beam_m": [
+          0.24836758407772389,
+          0.19397071141226277
+        ],
+        "open_pwm": {
+          "r1": 2000,
+          "r2": 2000
+        },
+        "beam_xy_yaw": [
+          4.794838303377467,
+          0.6647896450604344,
+          1.6942990457208749
+        ]
+      },
+      "input_audit": {
+        "held_world_reads": 0,
+        "invisible_measurements": 0
+      },
+      "robots": {
+        "r1": {
+          "released_t": 14.89999999998795,
+          "holding_ticks": {
+            "True": 48,
+            "False": 503
+          },
+          "frames": 13,
+          "frames_with_landmarks": 13,
+          "detections": {
+            "wall_points": 894,
+            "floor_lines": 20,
+            "doors": 0
+          },
+          "sweeps": [
+            {
+              "t0": 17.199999999991114,
+              "end": 21.7000000000126,
+              "accepted": false,
+              "reason": "ambiguous_global_landmarks",
+              "wall_inliers": null,
+              "features": null,
+              "views_with_evidence": 3
+            },
+            {
+              "t0": 23.400000000020718,
+              "end": 33.800000000070376,
+              "accepted": true,
+              "reason": "global_consensus",
+              "wall_inliers": null,
+              "features": null,
+              "views_with_evidence": 13
+            },
+            {
+              "t0": 35.500000000078494,
+              "end": 45.90000000012815,
+              "accepted": true,
+              "reason": "global_consensus",
+              "wall_inliers": null,
+              "features": null,
+              "views_with_evidence": 13
+            },
+            {
+              "t0": 47.60000000013627,
+              "end": 63.40000000021171,
+              "accepted": true,
+              "reason": "global_consensus",
+              "wall_inliers": null,
+              "features": null,
+              "views_with_evidence": 13
+            }
+          ],
+          "final_decision": {
+            "accepted": true,
+            "reason": "global_consensus",
+            "normal_rank": 2,
+            "score_gap": 3.8934033081368167,
+            "groups": [
+              "wall_east:30",
+              "wall_north:16",
+              "zone_A:5",
+              "zone_A:7",
+              "zone_C:13"
+            ]
+          }
+        },
+        "r2": {
+          "released_t": 14.89999999998795,
+          "holding_ticks": {
+            "True": 48,
+            "False": 503
+          },
+          "frames": 33,
+          "frames_with_landmarks": 28,
+          "detections": {
+            "wall_points": 1528,
+            "floor_lines": 45,
+            "doors": 0
+          },
+          "sweeps": [
+            {
+              "t0": 17.199999999991114,
+              "end": 21.7000000000126,
+              "accepted": false,
+              "reason": "ambiguous_global_landmarks",
+              "wall_inliers": null,
+              "features": null,
+              "views_with_evidence": 3
+            },
+            {
+              "t0": 23.400000000020718,
+              "end": 33.800000000070376,
+              "accepted": false,
+              "reason": "ambiguous_global_landmarks",
+              "wall_inliers": null,
+              "features": null,
+              "views_with_evidence": 13
+            },
+            {
+              "t0": 35.500000000078494,
+              "end": 45.90000000012815,
+              "accepted": false,
+              "reason": "ambiguous_global_landmarks",
+              "wall_inliers": null,
+              "features": null,
+              "views_with_evidence": 18
+            },
+            {
+              "t0": 47.60000000013627,
+              "end": 63.40000000021171,
+              "accepted": true,
+              "reason": "global_consensus",
+              "wall_inliers": null,
+              "features": null,
+              "views_with_evidence": 13
+            }
+          ],
+          "final_decision": {
+            "accepted": true,
+            "reason": "global_consensus",
+            "normal_rank": 2,
+            "score_gap": 0.8235896190698613,
+            "groups": [
+              "wall_divider_1:35",
+              "wall_south:21"
+            ]
+          }
+        }
+      },
+      "active_observation": [
+        {
+          "robot": "r1",
+          "stage": 1,
+          "t": 23.400000000020718,
+          "action": "pan",
+          "body_yaw_deg": null,
+          "backstep_m": null
+        },
+        {
+          "robot": "r2",
+          "stage": 1,
+          "t": 23.400000000020718,
+          "action": "pan",
+          "body_yaw_deg": null,
+          "backstep_m": null
+        },
+        {
+          "robot": "r2",
+          "stage": 2,
+          "t": 35.500000000078494,
+          "action": "motion_skipped_clearance_unknown_or_unsafe",
+          "body_yaw_deg": null,
+          "backstep_m": null
+        },
+        {
+          "robot": "r2",
+          "stage": 3,
+          "t": 47.60000000013627,
+          "action": "body_turn",
+          "body_yaw_deg": null,
+          "backstep_m": null
+        }
+      ]
+    },
+    {
+      "name": "release6-diagnostic-07-63201b88",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release6-diagnostic-07-63201b88/raw",
+      "seed": 74940,
+      "source_sha": "63201b88ce5342d57fa81bc0e141ec2d10beec49",
+      "outcome": "active_observation_exhausted",
+      "success": false,
+      "position": {
+        "center_offset_m": [
+          0.194838303377467,
+          0.26478964506043434
+        ],
+        "center_distance_m": 0.3287484153486381,
+        "yaw_error_deg": 7.076184552849032,
+        "min_end_margin_m": 0.0682049980024006,
+        "zone_long_axis": "y"
+      },
+      "evaluation_last": {
+        "t": 88.29999999963995,
+        "fit": true,
+        "z": -0.00010775542021616922,
+        "tilt_deg": 7.773675016281042e-09,
+        "contact_n": {
+          "r1": [
+            0.0,
+            0.0
+          ],
+          "r2": [
+            0.0,
+            0.0
+          ]
+        },
+        "grip_to_beam_m": [
+          0.24843030085580126,
+          0.19296360367894877
+        ],
+        "open_pwm": {
+          "r1": 2000,
+          "r2": 2000
+        },
+        "beam_xy_yaw": [
+          4.794838303377467,
+          0.6647896450604344,
+          1.6942990457208749
+        ]
+      },
+      "input_audit": {
+        "held_world_reads": 0,
+        "invisible_measurements": 0
+      },
+      "robots": {
+        "r1": {
+          "released_t": 14.89999999998795,
+          "holding_ticks": {
+            "True": 48,
+            "False": 710
+          },
+          "frames": 13,
+          "frames_with_landmarks": 13,
+          "detections": {
+            "wall_points": 894,
+            "floor_lines": 20,
+            "doors": 0
+          },
+          "sweeps": [
+            {
+              "t0": 17.199999999991114,
+              "end": 21.7000000000126,
+              "accepted": false,
+              "reason": "ambiguous_global_landmarks",
+              "wall_inliers": null,
+              "features": null,
+              "views_with_evidence": 3
+            },
+            {
+              "t0": 23.400000000020718,
+              "end": 33.800000000070376,
+              "accepted": true,
+              "reason": "global_consensus",
+              "wall_inliers": null,
+              "features": null,
+              "views_with_evidence": 13
+            },
+            {
+              "t0": 35.500000000078494,
+              "end": 45.90000000012815,
+              "accepted": true,
+              "reason": "global_consensus",
+              "wall_inliers": null,
+              "features": null,
+              "views_with_evidence": 13
+            },
+            {
+              "t0": 47.60000000013627,
+              "end": 63.40000000021171,
+              "accepted": true,
+              "reason": "global_consensus",
+              "wall_inliers": null,
+              "features": null,
+              "views_with_evidence": 13
+            },
+            {
+              "t0": 65.2000000001862,
+              "end": 70.40000000006323,
+              "accepted": true,
+              "reason": "global_consensus",
+              "wall_inliers": null,
+              "features": null,
+              "views_with_evidence": 13
+            },
+            {
+              "t0": 72.20000000002067,
+              "end": 77.19999999990243,
+              "accepted": true,
+              "reason": "global_consensus",
+              "wall_inliers": null,
+              "features": null,
+              "views_with_evidence": 13
+            },
+            {
+              "t0": 78.99999999985987,
+              "end": 84.09999999973927,
+              "accepted": true,
+              "reason": "global_consensus",
+              "wall_inliers": null,
+              "features": null,
+              "views_with_evidence": 13
+            }
+          ],
+          "final_decision": {
+            "accepted": true,
+            "reason": "global_consensus",
+            "normal_rank": 2,
+            "score_gap": 3.8934033081368167,
+            "groups": [
+              "wall_east:30",
+              "wall_north:16",
+              "zone_A:5",
+              "zone_A:7",
+              "zone_C:13"
+            ]
+          }
+        },
+        "r2": {
+          "released_t": 14.89999999998795,
+          "holding_ticks": {
+            "True": 48,
+            "False": 710
+          },
+          "frames": 42,
+          "frames_with_landmarks": 37,
+          "detections": {
+            "wall_points": 2183,
+            "floor_lines": 64,
+            "doors": 0
+          },
+          "sweeps": [
+            {
+              "t0": 17.199999999991114,
+              "end": 21.7000000000126,
+              "accepted": false,
+              "reason": "ambiguous_global_landmarks",
+              "wall_inliers": null,
+              "features": null,
+              "views_with_evidence": 3
+            },
+            {
+              "t0": 23.400000000020718,
+              "end": 33.800000000070376,
+              "accepted": false,
+              "reason": "ambiguous_global_landmarks",
+              "wall_inliers": null,
+              "features": null,
+              "views_with_evidence": 13
+            },
+            {
+              "t0": 35.500000000078494,
+              "end": 45.90000000012815,
+              "accepted": false,
+              "reason": "ambiguous_global_landmarks",
+              "wall_inliers": null,
+              "features": null,
+              "views_with_evidence": 18
+            },
+            {
+              "t0": 47.60000000013627,
+              "end": 63.40000000021171,
+              "accepted": true,
+              "reason": "global_consensus",
+              "wall_inliers": null,
+              "features": null,
+              "views_with_evidence": 13
+            },
+            {
+              "t0": 65.2000000001862,
+              "end": 70.40000000006323,
+              "accepted": false,
+              "reason": "ambiguous_global_landmarks",
+              "wall_inliers": null,
+              "features": null,
+              "views_with_evidence": 13
+            },
+            {
+              "t0": 72.20000000002067,
+              "end": 77.19999999990243,
+              "accepted": false,
+              "reason": "ambiguous_global_landmarks",
+              "wall_inliers": null,
+              "features": null,
+              "views_with_evidence": 13
+            },
+            {
+              "t0": 78.99999999985987,
+              "end": 84.09999999973927,
+              "accepted": false,
+              "reason": "ambiguous_global_landmarks",
+              "wall_inliers": null,
+              "features": null,
+              "views_with_evidence": 13
+            }
+          ],
+          "final_decision": {
+            "accepted": false,
+            "reason": "ambiguous_global_landmarks",
+            "normal_rank": 1,
+            "score_gap": 0.15693751606610107,
+            "groups": [
+              "zone_A:5",
+              "zone_A:7"
+            ]
+          }
+        }
+      },
+      "active_observation": [
+        {
+          "robot": "r1",
+          "stage": 1,
+          "t": 23.400000000020718,
+          "action": "pan",
+          "body_yaw_deg": null,
+          "backstep_m": null
+        },
+        {
+          "robot": "r2",
+          "stage": 1,
+          "t": 23.400000000020718,
+          "action": "pan",
+          "body_yaw_deg": null,
+          "backstep_m": null
+        },
+        {
+          "robot": "r2",
+          "stage": 2,
+          "t": 35.500000000078494,
+          "action": "motion_skipped_clearance_unknown_or_unsafe",
+          "body_yaw_deg": null,
+          "backstep_m": null
+        },
+        {
+          "robot": "r2",
+          "stage": 3,
+          "t": 47.60000000013627,
+          "action": "body_turn",
+          "body_yaw_deg": null,
+          "backstep_m": null
+        },
+        {
+          "robot": "r2",
+          "stage": 4,
+          "t": 65.2000000001862,
+          "action": "map_nbv",
+          "body_yaw_deg": 0.0,
+          "backstep_m": 0.0
+        },
+        {
+          "robot": "r2",
+          "stage": 5,
+          "t": 72.20000000002067,
+          "action": "map_nbv",
+          "body_yaw_deg": 0.0,
+          "backstep_m": 0.0
+        },
+        {
+          "robot": "r2",
+          "stage": 6,
+          "t": 78.99999999985987,
+          "action": "map_nbv",
+          "body_yaw_deg": 0.0,
+          "backstep_m": 0.0
+        }
+      ]
+    }
+  ],
+  "verified_file_count": 567,
+  "reviewed_frame_count": 48,
+  "geometry": [
+    {
+      "run": "release5-diagnostic-02-e96386d3",
+      "robot": "r1",
+      "sites": {
+        "after_original_backoff": {
+          "evaluation_pose": [
+            4.874844007992267,
+            0.04336783727737495,
+            1.7085131917293013
+          ],
+          "min_static_center_clearance_m": 0.5001559920077335,
+          "counts_by_type": {
+            "wall": 4,
+            "zone_edge": 6,
+            "door": 1
+          },
+          "unique_groups": {
+            "wall_east:w": "wall",
+            "wall_north:s": "wall",
+            "zone_A:e3": "zone_edge",
+            "wall_divider_1:e": "wall",
+            "wall_divider_2:e": "wall",
+            "zone_C:e1": "zone_edge",
+            "zone_C:e2": "zone_edge",
+            "zone_C:e3": "zone_edge",
+            "door_1": "door",
+            "zone_B:e2": "zone_edge",
+            "zone_B:e3": "zone_edge"
+          }
+        },
+        "after_nominal_retrace": {
+          "evaluation_pose": [
+            4.861115812387619,
+            0.1424210383636626,
+            1.7085131917293013
+          ],
+          "min_static_center_clearance_m": 0.5138841876123811,
+          "counts_by_type": {
+            "wall": 4,
+            "zone_edge": 7,
+            "door": 1
+          },
+          "unique_groups": {
+            "wall_east:w": "wall",
+            "wall_north:s": "wall",
+            "zone_A:e3": "zone_edge",
+            "wall_divider_1:e": "wall",
+            "wall_divider_2:e": "wall",
+            "zone_C:e1": "zone_edge",
+            "zone_C:e2": "zone_edge",
+            "zone_C:e3": "zone_edge",
+            "door_1": "door",
+            "zone_B:e2": "zone_edge",
+            "zone_B:e3": "zone_edge",
+            "zone_A:e0": "zone_edge"
+          }
+        }
+      }
+    },
+    {
+      "run": "release5-diagnostic-02-e96386d3",
+      "robot": "r2",
+      "sites": {
+        "after_original_backoff": {
+          "evaluation_pose": [
+            4.7156829490985315,
+            1.2854560645555269,
+            -1.439124219313187
+          ],
+          "min_static_center_clearance_m": 0.1395439354444731,
+          "counts_by_type": {
+            "wall": 3,
+            "zone_edge": 3
+          },
+          "unique_groups": {
+            "wall_north:s": "wall",
+            "wall_divider_2:e": "wall",
+            "zone_A:e3": "zone_edge",
+            "zone_C:e1": "zone_edge",
+            "wall_east:w": "wall",
+            "zone_A:e1": "zone_edge"
+          }
+        },
+        "after_nominal_retrace": {
+          "evaluation_pose": [
+            4.728812144966864,
+            1.1863216900134388,
+            -1.439124219313187
+          ],
+          "min_static_center_clearance_m": 0.23867830998656117,
+          "counts_by_type": {
+            "wall": 3,
+            "door": 1,
+            "zone_edge": 2
+          },
+          "unique_groups": {
+            "wall_north:s": "wall",
+            "wall_divider_2:e": "wall",
+            "door_1": "door",
+            "zone_A:e3": "zone_edge",
+            "zone_C:e1": "zone_edge",
+            "wall_east:w": "wall"
+          }
+        }
+      }
+    },
+    {
+      "run": "release6-diagnostic-07-63201b88",
+      "robot": "r1",
+      "sites": {
+        "after_original_backoff": {
+          "evaluation_pose": [
+            4.874844007992267,
+            0.04336783727737495,
+            1.7085131917293013
+          ],
+          "min_static_center_clearance_m": 0.5001559920077335,
+          "counts_by_type": {
+            "wall": 4,
+            "zone_edge": 6,
+            "door": 1
+          },
+          "unique_groups": {
+            "wall_east:w": "wall",
+            "wall_north:s": "wall",
+            "zone_A:e3": "zone_edge",
+            "wall_divider_1:e": "wall",
+            "wall_divider_2:e": "wall",
+            "zone_C:e1": "zone_edge",
+            "zone_C:e2": "zone_edge",
+            "zone_C:e3": "zone_edge",
+            "door_1": "door",
+            "zone_B:e2": "zone_edge",
+            "zone_B:e3": "zone_edge"
+          }
+        },
+        "after_nominal_retrace": {
+          "evaluation_pose": [
+            4.861115812387619,
+            0.1424210383636626,
+            1.7085131917293013
+          ],
+          "min_static_center_clearance_m": 0.5138841876123811,
+          "counts_by_type": {
+            "wall": 4,
+            "zone_edge": 7,
+            "door": 1
+          },
+          "unique_groups": {
+            "wall_east:w": "wall",
+            "wall_north:s": "wall",
+            "zone_A:e3": "zone_edge",
+            "wall_divider_1:e": "wall",
+            "wall_divider_2:e": "wall",
+            "zone_C:e1": "zone_edge",
+            "zone_C:e2": "zone_edge",
+            "zone_C:e3": "zone_edge",
+            "door_1": "door",
+            "zone_B:e2": "zone_edge",
+            "zone_B:e3": "zone_edge",
+            "zone_A:e0": "zone_edge"
+          }
+        }
+      }
+    },
+    {
+      "run": "release6-diagnostic-07-63201b88",
+      "robot": "r2",
+      "sites": {
+        "after_original_backoff": {
+          "evaluation_pose": [
+            4.7156829490985315,
+            1.2854560645555269,
+            -1.439124219313187
+          ],
+          "min_static_center_clearance_m": 0.1395439354444731,
+          "counts_by_type": {
+            "wall": 3,
+            "zone_edge": 3
+          },
+          "unique_groups": {
+            "wall_north:s": "wall",
+            "wall_divider_2:e": "wall",
+            "zone_A:e3": "zone_edge",
+            "zone_C:e1": "zone_edge",
+            "wall_east:w": "wall",
+            "zone_A:e1": "zone_edge"
+          }
+        },
+        "after_nominal_retrace": {
+          "evaluation_pose": [
+            4.728812144966864,
+            1.1863216900134388,
+            -1.439124219313187
+          ],
+          "min_static_center_clearance_m": 0.23867830998656117,
+          "counts_by_type": {
+            "wall": 3,
+            "door": 1,
+            "zone_edge": 2
+          },
+          "unique_groups": {
+            "wall_north:s": "wall",
+            "wall_divider_2:e": "wall",
+            "door_1": "door",
+            "zone_A:e3": "zone_edge",
+            "zone_C:e1": "zone_edge",
+            "wall_east:w": "wall"
+          }
+        }
+      }
+    }
+  ],
+  "detail": {
+    "path": "release7-analysis-detail.json.zst",
+    "sha256": "2b7a9483833a15d3058062240362bfbed053b3ec3e5287689224d3eb25f913a7"
+  },
+  "new_physical_success": "unmeasured",
+  "offline_replay_is_improvement_evidence": false
+}

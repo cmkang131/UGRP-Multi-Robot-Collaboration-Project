@@ -1,0 +1,59 @@
+{
+  "schema": "ugrp.release10.validation.v1",
+  "at": "2026-10-15T07:01:14.028261+09:00",
+  "source_sha": "8e520ea2816c46a0f0d7aac250fcf0969416c808",
+  "source_files_unchanged": {
+    "scripts/run_grasp_act_release.py": "acbf09a8c817d8f09c4c882fe8f20d8923e8626615fcca0d802a216551cfe29b",
+    "sim/grasp_act_release_teacher.py": "ed81c8bbf7a6765158fd811035c9db74002e22067139b6ffc93fd79c2544b73b",
+    "sim/release_global_observation.py": "4fb8f11422cb45a39961aac6e2bfca6e2654c214a1ac92ed050a02a8bfcacd93",
+    "sim/release_setdown_lookaround.py": "189f129a81f694ab812433b325c1ea2065c373715209b451bab2e9ad438413b5",
+    "sim/lookaround_localization.py": "1ed1162bb1800482126e9dd60314f90e22992bc87c727c527bf5ca7725af503d",
+    "sim/visible_belief.py": "41b4f213f0f1707207bcaffb0a786a007597d3aa84f71c8e2204af68d07ad6c4"
+  },
+  "scope": "offline measurement/data/document validation; no product tests or simulation executed",
+  "verified": {
+    "raw_payloads": 32,
+    "review_images": 24,
+    "final_metric_reconstructions": 12,
+    "final_metric_max_difference": 0,
+    "markdown_numeric_cells": 40,
+    "exact_episode_copies": 2,
+    "same_scene_source_blobs": 10,
+    "new_queue_runs": 2,
+    "old_queue_ready_runs": 0,
+    "old_queue_total_runs": 49,
+    "compressed_detail_roundtrip": true,
+    "relative_markdown_links": true,
+    "git_tracked_diff_before_addition_empty": true
+  },
+  "queue": {
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-release-bisect-4a69e6bc.json",
+    "sha256": "bc3314637c6b15ac4c9fb6f595026fdc159d397975c780249f22154605ff4987",
+    "ready": false,
+    "blocker": "old source runtime truth own-pose handoff; user clarification pending",
+    "previous_path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-release-gate-8e520ea2.json",
+    "previous_sha256": "4dc271a1212228c2fc5edd009a9c7d2208ac50a68cb8ccd1600e1b28b3f88b32",
+    "previous_ready": false,
+    "backup": "outputs/release10-review/previous-queue-before-release10.json",
+    "backup_sha256": "2764815c6483602d6e5aadcb726c1b44c29b7f77b16cd139cb9e1d5789d1ce29"
+  },
+  "artifact_sha256": {
+    "experiments/2026-10-14-e2e18-grasp-rootcause/release10-bisect-compatibility.json": "1428d82adb79a50ad5e63a7f72e3bc4cf180ce50a0ce62c9988c560a1ef8867f",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/release10-bisect-plan.json": "405ce907881e544aa33c0a9d1d77e23aa04a5ef045d6c4950ec1e9a7165edd26",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/release10-bisect-queue.json": "bc3314637c6b15ac4c9fb6f595026fdc159d397975c780249f22154605ff4987",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/release10-compression.json": "5961b4df509a14b31ddf7abc493b93336bf9a7b5007616e01acf7b76107984aa",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/release10-measurement-detail.json.zst": "ab1a05e600e726f68658ba91a5d08a0a5e92d7e92e1b508e82ce300cb0452232",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/release10-measurements.json": "f9f9502e996c0e23105a9ddf800a45921d06cb5d5bf1de54b7a8e64655694da3",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/release10.md": "4485b65f396d399295d8a3f32ee5f824dcd5d0c9b49208359dc6a9d2a08241ac"
+  },
+  "not_performed": [
+    "source modification",
+    "Mac physics",
+    "simulator rendering",
+    "remote host connection",
+    "new remote execution",
+    "old source outcome replay with truth",
+    "merge"
+  ],
+  "new_diagnostics_results": null
+}

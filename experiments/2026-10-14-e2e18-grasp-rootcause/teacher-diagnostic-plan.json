@@ -1,0 +1,114 @@
+{
+  "schema": "ugrp.grasp_act.plan.v1",
+  "episodes": [
+    {
+      "episode_id": "teacher_gate-71038",
+      "batch": "grasp-act-teacher_gate-71000",
+      "seed": 71038,
+      "split": "teacher_gate",
+      "scenario_id": "s6_novel_relation_v4",
+      "scenario_source_sha256": "fb2596bbbe76d360bd7c481e750bfea0683e95770d60617af26fbc114a820986",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "beam_pose": [
+        1.4695807371061322,
+        -1.597476568326919,
+        1.34617439394363
+      ],
+      "spawns": {
+        "r1": [
+          1.0414219920789507,
+          -1.8719975362362016,
+          0.032355118817659255,
+          0.8770645384526984
+        ],
+        "r2": [
+          1.7400916944831293,
+          -2.194579939222866,
+          0.032355118817659255,
+          1.9961743939436305
+        ],
+        "r3": [
+          1.8312175121926741,
+          -0.9678944699316323,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "near_own",
+      "initial_pan": {
+        "r1": 2172,
+        "r2": 2023
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "proposal_attempts": 3,
+      "near_wall": false
+    },
+    {
+      "episode_id": "teacher_gate-71029",
+      "batch": "grasp-act-teacher_gate-71000",
+      "seed": 71029,
+      "split": "teacher_gate",
+      "scenario_id": "s6_novel_relation_v4",
+      "scenario_source_sha256": "fb2596bbbe76d360bd7c481e750bfea0683e95770d60617af26fbc114a820986",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "beam_pose": [
+        0.9400576835800407,
+        -0.049456906407879586,
+        3.0056064400888918
+      ],
+      "spawns": {
+        "r1": [
+          -0.7941963145276423,
+          0.7860363459230043,
+          0.032355118817659255,
+          -0.7000020002361385
+        ],
+        "r2": [
+          0.3430051662428266,
+          -0.3865767774308792,
+          0.032355118817659255,
+          0.5140137864990987
+        ],
+        "r3": [
+          1.6253358047776936,
+          1.0751091921229103,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "near_own",
+      "initial_pan": {
+        "r1": 617,
+        "r2": 1345
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "proposal_attempts": 1,
+      "near_wall": false
+    }
+  ],
+  "diagnostic_only": true,
+  "r1_distance_m": [
+    0.5086075822921837,
+    1.9250158193227715
+  ],
+  "source_episode_indices": [
+    38,
+    29
+  ]
+}

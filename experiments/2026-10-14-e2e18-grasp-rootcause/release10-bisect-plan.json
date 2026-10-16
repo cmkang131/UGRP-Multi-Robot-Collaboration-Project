@@ -1,0 +1,158 @@
+{
+  "schema": "ugrp.grasp_act.release_plan.v1",
+  "episodes": [
+    {
+      "episode_id": "release9-reproduction-74940",
+      "batch": "release9-diagnostic",
+      "seed": 74940,
+      "split": "release_diagnostic",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        4.795457946838037,
+        0.6645557224389833,
+        1.6962291870114785
+      ],
+      "spawns": {
+        "r1": [
+          4.854632235608596,
+          0.19527179606977715,
+          0.032355118817659255,
+          1.6962291870114785
+        ],
+        "r2": [
+          4.736283658067478,
+          1.1338396488081894,
+          0.032355118817659255,
+          4.837821840601272
+        ],
+        "r3": [
+          1.357078659653129,
+          -2.363815765580392,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "skill": "release",
+      "destination_region": "zone_A",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "assignment_source": "demo_rule_fixed_r1_teal",
+      "initial_pan": {
+        "r1": 1500,
+        "r2": 1500
+      },
+      "stratum": {
+        "axial_outside_m": [
+          -0.3,
+          -0.02
+        ],
+        "sampled_outside_m": -0.09529911120547124,
+        "side": "north",
+        "teal_south": true
+      },
+      "handoff_pose_error": {
+        "r1": [
+          -0.016961726812283313,
+          4.6741373120177745e-05,
+          0.03734399734576219
+        ],
+        "r2": [
+          0.055090380970625165,
+          -0.017015110979723816,
+          -0.02818058317397999
+        ]
+      },
+      "beam_to_zone_center_m": 0.32892786330342016,
+      "proposal_attempts": 1,
+      "diagnostic_source": {
+        "kind": "reproduced_failure",
+        "parent_sha": "63201b88ce5342d57fa81bc0e141ec2d10beec49",
+        "parent_index": 7,
+        "parent_plan_sha256": "c5523be87387127cd5efdb9f205f69217ac11bf1ccad9624248d339e925bd027"
+      }
+    },
+    {
+      "episode_id": "release9-reproduction-74963",
+      "batch": "release9-diagnostic",
+      "seed": 74963,
+      "split": "release_diagnostic",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        4.793007979827961,
+        0.7626638128327512,
+        -1.6898219674999213
+      ],
+      "spawns": {
+        "r1": [
+          4.849174269420816,
+          1.2323172466681396,
+          0.032355118817659255,
+          -1.6898219674999213
+        ],
+        "r2": [
+          4.7368416902351065,
+          0.2930103789973627,
+          0.032355118817659255,
+          1.4517706860898718
+        ],
+        "r3": [
+          0.9866769648514357,
+          -2.0299191436143484,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "skill": "release",
+      "destination_region": "zone_A",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "assignment_source": "demo_rule_fixed_r1_teal",
+      "initial_pan": {
+        "r1": 1500,
+        "r2": 1500
+      },
+      "stratum": {
+        "axial_outside_m": [
+          0.0,
+          0.15
+        ],
+        "sampled_outside_m": 0.0029161509775157243,
+        "side": "north",
+        "teal_south": false
+      },
+      "handoff_pose_error": {
+        "r1": [
+          0.06100888944565334,
+          0.06261913424653458,
+          -0.06195743416195469
+        ],
+        "r2": [
+          -0.004535448877795503,
+          0.0032316290106423826,
+          -0.0345938037698841
+        ]
+      },
+      "beam_to_zone_center_m": 0.4108249279384828,
+      "proposal_attempts": 1
+    }
+  ],
+  "student_evaluation": false,
+  "diagnostic_only": true,
+  "gate": false,
+  "source_sha": "4a69e6bc1fb5d07ccf6b0e2e552140d9e839af9b",
+  "input_note": "Exact release9 start/roles/scenario/seed/handoff data, including original episode IDs and batch; execution identity belongs to queue. No seed-only regeneration."
+}

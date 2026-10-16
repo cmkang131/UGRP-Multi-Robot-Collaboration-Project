@@ -1,0 +1,288 @@
+{
+  "schema": "ugrp.release15.summary.v1",
+  "profile": "release15_fov_v1",
+  "baseline_sha": "7369ad5e75ac26b5b3f0ac7110bfce1d1456b367",
+  "source": "final pushed commit containing this record; exact SHA fixed in separate immutable local queue and delivery receipt",
+  "new_physical_runs": 0,
+  "mac_simulation_calls": 0,
+  "render_calls": 0,
+  "remote_submissions": 0,
+  "model_calls": 0,
+  "stored_failure_runs": [
+    {
+      "name": "r12d-01-97942a82",
+      "source_sha": "97942a8285b498a2e7896dc8dccc88e067b77cc7",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r12d-01-97942a82/raw",
+      "stored_outcome": "regrasp_realign_no_image_progress_3s:r1"
+    },
+    {
+      "name": "release11-diag-08-c9ba20a6",
+      "source_sha": "c9ba20a605c1c4117d553550268c20fa6ac2c3a3",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release11-diag-08-c9ba20a6/raw",
+      "stored_outcome": "regrasp_attempt_cap:r1:own_grip_shaft_not_framed"
+    },
+    {
+      "name": "r14d-00-7369ad5e",
+      "source_sha": "7369ad5e75ac26b5b3f0ac7110bfce1d1456b367",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r14d-00-7369ad5e/raw",
+      "stored_outcome": "release14_shaft_unobserved"
+    },
+    {
+      "name": "r14d-01-7369ad5e",
+      "source_sha": "7369ad5e75ac26b5b3f0ac7110bfce1d1456b367",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r14d-01-7369ad5e/raw",
+      "stored_outcome": "release14_shaft_unobserved"
+    }
+  ],
+  "tests": {
+    "files": [
+      "tests/test_release15.py",
+      "tests/test_release14.py",
+      "tests/test_release_regrasp.py",
+      "tests/test_grasp_act_release_run.py",
+      "tests/test_grasp_act_release_teacher.py"
+    ],
+    "pass_line": "100 passed in 99.76s (0:01:39)",
+    "backend": "clock-only fixture; no physics/render"
+  },
+  "replay": {
+    "payloads_verified": 12,
+    "jpegs_verified": 167,
+    "overview_own_review_hashes": 36,
+    "visual_review_frames": 48,
+    "decoded_sha256": "527ae44412551069493b00b9cc22946f0b8f175add8ee88d1cdca8c2fed3948d",
+    "branches": [
+      {
+        "name": "r12d-01-97942a82",
+        "first": {
+          "t": 43.30000000011574,
+          "robot": "r1",
+          "old": "recover_direction",
+          "new": "recover_fov",
+          "map_gated": {
+            "kind": "recover_fov",
+            "forward": 0.0,
+            "left": -0.004,
+            "yaw": 0.0,
+            "aligned": false,
+            "merit": 17506.0,
+            "predicted_merit": 15241.75654
+          }
+        },
+        "line_inputs": 27,
+        "pose_reconstruction": {
+          "r1": {
+            "position_error_m": 0.0,
+            "yaw_error_rad": 0.0
+          },
+          "r2": {
+            "position_error_m": 2.220446049250313e-16,
+            "yaw_error_rad": 0.0
+          }
+        }
+      },
+      {
+        "name": "release11-diag-08-c9ba20a6",
+        "first": null,
+        "line_inputs": 0,
+        "pose_reconstruction": {
+          "r1": {
+            "position_error_m": 0.0,
+            "yaw_error_rad": 0.0
+          },
+          "r2": {
+            "position_error_m": 0.0,
+            "yaw_error_rad": 0.0
+          }
+        }
+      },
+      {
+        "name": "r14d-00-7369ad5e",
+        "first": {
+          "t": 34.80000000007515,
+          "robot": "r2",
+          "old": "recover_direction",
+          "new": "recover_fov",
+          "map_gated": {
+            "kind": "recover_fov",
+            "forward": 0.004,
+            "left": 0.0,
+            "yaw": 0.0,
+            "aligned": false,
+            "merit": 8978.0,
+            "predicted_merit": 6517.031168
+          }
+        },
+        "line_inputs": 10,
+        "pose_reconstruction": {
+          "r1": {
+            "position_error_m": 0.0,
+            "yaw_error_rad": 0.0
+          },
+          "r2": {
+            "position_error_m": 0.0,
+            "yaw_error_rad": 8.881784197001252e-16
+          }
+        }
+      },
+      {
+        "name": "r14d-01-7369ad5e",
+        "first": {
+          "t": 31.800000000060827,
+          "robot": "r1",
+          "old": "recover_direction",
+          "new": "recover_fov",
+          "map_gated": {
+            "kind": "recover_fov",
+            "forward": 0.004,
+            "left": 0.0,
+            "yaw": 0.0,
+            "aligned": false,
+            "merit": 8978.0,
+            "predicted_merit": 6517.031168
+          }
+        },
+        "line_inputs": 6,
+        "pose_reconstruction": {
+          "r1": {
+            "position_error_m": 0.0,
+            "yaw_error_rad": 1.7763568394002505e-15
+          },
+          "r2": {
+            "position_error_m": 0.0,
+            "yaw_error_rad": 0.0
+          }
+        }
+      }
+    ],
+    "physical_effect": "unverified",
+    "scope": "Independent decisions on saved old states, not a counterfactual closed-loop trajectory"
+  },
+  "diagnostic_seeds": [
+    74963,
+    74976,
+    78330,
+    78331,
+    78332,
+    78333,
+    78334,
+    78335,
+    78336
+  ],
+  "denominators": {
+    "development_reproduction": 2,
+    "fresh_diagnostic": 7,
+    "gate_executed": 0
+  },
+  "coordinator_approval": {
+    "approved": false
+  },
+  "gate40": {
+    "approved": false,
+    "scheduled": false
+  },
+  "ready": false,
+  "stage_ready": {
+    "reproduction": false,
+    "fresh": false,
+    "gate": false
+  },
+  "weld": "off",
+  "truth_control_inputs": false,
+  "top_control_inputs": false,
+  "training_recording": "blocked pending new gate and student writer",
+  "artifacts": {
+    "experiments/2026-10-14-e2e18-grasp-rootcause/release15.md": {
+      "bytes": 15376,
+      "sha256": "36b53ba0fa7a52e97320e57950744766ff23fa602c30c555e36ab2d9656df91a"
+    },
+    "experiments/2026-10-14-e2e18-grasp-rootcause/release15-tests.txt": {
+      "bytes": 191,
+      "sha256": "2d0d9ae0afd54d877f0271766a7f890893c72c370d7e83dc4d6e96d31d7a7b93"
+    },
+    "experiments/2026-10-14-e2e18-grasp-rootcause/release15-replay.json.zst": {
+      "bytes": 14317,
+      "sha256": "fa1cb15d0b97132b73d41c78097567217884d6c947fde5ac29f3784f1fd64abf"
+    },
+    "experiments/2026-10-14-e2e18-grasp-rootcause/release15-diagnostic-plan.json": {
+      "bytes": 18903,
+      "sha256": "0c8f5817a2b6ae04e51a56084bfcb2c666cc901374b425b78996a9dcb2f54bc4"
+    },
+    "experiments/2026-10-14-e2e18-grasp-rootcause/release15-seed-audit.json": {
+      "bytes": 6426,
+      "sha256": "6466ef7e89b940924147c98ded646a7f68e0a9d70f131b270961e6a328abf75f"
+    },
+    "sim/release15.py": {
+      "bytes": 12375,
+      "sha256": "55ee21ace3eed642f3c750dcba39e5e36e346ae7578fd5455d9f5d174739fe60"
+    },
+    "sim/release_regrasp.py": {
+      "bytes": 15015,
+      "sha256": "49528a6da857c5506ea322f6bc8591fca0ef03e801e429061ffed7b474417ecd"
+    },
+    "scripts/run_grasp_act_release.py": {
+      "bytes": 66773,
+      "sha256": "db249ff6ae5ebba97eb13dd71903db3841efa46238698aefef415a60b5559554"
+    },
+    "scripts/replay_release15.py": {
+      "bytes": 9349,
+      "sha256": "86f6fa7d70f713c769b9d9ba74fc7e28485c0b2c2a7a7c807e8c61c5c075b6ed"
+    },
+    "tests/test_release15.py": {
+      "bytes": 10604,
+      "sha256": "d03e59e43422c9c3ebba8fdee0d6fd26f969f04c9e84bbb53646f226493005b8"
+    },
+    "tests/test_grasp_act_release_run.py": {
+      "bytes": 31765,
+      "sha256": "59c1de255ba8982a1401d81a88b9a116c80ed605c0722ad6453bb70d34004c7f"
+    },
+    "configs/grasp_act_seed_splits.json": {
+      "bytes": 2523,
+      "sha256": "fbe9478a209caa2647d8d5037c1424098d7523cb70781c319bbf5d16601c720a"
+    },
+    "/private/tmp/claude-501/-Users-changmin-projects-ugrp/4e56a99a-0106-48c9-b04d-d1cd272ae60e/scratchpad/release14_review.md": {
+      "bytes": 2267,
+      "sha256": "1b88a8fa53fb43742340113aa3450d2d3125090e35b5e1a981d26abf6b7d9cee"
+    },
+    "/private/tmp/claude-501/-Users-changmin-projects-ugrp/4e56a99a-0106-48c9-b04d-d1cd272ae60e/scratchpad/probe2.py": {
+      "bytes": 728,
+      "sha256": "69ddbd9971b0d3d93132c811e9c3ffe64da8fa932ec96be18f1108af8eb0474b"
+    },
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release14-7369ad5e-ops/r14d-00-7369ad5e/evidence.json": {
+      "bytes": 200751,
+      "sha256": "396757d395bd45fadac8d4c4f58189ddd8925ca1bc22387c8efbfdc5d550898d"
+    },
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release14-7369ad5e-ops/r14d-00-7369ad5e/montage.jpg": {
+      "bytes": 209623,
+      "sha256": "4a5b5948869a474b626db28d44458075a090f3cca0343c080f718c44db12921c"
+    },
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release14-7369ad5e-ops/r14d-00-7369ad5e/failure-input-montage.jpg": {
+      "bytes": 53077,
+      "sha256": "c470ed9df342165dce99c0aa08deaf9545bac54a1b532aa8a24853c7fd99f011"
+    },
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release14-7369ad5e-ops/r14d-01-7369ad5e/evidence.json": {
+      "bytes": 225761,
+      "sha256": "66ec1c4d8376b791ec7a3e5a02aa85e9aff5e327878d3ae00812dd556724eb6b"
+    },
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release14-7369ad5e-ops/r14d-01-7369ad5e/montage.jpg": {
+      "bytes": 209062,
+      "sha256": "ae30acb36d6b43d81dc31871c7387170b50dcf169a19201292f28c501d4a2986"
+    },
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release14-7369ad5e-ops/r14d-01-7369ad5e/failure-input-montage.jpg": {
+      "bytes": 45412,
+      "sha256": "24f4a441064eb01f76e8b8bc5c77f092af23e56579fa6a4d2db54e11581eb594"
+    },
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release14-7369ad5e-ops/final-lifecycle.json": {
+      "bytes": 7677,
+      "sha256": "75415e06b78162ba1361f1aa76ffc0540fddc6d6b17f5c6d969a1e2ce083895b"
+    }
+  },
+  "seed_preflight": {
+    "refs": 21,
+    "initial_queue_count": 89,
+    "final_queue_count": 91,
+    "changed_heads_rechecked": 3,
+    "seed_conflicts": 0,
+    "concurrent_prior_queue_changes": 3
+  }
+}

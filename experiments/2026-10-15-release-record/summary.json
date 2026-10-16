@@ -1,0 +1,1233 @@
+{
+  "schema": "ugrp.rel22adapt.summary.v1",
+  "source_sha": "f476338533b7608bab25422b360491d5795f6fde",
+  "runs": [
+    {
+      "round": 1,
+      "seed": 88600,
+      "mode": "off",
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/rel22adapt-r1-88600-off-9df35e49/raw",
+      "source_sha": "9df35e4940be18231d14ac5acb6a48dafbaade33",
+      "status": "complete",
+      "success": true,
+      "outcome": "teacher_done",
+      "termination": null,
+      "wall_s": 74.15388736800014,
+      "sim_s": 32.30000000007163,
+      "wall_sim": 2.2957859866203005,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "result_decoded_sha256": "f1c4d91072c1e766d58e1b08582bc74b74dcf7edac5e4e06e1593d4a9f3a8452",
+      "full_hashes_pass": true,
+      "manifest_files": 92,
+      "full_sha256sums_sha256": "e1e378ee7d168633c8af14a611283d04f3be36bcfaa6e871c1830aa08ed112a4",
+      "reproduction_command": ".venv-sim/bin/python scripts/run_release_recording.py --episode 0 --out /home/ugrp/ugrp-sim/runs/rel22adapt-r1-88600-off-9df35e49/raw",
+      "recording": null,
+      "logical_bytes": 1260641
+    },
+    {
+      "round": 1,
+      "seed": 88600,
+      "mode": "on",
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/rel22adapt-r1-88600-on-9df35e49/raw",
+      "source_sha": "9df35e4940be18231d14ac5acb6a48dafbaade33",
+      "status": "complete",
+      "success": true,
+      "outcome": "teacher_done",
+      "termination": null,
+      "wall_s": 99.46075579599983,
+      "sim_s": 32.30000000007163,
+      "wall_sim": 3.0792803651944047,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "result_decoded_sha256": "2f4a8a935ec4a86494225c8ef1e0b390aaee05340f387098c98b04dea393b06d",
+      "full_hashes_pass": true,
+      "manifest_files": 531,
+      "full_sha256sums_sha256": "383edcd9724d5e84fb0f3271de8babfc5d4cd6058c508ba292bbeda85f78ac1a",
+      "reproduction_command": ".venv-sim/bin/python scripts/run_release_recording.py --episode 0 --record-training --out /home/ugrp/ugrp-sim/runs/rel22adapt-r1-88600-on-9df35e49/raw",
+      "recording": {
+        "mode": "act12_observer_v1",
+        "actors": {
+          "r1": {
+            "frames": 216,
+            "rgb_bytes": 3177826,
+            "camera": {
+              "width": 640,
+              "height": 480,
+              "period_s": 0.1,
+              "hz": 10.0,
+              "camera": "robot_cam",
+              "pinhole_hfov_deg": 54.5351624215943,
+              "pinhole_vfov_deg": 42.1489488115246,
+              "raw_fisheye_fov": "nonlinear K/D; no single angular FOV",
+              "K": [
+                [
+                  619.5194540517232,
+                  0.0,
+                  287.68910608896766
+                ],
+                [
+                  0.0,
+                  622.1654884818748,
+                  218.69686648455726
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "fisheye_D": [
+                -0.0199819517209417,
+                -0.1707593617153504,
+                -0.2568318201202376,
+                0.9650933421665181
+              ],
+              "mount": "masterpi-camera-user-observation-target-review-v3",
+              "position_m": [
+                0.052982009925558314,
+                0.0,
+                0.028152173913043477
+              ],
+              "quat_wxyz": [
+                0.4545194776720437,
+                0.5416752204197018,
+                -0.5416752204197018,
+                -0.4545194776720437
+              ],
+              "schema": "ugrp.grasp_act.student.v6",
+              "sources": {
+                "sim/masterpi_camera_profile.py": "ec224a88f07b7f1e30b9f306951818ec3907c27554daab1361db6cc8b00f3a1a",
+                "sim/masterpi_camera_review_v3.py": "6d8d739085c44f3196e4b4c514ca7e6c515e82394b1180a712b935df0a1b9362",
+                "sim/s2_realism_camera_binding.py": "86922a48dc7e6a3350f478bf2331a9be114da00ec380b3145e834746ed59bbe0",
+                "harness/grasp_act_contract.py": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056"
+              }
+            },
+            "unpaired_observations": 0,
+            "history_bootstrap": "repeat first issued hold/frame until history exists",
+            "command_alignment": "own RGB + previous issued history -> next teacher command at same t",
+            "local_handoff_seen": true,
+            "raw_retained_for_failures": true
+          },
+          "r2": {
+            "frames": 216,
+            "rgb_bytes": 3534628,
+            "camera": {
+              "width": 640,
+              "height": 480,
+              "period_s": 0.1,
+              "hz": 10.0,
+              "camera": "robot_cam",
+              "pinhole_hfov_deg": 54.5351624215943,
+              "pinhole_vfov_deg": 42.1489488115246,
+              "raw_fisheye_fov": "nonlinear K/D; no single angular FOV",
+              "K": [
+                [
+                  619.5194540517232,
+                  0.0,
+                  287.68910608896766
+                ],
+                [
+                  0.0,
+                  622.1654884818748,
+                  218.69686648455726
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "fisheye_D": [
+                -0.0199819517209417,
+                -0.1707593617153504,
+                -0.2568318201202376,
+                0.9650933421665181
+              ],
+              "mount": "masterpi-camera-user-observation-target-review-v3",
+              "position_m": [
+                0.052982009925558314,
+                0.0,
+                0.028152173913043477
+              ],
+              "quat_wxyz": [
+                0.4545194776720437,
+                0.5416752204197018,
+                -0.5416752204197018,
+                -0.4545194776720437
+              ],
+              "schema": "ugrp.grasp_act.student.v6",
+              "sources": {
+                "sim/masterpi_camera_profile.py": "ec224a88f07b7f1e30b9f306951818ec3907c27554daab1361db6cc8b00f3a1a",
+                "sim/masterpi_camera_review_v3.py": "6d8d739085c44f3196e4b4c514ca7e6c515e82394b1180a712b935df0a1b9362",
+                "sim/s2_realism_camera_binding.py": "86922a48dc7e6a3350f478bf2331a9be114da00ec380b3145e834746ed59bbe0",
+                "harness/grasp_act_contract.py": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056"
+              }
+            },
+            "unpaired_observations": 0,
+            "history_bootstrap": "repeat first issued hold/frame until history exists",
+            "command_alignment": "own RGB + previous issued history -> next teacher command at same t",
+            "local_handoff_seen": true,
+            "raw_retained_for_failures": true
+          }
+        },
+        "render_audit": {
+          "calls": 432,
+          "integration_or_rng_changes": 0,
+          "comparison": "mjSTATE_INTEGRATION + Python/NumPy/world/controller RNG, exact SHA256"
+        },
+        "period_s": 0.1,
+        "prefix_recorded": false,
+        "training_include": false,
+        "timing": "unchanged SIM clock; additional rendering and I/O increase wall time"
+      },
+      "logical_bytes": 8108462
+    },
+    {
+      "round": 1,
+      "seed": 88601,
+      "mode": "off",
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/rel22adapt-r1-88601-off-9df35e49/raw",
+      "source_sha": "9df35e4940be18231d14ac5acb6a48dafbaade33",
+      "status": "complete",
+      "success": true,
+      "outcome": "teacher_done",
+      "termination": null,
+      "wall_s": 78.64934533499991,
+      "sim_s": 32.30000000007163,
+      "wall_sim": 2.4349642518521826,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "result_decoded_sha256": "e11d5438f3d6441f42eec538177dc47dbbef4e37c83427410ea91dad85a06fb0",
+      "full_hashes_pass": true,
+      "manifest_files": 92,
+      "full_sha256sums_sha256": "23394f5644a63e65a03ca890b7a0b8270900328af32e7c87d63ea6612ce7a9b2",
+      "reproduction_command": ".venv-sim/bin/python scripts/run_release_recording.py --episode 1 --out /home/ugrp/ugrp-sim/runs/rel22adapt-r1-88601-off-9df35e49/raw",
+      "recording": null,
+      "logical_bytes": 1249872
+    },
+    {
+      "round": 1,
+      "seed": 88601,
+      "mode": "on",
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/rel22adapt-r1-88601-on-9df35e49/raw",
+      "source_sha": "9df35e4940be18231d14ac5acb6a48dafbaade33",
+      "status": "complete",
+      "success": true,
+      "outcome": "teacher_done",
+      "termination": null,
+      "wall_s": 97.35755497300033,
+      "sim_s": 32.30000000007163,
+      "wall_sim": 3.014165788631097,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "result_decoded_sha256": "81421a14dd7b78dddc2d441e04bf27f824a05fd9d2b770fe2ce961135ad0115a",
+      "full_hashes_pass": true,
+      "manifest_files": 531,
+      "full_sha256sums_sha256": "d8d5efb3f1438780d248602b098b294a4d0a3aab370f1814bbff96d854689b0f",
+      "reproduction_command": ".venv-sim/bin/python scripts/run_release_recording.py --episode 1 --record-training --out /home/ugrp/ugrp-sim/runs/rel22adapt-r1-88601-on-9df35e49/raw",
+      "recording": {
+        "mode": "act12_observer_v1",
+        "actors": {
+          "r1": {
+            "frames": 216,
+            "rgb_bytes": 3389401,
+            "camera": {
+              "width": 640,
+              "height": 480,
+              "period_s": 0.1,
+              "hz": 10.0,
+              "camera": "robot_cam",
+              "pinhole_hfov_deg": 54.5351624215943,
+              "pinhole_vfov_deg": 42.1489488115246,
+              "raw_fisheye_fov": "nonlinear K/D; no single angular FOV",
+              "K": [
+                [
+                  619.5194540517232,
+                  0.0,
+                  287.68910608896766
+                ],
+                [
+                  0.0,
+                  622.1654884818748,
+                  218.69686648455726
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "fisheye_D": [
+                -0.0199819517209417,
+                -0.1707593617153504,
+                -0.2568318201202376,
+                0.9650933421665181
+              ],
+              "mount": "masterpi-camera-user-observation-target-review-v3",
+              "position_m": [
+                0.052982009925558314,
+                0.0,
+                0.028152173913043477
+              ],
+              "quat_wxyz": [
+                0.4545194776720437,
+                0.5416752204197018,
+                -0.5416752204197018,
+                -0.4545194776720437
+              ],
+              "schema": "ugrp.grasp_act.student.v6",
+              "sources": {
+                "sim/masterpi_camera_profile.py": "ec224a88f07b7f1e30b9f306951818ec3907c27554daab1361db6cc8b00f3a1a",
+                "sim/masterpi_camera_review_v3.py": "6d8d739085c44f3196e4b4c514ca7e6c515e82394b1180a712b935df0a1b9362",
+                "sim/s2_realism_camera_binding.py": "86922a48dc7e6a3350f478bf2331a9be114da00ec380b3145e834746ed59bbe0",
+                "harness/grasp_act_contract.py": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056"
+              }
+            },
+            "unpaired_observations": 0,
+            "history_bootstrap": "repeat first issued hold/frame until history exists",
+            "command_alignment": "own RGB + previous issued history -> next teacher command at same t",
+            "local_handoff_seen": true,
+            "raw_retained_for_failures": true
+          },
+          "r2": {
+            "frames": 216,
+            "rgb_bytes": 3220771,
+            "camera": {
+              "width": 640,
+              "height": 480,
+              "period_s": 0.1,
+              "hz": 10.0,
+              "camera": "robot_cam",
+              "pinhole_hfov_deg": 54.5351624215943,
+              "pinhole_vfov_deg": 42.1489488115246,
+              "raw_fisheye_fov": "nonlinear K/D; no single angular FOV",
+              "K": [
+                [
+                  619.5194540517232,
+                  0.0,
+                  287.68910608896766
+                ],
+                [
+                  0.0,
+                  622.1654884818748,
+                  218.69686648455726
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "fisheye_D": [
+                -0.0199819517209417,
+                -0.1707593617153504,
+                -0.2568318201202376,
+                0.9650933421665181
+              ],
+              "mount": "masterpi-camera-user-observation-target-review-v3",
+              "position_m": [
+                0.052982009925558314,
+                0.0,
+                0.028152173913043477
+              ],
+              "quat_wxyz": [
+                0.4545194776720437,
+                0.5416752204197018,
+                -0.5416752204197018,
+                -0.4545194776720437
+              ],
+              "schema": "ugrp.grasp_act.student.v6",
+              "sources": {
+                "sim/masterpi_camera_profile.py": "ec224a88f07b7f1e30b9f306951818ec3907c27554daab1361db6cc8b00f3a1a",
+                "sim/masterpi_camera_review_v3.py": "6d8d739085c44f3196e4b4c514ca7e6c515e82394b1180a712b935df0a1b9362",
+                "sim/s2_realism_camera_binding.py": "86922a48dc7e6a3350f478bf2331a9be114da00ec380b3145e834746ed59bbe0",
+                "harness/grasp_act_contract.py": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056"
+              }
+            },
+            "unpaired_observations": 0,
+            "history_bootstrap": "repeat first issued hold/frame until history exists",
+            "command_alignment": "own RGB + previous issued history -> next teacher command at same t",
+            "local_handoff_seen": true,
+            "raw_retained_for_failures": true
+          }
+        },
+        "render_audit": {
+          "calls": 432,
+          "integration_or_rng_changes": 0,
+          "comparison": "mjSTATE_INTEGRATION + Python/NumPy/world/controller RNG, exact SHA256"
+        },
+        "period_s": 0.1,
+        "prefix_recorded": false,
+        "training_include": false,
+        "timing": "unchanged SIM clock; additional rendering and I/O increase wall time"
+      },
+      "logical_bytes": 7996041
+    },
+    {
+      "round": 2,
+      "seed": 88600,
+      "mode": "off",
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/rel22adapt-r2-88600-off-7fcbe7c9/raw",
+      "source_sha": "7fcbe7c9cab9918914c9dcaa8397b9f380c70ac4",
+      "status": "complete",
+      "success": true,
+      "outcome": "teacher_done",
+      "termination": null,
+      "wall_s": 74.24611771499985,
+      "sim_s": 32.30000000007163,
+      "wall_sim": 2.2986414153199757,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "result_decoded_sha256": "13b769fc211f3b57ede7ca6cf7f14238fee34b78645020230aba5de124d1db1a",
+      "full_hashes_pass": true,
+      "manifest_files": 92,
+      "full_sha256sums_sha256": "91e02642af1a0da23155d52d8bf29b44ee16ff7a9c476a18c71126d47281ab48",
+      "reproduction_command": ".venv-sim/bin/python scripts/run_release_recording.py --episode 0 --out /home/ugrp/ugrp-sim/runs/rel22adapt-r2-88600-off-7fcbe7c9/raw",
+      "recording": null,
+      "logical_bytes": 1260647
+    },
+    {
+      "round": 2,
+      "seed": 88600,
+      "mode": "on",
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/rel22adapt-r2-88600-on-7fcbe7c9/raw",
+      "source_sha": "7fcbe7c9cab9918914c9dcaa8397b9f380c70ac4",
+      "status": "HOST_ERROR",
+      "success": null,
+      "outcome": null,
+      "termination": null,
+      "wall_s": 22.392569294000168,
+      "sim_s": 8.29999999999895,
+      "wall_sim": 2.69789991494012,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "result_decoded_sha256": "cba8f184a1d995bacc378faee69bb196985c0d2f049a1da0692d7313d89e63d3",
+      "full_hashes_pass": true,
+      "manifest_files": 42,
+      "full_sha256sums_sha256": "aa6cda4834559d97e393145341371e7d09bcf01584e0d39989e5999beb492798",
+      "reproduction_command": ".venv-sim/bin/python scripts/run_release_recording.py --episode 0 --record-training --out /home/ugrp/ugrp-sim/runs/rel22adapt-r2-88600-on-7fcbe7c9/raw",
+      "recording": {
+        "mode": "act12_observer_v1",
+        "actors": {
+          "r1": {
+            "frames": 0,
+            "rgb_bytes": 0,
+            "camera": {
+              "width": 640,
+              "height": 480,
+              "period_s": 0.1,
+              "hz": 10.0,
+              "camera": "robot_cam",
+              "pinhole_hfov_deg": 54.5351624215943,
+              "pinhole_vfov_deg": 42.1489488115246,
+              "raw_fisheye_fov": "nonlinear K/D; no single angular FOV",
+              "K": [
+                [
+                  619.5194540517232,
+                  0.0,
+                  287.68910608896766
+                ],
+                [
+                  0.0,
+                  622.1654884818748,
+                  218.69686648455726
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "fisheye_D": [
+                -0.0199819517209417,
+                -0.1707593617153504,
+                -0.2568318201202376,
+                0.9650933421665181
+              ],
+              "mount": "masterpi-camera-user-observation-target-review-v3",
+              "position_m": [
+                0.052982009925558314,
+                0.0,
+                0.028152173913043477
+              ],
+              "quat_wxyz": [
+                0.4545194776720437,
+                0.5416752204197018,
+                -0.5416752204197018,
+                -0.4545194776720437
+              ],
+              "schema": "ugrp.grasp_act.student.v6",
+              "sources": {
+                "sim/masterpi_camera_profile.py": "ec224a88f07b7f1e30b9f306951818ec3907c27554daab1361db6cc8b00f3a1a",
+                "sim/masterpi_camera_review_v3.py": "6d8d739085c44f3196e4b4c514ca7e6c515e82394b1180a712b935df0a1b9362",
+                "sim/s2_realism_camera_binding.py": "86922a48dc7e6a3350f478bf2331a9be114da00ec380b3145e834746ed59bbe0",
+                "harness/grasp_act_contract.py": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056"
+              }
+            },
+            "unpaired_observations": 0,
+            "history_bootstrap": "repeat first issued hold/frame until history exists",
+            "command_alignment": "own RGB + previous issued history -> next teacher command at same t",
+            "local_handoff_seen": true,
+            "raw_retained_for_failures": true
+          },
+          "r2": {
+            "frames": 0,
+            "rgb_bytes": 0,
+            "camera": {
+              "width": 640,
+              "height": 480,
+              "period_s": 0.1,
+              "hz": 10.0,
+              "camera": "robot_cam",
+              "pinhole_hfov_deg": 54.5351624215943,
+              "pinhole_vfov_deg": 42.1489488115246,
+              "raw_fisheye_fov": "nonlinear K/D; no single angular FOV",
+              "K": [
+                [
+                  619.5194540517232,
+                  0.0,
+                  287.68910608896766
+                ],
+                [
+                  0.0,
+                  622.1654884818748,
+                  218.69686648455726
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "fisheye_D": [
+                -0.0199819517209417,
+                -0.1707593617153504,
+                -0.2568318201202376,
+                0.9650933421665181
+              ],
+              "mount": "masterpi-camera-user-observation-target-review-v3",
+              "position_m": [
+                0.052982009925558314,
+                0.0,
+                0.028152173913043477
+              ],
+              "quat_wxyz": [
+                0.4545194776720437,
+                0.5416752204197018,
+                -0.5416752204197018,
+                -0.4545194776720437
+              ],
+              "schema": "ugrp.grasp_act.student.v6",
+              "sources": {
+                "sim/masterpi_camera_profile.py": "ec224a88f07b7f1e30b9f306951818ec3907c27554daab1361db6cc8b00f3a1a",
+                "sim/masterpi_camera_review_v3.py": "6d8d739085c44f3196e4b4c514ca7e6c515e82394b1180a712b935df0a1b9362",
+                "sim/s2_realism_camera_binding.py": "86922a48dc7e6a3350f478bf2331a9be114da00ec380b3145e834746ed59bbe0",
+                "harness/grasp_act_contract.py": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056"
+              }
+            },
+            "unpaired_observations": 0,
+            "history_bootstrap": "repeat first issued hold/frame until history exists",
+            "command_alignment": "own RGB + previous issued history -> next teacher command at same t",
+            "local_handoff_seen": true,
+            "raw_retained_for_failures": true
+          }
+        },
+        "render_audit": {
+          "calls": 0,
+          "integration_or_rng_changes": 1,
+          "comparison": "all live mjData arrays + integration state + model cameras + Python/NumPy/world/controller RNG, exact SHA256"
+        },
+        "period_s": 0.1,
+        "isolated_camera_runtime": {
+          "r1": {
+            "position_m": [
+              0.052982009925558314,
+              0.0,
+              0.028152173913043477
+            ],
+            "quat_wxyz": [
+              0.4545194776720437,
+              0.5416752204197018,
+              -0.5416752204197018,
+              -0.4545194776720437
+            ],
+            "pinhole_vfov_deg": 42.18818654076867,
+            "width": 640,
+            "height": 480,
+            "camera": "robot_cam"
+          }
+        },
+        "prefix_recorded": false,
+        "training_include": false,
+        "timing": "unchanged SIM clock; additional rendering and I/O increase wall time"
+      },
+      "logical_bytes": 668737
+    },
+    {
+      "round": 2,
+      "seed": 88601,
+      "mode": "off",
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/rel22adapt-r2-88601-off-7fcbe7c9/raw",
+      "source_sha": "7fcbe7c9cab9918914c9dcaa8397b9f380c70ac4",
+      "status": "complete",
+      "success": true,
+      "outcome": "teacher_done",
+      "termination": null,
+      "wall_s": 71.32142442000031,
+      "sim_s": 32.30000000007163,
+      "wall_sim": 2.208093635289231,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "result_decoded_sha256": "935312f5ec9665434feafbb5db5bba33b94f54a569333b7231fcf0b868842a9e",
+      "full_hashes_pass": true,
+      "manifest_files": 92,
+      "full_sha256sums_sha256": "165da5f9fe9998b6ffe86512eb10da2dc11703ba49923e3f4a1de371ff9e2c51",
+      "reproduction_command": ".venv-sim/bin/python scripts/run_release_recording.py --episode 1 --out /home/ugrp/ugrp-sim/runs/rel22adapt-r2-88601-off-7fcbe7c9/raw",
+      "recording": null,
+      "logical_bytes": 1249841
+    },
+    {
+      "round": 2,
+      "seed": 88601,
+      "mode": "on",
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/rel22adapt-r2-88601-on-7fcbe7c9/raw",
+      "source_sha": "7fcbe7c9cab9918914c9dcaa8397b9f380c70ac4",
+      "status": "HOST_ERROR",
+      "success": null,
+      "outcome": null,
+      "termination": null,
+      "wall_s": 21.81175774400026,
+      "sim_s": 8.29999999999895,
+      "wall_sim": 2.6279226197593997,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "result_decoded_sha256": "ab8c15f9e154ebf7ef6cd4600d4a29acea26f9ad6220e7afaeaa105ea5eeaac2",
+      "full_hashes_pass": true,
+      "manifest_files": 42,
+      "full_sha256sums_sha256": "f7556d3d869bd009244837aee9940f0bce0e6cda9db87237a94606f1c288df84",
+      "reproduction_command": ".venv-sim/bin/python scripts/run_release_recording.py --episode 1 --record-training --out /home/ugrp/ugrp-sim/runs/rel22adapt-r2-88601-on-7fcbe7c9/raw",
+      "recording": {
+        "mode": "act12_observer_v1",
+        "actors": {
+          "r1": {
+            "frames": 0,
+            "rgb_bytes": 0,
+            "camera": {
+              "width": 640,
+              "height": 480,
+              "period_s": 0.1,
+              "hz": 10.0,
+              "camera": "robot_cam",
+              "pinhole_hfov_deg": 54.5351624215943,
+              "pinhole_vfov_deg": 42.1489488115246,
+              "raw_fisheye_fov": "nonlinear K/D; no single angular FOV",
+              "K": [
+                [
+                  619.5194540517232,
+                  0.0,
+                  287.68910608896766
+                ],
+                [
+                  0.0,
+                  622.1654884818748,
+                  218.69686648455726
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "fisheye_D": [
+                -0.0199819517209417,
+                -0.1707593617153504,
+                -0.2568318201202376,
+                0.9650933421665181
+              ],
+              "mount": "masterpi-camera-user-observation-target-review-v3",
+              "position_m": [
+                0.052982009925558314,
+                0.0,
+                0.028152173913043477
+              ],
+              "quat_wxyz": [
+                0.4545194776720437,
+                0.5416752204197018,
+                -0.5416752204197018,
+                -0.4545194776720437
+              ],
+              "schema": "ugrp.grasp_act.student.v6",
+              "sources": {
+                "sim/masterpi_camera_profile.py": "ec224a88f07b7f1e30b9f306951818ec3907c27554daab1361db6cc8b00f3a1a",
+                "sim/masterpi_camera_review_v3.py": "6d8d739085c44f3196e4b4c514ca7e6c515e82394b1180a712b935df0a1b9362",
+                "sim/s2_realism_camera_binding.py": "86922a48dc7e6a3350f478bf2331a9be114da00ec380b3145e834746ed59bbe0",
+                "harness/grasp_act_contract.py": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056"
+              }
+            },
+            "unpaired_observations": 0,
+            "history_bootstrap": "repeat first issued hold/frame until history exists",
+            "command_alignment": "own RGB + previous issued history -> next teacher command at same t",
+            "local_handoff_seen": true,
+            "raw_retained_for_failures": true
+          },
+          "r2": {
+            "frames": 0,
+            "rgb_bytes": 0,
+            "camera": {
+              "width": 640,
+              "height": 480,
+              "period_s": 0.1,
+              "hz": 10.0,
+              "camera": "robot_cam",
+              "pinhole_hfov_deg": 54.5351624215943,
+              "pinhole_vfov_deg": 42.1489488115246,
+              "raw_fisheye_fov": "nonlinear K/D; no single angular FOV",
+              "K": [
+                [
+                  619.5194540517232,
+                  0.0,
+                  287.68910608896766
+                ],
+                [
+                  0.0,
+                  622.1654884818748,
+                  218.69686648455726
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "fisheye_D": [
+                -0.0199819517209417,
+                -0.1707593617153504,
+                -0.2568318201202376,
+                0.9650933421665181
+              ],
+              "mount": "masterpi-camera-user-observation-target-review-v3",
+              "position_m": [
+                0.052982009925558314,
+                0.0,
+                0.028152173913043477
+              ],
+              "quat_wxyz": [
+                0.4545194776720437,
+                0.5416752204197018,
+                -0.5416752204197018,
+                -0.4545194776720437
+              ],
+              "schema": "ugrp.grasp_act.student.v6",
+              "sources": {
+                "sim/masterpi_camera_profile.py": "ec224a88f07b7f1e30b9f306951818ec3907c27554daab1361db6cc8b00f3a1a",
+                "sim/masterpi_camera_review_v3.py": "6d8d739085c44f3196e4b4c514ca7e6c515e82394b1180a712b935df0a1b9362",
+                "sim/s2_realism_camera_binding.py": "86922a48dc7e6a3350f478bf2331a9be114da00ec380b3145e834746ed59bbe0",
+                "harness/grasp_act_contract.py": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056"
+              }
+            },
+            "unpaired_observations": 0,
+            "history_bootstrap": "repeat first issued hold/frame until history exists",
+            "command_alignment": "own RGB + previous issued history -> next teacher command at same t",
+            "local_handoff_seen": true,
+            "raw_retained_for_failures": true
+          }
+        },
+        "render_audit": {
+          "calls": 0,
+          "integration_or_rng_changes": 1,
+          "comparison": "all live mjData arrays + integration state + model cameras + Python/NumPy/world/controller RNG, exact SHA256"
+        },
+        "period_s": 0.1,
+        "isolated_camera_runtime": {
+          "r1": {
+            "position_m": [
+              0.052982009925558314,
+              0.0,
+              0.028152173913043477
+            ],
+            "quat_wxyz": [
+              0.4545194776720437,
+              0.5416752204197018,
+              -0.5416752204197018,
+              -0.4545194776720437
+            ],
+            "pinhole_vfov_deg": 42.18818654076867,
+            "width": 640,
+            "height": 480,
+            "camera": "robot_cam"
+          }
+        },
+        "prefix_recorded": false,
+        "training_include": false,
+        "timing": "unchanged SIM clock; additional rendering and I/O increase wall time"
+      },
+      "logical_bytes": 664953
+    },
+    {
+      "round": 3,
+      "seed": 88600,
+      "mode": "off",
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/rel22adapt-r3-88600-off-f4763385/raw",
+      "source_sha": "f476338533b7608bab25422b360491d5795f6fde",
+      "status": "complete",
+      "success": true,
+      "outcome": "teacher_done",
+      "termination": null,
+      "wall_s": 82.98000942500039,
+      "sim_s": 32.30000000007163,
+      "wall_sim": 2.5690405394679994,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "result_decoded_sha256": "bc0d1f79d4c4c51420f58b33734acd86d45fcdf57d469aa0b2cffbb396d35f4c",
+      "full_hashes_pass": true,
+      "manifest_files": 92,
+      "full_sha256sums_sha256": "1a22694df79387cad1c68030d16f1fa00451c7df47f94790eb51aa71553b5093",
+      "reproduction_command": ".venv-sim/bin/python scripts/run_release_recording.py --episode 0 --out /home/ugrp/ugrp-sim/runs/rel22adapt-r3-88600-off-f4763385/raw",
+      "recording": null,
+      "logical_bytes": 1260649
+    },
+    {
+      "round": 3,
+      "seed": 88600,
+      "mode": "on",
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/rel22adapt-r3-88600-on-f4763385/raw",
+      "source_sha": "f476338533b7608bab25422b360491d5795f6fde",
+      "status": "complete",
+      "success": true,
+      "outcome": "teacher_done",
+      "termination": null,
+      "wall_s": 106.38777505600046,
+      "sim_s": 32.30000000007163,
+      "wall_sim": 3.2937391658131436,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "result_decoded_sha256": "ac698e51ac9027651ec071e8c1dbd26fa6b79c6f594864af4f2e4811963b8cd0",
+      "full_hashes_pass": true,
+      "manifest_files": 531,
+      "full_sha256sums_sha256": "a5271a61e75649b464c158b569bb7512699ddb9748c6e1b7dc9867ebb4295e62",
+      "reproduction_command": ".venv-sim/bin/python scripts/run_release_recording.py --episode 0 --record-training --out /home/ugrp/ugrp-sim/runs/rel22adapt-r3-88600-on-f4763385/raw",
+      "recording": {
+        "mode": "act12_observer_v1",
+        "actors": {
+          "r1": {
+            "frames": 216,
+            "rgb_bytes": 3177826,
+            "camera": {
+              "width": 640,
+              "height": 480,
+              "period_s": 0.1,
+              "hz": 10.0,
+              "camera": "robot_cam",
+              "pinhole_hfov_deg": 54.5351624215943,
+              "pinhole_vfov_deg": 42.1489488115246,
+              "raw_fisheye_fov": "nonlinear K/D; no single angular FOV",
+              "K": [
+                [
+                  619.5194540517232,
+                  0.0,
+                  287.68910608896766
+                ],
+                [
+                  0.0,
+                  622.1654884818748,
+                  218.69686648455726
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "fisheye_D": [
+                -0.0199819517209417,
+                -0.1707593617153504,
+                -0.2568318201202376,
+                0.9650933421665181
+              ],
+              "mount": "masterpi-camera-user-observation-target-review-v3",
+              "position_m": [
+                0.052982009925558314,
+                0.0,
+                0.028152173913043477
+              ],
+              "quat_wxyz": [
+                0.4545194776720437,
+                0.5416752204197018,
+                -0.5416752204197018,
+                -0.4545194776720437
+              ],
+              "schema": "ugrp.grasp_act.student.v6",
+              "sources": {
+                "sim/masterpi_camera_profile.py": "ec224a88f07b7f1e30b9f306951818ec3907c27554daab1361db6cc8b00f3a1a",
+                "sim/masterpi_camera_review_v3.py": "6d8d739085c44f3196e4b4c514ca7e6c515e82394b1180a712b935df0a1b9362",
+                "sim/s2_realism_camera_binding.py": "86922a48dc7e6a3350f478bf2331a9be114da00ec380b3145e834746ed59bbe0",
+                "harness/grasp_act_contract.py": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056"
+              }
+            },
+            "unpaired_observations": 0,
+            "history_bootstrap": "repeat first issued hold/frame until history exists",
+            "command_alignment": "own RGB + previous issued history -> next teacher command at same t",
+            "local_handoff_seen": true,
+            "raw_retained_for_failures": true
+          },
+          "r2": {
+            "frames": 216,
+            "rgb_bytes": 3534628,
+            "camera": {
+              "width": 640,
+              "height": 480,
+              "period_s": 0.1,
+              "hz": 10.0,
+              "camera": "robot_cam",
+              "pinhole_hfov_deg": 54.5351624215943,
+              "pinhole_vfov_deg": 42.1489488115246,
+              "raw_fisheye_fov": "nonlinear K/D; no single angular FOV",
+              "K": [
+                [
+                  619.5194540517232,
+                  0.0,
+                  287.68910608896766
+                ],
+                [
+                  0.0,
+                  622.1654884818748,
+                  218.69686648455726
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "fisheye_D": [
+                -0.0199819517209417,
+                -0.1707593617153504,
+                -0.2568318201202376,
+                0.9650933421665181
+              ],
+              "mount": "masterpi-camera-user-observation-target-review-v3",
+              "position_m": [
+                0.052982009925558314,
+                0.0,
+                0.028152173913043477
+              ],
+              "quat_wxyz": [
+                0.4545194776720437,
+                0.5416752204197018,
+                -0.5416752204197018,
+                -0.4545194776720437
+              ],
+              "schema": "ugrp.grasp_act.student.v6",
+              "sources": {
+                "sim/masterpi_camera_profile.py": "ec224a88f07b7f1e30b9f306951818ec3907c27554daab1361db6cc8b00f3a1a",
+                "sim/masterpi_camera_review_v3.py": "6d8d739085c44f3196e4b4c514ca7e6c515e82394b1180a712b935df0a1b9362",
+                "sim/s2_realism_camera_binding.py": "86922a48dc7e6a3350f478bf2331a9be114da00ec380b3145e834746ed59bbe0",
+                "harness/grasp_act_contract.py": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056"
+              }
+            },
+            "unpaired_observations": 0,
+            "history_bootstrap": "repeat first issued hold/frame until history exists",
+            "command_alignment": "own RGB + previous issued history -> next teacher command at same t",
+            "local_handoff_seen": true,
+            "raw_retained_for_failures": true
+          }
+        },
+        "render_audit": {
+          "calls": 432,
+          "integration_or_rng_changes": 0,
+          "comparison": "integration state + defined kinematic outputs + model cameras + Python/NumPy/world/controller RNG, exact SHA256"
+        },
+        "period_s": 0.1,
+        "isolated_camera_runtime": {
+          "r1": {
+            "position_m": [
+              0.052982009925558314,
+              0.0,
+              0.028152173913043477
+            ],
+            "quat_wxyz": [
+              0.4545194776720437,
+              0.5416752204197018,
+              -0.5416752204197018,
+              -0.4545194776720437
+            ],
+            "pinhole_vfov_deg": 42.18818654076867,
+            "width": 640,
+            "height": 480,
+            "camera": "robot_cam"
+          },
+          "r2": {
+            "position_m": [
+              0.052982009925558314,
+              0.0,
+              0.028152173913043477
+            ],
+            "quat_wxyz": [
+              0.4545194776720437,
+              0.5416752204197018,
+              -0.5416752204197018,
+              -0.4545194776720437
+            ],
+            "pinhole_vfov_deg": 42.18818654076867,
+            "width": 640,
+            "height": 480,
+            "camera": "robot_cam"
+          }
+        },
+        "prefix_recorded": false,
+        "training_include": false,
+        "timing": "unchanged SIM clock; additional rendering and I/O increase wall time"
+      },
+      "logical_bytes": 8109390
+    },
+    {
+      "round": 3,
+      "seed": 88601,
+      "mode": "off",
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/rel22adapt-r3-88601-off-f4763385/raw",
+      "source_sha": "f476338533b7608bab25422b360491d5795f6fde",
+      "status": "complete",
+      "success": true,
+      "outcome": "teacher_done",
+      "termination": null,
+      "wall_s": 82.52739257599933,
+      "sim_s": 32.30000000007163,
+      "wall_sim": 2.5550276339262017,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "result_decoded_sha256": "94b44a580891b3c943610cb354f8f40bee56d3405c69485d0025bbed01e86256",
+      "full_hashes_pass": true,
+      "manifest_files": 92,
+      "full_sha256sums_sha256": "ee9b847ed5c11230ba1ef4b7fec58813d12d632184a87bcc8ba26148aee52462",
+      "reproduction_command": ".venv-sim/bin/python scripts/run_release_recording.py --episode 1 --out /home/ugrp/ugrp-sim/runs/rel22adapt-r3-88601-off-f4763385/raw",
+      "recording": null,
+      "logical_bytes": 1249849
+    },
+    {
+      "round": 3,
+      "seed": 88601,
+      "mode": "on",
+      "raw": "gcp1:/home/ugrp/ugrp-sim/runs/rel22adapt-r3-88601-on-f4763385/raw",
+      "source_sha": "f476338533b7608bab25422b360491d5795f6fde",
+      "status": "complete",
+      "success": true,
+      "outcome": "teacher_done",
+      "termination": null,
+      "wall_s": 104.96331620899946,
+      "sim_s": 32.30000000007163,
+      "wall_sim": 3.249638272717235,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "result_decoded_sha256": "59789c67832eda09a09e61130dbb817416e1d724d3472cc26428355904cc9754",
+      "full_hashes_pass": true,
+      "manifest_files": 531,
+      "full_sha256sums_sha256": "98c8f8fe044867dcdeaf92aa80fe5b0feb8cd94307dd187f997638380c7d7ad3",
+      "reproduction_command": ".venv-sim/bin/python scripts/run_release_recording.py --episode 1 --record-training --out /home/ugrp/ugrp-sim/runs/rel22adapt-r3-88601-on-f4763385/raw",
+      "recording": {
+        "mode": "act12_observer_v1",
+        "actors": {
+          "r1": {
+            "frames": 216,
+            "rgb_bytes": 3389401,
+            "camera": {
+              "width": 640,
+              "height": 480,
+              "period_s": 0.1,
+              "hz": 10.0,
+              "camera": "robot_cam",
+              "pinhole_hfov_deg": 54.5351624215943,
+              "pinhole_vfov_deg": 42.1489488115246,
+              "raw_fisheye_fov": "nonlinear K/D; no single angular FOV",
+              "K": [
+                [
+                  619.5194540517232,
+                  0.0,
+                  287.68910608896766
+                ],
+                [
+                  0.0,
+                  622.1654884818748,
+                  218.69686648455726
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "fisheye_D": [
+                -0.0199819517209417,
+                -0.1707593617153504,
+                -0.2568318201202376,
+                0.9650933421665181
+              ],
+              "mount": "masterpi-camera-user-observation-target-review-v3",
+              "position_m": [
+                0.052982009925558314,
+                0.0,
+                0.028152173913043477
+              ],
+              "quat_wxyz": [
+                0.4545194776720437,
+                0.5416752204197018,
+                -0.5416752204197018,
+                -0.4545194776720437
+              ],
+              "schema": "ugrp.grasp_act.student.v6",
+              "sources": {
+                "sim/masterpi_camera_profile.py": "ec224a88f07b7f1e30b9f306951818ec3907c27554daab1361db6cc8b00f3a1a",
+                "sim/masterpi_camera_review_v3.py": "6d8d739085c44f3196e4b4c514ca7e6c515e82394b1180a712b935df0a1b9362",
+                "sim/s2_realism_camera_binding.py": "86922a48dc7e6a3350f478bf2331a9be114da00ec380b3145e834746ed59bbe0",
+                "harness/grasp_act_contract.py": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056"
+              }
+            },
+            "unpaired_observations": 0,
+            "history_bootstrap": "repeat first issued hold/frame until history exists",
+            "command_alignment": "own RGB + previous issued history -> next teacher command at same t",
+            "local_handoff_seen": true,
+            "raw_retained_for_failures": true
+          },
+          "r2": {
+            "frames": 216,
+            "rgb_bytes": 3220771,
+            "camera": {
+              "width": 640,
+              "height": 480,
+              "period_s": 0.1,
+              "hz": 10.0,
+              "camera": "robot_cam",
+              "pinhole_hfov_deg": 54.5351624215943,
+              "pinhole_vfov_deg": 42.1489488115246,
+              "raw_fisheye_fov": "nonlinear K/D; no single angular FOV",
+              "K": [
+                [
+                  619.5194540517232,
+                  0.0,
+                  287.68910608896766
+                ],
+                [
+                  0.0,
+                  622.1654884818748,
+                  218.69686648455726
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              ],
+              "fisheye_D": [
+                -0.0199819517209417,
+                -0.1707593617153504,
+                -0.2568318201202376,
+                0.9650933421665181
+              ],
+              "mount": "masterpi-camera-user-observation-target-review-v3",
+              "position_m": [
+                0.052982009925558314,
+                0.0,
+                0.028152173913043477
+              ],
+              "quat_wxyz": [
+                0.4545194776720437,
+                0.5416752204197018,
+                -0.5416752204197018,
+                -0.4545194776720437
+              ],
+              "schema": "ugrp.grasp_act.student.v6",
+              "sources": {
+                "sim/masterpi_camera_profile.py": "ec224a88f07b7f1e30b9f306951818ec3907c27554daab1361db6cc8b00f3a1a",
+                "sim/masterpi_camera_review_v3.py": "6d8d739085c44f3196e4b4c514ca7e6c515e82394b1180a712b935df0a1b9362",
+                "sim/s2_realism_camera_binding.py": "86922a48dc7e6a3350f478bf2331a9be114da00ec380b3145e834746ed59bbe0",
+                "harness/grasp_act_contract.py": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056"
+              }
+            },
+            "unpaired_observations": 0,
+            "history_bootstrap": "repeat first issued hold/frame until history exists",
+            "command_alignment": "own RGB + previous issued history -> next teacher command at same t",
+            "local_handoff_seen": true,
+            "raw_retained_for_failures": true
+          }
+        },
+        "render_audit": {
+          "calls": 432,
+          "integration_or_rng_changes": 0,
+          "comparison": "integration state + defined kinematic outputs + model cameras + Python/NumPy/world/controller RNG, exact SHA256"
+        },
+        "period_s": 0.1,
+        "isolated_camera_runtime": {
+          "r1": {
+            "position_m": [
+              0.052982009925558314,
+              0.0,
+              0.028152173913043477
+            ],
+            "quat_wxyz": [
+              0.4545194776720437,
+              0.5416752204197018,
+              -0.5416752204197018,
+              -0.4545194776720437
+            ],
+            "pinhole_vfov_deg": 42.18818654076867,
+            "width": 640,
+            "height": 480,
+            "camera": "robot_cam"
+          },
+          "r2": {
+            "position_m": [
+              0.052982009925558314,
+              0.0,
+              0.028152173913043477
+            ],
+            "quat_wxyz": [
+              0.4545194776720437,
+              0.5416752204197018,
+              -0.5416752204197018,
+              -0.4545194776720437
+            ],
+            "pinhole_vfov_deg": 42.18818654076867,
+            "width": 640,
+            "height": 480,
+            "camera": "robot_cam"
+          }
+        },
+        "prefix_recorded": false,
+        "training_include": false,
+        "timing": "unchanged SIM clock; additional rendering and I/O increase wall time"
+      },
+      "logical_bytes": 7996973
+    }
+  ],
+  "final_equivalence_passed": true,
+  "rounds": 3,
+  "attempted": 12,
+  "completed": 10,
+  "teacher_success": 10,
+  "HOST_ERROR": 2,
+  "scope": "observer equivalence only; round1 result-cache mismatch and round2 HOST_ERROR retained, not pooled into final proof; no bulk/data admission/training"
+}

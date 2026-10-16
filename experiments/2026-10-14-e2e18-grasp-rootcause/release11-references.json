@@ -1,0 +1,26 @@
+{
+  "solo_source": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+  "reviewed_files": {
+    "sim/grasp_act_solo_teacher.py": "6b1cccf16d727449e059acebbba866cc4048f42918d8791ef8b1ba1729bcbdb6",
+    "sim/grasp_act_solo_lookback.py": "dfceb0c880bbf525c6218e2ec306ada5a48f3f951520635f43c4c1f9541ab323",
+    "sim/grasp_act_solo_rgb.py": "4713584e95ebf1458154f9383b7bb92f6e7b34374e7df6f59e7ff4387019cf21",
+    "sim/rgb_lift_evidence.py": "92719542fc830c6f9662fd66dce97d77c71bf2ff622da1c4828af289b1396f65"
+  },
+  "primary_sources": [
+    {
+      "url": "https://arw-proceedings.acin.tuwien.ac.at/article/722/galley/752/download/",
+      "title": "Sim2Real Transfer for Vision-Based Grasp Verification",
+      "read_scope": "abstract and sections I-IV; own camera gripper ROI/classifier separation; model not imported"
+    },
+    {
+      "url": "https://researchmgt.monash.edu/ws/portalfiles/portal/591431744/382055160_oa.pdf",
+      "title": "Closing the Loop for Robotic Grasping",
+      "read_scope": "abstract, closed-loop method and evaluation lift criterion; depth camera does not satisfy our RGB-only constraint"
+    },
+    {
+      "url": "https://arxiv.org/abs/1706.04652",
+      "title": "Learning a visuomotor controller for real world robotic grasping using simulated depth images",
+      "read_scope": "abstract; wrist feedback and robustness to kinematic/perceptual disturbances; not an RGB success detector"
+    }
+  ]
+}

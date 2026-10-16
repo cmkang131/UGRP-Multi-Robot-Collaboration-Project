@@ -1,0 +1,267 @@
+{
+  "source_sha": "cdace35e0c5bd94d0c1d348e17cd470a773cb270",
+  "scope": "offline evaluation only; no physics/rendering/model calls; frames not yet retrieved or reviewed",
+  "success": 24,
+  "n": 40,
+  "prefix_held": 40,
+  "center_distance_m": {
+    "all": {
+      "n": 40,
+      "min": 0.1045929134074232,
+      "median": 0.35704804559135533,
+      "max": 0.48364404333304445
+    },
+    "success": {
+      "n": 24,
+      "min": 0.1045929134074232,
+      "median": 0.3259753946590036,
+      "max": 0.40620165688345644
+    },
+    "failure": {
+      "n": 16,
+      "min": 0.33458290161242293,
+      "median": 0.3943285376549808,
+      "max": 0.48364404333304445
+    }
+  },
+  "center_y_offset_m": {
+    "n": 40,
+    "min": -0.46047555985878924,
+    "median": -0.3371513210198848,
+    "max": 0.28088277254410354
+  },
+  "last_sweep_error_before_m": {
+    "n": 80,
+    "min": 0.0006464758639635774,
+    "median": 0.009335472500715286,
+    "max": 0.029548232629505816
+  },
+  "last_sweep_error_after_m": {
+    "n": 80,
+    "min": 0.0004818240271636046,
+    "median": 0.009650433140175638,
+    "max": 0.03009936443782313
+  },
+  "error_scope": "arbitrary command origin, aligned using evaluation-only spawn; map-frame error is undefined, not zero",
+  "before_after_limit": "only last sweep before/after retained per robot; every view retained; timeout may leave last sweep incomplete",
+  "accepted_last_sweeps": 0,
+  "last_sweep_reasons": {
+    "map_pose_unknown": 80
+  },
+  "detection_totals_not_unique_landmarks": {
+    "wall_points": 45283,
+    "floor_lines": 1871,
+    "doors": 0
+  },
+  "view_count": 648,
+  "views_with_detections": 648,
+  "associated_map_group_count": 0,
+  "camera_fk_origin_error_m": {
+    "n": 648,
+    "min": 0.0006624205070122454,
+    "median": 0.0008411997969804621,
+    "max": 0.0010853204924046159
+  },
+  "camera_fk_axis_error_deg": {
+    "n": 648,
+    "min": 0.09222210465363799,
+    "median": 0.14010836504507482,
+    "max": 0.23353515331368088
+  },
+  "first_lower_without_evidence": 40,
+  "input_audit_totals": {
+    "held_world_reads": 0,
+    "invisible_measurements": 0
+  },
+  "groups": {
+    "scenario": {
+      "s1_normal_mixed_v4": {
+        "n": 14,
+        "success": 8,
+        "failed_indices": [
+          6,
+          12,
+          15,
+          30,
+          36,
+          39
+        ]
+      },
+      "s3_late_rendezvous_v4": {
+        "n": 13,
+        "success": 8,
+        "failed_indices": [
+          7,
+          13,
+          22,
+          31,
+          37
+        ]
+      },
+      "s6_novel_relation_v4": {
+        "n": 13,
+        "success": 8,
+        "failed_indices": [
+          14,
+          20,
+          23,
+          29,
+          38
+        ]
+      }
+    },
+    "zone": {
+      "zone_A": {
+        "n": 40,
+        "success": 24,
+        "failed_indices": [
+          6,
+          7,
+          12,
+          13,
+          14,
+          15,
+          20,
+          22,
+          23,
+          29,
+          30,
+          31,
+          36,
+          37,
+          38,
+          39
+        ]
+      }
+    },
+    "long_axis": {
+      "y": {
+        "n": 40,
+        "success": 24,
+        "failed_indices": [
+          6,
+          7,
+          12,
+          13,
+          14,
+          15,
+          20,
+          22,
+          23,
+          29,
+          30,
+          31,
+          36,
+          37,
+          38,
+          39
+        ]
+      }
+    },
+    "side": {
+      "south": {
+        "n": 34,
+        "success": 18,
+        "failed_indices": [
+          6,
+          7,
+          12,
+          13,
+          14,
+          15,
+          20,
+          22,
+          23,
+          29,
+          30,
+          31,
+          36,
+          37,
+          38,
+          39
+        ]
+      },
+      "north": {
+        "n": 6,
+        "success": 6,
+        "failed_indices": []
+      }
+    },
+    "teal_south": {
+      "True": {
+        "n": 20,
+        "success": 12,
+        "failed_indices": [
+          6,
+          12,
+          14,
+          20,
+          22,
+          30,
+          36,
+          38
+        ]
+      },
+      "False": {
+        "n": 20,
+        "success": 12,
+        "failed_indices": [
+          7,
+          13,
+          15,
+          23,
+          29,
+          31,
+          37,
+          39
+        ]
+      }
+    },
+    "axial_outside_m": {
+      "[-0.3, -0.02]": {
+        "n": 10,
+        "success": 10,
+        "failed_indices": []
+      },
+      "[0.0, 0.15]": {
+        "n": 10,
+        "success": 10,
+        "failed_indices": []
+      },
+      "[0.15, 0.3]": {
+        "n": 10,
+        "success": 4,
+        "failed_indices": [
+          12,
+          13,
+          20,
+          29,
+          36,
+          37
+        ]
+      },
+      "[0.3, 0.44]": {
+        "n": 10,
+        "success": 0,
+        "failed_indices": [
+          6,
+          7,
+          14,
+          15,
+          22,
+          23,
+          30,
+          31,
+          38,
+          39
+        ]
+      }
+    }
+  },
+  "detail": {
+    "path": "release-command-gate-diagnosis-detail.json.zst",
+    "sha256": "cfb207ffaf55d5c068094f9155caf11be29197aed2c8d32dbf6540fe4afdc191",
+    "bytes": 110865
+  },
+  "input_files_verified_against_source_manifest": 200
+}

@@ -1,0 +1,909 @@
+{
+  "schema": "ugrp.release11.replay.v1",
+  "scope": "saved own command / own RGB fit / sparse review RGB only",
+  "runs": [
+    {
+      "seed": 74940,
+      "source_sha": "8e520ea2816c46a0f0d7aac250fcf0969416c808",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release9-diagnostic-00-8e520ea2/raw",
+      "original_success": true,
+      "original_outcome": "teacher_done",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "decisions": [
+        {
+          "t": 23.400000000020718,
+          "old": {
+            "action": "observe",
+            "reason": "global_pose_unobserved",
+            "t": 23.400000000020718
+          },
+          "new": {
+            "action": "observe",
+            "reason": "global_pose_unobserved",
+            "t": 23.400000000020718
+          },
+          "equivalent": true
+        },
+        {
+          "t": 35.500000000078494,
+          "old": {
+            "action": "shift",
+            "shift_m": -0.2,
+            "reason": "localized_margin_correction",
+            "t": 35.500000000078494,
+            "margins_m": [
+              0.6414386423769941,
+              0.08915424765150226
+            ]
+          },
+          "new": {
+            "action": "shift",
+            "shift_m": -0.2,
+            "reason": "localized_margin_correction",
+            "t": 35.500000000078494,
+            "margins_m": [
+              0.6414386423769941,
+              0.08915424765150226
+            ]
+          },
+          "equivalent": true
+        },
+        {
+          "t": 58.100000000186405,
+          "old": {
+            "action": "shift",
+            "shift_m": 0.0,
+            "lateral_shift_m": -0.1,
+            "lateral_interval_m": [
+              -0.420249724596786,
+              -0.02682593701170813
+            ],
+            "reason": "localized_lateral_correction",
+            "t": 58.100000000186405
+          },
+          "new": {
+            "action": "shift",
+            "shift_m": 0.0,
+            "lateral_shift_m": -0.1,
+            "lateral_interval_m": [
+              -0.420249724596786,
+              -0.02682593701170813
+            ],
+            "reason": "localized_lateral_correction",
+            "t": 58.100000000186405
+          },
+          "equivalent": true
+        },
+        {
+          "t": 80.69999999981967,
+          "old": {
+            "action": "shift",
+            "shift_m": -0.07218857492183778,
+            "reason": "localized_margin_correction",
+            "t": 80.69999999981967,
+            "margins_m": [
+              0.4395489195780261,
+              0.29517176973435055
+            ]
+          },
+          "new": {
+            "action": "shift",
+            "shift_m": -0.07218857492183778,
+            "reason": "localized_margin_correction",
+            "t": 80.69999999981967,
+            "margins_m": [
+              0.4395489195780261,
+              0.29517176973435055
+            ]
+          },
+          "equivalent": true
+        },
+        {
+          "t": 102.49999999930417,
+          "old": {
+            "action": "lower",
+            "reason": "localized_margins_centered",
+            "t": 102.49999999930417,
+            "margins_m": [
+              0.36613527802407553,
+              0.36792059706813895
+            ]
+          },
+          "new": {
+            "action": "lower",
+            "reason": "localized_margins_centered",
+            "t": 102.49999999930417,
+            "margins_m": [
+              0.36613527802407553,
+              0.36792059706813895
+            ]
+          },
+          "equivalent": true
+        }
+      ],
+      "equivalent": 5,
+      "N": 5,
+      "margin_max_error_m": 0.0,
+      "review_rgb": [
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-own/r1/000000-prefix.jpg",
+          "original": "eval-own/r1/000000-prefix.jpg",
+          "sha256": "6528468a322c65d93ba305339f24f4391cf6aecad8e6666849ceb68ec5d8f5e1",
+          "near_grip": {
+            "qualified": false,
+            "central_fraction": 0.09171006944444444,
+            "threshold": 0.6,
+            "scope": "provisional own wrist near-field shaft"
+          }
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-own/r1/000070-prefix.jpg",
+          "original": "eval-own/r1/000070-prefix.jpg",
+          "sha256": "d4d57e025b33932f932682c39e2ba3d137c1de177b309fb73c91f4dea7ee888c",
+          "near_grip": {
+            "qualified": true,
+            "central_fraction": 1.0,
+            "threshold": 0.6,
+            "scope": "provisional own wrist near-field shaft"
+          }
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-own/r1/000190-release-lookaround.jpg",
+          "original": "eval-own/r1/000190-release-lookaround.jpg",
+          "sha256": "951eb23cc61db179194635aea2967fbdc68b9edf197dbb62a585557c2211cdc7",
+          "near_grip": {
+            "qualified": false,
+            "central_fraction": 0.20017361111111112,
+            "threshold": 0.6,
+            "scope": "provisional own wrist near-field shaft"
+          }
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-own/r1/000330-release-repick.jpg",
+          "original": "eval-own/r1/000330-release-repick.jpg",
+          "sha256": "526fa19970ca5676e97fc7355f6d150df68b5957db7ece34c12cdd3f030ce842",
+          "near_grip": {
+            "qualified": true,
+            "central_fraction": 1.0,
+            "threshold": 0.6,
+            "scope": "provisional own wrist near-field shaft"
+          }
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-own/r1/000470-release-observe_move.jpg",
+          "original": "eval-own/r1/000470-release-observe_move.jpg",
+          "sha256": "eb6c74ec42aa05b48421286c4edc535baa0862834e657d9d449a3a8d791f1600",
+          "near_grip": {
+            "qualified": false,
+            "central_fraction": 0.07135416666666666,
+            "threshold": 0.6,
+            "scope": "provisional own wrist near-field shaft"
+          }
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-own/r1/000610-release-open.jpg",
+          "original": "eval-own/r1/000610-release-open.jpg",
+          "sha256": "2c002f59c73de8d26530c525235a5efeac7858a7388ec2b6b9836b93da145b75",
+          "near_grip": {
+            "qualified": true,
+            "central_fraction": 1.0,
+            "threshold": 0.6,
+            "scope": "provisional own wrist near-field shaft"
+          }
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-own/r1/000750-release-repick.jpg",
+          "original": "eval-own/r1/000750-release-repick.jpg",
+          "sha256": "040377fcac412c2a3060467d510d9aeb8ade62228913e80c39ad1d1ac5a6452a",
+          "near_grip": {
+            "qualified": true,
+            "central_fraction": 0.8598524305555556,
+            "threshold": 0.6,
+            "scope": "provisional own wrist near-field shaft"
+          }
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-own/r1/000860-release-observe_back.jpg",
+          "original": "eval-own/r1/000860-release-observe_back.jpg",
+          "sha256": "50ef09ba89f58a0df474fc4eeb23aeabe1475b4086cb9e128b11bb0d6a1260e1",
+          "near_grip": {
+            "qualified": false,
+            "central_fraction": 0.06263020833333334,
+            "threshold": 0.6,
+            "scope": "provisional own wrist near-field shaft"
+          }
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-own/r1/000890-release-lookaround.jpg",
+          "original": "eval-own/r1/000890-release-lookaround.jpg",
+          "sha256": "3b7b2ef333994f5ba66f7e81f4598de18f9033aac66f01af5e1f7be326334ae5",
+          "near_grip": {
+            "qualified": false,
+            "central_fraction": 0.0,
+            "threshold": 0.6,
+            "scope": "provisional own wrist near-field shaft"
+          }
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-own/r2/000000-prefix.jpg",
+          "original": "eval-own/r2/000000-prefix.jpg",
+          "sha256": "1e21628ee5753f09e5e461859494adc1885af9ab361adf1aff4ee11f8c88febf",
+          "near_grip": {
+            "qualified": false,
+            "central_fraction": 0.09279513888888889,
+            "threshold": 0.6,
+            "scope": "provisional own wrist near-field shaft"
+          }
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-own/r2/000070-prefix.jpg",
+          "original": "eval-own/r2/000070-prefix.jpg",
+          "sha256": "67ce58920aa422a02c871948a6cb5b5edf07b826de8dddee19ce85eae0bd0104",
+          "near_grip": {
+            "qualified": true,
+            "central_fraction": 1.0,
+            "threshold": 0.6,
+            "scope": "provisional own wrist near-field shaft"
+          }
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-own/r2/000190-release-lookaround.jpg",
+          "original": "eval-own/r2/000190-release-lookaround.jpg",
+          "sha256": "c8279258a48c4b2e47040b2ca00a9884ad2ac98257a6871a23dc13e0b5d56515",
+          "near_grip": {
+            "qualified": false,
+            "central_fraction": 0.05720486111111111,
+            "threshold": 0.6,
+            "scope": "provisional own wrist near-field shaft"
+          }
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-own/r2/000330-release-repick.jpg",
+          "original": "eval-own/r2/000330-release-repick.jpg",
+          "sha256": "c77e6dff314537a55e5166b417904223e145ae41b016486f21b6a7bb24975518",
+          "near_grip": {
+            "qualified": true,
+            "central_fraction": 1.0,
+            "threshold": 0.6,
+            "scope": "provisional own wrist near-field shaft"
+          }
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-own/r2/000470-release-observe_move.jpg",
+          "original": "eval-own/r2/000470-release-observe_move.jpg",
+          "sha256": "243d4102e879cbfba726ca66285fcb102435b8d0bb2fccd104a698a796727ffc",
+          "near_grip": {
+            "qualified": false,
+            "central_fraction": 0.07395833333333333,
+            "threshold": 0.6,
+            "scope": "provisional own wrist near-field shaft"
+          }
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-own/r2/000610-release-open.jpg",
+          "original": "eval-own/r2/000610-release-open.jpg",
+          "sha256": "2bffc128a6142aac0aa0c2f792fdbcc93f0eaa48db2d82310d216180add9105f",
+          "near_grip": {
+            "qualified": true,
+            "central_fraction": 1.0,
+            "threshold": 0.6,
+            "scope": "provisional own wrist near-field shaft"
+          }
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-own/r2/000750-release-repick.jpg",
+          "original": "eval-own/r2/000750-release-repick.jpg",
+          "sha256": "6624091bb90a33abbb50b1acecc9cede9b85986548a43bcde0dfbd27148a6a50",
+          "near_grip": {
+            "qualified": true,
+            "central_fraction": 0.8394097222222222,
+            "threshold": 0.6,
+            "scope": "provisional own wrist near-field shaft"
+          }
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-own/r2/000860-release-observe_back.jpg",
+          "original": "eval-own/r2/000860-release-observe_back.jpg",
+          "sha256": "f5ced571e56cbd3fb4dfd628d67a27598164f06c6f67d1975807da8430395087",
+          "near_grip": {
+            "qualified": false,
+            "central_fraction": 0.09483506944444445,
+            "threshold": 0.6,
+            "scope": "provisional own wrist near-field shaft"
+          }
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-own/r2/000890-release-lookaround.jpg",
+          "original": "eval-own/r2/000890-release-lookaround.jpg",
+          "sha256": "20d0112fea54e4f9fff8c4794dcb392839e930a80b88493acbc0f9d5a14d0a55",
+          "near_grip": {
+            "qualified": false,
+            "central_fraction": 0.0,
+            "threshold": 0.6,
+            "scope": "provisional own wrist near-field shaft"
+          }
+        }
+      ],
+      "reviewed_frames": [
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-overview/000000-prefix.jpg",
+          "original": "eval-overview/000000-prefix.jpg",
+          "sha256": "b38afabb3e347a2925b438f11b5cf1bd95cb9dd9b4d6d44b36e758a590b90e6e"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-overview/000070-prefix.jpg",
+          "original": "eval-overview/000070-prefix.jpg",
+          "sha256": "3060e2c089f6cd09a21f4049f9bcee639a1f50b5b7f6eea42773a6afc9eef037"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-overview/000190-release-lookaround.jpg",
+          "original": "eval-overview/000190-release-lookaround.jpg",
+          "sha256": "04ef0742b45797e5bdfc053ce0f982ecc4878ee086a751b6512a6cee4979dbc5"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-overview/000330-release-repick.jpg",
+          "original": "eval-overview/000330-release-repick.jpg",
+          "sha256": "f72e98dd31f0664d89431deba3fd9fa189ab3a2b2f5c4617f1b844c6b8463b9f"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-overview/000470-release-observe_move.jpg",
+          "original": "eval-overview/000470-release-observe_move.jpg",
+          "sha256": "af502f5bb94e440e1981c53576cd21269451d908a8080284123d6ee1acda1886"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-overview/000610-release-open.jpg",
+          "original": "eval-overview/000610-release-open.jpg",
+          "sha256": "b1955b42d0a1020f9d7496112e26566501a2efa0cd9896279426b8c90f702a25"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-overview/000750-release-repick.jpg",
+          "original": "eval-overview/000750-release-repick.jpg",
+          "sha256": "1e08c8932792b7f582df08c5aec0ed2da16be5efec19201cb356a1a9434f3193"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-overview/000860-release-observe_back.jpg",
+          "original": "eval-overview/000860-release-observe_back.jpg",
+          "sha256": "566cc8e3e62cb69684f831ed17d5d4650d5a3790011a1e456cd9e2507be9f8f5"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-overview/000890-release-lookaround.jpg",
+          "original": "eval-overview/000890-release-lookaround.jpg",
+          "sha256": "1d96dbeaec373ecd1cee4ef90bf3deae0f2499593a0d6dda8f476b0e76d20557"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-own/r1/000000-prefix.jpg",
+          "original": "eval-own/r1/000000-prefix.jpg",
+          "sha256": "6528468a322c65d93ba305339f24f4391cf6aecad8e6666849ceb68ec5d8f5e1"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-own/r1/000070-prefix.jpg",
+          "original": "eval-own/r1/000070-prefix.jpg",
+          "sha256": "d4d57e025b33932f932682c39e2ba3d137c1de177b309fb73c91f4dea7ee888c"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-own/r1/000190-release-lookaround.jpg",
+          "original": "eval-own/r1/000190-release-lookaround.jpg",
+          "sha256": "951eb23cc61db179194635aea2967fbdc68b9edf197dbb62a585557c2211cdc7"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-own/r1/000330-release-repick.jpg",
+          "original": "eval-own/r1/000330-release-repick.jpg",
+          "sha256": "526fa19970ca5676e97fc7355f6d150df68b5957db7ece34c12cdd3f030ce842"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-own/r1/000470-release-observe_move.jpg",
+          "original": "eval-own/r1/000470-release-observe_move.jpg",
+          "sha256": "eb6c74ec42aa05b48421286c4edc535baa0862834e657d9d449a3a8d791f1600"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-own/r1/000610-release-open.jpg",
+          "original": "eval-own/r1/000610-release-open.jpg",
+          "sha256": "2c002f59c73de8d26530c525235a5efeac7858a7388ec2b6b9836b93da145b75"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-own/r1/000750-release-repick.jpg",
+          "original": "eval-own/r1/000750-release-repick.jpg",
+          "sha256": "040377fcac412c2a3060467d510d9aeb8ade62228913e80c39ad1d1ac5a6452a"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-own/r1/000860-release-observe_back.jpg",
+          "original": "eval-own/r1/000860-release-observe_back.jpg",
+          "sha256": "50ef09ba89f58a0df474fc4eeb23aeabe1475b4086cb9e128b11bb0d6a1260e1"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-own/r1/000890-release-lookaround.jpg",
+          "original": "eval-own/r1/000890-release-lookaround.jpg",
+          "sha256": "3b7b2ef333994f5ba66f7e81f4598de18f9033aac66f01af5e1f7be326334ae5"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-own/r2/000000-prefix.jpg",
+          "original": "eval-own/r2/000000-prefix.jpg",
+          "sha256": "1e21628ee5753f09e5e461859494adc1885af9ab361adf1aff4ee11f8c88febf"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-own/r2/000070-prefix.jpg",
+          "original": "eval-own/r2/000070-prefix.jpg",
+          "sha256": "67ce58920aa422a02c871948a6cb5b5edf07b826de8dddee19ce85eae0bd0104"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-own/r2/000190-release-lookaround.jpg",
+          "original": "eval-own/r2/000190-release-lookaround.jpg",
+          "sha256": "c8279258a48c4b2e47040b2ca00a9884ad2ac98257a6871a23dc13e0b5d56515"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-own/r2/000330-release-repick.jpg",
+          "original": "eval-own/r2/000330-release-repick.jpg",
+          "sha256": "c77e6dff314537a55e5166b417904223e145ae41b016486f21b6a7bb24975518"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-own/r2/000470-release-observe_move.jpg",
+          "original": "eval-own/r2/000470-release-observe_move.jpg",
+          "sha256": "243d4102e879cbfba726ca66285fcb102435b8d0bb2fccd104a698a796727ffc"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-own/r2/000610-release-open.jpg",
+          "original": "eval-own/r2/000610-release-open.jpg",
+          "sha256": "2bffc128a6142aac0aa0c2f792fdbcc93f0eaa48db2d82310d216180add9105f"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-own/r2/000750-release-repick.jpg",
+          "original": "eval-own/r2/000750-release-repick.jpg",
+          "sha256": "6624091bb90a33abbb50b1acecc9cede9b85986548a43bcde0dfbd27148a6a50"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-own/r2/000860-release-observe_back.jpg",
+          "original": "eval-own/r2/000860-release-observe_back.jpg",
+          "sha256": "f5ced571e56cbd3fb4dfd628d67a27598164f06c6f67d1975807da8430395087"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74940/eval-own/r2/000890-release-lookaround.jpg",
+          "original": "eval-own/r2/000890-release-lookaround.jpg",
+          "sha256": "20d0112fea54e4f9fff8c4794dcb392839e930a80b88493acbc0f9d5a14d0a55"
+        }
+      ],
+      "first_new_barrier": "repick timer expiry -> sequential own RGB test, never direct shift",
+      "missing_evidence": "No new sequential test-lift images in saved runs. Full enabled trajectory/outcome equivalence unverified.",
+      "frozen_path_warning": "Later stored inputs are old-path branch tests, not predictions after the new barrier."
+    },
+    {
+      "seed": 74963,
+      "source_sha": "8e520ea2816c46a0f0d7aac250fcf0969416c808",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release9-diagnostic-01-8e520ea2/raw",
+      "original_success": false,
+      "original_outcome": "active_observation_exhausted",
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "decisions": [
+        {
+          "t": 23.400000000020718,
+          "old": {
+            "action": "shift",
+            "shift_m": 0.0,
+            "lateral_shift_m": -0.1,
+            "lateral_interval_m": [
+              -0.4120575157568023,
+              -0.04627253271834267
+            ],
+            "reason": "localized_lateral_correction",
+            "t": 23.400000000020718
+          },
+          "new": {
+            "action": "shift",
+            "shift_m": 0.0,
+            "lateral_shift_m": -0.1,
+            "lateral_interval_m": [
+              -0.4120575157568023,
+              -0.04627253271834267
+            ],
+            "reason": "localized_lateral_correction",
+            "t": 23.400000000020718
+          },
+          "equivalent": true
+        },
+        {
+          "t": 45.800000000127675,
+          "old": {
+            "action": "observe",
+            "reason": "global_pose_unobserved",
+            "t": 45.800000000127675
+          },
+          "new": {
+            "action": "axis_correct",
+            "reason": "release_axis_unaligned",
+            "t": 45.800000000127675,
+            "axis_errors_rad": [
+              0.010101015471847496,
+              -0.3183036079809871
+            ],
+            "axis_path_refusal": "axis_correction_heading_disagreement"
+          },
+          "equivalent": false
+        },
+        {
+          "t": 57.90000000018545,
+          "old": {
+            "action": "observe",
+            "reason": "global_pose_unobserved",
+            "t": 57.90000000018545
+          },
+          "new": {
+            "action": "axis_correct",
+            "reason": "release_axis_unaligned",
+            "t": 57.90000000018545,
+            "axis_errors_rad": [
+              0.010101015471847496,
+              -0.3184724324629826
+            ],
+            "axis_path_refusal": "axis_correction_heading_disagreement"
+          },
+          "equivalent": false
+        },
+        {
+          "t": 97.09999999943186,
+          "old": {
+            "action": "observe",
+            "reason": "global_pose_unobserved",
+            "t": 97.09999999943186
+          },
+          "new": {
+            "action": "axis_correct",
+            "reason": "release_axis_unaligned",
+            "t": 97.09999999943186,
+            "axis_errors_rad": [
+              0.010101015471847496,
+              -0.2640290415206268
+            ],
+            "axis_path_refusal": "axis_correction_heading_disagreement"
+          },
+          "equivalent": false
+        }
+      ],
+      "equivalent": 1,
+      "N": 4,
+      "margin_max_error_m": 0.0,
+      "review_rgb": [
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74963/eval-own/r1/000000-prefix.jpg",
+          "original": "eval-own/r1/000000-prefix.jpg",
+          "sha256": "6257433c115dd64b326a1d1a85f8348ea33621eca0fbe8f9b0079cff97126088",
+          "near_grip": {
+            "qualified": false,
+            "central_fraction": 0.09166666666666666,
+            "threshold": 0.6,
+            "scope": "provisional own wrist near-field shaft"
+          }
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74963/eval-own/r1/000070-prefix.jpg",
+          "original": "eval-own/r1/000070-prefix.jpg",
+          "sha256": "b9c2a2b60ec9e2f05b0f7ae3821ecd385cc1237fbd4ffb909e69874828f32efb",
+          "near_grip": {
+            "qualified": true,
+            "central_fraction": 1.0,
+            "threshold": 0.6,
+            "scope": "provisional own wrist near-field shaft"
+          }
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74963/eval-own/r1/000190-release-repick.jpg",
+          "original": "eval-own/r1/000190-release-repick.jpg",
+          "sha256": "27eb39c8241d7822c558aa4763b98b18b5d79acc629c7b491b2787afa4703f5f",
+          "near_grip": {
+            "qualified": false,
+            "central_fraction": 0.03142361111111111,
+            "threshold": 0.6,
+            "scope": "provisional own wrist near-field shaft"
+          }
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74963/eval-own/r1/000330-release-lookaround.jpg",
+          "original": "eval-own/r1/000330-release-lookaround.jpg",
+          "sha256": "e1b20dda09f5963b1853a20cb208452c4cd09075390461f94ffb9c1a1716f32f",
+          "near_grip": {
+            "qualified": false,
+            "central_fraction": 0.0,
+            "threshold": 0.6,
+            "scope": "provisional own wrist near-field shaft"
+          }
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74963/eval-own/r1/000470-release-observe_move.jpg",
+          "original": "eval-own/r1/000470-release-observe_move.jpg",
+          "sha256": "5e92777f294f3b8b5c4b39a86d5d7769abde583f4c5bc3a67104c34cc8baa713",
+          "near_grip": {
+            "qualified": false,
+            "central_fraction": 0.002907986111111111,
+            "threshold": 0.6,
+            "scope": "provisional own wrist near-field shaft"
+          }
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74963/eval-own/r1/000610-release-lookaround.jpg",
+          "original": "eval-own/r1/000610-release-lookaround.jpg",
+          "sha256": "d55e2301601dff0924fc8d6c1920c498fea7d9c0e43bc592daf43b358a40af61",
+          "near_grip": {
+            "qualified": false,
+            "central_fraction": 0.002864583333333333,
+            "threshold": 0.6,
+            "scope": "provisional own wrist near-field shaft"
+          }
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74963/eval-own/r1/000750-release-lookaround.jpg",
+          "original": "eval-own/r1/000750-release-lookaround.jpg",
+          "sha256": "fa214c9179522e89f8f65801b0128182fe946bc7360c084c704b2e34d2f8fef2",
+          "near_grip": {
+            "qualified": false,
+            "central_fraction": 0.002864583333333333,
+            "threshold": 0.6,
+            "scope": "provisional own wrist near-field shaft"
+          }
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74963/eval-own/r1/000860-release-observe_move.jpg",
+          "original": "eval-own/r1/000860-release-observe_move.jpg",
+          "sha256": "19f2117ae4cbb0afe62318710e344c5086e66e62f90a2de90fd2bc36d8efa3e6",
+          "near_grip": {
+            "qualified": false,
+            "central_fraction": 0.002951388888888889,
+            "threshold": 0.6,
+            "scope": "provisional own wrist near-field shaft"
+          }
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74963/eval-own/r2/000000-prefix.jpg",
+          "original": "eval-own/r2/000000-prefix.jpg",
+          "sha256": "acff5e65d5b0b6e0c448264460dfefa2c0131d0cbd75ab32a8c294774830aa05",
+          "near_grip": {
+            "qualified": false,
+            "central_fraction": 0.09249131944444444,
+            "threshold": 0.6,
+            "scope": "provisional own wrist near-field shaft"
+          }
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74963/eval-own/r2/000070-prefix.jpg",
+          "original": "eval-own/r2/000070-prefix.jpg",
+          "sha256": "e2b1ed3e4f5105057a92f04f2d764fbda7c7ac55792cce460fbc1e388b53cdb0",
+          "near_grip": {
+            "qualified": true,
+            "central_fraction": 1.0,
+            "threshold": 0.6,
+            "scope": "provisional own wrist near-field shaft"
+          }
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74963/eval-own/r2/000190-release-repick.jpg",
+          "original": "eval-own/r2/000190-release-repick.jpg",
+          "sha256": "b4ee1670da8cc554c1bf35a7f2361fa281c532c9bb58d541113b19d453833615",
+          "near_grip": {
+            "qualified": true,
+            "central_fraction": 1.0,
+            "threshold": 0.6,
+            "scope": "provisional own wrist near-field shaft"
+          }
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74963/eval-own/r2/000330-release-lookaround.jpg",
+          "original": "eval-own/r2/000330-release-lookaround.jpg",
+          "sha256": "f90957aa31f72dc4a2769a921b24f2a2e5886b402ae82f4aadfd90662d533241",
+          "near_grip": {
+            "qualified": false,
+            "central_fraction": 0.0,
+            "threshold": 0.6,
+            "scope": "provisional own wrist near-field shaft"
+          }
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74963/eval-own/r2/000470-release-observe_move.jpg",
+          "original": "eval-own/r2/000470-release-observe_move.jpg",
+          "sha256": "c1053ecd6557a2fb599b5e1b26ada4d34ba1ce4aaac6b17258f04fdffd18e97b",
+          "near_grip": {
+            "qualified": false,
+            "central_fraction": 0.06940104166666666,
+            "threshold": 0.6,
+            "scope": "provisional own wrist near-field shaft"
+          }
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74963/eval-own/r2/000610-release-lookaround.jpg",
+          "original": "eval-own/r2/000610-release-lookaround.jpg",
+          "sha256": "34a5f7b9894c60e696b184857f10afceba5e878fe391a3aba11cfbcdbe2d4446",
+          "near_grip": {
+            "qualified": false,
+            "central_fraction": 0.0,
+            "threshold": 0.6,
+            "scope": "provisional own wrist near-field shaft"
+          }
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74963/eval-own/r2/000750-release-lookaround.jpg",
+          "original": "eval-own/r2/000750-release-lookaround.jpg",
+          "sha256": "22264cd195558b662c7191c4346f02daf4619288d74a53c785d3cc866ca4dc6d",
+          "near_grip": {
+            "qualified": false,
+            "central_fraction": 0.0,
+            "threshold": 0.6,
+            "scope": "provisional own wrist near-field shaft"
+          }
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74963/eval-own/r2/000860-release-observe_move.jpg",
+          "original": "eval-own/r2/000860-release-observe_move.jpg",
+          "sha256": "4aeb50d6a886db0671a33dcf2d7125ced12ef009f2def5b786303da8454af0c7",
+          "near_grip": {
+            "qualified": false,
+            "central_fraction": 0.1407986111111111,
+            "threshold": 0.6,
+            "scope": "provisional own wrist near-field shaft"
+          }
+        }
+      ],
+      "reviewed_frames": [
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74963/eval-overview/000000-prefix.jpg",
+          "original": "eval-overview/000000-prefix.jpg",
+          "sha256": "9c0faacd4df6189157f79e8b9b2f6d42a3022c86e0743881fce9bec9399e575c"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74963/eval-overview/000070-prefix.jpg",
+          "original": "eval-overview/000070-prefix.jpg",
+          "sha256": "8f20409f1424b6cff9a4cc6db4d0e3e9abb8a5828a453a6c4d75a1dac6c3efec"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74963/eval-overview/000190-release-repick.jpg",
+          "original": "eval-overview/000190-release-repick.jpg",
+          "sha256": "105ef476751e7cdb08de8758ea564964944dbd326fa3b7b435b4fb1fbcb8f49d"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74963/eval-overview/000330-release-lookaround.jpg",
+          "original": "eval-overview/000330-release-lookaround.jpg",
+          "sha256": "b9b61610726361c1118277b22d8712c52dd1466ad4b4d290cca0f2d9a1a4553b"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74963/eval-overview/000470-release-observe_move.jpg",
+          "original": "eval-overview/000470-release-observe_move.jpg",
+          "sha256": "45e10344d22e549039edbec0da0f9db35202907df1d3cc6b5f1967499bdacd1e"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74963/eval-overview/000610-release-lookaround.jpg",
+          "original": "eval-overview/000610-release-lookaround.jpg",
+          "sha256": "a269a495177ce9f6355d4978ccf8f591f52ffaec60b1897888f38b3e451c5908"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74963/eval-overview/000750-release-lookaround.jpg",
+          "original": "eval-overview/000750-release-lookaround.jpg",
+          "sha256": "37a4f94c39ad789ed43a6d41c9e47659ff396d8f340be3d02886c1221af4887e"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74963/eval-overview/000860-release-observe_move.jpg",
+          "original": "eval-overview/000860-release-observe_move.jpg",
+          "sha256": "839c25a57d1d15eccd8f7de43e2ac9c57dbb3e874ba3668c28ef8f7576b62aea"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74963/eval-own/r1/000000-prefix.jpg",
+          "original": "eval-own/r1/000000-prefix.jpg",
+          "sha256": "6257433c115dd64b326a1d1a85f8348ea33621eca0fbe8f9b0079cff97126088"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74963/eval-own/r1/000070-prefix.jpg",
+          "original": "eval-own/r1/000070-prefix.jpg",
+          "sha256": "b9c2a2b60ec9e2f05b0f7ae3821ecd385cc1237fbd4ffb909e69874828f32efb"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74963/eval-own/r1/000190-release-repick.jpg",
+          "original": "eval-own/r1/000190-release-repick.jpg",
+          "sha256": "27eb39c8241d7822c558aa4763b98b18b5d79acc629c7b491b2787afa4703f5f"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74963/eval-own/r1/000330-release-lookaround.jpg",
+          "original": "eval-own/r1/000330-release-lookaround.jpg",
+          "sha256": "e1b20dda09f5963b1853a20cb208452c4cd09075390461f94ffb9c1a1716f32f"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74963/eval-own/r1/000470-release-observe_move.jpg",
+          "original": "eval-own/r1/000470-release-observe_move.jpg",
+          "sha256": "5e92777f294f3b8b5c4b39a86d5d7769abde583f4c5bc3a67104c34cc8baa713"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74963/eval-own/r1/000610-release-lookaround.jpg",
+          "original": "eval-own/r1/000610-release-lookaround.jpg",
+          "sha256": "d55e2301601dff0924fc8d6c1920c498fea7d9c0e43bc592daf43b358a40af61"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74963/eval-own/r1/000750-release-lookaround.jpg",
+          "original": "eval-own/r1/000750-release-lookaround.jpg",
+          "sha256": "fa214c9179522e89f8f65801b0128182fe946bc7360c084c704b2e34d2f8fef2"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74963/eval-own/r1/000860-release-observe_move.jpg",
+          "original": "eval-own/r1/000860-release-observe_move.jpg",
+          "sha256": "19f2117ae4cbb0afe62318710e344c5086e66e62f90a2de90fd2bc36d8efa3e6"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74963/eval-own/r2/000000-prefix.jpg",
+          "original": "eval-own/r2/000000-prefix.jpg",
+          "sha256": "acff5e65d5b0b6e0c448264460dfefa2c0131d0cbd75ab32a8c294774830aa05"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74963/eval-own/r2/000070-prefix.jpg",
+          "original": "eval-own/r2/000070-prefix.jpg",
+          "sha256": "e2b1ed3e4f5105057a92f04f2d764fbda7c7ac55792cce460fbc1e388b53cdb0"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74963/eval-own/r2/000190-release-repick.jpg",
+          "original": "eval-own/r2/000190-release-repick.jpg",
+          "sha256": "b4ee1670da8cc554c1bf35a7f2361fa281c532c9bb58d541113b19d453833615"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74963/eval-own/r2/000330-release-lookaround.jpg",
+          "original": "eval-own/r2/000330-release-lookaround.jpg",
+          "sha256": "f90957aa31f72dc4a2769a921b24f2a2e5886b402ae82f4aadfd90662d533241"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74963/eval-own/r2/000470-release-observe_move.jpg",
+          "original": "eval-own/r2/000470-release-observe_move.jpg",
+          "sha256": "c1053ecd6557a2fb599b5e1b26ada4d34ba1ce4aaac6b17258f04fdffd18e97b"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74963/eval-own/r2/000610-release-lookaround.jpg",
+          "original": "eval-own/r2/000610-release-lookaround.jpg",
+          "sha256": "34a5f7b9894c60e696b184857f10afceba5e878fe391a3aba11cfbcdbe2d4446"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74963/eval-own/r2/000750-release-lookaround.jpg",
+          "original": "eval-own/r2/000750-release-lookaround.jpg",
+          "sha256": "22264cd195558b662c7191c4346f02daf4619288d74a53c785d3cc866ca4dc6d"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release11-review/reviewed-originals/74963/eval-own/r2/000860-release-observe_move.jpg",
+          "original": "eval-own/r2/000860-release-observe_move.jpg",
+          "sha256": "4aeb50d6a886db0671a33dcf2d7125ced12ef009f2def5b786303da8454af0c7"
+        }
+      ],
+      "first_new_barrier": "repick timer expiry -> sequential own RGB test, never direct shift",
+      "missing_evidence": "No new sequential test-lift images in saved runs. Full enabled trajectory/outcome equivalence unverified.",
+      "frozen_path_warning": "Later stored inputs are old-path branch tests, not predictions after the new barrier."
+    }
+  ],
+  "source_files": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release9-diagnostic-00-8e520ea2/raw/plan.json",
+      "sha256": "2490bbd1eba83397303bacdbd0ca8dce2bd385db87418765df576909d5317c22"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release9-diagnostic-00-8e520ea2/raw/result.json.zst",
+      "sha256": "9f52fd8c8101feb2f90a57fe78fe6a6303625c09d4b16d61599ec9be4e1b4114"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release9-diagnostic-00-8e520ea2/raw/teacher-r1.jsonl.zst",
+      "sha256": "6e46065b09687f5f0477f6f0183b8ff217c95d593f87adb28d5188e4ac19a7ef"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release9-diagnostic-00-8e520ea2/raw/teacher-r2.jsonl.zst",
+      "sha256": "f84d4421d08bee822ba2ba925786f591e374119f35c25c4a3849690c18276764"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release9-diagnostic-01-8e520ea2/raw/plan.json",
+      "sha256": "dec564a1be5a7ee1f4c119d70c3ec8506eeddbd82653190ceffe8b251c31e6a6"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release9-diagnostic-01-8e520ea2/raw/result.json.zst",
+      "sha256": "5b82eef56f00fd0ee3e23e1108caf768687cb4913b4271b34bba7f356def9e6f"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release9-diagnostic-01-8e520ea2/raw/teacher-r1.jsonl.zst",
+      "sha256": "abba3fbaa2af24e0c6a16b07d85d27a8b86058e5d2c406ebf8330066189652ea"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release9-diagnostic-01-8e520ea2/raw/teacher-r2.jsonl.zst",
+      "sha256": "e5b70e651f22de65dd153e62bdb64e4b72492500b1ee5ebed7d2f1fa1656b50e"
+    }
+  ],
+  "physics_runs": 0
+}

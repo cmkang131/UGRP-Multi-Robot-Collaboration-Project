@@ -1,0 +1,234 @@
+{
+  "raw": "azure3:/home/ugrp/ugrp-sim/runs/grasp-observe-diag-05ae4b2d/speed/episode-000/raw",
+  "camera": {
+    "scope": "evaluation-only; actual runtime values, not XML assumptions",
+    "binding": "v3",
+    "cameras": {
+      "r1": {
+        "pos": [
+          0.052982009925558314,
+          0.0,
+          0.028152173913043477
+        ],
+        "quat": [
+          0.4545194776720437,
+          0.5416752204197018,
+          -0.5416752204197018,
+          -0.4545194776720437
+        ],
+        "intrinsic": [
+          309.7597351074219,
+          311.0827331542969,
+          16.155447006225586,
+          10.651566505432129
+        ],
+        "resolution": [
+          320,
+          240
+        ]
+      },
+      "r2": {
+        "pos": [
+          0.052982009925558314,
+          0.0,
+          0.028152173913043477
+        ],
+        "quat": [
+          0.4545194776720437,
+          0.5416752204197018,
+          -0.5416752204197018,
+          -0.4545194776720437
+        ],
+        "intrinsic": [
+          309.7597351074219,
+          311.0827331542969,
+          16.155447006225586,
+          10.651566505432129
+        ],
+        "resolution": [
+          320,
+          240
+        ]
+      }
+    }
+  },
+  "actors": {
+    "r1": {
+      "first_seen_s": 18.700000000006685,
+      "max_unseen_s": 18.699999999999996,
+      "max_blind_motion_s": 17.999999999999986,
+      "max_unseen_after_first_seen_s": 0.0,
+      "max_pick_unseen_s": 0.0
+    },
+    "r2": {
+      "first_seen_s": null,
+      "max_unseen_s": 30.000000000000156,
+      "max_blind_motion_s": 29.300000000000146,
+      "max_unseen_after_first_seen_s": 0.0,
+      "max_pick_unseen_s": 0.0
+    }
+  },
+  "stages": {
+    "all": {
+      "visible_n": 113,
+      "in_frame_n": 113,
+      "N": 600,
+      "moving_n": 503,
+      "blind_moving_n": 473
+    },
+    "approach": {
+      "visible_n": 15,
+      "in_frame_n": 15,
+      "N": 502,
+      "moving_n": 488,
+      "blind_moving_n": 473
+    },
+    "alignment": {
+      "visible_n": 14,
+      "in_frame_n": 14,
+      "N": 14,
+      "moving_n": 14,
+      "blind_moving_n": 0
+    },
+    "ready": {
+      "visible_n": 84,
+      "in_frame_n": 84,
+      "N": 84,
+      "moving_n": 1,
+      "blind_moving_n": 0
+    }
+  },
+  "definition": "geometric availability of any assigned-band probe; commands are issued, not measured motion",
+  "source_sha": "05ae4b2d073fdde26872508ff6fad4401da16070",
+  "result": {
+    "status": "complete",
+    "source_sha": "05ae4b2d073fdde26872508ff6fad4401da16070",
+    "teacher_success_n": 0,
+    "teacher_N": 2,
+    "joint_held": false,
+    "data_admitted": false,
+    "assignment_source": "demo_rule_color_balanced",
+    "student_execution": false,
+    "recording_mode": "success_measurement",
+    "physical_success": false,
+    "teacher_profile": "observable_v2",
+    "action_contract": "ugrp.grasp_act.student.v4",
+    "loadavg_at_start": [
+      1.26708984375,
+      1.236328125,
+      0.5693359375
+    ],
+    "noise": "off",
+    "observation_sampling": {
+      "rgb_size": null,
+      "rgb_hz": 0,
+      "review_tile_size": [
+        320,
+        240
+      ],
+      "review_cameras": "four authored static top views",
+      "review_hz": 1,
+      "control_hz": 10,
+      "aspect_ratio_unchanged": true,
+      "camera_fov_and_pose_unchanged": true,
+      "own_review_hz": 1,
+      "own_review_size": [
+        320,
+        240
+      ]
+    },
+    "sim_s": 30.00000000006064,
+    "wall_s": 78.88854863099999,
+    "teachers": {
+      "r1": {
+        "profile": "observable_v2",
+        "planning_radius_m": 0.13,
+        "visibility_counts": {
+          "visible": 113,
+          "N": 293
+        },
+        "max_unseen_before_pick_s": 17.999999999999986,
+        "ik_rejections": 11,
+        "last_ik_error": "target has no safe v3 physical-pad IK solution",
+        "alignment_integral": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "phase": "ready",
+        "outcome": "episode_timeout",
+        "events": [
+          {
+            "t": 22.000000000014033,
+            "from": "approach",
+            "to": "align"
+          },
+          {
+            "t": 23.400000000020718,
+            "from": "align",
+            "to": "ready"
+          }
+        ],
+        "staging_distance_m": 0.203,
+        "phase_sim_s": {
+          "approach": 20.200000000013848,
+          "align": 1.4000000000066848
+        },
+        "planner_calls": 2,
+        "no_path_calls": 0,
+        "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+      },
+      "r2": {
+        "profile": "observable_v2",
+        "planning_radius_m": 0.17,
+        "visibility_counts": {
+          "visible": 0,
+          "N": 293
+        },
+        "max_unseen_before_pick_s": 29.300000000000146,
+        "ik_rejections": 0,
+        "last_ik_error": null,
+        "alignment_integral": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "phase": "approach",
+        "outcome": "episode_timeout",
+        "events": [],
+        "staging_distance_m": 0.203,
+        "phase_sim_s": {},
+        "planner_calls": 0,
+        "no_path_calls": 0,
+        "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+      }
+    },
+    "samples_per_robot": 300,
+    "first_attempt": true,
+    "weld": "off",
+    "loadavg_at_end": [
+      2.3349609375,
+      1.60693359375,
+      0.75732421875
+    ],
+    "timings_s": {
+      "physics": 59.57221788900017,
+      "rgb": 10.23097462599975,
+      "evaluation": 5.153499628999725,
+      "teacher": 0.07828345299947159,
+      "io": 0.0
+    },
+    "wall_per_sim": 2.6296182876946843
+  },
+  "review_seconds": [
+    0,
+    6,
+    12,
+    18,
+    24,
+    29
+  ],
+  "raw_manifest_sha256": "7fb058fa57742f01e87a5c73858a1d758f5b541a657b5a274d15e8e3f61978f4",
+  "review_sha256": "705077bc7df722792fdf41363926e63536f3fc452421963db875fd91e51cf217",
+  "scope": "DEV 30 s diagnostic, excluded from new forty-start gate; initial near view missing; fixed before gate"
+}

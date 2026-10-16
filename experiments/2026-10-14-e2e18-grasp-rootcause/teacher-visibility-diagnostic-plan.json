@@ -1,0 +1,115 @@
+{
+  "schema": "ugrp.grasp_act.plan.v1",
+  "episodes": [
+    {
+      "episode_id": "teacher_gate-71033",
+      "batch": "grasp-act-teacher_gate-71000",
+      "seed": 71033,
+      "split": "teacher_gate",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        -0.06935006411737615,
+        -0.4659926251434827,
+        5.185747368045237
+      ],
+      "spawns": {
+        "r1": [
+          0.2816725497450216,
+          -1.1723959110451627,
+          0.032355118817659255,
+          3.0572359011842387
+        ],
+        "r2": [
+          -0.2849803381051923,
+          -0.04500261939519978,
+          0.032355118817659255,
+          -1.0974379391343485
+        ],
+        "r3": [
+          4.007484012022681,
+          -2.5515446063407397,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "other_end",
+      "initial_pan": {
+        "r1": 2170,
+        "r2": 2318
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "proposal_attempts": 9,
+      "near_wall": false
+    }
+  ],
+  "rejected_proposals": {
+    "robot_overlap": 1,
+    "robot_wall": 26,
+    "beam_other_cargo": 11,
+    "robot_other_cargo": 5
+  },
+  "distribution": {
+    "beam_yaw_deg": [
+      0,
+      360
+    ],
+    "robot_center_distance_m": [
+      0.5,
+      2.0
+    ],
+    "robot_axis_bearing_deg": [
+      0,
+      360
+    ],
+    "robot_heading_error_deg": [
+      -60,
+      60
+    ],
+    "initial_pan_pwm": [
+      500,
+      2500
+    ],
+    "ends": "50:50 by index",
+    "fixed": [
+      "floor_light_v1",
+      "camera review v3",
+      "native v7",
+      "cargo_noslip_v1",
+      "weld off"
+    ],
+    "limits": "static rejection alters accepted strata; accepted plan is the source of actual coverage. Intermediate placed objects and moving work peers are a later collection stage."
+  },
+  "criteria": {
+    "teacher_target_rate": 0.95,
+    "minimum_episodes": 40,
+    "single_end": "bilateral >=0.5N each and end rise >=12mm for >=1s",
+    "pair": "both bilateral + whole beam lower surface >=12mm above floor for >=1s",
+    "first_attempt": "no teacher regrasp in this gate",
+    "phase_cap_s": 60,
+    "episode_cap_s": 60,
+    "target_pair_sim_s": 40
+  },
+  "stage_order": [
+    "long_beam",
+    "solo boxes/can/tile grasp and release",
+    "heavy_crate",
+    "tri_frame"
+  ],
+  "student_evaluation": false,
+  "purpose": "two diagnosed old failures, DEV regression only, never new 40-case qualification",
+  "original_indices": [
+    17,
+    33
+  ],
+  "candidate_teacher_profile": "pi_geometry_v1"
+}

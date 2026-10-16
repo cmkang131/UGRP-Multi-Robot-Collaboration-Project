@@ -1,0 +1,23 @@
+{
+  "source_sha": "9df35e4940be18231d14ac5acb6a48dafbaade33",
+  "pairs": 2,
+  "command_and_physics_ledger_equal": 2,
+  "full_result_equal": 0,
+  "categories": [
+    {
+      "category": "expected_recording_or_host_metadata",
+      "n": 21,
+      "blocker_name": "recording/wall/load metadata",
+      "minimum_gap_m": null,
+      "gap_reason": "not a spatial rejection"
+    },
+    {
+      "category": "live_camera_cache_diagnostic",
+      "n": 48,
+      "blocker_name": "live mjData.cam_xpos/cam_xmat",
+      "minimum_gap_m": null,
+      "gap_reason": "not a spatial rejection"
+    }
+  ],
+  "reproduction": "scripts/audit_release_recording.py --pair <off> <on> --output <report>"
+}

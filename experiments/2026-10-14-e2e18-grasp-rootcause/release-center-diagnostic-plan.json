@@ -1,0 +1,554 @@
+{
+  "schema": "ugrp.grasp_act.release_plan.v1",
+  "execution_profile": {
+    "held_object": "hidden_v1",
+    "lookaround": "setdown_lookaround_v2",
+    "pose_anchor": "command_relative_v1",
+    "own_pose_source": "commands",
+    "observe_mode": "backoff_v3",
+    "zone_slots": "zone",
+    "reach_mode": "pad_window_v2",
+    "placement": "zone_center_rgb_v1"
+  },
+  "episodes": [
+    {
+      "episode_id": "release-center-diagnostic-74106",
+      "batch": "release-center-diagnostic",
+      "seed": 74106,
+      "split": "release_gate_command_relative_v1",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        4.745666928088817,
+        -0.3585393992154142,
+        1.6855439659060767
+      ],
+      "spawns": {
+        "r1": [
+          4.799823531714384,
+          -0.8284288141672125,
+          0.032355118817659255,
+          1.6855439659060767
+        ],
+        "r2": [
+          4.691510324463251,
+          0.11135001573638406,
+          0.032355118817659255,
+          4.82713661949587
+        ],
+        "r3": [
+          1.2499465533294107,
+          -1.3691266280808496,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "skill": "release",
+      "destination_region": "zone_A",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "assignment_source": "demo_rule_fixed_r1_teal",
+      "initial_pan": {
+        "r1": 1500,
+        "r2": 1500
+      },
+      "stratum": {
+        "axial_outside_m": [
+          0.3,
+          0.44
+        ],
+        "sampled_outside_m": 0.3988564321076993,
+        "side": "south",
+        "teal_south": true
+      },
+      "handoff_pose_error": {
+        "r1": [
+          -0.030368012834107255,
+          -0.025154511921392904,
+          -0.02205660231039336
+        ],
+        "r2": [
+          -0.004163365201221203,
+          -0.007634205824758107,
+          -0.07300541008039749
+        ]
+      },
+      "beam_to_zone_center_m": 0.7723994265280849,
+      "proposal_attempts": 2,
+      "diagnostic_source": {
+        "plan": "release-command-gate-plan.json",
+        "index": 6,
+        "sha": "cdace35e0c5bd94d0c1d348e17cd470a773cb270"
+      }
+    },
+    {
+      "episode_id": "release-center-diagnostic-74112",
+      "batch": "release-center-diagnostic",
+      "seed": 74112,
+      "split": "release_gate_command_relative_v1",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        4.751230298996796,
+        -0.1347157604707926,
+        1.7019342384385832
+      ],
+      "spawns": {
+        "r1": [
+          4.813080899189725,
+          -0.6036544592958891,
+          0.032355118817659255,
+          1.7019342384385832
+        ],
+        "r2": [
+          4.689379698803867,
+          0.33422293835430394,
+          0.032355118817659255,
+          4.843526892028376
+        ],
+        "r3": [
+          -0.7774416785545714,
+          0.6997354695763578,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "skill": "release",
+      "destination_region": "zone_A",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "assignment_source": "demo_rule_fixed_r1_teal",
+      "initial_pan": {
+        "r1": 1500,
+        "r2": 1500
+      },
+      "stratum": {
+        "axial_outside_m": [
+          0.15,
+          0.3
+        ],
+        "sampled_outside_m": 0.17475512971262674,
+        "side": "south",
+        "teal_south": true
+      },
+      "handoff_pose_error": {
+        "r1": [
+          -0.07085171574121875,
+          -0.06945183356593547,
+          -0.016622941465617404
+        ],
+        "r2": [
+          0.07126884252464157,
+          -0.0709115082740033,
+          -0.012895017812329941
+        ]
+      },
+      "beam_to_zone_center_m": 0.5556901545200512,
+      "proposal_attempts": 1,
+      "diagnostic_source": {
+        "plan": "release-command-gate-plan.json",
+        "index": 12,
+        "sha": "cdace35e0c5bd94d0c1d348e17cd470a773cb270"
+      }
+    },
+    {
+      "episode_id": "release-center-diagnostic-74122",
+      "batch": "release-center-diagnostic",
+      "seed": 74122,
+      "split": "release_gate_command_relative_v1",
+      "scenario_id": "s3_late_rendezvous_v4",
+      "scenario_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        4.464942824075799,
+        -0.3538964206493661,
+        1.6911490214890983
+      ],
+      "spawns": {
+        "r1": [
+          4.521732319492182,
+          -0.8234749052612069,
+          0.032355118817659255,
+          1.6911490214890983
+        ],
+        "r2": [
+          4.408153328659417,
+          0.1156820639624746,
+          0.032355118817659255,
+          4.832741675078891
+        ],
+        "r3": [
+          -0.43125046498766756,
+          0.40801104806288446,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "skill": "release",
+      "destination_region": "zone_A",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "assignment_source": "demo_rule_fixed_r1_teal",
+      "initial_pan": {
+        "r1": 1500,
+        "r2": 1500
+      },
+      "stratum": {
+        "axial_outside_m": [
+          0.3,
+          0.44
+        ],
+        "sampled_outside_m": 0.3941275734863214,
+        "side": "south",
+        "teal_south": true
+      },
+      "handoff_pose_error": {
+        "r1": [
+          0.037211069610832,
+          -0.053849097283749814,
+          0.004531347662028848
+        ],
+        "r2": [
+          -0.05874846009821209,
+          -0.002245725614128371,
+          -0.007339096255378199
+        ]
+      },
+      "beam_to_zone_center_m": 0.7658983312663283,
+      "proposal_attempts": 2,
+      "diagnostic_source": {
+        "plan": "release-command-gate-plan.json",
+        "index": 22,
+        "sha": "cdace35e0c5bd94d0c1d348e17cd470a773cb270"
+      }
+    },
+    {
+      "episode_id": "release-center-diagnostic-74123",
+      "batch": "release-center-diagnostic",
+      "seed": 74123,
+      "split": "release_gate_command_relative_v1",
+      "scenario_id": "s6_novel_relation_v4",
+      "scenario_source_sha256": "fb2596bbbe76d360bd7c481e750bfea0683e95770d60617af26fbc114a820986",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "beam_pose": [
+        4.532862940215666,
+        -0.2623935317986229,
+        -1.5453748799396656
+      ],
+      "spawns": {
+        "r1": [
+          4.520839890933305,
+          0.21045363831657826,
+          0.032355118817659255,
+          -1.5453748799396656
+        ],
+        "r2": [
+          4.5448859894980265,
+          -0.7352407019138241,
+          0.032355118817659255,
+          1.5962177736501275
+        ],
+        "r3": [
+          1.4072304614928823,
+          -0.5172887490627214,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "skill": "release",
+      "destination_region": "zone_A",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "assignment_source": "demo_rule_fixed_r1_teal",
+      "initial_pan": {
+        "r1": 1500,
+        "r2": 1500
+      },
+      "stratum": {
+        "axial_outside_m": [
+          0.3,
+          0.44
+        ],
+        "sampled_outside_m": 0.30280497370181014,
+        "side": "south",
+        "teal_south": false
+      },
+      "handoff_pose_error": {
+        "r1": [
+          -0.0700859858117364,
+          0.02193849044876714,
+          -0.07272180012247184
+        ],
+        "r2": [
+          -0.05467901356192704,
+          0.06966445760434387,
+          -0.010543628408453841
+        ]
+      },
+      "beam_to_zone_center_m": 0.6657871850412401,
+      "proposal_attempts": 3,
+      "diagnostic_source": {
+        "plan": "release-command-gate-plan.json",
+        "index": 23,
+        "sha": "cdace35e0c5bd94d0c1d348e17cd470a773cb270"
+      }
+    },
+    {
+      "episode_id": "release-center-diagnostic-74930",
+      "batch": "release-center-diagnostic",
+      "seed": 74930,
+      "split": "release_diagnostic",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        4.790043878658722,
+        0.13728021400593277,
+        1.651673331371537
+      ],
+      "spawns": {
+        "r1": [
+          4.828257010755018,
+          -0.33417366129407056,
+          0.032355118817659255,
+          1.651673331371537
+        ],
+        "r2": [
+          4.751830746562425,
+          0.6087340893059361,
+          0.032355118817659255,
+          4.79326598496133
+        ],
+        "r3": [
+          3.5114218144167597,
+          -1.852644224016082,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "skill": "release",
+      "destination_region": "zone_A",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "assignment_source": "demo_rule_fixed_r1_teal",
+      "initial_pan": {
+        "r1": 1500,
+        "r2": 1500
+      },
+      "stratum": {
+        "axial_outside_m": [
+          -0.3,
+          -0.02
+        ],
+        "sampled_outside_m": -0.09664506552405766,
+        "side": "south",
+        "teal_south": true
+      },
+      "handoff_pose_error": {
+        "r1": [
+          0.03315257712589818,
+          -0.05881395570013151,
+          0.039370170062369765
+        ],
+        "r2": [
+          -0.011777704979475868,
+          0.10896910527560166,
+          0.01655194968800004
+        ]
+      },
+      "beam_to_zone_center_m": 0.32425046147757375,
+      "proposal_attempts": 1,
+      "diagnostic_source": {
+        "plan": "release-command-diagnostic-plan.json",
+        "index": 0,
+        "sha": "cdace35e0c5bd94d0c1d348e17cd470a773cb270"
+      }
+    },
+    {
+      "episode_id": "release-center-diagnostic-74931",
+      "batch": "release-center-diagnostic",
+      "seed": 74931,
+      "split": "release_diagnostic",
+      "scenario_id": "s3_late_rendezvous_v4",
+      "scenario_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        4.425610892381066,
+        0.6182628841556261,
+        -1.529086139196235
+      ],
+      "spawns": {
+        "r1": [
+          4.405887693679998,
+          1.0908514953525086,
+          0.032355118817659255,
+          -1.529086139196235
+        ],
+        "r2": [
+          4.445334091082134,
+          0.1456742729587436,
+          0.032355118817659255,
+          1.6125065143935582
+        ],
+        "r3": [
+          3.7976247874493443,
+          -2.2187668991863765,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "skill": "release",
+      "destination_region": "zone_A",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "assignment_source": "demo_rule_fixed_r1_teal",
+      "initial_pan": {
+        "r1": 1500,
+        "r2": 1500
+      },
+      "stratum": {
+        "axial_outside_m": [
+          -0.3,
+          -0.02
+        ],
+        "sampled_outside_m": -0.14116407708520665,
+        "side": "north",
+        "teal_south": false
+      },
+      "handoff_pose_error": {
+        "r1": [
+          0.058536764706636185,
+          -0.02600008008526843,
+          0.040591352593852374
+        ],
+        "r2": [
+          -0.049081195845982334,
+          -0.04506066531077901,
+          -0.01327461300104823
+        ]
+      },
+      "beam_to_zone_center_m": 0.2793747437691181,
+      "proposal_attempts": 1,
+      "diagnostic_source": {
+        "plan": "release-command-diagnostic-plan.json",
+        "index": 1,
+        "sha": "cdace35e0c5bd94d0c1d348e17cd470a773cb270"
+      }
+    },
+    {
+      "episode_id": "release-center-diagnostic-74932",
+      "batch": "release-center-diagnostic",
+      "seed": 74932,
+      "split": "release_diagnostic",
+      "scenario_id": "s6_novel_relation_v4",
+      "scenario_source_sha256": "fb2596bbbe76d360bd7c481e750bfea0683e95770d60617af26fbc114a820986",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "beam_pose": [
+        4.424691129002964,
+        -0.01357393210368163,
+        1.6807291874289416
+      ],
+      "spawns": {
+        "r1": [
+          4.476584700197558,
+          -0.4837186515982982,
+          0.032355118817659255,
+          1.6807291874289416
+        ],
+        "r2": [
+          4.37279755780837,
+          0.45657078739093493,
+          0.032355118817659255,
+          4.822321841018734
+        ],
+        "r3": [
+          2.6884319100560834,
+          -0.6135054938033511,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "skill": "release",
+      "destination_region": "zone_A",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "assignment_source": "demo_rule_fixed_r1_teal",
+      "initial_pan": {
+        "r1": 1500,
+        "r2": 1500
+      },
+      "stratum": {
+        "axial_outside_m": [
+          0.0,
+          0.15
+        ],
+        "sampled_outside_m": 0.05395720329242757,
+        "side": "south",
+        "teal_south": true
+      },
+      "handoff_pose_error": {
+        "r1": [
+          0.02670911152089049,
+          0.020754166283226277,
+          0.019531966097107573
+        ],
+        "r2": [
+          0.04519783870652032,
+          -0.07720119964652032,
+          0.001202982920317259
+        ]
+      },
+      "beam_to_zone_center_m": 0.44919550038480566,
+      "proposal_attempts": 1,
+      "diagnostic_source": {
+        "plan": "release-command-diagnostic-plan.json",
+        "index": 2,
+        "sha": "cdace35e0c5bd94d0c1d348e17cd470a773cb270"
+      }
+    }
+  ],
+  "scope": "Seen diagnostic only. Never pool with the fresh 40 or training.",
+  "source_indices": [
+    6,
+    12,
+    22,
+    23
+  ]
+}

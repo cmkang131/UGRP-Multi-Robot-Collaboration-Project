@@ -1,0 +1,146 @@
+{
+  "scope": "offline stored scalar decisions + saved detections; no new RGB, physics, render or model calls",
+  "source_parent": "e96386d319fee37cbf109867f55a1b9aefac4229",
+  "runs": [
+    {
+      "seed": 74122,
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release5-diagnostic-00-e96386d3",
+      "old_success": true,
+      "pair_decisions": 6,
+      "success_decisions_unchanged": true,
+      "terminal_observation_changed": false,
+      "new_physical_success": "unmeasured"
+    },
+    {
+      "seed": 74932,
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release5-diagnostic-01-e96386d3",
+      "old_success": true,
+      "pair_decisions": 4,
+      "success_decisions_unchanged": true,
+      "terminal_observation_changed": false,
+      "new_physical_success": "unmeasured"
+    },
+    {
+      "seed": 74940,
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release5-diagnostic-02-e96386d3",
+      "old_success": false,
+      "pair_decisions": 4,
+      "success_decisions_unchanged": false,
+      "terminal_observation_changed": true,
+      "new_physical_success": "unmeasured"
+    },
+    {
+      "seed": 74941,
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release5-diagnostic-03-e96386d3",
+      "old_success": true,
+      "pair_decisions": 2,
+      "success_decisions_unchanged": true,
+      "terminal_observation_changed": false,
+      "new_physical_success": "unmeasured"
+    },
+    {
+      "seed": 74942,
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release5-diagnostic-04-e96386d3",
+      "old_success": true,
+      "pair_decisions": 3,
+      "success_decisions_unchanged": true,
+      "terminal_observation_changed": false,
+      "new_physical_success": "unmeasured"
+    },
+    {
+      "seed": 74943,
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release5-diagnostic-05-e96386d3",
+      "old_success": true,
+      "pair_decisions": 4,
+      "success_decisions_unchanged": true,
+      "terminal_observation_changed": false,
+      "new_physical_success": "unmeasured"
+    },
+    {
+      "seed": 74944,
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release5-diagnostic-06-e96386d3",
+      "old_success": true,
+      "pair_decisions": 4,
+      "success_decisions_unchanged": true,
+      "terminal_observation_changed": false,
+      "new_physical_success": "unmeasured"
+    }
+  ],
+  "replayed_pair_decisions_exact": 27,
+  "baseline_success": 6,
+  "success_runs_unchanged": 6,
+  "diagnostic_maps": {
+    "zone_wide_door_geometry_v3": {
+      "sha256": "2302d273bcd30a9cc9d3166c753f2d40fcf3f03654369d23cd00324b4ca4688d",
+      "verified_against_scene_manifest": true
+    },
+    "zone_wide_two_doors_final_v3": {
+      "sha256": "ecbed849464b3dcc7c5f3679dffed419069391b4e72dc53276ed04dca2d64af5",
+      "verified_against_scene_manifest": true
+    }
+  },
+  "terminal_failure_recovery_changed": 1,
+  "original80": {
+    "n": 80,
+    "accepted": 77,
+    "reasons": {
+      "global_consensus": 77,
+      "ambiguous_global_landmarks": 2,
+      "no_consensus": 1
+    },
+    "map_id": "zone_wide_two_doors_final_v3",
+    "map_sha256": "ecbed849464b3dcc7c5f3679dffed419069391b4e72dc53276ed04dca2d64af5",
+    "comparison": "same map and detections as the previously reported 77/80 reference replay"
+  },
+  "actual_maps80": {
+    "n": 80,
+    "accepted": 77,
+    "reasons": {
+      "global_consensus": 77,
+      "ambiguous_global_landmarks": 2,
+      "no_consensus": 1
+    },
+    "map_case_counts": {
+      "zone_wide_door_geometry_v3": 54,
+      "zone_wide_two_doors_final_v3": 26
+    },
+    "comparison": "separate audit using each original plan map, verified against its scene manifest; not pooled with the fixed-reference 77/80"
+  },
+  "input_audit": {
+    "runs": 7,
+    "invisible_measurements": 0,
+    "held_world_reads": 0
+  },
+  "visually_reviewed": {
+    "frames": 21,
+    "time_scope": "prefix start through final release-await_observe; see detail for paths/hashes"
+  },
+  "evidence": {
+    "verified_files": 222,
+    "detail": "release6-replay-detail.json.zst",
+    "sha256": "1973c11e8beba1959111cf886c6bcc1709478d05b076f929d937788413cd2081"
+  },
+  "new_physical_success": "unmeasured; proposed camera views have no saved pixels",
+  "acceptance_params_unchanged": {
+    "line_sigma_m": 0.04,
+    "angle_sigma_rad": 0.08726646259971647,
+    "inlier_sigma": 2.5,
+    "min_lines": 3,
+    "min_views": 2,
+    "min_span_m": 0.2,
+    "wall_fit_m": 0.025,
+    "wall_min_points": 8,
+    "cluster_m": 0.15,
+    "cluster_rad": 0.13962634015954636,
+    "min_score_gap": 0.75,
+    "max_views": 18,
+    "max_refine": 16,
+    "robot_clearance_m": 0.18
+  },
+  "source_hashes": {
+    "sim/global_landmark_localization.py": "6c0764424ce0b670b220e0e4c5fd68c83de47c428c790cdb115a356d66f76ee9",
+    "sim/release_nbv_observation.py": "ee313bd260bb6ddd58f8b2cea87e5f391b81e4c0b5c078a2d894f1eaa784ed94",
+    "sim/release_global_observation.py": "c4b2ae41b3eec57e1ad446b0d1a30f50dcc339059be1ec94f5cf868a529eef09",
+    "scripts/run_grasp_act_release.py": "ea29b671876842088f760134eb7d067c75782e10a002be4639aa14042bda111a"
+  }
+}

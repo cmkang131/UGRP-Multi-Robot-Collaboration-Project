@@ -1,0 +1,91 @@
+{
+  "scope": "source/clock-only scheduler tests + retrieved originals and evaluation-only static geometry; no new pixels, physics, render or host connection",
+  "source_parent": "63201b88ce5342d57fa81bc0e141ec2d10beec49",
+  "tests": {
+    "files": [
+      "tests/test_release_setdown_lookaround.py",
+      "tests/test_release_nbv_observation.py",
+      "tests/test_grasp_act_release_run.py"
+    ],
+    "passed": 30,
+    "failures": 0,
+    "errors": 0,
+    "seconds": 19.726,
+    "junit_local": "outputs/release7-review/tests.xml",
+    "junit_sha256": "1f729b7358635a02296c1a2bb194a22172e4f66110b7e56dd5dee511dd0f9080"
+  },
+  "source_hashes": {
+    "scripts/run_grasp_act_release.py": "763bc7153fffac0dbf38a37bc03a435ad7fbe26e7aedbfa9a8f78f7f8a4df6bd",
+    "sim/release_global_observation.py": "6df1677d595bbb3e021419e2f0dca67a615f6316ce98dd7f64e5d9f099163171",
+    "sim/release_nbv_observation.py": "7d2cffdc9d20c4ed495a9d26887e223e5d5560d025f1c77d9784347b711ad3bd",
+    "sim/release_setdown_lookaround.py": "afb84c6ad8ae4ceff24f48a72f2955ac596362595daf8c8f607099289a6285fa",
+    "tests/test_release_setdown_lookaround.py": "167213db7c0e26afe9de949fdaef3e1d38efb4f34404867b5ea360aad37f6284",
+    "tests/test_release_nbv_observation.py": "f499c5db124176d1b124bcc0439901871ab87e7e11de793b21adef6a2b669ccf",
+    "tests/test_grasp_act_release_run.py": "1dd3d2d6a0a48641a2a6e2c1b7d79b3ddf37a81fe703c0647b68370a86b95ae3",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/analyze_release7.py": "8420ddbfbcd8537f87a5858a207953926f370368c774f8de13368d87ed4d92bc",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/register_release7_queue.py": "22d9710cc7dfb0729cf575f757590bb1e6c03789b5329c2962f90f5a67c48f83"
+  },
+  "unchanged_source_hashes": {
+    "sim/global_landmark_localization.py": "6c0764424ce0b670b220e0e4c5fd68c83de47c428c790cdb115a356d66f76ee9",
+    "sim/lookaround_localization.py": "5ad67e2e9434f567a01962823d9da36e9abe7c919020921bc392cb6cbd069a3c",
+    "sim/grasp_act_release_teacher.py": "73b6717da7de9454582ef3e5f84ac0d4e18802362f526cec6a51f410192751ea",
+    "harness/zone_scenario_feasibility.py": "e00376beb0f503c5092f848021963e13cf82c138398ada76c13e6576b2ea349a"
+  },
+  "unchanged_functions_and_criteria": [
+    "margin_report",
+    "pair_choice",
+    "MARGIN_M",
+    "CENTER_TOL_M",
+    "MAX_CORRECTIONS",
+    "SUCCESS"
+  ],
+  "original_runs": [
+    {
+      "name": "release5-diagnostic-02-e96386d3",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release5-diagnostic-02-e96386d3/raw",
+      "seed": 74940,
+      "source_sha": "e96386d319fee37cbf109867f55a1b9aefac4229",
+      "outcome": "active_observation_exhausted",
+      "success": false,
+      "input_audit": {
+        "held_world_reads": 0,
+        "invisible_measurements": 0
+      }
+    },
+    {
+      "name": "release6-diagnostic-07-63201b88",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release6-diagnostic-07-63201b88/raw",
+      "seed": 74940,
+      "source_sha": "63201b88ce5342d57fa81bc0e141ec2d10beec49",
+      "outcome": "active_observation_exhausted",
+      "success": false,
+      "input_audit": {
+        "held_world_reads": 0,
+        "invisible_measurements": 0
+      }
+    }
+  ],
+  "evidence": {
+    "verified_files": 567,
+    "reviewed_frames": 48,
+    "summary": "experiments/2026-10-14-e2e18-grasp-rootcause/release7-analysis.json",
+    "summary_sha256": "3c9e1f9c4c8597eea5801a06ffbde7f924a5957062d741f410f0354a6828f89a",
+    "detail": {
+      "path": "release7-analysis-detail.json.zst",
+      "sha256": "2b7a9483833a15d3058062240362bfbed053b3ec3e5287689224d3eb25f913a7"
+    }
+  },
+  "offline_replay_is_improvement_evidence": false,
+  "new_physical_success": "unmeasured",
+  "remote_execution": false,
+  "gate_promotion_authorized_if_all_conditions_pass": false,
+  "queue_fixture_validation": {
+    "path": "outputs/release7-review/queue-fixture-check.json",
+    "sha256": "b0501267771aa30541a6ee97a89c9b52aaa15bf093405a5488d039b6e1f033ac",
+    "scope": "temporary queue fixture, mocked git only; real queue untouched",
+    "planned": 48,
+    "authorized": 8,
+    "gate_ready": false,
+    "bytes": 64670
+  }
+}

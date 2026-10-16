@@ -1,0 +1,165 @@
+{
+  "schema": "ugrp.grasp_act.carry_probe_plan.v1",
+  "episodes": [
+    {
+      "episode_id": "carry_probe-75000",
+      "batch": "grasp-act-carry_probe-75000",
+      "seed": 75000,
+      "split": "carry_probe",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        4.2629866403518,
+        0.13112247397305943,
+        -2.0301977048288515
+      ],
+      "spawns": {
+        "r1": [
+          4.4727203416945605,
+          0.5550809324581634,
+          0.032355118817659255,
+          -2.0301977048288515
+        ],
+        "r2": [
+          4.053252939009039,
+          -0.2928359845120445,
+          0.032355118817659255,
+          1.1113949487609416
+        ],
+        "r3": [
+          -0.8063613807655985,
+          -2.361521382281021,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "skill": "carry_probe",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "assignment_source": "demo_rule_fixed_r1_teal",
+      "initial_pan": {
+        "r1": 1500,
+        "r2": 1500
+      },
+      "clear_radius_m": 0.75,
+      "min_wall_distance_m": 1.1120133596482007,
+      "proposal_attempts": 1
+    },
+    {
+      "episode_id": "carry_probe-75001",
+      "batch": "grasp-act-carry_probe-75000",
+      "seed": 75001,
+      "split": "carry_probe",
+      "scenario_id": "s3_late_rendezvous_v4",
+      "scenario_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        4.4940689790007085,
+        -2.0702687219077665,
+        -0.8059835800766457
+      ],
+      "spawns": {
+        "r1": [
+          4.166562877836909,
+          -1.7289935342651734,
+          0.032355118817659255,
+          -0.8059835800766457
+        ],
+        "r2": [
+          4.821575080164508,
+          -2.4115439095503595,
+          0.032355118817659255,
+          2.3356090735131474
+        ],
+        "r3": [
+          0.03377387389093367,
+          -0.3298890550380462,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "skill": "carry_probe",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "assignment_source": "demo_rule_fixed_r1_teal",
+      "initial_pan": {
+        "r1": 1500,
+        "r2": 1500
+      },
+      "clear_radius_m": 0.75,
+      "min_wall_distance_m": 0.8809310209992919,
+      "proposal_attempts": 2
+    },
+    {
+      "episode_id": "carry_probe-75002",
+      "batch": "grasp-act-carry_probe-75000",
+      "seed": 75002,
+      "split": "carry_probe",
+      "scenario_id": "s6_novel_relation_v4",
+      "scenario_source_sha256": "fb2596bbbe76d360bd7c481e750bfea0683e95770d60617af26fbc114a820986",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "beam_pose": [
+        0.7068880019980535,
+        0.4971488923160696,
+        -2.5001135699461035
+      ],
+      "spawns": {
+        "r1": [
+          1.0858610787843168,
+          0.7801831783507353,
+          0.032355118817659255,
+          -2.5001135699461035
+        ],
+        "r2": [
+          0.32791492521179,
+          0.214114606281404,
+          0.032355118817659255,
+          0.6414790836436897
+        ],
+        "r3": [
+          3.9061683031779517,
+          -0.008209443249716841,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "skill": "carry_probe",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "assignment_source": "demo_rule_fixed_r1_teal",
+      "initial_pan": {
+        "r1": 1500,
+        "r2": 1500
+      },
+      "clear_radius_m": 0.75,
+      "min_wall_distance_m": 0.9278511076839303,
+      "proposal_attempts": 1
+    }
+  ],
+  "rejected_proposals": {
+    "clear_circle": 1
+  },
+  "distribution": {
+    "beam_yaw": "uniform",
+    "clear_radius_m": 0.75,
+    "cargo_clear_m": 0.95,
+    "prefix": "unchanged observable_v2 grasp teacher from grasp stations; prefix failures reported separately"
+  },
+  "student_evaluation": false
+}

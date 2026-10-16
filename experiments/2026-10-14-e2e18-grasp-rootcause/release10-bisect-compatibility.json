@@ -1,0 +1,174 @@
+{
+  "old_sha": "4a69e6bc1fb5d07ccf6b0e2e552140d9e839af9b",
+  "current_sha": "8e520ea2816c46a0f0d7aac250fcf0969416c808",
+  "scene_source_checks": [
+    {
+      "path": "sim/grasp_act_scene.py",
+      "old_sha256": "c558fbb29ef49a07ef38ae0dedfcb50499dff3494e207ba50306abebfad7048a",
+      "release9_sha256": "c558fbb29ef49a07ef38ae0dedfcb50499dff3494e207ba50306abebfad7048a",
+      "equal": true
+    },
+    {
+      "path": "sim/zone_scenario_scene.py",
+      "old_sha256": "18408239cf13487e7f808eb9797337f3106ac1939892fb4ae8ec1f956b16c9e3",
+      "release9_sha256": "18408239cf13487e7f808eb9797337f3106ac1939892fb4ae8ec1f956b16c9e3",
+      "equal": true
+    },
+    {
+      "path": "sim/zone_cargo.py",
+      "old_sha256": "84cc956c22ca0d1b0d76fabcb4da61c33c73fcf77600d3079bced5658aa04a6b",
+      "release9_sha256": "84cc956c22ca0d1b0d76fabcb4da61c33c73fcf77600d3079bced5658aa04a6b",
+      "equal": true
+    },
+    {
+      "path": "sim/masterpi_drive_friction_v7.py",
+      "old_sha256": "6adcfd8e2fae919df777cf7532ef2e757e3b734dfe980fb38a6b4ccb65c2c2fa",
+      "release9_sha256": "6adcfd8e2fae919df777cf7532ef2e757e3b734dfe980fb38a6b4ccb65c2c2fa",
+      "equal": true
+    },
+    {
+      "path": "sim/grasp_act_teacher.py",
+      "old_sha256": "31412699ea8534216e7e2cb2694c9c4ffdfc085dab9dda49e47c2aac3abf71a1",
+      "release9_sha256": "31412699ea8534216e7e2cb2694c9c4ffdfc085dab9dda49e47c2aac3abf71a1",
+      "equal": true
+    },
+    {
+      "path": "sim/grasp_act_port.py",
+      "old_sha256": "047e2f9550b796999f55d487e48dae96e811ef4cc81da6b16f44460be4a322d0",
+      "release9_sha256": "047e2f9550b796999f55d487e48dae96e811ef4cc81da6b16f44460be4a322d0",
+      "equal": true
+    },
+    {
+      "path": "sim/s2_realism_camera_binding.py",
+      "old_sha256": "86922a48dc7e6a3350f478bf2331a9be114da00ec380b3145e834746ed59bbe0",
+      "release9_sha256": "86922a48dc7e6a3350f478bf2331a9be114da00ec380b3145e834746ed59bbe0",
+      "equal": true
+    },
+    {
+      "path": "sim/masterpi_camera_review_v3.py",
+      "old_sha256": "6d8d739085c44f3196e4b4c514ca7e6c515e82394b1180a712b935df0a1b9362",
+      "release9_sha256": "6d8d739085c44f3196e4b4c514ca7e6c515e82394b1180a712b935df0a1b9362",
+      "equal": true
+    },
+    {
+      "path": "maps/zones/zone_wide_door_geometry_v3.json",
+      "old_sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17",
+      "release9_sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17",
+      "equal": true
+    },
+    {
+      "path": "configs/zone_study_scenarios_v4/s1_normal_mixed_v4.json",
+      "old_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "release9_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "equal": true
+    }
+  ],
+  "cli_options": {
+    "--plan": "p.add_argument('--plan', type=Path, required=True)",
+    "--episode": "p.add_argument('--episode', type=int, default=0)",
+    "--out": "p.add_argument('--out', type=Path, required=True)",
+    "--cap-s": "p.add_argument('--cap-s', type=float, default=90.0)",
+    "--own-pose-source": "p.add_argument('--own-pose-source', choices=('commands', 'truth_comparison'), default='commands')",
+    "--observe-mode": "p.add_argument('--observe-mode', choices=OBSERVE_MODES, default='gaze_v2', help='backoff_v3: step back 0.15 m before the post-release look')",
+    "--render-dr": "p.add_argument('--render-dr', choices=('off', 'on_v1'), default='off', help='appearance randomization (harness/render_randomization.py); off for success measurement')",
+    "--zone-slots": "p.add_argument('--zone-slots', choices=ZONE_SLOT_MODES, default='floor', help='zone: white slot squares inside the destination (static map) count as zone')",
+    "--reach-mode": "p.add_argument('--reach-mode', choices=REACH_MODES, default='calibrated_mid_v1', help='pad_window_v2: approach to the measured pick-feasible IK window')",
+    "--held-object": "p.add_argument('--held-object', choices=HELD_OBJECT_MODES, default='visible_v0', help='hidden_v1: held cargo world pose never enters decisions while held')"
+  },
+  "episodes": [
+    {
+      "seed": 74940,
+      "scenario_id": "s1_normal_mixed_v4",
+      "map_id": "zone_wide_door_geometry_v3",
+      "in_original_success_set": false,
+      "within_declared_handoff_max": true,
+      "center_m": 0.32892786330342016,
+      "yaw_deviation_deg": 7.186773502664581,
+      "lateral_offset_m": 0.19545794683803752,
+      "same_declared_stratum": true,
+      "exact_inputs_preserved": true
+    },
+    {
+      "seed": 74963,
+      "scenario_id": "s1_normal_mixed_v4",
+      "map_id": "zone_wide_door_geometry_v3",
+      "in_original_success_set": false,
+      "within_declared_handoff_max": true,
+      "center_m": 0.4108249279384828,
+      "yaw_deviation_deg": -6.819666866238454,
+      "lateral_offset_m": 0.19300797982796158,
+      "same_declared_stratum": true,
+      "exact_inputs_preserved": true
+    }
+  ],
+  "original_gate": {
+    "N": 40,
+    "seeds": [
+      74000,
+      74001,
+      74002,
+      74003,
+      74004,
+      74005,
+      74006,
+      74007,
+      74008,
+      74009,
+      74010,
+      74011,
+      74012,
+      74013,
+      74014,
+      74015,
+      74016,
+      74017,
+      74018,
+      74019,
+      74020,
+      74021,
+      74022,
+      74023,
+      74024,
+      74025,
+      74026,
+      74027,
+      74028,
+      74029,
+      74030,
+      74031,
+      74032,
+      74033,
+      74034,
+      74035,
+      74036,
+      74037,
+      74038,
+      74039
+    ],
+    "reported_successes": 40,
+    "source_report": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release-gate-4a69e6bc.json",
+    "report_sha256": "1cecc1927a1f448a39dcea37fbf8ca2aacac88a021072bd8fcc806e35c4749ff",
+    "initial_center_range_m": [
+      0.08593932368318451,
+      0.7988943931488129
+    ]
+  },
+  "static_scene_and_cli_compatible": true,
+  "full_old_runtime_verified": false,
+  "offline_old_outcome": null,
+  "offline_outcome_limitation": "release9 global RGB-only observations do not contain legacy scan/band input sequence, and the legacy trajectory would differ; exact source is not replayed with evaluation truth",
+  "observation_boundary_blocker": {
+    "source": "scripts/run_grasp_act_release.py:204-208 at 4a69e6bc1fb5d07ccf6b0e2e552140d9e839af9b",
+    "code": "world.robot(rid).base_xyz()/base_rpy() + plan.handoff_pose_error -> ReleaseTeacher(handoff_pose_estimate=estimate)",
+    "commands_flag_does_not_remove_truth_anchor": true,
+    "original_camera_px": [
+      320,
+      240
+    ],
+    "release9_camera_px": [
+      640,
+      480
+    ],
+    "decision": "queue held ready=false under user truth-for-evaluation-only and no-code-edit constraints; no legacy execution permission inferred"
+  }
+}

@@ -1,0 +1,663 @@
+{
+  "schema": "ugrp.grasp_act.release_plan.v1",
+  "episodes": [
+    {
+      "episode_id": "release6-diagnostic-74950",
+      "batch": "release6-diagnostic",
+      "seed": 74950,
+      "split": "release_diagnostic",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        4.417399896511833,
+        0.4767443218035349,
+        1.637039418417396
+      ],
+      "spawns": {
+        "r1": [
+          4.448709968253552,
+          0.004781739168503885,
+          0.032355118817659255,
+          1.637039418417396
+        ],
+        "r2": [
+          4.3860898247701146,
+          0.9487069044385659,
+          0.032355118817659255,
+          4.7786320720071895
+        ],
+        "r3": [
+          3.3244984170862906,
+          0.48784847406149856,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "skill": "release",
+      "destination_region": "zone_A",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "assignment_source": "demo_rule_fixed_r1_teal",
+      "initial_pan": {
+        "r1": 1500,
+        "r2": 1500
+      },
+      "stratum": {
+        "axial_outside_m": [
+          -0.3,
+          -0.02
+        ],
+        "sampled_outside_m": -0.28258976651497747,
+        "side": "north",
+        "teal_south": true
+      },
+      "handoff_pose_error": {
+        "r1": [
+          -0.08739053022062554,
+          0.019913670386666506,
+          -0.03291720862342292
+        ],
+        "r2": [
+          0.025374942611952923,
+          0.007299957681264205,
+          -0.021848831876211682
+        ]
+      },
+      "beam_to_zone_center_m": 0.19807192815483363,
+      "proposal_attempts": 1,
+      "diagnostic_source": {
+        "kind": "fresh_seed"
+      }
+    },
+    {
+      "episode_id": "release6-diagnostic-74951",
+      "batch": "release6-diagnostic",
+      "seed": 74951,
+      "split": "release_diagnostic",
+      "scenario_id": "s3_late_rendezvous_v4",
+      "scenario_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        4.4260017559776665,
+        0.24018296013405283,
+        -1.4610511946491318
+      ],
+      "spawns": {
+        "r1": [
+          4.374196445254435,
+          0.7103374132458674,
+          0.032355118817659255,
+          -1.4610511946491318
+        ],
+        "r2": [
+          4.4778070667008985,
+          -0.22997149297776168,
+          0.032355118817659255,
+          1.6805414589406613
+        ],
+        "r3": [
+          3.995043710269513,
+          -1.4543913424815222,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "skill": "release",
+      "destination_region": "zone_A",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "assignment_source": "demo_rule_fixed_r1_teal",
+      "initial_pan": {
+        "r1": 1500,
+        "r2": 1500
+      },
+      "stratum": {
+        "axial_outside_m": [
+          -0.3,
+          -0.02
+        ],
+        "sampled_outside_m": -0.1997972473475645,
+        "side": "south",
+        "teal_south": false
+      },
+      "handoff_pose_error": {
+        "r1": [
+          -0.062084356453046496,
+          -0.030205120960463152,
+          0.008622383457087969
+        ],
+        "r2": [
+          0.07032864942858008,
+          -0.09599534794515983,
+          0.062387402214290094
+        ]
+      },
+      "beam_to_zone_center_m": 0.2362559526326673,
+      "proposal_attempts": 1,
+      "diagnostic_source": {
+        "kind": "fresh_seed"
+      }
+    },
+    {
+      "episode_id": "release6-diagnostic-74952",
+      "batch": "release6-diagnostic",
+      "seed": 74952,
+      "split": "release_diagnostic",
+      "scenario_id": "s6_novel_relation_v4",
+      "scenario_source_sha256": "fb2596bbbe76d360bd7c481e750bfea0683e95770d60617af26fbc114a820986",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "beam_pose": [
+        4.727692726180205,
+        -0.06092536390985237,
+        1.7047394894359678
+      ],
+      "spawns": {
+        "r1": [
+          4.790858572035941,
+          -0.5296887113649721,
+          0.032355118817659255,
+          1.7047394894359678
+        ],
+        "r2": [
+          4.664526880324469,
+          0.40783798354526735,
+          0.032355118817659255,
+          4.84633214302576
+        ],
+        "r3": [
+          3.0517314770673956,
+          -1.2874806960895833,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "skill": "release",
+      "destination_region": "zone_A",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "assignment_source": "demo_rule_fixed_r1_teal",
+      "initial_pan": {
+        "r1": 1500,
+        "r2": 1500
+      },
+      "stratum": {
+        "axial_outside_m": [
+          0.0,
+          0.15
+        ],
+        "sampled_outside_m": 0.10090912956239081,
+        "side": "south",
+        "teal_south": true
+      },
+      "handoff_pose_error": {
+        "r1": [
+          -0.049009522895971575,
+          0.051770679196403484,
+          0.009710152166996187
+        ],
+        "r2": [
+          -0.04669701901965471,
+          0.04160625931403761,
+          -0.011742819400951813
+        ]
+      },
+      "beam_to_zone_center_m": 0.47828613132178815,
+      "proposal_attempts": 1,
+      "diagnostic_source": {
+        "kind": "fresh_seed"
+      }
+    },
+    {
+      "episode_id": "release6-diagnostic-74953",
+      "batch": "release6-diagnostic",
+      "seed": 74953,
+      "split": "release_diagnostic",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        4.6914773954683024,
+        0.0034186636989919084,
+        -1.6417525776475093
+      ],
+      "spawns": {
+        "r1": [
+          4.725011546018807,
+          0.47522843547873805,
+          0.032355118817659255,
+          -1.6417525776475093
+        ],
+        "r2": [
+          4.6579432449177975,
+          -0.46839110808075424,
+          0.032355118817659255,
+          1.4998400759422839
+        ],
+        "r3": [
+          -0.8282116413339664,
+          1.1259985868547182,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "skill": "release",
+      "destination_region": "zone_A",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "assignment_source": "demo_rule_fixed_r1_teal",
+      "initial_pan": {
+        "r1": 1500,
+        "r2": 1500
+      },
+      "stratum": {
+        "axial_outside_m": [
+          0.0,
+          0.15
+        ],
+        "sampled_outside_m": 0.037244369165561876,
+        "side": "south",
+        "teal_south": false
+      },
+      "handoff_pose_error": {
+        "r1": [
+          -0.08465848049532133,
+          0.05167125085348319,
+          -0.011744104864301356
+        ],
+        "r2": [
+          -0.02032239039469201,
+          -0.08810036698313557,
+          -0.01690033540921695
+        ]
+      },
+      "beam_to_zone_center_m": 0.4069949264842961,
+      "proposal_attempts": 1,
+      "diagnostic_source": {
+        "kind": "fresh_seed"
+      }
+    },
+    {
+      "episode_id": "release6-diagnostic-74954",
+      "batch": "release6-diagnostic",
+      "seed": 74954,
+      "split": "release_diagnostic",
+      "scenario_id": "s3_late_rendezvous_v4",
+      "scenario_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        4.443332211364386,
+        -0.24567866458032828,
+        1.5436786903804744
+      ],
+      "spawns": {
+        "r1": [
+          4.430507141329075,
+          -0.7185047611302009,
+          0.032355118817659255,
+          1.5436786903804744
+        ],
+        "r2": [
+          4.4561572813996975,
+          0.2271474319695443,
+          0.032355118817659255,
+          4.685271343970268
+        ],
+        "r3": [
+          -0.660192246967669,
+          -2.619737389494531,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "skill": "release",
+      "destination_region": "zone_A",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "assignment_source": "demo_rule_fixed_r1_teal",
+      "initial_pan": {
+        "r1": 1500,
+        "r2": 1500
+      },
+      "stratum": {
+        "axial_outside_m": [
+          0.15,
+          0.3
+        ],
+        "sampled_outside_m": 0.2861106526684213,
+        "side": "south",
+        "teal_south": true
+      },
+      "handoff_pose_error": {
+        "r1": [
+          0.006263375691640702,
+          -0.007080570722095715,
+          -0.006512838003520121
+        ],
+        "r2": [
+          -0.029486388147490668,
+          0.019343882830340914,
+          0.02193569832631956
+        ]
+      },
+      "beam_to_zone_center_m": 0.6644138272870376,
+      "proposal_attempts": 1,
+      "diagnostic_source": {
+        "kind": "fresh_seed"
+      }
+    },
+    {
+      "episode_id": "release6-diagnostic-74955",
+      "batch": "release6-diagnostic",
+      "seed": 74955,
+      "split": "release_diagnostic",
+      "scenario_id": "s6_novel_relation_v4",
+      "scenario_source_sha256": "fb2596bbbe76d360bd7c481e750bfea0683e95770d60617af26fbc114a820986",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "beam_pose": [
+        4.668222930739389,
+        -0.1615857348762043,
+        -1.4878834234527192
+      ],
+      "spawns": {
+        "r1": [
+          4.629050046137896,
+          0.3097893653486571,
+          0.032355118817659255,
+          -1.4878834234527192
+        ],
+        "r2": [
+          4.707395815340882,
+          -0.6329608351010657,
+          0.032355118817659255,
+          1.653709230137074
+        ],
+        "r3": [
+          1.1210975235564866,
+          -2.5542704521783897,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "skill": "release",
+      "destination_region": "zone_A",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "assignment_source": "demo_rule_fixed_r1_teal",
+      "initial_pan": {
+        "r1": 1500,
+        "r2": 1500
+      },
+      "stratum": {
+        "axial_outside_m": [
+          0.15,
+          0.3
+        ],
+        "sampled_outside_m": 0.20221150180958336,
+        "side": "south",
+        "teal_south": false
+      },
+      "handoff_pose_error": {
+        "r1": [
+          -0.04631624721167846,
+          -0.03961016021850894,
+          0.03266365234541354
+        ],
+        "r2": [
+          -0.01672402161305439,
+          0.004301457485212562,
+          -0.0026488326148537285
+        ]
+      },
+      "beam_to_zone_center_m": 0.5657145091785414,
+      "proposal_attempts": 2,
+      "diagnostic_source": {
+        "kind": "fresh_seed"
+      }
+    },
+    {
+      "episode_id": "release6-diagnostic-74956",
+      "batch": "release6-diagnostic",
+      "seed": 74956,
+      "split": "release_diagnostic",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        4.636656957058151,
+        -0.29679841868964496,
+        1.6700668875608942
+      ],
+      "spawns": {
+        "r1": [
+          4.683534849528759,
+          -0.7674697086548543,
+          0.032355118817659255,
+          1.6700668875608942
+        ],
+        "r2": [
+          4.589779064587543,
+          0.17387287127556433,
+          0.032355118817659255,
+          4.8116595411506875
+        ],
+        "r3": [
+          3.4560693843975314,
+          -0.8981886939432164,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "skill": "release",
+      "destination_region": "zone_A",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "assignment_source": "demo_rule_fixed_r1_teal",
+      "initial_pan": {
+        "r1": 1500,
+        "r2": 1500
+      },
+      "stratum": {
+        "axial_outside_m": [
+          0.3,
+          0.44
+        ],
+        "sampled_outside_m": 0.3373035874824038,
+        "side": "south",
+        "teal_south": true
+      },
+      "handoff_pose_error": {
+        "r1": [
+          -0.1120606358080319,
+          0.022081538427770515,
+          0.06556122274713767
+        ],
+        "r2": [
+          0.07161890841458766,
+          0.01974019095593044,
+          -0.08668514055199181
+        ]
+      },
+      "beam_to_zone_center_m": 0.6977619714409442,
+      "proposal_attempts": 2,
+      "diagnostic_source": {
+        "kind": "fresh_seed"
+      }
+    },
+    {
+      "episode_id": "release6-diagnostic-74940-reproduction",
+      "batch": "release6-diagnostic",
+      "seed": 74940,
+      "split": "release_diagnostic",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        4.795457946838037,
+        0.6645557224389833,
+        1.6962291870114785
+      ],
+      "spawns": {
+        "r1": [
+          4.854632235608596,
+          0.19527179606977715,
+          0.032355118817659255,
+          1.6962291870114785
+        ],
+        "r2": [
+          4.736283658067478,
+          1.1338396488081894,
+          0.032355118817659255,
+          4.837821840601272
+        ],
+        "r3": [
+          1.357078659653129,
+          -2.363815765580392,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "skill": "release",
+      "destination_region": "zone_A",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "assignment_source": "demo_rule_fixed_r1_teal",
+      "initial_pan": {
+        "r1": 1500,
+        "r2": 1500
+      },
+      "stratum": {
+        "axial_outside_m": [
+          -0.3,
+          -0.02
+        ],
+        "sampled_outside_m": -0.09529911120547124,
+        "side": "north",
+        "teal_south": true
+      },
+      "handoff_pose_error": {
+        "r1": [
+          -0.016961726812283313,
+          4.6741373120177745e-05,
+          0.03734399734576219
+        ],
+        "r2": [
+          0.055090380970625165,
+          -0.017015110979723816,
+          -0.02818058317397999
+        ]
+      },
+      "beam_to_zone_center_m": 0.32892786330342016,
+      "proposal_attempts": 1,
+      "diagnostic_source": {
+        "kind": "reproduced_failure",
+        "parent_sha": "e96386d319fee37cbf109867f55a1b9aefac4229",
+        "parent_index": 2,
+        "parent_plan_sha256": "10fb32806c4460174b642aa045077dc7921d1f58ced750ca6cb3aea0f63aab7c"
+      }
+    }
+  ],
+  "rejected_proposals": {
+    "robot_wall": 1,
+    "beam_wall": 1
+  },
+  "distribution": {
+    "beam_yaw": "N-S +-8 deg, teal end south/north alternating",
+    "lateral_offset_m": [
+      -0.2,
+      0.2
+    ],
+    "axial_strata_outside_m": [
+      [
+        -0.3,
+        -0.02
+      ],
+      [
+        0.0,
+        0.15
+      ],
+      [
+        0.15,
+        0.3
+      ],
+      [
+        0.3,
+        0.44
+      ]
+    ],
+    "handoff_max_m": 0.8,
+    "handoff_pose_error_sigma": {
+      "xy_m": 0.05,
+      "yaw_rad": 0.03490658503988659
+    },
+    "prefix": "unchanged observable_v2 grasp teacher from grasp stations; prefix failures excluded from release outcomes and reported",
+    "fixed": [
+      "floor_light_v1",
+      "camera review v3 runtime binding",
+      "native v7",
+      "weld off",
+      "teal/blue end scene"
+    ]
+  },
+  "criteria": {
+    "teacher_target_rate": 0.95,
+    "minimum_episodes": 40,
+    "success": "landing rectangle inside zone, z<0.05, no finger contact, speed<0.01 m/s, tilt<3 deg, both grippers open (>=1900) and grip site >=4 cm from beam axis, for 2 s"
+  },
+  "student_evaluation": false,
+  "execution_profile": {
+    "held_object": "hidden_v1",
+    "lookaround": "setdown_global_v1",
+    "pose_anchor": "command_relative_v1",
+    "own_pose_source": "commands",
+    "observe_mode": "backoff_v3",
+    "zone_slots": "zone",
+    "reach_mode": "pad_window_v2",
+    "placement": "global_localized_release_v1",
+    "lateral_recovery": "bounded_v1",
+    "active_recovery": "map_nbv_v1"
+  },
+  "order": "reproduce index 7 first; then fresh indices 0-6 after first-30-SIM review",
+  "training_rgb": false,
+  "weld": "off"
+}

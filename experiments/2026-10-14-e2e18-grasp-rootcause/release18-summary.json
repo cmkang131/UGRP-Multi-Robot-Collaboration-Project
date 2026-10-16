@@ -1,0 +1,233 @@
+{
+  "schema": "ugrp.release18.summary.v1",
+  "baseline_sha": "6b263c9beb14757f88b76edd01088c6a46182a2f",
+  "candidate_source": "containing Git commit; resolve with git rev-parse HEAD",
+  "scope": "stored ledgers and pixels, offline scheduler/decision replay; no new physical result",
+  "runs": [
+    {
+      "run": "r16d-00-be2d749a",
+      "seed": 74963,
+      "source_sha": "be2d749adb4fd4eb38421fa19aa981e0eb195c4b",
+      "outcome": "release16_motion_cap",
+      "success": false,
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r16d-00-be2d749a/raw",
+      "evidence": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r16d-00-be2d749a/raw/result.json.zst",
+          "sha256": "a7ee346cdd9b6dba74eda2c4610f2c5196863b4553792e5a936fffceceb643c5",
+          "decoded_sha256": "71550c8e8768de0e76d1cbc747aa36ac2c553ec2274097866a7fd9cb77dfbb95",
+          "decoded_bytes": 550787
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r16d-00-be2d749a/raw/plan.json",
+          "sha256": "dec564a1be5a7ee1f4c119d70c3ec8506eeddbd82653190ceffe8b251c31e6a6",
+          "decoded_sha256": "dec564a1be5a7ee1f4c119d70c3ec8506eeddbd82653190ceffe8b251c31e6a6",
+          "decoded_bytes": 1571
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r16d-00-be2d749a/raw/teacher-r1.jsonl.zst",
+          "sha256": "96d03c1233be879d2674b0d50247ec6fcff24aec4a5dee4b88c5230b88ea8efc",
+          "decoded_sha256": "91bf9895516d8a973b9f9731298825af2eec4f1d0c0f98cdf69807c810272d11",
+          "decoded_bytes": 537058
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r16d-00-be2d749a/raw/teacher-r2.jsonl.zst",
+          "sha256": "9bc56c711a29739cfbe70a61ff51375571fccd9913e4a24209006a607019e8bd",
+          "decoded_sha256": "378b5803e81246c27fdfde8faeb4dc8ec24810913c58d186c73cbe389c59c3af",
+          "decoded_bytes": 546848
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r16d-00-be2d749a/raw/eval-only.jsonl.zst",
+          "sha256": "dc87c261b52c92327172f54486de3e331e37a039b3456bba92907a2ff76154d9",
+          "decoded_sha256": "10c20f1d49e71b93ac7c721dc6f925064ebd6f4e6ad36c016f0bedfa96c6d048",
+          "decoded_bytes": 715592
+        }
+      ],
+      "omitted_wait_s_in_conditional_replay": 0
+    },
+    {
+      "run": "r16d-01-be2d749a",
+      "seed": 74976,
+      "source_sha": "be2d749adb4fd4eb38421fa19aa981e0eb195c4b",
+      "outcome": "release16_no_recover_fov_progress_3s",
+      "success": false,
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r16d-01-be2d749a/raw",
+      "evidence": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r16d-01-be2d749a/raw/result.json.zst",
+          "sha256": "94c60fe624437a37b26ad276d837247eb530590beba96cdab6f420f973bc8c34",
+          "decoded_sha256": "c7422b00ae5aea41dbc49f8eb71e0a3553099822e1e98cdccc631b00bec1de26",
+          "decoded_bytes": 590505
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r16d-01-be2d749a/raw/plan.json",
+          "sha256": "dd71e81fca2439885596bf5e61b5b39a8e98dc9a8abf0bd372c95f8ddde69bae",
+          "decoded_sha256": "dd71e81fca2439885596bf5e61b5b39a8e98dc9a8abf0bd372c95f8ddde69bae",
+          "decoded_bytes": 1564
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r16d-01-be2d749a/raw/teacher-r1.jsonl.zst",
+          "sha256": "fe124ee890de0670bd20c5f7b1557c18368ed958bd09a8e437003d98cf0b37af",
+          "decoded_sha256": "36519d1de22116f9d7370368abb568f82a67f9bc8f0b8bd749e04c4ee35b860b",
+          "decoded_bytes": 533887
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r16d-01-be2d749a/raw/teacher-r2.jsonl.zst",
+          "sha256": "59dd3c5f73a1d5c1ce6eaace1c88f9725faca7a28ae848e0178594fa10130721",
+          "decoded_sha256": "521a1b6e6ff1bb945b11a646cf7204a7158997a5c9035d02396ff7c1aaa01321",
+          "decoded_bytes": 534116
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r16d-01-be2d749a/raw/eval-only.jsonl.zst",
+          "sha256": "04fa69b104839a01260b8ec7772c904bf30c36b9ace9d254235af40b6ddc0ae4",
+          "decoded_sha256": "6df9aff2b58c7bfddc9af64f03294d8d9c0c56fa192d794e97dfdf803828de55",
+          "decoded_bytes": 704688
+        }
+      ],
+      "omitted_wait_s_in_conditional_replay": 0
+    },
+    {
+      "run": "r17d-00-6b263c9b",
+      "seed": 74963,
+      "source_sha": "6b263c9beb14757f88b76edd01088c6a46182a2f",
+      "outcome": "teacher_done",
+      "success": true,
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r17d-00-6b263c9b/raw",
+      "evidence": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r17d-00-6b263c9b/raw/result.json.zst",
+          "sha256": "12cb4a499111d5c8412a350d401368f73e582aecf1ae26cc1e4252067b13d4c8",
+          "decoded_sha256": "968ec5d3c9103bb7c28568368c24d41235f6649a2fd713b7ddcf35d574bb5dc9",
+          "decoded_bytes": 761318
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r17d-00-6b263c9b/raw/plan.json",
+          "sha256": "dec564a1be5a7ee1f4c119d70c3ec8506eeddbd82653190ceffe8b251c31e6a6",
+          "decoded_sha256": "dec564a1be5a7ee1f4c119d70c3ec8506eeddbd82653190ceffe8b251c31e6a6",
+          "decoded_bytes": 1571
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r17d-00-6b263c9b/raw/teacher-r1.jsonl.zst",
+          "sha256": "1f9f16cd751db6aa5278aae4345e2ebd10ceee4909b3cc8cae1402758a1888bb",
+          "decoded_sha256": "e44b5df5976a6403f3a40929155dfee712b9feb2df412cdc1b58cf5d4ea5f079",
+          "decoded_bytes": 832129
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r17d-00-6b263c9b/raw/teacher-r2.jsonl.zst",
+          "sha256": "0510d3bf5f7f7c0b6eb4bb7a360191f37823a8d8b2e750a94fc003a77085e744",
+          "decoded_sha256": "5627d4ef48f37338d7b35488a5b4d97b1925a1f6a37c2c6b20ee8bc0875d7346",
+          "decoded_bytes": 841593
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r17d-00-6b263c9b/raw/eval-only.jsonl.zst",
+          "sha256": "94ec806e2189249e0d56ae432119245f3264167b5ba41c2deb9b62e1cc8b746f",
+          "decoded_sha256": "4e172c4fe12b8a66ae1229c7141025ff47fdd4c1789db3df15e28607d4e3ffd1",
+          "decoded_bytes": 1090383
+        }
+      ],
+      "omitted_wait_s_in_conditional_replay": 15.2
+    },
+    {
+      "run": "r17d-01-6b263c9b",
+      "seed": 74976,
+      "source_sha": "6b263c9beb14757f88b76edd01088c6a46182a2f",
+      "outcome": "release_timeout",
+      "success": false,
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r17d-01-6b263c9b/raw",
+      "evidence": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r17d-01-6b263c9b/raw/result.json.zst",
+          "sha256": "6c21ab1a5c9858b42bc3db17fdecd61a6351f0e70140bec7cce4a44815ec9321",
+          "decoded_sha256": "56079cf193860f97672d145a37fbfbef00cd69263dbef325311046538fca36b5",
+          "decoded_bytes": 964928
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r17d-01-6b263c9b/raw/plan.json",
+          "sha256": "dd71e81fca2439885596bf5e61b5b39a8e98dc9a8abf0bd372c95f8ddde69bae",
+          "decoded_sha256": "dd71e81fca2439885596bf5e61b5b39a8e98dc9a8abf0bd372c95f8ddde69bae",
+          "decoded_bytes": 1564
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r17d-01-6b263c9b/raw/teacher-r1.jsonl.zst",
+          "sha256": "44f625d551c7d8058680e3fad5bf3d8a9f18ba7b7dca48de75b38bac4b661edd",
+          "decoded_sha256": "84dd21f481514dc3a1253894fa7c3c65a087461fcd4cda757925471677f80fb3",
+          "decoded_bytes": 1133256
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r17d-01-6b263c9b/raw/teacher-r2.jsonl.zst",
+          "sha256": "a4e96c1cac255b215476af701239e031200ada8c203b4bc0769b715ef4636d5f",
+          "decoded_sha256": "6d0c4d235ac46ea467cb8566e3c91c4e0b352b8de8bf2fee5caa9f0ee53c0603",
+          "decoded_bytes": 1133163
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r17d-01-6b263c9b/raw/eval-only.jsonl.zst",
+          "sha256": "4fe5c9781bd9d9b0bcfb09ba50dd2121dcf2900bcd75485ec9e5df13506527b5",
+          "decoded_sha256": "5b20f01a68519ba9a25bfa2630a564510233969ba6e1e6a93f2fb10d4de56f67",
+          "decoded_bytes": 1432039
+        }
+      ],
+      "omitted_wait_s_in_conditional_replay": 22.8
+    }
+  ],
+  "tests": {
+    "passed": 94,
+    "seconds": 85.99,
+    "command": "python3 -m pytest -q tests/test_release18.py tests/test_release17.py tests/test_release16.py tests/test_release15.py tests/test_grasp_act_release_run.py",
+    "concurrency": 1
+  },
+  "simulation_calls": 0,
+  "remote_host_connections": 0,
+  "new_physical_runs": 0,
+  "queue": {
+    "seeds": [
+      74963,
+      74976,
+      78520,
+      78521,
+      78522,
+      78523,
+      78524,
+      78525,
+      78526
+    ],
+    "path_pattern": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-release-gate-<containing_commit_sha8>.json",
+    "all_approval_execution_flags": false,
+    "cap_s": 180
+  },
+  "previous_queue": {
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-release-gate-6b263c9b.json",
+    "sha256": "fb070dfe6ff60020f2902a3e5c59ce1179a08b483ebf5b55e16ab5fd88ff01e5"
+  },
+  "artifacts": {
+    "release18-diagnostic-plan.json": {
+      "bytes": 19410,
+      "sha256": "0992588d19049dfba5ed58a99c6490c49d481392f0a4016d29ed18389a8daf12"
+    },
+    "release18-replay.json.zst": {
+      "bytes": 11431,
+      "sha256": "d1a822f5e82da44b967b7482e469ef0b77453597524378ccf03fcc6c4ce95587"
+    },
+    "release18-seed-audit.json": {
+      "bytes": 1080,
+      "sha256": "78e024d1fe734bd38ced49de3fb720e9637e4fc0ff2dcf51847e61bd42a82cbb"
+    },
+    "release18-tests.txt": {
+      "bytes": 190,
+      "sha256": "68790cf1ec325cfcfaee9e3cb91260514f02e4df98c195d0c17d71068d97e705"
+    },
+    "release18-visual-review.json": {
+      "bytes": 11560,
+      "sha256": "56c17f4409e1bbdb03a5043191a014bbc133c1b9df7bd9b6468780c1b360d1ba"
+    },
+    "release18.md": {
+      "bytes": 7063,
+      "sha256": "19a864cd75a295a59e3297a5310b948b949ea36190738ee39b0e92a4e8e8e4ef"
+    }
+  },
+  "remaining": [
+    "independent Claude review",
+    "coordinator approval and remote seed/source preflight",
+    "reproduction 2 then fresh7 physical runs",
+    "gate40 not approved"
+  ]
+}

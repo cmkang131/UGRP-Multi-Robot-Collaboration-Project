@@ -1,0 +1,718 @@
+{
+ "schema": "opus-gcp-probe-results-v1",
+ "host": "gcp1 (GCP Emerald Rapids; not pooled with Azure)",
+ "source_sha": "4626ee99a886f668f5d246367c3ab7e8a0f987a9",
+ "branch": "claude/grasp-act-probes",
+ "class": "dev",
+ "profile": {
+  "held_object": "hidden_v1",
+  "release": "backoff_v3 + zone-slots zone + reach pad_window_v2",
+  "setdown": "reach pad_window_v2"
+ },
+ "runs": [
+  {
+   "name": "probe-setdown-0-4626ee99",
+   "raw_vm": "/home/ugrp/ugrp-sim/runs/probe-setdown-0-4626ee99",
+   "raw_mac": "outputs/gcp1-runs/probe-setdown-0-4626ee99",
+   "sha256sums_sha256": "b21c41c491e52365f0113c242acb85cbac8dc86585377a20eb6064cb1b292c72",
+   "result_sha256": "b16a0739e885095c75fde39d3de83ad9e1ff49306b903e1524c255f928c564d7",
+   "exit": "0",
+   "status": "complete",
+   "sim_s": 29.6,
+   "wall_s": 76.4,
+   "held_world_reads": 0,
+   "case": "door_before",
+   "regrasp_held": true,
+   "fail": [],
+   "cycle_sim_s": 17.5,
+   "setdown_move_mm": 2.4,
+   "total_move_mm": 3.4,
+   "regrip_axial_mm": {
+    "r1": 4.6,
+    "r2": -3.5
+   },
+   "pick_target_source": {
+    "r1": "own_command",
+    "r2": "own_command"
+   },
+   "look_best": {
+    "r1": {
+     "door_west": 4,
+     "door_east": 0,
+     "zone": 6,
+     "own_band_probes": 9,
+     "partner_any": true
+    },
+    "r2": {
+     "door_west": 0,
+     "door_east": 0,
+     "zone": 0,
+     "own_band_probes": 12,
+     "partner_any": true
+    }
+   }
+  },
+  {
+   "name": "probe-setdown-1-4626ee99",
+   "raw_vm": "/home/ugrp/ugrp-sim/runs/probe-setdown-1-4626ee99",
+   "raw_mac": "outputs/gcp1-runs/probe-setdown-1-4626ee99",
+   "sha256sums_sha256": "afb74198916d1fb9d80be8ddd359bb6602d071b91f49004a4d26e797a6f43906",
+   "result_sha256": "13ec5de46c3cb8de509dc131f58319ee4ba763457f7e368a68ccae46033c2726",
+   "exit": "0",
+   "status": "complete",
+   "sim_s": 29.6,
+   "wall_s": 74.8,
+   "held_world_reads": 0,
+   "case": "door_after",
+   "regrasp_held": true,
+   "fail": [],
+   "cycle_sim_s": 17.5,
+   "setdown_move_mm": 1.1,
+   "total_move_mm": 4.5,
+   "regrip_axial_mm": {
+    "r1": -2.0,
+    "r2": 0.0
+   },
+   "pick_target_source": {
+    "r1": "own_command",
+    "r2": "own_command"
+   },
+   "look_best": {
+    "r1": {
+     "door_west": 0,
+     "door_east": 0,
+     "zone": 9,
+     "own_band_probes": 12,
+     "partner_any": true
+    },
+    "r2": {
+     "door_west": 0,
+     "door_east": 4,
+     "zone": 1,
+     "own_band_probes": 12,
+     "partner_any": true
+    }
+   }
+  },
+  {
+   "name": "probe-setdown-2-4626ee99",
+   "raw_vm": "/home/ugrp/ugrp-sim/runs/probe-setdown-2-4626ee99",
+   "raw_mac": "outputs/gcp1-runs/probe-setdown-2-4626ee99",
+   "sha256sums_sha256": "422931f92a52be1402f0d47af11d2a88e78b3007f6dd732c50bbd0bccfa1287d",
+   "result_sha256": "84eb607a62f83a4598bdcb3045ab8cf0af409152e9e7d5cb7223f9555a63cebd",
+   "exit": "0",
+   "status": "complete",
+   "sim_s": 29.6,
+   "wall_s": 75.1,
+   "held_world_reads": 0,
+   "case": "door_before",
+   "regrasp_held": true,
+   "fail": [],
+   "cycle_sim_s": 17.5,
+   "setdown_move_mm": 0.6,
+   "total_move_mm": 1.6,
+   "regrip_axial_mm": {
+    "r1": 7.0,
+    "r2": -8.5
+   },
+   "pick_target_source": {
+    "r1": "own_command",
+    "r2": "own_command"
+   },
+   "look_best": {
+    "r1": {
+     "door_west": 4,
+     "door_east": 0,
+     "zone": 6,
+     "own_band_probes": 9,
+     "partner_any": true
+    },
+    "r2": {
+     "door_west": 0,
+     "door_east": 0,
+     "zone": 0,
+     "own_band_probes": 9,
+     "partner_any": true
+    }
+   }
+  },
+  {
+   "name": "probe-setdown-3-4626ee99",
+   "raw_vm": "/home/ugrp/ugrp-sim/runs/probe-setdown-3-4626ee99",
+   "raw_mac": "outputs/gcp1-runs/probe-setdown-3-4626ee99",
+   "sha256sums_sha256": "fd92a29e05290d937a2499f87fd673464687e47d30688e7d6d4bc9d6d41b7e41",
+   "result_sha256": "d9f6da99f13b6a319474594bdda50b90261b6dca6fcd0c2bba85c849421e7fe6",
+   "exit": "0",
+   "status": "complete",
+   "sim_s": 29.6,
+   "wall_s": 74.1,
+   "held_world_reads": 0,
+   "case": "door_after",
+   "regrasp_held": true,
+   "fail": [],
+   "cycle_sim_s": 17.5,
+   "setdown_move_mm": 1.7,
+   "total_move_mm": 4.7,
+   "regrip_axial_mm": {
+    "r1": 1.7,
+    "r2": 2.0
+   },
+   "pick_target_source": {
+    "r1": "own_command",
+    "r2": "own_command"
+   },
+   "look_best": {
+    "r1": {
+     "door_west": 0,
+     "door_east": 0,
+     "zone": 9,
+     "own_band_probes": 12,
+     "partner_any": true
+    },
+    "r2": {
+     "door_west": 0,
+     "door_east": 4,
+     "zone": 1,
+     "own_band_probes": 12,
+     "partner_any": true
+    }
+   }
+  },
+  {
+   "name": "probe-setdown-4-4626ee99",
+   "raw_vm": "/home/ugrp/ugrp-sim/runs/probe-setdown-4-4626ee99",
+   "raw_mac": "outputs/gcp1-runs/probe-setdown-4-4626ee99",
+   "sha256sums_sha256": "8cdbf4457bbd7040d6b466733dcb1947212d6910e6fe2905826114a51b3a67ab",
+   "result_sha256": "ab0b542161ee6507e060b7bda81107ea75b6256911e551875162dba4deae5a34",
+   "exit": "0",
+   "status": "complete",
+   "sim_s": 29.6,
+   "wall_s": 72.1,
+   "held_world_reads": 0,
+   "case": "door_before",
+   "regrasp_held": true,
+   "fail": [],
+   "cycle_sim_s": 17.5,
+   "setdown_move_mm": 1.4,
+   "total_move_mm": 3.1,
+   "regrip_axial_mm": {
+    "r1": 2.9,
+    "r2": -8.7
+   },
+   "pick_target_source": {
+    "r1": "own_command",
+    "r2": "own_command"
+   },
+   "look_best": {
+    "r1": {
+     "door_west": 4,
+     "door_east": 0,
+     "zone": 6,
+     "own_band_probes": 9,
+     "partner_any": true
+    },
+    "r2": {
+     "door_west": 0,
+     "door_east": 0,
+     "zone": 0,
+     "own_band_probes": 9,
+     "partner_any": true
+    }
+   }
+  },
+  {
+   "name": "probe-setdown-5-4626ee99",
+   "raw_vm": "/home/ugrp/ugrp-sim/runs/probe-setdown-5-4626ee99",
+   "raw_mac": "outputs/gcp1-runs/probe-setdown-5-4626ee99",
+   "sha256sums_sha256": "f164ffd1f3daa978753607948f6aa9567e053ba3376a90fb9a65529e2f267849",
+   "result_sha256": "6e760c6ba16355599a9860445af3231016e2f5bbcd36e28a5b78450c5df20d35",
+   "exit": "0",
+   "status": "complete",
+   "sim_s": 29.6,
+   "wall_s": 72.9,
+   "held_world_reads": 0,
+   "case": "door_after",
+   "regrasp_held": true,
+   "fail": [],
+   "cycle_sim_s": 17.5,
+   "setdown_move_mm": 2.3,
+   "total_move_mm": 3.0,
+   "regrip_axial_mm": {
+    "r1": -2.5,
+    "r2": -3.4
+   },
+   "pick_target_source": {
+    "r1": "own_command",
+    "r2": "own_command"
+   },
+   "look_best": {
+    "r1": {
+     "door_west": 0,
+     "door_east": 0,
+     "zone": 9,
+     "own_band_probes": 12,
+     "partner_any": true
+    },
+    "r2": {
+     "door_west": 0,
+     "door_east": 4,
+     "zone": 0,
+     "own_band_probes": 9,
+     "partner_any": true
+    }
+   }
+  },
+  {
+   "name": "release-v13-0-4626ee99",
+   "raw_vm": "/home/ugrp/ugrp-sim/runs/release-v13-0-4626ee99",
+   "raw_mac": "outputs/gcp1-runs/release-v13-0-4626ee99",
+   "sha256sums_sha256": "fbf3aeaf465f3efea42b2fa04afa21855a04ff922cf496bbdfc6d940d13c9ebe",
+   "result_sha256": "9bda213ce850c53b94a57fd0696f1b69f9e5d589a3d32b81617b0c2257f8b7f2",
+   "exit": "0",
+   "status": "complete",
+   "sim_s": 23.4,
+   "wall_s": 70.1,
+   "held_world_reads": 0,
+   "release_success": true,
+   "release_outcome": "teacher_done",
+   "iterations": 0,
+   "shift_steps": 0,
+   "decisions": [
+    [
+     "lower",
+     0,
+     [
+      "prior",
+      "prior"
+     ]
+    ],
+    [
+     "lower",
+     0,
+     [
+      "inside_lb",
+      "inside_lb"
+     ]
+    ]
+   ],
+   "release_sim_s": 8.6,
+   "settled_s": 2.5
+  },
+  {
+   "name": "release-v13-1-4626ee99",
+   "raw_vm": "/home/ugrp/ugrp-sim/runs/release-v13-1-4626ee99",
+   "raw_mac": "outputs/gcp1-runs/release-v13-1-4626ee99",
+   "sha256sums_sha256": "ae72f757810b14e88d396379bcc4aed7f0ba6f7758f425270563f854201fff46",
+   "result_sha256": "733d337ee47dc3d88deebcd8ca7eef3bf12e1c9a8948d5490bc0cb2433fe2b6f",
+   "exit": "0",
+   "status": "complete",
+   "sim_s": 23.4,
+   "wall_s": 66.5,
+   "held_world_reads": 0,
+   "release_success": true,
+   "release_outcome": "teacher_done",
+   "iterations": 0,
+   "shift_steps": 0,
+   "decisions": [
+    [
+     "lower",
+     0,
+     [
+      "prior",
+      "prior"
+     ]
+    ],
+    [
+     "lower",
+     0,
+     [
+      "inside_lb",
+      "inside_lb"
+     ]
+    ]
+   ],
+   "release_sim_s": 8.6,
+   "settled_s": 2.5
+  },
+  {
+   "name": "release-v13-2-4626ee99",
+   "raw_vm": "/home/ugrp/ugrp-sim/runs/release-v13-2-4626ee99",
+   "raw_mac": "outputs/gcp1-runs/release-v13-2-4626ee99",
+   "sha256sums_sha256": "f8e598ca733a7f72475b1e291ba579756b00129ffb9189a498c43acfe1d78260",
+   "result_sha256": "1956ce5dfc605f7fa393681ee51cd0517172eee17edffe20f33e08b5accbf7b4",
+   "exit": "0",
+   "status": "complete",
+   "sim_s": 26.9,
+   "wall_s": 74.5,
+   "held_world_reads": 0,
+   "release_success": true,
+   "release_outcome": "teacher_done",
+   "iterations": 0,
+   "shift_steps": 2,
+   "decisions": [
+    [
+     "shift",
+     0.1,
+     [
+      "prior",
+      "prior"
+     ]
+    ],
+    [
+     "shift",
+     0.1,
+     [
+      "prior",
+      "prior"
+     ]
+    ],
+    [
+     "lower",
+     0,
+     [
+      "prior",
+      "prior"
+     ]
+    ],
+    [
+     "lower",
+     0,
+     [
+      "edge",
+      "inside_lb"
+     ]
+    ]
+   ],
+   "release_sim_s": 12.1,
+   "settled_s": 2.5
+  },
+  {
+   "name": "release-v13-3-4626ee99",
+   "raw_vm": "/home/ugrp/ugrp-sim/runs/release-v13-3-4626ee99",
+   "raw_mac": "outputs/gcp1-runs/release-v13-3-4626ee99",
+   "sha256sums_sha256": "63fbf85c4df3d2f27c9685b7760ceaa7d7c6a50f25ef4a98048d44b8d4284bc0",
+   "result_sha256": "947da2fd77ed39972085bc25c83bc68036864c932ccbc4ce6ca319562366797d",
+   "exit": "0",
+   "status": "complete",
+   "sim_s": 25.1,
+   "wall_s": 75.1,
+   "held_world_reads": 0,
+   "release_success": true,
+   "release_outcome": "teacher_done",
+   "iterations": 0,
+   "shift_steps": 1,
+   "decisions": [
+    [
+     "shift",
+     -0.1,
+     [
+      "prior",
+      "prior"
+     ]
+    ],
+    [
+     "lower",
+     0,
+     [
+      "prior",
+      "prior"
+     ]
+    ],
+    [
+     "lower",
+     0,
+     [
+      "inside_lb",
+      "inside_lb"
+     ]
+    ]
+   ],
+   "release_sim_s": 10.3,
+   "settled_s": 2.5
+  },
+  {
+   "name": "release-v13-4-4626ee99",
+   "raw_vm": "/home/ugrp/ugrp-sim/runs/release-v13-4-4626ee99",
+   "raw_mac": "outputs/gcp1-runs/release-v13-4-4626ee99",
+   "sha256sums_sha256": "752d7dcf833035f5bfc88fa09d419702a376f87df91a27206da255351e57dcfd",
+   "result_sha256": "f268b917a286adfe597e54c78cd95d1d73b534608645ab4b7d5dbbedb004ea3c",
+   "exit": "0",
+   "status": "complete",
+   "sim_s": 28.7,
+   "wall_s": 85.0,
+   "held_world_reads": 0,
+   "release_success": true,
+   "release_outcome": "teacher_done",
+   "iterations": 0,
+   "shift_steps": 3,
+   "decisions": [
+    [
+     "shift",
+     0.1,
+     [
+      "prior",
+      "prior"
+     ]
+    ],
+    [
+     "shift",
+     0.1,
+     [
+      "prior",
+      "prior"
+     ]
+    ],
+    [
+     "shift",
+     0.1,
+     [
+      "prior",
+      "prior"
+     ]
+    ],
+    [
+     "lower",
+     0,
+     [
+      "prior",
+      "prior"
+     ]
+    ],
+    [
+     "lower",
+     0,
+     [
+      "edge",
+      "inside_lb"
+     ]
+    ]
+   ],
+   "release_sim_s": 13.9,
+   "settled_s": 2.5
+  },
+  {
+   "name": "release-v13-5-4626ee99",
+   "raw_vm": "/home/ugrp/ugrp-sim/runs/release-v13-5-4626ee99",
+   "raw_mac": "outputs/gcp1-runs/release-v13-5-4626ee99",
+   "sha256sums_sha256": "d42b83b78a07dd984bf0b7d103a79b07694fe3cdd2f663a27b18139f31839d0a",
+   "result_sha256": "875d5ac24e09299a350bf6167192856ae2749a90d32df30d8fdbdbd38bc17441",
+   "exit": "0",
+   "status": "complete",
+   "sim_s": 28.7,
+   "wall_s": 83.0,
+   "held_world_reads": 0,
+   "release_success": true,
+   "release_outcome": "teacher_done",
+   "iterations": 0,
+   "shift_steps": 3,
+   "decisions": [
+    [
+     "shift",
+     -0.1,
+     [
+      "prior",
+      "prior"
+     ]
+    ],
+    [
+     "shift",
+     -0.1,
+     [
+      "prior",
+      "prior"
+     ]
+    ],
+    [
+     "shift",
+     -0.1,
+     [
+      "prior",
+      "prior"
+     ]
+    ],
+    [
+     "lower",
+     0,
+     [
+      "prior",
+      "prior"
+     ]
+    ],
+    [
+     "lower",
+     0,
+     [
+      "inside_lb",
+      "inside_lb"
+     ]
+    ]
+   ],
+   "release_sim_s": 13.9,
+   "settled_s": 2.5
+  },
+  {
+   "name": "release-v13-6-4626ee99",
+   "raw_vm": "/home/ugrp/ugrp-sim/runs/release-v13-6-4626ee99",
+   "raw_mac": "outputs/gcp1-runs/release-v13-6-4626ee99",
+   "sha256sums_sha256": "9bb7b0e457a84a38e7baa377fb5cf49800539e42b593d18c0c6e234ec310b442",
+   "result_sha256": "bf203518f3050f5c37460d889b6bea33f422be0bc00186f5d7542c3a2a87cb06",
+   "exit": "0",
+   "status": "complete",
+   "sim_s": 45.6,
+   "wall_s": 134.2,
+   "held_world_reads": 0,
+   "release_success": true,
+   "release_outcome": "teacher_done",
+   "iterations": 1,
+   "shift_steps": 3,
+   "decisions": [
+    [
+     "shift",
+     0.1,
+     [
+      "prior",
+      "prior"
+     ]
+    ],
+    [
+     "shift",
+     0.1,
+     [
+      "prior",
+      "prior"
+     ]
+    ],
+    [
+     "shift",
+     0.1,
+     [
+      "prior",
+      "prior"
+     ]
+    ],
+    [
+     "lower",
+     0,
+     [
+      "prior",
+      "prior"
+     ]
+    ],
+    [
+     "shift",
+     0.052,
+     [
+      "edge",
+      "inside_lb"
+     ]
+    ],
+    [
+     "lower",
+     0,
+     [
+      "edge",
+      "inside_lb"
+     ]
+    ]
+   ],
+   "release_sim_s": 30.8,
+   "settled_s": 2.5
+  },
+  {
+   "name": "release-v13-7-4626ee99",
+   "raw_vm": "/home/ugrp/ugrp-sim/runs/release-v13-7-4626ee99",
+   "raw_mac": "outputs/gcp1-runs/release-v13-7-4626ee99",
+   "sha256sums_sha256": "241a949384d5f1036271a5f74b37068984c626c3fe0ec533eb9c4cb67bfe635e",
+   "result_sha256": "e0925255cf55872abebb2747cb2fb47993c71fc637ad91d1332f7c9e9931ac9a",
+   "exit": "0",
+   "status": "complete",
+   "sim_s": 32.1,
+   "wall_s": 96.2,
+   "held_world_reads": 0,
+   "release_success": true,
+   "release_outcome": "teacher_done",
+   "iterations": 0,
+   "shift_steps": 5,
+   "decisions": [
+    [
+     "shift",
+     -0.1,
+     [
+      "prior",
+      "prior"
+     ]
+    ],
+    [
+     "shift",
+     -0.1,
+     [
+      "prior",
+      "prior"
+     ]
+    ],
+    [
+     "shift",
+     -0.1,
+     [
+      "prior",
+      "prior"
+     ]
+    ],
+    [
+     "shift",
+     -0.1,
+     [
+      "prior",
+      "prior"
+     ]
+    ],
+    [
+     "shift",
+     -0.1,
+     [
+      "prior",
+      "prior"
+     ]
+    ],
+    [
+     "lower",
+     0,
+     [
+      "prior",
+      "prior"
+     ]
+    ],
+    [
+     "lower",
+     0,
+     [
+      "inside_lb",
+      "inside_lb"
+     ]
+    ]
+   ],
+   "release_sim_s": 17.3,
+   "settled_s": 2.5
+  }
+ ],
+ "totals": {
+  "release_success": "8/8",
+  "release_needing_repick": "1/1",
+  "release_with_edge_evidence": "3/3",
+  "setdown_regrasp_held": "6/6",
+  "held_world_reads_zero": "14/14",
+  "release_wall_per_sim_median": 2.961672473867596
+ },
+ "frames_viewed": {
+  "release-v13-6": "r1,r2 x 8 (look, lower, observe_back, approach, repick, shift, observe_back 2, done) + overview repick/done",
+  "release-v13-7": "r1,r2 x 6 (look 0/90, lower, observe_back, observe, done) + overview done",
+  "probe-setdown-0": "r1,r2 x 7 (held, open, look 1000/1500/2000, regrasp, end)",
+  "probe-setdown-1": "r1,r2 x 7 (held, open, look 1500/2000/2500, regrasp, end)",
+  "total": 57
+ },
+ "not_measured": [
+  "position estimate error after the set-down look: the probe has no landmark pose estimator; only landmark visibility counts were recorded",
+  "release gate seeds 74000-74039 (not run)",
+  "door passage while carrying"
+ ]
+}

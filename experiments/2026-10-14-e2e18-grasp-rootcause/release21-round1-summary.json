@@ -1,0 +1,788 @@
+{
+  "schema": "ugrp.release21.dev.v1",
+  "round": 1,
+  "source_sha": "b75b130f25dbcb08c8bbf5ef3929aa8bc9f4e1df",
+  "host": "gcp1",
+  "project": "ugrp-act-train-1014",
+  "class_": "dev",
+  "pr": 491,
+  "counts": {
+    "completed": 3,
+    "success": 3,
+    "N": 6
+  },
+  "terminal_N": 6,
+  "interrupted_N": 3,
+  "HOST_ERROR_N": 0,
+  "verified": true,
+  "research_result": false,
+  "training_rgb": false,
+  "model_calls": 0,
+  "cap_s": 180,
+  "pooling": "No pooling across rounds, release20, A/B gate cohorts or preflight. DEV6 diagnostic only.",
+  "first30_wall_per_sim_median": 2.5172502884377828,
+  "admission": {
+    "max_total": 6,
+    "max_own": 6,
+    "global_limit": 40,
+    "own_limit": 6
+  },
+  "runs": [
+    {
+      "name": "r21d1-00-b75b130f",
+      "seed": 110618,
+      "candidate": "A",
+      "episode": 0,
+      "source_sha": "b75b130f25dbcb08c8bbf5ef3929aa8bc9f4e1df",
+      "status": "complete",
+      "success": true,
+      "outcome": "teacher_done",
+      "sim_s": 84.49999999968706,
+      "wall_s": 232.8283818739983,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 0
+      },
+      "first30": {
+        "sim_s": 30.299999999998953,
+        "wall_s": 75.4339964389801,
+        "wall_per_sim": 2.4895708395703866
+      },
+      "metrics": {
+        "line_ibvs_pulses": 6,
+        "fov_recovery_pulses": 9,
+        "yaw_command_reversals": 1,
+        "rho_observed_reversals": 1,
+        "alignments": 4,
+        "settled": 4,
+        "fov_blocked": 1,
+        "alternative_pulses": {
+          "recenter_correction": 1
+        },
+        "alternative_attempts": {
+          "recenter": 1
+        },
+        "reversal_fallback_samples": 0
+      },
+      "source_proofs": [
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round1/lite/r21d1-00-b75b130f/raw/result.json.zst",
+          "sha256": "73a45735f66f0c0060ab9394d19e560a1f4faade217b60c3743c576eff4a6450",
+          "decoded_sha256": "51ab2837249f84dff98bdd35c5d88d8fb62545509f6a5322f5feff82a132b768"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round1/lite/r21d1-00-b75b130f/raw/teacher-r1.jsonl.zst",
+          "sha256": "af54e016e52a1651b3cd91b74612f7a01ae9689962b28e43294e3e168ae7fab7",
+          "decoded_sha256": "5a8cff3dedf7c7a36f0b6c56a1e288947231ca0e40e4dee0b8f62bff4e56a4ac"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round1/lite/r21d1-00-b75b130f/raw/teacher-r2.jsonl.zst",
+          "sha256": "74235330ae95c92d524d6675945e9ce3c112bf0ad687d47571e963dce69e61be",
+          "decoded_sha256": "9571f6d5d67e08d83847cfbbf3ab0d3068ebebd55fe5c97bb84e48ed3007fabe"
+        }
+      ],
+      "remote": "gcp1:/home/ugrp/ugrp-sim/runs/r21d1-00-b75b130f",
+      "local": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round1/lite/r21d1-00-b75b130f",
+      "manifest_sha256": "23cfc5b330df6ca0dfffce8e7e1512ec7f484a4c1663cd5aff5b5e69a47c6db2",
+      "remote_manifest_verified": true,
+      "local_verified_files": 18,
+      "visual_review": {
+        "directly_viewed": true,
+        "temporal_samples": 6,
+        "own_camera_frames": 12,
+        "frames": [
+          {
+            "sim_s": 0.0,
+            "path": "raw/eval-own/r1/000000-prefix.jpg",
+            "sha256": "756737ee500b9072ee605494142fed2450b077f2a4454eacc6f20222ae012dfb"
+          },
+          {
+            "sim_s": 0.0,
+            "path": "raw/eval-own/r2/000000-prefix.jpg",
+            "sha256": "d8445bda24b775b40b5e013543bb9c6d901b0fb4fd0749943b89e90cfada0060"
+          },
+          {
+            "sim_s": 15.3,
+            "path": "raw/eval-own/r1/000070-release-lookaround.jpg",
+            "sha256": "5a7d61d85d8de01e2e8fe57e4ff656b083e02ed6b5c1ca9540355250578eed1a"
+          },
+          {
+            "sim_s": 15.3,
+            "path": "raw/eval-own/r2/000070-release-lookaround.jpg",
+            "sha256": "24e8d8b817a2774ba63e19262685ebbe76667adb82ef5d8532f02f69461ef472"
+          },
+          {
+            "sim_s": 32.3,
+            "path": "raw/eval-own/r1/000240-release-line_recheck.jpg",
+            "sha256": "5e7c81015f98e3cb4e4eb244a6889e1a835b9e8ce4d065501b4d5e512f73d5bc"
+          },
+          {
+            "sim_s": 32.3,
+            "path": "raw/eval-own/r2/000240-release-line_recheck.jpg",
+            "sha256": "b8937d25a310b27dc70291d51cabb2aaf73bb5f1689b6e82cd862baa3ce13e1c"
+          },
+          {
+            "sim_s": 48.3,
+            "path": "raw/eval-own/r1/000400-release-regrasp_check.jpg",
+            "sha256": "c733841a8781d7e5be0dfda092bc5d193ccbb4a73d854620af66b4c2845b620c"
+          },
+          {
+            "sim_s": 48.3,
+            "path": "raw/eval-own/r2/000400-release-regrasp_check.jpg",
+            "sha256": "9e525287d5f82f5703f5bdb6f628602b6f909a0985c442d4d0f567f93c57005b"
+          },
+          {
+            "sim_s": 65.3,
+            "path": "raw/eval-own/r1/000570-release-lookaround.jpg",
+            "sha256": "3c91603cf89edf7f5a8e5082a8d7ca984fcd935628226a290cab871a9689b02f"
+          },
+          {
+            "sim_s": 65.3,
+            "path": "raw/eval-own/r2/000570-release-lookaround.jpg",
+            "sha256": "26d23d5845f78e16d7a85704ec2df7ef0d55f6c34a66bb0413af19100ed26f2e"
+          },
+          {
+            "sim_s": 81.3,
+            "path": "raw/eval-own/r1/000730-release-done.jpg",
+            "sha256": "941a6cfba97f8f08462adb53643d72383e3c32829cf54e265db7b0fcc61bd7bc"
+          },
+          {
+            "sim_s": 81.3,
+            "path": "raw/eval-own/r2/000730-release-done.jpg",
+            "sha256": "13608b52654ff29abc98f159df8440cc5585fde3c003b436c0b1e9e44d751069"
+          }
+        ],
+        "relationship": "Distinct teal/blue ends in selected own-camera frames; no same-end approach or mutual blockage seen. Interior panorama/held images cannot independently show full cargo placement."
+      }
+    },
+    {
+      "name": "r21d1-01-b75b130f",
+      "seed": 110618,
+      "candidate": "B",
+      "episode": 1,
+      "source_sha": "b75b130f25dbcb08c8bbf5ef3929aa8bc9f4e1df",
+      "status": "complete",
+      "success": true,
+      "outcome": "teacher_done",
+      "sim_s": 78.39999999983131,
+      "wall_s": 217.79096313899936,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 0
+      },
+      "first30": {
+        "sim_s": 30.299999999998953,
+        "wall_s": 75.57189679145813,
+        "wall_per_sim": 2.4941220063188365
+      },
+      "metrics": {
+        "line_ibvs_pulses": 1,
+        "fov_recovery_pulses": 9,
+        "yaw_command_reversals": 0,
+        "rho_observed_reversals": 1,
+        "alignments": 4,
+        "settled": 4,
+        "fov_blocked": 0,
+        "alternative_pulses": {},
+        "alternative_attempts": {},
+        "reversal_fallback_samples": 0
+      },
+      "source_proofs": [
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round1/lite/r21d1-01-b75b130f/raw/result.json.zst",
+          "sha256": "e93472ebfbca7b7e5f9c52b22f4aa92c83f02a2d3acf980eca62fe45e261d365",
+          "decoded_sha256": "a492ff263df56144fb6b2377309cf26c872867f30d39fc2c7d256cc8576648ac"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round1/lite/r21d1-01-b75b130f/raw/teacher-r1.jsonl.zst",
+          "sha256": "25671d3e9311ba436c2f216f25c02bf07a5424a2882052e3abdb6d5808a825c2",
+          "decoded_sha256": "e27b1c2eaecf0815062b71212ec7f7b63a66230935bedd8d370fe6dd6188ff0a"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round1/lite/r21d1-01-b75b130f/raw/teacher-r2.jsonl.zst",
+          "sha256": "13685ef14f69282164607aa9e42ac4f47ab3f38a9b406c0ffd8e02e25213a142",
+          "decoded_sha256": "8b6a65678bc23ee1d806176bab859f99df54e23751df2917852bce901a8ba56f"
+        }
+      ],
+      "remote": "gcp1:/home/ugrp/ugrp-sim/runs/r21d1-01-b75b130f",
+      "local": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round1/lite/r21d1-01-b75b130f",
+      "manifest_sha256": "a1747b32070c996992a291a28fde4566fa6bd22bda974e8dc8db08b8a548b3d7",
+      "remote_manifest_verified": true,
+      "local_verified_files": 18,
+      "visual_review": {
+        "directly_viewed": true,
+        "temporal_samples": 6,
+        "own_camera_frames": 12,
+        "frames": [
+          {
+            "sim_s": 0.0,
+            "path": "raw/eval-own/r1/000000-prefix.jpg",
+            "sha256": "756737ee500b9072ee605494142fed2450b077f2a4454eacc6f20222ae012dfb"
+          },
+          {
+            "sim_s": 0.0,
+            "path": "raw/eval-own/r2/000000-prefix.jpg",
+            "sha256": "d8445bda24b775b40b5e013543bb9c6d901b0fb4fd0749943b89e90cfada0060"
+          },
+          {
+            "sim_s": 14.3,
+            "path": "raw/eval-own/r1/000060-release-lookaround.jpg",
+            "sha256": "bec86ab95bf0881661790c629f4e00f86da6a8831231b61049da565e757b2697"
+          },
+          {
+            "sim_s": 14.3,
+            "path": "raw/eval-own/r2/000060-release-lookaround.jpg",
+            "sha256": "2783b1f328cb8690866c4f57860126e593b635ea255fcb5bd8f7cb7aa7d5e1b9"
+          },
+          {
+            "sim_s": 29.3,
+            "path": "raw/eval-own/r1/000210-release-line_recheck.jpg",
+            "sha256": "6a92aa6df7cbe6fd087bebb96cbf1fb66b1f69e995134b14cbabc318d2211c51"
+          },
+          {
+            "sim_s": 29.3,
+            "path": "raw/eval-own/r2/000210-release-line_recheck.jpg",
+            "sha256": "5a684c1a3d995655af87bc9d41705890c1d04ddc42d7063a2f141506a8104798"
+          },
+          {
+            "sim_s": 45.3,
+            "path": "raw/eval-own/r1/000370-release-regrasp_check.jpg",
+            "sha256": "00ac37ccf3105d9bd21ea55a429313e244125c923e33d20d715642e015e34210"
+          },
+          {
+            "sim_s": 45.3,
+            "path": "raw/eval-own/r2/000370-release-regrasp_check.jpg",
+            "sha256": "d2566ac37c502bad8c0112a27db12f73fe9dd4637b4fbbeeb7d59e68af28947e"
+          },
+          {
+            "sim_s": 60.3,
+            "path": "raw/eval-own/r1/000520-release-lookaround.jpg",
+            "sha256": "132c4e2da62ff35af3cdc681a928d5e8d73f9dbec2f2dc9bdee0d32effcad605"
+          },
+          {
+            "sim_s": 60.3,
+            "path": "raw/eval-own/r2/000520-release-lookaround.jpg",
+            "sha256": "d4cf1192a79900c28a1a2b0620869d422ed09a7c86899f53e2c1e464ade96f9c"
+          },
+          {
+            "sim_s": 75.3,
+            "path": "raw/eval-own/r1/000670-release-done.jpg",
+            "sha256": "9d4d3c15a425d1f7e257d87d0ca70f51d28ec7330b208ffb1d06718b6baddc75"
+          },
+          {
+            "sim_s": 75.3,
+            "path": "raw/eval-own/r2/000670-release-done.jpg",
+            "sha256": "f53459856142eb500b62db481f78b25d0ee65ad0bba60af3066b926ebe8804e5"
+          }
+        ],
+        "relationship": "Distinct teal/blue ends in selected own-camera frames; no same-end approach or mutual blockage seen. Interior panorama/held images cannot independently show full cargo placement."
+      }
+    },
+    {
+      "name": "r21d1-02-b75b130f",
+      "seed": 110613,
+      "candidate": "A",
+      "episode": 2,
+      "source_sha": "b75b130f25dbcb08c8bbf5ef3929aa8bc9f4e1df",
+      "status": "interrupted",
+      "success": null,
+      "outcome": null,
+      "sim_s": 122.5374999987876,
+      "wall_s": 340.971023271999,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 0
+      },
+      "first30": {
+        "sim_s": 30.299999999998953,
+        "wall_s": 76.32200026512146,
+        "wall_per_sim": 2.5188778965387493
+      },
+      "metrics": {
+        "line_ibvs_pulses": 4,
+        "fov_recovery_pulses": 16,
+        "yaw_command_reversals": 1,
+        "rho_observed_reversals": 2,
+        "alignments": 8,
+        "settled": 8,
+        "fov_blocked": 0,
+        "alternative_pulses": {},
+        "alternative_attempts": {},
+        "reversal_fallback_samples": 0
+      },
+      "source_proofs": [
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round1/lite/r21d1-02-b75b130f/raw/result.json.zst",
+          "sha256": "8382147cc93a19e7e60d19a7661ba0af4bdfcbd112f427e6b30a37d6e2e55edd",
+          "decoded_sha256": "f5fc0f04f09c61f98514b027b12eab456e3831b434c0895b3888e7b8fdd4a61e"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round1/lite/r21d1-02-b75b130f/raw/teacher-r1.jsonl.zst",
+          "sha256": "18cc22083daa570c5d2dee7c19d35705cb2d0b39fda9fab1faf9814dff5e4710",
+          "decoded_sha256": "9eba5d1739a3a308890dfd87a08f0ac66cd8c0996a803dd56185dee0874536cd"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round1/lite/r21d1-02-b75b130f/raw/teacher-r2.jsonl.zst",
+          "sha256": "ea5d8e9bfd9f237f360e47c9bc83525bc48885ddff950878427e8b85d5b9dab5",
+          "decoded_sha256": "0ad48b5333711d2d98ce1af90e5ce56fccbd72b6b0567ff5bf3949dd0e4dd34e"
+        }
+      ],
+      "remote": "gcp1:/home/ugrp/ugrp-sim/runs/r21d1-02-b75b130f",
+      "local": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round1/lite/r21d1-02-b75b130f",
+      "manifest_sha256": "978b31825a9eb8838da7bd29e8d595d712b0c1bc384b614e3156cb4f4889f4d6",
+      "remote_manifest_verified": true,
+      "local_verified_files": 19,
+      "visual_review": {
+        "directly_viewed": true,
+        "temporal_samples": 6,
+        "own_camera_frames": 12,
+        "frames": [
+          {
+            "sim_s": 0.0,
+            "path": "raw/eval-own/r1/000000-prefix.jpg",
+            "sha256": "5e4b2b50c63a3f1c06f60faceeb9d0a20c2c69565fc000706a7fcaf6bf3f9e39"
+          },
+          {
+            "sim_s": 0.0,
+            "path": "raw/eval-own/r2/000000-prefix.jpg",
+            "sha256": "98e82256d73d945bd7017914b845453af86217f133f4fe6033c3939f376029ce"
+          },
+          {
+            "sim_s": 24.3,
+            "path": "raw/eval-own/r1/000160-release-lookaround.jpg",
+            "sha256": "1bfc35e37f23fe898287dfa40c2861420e40b5db18668293a79c6746a635c7d4"
+          },
+          {
+            "sim_s": 24.3,
+            "path": "raw/eval-own/r2/000160-release-lookaround.jpg",
+            "sha256": "c81d87a97431d1d612de6936066ca6c0fa5b66ffb05251a9842420b33a5d7a63"
+          },
+          {
+            "sim_s": 48.3,
+            "path": "raw/eval-own/r1/000400-release-regrasp_check.jpg",
+            "sha256": "256a4bbce7cc9cad0192c74663033674dfc4c772d3ac4b59e7f5bb57000e9f34"
+          },
+          {
+            "sim_s": 48.3,
+            "path": "raw/eval-own/r2/000400-release-regrasp_check.jpg",
+            "sha256": "ab5cc24683d650789d192b814d1648c29d202e4bb5fd55add13c1e1c824f8316"
+          },
+          {
+            "sim_s": 73.3,
+            "path": "raw/eval-own/r1/000650-release-observe_move.jpg",
+            "sha256": "db8124b21775c540a6a560a8a189e0986d15fa02c53a118d9a798b50a0ddec0d"
+          },
+          {
+            "sim_s": 73.3,
+            "path": "raw/eval-own/r2/000650-release-observe_move.jpg",
+            "sha256": "b64c50a3cb649f752afc2460f898f46e356463271c60466f3017bc294c3cb445"
+          },
+          {
+            "sim_s": 97.3,
+            "path": "raw/eval-own/r1/000890-release-regrasp_check.jpg",
+            "sha256": "4947d351249bf21d6c96c01f44dfb07ae14e8d321e4acba160370a50ac3c1579"
+          },
+          {
+            "sim_s": 97.3,
+            "path": "raw/eval-own/r2/000890-release-regrasp_check.jpg",
+            "sha256": "58a8d0c73d83f2fa55beb67fc93708002609625e09e5e02e4ac98b2e4557437c"
+          },
+          {
+            "sim_s": 122.3,
+            "path": "raw/eval-own/r1/001140-release-observe.jpg",
+            "sha256": "166c3085d882a80470c74a59adf0ab3b24251b15f0db9fd635717022380dc52e"
+          },
+          {
+            "sim_s": 122.3,
+            "path": "raw/eval-own/r2/001140-release-observe.jpg",
+            "sha256": "9eae1a3cc2fb10f3c2f1eadb5232784cccfa3b657e7af6c9288c507ff287a213"
+          }
+        ],
+        "relationship": "Distinct teal/blue ends in selected own-camera frames; no same-end approach or mutual blockage seen. Interior panorama/held images cannot independently show full cargo placement."
+      }
+    },
+    {
+      "name": "r21d1-03-b75b130f",
+      "seed": 74976,
+      "candidate": "B",
+      "episode": 3,
+      "source_sha": "b75b130f25dbcb08c8bbf5ef3929aa8bc9f4e1df",
+      "status": "interrupted",
+      "success": null,
+      "outcome": null,
+      "sim_s": 114.61699999897489,
+      "wall_s": 327.54968537600143,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 0
+      },
+      "first30": {
+        "sim_s": 30.299999999998953,
+        "wall_s": 76.22336721420288,
+        "wall_per_sim": 2.515622680336816
+      },
+      "metrics": {
+        "line_ibvs_pulses": 0,
+        "fov_recovery_pulses": 19,
+        "yaw_command_reversals": 0,
+        "rho_observed_reversals": 0,
+        "alignments": 8,
+        "settled": 8,
+        "fov_blocked": 0,
+        "alternative_pulses": {},
+        "alternative_attempts": {},
+        "reversal_fallback_samples": 0
+      },
+      "source_proofs": [
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round1/lite/r21d1-03-b75b130f/raw/result.json.zst",
+          "sha256": "501563aba0f3a236b68abd3309bd63c4831b3b707f720963cfd4477e7bea62e0",
+          "decoded_sha256": "f17d837e7b5ed2960d6f33db4f837dc123cd7993ca6c563b119bbf78c77df261"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round1/lite/r21d1-03-b75b130f/raw/teacher-r1.jsonl.zst",
+          "sha256": "f0f573610bb7b1781da315ab5e8d8560da80b6fe4ff79e03a336f3f242c15338",
+          "decoded_sha256": "f24f21d5abe7f9fb1a16b8102e87091eaa9979595477b66ab744eade9c6ece72"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round1/lite/r21d1-03-b75b130f/raw/teacher-r2.jsonl.zst",
+          "sha256": "2b62914a25251a17967f66b7511c980b67eb8c78e0dec9d5fb8cc3448a6739b4",
+          "decoded_sha256": "effbeb809c71289319ff5cc4346939ad14a9dadce70d8207398acbb1b9426d4c"
+        }
+      ],
+      "remote": "gcp1:/home/ugrp/ugrp-sim/runs/r21d1-03-b75b130f",
+      "local": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round1/lite/r21d1-03-b75b130f",
+      "manifest_sha256": "bf0e624400c52c811f1a49a4456b2e88413077bfa6a1e0933f4efd492a4d2941",
+      "remote_manifest_verified": true,
+      "local_verified_files": 19,
+      "visual_review": {
+        "directly_viewed": true,
+        "temporal_samples": 6,
+        "own_camera_frames": 12,
+        "frames": [
+          {
+            "sim_s": 0.0,
+            "path": "raw/eval-own/r1/000000-prefix.jpg",
+            "sha256": "f638190d750c8732514be4bd3666e457fbbdeec0279b2bb60a48d6f98c4002c9"
+          },
+          {
+            "sim_s": 0.0,
+            "path": "raw/eval-own/r2/000000-prefix.jpg",
+            "sha256": "884b9a11d62a9a263f34ee49fff9cafcd48cfb0a7f1bc7c501bd959cd214a7b0"
+          },
+          {
+            "sim_s": 22.3,
+            "path": "raw/eval-own/r1/000140-release-lookaround.jpg",
+            "sha256": "871bf77d15f797e14a8a8f2cc0fd053e5dffd26b56eadde539f42c17f5e3632f"
+          },
+          {
+            "sim_s": 22.3,
+            "path": "raw/eval-own/r2/000140-release-lookaround.jpg",
+            "sha256": "dd3bccbad86516df998dcd7bd098cb67fa9b0ac88d2eb9e98a13744e8b263194"
+          },
+          {
+            "sim_s": 45.3,
+            "path": "raw/eval-own/r1/000370-release-regrasp_check.jpg",
+            "sha256": "542e3f1f527ea6c7007658b90bb37444f36dc27ccbb7c9bf22f644169ed1726a"
+          },
+          {
+            "sim_s": 45.3,
+            "path": "raw/eval-own/r2/000370-release-regrasp_check.jpg",
+            "sha256": "4402b6f833237bcd7db7921ee64a4ea5e62e0434b6203724df33f2908c9b68ea"
+          },
+          {
+            "sim_s": 68.3,
+            "path": "raw/eval-own/r1/000600-release-lookaround.jpg",
+            "sha256": "8c50cc42c9bff63f01b47026e0125f9f807712d149e852b039f09a7517ed19b7"
+          },
+          {
+            "sim_s": 68.3,
+            "path": "raw/eval-own/r2/000600-release-lookaround.jpg",
+            "sha256": "f808cabcffc872ccf1d34ea910007038446408a2db648ec34be6055fd460ccc9"
+          },
+          {
+            "sim_s": 91.3,
+            "path": "raw/eval-own/r1/000830-release-regrasp_check.jpg",
+            "sha256": "2c651b3e4de2a1cf6d70b98ea832d841b0ba2a523a71d32f3fdf8d3b03f0297c"
+          },
+          {
+            "sim_s": 91.3,
+            "path": "raw/eval-own/r2/000830-release-regrasp_check.jpg",
+            "sha256": "372ff1f2621420391801e83e9813aeca38a35b3b4f67428f2226c78d229fbf58"
+          },
+          {
+            "sim_s": 114.3,
+            "path": "raw/eval-own/r1/001060-release-lookaround.jpg",
+            "sha256": "0009be767b9f91148b55838646fff77ffc4201f459287f47282ca0994e09cbfd"
+          },
+          {
+            "sim_s": 114.3,
+            "path": "raw/eval-own/r2/001060-release-lookaround.jpg",
+            "sha256": "523386b2a8a701861e9b645a57d3fbece8f574c2ef6884db4fdb52d5ccc9ff55"
+          }
+        ],
+        "relationship": "Distinct teal/blue ends in selected own-camera frames; no same-end approach or mutual blockage seen. Interior panorama/held images cannot independently show full cargo placement."
+      }
+    },
+    {
+      "name": "r21d1-04-b75b130f",
+      "seed": 78526,
+      "candidate": "B",
+      "episode": 4,
+      "source_sha": "b75b130f25dbcb08c8bbf5ef3929aa8bc9f4e1df",
+      "status": "interrupted",
+      "success": null,
+      "outcome": null,
+      "sim_s": 110.29999999907697,
+      "wall_s": 314.29443305600216,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 0
+      },
+      "first30": {
+        "sim_s": 30.299999999998953,
+        "wall_s": 78.14820456504822,
+        "wall_per_sim": 2.5791486655132316
+      },
+      "metrics": {
+        "line_ibvs_pulses": 5,
+        "fov_recovery_pulses": 16,
+        "yaw_command_reversals": 0,
+        "rho_observed_reversals": 1,
+        "alignments": 8,
+        "settled": 8,
+        "fov_blocked": 0,
+        "alternative_pulses": {},
+        "alternative_attempts": {},
+        "reversal_fallback_samples": 0
+      },
+      "source_proofs": [
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round1/lite/r21d1-04-b75b130f/raw/result.json.zst",
+          "sha256": "74e965cceec3fa2cbfad988d27eaa1e548a5e2c8e2b97154846ef1a110a0db8e",
+          "decoded_sha256": "706c09ba3d37e8daa2f1ccd92901f62168232335477caa98ab419b0a2d549667"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round1/lite/r21d1-04-b75b130f/raw/teacher-r1.jsonl.zst",
+          "sha256": "dfd46ecf03761af0aaec21fc4e37675f53674cf0e5ed1903550da21cea83c32f",
+          "decoded_sha256": "63a60f967d7a9716d54897a0e155cff0915a0d90fb736fe7c2db5008ff5ab343"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round1/lite/r21d1-04-b75b130f/raw/teacher-r2.jsonl.zst",
+          "sha256": "72f21d08e6b975a9b6f863ab51e79c113349c764d507eec5e1c0a86438f38430",
+          "decoded_sha256": "da7a2c6f9d5130454ae7189a698e4253210466e5282d94e5252862089627fe77"
+        }
+      ],
+      "remote": "gcp1:/home/ugrp/ugrp-sim/runs/r21d1-04-b75b130f",
+      "local": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round1/lite/r21d1-04-b75b130f",
+      "manifest_sha256": "6d7552f97a87d2f16115b2fc966e25ea3b6782af0f7f8a196b5af41d1f1893e8",
+      "remote_manifest_verified": true,
+      "local_verified_files": 19,
+      "visual_review": {
+        "directly_viewed": true,
+        "temporal_samples": 6,
+        "own_camera_frames": 12,
+        "frames": [
+          {
+            "sim_s": 0.0,
+            "path": "raw/eval-own/r1/000000-prefix.jpg",
+            "sha256": "428c4c3f813177cdc82f62dd4b7990e3205dbb817e02aab001a1149b2a5fbe0b"
+          },
+          {
+            "sim_s": 0.0,
+            "path": "raw/eval-own/r2/000000-prefix.jpg",
+            "sha256": "4f643d57dba2854d4621947d9a6339dbd9a089fa44ec7b67a06c43c0896cc928"
+          },
+          {
+            "sim_s": 21.3,
+            "path": "raw/eval-own/r1/000130-release-lookaround.jpg",
+            "sha256": "cce1d5da2d4f0a7f6225f143c3b37fcaccf9b0461553e866114edb2a07678d91"
+          },
+          {
+            "sim_s": 21.3,
+            "path": "raw/eval-own/r2/000130-release-lookaround.jpg",
+            "sha256": "f2e26909fc6c8e97cc3225df10cda6954515ab41140501ca44ba29ed4b1918f2"
+          },
+          {
+            "sim_s": 43.3,
+            "path": "raw/eval-own/r1/000350-release-regrasp_check.jpg",
+            "sha256": "658ea9dc72a6d96076d438e64b0c3c584d7f701e721476535faec7592d841ad4"
+          },
+          {
+            "sim_s": 43.3,
+            "path": "raw/eval-own/r2/000350-release-regrasp_check.jpg",
+            "sha256": "3340d1ac46896cd79a40b5434f57f7dc532e25e3b9a5a8c8427f8d5b0a821a12"
+          },
+          {
+            "sim_s": 65.3,
+            "path": "raw/eval-own/r1/000570-release-observe_back.jpg",
+            "sha256": "be51b2f5a131e482ac88cae4ba22dc6c794592738e7620a1dc97ee2314fe69a8"
+          },
+          {
+            "sim_s": 65.3,
+            "path": "raw/eval-own/r2/000570-release-observe_back.jpg",
+            "sha256": "420d7b586f06cead4ade35e7945c377312519b3babebcc3bcb4aa8acf5f0188b"
+          },
+          {
+            "sim_s": 87.3,
+            "path": "raw/eval-own/r1/000790-release-regrasp_check.jpg",
+            "sha256": "b9b642a9759f4a350d7c4533ceca1b0f176300260e9d9391dcd9162dc855d7a8"
+          },
+          {
+            "sim_s": 87.3,
+            "path": "raw/eval-own/r2/000790-release-regrasp_check.jpg",
+            "sha256": "a2b3ddfbff0147406d9ec1b0a039f93e6b29bfc6f05549ae04b8fe6b9c773caa"
+          },
+          {
+            "sim_s": 109.3,
+            "path": "raw/eval-own/r1/001010-release-lookaround.jpg",
+            "sha256": "4276740605ba8d5c01e98d4884d0ff0abfaf708841cc5b92b1a58c1979ef248c"
+          },
+          {
+            "sim_s": 109.3,
+            "path": "raw/eval-own/r2/001010-release-lookaround.jpg",
+            "sha256": "b7ff270c0b4c558adc57e93aa13baa00a2f855b6868144b92a7f902db9207e4e"
+          }
+        ],
+        "relationship": "Distinct teal/blue ends in selected own-camera frames; no same-end approach or mutual blockage seen. Interior panorama/held images cannot independently show full cargo placement."
+      }
+    },
+    {
+      "name": "r21d1-05-b75b130f",
+      "seed": 110600,
+      "candidate": "A",
+      "episode": 5,
+      "source_sha": "b75b130f25dbcb08c8bbf5ef3929aa8bc9f4e1df",
+      "status": "complete",
+      "success": true,
+      "outcome": "teacher_done",
+      "sim_s": 33.90000000007927,
+      "wall_s": 91.52195658100027,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 0
+      },
+      "first30": {
+        "sim_s": 30.299999999998953,
+        "wall_s": 78.48065328598022,
+        "wall_per_sim": 2.5901205704944865
+      },
+      "metrics": {
+        "line_ibvs_pulses": 0,
+        "fov_recovery_pulses": 0,
+        "yaw_command_reversals": 0,
+        "rho_observed_reversals": 0,
+        "alignments": 0,
+        "settled": 0,
+        "fov_blocked": 0,
+        "alternative_pulses": {},
+        "alternative_attempts": {},
+        "reversal_fallback_samples": 0
+      },
+      "source_proofs": [
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round1/lite/r21d1-05-b75b130f/raw/result.json.zst",
+          "sha256": "c2f4ede411269f4be56587982e86a06bcc4ba0980a7fdcc768a22f533b0f5495",
+          "decoded_sha256": "9e7f878cc9b6974f82e88741012c3b2e0c10edc19938b891c5d8e186ac5fbc58"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round1/lite/r21d1-05-b75b130f/raw/teacher-r1.jsonl.zst",
+          "sha256": "4f79913ebbb4254cd1ea616fc139385e9fa28b2de3e163c0f30e94d8bf62e4fd",
+          "decoded_sha256": "d83d4aed3a2e270941c03768c99b6338e288ded23a102494fa0a983f3a0a7a85"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round1/lite/r21d1-05-b75b130f/raw/teacher-r2.jsonl.zst",
+          "sha256": "605af3d24520b1da0cb50759da4e0852bf5681f9970ac2dc6e1be097cf9189a9",
+          "decoded_sha256": "4d6b5d6d9b305a278a8afe9626ac71b076f8a06966341ea677e9fc2edd3c7bce"
+        }
+      ],
+      "remote": "gcp1:/home/ugrp/ugrp-sim/runs/r21d1-05-b75b130f",
+      "local": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release21/round1/lite/r21d1-05-b75b130f",
+      "manifest_sha256": "8936c6604090af4ead73380a7a71574cce2ca3b249b3ec8a3e4b51cad64db88c",
+      "remote_manifest_verified": true,
+      "local_verified_files": 18,
+      "visual_review": {
+        "directly_viewed": true,
+        "temporal_samples": 6,
+        "own_camera_frames": 12,
+        "frames": [
+          {
+            "sim_s": 0.0,
+            "path": "raw/eval-own/r1/000000-prefix.jpg",
+            "sha256": "b0876b1f87a696588fcf21ec1e044b14f8fd4b894e5226b7ede9ff8f2ecd67af"
+          },
+          {
+            "sim_s": 0.0,
+            "path": "raw/eval-own/r2/000000-prefix.jpg",
+            "sha256": "36c9a422a2766ed31bc64a66c6d5e624ea42848ac3e82a3b727064a4761dee80"
+          },
+          {
+            "sim_s": 6.0,
+            "path": "raw/eval-own/r1/000060-prefix.jpg",
+            "sha256": "cd0105c6abec72f8c03a51a55da26559b254f4efa555be53f2761fd4683e0886"
+          },
+          {
+            "sim_s": 6.0,
+            "path": "raw/eval-own/r2/000060-prefix.jpg",
+            "sha256": "06e3787a269edeffb96d7dedc958e289888af3f653d29d692b984d1d41466515"
+          },
+          {
+            "sim_s": 12.3,
+            "path": "raw/eval-own/r1/000040-release-open.jpg",
+            "sha256": "1639d64ccb07df796f9d5565fad9f37fce0d4c1ba33a0fb6009a52e0063a6a47"
+          },
+          {
+            "sim_s": 12.3,
+            "path": "raw/eval-own/r2/000040-release-open.jpg",
+            "sha256": "f07434e9efb26d1c096e48e48f82aba3f03c36dbf785500282b23a810e701a6b"
+          },
+          {
+            "sim_s": 18.3,
+            "path": "raw/eval-own/r1/000100-release-lookaround.jpg",
+            "sha256": "4e6c6dbfdfa756d5e1f8a54a3daaf41058a054d9d112ba2ce4ea1b49b3538bc5"
+          },
+          {
+            "sim_s": 18.3,
+            "path": "raw/eval-own/r2/000100-release-lookaround.jpg",
+            "sha256": "8b8d949365fbc2473a9456fd1c4330fd661eff78601a87720b7f591414b62fb4"
+          },
+          {
+            "sim_s": 25.3,
+            "path": "raw/eval-own/r1/000170-release-lookaround.jpg",
+            "sha256": "e165bcb15c8be08ca6f30224a08d1b88734e99ae1775b57922ec83bc1143db8e"
+          },
+          {
+            "sim_s": 25.3,
+            "path": "raw/eval-own/r2/000170-release-lookaround.jpg",
+            "sha256": "66c1dffa771262cc192971d7661786d9acc8d81db085eb8ed183391aa695b52f"
+          },
+          {
+            "sim_s": 31.3,
+            "path": "raw/eval-own/r1/000230-release-done.jpg",
+            "sha256": "0e6c08bbaf4e972c01d6fb7f0fe6f0535edb14b04096d0eca2d2505d78441819"
+          },
+          {
+            "sim_s": 31.3,
+            "path": "raw/eval-own/r2/000230-release-done.jpg",
+            "sha256": "ec8bdcb66ca196fe266d074de13132cee58e6cbadf82751f5e60167d75c94dbb"
+          }
+        ],
+        "relationship": "Distinct teal/blue ends in selected own-camera frames; no same-end approach or mutual blockage seen. Interior panorama/held images cannot independently show full cargo placement."
+      }
+    }
+  ],
+  "status": "RETIRED_CODE_AUDIT",
+  "retirement_reason": "Direct alternative yaw pulse missed first decisive same-camera RGB sign check; three active runs stopped immediately; no pooling"
+}
