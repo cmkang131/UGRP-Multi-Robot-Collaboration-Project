@@ -18,5 +18,38 @@
     "error": "a nominal pure turn with ~1e-9 decoded translation produced a negative float dot and one apparent reversal",
     "fix": "postprocess BOTH arms using integer body-mix quanta from exact wheel alphabet0.35/4; preserve original float outputs; no inference/control/model changes",
     "scope": "validation h0 unpulsed wheel mix; distinct from already canonicalized pulse-weighted cold-start40 dose"
+  },
+  {
+    "stage": "read-only GPU progress monitor",
+    "at": "2026-10-16T07:52:04Z",
+    "error": "one SSH query exit255",
+    "effect": "monitor cell stopped; remote supervisor/training continued",
+    "verification": {
+      "same_VM_last_start": "2026-10-15T23:01:09.361-07:00",
+      "instance_status": "RUNNING",
+      "boot_id": "0ce8107c-8c51-4ab1-b739-5ca7c14342bd",
+      "own_supervisor_pid": 1544,
+      "own_supervisor_alive": true,
+      "continued_to_step": 12650,
+      "latest_budget_notification_at": "2026-10-16T07:28:11.066006Z",
+      "budget_stop_fired": false
+    },
+    "new_training_or_restart_submitted": false,
+    "fix": "bounded retry of read-only SSH observations; not a training or student HOST_ERROR"
+  },
+  {
+    "stage": "Mac finite controller / read-only cloud instance query",
+    "at": "2026-10-16T09:05:12Z",
+    "error": "temporary Network is unreachable and gcloud instance-describe exit1 stopped Mac relay",
+    "VM_state_after": "RUNNING, unchanged lastStart2026-10-15T23:01:09.361-07:00, maxRunDuration28800s, same IP34.158.203.173",
+    "latest_budget_notification": {
+      "at": "2026-10-16T08:51:07.638521Z",
+      "costAmount": 0,
+      "budgetAmount": 1000,
+      "currency": "KRW"
+    },
+    "recovery": "retry read-only instance queries; verify/reuse transferred A model and completed A raw20; reconnect to existing B main-attempt2, never duplicate training or A physics",
+    "source_change_scope": "Mac orchestration only; frozen train4747 and eval5ad unchanged",
+    "GPU_restart_submitted": false
   }
 ]

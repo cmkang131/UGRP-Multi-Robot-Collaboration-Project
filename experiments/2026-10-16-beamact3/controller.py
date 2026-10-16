@@ -42,14 +42,16 @@ def run(argv,**kw):
 
 
 def cloud(args):
-    # Retry only the read-only budget log query; never turn an uncertain
-    # budget check into permission for a new submission or VM restart.
-    attempts=3 if args[:2]==['logging','read'] else 1
+    # A transient instance-describe failure ended the relay while the remote
+    # trainer stayed alive. Retry reads only, never resource mutations or an
+    # uncertain budget check into permission to submit/restart.
+    readonly=args[:2]==['logging','read'] or args[:3]==['compute','instances','describe']
+    attempts=3 if readonly else 1
     for attempt in range(attempts):
         try:return json.loads(run(['gcloud',*args,'--account',ACCOUNT,'--project',PROJECT,'--format=json']))
         except (subprocess.CalledProcessError,subprocess.TimeoutExpired) as exc:
             if attempt+1==attempts:raise
-            event('budget_read_retry',attempt=attempt+1,error_type=type(exc).__name__,new_submission=False)
+            event('cloud_read_retry',operation=args[:3],attempt=attempt+1,error_type=type(exc).__name__,new_submission=False)
             time.sleep(2**attempt)
 
 
@@ -255,7 +257,7 @@ def ensure_cpu():
         raise RuntimeError('CPU host not available; no stop or lifecycle override')
     for _ in range(12):
         try:
-            query('cpu',"import json;print(json.dumps({'ssh_ready':True}))")
+            query('cpu',f"import json,sys;sys.path.insert(0,{state['analysis_cpu_source']!r});from scripts.beamact1_runtime import require_gcp2;print(json.dumps(dict(ssh_ready=True,host=require_gcp2(training=False))))")
             return
         except (subprocess.CalledProcessError,subprocess.TimeoutExpired):time.sleep(10)
     raise RuntimeError('CPU SSH did not become ready')
@@ -264,6 +266,16 @@ def ensure_cpu():
 def transfer(arm):
     ensure_cpu()
     target=OUT+'/'+arm+'/model-v1';model=state['arms'][arm]['model']
+    if state['arms'][arm].get('cpu_model'):
+        if state['arms'][arm]['cpu_model']!=target:raise RuntimeError('unexpected saved CPU model path')
+        expected=next(e['model_sha256'] for e in reversed(state['events'])
+            if e.get('kind')=='model_transfer_verified' and e.get('arm')==arm)
+        result=query('cpu',f'''import hashlib,json,pathlib
+r=pathlib.Path({target!r});h=json.loads((r/'SHA256.json').read_text());assert all(hashlib.sha256((r/k).read_bytes()).hexdigest()==v for k,v in h.items());assert h['model.safetensors']=={expected!r}
+print(json.dumps(dict(files=len(h),model_sha256=h['model.safetensors'])))
+''')
+        event('existing_cpu_model_reverified',arm=arm,**result)
+        return
     # Only model+adapter, streamed through Mac memory; no dataset/raw transfer.
     run([*ssh('cpu'),'mkdir -p '+shlex.quote(OUT+'/'+arm)+' && test ! -e '+shlex.quote(target)+' && mkdir '+shlex.quote(target)])
     def relay_code(directory,send):
@@ -284,9 +296,39 @@ print(json.dumps(dict(files=len(h),model_sha256=h['model.safetensors'])))
     state['arms'][arm]['cpu_model']=target;event('model_transfer_verified',arm=arm,**result)
 
 
+def cpu_snapshot(arm):
+    return query('cpu',f'''import json,pathlib
+root=pathlib.Path({OUT+'/'+arm+'/heldout20-v1'!r});p=root/'summary.json';d=json.loads(p.read_text()) if p.exists() else {{}}
+lp=pathlib.Path({BASE!r})/'leases'/{'beamact3-'+arm+'.json'!r};lease=json.loads(lp.read_text()) if lp.exists() else {{}}
+cmd=pathlib.Path('/proc')/str(lease.get('pid',0))/'cmdline';raw=cmd.read_bytes() if cmd.exists() else b''
+print(json.dumps(dict(exists=root.exists(),complete=d.get('complete',False),runs=len(d.get('runs',[])),complete_runs=sum(bool(r.get('complete')) for r in d.get('runs',[])),source_sha=d.get('source_sha'),model_sha256=d.get('model_sha256'),lease_alive=b'beamact3' in raw and b'run_eval.py' in raw,result={{k:d[k] for k in ('n','N','complete','funnel','reason_distribution','failure_stage_distribution') if k in d}})))
+''')
+
+
+def accept_cpu(arm,snapshot,*,reused=False):
+    expected=next(e['model_sha256'] for e in reversed(state['events'])
+        if e.get('kind')=='model_transfer_verified' and e.get('arm')==arm)
+    result=snapshot['result']
+    if not(snapshot['complete'] and snapshot['runs']==snapshot['complete_runs']==20
+        and result['N']==20 and 0<=result['n']<=20
+        and snapshot['source_sha']==state['analysis_gpu_sha'] and snapshot['model_sha256']==expected):
+        raise RuntimeError('matching complete raw20 recount required')
+    state['arms'][arm]['student20']=result
+    event('student20_recount',arm=arm,reused_completed_batch=reused,**result)
+
+
 def evaluate_cpu(arm):
     ensure_cpu()
     src=state['analysis_cpu_source'];model=state['arms'][arm]['cpu_model'];dest=OUT+'/'+arm+'/heldout20-v1'
+    snapshot=cpu_snapshot(arm)
+    if snapshot['exists']:
+        if snapshot['complete']:
+            accept_cpu(arm,snapshot,reused=True)
+            return None,None
+        if snapshot['lease_alive']:
+            event('student20_reattach_existing',arm=arm,new_physical_runs=0)
+            return None,None
+        raise RuntimeError('existing incomplete CPU batch without live owner; inspect raw HOST_ERROR before any rerun')
     command='cd '+shlex.quote(src)+' && PYTHONPATH=. '+BASE+'/ugrp/.venv-sim/bin/python experiments/2026-10-16-beamact3/run_eval.py --arm '+arm+' --model '+shlex.quote(model)+' --output '+shlex.quote(dest)
     log=(HERE/(arm+'-cpu-supervisor.log')).open('x')
     proc=subprocess.Popen([*ssh('cpu'),command],stdout=log,stderr=subprocess.STDOUT)
@@ -294,10 +336,35 @@ def evaluate_cpu(arm):
     return proc,log
 
 
+def wait_cpu(arm,proc,log):
+    if proc is None and state['arms'][arm].get('student20',{}).get('complete'):
+        return
+    while True:
+        if time.monotonic()-initial>18*3600:raise TimeoutError('finite18h task controller')
+        budget()
+        try:snapshot=cpu_snapshot(arm)
+        except (subprocess.CalledProcessError,subprocess.TimeoutExpired):
+            event('cpu_observation_retry',arm=arm,new_physical_runs=0)
+            time.sleep(30);continue
+        if snapshot['complete']:
+            accept_cpu(arm,snapshot)
+            break
+        if proc is None and not snapshot['lease_alive']:
+            raise RuntimeError('detached CPU batch incomplete without live owner')
+        if proc is not None and proc.poll() is not None:
+            if not snapshot['lease_alive']:raise RuntimeError('CPU evaluation ended incomplete for '+arm)
+            event('cpu_transport_detached',arm=arm,relay_exit=proc.returncode,new_physical_runs=0)
+            proc=None
+        time.sleep(30)
+    if log is not None:log.close()
+
+
 def offline(arm):
     if state['arms'][arm].get('offline_summary'):return
     # Same frozen head module; analysis source adds only paired role probes.
-    launch(arm,'offline',1,model=state['arms'][arm]['model'],source=state['analysis_gpu_sha'])
+    if not any(e.get('kind')=='stage_launch' and e.get('arm')==arm
+        and e.get('stage')=='offline' and e.get('attempt')==1 for e in state['events']):
+        launch(arm,'offline',1,model=state['arms'][arm]['model'],source=state['analysis_gpu_sha'])
     result=wait_stage(arm,'offline',1)
     if result['supervisor_status']!='complete':raise RuntimeError('offline incomplete')
     state['arms'][arm]['offline_summary']=OUT+'/'+arm+'/offline-attempt1/summary.json'
@@ -321,14 +388,7 @@ def main():
         transfer(arm)
         cpu_jobs.append((arm,*evaluate_cpu(arm)))
     for arm,proc,log in cpu_jobs:
-        while proc.poll() is None:budget();save();time.sleep(30)
-        log.close()
-        if proc.returncode:raise RuntimeError('CPU evaluation failed for '+arm)
-        result=query('cpu',f'''import json,pathlib
-x=json.loads(pathlib.Path({OUT+'/'+arm+'/heldout20-v1/summary.json'!r}).read_text())
-print(json.dumps({{k:x[k] for k in ('n','N','complete','funnel','reason_distribution','failure_stage_distribution')}}))
-''')
-        state['arms'][arm]['student20']=result;event('student20_recount',arm=arm,**result)
+        wait_cpu(arm,proc,log)
     state['status']='training_offline_student_complete';event('finite_controller_complete')
 
 
