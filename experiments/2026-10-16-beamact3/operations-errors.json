@@ -12,5 +12,11 @@
     "error": "decoded normalized categorical wheels may contain arithmetic residue; exact data alphabet needed for body-axis zero",
     "fix": "reran A coldstart40 with exact -0.35/0/+0.35 before summing; same3/40first and6/40chunk class changes,1/40dose reversal; old result retained as superseded",
     "control_path_changes": 0
+  },
+  {
+    "stage": "saved validation role translation-sign analysis",
+    "error": "a nominal pure turn with ~1e-9 decoded translation produced a negative float dot and one apparent reversal",
+    "fix": "postprocess BOTH arms using integer body-mix quanta from exact wheel alphabet0.35/4; preserve original float outputs; no inference/control/model changes",
+    "scope": "validation h0 unpulsed wheel mix; distinct from already canonicalized pulse-weighted cold-start40 dose"
   }
 ]
