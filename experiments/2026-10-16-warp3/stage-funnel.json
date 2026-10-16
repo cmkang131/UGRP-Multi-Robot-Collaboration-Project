@@ -1,5 +1,5 @@
 {
-  "recorded_utc": "2026-10-16T06:54:58.425868+00:00",
+  "recorded_utc": "2026-10-16T09:45:09.478500+00:00",
   "scope": "ordered execution stages, not pooled teacher cohorts",
   "stages": [
     {
@@ -102,10 +102,47 @@
       "minimum_gap_m": null,
       "minimum_gap_status": "resource contention, not geometry",
       "raw": "/home/ugrp/ugrp-sim/runs/warp3-warm-gpu-r2/progress.json"
+    },
+    {
+      "name": "student_ACT15_full_DEV",
+      "attempts": 1,
+      "completed_full_evaluations": 0,
+      "physical_n": 0,
+      "physical_N": 0,
+      "resource_cap_end_inferred": 1,
+      "raw_HOST_ERROR": 1,
+      "reason": "7200s administrative resource cap interrupted at793steps/79.3SIM",
+      "blocking_object": "resource cap",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "resource, not geometry",
+      "raw": "student-resource-cap-ledger-r1.json"
+    },
+    {
+      "name": "student_playback_postprocess",
+      "attempts": 2,
+      "passed": 1,
+      "HOST_ERROR": 1,
+      "reason": "R1 relative floor asset unresolved from wrong CWD; R2 source-root rerun passed without physics rerun",
+      "blocking_object": "relative floor asset path",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "file path, not geometry",
+      "raw": "postprocess-rejection_table-r1.json"
+    },
+    {
+      "name": "command_transport",
+      "attempts": 2,
+      "passed": 1,
+      "HOST_ERROR": 1,
+      "teacher_N": 0,
+      "student_N": 0,
+      "reason": "R1 requested1.0 outside frozen0or absolute.31...40 range; R2.40 accepted and reached world-local GPU ctrl",
+      "blocking_object": "input contract wheel fraction",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "input validation, not geometry",
+      "raw": "command-transport-rejection_table-r1.json"
     }
   ],
   "reproduce": [
-    "python experiments/2026-10-16-warp3/recount_gate.py --help",
-    "See raw summary.reproduce / operations.warm_queue and scripts/*warm.py --help; explicit Linux gcp2 --enabled required"
+    "See reproduction-commands.json for actual command arrays, environment, source SHA, fresh output and lease preconditions."
   ]
 }

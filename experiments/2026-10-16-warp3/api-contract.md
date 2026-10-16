@@ -25,3 +25,7 @@
 발행 명령 원장 추가(source7303986fd): 평가 owner는 물리 step 전에 `issued-commands.jsonl`에 world/generation/sample/시간/스킬·입력 RGB의 경로와 SHA·발행 action을 기록한다. 정답은 이 원장에 넣지 않는다. [실제 R3 검증](student-api-smoke-r3-audit.json)에서 명령4/4가 actor 출력과 일치하고 RGB 참조16개를 확인했다. 학습 hot path에서는 이 평가용 원장을 끈다. 중단된 student prefix도 summary에 보존한다.
 
 본기록 승인 스키마: frozen validator는 schema/provider/cpu_count도 요구하지만 warp3 관문 원본은 project_id/instance/machine_type/zone만 기록했다. 이 과거 값을 만들지 않고 `--warp3-host-schema-v1`(act16w alias도 지원)로 기록된4필드를 승인 파일·실제 VM과 일치시킨다. 기존95%/40·truth-free gate·소스 고정·서로 다른 검토 pilot2개 조건을 유지하며 실제 pilot 파일 SHA도 읽어 확인한다. 실제 act16w 승인 파일에 `--admission-check-only --stage batch`를 실행해 [APPROVED_PINNED](record-host-admission-r1.json)를 확인했다. 이 확인은 물리/기록 실행0이며 새 데이터 승인이나 실행 소스 소급 변경이 아니다.
+
+추가 ACT15 full 평가 요청1개는7200초 자원 상한에서793step/79.3SIM로 중단됐다. 원본 HOST_ERROR를 보존하고 자원 cap으로 구분하며 **완료된 학생 평가N=0**이다. 전체2Hz159프레임과 마지막10SIM의10Hz100프레임을 직접 검토했다([타임라인](student-resource-playback-review.md)). 옛 발행 trace 부족으로 정책/이식 실패 원인은 미확정이다. 현재 명령 어댑터는 유효 wheel fraction0.40의 world-local GPU ctrl 전달을 별도 확인했다([증거](command-transport-r2-audit.json)); 학생 임무 성공 증거는 아니다.
+
+명령 단위는 기존 계약 그대로다: wheel은0 또는 절댓값0.31–0.40인 부호 있는 **비율**이고 pulse duration은 최대0.15SIM초다. 1.0 요청은 사전 거부한다. 새 물리 수용 상수를 만들거나 계약 범위를 넓히지 않았다.

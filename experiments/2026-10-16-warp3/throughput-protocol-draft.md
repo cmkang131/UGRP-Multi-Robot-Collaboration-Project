@@ -12,4 +12,4 @@ CPU C16 r1은 외부 Python PID23613이1회 보여 제외했다. r2는 외부 �
 
 L4는 현재 외부 beamact3/act16w 작업 종료 대기다. 별도 gcp2b는 GPUS_ALL_REGIONS limit1 때문에 생성이 거절됐고 추가 instance/disk는 남지 않았다. 유한 대기열은 현 boot8h 상한보다2분 앞선13:59:09Z까지이며 budget-stop/idle20분을 유지한다. 공유 부하가 없고 원본 SHA 검증이 끝난 경우만 최종 표에 수록한다.
 
-SIM초/$는 inherited 단가 가정(CPU $3.1454/h, L4 $1.096/h)에 따른 한 VM 값이다. 실시간 가격·실제 청구/크레딧 소진액은 검증하지 않았다. 종전 cold/shared warp1 값과 합산하지 않는다.
+원본 SIM초/$는 inherited 단가 가정(CPU $3.1454/h, L4 $1.096/h)을 보존한다. 별도로 서울 온디맨드 공시값(CPU $3.145365504/h, L4 $1.096224308/h)을 공식 가격표에서 확인했다([가격 영수증](published-price-verification.json)). 같은 C16 실측률의 공시값 정규화 결과는9364.020385978SIM/$다. compute만의 비교이며 실제 청구·세금·디스크·크레딧 잔액은 검증하지 않았다. 종전 cold/shared warp1 값과 합산하지 않는다.

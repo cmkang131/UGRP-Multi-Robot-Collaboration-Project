@@ -1,0 +1,27 @@
+{
+  "scope": "postprocessing failures only; no teacher/student policy rerun",
+  "funnel": [
+    {
+      "stage": "closed student raw audit",
+      "passed": 1,
+      "rejected": 0
+    },
+    {
+      "stage": "evaluation replay asset resolution",
+      "passed": 0,
+      "rejected": 1
+    }
+  ],
+  "reasons": [
+    {
+      "category": "relative_asset_cwd",
+      "count": 1,
+      "reason": "recorded XML uses sim/assets/floor_light_textured_v1/floor.png but postprocessor inherited /home/ugrp",
+      "blocking_object": "relative floor texture file",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "file lookup, not geometry",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/student-full-r1-postprocess.log",
+      "correction": "run replay from exact source2b99 directory; actor/control unchanged"
+    }
+  ]
+}

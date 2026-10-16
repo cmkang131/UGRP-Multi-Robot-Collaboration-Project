@@ -1,0 +1,36 @@
+{
+  "funnel": [
+    {
+      "stage": "N2 transport probe admission",
+      "passed": 1,
+      "rejected": 0
+    },
+    {
+      "stage": "wheel command contract",
+      "passed": 0,
+      "rejected": 1
+    },
+    {
+      "stage": "physics tick",
+      "passed": 0,
+      "rejected": 0
+    }
+  ],
+  "reasons": [
+    {
+      "category": "probe_command_range",
+      "count": 1,
+      "reason": "Probe requested fraction1.0 (100%); frozen command() permits zero or absolute fraction0.31..0.40 (31..40%). Rejected before physics.",
+      "blocking_object": "wheel command unit contract",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "input units, not geometry",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/command-transport-r1/summary.json",
+      "source_spec": "harness/grasp_act_contract.py at6f057f7e",
+      "attempted_abs_fraction": 1.0,
+      "allowed_abs_fraction": [
+        0.31,
+        0.4
+      ]
+    }
+  ]
+}

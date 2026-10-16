@@ -4,7 +4,7 @@
   "branch": "claude/warp-act",
   "PR": 534,
   "stage": "1 distinct PASS;2 teacher40/40 PASS;3 RECORD_API_READY;4 C16 qualified, L4 exclusive queue pending",
-  "source_sha": "46113bb18862b2b7041124750960413aded2e664",
+  "source_sha": "6a891648b",
   "L4": {
     "project": "ugrp-sim-b-1014",
     "account": "changmin5781@gmail.com",
@@ -123,7 +123,7 @@
       "pid_scope": "historical previous boot, not live"
     }
   ],
-  "scheduling": "Teacher40/40 finished04:50UTC. Current warm queue20738 waits for external CUDA and same-user compute to finish; N64 then256, deadline13:59:09Z.",
+  "scheduling": "Teacher40/40 finished04:50UTC. Queue22584 waits without CUDA context for no foreign GPU/CPU; deadline13:59:09Z.",
   "admission": {
     "status": "APPROVED_PINNED",
     "review_detail": "REVIEW_SKIPPED_BY_USER (10/15 run-first rule)",
@@ -142,7 +142,7 @@
     "No Mac physics/render/GUI/model calls, no Drive, no GCP1 operations; no foreign tasks or VMs stopped.",
     "preexisting COORDINATOR_NOTE.md untouched."
   ],
-  "recorded": "2026-10-16T06:54:58.425868+00:00",
+  "recorded": "2026-10-16T09:45:09.478500+00:00",
   "scheduler_pid": null,
   "scheduler_script": null,
   "scheduler_endUTC": "2026-10-16T13:59:09Z",
@@ -179,16 +179,36 @@
     "status": "WAIT_FOREIGN_GPU"
   },
   "CPU_cleanup": {
-    "own_lease_removed": true,
-    "foreign_leases_preserved": [
-      "warp7.json"
+    "foreign_leases": [],
+    "foreign_ugrp_processes": [],
+    "stop_allowed": true,
+    "utc": "2026-10-16T08:35:45.820346+00:00",
+    "command": [
+      "gcloud",
+      "compute",
+      "instances",
+      "stop",
+      "ugrp-sim-gcp2",
+      "--zone",
+      "asia-northeast3-a",
+      "--account",
+      "changmin5781@gmail.com",
+      "--project",
+      "ugrp-sim-b-1014",
+      "--quiet"
     ],
-    "vm_stopped": false
+    "exit": 0,
+    "stdout": "",
+    "stderr": "Stopping instance(s) ugrp-sim-gcp2...\n..........................................................................................................................................................................................................................................................................................................done.\nUpdated [https://compute.googleapis.com/compute/v1/projects/ugrp-sim-b-1014/zones/asia-northeast3-a/instances/ugrp-sim-gcp2].\n",
+    "verified_status": "TERMINATED"
   },
-  "student_full_running": {
-    "root": "/home/ugrp/ugrp-sim/runs/warp3/student-full-r1",
-    "session_pid": 23170,
-    "scope": "one DEV old ACT15 checkpoint case, shared GPU; not throughput or heldout performance",
-    "resource_cap_wall_s": 7200
-  }
+  "student_full_closed": {
+    "raw_status": "HOST_ERROR",
+    "inferred_resource_cap": 1,
+    "completed_full_evaluations": 0,
+    "steps": 793,
+    "last_SIM": 79.3,
+    "review": "student-resource-playback-review.json"
+  },
+  "foreign_L4_leases_snapshot_scope": "historical list below; live leases must be re-read before resource actions"
 }

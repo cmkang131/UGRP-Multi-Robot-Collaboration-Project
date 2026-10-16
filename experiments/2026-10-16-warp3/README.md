@@ -20,3 +20,5 @@
 비물리 관련 시험33개 PASS(실제 Mac 기존 환경, 물리/렌더 없음). GitHub CI는 과거 커밋e97464a3에서33/33 PASS([영수증](ci-receipt-e974.json)); 최신 소스 CI는 별도로 확인 중이다. [단계별 누적 통과/거부 표](stage-funnel.json), [운영 기록](operations.json), [참고 문헌·설치본 검증 범위](references.md).
 
 L4 현 boot의8h 상한14:01:09Z·유휴20분·budget-stop을 유지한다. 다른 작업이 main L4를 다시 시작했으며 warp3는 외부 작업/VM을 중지하지 않았다. 별도 L4 생성은 프로젝트 전체 GPU 한도1로 거절됐고 추가 instance/disk가 남지 않았음을 확인했다. [비용·자원 제한 기록](warm-resource-blocker.json). 현재 대기열은13:59:09Z까지만 기다린다. 원격 소스는 canonical git-shared.git을 직접 reference하고 그 저장소를 gc/prune하지 않는다. 기존 COORDINATOR_NOTE.md는 건드리지 않았다.
+
+추가 ACT15 full 평가 요청1개는7200초 자원 상한에서793step/79.3SIM로 중단됐다. 원본 HOST_ERROR를 보존하고 자원 cap으로 구분하며 **완료된 학생 평가N=0**이다. 전체2Hz159프레임과 마지막10SIM의10Hz100프레임을 직접 검토했다([타임라인](student-resource-playback-review.md)). 옛 발행 trace 부족으로 정책/이식 실패 원인은 미확정이다. 현재 명령 어댑터는 유효 wheel fraction0.40의 world-local GPU ctrl 전달을 별도 확인했다([증거](command-transport-r2-audit.json)); 학생 임무 성공 증거는 아니다.
