@@ -78,7 +78,7 @@ def decoded(x):
     # Exact contract projection, including completion-induced stop.
     return np.asarray([c.encode_action(dict(t=0., **{k:r[k] for k in
         ('wheels','duration_s','pwm')}), done=r['done'])
-        for r in map(c.decode_action, np.asarray(x).reshape(-1,14))]).reshape(np.shape(x))
+        for r in map(c.decode_action, np.asarray(x,dtype=float).reshape(-1,14))]).reshape(np.shape(x))
 
 
 def pulse_distribution(y, episodes):
