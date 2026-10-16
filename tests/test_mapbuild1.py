@@ -1,0 +1,46 @@
+import hashlib
+import json
+import cv2
+import numpy as np
+import pytest
+from scripts.mapbuild1_replay import read_frame, replay, score
+
+
+def record(path,frame=0):
+    image=np.zeros((480,640,3),np.uint8)
+    ok,raw=cv2.imencode('.jpg',image);assert ok
+    (path/'own.jpg').write_bytes(raw.tobytes())
+    return dict(sequence='blank',robot_id='r1',frame_id=frame,t=float(frame)/10,rgb='own.jpg',
+        sha256=hashlib.sha256(raw).hexdigest(),servo={'1':2000,'3':1100,'4':1500,'5':1900,'6':1500},
+        command_delta=[0.,0.,0.],command_covariance=np.zeros((3,3)).tolist())
+
+
+def test_strict_own_record_rejects_truth_path_and_corruption(tmp_path):
+    row=record(tmp_path)
+    assert read_frame(tmp_path,row).shape==(480,640,3)
+    with pytest.raises(ValueError,match='STRICT_OWN'):
+        read_frame(tmp_path,{**row,'truth_pose':[0,0,0]})
+    with pytest.raises(ValueError,match='PATH_ESCAPE'):
+        read_frame(tmp_path,{**row,'rgb':'../outside.jpg'})
+    with pytest.raises(ValueError,match='HASH_MISMATCH'):
+        read_frame(tmp_path,{**row,'sha256':'0'*64})
+
+
+def test_blank_image_is_unknown_and_never_visual_tracking(tmp_path):
+    manifest=dict(schema='ugrp.mapbuild1.own.v1',backend='mjwarp_render',
+        frames=[record(tmp_path,i) for i in range(2)])
+    rows=replay(tmp_path,manifest)
+    assert rows[1]['lk']['status']=='unknown_identical_rgb'
+    assert rows[1]['slam']['inliers']==0
+    # Empty floor observations must not be counted as tracked bootstrap.
+    metrics=score(rows,dict(frames=[dict(sequence='blank',frame_id=i,pose=[i*.1,0,0]) for i in range(2)]))
+    assert all(m['tracked_n']==0 and m['pairs']==1 for m in metrics)
+    assert all(m['ate_xy_m']['max']==pytest.approx(.1) for m in metrics)
+
+
+def test_evaluation_requires_exact_label_coverage(tmp_path):
+    rows=replay(tmp_path,dict(schema='ugrp.mapbuild1.own.v1',backend='mjwarp_render',frames=[record(tmp_path)]))
+    with pytest.raises(ValueError,match='EXACT_EVALUATION'):
+        score(rows,dict(frames=[]))
+    with pytest.raises(ValueError,match='DUPLICATE_EVALUATION'):
+        score(rows,dict(frames=[dict(sequence='blank',frame_id=0,pose=[0,0,0])]*2))

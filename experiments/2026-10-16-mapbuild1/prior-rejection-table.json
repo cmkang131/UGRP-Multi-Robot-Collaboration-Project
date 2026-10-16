@@ -1,0 +1,13 @@
+{
+  "schema": "ugrp.mapbuild1.funnel.v1",
+  "scope": "preflight; not a measured tracking funnel",
+  "stages": [
+    {"stage": "requested_conditions", "cumulative_pass_n": 6, "rejected_n": 0},
+    {"stage": "recorded_conditions", "cumulative_pass_n": 0, "rejected_n": 6}
+  ],
+  "reasons": [
+    {"category": "not_started", "reason": "awaiting pinned capture source and own lease", "blocked_object": "not_observed", "minimum_gap_m": null, "gap_status": "not_measured"}
+  ],
+  "raw": "/home/ugrp/ugrp-sim/runs/mapbuild1/render-r1",
+  "reproduction": "scripts/mapbuild1_capture.py --execute --queue <queue> --renderer-source <pinned warp5 source> --output <new path>"
+}
