@@ -1,0 +1,79 @@
+{
+  "agent": "warp8d",
+  "utc": "2026-10-16T14:39:43.221434+00:00",
+  "run": {
+    "utc": "2026-10-16T14:39:43.221434+00:00",
+    "tag": "beam40-native-r1",
+    "progress": {
+      "ticks": 134,
+      "active_N": 40,
+      "completed_N": 0,
+      "sim_s": 13.4,
+      "loop_wall_s": 557.208737857,
+      "aggregate_world_sim_s": 536.0,
+      "batch_sim_s": 13.4,
+      "per_world_wall_SIM": 1.039568540777985,
+      "task_wall_per_SIM": 1.039568540777985,
+      "batch_wall_SIM": 41.5827416311194
+    },
+    "status": "running",
+    "error_type": null,
+    "error": null,
+    "receipt": null,
+    "first30": null,
+    "raw_statuses": {
+      "running": 40
+    },
+    "outcomes": {
+      "None": 40
+    },
+    "last_teacher_phases": {
+      "None": 80
+    },
+    "terminal_world_audits": [],
+    "leases": {
+      "warp8-beam40-native-r1.json": {
+        "task": "warp8",
+        "pid": 3149,
+        "pids": [
+          3151
+        ],
+        "started_at": "2026-10-16T14:25:57.811669+00:00",
+        "expected_end": null,
+        "source_sha": "3170d909089865c45e2cbc6089beb6a2d05e576f",
+        "stage": "beam40-native-r1",
+        "concurrency": 40,
+        "gpu_shared": false
+      }
+    },
+    "GPU": "964, 0",
+    "disk_free_bytes": 95823839232
+  },
+  "cloud": {
+    "lastStartTimestamp": "2026-10-16T07:18:43.506-07:00",
+    "name": "ugrp-act-l4-gcp3",
+    "scheduling": {
+      "automaticRestart": true,
+      "onHostMaintenance": "TERMINATE",
+      "preemptible": false,
+      "provisioningModel": "STANDARD"
+    },
+    "status": "RUNNING"
+  },
+  "duplicate_submissions": 0,
+  "CPU_VM_starts": 0,
+  "acks": [
+    "nocap-ack",
+    "nocpu-ack",
+    "nativecontact-ack",
+    "cap-ack",
+    "ownership-ack"
+  ],
+  "ssh_note": "alias proxy path missing; direct endpoint verified via gcloud; no SSH config changes",
+  "budget_stop_live": {
+    "state": "ACTIVE",
+    "TARGET_PROJECT": "ugrp-sim-c-1016",
+    "pubsubTopic": "projects/ugrp-sim-c-1016/topics/budget-stop",
+    "checked_utc": "2026-10-16T14:42:15.575754+00:00"
+  }
+}

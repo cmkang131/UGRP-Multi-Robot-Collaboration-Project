@@ -1,4 +1,4 @@
-# warp8c — native contact 새 관문 (빔40 실행 중)
+# warp8d — native contact 관문 인수 (빔40 실행 중)
 
 `nocap-ack nocpu-ack nativecontact-ack cap-ack ownership-ack`.
 사용자 2026-10-16 23:1x 결정에 따라 `warp_native_contact_v1`로 빔40 → release A40 → B40을 새로 잰다.
@@ -24,6 +24,12 @@ gcp3는 상한 없이 시작했고 live scheduling에서 `maxRunDuration`과
 물리·교사 관문 실행이 아니며 원본/실패 산출물을 보존했다. 표시그룹의 근거는
 `sim/multi_masterpi_production.py:930-933`의 로봇별 camera housing 숨김이다.
 성공 조건·제어·접촉 상수는 추가하지 않았다.
+
+warp8d가 앱 재시작 뒤 기존 PID3149/3151을 인수했다. 중복 제출0이며
+실제 scheduling 상한 두 필드가 비어 있고 idle20은 ACTIVE임을 재확인했다.
+[인수 원본 상태](warp8d-resume.json). SSH 별칭의 사라진 로컬 proxy 경로는
+설정을 바꾸지 않고 명시적 gcloud 조회 IP·기존 strict host key로 접속했다.
+첫30SIM 속도는 완료 뒤 noslip10 기준5.60/8.72와 나란히 기록한다.
 
 아래는 noslip10 당시 기록이다. 그 안의8h 복원·CPU VM 분석 지시는 최신 사용자 지시로 폐기됐다.
 

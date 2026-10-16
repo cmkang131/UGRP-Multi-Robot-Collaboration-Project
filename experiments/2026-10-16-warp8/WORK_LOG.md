@@ -61,3 +61,6 @@ warp8: warp8c 새 nativecontact 관문 준비 | nocap-ack nocpu-ack nativecontac
 warp8: native-v1 빔40 한배치14:25:57Z 제출 driver3149/child3151 source3170d909089865c45e2cbc6089beb6a2d05e576f | C312 새참조80개 재컴파일·관절/재질/기하전수동일, 준비오류(asset경로1/표시그룹2)보존·교사실행아님 | gcp3단독MPSoff/fullnv/placementON·weldOFF,첫30대기·release미제출 | VM/supervisor상한없음·idle20/budget-stop유지·CPU VM시작0 | 2026-10-16T14:26:39.014136+00:00 nocap-ack nocpu-ack nativecontact-ack cap-ack ownership-ack
 
 고정소스3170d909; 직접 XML 준비가 기존 world의 camera housing group5를 재현하도록 로봇별 접두명을 맞췄다. 세 번째 geometry 대조는80개 모두 통과. 실패 참조폴더v1/v2/v3는 보존, 실제사용v4만. 참조 준비 중 native profile의 물리 step0/GPU context0.
+
+## warp8d resume
+warp8d: resume-ack | beam40-native-r1 driver3149/child3151 source3170d909 계속 실행 13.4SIM/완료0/40·오류0; 중복제출0 | gcp3단독/native0/VM상한두필드없음·idle20 ACTIVE, 분석gcp3만/CPU VM시작0 | 첫30대기·현재누적 batch 41.583/세계당 1.0396, noslip10 빔5.60/release8.72와별도 | 2026-10-16T14:39:43.221434+00:00 nocap-ack nocpu-ack nativecontact-ack cap-ack ownership-ack
