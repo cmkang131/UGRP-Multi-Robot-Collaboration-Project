@@ -51,7 +51,7 @@ def compare(root,rows):
             value['physics_settings_exact']=read(p/'physics-settings.json')==read(base/'physics-settings.json')
         if (p/'group-0-final-state.npz').exists() and (base/'group-0-final-state.npz').exists():
             aa,bb=np.load(p/'group-0-final-state.npz'),np.load(base/'group-0-final-state.npz')
-            value['state']={k:dict(exact=bool(np.array_equal(aa[k],bb[k])),max_abs=float(np.max(np.abs(aa[k]-bb[k]))) if aa[k].size else None) for k in aa.files}
+            value['state']={k:dict(exact=bool(np.array_equal(aa[k],bb[k])),max_abs=float(np.max(np.abs(aa[k].astype(float)-bb[k].astype(float)))) if aa[k].size else None) for k in aa.files}
         if row['sim_s']==old['sim_s']:value['speedup']=old['wall_s']/row['wall_s']
         values.append(value)
     return values
