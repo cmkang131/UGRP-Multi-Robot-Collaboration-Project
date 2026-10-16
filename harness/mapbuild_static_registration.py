@@ -7,7 +7,7 @@ never elapsed wall time. A single wall or a symmetric map stays unregistered.
 """
 import math
 import numpy as np
-from harness.self_map_csm import CSMOptions,DistanceField,sample_segments
+from harness.self_map_csm import CSMOptions,DistanceField
 from harness.self_odom_grid import transform
 
 OPTION='mapbuild_static_csm_v1'
@@ -35,7 +35,7 @@ class StaticRegistration:
         if not len(self.reference):raise ValueError('STATIC_WALLS_REQUIRED')
         self.field=DistanceField(self.reference,self.options.field_resolution_m,1.) if option!= 'off' else None
 
-    def register(self,own_segments):
+    def register(self,own_segments,*,camera_origins=None):
         """own_segments are observed wall contacts already in own-map gauge.
 
         Result transform composes on the LEFT of any own-map SE2 pose. No
@@ -51,7 +51,21 @@ class StaticRegistration:
         seg=np.asarray(own_segments,float)
         if not seg.size:return out('no_observed_wall_segments')
         if seg.ndim!=3 or seg.shape[1:]!=(2,2) or not np.isfinite(seg).all():raise ValueError('INVALID_OWN_SEGMENTS')
-        points=sample_segments(seg) # existing CSM .10m sample spacing
+        # The original CSM sigma depends on SENSOR range, not distance from
+        # the arbitrary own-map gauge. Missing source origins cannot silently
+        # become a noiseless map observation (mapbuild7 R1 source diagnosis).
+        if camera_origins is None:return out('source_camera_origins_required')
+        origins=np.asarray(camera_origins,float)
+        if origins.shape!=(len(seg),2) or not np.isfinite(origins).all():raise ValueError('INVALID_SOURCE_CAMERAS')
+        parts=[];sources=[]
+        for s,origin in zip(seg,origins):
+            if np.linalg.norm(s[1]-s[0])<=1e-6:continue # verbatim sample_segments
+            part=np.linspace(s[0],s[1],max(2,int(math.ceil(np.linalg.norm(s[1]-s[0])/.10))+1))
+            parts.append(part);sources.append(np.repeat(origin[None],len(part),axis=0))
+        if not parts:return out('insufficient_near_points',points=0)
+        points=np.vstack(parts);sources=np.vstack(sources)
+        _,idx=np.unique(np.floor(points/.10).astype(int),axis=0,return_index=True);idx=np.sort(idx)
+        points=points[idx];sources=sources[idx]
         if len(points)<o.min_points:return out('insufficient_near_points',points=len(points))
         # Existing .05m/1deg CSM lattice is the global search resolution.
         # Two-level search is only an exact batch partition, NOT a top-K prune.
@@ -59,7 +73,10 @@ class StaticRegistration:
         y=np.arange(math.ceil(self.bounds[2]/o.field_resolution_m),math.floor(self.bounds[3]/o.field_resolution_m)+1)*o.field_resolution_m
         xy=np.stack(np.meshgrid(x,y,indexing='ij'),-1).reshape(-1,2)
         yaw=np.arange(-180,180,o.yaw_step_deg)*math.pi/180
-        sigma=np.sqrt(o.calibration_floor_m**2+o.field_resolution_m**2/12)
+        radii=np.linalg.norm(points-sources,axis=1)
+        # Exact CorrelativeMatcher.match formula and frozen CSMOptions.
+        sigma=np.sqrt(o.calibration_floor_m**2+o.field_resolution_m**2/12+
+                      (o.pixel_sigma*radii**2/(o.focal_y_px*o.height_lower_bound_m))**2)
         poses=[];costs=[]
         # Per yaw table: no candidate truncation and no wall-clock exit.
         for angle in yaw:
@@ -76,7 +93,7 @@ class StaticRegistration:
         second=float(cost[separated].min()) if separated.any() else math.inf
         gap=second-float(cost[index]);world=transform(points,best);dist=self.field.query(world)
         relative=world-best[:2]
-        H=self.field.information(world,relative,np.full(len(points),sigma),o.overlap_distance_m,o.effective_points)
+        H=self.field.information(world,relative,sigma,o.overlap_distance_m,o.effective_points)
         S=np.diag([1.,1.,.5]);eigen=np.linalg.eigvalsh(S@H@S)
         observed=eigen>max(.5,o.hessian_ratio*eigen[-1]) # verbatim inherited CSM
         overlap=float(np.mean(dist<=o.overlap_distance_m));residual=float(np.sqrt(np.mean(dist**2)))
@@ -84,7 +101,8 @@ class StaticRegistration:
                 'high_residual' if residual>o.max_residual_m else 'ambiguous_modes' if gap<o.mode_gap else 'accepted')
         result=out(reason,points=len(points),best_candidate=best.tolist(),residual_m=residual,overlap=overlap,
             second_sensor_gap=gap,hessian_eigenvalues=eigen.tolist(),observable_rank=int(observed.sum()),
-            source_constants='unchanged CSMOptions: .05m/1deg, .08m sigma, overlap .60/.20m, residual .15m, mode .15/.50, rank3 mathematical SE2 requirement')
+            sensor_sigma_min_max_m=[float(sigma.min()),float(sigma.max())],
+            source_constants='unchanged CSMOptions: .05m/1deg, .08m floor + original range pixel variance, overlap .60/.20m, residual .15m, mode .15/.50, rank3 mathematical SE2 requirement')
         if reason=='accepted':
             result['static_from_own']=best.tolist();result['covariance']=(np.linalg.inv(H)+o.floor()).tolist()
         return result

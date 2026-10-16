@@ -41,7 +41,7 @@ def test_static_off_and_no_unseen_geometry():
     assert StaticRegistration(static).register([[[0,0],[1,0]]])['static_from_own'] is None
     reg=StaticRegistration(static,option=OPTION)
     assert reg.register([])['reason']=='no_observed_wall_segments'
-    assert reg.register([[[0,0],[.1,0]]])['reason']=='insufficient_near_points'
+    assert reg.register([[[0,0],[.1,0]]])['reason']=='source_camera_origins_required'
     with pytest.raises(ValueError):reg.register([[[float('nan'),0],[1,0]]])
 
 
@@ -55,7 +55,7 @@ def test_runtime_modules_no_truth_or_host_imports():
 
 def test_single_wall_is_not_a_global_SE2_registration():
     static=dict(bounds_m=[-.1,.1,-.1,.1],obstacles=[dict(id='wall_one',center_m=[0,1],half_extents_m=[1,.02])])
-    value=StaticRegistration(static,option=OPTION).register([[[-.8,.98],[.8,.98]]])
+    value=StaticRegistration(static,option=OPTION).register([[[-.8,.98],[.8,.98]]],camera_origins=[[0,0]])
     assert value['status']=='rejected' and value['static_from_own'] is None
     assert value['reason'] in ('unobservable_global_SE2','ambiguous_modes')
     assert value['work']['candidates']==5*5*360
@@ -66,6 +66,6 @@ def test_asymmetric_complete_geometry_registers_without_pose_prior():
     static=dict(bounds_m=[-.1,.1,-.1,.1],obstacles=[dict(id='wall_a',center_m=[0,1],half_extents_m=[1,.02]),dict(id='wall_b',center_m=[1,.25],half_extents_m=[.02,.55])])
     segments=np.asarray(wall_segments(static));theta=np.radians(30.);R=np.array([[np.cos(theta),-np.sin(theta)],[np.sin(theta),np.cos(theta)]])
     own=(segments-[.05,-.05])@R
-    value=StaticRegistration(static,option=OPTION).register(own)
+    value=StaticRegistration(static,option=OPTION).register(own,camera_origins=np.zeros((len(own),2)))
     assert value['status']=='accepted'
     np.testing.assert_allclose(value['static_from_own'],[.05,-.05,theta],atol=1e-12)

@@ -148,7 +148,7 @@ def run(a):
     if sha(colour)!='a37cf96551abbfb8b38df3efc1cd61f3f357ac9eb3a1dcd0b4d9947242e4e24f':raise ValueError('COLOUR_CHANGED')
     state=ColourBoundaryState('walls_floor_contrast_v5_indigo110_s80',json.loads(colour.read_text()),option=RELOC16_OPTION)
     registration=StaticRegistration(static,option=STATIC);rbpf=MapbuildRBPF(FOLDED,option=RBPF)
-    own=[];labels=[];saved=[];issued=[];trace=[];events=[];teacher_rows=[];wall_ledger=[];ring=deque(maxlen=101)
+    own=[];labels=[];saved=[];issued=[];trace=[];events=[];teacher_rows=[];wall_ledger=[];camera_ledger=[];ring=deque(maxlen=101)
     pose=np.zeros(3);anchor=None;old=None;previous=None;last_servo=None;stage='prescan';route=None;goal=None;start_return=None;status='cap_end';error=None;source_sha=q['source_sha'];start=time.monotonic();next_scan=0.
     d_eval=mujoco.MjData(m)
     body=m.body('r1__robot').id;adr=int(m.jnt_qposadr[int(m.body_jntadr[body])])
@@ -157,7 +157,7 @@ def run(a):
     rects=[(*o['center_m'],*o['half_extents_m'],o.get('yaw_rad',0.)) for o in static['obstacles']]
     def try_register(t,label):
         nonlocal anchor
-        result=registration.register(wall_ledger);events.append(dict(t=t,event=label,**result))
+        result=registration.register(wall_ledger,camera_origins=camera_ledger);events.append(dict(t=t,event=label,**result))
         if result['status']=='accepted':anchor=np.asarray(result['static_from_own'])
         dump(a.output/('registration-'+label+'.json'),result)
         return result
@@ -178,7 +178,7 @@ def run(a):
             increment=np.asarray(flow['delta']) if flow['status']=='measured' else delta;C=np.asarray(flow['covariance']) if flow['status']=='measured' else cov;pose=compose(pose,increment)
             estimate,wall_event=rbpf.step(t,tick,increment,C,scan,servo=servo)
             if scan['segments'] and t>=next_scan:
-                wall_ledger.extend([transform(s,pose).tolist() for s in scan['segments']]);next_scan=t+1.
+                wall_ledger.extend([transform(s,pose).tolist() for s in scan['segments']]);camera_ledger.extend([transform([scan['camera']],pose)[0].tolist() for _ in scan['segments']]);next_scan=t+1.
             file=a.output/'own-rgb'/f'r1-{tick:05d}.jpg'
             own.append(dict(sequence='actual-v7-route',robot_id='r1',frame_id=tick,t=t,rgb=str(file.relative_to(a.output)),sha256=sha(file),servo={str(s):v for s,v in servo.items()},command_delta=delta.tolist(),command_covariance=cov.tolist()))
             trace.append(dict(t=t,frame_id=tick,lk_pose=pose.tolist(),rbpf_pose=estimate,lk=flow,motion_delta=increment.tolist(),motion_covariance=C.tolist(),wall_event=wall_event))
@@ -233,7 +233,7 @@ def run(a):
     finally:
         dump(a.output/'own.json',dict(schema='ugrp.mapbuild1.own.v1',backend='mjwarp_render',physics_backend='mjwarp',frames=own));dump(a.output/'commands.json',issued);dump(a.output/'online-trajectory.json',trace)
         dump(a.output/'eval-only.json',dict(evaluation_only=True,frames=labels));np.savez_compressed(a.output/'eval-state.npz',qpos=np.asarray(saved));dump(a.output/'events.json',events);dump(a.output/'teacher-input-audit.json',teacher.audit.record());dump(a.output/'teacher-ledger.json',teacher_rows)
-        dump(a.output/'teacher-result.json',teacher.teacher.diagnostic());dump(a.output/'wall-ledger.json',wall_ledger)
+        dump(a.output/'teacher-result.json',teacher.teacher.diagnostic());dump(a.output/'wall-ledger.json',dict(segments=wall_ledger,camera_origins=camera_ledger))
         dump(a.output/'summary.json',dict(status=status,error=error,frames=len(own),sim_s=(len(own)-1)/10,wall_s=time.monotonic()-start,source_sha=source_sha,teacher_sha=TEACHER,scene='walls_floor_contrast_v5_indigo110_s80',physics_backend='mjwarp',contact_profile=dict(profile='warp_native_contact_v1',noslip_iterations=int(m.opt.noslip_iterations),gpu_noslip_iterations=int(wm.opt.noslip_iterations)),cpu_physics_steps=0,top_camera_frames=0,terminal_ring=dict(indices=list(ring),hz=10),required_route_complete=status=='ROUTE_COMMAND_COMPLETE',input_audit=teacher.audit.record(),student_success=False,llm_success=False,wall_cap=None))
         dump(a.output/'SHA256SUMS.json',{str(p.relative_to(a.output)):sha(p) for p in a.output.rglob('*') if p.is_file()})
 

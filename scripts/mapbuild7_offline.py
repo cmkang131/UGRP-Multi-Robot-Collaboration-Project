@@ -28,7 +28,7 @@ def main(a):
     calibration=a.vision/'experiments/2026-10-16-reloc16/colour-calibration.json'
     if hashlib.sha256(calibration.read_bytes()).hexdigest()!='a37cf96551abbfb8b38df3efc1cd61f3f357ac9eb3a1dcd0b4d9947242e4e24f':raise ValueError('COLOUR_CHANGED')
     state=ColourBoundaryState('walls_floor_contrast_v5_indigo110_s80',json.loads(calibration.read_text()),option=RELOC16_OPTION)
-    frames=json.loads((a.input/'own.json').read_text())['frames'];old=None;last=None;pose=np.zeros(3);rows=[];segments=[];scans=[];events=[]
+    frames=json.loads((a.input/'own.json').read_text())['frames'];old=None;last=None;pose=np.zeros(3);rows=[];segments=[];origins=[];scans=[];events=[]
     rbpf=MapbuildRBPF({int(k):v for k,v in frames[0]['servo'].items()},option=RBPF)
     a.output.mkdir(parents=True,exist_ok=False)
     def dump(p,x):p.write_text(json.dumps(x,indent=2,allow_nan=False)+'\n')
@@ -42,7 +42,7 @@ def main(a):
         estimate,event=rbpf.step(frame['t'],frame['frame_id'],delta,cov,view,servo=servo)
         # Collect at existing 1SIM second scan schedule, never use scoring data.
         if event.get('inserted'):
-            segments.extend([transform(s,pose).tolist() for s in view['segments']])
+            segments.extend([transform(s,pose).tolist() for s in view['segments']]);origins.extend([transform([view['camera']],pose)[0].tolist() for _ in view['segments']])
         rows.append(dict(t=frame['t'],frame_id=frame['frame_id'],lk_pose=pose.tolist(),rbpf_pose=estimate,lk=flow,motion_delta=delta,motion_covariance=cov))
         scans.append(dict(t=frame['t'],**view));events.append(event);old=rgb;last=servo
     dump(a.output/'trajectory.json',rows);dump(a.output/'scans.json',scans);dump(a.output/'events.json',events)
@@ -51,7 +51,7 @@ def main(a):
     dump(a.output/'prediction-seal.json',dict(scale=1,truth_inputs=0,input_sha256={str(a.input/'own.json'):hashlib.sha256((a.input/'own.json').read_bytes()).hexdigest()},
         prediction_sha256={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in a.output.glob('*.json')}))
     reg=StaticRegistration(json.loads((a.input/'static-map.json').read_text()),option=OPTION)
-    result=reg.register(segments);dump(a.output/'static-registration.json',result)
+    result=reg.register(segments,camera_origins=origins);dump(a.output/'static-registration.json',result)
     reasons=Counter(r['lk']['status'] for r in rows)
     dump(a.output/'summary.json',dict(raw=str(a.input),frames=len(rows),camera_option=CARRY_OPTION,registration=result,
         motion_status=dict(reasons),wall_visible_frames=sum(bool(s['segments']) for s in scans),
