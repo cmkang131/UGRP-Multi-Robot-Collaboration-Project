@@ -1,8 +1,8 @@
 {
   "schema": "ugrp.act16w.resume4.v1",
-  "status": "FINAL40_REFERENCE_SETUP",
-  "complete": false,
-  "updated_utc": "2026-10-16T19:38:25.387954+00:00",
+  "status": "EXPERIMENT_COMPLETE_NOT_READY",
+  "complete": true,
+  "updated_utc": "2026-10-16T20:37:31.700378+00:00",
   "execution_source_sha": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48",
   "orchestration_source_sha": "37a8c833656a58ba25472e2106276f225e95ad26",
   "teacher_library_sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
@@ -214,21 +214,62 @@
     "full_skill_recovery_expert_qualified": false
   },
   "final40": {
-    "status": "selected_A_frozen_before_outcomes; existing controller preparing references",
+    "status": "complete_raw_recount_and_direct_review",
     "seed_range": [
       91620,
       91659
     ],
-    "n": null,
-    "N": null,
+    "n": 0,
+    "N": 40,
     "selection": "native-final-selection.json",
     "checkpoint_sha256": "4955436e15054d76adf3ea7a339896dc1e500e4ed930aeb0c873ec23899f7719",
-    "frozen_utc": "2026-10-16T19:36:21.857988+00:00"
+    "frozen_utc": "2026-10-16T19:36:21.857988+00:00",
+    "started_utc": "2026-10-16T19:39:12.719358+00:00",
+    "kinds": {
+      "cyan": {
+        "n": 0,
+        "N": 10
+      },
+      "red": {
+        "n": 0,
+        "N": 10
+      },
+      "green": {
+        "n": 0,
+        "N": 10
+      },
+      "yellow": {
+        "n": 0,
+        "N": 10
+      }
+    },
+    "n_any_same_kind": 0,
+    "cap_end": 24,
+    "resource_cap_end": 0,
+    "HOST_ERROR": 0,
+    "stage_counts": {
+      "bilateral_load_observed": 2,
+      "lift_success": 1,
+      "release_success": 0,
+      "issued_sequence_complete": 16,
+      "task_success": 0
+    },
+    "raw_recount_matches": true,
+    "recount": "native-final40-independent.json",
+    "stage_disagreement": "native-final-stage-disagreement.json",
+    "alignment_rejections": 40,
+    "alignment_necessary_condition_validated": false,
+    "stable_lift_counterexample": 91637,
+    "geometry_summary": "native-final40-geometry-summary.json",
+    "rejection_table": "native-rejection-table-final40-enriched.json",
+    "physical_funnel": "native-final-physical-funnel.json",
+    "initial_same_kind_pixel_2plus": "6/40",
+    "final_tuning_performed": false
   },
   "artifacts": {
     "curves": "native-abcd-learning-curves.png",
-    "matched_montage": "native-A-B-teacher-montage.png",
-    "montage_success_row": "teacher reference, not ACT",
+    "matched_montage": "native-final-montage.png",
+    "montage_success_row": "teacher87429 reference, not ACT",
     "native_models_staged": 4,
     "native_models_public_verified": 4,
     "native_release_tag": "models-20261016-act16w-native-v1",
@@ -240,7 +281,13 @@
     "native_model_internal_files_verified": 76,
     "native_models_CPU_loading_verified": 4,
     "public_verification": "native-public-model-verification.json",
-    "metadata_public_verification": "native-release-metadata-verification.json"
+    "metadata_public_verification": "native-release-metadata-verification.json",
+    "final_direct_reviews": [
+      "native-final-91620-playback-review.json",
+      "native-final-91621-playback-review.json",
+      "native-final-91637-playback-review.json"
+    ],
+    "final_public_results": "native-final-results-public-verification.json"
   },
   "workflow_issues": [
     {
@@ -256,6 +303,14 @@
       "physics_steps": 0,
       "reason": "val/validation split-key typo; corrected v2 fresh242-file hash check passed",
       "receipt": "native-dagger-files-analysis-r1-error.json"
+    },
+    {
+      "stage": "final montage postprocessing",
+      "category": "POSTPROCESSING_ERRORS",
+      "physics_steps": 0,
+      "originals_models_unchanged": true,
+      "artifact_validated": true,
+      "receipt": "native-final-montage-postprocess-note.json"
     }
   ],
   "limits": {
@@ -268,9 +323,25 @@
     "h1_h2_h3": "off, unimplemented proposals; not evaluated",
     "raw_evidence": "retained on owned L4, only summaries/montage/review strips retrieved"
   },
-  "remaining": [
-    "existing frozen A final40 once; raw recount, geometry and direct playback review",
-    "final README/funnel/results/PR and safe owned-L4 stop"
+  "remaining": [],
+  "h5_observed_success_delta_percentage_points": 0,
+  "scientific_evaluation_complete": true,
+  "physical_ready": false,
+  "open_issues": [
+    "ACT task success0/40; stage completion and stable lift disagree",
+    "h5 noninitial labels limited to7 starts; no full recovery-expert qualification",
+    "h1/h2/h3 off/unimplemented/unevaluated; C CPU physics comparisonN0",
+    "independent control/preregistration review outstanding; PR stays draft"
   ],
-  "h5_observed_success_delta_percentage_points": 0
+  "rejection_table": "all-stages-rejection_table.json",
+  "resource_final": {
+    "VM": "TERMINATED",
+    "prestop_check": "owned-VM-final-stop-check.json",
+    "receipt": "owned-VM-terminated.json",
+    "cost": "native-cost-accounting.json",
+    "observed_L4_hours": 5.965179214444444,
+    "estimated_compute_usd": 6.539174456450345,
+    "actual_bill_queried": false
+  },
+  "delivery_scope": "experiment/raw recount/playback/models complete; PR remains draft, current-head CI and independent review tracked separately"
 }

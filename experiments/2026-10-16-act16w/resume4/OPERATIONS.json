@@ -49,12 +49,11 @@
     "B": "0/5",
     "pooled": false
   },
-  "progress": "A/B/C/D1 each10000 complete, VAL8 each0/8; D1 raw recount/full playback ack19:36Z. Frozen A before final; existing final references preparing. Models4 public download/hash76/CPUload4 verified.",
+  "progress": "COMPLETE study, NOT_READY policy: finalA0/40 eachkind0/10, raw match, physical funnel40/2/1/0/0; done16 cap24; all40 geometry and3 full direct reviews done. Models4/76files/CPUload4 and final summary public hash verified. Owned L4 TERMINATED.",
   "next": [
-    "Observe existing FINAL40, never resubmit. final-delivery.py independently recounts40, audits40 align/gaps and composes deterministic2 failure+1success ifavailable. Directly inspect all2Hz/10Hz strips after retrieval.",
-    "Update final summary/README/PR539, final outcomes not used for tuning.",
-    "All4 Release models already public redownload/all76files/CPUload verified. Source tag805 catalog staged at creation; verified external catalog and current registry supersede status only.",
-    "Before owned L4 stop inspect all leases, non-own processes and actual CPU/GPU; no foreign workload may be interrupted. idle20/budget-stop unchanged."
+    "No remote job remains; never resubmit final40 or tune on its outcomes.",
+    "PR539 stays draft for independent control/preregistration review; see summary/README and current-head CI.",
+    "h1/h2/h3 and C CPU robustness remain unevaluated; proposed next RGB candidates are not results."
   ],
   "native_gate_qualification": "/home/ugrp/ugrp-sim/runs/act16w-native-gate-r2/independent-gate-recount.json",
   "native_record": {
@@ -94,7 +93,8 @@
       "C",
       "D1"
     ],
-    "root": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1"
+    "root": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1",
+    "status": "complete/exit0"
   },
   "analysis_source": "/home/ugrp/ugrp-sim/src/34d53cfaadc093ac957bbfffc780a76f372041f9",
   "completed_native_provenance_annotations": "/home/ugrp/ugrp-sim/runs/act16w-native-provenance-annotations.json",
@@ -189,6 +189,17 @@
   "final_delivery": {
     "script": "final-delivery.py",
     "remote": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/delivery-ops/final-delivery.py",
-    "scope": "wait existing final40 then finite saved-state analyses; no duplicate physics"
-  }
+    "scope": "wait existing final40 then finite saved-state analyses; no duplicate physics",
+    "pid": 107322,
+    "script_sha256": "c096522cc359ed2e3a2cb1071bf544d0ef855ecf86c6e4818fa818501b65053a",
+    "status": "complete/exit0"
+  },
+  "final_first30_waiter": {
+    "pid": 109580,
+    "script": "final-first30-wait.py",
+    "scope": "finite existing first30 composition, no physics/model",
+    "status": "complete"
+  },
+  "VM_status": "TERMINATED",
+  "resource_receipt": "owned-VM-terminated.json"
 }

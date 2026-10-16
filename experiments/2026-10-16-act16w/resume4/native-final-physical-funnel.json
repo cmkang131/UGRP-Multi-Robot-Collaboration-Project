@@ -1,0 +1,35 @@
+{
+  "funnel": [
+    {
+      "gate": "scored",
+      "passed": 40,
+      "rejected": 0
+    },
+    {
+      "gate": "bilateral_load_observed",
+      "passed": 2,
+      "rejected": 38
+    },
+    {
+      "gate": "lift_success",
+      "passed": 1,
+      "rejected": 1
+    },
+    {
+      "gate": "release_success",
+      "passed": 0,
+      "rejected": 1
+    },
+    {
+      "gate": "task_success",
+      "passed": 0,
+      "rejected": 0
+    }
+  ],
+  "independent_sequence_done": 16,
+  "scope": "cumulative physical order; original done-first conjunction funnel retained separately",
+  "source": {
+    "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/independent-final40.json",
+    "sha256": "e0a52c571566f1c1662d34deb9c1d918ec183468865b9158e0b09039c9a98e2d"
+  }
+}

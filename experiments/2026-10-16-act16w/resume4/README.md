@@ -1,149 +1,94 @@
-# act16w4 인수 기록
+# ACT16w native 재기록·학습 결과
 
-`nativecontact-ack`, `resume-ack`. 원격 원본을 먼저 읽었고 기존 실행은 중복 제출하지 않았다.
-소유 VM은 gcp2 L4 `ugrp-act-l4-gcp2`이며 CPU VM은 시작하지 않는다.
-상한 없음, idle20·budget-stop 유지. Mac에는 요약·몽타주·실패 프레임만 회수한다.
+`nativecontact-ack`, `resume-ack`. **상자 1대 근거리 ACT 최종 평가는 A 0/40, NOT_READY**다.
+91620–91659를 한 번 평가했고 색별 cyan/red/green/yellow가 각각0/10이다. 같은 색 아무 물체 성공도0/40이다.
+원본 점수 재계수40개가 모두 일치했고 HOST_ERROR0·resource cap0, 명령 종료16·90SIM `cap_end`24다.
+[확정 요약](summary.json), [전체 단계 관문표](all-stages-rejection_table.json), [최종 원본 재계수](native-final40-independent.json).
+실행·학습·분석·렌더는 소유 gcp2 L4에서 수행했다. Mac은 소스/요약/이미지 확인만 했고 화면 앱은 열지 않았다.
 
-noslip10 VAL5 원본 채점·행동 원장의 재계수는 **A0/5, B0/5**다.
-두 팔 모두 발행 완료5/5 → 안정 들기0/5 → 안정 내려놓기0/5 → 임무0/5이며
-같은 종류 아무 물체 성공도0/5, cap_end0이다. 종류별 cyan0/1, red0/2,
-green0/1, yellow0/1이다. [재계수](noslip-baseline-recount.json)는 저장된 요약의
-physical·lift·release·drop·안정 지속시간 값과 전부 일치했다.
-단 chunk별 done 시각은 과거 원장에 없어 실패 메시지 문구 자체는 독립 재구성하지 않았다.
-noslip10 데이터·모델·Release는 비교용으로 보존하고 native 결과에 합산하지 않는다.
+| 후보 | 바꾼 조건 | VAL8 | 안정 들기 | 명령 종료 / cap_end |
+|---|---|---:|---:|---:|
+| A | 전체 발행 이력, h4/h5 off | 0/8 | 0/8 | 4 / 4 |
+| B | 과거 바퀴·펄스128열 TRAIN 평균 마스킹 | 0/8 | 0/8 | 2 / 6 |
+| C | A + h4 TRAIN 시작 커리큘럼 | 0/8 | 0/8 | 5 / 3 |
+| D1 | C + h5 1회 | 0/8 | 0/8 | 1 / 7 |
 
-native r1은 모델 그룹 검사에서 `from_xml_path`의 텍스처 상대경로 해석 때문에
-HOST_ERROR로 종료됐다. 교사 rollout0이며 물리 실패로 세지 않는다.
-XML을 바꾸지 않고 원래 world factory와 같은 Q 작업 디렉터리에서
-`from_xml_string`으로 읽게 수정했다. L4의 비물리 로딩 nq243/ngeom1387/noslip0,
-step0 확인 후, 같은 사전 고정40개87220–87259를 r2로 제출했다.
-소스 e40ff44ce, dispatcher52916. [실행 인수](native-r2-launch.json),
-[준비 거부 표](rejection_table.json). 40/40 PASS(종류별10/10), invisible/held0/0이다.
-원시 평가 시퀀스로 Score40개를 독립 재계산했고8254개 원본 파일 SHA가 일치했다
-([독립 관문](native-gate-independent.json), [실행 요약](native-gate-summary.json),
-[실제 관문표](native-gate-rejection_table.json)). 기준값·score 모듈·원본은 바꾸지 않았다.
-정식 `--teacher-gate-queue` 없이 실행돼 원본 `gate_eligible=false`40/40이다.
-[조정자 재계수 메모](coordinator-native-gate-recount.md)는 이를 명시하는 조건으로 측정 관문을 인정했다.
-이는 소급 admission이나 원본 flag 변경이 아니다. 장면 메타의 `cargo_noslip_v1(10)`은 적용 전
-빌더 표기이고 그룹별 `native-contact.json`의 실제 CPU/GPU noslip은0이다.
-관문·기록80세계에 보정 sidecar와 배치별 메모 총82개를 추가했고, 대상 원본253개 파일의
-전후 해시가 일치했다([보정 기록](native-provenance-annotations.json)). 첫 native 교사 관문은
-보고 class를 milestone로 주석했으며 원본 class/dev·branch/controller SHA를 보존했다.
-대표성공87244의 전체0–41SIM초2Hz·마지막31.1–41.0초10Hz를 직접 검토했다
-([타임라인](native-teacher-playback-review.json)). 학생 성공으로 세지 않는다.
+각10000스텝·동일 초기화 시드20261015·batch8·chunk8·0.1SIM초·temporal ensemble off다.
+A/B/C는 D0 동일 해시이며 D1도 D0 입력 정규화와 VAL3026행/8시드를 그대로 썼다.
+훈련/추론의 이력 변환이 일치하고 네 모델 모두 저장/재로딩 예측 일치를 확인했다.
+[h4 비교](native-h4-comparison.json), [h5 비교](native-h5-comparison.json)의 관찰 성공률 차이는0pp다.
+이8회로 일반적인 효과 없음을 증명하지 않는다. [실제 학습 곡선](native-abcd-learning-curves.png)의 손실 감소를 임무 성공으로 해석하지 않는다.
+[학습 완료/해시](native-ABCD-training-receipt.json).
 
-이후 별도 시드87420–87459의40개 기록을 시작했다. 소스c27a9d537, dispatcher64948,
-32TRAIN/8VAL을 사전 고정했다. [기록 제출](native-record-launch.json),
-[메모리·디스크·속도 수신](native-record-preflight.json). 첫30의 세계별 지연 중앙값34.292 wall/SIM은
-속도 관문FAIL이며 물리 성공과 별개다.40세계가7호환 모델 그룹을 한L4에서 공유한 실제 부하이며,
-사용자가 요구한 MJWarp·카메라·접촉을 유지하고 기록을 계속하는 사유를
-`--speed-gate-override`에 남겼다. 속도 통과·성능 개선으로 보고하지 않는다.
-기록40/40(종류별10/10), 원시Score40 재계산과8315개 원본 SHA 확인을 마쳤다.
-전체18046 JPEG/이력/표적 쌍이 정합했고, 변환된14886행 중 TRAIN11860행/32회와
-VAL3026행/8회로 나뉜다. [확정 데이터](native-dataset-receipt.json),
-[전체 감사](native-dataset-audit.json), [기록 관문](native-fresh-recording-gate.json).
-A/B는 각각 고정10000스텝과 저장/재로딩 예측 일치 검사를 완료했다.
-새 native VAL8×A/B는 둘 다0/8(종류별각0/2)이며 원본 재계수가 일치했다.
-양손 하중 관찰 A0/8·B1/8, 안정 들기·내려놓기0/8, cap_end A4·B6, HOST_ERROR0이다.
-기하 정렬 미통과도 각각8/8이라 사전 동률 규칙으로 A/off를 유지했다.
-[비교 표](native-A-B-comparison.json), [실제 검토 확인](native-review-A_B.json),
-[거부 표A](native-validation-A-rejection_table-enriched.json),
-[거부 표B](native-validation-B-rejection_table-enriched.json)를 보존한다.
-A/B87429 실패의 전체2Hz·끝10초10Hz를 직접 검토했다. 학생 성공0이라 교사 성공 참고와 구분한다.
-C는 동일D0에서 TRAIN 커리큘럼만 켜 고정10000스텝 학습과 저장/재로딩 예측 일치를 완료했고 VAL8도0/8로 끝났다.
-실제 표집 대상 행이1367→7219로 넓어지는 로그와 D0 동일 해시를 확인했다
-([진행 중 근거](native-C-curriculum-live-receipt.json)).
-[후속 실행기](native-experiment-launch.json)는 기존 A/B를 재제출하지 않고,
-검증→실제 영상 검토→h4→검토→h5→검토→선택 봉인→최종40 순서로 진행한다.
-학습 실행 소스는c27a9d537로 고정하고 조정 코드37a8c8336과 구분한다.
+모든 후보의 VAL 성공률과 기하 진단이 동률이라 사전 규칙의 A/off를 유지했다.
+[선택 고정](native-final-selection.json)은19:36:21.857988Z이며 최종 평가 시작19:39:12.719358Z보다 이르다.
+최종 결과를 본 뒤 체크포인트·입력·허용치·평가 시드를 바꾸지 않았다.
 
-종료된 자체 소스 사본8개만 sparse checkout으로 줄여 순여유10640805888바이트를
-확보했다. HEAD와 Git clean을 각각 확인했고, 원본·체크포인트·Git 객체는 보존했다
-([복원 명령/공간 기록](native-source-storage.json)).
+| 최종40 물리 관문, 누적 | 통과 | 직전 관문에서 탈락 |
+|---|---:|---:|
+| 채점된 실행 | 40 | 0 |
+| 양손 하중 관찰 | 2 | 38 |
+| 안정적 들기 | 1 | 1 |
+| 안정적 내려놓기 | 0 | 1 |
+| 임무 성공 | 0 | 0 |
 
-교사 라이브러리6f057f7e → MJWarp controller f0db6b1a → 기록API0362037의
-출처 관계를 유지한다. warpfit df5a1f86a의 프로필 파일 SHA256
-`a5c8d370755034b9f9615f66a94b87883327b7d7ecc4e13082eac2c2d4751c6a`는 byte 그대로다.
-공용 backend·장면 수정0. 후속 native learning dispatcher는 명시적 단계별 호출만 하며
-실패 후 자동 재시도하지 않는다. 최종평가는 A/B·h4·h5의 검증과 실제 영상 검토,
-검증 기준 선택 봉인 뒤에만 후속 실행기가 한 번 시작한다. h1/h2/h3은 계속 기본off·미구현이다.
-h4 C와 h5 D1은 각각10000스텝 새 초기화로 비교한다.
+[물리 순서 관문표](native-final-physical-funnel.json)는 명령 종료16회와 구분한다.
+명령 종료16회에는 안정 들기가 없고, 유일한 안정 들기91637은 grasp900스텝 동안 완료를 내지 못해 cap_end였다.
+그 실행의 최대 안정 들기 지속은73.1초다. [불일치 표](native-final-stage-disagreement.json).
+기하 정렬 진단은40/40 미통과였지만91637은 안정 들기에 성공했다. 따라서 이 진단은 실제 파지 성공의
+검증된 필요조건이나 전체 실패 원인이 아니다. [반례](native-alignment-diagnostic-counterexample.json)를 보존하고 임계값을 사후 조정하지 않았다.
+[최소 틈·물체 이름을 보완한 표](native-rejection-table-final40-enriched.json)는 저장 자세의 기하 질의이며,
+GPU 접촉력·실제 막은 물체·CPU 물리 견고성의 증거로 확대하지 않는다.
+시작 프레임에서 같은 색2개 이상이 보인 실행은6/40이다.
 
-검증: 수정 접촉/분모/입력경계 관련 비물리5pass; 기존 ACT16 관련36pass1torchskip.
-이는 CUDA 학습·native 관문 성공을 뜻하지 않는다. 최종91620–91659는 미개봉이다.
+실패91620·91621과 부분 들기91637의 전체0–90SIM초2Hz181장씩, 끝80.1–90초10Hz100장씩을 직접 보았다.
+91620은 약7초,91621은 약14초부터 대상이 사라진 뒤 바닥 화면에 머물렀다.
+91637도14초 이후 바닥 화면이지만 원본 물리 원장은 안정 들기73.1초를 기록했다. 영상만으로 들기를 판정하지 않았다.
+[91620](native-final-91620-playback-review.json), [91621](native-final-91621-playback-review.json), [91637](native-final-91637-playback-review.json).
+[몽타주](native-final-montage.png)의 세 번째 행은 **교사 성공 참고87429이며 ACT 성공이 아니다**.
+학생 임무 성공 예는0개다. 영상 원본은 gcp2에 남기고 최종 Mac 회수는 프레임 띠·몽타주·요약으로 제한했다.
+각 영상은 gcp2에서 ffprobe 확인·8MB 미만이며 전송한 모든 이미지/메타 파일 SHA가 일치했다.
+생성기의 환경·이전 기록 형식·완료 출력 오류는 [후처리 기록](native-final-montage-postprocess-note.json)에 남겼다.
+마지막 출력 예외 전에 생성된 PNG/JSON은 원 실행 소스 해시·파일 해시·직접 이미지 검토로 확인했다.
 
-참고 자료와 사전 계획은 [resume3](../resume3/README.md), [protocol](../resume3/protocol.json),
-[warpfit PR562](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/562),
-[act16a PR528](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/528).
-Refs #523, PR #539 DRAFT.
+native 교사 관문87220–87259는40/40, 별도 기록87420–87459도40/40이다.
+원시 Score40개씩 재계수와 원본 파일8254+8315개 SHA 검사가 일치했다.
+18046개 native640×480/10Hz JPEG·발행 이력·교사 표적이 정합했고 선택된14886행은 TRAIN11860/32시작·VAL3026/8시작이다.
+[관문](native-gate-independent.json), [기록](native-record-independent.json), [데이터 수신](native-dataset-receipt.json).
+정식 teacher queue 없이 실행돼 원본 gate_eligible=false였음은 [조정자 측정 관문 수용 기록](coordinator-native-gate-recount.md)에 명시했다.
+원본 장면의 적용 전 noslip10 표기는 [별도 주석](native-provenance-annotations.json)이 보완한다. 원본 flag/score/253파일은 바꾸지 않았다.
+실제 최종7그룹40세계의 CPU/GPU noslip0과 warpfit 파일 해시는 [실행 설정 기록](native-final-contact-receipts.json)에 있다.
 
+h5 TRAIN20 접두 궤적5427관측에서290 h0 라벨을 얻었다. 비초기270개는7시작에만 있고13시작은 초기 라벨뿐이다.
+마지막 유효 시각12SIM초, 미래7표적 padding, D0 정규화 동일, held/invisible/교사 행동 실행0이다.
+[자료 범위](native-h5-data-receipt.json), [파일242개 감사](native-dagger-dataset-files-independent.json).
+전체 스킬/회복 교사 성공을 검증한 자료가 아니며, 이 TRAIN 접두 궤적의 cap_end14개를 학생 최종 분모에 넣지 않는다.
+h1/h2/h3는 off·미구현·미평가다. 현재 RGB/작은 이동 후보도 후속 미실행 제안이며 이번 결과가 아니다.
+후속 모델을 개발하더라도 이번 최종40을 새 독립 확증처럼 재사용하지 않는다.
 
-A/B 입력 비교의 정확한 범위는16개 발행 명령의 각 `[wheel4,duration4]`128열이다.
-B는 이128열을 정규화 좌표의0(=TRAIN 평균)으로 바꾸고, 서보PWM5·명령 age·작업 토큰·
-시계는 유지한다. 물리적으로0인 명령으로 바꾸거나 모든 명령 이력을 지우는 실험이 아니다.
-같은 변환 함수가 훈련과 추론에 쓰인다.
+교사 라이브러리6f057f7e → MJWarp controller f0db6b1a → 녹화API0362037을 구분한다.
+실제 학습/평가 소스는c27a9d537, 후속 실행기37a8c8336, 사후 분석34d53cfa다.
+warpfit df5a1f86a 프로필 파일 SHA256 `a5c8d370755034b9f9615f66a94b87883327b7d7ecc4e13082eac2c2d4751c6a`는 byte 그대로다.
+공용 backend/장면 수정0, weld off, 손으로 짠 근거리 학생 보정0, LLM/API 호출0이다. ACT forward 호출은 별도 계수되지 않았다.
+첫30SIM 그룹 규모 가중 지연 중앙값39.98 wall/SIM은 속도 관문 미통과다. 시작/컴파일을 포함한 그룹 지연이며
+일찍 끝난 그룹은 제외했다. 명시한 속도 예외로 평가했고 속도 통과로 보고하지 않는다
+([명령·지연](native-final-first30-statistics.json), [종료 원본과 구간 해시 일치](native-final-first30-prefix-final-check.json)).
 
-직접 확인한 참고 자료와 이번 구현의 범위:
+[모델 Release](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/tag/models-20261016-act16w-native-v1)에
+A/B/C/D1을 각각 보존했다. 공개 재다운로드·전체76파일 SHA·새 공개 태그805a3b440 체크아웃 CPU 로딩4개를 확인했다
+([모델 확인](native-public-model-verification.json)). 기존 ACT 환경이며 새 가상환경/물리 성공/전체 원시 데이터 백업 확인은 아니다.
+태그 생성 당시 staged 상태는 공개 verified catalog와 현재 `configs/model_artifacts.json`의 확인 기록이 보완한다.
+원 실행기의 정적 업로드/검토 대기 표기도 [완료 후 별도 주석](native-delivery-status-annotations.json)이 실제 영수증에 연결한다.
+[공개 최종 결과](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261016-act16w-native-v1/native-final40-results-v1.json)도
+익명 재다운로드와 해시 일치를 확인했다([영수증](native-final-results-public-verification.json)).
+noslip10 A0/5·B0/5와 그 두 모델은 별도 비교 자료이며 native와 합산하지 않는다.
 
-- [ACT 원논문, Zhao et al. 2023](https://arxiv.org/abs/2304.13705): 행동 시퀀스를 학습하는 ACT의 출처. 이번에는 고정 chunk8·temporal ensemble OFF이며 원논문의 로봇·성공률을 전용하지 않는다.
-- [DAgger, Ross et al. 2011](https://proceedings.mlr.press/v15/ross11a.html): 자기 행동이 후속 관측 분포를 바꾸는 모방학습 문제의 동기. 이번 h5는 TRAIN20 시작의 최대30SIM초 방문 상태를 한 번 재라벨하며 h0만 유효·나머지7표적은 padding이다. 원형 전체 알고리즘이나 이론 보장을 재현했다는 주장은 하지 않는다.
-- [Curriculum Learning, Bengio et al. 2009, ICML 공식 초록](https://icml.cc/Conferences/2009/abstracts.html): 쉬운 예제에서 복잡한 예제로 순서를 넓히는 동기. 이번 h4의 구체적 난도는 TRAIN 시작 거리·절대 yaw의 경험 CDF이며 VAL/최종 시드로 맞추지 않는다. 저자 PDF/ACM 직접 열기는 실패해 공식 학회 초록 확인 범위로 기록한다.
-- [MuJoCo 거리 API](https://mujoco.readthedocs.io/en/stable/APIreference/APIfunctions.html#mj-geomdistance), [모델 형식](https://mujoco.readthedocs.io/en/stable/APIreference/APItypes.html): 저장 자세의 이름 있는 기하 거리 검사만 참고했다. 기존 컴파일 geometry를 복원하고 처음·마지막 프레임의 전수 계산과 대조한다. 거리 상한과 legacy CCD 정확도 한계를 보존하며 C 물리 견고성 시험으로 세지 않는다.
+타 임대0·타 Python/MuJoCo/ffmpeg0·GPU0%/0MiB를 확인한 뒤 소유 L4만 정지했고 **TERMINATED**를 확인했다
+([정지 전](owned-VM-final-stop-check.json), [정지 후](owned-VM-terminated.json)). idle20·budget-stop 유지, wall 상한 없음, CPU VM 시작0이다.
+[비용 기록](native-cost-accounting.json): 인수 관찰 구간5.965시간의 VM 계산비 추정$6.54, 전체 VM8.002시간은$8.77이다.
+전체 VM에는 인수 전 사용이 포함된다. 저장된 Seoul g2-standard-8 단가$1.096224308/h를 썼고 실청구·크레딧 잔액·디스크/네트워크 비용은 조회하지 않았다.
+A/B가 병렬이므로 각 optimizer wall 시간을 합쳐 GPU 임대 시간으로 보고하지 않는다.
 
-
-[동일 시드87429 비교 몽타주](native-A-B-teacher-montage.png)는 A/B 실패2개와
-기록 단계의 교사 성공 참고1개를 나란히 보여 준다. 교사 성공을 ACT 성공으로 세지 않는다.
-[교사 전체 검토](native-teacher-87429-playback-review.json)는0–45초2Hz와
-끝35.5–45.4초10Hz를 모두 확인했다. A/B/교사는 같은 시작 qpos·qvel·카메라 설정이며,
-실제640×480 첫 JPEG도 바이트까지 같았다([시작 대조](native-initial-87429-comparison.json)).
-교사 검토용320×240 축소 JPEG를 학생640×480 검토 파일과 비교한 차이는 별도 자료 크기 차이였다.
-학습용 원본 비교에서 픽셀 MAE0·최대차0이다. 이 동일성 검사는87429 한 사례 범위다.
-
-원본 기록 plan의 `split=train`은 최종 데이터 소속을 뜻하지 않는다.
-[소속 주석](native-dataset-split-annotation.json)은 실제 manifest의 TRAIN32/VAL8과
-겹침0을 확인했고,87429는 validation으로 분리됐다.
-[A/B 검증 소속](native-validation-split-annotation.json)은 실제8시드가 protocol VAL과 같음을
-확인한다. 원본 plan·학습 자료·평가 원장은 덮어쓰지 않았다.
-
-C87429의 첫30SIM초 원본61장(2Hz)을 직접 보았다. 약5초에 대상이 오른쪽으로 나간 뒤30초까지 다시 보이지 않았다.
-[부분 검토](native-C-first30-review.json)는 전체 검증·말기10Hz 검토와 구분하며 성공 판정으로 사용하지 않는다.
-
-C의 원본 재계수는0/8(색별각0/2), 양손 하중·안정 들기·내려놓기0, done5·cap_end3·HOST_ERROR0이다.
-기하 정렬 미통과8/8이며 [h4 비교](native-h4-comparison.json)에서 A0/8 대비 관찰된 성공률 차이는0이다.
-이는8회 범위이고 일반적인 효과 없음의 증명은 아니다. C87429의 전체0–73초2Hz·끝63.5–73.4초10Hz를 직접 보았고
-[검토](native-C-87429-playback-review.json)와 [증거 확인](native-review-C.json)을 연결했다.
-학생 성공 예는 없으며 교사 성공 참고와 구분한다. 기존 실행기가 사전 고정 TRAIN20의30SIM DAgger 접두 궤적을 수집 중이다.
-교사 명령 실행은0이며, 실제 유효 라벨·학생 행동 이후 상태 범위는 수집 종료 뒤 별도 감사한다. 최종40은 미개봉이다.
-
-h5 수집20개가 끝났다. 5427관측 중290 h0 라벨을 수용했고,270개는 실제 학생 명령이 교사 제안과 달라진 뒤의 비초기 상태였다.
-그 상태는7개 시작에만 있었고 색별 cyan88/red32/green30/yellow120개다. 나머지13개 시작은 초기 라벨만 남았다.
-최종 유효 시각은12SIM초이며 현재 대상이 보였다고 기록된 라벨은221/290개다. invisible/held/교사 명령 실행은 모두0이다.
-기존 잠재 닫기 명령 경계로5137개가 제외됐다. 이 경계는 실제 파지의 증명이 아니며 그대로 유지했다.
-이는 pre-hover h0 자료의 구조·입력·범위 감사이고, 전체 스킬이나 회복 교사 성공의 확인은 아니다
-([자료 수신](native-h5-data-receipt.json), [제외 표](native-dagger-rejection_table.json)).
-후속 상태270개의 같은 시각 교사 경로 대비 위치 차이는 P95 8.43cm, 가장 가까운 기록 경로점 대비 P95 3.44cm다.
-평가 전용 저장 자세에서 계산했으며 새 위치 허용치나 정책 입력으로 사용하지 않았다.
-
-D1의242개 파일을 새로 해시 검사했고 D0 공유161파일·정규화 해시가 일치했다. TRAIN12150행/52시퀀스(고유 시작32개),
-VAL3026행/8개다. h5의 미래7표적은 전부 padding이고 실제 추가290행은 grasp다.
-원본 dataset-audit의 done_priors는 D0에서 상속된 기록이다. 실제 학습은 같은 completion_priors 알고리즘으로
-D1의 grasp32/9345, release32/2805를 다시 계산했다. 입력 정규화는 D0와 byte 동일하다
-([파일·행·메타 수신](native-dagger-dataset-files-independent.json)). 사후 검증기 split 키 오타는
-원 스크립트/로그를 보존하고 v2에서 고쳐 통과했다. 데이터·정책·학습 코드는 변경하지 않았다.
-
-TRAIN87422(전체0–24.5/끝14.6–24.5초)와87431(전체0–30/끝20.1–30초)의2Hz/10Hz 영상을 모두 직접 보았다
-([87422](native-dagger-87422-playback-review.json), [87431](native-dagger-87431-playback-review.json)).
-대상이 화면 아래로 나간 뒤 다시 보이지 않았고, 평가 전용 원장의 양손 하중·안정 들기도0이었다.
-이 TRAIN 예시와14개30SIM prefix cap_end를 최종 성능 분모에 넣지 않는다.
-D1도 동일10000스텝과 저장/재로딩 예측 일치를 완료했고 VAL8을 시작했다. h5 성공률 효과와 최종40은 아직 미측정이다.
-
-[네 모델의 완료 학습 곡선](native-abcd-learning-curves.png)은 각10000스텝의 실제 로그다.
-movement L1·KL은 내려갔고 completion BCE의 간헐 급등은 남았다. 임무 성공률은 별도 검증한다.
-[학습 완료 수신](native-ABCD-training-receipt.json)과 [Release 예정 목록](native-release-publication-plan.json)은
-공개 업로드·재다운로드·로딩 확인 전 단계다. 모델 등록/패키지의 비물리11검사가 통과했다.
-최신 warp-act6d680e375와의 녹화 진입점 충돌은 소유자 파일을 byte 그대로 수용해 정리했고
-비물리 계약20검사가 통과했다([인계 병합](warp-act-base-refresh-merge.json)). 실제 연구 실행 소스c27은 고정이다.
-
-D1도 원본 재계수0/8(색별0/2), 정렬 탈락8/8, 안정 들기·내려놓기0, done1·cap_end7·HOST_ERROR0이다. 전체0–90초2Hz181장과 끝80.1–90초10Hz100장을 직접 검토했다. 약5초 대상 이탈 후 끝까지 회복하지 못했다([검토](native-D1-87429-playback-review.json), [h5 비교](native-h5-comparison.json)). 성공률 차이는 C 대비0pp이고 cap_end는3→7이다. 이8회로 일반적인 효과 없음을 주장하지 않는다.
-
-모든 후보가 성공률·정렬 탈락 동률이라 [사전 규칙](native-final-selection.json)대로 A를19:36:21.857988Z에 고정했다. 최종40 결과를 보기 전의 선택이며 이후 튜닝하지 않는다. [Release](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/tag/models-20261016-act16w-native-v1)의 네 모델은 공개 재다운로드·내부76파일 해시·새 공개 태그 체크아웃 CPU 로딩을 확인했다([영수증](native-public-model-verification.json)). 기존 ACT 환경을 사용했으므로 새 가상환경 검증은 아니고 임무 성공·원시 학습 자료 전체 백업도 아니다. 태그 생성 당시 staged였던 상태는 별도 공개 verified catalog와 현재 등록부가 보완한다.
+원본은 `/home/ugrp/ugrp-sim/runs/act16w-native-{gate-r2,record-r1,dataset-r1,training-r1,experiment-r1}`와 관련 reference 디렉터리에 보존한다.
+재현은 원본 JSON의 `reproduce`와 이 폴더의 `final-delivery.py`, `finalize-native-results.py`를 따른다.
+단계별 당시 진행 기록은 [stage-history.md](stage-history.md)에 보존했다. PR #539, Refs #523은 draft이며 독립 제어/사전등록 검토가 남아 있다.
