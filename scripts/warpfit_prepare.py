@@ -14,11 +14,38 @@ from types import SimpleNamespace
 from scripts.warpfit import dump, digest, host
 
 
+def finish(root):
+    import numpy as np
+    import mujoco
+    from scripts.simalt_compiled_compat import export_geometry,export_reference
+    for name in ('box','beam','drive'):
+        folder=root/name;meta=json.loads((folder/'fixture.json').read_text())
+        os.chdir(meta['asset_cwd'])
+        m=mujoco.MjModel.from_xml_path(str(folder/'scene.xml'))
+        export_geometry(m,folder/'scene.xml',mujoco.__version__,folder/'geometry312.npz')
+        export_reference(m,folder/'scene.xml',mujoco.__version__,folder/'actuator312.json')
+    drive=root/'drive';archive=np.load(drive/'fixture.npz');arrays={k:archive[k] for k in archive.files}
+    meta=json.loads((drive/'fixture.json').read_text());groups=[meta['cases'][:9],meta['cases'][9:]]
+    for i,group in enumerate(groups):
+        length=max(len(arrays[r['id']]) for r in group)
+        arrays[f'group{i}']=np.stack([np.concatenate([arrays[r['id']],np.tile(arrays[r['id']][-1],(length-len(arrays[r['id']]),1))]) for r in group],axis=1)
+    np.savez_compressed(drive/'fixture-batched.npz',**arrays)
+    # Preserve the original generated archive while making the finalized input
+    # explicit. No benchmark has consumed it before this preparation finishes.
+    (drive/'fixture-unbatched.npz').write_bytes((drive/'fixture.npz').read_bytes())
+    (drive/'fixture.npz').write_bytes((drive/'fixture-batched.npz').read_bytes())
+    meta['groups']={f'group{i}':[r['id'] for r in group] for i,group in enumerate(groups)}
+    dump(drive/'fixture.json',meta)
+    dump(root/'fixtures-final.json',{name:{p.name:digest(p) for p in (root/name).iterdir() if p.is_file()}
+                                    for name in ('box','beam','drive')})
+
+
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--teacher-source',type=Path,required=True)
     p.add_argument('--root',type=Path,required=True)
     p.add_argument('--enabled',action='store_true')
+    p.add_argument('--finish-only',action='store_true')
     a=p.parse_args()
     if not a.enabled:p.error('--enabled required')
     host()
@@ -27,6 +54,9 @@ def main():
     import numpy as np
     import mujoco
     if mujoco.__version__!='3.12.0':raise ValueError('frozen C3.12 fixture source required')
+    if a.finish_only:
+        finish(root)
+        return
     sys.path.insert(0,str(source));sys.path.insert(1,str(own/'scripts'))
     import scripts
     scripts.__path__.insert(0,str(source/'scripts'))
@@ -137,6 +167,7 @@ def main():
     dump(drive/'fixture.json',meta)
     dump(root/'fixtures.json',{name:{p.name:digest(p) for p in (root/name).iterdir() if p.is_file()}
                               for name in ('box','beam','drive')})
+    finish(root)
 
 
 if __name__=='__main__':main()

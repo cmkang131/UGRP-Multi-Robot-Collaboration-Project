@@ -44,6 +44,13 @@ def load(a):
     os.chdir(meta['asset_cwd'])
     xml = apply((a.fixture/'scene.xml').read_text(), a.profile)
     m = mujoco.MjModel.from_xml_string(xml)
+    if a.engine=='warp':
+        # Keep the existing C3.12 compiled mesh/actuator compatibility constant
+        # across ALL contact profiles. Drivecheck owns collider cause analysis;
+        # this experiment changes contact/solver settings, not wheel geometry.
+        from scripts.simalt_compiled_compat import apply_geometry, apply_reference
+        apply_geometry(m,a.fixture/'scene.xml',a.fixture/'geometry312.npz')
+        apply_reference(m,a.fixture/'scene.xml',a.fixture/'actuator312.json')
     f = np.load(a.fixture/'fixture.npz')
     for k in ('tree_sleep_policy', 'cam_pos', 'cam_quat', 'cam_resolution', 'cam_sensorsize', 'cam_intrinsic'):
         if k in f:
@@ -106,6 +113,9 @@ def run(a):
                 raise ValueError('pinned MJWarp required: '+url)
             report.update(mjwarp_source=url, warp=wp.__version__)
             wm=mjw.put_model(m)
+            from scripts.simalt_collision_compat import install_legacy_plane
+            report['collision_adapter']=install_legacy_plane(m)
+            report['compatibility_held_constant']='C312 mesh/actuator compilation and legacy plane; every profile'
             # Baseline preserves the earlier path's explicit 1e-8 tolerance.
             # Native profiles accept the pinned float32 conversion floor.
             if a.profile == 'baseline_noslip10':
