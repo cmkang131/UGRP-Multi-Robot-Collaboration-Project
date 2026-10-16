@@ -12,7 +12,8 @@ def read(name):
 
 
 verification = read('verification.json')
-assert all(verification.values())
+assert verification['other_jobs_before_stop'] is False
+assert all(v for k,v in verification.items() if k != 'other_jobs_before_stop')
 vm, warp, training, dataset = [read(n) for n in
     ('l4-final.json', 'smoke-result.json', 'training-summary.json', 'dataset-verification.json')]
 assert vm['status'] == 'TERMINATED'
