@@ -114,7 +114,10 @@ def main():
     if not os.uname().nodename.startswith('ugrp-sim-gcp2'):raise ValueError('gcp2 analysis only')
     import numpy as np
     a.output.mkdir(parents=True,exist_ok=False)
-    models={k:model(a.root/k,a.assets) for k in ('box','beam','drive')}
+    models={'original':{k:model(a.root/k,a.assets) for k in ('box','beam','drive')}}
+    if (a.root/'primitive-v1').exists():
+        models['primitive-v1']={k:model(a.root/'primitive-v1'/k,a.assets) for k in ('box','beam','drive')}
+    def protocol(report):return 'primitive-v1' if '/primitive-v1/' in report.get('fixture','') else 'original'
     results=[];rejections=[];thresholds={};sample_funnels=[]
     folders=sorted(a.root.glob('R*/**/result.json'))
     for rp in folders:
@@ -122,9 +125,9 @@ def main():
         if r.get('engine')=='cpu' and r.get('completed') and not r.get('cap_end'):
             kind='box' if 'box' in folder.name else 'beam' if 'beam' in folder.name else None
             if kind:
-                m,meta,f=models[kind];rows,points=grip(folder,m,meta)
+                pr=protocol(r);m,meta,f=models[pr][kind];rows,points=grip(folder,m,meta)
                 if points:
-                    thresholds[kind]=dict(height_p05_m=float(np.percentile([v['height_m'] for v in points],5)),
+                    thresholds[pr+'/'+kind]=dict(height_p05_m=float(np.percentile([v['height_m'] for v in points],5)),
                         slip_p95_m=float(np.percentile([v['slip_m'] for v in points],95)),
                         samples=len(points),positive_finger_samples=sum(v['all_fingers'] for v in points),
                         source=str(folder),source_states_sha256=hashlib.sha256((folder/'states.npz').read_bytes()).hexdigest(),
@@ -141,11 +144,11 @@ def main():
             profile=r['profile']['profile'])
         argv=r['reproduce'];case=argv[argv.index('--case')+1] if '--case' in argv else 'tape'
         kind='box' if 'box' in folder.name else 'beam' if 'beam' in folder.name else 'drive'
-        row['kind']=kind;row['case']=case
+        row['kind']=kind;row['case']=case;row['protocol']=protocol(r)
         if r.get('completed') and not r.get('cap_end'):
-            m,meta,f=models[kind]
+            m,meta,f=models[row['protocol']][kind]
             if kind in ('box','beam'):
-                worlds,points=grip(folder,m,meta);row['worlds']=worlds;ref=thresholds.get(kind)
+                worlds,points=grip(folder,m,meta);row['worlds']=worlds;ref=thresholds.get(row['protocol']+'/'+kind)
                 row['threshold']=ref
                 if ref and ref['established']:
                     for w in worlds:
