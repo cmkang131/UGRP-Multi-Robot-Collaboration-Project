@@ -1,0 +1,59 @@
+{
+  "source_sha": "3968d416f13d320a151d7c523b15c042c6d82dab",
+  "raw_dir": "/Users/changmin/projects/ugrp-wt/plannerswap/outputs/plannerswap-smoke-20261016-b",
+  "reproduce": "PYTHONPATH=. /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-16-plannerswap/probe.py --execute --output outputs/plannerswap-smoke-NEW-ID (3 paid POSTs; do not rerun for this task)",
+  "candidates": 1,
+  "requests": 3,
+  "own_rgb_images": 3,
+  "stages": [
+    {
+      "gate": "prepared own-RGB request",
+      "cumulative_passed": 3,
+      "rejected": 0,
+      "reason_category": "none",
+      "blocking_object": "not_applicable_api",
+      "minimum_gap": "not_measured_not_applicable_api"
+    },
+    {
+      "gate": "HTTP 200",
+      "cumulative_passed": 3,
+      "rejected": 0,
+      "reason_category": "none",
+      "blocking_object": "not_applicable_api",
+      "minimum_gap": "not_measured_not_applicable_api"
+    },
+    {
+      "gate": "response provider CoreWeave",
+      "cumulative_passed": 3,
+      "rejected": 0,
+      "reason_category": "none",
+      "blocking_object": "not_applicable_api",
+      "minimum_gap": "not_measured_not_applicable_api"
+    },
+    {
+      "gate": "fp4 filter + matching official endpoint catalog (inferred)",
+      "cumulative_passed": 3,
+      "rejected": 0,
+      "reason_category": "none",
+      "blocking_object": "not_applicable_api",
+      "minimum_gap": "not_measured_not_applicable_api"
+    },
+    {
+      "gate": "valid JSON act",
+      "cumulative_passed": 3,
+      "rejected": 0,
+      "reason_category": "none",
+      "blocking_object": "not_applicable_api",
+      "minimum_gap": "not_measured_not_applicable_api"
+    }
+  ],
+  "auxiliary_metadata_lookup": {
+    "passed": 0,
+    "rejected": 3,
+    "reason_category": "generation_GET_HTTP_404",
+    "blocking_object": "OpenRouter generation lookup",
+    "minimum_gap": "not_measured_not_applicable_api"
+  },
+  "simulation_queue_submitted": false,
+  "rejection_table_required_for_next_E2E": "coordinator must link the E2E predecessor-search funnel, not replace it with this API smoke funnel"
+}

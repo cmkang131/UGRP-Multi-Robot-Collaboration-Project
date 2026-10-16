@@ -1,0 +1,41 @@
+{
+  "range_sim_s": [
+    0.1,
+    43.400000000000006
+  ],
+  "whole_sample_hz": 2,
+  "last_sample_hz": 10,
+  "last_range_sim_s": [
+    2.3000000000000003,
+    12.200000000000001
+  ],
+  "whole_frame_count": 86,
+  "last_frame_count": 100,
+  "ffprobe": {
+    "format": {
+      "duration": "10.750000",
+      "size": "61410"
+    }
+  },
+  "sha256": "783b0e885e63b3f942ac62087f8b1f1bceae934286497834627727de2eeff7ab",
+  "renderer": "offline C3.12; not MJWarp batch-render parity or throughput",
+  "camera": "unchanged v3 mount and measured K/D; r2 absent by reduced-scene contract",
+  "source_states": "/home/ugrp/ugrp-sim/runs/simalt4/c312-grip/states.npz",
+  "reproduce": [
+    "/home/ugrp/ugrp-sim/src/51048030/scripts/simalt_review_physics.py",
+    "--gcp2-v1",
+    "--source",
+    "/home/ugrp/ugrp-sim/runs/simalt3/runtime/source",
+    "--fixture",
+    "/home/ugrp/ugrp-sim/runs/simalt3/fixture",
+    "--run",
+    "/home/ugrp/ugrp-sim/runs/simalt4/c312-grip",
+    "--out",
+    "/home/ugrp/ugrp-sim/runs/simalt5/review-C312-positive",
+    "--case",
+    "grip",
+    "--failure-time-s",
+    "12.2085"
+  ],
+  "failure_anchor_sim_s": 12.2085
+}
