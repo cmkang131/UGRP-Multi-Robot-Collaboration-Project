@@ -41,7 +41,7 @@ def test_main_admission_rejects_cross_arm_resume(tmp_path):
 def test_categorical_loss_gradient_and_padding_optional():
     import platform
     if platform.system()!='Linux':pytest.skip('GCP2 synthetic torch only; no Mac model')
-    import torch
+    torch=pytest.importorskip('torch')
     from torch import nn
     from types import SimpleNamespace
     from harness.beamact3 import install_head,policy_loss,WHEEL_VALUES
