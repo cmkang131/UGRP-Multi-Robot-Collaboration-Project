@@ -12,7 +12,7 @@ from harness.natural_floor_slam import _matches
 from harness.servo_camera_fk import transform_from_commands
 
 
-def pipeline(images, frames, *, corrected=False, masked=False, features=500, fast=20, stride=1, codec='jpg'):
+def pipeline(images, frames, *, corrected=False, masked=False, features=500, fast=20, stride=1, codec='jpg', levels=8, half=False, blur=False):
     """OpenCV API defaults, except documented diagnostic factors.
 
     ORB.create default nfeatures500, scaleFactor1.2/nlevels8/FAST20;
@@ -22,7 +22,13 @@ def pipeline(images, frames, *, corrected=False, masked=False, features=500, fas
     API defaults prob=.999, threshold=1px, maxIters1000; algebraic minimum5.
     Mutual ratio is separately counted and is not a standard prerequisite.
     """
-    orb=cv2.ORB_create(nfeatures=features,fastThreshold=fast)
+    # Pyramid 1/4 are finite compute-budget ablations of default8. Half-VGA
+    # preserves FOV and scales K with OpenCV resize's pixel-centre convention.
+    # Gaussian3x3/sigma0 is a diagnostic OpenCV operator, not a claim that the
+    # camera has this PSF and never an actor acceptance/quality threshold.
+    orb=cv2.ORB_create(nfeatures=features,fastThreshold=fast,nlevels=levels)
+    intrinsic=K.copy()
+    if half:intrinsic=np.array([[.5,0,-.25],[0,.5,-.25],[0,0,1.]])@K
     computed=[];rows=[]
     for frame in frames:
         rgb=images[frame['frame_id']][codec]
@@ -35,6 +41,10 @@ def pipeline(images, frames, *, corrected=False, masked=False, features=500, fas
         if corrected:
             rgb=cv2.fisheye.undistortImage(rgb,K,D,Knew=K,new_size=(640,480))
             if mask is not None:mask=cv2.fisheye.undistortImage(mask,K,D,Knew=K,new_size=(640,480))
+        if half:
+            rgb=cv2.resize(rgb,(320,240),interpolation=cv2.INTER_AREA)
+            if mask is not None:mask=cv2.resize(mask,(320,240),interpolation=cv2.INTER_NEAREST)
+        if blur:rgb=cv2.GaussianBlur(rgb,(3,3),0)
         gray=cv2.cvtColor(rgb,cv2.COLOR_RGB2GRAY)
         kp,desc=orb.detectAndCompute(gray,mask)
         uv=np.asarray([p.pt for p in kp],np.float64).reshape(-1,2)
@@ -54,10 +64,10 @@ def pipeline(images, frames, *, corrected=False, masked=False, features=500, fas
                     # Essential geometry consumes ideal pixel coordinates even
                     # when descriptor detection was performed on raw fisheye.
                     if not corrected:
-                        ua=cv2.fisheye.undistortPoints(ua.reshape(-1,1,2),K,D,P=K).reshape(-1,2)
-                        vb=cv2.fisheye.undistortPoints(vb.reshape(-1,1,2),K,D,P=K).reshape(-1,2)
+                        ua=cv2.fisheye.undistortPoints(ua.reshape(-1,1,2),intrinsic,D,P=intrinsic).reshape(-1,2)
+                        vb=cv2.fisheye.undistortPoints(vb.reshape(-1,1,2),intrinsic,D,P=intrinsic).reshape(-1,2)
                     cv2.setRNGSeed(i)
-                    e,mask=cv2.findEssentialMat(ua,vb,K,method=cv2.RANSAC,prob=.999,threshold=1.,maxIters=1000)
+                    e,mask=cv2.findEssentialMat(ua,vb,intrinsic,method=cv2.RANSAC,prob=.999,threshold=1.,maxIters=1000)
                     row.update(ransac_n=int(mask.sum()) if mask is not None else 0,reason='essential_returned' if e is not None else 'essential_failed')
         row.update(category='orb_pair_diagnostic',blocked_object='not_observed',minimum_gap_m=None,gap_status='not_measured')
         rows.append(row)
@@ -86,7 +96,9 @@ def run(a):
     configs=[dict(name='opencv-default-raw'),dict(name='opencv-default-rectified',corrected=True),
         dict(name='existing800-masked',features=800,masked=True),dict(name='800-raw',features=800),
         dict(name='2000-raw',features=2000),dict(name='800-fast7',features=800,fast=7),
-        dict(name='800-gap500ms',features=800,stride=5),dict(name='800-lossless',features=800,codec='png')]
+        dict(name='800-gap500ms',features=800,stride=5),dict(name='800-lossless',features=800,codec='png'),
+        dict(name='800-pyramid1',features=800,levels=1),dict(name='800-pyramid4',features=800,levels=4),
+        dict(name='800-half-vga',features=800,half=True),dict(name='800-blur3',features=800,blur=True)]
     diagnostic=[];events=[]
     for name,frames in sorted(grouped.items()):
         images={r['frame_id']:dict(jpg=read_frame(a.input,r),png=cv2.cvtColor(cv2.imread(str((a.input/r['rgb']).with_suffix('.png'))),cv2.COLOR_BGR2RGB)) for r in frames}
