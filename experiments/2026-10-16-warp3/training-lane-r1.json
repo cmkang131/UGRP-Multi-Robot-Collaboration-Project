@@ -1,0 +1,56 @@
+{
+  "status": "complete",
+  "passed": true,
+  "scope": "training critic lane wiring only; no RL update or task gate",
+  "probe_sha256": "7030d247ae5cfc00e79ec2ca604717ca66b241a2ceb4395036a32f15e5ca8dcf",
+  "actor_unchanged_by_critic": true,
+  "actor_fields": [
+    "destination_zone",
+    "issued",
+    "object_kind",
+    "pwm_elapsed_s",
+    "rgb",
+    "robot_id",
+    "role",
+    "sample_id",
+    "schema",
+    "skill",
+    "skill_elapsed_s",
+    "t"
+  ],
+  "critic_length": 512,
+  "truth_fields": [
+    "alignment_rad",
+    "distance_m",
+    "stable_lift",
+    "target_xy"
+  ],
+  "centre_mask_annotation_supported": false,
+  "private_truth_before": {
+    "distance_m": 0.9124985057379403,
+    "alignment_rad": -0.482659929379911,
+    "target_xy": null,
+    "stable_lift": false
+  },
+  "private_truth_after": {
+    "distance_m": 0.9124137558008035,
+    "alignment_rad": -0.48261948259608245,
+    "target_xy": null,
+    "stable_lift": false
+  },
+  "raw_sha256": {
+    "initial-plans.json": "5f2837fd0fbe700c4303407369b298e384ca45878d9a13e4afd290759fea1c90",
+    "owner.stderr.log": "43bf17d47879c3dbf6212b2345a77452461ea13a48d6549940f24fe4e0a8a117",
+    "owner/evaluation-only.jsonl": "154fc98cacbf0c1983682581c0290f10ce4550920c2f41484462fd7b78ee6cf6",
+    "owner/upstream_sleep_world_v1.py": "d7fe71f4f51dbbf7fdfa3c452cc2dfa8591118c57b6e87b3209015ea49cdabc3",
+    "owner/runtime-scene.xml": "856f16e5c3c13cf3d12d9cb2c0e2b0ae0f9d0351ec7ec2d6423dc24c37c93a69",
+    "owner/RUN_META.json": "a7be0ef8c99f4f27f76e60a896a909a73697d13d0d445cf165134c6c98d33cbd",
+    "owner/world-000/scene.xml": "856f16e5c3c13cf3d12d9cb2c0e2b0ae0f9d0351ec7ec2d6423dc24c37c93a69",
+    "owner/world-000/plan.json": "9c392fcbd99acd78ca89209886dd4d3e74b45b17f58fca3e32dddc0ba5f90e61",
+    "owner/world-000/result.json": "2f747607a18b8fa633796083c980f8ff86ba5f66bdc36fefdb99bca091de40bd",
+    "owner/__pycache__/upstream_sleep_world_v1.cpython-312.pyc": "2ebba4093e97e09b719d5031adcd1ea074d3276fa88d9813840df0cf72834d7f",
+    "owner/world-000/review-own/000000.jpg": "bd7398a0d5fecbfc537e5b5419b43869101e85e927662630940627e227237277",
+    "owner/world-000/last10s/000001.jpg": "d4ab9bdd6a708332952c32dd52fbfa31f55e7d29250d5f4a11ba7813e32eda39",
+    "owner/world-000/last10s/000000.jpg": "bd7398a0d5fecbfc537e5b5419b43869101e85e927662630940627e227237277"
+  }
+}

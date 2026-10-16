@@ -1,0 +1,94 @@
+{
+  "recorded_utc": "2026-10-16T09:45:09.478500+00:00",
+  "run": "/home/ugrp/ugrp-sim/runs/warp3/student-full-r1",
+  "scope": "one legacy ACT15 DEV prefix; completed full task N=0; no policy failure-rate claim",
+  "viewed_full_2hz": {
+    "SIM": [
+      0,
+      79
+    ],
+    "frames": 159,
+    "sheets": [
+      "full-2hz-00.jpg",
+      "full-2hz-01.jpg",
+      "full-2hz-02.jpg",
+      "full-2hz-03.jpg",
+      "full-2hz-04.jpg",
+      "full-2hz-05.jpg",
+      "full-2hz-06.jpg",
+      "full-2hz-07.jpg",
+      "full-2hz-08.jpg"
+    ]
+  },
+  "viewed_terminal_10hz": {
+    "SIM": [
+      69.4,
+      79.3
+    ],
+    "frames": 100,
+    "sheets": [
+      "last10s-10hz-00.jpg",
+      "last10s-10hz-01.jpg",
+      "last10s-10hz-02.jpg",
+      "last10s-10hz-03.jpg",
+      "last10s-10hz-04.jpg"
+    ]
+  },
+  "method": "all14 contact sheets directly inspected as files; video validated using ffprobe, no Mac GUI or video app",
+  "timeline": [
+    {
+      "SIM": [
+        0,
+        3.5
+      ],
+      "observed": "colored cargo shifts toward upper/left of own camera"
+    },
+    {
+      "SIM": [
+        4,
+        69.3
+      ],
+      "observed": "cargo outside own camera; own view mostly blue floor and right gray edge; overview body stays near start, visible arm configuration changes"
+    },
+    {
+      "SIM": [
+        69.4,
+        79.3
+      ],
+      "observed": "10Hz strip does not reveal a large fast oscillation missed by the2Hz overview"
+    }
+  ],
+  "different_from_sparse_review": "full prefix confirms prolonged loss from own view; last100 native frames add temporal detail, without a claim about unobserved sub-frame motion",
+  "raw_hash_files": 272,
+  "raw_hash_mismatch": 0,
+  "completed_steps": 793,
+  "last_SIM": 79.3,
+  "resource_cap_end_inferred": 1,
+  "raw_status": "HOST_ERROR",
+  "physical_n": 0,
+  "physical_N": 0,
+  "video_bytes": 122308,
+  "video_speed": 3,
+  "transfer_files": 16,
+  "transfer_sha_mismatch": 0,
+  "root_cause": "unresolved; old source lost issued-command summary on interruption; present transport proof cannot reconstruct old model commands",
+  "evaluation_only_motion": {
+    "source": "evaluation-only recorded free-joint translation; never actor input",
+    "xy_first_m": [
+      -0.3819182217121124,
+      -2.920380115509033
+    ],
+    "xy_last_m": [
+      -0.3891611099243164,
+      -2.8953421115875244
+    ],
+    "xy_peak_to_peak_m": [
+      0.014412164688110352,
+      0.036588191986083984
+    ],
+    "net_displacement_m": 0.026064555818735388,
+    "samples": 794
+  },
+  "reproduce": "student-resource-cap-ledger-r1.json:reproduce",
+  "postprocess": "student-full-r2-audit.json"
+}

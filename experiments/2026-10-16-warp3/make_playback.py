@@ -19,17 +19,24 @@ def main():
     p=argparse.ArgumentParser();p.add_argument('--run',type=Path,required=True);p.add_argument('--world',type=int,required=True)
     p.add_argument('--out',type=Path,required=True);a=p.parse_args();out=a.out;out.mkdir(parents=True,exist_ok=False)
     world=a.run/f'world-{a.world:03d}';state_path=a.run/f'world-{a.world:03d}-states.npz'
+    actor_owner=(a.run/'RUN_META.json').exists() and (world/'states.npz').exists()
+    if actor_owner:state_path=world/'states.npz'
     if not state_path.exists() and a.world==0:state_path=a.run/'world0-states.npz'
     state=np.load(state_path)
     index={int(t):i for i,t in enumerate(state['ticks'])}
     m=mujoco.MjModel.from_xml_string((world/'scene.xml').read_text());d=mujoco.MjData(m)
-    summary=json.loads((a.run/'summary.json').read_text());camera=summary['camera'];cid=m.camera('r1__robot_cam').id
+    summary=json.loads((a.run/('RUN_META.json' if actor_owner else 'summary.json')).read_text());camera=summary['camera'];cid=m.camera('r1__robot_cam').id
     m.cam_pos[cid]=camera['mount_pos'];m.cam_quat[cid]=camera['mount_quat']
     # Review camera only: fit actual r1/target geometry across the whole replay.
     # The source overview clipped starts outside its fixed rectangle. Actor RGB
     # remains the original recorded bytes and its camera is never reframed.
-    plan=json.loads((world/'plan.json').read_text());scene=json.loads((world/'scene.json').read_text())
-    target=scene['box_replicas'][plan['item_id']]['body_name']
+    plan=json.loads((world/'plan.json').read_text())
+    if actor_owner:
+        # Exact solo scene body naming; fail if the recorded model differs.
+        target='cargo_'+plan['item_id'];m.body(target)
+    else:
+        scene=json.loads((world/'scene.json').read_text())
+        target=scene['box_replicas'][plan['item_id']]['body_name']
     roots=[m.body_rootid[m.body(name).id] for name in ('r1__robot',target)]
     gids=np.flatnonzero(np.isin(m.body_rootid[m.geom_bodyid],roots)&np.isin(m.geom_group,[0,1,2,3]))
     paths=[path for path in sorted((world/'review-own').glob('*.jpg')) if int(path.stem) in index]
@@ -71,7 +78,7 @@ def main():
     step=np.diff(selected);hz=10/float(np.median(step)) if len(step) else 2.
     if len(step) and not np.all(step==5):raise ValueError('review timeline must be actual2Hz')
     composed=out/'frames';composed.mkdir()
-    filters="[0:v]drawtext=text='overview - reframed evaluation only':x=4:y=4:fontsize=12:fontcolor=white[a];[1:v]drawtext=text='r1 recorded own RGB':x=4:y=4:fontsize=14:fontcolor=white[b];color=c=0x202020:s=320x240:r=2,drawtext=text='r2 N/A - solo r1 task':x=8:y=110:fontsize=18:fontcolor=white[c];[a][b][c]hstack=inputs=3:shortest=1[v]"
+    filters="[0:v]drawtext=text='overview - reframed evaluation only':x=4:y=4:fontsize=12:fontcolor=white[a];[1:v]scale=320:240,drawtext=text='r1 recorded own RGB':x=4:y=4:fontsize=14:fontcolor=white[b];color=c=0x202020:s=320x240:r=2,drawtext=text='r2 N/A - solo r1 task':x=8:y=110:fontsize=18:fontcolor=white[c];[a][b][c]hstack=inputs=3:shortest=1[v]"
     subprocess.run(['ffmpeg','-y','-loglevel','error','-framerate',str(hz),'-i',str(tops/'%05d.png'),
         '-framerate',str(hz),'-i',str(own/'%05d.jpg'),'-filter_complex',filters,'-map','[v]',
         '-frames:v',str(len(selected)),str(composed/'%05d.jpg')],check=True)
@@ -81,7 +88,7 @@ def main():
     for start in range(0,len(selected),18):
         subprocess.run(['ffmpeg','-y','-loglevel','error','-start_number',str(start+1),'-i',str(composed/'%05d.jpg'),
             '-vf','scale=720:180,tile=3x6','-frames:v','1',str(out/f'full-2hz-{start//18:02d}.jpg')],check=True)
-    ring=sorted((world/'failure-rgb-buffer').glob('*.jpg'))
+    ring=sorted((world/('last10s' if actor_owner else 'failure-rgb-buffer')).glob('*.jpg'))
     for start in range(0,len(ring),20):
         subset=out/f'ring-{start//20:02d}';subset.mkdir()
         for i,path in enumerate(ring[start:start+20]):(subset/f'{i:03d}.jpg').write_bytes(path.read_bytes())

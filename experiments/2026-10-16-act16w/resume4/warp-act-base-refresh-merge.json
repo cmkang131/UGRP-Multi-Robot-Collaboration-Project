@@ -1,0 +1,33 @@
+{
+  "utc": "2026-10-16T19:02:59.678841+00:00",
+  "PR": 539,
+  "previous_reported_base": "0362037280c6cbc4677f70366db43b9892b23690",
+  "actual_refreshed_base": "6d680e375f4e4dd4bbdeb231acfd9f1f92688dba",
+  "premerge_own_head": "067e1f5e4852d067e6c4334a06934ab0e19510d5",
+  "refresh": "closed/reopened same own draft PR; no reviewer requests or reviews existed",
+  "conflict_files": [
+    "scripts/run_warp_act_record.py"
+  ],
+  "resolution": "take incoming owner version byte-exact, including act16w flag alias and hardened recording/error ledger; no custom shared-backend edit",
+  "incoming_record_script_sha256": "2ec6f83048bed0c37989b090e8697d0fb5cbb2d813a7ea91d74ac0ba3fad6daa",
+  "common_backend_matches_incoming": {
+    "scripts/warp_act_backend.py": "bba652bd4b1dd75f71bbd0efc6febc99307713fcc9c382ec87b1d1805ff06aae",
+    "scripts/warp_act_core.py": "c7ba4bd91113796b7bd958afdee69e510bb45c911a499c57d3973aaa64d5adc5",
+    "scripts/warp_act_numpy.py": "790f065a1b266821b58bc9a25dcaab41accb7d8752f393bd9cb99e49e5800321"
+  },
+  "native_profile_sha256": "a5c8d370755034b9f9615f66a94b87883327b7d7ecc4e13082eac2c2d4751c6a",
+  "live_physics_training_source_unchanged": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48",
+  "live_orchestrator_unchanged": "37a8c833656a58ba25472e2106276f225e95ad26",
+  "tests": {
+    "command": "python3 -m pytest tests/test_warp_act_api.py tests/test_act16w_native_contact.py -q",
+    "passed": 20,
+    "wall_s": 0.28,
+    "scope": "nonphysics contract/admission/recording mocks; no simulator/renderer/model imports"
+  },
+  "capture_history_review": {
+    "qualified_f0_source": "warp_act_episode.py:277,380: previous hold then previous=value reassignment",
+    "existing_fresh_native_audit": "18046 pairs compare observation own issued history against original teacher-command ledger and prior command, all passed; no current data defect identified",
+    "new_deepcopy_test": "upstream mock deliberately mutates old previous PWM; accepted owner hardening preserved for future recordings"
+  },
+  "remaining": "current-head CI after merge push; historical clean-ancestry finding applied to stale036 base, not refreshed6d base"
+}

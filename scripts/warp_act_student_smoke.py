@@ -36,10 +36,13 @@ def main():
         compiled_geometry=a.compiled_geometry, out=a.out, nworld=len(plans), enabled=True,
         on_reset=lambda indices: [chunks[i].reset() for i in indices])
     report = dict(status='running', passed=False, checkpoint_sha256=expected,
-                  scope='two own-RGB ACT policy steps only; no full student task score or training')
+                  requested_full_evaluation=a.full_evaluation,
+                  scope=('requested ACT15 full grasp/release; incomplete until scored' if a.full_evaluation else
+                         'two own-RGB ACT policy steps only; no full student task score or training'))
     try:
         client.reset(plans)
         actions_log = []
+        report['actions'] = actions_log  # preserve completed prefix on errors
         # Two steps verify a real inference plus world-local chunk continuation;
         # this is an API transaction count, not a new success/time threshold.
         for step in range(900 if a.full_evaluation else 2):  # existing90SIMs /0.1SIMs

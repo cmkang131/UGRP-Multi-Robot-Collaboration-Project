@@ -1,0 +1,40 @@
+{
+  "command": [
+    "python3",
+    "/home/ugrp/ugrp-sim/src/2b99e00d82f1f9a15769a9e41d4e599969571c9d/scripts/ugrp_session.py",
+    "run",
+    "warp3-warm-gpu-r2",
+    "--",
+    "/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python",
+    "-u",
+    "/home/ugrp/ugrp-sim/src/2b99e00d82f1f9a15769a9e41d4e599969571c9d/scripts/warp_act_gpu_warm.py",
+    "--enabled",
+    "--python",
+    "/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python",
+    "--qualified-source",
+    "/home/ugrp/ugrp-sim/src/f0db6b1abb842ea65b71c433738210254f300a7c",
+    "--teacher-source",
+    "/home/ugrp/ugrp-sim/src/warp1-teacher-snapshot-6f057f7e",
+    "--plan",
+    "/home/ugrp/ugrp-sim/src/f0db6b1abb842ea65b71c433738210254f300a7c/experiments/2026-10-16-warp1/all-source-plans.json",
+    "--compiled-reference",
+    "/home/ugrp/ugrp-sim/runs/warp3/gate-references-r1/case-04/compiled-312.json",
+    "--compiled-geometry",
+    "/home/ugrp/ugrp-sim/runs/warp3/gate-references-r1/case-04/compiled-geometry312.npz",
+    "--out",
+    "/home/ugrp/ugrp-sim/runs/warp3-warm-gpu-r2",
+    "--deadline-utc",
+    "2026-10-16T13:59:09Z",
+    "--hourly-usd-estimate",
+    "1.096"
+  ],
+  "source": "2b99e00d82f1f9a15769a9e41d4e599969571c9d",
+  "deadline_utc": "2026-10-16T13:59:09Z",
+  "env": {
+    "MUJOCO_GL": "osmesa",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "LP_NUM_THREADS": "1"
+  },
+  "env_scope": "live /proc/22584/environ whitelist read only these four nonsecret values"
+}

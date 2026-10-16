@@ -6,6 +6,7 @@ it supplies no input or action. Labels are paired after the controller exits.
 Pilot/cap/error recordings are never automatically admitted as training data.
 """
 import argparse
+from copy import deepcopy
 import hashlib
 import inspect
 import json
@@ -29,8 +30,9 @@ def main():
         p.add_argument('--'+key, type=Path, required=True)
     p.add_argument('--stage', choices=['pilot', 'batch'], default='pilot')
     p.add_argument('--recording-approval', type=Path)
-    p.add_argument('--act16w-host-schema-v1', action='store_true',
-                   help='explicit four-field warp3 gate/live-metadata compatibility')
+    p.add_argument('--warp3-host-schema-v1','--act16w-host-schema-v1',dest='host_schema_v1',action='store_true',
+                   help='explicit four-field pinned warp3 gate/live host compatibility')
+    p.add_argument('--admission-check-only',action='store_true',help='validate batch proof/live host without physics or capture')
     a = p.parse_args()
     if not a.enabled: p.error('recording is default OFF')
     gate = admit(a.qualification, a.qualified_source, a.teacher_source)
@@ -46,15 +48,24 @@ def main():
     import sim
     sim.__path__.append(str(a.qualified_source/'sim'))
     from harness.grasp_act_solo_recording import SoloRecorder, validate_recording, validate_approval
-    worker_source = None
-    if a.act16w_host_schema_v1:
-        if a.stage != 'batch': p.error('host schema compatibility is batch admission only')
-        from act16w_runtime import recording_host_schema_approval, require_gcp2, frozen_source
-        worker_source = frozen_source(Path(__file__).resolve().parents[1])
-        recording_host_schema_approval(a.recording_approval, source_sha=QUALIFIED,
-            gate_host=gate['cohort']['host'], current_host=require_gcp2(training=True))
+    if a.host_schema_v1:
+        if a.stage!='batch':p.error('recording host schema compatibility is batch-only')
+        from warp_act_record_admission import validate
+        from simalt_host import gcp2_identity
+        validate(a.recording_approval,source_sha=QUALIFIED,gate=gate,current_host=gcp2_identity())
     else:
         validate_approval(a.recording_approval, stage=a.stage, sha=QUALIFIED, host=gate['cohort']['host'])
+    if a.admission_check_only:
+        if a.stage!='batch':p.error('admission-only check requires batch stage')
+        a.out.mkdir(parents=True,exist_ok=False)
+        (a.out/'admission-only.json').write_text(json.dumps(dict(status='APPROVED_PINNED',
+            capture_or_physics_executed=False,controller_source=QUALIFIED,
+            gate_raw_sha256=__import__('warp_act_api').GATE_RAW_SHA,
+            adapter_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+            host_schema='warp3_recorded_four_fields_v1' if a.host_schema_v1 else 'legacy',
+            recording_approval=str(a.recording_approval),
+            recording_approval_sha256=hashlib.sha256(a.recording_approval.read_bytes()).hexdigest()),indent=2)+'\n')
+        return
     import warp_act_backend
     original = warp_act_backend.WarpTransport.capture
     a.out.mkdir(parents=True, exist_ok=False)
@@ -75,7 +86,7 @@ def main():
         folder = a.out/f'world-{index:03d}'/'capture'; folder.mkdir(parents=True, exist_ok=True)
         path = folder/f'{len(rows[index]):06d}.jpg'; path.write_bytes(jpeg)
         rows[index].append(dict(t=local['now'], skill=teacher.skill, phase=teacher.phase,
-            previous=local['previous'], path=str(path), sha256=hashlib.sha256(jpeg).hexdigest()))
+            previous=deepcopy(local['previous']), path=str(path), sha256=hashlib.sha256(jpeg).hexdigest()))
         return jpeg
 
     warp_act_backend.WarpTransport.capture = capture
@@ -87,38 +98,39 @@ def main():
         error = repr(exc)
     finally:
         warp_act_backend.WarpTransport.capture = original
-    import cv2
-    import numpy as np
     controller_out = Path(args[args.index('--out')+1])
     results = []
-    for i, frames in rows.items():
-        folder = a.out/f'world-{i:03d}'
-        (folder/'capture-context.json').write_text(json.dumps(frames, indent=2)+'\n')
-        commands = read_jsonl(controller_out/f'world-{i:03d}'/'teacher-commands.jsonl')
-        if len(commands) != len(frames): raise RuntimeError('unpaired capture/command trace')
-        recorder = SoloRecorder(folder, plans[i], frames[0]['previous'])
-        try:
-            for frame, command in zip(frames, commands):
-                jpeg = Path(frame['path']).read_bytes()
-                if hashlib.sha256(jpeg).hexdigest() != frame['sha256'] or frame['t'] != command['t']:
-                    raise RuntimeError('capture bytes/command clock changed')
-                bgr = cv2.imdecode(np.frombuffer(jpeg, np.uint8), cv2.IMREAD_COLOR)
-                recorder.observe(frame['t'], jpeg, bgr, skill=frame['skill'], phase=frame['phase'], previous=frame['previous'])
-                context = command['student_context']
-                recorder.target(command['command'], skill_after=context['skill'], phase_after=command['phase'], complete=command['phase']=='complete')
-            results.append(dict(world=i, seed=plans[i]['seed'], **recorder.record()))
-        finally:
-            recorder.close()
+    try:
+        import cv2
+        import numpy as np
+        for i, frames in rows.items():
+            folder = a.out/f'world-{i:03d}'
+            (folder/'capture-context.json').write_text(json.dumps(frames, indent=2)+'\n')
+            commands = read_jsonl(controller_out/f'world-{i:03d}'/'teacher-commands.jsonl')
+            if len(commands) != len(frames): raise RuntimeError('unpaired capture/command trace')
+            recorder = SoloRecorder(folder, plans[i], frames[0]['previous'])
+            try:
+                for frame, command in zip(frames, commands):
+                    jpeg = Path(frame['path']).read_bytes()
+                    if hashlib.sha256(jpeg).hexdigest() != frame['sha256'] or frame['t'] != command['t']:
+                        raise RuntimeError('capture bytes/command clock changed')
+                    bgr = cv2.imdecode(np.frombuffer(jpeg, np.uint8), cv2.IMREAD_COLOR)
+                    recorder.observe(frame['t'], jpeg, bgr, skill=frame['skill'], phase=frame['phase'], previous=frame['previous'])
+                    context = command['student_context']
+                    recorder.target(command['command'], skill_after=context['skill'], phase_after=command['phase'], complete=command['phase']=='complete')
+                results.append(dict(world=i, seed=plans[i]['seed'], **recorder.record()))
+            finally:
+                recorder.close()
+    except BaseException as exc:
+        # Preserve raw controller/capture bytes and a terminal ledger even when
+        # offline pairing/decoding fails; never promote incomplete samples.
+        error = '; '.join(x for x in (error, 'postprocess: '+repr(exc)) if x)
     summary = dict(status='HOST_ERROR' if error else 'recording_complete', error=error,
         controller_source=QUALIFIED, adapter_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         raw_controller=str(controller_out), stage=a.stage, gate_n=gate['n'], gate_N=gate['N'],
         exact_controller_jpeg=True, training_include=False, data_admitted=False,
         reason='pilot/raw recording requires separate inspected dataset admission', worlds=results,
         sha256={str(x.relative_to(a.out)): hashlib.sha256(x.read_bytes()).hexdigest() for x in a.out.rglob('*') if x.is_file()})
-    if worker_source:
-        summary.update(record_api_source=worker_source,
-            upstream_record_api_source='0362037280c6cbc4677f70366db43b9892b23690',
-            host_schema_compatibility='four recorded fields matched live; historical cpu affinity unavailable')
     (a.out/'summary.json').write_text(json.dumps(summary, indent=2)+'\n')
     if error: raise RuntimeError(error)
 

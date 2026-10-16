@@ -21,8 +21,9 @@ QUALIFIED = 'f0db6b1abb842ea65b71c433738210254f300a7c'
 GATE_RAW_SHA = 'a7f0a28cf927f718245c4c1c31bcf4cc760ad5526be5ff62bfe4a5727bd329be'
 TEACHER = '6f057f7e97c1a3aec9e8c398b8d9068e27b25df8'
 # Native mjSTATE_INTEGRATION plus documented persistent history/sleep state.
-# Compact solver values are derived again at the next step; replay checks that
-# restoring these owners also preserves the untouched world's NEXT dynamics.
+# Compact solver values are derived again at the next step. Independent GPU
+# baselines diverge numerically; only immediate reset/terminal state boundaries
+# are byte-verified. No bitwise guarantee for the untouched NEXT trajectory.
 STATE = ('qpos', 'qvel', 'act', 'history', 'ctrl', 'qacc_warmstart',
          'qfrc_applied', 'xfrc_applied', 'mocap_pos', 'mocap_quat',
          'eq_active', 'time', 'tree_asleep', 'tree_awake',
@@ -106,6 +107,7 @@ class Owner:
         self.current, self.histories, self.previous = [None]*self.n, [None]*self.n, [None]*self.n
         self.rings = [deque(maxlen=100) for _ in plans]  # existing10Hz/10SIMs recording-only rule
         self.log = (self.out/'evaluation-only.jsonl').open('x')
+        self.command_log = None if training else (self.out/'issued-commands.jsonl').open('x')
 
         class ActorTransport(WarpTransport):
             def sync_render(h, contexts):
@@ -382,6 +384,15 @@ class Owner:
         old_ctrl = {i: self.contexts[i]['world'].data.ctrl.copy() for i in inactive}
         for i, action in enumerate(actions):
             if not self.active[i]: continue
+            if self.command_log is not None:
+                # Persist the causal actor input references/issued action BEFORE
+                # physics, including the action interrupted by a host failure.
+                # No evaluation truth is included in this command ledger.
+                obs = self.current[i][0]
+                self.command_log.write(json.dumps(dict(world=i,generation=self.generations[i],
+                    sample_id=obs['sample_id'],t=obs['t'],skill=obs['skill'],
+                    own_rgb=obs['rgb'],action=action),allow_nan=False)+'\n')
+                self.command_log.flush()
             cmd, p = action['command'], self.contexts[i]['port']
             p.apply(dict(kind='wheel_pulse', wheels=cmd['wheels'], duration_s=cmd['duration_s']), now)
             for servo, pulse in cmd['pwm'].items():
@@ -432,7 +443,9 @@ class Owner:
                     dict(status='HOST_ERROR' if reason=='HOST_ERROR' else 'cap_end' if cap else 'interrupted',
                          cap_end=cap, reason=reason, issued_done=False,
                          teacher_criteria_diagnostic=self.contexts[i]['score'].record(False)))
-        self.log.close(); self.hooks.close()
+        self.log.close()
+        if self.command_log is not None:self.command_log.close()
+        self.hooks.close()
 
     def save_states(self, i):
         samples = self.hooks.samples.get(i, [])

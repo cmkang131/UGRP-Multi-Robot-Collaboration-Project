@@ -1,0 +1,191 @@
+{
+  "recorded_utc": "2026-10-16T09:45:09.478500+00:00",
+  "scope": "ordered execution stages, not pooled teacher cohorts",
+  "stages": [
+    {
+      "name": "scene_export_bootstrap",
+      "attempts": 3,
+      "compiled_export": 1,
+      "HOST_ERROR": 2,
+      "independent_teacher_N": 0,
+      "reason": "first nearclip scene-name guard, then missing pinned legacy wall texture; exact scene composition and release geometry extension resolved before N16",
+      "blocking_object": [
+        "floor_light_nearclip_v1",
+        "zone_wall_divider_1_250_14750_2000"
+      ],
+      "minimum_gap_m": null,
+      "minimum_gap_status": "scene construction, not geometry clearance",
+      "raw": "bootstrap-rejection_table.json"
+    },
+    {
+      "name": "distinct_start",
+      "candidates": 16,
+      "passed": 16,
+      "rejected": 0,
+      "independent_teacher_n": 0,
+      "raw": "distinct-proof.json"
+    },
+    {
+      "name": "numpy_teacher_prefix",
+      "attempts": 1,
+      "replica_worlds": 16,
+      "completed_prefixes": 16,
+      "cap_end": 16,
+      "HOST_ERROR": 0,
+      "independent_teacher_N": 0,
+      "raw": "numpy-prefix-summary.json"
+    },
+    {
+      "name": "teacher",
+      "candidates": 40,
+      "passed": 40,
+      "rejected": 0,
+      "cap_end": 0,
+      "HOST_ERROR": 0,
+      "raw": "teacher-gate-qualification-r1.json",
+      "rejection_table": "gate-rejection_table-r1.json"
+    },
+    {
+      "name": "API_probe",
+      "attempts": 6,
+      "passed": 2,
+      "HOST_ERROR": 4,
+      "rejection_category": "independent_baseline_numerical_drift",
+      "blocking_object": "GPU solver reproducibility",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "numerical assertion, not geometry",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3/api-probe-r{1,2,3,4-rpc,5-rpc,8-rpc}/summary.json",
+      "reason": "Initial bitwise next-step assertion failed even for independent identical baselines; retained HOST_ERROR and explicitly limited later proof to immediate/terminal boundaries."
+    },
+    {
+      "name": "native_record_pilot",
+      "attempts": 1,
+      "paired": 30,
+      "unpaired": 0,
+      "controller_cap_end": 1,
+      "HOST_ERROR": 0,
+      "data_admitted": false,
+      "raw": "record-api-audit-r1.json"
+    },
+    {
+      "name": "student_ACT15_prefix",
+      "attempts": 3,
+      "passed": 3,
+      "full_task_N": 0,
+      "raw": "student-api-smoke-r3-audit.json"
+    },
+    {
+      "name": "warm_C16",
+      "attempts": 2,
+      "passed": 1,
+      "unqualified_shared": 1,
+      "replica_cap_end": 32,
+      "HOST_ERROR": 0,
+      "reason": "r1 sampled foreign Python PID23613; r2 unshared",
+      "blocking_object": "PID23613",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "resource contention, not geometry",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3-warm-c16-r{1,2}/summary.json"
+    },
+    {
+      "name": "training_critic_probe",
+      "attempts": 1,
+      "passed": 1,
+      "cap_end": 1,
+      "HOST_ERROR": 0,
+      "RL_updates": 0,
+      "raw": "training-lane-r1.json"
+    },
+    {
+      "name": "GPU_queue_preflight",
+      "attempts": 1,
+      "physics_workers_started": 0,
+      "category": "configuration_path",
+      "reason": "wrong geometry filename caught during wait; own queue interrupted before any worker; corrected in r2",
+      "blocking_object": "/case-04/geometry.npz",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "missing file, not geometry clearance",
+      "raw": "warm-queue-r1-interrupted.json",
+      "cancelled_before_execution": 1,
+      "no_original_summary": true,
+      "posthoc_receipt": true
+    },
+    {
+      "name": "bulk_recording_host_schema_admission",
+      "attempts": 1,
+      "passed": 1,
+      "physics_workers_started": 0,
+      "raw": "record-host-admission-r1.json"
+    },
+    {
+      "name": "warm_GPU",
+      "status": "WAIT_FOREIGN_GPU",
+      "qualified_N64": false,
+      "qualified_N256": false,
+      "blocking_object": "beamact3-B/act16w live CUDA and CPU workers",
+      "reason": "preserve foreign tasks; global GPU quota1 prevents additional L4",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "resource contention, not geometry",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp3-warm-gpu-r2/progress.json"
+    },
+    {
+      "name": "student_ACT15_full_DEV",
+      "attempts": 1,
+      "completed_full_evaluations": 0,
+      "physical_n": 0,
+      "physical_N": 0,
+      "resource_cap_end_inferred": 1,
+      "raw_HOST_ERROR": 1,
+      "reason": "7200s administrative resource cap interrupted at793steps/79.3SIM",
+      "blocking_object": "resource cap",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "resource, not geometry",
+      "raw": "student-resource-cap-ledger-r1.json"
+    },
+    {
+      "name": "student_playback_postprocess",
+      "attempts": 2,
+      "passed": 1,
+      "HOST_ERROR": 1,
+      "reason": "R1 relative floor asset unresolved from wrong CWD; R2 source-root rerun passed without physics rerun",
+      "blocking_object": "relative floor asset path",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "file path, not geometry",
+      "raw": "postprocess-rejection_table-r1.json"
+    },
+    {
+      "name": "command_transport",
+      "attempts": 2,
+      "passed": 1,
+      "HOST_ERROR": 1,
+      "teacher_N": 0,
+      "student_N": 0,
+      "reason": "R1 requested1.0 outside frozen0or absolute.31...40 range; R2.40 accepted and reached world-local GPU ctrl",
+      "blocking_object": "input contract wheel fraction",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "input validation, not geometry",
+      "raw": "command-transport-rejection_table-r1.json"
+    },
+    {
+      "name": "student_SoloScore_posthoc_prefix",
+      "attempts": 1,
+      "passed": 1,
+      "HOST_ERROR": 0,
+      "actual_ACT_steps": 2,
+      "new_physics_steps": 0,
+      "completed_full_evaluations": 0,
+      "raw": "student-score-prefix-r1.json"
+    }
+  ],
+  "reproduce": [
+    "See reproduction-commands.json for actual command arrays, environment, source SHA, fresh output and lease preconditions."
+  ],
+  "run_summary_inventory": "run-summary-inventory-r1.json",
+  "auxiliary_funnels": [
+    "bootstrap-rejection_table.json",
+    "playback-preflight.json",
+    "result-reader-rejection_table.json",
+    "command-transport-rejection_table-r1.json",
+    "postprocess-rejection_table-r1.json"
+  ]
+}

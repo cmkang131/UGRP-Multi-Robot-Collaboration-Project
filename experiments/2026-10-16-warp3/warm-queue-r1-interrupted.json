@@ -1,0 +1,54 @@
+{
+  "status": "cancelled_before_execution",
+  "recorded_posthoc": true,
+  "utc": "2026-10-16T07:07:12.667305+00:00",
+  "physics_workers_started": 0,
+  "independent_gate_N": 0,
+  "category": "configuration_path",
+  "reason": "Own waiting session stopped before GPU worker after discovering incorrect geometry asset basename; requeued corrected path in r2",
+  "blocking_object": "/case-04/geometry.npz",
+  "minimum_gap_m": null,
+  "minimum_gap_status": "file path, not physical clearance",
+  "last_progress": {
+    "stage": "WAIT_FOREIGN_GPU",
+    "utc": "2026-10-16T06:56:07.607086+00:00",
+    "nworld": 64,
+    "foreign_gpu_pids": [
+      2448,
+      2538,
+      4508
+    ],
+    "foreign_compute": [
+      {
+        "pid": 1544,
+        "executable": "/home/ugrp/ugrp-rl1b-act-env/bin/python"
+      },
+      {
+        "pid": 1616,
+        "executable": "/home/ugrp/ugrp-rl1b-act-env/bin/python"
+      },
+      {
+        "pid": 2224,
+        "executable": "python3"
+      },
+      {
+        "pid": 2225,
+        "executable": "python3"
+      },
+      {
+        "pid": 2448,
+        "executable": "/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python"
+      },
+      {
+        "pid": 2538,
+        "executable": "/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python"
+      },
+      {
+        "pid": 4508,
+        "executable": "/home/ugrp/ugrp-rl1b-act-env/bin/python"
+      }
+    ]
+  },
+  "supervisor_log_sha256": "c8c7669a8352e0ee9d64ea881f95473b966952b2740dda99f6f565beab4bcb56",
+  "no_original_summary": "SIGTERM used by session stop had no Python handler; raw progress/log preserved"
+}

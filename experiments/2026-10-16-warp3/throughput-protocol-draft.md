@@ -1,10 +1,17 @@
-# 4단계 warm 측정 검토안 (미구현·미실행)
+# 4단계 warm 측정 프로토콜
 
-40시드 교사 관문과3단계 API 검증 뒤에만 확정·구현한다. 현재 관문의 공유 부하/SIGSTOP 시간은 intrinsic 처리량에서 제외한다.
+40/40 교사 관문과 RECORD_API_READY 뒤에만 구현·실행했다. 진입점은 `scripts/warp_act_warm.py`, CPU `warp_act_c16_warm.py`, L4 `warp_act_gpu_warm.py`. 모두 기본 off다.
 
-- 우선 구동+물리+640×480/10Hz RGB/JPEG 경로를 동일 상자 시나리오의 안정된 접촉 구간에서 비교한다. teacher FSM/ACT 추론/학습 시간은 별도다. 비교 C16은 gcp2 CPU VM, MJWarp N64/256은 외부 GPU 작업이 없는 L4 구간 또는 승인된 gcp2b다.
-- 초기화/JIT/capture/최초 RGB와 별도 동역학 warmup을 시간에서 뺀다. 후보 측정 창3SIM초=기존 Score의 lift_hold_s3초×10Hz=30개 제어 간격이다. 성공 수용 기준이 아니라 실행 예산을 제한하는 측정 창이며, 실제 적용 전 구간 안정성/컴파일 로그/분산을 확인한다. 짧은 창의 결과를 전체 교사/ACT 임무 처리량으로 확대하지 않는다.
-- 초기0.1SIM prefix 반복만으로 warm이라고 하지 않는다. 검토할 방법은 각 backend에서 정상 teacher로 들기/hold에 도달한 뒤 고정 발행 PWM/바퀴0 명령을 유지하는 접촉 부하를 비교하는 것이다. 전체40SIM을 N256으로 여러 번 돌리는 대신 N1 정상 실행의 full integration/sleep/warmstart/relay/port 상태를 정확히 복제할 수 있는지도3단계 reset 검증 뒤 판단한다. 현재 states.npz에는 qpos/qvel만 있어 그 파일만으로 완전한 접촉/sleep snapshot이라고 주장할 수 없다.
-- C와 Warp의 같은 초기 시나리오·알고리즘/명령 조건, 접촉 수·solver iteration·payload 상태·RGB/JPEG 바이트 수를 함께 기록한다. C RGB 동등성이나 물리 동등성을 새 관문으로 넣지 않는다. 복제 world는 처리량 부하일 뿐 독립 교사 n/N에 더하지 않는다.
-- 외부 leases/실행 PID와 측정 구간 실제 부하를 확인한다. GPU 예열과 actor/model 프로세스가 측정 시간에 섞이지 않게 하고, 단독 측정 전 실제 계측 경로를 확정한다. 다른 작업은 중단하지 않는다.
-- SIM초/$는 한 VM 측정 시간과 명시한 hourly 단가 가정으로 계산한다. 겹친 그룹 시간을 합산하지 않으며 실제 결제·크레딧 사용액과 구분한다. 새 VM은8h/idle20분/budget-stop을 유지하고 임대/프로세스 확인 뒤 정지한다.
+같은 f0db 교사·선택 장면·seed8317104/s1_normal_mixed_v4에서 정상 교사 행동을 실행한다. SIM0..3의 초기화/JIT/최초 RGB/동역학 예열을 제외하고 **SIM3..6의30제어 간격**을 잰다. 3SIM는 기존 Score lift_hold_s=3을 유한 측정 예산으로 빌린 값이며 성공·수용 상수가 아니다. 같은 native640×480/10Hz/JPEG를 포함하고 학습용 저장은 끈다. C는3.12.0, Warp는 설치된3.16 계열이며 호스트·backend 결과를 각각 표시한다.
+
+이 값은 **짧은 접근 구간의 warm 실행률**이다. 전체 교사/ACT 임무·학습·접촉 hold의 정상상태 성능으로 확대하지 않는다. 첫10/마지막10간격 중앙값과 p90·구간별 소요를 함께 보존하여 phase별 비용 변화를 드러낸다. 교사 Python 상태기계와 평가 기록도 전체 wall에 포함한다. world는 같은 case 복제 부하이며 독립 교사 n/N=0이다.
+
+C16은16프로세스 모두 warm READY 뒤 동시에 GO, 가장 이른 시작~가장 늦은 종료의48SIM/VM wall로 계산한다. 모두 DONE 뒤에만 FINALIZE하므로 빠른 worker의 압축/마감이 느린 worker 측정에 섞이지 않는다. L4 N64→N256은 같은 boot에서 순서대로, GPU context 없이 다른 작업 종료를 기다린다. 예열·측정 중 외부 CUDA PID와 같은 사용자의 Python/MuJoCo/ffmpeg 작업을 샘플링하며 섞인 시도는 제외한다. timed 로그에 신규 compile이 있어도 제외한다. 다른 작업을 중지하지 않는다.
+
+CPU C16 r1은 외부 Python PID23613이1회 보여 제외했다. r2는 외부 부하 관찰0,48SIM/5.866921376s=**8.181462972 SIM/s**, 자원 상한 cap_end16/HOST_ERROR0이다. 16worker의 원본1360파일 해시 불일치0·visible/held 입력 감사0을 독립 확인했다([감사](warm-c16-r2-independent-audit.json)). 첫10/마지막10간격의 속도 차이가 있어 임무 전체의 안정된 지연이라고 주장하지 않는다.
+
+L4는 현재 외부 beamact3/act16w 작업 종료 대기다. 별도 gcp2b는 GPUS_ALL_REGIONS limit1 때문에 생성이 거절됐고 추가 instance/disk는 남지 않았다. 유한 대기열은 현 boot8h 상한보다2분 앞선13:59:09Z까지이며 budget-stop/idle20분을 유지한다. 공유 부하가 없고 원본 SHA 검증이 끝난 경우만 최종 표에 수록한다.
+
+원본 SIM초/$는 inherited 단가 가정(CPU $3.1454/h, L4 $1.096/h)을 보존한다. 별도로 서울 온디맨드 공시값(CPU $3.145365504/h, L4 $1.096224308/h)을 공식 가격표에서 확인했다([가격 영수증](published-price-verification.json)). 같은 C16 실측률의 공시값 정규화 결과는9364.020385978SIM/$다. compute만의 비교이며 실제 청구·세금·디스크·크레딧 잔액은 검증하지 않았다. 종전 cold/shared warp1 값과 합산하지 않는다.
+
+CPU/GPU의 warm worker 파일 SHA256은 모두`c792ed14422bd0d9d998224d5a8d5f9db272125dac83d6eb726c1912b04c3819`다(e97d/2b99). 측정 중 상태 조회는 VM의 shell `cat progress.json`과 Mac JSON 해석만 사용한다. VM에 별도 Python 관찰자를 띄워 외부 부하 탐지에 섞이지 않게 한다. 완료 후 `recount_warm.py`로 N64/256의 전체 파일 목록·SHA·관측 표본·JIT 구간·입력 감사·계산식을 독립 확인한다.
