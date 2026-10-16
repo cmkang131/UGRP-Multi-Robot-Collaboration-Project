@@ -11,6 +11,7 @@ import os
 from pathlib import Path
 import platform
 import sys
+import xml.etree.ElementTree as ET
 
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
@@ -61,7 +62,15 @@ def run(a):
     for group,planpath,xmlpath,statepath in specs:
         plan=json.loads(planpath.read_text());seed=plan['seed']
         if not xmlpath.is_file():raise ValueError('MISSING_ORIGINAL_XML:'+str(xmlpath))
-        m=mujoco.MjModel.from_xml_string(xmlpath.read_text());d=mujoco.MjData(m);sets=named_sets(m)
+        tree=ET.fromstring(xmlpath.read_text());asset_remaps=[]
+        for node in tree.iter():
+            file=node.get('file','')
+            if file.startswith('/') and '/sim/assets/' in file:
+                replacement=a.renderer_source/'sim/assets'/file.split('/sim/assets/',1)[1]
+                if not replacement.is_file():raise ValueError('MISSING_SOURCE_ASSET:'+file)
+                asset_remaps.append(dict(original=file,resolved=str(replacement),sha256=digest(replacement)))
+                node.set('file',str(replacement))
+        m=mujoco.MjModel.from_xml_string(ET.tostring(tree,encoding='unicode'));d=mujoco.MjData(m);sets=named_sets(m)
         # Reconstruct authored reset: same explicit spawn poses, FOLDED command
         # joint targets and original per-plan beam placement, with zero stepping.
         for rid,spawn in plan['spawns'].items():
@@ -71,7 +80,7 @@ def run(a):
             st._free_pose(m,d,body,(x,y,st.default_free_z(m,body)),yaw)
         report=check(m,d,**sets,option=OPTION)
         rows.append(dict(cohort=group,seed=seed,state_scope='authored_reset_before_native_settle',
-            original_task_tick0=False,plan=str(planpath),xml=str(xmlpath),**report))
+            original_task_tick0=False,asset_remaps=asset_remaps,plan=str(planpath),xml=str(xmlpath),**report))
         statepath=states.get(seed) if group=='act16w_record' else statepath
         if statepath:
             saved=np.load(statepath)

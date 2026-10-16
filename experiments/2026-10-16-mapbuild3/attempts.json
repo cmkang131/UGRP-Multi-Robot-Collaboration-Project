@@ -1,0 +1,47 @@
+[
+  {
+    "attempt": "prepare-r1",
+    "status": "SUPERSEDED_SETUP_ONLY",
+    "reason": "independent posture starts replaced by shared XY; CPU integration0",
+    "category": "setup_diagnostic",
+    "blocked_object": "viewpoint_confound",
+    "minimum_gap_m": null,
+    "gap_status": "not_measured"
+  },
+  {
+    "attempt": "prepare-r1b",
+    "status": "COMPLETE_SETUP_ONLY",
+    "reason": "shared start accepted for FOLDED/HIGH; original scene files unchanged",
+    "category": "setup_diagnostic",
+    "blocked_object": "none:accepted",
+    "minimum_gap_m": null,
+    "gap_status": "no_relevant_contacts"
+  },
+  {
+    "attempt": "capture-r1",
+    "status": "HOST_ERROR_BEFORE_PHYSICS",
+    "reason": "archive renderer has no git metadata",
+    "category": "initialization",
+    "blocked_object": "source_verification",
+    "minimum_gap_m": null,
+    "gap_status": "not_measured"
+  },
+  {
+    "attempt": "capture-r1b",
+    "status": "HOST_ERROR_BEFORE_PHYSICS",
+    "reason": "pinned sim namespace did not include isolated checker",
+    "category": "initialization",
+    "blocked_object": "module_import",
+    "minimum_gap_m": null,
+    "gap_status": "not_measured"
+  },
+  {
+    "attempt": "capture-r1c",
+    "status": "RUNNING",
+    "reason": "clean shared start, actual MJWarp wheels; not complete yet",
+    "category": "capture",
+    "blocked_object": "not_applicable:running",
+    "minimum_gap_m": null,
+    "gap_status": "not_measured"
+  }
+]
