@@ -1,0 +1,35 @@
+{
+  "checked_utc": "2026-10-16T01:45:15.761476+00:00",
+  "own_running_processes": [],
+  "own_lease": {
+    "task": "actdiag",
+    "pid": 20534,
+    "started_at": "2026-10-16T01:27:19.380061+00:00",
+    "expected_end": "2026-10-16T05:00:00Z",
+    "owner": "remote inference and artifact analysis only; no VM stop",
+    "mode": "audit"
+  },
+  "other_leases": {
+    "reloc20.json": {
+      "task": "reloc20",
+      "pid": 17951,
+      "started_at": "2026-10-16T00:45:35.822105+00:00",
+      "expected_end": "2026-10-16T06:00:00Z",
+      "concurrency": 6,
+      "stage": "round2",
+      "controller": "Mac SSH; no credentials on VM",
+      "source_sha": "1b31086019b0d24a696a8069c790f9113d572e0e",
+      "pids": [
+        17981,
+        17979,
+        17980,
+        17983
+      ]
+    }
+  },
+  "other_processes": [
+    "  25304 python          /home/ugrp/ugrp-act-cpu-env/bin/python -"
+  ],
+  "vm_stop_performed": false,
+  "reason": "CPU artifact audit, solo retrieval and sampler complete; other tasks retain VM; L4 inference remains separately leased"
+}

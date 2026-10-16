@@ -1,0 +1,151 @@
+{
+  "scope": "Check CVAE posterior/prior gap without any parameter or buffer update.\n\nEight first TRAIN rows per oracle phase are a fixed inference computation\nbudget. Posterior uses target actions only as an evaluation diagnostic; it is\nnever an allowed student input or a new controller.\n",
+  "phase_counts": {
+    "approach": 8,
+    "align": 8,
+    "ready": 8,
+    "pick": 8,
+    "complete": 8,
+    "search": 8,
+    "relook": 8
+  },
+  "results": {
+    "prior_z0": {
+      "raw": {
+        "N": 56,
+        "wheel_mae": 0.07745338267888979,
+        "pulse_mae_ms": 10.85912319255732,
+        "pwm_mae": 26.097120881927424
+      },
+      "decoded": {
+        "N": 56,
+        "wheel_mae": 0.07031966914547892,
+        "pulse_mae_ms": 10.135383951764533,
+        "pwm_mae": 22.678570514258794
+      },
+      "per_phase": {
+        "align": {
+          "N": 8,
+          "wheel_mae": 0.014209262933056119,
+          "pulse_mae_ms": 1.6129405951127778,
+          "pwm_mae": 7.6749988704919865
+        },
+        "approach": {
+          "N": 8,
+          "wheel_mae": 0.04246692924129962,
+          "pulse_mae_ms": 16.055280217495255,
+          "pwm_mae": 17.39999809265137
+        },
+        "complete": {
+          "N": 8,
+          "wheel_mae": 0.0,
+          "pulse_mae_ms": 0.0,
+          "pwm_mae": 33.79999970742501
+        },
+        "pick": {
+          "N": 8,
+          "wheel_mae": 0.0,
+          "pulse_mae_ms": 0.0,
+          "pwm_mae": 27.050001777336
+        },
+        "ready": {
+          "N": 8,
+          "wheel_mae": 0.0,
+          "pulse_mae_ms": 0.0,
+          "pwm_mae": 11.624998686462641
+        },
+        "relook": {
+          "N": 8,
+          "wheel_mae": 0.38985637710543336,
+          "pulse_mae_ms": 43.01218692888518,
+          "pwm_mae": 12.049998158216477
+        },
+        "search": {
+          "N": 8,
+          "wheel_mae": 0.045705114738563424,
+          "pulse_mae_ms": 10.267279920858527,
+          "pwm_mae": 49.14999830722809
+        }
+      },
+      "kld": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    "posterior_target_conditioned": {
+      "raw": {
+        "N": 56,
+        "wheel_mae": 0.07748075690062632,
+        "pulse_mae_ms": 10.877109379468425,
+        "pwm_mae": 26.092102672193093
+      },
+      "decoded": {
+        "N": 56,
+        "wheel_mae": 0.0703095751270573,
+        "pulse_mae_ms": 10.152236281223002,
+        "pwm_mae": 22.68928479997308
+      },
+      "per_phase": {
+        "align": {
+          "N": 8,
+          "wheel_mae": 0.014234328546483866,
+          "pulse_mae_ms": 1.6252420540731685,
+          "pwm_mae": 7.624998870491987
+        },
+        "approach": {
+          "N": 8,
+          "wheel_mae": 0.0425877349034499,
+          "pulse_mae_ms": 16.161970566947183,
+          "pwm_mae": 17.44999809265137
+        },
+        "complete": {
+          "N": 8,
+          "wheel_mae": 0.0,
+          "pulse_mae_ms": 0.0,
+          "pwm_mae": 33.74999970742501
+        },
+        "pick": {
+          "N": 8,
+          "wheel_mae": 0.0,
+          "pulse_mae_ms": 0.0,
+          "pwm_mae": 27.075001777336
+        },
+        "ready": {
+          "N": 8,
+          "wheel_mae": 0.0,
+          "pulse_mae_ms": 0.0,
+          "pwm_mae": 11.54999868646264
+        },
+        "relook": {
+          "N": 8,
+          "wheel_mae": 0.38968542149869634,
+          "pulse_mae_ms": 43.014968890615926,
+          "pwm_mae": 12.099998158216478
+        },
+        "search": {
+          "N": 8,
+          "wheel_mae": 0.04565954094077095,
+          "pulse_mae_ms": 10.26347245692475,
+          "pwm_mae": 49.27499830722809
+        }
+      },
+      "kld": [
+        0.0008415244519710541,
+        0.0007928349077701569,
+        0.000870831310749054,
+        0.0008873455226421356,
+        0.0009241066873073578,
+        0.0010859593749046326,
+        0.0007687173783779144
+      ]
+    }
+  },
+  "parameter_and_buffer_unchanged": true,
+  "optimizer_steps": 0,
+  "torch_seed": 20261015
+}
