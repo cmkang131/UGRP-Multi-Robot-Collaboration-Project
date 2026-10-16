@@ -106,6 +106,17 @@ def test_audit_records_executed_export_destinations_not_unused_copy_workspace():
     assert writes=={('qpos',),('efm_c',)}
 
 
+def test_reference_audit_uses_independent_cached_numpy_for_all_worlds():
+    d=SimpleNamespace(qpos=Array((4,3)),efm_c=Array((4,3)))
+    cache={};reads=[]
+    def read(array):
+        if id(array) not in cache:reads.append(array);cache[id(array)]=array.numpy()
+        return cache[id(array)]
+    fn=destination_recorder(conditional_export,lambda p:None,read)
+    for world in range(4):fn(SimpleNamespace(qpos=np.zeros(3)),SimpleNamespace(discrete=False),d,world)
+    assert reads==[d.qpos]
+
+
 def test_per_execution_gate_does_not_drop_batch_measurement():
     samples=[dict(sim_s=i,delta_sim_s=1,wall_s=83.) for i in range(1,31)]
     result=summarize(samples,shared_load=False,nworld=16,per_execution=True)

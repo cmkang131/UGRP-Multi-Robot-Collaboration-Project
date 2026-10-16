@@ -62,7 +62,7 @@ def device_reads(function):
     return sorted(paths),hashlib.sha256(source.encode()).hexdigest()
 
 
-def destination_recorder(function,record):
+def destination_recorder(function,record,readback=None):
     """Track destinations in executed upstream branches, excluding workspaces.
 
     MjData.__copy__ does not preserve unused EFM workspaces under the ordinary
@@ -80,6 +80,13 @@ def destination_recorder(function,record):
         return [ast.Expr(ast.Call(func=ast.Name(id='__warp10_destination__',ctx=ast.Load()),
                     args=[ast.Constant(p)],keywords=[])) for p in paths if p]
     class Writes(ast.NodeTransformer):
+        def visit_Call(self,node):
+            self.generic_visit(node)
+            if readback is not None and isinstance(node.func,ast.Attribute) and node.func.attr=='numpy':
+                if node.args or node.keywords:raise ValueError('unsupported reference numpy call')
+                return ast.copy_location(ast.Call(func=ast.Name(id='__warp10_reference_readback__',ctx=ast.Load()),
+                    args=[node.func.value],keywords=[]),node)
+            return node
         def visit_Assign(self,node):
             self.generic_visit(node)
             return [node,*marked(path(t) for t in node.targets)]
@@ -94,7 +101,7 @@ def destination_recorder(function,record):
                 paths.extend([('qLD',),('qLDiagInv',)])
             return [node,*marked(paths)]
     tree=ast.fix_missing_locations(Writes().visit(tree))
-    namespace=dict(function.__globals__,__warp10_destination__=record)
+    namespace=dict(function.__globals__,__warp10_destination__=record,__warp10_reference_readback__=readback)
     exec(compile(tree,'<warp10-executed-export-destinations>','exec'),namespace)
     return namespace[function.__name__]
 
@@ -110,7 +117,14 @@ class EvaluationExport:
         self.owner=owner;self.paths,self.source_sha=device_reads(owner.mjw.get_data_into)
         self.readback=Readback(owner.wp,owner,'evaluator');self.values={}
         self.export,self.ast_audit=exporter(owner.mjw.get_data_into,self.read)
-        self.writes=set();self.reference_export=destination_recorder(owner.mjw.get_data_into,self.writes.add)
+        self.writes=set();self.reference_values={}
+        self.reference_export=destination_recorder(owner.mjw.get_data_into,self.writes.add,self.reference_read)
+
+    def reference_read(self,array):
+        # Independent ordinary NumPy readback, once per immutable audit state;
+        # even the reference must not repeat full-batch D2H for each world.
+        if id(array) not in self.reference_values:self.reference_values[id(array)]=array.numpy()
+        return self.reference_values[id(array)]
 
     def read(self,array):
         try:return self.values[id(array)]
@@ -131,7 +145,7 @@ class EvaluationExport:
     def compare(self,contexts):
         """Initial same-device-state export, every world and exported field."""
         import copy
-        rows=[]
+        rows=[];self.reference_values.clear()
         for i,c in enumerate(contexts):
             actual=c['world'].data;reference=copy.copy(actual)
             self.writes.clear();self.reference_export(reference,c['world'].model,self.owner.wd,world_id=i)
@@ -147,6 +161,7 @@ class EvaluationExport:
                 if getattr(actual,name)!=getattr(reference,name):differences.append(name)
             rows.append(dict(world=i,checked_arrays=checked,exact=not differences,differences=differences,
                 fields=['.'.join(p) for p in sorted(self.writes)],scope='executed upstream export destinations; no unused MjData workspaces'))
+        self.reference_values.clear()
         return rows
 
 
