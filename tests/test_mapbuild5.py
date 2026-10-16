@@ -71,3 +71,23 @@ def test_fixed_floor_calibration_preserves_body_camera_evaluation_transform():
     assert np.allclose(camera@normal+cal['camera_height_m'],0)
     assert np.isclose(np.linalg.norm(normal),1)
     assert np.allclose(camera@rotation.T+origin,floor)
+
+
+def test_camera_evaluation_uses_nominal_lever_arm_without_world_truth():
+    from scripts.mapbuild5_evaluate import estimated_camera
+    calibration=dict(camera_origin_body_m=[.1,0,.2],camera_to_body_rotation=np.eye(3).tolist())
+    xyz,rotation=estimated_camera([2,3,math.pi/2],calibration)
+    assert np.allclose(xyz,[2,3.1,.2])
+    assert np.allclose(rotation@[1,0,0],[0,1,0])
+
+
+def test_evaluator_rejects_modified_sealed_prediction(tmp_path):
+    import hashlib,json
+    from scripts.mapbuild5_evaluate import verify_seal
+    prediction=tmp_path/'trajectory.json';prediction.write_text('[1]')
+    (tmp_path/'prediction-seal.json').write_text(json.dumps(dict(inputs={},predictions={
+        prediction.name:hashlib.sha256(prediction.read_bytes()).hexdigest()})))
+    verify_seal(tmp_path)
+    prediction.write_text('[2]')
+    with pytest.raises(ValueError,match='SEALED_PREDICTION_CHANGED'):
+        verify_seal(tmp_path)
