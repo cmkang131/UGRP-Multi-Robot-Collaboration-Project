@@ -53,6 +53,23 @@ def main():
     saved = np.load(a.run / f'world-{a.world:03d}-states.npz')
     indices = {int(t): i for i, t in enumerate(saved['ticks'])}
     model = mujoco.MjModel.from_xml_string((raw / 'scene.xml').read_text())
+    # Reuse the gate's exact compiled-geometry and sleep-import adapters.
+    # Neither adapter changes the render option under comparison.
+    backend = Path('/home/ugrp/ugrp-sim/src') / read(a.run / 'summary.json')['source_sha']
+    sys.path.insert(0, str(backend / 'scripts'))
+    from simalt_compiled_compat import apply_geometry, apply_reference
+    from warp_act_core import runtime_sleep_policy
+    command = read(a.run.with_suffix('.command.json'))['command']
+    references = read(Path(command[command.index('--per-world-model-references-v1')+1]))
+    xml = raw / 'scene.xml'
+    reference = references[hashlib.sha256(xml.read_bytes()).hexdigest()]
+    apply_geometry(model, xml, Path(reference['geometry']))
+    apply_reference(model, xml, Path(reference['actuator']))
+    policy = mujoco.mjtSleepPolicy
+    model.tree_sleep_policy[:] = runtime_sleep_policy(model.tree_sleep_policy,
+        auto=int(policy.mjSLEEP_AUTO), auto_never=int(policy.mjSLEEP_AUTO_NEVER),
+        auto_allowed=int(policy.mjSLEEP_AUTO_ALLOWED), never=int(policy.mjSLEEP_NEVER),
+        allowed=int(policy.mjSLEEP_ALLOWED))
     data = mujoco.MjData(model)
     gpu_model, gpu_data = mjw.put_model(model), mjw.put_data(model, data)
     remap = raw_fisheye_remap(640, 480)
