@@ -185,6 +185,12 @@ def run(a):
         error=dict(category='HOST_ERROR',reason=repr(exc),blocked_object='physics_recorder',minimum_gap_m=None,gap_status='not_measured')
         raise
     finally:
+        # Recompute from issued history only. Never serialize cumulative pose
+        # covariance as the independent uncertainty of one frame increment.
+        sys.path.insert(0,str(ROOT/'scripts'))
+        from mapbuild2_commands import increments
+        corrected=increments(own,commands)
+        own=[{**row,**corrected[row['sequence'],row['frame_id']]} for row in own]
         dump(a.output/'own.json',dict(schema='ugrp.mapbuild1.own.v1',backend='mjwarp_render',
             physics_backend='mjwarp',scope='issued_wheel_physics',frames=own))
         dump(a.output/'eval-only.json',dict(frames=labels,map=str(MAPS[0]),map_sha256=sha(MAPS[0]),

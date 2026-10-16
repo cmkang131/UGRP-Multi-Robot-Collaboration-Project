@@ -10,6 +10,7 @@ from scripts.mapbuild1_replay import read_frame, replay, score, dump, percentile
 from harness.e2e_rgb_vo import K,D,image_mask,compose
 from harness.natural_floor_slam import _matches
 from harness.servo_camera_fk import transform_from_commands
+from scripts.mapbuild2_commands import increments
 
 
 def pipeline(images, frames, *, corrected=False, masked=False, features=500, fast=20, stride=1, codec='jpg', levels=8, half=False, blur=False):
@@ -77,6 +78,18 @@ def pipeline(images, frames, *, corrected=False, masked=False, features=500, fas
 def run(a):
     a.output.mkdir(exist_ok=False,parents=True)
     manifest=json.loads((a.input/'own.json').read_text())
+    raw_manifest=manifest
+    computed=increments(manifest['frames'],json.loads((a.input/'commands.json').read_text()))
+    normalized=[]
+    for row in manifest['frames']:
+        increment=computed[row['sequence'],row['frame_id']]
+        if not np.array_equal(row['command_delta'],increment['command_delta']):raise ValueError('ISSUED_MEAN_REPLAY_MISMATCH')
+        normalized.append({**row,**increment})
+    manifest={**manifest,'frames':normalized}
+    dump(a.output/'command-covariance-replay.json',dict(scope='own issued history only; original capture retained',
+        reason='capture-r4 serialized cumulative prior covariance; replay uses per-frame independent increments',
+        frame_n=len(normalized),changed_n=sum(not np.array_equal(a['command_covariance'],b['command_covariance'])
+            for a,b in zip(raw_manifest['frames'],normalized))))
     summaries={};outputs={}
     for candidate in ('legacy','orange-columns-fast7'):
         rows=replay(a.input,manifest,candidate=candidate)

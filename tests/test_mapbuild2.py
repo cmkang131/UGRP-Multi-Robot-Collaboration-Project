@@ -46,3 +46,13 @@ def test_camera_evaluation_never_qualifies_closed_command():
     assert transform_from_commands(closed,camera_pose='servo_fk_v1')[0] is None
     for a,b in zip(nominal_unqualified(SEARCH),nominal_unqualified(closed)):
         np.testing.assert_array_equal(a,b)
+
+
+def test_increment_covariance_does_not_repeat_cumulative_pose_uncertainty():
+    from scripts.mapbuild2_commands import increments
+    from harness.active_camera import SEARCH
+    frames=[dict(sequence='drive-off',frame_id=i,t=i/10,servo=SEARCH) for i in range(41)]
+    rows=increments(frames,[dict(t=1.,axis='forward',value=.35,duration_s=.1)])
+    assert np.count_nonzero(rows['drive-off',0]['command_covariance'])==0
+    assert np.trace(rows['drive-off',12]['command_covariance'])>0
+    assert np.count_nonzero(rows['drive-off',40]['command_covariance'])==0
