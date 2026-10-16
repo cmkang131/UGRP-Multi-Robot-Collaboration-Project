@@ -1,0 +1,169 @@
+{
+  "raw": "/home/ugrp/ugrp-sim/runs/e2ewarp-r2",
+  "reproduction": [
+    "/home/ugrp/ugrp-sim/ops-reviews/e2ewarp/inspect-v3.py",
+    "--raw",
+    "/home/ugrp/ugrp-sim/runs/e2ewarp-r2",
+    "--output",
+    "/home/ugrp/ugrp-sim/ops-reviews/e2ewarp/r2-review-v3",
+    "--playback"
+  ],
+  "frame_funnel": [
+    {
+      "stage": "own_rgb",
+      "cumulative_pass_n": 665,
+      "rejected_n": 0
+    },
+    {
+      "stage": "qualified_unloaded_FK",
+      "cumulative_pass_n": 665,
+      "rejected_n": 0
+    },
+    {
+      "stage": "settled_scan",
+      "cumulative_pass_n": 596,
+      "rejected_n": 69
+    },
+    {
+      "stage": "observed_wall_contacts",
+      "cumulative_pass_n": 596,
+      "rejected_n": 0
+    },
+    {
+      "stage": "inserted_keyframe",
+      "cumulative_pass_n": 60,
+      "rejected_n": 536
+    }
+  ],
+  "event_funnel": [
+    {
+      "stage": "client_request",
+      "cumulative_pass_n": 9,
+      "rejected_n": 0
+    },
+    {
+      "stage": "http_200",
+      "cumulative_pass_n": 0,
+      "rejected_n": 9
+    },
+    {
+      "stage": "valid_planner_choice",
+      "cumulative_pass_n": 0,
+      "rejected_n": 0
+    },
+    {
+      "stage": "action_message_accepted",
+      "cumulative_pass_n": 0,
+      "rejected_n": 0
+    }
+  ],
+  "reasons": [
+    {
+      "world": 0,
+      "robot": "r1",
+      "sim_s": 0.0,
+      "category": "llm",
+      "reason_category": "llm",
+      "reason": "llm_http_400",
+      "blocked_object": "not_observed",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "world": 0,
+      "robot": "r2",
+      "sim_s": 0.0,
+      "category": "llm",
+      "reason_category": "llm",
+      "reason": "llm_http_400",
+      "blocked_object": "not_observed",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "world": 0,
+      "robot": "r3",
+      "sim_s": 0.0,
+      "category": "llm",
+      "reason_category": "llm",
+      "reason": "llm_http_400",
+      "blocked_object": "not_observed",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "world": 0,
+      "robot": "r1",
+      "sim_s": 10.0,
+      "category": "llm",
+      "reason_category": "llm",
+      "reason": "llm_http_400",
+      "blocked_object": "not_observed",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "world": 0,
+      "robot": "r2",
+      "sim_s": 10.0,
+      "category": "llm",
+      "reason_category": "llm",
+      "reason": "llm_http_400",
+      "blocked_object": "not_observed",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "world": 0,
+      "robot": "r3",
+      "sim_s": 10.0,
+      "category": "llm",
+      "reason_category": "llm",
+      "reason": "llm_http_400",
+      "blocked_object": "not_observed",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "world": 0,
+      "robot": "r1",
+      "sim_s": 20.0,
+      "category": "llm",
+      "reason_category": "llm",
+      "reason": "llm_http_400",
+      "blocked_object": "not_observed",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "world": 0,
+      "robot": "r2",
+      "sim_s": 20.0,
+      "category": "llm",
+      "reason_category": "llm",
+      "reason": "llm_http_400",
+      "blocked_object": "not_observed",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "world": 0,
+      "robot": "r3",
+      "sim_s": 20.0,
+      "category": "llm",
+      "reason_category": "llm",
+      "reason": "llm_http_400",
+      "blocked_object": "not_observed",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    }
+  ],
+  "distribution": {
+    "llm_http_400": 9
+  },
+  "final_transport_gate": {
+    "passed_n": 0,
+    "rejected_n": 1,
+    "reason": "smoke is not transport"
+  }
+}

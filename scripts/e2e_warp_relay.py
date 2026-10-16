@@ -53,6 +53,13 @@ def validate(raw, call_id):
     return body
 
 
+def forward(upstream, raw, call_id):
+    validate(raw, call_id)
+    # Existing Journal requires exactly64 lowercase hex digits. Keep the human
+    # call ID for accounting; hash it only for the idempotency journal key.
+    return upstream.complete(raw, call_id, idempotency_key=sha(call_id.encode()))
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--output', type=Path, required=True)
@@ -90,10 +97,10 @@ def main():
                     raise ValueError('invalid transport length')
                 raw = self.rfile.read(length)
                 call_id = self.headers.get('X-UGRP-Call-ID', '')
-                validate(raw, call_id)
-                status, result, retry = upstream.complete(raw, call_id, idempotency_key=call_id)
+                status, result, retry = forward(upstream, raw, call_id)
             except (KeyError, TypeError, ValueError) as exc:
-                status, result, retry = 400, encode(dict(error=str(exc))).encode(), None
+                status, result, retry = 400, encode(dict(error=str(exc), host_error=True,
+                                                       ugrp_upstream_forwarded=False)).encode(), None
             self.send_response(status)
             self.send_header('Content-Type', 'application/json')
             if retry:

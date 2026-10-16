@@ -120,6 +120,7 @@ class Planner:
         self.run_id, self.world_id, self.robot = run_id, world_id, robot
         self.http_open = http_open or no_redirect_opener().open
         self.health, self.rows, self.calls = ConnectionHealth(), [], 0
+        self.http_failures = 0
         self.root.mkdir(parents=True, exist_ok=False)
 
     def body(self, frame, dynamic):
@@ -147,7 +148,7 @@ class Planner:
         status, data, connected = 0, {}, True
         try:
             req = Request(self.url, data=raw, headers={'Content-Type': 'application/json',
-                          'X-UGRP-Call-ID': call_id, 'X-UGRP-Idempotency-Key': call_id})
+                          'X-UGRP-Call-ID': call_id, 'X-UGRP-Idempotency-Key': sha(call_id.encode())})
             with self.http_open(req, timeout=180) as response:
                 status, response_raw = response.status, response.read()
             data = json.loads(response_raw)
@@ -170,6 +171,11 @@ class Planner:
                    usage=usage, upstream=data.get('ugrp_openrouter'), accepted=False)
         self.rows.append(row)
         self.health.observe(connected, frame.sim_s)
+        if data.get('host_error') and data.get('ugrp_upstream_forwarded') is False:
+            raise RuntimeError('HOST_ERROR:LOCAL_RELAY_CONTRACT:' + str(data.get('error')))
+        self.http_failures = self.http_failures+1 if status >= 400 else 0
+        if self.http_failures >= 5:  # existing planner HTTP-error stop rule
+            raise RuntimeError('HOST_ERROR:LLM_HTTP_ERRORS_5')
         if status != 200:
             return None, rejection('llm_http_' + str(status), category='llm')
         try:
@@ -230,9 +236,10 @@ def first30(rows, decisions, sim_s, nworld, wall_s):
     total = sum((r.get('usage') or {}).get('total_tokens', 0) or 0 for r in rows)
     cached = sum(((r.get('usage') or {}).get('prompt_tokens_details') or {}).get('cached_tokens', 0) or 0 for r in rows)
     attempts = [a for r in rows for a in (r.get('upstream') or {}).get('attempts', [])]
-    return dict(sim_s=sim_s, nworld=nworld, wall_s=wall_s, model_calls=len(rows),
+    return dict(sim_s=sim_s, nworld=nworld, wall_s=wall_s, client_requests=len(rows), model_calls=len(attempts),
                 accepted_calls=sum(r['accepted'] for r in rows),
-                prompt_tokens=prompt, total_tokens=total, tokens_per_sim_s=total/(sim_s*nworld) if sim_s else None,
+                prompt_tokens=prompt, total_tokens=total, tokens_per_sim_s=total/sim_s if sim_s else None,
+                tokens_per_sim_world_s=total/(sim_s*nworld) if sim_s else None,
                 cached_tokens=cached, cache_ratio=cached/prompt if prompt else None,
                 usage_missing=sum(not r.get('usage') for r in rows),
                 http_429=sum(r['status'] == 429 for r in rows),

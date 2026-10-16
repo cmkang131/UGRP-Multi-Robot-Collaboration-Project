@@ -57,13 +57,16 @@ def prepare(a):
             deviations.append(dict(id=key, reason='first30 diagnostic; incomplete component blocked; no transport/student success',
                 approval=dict(authority='user', evidence='2026-10-17 e2ewarp request §3(b): marked substitutions permitted for first30; pending parts interface/toggle only')))
     funnel = a.output/'rejection_table.json'
+    prior = getattr(a, 'rejection_table', None)
+    if prior is not None and (not prior.is_absolute() or not prior.is_file()):
+        raise ValueError('PRIOR_ABSOLUTE_FUNNEL_REQUIRED')
     queue = dict(schema='ugrp.e2ewarp.queue.v1', execution_bundle_id=BUNDLE_ID, flow='e2e_llm',
         source_sha=head(), option=OPTION, enabled=a.e2e_warp_batch == 'on_v1', mode=a.mode,
         round=a.round, nworld=a.nworld, condition=a.condition, seed=a.seed,
         sim_budget_s=30. if a.mode == 'smoke' else 1800.,
         stack_sha256=digest, stack_values=values, stack_deviations=deviations,
         host=dict(instance=INSTANCE, project_id=PROJECT, account=ACCOUNT),
-        no_pooling=True, rejection_table=str(funnel.resolve()),
+        no_pooling=True, rejection_table=str(prior or funnel.resolve()),
         record_tail=dict(hz=10, sim_s=10, purpose='recording_only; no control changes'),
         dependency_status='waiting for selected ACT / loaded FK / global registration / release API')
     a.output.mkdir(parents=True, exist_ok=False)
@@ -185,7 +188,7 @@ def run(a, queue):
                 frame = OwnFrame(robot, w, tick, now, jpeg, tuple(task.command_history[-16:]))
                 frames[key] = frame
                 rings[key].append(frame)
-                if tick % 10 == 0:  # review only; decision JPEGs are included
+                if tick % 5 == 0:  # recording-only2Hz review; decision JPEGs are included
                     rgb_path = a.output/f'world-{w:02d}'/'review-rgb'/f'{robot}-{tick:06d}.jpg'
                     rgb_path.parent.mkdir(parents=True, exist_ok=True)
                     rgb_path.write_bytes(jpeg)
@@ -236,7 +239,8 @@ def run(a, queue):
                 break
             hooks.step(contexts, np.ones(a.nworld, dtype=bool))
             if (tick+1) % 10 == 0:
-                write(a.output/'progress.json', dict(sim_s=(tick+1)/10, model_calls=sum(p.calls for p in planners.values()),
+                write(a.output/'progress.json', dict(sim_s=(tick+1)/10, client_requests=sum(p.calls for p in planners.values()),
+                      model_calls=sum(len((r.get('upstream') or {}).get('attempts', [])) for p in planners.values() for r in p.rows),
                       batch_wall_s=time.monotonic()-rollout_start, status='running'))
         sim_s = tick/10
         rows = [r for p in planners.values() for r in p.rows]
@@ -267,13 +271,16 @@ def run(a, queue):
         write(a.output/'terminal-ring.json', dict(hz=10, seconds=10, bytes=sum(r['bytes'] for r in sizes), frames=sizes))
         if hooks is not None:
             hooks.save_states()
+            write(a.output/'backend-timings.json', dict(hooks.seconds))
         summary = dict(schema='ugrp.e2ewarp.result.v1', status=status, error=error, sim_s=sim_s,
             source_sha=head(), mode=a.mode, nworld=a.nworld, wall_s=time.monotonic()-started,
             physics_backend='mjwarp_batch_v1', contact_profile='warp_native_contact_v1',
             E2E_success=False, student_execution=bool(components), research_result=False,
             no_pooling=True, input_audit=dict(top_camera_control=False, held_world_reads=0,
                 scope='capability boundary: controllers never receive world/model/evaluator; smoke has no holding'),
-            raw=str(a.output), model_calls=len(allrows), decisions=len(decisions),
+            raw=str(a.output), client_requests=len(allrows),
+            review_hz=2,
+            model_calls=sum(len((r.get('upstream') or {}).get('attempts', [])) for r in allrows), decisions=len(decisions),
             rejection_distribution=dict(Counter(r['reason'] for r in rejects)),
             dependency_status=queue['dependency_status'])
         if not (a.output/'first30.json').exists():
@@ -283,17 +290,27 @@ def run(a, queue):
         if components and not error:
             # Post-run evaluator receives raw state files ONLY after controllers
             # stop. Its output never re-enters their observations or transitions.
-            outcome = factory(components['evaluator_factory'])(raw=a.output)
-            write(a.output/'physical-evaluation.json', outcome)
-            worlds = outcome.get('worlds', [])
-            eligible = len(worlds) == a.nworld and all(
-                r.get('physical_success') is True and r.get('first_to_end_transport') is True
-                and r.get('same_episode') is True and r.get('self_map_used') is True for r in worlds)
-            summary['E2E_success'] = eligible and bool(allrows) and status == 'OWN_COMPLETION_CLAIM'
-            summary['research_result'] = summary['E2E_success']
+            try:
+                outcome = factory(components['evaluator_factory'])(raw=a.output)
+                write(a.output/'physical-evaluation.json', outcome)
+                worlds = outcome.get('worlds', [])
+                bound = (outcome.get('source_sha') == head()
+                    and outcome.get('evaluation_state_sha256') == sha((a.output/'evaluation-state.npz').read_bytes())
+                    and len(worlds) == a.nworld
+                    and {r.get('world_id') for r in worlds} == set(range(a.nworld)))
+                eligible = bound and all(
+                    r.get('physical_success') is True and r.get('first_to_end_transport') is True
+                    and r.get('same_episode') is True and r.get('self_map_used') is True for r in worlds)
+                per_robot_llm = all(any(row['world'] == w and row['robot'] == r and row['accepted']
+                    for row in allrows) for w in range(a.nworld) for r in ROBOTS)
+                summary['E2E_success'] = eligible and per_robot_llm and status == 'OWN_COMPLETION_CLAIM'
+                summary['research_result'] = summary['E2E_success']
+            except Exception:
+                summary.update(status='HOST_ERROR', error=traceback.format_exc(), E2E_success=False)
         if error and not rejects:
             rejects.append(dict(sim_s=sim_s, **rejection('HOST_ERROR', category='runtime', blocked_object='not_observed')))
             write(a.output/'rejections.json', rejects)
+        summary['rejection_distribution'] = dict(Counter(r['reason'] for r in rejects))
         write(a.output/'rejection_table.json', dict(raw=str(a.output), reproduction=a.command,
             stages=[dict(stage='world_attempted', cumulative_pass_n=a.nworld, rejected_n=0),
                     dict(stage='first30_complete', cumulative_pass_n=a.nworld if sim_s >= 30 else 0,
@@ -317,6 +334,7 @@ def main(argv=None):
     p.add_argument('--prepare', action='store_true')
     p.add_argument('--execute', action='store_true')
     p.add_argument('--queue', type=Path)
+    p.add_argument('--rejection-table', type=Path, help='absolute prior raw funnel for subsequent rounds')
     p.add_argument('--expected-source-sha')
     p.add_argument('--host-receipt', type=Path)
     p.add_argument('--components', type=Path)

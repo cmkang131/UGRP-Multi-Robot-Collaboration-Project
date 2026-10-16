@@ -43,6 +43,8 @@ def require_components(path, root):
     provenance = meta.get('provenance', {})
     if provenance.get('synthetic_only') or provenance.get('step') != 10000 or provenance.get('schedule_steps') != 10000:
         raise ValueError('completed ACT16w research artifact required')
+    if provenance.get('contact_profile') != 'warp_native_contact_v1':
+        raise ValueError('actual checkpoint provenance must bind native contact; no legacy substitution')
     if not actor.get('selection_evidence'):
         raise ValueError('ACT validation selection evidence required')
     return manifest

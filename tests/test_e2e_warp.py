@@ -69,7 +69,8 @@ class Reply(io.BytesIO):
 def complete(finish='stop', provider='CoreWeave'):
     return Reply(json.dumps(dict(provider=provider, choices=[dict(finish_reason=finish,
         message=dict(content=json.dumps({'act': 'wait', 'message': None})))],
-        usage=dict(prompt_tokens=100, total_tokens=105, prompt_tokens_details={'cached_tokens': 50}))).encode())
+        usage=dict(prompt_tokens=100, total_tokens=105, prompt_tokens_details={'cached_tokens': 50}),
+        ugrp_openrouter=dict(attempts=[dict(attempt=1,status=200)]))).encode())
 
 
 @pytest.mark.parametrize('finish,provider', [('length', 'CoreWeave'), ('stop', 'DeepInfra')])
@@ -137,3 +138,31 @@ def test_vendored_backend_core_abi_and_exact_control_clock():
     assert callable(core.multi_control_tape)
     assert callable(backend.WarpTransport.prepare_step)
     assert schedule.physics_schedule(.1, .00025) == (400, 16, 25)
+
+
+def test_relay_uses_existing_journal_contract_and_deduplicates(tmp_path):
+    from scripts.e2e_warp_relay import forward
+    from scripts.openrouter_upstream import OpenRouter
+    sent=[]
+    def upstream_send(payload, key):
+        sent.append(payload)
+        return 200, json.dumps(dict(provider='CoreWeave',choices=[dict(finish_reason='stop',
+            message=dict(content='{"act":"wait","message":null}'))],usage=dict(prompt_tokens=100,total_tokens=105))).encode(), None
+    upstream=OpenRouter(tmp_path/'upstream',key='unit-test',send=upstream_send)
+    planner=Planner('http://127.0.0.1:1',tmp_path/'client',{},run_id='e2ewarp-test',world_id=0,robot='r1')
+    raw=json.dumps(planner.body(frame(),{'candidates':[{'id':'wait'}]})).encode()
+    for _ in range(2):
+        status,response,_=forward(upstream,raw,'e2ewarp-test:w0:r1:1')
+        assert status==200 and json.loads(response)['provider']=='CoreWeave'
+    assert len(sent)==1
+    assert sent[0]['provider']==dict(order=['CoreWeave'],allow_fallbacks=False,quantizations=['fp4'])
+
+
+def test_local_relay_contract_failure_is_immediate_host_error(tmp_path):
+    from urllib.error import HTTPError
+    def reject(*a,**k):
+        raise HTTPError('http://127.0.0.1:1',400,'bad contract',{},io.BytesIO(json.dumps(
+            dict(error='idempotency_key_required',host_error=True,ugrp_upstream_forwarded=False)).encode()))
+    p=Planner('http://127.0.0.1:1',tmp_path/'client',{},run_id='e2ewarp-test',world_id=0,robot='r1',http_open=reject)
+    with pytest.raises(RuntimeError,match='LOCAL_RELAY_CONTRACT'):
+        p.decide(frame(),{'candidates':[]})

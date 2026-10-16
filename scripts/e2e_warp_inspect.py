@@ -14,6 +14,8 @@ import subprocess
 
 def read(root, name, default=None):
     p = root/name
+    if not p.exists() and Path(str(p)+'.zst').exists():
+        return json.loads(subprocess.check_output(['zstd', '-dc', str(p)+'.zst']))
     return json.loads(p.read_text()) if p.exists() else default
 
 
@@ -42,16 +44,20 @@ def inspect(root):
     worlds = result.get('nworld', 1)
     elapsed = min(result.get('sim_s', 0), 30)
     return dict(raw=str(root), source_sha=result.get('source_sha'), status=result.get('status'),
+        analysis_source_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         inspected_sim_range=[0, elapsed], worlds=worlds,
-        calls=len(calls), accepted=sum(r['accepted'] for r in calls), prompt_tokens=sum(prompts),
+        client_requests=len(calls), model_calls=len(attempts), accepted=sum(r['accepted'] for r in calls), prompt_tokens=sum(prompts),
         prompt_tokens_per_call=prompts, median_prompt_tokens=statistics.median(prompts) if prompts else None,
         total_tokens=tokens, tokens_per_sim_world_s=tokens/(worlds*elapsed) if elapsed else None,
+        tokens_per_batch_sim_s=tokens/elapsed if elapsed else None,
         cached_tokens=cached, cache_ratio=cached/sum(prompts) if sum(prompts) else None,
         http_429=sum(r['status'] == 429 for r in calls), upstream_429=sum(a['status'] == 429 for a in attempts),
         upstream_attempts=len(attempts), format_errors=sum('format_error' in r for r in calls),
         median_response_wall_s=statistics.median(r['response_wall_s'] for r in calls) if calls else None,
         image_raw_sha_verified=sum(image_checks), image_raw_sha_checks=len(image_checks),
         cache_order_checks=sum(prompt_checks), cache_order_total=len(prompt_checks),
+        reported_cost_usd=sum(r['usage']['cost'] for r in calls if r.get('usage', {}).get('cost') is not None),
+        cost_missing=sum(r.get('usage', {}).get('cost') is None for r in calls),
         selections=dict(Counter(str(r.get('act')) for r in decisions)),
         timeline=[{k:r.get(k) for k in ('world', 'robot', 'sim_s', 'act', 'reason')} for r in decisions],
         stops=dict(issued_command_rows=len(commands), zero_wheels=sum(not any(r['wheels']) for r in commands),
@@ -67,7 +73,9 @@ def inspect(root):
 def playback(root, output):
     from PIL import Image, ImageDraw
     rows=[]
-    for tick in (0, 60, 120, 180, 240, 300):
+    elapsed=read(root,'result.json',{}).get('sim_s',0)
+    end_tick=min(300,int(elapsed)*10)
+    for tick in sorted({round(end_tick*i/5/10)*10 for i in range(6)}):
         parts=[]
         for robot in ('r1', 'r2', 'r3'):
             path=root/'world-00/review-rgb'/f'{robot}-{tick:06d}.jpg'
@@ -86,9 +94,10 @@ def playback(root, output):
         sheet.save(output/'first30-montage.jpg',quality=88)
     if len(rows) < 6:
         return
+    fps=str(3*read(root,'result.json',{}).get('review_hz',1))
     subprocess.run(['ffmpeg','-hide_banner','-loglevel','error','-y',
-        '-framerate','3','-pattern_type','glob','-i',str(root/'world-00/review-rgb/r1-*.jpg'),
-        '-framerate','3','-pattern_type','glob','-i',str(root/'world-00/review-rgb/r2-*.jpg'),
+        '-framerate',fps,'-pattern_type','glob','-i',str(root/'world-00/review-rgb/r1-*.jpg'),
+        '-framerate',fps,'-pattern_type','glob','-i',str(root/'world-00/review-rgb/r2-*.jpg'),
         '-filter_complex','[0:v]scale=320:240[a];[1:v]scale=320:240[b];[a][b]hstack=inputs=2',
         '-c:v','libx264','-pix_fmt','yuv420p','-crf','28',str(output/'own-r1-r2-3x.mp4')],check=True)
     probe=subprocess.check_output(['ffprobe','-v','error','-show_entries','format=duration,size',
@@ -105,6 +114,26 @@ def main():
     a.output.mkdir(parents=True,exist_ok=False)
     report=inspect(a.raw)
     (a.output/'review.json').write_text(json.dumps(report,indent=2,ensure_ascii=False)+'\n')
+    mapping=read(a.raw,'localization.json',[]);calls=read(a.raw,'llm_ledger.json',[]);decisions=read(a.raw,'decisions.json',[])
+    def funnel(values):
+        previous=values[0][1];out=[]
+        for name,n in values:
+            if not 0<=n<=previous:raise ValueError('noncumulative funnel:'+name)
+            out.append(dict(stage=name,cumulative_pass_n=n,rejected_n=previous-n));previous=n
+        return out
+    frames=funnel([('own_rgb',len(mapping)),
+        ('qualified_unloaded_FK',sum(r.get('fk_status')=='servo_fk_nominal_unloaded' for r in mapping)),
+        ('settled_scan',sum(r.get('self_map',{}).get('scan_status') in ('observed_wall_contacts','unknown_wall_contact') for r in mapping)),
+        ('observed_wall_contacts',sum(r.get('self_map',{}).get('wall_columns',0)>0 for r in mapping)),
+        ('inserted_keyframe',sum(r.get('self_map',{}).get('inserted',False) for r in mapping))])
+    events=funnel([('client_request',len(calls)),('http_200',sum(r['status']==200 for r in calls)),
+        ('valid_planner_choice',sum(r['accepted'] for r in calls)),
+        ('action_message_accepted',sum(r.get('act') is not None for r in decisions))])
+    reasons=read(a.raw,'rejections.json',[])
+    (a.output/'rejection_table.json').write_text(json.dumps(dict(raw=str(a.raw.resolve()),reproduction=__import__('sys').argv,
+        frame_funnel=frames,event_funnel=events,reasons=reasons,
+        distribution=dict(Counter(r['reason'] for r in reasons)),
+        final_transport_gate=dict(passed_n=0,rejected_n=report['worlds'],reason='smoke is not transport')),indent=2)+'\n')
     if a.playback:playback(a.raw,a.output)
     (a.output/'sha256.json').write_text(json.dumps({p.name:hashlib.sha256(p.read_bytes()).hexdigest()
         for p in a.output.iterdir() if p.is_file()},indent=2)+'\n')
