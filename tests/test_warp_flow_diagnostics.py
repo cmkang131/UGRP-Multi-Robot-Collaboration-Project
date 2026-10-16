@@ -34,7 +34,7 @@ def test_verified_dispatch_never_captures_and_restores_global_state(monkeypatch,
     h.verify_cuda_v1=True;h.workspace_trace_v1=False
     h.prepare_solo_commands=lambda *a:None;h.seconds=defaultdict(float)
     h.sync_render=render;h.tick=0;h.solver_samples=[];h.dof_tree=np.array([0])
-    h.wd=NS(solver_niter=array([1]),tree_awake=array([[1]]),overflow=array([0]))
+    h.wd=NS(ctrl=object(),solver_niter=array([1]),tree_awake=array([[1]]),overflow=array([0]))
     if fail:
         with pytest.raises(RuntimeError,match='first failing launch'):h.step([],np.array([True]))
         assert events==['command','physics']
