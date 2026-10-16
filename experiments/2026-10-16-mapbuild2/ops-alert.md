@@ -1,1 +1,1 @@
-mapbuild2: RUNNING | PR #556 DRAFT | 1 実命令MJWarp→2 HIGH/ORB→3自己地図, 4 withheld(warp10待ち) | gcp2 L4 shared4, wall実行上限追加0・idle20/budget-stop維持 | 実機archive原本現行path不在を確認中
+mapbuild2: RUNNING | PR #556 DRAFT | 1 실제명령MJWarp→2 HIGH/ORB→3자기지도, 4 withheld(warp10 대기) | gcp2 L4 shared4, wall 실행상한 추가0·idle20/budget-stop 유지 | 실기archive 원본 현행path 부재 확인중

@@ -131,7 +131,7 @@ def run(a):
     graph=capture.graph;drive=DriveParameters();relay=np.zeros(4,int)
     sensor_data=mujoco.MjData(m)
     us=MujocoUltrasonic(m,sensor_data,'r1',sensor_seed(20261016,'r1'))
-    own=[];labels=[];ranges=[];commands=[];ring=deque(maxlen=101);previous=[np.zeros(3) for _ in cases]
+    own=[];labels=[];ranges=[];commands=[];states=[];ring=deque(maxlen=101);previous=[np.zeros(3) for _ in cases]
     body=m.body('r1__robot').id;adr=int(m.jnt_qposadr[int(m.body_jntadr[body])])
     origins=None;error=None;start=time.monotonic();steps=0
     try:
@@ -148,6 +148,7 @@ def run(a):
                 absolute=np.column_stack((qpos[:,adr:adr+2],angles))
                 if origins is None:origins=absolute.copy()
                 images=rc.render();tick=centi//10
+                states.append(qpos.copy())
                 for i,case in enumerate(cases):
                     folder=a.output/case['name'];folder.mkdir(exist_ok=True)
                     for camera in ('r1','r2','overview'):
@@ -157,6 +158,8 @@ def run(a):
                         ok,jpeg=cv2.imencode('.jpg',cv2.cvtColor(rgb,cv2.COLOR_RGB2BGR),[cv2.IMWRITE_JPEG_QUALITY,82])
                         if not ok:raise RuntimeError('JPEG_ENCODE_FAILED')
                         path.write_bytes(jpeg.tobytes())
+                        if camera=='r1':
+                            cv2.imwrite(str(folder/f'r1-{tick:04d}.png'),cv2.cvtColor(rgb,cv2.COLOR_RGB2BGR))
                     pred=np.asarray(odoms[i].advance(t));delta=between(previous[i],pred);previous[i]=pred.copy()
                     path=folder/f'r1-{tick:04d}.jpg'
                     own.append(dict(sequence=case['name'],robot_id='r1',frame_id=tick,t=t,
@@ -181,6 +184,7 @@ def run(a):
             physics_backend='mjwarp',scope='issued_wheel_physics',frames=own))
         dump(a.output/'eval-only.json',dict(frames=labels,map=str(MAPS[0]),map_sha256=sha(MAPS[0])))
         dump(a.output/'range.json',ranges);dump(a.output/'commands.json',commands)
+        np.savez_compressed(a.output/'eval-state.npz',qpos=np.asarray(states))
         dump(a.output/'summary.json',dict(status='HOST_ERROR' if error else 'cap_end',source_sha=q['source_sha'],
             renderer_sha=RENDERER_SHA,scene=PROFILE,scene_xml_sha256=hashlib.sha256(xml.encode()).hexdigest(),
             shared=True,speed_admission=False,physics_steps=steps,worlds=4,frames=len(own),wall_s=time.monotonic()-start,
