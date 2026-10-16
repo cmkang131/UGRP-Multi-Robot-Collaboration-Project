@@ -1,0 +1,45 @@
+{
+  "utc": "2026-10-16T15:20:55.939927+00:00",
+  "host": "gcp3",
+  "source_sha": "3170d909089865c45e2cbc6089beb6a2d05e576f",
+  "metric": "batch loop wall/(batch SIM*planned world N)",
+  "authority": "coordinator decision, user unconfirmed",
+  "threshold": 6.0,
+  "no_pooling": true,
+  "rows": [
+    {
+      "profile": "noslip10",
+      "flow": "beam_R2",
+      "N": 40,
+      "per_world_wall_SIM": 5.6024,
+      "window": "first30 complete"
+    },
+    {
+      "profile": "noslip10",
+      "flow": "release_A_S1",
+      "N": 14,
+      "per_world_wall_SIM": 8.72,
+      "window": "earlier cumulative prefix; first30 incomplete"
+    },
+    {
+      "profile": "warp_native_contact_v1",
+      "flow": "beam40_native_r1",
+      "N": 40,
+      "per_world_wall_SIM": 1.0552392641816668,
+      "batch_wall_SIM": 42.209570567266674,
+      "window": "first30 complete"
+    },
+    {
+      "profile": "warp_native_contact_v1",
+      "flow": "releaseA_s1_native_r1",
+      "N": 14,
+      "per_world_wall_SIM": 1.5824452932785713,
+      "batch_wall_SIM": 22.1542341059,
+      "window": "first30 complete",
+      "running": true
+    }
+  ],
+  "release_A_S1_first30_raw": "/home/ugrp/ugrp-sim/runs/warp8/releaseA-s1-native-r1/first30-speed.json",
+  "release_A_S1_first30_sha256": "67d0ad667d318521453d30701856752f147f6cab6cd8a37ea39df3326371e571",
+  "scope": "speed only; release physical outcomes and terminal input audits pending"
+}

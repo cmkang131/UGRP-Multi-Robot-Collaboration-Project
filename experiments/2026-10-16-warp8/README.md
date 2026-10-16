@@ -57,6 +57,10 @@ warp8d가 앱 재시작 뒤 기존 PID3149/3151을 인수했다. 중복 제출0�
 [제출](releaseA-s1-native-r1-submit.json), [실행 큐](native-gate-queue.json).
 release A 나머지26·B40은 아직 미제출이며 전체 데이터 수용은 NOT_READY다.
 
+release A-S1 첫30SIM은 **1.582445** = 664.627wall/(30×14), 배치22.15423이다.
+[비교 표](native-first30-comparison.json), [원본 측정](releaseA-s1-native-r1-first30-speed.json).
+14세계 모두 진행 중이며 최종 release 성공·입력감사는 아직 판정하지 않았다.
+
 아래는 noslip10 당시 기록이다. 그 안의8h 복원·CPU VM 분석 지시는 최신 사용자 지시로 폐기됐다.
 
 ---
