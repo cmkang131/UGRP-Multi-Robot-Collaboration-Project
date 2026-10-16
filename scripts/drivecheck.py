@@ -130,6 +130,8 @@ def load_fixture(a):
 
 def run(a):
     hostname = host(a.engine)
+    source_sha=a.source_sha or subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
+    sys.path.insert(0,str(Path(__file__).resolve().parent))
     import numpy as np
     import mujoco
     m, f, meta, cases = load_fixture(a)
@@ -138,7 +140,7 @@ def run(a):
     if not q.get('enabled') or not Path(q['rejection_table']).is_file():
         raise ValueError('enabled queue with existing absolute rejection_table required')
     report = dict(status='running', engine=a.engine, host=hostname, mujoco=mujoco.__version__,
-        source_sha=a.source_sha or subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+        source_sha=source_sha,
         fixture_sha256=sha(a.fixture/'fixture.npz'), xml_sha256=sha(a.fixture/'scene.xml'),
         toggles=dict(legacy_plane_v1=a.legacy_plane_v1, dense_capacity_v1=a.dense_capacity_v1,
                      noslip_off_v1=a.noslip_off_v1), cases=cases, dt=meta['dt'],
@@ -161,8 +163,11 @@ def run(a):
     for gid in range(m.ngeom):
         name = m.geom(gid).name or ''
         for wi, wn in enumerate(('fl','fr','rl','rr')):
-            if name.startswith('r1__wheel_'+wn+'_roller_') and name.endswith('_contact'):
+            if name.startswith('r1__v3_wheel_'+wn+'_roller_') and name.endswith('_body_contact'):
                 geomwheel[gid] = wi
+    # Four wheels x nine physical rollers from the existing MasterPi v3 model.
+    if np.count_nonzero(geomwheel>=0)!=36:raise ValueError('incomplete evaluator roller mapping')
+    robotgeom=np.array([(m.geom(g).name or '').startswith('r1__') for g in range(m.ngeom)])
     planes = np.flatnonzero(m.geom_type == int(mujoco.mjtGeom.mjGEOM_PLANE))
     report['roller_contact_geoms'] = int(np.count_nonzero(geomwheel >= 0))
     report['floor_geoms'] = [m.geom(int(i)).name for i in planes]
@@ -178,7 +183,7 @@ def run(a):
                         samples.append((ci,tick*dt,d.qpos.copy(),d.qvel.copy(),int(d.ncon),int(d.nefc)))
                         for j,c in enumerate(d.contact):
                             g0,g1=map(int,c.geom)
-                            if (geomwheel[g0]>=0 and g1 in planes) or (geomwheel[g1]>=0 and g0 in planes):
+                            if robotgeom[g0] or robotgeom[g1]:
                                 force=np.zeros(6);mujoco.mj_contactForce(m,d,j,force)
                                 contacts.append([ci,tick*dt,g0,g1,float(c.dist),*c.pos,*np.asarray(c.frame).ravel(),*force])
                     if tick == len(tape):break
@@ -247,7 +252,7 @@ def run(a):
                             samples.append((ci,tick*dt,qp[ci].copy(),qv[ci].copy(),int(np.count_nonzero(ids[:nc]==ci)),int(ne[ci])))
                     for j in range(nc):
                         ci=int(ids[j]);g0,g1=map(int,gs[j])
-                        if tick<=len(f[cases[ci]['id']]) and ((geomwheel[g0]>=0 and g1 in planes) or (geomwheel[g1]>=0 and g0 in planes)):
+                        if tick<=len(f[cases[ci]['id']]) and (robotgeom[g0] or robotgeom[g1]):
                             contacts.append([ci,tick*dt,g0,g1,float(dist[j]),*pos[j],*frame[j].ravel(),*forces[j]])
                     report.update(sim_s=tick*dt, max_ncon=int(max([s[4] for s in samples])),max_nefc=int(max([s[5] for s in samples])))
                     dump(a.out/'result.json',report)

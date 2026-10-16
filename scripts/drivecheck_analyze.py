@@ -60,7 +60,11 @@ def main():
         report=json.loads((folder/'result.json').read_text());runmeta.append(dict(name=folder.name,**report))
         if report['status']!='cap_end' or not report.get('planned_tape_complete'):
             rejections.append(dict(run=folder.name,category='HOST_ERROR',reason=report.get('error',{}),blocked_object='physics_engine',minimum_gap_m=None,gap_status='not_measured'));continue
-        s=np.load(folder/'states.npz');contacts=np.load(folder/'contacts.npz')['records']
+        s=np.load(folder/'states.npz');allcontacts=np.load(folder/'contacts.npz')['records']
+        roller={g for g in range(m.ngeom) if (m.geom(g).name or '').startswith('r1__v3_wheel_') and (m.geom(g).name or '').endswith('_body_contact')}
+        plane={g for g in range(m.ngeom) if int(m.geom_type[g])==0}
+        contacts=allcontacts[np.array([(int(x[2]) in roller and int(x[3]) in plane) or
+            (int(x[3]) in roller and int(x[2]) in plane) for x in allcontacts],dtype=bool)]
         def slips(indices):
             result=[]
             for idx in indices:
@@ -98,7 +102,7 @@ def main():
                 selected=indices[(t>=t[start])&(t<=t[j])]
                 perwheel=[]
                 for name in ('fl','fr','rl','rr'):
-                    geoms={k for k in range(m.ngeom) if (m.geom(k).name or '').startswith('r1__wheel_'+name+'_roller_')}
+                    geoms={k for k in roller if (m.geom(k).name or '').startswith('r1__v3_wheel_'+name+'_roller_')}
                     wrows=cr[np.array([int(x[2]) in geoms or int(x[3]) in geoms for x in cr],dtype=bool)]
                     times=s['t'][selected]
                     counts=[int(np.count_nonzero(np.isclose(wrows[:,1],tm,atol=1e-9))) for tm in times]
