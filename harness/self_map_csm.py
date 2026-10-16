@@ -163,7 +163,7 @@ class CorrelativeMatcher:
     def __init__(self, options=None):
         self.options = options or CSMOptions()
 
-    def match(self, pose, covariance, points, camera, reference, anchor_covariance):
+    def match(self, pose, covariance, points, camera, reference, anchor_covariance, *, prior_window=None):
         o = self.options
         pose, points, covariance = np.asarray(pose), np.asarray(points), np.asarray(covariance)
         radii = np.linalg.norm(points-camera, axis=1)
@@ -172,9 +172,18 @@ class CorrelativeMatcher:
         step = np.array([o.field_resolution_m, o.field_resolution_m, math.radians(o.yaw_step_deg)])
         limits = np.array([o.translation_window_m]*2 + [math.radians(o.yaw_window_deg)])
         window = np.minimum(limits, np.maximum(3*step, 3*np.sqrt(np.diag(covariance))))
+        if prior_window is not None:
+            # mapbuild8 explicit candidate: exactly +/- the supplied prior sigma,
+            # no SIGMA_SCALE or minimum .15m window. The endpoint samples below
+            # allow sub-grid priors without manufacturing a wider uncertainty.
+            window = np.minimum(limits, np.asarray(prior_window, float))
+            if window.shape != (3,) or np.any(window <= 0) or not np.isfinite(window).all():
+                raise ValueError('FINITE_POSITIVE_PRIOR_WINDOW_REQUIRED')
         counts = np.floor(window/step+1e-8).astype(int)
-        window = counts*step
-        candidates = np.stack(np.meshgrid(*[np.arange(-n, n+1)*s for n, s in zip(counts, step)],
+        if prior_window is None:window = counts*step
+        axes = [np.arange(-n, n+1)*s for n, s in zip(counts, step)]
+        if prior_window is not None:axes = [np.unique(np.r_[a, -w, w]) for a,w in zip(axes,window)]
+        candidates = np.stack(np.meshgrid(*axes,
                                          indexing='ij'), axis=-1).reshape(-1, 3)
         field = DistanceField(reference, o.field_resolution_m, o.translation_window_m+1.)
         c, s = np.cos(pose[2]+candidates[:, 2]), np.sin(pose[2]+candidates[:, 2])
