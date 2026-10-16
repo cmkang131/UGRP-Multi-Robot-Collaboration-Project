@@ -1,0 +1,1161 @@
+{
+  "status": "complete",
+  "source_sha": "5ad43e1e096822d7a4ed2e7ce720c2900e7f5ff6",
+  "host": {
+    "project": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "arm": "B",
+  "model_sha256": "908a594c6865ae38373910bfa9ba3764e8194c985c74e4fea56627e5a66e0389",
+  "dataset_manifest_sha256": "a0f5d8a1c6c9b6c4988122ae40bf412c4c705f3c34740d8d7a91c93fef58d6cd",
+  "physical_runs": 0,
+  "metrics": {
+    "train": {
+      "all_h0": {
+        "all": {
+          "all": {
+            "ACT": {
+              "N": 60023,
+              "wheel_mae": 0.022319990478864984,
+              "pulse_mae_ms": 4.72235664374173,
+              "pwm_mae": 18.66447790325015
+            },
+            "persistence": {
+              "N": 60023,
+              "wheel_mae": 0.02288268506526947,
+              "pulse_mae_ms": 2.8724937438964844,
+              "pwm_mae": 7.970252990722656
+            },
+            "wheel_improvement_percent": 2.459040907129051
+          },
+          "align": {
+            "ACT": {
+              "N": 10530,
+              "wheel_mae": 0.024347111556056494,
+              "pulse_mae_ms": 2.3909526494733004,
+              "pwm_mae": 10.08003672504527
+            },
+            "persistence": {
+              "N": 10530,
+              "wheel_mae": 0.04631766304373741,
+              "pulse_mae_ms": 2.4349935054779053,
+              "pwm_mae": 3.7498385906219482
+            },
+            "wheel_improvement_percent": 47.43449916057789
+          },
+          "approach": {
+            "ACT": {
+              "N": 26499,
+              "wheel_mae": 0.03695281708425633,
+              "pulse_mae_ms": 9.209451181702473,
+              "pwm_mae": 12.581726440038258
+            },
+            "persistence": {
+              "N": 26499,
+              "wheel_mae": 0.03203941881656647,
+              "pulse_mae_ms": 5.213730335235596,
+              "pwm_mae": 2.5756819248199463
+            },
+            "wheel_improvement_percent": -15.335478760773636
+          },
+          "complete": {
+            "ACT": {
+              "N": 332,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 27.928313589396225
+            },
+            "persistence": {
+              "N": 332,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            },
+            "wheel_improvement_percent": null
+          },
+          "pick": {
+            "ACT": {
+              "N": 18924,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 27.51125571442554
+            },
+            "persistence": {
+              "N": 18924,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.148553848266602
+            },
+            "wheel_improvement_percent": null
+          },
+          "ready": {
+            "ACT": {
+              "N": 352,
+              "wheel_mae": 0.0004971590780385788,
+              "pulse_mae_ms": 0.0191391767459441,
+              "pwm_mae": 11.9102257762263
+            },
+            "persistence": {
+              "N": 352,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            },
+            "wheel_improvement_percent": null
+          },
+          "relook": {
+            "ACT": {
+              "N": 8,
+              "wheel_mae": 0.34999999967496054,
+              "pulse_mae_ms": 40.027721425600774,
+              "pwm_mae": 13.249999028444291
+            },
+            "persistence": {
+              "N": 8,
+              "wheel_mae": 0.08749999850988388,
+              "pulse_mae_ms": 10.000000953674316,
+              "pwm_mae": 1.0500006675720215
+            },
+            "wheel_improvement_percent": -300.00000644048583
+          },
+          "search": {
+            "ACT": {
+              "N": 3378,
+              "wheel_mae": 0.029943754860586334,
+              "pulse_mae_ms": 4.116363470338288,
+              "pwm_mae": 43.3861452991579
+            },
+            "persistence": {
+              "N": 3378,
+              "wheel_mae": 0.010671994648873806,
+              "pulse_mae_ms": 2.52710223197937,
+              "pwm_mae": 24.860864639282227
+            },
+            "wheel_improvement_percent": -180.58255130165603
+          }
+        },
+        "stable": {
+          "all": {
+            "ACT": {
+              "N": 54314,
+              "wheel_mae": 0.013836906901652906,
+              "pulse_mae_ms": 4.032646297289554,
+              "pwm_mae": 19.42807682818528
+            },
+            "persistence": {
+              "N": 54314,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.9989503026008606,
+              "pwm_mae": 8.429892539978027
+            },
+            "wheel_improvement_percent": null
+          },
+          "align": {
+            "ACT": {
+              "N": 9046,
+              "wheel_mae": 0.015244315343971235,
+              "pulse_mae_ms": 2.129242180861282,
+              "pwm_mae": 9.898849063130394
+            },
+            "persistence": {
+              "N": 9046,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.193494975566864,
+              "pwm_mae": 3.8756797313690186
+            },
+            "wheel_improvement_percent": null
+          },
+          "approach": {
+            "ACT": {
+              "N": 22379,
+              "wheel_mae": 0.02308805939242899,
+              "pulse_mae_ms": 8.341414495663932,
+              "pwm_mae": 12.905678294339564
+            },
+            "persistence": {
+              "N": 22379,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 2.346245765686035,
+              "pwm_mae": 2.482229232788086
+            },
+            "wheel_improvement_percent": null
+          },
+          "complete": {
+            "ACT": {
+              "N": 332,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 27.928313589396225
+            },
+            "persistence": {
+              "N": 332,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            },
+            "wheel_improvement_percent": null
+          },
+          "pick": {
+            "ACT": {
+              "N": 18924,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 27.51125571442554
+            },
+            "persistence": {
+              "N": 18924,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.148553848266602
+            },
+            "wheel_improvement_percent": null
+          },
+          "ready": {
+            "ACT": {
+              "N": 352,
+              "wheel_mae": 0.0004971590780385788,
+              "pulse_mae_ms": 0.0191391767459441,
+              "pwm_mae": 11.9102257762263
+            },
+            "persistence": {
+              "N": 352,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            },
+            "wheel_improvement_percent": null
+          },
+          "relook": {
+            "ACT": {
+              "N": 6,
+              "wheel_mae": 0.34999999967496054,
+              "pulse_mae_ms": 39.98642901699162,
+              "pwm_mae": 13.433332220713298
+            },
+            "persistence": {
+              "N": 6,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.16666749119758606
+            },
+            "wheel_improvement_percent": null
+          },
+          "search": {
+            "ACT": {
+              "N": 3275,
+              "wheel_mae": 0.028908398081870033,
+              "pulse_mae_ms": 3.9233147053844157,
+              "pwm_mae": 43.568610367611676
+            },
+            "persistence": {
+              "N": 3275,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 24.60451889038086
+            },
+            "wheel_improvement_percent": null
+          }
+        },
+        "transition": {
+          "all": {
+            "ACT": {
+              "N": 5709,
+              "wheel_mae": 0.10302592871895908,
+              "pulse_mae_ms": 11.284088603314945,
+              "pwm_mae": 11.39978846395661
+            },
+            "persistence": {
+              "N": 5709,
+              "wheel_mae": 0.24058283865451813,
+              "pulse_mae_ms": 20.696910858154297,
+              "pwm_mae": 3.597337484359741
+            },
+            "wheel_improvement_percent": 57.176526266320096
+          },
+          "align": {
+            "ACT": {
+              "N": 1484,
+              "wheel_mae": 0.07983491110762203,
+              "pulse_mae_ms": 3.9862578375220328,
+              "pwm_mae": 11.184500060410485
+            },
+            "persistence": {
+              "N": 1484,
+              "wheel_mae": 0.3286556303501129,
+              "pulse_mae_ms": 16.098466873168945,
+              "pwm_mae": 2.9827494621276855
+            },
+            "wheel_improvement_percent": 75.70864341420993
+          },
+          "approach": {
+            "ACT": {
+              "N": 4120,
+              "wheel_mae": 0.11226335407100486,
+              "pulse_mae_ms": 13.924449481910365,
+              "pwm_mae": 10.822086015909875
+            },
+            "persistence": {
+              "N": 4120,
+              "wheel_mae": 0.20607098937034607,
+              "pulse_mae_ms": 20.78931999206543,
+              "pwm_mae": 3.083301067352295
+            },
+            "wheel_improvement_percent": 45.52199976618362
+          },
+          "relook": {
+            "ACT": {
+              "N": 2,
+              "wheel_mae": 0.34999999967496054,
+              "pulse_mae_ms": 40.1515986514282,
+              "pwm_mae": 12.699999451637268
+            },
+            "persistence": {
+              "N": 2,
+              "wheel_mae": 0.3499999940395355,
+              "pulse_mae_ms": 40.000003814697266,
+              "pwm_mae": 3.700000047683716
+            },
+            "wheel_improvement_percent": -1.6101214583841283e-06
+          },
+          "search": {
+            "ACT": {
+              "N": 103,
+              "wheel_mae": 0.06286407962074056,
+              "pulse_mae_ms": 10.254564491929859,
+              "pwm_mae": 37.58446472453551
+            },
+            "persistence": {
+              "N": 103,
+              "wheel_mae": 0.34999990463256836,
+              "pulse_mae_ms": 82.87913513183594,
+              "pwm_mae": 33.01165008544922
+            },
+            "wheel_improvement_percent": 82.03882950004355
+          }
+        }
+      },
+      "refresh_h0": {
+        "all": {
+          "all": {
+            "ACT": {
+              "N": 7952,
+              "wheel_mae": 0.021610920198802504,
+              "pulse_mae_ms": 4.743198329196436,
+              "pwm_mae": 19.379249663929052
+            },
+            "persistence": {
+              "N": 7952,
+              "wheel_mae": 0.025583187118172646,
+              "pulse_mae_ms": 3.632974624633789,
+              "pwm_mae": 8.421527862548828
+            },
+            "wheel_improvement_percent": 15.52686497198974
+          },
+          "align": {
+            "ACT": {
+              "N": 1367,
+              "wheel_mae": 0.02464338742327387,
+              "pulse_mae_ms": 2.569490180735182,
+              "pwm_mae": 10.502705365755673
+            },
+            "persistence": {
+              "N": 1367,
+              "wheel_mae": 0.048582665622234344,
+              "pulse_mae_ms": 2.9535939693450928,
+              "pwm_mae": 3.8241403102874756
+            },
+            "wheel_improvement_percent": 49.27534932954445
+          },
+          "approach": {
+            "ACT": {
+              "N": 3443,
+              "wheel_mae": 0.03517282205917541,
+              "pulse_mae_ms": 9.224098074855803,
+              "pwm_mae": 12.67876733155781
+            },
+            "persistence": {
+              "N": 3443,
+              "wheel_mae": 0.032783910632133484,
+              "pulse_mae_ms": 5.260693550109863,
+              "pwm_mae": 2.6716816425323486
+            },
+            "wheel_improvement_percent": -7.286840956369645
+          },
+          "pick": {
+            "ACT": {
+              "N": 2656,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 29.108132336571316
+            },
+            "persistence": {
+              "N": 2656,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.379895210266113
+            },
+            "wheel_improvement_percent": null
+          },
+          "ready": {
+            "ACT": {
+              "N": 38,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 11.626314218577585
+            },
+            "persistence": {
+              "N": 38,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            },
+            "wheel_improvement_percent": null
+          },
+          "search": {
+            "ACT": {
+              "N": 448,
+              "wheel_mae": 0.03808593853464553,
+              "pulse_mae_ms": 5.461719564679789,
+              "pwm_mae": 40.938838713801154
+            },
+            "persistence": {
+              "N": 448,
+              "wheel_mae": 0.05390625074505806,
+              "pulse_mae_ms": 15.043049812316895,
+              "pwm_mae": 26.100000381469727
+            },
+            "wheel_improvement_percent": 29.347825144123718
+          }
+        },
+        "stable": {
+          "all": {
+            "ACT": {
+              "N": 7159,
+              "wheel_mae": 0.01313906046728643,
+              "pulse_mae_ms": 3.9801147416897464,
+              "pwm_mae": 19.98477362500308
+            },
+            "persistence": {
+              "N": 7159,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.9407840967178345,
+              "pwm_mae": 8.679396629333496
+            },
+            "wheel_improvement_percent": null
+          },
+          "align": {
+            "ACT": {
+              "N": 1167,
+              "wheel_mae": 0.014470873751095804,
+              "pulse_mae_ms": 2.0683549264560233,
+              "pwm_mae": 10.3470424550607
+            },
+            "persistence": {
+              "N": 1167,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.25511348247528076,
+              "pwm_mae": 3.9412169456481934
+            },
+            "wheel_improvement_percent": null
+          },
+          "approach": {
+            "ACT": {
+              "N": 2919,
+              "wheel_mae": 0.022272190396988703,
+              "pulse_mae_ms": 8.366013625350867,
+              "pwm_mae": 12.855360259204266
+            },
+            "persistence": {
+              "N": 2919,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 2.205328941345215,
+              "pwm_mae": 2.4674887657165527
+            },
+            "wheel_improvement_percent": null
+          },
+          "pick": {
+            "ACT": {
+              "N": 2656,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 29.108132336571316
+            },
+            "persistence": {
+              "N": 2656,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.379895210266113
+            },
+            "wheel_improvement_percent": null
+          },
+          "ready": {
+            "ACT": {
+              "N": 38,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 11.626314218577585
+            },
+            "persistence": {
+              "N": 38,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            },
+            "wheel_improvement_percent": null
+          },
+          "search": {
+            "ACT": {
+              "N": 379,
+              "wheel_mae": 0.032091030208350226,
+              "pulse_mae_ms": 4.378568507080554,
+              "pwm_mae": 41.472822726872266
+            },
+            "persistence": {
+              "N": 379,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 25.02585792541504
+            },
+            "wheel_improvement_percent": null
+          }
+        },
+        "transition": {
+          "all": {
+            "ACT": {
+              "N": 793,
+              "wheel_mae": 0.09809269046100118,
+              "pulse_mae_ms": 11.632120653232253,
+              "pwm_mae": 13.912735114964418
+            },
+            "persistence": {
+              "N": 793,
+              "wheel_mae": 0.2565416097640991,
+              "pulse_mae_ms": 27.937379837036133,
+              "pwm_mae": 6.093568801879883
+            },
+            "wheel_improvement_percent": 61.76343847253412
+          },
+          "align": {
+            "ACT": {
+              "N": 200,
+              "wheel_mae": 0.08400000470043287,
+              "pulse_mae_ms": 5.493614389454074,
+              "pwm_mae": 11.410998449660838
+            },
+            "persistence": {
+              "N": 200,
+              "wheel_mae": 0.3320624530315399,
+              "pulse_mae_ms": 18.699228286743164,
+              "pwm_mae": 3.1409997940063477
+            },
+            "wheel_improvement_percent": 74.70355231867953
+          },
+          "approach": {
+            "ACT": {
+              "N": 524,
+              "wheel_mae": 0.10703721866589867,
+              "pulse_mae_ms": 14.004152479636156,
+              "pwm_mae": 11.695036881557801
+            },
+            "persistence": {
+              "N": 524,
+              "wheel_mae": 0.2154102921485901,
+              "pulse_mae_ms": 22.28093910217285,
+              "pwm_mae": 3.809159994125366
+            },
+            "wheel_improvement_percent": 50.31007218909282
+          },
+          "search": {
+            "ACT": {
+              "N": 69,
+              "wheel_mae": 0.07101449296458644,
+              "pulse_mae_ms": 11.411201460768337,
+              "pwm_mae": 38.00579609128012
+            },
+            "persistence": {
+              "N": 69,
+              "wheel_mae": 0.34999996423721313,
+              "pulse_mae_ms": 97.6707992553711,
+              "pwm_mae": 32.0
+            },
+            "wheel_improvement_percent": 79.71014279405576
+          }
+        }
+      }
+    },
+    "validation": {
+      "all_h0": {
+        "all": {
+          "all": {
+            "ACT": {
+              "N": 6908,
+              "wheel_mae": 0.030804868518164868,
+              "pulse_mae_ms": 6.212962718138926,
+              "pwm_mae": 19.706513307174802
+            },
+            "persistence": {
+              "N": 6908,
+              "wheel_mae": 0.02312898263335228,
+              "pulse_mae_ms": 2.961031913757324,
+              "pwm_mae": 8.301765441894531
+            },
+            "wheel_improvement_percent": -33.18730445905504
+          },
+          "align": {
+            "ACT": {
+              "N": 1142,
+              "wheel_mae": 0.02520797660396004,
+              "pulse_mae_ms": 2.405306826403759,
+              "pwm_mae": 10.291417403869177
+            },
+            "persistence": {
+              "N": 1142,
+              "wheel_mae": 0.04535901919007301,
+              "pulse_mae_ms": 2.0957558155059814,
+              "pwm_mae": 4.049737453460693
+            },
+            "wheel_improvement_percent": 44.425657666167304
+          },
+          "approach": {
+            "ACT": {
+              "N": 2968,
+              "wheel_mae": 0.048349063649877455,
+              "pulse_mae_ms": 11.16716240423055,
+              "pwm_mae": 12.92728966098797
+            },
+            "persistence": {
+              "N": 2968,
+              "wheel_mae": 0.034728772938251495,
+              "pulse_mae_ms": 5.752521991729736,
+              "pwm_mae": 2.4551210403442383
+            },
+            "wheel_improvement_percent": -39.21903816136301
+          },
+          "complete": {
+            "ACT": {
+              "N": 38,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 25.100000337378958
+            },
+            "persistence": {
+              "N": 38,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            },
+            "wheel_improvement_percent": null
+          },
+          "pick": {
+            "ACT": {
+              "N": 2166,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 27.4739611867884
+            },
+            "persistence": {
+              "N": 2166,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.189105987548828
+            },
+            "wheel_improvement_percent": null
+          },
+          "ready": {
+            "ACT": {
+              "N": 38,
+              "wheel_mae": 0.009210526376294936,
+              "pulse_mae_ms": 1.0259360731173537,
+              "pwm_mae": 11.27894608441152
+            },
+            "persistence": {
+              "N": 38,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            },
+            "wheel_improvement_percent": null
+          },
+          "search": {
+            "ACT": {
+              "N": 556,
+              "wheel_mae": 0.07223471497594433,
+              "pulse_mae_ms": 12.570436105424236,
+              "pwm_mae": 45.18093460849084
+            },
+            "persistence": {
+              "N": 556,
+              "wheel_mae": 0.008812949992716312,
+              "pulse_mae_ms": 1.7769261598587036,
+              "pwm_mae": 22.54928207397461
+            },
+            "wheel_improvement_percent": -719.6428555210748
+          }
+        },
+        "stable": {
+          "all": {
+            "ACT": {
+              "N": 6220,
+              "wheel_mae": 0.021875004603524345,
+              "pulse_mae_ms": 5.516126895190901,
+              "pwm_mae": 20.575786945526083
+            },
+            "persistence": {
+              "N": 6220,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 1.0944397449493408,
+              "pwm_mae": 8.8441162109375
+            },
+            "wheel_improvement_percent": null
+          },
+          "align": {
+            "ACT": {
+              "N": 984,
+              "wheel_mae": 0.01573933774384638,
+              "pulse_mae_ms": 2.229179906805621,
+              "pwm_mae": 10.048169556640023
+            },
+            "persistence": {
+              "N": 984,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.18554817140102386,
+              "pwm_mae": 4.189024448394775
+            },
+            "wheel_improvement_percent": null
+          },
+          "approach": {
+            "ACT": {
+              "N": 2452,
+              "wheel_mae": 0.0330801463262608,
+              "pulse_mae_ms": 10.317016989970988,
+              "pwm_mae": 13.29534926188306
+            },
+            "persistence": {
+              "N": 2452,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 2.7018086910247803,
+              "pwm_mae": 2.406035900115967
+            },
+            "wheel_improvement_percent": null
+          },
+          "complete": {
+            "ACT": {
+              "N": 38,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 25.100000337378958
+            },
+            "persistence": {
+              "N": 38,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            },
+            "wheel_improvement_percent": null
+          },
+          "pick": {
+            "ACT": {
+              "N": 2166,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 27.4739611867884
+            },
+            "persistence": {
+              "N": 2166,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.189105987548828
+            },
+            "wheel_improvement_percent": null
+          },
+          "ready": {
+            "ACT": {
+              "N": 38,
+              "wheel_mae": 0.009210526376294936,
+              "pulse_mae_ms": 1.0259360731173537,
+              "pwm_mae": 11.27894608441152
+            },
+            "persistence": {
+              "N": 38,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            },
+            "wheel_improvement_percent": null
+          },
+          "search": {
+            "ACT": {
+              "N": 542,
+              "wheel_mae": 0.07216328689978947,
+              "pulse_mae_ms": 12.51011998081798,
+              "pwm_mae": 45.39261932230531
+            },
+            "persistence": {
+              "N": 542,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 22.304798126220703
+            },
+            "wheel_improvement_percent": null
+          }
+        },
+        "transition": {
+          "all": {
+            "ACT": {
+              "N": 688,
+              "wheel_mae": 0.11153706844413004,
+              "pulse_mae_ms": 12.512844722116716,
+              "pwm_mae": 11.847673146498964
+            },
+            "persistence": {
+              "N": 688,
+              "wheel_mae": 0.23223109543323517,
+              "pulse_mae_ms": 19.836328506469727,
+              "pwm_mae": 3.3985464572906494
+            },
+            "wheel_improvement_percent": 51.97151861336495
+          },
+          "align": {
+            "ACT": {
+              "N": 158,
+              "wheel_mae": 0.0841772211504907,
+              "pulse_mae_ms": 3.502198528204824,
+              "pwm_mae": 11.80632804737226
+            },
+            "persistence": {
+              "N": 158,
+              "wheel_mae": 0.3278481066226959,
+              "pulse_mae_ms": 13.992240905761719,
+              "pwm_mae": 3.1822783946990967
+            },
+            "wheel_improvement_percent": 74.32432292574865
+          },
+          "approach": {
+            "ACT": {
+              "N": 516,
+              "wheel_mae": 0.1209060118621023,
+              "pulse_mae_ms": 15.207000690595752,
+              "pwm_mae": 11.178293262936116
+            },
+            "persistence": {
+              "N": 516,
+              "wheel_mae": 0.19975773990154266,
+              "pulse_mae_ms": 20.249319076538086,
+              "pwm_mae": 2.6883721351623535
+            },
+            "wheel_improvement_percent": 39.47367850592678
+          },
+          "search": {
+            "ACT": {
+              "N": 14,
+              "wheel_mae": 0.07500000192422503,
+              "pulse_mae_ms": 14.905531786609329,
+              "pwm_mae": 36.98571211653096
+            },
+            "persistence": {
+              "N": 14,
+              "wheel_mae": 0.34999996423721313,
+              "pulse_mae_ms": 70.56935119628906,
+              "pwm_mae": 32.0142822265625
+            },
+            "wheel_improvement_percent": 78.57142583209134
+          }
+        }
+      },
+      "refresh_h0": {
+        "all": {
+          "all": {
+            "ACT": {
+              "N": 913,
+              "wheel_mae": 0.03009310411819418,
+              "pulse_mae_ms": 6.2257539975447855,
+              "pwm_mae": 20.33340534073814
+            },
+            "persistence": {
+              "N": 913,
+              "wheel_mae": 0.02280941791832447,
+              "pulse_mae_ms": 3.383162498474121,
+              "pwm_mae": 8.909309387207031
+            },
+            "wheel_improvement_percent": -31.932801731070004
+          },
+          "align": {
+            "ACT": {
+              "N": 145,
+              "wheel_mae": 0.01568966318541643,
+              "pulse_mae_ms": 2.183511643441537,
+              "pwm_mae": 10.893791995525106
+            },
+            "persistence": {
+              "N": 145,
+              "wheel_mae": 0.03681034594774246,
+              "pulse_mae_ms": 1.6785657405853271,
+              "pwm_mae": 4.547585964202881
+            },
+            "wheel_improvement_percent": 57.377028709020706
+          },
+          "approach": {
+            "ACT": {
+              "N": 385,
+              "wheel_mae": 0.05000000701544855,
+              "pulse_mae_ms": 11.180189974508153,
+              "pwm_mae": 12.753764655414923
+            },
+            "persistence": {
+              "N": 385,
+              "wheel_mae": 0.03295454382896423,
+              "pulse_mae_ms": 5.551906585693359,
+              "pwm_mae": 2.9148051738739014
+            },
+            "wheel_improvement_percent": -51.7241667035391
+          },
+          "pick": {
+            "ACT": {
+              "N": 304,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 29.203947073174643
+            },
+            "persistence": {
+              "N": 304,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.409868240356445
+            },
+            "wheel_improvement_percent": null
+          },
+          "ready": {
+            "ACT": {
+              "N": 6,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 11.133332049225773
+            },
+            "persistence": {
+              "N": 6,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            },
+            "wheel_improvement_percent": null
+          },
+          "search": {
+            "ACT": {
+              "N": 73,
+              "wheel_mae": 0.08150685201476998,
+              "pulse_mae_ms": 14.563439332516813,
+              "pwm_mae": 42.87397180640534
+            },
+            "persistence": {
+              "N": 73,
+              "wheel_mae": 0.03835616260766983,
+              "pulse_mae_ms": 9.697962760925293,
+              "pwm_mae": 22.849315643310547
+            },
+            "wheel_improvement_percent": -112.50001687726598
+          }
+        },
+        "stable": {
+          "all": {
+            "ACT": {
+              "N": 831,
+              "wheel_mae": 0.01979543173613674,
+              "pulse_mae_ms": 5.4123734542234585,
+              "pwm_mae": 21.04332030547444
+            },
+            "persistence": {
+              "N": 831,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 1.0904723405838013,
+              "pwm_mae": 9.185318946838379
+            },
+            "wheel_improvement_percent": null
+          },
+          "align": {
+            "ACT": {
+              "N": 129,
+              "wheel_mae": 0.00949613229539042,
+              "pulse_mae_ms": 2.148280803484957,
+              "pwm_mae": 10.700774132406933
+            },
+            "persistence": {
+              "N": 129,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.306462824344635,
+              "pwm_mae": 4.531782627105713
+            },
+            "wheel_improvement_percent": null
+          },
+          "approach": {
+            "ACT": {
+              "N": 327,
+              "wheel_mae": 0.030504594831520578,
+              "pulse_mae_ms": 10.123414838099649,
+              "pwm_mae": 13.220793448879586
+            },
+            "persistence": {
+              "N": 327,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 2.6503021717071533,
+              "pwm_mae": 2.8984711170196533
+            },
+            "wheel_improvement_percent": null
+          },
+          "pick": {
+            "ACT": {
+              "N": 304,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 29.203947073174643
+            },
+            "persistence": {
+              "N": 304,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 15.409868240356445
+            },
+            "wheel_improvement_percent": null
+          },
+          "ready": {
+            "ACT": {
+              "N": 6,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 11.133332049225773
+            },
+            "persistence": {
+              "N": 6,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 0.0
+            },
+            "wheel_improvement_percent": null
+          },
+          "search": {
+            "ACT": {
+              "N": 65,
+              "wheel_mae": 0.0807692337956467,
+              "pulse_mae_ms": 14.003037919254615,
+              "pwm_mae": 43.67076846837998
+            },
+            "persistence": {
+              "N": 65,
+              "wheel_mae": 0.0,
+              "pulse_mae_ms": 0.0,
+              "pwm_mae": 21.78461456298828
+            },
+            "wheel_improvement_percent": null
+          }
+        },
+        "transition": {
+          "all": {
+            "ACT": {
+              "N": 82,
+              "wheel_mae": 0.13445122301441037,
+              "pulse_mae_ms": 14.468671454862136,
+              "pwm_mae": 13.139023198105578
+            },
+            "persistence": {
+              "N": 82,
+              "wheel_mae": 0.2539634108543396,
+              "pulse_mae_ms": 26.617618560791016,
+              "pwm_mae": 6.112194538116455
+            },
+            "wheel_improvement_percent": 47.058821362450246
+          },
+          "align": {
+            "ACT": {
+              "N": 16,
+              "wheel_mae": 0.06562500598625115,
+              "pulse_mae_ms": 2.4675602905914658,
+              "pwm_mae": 12.449998516915366
+            },
+            "persistence": {
+              "N": 16,
+              "wheel_mae": 0.3335937261581421,
+              "pulse_mae_ms": 12.741145133972168,
+              "pwm_mae": 4.675000190734863
+            },
+            "wheel_improvement_percent": 80.32786565202332
+          },
+          "approach": {
+            "ACT": {
+              "N": 58,
+              "wheel_mae": 0.15991379639724934,
+              "pulse_mae_ms": 17.13821531253542,
+              "pwm_mae": 10.120688526743447
+            },
+            "persistence": {
+              "N": 58,
+              "wheel_mae": 0.2187499850988388,
+              "pulse_mae_ms": 21.910953521728516,
+              "pwm_mae": 3.0068962574005127
+            },
+            "wheel_improvement_percent": 26.896545238622636
+          },
+          "search": {
+            "ACT": {
+              "N": 8,
+              "wheel_mae": 0.08750000004514655,
+              "pulse_mae_ms": 19.116700815272182,
+              "pwm_mae": 36.39999892786146
+            },
+            "persistence": {
+              "N": 8,
+              "wheel_mae": 0.3499999940395355,
+              "pulse_mae_ms": 88.49390411376953,
+              "pwm_mae": 31.5
+            },
+            "wheel_improvement_percent": 74.99999956135352
+          }
+        }
+      }
+    }
+  },
+  "checkpoint_selection": "fixed final20000; never validation/heldout selection",
+  "role_summary": {
+    "initial": {
+      "N": 38,
+      "wheel_class_changed": 0,
+      "raw_float_translation_reversed": 0,
+      "translation_reversed": 0,
+      "nonzero_heading_changed": 0,
+      "translation_starts_or_stops": 0,
+      "turn_sign_flipped": 0
+    },
+    "first_approach": {
+      "N": 29,
+      "wheel_class_changed": 0,
+      "raw_float_translation_reversed": 0,
+      "translation_reversed": 0,
+      "nonzero_heading_changed": 0,
+      "translation_starts_or_stops": 0,
+      "turn_sign_flipped": 0
+    }
+  },
+  "original_full_summary": {
+    "path": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/offline-attempt1/summary.json",
+    "sha256": "9d9e27ac3dce9c5d2cf86b198eccca3f478d5b0d48dd80e397ae057e809a7c73",
+    "bytes": 121873
+  },
+  "role_details": "GCP2 original full summary, all fixed role interventions preserved",
+  "role_summary_original_float": {
+    "initial": {
+      "N": 38,
+      "wheel_class_changed": 0,
+      "translation_reversed": 0,
+      "original_stationary": 12,
+      "swapped_stationary": 12
+    },
+    "first_approach": {
+      "N": 29,
+      "wheel_class_changed": 0,
+      "translation_reversed": 0,
+      "original_stationary": 1,
+      "swapped_stationary": 1
+    }
+  },
+  "role_direction_correction": "B-validation-role-direction.json (same exact alphabet audit as A; counts unchanged)"
+}

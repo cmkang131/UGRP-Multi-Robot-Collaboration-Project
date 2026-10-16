@@ -1,0 +1,56 @@
+{
+  "admission.json": {
+    "other_leases": {},
+    "other_reserved": 0,
+    "other_live_run_pids": [],
+    "own_requested": 16,
+    "loadavg": [
+      0.17041015625,
+      0.06298828125,
+      0.013671875
+    ],
+    "available_memory_bytes": 132610985984,
+    "free_bytes": 184602169344,
+    "per_run_reserved_bytes": 268435456,
+    "post_submission_floor_bytes": 8589934592,
+    "checked_at": "2026-10-16T10:04:29.937356+00:00"
+  },
+  "queue.json": {
+    "status": "APPROVED_PINNED",
+    "source_sha": "5ad43e1e096822d7a4ed2e7ce720c2900e7f5ff6",
+    "plan": "/home/ugrp/ugrp-sim/ops-reviews/beampair8/heldout-plan.json",
+    "plan_sha256": "5b04be7e5fa2102545666b0464ae0e162ec7a175de8df304b8e6b56ca53828f7",
+    "arm": "B",
+    "model": "/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/model-v1",
+    "model_sha256": "908a594c6865ae38373910bfa9ba3764e8194c985c74e4fea56627e5a66e0389",
+    "rejection_table": "/home/ugrp/ugrp-sim/src/5ad43e1e096822d7a4ed2e7ce720c2900e7f5ff6/experiments/2026-10-16-beamact3/prior-rejection-table.json",
+    "rejection_table_sha256": "99af9b54ac6f698486b6d662264a0922d176c0cc63883b113c9e5585cb5af8f0",
+    "max_parallel": 16,
+    "cap_sim_s": 60,
+    "run_class": "milestone",
+    "episodes": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ],
+    "host_total_limit": 40,
+    "admission": "explicit user beamact3 A/B heldout20 after smoke/train/offline; no teacher corrections"
+  }
+}
