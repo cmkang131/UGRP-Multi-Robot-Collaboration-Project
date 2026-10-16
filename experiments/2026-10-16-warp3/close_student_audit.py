@@ -55,7 +55,11 @@ def main():
             physical_n=sum(x['physical_success'] for x in scores) if completed else 0,physical_N=len(scores) if completed else 0,
             cap_end=sum(x.get('cap_end',False) for x in world_results),
             HOST_ERROR=int(result.get('status')=='HOST_ERROR'),student_scores=scores,
-            actual_policy_steps=len(result.get('actions',[])),summary_sha256=digest(a.run/'summary.json'))
+            summary_action_steps=len(result.get('actions',[])),summary_sha256=digest(a.run/'summary.json'))
+        evaluation=[json.loads(line) for line in (a.run/'owner/evaluation-only.jsonl').read_text().splitlines()
+                    if 'elapsed_sim_s' in json.loads(line)]
+        report['completed_eval_steps']=sum(row['elapsed_sim_s']>0 for row in evaluation)
+        report['last_complete_SIM']=max(row['elapsed_sim_s'] for row in evaluation)
         manifest={str(x.relative_to(a.run)):digest(x) for x in a.run.rglob('*') if x.is_file()}
         raw_manifest=a.out.with_name(a.out.stem+'-raw-manifest.json')
         raw_manifest.write_text(json.dumps(manifest,indent=2)+'\n')
