@@ -1,4 +1,4 @@
-"""Explicit gcp2-only diagnostic identity; never reads metadata credentials."""
+"""Gcp2 diagnostic identity, explicit isolated gcp3 opt-in; no credential reads."""
 import platform
 from urllib.request import Request, ProxyHandler, build_opener
 

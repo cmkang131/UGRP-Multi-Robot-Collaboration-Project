@@ -18,7 +18,7 @@ def main():
     p.add_argument('--asset-root',type=Path)
     p.add_argument('--label-existing',action='store_true')
     a=p.parse_args()
-    if a.run not in ('graph-isolated-beampair','graph-isolated-release-s3'):
+    if a.run not in ('graph-isolated-beampair','graph-isolated-release-s3','full-isolated-beampair'):
         raise ValueError('selected diagnostic evidence only')
     lease=ROOT/'leases/warp6-analysis.json'
     if lease.exists():raise RuntimeError('existing analysis lease must be inspected')
@@ -44,7 +44,9 @@ def main():
                 '--asset-root',str(a.asset_root)],check=True,cwd=a.asset_root,
                 env={**os.environ,'OMP_NUM_THREADS':'1','OPENBLAS_NUM_THREADS':'1','MUJOCO_GL':'osmesa'})
         meta=out/'playback-meta.json';data=json.loads(meta.read_text())
+        summary=json.loads((ROOT/'runs/warp6'/a.run/'summary.json').read_text())
         data.update(simulation_host='gcp3',analysis_host='gcp2',
+            original_summary_status=summary['status'],
             scope='finite diagnostic prefix, not a completed teacher trial; original own RGB, evaluator-only overview; no physics step')
         meta.write_text(json.dumps(data,indent=2)+'\n')
         print(out,flush=True)

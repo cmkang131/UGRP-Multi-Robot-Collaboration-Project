@@ -1,4 +1,4 @@
-"""warp4 beam pair / release teacher; MJWarp is the default, Linux gcp2 only.
+"""Beam pair / release teacher; MJWarp default, approved Linux GCP hosts only.
 
 Existing CPU entrypoints are retained as explicit historical comparisons.
 Training and LLM execution are outside this adapter's admission.
@@ -81,7 +81,7 @@ def parser():
 def main():
     p=parser();a=p.parse_args()
     if platform.system()!='Linux':
-        p.error('Mac physics/render forbidden; Linux gcp2 required')
+        p.error('Mac physics/render forbidden; approved Linux GCP host required')
     if not 0<a.cap_s<=180 or not 0<a.vm_hourly_usd<float('inf'):
         p.error('finite existing SIM cap and explicit positive hourly price required')
     if a.diagnostic_ticks is not None and a.diagnostic_ticks<=0:
@@ -93,7 +93,7 @@ def main():
         p.error('isolated gcp3 requires placement filter ON and MPS OFF')
     host=gcp2_identity(gcp3_v1=a.gcp3_isolated_v1)
     if a.physics_backend=='mjwarp_batch_v1' and not (a.initialize_only or a.export_compiled_only) and host['instance'] not in ('ugrp-act-l4-gcp2','ugrp-act-l4-gcp3'):
-        p.error('existing gcp2 L4 required for rollout')
+        p.error('approved L4 required for rollout')
     if a.gcp3_isolated_v1:
         # Fail closed before creating a CUDA context. No MPS daemon is managed here.
         if any(k.startswith('CUDA_MPS_') for k in os.environ):
