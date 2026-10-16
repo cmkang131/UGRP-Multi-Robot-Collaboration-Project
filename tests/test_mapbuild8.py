@@ -79,3 +79,15 @@ def test_registered_tracking_never_silently_runs_global_initialization(monkeypat
     result=m.initialize_static();assert result['reason']=='registered_local_tracking_only'
     assert result['static_from_own'] is None
     np.testing.assert_array_equal(m.static_from_own,[.1,.2,.3])
+
+
+def test_empirical_motion_never_extrapolates_to_closed_grip_or_different_command():
+    from harness.mapbuild_command_prior import CommandPrior,OPTION as COMMAND
+    calibration=dict(schema='ugrp.mapbuild8.own_command_motion.v1',interval_s=.1,qualified_servo={1:2000,3:740,4:2320,5:1320,6:1500},
+        mean_delta=[.001,-.001,.02],predictive_covariance=np.diag([1e-5,1e-5,1e-4]).tolist(),wheels=[-.35,.35,-.35,.35],duration_s=[.1]*4,source_sha256='0'*64)
+    model=CommandPrior(calibration,option=COMMAND);servo=calibration['qualified_servo'];cmd=dict(wheels=calibration['wheels'],duration_s=calibration['duration_s'])
+    nominal=[0,0,.04];P=np.diag([.01]*3)
+    accepted=model.predict(nominal,P,cmd,servo,servo,.1)
+    assert accepted['source']==COMMAND and accepted['delta']==calibration['mean_delta']
+    for current,old,command,dt in [({**servo,1:1500},servo,cmd,.1),(servo,{**servo,6:1600},cmd,.1),(servo,servo,{**cmd,'duration_s':[.05]*4},.1),(servo,servo,cmd,.2)]:
+        r=model.predict(nominal,P,command,current,old,dt);assert r['delta']==nominal and r['source']!='own_command_motion_v1'

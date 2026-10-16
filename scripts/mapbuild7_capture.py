@@ -31,6 +31,10 @@ def run(a):
     if not Path(q['rejection_table']).is_file():raise ValueError('PRIOR_FUNNEL_REQUIRED')
     task='mapbuild8' if a.map_correction else 'mapbuild7'
     if not Path('/home/ugrp/ugrp-sim/leases/'+task+'.json').is_file():raise ValueError('OWN_LEASE_REQUIRED')
+    own_motion=None;own_motion_config=None
+    if a.own_motion_model:
+        if sha(a.own_motion_model)!=q['own_motion_model_sha256']:raise ValueError('OWN_MOTION_CALIBRATION_CHANGED')
+        own_motion_config=json.loads(a.own_motion_model.read_text())
     vendor=ROOT/'experiments/2026-10-17-mapbuild7/vendor'
     sys.path[:0]=[str(vendor),str(ROOT),str(a.teacher_source/'scripts'),str(ROOT/'scripts'),str(a.teacher_source),str(a.renderer),str(a.renderer/'scripts')]
     import sim,harness,scripts
@@ -73,6 +77,9 @@ def run(a):
     from scripts.mapbuild6_capture import command_delta,duty
     from harness.rbpf_rejection import motion_variance
     from harness.mapbuild_camera import adapters,CommandCamera
+    if own_motion_config is not None:
+        from harness.mapbuild_command_prior import CommandPrior,OPTION as OWN_COMMAND
+        own_motion=CommandPrior(own_motion_config,option=OWN_COMMAND)
     from harness.servo_camera_fk import CARRY_OPTION
     from harness.mapbuild_rbpf import MapbuildRBPF,OPTION as RBPF
     from harness.mapbuild_static_registration import StaticRegistration,OPTION as STATIC
@@ -185,6 +192,10 @@ def run(a):
                 rgb[rid]=cv2.cvtColor(cv2.imread(str(file)),cv2.COLOR_BGR2RGB)
             servo={s:int(v) for s,v in zip(servos,np.rint(applied[0]))};flow={'status':'bootstrap'}
             delta=np.asarray(command_delta(previous,.1)) if previous else np.zeros(3);cov=np.diag(motion_variance(delta))
+            nominal_delta=delta.copy();motion_source='nominal_6f_unqualified_native'
+            if own_motion:
+                prediction=own_motion.predict(delta,cov,previous,servo,last_servo,.1)
+                delta=np.asarray(prediction['delta']);cov=np.asarray(prediction['covariance']);motion_source=prediction['source']
             flow,scan=camera_stream.observe(t,old,rgb['r1'],servo,state)
             recorded_scans.append(dict(t=t,**scan)) # recording only, same camera cadence
             increment=np.asarray(flow['delta']) if flow['status']=='measured' else delta;C=np.asarray(flow['covariance']) if flow['status']=='measured' else cov
@@ -197,7 +208,7 @@ def run(a):
             if scan['segments'] and t>=next_scan:
                 wall_ledger.extend([transform(s,pose).tolist() for s in scan['segments']]);camera_ledger.extend([transform([scan['camera']],pose)[0].tolist() for _ in scan['segments']]);next_scan=t+1.
             file=a.output/'own-rgb'/f'r1-{tick:05d}.jpg'
-            own.append(dict(sequence='actual-v7-route',robot_id='r1',frame_id=tick,t=t,rgb=str(file.relative_to(a.output)),sha256=sha(file),servo={str(s):v for s,v in servo.items()},command_delta=delta.tolist(),command_covariance=cov.tolist()))
+            own.append(dict(sequence='actual-v7-route',robot_id='r1',frame_id=tick,t=t,rgb=str(file.relative_to(a.output)),sha256=sha(file),servo={str(s):v for s,v in servo.items()},command_delta=delta.tolist(),command_covariance=cov.tolist(),command_delta_nominal=nominal_delta.tolist(),command_motion_source=motion_source))
             trace.append(dict(t=t,frame_id=tick,stage=stage,lk_pose=raw_pose.tolist(),corrected_pose=pose.tolist(),map_event=map_event,rbpf_pose=estimate,lk=flow,motion_delta=increment.tolist(),motion_covariance=C.tolist(),wall_event=wall_event))
             # Separate evaluation channel. Only the visible-only teacher below
             # gets a perception mirror; mapper, FK and route never see it.
@@ -223,6 +234,7 @@ def run(a):
                         sweep_budget=math.ceil(2*math.pi/abs(command_delta(probe,.1)[2]))
                         budget_basis='one full revolution / existing6f nominal command yaw increment; no wall budget'
                         if a.sweep_model:
+                            if sha(a.sweep_model)!=q['sweep_model_sha256']:raise ValueError('OWN_SWEEP_MODEL_CHANGED')
                             model=json.loads(a.sweep_model.read_text())
                             if model['schema']!='ugrp.mapbuild8.own_sweep.v1' or model['interval_s']!=.1 or model['positive_yaw_p05_rad']<=0:raise ValueError('OWN_SWEEP_RESPONSE_REQUIRED')
                             sweep_budget=math.ceil(2*math.pi/model['positive_yaw_p05_rad'])
@@ -321,4 +333,5 @@ if __name__=='__main__':
     p.add_argument('--map-correction',action='store_true',help='default off selfmap_map_correction_v1; mapbuild8 lease required')
     p.add_argument('--sweep-model',type=Path,help='default off frozen own-VO sweep response; never evaluation data')
     p.add_argument('--sweep-camera-folded',action='store_true',help='default off; existing FOLDED command pose, settle before body sweep')
+    p.add_argument('--own-motion-model',type=Path,help='default off own_command_motion_v1 exact repeat-command predictive distribution')
     run(p.parse_args())
