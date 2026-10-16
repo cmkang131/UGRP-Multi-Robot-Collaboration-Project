@@ -23,6 +23,14 @@ FIELDS = ('geom_friction', 'geom_solref', 'geom_solimp', 'body_mass', 'body_iner
           'geom_pos', 'geom_quat', 'geom_size', 'mesh_vert')
 
 
+def roller_wheel(name):
+    """Evaluator mapping for the unchanged physical v3/FUJI roller geoms."""
+    for index,wheel in enumerate(('fl','fr','rl','rr')):
+        if name.startswith('r1__v3_wheel_'+wheel+'_roller_') and name.endswith('_body_contact'):
+            return index
+    return -1
+
+
 def dump(path, value):
     Path(path).write_text(json.dumps(value, indent=2, allow_nan=False) + '\n')
 
@@ -179,9 +187,7 @@ def run(a):
     geomwheel = np.full(m.ngeom, -1, int)
     for gid in range(m.ngeom):
         name = m.geom(gid).name or ''
-        for wi, wn in enumerate(('fl','fr','rl','rr')):
-            if name.startswith('r1__v3_wheel_'+wn+'_roller_') and name.endswith('_body_contact'):
-                geomwheel[gid] = wi
+        geomwheel[gid] = roller_wheel(name)
     # Four wheels x nine physical rollers from the existing MasterPi v3 model.
     if np.count_nonzero(geomwheel>=0)!=36:raise ValueError('incomplete evaluator roller mapping')
     robotgeom=np.array([(m.geom(g).name or '').startswith('r1__') for g in range(m.ngeom)])
