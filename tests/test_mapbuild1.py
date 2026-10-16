@@ -47,6 +47,14 @@ def test_evaluation_requires_exact_label_coverage(tmp_path):
         score(rows,dict(frames=[dict(sequence='blank',frame_id=0,pose=[0,0,0])]*2))
 
 
+def test_loaded_camera_remains_unknown_without_truth_fallback(tmp_path):
+    row=record(tmp_path);row['servo']['1']=1500
+    rows=replay(tmp_path,dict(schema='ugrp.mapbuild1.own.v1',backend='mjwarp_render',frames=[row]))
+    assert rows[0]['slam']['reason']=='unqualified_camera:loaded_or_unknown_load_not_qualified'
+    assert rows[0]['lk']['status']=='unknown_camera:loaded_or_unknown_load_not_qualified'
+    assert rows[0]['lk_pose']==[0.,0.,0.]
+
+
 def test_map_unknowns_remain_omissions_and_false_occupied_is_not_coverage_success():
     base=dict(resolution_m=.1,frame='r1/start')
     truth=dict(**base,cells=[[0,0,'occupied'],[1,0,'free'],[2,0,'occupied']],wall=[[0.,0.],[.2,0.]])

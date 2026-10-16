@@ -13,8 +13,9 @@ from pathlib import Path
 import sys
 import cv2
 import numpy as np
-from harness.natural_floor_slam import NaturalFloorSLAM, extract
+from harness.natural_floor_slam import NaturalFloorSLAM, Observation, extract
 from harness.e2e_rgb_vo import ground_pair, compose, PARAMS
+from harness.servo_camera_fk import transform_from_commands
 
 
 def dump(path,value):
@@ -51,9 +52,18 @@ def replay(root,manifest):
         for row in frames:
             rgb=read_frame(root,row); servo={int(k):int(v) for k,v in row['servo'].items()}
             if previous_t is not None and row['t']<=previous_t:raise ValueError('CAUSAL_FRAMES_REQUIRED')
-            observation=extract(rgb,servo,frame_id=row['frame_id'],t=row['t'],sha256=row['sha256'])
+            camera,qualification=transform_from_commands(servo,camera_pose='servo_fk_v1')
+            if camera is None:
+                # Respect the existing loaded-camera qualification. Never
+                # substitute measured joints or turn this into zero-motion proof.
+                observation=Observation(row['frame_id'],row['t'],np.empty((0,2)),np.empty((0,32),np.uint8),row['sha256'])
+            else:
+                observation=extract(rgb,servo,frame_id=row['frame_id'],t=row['t'],sha256=row['sha256'])
             event=slam.step(observation,command_delta=row['command_delta'],command_covariance=row['command_covariance'])
-            if before is None:lk=dict(status='bootstrap',tracks=0,inliers=0,cells=0)
+            if camera is None:
+                event.update(status='command_only',reason='unqualified_camera:'+qualification)
+                lk=dict(status='unknown_camera:'+qualification,tracks=0,inliers=0,cells=0)
+            elif before is None:lk=dict(status='bootstrap',tracks=0,inliers=0,cells=0)
             elif servo!=previous_servo:lk=dict(status='unknown_servo_change',tracks=0,inliers=0,cells=0)
             elif row['t']-previous_t>PARAMS['max_pair_gap_s']:lk=dict(status='unknown_stale',tracks=0,inliers=0,cells=0)
             else:lk=ground_pair(before,rgb,servo)  # default off map mask; no surveyed walls
