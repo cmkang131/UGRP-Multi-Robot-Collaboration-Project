@@ -77,7 +77,11 @@ def run(args):
             fixtures.append(dict(view=vi,pose=pose,pwm=pwm,qpos=data.qpos.copy(),qvel=data.qvel.copy()))
         n=len(fixtures)
         wm=mjw.put_model(model)
-        with unused_efm(model,data):wd=mjw.put_data(model,data,nworld=n,nconmax=32,njmax=256)
+        # Workspace capacity comes from the authored fixture's actual contacts
+        # and constraints; this is allocation, never a detector/physics gate.
+        ncon=1 << (max(32,int(data.ncon))-1).bit_length()
+        njmax=1 << (max(256,int(data.nefc))-1).bit_length()
+        with unused_efm(model,data):wd=mjw.put_data(model,data,nworld=n,nconmax=ncon,njmax=njmax)
         rc=mjw.create_render_context(model,nworld=n,cam_res=(640,480),render_rgb=True,
               render_depth=False,render_seg=True,use_textures=True,use_shadows=True,
               enabled_geom_groups=[0,1,2,3],cam_active=[r+'__robot_cam' for r in old.ROBOTS],
