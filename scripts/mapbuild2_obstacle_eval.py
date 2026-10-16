@@ -8,12 +8,13 @@ import sys
 
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--input',type=Path,required=True)
+    p.add_argument('--expected-worlds',type=int,default=4,choices=(2,4))
     p.add_argument('--vision-source',type=Path,required=True);p.add_argument('--maps',type=Path,required=True)
     p.add_argument('--labels',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
     if a.output.exists():raise ValueError('NEW_EVALUATION_OUTPUT_REQUIRED')
     # Predictions already exist; evaluator truth never goes to their producer.
     predictions={f.name.removesuffix('-predicted.json'):json.loads(f.read_text()) for f in a.maps.glob('*-predicted.json')}
-    if len(predictions)!=4:raise ValueError('FOUR_SAVED_PREDICTIONS_REQUIRED')
+    if len(predictions)!=a.expected_worlds:raise ValueError('EXACT_SAVED_PREDICTIONS_REQUIRED')
     # Pure scoring lives in mapbuild2; scene construction lives in the frozen
     # renderer closure. Resolve the scoring module before adding that closure.
     from mapbuild2_map_eval import raster
