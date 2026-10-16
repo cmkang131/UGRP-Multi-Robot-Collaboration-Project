@@ -6,6 +6,7 @@ from pathlib import Path
 from harness.grasp_act_data import read_json, read_rows, sha256, write_json
 from harness.beamact_pair_student import Funnel, STAGES
 from harness.beamact_pair_score import assigned_forces
+from harness.grasp_act_rollout import InputAudit, LiftScore
 from scripts.beamact1_runtime import require_gcp2
 from scripts.grasp_act_training_guard import source_sha
 
@@ -35,7 +36,6 @@ def main():
             protocol_replay=replay(inputs,commands,read_rows(existing(out/'chunk-predictions.jsonl')),
                 read_json(out/'initial-issued.json'),read_json(out/'start-protocol.json'))
             # Revalidate ALL serialized actor inputs, not just inference calls.
-            from harness.grasp_act_rollout import InputAudit, LiftScore
             from harness import grasp_act_contract as c
             audit=InputAudit()
             for obs in inputs:audit.accept(obs)

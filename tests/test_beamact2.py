@@ -97,6 +97,24 @@ def test_evaluator_cannot_count_wrong_end_or_center_contacts_as_assigned_grasp()
     assert assigned_forces(contacts,ends,roles)=={'r1':[0.,0.],'r2':[0.,0.]}
 
 
+def test_raw_recount_preserves_all_HOST_ERROR_runs_without_fabricating_completed_trials(tmp_path,monkeypatch):
+    import json
+    import sys
+    import scripts.analyze_beamact2 as analyze
+    (tmp_path/'queue.json').write_text(json.dumps(dict(source_sha='rollout',model_sha256='model')))
+    for seed in range(8329000,8329020):
+        run=tmp_path/f'seed-{seed}';run.mkdir()
+        (run/'result.json').write_text(json.dumps(dict(status='HOST_ERROR',complete=False,cap_end=False)))
+    monkeypatch.setattr(analyze,'require_gcp2',lambda **kw:{'scope':'unit fixture'})
+    monkeypatch.setattr(analyze,'source_sha',lambda:'analysis')
+    monkeypatch.setattr(sys,'argv',['analyze','--root',str(tmp_path)])
+    analyze.main()
+    value=json.loads((tmp_path/'summary.json').read_text())
+    assert value['N']==value['attempted']==20 and value['n']==value['completed']==0
+    assert not value['complete'] and value['reason_distribution']=={'HOST_ERROR':20}
+    assert value['analysis_source_sha']=='analysis'
+
+
 def test_raw_replay_detects_one_PWM_or_issued_history_tampering():
     import numpy as np
     from harness import grasp_act_contract as c
