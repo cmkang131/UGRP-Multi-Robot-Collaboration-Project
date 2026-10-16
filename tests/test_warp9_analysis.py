@@ -14,3 +14,12 @@ def test_running_missing_and_error_are_not_reported_as_zero_or_success(tmp_path)
     (tmp_path/'n4/summary.json').write_text(json.dumps(dict(status='PROFILE_COMPLETE',source_sha='test',
         host={},shared_load=False,errors=[],batch_sim_s=.3)))
     assert collect(tmp_path)['rows'][1]['status']=='PROFILE_ARTIFACT_MISSING'
+
+
+def test_host_identity_is_derived_from_measured_report(tmp_path):
+    (tmp_path/'n1').mkdir()
+    (tmp_path/'n1/summary.json').write_text(json.dumps(dict(status='HOST_ERROR',source_sha='test',
+        host={'instance':'ugrp-act-l4-gcp4'},shared_load=False,errors=[])))
+    r=collect(tmp_path)
+    assert r['rows'][0]['load']=='exclusive_ugrp-act-l4-gcp4'
+    assert r['rows'][1]['load']=='unverified'

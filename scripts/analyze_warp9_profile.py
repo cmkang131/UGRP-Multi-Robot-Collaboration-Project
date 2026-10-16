@@ -9,13 +9,14 @@ def collect(root):
     rows=[]
     for n in (1,4,16,64):
         raw=root/f'n{n}';summary=raw/'summary.json';profile=raw/'profile.json'
-        row=dict(nworld=n,load='exclusive_gcp3',status='UNRETRIEVED',raw=str(raw),timing=None)
+        row=dict(nworld=n,load='unverified',status='UNRETRIEVED',raw=str(raw),timing=None)
         if not summary.is_file():
             if raw.exists():row['status']='RUNNING_OR_HOST_ERROR_UNRESOLVED'
             rows.append(row);continue
         report=json.loads(summary.read_text());row.update(status=report['status'],
             source_sha=report['source_sha'],host=report['host'],shared_load=report['shared_load'],
             sim_s=report.get('batch_sim_s'),task_outcome='unmeasured',errors=report['errors'])
+        row['load']=('shared_' if report['shared_load'] else 'exclusive_')+report['host'].get('instance','unknown_host')
         if report['status']=='PROFILE_COMPLETE' and not profile.is_file():
             row.update(status='PROFILE_ARTIFACT_MISSING',errors=[dict(category='HOST_ERROR',
                 reason='completed marker without required profile.json',blocked_object=str(profile),minimum_gap_m=None)])

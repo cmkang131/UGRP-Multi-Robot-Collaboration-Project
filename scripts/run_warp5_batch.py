@@ -21,14 +21,17 @@ def admit_render_gate(gate,diagnostic):
         raise ValueError('MJWarp visual admission missing; control batch withheld')
 
 
-def identity(*,gcp3_exclusive=False):
+def identity(*,gcp3_exclusive=False,exclusive_host=None):
     from scripts.grasp_act_host import metadata
     base='http://169.254.169.254/computeMetadata/v1/'
     get=lambda key:metadata(base+key,{'Metadata-Flavor':'Google'})
     host=dict(provider='gcp',project_id=get('project/project-id'),instance=get('instance/name'),
               machine_type=get('instance/machine-type').rsplit('/',1)[-1],zone=get('instance/zone').rsplit('/',1)[-1],
               cpu_count=len(os.sched_getaffinity(0)),schema='ugrp.grasp_act.host.v1')
-    expected=('ugrp-sim-c-1016','ugrp-act-l4-gcp3') if gcp3_exclusive else ('ugrp-sim-b-1014','ugrp-act-l4-gcp2')
+    hosts={'gcp3':('ugrp-sim-c-1016','ugrp-act-l4-gcp3'),
+           'gcp4':('ugrp-sim-d-1016','ugrp-act-l4-gcp4')}
+    if exclusive_host is not None and exclusive_host not in hosts:raise ValueError('unregistered exclusive host')
+    expected=hosts[exclusive_host or 'gcp3'] if exclusive_host or gcp3_exclusive else ('ugrp-sim-b-1014','ugrp-act-l4-gcp2')
     if (host['project_id'],host['instance'])!=expected:raise ValueError('registered L4 host required')
     return host
 
@@ -47,8 +50,9 @@ def run(a):
         # zero falsely accepted components. Never promote this to E2E-ready.
         admit_render_gate(gate,diagnostic)
         if len(q['runs'])<16 and not q.get('warp9_profile_v1'):raise ValueError('N16 minimum for run-first batch')
-    exclusive=q.get('warp9_exclusive_gcp3_v1',False)
-    host=identity(gcp3_exclusive=exclusive);a.output.mkdir(parents=True,exist_ok=False)
+    exclusive_host=q.get('warp9_exclusive_host_v1')
+    exclusive=q.get('warp9_exclusive_gcp3_v1',False) or exclusive_host is not None
+    host=identity(gcp3_exclusive=exclusive,exclusive_host=exclusive_host);a.output.mkdir(parents=True,exist_ok=False)
     for key,value in q.get('environment',{}).items():
         if not key.startswith(('UGRP_SCENE_','UGRP_RELOC','UGRP_WARP5_','UGRP_WARP7_')):raise ValueError('unapproved simulation environment field')
         os.environ[key]=str(value)
@@ -56,10 +60,10 @@ def run(a):
     task=q.get('task','warp5')
     if task not in ('warp5','warp7','warp9') or not any(l.get('task')==task for l in leases):raise ValueError('matching task lease required before execution')
     foreign=[l for l in leases if l.get('task')!=task]
-    if exclusive and foreign:raise ValueError('exclusive gcp3 has foreign leases')
+    if exclusive and foreign:raise ValueError('exclusive host has foreign leases')
     if exclusive:
         gpu_pids=subprocess.check_output(['nvidia-smi','--query-compute-apps=pid','--format=csv,noheader,nounits'],text=True).strip()
-        if gpu_pids:raise ValueError('exclusive gcp3 has existing GPU processes: '+gpu_pids)
+        if gpu_pids:raise ValueError('exclusive host has existing GPU processes: '+gpu_pids)
     # User's explicit N64 scaling diagnostic is not a 64-trial task gate.
     scaling=q.get('warp9_profile_v1') and exclusive and len(q['runs']) in (1,4,16,64)
     if not scaling and sum(l.get('concurrency',0) for l in foreign)+len(q['runs'])>40:raise ValueError('shared concurrency exceeds40')

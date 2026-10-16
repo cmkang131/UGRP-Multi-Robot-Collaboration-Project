@@ -1,4 +1,4 @@
-"""Finite exclusive gcp3 scaling diagnostic. Wait owns no GPU context.
+"""Finite exclusive gcp3/gcp4 scaling diagnostic. Wait owns no GPU context.
 
 No VM lifecycle operations, credentials, or automatic optimization/gate launch.
 The explicit --wait flag only waits for the user-named warp8 lease to end.
@@ -33,9 +33,10 @@ def resources():
 def main():
     parser=argparse.ArgumentParser()
     parser.add_argument('--wait',action='store_true')
+    parser.add_argument('--host',choices=('gcp3','gcp4'),default='gcp3')
     parser.add_argument('--output',type=Path,required=True)
     args=parser.parse_args()
-    if not platform.node().startswith('ugrp-act-l4-gcp3'):raise ValueError('gcp3 only')
+    if platform.node()!='ugrp-act-l4-'+args.host:raise ValueError('requested registered L4 only')
     sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
     if subprocess.check_output(['git','status','--porcelain','--untracked-files=no'],cwd=ROOT):raise ValueError('clean committed source required')
     args.output.mkdir(parents=True,exist_ok=False)
@@ -57,7 +58,7 @@ def main():
                             stage='exclusive scaling profile',source_sha=sha,gpu_shared=False),f,indent=2)
                     claimed=True
             if not claimed:
-                if not args.wait:raise RuntimeError('gcp3 occupied; no GPU work submitted')
+                if not args.wait:raise RuntimeError('requested host occupied; no GPU work submitted')
                 # Resource polling is not a planner or task time budget.
                 time.sleep(30)
         original=json.loads((ROOT/'experiments/2026-10-16-warp9/warp7-r3-queue.json').read_text())
@@ -73,7 +74,7 @@ def main():
             q.update(task='warp9',source_sha=sha,rejection_table=str(table),
                 render_gate=str(ROOT/'experiments/2026-10-16-warp7/colour/r5-summary.json'),
                 runs=[copy.deepcopy(original['runs'][0]) for _ in range(n)],
-                warp9_exclusive_gcp3_v1=True,warp9_profile_v1=True,profile_sim_s=.3,
+                warp9_exclusive_host_v1=args.host,warp9_profile_v1=True,profile_sim_s=.3,
                 independent_initial_cases=1,duplicate_isolation_worlds=n-1,
                 interpretation='fixed-work scaling diagnostic, not task qualification')
             # Source-relative calibration paths keep the exact saved hashes.
