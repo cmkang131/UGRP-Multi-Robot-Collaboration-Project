@@ -1,0 +1,227 @@
+{
+  "kind": "git_merge_audit",
+  "closed_at": "2026-10-12T16:03:29.160012+00:00",
+  "integration_pr": 460,
+  "integration_sha": "d3c607afb619142af9b085895aa08adc69532c1b",
+  "merge_commit": "77d747d698214ea09633dbf7f0dc1279607151ab",
+  "included_n": 7,
+  "included_N": 7,
+  "source_prs": [
+    {
+      "pr": 452,
+      "state": "MERGED",
+      "captured_sha": "83bdff828b3f1067bd80e6e687b4f4c3f0ad8a5c",
+      "latest_sha": "83bdff828b3f1067bd80e6e687b4f4c3f0ad8a5c",
+      "later_commits_pending": false
+    },
+    {
+      "pr": 453,
+      "state": "CLOSED",
+      "captured_sha": "24c442ac33e98394cb3e5de2c9fffa6310345a7b",
+      "latest_sha": "24c442ac33e98394cb3e5de2c9fffa6310345a7b",
+      "later_commits_pending": false
+    },
+    {
+      "pr": 454,
+      "state": "CLOSED",
+      "captured_sha": "e8d31cd4df240d99c2a93d7ae6704af58366f039",
+      "latest_sha": "e8d31cd4df240d99c2a93d7ae6704af58366f039",
+      "later_commits_pending": false
+    },
+    {
+      "pr": 455,
+      "state": "CLOSED",
+      "captured_sha": "dbbb245197caddf03b32fa4452d4f56e63842af1",
+      "latest_sha": "dbbb245197caddf03b32fa4452d4f56e63842af1",
+      "later_commits_pending": false
+    },
+    {
+      "pr": 456,
+      "state": "CLOSED",
+      "captured_sha": "1d16f8450599252ab0e28653902d51d0936b1f1e",
+      "latest_sha": "1d16f8450599252ab0e28653902d51d0936b1f1e",
+      "later_commits_pending": false
+    },
+    {
+      "pr": 457,
+      "state": "CLOSED",
+      "captured_sha": "6525faf8f30daee8c574949c5714828c0c5a289d",
+      "latest_sha": "6525faf8f30daee8c574949c5714828c0c5a289d",
+      "later_commits_pending": false
+    },
+    {
+      "pr": 458,
+      "state": "CLOSED",
+      "captured_sha": "cf805b77555f079ec65d49c49a33c47bdc36673e",
+      "latest_sha": "036088c9ca6eb46a81cf4211f4112b6dde12abd3",
+      "later_commits_pending": true
+    }
+  ],
+  "ancestry": [
+    {
+      "pr": 452,
+      "sha": "83bdff828b3f1067bd80e6e687b4f4c3f0ad8a5c",
+      "included": true
+    },
+    {
+      "pr": 453,
+      "sha": "24c442ac33e98394cb3e5de2c9fffa6310345a7b",
+      "included": true
+    },
+    {
+      "pr": 454,
+      "sha": "e8d31cd4df240d99c2a93d7ae6704af58366f039",
+      "included": true
+    },
+    {
+      "pr": 455,
+      "sha": "dbbb245197caddf03b32fa4452d4f56e63842af1",
+      "included": true
+    },
+    {
+      "pr": 456,
+      "sha": "1d16f8450599252ab0e28653902d51d0936b1f1e",
+      "included": true
+    },
+    {
+      "pr": 457,
+      "sha": "6525faf8f30daee8c574949c5714828c0c5a289d",
+      "included": true
+    },
+    {
+      "pr": 458,
+      "sha": "cf805b77555f079ec65d49c49a33c47bdc36673e",
+      "included": true
+    }
+  ],
+  "ci": {
+    "run": 38268715484,
+    "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/38268715484",
+    "passed_jobs": 33,
+    "total_jobs": 33,
+    "conclusion": "success",
+    "prior_attempts": [
+      {
+        "run": 38258293659,
+        "outcome": "superseded after P1 fix"
+      },
+      {
+        "run": 38259642855,
+        "outcome": "catalog fixture failure; superseded after fix"
+      },
+      {
+        "run": 38263656798,
+        "outcome": "30/33 jobs passed; two failed shards and aggregate; five test failures repaired"
+      }
+    ]
+  },
+  "review": {
+    "initial": "P1 static frame mismatch; P2 historical manifest test; P3 omitted CI patterns.",
+    "fixed": "Unregistered static live view rejected; historical text snapshots; all new CI patterns; baseline particle validation restored with explicit DEV context.",
+    "result": "narrow ready for changed production scopes",
+    "reports": [
+      "outputs/merge-a-20261012/review.md",
+      "outputs/merge-a-20261012/review-followup.md",
+      "outputs/merge-a-20261012/review-ci2.md"
+    ],
+    "limitations": "Live standoff_fullquad_v1 requires a future own-RGB static-map registration adapter. Missing optional simulator dependencies skip the corresponding runtime fixtures in minimal CI; local related fixtures passed. No new experimental physical result."
+  },
+  "primary": {
+    "path": "/Users/changmin/projects/ugrp",
+    "branch": "main",
+    "head": "77d747d698214ea09633dbf7f0dc1279607151ab",
+    "remote_head": "77d747d698214ea09633dbf7f0dc1279607151ab",
+    "clean": true,
+    "merge_commit_included": true,
+    "update": "ff-only"
+  },
+  "preserved_branches": {
+    "claude/e2e-bquad": "6525faf8f30daee8c574949c5714828c0c5a289d",
+    "claude/e2e-route": "1d16f8450599252ab0e28653902d51d0936b1f1e",
+    "codex/e2e-idle": "24c442ac33e98394cb3e5de2c9fffa6310345a7b",
+    "codex/e2e-speed3": "e8d31cd4df240d99c2a93d7ae6704af58366f039",
+    "codex/e2e-speed4": "dbbb245197caddf03b32fa4452d4f56e63842af1",
+    "codex/e2e-vomask": "83bdff828b3f1067bd80e6e687b4f4c3f0ad8a5c",
+    "codex/e2e18": "036088c9ca6eb46a81cf4211f4112b6dde12abd3",
+    "codex/merge-a": "d3c607afb619142af9b085895aa08adc69532c1b"
+  },
+  "delete_branch_on_merge": false,
+  "remaining_open_prs": [
+    {
+      "headRefName": "claude/e2e-bcones",
+      "headRefOid": "759ee957ee34a50b62e4057962d166d92be5af4d",
+      "number": 459,
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/459"
+    },
+    {
+      "headRefName": "codex/ego-pose-continuity",
+      "headRefOid": "33470893bf75fea9bf25efc9ee53c43a9790ee22",
+      "number": 440,
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/440"
+    },
+    {
+      "headRefName": "codex/egomap70-overview",
+      "headRefOid": "bb7028cac1c60f58440840e359a80cb52502b312",
+      "number": 437,
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/437"
+    },
+    {
+      "headRefName": "codex/real-robot-link",
+      "headRefOid": "88c5803c74bab1683fa1ef4082508ec50311ada9",
+      "number": 385,
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/385"
+    },
+    {
+      "headRefName": "codex/integ-target-backend",
+      "headRefOid": "e71d73c5abd2521fd027fe79f587d67ffe4c90e6",
+      "number": 339,
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/339"
+    }
+  ],
+  "pending_e2e18": {
+    "captured_sha": "cf805b77555f079ec65d49c49a33c47bdc36673e",
+    "latest_sha": "036088c9ca6eb46a81cf4211f4112b6dde12abd3",
+    "not_in_this_batch": true
+  },
+  "workflow_byte_comparisons": 36,
+  "changed_workflow_bytes": 0,
+  "raw_modified": false,
+  "mac_physics_runs": 0,
+  "azure_vm_operations": 0,
+  "records_root": "outputs/merge-a-20261012",
+  "compression": [
+    {
+      "source": "outputs/merge-a-20261012/ci-current.json",
+      "compressed": "outputs/merge-a-20261012/ci-current.json.zst",
+      "sha256": "02351f21a40db5826aa15d3eee3bb5ca507ef9cf9e5d41536cbbefaaf50036a3",
+      "compressed_sha256": "2d34ef6115226c6362937873a02d12122b20b2950085252a2e1ab03b34810ad5",
+      "roundtrip_verified": true,
+      "original_retained": "Task explicitly prohibits evidence deletion/overwrite."
+    },
+    {
+      "source": "outputs/merge-a-20261012/ci-d3-final.json",
+      "compressed": "outputs/merge-a-20261012/ci-d3-final.json.zst",
+      "sha256": "09f7d4c98eacc7117d39a12388e9a090cead5cc1f9e0c244bc93795588adc8bf",
+      "compressed_sha256": "7ffd3a4a272593ac19a0f5f1c0497fbb26a703cc10295e1931eafb0e7c026e52",
+      "roundtrip_verified": true,
+      "original_retained": "Task explicitly prohibits evidence deletion/overwrite."
+    },
+    {
+      "source": "outputs/merge-a-20261012/ci-latest-final-head.json",
+      "compressed": "outputs/merge-a-20261012/ci-latest-final-head.json.zst",
+      "sha256": "224a9e64b96d5b6350b591c3f9edebca83abc8a079c20f86818c49aa46de0e01",
+      "compressed_sha256": "10f24bc89545f6d28c4177d8d3c2667cb1b429791fecad8d618afb1619944cbd",
+      "roundtrip_verified": true,
+      "original_retained": "Task explicitly prohibits evidence deletion/overwrite."
+    },
+    {
+      "source": "outputs/merge-a-20261012/ci39-full-final.json",
+      "compressed": "outputs/merge-a-20261012/ci39-full-final.json.zst",
+      "sha256": "99e76af7a7ca442bf513f2be8955fe28341d8aa9ff3f230a28f0b1a53098c595",
+      "compressed_sha256": "492e5882a56def9342eba6fed6ff4d4fa9ff1e382803ad4a56830229de536268",
+      "roundtrip_verified": true,
+      "original_retained": "Task explicitly prohibits evidence deletion/overwrite."
+    }
+  ],
+  "one_hour_goal_met": false
+}
