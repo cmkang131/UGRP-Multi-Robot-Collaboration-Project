@@ -43,6 +43,7 @@ def main():
         category = ('DIAGNOSTIC_SUPERVISOR_STOP' if stop else summary.get('error_type') or
                     ('NATIVE_PROCESS_EXIT' if receipt.get('exit_code', 0) else 'running'))
         terminal=bool(receipt)
+        prefix_complete=summary.get('status')=='diagnostic_prefix_complete'
         counts = Counter('cap_end' if w.get('cap_end') else 'teacher_failure'
                          for w in worlds if not w.get('success'))
         if receipt and receipt['exit_code'] != 0:
@@ -53,7 +54,9 @@ def main():
                     dict(stage='native_setup', passed_cumulative_N=summary.get('started_N', 0),
                          rejected_N=n-summary.get('started_N', 0) if terminal else 0),
                     dict(stage='completed_teacher', passed_cumulative_N=completed,
-                         rejected_N=n-completed if terminal else 0, pending_N=0 if terminal else n-completed),
+                         rejected_N=n-completed if terminal and not prefix_complete else 0,
+                         pending_N=0 if terminal else n-completed,
+                         not_requested_N=n-completed if prefix_complete else 0),
                     dict(stage='success', passed_cumulative_N=sum(bool(w.get('success')) for w in worlds),
                          rejected_N=sum(not w.get('success') for w in worlds))],
             rejections=[dict(reason_category=k, blocked_object='software:diagnostic' if receipt.get('exit_code',0) else 'none:unclassified',
@@ -62,6 +65,8 @@ def main():
             cap_end_N=sum(bool(w.get('cap_end')) for w in worlds),
             HOST_ERROR_world_N=n-completed if receipt.get('exit_code',0) else 0,
             incomplete_world_N=n-completed, worlds=worlds)
+        if prefix_complete:
+            funnel['funnel'].insert(2,dict(stage='requested_diagnostic_prefix',passed_cumulative_N=n,rejected_N=0))
         attempts.append(dict(name=name, command=cmd, receipt=receipt, supervisor_stop=stop,
             status='HOST_ERROR' if receipt.get('exit_code',0) else summary.get('status','not_started'),
             original_summary_status=summary.get('status'),progress=progress,
