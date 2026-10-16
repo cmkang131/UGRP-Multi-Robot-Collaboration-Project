@@ -222,6 +222,12 @@ def report(a):
     result={};train=splits['train'];val=splits['validation'];basis={}
     for name,d in splits.items():
         pred=d['prediction'][:,0];y=d['target'];base=d['base'];pr=decoded(pred)
+        # Diagnostic only: nearest TRAIN-supported wheel class. Boundaries are
+        # exact midpoints between the three observed target values, no tuning.
+        classes=np.unique(train['target'][:,:4]);q=pred.copy()
+        q[:,:4]=classes[np.abs(q[:,:4,None]-classes).argmin(-1)]
+        quantized=decoded(q)
+        no_done=pred.copy();no_done[:,-1]=0.;no_done=decoded(no_done)
         out={}
         masks={'all':np.ones(len(y),bool),'refresh':d['refresh'].astype(bool)}
         masks.update({'phase_'+p:d['phase']==p for p in sorted(set(d['phase']))})
@@ -236,6 +242,9 @@ def report(a):
         out['projection']=dict(predicted_deadband_fraction=float((np.abs(w)<.155).mean()),
             moving_target_to_zero_fraction=float(((pr[:,:4]==0)&(t!=0)).sum()/max(1,(t!=0).sum())),
             raw_abs_wheel=quantiles(np.abs(w).ravel()),done_over_065=float((pred[:,-1]>=.65).mean()))
+        out['projection'].update(nearest_train_wheel_class=metrics(quantized,y),
+            ignore_done_for_motion_only=metrics(no_done,y),
+            scope='post-hoc output diagnostics only; not deployed or tuned on reserved student20')
         result[name]=out
     # TRAIN-only summaries; oracle phase is never an executable policy input.
     for mode in ('mean','median'):
