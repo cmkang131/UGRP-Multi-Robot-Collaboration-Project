@@ -55,3 +55,10 @@ R2 제출 전 실제 VM scheduling에서8h 필드가 제거된 것을 확인했�
 타 lease/GPU client 부재 확인 후 gcp3만 정지했고, maxRunDuration28800/STOP을 복원·조회했다.
 재시작으로 VM 상한 기준 시각이 바뀌어도 이 작업의 기존 정리 시한14:05UTC는 연장하지 않는다.
 [설정 복원 기록](scheduling-restored.json). gcp2는 변경하지 않았다.
+
+R1의별도재계수는실제`claude-haiku-4-5-20251001`이생성한독립판정코드를gcp2 CPU에서실행해확인했다.
+작업자가상태명complete·누락감사필드·SHA메타타입만스키마에맞췄으며물리계산은바꾸지않았다.
+결과complete1/HOST_ERROR39,175평가행·연속hold3.0000000000000036초·교사2/2,
+원본과불일치0·오류0·입력감사0값40건(전체1/prefix39)으로기존계수와같다.
+[R1 Haiku코드실행결과](R1-haiku-counter-result.json), [코드/보정근거](R1-haiku-counter-provenance.json).
+모델의문장응답은원본증거로쓰지않았고,잘못된상태분류/소스불일치지적을거부했다.

@@ -19,3 +19,5 @@
 08:38:49UTC R2 제출: driver1743/child1745,40세계, seed8318706 첫번째, 원래canonical XML+40참조, full nv222. 숨김 .warp9-claim.lock은0바이트·미보유였고 fcntl 비차단잠금 아래 타 JSONlease/GPU client부재를 확인했다. 파일은 보존했다. idle timer 정확한 이름은ugrp-idle-guard.timer이며active. 처음 잘못된이름을 조회한 단계에서는set-e로제출전중단됐으므로 중복실행없다.
 
 08:42UTC R1 CPU재계수 완료: gcp2 CPU가TERMINATED여서 명시project/account로시작했다(새IP조회). 재시작후타JSONlease0, 기존warp3/warp7파일은더이상없었고우리작업이제거하지않았다. R1+종료native export메타2041파일61,270,906바이트를Mac파일저장없이SSH pipe로gcp2에전송했다. 원본manifest2040파일의크기/SHA256전수일치(추가1파일은source manifest자체). R1완료성공1/cap_end0/HOST_ERROR39 재계수일치, evaluator JSON오류0.40세계held_world_reads=0/invisible_measurements=0; 단완료1은전체·미완료39는저장된prefix범위다. R1-summary.json/R1-integrity-audits.json 참조.
+
+08:54UTC 독립재계수: --model haiku별칭이실제Sonnet5.5를호출해Haiku검증으로세지않았다. 전체ID claude-haiku-4-5-20251001은메타확인후사용했다. 직접SSH응답도일부상태분류오류가있어전체검증으로수용하지않았다. 이후Haiku가독립작성한계수코드를스키마3군데만보정하고gcp2 CPU에서실행해complete1/HOST39·175행·3초hold·교사2/2·감사0값40·오류0을확인했다. per-completed.everycomponentminimum은전체평가구간최솟값이며hold구간최소가아니다. 원본은R1-summary/R1-integrity로별도입증한다. 로컬Claude외에VM모델호출/자격증명전송0.
