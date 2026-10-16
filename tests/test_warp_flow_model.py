@@ -76,3 +76,15 @@ def test_jpeg_ring_survives_missing_finalizer_and_partial_slot_write(tmp_path):
     with (ring.root/'journal.jsonl').open('a') as f:f.write('{incomplete')
     recovered=DiskRing.recover(ring.root)
     assert len(recovered)==99 and all(r['sequence']!=50 for r in recovered)
+
+
+def test_release_cannot_silently_fall_back_to_held_truth_or_other_scene():
+    from scripts.run_warp_flow_teacher import require_case_profiles
+    case=dict(plan={'scene_profile':'walls_floor_contrast_v5_indigo110_s80'},profile=dict(
+        held_object='hidden_v1',pose_anchor='command_relative_v1',lookaround='setdown_global_v1',
+        placement='global_localized_release_v1',review_top='off',release_sweep_wall_aware='release_sweep_wall_aware_v1'))
+    require_case_profiles('release',[case])
+    case['profile']['held_object']='visible_v0'
+    with pytest.raises(ValueError,match='own-RGB'):require_case_profiles('release',[case])
+    case['plan']['scene_profile']='off'
+    with pytest.raises(ValueError,match='scene-v5'):require_case_profiles('beampair',[case])

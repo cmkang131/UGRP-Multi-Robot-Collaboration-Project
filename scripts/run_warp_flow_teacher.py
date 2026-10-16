@@ -35,6 +35,18 @@ def require_source(path, expected):
         raise ValueError('clean frozen source required')
 
 
+def require_case_profiles(flow,cases):
+    for case in cases:
+        if case['plan'].get('scene_profile')!='walls_floor_contrast_v5_indigo110_s80':
+            raise ValueError('selected scene-v5 required for every flow case')
+        if flow=='release':
+            required=dict(held_object='hidden_v1',pose_anchor='command_relative_v1',
+                lookaround='setdown_global_v1',placement='global_localized_release_v1',
+                review_top='off',release_sweep_wall_aware='release_sweep_wall_aware_v1')
+            if any(case.get('profile',{}).get(k)!=v for k,v in required.items()):
+                raise ValueError('release25 hidden/command-relative own-RGB profile required')
+
+
 def parser():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--physics-backend',choices=['mjwarp_batch_v1','c_pilot_v1'],default='mjwarp_batch_v1')
@@ -85,6 +97,7 @@ def main():
     if not indices or len(indices)>256 or any(i<0 or i>=len(cases) for i in indices):
         p.error('one to256 valid world indices required')
     selected=[cases[i] for i in indices]
+    require_case_profiles(a.flow,selected)
     a.out.mkdir(parents=True,exist_ok=False)
     import numpy as np
     import mujoco
