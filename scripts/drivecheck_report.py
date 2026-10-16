@@ -83,9 +83,12 @@ def main():
             fmt(None if vals[0] is None else vals[0]['tilt_settled_deg']),r['status']])+'|')
     (a.out/'toggle-table.md').write_text('\n'.join(lines)+'\n')
     groups=[]
+    initial_audit_path=a.raw/'integrity-final'/'initial-contact-audit.json'
+    initial_audit=read(initial_audit_path)['rows'] if initial_audit_path.is_file() else []
     for label,ns in [('original_pair',names[:3]),('clear_overlap_causal',names[3:6]),('toggle_matrix',names[6:])]:
         rs=[r for r in reports if r['run'] in ns];planned=sum(18 if n in names[:4] else 3 if n.startswith('warp-L') else 1 for n in ns)
         recorded=sum(r.get('completed_cases') or 0 for r in rs)
+        accepted_initial=sum(bool(r['nonoverlap']) for r in initial_audit if r['run'] in ns)
         reasons=[]
         if label in ('original_pair','toggle_matrix'):
             reasons=[dict(category='INITIAL_SCENE_OVERLAP',reason='base overlaps cargo before command; diagnostic intentionally reproduces mapbuild2',
@@ -93,8 +96,12 @@ def main():
         groups.append(dict(scope=label,raw=[r['raw'] for r in rs],stages=[
             dict(stage='planned_pulses',cumulative_pass_n=planned,rejected_n=0),
             dict(stage='complete_tapes',cumulative_pass_n=recorded,rejected_n=planned-recorded),
-            dict(stage='initial_nonoverlap',cumulative_pass_n=recorded if label=='clear_overlap_causal' else 0,
-                 rejected_n=0 if label=='clear_overlap_causal' else recorded)],reasons=reasons))
+            dict(stage='initial_nonoverlap',cumulative_pass_n=accepted_initial,
+                 rejected_n=recorded-accepted_initial)],reasons=reasons))
+        if label=='clear_overlap_causal':
+            later=read(a.raw/'clear-later-contacts.json')
+            groups[-1]['stages'].append(dict(stage='no_later_nonfloor_contact',cumulative_pass_n=accepted_initial-len(later),rejected_n=len(later)))
+            groups[-1]['reasons']+=later
     dump('rejection_table.json',dict(cohorts=groups,raw=str(a.raw),reproduce=list(__import__('sys').argv),
         note='separate cumulative funnels; cap_end means fixed diagnostic tape complete, never task success'))
     dump('summary-sha256.json',{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in a.out.iterdir() if p.is_file() and p.name!='summary-sha256.json'})
