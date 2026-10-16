@@ -42,6 +42,23 @@ fails, an adaptive noise estimate, split covariance intersection for correlated 
 filters, random-particle injection (Thrun, Burgard, Fox). This relief neither trusts nor corrects the estimate: a
 confident 39 mm error toward a wall would defeat any margin.
 
+Probe af2f7c2a (raise_high, 10.9 s, r2), offline evaluation against the simulator pose: the estimate was 16.7 mm off the
+truth (13.8 mm of it toward ``wall_west``, NEES 0.42 with the honest sigma), the real chassis stood 34.6 mm from the wall's
+inner face, and the authored rear corner (-0.15 m) is inside the 50 mm wall box at the TRUE pose already (23.0 mm past the
+inner face, 27.0 mm from the outer one, 2.0 mm east of the wall's mid-plane). The estimate error put the corner on the
+OUTER side of the mid-plane (36.7 mm past the inner face, 13.3 mm from the outer one), so ``_signed``'s depth ("distance
+to the NEAREST face") flipped to the outer face and the first approach command, which drives east, away from the wall and
+toward the inner face, was refused as ``inside_pair_deeper`` (-13.3 -> -22.9 mm): depth to the nearest face grows until
+the mid-plane. Under the nearest-face depth no command at the controller's operating speed was admitted at that pose, and
+a reverse move toward the outer face was (it "reduces the depth"). Depth to the nearest face is discontinuous on the wall's
+medial axis (the jump set of a signed-distance gradient), so inside a thick wall it names the wrong exit whenever the
+estimate is a few millimetres off the mid-plane. ``DEPTH == 'exit_face'`` (v2) measures an inside pair's depth to the face
+of its wall that faces the robot's own estimated reference point (the side the body is on), fixed at the start sample:
+"deeper" is then "deeper along the way back to the free side", moving toward the free side never counts as deeper, and
+moving toward the far face does (the old rule admitted it). Where the nearest face already is that face the numbers are
+the old ones. ``'nearest_face'`` keeps the v1 rule for replays and the mutation tests. The no-entry rule and the floors
+are untouched.
+
 Shared ``zone_pair_geometry``, ``zone_own_guards`` and ``zone_final_pair_guards`` stay byte-identical. Only the robot's
 own pose estimate, own issued command and the static map enter the rule: no peer pose, no measured joint, no world state.
 """
@@ -56,18 +73,21 @@ from harness.zone_final_pair_guards import PairGeometry
 from harness.zone_own_guards import BACKOFF_GAIN_MAX, body_spheres
 from harness.zone_pair_geometry import MOTION_SAMPLE_S
 
-ID = 'v98_start_state_relief_v1'
+ID = 'v98_start_state_relief_v2'
 EVENT = 'pair_collision_guard_start_relief'
 SCOPE = 'group'
+DEPTH = 'exit_face'                            # 'nearest_face' = the v1 rule (kept for replays and mutation tests)
 EPS_M = 1e-3                                  # numeric slack of "never worse"; the group form needs 0.09 mm here
 SHOWN_PAIRS = 8
 
 
 def record() -> dict:
-    return {'id': ID, 'event': EVENT, 'scope': SCOPE, 'eps_m': EPS_M, 'applies_to': 'PairSweepGuard.motion_clear (base motion)',
+    return {'id': ID, 'event': EVENT, 'scope': SCOPE, 'depth': DEPTH, 'eps_m': EPS_M,
+            'applies_to': 'PairSweepGuard.motion_clear (base motion)',
             'arm_and_transition_checks_changed': False, 'shared_sources_modified': False,
             'rule': 'after a frozen veto, admit when start-clear pairs stay >= 0 and start-negative pairs do not fall '
-                    'below their (group) start worst - eps; pairs starting inside the wall box also do not get deeper; '
+                    'below their (group) start worst - eps; pairs starting inside the wall box also do not get deeper '
+                    '(depth to the wall face that faces the robot\'s own estimate, fixed at the start); '
                     'pairs starting outside the wall box never enter it (signed distance stays >= 0)',
             'known_issue': 'estimate over-confidence (r2 15 sigma at 8.7 s of probe 3358372e) is not addressed here'}
 
@@ -145,7 +165,45 @@ def enters(start_pair, pair) -> bool:
     return start_pair.signed >= 0. and pair.signed < 0.
 
 
-def relief(geo, servo, pose, cmd, loaded, *, scope=SCOPE, eps=EPS_M):
+def _local(box, x, y):
+    (cx, cy) = box['center']
+    dx, dy = x - cx, y - cy
+    if not box['yaw']:
+        return dx, dy
+    c, s = math.cos(box['yaw']), math.sin(box['yaw'])
+    return c * dx + s * dy, -s * dx + c * dy
+
+
+def exit_face(box, x, y):
+    """(axis, side) of the face of ``box`` that faces the point (x, y) (the robot's own reference point), or None when
+    that point is not outside the box. Axis 0/1 are the box's local x/y. A point outside along both axes (diagonal to a
+    corner) takes the face its plane is nearer to."""
+    local = _local(box, x, y)
+    out = [(abs(v) - h, axis, 1 if v > 0. else -1) for axis, (v, h) in enumerate(zip(local, box['half'])) if abs(v) > h]
+    if not out:
+        return None
+    _, axis, side = min(out)
+    return axis, side
+
+
+def exit_signed(box, pair, face):
+    """The pair's signed distance with the depth of a point inside the box measured to ``face``, not to the nearest face.
+
+    A centre outside the box keeps ``pair.signed``. Inside, the depth is the distance to the face plane along its normal
+    (>= the nearest-face depth, equal where that face is this one); a sphere keeps its radius term."""
+    r = pair.geom[3]
+    if pair.raw + r > 0.:
+        return pair.signed
+    axis, side = face
+    local = _local(box, pair.geom[4], pair.geom[5])
+    return -max(box['half'][axis] - side * local[axis], 0.) - r
+
+
+def _face_name(face):
+    return None if face is None else ('x', 'y')[face[0]] + ('+' if face[1] > 0 else '-')
+
+
+def relief(geo, servo, pose, cmd, loaded, *, scope=SCOPE, eps=EPS_M, depth=DEPTH):
     """Evaluate the start-state rule. None: not applicable (frozen answer stands). Else a dict with ``admitted``."""
     plan = sample_plan(cmd)
     if plan is None:
@@ -169,19 +227,27 @@ def relief(geo, servo, pose, cmd, loaded, *, scope=SCOPE, eps=EPS_M):
                     return None                         # nothing starts inside the margin: the frozen answer stands
                 limits = floors(start, scope, eps)
                 inside = {k for k, p in start.items() if p.clearance < 0. and p.raw <= 0.}
+                boxes = {b['id']: b for b in geo.boxes}
+                # The exit face of an inside pair is fixed at the start sample: the face of its wall that faces the
+                # robot's own estimated reference point (None: the reference point is not outside that wall).
+                faces = {k: exit_face(boxes[k[2]], pose.x, pose.y) if depth == 'exit_face' else None for k in inside}
+                depth_of = lambda k, p: p.signed if faces[k] is None else exit_signed(boxes[k[2]], p, faces[k])
+                begin = {k: depth_of(k, start[k]) for k in inside}
             samples += 1
             for key, p in pairs.items():
                 worst[key] = min(worst.get(key, math.inf), p.clearance)
                 if key in inside:
-                    deepest[key] = min(deepest.get(key, math.inf), p.signed - start[key].signed)
+                    deepest[key] = min(deepest.get(key, math.inf), depth_of(key, p) - begin[key])
                 if refusal is None and p.clearance < limits[key]:
                     refusal = {'why': 'start_clear_pair_negative' if start[key].clearance >= 0. else 'pair_worse_than_floor',
                                'pair': [p.kind, p.index, p.wall], 'sample': i, 'omega': omega,
                                'clearance_mm': p.clearance * 1000., 'floor_mm': limits[key] * 1000.,
                                'start_clearance_mm': start[key].clearance * 1000.}
-                if refusal is None and key in inside and p.signed < start[key].signed - eps:
+                if refusal is None and key in inside and depth_of(key, p) < begin[key] - eps:
                     refusal = {'why': 'inside_pair_deeper', 'pair': [p.kind, p.index, p.wall], 'sample': i, 'omega': omega,
-                               'signed_mm': p.signed * 1000., 'start_signed_mm': start[key].signed * 1000.}
+                               'signed_mm': depth_of(key, p) * 1000., 'start_signed_mm': begin[key] * 1000.,
+                               'depth': depth, 'exit_face': _face_name(faces[key]),
+                               'nearest_face_signed_mm': p.signed * 1000., 'nearest_face_start_signed_mm': start[key].signed * 1000.}
                 # Review 5 finding 1: relief never admits a NEW entry into an obstacle box. A pair whose raw signed
                 # distance is >= 0 at the start must keep it >= 0 at every swept sample (no slack).
                 if refusal is None and enters(start[key], p):
@@ -198,9 +264,10 @@ def relief(geo, servo, pose, cmd, loaded, *, scope=SCOPE, eps=EPS_M):
             row['pairs'] += 1
         shown = [{'kind': k[0], 'index': k[1], 'wall_id': k[2], 'start_clearance_mm': start[k].clearance * 1000.,
                   'start_raw_mm': start[k].raw * 1000., 'start_inside_raw': k in inside,
+                  **({'exit_face': _face_name(faces[k]), 'start_exit_signed_mm': begin[k] * 1000.} if k in inside else {}),
                   'worst_swept_clearance_mm': worst[k] * 1000., 'floor_mm': limits[k] * 1000.,
                   'worst_change_mm': (worst[k] - start[k].clearance) * 1000.} for k in negatives[:SHOWN_PAIRS]]
-        return _plain({'admitted': refusal is None, 'scope': scope, 'eps_m': eps, 'samples': samples,
+        return _plain({'admitted': refusal is None, 'scope': scope, 'depth': depth, 'eps_m': eps, 'samples': samples,
                        'start_negative_pairs': len(negatives), 'start_inside_raw': bool(inside),
                        'groups': groups, 'pairs': shown, 'refusal': refusal, 'motion_pad_mm': pad * 1000.})
     finally:
@@ -210,6 +277,7 @@ def relief(geo, servo, pose, cmd, loaded, *, scope=SCOPE, eps=EPS_M):
 class StartReliefGeometry(log.RecordingGeometry):
     """``PairGeometry`` (recording) whose ``motion_clear`` applies the start-state rule after a frozen veto."""
     scope = SCOPE
+    depth = DEPTH
     eps = EPS_M
 
     def motion_clear(self, servo, pose, cmd, *, loaded):
@@ -217,7 +285,7 @@ class StartReliefGeometry(log.RecordingGeometry):
         if super().motion_clear(servo, pose, cmd, loaded=loaded):
             return True
         try:
-            verdict = relief(self, servo, pose, cmd, loaded, scope=self.scope, eps=self.eps)
+            verdict = relief(self, servo, pose, cmd, loaded, scope=self.scope, eps=self.eps, depth=self.depth)
         except Exception as exc:                       # fail closed: the frozen veto stands
             self.trace.relief_notes.append(repr(exc))
             return False

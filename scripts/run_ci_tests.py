@@ -100,6 +100,7 @@ TEST_PATTERNS = (
     "tests/test_highpose_blind_close.py",  # v98 blind final approach (recorded own frames, no simulator)
     "tests/test_highpose_guard_veto_log.py",  # v98 pair-guard veto log (observation only)
     "tests/test_highpose_start_relief.py",  # v98 start-state relief after a frozen sweep veto
+    "tests/test_highpose_start_exit_face.py",  # v98 start relief v2: inside-pair depth to the wall face facing the robot
     "tests/test_highpose_edge_fit.py",  # v98 HIGH beam-edge consensus fit (recorded own frames)
     "tests/test_highpose_final_veto.py",  # v98 same-tick final veto of terminal endpoints' motion (real runner, fake backend)
     "tests/test_highpose_pf_consistency.py",  # v98 PF consistency (one stationary view counts once)
