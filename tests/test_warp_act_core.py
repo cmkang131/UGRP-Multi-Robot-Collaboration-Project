@@ -3,6 +3,15 @@ import pytest
 from scripts.warp_act_core import relay, visible_relative, control_tape
 
 
+def test_full_dof_workspace_covers_observed_wakeup_without_changing_legacy_default():
+    from scripts.warp_act_core import active_dof_workspace
+    # Actual warp8 R1 world008, seed8318706: native110, awake156, model nv222.
+    # experiments/2026-10-16-warp8/nvmax-evidence.json supplies the raw provenance.
+    assert active_dof_workspace(222,110)==128
+    assert active_dof_workspace(222,110)<156
+    assert active_dof_workspace(222,110,full=True)==222
+
+
 def test_vector_relay_has_independent_hysteresis_and_reversal():
     u = np.array([[.2, .35, -.2, -.35], [.2, .35, -.2, -.35]])
     state = np.array([[0, 0, 0, 0], [1, 1, -1, 1]])

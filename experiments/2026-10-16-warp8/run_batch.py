@@ -30,6 +30,8 @@ def main():
     p.add_argument('--indices', required=True)
     p.add_argument('--references', type=Path)
     p.add_argument('--rejection-table', type=Path, default=OPS / 'prior-rejection_table.json')
+    p.add_argument('--canonical-xml', type=Path)
+    p.add_argument('--full-active-dof-workspace-v1', action='store_true')
     p.add_argument('--export', action='store_true')
     p.add_argument('--memcheck', action='store_true')
     a = p.parse_args()
@@ -57,6 +59,11 @@ def main():
            '--rejection-table', str(table)]
     if a.flow == 'beampair':
         cmd += ['--teacher-source', str(ROOT / 'src/26f84d0f0ada1c33473c83cca2d3415ce51bd247')]
+    if a.canonical_xml is not None:
+        assert a.canonical_xml.is_file()
+        cmd += ['--canonical-xml',str(a.canonical_xml)]
+    if a.full_active_dof_workspace_v1:
+        cmd += ['--full-active-dof-workspace-v1']
     if a.export:
         cmd += ['--export-compiled-only']
     else:

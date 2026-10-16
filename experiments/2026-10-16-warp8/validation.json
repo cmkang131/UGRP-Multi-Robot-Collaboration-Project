@@ -1,8 +1,8 @@
 {
-  "passed": 11,
+  "passed": 30,
   "failed": 0,
-  "scope": "nonphysics model/host guards/dispatch and completed-world speed padding regression; no MuJoCo/Warp runtime",
-  "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_warp_flow_model.py tests/test_warp_flow_diagnostics.py",
+  "scope": "nonphysics; original wakeup counterexample110->156 with model nv222, legacy capacity default unchanged, command dispatch/model/recording checks",
+  "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_warp_act_core.py tests/test_warp_flow_model.py tests/test_warp_flow_diagnostics.py",
   "AST_parsed": [
     "scripts/run_warp_flow_teacher.py",
     "experiments/2026-10-16-warp8/run_batch.py"

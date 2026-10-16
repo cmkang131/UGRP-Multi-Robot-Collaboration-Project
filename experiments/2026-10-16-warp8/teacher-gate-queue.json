@@ -1,10 +1,10 @@
 {
   "schema": "ugrp.warp8.teacher_gate.v1",
-  "status": "RUNNING_BEAM40",
+  "status": "R1_HOST_ERROR_R2_FIX_PREPARED",
   "host": "gcp3",
   "project": "ugrp-sim-c-1016",
   "source_sha": "f75e3442957e8e00c4ed894056b3e06ee32399f0",
-  "rejection_table": "/home/ugrp/ugrp-sim/ops-reviews/warp8/prior-rejection_table.json",
+  "rejection_table": "/home/ugrp/ugrp-sim/ops-reviews/warp8/beam-r1-rejection_table.json",
   "local_rejection_table": "/Users/changmin/projects/ugrp-wt/warp4/experiments/2026-10-16-warp8/prior-rejection_table.json",
   "planned_denominators": {
     "beampair": 40,
@@ -32,5 +32,19 @@
   "execution_authority": "2026-10-16 user warp8 request",
   "speed_basis": "batch wall / (batch SIM * world count), coordinator decision, user unconfirmed; task duration metric separate",
   "simulation_host": "gcp3",
-  "analysis_host": "gcp2_CPU"
+  "analysis_host": "gcp2_CPU",
+  "ready": false,
+  "R1": {
+    "completed_N": 1,
+    "success_N": 1,
+    "cap_end_N": 0,
+    "HOST_ERROR_world_N": 39,
+    "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r1"
+  },
+  "R2_submitted": false,
+  "release_submitted": false,
+  "full_active_dof_workspace_v1": true,
+  "known_failure_first": 8318706,
+  "cleanup_deadline": "2026-10-16T14:05:00+00:00",
+  "VM_8h_setting": "removed externally; clarification pending"
 }

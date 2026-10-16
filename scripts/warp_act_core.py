@@ -6,6 +6,17 @@ frozen ACT11 source, rather than new acceptance thresholds.
 """
 import numpy as np
 
+
+def active_dof_workspace(nv, initial_bound, *, full=False):
+    """Default keeps legacy allocation; full uses the model's exact DOF bound.
+
+    warp8 R1: initial110 -> allocation128, but awake156 at control tick226.
+    Full nv222 is a structural bound, not an empirical multiplier. MJWarp's
+    documented default nvmax=nv admits all legal wakeups without changing sleep.
+    See experiments/2026-10-16-warp8/nvmax-evidence.json and references.md.
+    """
+    return int(nv) if full else min(int(nv),1 << (max(1,int(initial_bound))-1).bit_length())
+
 SERVOS = (1, 3, 4, 5, 6)
 
 

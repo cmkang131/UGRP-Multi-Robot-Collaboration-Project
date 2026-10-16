@@ -24,3 +24,22 @@ warp6 메타데이터에 기록된 정확한 adapter835ccef2 asset root로 해�
 파생 영상: gcp2 `/home/ugrp/ugrp-sim/ops-reviews/warp8/playback/warp8-prefix-0713/v3-world-000/`,
 `v3-world-001/`. Mac 몽타주: `/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/warp8-prefix-0713/`.
 최종 실패1–2개·성공1개의 전체2Hz/마지막10SIM초10Hz와 대표 영상 회수는 아직 미완료다.
+
+## R1 동기화 수정본 — native 상태 기준
+
+초기 prefix와 terminal-v1의 full2Hz 개요는 첫 evaluator 시각을 backend origin으로 잘못 썼다.
+실제 backend origin은1.7초, 첫 evaluator는 startup 뒤2.2초다. terminal-v2는 원래 review
+파일번호를 backend1.7초에 연결했다. 성공174행·중단221행의 evaluator/NPZ 중복 qpos가
+비트 단위로 일치했고 마지막 성공 상태만 evaluator에서 보완했다. 원래 파일과 v1은 보존하고
+대표 영상은 `representative-native-sync.json`의 v2 두 개를 쓴다.
+
+직접 검토: 성공 world028 전체2Hz36장(+0–17.5), tail10Hz100장(+8.0–17.9);
+HOST_ERROR world008 전체2Hz46장(+0–22.5), tail10Hz100장(+12.6–22.5) 전부다.
+성공은 +0–4초 scan/접근, +4–11초 양쪽 끝에 가까워지고, +11–14.5초 자기 RGB에서
+끝 색 띠가 화면 아래로 이동해 몸통이 커지며, +14.5–17.9초 유지한다. 평가 원본의 hold3초로
+성공을 재계수했다. 화면만으로 grip를 확정하지 않는다.
+중단 world008은 +0–10초 r2가 파랑 끝을 보고 r1은 멀리서 다른 로봇/빔을 보며,
++10–18초 r1이 방향을 맞추고, +18–22.5초 다른 로봇 쪽으로 접근한다. 마지막10Hz에서
+접근이 연속적으로 보이며 종료는 다음 물리 step의 NVMAX 오류다. 낙하/파지 실패로 세지 않는다.
+2Hz만으로는 frame 사이의 빠른 움직임을 알 수 없었고, 10Hz에서 접근이 이어짐을 확인했다.
+추가 접촉/각성 경로는 미확정이다. 전체 gate40 통과도 아니다.

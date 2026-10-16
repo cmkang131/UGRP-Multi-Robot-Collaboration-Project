@@ -77,6 +77,7 @@ def parser():
     p.add_argument('--placement-graspable-filter-v1',action='store_true')
     p.add_argument('--gcp3-isolated-v1',action='store_true',help='explicit warp6 L4 host admission; default OFF')
     p.add_argument('--batch-per-world-speed-v1',action='store_true',help='warp8 admission recording: batch wall / (batch SIM * world count); task throughput separate; default OFF')
+    p.add_argument('--full-active-dof-workspace-v1',action='store_true',help='exact full-model nvmax workspace for legal wakeups; default OFF; no physics settings changed')
     p.add_argument('--rejection-table',type=Path,help='absolute existing prior funnel for the warp8 gate')
     p.add_argument('--warp-debug-v1',action='store_true',help='Warp bounds checks and CUDA line information; default OFF')
     p.add_argument('--warp-workspace-trace-v1',action='store_true',help='synchronize and persist allocations after each existing graph chunk; default OFF')
@@ -100,6 +101,8 @@ def main():
     if a.batch_per_world_speed_v1 and (not a.gcp3_isolated_v1 or a.rejection_table is None
             or not a.rejection_table.is_absolute() or not a.rejection_table.is_file()):
         p.error('warp8 speed recording requires isolated gcp3 and an absolute existing rejection table')
+    if a.full_active_dof_workspace_v1 and not (a.gcp3_isolated_v1 and a.native_sleep_policy_compat_v1 and a.world_model_parameters_v1):
+        p.error('full DOF workspace requires isolated gcp3 and the existing native sleep/world-model profiles')
     if a.mps_shared_v1 and os.environ.get('CUDA_MPS_PIPE_DIRECTORY')!='/home/ugrp/ugrp-sim/runs/warp4/mps/pipe':
         p.error('private task-owned MPS pipe required; no global GPU configuration changes')
     from simalt_host import gcp2_identity
@@ -165,6 +168,7 @@ def main():
         gate_eligible=False,shared_load=not a.gcp3_isolated_v1,vm_hourly_usd=a.vm_hourly_usd,
         placement_graspable_filter_v1=a.placement_graspable_filter_v1,
         batch_per_world_speed_v1=a.batch_per_world_speed_v1,
+        full_active_dof_workspace_v1=a.full_active_dof_workspace_v1,
         prior_rejection_table=str(a.rejection_table) if a.rejection_table else None,
         cuda_runtime_profile=('gcp3_isolated_no_mps_v1' if a.gcp3_isolated_v1 else
             'warp4_private_mps_v1' if a.mps_shared_v1 else 'shared_contexts_baseline'),
@@ -192,6 +196,7 @@ def main():
             raise ValueError('single-model post-setup arrays differ; no SLEEP exception admitted')
         (a.out/'canonical-scene.xml').write_text(canonical['xml'])
         write(a.out/'canonical-poses.json',[b.model_audit for b in bridges])
+        report['native_initialization_only_sim_s']=[float(c['origin']) for c in contexts]
         if a.export_compiled_only:
             if mujoco.__version__!='3.12.0':raise ValueError('C312 reference export requires3.12')
             from simalt_compiled_compat import export_reference,export_geometry
@@ -212,7 +217,8 @@ def main():
         if a.physics_backend=='mjwarp_batch_v1':
             hooks.initialize(contexts,compiled_reference=Path(first['actuator']) if first else a.compiled_reference_v1,
                 compiled_geometry=Path(first['geometry']) if first else a.compiled_geometry_312_v1,
-                per_world_model_references=references,sap_segmented_v1=a.sap_segmented_v1)
+                per_world_model_references=references,sap_segmented_v1=a.sap_segmented_v1,
+                full_active_dof_workspace_v1=a.full_active_dof_workspace_v1)
             report.update(camera=hooks.camera,capacities=hooks.capacities,compatibility=hooks.compat,
                 initial_state_proof=hooks.initial_state_proof(contexts),model_batch_audit=hooks.model_batch_audit,
                 sleep_audit=hooks.sleep_audit,solver_numerics=hooks.solver_numerics)

@@ -12,7 +12,7 @@ import hashlib
 import time
 from pathlib import Path
 import numpy as np
-from warp_act_core import SERVOS, control_tape, model_key, varying_model_arrays, masked_restore, sleep_scene_xml, runtime_sleep_policy, physics_schedule, contact_maps
+from warp_act_core import SERVOS, control_tape, model_key, varying_model_arrays, masked_restore, sleep_scene_xml, runtime_sleep_policy, physics_schedule, contact_maps, active_dof_workspace
 
 
 class PerceptionWorld:
@@ -183,7 +183,7 @@ class CFlowTransport(CTransport):
 
 
 class WarpTransport(Transport):
-    def initialize(self, contexts, *, compiled_reference=None, compiled_geometry=None, per_world_model_references=None, float32_solver_default_v1=False,sap_segmented_v1=False):
+    def initialize(self, contexts, *, compiled_reference=None, compiled_geometry=None, per_world_model_references=None, float32_solver_default_v1=False,sap_segmented_v1=False,full_active_dof_workspace_v1=False):
         import mujoco
         import warp as wp
         import mujoco_warp as mjw
@@ -281,10 +281,14 @@ class WarpTransport(Transport):
             cargo_tree=int(m.body_treeid[m.geom_bodyid[c['gids'][0]]])
             active_bounds.append(int(np.count_nonzero(np.isin(self.dof_tree,[*robot_trees,cargo_tree]))))
         bound=max(int(native_active.max()),max(active_bounds))
-        self.nvmax=min(int(m.nv),1 << (max(1,bound)-1).bit_length()) if self.native_sleep_policy_compat_v1 else None
+        if full_active_dof_workspace_v1 and not self.native_sleep_policy_compat_v1:
+            raise ValueError('full active DOF workspace requires the existing native sleep profile')
+        self.nvmax=active_dof_workspace(m.nv,bound,full=full_active_dof_workspace_v1) if self.native_sleep_policy_compat_v1 else None
         self.sleep_audit={'enabled':self.native_sleep_policy_compat_v1,'native_initial_active_dofs':native_active.tolist(),
             'active_robot_plus_target_dofs':active_bounds,'nvmax':self.nvmax,
-            'capacity_basis':'next power of2 of actual native active count and static robot+target DOFs; overflow rejects unexpected activation'}
+            'full_active_dof_workspace_v1':full_active_dof_workspace_v1,'model_nv':int(m.nv),
+            'capacity_basis':('exact full model nv, documented upstream default; admits every legal wakeup, no sleep/physics setting change'
+                if full_active_dof_workspace_v1 else 'next power of2 of initial native active count and robot+target DOFs; not a bound on later wakeups')}
         (self.out/'sleep-allocation-audit.json').write_text(json.dumps(self.sleep_audit,indent=2)+'\n')
         d.tree_asleep[:]=self.source_sleep[0]
         with unused_efm(m, d):
@@ -588,6 +592,9 @@ class WarpTransport(Transport):
             'active_dofs_sample_max':int(np.sum(self.wd.tree_awake.numpy()[:,self.dof_tree]!=0,axis=1).max())})
         self.seconds['physics']+=time.perf_counter()-start
         if np.any(self.wd.overflow.numpy()):
+            # Recording only, on the already-fatal branch: preserve the actual
+            # per-world demand before exception unwinding destroys the context.
+            self.trace_workspace('overflow')
             raise RuntimeError('MJWarp workspace overflow '+str(self.wd.overflow.numpy().tolist()))
         self.sync_render(contexts)
 

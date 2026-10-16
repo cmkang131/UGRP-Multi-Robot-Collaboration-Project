@@ -1,1 +1,1 @@
-warp8: RUNNING | gcp3 단독 L4·MPS OFF | 빔40 9.3SIM/완료0, 중간 wall/(SIM×40)≈3.87·첫30 미완료 | release A/B 각 S1 14·S3 13·S6 13 참조 준비 | CUDA700 단독 환경에서 미재현·원인미확정 | prefix 0–7SIM 2Hz30장 검토·최종 성공/실패 영상 미회수 | PR#557 DRAFT
+warp8: R1 HOST_ERROR | 빔40: 완료성공1·cap_end0·미완료39, step226 world008 NVMAX128(활성156/할당128) | CUDA700 미재현 | full nv222 기본off 수정 후보·비물리30PASS | R2/release 미제출 | 대표 성공1/HOST중단1 native 동기화·Mac SHA/ffprobe 검증 | 8h VM필드 제거 발견·정책 확인 중, 자체14:05UTC 정리 유지 | PR#557 DRAFT

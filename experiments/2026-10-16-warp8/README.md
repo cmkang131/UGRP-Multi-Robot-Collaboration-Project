@@ -1,4 +1,4 @@
-# warp8 — gcp3 단독 빔 짝·release MJWarp 관문 (진행 중)
+# warp8 — gcp3 빔 짝·release MJWarp 관문 (R1 HOST_ERROR, 수정 후보 준비)
 
 warp6와 같은 `codex/warp6`, PR #557 DRAFT에서 이어간다. gcp2 R3의 CUDA700은
 gcp3 단독·MPS off·원래 graph 25.3 SIM초에서 **단독 환경에서 미재현**이었다.
@@ -31,3 +31,25 @@ gcp2 L4·gcp1을 건드리지 않는다. VM에 모델키·에이전트 자격증
 채택하지 않았다. 후속 실제 실행은 지정 식을 명시한 소스35e94d5d 이후를 쓴다.
 진행 중 빔 소스와 원래 기록은 유지하고, 원본으로 물리 처리량과 실제 작업 처리량을
 각각 다시 센다. 제어·물리는 불변이며 관련 비물리11PASS다.
+
+## R1 관문 중단과 R2 후보
+
+`beam40-r1`은 control225/+22.5SIM까지 정상 저장 뒤 step226에서 world008/seed8318706의
+NVMAX bit128로 중단됐다. 완료 성공1(world028, task17.4SIM), cap_end0, 미완료 HOST_ERROR39다.
+물리 실패0이라는 뜻이 아니라39건의 물리 결과를 모른다는 뜻이다. CUDA700은 미재현이다.
+첫30SIM은 미완료라 속도 관문 통과로 보고하지 않는다. [원본 거부표](beam-r1-rejection_table.json).
+
+실제 초기110→할당128, 마지막 활성156, 총 nv222다. 기본off `full_active_dof_workspace_v1`로
+공식 기본 방식인 정확한 전체 nv를 할당하는 후보를 만들었다([근거](references.md)). NoSlip10,
+dt, 접촉·마찰·m.opt solver 설정과 행동 경로는 유지한다. upstream compact 정규화의 pad/ctol은
+할당 크기에 따라 바뀌므로 기록하며 바이트 동등성을 주장하지 않는다. 관련 비물리30PASS다.
+R2는 새 실패seed8318706을 맨 앞에 놓고 원래 canonical XML과40건의 참조를 재사용한다.
+R1과 R2는 합산하지 않는다. R2 및 release의 실제 제출·완료 결과는 아직 없다.
+
+성공1개·HOST_ERROR1개의 원본 재계수와 대표 영상을 회수했다. full2Hz의 초기0.5SIM 동기화 오류는
+native NPZ로 고쳐 중복174/221행 qpos가 비트 일치함을 확인했다. 수정본 전체2Hz36/46장과
+마지막10SIM/10Hz 각100장을 전부 봤다. [대표 영상·검증](representative-native-sync.json),
+[영상 검토](playback-review.md). 원래 파생본은 보존하고 수정본을 최종 대표 영상으로 쓴다.
+
+R2 제출 전 실제 VM scheduling에서8h 필드가 외부에서 제거된 것을 확인했다. VM 설정은 아직
+변경하지 않았고, 이 작업 자체의 기존 정리 시한14:05UTC는 유지한다. 사용자에게 충돌 정책을 물었다.
