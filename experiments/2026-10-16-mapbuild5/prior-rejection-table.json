@@ -1,0 +1,47 @@
+{
+  "phase": "before_modification",
+  "raw": [
+    "experiments/2026-10-07-rbpf-rejection/results/diagnosis.json",
+    "experiments/2026-10-08-rbpf-insertion/results",
+    "experiments/2026-10-08-rbpf-turn-audit/results",
+    "experiments/2026-10-16-mapbuild4/rejection_table.json"
+  ],
+  "historical_rejections": [
+    {
+      "category": "scan_match",
+      "reason": "search_boundary",
+      "n": 37,
+      "blocked_object": "own_wall_scan_or_prior_map",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "scan_match",
+      "reason": "low_overlap",
+      "n": 10,
+      "blocked_object": "own_wall_scan_or_prior_map",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "category": "scan_match",
+      "reason": "high_residual",
+      "n": 1,
+      "blocked_object": "own_wall_scan_or_prior_map",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    }
+  ],
+  "scope": "egomap24 after t13.7 only; 48 rejected match attempts. Historical scene/host distinct; not merged with mapbuild5. Largest cause: yaw drift beyond local search, followed by overlap. egomap26 insertion recovered55 scans but resampled19 rejected frames; egomap27 selective+insertion+Manhattan reduced this to0 but uncertainty still failed525/891 times for wide.",
+  "stages": [
+    {
+      "stage": "historical_rejected_attempts",
+      "cumulative_pass_n": 48,
+      "rejected_n": 0
+    }
+  ],
+  "reproduction": [
+    "cat experiments/2026-10-07-rbpf-rejection/README.md",
+    "cat experiments/2026-10-08-rbpf-turn-audit/README.md"
+  ]
+}
