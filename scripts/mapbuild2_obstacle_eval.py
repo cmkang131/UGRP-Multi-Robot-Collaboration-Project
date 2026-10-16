@@ -13,13 +13,17 @@ def main():
     # Predictions already exist; evaluator truth never goes to their producer.
     predictions={f.name.removesuffix('-predicted.json'):json.loads(f.read_text()) for f in a.maps.glob('*-predicted.json')}
     if len(predictions)!=4:raise ValueError('FOUR_SAVED_PREDICTIONS_REQUIRED')
+    # Pure scoring lives in mapbuild2; scene construction lives in the frozen
+    # renderer closure. Resolve the scoring module before adding that closure.
+    from mapbuild2_map_eval import raster
+    from score_mapbuild1 import score
+    import scripts
+    scripts.__path__.append(str(a.vision_source/'scripts'))
     sys.path.insert(0,str(a.vision_source))
     import numpy as np
     import mujoco
     from scripts import probe_scene_tex2 as tools
     from scripts.generate_scene_textures import MAPS
-    from mapbuild2_map_eval import raster
-    from score_mapbuild1 import score
     m,scene,*_=tools.build_model(MAPS[0],'walls_floor_contrast_v5_indigo110_s80')
     d=mujoco.MjData(m);d.qpos[:]=np.load(a.input/'eval-state.npz')['qpos'][0,0];mujoco.mj_forward(m,d)
     roots={m.body(item['body_name']).id for item in scene.config['setup_only']['objects'].values()}
