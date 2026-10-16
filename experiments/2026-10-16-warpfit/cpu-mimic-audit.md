@@ -27,3 +27,5 @@
 원본 warpfit의 실제 실행 오류는 fast 빔 LS 한도2, 초기 import1이다. 새 후보는 solver·마찰·dt·치수·명령을 재맞춤하지 않는다. C의 micron slip 경계를 물리 실패로 둔 과거 분포는 후보 선정 근거에서 제외한다. [초기표](warpfit2-rejection-initial.json)와 원래 [전체 funnel](rejection_table.json)을 보존한다.
 
 공식 최소 할당은 가장 직접적인 성능 후보이고, upstream plane 복원은 C 모방 제거·주행 접촉 품질의 우선 후보다. 둘을 각각 측정하여 인과를 분리하며 결합 프로필은 이번에 만들지 않는다. 수치 이득은 측정 전에는 알 수 없다. 후보마다 N16 상자30회·빔 짧은 유지·원래 짧은 펄스와 warm 횡60/400ms, R3 N64 같은 조건으로 잰다. 들기 존재는 기존 교사12mm+양의 손가락 힘, 상대 slip/높이는 native-v1 자체 원본 P95/P05를 배율 없이 비교한다. 모든 세계·조건·실패·cap_end를 기록하며 교사 관문·학습·E2E 성공으로 확대하지 않는다.
+
+직전 원본 분포의 전체 재계수: height_below_C_p05 7,535프레임, slip_above_C_p95 3,887프레임, initial_overlap_diagnostic 8실행, solver_line_search_limit 2실행, HOST_ERROR 1실행이다. 단위가 달라 합산 비율로 만들지 않는다. [원본 분포 재계수](warpfit2-evidence/preceding-rejection-distribution.json).
