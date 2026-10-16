@@ -43,7 +43,16 @@ step0 확인 후, 같은 사전 고정40개87220–87259를 r2로 제출했다.
 VAL3026행/8회로 나뉜다. [확정 데이터](native-dataset-receipt.json),
 [전체 감사](native-dataset-audit.json), [기록 관문](native-fresh-recording-gate.json).
 A/B는 각각 고정10000스텝과 저장/재로딩 예측 일치 검사를 완료했다.
-현재 새 native VAL8×A/B(총16세계)를 실행 중이며 결과·선택은 아직 미확정이다.
+새 native VAL8×A/B는 둘 다0/8(종류별각0/2)이며 원본 재계수가 일치했다.
+양손 하중 관찰 A0/8·B1/8, 안정 들기·내려놓기0/8, cap_end A4·B6, HOST_ERROR0이다.
+기하 정렬 미통과도 각각8/8이라 사전 동률 규칙으로 A/off를 유지했다.
+[비교 표](native-A-B-comparison.json), [실제 검토 확인](native-review-A_B.json),
+[거부 표A](native-validation-A-rejection_table-enriched.json),
+[거부 표B](native-validation-B-rejection_table-enriched.json)를 보존한다.
+A/B87429 실패의 전체2Hz·끝10초10Hz를 직접 검토했다. 학생 성공0이라 교사 성공 참고와 구분한다.
+C는 동일D0·고정10000스텝에서 TRAIN 커리큘럼만 켜 학습 중이다.
+실제 표집 대상 행이1367→7219로 넓어지는 로그와 D0 동일 해시를 확인했다
+([진행 중 근거](native-C-curriculum-live-receipt.json)).
 [후속 실행기](native-experiment-launch.json)는 기존 A/B를 재제출하지 않고,
 검증→실제 영상 검토→h4→검토→h5→검토→선택 봉인→최종40 순서로 진행한다.
 학습 실행 소스는c27a9d537로 고정하고 조정 코드37a8c8336과 구분한다.
