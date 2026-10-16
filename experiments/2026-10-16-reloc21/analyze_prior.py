@@ -64,7 +64,7 @@ def main():
                     destination_visual_enabled=obj(raw/'plan.json').get('destination_visual_acquire_v1'),
                     destination_entered=any(x.get('phase_before',x['phase'])=='destination_acquire' for x in c),
                     remaining_euclidean_estimate_m=math.dist(pose[:2],goal) if goal else None,
-                    remaining_path_estimate_m=sum(math.dist(a,b) for a,b in zip(path,path[1:])),
+                    remaining_path_estimate_m=sum(math.dist(a,b) for a,b in zip(path,path[1:])) if path else None,
                     goal=goal,final_estimate=pose,first_travel_estimate=first,
                     travel_time_bins_sim_s=dict(categories),stall_reasons=dict(reasons),
                     travel_max_displacement_estimate_m=max((math.dist(first[:2],x['map_pose']['pose_estimate'][:2]) for x in travel),default=None),
@@ -100,7 +100,8 @@ def main():
     lines=['# reloc20 16시도 종료 관문표','', '|실행|종료|마지막 단계|잔여 직선/경로 m|', '|---|---|---|---|']
     for r in runs:
         a=r.get('remaining_euclidean_estimate_m');b=r.get('remaining_path_estimate_m')
-        lines.append(f"|{r['name']}|{r['termination']}: {r['original_reason'] or r.get('error')}|{r['last_phase']}|{f'{a:.3f}/{b:.3f}' if a is not None else '해당 없음'}|")
+        remaining=f'{a:.3f}/'+(f'{b:.3f}' if b is not None else '경로 없음') if a is not None else '해당 없음'
+        lines.append(f"|{r['name']}|{r['termination']}: {r['original_reason'] or r.get('error')}|{r['last_phase']}|{remaining}|")
     lines += ['',json.dumps(result['funnel'],ensure_ascii=False),'','잔여 거리는 자기 추정 좌표계이며 실제 정답 도착 거리와 다르다. HOST_ERROR 원상태는 보존하고 위치추정 소진을 별도 분류했다.']
     (p.parent/'gate-table.md').write_text('\n'.join(lines)+'\n')
     print(json.dumps(dict(funnel=result['funnel'],terminations=result['normalized_terminations'],

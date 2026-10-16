@@ -3,13 +3,13 @@
 |실행|종료|마지막 단계|잔여 직선/경로 m|
 |---|---|---|---|
 |reloc20-r1-carry-baseline-93266-aede24d6|cap_end: sim_cap|destination_acquire|0.609/0.048|
-|reloc20-r1-carry-candidate-93266-aede24d6|cap_end: sim_cap|align|2.610/0.000|
+|reloc20-r1-carry-candidate-93266-aede24d6|cap_end: sim_cap|align|2.610/경로 없음|
 |reloc20-r1-carry-baseline-93315-aede24d6|cap_end: phase_timeout|destination_acquire|1.330/0.052|
 |reloc20-r1-carry-candidate-93315-aede24d6|HOST_ERROR: fixed-floor declaration scenario hash mismatch|precontrol|해당 없음|
 |reloc20-r1-selfmap-short_regression-93584-aede24d6|controller_failure: selfmap4_relocalization_exhausted|stopped|해당 없음|
 |reloc20-r1-selfmap-short_regression-93583-aede24d6|controller_failure: selfmap4_relocalization_exhausted|stopped|해당 없음|
 |reloc20-r2-carry-candidate-93266-1b310860|cap_end: phase_timeout|carry_to_zone|3.187/4.642|
-|reloc20-r2-carry-candidate-93315-1b310860|cap_end: sim_cap|carry_reobserve|2.547/0.000|
+|reloc20-r2-carry-candidate-93315-1b310860|cap_end: sim_cap|carry_reobserve|2.547/경로 없음|
 |reloc20-r2-selfmap-short_regression-93584-1b310860|controller_failure: selfmap4_relocalization_exhausted|stopped|해당 없음|
 |reloc20-r2-selfmap-short_regression-93583-1b310860|controller_failure: selfmap4_relocalization_exhausted|stopped|해당 없음|
 |reloc20-r3-carry-candidate-93266-cb8b37c2|cap_end: phase_timeout|carry_to_zone|3.191/4.778|
