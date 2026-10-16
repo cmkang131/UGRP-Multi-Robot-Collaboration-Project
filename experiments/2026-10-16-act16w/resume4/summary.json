@@ -92,7 +92,7 @@
     "status": "main_running",
     "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-training-r1"
   },
-  "native_learning_status": "A/B fixed10000 complete and exact checkpoint prediction readback verified; native VAL8 each running",
+  "native_learning_status": "A/B10000+readback COMPLETE; raw native VAL8 each0/8; all8 geometric alignment rejected each. Actual playback reviewed. C TRAIN curriculum starts now with A/off per preregistered tie.",
   "native_training_curves": {
     "path": "native-ab-learning-curves.png",
     "receipt": "native-ab-learning-curves.json",
@@ -111,5 +111,168 @@
     "actual_contact_profile": "warp_native_contact_v1",
     "original_scene_label": "cargo_noslip_v1(10), pre-application builder metadata",
     "first_native_gate_report_class": "milestone"
+  },
+  "native_A_B": {
+    "status": "complete",
+    "arms": {
+      "A": {
+        "n": 0,
+        "N": 8,
+        "kinds": {
+          "cyan": {
+            "n": 0,
+            "N": 2
+          },
+          "red": {
+            "n": 0,
+            "N": 2
+          },
+          "green": {
+            "n": 0,
+            "N": 2
+          },
+          "yellow": {
+            "n": 0,
+            "N": 2
+          }
+        },
+        "stages": {
+          "bilateral_load_observed": 0,
+          "lift_success": 0,
+          "release_success": 0,
+          "issued_sequence_complete": 4,
+          "task_success": 0
+        },
+        "funnel": [
+          {
+            "gate": "requested",
+            "passed": 8,
+            "rejected": 0
+          },
+          {
+            "gate": "sequence_done",
+            "passed": 4,
+            "rejected": 4
+          },
+          {
+            "gate": "stable_lift",
+            "passed": 0,
+            "rejected": 4
+          },
+          {
+            "gate": "stable_release",
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "task_success",
+            "passed": 0,
+            "rejected": 0
+          }
+        ],
+        "cap_end": 4,
+        "HOST_ERROR": 0,
+        "raw_recount_matches": true,
+        "teacher_forced": {
+          "wheel_MAE": 0.04086160785602033,
+          "persistence_wheel_MAE": 0.040185183939219826,
+          "continuous13_MAE": 0.035999165005325386,
+          "transition_h0_wheel_MAE": 0.18249397467601156,
+          "transition_h0_persistence_MAE": 0.3167355317961086,
+          "done_Brier_h0": 0.03626618026373728
+        },
+        "teacher_forced_scope_annotation": {
+          "original_label": "teacher-forced prediction on validation5; not task success, not final40, no checkpoint/policy selection",
+          "actual_validation_seed_N": 8,
+          "reason": "legacy human-readable validation5 text; actual native seed list8 and3026 rows; metrics and source unchanged"
+        }
+      },
+      "B": {
+        "n": 0,
+        "N": 8,
+        "kinds": {
+          "cyan": {
+            "n": 0,
+            "N": 2
+          },
+          "red": {
+            "n": 0,
+            "N": 2
+          },
+          "green": {
+            "n": 0,
+            "N": 2
+          },
+          "yellow": {
+            "n": 0,
+            "N": 2
+          }
+        },
+        "stages": {
+          "bilateral_load_observed": 1,
+          "lift_success": 0,
+          "release_success": 0,
+          "issued_sequence_complete": 2,
+          "task_success": 0
+        },
+        "funnel": [
+          {
+            "gate": "requested",
+            "passed": 8,
+            "rejected": 0
+          },
+          {
+            "gate": "sequence_done",
+            "passed": 2,
+            "rejected": 6
+          },
+          {
+            "gate": "stable_lift",
+            "passed": 0,
+            "rejected": 2
+          },
+          {
+            "gate": "stable_release",
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "task_success",
+            "passed": 0,
+            "rejected": 0
+          }
+        ],
+        "cap_end": 6,
+        "HOST_ERROR": 0,
+        "raw_recount_matches": true,
+        "teacher_forced": {
+          "wheel_MAE": 0.05339614733481375,
+          "persistence_wheel_MAE": 0.040185183939219826,
+          "continuous13_MAE": 0.042904457267351086,
+          "transition_h0_wheel_MAE": 0.14806729075775832,
+          "transition_h0_persistence_MAE": 0.3167355317961086,
+          "done_Brier_h0": 0.02834821810602058
+        },
+        "teacher_forced_scope_annotation": {
+          "original_label": "teacher-forced prediction on validation5; not task success, not final40, no checkpoint/policy selection",
+          "actual_validation_seed_N": 8,
+          "reason": "legacy human-readable validation5 text; actual native seed list8 and3026 rows; metrics and source unchanged"
+        }
+      }
+    },
+    "student_success_examples_available": false,
+    "teacher_success_reference_only": "native-teacher-playback-review.json",
+    "matched_failure_playbacks": [
+      "native-A-87429-playback-review.json",
+      "native-B-87429-playback-review.json"
+    ],
+    "final40_accessed": false,
+    "alignment_rejections": {
+      "A": 8,
+      "B": 8
+    },
+    "selected_history": "A/off",
+    "selection_reason": "n0/8 tie, alignment8/8 tie, predeclared A/off on tie",
+    "h4_next": "C fresh10000 sameD0, TRAIN start curriculum only"
   }
 }
