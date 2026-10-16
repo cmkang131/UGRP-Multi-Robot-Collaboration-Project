@@ -49,6 +49,7 @@ class LoadedRoute:
         self.static = static
         self.radius = .26 + MARGIN_M  # retain the pre-existing arm envelope
         self.footprint = None
+        self.disc_names = []
         self.rects = [(o['id'], (*o['center_m'], *o['half_extents_m'], o.get('yaw_rad', 0.)))
                       for o in static['obstacles']]
         # Only an explicitly authored map extension is accepted. No setup/
@@ -76,7 +77,7 @@ class LoadedRoute:
     def gap(self, point, discs, radius=None):
         r = self.radius if radius is None else radius
         gaps = [(rect_distance(point, rect)-r, name) for name, rect in self.rects]
-        gaps += [(math.dist(point,d[:2])-r-d[2], f'own_rgb_disc_{i}') for i,d in enumerate(discs)]
+        gaps += [(math.dist(point,d[:2])-r-d[2], self.disc_names[i] if i<len(self.disc_names) else f'own_rgb_disc_{i}') for i,d in enumerate(discs)]
         x0,x1,y0,y1 = self.static['bounds_m']
         gaps += [(min(point[0]-x0,x1-point[0],point[1]-y0,y1-point[1])-r, 'map_bounds')]
         gap, name = min(gaps)

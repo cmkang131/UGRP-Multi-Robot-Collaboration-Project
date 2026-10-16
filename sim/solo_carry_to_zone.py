@@ -241,6 +241,8 @@ class CarryToZone:
             self.radius=route.radius
         self.obstacles.observe(bgr, pwm, self.loc.pose, now, holding=holding,
                                kind=kind, grasp_pwm=grasp_pwm, pose_sigma=self.loc.sigmas())
+        if route is not None:
+            route.disc_names=[f"own_rgb_{o['kind']}_track_{o.get('id',i)}" for i,o in enumerate(self.obstacles.tracks)]
         self.last_plan = -math.inf  # a newly visible obstacle invalidates the route
 
     def start(self, now, grip_xy):

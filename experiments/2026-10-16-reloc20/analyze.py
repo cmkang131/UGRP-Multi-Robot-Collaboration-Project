@@ -108,7 +108,7 @@ def main(n,media=False):
  (b/'rejection-table.json').write_text(json.dumps(dict(source_queue=str(b/'queue.json'),reproduce=f'PYTHONPATH={ROOT} python {__file__} --round {n}',runs=tables),indent=2)+'\n')
  brief=dict(round=n,status=d['status'],source_sha=q['source_sha'],speed=d['speed'],files_verified=sum(x['integrity']['files'] for x in integrity),runs=[{k:v for k,v in r.items() if k not in ('destination_acquisition','drift_bins','reloc20_motion','source_hashes')} for r in d['runs']])
  (b/'brief.json').write_text(json.dumps(brief,indent=2)+'\n')
- for name in ('summary.json','rejection-table.json'):
+ for name in ('summary.json','rejection-table.json','brief.json'):
   p=b/name
   if p.stat().st_size>65536:
    original=hashlib.sha256(p.read_bytes()).hexdigest();subprocess.run(['zstd','-q','-f',str(p)],check=True);assert hashlib.sha256(subprocess.check_output(['zstd','-dc',str(p)+'.zst'])).hexdigest()==original;p.unlink()
