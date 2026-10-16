@@ -64,3 +64,5 @@ warp8: native-v1 빔40 한배치14:25:57Z 제출 driver3149/child3151 source3170
 
 ## warp8d resume
 warp8d: resume-ack | beam40-native-r1 driver3149/child3151 source3170d909 계속 실행 13.4SIM/완료0/40·오류0; 중복제출0 | gcp3단독/native0/VM상한두필드없음·idle20 ACTIVE, 분석gcp3만/CPU VM시작0 | 첫30대기·현재누적 batch 41.583/세계당 1.0396, noslip10 빔5.60/release8.72와별도 | 2026-10-16T14:39:43.221434+00:00 nocap-ack nocpu-ack nativecontact-ack cap-ack ownership-ack
+
+warp8d: native-v1 빔 first30 1266.287wall/(30×40)=1.055239, batch wall/SIM=42.20957; noslip10 빔R2=5.6024/releaseA-S1누적prefix=8.72(첫30아님) 나란히·합산0 | 첫30완료7/40, 후속prefix원장8재계수8성공/불일치0·입력감사40 0/0(완료전체+진행prefix), 오류0 | 6.0환산차단미만(조정자결정/사용자미확인),전체관문진행·release미제출 | 압축된원장(.zst) 감시누락표시수정·기존감시사본보존·물리소스3170불변 | 2026-10-16T14:52:06.921532+00:00 nocap-ack nocpu-ack nativecontact-ack cap-ack ownership-ack

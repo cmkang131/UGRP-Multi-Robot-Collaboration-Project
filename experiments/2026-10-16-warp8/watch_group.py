@@ -10,8 +10,12 @@ import subprocess
 
 def read(path, default=None):
     try:
-        return json.loads(path.read_text())
-    except FileNotFoundError:
+        if path.exists():
+            return json.loads(path.read_text())
+        if path.with_name(path.name + '.zst').exists():
+            return json.loads(subprocess.check_output(['zstd', '-qdc', str(path) + '.zst']))
+        return default
+    except (FileNotFoundError, subprocess.CalledProcessError):
         return default
 
 
@@ -38,13 +42,18 @@ def main():
         if raw.get('status') == 'complete':
             audits.append(dict(world=folder.name, input_audit=raw.get('input_audit'),
                 release_success=raw.get('release_success'), outcome=raw.get('release_outcome')))
-        for trace in (folder / 'raw').glob('teacher-*.jsonl'):
-            with trace.open('rb') as f:
-                f.seek(max(0, trace.stat().st_size - 65536))
-                lines = f.read().splitlines()
+        for trace in (folder / 'raw').glob('teacher-*.jsonl*'):
+            if trace.suffix == '.zst':
+                if trace.with_suffix('').exists():
+                    continue
+                lines = subprocess.check_output(['zstd', '-qdc', str(trace)]).splitlines()
+            else:
+                with trace.open('rb') as f:
+                    f.seek(max(0, trace.stat().st_size - 65536))
+                    lines = f.read().splitlines()
             try:
                 row = json.loads(lines[-1])
-                phases[str(row.get('phase') or row.get('teacher', {}).get('phase'))] += 1
+                phases[str(row.get('teacher_phase') or row.get('phase') or row.get('teacher', {}).get('phase'))] += 1
             except (IndexError, json.JSONDecodeError):
                 phases['unflushed'] += 1
     print(json.dumps(dict(utc=dt.datetime.now(dt.timezone.utc).isoformat(), tag=a.tag,

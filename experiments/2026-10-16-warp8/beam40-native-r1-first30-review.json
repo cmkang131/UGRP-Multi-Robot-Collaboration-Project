@@ -1,0 +1,699 @@
+{
+  "utc": "2026-10-16T14:52:06.921532+00:00",
+  "host": "gcp3",
+  "source_sha": "3170d909089865c45e2cbc6089beb6a2d05e576f",
+  "profile": "warp_native_contact_v1",
+  "first30": {
+    "ticks": 300,
+    "active_N": 33,
+    "completed_N": 7,
+    "sim_s": 30.0,
+    "loop_wall_s": 1266.2871170180001,
+    "timing": {
+      "render": 91.05764804299827,
+      "readback_remap_jpeg_kinematics": 60.22234029699746,
+      "command_decode_upload": 2.835145402000194,
+      "physics": 505.0506689910005
+    },
+    "world_sim_s": [
+      30.0,
+      30.0,
+      30.0,
+      27.6,
+      30.0,
+      30.0,
+      27.8,
+      28.400000000000002,
+      30.0,
+      27.8,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      27.700000000000003,
+      30.0,
+      30.0,
+      24.3,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      17.5,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0
+    ],
+    "aggregate_world_sim_s": 1171.1,
+    "batch_sim_s": 30.0,
+    "per_world_wall_SIM": 1.0552392641816668,
+    "task_wall_per_SIM": 1.0812800930902573,
+    "batch_wall_SIM": 42.209570567266674,
+    "scope": "first batch clock >=30 SIM; setup/compile excluded; admission denominator=batch SIM*world count",
+    "basis": "coordinator decision 2026-10-16, user unconfirmed",
+    "block_threshold": 6.0,
+    "warning_threshold": 3.5,
+    "speed_gate_fail": false
+  },
+  "completed_recounts": [
+    {
+      "world": "world-003",
+      "check": {
+        "success": true,
+        "dense_evaluator_rows": true,
+        "evaluator_N": 277,
+        "first_evaluator_t": 2.200000000000151,
+        "last_evaluator_t": 29.800000000000153,
+        "max_evaluator_gap_s": 0.10000000000000142,
+        "terminal_hold_s": 3.0,
+        "max_hold_s": 3.0,
+        "teacher_success_n": 2,
+        "source_success": true,
+        "agrees": true
+      },
+      "sim_s": 27.6
+    },
+    {
+      "world": "world-006",
+      "check": {
+        "success": true,
+        "dense_evaluator_rows": true,
+        "evaluator_N": 279,
+        "first_evaluator_t": 2.200000000000151,
+        "last_evaluator_t": 30.000000000000153,
+        "max_evaluator_gap_s": 0.10000000000000142,
+        "terminal_hold_s": 3.0,
+        "max_hold_s": 3.0,
+        "teacher_success_n": 2,
+        "source_success": true,
+        "agrees": true
+      },
+      "sim_s": 27.8
+    },
+    {
+      "world": "world-007",
+      "check": {
+        "success": true,
+        "dense_evaluator_rows": true,
+        "evaluator_N": 285,
+        "first_evaluator_t": 2.200000000000151,
+        "last_evaluator_t": 30.600000000000154,
+        "max_evaluator_gap_s": 0.10000000000000142,
+        "terminal_hold_s": 3.0,
+        "max_hold_s": 3.0,
+        "teacher_success_n": 2,
+        "source_success": true,
+        "agrees": true
+      },
+      "sim_s": 28.400000000000002
+    },
+    {
+      "world": "world-009",
+      "check": {
+        "success": true,
+        "dense_evaluator_rows": true,
+        "evaluator_N": 279,
+        "first_evaluator_t": 2.200000000000151,
+        "last_evaluator_t": 30.000000000000153,
+        "max_evaluator_gap_s": 0.10000000000000142,
+        "terminal_hold_s": 3.0,
+        "max_hold_s": 3.0,
+        "teacher_success_n": 2,
+        "source_success": true,
+        "agrees": true
+      },
+      "sim_s": 27.8
+    },
+    {
+      "world": "world-014",
+      "check": {
+        "success": true,
+        "dense_evaluator_rows": true,
+        "evaluator_N": 301,
+        "first_evaluator_t": 2.200000000000151,
+        "last_evaluator_t": 32.20000000000015,
+        "max_evaluator_gap_s": 0.10000000000000142,
+        "terminal_hold_s": 3.0,
+        "max_hold_s": 3.0,
+        "teacher_success_n": 2,
+        "source_success": true,
+        "agrees": true
+      },
+      "sim_s": 30.0
+    },
+    {
+      "world": "world-016",
+      "check": {
+        "success": true,
+        "dense_evaluator_rows": true,
+        "evaluator_N": 278,
+        "first_evaluator_t": 2.200000000000151,
+        "last_evaluator_t": 29.900000000000155,
+        "max_evaluator_gap_s": 0.10000000000000142,
+        "terminal_hold_s": 3.0,
+        "max_hold_s": 3.0,
+        "teacher_success_n": 2,
+        "source_success": true,
+        "agrees": true
+      },
+      "sim_s": 27.700000000000003
+    },
+    {
+      "world": "world-019",
+      "check": {
+        "success": true,
+        "dense_evaluator_rows": true,
+        "evaluator_N": 244,
+        "first_evaluator_t": 2.200000000000151,
+        "last_evaluator_t": 26.500000000000153,
+        "max_evaluator_gap_s": 0.10000000000000142,
+        "terminal_hold_s": 3.0,
+        "max_hold_s": 3.0,
+        "teacher_success_n": 2,
+        "source_success": true,
+        "agrees": true
+      },
+      "sim_s": 24.3
+    },
+    {
+      "world": "world-028",
+      "check": {
+        "success": true,
+        "dense_evaluator_rows": true,
+        "evaluator_N": 176,
+        "first_evaluator_t": 2.200000000000151,
+        "last_evaluator_t": 19.700000000000152,
+        "max_evaluator_gap_s": 0.10000000000000142,
+        "terminal_hold_s": 3.0,
+        "max_hold_s": 3.0,
+        "teacher_success_n": 2,
+        "source_success": true,
+        "agrees": true
+      },
+      "sim_s": 17.5
+    }
+  ],
+  "input_audits": [
+    {
+      "world": "world-000",
+      "scope": "diagnostic prefix",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1772,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "world": "world-001",
+      "scope": "diagnostic prefix",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1353,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "world": "world-002",
+      "scope": "diagnostic prefix",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1304,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "world": "world-003",
+      "scope": "terminal full run",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1001,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "world": "world-004",
+      "scope": "diagnostic prefix",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1206,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "world": "world-005",
+      "scope": "diagnostic prefix",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1530,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "world": "world-006",
+      "scope": "terminal full run",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 928,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "world": "world-007",
+      "scope": "terminal full run",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 752,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "world": "world-008",
+      "scope": "diagnostic prefix",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1038,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "world": "world-009",
+      "scope": "terminal full run",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1158,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "world": "world-010",
+      "scope": "diagnostic prefix",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1337,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "world": "world-011",
+      "scope": "diagnostic prefix",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1004,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "world": "world-012",
+      "scope": "diagnostic prefix",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1192,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "world": "world-013",
+      "scope": "diagnostic prefix",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1294,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "world": "world-014",
+      "scope": "terminal full run",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 810,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "world": "world-015",
+      "scope": "diagnostic prefix",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1414,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "world": "world-016",
+      "scope": "terminal full run",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1041,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "world": "world-017",
+      "scope": "diagnostic prefix",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1219,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "world": "world-018",
+      "scope": "diagnostic prefix",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1224,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "world": "world-019",
+      "scope": "terminal full run",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 612,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "world": "world-020",
+      "scope": "diagnostic prefix",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1746,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "world": "world-021",
+      "scope": "diagnostic prefix",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1001,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "world": "world-022",
+      "scope": "diagnostic prefix",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 997,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "world": "world-023",
+      "scope": "diagnostic prefix",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1238,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "world": "world-024",
+      "scope": "diagnostic prefix",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1192,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "world": "world-025",
+      "scope": "diagnostic prefix",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1232,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "world": "world-026",
+      "scope": "diagnostic prefix",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1069,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "world": "world-027",
+      "scope": "diagnostic prefix",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1535,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "world": "world-028",
+      "scope": "terminal full run",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 333,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "world": "world-029",
+      "scope": "diagnostic prefix",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1538,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "world": "world-030",
+      "scope": "diagnostic prefix",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 736,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "world": "world-031",
+      "scope": "diagnostic prefix",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1450,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "world": "world-032",
+      "scope": "diagnostic prefix",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1063,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "world": "world-033",
+      "scope": "diagnostic prefix",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1266,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "world": "world-034",
+      "scope": "diagnostic prefix",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 837,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "world": "world-035",
+      "scope": "diagnostic prefix",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1315,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "world": "world-036",
+      "scope": "diagnostic prefix",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1194,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "world": "world-037",
+      "scope": "diagnostic prefix",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1369,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "world": "world-038",
+      "scope": "diagnostic prefix",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 869,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    },
+    {
+      "world": "world-039",
+      "scope": "diagnostic prefix",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 850,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      }
+    }
+  ],
+  "read_errors": [],
+  "comparison": {
+    "noslip10_beam_R2": 5.602445034410012,
+    "noslip10_release_A_S1_prefix": 8.72,
+    "release_baseline_scope": "prior cumulative prefix, not completed first30"
+  },
+  "first30_sha256": "cbbd9ed524dea45341b4a6c83d09d3db2369d96d72ff613176dd91265aafd892",
+  "scope": "first30 throughput plus later live prefix; no full40 verdict; no pooling"
+}
