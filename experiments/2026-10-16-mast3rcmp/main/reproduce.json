@@ -1,0 +1,144 @@
+{
+  "no_wall_cap": true,
+  "commands": [
+    {
+      "stage": "initial_transfer",
+      "where": "Mac",
+      "argv": [
+        "python3",
+        "scripts/mast3rcmp_transfer.py",
+        "--manifest",
+        "experiments/2026-10-16-mast3rcmp/main/sender-manifest.json",
+        "--manifest-sha256",
+        "de9addf5a7c268db99b0b8c7198e435a5adf90713bda7a718b4e6a7aec34e7d5",
+        "--destination-root",
+        "/home/ugrp/ugrp-sim/mast3rcmp/main-source",
+        "--receipt",
+        "experiments/2026-10-16-mast3rcmp/main/transfer.json"
+      ]
+    },
+    {
+      "stage": "estimate_once",
+      "where": "gcp4",
+      "source_sha": "ae4764136127b71b3b4bf4b8576de0c76b1cd5bc",
+      "env": {
+        "MAST3RCMP_SOURCE_SHA": "ae4764136127b71b3b4bf4b8576de0c76b1cd5bc"
+      },
+      "cwd": "/home/ugrp/ugrp-sim/mast3rcmp",
+      "argv": [
+        "venv/bin/python",
+        "mast3rcmp_recording.py"
+      ],
+      "warning": "already completed; do not resubmit existing paths"
+    },
+    {
+      "stage": "seal_before_truth",
+      "where": "gcp4",
+      "source_sha": "a6b421047",
+      "argv": [
+        "/home/ugrp/ugrp-sim/mast3rcmp/venv/bin/python",
+        "/home/ugrp/ugrp-sim/mast3rcmp/mast3rcmp_seal.py",
+        "--run",
+        "/home/ugrp/ugrp-sim/mast3rcmp/runs/recording-r2",
+        "--calibration",
+        "/home/ugrp/ugrp-sim/mast3rcmp/fixed-floor-calibration.json",
+        "--polygon",
+        "[[64,256],[447,256],[447,335],[64,335]]",
+        "--output",
+        "/home/ugrp/ugrp-sim/mast3rcmp/recording-r2-seal"
+      ]
+    },
+    {
+      "stage": "evaluation_transfer_after_seal",
+      "where": "Mac",
+      "source_sha": "e62fc2b50",
+      "argv": [
+        "python3",
+        "scripts/mast3rcmp_transfer_eval.py",
+        "--manifest",
+        "experiments/2026-10-16-mast3rcmp/main/evaluation-manifest.json",
+        "--manifest-sha256",
+        "8ff6dbaf090a555b9ed52e1a6d251567b010df79913021fc60c0ade66a6fd458",
+        "--seal",
+        "experiments/2026-10-16-mast3rcmp/main/seal/estimation-scale-seal.json",
+        "--destination",
+        "/home/ugrp/ugrp-sim/mast3rcmp/evaluation-source",
+        "--receipt",
+        "experiments/2026-10-16-mast3rcmp/main/evaluation-transfer.json"
+      ]
+    },
+    {
+      "stage": "score",
+      "where": "gcp4",
+      "argv": [
+        "/home/ugrp/ugrp-sim/mast3rcmp/venv/bin/python",
+        "/home/ugrp/ugrp-sim/mast3rcmp/mast3rcmp_compare.py",
+        "--trajectory",
+        "/home/ugrp/ugrp-sim/mast3rcmp/runs/recording-r2/probe/trajectory.json",
+        "--scale",
+        "/home/ugrp/ugrp-sim/mast3rcmp/recording-r2-seal/allowed-scale.json",
+        "--baseline",
+        "/home/ugrp/ugrp-sim/mast3rcmp/evaluation-source/home/ugrp/ugrp-sim/runs/mapbuild5/analysis-r2/trajectory.json",
+        "--truth",
+        "/home/ugrp/ugrp-sim/mast3rcmp/evaluation-source/home/ugrp/ugrp-sim/runs/mapbuild5/evaluation-c3/camera-evaluation-only.json",
+        "--calibration",
+        "/home/ugrp/ugrp-sim/mast3rcmp/fixed-floor-calibration.json",
+        "--output",
+        "/home/ugrp/ugrp-sim/mast3rcmp/recording-r2-comparison.json"
+      ]
+    },
+    {
+      "stage": "video_review_final",
+      "where": "gcp4",
+      "source_sha": "c45849242",
+      "argv": [
+        "/home/ugrp/ugrp-sim/mast3rcmp/venv/bin/python",
+        "/home/ugrp/ugrp-sim/mast3rcmp/mast3rcmp_review.py",
+        "--prepared",
+        "/home/ugrp/ugrp-sim/mast3rcmp/main-prepared",
+        "--output",
+        "/home/ugrp/ugrp-sim/mast3rcmp/recording-r2-review-r2"
+      ]
+    },
+    {
+      "stage": "final_stop",
+      "where": "Mac",
+      "argv": [
+        "gcloud",
+        "compute",
+        "instances",
+        "stop",
+        "ugrp-act-l4-gcp4",
+        "--zone",
+        "asia-northeast3-a",
+        "--account",
+        "changmin5781@gmail.com",
+        "--project",
+        "ugrp-sim-d-1016",
+        "--quiet"
+      ]
+    },
+    {
+      "stage": "unit_tests",
+      "where": "Mac",
+      "argv": [
+        "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+        "experiments/2026-10-16-mast3rcmp/test_mast3rcmp.py"
+      ]
+    }
+  ],
+  "source_script_sha256": {
+    "scripts/mast3rcmp_compare.py": "c9d4d70b26d65537f0eb436f51acc93ce7cf2e8799b3180d771f4c574716b79e",
+    "scripts/mast3rcmp_evaluate.py": "15b82b414fce65c3920d94602bbd3b4a5a10f1e0c42793e4e4612f542c8ebe8e",
+    "scripts/mast3rcmp_instrument.py": "e8e483d1699d1452664ee69ad2352470f089eb52dc9d23b30ce826af90b64b67",
+    "scripts/mast3rcmp_launch.py": "09276699ce6efbd120ab032a6d6634b01ef7c5d7a8bf8a5682f460a3c1471e35",
+    "scripts/mast3rcmp_prepare.py": "c5cc0289c837dbfbe0fc6e18784f857420c0e98eaad1dc2df6c1a6ff1bf2f12d",
+    "scripts/mast3rcmp_probe.py": "6ce38acbd8569e3e4d911b36171d2deed04518870269bb24f805dd4bcca59bbf",
+    "scripts/mast3rcmp_recording.py": "87b83873a6c449212a54e13e8d9936288de6086874cad507c94b2a67ce64f39b",
+    "scripts/mast3rcmp_review.py": "66311a968ba778aecca166c218103b440f7f670a6babf6e7f6ed5d0547993868",
+    "scripts/mast3rcmp_seal.py": "5d4838dd865034a7527c194ace466ef725e98c3ae1d061838a071d8fd7210114",
+    "scripts/mast3rcmp_transfer.py": "ccce21e49e12f23e3ce67cd6454607a9939058f9bb00eff78990fd2d6c628283",
+    "scripts/mast3rcmp_transfer_eval.py": "50d3d3e567c5a65157b8ef3fdb11e556b4027a5f9cc90331dd6289922d84456d"
+  },
+  "existing_outputs_refuse_overwrite": true
+}

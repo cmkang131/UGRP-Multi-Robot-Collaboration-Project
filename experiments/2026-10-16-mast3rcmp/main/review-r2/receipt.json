@@ -1,0 +1,46 @@
+{
+  "frames": 401,
+  "all_2hz_frames": 81,
+  "final10s_frames": 101,
+  "input_receipt_sha256": "f36963189c42f47d2f0669cd39ac8d08df1bc56115da32109f4d0c95766b3b8c",
+  "commands": [
+    [
+      "ffmpeg",
+      "-nostdin",
+      "-hide_banner",
+      "-loglevel",
+      "error",
+      "-framerate",
+      "30",
+      "-i",
+      "/home/ugrp/ugrp-sim/mast3rcmp/main-prepared/rgb/%08d.png",
+      "-c:v",
+      "libx264",
+      "-crf",
+      "25",
+      "-pix_fmt",
+      "yuv420p",
+      "/home/ugrp/ugrp-sim/mast3rcmp/recording-r2-review-r2/own-3x.mp4"
+    ]
+  ],
+  "gui_launches": 0,
+  "truth_reads": 0,
+  "files": {
+    "last10s-10hz.jpg": {
+      "bytes": 326175,
+      "sha256": "4245e37475ea12cf1c015143ecf2acdf0a2bef793c31b78dd4739e4c0ba563d9"
+    },
+    "ffprobe.json": {
+      "bytes": 2626,
+      "sha256": "bd8a3af1cbea03809d907250168abc100b0afdb185d5acd617903a62d6afdc4e"
+    },
+    "own-3x.mp4": {
+      "bytes": 111074,
+      "sha256": "c14e93d69f3e244256508a650a87c153d5a4023c74cf59870a6607e25028054c"
+    },
+    "all-2hz.jpg": {
+      "bytes": 264311,
+      "sha256": "353d59a849f570b0684417be5f8bead0c4c3785de4dcab5ae53a584bb3f3d825"
+    }
+  }
+}
