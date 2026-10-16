@@ -1,5 +1,25 @@
 {
-  "total": 1,
-  "reason_distribution": {"new_service_account_iam_propagation": 1},
-  "rejections": [{"category": "new_service_account_iam_propagation", "blocked_object": "budget-stopper@ugrp-sim-f-1016.iam.gserviceaccount.com", "minimum_gap_m": null, "measurement_status": "not_applicable_infrastructure", "evidence": "stopper-compute-retry-command.json", "recovery": "same-project IAM retry succeeded; original failure preserved"}]
+  "total": 2,
+  "reason_distribution": {
+    "new_service_account_iam_propagation": 1,
+    "dependency_excerpt_incomplete": 1
+  },
+  "rejections": [
+    {
+      "category": "new_service_account_iam_propagation",
+      "blocked_object": "budget-stopper@ugrp-sim-f-1016.iam.gserviceaccount.com",
+      "minimum_gap_m": null,
+      "measurement_status": "not_applicable_infrastructure",
+      "evidence": "stopper-compute-retry-command.json",
+      "recovery": "same-project IAM retry succeeded; original failure preserved"
+    },
+    {
+      "category": "dependency_excerpt_incomplete",
+      "blocked_object": "harness.catalog and package initialization dependencies",
+      "minimum_gap_m": null,
+      "measurement_status": "not_applicable_infrastructure",
+      "evidence": "act-smoke-import-failure-command.json",
+      "recovery": "expand committed harness package dependency excerpts; no trainer or model change"
+    }
+  ]
 }
