@@ -4,7 +4,7 @@
 
 ## 상태
 
-검증 중. 최종 판정은 [summary.json](summary.json)·[누적 관문 표](evidence/funnel.json)·[ops-alert.md](ops-alert.md)에 남긴다. 이번 범위는 인프라와 학습 환경 준비다. C2 본학습·교사/학생·폐루프·운반 성공 관문은 실행하지 않는다.
+**READY (인프라·ACT 환경)**: 예산 발동·시험 VM/디스크 삭제·MJWarp CUDA 2세계1스텝·115패키지 버전 일치·데이터1,482/1,482 SHA·ACT50step 저장/재로딩·같은 입력 예측 완전 일치를 통과했다. ACT smoke97.27초·학습60,023행·GPU peak1.57GB. CPU/MJWarp freeze와 핵심 소스3파일 SHA도 gcp4와 일치한다. 임대 중 정지 거부75·유휴 타이머 active·전용 키·실행 시간 상한 부재를 확인하고, 다른 작업이 없을 때 자기 임대만 해제해 **TERMINATED**로 인계한다. 비물리18개와 shell/AST·diff 검사를 통과했다. 최종 판정은 [summary.json](summary.json)·[누적 관문 표](evidence/funnel.json)·[ops-alert.md](ops-alert.md)에 남긴다. 이번 범위는 인프라와 학습 환경 준비다. C2 본학습·교사/학생·폐루프·운반 성공 관문은 실행하지 않는다.
 
 ## 예산 정지
 

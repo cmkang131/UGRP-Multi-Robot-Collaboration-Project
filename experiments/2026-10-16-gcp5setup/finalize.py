@@ -20,6 +20,9 @@ assert vm['status'] == 'TERMINATED'
 assert warp['status'] == training['status'] == dataset['status'] == 'PASS'
 assert training['steps_completed'] == 50 and training['readback_verified']
 assert dataset['files'] == len(read('dataset-sha256.json')['files'])
+assert all(read('gcp4-environment-match.json').values())
+assert read('source-lease-released.json')['own_lease_removed']
+assert not read('source-lease-released.json')['vm_stop_performed']
 assert read('instances-after-test.json') == read('disks-after-test.json') == []
 observations = read('test-observations.json')
 budget = read('budget-final.json')
@@ -60,6 +63,7 @@ funnel_path.write_text(json.dumps(funnel, indent=2)+'\n')
 summary = dict(status='READY', created_utc=stamp, project=PROJECT, account='changmin5781@gmail.com',
     source_sha=subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
     stacked_dependencies=[554, 558, 559], default_host='gcp2',
+    recorded_setup_wall_s=(datetime.datetime.fromisoformat(stamp)-datetime.datetime.fromisoformat(read('project-command.json')['started_utc'])).total_seconds(),
     rejection_table=str(funnel_path.resolve()),
     budget=dict(net_monthly_krw=1000, project_filter=budget['budgetFilter']['projects'],
         default_billing_iam_email_enabled=True, email_receipt_verified=False,
