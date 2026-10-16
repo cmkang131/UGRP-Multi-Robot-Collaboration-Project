@@ -14,7 +14,7 @@ from PIL import Image
 
 from harness import grasp_act_contract as c
 from harness.grasp_act_data import read_json,read_rows,write_json,sha256
-from scripts.analyze_actdiag import existing,metrics,pulse_distribution
+from analyze_actdiag import existing,metrics,pulse_distribution
 
 
 def main():
