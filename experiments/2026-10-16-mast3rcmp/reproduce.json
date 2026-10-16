@@ -1,0 +1,91 @@
+{
+  "source_sha": "eb92fbd92812cbcb1cb0394ad48c6a63f85c504a",
+  "host": "gcp4",
+  "no_wall_cap": true,
+  "instrument": {
+    "cwd": "/home/ugrp/ugrp-sim/mast3rcmp",
+    "argv": [
+      "venv/bin/python",
+      "mast3rcmp_instrument.py",
+      "MASt3R-SLAM/main.py",
+      "MASt3R-SLAM/mast3rcmp_main.py"
+    ]
+  },
+  "commands": [
+    {
+      "stage": "prepare",
+      "cwd": "/home/ugrp/ugrp-sim/mast3rcmp",
+      "argv": [
+        "/home/ugrp/ugrp-sim/mast3rcmp/venv/bin/python",
+        "/home/ugrp/ugrp-sim/mast3rcmp/mast3rcmp_prepare.py",
+        "--manifest",
+        "/home/ugrp/ugrp-sim/mast3rcmp/practice-drive-off.json",
+        "--manifest-sha256",
+        "6e71cfc319521a1445f267c91ca4ba187cfbca3f74790fa0e745f853dfc9f558",
+        "--root",
+        "/home/ugrp/ugrp-sim/mast3rcmp/practice-source",
+        "--output",
+        "/home/ugrp/ugrp-sim/mast3rcmp/practice-drive-off"
+      ]
+    },
+    {
+      "stage": "practice",
+      "cwd": "/home/ugrp/ugrp-sim/mast3rcmp",
+      "environment": {
+        "MAST3RCMP_SOURCE_SHA": "eb92fbd92812cbcb1cb0394ad48c6a63f85c504a"
+      },
+      "argv": [
+        "/home/ugrp/ugrp-sim/mast3rcmp/venv/bin/python",
+        "/home/ugrp/ugrp-sim/mast3rcmp/mast3rcmp_launch.py",
+        "--repo",
+        "/home/ugrp/ugrp-sim/mast3rcmp/MASt3R-SLAM",
+        "--entry",
+        "/home/ugrp/ugrp-sim/mast3rcmp/MASt3R-SLAM/mast3rcmp_main.py",
+        "--prepared",
+        "/home/ugrp/ugrp-sim/mast3rcmp/practice-drive-off",
+        "--output",
+        "/home/ugrp/ugrp-sim/mast3rcmp/runs/practice-drive-off-r1"
+      ]
+    },
+    {
+      "stage": "prepare",
+      "cwd": "/home/ugrp/ugrp-sim/mast3rcmp",
+      "argv": [
+        "/home/ugrp/ugrp-sim/mast3rcmp/venv/bin/python",
+        "/home/ugrp/ugrp-sim/mast3rcmp/mast3rcmp_prepare.py",
+        "--manifest",
+        "/home/ugrp/ugrp-sim/mast3rcmp/practice-high-off.json",
+        "--manifest-sha256",
+        "dbd0e37951e0d23130f05c6063beabcd4c34fd80c92f054920d2b625ee3ae2be",
+        "--root",
+        "/home/ugrp/ugrp-sim/mast3rcmp/practice-source",
+        "--output",
+        "/home/ugrp/ugrp-sim/mast3rcmp/practice-high-off"
+      ]
+    },
+    {
+      "stage": "practice",
+      "cwd": "/home/ugrp/ugrp-sim/mast3rcmp",
+      "environment": {
+        "MAST3RCMP_SOURCE_SHA": "eb92fbd92812cbcb1cb0394ad48c6a63f85c504a"
+      },
+      "argv": [
+        "/home/ugrp/ugrp-sim/mast3rcmp/venv/bin/python",
+        "/home/ugrp/ugrp-sim/mast3rcmp/mast3rcmp_launch.py",
+        "--repo",
+        "/home/ugrp/ugrp-sim/mast3rcmp/MASt3R-SLAM",
+        "--entry",
+        "/home/ugrp/ugrp-sim/mast3rcmp/MASt3R-SLAM/mast3rcmp_main.py",
+        "--prepared",
+        "/home/ugrp/ugrp-sim/mast3rcmp/practice-high-off",
+        "--output",
+        "/home/ugrp/ugrp-sim/mast3rcmp/runs/practice-high-off-r1"
+      ]
+    }
+  ],
+  "notes": [
+    "Preparations already completed; existing paths refuse overwrite.",
+    "Practice only; no truth input or ATE.",
+    "New main recording requires its own manifest hash, output and source freeze."
+  ]
+}

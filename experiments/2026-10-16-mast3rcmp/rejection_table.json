@@ -1,6 +1,6 @@
 {
   "scope": "offline_comparison_only",
-  "updated_stage": "installation_building",
+  "updated_stage": "practice_complete_waiting_main_recording",
   "funnel": [
     {
       "gate": "sender_manifest_sha256",
@@ -32,9 +32,9 @@
     {
       "gate": "SLAM_processed",
       "input": 82,
-      "cumulative_pass": 0,
+      "cumulative_pass": 82,
       "rejected": 0,
-      "pending": 82
+      "pending": 0
     },
     {
       "gate": "main_recording_received",
@@ -49,9 +49,30 @@
       "reason_category": "missing_host_cpp_compiler",
       "count": 1,
       "blocking_object": "c++/cc1plus",
-      "minimum_gap": "not_applicable_installation"
+      "minimum_gap": "not_applicable_installation",
+      "resolved_in_round": 2
     }
   ],
   "raw": "gcp4:/home/ugrp/ugrp-sim/mast3rcmp",
-  "reproduce": "install.sh; scripts/mast3rcmp_prepare.py; reproduce.json (to follow)"
+  "reproduce": "install.sh; scripts/mast3rcmp_prepare.py; reproduce.json (to follow)",
+  "practice_sequences": [
+    {
+      "sequence": "drive-off",
+      "input": 41,
+      "initialized": 1,
+      "tracked": 40,
+      "rejected": 0,
+      "unprocessed": 0,
+      "raw": "/home/ugrp/ugrp-sim/mast3rcmp/runs/practice-drive-off-r1"
+    },
+    {
+      "sequence": "high-off",
+      "input": 41,
+      "initialized": 1,
+      "tracked": 40,
+      "rejected": 0,
+      "unprocessed": 0,
+      "raw": "/home/ugrp/ugrp-sim/mast3rcmp/runs/practice-high-off-r1"
+    }
+  ]
 }
