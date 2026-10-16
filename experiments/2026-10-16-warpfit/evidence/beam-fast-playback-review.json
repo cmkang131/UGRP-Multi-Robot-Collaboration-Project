@@ -1,0 +1,50 @@
+{
+  "run": "gcp6 R2-retry1/beam-tape-warp_native_fast_v1",
+  "observed_world": 0,
+  "overflow_world": 6,
+  "review": {
+    "full_2hz": [
+      0,
+      0.5,
+      1,
+      1.5
+    ],
+    "tail_10hz_range": [
+      0,
+      1.7
+    ],
+    "tail_frames": 18
+  },
+  "timeline": [
+    {
+      "range": [
+        0,
+        1.0
+      ],
+      "observed": "jaws close around both beam ends; same ends, no mutual blocking or visible beam escape"
+    },
+    {
+      "range": [
+        1.1,
+        1.7
+      ],
+      "observed": "r2 own image gains a green lower strip as the assembly changes height; beam remains between robots, no rapid alternating motion or drop visible"
+    },
+    {
+      "range": [
+        1.8,
+        1.8
+      ],
+      "observed": "physics record aborts on LS_ITERATIONS bit1024 in world6; last retained world0 frame1.7s"
+    }
+  ],
+  "dense_vs_sparse": "10Hz reveals the lower-edge change around1.1s; no additional fast oscillation visible",
+  "limits": [
+    "world0 video does not establish what happened in error world6",
+    "not a demonstrated physical drop; solver limit prevents completion",
+    "last10s means all1.7s available for this short failure"
+  ],
+  "ffprobe_verified": true,
+  "video_bytes": 18805,
+  "renderer": "recorded MJWarp r1/r2; evaluation overview C reconstruction on gcp2"
+}

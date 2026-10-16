@@ -1,6 +1,6 @@
 """One finite phase of the three-round warpfit benchmark; no retuning loop."""
 import argparse
-from datetime import datetime,timezone
+from datetime import datetime,timezone,timedelta
 import json
 import os
 from pathlib import Path
@@ -67,7 +67,10 @@ def main():
         dump(phase/'queue.json',queue);prior=[]
     lease=Path('/home/ugrp/ugrp-sim/leases/warpfit.json')
     dump(lease,dict(task='warpfit',pid=os.getpid(),started=datetime.now(timezone.utc).isoformat(),
-        expected_end=None,round=a.round,phase='C reference' if a.reference_only else 'paired diagnostic',
+        # Estimate from the user-authorized3h resource watchdog; not an action
+        # deadline or VM duration cap. Keep all required lease fields populated.
+        expected_end=(datetime.now(timezone.utc)+timedelta(seconds=10800)).isoformat(),
+        round=a.round,phase='C reference' if a.reference_only else 'paired diagnostic',
         owner='codex/warpfit',worlds=1 if a.reference_only or a.round==1 else 16 if a.round==2 else 64,
         independent_gpu_processes=0 if a.reference_only else 1))
     env=os.environ.copy();env.update(PYTHONPATH=str(source),MUJOCO_GL='disable',OMP_NUM_THREADS='1')

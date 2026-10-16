@@ -26,13 +26,6 @@
       "fixture": "original tape2.7..6.0s, common C preclose state"
     },
     "drive": {
-      "N16_groups": [
-        "group16",
-        "tail2"
-      ],
-      "N64_groups": [
-        "group64"
-      ],
       "pulses": 18,
       "fixture": "unchanged drivecheck fixture-v3; exact pulse tape bytes, only lane packing",
       "primary_groups": {
@@ -84,5 +77,9 @@
   "primary_jobs": 28,
   "initial_overlap_N16_diagnostic_jobs": 8,
   "drive_revision": "reuse completed PR564 known blocker relocation as explicit default-off fixture; same registered100/60/100ms pulses in bothN; original N16 eighteen-pulse cohort retained separately",
-  "new_profile_retuning": 0
+  "new_profile_retuning": 0,
+  "final_analysis_source": "7514029f96842e8d3b0582a363915004fc6b7d65",
+  "final_analysis_host": "gcp6 CPU",
+  "model_variant_physics": 0,
+  "warm_after_forward_physics": 0
 }

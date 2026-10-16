@@ -1,0 +1,10 @@
+{
+  "reason": "origin/main-based worktree branch lacks gcp6 config; existing SSH alias must survive this branch switch/retirement",
+  "host": "gcp6",
+  "before": "Host gcp6\n  HostName gcp6\n  User ugrp\n  IdentityFile /Users/changmin/.ssh/ugrp_gcp6\n  IdentitiesOnly yes\n  StrictHostKeyChecking accept-new\n  ProxyCommand env UGRP_GCP_CONFIG=/Users/changmin/projects/ugrp-wt/gcp6setup/configs/gcp_hosts.json python3 /Users/changmin/projects/ugrp-wt/gcp6setup/scripts/gcpctl.py proxy gcp6 %p\n",
+  "after": "Host gcp6\n  HostName gcp6\n  User ugrp\n  IdentityFile /Users/changmin/.ssh/ugrp_gcp6\n  IdentitiesOnly yes\n  StrictHostKeyChecking accept-new\n  ProxyCommand env UGRP_GCP_CONFIG=/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp6-host.json python3 /Users/changmin/projects/ugrp/scripts/gcpctl.py proxy gcp6 %p\n",
+  "other_blocks_unchanged": true,
+  "config": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp6-host.json",
+  "config_sha256": "c5797de55869e5d026a0aca097da103926a105f29aea0dbecb37fdee8f9aa782",
+  "credentials_copied": false
+}

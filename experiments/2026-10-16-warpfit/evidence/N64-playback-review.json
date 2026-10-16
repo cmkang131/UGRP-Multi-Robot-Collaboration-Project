@@ -1,0 +1,47 @@
+{
+  "run": "gcp6 R3/beam-tape-warp_native_fast_v1",
+  "world": 10,
+  "full_2hz_times": [
+    0,
+    0.5,
+    1,
+    1.5
+  ],
+  "tail_10hz_range": [
+    0,
+    1.6
+  ],
+  "tail_frames": 17,
+  "timeline": [
+    {
+      "range": [
+        0,
+        1.0
+      ],
+      "observed": "both robots close their jaws around the same beam ends; beam stays between robots"
+    },
+    {
+      "range": [
+        1.1,
+        1.6
+      ],
+      "observed": "r2 own-image lower green band becomes visible; no rapid alternating oscillation or beam escape in the retained frames"
+    },
+    {
+      "range": [
+        1.7,
+        1.7
+      ],
+      "observed": "LS_ITERATIONS bit1024 noticed; no subsequent saved state"
+    }
+  ],
+  "dense_vs_sparse": "10Hz locates the lower-edge change around1.1s; no additional fast vibration is visible",
+  "renderer": "C3.12 reconstruction of actual failing world10 from gcp6 saved states; original cameras; evaluation overview",
+  "limits": [
+    "not recorded MJWarp RGB for world10",
+    "no post-warning state or demonstrated physical drop",
+    "micron-scale relative drift is below visible resolution"
+  ],
+  "video_bytes": 19266,
+  "ffprobe_verified": true
+}

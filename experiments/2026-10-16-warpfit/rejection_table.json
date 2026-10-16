@@ -1,47 +1,1266 @@
 {
-  "stage": "before_candidate_measurement",
-  "distribution": [
+  "stages": [
     {
-      "category": "physics_cost",
-      "reason": "warp9 last captured 16-step interval: NoSlip 0.125856 / step 0.148061 s, approx85%; not entire run",
-      "blocked_object": "NoSlip solver",
-      "minimum_gap_m": null,
-      "gap_status": "not_geometric",
-      "count": 1
-    },
-    {
-      "category": "host_memory",
-      "reason": "warp9 N64 host OOM; no task completion or timings",
-      "blocked_object": "host RAM",
-      "minimum_gap_m": null,
-      "gap_status": "not_geometric",
-      "count": 1
-    },
-    {
-      "category": "fixture_contact",
-      "reason": "drivecheck observed initial box/chassis overlap; causal ablation is owned by drivecheck and still running",
-      "blocked_object": "cargo_box_00",
-      "minimum_gap_m": null,
-      "gap_status": "pending_drivecheck_measured_gap",
-      "count": 1
-    }
-  ],
-  "funnel": [
-    {
-      "gate": "requested_profiles",
-      "cumulative_pass": 3,
+      "gate": "recorded_runs",
+      "cumulative_pass": 59,
       "rejected": 0
     },
     {
-      "gate": "measured_profiles",
-      "cumulative_pass": 0,
-      "rejected": 0,
-      "status": "pending"
+      "gate": "fixed_work_complete",
+      "cumulative_pass": 56,
+      "rejected": 3
+    },
+    {
+      "gate": "full_protocol_not_smoke",
+      "cumulative_pass": 39,
+      "rejected": 17
     }
   ],
-  "raw_paths": [
-    "/Users/changmin/projects/ugrp-wt/warp5/experiments/2026-10-16-warp9/resume2/final-v2",
-    "gcp2:/home/ugrp/ugrp-sim/runs/drivecheck/analysis-v4"
+  "reasons": [
+    {
+      "category": "HOST_ERROR",
+      "reason": "ModuleNotFoundError(\"No module named 'simalt_numeric_audit'\")",
+      "blocked_object": "physics_engine",
+      "minimum_gap_m": null,
+      "gap_status": "not_geometric",
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R1/box-tape-baseline_noslip10",
+      "unit": "run"
+    },
+    {
+      "category": "height_below_C_p05",
+      "count": 1,
+      "reason": "height_below_C_p05",
+      "blocked_object": "cargo_beam_1",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured_per_world; world0 contact distances retained",
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R1-Cref/beam-tape-baseline_noslip10",
+      "unit": "world x hold frame"
+    },
+    {
+      "category": "slip_above_C_p95",
+      "count": 1,
+      "reason": "slip_above_C_p95",
+      "blocked_object": "cargo_beam_1",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured_per_world; world0 contact distances retained",
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R1-Cref/beam-tape-baseline_noslip10",
+      "unit": "world x hold frame"
+    },
+    {
+      "category": "height_below_C_p05",
+      "count": 2,
+      "reason": "height_below_C_p05",
+      "blocked_object": "cargo_cyan_2",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured_per_world; world0 contact distances retained",
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R1-Cref/box-tape-baseline_noslip10",
+      "unit": "world x hold frame"
+    },
+    {
+      "category": "slip_above_C_p95",
+      "count": 2,
+      "reason": "slip_above_C_p95",
+      "blocked_object": "cargo_cyan_2",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured_per_world; world0 contact distances retained",
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R1-Cref/box-tape-baseline_noslip10",
+      "unit": "world x hold frame"
+    },
+    {
+      "category": "height_below_C_p05",
+      "count": 1,
+      "reason": "height_below_C_p05",
+      "blocked_object": "cargo_beam_1",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured_per_world; world0 contact distances retained",
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R1-Cref-retry1/beam-tape-baseline_noslip10",
+      "unit": "world x hold frame"
+    },
+    {
+      "category": "slip_above_C_p95",
+      "count": 1,
+      "reason": "slip_above_C_p95",
+      "blocked_object": "cargo_beam_1",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured_per_world; world0 contact distances retained",
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R1-Cref-retry1/beam-tape-baseline_noslip10",
+      "unit": "world x hold frame"
+    },
+    {
+      "category": "height_below_C_p05",
+      "count": 2,
+      "reason": "height_below_C_p05",
+      "blocked_object": "cargo_cyan_2",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured_per_world; world0 contact distances retained",
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R1-Cref-retry1/box-tape-baseline_noslip10",
+      "unit": "world x hold frame"
+    },
+    {
+      "category": "slip_above_C_p95",
+      "count": 2,
+      "reason": "slip_above_C_p95",
+      "blocked_object": "cargo_cyan_2",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured_per_world; world0 contact distances retained",
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R1-Cref-retry1/box-tape-baseline_noslip10",
+      "unit": "world x hold frame"
+    },
+    {
+      "category": "height_below_C_p05",
+      "count": 43,
+      "reason": "height_below_C_p05",
+      "blocked_object": "cargo_cyan_2",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured_per_world; world0 contact distances retained",
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R2/box-tape-baseline_noslip10",
+      "unit": "world x hold frame"
+    },
+    {
+      "category": "slip_above_C_p95",
+      "count": 268,
+      "reason": "slip_above_C_p95",
+      "blocked_object": "cargo_cyan_2",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured_per_world; world0 contact distances retained",
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R2/box-tape-baseline_noslip10",
+      "unit": "world x hold frame"
+    },
+    {
+      "category": "height_below_C_p05",
+      "count": 52,
+      "reason": "height_below_C_p05",
+      "blocked_object": "cargo_cyan_2",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured_per_world; world0 contact distances retained",
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R2-box-repeat2/box-tape-baseline_noslip10",
+      "unit": "world x hold frame"
+    },
+    {
+      "category": "slip_above_C_p95",
+      "count": 304,
+      "reason": "slip_above_C_p95",
+      "blocked_object": "cargo_cyan_2",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured_per_world; world0 contact distances retained",
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R2-box-repeat2/box-tape-baseline_noslip10",
+      "unit": "world x hold frame"
+    },
+    {
+      "category": "height_below_C_p05",
+      "count": 226,
+      "reason": "height_below_C_p05",
+      "blocked_object": "cargo_cyan_2",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured_per_world; world0 contact distances retained",
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R2-box-repeat2/box-tape-warp_native_contact_v1",
+      "unit": "world x hold frame"
+    },
+    {
+      "category": "slip_above_C_p95",
+      "count": 224,
+      "reason": "slip_above_C_p95",
+      "blocked_object": "cargo_cyan_2",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured_per_world; world0 contact distances retained",
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R2-box-repeat2/box-tape-warp_native_contact_v1",
+      "unit": "world x hold frame"
+    },
+    {
+      "category": "height_below_C_p05",
+      "count": 480,
+      "reason": "height_below_C_p05",
+      "blocked_object": "cargo_cyan_2",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured_per_world; world0 contact distances retained",
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R2-box-repeat2/box-tape-warp_native_contact_v2",
+      "unit": "world x hold frame"
+    },
+    {
+      "category": "height_below_C_p05",
+      "count": 480,
+      "reason": "height_below_C_p05",
+      "blocked_object": "cargo_cyan_2",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured_per_world; world0 contact distances retained",
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R2-box-repeat2/box-tape-warp_native_fast_v1",
+      "unit": "world x hold frame"
+    },
+    {
+      "category": "height_below_C_p05",
+      "count": 16,
+      "reason": "height_below_C_p05",
+      "blocked_object": "cargo_beam_1",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured_per_world; world0 contact distances retained",
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R2-retry1/beam-tape-baseline_noslip10",
+      "unit": "world x hold frame"
+    },
+    {
+      "category": "slip_above_C_p95",
+      "count": 16,
+      "reason": "slip_above_C_p95",
+      "blocked_object": "cargo_beam_1",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured_per_world; world0 contact distances retained",
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R2-retry1/beam-tape-baseline_noslip10",
+      "unit": "world x hold frame"
+    },
+    {
+      "category": "height_below_C_p05",
+      "count": 16,
+      "reason": "height_below_C_p05",
+      "blocked_object": "cargo_beam_1",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured_per_world; world0 contact distances retained",
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R2-retry1/beam-tape-warp_native_contact_v2",
+      "unit": "world x hold frame"
+    },
+    {
+      "category": "slip_above_C_p95",
+      "count": 32,
+      "reason": "slip_above_C_p95",
+      "blocked_object": "cargo_beam_1",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured_per_world; world0 contact distances retained",
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R2-retry1/beam-tape-warp_native_contact_v2",
+      "unit": "world x hold frame"
+    },
+    {
+      "category": "solver_line_search_limit",
+      "reason": "RuntimeError('CAPACITY_OVERFLOW [0, 0, 0, 0, 0, 0, 1024, 0, 0, 0, 0, 0, 0, 0, 0, 0]')",
+      "blocked_object": "physics_engine",
+      "minimum_gap_m": null,
+      "gap_status": "not_geometric",
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R2-retry1/beam-tape-warp_native_fast_v1",
+      "unit": "run"
+    },
+    {
+      "category": "height_below_C_p05",
+      "count": 31,
+      "reason": "height_below_C_p05",
+      "blocked_object": "cargo_cyan_2",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured_per_world; world0 contact distances retained",
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R2-retry1/box-tape-baseline_noslip10",
+      "unit": "world x hold frame"
+    },
+    {
+      "category": "slip_above_C_p95",
+      "count": 362,
+      "reason": "slip_above_C_p95",
+      "blocked_object": "cargo_cyan_2",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured_per_world; world0 contact distances retained",
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R2-retry1/box-tape-baseline_noslip10",
+      "unit": "world x hold frame"
+    },
+    {
+      "category": "height_below_C_p05",
+      "count": 217,
+      "reason": "height_below_C_p05",
+      "blocked_object": "cargo_cyan_2",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured_per_world; world0 contact distances retained",
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R2-retry1/box-tape-warp_native_contact_v1",
+      "unit": "world x hold frame"
+    },
+    {
+      "category": "slip_above_C_p95",
+      "count": 233,
+      "reason": "slip_above_C_p95",
+      "blocked_object": "cargo_cyan_2",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured_per_world; world0 contact distances retained",
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R2-retry1/box-tape-warp_native_contact_v1",
+      "unit": "world x hold frame"
+    },
+    {
+      "category": "height_below_C_p05",
+      "count": 480,
+      "reason": "height_below_C_p05",
+      "blocked_object": "cargo_cyan_2",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured_per_world; world0 contact distances retained",
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R2-retry1/box-tape-warp_native_contact_v2",
+      "unit": "world x hold frame"
+    },
+    {
+      "category": "height_below_C_p05",
+      "count": 480,
+      "reason": "height_below_C_p05",
+      "blocked_object": "cargo_cyan_2",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured_per_world; world0 contact distances retained",
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R2-retry1/box-tape-warp_native_fast_v1",
+      "unit": "world x hold frame"
+    },
+    {
+      "category": "height_below_C_p05",
+      "count": 64,
+      "reason": "height_below_C_p05",
+      "blocked_object": "cargo_beam_1",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured_per_world; world0 contact distances retained",
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R3/beam-tape-baseline_noslip10",
+      "unit": "world x hold frame"
+    },
+    {
+      "category": "slip_above_C_p95",
+      "count": 71,
+      "reason": "slip_above_C_p95",
+      "blocked_object": "cargo_beam_1",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured_per_world; world0 contact distances retained",
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R3/beam-tape-baseline_noslip10",
+      "unit": "world x hold frame"
+    },
+    {
+      "category": "height_below_C_p05",
+      "count": 1,
+      "reason": "height_below_C_p05",
+      "blocked_object": "cargo_beam_1",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured_per_world; world0 contact distances retained",
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R3/beam-tape-warp_native_contact_v1",
+      "unit": "world x hold frame"
+    },
+    {
+      "category": "height_below_C_p05",
+      "count": 64,
+      "reason": "height_below_C_p05",
+      "blocked_object": "cargo_beam_1",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured_per_world; world0 contact distances retained",
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R3/beam-tape-warp_native_contact_v2",
+      "unit": "world x hold frame"
+    },
+    {
+      "category": "slip_above_C_p95",
+      "count": 128,
+      "reason": "slip_above_C_p95",
+      "blocked_object": "cargo_beam_1",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured_per_world; world0 contact distances retained",
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R3/beam-tape-warp_native_contact_v2",
+      "unit": "world x hold frame"
+    },
+    {
+      "category": "solver_line_search_limit",
+      "reason": "RuntimeError('CAPACITY_OVERFLOW [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1024, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]')",
+      "blocked_object": "physics_engine",
+      "minimum_gap_m": null,
+      "gap_status": "not_geometric",
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R3/beam-tape-warp_native_fast_v1",
+      "unit": "run"
+    },
+    {
+      "category": "height_below_C_p05",
+      "count": 163,
+      "reason": "height_below_C_p05",
+      "blocked_object": "cargo_cyan_2",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured_per_world; world0 contact distances retained",
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R3/box-tape-baseline_noslip10",
+      "unit": "world x hold frame"
+    },
+    {
+      "category": "slip_above_C_p95",
+      "count": 1320,
+      "reason": "slip_above_C_p95",
+      "blocked_object": "cargo_cyan_2",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured_per_world; world0 contact distances retained",
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R3/box-tape-baseline_noslip10",
+      "unit": "world x hold frame"
+    },
+    {
+      "category": "height_below_C_p05",
+      "count": 876,
+      "reason": "height_below_C_p05",
+      "blocked_object": "cargo_cyan_2",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured_per_world; world0 contact distances retained",
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R3/box-tape-warp_native_contact_v1",
+      "unit": "world x hold frame"
+    },
+    {
+      "category": "slip_above_C_p95",
+      "count": 923,
+      "reason": "slip_above_C_p95",
+      "blocked_object": "cargo_cyan_2",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured_per_world; world0 contact distances retained",
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R3/box-tape-warp_native_contact_v1",
+      "unit": "world x hold frame"
+    },
+    {
+      "category": "height_below_C_p05",
+      "count": 1920,
+      "reason": "height_below_C_p05",
+      "blocked_object": "cargo_cyan_2",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured_per_world; world0 contact distances retained",
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R3/box-tape-warp_native_contact_v2",
+      "unit": "world x hold frame"
+    },
+    {
+      "category": "height_below_C_p05",
+      "count": 1920,
+      "reason": "height_below_C_p05",
+      "blocked_object": "cargo_cyan_2",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured_per_world; world0 contact distances retained",
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R3/box-tape-warp_native_fast_v1",
+      "unit": "world x hold frame"
+    },
+    {
+      "category": "initial_overlap_diagnostic",
+      "count": 8,
+      "unit": "batch run",
+      "reason": "original N16 pulse cohort is unsuitable for normal-drive calibration",
+      "blocked_object": "cargo_box_00",
+      "minimum_gap_m": -0.015344881182340743,
+      "gap_status": "C3.12 setup contact distance; same original reset",
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R2-retry1"
+    }
   ],
-  "reproduce": "scripts/warpfit.py --enabled; see each run reproduce argv"
+  "sample_funnels": [
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R1-Cref/beam-tape-baseline_noslip10",
+      "unit": "world x recorded hold frame; repeated fixture, not independent seeds",
+      "stages": [
+        {
+          "gate": "hold_frames",
+          "cumulative_pass": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "all_fingers_positive",
+          "cumulative_pass": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "height_at_least_C_p05",
+          "cumulative_pass": 2,
+          "rejected": 1
+        },
+        {
+          "gate": "relative_slip_at_most_C_p95",
+          "cumulative_pass": 1,
+          "rejected": 1
+        }
+      ]
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R1-Cref/box-tape-baseline_noslip10",
+      "unit": "world x recorded hold frame; repeated fixture, not independent seeds",
+      "stages": [
+        {
+          "gate": "hold_frames",
+          "cumulative_pass": 30,
+          "rejected": 0
+        },
+        {
+          "gate": "all_fingers_positive",
+          "cumulative_pass": 30,
+          "rejected": 0
+        },
+        {
+          "gate": "height_at_least_C_p05",
+          "cumulative_pass": 28,
+          "rejected": 2
+        },
+        {
+          "gate": "relative_slip_at_most_C_p95",
+          "cumulative_pass": 26,
+          "rejected": 2
+        }
+      ]
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R1-Cref-retry1/beam-tape-baseline_noslip10",
+      "unit": "world x recorded hold frame; repeated fixture, not independent seeds",
+      "stages": [
+        {
+          "gate": "hold_frames",
+          "cumulative_pass": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "all_fingers_positive",
+          "cumulative_pass": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "height_at_least_C_p05",
+          "cumulative_pass": 2,
+          "rejected": 1
+        },
+        {
+          "gate": "relative_slip_at_most_C_p95",
+          "cumulative_pass": 1,
+          "rejected": 1
+        }
+      ]
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R1-Cref-retry1/box-tape-baseline_noslip10",
+      "unit": "world x recorded hold frame; repeated fixture, not independent seeds",
+      "stages": [
+        {
+          "gate": "hold_frames",
+          "cumulative_pass": 30,
+          "rejected": 0
+        },
+        {
+          "gate": "all_fingers_positive",
+          "cumulative_pass": 30,
+          "rejected": 0
+        },
+        {
+          "gate": "height_at_least_C_p05",
+          "cumulative_pass": 28,
+          "rejected": 2
+        },
+        {
+          "gate": "relative_slip_at_most_C_p95",
+          "cumulative_pass": 26,
+          "rejected": 2
+        }
+      ]
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R2/box-tape-baseline_noslip10",
+      "unit": "world x recorded hold frame; repeated fixture, not independent seeds",
+      "stages": [
+        {
+          "gate": "hold_frames",
+          "cumulative_pass": 480,
+          "rejected": 0
+        },
+        {
+          "gate": "all_fingers_positive",
+          "cumulative_pass": 480,
+          "rejected": 0
+        },
+        {
+          "gate": "height_at_least_C_p05",
+          "cumulative_pass": 437,
+          "rejected": 43
+        },
+        {
+          "gate": "relative_slip_at_most_C_p95",
+          "cumulative_pass": 169,
+          "rejected": 268
+        }
+      ]
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R2-box-repeat2/box-tape-baseline_noslip10",
+      "unit": "world x recorded hold frame; repeated fixture, not independent seeds",
+      "stages": [
+        {
+          "gate": "hold_frames",
+          "cumulative_pass": 480,
+          "rejected": 0
+        },
+        {
+          "gate": "all_fingers_positive",
+          "cumulative_pass": 480,
+          "rejected": 0
+        },
+        {
+          "gate": "height_at_least_C_p05",
+          "cumulative_pass": 428,
+          "rejected": 52
+        },
+        {
+          "gate": "relative_slip_at_most_C_p95",
+          "cumulative_pass": 124,
+          "rejected": 304
+        }
+      ]
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R2-box-repeat2/box-tape-warp_native_contact_v1",
+      "unit": "world x recorded hold frame; repeated fixture, not independent seeds",
+      "stages": [
+        {
+          "gate": "hold_frames",
+          "cumulative_pass": 480,
+          "rejected": 0
+        },
+        {
+          "gate": "all_fingers_positive",
+          "cumulative_pass": 480,
+          "rejected": 0
+        },
+        {
+          "gate": "height_at_least_C_p05",
+          "cumulative_pass": 254,
+          "rejected": 226
+        },
+        {
+          "gate": "relative_slip_at_most_C_p95",
+          "cumulative_pass": 30,
+          "rejected": 224
+        }
+      ]
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R2-box-repeat2/box-tape-warp_native_contact_v2",
+      "unit": "world x recorded hold frame; repeated fixture, not independent seeds",
+      "stages": [
+        {
+          "gate": "hold_frames",
+          "cumulative_pass": 480,
+          "rejected": 0
+        },
+        {
+          "gate": "all_fingers_positive",
+          "cumulative_pass": 480,
+          "rejected": 0
+        },
+        {
+          "gate": "height_at_least_C_p05",
+          "cumulative_pass": 0,
+          "rejected": 480
+        },
+        {
+          "gate": "relative_slip_at_most_C_p95",
+          "cumulative_pass": 0,
+          "rejected": 0
+        }
+      ]
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R2-box-repeat2/box-tape-warp_native_fast_v1",
+      "unit": "world x recorded hold frame; repeated fixture, not independent seeds",
+      "stages": [
+        {
+          "gate": "hold_frames",
+          "cumulative_pass": 480,
+          "rejected": 0
+        },
+        {
+          "gate": "all_fingers_positive",
+          "cumulative_pass": 480,
+          "rejected": 0
+        },
+        {
+          "gate": "height_at_least_C_p05",
+          "cumulative_pass": 0,
+          "rejected": 480
+        },
+        {
+          "gate": "relative_slip_at_most_C_p95",
+          "cumulative_pass": 0,
+          "rejected": 0
+        }
+      ]
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R2-retry1/beam-tape-baseline_noslip10",
+      "unit": "world x recorded hold frame; repeated fixture, not independent seeds",
+      "stages": [
+        {
+          "gate": "hold_frames",
+          "cumulative_pass": 48,
+          "rejected": 0
+        },
+        {
+          "gate": "all_fingers_positive",
+          "cumulative_pass": 48,
+          "rejected": 0
+        },
+        {
+          "gate": "height_at_least_C_p05",
+          "cumulative_pass": 32,
+          "rejected": 16
+        },
+        {
+          "gate": "relative_slip_at_most_C_p95",
+          "cumulative_pass": 16,
+          "rejected": 16
+        }
+      ]
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R2-retry1/beam-tape-warp_native_contact_v1",
+      "unit": "world x recorded hold frame; repeated fixture, not independent seeds",
+      "stages": [
+        {
+          "gate": "hold_frames",
+          "cumulative_pass": 48,
+          "rejected": 0
+        },
+        {
+          "gate": "all_fingers_positive",
+          "cumulative_pass": 48,
+          "rejected": 0
+        },
+        {
+          "gate": "height_at_least_C_p05",
+          "cumulative_pass": 48,
+          "rejected": 0
+        },
+        {
+          "gate": "relative_slip_at_most_C_p95",
+          "cumulative_pass": 48,
+          "rejected": 0
+        }
+      ]
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R2-retry1/beam-tape-warp_native_contact_v2",
+      "unit": "world x recorded hold frame; repeated fixture, not independent seeds",
+      "stages": [
+        {
+          "gate": "hold_frames",
+          "cumulative_pass": 48,
+          "rejected": 0
+        },
+        {
+          "gate": "all_fingers_positive",
+          "cumulative_pass": 48,
+          "rejected": 0
+        },
+        {
+          "gate": "height_at_least_C_p05",
+          "cumulative_pass": 32,
+          "rejected": 16
+        },
+        {
+          "gate": "relative_slip_at_most_C_p95",
+          "cumulative_pass": 0,
+          "rejected": 32
+        }
+      ]
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R2-retry1/box-tape-baseline_noslip10",
+      "unit": "world x recorded hold frame; repeated fixture, not independent seeds",
+      "stages": [
+        {
+          "gate": "hold_frames",
+          "cumulative_pass": 480,
+          "rejected": 0
+        },
+        {
+          "gate": "all_fingers_positive",
+          "cumulative_pass": 480,
+          "rejected": 0
+        },
+        {
+          "gate": "height_at_least_C_p05",
+          "cumulative_pass": 449,
+          "rejected": 31
+        },
+        {
+          "gate": "relative_slip_at_most_C_p95",
+          "cumulative_pass": 87,
+          "rejected": 362
+        }
+      ]
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R2-retry1/box-tape-warp_native_contact_v1",
+      "unit": "world x recorded hold frame; repeated fixture, not independent seeds",
+      "stages": [
+        {
+          "gate": "hold_frames",
+          "cumulative_pass": 480,
+          "rejected": 0
+        },
+        {
+          "gate": "all_fingers_positive",
+          "cumulative_pass": 480,
+          "rejected": 0
+        },
+        {
+          "gate": "height_at_least_C_p05",
+          "cumulative_pass": 263,
+          "rejected": 217
+        },
+        {
+          "gate": "relative_slip_at_most_C_p95",
+          "cumulative_pass": 30,
+          "rejected": 233
+        }
+      ]
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R2-retry1/box-tape-warp_native_contact_v2",
+      "unit": "world x recorded hold frame; repeated fixture, not independent seeds",
+      "stages": [
+        {
+          "gate": "hold_frames",
+          "cumulative_pass": 480,
+          "rejected": 0
+        },
+        {
+          "gate": "all_fingers_positive",
+          "cumulative_pass": 480,
+          "rejected": 0
+        },
+        {
+          "gate": "height_at_least_C_p05",
+          "cumulative_pass": 0,
+          "rejected": 480
+        },
+        {
+          "gate": "relative_slip_at_most_C_p95",
+          "cumulative_pass": 0,
+          "rejected": 0
+        }
+      ]
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R2-retry1/box-tape-warp_native_fast_v1",
+      "unit": "world x recorded hold frame; repeated fixture, not independent seeds",
+      "stages": [
+        {
+          "gate": "hold_frames",
+          "cumulative_pass": 480,
+          "rejected": 0
+        },
+        {
+          "gate": "all_fingers_positive",
+          "cumulative_pass": 480,
+          "rejected": 0
+        },
+        {
+          "gate": "height_at_least_C_p05",
+          "cumulative_pass": 0,
+          "rejected": 480
+        },
+        {
+          "gate": "relative_slip_at_most_C_p95",
+          "cumulative_pass": 0,
+          "rejected": 0
+        }
+      ]
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R3/beam-tape-baseline_noslip10",
+      "unit": "world x recorded hold frame; repeated fixture, not independent seeds",
+      "stages": [
+        {
+          "gate": "hold_frames",
+          "cumulative_pass": 192,
+          "rejected": 0
+        },
+        {
+          "gate": "all_fingers_positive",
+          "cumulative_pass": 192,
+          "rejected": 0
+        },
+        {
+          "gate": "height_at_least_C_p05",
+          "cumulative_pass": 128,
+          "rejected": 64
+        },
+        {
+          "gate": "relative_slip_at_most_C_p95",
+          "cumulative_pass": 57,
+          "rejected": 71
+        }
+      ]
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R3/beam-tape-warp_native_contact_v1",
+      "unit": "world x recorded hold frame; repeated fixture, not independent seeds",
+      "stages": [
+        {
+          "gate": "hold_frames",
+          "cumulative_pass": 192,
+          "rejected": 0
+        },
+        {
+          "gate": "all_fingers_positive",
+          "cumulative_pass": 192,
+          "rejected": 0
+        },
+        {
+          "gate": "height_at_least_C_p05",
+          "cumulative_pass": 191,
+          "rejected": 1
+        },
+        {
+          "gate": "relative_slip_at_most_C_p95",
+          "cumulative_pass": 191,
+          "rejected": 0
+        }
+      ]
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R3/beam-tape-warp_native_contact_v2",
+      "unit": "world x recorded hold frame; repeated fixture, not independent seeds",
+      "stages": [
+        {
+          "gate": "hold_frames",
+          "cumulative_pass": 192,
+          "rejected": 0
+        },
+        {
+          "gate": "all_fingers_positive",
+          "cumulative_pass": 192,
+          "rejected": 0
+        },
+        {
+          "gate": "height_at_least_C_p05",
+          "cumulative_pass": 128,
+          "rejected": 64
+        },
+        {
+          "gate": "relative_slip_at_most_C_p95",
+          "cumulative_pass": 0,
+          "rejected": 128
+        }
+      ]
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R3/box-tape-baseline_noslip10",
+      "unit": "world x recorded hold frame; repeated fixture, not independent seeds",
+      "stages": [
+        {
+          "gate": "hold_frames",
+          "cumulative_pass": 1920,
+          "rejected": 0
+        },
+        {
+          "gate": "all_fingers_positive",
+          "cumulative_pass": 1920,
+          "rejected": 0
+        },
+        {
+          "gate": "height_at_least_C_p05",
+          "cumulative_pass": 1757,
+          "rejected": 163
+        },
+        {
+          "gate": "relative_slip_at_most_C_p95",
+          "cumulative_pass": 437,
+          "rejected": 1320
+        }
+      ]
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R3/box-tape-warp_native_contact_v1",
+      "unit": "world x recorded hold frame; repeated fixture, not independent seeds",
+      "stages": [
+        {
+          "gate": "hold_frames",
+          "cumulative_pass": 1920,
+          "rejected": 0
+        },
+        {
+          "gate": "all_fingers_positive",
+          "cumulative_pass": 1920,
+          "rejected": 0
+        },
+        {
+          "gate": "height_at_least_C_p05",
+          "cumulative_pass": 1044,
+          "rejected": 876
+        },
+        {
+          "gate": "relative_slip_at_most_C_p95",
+          "cumulative_pass": 121,
+          "rejected": 923
+        }
+      ]
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R3/box-tape-warp_native_contact_v2",
+      "unit": "world x recorded hold frame; repeated fixture, not independent seeds",
+      "stages": [
+        {
+          "gate": "hold_frames",
+          "cumulative_pass": 1920,
+          "rejected": 0
+        },
+        {
+          "gate": "all_fingers_positive",
+          "cumulative_pass": 1920,
+          "rejected": 0
+        },
+        {
+          "gate": "height_at_least_C_p05",
+          "cumulative_pass": 0,
+          "rejected": 1920
+        },
+        {
+          "gate": "relative_slip_at_most_C_p95",
+          "cumulative_pass": 0,
+          "rejected": 0
+        }
+      ]
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/warpfit/R3/box-tape-warp_native_fast_v1",
+      "unit": "world x recorded hold frame; repeated fixture, not independent seeds",
+      "stages": [
+        {
+          "gate": "hold_frames",
+          "cumulative_pass": 1920,
+          "rejected": 0
+        },
+        {
+          "gate": "all_fingers_positive",
+          "cumulative_pass": 1920,
+          "rejected": 0
+        },
+        {
+          "gate": "height_at_least_C_p05",
+          "cumulative_pass": 0,
+          "rejected": 1920
+        },
+        {
+          "gate": "relative_slip_at_most_C_p95",
+          "cumulative_pass": 0,
+          "rejected": 0
+        }
+      ]
+    }
+  ],
+  "raw": "/home/ugrp/ugrp-sim/runs/warpfit",
+  "reproduce": [
+    "python -m scripts.warpfit_analyze --root /home/ugrp/ugrp-sim/runs/warpfit --assets /home/ugrp/ugrp-sim/runs/warpfit/inputs/src/drivecheck-renderer-5974a181 --output <new-analysis>",
+    "python -m scripts.warpfit_report --analysis <new-analysis> --output <new-report>"
+  ],
+  "primary_jobs": [
+    {
+      "gate": "planned",
+      "cumulative_pass": 28,
+      "rejected": 0
+    },
+    {
+      "gate": "terminal",
+      "cumulative_pass": 28,
+      "rejected": 0
+    },
+    {
+      "gate": "fixed_work_complete",
+      "cumulative_pass": 26,
+      "rejected": 2
+    }
+  ],
+  "box_trial_funnels": [
+    {
+      "nworld": 16,
+      "profile": "baseline_noslip10",
+      "unit": "selected fixed-initial-condition trajectory",
+      "stages": [
+        {
+          "gate": "requested_first30",
+          "cumulative_pass": 30,
+          "rejected": 0
+        },
+        {
+          "gate": "loaded_contact_all_hold_frames",
+          "cumulative_pass": 30,
+          "rejected": 0
+        },
+        {
+          "gate": "C_reference_temporal_quantiles",
+          "cumulative_pass": 0,
+          "rejected": 30
+        }
+      ]
+    },
+    {
+      "nworld": 16,
+      "profile": "warp_native_contact_v1",
+      "unit": "selected fixed-initial-condition trajectory",
+      "stages": [
+        {
+          "gate": "requested_first30",
+          "cumulative_pass": 30,
+          "rejected": 0
+        },
+        {
+          "gate": "loaded_contact_all_hold_frames",
+          "cumulative_pass": 30,
+          "rejected": 0
+        },
+        {
+          "gate": "C_reference_temporal_quantiles",
+          "cumulative_pass": 0,
+          "rejected": 30
+        }
+      ]
+    },
+    {
+      "nworld": 16,
+      "profile": "warp_native_contact_v2",
+      "unit": "selected fixed-initial-condition trajectory",
+      "stages": [
+        {
+          "gate": "requested_first30",
+          "cumulative_pass": 30,
+          "rejected": 0
+        },
+        {
+          "gate": "loaded_contact_all_hold_frames",
+          "cumulative_pass": 30,
+          "rejected": 0
+        },
+        {
+          "gate": "C_reference_temporal_quantiles",
+          "cumulative_pass": 0,
+          "rejected": 30
+        }
+      ]
+    },
+    {
+      "nworld": 16,
+      "profile": "warp_native_fast_v1",
+      "unit": "selected fixed-initial-condition trajectory",
+      "stages": [
+        {
+          "gate": "requested_first30",
+          "cumulative_pass": 30,
+          "rejected": 0
+        },
+        {
+          "gate": "loaded_contact_all_hold_frames",
+          "cumulative_pass": 30,
+          "rejected": 0
+        },
+        {
+          "gate": "C_reference_temporal_quantiles",
+          "cumulative_pass": 0,
+          "rejected": 30
+        }
+      ]
+    },
+    {
+      "nworld": 64,
+      "profile": "baseline_noslip10",
+      "unit": "selected fixed-initial-condition trajectory",
+      "stages": [
+        {
+          "gate": "requested_first30",
+          "cumulative_pass": 30,
+          "rejected": 0
+        },
+        {
+          "gate": "loaded_contact_all_hold_frames",
+          "cumulative_pass": 30,
+          "rejected": 0
+        },
+        {
+          "gate": "C_reference_temporal_quantiles",
+          "cumulative_pass": 1,
+          "rejected": 29
+        }
+      ]
+    },
+    {
+      "nworld": 64,
+      "profile": "warp_native_contact_v1",
+      "unit": "selected fixed-initial-condition trajectory",
+      "stages": [
+        {
+          "gate": "requested_first30",
+          "cumulative_pass": 30,
+          "rejected": 0
+        },
+        {
+          "gate": "loaded_contact_all_hold_frames",
+          "cumulative_pass": 30,
+          "rejected": 0
+        },
+        {
+          "gate": "C_reference_temporal_quantiles",
+          "cumulative_pass": 0,
+          "rejected": 30
+        }
+      ]
+    },
+    {
+      "nworld": 64,
+      "profile": "warp_native_contact_v2",
+      "unit": "selected fixed-initial-condition trajectory",
+      "stages": [
+        {
+          "gate": "requested_first30",
+          "cumulative_pass": 30,
+          "rejected": 0
+        },
+        {
+          "gate": "loaded_contact_all_hold_frames",
+          "cumulative_pass": 30,
+          "rejected": 0
+        },
+        {
+          "gate": "C_reference_temporal_quantiles",
+          "cumulative_pass": 0,
+          "rejected": 30
+        }
+      ]
+    },
+    {
+      "nworld": 64,
+      "profile": "warp_native_fast_v1",
+      "unit": "selected fixed-initial-condition trajectory",
+      "stages": [
+        {
+          "gate": "requested_first30",
+          "cumulative_pass": 30,
+          "rejected": 0
+        },
+        {
+          "gate": "loaded_contact_all_hold_frames",
+          "cumulative_pass": 30,
+          "rejected": 0
+        },
+        {
+          "gate": "C_reference_temporal_quantiles",
+          "cumulative_pass": 0,
+          "rejected": 30
+        }
+      ]
+    }
+  ],
+  "queue_funnels": [
+    "/home/ugrp/ugrp-sim/runs/warpfit/R1/funnel.json",
+    "/home/ugrp/ugrp-sim/runs/warpfit/R1-Cref/funnel.json",
+    "/home/ugrp/ugrp-sim/runs/warpfit/R1-Cref-retry1/funnel.json",
+    "/home/ugrp/ugrp-sim/runs/warpfit/R1-retry1/funnel.json",
+    "/home/ugrp/ugrp-sim/runs/warpfit/R2/funnel.json",
+    "/home/ugrp/ugrp-sim/runs/warpfit/R2-box-repeat2/funnel.json",
+    "/home/ugrp/ugrp-sim/runs/warpfit/R2-drive-clear-v1/funnel.json",
+    "/home/ugrp/ugrp-sim/runs/warpfit/R2-retry1/funnel.json",
+    "/home/ugrp/ugrp-sim/runs/warpfit/R3/funnel.json"
+  ],
+  "distribution": [
+    {
+      "category": "HOST_ERROR",
+      "unit": "run",
+      "count": 1
+    },
+    {
+      "category": "initial_overlap_diagnostic",
+      "unit": "batch run",
+      "count": 8
+    },
+    {
+      "category": "height_below_C_p05",
+      "unit": "world x hold frame",
+      "count": 7535
+    },
+    {
+      "category": "slip_above_C_p95",
+      "unit": "world x hold frame",
+      "count": 3887
+    },
+    {
+      "category": "solver_line_search_limit",
+      "unit": "run",
+      "count": 2
+    }
+  ]
 }
