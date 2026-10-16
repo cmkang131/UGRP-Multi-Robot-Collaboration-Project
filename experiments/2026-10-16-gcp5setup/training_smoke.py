@@ -23,8 +23,10 @@ def meta(key):
 host = {k: meta(v) for k, v in dict(project='project/project-id', instance='instance/name',
                                   machine='instance/machine-type').items()}
 assert host == dict(project='ugrp-sim-e-1016', instance='ugrp-act-l4-gcp5', machine='g2-standard-8')
-assert not subprocess.check_output(['git', 'status', '--porcelain'], cwd=source)
-sha = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=source, text=True).strip()
+reference = json.loads((source/'source-provenance.json').read_text())
+for name, digest in reference['files_sha256'].items():
+    assert hashlib.sha256((source/name).read_bytes()).hexdigest() == digest, name
+sha = reference['source_sha']
 output.mkdir(exist_ok=False)
 report = dict(status='running', research_result=False, host=host, source_sha=sha,
               steps_requested=50, steps_completed=0, readback_verified=False,
