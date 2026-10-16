@@ -44,3 +44,5 @@
 
 
 gcp4는 자기 Python/MuJoCo/ffmpeg·GPU 프로세스0, 남은 lease JSON0을 확인하고 직접 정지했다. 다른 작업자의 오래된 `.warp9-claim.lock`·`.warp10-claim.lock`은 그대로 보존했다([종료 전 확인](gcp4-practice-close.txt)). [TERMINATED 확인](gcp4-after-practice-stop.json)의 `lastStopTimestamp`는 **2026-10-16T14:19:14.155Z (23:19:14.155 KST)**다. 실행 시간 상한 없이 idle20·budget-stop을 유지했다. 본 녹화가 도착하기 전까지 gcp4를 다시 시작하지 않는다.
+
+설치 원문 로그는 공백·CR까지 보존하는 [install.log.gz](installation/install.log.gz)로 버전 관리한다. [복원 SHA 검증](installation/install-log-compression.json)을 통과했으며 VM 원문과 같은 hash다.
