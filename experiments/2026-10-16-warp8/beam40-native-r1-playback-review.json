@@ -1,0 +1,153 @@
+{
+  "utc": "2026-10-16T15:07:09.946859+00:00",
+  "agent": "warp8d",
+  "run": "beam40-native-r1",
+  "world": 0,
+  "seed": 8318706,
+  "viewed_files": [
+    "full-2hz-00.jpg",
+    "full-2hz-01.jpg",
+    "full-2hz-02.jpg",
+    "full-2hz-03.jpg",
+    "full-2hz-04.jpg",
+    "last10s-10hz-00.jpg",
+    "last10s-10hz-01.jpg",
+    "last10s-10hz-02.jpg",
+    "last10s-10hz-03.jpg",
+    "last10s-10hz-04.jpg",
+    "last10s-10hz-05.jpg"
+  ],
+  "full_2hz_N": 81,
+  "full_SIM_range": [
+    0.0,
+    40.0
+  ],
+  "tail_10hz_N": 100,
+  "tail_SIM_range": [
+    30.4,
+    40.3
+  ],
+  "time_basis": "backend origin1.7; teacher episode begins world2.2, +0.5 backend SIM",
+  "timeline": [
+    {
+      "backend_SIM": "0–1.5",
+      "observation": "첫 둘러보기 뒤 파랑 끝이 한 로봇의 자기 RGB 중앙에 들어옴"
+    },
+    {
+      "backend_SIM": "2–23",
+      "observation": "파랑 끝 영상은 대부분 고정되고 다른 자기 RGB는 파트너·빔을 보며 접근 방향을 바꿈"
+    },
+    {
+      "backend_SIM": "24–32",
+      "observation": "다른 자기 RGB에 청록 끝 띠가 들어와 커짐; 파랑 끝은 반대 카메라에 계속 보임"
+    },
+    {
+      "backend_SIM": "33–36",
+      "observation": "양 끝 띠가 화면 아래로 빠지며 빔 표면이 양 카메라를 채움; 개요에서 양 로봇이 빔 양쪽에 위치"
+    },
+    {
+      "backend_SIM": "36–40.3",
+      "observation": "빔 표면과 개요 자세가 유지됨; 원장 별도 판정에서 연속 hold3.0초"
+    }
+  ],
+  "dense_vs_sparse": "마지막100쌍에서 접근·집기 전환을 시간순으로 확인; 2Hz보다 빠른 큰 반복진동·화물 낙하를 관찰하지 못함. 영상만으로 접촉 성공을 판정하지 않음.",
+  "native_evaluator_overlap_bit_equal_N": 398,
+  "evaluator_supplement_N": 1,
+  "top_missing_N": 0,
+  "video": {
+    "path": "/home/ugrp/ugrp-sim/ops-reviews/warp8/playback/beam40-native-r1-world000-v2/playback-full-tail-3x.mp4",
+    "bytes": 112368,
+    "sha256": "7b4ddadb4bf1a29a7932f0c870a1e4cd8d32b4d857caaf3c7556cdc2b35db1a8",
+    "ffprobe": {
+      "streams": [
+        {
+          "index": 0,
+          "codec_name": "h264",
+          "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+          "profile": "High",
+          "codec_type": "video",
+          "codec_tag_string": "avc1",
+          "codec_tag": "0x31637661",
+          "width": 960,
+          "height": 270,
+          "coded_width": 960,
+          "coded_height": 270,
+          "closed_captions": 0,
+          "film_grain": 0,
+          "has_b_frames": 2,
+          "sample_aspect_ratio": "1:1",
+          "display_aspect_ratio": "32:9",
+          "pix_fmt": "yuv420p",
+          "level": 30,
+          "color_range": "tv",
+          "color_space": "bt470bg",
+          "chroma_location": "center",
+          "field_order": "progressive",
+          "refs": 1,
+          "is_avc": "true",
+          "nal_length_size": "4",
+          "id": "0x1",
+          "r_frame_rate": "30/1",
+          "avg_frame_rate": "30/1",
+          "time_base": "1/15360",
+          "start_pts": 0,
+          "start_time": "0.000000",
+          "duration_ts": 207872,
+          "duration": "13.533333",
+          "bit_rate": "63041",
+          "bits_per_raw_sample": "8",
+          "nb_frames": "406",
+          "extradata_size": 50,
+          "disposition": {
+            "default": 1,
+            "dub": 0,
+            "original": 0,
+            "comment": 0,
+            "lyrics": 0,
+            "karaoke": 0,
+            "forced": 0,
+            "hearing_impaired": 0,
+            "visual_impaired": 0,
+            "clean_effects": 0,
+            "attached_pic": 0,
+            "timed_thumbnails": 0,
+            "non_diegetic": 0,
+            "captions": 0,
+            "descriptions": 0,
+            "metadata": 0,
+            "dependent": 0,
+            "still_image": 0
+          },
+          "tags": {
+            "language": "und",
+            "handler_name": "VideoHandler",
+            "vendor_id": "[0][0][0][0]",
+            "encoder": "Lavc60.31.102 libx264"
+          }
+        }
+      ],
+      "format": {
+        "filename": "/home/ugrp/ugrp-sim/ops-reviews/warp8/playback/beam40-native-r1-world000-v2/playback-full-tail-3x.mp4",
+        "nb_streams": 1,
+        "nb_programs": 0,
+        "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+        "format_long_name": "QuickTime / MOV",
+        "start_time": "0.000000",
+        "duration": "13.533333",
+        "size": "112368",
+        "bit_rate": "66424",
+        "probe_score": 100,
+        "tags": {
+          "major_brand": "isom",
+          "minor_version": "512",
+          "compatible_brands": "isomiso2avc1mp41",
+          "encoder": "Lavf60.16.100"
+        }
+      }
+    }
+  },
+  "source_artifact_manifest_sha256": "6298c7c50dd227594d1fee7ecdf4374de59a767c64aa9fc38fb4093d6828741e",
+  "failure_world_N": 0,
+  "failure_review": "빔 실패0; 실패 영상 대상 없음",
+  "previous_derived_preserved": true
+}

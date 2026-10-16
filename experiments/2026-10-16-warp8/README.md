@@ -1,4 +1,4 @@
-# warp8d — native contact 관문 인수 (빔40 실행 중)
+# warp8d — native contact 관문 인수 (빔40/40·release A-S1 실행 중)
 
 `nocap-ack nocpu-ack nativecontact-ack cap-ack ownership-ack`.
 사용자 2026-10-16 23:1x 결정에 따라 `warp_native_contact_v1`로 빔40 → release A40 → B40을 새로 잰다.
@@ -39,6 +39,23 @@ warp8d가 앱 재시작 뒤 기존 PID3149/3151을 인수했다. 중복 제출0�
 [원본 속도·재계수](beam40-native-r1-first30-review.json).
 완료 원장의 자동 zstd 압축을 감시기가 읽지 않아 생긴 누락 표시를 바로잡았다.
 원장·시뮬레이션 소스는 불변이며 과거 감시 사본도 보존했다.
+
+## native 빔 종료·release 인계
+
+빔40은 **40/40 성공·cap_end0·HOST_ERROR0**이다. [재계수](beam40-native-r1-summary.json),
+[전체 감사·26,040파일 SHA](beam40-native-r1-terminal-proof.json),
+[거부 사유·funnel](beam40-native-r1-rejection_table.json). 전체 배치52.7SIM/loop1911.026s의
+환산0.906559와 실제 작업 처리량1.298693은 구분한다. setup264.989s는 별도다.
+대표 known seed8318706의81개2Hz/100개10Hz 프레임쌍을 모두 검토했고
+398개 native/evaluator qpos 비트일치·마지막 평가1행 보충을 확인했다.
+112,368바이트/3배속 영상은 Mac playback에 회수·SHA·ffprobe를 확인했다.
+[검토 타임라인](beam40-native-r1-playback-review.json), [회수](beam40-native-r1-playback-v2-transfer.json).
+이 빔 배치에 실패는0이므로 실패 영상 대상은 없다. 초기 파생본도 보존한다.
+
+[빔 인수](beam40-native-r1-admission.json) 뒤 release A-S1 native14세계를15:07:27Z에
+제출했다(driver17837/child17839, 같은 고정 소스3170d909).
+[제출](releaseA-s1-native-r1-submit.json), [실행 큐](native-gate-queue.json).
+release A 나머지26·B40은 아직 미제출이며 전체 데이터 수용은 NOT_READY다.
 
 아래는 noslip10 당시 기록이다. 그 안의8h 복원·CPU VM 분석 지시는 최신 사용자 지시로 폐기됐다.
 
