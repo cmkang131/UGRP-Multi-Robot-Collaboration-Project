@@ -84,3 +84,7 @@ python3 scripts/ugrp_session.py run kiro-m1 -- python3 scripts/sim_slots.py run 
 | Colab CLI ([안내](colab_simulation.md), [L4 검토](colab_standard_simulation_review_20260923.md)) | 무료 CPU 런타임 또는 계정의 CCU. 유료 자원 자동 구매 금지 | 전송기가 OSMesa를 강제. L4 EGL 연결·검증 미완. 세션당 유한 배치 후 회수·해시 검증, 자기 세션만 정리 |
 
 세 경로 모두 결과 회수·해시 검증까지 해야 완료이며 Mac 결과와 섞지 않는다. 이번 작업은 원격 자원을 만들거나 실행하지 않았다.
+
+## 7. grasp 교사 속도 토글 (2026-10-14, 기본 off)
+
+`scripts/run_grasp_act_teacher.py --speed-options adaptive_dt=0.001,idle_freeze,review_period=2` (배치는 `run_grasp_act_batch.py --speed-options ...`). 원인은 물리 timestep 0.25 ms(손가락-화물 마찰용 `local_contact_fine`)이고, 접근 단계는 1 ms로, 자기 발행 명령으로 팔/집게가 움직이는 순간부터 0.25 ms로 돌린다. 30 SIM초 wall/SIM이 동시 1개 2.85→1.26, 동시 16개 3.04→1.34로 줄었고(같은 VM 짝 측정), 교사 성공은 같은 16개에서 12/16→9/16으로 갈려 새 코호트로 분리한다. 근거·한계·버린 후보는 [실험 기록](../experiments/2026-10-14-sim-speed/README.md).

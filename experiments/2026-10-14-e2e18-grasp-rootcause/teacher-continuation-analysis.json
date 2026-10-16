@@ -1,0 +1,285 @@
+{
+  "scope": "25 is completed failure; 17/20 administratively interrupted and excluded until exact same frozen starts finish",
+  "method": "original teacher 0.17m robot disc + obstacle bounding circle + 0.02m obstacle padding; static planning clearance, not measured physical collision",
+  "episodes": [
+    {
+      "index": 17,
+      "status": "interrupted",
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/grasp-teacher-continue-7176b238/cohort-016/episode-017/raw",
+      "eval_sha256": "60c3a6a4054a7c406b7694b9a39158b9c0c90b6ff2f7636283898769220fa96d",
+      "reviewed_frames_sim_s": [
+        0,
+        12,
+        24,
+        36,
+        48,
+        59
+      ],
+      "robot_relation": "r1 reached assigned end and waits; r2 stays away; neither competing for same end nor physically blocking each other",
+      "goals": {
+        "r1": {
+          "role": "blue",
+          "final_pose": [
+            0.37446031736714214,
+            -0.6888928981680289,
+            -0.2073364145686257
+          ],
+          "station": [
+            0.3705662454768326,
+            -0.6912330937719502
+          ],
+          "goal_distance_m": 0.004543160942726056,
+          "map_bounds_clearance_m": 1.2505662454768327,
+          "cargo_clearances": [
+            {
+              "id": "can_1",
+              "clearance_m": 0.8741772194377716,
+              "center": [
+                1.45,
+                -0.85
+              ],
+              "radius": 0.026870057685088804
+            },
+            {
+              "id": "cyan_1",
+              "clearance_m": 1.5427643730428504,
+              "center": [
+                0.4,
+                -2.45
+              ],
+              "radius": 0.026248809496813377
+            }
+          ],
+          "robot_displacement_m": 1.1144746450524057
+        },
+        "r2": {
+          "role": "teal",
+          "final_pose": [
+            0.15654406891007863,
+            -1.1057398724643919,
+            0.4322461574013491
+          ],
+          "station": [
+            1.2943642657149508,
+            -0.8949810208881142
+          ],
+          "goal_distance_m": 1.1571750488905426,
+          "map_bounds_clearance_m": 2.0850189791118856,
+          "cargo_clearances": [
+            {
+              "id": "can_1",
+              "clearance_m": -0.05486458238692675,
+              "center": [
+                1.45,
+                -0.85
+              ],
+              "radius": 0.026870057685088804
+            },
+            {
+              "id": "cyan_1",
+              "clearance_m": 1.577621716819402,
+              "center": [
+                0.4,
+                -2.45
+              ],
+              "radius": 0.026248809496813377
+            }
+          ],
+          "robot_displacement_m": 0.0005129114841920465
+        }
+      }
+    },
+    {
+      "index": 20,
+      "status": "interrupted",
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/grasp-teacher-continue-7176b238/cohort-016/episode-020/raw",
+      "eval_sha256": "2bd327aa81053da086fe8eaa2d5ea20fa6b74f3f6977005492014ef2fe4af908",
+      "reviewed_frames_sim_s": [
+        0,
+        12,
+        24,
+        36,
+        48,
+        59
+      ],
+      "robot_relation": "r1 reached assigned end and waits; r2 stays away; neither competing for same end nor physically blocking each other",
+      "goals": {
+        "r1": {
+          "role": "teal",
+          "final_pose": [
+            1.6856094070771275,
+            -2.2537468936561877,
+            -1.6702134889696014
+          ],
+          "station": [
+            1.7100862955933842,
+            -2.253949717846813
+          ],
+          "goal_distance_m": 0.02447772883846791,
+          "map_bounds_clearance_m": 0.7260502821531868,
+          "cargo_clearances": [
+            {
+              "id": "cyan_1",
+              "clearance_m": 1.1084254202796777,
+              "center": [
+                0.4,
+                -2.45
+              ],
+              "radius": 0.026248809496813377
+            },
+            {
+              "id": "can_1",
+              "clearance_m": 1.2109673600196145,
+              "center": [
+                1.45,
+                -0.85
+              ],
+              "radius": 0.026870057685088804
+            }
+          ],
+          "robot_displacement_m": 0.7225861735209951
+        },
+        "r2": {
+          "role": "blue",
+          "final_pose": [
+            1.1139602003196272,
+            -1.8394363058895724,
+            -1.0126233374650058
+          ],
+          "station": [
+            1.6232531083052348,
+            -3.195956085970395
+          ],
+          "goal_distance_m": 1.4489738368497065,
+          "map_bounds_clearance_m": -0.21595608597039515,
+          "cargo_clearances": [
+            {
+              "id": "cyan_1",
+              "clearance_m": 1.2165102941820602,
+              "center": [
+                0.4,
+                -2.45
+              ],
+              "radius": 0.026248809496813377
+            },
+            {
+              "id": "can_1",
+              "clearance_m": 2.1354748568287163,
+              "center": [
+                1.45,
+                -0.85
+              ],
+              "radius": 0.026870057685088804
+            }
+          ],
+          "robot_displacement_m": 0.0005503981470810569
+        }
+      }
+    },
+    {
+      "index": 25,
+      "status": "complete",
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/grasp-teacher-continue-7176b238/cohort-016/episode-025/raw",
+      "eval_sha256": "af2e0fdab519f3b460145a259d1badfdc3e4dc1a38f238afa3f4ee6d56d3bfc3",
+      "reviewed_frames_sim_s": [
+        0,
+        12,
+        24,
+        36,
+        48,
+        59
+      ],
+      "robot_relation": "r1 reached assigned end and waits; r2 stays away; neither competing for same end nor physically blocking each other",
+      "goals": {
+        "r1": {
+          "role": "blue",
+          "final_pose": [
+            1.507651383693071,
+            -0.026739992583204062,
+            -2.130928603357576
+          ],
+          "station": [
+            1.488797953192125,
+            -0.004250422372117202
+          ],
+          "goal_distance_m": 0.029346764897231974,
+          "map_bounds_clearance_m": 1.2842504223721172,
+          "cargo_clearances": [
+            {
+              "id": "tile_1",
+              "clearance_m": 0.7507841809016697,
+              "center": [
+                1.0,
+                -0.85
+              ],
+              "radius": 0.03605551275463989
+            },
+            {
+              "id": "red_1",
+              "clearance_m": 2.2778671532273003,
+              "center": [
+                1.0000000000005511,
+                -2.4500000000008164
+              ],
+              "radius": 0.026248809496813377
+            },
+            {
+              "id": "cyan_1",
+              "clearance_m": 2.4609086343869655,
+              "center": [
+                0.4,
+                -2.45
+              ],
+              "radius": 0.026248809496813377
+            }
+          ],
+          "robot_displacement_m": 1.7314114824821072
+        },
+        "r2": {
+          "role": "teal",
+          "final_pose": [
+            0.3321721825862686,
+            -0.5684609260862238,
+            0.19368505682585396
+          ],
+          "station": [
+            0.9553323082381368,
+            -0.7854868818732248
+          ],
+          "goal_distance_m": 0.6598702961095563,
+          "map_bounds_clearance_m": 1.835332308238137,
+          "cargo_clearances": [
+            {
+              "id": "tile_1",
+              "clearance_m": -0.14758803479228869,
+              "center": [
+                1.0,
+                -0.85
+              ],
+              "radius": 0.03605551275463989
+            },
+            {
+              "id": "red_1",
+              "clearance_m": 1.4488635359940907,
+              "center": [
+                1.0000000000005511,
+                -2.4500000000008164
+              ],
+              "radius": 0.026248809496813377
+            },
+            {
+              "id": "cyan_1",
+              "clearance_m": 1.5384585430236055,
+              "center": [
+                0.4,
+                -2.45
+              ],
+              "radius": 0.026248809496813377
+            }
+          ],
+          "robot_displacement_m": 0.0005986283179475404
+        }
+      }
+    }
+  ]
+}
