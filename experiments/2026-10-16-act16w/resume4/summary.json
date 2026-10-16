@@ -1,5 +1,5 @@
 {
-  "status": "NATIVE_C_VALIDATION",
+  "status": "NATIVE_DAGGER_PREFIX_COLLECTION",
   "complete": false,
   "contact_profile": "warp_native_contact_v1",
   "noslip_baseline": {
@@ -66,7 +66,8 @@
     "native-gate-rejection_table.json",
     "native-record-rejection_table.json",
     "native-dataset-rejection_table.json",
-    "rejection_table.json"
+    "rejection_table.json",
+    "native-validation-C-rejection_table-enriched.json"
   ],
   "dataset": {
     "completed_utc": "2026-10-16T15:42:16.963301+00:00",
@@ -92,7 +93,7 @@
     "status": "A/B/C_10000_complete_readback_verified",
     "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-training-r1"
   },
-  "native_learning_status": "C10000 readback complete; native VAL8 running. A/B0/8 each, DAgger/D1/final40 not started.",
+  "native_learning_status": "A/B/C each0/8 independent recount, all alignment8/8; TRAIN20 DAgger collecting; D1/final40 not started",
   "native_training_curves": {
     "path": "native-abc-learning-curves.png",
     "receipt": "native-abc-learning-curves.json",
@@ -281,8 +282,181 @@
     "history": "off",
     "curriculum": true,
     "same_D0_as_A": true,
-    "validation": "RUNNING8; no completed outcome yet",
+    "validation": "COMPLETE0/8; raw recount matches; kind each0/2",
     "curve": "native-abc-learning-curves.png",
     "model": "native-model-C-pending.json"
+  },
+  "new_training_steps_scope": "completed A/B/C10000 each, smoke included",
+  "native_h4": {
+    "status": "complete",
+    "comparison": "h4 C vs A",
+    "arms": {
+      "A": {
+        "n": 0,
+        "N": 8,
+        "kinds": {
+          "cyan": {
+            "n": 0,
+            "N": 2
+          },
+          "red": {
+            "n": 0,
+            "N": 2
+          },
+          "green": {
+            "n": 0,
+            "N": 2
+          },
+          "yellow": {
+            "n": 0,
+            "N": 2
+          }
+        },
+        "stages": {
+          "bilateral_load_observed": 0,
+          "lift_success": 0,
+          "release_success": 0,
+          "issued_sequence_complete": 4,
+          "task_success": 0
+        },
+        "funnel": [
+          {
+            "gate": "requested",
+            "passed": 8,
+            "rejected": 0
+          },
+          {
+            "gate": "sequence_done",
+            "passed": 4,
+            "rejected": 4
+          },
+          {
+            "gate": "stable_lift",
+            "passed": 0,
+            "rejected": 4
+          },
+          {
+            "gate": "stable_release",
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "task_success",
+            "passed": 0,
+            "rejected": 0
+          }
+        ],
+        "cap_end": 4,
+        "HOST_ERROR": 0,
+        "raw_recount_matches": true,
+        "teacher_forced": {
+          "wheel_MAE": 0.04086160785602033,
+          "persistence_wheel_MAE": 0.040185183939219826,
+          "continuous13_MAE": 0.035999165005325386,
+          "transition_h0_wheel_MAE": 0.18249397467601156,
+          "transition_h0_persistence_MAE": 0.3167355317961086,
+          "done_Brier_h0": 0.03626618026373728
+        },
+        "teacher_forced_scope_annotation": {
+          "original_label": "teacher-forced prediction on validation5; not task success, not final40, no checkpoint/policy selection",
+          "actual_validation_seed_N": 8,
+          "reason": "legacy human-readable validation5 text; actual native seed list8 and3026 rows; metrics and source unchanged"
+        }
+      },
+      "C": {
+        "n": 0,
+        "N": 8,
+        "kinds": {
+          "cyan": {
+            "n": 0,
+            "N": 2
+          },
+          "red": {
+            "n": 0,
+            "N": 2
+          },
+          "green": {
+            "n": 0,
+            "N": 2
+          },
+          "yellow": {
+            "n": 0,
+            "N": 2
+          }
+        },
+        "stages": {
+          "bilateral_load_observed": 0,
+          "lift_success": 0,
+          "release_success": 0,
+          "issued_sequence_complete": 5,
+          "task_success": 0
+        },
+        "funnel": [
+          {
+            "gate": "requested",
+            "passed": 8,
+            "rejected": 0
+          },
+          {
+            "gate": "sequence_done",
+            "passed": 5,
+            "rejected": 3
+          },
+          {
+            "gate": "stable_lift",
+            "passed": 0,
+            "rejected": 5
+          },
+          {
+            "gate": "stable_release",
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "task_success",
+            "passed": 0,
+            "rejected": 0
+          }
+        ],
+        "cap_end": 3,
+        "HOST_ERROR": 0,
+        "alignment_rejections": 8,
+        "raw_recount_matches": true,
+        "teacher_forced": {
+          "wheel_MAE": 0.044908051495100985,
+          "persistence_wheel_MAE": 0.040185183939219826,
+          "continuous13_MAE": 0.04038212620070632,
+          "transition_h0_wheel_MAE": 0.14939528236829122,
+          "transition_h0_persistence_MAE": 0.3167355317961086,
+          "done_Brier_h0": 0.025115232340674302
+        },
+        "teacher_forced_scope_annotation": {
+          "original_label": "teacher-forced prediction on validation5; not task success, not final40, no checkpoint/policy selection",
+          "actual_validation_seed_N": 8,
+          "rows": 3026,
+          "reason": "legacy validation5 text; actual fixed native8/3026 rows; original retained"
+        }
+      }
+    },
+    "only_manipulation": "TRAIN start empirical CDF curriculum; fixed sameD0,seed20261015,10000 steps,chunk8,period0.1,historyoff",
+    "observed_success_delta_percentage_points": 0.0,
+    "interpretation": "No observed task-success improvement in matched VAL8; not proof of zero general effect; no final outcomes used",
+    "student_success_examples_available": false,
+    "failure_playback": "native-C-87429-playback-review.json",
+    "teacher_success_reference_only": "native-teacher-87429-playback-review.json",
+    "rejection_categories": {
+      "student_task_failure": 5,
+      "cap_end": 3
+    },
+    "rejection_reasons": {
+      "lift_not_stable": 5,
+      "grasp_done_not_requested": 3
+    },
+    "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-C",
+    "recount": "native-validation-C-independent.json",
+    "rejection_table": "native-validation-C-rejection_table-enriched.json",
+    "review_ack": "native-review-C.json",
+    "final40_accessed": false,
+    "noslip10_pooled": false
   }
 }

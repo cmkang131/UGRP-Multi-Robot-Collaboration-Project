@@ -1,0 +1,193 @@
+{
+  "status": "complete",
+  "complete": true,
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "source_sha": "7381482975ae5fac440c7f3dcb22403133df972b",
+  "seed": 87429,
+  "assigned_item_id": "red_2",
+  "samples": 735,
+  "geometry_queries": 190989,
+  "geometry_compatibility": {
+    "mode": "compiled-geometry-312-v1",
+    "reference": "/home/ugrp/ugrp-sim/runs/act16w-native-record-references-r1/case-09/compiled-geometry312.npz",
+    "reference_sha256": "cf4925c34abc862ed87947cb744f30e372597f164ffead1d960f7f0c26b76d89",
+    "fields_copied": 65,
+    "changes": [
+      {
+        "array": "bvh_aabb",
+        "entries": 73545,
+        "before_sha256": "240782216ab3b4022ce942800b3e143bfaf7799573cfc051c33d4c29bb956c6e",
+        "after_sha256": "5dbffc6c9a5834a6774407e6bcccf130eeb59a4f54cbe853f3d63dbe956fa263"
+      },
+      {
+        "array": "bvh_nodeid",
+        "entries": 5971,
+        "before_sha256": "56a4b9e98e84f57f2223c0e873fb6e743c1f542fac609cd53fe7bdd603f3b473",
+        "after_sha256": "9009ee3050933cef92905f77c56819a32b46222a1db9de248a4b6c54dcd030c1"
+      },
+      {
+        "array": "geom_aabb",
+        "entries": 927,
+        "before_sha256": "6b5a3798c63ace1470ac6dcc3d429a573ed66bc65d5e1835a5e830a372776f0b",
+        "after_sha256": "b4580bc5d901f8c60b0df913d5e002d6901d0d0bf4df90cb44d6b25397c09f25"
+      },
+      {
+        "array": "geom_group",
+        "entries": 3,
+        "before_sha256": "e7be260ea402bead08810c7427c93ea0004cc938f5ecb3d44d6a34d1e3bc9a76",
+        "after_sha256": "daa488a7270edf454d9240037ff5970d355d16c6296c9b8a116713ea61c9091e"
+      },
+      {
+        "array": "geom_quat",
+        "entries": 612,
+        "before_sha256": "35d9ceb6cf3bf3e84ca7ef7ac07126ed8cb0dcb1079812d24727a769b41dd777",
+        "after_sha256": "6727b7efe0ab2ae39b28b89ad6b8d607e932bcfe54a18e9de85afe11cc40de5c"
+      },
+      {
+        "array": "geom_rbound",
+        "entries": 156,
+        "before_sha256": "c39c1b376fc756e5a3014ad5c581be44b20407a90646c8474b7333583c88f6f3",
+        "after_sha256": "c55b87e7e4aff030f5a771db1f7c81e38154ca5ee9a84fbce73c4b56b6920c25"
+      },
+      {
+        "array": "geom_sameframe",
+        "entries": 36,
+        "before_sha256": "dde8dce81d03e24a1435032037aedd891ae8d6e5d8a7563aa4459ac7a46f0504",
+        "after_sha256": "4b7501570f9c58152b8a155ed9bcbc181b1ebecd131a25d065bf986fab61ff52"
+      },
+      {
+        "array": "geom_size",
+        "entries": 468,
+        "before_sha256": "1d824f42d552a6f3439757a2c786d939b65dd18f8c106260a6bf961bac671906",
+        "after_sha256": "692acf042dd2d7be3125cbdc9e44296920f268a594d94dd9dfd4b749352b3e5a"
+      },
+      {
+        "array": "mesh_extrema",
+        "entries": 26,
+        "before_sha256": "c7356de6bccad32046ad4c4ca5923e7af67c66bc4f36fbca29496e23eead167d",
+        "after_sha256": "b87b9578a5aaa8f2c9f486cf09e68f37720f71f0229590b9a508392dad0194cf"
+      },
+      {
+        "array": "mesh_normal",
+        "entries": 10056,
+        "before_sha256": "1372b3c7560d04961a38cc0e27f91604fb2f8b95b1515c38121462699488d1af",
+        "after_sha256": "1185bd88161d9c2da76422e974e7c273a29564a57b6b45c4852a7fb8be6e8d23"
+      },
+      {
+        "array": "mesh_polynormal",
+        "entries": 9111,
+        "before_sha256": "dc7cc865463dc840301f0d6a49e15e7644230f910c1dc6962c1d67b2c00e16e1",
+        "after_sha256": "bcd310eeaa441c0fdcaecaf594d1156713c8ee071b6de150ce2f9510d41828a2"
+      },
+      {
+        "array": "mesh_quat",
+        "entries": 64,
+        "before_sha256": "5fa4b1ecb45d94c08a4eb5ddaefb41903588ce883ccd74ba201438fa91ae9710",
+        "after_sha256": "189788156b49a16bfbaa735e41b00ccafeeec1d1b45f78d9dc25183d69bff160"
+      },
+      {
+        "array": "mesh_vert",
+        "entries": 10279,
+        "before_sha256": "7e1cf1d091a752599029002d58f7493a46f1f3696e6e8d2279fca9d68195d0a7",
+        "after_sha256": "9053f0dc25a6d76d14a9fc147262e7b057a36eabb2e6391eb5437a070a0ba46f"
+      }
+    ],
+    "basis": "same XML and same physical geometry; C312 compiled mesh principal axes, vertices and caches transferred as a unit",
+    "new_physical_parameters": false
+  },
+  "model_extent_distance_ceiling_m": 11.112488003827721,
+  "closest": {
+    "all_external": {
+      "tick": 12,
+      "elapsed_SIM_s": 1.2000000000000002,
+      "gap_m": -0.0006092460108465285,
+      "robot_geom": "r1__v3_wheel_fl_roller_8_body_contact",
+      "external_geom": "floor",
+      "censored_at_model_extent": false
+    },
+    "non_floor_external": {
+      "tick": 734,
+      "elapsed_SIM_s": 73.4,
+      "gap_m": 0.15328011690216564,
+      "robot_geom": "r1__v3_wheel_fr_roller_1_body_contact",
+      "external_geom": "cargo_red_2_geom",
+      "censored_at_model_extent": false
+    }
+  },
+  "exhaustive_first_last_checks": [
+    {
+      "tick": 0,
+      "kind": "all_external",
+      "exact_match": true,
+      "pairs": 2962
+    },
+    {
+      "tick": 0,
+      "kind": "non_floor_external",
+      "exact_match": true,
+      "pairs": 2912
+    },
+    {
+      "tick": 734,
+      "kind": "all_external",
+      "exact_match": true,
+      "pairs": 2962
+    },
+    {
+      "tick": 734,
+      "kind": "non_floor_external",
+      "exact_match": true,
+      "pairs": 2912
+    }
+  ],
+  "API_reference": "https://mujoco.readthedocs.io/en/stable/APIreference/APIfunctions.html#mj-geomdistance",
+  "distance_limit": "API distances are capped by distmax; legacy CCD may be inaccurate; existing nativeccd flags untouched",
+  "model_enableflags": 16,
+  "model_disableflags": 0,
+  "floor_filter": "existing frozen3f99d58c floor/ground geom-name exclusions; not a new acceptance criterion",
+  "physics_steps": 0,
+  "rendered_frames": 0,
+  "policy_or_scores_changed": false,
+  "scope": "C3.16 distance queries on saved MJWarp poses and exact compiled-reference geometry; no contact-force, blockage-cause, C-physics robustness or policy-input claim",
+  "raw": [
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-C/validation/group-04/evaluation/owner/world-000/scene.xml",
+      "sha256": "99e2454e578184725c55607aab0250fc52de745a1ddec24d2a91a3fee673af97"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-C/validation/group-04/evaluation/owner/world-000/states.npz",
+      "sha256": "d7fda93664d42fad08be4324d85fa1ac1b12b3aef34ca4e67bd8a4dd1319b944"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-C/validation/group-04/evaluation/owner/world-000/plan.json",
+      "sha256": "15f0442454591e4483074741202034cef69d508ac78ac0305c620a943382238a"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-record-references-r1/per-world-references.json",
+      "sha256": "fc7a7e122f4a0ad2c47db5cebf81c77e08618c82116ef8cc4cd273ae56b1af13"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16w-native-record-references-r1/case-09/compiled-geometry312.npz",
+      "sha256": "cf4925c34abc862ed87947cb744f30e372597f164ffead1d960f7f0c26b76d89"
+    }
+  ],
+  "reproduce": [
+    "/home/ugrp/ugrp-sim/src/7381482975ae5fac440c7f3dcb22403133df972b/scripts/audit_act16w_saved_gaps.py",
+    "--enabled",
+    "--world-root",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-C/validation/group-04/evaluation/owner/world-000",
+    "--references",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-record-references-r1/per-world-references.json",
+    "--out",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/C-87429-gaps-full.json"
+  ],
+  "raw_full": {
+    "path": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/C-87429-gaps-full.json",
+    "sha256": "e8058eacc071545e6e65393df2896d25f1af54eb8b057abae4ac2aaabef30b44"
+  }
+}

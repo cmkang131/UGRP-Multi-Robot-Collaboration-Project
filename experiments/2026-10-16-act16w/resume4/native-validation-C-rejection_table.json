@@ -1,0 +1,135 @@
+{
+  "funnel": [
+    {
+      "gate": "requested",
+      "passed": 8,
+      "rejected": 0
+    },
+    {
+      "gate": "scored_runs",
+      "passed": 8,
+      "rejected": 0,
+      "unfinished": 0
+    },
+    {
+      "gate": "sequence_done",
+      "passed": 5,
+      "rejected": 3
+    },
+    {
+      "gate": "stable_lift",
+      "passed": 0,
+      "rejected": 5
+    },
+    {
+      "gate": "stable_release",
+      "passed": 0,
+      "rejected": 0
+    },
+    {
+      "gate": "task_success",
+      "passed": 0,
+      "rejected": 0
+    }
+  ],
+  "rejections": [
+    {
+      "seed": 87429,
+      "category": "student_task_failure",
+      "reason": "lift_not_stable",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-C/validation",
+      "blocking_object": "not_attributed_before_playback",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not measured; no geometric cause claim"
+    },
+    {
+      "seed": 87434,
+      "category": "student_task_failure",
+      "reason": "lift_not_stable",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-C/validation",
+      "blocking_object": "not_attributed_before_playback",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not measured; no geometric cause claim"
+    },
+    {
+      "seed": 87454,
+      "category": "cap_end",
+      "reason": "grasp_done_not_requested",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-C/validation",
+      "blocking_object": "not_attributed_before_playback",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not measured; no geometric cause claim"
+    },
+    {
+      "seed": 87439,
+      "category": "student_task_failure",
+      "reason": "lift_not_stable",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-C/validation",
+      "blocking_object": "not_attributed_before_playback",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not measured; no geometric cause claim"
+    },
+    {
+      "seed": 87459,
+      "category": "student_task_failure",
+      "reason": "lift_not_stable",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-C/validation",
+      "blocking_object": "not_attributed_before_playback",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not measured; no geometric cause claim"
+    },
+    {
+      "seed": 87424,
+      "category": "cap_end",
+      "reason": "grasp_done_not_requested",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-C/validation",
+      "blocking_object": "not_attributed_before_playback",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not measured; no geometric cause claim"
+    },
+    {
+      "seed": 87444,
+      "category": "cap_end",
+      "reason": "grasp_done_not_requested",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-C/validation",
+      "blocking_object": "not_attributed_before_playback",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not measured; no geometric cause claim"
+    },
+    {
+      "seed": 87449,
+      "category": "student_task_failure",
+      "reason": "lift_not_stable",
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-C/validation",
+      "blocking_object": "not_attributed_before_playback",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not measured; no geometric cause claim"
+    }
+  ],
+  "unfinished_seeds": [],
+  "raw": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-C/validation",
+  "reproduce": [
+    "/home/ugrp/ugrp-sim/src/c27a9d537eaae873c7e7bc2ceaeeada69696cc48/scripts/act16w_eval_batch.py",
+    "--enabled",
+    "--checkpoint",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-training-r1/C/main/step-010000/actor",
+    "--references-root",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-record-references-r1",
+    "--groups",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-record-r1/exact-groups/model-groups.json",
+    "--protocol",
+    "/home/ugrp/ugrp-sim/src/c27a9d537eaae873c7e7bc2ceaeeada69696cc48/experiments/2026-10-16-act16w/resume3/protocol.json",
+    "--capacity-receipt",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-capacity.json",
+    "--out",
+    "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/validation-C/validation",
+    "--split",
+    "validation",
+    "--name",
+    "native-C-validation-C",
+    "--max-worlds",
+    "8",
+    "--speed-gate-override",
+    "Native MJWarp ACT study; record world latency separately from aggregate throughput; fixed90SIM task, no wall cap."
+  ]
+}

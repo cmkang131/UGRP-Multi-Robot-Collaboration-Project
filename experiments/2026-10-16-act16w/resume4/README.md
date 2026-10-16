@@ -50,7 +50,7 @@ A/B는 각각 고정10000스텝과 저장/재로딩 예측 일치 검사를 완�
 [거부 표A](native-validation-A-rejection_table-enriched.json),
 [거부 표B](native-validation-B-rejection_table-enriched.json)를 보존한다.
 A/B87429 실패의 전체2Hz·끝10초10Hz를 직접 검토했다. 학생 성공0이라 교사 성공 참고와 구분한다.
-C는 동일D0에서 TRAIN 커리큘럼만 켜 고정10000스텝 학습과 저장/재로딩 예측 일치를 완료했고 VAL8을 진행 중이다.
+C는 동일D0에서 TRAIN 커리큘럼만 켜 고정10000스텝 학습과 저장/재로딩 예측 일치를 완료했고 VAL8도0/8로 끝났다.
 실제 표집 대상 행이1367→7219로 넓어지는 로그와 D0 동일 해시를 확인했다
 ([진행 중 근거](native-C-curriculum-live-receipt.json)).
 [후속 실행기](native-experiment-launch.json)는 기존 A/B를 재제출하지 않고,
@@ -107,3 +107,10 @@ B는 이128열을 정규화 좌표의0(=TRAIN 평균)으로 바꾸고, 서보PWM
 
 C87429의 첫30SIM초 원본61장(2Hz)을 직접 보았다. 약5초에 대상이 오른쪽으로 나간 뒤30초까지 다시 보이지 않았다.
 [부분 검토](native-C-first30-review.json)는 전체 검증·말기10Hz 검토와 구분하며 성공 판정으로 사용하지 않는다.
+
+C의 원본 재계수는0/8(색별각0/2), 양손 하중·안정 들기·내려놓기0, done5·cap_end3·HOST_ERROR0이다.
+기하 정렬 미통과8/8이며 [h4 비교](native-h4-comparison.json)에서 A0/8 대비 관찰된 성공률 차이는0이다.
+이는8회 범위이고 일반적인 효과 없음의 증명은 아니다. C87429의 전체0–73초2Hz·끝63.5–73.4초10Hz를 직접 보았고
+[검토](native-C-87429-playback-review.json)와 [증거 확인](native-review-C.json)을 연결했다.
+학생 성공 예는 없으며 교사 성공 참고와 구분한다. 기존 실행기가 사전 고정 TRAIN20의30SIM DAgger 접두 궤적을 수집 중이다.
+교사 명령 실행은0이며, 실제 유효 라벨·학생 행동 이후 상태 범위는 수집 종료 뒤 별도 감사한다. 최종40은 미개봉이다.
