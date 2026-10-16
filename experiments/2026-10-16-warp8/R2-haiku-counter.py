@@ -61,26 +61,26 @@ if cmd_file:
 for i in range(40):
     world = f'world-{i:03d}'
     world_path = os.path.join(ROOT, world)
-    
+
     try:
         raw = load_json(os.path.join(world_path, 'raw', 'result.json'))
         if raw is None:
             errors.append({'world': world, 'error': 'result.json not found'})
             continue
-        
+
         assert isinstance(raw.get('input_audit'), dict) and all(k in raw['input_audit'] for k in ('held_world_reads','invisible_measurements')), 'audit fields missing'
         status = raw.get('status')
         if status is None:
             errors.append({'world': world, 'error': 'status key missing'})
             continue
-        
+
         if status not in status_histogram:
             status_histogram[status] = 0
         status_histogram[status] += 1
-        
+
         if 'source_sha' in raw:
             source_shas.add(raw['source_sha'])
-        
+
         if status != 'complete':
             ia = raw.get('input_audit')
             if ia:
@@ -91,9 +91,9 @@ for i in range(40):
                     audit_by_scope[scope] += 1
                     audit_zero_count += 1
             continue
-        
+
         completed_N += 1
-        
+
         ia = raw.get('input_audit')
         if ia:
             if ia.get('held_world_reads') == 0 and ia.get('invisible_measurements') == 0:
@@ -101,7 +101,7 @@ for i in range(40):
                     audit_by_scope['whole-run'] = 0
                 audit_by_scope['whole-run'] += 1
                 audit_zero_count += 1
-        
+
         rows = load_jsonl(os.path.join(world_path, 'raw', 'eval-only.jsonl'))
         if rows is None or len(rows) == 0:
             errors.append({'world': world, 'error': 'eval-only.jsonl empty or not found'})
@@ -113,53 +113,53 @@ for i in range(40):
             if raw.get('physical_success'):
                 original_success_count += 1
             continue
-        
+
         first_good = None
         last_t = None
         components_min = {'r1_0': float('inf'), 'r1_1': float('inf'), 'r2_0': float('inf'), 'r2_1': float('inf'), 'min_z': float('inf')}
         tilt_max = float('-inf')
         densegrid_ok = True
-        
+
         for idx, row in enumerate(rows):
             t = row.get('t', 0.0)
             last_t = t
             contacts = row.get('contacts', {})
             beam = row.get('beam', {})
-            
+
             r1 = contacts.get('r1', [0, 0])
             r2 = contacts.get('r2', [0, 0])
             min_z = beam.get('min_z', 0.0)
             tilt = beam.get('tilt_deg', 0.0)
-            
+
             components_min['r1_0'] = min(components_min['r1_0'], r1[0])
             components_min['r1_1'] = min(components_min['r1_1'], r1[1])
             components_min['r2_0'] = min(components_min['r2_0'], r2[0])
             components_min['r2_1'] = min(components_min['r2_1'], r2[1])
             components_min['min_z'] = min(components_min['min_z'], min_z)
             tilt_max = max(tilt_max, tilt)
-            
+
             if idx > 0:
                 prev_t = rows[idx - 1].get('t', 0.0)
                 if abs((t - prev_t) - 0.1) >= 1e-8:
                     densegrid_ok = False
-            
-            is_good = (r1[0] >= 0.5 and r1[1] >= 0.5 and r2[0] >= 0.5 and r2[1] >= 0.5 
+
+            is_good = (r1[0] >= 0.5 and r1[1] >= 0.5 and r2[0] >= 0.5 and r2[1] >= 0.5
                       and min_z >= 0.012 and tilt <= 10.0)
-            
+
             if is_good:
                 if first_good is None:
                     first_good = t
             else:
                 first_good = None
-        
+
         terminal_hold = 0.0
         if first_good is not None and last_t is not None:
             terminal_hold = last_t - first_good
-        
+
         teacher_N = raw.get('teacher_N')
         teachers_ok = False
         teacher_outcomes = {}
-        
+
         if teacher_N == 2 and 'teachers' in raw:
             teachers = raw.get('teachers', {})
             r1_outcome = teachers.get('r1', {}).get('outcome')
@@ -171,20 +171,20 @@ for i in range(40):
             teacher_outcomes = {'error': f'teacher_N={teacher_N}, expected 2'}
         else:
             teacher_outcomes = {'error': 'teachers key missing'}
-        
+
         recomputed_success = (terminal_hold >= 3.0) and teachers_ok and densegrid_ok
         original_success = raw.get('physical_success', False)
-        
+
         if original_success:
             original_success_count += 1
         if recomputed_success:
             successes_recounted += 1
-        
+
         if original_success == recomputed_success:
             physical_agree.append(world)
         else:
             physical_disagree.append(world)
-        
+
         per_completed[world] = {
             'evaluatorN': len(rows),
             'lastgoodstart': first_good if first_good is not None else None,
@@ -196,7 +196,7 @@ for i in range(40):
             'recomputed_success': recomputed_success,
             'original_physical_success': original_success
         }
-        
+
     except Exception as e:
         errors.append({'world': world, 'error': str(e)})
 
