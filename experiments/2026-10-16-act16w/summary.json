@@ -1,36 +1,31 @@
 {
   "schema": "ugrp.act16w.summary.v1",
-  "status": "WAIT_WARP3_GATE_AND_RECORD_API",
+  "status": "BLOCKED_PREREQUISITE_WAIT_EXPIRED",
   "complete": false,
   "authorization": "2026-10-16 user: autonomous MJWarp ACT16 record/train/evaluate after warp1 and scene signals",
   "source_base": "06870b6d1ad9233c6e5d63eee2c8c7b81efc66f5",
   "act_library_source": "3f99d58c5ada0862e669ef4065c0ba957f1b4547",
   "prerequisites": {
+    "upstream_job": "warp3",
     "poll_s": 300,
     "max_wait_s": 36000,
-    "state": "outputs/act16w-wait/wait-state.json",
-    "warp1": "2026-10-15T18:51:49.347269+00:00 warp1: GPU_SHARED_TIMING | L4 warp2 PID9247 발견, warp1 N1은 paused·N16 prefix 측정 진행 | 공유부하 처리량으로 분리, 타 작업 정지/VM 정지 없음 | 독점 여부 사용자 선택 대기",
-    "scene_decision": "experiments/2026-10-16-act16w/scene-decision.json",
-    "latest_check": "2026-10-16T00:11:57.586773+00:00",
-    "checks": 74,
-    "queue_status": "predecessor_NOT_READY; awaiting warp3 gate and RECORD_API_READY",
-    "queue_receipt": "experiments/2026-10-16-act16w/warp1-queue-receipt.json",
-    "warp1_queue_blockers": [
-      "scene profile not approved",
-      "scalar frozen teacher/IK/raycast loop remains; full NumPy teacher migration unfinished",
-      "training recording and ACT student evaluation adapters unfinished",
-      "heterogeneous source seeds differ in unbatchable model fields; use exact model cohorts or implement supported layout",
-      "full N1/N16 qualitative and intrinsic throughput must be qualified before any gate submission"
-    ],
-    "queue_backend_readiness": "NOT_READY",
-    "queue_rejection_table_exists": true,
-    "queue_last_verified_at": "2026-10-15T21:44:50.399525+00:00",
-    "blocker_interpretation": "Published queue still says scene unapproved, but coordinator scene decision is received; queue has not integrated that profile. Other backend blockers remain.",
-    "upstream_job": "warp3",
-    "upstream_handoff": "upstream-handoff.json",
+    "checks": 123,
     "deadline_utc": "2026-10-16T04:14:16.449463+00:00",
-    "latest_upstream_signal": "warp3: TEACHER_GATE RUNNING | 2026-10-16T00:05Z completed0/40; group0 stable physical lift7/7 is partial only, not release/full success | L4 beamact2 foreign lease+GPU PID14151 found/preserved; no stop/pause | free disk14.5GiB, own raw150MiB | gate timings shared+paused, excluded from warm benchmark | controller frozen f0db6b1a",
-    "upstream_gate_receipt": "warp3-gate-receipt.json"
+    "last_check": "2026-10-16T04:15:54.225115+00:00",
+    "actual_last_check_elapsed_s": 36097.79513788223,
+    "state": "WAIT_EXPIRED",
+    "scene_decision_received": true,
+    "distinct_starts_received": true,
+    "upstream_teacher_reported_success": 29,
+    "upstream_teacher_planned_N": 40,
+    "upstream_completed_raw_N": 29,
+    "upstream_remaining_running": 11,
+    "upstream_full_gate_passed": false,
+    "record_api_ready": false,
+    "latest_upstream_signal": "warp3: TEACHER_GATE 29/40 RUNNING | 2026-10-16T04:00Z remaining11 all active; closed raw29/29 with5952 hash checks; foreign L4 lease now beamact3-A only; disk24.5GiB/idle timer active; CI e97464a3 33/33 PASS; API/warm still not admitted.",
+    "receipt": "wait-final-receipt.json",
+    "upstream_handoff": "upstream-handoff.json",
+    "predecessor_warp1_receipt": "warp1-queue-receipt.json"
   },
   "teacher_gate": {
     "attempted": 0,
@@ -40,20 +35,27 @@
   },
   "data": {
     "recorded_episodes": 0,
-    "admitted": false
+    "admitted": false,
+    "status": "not_recorded"
   },
   "training": {
     "optimizer_steps": 0,
     "gpu_wall_s": 0,
-    "gpu_budget_s": 28800
+    "gpu_budget_s": 28800,
+    "status": "not_started",
+    "curves": "training-curves.json",
+    "A_vs_B": "not_measured",
+    "curriculum_effect": "not_measured",
+    "dagger_effect": "not_measured"
   },
   "evaluation": {
     "attempted": 0,
     "success": 0,
-    "research_result": false
+    "research_result": false,
+    "status": "not_started"
   },
   "release": {
-    "status": "not_started",
+    "status": "not_created_no_checkpoint",
     "assets": []
   },
   "checks": {
@@ -64,21 +66,20 @@
   },
   "rejection_table": "experiments/2026-10-16-act16w/rejection_table.json",
   "remaining": [
-    "warp1 readiness and actual gate queue",
-    "MJWarp teacher gate",
-    "data and DAgger labels",
-    "fixed A/B training and curriculum/DAgger comparisons",
-    "new40 evaluation and playback",
-    "Release hash/loading verification",
-    "PR final results"
+    "warp3 exact-scene teacher full>=95%>=40 and RECORD_API_READY",
+    "merge and freeze qualified backend/recording/actor adapters",
+    "same-camera fresh data and h5 relabel integration",
+    "matched A/B then curriculum and DAgger training within8h budget",
+    "new40 evaluation, funnels and gcp2 playback",
+    "Release upload, full download/hash/loading checks"
   ],
   "publication": {
-    "commit": "66d08edae",
     "push_verified": true,
     "pr": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/539",
     "pr_blocker": null,
     "base_branch_published": true,
-    "draft": true
+    "draft": true,
+    "receipt_source_commit": "2139522b44b67751e4e05126ade95a1399b6a805"
   },
   "scene": {
     "scope": "coordinator ACT scene selection; no runtime verified by act16w",
@@ -104,5 +105,17 @@
     "oracle_query_after_potential_student_close": "blocked without calling oracle",
     "rollouts": 0
   },
-  "backend_source_merged": "90a25999c16faca91667bd54cdd12270f44b8632"
+  "backend_source_merged": "90a25999c16faca91667bd54cdd12270f44b8632",
+  "cost": {
+    "own_L4_hours": 0,
+    "additional_VM_compute_USD": 0,
+    "scope": "no VM start/create/lease/compute submitted by act16w; project-wide costs not assessed"
+  },
+  "ended_at": "2026-10-16T04:53:58.572085+00:00",
+  "resource_cleanup": {
+    "watcher": "exited0",
+    "cloud_leases_created": 0,
+    "cloud_processes_started": 0,
+    "vm_stop_attempts": 0
+  }
 }

@@ -1,0 +1,63 @@
+{
+  "status": "WAIT_EXPIRED",
+  "closed_at": "2026-10-16T04:53:58.572085+00:00",
+  "started_epoch": 1792088056.4494631,
+  "requested_max_wait_s": 36000,
+  "actual_last_check_elapsed_s": 36097.79513788223,
+  "deadline_overrun_observed_s": 97.79513788223267,
+  "overrun_cause": "not established; no cloud execution during wait",
+  "checks": 123,
+  "poll_interval_requested_s": 300,
+  "last_check": {
+    "checked_at": "2026-10-16T04:15:54.225115+00:00",
+    "ops_alert_sha256": "8de8e22a1c24c83069a9de330f14f98287e3f348cb25ccd301bb780947a6c8d9",
+    "watcher_source_sha256": "1e51666c981a22e93d6a9ef4257e2b10bd6056a2eeab5e587fdb7441280228e5",
+    "warp1": null,
+    "upstream_job": "warp3",
+    "upstream_signal": "warp3: TEACHER_GATE 29/40 RUNNING | 2026-10-16T04:00Z remaining11 all active; closed raw29/29 with5952 hash checks; foreign L4 lease now beamact3-A only; disk24.5GiB/idle timer active; CI e97464a3 33/33 PASS; API/warm still not admitted.",
+    "scene_decision": "2026-10-16 03:45:27 KST SCENE_DECISION: 장면 walls_floor_contrast_v5_indigo110_s80(벽 남보라·채도80) + v1 바닥 질감 + 렌더 화질 no_mip_v1, 소스 PR #527 a68106fd(렌더)/63f14fda(경계 facade)/기록 7be46a16 | 근거 scenetex5: 기존 색 검출 PNG/JPEG90/PIL82 88/88/88·바닥 ORB 중앙 14.5→23·매칭 10→17·경계 오차 v1 이하·벽/바닥 IoU 중앙 .90–.99 | 남은 것은 장면이 아니라 경계 알고리즘(scene_colour_transition_v1: 주황 구역 마스크가 직선 시드를 지움, 색 지지 부족, LK S>100 제외) → reloc16에서 고침 | 이 장면은 새 장면 버전이며 v1·v2·v3 결과와 합산 금지 | 조정자 결정(사용자 '알아서 계속' 위임, 5라운드 끝)",
+    "distinct_starts": "warp3: DISTINCT_STARTS PASS | source e200c1e5 | N16 start manifests16/qpos16/firstRGB16, expected=actual16/16; RGB120pairs min213766 different pixels, mean absolute channel delta>=2.9452 | montage+hash verified; independent teacher gate n=0 | experiments/2026-10-16-warp3/distinct-proof.json",
+    "teacher_gate": "warp3: TEACHER_GATE 29/40 RUNNING | 2026-10-16T04:00Z remaining11 all active; closed raw29/29 with5952 hash checks; foreign L4 lease now beamact3-A only; disk24.5GiB/idle timer active; CI e97464a3 33/33 PASS; API/warm still not admitted.",
+    "record_api": null,
+    "record_api_pass": false,
+    "teacher_success_n": 29,
+    "teacher_attempts_N": 40,
+    "warp_not_ready": false,
+    "signals_present": true,
+    "ready_for_queue_inspection": false,
+    "status": "WAIT_SIGNALS"
+  },
+  "watch_files": {
+    "wait-state.json": "4355786718dbd31b37ed976fcfbd26931f0881e69b621b056268536445c85744",
+    "prerequisite-checks.jsonl": "0cb0291ca3f7439380d0a4bd14fe3da555333d2af8b372a90831c6f081f1f182"
+  },
+  "watcher_source_versions": [
+    "1754250fd94b3c7710d4d13c3edfc4a2c3db3a96d098f5909ff434789d47479a",
+    "17a6ee2012978cda57d11e2be39347107917606415fc0ce50c55f753a20429f2",
+    "1e51666c981a22e93d6a9ef4257e2b10bd6056a2eeab5e587fdb7441280228e5",
+    "6037cc46b6acaa4d7d4c4ec20a564717ec76c2060ce2c3afabab4f36b9ddfb9f",
+    "6c4b96a7c4e2fa2702b781f395a74ad93d5dee8544a2c169275859b290cf5730"
+  ],
+  "early_rows_without_watcher_source_hash": 21,
+  "early_source_scope": "first21 checks predate per-check watcher hash; original timestamps/ops hashes retained unchanged",
+  "upstream_local_receipts": {
+    "/Users/changmin/projects/ugrp-wt/warp-act/experiments/2026-10-16-warp3/scene-source.json": "c06b8a5a862e2d88c708967a634241495aafc386c2ac73f6032eb4cce3640621",
+    "/Users/changmin/projects/ugrp-wt/warp-act/experiments/2026-10-16-warp3/recount-closed-0-3-compression.json": "66cf493c3e401d5e22a458ae65b01b4c8b98e2c7f50e15499fcc9b53a11c7021",
+    "/Users/changmin/projects/ugrp-wt/warp-act/experiments/2026-10-16-warp3/recount-closed-0-2-3-compression.json": "db782205a0849d7c1a5983fc5a78e27d8d311cc9482ca676da15354c648f757e",
+    "/Users/changmin/projects/ugrp-wt/warp-act/experiments/2026-10-16-warp3/teacher-gate-raw-recount-r1.json.zst": "d7df5a7dbdff800e53b6bbc8bb14b12c1d136d46c2deca88369b17b6bf78fd1d",
+    "/Users/changmin/projects/ugrp-wt/warp-act/experiments/2026-10-16-warp3/api-contract.md": "ce6edbdeb5685afd9a53225dabb6334d6fe14a1e21dfca61fd537525e5e8da61",
+    "/Users/changmin/projects/ugrp-wt/warp-act/experiments/2026-10-16-warp3/teacher-gate-raw-recount-r1-compression.json": "fe5f9eb62d323c933b92f7e5fb5039c0eeb530c06c27d4c8e4ff722342e24e72",
+    "/Users/changmin/projects/ugrp-wt/warp-act/experiments/2026-10-16-warp3/recount-closed-0-2-3.json.zst": "2652cec32162a3863ae761b33f521446c063cbe0857a3232becdb265e0949ce1",
+    "/Users/changmin/projects/ugrp-wt/warp-act/experiments/2026-10-16-warp3/recount-closed-0-3.json.zst": "aad77778b9e398db171babcf3c981445ddeeedafd35e7baf98ebfbe17e9797a8",
+    "/Users/changmin/projects/ugrp-wt/warp-act/experiments/2026-10-16-warp3/recount_gate.py": "908eb162c4f2039fd108251297af9b03a410d8a716ccdce1028faf78537d6338",
+    "/Users/changmin/projects/ugrp-wt/warp-act/experiments/2026-10-16-warp3/partial-finished-recount-0110.json": "79efaba458b6274cb481081422344a613a39dd04ea5a5b1af6e4522345b15d15",
+    "/Users/changmin/projects/ugrp-wt/warp-act/experiments/2026-10-16-warp3/teacher-gate-queue-r1.json": "00765a0ee9b2329cb39fa9a78230965e0ae395b4c5978098cc3a1f0678988b97",
+    "/Users/changmin/projects/ugrp-wt/warp-act/experiments/2026-10-16-warp3/operations.json": "c18267ab6e04a931ec85afa68dfb245ce5a06628d36e333ee8c38ff0076a6e81",
+    "/Users/changmin/projects/ugrp-wt/warp-act/experiments/2026-10-16-warp3/group0-raw-recount.json": "8b0faffacf76ef4c8554b9fccdf39765dcf26ced8759d01bf748d647d0e5c571"
+  },
+  "scope": "upstream reports and local source reviewed; act16w ran no remote physics/training/render",
+  "own_cloud_processes_started": 0,
+  "own_cloud_leases_created": 0,
+  "vm_stop_attempts": 0,
+  "foreign_tasks": "preserved; no remote cleanup/stop attempted"
+}

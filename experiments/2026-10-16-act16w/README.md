@@ -1,6 +1,8 @@
 # ACT16w — MJWarp 재기록·학습
 
-상태: 시작 조건 대기. 교사 관문·학습 데이터·학습·학생 평가·Release는 아직 실행하지 않았다.
+상태: **BLOCKED_PREREQUISITE_WAIT_EXPIRED**. 시작 조건의10시간 대기가 끝났다.
+warp3 마지막 보고는29성공 완료/40계획·11진행, RECORD_API_READY 미수신이다.
+act16w 교사 실행·학습 데이터·학습·학생 평가·Release는 모두 미실행이다.
 작업 브랜치 `claude/act16w`, 초기 backend `06870b6d1ad9233c6e5d63eee2c8c7b81efc66f5`.
 Refs #523. 결과는 gcp2/MJWarp 코호트로 구분한다.
 
@@ -137,3 +139,21 @@ DAgger는 같은10000스텝의 새 초기화와 D0 TRAIN 정규화 통계를 써
 API 계약은 설계 기록이며 RECORD_API_READY가 아니다. RUNNING 0/40은 최종
 실패율이 아니다. watcher는 실제 RUNNING/PASS 표기를 읽고 RUNNING인 동안
 기록을 허용하지 않는다.
+
+## 대기 종료
+
+첫 시작03:14:16 KST, 요청한 종료13:14:16 KST. 마지막 확인13:15:54 KST,
+123회 확인 후 watcher exit0. 마지막 확인은 요청 상한보다97.8초 늦었으며 원인은
+확인하지 않았다. [최종 대기 증거](wait-final-receipt.json)에 실제 시각을 보존했다.
+조건을 갖추지 못해 기록·학습은 시작하지 않았다. GPU0시간·추가 VM 계산비용$0,
+자기 원격 프로세스/임대/VM 정지 시도0이다. 타 작업을 건드리지 않았다.
+
+준비 코드: 이력 A/B의 훈련·추론 동일 마스크, TRAIN 커리큘럼, pre-hover DAgger
+h0 라벨 검사, 유한 L4 학습기. 비물리25통과·torch1skip, syntax/CLI help 통과.
+실제 CUDA·데이터 기록/교사 재라벨 연결·학생 rollout은 검증하지 않았다. h1/h2/h3의
+손실 결합도 미구현이다. [학습 곡선](training-curves.json)은 미측정 상태다.
+[관문표](rejection_table.json)는 준비 조건의 탈락 표다. 학생 성공0/40이나
+A/B·DAgger 효과를 측정한 결과로 해석하지 않는다.
+
+Gemma4-31B@DeepInfra 가격+50% 감시 경보를 사용자에게 알렸다. 새 LLM 배치0이며
+[수신 기록](endpoint-alert-receipt.json)은 독립적인 새 가격 측정이 아니다.

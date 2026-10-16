@@ -1,0 +1,29 @@
+{
+  "started_epoch": 1792088056.4494631,
+  "max_wait_s": 36000,
+  "poll_s": 300,
+  "ops_alert": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/ops-alert.md",
+  "checks": 123,
+  "status": "WAIT_EXPIRED",
+  "latest": {
+    "checked_at": "2026-10-16T04:15:54.225115+00:00",
+    "ops_alert_sha256": "8de8e22a1c24c83069a9de330f14f98287e3f348cb25ccd301bb780947a6c8d9",
+    "watcher_source_sha256": "1e51666c981a22e93d6a9ef4257e2b10bd6056a2eeab5e587fdb7441280228e5",
+    "warp1": null,
+    "upstream_job": "warp3",
+    "upstream_signal": "warp3: TEACHER_GATE 29/40 RUNNING | 2026-10-16T04:00Z remaining11 all active; closed raw29/29 with5952 hash checks; foreign L4 lease now beamact3-A only; disk24.5GiB/idle timer active; CI e97464a3 33/33 PASS; API/warm still not admitted.",
+    "scene_decision": "2026-10-16 03:45:27 KST SCENE_DECISION: 장면 walls_floor_contrast_v5_indigo110_s80(벽 남보라·채도80) + v1 바닥 질감 + 렌더 화질 no_mip_v1, 소스 PR #527 a68106fd(렌더)/63f14fda(경계 facade)/기록 7be46a16 | 근거 scenetex5: 기존 색 검출 PNG/JPEG90/PIL82 88/88/88·바닥 ORB 중앙 14.5→23·매칭 10→17·경계 오차 v1 이하·벽/바닥 IoU 중앙 .90–.99 | 남은 것은 장면이 아니라 경계 알고리즘(scene_colour_transition_v1: 주황 구역 마스크가 직선 시드를 지움, 색 지지 부족, LK S>100 제외) → reloc16에서 고침 | 이 장면은 새 장면 버전이며 v1·v2·v3 결과와 합산 금지 | 조정자 결정(사용자 '알아서 계속' 위임, 5라운드 끝)",
+    "distinct_starts": "warp3: DISTINCT_STARTS PASS | source e200c1e5 | N16 start manifests16/qpos16/firstRGB16, expected=actual16/16; RGB120pairs min213766 different pixels, mean absolute channel delta>=2.9452 | montage+hash verified; independent teacher gate n=0 | experiments/2026-10-16-warp3/distinct-proof.json",
+    "teacher_gate": "warp3: TEACHER_GATE 29/40 RUNNING | 2026-10-16T04:00Z remaining11 all active; closed raw29/29 with5952 hash checks; foreign L4 lease now beamact3-A only; disk24.5GiB/idle timer active; CI e97464a3 33/33 PASS; API/warm still not admitted.",
+    "record_api": null,
+    "record_api_pass": false,
+    "teacher_success_n": 29,
+    "teacher_attempts_N": 40,
+    "warp_not_ready": false,
+    "signals_present": true,
+    "ready_for_queue_inspection": false,
+    "status": "WAIT_SIGNALS"
+  },
+  "elapsed_s": 36097.79513788223,
+  "upstream_job": "warp3"
+}
