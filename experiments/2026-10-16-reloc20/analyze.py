@@ -75,6 +75,23 @@ def main(n,media=False):
     w=x['command']['wheels'];dur=x['command']['duration_s'];lat=-w[0]*dur[0]+w[1]*dur[1]+w[2]*dur[2]-w[3]*dur[3]
     if abs(lat)>1e-10:lateral.append(dict(t=x['t'],lateral_wheel_impulse=lat))
    r['lateral_pulse_ticks']=len(lateral);r['lateral_pulse_examples']=lateral[:6]
+   drive_path=raw/'drive-eval-only.jsonl'
+   if drive_path.exists() or Path(str(drive_path)+'.zst').exists():
+    wheel=rows(drive_path);wb={round(x['t'],5):x for x in wheel};measurements=[];contact_names=collections.Counter()
+    for (x,e),(nx,ne) in zip(pairs,pairs[1:]):
+     wa,ww=wb.get(round(x['t'],5)),wb.get(round(nx['t'],5))
+     if wa is None or ww is None:continue
+     a,b,cw,dw=np.array(ww['wheel_qpos_rad'])-np.array(wa['wheel_qpos_rad'])
+     wd=.0325*np.array([a+b+cw+dw,-a+b+cw-dw,(-a+b-cw+dw)/.12435])/4
+     yaw=e['base_yaw_rad'];rot=np.array([[math.cos(yaw),math.sin(yaw)],[-math.sin(yaw),math.cos(yaw)]])
+     xy=rot@(np.array(ne['base_xyz'][:2])-np.array(e['base_xyz'][:2]));da=(ne['base_yaw_rad']-yaw+np.pi)%(2*np.pi)-np.pi
+     measurements.append(dict(t=x['t'],phase=x.get('phase_before',x['phase']),wheel_xy_m=float(np.linalg.norm(wd[:2])),body_xy_m=float(np.linalg.norm(xy)),wheel_body_residual_m=float(np.linalg.norm(wd[:2]-xy)),wheel_yaw_deg=float(np.degrees(wd[2])),body_yaw_deg=float(np.degrees(da))))
+     for contact in wa['contacts']:
+      for name in contact['geoms']:
+       if name and not name.startswith('r1__'):contact_names[name]+=1
+    r['drivetrain_evaluation']=dict(samples=len(measurements),wheel_body_xy_residual_m=summary.dist([x['wheel_body_residual_m'] for x in measurements]),contact_names=dict(contact_names),scope='wheel angle kinematics versus body increments, evaluation only; residual includes roller kinematic/model effects and is not contact-point slip or hardware validation')
+   else:r['drivetrain_evaluation']=dict(available=False,reason='not recorded in this source')
+
   tables.append(dict(run=t['name'],raw=t['raw'],termination=normalized,cumulative=r.get('gate_cumulative',r.get('registration_frame_funnel')),frame_funnel=r.get('acquisition_frame_funnel'),rejections=r.get('acquisition_frame_rejections'),motion=r.get('reloc20_motion'),route_frame_rejections=r.get('route_frame_rejections'),visual_stall_frame_reasons=r.get('visual_stall_frame_reasons'),geometry_risk_intervals=r.get('geometry_risk_intervals'),terminal=r.get('terminal_rejections')))
   mf=raw/'failure-rgb/manifest.json'
   if mf.exists() or Path(str(mf)+'.zst').exists():
