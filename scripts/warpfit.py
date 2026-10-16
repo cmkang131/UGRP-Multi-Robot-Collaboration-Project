@@ -36,6 +36,21 @@ def host():
         raise ValueError('own warpfit lease required')
 
 
+def recording_ticks(meta,case,ticks,dt):
+    """10Hz plus every pulse/stop boundary, with no extra physics work."""
+    values=set(range(0,ticks+1,round(.1/dt)))
+    if meta.get('kind')=='drive':
+        names=meta.get('groups',{}).get(case,[case])
+        for row in meta['cases']:
+            if row['id'] in names:
+                for t in (row['settle_s'],row['settle_s']+row['duration_s'],
+                          row['settle_s']+row['duration_s']+row['tail_s']):
+                    tick=round(t/dt)
+                    if 0<=tick<=ticks:values.add(tick)
+    values.add(ticks)
+    return sorted(values)
+
+
 def load(a):
     import mujoco
     import numpy as np
@@ -55,6 +70,15 @@ def load(a):
     for k in ('tree_sleep_policy', 'cam_pos', 'cam_quat', 'cam_resolution', 'cam_sensorsize', 'cam_intrinsic'):
         if k in f:
             getattr(m, k)[:] = f[k]
+    if a.engine=='warp':
+        # Same runtime predicate aliases as the existing backend, not INIT:
+        # C3.16 engine_sleep.c125 NEVER/AUTO_NEVER both return false; explicit
+        # ALLOWED and AUTO_ALLOWED share the remaining path (warp5 core158).
+        e=mujoco.mjtSleepPolicy
+        valid=[int(getattr(e,'mjSLEEP_'+n)) for n in ('AUTO','AUTO_NEVER','AUTO_ALLOWED','NEVER','ALLOWED')]
+        if not np.isin(m.tree_sleep_policy,valid).all():raise ValueError('unsupported INIT sleep policy')
+        m.tree_sleep_policy[:]=np.where(m.tree_sleep_policy==int(e.mjSLEEP_NEVER),int(e.mjSLEEP_AUTO_NEVER),
+            np.where(m.tree_sleep_policy==int(e.mjSLEEP_ALLOWED),int(e.mjSLEEP_AUTO_ALLOWED),m.tree_sleep_policy))
     if np.any(m.eq_active0):
         raise ValueError('active equality assistance forbidden')
     d = mujoco.MjData(m)
@@ -98,6 +122,7 @@ def run(a):
     ticks = len(tape) if a.max_sim_s is None else min(len(tape), round(a.max_sim_s/dt))
     if ticks % stride:
         raise ValueError('fixed work must end on the recorded 10Hz boundary')
+    events=recording_ticks(meta,a.case,ticks,dt)
     samples=[]; all_contacts=[]; setup=time.perf_counter()
     max_nc=int(d.ncon); max_nf=int(d.nefc)
     target_ids={m.geom(n).id for n in meta.get('target_geoms',[])}
@@ -154,7 +179,7 @@ def run(a):
         report.update(status='running',setup_jit_s=time.perf_counter()-setup)
         dump(a.output/'result.json',report)
         start=time.perf_counter()
-        for begin in range(0,ticks+1,stride):
+        for event_index,begin in enumerate(events):
             if a.engine == 'warp':
                 wp.synchronize()
                 if np.any(wd.overflow.numpy()):
@@ -186,17 +211,19 @@ def run(a):
             sel=np.flatnonzero(ids==0)
             all_contacts.extend([[begin*dt,int(gs[j,0]),int(gs[j,1]),float(dist[j]),float(normal[j])] for j in sel])
             if begin == ticks:break
+            block=events[event_index+1]-begin
             ps=time.perf_counter()
             if a.engine == 'warp':
                 wp.record_event(first)
-                for _ in range(stride//graph_steps):wp.capture_launch(capture.graph)
+                if block%graph_steps:raise ValueError('record boundary must preserve exact graph ticks')
+                for _ in range(block//graph_steps):wp.capture_launch(capture.graph)
                 wp.record_event(last);wp.synchronize()
                 report['physical_gpu_s']+=wp.get_event_elapsed_time(first,last)/1000.
             else:
-                for j in range(begin,begin+stride):
+                for j in range(begin,begin+block):
                     d.ctrl[:]=tape[j];mujoco.mj_step(m,d)
             report['physics_wall_s']+=time.perf_counter()-ps
-            report.update(sim_s=(begin+stride)*dt,steps=begin+stride,
+            report.update(sim_s=(begin+block)*dt,steps=begin+block,
                           runtime_wall_s=time.perf_counter()-start,max_ncon=max_nc,max_nefc=max_nf)
             if begin % (10*stride)==0:
                 dump(a.output/'result.json',report)

@@ -30,3 +30,14 @@ def test_fail_closed_and_distinct_records():
     with pytest.raises(ValueError):
         apply(XML, 'typo')
     assert record('warp_native_contact_v1')['sha256'] != record('warp_native_fast_v1')['sha256']
+
+
+def test_recording_preserves_short_pulse_boundaries():
+    from scripts.warpfit import recording_ticks
+    meta=dict(kind='drive',groups={'group0':['left-.06','forward-.25']},cases=[
+        dict(id='left-.06',settle_s=1,duration_s=.06,tail_s=1),
+        dict(id='forward-.25',settle_s=1,duration_s=.25,tail_s=1)])
+    ticks=recording_ticks(meta,'group0',24000,.00025)
+    assert all(round(t/.00025) in ticks for t in (1,1.06,1.25,2.06,2.25))
+    assert all((b-a)%10==0 for a,b in zip(ticks,ticks[1:]))
+    assert ticks[0]==0 and ticks[-1]==24000

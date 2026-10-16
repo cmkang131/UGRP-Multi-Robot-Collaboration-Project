@@ -62,30 +62,31 @@ def main():
     scripts.__path__.insert(0,str(source/'scripts'))
     os.chdir(source)
     from simalt_physics_compare import prepare
-    out=root/'box-full';out.mkdir()
-    prepare(SimpleNamespace(plan=own/'experiments/2026-10-15-simalt1/plan.json',
-        trace=own/'experiments/2026-10-15-simalt1/trace.jsonl',out=out,sha='6f057f7e97c1a3aec9e8c398b8d9068e27b25df8'))
-    f=np.load(out/'fixture.npz');m=mujoco.MjModel.from_xml_path(str(out/'scene.xml'));d=mujoco.MjData(m)
-    d.qpos[:]=f['qpos'];d.qvel[:]=f['qvel'];mujoco.mj_forward(m,d)
-    meta=json.loads((out/'fixture.json').read_text());phases=next(r for r in meta['cases'] if r['name']=='grip')['phases']
-    stride=round(.1/m.opt.timestep);begin=phases.index('close')*stride
-    end=(max(i for i,x in enumerate(phases) if x=='hold')+1)*stride
-    # C trajectory is used ONLY to construct the common grasp-ready starting
-    # snapshot. No profile receives C state after this boundary.
-    for j in range(begin):d.ctrl[:]=f['grip'][j];mujoco.mj_step(m,d)
-    out2=root/'box';out2.mkdir()
-    (out2/'scene.xml').write_bytes((out/'scene.xml').read_bytes())
-    np.savez_compressed(out2/'fixture.npz',qpos=d.qpos,qvel=d.qvel,ctrl=d.ctrl,
-        qacc_warmstart=d.qacc_warmstart,tape=f['grip'][begin:end])
-    target=[m.geom(i).name for i in range(m.ngeom) if m.body(m.geom_bodyid[i]).name=='cargo_cyan_2']
-    dump(out2/'fixture.json',dict(kind='box',asset_cwd=str(source),original=meta,
-        crop_control_rows=[begin//stride,end//stride],phases=phases[begin//stride:end//stride],
-        hold_start_s=(phases.index('hold')*stride-begin)*m.opt.timestep,
-        target_body='cargo_cyan_2',target_geoms=target,
-        finger_geoms=['r1__left_finger','r1__right_finger'],
-        start_state_source='C3.12 pre-close fixed tape replay; no subsequent state feedback',
-        control_sha256=digest(out2/'fixture.npz'),physics_feedback=0))
-    print('box ready',m.nv,(end-begin)*m.opt.timestep,flush=True)
+    if not (root/'box/fixture.json').is_file():
+        out=root/'box-full';out.mkdir()
+        prepare(SimpleNamespace(plan=own/'experiments/2026-10-15-simalt1/plan.json',
+            trace=own/'experiments/2026-10-15-simalt1/trace.jsonl',out=out,sha='6f057f7e97c1a3aec9e8c398b8d9068e27b25df8'))
+        f=np.load(out/'fixture.npz');m=mujoco.MjModel.from_xml_path(str(out/'scene.xml'));d=mujoco.MjData(m)
+        d.qpos[:]=f['qpos'];d.qvel[:]=f['qvel'];mujoco.mj_forward(m,d)
+        meta=json.loads((out/'fixture.json').read_text());phases=next(r for r in meta['cases'] if r['name']=='grip')['phases']
+        stride=round(.1/m.opt.timestep);begin=phases.index('close')*stride
+        end=(max(i for i,x in enumerate(phases) if x=='hold')+1)*stride
+        # C trajectory is used ONLY to construct the common grasp-ready starting
+        # snapshot. No profile receives C state after this boundary.
+        for j in range(begin):d.ctrl[:]=f['grip'][j];mujoco.mj_step(m,d)
+        out2=root/'box';out2.mkdir()
+        (out2/'scene.xml').write_bytes((out/'scene.xml').read_bytes())
+        np.savez_compressed(out2/'fixture.npz',qpos=d.qpos,qvel=d.qvel,ctrl=d.ctrl,
+            qacc_warmstart=d.qacc_warmstart,tape=f['grip'][begin:end])
+        target=[m.geom(i).name for i in range(m.ngeom) if m.body(m.geom_bodyid[i]).name=='cargo_cyan_2']
+        dump(out2/'fixture.json',dict(kind='box',asset_cwd=str(source),original=meta,
+            crop_control_rows=[begin//stride,end//stride],phases=phases[begin//stride:end//stride],
+            hold_start_s=(phases.index('hold')*stride-begin)*m.opt.timestep,
+            target_body='cargo_cyan_2',target_geoms=target,
+            finger_geoms=['r1__left_finger','r1__right_finger'],
+            start_state_source='C3.12 pre-close fixed tape replay; no subsequent state feedback',
+            control_sha256=digest(out2/'fixture.npz'),physics_feedback=0))
+        print('box ready',m.nv,(end-begin)*m.opt.timestep,flush=True)
     # Beam: a successful MJWarp world's recorded pre-pick state and its issued
     # commands; never choose new actions from the saved ground truth.
     inp=root/'inputs'
@@ -93,7 +94,10 @@ def main():
     raw=beam/'world-000/raw'
     assets=inp/'src/drivecheck-renderer-5974a181'
     os.chdir(assets)
-    xml=(raw/'scene.xml').read_text();m=mujoco.MjModel.from_xml_string(xml)
+    xml=(raw/'scene.xml').read_text()
+    import re
+    xml=re.sub(r'/home/ugrp/ugrp-sim/src/[^/]+/',str(assets)+'/',xml)
+    m=mujoco.MjModel.from_xml_string(xml)
     states=np.load(beam/'world-000-states.npz')
     start_tick=111  # Saved warp8 transition ready→pick at 11.1s (diagnostic crop).
     stop_tick=171  # 6s fixed lift + early hold, not a new acceptance timeout.
