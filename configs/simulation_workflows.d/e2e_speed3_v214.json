@@ -1,0 +1,63 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "e2e-speed3-v214",
+      "version": "7.107.0",
+      "purpose": "New timestep and observation profiles plus all exact speed options; separate DEV cohort.",
+      "entry": "scripts/run_e2e_ownmap_live.py",
+      "runner": "scripts.run_e2e_ownmap_live",
+      "docs": "experiments/2026-10-12-e2e-speed3/README.md",
+      "requires": "Committed Azure x86 OSMesa source; current lease/admission; persistent runs",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha",
+        "--seed",
+        "--driver-profile",
+        "--relay-receipt",
+        "--decider",
+        "--exploration-progress",
+        "--pose-fix",
+        "--path-follow",
+        "--wall-cap-s",
+        "--stall-odometry",
+        "--stall-recovery",
+        "--stall-noise",
+        "--mapping-budget",
+        "--boundary-views",
+        "--b-marker-detect",
+        "--ultrasonic-front",
+        "--vo-floor-mask",
+        "--vo-rotation-policy",
+        "--explore-deadlock",
+        "--boundary-association",
+        "--boundary-retry",
+        "--boundary-coverage",
+        "--speed3"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "shutdown_grace_s": 60
+    },
+    {
+      "id": "e2e-speed3-physics-probe",
+      "version": "1.0.0",
+      "purpose": "Finite staged physics plausibility, no E2E success claim",
+      "entry": "scripts/probe_e2e_speed3_physics.py",
+      "runner": "scripts.probe_e2e_speed3_physics",
+      "docs": "experiments/2026-10-12-e2e-speed3/README.md",
+      "requires": "Committed Azure x86 source and persistent output",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha",
+        "--profiles",
+        "--pr"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "shutdown_grace_s": 60
+    }
+  ]
+}

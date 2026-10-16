@@ -1,0 +1,172 @@
+{
+  "stage": "final",
+  "distribution": [
+    {
+      "category": "numeric_cast_overflow",
+      "count": 1,
+      "reason": "perturbed inactive EFM scratch efm_c cannot cast to float32; unused_efm_v1 only skips four inactive workspace copies",
+      "blocking_object": "MjData.efm_c",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_geometric"
+    },
+    {
+      "category": "provider_budget_stop",
+      "count": 1,
+      "reason": "gcp1 budget stop interrupted simalt2; first project forbidden",
+      "blocking_object": "ugrp-act-train-1014",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_geometric"
+    }
+  ],
+  "funnel": [
+    {
+      "gate": "gcp2 setup stop test",
+      "unit": "backend candidate",
+      "entered": 1,
+      "passed": 1,
+      "rejected": 0,
+      "blocked": 0
+    },
+    {
+      "gate": "unused EFM numeric import",
+      "unit": "backend candidate",
+      "entered": 1,
+      "passed": 1,
+      "rejected": 0,
+      "blocked": 0
+    },
+    {
+      "gate": "first finite noslip10 step",
+      "unit": "backend candidate",
+      "entered": 1,
+      "passed": 1,
+      "rejected": 0,
+      "blocked": 0
+    },
+    {
+      "gate": "N1 complete four-case suite",
+      "unit": "backend candidate",
+      "entered": 1,
+      "passed": 1,
+      "rejected": 0,
+      "blocked": 0
+    },
+    {
+      "gate": "all four endpoint responses within exploratory proposals",
+      "unit": "backend candidate",
+      "entered": 1,
+      "passed": 0,
+      "rejected": 1,
+      "blocked": 0
+    },
+    {
+      "gate": "3s bilateral loaded hold admission",
+      "unit": "backend candidate",
+      "entered": 0,
+      "passed": 0,
+      "rejected": 0,
+      "blocked": 1
+    },
+    {
+      "gate": "information-equivalent RGB admission",
+      "unit": "backend candidate",
+      "entered": 0,
+      "passed": 0,
+      "rejected": 0,
+      "blocked": 1
+    },
+    {
+      "gate": "twofold cost efficiency adoption",
+      "unit": "backend candidate",
+      "entered": 0,
+      "passed": 0,
+      "rejected": 0,
+      "blocked": 1
+    }
+  ],
+  "raw_paths": [
+    "/Users/changmin/projects/ugrp-wt/simalt-pilot/experiments/2026-10-15-simalt2/audit-intact.json",
+    "/Users/changmin/projects/ugrp-wt/simalt-pilot/experiments/2026-10-15-simalt2/audit-perturbed.json",
+    "/Users/changmin/projects/ugrp-wt/simalt-pilot/experiments/2026-10-15-simalt2/audit-safe.json",
+    "/home/ugrp/ugrp-sim/runs/simalt3/cpu-n1",
+    "/home/ugrp/ugrp-sim/runs/simalt3/warp-n1",
+    "/home/ugrp/ugrp-sim/runs/simalt3/comparison.json"
+  ],
+  "reproduction": "README and plan; comparison.json contains exact analysis argv",
+  "current_rejections": [
+    {
+      "category": "endpoint_response_mismatch",
+      "count": 3,
+      "cases": [
+        "side",
+        "turn",
+        "grip"
+      ],
+      "reason": "Same command tape exceeded user exploratory 5mm/2deg proposal in 3/4 cases",
+      "blocking_object": "r1__robot / cargo_cyan_2",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_path_clearance; response difference, contact minima in comparison.json"
+    },
+    {
+      "category": "loaded_hold_not_reproduced",
+      "count": 1,
+      "cases": [
+        "grip"
+      ],
+      "reason": "C has bilateral contact 30/30 and 70.835mm minimum clearance; Warp bilateral contact 0/30 and near-floor object",
+      "blocking_object": "cargo_cyan_2 / r1__left_finger / r1__right_finger",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_path_clearance; no loaded hold, not low-slip success"
+    },
+    {
+      "category": "render_observation_mismatch",
+      "count": 1,
+      "reason": "Matched qpos/qvel own RGB: zone_pickup alpha0.14 obscures floor checker in MJWarp, visible through it in C3.12. Partial alpha rendering differs.",
+      "blocking_object": "zone_pickup",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_geometric; visual information loss",
+      "evidence": "evidence/rgb-matched-state-comparison.jpg"
+    }
+  ],
+  "diagnostic_funnels": {
+    "endpoint_cases": {
+      "entered": 4,
+      "passed": 1,
+      "rejected": 3,
+      "unit": "command case"
+    },
+    "loaded_hold_samples": {
+      "entered": 30,
+      "C_passed": 30,
+      "Warp_passed": 0,
+      "Warp_rejected": 30,
+      "unit": "10Hz samples, not episodes"
+    },
+    "completed_throughput_jobs": {
+      "entered": 10,
+      "passed": 10,
+      "rejected": 0,
+      "unit": "N/mode row; N1 physics row is forward excerpt from full suite"
+    },
+    "matched_RGB_snapshot": {
+      "entered": 1,
+      "passed": 0,
+      "rejected": 1,
+      "unit": "same-state image pair"
+    },
+    "raw_files_SHA256": {
+      "entered": 992,
+      "passed": 992,
+      "rejected": 0,
+      "unit": "stored raw file"
+    }
+  },
+  "source_paths": {
+    "comparison": "evidence/comparison.json",
+    "C_version_control": "evidence/comparison-cpu316.json",
+    "throughput": "benchmark.json",
+    "raw_manifest": "evidence/SHA256SUMS",
+    "reproduction": "README.md and run-batch.sh"
+  },
+  "adoption": "NOT_ADOPTED"
+}

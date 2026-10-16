@@ -32,9 +32,9 @@ from harness.e2e_result_writer import write, Finalizer
 
 WALL_CAP_MAX_S = 25200.  # 7 h finite ceiling; default --wall-cap-s remains 12600
 
-def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decider='off',exploration_progress='off',pose_fix='off',path_follow='off',dev_light=False,wall_cap_s=12600.,stall_odometry='off',stall_recovery='off',stall_noise='off',stall_bundle=False,mapping_budget='off',exact_speedups=None,speed_bundle=False,boundary_views='off',b_marker_detect='off',runtime_registration='off',speed2_bundle=False,ultrasonic_front='off',vo_floor_mask='off',vo_rotation_policy='off',explore_deadlock='off',boundary_association='off',boundary_retry='off',boundary_coverage='off'):
+def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decider='off',exploration_progress='off',pose_fix='off',path_follow='off',dev_light=False,wall_cap_s=12600.,stall_odometry='off',stall_recovery='off',stall_noise='off',stall_bundle=False,mapping_budget='off',exact_speedups=None,speed_bundle=False,boundary_views='off',b_marker_detect='off',runtime_registration='off',speed2_bundle=False,ultrasonic_front='off',vo_floor_mask='off',vo_rotation_policy='off',explore_deadlock='off',boundary_association='off',boundary_retry='off',boundary_coverage='off',speed3='off',speed4=None,b_partial_accept='off',speed5='off',observation_cadence='off',route_guard='off',beam_axis='off',route_coverage='off',carrier_axes='off',carrier_approach='off',route_extent='off',record_scalars='off'):
     # E2E17 broad is candidate-only; preserve every older bundle's seed scope.
-    registered_seeds = range(61001, 61010) if explore_deadlock == 'replan_v1' else range(61001, 61005)
+    registered_seeds = range(61001,61013) if b_partial_accept != 'off' else range(61001, 61010) if explore_deadlock == 'replan_v1' else range(61001, 61005)
     if profile not in PROFILES or seed not in registered_seeds:raise ValueError('REGISTERED_MODEL_SEED_REQUIRED')
     if relook not in ('off','on_v1'):raise ValueError('UNKNOWN_RELOOK_TOGGLE')
     if decider not in ('off','jev_v1'):raise ValueError('UNKNOWN_DECIDER')
@@ -60,7 +60,7 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
     sensors = normalize_sensors({'ultrasonic_front': ultrasonic_front})
     us_on = stall.stall_odometry == 'rgb_vo_us_v1'
     if us_on != bool(sensors):raise ValueError('US_STALL_REQUIRES_SENSOR_ON_AND_CONSUMER')
-    if us_on and (boundary_views != 'candidate_views_v1' or b_marker_detect not in MARKER_OPTIONS):
+    if us_on and (boundary_views not in VIEWS_OPTIONS or b_marker_detect not in MARKER_OPTIONS):
         raise ValueError('US_STALL_REQUIRES_V205_COMPOSITION')
     mask_on = vo_floor_mask != 'off' or vo_rotation_policy != 'off'
     if mask_on and (not us_on or (vo_floor_mask, vo_rotation_policy) != ('homography_v1', 'no_ransac_v1')):
@@ -160,6 +160,8 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
     from harness.e2e_runtime_registration import register
     if boundary_coverage != 'off':runtime_registration='reviewed_v1'
     runtime_assets=register(b,runtime_registration)
+    from harness.e2e_speed3 import compose
+    speed3_assets=compose(b,speed3)
     from harness.python_source_closure import source_closure
     paths=set(source_closure(ROOT,['scripts/run_e2e_ownmap_live.py','sim/e2e_ownmap_live.py',
         'harness/e2e_live_transport.py','harness/e2e_live_mapping.py','harness/e2e_s4_live.py',
@@ -190,19 +192,62 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
     if boundary_association != 'off' or boundary_retry != 'off':paths.add('configs/simulation_workflows.d/e2e_boundary_repair_v212.json')
     if speed2:paths.update(('configs/simulation_workflows.d/e2e_exact_speed2_v203.json','scripts/e2e_speed_measure.py'))
     paths.update(runtime_assets)
+    paths.update(speed3_assets)
     if boundary_coverage != 'off':paths.add('configs/simulation_workflows.d/e2e_boundary_native_v213.json')
+    from harness.e2e_speed4 import Options as Speed4Options, record as speed4_record
+    candidate = Speed4Options(**(speed4 or {}))
+    if candidate.enabled:
+        if not dev_light:raise ValueError('SPEED4_DEV_COHORT_REQUIRED')
+        b['speed4']=dataclasses.asdict(candidate)
+        b['speed4_record']=speed4_record(candidate)
+    if b_partial_accept not in ('off','on_v1'):raise ValueError('UNKNOWN_B_PARTIAL_ACCEPT')
+    if b_partial_accept != 'off':
+        from harness.e2e18_bundle import compose as compose18
+        paths.update(compose18(b, b_partial_accept))
+    from harness.e2e_speed5 import OPTIONS as SPEED5_OPTIONS, STATIC, INPUTS
+    if speed5 not in ('off',*SPEED5_OPTIONS):raise ValueError('UNKNOWN_SPEED5')
+    if speed5 != 'off':
+        if b['execution_bundle_id']!='e2e18-v216':raise ValueError('SPEED5_REQUIRES_E2E18')
+        b['e2e_options']['speed5']=speed5
+        b.update(schema='ugrp.e2e_ownmap_live.v217',execution_bundle_id='e2e18-v217',workflow_version='7.110.0')
+        paths.update((STATIC,*INPUTS,'configs/simulation_workflows.d/e2e18_v217.json'))
+        if speed5 in ('lean_v2','lean_v3'):
+            b.update(schema='ugrp.e2e_ownmap_live.v218',execution_bundle_id='e2e18-v218',workflow_version='7.111.0')
+            b['opencv_threads']=1
+            paths.add('configs/simulation_workflows.d/e2e18_v218.json')
+        if speed5=='lean_v3':
+            b.update(schema='ugrp.e2e_ownmap_live.v219',execution_bundle_id='e2e18-v219',workflow_version='7.112.0')
+            b['coarse_grid_dtype']='float32'
+            paths.add('configs/simulation_workflows.d/e2e18_v219.json')
+    from harness.e2e_observation_cadence import compose as cadence_compose
+    paths.update(cadence_compose(b,observation_cadence))
+    from harness.e2e_route_guard import compose as route_guard_compose
+    paths.update(route_guard_compose(b,route_guard))
+    from harness.e2e_beam_axis import compose as beam_axis_compose
+    paths.update(beam_axis_compose(b,beam_axis))
+    from harness.e2e_route_coverage import compose as coverage_compose
+    paths.update(coverage_compose(b,route_coverage))
+    from harness.e2e_carrier_axes import compose as axes_compose
+    paths.update(axes_compose(b,carrier_axes,carrier_approach))
+    from harness.e2e_route_extent import compose as extent_compose
+    paths.update(extent_compose(b,route_extent,record_scalars))
     b['source_sha256']={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in sorted(paths)}
     return b
 
 
 def ownmap_record(robot, obs, trace, now):
     """Persist both accepted and rejected own-input association diagnostics."""
-    return dict(t=now,frame_id=obs['frame_id'],sha256=obs['sha256'],
+    record=dict(t=now,frame_id=obs['frame_id'],sha256=obs['sha256'],
         pose_own_m=robot.goal.explorer.local_pose.tolist(),
         remembered_B=robot.goal.entities.get('B'),stage=robot.goal.stage,command=robot.nav_command,
+        carrier_approach=getattr(robot,'carrier_approach',None),sigma_xy_m=trace.get('sigma_xy'),own_beam=robot.beam,route_diagnostics=getattr(robot.goal,'e2e_route_diagnostics',None),
         pose_continuity=trace.get('pose_continuity'),exploration=trace.get('exploration'),
         navigation_status=trace.get('status'),pulse=trace.get('pulse'),stall_odometry=trace.get('stall_odometry'),
         **{k:trace[k] for k in ('boundary_view','boundary_diagnostics','explore_deadlock','boundary_association') if k in trace})
+    if getattr(robot.goal,'e2e_record_scalars','off')=='python_v1':
+        from harness.e2e_record_scalars import normalize
+        return normalize(record)
+    return record
 
 
 def health(robots,host,transport,sim_s,wall_s,frames):
@@ -215,11 +260,13 @@ def health(robots,host,transport,sim_s,wall_s,frames):
         first_model_response=bool(normal),own_map_B_generated=generated,
         own_B_boundary_remembered=bool(r1 and 'B' in r1.goal.e2e_gate.references),
         own_route_generated=bool(r1 and r1.packet is not None),
+        own_route_observed_complete=bool(r1 and r1.packet and r1.packet.get('observed_coverage_complete',True)),
         phase=transport.state if transport else 'boot',setdowns=transport.setdowns if transport else 0,
         robots={r:dict(pose_own_m=v.goal.explorer.local_pose.tolist(),stage=v.goal.stage,
             map_frames=len(v.goal.e2e_observed),command=v.nav_command,
-            translation_commands=v.translation_commands) for r,v in robots.items()},
-        latest_route_wait=transport.last_route_error if transport else None)
+            translation_commands=v.translation_commands,carrier_approach=getattr(v,'carrier_approach',None)) for r,v in robots.items()},
+        latest_route_wait=transport.last_route_error if transport else None,
+        route_diagnostics=getattr(r1.goal,'e2e_route_diagnostics',None) if r1 else None)
 
 
 def startup_decision(progress, b):
@@ -251,11 +298,14 @@ def run(b,out,receipt,*,backend_factory=None):
     from harness.zone_study_decisions import DecisionLimits
     from harness.active_camera import SEARCH
     from sim.e2e_ownmap_live import PhysicsBackend
+    from harness.s4_live_transport import bind_openrouter_bundle
+    b = bind_openrouter_bundle(b, receipt)
     out.mkdir(parents=True,exist_ok=False);write(out/'bundle.json',b)
     result=dict(status='HOST_ERROR',source_sha=b['source_sha'],seed=b['seed'],model=b['driver_profile'],
         condition=b['condition'],options=b['e2e_options'],LLM_operated=False,own_map_completed=False,
         start_to_finish_transport=False,E2E_success=False,setdowns=0,model_calls=0,
-        physical_hardware=False,route_source='own_map',host='azure',class_='dev',pr=433)
+        physical_hardware=False,route_source='own_map',host='azure',class_='dev',
+        pr=json.loads((out.parent/'RUN_META.json').read_text()).get('pr') if (out.parent/'RUN_META.json').exists() else None)
     started=time.monotonic();backend=host=transport=None;robots={};frames_seen=0;origin=0.
     milestones={};initial_recorded=False
     finalizer=Finalizer(out,result)
@@ -263,9 +313,15 @@ def run(b,out,receipt,*,backend_factory=None):
     try:
         for p,sha in b['source_sha256'].items():
             if hashlib.sha256((ROOT/p).read_bytes()).hexdigest()!=sha:raise ValueError('SOURCE_HASH_MISMATCH:'+p)
+        if b.get('opencv_threads')==1:
+            import cv2
+            cv2.setNumThreads(1)
         options=Options(**b['study_options'])
+        from harness.e2e_speed4 import Options as Speed4Options, processing_due
+        speed4=Speed4Options(**b.get('speed4',{}))
+        if speed4.enabled:write(out/'speed4.json',b['speed4_record'])
         cov=json.loads((ROOT/'configs/e2e_nees_egomap70_dev_v1.json').read_text())
-        robots={r:Robot(r,b['seed']+i,cov,options,relook=b['e2e_options']['setdown_only_when_relook'],
+        robots={r:Robot(r,b['seed']+i,cov,options,speed4=speed4,speed5=b['e2e_options'].get('speed5','off'),relook=b['e2e_options']['setdown_only_when_relook'],
                         goal_geometry=b['e2e_options']['goal_geometry'],
                         exploration_progress=b['e2e_options'].get('exploration_progress','off'),
                         pose_fix=b['e2e_options'].get('pose_fix','off'),
@@ -280,8 +336,18 @@ def run(b,out,receipt,*,backend_factory=None):
                         mapping_budget_s=b['e2e_options'].get('mapping_budget_s'),
                         boundary_views=b['e2e_options'].get('boundary_views','off'),
                         b_marker_detect=b['e2e_options'].get('b_marker_detect','off'),
+                        b_partial_accept=b['e2e_options'].get('b_partial_accept','off'),
                         exact_speedups=SpeedOptions(**b['e2e_options'].get('exact_speedups',{})))
                 for i,r in enumerate(('r1','r2','r3'))}
+        from harness.e2e_observation_cadence import configure as cadence_configure
+        for robot in robots.values():cadence_configure(robot.goal,b['e2e_options'].get('observation_cadence','off'),b.get('speed3_profile',{}).get('observation_period_s',.2))
+        for robot in robots.values():
+            robot.goal.e2e_route_guard=b['e2e_options'].get('route_guard','off')
+            robot.goal.e2e_beam_axis=b['e2e_options'].get('beam_axis','off')
+            robot.goal.e2e_route_coverage=b['e2e_options'].get('route_coverage','off')
+            robot.goal.e2e_carrier_axes=b['e2e_options'].get('carrier_axes','off')
+            robot.goal.e2e_route_extent=b['e2e_options'].get('route_extent','off')
+            robot.goal.e2e_record_scalars=b['e2e_options'].get('record_scalars','off')
         for robot in robots.values():robot.decider=b['e2e_options'].get('decider','off')
         offered=json.loads(receipt.read_text())
         if offered.get('decider','off')!=b['e2e_options'].get('decider','off'):
@@ -317,19 +383,23 @@ def run(b,out,receipt,*,backend_factory=None):
         profiles=json.loads((ROOT/'configs/s2_v133_full_template.json').read_text())['pulse_calibration']['profiles']
         transport=Transport(robots,host.trial.dialogue,profiles,pulse_budget=b['e2e_options']['pulse_budget'],
                             setdown_only_when_relook=b['e2e_options']['setdown_only_when_relook'],
-                            dev_light=b['e2e_options'].get('dev_light',False))
+                            dev_light=b['e2e_options'].get('dev_light',False),carrier_approach=b['e2e_options'].get('carrier_approach','off'))
         host.trial.dialogue.motion_connected=True
         host.trial.provenance.update(provider=offered.get('upstream',host.trial.provenance['provider']),
             decider=b['e2e_options'].get('decider','off'))
         backend.authorize_pulse=lambda rid,a,t:transport.authorize(rid,a,round(t-origin,8))
         backend.final_segment_getter=lambda:bool(transport.plan and transport.seg==len(transport.plan['own_route']['legs'])-1)
+        observation_ticks=round(b.get('speed3_profile',{}).get('observation_period_s',.2)/.05)
         for tick in range(round(b['case_cap_s']/.05)):
             now=round(backend.now-origin,8)
             if time.monotonic()-started>b['wall_cap_s']:raise TimeoutError('E2E_WALL_CAP')
             backend.eval_sample()
-            if tick%4==0:
+            if tick%observation_ticks==0:
                 raw=backend.capture()
                 for rid,robot in robots.items():
+                    if not processing_due(robot,now,transport.state):
+                        backend._append(f'robots/{rid}/speed4-skips.jsonl',dict(t=now,reason='moving_observation_stride'))
+                        continue
                     obs,rgb=raw[rid]
                     own_obs={k:obs[k] for k in ('frame_id','sim_time','sha256','image')}
                     own_obs['sim_time']=round(obs['sim_time']-origin,8)
@@ -379,8 +449,9 @@ def run(b,out,receipt,*,backend_factory=None):
         if backend is not None:result['sim_s']=backend.now-origin
         finalizer.checkpoint()
         if transport is not None:
+            from harness.e2e_route_coverage import map_completed
             result.update(setdowns=transport.setdowns,controller_failure=transport.failure,
-                own_map_completed=any(e['event']=='own_map_B_route_generated' for e in transport.events))
+                own_map_completed=map_completed(transport.events))
             finalizer.attempt('transport',lambda:write(out/'transport-trace.json',transport.events))
         if host is not None:
             from harness.llm_completion import normal_completion
@@ -441,7 +512,8 @@ def main(argv=None):
     p.add_argument('--mapping-budget',choices=('off','case_cap_v1'),default='off')
     p.add_argument('--dev-light',action='store_true')
     p.add_argument('--boundary-views',choices=('off','candidate_views_v1','standoff_fullquad_v1'),default='off')
-    p.add_argument('--b-marker-detect',choices=('off','contrast_v1','contrast_v2'),default='off')
+    p.add_argument('--b-marker-detect',choices=('off','contrast_v1','contrast_v2','partial_known_size_v1'),default='off')
+    p.add_argument('--b-partial-accept',choices=('off','on_v1'),default='off')
     p.add_argument('--wall-cap-s',type=float,default=12600.)
     p.add_argument('--exact-provenance-index',action='store_true')
     p.add_argument('--exact-sha-cache',action='store_true')
@@ -455,10 +527,21 @@ def main(argv=None):
     p.add_argument('--exact-vector-costmap-writes',action='store_true')
     p.add_argument('--exact-track-cell-tuples',action='store_true')
     p.add_argument('--exact-speed2-bundle',action='store_true')
-    p.add_argument('--rbpf-audit-hash',choices=('off','binary_v1','both_v1'),default='off',
+    p.add_argument('--rbpf-audit-hash',choices=('off','binary_v1','both_v1','none','final_v1'),default='off',
                    help='Measurement-only RBPF audit digest (with --measure-sim-s); off = legacy JSON digest')
     p.add_argument('--measure-sim-s',type=float,default=0.,help='External measurement stop; bundle horizon unchanged')
     p.add_argument('--measure-profile',action='store_true')
+    p.add_argument('--speed3',choices=('off','dt1_v1','dt2_v1','adaptive_v1'),default='off')
+    p.add_argument('--record-scalars',choices=('off','python_v1'),default='off')
+    p.add_argument('--route-extent',choices=('off','goal_envelope_v1'),default='off')
+    p.add_argument('--carrier-axes',choices=('off','beam_v1'),default='off')
+    p.add_argument('--carrier-approach',choices=('off','standoff_v1'),default='off')
+    p.add_argument('--route-coverage',choices=('off','native_v1'),default='off')
+    p.add_argument('--beam-axis',choices=('off','undirected_v1'),default='off')
+    p.add_argument('--route-guard',choices=('off','dev_nominal_v1'),default='off')
+    p.add_argument('--observation-cadence',choices=('off','on_v1'),default='off')
+    p.add_argument('--speed5',choices=('off','cache_v1','lean_v1','lean_v2','lean_v3'),default='off')
+    p.add_argument('--speed4',type=json.loads,default=None,help='DEV compute budget JSON; all fields default off')
     p.add_argument('--runtime-registration',choices=('off','reviewed_v1'),default='off')
     p.add_argument('--expected-workflow-id')
     p.add_argument('--execute',action='store_true');a=p.parse_args(argv)
@@ -470,7 +553,7 @@ def main(argv=None):
              exact_speedups=dict(provenance_index=a.exact_provenance_index,sha_validation_cache=a.exact_sha_cache,omit_discarded_copy=a.exact_omit_copy,scalar_cells=a.exact_scalar_cells,geometry_cache=a.exact_geometry_cache,
                  vector_rays=a.exact_vector_rays,shared_wall_frontend=a.exact_shared_wall_frontend,lazy_scan_path=a.exact_lazy_scan_path,
                  vector_costmap_writes=a.exact_vector_costmap_writes,track_cell_tuples=a.exact_track_cell_tuples),
-             speed_bundle=a.exact_speed_bundle,speed2_bundle=a.exact_speed2_bundle,boundary_views=a.boundary_views,b_marker_detect=a.b_marker_detect,runtime_registration=a.runtime_registration,ultrasonic_front=a.ultrasonic_front,vo_floor_mask=a.vo_floor_mask,vo_rotation_policy=a.vo_rotation_policy,explore_deadlock=a.explore_deadlock,boundary_association=a.boundary_association,boundary_retry=a.boundary_retry,boundary_coverage=a.boundary_coverage)
+             speed_bundle=a.exact_speed_bundle,speed2_bundle=a.exact_speed2_bundle,boundary_views=a.boundary_views,b_marker_detect=a.b_marker_detect,runtime_registration=a.runtime_registration,ultrasonic_front=a.ultrasonic_front,vo_floor_mask=a.vo_floor_mask,vo_rotation_policy=a.vo_rotation_policy,explore_deadlock=a.explore_deadlock,boundary_association=a.boundary_association,boundary_retry=a.boundary_retry,boundary_coverage=a.boundary_coverage,speed3=a.speed3,speed4=a.speed4,b_partial_accept=a.b_partial_accept,speed5=a.speed5,observation_cadence=a.observation_cadence,route_guard=a.route_guard,beam_axis=a.beam_axis,route_coverage=a.route_coverage,carrier_axes=a.carrier_axes,carrier_approach=a.carrier_approach,route_extent=a.route_extent,record_scalars=a.record_scalars)
     if a.rbpf_audit_hash!='off' and not a.measure_sim_s:raise ValueError('RBPF_AUDIT_HASH_REQUIRES_MEASUREMENT')
     if a.expected_workflow_id is not None and a.expected_workflow_id!=b['execution_bundle_id']:
         raise ValueError('WORKFLOW_BUNDLE_ID_MISMATCH')
@@ -484,7 +567,8 @@ def main(argv=None):
     try:
         if a.measure_sim_s:
             from scripts.e2e_speed_measure import measured_run
-            r=measured_run(run,b,a.output,a.relay_receipt,a.measure_sim_s,a.measure_profile,a.rbpf_audit_hash)
+            r=measured_run(run,b,a.output,a.relay_receipt,a.measure_sim_s,a.measure_profile,
+                'final_v1' if a.speed3!='off' and a.rbpf_audit_hash=='off' else a.rbpf_audit_hash)
         else:r=run(b,a.output,a.relay_receipt)
     finally:undo()
     print(json.dumps(r));return int(r['status']!='FINISHED')

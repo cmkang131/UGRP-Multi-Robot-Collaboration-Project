@@ -15,9 +15,11 @@ from harness.e2e_goal_route import GoalRoute, attach
 from harness.e2e_setdown_relook import OwnRGBRelook
 from harness.self_odom_grid import transform
 from harness.e2e_exact_speedups import OFF, using
+from harness.e2e_speed5 import using as speed5_using
+from harness.e2e_speed4 import OFF as SPEED4_OFF, using as speed4_using
 
 
-def make_goal(rid, seed, covariance_profile, *, relook='off',goal_geometry='off',exploration_progress='off',pose_fix='off',path_follow='off',stall_options=None,mapping_budget_s=None,boundary_views='off',b_marker_detect='off',vo_floor_mask='off',vo_rotation_policy='off',explore_deadlock='off',boundary_association='off',boundary_retry='off',boundary_coverage='off',b_cone_accept='off',camera_calib='off'):
+def make_goal(rid, seed, covariance_profile, *, relook='off',goal_geometry='off',exploration_progress='off',pose_fix='off',path_follow='off',stall_options=None,mapping_budget_s=None,boundary_views='off',b_marker_detect='off',b_partial_accept='off',vo_floor_mask='off',vo_rotation_policy='off',explore_deadlock='off',boundary_association='off',boundary_retry='off',boundary_coverage='off',b_cone_accept='off',camera_calib='off'):
     if goal_geometry not in ('off','e2e_b80_v1'):raise ValueError('UNKNOWN_GOAL_GEOMETRY')
     from harness.e2e_rgb_gate import MARKER_OPTIONS
     if b_marker_detect not in ('off',*MARKER_OPTIONS):raise ValueError('UNKNOWN_B_MARKER_DETECT')
@@ -48,6 +50,8 @@ def make_goal(rid, seed, covariance_profile, *, relook='off',goal_geometry='off'
     _calib.set_mode(camera_calib)
     if b_cone_accept not in ('off','on_v1') or (b_cone_accept!='off' and b_marker_detect!='cones_v1'):raise ValueError('UNKNOWN_B_CONE_ACCEPT')
     goal.e2e_gate.cone_accept=b_cone_accept
+    if b_partial_accept not in ('off','on_v1'):raise ValueError('UNKNOWN_B_PARTIAL_ACCEPT')
+    goal.e2e_gate.partial_accept=b_partial_accept
     # This mission maps a beam route, not the old B+cyan+return benchmark.
     # Keep the same receive/localization/GoalRoute memory, but frontier exploration
     # owns locomotion until a fresh own beam and a fully observed corridor exist.
@@ -88,11 +92,14 @@ def beam_observer():
 
 
 class Robot:
-    def __init__(self,rid,seed,covariance_profile,options,*,relook='off',goal_geometry='off',exploration_progress='off',pose_fix='off',path_follow='off',stall_options=None,mapping_budget_s=None,boundary_views='off',b_marker_detect='off',exact_speedups=OFF,vo_floor_mask='off',vo_rotation_policy='off',explore_deadlock='off',boundary_association='off',boundary_retry='off',boundary_coverage='off'):
+    def __init__(self,rid,seed,covariance_profile,options,*,relook='off',goal_geometry='off',exploration_progress='off',pose_fix='off',path_follow='off',stall_options=None,mapping_budget_s=None,boundary_views='off',b_marker_detect='off',b_partial_accept='off',exact_speedups=OFF,vo_floor_mask='off',vo_rotation_policy='off',explore_deadlock='off',boundary_association='off',boundary_retry='off',boundary_coverage='off',speed4=SPEED4_OFF,speed5='off'):
         self.exact_speedups=exact_speedups
+        self.speed4=speed4
+        self.speed5=speed5
         self.robot_id=rid;self.study_options=options
-        self.goal=make_goal(rid,seed,covariance_profile,relook=relook,goal_geometry=goal_geometry,
-                            exploration_progress=exploration_progress,pose_fix=pose_fix,path_follow=path_follow,stall_options=stall_options,mapping_budget_s=mapping_budget_s,boundary_views=boundary_views,b_marker_detect=b_marker_detect,vo_floor_mask=vo_floor_mask,vo_rotation_policy=vo_rotation_policy,explore_deadlock=explore_deadlock,boundary_association=boundary_association,boundary_retry=boundary_retry,boundary_coverage=boundary_coverage)
+        with speed4_using(speed4), speed5_using(speed5):
+            self.goal=make_goal(rid,seed,covariance_profile,relook=relook,goal_geometry=goal_geometry,
+                                exploration_progress=exploration_progress,pose_fix=pose_fix,path_follow=path_follow,stall_options=stall_options,mapping_budget_s=mapping_budget_s,boundary_views=boundary_views,b_marker_detect=b_marker_detect,b_partial_accept=b_partial_accept,vo_floor_mask=vo_floor_mask,vo_rotation_policy=vo_rotation_policy,explore_deadlock=explore_deadlock,boundary_association=boundary_association,boundary_retry=boundary_retry,boundary_coverage=boundary_coverage)
         self.observe_beam=beam_observer()
         self.servo=dict(SEARCH);self.now=0.;self.frame=None;self.last_obs=None
         self.nav_command=dict(kind='hold');self.packet=None;self.beam=None;self.events=[]
@@ -101,7 +108,7 @@ class Robot:
         self.translation_commands=0
 
     def receive(self,obs,rgb):
-        with using(self.exact_speedups):
+        with using(self.exact_speedups), speed4_using(self.speed4), speed5_using(self.speed5):
             return self._receive(obs,rgb)
 
     def _receive(self,obs,rgb):
@@ -134,6 +141,10 @@ class Robot:
         return trace
 
     def commanded(self,action,now):
+        if self.speed4.enabled and action['kind'] in ('mecanum','drive','hold','wait'):
+            self._speed4_last_motion = dict(action)
+        if self.speed4.enabled and action['kind'] in ('arm','look'):
+            self._speed4_servo_changed = True
         if action['kind']=='mecanum' and abs(action.get('forward',0))+abs(action.get('left',0))>0:
             self.translation_commands+=1
         if action['kind']=='arm':self.servo[action['servo_id']]=action['pulse']
@@ -142,6 +153,10 @@ class Robot:
 
     def route(self,profiles,pulse_budget):
         if self.robot_id!='r1' or self.beam is None:return None
+        if getattr(self.goal,'e2e_route_guard','off')!='off':
+            frame=self.beam['rgb']['frame_id']
+            if getattr(self,'_route_attempt_frame',None)==frame:return None
+            self._route_attempt_frame=frame
         beam={k:self.beam[k] for k in ('rgb','pose_own_m')}
         return self.goal.route_to_B(beam,now=self.now,profiles=profiles,pulse_budget=pulse_budget)
 

@@ -39,6 +39,7 @@ def test_all_saved_terminal_states_keep_off_hold_and_resume_bounded_scan():
 
 
 def test_expiry_reselects_real_native_path_and_preserves_obstacles_and_pose():
+    pytest.importorskip('matplotlib', exc_type=ModuleNotFoundError)
     g, n, c, pose = restored(fixture(), 'replan_v1')
     target = pose[:2]+[1., 0.]
     n.blacklist = [target.copy()]; n.visited = [target.copy()]
@@ -123,6 +124,10 @@ def test_v208_bundle_v207_off_identity_relay_and_real_robot_wiring():
     with pytest.raises(ValueError,match='REGISTERED_MODEL_SEED_REQUIRED'):
         bundle('sha',61010,'study_gemma4_31b_v1',**kw,explore_deadlock='replan_v1')
     assert not accepted_call_id('e2e-idle-a-s61010:call-0001-r1:1')
+    # Numeric admission assertions above still run in the minimal offline suite.
+    # Real robot adapter wiring uses the optional simulation dependencies.
+    pytest.importorskip('mujoco', exc_type=ModuleNotFoundError)
+    pytest.importorskip('matplotlib', exc_type=ModuleNotFoundError)
     cov=json.loads(Path('configs/e2e_nees_egomap70_dev_v1.json').read_text())
     robot=Robot('r1',61001,cov,Options(),exploration_progress='frontier_progress_v1',
         boundary_views='candidate_views_v1',explore_deadlock='replan_v1',

@@ -1,0 +1,182 @@
+{
+  "scope": "Merge-only integration of PR452-458; no new physical/model/VM execution.",
+  "base_sha": "681d83e43355df3d66c20c597293627bb2ab8830",
+  "source_snapshot_sha": "cf805b77555f079ec65d49c49a33c47bdc36673e",
+  "included_prs": [
+    {
+      "number": 452,
+      "branch": "codex/e2e-vomask",
+      "sha": "83bdff828b3f1067bd80e6e687b4f4c3f0ad8a5c"
+    },
+    {
+      "number": 453,
+      "branch": "codex/e2e-idle",
+      "sha": "24c442ac33e98394cb3e5de2c9fffa6310345a7b"
+    },
+    {
+      "number": 454,
+      "branch": "codex/e2e-speed3",
+      "sha": "e8d31cd4df240d99c2a93d7ae6704af58366f039"
+    },
+    {
+      "number": 455,
+      "branch": "codex/e2e-speed4",
+      "sha": "dbbb245197caddf03b32fa4452d4f56e63842af1"
+    },
+    {
+      "number": 456,
+      "branch": "claude/e2e-route",
+      "sha": "1d16f8450599252ab0e28653902d51d0936b1f1e"
+    },
+    {
+      "number": 457,
+      "branch": "claude/e2e-bquad",
+      "sha": "6525faf8f30daee8c574949c5714828c0c5a289d"
+    },
+    {
+      "number": 458,
+      "branch": "codex/e2e18",
+      "sha": "cf805b77555f079ec65d49c49a33c47bdc36673e"
+    }
+  ],
+  "excluded_prs": [
+    459
+  ],
+  "candidate_before_ci_fixes": "00367e61247aac1bef3f17fc9ff9e42fcb686cb9",
+  "bundle_workflow_byte_check": {
+    "compared": 36,
+    "different": 0
+  },
+  "targeted_initial": {
+    "passed": 41,
+    "failed": 2,
+    "log": "outputs/merge-a-20261012/targeted-tests.log"
+  },
+  "ci": "pending_final_fix_push",
+  "review": "in_progress",
+  "raw_modified": false,
+  "ci_new_test_registration": {
+    "new_files": 16,
+    "omitted_before_fix": 8,
+    "missing_after_fix": 0
+  },
+  "targeted_final": {
+    "passed": 34,
+    "failed": 0,
+    "files": [
+      "tests/test_e2e_boundary_repair.py",
+      "tests/test_e2e18.py",
+      "tests/test_e2e_record_scalars.py"
+    ],
+    "log": "outputs/merge-a-20261012/targeted-tests-fix.log",
+    "log_sha256": "0ab329906e55160b651313f77e0d2b09dd84085c42ce160880284bd618eb5191"
+  },
+  "independent_review": {
+    "sha": "00367e61247aac1bef3f17fc9ff9e42fcb686cb9",
+    "report": "outputs/merge-a-20261012/review.md",
+    "report_sha256": "4cf4fc388b2304b011e1ed2ec7017fbae7739929ac90cb6eaf952257f7438630",
+    "P1": 1,
+    "P2": 1,
+    "P3": 1
+  },
+  "review_fixes": {
+    "P1": "Reject live standoff_fullquad_v1 before navigator mutation: no RGB-derived static-map-to-own registration exists. Offline planner and historical bundles remain available. E2E18 live use of this option requires a future registration adapter.",
+    "P2": "Preserve historical text snapshots from the recorded SHA; original manifest unchanged.",
+    "P3": "All 16 new regression modules are registered; 8 omissions fixed before CI."
+  },
+  "references": [
+    {
+      "url": "https://modernrobotics.northwestern.edu/nu-gm-book-resource/3-3-1-homogeneous-transformation-matrices/",
+      "checked": "2026-10-12",
+      "scope": "Frame transforms require the missing static-map-to-own relation; self-SLAM map_to_odom is not that relation.",
+      "method": "Reject unsupported live conversion; do not infer it from simulator spawn state."
+    },
+    {
+      "url": "https://docs.python.org/3/library/contextvars.html",
+      "scope": "Keep experimental particle allowance local to the explicit context; reset restores baseline.",
+      "checked": "2026-10-13"
+    },
+    {
+      "url": "https://docs.pytest.org/en/stable/how-to/skipping.html",
+      "scope": "Missing optional simulation dependencies are explicit skips, consistent with the minimal CI requirements.",
+      "checked": "2026-10-13"
+    }
+  ],
+  "P1_counterexample": {
+    "static_start_pose": [
+      3.9,
+      -1.4,
+      -0.7853981633974483
+    ],
+    "static_candidate_pose": [
+      2.3,
+      0.0,
+      5.585053606381854
+    ],
+    "expected_own_pose": [
+      -2.121320343559643,
+      -0.14142135623730945,
+      0.08726646259971614
+    ],
+    "incorrect_own_xy": [
+      2.3,
+      0.0
+    ],
+    "position_error_m": 4.423581533144196,
+    "scope": "Static review counterexample only. Spawn pose was never passed to the controller."
+  },
+  "review_fix_tests": {
+    "passed": 46,
+    "failed": 0,
+    "files": [
+      "tests/test_e2e_boundary_views.py",
+      "tests/test_e2e_boundary_repair.py",
+      "tests/test_e2e18.py"
+    ],
+    "log": "outputs/merge-a-20261012/review-fix-tests.log",
+    "log_sha256": "62c3291c865a0d268e4e89b63ac3368659533943c6dfc67dba19b418a4030891"
+  },
+  "ci_failure_fix": {
+    "run": 38259642855,
+    "source_sha": "719555e22829b5c6b66613698d17f8e6c029bdd7",
+    "failed_job": 114847310033,
+    "failure": "Explicit-plan samples omitted 13 new workflows; first KeyError e2e18-v216.",
+    "changed_file": "tests/test_simulation_workflow_manager.py",
+    "new_workflow_samples": 13,
+    "targeted_file_passed": 21,
+    "targeted_file_failed": 0,
+    "log": "outputs/merge-a-20261012/catalog-fix-tests.log",
+    "log_sha256": "72c0a098434ff57a46350a5eb089bcad7a95762aec8baaa3d0552fe7f515f1fb",
+    "production_code_changed": false
+  },
+  "ci39_completed": {
+    "run": 38263656798,
+    "jobs_success": 30,
+    "jobs_total": 33,
+    "failed_shards": [
+      2,
+      4
+    ],
+    "failed_tests": 5,
+    "aggregate_failed": true
+  },
+  "ci39_fix": {
+    "particle_50": "Allowed only while explicit speed4 rbpf_particles=50 context is active; baseline 30/100/500 and original error preserved.",
+    "optional_dependencies": "Simulation-backed fixtures use explicit importorskip for unavailable mujoco/matplotlib in intentionally minimal offline CI; local environment executes them. No CI dependency policy change.",
+    "review": "outputs/merge-a-20261012/review-ci2.md",
+    "review_sha256": "64fdee2ea84b35c26287dc52ed5305cac90cca5888f4d07c00962b52d3f77bf1",
+    "review_result": "narrow ready"
+  },
+  "ci39_particle_tests": {
+    "passed": 40,
+    "failed": 0,
+    "log": "outputs/merge-a-20261012/ci2-fix-tests.log",
+    "sha256": "ee60c8428c75565081802d01d4856f9ea804e4608b5ddecef79019803548636b"
+  },
+  "ci39_optional_tests": {
+    "passed": 38,
+    "failed": 0,
+    "log": "outputs/merge-a-20261012/ci-optional-fix-tests.log",
+    "sha256": "98068584268272ba14aeb1788ea4143f6353f3aa78efa149ee71398fd29e71e3"
+  }
+}

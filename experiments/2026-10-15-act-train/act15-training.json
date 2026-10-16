@@ -1,0 +1,170 @@
+{
+  "status": "complete",
+  "complete": true,
+  "stage": "main",
+  "class": "dev",
+  "research_result": false,
+  "source_sha": "1535c8a3e4e10184669304081aaaf7ce4eff3512",
+  "dataset_manifest_sha256": "314539e8d815eee17dcc8bbf488afaefca18e4fe6cb425ff5bd98b5dcd407b64",
+  "host": {
+    "project": "ugrp-act-train-1014",
+    "instance": "ugrp-act-l4-pilot1",
+    "machine_type": "g2-standard-4",
+    "zone": "asia-northeast3-a"
+  },
+  "steps_requested": 10000,
+  "steps_completed": 10000,
+  "seed": 20261015,
+  "blank_images": false,
+  "done_loss": "balanced_bce_v1",
+  "done_loss_weight": 1.0,
+  "command_history_dropout": 0.0,
+  "checkpoint_every": 5000,
+  "batch_size": 8,
+  "readback_verified": true,
+  "gate_promotion_authorized_if_all_conditions_pass": false,
+  "selection": "fixed final step; validation never selects checkpoint",
+  "done_class_counts": {
+    "grasp": {
+      "positive_n": 45,
+      "rows_N": 18937,
+      "positive_fraction": 0.002376300364366056
+    },
+    "release": {
+      "positive_n": 45,
+      "rows_N": 3915,
+      "positive_fraction": 0.011494252873563218
+    }
+  },
+  "environment": {
+    "torch": "2.11.0",
+    "torchvision": "0.26.0",
+    "lerobot": "0.6.2",
+    "numpy": "2.2.6"
+  },
+  "training_rows": 22852,
+  "gpu": "NVIDIA L4",
+  "cuda": "13.0",
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "backbone_initialization": "ResNet18_Weights.IMAGENET1K_V1; fine-tuned; no freeze/cache",
+  "activation_checkpointing": "harness.act_training.checkpoint_encoder",
+  "latest": {
+    "step": 10000,
+    "loss": 0.14836522936820984,
+    "legacy_l1_loss": 0.5871723294258118,
+    "movement_l1_loss": 0.10769647359848022,
+    "done_bce_loss": 0.000667120679281652,
+    "kld_loss": 0.004000164568424225,
+    "gradient_norm": 12.19200611114502,
+    "wall_s": 1855.6519540150002,
+    "steps_per_s": 5.227273346713804,
+    "peak_gpu_bytes": 1548071424
+  },
+  "last_checkpoint": "/mnt/act-source/act15-1535c8a3/main/step-010000",
+  "peak_training_gpu_bytes": 1548071424,
+  "peak_training_gpu_reserved_bytes": 2164260864,
+  "input_audit": {
+    "keys": [
+      "observation.images.own_history",
+      "observation.state"
+    ],
+    "shapes": {
+      "observation.images.own_history": [
+        1,
+        3,
+        480,
+        640
+      ],
+      "observation.state": [
+        1,
+        252
+      ]
+    },
+    "whitelist_verified": true,
+    "teacher_input_fields": 0,
+    "scope": "saved training input; own RGB history and contract context only; not closed-loop validation"
+  },
+  "wall_s": 1859.295211049,
+  "artifacts": {
+    "progress.jsonl": "6fa7b4e80da609db9aeceec053f426d72e6bd513d30b36a38aefd6fca0091666",
+    "RUN_META.json": "6f282bd8f8ebfe18f1109db16ed65fc7f509cb6117acc447ce1f6b175b3986a4",
+    "step-010000/resume.json": "2a0b1b6ebe387edfc8b3dff8a90bfb7a25e968be24d69c7e210222b26584f1c9",
+    "step-010000/optimizer.pt": "ceb7522ff00f43dc0e7eda484e17f1a7321c31d1368ef6cbf2569bafeb65a437",
+    "step-005000/resume.json": "5ac7c5b56219958c0854ffb493d6224cb4a77de5be0ffadc1bff0086da8354d2",
+    "step-005000/optimizer.pt": "8750e2b847271fa437ad4ff98a345da218e557ecc55956eb908160f2562fa0fc",
+    "step-010000/actor/SHA256.json": "de15c0e0d9d7813ab62b92495706100a0dd4ef493d06c403301f6f8763aebb97",
+    "step-010000/actor/model.safetensors": "d90a2b545709df6cd1a5972874db2e20c264007f9a798888f1bdccac22882ed1",
+    "step-010000/actor/adapter.json": "a54d8c4e1721f7282b2ae067d3935b82363af6dd5e893413c73ede2bc5c431b5",
+    "step-010000/actor/config.json": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f",
+    "step-005000/actor/SHA256.json": "3a88b2c9c02e19eec85c00272c8fc2e7917cbad2c13822940ea3d899ecdf06e0",
+    "step-005000/actor/model.safetensors": "7606ba8d5713f70aa384a2e1c8f9e2a78d51e9640c27b211519250205b9521fb",
+    "step-005000/actor/adapter.json": "b25b81a9da067d41a9a289ae4552817f3a3656c23e851ef6c71f9bb3d0de378a",
+    "step-005000/actor/config.json": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f"
+  },
+  "timing": {
+    "dataset_load_s": 15.629462866999916,
+    "setup_s": 23.173153407999962,
+    "method": "CUDA synchronized step including batch load, H2D, forward, backward, optimizer; excludes checkpoint/log",
+    "checkpoint_load_s": 1.21310428400011,
+    "inference_s": 0.010665169999811042,
+    "step_mean_s": 0.18663261015989788,
+    "step_median_s": 0.17958707550019426,
+    "step_p95_s": 0.20048114199994416
+  },
+  "original_summary": {
+    "path": "ugrp-act-l4-pilot1:/mnt/act-source/act15-1535c8a3/main/summary.json",
+    "sha256": "f55110f134dee49f5daed657a6cecb236a5de78a5a506ddc8a25a82291243d60"
+  },
+  "commands": {
+    "smoke": [
+      "/home/ugrp/ugrp-act-env/bin/python",
+      "-m",
+      "scripts.train_grasp_act",
+      "--dataset",
+      "/mnt/act-source/act15-1535c8a3/dataset",
+      "--output",
+      "/mnt/act-source/act15-1535c8a3/smoke",
+      "--stage",
+      "smoke",
+      "--steps",
+      "300",
+      "--max-wall-s",
+      "840",
+      "--run-class",
+      "dev",
+      "--profile-timing",
+      "--checkpoint-every",
+      "5000",
+      "--done-loss",
+      "balanced_bce_v1"
+    ],
+    "main": [
+      "/home/ugrp/ugrp-act-env/bin/python",
+      "-m",
+      "scripts.train_grasp_act",
+      "--dataset",
+      "/mnt/act-source/act15-1535c8a3/dataset",
+      "--output",
+      "/mnt/act-source/act15-1535c8a3/main",
+      "--stage",
+      "main",
+      "--steps",
+      "10000",
+      "--max-wall-s",
+      "21600",
+      "--run-class",
+      "dev",
+      "--profile-timing",
+      "--checkpoint-every",
+      "5000",
+      "--done-loss",
+      "balanced_bce_v1",
+      "--resume",
+      "/mnt/act-source/act15-1535c8a3/smoke/step-000300",
+      "--smoke-summary",
+      "/mnt/act-source/act15-1535c8a3/smoke/summary.json",
+      "--approval",
+      "/mnt/act-source/act15-1535c8a3/main-approval.json"
+    ]
+  }
+}

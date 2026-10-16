@@ -86,6 +86,8 @@ def test_bundle_default_identity_three_candidates_relay_and_real_wiring():
     for name in ['e2e-idle-a-s61001-r2','e2e-idle-b-s61003-r3']:
         assert accepted_call_id(name+':call-0001-r1:1')
     assert not accepted_call_id('e2e-idle-a-s61010-r2:call-0001-r1:1')
+    pytest.importorskip('mujoco', exc_type=ModuleNotFoundError)
+    pytest.importorskip('matplotlib', exc_type=ModuleNotFoundError)
     cov=json.loads(Path('configs/e2e_nees_egomap70_dev_v1.json').read_text())
     r=Robot('r1',61001,cov,Options(),exploration_progress='frontier_progress_v1',
         boundary_views='candidate_views_v1',boundary_association='extent_v1',boundary_retry='navigation_v1')
@@ -176,7 +178,7 @@ def test_unstable_association_is_preserved_in_actual_ownmap_record():
         receive(association, boundary, i, i*.2)
     assert not g.e2e_gate.references
     g.explorer = SimpleNamespace(local_pose=np.zeros(3)); g.stage = 'explore'
-    robot = SimpleNamespace(goal=g, nav_command={'kind':'hold'})
+    robot = SimpleNamespace(goal=g, nav_command={'kind':'hold'}, beam=None)
     obs = {'frame_id':2, 'sha256':'own-frame'}
     record = ownmap_record(robot, obs, {'boundary_association':association.last}, .4)
     saved = json.loads(json.dumps(record))['boundary_association']
@@ -253,6 +255,8 @@ def test_saved_view_probe_forwards_observed_keyword_and_restores_hook(monkeypatc
 def test_native_artifact_correction_preserves_original_manifest_and_verifies_entries():
     import hashlib
     correction = json.loads(Path('experiments/2026-10-12-merge-train/pr453/native-artifact-correction.json').read_text())
+    snapshots = json.loads(Path('experiments/2026-10-12-merge-train/merge-a/native-artifact-snapshots.json').read_text())
+    assert snapshots['source_sha'] == correction['source_sha']
     manifest = Path(correction['original_manifest']).read_bytes()
     assert hashlib.sha256(manifest).hexdigest() == correction['original_manifest_sha256']
     entries = json.loads(manifest)
@@ -262,6 +266,12 @@ def test_native_artifact_correction_preserves_original_manifest_and_verifies_ent
             item = correction['corrections'][name]
             assert recorded == item['recorded']
             recorded = item['corrected']
-        data = Path(name).read_bytes()
+        # README and launcher text continued evolving after this historical audit.
+        # Verify their preserved source bytes, without rewriting the old manifest.
+        snapshot = snapshots['artifacts'].get(name)
+        data = Path(snapshot['preserved'] if snapshot else name).read_bytes()
+        if snapshot:
+            assert snapshot['bytes'] == recorded['bytes']
+            assert snapshot['sha256'] == recorded['sha256']
         assert len(data) == recorded['bytes']
         assert hashlib.sha256(data).hexdigest() == recorded['sha256']

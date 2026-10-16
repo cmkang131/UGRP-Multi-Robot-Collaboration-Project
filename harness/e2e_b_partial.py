@@ -32,6 +32,14 @@ def board_half_extents():
 
 def rect_sd(points, center, yaw, half):
     """Signed distance (m) from points to a centred rectangle (negative inside)."""
+    from harness.e2e_speed5 import ACTIVE
+    if ACTIVE.get() != 'off':
+        # Broadcasting scalar components avoids an N*2 temporary at each grid pose.
+        c, s = math.cos(yaw), math.sin(yaw)
+        d = np.asarray(points, float)-center
+        ex = np.abs(c*d[...,0]+s*d[...,1])-half[0]
+        ey = np.abs(-s*d[...,0]+c*d[...,1])-half[1]
+        return np.hypot(np.maximum(ex,0),np.maximum(ey,0))+np.minimum(np.maximum(ex,ey),0)
     c, s = math.cos(yaw), math.sin(yaw)
     d = np.asarray(points, float)-center
     q = np.stack([c*d[..., 0]+s*d[..., 1], -s*d[..., 0]+c*d[..., 1]], axis=-1)
@@ -86,7 +94,13 @@ def estimate(contour, servo, usable, board_half=None, *, cfg=CFG):
     cx, cy = np.meshgrid(m[0]+g, m[1]+g); centers = np.stack([cx.ravel(), cy.ravel()], 1)
     yaws = np.deg2rad(np.arange(0, 180, cfg['yaw_step_deg']))
     t = cfg['trunc_m']; cost = np.empty((len(yaws), len(centers)))
+    from harness.e2e_speed5 import ACTIVE, rectangle_grid_cost
     for i, yaw in enumerate(yaws):
+        if ACTIVE.get() in ('lean_v2','lean_v3'):
+            c=rectangle_grid_cost(sub,centers,yaw,half,t)
+            if len(floor_i):c+=rectangle_grid_cost(floor_i,centers,yaw,half,t,interior=True)
+            cost[i]=c
+            continue
         e = np.minimum(np.abs(rect_sd(sub[None], centers[:, None], yaw, half)), t)**2
         c = e.mean(axis=1)
         if len(floor_i): c = c+(np.minimum(np.maximum(rect_sd(floor_i[None], centers[:, None], yaw, half), 0), t)**2).mean(axis=1)
@@ -182,7 +196,9 @@ def detect_partial(rgb, servo, pose, *, diagnostics=None, board_half=None):
         if quad is not None:  # a complete quad belongs to the full-boundary stage
             if diagnostics is not None: diagnostics.setdefault('patches', []).append(dict(reason='full_quad_stage'))
             continue
-        fit, reason, stats = estimate(contour, servo, usable, board_half)
+        from harness.e2e_speed5 import ACTIVE
+        cfg = dict(CFG,interior_samples=80) if ACTIVE.get() in ('lean_v1','lean_v2','lean_v3') else CFG
+        fit, reason, stats = estimate(contour, servo, usable, board_half, cfg=cfg)
         if diagnostics is not None: diagnostics.setdefault('patches', []).append(dict(full_quad_reason=why, reason=reason, **stats))
         if fit is None: continue
         polygon = transform(np.asarray(fit['corners_robot_m']), pose)

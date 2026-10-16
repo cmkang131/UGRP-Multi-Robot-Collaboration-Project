@@ -1,0 +1,24 @@
+{
+  "alert_path": "/Users/changmin/projects/ugrp/outputs/model-endpoint-alerts/last-alerts.json",
+  "active_alerts": [
+    {
+      "kind": "price_increase",
+      "model": "google/gemma-4-31b-it",
+      "prices": {
+        "completion": {
+          "baseline": 0.34,
+          "now": 0.51
+        },
+        "input_cache_read": {
+          "baseline": 0.05,
+          "now": 0.075
+        },
+        "prompt": {
+          "baseline": 0.09,
+          "now": 0.135
+        }
+      },
+      "provider": "DeepInfra"
+    }
+  ]
+}

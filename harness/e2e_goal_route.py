@@ -108,7 +108,14 @@ class IntegratedGoalRoute(GoalRoute):
         own.scan(beam); own.rgb_ref(beam['rgb'], 'r1', now, self.e2e_observed)
         own.numbers(beam['pose_own_m'], 3, 'OWN_BEAM_POSE')
         if now-beam['rgb']['t_sim'] > .25: raise ContractViolation('FRESH_OWN_BEAM_REQUIRED')
-        if abs(beam['pose_own_m'][2]) > math.radians(5):
+        diagnostic=getattr(self,'e2e_route_guard','off')!='off'
+        if diagnostic:
+            self.e2e_route_diagnostics=dict(t=now,beam_pose_own_m=copy.deepcopy(beam['pose_own_m']),beam_rgb=copy.deepcopy(beam['rgb']),sigma_xy_m=math.sqrt(float(np.linalg.eigvalsh(np.asarray(self.pose_covariance())[:2,:2]).max())),stage='beam_axes')
+        from harness.e2e_beam_axis import error as axis_error
+        beam_axis_error=axis_error(beam['pose_own_m'][2],getattr(self,'e2e_beam_axis','off'))
+        if diagnostic:self.e2e_route_diagnostics['beam_axis_error_rad']=beam_axis_error
+        carrier_axes=getattr(self,'e2e_carrier_axes','off')=='beam_v1'
+        if beam_axis_error > math.radians(5) and not carrier_axes:
             raise ContractViolation('S3_OWN_AXES_BEAM_ALIGNMENT_REQUIRED')
         entity, reference = self.entities.get('B'), self.e2e_gate.references.get('B')
         if entity is None or entity['source'] != 'own' or reference is None:
@@ -131,6 +138,10 @@ class IntegratedGoalRoute(GoalRoute):
         first, last = transform([start, target], tf)
         cells = astar(allowed, np.asarray(grid.cell(first))-lo, np.asarray(grid.cell(last))-lo,
                       grid.resolution, clearance)
+        if diagnostic:
+            from harness.e2e_route_guard import search as dev_search
+            self.e2e_route_diagnostics.update(stage='grid_route',strict_margin_m=margin,B_own_m=list(target))
+            allowed,clearance,lo,cells=dev_search(self,grid,tf,beam,first,last,margin,(allowed,clearance,lo,cells))
         if not cells: raise ContractViolation('OWN_GRID_ROUTE_UNAVAILABLE')
         path = [start] + transform([grid.point(np.asarray(c)+lo) for c in cells], inverse(tf)).tolist() + [list(target)]
 
@@ -141,7 +152,13 @@ class IntegratedGoalRoute(GoalRoute):
                 if not (0 <= y < allowed.shape[0] and 0 <= x < allowed.shape[1] and allowed[y, x]): return False
             return True
 
-        points = cardinal_path(path, clear)
+        carrier_basis=None
+        if carrier_axes:
+            from harness.e2e_carrier_axes import basis,to_axes,from_axes
+            carrier_basis=basis(beam,target)
+            points=from_axes(cardinal_path(to_axes(path,carrier_basis),
+                lambda a,b:clear(*from_axes([a,b],carrier_basis))),carrier_basis)
+        else:points = cardinal_path(path, clear)
         # Occupied cell edges retain the actual wall RGB references. Empty or
         # unknown cells are not fabricated as observations of free space.
         refs = {r['frame_id']: r for r in sources}; walls = []
@@ -160,11 +177,14 @@ class IntegratedGoalRoute(GoalRoute):
                       walls=walls, goal=dict(label='B', sources=copy.deepcopy(goal_sources)), sources=sources)
         route = dict(schema=own.ROUTE_SCHEMA, robot_id='r1', frame_id=sources[-1]['frame_id'],
                      map_version=self.e2e_version, own_map=mapped, B_rgb_sources=copy.deepcopy(goal_sources), waypoints=points)
+        if carrier_basis is not None:
+            from harness.e2e_carrier_axes import ROUTE_SCHEMA
+            route.update(schema=ROUTE_SCHEMA,carrier_basis=carrier_basis)
         route['route_hash'] = digest(route)
         compiled = compile_route(route, now=now, observed=sources, profiles=profiles, option='on_v1',
                                  source='own_map', pulse_budget=pulse_budget,
                                  setdown_only_when_relook=self.e2e_options['setdown_only_when_relook'])
-        return dict(source='own_map', route=route, compiled=compiled,
+        return dict(source='own_map', observed_coverage_complete=not getattr(self,'e2e_route_diagnostics',{}).get('would_stop_unknown',False), route=route, compiled=compiled,
                     inputs=own.s3_inputs(route, rid='r1', now=now, observed=sources),
                     proposal=dict(kind='OwnRoute', route=wire_route(route), source_message_id=None),
                     s3_plan={**plan_from_route(None, compiled), 'agreement_route_hash':wire_route(route)['route_hash']})

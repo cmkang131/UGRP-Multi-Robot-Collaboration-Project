@@ -1,0 +1,1305 @@
+{
+  "schema": "ugrp.act15.summary.v1",
+  "complete": true,
+  "date": "2026-10-15",
+  "scope": "DEV one-robot near-field box grasp; no navigation/release/E2E/real-robot or default-adoption claim",
+  "starting_sha": "e03667a9",
+  "training_source_sha": "1535c8a3e4e10184669304081aaaf7ce4eff3512",
+  "evaluation_source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+  "model_sha256": "d90a2b545709df6cd1a5972874db2e20c264007f9a798888f1bdccac22882ed1",
+  "dataset": {
+    "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset",
+    "manifest_sha256": "314539e8d815eee17dcc8bbf488afaefca18e4fe6cb425ff5bd98b5dcd407b64",
+    "bytes": 5804766891,
+    "episodes": 70,
+    "rows": {
+      "train": 22852,
+      "validation": 1847
+    },
+    "dagger_rows": 6161
+  },
+  "cohorts": {
+    "same20": {
+      "N": 20,
+      "gate_events": [
+        {
+          "gate": "approach",
+          "received": 20,
+          "passed": 13,
+          "rejected": 7
+        },
+        {
+          "gate": "alignment",
+          "received": 13,
+          "passed": 2,
+          "rejected": 11
+        },
+        {
+          "gate": "grasp",
+          "received": 2,
+          "passed": 2,
+          "rejected": 0
+        },
+        {
+          "gate": "lift_confirmation",
+          "received": 2,
+          "passed": 0,
+          "rejected": 2
+        }
+      ],
+      "completion_gate": {
+        "received": 0,
+        "passed": 0,
+        "rejected": 0
+      },
+      "stable_lift": 0,
+      "completed": 0,
+      "cap_end": 8,
+      "HOST_ERROR": 0,
+      "rejection_distribution": {
+        "alignment_not_passed": 11,
+        "approach_not_passed": 7,
+        "lift_confirmation_not_passed": 2
+      },
+      "wall_sim_median": 3.5471585221361277,
+      "model_calls": 1555
+    },
+    "new20": {
+      "N": 20,
+      "gate_events": [
+        {
+          "gate": "approach",
+          "received": 20,
+          "passed": 12,
+          "rejected": 8
+        },
+        {
+          "gate": "alignment",
+          "received": 12,
+          "passed": 1,
+          "rejected": 11
+        },
+        {
+          "gate": "grasp",
+          "received": 1,
+          "passed": 0,
+          "rejected": 1
+        },
+        {
+          "gate": "lift_confirmation",
+          "received": 0,
+          "passed": 0,
+          "rejected": 0
+        }
+      ],
+      "completion_gate": {
+        "received": 0,
+        "passed": 0,
+        "rejected": 0
+      },
+      "stable_lift": 0,
+      "completed": 0,
+      "cap_end": 7,
+      "HOST_ERROR": 0,
+      "rejection_distribution": {
+        "alignment_not_passed": 11,
+        "approach_not_passed": 8,
+        "grasp_not_passed": 1
+      },
+      "wall_sim_median": 3.34705989383841,
+      "model_calls": 1584
+    }
+  },
+  "primary_runs": [
+    {
+      "run": "act15-n8-91420-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91420-686cccb6/raw",
+      "status": "complete",
+      "exit": "0",
+      "seed": 91420,
+      "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "completed": false,
+      "stable_lift": false,
+      "cap_end": true,
+      "first_failed_gate": "alignment",
+      "wall_s": 274.27221387700047,
+      "sim_s": 89.999999999569,
+      "own_input_rows": 900,
+      "policy_calls": 113,
+      "hash_manifest": {
+        "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91420-686cccb6/SHA256SUMS",
+        "sha256": "fb681cd34dddbd342077aed8d0aeb1f3975442263a5f0191c117821dff837604"
+      }
+    },
+    {
+      "run": "act15-n8-91434-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91434-686cccb6/raw",
+      "status": "complete",
+      "exit": "0",
+      "seed": 91434,
+      "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "completed": false,
+      "stable_lift": false,
+      "cap_end": true,
+      "first_failed_gate": "alignment",
+      "wall_s": 268.55326214199886,
+      "sim_s": 89.999999999569,
+      "own_input_rows": 900,
+      "policy_calls": 113,
+      "hash_manifest": {
+        "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91434-686cccb6/SHA256SUMS",
+        "sha256": "8cd2f5cf07f97beb15c9924b08605652d03840466c447a6e75a6f899b177cab2"
+      }
+    },
+    {
+      "run": "act15-n8-91422-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91422-686cccb6/raw",
+      "status": "complete",
+      "exit": "0",
+      "seed": 91422,
+      "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "completed": false,
+      "stable_lift": false,
+      "cap_end": false,
+      "first_failed_gate": "alignment",
+      "wall_s": 139.66283328700047,
+      "sim_s": 45.40000000013195,
+      "own_input_rows": 455,
+      "policy_calls": 53,
+      "hash_manifest": {
+        "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91422-686cccb6/SHA256SUMS",
+        "sha256": "f01fe0bfeeb63dd16950acb07b1c3b9fb00b5dc30fb81e1b311fe44bc78ca4dd"
+      }
+    },
+    {
+      "run": "act15-n8-91426-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91426-686cccb6/raw",
+      "status": "complete",
+      "exit": "0",
+      "seed": 91426,
+      "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "completed": false,
+      "stable_lift": false,
+      "cap_end": false,
+      "first_failed_gate": "alignment",
+      "wall_s": 75.51375187099984,
+      "sim_s": 23.800000000028817,
+      "own_input_rows": 239,
+      "policy_calls": 26,
+      "hash_manifest": {
+        "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91426-686cccb6/SHA256SUMS",
+        "sha256": "8d38f73cc0d14b3edf76876837fcee1da303ce76645e56a24f6b947637f444d5"
+      }
+    },
+    {
+      "run": "act15-n8-91421-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91421-686cccb6/raw",
+      "status": "complete",
+      "exit": "0",
+      "seed": 91421,
+      "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "completed": false,
+      "stable_lift": false,
+      "cap_end": true,
+      "first_failed_gate": "approach",
+      "wall_s": 339.0371105329996,
+      "sim_s": 89.999999999569,
+      "own_input_rows": 900,
+      "policy_calls": 113,
+      "hash_manifest": {
+        "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91421-686cccb6/SHA256SUMS",
+        "sha256": "b586cd6c0cf984077f5cd3bc993606aeda491fa990a0f6d381e0b5b0e42a221d"
+      }
+    },
+    {
+      "run": "act15-n8-91423-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91423-686cccb6/raw",
+      "status": "complete",
+      "exit": "0",
+      "seed": 91423,
+      "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "completed": false,
+      "stable_lift": false,
+      "cap_end": false,
+      "first_failed_gate": "approach",
+      "wall_s": 225.46468127700064,
+      "sim_s": 59.80000000020071,
+      "own_input_rows": 599,
+      "policy_calls": 71,
+      "hash_manifest": {
+        "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91423-686cccb6/SHA256SUMS",
+        "sha256": "a6ac5746652e37e42c99c8449f8786f77b1eec68224f5cd15e26800c71957db9"
+      }
+    },
+    {
+      "run": "act15-n8-91424-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91424-686cccb6/raw",
+      "status": "complete",
+      "exit": "0",
+      "seed": 91424,
+      "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "completed": false,
+      "stable_lift": false,
+      "cap_end": true,
+      "first_failed_gate": "lift_confirmation",
+      "wall_s": 337.5378768130013,
+      "sim_s": 89.999999999569,
+      "own_input_rows": 900,
+      "policy_calls": 113,
+      "hash_manifest": {
+        "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91424-686cccb6/SHA256SUMS",
+        "sha256": "32885cc810407c76869fdf81ac806fd71d423526202d5b6e60e1dd26b03a9579"
+      }
+    },
+    {
+      "run": "act15-n8-91425-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91425-686cccb6/raw",
+      "status": "complete",
+      "exit": "0",
+      "seed": 91425,
+      "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "completed": false,
+      "stable_lift": false,
+      "cap_end": false,
+      "first_failed_gate": "approach",
+      "wall_s": 219.11883478800155,
+      "sim_s": 66.10000000013416,
+      "own_input_rows": 662,
+      "policy_calls": 79,
+      "hash_manifest": {
+        "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91425-686cccb6/SHA256SUMS",
+        "sha256": "29a815f12d5d33f9ddf02c7c4bb8bcd8e21dc9620e7881c254b4a04da4d0e119"
+      }
+    },
+    {
+      "run": "act15-n8-91427-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91427-686cccb6/raw",
+      "status": "complete",
+      "exit": "0",
+      "seed": 91427,
+      "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "completed": false,
+      "stable_lift": false,
+      "cap_end": false,
+      "first_failed_gate": "approach",
+      "wall_s": 207.4258234480003,
+      "sim_s": 55.00000000017779,
+      "own_input_rows": 551,
+      "policy_calls": 65,
+      "hash_manifest": {
+        "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91427-686cccb6/SHA256SUMS",
+        "sha256": "35c07f66e4031c11d9583f56c8efad233db863d33468841f8a9cb2f16715541d"
+      }
+    },
+    {
+      "run": "act15-n8-91428-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91428-686cccb6/raw",
+      "status": "complete",
+      "exit": "0",
+      "seed": 91428,
+      "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "completed": false,
+      "stable_lift": false,
+      "cap_end": false,
+      "first_failed_gate": "approach",
+      "wall_s": 91.93567117800012,
+      "sim_s": 27.000000000044096,
+      "own_input_rows": 271,
+      "policy_calls": 30,
+      "hash_manifest": {
+        "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91428-686cccb6/SHA256SUMS",
+        "sha256": "b1910992571d114228835c01bad0e5996e5c0246bfe5d1ba0a2cd69585c4a043"
+      }
+    },
+    {
+      "run": "act15-n8-91429-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91429-686cccb6/raw",
+      "status": "complete",
+      "exit": "0",
+      "seed": 91429,
+      "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "completed": false,
+      "stable_lift": false,
+      "cap_end": true,
+      "first_failed_gate": "alignment",
+      "wall_s": 373.5681621949989,
+      "sim_s": 89.999999999569,
+      "own_input_rows": 900,
+      "policy_calls": 113,
+      "hash_manifest": {
+        "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91429-686cccb6/SHA256SUMS",
+        "sha256": "7117813ff71bfdfb91a31c5e12eeff04d88cbaf4bb606eb81acd2b793ea33e73"
+      }
+    },
+    {
+      "run": "act15-n8-91430-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91430-686cccb6/raw",
+      "status": "complete",
+      "exit": "0",
+      "seed": 91430,
+      "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "completed": false,
+      "stable_lift": false,
+      "cap_end": true,
+      "first_failed_gate": "alignment",
+      "wall_s": 312.74959134300116,
+      "sim_s": 89.999999999569,
+      "own_input_rows": 900,
+      "policy_calls": 113,
+      "hash_manifest": {
+        "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91430-686cccb6/SHA256SUMS",
+        "sha256": "7dbd61d51cc9b7d41c7a4ad3f0b5919e06ae4541bbfcd0754559ae71c16ff9c2"
+      }
+    },
+    {
+      "run": "act15-n8-91431-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91431-686cccb6/raw",
+      "status": "complete",
+      "exit": "0",
+      "seed": 91431,
+      "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "completed": false,
+      "stable_lift": false,
+      "cap_end": false,
+      "first_failed_gate": "alignment",
+      "wall_s": 225.82402022599854,
+      "sim_s": 60.60000000020453,
+      "own_input_rows": 607,
+      "policy_calls": 72,
+      "hash_manifest": {
+        "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91431-686cccb6/SHA256SUMS",
+        "sha256": "64697e09376d0711bca1f3592024d50672c1fd10011d90eee98a53c9d353c7a2"
+      }
+    },
+    {
+      "run": "act15-n8-91432-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91432-686cccb6/raw",
+      "status": "complete",
+      "exit": "0",
+      "seed": 91432,
+      "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "completed": false,
+      "stable_lift": false,
+      "cap_end": false,
+      "first_failed_gate": "lift_confirmation",
+      "wall_s": 83.24714536000101,
+      "sim_s": 22.90000000002452,
+      "own_input_rows": 230,
+      "policy_calls": 25,
+      "hash_manifest": {
+        "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91432-686cccb6/SHA256SUMS",
+        "sha256": "7d73c2eb6bb16247fad58dbb23c3a0aa9224a3284ef111cd43afb15216ba4854"
+      }
+    },
+    {
+      "run": "act15-n8-91433-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91433-686cccb6/raw",
+      "status": "complete",
+      "exit": "0",
+      "seed": 91433,
+      "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "completed": false,
+      "stable_lift": false,
+      "cap_end": false,
+      "first_failed_gate": "alignment",
+      "wall_s": 194.71292915200138,
+      "sim_s": 57.40000000018925,
+      "own_input_rows": 575,
+      "policy_calls": 68,
+      "hash_manifest": {
+        "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91433-686cccb6/SHA256SUMS",
+        "sha256": "f4926456cf0d5159d5947962104e28a0c7cc847c20a404dfaf7f4cff2ae699a1"
+      }
+    },
+    {
+      "run": "act15-n8-91435-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91435-686cccb6/raw",
+      "status": "complete",
+      "exit": "0",
+      "seed": 91435,
+      "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "completed": false,
+      "stable_lift": false,
+      "cap_end": true,
+      "first_failed_gate": "alignment",
+      "wall_s": 345.7484462829998,
+      "sim_s": 89.999999999569,
+      "own_input_rows": 900,
+      "policy_calls": 113,
+      "hash_manifest": {
+        "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91435-686cccb6/SHA256SUMS",
+        "sha256": "aef69ec49468268988bc18b95771b1d2b4afe49d08776b11e796abb42f61d959"
+      }
+    },
+    {
+      "run": "act15-n8-91436-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91436-686cccb6/raw",
+      "status": "complete",
+      "exit": "0",
+      "seed": 91436,
+      "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "completed": false,
+      "stable_lift": false,
+      "cap_end": false,
+      "first_failed_gate": "approach",
+      "wall_s": 222.68083945299986,
+      "sim_s": 63.80000000018854,
+      "own_input_rows": 639,
+      "policy_calls": 76,
+      "hash_manifest": {
+        "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91436-686cccb6/SHA256SUMS",
+        "sha256": "fdc8be8768abd89581dc1bb13349446f976248c344611c23fd2d643e99cea9fc"
+      }
+    },
+    {
+      "run": "act15-n8-91437-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91437-686cccb6/raw",
+      "status": "complete",
+      "exit": "0",
+      "seed": 91437,
+      "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "completed": false,
+      "stable_lift": false,
+      "cap_end": false,
+      "first_failed_gate": "alignment",
+      "wall_s": 167.27690355400046,
+      "sim_s": 50.20000000015487,
+      "own_input_rows": 503,
+      "policy_calls": 59,
+      "hash_manifest": {
+        "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91437-686cccb6/SHA256SUMS",
+        "sha256": "7de914ac0fdd5626734eb1955477732a48591ff3b20deaf540b83e961338e956"
+      }
+    },
+    {
+      "run": "act15-n8-91438-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91438-686cccb6/raw",
+      "status": "complete",
+      "exit": "0",
+      "seed": 91438,
+      "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "completed": false,
+      "stable_lift": false,
+      "cap_end": true,
+      "first_failed_gate": "approach",
+      "wall_s": 324.36195795300046,
+      "sim_s": 89.999999999569,
+      "own_input_rows": 900,
+      "policy_calls": 113,
+      "hash_manifest": {
+        "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91438-686cccb6/SHA256SUMS",
+        "sha256": "1fe21aa2e46f8069426014918c00b929219730e6915432a80e5fe36cc86ea38d"
+      }
+    },
+    {
+      "run": "act15-n8-91439-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91439-686cccb6/raw",
+      "status": "complete",
+      "exit": "0",
+      "seed": 91439,
+      "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "completed": false,
+      "stable_lift": false,
+      "cap_end": false,
+      "first_failed_gate": "alignment",
+      "wall_s": 92.9548598220008,
+      "sim_s": 23.900000000029294,
+      "own_input_rows": 240,
+      "policy_calls": 27,
+      "hash_manifest": {
+        "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91439-686cccb6/SHA256SUMS",
+        "sha256": "1d67f42be16e92a3b80efc22ade48c950f2ad69dd17fce55ebd8a6ab655589a3"
+      }
+    },
+    {
+      "run": "act15-n8-91500-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91500-686cccb6/raw",
+      "status": "complete",
+      "exit": "0",
+      "seed": 91500,
+      "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "completed": false,
+      "stable_lift": false,
+      "cap_end": true,
+      "first_failed_gate": "alignment",
+      "wall_s": 327.14603604400145,
+      "sim_s": 89.999999999569,
+      "own_input_rows": 900,
+      "policy_calls": 113,
+      "hash_manifest": {
+        "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91500-686cccb6/SHA256SUMS",
+        "sha256": "762ea85990aaa12b399500946755e75404acf01146617c28fe77550f3ee6aa6a"
+      }
+    },
+    {
+      "run": "act15-n8-91501-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91501-686cccb6/raw",
+      "status": "complete",
+      "exit": "0",
+      "seed": 91501,
+      "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "completed": false,
+      "stable_lift": false,
+      "cap_end": false,
+      "first_failed_gate": "approach",
+      "wall_s": 222.12781002300108,
+      "sim_s": 61.40000000020835,
+      "own_input_rows": 615,
+      "policy_calls": 73,
+      "hash_manifest": {
+        "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91501-686cccb6/SHA256SUMS",
+        "sha256": "fcae62f21028b34211c4b2996251bf423d18c888cebc4b7ac14a24e52504f6d9"
+      }
+    },
+    {
+      "run": "act15-n8-91502-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91502-686cccb6/raw",
+      "status": "complete",
+      "exit": "0",
+      "seed": 91502,
+      "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "completed": false,
+      "stable_lift": false,
+      "cap_end": false,
+      "first_failed_gate": "alignment",
+      "wall_s": 215.06762586899822,
+      "sim_s": 58.20000000019307,
+      "own_input_rows": 583,
+      "policy_calls": 69,
+      "hash_manifest": {
+        "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91502-686cccb6/SHA256SUMS",
+        "sha256": "e193345cd35d26a2e8b75f8f8156af72cb7bcb6cabfc7daf6fa0c1d31236a9b6"
+      }
+    },
+    {
+      "run": "act15-n8-91503-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91503-686cccb6/raw",
+      "status": "complete",
+      "exit": "0",
+      "seed": 91503,
+      "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "completed": false,
+      "stable_lift": false,
+      "cap_end": false,
+      "first_failed_gate": "alignment",
+      "wall_s": 288.2000796950015,
+      "sim_s": 77.09999999987404,
+      "own_input_rows": 772,
+      "policy_calls": 93,
+      "hash_manifest": {
+        "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91503-686cccb6/SHA256SUMS",
+        "sha256": "549028b6269e6ddb94badc815db9207348fc0546a41143502108241a6874fb99"
+      }
+    },
+    {
+      "run": "act15-n8-91504-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91504-686cccb6/raw",
+      "status": "complete",
+      "exit": "0",
+      "seed": 91504,
+      "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "completed": false,
+      "stable_lift": false,
+      "cap_end": true,
+      "first_failed_gate": "alignment",
+      "wall_s": 298.48754926999936,
+      "sim_s": 89.999999999569,
+      "own_input_rows": 900,
+      "policy_calls": 113,
+      "hash_manifest": {
+        "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91504-686cccb6/SHA256SUMS",
+        "sha256": "9b214d476e8d17be260d38a287c23842edfaf8750efe60db77bb50a84fc68fd7"
+      }
+    },
+    {
+      "run": "act15-n8-91505-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91505-686cccb6/raw",
+      "status": "complete",
+      "exit": "0",
+      "seed": 91505,
+      "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "completed": false,
+      "stable_lift": false,
+      "cap_end": false,
+      "first_failed_gate": "approach",
+      "wall_s": 126.78615279699989,
+      "sim_s": 35.000000000082295,
+      "own_input_rows": 351,
+      "policy_calls": 40,
+      "hash_manifest": {
+        "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91505-686cccb6/SHA256SUMS",
+        "sha256": "4db43cbaf648504d8e64fb43f1a7d4f6186e4c0233197cc0858eb41ce1f520e5"
+      }
+    },
+    {
+      "run": "act15-n8-91506-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91506-686cccb6/raw",
+      "status": "complete",
+      "exit": "0",
+      "seed": 91506,
+      "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "completed": false,
+      "stable_lift": false,
+      "cap_end": false,
+      "first_failed_gate": "approach",
+      "wall_s": 206.1190182850005,
+      "sim_s": 59.00000000019689,
+      "own_input_rows": 591,
+      "policy_calls": 70,
+      "hash_manifest": {
+        "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91506-686cccb6/SHA256SUMS",
+        "sha256": "205321e812271e4eb5f6fd3fe2bb294bba1fcbc57005380ba2193c8b1e4b0f23"
+      }
+    },
+    {
+      "run": "act15-n8-91507-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91507-686cccb6/raw",
+      "status": "complete",
+      "exit": "0",
+      "seed": 91507,
+      "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "completed": false,
+      "stable_lift": false,
+      "cap_end": true,
+      "first_failed_gate": "alignment",
+      "wall_s": 324.51367161000053,
+      "sim_s": 89.999999999569,
+      "own_input_rows": 900,
+      "policy_calls": 113,
+      "hash_manifest": {
+        "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91507-686cccb6/SHA256SUMS",
+        "sha256": "0bd7df2b906d9eea0d4866c0ed45f23a09e1e45fd89b8713983781cdf0bff227"
+      }
+    },
+    {
+      "run": "act15-n8-91508-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91508-686cccb6/raw",
+      "status": "complete",
+      "exit": "0",
+      "seed": 91508,
+      "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "completed": false,
+      "stable_lift": false,
+      "cap_end": false,
+      "first_failed_gate": "alignment",
+      "wall_s": 224.49658715400074,
+      "sim_s": 67.00000000011288,
+      "own_input_rows": 671,
+      "policy_calls": 80,
+      "hash_manifest": {
+        "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91508-686cccb6/SHA256SUMS",
+        "sha256": "92ccfb6d6c4c6d968308cdc94824c10fe1c4e61a098c06819c7f73f94e59ac2e"
+      }
+    },
+    {
+      "run": "act15-n8-91509-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91509-686cccb6/raw",
+      "status": "complete",
+      "exit": "0",
+      "seed": 91509,
+      "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "completed": false,
+      "stable_lift": false,
+      "cap_end": true,
+      "first_failed_gate": "approach",
+      "wall_s": 282.0741585930009,
+      "sim_s": 89.999999999569,
+      "own_input_rows": 900,
+      "policy_calls": 113,
+      "hash_manifest": {
+        "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91509-686cccb6/SHA256SUMS",
+        "sha256": "73b6699cb37e4dbb74c9575cf9c34d3ded8f3adaa4ca9a0c564ced8b15d15fae"
+      }
+    },
+    {
+      "run": "act15-n8-91510-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91510-686cccb6/raw",
+      "status": "complete",
+      "exit": "0",
+      "seed": 91510,
+      "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "completed": false,
+      "stable_lift": false,
+      "cap_end": true,
+      "first_failed_gate": "alignment",
+      "wall_s": 265.0176127609993,
+      "sim_s": 89.999999999569,
+      "own_input_rows": 900,
+      "policy_calls": 113,
+      "hash_manifest": {
+        "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91510-686cccb6/SHA256SUMS",
+        "sha256": "f8aa3f46485ca69f8ed4cf605f4d5880b43f9f2490bc0fd0f2f02ba0e11b3f66"
+      }
+    },
+    {
+      "run": "act15-n8-91511-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91511-686cccb6/raw",
+      "status": "complete",
+      "exit": "0",
+      "seed": 91511,
+      "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "completed": false,
+      "stable_lift": false,
+      "cap_end": false,
+      "first_failed_gate": "alignment",
+      "wall_s": 75.95824385099877,
+      "sim_s": 19.900000000010195,
+      "own_input_rows": 200,
+      "policy_calls": 22,
+      "hash_manifest": {
+        "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91511-686cccb6/SHA256SUMS",
+        "sha256": "04072415daae2d1ef2f80cd92127caa38dfb90a9fc5a67ecabbbd134a8ecd27d"
+      }
+    },
+    {
+      "run": "act15-n8-91512-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91512-686cccb6/raw",
+      "status": "complete",
+      "exit": "0",
+      "seed": 91512,
+      "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "completed": false,
+      "stable_lift": false,
+      "cap_end": false,
+      "first_failed_gate": "approach",
+      "wall_s": 212.5236264390005,
+      "sim_s": 71.00000000001829,
+      "own_input_rows": 711,
+      "policy_calls": 85,
+      "hash_manifest": {
+        "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91512-686cccb6/SHA256SUMS",
+        "sha256": "a56518cc6c975c98f08ab43856398bdffdb1af7fc58b2014d3eca4e4f7ee4b79"
+      }
+    },
+    {
+      "run": "act15-n8-91513-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91513-686cccb6/raw",
+      "status": "complete",
+      "exit": "0",
+      "seed": 91513,
+      "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "completed": false,
+      "stable_lift": false,
+      "cap_end": false,
+      "first_failed_gate": "grasp",
+      "wall_s": 70.88059848900048,
+      "sim_s": 21.200000000016402,
+      "own_input_rows": 213,
+      "policy_calls": 23,
+      "hash_manifest": {
+        "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91513-686cccb6/SHA256SUMS",
+        "sha256": "3ae971fffb76e572b93ac6bc6a58b8c960cdd5d89bd93a7236820a1568552ff6"
+      }
+    },
+    {
+      "run": "act15-n8-91514-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91514-686cccb6/raw",
+      "status": "complete",
+      "exit": "0",
+      "seed": 91514,
+      "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "completed": false,
+      "stable_lift": false,
+      "cap_end": false,
+      "first_failed_gate": "approach",
+      "wall_s": 95.3989225639998,
+      "sim_s": 30.200000000059376,
+      "own_input_rows": 303,
+      "policy_calls": 34,
+      "hash_manifest": {
+        "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91514-686cccb6/SHA256SUMS",
+        "sha256": "6c8f4da595289833d4d179bc921e3c9a5d6e1874fb7c32a733372c1c1cd66e55"
+      }
+    },
+    {
+      "run": "act15-n8-91515-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91515-686cccb6/raw",
+      "status": "complete",
+      "exit": "0",
+      "seed": 91515,
+      "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "completed": false,
+      "stable_lift": false,
+      "cap_end": false,
+      "first_failed_gate": "alignment",
+      "wall_s": 201.6207541570002,
+      "sim_s": 61.40000000020835,
+      "own_input_rows": 615,
+      "policy_calls": 73,
+      "hash_manifest": {
+        "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91515-686cccb6/SHA256SUMS",
+        "sha256": "426d3c3ac329187105391428b349f8a643a43efe534e350877389a1cd6d3986b"
+      }
+    },
+    {
+      "run": "act15-n8-91516-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91516-686cccb6/raw",
+      "status": "complete",
+      "exit": "0",
+      "seed": 91516,
+      "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "completed": false,
+      "stable_lift": false,
+      "cap_end": false,
+      "first_failed_gate": "approach",
+      "wall_s": 241.4392889339997,
+      "sim_s": 86.99999999963994,
+      "own_input_rows": 871,
+      "policy_calls": 105,
+      "hash_manifest": {
+        "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91516-686cccb6/SHA256SUMS",
+        "sha256": "d9eea11b5e3550a85b6b5d20e205e52b1823beb4bc6fb11ca329d9f401957c68"
+      }
+    },
+    {
+      "run": "act15-n8-91517-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91517-686cccb6/raw",
+      "status": "complete",
+      "exit": "0",
+      "seed": 91517,
+      "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "completed": false,
+      "stable_lift": false,
+      "cap_end": true,
+      "first_failed_gate": "alignment",
+      "wall_s": 292.1829158849996,
+      "sim_s": 89.999999999569,
+      "own_input_rows": 900,
+      "policy_calls": 113,
+      "hash_manifest": {
+        "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91517-686cccb6/SHA256SUMS",
+        "sha256": "0250080d3956587dc30a4d015c0cadafab78fa07d7172c1833737f33db21ee27"
+      }
+    },
+    {
+      "run": "act15-n8-91518-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91518-686cccb6/raw",
+      "status": "complete",
+      "exit": "0",
+      "seed": 91518,
+      "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "completed": false,
+      "stable_lift": false,
+      "cap_end": false,
+      "first_failed_gate": "approach",
+      "wall_s": 86.54845896599909,
+      "sim_s": 23.800000000028817,
+      "own_input_rows": 239,
+      "policy_calls": 26,
+      "hash_manifest": {
+        "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91518-686cccb6/SHA256SUMS",
+        "sha256": "be3036552258c9af694696f5d4dc45a238c2680ec14ca5a1dac5f543ac0e89ce"
+      }
+    },
+    {
+      "run": "act15-n8-91519-686cccb6",
+      "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91519-686cccb6/raw",
+      "status": "complete",
+      "exit": "0",
+      "seed": 91519,
+      "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "completed": false,
+      "stable_lift": false,
+      "cap_end": true,
+      "first_failed_gate": "alignment",
+      "wall_s": 277.82472281599985,
+      "sim_s": 89.999999999569,
+      "own_input_rows": 900,
+      "policy_calls": 113,
+      "hash_manifest": {
+        "path": "/home/ugrp/ugrp-sim/runs/act15-n8-91519-686cccb6/SHA256SUMS",
+        "sha256": "db9cc57398d9a26002eef3b1b73e74961a7eb1726b3d9a0fbc060a2730724845"
+      }
+    }
+  ],
+  "open_loop": {
+    "status": "complete",
+    "physical_runs": 0,
+    "raw": {
+      "path": "/home/ugrp/ugrp-sim/act15-openloop-a25d378b/summary.json",
+      "sha256": "a490c94a4aa283bf80d4f9cc1c8c20e8b53e73bf88169887228c62ab31975d2b"
+    },
+    "source_sha": "a25d378b07e8d638952545877c630b5693a562cc",
+    "reproduce": "/home/ugrp/ugrp-act-env/bin/python -m scripts.diagnose_grasp_act_act15 --dataset /home/ugrp/act13train-961aa751/dataset --models /home/ugrp/ugrp-sim/act14-models-961aa751 --output /home/ugrp/ugrp-sim/act15-openloop-a25d378b"
+  },
+  "exact_replay": {
+    "complete": 3,
+    "input_rgb_history_clock_exact": true,
+    "raw": [
+      "/home/ugrp/ugrp-sim/runs/act15-replay-p0-91420-1535c8a3/raw",
+      "/home/ugrp/ugrp-sim/runs/act15-replay-p0-91434-1535c8a3/raw",
+      "/home/ugrp/ugrp-sim/runs/act15-replay-p02-91420-1535c8a3/raw"
+    ],
+    "actual_source_sha": "efb90d1d9c74e1602a018afad68c87fe33886479"
+  },
+  "diagnostic_HOST_ERROR_raw_hashes": "act15-diagnostic-errors-raw.json",
+  "auxiliary_funnel": "act15-auxiliary-funnel.json",
+  "diagnostic_HOST_ERROR": [
+    {
+      "raw": "/home/ugrp/ugrp-sim/act15-replay-p0-91420-57baa848",
+      "category": "OpenGL initialization missing GL environment",
+      "policy_execution": false
+    },
+    {
+      "raw": "/home/ugrp/ugrp-sim/act15-replay-p0-91420-57baa848-osmesa",
+      "category": "Empty zero-inference latency percentile at report finalization; fixed1535",
+      "replayed_rows": 347
+    }
+  ],
+  "initialization_HOST_ERROR": {
+    "N": 4,
+    "runs": [
+      {
+        "run": "act15-eval-91420-2cc64d0c",
+        "exit": "1",
+        "source_sha": "2cc64d0cadae07286608465196e4568a5b55ce48",
+        "raw": "/home/ugrp/ugrp-sim/runs/act15-eval-91420-2cc64d0c/raw",
+        "manifest": "/home/ugrp/ugrp-sim/runs/act15-eval-91420-2cc64d0c/SHA256SUMS-post-compression",
+        "manifest_sha256": "03d51c12f9c61284e557642af547749bfbd56c898a79e8ffa58520b23c52295c",
+        "files_verified": 16,
+        "actual_bytes": 514954,
+        "raw_retained": true,
+        "own_lease_released": true,
+        "compression": []
+      },
+      {
+        "run": "act15-eval-91422-2cc64d0c",
+        "exit": "1",
+        "source_sha": "2cc64d0cadae07286608465196e4568a5b55ce48",
+        "raw": "/home/ugrp/ugrp-sim/runs/act15-eval-91422-2cc64d0c/raw",
+        "manifest": "/home/ugrp/ugrp-sim/runs/act15-eval-91422-2cc64d0c/SHA256SUMS-post-compression",
+        "manifest_sha256": "898f6bf42662b43e6c2cd5bf6a245228c7fe2718c6cc6c1c83758286b8cbe677",
+        "files_verified": 16,
+        "actual_bytes": 517781,
+        "raw_retained": true,
+        "own_lease_released": true,
+        "compression": []
+      },
+      {
+        "run": "act15-eval-91426-2cc64d0c",
+        "exit": "1",
+        "source_sha": "2cc64d0cadae07286608465196e4568a5b55ce48",
+        "raw": "/home/ugrp/ugrp-sim/runs/act15-eval-91426-2cc64d0c/raw",
+        "manifest": "/home/ugrp/ugrp-sim/runs/act15-eval-91426-2cc64d0c/SHA256SUMS-post-compression",
+        "manifest_sha256": "88e33d08148bead285dc6d315100b114b4baf567693905b5d4f2ab23b9216eb8",
+        "files_verified": 16,
+        "actual_bytes": 517787,
+        "raw_retained": true,
+        "own_lease_released": true,
+        "compression": []
+      },
+      {
+        "run": "act15-eval-91434-2cc64d0c",
+        "exit": "1",
+        "source_sha": "2cc64d0cadae07286608465196e4568a5b55ce48",
+        "raw": "/home/ugrp/ugrp-sim/runs/act15-eval-91434-2cc64d0c/raw",
+        "manifest": "/home/ugrp/ugrp-sim/runs/act15-eval-91434-2cc64d0c/SHA256SUMS-post-compression",
+        "manifest_sha256": "5d38352091f06cba55fbcbbd30eb0d7dc54a845de889fc2f14b01b289b5b9602",
+        "files_verified": 16,
+        "actual_bytes": 517788,
+        "raw_retained": true,
+        "own_lease_released": true,
+        "compression": []
+      }
+    ],
+    "category": "Import optional private_url after entering frozen harness namespace; fixed686 before primary40; no student commands executed"
+  },
+  "submission_refusals": {
+    "storage": [
+      {
+        "run": "act15-eval-91420-2cc64d0c",
+        "status": "SUBMISSION_REFUSED",
+        "reason": "storage_floor",
+        "simulator_started": false
+      },
+      {
+        "run": "act15-eval-91434-2cc64d0c",
+        "status": "SUBMISSION_REFUSED",
+        "reason": "storage_floor",
+        "simulator_started": false
+      },
+      {
+        "run": "act15-eval-91422-2cc64d0c",
+        "status": "SUBMISSION_REFUSED",
+        "reason": "storage_floor",
+        "simulator_started": false
+      },
+      {
+        "run": "act15-eval-91426-2cc64d0c",
+        "status": "SUBMISSION_REFUSED",
+        "reason": "storage_floor",
+        "simulator_started": false
+      }
+    ],
+    "source_clean": {
+      "run": "act15-n8-91519-686cccb6",
+      "simulation_created": false,
+      "category": "Untracked representative preview briefly staged before final submission; source-clean guard correctly refused. Moved preview to ignored output; no policy/source/seed change.",
+      "original_log": "/Users/changmin/projects/ugrp-wt/act-train/outputs/act15-ops/act15-n8-91519-686cccb6-preflight-refused.log"
+    }
+  },
+  "auxiliary_dense_TE": {
+    "profile": {
+      "chunk": 8,
+      "n_action_steps": 1,
+      "temporal_ensemble_coeff": 0.01,
+      "inference": "L4 batch1 deterministic private inference"
+    },
+    "complete": 4,
+    "completed_success": 0,
+    "stable_lift": 1,
+    "cap_end_complete": 4,
+    "interrupted": 8,
+    "interrupted_reason": "End optional slow dense-inference probe; final40 uses ACT14-matched n8 CPU schedule, model/data unchanged",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "server_source_sha": "4c1400d90701ff0704e178aa86b72b67e0cd5f2e",
+    "runs": [
+      {
+        "run": "act15-eval-91420-686cccb6",
+        "exit": "0",
+        "status": "complete",
+        "raw": "/home/ugrp/ugrp-sim/runs/act15-eval-91420-686cccb6/raw",
+        "sim_s": 89.999999999569,
+        "wall_s": 315.7550716229998,
+        "complete": true
+      },
+      {
+        "run": "act15-eval-91434-686cccb6",
+        "exit": "0",
+        "status": "complete",
+        "raw": "/home/ugrp/ugrp-sim/runs/act15-eval-91434-686cccb6/raw",
+        "sim_s": 89.999999999569,
+        "wall_s": 311.4053771809995,
+        "complete": true
+      },
+      {
+        "run": "act15-eval-91422-686cccb6",
+        "exit": "0",
+        "status": "complete",
+        "raw": "/home/ugrp/ugrp-sim/runs/act15-eval-91422-686cccb6/raw",
+        "sim_s": 89.999999999569,
+        "wall_s": 316.4955981029998,
+        "complete": true
+      },
+      {
+        "run": "act15-eval-91426-686cccb6",
+        "exit": "0",
+        "status": "complete",
+        "raw": "/home/ugrp/ugrp-sim/runs/act15-eval-91426-686cccb6/raw",
+        "sim_s": 89.999999999569,
+        "wall_s": 347.46561030500015,
+        "complete": true
+      },
+      {
+        "run": "act15-eval-91421-686cccb6",
+        "exit": "130",
+        "status": "interrupted",
+        "raw": "/home/ugrp/ugrp-sim/runs/act15-eval-91421-686cccb6/raw",
+        "sim_s": null,
+        "wall_s": 368.8211821900004,
+        "complete": false
+      },
+      {
+        "run": "act15-eval-91423-686cccb6",
+        "exit": "130",
+        "status": "interrupted",
+        "raw": "/home/ugrp/ugrp-sim/runs/act15-eval-91423-686cccb6/raw",
+        "sim_s": null,
+        "wall_s": 366.76867256900005,
+        "complete": false
+      },
+      {
+        "run": "act15-eval-91424-686cccb6",
+        "exit": "130",
+        "status": "interrupted",
+        "raw": "/home/ugrp/ugrp-sim/runs/act15-eval-91424-686cccb6/raw",
+        "sim_s": null,
+        "wall_s": 364.19059363900124,
+        "complete": false
+      },
+      {
+        "run": "act15-eval-91425-686cccb6",
+        "exit": "130",
+        "status": "interrupted",
+        "raw": "/home/ugrp/ugrp-sim/runs/act15-eval-91425-686cccb6/raw",
+        "sim_s": null,
+        "wall_s": 365.1281616110009,
+        "complete": false
+      },
+      {
+        "run": "act15-eval-91427-686cccb6",
+        "exit": "130",
+        "status": "interrupted",
+        "raw": "/home/ugrp/ugrp-sim/runs/act15-eval-91427-686cccb6/raw",
+        "sim_s": null,
+        "wall_s": 356.3983815339998,
+        "complete": false
+      },
+      {
+        "run": "act15-eval-91428-686cccb6",
+        "exit": "130",
+        "status": "interrupted",
+        "raw": "/home/ugrp/ugrp-sim/runs/act15-eval-91428-686cccb6/raw",
+        "sim_s": null,
+        "wall_s": 354.66016925199983,
+        "complete": false
+      },
+      {
+        "run": "act15-eval-91429-686cccb6",
+        "exit": "130",
+        "status": "interrupted",
+        "raw": "/home/ugrp/ugrp-sim/runs/act15-eval-91429-686cccb6/raw",
+        "sim_s": null,
+        "wall_s": 352.9305378040008,
+        "complete": false
+      },
+      {
+        "run": "act15-eval-91430-686cccb6",
+        "exit": "130",
+        "status": "interrupted",
+        "raw": "/home/ugrp/ugrp-sim/runs/act15-eval-91430-686cccb6/raw",
+        "sim_s": null,
+        "wall_s": 351.6353847980008,
+        "complete": false
+      }
+    ],
+    "pooling_with_primary": false
+  },
+  "training": {
+    "status": "complete",
+    "steps": 10000,
+    "readback_verified": true,
+    "loss": 0.14836522936820984,
+    "selection": "fixed final; no val selection",
+    "main_command": [
+      "/home/ugrp/ugrp-act-env/bin/python",
+      "-m",
+      "scripts.train_grasp_act",
+      "--dataset",
+      "/mnt/act-source/act15-1535c8a3/dataset",
+      "--output",
+      "/mnt/act-source/act15-1535c8a3/main",
+      "--stage",
+      "main",
+      "--steps",
+      "10000",
+      "--max-wall-s",
+      "21600",
+      "--run-class",
+      "dev",
+      "--profile-timing",
+      "--checkpoint-every",
+      "5000",
+      "--done-loss",
+      "balanced_bce_v1",
+      "--resume",
+      "/mnt/act-source/act15-1535c8a3/smoke/step-000300",
+      "--smoke-summary",
+      "/mnt/act-source/act15-1535c8a3/smoke/summary.json",
+      "--approval",
+      "/mnt/act-source/act15-1535c8a3/main-approval.json"
+    ]
+  },
+  "L4_cost": {
+    "rate_usd_h": 0.907714,
+    "rate_basis": "ACT13 user-specified reference rate; compute estimate, not verified invoice",
+    "windows": [
+      {
+        "window": "training",
+        "start": "2026-10-15T05:13:15.633-07:00",
+        "stop": "2026-10-15T06:00:35.718-07:00",
+        "seconds": 2840.085,
+        "hours": 0.7889125,
+        "estimated_usd": 0.7161069210250001,
+        "final_status": "TERMINATED"
+      },
+      {
+        "window": "inference",
+        "start": "2026-10-15T06:01:45.352-07:00",
+        "stop": "2026-10-15T06:33:20.549-07:00",
+        "seconds": 1895.197,
+        "hours": 0.526443611111111,
+        "estimated_usd": 0.47786023601611105,
+        "final_status": "TERMINATED"
+      }
+    ],
+    "L4_hours": 1.315356111111111,
+    "estimated_compute_usd": 1.193967157041111,
+    "excludes": "disk/network/tax/credit; training window includes preparation/transfer",
+    "eight_hour_STOP_and_idle20m_retained": true
+  },
+  "primary_reproduce": {
+    "cwd": "/home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "environment": {
+      "MUJOCO_GL": "osmesa",
+      "OMP_NUM_THREADS": "1",
+      "LP_NUM_THREADS": "4"
+    },
+    "commands": {
+      "act15-n8-91420-686cccb6": "/home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/.venv-sim/bin/python -m scripts.run_grasp_act_student --plan /home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/experiments/2026-10-15-act-train/act14-plans/91420.json --protocol /home/ugrp/ugrp-sim/act15-1535c8a3/eval-protocol-n8.json --model /home/ugrp/ugrp-sim/act15-model-1535c8a3/actor --output /home/ugrp/ugrp-sim/runs/act15-n8-91420-686cccb6/raw --actor-python /home/ugrp/ugrp-act-env/bin/python --cap-s 90 --actor-threads 1 --teacher-start-v1 --scene-source /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --n-action-steps 8",
+      "act15-n8-91434-686cccb6": "/home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/.venv-sim/bin/python -m scripts.run_grasp_act_student --plan /home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/experiments/2026-10-15-act-train/act14-plans/91434.json --protocol /home/ugrp/ugrp-sim/act15-1535c8a3/eval-protocol-n8.json --model /home/ugrp/ugrp-sim/act15-model-1535c8a3/actor --output /home/ugrp/ugrp-sim/runs/act15-n8-91434-686cccb6/raw --actor-python /home/ugrp/ugrp-act-env/bin/python --cap-s 90 --actor-threads 1 --teacher-start-v1 --scene-source /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --n-action-steps 8",
+      "act15-n8-91422-686cccb6": "/home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/.venv-sim/bin/python -m scripts.run_grasp_act_student --plan /home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/experiments/2026-10-15-act-train/act14-plans/91422.json --protocol /home/ugrp/ugrp-sim/act15-1535c8a3/eval-protocol-n8.json --model /home/ugrp/ugrp-sim/act15-model-1535c8a3/actor --output /home/ugrp/ugrp-sim/runs/act15-n8-91422-686cccb6/raw --actor-python /home/ugrp/ugrp-act-env/bin/python --cap-s 90 --actor-threads 1 --teacher-start-v1 --scene-source /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --n-action-steps 8",
+      "act15-n8-91426-686cccb6": "/home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/.venv-sim/bin/python -m scripts.run_grasp_act_student --plan /home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/experiments/2026-10-15-act-train/act14-plans/91426.json --protocol /home/ugrp/ugrp-sim/act15-1535c8a3/eval-protocol-n8.json --model /home/ugrp/ugrp-sim/act15-model-1535c8a3/actor --output /home/ugrp/ugrp-sim/runs/act15-n8-91426-686cccb6/raw --actor-python /home/ugrp/ugrp-act-env/bin/python --cap-s 90 --actor-threads 1 --teacher-start-v1 --scene-source /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --n-action-steps 8",
+      "act15-n8-91421-686cccb6": "/home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/.venv-sim/bin/python -m scripts.run_grasp_act_student --plan /home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/experiments/2026-10-15-act-train/act14-plans/91421.json --protocol /home/ugrp/ugrp-sim/act15-1535c8a3/eval-protocol-n8.json --model /home/ugrp/ugrp-sim/act15-model-1535c8a3/actor --output /home/ugrp/ugrp-sim/runs/act15-n8-91421-686cccb6/raw --actor-python /home/ugrp/ugrp-act-env/bin/python --cap-s 90 --actor-threads 1 --teacher-start-v1 --scene-source /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --n-action-steps 8",
+      "act15-n8-91423-686cccb6": "/home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/.venv-sim/bin/python -m scripts.run_grasp_act_student --plan /home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/experiments/2026-10-15-act-train/act14-plans/91423.json --protocol /home/ugrp/ugrp-sim/act15-1535c8a3/eval-protocol-n8.json --model /home/ugrp/ugrp-sim/act15-model-1535c8a3/actor --output /home/ugrp/ugrp-sim/runs/act15-n8-91423-686cccb6/raw --actor-python /home/ugrp/ugrp-act-env/bin/python --cap-s 90 --actor-threads 1 --teacher-start-v1 --scene-source /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --n-action-steps 8",
+      "act15-n8-91424-686cccb6": "/home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/.venv-sim/bin/python -m scripts.run_grasp_act_student --plan /home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/experiments/2026-10-15-act-train/act14-plans/91424.json --protocol /home/ugrp/ugrp-sim/act15-1535c8a3/eval-protocol-n8.json --model /home/ugrp/ugrp-sim/act15-model-1535c8a3/actor --output /home/ugrp/ugrp-sim/runs/act15-n8-91424-686cccb6/raw --actor-python /home/ugrp/ugrp-act-env/bin/python --cap-s 90 --actor-threads 1 --teacher-start-v1 --scene-source /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --n-action-steps 8",
+      "act15-n8-91425-686cccb6": "/home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/.venv-sim/bin/python -m scripts.run_grasp_act_student --plan /home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/experiments/2026-10-15-act-train/act14-plans/91425.json --protocol /home/ugrp/ugrp-sim/act15-1535c8a3/eval-protocol-n8.json --model /home/ugrp/ugrp-sim/act15-model-1535c8a3/actor --output /home/ugrp/ugrp-sim/runs/act15-n8-91425-686cccb6/raw --actor-python /home/ugrp/ugrp-act-env/bin/python --cap-s 90 --actor-threads 1 --teacher-start-v1 --scene-source /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --n-action-steps 8",
+      "act15-n8-91427-686cccb6": "/home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/.venv-sim/bin/python -m scripts.run_grasp_act_student --plan /home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/experiments/2026-10-15-act-train/act14-plans/91427.json --protocol /home/ugrp/ugrp-sim/act15-1535c8a3/eval-protocol-n8.json --model /home/ugrp/ugrp-sim/act15-model-1535c8a3/actor --output /home/ugrp/ugrp-sim/runs/act15-n8-91427-686cccb6/raw --actor-python /home/ugrp/ugrp-act-env/bin/python --cap-s 90 --actor-threads 1 --teacher-start-v1 --scene-source /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --n-action-steps 8",
+      "act15-n8-91428-686cccb6": "/home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/.venv-sim/bin/python -m scripts.run_grasp_act_student --plan /home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/experiments/2026-10-15-act-train/act14-plans/91428.json --protocol /home/ugrp/ugrp-sim/act15-1535c8a3/eval-protocol-n8.json --model /home/ugrp/ugrp-sim/act15-model-1535c8a3/actor --output /home/ugrp/ugrp-sim/runs/act15-n8-91428-686cccb6/raw --actor-python /home/ugrp/ugrp-act-env/bin/python --cap-s 90 --actor-threads 1 --teacher-start-v1 --scene-source /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --n-action-steps 8",
+      "act15-n8-91429-686cccb6": "/home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/.venv-sim/bin/python -m scripts.run_grasp_act_student --plan /home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/experiments/2026-10-15-act-train/act14-plans/91429.json --protocol /home/ugrp/ugrp-sim/act15-1535c8a3/eval-protocol-n8.json --model /home/ugrp/ugrp-sim/act15-model-1535c8a3/actor --output /home/ugrp/ugrp-sim/runs/act15-n8-91429-686cccb6/raw --actor-python /home/ugrp/ugrp-act-env/bin/python --cap-s 90 --actor-threads 1 --teacher-start-v1 --scene-source /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --n-action-steps 8",
+      "act15-n8-91430-686cccb6": "/home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/.venv-sim/bin/python -m scripts.run_grasp_act_student --plan /home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/experiments/2026-10-15-act-train/act14-plans/91430.json --protocol /home/ugrp/ugrp-sim/act15-1535c8a3/eval-protocol-n8.json --model /home/ugrp/ugrp-sim/act15-model-1535c8a3/actor --output /home/ugrp/ugrp-sim/runs/act15-n8-91430-686cccb6/raw --actor-python /home/ugrp/ugrp-act-env/bin/python --cap-s 90 --actor-threads 1 --teacher-start-v1 --scene-source /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --n-action-steps 8",
+      "act15-n8-91431-686cccb6": "/home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/.venv-sim/bin/python -m scripts.run_grasp_act_student --plan /home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/experiments/2026-10-15-act-train/act14-plans/91431.json --protocol /home/ugrp/ugrp-sim/act15-1535c8a3/eval-protocol-n8.json --model /home/ugrp/ugrp-sim/act15-model-1535c8a3/actor --output /home/ugrp/ugrp-sim/runs/act15-n8-91431-686cccb6/raw --actor-python /home/ugrp/ugrp-act-env/bin/python --cap-s 90 --actor-threads 1 --teacher-start-v1 --scene-source /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --n-action-steps 8",
+      "act15-n8-91432-686cccb6": "/home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/.venv-sim/bin/python -m scripts.run_grasp_act_student --plan /home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/experiments/2026-10-15-act-train/act14-plans/91432.json --protocol /home/ugrp/ugrp-sim/act15-1535c8a3/eval-protocol-n8.json --model /home/ugrp/ugrp-sim/act15-model-1535c8a3/actor --output /home/ugrp/ugrp-sim/runs/act15-n8-91432-686cccb6/raw --actor-python /home/ugrp/ugrp-act-env/bin/python --cap-s 90 --actor-threads 1 --teacher-start-v1 --scene-source /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --n-action-steps 8",
+      "act15-n8-91433-686cccb6": "/home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/.venv-sim/bin/python -m scripts.run_grasp_act_student --plan /home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/experiments/2026-10-15-act-train/act14-plans/91433.json --protocol /home/ugrp/ugrp-sim/act15-1535c8a3/eval-protocol-n8.json --model /home/ugrp/ugrp-sim/act15-model-1535c8a3/actor --output /home/ugrp/ugrp-sim/runs/act15-n8-91433-686cccb6/raw --actor-python /home/ugrp/ugrp-act-env/bin/python --cap-s 90 --actor-threads 1 --teacher-start-v1 --scene-source /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --n-action-steps 8",
+      "act15-n8-91435-686cccb6": "/home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/.venv-sim/bin/python -m scripts.run_grasp_act_student --plan /home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/experiments/2026-10-15-act-train/act14-plans/91435.json --protocol /home/ugrp/ugrp-sim/act15-1535c8a3/eval-protocol-n8.json --model /home/ugrp/ugrp-sim/act15-model-1535c8a3/actor --output /home/ugrp/ugrp-sim/runs/act15-n8-91435-686cccb6/raw --actor-python /home/ugrp/ugrp-act-env/bin/python --cap-s 90 --actor-threads 1 --teacher-start-v1 --scene-source /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --n-action-steps 8",
+      "act15-n8-91436-686cccb6": "/home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/.venv-sim/bin/python -m scripts.run_grasp_act_student --plan /home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/experiments/2026-10-15-act-train/act14-plans/91436.json --protocol /home/ugrp/ugrp-sim/act15-1535c8a3/eval-protocol-n8.json --model /home/ugrp/ugrp-sim/act15-model-1535c8a3/actor --output /home/ugrp/ugrp-sim/runs/act15-n8-91436-686cccb6/raw --actor-python /home/ugrp/ugrp-act-env/bin/python --cap-s 90 --actor-threads 1 --teacher-start-v1 --scene-source /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --n-action-steps 8",
+      "act15-n8-91437-686cccb6": "/home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/.venv-sim/bin/python -m scripts.run_grasp_act_student --plan /home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/experiments/2026-10-15-act-train/act14-plans/91437.json --protocol /home/ugrp/ugrp-sim/act15-1535c8a3/eval-protocol-n8.json --model /home/ugrp/ugrp-sim/act15-model-1535c8a3/actor --output /home/ugrp/ugrp-sim/runs/act15-n8-91437-686cccb6/raw --actor-python /home/ugrp/ugrp-act-env/bin/python --cap-s 90 --actor-threads 1 --teacher-start-v1 --scene-source /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --n-action-steps 8",
+      "act15-n8-91438-686cccb6": "/home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/.venv-sim/bin/python -m scripts.run_grasp_act_student --plan /home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/experiments/2026-10-15-act-train/act14-plans/91438.json --protocol /home/ugrp/ugrp-sim/act15-1535c8a3/eval-protocol-n8.json --model /home/ugrp/ugrp-sim/act15-model-1535c8a3/actor --output /home/ugrp/ugrp-sim/runs/act15-n8-91438-686cccb6/raw --actor-python /home/ugrp/ugrp-act-env/bin/python --cap-s 90 --actor-threads 1 --teacher-start-v1 --scene-source /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --n-action-steps 8",
+      "act15-n8-91439-686cccb6": "/home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/.venv-sim/bin/python -m scripts.run_grasp_act_student --plan /home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/experiments/2026-10-15-act-train/act14-plans/91439.json --protocol /home/ugrp/ugrp-sim/act15-1535c8a3/eval-protocol-n8.json --model /home/ugrp/ugrp-sim/act15-model-1535c8a3/actor --output /home/ugrp/ugrp-sim/runs/act15-n8-91439-686cccb6/raw --actor-python /home/ugrp/ugrp-act-env/bin/python --cap-s 90 --actor-threads 1 --teacher-start-v1 --scene-source /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --n-action-steps 8",
+      "act15-n8-91500-686cccb6": "/home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/.venv-sim/bin/python -m scripts.run_grasp_act_student --plan /home/ugrp/ugrp-sim/act15-1535c8a3/plans/91500.json --protocol /home/ugrp/ugrp-sim/act15-1535c8a3/eval-protocol-n8.json --model /home/ugrp/ugrp-sim/act15-model-1535c8a3/actor --output /home/ugrp/ugrp-sim/runs/act15-n8-91500-686cccb6/raw --actor-python /home/ugrp/ugrp-act-env/bin/python --cap-s 90 --actor-threads 1 --teacher-start-v1 --scene-source /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --n-action-steps 8",
+      "act15-n8-91501-686cccb6": "/home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/.venv-sim/bin/python -m scripts.run_grasp_act_student --plan /home/ugrp/ugrp-sim/act15-1535c8a3/plans/91501.json --protocol /home/ugrp/ugrp-sim/act15-1535c8a3/eval-protocol-n8.json --model /home/ugrp/ugrp-sim/act15-model-1535c8a3/actor --output /home/ugrp/ugrp-sim/runs/act15-n8-91501-686cccb6/raw --actor-python /home/ugrp/ugrp-act-env/bin/python --cap-s 90 --actor-threads 1 --teacher-start-v1 --scene-source /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --n-action-steps 8",
+      "act15-n8-91502-686cccb6": "/home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/.venv-sim/bin/python -m scripts.run_grasp_act_student --plan /home/ugrp/ugrp-sim/act15-1535c8a3/plans/91502.json --protocol /home/ugrp/ugrp-sim/act15-1535c8a3/eval-protocol-n8.json --model /home/ugrp/ugrp-sim/act15-model-1535c8a3/actor --output /home/ugrp/ugrp-sim/runs/act15-n8-91502-686cccb6/raw --actor-python /home/ugrp/ugrp-act-env/bin/python --cap-s 90 --actor-threads 1 --teacher-start-v1 --scene-source /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --n-action-steps 8",
+      "act15-n8-91503-686cccb6": "/home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/.venv-sim/bin/python -m scripts.run_grasp_act_student --plan /home/ugrp/ugrp-sim/act15-1535c8a3/plans/91503.json --protocol /home/ugrp/ugrp-sim/act15-1535c8a3/eval-protocol-n8.json --model /home/ugrp/ugrp-sim/act15-model-1535c8a3/actor --output /home/ugrp/ugrp-sim/runs/act15-n8-91503-686cccb6/raw --actor-python /home/ugrp/ugrp-act-env/bin/python --cap-s 90 --actor-threads 1 --teacher-start-v1 --scene-source /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --n-action-steps 8",
+      "act15-n8-91504-686cccb6": "/home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/.venv-sim/bin/python -m scripts.run_grasp_act_student --plan /home/ugrp/ugrp-sim/act15-1535c8a3/plans/91504.json --protocol /home/ugrp/ugrp-sim/act15-1535c8a3/eval-protocol-n8.json --model /home/ugrp/ugrp-sim/act15-model-1535c8a3/actor --output /home/ugrp/ugrp-sim/runs/act15-n8-91504-686cccb6/raw --actor-python /home/ugrp/ugrp-act-env/bin/python --cap-s 90 --actor-threads 1 --teacher-start-v1 --scene-source /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --n-action-steps 8",
+      "act15-n8-91505-686cccb6": "/home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/.venv-sim/bin/python -m scripts.run_grasp_act_student --plan /home/ugrp/ugrp-sim/act15-1535c8a3/plans/91505.json --protocol /home/ugrp/ugrp-sim/act15-1535c8a3/eval-protocol-n8.json --model /home/ugrp/ugrp-sim/act15-model-1535c8a3/actor --output /home/ugrp/ugrp-sim/runs/act15-n8-91505-686cccb6/raw --actor-python /home/ugrp/ugrp-act-env/bin/python --cap-s 90 --actor-threads 1 --teacher-start-v1 --scene-source /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --n-action-steps 8",
+      "act15-n8-91506-686cccb6": "/home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/.venv-sim/bin/python -m scripts.run_grasp_act_student --plan /home/ugrp/ugrp-sim/act15-1535c8a3/plans/91506.json --protocol /home/ugrp/ugrp-sim/act15-1535c8a3/eval-protocol-n8.json --model /home/ugrp/ugrp-sim/act15-model-1535c8a3/actor --output /home/ugrp/ugrp-sim/runs/act15-n8-91506-686cccb6/raw --actor-python /home/ugrp/ugrp-act-env/bin/python --cap-s 90 --actor-threads 1 --teacher-start-v1 --scene-source /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --n-action-steps 8",
+      "act15-n8-91507-686cccb6": "/home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/.venv-sim/bin/python -m scripts.run_grasp_act_student --plan /home/ugrp/ugrp-sim/act15-1535c8a3/plans/91507.json --protocol /home/ugrp/ugrp-sim/act15-1535c8a3/eval-protocol-n8.json --model /home/ugrp/ugrp-sim/act15-model-1535c8a3/actor --output /home/ugrp/ugrp-sim/runs/act15-n8-91507-686cccb6/raw --actor-python /home/ugrp/ugrp-act-env/bin/python --cap-s 90 --actor-threads 1 --teacher-start-v1 --scene-source /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --n-action-steps 8",
+      "act15-n8-91508-686cccb6": "/home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/.venv-sim/bin/python -m scripts.run_grasp_act_student --plan /home/ugrp/ugrp-sim/act15-1535c8a3/plans/91508.json --protocol /home/ugrp/ugrp-sim/act15-1535c8a3/eval-protocol-n8.json --model /home/ugrp/ugrp-sim/act15-model-1535c8a3/actor --output /home/ugrp/ugrp-sim/runs/act15-n8-91508-686cccb6/raw --actor-python /home/ugrp/ugrp-act-env/bin/python --cap-s 90 --actor-threads 1 --teacher-start-v1 --scene-source /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --n-action-steps 8",
+      "act15-n8-91509-686cccb6": "/home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/.venv-sim/bin/python -m scripts.run_grasp_act_student --plan /home/ugrp/ugrp-sim/act15-1535c8a3/plans/91509.json --protocol /home/ugrp/ugrp-sim/act15-1535c8a3/eval-protocol-n8.json --model /home/ugrp/ugrp-sim/act15-model-1535c8a3/actor --output /home/ugrp/ugrp-sim/runs/act15-n8-91509-686cccb6/raw --actor-python /home/ugrp/ugrp-act-env/bin/python --cap-s 90 --actor-threads 1 --teacher-start-v1 --scene-source /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --n-action-steps 8",
+      "act15-n8-91510-686cccb6": "/home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/.venv-sim/bin/python -m scripts.run_grasp_act_student --plan /home/ugrp/ugrp-sim/act15-1535c8a3/plans/91510.json --protocol /home/ugrp/ugrp-sim/act15-1535c8a3/eval-protocol-n8.json --model /home/ugrp/ugrp-sim/act15-model-1535c8a3/actor --output /home/ugrp/ugrp-sim/runs/act15-n8-91510-686cccb6/raw --actor-python /home/ugrp/ugrp-act-env/bin/python --cap-s 90 --actor-threads 1 --teacher-start-v1 --scene-source /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --n-action-steps 8",
+      "act15-n8-91511-686cccb6": "/home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/.venv-sim/bin/python -m scripts.run_grasp_act_student --plan /home/ugrp/ugrp-sim/act15-1535c8a3/plans/91511.json --protocol /home/ugrp/ugrp-sim/act15-1535c8a3/eval-protocol-n8.json --model /home/ugrp/ugrp-sim/act15-model-1535c8a3/actor --output /home/ugrp/ugrp-sim/runs/act15-n8-91511-686cccb6/raw --actor-python /home/ugrp/ugrp-act-env/bin/python --cap-s 90 --actor-threads 1 --teacher-start-v1 --scene-source /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --n-action-steps 8",
+      "act15-n8-91512-686cccb6": "/home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/.venv-sim/bin/python -m scripts.run_grasp_act_student --plan /home/ugrp/ugrp-sim/act15-1535c8a3/plans/91512.json --protocol /home/ugrp/ugrp-sim/act15-1535c8a3/eval-protocol-n8.json --model /home/ugrp/ugrp-sim/act15-model-1535c8a3/actor --output /home/ugrp/ugrp-sim/runs/act15-n8-91512-686cccb6/raw --actor-python /home/ugrp/ugrp-act-env/bin/python --cap-s 90 --actor-threads 1 --teacher-start-v1 --scene-source /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --n-action-steps 8",
+      "act15-n8-91513-686cccb6": "/home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/.venv-sim/bin/python -m scripts.run_grasp_act_student --plan /home/ugrp/ugrp-sim/act15-1535c8a3/plans/91513.json --protocol /home/ugrp/ugrp-sim/act15-1535c8a3/eval-protocol-n8.json --model /home/ugrp/ugrp-sim/act15-model-1535c8a3/actor --output /home/ugrp/ugrp-sim/runs/act15-n8-91513-686cccb6/raw --actor-python /home/ugrp/ugrp-act-env/bin/python --cap-s 90 --actor-threads 1 --teacher-start-v1 --scene-source /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --n-action-steps 8",
+      "act15-n8-91514-686cccb6": "/home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/.venv-sim/bin/python -m scripts.run_grasp_act_student --plan /home/ugrp/ugrp-sim/act15-1535c8a3/plans/91514.json --protocol /home/ugrp/ugrp-sim/act15-1535c8a3/eval-protocol-n8.json --model /home/ugrp/ugrp-sim/act15-model-1535c8a3/actor --output /home/ugrp/ugrp-sim/runs/act15-n8-91514-686cccb6/raw --actor-python /home/ugrp/ugrp-act-env/bin/python --cap-s 90 --actor-threads 1 --teacher-start-v1 --scene-source /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --n-action-steps 8",
+      "act15-n8-91515-686cccb6": "/home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/.venv-sim/bin/python -m scripts.run_grasp_act_student --plan /home/ugrp/ugrp-sim/act15-1535c8a3/plans/91515.json --protocol /home/ugrp/ugrp-sim/act15-1535c8a3/eval-protocol-n8.json --model /home/ugrp/ugrp-sim/act15-model-1535c8a3/actor --output /home/ugrp/ugrp-sim/runs/act15-n8-91515-686cccb6/raw --actor-python /home/ugrp/ugrp-act-env/bin/python --cap-s 90 --actor-threads 1 --teacher-start-v1 --scene-source /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --n-action-steps 8",
+      "act15-n8-91516-686cccb6": "/home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/.venv-sim/bin/python -m scripts.run_grasp_act_student --plan /home/ugrp/ugrp-sim/act15-1535c8a3/plans/91516.json --protocol /home/ugrp/ugrp-sim/act15-1535c8a3/eval-protocol-n8.json --model /home/ugrp/ugrp-sim/act15-model-1535c8a3/actor --output /home/ugrp/ugrp-sim/runs/act15-n8-91516-686cccb6/raw --actor-python /home/ugrp/ugrp-act-env/bin/python --cap-s 90 --actor-threads 1 --teacher-start-v1 --scene-source /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --n-action-steps 8",
+      "act15-n8-91517-686cccb6": "/home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/.venv-sim/bin/python -m scripts.run_grasp_act_student --plan /home/ugrp/ugrp-sim/act15-1535c8a3/plans/91517.json --protocol /home/ugrp/ugrp-sim/act15-1535c8a3/eval-protocol-n8.json --model /home/ugrp/ugrp-sim/act15-model-1535c8a3/actor --output /home/ugrp/ugrp-sim/runs/act15-n8-91517-686cccb6/raw --actor-python /home/ugrp/ugrp-act-env/bin/python --cap-s 90 --actor-threads 1 --teacher-start-v1 --scene-source /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --n-action-steps 8",
+      "act15-n8-91518-686cccb6": "/home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/.venv-sim/bin/python -m scripts.run_grasp_act_student --plan /home/ugrp/ugrp-sim/act15-1535c8a3/plans/91518.json --protocol /home/ugrp/ugrp-sim/act15-1535c8a3/eval-protocol-n8.json --model /home/ugrp/ugrp-sim/act15-model-1535c8a3/actor --output /home/ugrp/ugrp-sim/runs/act15-n8-91518-686cccb6/raw --actor-python /home/ugrp/ugrp-act-env/bin/python --cap-s 90 --actor-threads 1 --teacher-start-v1 --scene-source /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --n-action-steps 8",
+      "act15-n8-91519-686cccb6": "/home/ugrp/ugrp-sim/src/686cccb6e31342a9edfadb30a8047ad57ceb9291/.venv-sim/bin/python -m scripts.run_grasp_act_student --plan /home/ugrp/ugrp-sim/act15-1535c8a3/plans/91519.json --protocol /home/ugrp/ugrp-sim/act15-1535c8a3/eval-protocol-n8.json --model /home/ugrp/ugrp-sim/act15-model-1535c8a3/actor --output /home/ugrp/ugrp-sim/runs/act15-n8-91519-686cccb6/raw --actor-python /home/ugrp/ugrp-act-env/bin/python --cap-s 90 --actor-threads 1 --teacher-start-v1 --scene-source /home/ugrp/ugrp-deps/solo-teacher-6f057f7e --n-action-steps 8"
+    },
+    "rejection_table": "/Users/changmin/projects/ugrp-wt/act-train/outputs/act15-ops/act15-dense-pilot-funnel.json",
+    "queue": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-act15-final-n8-686cccb6.json",
+    "run_wrapper": "python3 scripts/remote_run.py --host gcp1 --detach --class dev --pr 504 --per-run-mb 26 /Users/changmin/projects/ugrp-wt/act-train RUN_NAME -- bash -c \"cd FROZEN_SOURCE && exec <commands[RUN_NAME]>\""
+  },
+  "speed_limit_observation": {
+    "reference_wall_sim": 3.5,
+    "same20_median_exceeds_reference": true,
+    "new_speed_gate_pass_claim": false,
+    "basis": "ACT14 measured16 CPU profile reused; new same20 median3.547 exceeds reference. Do not promote a faster/default profile or infer a cause from wall time."
+  },
+  "constant_basis": {
+    "gates": "Unchanged frozen ACT11 / existing LiftScore; no new or tuned physical acceptance thresholds",
+    "diagnostic_tail": "Original five-val-episode per-phase95 percentile, descriptive evidence not policy guard or OOD guarantee",
+    "TE_m": ".01 official ACT implementation; auxiliary profile only",
+    "compute_budget": "No search planner in ACT; static setup existing400/2000 check count. 90 SIM seconds for result cap; wall watchdog only host resource/error limit, never action selection.",
+    "storage_reservation": "Measured max collection18.24MiB + measured prediction-row bytes x900 x unchanged storage_budget.py1.25 margin;26MiB per run; existing8GiB free floor retained"
+  },
+  "ready": false,
+  "remaining": [
+    "A single combined prefix+DAgger round does not establish causal ablation or sufficient closed-loop recovery.",
+    "Only five validation episodes; source/action-error metrics do not imply physical success.",
+    "Off-policy label rows stop at hover; successful grasp/release recovery diversity remains limited.",
+    "No independent review or full raw off-disk backup completed; no default adoption/merge claimed."
+  ],
+  "recorded_primary_queue_result": "Final40 complete; queue rejection_table existed before submission; result_funnel=experiments/2026-10-15-act-train/act15-funnel.json"
+}

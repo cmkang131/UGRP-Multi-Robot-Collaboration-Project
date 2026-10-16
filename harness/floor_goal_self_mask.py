@@ -110,17 +110,21 @@ def _project_envelopes(envelopes, origin, axes, width, height, padding_m=.002, d
         if np.max(optical[:, 2]) <= .001:
             continue
         # All pairs include every edge of each exported box, plus safe diagonals.
-        samples = [optical[optical[:, 2] >= .001]]
-        for i in range(len(optical)):
-            for j in range(i):
-                a, b = optical[i], optical[j]
-                for fraction in (.25, .5, .75):
-                    p = a*(1-fraction)+b*fraction
-                    if p[2] >= .001:
-                        samples.append(p[None])
-                if (a[2]-.001)*(b[2]-.001) < 0:
-                    samples.append((a+(.001-a[2])/(b[2]-a[2])*(b-a))[None])
-        points = np.concatenate(samples)
+        from harness.e2e_speed4 import current, envelope_samples
+        if current().vector_envelopes:
+            points = envelope_samples(optical)
+        else:
+            samples = [optical[optical[:, 2] >= .001]]
+            for i in range(len(optical)):
+                for j in range(i):
+                    a, b = optical[i], optical[j]
+                    for fraction in (.25, .5, .75):
+                        p = a*(1-fraction)+b*fraction
+                        if p[2] >= .001:
+                            samples.append(p[None])
+                    if (a[2]-.001)*(b[2]-.001) < 0:
+                        samples.append((a+(.001-a[2])/(b[2]-a[2])*(b-a))[None])
+            points = np.concatenate(samples)
         if len(points) < 3:
             continue
         uv = cv2.fisheye.projectPoints(points.reshape(-1, 1, 3), np.zeros(3), np.zeros(3), K, D)[0].reshape(-1, 2)

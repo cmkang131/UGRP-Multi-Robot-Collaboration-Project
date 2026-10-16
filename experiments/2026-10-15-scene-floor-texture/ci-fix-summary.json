@@ -1,0 +1,119 @@
+{
+  "schema": "ugrp.pr511_ci_fix.v1",
+  "recorded_at": "2026-10-15T06:25:18.060944+00:00",
+  "pr": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/511",
+  "failed_job": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/38687220648/job/116264874416",
+  "branch": "claude/scene-floor-texture",
+  "source_head_at_test": "976b4ef265a73594cd6f6ed9be04a63c455cff93",
+  "main_reference": "328b4e1d2a4abe245620a58b35ea96ddc1450ef1",
+  "candidate_source_sha256": {
+    "sim/render_profile.py": "782a531a5a89d23dce2974778e26b7ab1f0b6df8cd60f83df9404079cf7290d5",
+    "sim/render_profile_textured.py": "9eaba2c4c0bfc1ead8a106f59ff040b5ec320589dc6c2a4bf739049dda3be0d2",
+    "sim/render_profile_selection.py": "165bd4594018ff511a80871c74ee448e9890598de0992720d7650537a65f4a9d",
+    "sim/natural_scene_texture.py": "7fa1a97b29e28918342c790d4b5e9b624036b2f16e95642f92da67235b68ca6a",
+    "sim/final_pair_highpose_nearclip.py": "a199ea0eb1d9114fabf028b3b0b48e34722834b5ac3d6ab5ef305071b45e21e1",
+    "scripts/make_scene_texture_plan.py": "3d2ef9067f5d5fe72221afe9bd6481c46c8d41f3870dc5fde3b9ba2ccc390b7d",
+    "tests/test_natural_scene_texture.py": "de9b770e293942dad368e7b86ba5c07fd6b97bcc98456786619baf139be78fc2"
+  },
+  "change": "Restore pinned render_profile.py bytes; separate texture implementation and lazy selector; wire texture plan through selector without changing legacy consumers.",
+  "checks": {
+    "render_profile_diff_origin_main_empty": true,
+    "p03_and_other_config_pins_unchanged": true,
+    "frozen_stage_probe_runner_unchanged": true,
+    "textured_definition_and_representative_xml_unchanged": true,
+    "legacy_selection_does_not_import_textures": true
+  },
+  "textured_before": {
+    "path": "/Users/changmin/projects/ugrp-wt/floor-texture/outputs/pr511-ci-fix-20261015/textured-before.json",
+    "bytes": 1034,
+    "sha256": "807f6dc8e3844946681fd7e6009846e519c305b831fd2e7f6e24bccb2e8084aa"
+  },
+  "runs": [
+    {
+      "test_file": "tests/test_zone_e2e_manifest.py",
+      "phase": "before_fix",
+      "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_zone_e2e_manifest.py --tb=short",
+      "status": "failed",
+      "passed": 4,
+      "failed": 1,
+      "errors": 116,
+      "cause": "P03 combination asset hash mismatch: sim/render_profile.py",
+      "log": {
+        "path": "/Users/changmin/projects/ugrp-wt/floor-texture/outputs/pr511-ci-fix-20261015/before-zone-e2e.log",
+        "bytes": 91641,
+        "sha256": "9455aa74eef05899cb6e26a3e5ae34b94c0ea482736fe0ed7be099b20bb04cca"
+      }
+    },
+    {
+      "test_file": "tests/test_natural_scene_texture.py",
+      "phase": "after_fix",
+      "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_natural_scene_texture.py --tb=short --junitxml=outputs/pr511-ci-fix-20261015/texture.xml",
+      "status": "passed",
+      "passed": 29,
+      "failed": 0,
+      "errors": 0,
+      "log": {
+        "path": "/Users/changmin/projects/ugrp-wt/floor-texture/outputs/pr511-ci-fix-20261015/texture.log",
+        "bytes": 99,
+        "sha256": "a19e1088281557269f807fc09f4aea67d6bda628424bfbf2b4394e41b1b1f658"
+      },
+      "junit": {
+        "path": "/Users/changmin/projects/ugrp-wt/floor-texture/outputs/pr511-ci-fix-20261015/texture.xml",
+        "bytes": 4548,
+        "sha256": "e86df9ab68d7f4e901d6576afdf33e2c62f78322e667e1136f2ea1e837631e68"
+      }
+    },
+    {
+      "test_file": "tests/test_zone_e2e_manifest.py",
+      "phase": "after_fix",
+      "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_zone_e2e_manifest.py --tb=short --junitxml=outputs/pr511-ci-fix-20261015/zone-e2e.xml",
+      "status": "passed",
+      "passed": 121,
+      "failed": 0,
+      "errors": 0,
+      "log": {
+        "path": "/Users/changmin/projects/ugrp-wt/floor-texture/outputs/pr511-ci-fix-20261015/zone-e2e.log",
+        "bytes": 181,
+        "sha256": "6a1c2056caa7d672ea3d69ee7867cd06f3047967c2d0e9c7ac51ab1db69784d1"
+      },
+      "junit": {
+        "path": "/Users/changmin/projects/ugrp-wt/floor-texture/outputs/pr511-ci-fix-20261015/zone-e2e.xml",
+        "bytes": 18704,
+        "sha256": "b4df77fca414dbf9925889764551a3d541eed6fa1f30a3360c4c529b3de9cd3d"
+      }
+    },
+    {
+      "test_file": "tests/test_zone_final_environment_runnable.py",
+      "phase": "after_fix",
+      "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_zone_final_environment_runnable.py --tb=short --junitxml=outputs/pr511-ci-fix-20261015/final-environment.xml",
+      "status": "passed",
+      "passed": 30,
+      "failed": 0,
+      "errors": 0,
+      "log": {
+        "path": "/Users/changmin/projects/ugrp-wt/floor-texture/outputs/pr511-ci-fix-20261015/final-environment.log",
+        "bytes": 100,
+        "sha256": "5c00e8b4e9dd495704043874e9c25a463e3743c49807db5c2dc0d172b8f4a52d"
+      },
+      "junit": {
+        "path": "/Users/changmin/projects/ugrp-wt/floor-texture/outputs/pr511-ci-fix-20261015/final-environment.xml",
+        "bytes": 4947,
+        "sha256": "06b9e1b95f7ba01747cc11290465fc0df91190ab906541c5e7cab26ce927b7c9"
+      }
+    }
+  ],
+  "after_fix_total_passed": 180,
+  "scope": "Offline XML/PNG, manifest and stubbed provider/audit tests only; no MuJoCo model construction, simulation, rendering, training or remote host access.",
+  "simulation_runs": 0,
+  "model_compilations": 0,
+  "render_runs": 0,
+  "training_runs": 0,
+  "remote_host_connections": 0,
+  "other_worktrees_modified": false,
+  "raw_storage": "Local worktree outputs only; raw logs are not uploaded. This summary and source are committed to the PR.",
+  "remaining": [
+    "Full GitHub CI must run on the pushed fix.",
+    "Existing pinned stage-probe CLI remains closed to the new profile; new consumers must use the selector and pin a new source/bundle.",
+    "Actual compiled-model/camera texture validation remains unperformed in this CI-only fix."
+  ]
+}
