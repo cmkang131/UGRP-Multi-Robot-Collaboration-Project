@@ -19,5 +19,7 @@ nvidia-smi --query-gpu=name,driver_version,memory.total --format=csv,noheader
 # Reproduce gcp2 L4 ACT versions from a read-only pip freeze; no environments copied.
 python3.12 -m venv /home/ugrp/ugrp-rl1b-act-env
 /home/ugrp/ugrp-rl1b-act-env/bin/pip install --no-deps --extra-index-url https://download.pytorch.org/whl/cu128 -r /home/ugrp/ugrp-sim/setup/act-requirements.txt
+# The extra CUDA index offers torchcodec 0.10.0+cu128 for ==0.10.0; gcp2 uses the PyPI build.
+/home/ugrp/ugrp-rl1b-act-env/bin/pip install --no-deps --force-reinstall --index-url https://pypi.org/simple torchcodec==0.10.0
 /home/ugrp/ugrp-rl1b-act-env/bin/pip check
 /home/ugrp/ugrp-rl1b-act-env/bin/pip freeze > /home/ugrp/ugrp-sim/setup/act-freeze.txt

@@ -27,7 +27,11 @@ if '--resume-after-mjwarp' in sys.argv:
     print('Previously completed one-step MJWarp probe retained; hashes checked below',flush=True)
 else:
     remote('smoke-command', 'cd /home/ugrp/ugrp-sim/setup && /home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python smoke.py smoke-result.json > smoke.log 2>&1')
-remote('act-smoke-command', 'cd /home/ugrp/ugrp-sim/setup && /home/ugrp/ugrp-rl1b-act-env/bin/python beamact_smoke.py act-smoke-result.json > act-smoke.log 2>&1')
+if '--resume-after-training' in sys.argv:
+    assert json.loads((EVIDENCE/'act-smoke-command.json').read_text())['returncode']==0
+    assert json.loads((EVIDENCE/'act-smoke-result.json').read_text())['status']=='PASS'
+else:
+    remote('act-smoke-command', 'cd /home/ugrp/ugrp-sim/setup && /home/ugrp/ugrp-rl1b-act-env/bin/python beamact_smoke.py act-smoke-result.json > act-smoke.log 2>&1')
 remote('audit-command', 'cd /home/ugrp/ugrp-sim/setup && sudo python3 audit_guest.py guest-audit.json')
 files=['smoke-result.json','guest-audit.json','warp-freeze.txt','cpu-freeze.txt','act-freeze.txt','act-smoke-result.json']
 sources=['setup_guest.sh','smoke.py','audit_guest.py','act_smoke.py','act-requirements.txt','beamact_smoke.py']

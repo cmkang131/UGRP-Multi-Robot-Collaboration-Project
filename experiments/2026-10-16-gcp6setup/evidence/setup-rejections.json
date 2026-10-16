@@ -1,8 +1,9 @@
 {
-  "total": 2,
+  "total": 3,
   "reason_distribution": {
     "new_service_account_iam_propagation": 1,
-    "dependency_excerpt_incomplete": 1
+    "dependency_excerpt_incomplete": 1,
+    "torchcodec_local_build_variant": 1
   },
   "rejections": [
     {
@@ -20,6 +21,14 @@
       "measurement_status": "not_applicable_infrastructure",
       "evidence": "act-smoke-import-failure-command.json",
       "recovery": "expand committed harness package dependency excerpts; no trainer or model change"
+    },
+    {
+      "category": "torchcodec_local_build_variant",
+      "blocked_object": "torchcodec 0.10.0+cu128 versus gcp2 0.10.0",
+      "minimum_gap_m": null,
+      "measurement_status": "not_applicable_infrastructure",
+      "evidence": "act-freeze-initial.txt",
+      "recovery": "reinstall exact PyPI build without the optional CUDA index; retain completed training probe"
     }
   ]
 }
