@@ -3,7 +3,7 @@
   "status": "R2_RUNNING",
   "host": "gcp3",
   "project": "ugrp-sim-c-1016",
-  "source_sha": "f75e3442957e8e00c4ed894056b3e06ee32399f0",
+  "source_sha": "175281c8922453465f8bf32707e22988e78b8812",
   "rejection_table": "/home/ugrp/ugrp-sim/ops-reviews/warp8/beam-r1-rejection_table.json",
   "local_rejection_table": "/Users/changmin/projects/ugrp-wt/warp4/experiments/2026-10-16-warp8/beam-r1-rejection_table.json",
   "planned_denominators": {
@@ -21,7 +21,13 @@
       "completed": false,
       "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r1",
       "source_sha": "f75e3442957e8e00c4ed894056b3e06ee32399f0",
-      "rejection_table": "/home/ugrp/ugrp-sim/ops-reviews/warp8/prior-rejection_table.json"
+      "rejection_table": "/home/ugrp/ugrp-sim/ops-reviews/warp8/prior-rejection_table.json",
+      "terminal": true,
+      "status": "HOST_ERROR",
+      "completed_N": 1,
+      "success_N": 1,
+      "HOST_ERROR_world_N": 39,
+      "cap_end_N": 0
     },
     {
       "name": "beam40-r2",
@@ -33,7 +39,9 @@
       "source_sha": "175281c8922453465f8bf32707e22988e78b8812",
       "rejection_table": "/home/ugrp/ugrp-sim/ops-reviews/warp8/beam-r1-rejection_table.json",
       "known_failure_first": 8318706,
-      "full_active_dof_workspace_v1": true
+      "full_active_dof_workspace_v1": true,
+      "terminal": false,
+      "status": "running"
     }
   ],
   "placement_graspable_filter_v1": true,
@@ -59,5 +67,6 @@
   "known_failure_first": 8318706,
   "cleanup_deadline": "2026-10-16T14:05:00+00:00",
   "VM_8h_setting": "restored28800s/STOP while stopped; independent deadline14:05UTC unchanged",
-  "candidate_source_sha": "175281c8922453465f8bf32707e22988e78b8812"
+  "candidate_source_sha": "175281c8922453465f8bf32707e22988e78b8812",
+  "initial_source_sha": "f75e3442957e8e00c4ed894056b3e06ee32399f0"
 }

@@ -1,0 +1,32 @@
+{
+  "host": "gcp3",
+  "project": "ugrp-sim-c-1016",
+  "account": "changmin5781@gmail.com",
+  "observed_utc": "2026-10-16T09:42:01.352503+00:00",
+  "intervals": [
+    {
+      "start": "2026-10-15T23:36:59.245-07:00",
+      "stop": "2026-10-16T01:36:23.799-07:00",
+      "reason": "R1 and native reference exports; stopped to restore8h setting"
+    },
+    {
+      "start": "2026-10-16T01:37:25.799-07:00",
+      "stop": null,
+      "reason": "R2 and pending release gates"
+    }
+  ],
+  "current_scheduling": {
+    "automaticRestart": true,
+    "instanceTerminationAction": "STOP",
+    "maxRunDuration": {
+      "nanos": 0,
+      "seconds": "28800"
+    },
+    "onHostMaintenance": "TERMINATE",
+    "preemptible": false,
+    "provisioningModel": "STANDARD"
+  },
+  "hourly_USD_inherited_estimate": 1.096,
+  "billing_verified": false,
+  "scope": "VM running intervals; never add overlapping per-batch estimates; excludes disk/network and local Claude analysis"
+}
