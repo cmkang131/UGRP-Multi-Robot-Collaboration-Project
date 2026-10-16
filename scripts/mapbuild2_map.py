@@ -15,6 +15,11 @@ def new_grid():
     return OdomGrid('r1',profiles={})
 
 
+def serialize_cells(cells):
+    """OdomGrid DDA keys may be NumPy integers; JSON ABI requires native ints."""
+    return [[int(x),int(y),label] for (x,y),label in sorted(cells.items())]
+
+
 def run(a):
     # Use the complete pinned vision dependency closure, not mixed versions.
     if subprocess.check_output(['git','rev-parse','HEAD'],cwd=a.vision_source,text=True).strip()!='5974a181a2cec9731339a6ce3aadc0464b8dddcf':
@@ -105,7 +110,7 @@ def run(a):
                     if gap and len(gap)==end-start-1:doors.update(gap)
         points=lambda keys:[[(x+.5)*grid.resolution_m,(y+.5)*grid.resolution_m] for x,y in sorted(keys)]
         dump(a.output/(name+'-predicted.json'),dict(frame='r1/start',resolution_m=grid.resolution_m,
-            cells=[[x,y,label] for (x,y),label in sorted(cells.items())],wall=points(walls[name]),
+            cells=serialize_cells(cells),wall=points(walls[name]),
             obstacle=points(obstacles[name]),destination=points(destinations[name]),door=points(doors),
             door_scope='observed free crossing candidates, not instance identity or certified transit'))
     dump(a.output/'rejection-table.json',dict(raw=str(a.input),reproduction=sys.argv,stages=[

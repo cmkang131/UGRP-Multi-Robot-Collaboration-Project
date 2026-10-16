@@ -73,3 +73,12 @@ def test_external_pose_grid_does_not_open_unused_motion_calibration(monkeypatch)
     def unavailable():raise FileNotFoundError('unused calibration must not be read')
     monkeypatch.setattr(grid,'motion_profiles',unavailable)
     assert new_grid().resolution_m==.1
+
+
+def test_real_inverse_sensor_grid_keys_round_trip_through_json():
+    import json
+    from scripts.mapbuild2_map import new_grid,serialize_cells
+    grid=new_grid();grid.insert(np.zeros(2),[np.array([[.1,0],[.2,0]])])
+    cells={key:'occupied' if value>0 else 'free' for key,value in grid.cells.items()}
+    restored=json.loads(json.dumps(serialize_cells(cells)))
+    assert restored and all(type(x) is int and type(y) is int for x,y,_ in restored)
