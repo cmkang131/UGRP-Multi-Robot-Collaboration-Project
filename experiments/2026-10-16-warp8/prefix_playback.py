@@ -77,7 +77,9 @@ def main():
             terminal_rows=[]
             ring=world/'tail-ring-10hz'
             if a.terminal:
-                for line in (ring/'journal.jsonl').read_text().splitlines():
+                # Existing ring is100 samples=10 SIM seconds at10Hz. Older
+                # identical JPEGs may still hash-match an overwritten slot.
+                for line in (ring/'journal.jsonl').read_text().splitlines()[-100:]:
                     record=json.loads(line);files={}
                     for rid,item in record['files'].items():
                         image=ring/Path(item['path']).name
