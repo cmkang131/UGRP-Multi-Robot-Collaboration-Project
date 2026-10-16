@@ -36,3 +36,13 @@ def test_evaluation_raster_retains_thin_walls_and_rotated_start():
     assert any(label=='occupied' for _,_,label in truth['cells'])
     assert len(truth['wall'])>0
     assert intersects([[0,0],[.2,0]],0,.1,static['obstacles'][0]).tolist()==[True,False]
+
+
+def test_camera_evaluation_never_qualifies_closed_command():
+    from scripts.mapbuild2_camera_eval import nominal_unqualified
+    from harness.active_camera import SEARCH
+    from harness.servo_camera_fk import transform_from_commands
+    closed={**SEARCH,1:1500}
+    assert transform_from_commands(closed,camera_pose='servo_fk_v1')[0] is None
+    for a,b in zip(nominal_unqualified(SEARCH),nominal_unqualified(closed)):
+        np.testing.assert_array_equal(a,b)
