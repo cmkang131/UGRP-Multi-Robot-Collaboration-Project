@@ -6,6 +6,7 @@ Pending navigation/ACT/relocalization components cannot silently become success.
 from __future__ import annotations
 
 import base64
+import copy
 from collections import Counter, deque
 from dataclasses import dataclass
 import hashlib
@@ -49,6 +50,19 @@ def rejection(reason, *, category='dependency', blocked_object='not_observed', m
                 gap_status='not_measured' if minimum_gap_m is None else 'measured')
 
 
+def keyframe_due(tick, previous_tick, interval_ticks, *, option='off'):
+    """Preserve R3 replay; candidate follows owner's elapsed-SIM cadence.
+
+    The interval is CSMOptions.keyframe_interval_s converted to the existing
+    10Hz integer frame clock. No admission tolerance or physical constant is fit.
+    """
+    if option == 'off':
+        return tick % interval_ticks == 0
+    if option != 'elapsed_sim_v1':
+        raise ValueError('unknown keyframe admission policy')
+    return previous_tick is None or tick-previous_tick >= interval_ticks
+
+
 @dataclass(frozen=True)
 class OwnFrame:
     robot_id: str
@@ -85,16 +99,22 @@ class Channels:
         return extra
 
     def send(self, sender, message, *, now):
+        self.validate(sender, message)
+        if message is None:
+            return
+        recipients = message['recipients']
+        row = dict(sender=sender, recipients=recipients, body=message['body'], sim_s=now)
+        for receiver in recipients:
+            self.inboxes[receiver].append(copy.deepcopy(row))
+        self.events.append(copy.deepcopy(row))
+
+    def validate(self, sender, message):
         if message is None:
             return
         if not isinstance(message, dict) or set(message) != {'recipients', 'body'}:
             raise ValueError('invalid message envelope')
         recipients = message['recipients']
         check_message(self.condition, sender, recipients, message['body'], seed=self.seed)
-        row = dict(sender=sender, recipients=recipients, body=message['body'], sim_s=now)
-        for receiver in recipients:
-            self.inboxes[receiver].append(row.copy())
-        self.events.append(row)
 
 
 class ConnectionHealth:
@@ -111,6 +131,10 @@ class ConnectionHealth:
             self.first_failure = now
         # AGENTS/docs act execution decision: 3 consecutive OR >30 SIM s.
         if self.consecutive >= 3 or now - self.first_failure > 30.:
+            raise RuntimeError('HOST_ERROR:LLM_CONNECTION_LOST')
+
+    def check(self, now):
+        if self.first_failure is not None and now-self.first_failure > 30.:
             raise RuntimeError('HOST_ERROR:LLM_CONNECTION_LOST')
 
 

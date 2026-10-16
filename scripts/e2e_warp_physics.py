@@ -152,6 +152,9 @@ def transport(contexts, out, sha, stack):
             if len({hashlib.sha256(c['world'].scene_xml.encode()).hexdigest() for c in contexts}) != 1:
                 raise ValueError('one exact scene model per batch required')
             wp.init()
+            if not wp.is_cuda_available():
+                raise RuntimeError('CUDA required; no CPU physics fallback')
+            wp.set_device('cuda:0')
             self.wm = mjw.put_model(m)
             assert_model_profile(self.wm, stack['contact_profile'])
             # Allocation only, same full-scene envelope as mapbuild6; not an
@@ -204,12 +207,14 @@ def issue(context, robot, command):
     port._servo_targets.update({int(k): v for k, v in command['pwm'].items()})
 
 
-def own_map(frame, state):
+def own_map(frame, state, *, keyframe_policy='off'):
     """mapbuild6 qualified LK, own gauge only. No pretend static registration."""
     import cv2
     from harness.servo_camera_fk import transform_from_commands
     from harness.e2e_rgb_vo import ground_pair, compose, PARAMS
     from harness.self_odom_grid import OdomGrid, transform
+    from harness.self_map_csm import CSMOptions
+    from harness.e2e_warp_runtime import keyframe_due, rejection
     from harness.mapbuild_rbpf import virtual_scan
     from harness.scene_colour_boundary import ColourBoundaryState, RELOC16_OPTION
     import json
@@ -243,19 +248,25 @@ def own_map(frame, state):
             json.loads(calibration.read_text()), option=RELOC16_OPTION)
         state['grid'] = OdomGrid(frame.robot_id, profiles={})
     scan_status, hits, inserted = 'unknown_commanded_camera_settling', 0, False
+    input_rejection=rejection(scan_status,category='camera_qualification')
     if camera is not None and settled:
         scan = virtual_scan(rgb, pwm, state['colour'])
         hits = sum(c['status'] == 'hit' for c in scan['columns'])
         scan_status = 'observed_wall_contacts' if hits else 'unknown_wall_contact'
+        input_rejection=rejection('unknown_wall_contact' if not hits else 'keyframe_interval_wait',
+                                  category='wall_observation' if not hits else 'map_keyframe_scheduler')
         # Use the frozen LK-only map insertion from mapbuild5_replay; RBPF stays
         # off pending its owner comparison. This map remains in the own gauge.
-        if scan['segments'] and frame.tick % 10 == 0:
+        interval_ticks=round(CSMOptions().keyframe_interval_s*10)
+        if scan['segments'] and keyframe_due(frame.tick, state.get('last_map_tick'), interval_ticks, option=keyframe_policy):
             state['grid'].insert(transform([scan['camera']], pose)[0],
                                  [transform(s, pose) for s in scan['segments']])
             inserted = True
+            state['last_map_tick'] = frame.tick
+            input_rejection=None
     return dict(own_gauge_pose=pose.tolist(), static_map_registered=False, qualified_navigation=False,
                 status=flow['status'], fk_status=reason, flow=flow,
                 self_map=dict(frame='own_start', occupied_cells=sum(v>0 for v in state['grid'].cells.values()),
                               known_cells=len(state['grid'].cells), wall_columns=hits, scan_status=scan_status,
-                              inserted=inserted, rbpf='off'),
+                              inserted=inserted, rbpf='off', input_rejection=input_rejection),
                 dependency_wait=['loaded_fk', 'static_map_registration', 'selected_ACT', 'release_relocalization'])

@@ -82,7 +82,9 @@ no_comm은 inbox 자체가 없다. peer_ko는 수신자별 자유 한국어, lea
 | current_stack/check_current_stack | stackaudit | JSON 로컬 초안 확인, remote ref/점검기 준비 대기 | commit/ref 요청 |
 
 외부 부품은 `manifest + observe(own) + candidates() + execute(selection)` 계약으로
-연결한다. 완료·성공·실측 여부를 어댑터가 지어내지 않는다. runtime/own inputs를
+연결한다. 최종 조합은 `harness/e2e_warp_mission.py`가 맡고, owner에게는 navigation와
+release 부품 factory만 요구한다. ACT 이미지/명령 이력 구성과 기존 청크 실행도 이
+조합 경로에서 수행한다. 완료·성공·실측 여부를 어댑터가 지어내지 않는다. runtime/own inputs를
 보존하고 각 dependency가 ready여도 처음→끝 새 물리 검증 없이는 ready 판정하지 않는다.
 
 ## 실행·검증 계획
@@ -120,3 +122,11 @@ SIM 예산이며 wall 상한이 아니다. cap_end로 표시한다. 계산 상�
   앞부분 일치와 cached token 사용량. 실제 CoreWeave cache hit은 원장에서 확인한다.
 - 저장소 docs/decision_model_control.md, docs/act_execution_decisions.md와 stackaudit
   flows.md. 문서의 과거 DeepInfra/CPU 추론/8시간 구절보다 최신 AGENTS·사용자 지시가 우선한다.
+
+## 실행 뒤 판정
+
+3라운드 결과와 후속 코드는 README.md에 구분했다. e0e124483의 실제 N2 첫30에서
+LLM18/18은 확인했지만 자기 지도 키프레임은0이었다. 다음 후보의 기본 off
+elapsed_sim_v1 삽입 정책·mission 조합은 비물리 시험만 통과했으며 물리 성공을
+승계하지 않는다. source334 vendor 중 release 관측 어댑터는 실행 뒤 대기 부품으로
+추가했으며 R3에 실행됐다고 주장하지 않는다.

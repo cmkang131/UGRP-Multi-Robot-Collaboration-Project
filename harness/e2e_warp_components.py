@@ -4,6 +4,7 @@ No simulator imports. Factories receive static task/map and own observations,
 never the physics object. A manifest is an admission claim, not task success.
 """
 import hashlib
+import copy
 import importlib
 import json
 from pathlib import Path
@@ -19,7 +20,7 @@ def require_components(path, root):
         record = manifest.get(name, {})
         if record.get('ready') is not True or not record.get('owner') or not record.get('evidence'):
             raise ValueError('DEPENDENCY_WAIT:' + name)
-    for name in ('controller_factory', 'evaluator_factory'):
+    for name in ('navigation_factory', 'release_factory', 'evaluator_factory'):
         item = manifest.get(name, {})
         module, sep, attr = item.get('entry', '').partition(':')
         file = Path(root) / (module.replace('.', '/') + '.py')
@@ -71,22 +72,30 @@ def load_actor(record):
 class MissionRobot:
     """Owner controller protocol for the full path (no diagnostic substitution).
 
-    factory(robot_id, static, predict_act) -> controller
-    observe(OwnFrame) -> own-derived report
-    candidates() -> [{id,skill,expected_cost,...}]
-    select(candidate_id, sim_s); command(sim_s) -> grasp_act_contract command
-    complete -> own-observation completion claim (never physical success)
+    The E2E composition is owned here. Owners supply navigation/release adapters,
+    not another monolithic E2E controller. See e2e_warp_mission for their ABI.
     """
     def __init__(self, robot, static, components, actor):
-        self.component = factory(components['controller_factory'])(
-            robot_id=robot, static=static, predict_act=actor.predict)
+        from harness.e2e_warp_mission import IntegratedController
+        navigation = factory(components['navigation_factory'])(robot_id=robot, static=static)
+        release = factory(components['release_factory'])(robot_id=robot, static=static)
+        self.component = IntegratedController(robot, static, actor.predict, navigation, release)
         self.command_history = []
+        self.pending_inbox = []
 
     def observe(self, frame):
         return self.component.observe(frame)
 
     def candidates(self):
         return self.component.candidates()
+
+    def receive(self, rows):
+        self.pending_inbox.extend(copy.deepcopy(rows))
+        return self.component.receive(copy.deepcopy(rows))
+
+    def take_inbox(self):
+        rows, self.pending_inbox = self.pending_inbox, []
+        return rows
 
     def select(self, candidate, now):
         return self.component.select(candidate, now)

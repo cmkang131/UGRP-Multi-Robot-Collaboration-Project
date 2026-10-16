@@ -1,0 +1,67 @@
+{
+  "raw": "/home/ugrp/ugrp-sim/runs/e2ewarp-r3",
+  "reproduction": [
+    "/home/ugrp/ugrp-sim/src/e0e1244839d993424cd232836c55357e49ac7d51/scripts/e2e_warp_inspect.py",
+    "--raw",
+    "/home/ugrp/ugrp-sim/runs/e2ewarp-r3",
+    "--output",
+    "/home/ugrp/ugrp-sim/ops-reviews/e2ewarp/r3-review",
+    "--playback"
+  ],
+  "frame_funnel": [
+    {
+      "stage": "own_rgb",
+      "cumulative_pass_n": 1806,
+      "rejected_n": 0
+    },
+    {
+      "stage": "qualified_unloaded_FK",
+      "cumulative_pass_n": 1806,
+      "rejected_n": 0
+    },
+    {
+      "stage": "settled_scan",
+      "cumulative_pass_n": 48,
+      "rejected_n": 1758
+    },
+    {
+      "stage": "observed_wall_contacts",
+      "cumulative_pass_n": 48,
+      "rejected_n": 0
+    },
+    {
+      "stage": "inserted_keyframe",
+      "cumulative_pass_n": 0,
+      "rejected_n": 48
+    }
+  ],
+  "event_funnel": [
+    {
+      "stage": "client_request",
+      "cumulative_pass_n": 18,
+      "rejected_n": 0
+    },
+    {
+      "stage": "http_200",
+      "cumulative_pass_n": 18,
+      "rejected_n": 0
+    },
+    {
+      "stage": "valid_planner_choice",
+      "cumulative_pass_n": 18,
+      "rejected_n": 0
+    },
+    {
+      "stage": "action_message_accepted",
+      "cumulative_pass_n": 18,
+      "rejected_n": 0
+    }
+  ],
+  "reasons": [],
+  "distribution": {},
+  "final_transport_gate": {
+    "passed_n": 0,
+    "rejected_n": 2,
+    "reason": "smoke is not transport"
+  }
+}

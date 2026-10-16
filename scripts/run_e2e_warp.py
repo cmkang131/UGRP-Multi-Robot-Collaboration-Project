@@ -64,6 +64,7 @@ def prepare(a):
         source_sha=head(), option=OPTION, enabled=a.e2e_warp_batch == 'on_v1', mode=a.mode,
         round=a.round, nworld=a.nworld, condition=a.condition, seed=a.seed,
         sim_budget_s=30. if a.mode == 'smoke' else 1800.,
+        map_keyframe_admission=a.map_keyframe_admission,
         stack_sha256=digest, stack_values=values, stack_deviations=deviations,
         host=dict(instance=INSTANCE, project_id=PROJECT, account=ACCOUNT),
         no_pooling=True, rejection_table=str(prior or funnel.resolve()),
@@ -91,6 +92,9 @@ def admit(a, queue):
         raise ValueError('Linux gcp6 only; Mac step/render prohibited')
     if queue['source_sha'] != head() or head() != a.expected_source_sha:
         raise ValueError('FROZEN_SOURCE_SHA_REQUIRED')
+    dirty=subprocess.check_output(['git','-C',str(ROOT),'status','--porcelain','--untracked-files=normal'],text=True)
+    if dirty.strip():
+        raise ValueError('FROZEN_SOURCE_DIRTY')
     if (queue['mode'] != a.mode or queue['round'] != a.round or queue['nworld'] != a.nworld
             or queue['seed'] != a.seed or queue['condition'] != a.condition):
         raise ValueError('QUEUE_CLI_MISMATCH')
@@ -166,6 +170,7 @@ def run(a, queue):
             contact_profile=dict(profile=queue['stack_values']['contact_profile'],
                 noslip_iterations=int(hooks.m.opt.noslip_iterations)),
             gpu_noslip_iterations=int(hooks.wm.opt.noslip_iterations),
+            map_keyframe_admission=queue.get('map_keyframe_admission','off'),
             camera=dict(robots=list(ROBOTS), resolution=[640, 480], hz=10, top_control=False),
             cpu_physics_steps=0, cpu_render_calls=0, legacy_equivalence_shims=False,
             xml_sha256=[sha(c['world'].scene_xml.encode()) for c in contexts]))
@@ -192,20 +197,28 @@ def run(a, queue):
                     rgb_path = a.output/f'world-{w:02d}'/'review-rgb'/f'{robot}-{tick:06d}.jpg'
                     rgb_path.parent.mkdir(parents=True, exist_ok=True)
                     rgb_path.write_bytes(jpeg)
-                report = task.observe(frame) if components else own_map(frame, ownstates[key])
+                planners[key].health.check(now)
+                report = task.observe(frame) if components else own_map(frame, ownstates[key],
+                    keyframe_policy=queue.get('map_keyframe_admission','off'))
                 maprows.append(dict(world=w, robot=robot, sim_s=now, rgb_sha256=sha(jpeg), **report))
                 # Smoke: 3 decision epochs within user-prescribed first30. Full
                 # owner controller requests decisions on task/observation events.
+                delivered = channels[w].inbox(robot) if components else None
+                if components:
+                    task.receive(delivered.get('inbox', []))
                 needs_decision = bool(getattr(task.component, 'needs_decision', False)) if components else tick in (0, 100, 200)
                 if needs_decision:
+                    peer_input = channels[w].inbox(robot) if not components else {
+                        **delivered, **({'inbox': task.take_inbox()} if 'inbox' in delivered else {})}
                     dynamic = dict(robot_id=robot, world_id=w, sim_s=now, own_map=report,
                                    issued_commands=list(frame.issued), candidates=task.candidates(),
-                                   **channels[w].inbox(robot))
+                                   **peer_input)
                     answer, reason = planners[key].decide(frame, dynamic)
                     if answer is not None:
                         try:
-                            channels[w].send(robot, answer['message'], now=now)
+                            channels[w].validate(robot, answer['message'])
                             task.select(answer['act'], now)
+                            channels[w].send(robot, answer['message'], now=now)
                         except (ValueError, TypeError) as exc:
                             answer, reason = None, rejection(str(exc), category='message_or_selection')
                     if reason:
@@ -260,6 +273,8 @@ def run(a, queue):
         if evalstates:
             np.savez_compressed(a.output/'evaluation-state.npz', qpos=np.asarray(evalstates), dt=.1)
         write(a.output/'messages.json', [dict(world=w, events=c.events) for w, c in enumerate(channels)])
+        if components:
+            write(a.output/'mission-events.json', {f'{w}:{r}': task.component.events for (w,r),task in tasks.items()})
         sizes = []
         for (w, robot), frames in rings.items():
             for f in frames:
@@ -274,6 +289,7 @@ def run(a, queue):
             write(a.output/'backend-timings.json', dict(hooks.seconds))
         summary = dict(schema='ugrp.e2ewarp.result.v1', status=status, error=error, sim_s=sim_s,
             source_sha=head(), mode=a.mode, nworld=a.nworld, wall_s=time.monotonic()-started,
+            map_keyframe_admission=queue.get('map_keyframe_admission','off'),
             physics_backend='mjwarp_batch_v1', contact_profile='warp_native_contact_v1',
             E2E_success=False, student_execution=bool(components), research_result=False,
             no_pooling=True, input_audit=dict(top_camera_control=False, held_world_reads=0,
@@ -318,6 +334,8 @@ def run(a, queue):
                     dict(stage='actual_transport', cumulative_pass_n=0, rejected_n=a.nworld if sim_s >= 30 else 0)],
             reasons=rejects or [dict(count=a.nworld, **rejection('marked_smoke_dependency_wait'))]))
         write(a.output/'result.json', summary)
+        write(a.output/'progress.json', dict(sim_s=sim_s,status=summary['status'],
+            client_requests=len(allrows),model_calls=summary['model_calls'],finished=True))
         write(a.output/'sha256.json', {str(p.relative_to(a.output)): sha(p.read_bytes()) for p in a.output.rglob('*') if p.is_file()})
     return summary
 
@@ -335,6 +353,8 @@ def main(argv=None):
     p.add_argument('--execute', action='store_true')
     p.add_argument('--queue', type=Path)
     p.add_argument('--rejection-table', type=Path, help='absolute prior raw funnel for subsequent rounds')
+    p.add_argument('--map-keyframe-admission',choices=('off','elapsed_sim_v1'),default='off',
+                   help='post-R3 candidate; irregular qualified frames use elapsed SIM cadence')
     p.add_argument('--expected-source-sha')
     p.add_argument('--host-receipt', type=Path)
     p.add_argument('--components', type=Path)
