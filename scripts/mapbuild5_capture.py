@@ -28,6 +28,59 @@ def plan():
     return rows, 40.
 
 
+def finish_saved(a, m, xml, cases, saved, *, renderer, wall_s, resumed=False):
+    """Finalize immutable physics/RGB; never integrate or render a new state."""
+    import numpy as np
+    import harness
+    harness.__path__.append(str(ROOT/'harness'))
+    from harness.e2e_rgb_vo import between
+    from mapbuild2_capture import quaternion_heading
+    from mapbuild5_motion import command_intervals
+    queue=json.loads(a.queue.read_text())
+    calibration=Path(queue['motion_calibration'])
+    if hashlib.sha256(calibration.read_bytes()).hexdigest()!=queue['calibration_sha256']:
+        raise ValueError('PINNED_NATIVE_MOTION_REQUIRED')
+    prior=json.loads(calibration.read_text())
+    if prior['contact_profile']!='warp_native_contact_v1':raise ValueError('CONTACT_COHORT_MISMATCH')
+    if len(saved)!=401:raise ValueError('COMPLETE_FIXED_STIMULUS_REQUIRED')
+    for name in ('own.json','eval-only.json','summary.json','SHA256SUMS.json'):
+        if (a.output/name).exists():raise ValueError('NO_COMPLETION_OVERWRITE:'+name)
+    body=m.body('r1__robot').id;adr=int(m.jnt_qposadr[int(m.body_jntadr[body])])
+    pose=lambda q:np.r_[q[adr:adr+2],quaternion_heading(q[adr+3:adr+7])]
+    origin=pose(saved[0]);own=[];labels=[]
+    folder=a.output/'roundtrip'
+    for k,q in enumerate(saved):
+        for camera in ('r1','r2','overview'):
+            if not (folder/f'{camera}-{k:04d}.jpg').is_file():raise ValueError('MISSING_SAVED_RGB')
+        path=folder/f'r1-{k:04d}.jpg'
+        own.append(dict(sequence='roundtrip',robot_id='r1',frame_id=k,t=k/10,
+            rgb=str(path.relative_to(a.output)),sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
+            servo={str(s):v for s,v in cases[0]['pwm'].items()}))
+        labels.append(dict(sequence='roundtrip',frame_id=k,t=k/10,pose=between(origin,pose(q)).tolist()))
+    commands=json.loads((a.output/'commands.json').read_text())
+    # The old mapbuild2 v122 facade cannot represent measured 400ms pulses.
+    # Use exactly the same frozen native response/covariance as paired replay.
+    intervals=command_intervals(own,commands,prior)
+    own=[{**r,'command_delta':intervals[r['frame_id']][0].tolist(),
+          'command_covariance':intervals[r['frame_id']][1].tolist()} for r in own]
+    dump(a.output/'own.json',dict(schema='ugrp.mapbuild1.own.v1',backend='mjwarp_render',physics_backend='mjwarp',
+        scope='physical_fixed_command_roundtrip',frames=own))
+    dump(a.output/'eval-only.json',dict(frames=labels,first_origin=[origin.tolist()],evaluation_only=True))
+    original=json.loads((a.output/'RUN_META.json').read_text())
+    dump(a.output/'summary.json',dict(status='cap_end',source_sha=original['sha'],metadata_source_sha=queue['source_sha'],
+        metadata_resumed_without_physics=resumed,scene='walls_floor_contrast_v5_indigo110_s80',
+        scene_xml_sha256=hashlib.sha256(xml.encode()).hexdigest(),frames=len(own),worlds=1,sim_s=40.,
+        recording=dict(hz=10,terminal_sim_s=10,retained=list(range(300,401)),
+                       bytes=sum(p.stat().st_size for p in folder.glob('*.jpg'))),renderer=renderer,
+        physics_backend='mjwarp',contact_profile=json.loads((a.output/'contact-profile.json').read_text()),wall_s=wall_s,
+        input_audit=dict(top_actor_reads=0,truth_feedback=0,cpu_physics_steps=0),termination='cap_end'))
+    dump(a.output/'rejection_table.json',dict(raw=str(a.output),reproduction=sys.argv,
+        stages=[dict(stage='requested_frames',cumulative_pass_n=401,rejected_n=0),
+                dict(stage='recorded_frames',cumulative_pass_n=len(own),rejected_n=401-len(own))],reasons={}))
+    dump(a.output/'SHA256SUMS.json',{str(p.relative_to(a.output)):hashlib.sha256(p.read_bytes()).hexdigest()
+        for p in a.output.rglob('*') if p.is_file()})
+
+
 def run(a):
     a.backend = 'warp'; a.contact_profile = 'warp_native_contact_v1'
     a.case_filter = 'drive-forward-+1-100'
@@ -43,7 +96,6 @@ def run(a):
     from sim.masterpi_camera_profile import raw_fisheye_remap
     from harness.e2e_rgb_vo import between, K, D
     from mapbuild2_capture import quaternion_heading
-    from mapbuild2_commands import increments
     queue = json.loads(a.queue.read_text())
     if queue.get('toggle') != 'mapbuild5_recording_v1' or queue.get('enabled') is not True:
         raise ValueError('EXPLICIT_RECORDING_TOGGLE_REQUIRED')
@@ -52,6 +104,17 @@ def run(a):
     lease = Path('/home/ugrp/ugrp-sim/leases/mapbuild5.json')
     if not lease.is_file():
         raise ValueError('OWN_LEASE_REQUIRED')
+    if a.finalize_saved_recording:
+        physics=json.loads((a.output/'physics.json').read_text())
+        if physics['status']!='cap_end' or physics['sim_s']!=40.:raise ValueError('COMPLETED_PHYSICS_REQUIRED')
+        saved=np.load(a.output/'eval-state.npz')['qpos']
+        # Exact archived reset identity, float32 storage conversion only.
+        if not np.array_equal(saved[0].astype(np.float32),initial[0].astype(np.float32)):
+            raise ValueError('SAVED_MODEL_FIXTURE_MISMATCH')
+        finish_saved(a,m,xml,cases,saved,renderer=dict(source='5974a181a2cec9731339a6ce3aadc0464b8dddcf',
+            runtime_audit='not persisted by original failed metadata writer; saved JPEGs retained'),
+            wall_s=None,resumed=True)
+        return
     a.output.mkdir(parents=True, exist_ok=False)
     dump(a.output/'RUN_META.json',dict(schema='ugrp.run_meta.v1',**{'class':'dev'},pr=556,
          branch='codex/mapbuild1',sha=queue['source_sha'],batch='mapbuild5'))
@@ -151,28 +214,16 @@ def run(a):
             ring.append(k)
         dump(a.output/'progress.json',dict(status='RENDERING',recorded=len(own),expected=len(saved)))
         print('rendered',len(own),flush=True)
-    inc = increments(own,commands)
-    own = [{**r,**inc[r['sequence'],r['frame_id']]} for r in own]
-    dump(a.output/'own.json', dict(schema='ugrp.mapbuild1.own.v1',backend='mjwarp_render',physics_backend='mjwarp',
-         scope='physical_fixed_command_roundtrip',frames=own))
-    dump(a.output/'eval-only.json',dict(frames=labels,first_origin=[origin.tolist()],evaluation_only=True))
-    dump(a.output/'summary.json',dict(status='cap_end',source_sha=queue['source_sha'],scene='walls_floor_contrast_v5_indigo110_s80',
-         scene_xml_sha256=hashlib.sha256(xml.encode()).hexdigest(),frames=len(own),worlds=1,sim_s=end,
-         recording=dict(hz=10,terminal_sim_s=10,retained=list(ring),bytes=sum(p.stat().st_size for p in folder.glob('*.jpg'))),
-         renderer=rc.audit,physics_backend='mjwarp',contact_profile=contact,wall_s=time.monotonic()-t0,
-         input_audit=dict(top_actor_reads=0,truth_feedback=0,cpu_physics_steps=0),termination='cap_end'))
-    dump(a.output/'rejection_table.json',dict(raw=str(a.output),reproduction=sys.argv,
-         stages=[dict(stage='requested_frames',cumulative_pass_n=len(saved),rejected_n=0),
-                 dict(stage='recorded_frames',cumulative_pass_n=len(own),rejected_n=len(saved)-len(own))],reasons={}))
-    dump(a.output/'SHA256SUMS.json',{str(p.relative_to(a.output)):hashlib.sha256(p.read_bytes()).hexdigest()
-         for p in a.output.rglob('*') if p.is_file()})
+    finish_saved(a,m,xml,cases,saved,renderer=rc.audit,wall_s=time.monotonic()-t0)
 
 
 if __name__ == '__main__':
     p = argparse.ArgumentParser(description=__doc__)
     for name in ('renderer-source','renderer-receipt','fixture','queue','output'):
         p.add_argument('--'+name,type=Path,required=True)
-    p.add_argument('--mapbuild5-recording-v1',action='store_true'); a = p.parse_args()
+    p.add_argument('--mapbuild5-recording-v1',action='store_true')
+    p.add_argument('--finalize-saved-recording',action='store_true',help='metadata only; no physics or rendering')
+    a = p.parse_args()
     if not a.mapbuild5_recording_v1:
         p.error('default off; --mapbuild5-recording-v1 required')
     run(a)
