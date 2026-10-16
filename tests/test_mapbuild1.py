@@ -3,7 +3,7 @@ import json
 import cv2
 import numpy as np
 import pytest
-from scripts.mapbuild1_replay import read_frame, replay, score
+from scripts.mapbuild1_replay import read_frame, replay, score, orange_floor_mask
 from scripts.score_mapbuild1 import score as map_score
 
 
@@ -12,7 +12,7 @@ def record(path,frame=0):
     ok,raw=cv2.imencode('.jpg',image);assert ok
     (path/'own.jpg').write_bytes(raw.tobytes())
     return dict(sequence='blank',robot_id='r1',frame_id=frame,t=float(frame)/10,rgb='own.jpg',
-        sha256=hashlib.sha256(raw).hexdigest(),servo={'1':2000,'3':1100,'4':1500,'5':1900,'6':1500},
+        sha256=hashlib.sha256(raw).hexdigest(),servo={'1':2000,'3':740,'4':2320,'5':1320,'6':1500},
         command_delta=[0.,0.,0.],command_covariance=np.zeros((3,3)).tolist())
 
 
@@ -53,6 +53,16 @@ def test_loaded_camera_remains_unknown_without_truth_fallback(tmp_path):
     assert rows[0]['slam']['reason']=='unqualified_camera:loaded_or_unknown_load_not_qualified'
     assert rows[0]['lk']['status']=='unknown_camera:loaded_or_unknown_load_not_qualified'
     assert rows[0]['lk_pose']==[0.,0.,0.]
+
+
+def test_orange_exclusion_only_withholds_floor_support(tmp_path):
+    from harness.e2e_rgb_vo import image_mask
+    row=record(tmp_path);servo={int(k):v for k,v in row['servo'].items()}
+    rgb=np.full((480,640,3),150,np.uint8)
+    rgb[:,280:360]=[255,128,0]
+    prior=image_mask(rgb,servo);masked=orange_floor_mask(rgb,servo)
+    assert np.all(masked<=prior)
+    assert np.count_nonzero(masked)<np.count_nonzero(prior)
 
 
 def test_map_unknowns_remain_omissions_and_false_occupied_is_not_coverage_success():

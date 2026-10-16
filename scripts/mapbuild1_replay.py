@@ -16,6 +16,41 @@ import numpy as np
 from harness.natural_floor_slam import NaturalFloorSLAM, Observation, extract
 from harness.e2e_rgb_vo import ground_pair, compose, PARAMS
 from harness.servo_camera_fk import transform_from_commands
+from harness.active_camera import bind
+from harness.e2e_rgb_vo import image_mask, ground, K, D
+
+
+def orange_floor_mask(rgb,servo):
+    """Existing RGB orange-column exclusion mapped from ideal to raw fisheye.
+
+    Thresholds/morphology are reused unchanged from orange_columns_v1, with
+    their recorded 2026-10-06 provenance. No peer pose or segmentation input.
+    """
+    from harness.opencv_wall_observation_robot_mask import robot_occluded_columns
+    bgr=cv2.cvtColor(rgb,cv2.COLOR_RGB2BGR)
+    ideal=cv2.fisheye.undistortImage(bgr,K,D,Knew=K,new_size=(640,480))
+    excluded=robot_occluded_columns(ideal)
+    yy,xx=np.indices((480,640))
+    uv=np.stack((xx,yy),-1).astype(np.float64).reshape(-1,1,2)
+    points=cv2.fisheye.undistortPoints(uv,K,D,P=K).reshape(480,640,2)
+    cols=np.rint(points[...,0]).astype(int)
+    valid=(cols>=0)&(cols<640)
+    blocked=np.ones((480,640),bool);blocked[valid]=excluded[cols[valid]]
+    mask=image_mask(rgb,servo);mask[blocked]=0
+    return mask
+
+
+def candidate_extract(rgb,servo,*,frame_id,t,sha256,options,candidate):
+    if candidate=='legacy':return extract(rgb,servo,frame_id=frame_id,t=t,sha256=sha256,options=options)
+    # FAST7 is the measured warp5 R3 comparator, not a fit to these labels.
+    # All SE(2), match, residual and landmark acceptance constants are unchanged.
+    mask=orange_floor_mask(rgb,servo) if candidate=='orange-columns-fast7' else image_mask(rgb,servo)
+    key,desc=cv2.ORB_create(nfeatures=options.features,fastThreshold=7).detectAndCompute(
+        cv2.cvtColor(rgb,cv2.COLOR_RGB2GRAY),mask)
+    if desc is None:return Observation(frame_id,t,np.empty((0,2)),np.empty((0,32),np.uint8),sha256)
+    points,depth=ground(servo,np.asarray([k.pt for k in key],np.float64))
+    good=np.isfinite(points).all(1)&np.isfinite(depth)&(depth>0)
+    return Observation(frame_id,t,points[good],desc[good],sha256)
 
 
 def dump(path,value):
@@ -39,10 +74,12 @@ def read_frame(root,row):
     return cv2.cvtColor(bgr,cv2.COLOR_BGR2RGB)
 
 
-def replay(root,manifest):
+def replay(root,manifest,*,candidate='legacy'):
     """Only the restricted manifest is consumed here; labels are not opened."""
     if manifest['schema']!='ugrp.mapbuild1.own.v1' or manifest['backend']!='mjwarp_render':
         raise ValueError('MJWARP_OWN_MANIFEST_REQUIRED')
+    if candidate not in ('legacy','fast7','orange-columns-fast7'):raise ValueError('UNKNOWN_CANDIDATE')
+    pair=bind(ground_pair,image_mask=orange_floor_mask) if candidate=='orange-columns-fast7' else ground_pair
     grouped={}
     for row in manifest['frames']:grouped.setdefault(row['sequence'],[]).append(row)
     output=[]
@@ -58,7 +95,8 @@ def replay(root,manifest):
                 # substitute measured joints or turn this into zero-motion proof.
                 observation=Observation(row['frame_id'],row['t'],np.empty((0,2)),np.empty((0,32),np.uint8),row['sha256'])
             else:
-                observation=extract(rgb,servo,frame_id=row['frame_id'],t=row['t'],sha256=row['sha256'])
+                observation=candidate_extract(rgb,servo,frame_id=row['frame_id'],t=row['t'],sha256=row['sha256'],
+                                              options=slam.options,candidate=candidate)
             event=slam.step(observation,command_delta=row['command_delta'],command_covariance=row['command_covariance'])
             if camera is None:
                 event.update(status='command_only',reason='unqualified_camera:'+qualification)
@@ -66,7 +104,7 @@ def replay(root,manifest):
             elif before is None:lk=dict(status='bootstrap',tracks=0,inliers=0,cells=0)
             elif servo!=previous_servo:lk=dict(status='unknown_servo_change',tracks=0,inliers=0,cells=0)
             elif row['t']-previous_t>PARAMS['max_pair_gap_s']:lk=dict(status='unknown_stale',tracks=0,inliers=0,cells=0)
-            else:lk=ground_pair(before,rgb,servo)  # default off map mask; no surveyed walls
+            else:lk=pair(before,rgb,servo)  # default off map mask; no surveyed walls
             lkpose=compose(lkpose,lk['delta'] if lk['status']=='measured' else row['command_delta'])
             output.append(dict(sequence=name,frame_id=row['frame_id'],t=row['t'],rgb=row['rgb'],
                 slam=event,lk=lk,lk_pose=lkpose.tolist(),
@@ -115,16 +153,17 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--input',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
     p.add_argument('--evaluation-labels',type=Path,required=True)
+    p.add_argument('--candidate',choices=['legacy','fast7','orange-columns-fast7'],default='legacy')
     p.add_argument('--mapbuild1-v1',action='store_true');a=p.parse_args()
     if not a.mapbuild1_v1:p.error('default off; --mapbuild1-v1 required')
     cv2.setNumThreads(1);a.output.mkdir(parents=True,exist_ok=False)
     manifest=json.loads((a.input/'own.json').read_text())
-    rows=replay(a.input,manifest)
+    rows=replay(a.input,manifest,candidate=a.candidate)
     dump(a.output/'trajectory.json',rows)
     # Open labels only after the actor output is committed to disk.
     metrics=score(rows,json.loads(a.evaluation_labels.read_text()))
     dump(a.output/'summary.json',dict(scope=manifest['scope'],status='MEASURED_NOT_ADMITTED',
-        results=metrics,runtime_inputs=['own_rgb','fixed_camera_calibration','fixture_pwm_specification','zero_wheel_prior'],
+        results=metrics,candidate=a.candidate,runtime_inputs=['own_rgb','fixed_camera_calibration','fixture_pwm_specification','zero_wheel_prior'],
         command_scale_measured=False,physical_driving_measured=False,
         input_sha256=hashlib.sha256((a.input/'own.json').read_bytes()).hexdigest()))
     pairs=[r for r in rows if r['frame_id']!=0]
