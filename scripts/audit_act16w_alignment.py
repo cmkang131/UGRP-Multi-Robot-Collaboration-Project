@@ -22,6 +22,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--enabled', action='store_true')
     parser.add_argument('--world-root', type=Path, required=True)
+    parser.add_argument('--states', type=Path, help='explicit teacher aggregate file; default owner world-root/states.npz')
     parser.add_argument('--actions', type=Path, required=True)
     parser.add_argument('--action-format', choices=('teacher', 'student'), required=True)
     parser.add_argument('--world-index', type=int, default=0)
@@ -45,6 +46,7 @@ def main():
     station, xy_tol, yaw_tol, dwell = MOUNT_X_M + PAD_MID_M, PAD_TOL_M, .04, .3
     clock_tol = 1e-5  # frozen ACT ChunkExecutor/owner issued-clock tolerance
     root = args.world_root
+    states_path = args.states if args.states else root / 'states.npz'
     plan = json.loads((root / 'plan.json').read_text())
     if plan['kind'] not in ('cyan', 'red', 'green', 'yellow') or plan['role'] != 'west':
         raise ValueError('qualified solo BOX west geometry only')
@@ -56,7 +58,7 @@ def main():
     data = mujoco.MjData(model)
     base_id = model.body(plan['robot_id'] + '__robot').id
     target_id = model.body(target).id
-    with np.load(root / 'states.npz') as archive:
+    with np.load(states_path) as archive:
         ticks, qpos = archive['ticks'].copy(), archive['qpos'].copy()
     if qpos.shape != (len(ticks), model.nq):
         raise ValueError('saved MJWarp qpos/model dimensions differ')
@@ -113,7 +115,7 @@ def main():
                       evidence='qualified pad_window_v2 physical pad window and existing _seek readiness; values unchanged'),
                   scope='post-action saved-state geometric readiness during grasp; visibility and IK are not tested, task success is unchanged; no C-physics robustness run',
                   raw=[dict(path=str(p), sha256=sha256(p)) for p in
-                       (root/'scene.xml', root/'states.npz', root/'plan.json', args.actions)],
+                       (root/'scene.xml', states_path, root/'plan.json', args.actions)],
                   points=points, reproduce=sys.argv)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     with args.out.open('x') as stream:
