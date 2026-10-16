@@ -1,5 +1,5 @@
 {
-  "status": "FRESH_RECORD40_IN_PROGRESS",
+  "status": "A_B_TRAINING",
   "started_utc": "2026-10-16T05:45:57.126020+00:00",
   "previous_attempt": "../summary.json",
   "record_api_source": "0362037280c6cbc4677f70366db43b9892b23690",
@@ -33,18 +33,18 @@
     ]
   },
   "scene": "walls_floor_contrast_v5_indigo110_s80 + v1 floor + no_mip_v1",
-  "gpu_budget_s": 28800,
+  "gpu_budget_s": null,
   "warm_sim_s": 3,
   "warm_scope": "recording API/throughput diagnostic, not data admission or teacher success",
   "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2",
   "teacher_gate_independent": {
-    "n": 24,
+    "n": 40,
     "N": 40,
-    "complete": false,
-    "passed": false
+    "complete": true,
+    "passed": true
   },
-  "recorded_admitted_episodes": 0,
-  "optimizer_steps": 0,
+  "recorded_admitted_episodes": 40,
+  "optimizer_steps": "live per-arm summaries; actual research optimization in progress",
   "evaluation_N": 0,
   "rejection_table": "experiments/2026-10-16-act16w/resume2/rejection_table.json",
   "warm_receipts": "warm-receipts.json",
@@ -71,7 +71,7 @@
     "passed": 27,
     "command": "python3 -m pytest -q tests/test_act16w_runtime.py tests/test_warp_act_core.py tests/test_warp_act_api.py"
   },
-  "next": "Fresh40 recording gate -> full dataset audit -> source/hash-bound admission -> matched A/B300 smoke then10000 total, bounded by13:43Z drain; C/DAgger/final40 only after required comparisons.",
+  "next": "finish A/B10000 then validation5, C h4, D1 h5, frozen final40; no wall cap; retain idle20/budget-stop",
   "recording_selection": "record-selection.json",
   "selected_fresh_records_planned": 40,
   "train_records_planned": 35,
@@ -86,7 +86,7 @@
   ],
   "cuda_preflight": "cuda-preflight.json",
   "gpu_task_first_utc": "2026-10-16T05:47:00.019842+00:00",
-  "gpu_task_hard_end_utc": "2026-10-16T13:47:00.019842+00:00",
+  "gpu_task_hard_end_utc": null,
   "speed_exception": "pilot-queue.json:speed_gate_override",
   "running_pilots": [],
   "sap_candidate": "not_adopted_no_verified_speed_gain",
@@ -103,10 +103,16 @@
     "pending": 16,
     "complete": false
   },
-  "student_training_steps": 0,
+  "student_training_steps": {
+    "A": 2740,
+    "B": 2740,
+    "as_of_utc": "2026-10-16T13:09:00Z",
+    "exact_snapshot": false,
+    "live_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training-r2"
+  },
   "student_evaluation_runs": 0,
   "bulk_first_attempt": "HOST_ERROR before physics: gate host schema7 vs4; separate integration fix tested11passed",
-  "updated_utc": "2026-10-16T11:40:27.455860+00:00",
+  "updated_utc": "2026-10-16T13:11:04.028217+00:00",
   "pilot_completed": 2,
   "pilot_success": 2,
   "bulk_raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2",
@@ -133,7 +139,7 @@
     ]
   },
   "research_training_steps": 0,
-  "recording_active_worlds": 16,
+  "recording_active_worlds": 0,
   "recording_pending_worlds": 0,
   "parallel_scheduler_source": "a6d08b6ac397cd0e3a29f3ff9c9490895d863a20",
   "first30_own_rgb_review": "first30-own-rgb-preview.json",
@@ -147,13 +153,9 @@
   "input_contract_limitation": "same-colour-task-input-review.json",
   "alignment_diagnostic": "alignment-diagnostic-protocol.json",
   "strict_native_audits": {
-    "worlds": 24,
-    "paired_frames": 10639,
-    "max_period_error_s": 5.689893001203927e-15,
-    "clock_tolerance_s": 1e-05,
-    "proof": [
-      "strict-audits-stage1.json",
-      "strict-audits-stage2.json"
-    ]
-  }
+    "proof": "strict-audits-final40.json",
+    "worlds": 40,
+    "exact_pairs": 17706
+  },
+  "cap_decision": "cap-decision.json"
 }

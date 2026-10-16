@@ -1,12 +1,15 @@
 # ACT16w — MJWarp 재기록·학습
 
-현재는 **2회차 재개 진행 중**이다. warp3 40/40과 RECORD_API_READY `0362037`을
-수신했고, 새 파일럿2/2와 본 기록 그룹9/9·13/13이 성공했다. 완료24회의 native
-JPEG·발행 이력·교사 표적10,639/10,639쌍이 정합했고 입력 감사는 invisible/held0/0이다.
-기존ACT와 같은1e-5초 주기 허용치로 감사했다([첫 감사](resume2/strict-audits-stage1.json), [13회 추가 감사](resume2/strict-audits-stage2.json)).
-두 파일럿의 전체2Hz·끝10SIM초10Hz 프레임 띠와 본 기록 첫30초를 직접 검토했다.
-나머지 기록이 진행 중이며 독립40회 관문·데이터 승인·ACT 학습·학생 평가는 아직
-미완료다. 앞선3SIM초 warm2회(cap_end,60쌍)는 학습에서 제외한다.
+현재는 **2회차 A/B 학습 진행 중**이다. 새 독립 시드의 교사 기록40/40이 성공했고,
+native JPEG·발행 이력·교사 표적17,706/17,706쌍이 정합했다. 입력 감사는 invisible/held0/0이며,
+기존 ACT와 같은1e-5초 주기 허용치로 전체40회를 재감사했다
+([전체 감사](resume2/strict-audits-final40.json), [기록 관문](resume2/fresh-recording-gate.json)).
+D0는35TRAIN/5VAL이며 재부팅 후162개 파일의 해시를 확인해 재사용했다.
+A/B는 동일 초기화·10000스텝으로 학습 중이며, 학생 성공률·h4·h5·최종40회는 미측정이다.
+두 파일럿 전체2Hz·끝10SIM초10Hz와 본 기록 첫30초를 직접 검토했다.
+앞선3SIM초 warm2회(cap_end,60쌍)는 학습에서 제외했다.
+사용자가 상한을 해제했고 조정자가 VM 설정을 적용했다([결정](resume2/cap-decision.json)).
+작업자 wall 종료 시각을 없앴으며 유휴20분·budget-stop은 유지한다.
 [2회차 요약](resume2/summary.json), [warm 원본 해시/감사](resume2/warm-receipts.json),
 [파일럿 대기열](resume2/pilot-queue.json), [관문표](resume2/rejection_table.json).
 [실제 파일럿 감사](resume2/native-pilot-checks.json), [시계열 검토](resume2/pilot-playback-review.json),
@@ -47,7 +50,8 @@ Mac은 소스·짧은 비물리 검사·요약/몽타주 열람만 한다.
 
 [입력 규약 점검](resume2/same-colour-task-input-review.json): 교사는 item_id로 대상을 고르지만
 현재 학생 상자 토큰은 종류+west라 같은 색 인스턴스의 지시 구분이 빠진다.
-실제 성능 영향은 미측정이며 A/B 입력은 유지한다.
+실제 성능 영향은 미측정이며 A/B 입력은 유지한다. 조정자 지시로 배정 item_id 성공과
+같은 종류 아무 상자 성공, 시작 화면 같은 색2개 이상 비율을 평가 전용으로 함께 낸다.
 [정렬 사후 진단 규약](resume2/alignment-diagnostic-protocol.json)은 학생 결과 전에 고정했고,
 [교사 파일럿2회](resume2/alignment-pilot-checks.json)의 저장 자세로 좌표 복원을 확인했다.
 이것은 기존 패드 창의 기하 진단이며 가시성/IK·물리 성공과 별개다.
@@ -75,7 +79,7 @@ Mac은 소스·짧은 비물리 검사·요약/몽타주 열람만 한다.
    가능한 C CPU 견고성 확인은 별도 분모다. 모델은 Release 재다운로드·전체
    해시·모델 로딩 검증 후에만 배포 완료로 표시한다.
 
-L4 합계 최대 8시간(교사/기록/학습/평가의 GPU 점유 모두 포함).
+작업자 wall 상한 없음(2026-10-16 사용자 후속 지시). 유휴20분·budget-stop은 유지한다.
 사용 project/account는 `ugrp-sim-b-1014`/`changmin5781@gmail.com`만 허용한다.
 다른 작업의 임대/프로세스가 있으면 VM을 정지하지 않는다.
 
@@ -105,13 +109,13 @@ L4 합계 최대 8시간(교사/기록/학습/평가의 GPU 점유 모두 포함
 - `scripts/act16w_runtime.py`: gcp2 실제 metadata와 고정 ACT 소스,
   교사 관문·장면·데이터 감사 파일의 해시를 검증한다.
 - `scripts/train_act16w.py`: 기존 ACT 라이브러리 `3f99d58c`를 별도 source에서
-  재사용하는 유한 학습 실행기. 합성 CUDA 저장/재로딩은 통과했고 실제 데이터 학습은 대기 중이다.
+  재사용하는 유한10000스텝 학습 실행기. 실제40회 기록 데이터로 A/B 학습이 진행 중이다.
 - `scripts/act16w_curriculum.py`: TRAIN 시작 거리·절대 각도의 종류별 경험
   백분위 순위를 합해 쉬운 에피소드부터 연다. optimizer 진행률에 따라 허용
   에피소드 수를 선형으로 늘리는 조정자 설계다. 기존 표집은 기본값이다.
 - `scripts/act16w_train_pipeline.py`: fresh40 관문·전체 텐서 감사·소스/해시 승인 후
-  A/B300 smoke→총10000스텝으로 이어진다. 13:43Z에 자기 학습을 정리하며
-  최초GPU05:47Z 기준 총8시간13:47Z를 넘기지 않는다. 미완료 arm은 선택하지 않는다.
+  A/B300 smoke→총10000스텝으로 이어진다. wall 종료 시각은 사용자 지시로 제거했다.
+  미완료 arm은 선택하지 않는다. 재사용 D0의 전체 해시를 다시 확인한다.
 - `scripts/act16w_dagger_owner.py`, `collect_act16w_dagger.py`, `act16w_dagger_dataset.py`:
   학습 전용 라벨 채널·학생 TRAIN 방문·h0 표적 결합. 원래 학생 명령을 그대로 실행하고
   닫기 뒤에는 질의를 영구 차단하며 D0 정규화 통계를 그대로 쓴다. 전체 DAgger 실행은 미검증이다.
@@ -182,7 +186,7 @@ watcher 검사11통과, 전체 신규 비물리 검사 누계25통과·torch1ski
 이전 분석의 시드 범위를 gcp2/MJWarp에서 새로 기록할 계획이고 아직 실행하지 않았다.
 DAgger는 같은10000스텝의 새 초기화와 D0 TRAIN 정규화 통계를 써서 추가 업데이트
 효과와 분리한다. h1/h2/h3의 손실 결합은 아직 구현하지 않았으며 실제 효과로 보고하지 않는다.
-전체 비교가8시간 안에 안 들어가면 미완료로 남기고 상한을 넘기지 않는다.
+당시8시간 예산은 이후 사용자 지시로 해제됐다. 고정 optimizer/SIM 평가 구간은 유지한다.
 
 08:17 KST: warp3은 독립40개 참조를7모델 그룹으로 나눠 첫7개 결과를 기다린다.
 API 계약은 설계 기록이며 RECORD_API_READY가 아니다. RUNNING 0/40은 최종

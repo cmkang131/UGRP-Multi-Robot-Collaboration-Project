@@ -1,0 +1,1696 @@
+{
+  "schema": "ugrp.grasp_act.dataset.v1",
+  "status": "complete",
+  "complete": true,
+  "protocol": {
+    "teacher_sha": "f0db6b1abb842ea65b71c433738210254f300a7c",
+    "train_seeds": [
+      86820,
+      86821,
+      86822,
+      86823,
+      86824,
+      86825,
+      86826,
+      86827,
+      86828,
+      86830,
+      86831,
+      86832,
+      86834,
+      86835,
+      86836,
+      86838,
+      86839,
+      86842,
+      86843,
+      86846,
+      86847,
+      86849,
+      86850,
+      86851,
+      86852,
+      86853,
+      86854,
+      86855,
+      86856,
+      86858,
+      86859,
+      86860,
+      86862,
+      86863,
+      86864
+    ],
+    "validation_seeds": [
+      86865,
+      86866,
+      86867,
+      86868,
+      86869
+    ],
+    "run_pattern": "{seed}",
+    "transport_sha_by_seed": {
+      "86821": "0362037280c6cbc4677f70366db43b9892b23690",
+      "86822": "0362037280c6cbc4677f70366db43b9892b23690",
+      "86820": "813b9113b16e382712a00b911a9dcc7c06fbd77d",
+      "86826": "813b9113b16e382712a00b911a9dcc7c06fbd77d",
+      "86830": "813b9113b16e382712a00b911a9dcc7c06fbd77d",
+      "86834": "813b9113b16e382712a00b911a9dcc7c06fbd77d",
+      "86838": "813b9113b16e382712a00b911a9dcc7c06fbd77d",
+      "86842": "813b9113b16e382712a00b911a9dcc7c06fbd77d",
+      "86846": "813b9113b16e382712a00b911a9dcc7c06fbd77d",
+      "86850": "813b9113b16e382712a00b911a9dcc7c06fbd77d",
+      "86854": "813b9113b16e382712a00b911a9dcc7c06fbd77d",
+      "86856": "813b9113b16e382712a00b911a9dcc7c06fbd77d",
+      "86858": "813b9113b16e382712a00b911a9dcc7c06fbd77d",
+      "86862": "813b9113b16e382712a00b911a9dcc7c06fbd77d",
+      "86866": "813b9113b16e382712a00b911a9dcc7c06fbd77d",
+      "86824": "813b9113b16e382712a00b911a9dcc7c06fbd77d",
+      "86849": "813b9113b16e382712a00b911a9dcc7c06fbd77d",
+      "86852": "813b9113b16e382712a00b911a9dcc7c06fbd77d",
+      "86853": "813b9113b16e382712a00b911a9dcc7c06fbd77d",
+      "86823": "813b9113b16e382712a00b911a9dcc7c06fbd77d",
+      "86827": "813b9113b16e382712a00b911a9dcc7c06fbd77d",
+      "86831": "813b9113b16e382712a00b911a9dcc7c06fbd77d",
+      "86835": "813b9113b16e382712a00b911a9dcc7c06fbd77d",
+      "86839": "813b9113b16e382712a00b911a9dcc7c06fbd77d",
+      "86843": "813b9113b16e382712a00b911a9dcc7c06fbd77d",
+      "86847": "813b9113b16e382712a00b911a9dcc7c06fbd77d",
+      "86851": "813b9113b16e382712a00b911a9dcc7c06fbd77d",
+      "86855": "813b9113b16e382712a00b911a9dcc7c06fbd77d",
+      "86859": "813b9113b16e382712a00b911a9dcc7c06fbd77d",
+      "86863": "813b9113b16e382712a00b911a9dcc7c06fbd77d",
+      "86867": "813b9113b16e382712a00b911a9dcc7c06fbd77d",
+      "86825": "813b9113b16e382712a00b911a9dcc7c06fbd77d",
+      "86828": "813b9113b16e382712a00b911a9dcc7c06fbd77d",
+      "86832": "813b9113b16e382712a00b911a9dcc7c06fbd77d",
+      "86836": "813b9113b16e382712a00b911a9dcc7c06fbd77d",
+      "86860": "813b9113b16e382712a00b911a9dcc7c06fbd77d",
+      "86864": "813b9113b16e382712a00b911a9dcc7c06fbd77d",
+      "86865": "813b9113b16e382712a00b911a9dcc7c06fbd77d",
+      "86868": "813b9113b16e382712a00b911a9dcc7c06fbd77d",
+      "86869": "813b9113b16e382712a00b911a9dcc7c06fbd77d"
+    },
+    "done_label": "last_local_row_v1",
+    "include_initial_approach_v1": true,
+    "run_class": "milestone",
+    "external_capture_view_v1": true,
+    "old_bootstrap_gate_pooled": false
+  },
+  "done_label": "last_local_row_v1",
+  "image_hw": [
+    240,
+    320
+  ],
+  "episodes": [
+    {
+      "path": "86820-r1",
+      "seed": 86820,
+      "split": "train",
+      "robot_id": "r1",
+      "source_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training/recorded-dataset/views/86820",
+      "source_hashes": {
+        "raw/student-r1.jsonl": "c02f97b0084f93c2078d2504be463ce2a4bc72a43a30ec166d1e22c9bc98cd1c",
+        "raw/teacher-r1.jsonl": "bd77698fe453b977cdf91d3052c88268207499173cc48daf51abe45ebec22853",
+        "raw/student-camera.json": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f",
+        "raw/plan.json": "0af7ba9302bd0bb7f5aa23a50789e60146954b6f138cd130d21587fbf9334e12",
+        "raw/result.json": "153516f3f7431f99c43ff3da3176c92921decf18ad8f03786fa33b9a06a27299",
+        "SOURCE_SHA": "ad5671e5b6395144217c022b7df9e7a9b3882b7858d2e41f62ddc8fc43080ba8",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "rows_total": 454,
+      "rows_selected": 375,
+      "frames": 375,
+      "skill_counts": {
+        "grasp": 287,
+        "release": 88
+      },
+      "done_counts": {
+        "grasp": 1,
+        "release": 1
+      },
+      "missing_done_skills": [],
+      "files": {
+        "rgb-provenance.json": "3460bb169d3f6cdddbde504c4a9e711725f4538ce0121471ffb94c5ea909efff",
+        "images.npy": "9cc6055f67c4d650f656ce85d6fa51ec57f2db2ef5d0897d310ac120c3d3336b",
+        "tensors.npz": "a13ba9c1cf61ff9bb8e1cfcc3e31281012678fb7c1599ee9d0380fdc4008231f",
+        "samples.json": "3585fe16f1372854d7d566a95571515a9563396aa7e62d37b0cc78d67346ba73"
+      }
+    },
+    {
+      "path": "86821-r1",
+      "seed": 86821,
+      "split": "train",
+      "robot_id": "r1",
+      "source_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training/recorded-dataset/views/86821",
+      "source_hashes": {
+        "raw/student-r1.jsonl": "c5c2b874471a0203d27cdcedc104d320d5cde8f260a5799caaf27a4b214cbd7a",
+        "raw/teacher-r1.jsonl": "e84cf296bd1f69fe798cd253566c987bb0f2101345a754cac0dec114c8082225",
+        "raw/student-camera.json": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f",
+        "raw/plan.json": "e297dc6e4a07e2f97f2679b8e0f7d08898d02553f5846d48ce29cf27eca6fc3a",
+        "raw/result.json": "29403047e1cd32e72b93daea0d893272781cc39c8fcb890a686bad6aaa336ff1",
+        "SOURCE_SHA": "a8ebfe1ee9976a2a6f608e1dc931f6dcaf2afcc2269f26d4f7c2573b1f2708fc",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "rows_total": 449,
+      "rows_selected": 370,
+      "frames": 370,
+      "skill_counts": {
+        "grasp": 282,
+        "release": 88
+      },
+      "done_counts": {
+        "grasp": 1,
+        "release": 1
+      },
+      "missing_done_skills": [],
+      "files": {
+        "rgb-provenance.json": "696b8d70c596b645404f1d1e62cab9d5eb6a98b266e384138010b7cf06c07841",
+        "images.npy": "ccf01ad10a8f2b0cb3dee2d12dfad07145b0bf0b2cdc160e94881252968db32c",
+        "tensors.npz": "995adcf2b682d0ab97cbb551d926db5da28477fb6deb9dacc5e5a85cac137345",
+        "samples.json": "a36ea1e51dc9cc79e41401e361f9236144f29ccccb45a5e650e91a5310d780a7"
+      }
+    },
+    {
+      "path": "86822-r1",
+      "seed": 86822,
+      "split": "train",
+      "robot_id": "r1",
+      "source_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training/recorded-dataset/views/86822",
+      "source_hashes": {
+        "raw/student-r1.jsonl": "ad7b67b9c624ed5e88de32efadd799cf18493d3ebc2c01e71fd37bd4d62006da",
+        "raw/teacher-r1.jsonl": "ac5f16e294170539be2943a123542f49a39870955658d67ffc3b5da9a3b6b71f",
+        "raw/student-camera.json": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f",
+        "raw/plan.json": "1307b946f6362cc8fdcbc37134e3da6e82ebf8e699a3d6ca77dd97c9d1999429",
+        "raw/result.json": "e6cce3a76b7031e49de0b1c4ea5ca0fc4a16dd869abd6ac62d48d766c43bd881",
+        "SOURCE_SHA": "a8ebfe1ee9976a2a6f608e1dc931f6dcaf2afcc2269f26d4f7c2573b1f2708fc",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "rows_total": 424,
+      "rows_selected": 345,
+      "frames": 345,
+      "skill_counts": {
+        "grasp": 257,
+        "release": 88
+      },
+      "done_counts": {
+        "grasp": 1,
+        "release": 1
+      },
+      "missing_done_skills": [],
+      "files": {
+        "rgb-provenance.json": "2b138ef15f019d11253b38bb32b0c45ed5fca8d0a535171ab0969816837b1d9c",
+        "images.npy": "94e57bc8c93a6847a608547eacf1e04dbc82a8a4fe3059063761ef1a3bb93f81",
+        "tensors.npz": "8b6339657e1cf9487308069c3b802d712de1c6bbc0f75db747023cf7af5ebdcc",
+        "samples.json": "091b9bc82a093b9acf846e7f1ee618af7193699558da9ea26c0dbd8b64d48da2"
+      }
+    },
+    {
+      "path": "86823-r1",
+      "seed": 86823,
+      "split": "train",
+      "robot_id": "r1",
+      "source_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training/recorded-dataset/views/86823",
+      "source_hashes": {
+        "raw/student-r1.jsonl": "aad1d20cd1675da9bf31a3dc19e1461ceff532174a07d2e3fbd378b2cddf2798",
+        "raw/teacher-r1.jsonl": "9bb2883efa27f12dbb0c52fe30d52d82214487cf5a0beef540fde9a6021e8e23",
+        "raw/student-camera.json": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f",
+        "raw/plan.json": "7ec08c12f7abdab7020735e2feb8387e0cff37899e938e2edbb33f53ee51188d",
+        "raw/result.json": "137bb166ec2698551ce146c6b28dccdb15c4877a7513beb98e6bf9c71a2b5cff",
+        "SOURCE_SHA": "ad5671e5b6395144217c022b7df9e7a9b3882b7858d2e41f62ddc8fc43080ba8",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "rows_total": 413,
+      "rows_selected": 334,
+      "frames": 334,
+      "skill_counts": {
+        "grasp": 247,
+        "release": 87
+      },
+      "done_counts": {
+        "grasp": 1,
+        "release": 1
+      },
+      "missing_done_skills": [],
+      "files": {
+        "rgb-provenance.json": "8b4ff055d7d07f8df4f472a2fdde8a8b6ce1f9bbca86aa8664348cf0f83679f2",
+        "images.npy": "bd8f3f880eaf585d511accc94e21ffa9b2516c811a96f060f0a0596c7ca288e5",
+        "tensors.npz": "a79508b0e678a1a3a3b5241d231999c268377c74eaf824390abd992b05ba9cf2",
+        "samples.json": "40d4cba7835611827ecb880f1f4a0d3e119897dc97a480eb4d5e8c0fc0b35746"
+      }
+    },
+    {
+      "path": "86824-r1",
+      "seed": 86824,
+      "split": "train",
+      "robot_id": "r1",
+      "source_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training/recorded-dataset/views/86824",
+      "source_hashes": {
+        "raw/student-r1.jsonl": "edec908596032dc37bf5aa5713bcb8905b6cecedff004e9a18333eb7c51b1082",
+        "raw/teacher-r1.jsonl": "7e9723779e505f2d1d05feffbe60a742ebb9f2de12df9738217850ddcb4249b6",
+        "raw/student-camera.json": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f",
+        "raw/plan.json": "959bec25f96ced22a8c3cbd16ddab7c690fb43958a7c0c0d2db52852f796f475",
+        "raw/result.json": "839d392d27d788b988cc951b4a994f84e8768e6a557656ba7b64e41ced2584fa",
+        "SOURCE_SHA": "ad5671e5b6395144217c022b7df9e7a9b3882b7858d2e41f62ddc8fc43080ba8",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "rows_total": 474,
+      "rows_selected": 395,
+      "frames": 395,
+      "skill_counts": {
+        "grasp": 307,
+        "release": 88
+      },
+      "done_counts": {
+        "grasp": 1,
+        "release": 1
+      },
+      "missing_done_skills": [],
+      "files": {
+        "rgb-provenance.json": "c421cd6fd022591e96347739394216604819fd1a9723f4ad111ecef057d297de",
+        "images.npy": "4fdd8936133c6a56a2627976d12f6cca940cbe8272ab406d977ccf9f97b470f0",
+        "tensors.npz": "6cf83b7d7e92f2278c8f95703b0a8fd9725aeeb7544a46ed941d70541218da1d",
+        "samples.json": "c40c92f274e350b96ea02f50701b5738424f632699072401b616f695f018564f"
+      }
+    },
+    {
+      "path": "86825-r1",
+      "seed": 86825,
+      "split": "train",
+      "robot_id": "r1",
+      "source_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training/recorded-dataset/views/86825",
+      "source_hashes": {
+        "raw/student-r1.jsonl": "cf4016f925b5114858b26064c9d72f8093b30bb0434b7a541b56b613ed382f0d",
+        "raw/teacher-r1.jsonl": "149d7d668ede84f2f0ec5608fe7258b5e97a796064e28c35f2a04c1867e65d6f",
+        "raw/student-camera.json": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f",
+        "raw/plan.json": "9e6b8d73f499d2ed62d9c91996f3a8fb1866328d02982a9e7c7af65f38d381a4",
+        "raw/result.json": "9b7f878ceceea588d338b56c60f7a56e5d843378eafc24c55d0554da615b7137",
+        "SOURCE_SHA": "ad5671e5b6395144217c022b7df9e7a9b3882b7858d2e41f62ddc8fc43080ba8",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "rows_total": 454,
+      "rows_selected": 375,
+      "frames": 375,
+      "skill_counts": {
+        "grasp": 287,
+        "release": 88
+      },
+      "done_counts": {
+        "grasp": 1,
+        "release": 1
+      },
+      "missing_done_skills": [],
+      "files": {
+        "rgb-provenance.json": "12f6dc08f10889c849839d2aeb43739d232104b6e1c18c6e6d54bb1e49e747f0",
+        "images.npy": "253f5ec0273c3b79a488bc14dd40cc97c770cf8dbf53bdfed516720af6da6834",
+        "tensors.npz": "7b550a37b73fc1562764b2f54cd1384e80538d50ab0201320359fe41654f8b6d",
+        "samples.json": "61e585d5cb5b8e614c46c1f7bf4a5d22a56c1ef97d130be02406f8daa6bff117"
+      }
+    },
+    {
+      "path": "86826-r1",
+      "seed": 86826,
+      "split": "train",
+      "robot_id": "r1",
+      "source_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training/recorded-dataset/views/86826",
+      "source_hashes": {
+        "raw/student-r1.jsonl": "18531e826505d238db3031b186b585c48fabe0347976001122985df2d80418fd",
+        "raw/teacher-r1.jsonl": "2e4ebd014ca4dd33e0805ae462b64b8609ad8a208c476f54786d91f0e9403e9b",
+        "raw/student-camera.json": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f",
+        "raw/plan.json": "26177cc38791b1fe377920ceed6d31ee8422e678e8708bb15e3f1f1f050c1b3f",
+        "raw/result.json": "7d70ddd5d8a0cc96bc22e436e286ad495b9de5369d386cf910dc4518ee0ae4b2",
+        "SOURCE_SHA": "ad5671e5b6395144217c022b7df9e7a9b3882b7858d2e41f62ddc8fc43080ba8",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "rows_total": 429,
+      "rows_selected": 350,
+      "frames": 350,
+      "skill_counts": {
+        "grasp": 262,
+        "release": 88
+      },
+      "done_counts": {
+        "grasp": 1,
+        "release": 1
+      },
+      "missing_done_skills": [],
+      "files": {
+        "rgb-provenance.json": "a328addca0e12745d2c91b0477fabaccde6ba384abd7c073d60f1fb1dd97d597",
+        "images.npy": "9bbddb8803c27348084c9fe452ecefa560762bde3021eaefabe996d50499e03e",
+        "tensors.npz": "f3c4eb87606743a37884b36741a0bb7c9794ac23262343659aea7b952e8ca507",
+        "samples.json": "bf3cd4e49aef73039d1e6b62fe55d1f81c84e1f1782ab996d336ddae04cb857a"
+      }
+    },
+    {
+      "path": "86827-r1",
+      "seed": 86827,
+      "split": "train",
+      "robot_id": "r1",
+      "source_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training/recorded-dataset/views/86827",
+      "source_hashes": {
+        "raw/student-r1.jsonl": "b14590f7770d0d6e04512568d466767b0a85a2ad5b042a63f7b69bc773ce0e54",
+        "raw/teacher-r1.jsonl": "933f7ec5947b729861603d63bb66ae78d257bbb4c4be0a0f92578a2b58944fce",
+        "raw/student-camera.json": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f",
+        "raw/plan.json": "2f5c2bff9bf17ad366f04393db91a84506a7f82f18bba4b632125583d1cd5391",
+        "raw/result.json": "306a2357d5f49d096697cca5ca1a2bf6c93c58053d09773dfcb922bb33792c25",
+        "SOURCE_SHA": "ad5671e5b6395144217c022b7df9e7a9b3882b7858d2e41f62ddc8fc43080ba8",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "rows_total": 439,
+      "rows_selected": 360,
+      "frames": 360,
+      "skill_counts": {
+        "grasp": 272,
+        "release": 88
+      },
+      "done_counts": {
+        "grasp": 1,
+        "release": 1
+      },
+      "missing_done_skills": [],
+      "files": {
+        "rgb-provenance.json": "97329e96e63c044b45f65adee77732225aab7d5db6ece5217dcc70601307a923",
+        "images.npy": "d80e102608e42cef7564e06e895cda1d43c183f681655e8bdf01c0d252842431",
+        "tensors.npz": "a5ac44bf9cb3b0a95d3ee5f0acfd49d01c7230391103382b3b396660b8f80245",
+        "samples.json": "2d85237b5743f3fe322e6d0c03b1f2dd2eea56279363418fef408a1e2b1f1271"
+      }
+    },
+    {
+      "path": "86828-r1",
+      "seed": 86828,
+      "split": "train",
+      "robot_id": "r1",
+      "source_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training/recorded-dataset/views/86828",
+      "source_hashes": {
+        "raw/student-r1.jsonl": "dcfacd9a97588b68a57bd4027eac7b5956566a2687d1284d74f9bdb140892314",
+        "raw/teacher-r1.jsonl": "09204bc72c1f7334753732287907488b2b647bb15d9bea668f58555a98237579",
+        "raw/student-camera.json": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f",
+        "raw/plan.json": "28b3cacfd8f6bdf08d3a2ffb83434866b56af9f273fa41409ee09c2e4bcb4902",
+        "raw/result.json": "c3647c73b3f948434e8b2824cd923504a4d558e501b3d82b50829f10ea237821",
+        "SOURCE_SHA": "ad5671e5b6395144217c022b7df9e7a9b3882b7858d2e41f62ddc8fc43080ba8",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "rows_total": 429,
+      "rows_selected": 350,
+      "frames": 350,
+      "skill_counts": {
+        "grasp": 262,
+        "release": 88
+      },
+      "done_counts": {
+        "grasp": 1,
+        "release": 1
+      },
+      "missing_done_skills": [],
+      "files": {
+        "rgb-provenance.json": "7142757ac53d8acd588eb611de51e6bf1f84c8eb895b4476d9a1e999f81818e0",
+        "images.npy": "5209fe8bf0d776cc3da80dd54d1241f4c75e90a73cdea20aa0d35cd7b28cc962",
+        "tensors.npz": "2a58888c171dd0e85f0086d5a64c5d39b7b2a62c4442c3a469e0d9aaa0ad33dd",
+        "samples.json": "eced9ffe2e9d599266a783d747b784439e8773f0c743f90a724723e3f19510de"
+      }
+    },
+    {
+      "path": "86830-r1",
+      "seed": 86830,
+      "split": "train",
+      "robot_id": "r1",
+      "source_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training/recorded-dataset/views/86830",
+      "source_hashes": {
+        "raw/student-r1.jsonl": "ba1cf36f34621f408c844e9a1f385cb04b827e3f7dad532043612e79e637aa9f",
+        "raw/teacher-r1.jsonl": "1634b78cc1e104829e8cdaf633b7091e13e346fd37c57a3786d087373da500c0",
+        "raw/student-camera.json": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f",
+        "raw/plan.json": "7df4c057a81144703a99b4c02c81e273edb366c7c55049b4e95264c7b61b928e",
+        "raw/result.json": "2e9b45fbfe15c6e54a2ea78127f154693520e503ff4cb26e5e9bb439ef9ba15c",
+        "SOURCE_SHA": "ad5671e5b6395144217c022b7df9e7a9b3882b7858d2e41f62ddc8fc43080ba8",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "rows_total": 494,
+      "rows_selected": 415,
+      "frames": 415,
+      "skill_counts": {
+        "grasp": 327,
+        "release": 88
+      },
+      "done_counts": {
+        "grasp": 1,
+        "release": 1
+      },
+      "missing_done_skills": [],
+      "files": {
+        "rgb-provenance.json": "d91ab21c4717e2cfd029e10e553c64df72e76691af93d15bc968f9223ae9a521",
+        "images.npy": "2fac347b0384e91ed5d0e08b9dc00828bae5437b2e6589662ccb485f36bc2ef4",
+        "tensors.npz": "103a74a3cf79a4c8fac5d86f890a674ac685d7c1ade2706b0850614be23e9e97",
+        "samples.json": "4911eff6d4dbacbc3db1e09be823ab41a592b38ed37a0e2d03a3a24665267de3"
+      }
+    },
+    {
+      "path": "86831-r1",
+      "seed": 86831,
+      "split": "train",
+      "robot_id": "r1",
+      "source_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training/recorded-dataset/views/86831",
+      "source_hashes": {
+        "raw/student-r1.jsonl": "f646562c8196630e1f629ba8406ac85b33f0971da2df734febda5a5374a5bc82",
+        "raw/teacher-r1.jsonl": "3c2e87563d53a6eefe85b4e1f6ce9e0d892ff8d93edd3b55093b022e108b1eb7",
+        "raw/student-camera.json": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f",
+        "raw/plan.json": "e37b98e89b6aa6f84c7d9ddec298b31d0c067dd435a197e81ef457630abd2597",
+        "raw/result.json": "4d3d73084f6b4971bd4b869c7b041541112bc67bcb7b6df59d6ad854e7302fdd",
+        "SOURCE_SHA": "ad5671e5b6395144217c022b7df9e7a9b3882b7858d2e41f62ddc8fc43080ba8",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "rows_total": 434,
+      "rows_selected": 355,
+      "frames": 355,
+      "skill_counts": {
+        "grasp": 267,
+        "release": 88
+      },
+      "done_counts": {
+        "grasp": 1,
+        "release": 1
+      },
+      "missing_done_skills": [],
+      "files": {
+        "rgb-provenance.json": "149d544884bb2805f8272997973c6c32adb5abea96be127e42fb2126369d6121",
+        "images.npy": "2252d906dfe90d02dceec5acfe4f6d3bd59f8f755cd9fbb8cd10b10fd48e3f89",
+        "tensors.npz": "da31d1c8bea2199ee4e2c61d42a472fb2d95dde44472c0bc3f728c714c0e355f",
+        "samples.json": "052585338f4b4afde968382c9cae9bd6c8648e302a3deb7609eecd1dff53482d"
+      }
+    },
+    {
+      "path": "86832-r1",
+      "seed": 86832,
+      "split": "train",
+      "robot_id": "r1",
+      "source_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training/recorded-dataset/views/86832",
+      "source_hashes": {
+        "raw/student-r1.jsonl": "8a0a3061de3e24d478bd0a1483f00cfbfe81e53fc22f0cee200ef493befa6b22",
+        "raw/teacher-r1.jsonl": "3e1845b8891fe2e88cc6f2b7c48e85ffce280ead40dfddb577abd4c6967a93a2",
+        "raw/student-camera.json": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f",
+        "raw/plan.json": "f1fb904b42a333e01c70e14469618a4e3f92bcf9956ca3f6cd337d4d6f571883",
+        "raw/result.json": "768bdb0411aed0d1db42cfe9e4f028d8842e93af57dab225a94a4e55d21acd3f",
+        "SOURCE_SHA": "ad5671e5b6395144217c022b7df9e7a9b3882b7858d2e41f62ddc8fc43080ba8",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "rows_total": 460,
+      "rows_selected": 381,
+      "frames": 381,
+      "skill_counts": {
+        "grasp": 294,
+        "release": 87
+      },
+      "done_counts": {
+        "grasp": 1,
+        "release": 1
+      },
+      "missing_done_skills": [],
+      "files": {
+        "rgb-provenance.json": "237c7acba19066b13201de98b74f19a40371cabd824e25af70edc44deb8fde8b",
+        "images.npy": "ff17e632f669ccce26351a3c93b85987c0f32ef4b865eecc2686fa5d84a52f66",
+        "tensors.npz": "a713d5af2ae4dee3e8bf330d7ebed1d0768ffe5680214f53bcf571f0f4e296c6",
+        "samples.json": "5adf54adc9e16c8a1fe0cfb688d278b5cfaa07185178ebe47b6be4b4197a45fe"
+      }
+    },
+    {
+      "path": "86834-r1",
+      "seed": 86834,
+      "split": "train",
+      "robot_id": "r1",
+      "source_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training/recorded-dataset/views/86834",
+      "source_hashes": {
+        "raw/student-r1.jsonl": "56065c7a8869f3a3b6f0e2a41965c2a73572b20b58379ad8f6d5294feae9ed47",
+        "raw/teacher-r1.jsonl": "cc3fac4dba51314da1a98bb6591d47aed43621833675d6025a6c1106c5929852",
+        "raw/student-camera.json": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f",
+        "raw/plan.json": "deec14d4fe9208355f356084d1dc484f591e627dcbd768eb71ee628b941c3eab",
+        "raw/result.json": "c41c98db16c44df62548e11945ed2c720eb7eddd2a1843f4d842f144e523b7ce",
+        "SOURCE_SHA": "ad5671e5b6395144217c022b7df9e7a9b3882b7858d2e41f62ddc8fc43080ba8",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "rows_total": 479,
+      "rows_selected": 400,
+      "frames": 400,
+      "skill_counts": {
+        "grasp": 312,
+        "release": 88
+      },
+      "done_counts": {
+        "grasp": 1,
+        "release": 1
+      },
+      "missing_done_skills": [],
+      "files": {
+        "rgb-provenance.json": "7ae7643afe068e50259a4f98fc3c65d2dd2eec2038e17d9415f93fde8b0a2b33",
+        "images.npy": "d2fe201e3d2c336854aad651e6948d92b97ea4cc0459a8fc9656c100d15d50b5",
+        "tensors.npz": "d49fb5033c43fa04c7882036ca993455ff42eb80cd97fa0ca3d8d0aa0c965f4c",
+        "samples.json": "7f631e4004c87df71bbcbda0fd42ac44d442c58d8cc317898717cbe6237ca8d8"
+      }
+    },
+    {
+      "path": "86835-r1",
+      "seed": 86835,
+      "split": "train",
+      "robot_id": "r1",
+      "source_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training/recorded-dataset/views/86835",
+      "source_hashes": {
+        "raw/student-r1.jsonl": "d8fbbbff717ab8d75e440f78e30da6acead4e43dd393042b6b28da794a3bec63",
+        "raw/teacher-r1.jsonl": "1fb5db7aa117833fe67680eab2a54a9d58b4475869175d13b58bea4f842efdd1",
+        "raw/student-camera.json": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f",
+        "raw/plan.json": "f0466338118844575a47768637e6c5a88ef2631e89c63e860128f43ec101c783",
+        "raw/result.json": "3ab90271d69b12b5862c8ccfa6149125fe4418d29bfb50dc4eb2a58da7ada3d4",
+        "SOURCE_SHA": "ad5671e5b6395144217c022b7df9e7a9b3882b7858d2e41f62ddc8fc43080ba8",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "rows_total": 449,
+      "rows_selected": 370,
+      "frames": 370,
+      "skill_counts": {
+        "grasp": 282,
+        "release": 88
+      },
+      "done_counts": {
+        "grasp": 1,
+        "release": 1
+      },
+      "missing_done_skills": [],
+      "files": {
+        "rgb-provenance.json": "a20c3ba10088f9b6f77f69b8ec23da2303693543de1339b9a062ed8fd7628594",
+        "images.npy": "768f5b13ae06fb9dfca393bc54f3a62d5412fa95ce4b7581d8cbc073c56ff258",
+        "tensors.npz": "9577d0a876fa9e8db5e7c33ad9ecc01afff937de2e3f5e48b831661af9ef37a3",
+        "samples.json": "ee37123d2cabbfdf74f937709dd6f10425e89089d35f4466bb71368926ef5a51"
+      }
+    },
+    {
+      "path": "86836-r1",
+      "seed": 86836,
+      "split": "train",
+      "robot_id": "r1",
+      "source_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training/recorded-dataset/views/86836",
+      "source_hashes": {
+        "raw/student-r1.jsonl": "58f7cdd2ae70ae619f34d643ec60d77e16667e201b6510f051268c7a96db2bee",
+        "raw/teacher-r1.jsonl": "8b0902c76453fbf220f7d41b70357834ed1b830c82b0e5a9adbc0001d6c5b12d",
+        "raw/student-camera.json": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f",
+        "raw/plan.json": "9dfff0106f02c928b8a6ddaae317237847fdc56cb8cd5df9d5fd61018926ab1d",
+        "raw/result.json": "d210ea8faef6010ded7eadadd0a5c4936db8fa43736d24f4e8b6b2560fed06bd",
+        "SOURCE_SHA": "ad5671e5b6395144217c022b7df9e7a9b3882b7858d2e41f62ddc8fc43080ba8",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "rows_total": 428,
+      "rows_selected": 349,
+      "frames": 349,
+      "skill_counts": {
+        "grasp": 261,
+        "release": 88
+      },
+      "done_counts": {
+        "grasp": 1,
+        "release": 1
+      },
+      "missing_done_skills": [],
+      "files": {
+        "rgb-provenance.json": "2049bae1ceec0711f70493e7b6fee201e73a4def73d6d0bf3f47247631f9c42e",
+        "images.npy": "46df279e9913b7f1376d37c5709c2a48f1a236e08ab4cd2c7bc12d394e3e93e4",
+        "tensors.npz": "f9d0403fcaf0a7892c68c5df0af74c3724741a5d3739b5c9276b930e0d9f23b6",
+        "samples.json": "d4b29043281e064bd89732bd0281875079311dd80bdfceb502cc2d5bc23b47c7"
+      }
+    },
+    {
+      "path": "86838-r1",
+      "seed": 86838,
+      "split": "train",
+      "robot_id": "r1",
+      "source_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training/recorded-dataset/views/86838",
+      "source_hashes": {
+        "raw/student-r1.jsonl": "94f3c691966ea6251a8c6abd534e7ced6ab21123256d3fc0ecdefa04ca8c353a",
+        "raw/teacher-r1.jsonl": "941e9f14ccc4050f05e34ebf4ce38a54f92419dee1f81e84ccc7dda6675535c9",
+        "raw/student-camera.json": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f",
+        "raw/plan.json": "ea23e895159d1687d13f0a653621d4be1c8c262e3e0afe460df25db2914890f3",
+        "raw/result.json": "ef8bebec928c8a7cf9884214caec00a949c3cfb22af6b5e8d1c6577400bc55ec",
+        "SOURCE_SHA": "ad5671e5b6395144217c022b7df9e7a9b3882b7858d2e41f62ddc8fc43080ba8",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "rows_total": 465,
+      "rows_selected": 386,
+      "frames": 386,
+      "skill_counts": {
+        "grasp": 299,
+        "release": 87
+      },
+      "done_counts": {
+        "grasp": 1,
+        "release": 1
+      },
+      "missing_done_skills": [],
+      "files": {
+        "rgb-provenance.json": "3392857282e3412aa37fbe89cafda23ea11c532361ccfabde081f96019b5a3f0",
+        "images.npy": "3c162f55f451e6805ef131d09c2bb6fcdacbcd59ed5f785b8769c37114078501",
+        "tensors.npz": "da445f688a0f259d06cfdcc278b6bfc7dfa0c93618f43f444e425713b1694306",
+        "samples.json": "81f9c6e3c3a46653eb683afba7b986b333ce93903f808a5851447e244e4b809f"
+      }
+    },
+    {
+      "path": "86839-r1",
+      "seed": 86839,
+      "split": "train",
+      "robot_id": "r1",
+      "source_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training/recorded-dataset/views/86839",
+      "source_hashes": {
+        "raw/student-r1.jsonl": "3b3fffb808df74839c766102e53e42064d212818f38624eb2a43088e5cdd263b",
+        "raw/teacher-r1.jsonl": "d129ea3afc25a1b27d329451ea67389da7d35affb2994226a9639cbe552462a1",
+        "raw/student-camera.json": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f",
+        "raw/plan.json": "d6cefbe61077560db2e8578e32475a2ae56ee08b955731230cafb6c8ddba8196",
+        "raw/result.json": "7eca48cbc287b30eeb9e63a0e64248d997ef51ed38a6b3e9fda9cd4c4850f0ab",
+        "SOURCE_SHA": "ad5671e5b6395144217c022b7df9e7a9b3882b7858d2e41f62ddc8fc43080ba8",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "rows_total": 417,
+      "rows_selected": 338,
+      "frames": 338,
+      "skill_counts": {
+        "grasp": 251,
+        "release": 87
+      },
+      "done_counts": {
+        "grasp": 1,
+        "release": 1
+      },
+      "missing_done_skills": [],
+      "files": {
+        "rgb-provenance.json": "ec80cec4631d10ae313a1f38716e8375a79971d15a68d21f432b62c6596af15a",
+        "images.npy": "3bfbf3a8b7a8cfa67e5e4d58d881760031cb2929ae444118390213a159ceedd8",
+        "tensors.npz": "1a0339918922adfafa52399886646349e55c5c2f9ca81b4e9413ba106a579344",
+        "samples.json": "07d9daa6b26303dac7d93080cc7a887fdf3a42c1f3e4c37fbac23dfce6773949"
+      }
+    },
+    {
+      "path": "86842-r1",
+      "seed": 86842,
+      "split": "train",
+      "robot_id": "r1",
+      "source_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training/recorded-dataset/views/86842",
+      "source_hashes": {
+        "raw/student-r1.jsonl": "cae6f45b737e132919f89e559834aec6bf056eb2dc4a6a89a421d249d40546cd",
+        "raw/teacher-r1.jsonl": "b8cd8583a4df3ac14562b301802eeddaa7360656deb5a1650d5e2c8299f170de",
+        "raw/student-camera.json": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f",
+        "raw/plan.json": "2f7fc55b598e3f90dd536b6b799a12f6cb8d7134cb8f4b11adc5b4acf1240c9f",
+        "raw/result.json": "5f6105241f003ebdf8f94249215e2ceeee5dd23bd787c048356caaeb3a88ff4b",
+        "SOURCE_SHA": "ad5671e5b6395144217c022b7df9e7a9b3882b7858d2e41f62ddc8fc43080ba8",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "rows_total": 455,
+      "rows_selected": 376,
+      "frames": 376,
+      "skill_counts": {
+        "grasp": 289,
+        "release": 87
+      },
+      "done_counts": {
+        "grasp": 1,
+        "release": 1
+      },
+      "missing_done_skills": [],
+      "files": {
+        "rgb-provenance.json": "82a85a59390173e67d69eb1f4505453b46fb7ef06269c2b170c031b1569ab281",
+        "images.npy": "ca956ef33e035fbdcb598775c796eaf1e3167df93fc56a2b01477ca44893e187",
+        "tensors.npz": "0ac9b2fae82b02359e3360e2a16becf0438d91ffe704bee5a75fb856e771722e",
+        "samples.json": "10240e439b68e84acd72c0f1982e362032fd1267c1e356078e24f0b2a58bbee6"
+      }
+    },
+    {
+      "path": "86843-r1",
+      "seed": 86843,
+      "split": "train",
+      "robot_id": "r1",
+      "source_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training/recorded-dataset/views/86843",
+      "source_hashes": {
+        "raw/student-r1.jsonl": "4cb0b90d0fa0f39f2f3aed808948a14c9a1e584fbd5541ecfd90f247b3e40987",
+        "raw/teacher-r1.jsonl": "95eee2d764b63764a07a67e0ed64df255b8b29bf16f393b6edfc0b993cb77305",
+        "raw/student-camera.json": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f",
+        "raw/plan.json": "ef4f5fa013ce3f0e39c9ac2f4c3f06a197e8749d11eb0812537d3c16c6c46584",
+        "raw/result.json": "da506417b930252106ef7dd8adeec0bcd33f69ba5c23bae8079281070ee7fc09",
+        "SOURCE_SHA": "ad5671e5b6395144217c022b7df9e7a9b3882b7858d2e41f62ddc8fc43080ba8",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "rows_total": 455,
+      "rows_selected": 376,
+      "frames": 376,
+      "skill_counts": {
+        "grasp": 289,
+        "release": 87
+      },
+      "done_counts": {
+        "grasp": 1,
+        "release": 1
+      },
+      "missing_done_skills": [],
+      "files": {
+        "rgb-provenance.json": "8e7d4c030e467c72cbca6e57ba2068cc15c676e75e1d0c41b2a3e98848ba18e0",
+        "images.npy": "86f71d16af9d79cd66eac292fceb99d65aa9e9690905249f3ac55fd7d5a1c546",
+        "tensors.npz": "793c0674ad0019910dd644823f374891629f06300d1ad368c541a471d87596f1",
+        "samples.json": "c5c255a381c95dcfb14645caf84965ce861b502d3989e677ab358f9d492e70e5"
+      }
+    },
+    {
+      "path": "86846-r1",
+      "seed": 86846,
+      "split": "train",
+      "robot_id": "r1",
+      "source_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training/recorded-dataset/views/86846",
+      "source_hashes": {
+        "raw/student-r1.jsonl": "09840b3d36b9e4bb87c5e938ad26b0883d8f0ab6dfb275aecdded7a5fc81850b",
+        "raw/teacher-r1.jsonl": "b77540a5cdb497ad6cb290f7bc78f0aef3cee40ea4cea9170982d6652057c50d",
+        "raw/student-camera.json": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f",
+        "raw/plan.json": "0188834eacad8a464420d9b49cd77b4f730d52895eea0c9196464e3daf483b32",
+        "raw/result.json": "7f92ce9bc2188bfc4841134ebe68b96e993013b1ee61f027c89d0e773cf1c364",
+        "SOURCE_SHA": "ad5671e5b6395144217c022b7df9e7a9b3882b7858d2e41f62ddc8fc43080ba8",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "rows_total": 434,
+      "rows_selected": 355,
+      "frames": 355,
+      "skill_counts": {
+        "grasp": 267,
+        "release": 88
+      },
+      "done_counts": {
+        "grasp": 1,
+        "release": 1
+      },
+      "missing_done_skills": [],
+      "files": {
+        "rgb-provenance.json": "dc36be2d7a83d774909e77f9c9a9e578e1c2e5cbd44262c17254a2140a54d494",
+        "images.npy": "2757369425f6e169619d206328394d6d4e72365faf109f34fde35618272a013c",
+        "tensors.npz": "3cbabb5286c20bdc1f80192b65250f823308b18871eac8ce0748f9516926d804",
+        "samples.json": "e6e2b4049e076a12e208750de6efdf98760d193de8126c0f2d0028ba107c27b6"
+      }
+    },
+    {
+      "path": "86847-r1",
+      "seed": 86847,
+      "split": "train",
+      "robot_id": "r1",
+      "source_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training/recorded-dataset/views/86847",
+      "source_hashes": {
+        "raw/student-r1.jsonl": "1dc26c20f92b350713d8dc61829ff93036ebc8b381c5e1413fa1e9fd5ef006d6",
+        "raw/teacher-r1.jsonl": "07fcfdc965ec78f82d00dfd2dac130348bb6e42896731ac57d8927b69013cb88",
+        "raw/student-camera.json": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f",
+        "raw/plan.json": "7e6a8586ba686ec9294a9270b3984470b2fbda705dd04796a0c862e07faf0368",
+        "raw/result.json": "c6efd13cf67c0d7f64cb48480e17e44d15abbb44644e768fb268f446ea40ce98",
+        "SOURCE_SHA": "ad5671e5b6395144217c022b7df9e7a9b3882b7858d2e41f62ddc8fc43080ba8",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "rows_total": 428,
+      "rows_selected": 349,
+      "frames": 349,
+      "skill_counts": {
+        "grasp": 261,
+        "release": 88
+      },
+      "done_counts": {
+        "grasp": 1,
+        "release": 1
+      },
+      "missing_done_skills": [],
+      "files": {
+        "rgb-provenance.json": "cc7f77fd53f56e6d6c922cc789a79b784e7c611f0b291c1579f634b03c9d50e9",
+        "images.npy": "f33e37f6840cb29109321b90b41a8dd4c43d9c6b2833f5b01af403e7c7794843",
+        "tensors.npz": "c8b4546710e990706d726923d710438cf1d35dc116f1e54b9f7f5400db3b9ed0",
+        "samples.json": "5a53504e6dafac7fc225311f6b3efd69c29181ecd27204a9f3a0ab9cb960677f"
+      }
+    },
+    {
+      "path": "86849-r1",
+      "seed": 86849,
+      "split": "train",
+      "robot_id": "r1",
+      "source_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training/recorded-dataset/views/86849",
+      "source_hashes": {
+        "raw/student-r1.jsonl": "70ab8f6773aaead108b85cab1817dac1c3a10f0bb2ee7cbb5319a6d797c6d75f",
+        "raw/teacher-r1.jsonl": "91b597536bd7028ea8096698d0df3e406c72c6106925bd831d2c2970646202db",
+        "raw/student-camera.json": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f",
+        "raw/plan.json": "d15ce0089d309f53bd87fdab6b551a8ce8008afc00d80cf15f021fa5e574851a",
+        "raw/result.json": "28d03d8f5b0404b9fe8868375478aced84f7ea049e0a09f6fa9b2cfa6ea1c000",
+        "SOURCE_SHA": "ad5671e5b6395144217c022b7df9e7a9b3882b7858d2e41f62ddc8fc43080ba8",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "rows_total": 423,
+      "rows_selected": 344,
+      "frames": 344,
+      "skill_counts": {
+        "grasp": 256,
+        "release": 88
+      },
+      "done_counts": {
+        "grasp": 1,
+        "release": 1
+      },
+      "missing_done_skills": [],
+      "files": {
+        "rgb-provenance.json": "8f338da7983993f24fc656a573ce5788e058d903368e10b9bcd19df04f9364dd",
+        "images.npy": "6b58ccfeb0129ea1cc1c2d2c3fb143d0b113a40510f3bbeef292bcad627a483d",
+        "tensors.npz": "395cd38b06b88b8bd054bc239beee7f031c3e4f9bf1e67fcd07fd3f71b7d3a45",
+        "samples.json": "0ecf1c53f835a67a239973ff2d2bbe79fcc694d676de6057f9a1244b11872d12"
+      }
+    },
+    {
+      "path": "86850-r1",
+      "seed": 86850,
+      "split": "train",
+      "robot_id": "r1",
+      "source_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training/recorded-dataset/views/86850",
+      "source_hashes": {
+        "raw/student-r1.jsonl": "e205fa56e262a994ea7e125c656b63cc6eb48065c6ce98d64748dc63e03982c8",
+        "raw/teacher-r1.jsonl": "dd36f359f61424ee411c21edd18d6c8e727c527558503b25d154c0ac73a60027",
+        "raw/student-camera.json": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f",
+        "raw/plan.json": "6ecb35284cc1c1d27dcc0871bec6f28ad0e68d639012b2e4f01b911a57e57553",
+        "raw/result.json": "fb548531fc68d76fd4075f63a68f8bc13cf0885f04cdf448da2c84e1a6786f07",
+        "SOURCE_SHA": "ad5671e5b6395144217c022b7df9e7a9b3882b7858d2e41f62ddc8fc43080ba8",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "rows_total": 465,
+      "rows_selected": 386,
+      "frames": 386,
+      "skill_counts": {
+        "grasp": 299,
+        "release": 87
+      },
+      "done_counts": {
+        "grasp": 1,
+        "release": 1
+      },
+      "missing_done_skills": [],
+      "files": {
+        "rgb-provenance.json": "cdb9c814009c4625971c756b34ab246efa17d0c3589f560e92debfac0863916b",
+        "images.npy": "7d5528ffad12a884dbe8916606ebb4def5eac6fb4c032db0e2b208eaedcc4c3e",
+        "tensors.npz": "cf65b36d2782dac2fa692d75fe5450abb3bef04e85720424a6f7136e8a99abe4",
+        "samples.json": "d53520d811c330f338b4d9b57bf0508d7909adc33bc8ba2f8fe1834a8a4f7c2e"
+      }
+    },
+    {
+      "path": "86851-r1",
+      "seed": 86851,
+      "split": "train",
+      "robot_id": "r1",
+      "source_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training/recorded-dataset/views/86851",
+      "source_hashes": {
+        "raw/student-r1.jsonl": "ecc7bfc29a200cff499e5d4200f4606afe06752b939beec24c82c62c02e19dbf",
+        "raw/teacher-r1.jsonl": "f99dd27980ccdc24ab5812af6ced0451b4877b1944373939b0ce62f412a70301",
+        "raw/student-camera.json": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f",
+        "raw/plan.json": "49403075902516521346e4d5207512d0c2627b6589cceab6c6b0d9800a5dab49",
+        "raw/result.json": "23c2bf183859d0f975fbb49dcf9987ec217bd81c5331e0a01c579099d58977e1",
+        "SOURCE_SHA": "ad5671e5b6395144217c022b7df9e7a9b3882b7858d2e41f62ddc8fc43080ba8",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "rows_total": 456,
+      "rows_selected": 377,
+      "frames": 377,
+      "skill_counts": {
+        "grasp": 290,
+        "release": 87
+      },
+      "done_counts": {
+        "grasp": 1,
+        "release": 1
+      },
+      "missing_done_skills": [],
+      "files": {
+        "rgb-provenance.json": "e2c6ff9b53da1c2aaaaef31da54b4c8859bbaab0ad4239bd2c81ad38ded9ad9a",
+        "images.npy": "81d500e32181f92a64ab6049af29044500156f1b923a620db798e43fce179050",
+        "tensors.npz": "2c885d148515258012e7243c713c754e00608007fd90ff664acc3216047c1300",
+        "samples.json": "61b92f48251604cbef6229510eed4703255b0954ce087821535c5c98e58d9256"
+      }
+    },
+    {
+      "path": "86852-r1",
+      "seed": 86852,
+      "split": "train",
+      "robot_id": "r1",
+      "source_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training/recorded-dataset/views/86852",
+      "source_hashes": {
+        "raw/student-r1.jsonl": "6c8e4c93357ba47123b4cdbcf79f4850fa55a21c4b1de47b3b2fdf85fece4ec2",
+        "raw/teacher-r1.jsonl": "a0e7a51684d00185799a70af19b7cc1fdd082e5ad9e60ab246b8b712e4a8d17d",
+        "raw/student-camera.json": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f",
+        "raw/plan.json": "2ddc73c32f587d63c329c97f1a921ad9866d87868575ec3a61d806db75f9b301",
+        "raw/result.json": "f21444d445ffcfadb67d661578be5ae231db7182483996b519e00c8c6b3fe990",
+        "SOURCE_SHA": "ad5671e5b6395144217c022b7df9e7a9b3882b7858d2e41f62ddc8fc43080ba8",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "rows_total": 436,
+      "rows_selected": 357,
+      "frames": 357,
+      "skill_counts": {
+        "grasp": 269,
+        "release": 88
+      },
+      "done_counts": {
+        "grasp": 1,
+        "release": 1
+      },
+      "missing_done_skills": [],
+      "files": {
+        "rgb-provenance.json": "dd4f1f53eecd130121ab72ba77d54148aef32a8f7ce9182b7b2d511f5c5460c5",
+        "images.npy": "24230332f61e06330b3bc7fb5959d6c446b82a57881b342c62d71706dd75d7c0",
+        "tensors.npz": "7e4ce15219b9e0b6064e6daf213e0784fd330f00dcbbe581a4f8752e6791ff25",
+        "samples.json": "4d7391fa39e56d3832beec3fac71f9638f5899290e0a617146ba0652ac6dbd57"
+      }
+    },
+    {
+      "path": "86853-r1",
+      "seed": 86853,
+      "split": "train",
+      "robot_id": "r1",
+      "source_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training/recorded-dataset/views/86853",
+      "source_hashes": {
+        "raw/student-r1.jsonl": "cb30c2945d89f1a383d0b7428d4941b4fab7adb25497fba8bea855dfc533462c",
+        "raw/teacher-r1.jsonl": "702fc6096c9d4c83c69cf0d88bd76ccacae311dff7f561331be7d776398c70ad",
+        "raw/student-camera.json": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f",
+        "raw/plan.json": "1843ee7714ed18b1697798b9d45096ee085a6de5eeccebcf6b60da7c6999ffd2",
+        "raw/result.json": "0de88fbce85bb7b76e21c7c5ddbb8ef2e66a536d7533facee4a480d09c3c5bca",
+        "SOURCE_SHA": "ad5671e5b6395144217c022b7df9e7a9b3882b7858d2e41f62ddc8fc43080ba8",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "rows_total": 450,
+      "rows_selected": 371,
+      "frames": 371,
+      "skill_counts": {
+        "grasp": 284,
+        "release": 87
+      },
+      "done_counts": {
+        "grasp": 1,
+        "release": 1
+      },
+      "missing_done_skills": [],
+      "files": {
+        "rgb-provenance.json": "9cd268ec41d3548185f5c354c05ad832b966c7f10bbb4bf9c609e6f731234726",
+        "images.npy": "22800bfe222957a5685b4eccf6e0cc7c45e12514c7c39262a4478e790ee81acb",
+        "tensors.npz": "860bab6260239441a03fa37eba7fc39d4b19fc8c97ebc507afd9795b002e63cf",
+        "samples.json": "01aca0b900d7a603b5c51551802c8c33f8681f7bbb365894276135b12dcbfc3a"
+      }
+    },
+    {
+      "path": "86854-r1",
+      "seed": 86854,
+      "split": "train",
+      "robot_id": "r1",
+      "source_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training/recorded-dataset/views/86854",
+      "source_hashes": {
+        "raw/student-r1.jsonl": "1577ba6cd65e69b448857dde774b1d588fd6e9182780e62c9dca9d17aba5d1c1",
+        "raw/teacher-r1.jsonl": "201741b5070aa2a983b8e22ad3051c388a44a744cbcd54831108509e40e8c94a",
+        "raw/student-camera.json": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f",
+        "raw/plan.json": "801f12f16882e444eb6ba24dca1585e471ae273e42520048b37f7d3fb92af217",
+        "raw/result.json": "a67e0825f72da4f7d1a87ef63034695e655b06e45600df574ad2afe4931b2978",
+        "SOURCE_SHA": "ad5671e5b6395144217c022b7df9e7a9b3882b7858d2e41f62ddc8fc43080ba8",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "rows_total": 446,
+      "rows_selected": 367,
+      "frames": 367,
+      "skill_counts": {
+        "grasp": 279,
+        "release": 88
+      },
+      "done_counts": {
+        "grasp": 1,
+        "release": 1
+      },
+      "missing_done_skills": [],
+      "files": {
+        "rgb-provenance.json": "56fecf9d635975bd9067ed47366580453c69626812d9aeb9fbd3b2b309c659cf",
+        "images.npy": "5f38a8d9ad5e87e0542e4459092a694b1acab82567f8649b825cd16d317517d5",
+        "tensors.npz": "1c6947742516a42850a1c9d4b7efe487526f993e148c9968e98f5c4eb0cca031",
+        "samples.json": "44ffe9b73fc283ef5dec5e07be32a94f1c3c56f5a1076ae94ae91d7667bdc0f1"
+      }
+    },
+    {
+      "path": "86855-r1",
+      "seed": 86855,
+      "split": "train",
+      "robot_id": "r1",
+      "source_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training/recorded-dataset/views/86855",
+      "source_hashes": {
+        "raw/student-r1.jsonl": "72aeaf4e3717e8094979ae55e3e0395089bb2b997909c00f6191749968624010",
+        "raw/teacher-r1.jsonl": "afe4dfb454f8422a8c0f91b2fe8eaba652900de3eac1849965047c1ad707398d",
+        "raw/student-camera.json": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f",
+        "raw/plan.json": "f8b4039fdcd6c81dd193e161badfb1b87cfece21ad7bd27176f1196063e968c7",
+        "raw/result.json": "bc965d77e9a0983237ae4548e99e674df52190c0e1d6adb6b6b4725c73f6f865",
+        "SOURCE_SHA": "ad5671e5b6395144217c022b7df9e7a9b3882b7858d2e41f62ddc8fc43080ba8",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "rows_total": 465,
+      "rows_selected": 386,
+      "frames": 386,
+      "skill_counts": {
+        "grasp": 299,
+        "release": 87
+      },
+      "done_counts": {
+        "grasp": 1,
+        "release": 1
+      },
+      "missing_done_skills": [],
+      "files": {
+        "rgb-provenance.json": "653b373fefad8e373fce0b62ccdbce87ab06b7099e1f1079ca05b2b5bb8e2567",
+        "images.npy": "265c141a43e0ffad6162bef3cfef1ede0098293ec23db79970e2ac683b254301",
+        "tensors.npz": "5463a2a35923fe4787e316f57ad645b34aa6a185bdfe8b675896a16f46df4931",
+        "samples.json": "a83f71debfe70b3c0ab043323a391bab6c91bac3ee9e95b4b0af27d2ea834ee0"
+      }
+    },
+    {
+      "path": "86856-r1",
+      "seed": 86856,
+      "split": "train",
+      "robot_id": "r1",
+      "source_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training/recorded-dataset/views/86856",
+      "source_hashes": {
+        "raw/student-r1.jsonl": "3036ae80b9cf2b3fb9dec92c65664f794236c332b5f25fd0c5e2efbe319db40c",
+        "raw/teacher-r1.jsonl": "7a8d3bb3d200036b0f89c4e080efb2cd4b441760db34d3413b9a98ad3a53147e",
+        "raw/student-camera.json": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f",
+        "raw/plan.json": "c654495b57339b3d2b6b5f0a972949b69c48601c7b04430de3e3cf5cf3ca1b15",
+        "raw/result.json": "79098e1439bb0098832005c3361e177ed9c1820a3becf106393fb69663116006",
+        "SOURCE_SHA": "ad5671e5b6395144217c022b7df9e7a9b3882b7858d2e41f62ddc8fc43080ba8",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "rows_total": 418,
+      "rows_selected": 339,
+      "frames": 339,
+      "skill_counts": {
+        "grasp": 252,
+        "release": 87
+      },
+      "done_counts": {
+        "grasp": 1,
+        "release": 1
+      },
+      "missing_done_skills": [],
+      "files": {
+        "rgb-provenance.json": "78f60e48ac62987091941840ad7172e1428cae0a507cb664402fe45e6c428f1c",
+        "images.npy": "18406ac8a96134778fb5cda0405fdeeaba35022b076f5dcb52e3b04dfe680ab2",
+        "tensors.npz": "aa68cca8c6f3c168559a2a27b4843bf793f28b0d00b0ccf4009f691e63d836ac",
+        "samples.json": "19537734d23912b3aa86cbf26f82553eff4f16386a2f261a93c8831e7da61476"
+      }
+    },
+    {
+      "path": "86858-r1",
+      "seed": 86858,
+      "split": "train",
+      "robot_id": "r1",
+      "source_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training/recorded-dataset/views/86858",
+      "source_hashes": {
+        "raw/student-r1.jsonl": "e5665e8a50de800ab42f15308be19dc4cb95d95b43c79fe120977cf80eb1e7d7",
+        "raw/teacher-r1.jsonl": "7ca9f0a05f9f7174935c5de643c6020a2526ea7caff5a71d362115739d5839be",
+        "raw/student-camera.json": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f",
+        "raw/plan.json": "b28d81d66bf29aa419f21753679474bfb67725d574940e1222736f61a3c4b9be",
+        "raw/result.json": "33f98594b49755ce3c5173336c46eadfd512e9d8a27a867a362ca40e9e2abc2a",
+        "SOURCE_SHA": "ad5671e5b6395144217c022b7df9e7a9b3882b7858d2e41f62ddc8fc43080ba8",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "rows_total": 399,
+      "rows_selected": 320,
+      "frames": 320,
+      "skill_counts": {
+        "grasp": 232,
+        "release": 88
+      },
+      "done_counts": {
+        "grasp": 1,
+        "release": 1
+      },
+      "missing_done_skills": [],
+      "files": {
+        "rgb-provenance.json": "7c64d04d582faad780d7c06229b47a3e6b5d5409db4ac666b9d071ff11d8bc82",
+        "images.npy": "d7e281b5da09a8df5b0691a90f9c4d0b6ea3e8ba6cdd95c59d784e2908b65186",
+        "tensors.npz": "29583e3b058f092a0676dd043668eb770c304451473c0ca2b524b0959aa40509",
+        "samples.json": "38d86e97cb846347a9eaf3c9bda14871f27b36552f47409ae82abf27b8a02350"
+      }
+    },
+    {
+      "path": "86859-r1",
+      "seed": 86859,
+      "split": "train",
+      "robot_id": "r1",
+      "source_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training/recorded-dataset/views/86859",
+      "source_hashes": {
+        "raw/student-r1.jsonl": "40cbca1676af22397e970ffb29875927c498287bcab7feb173862951cbd02acb",
+        "raw/teacher-r1.jsonl": "9769f10ca1e609a9b95100f295735c01ac1bbf32a33932b885b473f04526393f",
+        "raw/student-camera.json": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f",
+        "raw/plan.json": "bff6f1199be762254c6178ee0a104a19102431ee18c3916bd78add6309c526da",
+        "raw/result.json": "5675da72e7bba2c00e46b0ef877cfba52cda5c5a33d461f6745b0c4d4d4d4c31",
+        "SOURCE_SHA": "ad5671e5b6395144217c022b7df9e7a9b3882b7858d2e41f62ddc8fc43080ba8",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "rows_total": 441,
+      "rows_selected": 362,
+      "frames": 362,
+      "skill_counts": {
+        "grasp": 274,
+        "release": 88
+      },
+      "done_counts": {
+        "grasp": 1,
+        "release": 1
+      },
+      "missing_done_skills": [],
+      "files": {
+        "rgb-provenance.json": "85752d3052c42f746ad163a7d2b3f958de29f6c22ef04a15d63dc06ef58e9e84",
+        "images.npy": "b7e8e29cfc03bc7090186e6b0fb5a431b726c5068ab9dc8d05d08e480017d1e5",
+        "tensors.npz": "6b60f596220d83b83ed493736af64a0d448a69043d9f676dd0d82f63280c489c",
+        "samples.json": "895e189b10632ddef0dd452b76324a8b6dcb645ae141960454286a91ef2393cb"
+      }
+    },
+    {
+      "path": "86860-r1",
+      "seed": 86860,
+      "split": "train",
+      "robot_id": "r1",
+      "source_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training/recorded-dataset/views/86860",
+      "source_hashes": {
+        "raw/student-r1.jsonl": "0b3adb07118f3559e1c52d529dbc412b0cf735dc736dfa1aa3f0d1050d798eba",
+        "raw/teacher-r1.jsonl": "02b4b0f9bc4c2e2a0426b362349499727ef6f0324e1f54c66c09aaf3a89b7408",
+        "raw/student-camera.json": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f",
+        "raw/plan.json": "daa3f4cbc39d89292efbbfb55b90a9b69c72617b0b6d1a09bd04599118825f88",
+        "raw/result.json": "464be2d46539cc130cde6c12478b9dfc9fe5043b20f6177f2083cf2f4e3d71a4",
+        "SOURCE_SHA": "ad5671e5b6395144217c022b7df9e7a9b3882b7858d2e41f62ddc8fc43080ba8",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "rows_total": 411,
+      "rows_selected": 332,
+      "frames": 332,
+      "skill_counts": {
+        "grasp": 244,
+        "release": 88
+      },
+      "done_counts": {
+        "grasp": 1,
+        "release": 1
+      },
+      "missing_done_skills": [],
+      "files": {
+        "rgb-provenance.json": "c45fdfc0765f141e39186a5893dc20b94137b90dd0a0b5f592044f13d10bf58c",
+        "images.npy": "13141a1d150db7a432622f2d674b4baf15941c31b1eec8864e8516876a68879c",
+        "tensors.npz": "0ab0984e831eb31bf738e4dce916d10789157132452010830b78195f39353712",
+        "samples.json": "1971e7146e578b2339f4ef4f56e1e35596082d901e3fdf28565061fdde1fdf88"
+      }
+    },
+    {
+      "path": "86862-r1",
+      "seed": 86862,
+      "split": "train",
+      "robot_id": "r1",
+      "source_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training/recorded-dataset/views/86862",
+      "source_hashes": {
+        "raw/student-r1.jsonl": "ff1011e740e2154f61c8fa95be8f988cf90de8fd08b600666c4cea891061641d",
+        "raw/teacher-r1.jsonl": "40f1ec225a0f2a7666f3577ba76d0b3aa57fac1c6683559e3e9e2451bad754f9",
+        "raw/student-camera.json": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f",
+        "raw/plan.json": "d4b4830a9a70f5d8dc471de972ae28c22a5003976eb4644d1899d7ff29881b53",
+        "raw/result.json": "ac5ce58d7ad01883d82c6ea9031447648655a86d043d483c539c5db07b9f94f9",
+        "SOURCE_SHA": "ad5671e5b6395144217c022b7df9e7a9b3882b7858d2e41f62ddc8fc43080ba8",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "rows_total": 434,
+      "rows_selected": 355,
+      "frames": 355,
+      "skill_counts": {
+        "grasp": 267,
+        "release": 88
+      },
+      "done_counts": {
+        "grasp": 1,
+        "release": 1
+      },
+      "missing_done_skills": [],
+      "files": {
+        "rgb-provenance.json": "adb4bd814d3121612d116d181f772fe94a9d17b16755bdfeed8aaf94b3fcd7d8",
+        "images.npy": "025d619e2551e16b629306a63c7d03f89df69346a11f79e6be961952884f3445",
+        "tensors.npz": "64b3990279ea366bb070a6fe29c17024fb0167b1d11db361be8c1b00d19888b4",
+        "samples.json": "a7c495e15bbe6865e57749746e86b5746aa2785667cad85e132aecbe7fd721a7"
+      }
+    },
+    {
+      "path": "86863-r1",
+      "seed": 86863,
+      "split": "train",
+      "robot_id": "r1",
+      "source_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training/recorded-dataset/views/86863",
+      "source_hashes": {
+        "raw/student-r1.jsonl": "971249977eebd6b64dd00cef1ba70db19af1ac0a1fd7a03b715cf641cda4495f",
+        "raw/teacher-r1.jsonl": "5255ac595586fb1406739b0e3258500ef0c2ba2ccd9d7cf0df8abe2208f8433c",
+        "raw/student-camera.json": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f",
+        "raw/plan.json": "2bf45fd862cd233083b6824b03c3937a164435b07c9efaf894b03a317f3fcece",
+        "raw/result.json": "ec4bc52bfbf7b2fcf14218aa6f6141316e4c76a932a88f8a626436102dbeb21a",
+        "SOURCE_SHA": "ad5671e5b6395144217c022b7df9e7a9b3882b7858d2e41f62ddc8fc43080ba8",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "rows_total": 459,
+      "rows_selected": 380,
+      "frames": 380,
+      "skill_counts": {
+        "grasp": 292,
+        "release": 88
+      },
+      "done_counts": {
+        "grasp": 1,
+        "release": 1
+      },
+      "missing_done_skills": [],
+      "files": {
+        "rgb-provenance.json": "46defb20ec8e95f977d5b286d5030967df03c28aa114adaef7cbb38fe3711ed7",
+        "images.npy": "4723b69ac0eb47ada1b18d827ca4f68b323468f3d189b8d75bc3441c563877eb",
+        "tensors.npz": "fb125347856119d5b9c8dc7ea17292566329f833170106175855cd99bb0b3c9c",
+        "samples.json": "d385218e076be4ff78f1af1a22bdab388694006aeacbaed73f152e1b91ae1afa"
+      }
+    },
+    {
+      "path": "86864-r1",
+      "seed": 86864,
+      "split": "train",
+      "robot_id": "r1",
+      "source_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training/recorded-dataset/views/86864",
+      "source_hashes": {
+        "raw/student-r1.jsonl": "75da299b23fcaf442910875956b78b291d1479e8ade3afbd15b9b1026cd98413",
+        "raw/teacher-r1.jsonl": "816746bdcbdaf4061e230ea7561fd97e2ca5fa6eaadc043809738c221b87b43d",
+        "raw/student-camera.json": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f",
+        "raw/plan.json": "1b4c897f6d8f71261655c92993b99330aca742cb21d0a776a86844fb765f6143",
+        "raw/result.json": "63ac7e3600c2021f2dfe80a6e0b6a7f8215cfc6d89656c6081131fb096545d51",
+        "SOURCE_SHA": "ad5671e5b6395144217c022b7df9e7a9b3882b7858d2e41f62ddc8fc43080ba8",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "rows_total": 433,
+      "rows_selected": 354,
+      "frames": 354,
+      "skill_counts": {
+        "grasp": 266,
+        "release": 88
+      },
+      "done_counts": {
+        "grasp": 1,
+        "release": 1
+      },
+      "missing_done_skills": [],
+      "files": {
+        "rgb-provenance.json": "b48bf75965eca4f1e97e45c27dbbd7ad07d9e3dc9653a2ce5e4c1ddce5bb1478",
+        "images.npy": "5eff297f5caf4f0d3d6165f85dbed04dbdebe3d742c91da02461f3d597ad11e5",
+        "tensors.npz": "1a90d06898050920666d2d677a511512dd3a20cd3a5e9c2bd7330aebea8815e2",
+        "samples.json": "8d8705ff8426df4ceccd5d20471bede800cd5ef6f1caadc55b5b2f498fc59808"
+      }
+    },
+    {
+      "path": "86865-r1",
+      "seed": 86865,
+      "split": "validation",
+      "robot_id": "r1",
+      "source_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training/recorded-dataset/views/86865",
+      "source_hashes": {
+        "raw/student-r1.jsonl": "12b0b8c4e579c35c5eebce57444fc007e67810ad08e1fe294f702cda1190d99e",
+        "raw/teacher-r1.jsonl": "c86e01a2aeb522f369b57f838c3f83fef76b413905c573fa4f9fb8ec0e99bb64",
+        "raw/student-camera.json": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f",
+        "raw/plan.json": "31154742d56d52dd55d4fe4321f277c2399c7f6ad1f1dae2b46bf2f7539ca46b",
+        "raw/result.json": "1b7c77ec05bc52eef8ee130320397bda4934ae8638ba8f55ba8e9822761fdffc",
+        "SOURCE_SHA": "ad5671e5b6395144217c022b7df9e7a9b3882b7858d2e41f62ddc8fc43080ba8",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "rows_total": 441,
+      "rows_selected": 362,
+      "frames": 362,
+      "skill_counts": {
+        "grasp": 274,
+        "release": 88
+      },
+      "done_counts": {
+        "grasp": 1,
+        "release": 1
+      },
+      "missing_done_skills": [],
+      "files": {
+        "rgb-provenance.json": "bb250327adf627698a5465c877ee065d4f92932cc6892d8a1cfa60cdbe730b1a",
+        "images.npy": "d17a3c59a817741c7edb8151d01924e1dc2efa2235d020277b5b188fbf62fb12",
+        "tensors.npz": "b483bf3aee49a94f92534b52f048b2632f9b601488fcae5ba1d7ab18c4c66ad2",
+        "samples.json": "2f72e389cb0bf288b37c069c38fe0062c8d05e8818c8e1528e149d6a26fcf554"
+      }
+    },
+    {
+      "path": "86866-r1",
+      "seed": 86866,
+      "split": "validation",
+      "robot_id": "r1",
+      "source_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training/recorded-dataset/views/86866",
+      "source_hashes": {
+        "raw/student-r1.jsonl": "f58193093c9cb56eef18965fa691eb740cb786b0dd91671f8773759e362c20c8",
+        "raw/teacher-r1.jsonl": "5a2a679aeee45d904a97d4d902b98811540edf7e898567f02b23573492c9cbe3",
+        "raw/student-camera.json": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f",
+        "raw/plan.json": "ea48c88681f54cc8967c8ab6552d621dbe8d70d3473836d8501d87734eb7787b",
+        "raw/result.json": "e549832b056e47419208d1a6aaa7d118fbf6132f1d86a65396e2b683d5ff56eb",
+        "SOURCE_SHA": "ad5671e5b6395144217c022b7df9e7a9b3882b7858d2e41f62ddc8fc43080ba8",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "rows_total": 454,
+      "rows_selected": 375,
+      "frames": 375,
+      "skill_counts": {
+        "grasp": 287,
+        "release": 88
+      },
+      "done_counts": {
+        "grasp": 1,
+        "release": 1
+      },
+      "missing_done_skills": [],
+      "files": {
+        "rgb-provenance.json": "8dc48c51a1d7db99540dbf3df47e447a595dddf9118832ff682e10ffcaffb510",
+        "images.npy": "6b903da2e52a1fe7f310c92691d8407ff0a34cc5eddbed4fc12160fd05c13989",
+        "tensors.npz": "450130088562f79aa0b11e9f4610f15d6c802f3eef053f866850ff384aad21cf",
+        "samples.json": "143e2a5edbd6d9990941a0d4e0080f7bebd1a10631c2148a079439c012acceb1"
+      }
+    },
+    {
+      "path": "86867-r1",
+      "seed": 86867,
+      "split": "validation",
+      "robot_id": "r1",
+      "source_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training/recorded-dataset/views/86867",
+      "source_hashes": {
+        "raw/student-r1.jsonl": "29853f27bc69dc6bcf2fb3fcf91d373512d8dca4488bb38e096e2b3b5f032255",
+        "raw/teacher-r1.jsonl": "99f4cd68e9f02a1ea1806c3db0b2c36aecfa07b3ab561cc1b8f6e813462b64c0",
+        "raw/student-camera.json": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f",
+        "raw/plan.json": "cf719850ac8a8e92f7334e02cb54652b09e4e04cf39c72d3796832e32ecb8688",
+        "raw/result.json": "e7cf0fa9998753389ad6428e196a3a8c1207100732c5ff8ed12857903e234d60",
+        "SOURCE_SHA": "ad5671e5b6395144217c022b7df9e7a9b3882b7858d2e41f62ddc8fc43080ba8",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "rows_total": 428,
+      "rows_selected": 349,
+      "frames": 349,
+      "skill_counts": {
+        "grasp": 261,
+        "release": 88
+      },
+      "done_counts": {
+        "grasp": 1,
+        "release": 1
+      },
+      "missing_done_skills": [],
+      "files": {
+        "rgb-provenance.json": "e15d6b6e5ca4df27db8f0875e8959f592db845be27569e373d3ae25d44883419",
+        "images.npy": "6eba2b61df56ba4cc8711ba331c4130ae2ef81b54958b148c4e3c6de29c75fe9",
+        "tensors.npz": "454f27a520f53289979658e5ba1e9cd0c44e996464d5e854140d71be806d74d2",
+        "samples.json": "d0f2dedace19ef59600aaaecf7a3ca64103a24fa12845ce27dc70324c301c02e"
+      }
+    },
+    {
+      "path": "86868-r1",
+      "seed": 86868,
+      "split": "validation",
+      "robot_id": "r1",
+      "source_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training/recorded-dataset/views/86868",
+      "source_hashes": {
+        "raw/student-r1.jsonl": "2acd0cbfc7d58659d9596efa60b8dec9d00937bb6290a62ec193bc989c3487c9",
+        "raw/teacher-r1.jsonl": "22dba3c47afc103b406d507323d56284d9e8fb082054a41e1d638271d53b4398",
+        "raw/student-camera.json": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f",
+        "raw/plan.json": "994b868e27deec5866544b6662fa9e697a34aaee52debdbbb2d3f6a42c3d26b9",
+        "raw/result.json": "39baf313483fcc39a12c5317cf8b43a4db076c298131df789603ed08207021b5",
+        "SOURCE_SHA": "ad5671e5b6395144217c022b7df9e7a9b3882b7858d2e41f62ddc8fc43080ba8",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "rows_total": 450,
+      "rows_selected": 371,
+      "frames": 371,
+      "skill_counts": {
+        "grasp": 284,
+        "release": 87
+      },
+      "done_counts": {
+        "grasp": 1,
+        "release": 1
+      },
+      "missing_done_skills": [],
+      "files": {
+        "rgb-provenance.json": "d9f2d381706e2bdf5e50213da4d6a50b30331fcff74aa383110ab93aa2bcf572",
+        "images.npy": "5da18102ace3a1c52a79b49752058639985ad4e9b69c921f5d0a0a19d4bb4f8e",
+        "tensors.npz": "2a6b33dddf9c4f176e299363ca577c30ba20240516b85000f10fa9c017a12490",
+        "samples.json": "d99e14d41af184b1e218ea116a842a057cf93d852dc79629a5773048fa48d364"
+      }
+    },
+    {
+      "path": "86869-r1",
+      "seed": 86869,
+      "split": "validation",
+      "robot_id": "r1",
+      "source_root": "/home/ugrp/ugrp-sim/runs/act16w-resume2-training/recorded-dataset/views/86869",
+      "source_hashes": {
+        "raw/student-r1.jsonl": "4ef75a049742a755232772c318064bc91d5071aae882ae5c0cdc729297355fbd",
+        "raw/teacher-r1.jsonl": "f6990d91d3cbf00dd18742f978fb8e260d9a973af506899df092841c442dca0a",
+        "raw/student-camera.json": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f",
+        "raw/plan.json": "eaed7adb00692c93e5302956be58faa3d417f1ef533a9a10dfa4f72a8872878b",
+        "raw/result.json": "db1df84519a09f6dfeb8a9c0756868d7dc3175ea876108123e39b677f6b9764d",
+        "SOURCE_SHA": "ad5671e5b6395144217c022b7df9e7a9b3882b7858d2e41f62ddc8fc43080ba8",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "rows_total": 434,
+      "rows_selected": 355,
+      "frames": 355,
+      "skill_counts": {
+        "grasp": 267,
+        "release": 88
+      },
+      "done_counts": {
+        "grasp": 1,
+        "release": 1
+      },
+      "missing_done_skills": [],
+      "files": {
+        "rgb-provenance.json": "229d4f5767f964a1a6fbc465023aadec9d079cb12be8d55a212221da0fa02c81",
+        "images.npy": "5c9bf50a21a65bc25317d3af0666daafcdda9f2bc53da2823c325f8d4311303f",
+        "tensors.npz": "b54d114b55c78e867977a653c69e5cbef5b9b10b081d12324cba558d09133c11",
+        "samples.json": "19239573de1feef7c54d51031250855793b136b7f711f10522ad07d63b4286ed"
+      }
+    }
+  ],
+  "input_keys": [
+    "observation.images.own_history",
+    "observation.state"
+  ],
+  "normalization": {
+    "path": "normalization.json",
+    "sha256": "cce5246478215992670c7cf68cb8fa977fe12c45a4cf861cccf697487483bab4"
+  },
+  "input_audit": {
+    "forbidden_input_fields": 0,
+    "teacher_input_fields": 0
+  },
+  "admission": "user/coordinator accepted 50/50; not independently remeasured",
+  "camera": {
+    "width": 640,
+    "height": 480,
+    "period_s": 0.1,
+    "hz": 10.0,
+    "camera": "robot_cam",
+    "pinhole_hfov_deg": 54.5351624215943,
+    "pinhole_vfov_deg": 42.1489488115246,
+    "raw_fisheye_fov": "nonlinear K/D; no single angular FOV",
+    "K": [
+      [
+        619.5194540517232,
+        0.0,
+        287.68910608896766
+      ],
+      [
+        0.0,
+        622.1654884818748,
+        218.69686648455726
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "fisheye_D": [
+      -0.0199819517209417,
+      -0.1707593617153504,
+      -0.2568318201202376,
+      0.9650933421665181
+    ],
+    "mount": "masterpi-camera-user-observation-target-review-v3",
+    "position_m": [
+      0.052982009925558314,
+      0.0,
+      0.028152173913043477
+    ],
+    "quat_wxyz": [
+      0.4545194776720437,
+      0.5416752204197018,
+      -0.5416752204197018,
+      -0.4545194776720437
+    ],
+    "schema": "ugrp.grasp_act.student.v6",
+    "sources": {
+      "sim/masterpi_camera_profile.py": "ec224a88f07b7f1e30b9f306951818ec3907c27554daab1361db6cc8b00f3a1a",
+      "sim/masterpi_camera_review_v3.py": "6d8d739085c44f3196e4b4c514ca7e6c515e82394b1180a712b935df0a1b9362",
+      "sim/s2_realism_camera_binding.py": "86922a48dc7e6a3350f478bf2331a9be114da00ec380b3145e834746ed59bbe0",
+      "harness/grasp_act_contract.py": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056"
+    }
+  },
+  "files": {
+    "86820-r1/images.npy": "9cc6055f67c4d650f656ce85d6fa51ec57f2db2ef5d0897d310ac120c3d3336b",
+    "86820-r1/rgb-provenance.json": "3460bb169d3f6cdddbde504c4a9e711725f4538ce0121471ffb94c5ea909efff",
+    "86820-r1/samples.json": "3585fe16f1372854d7d566a95571515a9563396aa7e62d37b0cc78d67346ba73",
+    "86820-r1/tensors.npz": "a13ba9c1cf61ff9bb8e1cfcc3e31281012678fb7c1599ee9d0380fdc4008231f",
+    "86821-r1/images.npy": "ccf01ad10a8f2b0cb3dee2d12dfad07145b0bf0b2cdc160e94881252968db32c",
+    "86821-r1/rgb-provenance.json": "696b8d70c596b645404f1d1e62cab9d5eb6a98b266e384138010b7cf06c07841",
+    "86821-r1/samples.json": "a36ea1e51dc9cc79e41401e361f9236144f29ccccb45a5e650e91a5310d780a7",
+    "86821-r1/tensors.npz": "995adcf2b682d0ab97cbb551d926db5da28477fb6deb9dacc5e5a85cac137345",
+    "86822-r1/images.npy": "94e57bc8c93a6847a608547eacf1e04dbc82a8a4fe3059063761ef1a3bb93f81",
+    "86822-r1/rgb-provenance.json": "2b138ef15f019d11253b38bb32b0c45ed5fca8d0a535171ab0969816837b1d9c",
+    "86822-r1/samples.json": "091b9bc82a093b9acf846e7f1ee618af7193699558da9ea26c0dbd8b64d48da2",
+    "86822-r1/tensors.npz": "8b6339657e1cf9487308069c3b802d712de1c6bbc0f75db747023cf7af5ebdcc",
+    "86823-r1/images.npy": "bd8f3f880eaf585d511accc94e21ffa9b2516c811a96f060f0a0596c7ca288e5",
+    "86823-r1/rgb-provenance.json": "8b4ff055d7d07f8df4f472a2fdde8a8b6ce1f9bbca86aa8664348cf0f83679f2",
+    "86823-r1/samples.json": "40d4cba7835611827ecb880f1f4a0d3e119897dc97a480eb4d5e8c0fc0b35746",
+    "86823-r1/tensors.npz": "a79508b0e678a1a3a3b5241d231999c268377c74eaf824390abd992b05ba9cf2",
+    "86824-r1/images.npy": "4fdd8936133c6a56a2627976d12f6cca940cbe8272ab406d977ccf9f97b470f0",
+    "86824-r1/rgb-provenance.json": "c421cd6fd022591e96347739394216604819fd1a9723f4ad111ecef057d297de",
+    "86824-r1/samples.json": "c40c92f274e350b96ea02f50701b5738424f632699072401b616f695f018564f",
+    "86824-r1/tensors.npz": "6cf83b7d7e92f2278c8f95703b0a8fd9725aeeb7544a46ed941d70541218da1d",
+    "86825-r1/images.npy": "253f5ec0273c3b79a488bc14dd40cc97c770cf8dbf53bdfed516720af6da6834",
+    "86825-r1/rgb-provenance.json": "12f6dc08f10889c849839d2aeb43739d232104b6e1c18c6e6d54bb1e49e747f0",
+    "86825-r1/samples.json": "61e585d5cb5b8e614c46c1f7bf4a5d22a56c1ef97d130be02406f8daa6bff117",
+    "86825-r1/tensors.npz": "7b550a37b73fc1562764b2f54cd1384e80538d50ab0201320359fe41654f8b6d",
+    "86826-r1/images.npy": "9bbddb8803c27348084c9fe452ecefa560762bde3021eaefabe996d50499e03e",
+    "86826-r1/rgb-provenance.json": "a328addca0e12745d2c91b0477fabaccde6ba384abd7c073d60f1fb1dd97d597",
+    "86826-r1/samples.json": "bf3cd4e49aef73039d1e6b62fe55d1f81c84e1f1782ab996d336ddae04cb857a",
+    "86826-r1/tensors.npz": "f3c4eb87606743a37884b36741a0bb7c9794ac23262343659aea7b952e8ca507",
+    "86827-r1/images.npy": "d80e102608e42cef7564e06e895cda1d43c183f681655e8bdf01c0d252842431",
+    "86827-r1/rgb-provenance.json": "97329e96e63c044b45f65adee77732225aab7d5db6ece5217dcc70601307a923",
+    "86827-r1/samples.json": "2d85237b5743f3fe322e6d0c03b1f2dd2eea56279363418fef408a1e2b1f1271",
+    "86827-r1/tensors.npz": "a5ac44bf9cb3b0a95d3ee5f0acfd49d01c7230391103382b3b396660b8f80245",
+    "86828-r1/images.npy": "5209fe8bf0d776cc3da80dd54d1241f4c75e90a73cdea20aa0d35cd7b28cc962",
+    "86828-r1/rgb-provenance.json": "7142757ac53d8acd588eb611de51e6bf1f84c8eb895b4476d9a1e999f81818e0",
+    "86828-r1/samples.json": "eced9ffe2e9d599266a783d747b784439e8773f0c743f90a724723e3f19510de",
+    "86828-r1/tensors.npz": "2a58888c171dd0e85f0086d5a64c5d39b7b2a62c4442c3a469e0d9aaa0ad33dd",
+    "86830-r1/images.npy": "2fac347b0384e91ed5d0e08b9dc00828bae5437b2e6589662ccb485f36bc2ef4",
+    "86830-r1/rgb-provenance.json": "d91ab21c4717e2cfd029e10e553c64df72e76691af93d15bc968f9223ae9a521",
+    "86830-r1/samples.json": "4911eff6d4dbacbc3db1e09be823ab41a592b38ed37a0e2d03a3a24665267de3",
+    "86830-r1/tensors.npz": "103a74a3cf79a4c8fac5d86f890a674ac685d7c1ade2706b0850614be23e9e97",
+    "86831-r1/images.npy": "2252d906dfe90d02dceec5acfe4f6d3bd59f8f755cd9fbb8cd10b10fd48e3f89",
+    "86831-r1/rgb-provenance.json": "149d544884bb2805f8272997973c6c32adb5abea96be127e42fb2126369d6121",
+    "86831-r1/samples.json": "052585338f4b4afde968382c9cae9bd6c8648e302a3deb7609eecd1dff53482d",
+    "86831-r1/tensors.npz": "da31d1c8bea2199ee4e2c61d42a472fb2d95dde44472c0bc3f728c714c0e355f",
+    "86832-r1/images.npy": "ff17e632f669ccce26351a3c93b85987c0f32ef4b865eecc2686fa5d84a52f66",
+    "86832-r1/rgb-provenance.json": "237c7acba19066b13201de98b74f19a40371cabd824e25af70edc44deb8fde8b",
+    "86832-r1/samples.json": "5adf54adc9e16c8a1fe0cfb688d278b5cfaa07185178ebe47b6be4b4197a45fe",
+    "86832-r1/tensors.npz": "a713d5af2ae4dee3e8bf330d7ebed1d0768ffe5680214f53bcf571f0f4e296c6",
+    "86834-r1/images.npy": "d2fe201e3d2c336854aad651e6948d92b97ea4cc0459a8fc9656c100d15d50b5",
+    "86834-r1/rgb-provenance.json": "7ae7643afe068e50259a4f98fc3c65d2dd2eec2038e17d9415f93fde8b0a2b33",
+    "86834-r1/samples.json": "7f631e4004c87df71bbcbda0fd42ac44d442c58d8cc317898717cbe6237ca8d8",
+    "86834-r1/tensors.npz": "d49fb5033c43fa04c7882036ca993455ff42eb80cd97fa0ca3d8d0aa0c965f4c",
+    "86835-r1/images.npy": "768f5b13ae06fb9dfca393bc54f3a62d5412fa95ce4b7581d8cbc073c56ff258",
+    "86835-r1/rgb-provenance.json": "a20c3ba10088f9b6f77f69b8ec23da2303693543de1339b9a062ed8fd7628594",
+    "86835-r1/samples.json": "ee37123d2cabbfdf74f937709dd6f10425e89089d35f4466bb71368926ef5a51",
+    "86835-r1/tensors.npz": "9577d0a876fa9e8db5e7c33ad9ecc01afff937de2e3f5e48b831661af9ef37a3",
+    "86836-r1/images.npy": "46df279e9913b7f1376d37c5709c2a48f1a236e08ab4cd2c7bc12d394e3e93e4",
+    "86836-r1/rgb-provenance.json": "2049bae1ceec0711f70493e7b6fee201e73a4def73d6d0bf3f47247631f9c42e",
+    "86836-r1/samples.json": "d4b29043281e064bd89732bd0281875079311dd80bdfceb502cc2d5bc23b47c7",
+    "86836-r1/tensors.npz": "f9d0403fcaf0a7892c68c5df0af74c3724741a5d3739b5c9276b930e0d9f23b6",
+    "86838-r1/images.npy": "3c162f55f451e6805ef131d09c2bb6fcdacbcd59ed5f785b8769c37114078501",
+    "86838-r1/rgb-provenance.json": "3392857282e3412aa37fbe89cafda23ea11c532361ccfabde081f96019b5a3f0",
+    "86838-r1/samples.json": "81f9c6e3c3a46653eb683afba7b986b333ce93903f808a5851447e244e4b809f",
+    "86838-r1/tensors.npz": "da445f688a0f259d06cfdcc278b6bfc7dfa0c93618f43f444e425713b1694306",
+    "86839-r1/images.npy": "3bfbf3a8b7a8cfa67e5e4d58d881760031cb2929ae444118390213a159ceedd8",
+    "86839-r1/rgb-provenance.json": "ec80cec4631d10ae313a1f38716e8375a79971d15a68d21f432b62c6596af15a",
+    "86839-r1/samples.json": "07d9daa6b26303dac7d93080cc7a887fdf3a42c1f3e4c37fbac23dfce6773949",
+    "86839-r1/tensors.npz": "1a0339918922adfafa52399886646349e55c5c2f9ca81b4e9413ba106a579344",
+    "86842-r1/images.npy": "ca956ef33e035fbdcb598775c796eaf1e3167df93fc56a2b01477ca44893e187",
+    "86842-r1/rgb-provenance.json": "82a85a59390173e67d69eb1f4505453b46fb7ef06269c2b170c031b1569ab281",
+    "86842-r1/samples.json": "10240e439b68e84acd72c0f1982e362032fd1267c1e356078e24f0b2a58bbee6",
+    "86842-r1/tensors.npz": "0ac9b2fae82b02359e3360e2a16becf0438d91ffe704bee5a75fb856e771722e",
+    "86843-r1/images.npy": "86f71d16af9d79cd66eac292fceb99d65aa9e9690905249f3ac55fd7d5a1c546",
+    "86843-r1/rgb-provenance.json": "8e7d4c030e467c72cbca6e57ba2068cc15c676e75e1d0c41b2a3e98848ba18e0",
+    "86843-r1/samples.json": "c5c255a381c95dcfb14645caf84965ce861b502d3989e677ab358f9d492e70e5",
+    "86843-r1/tensors.npz": "793c0674ad0019910dd644823f374891629f06300d1ad368c541a471d87596f1",
+    "86846-r1/images.npy": "2757369425f6e169619d206328394d6d4e72365faf109f34fde35618272a013c",
+    "86846-r1/rgb-provenance.json": "dc36be2d7a83d774909e77f9c9a9e578e1c2e5cbd44262c17254a2140a54d494",
+    "86846-r1/samples.json": "e6e2b4049e076a12e208750de6efdf98760d193de8126c0f2d0028ba107c27b6",
+    "86846-r1/tensors.npz": "3cbabb5286c20bdc1f80192b65250f823308b18871eac8ce0748f9516926d804",
+    "86847-r1/images.npy": "f33e37f6840cb29109321b90b41a8dd4c43d9c6b2833f5b01af403e7c7794843",
+    "86847-r1/rgb-provenance.json": "cc7f77fd53f56e6d6c922cc789a79b784e7c611f0b291c1579f634b03c9d50e9",
+    "86847-r1/samples.json": "5a53504e6dafac7fc225311f6b3efd69c29181ecd27204a9f3a0ab9cb960677f",
+    "86847-r1/tensors.npz": "c8b4546710e990706d726923d710438cf1d35dc116f1e54b9f7f5400db3b9ed0",
+    "86849-r1/images.npy": "6b58ccfeb0129ea1cc1c2d2c3fb143d0b113a40510f3bbeef292bcad627a483d",
+    "86849-r1/rgb-provenance.json": "8f338da7983993f24fc656a573ce5788e058d903368e10b9bcd19df04f9364dd",
+    "86849-r1/samples.json": "0ecf1c53f835a67a239973ff2d2bbe79fcc694d676de6057f9a1244b11872d12",
+    "86849-r1/tensors.npz": "395cd38b06b88b8bd054bc239beee7f031c3e4f9bf1e67fcd07fd3f71b7d3a45",
+    "86850-r1/images.npy": "7d5528ffad12a884dbe8916606ebb4def5eac6fb4c032db0e2b208eaedcc4c3e",
+    "86850-r1/rgb-provenance.json": "cdb9c814009c4625971c756b34ab246efa17d0c3589f560e92debfac0863916b",
+    "86850-r1/samples.json": "d53520d811c330f338b4d9b57bf0508d7909adc33bc8ba2f8fe1834a8a4f7c2e",
+    "86850-r1/tensors.npz": "cf65b36d2782dac2fa692d75fe5450abb3bef04e85720424a6f7136e8a99abe4",
+    "86851-r1/images.npy": "81d500e32181f92a64ab6049af29044500156f1b923a620db798e43fce179050",
+    "86851-r1/rgb-provenance.json": "e2c6ff9b53da1c2aaaaef31da54b4c8859bbaab0ad4239bd2c81ad38ded9ad9a",
+    "86851-r1/samples.json": "61b92f48251604cbef6229510eed4703255b0954ce087821535c5c98e58d9256",
+    "86851-r1/tensors.npz": "2c885d148515258012e7243c713c754e00608007fd90ff664acc3216047c1300",
+    "86852-r1/images.npy": "24230332f61e06330b3bc7fb5959d6c446b82a57881b342c62d71706dd75d7c0",
+    "86852-r1/rgb-provenance.json": "dd4f1f53eecd130121ab72ba77d54148aef32a8f7ce9182b7b2d511f5c5460c5",
+    "86852-r1/samples.json": "4d7391fa39e56d3832beec3fac71f9638f5899290e0a617146ba0652ac6dbd57",
+    "86852-r1/tensors.npz": "7e4ce15219b9e0b6064e6daf213e0784fd330f00dcbbe581a4f8752e6791ff25",
+    "86853-r1/images.npy": "22800bfe222957a5685b4eccf6e0cc7c45e12514c7c39262a4478e790ee81acb",
+    "86853-r1/rgb-provenance.json": "9cd268ec41d3548185f5c354c05ad832b966c7f10bbb4bf9c609e6f731234726",
+    "86853-r1/samples.json": "01aca0b900d7a603b5c51551802c8c33f8681f7bbb365894276135b12dcbfc3a",
+    "86853-r1/tensors.npz": "860bab6260239441a03fa37eba7fc39d4b19fc8c97ebc507afd9795b002e63cf",
+    "86854-r1/images.npy": "5f38a8d9ad5e87e0542e4459092a694b1acab82567f8649b825cd16d317517d5",
+    "86854-r1/rgb-provenance.json": "56fecf9d635975bd9067ed47366580453c69626812d9aeb9fbd3b2b309c659cf",
+    "86854-r1/samples.json": "44ffe9b73fc283ef5dec5e07be32a94f1c3c56f5a1076ae94ae91d7667bdc0f1",
+    "86854-r1/tensors.npz": "1c6947742516a42850a1c9d4b7efe487526f993e148c9968e98f5c4eb0cca031",
+    "86855-r1/images.npy": "265c141a43e0ffad6162bef3cfef1ede0098293ec23db79970e2ac683b254301",
+    "86855-r1/rgb-provenance.json": "653b373fefad8e373fce0b62ccdbce87ab06b7099e1f1079ca05b2b5bb8e2567",
+    "86855-r1/samples.json": "a83f71debfe70b3c0ab043323a391bab6c91bac3ee9e95b4b0af27d2ea834ee0",
+    "86855-r1/tensors.npz": "5463a2a35923fe4787e316f57ad645b34aa6a185bdfe8b675896a16f46df4931",
+    "86856-r1/images.npy": "18406ac8a96134778fb5cda0405fdeeaba35022b076f5dcb52e3b04dfe680ab2",
+    "86856-r1/rgb-provenance.json": "78f60e48ac62987091941840ad7172e1428cae0a507cb664402fe45e6c428f1c",
+    "86856-r1/samples.json": "19537734d23912b3aa86cbf26f82553eff4f16386a2f261a93c8831e7da61476",
+    "86856-r1/tensors.npz": "aa68cca8c6f3c168559a2a27b4843bf793f28b0d00b0ccf4009f691e63d836ac",
+    "86858-r1/images.npy": "d7e281b5da09a8df5b0691a90f9c4d0b6ea3e8ba6cdd95c59d784e2908b65186",
+    "86858-r1/rgb-provenance.json": "7c64d04d582faad780d7c06229b47a3e6b5d5409db4ac666b9d071ff11d8bc82",
+    "86858-r1/samples.json": "38d86e97cb846347a9eaf3c9bda14871f27b36552f47409ae82abf27b8a02350",
+    "86858-r1/tensors.npz": "29583e3b058f092a0676dd043668eb770c304451473c0ca2b524b0959aa40509",
+    "86859-r1/images.npy": "b7e8e29cfc03bc7090186e6b0fb5a431b726c5068ab9dc8d05d08e480017d1e5",
+    "86859-r1/rgb-provenance.json": "85752d3052c42f746ad163a7d2b3f958de29f6c22ef04a15d63dc06ef58e9e84",
+    "86859-r1/samples.json": "895e189b10632ddef0dd452b76324a8b6dcb645ae141960454286a91ef2393cb",
+    "86859-r1/tensors.npz": "6b60f596220d83b83ed493736af64a0d448a69043d9f676dd0d82f63280c489c",
+    "86860-r1/images.npy": "13141a1d150db7a432622f2d674b4baf15941c31b1eec8864e8516876a68879c",
+    "86860-r1/rgb-provenance.json": "c45fdfc0765f141e39186a5893dc20b94137b90dd0a0b5f592044f13d10bf58c",
+    "86860-r1/samples.json": "1971e7146e578b2339f4ef4f56e1e35596082d901e3fdf28565061fdde1fdf88",
+    "86860-r1/tensors.npz": "0ab0984e831eb31bf738e4dce916d10789157132452010830b78195f39353712",
+    "86862-r1/images.npy": "025d619e2551e16b629306a63c7d03f89df69346a11f79e6be961952884f3445",
+    "86862-r1/rgb-provenance.json": "adb4bd814d3121612d116d181f772fe94a9d17b16755bdfeed8aaf94b3fcd7d8",
+    "86862-r1/samples.json": "a7c495e15bbe6865e57749746e86b5746aa2785667cad85e132aecbe7fd721a7",
+    "86862-r1/tensors.npz": "64b3990279ea366bb070a6fe29c17024fb0167b1d11db361be8c1b00d19888b4",
+    "86863-r1/images.npy": "4723b69ac0eb47ada1b18d827ca4f68b323468f3d189b8d75bc3441c563877eb",
+    "86863-r1/rgb-provenance.json": "46defb20ec8e95f977d5b286d5030967df03c28aa114adaef7cbb38fe3711ed7",
+    "86863-r1/samples.json": "d385218e076be4ff78f1af1a22bdab388694006aeacbaed73f152e1b91ae1afa",
+    "86863-r1/tensors.npz": "fb125347856119d5b9c8dc7ea17292566329f833170106175855cd99bb0b3c9c",
+    "86864-r1/images.npy": "5eff297f5caf4f0d3d6165f85dbed04dbdebe3d742c91da02461f3d597ad11e5",
+    "86864-r1/rgb-provenance.json": "b48bf75965eca4f1e97e45c27dbbd7ad07d9e3dc9653a2ce5e4c1ddce5bb1478",
+    "86864-r1/samples.json": "8d8705ff8426df4ceccd5d20471bede800cd5ef6f1caadc55b5b2f498fc59808",
+    "86864-r1/tensors.npz": "1a90d06898050920666d2d677a511512dd3a20cd3a5e9c2bd7330aebea8815e2",
+    "86865-r1/images.npy": "d17a3c59a817741c7edb8151d01924e1dc2efa2235d020277b5b188fbf62fb12",
+    "86865-r1/rgb-provenance.json": "bb250327adf627698a5465c877ee065d4f92932cc6892d8a1cfa60cdbe730b1a",
+    "86865-r1/samples.json": "2f72e389cb0bf288b37c069c38fe0062c8d05e8818c8e1528e149d6a26fcf554",
+    "86865-r1/tensors.npz": "b483bf3aee49a94f92534b52f048b2632f9b601488fcae5ba1d7ab18c4c66ad2",
+    "86866-r1/images.npy": "6b903da2e52a1fe7f310c92691d8407ff0a34cc5eddbed4fc12160fd05c13989",
+    "86866-r1/rgb-provenance.json": "8dc48c51a1d7db99540dbf3df47e447a595dddf9118832ff682e10ffcaffb510",
+    "86866-r1/samples.json": "143e2a5edbd6d9990941a0d4e0080f7bebd1a10631c2148a079439c012acceb1",
+    "86866-r1/tensors.npz": "450130088562f79aa0b11e9f4610f15d6c802f3eef053f866850ff384aad21cf",
+    "86867-r1/images.npy": "6eba2b61df56ba4cc8711ba331c4130ae2ef81b54958b148c4e3c6de29c75fe9",
+    "86867-r1/rgb-provenance.json": "e15d6b6e5ca4df27db8f0875e8959f592db845be27569e373d3ae25d44883419",
+    "86867-r1/samples.json": "d0f2dedace19ef59600aaaecf7a3ca64103a24fa12845ce27dc70324c301c02e",
+    "86867-r1/tensors.npz": "454f27a520f53289979658e5ba1e9cd0c44e996464d5e854140d71be806d74d2",
+    "86868-r1/images.npy": "5da18102ace3a1c52a79b49752058639985ad4e9b69c921f5d0a0a19d4bb4f8e",
+    "86868-r1/rgb-provenance.json": "d9f2d381706e2bdf5e50213da4d6a50b30331fcff74aa383110ab93aa2bcf572",
+    "86868-r1/samples.json": "d99e14d41af184b1e218ea116a842a057cf93d852dc79629a5773048fa48d364",
+    "86868-r1/tensors.npz": "2a6b33dddf9c4f176e299363ca577c30ba20240516b85000f10fa9c017a12490",
+    "86869-r1/images.npy": "5c9bf50a21a65bc25317d3af0666daafcdda9f2bc53da2823c325f8d4311303f",
+    "86869-r1/rgb-provenance.json": "229d4f5767f964a1a6fbc465023aadec9d079cb12be8d55a212221da0fa02c81",
+    "86869-r1/samples.json": "19239573de1feef7c54d51031250855793b136b7f711f10522ad07d63b4286ed",
+    "86869-r1/tensors.npz": "b54d114b55c78e867977a653c69e5cbef5b9b10b081d12324cba558d09133c11",
+    "RUN_META.json": "a25af2d03a078b2964c3929b6020e6f81db74809c4f0e03c9df212f3412df175",
+    "normalization.json": "cce5246478215992670c7cf68cb8fa977fe12c45a4cf861cccf697487483bab4"
+  }
+}
