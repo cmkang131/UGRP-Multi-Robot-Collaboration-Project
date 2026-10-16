@@ -61,7 +61,16 @@ def run(a):
     seal = verify_seal(a.prediction)
     # Python caches package paths.  Import frozen scene packages FIRST in this
     # new evaluator process; changing sys.path after replay cannot undo imports.
-    sys.path[:0] = [str(a.vision), str(a.vision/'scripts'), str(ROOT), str(ROOT/'scripts')]
+    renderer = Path(queue.get('renderer_source', str(a.vision)))
+    if 'renderer_receipt' in queue:
+        receipt = json.loads(Path(queue['renderer_receipt']).read_text())
+        if any(sha(renderer/p) != h for p, h in receipt['files'].items()):
+            raise ValueError('RENDERER_BYTES_CHANGED')
+    # XML contains source-relative asset paths expanded by the scene builder.
+    # Even byte-identical copies at a new directory produce a different XML.
+    # Reuse the recording's exact renderer root, verified by its file receipt.
+    sys.path[:0] = [str(renderer), str(renderer/'scripts'), str(a.vision),
+                   str(a.vision/'scripts'), str(ROOT), str(ROOT/'scripts')]
     import sim, scripts, harness
     sim.__path__.append(str(ROOT/'sim'))
     scripts.__path__.append(str(ROOT/'scripts'))
@@ -70,7 +79,7 @@ def run(a):
     import mujoco
     from scripts import probe_scene_tex2 as tools
     from scripts.generate_scene_textures import MAPS
-    os.chdir(a.vision)
+    os.chdir(renderer)
     model, scene, hardware, xml, audit = tools.build_model(MAPS[0], 'walls_floor_contrast_v5_indigo110_s80')
     recording = json.loads((a.input/'summary.json').read_text())
     # Match the recorder's owner-provided XML transformation byte for byte.
