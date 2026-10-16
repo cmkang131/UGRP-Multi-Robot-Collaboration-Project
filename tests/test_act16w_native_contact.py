@@ -100,3 +100,18 @@ def test_first30_speed_median_counts_worlds_not_model_groups(tmp_path, monkeypat
     (tmp_path/'group-00/first30.json').unlink()
     result = world_latency_summary(tmp_path, groups)
     assert not result['complete'] and not result['passed']
+
+
+def test_native_selection_uses_only_completed_validation_and_registered_ties(monkeypatch):
+    monkeypatch.syspath_prepend(str(ROOT/'scripts'))
+    from act16w_native_experiment import select_arm
+    import pytest
+    rows={arm:dict(n=0,N=8,complete=True,alignment_rejections=8) for arm in ('A','B','C','D1')}
+    assert select_arm(rows,list(rows))=='A'
+    rows['B']['alignment_rejections']=7
+    assert select_arm(rows,['A','B'])=='B'
+    rows['C']['n']=1
+    assert select_arm(rows,list(rows))=='C'
+    rows['C']['complete']=False
+    with pytest.raises(ValueError,match='completed'):
+        select_arm(rows,list(rows))
