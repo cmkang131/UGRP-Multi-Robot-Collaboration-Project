@@ -51,6 +51,8 @@ def run(a):
     if not lease.is_file():
         raise ValueError('OWN_LEASE_REQUIRED')
     a.output.mkdir(parents=True, exist_ok=False)
+    dump(a.output/'RUN_META.json',dict(schema='ugrp.run_meta.v1',**{'class':'dev'},pr=556,
+         branch='codex/mapbuild1',sha=queue['source_sha'],batch='mapbuild5'))
     commands, end = plan(); dump(a.output/'commands.json', commands)
     dump(a.output/'queue.json', queue); dump(a.output/'admissions.json', admission)
     dump(a.output/'camera-calibration.json', dict(K=K.tolist(), D=D.tolist(), width=640, height=480,
@@ -58,6 +60,7 @@ def run(a):
          servo=cases[0]['pwm'], renderer_sha='5974a181a2cec9731339a6ce3aadc0464b8dddcf'))
     wp.init(); wm = mjw.put_model(m); wm.opt.tolerance.fill_(float(m.opt.tolerance))
     d = mujoco.MjData(m)
+    d.qpos[:]=initial[0];mujoco.mj_forward(m,d)
     with unused_efm(m, d):
         wd = mjw.put_data(m, d, nworld=1, nconmax=128, njmax=512)
     def reset():

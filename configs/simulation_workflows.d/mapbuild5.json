@@ -1,0 +1,19 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "mapbuild5-rbpf-recording",
+      "purpose": "기본 off gcp5 MJWarp 측정 펄스 왕복 녹화와 자기 벽 가상 스캔 RBPF의 동일 영상 비교",
+      "entry": "scripts/mapbuild5_capture.py",
+      "docs": "experiments/2026-10-16-mapbuild5/README.md",
+      "requires": "gcp5 only; own lease; pinned mapbuild3 clean fixture/renderer; source hashes; existing absolute rejection_table; explicit --mapbuild5-recording-v1; no wall cap",
+      "version": "0.1.0",
+      "runner": "scripts.mapbuild5_capture",
+      "output_flag": "--output",
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": ["--queue", "--renderer-source", "--renderer-receipt", "--fixture"],
+      "output_kind": "directory"
+    }
+  ]
+}
