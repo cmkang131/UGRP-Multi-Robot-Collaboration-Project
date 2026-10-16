@@ -40,6 +40,7 @@ def main():
     try:
         client.reset(plans)
         actions_log = []
+        report['actions'] = actions_log  # preserve completed prefix on errors
         # Two steps verify a real inference plus world-local chunk continuation;
         # this is an API transaction count, not a new success/time threshold.
         for step in range(900 if a.full_evaluation else 2):  # existing90SIMs /0.1SIMs
