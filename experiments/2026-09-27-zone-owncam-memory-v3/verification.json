@@ -1,0 +1,49 @@
+{
+  "status": "unit-tested development candidate; no cohort",
+  "base_sha": "367b40da2350d5fff08364984251581dd0d1a8da",
+  "branch": "codex/zone-owncam-memory-v3",
+  "committed": false,
+  "python": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+  "thread_caps": {
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "VECLIB_MAXIMUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1"
+  },
+  "new_unit_tests": {
+    "passed": 45,
+    "failed": 0,
+    "command": "python -m unittest tests.test_owncam_memory_v3 -v"
+  },
+  "related_existing_tests": {
+    "passed_after_catalog_fix": 106,
+    "blocked": 1,
+    "blocked_test": "test_parent_exit_cleans_background_child",
+    "reason": "sandbox PermissionError: Operation not permitted: ps",
+    "initial_command": "python -m unittest tests.test_owncam_memory tests.test_m1_owncam tests.test_owncam_localizer tests.test_simulation_workflow_manager -v"
+  },
+  "v2_preserved_files": 23,
+  "checks": [
+    "v2 bytes preserved",
+    "DRAFT parsed and runner refuses launch",
+    "git diff --check"
+  ],
+  "sha256": {
+    "harness/owncam_pose_guard_v3.py": "f9c32699589cd256f71df4ef3501443ce3d588e5931bdaae049f3f817268dd60",
+    "harness/owncam_memory_v3.py": "fb2f1394c974450b778ce0091a8fb6f249fad5af2d2a9e105d98df00db255f36",
+    "harness/owncam_drive_mem_v3.py": "2b4f4c39fa9582990771eee209c0a7e5131ad020f96b5c2b160d5fca19d86d41",
+    "harness/m1_owncam_memory_v3.py": "8373054814401613e1db56205bbe8f359cd0844b23fb3ffc3b6a50c3808aec2a",
+    "scripts/run_m1_owncam_memory_v3.py": "3b9b72a7e8369f3e9823ba119a0eab7c5781facda187eca6d8bd623ebc1cc318",
+    "tests/test_owncam_memory_v3.py": "0cd0358772da0ab04bfaa1f40ac1eb0e70612a8f8c30093cbc9b306dbf262e32",
+    "scripts/run_ci_tests.py": "c126f25eb85d50a40c6eb92382d5873f2da5180d50dbdf6517673015a1515fe7",
+    "tests/test_simulation_workflow_manager.py": "0a9ebaa4b0e8fbca666882ce4945ae6808fa677c85b9d35412325183faeb8693",
+    "configs/simulation_workflows.json": "33d662e931529fdc8c40e9f967ea394aa8c331a3ad59d734b2e29363e769b306",
+    "docs/design/2026-09-27-owncam-memory-v3.md": "45be49e8b35f4d7cb6e78df977d1962a9e5d078cb019a1aa3fd2e6df52e89052",
+    "experiments/2026-09-27-zone-owncam-memory-v3/README.md": "30c3eb3fc57fd836d45dafb5703a3e6a0be9537711aa03e0a7f755b135edd3c3",
+    "experiments/2026-09-27-zone-owncam-memory-v3/catalog_fix_tests.txt": "808c27d903425b862fb18088aa90b8ff7411aa6137877e28ae8417d76403d081",
+    "experiments/2026-09-27-zone-owncam-memory-v3/prereg_DRAFT.json": "15d1df48bf3214d0268e8ffdd05a53f964955e63a4871fd74ef150a8a5badf07",
+    "experiments/2026-09-27-zone-owncam-memory-v3/related_tests_initial.txt": "8a0d212769b53efc5d6476fef0811fbbe8f8bb6089796172ac093e4eef52f8ff",
+    "experiments/2026-09-27-zone-owncam-memory-v3/unit_tests.txt": "f5c647bdff555a016095d1858b4d8ede3eb1f053882c839c5b8cdd0329bc5132",
+    "experiments/2026-09-27-zone-owncam-memory-v3/v2_preservation.json": "f4c09869a8d279f0b4646c190951b2d48f21787a723905210966cdfe54e71d39"
+  }
+}

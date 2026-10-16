@@ -1,0 +1,160 @@
+test_frozen_m1_files_are_unchanged (tests.test_owncam_memory.BoundaryTests.test_frozen_m1_files_are_unchanged) ... ok
+test_imports_are_allowed (tests.test_owncam_memory.BoundaryTests.test_imports_are_allowed) ... ok
+test_memory_core_is_tag_free (tests.test_owncam_memory.BoundaryTests.test_memory_core_is_tag_free) ... ok
+test_memory_modules_import_with_mujoco_poisoned (tests.test_owncam_memory.BoundaryTests.test_memory_modules_import_with_mujoco_poisoned) ... ok
+test_no_simulator_state_names (tests.test_owncam_memory.BoundaryTests.test_no_simulator_state_names) ... ok
+test_door_posts_of_v2_and_two_doors (tests.test_owncam_memory.CatalogueTests.test_door_posts_of_v2_and_two_doors) ... ok
+test_seen_from_respects_the_free_side (tests.test_owncam_memory.CatalogueTests.test_seen_from_respects_the_free_side) ... ok
+test_tags_are_never_read_and_never_required (tests.test_owncam_memory.CatalogueTests.test_tags_are_never_read_and_never_required) ... ok
+test_v1_catalogue_is_derived_from_walls_and_doors (tests.test_owncam_memory.CatalogueTests.test_v1_catalogue_is_derived_from_walls_and_doors) ... ok
+test_gate_looks_short_first_then_full_and_manipulation_full (tests.test_owncam_memory.ControllerTests.test_gate_looks_short_first_then_full_and_manipulation_full) ... ok
+test_initial_look_can_already_find_the_target (tests.test_owncam_memory.ControllerTests.test_initial_look_can_already_find_the_target) ... ok
+test_preplace_look_is_skipped_when_the_release_gate_holds (tests.test_owncam_memory.ControllerTests.test_preplace_look_is_skipped_when_the_release_gate_holds) ... ok
+test_viewpoints_with_known_floor_are_skipped_then_revisited (tests.test_owncam_memory.ControllerTests.test_viewpoints_with_known_floor_are_skipped_then_revisited) ... ok
+test_without_frames_the_memory_controller_fails_like_the_baseline (tests.test_owncam_memory.ControllerTests.test_without_frames_the_memory_controller_fails_like_the_baseline) ... ok
+test_confident_arrival_check_is_skipped_only_with_a_fresh_look_fix (tests.test_owncam_memory.DriverPolicyTests.test_confident_arrival_check_is_skipped_only_with_a_fresh_look_fix) ... ok
+test_missing_expected_view_forces_a_full_look (tests.test_owncam_memory.DriverPolicyTests.test_missing_expected_view_forces_a_full_look) ... ok
+test_no_travel_look_and_confident_door_checkpoints_are_skipped (tests.test_owncam_memory.DriverPolicyTests.test_no_travel_look_and_confident_door_checkpoints_are_skipped) ... ok
+test_short_look_stops_early_and_escalates_when_still_uncertain (tests.test_owncam_memory.DriverPolicyTests.test_short_look_stops_early_and_escalates_when_still_uncertain) ... ok
+test_association_new_update_and_ambiguous (tests.test_owncam_memory.KalmanAdapterTests.test_association_new_update_and_ambiguous) ... ok
+test_observation_covariance_propagates_the_pose (tests.test_owncam_memory.KalmanAdapterTests.test_observation_covariance_propagates_the_pose) ... ok
+test_update_matches_the_textbook_filter_and_joseph_form (tests.test_owncam_memory.KalmanAdapterTests.test_update_matches_the_textbook_filter_and_joseph_form) ... ok
+test_box_track_confirms_ages_and_goes_absent (tests.test_owncam_memory.MemoryTests.test_box_track_confirms_ages_and_goes_absent) ... ok
+test_free_floor_is_remembered_and_decays (tests.test_owncam_memory.MemoryTests.test_free_floor_is_remembered_and_decays) ... ok
+test_keepouts_and_slot_occupancy_use_confirmed_tracks (tests.test_owncam_memory.MemoryTests.test_keepouts_and_slot_occupancy_use_confirmed_tracks) ... ok
+test_look_plan_is_short_with_landmarks_and_full_without_a_detector (tests.test_owncam_memory.MemoryTests.test_look_plan_is_short_with_landmarks_and_full_without_a_detector) ... ok
+test_missing_expected_view_needs_three_settled_frames (tests.test_owncam_memory.MemoryTests.test_missing_expected_view_needs_three_settled_frames) ... ok
+test_remembered_pan_failures_lower_the_detection_prior (tests.test_owncam_memory.MemoryTests.test_remembered_pan_failures_lower_the_detection_prior) ... ok
+test_search_pans_skip_known_floor (tests.test_owncam_memory.MemoryTests.test_search_pans_skip_known_floor) ... ok
+test_snapshot_is_json (tests.test_owncam_memory.MemoryTests.test_snapshot_is_json) ... ok
+test_stale_look_fix (tests.test_owncam_memory.MemoryTests.test_stale_look_fix) ... ok
+test_the_memory_runs_on_a_map_without_tags (tests.test_owncam_memory.MemoryTests.test_the_memory_runs_on_a_map_without_tags) ... ok
+test_track_sigma_keeps_the_pose_floor (tests.test_owncam_memory.MemoryTests.test_track_sigma_keeps_the_pose_floor) ... ok
+test_unsettled_loaded_or_unknown_posture_frames_do_not_touch_boxes (tests.test_owncam_memory.MemoryTests.test_unsettled_loaded_or_unknown_posture_frames_do_not_touch_boxes) ... ok
+test_conditions_select_the_controller_and_guards_refuse (tests.test_owncam_memory.RunnerTests.test_conditions_select_the_controller_and_guards_refuse) ... ok
+test_runner_patches_the_class_only_for_the_episode (tests.test_owncam_memory.RunnerTests.test_runner_patches_the_class_only_for_the_episode) ... ok
+test_test_split_needs_a_frozen_source (tests.test_owncam_memory.RunnerTests.test_test_split_needs_a_frozen_source) ... ok
+test_every_tag_is_anchored_to_a_static_map_landmark (tests.test_owncam_memory.TagProviderTests.test_every_tag_is_anchored_to_a_static_map_landmark) ... ok
+test_observations_are_generic_landmark_records (tests.test_owncam_memory.TagProviderTests.test_observations_are_generic_landmark_records) ... ok
+test_support_follows_the_tags_next_to_each_landmark (tests.test_owncam_memory.TagProviderTests.test_support_follows_the_tags_next_to_each_landmark) ... ok
+test_box_detection_is_reprojected_with_the_pf_camera_model (tests.test_owncam_memory.ViewModelTests.test_box_detection_is_reprojected_with_the_pf_camera_model) ... ok
+test_fisher_information_is_informative_for_visible_landmarks (tests.test_owncam_memory.ViewModelTests.test_fisher_information_is_informative_for_visible_landmarks) ... ok
+test_held_box_band_limits_loaded_views (tests.test_owncam_memory.ViewModelTests.test_held_box_band_limits_loaded_views) ... ok
+test_predicted_tags_match_a_synthetic_render (tests.test_owncam_memory.ViewModelTests.test_predicted_tags_match_a_synthetic_render) ... ok
+test_walls_occlude_and_back_faces_are_invisible (tests.test_owncam_memory.ViewModelTests.test_walls_occlude_and_back_faces_are_invisible) ... ok
+test_controller_imports_with_mujoco_poisoned (tests.test_m1_owncam.BoundaryTests.test_controller_imports_with_mujoco_poisoned) ... ok
+test_imports_are_allowed (tests.test_m1_owncam.BoundaryTests.test_imports_are_allowed) ... ok
+test_no_simulator_state_names (tests.test_m1_owncam.BoundaryTests.test_no_simulator_state_names) ... ok
+test_exporter_guard (tests.test_m1_owncam.ContractTests.test_exporter_guard) ... ok
+test_judge_separates_diagnostic_and_m1 (tests.test_m1_owncam.ContractTests.test_judge_separates_diagnostic_and_m1) ... ok
+test_observation_validation (tests.test_m1_owncam.ContractTests.test_observation_validation) ... ok
+test_sources (tests.test_m1_owncam.ContractTests.test_sources) ... ok
+test_fine_profile_follows_skill_phase_and_forces_a_look (tests.test_m1_owncam.ControllerTests.test_fine_profile_follows_skill_phase_and_forces_a_look) ... ok
+test_init_looks_until_localized_then_gives_up (tests.test_m1_owncam.ControllerTests.test_init_looks_until_localized_then_gives_up) ... ok
+test_order_sheet_has_no_scenario_position (tests.test_m1_owncam.ControllerTests.test_order_sheet_has_no_scenario_position) ... ok
+test_v5_order_is_a_coarse_bay_from_own_search (tests.test_m1_owncam.ControllerTests.test_v5_order_is_a_coarse_bay_from_own_search) ... ok
+test_default_profile_is_loop_v2 (tests.test_m1_owncam.M1LocalizerTests.test_default_profile_is_loop_v2) ... ok
+test_fine_profile_lags_per_axis_and_ignores_slip_scale (tests.test_m1_owncam.M1LocalizerTests.test_fine_profile_lags_per_axis_and_ignores_slip_scale) ... ok
+test_kidnap_reset_needs_settled_consecutive_frames (tests.test_m1_owncam.M1LocalizerTests.test_kidnap_reset_needs_settled_consecutive_frames) ... ok
+test_limits (tests.test_m1_owncam.PoseLimitTests.test_limits) ... ok
+test_source_label_is_owncam_and_stable (tests.test_m1_owncam.PoseLimitTests.test_source_label_is_owncam_and_stable) ... ok
+test_look_back_gate_is_checked_on_every_confirmation_frame (tests.test_m1_owncam.PreReviewTests.test_look_back_gate_is_checked_on_every_confirmation_frame) ... ok
+test_runner_keepouts_build_every_static_keepout_skill (tests.test_m1_owncam.PreReviewTests.test_runner_keepouts_build_every_static_keepout_skill) ... ok
+test_test_adoption_rules (tests.test_m1_owncam.PreReviewTests.test_test_adoption_rules) ... ok
+test_test_split_needs_explicit_flag_and_freeze (tests.test_m1_owncam.PreReviewTests.test_test_split_needs_explicit_flag_and_freeze) ... {"episode": "m1dev-s91", "outcome": "x", "m1_success": false, "failed": [], "diagnostic_success": false, "false_success": false, "sim_s": 0, "looks": 0, "wall_s": 0, "load": {}}
+{"episode": "m1dev-s92", "outcome": "x", "m1_success": false, "failed": [], "diagnostic_success": false, "false_success": false, "sim_s": 0, "looks": 0, "wall_s": 0, "load": {}}
+{"episode": "m1dev-s93", "outcome": "x", "m1_success": false, "failed": [], "diagnostic_success": false, "false_success": false, "sim_s": 0, "looks": 0, "wall_s": 0, "load": {}}
+{"episode": "m1devdiag-s94", "outcome": "x", "m1_success": false, "failed": [], "diagnostic_success": false, "false_success": false, "sim_s": 0, "looks": 0, "wall_s": 0, "load": {}}
+{"episode": "m1devdiag-s95", "outcome": "x", "m1_success": false, "failed": [], "diagnostic_success": false, "false_success": false, "sim_s": 0, "looks": 0, "wall_s": 0, "load": {}}
+ok
+test_v6_approach_point_clears_spawn_keepouts_with_a_half_metre_bay (tests.test_m1_owncam.PreReviewTests.test_v6_approach_point_clears_spawn_keepouts_with_a_half_metre_bay) ... ok
+test_loaded_looks_by_travel_not_by_missing_tags (tests.test_owncam_localizer.DriverLookTriggerTests.test_loaded_looks_by_travel_not_by_missing_tags) ... ok
+test_unloaded_keeps_no_tag_trigger (tests.test_owncam_localizer.DriverLookTriggerTests.test_unloaded_keeps_no_tag_trigger) ... ok
+test_pnp_recovers_synthetic_tag_translation (tests.test_owncam_localizer.GeometryTests.test_pnp_recovers_synthetic_tag_translation) ... ok
+test_synthetic_localization_tracks_a_drive_through_the_door (tests.test_owncam_localizer.GeometryTests.test_synthetic_localization_tracks_a_drive_through_the_door) ... ok
+test_tag_frame_is_right_handed_and_faces_the_room (tests.test_owncam_localizer.GeometryTests.test_tag_frame_is_right_handed_and_faces_the_room) ... ok
+test_undistort_inverts_fisheye_distortion (tests.test_owncam_localizer.GeometryTests.test_undistort_inverts_fisheye_distortion) ... ok
+test_absent_stop_lag_is_v1 (tests.test_owncam_localizer.LoopV2Tests.test_absent_stop_lag_is_v1) ... ok
+test_runner_student_selection (tests.test_owncam_localizer.LoopV2Tests.test_runner_student_selection) ... ok
+test_stop_lag_only_changes_the_coast (tests.test_owncam_localizer.LoopV2Tests.test_stop_lag_only_changes_the_coast) ... ok
+test_v2_loaded_hysteresis_and_travel (tests.test_owncam_localizer.LoopV2Tests.test_v2_loaded_hysteresis_and_travel) ... ok
+test_v2_refixes_at_most_once_in_a_row (tests.test_owncam_localizer.LoopV2Tests.test_v2_refixes_at_most_once_in_a_row) ... ok
+test_v2_unloaded_is_v1 (tests.test_owncam_localizer.LoopV2Tests.test_v2_unloaded_is_v1) ... ok
+test_localizer_runs_with_mujoco_import_poisoned (tests.test_owncam_localizer.RuntimeBoundaryTests.test_localizer_runs_with_mujoco_import_poisoned) ... ok
+test_offline_localize_never_opens_eval_only (tests.test_owncam_localizer.RuntimeBoundaryTests.test_offline_localize_never_opens_eval_only) ... ok
+test_runtime_modules_import_only_allowed_modules (tests.test_owncam_localizer.RuntimeBoundaryTests.test_runtime_modules_import_only_allowed_modules) ... ok
+test_runtime_modules_never_name_simulator_state (tests.test_owncam_localizer.RuntimeBoundaryTests.test_runtime_modules_never_name_simulator_state) ... ok
+test_base_maps_are_unchanged (tests.test_owncam_localizer.TaggedMapTests.test_base_maps_are_unchanged) ... ok
+test_every_door_has_post_tags_on_both_faces (tests.test_owncam_localizer.TaggedMapTests.test_every_door_has_post_tags_on_both_faces) ... ok
+test_published_tagged_maps_are_unchanged (tests.test_owncam_localizer.TaggedMapTests.test_published_tagged_maps_are_unchanged) ... ok
+test_shared_postures_match_pr176 (tests.test_owncam_localizer.TaggedMapTests.test_shared_postures_match_pr176) ... ok
+test_tagged_maps_match_definition_and_link_base_hash (tests.test_owncam_localizer.TaggedMapTests.test_tagged_maps_match_definition_and_link_base_hash) ... ok
+test_tags_sit_on_wall_faces_inside_the_wall_height (tests.test_owncam_localizer.TaggedMapTests.test_tags_sit_on_wall_faces_inside_the_wall_height) ... ok
+test_v2_door_posts_stand_on_walls_with_two_tag_heights_per_face (tests.test_owncam_localizer.TaggedMapTests.test_v2_door_posts_stand_on_walls_with_two_tag_heights_per_face) ... ok
+test_wide_look_pans_extend_shared_pans_within_servo_range (tests.test_owncam_localizer.TaggedMapTests.test_wide_look_pans_extend_shared_pans_within_servo_range) ... ok
+test_act_finalization_requires_original_assets_and_pinned_hashes (tests.test_simulation_workflow_manager.WorkflowManagerTests.test_act_finalization_requires_original_assets_and_pinned_hashes) ... ok
+test_act_workflows_require_explicit_suite_and_training_shape (tests.test_simulation_workflow_manager.WorkflowManagerTests.test_act_workflows_require_explicit_suite_and_training_shape) ... ok
+test_catalog_has_thirty_selectable_workflows_and_distinct_adapters (tests.test_simulation_workflow_manager.WorkflowManagerTests.test_catalog_has_thirty_selectable_workflows_and_distinct_adapters) ... FAIL
+test_custom_record_is_queryable_and_never_overwritten (tests.test_simulation_workflow_manager.WorkflowManagerTests.test_custom_record_is_queryable_and_never_overwritten) ... Simulation record: /private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/tmpgyvl3m9q/custom-record/manifest.json
+fixture executed
+ok
+test_dispatch_skills_cannot_switch_to_raw (tests.test_simulation_workflow_manager.WorkflowManagerTests.test_dispatch_skills_cannot_switch_to_raw) ... ok
+test_every_catalog_workflow_has_a_read_only_explicit_plan (tests.test_simulation_workflow_manager.WorkflowManagerTests.test_every_catalog_workflow_has_a_read_only_explicit_plan) ... ERROR
+test_inprocess_finalizes_on_exception (tests.test_simulation_workflow_manager.WorkflowManagerTests.test_inprocess_finalizes_on_exception) ... Simulation record: /private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/tmp6w2eqjgs/outputs/simulation-runs/20260927-081550-fixture-2f4bbc8b/manifest.json
+ok
+test_interactive_prompt_is_tee_d_before_child_waits_for_input (tests.test_simulation_workflow_manager.WorkflowManagerTests.test_interactive_prompt_is_tee_d_before_child_waits_for_input) ... ok
+test_output_collision_and_duplicate_flag_fail_before_record (tests.test_simulation_workflow_manager.WorkflowManagerTests.test_output_collision_and_duplicate_flag_fail_before_record) ... ok
+test_parent_exit_cleans_background_child (tests.test_simulation_workflow_manager.WorkflowManagerTests.test_parent_exit_cleans_background_child) ... Simulation record: /private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/tmpe6rjlke1/outputs/simulation-runs/20260927-081551-fixture-1e83a1f3/manifest.json
+fixture executed
+ERROR
+test_physical_rejects_copy_into_own_trace_and_worker_token_argv (tests.test_simulation_workflow_manager.WorkflowManagerTests.test_physical_rejects_copy_into_own_trace_and_worker_token_argv) ... ok
+test_plan_is_read_only_and_resolves_default_artifact (tests.test_simulation_workflow_manager.WorkflowManagerTests.test_plan_is_read_only_and_resolves_default_artifact) ... ok
+test_redacts_secret_argv_and_tracks_input_hash (tests.test_simulation_workflow_manager.WorkflowManagerTests.test_redacts_secret_argv_and_tracks_input_hash) ... ok
+test_run_records_source_inputs_exit_and_physical_evidence (tests.test_simulation_workflow_manager.WorkflowManagerTests.test_run_records_source_inputs_exit_and_physical_evidence) ... Simulation record: /private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/tmpoj80jm92/outputs/simulation-runs/20260927-081552-fixture-d57fd6c7/manifest.json
+fixture executed
+ok
+test_source_fingerprint_includes_calibration_requirements_and_sparse_absence (tests.test_simulation_workflow_manager.WorkflowManagerTests.test_source_fingerprint_includes_calibration_requirements_and_sparse_absence) ... ok
+test_standard_run_and_dispatch_record_selected_workflow (tests.test_simulation_workflow_manager.WorkflowManagerTests.test_standard_run_and_dispatch_record_selected_workflow) ... Simulation record: /private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/tmpm0pphprb/outputs/simulation-runs/20260927-081552-local-9b291cc8/manifest.json
+Simulation record: /private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/tmpm0pphprb/outputs/simulation-runs/20260927-081552-dispatch-e843ba3d/manifest.json
+ok
+test_timeout_terminates_child (tests.test_simulation_workflow_manager.WorkflowManagerTests.test_timeout_terminates_child) ... Simulation record: /private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/tmpn_s0s_eo/outputs/simulation-runs/20260927-081553-fixture-90bdb305/manifest.json
+ok
+test_worker_plan_redacts_entire_url_query (tests.test_simulation_workflow_manager.WorkflowManagerTests.test_worker_plan_redacts_entire_url_query) ... ok
+
+======================================================================
+ERROR: test_every_catalog_workflow_has_a_read_only_explicit_plan (tests.test_simulation_workflow_manager.WorkflowManagerTests.test_every_catalog_workflow_has_a_read_only_explicit_plan)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/changmin/projects/ugrp-wt/codex-memory-v3/tests/test_simulation_workflow_manager.py", line 239, in test_every_catalog_workflow_has_a_read_only_explicit_plan
+    plans = {row["id"]: wm.plan(PROJECT, row["id"], samples[row["id"]]) for row in data["workflows"]}
+                                                    ~~~~~~~^^^^^^^^^^^
+KeyError: 'zone-m1-owncam-memory-v3-run'
+
+======================================================================
+ERROR: test_parent_exit_cleans_background_child (tests.test_simulation_workflow_manager.WorkflowManagerTests.test_parent_exit_cleans_background_child)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/changmin/projects/ugrp-wt/codex-memory-v3/tests/test_simulation_workflow_manager.py", line 107, in test_parent_exit_cleans_background_child
+    result = subprocess.run(["ps", "-o", "stat=", "-p", str(pid)], text=True, capture_output=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/subprocess.py", line 548, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/subprocess.py", line 1955, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 1] Operation not permitted: 'ps'
+
+======================================================================
+FAIL: test_catalog_has_thirty_selectable_workflows_and_distinct_adapters (tests.test_simulation_workflow_manager.WorkflowManagerTests.test_catalog_has_thirty_selectable_workflows_and_distinct_adapters)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/changmin/projects/ugrp-wt/codex-memory-v3/tests/test_simulation_workflow_manager.py", line 188, in test_catalog_has_thirty_selectable_workflows_and_distinct_adapters
+    self.assertEqual(len(data["workflows"]), 33)
+AssertionError: 34 != 33
+
+----------------------------------------------------------------------
+Ran 107 tests in 9.632s
+
+FAILED (failures=1, errors=2)

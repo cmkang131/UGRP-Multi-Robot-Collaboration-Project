@@ -2669,3 +2669,134 @@ No physical MasterPi command was issued for this architecture change. The REAL s
 - 옛 Linux/중복 Mac 가상환경 3개(삭제 전 약 1.21 GB), 사용하지 않는 구형 물리 엔진과 클라우드 배포 파일을 제거했다. 현재 Mac 워커, V2 기반 XML, 실물 코드, 회귀 fixture는 유지했다. `.venv-sim`은 현재 워커의 호환 링크로 통합했다.
 - 현재 운반 기본 회귀 188개+107개 세부 검사, 장면/공유 제어 48개, Bridge 35개 통과. 초기 장면의 물리 진행·NAV 렌더링을 직접 확인했으며 새 전체 운반 실험은 하지 않았다.
 - [정리 기록과 검증](simulation_cleanup_20260909.md), [클라우드 간략 이력](cloud_simulation.md), [삭제 소스 식별값](retired_sim_sources_20260909.json)에 보존했다. 코드 원문은 정리 전 Git 커밋으로 복원할 수 있다.
+
+## 2026-09-25 — 운영 모델·연구 단계·지도·화물·통신 감사·재파지 원인에 대한 사용자 결정 기록
+
+Claude 코디네이터가 여러 Codex/Claude 위임 작업을 진행하며 2026-09-25 중 사용자가 정한 방향과 결정을 한곳에 모은다. 개별 작업의 상세 결과는 각 PR·`experiments/` 기록을 따른다.
+
+- **운영 모델:** 메인 Claude 세션은 관리자·보고자 역할만 하고 작업은 위임한다. Codex는 한 번에 한 작업만, reasoning xhigh, 읽기 전용 분석으로 실행한다. Codex의 샌드박스는 git 쓰기와 GitHub 코멘트를 막으므로, Claude 서브에이전트가 Codex 결과를 검증·기록한다. Claude 서브에이전트는 각자 자기 worktree·브랜치에서 병렬로 실행하며, 호스트 부하 평균이 약 186까지 올라간 뒤로는 동시 프로세스를 2개로 제한한다. 병합은 사용자가 별도 대화에서 처리한다.
+- **연구 단계:** 통제된 반복 비교(ZC3)는 아직 이르다. 현재 단계는 최종 연구 환경을 만드는 단계다. PR [#160](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/160)(ZC3 사전등록 초안/예산)은 얼려두지 않은 초안 문서로만 남긴다.
+- **지도:** 기존 소형 `zone_open`은 새 실행에서 퇴역시킨다. 파일 자체는 Z1–Z3 재현용으로 남긴다. `zone_wide`([#155](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/155))가 기본 지도다. 더 어려운 경로(좁은 문, 두 문, 복도)를 추가한다(branch `claude/zone-hard-routes`).
+- **화물 다양성:** 단독은 can과 tile, 2인은 long_beam과 heavy_crate, 3인은 tri_frame([#164](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/164), 병합됨). 로봇 인원 수는 물리에서 나온다 — 단독 로봇 한계는 0.66 kg이고 0.68 kg에서 한 대가 넘어진다. Slip은 opt-in 접촉 프로필 `cargo_noslip_v1`(noslip_iterations 10)로 제거했다([#167](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/167)). weld는 전 구간 OFF다.
+- **통신 감사(병합 [#161](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/161)):** 상자 좌표 채널은 깨끗하다. 누설은 L1(교사가 동료 의도로 로봇을 멈춤, 심각도 높음), L4(영수증이 정답에서 나옴)다. 교란 C1: dynamic의 우위는 메시지만이 아니라 게시판·중재·깨우기를 포함한 조정 묶음 전체다. ZC2 결론은 이 범위 안에서만 유효하다. 상세는 [experiments/2026-09-25-zone-comm-boundary-audit/README.md](../experiments/2026-09-25-zone-comm-boundary-audit/README.md).
+- **빔 재파지:** 근본 원인은 빔이 들렸다 내려온 뒤 정지 위치가 0.59 mm 옮겨진 것이다. 실패 슬롯 "r3"는 물리적으로 r1이다(병합 [#162](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/162)). 이 원인은 현재 단계에서는 보류한다. 상세는 [experiments/2026-09-25-r3-regrasp-pose/README.md](../experiments/2026-09-25-r3-regrasp-pose/README.md).
+- **연구 목표 강조:** 핵심 질문은 자연어 대화가 효율에 영향을 주는가이므로, 로봇이 실제로 한국어로 대화해야 한다. ZC2는 메시지 129건 중 한국어가 0건이었다. 조건은 A 무통신 / B 정형 통신 / C 자유 한국어 / D 게시판 제거실험이다([docs/design/2026-09-25-zone-korean-dialogue-codex.md](design/2026-09-25-zone-korean-dialogue-codex.md) 참고).
+- **기록 규칙:** 이후 보고서 작성을 위해 모든 것을 GitHub에 남긴다 — 초기 초안 PR, 설계 문서, 이 로그를 포함한다.
+
+**보존한 자료:**
+- 세 Codex 설계 제안 원문을 그대로 `docs/design/`에 보존했다: [팀 운반](design/2026-09-25-zone-team-carry-codex.md), [미등록 장애물](design/2026-09-25-zone-unmapped-blockage-codex.md), [한국어 대화](design/2026-09-25-zone-korean-dialogue-codex.md). 각 문서는 제안 당시 상태와 이후 실제 진행 상황을 구분해 적었다.
+- 지도 비교 렌더 `docs/design/media/2026-09-25-zone-open-vs-wide.png`(같은 축척, 하향식, 왼쪽 = 퇴역한 `zone_open` 6.45×2.3 m, 오른쪽 = `zone_wide` 6.45×4.6 m, replay `model.mjb`인 Z3-G5-dyn과 ZC2-s13-dynamic-graspfail에서 렌더링). SHA-256: `d410af3107df3542ecffebb59d50bb243991718a34e151193b4176827fc62fb0`.
+- 파이프라인 단계별 현재 완료/진행/미착수 스냅샷은 [docs/e2e_status_20260925.md](e2e_status_20260925.md)에 별도로 남긴다.
+
+## 2026-09-25 — 주 연구 조건 변경: 무통신·동적 통신·AI 지휘
+
+같은 날 앞 절의 "연구 목표 강조"에 이어, 사용자가 본 연구의 조정 조건을 다시 정했다. 이 절은 결정과 이유만 기록한다. 구현·실행 결과는 아직 없다.
+
+- **사용자 결정:** 본 연구의 조정 조건을 "통신 없음 / 동적 통신 / 미리 계획(`plan_first`)"에서 **"통신 없음(`independent`) / 동적 통신(`dynamic`, 분산 한국어 대화) / AI 한 명이 모두 지휘(`leader`, 중앙 지휘)"**로 바꾼다.
+- **이유:** 연구 질문은 자연어 대화가 효율에 영향을 주는가이다. `plan_first`(제안자 순환 + 만장일치 ACK)는 협상 프로토콜의 변형일 뿐 연구 조건이 아니다. `leader`와 `dynamic`의 비교는 같은 대화라도 중앙 지휘 구조와 분산 구조의 차이를 본다.
+- **`plan_first` 은퇴:** 새 본 연구 조건에서 뺀다. 다만 Z1–Z3·ZC1·ZC2 재현을 위해 코드는 남긴다. 정확한 은퇴 방식(선택 차단, 버전·프로필 표시 등)은 설계 문서에서 정한다. 기존 Z1–Z3·ZC1·ZC2 기록과 결론은 기록 당시 조건 범위 그대로 유지한다.
+- **앞선 A/B/C/D 계획의 재배치:** [한국어 대화 설계 제안](design/2026-09-25-zone-korean-dialogue-codex.md)의 A 무통신 / B 정형 통신 / C 자유 한국어 / D 게시판 제거실험 구조를 다시 배치한다. 위 세 조건이 주 비교 축이다. 정형 통신 대 자유 한국어 비교와 게시판 제거실험은 보조 제거실험으로 내리고, 실행 여부와 방식은 나중에 정한다.
+- **상태:** `leader` 조건 설계가 진행 중이다(Codex 읽기 전용 설계, 끝나면 `docs/design/`에 커밋). 구현은 PR [#169](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/169)(A2 러너 연결)를 기다린다. 아직 이 세 조건으로 실행한 결과는 없다.
+- **승인 상태:** 사용자 결정(2026-09-25 세션 지시).
+
+**보존한 자료:**
+- 같은 날 Codex의 PR 검토 보고서 원문을 [docs/design/2026-09-25-zone-pr-review-codex.md](design/2026-09-25-zone-pr-review-codex.md)에 보존했다(#167·#168·#170·#172·#169 검토, 수정은 #169·#170·#172에서 추적). 조건 변경과는 별개 기록이다.
+
+**후속 방향 갱신 (같은 날, 사용자·코디네이터 논의):** 아래는 위 결정을 구체화한 것이며, 위의 세 조건 목록은 기록 당시 결정으로 그대로 둔다.
+
+- **주 비교 축:** 통신 채널만 바꾸고 나머지(지도·작업·로봇·물리·입력)는 모두 같게 둔다. 제안 조건은 무통신 / 자유 한국어 동료 대화 / 한국어 명령 지휘자(`leader`) / 정형 메시지 통제 조건 네 가지다. 정형 메시지 통제 조건은 같은 정보를 고정 스키마로만 주고받게 해서, 자연어의 효과와 정보 공유의 효과를 분리한다. 모든 로봇의 카메라를 보는 전지적 지휘자는 주 조건이 아니라 참고용 상한으로 따로 둔다. 지휘자 형태는 처음엔 정하지 않았다(로봇 하나가 지휘를 겸하는 방식 대 보고만 받는 지휘 AI를 따로 두는 방식). 같은 날 로봇 하나가 겸하는 방식으로 정했다(아래 지휘자 형태 결정).
+- **로봇 입력 변경(사용자 결정):** 공용 TOP 카메라를 로봇 LLM 입력에서 뺀다. TOP 영상은 평가·채점용으로만 남긴다. 대신 모든 호출에 두 가지를 준다. 하나는 정적 지도(벽·문·복도·구역·집하 칸, 버전과 해시 포함)다. 다른 하나는 작업 지시서(물품 종류, 개수, 필요한 로봇 수, 목적 구역, 집하 칸 슬롯 수준의 대략적 초기 위치)다. 작업 지시서는 반드시 시나리오 설정에서 만들고, 시뮬레이터 상태에서 만들지 않는다. 실시간 상태(위치·완료 여부·변화)는 주지 않는다. 로봇은 이를 자기 카메라, 자기 명령 이력, 대화로만 알아낸다. 사용자 원문: "정적 지도도 계속 llm이 볼 수 있게 … 실제 지도를 보면서 일하듯이 대신 실시간 상황은 못 보고".
+- **대화·사고 시간 비용:** 말하고 생각하는 시간도 SIM 시간을 소모해야 한다. 소모 모델은 앞으로 설계한다.
+- **이유:** 위에서 내려다보는 카메라가 있으면 로봇은 말하지 않아도 모든 상황을 알 수 있다. 그러면 대화 효과는 0에 가깝게 나올 가능성이 크다. 참고한 선행연구는 Chen et al., ICRA 2024(arXiv 2309.15943)와 Guo et al., 2024(arXiv 2403.12482)다.
+- **상태:** Codex가 통합 설계를 쓰고 있다(읽기 전용). 알려진 공백이 하나 있다. 로봇 자기 카메라만으로 하는 인식이 아직 없다. 입력 변경·조건 추가는 아직 구현하거나 실행하지 않았다.
+- **지휘자 형태 결정(사용자 승인, 2026-09-25):** 로봇 한 대가 지휘자를 겸한다. 지휘자는 고정하지 않는다. 시행·시드마다 r1/r2/r3로 돌려서, 누가 지휘자인지와 그 위치의 영향을 상쇄한다.
+  - 통신은 지휘자 ↔ 각 추종자만 잇는 허브-스포크 구조다. 추종자끼리는 직접 대화하지 않는다.
+  - 지휘자는 작업 배정, 팀 운반 역할, 좁은 문 통과 순서를 정한다.
+  - 추종자는 지시를 따르되, 막힘이나 파지 실패 같은 상황은 한국어로 보고하고 이의를 제기할 수 있다.
+  - 지휘자는 시작 시, 보고를 받았을 때, 누군가 할 일이 없어졌을 때 호출된다.
+  - 이유는 세 가지다. 첫째, LLM 수와 각 LLM의 입력이 다른 조건과 같아서 통신 채널만 다르다. 둘째, 지휘하는 시간만큼 지휘자 자신의 작업이 늦어지므로 현실적인 병목이 생긴다. 셋째, Guo et al. 2024의 지정 지휘자 설정과 맞는다.
+  - 별도 지휘 AI 방안은 전지적 참고 상한으로만 남긴다.
+- **최종 연구의 실행 입력(사용자 결정, 2026-09-25):** 최종 연구의 로봇은 자기 RGB, 정적 지도, 자기가 발행한 명령 이력만으로 성공해야 한다. 정답 교사 실행기(`scripts/zone_teacher.py`, 시뮬레이터 `xpos`를 읽음)는 시연과 학습 표적 생성에만 쓴다. 연구 실행기가 아니며, 교사 주행은 로봇 성공으로 세지 않는다. 사용자 원문: "본인 카메라만 보고 성공해야지".
+  - 기존 코드(저장소 내부와 오픈소스)를 최대한 재사용한다.
+  - (a) 벽과 문기둥에는 AprilTag(`tag36h11`) 표식을 붙여도 된다. 표식은 새로 버전을 매긴 지도에 정적 지도 특징으로 등록한다. 화물과 로봇에는 계속 표식을 붙이지 않는다([2026-09-09 표식 제거 결정](cargo_marker_removal_20260909.md) 참고).
+  - (b) 카메라는 실물 로봇과 같게 둔다. MasterPi 팔 끝의 어안 카메라 하나뿐이다. 시뮬레이터 전용 `nav_cam`은 연구에서 로봇 입력으로 쓰지 않는다.
+  - **첫 마일스톤 M1:** `zone_wide_door`에서 로봇 1대가 청록 상자 1개를 손목 카메라만으로 문 너머까지 배달한다. TOP은 채점과 영상에만 쓰고, weld는 OFF다. (`zone_wide_door`는 기록 시점에 main이 아니라 PR [#173](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/173) 브랜치에 있다.)
+  - 근거 자료로 두 읽기 전용 조사 보고서를 보존했다. 하나는 [자기 카메라 역량·격차 목록](design/2026-09-25-own-camera-inventory-claude.md)이고, 다른 하나는 [오픈소스 재사용 조사](design/2026-09-25-own-camera-oss-survey-claude.md)다. 두 보고서 모두 "저장소에 자기 카메라만으로 지도 위 위치를 추정하는 실행기는 없다"고 확인했다.
+
+## 2026-09-26 — Kiro 서브에이전트 추가, 대화 연구 작업 패키지 착수, 자기 카메라 진행과 미끄러짐 판정
+
+이 절은 2026-09-26 사용자 지시와 그때까지의 작업 상태를 모은다. 아래 PR은 모두 **draft·미병합**이며, 병합은 사용자 확인·승인 뒤에만 한다. 개별 수치·검증 범위는 각 PR과 `experiments/` 기록을 따른다. 기준 `origin/main` `1cd9ea1`.
+
+### 1. 에이전트 구성: Kiro 추가
+
+- **사용자 결정:** Claude·Codex에 이어 **Kiro를 서브에이전트로 추가한다.** 원문: "kiro도 서브 에이전트로 써주라", "kiro 쓸 때는 opus 5 max!", "Kiro도 여러 개 써. claude랑 같이 쓰면 됨". 즉 Kiro 세션도 여러 개를 Claude와 함께 병렬로 돌린다.
+- **모델 설정:** Kiro는 `claude-opus-5`, effort `max`로 돈다. `~/.kiro/settings/cli.json`의 `chat.defaultModel` = `claude-opus-5`, `chat.modelDefaults.claude-opus-5.output_config.effort` = `max`로 고정했다.
+- **브랜치 접두사:** Kiro의 작업은 `kiro/`로 표시한다(Claude `claude/`, Codex `codex/`와 같은 구분). worktree는 `/Users/changmin/projects/ugrp-wt/<이름>`에 따로 둔다.
+- **규칙 등록:** `AGENTS.md`의 "여러 에이전트 동시 작업" 절에 Kiro를 3번째 에이전트로 넣는 변경은 **다른 세션의 PR [#182](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/182)** (draft, 미병합)가 소유한다. 이 로그는 그 PR을 참조하며 규칙 본문을 여기에 중복 기록하지 않는다. #182에는 잠금 `--owner kiro`, `kiro-plugin-cc` 호출 시 호출자 브랜치 안에서만 실행, 기본 체크아웃에서는 `--no-trust-all-tools`가 함께 들어 있다.
+
+### 2. 한국어 대화 연구 작업 패키지 착수 (Kiro draft PR)
+
+[Codex 통합 설계](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/180)(`docs/design/2026-09-25-zone-dialogue-study-design-codex.md`, PR #180에서 보존, 미병합) 9절의 병렬 작업 패키지를 Kiro 세션들이 나눠 시작했다. 설계 문서의 `r1` 고정 지휘자·별도 commander 주 조건·교사 실행기 전제는 2026-09-25/26 사용자 결정으로 대체했다(지휘자는 로봇 한 대가 겸하고 seed마다 r1/r2/r3 순환, 전지적 지휘자는 참고 상한, 실행은 자기 카메라만).
+
+| 패키지 | PR | 상태 | 범위 |
+|---|---|---|---|
+| A 연구 계약·입력 | [#187](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/187) | draft, 미병합 | 조건 registry(`no_comm`/`peer_ko`/`leader_ko`/`structured` + 참조 상한 `reference_R`), 입력 경계 검증기, 시나리오 설정 기반 주문서, 지도 도식·해시. 테스트 91건 통과. 독립 감사가 찾은 이름만 바꾼 평가 전용 자료 우회 12건을 닫힌 schema로 막고 회귀로 고정 |
+| B 자기 RGB 인식 | PR 미제출 | 작업 중(로컬) | `harness/zone_own_perception.py`·`zone_own_outcome.py`, `scripts/eval_zone_own_perception.py`, `experiments/2026-09-26-zone-own-perception/`가 worktree `ugrp-wt/kiro-own-perception`에 미커밋 상태다. 브랜치 `kiro/zone-own-perception`은 origin에 없다 |
+| C 프롬프트·통신 | [#184](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/184) | draft, 미병합 | 4조건 한국어 프롬프트와 통신 프로토콜(`harness/zone_study_protocol.py`, `zone_study_prompts_ko.py`). 오프라인 전용, SIM·모델 호출 없음 |
+| D SIM 비용·scheduler | [#186](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/186) | draft, 미병합 | `harness/zone_sim_cost.py`·`zone_event_scheduler.py`. 대화·추론이 SIM 시간을 쓰게 하는 결정론적 비용식과 가짜 시계 사건 큐. 테스트 71건 통과, wall 시간·API 완료 순서와 독립. **러너 미통합**이고 기본값은 전부 잠정(`provisional=True`, 이 프로젝트 모델의 측정값 아님) |
+| E 시나리오(설정) | [#190](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/190) | draft, 미병합 | 시나리오 6종 설정(`s1_normal_mixed`~`s6_novel_relation`)과 공개/비공개 분리 검증기. base가 main이 아니라 A(#187)다. 테스트 204건 통과(신규 82건). 장면 빌더·러너는 건드리지 않았고 물리 도달성·완주는 미검증 |
+| I 평가·결과 | [#185](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/185) | draft, 미병합 | `harness/zone_study_eval.py`·`scripts/zone_study_report.py`. 실패를 분모에 유지하는 `par_makespan_sim_s`, 대화 지표, 평가 역류 차단, TensorBoard 변환. 테스트 67건 통과 |
+| noslip 부작용 감사 | [#189](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/189) | draft, 미병합 | `cargo_noslip_v1`의 장면 전체 접촉 부작용 사전 등록 + 프로필 수준 A/B(7 시나리오 × 2 프로필 × 3 시드 = 42건). 테스트 30건 통과. **42건 실제 실행은 아직 안 했다** |
+| 보고서 초안 | [#191](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/191) | draft, 미병합 | `docs/report/` 7장 초안. 저장소에 이미 있는 근거만 인용하고 주장 종류를 `T` 교사 / `S` gt_stub 스킬 / `O` 오프라인 / `R` 실제 학생 성공으로 분리했다. **`R`은 아직 없다** |
+| 한국어 파일럿 후속 수정 | [#188](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/188) | draft, 미병합 | PR #172 리뷰 지적 3건(원시 wire 덮어쓰기, 과한 인과 주장, 행위 규칙의 언급 혼동) 수정. 테스트 61건 통과. 기존 결과·원시 자료는 변경하지 않았고 규칙 v2는 다음 실행에만 적용된다 |
+| TensorBoard 보완 | [#183](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/183) | draft, 미병합 | 스냅샷 없던 2026-09-25 기록 6개를 `outputs/tensorboard/0925-zone-supplement`(116 run)으로 변환. 813개 스칼라를 원본에서 독립 재계산해 불일치 0. 어떤 run도 자기 카메라 학생 운반 성공이 아니다 |
+
+- 러너 통합(G), 실행 메뉴·버전(H), 로봇 실행(F)은 착수하지 않았다. `scripts/run_ci_tests.py`와 `configs/simulation_workflows.json` 등록은 브랜치 간 충돌을 피해 통합 패키지로 넘겼다.
+- **아직 4조건으로 실행한 결과는 없다.** 위 통과 테스트는 계약·비용·지표 계층의 정확성만 확인한 것이며 통신 효과의 근거가 아니다.
+
+### 3. 자기 카메라 실행 진행 (M1)
+
+- **위치 추정 1단계 — PR [#177](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/177) 병합됨.** 벽 AprilTag 지도 버전 `*_tags_v1`, wrist 어안 PnP, 발행 명령 파티클 필터. 사전 등록 게이트는 **G1(정지 둘러보기 p90 < 5 cm/5°) 실패, G2(전체 p50) 통과, G3(전체 p90 < 10 cm/10°) 실패**다. 주 원인은 **상자를 든 수평 carry의 태그 가시율 0%**(교사 low carry도 0%)다. 사후(사전 등록 아님) look 모드만 보면 test p50 1.9 cm / p90 5.8 cm이고, 20° 숙인 carry는 가시율 97%였다(30°는 7%).
+- **폐루프 문 통과 2단계 — PR [#178](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/178) 진행 중**(draft, 미병합). `_tags_v2` 문기둥 태그판과 추정 기반 A* 주행·사전 등록 코호트(dev 31–33, test 41–43)까지 올렸고 dev/test 실행과 기록은 남았다.
+- **공용 자세 합의:** `CARRY_POSTURE = {1: 1500, 3: 777, 4: 2053, 5: 1646, 6: 1500}`, `LOOK_P20 = {3: 1072, 4: 2400, 5: 1482}`(#176 값, `harness/owncam_drive.py:35-36`). #178의 둘러보기 pan은 dev 수정으로 ±48°까지 넓혔고 이는 #176과 공유하지 않는다.
+- **wrist 스킬 격리 결과:** v1 사전 등록 시드 501–505에서 GT 슬롯 배치 **1/5**, v2 시드 511–520에서 **9/10**, v3 시드 521–530 주 조건 P(`cargo_noslip_v1`)에서 **9/10**(보조 조건 S `local_contact_fine`는 10/10). 시나리오가 달라 v1과 v2/v3의 직접 비교는 아니다. **세 코호트 모두 `pose_source=gt_stub_eval_only`이고 문 통과가 없어 M1이 아니다.** weld OFF, 벽 접촉 0. 기록은 [experiments/2026-09-25-zone-owncam-skill/README.md](../experiments/2026-09-25-zone-owncam-skill/README.md).
+
+### 4. 단독 운반 상자 미끄러짐: 시뮬레이터 수치 인공물로 판정
+
+- **판정(PR [#181](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/181), draft·미병합):** 청록 상자 단독 운반의 미끄러짐은 물리가 아니라 **soft 마찰 제약의 감쇠-only 기준(`solreffriction 0 -6000`)에서 오는 수치 인공물**이다. 파지력은 30 g 상자에 법선력 합 10.4 N(턱당 5.19 N)이고 필요한 마찰비는 0.029로 mu 3.4의 1% 미만이다. 진단 probe(`scripts/probe_zone_box_grip_hold.py`, GT 교사, weld OFF)에서 `local_contact_fine`는 **약 2 mm/min**(2.09 mm/min, 정지 중에도 같음), `cargo_noslip_v1`는 **약 0.016 mm/min**이었다. v2의 "약 60 s마다 재장착"은 이 creep이 anchor 경고에 닿는 시간이었고, 즉 인공물을 가리는 행동이었다. 실물 MasterPi 미끄러짐 자료는 없다(`validated:false`).
+- **보류 중인 사용자 결정 (아직 정하지 않았다):** `cargo_noslip_v1`을 **연구 전체의 접촉 프로필로 채택할지**가 미결이다. `noslip_iterations`는 전역 MuJoCo solver 옵션이라 같은 장면의 바퀴·팔·벽·쉬는 상자까지 모두 바뀐다. 채택 여부는 **noslip 부작용 감사(#189)의 A/B 42건 결과**를 보고 정한다. 기본값은 바꾸지 않았고 러너에 `--contact-profile {local_contact_fine, cargo_noslip_v1}` 선택만 추가했다. **이 절의 어떤 내용도 채택 결정으로 읽지 않는다.**
+- **이후 결정:** 같은 날 뒤이어 사용자가 `cargo_noslip_v1`을 연구 전체 접촉 프로필로 채택했다(아래 절). 위 문단은 그 전 기록 시점의 상태다.
+
+**기록 범위:** 이 절은 사용자 결정과 각 PR이 보고한 상태만 옮긴다. 새 실험·시뮬레이션·모델 호출을 하지 않았고, 다른 에이전트의 결과를 이 기록의 증거로 합산하지 않는다.
+
+## 2026-09-26 — 연구 전체 접촉 프로필 `cargo_noslip_v1` 채택과 짝 실행기 상태 채널의 전 조건 포함
+
+한국어 대화 효율 연구(무통신 / 자유 한국어 동료 대화 / 한국어 지휘자 / 정형 메시지 통제)의 공통 조건에 관한 사용자 결정 두 가지를 기록한다. 이 절은 결정과 근거만 적는다. 새 시뮬레이션이나 모델 호출은 하지 않았다. 근거 PR 두 개는 기록 시점에 병합 전 draft다. 수치는 각 PR의 해당 커밋 기록(아래 SHA)을 인용했으며 main에서 재실행한 결과가 아니다.
+
+- **결정 1 — 연구 전체 접촉 프로필(사용자 승인, 2026-09-26):** `cargo_noslip_v1`(= `local_contact_fine` + `noslip_iterations 10`)을 한국어 대화 연구 전체의 접촉 프로필로 채택한다. 모든 주 조건과 참고 상한 R이 같은 프로필을 쓴다. weld는 계속 OFF다.
+  - 근거: PR [#189](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/189)(`kiro/zone-noslip-audit`, `63ad9da`)의 부작용 감사. 7개 시나리오 × 2개 프로필 × 3개 시드, 모두 42회를 실행했다. 주행·벽 밀기·팔 자세·정지 상태에서 차이가 없었다. 게이트 327개 중 324개가 통과했다. 실패한 3개는 `solo_hold_load`이며, 기준 프로필이 짐을 떨어뜨려서 생긴 실패다.
+  - `local_contact_fine`의 짐 밀림(creep)은 시뮬레이터 인공물로 본다. 30 g 상자는 파지 중 분당 약 2 mm(1.97 mm/min) 미끄러진다. 0.3 kg 상자는 유지 89.5 s에 손가락 접촉력이 0이 되며 떨어진다. `cargo_noslip_v1`은 같은 조건에서 각각 0.0033 mm/min, 낙하 없음이다.
+  - 다른 프로필로 얻은 과거 결과는 기록 당시의 프로필 표시를 그대로 둔다. 새 프로필로 다시 표시하거나 새 프로필의 성공으로 합산하지 않는다. 기존 프로필과 기본값은 바꾸지 않는다. 연구 실행기에서는 이 프로필을 명시적으로 선택하고, 실행 번들 ID와 해시로 기록한다.
+- **결정 2 — 짝 실행기 상태 채널은 모든 조건에 둔다(사용자 승인, 2026-09-26):** 공동 운반 실행기 수준의 짝 상태 채널(`aligning` / `ready` / `lift` / `carry` / `put_down` / `abort`, PR [#200](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/200) `claude/zone-owncam-pair`, `29700fd`의 `harness/team_carry_status.py`)을 `no_comm`를 포함한 모든 연구 조건에 둔다.
+  - 이유: 두 로봇이 물리적으로 함께 들고 옮기려면 이 채널이 필요하다. `no_comm`에서만 빼면, 운반 자체가 가능한지 여부가 통신 효과에 섞인다. 이 채널은 물리 협응 기반 시설이며 조작 변인(대화 채널)이 아니다.
+  - 제약: 값은 고정 열거형 6개만 허용한다. 자유 텍스트, 작업·계획·배정 내용, 좌표·영상·인식 수치·정답은 싣지 않는다. 스키마를 위반하면 거부하고 기록한다. 로그는 대화 채널과 따로 남기고, 대화 지표(메시지 수·길이·언어 등)에 넣지 않는다.
+- **승인 상태:** 사용자 결정(2026-09-26 세션 지시). 두 PR의 구현·병합은 이 결정과 별개이며 각 PR에서 추적한다.
+
+## 2026-10-09 — 진행 방식 재정렬: S2 반복 졸업 중단, 자기 지도는 목표 지향 최소 지도로
+
+사용자 지시·결정(2026-10-09 세션). 근거 숫자는 각 실험 README와 PR에 있다.
+
+- **결정 1 — 자기 지도는 연구 범위에 남긴다(사용자 결정):** 각 로봇이 자기가 본 것만으로 지도를 만드는 것이 **로봇 간 정보 비대칭**을 만들고, 그것이 통신의 가치를 묻는 연구 질문의 조건이다. 공유 지도·주어진 지도로 대체하지 않는다. 막히면 범위가 아니라 방법을 바꾼다.
+- **결정 2 — 자기 지도는 전체 탐색이 아니라 목표 지향 최소 지도(사용자 지시):** "다 둘러볼 필요 없다. 시작점과 도착점 사이를 이동하는 길만 있으면 충분하다." 상자·B를 찾을 때까지만 탐색하고, 지나온 길에서 시작↔상자↔B 경로만 유지·단축(재방문 정합으로 검증된 연결만)하며, 귀환은 그 경로를 따른다. 현재 자작 파이프라인(egomap1–54, 귀환 도착 0/6, 49002 시간순 되짚기 34.7m로 귀환 예산 270s 초과 추정)은 표준 방법 조사 후 교체를 검토한다.
+- **결정 3 — 이동은 진행 방향을 보고(사용자 지적):** 기존 S2 주행(`zone_solo_cyan_v106.py` drive, 항상 동쪽을 보며 메카넘 옆걸음)은 카메라가 진행 방향을 보지 않아 부자연스럽고 위험하다(seed 1068: 상자를 든 채 문 위쪽 벽을 따라 옆걸음으로 북진하다 걸림). 표준 방식(경로 방향으로 회전 후 전진, Nav2 RPP 계열)을 옵션 `heading_mode=path_tangent_v1`으로 넣고, 옆걸음은 집기·놓기·문 정렬의 최종 0.10m 이내에만 쓴다.
+- **결정 4 — S2를 고칠 때마다 다시 졸업시키지 않는다(사용자 우려 "고치고 다시 S2를 하면 좀 그렇다" 반영):** 단독 운반은 "충분히 좋음" 기준(미리 고정)에서 멈추고, 이후 수정은 S3 3대 실행 안에서 로봇별 운반 결과로 확인한다. 3조건 비교는 같은 단독 제어기를 공유하므로 바탕 실패율은 측정·보고하면 된다. S2는 조건부 통과로 두고 S3로 진행한다(v106 사전정보 있음 전 구간 5/5, v140/141 사전정보 없음 진행 중).
+- **결정 5 — 우선순위:** S3 3대 스모크 → S4 LLM 연결 → 작은 규모 3조건 비교로 핵심 질문의 첫 결과를 먼저 본다. 자기 지도(결정 1·2)는 병행한다.
+- **결정 6 — CI를 기다리지 않는다(사용자 지시 "Ci 기다리지 말고 빨리"):** 바뀐 시험이 로컬에서 통과하고 필요한 독립 리뷰가 끝나면 자기 PR은 `--admin`으로 병합하고, CI 실패는 이후 고친다. 제어기·사전등록·정책 PR의 독립 리뷰 요구는 유지한다.
+- **결정 7 — 쓰지 않는 모듈은 퇴역시킨다(사용자 지적 "안 쓸 모듈이 왜 죄다 남아있냐"):** 새 버전이 채택되면 이전 버전을 퇴역하고 `docs/retired_modules.md`에 재현 커밋을 남긴다. 첫 정리: PR #417(87개 퇴역, 14개 보류).
+- **결정 8 — 시뮬레이션 2개 동시 실행은 측정 후 결정(사용자 승인 "ㄱㄱ"):** S2 졸업 실행 6개 중 1067·1068 쌍으로 처리량을 쟀고, 처리량 1.3배 이상이고 결과가 같으면 "서로 독립인 일반 실행은 2개까지"로 규칙을 바꾸는 것을 검토한다. 그 전까지 AGENTS의 "한 번에 하나"를 유지한다.
+- **결정 9 — 역할 협상은 연구 범위다 (사용자 결정, 2026-10-09 "서로 역할을 정하는 협상 연구 범위지"):** 지금의 S4 고정 역할(r1·r2 빔 양끝, r3 cyan)은 dev_s1lite 개발용 시작점일 뿐이다. 본 연구 시나리오에는 로봇들이 LLM 대화로 누가 어떤 물체를 맡을지 정하는 단계를 넣는다. 고정 역할 결과는 협상 조건과 비교하는 기준선으로만 쓴다.
+- **승인 상태:** 결정 1·2·3·6·7은 사용자 지시, 4·5는 사용자 우려에 대한 감독 제안을 사용자가 "자기 지도는 해야지"로 답하며 부분 확인(4·5는 반대 없음), 8은 사용자 승인, 9는 미정.
+- **결정 10 — 시뮬레이션 동시 실행은 하지 않는다:** 두 개 동시 실행의 처리량은 1.296배로 사전 기준 1.3배에 못 미쳤다(PR #406). 한 번에 하나(agent_lock)를 유지한다.
+- **결정 11 — 강제 위치 잊기 제거 (사용자 "강제로 잊는 건 당연히 빼고"):** 자기 지도 주 흐름은 연속 추적이다. 재위치는 실제 추적 실패를 감지했을 때만 한다. 강제 loss 재위치는 별도 강건성 표로 보고하고 성공률에 합산하지 않는다. 이 결정으로 egomap54(seed54001)는 시작 5분 38초에 중단했고 나머지 seed는 취소했다(결과 아님).
+
+- **결정 12 — heading 기본 on (2026-10-09 사용자 “heading을 기본으로 해주라”):** 완료된 고정 v143 코호트 이후 새 v145 및 공통 S2/S3/S4·자기 지도 명령 생성은 진행 방향 회전 후 전진을 기본으로 하고, 명시적 off로 baseline 명령을 바이트 동일 재현한다. [적용 범위·1068 실패 원인·선택 수정안](../experiments/2026-10-09-s2-heading/default-on/README.md).

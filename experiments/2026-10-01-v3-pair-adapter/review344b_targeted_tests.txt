@@ -1,0 +1,71 @@
+.....................................FFFFF.............................. [ 41%]
+........................................................................ [ 82%]
+...............................                                          [100%]
+=================================== FAILURES ===================================
+__ test_floor_light_enforcement_rejects_bad_model_and_closes_backend[shadow] ___
+tests/test_review_344.py:287: in test_floor_light_enforcement_rejects_bad_model_and_closes_backend
+    data = probe("""
+tests/test_review_344.py:55: in probe
+    raise RuntimeError(result.stdout + result.stderr)
+E   RuntimeError: Traceback (most recent call last):
+E     File "<string>", line 37, in <module>
+E     File "/Users/changmin/projects/ugrp-wt/integ-v3-pair-adapter/scripts/run_final_pair_v3.py", line 43, in run_case
+E       require_collection_clearance(bundle)
+E     File "/Users/changmin/projects/ugrp-wt/integ-v3-pair-adapter/harness/zone_final_pair_clearance.py", line 45, in require_collection_clearance
+E       raise ValueError('FULL_PATH_CLEARANCE_REJECTED: ' + receipt['reason'])
+E   ValueError: FULL_PATH_CLEARANCE_REJECTED: MISSING_INDEPENDENT_MOTION_BOUNDS
+_ test_floor_light_enforcement_rejects_bad_model_and_closes_backend[reflection] _
+tests/test_review_344.py:287: in test_floor_light_enforcement_rejects_bad_model_and_closes_backend
+    data = probe("""
+tests/test_review_344.py:55: in probe
+    raise RuntimeError(result.stdout + result.stderr)
+E   RuntimeError: Traceback (most recent call last):
+E     File "<string>", line 37, in <module>
+E     File "/Users/changmin/projects/ugrp-wt/integ-v3-pair-adapter/scripts/run_final_pair_v3.py", line 43, in run_case
+E       require_collection_clearance(bundle)
+E     File "/Users/changmin/projects/ugrp-wt/integ-v3-pair-adapter/harness/zone_final_pair_clearance.py", line 45, in require_collection_clearance
+E       raise ValueError('FULL_PATH_CLEARANCE_REJECTED: ' + receipt['reason'])
+E   ValueError: FULL_PATH_CLEARANCE_REJECTED: MISSING_INDEPENDENT_MOTION_BOUNDS
+___ test_floor_light_enforcement_rejects_bad_model_and_closes_backend[spot] ____
+tests/test_review_344.py:287: in test_floor_light_enforcement_rejects_bad_model_and_closes_backend
+    data = probe("""
+tests/test_review_344.py:55: in probe
+    raise RuntimeError(result.stdout + result.stderr)
+E   RuntimeError: Traceback (most recent call last):
+E     File "<string>", line 37, in <module>
+E     File "/Users/changmin/projects/ugrp-wt/integ-v3-pair-adapter/scripts/run_final_pair_v3.py", line 43, in run_case
+E       require_collection_clearance(bundle)
+E     File "/Users/changmin/projects/ugrp-wt/integ-v3-pair-adapter/harness/zone_final_pair_clearance.py", line 45, in require_collection_clearance
+E       raise ValueError('FULL_PATH_CLEARANCE_REJECTED: ' + receipt['reason'])
+E   ValueError: FULL_PATH_CLEARANCE_REJECTED: MISSING_INDEPENDENT_MOTION_BOUNDS
+___ test_floor_light_enforcement_rejects_bad_model_and_closes_backend[dark] ____
+tests/test_review_344.py:287: in test_floor_light_enforcement_rejects_bad_model_and_closes_backend
+    data = probe("""
+tests/test_review_344.py:55: in probe
+    raise RuntimeError(result.stdout + result.stderr)
+E   RuntimeError: Traceback (most recent call last):
+E     File "<string>", line 37, in <module>
+E     File "/Users/changmin/projects/ugrp-wt/integ-v3-pair-adapter/scripts/run_final_pair_v3.py", line 43, in run_case
+E       require_collection_clearance(bundle)
+E     File "/Users/changmin/projects/ugrp-wt/integ-v3-pair-adapter/harness/zone_final_pair_clearance.py", line 45, in require_collection_clearance
+E       raise ValueError('FULL_PATH_CLEARANCE_REJECTED: ' + receipt['reason'])
+E   ValueError: FULL_PATH_CLEARANCE_REJECTED: MISSING_INDEPENDENT_MOTION_BOUNDS
+_ test_floor_light_enforcement_rejects_bad_model_and_closes_backend[missing_floor] _
+tests/test_review_344.py:287: in test_floor_light_enforcement_rejects_bad_model_and_closes_backend
+    data = probe("""
+tests/test_review_344.py:55: in probe
+    raise RuntimeError(result.stdout + result.stderr)
+E   RuntimeError: Traceback (most recent call last):
+E     File "<string>", line 37, in <module>
+E     File "/Users/changmin/projects/ugrp-wt/integ-v3-pair-adapter/scripts/run_final_pair_v3.py", line 43, in run_case
+E       require_collection_clearance(bundle)
+E     File "/Users/changmin/projects/ugrp-wt/integ-v3-pair-adapter/harness/zone_final_pair_clearance.py", line 45, in require_collection_clearance
+E       raise ValueError('FULL_PATH_CLEARANCE_REJECTED: ' + receipt['reason'])
+E   ValueError: FULL_PATH_CLEARANCE_REJECTED: MISSING_INDEPENDENT_MOTION_BOUNDS
+=========================== short test summary info ============================
+FAILED tests/test_review_344.py::test_floor_light_enforcement_rejects_bad_model_and_closes_backend[shadow]
+FAILED tests/test_review_344.py::test_floor_light_enforcement_rejects_bad_model_and_closes_backend[reflection]
+FAILED tests/test_review_344.py::test_floor_light_enforcement_rejects_bad_model_and_closes_backend[spot]
+FAILED tests/test_review_344.py::test_floor_light_enforcement_rejects_bad_model_and_closes_backend[dark]
+FAILED tests/test_review_344.py::test_floor_light_enforcement_rejects_bad_model_and_closes_backend[missing_floor]
+5 failed, 170 passed in 134.53s (0:02:14)

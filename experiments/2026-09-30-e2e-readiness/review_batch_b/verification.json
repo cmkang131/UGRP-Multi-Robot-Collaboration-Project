@@ -1,0 +1,282 @@
+{
+  "checked_at_utc": "2026-09-30T12:12:43.150271+00:00",
+  "review_branch": "codex/review-e2e-batch-b",
+  "review_base": "6594536b1a1afec6d9d109b35dd85a8426142d01",
+  "python": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+  "scope": "static and fake wire only; no physics, render, model service calls",
+  "raw_root": "/Users/changmin/projects/ugrp/outputs/review-e2e-b-20260930",
+  "results": {
+    "307": {
+      "new_suite_passed": 26,
+      "static_resolver_extra_passed": 1,
+      "existing_source_pin_failed": 1
+    },
+    "308": {
+      "existing_and_pr_driver_suite_passed": 155,
+      "existing_source_pin_failed": 1,
+      "independent_usage_counterexamples_failed": 2
+    },
+    "302": {
+      "static_tests_passed": 124,
+      "inventory_bytes_equal": true,
+      "feasibility_bytes_equal": true,
+      "tested_sha": "dec67997815e4cdc564a9848ed6020eede45cbfa",
+      "final_review_sha": "bd95530a2d5a8b8467620809749273068a7ed55d",
+      "tree_identical": true
+    }
+  },
+  "initial_harness_errors": {
+    "308": "mixed /tmp and /private/tmp arguments expanded collection root; no tests ran; corrected by putting explicit repro in archived tests/",
+    "302": "basetemp parent absent; 123 passed and 1 setup error; created new parent and reran all 124 successfully"
+  },
+  "lock_releases": [
+    {
+      "owner": "codex",
+      "branch": "codex/review-e2e-batch-b",
+      "purpose": "local offline regression tests",
+      "pid": 666,
+      "acquired_unix": 1790769538.051399,
+      "expected_end_unix": 1790770138.051399,
+      "loadavg_at_acquire": [
+        9.796875,
+        20.2578125,
+        23.33984375
+      ],
+      "pid_alive": true,
+      "released_by": "codex",
+      "released_unix": 1790769565.306122,
+      "stale_release": false
+    },
+    {
+      "owner": "codex",
+      "branch": "codex/review-e2e-batch-b",
+      "purpose": "local offline regression tests",
+      "pid": 3388,
+      "acquired_unix": 1790770167.720782,
+      "expected_end_unix": 1790770767.720782,
+      "loadavg_at_acquire": [
+        35.150390625,
+        44.94091796875,
+        36.0888671875
+      ],
+      "pid_alive": true,
+      "released_by": "codex",
+      "released_unix": 1790770282.374182,
+      "stale_release": false
+    }
+  ],
+  "test_commands_initial": {
+    "307": {
+      "exit": 1,
+      "command": [
+        "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_zone_mixed_jobs.py",
+        "tests/test_zone_pair_registered_source.py::test_v6e_records_current_scene_and_full_source_closure",
+        "--tb=short",
+        "--junitxml=/tmp/ugrp-review-e2e-b/pr307-review.xml",
+        "--basetemp=/Users/changmin/projects/ugrp/outputs/review-e2e-b-20260930/pr307"
+      ]
+    },
+    "308": {
+      "exit": 4,
+      "command": [
+        "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_zone_study_llm_driver.py",
+        "tests/test_zone_pair_registered_source.py::test_v6e_records_current_scene_and_full_source_closure",
+        "/tmp/ugrp-review-e2e-b/test_review_usage.py",
+        "--tb=short",
+        "--junitxml=/tmp/ugrp-review-e2e-b/pr308-review.xml",
+        "--basetemp=/Users/changmin/projects/ugrp/outputs/review-e2e-b-20260930/pr308"
+      ]
+    },
+    "302": {
+      "exit": 1,
+      "command": [
+        "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_zone_scenario_feasibility.py",
+        "tests/test_zone_final_env.py",
+        "experiments/2026-09-30-scenario-capabilities/test_audit.py",
+        "--tb=short",
+        "--junitxml=/tmp/ugrp-review-e2e-b/pr302-review.xml",
+        "--basetemp=/Users/changmin/projects/ugrp/outputs/review-e2e-b-20260930/pr302"
+      ]
+    }
+  },
+  "test_commands_final": {
+    "307": {
+      "exit": 0,
+      "command": [
+        "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_review_mixed_scene.py",
+        "--tb=short",
+        "--junitxml=/private/tmp/ugrp-review-e2e-b/pr307-review-r2.xml"
+      ]
+    },
+    "308": {
+      "exit": 1,
+      "command": [
+        "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_zone_study_llm_driver.py",
+        "tests/test_zone_pair_registered_source.py::test_v6e_records_current_scene_and_full_source_closure",
+        "tests/test_review_usage.py",
+        "--tb=short",
+        "--junitxml=/private/tmp/ugrp-review-e2e-b/pr308-review-r2.xml",
+        "--basetemp=/Users/changmin/projects/ugrp/outputs/review-e2e-b-20260930/pr308-r2"
+      ]
+    },
+    "302": {
+      "exit": 0,
+      "command": [
+        "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+        "/private/tmp/ugrp-review-e2e-b/p09_static_review.py"
+      ]
+    }
+  },
+  "raw_files": {
+    "pr307-pytest-r2.txt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-b-20260930/evidence/pr307-pytest-r2.txt",
+      "bytes": 98,
+      "sha256": "1ab9905d8b0f34f6d791ff7da4efa2de0f7f3e282a078758cc0496cc0230c0f0"
+    },
+    "pr302-pytest.txt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-b-20260930/evidence/pr302-pytest.txt",
+      "bytes": 792,
+      "sha256": "08777fc50ae0dccc913ba499781de52623927e4af2fc03949ee622f04c922653"
+    },
+    "pr302-pytest-r2.txt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-b-20260930/evidence/pr302-pytest-r2.txt",
+      "bytes": 494,
+      "sha256": "6550e80fbb720e9e8ad017f3cfff1047d70104ef580c2835a5f15c043be65fad"
+    },
+    "pr307-pytest.txt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-b-20260930/evidence/pr307-pytest.txt",
+      "bytes": 1434,
+      "sha256": "4c1d908c4ca57f02ae63951af5d7d0c595a08e432d8f6bc5e80ed0bb84e7ec72"
+    },
+    "pr308-pytest.txt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-b-20260930/evidence/pr308-pytest.txt",
+      "bytes": 3399,
+      "sha256": "8fa487aca472cf853b588921c22d7037a6963cdc6ebfb96d67e2c3e39bba3f8d"
+    },
+    "pr308-pytest-r2.txt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-b-20260930/evidence/pr308-pytest-r2.txt",
+      "bytes": 10752,
+      "sha256": "f80e269010a2fcb5bd29a435e6cd08e7da012067544d78df5af171fac09aab17"
+    },
+    "pr308-review.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-b-20260930/evidence/pr308-review.xml",
+      "bytes": 3024,
+      "sha256": "9fb968c2256e9c0867eebdc5f20ed3c4f8c9b435991b73699db56c173472bd98"
+    },
+    "pr308-review-r2.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-b-20260930/evidence/pr308-review-r2.xml",
+      "bytes": 46718,
+      "sha256": "e0e425d688b81bc2b364dfe5fdd22a0f64895d546b9b0e10698c84f8185d6fa9"
+    },
+    "pr302-review-r2.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-b-20260930/evidence/pr302-review-r2.xml",
+      "bytes": 16044,
+      "sha256": "e5f36946ea31d1db7badc4c59f370910b007d669790fba60a8f256f6c605a6a3"
+    },
+    "pr302-review.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-b-20260930/evidence/pr302-review.xml",
+      "bytes": 16511,
+      "sha256": "414fd75e5f0510de8d19421033939d51c2a02513ef0f3ced8f27715ba265e741"
+    },
+    "pr307-review.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-b-20260930/evidence/pr307-review.xml",
+      "bytes": 5953,
+      "sha256": "f66934f6fdb7a86ad4f2bf70189ec03a60ff52fe7ee20ffee32da3051ec48e08"
+    },
+    "pr307-review-r2.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-b-20260930/evidence/pr307-review-r2.xml",
+      "bytes": 382,
+      "sha256": "7f678219061ee5ee27d4b38260c89469ddf2a82584272a6d808080e2556a5bf5"
+    },
+    "pr308-ci3.log": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-b-20260930/evidence/pr308-ci3.log",
+      "bytes": 137046,
+      "sha256": "cf0d6e2053552dfdafa8a7ce5499431b1b45b8a036aa2ea1da35fc801f51148a"
+    },
+    "pr307-ci0.log": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-b-20260930/evidence/pr307-ci0.log",
+      "bytes": 57248,
+      "sha256": "7aa387c5896ef5b00b61d9d488036732c01a87b5540ce190224745722bdcd48c"
+    },
+    "test-summary.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-b-20260930/evidence/test-summary.json",
+      "bytes": 1612,
+      "sha256": "b94848bea504804d70af21eb03e0c077db982013c311e1357c57608c5127ee7b"
+    },
+    "test-summary-r2.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-b-20260930/evidence/test-summary-r2.json",
+      "bytes": 1092,
+      "sha256": "1a9d2632ddb97cd89806e1ba4e742e3f5d534664a5ae7d8824b07ea8230ecf2f"
+    },
+    "remote-final.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-b-20260930/evidence/remote-final.json",
+      "bytes": 104055,
+      "sha256": "631dcec55b9ba24cad8c1e3d4a917a5f0867bc094a22293e3fd9a68632ca9e95"
+    },
+    "pr302-current.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-b-20260930/evidence/pr302-current.json",
+      "bytes": 47591,
+      "sha256": "0fdd17cce49e9a5bed1c134b1236181d89e684476fa26caf6a272a8138a9da54"
+    },
+    "test_review_usage.py": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-b-20260930/evidence/test_review_usage.py",
+      "bytes": 988,
+      "sha256": "b391f74a792612e4c8ecc7f26e0fa94448f6aecfde246c27963b7ea6c74cb01e"
+    },
+    "run_batch.py": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-b-20260930/evidence/run_batch.py",
+      "bytes": 1408,
+      "sha256": "5a1c0d3d623b0b6ca9943657e38e0768065a93fb39f8d84e693078bb2b7427da"
+    },
+    "run_batch2.py": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-b-20260930/evidence/run_batch2.py",
+      "bytes": 1372,
+      "sha256": "caacd58db8f14e30a790462ddefe58e453f918256cacc8193c151efcb891924a"
+    },
+    "locked_batch.py": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-b-20260930/evidence/locked_batch.py",
+      "bytes": 520,
+      "sha256": "2e62693780b10abaa08782422c97876772940b788df3f894392d244360df8300"
+    },
+    "locked_batch2.py": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-b-20260930/evidence/locked_batch2.py",
+      "bytes": 521,
+      "sha256": "27c4281f5bfae1d05d206b59cb35cad29f93d890a9513b9118157febcf8a9607"
+    },
+    "p09_static_review.py": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-b-20260930/evidence/p09_static_review.py",
+      "bytes": 1174,
+      "sha256": "446d9bcdf7d0cd009606e305a3a26132444572579b88d87959a96fc06e1f001b"
+    }
+  }
+}

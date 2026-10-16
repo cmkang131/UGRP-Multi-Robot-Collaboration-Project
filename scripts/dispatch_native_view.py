@@ -8,6 +8,13 @@ from __future__ import annotations
 import copy
 import queue
 import time
+import math
+
+from harness.communication_overlay import ObserverDialoguePanel
+
+_POLL_INTERVAL_S = .01
+_SLEEP_BATCH_S = .005
+_PACE_REBASE_GAP_S = .25
 
 
 class DispatchNativeView:
@@ -24,15 +31,19 @@ class DispatchNativeView:
         self.viewer = mujoco.viewer.launch_passive(
             self.model, self.data, key_callback=self.keys.put,
             show_left_ui=False, show_right_ui=False)
+        self.dialogue_panel = (ObserverDialoguePanel(scene.out / 'team' / 'latest-dialogue.json')
+                               if getattr(scene, 'out', None) is not None else None)
         with self.viewer.lock():
             self.viewer.cam.type = mujoco.mjtCamera.mjCAMERA_FREE
             self.viewer.cam.lookat[:] = [.55, -2., .1]
             self.viewer.cam.distance = 4.8
             self.viewer.cam.azimuth = 90
             self.viewer.cam.elevation = -55
-        self.last_sim = scene.time()
-        self.last_wall = time.monotonic()
-        self.target_wall = self.last_wall
+        self.pace_sim = scene.time()
+        self.pace_wall = time.monotonic()
+        self.last_tick_wall = self.pace_wall
+        self.rebase_pace = False
+        self.next_poll = 0.
         self.next_sync = 0.
         self.poll()
         print('MuJoCo 관찰 창: Space 일시정지/재개 · Q 또는 창 닫기로 종료. 계획 대기 중 물리는 정지합니다.', flush=True)
@@ -48,6 +59,8 @@ class DispatchNativeView:
                 key = self.keys.get()
                 if key == 32:
                     self.paused = not self.paused
+                    if not self.paused:
+                        self.rebase_pace = True
                     print('PAUSED' if self.paused else 'RUNNING', flush=True)
                 elif key in (81, 256):
                     raise KeyboardInterrupt('native operator quit')
@@ -55,26 +68,41 @@ class DispatchNativeView:
             if now >= self.next_sync:
                 with self.viewer.lock():
                     mujoco.mj_copyData(self.data, self.model, self.scene.world.data)
-                self.viewer.sync()
+                    # These flags belong to the copied observer scene only.
+                    self.viewer.user_scn.flags[mujoco.mjtRndFlag.mjRND_SHADOW] = 0
+                    self.viewer.user_scn.flags[mujoco.mjtRndFlag.mjRND_REFLECTION] = 0
+                self.viewer.sync(state_only=True)
                 self.next_sync = now + 1 / 30
+            panel = getattr(self, 'dialogue_panel', None)
+            if panel is not None:
+                panel.poll(self.viewer, mujoco, now)
             if not self.paused:
+                self.next_poll = time.monotonic() + _POLL_INTERVAL_S
                 return
             time.sleep(.02)
 
     def tick(self):
-        self.poll()
+        now = time.monotonic()
+        # Check the budget on every physics step; GUI calls only need wall-time polling.
+        if self.scene.deadline and now >= self.scene.deadline:
+            raise RuntimeError('skill wall budget exhausted')
+        if self.paused or now >= self.next_poll:
+            self.poll()
+            now = time.monotonic()
         now_sim = self.scene.time()
-        now_wall = time.monotonic()
-        # Preserve average pacing without issuing a sub-millisecond sleep for
-        # every 2 ms physics tick. Those sleeps are disproportionately slow on
-        # Windows. An inference pause still never incurs catch-up physics.
-        if now_wall - self.target_wall > .05:
-            self.target_wall = now_wall
-        self.target_wall += max(0., now_sim - self.last_sim) / self.factor
-        delay = self.target_wall - now_wall
-        if delay >= .002:
-            time.sleep(delay)
-        self.last_sim, self.last_wall = now_sim, time.monotonic()
+        target = self.pace_wall + (now_sim - self.pace_sim) / self.factor
+        # Rebase after inference, operator pause, or a long render stall. Small
+        # sleep overshoots remain in the wall-clock schedule instead of adding
+        # one extra sleep to every fine physics step.
+        if (self.rebase_pace or now - self.last_tick_wall > _PACE_REBASE_GAP_S
+                or now - target > _PACE_REBASE_GAP_S or now_sim < self.pace_sim):
+            self.pace_sim, self.pace_wall = now_sim, now
+            self.rebase_pace = False
+            target = now
+        delay = target - now
+        if delay >= _SLEEP_BATCH_S:
+            time.sleep(min(delay, _POLL_INTERVAL_S))
+        self.last_tick_wall = time.monotonic()
 
     def close(self):
         self.viewer.close()
@@ -84,3 +112,23 @@ class DispatchNativeView:
             if time.monotonic() >= deadline:
                 raise RuntimeError('native dispatch viewer did not close within 10 seconds')
             time.sleep(.01)
+
+
+class HeadlessPacer(DispatchNativeView):
+    """Use the native SIM/wall clock contract without opening an observer UI."""
+    def __init__(self,scene,*,realtime_factor=1.):
+        if not math.isfinite(realtime_factor) or realtime_factor<=0:
+            raise ValueError('positive finite realtime_factor required')
+        self.scene=scene;self.factor=float(realtime_factor)
+        self.paused=False
+        self.pace_sim=scene.time();self.pace_wall=time.monotonic()
+        self.last_tick_wall=self.pace_wall;self.rebase_pace=False
+        self.next_poll=0.
+
+    def poll(self):
+        if self.scene.deadline and time.monotonic()>=self.scene.deadline:
+            raise RuntimeError('skill wall budget exhausted')
+        self.next_poll=time.monotonic()+_POLL_INTERVAL_S
+
+    def close(self):
+        pass

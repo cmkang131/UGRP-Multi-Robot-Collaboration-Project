@@ -1,0 +1,64 @@
+{
+  "status": "SYNTHETIC_DESIGN_ONLY",
+  "active_logdir": "/Users/changmin/projects/ugrp/outputs/tensorboard",
+  "snapshot": "/Users/changmin/projects/ugrp/outputs/tensorboard/1001-v89-design-fixed",
+  "offline_source": {
+    "path": "/Users/changmin/projects/ugrp-wt/calib-measure-v2/experiments/2026-10-01-final-env-measurement-v2/identifiability_review_fixed.json",
+    "sha256": "bc067da15f2d40632e200e30bd21f27c72eedebca3314397742fd3b3a48f770f"
+  },
+  "supersedes_v1_metrics_from": "1001-v89-design (original retained)",
+  "runs": {
+    "1001-v89-design-fixed/v1-forward": {
+      "offline/fisher_condition": 18523.615234375,
+      "offline/profiled_tau20_rms_m": 3.00145911751315e-05,
+      "offline/pose_sample_period_s": 0.20000000298023224,
+      "offline/samples_per_drive_tau": 7.199999809265137
+    },
+    "1001-v89-design-fixed/v1-left": {
+      "offline/fisher_condition": 92735.1015625,
+      "offline/profiled_tau20_rms_m": 1.02920694189379e-05,
+      "offline/pose_sample_period_s": 0.20000000298023224,
+      "offline/samples_per_drive_tau": 15.0
+    },
+    "1001-v89-design-fixed/v2-forward": {
+      "offline/fisher_condition": 206.460205078125,
+      "offline/profiled_tau20_rms_m": 0.0032359680626541376,
+      "offline/pose_sample_period_s": 0.05000000074505806,
+      "offline/samples_per_drive_tau": 28.799999237060547
+    },
+    "1001-v89-design-fixed/v2-left": {
+      "offline/fisher_condition": 123.3193588256836,
+      "offline/profiled_tau20_rms_m": 0.0053232451900839806,
+      "offline/pose_sample_period_s": 0.05000000074505806,
+      "offline/samples_per_drive_tau": 60.0
+    }
+  },
+  "verified_scalar_count": 16,
+  "url": "http://127.0.0.1:6006/?pinnedCards=%5B%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Ffisher_condition%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fprofiled_tau20_rms_m%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fpose_sample_period_s%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fsamples_per_drive_tau%22%7D%5D&smoothing=0&runFilter=%5E1001-v89-design-fixed%2F#timeseries",
+  "pinned_tags": [
+    "offline/fisher_condition",
+    "offline/profiled_tau20_rms_m",
+    "offline/pose_sample_period_s",
+    "offline/samples_per_drive_tau"
+  ],
+  "hparams_visible_columns": [
+    "condition",
+    "case",
+    "outcome",
+    "offline/fisher_condition",
+    "offline/profiled_tau20_rms_m",
+    "offline/pose_sample_period_s",
+    "offline/samples_per_drive_tau"
+  ],
+  "hparams_event_metadata_verified": true,
+  "ui_verified": false,
+  "ui_blocker": "Chrome CUA cgWindowNotFound (-10005); no browser surfaces available",
+  "video": "not applicable: no physics/rendering or video",
+  "server_modified": false,
+  "manifests_sha256": {
+    "v2-left/manifest.json": "1daf77246d79b4018f0c9e3adac5c19029e99cb6adc0b045ede768fa8acad4a1",
+    "v1-forward/manifest.json": "0ddb86f489b5b4f55996224225734275669c02d86bf152ad0db5f0d7595b3090",
+    "v1-left/manifest.json": "beb7e4031ddbf611a4790499e33a66d6f1c5ffe48be9e277be1ef71fc7be206b",
+    "v2-forward/manifest.json": "1768de6050b06f80741fd6e93c533d117577effb8f1f536d97e4a2b94c5eb211"
+  }
+}

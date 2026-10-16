@@ -1,0 +1,160 @@
+{
+  "seed": 49001,
+  "acquisition": {
+    "status": "RECORDED",
+    "source_sha": "b3cc09dce60e8b93ec2bea7f8e81afe4c3c94b61",
+    "model_calls": 0,
+    "freeze": false,
+    "qualification": "one MuJoCo DEV attempt, not real hardware or confirmation cohort",
+    "loadavg_start": [
+      6.53271484375,
+      5.837890625,
+      4.4736328125
+    ],
+    "start_sim_s": 1.3,
+    "frames": 3151,
+    "total_sim_s": 631.3,
+    "stage": "return",
+    "declared_goal": false,
+    "loss_t": 361.3,
+    "wall_s": 3463.244158332993,
+    "loadavg_end": [
+      2.1806640625,
+      2.95947265625,
+      3.3203125
+    ]
+  },
+  "started": true,
+  "arrived": false,
+  "false_declarations": 0,
+  "final_xy_m": 0.35744125563009616,
+  "final_sigma_xy_m": 0.1342038953638229,
+  "final_error_sigma_ratio": 2.6634193788569487,
+  "final_nees_xy": 51.39016472853571,
+  "over_3sigma": false,
+  "goal_observed": true,
+  "failure_class": "localization",
+  "excluded": false,
+  "thresholds_unchanged": true,
+  "goal": {
+    "entity": {
+      "kind": "floor_zone",
+      "id": "B"
+    },
+    "center_m": [
+      -1.080708661417323,
+      3.2279527559055117
+    ],
+    "source": "own",
+    "detector": "floor_color_v3",
+    "candidate_id": 9,
+    "obs_id": "r3-obs-000112",
+    "t_sim": 23.5,
+    "frame_sha256": "51cc7927765925a1042bcec3818741068a83c45397455192222612d1aeb52fd3",
+    "observations": 11,
+    "first_t": 21.5,
+    "bounds_m": [
+      [
+        -1.4500000000000002,
+        2.45
+      ],
+      [
+        -0.75,
+        4.05
+      ]
+    ],
+    "confidence": 0.8461248936748883,
+    "partial_extent": true
+  },
+  "target_assignment": {
+    "t": 361.3,
+    "frame_id": 1801,
+    "reason": "remembered_target_assigned",
+    "target": 9,
+    "first_detection_t": 21.5,
+    "first_confirmation_t": 23.5
+  },
+  "loss_t": 361.3,
+  "correct_convergence": true,
+  "false_convergence_frames": 1071,
+  "post_loss_frames": 1350,
+  "declarations": [],
+  "final_yaw_deg": -2.115201220006297,
+  "final_sigma_definition": "sqrt_trace_cov_xy",
+  "post_loss_over_3sigma": 1165,
+  "path_rmse_m": 0.3329882993577564,
+  "error_samples": 3140,
+  "missing_gt_trace_samples": 0,
+  "final_error_t": 631.3,
+  "last_truth_t": 631.3,
+  "sim_s": 630.0,
+  "wall_s": 3463.244158332993,
+  "arrival_after_loss_s": null,
+  "contacts": {
+    "wall": {
+      "frames": 0,
+      "episodes": 0
+    },
+    "robot": {
+      "frames": 0,
+      "episodes": 0
+    }
+  },
+  "contact_samples": 3151,
+  "contact_scope": "5Hz samples/contiguous sampled episodes, plus native failure reason; not exhaustive",
+  "command_frames": 3141,
+  "hold_frames": 110,
+  "return_statuses": {
+    "unknown_start_reset": 1,
+    "relocalize": 24,
+    "sensor_sweep": 575,
+    "public_static": 50,
+    "public_frontier": 696,
+    "no_path": 5
+  },
+  "return_navigation": {
+    "sensor_sweep_started": 8,
+    "sensor_sweep_completed": 8,
+    "frontier_selected": 7,
+    "frontier_cycle_committed": 8,
+    "controller_no_progress": 7,
+    "navigation_action_aborted": 7,
+    "ABORTED_goal_blacklisted": 8,
+    "next_frontier_requested": 7,
+    "sensor_sweep_requested": 7,
+    "frontier_navigation_action": 1,
+    "planner_failed": 2,
+    "recovery_context_clear": 3,
+    "context_clear_planner": 2,
+    "navigation_layer_reset": 3,
+    "recovery_success": 3,
+    "predicted_footprint_collision": 1,
+    "controller_collision": 1,
+    "context_clear_controller": 1
+  },
+  "travelled_m": 15.46330325647893,
+  "map": {
+    "quality": {
+      "occupied_cells": 723,
+      "precision_015": 0.37344398340248963,
+      "precision_cell": 0.15767634854771784,
+      "wall_coverage": 0.7112462006079028,
+      "wall_error_rmse_m": 0.48957409269971186
+    },
+    "occupied_cells": 723,
+    "inserted_scans": 220,
+    "visible_samples": 175,
+    "total_wall_samples": 329,
+    "covered_samples": 234,
+    "coverage": 0.7112462006079028
+  },
+  "insertion_gate_counts": {
+    "bootstrap/bootstrap": 1,
+    "deferred/gmapping_motion_gate": 1560,
+    "rejected/low_overlap": 16,
+    "accepted/improved_proposal": 161,
+    "rejected/high_residual": 36,
+    "deferred/insufficient_match_points": 5,
+    "rejected/search_boundary": 1
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "records": {
+    "31001": {
+      "seal_sha256": "562f8e577c316033b8f95ae4ab12325d79d9a205367265ed5b477b59ad47efc7",
+      "prediction_source_sha": "0f0e5830dbd9c102fa51ba5b6adf3807fef1db14",
+      "off_grid_file_bytes_identical": true,
+      "rgb": 901,
+      "inserted": 47,
+      "actual_contact_columns": 3054,
+      "decision_reason_counts": {
+        "bootstrap": 1,
+        "gmapping_motion_gate": 844,
+        "low_overlap": 8,
+        "improved_proposal": 22,
+        "high_residual": 14,
+        "search_boundary": 2
+      },
+      "decisions_sha256": "3dcf7d4f2b8bc9187acaa5e3752b53c035a18492315fa7d9c69ae7fe56a5094b",
+      "gt_evaluation_only_hashes": {
+        "eval_only/trajectory.jsonl": "bab865dfdccf368f205d80c22ae02cbecbdd6d5590ca29e4a2ee214129a9b097",
+        "eval_only/camera.jsonl": "38c3bd2a5c2c0c905d06ac0c1116b2ff97c5f1ac1d5447b05fa7a23c5fc04e57",
+        "inputs/static_map.json": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+      },
+      "representations": {
+        "grid": {
+          "off_identity": true,
+          "input_unchanged": true,
+          "geometry_unchanged": true,
+          "fixed_point": {
+            "min_views": 1,
+            "min_angle_deg": 30
+          },
+          "free_cells_unchanged": true
+        },
+        "segments": {
+          "off_identity": true,
+          "input_unchanged": true,
+          "geometry_unchanged": true,
+          "fixed_point": {
+            "min_views": 2,
+            "min_angle_deg": 0
+          },
+          "free_cells_unchanged": null
+        }
+      }
+    },
+    "32002": {
+      "seal_sha256": "54dacb22c17b46d83aca24313ad147c9c20ad09b79ae874b12934e8bf5d2522b",
+      "prediction_source_sha": "369366d6dd2fc5a5cfd03e910ebe5706dc64c6c2",
+      "off_grid_file_bytes_identical": true,
+      "rgb": 901,
+      "inserted": 64,
+      "actual_contact_columns": 4313,
+      "decision_reason_counts": {
+        "bootstrap": 1,
+        "gmapping_motion_gate": 814,
+        "improved_proposal": 30,
+        "search_boundary": 2,
+        "high_residual": 19,
+        "insufficient_match_points": 5,
+        "low_overlap": 7
+      },
+      "decisions_sha256": "7b1bfd9fd356f0980d112e1504bd48f48713f4b1475555c43342423817a59f28",
+      "gt_evaluation_only_hashes": {
+        "eval_only/trajectory.jsonl": "c06c2d964971d4ee1eaaa90760f8f04bea15555a64ea481849a903f18f211ee0",
+        "eval_only/camera.jsonl": "189436ec15c8eafda5a44d323e01a8d7d4f1eb3e828d5792b1d294e16cac0870",
+        "inputs/static_map.json": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+      },
+      "representations": {
+        "grid": {
+          "off_identity": true,
+          "input_unchanged": true,
+          "geometry_unchanged": true,
+          "fixed_point": {
+            "min_views": 1,
+            "min_angle_deg": 30
+          },
+          "free_cells_unchanged": true
+        },
+        "segments": {
+          "off_identity": true,
+          "input_unchanged": true,
+          "geometry_unchanged": true,
+          "fixed_point": {
+            "min_views": 2,
+            "min_angle_deg": 0
+          },
+          "free_cells_unchanged": null
+        }
+      }
+    }
+  },
+  "preregistration_commit": "e48ece04",
+  "prediction_code_commit": "0f0e5830",
+  "operating_point_commit": "369366d6dd2fc5a5cfd03e910ebe5706dc64c6c2",
+  "held_evaluations": 1,
+  "held_threshold_sweeps": 0,
+  "post_result_threshold_changes": 0,
+  "previously_seen_held_recording": true,
+  "tests": 12,
+  "physics": 0,
+  "render": 0,
+  "models": 0,
+  "lock_acquired": false,
+  "original_untracked_hashes": {
+    "analyze_wall_detection.py": "26c818f1cd4673c7f4a1b6ab535b4e70ac68167f1f56989f10c8c6bebe0c3dd0",
+    "create_wall_visualizations.py": "e2b77c1f678d1ba27658dffecf99bcf7bfd7c12c056d41869a7a38cc482f8efa",
+    "create_wall_visualizations_v2.py": "8e6fa7f6598336bc6f7c61ad956d1902be9925443d7656cea2801362195d83c8",
+    "parameter_probe.py": "43f91584406ba91a73032514b8409357fc9c7ac2c3cbc3e72d26bce5257e103b"
+  },
+  "raw_manifest_sha256": "b2fbed2104ad1726431e65cd57714b9e4be69d1b07ec1166a88f81c343c71fe4",
+  "result_hashes": {
+    "development.json": "439aa0f38edcb4a3e10815406d2749622ac42f0149c99cde72a07f40da5f2a93",
+    "held.json": "0f14903886c4b8bef44313100fd0147679645ec9b9c30f870538af71b2a1ad73",
+    "raster-diagnostic.json": "321db9ea6445d47874e68816e8c4ff0a6a289e589d52a98ae0ffa5c9d34de49d"
+  },
+  "figures": {
+    "development-pr.png": {
+      "sha256": "2893f62295b45fc131febe7bb8ea5bbab1da19b24a443aa622e3f8004644c4ab",
+      "bytes": 118004
+    },
+    "held-maps.png": {
+      "sha256": "4e7f33c23b9fefa0ab5e313c707e9c19410838ab94d1911303edd2050a0608ac",
+      "bytes": 132601
+    }
+  },
+  "raw_path": "/Users/changmin/projects/ugrp/outputs/wall-pr-operating-point-v1",
+  "export_start": false
+}

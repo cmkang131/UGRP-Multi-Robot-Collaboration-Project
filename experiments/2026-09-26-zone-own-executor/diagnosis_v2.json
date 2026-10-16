@@ -1,0 +1,22 @@
+{
+  "schema": "ugrp.zone_own_executor_smoke_diagnosis.v1",
+  "cohort": "smoke-v2 (a5b3687e), post hoc, evaluation-only GT used for this record only (never fed to control)",
+  "finding": "4 of 6 robot-episodes ended <leg>_no_path right after a progress-monitor stall recovery; the stall keep-out (0.20 m ahead, half 0.08 m) covered the leg goal or the door lane, so plan_path failed 3 times",
+  "stalls": [
+    {"episode": "smoke-v2-s700", "robot": "r1", "leg": "carry (loaded) to pre-place goal via door_1", "backoff_t": 316.92,
+     "gt_moved_8s_m": 0.132, "commands_8s": 35, "real_stall": false,
+     "why": "robot held still ~306-313 s (looks/re-anchor) then drove 0.048 m/s; drive TIME since an old baseline passed 6 s; keep-out at (1.85, -0.09) in the door approach lane"},
+    {"episode": "smoke-v2-s700", "robot": "r2", "leg": "search viewpoint (-0.47, -2.45)", "backoff_t": 264.2,
+     "gt_moved_8s_m": 0.028, "commands_8s": 25, "mean_cmd_speed_mps": 0.018, "real_stall": false,
+     "why": "slow crawl 0.07 m from the goal (small commands); keep-out at (-0.47, -2.613) covers the goal cell"},
+    {"episode": "smoke-v2-s701", "robot": "r1", "leg": "closer view toward a far_coarse cyan detection", "backoff_t": 310.5,
+     "gt_moved_8s_m": 0.004, "commands_8s": 11, "real_stall": true,
+     "why": "same unseen green box jam as v1 (0.33, -1.61); v1 lost ~660 SIM s there, v2 failed at 80.9 s job time; keep-out (0.478, -1.444) covers the goal (0.438, -1.504)"},
+    {"episode": "smoke-v2-s701", "robot": "r3", "leg": "approach to the south approach point (-0.19, -1.37)", "backoff_t": [220.8, 254.2],
+     "gt_moved_8s_m": [0.001, 0.288], "real_stall": [true, false],
+     "why": "first: pushing against the target box itself (M1 _keepouts excludes the target); second: moving; keep-outs within 0.16 m of the goal"}
+  ],
+  "fix_v3": ["stall = commanded own displacement (sum |v_cmd| dt) >= 0.30 m since the trusted baseline while the trusted estimate moved < 0.10 m (was: 6 s of commanded-drive time)",
+             "no stall keep-out within 0.45 m of the leg goal or 0.60 m of a door centre (back off and re-look only)",
+             "a plan failure after a stall keep-out drops the stall keep-outs and re-plans; a leg that still cannot plan after a recovery ends 'blocked', not 'no_path'"]
+}

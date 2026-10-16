@@ -1,0 +1,214 @@
+{
+  "schema": "ugrp.pr245.review6.validation.v1",
+  "base_head": "9fb47846b4bbb35be5692345843aadd896b6e3eb",
+  "git_commits": 0,
+  "model_calls": 0,
+  "physics_steps": 0,
+  "passed": 6552,
+  "failed": 0,
+  "skipped": 0,
+  "tests_seconds": 1301.761,
+  "test_modules": [
+    "tests.test_zone_event_scheduler",
+    "tests.test_zone_sim_cost",
+    "tests.test_zone_study_contract",
+    "tests.test_zone_study_eval",
+    "tests.test_zone_study_fenced_reply",
+    "tests.test_zone_study_inputs",
+    "tests.test_zone_study_integration",
+    "tests.test_zone_study_integration_pair",
+    "tests.test_zone_study_integration_seams",
+    "tests.test_zone_study_multiturn",
+    "tests.test_zone_study_multiturn_exits",
+    "tests.test_zone_study_multiturn_generated",
+    "tests.test_zone_study_multiturn_model",
+    "tests.test_zone_study_multiturn_properties",
+    "tests.test_zone_study_multiturn_review5",
+    "tests.test_zone_study_multiturn_review6",
+    "tests.test_zone_study_offline",
+    "tests.test_zone_study_pair_delay",
+    "tests.test_zone_study_protocol",
+    "tests.test_zone_study_review_fixes",
+    "tests.test_zone_study_review_r10",
+    "tests.test_zone_study_review_r5",
+    "tests.test_zone_study_review_r6",
+    "tests.test_zone_study_review_r6_paths_contract",
+    "tests.test_zone_study_review_r7",
+    "tests.test_zone_study_review_r7_contract",
+    "tests.test_zone_study_review_r7_transport",
+    "tests.test_zone_study_review_r8",
+    "tests.test_zone_study_review_r9",
+    "tests.test_zone_study_scenarios",
+    "tests.test_zone_study_source_pinning"
+  ],
+  "final_targeted": {
+    "passed": 313,
+    "failed": 0,
+    "overlaps_full_suite": true
+  },
+  "generated_reference_streams": 3000,
+  "new_v64_byte_streams": 200,
+  "mutation_seeds": {
+    "lineage": 30,
+    "timer": 1235,
+    "termination": 1,
+    "coalesced": 479
+  },
+  "audit": {
+    "rows": 194,
+    "sites": 114,
+    "executed_sites": 114
+  },
+  "frozen_v64": {
+    "commit": "97f91cb040bf382973ce84b24b1ca8399e64a6fb",
+    "files_sha256": {
+      "harness/zone_event_scheduler.py": "4ed23c52eb6fe9420f4752ebcbc1d33d5a0f464e46f809885696fa234893750f",
+      "harness/zone_study_offline.py": "95736afeeab7ce74a8b518cff48f7b78efbd1321ef0e9659ecd1beaab540d8f6",
+      "harness/zone_study_integration.py": "f4557836b262af3e8c0d643dd8e0ce0555019d81d1c57737dee1fe77ab266311"
+    }
+  },
+  "python": {
+    "executable": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+    "version": "3.12.13"
+  },
+  "pytest_options": [
+    "OMP_NUM_THREADS=1",
+    "--basetemp=./.pytest_tmp",
+    "-q"
+  ],
+  "offline_guards": [
+    "socket connect/connect_ex blocked",
+    "mujoco import blocked"
+  ],
+  "checks": {
+    "ast": true,
+    "ci_yaml": true,
+    "ci_inclusion": true,
+    "diff_check": true,
+    "frozen_git_blobs": true
+  },
+  "cleanup": {
+    "pytest_tmp_removed": true,
+    "sparse_copies_removed": [
+      "experiments/2026-09-26-zone-study-offline-smoke/v3/example_trial_record.json.gz",
+      "experiments/2026-09-26-zone-study-offline-smoke/v4/example_trial_record.json.gz",
+      "experiments/2026-09-26-zone-study-offline-smoke/v5/example_trial_record.json.gz"
+    ]
+  },
+  "remote": {
+    "fetch": "blocked: shared git metadata write denied",
+    "gh": "network unavailable",
+    "connector": "repository moved; redirect endpoint not allowed",
+    "ci_verified": false
+  },
+  "files": {
+    ".github/workflows/tests.yml": {
+      "bytes": 16978,
+      "sha256": "97bdef3aeb3e52b10b5d7f7c0eb85639eac0b1c038024743490ea8afcc7f11c5"
+    },
+    "experiments/2026-09-27-zone-study-multiturn/audit_review6.py": {
+      "bytes": 11986,
+      "sha256": "117dce761ac1767ccae79abb248ed665af13c8a29f64fb4e928552c8b7a31141"
+    },
+    "experiments/2026-09-27-zone-study-multiturn/audit_review6_before.py": {
+      "bytes": 2962,
+      "sha256": "cc5afeb2871b28e21788ca236089945e89e52cefe69e0fbc865b8cc9aefb3d5c"
+    },
+    "experiments/2026-09-27-zone-study-multiturn/review6-audit.txt": {
+      "bytes": 56,
+      "sha256": "709b8d683d1e4214b6877cb8a2bec19fb0c4f5f447e4c468c5341c17c93a2497"
+    },
+    "experiments/2026-09-27-zone-study-multiturn/review6-core-final.txt": {
+      "bytes": 4022,
+      "sha256": "a8bd4a753672b942af395470055d48ce92ab7126815b7d9aeae2b2a05ef7bb4b"
+    },
+    "experiments/2026-09-27-zone-study-multiturn/review6-core.txt": {
+      "bytes": 4022,
+      "sha256": "1a45dd9770bb078a990daa17039831b18a4a3de76201568eb97422c9ef0c668a"
+    },
+    "experiments/2026-09-27-zone-study-multiturn/review6-counterexamples-before.json": {
+      "bytes": 33141,
+      "sha256": "9c4aa6dcbcc6b72073c05477e2cf665b6202704d9933767c4b68f86cae5a4c75"
+    },
+    "experiments/2026-09-27-zone-study-multiturn/review6-exit-table.md": {
+      "bytes": 24317,
+      "sha256": "4fa1d841170f8e9afec011888e52006ad317a6aa532b3c061a0aea7e2068351f"
+    },
+    "experiments/2026-09-27-zone-study-multiturn/review6-exit-traces.json.gz": {
+      "bytes": 36797,
+      "sha256": "628776cdd48f8d8541d1b37d5518d23438a8b967e2a80df88fce528398b49bd8"
+    },
+    "experiments/2026-09-27-zone-study-multiturn/review6-final-targeted.txt": {
+      "bytes": 450,
+      "sha256": "d9337088bf8dbbb6708beadcf53b44ef8bc7425c2a2bc83ae2fc6ed306b66d6b"
+    },
+    "experiments/2026-09-27-zone-study-multiturn/review6-fix.md": {
+      "bytes": 9324,
+      "sha256": "5ec98cfc91d8c268804834ce22290265f263f54b3a0b511c7ec5f8c76d10f4fe"
+    },
+    "experiments/2026-09-27-zone-study-multiturn/review6-model-initial.txt": {
+      "bytes": 1722,
+      "sha256": "d0a0a96cfaac609cfbb3fb43d982d0075ab5100089537027388b7768dc119b01"
+    },
+    "experiments/2026-09-27-zone-study-multiturn/review6-model-pass2.txt": {
+      "bytes": 4777,
+      "sha256": "25c698ffd42ed1e7013e13aa175d0c0e3ff9c91d8796aa4fd7a9aacd1fd33f80"
+    },
+    "experiments/2026-09-27-zone-study-multiturn/review6-regression-interrupted.txt": {
+      "bytes": 5856,
+      "sha256": "7ea68bbec6fbc61731bd4d49e0839d0cd1d7c3caafe61e07e3ca3d300a093cc8"
+    },
+    "experiments/2026-09-27-zone-study-multiturn/review6-regression-interrupted.xml": {
+      "bytes": 725328,
+      "sha256": "122290691fe90af53b4e959d85364322c834dc03fc116f0303a86b67e8bce531"
+    },
+    "experiments/2026-09-27-zone-study-multiturn/review6-regression.txt": {
+      "bytes": 7381,
+      "sha256": "b2fd86c902473afea74152186e4fed20ca4320e9a5ecda09bb7aa4fff4febdc1"
+    },
+    "experiments/2026-09-27-zone-study-multiturn/review6-regression.xml": {
+      "bytes": 956030,
+      "sha256": "98d030f44f6114bbb593edc2222b8bd0eef770258284f09bec6c3f4b2c968a33"
+    },
+    "experiments/2026-09-27-zone-study-multiturn/review6-targeted.txt": {
+      "bytes": 160129,
+      "sha256": "a70161cae1413c1d3fdec5752273488917445685337ef87bc35bde0eeb4336c8"
+    },
+    "experiments/2026-09-27-zone-study-multiturn/run_review6_tests.py": {
+      "bytes": 1683,
+      "sha256": "97948afebbc1feaf831353579d6a216d34341af444bb562af6ab57f7dca5b583"
+    },
+    "harness/zone_event_scheduler.py": {
+      "bytes": 89761,
+      "sha256": "7ab46e47f1c217a9fec56c8f98c5ff61789c00bbda1cf306f4d6272abc1dd25e"
+    },
+    "harness/zone_study_integration.py": {
+      "bytes": 30605,
+      "sha256": "3dbf55972122c7f6d62e812ee724a66177c437d2d70d9a969c7474e23f2206ab"
+    },
+    "tests/test_zone_study_multiturn_exits.py": {
+      "bytes": 24878,
+      "sha256": "b7122b2d9cc3ac3f34723071b9ad7d1338c3d39df607a3a53111c7258641eb2e"
+    },
+    "tests/test_zone_study_multiturn_model.py": {
+      "bytes": 10941,
+      "sha256": "236957941bfa3c16e6f4cac1155a3ac3cc53199258ed1e5ca0c80ebeeea1031a"
+    },
+    "tests/test_zone_study_multiturn_properties.py": {
+      "bytes": 24718,
+      "sha256": "eb44b2b3db77b54a7ac091185f4e6240a355bc6ad7cac8ed19759238def39c08"
+    },
+    "tests/test_zone_study_multiturn_review5.py": {
+      "bytes": 10474,
+      "sha256": "bab1e30bfc9485358aca78077eea615ccff953269884466a3dcf8e1f05385af3"
+    },
+    "tests/test_zone_study_multiturn_review6.py": {
+      "bytes": 7122,
+      "sha256": "cbc743452b120145f66d6768bf9e75862a737c262357851e472f3cf7358f90f3"
+    },
+    "tests/zone_multiturn_reference.py": {
+      "bytes": 13061,
+      "sha256": "4be3dc8156ba42e9ab920ac11215cd173fc004ab9143fc32048dc266c5a4f267"
+    }
+  }
+}

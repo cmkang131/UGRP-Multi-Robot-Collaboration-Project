@@ -1,0 +1,71 @@
+{
+  "schema": "ugrp.zone_e2e_plan_review_fix.v1",
+  "reviewed_head": "bd011c997f9f7946de28f912dbdd3833ebb33988",
+  "integrated_main": "b10907c5f2c84f2712030f48fb38061fd4f51281",
+  "finding": "C311-1",
+  "regression_before_fix": {
+    "failed": 2,
+    "reason": "camera and new asset changes leave draft digest unchanged"
+  },
+  "initial_fixture_attempt": {
+    "passed": 294,
+    "failed": 5,
+    "reason": "P03 worker fixture absent; corrected only in temporary test composition"
+  },
+  "related_tests": {
+    "tests": "303",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "time": "97.293",
+    "timestamp": "2026-09-30T21:48:25.060363+09:00"
+  },
+  "postmerge_ci_tests": {
+    "tests": "356",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "time": "2.366",
+    "timestamp": "2026-09-30T21:52:47.796070+09:00"
+  },
+  "postmerge_ci_subtests_passed": 280,
+  "protection": "run_locked/local_lock_root; threads=1; mujoco/torch/worker/network forbidden",
+  "source_preservation": {
+    "registrations_unchanged": 60,
+    "v6e_pinned_sources_unchanged": 85
+  },
+  "cli": {
+    "draft_exit": 3,
+    "saved_dry_run_exit": 3,
+    "historical_draft_exit": 2,
+    "postmerge_summary_bytes_identical": true,
+    "runtime_pins": 268,
+    "unmet_conditions": 37,
+    "planned_cohorts": [
+      4,
+      4,
+      24,
+      72
+    ],
+    "planned_sim_cap_s": 212250,
+    "raw_destinations": 228,
+    "raw_root_created": false
+  },
+  "files_sha256": {
+    "harness/zone_e2e_manifest.py": "e4ce4e125afb3fb7573b49693ef55e85425c5a115bc52d1c03990f5a084b37c0",
+    "scripts/plan_zone_e2e.py": "24b52277a4b31ecd236567aea9450674739614b3832b1c83002a1031c55e3198",
+    "scripts/run_ci_tests.py": "d655e37350b9340c6bb015a9761678e7993fa0066561b67ad995676c5bd2bede",
+    "tests/test_zone_e2e_manifest.py": "2a26d6f903551ece1c5323197cc5d13eecfd4e3dae4fab9e4a861c836c79a751",
+    "experiments/2026-09-30-e2e-run-manifest/evaluation_proposal_v1.json": "a4cecfe896a3f96482bfb8c8c525f5171864c8698893f963807edd9281a4832f",
+    "tests/fixtures/zone_e2e/vision_loc_provider_p03.json": "1fbce18780d09d832e4cd8e7df69a3922cd33c70334a98b689b350e2eab3b1dc",
+    "tests/fixtures/zone_e2e/vision_loc_worker_p03.json": "c92165360bb5385f83894a32bcfe411ab0258c983f38b80b09e700498fefce88"
+  },
+  "local_evidence": {
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e-p07-manifest/review-fixes-20260930",
+    "checksums_file": "evidence_checksums_final.json",
+    "sha256": "ed29602b542296cc933afff0257568f7c0bca3af1f7c74904bb65cf6d49ff74a"
+  },
+  "local_physics_executions": 0,
+  "execution_approval": null,
+  "remote_ci": "normal CI required; status reported in PR after push"
+}

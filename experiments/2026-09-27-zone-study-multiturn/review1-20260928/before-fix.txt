@@ -1,0 +1,72 @@
+FFFF.FFF........                                                         [100%]
+=================================== FAILURES ===================================
+___ test_90s_wait_preserves_v64_inputs_and_calls_in_all_conditions[no_comm] ____
+tests/test_zone_study_multiturn.py:146: in test_90s_wait_preserves_v64_inputs_and_calls_in_all_conditions
+    assert actual == golden['conditions'][condition]
+E   AssertionError: assert {'requests': ...e7222a8d1b9a'} == {'requests': ...4682504bea24'}
+E     
+E     Differing items:
+E     {'dispatch_sha256': 'afb411873911f74f0424237f04f9ee95d845fdf62df0cfca8c2de7222a8d1b9a'} != {'dispatch_sha256': '5e60695fdae1ecaede07a3a0880ec3fd171df823ac67fd1b81ac4682504bea24'}
+E     {'requests': [{'actor': 'r1', 'sim_s': 0.0, 'input_sha256': '3c4d79747da936961161a0284bd84ebd4371686877e8255af4e6fb0fb...bd1d91e05c7d88', 'common_input_sha256': '6b3852e8b6f1eb5410281adc48164cb4c335966c41b67f91b55df0bf903d76f4', ...}, ...]} != {'requests': [{'actor': 'r1', 'sim_s': 0.0, 'input_sha256': '3c4d79747da936961161a0284bd84ebd4371686877e8255af4e6fb0fb...9550b52f89c0d5', ...
+E     
+E     ...Full output truncated (3 lines hidden), use '-vv' to show
+___ test_90s_wait_preserves_v64_inputs_and_calls_in_all_conditions[peer_ko] ____
+tests/test_zone_study_multiturn.py:146: in test_90s_wait_preserves_v64_inputs_and_calls_in_all_conditions
+    assert actual == golden['conditions'][condition]
+E   AssertionError: assert {'requests': ...e7222a8d1b9a'} == {'requests': ...4682504bea24'}
+E     
+E     Differing items:
+E     {'dispatch_sha256': 'afb411873911f74f0424237f04f9ee95d845fdf62df0cfca8c2de7222a8d1b9a'} != {'dispatch_sha256': '5e60695fdae1ecaede07a3a0880ec3fd171df823ac67fd1b81ac4682504bea24'}
+E     {'requests': [{'actor': 'r1', 'sim_s': 0.0, 'input_sha256': 'e10a4e265e1ce907c85fb786b90bbe90c0e76609058fc4a17f8c8454a...7bba426083e341', 'common_input_sha256': '9f51a011acae3b4fcc6589432a7dd0d1dc1da68d688d19fca54e60d167c469e7', ...}, ...]} != {'requests': [{'actor': 'r1', 'sim_s': 0.0, 'input_sha256': 'e10a4e265e1ce907c85fb786b90bbe90c0e76609058fc4a17f8c8454a...f02e610ad2e545', ...
+E     
+E     ...Full output truncated (3 lines hidden), use '-vv' to show
+__ test_90s_wait_preserves_v64_inputs_and_calls_in_all_conditions[leader_ko] ___
+tests/test_zone_study_multiturn.py:146: in test_90s_wait_preserves_v64_inputs_and_calls_in_all_conditions
+    assert actual == golden['conditions'][condition]
+E   AssertionError: assert {'requests': ...e7222a8d1b9a'} == {'requests': ...4682504bea24'}
+E     
+E     Differing items:
+E     {'dispatch_sha256': 'afb411873911f74f0424237f04f9ee95d845fdf62df0cfca8c2de7222a8d1b9a'} != {'dispatch_sha256': '5e60695fdae1ecaede07a3a0880ec3fd171df823ac67fd1b81ac4682504bea24'}
+E     {'requests': [{'actor': 'r1', 'sim_s': 0.0, 'input_sha256': '9a0f5bb6304c1c6634ce28be05fe940ee03f39c2bc31a008a40c89304...b9d132f5f70a9c', 'common_input_sha256': '1ef7bb02a4c76a1554b93cfb289222df3dec3a3b096c5a10d9b1690b6b124f4b', ...}, ...]} != {'requests': [{'actor': 'r1', 'sim_s': 0.0, 'input_sha256': '9a0f5bb6304c1c6634ce28be05fe940ee03f39c2bc31a008a40c89304...6765f11c2b5b63', ...
+E     
+E     ...Full output truncated (3 lines hidden), use '-vv' to show
+__ test_90s_wait_preserves_v64_inputs_and_calls_in_all_conditions[structured] __
+tests/test_zone_study_multiturn.py:146: in test_90s_wait_preserves_v64_inputs_and_calls_in_all_conditions
+    assert actual == golden['conditions'][condition]
+E   AssertionError: assert {'requests': ...e7222a8d1b9a'} == {'requests': ...4682504bea24'}
+E     
+E     Differing items:
+E     {'dispatch_sha256': 'afb411873911f74f0424237f04f9ee95d845fdf62df0cfca8c2de7222a8d1b9a'} != {'dispatch_sha256': '5e60695fdae1ecaede07a3a0880ec3fd171df823ac67fd1b81ac4682504bea24'}
+E     {'requests': [{'actor': 'r1', 'sim_s': 0.0, 'input_sha256': '56534beb889c62c70eb44666a18aaf45459ed01bdc4886f58a4e13500...ce946910589d28', 'common_input_sha256': '9f51a011acae3b4fcc6589432a7dd0d1dc1da68d688d19fca54e60d167c469e7', ...}, ...]} != {'requests': [{'actor': 'r1', 'sim_s': 0.0, 'input_sha256': '56534beb889c62c70eb44666a18aaf45459ed01bdc4886f58a4e13500...8f0d102051889f', ...
+E     
+E     ...Full output truncated (3 lines hidden), use '-vv' to show
+_ test_deferred_report_never_suppresses_common_timer_or_rearming[None-peer_ko] _
+tests/test_zone_study_multiturn.py:162: in test_deferred_report_never_suppresses_common_timer_or_rearming
+    assert [p['sim_time_s'] for p in r1] == expected
+E   assert [0.0] == [0.0, 65.3, 130.6]
+E     
+E     Right contains 2 more items, first extra item: 65.3
+E     Use -v to get more diff
+_ test_deferred_report_never_suppresses_common_timer_or_rearming[None-leader_ko] _
+tests/test_zone_study_multiturn.py:162: in test_deferred_report_never_suppresses_common_timer_or_rearming
+    assert [p['sim_time_s'] for p in r1] == expected
+E   assert [0.0] == [0.0, 65.3, 130.6]
+E     
+E     Right contains 2 more items, first extra item: 65.3
+E     Use -v to get more diff
+_ test_deferred_report_never_suppresses_common_timer_or_rearming[None-structured] _
+tests/test_zone_study_multiturn.py:162: in test_deferred_report_never_suppresses_common_timer_or_rearming
+    assert [p['sim_time_s'] for p in r1] == expected
+E   assert [0.0] == [0.0, 65.3, 130.6]
+E     
+E     Right contains 2 more items, first extra item: 65.3
+E     Use -v to get more diff
+=========================== short test summary info ============================
+FAILED tests/test_zone_study_multiturn.py::test_90s_wait_preserves_v64_inputs_and_calls_in_all_conditions[no_comm]
+FAILED tests/test_zone_study_multiturn.py::test_90s_wait_preserves_v64_inputs_and_calls_in_all_conditions[peer_ko]
+FAILED tests/test_zone_study_multiturn.py::test_90s_wait_preserves_v64_inputs_and_calls_in_all_conditions[leader_ko]
+FAILED tests/test_zone_study_multiturn.py::test_90s_wait_preserves_v64_inputs_and_calls_in_all_conditions[structured]
+FAILED tests/test_zone_study_multiturn.py::test_deferred_report_never_suppresses_common_timer_or_rearming[None-peer_ko]
+FAILED tests/test_zone_study_multiturn.py::test_deferred_report_never_suppresses_common_timer_or_rearming[None-leader_ko]
+FAILED tests/test_zone_study_multiturn.py::test_deferred_report_never_suppresses_common_timer_or_rearming[None-structured]
+7 failed, 9 passed, 43 deselected in 4.20s

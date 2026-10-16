@@ -1,0 +1,21 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "s2-load-wall-v1",
+      "version": "1.0.0",
+      "purpose": "Controlled S2 pose/load/wall ablation with write-only contact and camera evaluation",
+      "entry": "scripts/diagnose_s2_load_wall.py",
+      "runner": "scripts.diagnose_s2_load_wall",
+      "docs": "experiments/2026-10-06-s2-realism/README.md",
+      "requires": "committed source, exclusive agent_lock, fixed 14 diagnostic cases; no task controller",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

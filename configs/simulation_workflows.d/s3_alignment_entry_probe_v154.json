@@ -1,0 +1,19 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "zone-s3-alignment-entry-probe-v154",
+      "version": "7.47.0",
+      "purpose": "S3 align_start 자세 보존→집기 ≤60 SIM초 단계 진단",
+      "entry": "scripts/run_s3_alignment_entry_probe.py",
+      "runner": "scripts.run_s3_alignment_entry_probe",
+      "docs": "experiments/2026-10-09-s3-no-prior/s3fix9/README.md",
+      "requires": "committed SHA; exclusive lock; saved scene and own history; stage probe only",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": ["--expected-source-sha"],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

@@ -1,0 +1,4451 @@
+{
+  "open_prs": [
+    {
+      "headRefName": "codex/calib-fit-v87",
+      "number": 346,
+      "title": "보정: v87 무하중 오프라인 적합 (PARTIAL)"
+    },
+    {
+      "headRefName": "claude/ci-shard-durations",
+      "number": 345,
+      "title": "ci: 측정 시간 기반 오프라인 shard 분배"
+    },
+    {
+      "headRefName": "codex/v3-pair-adapter",
+      "number": 344,
+      "title": "feat: v88 최종 v3 공동 운반·P03 및 loaded/fine 보정 수집"
+    },
+    {
+      "headRefName": "claude/phys-v87-rec",
+      "number": 343,
+      "title": "P01·무하중 보정 수집: 최종 환경 v87 밝은 렌더 (#342)"
+    },
+    {
+      "headRefName": "codex/final-env-floor-light",
+      "number": 342,
+      "title": "feat: 최종 환경 v87 floor_light_v1 P01·unloaded 수집 등록"
+    },
+    {
+      "headRefName": "claude/phys-p01-1001",
+      "number": 341,
+      "title": "P01: 최종 환경 v84 물리 점검 3×30 SIM초 결과 (COLLECTED_UNQUALIFIED)"
+    },
+    {
+      "headRefName": "codex/integ-target-backend",
+      "number": 339,
+      "title": "T13: 표적 backend 검토 수정·최종 v3 환경 계약 (v86, 실행 차단)"
+    },
+    {
+      "headRefName": "codex/review-e2e-batch-f",
+      "number": 327,
+      "title": "review: E2E batch F 독립 검토 (#320/#323/#324)"
+    },
+    {
+      "headRefName": "codex/review-e2e-batch-d",
+      "number": 322,
+      "title": "review: E2E batch D 독립 검토 (#313/#314/#315)"
+    },
+    {
+      "headRefName": "codex/review-e2e-batch-e",
+      "number": 321,
+      "title": "review: E2E Batch E — #316/#306 독립 검토"
+    },
+    {
+      "headRefName": "codex/review-e2e-batch-a",
+      "number": 319,
+      "title": "review: E2E batch A 독립 검토 — P06 증거 연결·P01 회귀"
+    },
+    {
+      "headRefName": "codex/review-e2e-batch-c",
+      "number": 318,
+      "title": "docs: E2E batch C 독립 검토 (#310·#311·#312)"
+    },
+    {
+      "headRefName": "codex/review-e2e-batch-b",
+      "number": 317,
+      "title": "review: E2E Batch B — #307/#308/#302 독립 검토"
+    },
+    {
+      "headRefName": "codex/outputs-retention",
+      "number": 309,
+      "title": "feat: outputs 보존 3차·참조 보호와 0.568 GiB 캐시 후보"
+    },
+    {
+      "headRefName": "codex/evidence-referee",
+      "number": 303,
+      "title": "P06: 평가 심판·raw manifest·TensorBoard synthetic 연결 검사"
+    },
+    {
+      "headRefName": "codex/stall-d1-prereg",
+      "number": 293,
+      "title": "D1 정체 검출 사전 등록 초안과 NumPy 오프라인 참조"
+    },
+    {
+      "headRefName": "codex/pair-v6h-register",
+      "number": 292,
+      "title": "봉인 — 독립 검토 필요"
+    },
+    {
+      "headRefName": "claude/b-v6h-gain",
+      "number": 285,
+      "title": "b-v6h gain fix + p2f: 연쇄 탐색 실험 및 v6h 등록 준비 초안 (봉인·실행 없음)"
+    }
+  ],
+  "branches": [
+    {
+      "branch": "main",
+      "sha": "78ce79162d907d88d38ef3afcfc0c62e4a72aaba",
+      "RUNNABLE_ID": [
+        "origin/main:harness/rgb_execution_bundle.py:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/main:harness/rgb_execution_bundle.py:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/main:harness/rgb_execution_bundle.py:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/main:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/main:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID:"
+      ],
+      "bundles": [
+        "zone-final-environment-v84"
+      ],
+      "workflows": [
+        {
+          "id": "zone-final-environment-check",
+          "version": "2.17.0",
+          "file": "configs/simulation_workflows.d/final_environment_v84.json"
+        },
+        {
+          "id": "zone-study-pilot",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "local",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "dispatch",
+          "version": "1.63.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "dispatch-skills",
+          "version": "1.63.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "multi-object",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-dispatch",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-teacher-fix",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-probe",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-team-jobs-smoke",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-catalogue",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-color-eval",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-perception-eval",
+          "version": "1.1.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-rgb-outcome-eval",
+          "version": "2.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "navigation",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "pair-navigation",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "camera-pair",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "rgb-traffic",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "teacher",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-map-suite",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-training",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-input-training",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-input-finalization",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "jev",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "stage-sync",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "physical",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "worker",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "tensorboard",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication-study",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication-cloud-submit",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-owncam-loc-record",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-owncam-loop-run",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-run",
+          "version": "1.1.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-memory-v3-run",
+          "version": "3.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-memory-run",
+          "version": "2.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m2-pair",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-pair-dev",
+          "version": "0.6.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "masterpi-v3-static-audit",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-study-integration-run",
+          "version": "2.14.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-pair-bootstrap-probe",
+          "version": "0.1.0",
+          "file": "configs/simulation_workflows.json"
+        }
+      ]
+    },
+    {
+      "branch": "codex/calib-fit-v87",
+      "sha": "a5cc1402049a249253893762e1ca347e448a5f3f",
+      "RUNNABLE_ID": [
+        "origin/codex/calib-fit-v87:harness/rgb_execution_bundle.py:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/calib-fit-v87:harness/rgb_execution_bundle.py:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/codex/calib-fit-v87:harness/rgb_execution_bundle.py:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/codex/calib-fit-v87:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/codex/calib-fit-v87:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID:"
+      ],
+      "bundles": [
+        "zone-final-environment-v84",
+        "zone-final-environment-v87"
+      ],
+      "workflows": [
+        {
+          "id": "zone-final-environment-check",
+          "version": "2.17.0",
+          "file": "configs/simulation_workflows.d/final_environment_v84.json"
+        },
+        {
+          "id": "zone-final-environment-floor-light-check",
+          "version": "2.20.0",
+          "file": "configs/simulation_workflows.d/final_environment_v87.json"
+        },
+        {
+          "id": "zone-study-pilot",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "local",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "dispatch",
+          "version": "1.63.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "dispatch-skills",
+          "version": "1.63.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "multi-object",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-dispatch",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-teacher-fix",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-probe",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-team-jobs-smoke",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-catalogue",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-color-eval",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-perception-eval",
+          "version": "1.1.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-rgb-outcome-eval",
+          "version": "2.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "navigation",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "pair-navigation",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "camera-pair",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "rgb-traffic",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "teacher",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-map-suite",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-training",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-input-training",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-input-finalization",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "jev",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "stage-sync",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "physical",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "worker",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "tensorboard",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication-study",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication-cloud-submit",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-owncam-loc-record",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-owncam-loop-run",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-run",
+          "version": "1.1.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-memory-v3-run",
+          "version": "3.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-memory-run",
+          "version": "2.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m2-pair",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-pair-dev",
+          "version": "0.6.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "masterpi-v3-static-audit",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-study-integration-run",
+          "version": "2.14.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-pair-bootstrap-probe",
+          "version": "0.1.0",
+          "file": "configs/simulation_workflows.json"
+        }
+      ]
+    },
+    {
+      "branch": "claude/ci-shard-durations",
+      "sha": "f46571ecd4bf8b1a6efd603ca7fd96168e1a1655",
+      "RUNNABLE_ID": [
+        "origin/claude/ci-shard-durations:harness/rgb_execution_bundle.py:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/claude/ci-shard-durations:harness/rgb_execution_bundle.py:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/claude/ci-shard-durations:harness/rgb_execution_bundle.py:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/claude/ci-shard-durations:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/claude/ci-shard-durations:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID:"
+      ],
+      "bundles": [
+        "zone-final-environment-v84"
+      ],
+      "workflows": [
+        {
+          "id": "zone-final-environment-check",
+          "version": "2.17.0",
+          "file": "configs/simulation_workflows.d/final_environment_v84.json"
+        },
+        {
+          "id": "zone-study-pilot",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "local",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "dispatch",
+          "version": "1.63.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "dispatch-skills",
+          "version": "1.63.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "multi-object",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-dispatch",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-teacher-fix",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-probe",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-team-jobs-smoke",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-catalogue",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-color-eval",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-perception-eval",
+          "version": "1.1.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-rgb-outcome-eval",
+          "version": "2.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "navigation",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "pair-navigation",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "camera-pair",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "rgb-traffic",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "teacher",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-map-suite",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-training",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-input-training",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-input-finalization",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "jev",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "stage-sync",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "physical",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "worker",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "tensorboard",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication-study",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication-cloud-submit",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-owncam-loc-record",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-owncam-loop-run",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-run",
+          "version": "1.1.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-memory-v3-run",
+          "version": "3.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-memory-run",
+          "version": "2.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m2-pair",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-pair-dev",
+          "version": "0.6.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "masterpi-v3-static-audit",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-study-integration-run",
+          "version": "2.14.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-pair-bootstrap-probe",
+          "version": "0.1.0",
+          "file": "configs/simulation_workflows.json"
+        }
+      ]
+    },
+    {
+      "branch": "codex/v3-pair-adapter",
+      "sha": "45c4ebc43daa96542cf298cea6f69964e501ec4a",
+      "RUNNABLE_ID": [
+        "origin/codex/v3-pair-adapter:harness/rgb_execution_bundle.py:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/v3-pair-adapter:harness/rgb_execution_bundle.py:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/codex/v3-pair-adapter:harness/rgb_execution_bundle.py:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/codex/v3-pair-adapter:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/codex/v3-pair-adapter:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID:"
+      ],
+      "bundles": [
+        "zone-final-environment-v84",
+        "zone-final-pair-v88"
+      ],
+      "workflows": [
+        {
+          "id": "zone-final-environment-check",
+          "version": "2.17.0",
+          "file": "configs/simulation_workflows.d/final_environment_v84.json"
+        },
+        {
+          "id": "zone-final-pair-v3",
+          "version": "3.1.0",
+          "file": "configs/simulation_workflows.d/final_pair_v88.json"
+        },
+        {
+          "id": "zone-study-pilot",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "local",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "dispatch",
+          "version": "1.63.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "dispatch-skills",
+          "version": "1.63.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "multi-object",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-dispatch",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-teacher-fix",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-probe",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-team-jobs-smoke",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-catalogue",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-color-eval",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-perception-eval",
+          "version": "1.1.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-rgb-outcome-eval",
+          "version": "2.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "navigation",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "pair-navigation",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "camera-pair",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "rgb-traffic",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "teacher",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-map-suite",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-training",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-input-training",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-input-finalization",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "jev",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "stage-sync",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "physical",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "worker",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "tensorboard",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication-study",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication-cloud-submit",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-owncam-loc-record",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-owncam-loop-run",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-run",
+          "version": "1.1.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-memory-v3-run",
+          "version": "3.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-memory-run",
+          "version": "2.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m2-pair",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-pair-dev",
+          "version": "0.6.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "masterpi-v3-static-audit",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-study-integration-run",
+          "version": "2.14.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-pair-bootstrap-probe",
+          "version": "0.1.0",
+          "file": "configs/simulation_workflows.json"
+        }
+      ]
+    },
+    {
+      "branch": "claude/phys-v87-rec",
+      "sha": "668d5d4f2af7a0d9599b6762460351c3dd7f5fdf",
+      "RUNNABLE_ID": [
+        "origin/claude/phys-v87-rec:harness/rgb_execution_bundle.py:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/claude/phys-v87-rec:harness/rgb_execution_bundle.py:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/claude/phys-v87-rec:harness/rgb_execution_bundle.py:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/claude/phys-v87-rec:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/claude/phys-v87-rec:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID:"
+      ],
+      "bundles": [
+        "zone-final-environment-v84"
+      ],
+      "workflows": [
+        {
+          "id": "zone-final-environment-check",
+          "version": "2.17.0",
+          "file": "configs/simulation_workflows.d/final_environment_v84.json"
+        },
+        {
+          "id": "zone-study-pilot",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "local",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "dispatch",
+          "version": "1.63.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "dispatch-skills",
+          "version": "1.63.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "multi-object",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-dispatch",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-teacher-fix",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-probe",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-team-jobs-smoke",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-catalogue",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-color-eval",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-perception-eval",
+          "version": "1.1.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-rgb-outcome-eval",
+          "version": "2.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "navigation",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "pair-navigation",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "camera-pair",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "rgb-traffic",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "teacher",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-map-suite",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-training",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-input-training",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-input-finalization",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "jev",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "stage-sync",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "physical",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "worker",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "tensorboard",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication-study",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication-cloud-submit",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-owncam-loc-record",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-owncam-loop-run",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-run",
+          "version": "1.1.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-memory-v3-run",
+          "version": "3.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-memory-run",
+          "version": "2.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m2-pair",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-pair-dev",
+          "version": "0.6.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "masterpi-v3-static-audit",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-study-integration-run",
+          "version": "2.14.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-pair-bootstrap-probe",
+          "version": "0.1.0",
+          "file": "configs/simulation_workflows.json"
+        }
+      ]
+    },
+    {
+      "branch": "codex/final-env-floor-light",
+      "sha": "04eb11c6a001f2a7d2ab916765d59b3661c06efe",
+      "RUNNABLE_ID": [
+        "origin/codex/final-env-floor-light:harness/rgb_execution_bundle.py:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/final-env-floor-light:harness/rgb_execution_bundle.py:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/codex/final-env-floor-light:harness/rgb_execution_bundle.py:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/codex/final-env-floor-light:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/codex/final-env-floor-light:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID:"
+      ],
+      "bundles": [
+        "zone-final-environment-v84",
+        "zone-final-environment-v87"
+      ],
+      "workflows": [
+        {
+          "id": "zone-final-environment-check",
+          "version": "2.17.0",
+          "file": "configs/simulation_workflows.d/final_environment_v84.json"
+        },
+        {
+          "id": "zone-final-environment-floor-light-check",
+          "version": "2.20.0",
+          "file": "configs/simulation_workflows.d/final_environment_v87.json"
+        },
+        {
+          "id": "zone-study-pilot",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "local",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "dispatch",
+          "version": "1.63.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "dispatch-skills",
+          "version": "1.63.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "multi-object",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-dispatch",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-teacher-fix",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-probe",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-team-jobs-smoke",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-catalogue",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-color-eval",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-perception-eval",
+          "version": "1.1.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-rgb-outcome-eval",
+          "version": "2.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "navigation",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "pair-navigation",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "camera-pair",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "rgb-traffic",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "teacher",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-map-suite",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-training",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-input-training",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-input-finalization",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "jev",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "stage-sync",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "physical",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "worker",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "tensorboard",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication-study",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication-cloud-submit",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-owncam-loc-record",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-owncam-loop-run",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-run",
+          "version": "1.1.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-memory-v3-run",
+          "version": "3.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-memory-run",
+          "version": "2.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m2-pair",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-pair-dev",
+          "version": "0.6.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "masterpi-v3-static-audit",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-study-integration-run",
+          "version": "2.14.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-pair-bootstrap-probe",
+          "version": "0.1.0",
+          "file": "configs/simulation_workflows.json"
+        }
+      ]
+    },
+    {
+      "branch": "claude/phys-p01-1001",
+      "sha": "339d281e05d80ff19bb1a78a4a9c020c9653eff6",
+      "RUNNABLE_ID": [
+        "origin/claude/phys-p01-1001:harness/rgb_execution_bundle.py:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/claude/phys-p01-1001:harness/rgb_execution_bundle.py:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/claude/phys-p01-1001:harness/rgb_execution_bundle.py:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/claude/phys-p01-1001:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/claude/phys-p01-1001:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID:"
+      ],
+      "bundles": [
+        "zone-final-environment-v84"
+      ],
+      "workflows": [
+        {
+          "id": "zone-final-environment-check",
+          "version": "2.17.0",
+          "file": "configs/simulation_workflows.d/final_environment_v84.json"
+        },
+        {
+          "id": "zone-study-pilot",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "local",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "dispatch",
+          "version": "1.63.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "dispatch-skills",
+          "version": "1.63.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "multi-object",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-dispatch",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-teacher-fix",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-probe",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-team-jobs-smoke",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-catalogue",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-color-eval",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-perception-eval",
+          "version": "1.1.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-rgb-outcome-eval",
+          "version": "2.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "navigation",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "pair-navigation",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "camera-pair",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "rgb-traffic",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "teacher",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-map-suite",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-training",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-input-training",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-input-finalization",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "jev",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "stage-sync",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "physical",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "worker",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "tensorboard",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication-study",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication-cloud-submit",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-owncam-loc-record",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-owncam-loop-run",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-run",
+          "version": "1.1.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-memory-v3-run",
+          "version": "3.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-memory-run",
+          "version": "2.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m2-pair",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-pair-dev",
+          "version": "0.6.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "masterpi-v3-static-audit",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-study-integration-run",
+          "version": "2.14.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-pair-bootstrap-probe",
+          "version": "0.1.0",
+          "file": "configs/simulation_workflows.json"
+        }
+      ]
+    },
+    {
+      "branch": "codex/integ-target-backend",
+      "sha": "9912bb15bb492bab0f9278fc493feed1547ff8ee",
+      "RUNNABLE_ID": [
+        "origin/codex/integ-target-backend:harness/rgb_execution_bundle.py:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/integ-target-backend:harness/rgb_execution_bundle.py:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/codex/integ-target-backend:harness/rgb_execution_bundle.py:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/codex/integ-target-backend:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/codex/integ-target-backend:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID:"
+      ],
+      "bundles": [
+        "zone-final-environment-v84"
+      ],
+      "workflows": [
+        {
+          "id": "zone-final-environment-check",
+          "version": "2.17.0",
+          "file": "configs/simulation_workflows.d/final_environment_v84.json"
+        },
+        {
+          "id": "zone-target-checks",
+          "version": "2.19.0",
+          "file": "configs/simulation_workflows.d/target_v86.json"
+        },
+        {
+          "id": "zone-study-pilot",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "local",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "dispatch",
+          "version": "1.63.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "dispatch-skills",
+          "version": "1.63.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "multi-object",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-dispatch",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-teacher-fix",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-probe",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-team-jobs-smoke",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-catalogue",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-color-eval",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-perception-eval",
+          "version": "1.1.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-rgb-outcome-eval",
+          "version": "2.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "navigation",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "pair-navigation",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "camera-pair",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "rgb-traffic",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "teacher",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-map-suite",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-training",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-input-training",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-input-finalization",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "jev",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "stage-sync",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "physical",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "worker",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "tensorboard",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication-study",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication-cloud-submit",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-owncam-loc-record",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-owncam-loop-run",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-run",
+          "version": "1.1.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-memory-v3-run",
+          "version": "3.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-memory-run",
+          "version": "2.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m2-pair",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-pair-dev",
+          "version": "0.6.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "masterpi-v3-static-audit",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-study-integration-run",
+          "version": "2.14.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-pair-bootstrap-probe",
+          "version": "0.1.0",
+          "file": "configs/simulation_workflows.json"
+        }
+      ]
+    },
+    {
+      "branch": "codex/review-e2e-batch-f",
+      "sha": "887b4d5e73823733a39d10060734080e46668548",
+      "RUNNABLE_ID": [
+        "origin/codex/review-e2e-batch-f:harness/rgb_execution_bundle.py:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/review-e2e-batch-f:harness/rgb_execution_bundle.py:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/codex/review-e2e-batch-f:harness/rgb_execution_bundle.py:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/codex/review-e2e-batch-f:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/codex/review-e2e-batch-f:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID:"
+      ],
+      "bundles": [],
+      "workflows": [
+        {
+          "id": "zone-study-pilot",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "local",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "dispatch",
+          "version": "1.63.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "dispatch-skills",
+          "version": "1.63.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "multi-object",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-dispatch",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-teacher-fix",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-probe",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-team-jobs-smoke",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-catalogue",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-color-eval",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-perception-eval",
+          "version": "1.1.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-rgb-outcome-eval",
+          "version": "2.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "navigation",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "pair-navigation",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "camera-pair",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "rgb-traffic",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "teacher",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-map-suite",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-training",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-input-training",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-input-finalization",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "jev",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "stage-sync",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "physical",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "worker",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "tensorboard",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication-study",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication-cloud-submit",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-owncam-loc-record",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-owncam-loop-run",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-run",
+          "version": "1.1.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-memory-v3-run",
+          "version": "3.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-memory-run",
+          "version": "2.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m2-pair",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-pair-dev",
+          "version": "0.6.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "masterpi-v3-static-audit",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-study-integration-run",
+          "version": "2.14.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-pair-bootstrap-probe",
+          "version": "0.1.0",
+          "file": "configs/simulation_workflows.json"
+        }
+      ]
+    },
+    {
+      "branch": "codex/review-e2e-batch-d",
+      "sha": "cd4a71ab7c7cca801fe6dba163a8bb8a1179aa91",
+      "RUNNABLE_ID": [
+        "origin/codex/review-e2e-batch-d:harness/rgb_execution_bundle.py:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/review-e2e-batch-d:harness/rgb_execution_bundle.py:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/codex/review-e2e-batch-d:harness/rgb_execution_bundle.py:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/codex/review-e2e-batch-d:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/codex/review-e2e-batch-d:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID:"
+      ],
+      "bundles": [],
+      "workflows": [
+        {
+          "id": "zone-study-pilot",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "local",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "dispatch",
+          "version": "1.63.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "dispatch-skills",
+          "version": "1.63.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "multi-object",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-dispatch",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-teacher-fix",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-probe",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-team-jobs-smoke",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-catalogue",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-color-eval",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-perception-eval",
+          "version": "1.1.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-rgb-outcome-eval",
+          "version": "2.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "navigation",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "pair-navigation",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "camera-pair",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "rgb-traffic",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "teacher",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-map-suite",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-training",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-input-training",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-input-finalization",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "jev",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "stage-sync",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "physical",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "worker",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "tensorboard",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication-study",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication-cloud-submit",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-owncam-loc-record",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-owncam-loop-run",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-run",
+          "version": "1.1.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-memory-v3-run",
+          "version": "3.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-memory-run",
+          "version": "2.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m2-pair",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-pair-dev",
+          "version": "0.6.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "masterpi-v3-static-audit",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-study-integration-run",
+          "version": "2.14.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-pair-bootstrap-probe",
+          "version": "0.1.0",
+          "file": "configs/simulation_workflows.json"
+        }
+      ]
+    },
+    {
+      "branch": "codex/review-e2e-batch-e",
+      "sha": "585cf9c01d4396d6f5f1d94f5a187cd9b71425f4",
+      "RUNNABLE_ID": [
+        "origin/codex/review-e2e-batch-e:harness/rgb_execution_bundle.py:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/review-e2e-batch-e:harness/rgb_execution_bundle.py:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/codex/review-e2e-batch-e:harness/rgb_execution_bundle.py:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/codex/review-e2e-batch-e:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/codex/review-e2e-batch-e:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID:"
+      ],
+      "bundles": [],
+      "workflows": [
+        {
+          "id": "zone-study-pilot",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "local",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "dispatch",
+          "version": "1.63.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "dispatch-skills",
+          "version": "1.63.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "multi-object",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-dispatch",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-teacher-fix",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-probe",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-team-jobs-smoke",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-catalogue",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-color-eval",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-perception-eval",
+          "version": "1.1.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-rgb-outcome-eval",
+          "version": "2.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "navigation",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "pair-navigation",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "camera-pair",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "rgb-traffic",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "teacher",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-map-suite",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-training",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-input-training",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-input-finalization",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "jev",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "stage-sync",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "physical",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "worker",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "tensorboard",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication-study",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication-cloud-submit",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-owncam-loc-record",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-owncam-loop-run",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-run",
+          "version": "1.1.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-memory-v3-run",
+          "version": "3.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-memory-run",
+          "version": "2.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m2-pair",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-pair-dev",
+          "version": "0.6.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "masterpi-v3-static-audit",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-study-integration-run",
+          "version": "2.14.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-pair-bootstrap-probe",
+          "version": "0.1.0",
+          "file": "configs/simulation_workflows.json"
+        }
+      ]
+    },
+    {
+      "branch": "codex/review-e2e-batch-a",
+      "sha": "933bb1d63f2de7d5df16ede55c4235e4a65cc1f4",
+      "RUNNABLE_ID": [
+        "origin/codex/review-e2e-batch-a:harness/rgb_execution_bundle.py:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/review-e2e-batch-a:harness/rgb_execution_bundle.py:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/codex/review-e2e-batch-a:harness/rgb_execution_bundle.py:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/codex/review-e2e-batch-a:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/codex/review-e2e-batch-a:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID:"
+      ],
+      "bundles": [],
+      "workflows": [
+        {
+          "id": "zone-study-pilot",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "local",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "dispatch",
+          "version": "1.63.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "dispatch-skills",
+          "version": "1.63.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "multi-object",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-dispatch",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-teacher-fix",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-probe",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-team-jobs-smoke",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-catalogue",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-color-eval",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-perception-eval",
+          "version": "1.1.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-rgb-outcome-eval",
+          "version": "2.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "navigation",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "pair-navigation",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "camera-pair",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "rgb-traffic",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "teacher",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-map-suite",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-training",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-input-training",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-input-finalization",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "jev",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "stage-sync",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "physical",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "worker",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "tensorboard",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication-study",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication-cloud-submit",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-owncam-loc-record",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-owncam-loop-run",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-run",
+          "version": "1.1.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-memory-v3-run",
+          "version": "3.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-memory-run",
+          "version": "2.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m2-pair",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-pair-dev",
+          "version": "0.6.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "masterpi-v3-static-audit",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-study-integration-run",
+          "version": "2.14.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-pair-bootstrap-probe",
+          "version": "0.1.0",
+          "file": "configs/simulation_workflows.json"
+        }
+      ]
+    },
+    {
+      "branch": "codex/review-e2e-batch-c",
+      "sha": "7ee20a048c6b29089dbcd3c332d734bf43cd77c0",
+      "RUNNABLE_ID": [
+        "origin/codex/review-e2e-batch-c:harness/rgb_execution_bundle.py:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/review-e2e-batch-c:harness/rgb_execution_bundle.py:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/codex/review-e2e-batch-c:harness/rgb_execution_bundle.py:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/codex/review-e2e-batch-c:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/codex/review-e2e-batch-c:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID:"
+      ],
+      "bundles": [],
+      "workflows": [
+        {
+          "id": "zone-study-pilot",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "local",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "dispatch",
+          "version": "1.63.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "dispatch-skills",
+          "version": "1.63.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "multi-object",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-dispatch",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-teacher-fix",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-probe",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-team-jobs-smoke",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-catalogue",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-color-eval",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-perception-eval",
+          "version": "1.1.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-rgb-outcome-eval",
+          "version": "2.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "navigation",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "pair-navigation",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "camera-pair",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "rgb-traffic",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "teacher",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-map-suite",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-training",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-input-training",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-input-finalization",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "jev",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "stage-sync",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "physical",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "worker",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "tensorboard",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication-study",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication-cloud-submit",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-owncam-loc-record",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-owncam-loop-run",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-run",
+          "version": "1.1.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-memory-v3-run",
+          "version": "3.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-memory-run",
+          "version": "2.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m2-pair",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-pair-dev",
+          "version": "0.6.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "masterpi-v3-static-audit",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-study-integration-run",
+          "version": "2.14.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-pair-bootstrap-probe",
+          "version": "0.1.0",
+          "file": "configs/simulation_workflows.json"
+        }
+      ]
+    },
+    {
+      "branch": "codex/review-e2e-batch-b",
+      "sha": "ec0f85807ddb55927a81ac071b407b8ea53802d8",
+      "RUNNABLE_ID": [
+        "origin/codex/review-e2e-batch-b:harness/rgb_execution_bundle.py:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/review-e2e-batch-b:harness/rgb_execution_bundle.py:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/codex/review-e2e-batch-b:harness/rgb_execution_bundle.py:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/codex/review-e2e-batch-b:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/codex/review-e2e-batch-b:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID:"
+      ],
+      "bundles": [],
+      "workflows": [
+        {
+          "id": "zone-study-pilot",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "local",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "dispatch",
+          "version": "1.63.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "dispatch-skills",
+          "version": "1.63.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "multi-object",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-dispatch",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-teacher-fix",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-probe",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-team-jobs-smoke",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-catalogue",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-color-eval",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-perception-eval",
+          "version": "1.1.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-rgb-outcome-eval",
+          "version": "2.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "navigation",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "pair-navigation",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "camera-pair",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "rgb-traffic",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "teacher",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-map-suite",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-training",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-input-training",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-input-finalization",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "jev",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "stage-sync",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "physical",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "worker",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "tensorboard",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication-study",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication-cloud-submit",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-owncam-loc-record",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-owncam-loop-run",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-run",
+          "version": "1.1.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-memory-v3-run",
+          "version": "3.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-memory-run",
+          "version": "2.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m2-pair",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-pair-dev",
+          "version": "0.6.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "masterpi-v3-static-audit",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-study-integration-run",
+          "version": "2.14.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-pair-bootstrap-probe",
+          "version": "0.1.0",
+          "file": "configs/simulation_workflows.json"
+        }
+      ]
+    },
+    {
+      "branch": "codex/outputs-retention",
+      "sha": "c8379bbe16492687af9d7b2d04f85e4ae4c610cc",
+      "RUNNABLE_ID": [
+        "origin/codex/outputs-retention:harness/rgb_execution_bundle.py:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/outputs-retention:harness/rgb_execution_bundle.py:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/codex/outputs-retention:harness/rgb_execution_bundle.py:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/codex/outputs-retention:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/codex/outputs-retention:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID:"
+      ],
+      "bundles": [],
+      "workflows": [
+        {
+          "id": "zone-study-pilot",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "local",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "dispatch",
+          "version": "1.63.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "dispatch-skills",
+          "version": "1.63.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "multi-object",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-dispatch",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-teacher-fix",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-probe",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-team-jobs-smoke",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-catalogue",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-color-eval",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-perception-eval",
+          "version": "1.1.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-rgb-outcome-eval",
+          "version": "2.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "navigation",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "pair-navigation",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "camera-pair",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "rgb-traffic",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "teacher",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-map-suite",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-training",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-input-training",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-input-finalization",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "jev",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "stage-sync",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "physical",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "worker",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "tensorboard",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication-study",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication-cloud-submit",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-owncam-loc-record",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-owncam-loop-run",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-run",
+          "version": "1.1.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-memory-v3-run",
+          "version": "3.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-memory-run",
+          "version": "2.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m2-pair",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-pair-dev",
+          "version": "0.6.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "masterpi-v3-static-audit",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-study-integration-run",
+          "version": "2.14.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-pair-bootstrap-probe",
+          "version": "0.1.0",
+          "file": "configs/simulation_workflows.json"
+        }
+      ]
+    },
+    {
+      "branch": "codex/evidence-referee",
+      "sha": "39b5cc870ef064083fa41c19e1f8ece2644c025f",
+      "RUNNABLE_ID": [
+        "origin/codex/evidence-referee:harness/rgb_execution_bundle.py:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/evidence-referee:harness/rgb_execution_bundle.py:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/codex/evidence-referee:harness/rgb_execution_bundle.py:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/codex/evidence-referee:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/codex/evidence-referee:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID:"
+      ],
+      "bundles": [
+        "zone-final-environment-v84"
+      ],
+      "workflows": [
+        {
+          "id": "zone-final-environment-check",
+          "version": "2.17.0",
+          "file": "configs/simulation_workflows.d/final_environment_v84.json"
+        },
+        {
+          "id": "zone-study-pilot",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "local",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "dispatch",
+          "version": "1.63.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "dispatch-skills",
+          "version": "1.63.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "multi-object",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-dispatch",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-teacher-fix",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-probe",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-team-jobs-smoke",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-catalogue",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-color-eval",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-perception-eval",
+          "version": "1.1.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-rgb-outcome-eval",
+          "version": "2.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "navigation",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "pair-navigation",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "camera-pair",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "rgb-traffic",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "teacher",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-map-suite",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-training",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-input-training",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-input-finalization",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "jev",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "stage-sync",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "physical",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "worker",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "tensorboard",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication-study",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication-cloud-submit",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-owncam-loc-record",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-owncam-loop-run",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-run",
+          "version": "1.1.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-memory-v3-run",
+          "version": "3.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-memory-run",
+          "version": "2.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m2-pair",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-pair-dev",
+          "version": "0.6.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "masterpi-v3-static-audit",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-study-integration-run",
+          "version": "2.14.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-pair-bootstrap-probe",
+          "version": "0.1.0",
+          "file": "configs/simulation_workflows.json"
+        }
+      ]
+    },
+    {
+      "branch": "codex/stall-d1-prereg",
+      "sha": "d86cc82eedbe0c6693eaf808c54ce43387723f1d",
+      "RUNNABLE_ID": [
+        "origin/codex/stall-d1-prereg:harness/rgb_execution_bundle.py:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/stall-d1-prereg:harness/rgb_execution_bundle.py:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/codex/stall-d1-prereg:harness/rgb_execution_bundle.py:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/codex/stall-d1-prereg:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/codex/stall-d1-prereg:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID:"
+      ],
+      "bundles": [],
+      "workflows": [
+        {
+          "id": "zone-study-pilot",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "local",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "dispatch",
+          "version": "1.63.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "dispatch-skills",
+          "version": "1.63.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "multi-object",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-dispatch",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-teacher-fix",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-probe",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-team-jobs-smoke",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-catalogue",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-color-eval",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-perception-eval",
+          "version": "1.1.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-rgb-outcome-eval",
+          "version": "2.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "navigation",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "pair-navigation",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "camera-pair",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "rgb-traffic",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "teacher",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-map-suite",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-training",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-input-training",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-input-finalization",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "jev",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "stage-sync",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "physical",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "worker",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "tensorboard",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication-study",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication-cloud-submit",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-owncam-loc-record",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-owncam-loop-run",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-run",
+          "version": "1.1.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-memory-v3-run",
+          "version": "3.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-memory-run",
+          "version": "2.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m2-pair",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-pair-dev",
+          "version": "0.6.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "masterpi-v3-static-audit",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-study-integration-run",
+          "version": "2.14.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-pair-bootstrap-probe",
+          "version": "0.1.0",
+          "file": "configs/simulation_workflows.json"
+        }
+      ]
+    },
+    {
+      "branch": "codex/pair-v6h-register",
+      "sha": "266118d2c2337bbf1cff507690da131c63e2db11",
+      "RUNNABLE_ID": [
+        "origin/codex/pair-v6h-register:harness/rgb_execution_bundle.py:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/pair-v6h-register:harness/rgb_execution_bundle.py:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/codex/pair-v6h-register:harness/rgb_execution_bundle.py:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/codex/pair-v6h-register:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/codex/pair-v6h-register:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID:"
+      ],
+      "bundles": [],
+      "workflows": [
+        {
+          "id": "zone-study-pilot",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "local",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "dispatch",
+          "version": "1.63.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "dispatch-skills",
+          "version": "1.63.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "multi-object",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-dispatch",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-teacher-fix",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-probe",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-team-jobs-smoke",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-catalogue",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-color-eval",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-perception-eval",
+          "version": "1.1.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-rgb-outcome-eval",
+          "version": "2.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "navigation",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "pair-navigation",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "camera-pair",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "rgb-traffic",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "teacher",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-map-suite",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-training",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-input-training",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-input-finalization",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "jev",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "stage-sync",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "physical",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "worker",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "tensorboard",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication-study",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication-cloud-submit",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-owncam-loc-record",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-owncam-loop-run",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-run",
+          "version": "1.1.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-memory-v3-run",
+          "version": "3.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-memory-run",
+          "version": "2.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m2-pair",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-pair-dev",
+          "version": "0.6.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "masterpi-v3-static-audit",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-study-integration-run",
+          "version": "2.16.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-pair-bootstrap-probe",
+          "version": "0.1.0",
+          "file": "configs/simulation_workflows.json"
+        }
+      ]
+    },
+    {
+      "branch": "claude/b-v6h-gain",
+      "sha": "1f0e4eb501a8f1b87077df943382fc1f0777dc69",
+      "RUNNABLE_ID": [
+        "origin/claude/b-v6h-gain:harness/rgb_execution_bundle.py:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/claude/b-v6h-gain:harness/rgb_execution_bundle.py:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/claude/b-v6h-gain:harness/rgb_execution_bundle.py:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/claude/b-v6h-gain:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/claude/b-v6h-gain:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID:"
+      ],
+      "bundles": [],
+      "workflows": [
+        {
+          "id": "zone-study-pilot",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "local",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "dispatch",
+          "version": "1.63.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "dispatch-skills",
+          "version": "1.63.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "multi-object",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-dispatch",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-teacher-fix",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-probe",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-team-jobs-smoke",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-catalogue",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-color-eval",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-cargo-perception-eval",
+          "version": "1.1.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-rgb-outcome-eval",
+          "version": "2.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "navigation",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "pair-navigation",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "camera-pair",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "rgb-traffic",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "teacher",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-map-suite",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-training",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-input-training",
+          "version": "1.2.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "act-input-finalization",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "jev",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "stage-sync",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "physical",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "worker",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "tensorboard",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication-study",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "communication-cloud-submit",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-owncam-loc-record",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-owncam-loop-run",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-run",
+          "version": "1.1.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-memory-v3-run",
+          "version": "3.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m1-owncam-memory-run",
+          "version": "2.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-m2-pair",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-pair-dev",
+          "version": "0.6.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "masterpi-v3-static-audit",
+          "version": "1.0.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-study-integration-run",
+          "version": "2.14.0",
+          "file": "configs/simulation_workflows.json"
+        },
+        {
+          "id": "zone-pair-bootstrap-probe",
+          "version": "0.1.0",
+          "file": "configs/simulation_workflows.json"
+        }
+      ]
+    }
+  ],
+  "max_bundle_number": 88,
+  "max_workflow_2x": "2.20.0",
+  "max_workflow_all": "3.1.0",
+  "reserved_bundle": "zone-final-environment-v89",
+  "reserved_floor_light_workflow_version": "2.21.0",
+  "workflow_series_note": "floor-light follows integrated 2.x series; independent pair-v3 uses 3.1.0",
+  "fit_reference": {
+    "branch": "origin/codex/calib-fit-v87",
+    "sha": "a5cc1402049a249253893762e1ca347e448a5f3f",
+    "path": "experiments/2026-10-01-final-env-v87-calibration-fit/README.md"
+  },
+  "precommit_reservation_recheck": [
+    {
+      "branch": "main",
+      "sha": "78ce79162d907d88d38ef3afcfc0c62e4a72aaba",
+      "reservation_conflicts": []
+    },
+    {
+      "branch": "codex/calib-fit-v87",
+      "sha": "a5cc1402049a249253893762e1ca347e448a5f3f",
+      "reservation_conflicts": []
+    },
+    {
+      "branch": "claude/ci-shard-durations",
+      "sha": "5b52dafdd4cc3b0cc7d298635ea6bfacc997496e",
+      "reservation_conflicts": []
+    },
+    {
+      "branch": "codex/v3-pair-adapter",
+      "sha": "45c4ebc43daa96542cf298cea6f69964e501ec4a",
+      "reservation_conflicts": []
+    },
+    {
+      "branch": "claude/phys-v87-rec",
+      "sha": "668d5d4f2af7a0d9599b6762460351c3dd7f5fdf",
+      "reservation_conflicts": []
+    },
+    {
+      "branch": "codex/final-env-floor-light",
+      "sha": "04eb11c6a001f2a7d2ab916765d59b3661c06efe",
+      "reservation_conflicts": []
+    },
+    {
+      "branch": "claude/phys-p01-1001",
+      "sha": "339d281e05d80ff19bb1a78a4a9c020c9653eff6",
+      "reservation_conflicts": []
+    },
+    {
+      "branch": "codex/integ-target-backend",
+      "sha": "9912bb15bb492bab0f9278fc493feed1547ff8ee",
+      "reservation_conflicts": []
+    },
+    {
+      "branch": "codex/review-e2e-batch-f",
+      "sha": "887b4d5e73823733a39d10060734080e46668548",
+      "reservation_conflicts": []
+    },
+    {
+      "branch": "codex/review-e2e-batch-d",
+      "sha": "cd4a71ab7c7cca801fe6dba163a8bb8a1179aa91",
+      "reservation_conflicts": []
+    },
+    {
+      "branch": "codex/review-e2e-batch-e",
+      "sha": "585cf9c01d4396d6f5f1d94f5a187cd9b71425f4",
+      "reservation_conflicts": []
+    },
+    {
+      "branch": "codex/review-e2e-batch-a",
+      "sha": "933bb1d63f2de7d5df16ede55c4235e4a65cc1f4",
+      "reservation_conflicts": []
+    },
+    {
+      "branch": "codex/review-e2e-batch-c",
+      "sha": "7ee20a048c6b29089dbcd3c332d734bf43cd77c0",
+      "reservation_conflicts": []
+    },
+    {
+      "branch": "codex/review-e2e-batch-b",
+      "sha": "ec0f85807ddb55927a81ac071b407b8ea53802d8",
+      "reservation_conflicts": []
+    },
+    {
+      "branch": "codex/outputs-retention",
+      "sha": "c8379bbe16492687af9d7b2d04f85e4ae4c610cc",
+      "reservation_conflicts": []
+    },
+    {
+      "branch": "codex/evidence-referee",
+      "sha": "39b5cc870ef064083fa41c19e1f8ece2644c025f",
+      "reservation_conflicts": []
+    },
+    {
+      "branch": "codex/stall-d1-prereg",
+      "sha": "d86cc82eedbe0c6693eaf808c54ce43387723f1d",
+      "reservation_conflicts": []
+    },
+    {
+      "branch": "codex/pair-v6h-register",
+      "sha": "266118d2c2337bbf1cff507690da131c63e2db11",
+      "reservation_conflicts": []
+    },
+    {
+      "branch": "claude/b-v6h-gain",
+      "sha": "1f0e4eb501a8f1b87077df943382fc1f0777dc69",
+      "reservation_conflicts": []
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "scope": "offline diagnosis on existing v88 training raw only",
+  "checks": {
+    "raw_audit_and_hash_recheck_files": 11175,
+    "optimizer_active_bounds": 5,
+    "signed_level_horizon_support_cells": 288,
+    "support_cells_lost_to_load_filter": 0,
+    "pair_edge_unavailable_windows": 54,
+    "example_jpegs": 7,
+    "example_jpeg_bytes": 246790,
+    "python_ast": "PASS",
+    "json_parse": "PASS",
+    "local_links": "PASS",
+    "reference_and_image_hashes": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "not_run": [
+    "physics stepping",
+    "rendering",
+    "held-out scoring",
+    "controller regression suite (no controller or criterion changes)",
+    "rendered fix acceptance"
+  ],
+  "scripts": {
+    "make_examples.py": "c711609496a14eb617a489c9d0c6d369683be0232e846b1b2666e4802123f408",
+    "diagnose.py": "b86883c42b2f4beaca9d51362079776cc21908b27cfde56301672cdb769f9d91",
+    "inspect_geometry.py": "5fbeaa4f8962510f6231e6fcf9b11646930cbd6930c54db9a190a33b75e63959",
+    "inspect_rejections.py": "a0900de725d46f3974a8e8128284392f40572fee78e58b46966fd4d83954d6c1"
+  },
+  "remaining": [
+    "new loaded schedule and bundle",
+    "coordinator frozen-criterion decisions",
+    "pre-v3 original JPEG location",
+    "TensorBoard browser pin/HParams display"
+  ]
+}

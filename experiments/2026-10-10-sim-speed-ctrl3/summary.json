@@ -1,0 +1,722 @@
+{
+  "schema": "ugrp.dev_speed4.v1",
+  "status": "COMPLETE_NOT_ADOPTED",
+  "n": 8,
+  "N": 8,
+  "adopted": false,
+  "default": "eager",
+  "cases": {
+    "s3": {
+      "n": 4,
+      "N": 4,
+      "wall": {
+        "median": 1.001112624288615,
+        "range": [
+          0.99660881302759,
+          1.003429087137875
+        ],
+        "ratios": [
+          0.99660881302759,
+          1.0000831660202658,
+          1.003429087137875,
+          1.0021420825569645
+        ]
+      },
+      "cpu": {
+        "median": 1.0050839612987899,
+        "range": [
+          0.9977233142997401,
+          1.0090542464042276
+        ],
+        "ratios": [
+          0.9977233142997401,
+          1.0031385241425304,
+          1.0090542464042276,
+          1.0070293984550494
+        ]
+      }
+    },
+    "ego": {
+      "n": 4,
+      "N": 4,
+      "wall": {
+        "median": 1.0027850130724125,
+        "range": [
+          0.999765731877897,
+          1.0128810856292605
+        ],
+        "ratios": [
+          1.0054641426687592,
+          1.0001058834760659,
+          0.999765731877897,
+          1.0128810856292605
+        ]
+      },
+      "cpu": {
+        "median": 1.0024254962415469,
+        "range": [
+          1.000116927222069,
+          1.0043735786507315
+        ],
+        "ratios": [
+          1.0043735786507315,
+          1.002654312442976,
+          1.000116927222069,
+          1.0021966800401176
+        ]
+      }
+    }
+  },
+  "candidates": [
+    "A eager",
+    "B lazy-v1"
+  ],
+  "pairs_per_case": 4,
+  "admission": "load1 <51 and MemAvailable >=6GiB; research peers allowed",
+  "criteria": "complete60SIM; same commands, frame-ledger and allJPEG bytes; projected control JSON equal; timing quantiles only separated; no gain claim on ineligible pairs",
+  "telemetry_exclusions": [
+    "JSON object key serialization order in bundle/student_record only",
+    "18 inference_wall_ms p50/p90/max fields at explicit provider paths; n preserved"
+  ],
+  "initial_check": "each run at 180seconds or completion: exception, frame/SIM progress, evaluation base/grip motion, commands, stage; stop owned anomalous run",
+  "references": [
+    "https://docs.python.org/3/library/json.html",
+    "https://www.rfc-editor.org/rfc/rfc8785.html",
+    "https://google.github.io/benchmark/user_guide.html"
+  ],
+  "tensorboard_conversion": false,
+  "failed_rounds": [
+    {
+      "name": "speed4-paired-4bc1",
+      "source": "4bc172c3bd8603ae4672d5acec149f84810c60c1",
+      "n": 0,
+      "N": 8,
+      "cause": "evaluation motion dict shadowed by module import on ego first frame; early detected; owned parent stopped; originals retained",
+      "raw": "oracle-x86:~/ugrp-sim/runs/speed4-paired-4bc1",
+      "peer_signals": 0
+    },
+    {
+      "name": "speed4-paired-6b9a",
+      "source": "6b9a3aa73650a006570c8a754df85c6f9daff18b",
+      "cause": "S3 v98 buffers command ledgers; early disk-only observer falsely saw command0; keep completed ego pairs and all originals; add independent append-call observer without flushing or changing bytes",
+      "raw": "oracle-x86:~/ugrp-sim/runs/speed4-paired-6b9a",
+      "peer_signals": 0
+    }
+  ],
+  "measurement_source": "f29d141d09b31ad6fa503aba95a584249ec2b974",
+  "early_check": {
+    "n": 16,
+    "N": 16,
+    "raw": "/Users/changmin/projects/ugrp/outputs/speedctrl3-delivery/speed4-f29d-early-check.json",
+    "sha256": "38bb95c9eb393b5216635439f8b0fb5d40709bd5466e8fe2cf9150a9b5d3df8e",
+    "per_run": {
+      "s3-p1-eager": [
+        24.35,
+        1321,
+        874,
+        2,
+        0.173289288070742,
+        []
+      ],
+      "s3-p1-lazy-v1": [
+        24.35,
+        1321,
+        874,
+        2,
+        0.173289288070742,
+        []
+      ],
+      "ego-p1-eager": [
+        48.3,
+        238,
+        236,
+        5,
+        0.3320870732789239,
+        [
+          "explore"
+        ]
+      ],
+      "ego-p1-lazy-v1": [
+        47.3,
+        235,
+        233,
+        5,
+        0.3026025294403712,
+        [
+          "explore"
+        ]
+      ],
+      "s3-p2-lazy-v1": [
+        24.35,
+        1321,
+        874,
+        2,
+        0.173289288070742,
+        []
+      ],
+      "s3-p2-eager": [
+        24.35,
+        1321,
+        874,
+        2,
+        0.173289288070742,
+        []
+      ],
+      "ego-p2-lazy-v1": [
+        48.3,
+        238,
+        235,
+        5,
+        0.3320870732789239,
+        [
+          "explore"
+        ]
+      ],
+      "ego-p2-eager": [
+        48.3,
+        236,
+        234,
+        5,
+        0.3320870732789239,
+        [
+          "explore"
+        ]
+      ],
+      "s3-p3-eager": [
+        25.35,
+        1381,
+        884,
+        2,
+        0.173289288070742,
+        []
+      ],
+      "s3-p3-lazy-v1": [
+        24.35,
+        1321,
+        874,
+        2,
+        0.173289288070742,
+        []
+      ],
+      "ego-p3-eager": [
+        48.3,
+        238,
+        236,
+        5,
+        0.3320870732789239,
+        [
+          "explore"
+        ]
+      ],
+      "ego-p3-lazy-v1": [
+        48.3,
+        240,
+        237,
+        5,
+        0.3320870732789239,
+        [
+          "explore"
+        ]
+      ],
+      "s3-p4-lazy-v1": [
+        24.35,
+        1321,
+        874,
+        2,
+        0.173289288070742,
+        []
+      ],
+      "s3-p4-eager": [
+        24.35,
+        1321,
+        874,
+        2,
+        0.173289288070742,
+        []
+      ],
+      "ego-p4-lazy-v1": [
+        47.3,
+        235,
+        233,
+        5,
+        0.3026025294403712,
+        [
+          "explore"
+        ]
+      ],
+      "ego-p4-eager": [
+        48.3,
+        239,
+        237,
+        5,
+        0.3320870732789239,
+        [
+          "explore"
+        ]
+      ]
+    },
+    "columns": [
+      "sim_time",
+      "frames",
+      "commands",
+      "translating_commands",
+      "motion_delta_m",
+      "stages"
+    ]
+  },
+  "preceding_fetch": [
+    {
+      "name": "speed4-paired-4bc1",
+      "files": 2458,
+      "bytes": 79811159,
+      "mismatches": [],
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/speed4-paired-4bc1",
+      "inventory_sha256": "95df4907cf8124241a07cf39c9977d2966b04a32846ef3c80cb911f89aedd03b",
+      "EXIT": "1"
+    },
+    {
+      "name": "speedctrl3-abba-2e08",
+      "files": 12,
+      "bytes": 3616705,
+      "mismatches": [],
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/speedctrl3-abba-2e08",
+      "inventory_sha256": "0f397dd7a6637cf5d828393a657e11385c9b0944aed69a77086bb3ad67e3d6e5",
+      "EXIT": "130"
+    },
+    {
+      "name": "speed4-paired-6b9a",
+      "files": 14415,
+      "bytes": 781140230,
+      "mismatches": [],
+      "inventory_sha256": "68437ccd4211f23647168e5c41727a386a7f3e7a4f7d9f5a9f9a1a9c23888443",
+      "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/speed4-paired-6b9a",
+      "EXIT": "1"
+    }
+  ],
+  "cause": "all mandatory recorded/consumed camera frames are materialized in both modes; render count unchanged; no wall/CPU gain and online <=1.5 not met",
+  "raw": "oracle-x86:~/ugrp-sim/runs/speed4-paired-f29d",
+  "local_raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/speed4-paired-f29d",
+  "comparison_sha256": "292f52d49baab9203eee30425f7099fccdd0219bf14dd1dbaa7df2732a18435c",
+  "wall_target_n": 0,
+  "wall_target_N": 16,
+  "pairs": [
+    {
+      "kind": "s3",
+      "pair": "p1",
+      "eligible": true,
+      "raw_byte_identical": false,
+      "raw_mismatches": [
+        "bundle.json",
+        "student_record.json"
+      ],
+      "behavior_byte_identical": true,
+      "behavior_mismatches": [],
+      "compared_files": 3609,
+      "start_skew_s": 0.03019857406616211,
+      "sample_proven_overlap_s": 406.1409091949463,
+      "wall_ratio_b_over_a": 0.99660881302759,
+      "cpu_ratio_b_over_a": 0.9977233142997401
+    },
+    {
+      "kind": "s3",
+      "pair": "p2",
+      "eligible": true,
+      "raw_byte_identical": false,
+      "raw_mismatches": [
+        "bundle.json",
+        "student_record.json"
+      ],
+      "behavior_byte_identical": true,
+      "behavior_mismatches": [],
+      "compared_files": 3609,
+      "start_skew_s": 0.034342288970947266,
+      "sample_proven_overlap_s": 406.1591684818268,
+      "wall_ratio_b_over_a": 1.0000831660202658,
+      "cpu_ratio_b_over_a": 1.0031385241425304
+    },
+    {
+      "kind": "s3",
+      "pair": "p3",
+      "eligible": true,
+      "raw_byte_identical": false,
+      "raw_mismatches": [
+        "bundle.json",
+        "student_record.json"
+      ],
+      "behavior_byte_identical": true,
+      "behavior_mismatches": [],
+      "compared_files": 3609,
+      "start_skew_s": 0.04234123229980469,
+      "sample_proven_overlap_s": 405.30710673332214,
+      "wall_ratio_b_over_a": 1.003429087137875,
+      "cpu_ratio_b_over_a": 1.0090542464042276
+    },
+    {
+      "kind": "s3",
+      "pair": "p4",
+      "eligible": true,
+      "raw_byte_identical": false,
+      "raw_mismatches": [
+        "bundle.json",
+        "student_record.json"
+      ],
+      "behavior_byte_identical": true,
+      "behavior_mismatches": [],
+      "compared_files": 3609,
+      "start_skew_s": 0.03207063674926758,
+      "sample_proven_overlap_s": 405.19990253448486,
+      "wall_ratio_b_over_a": 1.0021420825569645,
+      "cpu_ratio_b_over_a": 1.0070293984550494
+    },
+    {
+      "kind": "ego",
+      "pair": "p1",
+      "eligible": true,
+      "raw_byte_identical": true,
+      "raw_mismatches": [],
+      "behavior_byte_identical": true,
+      "behavior_mismatches": [],
+      "compared_files": 317,
+      "start_skew_s": 0.015982389450073242,
+      "sample_proven_overlap_s": 245.76506066322327,
+      "wall_ratio_b_over_a": 1.0054641426687592,
+      "cpu_ratio_b_over_a": 1.0043735786507315
+    },
+    {
+      "kind": "ego",
+      "pair": "p2",
+      "eligible": true,
+      "raw_byte_identical": true,
+      "raw_mismatches": [],
+      "behavior_byte_identical": true,
+      "behavior_mismatches": [],
+      "compared_files": 317,
+      "start_skew_s": 0.02645087242126465,
+      "sample_proven_overlap_s": 247.43926429748535,
+      "wall_ratio_b_over_a": 1.0001058834760659,
+      "cpu_ratio_b_over_a": 1.002654312442976
+    },
+    {
+      "kind": "ego",
+      "pair": "p3",
+      "eligible": true,
+      "raw_byte_identical": true,
+      "raw_mismatches": [],
+      "behavior_byte_identical": true,
+      "behavior_mismatches": [],
+      "compared_files": 317,
+      "start_skew_s": 0.03762507438659668,
+      "sample_proven_overlap_s": 246.80632781982422,
+      "wall_ratio_b_over_a": 0.999765731877897,
+      "cpu_ratio_b_over_a": 1.000116927222069
+    },
+    {
+      "kind": "ego",
+      "pair": "p4",
+      "eligible": true,
+      "raw_byte_identical": true,
+      "raw_mismatches": [],
+      "behavior_byte_identical": true,
+      "behavior_mismatches": [],
+      "compared_files": 317,
+      "start_skew_s": 0.011370658874511719,
+      "sample_proven_overlap_s": 244.82105422019958,
+      "wall_ratio_b_over_a": 1.0128810856292605,
+      "cpu_ratio_b_over_a": 1.0021966800401176
+    }
+  ],
+  "table": {
+    "s3": {
+      "eager": {
+        "wall_per_sim": 6.79013874304998,
+        "cpu_per_sim": 24.897847716666668,
+        "rendered": 3600.0,
+        "skipped": 0.0
+      },
+      "lazy-v1": {
+        "wall_per_sim": 6.793483998166691,
+        "cpu_per_sim": 25.024339791666666,
+        "rendered": 3600.0,
+        "skipped": 0.0
+      },
+      "strict_raw_n": 0
+    },
+    "ego": {
+      "eager": {
+        "wall_per_sim": 4.1363799357333235,
+        "cpu_per_sim": 6.8010905,
+        "rendered": 301.0,
+        "skipped": 0.0
+      },
+      "lazy-v1": {
+        "wall_per_sim": 4.151031388983332,
+        "cpu_per_sim": 6.817403425,
+        "rendered": 301.0,
+        "skipped": 0.0
+      },
+      "strict_raw_n": 4
+    }
+  },
+  "measurement_limit": "f29d receipt ended_at was after source verification; overlap independently proven by 1-second load-sample intervals inside measurement; final driver records ended_at at measurement end. Wall/CPU quantities and camera module unchanged.",
+  "review": {
+    "first": "f29d P0=0/P1=2/P2=1; spawn registration interrupt, cleanup failure isolation, ended_at fixed without changing candidate camera module; 26 tests pass",
+    "final": {
+      "source": "170fc9661d79cdcc61f3d4cbcffe45f8e2d4b100",
+      "verdict": "source-ready",
+      "P0": 0,
+      "P1": 0,
+      "P2": 0,
+      "scope": "only changed source; no independent physics/performance",
+      "resolved_previous": "P1=2 P2=1"
+    },
+    "correction_scope": "spawn/cleanup and telemetry endpoint only; sim/lazy_camera.py, adapters, controller and physical configuration unchanged from measurement source"
+  },
+  "run_metrics": {
+    "columns": [
+      "name",
+      "wall_per_sim",
+      "cpu_per_sim",
+      "load_start_1",
+      "load_end_1",
+      "load_mean_1",
+      "rendered",
+      "skipped"
+    ],
+    "rows": [
+      [
+        "s3-p1-eager",
+        6.8158904059333505,
+        24.95771228333333,
+        43.6953125,
+        81.0693359375,
+        107.72736118008864,
+        3600,
+        0
+      ],
+      [
+        "s3-p1-lazy-v1",
+        6.792776447183375,
+        24.900891416666664,
+        43.6953125,
+        81.0693359375,
+        107.79269947725184,
+        3600,
+        0
+      ],
+      [
+        "s3-p2-eager",
+        6.793626550266648,
+        24.942886033333334,
+        43.6953125,
+        81.0693359375,
+        107.79269947725184,
+        3600,
+        0
+      ],
+      [
+        "s3-p2-lazy-v1",
+        6.794191549150006,
+        25.021169883333332,
+        43.6953125,
+        81.0693359375,
+        107.79269947725184,
+        3600,
+        0
+      ],
+      [
+        "s3-p3-eager",
+        6.786650935833313,
+        24.824153216666666,
+        43.6953125,
+        81.0693359375,
+        107.85835884712837,
+        3600,
+        0
+      ],
+      [
+        "s3-p3-lazy-v1",
+        6.809922953266626,
+        25.048917216666666,
+        43.6953125,
+        81.0693359375,
+        107.72736118008864,
+        3600,
+        0
+      ],
+      [
+        "s3-p4-eager",
+        6.773134242416685,
+        24.8528094,
+        43.6953125,
+        81.0693359375,
+        107.85835884712837,
+        3600,
+        0
+      ],
+      [
+        "s3-p4-lazy-v1",
+        6.7876428551333445,
+        25.0275097,
+        43.6953125,
+        81.0693359375,
+        107.85835884712837,
+        3600,
+        0
+      ],
+      [
+        "ego-p1-eager",
+        4.129070902383319,
+        6.779730216666667,
+        43.6953125,
+        137.86865234375,
+        113.0563263063006,
+        301,
+        0
+      ],
+      [
+        "ego-p1-lazy-v1",
+        4.151632734883363,
+        6.8093819,
+        43.6953125,
+        137.86865234375,
+        113.25882632090864,
+        301,
+        0
+      ],
+      [
+        "ego-p2-eager",
+        4.149990627650004,
+        6.807356100000001,
+        43.6953125,
+        137.86865234375,
+        113.25882632090864,
+        301,
+        0
+      ],
+      [
+        "ego-p2-lazy-v1",
+        4.1504300430833005,
+        6.82542495,
+        43.6953125,
+        137.86865234375,
+        113.22463878953313,
+        301,
+        0
+      ],
+      [
+        "ego-p3-eager",
+        4.143688969083329,
+        6.794824899999999,
+        43.6953125,
+        137.86865234375,
+        113.11951668031755,
+        301,
+        0
+      ],
+      [
+        "ego-p3-lazy-v1",
+        4.142718234849963,
+        6.7956194000000005,
+        43.6953125,
+        137.86865234375,
+        113.19051631804436,
+        301,
+        0
+      ],
+      [
+        "ego-p4-eager",
+        4.110770737083355,
+        6.817811300000001,
+        43.6953125,
+        137.86865234375,
+        112.95546319232723,
+        301,
+        0
+      ],
+      [
+        "ego-p4-lazy-v1",
+        4.163721926949984,
+        6.83278785,
+        43.6953125,
+        137.86865234375,
+        113.21478099899599,
+        301,
+        0
+      ]
+    ]
+  },
+  "raw_byte_n": 4,
+  "raw_byte_N": 8,
+  "tests": {
+    "files": [
+      "tests/test_lazy_camera.py",
+      "tests/test_simulation_workflow_manager.py"
+    ],
+    "first_n": 44,
+    "final_changed_file_n": 26,
+    "mac_physics": 0,
+    "mac_render": 0
+  },
+  "retrieval": {
+    "name": "speed4-paired-f29d",
+    "files": 31949,
+    "bytes": 1296663389,
+    "mismatches": [],
+    "frames_sha256_verified": 31208,
+    "frame_mismatches": [],
+    "independent_projection_pairs": 8,
+    "raw": "/Users/changmin/projects/ugrp/outputs/oracle-runs/speed4-paired-f29d",
+    "remote_raw": "oracle-x86:~/ugrp-sim/runs/speed4-paired-f29d",
+    "remote_originals_retained": true,
+    "inventory_sha256": "3b2e184a05d3a7280152dd74869054480aefa5c8c3e57bd5affc7bdd4ca04c48",
+    "comparison_sha256": "292f52d49baab9203eee30425f7099fccdd0219bf14dd1dbaa7df2732a18435c",
+    "EXIT": "0",
+    "receipt_raw": "/Users/changmin/projects/ugrp/outputs/speedctrl3-delivery/speed4-final-verification.json",
+    "receipt_sha256": "295ce245f91d27a1e0365cd2d9521c410834c4f061bce707ce3ea0f9ae854cf6"
+  },
+  "cause_raw_numbers": {
+    "s3": {
+      "eager": {
+        "render_wall_per_sim": 1.7350305588179555,
+        "capture_wall_per_sim": 1.8821423830077038,
+        "rendered_each": 3600,
+        "consumer_materialized_each": 0,
+        "recording_materialized_each": 0,
+        "skipped_each": 0
+      },
+      "lazy-v1": {
+        "render_wall_per_sim": 1.7295027612911023,
+        "capture_wall_per_sim": 1.8761597266828782,
+        "rendered_each": 3600,
+        "consumer_materialized_each": 3600,
+        "recording_materialized_each": 0,
+        "skipped_each": 0
+      }
+    },
+    "ego": {
+      "eager": {
+        "render_wall_per_sim": 0.20776465673310063,
+        "capture_wall_per_sim": 0.22142569883317265,
+        "rendered_each": 301,
+        "consumer_materialized_each": 0,
+        "recording_materialized_each": 0,
+        "skipped_each": 0
+      },
+      "lazy-v1": {
+        "render_wall_per_sim": 0.2082336146340822,
+        "capture_wall_per_sim": 0.22202200089929341,
+        "rendered_each": 301,
+        "consumer_materialized_each": 301,
+        "recording_materialized_each": 0,
+        "skipped_each": 0
+      }
+    }
+  },
+  "evaluation_pose_check": {
+    "n": 8,
+    "N": 8,
+    "scope": "initial/latest sampled base/grip and max-motion values, SIM sample time; wall clock excluded; not full particle/RNG state proof",
+    "raw": "/Users/changmin/projects/ugrp/outputs/speedctrl3-delivery/speed4-evaluation-pose-check.json",
+    "sha256": "cb56fc087a6a0654c1b42d5578d8fe6be7f8463c33fb084b2a0b5f2ea1d5ea06"
+  }
+}

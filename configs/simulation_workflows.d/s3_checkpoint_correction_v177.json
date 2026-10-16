@@ -1,0 +1,24 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "zone-s3-checkpoint-correction-v177",
+      "version": "7.70.0",
+      "purpose": "Unbroken registered routes and default-off own-RGB checkpoint reacquisition",
+      "entry": "scripts/run_s3_checkpoint_correction.py",
+      "runner": "scripts.run_s3_checkpoint_correction",
+      "docs": "experiments/2026-10-11-s3-checkpoint-correction/README.md",
+      "requires": "committed oracle-x86 OSMesa LP4; persistent runs; load<51 memory>=6GiB",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha",
+        "--condition",
+        "--route-case",
+        "--seed"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

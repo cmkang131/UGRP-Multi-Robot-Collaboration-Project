@@ -1,0 +1,345 @@
+diff --git a/harness/vision_pose_source_highpose.py b/harness/vision_pose_source_highpose.py
+index 3384cfa..d099fc8 100644
+--- a/harness/vision_pose_source_highpose.py
++++ b/harness/vision_pose_source_highpose.py
+@@ -26,6 +26,12 @@ from harness import zone_pair_highpose_pf_consistency as pf_consistency
+ # DEV candidate: constants come from the sources, not tuned; not validated closed-loop.
+ PF_RECOVERY = {'alpha_slow': 0.001, 'alpha_fast': 0.1, 'max_fraction': 1.0, 'uniform_share': 0.0, 'local_std': [0.1, 0.1, 0.2]}
+ 
++# Expansion resetting (Ueda, Arai & Sakamoto, IROS 2004; emcl2 defaults expansion_radius_position 0.1 m / expansion_radius_orientation 0.2 rad):
++# an own arrival rejection says belief and view disagree, so keeping belief and sigma (what begin_relocalization does) repeats the rejected view.
++# The belief is expanded ONLY when the arrival-rejection path arms it (zone_pair_highpose_arrival_confirm.request_belief_expansion); the DR
++# checkpoint and every other relocalization keep their belief. Radii are the emcl2 defaults: DEV candidate, not tuned.
++EXPANSION_RADIUS = (0.1, 0.1, 0.2)
++
+ 
+ class HighPoseSource(PairVisionPoseSource):
+     provider_id = contract.PROVIDER_ID
+@@ -45,7 +51,8 @@ class HighPoseSource(PairVisionPoseSource):
+             'render_profile': 'floor_light_v1', 'qualification': 'unqualified OpenCV/HIGH candidate',
+             'own_image_gates': {'path': self.gates['path'], 'sha256': self.gates['sha256']},
+             'pf_consistency': pf_consistency.record(pf_consistency.CONFIG),
+-            'pf_recovery': copy.deepcopy(PF_RECOVERY)}
++            'pf_recovery': copy.deepcopy(PF_RECOVERY),
++            'pf_expansion': {'radius': list(EXPANSION_RADIUS), 'trigger': 'own arrival-view rejection only (one shot)'}}
+         # These frozen modules supply only column geometry, likelihood and PF.
+         # load_vis3 never imports seg_model/torch or opens a checkpoint.
+         vl, vpf = vp.load_vis3()
+@@ -85,6 +92,7 @@ class HighPoseSource(PairVisionPoseSource):
+                        'rejected_frames': 0, 'after_failure': 0}
+         self.timing, self.lifecycle = [], []
+         self._started, self._closed, self._last_frame_t = False, False, None
++        self._expand_next = False
+         pair = cal['pair_model']
+         self.beam_edge = HighBeamEdgeTracker(float(pair['slope_to_yaw_ratio']))
+         self.carry_yaw_fallback = {'pair': True, 'edge': HIGH_EDGE_INFORMATIVE,
+@@ -93,6 +101,28 @@ class HighPoseSource(PairVisionPoseSource):
+         self.worker = worker if worker is not None else OpenCVObserver(
+             vl, lambda: pf.column_model_for(self.servo), self.gates['values'])
+ 
++    def arm_expansion(self):
++        """One shot: the next begin_relocalization also expands the belief. Only the arrival-rejection path arms it."""
++        self._expand_next = True
++
++    def disarm_expansion(self):
++        self._expand_next = False
++
++    def begin_relocalization(self, now, servo):
++        expand, self._expand_next = self._expand_next, False
++        super().begin_relocalization(now, servo)
++        if expand:
++            self._expand_belief()
++
++    def _expand_belief(self):
++        """Expansion resetting at the (already predicted) relocalization time: uniform +-radius per particle, weights reset."""
++        pf = self.loc._pf
++        pf.px = pf.px + pf.rng.uniform(-1., 1., size=pf.px.shape)*np.asarray(EXPANSION_RADIUS, float)
++        pf.px[:, 2] = pf.wrap(pf.px[:, 2])
++        pf.logw = np.zeros(pf.n)
++        self.lifecycle[-1].update(expansion_radius=list(EXPANSION_RADIUS), belief_preserved=False,
++                                  particles_sha256_after_expansion=contract.base.digest(pf.px.tolist()))
++
+     def on_command(self, row):
+         super().on_command(row)
+         if not pose.at_high(self.servo):
+diff --git a/harness/zone_pair_highpose_arrival_confirm.py b/harness/zone_pair_highpose_arrival_confirm.py
+index 85f7659..938a8d3 100644
+--- a/harness/zone_pair_highpose_arrival_confirm.py
++++ b/harness/zone_pair_highpose_arrival_confirm.py
+@@ -26,11 +26,12 @@ must be consistent with the beam seen from some pose inside the stated tolerance
+ 
+ On a rejection the driver relocalizes and approaches again, at most ``MAX_VIEW_RETRIES`` times. In v98 the
+ relocalization is ``GuardedPairApproach._relocalize`` -> provider ``begin_relocalization``: it voids only the fix
+-receipt and KEEPS the particle belief and its sigma (it is not ``run_m2_pair._start_reapproach``'s fresh localizer),
+-then runs the look; ``arrival_checked``/``rotated``/``hold_yaw`` are reset. An over-confident wrong belief is
+-therefore usually not corrected by the look, and the second arrival is rejected on the same view: the check ends a
+-false arrival cleanly, it does not recover from it (independent review #363 P1-2; recovering an over-confident PF,
+-e.g. a wide static-map prior re-initialisation or augmented-MCL particle injection, is a separate design). The retry
++receipt and keeps the particle belief and its sigma (it is not ``run_m2_pair._start_reapproach``'s fresh localizer),
++then runs the look; ``arrival_checked``/``rotated``/``hold_yaw`` are reset. Kept alone, an over-confident wrong belief
++is not corrected by the look and the second arrival is rejected on the same view (independent review #363 P1-2). The
++rejection path therefore first arms the provider's one-shot belief expansion (``request_belief_expansion``; expansion
++resetting, Ueda et al. 2004, radii 0.1 m / 0.1 m / 0.2 rad as in emcl2) so the look starts from a belief wide enough to
++reach the view; no other relocalization (DR checkpoint, look-around) expands. The retry
+ count ``MAX_VIEW_RETRIES`` = ``run_m2_pair.MAX_REAPPROACH``; the next rejection ends the approach with outcome
+ ``arrival_not_confirmed_by_view`` (controller failure ``APPROACH_ARRIVAL_NOT_CONFIRMED_BY_VIEW``).
+ The decision waits at most ``CONFIRM_WAIT_S`` (= ``blind_close.HOVER_CONFIRM_MAX_S``) for a frame captured after
+@@ -278,10 +279,36 @@ class ViewConfirmedArrival:
+         self._event(now, 'arrival_view_rejected', **detail)
+         if self.view_rejections > MAX_VIEW_RETRIES:
+             return self._finish(now, OUTCOME)
+-        # approach again: v98 relocalization voids the fix receipt only (belief and sigma kept), then looks
++        # approach again: relocalization voids the fix receipt, after a one-shot belief expansion (expansion resetting), then looks
+         self.arrival_checked, self.rotated, self.hold_yaw = False, False, None
+         self.arrival_rechecks, self.path, self.last_look = 0, None, None
+-        return self._relocalize(now)
++        pose = getattr(self, '_shared_pose', None)
++        request_belief_expansion(pose)
++        try:
++            return self._relocalize(now)
++        finally:
++            clear_belief_expansion(pose)             # the request never outlives this relocalization (e.g. a delayed-provider branch)
++
++
++def request_belief_expansion(pose) -> bool:
++    """Arrival-rejection path only: arm the own provider's one-shot belief expansion for the coming relocalization.
++
++    ``pose`` is the driver's shared pose source (the delayed wrapper exposes the provider as ``.provider``); a source without
++    the hook (fakes, older providers) is left unchanged and False is returned. Nothing else (DR checkpoint, look-around) arms it.
++    """
++    provider = getattr(pose, 'provider', pose)
++    arm = getattr(provider, 'arm_expansion', None)
++    if arm is None:
++        return False
++    arm()
++    return True
++
++
++def clear_belief_expansion(pose) -> None:
++    provider = getattr(pose, 'provider', pose)
++    disarm = getattr(provider, 'disarm_expansion', None)
++    if disarm is not None:
++        disarm()
+ 
+ 
+ _CACHE: dict = {}
+@@ -309,8 +336,9 @@ def record() -> dict:
+             'max_view_retries_source': 'run_m2_pair.MAX_REAPPROACH', 'confirm_wait_s': CONFIRM_WAIT_S,
+             'confirm_wait_source': 'blind_close.HOVER_CONFIRM_MAX_S', 'frame_settle_s': FRAME_SETTLE_S,
+             'wait_restarts_on_own_command': True,
+-            'retry_relocalization': 'begin_relocalization: fix receipt voided, particle belief and sigma kept '
+-                                    '(not a fresh localizer); ends a false arrival, does not recover from it',
++            'retry_relocalization': 'one-shot belief expansion (expansion resetting: particles displaced uniformly by +-(0.1 m, 0.1 m, '
++                                    '0.2 rad), weights reset; Ueda 2004 / emcl2 defaults) then begin_relocalization (fix receipt voided); '
++                                    'sigma is widened by the expansion, not a fresh localizer; no ground truth, no PF sigma input',
+             'outcome': OUTCOME, 'failure': FAILURE, 'cause': CAUSE, 'band_half_len_m': BAND_HALF_LEN_M,
+             'inputs': 'own RGB + measured camera model of the drive posture + static order sheet / beam spec',
+             'not_inputs': 'ground truth, simulator state, PF sigma, partner pose, shared top camera',
+diff --git a/scripts/run_ci_tests.py b/scripts/run_ci_tests.py
+index 41c7248..ba597c3 100644
+--- a/scripts/run_ci_tests.py
++++ b/scripts/run_ci_tests.py
+@@ -118,6 +118,7 @@ TEST_PATTERNS = (
+     "tests/test_highpose_edge_uninformative.py",  # v98 HIGH edge = render near-clip trace: not used (znear live check)
+     "tests/test_highpose_grasp_receipt_carry.py",  # v98 grasp receipt kept across HIGH stops (1236c63d record)
+     "tests/test_highpose_receipt_nees.py",  # v98 eval-only NEES of HIGH checkpoint receipts (σ 예산 영수증), never fed to control
++    "tests/test_highpose_belief_expansion.py",  # v98 R2: one-shot belief expansion armed only by an arrival-view rejection
+     "tests/test_zone_final_pair_review_fixes.py",
+     "tests/test_review_344*.py",
+     "tests/test_zone_final_environment_floor_light.py",
+diff --git a/tests/test_highpose_arrival_confirm.py b/tests/test_highpose_arrival_confirm.py
+index 0a075f0..3b5e8f8 100644
+--- a/tests/test_highpose_arrival_confirm.py
++++ b/tests/test_highpose_arrival_confirm.py
+@@ -307,13 +307,88 @@ def test_mutation_wait_not_restarted_by_a_command_rejects_the_true_dock(monkeypa
+     assert d.log[0][1]['reasons'] == ['NO_SETTLED_FRAME']
+ 
+ 
+-def test_record_states_the_relocalization_keeps_the_belief_review_p1_2():
++def test_record_states_the_one_shot_expansion_before_the_relocalization_review_p1_2():
+     r = ac.record()
+     assert r['wait_restarts_on_own_command'] is True
+-    assert 'belief and sigma kept' in r['retry_relocalization'] and 'not a fresh localizer' in r['retry_relocalization']
++    assert 'expansion' in r['retry_relocalization'] and 'not a fresh localizer' in r['retry_relocalization']
++    assert 'no ground truth' in r['retry_relocalization']
+     assert 'fresh localizer + wide look' not in (ac.__doc__ or '')
+ 
+ 
++class FakeProvider:
++    def __init__(self):
++        self.armed, self.arms, self.disarms = False, 0, 0
++
++    def arm_expansion(self):
++        self.armed = True
++        self.arms += 1
++
++    def disarm_expansion(self):
++        self.armed = False
++        self.disarms += 1
++
++
++class FakePose:
++    def __init__(self):
++        self.provider = FakeProvider()
++
++
++class ExpandingBase(Base):
++    """The relocalization consumes the armed request exactly as ``HighPoseSource.begin_relocalization`` does."""
++    consumed = None
++
++    def _relocalize(self, now):
++        provider = self._shared_pose.provider
++        self.consumed = provider.armed
++        provider.armed = False
++        return super()._relocalize(now)
++
++
++ExpandingDriver = ac.adopt(ExpandingBase)
++
++
++def expanding_driver(name):
++    d = ExpandingDriver()
++    d._shared_pose = FakePose()
++    d.arrival_view = view('r1')
++    d.on_command({'t': 10., 'kind': 'arm', 'servo_id': 3, 'pulse': 740})
++    d.observe(20., cv2.cvtColor(frame(name), cv2.COLOR_BGR2RGB))
++    return d
++
++
++def test_rejected_arrival_arms_the_one_shot_expansion_for_its_relocalization_only():
++    d = expanding_driver('false_arrival_r1_t118p50')
++    assert d._arrive(20.2) == [{'kind': 'look'}]
++    assert d.consumed is True and d.relocalized == 1                  # armed when begin_relocalization ran
++    assert d._shared_pose.provider.arms == 1 and d._shared_pose.provider.armed is False
++    d.observe(40., cv2.cvtColor(frame('false_arrival_r1_t118p50'), cv2.COLOR_BGR2RGB))
++    d._arrive(40.2)                                                   # second rejection ends the approach: no new request
++    assert d.outcome == ac.OUTCOME and d._shared_pose.provider.arms == 1
++
++
++def test_confirmed_arrival_never_arms_the_expansion():
++    d = expanding_driver('dock_r1_t10p20')
++    assert d._arrive(20.2) == [{'kind': 'arrived'}]
++    assert d._shared_pose.provider.arms == 0 and d.consumed is None
++
++
++def test_unconsumed_request_is_cleared_after_the_relocalization():
++    d = expanding_driver('false_arrival_r1_t118p50')
++    d._relocalize = lambda now: [{'kind': 'look'}]                    # a path that never reaches the provider hook
++    d._arrive(20.2)
++    assert d._shared_pose.provider.arms == 1 and d._shared_pose.provider.disarms >= 1 and d._shared_pose.provider.armed is False
++
++
++def test_pose_source_without_the_hook_is_left_alone():
++    assert ac.request_belief_expansion(None) is False
++    assert ac.request_belief_expansion(object()) is False
++    ac.clear_belief_expansion(None)
++    d = driver('false_arrival_r1_t118p50')                            # stub base has no _shared_pose
++    assert d._arrive(20.2) == [{'kind': 'look'}] and d.relocalized == 1
++    wrapped = FakePose()
++    assert ac.request_belief_expansion(wrapped) is True and wrapped.provider.armed is True   # delayed wrapper: provider attribute
++
++
+ def test_record_entry():
+     r = ac.record()
+     assert r['id'] == ac.ID and r['new_threshold'] is False and r['max_view_retries'] == 1
+@@ -354,6 +429,12 @@ def test_real_v98_runtime_drivers_are_configured_with_the_derived_bands(admitted
+         expect = ac.ArrivalView(CALIBRATION, KEY, (*drv.goal, drv.goal_yaw), plan)
+         assert drv.arrival_view.bands_px == expect.bands_px and drv.arrival_view.sheet == tuple(plan['sheet']['beam_xyyaw'])
+         assert ac.camera_key(drv.drive_pose) == KEY
++        # R2: the real driver's shared pose source reaches the real HIGH provider's one-shot expansion hook (no silent no-op)
++        provider = runtime.providers[rid].provider
++        assert drv._shared_pose is not None and getattr(drv._shared_pose, 'provider', drv._shared_pose) is provider
++        assert ac.request_belief_expansion(drv._shared_pose) is True and provider._expand_next is True
++        ac.clear_belief_expansion(drv._shared_pose)
++        assert provider._expand_next is False
+     assert runtime.own_image_gates['arrival_confirm'] == ac.record()
+     assert runtime.own_image_gates['high_edge_informative'] is False      # review #363 P2-2: the flag is in the record
+     # the pair approach driver's own log (looks, relocalizations, arrival view verdicts) is saved in the record
+diff --git a/tests/test_highpose_belief_expansion.py b/tests/test_highpose_belief_expansion.py
+new file mode 100644
+index 0000000..691f531
+--- /dev/null
++++ b/tests/test_highpose_belief_expansion.py
+@@ -0,0 +1,82 @@
++"""R2: one-shot belief expansion of the v98 HIGH provider, armed only by the arrival-rejection path (simulator-free)."""
++import numpy as np
++
++from harness import zone_pair_highpose_arrival_confirm as ac
++from harness import vision_pose_source_highpose as hp
++from tests.test_zone_final_pair_highpose import synthetic, MAPS, c
++
++
++def _provider(tmp_path, monkeypatch):
++    path, _ = synthetic(tmp_path, monkeypatch)
++    dsrc = hp.build_provider(c.resolve(MAPS[0])[0], path, c.base.sha(path), seed=3)
++    dsrc.init_prior((1., 0., 0.), (.1, .1, .1), source='synthetic public dock')
++    return dsrc, dsrc.provider
++
++
++def _stats(pf):
++    return pf.px.mean(0), pf.px.std(0), pf.logw.copy()
++
++
++def test_relocalization_keeps_the_belief_unless_the_arrival_path_armed_it(tmp_path, monkeypatch):
++    dsrc, src = _provider(tmp_path, monkeypatch)
++    pf = src.loc._pf
++    assert src.runtime_contract['pf_expansion'] == {'radius': list(hp.EXPANSION_RADIUS), 'trigger': 'own arrival-view rejection only (one shot)'}
++    dsrc.begin_relocalization(1.0, {})                                   # DR checkpoint / look-around style call: not armed
++    assert src.lifecycle[-1]['event'] == 'begin_relocalization' and src.lifecycle[-1]['belief_preserved'] is True
++    assert 'expansion_radius' not in src.lifecycle[-1]
++    assert src.lifecycle[-1]['before']['particles_sha256'] == src.lifecycle[-1]['after']['particles_sha256']
++    before_mean, before_std, _ = _stats(pf)
++    assert ac.request_belief_expansion(dsrc) is True and src._expand_next is True      # delayed wrapper -> provider
++    dsrc.begin_relocalization(2.0, {})
++    row = src.lifecycle[-1]
++    assert row['belief_preserved'] is False and row['expansion_radius'] == list(hp.EXPANSION_RADIUS)
++    mean, std, logw = _stats(pf)
++    assert np.all(logw == 0.) and src._expand_next is False
++    radius = np.asarray(hp.EXPANSION_RADIUS)
++    assert np.all(std > np.sqrt(before_std**2 + (radius/np.sqrt(3.))**2)*.9)       # uniform +-r adds variance r^2/3
++    assert np.all(np.abs(mean - before_mean) < radius/3.)                          # expanded around the belief, not re-initialised
++    assert np.all(np.abs(pf.px[:, 2]) <= np.pi + 1e-9)
++    dsrc.begin_relocalization(3.0, {})                                             # one shot: the next relocalization keeps its belief
++    assert 'expansion_radius' not in src.lifecycle[-1] and src.lifecycle[-1]['belief_preserved'] is True
++
++
++def test_clear_disarms_a_request_that_was_never_consumed(tmp_path, monkeypatch):
++    dsrc, src = _provider(tmp_path, monkeypatch)
++    ac.request_belief_expansion(dsrc)
++    assert src._expand_next is True
++    ac.clear_belief_expansion(dsrc)
++    dsrc.begin_relocalization(1.0, {})
++    assert 'expansion_radius' not in src.lifecycle[-1]
++
++
++def test_rejected_arrival_expands_the_real_provider_belief_through_the_real_delayed_pose_source(tmp_path, monkeypatch):
++    """The production call site (ViewConfirmedArrival._arrive) with the real DelayedPoseSource + HighPoseSource: GuardedPairApproach._relocalize
++    is ``shared_pose.begin_relocalization(now, servo)``; a rejected arrival expands once, a confirmed arrival never."""
++    import cv2
++    from tests import test_highpose_arrival_confirm as t
++
++    class RealPoseBase(t.Base):
++        def _relocalize(self, now):
++            self.relocalized += 1
++            self._shared_pose.begin_relocalization(now, self.servo)
++            return [{'kind': 'look'}]
++
++    def drive(name):
++        dsrc, src = _provider(tmp_path, monkeypatch)
++        drv = ac.adopt(RealPoseBase)()
++        drv._shared_pose = dsrc
++        drv.arrival_view = t.view('r1')
++        drv.on_command({'t': 10., 'kind': 'arm', 'servo_id': 3, 'pulse': 740})
++        drv.observe(20., cv2.cvtColor(t.frame(name), cv2.COLOR_BGR2RGB))
++        return drv, src
++
++    drv, src = drive('false_arrival_r1_t118p50')
++    std0 = src.loc._pf.px.std(0).copy()
++    assert drv._arrive(20.2) == [{'kind': 'look'}] and drv.relocalized == 1
++    row = src.lifecycle[-1]
++    assert row['event'] == 'begin_relocalization' and row['belief_preserved'] is False
++    assert row['expansion_radius'] == list(hp.EXPANSION_RADIUS) and src._expand_next is False
++    assert np.all(src.loc._pf.px.std(0) > std0)
++    drv, src = drive('dock_r1_t10p20')
++    assert drv._arrive(20.2) == [{'kind': 'arrived'}] and drv.relocalized == 0
++    assert all(r['event'] != 'begin_relocalization' for r in src.lifecycle) and src._expand_next is False

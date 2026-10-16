@@ -1,0 +1,25 @@
+{
+  "changed_test_file": "tests/test_s3_pair_heading.py",
+  "unique_tests": 16,
+  "passed": 16,
+  "rounds": [
+    {
+      "passed": 15,
+      "failed": 1,
+      "reason": "test used decimal 1.4 before floating-point expiry 1.4000000000000001; production expiry unchanged"
+    },
+    {
+      "selection": "saved_v148_command",
+      "passed": 2,
+      "failed": 0
+    }
+  ],
+  "physics_runs": 0,
+  "saved_command": "tests/fixtures/path_heading/s3-v148-reset.json",
+  "actual_integer_clock_reset": true,
+  "physical_parent_stubbed": true,
+  "before": "constructor FinePulsePort lost by IntegerClock.reset; saved .35 turn rejects",
+  "after": "reset method attaches PairPhasePort r1/r2 and FinePulsePort r3; native motor/expiry accepted",
+  "default_off": "old reset ports/rejection retained",
+  "post_fix_physical_runs": 0
+}

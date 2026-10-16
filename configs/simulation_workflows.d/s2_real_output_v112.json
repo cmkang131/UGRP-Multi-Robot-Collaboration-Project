@@ -1,0 +1,12 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [{
+    "id": "zone-s2-real-output-diag-v112", "version": "7.5.0",
+    "purpose": "Three exploratory real-style wheel pulses on native drive v7",
+    "entry": "scripts/diagnose_s2_real_output_v112.py", "runner": "scripts.diagnose_s2_real_output_v112",
+    "docs": "experiments/2026-10-06-s2-realism/README.md",
+    "requires": "committed SHA; owned exclusive SIM lock; fixed exploratory seeds; no model",
+    "output_flag": "--output", "output_kind": "directory",
+    "required_inputs": ["--expected-source-sha"], "side_effect": "local_simulation", "adapter": "managed_legacy_cli"
+  }]
+}

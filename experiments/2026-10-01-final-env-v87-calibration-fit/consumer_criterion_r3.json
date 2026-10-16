@@ -1,0 +1,45 @@
+{
+  "schema": "ugrp.motion_consumer_criterion.v1",
+  "revision": "v89-consumer-r3",
+  "scope": "Previously inspected deterministic v89 unloaded development data; criteria fixed before this revision's fitting. Not a fresh confirmatory test or a controller safety guarantee.",
+  "horizons_s": [0.2, 0.5, 1.0, 2.0, 3.0, 3.2],
+  "consumer": {
+    "frame_opportunity_s": 0.2,
+    "control_tick_s": 0.1,
+    "pf_step_s": 0.05,
+    "unloaded_relook_trigger_s": 3.0,
+    "configured_perception_delay_s": 0.16,
+    "interpretation": "0.2 s is a frame opportunity, not a guaranteed fix. 3.0 s is the strict-greater-than relook trigger; 3.2 s is a neighbouring delay/tick stress horizon, not a guaranteed upper bound on a successful fix. Loaded travel-based looks and manipulation are out of scope.",
+    "noise_source": "experiments/2026-09-26-zone-m1-owncam/calibration_m1_dev.json",
+    "prediction_source": "harness/owncam_localizer.py",
+    "comparison": "Existing per-step white process covariance, propagated with heading coupling from an ideal zero-error pose fix. Persistent scale_std and scale_walk covariance is additionally reported but cannot rescue acceptance; actual posterior scale uncertainty is unknown. No measurement covariance, map prior, reset or roughening is credited."
+  },
+  "split": {
+    "fit_mean_and_noise": "all six complete signed step+stop segments per axis",
+    "validation": "one continuous PRBS+stop segment per axis",
+    "windows": "every 0.05 s start whose complete horizon is inside its segment, including zero-motion, onset, reversal and stop windows; never bridge fit/validation boundaries",
+    "initial_state": "Observed start pose represents an ideal visual fix; motor/velocity state is warmed by issued commands from the beginning of the full recording, never by measured velocity or future poses. End pose is evaluation-only."
+  },
+  "candidate_order": ["gain_first_order", "grey_box"],
+  "fit_objective": "unweighted concatenation of driven-axis k-step position errors over all listed horizons on steps only; no whole-trajectory NRMSE gate",
+  "noise": {
+    "method": "zero-mean nonnegative Gaussian quasi-MLE on step window residuals, without centering away bias",
+    "variance": "q_j * horizon_s + alpha_j_translation * predicted_absolute_travel_m^2; turn terms alpha2/alpha4 are null because all turn commands are zero",
+    "components": ["along", "cross", "yaw"],
+    "reference_mapping": "alpha1=along variance per translation squared, alpha3=yaw variance per translation squared; alpha_lateral is a mecanum cross-axis extension. alpha2/alpha4 multiply turn travel squared and are unidentifiable. This is a finite-horizon adaptation, not a claim of implementing the complete six-alpha velocity sampler."
+  },
+  "acceptance": {
+    "all_horizons_required": true,
+    "optimizer_success_and_full_mean_jacobian_rank": true,
+    "existing_white_sigma_normalized_abs_error_p95_max": 2.0,
+    "new_to_existing_white_sigma_ratio_p95_max": 1.0,
+    "coverage_1sigma_range": [0.60, 0.76],
+    "coverage_2sigma_range": [0.90, 0.99],
+    "mean_nees_per_dimension_range": [0.5, 2.0],
+    "minimum_validation_windows_per_horizon": 100,
+    "note": "All three residual components must pass separately. These fixed engineering tolerances surround Gaussian 68.27/95.45 percent coverage and NEES/dimension=1; overlapping deterministic windows are not independent samples, so no chi-square confidence or population coverage claim is made. Reject excessive coverage as well as undercoverage; noise inflation cannot substitute for a mean model."
+  },
+  "rotation": "No turn command in v89; no rotation mean, alpha2 or alpha4 can be adopted. v87 two single-amplitude steps do not replace turn validation.",
+  "consumer_unchanged": false,
+  "consumer_reason": "Current final-v3 loader accepts schema v1 + MEASURED_SIM only. New finite-horizon motion-dependent covariance is not the existing noise_rel/noise_abs rule. No controllers are modified."
+}

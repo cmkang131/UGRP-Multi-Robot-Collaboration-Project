@@ -1,0 +1,100 @@
+{
+  "base_head": "8a1631b9cf6f9d658961fcb80339539e87541d3d",
+  "source_hashes": {
+    "experiments/2026-09-30-pair-v6h-carry/analysis/classify_placements.py": "b108e036e500807b47d8307285d45c3ed86522bf0835660c5642e64be0a2fb90",
+    "experiments/2026-09-30-pair-v6h-carry/analysis/revalidate_published.py": "e22ee8f93c21061aa4a0594350962caefba06d855fcc83f8c737d6e3bb8be403",
+    "scripts/run_ci_tests.py": "a75eb24063a4230bbacfb793ef323cf397ed3859b133b5c388c70b5e2cefe618",
+    "tests/test_v6h_classify_placements.py": "27e6e84d736786d2eddb720f76450c3e9878e0b8abaa5b2f261ebe23b133c193",
+    "tests/test_classify_review_299.py": "877dcc21a32e47f4525d8627c51905b4c55b368f5f3debb54f1442d8771cfc7b",
+    "tests/test_classify_review_299b.py": "f369cc59634a26a1a936daf0abe22617db2fc17cdda29412804a857f5dd0c767",
+    "tests/test_v6h_classifier_properties.py": "acf93b3034d5e1cd3b486f07c66a732ea12ba99251b7d7657e6c7297c6a6406a"
+  },
+  "unchanged_after_validation": true,
+  "commands": {
+    "related_tests": {
+      "command": [
+        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_v6h_classify_placements.py",
+        "tests/test_classify_review_299.py",
+        "tests/test_classify_review_299b.py",
+        "tests/test_v6h_classifier_properties.py",
+        "tests/test_ci_sharding.py",
+        "tests/test_chain_analysis_hard_limit.py",
+        "tests/test_pair_chain_probe.py",
+        "tests/test_b_v6h_gain.py"
+      ],
+      "exit_code": 0
+    },
+    "old_regressions": {
+      "command": [
+        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_v6h_classify_placements.py::test_observed_criterion_48_of_60_and_safety_veto_even_for_auxiliary_seed",
+        "tests/test_v6h_classify_placements.py::test_truncated_or_unordered_trace_is_rejected[one_row]",
+        "tests/test_v6h_classify_placements.py::test_truncated_or_unordered_trace_is_rejected[cut_tail]",
+        "tests/test_v6h_classify_placements.py::test_truncated_or_unordered_trace_is_rejected[cut_head]",
+        "tests/test_v6h_classify_placements.py::test_truncated_or_unordered_trace_is_rejected[gap]",
+        "tests/test_v6h_classify_placements.py::test_truncated_or_unordered_trace_is_rejected[reverse]",
+        "tests/test_v6h_classify_placements.py::test_truncated_or_unordered_trace_is_rejected[duplicate]",
+        "tests/test_v6h_classify_placements.py::test_missing_or_nonboolean_jaws_cannot_pass[jaws0]",
+        "tests/test_v6h_classify_placements.py::test_missing_or_nonboolean_jaws_cannot_pass[jaws1]",
+        "tests/test_v6h_classify_placements.py::test_missing_or_nonboolean_jaws_cannot_pass[jaws2]",
+        "tests/test_v6h_classify_placements.py::test_missing_or_nonboolean_jaws_cannot_pass[jaws3]",
+        "tests/test_v6h_classify_placements.py::test_invalid_leg_metrics_cannot_pass[lift_m-inf]",
+        "tests/test_v6h_classify_placements.py::test_invalid_leg_metrics_cannot_pass[end_error_m--0.01]",
+        "tests/test_v6h_classify_placements.py::test_invalid_leg_metrics_cannot_pass[tilt_deg-181.0]",
+        "tests/test_v6h_classify_placements.py::test_invalid_leg_metrics_cannot_pass[leg_error_m-nan]",
+        "tests/test_v6h_classify_placements.py::test_null_failures_mean_no_failure_and_nonnull_failure_vetoes_good_endpoints",
+        "tests/test_v6h_classify_placements.py::test_actual_timeout_cannot_be_relabelled_from_good_endpoints"
+      ],
+      "exit_code": 0
+    },
+    "published_counts": {
+      "command": [
+        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+        "/Users/changmin/projects/ugrp-wt/v6h-fixcls/experiments/2026-09-30-pair-v6h-carry/analysis/revalidate_published.py",
+        "--output",
+        "/Users/changmin/projects/ugrp/outputs/v6h-classifier-redesign-20260930/validation-final/published"
+      ],
+      "exit_code": 0
+    },
+    "diff_check": {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0
+    }
+  },
+  "executable": "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+  "old_regression_nodeids": [
+    "tests/test_v6h_classify_placements.py::test_observed_criterion_48_of_60_and_safety_veto_even_for_auxiliary_seed",
+    "tests/test_v6h_classify_placements.py::test_truncated_or_unordered_trace_is_rejected[one_row]",
+    "tests/test_v6h_classify_placements.py::test_truncated_or_unordered_trace_is_rejected[cut_tail]",
+    "tests/test_v6h_classify_placements.py::test_truncated_or_unordered_trace_is_rejected[cut_head]",
+    "tests/test_v6h_classify_placements.py::test_truncated_or_unordered_trace_is_rejected[gap]",
+    "tests/test_v6h_classify_placements.py::test_truncated_or_unordered_trace_is_rejected[reverse]",
+    "tests/test_v6h_classify_placements.py::test_truncated_or_unordered_trace_is_rejected[duplicate]",
+    "tests/test_v6h_classify_placements.py::test_missing_or_nonboolean_jaws_cannot_pass[jaws0]",
+    "tests/test_v6h_classify_placements.py::test_missing_or_nonboolean_jaws_cannot_pass[jaws1]",
+    "tests/test_v6h_classify_placements.py::test_missing_or_nonboolean_jaws_cannot_pass[jaws2]",
+    "tests/test_v6h_classify_placements.py::test_missing_or_nonboolean_jaws_cannot_pass[jaws3]",
+    "tests/test_v6h_classify_placements.py::test_invalid_leg_metrics_cannot_pass[lift_m-inf]",
+    "tests/test_v6h_classify_placements.py::test_invalid_leg_metrics_cannot_pass[end_error_m--0.01]",
+    "tests/test_v6h_classify_placements.py::test_invalid_leg_metrics_cannot_pass[tilt_deg-181.0]",
+    "tests/test_v6h_classify_placements.py::test_invalid_leg_metrics_cannot_pass[leg_error_m-nan]",
+    "tests/test_v6h_classify_placements.py::test_null_failures_mean_no_failure_and_nonnull_failure_vetoes_good_endpoints",
+    "tests/test_v6h_classify_placements.py::test_actual_timeout_cannot_be_relabelled_from_good_endpoints"
+  ],
+  "no_physics": true
+}

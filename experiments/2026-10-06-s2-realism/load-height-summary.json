@@ -1,0 +1,124 @@
+{
+  "schema": "ugrp.s2.load_height.summary.v1",
+  "admission_pass": false,
+  "gates": {
+    "off_exact": true,
+    "load_endpoint_xy": false,
+    "load_endpoint_yaw": false,
+    "height_floor_fraction": false,
+    "height_wall_retention": false,
+    "load_only_rmse": true,
+    "load_only_updates": true,
+    "load_only_stationary": true,
+    "height_only_rmse": true,
+    "height_only_updates": false,
+    "height_only_stationary": true,
+    "load_height_rmse": true,
+    "load_height_updates": false,
+    "load_height_stationary": true
+  },
+  "results": [
+    {
+      "option": "baseline",
+      "carry_rmse_m": 2.0235827759068257,
+      "end_error_m": 2.5920966525542695,
+      "carry_updates": 27,
+      "max_update_gap_sim_s": 33.85000000000002,
+      "initial_stationary_max_m": 0.10566117090294402,
+      "max_off_difference": 0.0,
+      "source_sha": "e178f2ef62f17c45820bb5399092bea6868c8110",
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-load-height-20261007/replay-baseline.json",
+      "sha256": "af6cb5c92336e92050a9d1ae624e38142f37efac6cca47ddc10bc2b71f95fc48"
+    },
+    {
+      "option": "load_only",
+      "carry_rmse_m": 1.6406749455333427,
+      "end_error_m": 1.9656059239685388,
+      "carry_updates": 23,
+      "max_update_gap_sim_s": 43.70000000000002,
+      "initial_stationary_max_m": 0.10566117090294402,
+      "max_off_difference": 3.0123459599949087,
+      "source_sha": "e178f2ef62f17c45820bb5399092bea6868c8110",
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-load-height-20261007/replay-load_only.json",
+      "sha256": "137a7065daf95fa6831432e34eeb9e5187c1f38972fce9100760abc10b789f12"
+    },
+    {
+      "option": "height_only",
+      "carry_rmse_m": 1.0514374710091519,
+      "end_error_m": 2.015812482698213,
+      "carry_updates": 0,
+      "max_update_gap_sim_s": 154.05,
+      "initial_stationary_max_m": 0.10566117090294402,
+      "max_off_difference": 1.318711633144578,
+      "source_sha": "e178f2ef62f17c45820bb5399092bea6868c8110",
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-load-height-20261007/replay-height_only.json",
+      "sha256": "e828b293e240f0cb090ba3d4c286ce2e144f36c0ef1097ac250c25b790788b6b"
+    },
+    {
+      "option": "load_height",
+      "carry_rmse_m": 1.3118298827372132,
+      "end_error_m": 2.289781094853331,
+      "carry_updates": 0,
+      "max_update_gap_sim_s": 154.05,
+      "initial_stationary_max_m": 0.10566117090294402,
+      "max_off_difference": 3.3953175094753916,
+      "source_sha": "e178f2ef62f17c45820bb5399092bea6868c8110",
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-load-height-20261007/replay-load_height.json",
+      "sha256": "be3daed6d6784ebbf0e5e7b4adb7fa42df9981f141afe7efda7b57a3aee479bc"
+    }
+  ],
+  "physics_runs": 0,
+  "model_calls": 0,
+  "new_seed": null,
+  "new_execution_bundle": null,
+  "full_dev": "NOT_RUN_CRITERIA_FAILED",
+  "criteria_sha256": "2350b394ed25e5318d022e934a5c4124d3a5469e1b705e3a5402f7438a41272a",
+  "motion_scores": {
+    "baseline": {
+      "n": 277,
+      "xy_rmse_m": 0.02413160030025427,
+      "yaw_rmse_deg": 1.191970993288057,
+      "mean_error": [
+        -0.002530355880759781,
+        -0.004086840807428236,
+        -0.0018876474048801818
+      ],
+      "sum_local_xy_error_m": 1.9670892896463514
+    },
+    "candidate": {
+      "n": 277,
+      "xy_rmse_m": 0.04316072873225828,
+      "yaw_rmse_deg": 1.6078907862398089,
+      "mean_error": [
+        0.00022994506418930874,
+        -0.012777362119864364,
+        -0.0072362283829101115
+      ],
+      "sum_local_xy_error_m": 4.213411970597223
+    }
+  },
+  "height_scores": {
+    "baseline": {
+      "total": 1459,
+      "floor": 553,
+      "wall": 848,
+      "ambiguous": 58
+    },
+    "height": {
+      "total": 0,
+      "floor": 0,
+      "wall": 0,
+      "ambiguous": 0
+    },
+    "retained_baseline": {
+      "total": 0,
+      "floor": 0,
+      "wall": 0,
+      "ambiguous": 0
+    },
+    "baseline_floor_fraction": 0.37902673063742287,
+    "height_floor_fraction": null,
+    "true_wall_retention": 0.0
+  },
+  "limits": "Exploratory frozen-command replay; no new physical lifted/inside/visibility/B distance/wall-SIM metrics. No outcome-driven tuning or additional candidate."
+}

@@ -1,0 +1,435 @@
+{
+ "rule": "hG: grasp_lift entries = recorded ALIGN end states of the b-v6d align probes (offline; pre-registered rule below).\n\nWhy: the recorded grasp_lift probes all start from the coarse-sheet plan-station prior (5 cm y error), which the real job never\nhas (one localizer object from approach through carry, localizer_object_replaced = 0). Chain it from the recorded align end\ninstead: GT poses at align stop + the recorded PF posterior at that stop as the start prior.\nRule (fixed before any hG grasp_lift case ran): raw 052e3eba-v6d-venv-align-combined, policy b-v6d, category PASS, checkpoint present:\n  the 6 E2E-checkpoint cases (v6-s911/s912-v5h x seeds 911..913; real E2E align-entry priors) + 4 teacher cases picked by\n  index round(i*(n-1)/3), i = 0..3, over the sorted teacher case ids -> 10 samples.",
+ "samples": [
+  {
+   "id": "hG01",
+   "source_case_id": "align@b-v6d:e2e:v6-s911-v5h:s911",
+   "source_raw_dir": "/Users/changmin/projects/ugrp/outputs/pair-stage-probes-052e3eba-v6d-venv-align-1/cases/align_b-v6d_e2e_v6-s911-v5h_s911",
+   "note": "align end (e2e start)",
+   "beam_xyyaw": [
+    1.0,
+    0.05,
+    2.8745567266691245e-15
+   ],
+   "robots": {
+    "r1": [
+     0.5606841764969123,
+     0.04072748613408678,
+     0.0133079196067167
+    ],
+    "r2": [
+     1.438660762086101,
+     0.044966988339412955,
+     -3.126494005522286
+    ]
+   },
+   "prior_err": {
+    "r1": {
+     "mean_err_xyyaw": [
+      0.0017949956440178605,
+      0.004843779378960203,
+      -0.003470403480087647
+     ],
+     "std_xy_m": 0.026608863976601546,
+     "std_yaw_rad": 0.013572057888534364
+    },
+    "r2": {
+     "mean_err_xyyaw": [
+      -0.000922513960263549,
+      0.012045654351406435,
+      0.0036472895537444927
+     ],
+     "std_xy_m": 0.030081793734283487,
+     "std_yaw_rad": 0.010605354040899649
+    }
+   }
+  },
+  {
+   "id": "hG02",
+   "source_case_id": "align@b-v6d:e2e:v6-s911-v5h:s912",
+   "source_raw_dir": "/Users/changmin/projects/ugrp/outputs/pair-stage-probes-052e3eba-v6d-venv-align-0/cases/align_b-v6d_e2e_v6-s911-v5h_s912",
+   "note": "align end (e2e start)",
+   "beam_xyyaw": [
+    1.0,
+    0.05,
+    2.8745567266691245e-15
+   ],
+   "robots": {
+    "r1": [
+     0.5606841208737922,
+     0.040729694500923605,
+     0.013307431606491374
+    ],
+    "r2": [
+     1.4386775146528867,
+     0.04505101569197588,
+     -3.1264592645260962
+    ]
+   },
+   "prior_err": {
+    "r1": {
+     "mean_err_xyyaw": [
+      0.0026841137238956536,
+      0.005529481839535964,
+      -0.004183917149130689
+     ],
+     "std_xy_m": 0.02933555163786475,
+     "std_yaw_rad": 0.014931388164009726
+    },
+    "r2": {
+     "mean_err_xyyaw": [
+      0.0008774016559833786,
+      0.012175453521509956,
+      0.004311696608451765
+     ],
+     "std_xy_m": 0.029418832752088016,
+     "std_yaw_rad": 0.010955533123309399
+    }
+   }
+  },
+  {
+   "id": "hG03",
+   "source_case_id": "align@b-v6d:e2e:v6-s911-v5h:s913",
+   "source_raw_dir": "/Users/changmin/projects/ugrp/outputs/pair-stage-probes-052e3eba-v6d-venv-align-1/cases/align_b-v6d_e2e_v6-s911-v5h_s913",
+   "note": "align end (e2e start)",
+   "beam_xyyaw": [
+    1.0,
+    0.05,
+    2.8745567266691245e-15
+   ],
+   "robots": {
+    "r1": [
+     0.5606841208737922,
+     0.040729694500923605,
+     0.013307431606491374
+    ],
+    "r2": [
+     1.4386775146528867,
+     0.04505101569197588,
+     -3.1264592645260962
+    ]
+   },
+   "prior_err": {
+    "r1": {
+     "mean_err_xyyaw": [
+      0.003122150921077149,
+      0.005221738882359515,
+      -0.0033031766588536016
+     ],
+     "std_xy_m": 0.02533731104133036,
+     "std_yaw_rad": 0.013310340574849039
+    },
+    "r2": {
+     "mean_err_xyyaw": [
+      -0.0006823965544922039,
+      0.012054273628983717,
+      0.003820614401343292
+     ],
+     "std_xy_m": 0.027139630997716026,
+     "std_yaw_rad": 0.009662529964269204
+    }
+   }
+  },
+  {
+   "id": "hG04",
+   "source_case_id": "align@b-v6d:e2e:v6-s912-v5h:s911",
+   "source_raw_dir": "/Users/changmin/projects/ugrp/outputs/pair-stage-probes-052e3eba-v6d-venv-align-0/cases/align_b-v6d_e2e_v6-s912-v5h_s911",
+   "note": "align end (e2e start)",
+   "beam_xyyaw": [
+    0.93,
+    -0.020000000000000368,
+    -0.07
+   ],
+   "robots": {
+    "r1": [
+     0.4911410430238338,
+     -0.0018397363854513846,
+     -0.03573399431996833
+    ],
+    "r2": [
+     1.3681650988179226,
+     -0.03860867540941719,
+     3.108590636421197
+    ]
+   },
+   "prior_err": {
+    "r1": {
+     "mean_err_xyyaw": [
+      0.0017537321030918762,
+      -0.005477107638263317,
+      0.0024280669581164815
+     ],
+     "std_xy_m": 0.02594393316023511,
+     "std_yaw_rad": 0.012589879091881638
+    },
+    "r2": {
+     "mean_err_xyyaw": [
+      -0.005518531122036485,
+      0.0032193662740820153,
+      -0.0004975365387025477
+     ],
+     "std_xy_m": 0.028326574876269297,
+     "std_yaw_rad": 0.010626228291437141
+    }
+   }
+  },
+  {
+   "id": "hG05",
+   "source_case_id": "align@b-v6d:e2e:v6-s912-v5h:s912",
+   "source_raw_dir": "/Users/changmin/projects/ugrp/outputs/pair-stage-probes-052e3eba-v6d-venv-align-1/cases/align_b-v6d_e2e_v6-s912-v5h_s912",
+   "note": "align end (e2e start)",
+   "beam_xyyaw": [
+    0.93,
+    -0.020000000000000368,
+    -0.07
+   ],
+   "robots": {
+    "r1": [
+     0.4911410430238338,
+     -0.0018397363854513846,
+     -0.03573399431996833
+    ],
+    "r2": [
+     1.3681650988179226,
+     -0.03860867540941719,
+     3.108590636421197
+    ]
+   },
+   "prior_err": {
+    "r1": {
+     "mean_err_xyyaw": [
+      0.0036602450659157793,
+      -0.004053918459855874,
+      0.0013613374476082463
+     ],
+     "std_xy_m": 0.02726081842103065,
+     "std_yaw_rad": 0.012201138693707488
+    },
+    "r2": {
+     "mean_err_xyyaw": [
+      -0.006546247998819865,
+      4.35909362866832e-05,
+      -0.0016632425348395152
+     ],
+     "std_xy_m": 0.027423701447887073,
+     "std_yaw_rad": 0.010846517353367198
+    }
+   }
+  },
+  {
+   "id": "hG06",
+   "source_case_id": "align@b-v6d:e2e:v6-s912-v5h:s913",
+   "source_raw_dir": "/Users/changmin/projects/ugrp/outputs/pair-stage-probes-052e3eba-v6d-venv-align-0/cases/align_b-v6d_e2e_v6-s912-v5h_s913",
+   "note": "align end (e2e start)",
+   "beam_xyyaw": [
+    0.93,
+    -0.020000000000000368,
+    -0.07
+   ],
+   "robots": {
+    "r1": [
+     0.4911410430238338,
+     -0.0018397363854513846,
+     -0.03573399431996833
+    ],
+    "r2": [
+     1.3681650988179226,
+     -0.03860867540941719,
+     3.108590636421197
+    ]
+   },
+   "prior_err": {
+    "r1": {
+     "mean_err_xyyaw": [
+      0.0029023776857963757,
+      -0.0018862647554808683,
+      0.0004219556409337244
+     ],
+     "std_xy_m": 0.025261974310298863,
+     "std_yaw_rad": 0.011638656513651082
+    },
+    "r2": {
+     "mean_err_xyyaw": [
+      -0.005839560826302881,
+      0.0014213529244184245,
+      -0.000959401183876718
+     ],
+     "std_xy_m": 0.028612903825349437,
+     "std_yaw_rad": 0.011088911969661473
+    }
+   }
+  },
+  {
+   "id": "hG07",
+   "source_case_id": "align@b-v6d:teacher:along+/opp:s911:pE2E",
+   "source_raw_dir": "/Users/changmin/projects/ugrp/outputs/pair-stage-probes-052e3eba-v6d-venv-align-0/cases/align_b-v6d_teacher_along+_opp_s911_pE2E",
+   "note": "align end (teacher start)",
+   "beam_xyyaw": [
+    1.0,
+    0.05,
+    8.845738805902603e-16
+   ],
+   "robots": {
+    "r1": [
+     0.5604788666911635,
+     0.04479502345870959,
+     -0.00642652742340014
+    ],
+    "r2": [
+     1.438429977341966,
+     0.0450125343594062,
+     -3.13854938652512
+    ]
+   },
+   "prior_err": {
+    "r1": {
+     "mean_err_xyyaw": [
+      0.0028932098826480734,
+      -0.0020209914136097504,
+      -5.908314551295035e-05
+     ],
+     "std_xy_m": 0.028307480347855612,
+     "std_yaw_rad": 0.015024401709692523
+    },
+    "r2": {
+     "mean_err_xyyaw": [
+      -0.0006762113389124913,
+      0.013964610059252099,
+      0.0047569204572974755
+     ],
+     "std_xy_m": 0.02831597397683272,
+     "std_yaw_rad": 0.010375745784611843
+    }
+   }
+  },
+  {
+   "id": "hG08",
+   "source_case_id": "align@b-v6d:teacher:corner--/opp:s911:pE2E",
+   "source_raw_dir": "/Users/changmin/projects/ugrp/outputs/pair-stage-probes-052e3eba-v6d-venv-align-0/cases/align_b-v6d_teacher_corner--_opp_s911_pE2E",
+   "note": "align end (teacher start)",
+   "beam_xyyaw": [
+    1.0,
+    0.05,
+    8.77520535494905e-16
+   ],
+   "robots": {
+    "r1": [
+     0.5604626435253186,
+     0.04647311591038355,
+     -0.015403615638776751
+    ],
+    "r2": [
+     1.4389651498740788,
+     0.04271491100336709,
+     3.141587210853532
+    ]
+   },
+   "prior_err": {
+    "r1": {
+     "mean_err_xyyaw": [
+      0.0013923210600795821,
+      -0.005135633626986741,
+      0.002381908168986868
+     ],
+     "std_xy_m": 0.025273710255485707,
+     "std_yaw_rad": 0.012239114484684392
+    },
+    "r2": {
+     "mean_err_xyyaw": [
+      -0.011619520646416692,
+      0.011897890332102909,
+      0.0010235062217560653
+     ],
+     "std_xy_m": 0.03067440470285183,
+     "std_yaw_rad": 0.01217226545561552
+    }
+   }
+  },
+  {
+   "id": "hG09",
+   "source_case_id": "align@b-v6d:teacher:nominal:s911:pE2E",
+   "source_raw_dir": "/Users/changmin/projects/ugrp/outputs/pair-stage-probes-052e3eba-v6d-venv-align-0/cases/align_b-v6d_teacher_nominal_s911_pE2E",
+   "note": "align end (teacher start)",
+   "beam_xyyaw": [
+    1.0,
+    0.05,
+    8.385224360478287e-16
+   ],
+   "robots": {
+    "r1": [
+     0.5614327796133426,
+     0.0448401753334065,
+     -0.004046132377262601
+    ],
+    "r2": [
+     1.4384750937294621,
+     0.044527713972434525,
+     -3.137380828586915
+    ]
+   },
+   "prior_err": {
+    "r1": {
+     "mean_err_xyyaw": [
+      0.0025263507542266916,
+      0.0017120008773824844,
+      -0.0016530178254661188
+     ],
+     "std_xy_m": 0.02464632028489269,
+     "std_yaw_rad": 0.012297546780975485
+    },
+    "r2": {
+     "mean_err_xyyaw": [
+      -0.004903663166751393,
+      0.015934288030305242,
+      0.004468287458774256
+     ],
+     "std_xy_m": 0.029803045836575684,
+     "std_yaw_rad": 0.010838018258797434
+    }
+   }
+  },
+  {
+   "id": "hG10",
+   "source_case_id": "align@b-v6d:teacher:yaw-/same:s911:pE2E",
+   "source_raw_dir": "/Users/changmin/projects/ugrp/outputs/pair-stage-probes-052e3eba-v6d-venv-align-1/cases/align_b-v6d_teacher_yaw-_same_s911_pE2E",
+   "note": "align end (teacher start)",
+   "beam_xyyaw": [
+    1.0,
+    0.05,
+    8.363338815236192e-16
+   ],
+   "robots": {
+    "r1": [
+     0.5606459338497104,
+     0.04864730535510132,
+     -0.021605148026489378
+    ],
+    "r2": [
+     1.438252297818462,
+     0.04256113908761906,
+     3.128870620345631
+    ]
+   },
+   "prior_err": {
+    "r1": {
+     "mean_err_xyyaw": [
+      0.00232853107536668,
+      -0.0070330840271082135,
+      0.00346511418456652
+     ],
+     "std_xy_m": 0.02351928616614801,
+     "std_yaw_rad": 0.011950497234669689
+    },
+    "r2": {
+     "mean_err_xyyaw": [
+      -0.0008262114945551957,
+      0.028004818332396986,
+      0.009418079816169378
+     ],
+     "std_xy_m": 0.026888978912505374,
+     "std_yaw_rad": 0.010019961232732764
+    }
+   }
+  }
+ ]
+}

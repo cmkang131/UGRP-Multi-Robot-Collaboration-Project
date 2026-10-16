@@ -1,0 +1,46 @@
+........................................................................ [ 11%]
+........................................................................ [ 23%]
+........................................................................ [ 35%]
+........................................................................ [ 47%]
+........................................................................ [ 58%]
+........................................................................ [ 70%]
+........................................................................ [ 82%]
+........................................................................ [ 94%]
+........................F
+=================================== FAILURES ===================================
+____________ test_review_6s_error_retry_message_timer_tie[no_comm] _____________
+
+condition = 'no_comm'
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+
+    def test_review_6s_error_retry_message_timer_tie(condition, v64):
+        def error(payload, turn):
+            if payload['robot_id'] == 'r1' and payload['sim_time_s'] == 5.5:
+                raise OSError('review counterexample: error costs 0.5 s')
+    
+        def run(cls, cond):
+            class RetryTieTrial(cls or fixture.TimingTrial):
+                def sim_output_tokens(self, raw, n):
+                    # Leader 5.9 + delivery 0.1 = 6.0; follower cost is unchanged.
+                    return super().sim_output_tokens(raw, n) - json.loads(raw)['request_id'].endswith('r3')
+    
+            trial, clock, links, requests = fixture.make_trial(cond, trial_cls=RetryTieTrial, wire_fault=error)
+            trial.scheduler.trigger('r1', 'timer', at=5.5)
+            trial.scheduler.timer('r1', at=6.)
+            fixture.advance(trial, clock, links, 20.)
+            return trial, requests
+    
+        old, old_requests = run(v64, 'no_comm')
+        new, new_requests = run(None, condition)
+>       starts = lambda tr: [c.started_sim_s for c in tr.scheduler.calls if c.actor == 'r1']
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       assert [0.0, 5.5, 7.5, 12.8] == [0.0, 5.5, 7.5]
+E         
+E         Left contains one more item: 12.8
+E         Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:181: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_zone_study_multiturn_properties.py::test_review_6s_error_retry_message_timer_tie[no_comm]
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 600 passed in 869.02s (0:14:29)

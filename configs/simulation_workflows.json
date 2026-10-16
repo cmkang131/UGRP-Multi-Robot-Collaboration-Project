@@ -3,6 +3,20 @@
   "scope": "entry points; sim_cli does not silently launch models, hardware or training",
   "workflows": [
     {
+      "id": "zone-study-pilot",
+      "purpose": "구역 연구 실어댑터 파일럿: 기본 dry-run, 4조건 pre-flight와 공유 영속 예산",
+      "entry": "scripts/run_zone_study_pilot.py",
+      "docs": "docs/zone_study_pilot.md",
+      "requires": "real calls require --execute, existing --budget-file and verified proxy PID; rgb-standard-dispatch-v63 source pins; same-file source migration preserves all spending; cohort requires reconciled preflight and explicit upstream finish limitation acknowledgement",
+      "version": "1.2.0",
+      "runner": "scripts.run_zone_study_pilot",
+      "output_flag": "--output",
+      "side_effect": "model_calls",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": [],
+      "output_kind": "directory"
+    },
+    {
       "id": "local",
       "purpose": "기본 창·설정·raw action·사용자 제어기",
       "entry": "scripts/sim_cli.py",
@@ -30,7 +44,7 @@
       "local_cli": "bash scripts/open_simulation.command dispatch --task 'beam과 box를 같은 dock으로 옮겨'",
       "docs": "docs/research_dispatch_arena.md",
       "requires": "model endpoint, full grasp model and stage policies; costs depend on planner",
-      "version": "1.0.0",
+      "version": "1.63.0",
       "runner": "scripts.sim_cli",
       "output_flag": "--output",
       "side_effect": "model_calls",
@@ -44,7 +58,7 @@
       "entry": "scripts/run_dispatch_skills.py",
       "docs": "docs/research_dispatch_arena.md",
       "requires": "saved agreement and complete grasp/stage policy artifacts",
-      "version": "1.0.0",
+      "version": "1.63.0",
       "runner": "scripts.run_dispatch_e2e",
       "output_flag": "--output",
       "side_effect": "local_simulation",
@@ -108,6 +122,180 @@
         "--model"
       ],
       "output_kind": "directory"
+    },
+    {
+      "id": "zone-dispatch",
+      "purpose": "구역별 수량 목표 협업 벤치마크(교사 실행기; 기본 zone_wide, 벽·문 경로 변형 포함, zone_open 은퇴; 화물 종류·팀 운반 목표는 protocol v2: 역할 선언·팀 형성 규칙·팀 교사)",
+      "entry": "scripts/run_zone_dispatch.py",
+      "docs": "docs/zone_dispatch.md",
+      "requires": "model endpoint in llm mode; privileged TEACHER motion executor, never an RGB-skill success; protocol v2 (goals with catalogue cargo, or --protocol v2): an explicit --contact-profile (A2 smokes: cargo_noslip_v1), cargo scene and the GT team executor",
+      "version": "1.2.0",
+      "runner": "scripts.run_zone_dispatch",
+      "output_flag": "--output",
+      "side_effect": "model_calls",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": [],
+      "output_kind": "directory"
+    },
+    {
+      "id": "zone-teacher-fix",
+      "purpose": "구역 교사 막힘 수정 진단(PR #169 B2·B3·B4·B5·B8): 물리 실행 전 팀 경로 게이트와 수정 교사 실행기로 교사 실현 가능성만 확인",
+      "entry": "scripts/run_zone_teacher_fix.py",
+      "docs": "experiments/2026-09-26-zone-teacher-fix/README.md",
+      "requires": "protocol v2 zone dispatch arguments with an explicit --contact-profile; privileged ground-truth TEACHER executor (poses, IK, contact forces, weld OFF), never the study executor and never a robot, RGB-skill or student success",
+      "version": "1.0.0",
+      "runner": "scripts.run_zone_teacher_fix",
+      "output_flag": "--output",
+      "side_effect": "model_calls",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": [],
+      "output_kind": "directory"
+    },
+    {
+      "id": "zone-cargo-probe",
+      "purpose": "구역 화물 목록의 물리 가능성 검사(정답 교사, weld OFF)",
+      "entry": "scripts/probe_zone_cargo.py",
+      "docs": "docs/zone_cargo.md",
+      "requires": "local Mac/Linux; privileged ground-truth TEACHER (poses, IK, contact forces), never an RGB/student success; one of --probe or --sweep",
+      "version": "1.0.0",
+      "runner": "scripts.probe_zone_cargo",
+      "output_flag": "--output",
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": [],
+      "output_kind": "directory"
+    },
+    {
+      "id": "zone-team-jobs-smoke",
+      "purpose": "구역 팀 작업(A1) 순수 부품의 동기 SIM 결합 확인(정답 교사, weld OFF)",
+      "entry": "scripts/smoke_zone_team_formation.py",
+      "docs": "experiments/2026-09-25-zone-team-jobs/README.md",
+      "requires": "local Mac/Linux; privileged ground-truth TEACHER (poses, IK, contact forces) on an open floor patch, never an RGB/student or zone-dispatch success; --probe pair_beam or trio_frame",
+      "version": "1.0.0",
+      "runner": "scripts.smoke_zone_team_formation",
+      "output_flag": "--output",
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": [
+        "--probe"
+      ],
+      "output_kind": "directory"
+    },
+    {
+      "id": "zone-cargo-catalogue",
+      "purpose": "구역 화물 목록 그림과 TOP RGB 색 분리 검사",
+      "entry": "scripts/render_zone_cargo_catalogue.py",
+      "docs": "docs/zone_cargo.md",
+      "requires": "local Mac/Linux offscreen rendering; segmentation is evaluation-only",
+      "version": "1.0.0",
+      "runner": "scripts.render_zone_cargo_catalogue",
+      "output_flag": "--output",
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": [],
+      "output_kind": "directory"
+    },
+    {
+      "id": "zone-color-eval",
+      "purpose": "구역 상자 4색 RGB 검출 오프라인 평가(자기 RGB·TOP)",
+      "entry": "scripts/eval_zone_color_detection.py",
+      "docs": "docs/zone_dispatch.md",
+      "requires": "committed split file; synchronous SIM rendering only; ground truth is written to eval-labels/ for scoring and never reaches a detector",
+      "version": "1.0.0",
+      "runner": "scripts.eval_zone_color_detection",
+      "output_flag": {
+        "render": "--output",
+        "score": "--output"
+      },
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": {
+        "render": [
+          "--split"
+        ],
+        "score": [
+          "--frames"
+        ]
+      },
+      "output_kind": {
+        "render": "directory",
+        "score": "directory"
+      }
+    },
+    {
+      "id": "zone-cargo-perception-eval",
+      "purpose": "구역 화물 종류 인식(TOP RGB 색+모양, 자세) 오프라인 평가",
+      "entry": "scripts/eval_zone_cargo_perception.py",
+      "docs": "docs/zone_cargo_perception.md",
+      "requires": "committed split file; synchronous SIM rendering only; ground truth is written to eval-labels/ for scoring and never reaches a detector",
+      "version": "1.1.0",
+      "runner": "scripts.eval_zone_cargo_perception",
+      "output_flag": {
+        "render": "--output",
+        "score": "--output"
+      },
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": {
+        "render": [
+          "--split"
+        ],
+        "score": [
+          "--frames"
+        ]
+      },
+      "output_kind": {
+        "render": "directory",
+        "score": "directory"
+      }
+    },
+    {
+      "id": "zone-rgb-outcome-eval",
+      "purpose": "구역 작업 결과(배달·출발지 잔류·다른 곳 발견·미발견) RGB 전용 판정 오프라인 평가(기록 실행 재렌더·합성 사례)",
+      "entry": "scripts/eval_zone_rgb_outcome.py",
+      "docs": "experiments/2026-09-25-zone-rgb-outcome/README.md",
+      "requires": "committed split file (split-v2.json); record runs the unmodified zone runner in fixture mode with an observation-only port command log; track/synth/validate render only from recorded observer replays; ground truth is written by label and read only by score; every subcommand needs a new --out directory",
+      "version": "2.0.0",
+      "runner": "scripts.eval_zone_rgb_outcome",
+      "output_flag": {
+        "record": "--out",
+        "track": "--out",
+        "label": "--out",
+        "score": "--out",
+        "synth": "--out",
+        "validate": "--out"
+      },
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": {
+        "record": [
+          "--seed"
+        ],
+        "track": [
+          "--split"
+        ],
+        "label": [
+          "--track"
+        ],
+        "score": [
+          "--track",
+          "--labels"
+        ],
+        "synth": [
+          "--split"
+        ],
+        "validate": [
+          "--splits"
+        ]
+      },
+      "output_kind": {
+        "record": "directory",
+        "track": "directory",
+        "label": "directory",
+        "score": "directory",
+        "synth": "directory",
+        "validate": "directory"
+      }
     },
     {
       "id": "navigation",
@@ -246,8 +434,8 @@
       "purpose": "운반 입력·이력·종료 목적 함수 ACT 학습",
       "entry": "scripts/train_carry_input_act.py",
       "docs": "docs/research_controller_validation.md",
-      "requires": "verified teacher dataset and pinned ACT dependencies; explicit size/history/steps/device/seed and a fresh output; managed resume is not supported",
-      "version": "1.0.0",
+      "requires": "verified teacher dataset and pinned ACT dependencies; explicit size/history/steps/device/seed and a fresh output; optional deployed_window requires evaluation batch 1 and all-row native strict verification; managed resume is not supported",
+      "version": "1.2.0",
       "runner": "scripts.train_carry_input_act",
       "output_flag": "--out",
       "side_effect": "training",
@@ -259,6 +447,28 @@
         "--steps",
         "--device",
         "--seed"
+      ],
+      "output_kind": "directory"
+    },
+    {
+      "id": "act-input-finalization",
+      "purpose": "완료된 학습의 실패 원본에서 선택 상태만 별도 진단 모델로 최종화",
+      "entry": "scripts/finalize_carry_input_act.py",
+      "docs": "experiments/2026-09-24-action-act/finalization-recovery.md",
+      "requires": "failed 8000-update managed ACT run, frozen source/dataset and explicit original SHA-256; no optimizer updates or checkpoint reselection; fixed 720-second wall cap",
+      "version": "1.0.0",
+      "runner": "scripts.finalize_carry_input_act",
+      "output_flag": "--out",
+      "side_effect": "offline_model_finalization",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": [
+        "--failed-run",
+        "--dataset",
+        "--source-freeze",
+        "--expected-manifest-sha256",
+        "--expected-report-sha256",
+        "--expected-checkpoint-sha256",
+        "--expected-source-freeze-sha256"
       ],
       "output_kind": "directory"
     },
@@ -395,6 +605,167 @@
       "required_inputs": [
         "--evidence-root",
         "--inventory"
+      ],
+      "output_kind": "directory"
+    },
+    {
+      "id": "zone-owncam-loc-record",
+      "purpose": "자기 카메라 위치 추정 데이터 기록(벽 태그 지도, 교사 주행, 평가 정답 분리)",
+      "entry": "scripts/record_owncam_localization.py",
+      "docs": "docs/zone_owncam_localization.md",
+      "requires": "local Mac/Linux offscreen rendering; privileged ground-truth TEACHER drives, never a student result; robot inputs and eval_only truth are written to separate files; synchronous SIM only",
+      "version": "1.0.0",
+      "runner": "scripts.record_owncam_localization",
+      "output_flag": "--output",
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": [
+        "--episodes"
+      ],
+      "output_kind": "directory"
+    },
+    {
+      "id": "zone-owncam-loop-run",
+      "purpose": "자기 카메라 폐루프 문 통과(학생은 자기 RGB·정적 태그 지도·자기 명령만 사용, 평가 정답 분리)",
+      "entry": "scripts/run_owncam_closed_loop.py",
+      "docs": "docs/zone_owncam_localization.md",
+      "requires": "local Mac/Linux offscreen rendering; synchronous SIM only; the student never receives live poses (GT only in eval_only/ and for the box-condition teacher grasp, reported separately); weld OFF",
+      "version": "1.0.0",
+      "runner": "scripts.run_owncam_closed_loop",
+      "output_flag": "--output",
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": [
+        "--prereg"
+      ],
+      "output_kind": "directory"
+    },
+    {
+      "id": "zone-m1-owncam-run",
+      "purpose": "M1 자기 카메라 배달(자기 RGB 탐색·손목 스킬 파지·추정 기반 문 통과·배치·다시 보기, pose stub 없음)",
+      "entry": "scripts/run_m1_owncam.py",
+      "docs": "experiments/2026-09-26-zone-m1-owncam/README.md",
+      "requires": "local Mac/Linux offscreen rendering; synchronous SIM only; M1 contract rejects any non own-camera pose source; GT only in eval_only/; weld OFF",
+      "version": "1.1.0",
+      "runner": "scripts.run_m1_owncam",
+      "output_flag": "--output",
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": [
+        "--prereg"
+      ],
+      "output_kind": "directory"
+    },
+    {
+      "id": "zone-m1-owncam-memory-v3-run",
+      "version": "3.0.0",
+      "output_flag": "--output",
+      "side_effect": "local_simulation",
+      "entry": "scripts/run_m1_owncam_memory_v3.py",
+      "docs": "docs/design/2026-09-27-owncam-memory-v3.md",
+      "description": "DRAFT memory_v3; coordinator registration required, no cohort launched",
+      "runner": "scripts.run_m1_owncam_memory_v3",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": ["--prereg", "--condition"],
+      "output_kind": "directory"
+    },
+    {
+      "id": "zone-m1-owncam-memory-run",
+      "purpose": "M1 자기 카메라 배달의 관측 기억 ON/OFF 비교(같은 M1 러너, 조건별 제어기만 교체: off = 동결 M1, memory_v2 = 표식 비의존 기억 + 임시 태그 제공자)",
+      "entry": "scripts/run_m1_owncam_memory.py",
+      "docs": "experiments/2026-09-26-zone-owncam-memory/README.md",
+      "requires": "local Mac/Linux offscreen rendering; synchronous SIM only; thread caps 1 and >= 30 GiB free are enforced; M1 contract rejects any non own-camera pose source; GT only in eval_only/; weld OFF",
+      "version": "2.0.0",
+      "runner": "scripts.run_m1_owncam_memory",
+      "output_flag": "--output",
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": [
+        "--prereg",
+        "--condition"
+      ],
+      "output_kind": "directory"
+    },
+    {
+      "id": "zone-m2-pair",
+      "purpose": "M2: 실행 중 GT 없는 2인 long_beam 운반(자기 손목 RGB·정적 태그 지도·개략 주문서·자기 명령; 자기 카메라 위치 추정 접근 → 자기 RGB 정렬·파지·운반)",
+      "entry": "scripts/run_m2_pair.py",
+      "docs": "docs/zone_m2_pair.md",
+      "requires": "local Mac/Linux offscreen rendering; no ground truth at runtime (truth only in evaluation-only outputs); weld OFF; status channel is a CANDIDATE behind --status-channel (pending user decision); synchronous SIM only",
+      "version": "1.0.0",
+      "runner": "scripts.run_m2_pair",
+      "output_flag": "--output",
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": [
+        "--seed",
+        "--status-channel"
+      ],
+      "output_kind": "directory"
+    },
+    {
+      "id": "zone-pair-dev",
+      "purpose": "PairTeam + OwnCamTeamHost dev PHYSICAL gate; tags_temporary, dev, 연구 결과 아님",
+      "entry": "scripts/run_zone_pair_dev.py",
+      "docs": "experiments/2026-09-28-zone-pair-v6/README.md",
+      "requires": "No model calls; prepare-only by default. Physical execution requires --execute, clean pinned SHA, matching agent_lock and absolute primary outputs path. GT stays in eval_only/.",
+      "version": "0.6.0",
+      "runner": "scripts.run_zone_pair_dev",
+      "output_flag": "--output",
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": [
+        "--prereg",
+        "--run-id"
+      ],
+      "output_kind": "directory"
+    },
+    {
+      "id": "masterpi-v3-static-audit",
+      "purpose": "MasterPi v3 새 장면의 시작 자세 접촉과 카메라 가림 정적 감사(mj_forward만)",
+      "entry": "scripts/audit_masterpi_v3_static.py",
+      "docs": "experiments/2026-09-28-masterpi-visual-v3/README.md",
+      "requires": "MuJoCo 컴파일·mj_forward·광선 검사만 사용. 물리 step·모델 호출 없음. 평가 전용 출력.",
+      "version": "1.0.0",
+      "runner": "scripts.audit_masterpi_v3_static",
+      "output_flag": "--output",
+      "side_effect": "local_diagnostic",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": [],
+      "output_kind": "file"
+    },
+    {
+      "id": "zone-study-integration-run",
+      "purpose": "구역 대화 연구 통합 러너: 연구 뼈대(#194 조건·프롬프트·프로토콜·SIM 비용·스케줄러)가 자기 카메라 실행기(#206) 3대와 공동 운반 PairTeam(#235)을 구동(no-LLM fixture, 자세 제공자는 설정으로 선택; tags_temporary = 임시, 표식 사용, 연구 결과 아님)",
+      "entry": "scripts/run_zone_study_integration.py",
+      "docs": "experiments/2026-09-26-zone-study-integration/README.md",
+      "requires": "local Mac/Linux offscreen rendering; synchronous SIM only; run bundle must match the prereg bundle_sha256; robot inputs = own robot_cam + own commands + static map + order sheet + delivered messages; GT only in eval_only/; weld OFF; no model call by default; --llm = real model calls via the prereg llm_driver block and the main-study ledger (bundle v79); eval-only referee (orders_complete stop, PAR-2/delivery_rate) and scenario hidden events in the physics owner; explicitly versioned MasterPi v3 scenes (geometry_v3, geometry_v3_dock_v1) select their own robot model; bundle v76 = v79 plus the opt-in b-v6c pair policy (exact PF fix clock, grasp-range pre-grasp entry; other pair policies unchanged); bundle v80 = v76 plus the opt-in b-v6d pair policy (wide-hue beam heading in the close p45/inspect views, M1 fine motion profile for align pulses; other pair policies unchanged); bundle v81 = v80 plus the opt-in b-v6g pair policy (carry dead-reckoning PF model with lateral breakaway ramp and cross-axis drift, pair-mean carry yaw, beam-edge relative yaw, own-image validity by optical black, bounded retreat; other pair policies unchanged); bundle v83 = v81 plus b-v6h1 (fixed loaded forward gain, probe-matched 1-sigma own-pose margin for unloaded/loaded pair sweeps, approach/backoff and preclose; beam-fit and global/consistency margins stay 2-sigma, loaded yaw 5/4 deg, moved-fix-only progress monitor, axial lag timing); v6h pending seal and independent review",
+      "version": "2.16.0",
+      "runner": "scripts.run_zone_study_integration",
+      "output_flag": "--output",
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": [
+        "--prereg",
+        "--episode",
+        "--condition"
+      ],
+      "output_kind": "directory"
+    },
+    {
+      "id": "zone-pair-bootstrap-probe",
+      "purpose": "v6b 출발 자세 부트스트랩만 짧게 확인: pair 장면 → 정지 관측·팬 스캔 → 팔 올림 guard 통과/실패에서 즉시 종료 (seed × 출발 dock × 작은 자세 섭동 grid; tags_temporary, dev 진단, 연구 결과 아님)",
+      "entry": "scripts/probe_zone_pair_bootstrap.py",
+      "docs": "experiments/2026-09-28-zone-pair-v6b-boot/README.md",
+      "requires": "local Mac/Linux offscreen rendering; synchronous SIM only; no model call; weld OFF; no pair_carry submission; GT never reaches control (eval_* columns and the host eval_only record only); check agent_lock status before a grid",
+      "version": "0.1.0",
+      "runner": "scripts.probe_zone_pair_bootstrap",
+      "output_flag": "--output",
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": [
+        "--seeds",
+        "--policy"
       ],
       "output_kind": "directory"
     }

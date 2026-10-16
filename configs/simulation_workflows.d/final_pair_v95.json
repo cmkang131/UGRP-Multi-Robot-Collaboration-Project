@@ -1,0 +1,25 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "zone-final-pair-heldout-v95",
+      "version": "3.7.0",
+      "purpose": "V95 held-out unloaded acquisition: new starts, both robots, 370 SIM s per map; precheck and public commitment required",
+      "entry": "scripts/run_final_pair_new_starts.py",
+      "runner": "scripts.run_final_pair_new_starts",
+      "docs": "experiments/2026-10-03-critb-heldout-v95/README.md",
+      "requires": "Committed source; owned SIM slot; v95 precheck receipt and pre-collection GitHub commitment; abort-only guard on both robots; weld OFF",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--check",
+        "--map-id",
+        "--expected-source-sha",
+        "--precheck",
+        "--commitment-comment"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

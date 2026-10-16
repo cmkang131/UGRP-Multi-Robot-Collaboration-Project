@@ -1,0 +1,76 @@
+{
+  "schema": "ugrp.offline_audit_view.v1",
+  "derived_view_only": true,
+  "run_id": "v92-collection",
+  "family": "calibration-assembly",
+  "policy": "v92-d5",
+  "case": "zone_wide_two_doors_final_v3",
+  "condition": "loaded-HIGH-720s",
+  "split": "calibration",
+  "seed": 911,
+  "outcome": "COLLECTED_UNQUALIFIED",
+  "source_sha": "257953ec",
+  "offline_source": {
+    "path": "/Users/changmin/projects/ugrp/outputs/final-pair-v92-loaded-257953ec-20261003/result.json",
+    "sha256": "2a30db178991135f3c58a62bba8db0b1518aebd6b1e34c9eaa39fdf45a1e062d"
+  },
+  "offline_scalar_scope": "v92 HIGH loaded calibration collection (teacher-only, CALIBRATION_TRAINING): completion flags from result.json; command/frame counts from robots/*/commands.jsonl and frames.jsonl of the same folder.",
+  "offline_scalars": {
+    "offline/protocol_complete": 1.0,
+    "offline/frames_r1": 3601.0,
+    "offline/frames_r2": 3601.0,
+    "offline/unattempted": 0.0
+  },
+  "sim_s": 720.0,
+  "commands": 22302.0,
+  "model_calls": 0.0,
+  "hparam_metrics": [
+    "result/sim_s",
+    "result/commands",
+    "result/model_calls",
+    "offline/protocol_complete"
+  ],
+  "scope": "collection record; not a calibration acceptance, not a task success",
+  "texts": {
+    "notes/collection": {
+      "commands_by_kind": {
+        "r1": {
+          "initial_servo_command": 1,
+          "arm": 21,
+          "look": 10,
+          "mecanum": 11120
+        },
+        "r2": {
+          "initial_servo_command": 1,
+          "arm": 21,
+          "look": 10,
+          "mecanum": 11120
+        }
+      },
+      "commands_metric": "scheduled issued commands of both robots, excluding the 2 initial_servo_command state records",
+      "host_loadavg_start_end": [
+        [
+          8.77783203125,
+          10.90625,
+          11.92724609375
+        ],
+        [
+          226.49267578125,
+          134.88916015625,
+          65.216796875
+        ]
+      ],
+      "source": "/Users/changmin/projects/ugrp/outputs/final-pair-v92-loaded-257953ec-20261003"
+    },
+    "media/videos": {
+      "dir": "/Users/changmin/projects/ugrp/outputs/v92-loaded-videos-20261003",
+      "sha256": {
+        "v92_loaded_own_rgb_r1_r2_4x.mp4": "f7afad40fda8619e4f55cd1799c5cfc91bc559b1e1e5366cb0570a0a476daa92",
+        "v92_loaded_top_REPLAY_of_recorded_poses_4x.mp4": "494b463fa196e818a5cdaefaa16cef55bc1e583ea60a4380dab12d904eb7d1eb"
+      },
+      "own_rgb": "robots/r1/rgb | robots/r2/rgb, 5 Hz frames at 20 fps = 4x SIM",
+      "top_replay": "REPLAY of recorded eval_only qpos (not physics rerun, not robot input)",
+      "registration": "offline-audit exporter has no video registration; open the files locally"
+    }
+  }
+}

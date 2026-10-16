@@ -1,0 +1,44 @@
+{
+  "option": "forward_scale_v1",
+  "holdout": 1051,
+  "fit_seeds": [
+    1053,
+    1054
+  ],
+  "base_sha256": "2245bb9fdcb69d872893dd6ffafb57151750dd42916394a287b6d10bab11d69d",
+  "fit_gt_inputs": true,
+  "gt_use": "offline physical calibration only; authorization s2v45/supervisor06:05",
+  "groups": {
+    "1050,2035,1894,1500|1:forward:0.35:0.10": {
+      "gain": 0.9070379452917782,
+      "n": 662,
+      "seeds": [
+        1053,
+        1054
+      ],
+      "mean_error_before_m": 0.001202810164880381,
+      "mean_error_after_m": 4.0092551635113516e-19,
+      "residual_std_m": 0.00040579765969131097
+    },
+    "740,2320,1320,1500|0:forward:0.35:0.10": {
+      "gain": 0.9277541149388329,
+      "n": 131,
+      "seeds": [
+        1053,
+        1054
+      ],
+      "mean_error_before_m": 0.0009332114956696858,
+      "mean_error_after_m": 3.694563738912437e-18,
+      "residual_std_m": 0.0005160588802862159
+    }
+  },
+  "criteria_sha256": "e278a2fece6d446fe33ff609d54df0917a7bf4d48c6e93967500332d443f60e7",
+  "input_hashes": {
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1053-v133-reproduction/student_record.json": "8e3e92e1209131d7c66e6d92e4ae6778a86a6c559b696070aded41bc04632430",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1053-v133-reproduction/eval_only/trajectory.jsonl": "7abb90985dc9106a800696cda652948bc2aa3ec2b1b93c61ea0fb592bfcba197",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1053-v133-reproduction/eval_only/wall-contacts.jsonl": "960fc8b32bb1199e961dba66b6730c4c8edc2b77e3b3664d0bcbddfd9d114f79",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1054-v133-reproduction/student_record.json": "6a1dbf2b8f9b01fcfb5985b7d3bfd4f75a6160c8b5d25ebd57c34ac0716dfca8",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1054-v133-reproduction/eval_only/trajectory.jsonl": "629f1d6bf90715d98ff06750c73fe1ce26e1b1a66e6b1ba9f1cf33c5240589ae",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1054-v133-reproduction/eval_only/wall-contacts.jsonl": "e71833b32c05a782b69eff7be2e696d10dea41c25e072cf32b28473929f8f711"
+  }
+}

@@ -1,0 +1,976 @@
+{
+  "schema": "ugrp.model-artifacts.v1",
+  "repository": "cmkang131/UGRP-Multi-Robot-Collaboration-Project",
+  "artifacts": [
+    {
+      "id": "act-pair-carry-seed18-20260918",
+      "status": "available",
+      "description": "Historical pair-carry ACT training seed 20260918; experimental, not a default controller",
+      "source_sha": "92b984e9d518fbdd878d0e1260b527cb5aad6a1a",
+      "training_source_sha": "e987d4a7f5bea5d08fd4100f23be6fce9b1251f0",
+      "release": {
+        "tag": "models-20260923-v1",
+        "asset": "act-pair-carry-seed18-20260918.zip",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20260923-v1/act-pair-carry-seed18-20260918.zip"
+      },
+      "archive": {
+        "sha256": "f930e43b9e9617580902e455589dff43d698092d9e0137bd98d94c7e0a9d4a50",
+        "bytes": 44604665
+      },
+      "files": [
+        {
+          "path": "act/adapter.json",
+          "bytes": 334,
+          "sha256": "6da54d883574929010bf4a79d2419cd6cdf1d719e5e8cf060be6e4212b3f6b2b"
+        },
+        {
+          "path": "act/config.json",
+          "bytes": 1395,
+          "sha256": "2a923ed3a16197841fd599301ed157bc2e3518e35a8fc99563f45d73f8089665"
+        },
+        {
+          "path": "act/model.safetensors",
+          "bytes": 45777416,
+          "sha256": "ddf79d3577b9d66aa53e16fbe387bbe1039a5ddb0b4cc3caeb7292dc81dcd90e"
+        },
+        {
+          "path": "plan.json",
+          "bytes": 609,
+          "sha256": "2153ca63e64457d8495a8c215dad40e154cde9ffc45a710ac4f396aa90357548"
+        },
+        {
+          "path": "provenance.json",
+          "bytes": 781,
+          "sha256": "473eb02cb84be86bbcc49d9c17c45d44edadf23e19dcbfcc7b2b799f4cb27e85"
+        },
+        {
+          "path": "reference-top.jpg",
+          "bytes": 71401,
+          "sha256": "35e990136a3410ea514e0445f92a6886b07e2a463e8c3ee0804dd6f3ae8d091c"
+        },
+        {
+          "path": "requirements-reference-act.txt",
+          "bytes": 330,
+          "sha256": "fa1d4f36fe5cc2eb43c784a41e5b9e754b6a9ca2f53145242e4803a7f904793d"
+        },
+        {
+          "path": "rgb/grasp/evaluation-fixture.json",
+          "bytes": 467,
+          "sha256": "c2183ad250ea16606d652f91d117e4abb085f9c88b2ab0115de0ba93e1bc5f3f"
+        },
+        {
+          "path": "rgb/grasp/r1-model.json",
+          "bytes": 1122932,
+          "sha256": "c6995cac23ccf2fd168fb222c2332b518507d7ea66921aaf0c231bc460598e45"
+        },
+        {
+          "path": "rgb/grasp/r3-model.json",
+          "bytes": 1121267,
+          "sha256": "8349e10ed659abf4bc62f6fcc62bf22d22ca95fe05d954b42b3883b0d070861d"
+        },
+        {
+          "path": "rgb/grasp/student-skill.json",
+          "bytes": 9497,
+          "sha256": "b244293aa1a5dd2efda1a0d6e8b15582d8a12a3e4d151d46cf679321535e0970"
+        },
+        {
+          "path": "rgb/varied/model-r1-forward.json",
+          "bytes": 1515692,
+          "sha256": "a797697635f378a361f9e2c729ec227c17ae78386dc8f13bfec60662e9e2fb45"
+        },
+        {
+          "path": "rgb/varied/model-r1-lateral.json",
+          "bytes": 1518422,
+          "sha256": "0e5e4290dd34ff8952329bb444f0f5cdf05beada42dfdb879916c25636ae8869"
+        },
+        {
+          "path": "rgb/varied/model-r1-yaw.json",
+          "bytes": 79887,
+          "sha256": "d9afb476728602f6f7f61d41d1104a01e5c5a05854dc5fead03b7753c3bfd374"
+        },
+        {
+          "path": "rgb/varied/model-r3-forward.json",
+          "bytes": 1543369,
+          "sha256": "ec42470273b3506028ab58d460888c95c2132130854fca6c5e32a44698a1ad3d"
+        },
+        {
+          "path": "rgb/varied/model-r3-lateral.json",
+          "bytes": 1540729,
+          "sha256": "bc95bd85afa6618863b89ecd72a3edf31b887c83875d4d50ade4cd6cc6c4ca9f"
+        },
+        {
+          "path": "rgb/varied/model-r3-yaw.json",
+          "bytes": 74733,
+          "sha256": "deff812844abd7b92217eda3a7bd6eeb3a3baaed9a77c09a558e06941c39b5f8"
+        },
+        {
+          "path": "rgb/varied/varied-start-skill.json",
+          "bytes": 1051,
+          "sha256": "b83998d21870d6b739756832ecb8d5a8be842094001bcfece4ab0b274ec47a5a"
+        }
+      ],
+      "entrypoints": {
+        "act": "act",
+        "grasp": "rgb/grasp",
+        "stages": "rgb/varied",
+        "plan": "plan.json",
+        "reference_top": "reference-top.jpg"
+      },
+      "limitations": [
+        "Historical experimental checkpoint; not the 2026-09-22 expanded ACT model.",
+        "Model loading and inference are distinct from successful physical transport.",
+        "Training images and full raw experiment evidence are not included."
+      ]
+    },
+    {
+      "id": "act-pair-carry-seed19-20260919",
+      "status": "available",
+      "description": "Historical pair-carry ACT training seed 20260919; experimental, not a default controller",
+      "source_sha": "92b984e9d518fbdd878d0e1260b527cb5aad6a1a",
+      "training_source_sha": "e987d4a7f5bea5d08fd4100f23be6fce9b1251f0",
+      "release": {
+        "tag": "models-20260923-v1",
+        "asset": "act-pair-carry-seed19-20260919.zip",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20260923-v1/act-pair-carry-seed19-20260919.zip"
+      },
+      "archive": {
+        "sha256": "1744191db018b882f7a9f88b035b713596dffca969efdd4a38cb63227ca747a7",
+        "bytes": 44604587
+      },
+      "files": [
+        {
+          "path": "act/adapter.json",
+          "bytes": 334,
+          "sha256": "6da54d883574929010bf4a79d2419cd6cdf1d719e5e8cf060be6e4212b3f6b2b"
+        },
+        {
+          "path": "act/config.json",
+          "bytes": 1395,
+          "sha256": "2a923ed3a16197841fd599301ed157bc2e3518e35a8fc99563f45d73f8089665"
+        },
+        {
+          "path": "act/model.safetensors",
+          "bytes": 45777416,
+          "sha256": "0023b1cb3c016c6ea20c7c42f402adf5b39b5df4a99089439833c00323364199"
+        },
+        {
+          "path": "plan.json",
+          "bytes": 609,
+          "sha256": "2153ca63e64457d8495a8c215dad40e154cde9ffc45a710ac4f396aa90357548"
+        },
+        {
+          "path": "provenance.json",
+          "bytes": 781,
+          "sha256": "256392146ff16f388cab93cfa746a4f8d07a014d45a8c9199af55632c1b0cf54"
+        },
+        {
+          "path": "reference-top.jpg",
+          "bytes": 71401,
+          "sha256": "35e990136a3410ea514e0445f92a6886b07e2a463e8c3ee0804dd6f3ae8d091c"
+        },
+        {
+          "path": "requirements-reference-act.txt",
+          "bytes": 330,
+          "sha256": "fa1d4f36fe5cc2eb43c784a41e5b9e754b6a9ca2f53145242e4803a7f904793d"
+        },
+        {
+          "path": "rgb/grasp/evaluation-fixture.json",
+          "bytes": 467,
+          "sha256": "c2183ad250ea16606d652f91d117e4abb085f9c88b2ab0115de0ba93e1bc5f3f"
+        },
+        {
+          "path": "rgb/grasp/r1-model.json",
+          "bytes": 1122932,
+          "sha256": "c6995cac23ccf2fd168fb222c2332b518507d7ea66921aaf0c231bc460598e45"
+        },
+        {
+          "path": "rgb/grasp/r3-model.json",
+          "bytes": 1121267,
+          "sha256": "8349e10ed659abf4bc62f6fcc62bf22d22ca95fe05d954b42b3883b0d070861d"
+        },
+        {
+          "path": "rgb/grasp/student-skill.json",
+          "bytes": 9497,
+          "sha256": "b244293aa1a5dd2efda1a0d6e8b15582d8a12a3e4d151d46cf679321535e0970"
+        },
+        {
+          "path": "rgb/varied/model-r1-forward.json",
+          "bytes": 1515692,
+          "sha256": "a797697635f378a361f9e2c729ec227c17ae78386dc8f13bfec60662e9e2fb45"
+        },
+        {
+          "path": "rgb/varied/model-r1-lateral.json",
+          "bytes": 1518422,
+          "sha256": "0e5e4290dd34ff8952329bb444f0f5cdf05beada42dfdb879916c25636ae8869"
+        },
+        {
+          "path": "rgb/varied/model-r1-yaw.json",
+          "bytes": 79887,
+          "sha256": "d9afb476728602f6f7f61d41d1104a01e5c5a05854dc5fead03b7753c3bfd374"
+        },
+        {
+          "path": "rgb/varied/model-r3-forward.json",
+          "bytes": 1543369,
+          "sha256": "ec42470273b3506028ab58d460888c95c2132130854fca6c5e32a44698a1ad3d"
+        },
+        {
+          "path": "rgb/varied/model-r3-lateral.json",
+          "bytes": 1540729,
+          "sha256": "bc95bd85afa6618863b89ecd72a3edf31b887c83875d4d50ade4cd6cc6c4ca9f"
+        },
+        {
+          "path": "rgb/varied/model-r3-yaw.json",
+          "bytes": 74733,
+          "sha256": "deff812844abd7b92217eda3a7bd6eeb3a3baaed9a77c09a558e06941c39b5f8"
+        },
+        {
+          "path": "rgb/varied/varied-start-skill.json",
+          "bytes": 1051,
+          "sha256": "b83998d21870d6b739756832ecb8d5a8be842094001bcfece4ab0b274ec47a5a"
+        }
+      ],
+      "entrypoints": {
+        "act": "act",
+        "grasp": "rgb/grasp",
+        "stages": "rgb/varied",
+        "plan": "plan.json",
+        "reference_top": "reference-top.jpg"
+      },
+      "limitations": [
+        "Historical experimental checkpoint; not the 2026-09-22 expanded ACT model.",
+        "Model loading and inference are distinct from successful physical transport.",
+        "Training images and full raw experiment evidence are not included."
+      ]
+    },
+    {
+      "id": "act-expanded-20260922",
+      "status": "unavailable",
+      "description": "Expanded 128px/history4 ACT used in the 2026-09-22 qualification; original files not located",
+      "source_sha": "f70bd9b20e0972ce71f24d724211f4cd27f7786e",
+      "reason": "Original checkpoint/config/adapter not located in the checked local and archive paths; do not substitute an older model.",
+      "expected_files": [
+        {
+          "path": "act/model.safetensors",
+          "sha256": "c98a640167110f7ee0b5fc2b1d5edde4a4065464c6c47519b366cc3ff8ee4e96"
+        },
+        {
+          "path": "act/config.json",
+          "sha256": "a4391e9cd4c9d5b8dc266f9706bad0e276cd7540df00aeb9b1e3195c389e7110"
+        },
+        {
+          "path": "act/adapter.json",
+          "sha256": "cfc00170f7056da656087a5ae38718ded59d648c0817aadbaf29201eb986e50f"
+        }
+      ]
+    },
+    {
+      "archive": {
+        "bytes": 44611174,
+        "sha256": "c22d88a7c37b8a543f1f0fb452c3f54a4f6ef3ed379e2465bd8b5c85762f82e8"
+      },
+      "description": "First 2026-09-24 action-ACT 128px/history4 comparison checkpoint; offline termination gate failed; not a default controller",
+      "entrypoints": {
+        "act": "act",
+        "grasp": "rgb/grasp",
+        "plan": "plan.json",
+        "reference_top": "reference-top.jpg",
+        "stages": "rgb/varied"
+      },
+      "files": [
+        {
+          "bytes": 442,
+          "path": "act/adapter.json",
+          "sha256": "cfc00170f7056da656087a5ae38718ded59d648c0817aadbaf29201eb986e50f"
+        },
+        {
+          "bytes": 1396,
+          "path": "act/config.json",
+          "sha256": "a4391e9cd4c9d5b8dc266f9706bad0e276cd7540df00aeb9b1e3195c389e7110"
+        },
+        {
+          "bytes": 45784256,
+          "path": "act/model.safetensors",
+          "sha256": "3957eb3df4304561e2af6ed28e3be05a8a85c985ff80c31c2ad733e2d2e355d2"
+        },
+        {
+          "bytes": 587,
+          "path": "plan.json",
+          "sha256": "1ab2499252427839d21eec7f474fe3c5a74c2a2c4cdeddb7ac338782a3c898c7"
+        },
+        {
+          "bytes": 3973,
+          "path": "provenance.json",
+          "sha256": "772e118a555a4b3167d1e47704e9358c4f67a3860421425d61ccbf39f6d24634"
+        },
+        {
+          "bytes": 71401,
+          "path": "reference-top.jpg",
+          "sha256": "35e990136a3410ea514e0445f92a6886b07e2a463e8c3ee0804dd6f3ae8d091c"
+        },
+        {
+          "bytes": 330,
+          "path": "requirements-reference-act.txt",
+          "sha256": "fa1d4f36fe5cc2eb43c784a41e5b9e754b6a9ca2f53145242e4803a7f904793d"
+        },
+        {
+          "bytes": 467,
+          "path": "rgb/grasp/evaluation-fixture.json",
+          "sha256": "c2183ad250ea16606d652f91d117e4abb085f9c88b2ab0115de0ba93e1bc5f3f"
+        },
+        {
+          "bytes": 1122932,
+          "path": "rgb/grasp/r1-model.json",
+          "sha256": "c6995cac23ccf2fd168fb222c2332b518507d7ea66921aaf0c231bc460598e45"
+        },
+        {
+          "bytes": 1121267,
+          "path": "rgb/grasp/r3-model.json",
+          "sha256": "8349e10ed659abf4bc62f6fcc62bf22d22ca95fe05d954b42b3883b0d070861d"
+        },
+        {
+          "bytes": 9497,
+          "path": "rgb/grasp/student-skill.json",
+          "sha256": "b244293aa1a5dd2efda1a0d6e8b15582d8a12a3e4d151d46cf679321535e0970"
+        },
+        {
+          "bytes": 1515692,
+          "path": "rgb/varied/model-r1-forward.json",
+          "sha256": "a797697635f378a361f9e2c729ec227c17ae78386dc8f13bfec60662e9e2fb45"
+        },
+        {
+          "bytes": 1518422,
+          "path": "rgb/varied/model-r1-lateral.json",
+          "sha256": "0e5e4290dd34ff8952329bb444f0f5cdf05beada42dfdb879916c25636ae8869"
+        },
+        {
+          "bytes": 79887,
+          "path": "rgb/varied/model-r1-yaw.json",
+          "sha256": "d9afb476728602f6f7f61d41d1104a01e5c5a05854dc5fead03b7753c3bfd374"
+        },
+        {
+          "bytes": 1543369,
+          "path": "rgb/varied/model-r3-forward.json",
+          "sha256": "ec42470273b3506028ab58d460888c95c2132130854fca6c5e32a44698a1ad3d"
+        },
+        {
+          "bytes": 1540729,
+          "path": "rgb/varied/model-r3-lateral.json",
+          "sha256": "bc95bd85afa6618863b89ecd72a3edf31b887c83875d4d50ade4cd6cc6c4ca9f"
+        },
+        {
+          "bytes": 74733,
+          "path": "rgb/varied/model-r3-yaw.json",
+          "sha256": "deff812844abd7b92217eda3a7bd6eeb3a3baaed9a77c09a558e06941c39b5f8"
+        },
+        {
+          "bytes": 1051,
+          "path": "rgb/varied/varied-start-skill.json",
+          "sha256": "b83998d21870d6b739756832ecb8d5a8be842094001bcfece4ab0b274ec47a5a"
+        }
+      ],
+      "id": "act-action-first-study-seed24-20260924",
+      "limitations": [
+        "Selected development termination gate failed.",
+        "Physical comparison completed 0 of 2 trials; both attempts failed.",
+        "Experimental comparison only; not a default controller.",
+        "Model loading is not physical transport success.",
+        "Original training data and raw experiment video are excluded."
+      ],
+      "release": {
+        "asset": "act-action-first-study-seed24-20260924.zip",
+        "tag": "models-20260924-action-act-v1",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20260924-action-act-v1/act-action-first-study-seed24-20260924.zip"
+      },
+      "source_sha": "12f8e6dda76e39b3ec612f247deb4835a2ff50bc",
+      "status": "available",
+      "training_source_sha": "12f8e6dda76e39b3ec612f247deb4835a2ff50bc"
+    },
+    {
+      "archive": {
+        "bytes": 12111169,
+        "sha256": "165679736e426748bcdaa1c4c341781482198c2135bd8974494ab4f41f27a936"
+      },
+      "id": "vision-loc-seg-lraspp-mbv3-20260926-v2",
+      "status": "available",
+      "description": "Tag-free vision localization segmentation model (LR-ASPP MobileNetV3, 5 classes) with its round-2/round-3 localization configs and train-split camera calibration; experimental, offline-evaluated only",
+      "source_sha": "0b1cffa0d8225b85b39014c35ae847952b9c468f",
+      "training_source_sha": "0c889f0c1df365ddaac8de34e97e7f73372e2772",
+      "release": {
+        "tag": "models-20260927-vision-loc-v1",
+        "asset": "vision-loc-seg-lraspp-mbv3-20260926-v2.zip",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20260927-vision-loc-v1/vision-loc-seg-lraspp-mbv3-20260926-v2.zip"
+      },
+      "entrypoints": {
+        "segmentation": "seg/seg_lraspp_mbv3.pt",
+        "student_config_round3": "config/selected_config_v3.json",
+        "calibration": "calibration/calibration_train.json"
+      },
+      "files": [
+        {
+          "path": "calibration/calibration_train.json",
+          "bytes": 4155,
+          "sha256": "60177d6b4e116f4d63aea0b5c0bd200cd5eaebe66a63080612c7949491f085dd"
+        },
+        {
+          "path": "config/secondary_config_v3.json",
+          "bytes": 239,
+          "sha256": "19e5f5b306c11a41d68b537fc943575e3dae7649e7f8b61c2930c231a9ce87be"
+        },
+        {
+          "path": "config/selected_config.json",
+          "bytes": 148,
+          "sha256": "57665a36e72cc186cffacdb87eabd36ff8f653e04c25b97c61cf2c048e396412"
+        },
+        {
+          "path": "config/selected_config_v3.json",
+          "bytes": 161,
+          "sha256": "87f94b342b260715b1c556da3dea3832cc11daeaf88ef0aa97f14b3c9a970707"
+        },
+        {
+          "path": "provenance.json",
+          "bytes": 1822,
+          "sha256": "796f4166b6b09dd3ce471e0f7569f563b335695c3cb8521278e55dceceacf3c2"
+        },
+        {
+          "path": "requirements-vision-loc.txt",
+          "bytes": 174,
+          "sha256": "29d201729b8b42c867e2eb08b93789685f43e3a30df76147ee16a5bda7265a59"
+        },
+        {
+          "path": "seg/seg_lraspp_mbv3.pt",
+          "bytes": 13071401,
+          "sha256": "348539030fda962cc5ba64e21c956619bc4db9321a99cd3ae6746611a9939fd9"
+        },
+        {
+          "path": "seg/train_info.json",
+          "bytes": 7097,
+          "sha256": "a9453aab30d5af6e0f1b6214049cf0bc538128fc1faca77be32400f54ee47caa"
+        },
+        {
+          "path": "seg/train_log.jsonl",
+          "bytes": 3338,
+          "sha256": "d3c630bbc3410d20881a4626ad8595d7d3bceedcf418038ac5feb88b741fea08"
+        }
+      ],
+      "limitations": [
+        "Simulator renders only; no real-camera validation.",
+        "Offline replay of teacher-driven renders; no closed-loop localization result.",
+        "Round-2 test was not independent of train (s917 replays train s903); see experiments/2026-09-26-vision-loc/README.md.",
+        "Model loading is not a localization or navigation success.",
+        "Training data and raw renders are excluded."
+      ]
+    },
+    {
+      "id": "grasp-act-solo-smoke-f609979c",
+      "status": "available",
+      "description": "Fixed smoke step 300 own-RGB solo ACT pilot; not a default controller",
+      "source_sha": "f609979cd4e0b7174f999986408401817a5c991a",
+      "training_source_sha": "f609979cd4e0b7174f999986408401817a5c991a",
+      "release": {
+        "tag": "models-20261015-grasp-act-f609979c",
+        "asset": "grasp-act-solo-smoke-f609979c.zip",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261015-grasp-act-f609979c/grasp-act-solo-smoke-f609979c.zip"
+      },
+      "archive": {
+        "sha256": "bd2936a8fc2947353f5c1ffe374996deab53f07881798fcfe3c8936ddee6163d",
+        "bytes": 192288207
+      },
+      "files": [
+        {
+          "path": "actor/SHA256.json",
+          "bytes": 265,
+          "sha256": "9cb0b705b91f87ccf06c516881e66076f57ceb5cf468b858ca412adc106ce8b7"
+        },
+        {
+          "path": "actor/adapter.json",
+          "bytes": 14778,
+          "sha256": "0ca09f8f213ea156a9adb7d03ea1131f22935f8d694726e765c1c2153514f5ec"
+        },
+        {
+          "path": "actor/config.json",
+          "bytes": 1278,
+          "sha256": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f"
+        },
+        {
+          "path": "actor/model.safetensors",
+          "bytes": 207363320,
+          "sha256": "294c8178515e62a77127a4484df1fbed650d1a8786184793f0cfc53d37ac3643"
+        },
+        {
+          "path": "offline-summary.json",
+          "bytes": 24365,
+          "sha256": "8761bd1d8f8000e4f50be77c4807a230b648991a3f1f85a859685b0e154db5d6"
+        },
+        {
+          "path": "protocol.json",
+          "bytes": 2455,
+          "sha256": "fa75ef5f7a777bbd0e197ee439f267eb3395234f42d26ba26050ac9eda7563d2"
+        },
+        {
+          "path": "provenance.json",
+          "bytes": 1118,
+          "sha256": "c13010d42de1e173ed8e78680b5f72aad3f2e4e1b81525da059d23a58ad5f1f9"
+        },
+        {
+          "path": "requirements-reference-act.txt",
+          "bytes": 330,
+          "sha256": "fa1d4f36fe5cc2eb43c784a41e5b9e754b6a9ca2f53145242e4803a7f904793d"
+        },
+        {
+          "path": "training-summary.json",
+          "bytes": 3549,
+          "sha256": "f621dced7c1e30c5588fd963d566c207f06ddd654ef3af84d30613fd6c3bd483"
+        }
+      ],
+      "entrypoints": {
+        "act": "actor"
+      },
+      "limitations": [
+        "Own-RGB solo component pilot only; no gate promotion.",
+        "Model loading is distinct from closed-loop physical success.",
+        "Full raw training data and optimizer/RNG checkpoints remain on the original GCP disk."
+      ],
+      "verification_scope": {
+        "training_source_sha": "f609979cd4e0b7174f999986408401817a5c991a",
+        "gpu_saved_weight_readback": true,
+        "offline_validation_seeds": [
+          86045,
+          86046,
+          86047,
+          86048,
+          86049
+        ],
+        "student_closed_loop": {
+          "n": null,
+          "N": 0,
+          "scope": "offline-only comparison; no rollout"
+        },
+        "release_redownload_verified": true,
+        "release_inventory_files": 9,
+        "release_cpu_load_ready": true,
+        "verification_record": "experiments/2026-10-15-act-train/operations-model-release-verification.json",
+        "verification_record_sha256": "cfbb39316c68f8582a8ee06af2f42438a13f789f10905bc26591641fd0ecaa93"
+      }
+    },
+    {
+      "id": "grasp-act-solo-main-f609979c",
+      "status": "available",
+      "description": "Fixed main step 10000 own-RGB solo ACT pilot; not a default controller",
+      "source_sha": "f609979cd4e0b7174f999986408401817a5c991a",
+      "training_source_sha": "f609979cd4e0b7174f999986408401817a5c991a",
+      "release": {
+        "tag": "models-20261015-grasp-act-f609979c",
+        "asset": "grasp-act-solo-main-f609979c.zip",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261015-grasp-act-f609979c/grasp-act-solo-main-f609979c.zip"
+      },
+      "archive": {
+        "sha256": "315e6752e6c8a6054966b3aac98b39e51d3f18fc0132ef4c308204caed0542c2",
+        "bytes": 192341234
+      },
+      "files": [
+        {
+          "path": "actor/SHA256.json",
+          "bytes": 265,
+          "sha256": "d9005385c5da238e069e5ce08c08d5f342a0a73a1f1310b4703f258ae5a523f7"
+        },
+        {
+          "path": "actor/adapter.json",
+          "bytes": 14780,
+          "sha256": "324cc4c02cc814f4f72fbd1df211e8b61814649066dd29b40917f9c5cb1984a7"
+        },
+        {
+          "path": "actor/config.json",
+          "bytes": 1278,
+          "sha256": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f"
+        },
+        {
+          "path": "actor/model.safetensors",
+          "bytes": 207363320,
+          "sha256": "9f5e469439e1ea8bc7ada73dc558b6f5e7aa48edf71cc416b64b9f7b6929576a"
+        },
+        {
+          "path": "offline-summary.json",
+          "bytes": 24469,
+          "sha256": "affa6d8de05e446f02ba9792f6768836947194363179bd8a9f3e98133e4468e7"
+        },
+        {
+          "path": "protocol.json",
+          "bytes": 2455,
+          "sha256": "fa75ef5f7a777bbd0e197ee439f267eb3395234f42d26ba26050ac9eda7563d2"
+        },
+        {
+          "path": "provenance.json",
+          "bytes": 1119,
+          "sha256": "e0d6093ee85eaae0f0fc3ff549b7149ff7a52eed2df68c62919f3ff0a049533a"
+        },
+        {
+          "path": "requirements-reference-act.txt",
+          "bytes": 330,
+          "sha256": "fa1d4f36fe5cc2eb43c784a41e5b9e754b6a9ca2f53145242e4803a7f904793d"
+        },
+        {
+          "path": "training-summary.json",
+          "bytes": 14199,
+          "sha256": "7496d7e1698d25afb64bdfc19ecde6dd2efdfa118215ac90b2ee8623b7652a90"
+        }
+      ],
+      "entrypoints": {
+        "act": "actor"
+      },
+      "limitations": [
+        "Own-RGB solo component pilot only; no gate promotion.",
+        "Model loading is distinct from closed-loop physical success.",
+        "Full raw training data and optimizer/RNG checkpoints remain on the original GCP disk."
+      ],
+      "verification_scope": {
+        "training_source_sha": "f609979cd4e0b7174f999986408401817a5c991a",
+        "gpu_saved_weight_readback": true,
+        "offline_validation_seeds": [
+          86045,
+          86046,
+          86047,
+          86048,
+          86049
+        ],
+        "student_closed_loop": {
+          "n": 0,
+          "N": 1,
+          "seeds": [
+            91100
+          ],
+          "stopped_unsubmitted": [
+            91101,
+            91102,
+            91103,
+            91104,
+            91105,
+            91106,
+            91107,
+            91108,
+            91109
+          ]
+        },
+        "release_redownload_verified": true,
+        "release_inventory_files": 9,
+        "release_cpu_load_ready": true,
+        "verification_record": "experiments/2026-10-15-act-train/operations-model-release-verification.json",
+        "verification_record_sha256": "cfbb39316c68f8582a8ee06af2f42438a13f789f10905bc26591641fd0ecaa93"
+      }
+    },
+    {
+      "id": "grasp-act13-p0-step10000-961aa751",
+      "status": "available",
+      "description": "ACT13 fixed step10000 own-RGB solo boxes, history dropout 0.0; evaluation model, no default adoption",
+      "source_sha": "961aa7517b29f187f6869e2624ed848ee2c32cfd",
+      "training_source_sha": "961aa7517b29f187f6869e2624ed848ee2c32cfd",
+      "release": {
+        "tag": "models-20261015-act13-961aa751",
+        "asset": "grasp-act13-p0-step10000-961aa751.zip",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261015-act13-961aa751/grasp-act13-p0-step10000-961aa751.zip"
+      },
+      "archive": {
+        "bytes": 192496781,
+        "sha256": "b0a902bee56b05252bcef8ddfe4e4cf96aa41958d891683519245c98a432a514"
+      },
+      "files": [
+        {
+          "path": "actor/SHA256.json",
+          "bytes": 265,
+          "sha256": "1a79b25b5e84401150074af9d3b7fa7f79a975e72557470f2f54c37c500c0f56"
+        },
+        {
+          "path": "actor/adapter.json",
+          "bytes": 15287,
+          "sha256": "f5832e9fe6bbfcff0671456ae33457071222c214edefc61e4e58a3c485be3491"
+        },
+        {
+          "path": "actor/config.json",
+          "bytes": 1278,
+          "sha256": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f"
+        },
+        {
+          "path": "actor/model.safetensors",
+          "bytes": 207363320,
+          "sha256": "b617415079a95a4bb4426fefe0d445cb288ea49eef0928278cb268212de02676"
+        },
+        {
+          "path": "evaluation-protocol.json",
+          "bytes": 1651,
+          "sha256": "64364a216d973132b0b5b08985e534a56c943a7118127eb9670bd74055638033"
+        },
+        {
+          "path": "provenance.json",
+          "bytes": 644,
+          "sha256": "db819c339c72175cf657054aa1f60aa0b7113f5e1b293f92b351a47a8396f7a7"
+        },
+        {
+          "path": "requirements-reference-act.txt",
+          "bytes": 330,
+          "sha256": "fa1d4f36fe5cc2eb43c784a41e5b9e754b6a9ca2f53145242e4803a7f904793d"
+        },
+        {
+          "path": "training-summary.json",
+          "bytes": 529559,
+          "sha256": "50367eaaaf1039785fe97431aada9add2f933345207ad37dec223286bb1b0202"
+        },
+        {
+          "path": "validation-summary.json",
+          "bytes": 29965,
+          "sha256": "9c7bc2b5141612784004a217661fced9d189fd7641a725133ffd94a5f49a1c02"
+        }
+      ],
+      "entrypoints": {
+        "act": "actor"
+      },
+      "limitations": [
+        "Own-RGB component evaluation; no navigation/E2E/real-robot or default-controller claim.",
+        "Stable-lift scoring and student completion/cap_end are separate.",
+        "Independent Haiku recount pending.",
+        "Full data and optimizer/RNG remain on original GCP disk."
+      ],
+      "verification_scope": {
+        "fixed_step": 10000,
+        "history_dropout": 0.0,
+        "validation_seeds": [
+          86865,
+          86866,
+          86867,
+          86868,
+          86869
+        ],
+        "release_redownload_verified": true,
+        "release_inventory_files": 9,
+        "release_cpu_load_ready": true,
+        "verification_record": "experiments/2026-10-15-act-train/act14-model-release-verification.json",
+        "verification_record_sha256": "0df4a918ab89457ebb2474cddddd4f29050922a567701a0c146be3c16824ebf1",
+        "closed_loop_recount": "independent Haiku recount pending; no adoption or research promotion",
+        "closed_loop_automated": {
+          "N": 20,
+          "stable_lift": 1,
+          "physical_score_success": 1,
+          "completed": 1,
+          "cap_end": 6,
+          "HOST_ERROR": 0
+        },
+        "evaluation_source_sha": "8a43837598504e774532df463ff67836785958d6"
+      }
+    },
+    {
+      "id": "grasp-act13-p02-step10000-961aa751",
+      "status": "available",
+      "description": "ACT13 fixed step10000 own-RGB solo boxes, history dropout 0.2; evaluation model, no default adoption",
+      "source_sha": "961aa7517b29f187f6869e2624ed848ee2c32cfd",
+      "training_source_sha": "961aa7517b29f187f6869e2624ed848ee2c32cfd",
+      "release": {
+        "tag": "models-20261015-act13-961aa751",
+        "asset": "grasp-act13-p02-step10000-961aa751.zip",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261015-act13-961aa751/grasp-act13-p02-step10000-961aa751.zip"
+      },
+      "archive": {
+        "bytes": 192499073,
+        "sha256": "07c9143edc8a19a9a9960b1422b89ceff15fabedfb22b0f4d9bfebebecb64657"
+      },
+      "files": [
+        {
+          "path": "actor/SHA256.json",
+          "bytes": 265,
+          "sha256": "b2b4589abdfafaba3f75b98ab8742a182f5d8a0202e549e421f8a1d107bea81d"
+        },
+        {
+          "path": "actor/adapter.json",
+          "bytes": 15287,
+          "sha256": "f094630df3d53f61aa67e10885281a3443c6ca0b4cd08b7e818fcec8cc10fd41"
+        },
+        {
+          "path": "actor/config.json",
+          "bytes": 1278,
+          "sha256": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f"
+        },
+        {
+          "path": "actor/model.safetensors",
+          "bytes": 207363320,
+          "sha256": "b55a72bc8cbd01fec553313375b59686bc8297ea62944283fccedd38cff58613"
+        },
+        {
+          "path": "evaluation-protocol.json",
+          "bytes": 1651,
+          "sha256": "64364a216d973132b0b5b08985e534a56c943a7118127eb9670bd74055638033"
+        },
+        {
+          "path": "provenance.json",
+          "bytes": 648,
+          "sha256": "d81d86f905dcf3b1405bdcedf3eb935b190b67d163f76b2712aa90920e379cd4"
+        },
+        {
+          "path": "requirements-reference-act.txt",
+          "bytes": 330,
+          "sha256": "fa1d4f36fe5cc2eb43c784a41e5b9e754b6a9ca2f53145242e4803a7f904793d"
+        },
+        {
+          "path": "training-summary.json",
+          "bytes": 529610,
+          "sha256": "97d329c255acf91065bc32ebfb54743070fc37e372aa44b301b1783fb14416e4"
+        },
+        {
+          "path": "validation-summary.json",
+          "bytes": 29965,
+          "sha256": "9c7bc2b5141612784004a217661fced9d189fd7641a725133ffd94a5f49a1c02"
+        }
+      ],
+      "entrypoints": {
+        "act": "actor"
+      },
+      "limitations": [
+        "Own-RGB component evaluation; no navigation/E2E/real-robot or default-controller claim.",
+        "Stable-lift scoring and student completion/cap_end are separate.",
+        "Independent Haiku recount pending.",
+        "Full data and optimizer/RNG remain on original GCP disk."
+      ],
+      "verification_scope": {
+        "fixed_step": 10000,
+        "history_dropout": 0.2,
+        "validation_seeds": [
+          86865,
+          86866,
+          86867,
+          86868,
+          86869
+        ],
+        "release_redownload_verified": true,
+        "release_inventory_files": 9,
+        "release_cpu_load_ready": true,
+        "verification_record": "experiments/2026-10-15-act-train/act14-model-release-verification.json",
+        "verification_record_sha256": "0df4a918ab89457ebb2474cddddd4f29050922a567701a0c146be3c16824ebf1",
+        "closed_loop_recount": "independent Haiku recount pending; no adoption or research promotion",
+        "closed_loop_automated": {
+          "N": 20,
+          "stable_lift": 1,
+          "physical_score_success": 1,
+          "completed": 0,
+          "cap_end": 7,
+          "HOST_ERROR": 0
+        },
+        "evaluation_source_sha": "8a43837598504e774532df463ff67836785958d6"
+      }
+    },
+    {
+      "id": "grasp-act15-dagger1-step10000-1535c8a3",
+      "status": "available",
+      "description": "ACT15 fixed step10000, expert initial prefix plus one student-only DAgger round; DEV failure comparison model, no default adoption",
+      "source_sha": "1535c8a3e4e10184669304081aaaf7ce4eff3512",
+      "training_source_sha": "1535c8a3e4e10184669304081aaaf7ce4eff3512",
+      "release": {
+        "tag": "models-20261015-act15-1535c8a3",
+        "asset": "grasp-act15-dagger1-step10000-1535c8a3.zip",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261015-act15-1535c8a3/grasp-act15-dagger1-step10000-1535c8a3.zip"
+      },
+      "archive": {
+        "bytes": 192495476,
+        "sha256": "e39bf6b27f263bc699a6b3165461421c5f5062ab6fc0be5bc38f90f369fb77cf"
+      },
+      "files": [
+        {
+          "path": "actor/SHA256.json",
+          "bytes": 265,
+          "sha256": "de15c0e0d9d7813ab62b92495706100a0dd4ef493d06c403301f6f8763aebb97"
+        },
+        {
+          "path": "actor/adapter.json",
+          "bytes": 15604,
+          "sha256": "a54d8c4e1721f7282b2ae067d3935b82363af6dd5e893413c73ede2bc5c431b5"
+        },
+        {
+          "path": "actor/config.json",
+          "bytes": 1278,
+          "sha256": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f"
+        },
+        {
+          "path": "actor/model.safetensors",
+          "bytes": 207363320,
+          "sha256": "d90a2b545709df6cd1a5972874db2e20c264007f9a798888f1bdccac22882ed1"
+        },
+        {
+          "path": "dataset-audit.json",
+          "bytes": 272,
+          "sha256": "3f1bae6ba8d6b9a2bccea05dc68c6c2de447e2d0d4ec54877315880b426da13a"
+        },
+        {
+          "path": "deployment.json",
+          "bytes": 388,
+          "sha256": "1f129c656e0ab6ab69b25d5425ffe0df8da737ea8d9c5667f10556621c9e3c47"
+        },
+        {
+          "path": "evaluation-summary.json",
+          "bytes": 1458,
+          "sha256": "5ede825146140dd10f724251380f34f94743d8f3e94f044bd9d4f31de384b9e2"
+        },
+        {
+          "path": "provenance.json",
+          "bytes": 941,
+          "sha256": "08c3a217cdeb77891d8dbdc413b80cee42607a747d1578b8731a516fe4a5e13c"
+        },
+        {
+          "path": "requirements-reference-act.txt",
+          "bytes": 330,
+          "sha256": "fa1d4f36fe5cc2eb43c784a41e5b9e754b6a9ca2f53145242e4803a7f904793d"
+        },
+        {
+          "path": "training-summary.json",
+          "bytes": 529534,
+          "sha256": "f55110f134dee49f5daed657a6cecb236a5de78a5a506ddc8a25a82291243d60"
+        }
+      ],
+      "entrypoints": {
+        "act": "actor"
+      },
+      "limitations": [
+        "One-robot near-field boxes; no navigation/release/E2E/real-robot claim.",
+        "Same20 completion0/20, new20 completion0/20; stable lift0/40. No adoption.",
+        "Auxiliary dense temporal-ensemble probe is separate from final n8 CPU evaluation.",
+        "Full raw and optimizer/RNG remain on GCP persistent disks; no independent complete raw backup.",
+        "No independent merge review completed."
+      ],
+      "verification_scope": {
+        "fixed_step": 10000,
+        "dagger_rounds": 1,
+        "history_dropout": 0.0,
+        "include_initial_approach_v1": true,
+        "validation_seeds": [
+          86865,
+          86866,
+          86867,
+          86868,
+          86869
+        ],
+        "release_redownload_verified": true,
+        "release_inventory_files": 10,
+        "release_cpu_load_ready": true,
+        "verification_record": "experiments/2026-10-15-act-train/act15-model-release-verification.json",
+        "verification_record_sha256": "58bfccea8554620e28743988777c17e5b296451847119bde0661ef3dd7ad0811",
+        "evaluation_source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+        "primary_execution": {
+          "chunk_size": 8,
+          "n_action_steps": 8,
+          "temporal_ensemble_coeff": null,
+          "actor_threads": 1
+        },
+        "closed_loop_automated": {
+          "same20": {
+            "N": 20,
+            "stable_lift": 0,
+            "completed": 0,
+            "cap_end": 8,
+            "HOST_ERROR": 0
+          },
+          "new20": {
+            "N": 20,
+            "stable_lift": 0,
+            "completed": 0,
+            "cap_end": 7,
+            "HOST_ERROR": 0
+          }
+        }
+      }
+    }
+  ]
+}

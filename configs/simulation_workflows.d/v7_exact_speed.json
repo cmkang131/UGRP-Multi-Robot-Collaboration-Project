@@ -1,0 +1,22 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "v7-exact-speed-benchmark",
+      "version": "1.0.0",
+      "purpose": "Pinned S2/S3/egomap command replay: v7 exact-cache ABBA, state and artifact bytes",
+      "entry": "scripts/benchmark_v7_speed.py",
+      "runner": "scripts.benchmark_v7_speed",
+      "docs": "experiments/2026-10-09-sim-speed-core/README.md",
+      "requires": "clean committed SHA; completed fixed inputs; exclusive agent_lock after research queue",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--suite",
+        "--expected-source-sha"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

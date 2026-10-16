@@ -1,10 +1,37 @@
 # UGRP 연구 TODO — 통신 효과 중심
 
-작성: 2026-09-22. 기준 main: `120cc821b6a1d5c104aab8c8ef2260cf7f8c9a7b`.
-이 문서는 앞으로의 연구 우선순위와 완료 기준이다. 체크박스는 아래 기준의 검증이 남았다는 뜻이며, 관련 코드가 전혀 없다는 뜻은 아니다. 이번 작성에서는 실험을 새로 실행하지 않았다.
+> 진행 중인 연구 TODO다. 현행 규칙(2026-10-03 [#366](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/366))상 top 카메라는 평가·검토 영상 전용이며 제어·지도 만들기·위치 추정 입력으로 금지한다.
 
-첫 구현 배치의 담당·파일 소유권·의존 관계는 [병렬 작업 배정](research_parallel_work.md)을 따른다.
-1차 PR 이후 실제 스킬·비동기 판단·재협상·통합 runner의 후속 배치는 [2차 고급 연구 작업](research_advanced_work.md)을 따른다.
+최초 작성: 2026-09-22. **2026-09-29:** §0 표의 상태 열만 최신화했다(로드맵 순서·내용 불변, 상세는 [현재 상태 9/29 절](current_status.md#2026-09-29-기준-진행-요약-main-45a21b23-pr-256268-병합-뒤)). **2026-09-26 개정:** §0 로드맵과 이슈 연결을 추가했다. §1 이하는 연구 방법의 원칙으로 유지한다. 단, 9/22의 A/B/C 조건 표기는 §0의 조건 4개로 대체한다. 개정 전 판은 git 이력 `6588dafc`에 있다.
+
+## 0. 현재 로드맵 (2026-09-26, 상태 열 2026-09-29 갱신)
+
+진행 관리는 GitHub 마일스톤 **"E2E 첫 파일럿"**과 `roadmap` 라벨 이슈로 한다. 모든 PR 본문에 `Refs #이슈`를 적고, 작업이 끝나면 해당 이슈에 결과 댓글을 남긴다. 이슈가 대체되면 이유와 대체 이슈를 적고 닫는다(`superseded` 라벨).
+
+**연구 질문:** 로봇 사이의 한국어 자연어 대화가 다중 로봇 작업 효율에 영향을 주는가.
+- **조건 4개:** 무통신 / 자유 한국어 peer 대화 / 리더 교대(한 로봇이 리더를 겸함, 허브-스포크, seed마다 r1·r2·r3 교대) / 정형 메시지. 모든 것을 보는 지휘자(R)는 참고용 상한이다.
+- **로봇 LLM 입력:** 자기 팔 끝 RGB, 정적 지도, 주문서, 자기 명령 이력. TOP 카메라는 평가 전용이다. 대화·생각 시간은 SIM 시간 비용으로 계산한다.
+- **최종 환경:** walls_v3(0.40 m), **AprilTag 0개**. 문·문기둥·벽 모서리를 비전으로 인식해 위치를 추정한다. cargo_noslip_v1 사용, weld OFF. 짝 상태 채널은 모든 조건에 넣는다.
+
+| 단계 | 이슈 | 관련 PR | 상태 (2026-09-29 기록 기준) |
+|---|---|---|---|
+| 1 표식 없는 비전 위치 추정 | [#216](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/216) | #210, VIS2, #227, #233, #242, #243, #264 | 진행 중. **가장 큰 위험**. 9/27 VIS3 독립 test 게이트 FAIL, 9/28 VIS4·VIS5 후보 기각, 9/29 VIS6 레시피 1 오프라인 재생(214단위) 채택 후보 없음, b0 유지. 태그 0개 폐루프 dev 1회는 배송 실패(#237) |
+| 2 로봇별 관측 기억 (표식 무관) | [#217](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/217) | #211, #234 | 9/27 memory_v2 test OFF 4/6 대 3/6이라 이득 주장 불충족(interim, 태그 제공자). memory_v3(#234) 병합, 이슈 마지막 코멘트(9/26)는 검토 P1 3건 수정 중 |
+| 3 최종 환경 고정 | [#218](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/218) | #208, #232, #255 | 9/28 표식 0개 지도 3종·시나리오 v2 6종 고정(정적 검사 9/9, 물리 없음). 남은 일: 2인 편대 경로 재검사, 신규 지도 장면·러너 연결, 최종 환경 스모크(B8) |
+| 4 자기 카메라 기술 재검증 (M1·M2) | [#219](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/219) | #201, #203, #205 | 표식 0개 최종 환경 재검증은 미착수. 옛 태그 환경 결과만 있음(M1 test 4/6, M2 1단계 8/8·접근 관문 2 seed 실패) |
+| 5 인식 잔여 오류 | [#220](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/220) | #193 | v3.1 병합(9/27). 그림자·가림 오류 남음. 이슈 마지막 코멘트(9/26)의 T3 판정식 결함 수정 여부는 미확인 |
+| 6 실행기 보완·3대 no-LLM 스모크 | [#221](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/221) | #206, #229, #235, #244, #259, #260, #263, #265, #266 | 실행기 API·통합 러너 4조건 no-LLM 배선·공동 운반 API 병합(9/27). 공동 운반은 E2E가 아닌 단계 probe로 전환(9/28): 정렬 0/25 → 13/25(b-v6c) → 25/25(b-v6d), 파지 22/23, 운반 0/33·목적지 내려놓기 0/13(b-v6c, 제어기 미수정). 모두 dev 격자, E2E 성공 아님 |
+| 7 대화 연구 뼈대·실제 LLM adapter | [#222](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/222) | #184–#190, #194, #238, #245 | 9/28 다회 결정 루프(#245) 병합. 9/27 실제 LLM 첫 호출 파일럿 17회(물리 0회). 실제 다회 LLM 드라이버(B7, #256) 병합 |
+| 8 통합·조건 연결·host 교란 제거 | [#223](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/223) | #229, #245, #256, #257 | 4조건 no-LLM 배선(9/27)·다회 루프(9/28)·평가 전용 심판(B6, 9/28) 병합. 남은 일은 전체 장면 실행 |
+| 9 스모크 → LLM 파일럿 → 본 실험 | [#224](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/224) | #254, #257 | 본연구 사전 등록은 DRAFT·미고정(#254). 전체 스모크·파일럿·본 실험은 미착수 |
+| 지원: 교사 실행기 (시연 전용) | [#225](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/225) | #207, #202 | 9/27 교사 실현 가능성 5/8(교사, 로봇 성공 아님). N1(TOP green 검출) 열림 |
+| 운영: 디스크·속도·기록 | [#226](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/226), [#3](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/3), [#6](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/6) | #191, #192, #195, #199, #209, #212, #228, #236, #239, #241, #267, #268 | 진행 중. 9/27 디스크 정리 기록(raw 결정은 사용자 대기), 9/28 캡처 프로필, 9/29 CI 8개 shard 분할·플래키 수정 |
+| 후속: 도메인 랜덤화 | [#213](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/213) | – | VIS2 1차 결과 뒤(변화 없음) |
+| 후속: sim2real | [#214](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/214) | #251, #258 | 연구 뒤, 사용자 확인 필요. 9/28 실측 절차·공개 사양 조사(문서만, 실측 미실행) |
+
+**사용자 결정이 필요한 것:** 실제 LLM 파일럿의 모델과 비용 한도(#222), sim2real의 로봇 대수·경기장·천장 카메라(#214).
+
+2026-09-26 이슈 정리로 닫은 옛 이슈: #1, #2, #21, #26, #29, #30, #35, #37, #39, #49, #50, #51, #116, #117. 각 이슈에 대체 이유를 댓글로 남겼다.
 
 ## 1. 연구 목표와 판단 기준
 
@@ -43,6 +70,8 @@ R1의 감사와 R2의 실행기 점검은 함께 진행할 수 있다. S1–S3 �
 완료 증거: 연구 질문, A/B/C 정의, 실행 범위, 코드·모델 기준, 필요한 산출물과 미확정 수치가 담긴 프로토콜. 설계 문서 작성만으로 실행 완료 표시를 하지 않는다.
 
 ### P0 · R1. 로봇별 정보와 통신 경계 감사
+
+> 현행 규칙(2026-10-03 [#366](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/366))상 공용 top RGB와 그 파생 위치 정보는 제어·지도 만들기·위치 추정 입력으로 금지한다. 아래 두 TOP 항목은 아직 TOP을 쓰는 기존 경로의 감사 대상(미이행)이며, 현행 입력 허용이 아니다.
 
 - [ ] 각 로봇에 들어가는 자기 RGB·공용 top RGB·자기 명령/기억·정적 지도/과제·실제 수신 메시지를 필드별로 열거하고 출처·시각을 기록한다. 평가 정답·접촉·측정 관절은 제어와 완료 통보에 넣지 않는다.
 - [ ] 프롬프트뿐 아니라 기억 갱신, 재판단을 깨우는 조건, 완료 목록, 예약 거부, 경로 후보, 중앙 계획 사본을 검사한다. 관측하지 않은 동료의 비공개 상태만 바꿨을 때 자기 입력·깨우기가 달라지지 않아야 한다.
@@ -144,19 +173,26 @@ R1의 감사와 R2의 실행기 점검은 함께 진행할 수 있다. S1–S3 �
 - [ ] 주 실험 후 기억 길이, 사건 기반/주기적 소통, 메시지 지연·손실·오래된 보고를 한 축씩 바꿔 효과를 비교한다.
 - [ ] 맵 연결 구조·물건 수·선행 작업·파트너 교체를 늘릴 때 기존 ID 추적·자원 계약·실행 지원을 먼저 확인한다. 통신 효과와 운동 난이도 상승의 영향을 구분한다.
 
+### S4. 비전 위치 추정 도메인 랜덤화 ([#213](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/213))
+
+2026-09-26 사용자 결정. 표식 없는 최종 환경의 비전 위치 추정(VIS2) 1차 결과가 나온 뒤 시작한다.
+
+- [ ] 깨끗한 렌더링 결과를 기준선으로 고정한 뒤, 학습 데이터 일부에만 약한 변형(조명, 벽·바닥 색과 질감, 노이즈, 흐림, 노출)을 섞는다.
+- [ ] 변형 강도를 단계별로 올린다. 단계마다 깨끗한 화면 성능이 사전 등록한 허용폭 안에 있는지 확인한다.
+- [ ] 깨끗한 화면, 변형 화면, 실물 사진 점수를 따로 보고한다. 랜덤화는 비전 모델 학습에만 쓰고, 조건 비교 실험 환경의 화면은 고정한다.
+
 ## 5. H1 · 실물 MasterPi 확인
 
 - [ ] 공식 제출계획의 실물 검증 범위와 현재 팀 계획을 대조해 필수 산출물·일정을 확정한다. 시뮬레이션 중심으로 범위를 바꾸었다면 승인·합의 근거를 기록한다. 시뮬레이션 우선 진행이 원래 실물 목표의 삭제를 뜻하지는 않는다.
 - [ ] 실제 카메라·구동·통신·시계·정지/만료·하중 유지의 지원 범위를 실측한다. 시뮬레이션 성공을 실물 검증으로 대체하지 않는다.
 - [ ] 단독 기본 동작→두 로봇 공동 동작→제한된 협업/통신 비교 순으로 진행한다. 실물 결과는 별도 조건표·로그·영상으로 보고한다.
+- [ ] 2026-09-26 sim2real 계획([#214](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/214)): 시뮬과 비슷한 실물 경기장(벽 0.40 m, 표식 없음)을 만들고 실측한 정적 지도를 같은 형식으로 준다. H0 조기 확인으로 벽·문 모형 앞 실물 카메라 사진에서 비전 위치 추정을 미리 점검한다. 이어서 1대 배달→문 통과→2대 공동 운반→조건 4개 소규모 파일럿 순으로 진행한다. 로봇 대수, 경기장 공간·재료, 천장 평가 카메라는 사용자 확인이 필요하다.
 
-## 6. 바로 착수할 세 가지
+## 6. 바로 착수할 일
 
-1. **R0/R1:** 현재 RGB 실행 경로 기준으로 A/B/C 입력·메시지·동기화 표를 쓰고, 옛 CoELA와의 차이 및 새 adapter 경계를 고정한다.
-2. **R2/R3:** 지원되는 작은 임무 하나에서 공통 운동 스킬을 세 독립 에이전트에 연결하고 무통신·정형·자연어 전환 검사를 한다.
-3. **R4:** 동일 조건의 6회 연결 파일럿으로 실제 협상/실행·실패·비용 로그를 회수한다. 성공 여부와 별개로 측정 가능한 설계인지 판단하고 본실험 크기를 정한다.
+2026-09-26부터는 §0 로드맵과 마일스톤 이슈를 따른다. 9/22에 적은 "바로 착수할 세 가지"(A/B/C 표, CoELA 연결, 6회 파일럿)는 로드맵 7·8·9단계로 흡수됐다.
 
-새 작업은 관련 TODO ID, 연구 질문과의 연결, 종료 조건, 필요한 원본을 첫 기록에 적는다. 첫 단계 완료 증거가 없으면 모델·맵·학습량 확대보다 해당 경계부터 해결한다.
+새 작업은 관련 이슈 번호, 연구 질문과의 연결, 종료 조건, 필요한 원본을 첫 기록에 적는다.
 
 ## 7. 구현·검증 진입점
 
@@ -168,6 +204,6 @@ R1의 감사와 R2의 실행기 점검은 함께 진행할 수 있다. S1–S3 �
 | 맵·시나리오 | [맵/ACT 보조 계획](act_map_generalization_plan.md), [다중 물건 실행](multi_object_execution.md), [지도 목록](../maps/README.md) |
 | 운영·증거 | [개발·검증](../CONTRIBUTING.md), [Colab CLI](colab_simulation.md), [Kaggle CLI](kaggle_simulation.md), [실험 인덱스](../experiments/README.md), [TensorBoard](tensorboard.md) |
 
-기존 테스트가 CI 기본 목록에 포함되는지도 함께 확인한다. 테스트 존재·과거 통과·현재 통합 검증을 같은 상태로 세지 않는다. 관련 기존 작업은 [#39 공동 운반](https://github.com/cmk404/UGRP-Multi-Robot-Collaboration-Project/issues/39), [#49 예약·양보](https://github.com/cmk404/UGRP-Multi-Robot-Collaboration-Project/issues/49), [#50 상위 계획 연결](https://github.com/cmk404/UGRP-Multi-Robot-Collaboration-Project/issues/50), [#51 통합 비교](https://github.com/cmk404/UGRP-Multi-Robot-Collaboration-Project/issues/51)다. 각 이슈의 구현 효과와 본 문서의 통신 효과 비교를 구분한다.
+기존 테스트가 CI 기본 목록에 포함되는지도 함께 확인한다. 테스트 존재·과거 통과·현재 통합 검증을 같은 상태로 세지 않는다. (2026-09-26: 아래 #39·#49·#50·#51은 로드맵 이슈로 대체되어 닫혔다.) 관련 기존 작업은 [#39 공동 운반](https://github.com/cmk404/UGRP-Multi-Robot-Collaboration-Project/issues/39), [#49 예약·양보](https://github.com/cmk404/UGRP-Multi-Robot-Collaboration-Project/issues/49), [#50 상위 계획 연결](https://github.com/cmk404/UGRP-Multi-Robot-Collaboration-Project/issues/50), [#51 통합 비교](https://github.com/cmk404/UGRP-Multi-Robot-Collaboration-Project/issues/51)다. 각 이슈의 구현 효과와 본 문서의 통신 효과 비교를 구분한다.
 
-실행 환경은 최신 프로젝트 지침을 따른다. 기본 무거운 실행은 Colab CLI, 허용된 Kaggle 작업은 유한한 배치로 한다. 다른 작업에서 기록된 특정 Mac 실행 허용을 이 TODO 전체에 확대하지 않는다. 결과·참고 자료는 로컬 프로젝트에 보존하고 UGRP에서는 Drive를 사용하지 않는다.
+실행 환경은 최신 프로젝트 지침(AGENTS.md)을 따른다. 기본 경로는 로컬 CLI와 MuJoCo이고, Colab/Kaggle은 명시적으로 선택하는 유한 배치 경로다. 다른 작업에서 기록된 특정 Mac 실행 허용을 이 TODO 전체에 확대하지 않는다. 결과·참고 자료는 로컬 프로젝트에 보존하고 UGRP에서는 Drive를 사용하지 않는다.

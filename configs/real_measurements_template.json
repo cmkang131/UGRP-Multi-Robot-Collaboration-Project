@@ -1,0 +1,770 @@
+{
+  "schema": "ugrp.real_measurements.v1",
+  "protocol": "docs/sim2real_measurement_protocol.md",
+  "hardware_unit": null,
+  "measured_by": null,
+  "measured_at": null,
+  "measurement_source": null,
+  "_instructions": [
+    "Copy to calibration/masterpi/real_measurements_<robot>_<YYYYMMDD>.json and fill it; leave unknowns null.",
+    "value = median of repeats; put every repeat in repeats.",
+    "measurement_source must not contain: sim, mujoco, synthetic, mock, generated, fake.",
+    "static_geometry values are in mm/deg for humans; code_scale converts to the code unit.",
+    "ultrasonic.spec, dynamics_manifest_static and wrist_camera.intrinsics use code units and code key names.",
+    "Photos and CSVs stay in outputs/real-measurements/<robot>-<date>/; list path + sha256 in raw_files."
+  ],
+  "conditions": {
+    "battery_mv_start": null,
+    "battery_mv_end": null,
+    "room_temp_c": null,
+    "floor_material": null,
+    "floor_photo": null,
+    "notes": null
+  },
+  "static_geometry": {
+    "sonar_center_height_mm": {
+      "value": null,
+      "unit": "mm",
+      "repeats": [],
+      "expected": {
+        "drawing": 61.7,
+        "v2": 54.0
+      },
+      "tolerance": 2.0,
+      "tool": "caliper depth rod",
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):SONAR_CENTER_Z_FLOOR_M; harness/ultrasonic_model.py:UltrasonicSpec.mount_z_floor_m",
+      "photo": null,
+      "notes": null,
+      "code_unit": "m",
+      "code_scale": 0.001
+    },
+    "sonar_face_forward_mm": {
+      "value": null,
+      "unit": "mm",
+      "repeats": [],
+      "expected": {
+        "drawing": 88.0,
+        "v2": 84.0
+      },
+      "tolerance": 2.0,
+      "tool": "reference sheet + square + ruler",
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):SONAR_FACE_X_M; UltrasonicSpec.mount_x_m (v2 centre 78)",
+      "photo": null,
+      "notes": null,
+      "code_unit": "m",
+      "code_scale": 0.001
+    },
+    "sonar_pitch_deg": {
+      "value": null,
+      "unit": "deg",
+      "repeats": [],
+      "expected": {
+        "drawing": 0.0
+      },
+      "tolerance": 1.0,
+      "tool": "phone level app on ruler",
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):SONAR_PITCH_DEG; UltrasonicSpec.mount_pitch_deg",
+      "photo": null,
+      "notes": "up = +"
+    },
+    "sonar_center_lateral_mm": {
+      "value": null,
+      "unit": "mm",
+      "repeats": [],
+      "expected": {
+        "drawing": 0.0
+      },
+      "tolerance": 2.0,
+      "tool": "reference sheet + ruler",
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):SONAR_CENTER_Y_M; UltrasonicSpec.mount_y_m",
+      "photo": null,
+      "notes": "left = +",
+      "code_unit": "m",
+      "code_scale": 0.001
+    },
+    "sonar_transducer_spacing_mm": {
+      "value": null,
+      "unit": "mm",
+      "repeats": [],
+      "expected": {
+        "module_drawing": 26.7,
+        "v2": 34.0
+      },
+      "tolerance": 1.0,
+      "tool": "caliper",
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):SONAR_TRANSDUCER_SPACING_M",
+      "photo": null,
+      "notes": null,
+      "code_unit": "m",
+      "code_scale": 0.001
+    },
+    "yaw_axis_forward_mm": {
+      "value": null,
+      "unit": "mm",
+      "repeats": [],
+      "expected": {
+        "drawing": 48.2,
+        "v2": 0.0
+      },
+      "tolerance": 2.0,
+      "tool": "top photos at 3 pan angles (circle centre)",
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):YAW_AXIS_X_M",
+      "photo": null,
+      "notes": null,
+      "code_unit": "m",
+      "code_scale": 0.001
+    },
+    "yaw_axis_lateral_mm": {
+      "value": null,
+      "unit": "mm",
+      "repeats": [],
+      "expected": {
+        "drawing": 0.0
+      },
+      "tolerance": 2.0,
+      "tool": "top photos",
+      "code_constant": "(new) yaw axis y offset",
+      "photo": null,
+      "notes": "left = +",
+      "code_unit": "m",
+      "code_scale": 0.001
+    },
+    "shoulder_axis_height_mm": {
+      "value": null,
+      "unit": "mm",
+      "repeats": [],
+      "expected": {
+        "drawing": 127.7,
+        "v2": 125.5
+      },
+      "tolerance": 2.0,
+      "tool": "square + ruler",
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):SHOULDER_AXIS_Z_FLOOR_M",
+      "photo": null,
+      "notes": null,
+      "code_unit": "m",
+      "code_scale": 0.001
+    },
+    "upper_arm_mm": {
+      "value": null,
+      "unit": "mm",
+      "repeats": [],
+      "expected": {
+        "drawing": 57.7,
+        "sdk_v2": 65.0
+      },
+      "tolerance": 1.0,
+      "tool": "caliper (outer+inner average)",
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):DRAWING_UPPER_ARM_M; CONTROLLER_UPPER_ARM_M; harness/real_geometry.py:LINK_2_CM",
+      "photo": null,
+      "notes": null,
+      "code_unit": "m",
+      "code_scale": 0.001
+    },
+    "forearm_mm": {
+      "value": null,
+      "unit": "mm",
+      "repeats": [],
+      "expected": {
+        "drawing": 62.4,
+        "sdk_v2": 62.0
+      },
+      "tolerance": 1.0,
+      "tool": "caliper",
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):DRAWING_FOREARM_M; CONTROLLER_FOREARM_M; LINK_3_CM",
+      "photo": null,
+      "notes": null,
+      "code_unit": "m",
+      "code_scale": 0.001
+    },
+    "wrist_to_closed_tip_mm": {
+      "value": null,
+      "unit": "mm",
+      "repeats": [],
+      "expected": {
+        "drawing": 94.0,
+        "sdk": 100.0
+      },
+      "tolerance": 2.0,
+      "tool": "caliper",
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):DRAWING_WRIST_TO_TIP_M; CONTROLLER_TOOL_M",
+      "photo": null,
+      "notes": null,
+      "code_unit": "m",
+      "code_scale": 0.001
+    },
+    "straight_up_tip_height_mm": {
+      "value": null,
+      "unit": "mm",
+      "repeats": [],
+      "expected": {
+        "official": 343.0,
+        "sdk_sum": 352.5
+      },
+      "tolerance": 3.0,
+      "tool": "tape + square",
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):OFFICIAL_TOTAL_HEIGHT_M (check only)",
+      "photo": null,
+      "notes": "arm straight up = nominal 1500 + SERVO_DEVIATION",
+      "code_unit": "m",
+      "code_scale": 0.001
+    },
+    "straight_up_residual_deg": {
+      "value": null,
+      "unit": "deg",
+      "per_link": {
+        "upper_arm": null,
+        "forearm": null,
+        "tool": null
+      },
+      "expected": 0.0,
+      "tolerance": 3.0,
+      "tool": "phone level app",
+      "code_constant": "harness/real_geometry.py:SERVO_DEVIATION",
+      "notes": null
+    },
+    "camera_lens_along_mm": {
+      "value": null,
+      "unit": "mm",
+      "repeats": [],
+      "expected": {
+        "stock_drawing": 53.0,
+        "ugrp1_fit": 67.0
+      },
+      "tolerance": 2.0,
+      "tool": "caliper",
+      "code_constant": "sim/masterpi_camera_profile.py:CAMERA_LOCAL_POS_M[0]; REAL_CAPTURE_CAMERA_LINK_M",
+      "photo": null,
+      "notes": "from ID3 axis along the tool axis to lens front centre",
+      "code_unit": "m",
+      "code_scale": 0.001
+    },
+    "camera_lens_up_mm": {
+      "value": null,
+      "unit": "mm",
+      "repeats": [],
+      "expected": {
+        "stock_drawing": 27.8,
+        "ugrp1_fit": 13.6
+      },
+      "tolerance": 2.0,
+      "tool": "caliper",
+      "code_constant": "CAMERA_LOCAL_POS_M[2]; REAL_CAPTURE_CAMERA_LOCAL_Z_M",
+      "photo": null,
+      "notes": "perpendicular distance from tool axis; record side in photo",
+      "code_unit": "m",
+      "code_scale": 0.001
+    },
+    "camera_lens_lateral_mm": {
+      "value": null,
+      "unit": "mm",
+      "repeats": [],
+      "expected": {
+        "production": 0.0,
+        "archived_fit": 8.1
+      },
+      "tolerance": 2.0,
+      "tool": "caliper",
+      "code_constant": "CAMERA_LOCAL_POS_M[1]",
+      "photo": null,
+      "notes": "left = +",
+      "code_unit": "m",
+      "code_scale": 0.001
+    },
+    "camera_pitch_deg": {
+      "value": null,
+      "unit": "deg",
+      "repeats": [],
+      "expected": {
+        "production_approx": -7.5,
+        "real_capture_fit": -7.95
+      },
+      "tolerance": 1.0,
+      "tool": "side photo angle + phone level",
+      "code_constant": "CAMERA_LOCAL_QUAT_WXYZ; REAL_CAPTURE_CAMERA_PITCH_OFFSET_DEG",
+      "photo": null,
+      "notes": "optical axis vs tool axis; looking below the fingers = -"
+    },
+    "camera_model": {
+      "value": null,
+      "label_text": null,
+      "usb_id": null,
+      "lsusb": null,
+      "formats": null,
+      "expected": [
+        "HBVCAM-V2101 (stock)",
+        "icspring fisheye (profile)"
+      ],
+      "code_constant": "sim/masterpi_camera_profile.py:CAMERA_CALIBRATION_ID",
+      "photo": null,
+      "notes": null
+    },
+    "wheel_track_mm": {
+      "value": null,
+      "unit": "mm",
+      "repeats": [],
+      "expected": {
+        "drawing": 129.9,
+        "v2": 131.0,
+        "sdk_mecanum_2a": 134.0
+      },
+      "tolerance": 2.0,
+      "tool": "reference sheet + ruler",
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):DRAWING_TRACK_M; sim/masterpi_geometry.py:NOMINAL_TRACK_M",
+      "photo": null,
+      "notes": null,
+      "code_unit": "m",
+      "code_scale": 0.001
+    },
+    "wheelbase_mm": {
+      "value": null,
+      "unit": "mm",
+      "repeats": [],
+      "expected": {
+        "drawing": 118.8,
+        "v2": 120.0,
+        "sdk_mecanum_2b": 118.0
+      },
+      "tolerance": 2.0,
+      "tool": "reference sheet + ruler",
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):DRAWING_WHEELBASE_M; NOMINAL_WHEELBASE_M",
+      "photo": null,
+      "notes": null,
+      "code_unit": "m",
+      "code_scale": 0.001
+    },
+    "wheel_width_mm": {
+      "value": null,
+      "unit": "mm",
+      "repeats": [],
+      "expected": {
+        "drawing": 30.0,
+        "v2": 31.0
+      },
+      "tolerance": 1.0,
+      "tool": "caliper",
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):OFFICIAL_WHEEL_WIDTH_M; NOMINAL_WHEEL_WIDTH_M",
+      "photo": null,
+      "notes": null,
+      "code_unit": "m",
+      "code_scale": 0.001
+    },
+    "wheel_diameter_mm": {
+      "value": null,
+      "unit": "mm",
+      "repeats": [],
+      "expected": {
+        "official": 65.0
+      },
+      "tolerance": 0.5,
+      "tool": "caliper",
+      "code_constant": "OFFICIAL_WHEEL_DIAMETER_M; NOMINAL_WHEEL_RADIUS_M (x0.5)",
+      "photo": null,
+      "notes": null,
+      "code_unit": "m",
+      "code_scale": 0.001
+    },
+    "wheel_rolling_diameter_mm": {
+      "value": null,
+      "unit": "mm",
+      "repeats": [],
+      "expected": {
+        "official": 65.0
+      },
+      "tolerance": 0.5,
+      "tool": "roll test + tape",
+      "code_constant": "(effective) distance of 5 turns / (5*pi)",
+      "photo": null,
+      "notes": null,
+      "code_unit": "m",
+      "code_scale": 0.001
+    },
+    "chassis_length_mm": {
+      "value": null,
+      "unit": "mm",
+      "repeats": [],
+      "expected": {
+        "drawing": 185.0,
+        "v2_tray": 120.0
+      },
+      "tolerance": 3.0,
+      "tool": "ruler",
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):CHASSIS_LENGTH_M; NOMINAL_DECK_LENGTH_M",
+      "photo": null,
+      "notes": null,
+      "code_unit": "m",
+      "code_scale": 0.001
+    },
+    "overall_length_mm": {
+      "value": null,
+      "unit": "mm",
+      "repeats": [],
+      "expected": {
+        "official": 185.0
+      },
+      "tolerance": 3.0,
+      "tool": "ruler",
+      "code_constant": "OFFICIAL_TOTAL_LENGTH_M",
+      "photo": null,
+      "notes": null,
+      "code_unit": "m",
+      "code_scale": 0.001
+    },
+    "overall_width_mm": {
+      "value": null,
+      "unit": "mm",
+      "repeats": [],
+      "expected": {
+        "official": 162.0
+      },
+      "tolerance": 3.0,
+      "tool": "ruler",
+      "code_constant": "OFFICIAL_TOTAL_WIDTH_M",
+      "photo": null,
+      "notes": null,
+      "code_unit": "m",
+      "code_scale": 0.001
+    },
+    "chassis_bottom_height_mm": {
+      "value": null,
+      "unit": "mm",
+      "repeats": [],
+      "expected": {
+        "drawing": 16.8,
+        "v2": 17.0
+      },
+      "tolerance": 2.0,
+      "tool": "caliper depth rod",
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):CHASSIS_BOTTOM_Z_FLOOR_M",
+      "photo": null,
+      "notes": null,
+      "code_unit": "m",
+      "code_scale": 0.001
+    },
+    "chassis_top_height_mm": {
+      "value": null,
+      "unit": "mm",
+      "repeats": [],
+      "expected": {
+        "drawing": 50.0,
+        "v2": 47.0
+      },
+      "tolerance": 2.0,
+      "tool": "caliper depth rod",
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):CHASSIS_TOP_Z_FLOOR_M",
+      "photo": null,
+      "notes": null,
+      "code_unit": "m",
+      "code_scale": 0.001
+    },
+    "cover_top_height_mm": {
+      "value": null,
+      "unit": "mm",
+      "repeats": [],
+      "expected": {
+        "official": 101.0
+      },
+      "tolerance": 3.0,
+      "tool": "ruler",
+      "code_constant": "OFFICIAL_COVER_TOP_Z_FLOOR_M",
+      "photo": null,
+      "notes": null,
+      "code_unit": "m",
+      "code_scale": 0.001
+    },
+    "arm_box_front_forward_mm": {
+      "value": null,
+      "unit": "mm",
+      "repeats": [],
+      "expected": {
+        "drawing": 76.9
+      },
+      "tolerance": 2.0,
+      "tool": "reference sheet + ruler",
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):ARM_BOX_FRONT_X_M",
+      "photo": null,
+      "notes": null,
+      "code_unit": "m",
+      "code_scale": 0.001
+    },
+    "robot_mass_kg": {
+      "value": null,
+      "unit": "kg",
+      "repeats": [],
+      "expected": {
+        "official": 1.1
+      },
+      "tolerance": 0.05,
+      "tool": "scale (if available)",
+      "code_constant": "sim/masterpi_geometry.py:OFFICIAL_TOTAL_MASS_KG",
+      "photo": null,
+      "notes": null
+    },
+    "shoulder_servo_model": {
+      "value": null,
+      "label_text": null,
+      "expected": [
+        "LD-1501MG",
+        "LDX-218"
+      ],
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):LD1501_BODY_M",
+      "photo": null,
+      "notes": null
+    }
+  },
+  "ultrasonic": {
+    "i2c_address_seen": null,
+    "sdk_path": null,
+    "tests": {
+      "U1_accuracy": {
+        "description": "flat board, 50..3000 mm, 50 reads each",
+        "csv": null,
+        "csv_sha256": null,
+        "per_distance_summary": null,
+        "notes": null
+      },
+      "U2_incidence": {
+        "description": "flat board rotated 0..60 deg at 300/500/1000 mm",
+        "csv": null,
+        "csv_sha256": null,
+        "max_visible_incidence_deg_by_distance": null,
+        "notes": null
+      },
+      "U3_cone": {
+        "description": "40 mm strip moved sideways/up at 300/500/1000/1500 mm",
+        "csv": null,
+        "csv_sha256": null,
+        "edge_offset_left_mm_by_distance": null,
+        "edge_offset_right_mm_by_distance": null,
+        "edge_offset_up_mm_by_distance": null,
+        "half_angle_deg_by_distance": null,
+        "interpretation": null,
+        "notes": null
+      },
+      "U4_min_range": {
+        "description": "board at <=5..100 mm",
+        "csv": null,
+        "csv_sha256": null,
+        "reliable_min_mm": null,
+        "values_below_min": null,
+        "notes": null
+      },
+      "U5_no_echo": {
+        "description": "open space >=5 m and blanket at 45 deg",
+        "csv": null,
+        "csv_sha256": null,
+        "open_space_values": null,
+        "blanket_values": null,
+        "notes": null
+      },
+      "U6_update_period": {
+        "description": "moving board, 5 ms polling, 2000 reads",
+        "csv": null,
+        "csv_sha256": null,
+        "median_change_interval_s": null,
+        "median_read_s": null,
+        "triggered_per_read": null,
+        "notes": null
+      },
+      "U7_crosstalk": {
+        "description": "two robots facing (500/1000 mm) and side by side; B off / idle / reading",
+        "csv": null,
+        "csv_sha256": null,
+        "bad_reading_rate_by_condition": null,
+        "notes": null
+      },
+      "U8_mount_check": {
+        "description": "optional: axis height check with a strip target",
+        "csv": null,
+        "csv_sha256": null,
+        "axis_height_mm_estimate": null,
+        "notes": null
+      }
+    },
+    "spec": {
+      "_code": "harness/ultrasonic_model.py:UltrasonicSpec (PR #248); units m, deg, s",
+      "mount_x_m": null,
+      "mount_y_m": null,
+      "mount_z_floor_m": null,
+      "mount_pitch_deg": null,
+      "min_range_m": null,
+      "max_range_m": null,
+      "sdk_clamp_m": null,
+      "half_angle_deg": null,
+      "incidence_sigma_deg": null,
+      "echo_threshold": null,
+      "noise_sigma0_m": null,
+      "noise_rel": null,
+      "period_s": null,
+      "dropout_prob": null,
+      "outlier_prob": null,
+      "crosstalk": null,
+      "no_echo_value_mm": null,
+      "below_min_value_mm": null,
+      "_assumed_v1": {
+        "mount_x_m": 0.078,
+        "mount_z_floor_m": 0.054,
+        "half_angle_deg": 15.0,
+        "period_s": 0.06,
+        "noise_sigma0_m": 0.003,
+        "noise_rel": 0.01,
+        "min_range_m": 0.02,
+        "max_range_m": 4.0,
+        "sdk_clamp_m": 5.0
+      }
+    }
+  },
+  "wrist_camera": {
+    "intrinsics": {
+      "_code": "sim/masterpi_camera_profile.py; OpenCV fisheye, native 640x480",
+      "capture_path": null,
+      "width": null,
+      "height": null,
+      "board_inner_corners": null,
+      "board_square_mm_measured": null,
+      "n_images_fit": null,
+      "n_images_holdout": null,
+      "CAMERA_FX_PX": null,
+      "CAMERA_FY_PX": null,
+      "CAMERA_CX_PX": null,
+      "CAMERA_CY_PX": null,
+      "CAMERA_FISHEYE_D": [
+        null,
+        null,
+        null,
+        null
+      ],
+      "rms_px_fit": null,
+      "reproj_px_holdout_mean": null,
+      "_current": {
+        "CAMERA_FX_PX": 619.519,
+        "CAMERA_FY_PX": 622.165,
+        "CAMERA_CX_PX": 287.689,
+        "CAMERA_CY_PX": 218.697,
+        "CAMERA_FISHEYE_D": [
+          -0.01998,
+          -0.17076,
+          -0.25683,
+          0.96509
+        ]
+      }
+    },
+    "hand_eye": {
+      "_code": "scripts/benchmarks/fit_masterpi_hand_eye.py output; manifest keys",
+      "trials_file": "calibration/masterpi/hand_eye_trials.jsonl",
+      "trials_sha256": null,
+      "camera_link_cm": null,
+      "camera_z_offset_cm": null,
+      "camera_pitch_offset_deg": null,
+      "servo6_center_pwm": null,
+      "holdout_position_mae_m": null,
+      "acceptance_mae_m_max": 0.02
+    }
+  },
+  "servo_angle_tables": {
+    "_format": "list of {pulse, angle_deg, direction: up|down}; angle 0 = straight up (servo 3/4/5) or robot forward (servo 6, left +)",
+    "_code": "harness/real_geometry.py:PULSE_PER_DEGREE (2000/180), SERVO_DEVIATION {3:54,4:53,5:89,6:64}, BASE_CENTER 1500",
+    "servo3": [],
+    "servo4": [],
+    "servo5": [],
+    "servo6": [],
+    "servo6_center_pwm_caliper": null,
+    "pan_pwm_for_plus90": null,
+    "pan_pwm_for_minus90": null,
+    "pan_endstop_notes": null,
+    "servo_trials_file": "calibration/masterpi/servo_trials.jsonl",
+    "servo_trials_sha256": null
+  },
+  "gripper": {
+    "_code": "scripts/red_block/poses.py: GRIPPER_CLOSED 1500, GRIPPER_OPEN 2000; carry_handoff.py: GRIPPER_CLOSED_MAX_PULSE 1700",
+    "tip_gap_mm_by_pulse": {
+      "1500": null,
+      "1600": null,
+      "1700": null,
+      "1800": null,
+      "1900": null,
+      "2000": null
+    },
+    "finger_outer_span_mm_open": {
+      "value": null,
+      "expected": 46.7,
+      "tolerance": 2.0,
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):FINGER_OPEN_SPAN_M"
+    },
+    "gripper_contact_pwm_30mm": null,
+    "finger_pad_length_mm": {
+      "value": null,
+      "expected": 14.3,
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):FINGER_PAD_LENGTH_M"
+    },
+    "finger_plate_thickness_mm": {
+      "value": null,
+      "expected": 3.7,
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):FINGER_PLATE_THICKNESS_M"
+    },
+    "notes": null
+  },
+  "drive": {
+    "_code": "scripts/masterpi_control.py drive; scripts/study_owncam_pair_beam.py SPEED_M_S 0.06, CARRY_ODOM_SCALE {axial 0.772, lateral 0.697} (SIM-derived)",
+    "method": null,
+    "marker_separation_mm": null,
+    "trials_csv": null,
+    "trials_csv_sha256": null,
+    "_trial_row_format": [
+      "trial_id",
+      "direction",
+      "command",
+      "drive_s",
+      "payload_kg",
+      "payload_mount",
+      "battery_mv",
+      "dx_m",
+      "dy_m",
+      "dyaw_deg",
+      "notes"
+    ],
+    "chassis_trials_file": "calibration/masterpi/chassis_trials.jsonl",
+    "chassis_trials_sha256": null,
+    "speed_fit": {
+      "_format": "per direction+command: {speed_mps or yaw_rate_dps, lag_s, drift_m_per_m, n}",
+      "forward_35": null,
+      "forward_40": null,
+      "backward_35": null,
+      "backward_40": null,
+      "left_40": null,
+      "left_65": null,
+      "right_40": null,
+      "right_65": null,
+      "rotate-left_35": null,
+      "rotate-left_40": null,
+      "rotate-right_35": null,
+      "rotate-right_40": null
+    },
+    "payload_effect": {
+      "_format": "{payload_kg: {mount: {direction: speed ratio vs 0 kg}}}",
+      "0.2": null,
+      "0.3": null
+    },
+    "odometry_scale": {
+      "axial": null,
+      "lateral": null,
+      "rotation": null,
+      "_note": "real-floor value; do not overwrite CARRY_ODOM_SCALE"
+    }
+  },
+  "dynamics_manifest_static": {
+    "_code": "calibration/masterpi/static_measurements.json -> scripts/benchmarks/apply_masterpi_static_measurements.py (SI units)",
+    "wheel_radius_m": null,
+    "wheelbase_m": null,
+    "track_m": null,
+    "block_mass_kg": null,
+    "block_floor_friction": null,
+    "beam_mass_kg": null
+  },
+  "raw_files": [],
+  "_raw_file_format": {
+    "path": "outputs/real-measurements/<robot>-<date>/...",
+    "sha256": null,
+    "what": null
+  }
+}

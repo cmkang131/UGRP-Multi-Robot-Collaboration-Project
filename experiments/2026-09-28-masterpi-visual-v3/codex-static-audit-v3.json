@@ -1,0 +1,680 @@
+[
+  {
+    "schema": "ugrp.masterpi_v3_static_audit.v1",
+    "scene": "zone_wide_door_geometry_v3",
+    "seed": 700,
+    "robot_model": "masterpi_v3",
+    "mujoco": "3.12.0",
+    "contact_profile": "cargo_noslip_v1",
+    "noslip_iterations": 10,
+    "runtime_engine_layout": "standard",
+    "nav_cam_scope_ko": "standard host에는 nav_cam이 없음. 같은 builder의 navigation_camera=True로 추가한 고정 카메라 진단.",
+    "scene_xml_sha256": "aea9386fc85d08c017b97b4495312f95ca78cec69c684ddc08417fdc66b3e523",
+    "start_pwm": {
+      "1": 2000,
+      "3": 740,
+      "4": 2320,
+      "5": 1320,
+      "6": 1500
+    },
+    "setup_only_spawns": {
+      "r1": [
+        -0.8982,
+        -2.25,
+        0.032355118817659255,
+        0.0
+      ],
+      "r3": [
+        -0.8982,
+        -0.85,
+        0.032355118817659255,
+        0.0
+      ],
+      "r2": [
+        -0.8982,
+        0.55,
+        0.032355118817659255,
+        0.0
+      ]
+    },
+    "contacts": [
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r1__wheel_fl"
+        ],
+        "penetration_m": 0.00014493628019805055
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r1__wheel_fl"
+        ],
+        "penetration_m": 0.0001448260840449453
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r1__wheel_fr"
+        ],
+        "penetration_m": 0.00014493628019805055
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r1__wheel_fr"
+        ],
+        "penetration_m": 0.0001448260840449453
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r1__wheel_rl"
+        ],
+        "penetration_m": 0.00014493628019805055
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r1__wheel_rl"
+        ],
+        "penetration_m": 0.0001448260840449453
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r1__wheel_rr"
+        ],
+        "penetration_m": 0.00014493628019805055
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r1__wheel_rr"
+        ],
+        "penetration_m": 0.0001448260840449453
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r2__wheel_fl"
+        ],
+        "penetration_m": 0.00014493628019805055
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r2__wheel_fl"
+        ],
+        "penetration_m": 0.0001448260840449453
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r2__wheel_fr"
+        ],
+        "penetration_m": 0.00014493628019805055
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r2__wheel_fr"
+        ],
+        "penetration_m": 0.0001448260840449453
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r2__wheel_rl"
+        ],
+        "penetration_m": 0.00014493628019805055
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r2__wheel_rl"
+        ],
+        "penetration_m": 0.0001448260840449453
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r2__wheel_rr"
+        ],
+        "penetration_m": 0.00014493628019805055
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r2__wheel_rr"
+        ],
+        "penetration_m": 0.0001448260840449453
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r3__wheel_fl"
+        ],
+        "penetration_m": 0.00014493628019805055
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r3__wheel_fl"
+        ],
+        "penetration_m": 0.0001448260840449453
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r3__wheel_fr"
+        ],
+        "penetration_m": 0.00014493628019805055
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r3__wheel_fr"
+        ],
+        "penetration_m": 0.0001448260840449453
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r3__wheel_rl"
+        ],
+        "penetration_m": 0.00014493628019805055
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r3__wheel_rl"
+        ],
+        "penetration_m": 0.0001448260840449453
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r3__wheel_rr"
+        ],
+        "penetration_m": 0.00014493628019805055
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r3__wheel_rr"
+        ],
+        "penetration_m": 0.0001448260840449453
+      }
+    ],
+    "cameras": {
+      "r1__nav_cam": {
+        "rays": 221,
+        "self_hits": 2,
+        "self_fraction": 0.00904977375565611,
+        "self_geoms": {
+          "r1__v3_left_jaw_pad": 1,
+          "r1__v3_right_jaw_pad": 1
+        },
+        "geomgroup": [
+          1,
+          1,
+          1,
+          1,
+          0,
+          0
+        ],
+        "scope": "raw_pinhole_sample_not_fisheye_render_or_task_visibility"
+      },
+      "r1__robot_cam": {
+        "rays": 221,
+        "self_hits": 0,
+        "self_fraction": 0.0,
+        "self_geoms": {},
+        "geomgroup": [
+          1,
+          1,
+          1,
+          1,
+          0,
+          0
+        ],
+        "scope": "raw_pinhole_sample_not_fisheye_render_or_task_visibility"
+      },
+      "r2__nav_cam": {
+        "rays": 221,
+        "self_hits": 2,
+        "self_fraction": 0.00904977375565611,
+        "self_geoms": {
+          "r2__v3_left_jaw_pad": 1,
+          "r2__v3_right_jaw_pad": 1
+        },
+        "geomgroup": [
+          1,
+          1,
+          1,
+          1,
+          0,
+          0
+        ],
+        "scope": "raw_pinhole_sample_not_fisheye_render_or_task_visibility"
+      },
+      "r2__robot_cam": {
+        "rays": 221,
+        "self_hits": 0,
+        "self_fraction": 0.0,
+        "self_geoms": {},
+        "geomgroup": [
+          1,
+          1,
+          1,
+          1,
+          0,
+          0
+        ],
+        "scope": "raw_pinhole_sample_not_fisheye_render_or_task_visibility"
+      },
+      "r3__nav_cam": {
+        "rays": 221,
+        "self_hits": 2,
+        "self_fraction": 0.00904977375565611,
+        "self_geoms": {
+          "r3__v3_left_jaw_pad": 1,
+          "r3__v3_right_jaw_pad": 1
+        },
+        "geomgroup": [
+          1,
+          1,
+          1,
+          1,
+          0,
+          0
+        ],
+        "scope": "raw_pinhole_sample_not_fisheye_render_or_task_visibility"
+      },
+      "r3__robot_cam": {
+        "rays": 221,
+        "self_hits": 0,
+        "self_fraction": 0.0,
+        "self_geoms": {},
+        "geomgroup": [
+          1,
+          1,
+          1,
+          1,
+          0,
+          0
+        ],
+        "scope": "raw_pinhole_sample_not_fisheye_render_or_task_visibility"
+      }
+    },
+    "mj_step_calls": 0,
+    "sim_time_s": 0.0,
+    "active_welds": 0,
+    "model_calls": 0,
+    "verdict_ko": "정적 진단만 수행. 파지·주행·운반·실물 성공 판정 없음."
+  },
+  {
+    "schema": "ugrp.masterpi_v3_static_audit.v1",
+    "scene": "zone_wide_door_geometry_v3_dock_v1",
+    "seed": 700,
+    "robot_model": "masterpi_v3",
+    "mujoco": "3.12.0",
+    "contact_profile": "cargo_noslip_v1",
+    "noslip_iterations": 10,
+    "runtime_engine_layout": "standard",
+    "nav_cam_scope_ko": "standard host에는 nav_cam이 없음. 같은 builder의 navigation_camera=True로 추가한 고정 카메라 진단.",
+    "scene_xml_sha256": "aea9386fc85d08c017b97b4495312f95ca78cec69c684ddc08417fdc66b3e523",
+    "start_pwm": {
+      "1": 2000,
+      "3": 740,
+      "4": 2320,
+      "5": 1320,
+      "6": 1500
+    },
+    "setup_only_spawns": {
+      "r1": [
+        -0.6982,
+        -2.25,
+        0.032355118817659255,
+        0.0
+      ],
+      "r3": [
+        -0.6982,
+        -0.85,
+        0.032355118817659255,
+        0.0
+      ],
+      "r2": [
+        -0.6982,
+        0.55,
+        0.032355118817659255,
+        0.0
+      ]
+    },
+    "contacts": [
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r1__wheel_fl"
+        ],
+        "penetration_m": 0.00014493628019805055
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r1__wheel_fl"
+        ],
+        "penetration_m": 0.0001448260840449453
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r1__wheel_fr"
+        ],
+        "penetration_m": 0.00014493628019805055
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r1__wheel_fr"
+        ],
+        "penetration_m": 0.0001448260840449453
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r1__wheel_rl"
+        ],
+        "penetration_m": 0.00014493628019805055
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r1__wheel_rl"
+        ],
+        "penetration_m": 0.0001448260840449453
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r1__wheel_rr"
+        ],
+        "penetration_m": 0.00014493628019805055
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r1__wheel_rr"
+        ],
+        "penetration_m": 0.0001448260840449453
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r2__wheel_fl"
+        ],
+        "penetration_m": 0.00014493628019805055
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r2__wheel_fl"
+        ],
+        "penetration_m": 0.0001448260840449453
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r2__wheel_fr"
+        ],
+        "penetration_m": 0.00014493628019805055
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r2__wheel_fr"
+        ],
+        "penetration_m": 0.0001448260840449453
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r2__wheel_rl"
+        ],
+        "penetration_m": 0.00014493628019805055
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r2__wheel_rl"
+        ],
+        "penetration_m": 0.0001448260840449453
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r2__wheel_rr"
+        ],
+        "penetration_m": 0.00014493628019805055
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r2__wheel_rr"
+        ],
+        "penetration_m": 0.0001448260840449453
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r3__wheel_fl"
+        ],
+        "penetration_m": 0.00014493628019805055
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r3__wheel_fl"
+        ],
+        "penetration_m": 0.0001448260840449453
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r3__wheel_fr"
+        ],
+        "penetration_m": 0.00014493628019805055
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r3__wheel_fr"
+        ],
+        "penetration_m": 0.0001448260840449453
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r3__wheel_rl"
+        ],
+        "penetration_m": 0.00014493628019805055
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r3__wheel_rl"
+        ],
+        "penetration_m": 0.0001448260840449453
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r3__wheel_rr"
+        ],
+        "penetration_m": 0.00014493628019805055
+      },
+      {
+        "kind": "environment",
+        "geoms": [
+          "floor",
+          "r3__wheel_rr"
+        ],
+        "penetration_m": 0.0001448260840449453
+      }
+    ],
+    "cameras": {
+      "r1__nav_cam": {
+        "rays": 221,
+        "self_hits": 2,
+        "self_fraction": 0.00904977375565611,
+        "self_geoms": {
+          "r1__v3_left_jaw_pad": 1,
+          "r1__v3_right_jaw_pad": 1
+        },
+        "geomgroup": [
+          1,
+          1,
+          1,
+          1,
+          0,
+          0
+        ],
+        "scope": "raw_pinhole_sample_not_fisheye_render_or_task_visibility"
+      },
+      "r1__robot_cam": {
+        "rays": 221,
+        "self_hits": 0,
+        "self_fraction": 0.0,
+        "self_geoms": {},
+        "geomgroup": [
+          1,
+          1,
+          1,
+          1,
+          0,
+          0
+        ],
+        "scope": "raw_pinhole_sample_not_fisheye_render_or_task_visibility"
+      },
+      "r2__nav_cam": {
+        "rays": 221,
+        "self_hits": 2,
+        "self_fraction": 0.00904977375565611,
+        "self_geoms": {
+          "r2__v3_left_jaw_pad": 1,
+          "r2__v3_right_jaw_pad": 1
+        },
+        "geomgroup": [
+          1,
+          1,
+          1,
+          1,
+          0,
+          0
+        ],
+        "scope": "raw_pinhole_sample_not_fisheye_render_or_task_visibility"
+      },
+      "r2__robot_cam": {
+        "rays": 221,
+        "self_hits": 0,
+        "self_fraction": 0.0,
+        "self_geoms": {},
+        "geomgroup": [
+          1,
+          1,
+          1,
+          1,
+          0,
+          0
+        ],
+        "scope": "raw_pinhole_sample_not_fisheye_render_or_task_visibility"
+      },
+      "r3__nav_cam": {
+        "rays": 221,
+        "self_hits": 2,
+        "self_fraction": 0.00904977375565611,
+        "self_geoms": {
+          "r3__v3_left_jaw_pad": 1,
+          "r3__v3_right_jaw_pad": 1
+        },
+        "geomgroup": [
+          1,
+          1,
+          1,
+          1,
+          0,
+          0
+        ],
+        "scope": "raw_pinhole_sample_not_fisheye_render_or_task_visibility"
+      },
+      "r3__robot_cam": {
+        "rays": 221,
+        "self_hits": 0,
+        "self_fraction": 0.0,
+        "self_geoms": {},
+        "geomgroup": [
+          1,
+          1,
+          1,
+          1,
+          0,
+          0
+        ],
+        "scope": "raw_pinhole_sample_not_fisheye_render_or_task_visibility"
+      }
+    },
+    "mj_step_calls": 0,
+    "sim_time_s": 0.0,
+    "active_welds": 0,
+    "model_calls": 0,
+    "verdict_ko": "정적 진단만 수행. 파지·주행·운반·실물 성공 판정 없음."
+  }
+]

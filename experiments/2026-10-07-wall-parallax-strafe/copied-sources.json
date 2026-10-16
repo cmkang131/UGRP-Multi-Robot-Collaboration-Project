@@ -1,0 +1,64 @@
+{
+  "source_sha": "6bd861fb8800d9ee0ece56dad81480c0c3142b95",
+  "pr": 406,
+  "mode": "byte_identical_read_only_git_object_copy",
+  "files": {
+    "sim/masterpi_drive_friction.py": {
+      "sha256": "84140d913e1cb844e317a72a34f96aec3134a9f922a3021434ed4ce347381216",
+      "bytes": 9174
+    },
+    "sim/masterpi_drive_friction_v2.py": {
+      "sha256": "5191980300c6935146d160d6509a00df463d2e717547b9422b8560ac75ca68aa",
+      "bytes": 8105
+    },
+    "sim/masterpi_drive_friction_v6.py": {
+      "sha256": "b6a8a0a8e0b0107e002fa4c83de82c68355d2ed81a60d6967c556a97dfd80621",
+      "bytes": 5663
+    },
+    "sim/masterpi_drive_friction_v7.py": {
+      "sha256": "e5376f0c2a639365a5e9d5e4c1f67d58995f822c016cfbbe00004cd747ade726",
+      "bytes": 14263
+    },
+    "sim/masterpi_camera_review_v1.py": {
+      "sha256": "923ce09cebbd3fed22f87defe292b329c47f74a43e1cd2f1e5ef101b3939f86b",
+      "bytes": 5103
+    },
+    "sim/masterpi_camera_review_v3.py": {
+      "sha256": "6d8d739085c44f3196e4b4c514ca7e6c515e82394b1180a712b935df0a1b9362",
+      "bytes": 4032
+    },
+    "sim/s2_real_output.py": {
+      "sha256": "da3624ac620160e8aecf8727c2b1159a9fde7a2a94b6406d3264c721f653faf0",
+      "bytes": 3525
+    },
+    "sim/assets/masterpi_drive_friction_v2/LICENSE": {
+      "sha256": "0dc33809f8de406bda4e3ad5db5b20b3113a4e754ea146703fdc9cea079b3504",
+      "bytes": 1065
+    },
+    "sim/assets/masterpi_drive_friction_v2/source.json": {
+      "sha256": "00679769021fa5bd1035204aec4777be78c96eb86a23f2c24ca445e80d237cfe",
+      "bytes": 905
+    },
+    "sim/assets/masterpi_drive_friction_v2/fuji_roller.stl": {
+      "sha256": "2bea3228aa5766e2ce42f4f4a46cdf4bc3e63802958fa7f0ffb9688d9393a424",
+      "bytes": 292284
+    },
+    "sim/assets/masterpi_drive_friction_v7_sphere6/source.json": {
+      "sha256": "96932072b535428e4eff599ffbe8548b29879e1b511830be2f06edfefff623d3",
+      "bytes": 2952
+    }
+  },
+  "function_copies": [
+    {
+      "source": "sim/s2_realism_camera_binding.py",
+      "lines": [
+        9,
+        22
+      ],
+      "function": "bind_camera",
+      "sha256": "87339fdb915a1cf03b4988f727d3e7c2bd184bda8628d3014e096da9eb2d7590",
+      "destination": "sim/wall_parallax_strafe.py",
+      "byte_identical": true
+    }
+  ]
+}

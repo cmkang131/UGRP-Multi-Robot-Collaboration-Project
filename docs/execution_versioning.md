@@ -27,18 +27,221 @@
 
 자동 검사는 설정 누락과 알려진 실행 계약의 변경을 검출한다. 물리적 완주나 일반화 성능을 대신 검증하지 않는다. 적용된 실행 경로 밖의 도구는 별도 검토가 필요하다.
 
+## 최종 환경 v87 — 밝은 렌더로 별도 수집 (2026-10-01)
+
+`zone-final-environment-v87` / `zone-final-environment-floor-light-check` **2.20.0**은
+2026-09-29 사용자의 `floor_light_v1` 연구 코호트 결정을 적용한다.
+[P01 #341](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/341)은
+v84/default의 어두운 영상을 기록했다. v87은 기존 지도·물리·카메라·명령·시간 상한을
+유지하면서 기존 `sim.render_profile`을 적용/검사하는 별도 어댑터다.
+P01 3×30초(총 ≤105 SIM초), unloaded 수집 3×120초(총 ≤375 SIM초)를 새 코호트로 실행한다.
+그림자 결과와 합산하지 않으며, P03·실측 보정·학생 성공은 여전히 미검증이다.
+
+번호 선택 전 main + 열린 PR 16개 전체에서 최대 v86 / 통합 2.19.0(#339)을 확인했다.
+[조회 기록](../experiments/2026-10-01-final-env-floor-light/reservation_scan.json),
+[보존 해시](../experiments/2026-10-01-final-env-floor-light/v84_preservation.json),
+[실행 명령](../PHYSICS_HANDOFF.md)을 따른다.
+실행된 v84 JSON·workflow·원래 보정 계약·소스와 생성 번들은 바이트/해시 그대로 남긴다.
+새 workflow ID를 추가하여 v84의 기존 ID를 덮어쓰지 않는다. v84의 과거 결과는 v87로 승계하지 않는다.
+
+## 최종 환경 v84 — DRAFT 점검 경로
+
+`zone-final-environment-v84` / `zone-final-environment-check` 2.17.0은
+P01 최종 v3 지도 3종의 reset·정지 관찰과 unloaded 보정 자료 수집을 위한 새 후보다.
+등록 당시 main+열린 PR 조회에서 번들 최대 v83(#292), 통합 workflow 최대 2.16.0을
+확인했다. [조회 기록](../experiments/2026-10-01-final-env-runnable/reservation_scan.json)과
+[물리 인계](../PHYSICS_HANDOFF.md)를 따른다. P03 #312에 의존하며 병합/봉인하지 않는다.
+
+v6e가 고정한 기본 workflow catalog는 바이트 그대로 두고
+`configs/simulation_workflows.d/final_environment_v84.json`에 추가 등록했다.
+표준 관리자는 기본 catalog와 추가 파일의 hash를 함께 기록하고 중복 ID를 거부한다.
+기존 등록 번들·지도·보정 파일을 은퇴/덮어쓰기할 이유가 없어 그대로 보존했다.
+
+`scripts.zone_environment_bundle --map-id <등록된 v3 지도> --check p01`은
+새 ID·`runnable:true`·`DRAFT_UNSEALED`를 반환한다. 이것은 P01 수집 경로의 실행 가능
+표시다. 보정 측정값은 null이며 학생 실행에 v2 값을 승계하지 않는다.
+P03 3×120초 연쇄는 실측 보정과 v3 pair adapter가 없어 `runnable:false`로
+별도 보고한다. 환경 등록만으로 봉인·파지·재측위·연쇄 성공을 주장하지 않는다.
+
+## 새 등록의 의존성 계약 v2 (2026-09-30)
+
+**PR #301 두 차례 BLOCK 이후:** 아래 정적 v2 계약만으로 런타임 의존성 완전성을
+주장하지 않는다. 추가 AST 패치를 중단하고 [실행 관측 기반 봉인](runtime_provenance.md)을
+도입했다. 명시적으로 선택하는 오프라인 Python 추적기는 관측 파일 ∪ 정적 파일을 고정하고
+실행 중 새 파일 읽기를 HOST_ERROR로 거부한다. 환경 비교도 실행 시 수행한다.
+이 경로는 read-only Python prototype이며 native/물리/자식 worker의 OS 추적·강제와
+기존 runner admission 연결은 미완료다. **기존 봉인은 바꾸지 않으며 새 등록도 이
+prototype만으로 물리 승인하지 않는다.** 아래 구현 설명과 제외 테스트는 정적 v2만의
+기록으로 보존한다. 관측 봉인에서 JSON 전체를 읽으면 whole-file pin으로 강화된다.
+
+새 등록용 빌더는 `harness.execution_dependency_contract.build_contract`와
+`python -m scripts.build_execution_dependency_contract`를 사용한다. 기본 계약은
+`ugrp.execution_dependency_contract.v2`다. **기존 v6~v6e와 RGB 봉인·검증기는
+바꾸지 않는다.** 기존 등록을 v2로 자동 변환하거나 실행 승인을 승계하지 않는다.
+현재 실행기는 기존 admission을 유지하며, 새 revision의 등록 빌더와 admission에서
+아래 API를 연결한 뒤 v2를 사용한다. #292도 이 연결과 독립 검토가 필요하다.
+
+- 실행 Python은 새 `harness.python_source_closure_v2.source_closure`로 정적으로
+  추적한다. 기존 `python_source_closure.py`와 그 호출자는 바꾸지 않는다.
+  runner·policy·host/scene·evaluator·subprocess worker를 진입점으로 선언하며,
+  함수 안 import·상대 import·package 초기화를 포함한다. `from pkg import *`는
+  `__all__`의 계산 방법과 관계없이 해당 로컬 package 아래 **모든 Python 파일**을
+  고정한다. 사용 여부가 불명확한 파일은 빼지 않는다.
+- 파일 진입점은 `python path.py`와 `python -m package.module` 양쪽을 보수적으로
+  다룬다. 저장소 루트와 선언된 모든 진입점의 부모 폴더에서 찾은 로컬 import 후보를
+  전부 고정하고 전이 의존성도 같은 범위에서 추적한다. 검색 경로를 택해 한 후보만
+  남기지 않는다. 진입점 목록과 이 해석 규칙의 구현도 봉인된다. 별도 `sys.path`/
+  `PYTHONPATH`, 사용자 loader, 외부 경로는 자동 추적 범위가 아니며 별도 선언·검토한다.
+- `importlib.import_module`/`__import__`, import 별칭, 함수·모듈 대입 별칭의 연쇄,
+  `builtins.__import__`, 문자열 `getattr`를 따라간다. 문자열 module 이름은 자동
+  고정한다. 비상수/상대 import와 `__import__`의 fromlist/level은 파일당 **한 호출**에
+  한해 `dynamic_imports`에 가능한 로컬 module 전부를 명시해야 한다. 같은 파일의
+  미해결 호출이 여럿이면 각각 검토 가능한 wrapper로 나눠야 한다. 함수의 객체/컨테이너
+  저장·다른 함수 전달·비상수 loader getattr 등 추적할 수 없는 loader 참조는 선언이
+  있어도 거부한다. 임의 `eval`/`exec`, 외부 Python, native loader를 완전 분석한다는
+  보장은 없으며 이 경계가 불명확한 후보를 축소된 v2만으로 실행 승인하지 않는다.
+- `inputs`에는 실제 읽는 지도·모델·보정·물리/환경 설정·native 소스 등을 넣는다.
+  파일 경로가 Python 문자열에 있다는 이유로 데이터 내용까지 자동 고정되지 않는다.
+  선언에서 빠진 비 import 입력은 아래의 명시적 제외 범위다.
+- 공용 JSON은 `registries`에 파일과 `keys`를 선언한다. 예:
+  `{"path":"configs/simulation_workflows.json","keys":["workflows",{"id":"zone-study-integration-run"}]}`.
+  선택 값 전체와 최상위 `schema`를 고정한다. **선택 값 안의 객체 키 순서와 배열 순서도
+  고정**한다. Python의 순회 순서가 동작에 영향을 줄 수 있기 때문이다. 선택 값의
+  순서 보존 hash를 외부 digest 안에 넣고 receipt의 값/hash도 재검사한다.
+  receipt를 다시 저장할 때도 선택 값의 키 순서를 유지해야 한다(기본 CLI는 유지한다).
+  공백과 선택 행 **밖의** 행 재정렬·유효한 무관 행 편집은 허용한다. 중복 JSON key,
+  선택 id 중복/누락, NaN·overflow는 거부한다. 다른 기본값/참조 행을 읽으면 selector를
+  추가하거나 파일 전체를 `inputs`로 고정한다. 전체 pin과 entry pin의 중복은 거부한다.
+- 표준 `configs/simulation_workflows.json`은 build/verify마다 실제 실행기의
+  `sim.workflow_manager.catalog`를 그대로 호출한다. 선택하지 않은 행도 id 중복,
+  필수 필드, entry 파일 존재, catalog schema 검사를 통과해야 한다. 검증기 소스도
+  고정한다. 실제 소비자가 거부하는 카탈로그를 선택 행이 같다는 이유로 통과시키지 않는다.
+- `workflow_spec(id, ...)`는 선택 행의 `entry`/`runner` 외에도
+  `sim/workflow_manager.py`, `scripts/sim_cli.py`, `scripts/ugrp_session.py`,
+  `scripts/open_simulation.command`와 그 Python 전이 의존성을 필수로 고정한다.
+  누락되면 빌드가 실패한다. 다른 worker·provider·evaluator·자산은 호출자가 추가한다.
+  가설·표본·판정·승인 등 연구 등록 내용은 외부 사전 등록 봉인에 별도로 남긴다.
+
+### 선언·환경의 명시적 제외 범위 (PR #301 B1/B2)
+
+v2는 **선언된 파일/선택 값의 의존성 검사**다. 아래 다섯 항목은 자동 pin 또는 실행
+승인 대상이 아니다. 이 한계를 감춘 채 완전한 동작 봉인이라고 사용하지 않는다.
+`tests/test_seal_v2_review_301.py`에서 제외 시 digest가 그대로인 것과, 파일을 선언한
+양성 대조에서는 변경을 거부하는 것을 일반 테스트로 검사한다. 예상 실패(xfail)는 없다.
+
+| 제외 항목 | 새 등록에서 필요한 선언·별도 검사 | 테스트 |
+|---|---|---|
+| 문자열로 실행되는 subprocess worker | worker와 실제 주입 runner를 `entry_points`에 추가한다. 부모만으로 자식은 고정되지 않는다. | `test_undeclared_subprocess_worker_is_outside_seal` (미선언/선언), `test_runner_monkeypatch_is_pinned_when_runner_is_declared` |
+| MJCF/XML의 include·mesh·texture | 상위 XML뿐 아니라 모든 참조 파일을 `inputs`에 넣는다. 지도/JSON/YAML/NPZ도 실제 읽는 파일 전부를 선언한다. | `test_mjcf_include_requires_transitive_asset_declaration` (미선언/선언), `test_runtime_data_boundary`, `test_npz_runtime_input_boundary` |
+| 선택 registry 행 밖의 공용 defaults·참조 행 | 읽는 defaults/참조 행을 별도 selector로 고정하거나 전체 파일을 고정한다. 표준 workflow의 전체 catalog 유효성 검사는 제외가 아니며 항상 수행한다. | `test_registry_default_outside_selected_row_changes_command` (미선언/선언) |
+| live 환경 변수 | v2가 환경을 캡처하거나 비교하지 않는다. 동작에 쓰는 비밀이 아닌 설정값은 외부 등록과 실제 실행 인자를 대조한다. 인증정보를 봉인/기록에 넣지 않는다. | `test_environment_changes_command_without_invalidating_seal` |
+| Python·NumPy·MuJoCo 등 설치 버전/플랫폼 | 버전은 공통 실행 기록의 `environment` 및 실행 번들의 환경 identity에 기록한다. **v2 digest에 버전을 pin하거나 버전 변경을 거부하지 않는다.** 버전 기록 자체는 실행 승인 검사가 아니다. 환경 적합성은 외부 admission에서 별도로 입증해야 한다. | `test_runtime_environment_identity_changes_without_invalidating_seal` (identity 응답 교체만 수행) |
+
+#292 연결 시 위 선언의 완전성과 환경 대조를 별도 인수 검사로 입증해야 한다.
+이 PR은 그 연결을 구현하거나 승인하지 않는다. 파일이 동작에 영향을 주는지 불명확하면
+고정하는 쪽을 택한다. 제외 범위라는 이유만으로 이미 알고 있는 실제 입력을 누락해도
+된다는 뜻이 아니다.
+
+`build_contract(spec)`가 반환하는 `sha256`은 선언·전이 소스 해시·선택 항목 해시를
+모두 포함한다. Git SHA는 출처로 계속 보관하지만 이 의존성 digest에는 섞지 않는다.
+실행 전 `verify_contract(receipt, expected_sha256=<외부 등록에 고정한 해시>)`를
+호출하면 closure를 다시 생성해 추가/삭제된 import까지 대조한다. receipt 자체에서
+읽은 해시만을 승인 근거로 쓰지 않는다. **기존 HEAD 일치·dirty tree·승인·예산·환경·
+worker case 검사를 끄지 않는다.** 다른 HEAD에서 digest가 같다는 사실만으로 실행이나
+과거 검증 결과 재사용을 허용하지 않는다. 재사용 키에는 테스트·환경·설정도 필요하다.
+
+빌더는 정책을 import/실행하지 않고 기존 파일을 덮어쓰지 않는다.
+
+```sh
+# spec은 schema/entry_points/modules/inputs/registries/dynamic_imports를 포함한다.
+python -m scripts.build_execution_dependency_contract build --spec candidate-spec.json
+python -m scripts.build_execution_dependency_contract build --spec candidate-spec.json --output new-receipt.json
+python -m scripts.build_execution_dependency_contract verify --contract new-receipt.json --expected-sha256 <봉인에_고정한_SHA256>
+```
+
+[설계·검증 기록과 #292 적용 순서](../experiments/2026-09-30-seal-dependency-decouple/README.md)를
+참고한다. 신규 bundle/workflow 번호, 물리 결과, 테스트 캐시, 자동 승인 정책은 추가하지 않는다.
+
+## 구역 연구 통합 v64
+
+`zone-study-integration-v64-source-closure`는 PR #229 P1/P2 수정 후보다. 로컬 branch/remote refs 259개의 `RUNNABLE_ID` 최대 v63(통합 번들은 v2)을 확인해 다음 번호를 선택했다. 원격 fetch·열린 PR 재조회는 환경 제한으로 실패했으며, 최신 원격 예약까지 확인한 것은 아니다.
+
+- 수동 소스 목록을 전이 import closure + 설정 선택 모듈로 바꾸고, 실행 전 HEAD와 사전등록/기대 SHA를 대조한다.
+- 기존 `config/rgb_execution_bundles/`, 과거 integration prereg·번들·실행 기록은 수정하지 않는다. v2 및 과거 결과를 v64 성공으로 승계하지 않는다.
+- 제어·접촉 설정은 유지한다: GT 제어 입력 없음, weld OFF, `cargo_noslip_v1`, 인식 지연 0.16 SIM초.
+- 새 번들 JSON은 [미커밋 후보 기록](../experiments/2026-09-27-pr229-source-delay/README.md)에만 저장한다. 소스 커밋·실행 pin 확정·물리 완주는 별도이며 이번 검증은 오프라인 회귀다.
+
+## 선택 입력(센서) 스위치 (2026-09-29)
+
+실행 구성의 `sensors.ultrasonic_front`(`off` | `on_v1`)는 번들 ID를 새로 만들지 않는 **선택 입력 스위치**다. 기본은 꺼짐이며, 꺼진 실행은 소스·번들·해시·출력이 바이트 동일하다. 켜면 `bundle.sensors`에 프로필·센서 모델 id·spec 해시·`baseline_comparable: false`를 기록하고 센서 소스를 소스 고정 목록에 넣으므로 번들 해시가 꺼진 실행과 달라진다. 켠 실행의 성공률은 꺼진 baseline에 합치지 않는다. 구현은 `scripts/run_zone_study_sensors.py`(어댑터)이며 세부는 [초음파 센서 12절](ultrasonic_range_sensor.md)에 있다.
+
 ## 공통 RGB 실행기에 적용된 검사
+
+- `rgb-standard-dispatch-v63` (PR #194, 실제 R10 PREFLIGHT 펜스 회귀 수정):
+  코디네이터가 main·열린 PR 최댓값 v62를 확인해 지정한 번호다. 실행된 v62 JSON은
+  SHA-256 `6601192a6da7ac018dd3a7104364065bb9afb9dce0d61e79021f824648b07f69` 그대로 은퇴 보존한다.
+  기존 `three_robot_plan.parse`를 completion 검사에도 사용한다. 공백 외에는 정확히
+  하나인 `json`/무표시 펜스만 허용하고 네 조건의 스키마 검사는 그대로 적용한다.
+  호출별 제거 여부와 집계를 기록하고 원문·출력 토큰 비용은 보존한다.
+  같은 budget의 소스 이관은 원자적 감사 기록을 추가하며 기존 지출·한도를 유지한다.
+  새 소스의 4조건 preflight와 기존 청구 대사를 요구한다. 물리·카메라·명령 설정은
+  v62와 같으며 과거 성공을 승계하지 않는다. 실모델·물리 실행 없는 검증 범위다.
+  [이관 절차와 원문 재현](zone_study_pilot.md#v63-단일-json-펜스와-예산-소스-이관)을 따른다.
+
+- `rgb-standard-dispatch-v62` (PR #194 R10): 코디네이터가 main과 열린 PR의 최댓값
+  v61을 확인해 예약한 번호다. v61 JSON은 바이트 그대로 은퇴 보존한다.
+  공통 `gemini_proxy.py`의 완료 정책 의존성 `harness/llm_completion.py`를 포함한
+  소스 closure 174개와 최종 파일 hash를 새로 고정했다. RGB 물리·카메라·명령 설정은
+  v61과 같고 `experimental_unqualified`이며 이전 성공을 승계하지 않는다.
+  파일럿은 proxy `stop` + 완전한 스키마만 채택하며 `upstream_finish_verified=false`로
+  기록한다. 정상 채택(상류 미검증)의 별도 집계와 manifest의 명시적 한계 인정이
+  코호트 진입 조건이다. 설치/사본 프록시 변경은 없다.
+  [파일럿 문서](zone_study_pilot.md)의 고정 목록에 따라 최종 커밋 SHA·전체 소스 hash,
+  프록시 PID/실효 설정, 입력·조건·비용·검증 범위를 실행 manifest에 연결한다.
+  정적 번들 검사는 물리 완주·실모델 응답·상류 과금 대조를 검증하지 않는다.
 
 `config/rgb_execution_bundles/`에 버전별 JSON을 보존한다.
 
 - `dispatch-f1-local-contact-fine-v1`: 기존 `e099a4a` F1 성공의 참조 기록이다. 원래 실행기·접촉 설정과 원본 결과 해시에만 성공 근거가 적용되며 공통 adapter에서 선택하면 거절한다.
 - `rgb-adapter-legacy-v1`: PR #113 당시 공통 adapter 조건을 보존한 실험 버전이다. 기존 JSON과 소스 해시는 변경하지 않는다. 현재 코드로 실행할 수 없으며 당시 checkout에서 재현한다.
-- `rgb-standard-dispatch-v2`: 표준 장면 생성·초기화와 연결한 현재 후보다. `legacy` 접촉 설정과 adapter의 기존 명령 일정은 그대로 유지한다. 과거 성공 프로필 `local_contact_fine`과는 별도 조건이며, 이 변경으로 운반 성공을 복구했다고 주장하지 않는다.
+- 아래 `rgb-adapter-contact-fine-*` v1~v8은 PR #120의 공통 RGB adapter 개발 후보다. main의 dispatch 번들 계열과 제어기·접촉 프로필이 달라 코드는 병합하지 않았고, JSON은 바이트 그대로 은퇴 목록에 보존한다. 각 후보는 기록된 실행 SHA(브랜치 `codex/rgb-common-physical-recovery`)에서만 재현한다.
+- `rgb-adapter-contact-fine-solo-parity-v1`: 접촉·단독 팔 일정을 맞춘 첫 후보이다. `bf476e2`의 180초 물리 재생에서 단독은 화물을 든 채 시간 초과, 공동은 이웃 바퀴 픽셀이 섞여 방향 판독 실패했다. 원본과 번들은 읽기 전용으로 보존한다.
+- `rgb-adapter-contact-fine-replay-v2`: 300초 실행 예산과 1,200회 단독 결정 상한, 공동 바퀴 영상의 좁은 영역 재검사를 적용한 후보이다. `7c3e4aa` 물리 재생에서는 단독이 슬롯 근처에서 영상 제어의 0.5px 정지 구간에 걸려 방출하지 못했고, 공동은 바로 다음 바퀴 영상에서 다시 중단됐다. 원본과 번들은 읽기 전용으로 보존한다.
+- `rgb-adapter-contact-fine-visual-recovery-v3`: 슬롯 경계보다 1px 안쪽의 단독 목표와 직전 TOP RGB의 공동 바퀴 영역 재검사를 적용했다. `050f341` 물리 재생에서는 단독 상자 대상이 운반·방출·안정화까지 성공했으나 공동은 sim 29.70의 자기 바퀴 방향 판독 실패로 파지 전에 중단됐다. 전체 임무 완료는 두 대상 모두 거짓이며 원본 번들은 보존한다.
+- `rgb-adapter-contact-fine-component-identity-v4`: 물리·카메라·팔 일정과 300초 예산을 유지한다. 공동 바퀴 영상이 겹쳐 이전 영역 확장 검사에 실패하면, 직전 자기 바퀴 영역 안에 중심이 있는 노란 영상 성분만 재선택한다. `2c23383` 물리 재생에서 단독 상자는 운반·방출·안정화에 성공했지만, 공동은 SIM 29.95의 r1-000177 바퀴 판독에서 파지 전에 중단됐다. 직전 마스크가 지지 영역 경계에 닿으며 이웃 바퀴를 받아들인 것이 저장 영상에서 확인됐다. 원본과 번들은 보존한다.
+- `rgb-adapter-contact-fine-boundary-identity-v5`: 영역 확장 마스크가 직전 자기 바퀴 영역의 지지 경계에 닿으면 그대로 수용하지 않고 v4의 성분 재선택으로 보낸다. 물리·카메라·팔 일정, 네 모서리·연속성 검사와 예산은 유지한다. `c1e63e7` 물리 재생에서 단독 상자는 다시 성공했으나 공동은 SIM 30.45의 양쪽 안쪽 바퀴가 하나의 TOP 영상 성분으로 합쳐져 파지 전에 중단됐다. 안전하게 구분할 근거 없이 성분을 잘라 통과시키지 않는다. 전체 임무 완료는 두 실행 모두 거짓이며 등록 상태는 `experimental_unqualified`다.
+- `rgb-adapter-contact-fine-role-binding-v6`: 고정 공동 역할 배정을 준비 입력에 명시하고, 각 actor가 자기 움직임으로 확인한 TOP 위치·네 모서리 바퀴 영역이 저장 슬롯과 빔의 같은 쪽에 있는지 동작 전에 검사한다. v5 첫 공동 영상에서 기존 r1 아래/r3 위 배정은 둘 다 거절되고 r1 위/r3 아래 배정은 수용됐다. `c52d364` 물리 재생에서 단독 상자는 대상 성공, 공동은 역할 판독을 유지하며 더 진행했으나 coarse 170회 상한으로 파지 전 중단됐다. 등록 상태는 여전히 `experimental_unqualified`다.
+- `rgb-adapter-contact-fine-progress-budget-v7`: v6의 자기 영상 역할 검사와 정렬 기준은 유지한다. 공동 coarse에서 170회 이후 TOP 오차의 24회 중앙값이 직전 창보다 0.5px 이상 줄어들 때만 유한한 연장을 허용하고, 준비된 동료는 barrier에서 기다린다. 둘 다 최대 300회이며 정체·영상 오류는 중단한다. `13c7996` 물리 재생에서 단독 상자 대상은 성공, 공동은 양쪽 coarse 236회 후 yaw 방향 등록이 영상상 불가능해 파지 전 중단됐다. 전체 임무는 두 실행 모두 실패했고 번들은 `experimental_unqualified`다.
+- `rgb-adapter-contact-fine-yaw-wheel-anchor-v8`: v7의 저장 TOP 영상에서 노란 빔을 로봇 바퀴 중심으로 혼동한 yaw 등록 실패를 수정한 후보이다. 자기 움직임으로 식별한 역할과 네 모서리 바퀴 영상을 매번 다시 검사해 저장 yaw 영상의 등록 중심으로 사용한다. 네 모서리·연속성·역할 검사가 실패하면 동작 전에 중단한다. `ead4a3a` 물리 재생에서 단독 상자 대상은 성공했고, 공동은 양쪽 yaw를 통과한 뒤 lateral 저장 RGB 모델의 지원 범위 밖으로 거절돼 파지 전 종료됐다. 빔 대상과 전체 임무는 실패이며 번들은 `experimental_unqualified`다.
+- `rgb-standard-dispatch-v2`: 표준 장면 생성·초기화와 연결한 2026-09-23 이전 후보다. 당시 소스와 실행 조건을 보존한다.
+- `rgb-standard-dispatch-v3`: beam 접근 중 양쪽의 새 TOP RGB로 전진 간격을 제한한 후보이다. 16px 제한으로 초기 전진 시작은 동기화됐지만, 2026-09-23 동일 계획의 headless 재실행 두 번 모두 미세 접근 중 일시적인 RGB 모델 지원 범위 이탈로 중단됐다. 실행 기록과 번들 JSON은 보존한다.
+- `rgb-standard-dispatch-v4`: 봉 접근 동기화와 정지 재관측을 도입한 이전 후보이다. v3의 접근 제어를 유지하며 dispatch 공동 접근에서만 미세 단계의 유효하지 않은 RGB 판정 1회에 양쪽 정지 명령 0.25초, 추가 정지 대기 1.3초, 양쪽 모두 유효한 새 영상 2회 확인을 허용한다. 지속 이탈은 중단한다. 다른 RGB 접근 경로의 기본 동작은 그대로 즉시 중단한다. 임계값·저장 모델·`legacy` 접촉 설정은 변경하지 않았으며 실제 접근·운반 완주 결과로 아직 검증되지 않았다. 과거 성공 프로필 `local_contact_fine`과도 별도 조건이다.
+
+- `rgb-standard-dispatch-v5`: 표준 로컬 dispatch가 불필요한 pair 카메라 촬영을 생략하고, 합의된 독립 open-map 경로의 동시 운반을 자동 선택하는 후보이다. 선행 조건·같은 경로/자원·지원하지 않는 지도에서는 기존 직렬 gate를 유지하고 선택 이유를 기록한다. 공용 하역 구역의 독점과 실제 물리·입력·동작 주기는 유지한다. v4의 접근·재관측 동작도 보존하며 새 물리 재생 결과는 별도로 판정한다. 이 JSON의 `effective`는 공통 adapter 조건이고, 로컬 dispatch에서 선택한 접촉 프로필·VisualMacroExecutor·자동 선택의 실제 값은 실행 manifest/result와 함께 확인한다.
+
+- `rgb-standard-dispatch-v6`: v5의 로컬 촬영·경로 선택을 유지하고, MuJoCo 관찰 창의 wall-clock 입력 확인과 재생 속도 대기를 묶는다. 물리 timestep·actor 관측·명령 일정은 바꾸지 않는다. v5 원본 번들은 보존하며 실제 창 실행 결과는 별도 기록한다.
+
+- `rgb-standard-dispatch-v7`: v6의 pacing을 유지하며 관찰 창 전용 그림자·반사를 끄고 MuJoCo 3.12의 state-only sync를 사용한다. actor 카메라와 원본 영상 렌더러, 모델·물리·제어 주기는 유지한다. v6의 창 실행 완주와 이 후보의 처리 속도는 별도로 평가한다.
+
+- `rgb-standard-dispatch-v8`: 선택 옵션 `--realtime-control`에서 actor RGB를 같은 물리 순간의 복사본으로 비동기 렌더하고, 단독 판단·공동 운반 판단·관찰 창·녹화를 물리 owner에서 분리했다. 첫 open/seed11 실행은 운반 영상이 0.70–0.74 SIM초 늦어져 0.6초 신선도 제한에 걸려 중단됐다. 실패 원본과 별도 TensorBoard 스냅샷을 보존한다.
+- `rgb-standard-dispatch-v9`: open RGB의 접근·파지·운반·하역 관측까지 비동기 경로를 연결한다. 같은 JPEG의 18개 빔 분할 후보만 제한된 캐시에 재사용하며 각 tracker의 이전 상태와 선택 판단은 독립 유지한다. stale 관측은 매번 양쪽 HOLD로 처리하고 연속 지연 예산을 시각 인식 실패와 구분한다. Mac 물리 owner는 일반 Python, 독립 관찰 창만 `mjpython`을 사용한다. 물리 timestep·카메라·임계값·모델은 그대로이며 전체 완주와 처리 속도는 이 버전에서 재검증한다.
+- `rgb-standard-dispatch-v10`: v9의 명령 종료 후 관측 공백을 줄이기 위해 open RGB 초기 접근의 이동 명령과 다음 관측을 겹친다. 정지 확인의 기존 대기 시간은 유지하고 공동 명령은 촬영 시각 + 0.6초 이내에서 끝나도록 제한한다. v9은 정지를 포함한 물리 재생률 1.000×에 도달했지만 120회 접근 한도를 소진했으므로 성공으로 승계하지 않는다.
+
+- `rgb-standard-dispatch-v11`: v10의 실제 접근 판단 간격 중앙값 0.22초와 0.20초 이동 명령 사이에 반복 정지가 남았다. open RGB 초기 접근의 이동 lease만 최대 0.25초로 바꾸며, 원본 촬영 시각 + 0.6초 제한과 지연 시 양쪽 HOLD는 유지한다. 명령 지속시간이 바뀐 별도 후보이며 새 실제 접근·완주 검증 전에는 성공을 승계하지 않는다.
+
+- `rgb-standard-dispatch-v12`: v11은 초기 접근 71회와 정밀 yaw/lateral/yaw 확인을 통과했으나 정밀 forward의 160회 이동 한도를 소진했다. 0.25초 bounded 갱신을 open realtime의 정밀 접근 이동에도 적용한다. 정지 확인·모델 지원 임계값·물리 감쇠·0.6초 영상 TTL·운반 명령 시간은 유지한다. 새 후보의 물리 완주는 별도 판정한다.
+
+- `rgb-standard-dispatch-v13`: v12는 접근·파지 후 계획된 10회 운반 진단 한도까지 도달했다. 그러나 첫 프레임 빔 특징 계산으로 운반 RGB age가 0.44–0.64초였고 TTL에 남은 명령 시간이 짧았다. 같은 특징 결과를 유지하는 계산 최적화와 moving carry 최대0.25초 갱신/빠른 다음 관측을 검증한다. TTL·물리·모델·파지/경로/성공 임계값은 유지한다.
+
+- `rgb-standard-dispatch-v14`: 최신 권한을 물리 owner에서 확정하고 solo 이동 갱신을 겹친 후보. 상자 대기 중 영상 상태 갱신 공백으로 중단한 원본을 보존한다.
+- `rgb-standard-dispatch-v15`: carry 분석과 다음 촬영 요청을 겹치고 자원 대기 중 검증된 own-RGB 연속 관측을 유지한다. 두 화물 물리 성공과 solo 시간 한도에 따른 절차 실패를 분리한다.
+- `rgb-standard-dispatch-v16`: realtime actor 영상은 렌더 작업 시작 시 동일 순간을 복사해 대기열에서 생기는 관측 지연을 줄인다. 실제 촬영 시각과0.6초 TTL을 유지하며 solo 활동300초와 명시적 자원 대기를 분리한다. MuJoCo 관찰 창의 실제 자연어 전달 패널은 제어 입력과 분리한다. 새 완주는 고정 소스에서 별도 검증한다.
+- `rgb-standard-dispatch-v17`: 실제 창에서 검증한 한글 대화 패널을 사용하고, 상자 이동 판단은 기존 명령의0.2초 주기를 유지한다. 공동 운반은 새 영상 처리를 기다리는 동안 승인된 동일 명령만 원본 영상 TTL 이내에서 갱신한다. 실제 완주와 명령 공백은 새 고정 실행에서 별도 확인한다.
 
 새 backend 설정 schema는 `ugrp.rgb_skill_backend.v2`다. `execution_bundle_id`가 없거나 지원하지 않는 조합이면 거절한다. 과거 v1 설정은 당시 실행 기록으로 보존한다. 실행 전 정적 검사는 다음과 같다. 시뮬레이션·렌더링·외부 모델 호출은 하지 않는다.
 
 ```sh
-python3 -m harness.rgb_execution_bundle verify-current --id rgb-standard-dispatch-v2
+python3 -m harness.rgb_execution_bundle verify-current --id rgb-standard-dispatch-v17
 python3 -m harness.rgb_execution_bundle verify-registry --base origin/main
 ```
 
@@ -47,3 +250,70 @@ python3 -m harness.rgb_execution_bundle verify-registry --base origin/main
 실제 backend를 만들 때는 적용된 장면·물리 모델·카메라 설정과 명령 일정을 다시 확인한다. 정적 검사 통과만으로 이 단계를 통과했다고 보고하지 않는다. 결과에는 번들 ID·해시, 실제 적용값, 성공 기준과의 차이 및 자산·환경·코드 식별값을 남긴다. 이 정보는 감독·평가 기록이며 actor의 추가 관측으로 전달하지 않는다.
 
 기존 버전의 소스나 조건을 변경하려면 새 ID의 manifest와 해당 버전을 지원하는 코드를 함께 PR로 제출하고 회귀 검사를 수행한다. 성공 여부는 새 실험 기록에서 정확한 번들 해시에 연결한다. 과거 실험 설정을 새 필수 필드에 맞추려고 소급 수정하지 않는다. 과거 재현에는 그 당시 Git SHA의 실행 경로와 원본 자산을 사용한다.
+
+- `rgb-standard-dispatch-v20`: solo carry에서 다음 RGB를 기다리는 동안 마지막 승인 이동 명령만 원본0.6초 TTL 및0.25초 lease 안에서 갱신한다. 만료 명령 재개·권한 상실·새 정지 판단 시 연장은 금지한다. .2초 판단 주기와 속도 정책은 유지하며 실제 완주는 새 고정 소스에서 별도 검증한다.
+
+- `rgb-standard-dispatch-v21`: v20의 solo TTL 갱신을 유지하고, 지원되는 RGB 정지 관측으로 coarse→fine 진입을 확인한다. 알려진 open 독립 상자 경로의 먼 구간 상한은 전진.12/측면.10이며 근거리 비례 감속·후진.05·최종 하역 판정·기존 모터 한도는 유지한다. 실제 완주와 시간은 별도 유한 검증한다.
+
+- `rgb-standard-dispatch-v22`: coarse 방향 추정 불가 시에도 충분한 바퀴 픽셀·화물·참조 RGB에서 독립적으로 관측된 전방 간격은 보존한다. coarse 명령은 계속 무효/정지이며, 더 정밀한 기존 yaw 포함6개 모델이 초기/새 정지 RGB 모두를 지원할 때만 별도 fine 진입을 허용한다. v21 실패와 새 물리 검증은 분리한다.
+
+- `rgb-standard-dispatch-v23`: 기본 open coarse 접근에서도 다음 영상 처리 중 마지막 승인 이동을 원본 TTL 이내로 갱신한다. 현재 계획·접근 권한·실제 발행 포트 명령/만료를 다시 확인하며 만료 후 재개하지 않는다. coarse120회·정렬 기준·fine/정지 확인은 유지한다. v22 실패 및 짧은1배속 진단은 별도 원본이며 새 완주를 승계하지 않는다.
+
+- `rgb-standard-dispatch-v24`: 운반 상자의 강한 색상 마스크가 여러 조각으로 나뉘면 기존 다음 포화도 단계에서도 유일 후보를 확인한다. 강한 색상의 유일 후보 우선·면적/모양/8px 예측 오차·optical flow 조건은 유지한다. 이전 v23은 파지/운반 및 명령 갱신 감사를 통과했지만 TOP 추적 실패로 완주하지 못했으며 새 전체 결과는 별도 기록한다.
+
+- `rgb-standard-dispatch-v25`: 지원되는 pose 영상 모델의 먼 측면/전진 정렬에서만 다음 RGB 대기 동안 원 명령 종료를 최대0.05 SIM초 연장한다. 원 영상+0.6초·개별0.25초·현재 계획/권한·포트 일치 조건을 유지하고 누적 추가 연장은0.05초를 넘지 않는다. yaw/근접/정지 확인/최종 refinement/dock/단계 변경은 제외하며 기존 명령과 정렬 기준은 유지한다. v24는220.348초로 완주했지만 이전 기준보다 느렸으므로 속도 개선으로 보고하지 않는다.
+
+- `rgb-standard-dispatch-v26`: 기존 open 독립 경로의 먼 구간 속도 상한을 빔에도 적용한다(전진.12/측면.10/후진.05). 근접 비례감속·최종.08·경유점 판정·pair GO/skew·하역 자원 독점은 유지한다. v25 두 완주 평균200.348초는 기준198.516초보다 느리며, v26 시간은 별도 검증한다.
+
+- `rgb-standard-dispatch-v27`: 상자 TOP 가림은 직전 상자와 함께 움직인 로봇 외형 특징 8점 이상·60% 일치, 현재 own RGB 파지 확인이 모두 있을 때 최대 3프레임만 연결한다. 이 추정으로 최종 도착을 확정하지 않는다. ACT는 원본 RGB 추론을 owner 밖에서 처리하고 물리를 계속 진행하며 원 관측+0.6초 TTL·0.25초 명령 상한을 유지한다. 폐기·오류 요청도 보존한다. 학습·실제 운반 결과는 2026-09-24-action-act 코호트에서 별도 검증한다.
+
+- `rgb-standard-dispatch-v28`: realtime·정적 open 지도에서 반복된 지원 own RGB로 큰 수직 오차의 감소와 명령 이력 일치를 확인할 때만 근거리 카메라 보정 상한을8→24 PWM으로 높인다. 궤적·안정화·새 영상·최종 접근 및 파지 기준은 유지하고 후보 명령과 선택 근거를 기록한다. 별도 ACT 종료 목적 함수는 배포와 동일한 zero-latent 첫 출력에 class-balanced MSE를 더한다. 동결한 새 물리 코호트와 모델 학습으로 검증하며 v27의 성공 판정을 승계하지 않는다.
+
+- `rgb-standard-dispatch-v29`: `--rolling-visual-servo`를 명시한 realtime open 지도에서 단독 상자 접근의 이동 중 다음 own/TOP 영상을 요청한다. 새 직접 cyan 관측·계획/접근 권한·발행 포트 일치가 필요하며 원 명령 시간, 관측+0.6초, 개별0.25초 상한을 유지한다. 물체 가까이에서는 정지와 새 영상 확인 뒤 기존 정밀 접근으로 넘긴다. 기본 OFF이며 팔·파지·운반·방출·물리는 유지한다. 발행 명령 중 촬영과 실제 이동은 구분하고 별도 코호트에서 완주·시간을 검증한다.
+- `rgb-standard-dispatch-v30`: 부모는 main의 v27이다. 2026-09-24 ABBA 코호트가 이 번들로 실행됐다(sha `53502d82…`). v28과 병합한 뒤 같은 동작을 v31로 다시 등록했다.
+- `rgb-standard-dispatch-v31`: 부모는 main의 v28이다(v29는 draft PR #131이 사용 중이다). 명시적 `--fine-gain-schedule`에서만, pose 영상 모델의 미세 yaw/측면/전진 단계 오차가 기존 허용오차의 3배를 넘으면 같은 영상 추정 오차의 약35%를 한 명령 구간에 줄이도록 모델 명령을 올린다. 모델 명령을 낮추거나 뒤집지 않고, 기록된 상위 사분위 응답에서도 바깥 허용오차를 넘지 않게 제한하며 기존 명령 상한을 유지한다. 준비 판정·허용오차·정지 확인·최종 정렬 재확인·dock·lease·예산은 같다. 판단마다 모델 명령과 스케줄을 기록한다. 기본값은 OFF이며 물리 완주·시간은 별도 검증한다.
+
+- `rgb-standard-dispatch-v32`: 부모는 v31이다. v31(protocol-v2 동기 코호트에서 사용, 은퇴 보존)의 스케줄이 직전 명령의 관성 때문에 목표를 지나친 뒤 모델 지원 범위를 벗어났다. v32 스케줄은 (1) 직전 자기 명령이 남긴 이동량의 상한을 오차에서 먼저 빼고, (2) 이번 명령과 다음 구간까지의 상한 이동이 목표 앞 허용오차 8배 지점에서 멈추도록 명령 크기를 정한다. (3) 그 안쪽에서는 모델 명령을 그대로 쓰고, (4) 한 단계 안에서 오차 부호가 바뀌면 그 단계의 스케줄을 끈다. 응답 상수는 동기 실행의 영상 추정 오차에서 맞춘 값이므로 `--realtime-control`과 함께 쓰면 거부한다. 기본값은 OFF다.
+
+- `rgb-standard-dispatch-v33`: 부모는 v32다. 제어·관측·물리는 v32와 같다. 표준 `dispatch`(창 사용, `--realtime-control` 없음)의 기본 관찰을 계산 중 실시간 창에서 **계산 후 재생**으로 바꿨다. 창 없이 동기 실행을 끝까지 계산하는 동안 관찰 전용 recorder가 physics owner의 매 스텝 뒤 SIM 30Hz로 관절·mocap 위치와 단계 표시를 복사한다. compiled model(`model.mjb`)과 함께 `replay/`에 저장하고, 끝나면 MuJoCo 기본 창에서 `mj_forward`로 운동학 재생한다. 기록은 actor·제어기·referee 입력이 아니다. 이전 계산 중 관찰은 `--live-view`, headless 기록은 `--record-replay`로 명시한다.
+- `rgb-standard-dispatch-v41`: 부모는 main의 v32다. PR #133(v30–v32)이 먼저 병합되어, draft PR #131/#137의 v29·v40 번들을 바이트 그대로 은퇴 보존하고 같은 동작을 v32 위에 다시 등록했다. v32의 `--fine-gain-schedule`(동기 전용)과 v40의 `--rolling-visual-servo`·`--bounded-carrier-relink`(realtime open 전용)를 모두 포함하며 세 옵션 모두 기본 OFF다. 실행 모드가 서로 달라 함께 켤 수 없다. PR #120의 `rgb-adapter-contact-fine-*` v1~v8 은퇴 등록도 이 버전의 소스 해시에 포함된다. v29/v32/v40의 코호트 결과를 승계하지 않으며 결합 소스의 물리 완주는 별도로 검증한다.
+
+- `rgb-standard-dispatch-v42`: 부모는 main의 v41이다. PR #137(v41)이 먼저 병합되어 PR #140의 v33을 바이트 그대로 은퇴 보존하고, v33의 관찰 전용 사후 재생(`--record-replay`, `native_observer.post_run_replay`)을 v41 위에 다시 등록했다. 기록은 physics owner step 뒤 관찰용 상태 복사본이며 actor·제어·판정 입력이 아니다. v41의 세 선택 옵션은 기본 OFF 그대로다. v33·v41의 결과를 승계하지 않는다.
+
+- `rgb-standard-dispatch-v43`: 부모는 v42다. realtime open 지도에서 `--rolling-visual-servo`와 함께 명시한 `--rolling-view-recovery`만 단독 상자 접근의 약한 own RGB 직접 관측 뒤 유한한 active-view pose를 시도한다. 자기 발행 완료 pan·wrist 명령 이력으로 확인된 anchor에만 돌아가며, 각 pose 전에 바퀴를 정확히 정지하고 기존 보간·안정화 후 새로운 own/TOP RGB로 직접 cyan·동일성·신뢰도 ≥0.75를 다시 확인한다. 한 episode에 최대 3 pose·4초, 한 실행에 최대 3 episode이며 실패하면 정지한다. 관측 TTL 0.6초, 원 rolling lease와 최종 접근·파지·운반·방출 기준, 카메라·물리는 유지한다. 기존 세 제어 옵션과 관찰 전용 재생도 그대로이며 모두 기본 OFF다. v40·v42의 물리 결과를 승계하지 않는다.
+
+- `rgb-standard-dispatch-v48`: 부모 v43 위의 opt-in coarse 동시 정렬 후보. 신선한 동일 TOP·자기 RGB와 자기 yaw/횡오차 준비, 16px 미만 선행 조건에서 동료의 방향 보정만으로 자기 전진을 막지 않는다. 실제 port 발행 시각·종료·PWM과 원영상 해시를 출력 기록으로 연결한다. open/shared_crossing 정확한 지도 해시만 허용하며 기본 OFF, 물리 미검증이다. v43 바이트를 보존한다.
+
+- `rgb-standard-dispatch-v44`: 부모는 v42다(v43은 Codex rolling-view-recovery가 물리 코호트에 사용 중이라 건너뜀; 병합 순서에 따라 부모를 다시 맞춘다). 명시적 `--coordination dynamic`(동기 전용, 새 LLM 계획)에서만 동작이 달라진다. (1) 시작: 세 로봇이 각자 한 번씩 독립적으로 자기 할 일(물체·빔 끝·경로·dock)만 밝히고, 호스트는 서로 맞는지만 확인한다. 맞고 기존 RGB/지도 가능성 검사를 통과하면 협상 없이 출발하고, 충돌하거나 거절되면 기존 동료 협상으로 넘어간다. (2) 실행 중: 빔 짝 접근이 지원된 이유로 실패하면 두 운반 로봇이 자기 RGB·TOP·명령 이력·실패 이유로 retry/abort를 만장일치로 정한다. retry는 짧은 후진(0.05×10구간) 뒤 새 RGB 접근이며 최대 `--approach-retries`(기본 2)다. `--diagnostic-fail-approach-once`는 첫 완료 접근 뒤 실패를 주입하는 진단이다. 기본 `plan_first`의 동작·실패 처리는 v42와 같다.
+
+- `rgb-standard-dispatch-v47`: 부모는 main의 v43(PR #143)이다. v44(부모 v42)의 동적 협업을 v43 위에 다시 등록했다(v45·v46은 다른 작업이 사용 중이라 건너뜀). v43의 `--rolling-view-recovery`는 기본 OFF 그대로다. v44로 돌린 실LLM D3에서 동적 재시도가 매번 `coarse RGB model convention unresolved`로 실패했다. 원인은 후진 뒤 거친 추적기를 출발 시점 식별 위치로 다시 만든 것이다(빔 옆까지 온 바퀴가 ±55 px 창 밖). v47은 후진을 20구간으로 늘리고, RGB로 추적해 온 바퀴 창을 유지한 채 정지 TOP 한 장으로 창 중심을 다시 맞춘다. 진단 주입은 로봇에게 실제 제어기 정지 이유(`coarse RGB approach budget exhausted`)만 보여 주고 주입 사실은 출력(`diagnostic_injection`)에만 남긴다. v44는 D2/D3가 쓴 바이트 그대로 은퇴 보존한다. 기본 `plan_first`는 바뀌지 않는다.
+
+- `rgb-standard-dispatch-v49`: #142가 먼저 병합되어 부모 v47 위에 v48 동시 coarse 후보를 다시 등록했다. v44·v47·v48은 원본 바이트를 보존한다. dynamic coordination·coarse concurrency는 각각 기존처럼 명시적 opt-in이며 이번 고정 A/B는 저장 계획의 plan_first만 사용한다. 물리 미검증.
+
+- `rgb-standard-dispatch-v46`: 부모 v43의 opt-in 시야 복구에 정확한 HOLD와 0.2초 안정화 뒤 새 paired RGB 재관측을 추가한다. 정상 주행 중 촬영한 약한 영상은 즉시 실패나 주행 허가로 쓰지 않는다. 새 강한 영상에서 기존 주행 검사로 복귀하거나, 최근 강한 카메라 자세와 현재 약한 영상 연속성이 확인될 때만 pose 탐색한다. 과거 anchor의 시간·프레임·wheel generation은 보존하며, 4초 예산은 최초 HOLD부터다. 3 episode·각 3 pose와 기존 TTL·lease·600 decision·카메라·물리 제한은 같다. 기본 OFF, 실제 완주 검증 전이며 v43 실패를 보존한다.
+
+- `rgb-standard-dispatch-v50`: #142가 먼저 병합되어 부모 v47 위에 v46 정지 후 RGB 재관측을 다시 등록했다. v46·v44·v47은 원본 바이트를 보존한다. 정지/시야 탐색은 같은 기본 OFF 옵션이며 이번 진단은 저장 계획 plan_first만 사용한다. v46은 로컬 물리 미실행이고 v50 역시 완주 검증 전이다.
+
+- `rgb-standard-dispatch-v53`: #145의 정지 후 새 RGB 재관측(v50)을 보존한 부모 v50 위에 v49 coarse 동시 접근을 통합했다. v48·v49·v46·v50은 바이트 그대로 은퇴 보존한다. v51·v52는 열린 Claude PR에 요청한 번호로 건너뛴다. 두 옵션은 각각 기본 OFF이며, 이번 동일 소스 OFF/ON 비교는 coarse 옵션만 바꾼다. v49 CI 통과는 이전 소스 검증이고 v53 물리 실행·속도 개선은 아직 없다.
+
+- `rgb-standard-dispatch-v51`: 부모는 main의 v53(PR #146)이다. 이 브랜치가 처음 등록한 v49 제안은 main의 v49(#146)와 번호가 겹쳐 실행 전에 철회했고, 루트가 예약한 v51로 다시 등록했다(v49 제안은 물리 실행 기록 없음). 명시적 `--coordination dynamic`에서만 실패 대화를 넓힌다. 빔 파지 실패(닫기 전 RGB 지원 밖, 또는 짐을 싣고 이동하기 전 운반 감시 정지)는 짝이 `regrasp`/`abort`를 정한다. 상자 로봇 실패(접근 중 대상·자세 판단 실패, 들기 미확인)는 상자 로봇이 `retry`/`abort`를 정한다. 한 작업을 포기하게 되면 세 로봇이 `continue_others`/`stop_all`을 정하고, `continue_others`면 그 작업만 계획에서 빼고 나머지를 끝내 `FINISHED_PARTIAL`(전체 성공 아님)로 끝난다. 결정 대화 메시지는 참가 로봇에게만 가고, 일시 오류는 같은 요청을 한 번 다시 보낸다. 계산 후 재생 창은 동료 메시지를 관찰 전용으로 겹쳐 보여 준다. 기본 `plan_first`와 기본 OFF coarse 동시 접근·정지 후 재관측은 바뀌지 않는다. 물리 미검증.
+
+- `rgb-standard-dispatch-v45`: (은퇴 보존, PR #144 코호트가 실행한 번들) 부모는 main의 v42다. v43(Codex rolling-view-recovery)·v44(PR #142 dynamic coordination)는 열린 PR에서 쓰고 있어 건너뛰었다. 계획 입력 조건 `--plan-guidance`를 추가했다. 기본값 `legacy`는 기존 계획 프롬프트·능력 설명·재계획 안내와 바이트가 같다. `objective`는 "안전하게 모두 배달한 뒤 총 SIM 시간 최소화"라는 팀 목표, 선행 조건별 실행기 동작의 중립 설명, 지도와 맞는 통로 설명을 주고 기존의 특정 선행 조건 예시를 뺀다. `objective_preview`는 여기에 동결된 제안마다 실행기 자원 규칙(`SkillBindings`)과 과거 명목 단계 시간(`configs/dispatch_stage_priors.json`)으로 계산한 대략적 일정 미리보기를 더한다. 미리보기는 계획·정적 지도·저장 prior·이번 실행의 경로 설정만 읽고 실시간 상태를 읽지 않으며, 계획을 고치거나 거절하지 않는다. 제어·물리·카메라·성공 기준은 v42와 같고 v42 결과를 승계하지 않는다.
+
+- `rgb-standard-dispatch-v54`: 부모는 main의 v51이다(v51은 v53 위). PR #146·#147이 먼저 병합되어, PR #144 코호트가 실행한 v45를 바이트 그대로 은퇴 보존하고 같은 `--plan-guidance` 동작을 v53 위에 다시 등록했다. `--plan-guidance`는 `--coordination plan_first`에서만 허용한다(dynamic 자기 주장 경로는 별도 프롬프트이며 검증하지 않음). v45 코호트 결과를 승계하지 않는다.
+
+- `rgb-standard-dispatch-v56`: 부모는 main의 v54다(v54·v51은 바이트 그대로 보존, v55는 #148이 사용 중). 명시적 `--coordination dynamic`의 복구 후진에서 coarse 바퀴 추적 영역을 후진 전 정지 TOP 영상 한 번과, 20 슬라이스 후진을 5 슬라이스씩 4번 나눈 각 묶음 뒤마다 다시 맞춘다. v51 실측 E2에서 미세 정렬 실패 뒤 한 번에 20 슬라이스를 후진하자 두 로봇이 약 64 px(추적 영역 반폭 55 px 초과) 이동해 r1 바퀴 픽셀이 76개(기준 80개 미만)로 줄었고, 다음 접근이 `coarse RGB model convention unresolved`로 멈췄다. 같은 v51 실측에서 나온 두 문제도 고친다. E4: 짐을 잡기 전에 팀이 빔 작업을 포기하면 경로 공유 모드의 상자 잡기 허가가 영원히 열리지 않아 상자 로봇이 SIM 예산이 끝날 때까지 기다렸다. 이제 포기된 빔은 상자 잡기를 막지 않는다. E3: 상자 재시도 뒤 새 상자 스킬이 항상 왼쪽으로만 탐색해, 직전에 오른쪽에서 본 상자를 찾지 못했다. 이제 실패한 스킬이 자기 RGB에서 마지막으로 상자를 본 쪽으로 먼저 돈다(본 적 없으면 기존처럼 왼쪽). 기본 `plan_first`와 다른 기본 OFF 옵션은 바뀌지 않는다. 물리 미검증이며 v51·v54 결과를 승계하지 않는다.
+
+- `rgb-standard-dispatch-v58`: 부모는 main의 v56이다(v56은 V1~V4가 쓴 바이트 그대로 보존, v57은 #148이 사용 중). 명시적 `--coordination dynamic`의 두 복구 후진을 두 배로 늘린다. 빔 쌍 후진은 40 슬라이스(5 슬라이스씩 8묶음, 묶음마다 추적 영역 재맞춤)다. V1·V2에서 도킹 자세로부터 20 슬라이스(약 35 px) 뒤에는 빔 옆 로봇의 방향이 풀리지 않아 재시도 하나를 더 썼고, 40 슬라이스 뒤에는 풀렸다. 상자 재시도 후진은 접은 뒤 20 슬라이스다. E3·V3에서 10 슬라이스는 r2를 약 8 cm만 옮겨 상자가 약 0.25 m 거리, 접은 카메라 시야 아래에 남았고 새 탐색이 끝내 보지 못했다. 물리 미검증이며 v56 결과를 승계하지 않는다.
+
+- `rgb-standard-dispatch-v55`(은퇴 보존): 부모는 main의 v51이다. 2026-09-25 R2 재생 2회가 이 번들(소스 `a19af8b`)로 실행됐다. 기본 OFF인 `--navigation planned`를 추가한다. 동기식 plan-first skills 실행기에서 세 로봇 모델이 상자의 목적지(dock)와 하역 뒤 대기 위치(`park`: 지도 region 이름 또는 `xy_m` 좌표)를 정하고, 상자 로봇의 적재 경로와 대기 이동은 정적 지도 A*(`harness/map_goto.py`, `harness/dispatch_goto.py`)가 현재 TOP RGB 추정 위치에서 계획한다. 저작 장애물·지형·RGB 장벽·빔 팀 금지 영역과 카메라 직하 화물 가림 영역을 피하고, 슬롯에는 항상 동쪽(빔 슬롯 반대편)에서 기존 직선 도킹으로 들어간다. 실행 전 가능성 검사가 경로/대기 위치를 거절하면 이유를 모델에 돌려 재합의시킨다. 빔은 합의한 north/south 통로를 쓰며 직렬 자원만 지원한다(`--route-overlap`·`--realtime-control`·`--coordination dynamic` 거절). 정답 위치·접촉·성공 신호를 쓰지 않는다. 기본 authored 경로는 바뀌지 않는다. 이 후보는 처음 v48로 등록해 2026-09-25 재생 2회에 썼으나 #146의 v48과 번호가 충돌했다. 그 바이트는 `experiments/2026-09-25-map-goto-navigation/retired-bundle/map-goto-candidate-v48.json`(sha256 `5f6c100b…`)에 보존했고, 재생에서 드러난 세 실패(서쪽 진입 시차 방출, 카메라 직하 화물 상실, 대기 이동 진동)를 고친 뒤 v55로 다시 등록했다.
+
+- `rgb-standard-dispatch-v57`(은퇴 보존): 부모는 main의 v54다. PR #144(v54)가 먼저 병합되어, R2 재생이 쓴 v55를 바이트 그대로 은퇴 보존하고 같은 `--navigation planned` 동작을 v54 위에 다시 등록했다(v56은 다른 브랜치가 사용 중). `--plan-guidance objective*`와의 결합은 거절한다. v55·v48 후보의 결과를 승계하지 않는다.
+
+- `rgb-standard-dispatch-v59`: 부모는 main의 v58이다. PR #153(v58)이 먼저 병합되어, #148 브랜치의 v57을 바이트 그대로 은퇴 보존하고 같은 기본 OFF `--navigation planned` 동작을 v58 위에 다시 등록했다. `--plan-guidance objective*`와의 결합은 거절한다. v55·v57·v48 후보의 결과를 승계하지 않는다.
+
+- `rgb-standard-dispatch-v60`: 부모는 main의 v59다(v59는 바이트 그대로 보존). 명시적 `--coordination dynamic`의 재파지 재접근에만 적용한다. 빔 북쪽 절반은 고정 조명에서 노랑(색상 약 28)이라 기존 빔 기준 마스크(색상 ≤24)에는 얇은 그늘 가장자리로만 남는다. W2(v58)에서 파지 실패 뒤 이 가장자리가 끊겨 색상 ≤24 빔이 123 → 95 px로 짧아졌고, 빔 기준 TOP이 14 px 옮겨져 학습된 lateral 모델이 지원 밖(거리 17,199와 1,088)으로 판정했다. 심판 기록상 빔은 움직이지 않았다. 이제 재파지 뒤 운반 전 캡처에서 색상 ≤24 빔이 색상 ≤35 빔의 0.9배보다 짧고 색상 ≤35 빔 중심이 실패한 파지 때보다 2 px 이하로 움직였으면, 그 파지 때의 RGB 평행 이동값을 그대로 쓴다(`fixed_from_prior_rgb`, 근거는 `transform.regrasp_binding`). 기록된 W2 프레임에서 오프라인으로 두 lateral 모델이 거리 7.6과 7.5로 돌아왔다. 물리 미검증이며 v58·v59 결과를 승계하지 않는다.
+- `rgb-standard-dispatch-v61`: 부모는 main의 v60이다(v60은 바이트 그대로 보존). 명시적 `--coordination dynamic`의 재파지 재접근에만 적용한다. v60 물리 확인 X1에서 미세 정렬 평행 이동값은 저장값 (212, 96)으로 고정됐지만, 거친 정렬은 여전히 잘린 색상 ≤24 빔 중심을 목표 기준으로 썼다(263.5 → 277.5 px, 색상 ≤35 중심은 261.5 px 그대로). 그래서 두 로봇이 처음 접근보다 약 13 px 남쪽에서 멈췄고, 학습된 yaw 단계가 r1을 세 번 모두 지원 밖으로 판정했다. 이제 처음 접근에서 마지막으로 거친 정렬이 준비 완료였던 프레임의 색상 ≤24 빔 중심을 파지 초기화 때 저장한다(후진 중 재중심 판정은 기록하지 않는다). 재파지 뒤에는 v60과 같은 RGB 조건(색상 ≤24가 색상 ≤35의 0.9배 미만, 색상 ≤35 중심 이동 2 px 이하)일 때 거친 정렬 목표에 그 중심을 쓴다(근거는 각 거친 판정의 `regrasp_beam`). 기록된 X1 프레임에서 오프라인으로 재접근 끝 자세가 "준비 완료"에서 측면 영상 오차 0.018(약 13 px)로 바뀌었다. 물리 미검증이며 v60 결과를 승계하지 않는다.
+- `zone-pair-llm-v97`(3.9.0, 은퇴 보존): 두 로봇 짝 운반 LLM 층의 가짜 모델 배관 스모크가 이 번들(소스 `b201f777`, 원격 보관 브랜치 `archive/pair-llm-v97-b201f777`)로 실행됐다. 설정 JSON 2개를 바이트 그대로 `experiments/2026-10-03-pair-llm-viability/retired-bundle/v97/configs/`에 보존한다(`pair_llm_v97.json` sha256 `ca0c34b2f7acf904376584ebb2f595b1278275c447e827292666b2e14f01b808`, `simulation_workflows.d/pair_llm_v97.json` sha256 `9077a7dd83bda8123ef6c844827f66c689227465315f99cd4206878d98587eb6`). 다시 등록하지 않으며 재현은 `b201f777`에서만 한다(PR #371).
+- `zone-pair-llm-v99`(3.11.0, 은퇴 보존): 같은 층의 실제 모델 스모크 1회(peer_nl, 실제 호출 12회)가 이 번들(소스 `ad1dda73`, 원격 보관 브랜치 `archive/pair-llm-v99-ad1dda73`)로 실행됐다. 설정 JSON 2개를 바이트 그대로 `experiments/2026-10-03-pair-llm-viability/retired-bundle/v99/configs/`에 보존한다(`pair_llm_v99.json` sha256 `284232e5955eb4c0b753497c8e59f81a072506b08d33ff8ad1e9183c496137b4`, `simulation_workflows.d/pair_llm_v99.json` sha256 `a0d8a41eebd04d2656acdfe622cec5ba3ef5af5baa547192f339fb61900719c3`). 실행 기록의 원본은 실행 산출물 `bundle.json`(`result.json`의 `bundle_sha256` `a8e112945fbad678…`)이다. 다시 등록하지 않으며 재현은 `ad1dda73`에서만 한다.
+- `zone-pair-llm-v100`(3.12.0, DRAFT_UNSEALED, 실행 기록 없음): 부모는 v99다(v99는 바이트 그대로 은퇴 보존). 모델 입력에 자기 소프트웨어 상태 `own_status`를 더하고(닫힌 기록, 자세·접촉·성공·상대 상태·원문 이유 없음), 행동 `look_around`를 열며, SIM 입력 청구에 이미지당 고정 1,490토큰(`ugrp.pair_image_billing.v2`, v1은 이미지 0이며 v97·v99가 사용)을 더하고, 울타리 지표를 기록한다. `configs/pair_llm_v100.json`과 `configs/simulation_workflows.d/pair_llm_v100.json`으로 등록했다. v97·v99의 결과를 승계하지 않으며 v100 물리·모델 실행은 아직 없다(PR #371, 실험 `experiments/2026-10-03-pair-llm-viability/`).

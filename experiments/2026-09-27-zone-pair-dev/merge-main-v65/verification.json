@@ -1,0 +1,48 @@
+{
+  "head_before_merge": "2aedf030c5236a7aa98329acd8367ad6d76743cb",
+  "merge_head": "414f8d8f1873e3309e4dc29b4c1c8930ab5c3a53",
+  "state": "uncommitted_merge_resolution; no git add/commit; coordinator owns index",
+  "scope": "nonphysical software regression; no model calls, no MuJoCo stepping; no physical success claim",
+  "test_environment": {
+    "python": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+    "OMP_NUM_THREADS": "1",
+    "basetemp": "./.pytest_tmp",
+    "mujoco_step_tripwire": "no_physics.py"
+  },
+  "files_sha256": {
+    "configs/simulation_workflows.json": "a2f7020d59b3043c4bdd9040d52229c1b6dd20dc0269c2b9d96c33be1c2a4671",
+    "docs/zone_study_integration.md": "a52954aa28a8243635ea8fa321fb9a48ee51424eba43d586ac1f28ff89910945",
+    "harness/zone_study_integration.py": "7d770b85caf2fcee0f96b5343da08a04c32e930bbe7e908a9c55dbb8802e120d",
+    "tests/test_zone_pair_grasp.py": "09ff1386f74be018f9bd1c9c5c1d058661fec641855b9f11c25ca7abe8ffc7fe",
+    "tests/test_zone_pair_v5.py": "9a668a6f3ebf19f17202c395bd29b25c870739788405a96d22ecda73220ccf28",
+    "tests/test_zone_start_dock.py": "0d7980575a74f31184d10092e2f9a91041d1c63b311e3face2134de1df2f1952",
+    "tests/test_zone_study_integration_pair.py": "fe1fbdeb6eaca9856977c2ff26f87f3109b36722c79cdb24577acd9880ea47b7",
+    "tests/test_zone_study_pair_delay.py": "1e0a634ca755d8fdea69a612d5dddeec0d773f4f0739b6a0c7fc92c0b847bcc8",
+    "tests/test_zone_study_source_pinning.py": "e3cac1d8911a44481b104e95dd14d14d94262c13e77bc8479de02d0aaeb59a5c",
+    "tests/fixtures/zone_study_pair_delay/standoff_v5.json": "b371354b9adb9be724048c43cf5090cb99d854ead8c76ba6880c3ad14aac4f58",
+    "tests/fixtures/zone_study_pair_delay/r1-00416.jpg": "bacf4b473dfb48d55fe5d70624ea0bfb1713d494c7ec487983e8791887c3b14e",
+    "tests/fixtures/zone_study_pair_delay/r2-00618.jpg": "de03cfedff20008dab1c044976213ec4813ac8ec16d06b557e8b40ada1f5d25f"
+  },
+  "integration_bundle_digest": "40b8d4015a68d8709d76f3eead3865878f849a61121f55eff548695d061a1619",
+  "results": {
+    "before_head": "2 failed, 490 passed",
+    "targeted": "114 passed",
+    "full": "1 failed, 1625 passed in 253.12s",
+    "remaining_test": "tests/test_simulation_workflow_manager.py::WorkflowManagerTests::test_parent_exit_cleans_background_child",
+    "remaining_reason": "PermissionError: [Errno 1] Operation not permitted: 'ps' (sandbox); production cleanup assertion cannot be verified here",
+    "ci_registered_files": 39,
+    "historical_files_unchanged": 123,
+    "conflict_markers": 0,
+    "git_diff_check": "passed"
+  },
+  "cleanup": {
+    "workspace_pytest_tmp_removed": true,
+    "baseline_copy_removed": true
+  },
+  "log_sha256": {
+    "before-head.txt": "d93ad540cfd2d3092d4d88bd0704d1109d01542e388320df489b75a6cbd50f79",
+    "before-delay.txt": "17c3138963f70c3b62900fadc7d6033f0ff85c483528a52654f696b808c3bad9",
+    "targeted.txt": "2e6e75ef8d49f73242d40c312b6185a45d42a23ee9e4f51afa9888c43f2c8e1a",
+    "full.txt": "1875b387d337f11e6e1f984208ed1007143ae6284bb6274925291355d5e0889e"
+  }
+}

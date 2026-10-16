@@ -1,0 +1,151 @@
+FFFF                                                                     [100%]
+=================================== FAILURES ===================================
+________ test_initial_command_nan_is_rejected_from_real_jsonl[unloaded] ________
+
+tmp_path = PosixPath('/private/tmp/ugrp-fix-351b-_rw23_h8/before/test_initial_command_nan_is_re0')
+profile = 'unloaded'
+
+    @pytest.mark.parametrize('profile', ['unloaded', 'fine', 'loaded'])
+    def test_initial_command_nan_is_rejected_from_real_jsonl(tmp_path, profile):
+        result = probe("""
+    profile = """ + repr(profile) + """
+    collection = fixture.synthetic_collection(tmp/'actual', profile)
+    folder = collection/raw.MAP_ID
+    results = []
+    for rid in ('r1','r2'):
+        path = folder/f'robots/{rid}/commands.jsonl'
+        original = path.read_bytes()
+        rows = [json.loads(line) for line in original.splitlines()]
+        rows[0]['t'] = float('nan')
+        path.write_text(''.join(json.dumps(row)+'\\n' for row in rows))
+        fixture.refresh_manifest(folder)
+        inputs = raw.Inputs()
+        try:
+            data = raw.load_collection(collection,profile,inputs)
+            inputs.verify()
+        except ValueError as exc:
+            results.append({'robot':rid,'rejected':True,'reason':str(exc)})
+        else:
+            results.append({'robot':rid,'rejected':False,
+                            'initial_time_finite':bool(np.isfinite(data['robots'][rid]['commands'][0]['t']))})
+        path.write_bytes(original)
+        fixture.refresh_manifest(folder)
+    print(json.dumps({'profile':profile,'cases':results}))
+    """, tmp_path)
+>       assert all(row['rejected'] for row in result['cases']), result
+E       AssertionError: {'cases': [{'initial_time_finite': False, 'rejected': False, 'robot': 'r1'}, {'initial_time_finite': False, 'rejected': False, 'robot': 'r2'}], 'profile': 'unloaded'}
+E       assert False
+E        +  where False = all(<generator object test_initial_command_nan_is_rejected_from_real_jsonl.<locals>.<genexpr> at 0x10624e0c0>)
+
+tests/test_review_351b.py:152: AssertionError
+__________ test_initial_command_nan_is_rejected_from_real_jsonl[fine] __________
+
+tmp_path = PosixPath('/private/tmp/ugrp-fix-351b-_rw23_h8/before/test_initial_command_nan_is_re1')
+profile = 'fine'
+
+    @pytest.mark.parametrize('profile', ['unloaded', 'fine', 'loaded'])
+    def test_initial_command_nan_is_rejected_from_real_jsonl(tmp_path, profile):
+        result = probe("""
+    profile = """ + repr(profile) + """
+    collection = fixture.synthetic_collection(tmp/'actual', profile)
+    folder = collection/raw.MAP_ID
+    results = []
+    for rid in ('r1','r2'):
+        path = folder/f'robots/{rid}/commands.jsonl'
+        original = path.read_bytes()
+        rows = [json.loads(line) for line in original.splitlines()]
+        rows[0]['t'] = float('nan')
+        path.write_text(''.join(json.dumps(row)+'\\n' for row in rows))
+        fixture.refresh_manifest(folder)
+        inputs = raw.Inputs()
+        try:
+            data = raw.load_collection(collection,profile,inputs)
+            inputs.verify()
+        except ValueError as exc:
+            results.append({'robot':rid,'rejected':True,'reason':str(exc)})
+        else:
+            results.append({'robot':rid,'rejected':False,
+                            'initial_time_finite':bool(np.isfinite(data['robots'][rid]['commands'][0]['t']))})
+        path.write_bytes(original)
+        fixture.refresh_manifest(folder)
+    print(json.dumps({'profile':profile,'cases':results}))
+    """, tmp_path)
+>       assert all(row['rejected'] for row in result['cases']), result
+E       AssertionError: {'cases': [{'initial_time_finite': False, 'rejected': False, 'robot': 'r1'}, {'initial_time_finite': False, 'rejected': False, 'robot': 'r2'}], 'profile': 'fine'}
+E       assert False
+E        +  where False = all(<generator object test_initial_command_nan_is_rejected_from_real_jsonl.<locals>.<genexpr> at 0x10624cad0>)
+
+tests/test_review_351b.py:152: AssertionError
+_________ test_initial_command_nan_is_rejected_from_real_jsonl[loaded] _________
+
+tmp_path = PosixPath('/private/tmp/ugrp-fix-351b-_rw23_h8/before/test_initial_command_nan_is_re2')
+profile = 'loaded'
+
+    @pytest.mark.parametrize('profile', ['unloaded', 'fine', 'loaded'])
+    def test_initial_command_nan_is_rejected_from_real_jsonl(tmp_path, profile):
+        result = probe("""
+    profile = """ + repr(profile) + """
+    collection = fixture.synthetic_collection(tmp/'actual', profile)
+    folder = collection/raw.MAP_ID
+    results = []
+    for rid in ('r1','r2'):
+        path = folder/f'robots/{rid}/commands.jsonl'
+        original = path.read_bytes()
+        rows = [json.loads(line) for line in original.splitlines()]
+        rows[0]['t'] = float('nan')
+        path.write_text(''.join(json.dumps(row)+'\\n' for row in rows))
+        fixture.refresh_manifest(folder)
+        inputs = raw.Inputs()
+        try:
+            data = raw.load_collection(collection,profile,inputs)
+            inputs.verify()
+        except ValueError as exc:
+            results.append({'robot':rid,'rejected':True,'reason':str(exc)})
+        else:
+            results.append({'robot':rid,'rejected':False,
+                            'initial_time_finite':bool(np.isfinite(data['robots'][rid]['commands'][0]['t']))})
+        path.write_bytes(original)
+        fixture.refresh_manifest(folder)
+    print(json.dumps({'profile':profile,'cases':results}))
+    """, tmp_path)
+>       assert all(row['rejected'] for row in result['cases']), result
+E       AssertionError: {'cases': [{'initial_time_finite': False, 'rejected': False, 'robot': 'r1'}, {'initial_time_finite': False, 'rejected': False, 'robot': 'r2'}], 'profile': 'loaded'}
+E       assert False
+E        +  where False = all(<generator object test_initial_command_nan_is_rejected_from_real_jsonl.<locals>.<genexpr> at 0x10624f6b0>)
+
+tests/test_review_351b.py:152: AssertionError
+____________ test_initial_nan_cannot_produce_accepted_fine_section _____________
+
+tmp_path = PosixPath('/private/tmp/ugrp-fix-351b-_rw23_h8/before/test_initial_nan_cannot_produc0')
+
+    def test_initial_nan_cannot_produce_accepted_fine_section(tmp_path):
+        result = probe("""
+    collection = fixture.synthetic_collection(tmp/'actual','fine')
+    folder = collection/raw.MAP_ID
+    path = folder/'robots/r1/commands.jsonl'
+    rows = [json.loads(line) for line in path.read_text().splitlines()]
+    rows[0]['t'] = float('nan')
+    path.write_text(''.join(json.dumps(row)+'\\n' for row in rows))
+    fixture.refresh_manifest(folder)
+    output = tmp/'output'
+    cal = a.run(collection.parent,output)
+    report = json.loads((output/'fit_report.json').read_text())
+    print(json.dumps({'status':cal['status'],'fine_audit':report['fine']['collection_audit'],
+                      'fine_motion_accepted':report['fine'].get('motion',{}).get('accepted',False),
+                      'fine_gain':cal['params']['motion_profiles']['fine']['gain']}))
+    """, tmp_path)
+>       assert result['fine_audit'] == 'FAIL' and not result['fine_motion_accepted'] and result['fine_gain'] is None, result
+E       AssertionError: {'fine_audit': 'PASS', 'fine_gain': [[1.200000000000001, 0.0, 0.0], [0.0, 0.8500000000000011, 0.0], [0.0, 0.0, 1.4000000000000439]], 'fine_motion_accepted': True, 'status': 'PARTIAL'}
+E       assert ('PASS' == 'FAIL'
+E
+E         - FAIL
+E         + PASS)
+
+tests/test_review_351b.py:194: AssertionError
+------ generated xml file: /private/tmp/ugrp-fix-351b-_rw23_h8/before.xml ------
+=========================== short test summary info ============================
+FAILED tests/test_review_351b.py::test_initial_command_nan_is_rejected_from_real_jsonl[unloaded]
+FAILED tests/test_review_351b.py::test_initial_command_nan_is_rejected_from_real_jsonl[fine]
+FAILED tests/test_review_351b.py::test_initial_command_nan_is_rejected_from_real_jsonl[loaded]
+FAILED tests/test_review_351b.py::test_initial_nan_cannot_produce_accepted_fine_section
+4 failed, 14 deselected in 51.66s

@@ -1,0 +1,2494 @@
+{
+ "schema": "ugrp.vision_loc.dev_variants.v3",
+ "plan": [
+  "dev_plan_v3.json",
+  "dev_plan_v3_amendment1.json",
+  "dev_plan_v3_amendment2.json",
+  "dev_plan_v3_amendment3.json"
+ ],
+ "plan_sha256": {
+  "dev_plan_v3.json": "7fffa24d68148943990e55b6bf88426004e8bf0acf82438662ddeea1562fcf2f",
+  "dev_plan_v3_amendment1.json": "a5a0f2322ae41709e9e6b4ca6fec34da8435f4a0990484078f79ffe4c195a0d9",
+  "dev_plan_v3_amendment2.json": "82b84664a97cd21e77b2be1fb06637a885747b56e1201af46f3efe47bf06b7be",
+  "dev_plan_v3_amendment3.json": "02bee237a627f608d5baa4e833a68a18110df0d5d3548889409e76512bcfcec6"
+ },
+ "variants": {
+  "b0_w6_legacy": {
+   "metrics_file": "/Users/changmin/projects/ugrp/outputs/vision-loc-20260926/r3/dev-grid/b0_w6_legacy/metrics.json",
+   "metrics_sha256": "bb215bda583b79e447be5b9c7420fb7bee37a2a0b338a9062f80fec82ee78d55",
+   "config": "dev_configs_v3/b0_w6_legacy.json",
+   "config_sha256": "9e4100edc080ed1f6f8ca210ef846fd1109c9300a3956c0f3ea020d9b8c23ead",
+   "episodes": [
+    "vl-dev-s909",
+    "vl-dev-s910",
+    "vl-dev-s911",
+    "vl3-dev-s941",
+    "vl3-dev-s942",
+    "vl3-dev-s943",
+    "vl3-dev-s945",
+    "vl3-dev-s946",
+    "vl3-dev-s947"
+   ],
+   "filter": "vision",
+   "pooled": {
+    "all": {
+     "n": 20433,
+     "pos_p50_m": 0.0597,
+     "pos_p90_m": 1.5118,
+     "pos_p99_m": 2.6893,
+     "lat_abs_p99_m": 2.2401,
+     "yaw_p90_deg": 68.6743
+    },
+    "door_zone": {
+     "n": 1347,
+     "pos_p50_m": 0.0405,
+     "pos_p90_m": 0.0718,
+     "pos_p99_m": 0.1032,
+     "lat_abs_p99_m": 0.0553,
+     "yaw_p90_deg": 3.4382
+    },
+    "door_loaded": {
+     "n": 1347,
+     "pos_p50_m": 0.0405,
+     "pos_p90_m": 0.0718,
+     "pos_p99_m": 0.1032,
+     "lat_abs_p99_m": 0.0553,
+     "yaw_p90_deg": 3.4382
+    },
+    "loaded": {
+     "n": 6429,
+     "pos_p50_m": 0.0415,
+     "pos_p90_m": 0.2216,
+     "pos_p99_m": 0.9903,
+     "lat_abs_p99_m": 0.9874,
+     "yaw_p90_deg": 2.8616
+    },
+    "unloaded": {
+     "n": 14004,
+     "pos_p50_m": 0.0764,
+     "pos_p90_m": 1.9893,
+     "pos_p99_m": 2.8917,
+     "lat_abs_p99_m": 2.2413,
+     "yaw_p90_deg": 83.5033
+    }
+   },
+   "recovery": {
+    "lost_frames": 5279,
+    "recoveries": 3,
+    "injection_frames": 0,
+    "injected_particles": 0,
+    "injection_frames_while_ok": 0
+   },
+   "per_episode_door_loaded": {
+    "vl-dev-s909": {
+     "n": null,
+     "pos_p90_m": null,
+     "lat_abs_p99_m": null,
+     "yaw_p90_deg": null
+    },
+    "vl-dev-s910": {
+     "n": 246,
+     "pos_p90_m": 0.0688,
+     "lat_abs_p99_m": 0.0594,
+     "yaw_p90_deg": 4.4619
+    },
+    "vl-dev-s911": {
+     "n": null,
+     "pos_p90_m": null,
+     "lat_abs_p99_m": null,
+     "yaw_p90_deg": null
+    },
+    "vl3-dev-s941": {
+     "n": null,
+     "pos_p90_m": null,
+     "lat_abs_p99_m": null,
+     "yaw_p90_deg": null
+    },
+    "vl3-dev-s942": {
+     "n": 169,
+     "pos_p90_m": 0.0732,
+     "lat_abs_p99_m": 0.0515,
+     "yaw_p90_deg": 1.3394
+    },
+    "vl3-dev-s943": {
+     "n": 219,
+     "pos_p90_m": 0.0585,
+     "lat_abs_p99_m": 0.0267,
+     "yaw_p90_deg": 1.9831
+    },
+    "vl3-dev-s945": {
+     "n": 237,
+     "pos_p90_m": 0.0934,
+     "lat_abs_p99_m": 0.0553,
+     "yaw_p90_deg": 5.0077
+    },
+    "vl3-dev-s946": {
+     "n": 251,
+     "pos_p90_m": 0.0666,
+     "lat_abs_p99_m": 0.0655,
+     "yaw_p90_deg": 4.6924
+    },
+    "vl3-dev-s947": {
+     "n": 225,
+     "pos_p90_m": 0.0694,
+     "lat_abs_p99_m": 0.0442,
+     "yaw_p90_deg": 1.619
+    }
+   },
+   "per_episode_all_p90_m": {
+    "vl-dev-s909": 2.1823,
+    "vl-dev-s910": 0.1356,
+    "vl-dev-s911": 0.0763,
+    "vl3-dev-s941": 2.2337,
+    "vl3-dev-s942": 0.1192,
+    "vl3-dev-s943": 0.1014,
+    "vl3-dev-s945": 0.9904,
+    "vl3-dev-s946": 0.1263,
+    "vl3-dev-s947": 0.2199
+   },
+   "per_episode_recovery": {
+    "vl-dev-s909": {
+     "lost_frames": 2870,
+     "recoveries": 1,
+     "ends_lost": true,
+     "longest_lost_s": 482.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl-dev-s910": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl-dev-s911": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s941": {
+     "lost_frames": 1551,
+     "recoveries": 1,
+     "ends_lost": false,
+     "longest_lost_s": 311.6,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s942": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s943": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s945": {
+     "lost_frames": 858,
+     "recoveries": 1,
+     "ends_lost": false,
+     "longest_lost_s": 163.1,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s946": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s947": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    }
+   },
+   "false_detections": {
+    "b": {
+     "edges": 1275303,
+     "false_edges": 77217,
+     "teacher_edges": 1264209,
+     "missed_edges": 13023,
+     "false_edge_rate": 0.06055,
+     "missed_edge_rate": 0.0103
+    },
+    "t": {
+     "edges": 97649,
+     "false_edges": 14642,
+     "teacher_edges": 165175,
+     "missed_edges": 13878,
+     "false_edge_rate": 0.14995,
+     "missed_edge_rate": 0.08402
+    }
+   }
+  },
+  "a1_open": {
+   "metrics_file": "/Users/changmin/projects/ugrp/outputs/vision-loc-20260926/r3/dev-grid/a1_open/metrics.json",
+   "metrics_sha256": "ee626ac49e0fc18009bc47dfb759cdb50fb7745f465a87ee47989d56c2aaa73a",
+   "config": "dev_configs_v3/a1_open.json",
+   "config_sha256": "87f94b342b260715b1c556da3dea3832cc11daeaf88ef0aa97f14b3c9a970707",
+   "episodes": [
+    "vl-dev-s909",
+    "vl-dev-s910",
+    "vl-dev-s911",
+    "vl3-dev-s941",
+    "vl3-dev-s942",
+    "vl3-dev-s943",
+    "vl3-dev-s945",
+    "vl3-dev-s946",
+    "vl3-dev-s947"
+   ],
+   "filter": "vision",
+   "pooled": {
+    "all": {
+     "n": 20433,
+     "pos_p50_m": 0.0601,
+     "pos_p90_m": 1.5118,
+     "pos_p99_m": 2.6893,
+     "lat_abs_p99_m": 2.2401,
+     "yaw_p90_deg": 68.6743
+    },
+    "door_zone": {
+     "n": 1347,
+     "pos_p50_m": 0.0322,
+     "pos_p90_m": 0.0645,
+     "pos_p99_m": 0.0798,
+     "lat_abs_p99_m": 0.0478,
+     "yaw_p90_deg": 2.3605
+    },
+    "door_loaded": {
+     "n": 1347,
+     "pos_p50_m": 0.0322,
+     "pos_p90_m": 0.0645,
+     "pos_p99_m": 0.0798,
+     "lat_abs_p99_m": 0.0478,
+     "yaw_p90_deg": 2.3605
+    },
+    "loaded": {
+     "n": 6429,
+     "pos_p50_m": 0.0391,
+     "pos_p90_m": 0.1872,
+     "pos_p99_m": 0.9903,
+     "lat_abs_p99_m": 0.9874,
+     "yaw_p90_deg": 2.4333
+    },
+    "unloaded": {
+     "n": 14004,
+     "pos_p50_m": 0.0775,
+     "pos_p90_m": 1.9893,
+     "pos_p99_m": 2.8917,
+     "lat_abs_p99_m": 2.2413,
+     "yaw_p90_deg": 83.5033
+    }
+   },
+   "recovery": {
+    "lost_frames": 5279,
+    "recoveries": 3,
+    "injection_frames": 0,
+    "injected_particles": 0,
+    "injection_frames_while_ok": 0
+   },
+   "per_episode_door_loaded": {
+    "vl-dev-s909": {
+     "n": null,
+     "pos_p90_m": null,
+     "lat_abs_p99_m": null,
+     "yaw_p90_deg": null
+    },
+    "vl-dev-s910": {
+     "n": 246,
+     "pos_p90_m": 0.0732,
+     "lat_abs_p99_m": 0.0289,
+     "yaw_p90_deg": 2.077
+    },
+    "vl-dev-s911": {
+     "n": null,
+     "pos_p90_m": null,
+     "lat_abs_p99_m": null,
+     "yaw_p90_deg": null
+    },
+    "vl3-dev-s941": {
+     "n": null,
+     "pos_p90_m": null,
+     "lat_abs_p99_m": null,
+     "yaw_p90_deg": null
+    },
+    "vl3-dev-s942": {
+     "n": 169,
+     "pos_p90_m": 0.0711,
+     "lat_abs_p99_m": 0.0494,
+     "yaw_p90_deg": 1.3394
+    },
+    "vl3-dev-s943": {
+     "n": 219,
+     "pos_p90_m": 0.0588,
+     "lat_abs_p99_m": 0.0267,
+     "yaw_p90_deg": 1.9831
+    },
+    "vl3-dev-s945": {
+     "n": 237,
+     "pos_p90_m": 0.0471,
+     "lat_abs_p99_m": 0.0348,
+     "yaw_p90_deg": 2.7049
+    },
+    "vl3-dev-s946": {
+     "n": 251,
+     "pos_p90_m": 0.0612,
+     "lat_abs_p99_m": 0.0468,
+     "yaw_p90_deg": 2.7275
+    },
+    "vl3-dev-s947": {
+     "n": 225,
+     "pos_p90_m": 0.0694,
+     "lat_abs_p99_m": 0.0431,
+     "yaw_p90_deg": 1.619
+    }
+   },
+   "per_episode_all_p90_m": {
+    "vl-dev-s909": 2.1823,
+    "vl-dev-s910": 0.1239,
+    "vl-dev-s911": 0.0763,
+    "vl3-dev-s941": 2.2337,
+    "vl3-dev-s942": 0.1121,
+    "vl3-dev-s943": 0.1014,
+    "vl3-dev-s945": 0.9904,
+    "vl3-dev-s946": 0.1263,
+    "vl3-dev-s947": 0.1839
+   },
+   "per_episode_recovery": {
+    "vl-dev-s909": {
+     "lost_frames": 2870,
+     "recoveries": 1,
+     "ends_lost": true,
+     "longest_lost_s": 482.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl-dev-s910": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl-dev-s911": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s941": {
+     "lost_frames": 1551,
+     "recoveries": 1,
+     "ends_lost": false,
+     "longest_lost_s": 311.6,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s942": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s943": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s945": {
+     "lost_frames": 858,
+     "recoveries": 1,
+     "ends_lost": false,
+     "longest_lost_s": 163.1,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s946": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s947": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    }
+   },
+   "false_detections": {
+    "b": {
+     "edges": 1275303,
+     "false_edges": 77217,
+     "teacher_edges": 1264209,
+     "missed_edges": 13023,
+     "false_edge_rate": 0.06055,
+     "missed_edge_rate": 0.0103
+    },
+    "t": {
+     "edges": 97649,
+     "false_edges": 14642,
+     "teacher_edges": 165175,
+     "missed_edges": 13878,
+     "false_edge_rate": 0.14995,
+     "missed_edge_rate": 0.08402
+    }
+   }
+  },
+  "a2_open_scale": {
+   "metrics_file": "/Users/changmin/projects/ugrp/outputs/vision-loc-20260926/r3/dev-grid/a2_open_scale/metrics.json",
+   "metrics_sha256": "a26491d841948e302b42de26b527f744439938f2402bdd464a18fc69f60b2ada",
+   "config": "dev_configs_v3/a2_open_scale.json",
+   "config_sha256": "df0fdaf4038079b0a6755d72b1d18a52e8f44de4719c0e03223cd67d8044cddf",
+   "episodes": [
+    "vl-dev-s909",
+    "vl-dev-s910",
+    "vl-dev-s911",
+    "vl3-dev-s941",
+    "vl3-dev-s942",
+    "vl3-dev-s943",
+    "vl3-dev-s945",
+    "vl3-dev-s946",
+    "vl3-dev-s947"
+   ],
+   "filter": "vision",
+   "pooled": {
+    "all": {
+     "n": 20433,
+     "pos_p50_m": 0.0623,
+     "pos_p90_m": 1.6374,
+     "pos_p99_m": 2.6893,
+     "lat_abs_p99_m": 2.2401,
+     "yaw_p90_deg": 68.6743
+    },
+    "door_zone": {
+     "n": 1347,
+     "pos_p50_m": 0.0396,
+     "pos_p90_m": 1.0167,
+     "pos_p99_m": 1.2222,
+     "lat_abs_p99_m": 1.059,
+     "yaw_p90_deg": 7.2402
+    },
+    "door_loaded": {
+     "n": 1347,
+     "pos_p50_m": 0.0396,
+     "pos_p90_m": 1.0167,
+     "pos_p99_m": 1.2222,
+     "lat_abs_p99_m": 1.059,
+     "yaw_p90_deg": 7.2402
+    },
+    "loaded": {
+     "n": 6429,
+     "pos_p50_m": 0.0451,
+     "pos_p90_m": 0.9568,
+     "pos_p99_m": 1.6532,
+     "lat_abs_p99_m": 1.6328,
+     "yaw_p90_deg": 20.1163
+    },
+    "unloaded": {
+     "n": 14004,
+     "pos_p50_m": 0.078,
+     "pos_p90_m": 1.9893,
+     "pos_p99_m": 2.8917,
+     "lat_abs_p99_m": 2.2413,
+     "yaw_p90_deg": 83.5033
+    }
+   },
+   "recovery": {
+    "lost_frames": 6092,
+    "recoveries": 2,
+    "injection_frames": 0,
+    "injected_particles": 0,
+    "injection_frames_while_ok": 0
+   },
+   "per_episode_door_loaded": {
+    "vl-dev-s909": {
+     "n": null,
+     "pos_p90_m": null,
+     "lat_abs_p99_m": null,
+     "yaw_p90_deg": null
+    },
+    "vl-dev-s910": {
+     "n": 246,
+     "pos_p90_m": 0.0676,
+     "lat_abs_p99_m": 0.0556,
+     "yaw_p90_deg": 2.2797
+    },
+    "vl-dev-s911": {
+     "n": null,
+     "pos_p90_m": null,
+     "lat_abs_p99_m": null,
+     "yaw_p90_deg": null
+    },
+    "vl3-dev-s941": {
+     "n": null,
+     "pos_p90_m": null,
+     "lat_abs_p99_m": null,
+     "yaw_p90_deg": null
+    },
+    "vl3-dev-s942": {
+     "n": 169,
+     "pos_p90_m": 0.0695,
+     "lat_abs_p99_m": 0.0467,
+     "yaw_p90_deg": 1.6705
+    },
+    "vl3-dev-s943": {
+     "n": 219,
+     "pos_p90_m": 0.0602,
+     "lat_abs_p99_m": 0.0249,
+     "yaw_p90_deg": 1.9703
+    },
+    "vl3-dev-s945": {
+     "n": 237,
+     "pos_p90_m": 1.2198,
+     "lat_abs_p99_m": 1.0598,
+     "yaw_p90_deg": 25.4403
+    },
+    "vl3-dev-s946": {
+     "n": 251,
+     "pos_p90_m": 0.0644,
+     "lat_abs_p99_m": 0.0503,
+     "yaw_p90_deg": 2.7171
+    },
+    "vl3-dev-s947": {
+     "n": 225,
+     "pos_p90_m": 0.0722,
+     "lat_abs_p99_m": 0.051,
+     "yaw_p90_deg": 1.8425
+    }
+   },
+   "per_episode_all_p90_m": {
+    "vl-dev-s909": 2.1823,
+    "vl-dev-s910": 0.0805,
+    "vl-dev-s911": 0.0763,
+    "vl3-dev-s941": 2.2337,
+    "vl3-dev-s942": 0.1141,
+    "vl3-dev-s943": 0.1014,
+    "vl3-dev-s945": 1.5709,
+    "vl3-dev-s946": 0.1263,
+    "vl3-dev-s947": 0.0745
+   },
+   "per_episode_recovery": {
+    "vl-dev-s909": {
+     "lost_frames": 2870,
+     "recoveries": 1,
+     "ends_lost": true,
+     "longest_lost_s": 482.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl-dev-s910": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl-dev-s911": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s941": {
+     "lost_frames": 1551,
+     "recoveries": 1,
+     "ends_lost": false,
+     "longest_lost_s": 311.6,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s942": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s943": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s945": {
+     "lost_frames": 1671,
+     "recoveries": 0,
+     "ends_lost": true,
+     "longest_lost_s": 303.5,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s946": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s947": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    }
+   },
+   "false_detections": {
+    "b": {
+     "edges": 1275303,
+     "false_edges": 77217,
+     "teacher_edges": 1264209,
+     "missed_edges": 13023,
+     "false_edge_rate": 0.06055,
+     "missed_edge_rate": 0.0103
+    },
+    "t": {
+     "edges": 97649,
+     "false_edges": 14642,
+     "teacher_edges": 165175,
+     "missed_edges": 13878,
+     "false_edge_rate": 0.14995,
+     "missed_edge_rate": 0.08402
+    }
+   }
+  },
+  "s1_open_stuck_low": {
+   "metrics_file": "/Users/changmin/projects/ugrp/outputs/vision-loc-20260926/r3/dev-grid/s1_open_stuck_low/metrics.json",
+   "metrics_sha256": "71201779241c539946f42b999f12867e0511eb423390e33ed0169041ff3368f5",
+   "config": "dev_configs_v3/s1_open_stuck_low.json",
+   "config_sha256": "bc58e74eec79a11fc8d51aa5b781ea5d7a64f4609da68d99eee399e63994530e",
+   "episodes": [
+    "vl-dev-s909",
+    "vl-dev-s910",
+    "vl-dev-s911",
+    "vl3-dev-s941",
+    "vl3-dev-s942",
+    "vl3-dev-s943",
+    "vl3-dev-s945",
+    "vl3-dev-s946",
+    "vl3-dev-s947"
+   ],
+   "filter": "vision",
+   "pooled": {
+    "all": {
+     "n": 20433,
+     "pos_p50_m": 0.068,
+     "pos_p90_m": 0.1348,
+     "pos_p99_m": 0.9229,
+     "lat_abs_p99_m": 0.9226,
+     "yaw_p90_deg": 2.3455
+    },
+    "door_zone": {
+     "n": 1347,
+     "pos_p50_m": 0.0353,
+     "pos_p90_m": 0.0702,
+     "pos_p99_m": 0.2136,
+     "lat_abs_p99_m": 0.1642,
+     "yaw_p90_deg": 2.2148
+    },
+    "door_loaded": {
+     "n": 1347,
+     "pos_p50_m": 0.0353,
+     "pos_p90_m": 0.0702,
+     "pos_p99_m": 0.2136,
+     "lat_abs_p99_m": 0.1642,
+     "yaw_p90_deg": 2.2148
+    },
+    "loaded": {
+     "n": 6429,
+     "pos_p50_m": 0.0424,
+     "pos_p90_m": 0.2552,
+     "pos_p99_m": 0.9335,
+     "lat_abs_p99_m": 0.9334,
+     "yaw_p90_deg": 2.3266
+    },
+    "unloaded": {
+     "n": 14004,
+     "pos_p50_m": 0.0792,
+     "pos_p90_m": 0.1235,
+     "pos_p99_m": 0.9217,
+     "lat_abs_p99_m": 0.9213,
+     "yaw_p90_deg": 2.3463
+    }
+   },
+   "recovery": {
+    "lost_frames": 915,
+    "recoveries": 3,
+    "injection_frames": 0,
+    "injected_particles": 0,
+    "injection_frames_while_ok": 0
+   },
+   "per_episode_door_loaded": {
+    "vl-dev-s909": {
+     "n": null,
+     "pos_p90_m": null,
+     "lat_abs_p99_m": null,
+     "yaw_p90_deg": null
+    },
+    "vl-dev-s910": {
+     "n": 246,
+     "pos_p90_m": 0.0675,
+     "lat_abs_p99_m": 0.0336,
+     "yaw_p90_deg": 1.952
+    },
+    "vl-dev-s911": {
+     "n": null,
+     "pos_p90_m": null,
+     "lat_abs_p99_m": null,
+     "yaw_p90_deg": null
+    },
+    "vl3-dev-s941": {
+     "n": null,
+     "pos_p90_m": null,
+     "lat_abs_p99_m": null,
+     "yaw_p90_deg": null
+    },
+    "vl3-dev-s942": {
+     "n": 169,
+     "pos_p90_m": 0.0702,
+     "lat_abs_p99_m": 0.049,
+     "yaw_p90_deg": 0.9955
+    },
+    "vl3-dev-s943": {
+     "n": 219,
+     "pos_p90_m": 0.056,
+     "lat_abs_p99_m": 0.027,
+     "yaw_p90_deg": 2.1611
+    },
+    "vl3-dev-s945": {
+     "n": 237,
+     "pos_p90_m": 0.2111,
+     "lat_abs_p99_m": 0.1887,
+     "yaw_p90_deg": 9.9686
+    },
+    "vl3-dev-s946": {
+     "n": 251,
+     "pos_p90_m": 0.0578,
+     "lat_abs_p99_m": 0.0268,
+     "yaw_p90_deg": 2.2552
+    },
+    "vl3-dev-s947": {
+     "n": 225,
+     "pos_p90_m": 0.0699,
+     "lat_abs_p99_m": 0.0446,
+     "yaw_p90_deg": 1.831
+    }
+   },
+   "per_episode_all_p90_m": {
+    "vl-dev-s909": 0.1203,
+    "vl-dev-s910": 0.1263,
+    "vl-dev-s911": 0.131,
+    "vl3-dev-s941": 0.1215,
+    "vl3-dev-s942": 0.0907,
+    "vl3-dev-s943": 0.0948,
+    "vl3-dev-s945": 0.9022,
+    "vl3-dev-s946": 0.1422,
+    "vl3-dev-s947": 0.2362
+   },
+   "per_episode_recovery": {
+    "vl-dev-s909": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl-dev-s910": {
+     "lost_frames": 18,
+     "recoveries": 1,
+     "ends_lost": false,
+     "longest_lost_s": 3.6,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl-dev-s911": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s941": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s942": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s943": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s945": {
+     "lost_frames": 893,
+     "recoveries": 1,
+     "ends_lost": false,
+     "longest_lost_s": 176.9,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s946": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s947": {
+     "lost_frames": 4,
+     "recoveries": 1,
+     "ends_lost": false,
+     "longest_lost_s": 1.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    }
+   },
+   "false_detections": {
+    "b": {
+     "edges": 1275303,
+     "false_edges": 77217,
+     "teacher_edges": 1264209,
+     "missed_edges": 13023,
+     "false_edge_rate": 0.06055,
+     "missed_edge_rate": 0.0103
+    },
+    "t": {
+     "edges": 97649,
+     "false_edges": 14642,
+     "teacher_edges": 165175,
+     "missed_edges": 13878,
+     "false_edge_rate": 0.14995,
+     "missed_edge_rate": 0.08402
+    }
+   }
+  },
+  "s2_open_stuck_low_dom": {
+   "metrics_file": "/Users/changmin/projects/ugrp/outputs/vision-loc-20260926/r3/dev-grid/s2_open_stuck_low_dom/metrics.json",
+   "metrics_sha256": "454ad1b0123fe8f6f68c4381a2fd04baee8de98a7220ac3e98ef807a8a8eb930",
+   "config": "dev_configs_v3/s2_open_stuck_low_dom.json",
+   "config_sha256": "794c50c359ec5469584a79d87f2fe24c3914fcb6e86d52a0bbf6f1c1176e34aa",
+   "episodes": [
+    "vl-dev-s909",
+    "vl-dev-s910",
+    "vl-dev-s911",
+    "vl3-dev-s941",
+    "vl3-dev-s942",
+    "vl3-dev-s943",
+    "vl3-dev-s945",
+    "vl3-dev-s946",
+    "vl3-dev-s947"
+   ],
+   "filter": "vision",
+   "pooled": {
+    "all": {
+     "n": 20433,
+     "pos_p50_m": 0.0623,
+     "pos_p90_m": 0.1449,
+     "pos_p99_m": 0.922,
+     "lat_abs_p99_m": 0.9218,
+     "yaw_p90_deg": 2.0849
+    },
+    "door_zone": {
+     "n": 1347,
+     "pos_p50_m": 0.0358,
+     "pos_p90_m": 0.0703,
+     "pos_p99_m": 0.2242,
+     "lat_abs_p99_m": 0.1722,
+     "yaw_p90_deg": 2.207
+    },
+    "door_loaded": {
+     "n": 1347,
+     "pos_p50_m": 0.0358,
+     "pos_p90_m": 0.0703,
+     "pos_p99_m": 0.2242,
+     "lat_abs_p99_m": 0.1722,
+     "yaw_p90_deg": 2.207
+    },
+    "loaded": {
+     "n": 6429,
+     "pos_p50_m": 0.0424,
+     "pos_p90_m": 0.2556,
+     "pos_p99_m": 0.933,
+     "lat_abs_p99_m": 0.9329,
+     "yaw_p90_deg": 2.3344
+    },
+    "unloaded": {
+     "n": 14004,
+     "pos_p50_m": 0.072,
+     "pos_p90_m": 0.1422,
+     "pos_p99_m": 0.9211,
+     "lat_abs_p99_m": 0.9207,
+     "yaw_p90_deg": 2.0083
+    }
+   },
+   "recovery": {
+    "lost_frames": 914,
+    "recoveries": 3,
+    "injection_frames": 0,
+    "injected_particles": 0,
+    "injection_frames_while_ok": 0
+   },
+   "per_episode_door_loaded": {
+    "vl-dev-s909": {
+     "n": null,
+     "pos_p90_m": null,
+     "lat_abs_p99_m": null,
+     "yaw_p90_deg": null
+    },
+    "vl-dev-s910": {
+     "n": 246,
+     "pos_p90_m": 0.0677,
+     "lat_abs_p99_m": 0.0351,
+     "yaw_p90_deg": 1.9558
+    },
+    "vl-dev-s911": {
+     "n": null,
+     "pos_p90_m": null,
+     "lat_abs_p99_m": null,
+     "yaw_p90_deg": null
+    },
+    "vl3-dev-s941": {
+     "n": null,
+     "pos_p90_m": null,
+     "lat_abs_p99_m": null,
+     "yaw_p90_deg": null
+    },
+    "vl3-dev-s942": {
+     "n": 169,
+     "pos_p90_m": 0.07,
+     "lat_abs_p99_m": 0.0492,
+     "yaw_p90_deg": 0.9939
+    },
+    "vl3-dev-s943": {
+     "n": 219,
+     "pos_p90_m": 0.0557,
+     "lat_abs_p99_m": 0.027,
+     "yaw_p90_deg": 2.1616
+    },
+    "vl3-dev-s945": {
+     "n": 237,
+     "pos_p90_m": 0.223,
+     "lat_abs_p99_m": 0.1986,
+     "yaw_p90_deg": 10.236
+    },
+    "vl3-dev-s946": {
+     "n": 251,
+     "pos_p90_m": 0.0585,
+     "lat_abs_p99_m": 0.0271,
+     "yaw_p90_deg": 2.2599
+    },
+    "vl3-dev-s947": {
+     "n": 225,
+     "pos_p90_m": 0.0699,
+     "lat_abs_p99_m": 0.0445,
+     "yaw_p90_deg": 1.8282
+    }
+   },
+   "per_episode_all_p90_m": {
+    "vl-dev-s909": 0.0831,
+    "vl-dev-s910": 0.1259,
+    "vl-dev-s911": 0.1307,
+    "vl3-dev-s941": 0.1459,
+    "vl3-dev-s942": 0.0904,
+    "vl3-dev-s943": 0.0945,
+    "vl3-dev-s945": 0.9031,
+    "vl3-dev-s946": 0.142,
+    "vl3-dev-s947": 0.2381
+   },
+   "per_episode_recovery": {
+    "vl-dev-s909": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl-dev-s910": {
+     "lost_frames": 16,
+     "recoveries": 1,
+     "ends_lost": false,
+     "longest_lost_s": 3.2,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl-dev-s911": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s941": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s942": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s943": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s945": {
+     "lost_frames": 894,
+     "recoveries": 1,
+     "ends_lost": false,
+     "longest_lost_s": 176.9,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s946": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s947": {
+     "lost_frames": 4,
+     "recoveries": 1,
+     "ends_lost": false,
+     "longest_lost_s": 1.2,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    }
+   },
+   "false_detections": {
+    "b": {
+     "edges": 1275303,
+     "false_edges": 77217,
+     "teacher_edges": 1264209,
+     "missed_edges": 13023,
+     "false_edge_rate": 0.06055,
+     "missed_edge_rate": 0.0103
+    },
+    "t": {
+     "edges": 97649,
+     "false_edges": 14642,
+     "teacher_edges": 165175,
+     "missed_edges": 13878,
+     "false_edge_rate": 0.14995,
+     "missed_edge_rate": 0.08402
+    }
+   }
+  },
+  "m1_open_amcl": {
+   "metrics_file": "/Users/changmin/projects/ugrp/outputs/vision-loc-20260926/r3/dev-grid/m1_open_amcl/metrics.json",
+   "metrics_sha256": "76a5c11cfe5835971a873a09255bcb75babde4b5c1b7f587170db054a7a925fb",
+   "config": "dev_configs_v3/m1_open_amcl.json",
+   "config_sha256": "5d9f82c6c16990afc62fd3a25bc42f5ce5b926968cc7d2c4952091ed9f8413f8",
+   "episodes": [
+    "vl-dev-s909",
+    "vl-dev-s910",
+    "vl-dev-s911",
+    "vl3-dev-s941",
+    "vl3-dev-s942",
+    "vl3-dev-s943",
+    "vl3-dev-s945",
+    "vl3-dev-s946",
+    "vl3-dev-s947"
+   ],
+   "filter": "vision",
+   "pooled": {
+    "all": {
+     "n": 20433,
+     "pos_p50_m": 0.0746,
+     "pos_p90_m": 4.606,
+     "pos_p99_m": 5.4907,
+     "lat_abs_p99_m": 2.8415,
+     "yaw_p90_deg": 102.9766
+    },
+    "door_zone": {
+     "n": 1347,
+     "pos_p50_m": 0.0412,
+     "pos_p90_m": 0.3287,
+     "pos_p99_m": 3.6285,
+     "lat_abs_p99_m": 1.7288,
+     "yaw_p90_deg": 2.6789
+    },
+    "door_loaded": {
+     "n": 1347,
+     "pos_p50_m": 0.0412,
+     "pos_p90_m": 0.3287,
+     "pos_p99_m": 3.6285,
+     "lat_abs_p99_m": 1.7288,
+     "yaw_p90_deg": 2.6789
+    },
+    "loaded": {
+     "n": 6429,
+     "pos_p50_m": 0.0397,
+     "pos_p90_m": 0.8529,
+     "pos_p99_m": 5.0766,
+     "lat_abs_p99_m": 2.8893,
+     "yaw_p90_deg": 2.524
+    },
+    "unloaded": {
+     "n": 14004,
+     "pos_p50_m": 0.1344,
+     "pos_p90_m": 4.9879,
+     "pos_p99_m": 5.4914,
+     "lat_abs_p99_m": 2.7056,
+     "yaw_p90_deg": 104.0242
+    }
+   },
+   "recovery": {
+    "lost_frames": 7243,
+    "recoveries": 4,
+    "injection_frames": 158,
+    "injected_particles": 1438,
+    "injection_frames_while_ok": 30
+   },
+   "per_episode_door_loaded": {
+    "vl-dev-s909": {
+     "n": null,
+     "pos_p90_m": null,
+     "lat_abs_p99_m": null,
+     "yaw_p90_deg": null
+    },
+    "vl-dev-s910": {
+     "n": 246,
+     "pos_p90_m": 0.0711,
+     "lat_abs_p99_m": 0.0529,
+     "yaw_p90_deg": 2.1167
+    },
+    "vl-dev-s911": {
+     "n": null,
+     "pos_p90_m": null,
+     "lat_abs_p99_m": null,
+     "yaw_p90_deg": null
+    },
+    "vl3-dev-s941": {
+     "n": null,
+     "pos_p90_m": null,
+     "lat_abs_p99_m": null,
+     "yaw_p90_deg": null
+    },
+    "vl3-dev-s942": {
+     "n": 169,
+     "pos_p90_m": 0.0706,
+     "lat_abs_p99_m": 0.05,
+     "yaw_p90_deg": 1.1376
+    },
+    "vl3-dev-s943": {
+     "n": 219,
+     "pos_p90_m": 0.0554,
+     "lat_abs_p99_m": 0.0248,
+     "yaw_p90_deg": 2.0406
+    },
+    "vl3-dev-s945": {
+     "n": 237,
+     "pos_p90_m": 3.6276,
+     "lat_abs_p99_m": 1.738,
+     "yaw_p90_deg": 106.7532
+    },
+    "vl3-dev-s946": {
+     "n": 251,
+     "pos_p90_m": 0.0612,
+     "lat_abs_p99_m": 0.0504,
+     "yaw_p90_deg": 2.7015
+    },
+    "vl3-dev-s947": {
+     "n": 225,
+     "pos_p90_m": 0.066,
+     "lat_abs_p99_m": 0.0433,
+     "yaw_p90_deg": 1.5655
+    }
+   },
+   "per_episode_all_p90_m": {
+    "vl-dev-s909": 4.8492,
+    "vl-dev-s910": 0.104,
+    "vl-dev-s911": 0.0748,
+    "vl3-dev-s941": 5.4875,
+    "vl3-dev-s942": 0.1155,
+    "vl3-dev-s943": 0.0959,
+    "vl3-dev-s945": 5.0297,
+    "vl3-dev-s946": 0.1324,
+    "vl3-dev-s947": 0.1083
+   },
+   "per_episode_recovery": {
+    "vl-dev-s909": {
+     "lost_frames": 2829,
+     "recoveries": 2,
+     "ends_lost": true,
+     "longest_lost_s": 306.4,
+     "injection_frames": 96,
+     "injected_particles": 242,
+     "injection_frames_while_ok": 1,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl-dev-s910": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 4,
+     "injected_particles": 177,
+     "injection_frames_while_ok": 3,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl-dev-s911": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 5,
+     "injected_particles": 57,
+     "injection_frames_while_ok": 5,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s941": {
+     "lost_frames": 3244,
+     "recoveries": 0,
+     "ends_lost": true,
+     "longest_lost_s": 648.6,
+     "injection_frames": 15,
+     "injected_particles": 30,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s942": {
+     "lost_frames": 18,
+     "recoveries": 1,
+     "ends_lost": false,
+     "longest_lost_s": 3.5,
+     "injection_frames": 7,
+     "injected_particles": 264,
+     "injection_frames_while_ok": 7,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s943": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 4,
+     "injected_particles": 77,
+     "injection_frames_while_ok": 4,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s945": {
+     "lost_frames": 1152,
+     "recoveries": 1,
+     "ends_lost": false,
+     "longest_lost_s": 221.0,
+     "injection_frames": 19,
+     "injected_particles": 430,
+     "injection_frames_while_ok": 2,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s946": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 2,
+     "injected_particles": 26,
+     "injection_frames_while_ok": 2,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s947": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 6,
+     "injected_particles": 135,
+     "injection_frames_while_ok": 6,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    }
+   },
+   "false_detections": {
+    "b": {
+     "edges": 1275303,
+     "false_edges": 77217,
+     "teacher_edges": 1264209,
+     "missed_edges": 13023,
+     "false_edge_rate": 0.06055,
+     "missed_edge_rate": 0.0103
+    },
+    "t": {
+     "edges": 97649,
+     "false_edges": 14642,
+     "teacher_edges": 165175,
+     "missed_edges": 13878,
+     "false_edge_rate": 0.14995,
+     "missed_edge_rate": 0.08402
+    }
+   }
+  },
+  "m2_open_amcl_local": {
+   "metrics_file": "/Users/changmin/projects/ugrp/outputs/vision-loc-20260926/r3/dev-grid/m2_open_amcl_local/metrics.json",
+   "metrics_sha256": "11f1f61cd84739bc1f6b7f7ae580b9e1aebde686f6125b0bd88c4fbb3f24d341",
+   "config": "dev_configs_v3/m2_open_amcl_local.json",
+   "config_sha256": "5f5afd86a981d82cdd3f9efe986fe12977cd7a77b2f657ce735562843de85d8a",
+   "episodes": [
+    "vl-dev-s909",
+    "vl-dev-s910",
+    "vl-dev-s911",
+    "vl3-dev-s941",
+    "vl3-dev-s942",
+    "vl3-dev-s943",
+    "vl3-dev-s945",
+    "vl3-dev-s946",
+    "vl3-dev-s947"
+   ],
+   "filter": "vision",
+   "pooled": {
+    "all": {
+     "n": 20433,
+     "pos_p50_m": 0.0714,
+     "pos_p90_m": 4.1176,
+     "pos_p99_m": 5.4804,
+     "lat_abs_p99_m": 2.2786,
+     "yaw_p90_deg": 90.8781
+    },
+    "door_zone": {
+     "n": 1347,
+     "pos_p50_m": 0.0352,
+     "pos_p90_m": 0.0736,
+     "pos_p99_m": 0.1651,
+     "lat_abs_p99_m": 0.1648,
+     "yaw_p90_deg": 2.7042
+    },
+    "door_loaded": {
+     "n": 1347,
+     "pos_p50_m": 0.0352,
+     "pos_p90_m": 0.0736,
+     "pos_p99_m": 0.1651,
+     "lat_abs_p99_m": 0.1648,
+     "yaw_p90_deg": 2.7042
+    },
+    "loaded": {
+     "n": 6429,
+     "pos_p50_m": 0.0396,
+     "pos_p90_m": 0.1238,
+     "pos_p99_m": 0.2319,
+     "lat_abs_p99_m": 0.1716,
+     "yaw_p90_deg": 2.1396
+    },
+    "unloaded": {
+     "n": 14004,
+     "pos_p50_m": 0.1363,
+     "pos_p90_m": 4.55,
+     "pos_p99_m": 5.484,
+     "lat_abs_p99_m": 2.2801,
+     "yaw_p90_deg": 101.9584
+    }
+   },
+   "recovery": {
+    "lost_frames": 6313,
+    "recoveries": 2,
+    "injection_frames": 172,
+    "injected_particles": 1323,
+    "injection_frames_while_ok": 33
+   },
+   "per_episode_door_loaded": {
+    "vl-dev-s909": {
+     "n": null,
+     "pos_p90_m": null,
+     "lat_abs_p99_m": null,
+     "yaw_p90_deg": null
+    },
+    "vl-dev-s910": {
+     "n": 246,
+     "pos_p90_m": 0.0744,
+     "lat_abs_p99_m": 0.0275,
+     "yaw_p90_deg": 2.233
+    },
+    "vl-dev-s911": {
+     "n": null,
+     "pos_p90_m": null,
+     "lat_abs_p99_m": null,
+     "yaw_p90_deg": null
+    },
+    "vl3-dev-s941": {
+     "n": null,
+     "pos_p90_m": null,
+     "lat_abs_p99_m": null,
+     "yaw_p90_deg": null
+    },
+    "vl3-dev-s942": {
+     "n": 169,
+     "pos_p90_m": 0.0723,
+     "lat_abs_p99_m": 0.0513,
+     "yaw_p90_deg": 1.2961
+    },
+    "vl3-dev-s943": {
+     "n": 219,
+     "pos_p90_m": 0.0583,
+     "lat_abs_p99_m": 0.0263,
+     "yaw_p90_deg": 2.0245
+    },
+    "vl3-dev-s945": {
+     "n": 237,
+     "pos_p90_m": 0.1646,
+     "lat_abs_p99_m": 0.1653,
+     "yaw_p90_deg": 6.7872
+    },
+    "vl3-dev-s946": {
+     "n": 251,
+     "pos_p90_m": 0.0603,
+     "lat_abs_p99_m": 0.0406,
+     "yaw_p90_deg": 2.61
+    },
+    "vl3-dev-s947": {
+     "n": 225,
+     "pos_p90_m": 0.0662,
+     "lat_abs_p99_m": 0.0405,
+     "yaw_p90_deg": 1.521
+    }
+   },
+   "per_episode_all_p90_m": {
+    "vl-dev-s909": 4.7064,
+    "vl-dev-s910": 0.1103,
+    "vl-dev-s911": 0.0748,
+    "vl3-dev-s941": 5.4014,
+    "vl3-dev-s942": 0.1071,
+    "vl3-dev-s943": 0.0904,
+    "vl3-dev-s945": 0.2496,
+    "vl3-dev-s946": 0.1318,
+    "vl3-dev-s947": 0.1597
+   },
+   "per_episode_recovery": {
+    "vl-dev-s909": {
+     "lost_frames": 2886,
+     "recoveries": 1,
+     "ends_lost": true,
+     "longest_lost_s": 495.8,
+     "injection_frames": 104,
+     "injected_particles": 262,
+     "injection_frames_while_ok": 1,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl-dev-s910": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 4,
+     "injected_particles": 188,
+     "injection_frames_while_ok": 4,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl-dev-s911": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 5,
+     "injected_particles": 47,
+     "injection_frames_while_ok": 5,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s941": {
+     "lost_frames": 3244,
+     "recoveries": 0,
+     "ends_lost": true,
+     "longest_lost_s": 648.6,
+     "injection_frames": 21,
+     "injected_particles": 43,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s942": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 7,
+     "injected_particles": 250,
+     "injection_frames_while_ok": 7,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s943": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 6,
+     "injected_particles": 198,
+     "injection_frames_while_ok": 5,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s945": {
+     "lost_frames": 183,
+     "recoveries": 1,
+     "ends_lost": false,
+     "longest_lost_s": 34.8,
+     "injection_frames": 17,
+     "injected_particles": 160,
+     "injection_frames_while_ok": 3,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s946": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 2,
+     "injected_particles": 21,
+     "injection_frames_while_ok": 2,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s947": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 6,
+     "injected_particles": 154,
+     "injection_frames_while_ok": 6,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    }
+   },
+   "false_detections": {
+    "b": {
+     "edges": 1275303,
+     "false_edges": 77217,
+     "teacher_edges": 1264209,
+     "missed_edges": 13023,
+     "false_edge_rate": 0.06055,
+     "missed_edge_rate": 0.0103
+    },
+    "t": {
+     "edges": 97649,
+     "false_edges": 14642,
+     "teacher_edges": 165175,
+     "missed_edges": 13878,
+     "false_edge_rate": 0.14995,
+     "missed_edge_rate": 0.08402
+    }
+   }
+  },
+  "a3b_open_scale_stuck_low": {
+   "metrics_file": "/Users/changmin/projects/ugrp/outputs/vision-loc-20260926/r3/dev-grid/a3b_open_scale_stuck_low/metrics.json",
+   "metrics_sha256": "93319fdc25f110368a6fafe3d27548eafa02a6d1c3d0558639a124318ec18fc8",
+   "config": "dev_configs_v3/a3b_open_scale_stuck_low.json",
+   "config_sha256": "19e5f5b306c11a41d68b537fc943575e3dae7649e7f8b61c2930c231a9ce87be",
+   "episodes": [
+    "vl-dev-s909",
+    "vl-dev-s910",
+    "vl-dev-s911",
+    "vl3-dev-s941",
+    "vl3-dev-s942",
+    "vl3-dev-s943",
+    "vl3-dev-s945",
+    "vl3-dev-s946",
+    "vl3-dev-s947"
+   ],
+   "filter": "vision",
+   "pooled": {
+    "all": {
+     "n": 20433,
+     "pos_p50_m": 0.0643,
+     "pos_p90_m": 0.1229,
+     "pos_p99_m": 0.9229,
+     "lat_abs_p99_m": 0.9226,
+     "yaw_p90_deg": 2.3418
+    },
+    "door_zone": {
+     "n": 1347,
+     "pos_p50_m": 0.032,
+     "pos_p90_m": 0.0612,
+     "pos_p99_m": 0.0774,
+     "lat_abs_p99_m": 0.0558,
+     "yaw_p90_deg": 2.2663
+    },
+    "door_loaded": {
+     "n": 1347,
+     "pos_p50_m": 0.032,
+     "pos_p90_m": 0.0612,
+     "pos_p99_m": 0.0774,
+     "lat_abs_p99_m": 0.0558,
+     "yaw_p90_deg": 2.2663
+    },
+    "loaded": {
+     "n": 6429,
+     "pos_p50_m": 0.0352,
+     "pos_p90_m": 0.1109,
+     "pos_p99_m": 0.9335,
+     "lat_abs_p99_m": 0.9334,
+     "yaw_p90_deg": 2.2787
+    },
+    "unloaded": {
+     "n": 14004,
+     "pos_p50_m": 0.0791,
+     "pos_p90_m": 0.123,
+     "pos_p99_m": 0.9217,
+     "lat_abs_p99_m": 0.9213,
+     "yaw_p90_deg": 2.3459
+    }
+   },
+   "recovery": {
+    "lost_frames": 842,
+    "recoveries": 3,
+    "injection_frames": 0,
+    "injected_particles": 0,
+    "injection_frames_while_ok": 0
+   },
+   "per_episode_door_loaded": {
+    "vl-dev-s909": {
+     "n": null,
+     "pos_p90_m": null,
+     "lat_abs_p99_m": null,
+     "yaw_p90_deg": null
+    },
+    "vl-dev-s910": {
+     "n": 246,
+     "pos_p90_m": 0.0682,
+     "lat_abs_p99_m": 0.0566,
+     "yaw_p90_deg": 2.3478
+    },
+    "vl-dev-s911": {
+     "n": null,
+     "pos_p90_m": null,
+     "lat_abs_p99_m": null,
+     "yaw_p90_deg": null
+    },
+    "vl3-dev-s941": {
+     "n": null,
+     "pos_p90_m": null,
+     "lat_abs_p99_m": null,
+     "yaw_p90_deg": null
+    },
+    "vl3-dev-s942": {
+     "n": 169,
+     "pos_p90_m": 0.0683,
+     "lat_abs_p99_m": 0.0445,
+     "yaw_p90_deg": 1.6267
+    },
+    "vl3-dev-s943": {
+     "n": 219,
+     "pos_p90_m": 0.0582,
+     "lat_abs_p99_m": 0.026,
+     "yaw_p90_deg": 1.9718
+    },
+    "vl3-dev-s945": {
+     "n": 237,
+     "pos_p90_m": 0.0591,
+     "lat_abs_p99_m": 0.0389,
+     "yaw_p90_deg": 2.2911
+    },
+    "vl3-dev-s946": {
+     "n": 251,
+     "pos_p90_m": 0.0589,
+     "lat_abs_p99_m": 0.0454,
+     "yaw_p90_deg": 2.6822
+    },
+    "vl3-dev-s947": {
+     "n": 225,
+     "pos_p90_m": 0.0683,
+     "lat_abs_p99_m": 0.0463,
+     "yaw_p90_deg": 1.882
+    }
+   },
+   "per_episode_all_p90_m": {
+    "vl-dev-s909": 0.1203,
+    "vl-dev-s910": 0.1051,
+    "vl-dev-s911": 0.131,
+    "vl3-dev-s941": 0.1215,
+    "vl3-dev-s942": 0.07,
+    "vl3-dev-s943": 0.0948,
+    "vl3-dev-s945": 0.9022,
+    "vl3-dev-s946": 0.1422,
+    "vl3-dev-s947": 0.0796
+   },
+   "per_episode_recovery": {
+    "vl-dev-s909": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl-dev-s910": {
+     "lost_frames": 18,
+     "recoveries": 1,
+     "ends_lost": false,
+     "longest_lost_s": 3.6,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl-dev-s911": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s941": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s942": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s943": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s945": {
+     "lost_frames": 820,
+     "recoveries": 1,
+     "ends_lost": false,
+     "longest_lost_s": 167.5,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s946": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s947": {
+     "lost_frames": 4,
+     "recoveries": 1,
+     "ends_lost": false,
+     "longest_lost_s": 1.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    }
+   },
+   "false_detections": {
+    "b": {
+     "edges": 1275303,
+     "false_edges": 77217,
+     "teacher_edges": 1264209,
+     "missed_edges": 13023,
+     "false_edge_rate": 0.06055,
+     "missed_edge_rate": 0.0103
+    },
+    "t": {
+     "edges": 97649,
+     "false_edges": 14642,
+     "teacher_edges": 165175,
+     "missed_edges": 13878,
+     "false_edge_rate": 0.14995,
+     "missed_edge_rate": 0.08402
+    }
+   }
+  },
+  "a3c_open_scale_stuck_low_dom": {
+   "metrics_file": "/Users/changmin/projects/ugrp/outputs/vision-loc-20260926/r3/dev-grid/a3c_open_scale_stuck_low_dom/metrics.json",
+   "metrics_sha256": "b6bd7a65a9e21eba68e0c0d3c5e95bbbfc7e4938f8aabc1acae05e67009a222f",
+   "config": "dev_configs_v3/a3c_open_scale_stuck_low_dom.json",
+   "config_sha256": "7b77b7a981b074650a5bb484d456d1578c77ef36d49b1c9c976403eecf68ae87",
+   "episodes": [
+    "vl-dev-s909",
+    "vl-dev-s910",
+    "vl-dev-s911",
+    "vl3-dev-s941",
+    "vl3-dev-s942",
+    "vl3-dev-s943",
+    "vl3-dev-s945",
+    "vl3-dev-s946",
+    "vl3-dev-s947"
+   ],
+   "filter": "vision",
+   "pooled": {
+    "all": {
+     "n": 20433,
+     "pos_p50_m": 0.0596,
+     "pos_p90_m": 0.1417,
+     "pos_p99_m": 0.922,
+     "lat_abs_p99_m": 0.9218,
+     "yaw_p90_deg": 2.099
+    },
+    "door_zone": {
+     "n": 1347,
+     "pos_p50_m": 0.0313,
+     "pos_p90_m": 0.0615,
+     "pos_p99_m": 0.0781,
+     "lat_abs_p99_m": 0.0542,
+     "yaw_p90_deg": 2.2633
+    },
+    "door_loaded": {
+     "n": 1347,
+     "pos_p50_m": 0.0313,
+     "pos_p90_m": 0.0615,
+     "pos_p99_m": 0.0781,
+     "lat_abs_p99_m": 0.0542,
+     "yaw_p90_deg": 2.2633
+    },
+    "loaded": {
+     "n": 6429,
+     "pos_p50_m": 0.0331,
+     "pos_p90_m": 0.1109,
+     "pos_p99_m": 0.933,
+     "lat_abs_p99_m": 0.9329,
+     "yaw_p90_deg": 2.2954
+    },
+    "unloaded": {
+     "n": 14004,
+     "pos_p50_m": 0.0718,
+     "pos_p90_m": 0.142,
+     "pos_p99_m": 0.9211,
+     "lat_abs_p99_m": 0.9207,
+     "yaw_p90_deg": 2.0085
+    }
+   },
+   "recovery": {
+    "lost_frames": 841,
+    "recoveries": 3,
+    "injection_frames": 0,
+    "injected_particles": 0,
+    "injection_frames_while_ok": 0
+   },
+   "per_episode_door_loaded": {
+    "vl-dev-s909": {
+     "n": null,
+     "pos_p90_m": null,
+     "lat_abs_p99_m": null,
+     "yaw_p90_deg": null
+    },
+    "vl-dev-s910": {
+     "n": 246,
+     "pos_p90_m": 0.0681,
+     "lat_abs_p99_m": 0.0564,
+     "yaw_p90_deg": 2.3673
+    },
+    "vl-dev-s911": {
+     "n": null,
+     "pos_p90_m": null,
+     "lat_abs_p99_m": null,
+     "yaw_p90_deg": null
+    },
+    "vl3-dev-s941": {
+     "n": null,
+     "pos_p90_m": null,
+     "lat_abs_p99_m": null,
+     "yaw_p90_deg": null
+    },
+    "vl3-dev-s942": {
+     "n": 169,
+     "pos_p90_m": 0.0683,
+     "lat_abs_p99_m": 0.0447,
+     "yaw_p90_deg": 1.6256
+    },
+    "vl3-dev-s943": {
+     "n": 219,
+     "pos_p90_m": 0.0583,
+     "lat_abs_p99_m": 0.0261,
+     "yaw_p90_deg": 1.9717
+    },
+    "vl3-dev-s945": {
+     "n": 237,
+     "pos_p90_m": 0.0602,
+     "lat_abs_p99_m": 0.0388,
+     "yaw_p90_deg": 2.2942
+    },
+    "vl3-dev-s946": {
+     "n": 251,
+     "pos_p90_m": 0.0589,
+     "lat_abs_p99_m": 0.0448,
+     "yaw_p90_deg": 2.6766
+    },
+    "vl3-dev-s947": {
+     "n": 225,
+     "pos_p90_m": 0.0682,
+     "lat_abs_p99_m": 0.0462,
+     "yaw_p90_deg": 1.8829
+    }
+   },
+   "per_episode_all_p90_m": {
+    "vl-dev-s909": 0.0831,
+    "vl-dev-s910": 0.1086,
+    "vl-dev-s911": 0.1307,
+    "vl3-dev-s941": 0.1459,
+    "vl3-dev-s942": 0.0707,
+    "vl3-dev-s943": 0.0944,
+    "vl3-dev-s945": 0.9031,
+    "vl3-dev-s946": 0.142,
+    "vl3-dev-s947": 0.0679
+   },
+   "per_episode_recovery": {
+    "vl-dev-s909": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl-dev-s910": {
+     "lost_frames": 16,
+     "recoveries": 1,
+     "ends_lost": false,
+     "longest_lost_s": 3.2,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl-dev-s911": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s941": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s942": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s943": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s945": {
+     "lost_frames": 821,
+     "recoveries": 1,
+     "ends_lost": false,
+     "longest_lost_s": 167.7,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s946": {
+     "lost_frames": 0,
+     "recoveries": 0,
+     "ends_lost": false,
+     "longest_lost_s": 0.0,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    },
+    "vl3-dev-s947": {
+     "lost_frames": 4,
+     "recoveries": 1,
+     "ends_lost": false,
+     "longest_lost_s": 1.2,
+     "injection_frames": 0,
+     "injected_particles": 0,
+     "injection_frames_while_ok": 0,
+     "thresholds_m": {
+      "lost": 0.3,
+      "ok": 0.1
+     }
+    }
+   },
+   "false_detections": {
+    "b": {
+     "edges": 1275303,
+     "false_edges": 77217,
+     "teacher_edges": 1264209,
+     "missed_edges": 13023,
+     "false_edge_rate": 0.06055,
+     "missed_edge_rate": 0.0103
+    },
+    "t": {
+     "edges": 97649,
+     "false_edges": 14642,
+     "teacher_edges": 165175,
+     "missed_edges": 13878,
+     "false_edge_rate": 0.14995,
+     "missed_edge_rate": 0.08402
+    }
+   }
+  }
+ },
+ "oracle": {},
+ "rule_steps": [
+  {
+   "step": "a1_open",
+   "base": "b0_w6_legacy",
+   "adopted": true,
+   "reason": "adopted: L 0.0553->0.0478, P 0.0718->0.0645, A 1.5118->1.5118, lost 5279->5279"
+  },
+  {
+   "step": "a2_open_scale",
+   "base": "a1_open",
+   "adopted": false,
+   "reason": "L 0.0478->1.0590 or P 0.0645->1.0167 rose by > 0.003 m"
+  },
+  {
+   "step": "stuck: s1 vs s2",
+   "candidate": "s1_open_stuck_low",
+   "reason": "L 0.1642 vs 0.1722"
+  },
+  {
+   "step": "s1_open_stuck_low",
+   "base": "a1_open",
+   "adopted": false,
+   "reason": "L 0.0478->0.1642 or P 0.0645->0.0702 rose by > 0.003 m"
+  },
+  {
+   "step": "AMCL: m1_open_amcl vs m2_open_amcl_local",
+   "candidate": "m2_open_amcl_local",
+   "reason": "lost 7243 vs 6313"
+  },
+  {
+   "step": "m2_open_amcl_local",
+   "base": "a1_open",
+   "adopted": false,
+   "reason": "L 0.0478->0.1648 or P 0.0645->0.0736 rose by > 0.003 m"
+  }
+ ],
+ "selected": "a1_open"
+}

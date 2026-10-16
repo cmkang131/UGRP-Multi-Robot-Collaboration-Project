@@ -1,0 +1,3974 @@
+{
+ "default|vision|wide|p20": {
+  "config": "default|vision|wide|p20",
+  "note": "sigma0_xy is the per-axis RMS = radial RMS / sqrt(2); sigma0_yaw is the RMS of the yaw error",
+  "sigma0": {
+   "pr277_assumption": {
+    "yaw_deg": 1.3,
+    "xy_m": 0.038
+   },
+   "measured_pooled_rms": {
+    "yaw_deg": 0.419,
+    "xy_m": 0.0157
+   },
+   "measured_worst_checkpoint_rms": {
+    "yaw_deg": 1.129,
+    "xy_m": 0.0277
+   }
+  },
+  "budgets": {
+   "pr277_assumption": {
+    "v6e_pm+edge|low_1.1": {
+     "t_yaw_s": 30.2,
+     "t_xy_s": 53.4,
+     "t_gate_s": 30.2,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "v6e_pm+edge|high_1.5": {
+     "t_yaw_s": 30.2,
+     "t_xy_s": 39.2,
+     "t_gate_s": 30.2,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "v6g_pm+edge|low_1.1": {
+     "t_yaw_s": 23.1,
+     "t_xy_s": 53.4,
+     "t_gate_s": 23.1,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "v6g_pm+edge|high_1.5": {
+     "t_yaw_s": 23.1,
+     "t_xy_s": 39.2,
+     "t_gate_s": 23.1,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_cal2|low_1.1": {
+     "t_yaw_s": 20.3,
+     "t_xy_s": 53.4,
+     "t_gate_s": 20.3,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_cal2|high_1.5": {
+     "t_yaw_s": 20.3,
+     "t_xy_s": 39.2,
+     "t_gate_s": 20.3,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_v6g_refit|low_1.1": {
+     "t_yaw_s": 18.5,
+     "t_xy_s": 53.4,
+     "t_gate_s": 18.5,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_v6g_refit|high_1.5": {
+     "t_yaw_s": 18.5,
+     "t_xy_s": 39.2,
+     "t_gate_s": 18.5,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    }
+   },
+   "measured_pooled_rms": {
+    "v6e_pm+edge|low_1.1": {
+     "t_yaw_s": 33.2,
+     "t_xy_s": 62.0,
+     "t_gate_s": 33.2,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "v6e_pm+edge|high_1.5": {
+     "t_yaw_s": 33.2,
+     "t_xy_s": 45.5,
+     "t_gate_s": 33.2,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "v6g_pm+edge|low_1.1": {
+     "t_yaw_s": 25.4,
+     "t_xy_s": 62.0,
+     "t_gate_s": 25.4,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "v6g_pm+edge|high_1.5": {
+     "t_yaw_s": 25.4,
+     "t_xy_s": 45.5,
+     "t_gate_s": 25.4,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_cal2|low_1.1": {
+     "t_yaw_s": 22.3,
+     "t_xy_s": 62.0,
+     "t_gate_s": 22.3,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_cal2|high_1.5": {
+     "t_yaw_s": 22.3,
+     "t_xy_s": 45.5,
+     "t_gate_s": 22.3,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_v6g_refit|low_1.1": {
+     "t_yaw_s": 20.3,
+     "t_xy_s": 62.0,
+     "t_gate_s": 20.3,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_v6g_refit|high_1.5": {
+     "t_yaw_s": 20.3,
+     "t_xy_s": 45.5,
+     "t_gate_s": 20.3,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    }
+   },
+   "measured_worst_checkpoint_rms": {
+    "v6e_pm+edge|low_1.1": {
+     "t_yaw_s": 31.1,
+     "t_xy_s": 58.5,
+     "t_gate_s": 31.1,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "v6e_pm+edge|high_1.5": {
+     "t_yaw_s": 31.1,
+     "t_xy_s": 42.9,
+     "t_gate_s": 31.1,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "v6g_pm+edge|low_1.1": {
+     "t_yaw_s": 23.8,
+     "t_xy_s": 58.5,
+     "t_gate_s": 23.8,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "v6g_pm+edge|high_1.5": {
+     "t_yaw_s": 23.8,
+     "t_xy_s": 42.9,
+     "t_gate_s": 23.8,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_cal2|low_1.1": {
+     "t_yaw_s": 20.8,
+     "t_xy_s": 58.5,
+     "t_gate_s": 20.8,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_cal2|high_1.5": {
+     "t_yaw_s": 20.8,
+     "t_xy_s": 42.9,
+     "t_gate_s": 20.8,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_v6g_refit|low_1.1": {
+     "t_yaw_s": 19.0,
+     "t_xy_s": 58.5,
+     "t_gate_s": 19.0,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_v6g_refit|high_1.5": {
+     "t_yaw_s": 19.0,
+     "t_xy_s": 42.9,
+     "t_gate_s": 19.0,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    }
+   }
+  }
+ },
+ "default|vision|wide|search": {
+  "config": "default|vision|wide|search",
+  "note": "sigma0_xy is the per-axis RMS = radial RMS / sqrt(2); sigma0_yaw is the RMS of the yaw error",
+  "sigma0": {
+   "pr277_assumption": {
+    "yaw_deg": 1.3,
+    "xy_m": 0.038
+   },
+   "measured_pooled_rms": {
+    "yaw_deg": 0.918,
+    "xy_m": 0.0386
+   },
+   "measured_worst_checkpoint_rms": {
+    "yaw_deg": 2.364,
+    "xy_m": 0.125
+   }
+  },
+  "budgets": {
+   "pr277_assumption": {
+    "v6e_pm+edge|low_1.1": {
+     "t_yaw_s": 30.2,
+     "t_xy_s": 53.4,
+     "t_gate_s": 30.2,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "v6e_pm+edge|high_1.5": {
+     "t_yaw_s": 30.2,
+     "t_xy_s": 39.2,
+     "t_gate_s": 30.2,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "v6g_pm+edge|low_1.1": {
+     "t_yaw_s": 23.1,
+     "t_xy_s": 53.4,
+     "t_gate_s": 23.1,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "v6g_pm+edge|high_1.5": {
+     "t_yaw_s": 23.1,
+     "t_xy_s": 39.2,
+     "t_gate_s": 23.1,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_cal2|low_1.1": {
+     "t_yaw_s": 20.3,
+     "t_xy_s": 53.4,
+     "t_gate_s": 20.3,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_cal2|high_1.5": {
+     "t_yaw_s": 20.3,
+     "t_xy_s": 39.2,
+     "t_gate_s": 20.3,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_v6g_refit|low_1.1": {
+     "t_yaw_s": 18.5,
+     "t_xy_s": 53.4,
+     "t_gate_s": 18.5,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_v6g_refit|high_1.5": {
+     "t_yaw_s": 18.5,
+     "t_xy_s": 39.2,
+     "t_gate_s": 18.5,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    }
+   },
+   "measured_pooled_rms": {
+    "v6e_pm+edge|low_1.1": {
+     "t_yaw_s": 32.0,
+     "t_xy_s": 53.1,
+     "t_gate_s": 32.0,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "v6e_pm+edge|high_1.5": {
+     "t_yaw_s": 32.0,
+     "t_xy_s": 38.9,
+     "t_gate_s": 32.0,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "v6g_pm+edge|low_1.1": {
+     "t_yaw_s": 24.4,
+     "t_xy_s": 53.1,
+     "t_gate_s": 24.4,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "v6g_pm+edge|high_1.5": {
+     "t_yaw_s": 24.4,
+     "t_xy_s": 38.9,
+     "t_gate_s": 24.4,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_cal2|low_1.1": {
+     "t_yaw_s": 21.4,
+     "t_xy_s": 53.1,
+     "t_gate_s": 21.4,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_cal2|high_1.5": {
+     "t_yaw_s": 21.4,
+     "t_xy_s": 38.9,
+     "t_gate_s": 21.4,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_v6g_refit|low_1.1": {
+     "t_yaw_s": 19.5,
+     "t_xy_s": 53.1,
+     "t_gate_s": 19.5,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_v6g_refit|high_1.5": {
+     "t_yaw_s": 19.5,
+     "t_xy_s": 38.9,
+     "t_gate_s": 19.5,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    }
+   },
+   "measured_worst_checkpoint_rms": {
+    "v6e_pm+edge|low_1.1": {
+     "t_yaw_s": 20.7,
+     "t_xy_s": 0.0,
+     "t_gate_s": 0.0,
+     "binding": "xy",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L0",
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "v6e_pm+edge|high_1.5": {
+     "t_yaw_s": 20.7,
+     "t_xy_s": 0.0,
+     "t_gate_s": 0.0,
+     "binding": "xy",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L0",
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "v6g_pm+edge|low_1.1": {
+     "t_yaw_s": 15.8,
+     "t_xy_s": 0.0,
+     "t_gate_s": 0.0,
+     "binding": "xy",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L0",
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "v6g_pm+edge|high_1.5": {
+     "t_yaw_s": 15.8,
+     "t_xy_s": 0.0,
+     "t_gate_s": 0.0,
+     "binding": "xy",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L0",
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_cal2|low_1.1": {
+     "t_yaw_s": 13.8,
+     "t_xy_s": 0.0,
+     "t_gate_s": 0.0,
+     "binding": "xy",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L0",
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_cal2|high_1.5": {
+     "t_yaw_s": 13.8,
+     "t_xy_s": 0.0,
+     "t_gate_s": 0.0,
+     "binding": "xy",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L0",
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_v6g_refit|low_1.1": {
+     "t_yaw_s": 12.6,
+     "t_xy_s": 0.0,
+     "t_gate_s": 0.0,
+     "binding": "xy",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L0",
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_v6g_refit|high_1.5": {
+     "t_yaw_s": 12.6,
+     "t_xy_s": 0.0,
+     "t_gate_s": 0.0,
+     "binding": "xy",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L0",
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    }
+   }
+  }
+ },
+ "floor_light_v1|vision|wide|p20": {
+  "config": "floor_light_v1|vision|wide|p20",
+  "note": "sigma0_xy is the per-axis RMS = radial RMS / sqrt(2); sigma0_yaw is the RMS of the yaw error",
+  "sigma0": {
+   "pr277_assumption": {
+    "yaw_deg": 1.3,
+    "xy_m": 0.038
+   },
+   "measured_pooled_rms": {
+    "yaw_deg": 0.776,
+    "xy_m": 0.0274
+   },
+   "measured_worst_checkpoint_rms": {
+    "yaw_deg": 2.064,
+    "xy_m": 0.05
+   }
+  },
+  "budgets": {
+   "pr277_assumption": {
+    "v6e_pm+edge|low_1.1": {
+     "t_yaw_s": 30.2,
+     "t_xy_s": 53.4,
+     "t_gate_s": 30.2,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "v6e_pm+edge|high_1.5": {
+     "t_yaw_s": 30.2,
+     "t_xy_s": 39.2,
+     "t_gate_s": 30.2,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "v6g_pm+edge|low_1.1": {
+     "t_yaw_s": 23.1,
+     "t_xy_s": 53.4,
+     "t_gate_s": 23.1,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "v6g_pm+edge|high_1.5": {
+     "t_yaw_s": 23.1,
+     "t_xy_s": 39.2,
+     "t_gate_s": 23.1,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_cal2|low_1.1": {
+     "t_yaw_s": 20.3,
+     "t_xy_s": 53.4,
+     "t_gate_s": 20.3,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_cal2|high_1.5": {
+     "t_yaw_s": 20.3,
+     "t_xy_s": 39.2,
+     "t_gate_s": 20.3,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_v6g_refit|low_1.1": {
+     "t_yaw_s": 18.5,
+     "t_xy_s": 53.4,
+     "t_gate_s": 18.5,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_v6g_refit|high_1.5": {
+     "t_yaw_s": 18.5,
+     "t_xy_s": 39.2,
+     "t_gate_s": 18.5,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    }
+   },
+   "measured_pooled_rms": {
+    "v6e_pm+edge|low_1.1": {
+     "t_yaw_s": 32.4,
+     "t_xy_s": 58.6,
+     "t_gate_s": 32.4,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "v6e_pm+edge|high_1.5": {
+     "t_yaw_s": 32.4,
+     "t_xy_s": 42.9,
+     "t_gate_s": 32.4,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "v6g_pm+edge|low_1.1": {
+     "t_yaw_s": 24.8,
+     "t_xy_s": 58.6,
+     "t_gate_s": 24.8,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "v6g_pm+edge|high_1.5": {
+     "t_yaw_s": 24.8,
+     "t_xy_s": 42.9,
+     "t_gate_s": 24.8,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_cal2|low_1.1": {
+     "t_yaw_s": 21.7,
+     "t_xy_s": 58.6,
+     "t_gate_s": 21.7,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_cal2|high_1.5": {
+     "t_yaw_s": 21.7,
+     "t_xy_s": 42.9,
+     "t_gate_s": 21.7,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_v6g_refit|low_1.1": {
+     "t_yaw_s": 19.8,
+     "t_xy_s": 58.6,
+     "t_gate_s": 19.8,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_v6g_refit|high_1.5": {
+     "t_yaw_s": 19.8,
+     "t_xy_s": 42.9,
+     "t_gate_s": 19.8,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    }
+   },
+   "measured_worst_checkpoint_rms": {
+    "v6e_pm+edge|low_1.1": {
+     "t_yaw_s": 24.4,
+     "t_xy_s": 44.5,
+     "t_gate_s": 24.4,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "v6e_pm+edge|high_1.5": {
+     "t_yaw_s": 24.4,
+     "t_xy_s": 32.7,
+     "t_gate_s": 24.4,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "v6g_pm+edge|low_1.1": {
+     "t_yaw_s": 18.6,
+     "t_xy_s": 44.5,
+     "t_gate_s": 18.6,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "v6g_pm+edge|high_1.5": {
+     "t_yaw_s": 18.6,
+     "t_xy_s": 32.7,
+     "t_gate_s": 18.6,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_cal2|low_1.1": {
+     "t_yaw_s": 16.3,
+     "t_xy_s": 44.5,
+     "t_gate_s": 16.3,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L0",
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_cal2|high_1.5": {
+     "t_yaw_s": 16.3,
+     "t_xy_s": 32.7,
+     "t_gate_s": 16.3,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L0",
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_v6g_refit|low_1.1": {
+     "t_yaw_s": 14.9,
+     "t_xy_s": 44.5,
+     "t_gate_s": 14.9,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L0",
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_v6g_refit|high_1.5": {
+     "t_yaw_s": 14.9,
+     "t_xy_s": 32.7,
+     "t_gate_s": 14.9,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L0",
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    }
+   }
+  }
+ },
+ "floor_light_v1|vision|wide|search": {
+  "config": "floor_light_v1|vision|wide|search",
+  "note": "sigma0_xy is the per-axis RMS = radial RMS / sqrt(2); sigma0_yaw is the RMS of the yaw error",
+  "sigma0": {
+   "pr277_assumption": {
+    "yaw_deg": 1.3,
+    "xy_m": 0.038
+   },
+   "measured_pooled_rms": {
+    "yaw_deg": 2.184,
+    "xy_m": 0.0597
+   },
+   "measured_worst_checkpoint_rms": {
+    "yaw_deg": 6.638,
+    "xy_m": 0.1109
+   }
+  },
+  "budgets": {
+   "pr277_assumption": {
+    "v6e_pm+edge|low_1.1": {
+     "t_yaw_s": 30.2,
+     "t_xy_s": 53.4,
+     "t_gate_s": 30.2,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "v6e_pm+edge|high_1.5": {
+     "t_yaw_s": 30.2,
+     "t_xy_s": 39.2,
+     "t_gate_s": 30.2,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "v6g_pm+edge|low_1.1": {
+     "t_yaw_s": 23.1,
+     "t_xy_s": 53.4,
+     "t_gate_s": 23.1,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "v6g_pm+edge|high_1.5": {
+     "t_yaw_s": 23.1,
+     "t_xy_s": 39.2,
+     "t_gate_s": 23.1,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_cal2|low_1.1": {
+     "t_yaw_s": 20.3,
+     "t_xy_s": 53.4,
+     "t_gate_s": 20.3,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_cal2|high_1.5": {
+     "t_yaw_s": 20.3,
+     "t_xy_s": 39.2,
+     "t_gate_s": 20.3,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_v6g_refit|low_1.1": {
+     "t_yaw_s": 18.5,
+     "t_xy_s": 53.4,
+     "t_gate_s": 18.5,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_v6g_refit|high_1.5": {
+     "t_yaw_s": 18.5,
+     "t_xy_s": 39.2,
+     "t_gate_s": 18.5,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    }
+   },
+   "measured_pooled_rms": {
+    "v6e_pm+edge|low_1.1": {
+     "t_yaw_s": 23.0,
+     "t_xy_s": 33.2,
+     "t_gate_s": 23.0,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "v6e_pm+edge|high_1.5": {
+     "t_yaw_s": 23.0,
+     "t_xy_s": 24.3,
+     "t_gate_s": 23.0,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L1",
+      "L2"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "v6g_pm+edge|low_1.1": {
+     "t_yaw_s": 17.6,
+     "t_xy_s": 33.2,
+     "t_gate_s": 17.6,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L0",
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "v6g_pm+edge|high_1.5": {
+     "t_yaw_s": 17.6,
+     "t_xy_s": 24.3,
+     "t_gate_s": 17.6,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L0",
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_cal2|low_1.1": {
+     "t_yaw_s": 15.4,
+     "t_xy_s": 33.2,
+     "t_gate_s": 15.4,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L0",
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_cal2|high_1.5": {
+     "t_yaw_s": 15.4,
+     "t_xy_s": 24.3,
+     "t_gate_s": 15.4,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L0",
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_v6g_refit|low_1.1": {
+     "t_yaw_s": 14.1,
+     "t_xy_s": 33.2,
+     "t_gate_s": 14.1,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L0",
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_v6g_refit|high_1.5": {
+     "t_yaw_s": 14.1,
+     "t_xy_s": 24.3,
+     "t_gate_s": 14.1,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L0",
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    }
+   },
+   "measured_worst_checkpoint_rms": {
+    "v6e_pm+edge|low_1.1": {
+     "t_yaw_s": 0.0,
+     "t_xy_s": 0.0,
+     "t_gate_s": 0.0,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L0",
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "v6e_pm+edge|high_1.5": {
+     "t_yaw_s": 0.0,
+     "t_xy_s": 0.0,
+     "t_gate_s": 0.0,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L0",
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "v6g_pm+edge|low_1.1": {
+     "t_yaw_s": 0.0,
+     "t_xy_s": 0.0,
+     "t_gate_s": 0.0,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L0",
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "v6g_pm+edge|high_1.5": {
+     "t_yaw_s": 0.0,
+     "t_xy_s": 0.0,
+     "t_gate_s": 0.0,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L0",
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_cal2|low_1.1": {
+     "t_yaw_s": 0.0,
+     "t_xy_s": 0.0,
+     "t_gate_s": 0.0,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L0",
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_cal2|high_1.5": {
+     "t_yaw_s": 0.0,
+     "t_xy_s": 0.0,
+     "t_gate_s": 0.0,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L0",
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_v6g_refit|low_1.1": {
+     "t_yaw_s": 0.0,
+     "t_xy_s": 0.0,
+     "t_gate_s": 0.0,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L0",
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    },
+    "registered_E0_v6g_refit|high_1.5": {
+     "t_yaw_s": 0.0,
+     "t_xy_s": 0.0,
+     "t_gate_s": 0.0,
+     "binding": "yaw",
+     "resets": 7,
+     "blocks": [
+      [
+       "L0"
+      ],
+      [
+       "L1"
+      ],
+      [
+       "L2"
+      ],
+      [
+       "L3"
+      ],
+      [
+       "L4"
+      ],
+      [
+       "L5"
+      ],
+      [
+       "L6"
+      ],
+      [
+       "L7"
+      ]
+     ],
+     "legs_over_budget_alone": [
+      "L0",
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7"
+     ],
+     "extra_time_s_at_18s_per_checkpoint": 126.0
+    }
+   }
+  }
+ }
+}

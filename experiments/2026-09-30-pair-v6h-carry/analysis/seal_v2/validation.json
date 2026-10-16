@@ -1,0 +1,121 @@
+{
+  "status": "OFFLINE_VERIFIED_BLINDED",
+  "created_utc": "2026-09-30T21:22:21.630860+00:00",
+  "base_seal_commit": "266118d2c2337bbf1cff507690da131c63e2db11",
+  "merged_main_commit": "78ce79162d907d88d38ef3afcfc0c62e4a72aaba",
+  "python": "3.13.5 | packaged by Anaconda, Inc. | (main, Jun 12 2025, 11:23:37) [Clang 14.0.6 ]",
+  "environment": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+  "pytest": {
+    "passed": 586,
+    "subtests_passed": 280,
+    "failed": 0,
+    "skipped": 0,
+    "xfailed": 0,
+    "exit_code": 0,
+    "wall_seconds": 800.98,
+    "files": [
+      "tests/test_review_seal_v6h1.py",
+      "tests/test_v6h_acquisition_reader.py",
+      "tests/test_zone_pair_v6h_seal.py",
+      "tests/test_zone_pair_registered_source.py",
+      "tests/test_zone_study_source_pinning.py",
+      "tests/test_zone_pair_v6h.py",
+      "tests/test_zone_pair_v6h_review_delta.py",
+      "tests/test_v6h_classify_placements.py",
+      "tests/test_v6h_classifier_properties.py",
+      "tests/test_v6h_recorder_contract.py",
+      "tests/test_v6h_blinded_run_manifest.py",
+      "tests/test_ci_sharding.py",
+      "tests/test_ci_fast_path.py",
+      "tests/test_ci_host_lock.py"
+    ],
+    "plugins": [
+      "tests.pose_provider_no_physics",
+      "tests.v6h_seal_offline_guard"
+    ],
+    "subtests_are_not_added_to_pytest_pass_count": true
+  },
+  "guards": {
+    "blinded_access_attempts": 0,
+    "physics_or_render_attempts": 0,
+    "physical_step_attempts": 0,
+    "real_vision_worker_attempts": 0,
+    "network_attempts": 0
+  },
+  "seal": {
+    "revision": "v2",
+    "registration_sha256": "487950b61e0207e6634e8e2895b8f2b8b79dc91c50aded2bd26c23064f807d57",
+    "execution_commit": "4c6b439f3f7c9a147c901f8b260a1e214d4eb396",
+    "execution_files": 274,
+    "analysis_files": 293,
+    "verification": "build --seal --seal-revision v2 verified Git execution blobs and current analysis bytes before write; current v2 and historical v1 verify_seal also passed in regression suite. Explicit new-commit Git blob audit follows commit, recorded separately in local outputs/PR comment.",
+    "old_seal_files_preserved": 19
+  },
+  "mutation": {
+    "status": "MUTATION_DETECTED",
+    "removed": "inventory admission and strict reader",
+    "failed_review_regressions": 2,
+    "pytest_exit_code": 1,
+    "source_unchanged": true,
+    "receipt": "mutation_results.json"
+  },
+  "initial_setup_failures": [
+    {
+      "artifact": "mutation/mutation.log",
+      "reason": "standalone script lacked repository sys.path; no tests ran; fixed sys.path then reran successfully"
+    },
+    {
+      "artifact": "related.log",
+      "reason": "nonexistent test_run_ci_tests.py in command; no tests ran; corrected to existing CI test files"
+    }
+  ],
+  "preservation": "preservation.json",
+  "artifacts": {
+    "related-final.log": {
+      "path": "/Users/changmin/projects/ugrp/outputs/v6h-seal-v2-validation-20261001/related-final.log",
+      "bytes": 977,
+      "sha256": "909032529336e0ec166703463f8541734648783de751c2b6d0c281a2cd0bd0a9"
+    },
+    "related-final.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/v6h-seal-v2-validation-20261001/related-final.xml",
+      "bytes": 84111,
+      "sha256": "15a17c967056196ed3a715e03f832a1d33a3e368e3aaf296c532809477b1f55e"
+    },
+    "related.log": {
+      "path": "/Users/changmin/projects/ugrp/outputs/v6h-seal-v2-validation-20261001/related.log",
+      "bytes": 283,
+      "sha256": "f5b30c7c860d27316c1555ad05b2c7f54fab94ea4bbad423f213516a0c84bb83"
+    },
+    "mutation/mutation.log": {
+      "path": "/Users/changmin/projects/ugrp/outputs/v6h-seal-v2-validation-20261001/mutation/mutation.log",
+      "bytes": 6234,
+      "sha256": "a19c64b7f4604e2cd8162825276daa8cfdfaf4e444f024802e0a3becc5c89690"
+    },
+    "mutation-fixed/mutation.log": {
+      "path": "/Users/changmin/projects/ugrp/outputs/v6h-seal-v2-validation-20261001/mutation-fixed/mutation.log",
+      "bytes": 4205,
+      "sha256": "b88a5f25d19bbf513321e86ddfba5b859c2c5f4eae0580f3f55518e18c2f3404"
+    },
+    "mutation-fixed/mutation.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/v6h-seal-v2-validation-20261001/mutation-fixed/mutation.xml",
+      "bytes": 4545,
+      "sha256": "555d5fb83d336537925a006e437d3438158a5984c1732d295e77085e93ef93c9"
+    },
+    "mutation-fixed/receipt.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/v6h-seal-v2-validation-20261001/mutation-fixed/receipt.json",
+      "bytes": 567,
+      "sha256": "74577d8c6052709c69a4d1f689c7b52c1ea82cfc95a2a4a517527536b85d3644"
+    }
+  },
+  "temporary_test_clone_leftovers": {
+    "/private/tmp": [],
+    "/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T": []
+  },
+  "private_tmp_extraction_created": false,
+  "raw_outcomes_read": false,
+  "real_inventory_read": false,
+  "host_lock_acquired": false,
+  "unblinding_command_run": false,
+  "tensorboard_conversion": "not applicable: no new experimental results or unblinding",
+  "pr_policy": "Keep #292 OPEN/DRAFT; independent re-review pending; do not merge"
+}

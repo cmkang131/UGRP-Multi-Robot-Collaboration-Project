@@ -1,0 +1,48 @@
+{
+  "files": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/calib-motion-v89-eaeaaff0-20261001/zone_wide_two_doors_final_v3/bundle.json",
+      "sha256": "6a6a42bf63b5fc81201e68916aa833cb761c5d1d1e84578bfcde73104a46c450",
+      "bytes": 34713
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/calib-motion-v89-eaeaaff0-20261001/zone_wide_two_doors_final_v3/result.json",
+      "sha256": "7d595850ee4ee94d0415ea8ddf19f3c134770010c1d2701c970c020bbdeff816",
+      "bytes": 547
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/calib-motion-v89-eaeaaff0-20261001/zone_wide_two_doors_final_v3/eval_only/r1/pose.jsonl",
+      "sha256": "f107f6afcf7a799fe3e13c8e79c12dd99bb874b8fd796583c044bfc80ea07b8b",
+      "bytes": 2327056
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/calib-motion-v89-eaeaaff0-20261001/zone_wide_two_doors_final_v3/robots/r1/commands.jsonl",
+      "sha256": "f74aa608c78871813ee03caf734f7691a6407cb3c2bdb367516f8bddec0536ca",
+      "bytes": 496264
+    }
+  ],
+  "training_audit": {
+    "commands": 4600,
+    "poses": 4601,
+    "dt_s": 0.05,
+    "command_plan_mismatches": 0,
+    "rotation_command_nonzero": 0,
+    "yaw_span_deg": 0.9481199517415786,
+    "frame": "integrated midpoint-yaw body-frame increments; eval_only targets",
+    "initial_state": "zero at each complete step+coast and PRBS sequence; no measured velocity"
+  },
+  "criterion_sha256": "74c312b5eff11e27be2b30d103f6d955f03b0c4b91595dfc9843c366b2c49b5f",
+  "source_sha256": {
+    "scripts/fit_consumer_criterion_b.py": "dc45b1069b61b36bca7e9218be4c132ffb38b368704a88c5e0f6d4be37c9cbad",
+    "scripts/validate_consumer_criterion_b.py": "e2bcbdb9139f0027afc82f41372252be062ac34dc3623a80ef74a9497aaeac0b",
+    "scripts/fit_unloaded_consumer.py": "63c7e1298ae6ccf63d2552e23f9fcb2cef09b26d55092f3a6c92ed0fadd5c350",
+    "scripts/fit_unloaded_hammerstein.py": "fe1a327ad060a9bbac8b9c25292e823e0b2b73319e16559d876e9d1a4dbc7677",
+    "harness/owncam_localizer.py": "9793f74b008b96d4b6659a5251bde7374c697ac7d4bbb23758d5433098402347"
+  },
+  "execution_base_head": "bedcc99d8adcff470eb396c9985e766e76affb3d",
+  "source_state": "implementation hashed before commit; commit only after offline tests",
+  "python": "3.13.5 | packaged by Anaconda, Inc. | (main, Jun 12 2025, 11:23:37) [Clang 14.0.6 ]",
+  "numpy": "2.4.4",
+  "scipy": "1.17.1",
+  "platform": "macOS-27.2-arm64-arm-64bit-Mach-O"
+}

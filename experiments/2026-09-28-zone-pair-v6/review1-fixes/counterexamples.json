@@ -1,0 +1,131 @@
+{
+  "base_sha": "837a110ae15e46a45291100f161b3a33c83eb3d9",
+  "scope": "counterfactual source/geometry regression, not episode replay or physics",
+  "approach": {
+    "before": {
+      "clearance_m": 0.019619276798716778,
+      "commands": [
+        {
+          "kind": "mecanum",
+          "forward": 0.12,
+          "left": 0.0,
+          "turn": 0.0,
+          "duration_s": 0.15
+        }
+      ],
+      "aborted": false
+    },
+    "after": {
+      "clearance_m": 0.019619276798716778,
+      "commands": [
+        {
+          "kind": "hold"
+        }
+      ],
+      "aborted": true
+    }
+  },
+  "yaw": {
+    "before": {
+      "fix_t": 1.0,
+      "anchor_yaw_rad": 1.5707963267948966,
+      "returned_std_yaw_rad": 0.01
+    },
+    "after": {
+      "fix_t": 0.0,
+      "anchor_yaw_rad": 0.0,
+      "returned_std_yaw_rad": null
+    }
+  },
+  "relative": {
+    "before": [
+      {
+        "t": 0.0,
+        "ready": true,
+        "bound_m": 0.04062089080570207,
+        "grip_base_m": [
+          0.3314829841603687,
+          7.793897255902568e-05
+        ],
+        "reasons": [
+          "MONOCULAR_RESTING_PLANE_HYPOTHESIS"
+        ]
+      },
+      {
+        "t": 0.3,
+        "ready": false,
+        "bound_m": 0.07917089080570207,
+        "grip_base_m": [
+          0.3122829841603687,
+          7.793897255902568e-05
+        ],
+        "reasons": [
+          "END_CLIPPED",
+          "AXIAL_POSITION_UNKNOWN",
+          "END_ID_AMBIGUOUS",
+          "PARTIAL_SUPPORT_ONLY",
+          "MONOCULAR_RESTING_PLANE_HYPOTHESIS"
+        ]
+      },
+      {
+        "t": 1.0,
+        "ready": false,
+        "bound_m": 0.08044489080570207,
+        "grip_base_m": [
+          0.3122829841603687,
+          7.793897255902568e-05
+        ],
+        "reasons": [
+          "END_CLIPPED",
+          "AXIAL_POSITION_UNKNOWN",
+          "END_ID_AMBIGUOUS",
+          "PARTIAL_SUPPORT_ONLY",
+          "MONOCULAR_RESTING_PLANE_HYPOTHESIS"
+        ]
+      }
+    ],
+    "after": [
+      {
+        "t": 0.0,
+        "ready": true,
+        "bound_m": 0.04062089080570207,
+        "grip_base_m": [
+          0.3314829841603687,
+          7.793897255902568e-05
+        ],
+        "reasons": [
+          "MONOCULAR_RESTING_PLANE_HYPOTHESIS"
+        ]
+      },
+      {
+        "t": 0.3,
+        "ready": false,
+        "bound_m": 0.07917089080570207,
+        "grip_base_m": [
+          0.3122829841603687,
+          7.793897255902568e-05
+        ],
+        "reasons": [
+          "END_CLIPPED",
+          "AXIAL_POSITION_UNKNOWN",
+          "END_ID_AMBIGUOUS",
+          "PARTIAL_SUPPORT_ONLY",
+          "MONOCULAR_RESTING_PLANE_HYPOTHESIS"
+        ]
+      },
+      {
+        "t": 1.0,
+        "ready": true,
+        "bound_m": 0.03648567439749395,
+        "grip_base_m": [
+          0.307069598381447,
+          2.939148055388355e-06
+        ],
+        "reasons": [
+          "MONOCULAR_RESTING_PLANE_HYPOTHESIS",
+          "NEAR_END_AND_PAIRED_EDGES_UPDATE"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,231 @@
+{
+  "pr": 438,
+  "class": "dev",
+  "branch": "codex/azure-sim",
+  "base_sha": "393a4c82113bf84e59768335c4e191a2eac48fd7",
+  "source_sha": "f566eeefb8b6afd3c041064e1706c9f2e1f8cac3",
+  "decision": "Cost/expiry/eight-hour caps always deallocate after at most ten minutes of graceful effort; daily/idle/ordinary stop defer for leases or unarchived evidence.",
+  "fixes": [
+    {
+      "P1": "eight_hour_cap",
+      "behavior": [
+        "SIGINT to this run only",
+        "signal-aware command flush and workflow-record finalization",
+        "600-second outer guest deadline",
+        "ARM rsync -ac/-anc and whole-file SHA256 verification",
+        "durable archive success/failure lists",
+        "deallocate even on flush/archive errors"
+      ]
+    },
+    {
+      "P1": "credit_expiry_daily",
+      "behavior": [
+        "asynchronous Managed Run Command first",
+        "shared 600-second Automation deadline",
+        "credit/expiry and cost-query failure still deallocate",
+        "Daily active lease/unarchived/unverifiable guest skips and records",
+        "separate Automation-only command role in future full setup"
+      ]
+    },
+    {
+      "P1": "lease_archive_failure",
+      "behavior": [
+        "failed lease retained and retry recorded",
+        "EXIT alone cannot authorize ordinary stop",
+        "boot and azctl start recovery retry pending originals",
+        "partial no-EXIT recovery recorded HOST_ERROR",
+        "emergency/recovery source originals and partial incoming copies preserved",
+        "Mac lite lifecycle checksum retrieval; disconnected retrieval remains pending"
+      ]
+    }
+  ],
+  "validation": {
+    "files": [
+      "tests/test_azure_lifecycle.py",
+      "tests/test_azure_shutdown.py"
+    ],
+    "passed": 38,
+    "failed": 0,
+    "skipped": 0,
+    "python": "3.12.12",
+    "powershell": "7.6.6",
+    "scope": "Mocked lease/process/ARM copy/PowerShell Azure responses. No simulation, actual graceful-stop/rsync run, guest installation, or VM start. bash -n, py_compile and git diff --check passed.",
+    "development_fixture_failures": [
+      {
+        "failed": 12,
+        "cause": "Mock PowerShell events/scenario used script scope across child script; corrected to isolated global mock variables."
+      },
+      {
+        "failed": 1,
+        "cause": "Empty PowerShell event list produced empty JSON text; test parser corrected to empty array."
+      }
+    ]
+  },
+  "deployment": {
+    "source_sha": "f566eeefb8b6afd3c041064e1706c9f2e1f8cac3",
+    "writes": [
+      "runbook draft/content PUT",
+      "runbook publish POST"
+    ],
+    "published_state": "Published",
+    "runbook_sha256": "9f5b5e6e49b7b5998b05d75011070100092ffc571bb8d1a9383811f8f018ca39",
+    "readback_exact_match": true,
+    "vms": [
+      {
+        "subscription": "88b7ee7f-f2f3-4a0d-a0ce-cf7306943676",
+        "name": "ugrp-sim-azure",
+        "states": [
+          "ProvisioningState/succeeded",
+          "PowerState/deallocated"
+        ]
+      },
+      {
+        "subscription": "c02f839a-2a6b-49d8-9c9a-f3d9f09aa5ea",
+        "name": "ugrp-a10-sim",
+        "states": [
+          "ProvisioningState/succeeded",
+          "PowerState/deallocated"
+        ]
+      }
+    ],
+    "automation_effective_role_assignments": {
+      "88b7ee7f-f2f3-4a0d-a0ce-cf7306943676": [
+        {
+          "name": "UGRP VM Deallocator",
+          "permissions": [
+            {
+              "actions": [
+                "Microsoft.Compute/virtualMachines/read",
+                "Microsoft.Compute/virtualMachines/instanceView/read",
+                "Microsoft.Compute/virtualMachines/deallocate/action"
+              ],
+              "notActions": [],
+              "dataActions": [],
+              "notDataActions": []
+            }
+          ]
+        },
+        {
+          "name": "Cost Management Reader",
+          "permissions": [
+            {
+              "actions": [
+                "Microsoft.Consumption/*/read",
+                "Microsoft.CostManagement/*/read",
+                "Microsoft.Billing/billingPeriods/read",
+                "Microsoft.Resources/subscriptions/read",
+                "Microsoft.Resources/subscriptions/resourceGroups/read",
+                "Microsoft.Support/*",
+                "Microsoft.Advisor/configurations/read",
+                "Microsoft.Advisor/recommendations/read",
+                "Microsoft.Management/managementGroups/read",
+                "Microsoft.Billing/billingProperty/read"
+              ],
+              "notActions": [],
+              "dataActions": [],
+              "notDataActions": []
+            }
+          ]
+        }
+      ],
+      "c02f839a-2a6b-49d8-9c9a-f3d9f09aa5ea": [
+        {
+          "name": "UGRP VM Deallocator",
+          "permissions": [
+            {
+              "actions": [
+                "Microsoft.Compute/virtualMachines/read",
+                "Microsoft.Compute/virtualMachines/instanceView/read",
+                "Microsoft.Compute/virtualMachines/deallocate/action"
+              ],
+              "notActions": [],
+              "dataActions": [],
+              "notDataActions": []
+            }
+          ]
+        },
+        {
+          "name": "Cost Management Reader",
+          "permissions": [
+            {
+              "actions": [
+                "Microsoft.Consumption/*/read",
+                "Microsoft.CostManagement/*/read",
+                "Microsoft.Billing/billingPeriods/read",
+                "Microsoft.Resources/subscriptions/read",
+                "Microsoft.Resources/subscriptions/resourceGroups/read",
+                "Microsoft.Support/*",
+                "Microsoft.Advisor/configurations/read",
+                "Microsoft.Advisor/recommendations/read",
+                "Microsoft.Management/managementGroups/read",
+                "Microsoft.Billing/billingProperty/read"
+              ],
+              "notActions": [],
+              "dataActions": [],
+              "notDataActions": []
+            }
+          ]
+        }
+      ]
+    },
+    "devtest_daily_shutdown": "Enabled",
+    "automation_schedules": [
+      {
+        "name": "credit-expiry-kst",
+        "enabled": true
+      },
+      {
+        "name": "hourly-credit-check",
+        "enabled": true
+      }
+    ],
+    "vm_start_or_guest_calls": false
+  },
+  "remaining": [
+    "Automation managed Run Command role/assignment not deployed; live effective roles remain deallocator+cost reader only.",
+    "Lease-aware daily Automation schedule absent; old unconditional DevTest midnight shutdown remains Enabled.",
+    "Updated VM guard, supervisor and boot recovery installation unperformed because VM must remain off.",
+    "Actual eight-hour/credit/expiry graceful stop, ARM archival and disconnected Mac retrieval are unverified.",
+    "Independent re-review/CI/merge remain outside this commit-and-push delivery."
+  ],
+  "raw_records": [
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/review-fixes/live-readback.json",
+      "bytes": 3589,
+      "sha256": "bf17bf98f251a7f9bce0b814fc32b6beab2ddd9d5feb670efd9a92bd988fed67"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/review-fixes/runbook-publish.txt",
+      "bytes": 62,
+      "sha256": "2f5eace67a1905df5a8c4656e1564083dced75007c87138fca9d305e84e31d8f"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/azure-sim/outputs/azure-migration/review-fixes/tests.txt",
+      "bytes": 99,
+      "sha256": "78aac410d534a8dd093030ee190b6069d80401b37338f2b36770f31e803c5481"
+    }
+  ],
+  "candidate_file_sha256": {
+    "docs/azure_simulation.md": "3a429c8629974b031eee2de5feebeadd1055e7dbf7c2c8474b125b19d94c872d",
+    "scripts/azctl.py": "4b8918f64cc78ced6eb460763e32f4dea15974e79ec635e7e0dded1b19fd27d3",
+    "scripts/azure_guard_install.sh": "8502df73076b5e221cf29e35f66c45a2ec067a48db1f07520ae6edeafba6954e",
+    "scripts/azure_idle_guard.py": "f720ce1ccda1d158a312f043fe397a2dae80cd743bd2017e037f5c3f181f455c",
+    "scripts/azure_safety_setup.py": "8471f3fa59327e5fa4b9c71deebde085063a348b21674607ce3994c74fdbfa78",
+    "scripts/azure_shutdown.py": "bb0bdc2b6d3cb2522f5bfd3fb0537575be22af6affb72e211f36a10284a5b6f4",
+    "scripts/azure_stop_vms.ps1": "ad72aa246f364e7b3afdbcbbb895ca8011df78675b871539024eba3ad8221418",
+    "scripts/remote_run.py": "aa13814e71d8e9ee4cca81306a277298c41790ffa2a27515ba243027d7175b30",
+    "scripts/remote_run_finish.py": "f78bc81e45a6f6b7f4d03dd666e3d69d0aa72c3d6dc2e8cfe393874eeb6ff2ad",
+    "scripts/run_ci_tests.py": "1359619f07f84da247107a302d10eacbbee582271f39222a20cc8600baa1efad",
+    "tests/test_azure_shutdown.py": "13629986b200a4f5fa87fcf50927be3941c610cf512dcf5d7826b0bea11d447e"
+  },
+  "references": [
+    {
+      "url": "https://learn.microsoft.com/en-us/azure/virtual-machines/linux/run-command-managed",
+      "verified": "Opened official documentation: asyncExecution, user timeout and instanceView polling."
+    },
+    {
+      "url": "https://github.com/RsyncProject/rsync/blob/master/rsync.1.md",
+      "verified": "Opened official code/manual: checksum-based comparison and resumable copy."
+    }
+  ]
+}

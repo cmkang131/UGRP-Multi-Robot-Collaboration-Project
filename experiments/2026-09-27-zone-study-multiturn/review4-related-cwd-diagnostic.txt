@@ -1,0 +1,603 @@
+........................................................................ [  3%]
+........................................................................ [  6%]
+.FFFFFF..FF.FFFFFF..........F........................................... [  9%]
+........................................................................ [ 13%]
+..........................................
+=================================== FAILURES ===================================
+____ test_pair_and_multiple_real_adapter_calls_use_each_own_camera[no_comm] ____
+
+condition = 'no_comm'
+tmp_path = PosixPath('/private/tmp/ugrp-review4-related-jpq3fz8z/.pytest_tmp/test_pair_and_multiple_real_ad0')
+
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+    def test_pair_and_multiple_real_adapter_calls_use_each_own_camera(condition, tmp_path):
+>       host, scenario, map_bundle, bundle = setup()
+                                             ^^^^^^^
+
+/Users/changmin/projects/ugrp-wt/codex-multiturn/tests/test_zone_study_integration_pair.py:81: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Users/changmin/projects/ugrp-wt/codex-multiturn/tests/test_zone_study_integration_pair.py:43: in setup
+    bundle, scenario, map_bundle, provider = runner.run_bundle(pre, pre['episodes'][0])
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/Users/changmin/projects/ugrp-wt/codex-multiturn/scripts/run_zone_study_integration.py:301: in run_bundle
+    static = json.loads(Path(map_bundle['map_file']).read_text())
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('maps/zones/zone_wide_door_tags_v2.json'), mode = 'r'
+buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'maps/zones/zone_wide_door_tags_v2.json'
+
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1013: FileNotFoundError
+____ test_pair_and_multiple_real_adapter_calls_use_each_own_camera[peer_ko] ____
+
+condition = 'peer_ko'
+tmp_path = PosixPath('/private/tmp/ugrp-review4-related-jpq3fz8z/.pytest_tmp/test_pair_and_multiple_real_ad1')
+
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+    def test_pair_and_multiple_real_adapter_calls_use_each_own_camera(condition, tmp_path):
+>       host, scenario, map_bundle, bundle = setup()
+                                             ^^^^^^^
+
+/Users/changmin/projects/ugrp-wt/codex-multiturn/tests/test_zone_study_integration_pair.py:81: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Users/changmin/projects/ugrp-wt/codex-multiturn/tests/test_zone_study_integration_pair.py:43: in setup
+    bundle, scenario, map_bundle, provider = runner.run_bundle(pre, pre['episodes'][0])
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/Users/changmin/projects/ugrp-wt/codex-multiturn/scripts/run_zone_study_integration.py:301: in run_bundle
+    static = json.loads(Path(map_bundle['map_file']).read_text())
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('maps/zones/zone_wide_door_tags_v2.json'), mode = 'r'
+buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'maps/zones/zone_wide_door_tags_v2.json'
+
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1013: FileNotFoundError
+___ test_pair_and_multiple_real_adapter_calls_use_each_own_camera[leader_ko] ___
+
+condition = 'leader_ko'
+tmp_path = PosixPath('/private/tmp/ugrp-review4-related-jpq3fz8z/.pytest_tmp/test_pair_and_multiple_real_ad2')
+
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+    def test_pair_and_multiple_real_adapter_calls_use_each_own_camera(condition, tmp_path):
+>       host, scenario, map_bundle, bundle = setup()
+                                             ^^^^^^^
+
+/Users/changmin/projects/ugrp-wt/codex-multiturn/tests/test_zone_study_integration_pair.py:81: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Users/changmin/projects/ugrp-wt/codex-multiturn/tests/test_zone_study_integration_pair.py:43: in setup
+    bundle, scenario, map_bundle, provider = runner.run_bundle(pre, pre['episodes'][0])
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/Users/changmin/projects/ugrp-wt/codex-multiturn/scripts/run_zone_study_integration.py:301: in run_bundle
+    static = json.loads(Path(map_bundle['map_file']).read_text())
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('maps/zones/zone_wide_door_tags_v2.json'), mode = 'r'
+buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'maps/zones/zone_wide_door_tags_v2.json'
+
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1013: FileNotFoundError
+__ test_pair_and_multiple_real_adapter_calls_use_each_own_camera[structured] ___
+
+condition = 'structured'
+tmp_path = PosixPath('/private/tmp/ugrp-review4-related-jpq3fz8z/.pytest_tmp/test_pair_and_multiple_real_ad3')
+
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+    def test_pair_and_multiple_real_adapter_calls_use_each_own_camera(condition, tmp_path):
+>       host, scenario, map_bundle, bundle = setup()
+                                             ^^^^^^^
+
+/Users/changmin/projects/ugrp-wt/codex-multiturn/tests/test_zone_study_integration_pair.py:81: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Users/changmin/projects/ugrp-wt/codex-multiturn/tests/test_zone_study_integration_pair.py:43: in setup
+    bundle, scenario, map_bundle, provider = runner.run_bundle(pre, pre['episodes'][0])
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/Users/changmin/projects/ugrp-wt/codex-multiturn/scripts/run_zone_study_integration.py:301: in run_bundle
+    static = json.loads(Path(map_bundle['map_file']).read_text())
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('maps/zones/zone_wide_door_tags_v2.json'), mode = 'r'
+buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'maps/zones/zone_wide_door_tags_v2.json'
+
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1013: FileNotFoundError
+_______ test_pair_release_cancels_own_job_and_never_auto_submits_a_peer ________
+
+    def test_pair_release_cancels_own_job_and_never_auto_submits_a_peer():
+>       host, scenario, _, _ = setup()
+                               ^^^^^^^
+
+/Users/changmin/projects/ugrp-wt/codex-multiturn/tests/test_zone_study_integration_pair.py:153: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Users/changmin/projects/ugrp-wt/codex-multiturn/tests/test_zone_study_integration_pair.py:43: in setup
+    bundle, scenario, map_bundle, provider = runner.run_bundle(pre, pre['episodes'][0])
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/Users/changmin/projects/ugrp-wt/codex-multiturn/scripts/run_zone_study_integration.py:301: in run_bundle
+    static = json.loads(Path(map_bundle['map_file']).read_text())
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('maps/zones/zone_wide_door_tags_v2.json'), mode = 'r'
+buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'maps/zones/zone_wide_door_tags_v2.json'
+
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1013: FileNotFoundError
+__________ test_research_scenarios_and_bundle_use_study_wide_profile ___________
+
+    def test_research_scenarios_and_bundle_use_study_wide_profile():
+        for s in scenarios.load_all().values():
+            assert s['eval']['setup']['contact_profile'] == 'cargo_noslip_v1'
+        pre = runner.load_prereg(PREREG)
+>       bundle = runner.run_bundle(pre, pre['episodes'][0])[0]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+/Users/changmin/projects/ugrp-wt/codex-multiturn/tests/test_zone_study_integration_pair.py:169: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Users/changmin/projects/ugrp-wt/codex-multiturn/scripts/run_zone_study_integration.py:301: in run_bundle
+    static = json.loads(Path(map_bundle['map_file']).read_text())
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('maps/zones/zone_wide_door_tags_v2.json'), mode = 'r'
+buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'maps/zones/zone_wide_door_tags_v2.json'
+
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1013: FileNotFoundError
+____ test_output_manifest_preserves_actual_profile_separately_from_expected ____
+
+tmp_path = PosixPath('/private/tmp/ugrp-review4-related-jpq3fz8z/.pytest_tmp/test_output_manifest_preserves0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x114d1a240>
+
+    def test_output_manifest_preserves_actual_profile_separately_from_expected(tmp_path, monkeypatch):
+        import time
+>       host, _, map_bundle, bundle = setup()
+                                      ^^^^^^^
+
+/Users/changmin/projects/ugrp-wt/codex-multiturn/tests/test_zone_study_integration_pair.py:236: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Users/changmin/projects/ugrp-wt/codex-multiturn/tests/test_zone_study_integration_pair.py:43: in setup
+    bundle, scenario, map_bundle, provider = runner.run_bundle(pre, pre['episodes'][0])
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/Users/changmin/projects/ugrp-wt/codex-multiturn/scripts/run_zone_study_integration.py:301: in run_bundle
+    static = json.loads(Path(map_bundle['map_file']).read_text())
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('maps/zones/zone_wide_door_tags_v2.json'), mode = 'r'
+buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'maps/zones/zone_wide_door_tags_v2.json'
+
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1013: FileNotFoundError
+_____ test_provider_prior_and_close_hooks_use_only_preregistered_own_docks _____
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x1154d08f0>
+
+    def test_provider_prior_and_close_hooks_use_only_preregistered_own_docks(monkeypatch):
+>       fake, _, _, _ = setup()
+                        ^^^^^^^
+
+/Users/changmin/projects/ugrp-wt/codex-multiturn/tests/test_zone_study_integration_pair.py:255: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Users/changmin/projects/ugrp-wt/codex-multiturn/tests/test_zone_study_integration_pair.py:43: in setup
+    bundle, scenario, map_bundle, provider = runner.run_bundle(pre, pre['episodes'][0])
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/Users/changmin/projects/ugrp-wt/codex-multiturn/scripts/run_zone_study_integration.py:301: in run_bundle
+    static = json.loads(Path(map_bundle['map_file']).read_text())
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('maps/zones/zone_wide_door_tags_v2.json'), mode = 'r'
+buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'maps/zones/zone_wide_door_tags_v2.json'
+
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1013: FileNotFoundError
+_ test_dependency_mutation_changes_the_actual_run_bundle[harness/visual_arm.py] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x114bfdc40>
+changed = 'harness/visual_arm.py'
+
+    @pytest.mark.parametrize('changed', ['harness/visual_arm.py', 'harness/llm_completion.py',
+                                         'sim/session_scenes.py', 'harness/wrist_zone_skill_v9.py',
+                                         'harness/owncam_pose_source.py', 'harness/zone_study_decisions.py'])
+    def test_dependency_mutation_changes_the_actual_run_bundle(monkeypatch, changed):
+        pre = runner.load_prereg(PREREG)
+>       original = runner.run_bundle(pre, pre['episodes'][0])[0]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+/Users/changmin/projects/ugrp-wt/codex-multiturn/tests/test_zone_study_source_pinning.py:39: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Users/changmin/projects/ugrp-wt/codex-multiturn/scripts/run_zone_study_integration.py:301: in run_bundle
+    static = json.loads(Path(map_bundle['map_file']).read_text())
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('maps/zones/zone_wide_door_tags_v2.json'), mode = 'r'
+buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'maps/zones/zone_wide_door_tags_v2.json'
+
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1013: FileNotFoundError
+_ test_dependency_mutation_changes_the_actual_run_bundle[harness/llm_completion.py] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x1154d1a60>
+changed = 'harness/llm_completion.py'
+
+    @pytest.mark.parametrize('changed', ['harness/visual_arm.py', 'harness/llm_completion.py',
+                                         'sim/session_scenes.py', 'harness/wrist_zone_skill_v9.py',
+                                         'harness/owncam_pose_source.py', 'harness/zone_study_decisions.py'])
+    def test_dependency_mutation_changes_the_actual_run_bundle(monkeypatch, changed):
+        pre = runner.load_prereg(PREREG)
+>       original = runner.run_bundle(pre, pre['episodes'][0])[0]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+/Users/changmin/projects/ugrp-wt/codex-multiturn/tests/test_zone_study_source_pinning.py:39: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Users/changmin/projects/ugrp-wt/codex-multiturn/scripts/run_zone_study_integration.py:301: in run_bundle
+    static = json.loads(Path(map_bundle['map_file']).read_text())
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('maps/zones/zone_wide_door_tags_v2.json'), mode = 'r'
+buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'maps/zones/zone_wide_door_tags_v2.json'
+
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1013: FileNotFoundError
+_ test_dependency_mutation_changes_the_actual_run_bundle[sim/session_scenes.py] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x115610380>
+changed = 'sim/session_scenes.py'
+
+    @pytest.mark.parametrize('changed', ['harness/visual_arm.py', 'harness/llm_completion.py',
+                                         'sim/session_scenes.py', 'harness/wrist_zone_skill_v9.py',
+                                         'harness/owncam_pose_source.py', 'harness/zone_study_decisions.py'])
+    def test_dependency_mutation_changes_the_actual_run_bundle(monkeypatch, changed):
+        pre = runner.load_prereg(PREREG)
+>       original = runner.run_bundle(pre, pre['episodes'][0])[0]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+/Users/changmin/projects/ugrp-wt/codex-multiturn/tests/test_zone_study_source_pinning.py:39: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Users/changmin/projects/ugrp-wt/codex-multiturn/scripts/run_zone_study_integration.py:301: in run_bundle
+    static = json.loads(Path(map_bundle['map_file']).read_text())
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('maps/zones/zone_wide_door_tags_v2.json'), mode = 'r'
+buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'maps/zones/zone_wide_door_tags_v2.json'
+
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1013: FileNotFoundError
+_ test_dependency_mutation_changes_the_actual_run_bundle[harness/wrist_zone_skill_v9.py] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x1098cf230>
+changed = 'harness/wrist_zone_skill_v9.py'
+
+    @pytest.mark.parametrize('changed', ['harness/visual_arm.py', 'harness/llm_completion.py',
+                                         'sim/session_scenes.py', 'harness/wrist_zone_skill_v9.py',
+                                         'harness/owncam_pose_source.py', 'harness/zone_study_decisions.py'])
+    def test_dependency_mutation_changes_the_actual_run_bundle(monkeypatch, changed):
+        pre = runner.load_prereg(PREREG)
+>       original = runner.run_bundle(pre, pre['episodes'][0])[0]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+/Users/changmin/projects/ugrp-wt/codex-multiturn/tests/test_zone_study_source_pinning.py:39: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Users/changmin/projects/ugrp-wt/codex-multiturn/scripts/run_zone_study_integration.py:301: in run_bundle
+    static = json.loads(Path(map_bundle['map_file']).read_text())
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('maps/zones/zone_wide_door_tags_v2.json'), mode = 'r'
+buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'maps/zones/zone_wide_door_tags_v2.json'
+
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1013: FileNotFoundError
+_ test_dependency_mutation_changes_the_actual_run_bundle[harness/owncam_pose_source.py] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x1098f43b0>
+changed = 'harness/owncam_pose_source.py'
+
+    @pytest.mark.parametrize('changed', ['harness/visual_arm.py', 'harness/llm_completion.py',
+                                         'sim/session_scenes.py', 'harness/wrist_zone_skill_v9.py',
+                                         'harness/owncam_pose_source.py', 'harness/zone_study_decisions.py'])
+    def test_dependency_mutation_changes_the_actual_run_bundle(monkeypatch, changed):
+        pre = runner.load_prereg(PREREG)
+>       original = runner.run_bundle(pre, pre['episodes'][0])[0]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+/Users/changmin/projects/ugrp-wt/codex-multiturn/tests/test_zone_study_source_pinning.py:39: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Users/changmin/projects/ugrp-wt/codex-multiturn/scripts/run_zone_study_integration.py:301: in run_bundle
+    static = json.loads(Path(map_bundle['map_file']).read_text())
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('maps/zones/zone_wide_door_tags_v2.json'), mode = 'r'
+buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'maps/zones/zone_wide_door_tags_v2.json'
+
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1013: FileNotFoundError
+_ test_dependency_mutation_changes_the_actual_run_bundle[harness/zone_study_decisions.py] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x115610aa0>
+changed = 'harness/zone_study_decisions.py'
+
+    @pytest.mark.parametrize('changed', ['harness/visual_arm.py', 'harness/llm_completion.py',
+                                         'sim/session_scenes.py', 'harness/wrist_zone_skill_v9.py',
+                                         'harness/owncam_pose_source.py', 'harness/zone_study_decisions.py'])
+    def test_dependency_mutation_changes_the_actual_run_bundle(monkeypatch, changed):
+        pre = runner.load_prereg(PREREG)
+>       original = runner.run_bundle(pre, pre['episodes'][0])[0]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+/Users/changmin/projects/ugrp-wt/codex-multiturn/tests/test_zone_study_source_pinning.py:39: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Users/changmin/projects/ugrp-wt/codex-multiturn/scripts/run_zone_study_integration.py:301: in run_bundle
+    static = json.loads(Path(map_bundle['map_file']).read_text())
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('maps/zones/zone_wide_door_tags_v2.json'), mode = 'r'
+buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'maps/zones/zone_wide_door_tags_v2.json'
+
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1013: FileNotFoundError
+_______ test_source_mismatch_stops_before_physics_import_host_or_output ________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x114fd2810>
+tmp_path = PosixPath('/private/tmp/ugrp-review4-related-jpq3fz8z/.pytest_tmp/test_source_mismatch_stops_bef0')
+
+    def test_source_mismatch_stops_before_physics_import_host_or_output(monkeypatch, tmp_path):
+        import sys
+        monkeypatch.setitem(sys.modules, 'mujoco', None)
+        monkeypatch.setattr(runner, 'git', fake_git)
+        monkeypatch.setattr(runner, 'StudyTeamHost', lambda *a, **k: pytest.fail('host construction forbidden'))
+        pre = runner.load_prereg(PREREG)
+        pre['source_sha'] = OTHER
+>       pre['bundle_sha256'] = runner.digest(runner.run_bundle(pre, pre['episodes'][0])[0])
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+/Users/changmin/projects/ugrp-wt/codex-multiturn/tests/test_zone_study_source_pinning.py:104: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Users/changmin/projects/ugrp-wt/codex-multiturn/scripts/run_zone_study_integration.py:301: in run_bundle
+    static = json.loads(Path(map_bundle['map_file']).read_text())
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('maps/zones/zone_wide_door_tags_v2.json'), mode = 'r'
+buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'maps/zones/zone_wide_door_tags_v2.json'
+
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1013: FileNotFoundError
+=========================== short test summary info ============================
+FAILED ../../../Users/changmin/projects/ugrp-wt/codex-multiturn/tests/test_zone_study_integration_pair.py::test_pair_and_multiple_real_adapter_calls_use_each_own_camera[no_comm]
+FAILED ../../../Users/changmin/projects/ugrp-wt/codex-multiturn/tests/test_zone_study_integration_pair.py::test_pair_and_multiple_real_adapter_calls_use_each_own_camera[peer_ko]
+FAILED ../../../Users/changmin/projects/ugrp-wt/codex-multiturn/tests/test_zone_study_integration_pair.py::test_pair_and_multiple_real_adapter_calls_use_each_own_camera[leader_ko]
+FAILED ../../../Users/changmin/projects/ugrp-wt/codex-multiturn/tests/test_zone_study_integration_pair.py::test_pair_and_multiple_real_adapter_calls_use_each_own_camera[structured]
+FAILED ../../../Users/changmin/projects/ugrp-wt/codex-multiturn/tests/test_zone_study_integration_pair.py::test_pair_release_cancels_own_job_and_never_auto_submits_a_peer
+FAILED ../../../Users/changmin/projects/ugrp-wt/codex-multiturn/tests/test_zone_study_integration_pair.py::test_research_scenarios_and_bundle_use_study_wide_profile
+FAILED ../../../Users/changmin/projects/ugrp-wt/codex-multiturn/tests/test_zone_study_integration_pair.py::test_output_manifest_preserves_actual_profile_separately_from_expected
+FAILED ../../../Users/changmin/projects/ugrp-wt/codex-multiturn/tests/test_zone_study_integration_pair.py::test_provider_prior_and_close_hooks_use_only_preregistered_own_docks
+FAILED ../../../Users/changmin/projects/ugrp-wt/codex-multiturn/tests/test_zone_study_source_pinning.py::test_dependency_mutation_changes_the_actual_run_bundle[harness/visual_arm.py]
+FAILED ../../../Users/changmin/projects/ugrp-wt/codex-multiturn/tests/test_zone_study_source_pinning.py::test_dependency_mutation_changes_the_actual_run_bundle[harness/llm_completion.py]
+FAILED ../../../Users/changmin/projects/ugrp-wt/codex-multiturn/tests/test_zone_study_source_pinning.py::test_dependency_mutation_changes_the_actual_run_bundle[sim/session_scenes.py]
+FAILED ../../../Users/changmin/projects/ugrp-wt/codex-multiturn/tests/test_zone_study_source_pinning.py::test_dependency_mutation_changes_the_actual_run_bundle[harness/wrist_zone_skill_v9.py]
+FAILED ../../../Users/changmin/projects/ugrp-wt/codex-multiturn/tests/test_zone_study_source_pinning.py::test_dependency_mutation_changes_the_actual_run_bundle[harness/owncam_pose_source.py]
+FAILED ../../../Users/changmin/projects/ugrp-wt/codex-multiturn/tests/test_zone_study_source_pinning.py::test_dependency_mutation_changes_the_actual_run_bundle[harness/zone_study_decisions.py]
+FAILED ../../../Users/changmin/projects/ugrp-wt/codex-multiturn/tests/test_zone_study_source_pinning.py::test_source_mismatch_stops_before_physics_import_host_or_output
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! KeyboardInterrupt !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+/Users/changmin/projects/ugrp-wt/codex-multiturn/harness/zone_study_prompts_ko.py:556: KeyboardInterrupt
+(to show a full traceback on KeyboardInterrupt use --full-trace)
+15 failed, 315 passed in 52.02s

@@ -1,0 +1,36 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "e2e-combo14-v204",
+      "version": "7.97.0",
+      "purpose": "DEV E2E14 composition: v199 budget + RPP + innovation + Gemma with own-RGB VO (stall_odometry=rgb_vo_v1, replaces rgb_pulse_gate_v1; recovery/noise off by #444 contract) + B confirmation views (boundary_views=candidate_views_v1) + B mark contrast (b_marker_detect=contrast_v1); 7 h finite wall ceiling; v204 = v202 + rgb_vo_v1 empty/None floor-point guard (v202 VO runs crashed at ground(), source e4fc8354)",
+      "entry": "scripts/run_e2e_ownmap_live.py",
+      "runner": "scripts.run_e2e_ownmap_live",
+      "docs": "experiments/2026-10-12-e2e14-combo/README.md",
+      "requires": "Committed Azure x86 OSMesa source; current lease/admission; persistent runs",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha",
+        "--seed",
+        "--driver-profile",
+        "--relay-receipt",
+        "--decider",
+        "--exploration-progress",
+        "--pose-fix",
+        "--path-follow",
+        "--wall-cap-s",
+        "--stall-odometry",
+        "--stall-recovery",
+        "--stall-noise",
+        "--mapping-budget",
+        "--boundary-views",
+        "--b-marker-detect"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "shutdown_grace_s": 60
+    }
+  ]
+}

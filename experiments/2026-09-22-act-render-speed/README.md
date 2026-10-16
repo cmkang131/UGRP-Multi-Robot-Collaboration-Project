@@ -32,3 +32,5 @@ Full-mission validation completed at source `074f1ec640661508c37bbb9289fe2b9ea81
 The repaired reference took 814.808 seconds while another simulation was active; the optimized validation ran alone. These whole-mission times describe the observed runs, not a controlled estimate of the render-only effect. The counterbalanced capture benchmark above is the isolated speed measurement. This validation establishes reference behavior preservation, not a new model's generalization or retraining.
 
 `full-mission.json` links the exact command, source SHA, source hashes, alignment audits and verified TensorBoard snapshot. The 159.75-second source video is 960x720 at 4 fps; its final frame was visually reviewed. Raw artifacts remain local.
+
+코드는 커밋 `888447674318bc311e1ef65f71c654692b2b76bb`에서 재현(퇴역 전 소스 복구 기준). 당시 실행 SHA·설정·결과는 본문 기록을 따르며, [퇴역 목록](../../docs/retired_modules.md)을 참고한다.

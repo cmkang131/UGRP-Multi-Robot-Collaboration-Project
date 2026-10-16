@@ -1,0 +1,24 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+______________ test_waypoint_proximity_cannot_override_full_exit _______________
+
+static = {'robot_model': 'masterpi_v3', 'bounds_m': [-4.0, 5.0, -3.0, 3.0], 'obstacles': [], 'passages': [{'id': 'corridor_1', ...'x', 'center_m': [0.0, 0.0], ...}, {'id': 'bay_1', 'kind': 'passing_bay', 'axis': 'y', 'opens_to': 'corridor_1', ...}]}
+
+    def test_waypoint_proximity_cannot_override_full_exit(static):
+        p = plan(static)
+        t = Trace(p)
+        solo_to_junction(t)
+        t.tick(p.path[1])
+        t.tick(p.path[2])
+        t.controller._full_exit = lambda pose: False
+        d = t.tick(p.path[2])
+>       assert d.reason == 'EXIT_NOT_CONFIRMED' and not d.passage_observed
+E       AssertionError: assert ('waypoint_is_not_completion' == 'EXIT_NOT_CONFIRMED'
+E         
+E         - EXIT_NOT_CONFIRMED
+E         + waypoint_is_not_completion)
+
+tests/test_zone_own_executor_corridor_control.py:445: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_zone_own_executor_corridor_control.py::test_waypoint_proximity_cannot_override_full_exit
+1 failed in 0.32s

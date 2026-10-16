@@ -1,0 +1,226 @@
+FFFFFFF                                                                  [100%]
+=================================== FAILURES ===================================
+________ test_r12_post_after_right_bracket_cannot_hide_time_regression _________
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_r12_post_after_right_brac0')
+
+    def test_r12_post_after_right_bracket_cannot_hide_time_regression(tmp_path):
+        budget, log = case(tmp_path)
+        with log.open('a') as stream:
+            stream.write(POST)  # :00 -> :06 -> :08 -> :06, beyond the old early exit
+        report, rows, _ = build(tmp_path, budget, log)
+>       assert not report['complete']
+E       assert not True
+
+tests/test_zone_pilot_proxy_log.py:249: AssertionError
+_ test_r12_sealed_retry_or_error_outside_time_bounds_is_incomplete[before-2026-09-27 12:00:03 transient_429_retry retry_after=0s delay=1s\n] _
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_r12_sealed_retry_or_error0')
+event = '2026-09-27 12:00:00 transient_429_retry retry_after=0s delay=1s\n'
+side = 'before'
+
+    @pytest.mark.parametrize('event', [RETRY, ERROR])
+    @pytest.mark.parametrize('side', ['before', 'after'])
+    def test_r12_sealed_retry_or_error_outside_time_bounds_is_incomplete(tmp_path, event, side):
+        if side == 'before':
+            # Monotonic timestamps: order checking alone cannot catch this.
+            event = event.replace('12:00:03', '12:00:00').replace('12:00:04', '12:00:00')
+            budget, log = case(tmp_path, extra=event)
+        else:
+            event = event.replace('12:00:03', '12:00:09').replace('12:00:04', '12:00:09')
+            budget, log = case(tmp_path, post=POST + event)
+            log.write_text(log.read_text().replace('12:00:08', '12:00:10'))
+        report, rows, _ = build(tmp_path, budget, log)
+>       assert not report['complete']
+E       assert not True
+
+tests/test_zone_pilot_proxy_log.py:265: AssertionError
+_ test_r12_sealed_retry_or_error_outside_time_bounds_is_incomplete[before-2026-09-27 12:00:04 complete_exception TimeoutError: fixture\n] _
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_r12_sealed_retry_or_error1')
+event = '2026-09-27 12:00:00 complete_exception TimeoutError: fixture\n'
+side = 'before'
+
+    @pytest.mark.parametrize('event', [RETRY, ERROR])
+    @pytest.mark.parametrize('side', ['before', 'after'])
+    def test_r12_sealed_retry_or_error_outside_time_bounds_is_incomplete(tmp_path, event, side):
+        if side == 'before':
+            # Monotonic timestamps: order checking alone cannot catch this.
+            event = event.replace('12:00:03', '12:00:00').replace('12:00:04', '12:00:00')
+            budget, log = case(tmp_path, extra=event)
+        else:
+            event = event.replace('12:00:03', '12:00:09').replace('12:00:04', '12:00:09')
+            budget, log = case(tmp_path, post=POST + event)
+            log.write_text(log.read_text().replace('12:00:08', '12:00:10'))
+        report, rows, _ = build(tmp_path, budget, log)
+>       assert not report['complete']
+E       assert not True
+
+tests/test_zone_pilot_proxy_log.py:265: AssertionError
+_ test_r12_sealed_retry_or_error_outside_time_bounds_is_incomplete[after-2026-09-27 12:00:03 transient_429_retry retry_after=0s delay=1s\n] _
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_r12_sealed_retry_or_error2')
+event = '2026-09-27 12:00:09 transient_429_retry retry_after=0s delay=1s\n'
+side = 'after'
+
+    @pytest.mark.parametrize('event', [RETRY, ERROR])
+    @pytest.mark.parametrize('side', ['before', 'after'])
+    def test_r12_sealed_retry_or_error_outside_time_bounds_is_incomplete(tmp_path, event, side):
+        if side == 'before':
+            # Monotonic timestamps: order checking alone cannot catch this.
+            event = event.replace('12:00:03', '12:00:00').replace('12:00:04', '12:00:00')
+            budget, log = case(tmp_path, extra=event)
+        else:
+            event = event.replace('12:00:03', '12:00:09').replace('12:00:04', '12:00:09')
+            budget, log = case(tmp_path, post=POST + event)
+            log.write_text(log.read_text().replace('12:00:08', '12:00:10'))
+        report, rows, _ = build(tmp_path, budget, log)
+>       assert not report['complete']
+E       assert not True
+
+tests/test_zone_pilot_proxy_log.py:265: AssertionError
+_ test_r12_sealed_retry_or_error_outside_time_bounds_is_incomplete[after-2026-09-27 12:00:04 complete_exception TimeoutError: fixture\n] _
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_r12_sealed_retry_or_error3')
+event = '2026-09-27 12:00:09 complete_exception TimeoutError: fixture\n'
+side = 'after'
+
+    @pytest.mark.parametrize('event', [RETRY, ERROR])
+    @pytest.mark.parametrize('side', ['before', 'after'])
+    def test_r12_sealed_retry_or_error_outside_time_bounds_is_incomplete(tmp_path, event, side):
+        if side == 'before':
+            # Monotonic timestamps: order checking alone cannot catch this.
+            event = event.replace('12:00:03', '12:00:00').replace('12:00:04', '12:00:00')
+            budget, log = case(tmp_path, extra=event)
+        else:
+            event = event.replace('12:00:03', '12:00:09').replace('12:00:04', '12:00:09')
+            budget, log = case(tmp_path, post=POST + event)
+            log.write_text(log.read_text().replace('12:00:08', '12:00:10'))
+        report, rows, _ = build(tmp_path, budget, log)
+>       assert not report['complete']
+E       assert not True
+
+tests/test_zone_pilot_proxy_log.py:265: AssertionError
+_____________ test_four_condition_window_gate_and_cohort_manifest ______________
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_four_condition_window_gat0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x1093a7cb0>
+
+    def test_four_condition_window_gate_and_cohort_manifest(tmp_path, monkeypatch):
+        import io
+        from types import SimpleNamespace
+        from harness import zone_pilot_ledger as pl
+        from harness.zone_send_ledger import completion_body
+        from harness.zone_study_offline import FixtureActor
+        from tests.test_zone_study_review_r8 import PROFILE
+    
+        identity = {'source_head': 'offline-exclusive-window'}
+        monkeypatch.setattr(runner, 'proxy_profile', lambda *a: PROFILE)
+        monkeypatch.setattr(runner, 'source_identity', lambda *a: identity)
+        monkeypatch.setattr(runner, 'runtime_identity', lambda *a: {'pid': 0, 'offline_injection': True})
+        monkeypatch.setattr(runner.subprocess, 'run', lambda *a, **kw: SimpleNamespace(stdout=''))
+        log = tmp_path / 'proxy.log'
+        log.write_text(PREFIX)
+        epoch = int(datetime(2026, 9, 27, 12, tzinfo=ZoneInfo('Asia/Seoul')).timestamp())
+        current = [(epoch + 2) * 10**9]
+        monkeypatch.setattr(pl.time, 'time_ns', lambda: current[0])
+        monkeypatch.setattr(pl.time, 'monotonic_ns', lambda: current[0])
+        def sleep(seconds):
+            current[0] += round(seconds * 10**9)
+        monkeypatch.setattr(pl.time, 'sleep', sleep)
+    
+        def log_at(second, method):
+            stamp = datetime.fromtimestamp(second, ZoneInfo('Asia/Seoul')).strftime('%Y-%m-%d %H:%M:%S')
+            with log.open('a') as stream:
+                stream.write(f'{stamp} http "{method} HTTP/1.1" 200 -\n')
+    
+        actual = pl.PilotSendLedger
+        def ledger(**kwargs):
+            current[0] += 200_000_000  # :06.3 response -> :06.5 next call, no artificial 10s gap
+            condition = kwargs['context']['condition']
+            def wire(request, *, timeout=None):
+                messages = json.loads(request.data)['messages']
+                user = next(p['text'] for p in messages[-1]['content'] if p['type'] == 'text')
+                actor = json.loads(user)['robot_id']
+                reply = FixtureActor(actor, condition, 11).respond({
+                    'messages': [messages[0], {'role': 'user', 'content': user}]})
+                response = json.loads(completion_body(reply, usage=USAGE))
+                response['id'] = 'actual-fixture-' + request.get_header('X-ugrp-call-id')
+                current[0] += 4_100_000_000
+                log_at(current[0] // 10**9, 'POST /v1/chat/completions')
+                return io.BytesIO(json.dumps(response).encode())
+            kwargs.update(wire=wire, proxy_log=log)
+            return actual(**kwargs)
+        monkeypatch.setattr(runner, 'PilotSendLedger', ledger)
+        budget = PilotBudget.create(tmp_path / 'budget.sqlite', identity=identity)
+        preflight = tmp_path / 'preflight'
+        args = ['--execute', '--budget-file', str(budget.path)]
+        assert runner.main(args + ['--acknowledge-upstream-finish-limitation', '--output', str(preflight)]) == 2
+        current[0] += 3 * 10**9
+        log_at(current[0] // 10**9, 'GET /v1/usage')  # prove coverage after the last padded window
+        manifest = json.loads((preflight / 'manifest.json').read_text())
+        report, rows, evidence = build(tmp_path, budget, log)
+>       assert report['complete'] and len(rows) == 4
+E       assert (False)
+
+tests/test_zone_pilot_proxy_log.py:349: AssertionError
+----------------------------- Captured stdout call -----------------------------
+{"manifest": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_four_condition_window_gat0/preflight/manifest.json", "status": "recorded", "accepted_upstream_unverified_calls": 4, "json_fence_removed_calls": 0, "accepted_upstream_unverified_label": "\uc815\uc0c1 \ucc44\ud0dd(\uc0c1\ub958 \ubbf8\uac80\uc99d)", "reconciliation_evidence_levels": ["unresolved"], "reconciliation_complete": false}
+____ test_r12_same_bundle_source_remigration_preserves_hash_chain_and_spend ____
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_r12_same_bundle_source_re0')
+
+    def test_r12_same_bundle_source_remigration_preserves_hash_chain_and_spend(tmp_path):
+        budget = PilotBudget.create(tmp_path / 'budget.sqlite', identity=identity(62))
+        reserve(budget)
+        first = budget.migrate_source(identity(63), **review(budget))
+        budget = PilotBudget(budget.path, identity=identity(63))
+        before, history = budget.snapshot(), raw_history(budget.path)
+        target = {**identity(63), 'source_head': 'review-r12',
+                  'files': {**identity(63)['files'], 'harness/zone_pilot_budget.py': 'r12'}}
+>       second = budget.migrate_source(target, **review(budget))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_zone_pilot_source_migration.py:155: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <harness.zone_pilot_budget.PilotBudget object at 0x1096aa7b0>
+identity = {'source_head': 'review-r12', 'source_root': '/offline', 'files': {'harness/llm_completion.py': '63', 'harness/zone_pi...'}, 'rgb_execution_bundle': {'id': 'rgb-standard-dispatch-v63', 'sha256': '63', 'effective': {'unchanged': True}}, ...}
+reason = 'PR #194: strict single JSON fence; v62 -> v63'
+expected_identity_sha256 = '9785ae1f0c1d8e70ef98c1905b0eb0e0654b43e1cb286c8a88faca297f0dca0b'
+expected_state_sha256 = 'f6e431626789c695810fa9621845db672e0f671314b5f0a5a190cc316bdfa70b'
+
+    def migrate_source(self, identity, *, reason, expected_identity_sha256, expected_state_sha256):
+        """Atomically append source provenance and reseal this file, never refund.
+    
+        Does not reconcile unknown billing or authorize a run. The existing
+        reconciliation gate still applies; a new preflight is mandatory.
+        The caller must stop drivers and pass the reviewed committed identity.
+        This object becomes stale on success and cannot send/settle/start runs.
+        """
+        if not isinstance(reason, str) or not reason.strip():
+            raise ValueError('source migration requires a nonempty review reason')
+        old = self.meta['identity']
+        if expected_identity_sha256 != sha(canonical(old).encode()):
+            raise ValueError('reviewed source identity hash mismatch')
+        mutable = {'source_head', 'source_root', 'files', 'rgb_execution_bundle'}
+        if ({k: v for k, v in old.items() if k not in mutable}
+                != {k: v for k, v in identity.items() if k not in mutable}):
+            raise ValueError('source migration cannot change provider/settings/cost/input policy')
+        previous_bundle, next_bundle = old.get('rgb_execution_bundle', {}), identity.get('rgb_execution_bundle', {})
+        if (not next_bundle.get('id') or next_bundle['id'] == previous_bundle.get('id')
+                or {k: v for k, v in next_bundle.items() if k not in {'id', 'sha256'}}
+                != {k: v for k, v in previous_bundle.items() if k not in {'id', 'sha256'}}):
+>           raise ValueError('source migration requires a new bundle with identical effective settings')
+E           ValueError: source migration requires a new bundle with identical effective settings
+
+harness/zone_pilot_budget.py:199: ValueError
+=========================== short test summary info ============================
+FAILED tests/test_zone_pilot_proxy_log.py::test_r12_post_after_right_bracket_cannot_hide_time_regression
+FAILED tests/test_zone_pilot_proxy_log.py::test_r12_sealed_retry_or_error_outside_time_bounds_is_incomplete[before-2026-09-27 12:00:03 transient_429_retry retry_after=0s delay=1s\n]
+FAILED tests/test_zone_pilot_proxy_log.py::test_r12_sealed_retry_or_error_outside_time_bounds_is_incomplete[before-2026-09-27 12:00:04 complete_exception TimeoutError: fixture\n]
+FAILED tests/test_zone_pilot_proxy_log.py::test_r12_sealed_retry_or_error_outside_time_bounds_is_incomplete[after-2026-09-27 12:00:03 transient_429_retry retry_after=0s delay=1s\n]
+FAILED tests/test_zone_pilot_proxy_log.py::test_r12_sealed_retry_or_error_outside_time_bounds_is_incomplete[after-2026-09-27 12:00:04 complete_exception TimeoutError: fixture\n]
+FAILED tests/test_zone_pilot_proxy_log.py::test_four_condition_window_gate_and_cohort_manifest
+FAILED tests/test_zone_pilot_source_migration.py::test_r12_same_bundle_source_remigration_preserves_hash_chain_and_spend
+7 failed, 63 deselected in 0.51s

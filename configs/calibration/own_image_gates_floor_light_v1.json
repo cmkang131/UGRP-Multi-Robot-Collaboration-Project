@@ -1,0 +1,228 @@
+{
+ "acceptance": {
+  "A1_eval_correct_columns_kept_min": 0.995,
+  "A2_eval_column_precision_min": 0.95,
+  "A3_high_pose_occluder_pass_rate_max": "not above the old filter",
+  "A4_eval_frame_false_reject_max": 0.005,
+  "A5_false_accept_on_bad_frames": "not above the old gate"
+ },
+ "acceptance_passed": {
+  "A1": true,
+  "A2": true,
+  "A3": true,
+  "A4": true,
+  "A5": true
+ },
+ "data_sha256": {
+  "final-pair-v88-cal-747d2b9f-20261001-r8/calibration-loaded/zone_wide_two_doors_final_v3": {
+   "r1": "63118ec73adfebb988ab503ca90a09d26775634a530515d1fc9903b6546b4195",
+   "r2": "c1456c7515f8e72ae4334b008074340ffc6d77a9ca6479185867d998b919a4e8"
+  },
+  "final-pair-v88-cal-747d2b9f-20261001/calibration-fine/zone_wide_two_doors_final_v3": {
+   "r1": "bf510744f06b67677fb37ba47ab72ec712f4fec8a50fdfe972df715f2f424133",
+   "r2": "d2f385aa04a1c60099e1676023e85afdff589f428bdd24d81e6ef42c4be1d83e"
+  },
+  "final-pair-v88-cal-747d2b9f-20261001/calibration-unloaded/zone_wide_two_doors_final_v3": {
+   "r1": "110547b4f7494a525549259827a0fa344c6dcc42e94f198999ebb6f32e99edc0",
+   "r2": "3f67dfee3fe1d4dae7de6d526ca6eaac6fa6de7fad64ebf227b5a3aee2c720f8"
+  },
+  "final-pair-v92-loaded-257953ec-20261003/zone_wide_two_doors_final_v3": {
+   "r1": "2dc073bcc73ed1fc632b32def8d3da2229bc4b2ae54aa9b7062b2ebeb2ee67b7",
+   "r2": "ae2d5a8710df87d7e1304ac88ea38a9763f3059d3b63cfef1f0d20145b788248"
+  },
+  "v96-dev-probe-raise_high-323fe3f9/before_door": {
+   "r1": "f98fd6fcf0a9620612b0d849759648393ecbe2cd2a1372fea349ee1bc36c4af9",
+   "r2": "f3b1b6d904463fa5bc1da2d1eccb19633f0d5b13c8144cd3cf346a217c761dd7"
+  }
+ },
+ "dev_calibration_sha256": "398372ae6b9b0fef7344d7f29146ce75b309d334b3ce31af527bc071c0e582f5",
+ "fixtures_manifest_sha256": "a2131ccd4785f1c1788555873d8ef9d9371a2c8207c615449542905afe64a9c7",
+ "gates_id": "own_image_gates_floor_light_v1",
+ "legacy_values": {
+  "frame_contrast_spread_min": 15.0,
+  "frame_value_std_min": 3.0,
+  "wall_band_saturation_max": 80,
+  "wall_edge_step_min": 0.0
+ },
+ "procedure": "docs/own_image_gate_calibration.md",
+ "render_profile": "floor_light_v1",
+ "results": {
+  "column_calibration": {
+   "columns": 23839,
+   "correct": 21970,
+   "new": {
+    "correct_kept": 21965,
+    "precision": 0.9990448467206404,
+    "wrong_kept": 21
+   },
+   "old": {
+    "correct_kept": 17274,
+    "precision": 0.9730734565119423,
+    "wrong_kept": 478
+   }
+  },
+  "column_evaluation": {
+   "columns": 37915,
+   "correct": 34545,
+   "new": {
+    "correct_kept": 34491,
+    "precision": 0.9893296618191205,
+    "wrong_kept": 372
+   },
+   "old": {
+    "correct_kept": 4947,
+    "precision": 0.6647406611126041,
+    "wrong_kept": 2495
+   }
+  },
+  "frame_stats_percentiles": {
+   "cal": {
+    "spread": {
+     "0": 2.0,
+     "0.1": 2.0,
+     "1": 2.0,
+     "50": 77.0
+    },
+    "std": {
+     "0": 0.4310600310912402,
+     "0.1": 0.4317652776274829,
+     "1": 0.4317652776274829,
+     "50": 24.215006895752957
+    }
+   },
+   "eval": {
+    "spread": {
+     "0": 2.0,
+     "0.1": 2.783,
+     "1": 3.0,
+     "50": 118.0
+    },
+    "std": {
+     "0": 0.4327375854289282,
+     "0.1": 0.45687533070991615,
+     "1": 0.4635648463241874,
+     "50": 30.41897248779206
+    }
+   }
+  },
+  "frames": {
+   "new": {
+    "constant_frames_accepted": [
+     false,
+     false,
+     false,
+     false
+    ],
+    "false_accept_black_cover_100pct": 0.0,
+    "false_accept_black_cover_10pct": 1.0,
+    "false_accept_black_cover_20pct": 1.0,
+    "false_accept_black_cover_30pct": 0.0,
+    "false_accept_black_cover_50pct": 0.0,
+    "false_reject_cal": 0.0,
+    "false_reject_eval": 0.0
+   },
+   "old": {
+    "constant_frames_accepted": [
+     false,
+     false,
+     false,
+     false
+    ],
+    "false_accept_black_cover_100pct": 0.0,
+    "false_accept_black_cover_10pct": 1.0,
+    "false_accept_black_cover_20pct": 1.0,
+    "false_accept_black_cover_30pct": 0.0,
+    "false_accept_black_cover_50pct": 0.0,
+    "false_reject_cal": 0.27615780445969124,
+    "false_reject_eval": 0.02806122448979592
+   }
+  },
+  "occluder_check_high_pose": {
+   "columns": 40536,
+   "correct": 0,
+   "new_pass": 0,
+   "old_pass": 0
+  }
+ },
+ "robot_model": "masterpi_v3",
+ "rules": {
+  "correct_column": "|observed boundary row - row expected from GT pose and map| < 4 px (label only; offline)",
+  "frame_contrast_spread_min": "round(0.5 x P0.1 of the 1-99 percentile V spread over frame_calibration frames, 1 decimal)",
+  "frame_value_std_min": "round(0.5 x P0.1 of the V std over frame_calibration frames, 2 decimals)",
+  "valid_frame": "every frame of a successful nominal run is a valid view; bad frames are made offline by covering the lowest f of the valid circle with black, or constant frames",
+  "wall_band_saturation_max": "round(1.2 x P99.9 of the max-S in the boundary-band window over CORRECT candidate columns of column_calibration, to the nearest 10)",
+  "wall_edge_step_min": "round(0.5 x P0.5 of the luminance/chroma edge step over CORRECT candidate columns of column_calibration)"
+ },
+ "schema": "ugrp.own_image_gates.v1",
+ "script": "scripts/calibrate_own_image_gates.py",
+ "script_sha256": "bb651f5d94dfdbcd98fb2f74108370b07f47a63bbbfc698269ff20229030534e",
+ "splits": {
+  "column_calibration": {
+   "every": 3,
+   "poses": [
+    "740,2320,1320,1500",
+    "1072,2400,1482,1500",
+    "1072,2400,1482,1230",
+    "1072,2400,1482,970",
+    "1072,2400,1482,1770",
+    "1072,2400,1482,2030"
+   ],
+   "runs": [
+    "final-pair-v88-cal-747d2b9f-20261001/calibration-unloaded/zone_wide_two_doors_final_v3",
+    "final-pair-v88-cal-747d2b9f-20261001/calibration-fine/zone_wide_two_doors_final_v3"
+   ]
+  },
+  "column_evaluation": {
+   "every": 2,
+   "poses": null,
+   "runs": [
+    "v96-dev-probe-raise_high-323fe3f9/before_door"
+   ]
+  },
+  "frame_calibration": {
+   "runs": [
+    [
+     "final-pair-v88-cal-747d2b9f-20261001/calibration-unloaded/zone_wide_two_doors_final_v3",
+     10
+    ],
+    [
+     "final-pair-v88-cal-747d2b9f-20261001/calibration-fine/zone_wide_two_doors_final_v3",
+     2
+    ],
+    [
+     "final-pair-v88-cal-747d2b9f-20261001-r8/calibration-loaded/zone_wide_two_doors_final_v3",
+     10
+    ],
+    [
+     "final-pair-v92-loaded-257953ec-20261003/zone_wide_two_doors_final_v3",
+     20
+    ]
+   ]
+  },
+  "frame_evaluation": {
+   "fixtures": "tests/fixtures/highpose_recorded_frames",
+   "runs": [
+    [
+     "v96-dev-probe-raise_high-323fe3f9/before_door",
+     3
+    ]
+   ]
+  },
+  "occluder_check_high_pose": {
+   "every": 12,
+   "poses": [
+    "896,2035,1894,1500"
+   ],
+   "runs": [
+    "final-pair-v92-loaded-257953ec-20261003/zone_wide_two_doors_final_v3"
+   ]
+  }
+ },
+ "status": "DEV_CALIBRATED",
+ "values": {
+  "frame_contrast_spread_min": 1.0,
+  "frame_value_std_min": 0.22,
+  "wall_band_saturation_max": 140,
+  "wall_edge_step_min": 10.0
+ }
+}

@@ -1,0 +1,16 @@
+{
+  "review_target_sha": "a9481446d9c7c503bdbc53941d3538cd5ec5ee12",
+  "review_record_sha": "4ee5ff52ea53153c0fe6ab8d6decf18d6daa2740",
+  "review_url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/361#issuecomment-5966324406",
+  "finding": "P1: 카탈로그 개수 47/48 불일치와 v92 plan 입력 누락",
+  "fix": "tests/test_simulation_workflow_manager.py: 기대값 48, v92의 loaded/two-door/40자리 SHA plan 예시 추가. 오래된 함수명의 thirty 제거.",
+  "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_simulation_workflow_manager.py -k \"catalog or plan\"",
+  "pass_line": "4 passed, 14 deselected in 0.22s",
+  "log": "/Users/changmin/projects/ugrp/outputs/v92-loaded-d1-d4-20261003/review-361-catalog.log",
+  "log_sha256": "54a7213370af916236fa24917734295c5f2b422980693c5d55c6fa69266e70a6",
+  "junit_sha256": "7cb40ecac3c17d5fe463b460f0f9b2007c3a411cc060ca0a4e4fb9cb50d7043d",
+  "test_sha256": "7ada470f0c8576a556420f370fba360b4edbbbec5585be5c56cf153eb27274fc",
+  "scope": "카탈로그/계획 테스트 4개. 기존 실패 2개 포함. 프로세스 수명 등 다른 14개는 변경 범위 밖이라 선택하지 않았다. 테스트 제외 설정/CI workflow 수정 없음.",
+  "schedule_and_criterion_unchanged": true,
+  "remaining": "새 SHA 원격 CI, HIGH/B-double-prime 변경 범위 독립 재검토, D2/D5/전체 렌더 인수"
+}

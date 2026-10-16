@@ -1,0 +1,193 @@
+"""Own executor guards around the frozen M2 approach and command stream.
+
+Unloaded approach reuses the merged guarded driver's bounded look/back-off
+recovery. After joint grasp, an unsafe or stalled robot aborts through STATUS;
+it must not drag its peer into a unilateral navigation recovery.
+"""
+from __future__ import annotations
+
+import math
+
+from harness.pair_owncam_approach import PairApproachDriverV2
+from harness.zone_own_driver import GuardedDriver
+from harness.zone_own_guards import (GATE_LOADED, GATE_UNLOADED,
+                                     TRUSTED_TAG_AGE_S, OwnPose, ProgressMonitor, commanded_step_m)
+from harness.zone_pair_geometry import PairSweepGuard
+
+
+class GuardedPairApproach(GuardedDriver, PairApproachDriverV2):
+    """GuardedDriver hooks with the frozen M2 heading/pursuit/relocalization policy.
+
+    Exactly one own pose source receives frames and commands. The loc property
+    also keeps the frozen controller's explicit relocalization assignments local
+    to that same source. observe() consumes an already processed own frame.
+    """
+    def __init__(self, own, params, **kwargs):
+        self._shared_pose = None
+        super().__init__(own.pose.loc, own.map, params, gate=own.gate, guard=own.guard, **kwargs)
+        self._shared_pose = own.pose
+
+    @property
+    def loc(self):
+        return self._shared_pose.loc if self._shared_pose is not None else self._initial_loc
+
+    @loc.setter
+    def loc(self, value):
+        if self._shared_pose is None:
+            self._initial_loc = value
+        else:
+            self._shared_pose.loc = value
+
+    def observe(self, now, rgb):
+        self.frames_seen += 1
+        self.loc.predict_to(now)
+        self.last_estimate = self.loc.estimate()
+        return self.last_estimate
+
+    def _look_step(self, now):
+        # OwnCamDriver resets the counter before emitting look_done. Preserve
+        # the prior value for M2's no-tag correction, before trusting the event.
+        self._looks_before_step = self.looks_without_fix
+        return super()._look_step(now)
+
+    def _event(self, now, kind, **detail):
+        # Pair v2 rejects low-sigma looks without an actual tag. Apply that rule
+        # before GuardedDriver lets the progress monitor trust the look.
+        tagless = (kind == 'look_done' and detail.get('fixed')
+                   and not (self.loc.last_tag_t is not None and self.look_t0 is not None
+                            and self.loc.last_tag_t >= self.look_t0))
+        if tagless:
+            detail['fixed'] = False
+            self.looks_without_fix = self._looks_before_step + 1
+        super()._event(now, kind, **detail)
+        if tagless:
+            super()._event(now, 'look_no_tags', looks_without_fix=self.looks_without_fix)
+
+
+class PairCommandGuard:
+    def __init__(self, execution):
+        self.ep = execution
+        self.monitor = ProgressMonitor()
+        self.segment = None
+        self.last_evidence = None
+        self.stationary_pose = None
+        self.motion_until = -math.inf
+        self._pose(execution.own.now)
+
+    @property
+    def approach(self):
+        return self.ep.controller.state in ('approach', 'reapproach', 'wait_approach')
+
+    @property
+    def reobserving(self):
+        ctl = self.ep.controller
+        return (ctl.state == 'pregrasp_look'
+                or (ctl.state in ('approach', 'reapproach')
+                    and getattr(ctl.driver, 'state', None) in ('look_arm', 'look_pan')))
+
+    @property
+    def carrying_beam(self):
+        return self.ep.controller.state in ('grasp', 'wait_lift', 'lift', 'wait_carry',
+                                           'carry', 'wait_lower', 'lower', 'wait_open')
+
+    def _pose(self, now):
+        report = self.ep.own.last_report
+        pose = OwnPose.from_report(report)
+        fresh = report is not None and 0 <= now - report.t_est <= .3 + 1e-9
+        # Cache only a bounded own estimate AFTER the last base command ended.
+        # A reset localizer has no pose yet, but cannot move a stationary base.
+        if fresh and pose is not None:
+            if (now >= self.motion_until and report.t_est >= self.motion_until
+                    and not self._high(pose)):
+                self.stationary_pose = pose
+            return pose
+        if (fresh and not report.initialized and self.reobserving
+                and now >= self.motion_until):
+            return self.stationary_pose
+        return None
+
+    def _high(self, pose):
+        p = self.ep.own.gate.profile
+        return pose.std_xy > p.high_xy_m or pose.std_yaw > p.high_yaw_rad
+
+    def on_command(self, row):
+        if row['kind'] in ('drive', 'mecanum') and any(row.get(k, 0.) for k in ('forward', 'left', 'turn')):
+            self.stationary_pose = None
+            self.motion_until = row['t'] + row['duration_s']
+        elif row['kind'] == 'hold' and self.motion_until > row['t']:
+            self.motion_until = row['t']
+        if not self.approach:
+            self.monitor.drove(commanded_step_m(row))
+
+    def before_control(self, now):
+        own = self.ep.own
+        own.gate.set_profile(GATE_UNLOADED if self.approach else GATE_LOADED)
+        pose = self._pose(now)
+        if self.reobserving:
+            if pose is not None and not self._high(pose) and now >= self.motion_until:
+                return True  # arm/camera sweeps only; check() still checks every command
+            self.ep.abort(now, 'POSE_UNCERTAIN')
+            return False
+        if self.ep.controller.state not in ('approach', 'reapproach'):
+            if not own.gate.ok or pose is None or self._high(pose):
+                self.ep.abort(now, 'POSE_UNCERTAIN')
+                return False
+        return True
+
+    def check(self, now, commands):
+        ep, own = self.ep, self.ep.own
+        loaded = not self.approach
+        own.gate.set_profile(GATE_LOADED if loaded else GATE_UNLOADED)
+        if not any(c['kind'] in ('arm', 'look', 'mecanum', 'drive') for c in commands):
+            return commands
+        pose, report = self._pose(now), own.last_report
+        reason = None
+        if pose is None:
+            reason = 'POSE_UNCERTAIN'
+        elif self._high(pose) or (loaded and not own.gate.ok and not self.reobserving):
+            reason = 'POSE_UNCERTAIN'
+        if reason is None and self.reobserving and (now < self.motion_until or any(
+                c['kind'] not in ('hold', 'arm', 'look') for c in commands)):
+            reason = 'POSE_UNCERTAIN'
+        if reason is None and loaded and not self.reobserving:
+            # A new segment has its own movement baseline. Heartbeats and
+            # repeated reads of one frame never count as a fresh stall check.
+            if self.segment != ep.controller.seg:
+                self.monitor.reset()
+                self.segment, self.last_evidence = ep.controller.seg, None
+            evidence = (own.last_obs['frame_id'], report.t_est)
+            if (evidence != self.last_evidence and report.since_tag_s is not None
+                    and report.since_tag_s <= TRUSTED_TAG_AGE_S and report.std_xy_m <= own.gate.profile.low_xy_m):
+                target = ep.plan['route'][min(ep.controller.seg + 1, len(ep.plan['route']) - 1)]
+                self.monitor.trusted((pose.x, pose.y), math.dist((pose.x, pose.y), target))
+                self.last_evidence = evidence
+            if self.monitor.stalled():
+                reason = 'PAIR_blocked'
+            elif self.monitor.needs_check():
+                # A loaded pair cannot execute the single-robot back-off/look
+                # recovery safely. Stop both; a new independent rendezvous is required.
+                reason = 'POSE_UNCERTAIN_PROGRESS'
+        servo = dict(own.servo)
+        guard = PairSweepGuard(own.guard, ep.plan['beam_geometry'], ep.arguments['role'])
+        for cmd in commands if reason is None else ():
+            if cmd['kind'] in ('arm', 'look'):
+                sid = 6 if cmd['kind'] == 'look' else int(cmd['servo_id'])
+                target = {**servo, sid: cmd['pan_pulse'] if sid == 6 and cmd['kind'] == 'look' else cmd['pulse']}
+                plan = guard.plan(servo, target, [target[6]], pose, loaded=self.carrying_beam, allow_backoff=False)
+                if plan['reason'] != 'clear' or not plan.get('transition_clear', False):
+                    reason = 'PAIR_COLLISION_GUARD'
+                    break
+                servo = target
+            elif cmd['kind'] in ('mecanum', 'drive'):
+                # Bounded guarded approach back-offs are the only motion
+                # permitted while the gate is uncertain (same as GuardedDriver).
+                if not own.gate.ok and getattr(ep.controller.driver, 'state', None) != 'guard_backoff':
+                    reason = 'POSE_UNCERTAIN'
+                    break
+                if not guard.motion_clear(servo, pose, cmd, loaded=self.carrying_beam):
+                    reason = 'PAIR_COLLISION_GUARD'
+                    break
+        if reason:
+            ep.abort(now, reason)
+            return [{'kind': 'hold'}]
+        return commands

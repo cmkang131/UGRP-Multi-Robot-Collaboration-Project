@@ -1,0 +1,135 @@
+{
+  "schema": "ugrp.p03_f312_1_verification.v1",
+  "date_kst": "2026-10-01",
+  "review_sha": "7623f3ca",
+  "reviewed_pr_head": "b38c1d5905fdf798dcfd34d215c7e82d0a0cf296",
+  "merge_main": "7e081d7047aa2df737cc1890c963b1d3a14302c0",
+  "scope": "local offline numeric/fake contracts and static source boundary only; no physics, rendering, inference, network calls or host lock",
+  "changed_source_sha256": {
+    "tests/test_zone_eval_top.py": "435e0d33126f8b5ca8cd02c16919ff212e05bfbcc3da0fcb858e8465d0988aa1",
+    "experiments/2026-09-30-e2e-p03-provider/offline_checks.py": "12aa0712d9896e59f638f77982f09a4cb27f0a4e4f972e9ce58c189bda8d13b2",
+    "experiments/2026-09-30-e2e-p03-provider/check_eval_boundary_mutations.py": "2dfbae76a14ff0f98f2f3e9be1fab336d0d0c2bcb4d701b88288eacf81dca40b"
+  },
+  "checks": {
+    "before": {
+      "passed": 1,
+      "failed": 1,
+      "errors": 0,
+      "skipped": 0,
+      "deselected": 0,
+      "subtests_passed": 0,
+      "testcases_by_class": {
+        "tests.test_zone_eval_top.RobotInputBoundaryTests": 2
+      }
+    },
+    "related": {
+      "passed": 341,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "deselected": 10,
+      "subtests_passed": 4,
+      "testcases_by_class": {
+        "tests.test_zone_eval_top.ProfileTests": 6,
+        "tests.test_zone_eval_top.BoundaryTests": 4,
+        "tests.test_zone_eval_top.RobotInputBoundaryTests": 3,
+        "tests.test_vision_loc_provider_lifecycle": 28,
+        "tests.test_vision_loc_p03_source_pinning": 11,
+        "tests.test_zone_pair_registered_source": 22,
+        "tests.test_zone_pair_door_relax": 20,
+        "tests.test_zone_study_source_pinning": 34,
+        "tests.test_zone_pair_provider_init": 18,
+        "tests.test_zone_pair_tag_boundary_matrix": 77,
+        "tests.test_vision_pose_source": 58,
+        "tests.test_pose_provider_contract": 48,
+        "tests.test_pose_provider_boundary": 12
+      }
+    },
+    "ci-policy": {
+      "passed": 100,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "deselected": 0,
+      "subtests_passed": 280,
+      "testcases_by_class": {
+        "tests.test_ci_fast_path.CiFastPathTests": 10,
+        "tests.test_ci_sharding": 66,
+        "tests.test_ci_host_lock": 24
+      }
+    }
+  },
+  "frozen_fixture_preflight": "3 present",
+  "protected": {
+    "file_count": 141,
+    "v6e_source_count": 85,
+    "prereg_json_count": 53,
+    "pin_test_count": 2,
+    "workflow_file_count": 1,
+    "unchanged_during_tests": true,
+    "byte_identical_to_origin_main": true
+  },
+  "mutations": {
+    "boundary_mutants_detected": 3,
+    "rows": [
+      {
+        "mutation": "normal",
+        "expected_assertion_failures": 0,
+        "observed_assertion_failures": 0,
+        "errors": 0,
+        "tracebacks": []
+      },
+      {
+        "mutation": "skip_p03_boundary",
+        "expected_assertion_failures": 2,
+        "observed_assertion_failures": 2,
+        "errors": 0,
+        "tracebacks": [
+          "Traceback (most recent call last):\n  File \"/Users/changmin/projects/ugrp-wt/e2e-p03-provider/tests/test_zone_eval_top.py\", line 224, in test_each_host_rejects_evaluation_camera_use_in_control\n    with self.assertRaisesRegex(AssertionError, 'non-evaluation use of the TOP profiles'):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: AssertionError not raised\n",
+          "Traceback (most recent call last):\n  File \"/Users/changmin/projects/ugrp-wt/e2e-p03-provider/tests/test_zone_eval_top.py\", line 224, in test_each_host_rejects_evaluation_camera_use_in_control\n    with self.assertRaisesRegex(AssertionError, 'non-evaluation use of the TOP profiles'):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: AssertionError not raised\n"
+        ]
+      },
+      {
+        "mutation": "skip_legacy_boundary",
+        "expected_assertion_failures": 2,
+        "observed_assertion_failures": 2,
+        "errors": 0,
+        "tracebacks": [
+          "Traceback (most recent call last):\n  File \"/Users/changmin/projects/ugrp-wt/e2e-p03-provider/tests/test_zone_eval_top.py\", line 224, in test_each_host_rejects_evaluation_camera_use_in_control\n    with self.assertRaisesRegex(AssertionError, 'non-evaluation use of the TOP profiles'):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: AssertionError not raised\n",
+          "Traceback (most recent call last):\n  File \"/Users/changmin/projects/ugrp-wt/e2e-p03-provider/tests/test_zone_eval_top.py\", line 224, in test_each_host_rejects_evaluation_camera_use_in_control\n    with self.assertRaisesRegex(AssertionError, 'non-evaluation use of the TOP profiles'):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: AssertionError not raised\n"
+        ]
+      },
+      {
+        "mutation": "skip_both_boundaries",
+        "expected_assertion_failures": 4,
+        "observed_assertion_failures": 4,
+        "errors": 0,
+        "tracebacks": [
+          "Traceback (most recent call last):\n  File \"/Users/changmin/projects/ugrp-wt/e2e-p03-provider/tests/test_zone_eval_top.py\", line 224, in test_each_host_rejects_evaluation_camera_use_in_control\n    with self.assertRaisesRegex(AssertionError, 'non-evaluation use of the TOP profiles'):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: AssertionError not raised\n",
+          "Traceback (most recent call last):\n  File \"/Users/changmin/projects/ugrp-wt/e2e-p03-provider/tests/test_zone_eval_top.py\", line 224, in test_each_host_rejects_evaluation_camera_use_in_control\n    with self.assertRaisesRegex(AssertionError, 'non-evaluation use of the TOP profiles'):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: AssertionError not raised\n",
+          "Traceback (most recent call last):\n  File \"/Users/changmin/projects/ugrp-wt/e2e-p03-provider/tests/test_zone_eval_top.py\", line 224, in test_each_host_rejects_evaluation_camera_use_in_control\n    with self.assertRaisesRegex(AssertionError, 'non-evaluation use of the TOP profiles'):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: AssertionError not raised\n",
+          "Traceback (most recent call last):\n  File \"/Users/changmin/projects/ugrp-wt/e2e-p03-provider/tests/test_zone_eval_top.py\", line 224, in test_each_host_rejects_evaluation_camera_use_in_control\n    with self.assertRaisesRegex(AssertionError, 'non-evaluation use of the TOP profiles'):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: AssertionError not raised\n"
+        ]
+      }
+    ]
+  },
+  "local_raw_root": "/Users/changmin/projects/ugrp/outputs/e2e-p03-f312-1-20261001",
+  "local_raw_sha256": {
+    "before.log": "db4a71a9192b27f9d8ba2738e79e816cd00749e27aa977ca4383ebea8792c3d8",
+    "before.xml": "87509e618ad83b062af057e68c5faf70b3dd9bfabe236055c2c955558787ca33",
+    "ci-before.log": "008b704ded3e7c48971f9005e40c3bc19f22cb36b8fc39dc29003cb51d4d854a",
+    "ci-policy.log": "7ca4337de166e865e9633556d624a1beb00ffed2bf8e62fb46991b4d4670a0fa",
+    "ci-policy.xml": "d14a08975c27c2c69dd9d3f0e487daae35c1eacd41ec8ff637a2622dbc156006",
+    "mutations.json": "3cfd9e8619ee01f4ec10a7e0f04b05e048d22a7af511b7ccee3516c43b872af8",
+    "protected-before.json": "7f558a341270c23bf7e1646c490093ec7eea90db0eb333c66cab70619b67447a",
+    "related.log": "8ba9bdfa0462446aa63ac075107015ec86d57333231e565921c6dc092adbf576",
+    "related.xml": "0426e0c781483da23eba24bc512aad493da5c93897afbd43f25322adbc93efb1"
+  },
+  "github_ci": "normal PR workflow after push; actual result will be linked in the single PR comment",
+  "extraction_directories_created": [],
+  "limitations": [
+    "The candidate remains unregistered and unsealed; runnable=false and physical_ready=false.",
+    "No new experiment/training/evaluation cohort; no TensorBoard conversion or server.",
+    "Logs are local, not a full remote raw backup."
+  ]
+}

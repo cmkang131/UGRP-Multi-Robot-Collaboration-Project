@@ -1,0 +1,38 @@
+{
+  "schema": "ugrp.offline_audit_view.v1",
+  "derived_view_only": true,
+  "run_id": "v92-fit-gates",
+  "family": "calibration-assembly",
+  "policy": "v92-d5",
+  "case": "three_collections",
+  "condition": "frozen-Bpp-257953ec",
+  "split": "calibration",
+  "seed": 911,
+  "outcome": "PARTIAL",
+  "source_sha": "257953ec",
+  "offline_source": {
+    "path": "/Users/changmin/projects/ugrp/outputs/final-pair-v92-measured-20261003T091812Z/assembly/fit_report.json",
+    "sha256": "1b4ff5593f6e7558b71f17548d00f5e4ddaded7567f0fe74fd7e2d3d765fc74d"
+  },
+  "offline_scalar_scope": "Gates actually evaluated in fit_report.json: fine B-prime acceptance, camera pose/pan acceptance (unloaded v88, loaded v92 HIGH), loaded selection sample counts. Loaded B'' motion/spread/pair gates were never evaluated (shared fit rejected) and are deliberately not emitted.",
+  "offline_scalars": {
+    "gate/fine_bprime_pass": 1.0,
+    "gate/unloaded_camera_poses_accepted": 25.0,
+    "gate/loaded_camera_poses_accepted": 3.0,
+    "gate/unloaded_pan_pass": 1.0,
+    "gate/loaded_pan_pass": 1.0,
+    "offline/loaded_lifted_samples": 13926.0,
+    "offline/loaded_not_lifted_samples": 475.0,
+    "offline/fine_tau_stop_s": 0.06965110936636022,
+    "offline/loaded_pan_rad_per_pwm": -0.0011782219763573187
+  },
+  "hparam_metrics": [
+    "gate/fine_bprime_pass",
+    "gate/loaded_camera_poses_accepted",
+    "offline/loaded_lifted_samples"
+  ],
+  "scope": "evaluated gates only; not evaluated: loaded B-double-prime training/validation numerical_pass, spread, deadband support, pair model",
+  "texts": {
+    "notes/not_evaluated": "loaded shared fit raised at verify_fit (c0 at lower bounds) -> spread, deadband support, pair_rows/fit_pair never ran. No 0 is recorded for them."
+  }
+}

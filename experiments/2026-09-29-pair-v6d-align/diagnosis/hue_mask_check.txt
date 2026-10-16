@@ -1,0 +1,42 @@
+r1 p45: frames=288 repro=288/288
+   plane-projected beam pixels  hue36 median=2004  hue25 median=8068  added median=6000
+   v2 visible hue36=288 hue25=288; visible length median hue36=0.25 m hue25=0.32 m
+   |heading err| (GT, offline) hue36 median=0.023 rad, >0.05: 28/288; hue25 median=0.005 rad, >0.05: 0/288
+   per frame (|err| differs by >5 mrad): hue25 better 255, worse 4, same 29
+   added pixels outside GT beam footprint (+0.06 m): frames with >= 10 such pixels: 0/288; max per frame 0; total 0 of 1797337 added
+   added samples that do not project onto the beam-top plane within 2.5 m (above horizon / far): frames with any: 0/288; max per frame 0
+r1 inspect: frames=761 repro=761/761
+   plane-projected beam pixels  hue36 median=1959  hue25 median=7697  added median=5730
+   v2 visible hue36=761 hue25=761; visible length median hue36=0.12 m hue25=0.16 m
+   |heading err| (GT, offline) hue36 median=0.050 rad, >0.05: 377/761; hue25 median=0.005 rad, >0.05: 0/761
+   per frame (|err| differs by >5 mrad): hue25 better 731, worse 3, same 27
+   added pixels outside GT beam footprint (+0.06 m): frames with >= 10 such pixels: 0/761; max per frame 0; total 0 of 4167099 added
+   added samples that do not project onto the beam-top plane within 2.5 m (above horizon / far): frames with any: 0/761; max per frame 0
+r1 p45+inspect: frames=1049 repro=1049/1049
+   plane-projected beam pixels  hue36 median=1964  hue25 median=7766  added median=5782
+   v2 visible hue36=1049 hue25=1049; visible length median hue36=0.13 m hue25=0.17 m
+   |heading err| (GT, offline) hue36 median=0.040 rad, >0.05: 405/1049; hue25 median=0.005 rad, >0.05: 0/1049
+   per frame (|err| differs by >5 mrad): hue25 better 986, worse 7, same 56
+   added pixels outside GT beam footprint (+0.06 m): frames with >= 10 such pixels: 0/1049; max per frame 0; total 0 of 5964436 added
+   added samples that do not project onto the beam-top plane within 2.5 m (above horizon / far): frames with any: 0/1049; max per frame 0
+r2 p45: frames=290 repro=290/290
+   plane-projected beam pixels  hue36 median=7142  hue25 median=8048  added median=621
+   v2 visible hue36=290 hue25=290; visible length median hue36=0.26 m hue25=0.32 m
+   |heading err| (GT, offline) hue36 median=0.007 rad, >0.05: 0/290; hue25 median=0.003 rad, >0.05: 0/290
+   per frame (|err| differs by >5 mrad): hue25 better 75, worse 6, same 209
+   added pixels outside GT beam footprint (+0.06 m): frames with >= 10 such pixels: 0/290; max per frame 0; total 0 of 253043 added
+   added samples that do not project onto the beam-top plane within 2.5 m (above horizon / far): frames with any: 0/290; max per frame 0
+r2 inspect: frames=772 repro=772/772
+   plane-projected beam pixels  hue36 median=7408  hue25 median=7663  added median=21
+   v2 visible hue36=772 hue25=772; visible length median hue36=0.16 m hue25=0.16 m
+   |heading err| (GT, offline) hue36 median=0.006 rad, >0.05: 93/772; hue25 median=0.004 rad, >0.05: 0/772
+   per frame (|err| differs by >5 mrad): hue25 better 126, worse 0, same 646
+   added pixels outside GT beam footprint (+0.06 m): frames with >= 10 such pixels: 0/772; max per frame 0; total 0 of 397672 added
+   added samples that do not project onto the beam-top plane within 2.5 m (above horizon / far): frames with any: 0/772; max per frame 0
+r2 p45+inspect: frames=1062 repro=1062/1062
+   plane-projected beam pixels  hue36 median=7332  hue25 median=7721  added median=108
+   v2 visible hue36=1062 hue25=1062; visible length median hue36=0.17 m hue25=0.17 m
+   |heading err| (GT, offline) hue36 median=0.006 rad, >0.05: 93/1062; hue25 median=0.004 rad, >0.05: 0/1062
+   per frame (|err| differs by >5 mrad): hue25 better 201, worse 6, same 855
+   added pixels outside GT beam footprint (+0.06 m): frames with >= 10 such pixels: 0/1062; max per frame 0; total 0 of 650715 added
+   added samples that do not project onto the beam-top plane within 2.5 m (above horizon / far): frames with any: 0/1062; max per frame 0

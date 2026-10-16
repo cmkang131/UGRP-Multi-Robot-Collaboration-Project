@@ -1,0 +1,80 @@
+{
+  "schema": "ugrp.criterion_B_v91_verification.v1",
+  "recorded_at_utc": "2026-10-02T18:25:25.834415+00:00",
+  "base_sha": "0bf41800272ec4c4bfa035cfc5609af8850e3e48",
+  "branch": "codex/critb-v91",
+  "environment": {
+    "python": "3.13.5 | packaged by Anaconda, Inc. | (main, Jun 12 2025, 11:23:37) [Clang 14.0.6 ]",
+    "executable": "/opt/anaconda3/bin/python3",
+    "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+    "numpy": "2.4.4",
+    "scipy": "1.17.1",
+    "pytest": "8.3.4"
+  },
+  "checks": [
+    {
+      "command": "python3 -m pytest -q tests/test_consumer_criterion_b_v91.py --disable-warnings --maxfail=3",
+      "exit_code": 0,
+      "pass_line": "73 passed in 13.30s"
+    },
+    {
+      "command": "python3 -m pytest -q tests/test_consumer_criterion_b.py tests/test_consumer_criterion_b_v91.py tests/test_review_346.py tests/test_zone_final_pair_fast.py tests/test_zone_final_pair_heldout.py --disable-warnings --junitxml=/private/tmp/critb-v91-related-tests.xml",
+      "exit_code": 0,
+      "pass_line": "222 passed in 164.18s (0:02:44)",
+      "log": "related-tests.txt",
+      "junit": "related-tests.xml"
+    },
+    {
+      "command": "python3 -m pytest -q tests/test_consumer_criterion_b_v91.py --disable-warnings --junitxml=/private/tmp/critb-v91-final-tests.xml",
+      "exit_code": 0,
+      "pass_line": "75 passed in 12.90s",
+      "log": "final-tests.txt",
+      "junit": "final-tests.xml",
+      "change_since_related_suite": "Malformed nested raw records now return INELIGIBLE/null rather than raising AttributeError; two counterexamples added."
+    },
+    {
+      "command": "verify_commitment([], refetch=True)",
+      "exit_code": 0,
+      "pass_line": "PASS live GitHub commitment equals pinned snapshot: 5958329647 2026-10-02T18:04:39Z"
+    },
+    {
+      "command": "sha256 preservation check + git diff --check + git diff base -- .github/workflows configs harness",
+      "exit_code": 0,
+      "pass_line": "PASS 23 frozen files and v88/v90/v91 registrations; no workflow/config/harness changes"
+    }
+  ],
+  "initial_failure": {
+    "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_consumer_criterion_b_v91.py --disable-warnings --maxfail=3",
+    "exit_code": 2,
+    "error": "ModuleNotFoundError: No module named scipy during test collection",
+    "resolution": "Used existing python3 with NumPy/SciPy/pytest; no environment installation or alteration."
+  },
+  "sha256": {
+    "scripts/validate_consumer_criterion_b_v91.py": "65eb7d4c2c70533c8e8399f94bcffdff62508ff0dfef5cec948f809642ac953b",
+    "tests/test_consumer_criterion_b_v91.py": "bd61630a554d54cb4d66cf2305866ecaf06d2e6e213502d20f428fa9aa833e8c",
+    "scripts/run_ci_tests.py": "76aeee4f618042e67d20ae4b69a824f6b73e0d9222a573ca24f06006a65aa794",
+    "experiments/2026-10-03-critb-v91/commitment.json": "7c4238238f4e7d660841abf50975b27492fd7beec461a4f08da9e72ae88a35b8",
+    "experiments/2026-10-03-critb-v91/acquisition_contract.json": "a60ff44849d296e334dd60ff00f81ed91da3b259fd2521636f9243faa74640e8",
+    "experiments/2026-10-03-critb-v91/preservation.json": "aef488a456af85d681ff60dfcc204683558429ba44c28066ae77abb7148a37a4",
+    "experiments/2026-10-03-critb-v91/related-tests.xml": "8a9049ab40bffa395c961d859051fe1135137184c2298b5e9895e587b7e6e338",
+    "experiments/2026-10-03-critb-v91/final-tests.xml": "a9d563ca2f1da6cfee70462bdc7716e097ee684099804d158cabaf04259a9713",
+    "experiments/2026-10-03-critb-v91/related-tests.txt": "380a7a9016e03558f59d6c8fb63dbc3993ab418a9a07e64dfe83135d20f903b5",
+    "experiments/2026-10-03-critb-v91/final-tests.txt": "7c34d7f21009e4d8f457921744f745476de371c3e3c6712b22da548881cb6d1a"
+  },
+  "reservation_change": "none; no bundle/workflow ID created",
+  "scope": {
+    "synthetic_or_fake_only": true,
+    "physics_runs": 0,
+    "render_runs": 0,
+    "model_calls": 0,
+    "real_v91_raw_scored": false,
+    "primary_outputs_written": false,
+    "running_processes_modified": false,
+    "tensorboard_updated": false
+  },
+  "limits": [
+    "GitHub server clock versus runner clock; lock acquired_unix is a conservative pre-start lower bound, not a direct start timestamp or clock-synchronization proof.",
+    "Unsigned raw provenance; frozen candidate rotation remains null.",
+    "No actual held-out acceptance, candidate promotion, PF/student/physical success, independent review or merge."
+  ]
+}

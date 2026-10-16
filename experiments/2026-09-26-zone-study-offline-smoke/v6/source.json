@@ -1,0 +1,71 @@
+{
+  "agent_lock": "잡지 않음(물리·학습·wall 시간 비교 없음)",
+  "branch": "kiro/zone-study-core",
+  "code_sha": "9484173871ea9971784561e5ed759d5fbddc7e3a",
+  "command": "OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1 PYTHONPATH=. python3 scripts/ugrp_session.py run kiro-zone-study-smoke-v6 -- /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python scripts/run_zone_study_offline_smoke.py --output /Users/changmin/projects/ugrp/outputs/zone-study-offline-smoke-v6",
+  "driver": "scripts/run_zone_study_offline_smoke.py",
+  "exit_code": 0,
+  "head_at_start": "9484173871ea9971784561e5ed759d5fbddc7e3a dirty=0",
+  "load_average": {
+    "after": [
+      72.41,
+      67.53,
+      60.89
+    ],
+    "at_run_start": [
+      74.81,
+      62.91,
+      58.36
+    ],
+    "before": [
+      49.69,
+      50.77,
+      55.13
+    ],
+    "note_ko": "공유 Mac(8코어)에 다른 작업 부하가 컸다(부하 평균 50~75). 같은 시각에 이 작업의 변이 검사 pytest도 돌았다. 가짜 SIM 시계만 쓰므로 결과는 wall 시간과 무관하다."
+  },
+  "loop": "harness/zone_study_offline.py",
+  "machine_sim_cap": {
+    "cap": 6,
+    "literal_grep_before": 9,
+    "note_ko": "지정 grep 9개 = 다른 작업의 TensorBoard 뷰어 1(PID 9291), 실행 중인 kiro-cli 에이전트 6(프롬프트 문자열에 run_ 포함), 다른 작업의 렌더링 2(run_vl_teacher_render.py, PID 69168·69212). 실제 시뮬 프로세스는 2개라 상한(6) 아래에서 시작했다.",
+    "own_processes": 1,
+    "sim_eval_processes_before": 2
+  },
+  "model_calls": 0,
+  "network_requests": 0,
+  "physics_steps": 0,
+  "previous_version": {
+    "code_sha": "8ab8f7edbc78e7cb27985dfe81dde092823e01b1",
+    "record": "experiments/2026-09-26-zone-study-offline-smoke/v5"
+  },
+  "record_version": "v6",
+  "report_run": {
+    "command": "OMP_NUM_THREADS=1 ... PYTHONPATH=. python3 scripts/ugrp_session.py run kiro-zone-study-report-v6 -- /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python scripts/zone_study_report.py /Users/changmin/projects/ugrp/outputs/zone-study-offline-smoke-v6/trial_records --output /Users/changmin/projects/ugrp/outputs/zone-study-offline-smoke-v6-report --tb-events /Users/changmin/projects/ugrp/outputs/tensorboard/0927-zone-study-offline-smoke-v6",
+    "exit_code": 0,
+    "load_average": {
+      "after": [
+        62.42,
+        65.4,
+        60.63
+      ],
+      "before": [
+        67.97,
+        66.79,
+        60.74
+      ]
+    },
+    "wall_clock": {
+      "end": "2026-09-27T08:51:16+0900",
+      "start": "2026-09-27T08:50:15+0900"
+    }
+  },
+  "review": "codex-194-r7 (Codex seventh review of PR 194: P1 send ledger, P2 contract version audit)",
+  "session_status_after": "stopped (python3 scripts/ugrp_session.py status kiro-zone-study-smoke-v6)",
+  "wall_clock": {
+    "end_outputs_written": "2026-09-27T08:49:25+0900",
+    "start": "2026-09-27T08:41:15+0900"
+  },
+  "why_new_version_ko": "실행 번들 ID(zone_study_offline_v3)와 호출 기록 provenance(model_settings_sha256)가 바뀌고 trial record에 send_ledger 절이 생겼다. SIM trace·요청 입력은 v5와 같지만 기록 바이트가 다르므로 v5를 덮어쓰지 않고 새 버전으로 남긴다.",
+  "worktree": "/Users/changmin/projects/ugrp-wt/kiro-study-core (HEAD 94841738, clean: git status --porcelain 0 lines)"
+}

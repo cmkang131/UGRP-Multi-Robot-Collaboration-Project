@@ -1,0 +1,72 @@
+{
+  "schema": "ugrp.v92_assembler_validation.v1",
+  "implementation_parent_sha": "9583d3cb7ef2d6f30a5d47fa73ec92964c94eeb0",
+  "scope": "작성자의 합성 회귀 검사. 실제 수집/렌더/외부 모델/v91 원본 접근과 채점 없음.",
+  "pass_lines": [
+    "44 passed in 238.22s (0:03:58)",
+    "9 passed, 354 deselected in 15.61s"
+  ],
+  "passed": 53,
+  "failed": 0,
+  "skipped": 0,
+  "v88_protected_files": 35,
+  "ci_selection": "새 파일은 scripts/run_ci_tests.py에서 정확히 한 번 수집. .github/workflows 변경 없음.",
+  "environment": {
+    "python": "3.12.13",
+    "numpy": "2.5.2",
+    "scipy": "1.17.1",
+    "pytest": "9.1.1"
+  },
+  "files": {
+    "v92-tests.txt": {
+      "sha256": "04abc51184960146f28470637db40004924099c28aae4e75560401e8f55ca507",
+      "bytes": 111
+    },
+    "v92-tests.xml": {
+      "sha256": "c593d3e993232b93557211b44c5043b486a5075ef431f9effdea481ae04e271d",
+      "bytes": 6237
+    },
+    "v88-related.txt": {
+      "sha256": "93d0e09218fca533f2728214951bbc4f7f2ba0ae1236d5a87f8775c30ddb6034",
+      "bytes": 115
+    },
+    "v88-related.xml": {
+      "sha256": "cd653e48baa1b0332425b863e4dd20563f9e62917c4eab63d0d151d4a2c6595d",
+      "bytes": 1555
+    },
+    "r5-input-check.json": {
+      "sha256": "8fbce577a620e421b0026b195d697317f38c739ebd1ff26fe1468a55befd45e5",
+      "bytes": 332
+    },
+    "preservation.json": {
+      "sha256": "96d2a017ba4cecea5de48a82bb2ffa919099b75c5a56761a52bbbd215aff7ee0",
+      "bytes": 4153
+    },
+    "final-format-check.txt": {
+      "sha256": "3cfb834cbb17d0e75e4c13c30f8cbf0bf4e2df5a48ff26f2a195ac3cc432edc9",
+      "bytes": 114
+    }
+  },
+  "tested_source_sha256": {
+    "scripts/final_pair_calibration_v92_io.py": "18bfc0c4acd7a2b25d993ae0528952643a4dc67b5b0cf5668bc05a834c183b5f",
+    "scripts/final_pair_calibration_v92_camera.py": "d66cc6ebb248ad5b37875d25a6e9e44b3cefdf1b82435cb6bc36057ce7a8530b",
+    "scripts/final_pair_calibration_v92_motion.py": "20532aec09988cd9a8ca1eb61d9346a9226db71b2fe1633707b3fc334eaffaf9",
+    "scripts/assemble_final_pair_calibration_v92.py": "a61ac39db76661c6bfb489e2835784fd9628dd324d4ce93db89b593f823cc5b9",
+    "harness/zone_final_pair_calibration_v92_contract.py": "164f3212706fc6505d1dd38db74e519c40bcc986f0b8200a6c4fb10d94a7a68e",
+    "tests/test_final_pair_calibration_v92.py": "4576b6be37ce41c9cef97feed5b507a31b2aa544cc0dde1d00e2fe4b743e197e"
+  },
+  "local_logs": "/Users/changmin/projects/ugrp/outputs/v92-assembly-d5-20261003",
+  "raw_collections_read": [],
+  "physics_runs": 0,
+  "render_runs": 0,
+  "external_model_calls": 0,
+  "tensorboard": "신규 실험/학습/실제 평가 결과가 없어 새 snapshot 없음.",
+  "remaining": [
+    "조정자의 #219 해시 공개 고정과 변경분 독립 검토",
+    "v92 전체 렌더 수집 및 실제 적합",
+    "무하중 통합 운동 프로필의 별도 근거",
+    "D1 학생의 새 계약 연결 및 인수",
+    "새 HEAD의 원격 CI"
+  ],
+  "final_whitespace_only_recheck": "6 passed, 38 deselected in 16.47s"
+}

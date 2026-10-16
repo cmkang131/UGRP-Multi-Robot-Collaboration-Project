@@ -1,0 +1,19 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "zone-final-pair-highpose-v98-dev-checkpoint",
+      "version": "1.0.0",
+      "purpose": "DEV 전용: v98 단계 검사(DEV_PILOT)를 중간 상태 체크포인트에서 이어 실행(resumed_from 표시, 증거 아님·합산 안 함). run(체크포인트 저장 연속 실행, 실행기 main 그대로) / resume / compare(비트 동일 게이트)",
+      "entry": "scripts/dev_pair_checkpoint.py",
+      "runner": "scripts.dev_pair_checkpoint",
+      "docs": "experiments/2026-10-05-dev-checkpoint-resume/README.md",
+      "requires": "committed source; owned SIM slot; DEV_PILOT stage probe only; resumed runs are dev diagnostics, final validation stays a continuous run",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

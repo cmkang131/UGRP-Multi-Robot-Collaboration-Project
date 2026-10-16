@@ -1,0 +1,80 @@
+{
+  "schema": "ugrp.offline_implementation_validation.v1",
+  "recorded_at": "2026-10-01T01:26:18.981595+00:00",
+  "base_sha": "2523269857596ffdd1a8cda9814a6e92f399f1da",
+  "source_state": "tested working files hashed before commit; user requires commit after tests",
+  "source_sha256": {
+    "scripts/assemble_final_pair_calibration.py": "d18317e573ab0ad01011f6f65dcecb3ed2e8f11716f8215a89223814193b63ac",
+    "scripts/final_pair_calibration_io.py": "89e31ee93e3c1fa09f25b5b452a564425f004ebc7a933202cd267cec29c3d63e",
+    "scripts/final_pair_calibration_motion.py": "80bed1477beb71f72126cce17ebe38e65441102a80e731a980b0e40750f3de4a",
+    "scripts/final_pair_calibration_camera.py": "1969525830d622bce197838413bb89f8f85d57eb7cab387d174f7ad9e7b351e3",
+    "scripts/run_ci_tests.py": "b8ef9262a73ce6735acacef9144ab63970ed1495d5a260fe2a2dcb158f5db181",
+    "tests/test_final_pair_calibration_assembly.py": "bb21c37436efbe39e5183a3d8854b0b1d8bcb3a9e347103f169d0b58e90416ae"
+  },
+  "criterion_B_prime_sha256": "3f863f81bea8b4401d980e1c39ec8438b75b34d8f80792d41dbfbcd331f66b33",
+  "tests": {
+    "new_unique_passed": 134,
+    "existing_related_passed": 149,
+    "total_unique_passed": 283,
+    "existing_suites": [
+      "tests/test_consumer_criterion_b.py",
+      "tests/test_final_environment_unloaded_fit.py",
+      "tests/test_zone_final_pair_v3.py",
+      "tests/test_zone_final_pair_review_fixes.py"
+    ],
+    "note": "New suite 132 passed, then 79 affected IO checks and 3 method checks passed (2 new cases); no sum of duplicate rechecks."
+  },
+  "checks": {
+    "frozen_ci_fixtures": 3,
+    "ci_shard_list": "new test registered and expanded",
+    "diff_check": "PASS",
+    "complete_synthetic_loader_maps": 3,
+    "all_required_field_deletions": "PARTIAL",
+    "coordinator_raw_read": false,
+    "physics_calls": 0,
+    "render_calls": 0,
+    "model_calls": 0,
+    "controllers_changed": false,
+    "github_workflows_changed": false,
+    "student_factories_changed": false,
+    "private_tmp_extraction_created": false,
+    "private_tmp_task_v88_entries_at_finish": []
+  },
+  "artifacts": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v88-calibration-pipeline-offline-20261001/assembly-junit.xml",
+      "sha256": "e1e4cab2ef69d84cbe81ba4f88428df5c3de090d36cd85217636bd227b7bb562",
+      "bytes": 23537,
+      "tests": 132,
+      "failures": 0,
+      "errors": 0
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v88-calibration-pipeline-offline-20261001/final-io-junit.xml",
+      "sha256": "ac31f5491ae4946ae2693e985abf3541e2ca5c2f39bde2468f3a93ace216bb47",
+      "bytes": 14984,
+      "tests": 79,
+      "failures": 0,
+      "errors": 0
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v88-calibration-pipeline-offline-20261001/final-method-junit.xml",
+      "sha256": "4d98a7eb985fd5d5b44cd57b1a5bbce0b76482ffc8c5425229fd328509bf9519",
+      "bytes": 683,
+      "tests": 3,
+      "failures": 0,
+      "errors": 0
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v88-calibration-pipeline-offline-20261001/ci-shards.txt",
+      "sha256": "c84981f72d026951b97a57b9940073984e578d09c10a3bf60e66401b4e756ccc",
+      "bytes": 18389
+    }
+  ],
+  "limits": [
+    "No real v88 measured calibration or robot task approval.",
+    "Frozen unloaded B rejects training map and lacks yaw candidate/chronology verification; pipeline retains nulls and PARTIAL.",
+    "Only offline synthetic unit/regression evidence; no new experiment cohort/TensorBoard snapshot.",
+    "Raw and local JUnit are not a remote raw backup."
+  ]
+}

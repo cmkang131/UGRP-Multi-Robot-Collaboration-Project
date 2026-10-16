@@ -1,0 +1,23 @@
+{
+  "mutation": {
+    "name": "remove_heartbeat",
+    "module": "harness.zone_corridor_control",
+    "selected_test": "test_heartbeat_boundary_uses_actual_delivery_not_private_partner_state",
+    "original_sha256": "04867a8cd1f6b0987a9ee6ee8efc43f21081f43df91fa06c16938a2b49df7736",
+    "mutated_in_memory_sha256": "a524aba482221f83b64203c6bc939ff94297fbe8e7192660c9425d9cb62275c1",
+    "file_bytes_unchanged": true
+  },
+  "pytest_exit_code": 1,
+  "failed_tests": [
+    "tests/test_zone_own_executor_corridor_control.py::test_heartbeat_boundary_uses_actual_delivery_not_private_partner_state[0.15-ABORTED]",
+    "tests/test_zone_own_executor_corridor_control.py::test_heartbeat_boundary_uses_actual_delivery_not_private_partner_state[0.151-ABORTED]"
+  ],
+  "passed_tests": [
+    "tests/test_zone_own_executor_corridor_control.py::test_heartbeat_boundary_uses_actual_delivery_not_private_partner_state[0.149-FOLLOW]"
+  ],
+  "setup_teardown_errors": [],
+  "original_file_unchanged": true,
+  "mutation_caught": true,
+  "host_lock_required": false,
+  "scope": "fake only; physics/render/model calls 0"
+}

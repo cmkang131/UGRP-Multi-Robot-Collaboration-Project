@@ -1,0 +1,297 @@
+{
+  "input_frames": 901,
+  "own_frames": 891,
+  "warmup_frames": 10,
+  "stage_counts": {
+    "all": {
+      "frames": 891,
+      "detected_frames": 891,
+      "bootstrap": 1,
+      "inserted": 7,
+      "duplicate": 0,
+      "admitted": 55,
+      "segments": 4565,
+      "gmapping_motion_gate": 836,
+      "improved_proposal": 3,
+      "low_overlap": 47,
+      "insufficient_match_points": 3,
+      "search_boundary": 1
+    },
+    "after_36_1": {
+      "frames": 726,
+      "detected_frames": 726,
+      "gmapping_motion_gate": 679,
+      "inserted": 0,
+      "duplicate": 0,
+      "admitted": 47,
+      "segments": 4092,
+      "low_overlap": 46,
+      "search_boundary": 1
+    }
+  },
+  "grid_rejected": {
+    "unsettled": 0,
+    "range_segments": 0
+  },
+  "range_segments": {
+    "all": [
+      {
+        "bin": "0\u20131",
+        "segments": 449,
+        "bootstrap": 1,
+        "inserted": 5,
+        "gmapping_motion_gate": 413,
+        "improved_proposal": 3,
+        "low_overlap": 31,
+        "insufficient_match_points": 1
+      },
+      {
+        "bin": "1\u20132",
+        "segments": 1736,
+        "bootstrap": 3,
+        "inserted": 3,
+        "gmapping_motion_gate": 1619,
+        "low_overlap": 113,
+        "search_boundary": 1
+      },
+      {
+        "bin": "2\u20133",
+        "segments": 1409,
+        "gmapping_motion_gate": 1319,
+        "inserted": 0,
+        "low_overlap": 86,
+        "search_boundary": 4
+      },
+      {
+        "bin": "3\u20134",
+        "segments": 971,
+        "gmapping_motion_gate": 928,
+        "inserted": 4,
+        "insufficient_match_points": 4,
+        "low_overlap": 38,
+        "search_boundary": 1
+      },
+      {
+        "bin": ">4"
+      }
+    ],
+    "after_36_1": [
+      {
+        "bin": "0\u20131",
+        "segments": 248,
+        "gmapping_motion_gate": 218,
+        "inserted": 0,
+        "low_overlap": 30
+      },
+      {
+        "bin": "1\u20132",
+        "segments": 1627,
+        "gmapping_motion_gate": 1515,
+        "inserted": 0,
+        "low_overlap": 111,
+        "search_boundary": 1
+      },
+      {
+        "bin": "2\u20133",
+        "segments": 1408,
+        "gmapping_motion_gate": 1318,
+        "inserted": 0,
+        "low_overlap": 86,
+        "search_boundary": 4
+      },
+      {
+        "bin": "3\u20134",
+        "segments": 809,
+        "gmapping_motion_gate": 770,
+        "inserted": 0,
+        "low_overlap": 38,
+        "search_boundary": 1
+      },
+      {
+        "bin": ">4"
+      }
+    ]
+  },
+  "projection_by_endpoint_range": [
+    {
+      "bin": "0\u20131",
+      "projection": {
+        "n": 1087,
+        "median_m": 0.010755601897923562,
+        "p95_m": 0.01695396843337614,
+        "rmse_m": 0.011354087539969335
+      },
+      "total_wall": {
+        "n": 1087,
+        "median_m": 0.010352799130222225,
+        "p95_m": 0.05445848617362729,
+        "rmse_m": 0.03872657802696304
+      },
+      "wall_matched_projection": {
+        "n": 1071,
+        "median_m": 0.010850076409214201,
+        "p95_m": 0.01696902946425143,
+        "rmse_m": 0.011396515176322787
+      }
+    },
+    {
+      "bin": "1\u20132",
+      "projection": {
+        "n": 3490,
+        "median_m": 0.03415059092329714,
+        "p95_m": 0.05913901439027797,
+        "rmse_m": 0.03786785816141884
+      },
+      "total_wall": {
+        "n": 3490,
+        "median_m": 0.01623116404102385,
+        "p95_m": 0.19556553016660347,
+        "rmse_m": 0.11696482327036904
+      },
+      "wall_matched_projection": {
+        "n": 3306,
+        "median_m": 0.033868109652102144,
+        "p95_m": 0.05926150239588256,
+        "rmse_m": 0.03776867763124518
+      }
+    },
+    {
+      "bin": "2\u20133",
+      "projection": {
+        "n": 2725,
+        "median_m": 0.08378740187755594,
+        "p95_m": 0.12692809474094913,
+        "rmse_m": 0.08867799592786653
+      },
+      "total_wall": {
+        "n": 2725,
+        "median_m": 0.04253618184405541,
+        "p95_m": 0.3200358696865671,
+        "rmse_m": 0.2531603875420988
+      },
+      "wall_matched_projection": {
+        "n": 2552,
+        "median_m": 0.08378962419600203,
+        "p95_m": 0.12641930532723442,
+        "rmse_m": 0.08871310515696126
+      }
+    },
+    {
+      "bin": "3\u20134",
+      "projection": {
+        "n": 1828,
+        "median_m": 0.15342123392800727,
+        "p95_m": 0.2058719910566613,
+        "rmse_m": 0.15721374217764592
+      },
+      "total_wall": {
+        "n": 1828,
+        "median_m": 0.1294152100583789,
+        "p95_m": 0.5485020113402638,
+        "rmse_m": 0.32130398225166584
+      },
+      "wall_matched_projection": {
+        "n": 1644,
+        "median_m": 0.15333312014023992,
+        "p95_m": 0.20300557425794727,
+        "rmse_m": 0.15616060092690337
+      }
+    },
+    {
+      "bin": ">4"
+    }
+  ],
+  "theory": {
+    "height_m": 0.23,
+    "pitch_error_deg": 0.13,
+    "width_px": 640,
+    "height_px": 480,
+    "fy": 622.1654884818748,
+    "rows": [
+      {
+        "range_m": 0.5,
+        "pitch_013deg_m": 0.002988079563294814,
+        "pixel_1px_m": 0.00211673026890738,
+        "pixel_quantization_sd_m": 0.0006110473952777525,
+        "combined_1px_rss_m": 0.0036618528790612046,
+        "pitch_exact_max_m": 0.00300289635915596
+      },
+      {
+        "range_m": 1.5,
+        "pitch_013deg_m": 0.02271788849888289,
+        "pixel_1px_m": 0.01609315990844109,
+        "pixel_quantization_sd_m": 0.004645695102625079,
+        "combined_1px_rss_m": 0.027840478689963845,
+        "pitch_exact_max_m": 0.023059142424337153
+      },
+      {
+        "range_m": 2.5,
+        "pitch_013deg_m": 0.06217750637005904,
+        "pixel_1px_m": 0.04404601918750851,
+        "pixel_quantization_sd_m": 0.01271499051731973,
+        "combined_1px_rss_m": 0.07619773031176913,
+        "pitch_exact_max_m": 0.06374983074077667
+      },
+      {
+        "range_m": 3.5,
+        "pitch_013deg_m": 0.12136693317682326,
+        "pixel_1px_m": 0.08597530810610962,
+        "pixel_quantization_sd_m": 0.024818933639361704,
+        "combined_1px_rss_m": 0.14873360774447703,
+        "pitch_exact_max_m": 0.12570747158564055
+      },
+      {
+        "range_m": 5.0,
+        "pitch_013deg_m": 0.24714446514119723,
+        "pixel_1px_m": 0.175075047058137,
+        "pixel_quantization_sd_m": 0.050539812773700905,
+        "combined_1px_rss_m": 0.3028723472889814,
+        "pitch_exact_max_m": 0.2599676935571633
+      }
+    ]
+  },
+  "around_120s": [
+    {
+      "t": 119.7,
+      "frame_id": 593,
+      "segments": 5,
+      "range_min_m": 0.8969673173389694,
+      "range_max_m": 2.029341279111324,
+      "reason": "gmapping_motion_gate",
+      "inserted": false
+    },
+    {
+      "t": 119.9,
+      "frame_id": 594,
+      "segments": 6,
+      "range_min_m": 0.8853682401252984,
+      "range_max_m": 2.029341279111324,
+      "reason": "gmapping_motion_gate",
+      "inserted": false
+    },
+    {
+      "t": 120.1,
+      "frame_id": 595,
+      "segments": 5,
+      "range_min_m": 0.8706169279771924,
+      "range_max_m": 1.5064407181053567,
+      "reason": "gmapping_motion_gate",
+      "inserted": false
+    },
+    {
+      "t": 120.3,
+      "frame_id": 596,
+      "segments": 5,
+      "range_min_m": 0.8597180774822091,
+      "range_max_m": 1.5000879336943922,
+      "reason": "gmapping_motion_gate",
+      "inserted": false
+    }
+  ],
+  "qualifications": [
+    "Segment max endpoint range controls bin, inclusive lower and exclusive upper except final >=4; exact 4 absent.",
+    "Projection comparison uses evaluation-only actual camera vs command camera at the same inferred pixel; it excludes detector edge picking error.",
+    "Total wall error uses GT chassis pose, and includes detection, association and projection error.",
+    "Peer/self occlusion is not an RBPF rejection reason; instance masks are unavailable, so physical occlusion count is not inferred from nonempty detections."
+  ]
+}

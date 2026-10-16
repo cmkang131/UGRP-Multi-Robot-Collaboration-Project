@@ -1,0 +1,15 @@
+{
+  "pr": 433,
+  "previous_head": "35422105b6901bb907fe958c1ac08ac4ec8e2d5a",
+  "review": "New P1: full pulses bypassed native authorization when pulse_budget=off",
+  "fix": "Separate opt-in pulse_authorization=current_go_v1 from duration selection; require it in v210 and wire native full-pulse port to the existing Transport.authorize handler",
+  "verification": {
+    "tests": "40 passed",
+    "native_stub": "Transport.step -> real port -> stub motor; current permit accepted, duplicate dispatch and revoked route key rejected without motor mutation",
+    "log": "outputs/merge-train-20261012/pr433-native-authorization-tests.txt",
+    "sha256": "220972b685606b84521443ca0450de15ca8bc30f733ee72a60ad73a3d546359a"
+  },
+  "physical_runs": 0,
+  "source_seal_v209": "446 current hashes unchanged",
+  "legacy_default": "require_authorization=False; historical catalogs unchanged"
+}

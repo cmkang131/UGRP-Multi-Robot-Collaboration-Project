@@ -1,0 +1,19 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "zone-final-pair-heldout-v91",
+      "version": "3.3.0",
+      "purpose": "DRAFT v91 teacher-only held-out unloaded collection; two other final v3 maps, seed 911, 370 SIM s per map; never training",
+      "entry": "scripts/run_final_pair_fast.py",
+      "runner": "scripts.run_final_pair_fast",
+      "docs": "PHYSICS_HANDOFF.md",
+      "requires": "Committed source; owned non-exclusive --sim-slot or exclusive host lock; equivalent fast v91 clearance interlock; unloaded only; floor_light_v1; weld OFF",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": ["--check", "--map-id", "--expected-source-sha"],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

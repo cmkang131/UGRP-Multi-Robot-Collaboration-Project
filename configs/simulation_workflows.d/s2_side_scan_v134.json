@@ -1,0 +1,10 @@
+{
+  "schema":"ugrp.local_workflow_catalog.v1",
+  "workflows":[{"id":"zone-s2-side-scan-v134","version":"7.27.0",
+    "purpose":"s2v48 one seed1054 side scan, own RGB obstacle appearance only, no transport",
+    "entry":"scripts/run_s2_side_scan.py","runner":"scripts.run_s2_side_scan",
+    "docs":"experiments/2026-10-06-s2-realism/README.md",
+    "requires":"committed registration; exclusive agent_lock; 15min wall and 45s SIM budgets",
+    "output_flag":"--output","output_kind":"directory","required_inputs":["--expected-source-sha"],
+    "side_effect":"local_simulation","adapter":"managed_legacy_cli"}]
+}

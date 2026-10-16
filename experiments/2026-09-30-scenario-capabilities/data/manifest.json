@@ -1,0 +1,2770 @@
+{
+  "audit_base": "a8094cc14e098a55483f53a3c49bf6a0b116043d",
+  "source_head": "d17ca4345affef8cf027e121cf1f3197b36c23e0",
+  "branch": "codex/scenario-capabilities",
+  "audit_script_sha256": "07a40222f0b8fdf28ac39ba6fa5f7477a141014ff5a919f9ba403bfe427b04e8",
+  "audit_base_inputs_equal": true,
+  "audit_tests_sha256": "3c4a0e05f6ae4dcc7d0ebb9c807174b0a8d696b37593b356d22fda32d11bffe4",
+  "python": "3.12.13",
+  "platform": "macOS-27.2-arm64-arm-64bit",
+  "input_sha256": {
+    "configs/zone_study_scenarios/s1_normal_mixed.json": "97709cbd901c15d2f45fd996659b836763ae9f197e15109e2fdaf12fb16f730b",
+    "configs/zone_study_scenarios/s2_unmapped_blockage.json": "7a08d478d2adf91ed9da60f48cd55bef7aa10fc1c8988aa23531b84540d50632",
+    "configs/zone_study_scenarios/s3_late_rendezvous.json": "db261ce07a558947fcece3158b8fc7c3d120dd0b5fbd7262d8071b054c871c0f",
+    "configs/zone_study_scenarios/s4_narrow_door_standoff.json": "a108895c7740186ad784e321325f4b7e885c8c4568e4972e49613fcfc953e595",
+    "configs/zone_study_scenarios/s5_moved_dropped_item.json": "6720b8f03fb480ee21e8667fa5c1483924a4acb4ca20d3c1b1b7b11d54fbdd80",
+    "configs/zone_study_scenarios/s6_novel_relation.json": "2c165d0971717ca8cc27d9558bc1458740edcc45985882f2ba458a9a402ba22b",
+    "configs/zone_study_scenarios_v2/s1_normal_mixed_v2.json": "8e1e98d936cb1e06c8dbd38fb8cb8bbea08c66f0963ca7a96f5aebe07dc0bd04",
+    "configs/zone_study_scenarios_v2/s2_unmapped_blockage_v2.json": "59828ecf8c56918dbd52e72cb2deaee3b469c755dd7d1373a821ccc99c2fb6de",
+    "configs/zone_study_scenarios_v2/s3_late_rendezvous_v2.json": "d49cd32bfaa4446be50d0366c231fb39c4ad801ee3f4e5be080021b0f7c494ce",
+    "configs/zone_study_scenarios_v2/s4_narrow_door_standoff_v2.json": "eb7fd21d856b8db5673f150754e6d27a0d643d8c07f6263f349ee13bb307793a",
+    "configs/zone_study_scenarios_v2/s5_moved_dropped_item_v2.json": "6aa1171c158a830bfe2fb4c4958dabe2522144175c40465009c52d77ec9d8e5a",
+    "configs/zone_study_scenarios_v2/s6_novel_relation_v2.json": "c5930160d4cfff2e6f7e20c1222697dd865498a6c16e01796e8ef6e7132165f1",
+    "harness/m1_owncam_delivery.py": "767cda1a6b523e19c0f7ef0f32e6b453799978e623b8e37bfa493b23f9993e09",
+    "harness/pair_owncam_approach.py": "75058e95ff0f78dc388e9e34deba59f0524ef0647fb4e8a2597852ae0440f184",
+    "harness/static_keepouts.py": "2b4faf26317f45cbdd7cb2deab8fae87a9e460f96778c8af185ec2ac00d57aa3",
+    "harness/vision_pose_source.py": "dc5d5f8d0c0eafae500992ef82635ee6810ba1f71e49f04dc21a298955f6aba7",
+    "harness/zone_final_env.py": "cb1f8111cb7a3dbaf763223ab50543fbf78513d38509352013728c3164ac20b8",
+    "harness/zone_map_schematic.py": "84e75a70448786ef331df81bf9aef6026b7a0331f629f1e4fde8887efe2622b9",
+    "harness/zone_own_executor.py": "55ed01bba2271a647e5df1718b6876f3b887c33e1d9b0617e43d52cc46fbb4c5",
+    "harness/zone_pair_executor.py": "36813f20315e6e9cd7640a7e6fb47bbb9741df69ba027e576e8171b2e6a90465",
+    "harness/zone_scenario_feasibility.py": "e00376beb0f503c5092f848021963e13cf82c138398ada76c13e6576b2ea349a",
+    "harness/zone_study_contract.py": "f6e4c5fef3bdb7e332d2871b309bec1a46e3d1d98533050e723094200dc460f6",
+    "harness/zone_study_inputs.py": "179489a24bc76e73a52bebec1f5918b1a1ac0d128480864ae35debf57c007e0a",
+    "harness/zone_study_integration.py": "5997f0b431fa85c4d5df51f96297924c7f0c9df63b052d853f963662ad997d06",
+    "harness/zone_study_scenarios.py": "69a653ca4e262d22fc6266a02c486c0952a96c45034b2719d46bce69e81e0aa5",
+    "harness/zone_team_footprint.py": "a482d6fdbd42f74fc47178779fc55fe3be6a6f6c168d0b7a385fc399fb575e0b",
+    "maps/zones/zone_wide_door_geometry_v2.json": "0a8f5fdc3b3ad01710971a9f5caf020eb76c7e90f3da5713e669d035b4e7ebaf",
+    "maps/zones_final/catalog.json": "2b9080dd51b52c3a6ad4f88c844785cda3be7cd6ac4844dfe8a2aa56f2b05577",
+    "maps/zones_final/zone_wide_corridor_final_v1.json": "f968251ae0e9a3af3e2198fdce850ed649b06f370bf4c8b526c921903faef4fc",
+    "maps/zones_final/zone_wide_two_doors_final_v1.json": "e93bce155c01aef3cc7c8418c4d921aee1e50b9539167fb7b9f94cdd2a29d888",
+    "scripts/check_zone_scenarios.py": "35ef7d5e6b33db35f2727f2521a8ee86c9283ec142d3dc713661951844d0b1f6",
+    "scripts/run_zone_study_integration.py": "85508cc58e1cba0f1fc11e3b7ef656c0c7648202ff1086c274c3dbaa64a99edd",
+    "sim/research_dispatch_arena.py": "eb4593ce5d6ce5c9406e903ad885262cc092113b013f50714fde26f01918af52",
+    "sim/zone_arena.py": "191c1aac15b2796514ea21a290be1b2e5b497754c12abd6f7d15df614a1630c8",
+    "sim/zone_cargo.py": "84cc956c22ca0d1b0d76fabcb4da61c33c73fcf77600d3079bced5658aa04a6b",
+    "sim/zone_geometry_scene.py": "39e2644d7650eed49417978df01b9eb5f1601664371b81c418e9d689e949e4b0",
+    "sim/zone_hidden_events.py": "7d05eb722202e49c4b4225986a51fb39c57d390b65b7d5c81cf5563ce8fe51dc",
+    "sim/zone_own_scene_provider.py": "68b3f649b957af34db30ebec39b93ee45d8f7aee7b84c479154cd2ffc833e48b",
+    "tests/test_zone_final_env.py": "f766ced295c5dae3bbb7a126b48f708a60b7d93f77d22e6cb9ecd847efd2d556",
+    "tests/test_zone_scenario_feasibility.py": "a5ad32ed45e914ba891af1c3101d18bda0af4fafa78245e88d4961f39b7dab59"
+  },
+  "symbols": {
+    "harness/zone_scenario_feasibility.py": {
+      "ScenarioInfeasible": [
+        82,
+        83
+      ],
+      "ScenarioItem": [
+        90,
+        106
+      ],
+      "required_robots": [
+        109,
+        111
+      ],
+      "scenario_items": [
+        114,
+        136
+      ],
+      "load_static_map": [
+        139,
+        141
+      ],
+      "min_width": [
+        147,
+        159
+      ],
+      "item_rects": [
+        162,
+        184
+      ],
+      "landing_half_extents": [
+        187,
+        191
+      ],
+      "landing_fits": [
+        194,
+        200
+      ],
+      "zone_rect": [
+        203,
+        206
+      ],
+      "passage_fit": [
+        209,
+        224
+      ],
+      "Lattice": [
+        231,
+        271
+      ],
+      "_wrap": [
+        274,
+        275
+      ],
+      "Clearance": [
+        278,
+        319
+      ],
+      "CarryRoute": [
+        326,
+        353
+      ],
+      "_search": [
+        356,
+        376
+      ],
+      "_path": [
+        379,
+        384
+      ],
+      "crossing_zones": [
+        387,
+        404
+      ],
+      "_passages_on": [
+        407,
+        409
+      ],
+      "carry_route": [
+        412,
+        485
+      ],
+      "_no_route_reason": [
+        488,
+        499
+      ],
+      "Finding": [
+        506,
+        515
+      ],
+      "_other_rects": [
+        518,
+        520
+      ],
+      "check_carry_routes": [
+        523,
+        537
+      ],
+      "check_placement_blocking": [
+        540,
+        608
+      ],
+      "check_robot_count": [
+        611,
+        631
+      ],
+      "_event_rects": [
+        634,
+        642
+      ],
+      "declared_unsolvable": [
+        645,
+        654
+      ],
+      "check_hidden_events": [
+        660,
+        731
+      ],
+      "check_free_robot_access": [
+        734,
+        784
+      ],
+      "FeasibilityReport": [
+        791,
+        823
+      ],
+      "evaluate": [
+        830,
+        865
+      ],
+      "_digest": [
+        868,
+        869
+      ],
+      "report_ko": [
+        872,
+        936
+      ],
+      "footprint": [
+        100,
+        101
+      ],
+      "record": [
+        818,
+        823
+      ],
+      "build": [
+        242,
+        250
+      ],
+      "size": [
+        253,
+        254
+      ],
+      "pose": [
+        256,
+        258
+      ],
+      "nearest": [
+        260,
+        267
+      ],
+      "flat": [
+        269,
+        271
+      ],
+      "__init__": [
+        287,
+        294
+      ],
+      "free": [
+        296,
+        303
+      ],
+      "clear": [
+        305,
+        319
+      ],
+      "ok": [
+        809,
+        810
+      ],
+      "goal_pred": [
+        438,
+        439
+      ],
+      "verdict": [
+        803,
+        806
+      ],
+      "raise_for_verdict": [
+        812,
+        816
+      ]
+    },
+    "harness/zone_final_env.py": {
+      "FinalEnvError": [
+        84,
+        85
+      ],
+      "_dump": [
+        91,
+        92
+      ],
+      "sha256_bytes": [
+        95,
+        96
+      ],
+      "final_map_path": [
+        99,
+        102
+      ],
+      "maps_dir_for": [
+        105,
+        106
+      ],
+      "final_map": [
+        109,
+        120
+      ],
+      "write_maps": [
+        123,
+        137
+      ],
+      "tag_hits": [
+        140,
+        154
+      ],
+      "_footprints": [
+        157,
+        159
+      ],
+      "check_map": [
+        162,
+        194
+      ],
+      "_finite": [
+        200,
+        201
+      ],
+      "measured_gap_m": [
+        204,
+        231
+      ],
+      "passage_widths": [
+        234,
+        259
+      ],
+      "free_grid": [
+        265,
+        280
+      ],
+      "_labels": [
+        283,
+        300
+      ],
+      "_rect_labels": [
+        303,
+        310
+      ],
+      "reachability": [
+        313,
+        362
+      ],
+      "v2_id": [
+        368,
+        369
+      ],
+      "scenario_v2": [
+        372,
+        382
+      ],
+      "diff_paths": [
+        385,
+        398
+      ],
+      "scenario_diff": [
+        401,
+        407
+      ],
+      "write_scenarios": [
+        410,
+        424
+      ],
+      "_rel": [
+        427,
+        428
+      ],
+      "catalog": [
+        431,
+        461
+      ],
+      "write_catalog": [
+        464,
+        469
+      ],
+      "check_all": [
+        472,
+        495
+      ],
+      "main": [
+        498,
+        515
+      ]
+    },
+    "harness/static_keepouts.py": {
+      "keepout_rects": [
+        25,
+        29
+      ],
+      "_local": [
+        32,
+        38
+      ],
+      "rect_distance": [
+        41,
+        44
+      ],
+      "inside_rect": [
+        47,
+        49
+      ],
+      "rect_corners": [
+        52,
+        56
+      ],
+      "polygon_at": [
+        59,
+        63
+      ],
+      "_axes": [
+        66,
+        71
+      ],
+      "polygons_overlap": [
+        74,
+        81
+      ],
+      "pose_clear": [
+        84,
+        92
+      ],
+      "_wrap": [
+        95,
+        96
+      ],
+      "swept_clear": [
+        99,
+        111
+      ],
+      "disc_footprint": [
+        114,
+        117
+      ],
+      "passage_zones": [
+        123,
+        139
+      ]
+    },
+    "harness/zone_team_footprint.py": {
+      "box_grasps": [
+        42,
+        44
+      ],
+      "rect": [
+        47,
+        49
+      ],
+      "centred_rect": [
+        52,
+        54
+      ],
+      "circle": [
+        57,
+        61
+      ],
+      "transform": [
+        64,
+        67
+      ],
+      "convex_hull": [
+        70,
+        87
+      ],
+      "bounds": [
+        90,
+        93
+      ],
+      "item_polygons": [
+        96,
+        111
+      ],
+      "grasps": [
+        114,
+        119
+      ],
+      "station_offset": [
+        122,
+        127
+      ],
+      "carrier_polygons": [
+        130,
+        135
+      ],
+      "TeamFootprint": [
+        138,
+        171
+      ],
+      "team_footprint": [
+        174,
+        178
+      ],
+      "_keepouts": [
+        181,
+        185
+      ],
+      "pose_clear": [
+        188,
+        195
+      ],
+      "swept_clear": [
+        198,
+        201
+      ],
+      "point_in_convex": [
+        204,
+        217
+      ],
+      "polygons_inside_rect": [
+        220,
+        223
+      ],
+      "cross": [
+        76,
+        77
+      ],
+      "__init__": [
+        144,
+        153
+      ],
+      "at": [
+        155,
+        157
+      ],
+      "hull_at": [
+        159,
+        160
+      ],
+      "radius": [
+        162,
+        163
+      ],
+      "record": [
+        165,
+        171
+      ]
+    },
+    "harness/zone_map_schematic.py": {
+      "digest": [
+        60,
+        62
+      ],
+      "digest_bytes": [
+        65,
+        66
+      ],
+      "_round": [
+        69,
+        79
+      ],
+      "map_path": [
+        82,
+        85
+      ],
+      "load_map": [
+        88,
+        97
+      ],
+      "pickup_bays": [
+        100,
+        114
+      ],
+      "bay_ids": [
+        117,
+        120
+      ],
+      "_walls": [
+        123,
+        132
+      ],
+      "_passages": [
+        135,
+        137
+      ],
+      "_regions": [
+        140,
+        146
+      ],
+      "_landmarks": [
+        149,
+        166
+      ],
+      "public_map": [
+        169,
+        184
+      ],
+      "_font": [
+        203,
+        204
+      ],
+      "_Plan": [
+        207,
+        227
+      ],
+      "render_schematic": [
+        230,
+        309
+      ],
+      "schematic_ref_id": [
+        312,
+        313
+      ],
+      "map_bundle": [
+        316,
+        331
+      ],
+      "static_map_section": [
+        334,
+        346
+      ],
+      "verify_static_map_section": [
+        349,
+        359
+      ],
+      "__init__": [
+        210,
+        212
+      ],
+      "px": [
+        214,
+        216
+      ],
+      "box": [
+        218,
+        222
+      ],
+      "size": [
+        225,
+        227
+      ]
+    },
+    "harness/zone_study_scenarios.py": {
+      "ScenarioError": [
+        116,
+        117
+      ],
+      "cargo_table": [
+        123,
+        136
+      ],
+      "half_footprint": [
+        139,
+        144
+      ],
+      "_rect": [
+        147,
+        149
+      ],
+      "_overlaps": [
+        152,
+        153
+      ],
+      "_inside": [
+        156,
+        157
+      ],
+      "scenario_ids": [
+        163,
+        164
+      ],
+      "scenario_path": [
+        167,
+        171
+      ],
+      "load": [
+        174,
+        181
+      ],
+      "load_all": [
+        184,
+        185
+      ],
+      "public_part": [
+        188,
+        200
+      ],
+      "private_part": [
+        203,
+        205
+      ],
+      "bundle_for": [
+        208,
+        211
+      ],
+      "leader_rotation": [
+        214,
+        216
+      ],
+      "Report": [
+        223,
+        242
+      ],
+      "_numbers": [
+        253,
+        265
+      ],
+      "_strings": [
+        268,
+        279
+      ],
+      "private_ids": [
+        282,
+        292
+      ],
+      "check_public_no_private_info": [
+        295,
+        322
+      ],
+      "check_order_sheet_private_independent": [
+        325,
+        351
+      ],
+      "_passages": [
+        354,
+        355
+      ],
+      "free_gaps_m": [
+        358,
+        375
+      ],
+      "_location_refs": [
+        378,
+        382
+      ],
+      "check_hidden_events_private_only": [
+        385,
+        441
+      ],
+      "_event_target": [
+        444,
+        507
+      ],
+      "_event_discovery": [
+        510,
+        530
+      ],
+      "check_cargo_matches_sim": [
+        533,
+        573
+      ],
+      "check_placements_match_public_slots": [
+        576,
+        681
+      ],
+      "check_leader_rotation": [
+        684,
+        694
+      ],
+      "validate": [
+        700,
+        732
+      ],
+      "validate_all": [
+        735,
+        737
+      ],
+      "manifest": [
+        740,
+        767
+      ],
+      "scenario_table": [
+        770,
+        780
+      ],
+      "main": [
+        783,
+        801
+      ],
+      "problems": [
+        231,
+        232
+      ],
+      "ok": [
+        235,
+        236
+      ],
+      "raise_for_problems": [
+        238,
+        242
+      ]
+    },
+    "harness/zone_study_contract.py": {
+      "ContractViolation": [
+        70,
+        71
+      ],
+      "digest": [
+        74,
+        76
+      ],
+      "scenario_ref": [
+        84,
+        99
+      ],
+      "Condition": [
+        112,
+        137
+      ],
+      "condition": [
+        172,
+        175
+      ],
+      "leader_for_seed": [
+        178,
+        185
+      ],
+      "allowed_edges": [
+        188,
+        201
+      ],
+      "role_of": [
+        204,
+        213
+      ],
+      "channel_section": [
+        216,
+        224
+      ],
+      "condition_manifest": [
+        227,
+        241
+      ],
+      "_version": [
+        244,
+        248
+      ],
+      "registry_sha256": [
+        251,
+        258
+      ],
+      "registry_versions": [
+        264,
+        268
+      ],
+      "contract_version_for_registry": [
+        271,
+        282
+      ],
+      "Vocabulary": [
+        308,
+        319
+      ],
+      "structured_violations": [
+        322,
+        357
+      ],
+      "free_text_report": [
+        360,
+        385
+      ],
+      "language_violations": [
+        388,
+        392
+      ],
+      "message_violations": [
+        395,
+        422
+      ],
+      "check_message": [
+        425,
+        429
+      ],
+      "message_envelope": [
+        432,
+        440
+      ],
+      "_walk": [
+        524,
+        531
+      ],
+      "forbidden_key_hits": [
+        534,
+        546
+      ],
+      "non_ascii_keys": [
+        549,
+        552
+      ],
+      "_value_hits": [
+        555,
+        576
+      ],
+      "_closed": [
+        579,
+        590
+      ],
+      "_is_num": [
+        593,
+        594
+      ],
+      "_vec": [
+        597,
+        603
+      ],
+      "_num": [
+        606,
+        607
+      ],
+      "_int": [
+        610,
+        612
+      ],
+      "_bool": [
+        615,
+        616
+      ],
+      "_str": [
+        619,
+        620
+      ],
+      "_opt": [
+        623,
+        624
+      ],
+      "_tokens": [
+        627,
+        630
+      ],
+      "_strs": [
+        633,
+        637
+      ],
+      "_rgba": [
+        640,
+        641
+      ],
+      "_door_posts": [
+        668,
+        679
+      ],
+      "_either": [
+        690,
+        694
+      ],
+      "_points": [
+        700,
+        705
+      ],
+      "_typed": [
+        722,
+        735
+      ],
+      "_sha": [
+        738,
+        741
+      ],
+      "vocabulary_from_payload": [
+        744,
+        769
+      ],
+      "_rgb_hits": [
+        772,
+        793
+      ],
+      "_token": [
+        796,
+        800
+      ],
+      "_whole": [
+        803,
+        806
+      ],
+      "_seq": [
+        809,
+        812
+      ],
+      "map_slot_ids": [
+        815,
+        829
+      ],
+      "map_bay_ids": [
+        832,
+        836
+      ],
+      "_public_map_hits": [
+        839,
+        914
+      ],
+      "_static_map_hits": [
+        917,
+        944
+      ],
+      "_order_sheet_hits": [
+        947,
+        1026
+      ],
+      "_history_hits": [
+        1029,
+        1058
+      ],
+      "_inbox_hits": [
+        1061,
+        1095
+      ],
+      "_shape_hits": [
+        1098,
+        1133
+      ],
+      "boundary_manifest": [
+        1155,
+        1191
+      ],
+      "_pinned_hits": [
+        1200,
+        1230
+      ],
+      "thaw_for_json": [
+        1233,
+        1247
+      ],
+      "payload_violations": [
+        1250,
+        1300
+      ],
+      "validate_robot_payload": [
+        1303,
+        1310
+      ],
+      "_require": [
+        1388,
+        1403
+      ],
+      "call_record_violations": [
+        1406,
+        1439
+      ],
+      "message_record_violations": [
+        1442,
+        1465
+      ],
+      "_delivery_hits": [
+        1468,
+        1506
+      ],
+      "action_record_violations": [
+        1509,
+        1526
+      ],
+      "validate_log_record": [
+        1533,
+        1541
+      ],
+      "input_allowlist": [
+        128,
+        129
+      ],
+      "required_keys": [
+        132,
+        133
+      ],
+      "free_text_allowed": [
+        136,
+        137
+      ],
+      "allowed": [
+        318,
+        319
+      ],
+      "check": [
+        691,
+        693
+      ]
+    },
+    "harness/zone_study_inputs.py": {
+      "_token": [
+        65,
+        68
+      ],
+      "load_scenario": [
+        71,
+        73
+      ],
+      "eval_section": [
+        76,
+        78
+      ],
+      "hidden_events": [
+        276,
+        278
+      ],
+      "validate_scenario": [
+        86,
+        132
+      ],
+      "_order": [
+        135,
+        197
+      ],
+      "leader_rotation": [
+        200,
+        202
+      ],
+      "_kind_table": [
+        205,
+        208
+      ],
+      "_build_sheet": [
+        211,
+        224
+      ],
+      "_map_ref": [
+        227,
+        232
+      ],
+      "order_sheet": [
+        235,
+        237
+      ],
+      "OrderSheetSource": [
+        240,
+        297
+      ],
+      "vocabulary": [
+        300,
+        310
+      ],
+      "own_rgb_ref": [
+        316,
+        323
+      ],
+      "command_entry": [
+        326,
+        336
+      ],
+      "belief_skeleton": [
+        339,
+        342
+      ],
+      "_trim": [
+        345,
+        347
+      ],
+      "build_call_input": [
+        353,
+        400
+      ],
+      "payload_sha256": [
+        403,
+        404
+      ],
+      "call_input_bundle": [
+        407,
+        418
+      ],
+      "provenance": [
+        421,
+        435
+      ],
+      "call_log_record": [
+        441,
+        462
+      ],
+      "message_log_record": [
+        465,
+        486
+      ],
+      "action_log_record": [
+        489,
+        499
+      ],
+      "static_map_for_call": [
+        502,
+        504
+      ],
+      "__init__": [
+        243,
+        248
+      ],
+      "scenario_id": [
+        251,
+        252
+      ],
+      "scenario_ref": [
+        255,
+        257
+      ],
+      "pinned": [
+        260,
+        266
+      ],
+      "seeds": [
+        269,
+        270
+      ],
+      "sheet": [
+        272,
+        274
+      ],
+      "assert_unchanged": [
+        280,
+        287
+      ],
+      "manifest": [
+        289,
+        297
+      ]
+    },
+    "harness/zone_own_executor.py": {
+      "_Job": [
+        85,
+        93
+      ],
+      "ZoneOwnExecutor": [
+        96,
+        784
+      ],
+      "__getattr__": [
+        787,
+        792
+      ],
+      "__init__": [
+        99,
+        167
+      ],
+      "_require_owncam": [
+        170,
+        176
+      ],
+      "_next_id": [
+        178,
+        180
+      ],
+      "_emit": [
+        182,
+        191
+      ],
+      "drain_events": [
+        193,
+        195
+      ],
+      "on_command": [
+        198,
+        215
+      ],
+      "on_frame": [
+        217,
+        239
+      ],
+      "_update_gate": [
+        241,
+        246
+      ],
+      "_ack": [
+        249,
+        261
+      ],
+      "_start": [
+        263,
+        271
+      ],
+      "_token": [
+        274,
+        275
+      ],
+      "deliver": [
+        277,
+        305
+      ],
+      "pair_readiness": [
+        307,
+        310
+      ],
+      "pair_carry": [
+        312,
+        331
+      ],
+      "goto": [
+        333,
+        351
+      ],
+      "_goto_goal": [
+        353,
+        369
+      ],
+      "look_around": [
+        371,
+        372
+      ],
+      "hold": [
+        374,
+        379
+      ],
+      "abort": [
+        383,
+        397
+      ],
+      "deadline": [
+        400,
+        401
+      ],
+      "expire_if_due": [
+        403,
+        413
+      ],
+      "cancel": [
+        415,
+        424
+      ],
+      "refuse": [
+        426,
+        428
+      ],
+      "stop": [
+        430,
+        434
+      ],
+      "_record": [
+        437,
+        441
+      ],
+      "_finish": [
+        443,
+        449
+      ],
+      "_fail": [
+        451,
+        469
+      ],
+      "_end_job": [
+        471,
+        504
+      ],
+      "_holding_after_deliver": [
+        506,
+        514
+      ],
+      "step": [
+        516,
+        535
+      ],
+      "_stationary_bootstrap": [
+        537,
+        562
+      ],
+      "_step_pair_carry": [
+        564,
+        565
+      ],
+      "_step_hold": [
+        567,
+        574
+      ],
+      "_step_deliver": [
+        576,
+        613
+      ],
+      "_skill_for": [
+        615,
+        620
+      ],
+      "_step_goto": [
+        622,
+        641
+      ],
+      "_step_look_around": [
+        643,
+        657
+      ],
+      "_tick_sweep": [
+        659,
+        727
+      ],
+      "_sweep_steps": [
+        729,
+        756
+      ],
+      "_arm_steps": [
+        758,
+        767
+      ],
+      "summary": [
+        770,
+        779
+      ],
+      "_bootstrap_summary": [
+        781,
+        784
+      ],
+      "make": [
+        618,
+        619
+      ]
+    },
+    "harness/zone_pair_executor.py": {
+      "_digest": [
+        24,
+        25
+      ],
+      "make_plan": [
+        28,
+        108
+      ],
+      "_OwnPort": [
+        111,
+        126
+      ],
+      "carry_role_sign": [
+        129,
+        131
+      ],
+      "m2_controller": [
+        134,
+        246
+      ],
+      "PairExecution": [
+        249,
+        430
+      ],
+      "PairTeam": [
+        433,
+        630
+      ],
+      "__init__": [
+        440,
+        499
+      ],
+      "apply": [
+        116,
+        117
+      ],
+      "hold": [
+        119,
+        120
+      ],
+      "capture": [
+        122,
+        126
+      ],
+      "RoutedM2": [
+        143,
+        231
+      ],
+      "log": [
+        271,
+        272
+      ],
+      "save": [
+        274,
+        278
+      ],
+      "on_command": [
+        280,
+        285
+      ],
+      "abort": [
+        287,
+        296
+      ],
+      "_clear": [
+        298,
+        302
+      ],
+      "check": [
+        304,
+        332
+      ],
+      "step": [
+        334,
+        389
+      ],
+      "next_wake": [
+        391,
+        393
+      ],
+      "arm_step": [
+        395,
+        430
+      ],
+      "start": [
+        501,
+        587
+      ],
+      "poll": [
+        589,
+        601
+      ],
+      "_carry_yaw_record": [
+        603,
+        614
+      ],
+      "records": [
+        616,
+        630
+      ],
+      "policy": [
+        147,
+        148
+      ],
+      "relative_report": [
+        150,
+        151
+      ],
+      "global_certificate": [
+        153,
+        154
+      ],
+      "begin_scheduled_reobserve": [
+        156,
+        157
+      ],
+      "reset_object_anchor": [
+        159,
+        160
+      ],
+      "reset_phase_budget": [
+        162,
+        163
+      ],
+      "align_stop_ready": [
+        165,
+        166
+      ],
+      "align_look_choices": [
+        168,
+        179
+      ],
+      "preclose_check": [
+        181,
+        182
+      ],
+      "record_standoff": [
+        184,
+        185
+      ],
+      "fail": [
+        187,
+        190
+      ],
+      "_wait_carry": [
+        192,
+        197
+      ],
+      "door_schedule": [
+        199,
+        231
+      ],
+      "refuse": [
+        506,
+        511
+      ],
+      "leg_command": [
+        209,
+        213
+      ]
+    },
+    "harness/zone_study_integration.py": {
+      "file_sha256": [
+        136,
+        137
+      ],
+      "check_actor": [
+        140,
+        145
+      ],
+      "model_config": [
+        148,
+        150
+      ],
+      "load_pose_providers": [
+        156,
+        160
+      ],
+      "pose_provider_spec": [
+        163,
+        177
+      ],
+      "provider_record": [
+        180,
+        188
+      ],
+      "build_pose_provider": [
+        191,
+        196
+      ],
+      "check_pose_provider": [
+        199,
+        215
+      ],
+      "PairStatusBus": [
+        221,
+        248
+      ],
+      "Plan": [
+        255,
+        258
+      ],
+      "executor_plan": [
+        261,
+        293
+      ],
+      "OwnFrame": [
+        300,
+        304
+      ],
+      "RobotLink": [
+        307,
+        316
+      ],
+      "_NoStoredFrames": [
+        319,
+        326
+      ],
+      "ModelAdapter": [
+        330,
+        337
+      ],
+      "_LiveTransport": [
+        340,
+        345
+      ],
+      "IntegratedTrial": [
+        348,
+        626
+      ],
+      "condition_invariant_config": [
+        629,
+        632
+      ],
+      "__init__": [
+        351,
+        415
+      ],
+      "config": [
+        232,
+        240
+      ],
+      "config_sha256": [
+        242,
+        243
+      ],
+      "record": [
+        245,
+        248
+      ],
+      "frame_at": [
+        312,
+        312
+      ],
+      "belief": [
+        313,
+        313
+      ],
+      "job": [
+        314,
+        314
+      ],
+      "call": [
+        315,
+        315
+      ],
+      "clock": [
+        316,
+        316
+      ],
+      "pick": [
+        322,
+        323
+      ],
+      "manifest": [
+        325,
+        326
+      ],
+      "submit": [
+        343,
+        345
+      ],
+      "sim_output_tokens": [
+        417,
+        419
+      ],
+      "cost_summary": [
+        421,
+        427
+      ],
+      "begin": [
+        430,
+        435
+      ],
+      "step_to": [
+        437,
+        439
+      ],
+      "on_executor_event": [
+        441,
+        456
+      ],
+      "decision_budget_spent": [
+        458,
+        459
+      ],
+      "quiescent": [
+        461,
+        464
+      ],
+      "decision_end_reason": [
+        466,
+        470
+      ],
+      "end_state": [
+        472,
+        501
+      ],
+      "finish": [
+        503,
+        511
+      ],
+      "snapshot": [
+        514,
+        525
+      ],
+      "build_inputs": [
+        527,
+        544
+      ],
+      "_on_action": [
+        547,
+        572
+      ],
+      "_remember_command": [
+        574,
+        582
+      ],
+      "_arm_reask": [
+        584,
+        598
+      ],
+      "wakeups": [
+        601,
+        604
+      ],
+      "study_config": [
+        606,
+        626
+      ]
+    },
+    "scripts/run_zone_study_integration.py": {
+      "runtime_files": [
+        79,
+        82
+      ],
+      "git": [
+        86,
+        87
+      ],
+      "jsonl": [
+        90,
+        92
+      ],
+      "HostRobotLink": [
+        98,
+        141
+      ],
+      "StudyTeamHost": [
+        145,
+        286
+      ],
+      "evaluation_top_config": [
+        293,
+        300
+      ],
+      "load_prereg": [
+        303,
+        307
+      ],
+      "_StubLink": [
+        310,
+        315
+      ],
+      "host_spec": [
+        318,
+        346
+      ],
+      "run_bundle": [
+        349,
+        403
+      ],
+      "placements_match": [
+        406,
+        413
+      ],
+      "robot_eval": [
+        419,
+        440
+      ],
+      "check_run_source": [
+        446,
+        469
+      ],
+      "run_loop": [
+        472,
+        505
+      ],
+      "run_trial": [
+        508,
+        585
+      ],
+      "write_outputs": [
+        588,
+        649
+      ],
+      "write_study": [
+        652,
+        706
+      ],
+      "llm_driver": [
+        709,
+        715
+      ],
+      "run_llm_trial": [
+        718,
+        746
+      ],
+      "main": [
+        749,
+        792
+      ],
+      "__init__": [
+        311,
+        312
+      ],
+      "clock": [
+        120,
+        121
+      ],
+      "frame_at": [
+        123,
+        124
+      ],
+      "belief": [
+        126,
+        127
+      ],
+      "job": [
+        129,
+        132
+      ],
+      "call": [
+        134,
+        141
+      ],
+      "hidden_log": [
+        197,
+        198
+      ],
+      "hidden_tick": [
+        200,
+        203
+      ],
+      "referee_truth": [
+        206,
+        227
+      ],
+      "_no_layer": [
+        230,
+        231
+      ],
+      "settle": [
+        233,
+        242
+      ],
+      "advance_to": [
+        244,
+        271
+      ],
+      "close": [
+        273,
+        286
+      ],
+      "__getattr__": [
+        314,
+        315
+      ],
+      "start": [
+        727,
+        730
+      ],
+      "attempt_fn": [
+        732,
+        735
+      ],
+      "tapped": [
+        107,
+        117
+      ],
+      "pose_factory": [
+        153,
+        162
+      ]
+    },
+    "scripts/check_zone_scenarios.py": {
+      "scenario_paths": [
+        33,
+        39
+      ],
+      "main": [
+        42,
+        88
+      ]
+    },
+    "sim/zone_geometry_scene.py": {
+      "geometry_map": [
+        11,
+        14
+      ],
+      "GeometryCargoZoneScene": [
+        17,
+        51
+      ],
+      "from_spec": [
+        19,
+        25
+      ],
+      "_resolve": [
+        27,
+        45
+      ],
+      "transform": [
+        47,
+        51
+      ]
+    },
+    "sim/zone_hidden_events.py": {
+      "profile": [
+        60,
+        64
+      ],
+      "obstacle_xml": [
+        70,
+        85
+      ],
+      "_cargo_free_twin": [
+        88,
+        111
+      ],
+      "hidden_event_scene": [
+        114,
+        129
+      ],
+      "ActuatorFaults": [
+        135,
+        199
+      ],
+      "finger_holders": [
+        205,
+        212
+      ],
+      "HiddenEventPhysics": [
+        215,
+        287
+      ],
+      "transform": [
+        124,
+        125
+      ],
+      "__init__": [
+        218,
+        224
+      ],
+      "hold_wheels": [
+        149,
+        150
+      ],
+      "open_gripper": [
+        152,
+        153
+      ],
+      "_open_targets": [
+        155,
+        165
+      ],
+      "_expire": [
+        167,
+        172
+      ],
+      "_step": [
+        174,
+        199
+      ],
+      "tick": [
+        226,
+        228
+      ],
+      "holders": [
+        230,
+        231
+      ],
+      "apply": [
+        233,
+        287
+      ]
+    },
+    "sim/zone_arena.py": {
+      "_same_top": [
+        32,
+        35
+      ],
+      "_wall": [
+        115,
+        117
+      ],
+      "_divider": [
+        120,
+        128
+      ],
+      "_door": [
+        131,
+        133
+      ],
+      "_corridor_walls": [
+        142,
+        150
+      ],
+      "_corridor_passages": [
+        153,
+        165
+      ],
+      "wall_profile_record": [
+        205,
+        211
+      ],
+      "apply_wall_profile": [
+        214,
+        222
+      ],
+      "layout": [
+        225,
+        228
+      ],
+      "top_views": [
+        231,
+        233
+      ],
+      "build_authored_map": [
+        236,
+        266
+      ],
+      "static_map_text": [
+        269,
+        300
+      ],
+      "authored_map": [
+        303,
+        309
+      ],
+      "goal_counts": [
+        312,
+        326
+      ],
+      "episode": [
+        329,
+        361
+      ],
+      "actor_task": [
+        364,
+        379
+      ],
+      "_geom": [
+        382,
+        387
+      ],
+      "build_zone_xml": [
+        390,
+        452
+      ],
+      "_dispatch_compatible": [
+        455,
+        457
+      ],
+      "summary": [
+        460,
+        464
+      ],
+      "seg": [
+        278,
+        281
+      ]
+    },
+    "sim/zone_cargo.py": {
+      "Part": [
+        59,
+        75
+      ],
+      "Grasp": [
+        79,
+        90
+      ],
+      "CargoKind": [
+        94,
+        111
+      ],
+      "_handle": [
+        114,
+        117
+      ],
+      "_band": [
+        120,
+        123
+      ],
+      "_build": [
+        126,
+        202
+      ],
+      "kind": [
+        219,
+        224
+      ],
+      "with_mass": [
+        227,
+        230
+      ],
+      "part_masses": [
+        236,
+        239
+      ],
+      "_part_inertia": [
+        242,
+        251
+      ],
+      "mass_properties": [
+        254,
+        270
+      ],
+      "bounding_box": [
+        273,
+        289
+      ],
+      "spec_record": [
+        292,
+        304
+      ],
+      "visual_spec": [
+        307,
+        317
+      ],
+      "catalogue_record": [
+        320,
+        327
+      ],
+      "CargoInstance": [
+        334,
+        353
+      ],
+      "instances": [
+        356,
+        369
+      ],
+      "world_grasps": [
+        372,
+        383
+      ],
+      "_wrap": [
+        386,
+        387
+      ],
+      "body_element": [
+        390,
+        410
+      ],
+      "add_cargo_xml": [
+        413,
+        443
+      ],
+      "place": [
+        446,
+        457
+      ],
+      "volume": [
+        70,
+        75
+      ],
+      "approach_base": [
+        86,
+        90
+      ],
+      "body": [
+        341,
+        342
+      ],
+      "joint": [
+        345,
+        346
+      ],
+      "spec": [
+        348,
+        350
+      ],
+      "geom": [
+        352,
+        353
+      ]
+    },
+    "sim/research_dispatch_arena.py": {
+      "digest": [
+        23,
+        25
+      ],
+      "authored_map": [
+        28,
+        48
+      ],
+      "episode": [
+        51,
+        63
+      ],
+      "actor_task": [
+        66,
+        87
+      ],
+      "_geom": [
+        90,
+        95
+      ],
+      "build_scene_xml": [
+        98,
+        154
+      ]
+    },
+    "tests/test_zone_scenario_feasibility.py": {
+      "door_map": [
+        46,
+        47
+      ],
+      "two_doors_map": [
+        51,
+        52
+      ],
+      "corridor_map": [
+        56,
+        57
+      ],
+      "test_clearance_agrees_with_the_reused_footprint_check": [
+        63,
+        77
+      ],
+      "test_min_width_is_the_hull_width_of_the_formation": [
+        80,
+        89
+      ],
+      "test_crossing_zones_covers_multi_lane_doors_too": [
+        92,
+        97
+      ],
+      "test_item_rects_are_exact_for_boxes_and_bounded_for_cylinders": [
+        100,
+        105
+      ],
+      "test_required_robots_comes_from_the_sim_catalogue": [
+        108,
+        110
+      ],
+      "test_landing_fits_uses_the_catalogue_landing_rectangle": [
+        113,
+        118
+      ],
+      "test_b2_trio_formation_is_wider_than_the_only_door": [
+        124,
+        133
+      ],
+      "test_b2_tri_frame_has_no_carry_route_through_the_narrow_door": [
+        136,
+        145
+      ],
+      "test_b2_a_pair_item_does_pass_the_same_door": [
+        148,
+        154
+      ],
+      "test_b2_scenario_evaluation_is_infeasible_and_says_why": [
+        157,
+        172
+      ],
+      "test_b8_the_trio_route_exists_until_the_red_box_is_placed": [
+        182,
+        188
+      ],
+      "test_b8_names_the_box_and_the_forced_order": [
+        191,
+        206
+      ],
+      "test_b8_an_unmovable_blocker_is_infeasible_not_a_warning": [
+        209,
+        216
+      ],
+      "test_b8_scenario_evaluation_is_conditional_with_the_order_named": [
+        219,
+        231
+      ],
+      "test_b8_three_team_items_leave_no_robot_to_clear": [
+        234,
+        240
+      ],
+      "test_more_carriers_than_robots_is_infeasible": [
+        243,
+        247
+      ],
+      "_blockage": [
+        253,
+        259
+      ],
+      "test_blocking_the_narrow_door_leaves_the_wide_door": [
+        262,
+        269
+      ],
+      "test_blocking_the_only_door_is_reported_infeasible": [
+        272,
+        279
+      ],
+      "test_a_declared_unsolvable_blockage_is_only_an_info_finding": [
+        282,
+        289
+      ],
+      "test_an_item_moved_event_is_rerouted_from_its_new_pose": [
+        292,
+        301
+      ],
+      "test_a_robot_hold_event_changes_no_geometry": [
+        304,
+        311
+      ],
+      "test_scenario_items_reads_the_study_config_layout": [
+        317,
+        328
+      ],
+      "test_scenario_items_rejects_an_unknown_zone": [
+        331,
+        334
+      ],
+      "test_a_start_pose_inside_a_wall_is_reported_as_such": [
+        337,
+        340
+      ],
+      "test_an_item_without_a_destination_is_not_routed": [
+        343,
+        345
+      ],
+      "test_a_solo_route_on_the_corridor_map_uses_the_corridor": [
+        348,
+        350
+      ],
+      "test_a_station_buried_in_another_item_is_flagged": [
+        353,
+        361
+      ],
+      "test_a_millimetre_station_gap_is_a_warning_not_silence": [
+        364,
+        374
+      ],
+      "test_the_report_records_what_was_not_verified": [
+        377,
+        389
+      ],
+      "test_the_file_hash_matches_the_map_the_scenario_pins": [
+        392,
+        399
+      ],
+      "test_lattice_rejects_a_yaw_it_was_not_built_for": [
+        402,
+        406
+      ]
+    },
+    "tests/test_zone_final_env.py": {
+      "_sha": [
+        36,
+        37
+      ],
+      "_map": [
+        40,
+        41
+      ],
+      "_v2": [
+        44,
+        45
+      ],
+      "test_v1_scenarios_and_tag_maps_are_unchanged": [
+        51,
+        56
+      ],
+      "test_catalog_matches_the_files_and_pins_every_hash": [
+        59,
+        70
+      ],
+      "test_the_recipe_reproduces_the_reused_door_map_byte_for_byte": [
+        73,
+        75
+      ],
+      "test_new_maps_are_the_registered_env_v3_maps_without_landmarks": [
+        80,
+        86
+      ],
+      "test_write_refuses_to_change_a_published_file": [
+        89,
+        95
+      ],
+      "test_write_never_creates_a_file_under_maps_zones": [
+        98,
+        102
+      ],
+      "test_final_maps_pass_schema_and_carry_no_tag_field": [
+        109,
+        116
+      ],
+      "test_check_map_reports_unknown_ids_instead_of_raising": [
+        119,
+        121
+      ],
+      "test_tag_hits_finds_keys_and_values_only": [
+        130,
+        131
+      ],
+      "test_passage_widths_are_measured_from_the_walls": [
+        143,
+        147
+      ],
+      "test_a_wrong_declared_width_is_reported": [
+        151,
+        155
+      ],
+      "test_a_wall_moved_into_the_door_is_measured_as_closed": [
+        158,
+        163
+      ],
+      "test_a_narrowed_door_is_measured_not_trusted": [
+        166,
+        174
+      ],
+      "test_corrupted_passage_frames_fail_loudly": [
+        180,
+        184
+      ],
+      "test_a_map_without_passages_is_reported": [
+        188,
+        191
+      ],
+      "test_every_v2_order_is_reachable": [
+        199,
+        204
+      ],
+      "_door_block": [
+        207,
+        209
+      ],
+      "test_blocking_the_only_door_disconnects_every_order": [
+        212,
+        216
+      ],
+      "test_blocking_the_narrow_door_leaves_the_wide_door": [
+        219,
+        223
+      ],
+      "test_a_disc_wider_than_the_door_cannot_pass": [
+        226,
+        229
+      ],
+      "test_radius_zero_is_a_point_robot_not_the_default": [
+        232,
+        235
+      ],
+      "test_bad_radius_raises": [
+        239,
+        241
+      ],
+      "test_bad_orders_are_reported": [
+        252,
+        254
+      ],
+      "test_a_bay_without_slot_is_accepted": [
+        257,
+        260
+      ],
+      "test_v2_changes_only_the_map_pin": [
+        267,
+        279
+      ],
+      "test_v2_passes_the_study_scenario_validator": [
+        283,
+        288
+      ],
+      "test_scenario_diff_flags_any_other_change": [
+        291,
+        300
+      ],
+      "test_scenario_v2_refuses_non_v1_inputs": [
+        304,
+        306
+      ],
+      "test_diff_paths_distinguishes_types_and_missing_keys": [
+        309,
+        314
+      ],
+      "test_check_all_is_clean": [
+        317,
+        318
+      ],
+      "test_ci_collects_this_file": [
+        321,
+        324
+      ]
+    },
+    "harness/m1_owncam_delivery.py": {
+      "_LegDriver": [
+        75,
+        90
+      ],
+      "M1OwnCamDelivery": [
+        93,
+        598
+      ],
+      "__init__": [
+        94,
+        147
+      ],
+      "on_command": [
+        150,
+        160
+      ],
+      "on_frame": [
+        162,
+        170
+      ],
+      "_event": [
+        173,
+        174
+      ],
+      "_keepouts": [
+        176,
+        184
+      ],
+      "_seen_clusters": [
+        186,
+        194
+      ],
+      "_start_leg": [
+        196,
+        202
+      ],
+      "_arm_steps": [
+        204,
+        213
+      ],
+      "_start_sweep": [
+        215,
+        219
+      ],
+      "_tick_sweep": [
+        221,
+        255
+      ],
+      "_search_detect": [
+        257,
+        272
+      ],
+      "_cluster": [
+        274,
+        281
+      ],
+      "_estimate": [
+        283,
+        286
+      ],
+      "decide": [
+        289,
+        299
+      ],
+      "_after_sweep": [
+        301,
+        327
+      ],
+      "_approach_goal": [
+        329,
+        342
+      ],
+      "_make_order": [
+        344,
+        355
+      ],
+      "_init": [
+        357,
+        372
+      ],
+      "_drive_leg": [
+        374,
+        378
+      ],
+      "_search_leg": [
+        380,
+        390
+      ],
+      "_approach_leg": [
+        392,
+        405
+      ],
+      "_skill": [
+        407,
+        519
+      ],
+      "_set_motion_profile": [
+        521,
+        529
+      ],
+      "_tick_probe": [
+        531,
+        572
+      ],
+      "_gate_look": [
+        574,
+        582
+      ],
+      "summary": [
+        584,
+        598
+      ]
+    },
+    "harness/pair_owncam_approach.py": {
+      "coarse_order_sheet": [
+        48,
+        59
+      ],
+      "prestation": [
+        62,
+        64
+      ],
+      "beam_keepout": [
+        67,
+        74
+      ],
+      "PairApproachDriver": [
+        77,
+        141
+      ],
+      "PairApproachDriverV2": [
+        167,
+        246
+      ],
+      "__init__": [
+        170,
+        176
+      ],
+      "_needs_look": [
+        91,
+        96
+      ],
+      "tick": [
+        206,
+        246
+      ],
+      "_arrive": [
+        137,
+        141
+      ],
+      "_start_look": [
+        178,
+        180
+      ],
+      "_relocalize": [
+        182,
+        192
+      ],
+      "_look_step": [
+        194,
+        204
+      ]
+    },
+    "harness/vision_pose_source.py": {
+      "FailClosedLoc": [
+        41,
+        68
+      ],
+      "_finite_seq": [
+        71,
+        73
+      ],
+      "VisionPoseSource": [
+        76,
+        260
+      ],
+      "VisionPoseSourceV2": [
+        266,
+        271
+      ],
+      "__init__": [
+        84,
+        120
+      ],
+      "__getattr__": [
+        49,
+        50
+      ],
+      "initialized": [
+        53,
+        54
+      ],
+      "predict_to": [
+        56,
+        57
+      ],
+      "estimate": [
+        59,
+        68
+      ],
+      "begin_relocalization": [
+        123,
+        133
+      ],
+      "expected_observability": [
+        135,
+        149
+      ],
+      "init_prior": [
+        151,
+        160
+      ],
+      "get_motion_params": [
+        162,
+        163
+      ],
+      "on_command": [
+        165,
+        174
+      ],
+      "set_motion_profile": [
+        176,
+        178
+      ],
+      "on_frame": [
+        180,
+        219
+      ],
+      "_fail": [
+        221,
+        227
+      ],
+      "report": [
+        230,
+        247
+      ],
+      "record": [
+        249,
+        257
+      ],
+      "close": [
+        259,
+        260
+      ]
+    },
+    "sim/zone_own_scene_provider.py": {
+      "own_scene": [
+        4,
+        37
+      ],
+      "scene_static_map": [
+        40,
+        48
+      ]
+    }
+  },
+  "guard": [
+    "mujoco",
+    "torch",
+    "tensorflow",
+    "cv2",
+    "openai",
+    "anthropic",
+    "google.genai",
+    "google.generativeai",
+    "requests",
+    "httpx",
+    "sim.session_scenes",
+    "sim.warehouse_mission"
+  ],
+  "scope": "evaluation_only_static",
+  "physics_runs": 0,
+  "render_calls": 0,
+  "model_calls": 0,
+  "student_trials": 0,
+  "started_unix": 1790766820.307494,
+  "lock_wait_wall_s": 91.495,
+  "lock": {
+    "owner": "codex",
+    "branch": "codex/scenario-capabilities",
+    "purpose": "P09 static audit and pytest only",
+    "pid": 42406,
+    "acquired_unix": 1790766820.307209,
+    "expected_end_unix": 1790767420.30721,
+    "loadavg_at_acquire": [
+      12.935546875,
+      41.90771484375,
+      38.14453125
+    ]
+  },
+  "inputs_unchanged": true,
+  "pytest_exit_code": 0,
+  "forbidden_imports_loaded": [],
+  "ended_unix": 1790766892.9580212,
+  "loadavg_end": [
+    11.630859375,
+    35.14501953125,
+    35.8935546875
+  ],
+  "lock_released": true
+}

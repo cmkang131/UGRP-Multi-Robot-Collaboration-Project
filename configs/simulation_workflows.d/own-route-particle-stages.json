@@ -1,0 +1,22 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "own-route-particle-stages-dev",
+      "version": "1.0.0",
+      "purpose": "egomap60 oracle-x86 resumed DEV stages and conditional continuous tests",
+      "entry": "scripts/run_own_route_particle_stages.py",
+      "runner": "scripts.run_own_route_particle_stages",
+      "docs": "experiments/2026-10-10-own-route-particle-stages/README.md",
+      "requires": "oracle-x86 only; committed archive; OSMesa; egomap max8; fixed stage/full seed registration",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--mode",
+        "--seed"
+      ],
+      "side_effect": "remote_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

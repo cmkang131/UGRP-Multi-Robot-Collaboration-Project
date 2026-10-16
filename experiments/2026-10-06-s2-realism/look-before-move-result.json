@@ -1,0 +1,573 @@
+{
+  "schema": "ugrp.s2.look_before_move_result.v1",
+  "diagnostic": {
+    "source_sha": "32776381a244dabd611da94c4b621360c8ff6c5c",
+    "bundle": "zone-s2-realism-v134",
+    "seed": 1054,
+    "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-32776381-s1054-v134-side-scan",
+    "status": "STAGE_REACHED_UNQUALIFIED",
+    "trigger": {
+      "t": 12.0,
+      "withheld": [
+        [
+          "r3",
+          {
+            "kind": "mecanum",
+            "forward": 0.0,
+            "left": 0.65,
+            "turn": 0.0,
+            "duration_s": 0.65
+          }
+        ]
+      ],
+      "state": "search_move"
+    },
+    "completed_t": 23.0,
+    "wall_s": 24.344189875002485,
+    "sim_s": 24.7,
+    "wall_per_sim": 0.9363149951924032,
+    "frames_by_pan": {
+      "1500": {
+        "frames": 32,
+        "detections": 0,
+        "orange_pixels": [
+          0,
+          0
+        ]
+      },
+      "2300": {
+        "frames": 16,
+        "detections": 16,
+        "orange_pixels": [
+          2716,
+          2716
+        ]
+      },
+      "700": {
+        "frames": 16,
+        "detections": 0,
+        "orange_pixels": [
+          0,
+          0
+        ]
+      }
+    },
+    "peer_contact_points": 0,
+    "nonzero_drive_commands": 0,
+    "own_rgb_review": {
+      "positive": "robots/r3/rgb/00309.jpg",
+      "negative": "robots/r3/rgb/00364.jpg",
+      "claim": "visible orange robot; controller does not know robot ID",
+      "independent_positive_viewpoints": 1
+    },
+    "limitation": "16 frames at one settled pose, not 16 independent trials; no depth/free-space inference from no detection",
+    "physical_runs": 1,
+    "model_calls": 0,
+    "lock": {
+      "acquired": {
+        "owner": "codex",
+        "branch": "codex/s2-realism",
+        "purpose": "s2v48 one seed1054 own RGB side scan, no transport",
+        "pid": 17825,
+        "acquired_unix": 1791429634.456974,
+        "expected_end_unix": 1791430534.4569752,
+        "loadavg_at_acquire": [
+          2.66650390625,
+          5.67333984375,
+          8.1708984375
+        ],
+        "timing_sensitive": true
+      },
+      "released": {
+        "owner": "codex",
+        "branch": "codex/s2-realism",
+        "purpose": "s2v48 one seed1054 own RGB side scan, no transport",
+        "pid": 17825,
+        "acquired_unix": 1791429634.456974,
+        "expected_end_unix": 1791430534.4569752,
+        "loadavg_at_acquire": [
+          2.66650390625,
+          5.67333984375,
+          8.1708984375
+        ],
+        "timing_sensitive": true,
+        "pid_alive": true
+      },
+      "status_after": null
+    },
+    "source_hashes": {
+      "student_record.json": "fa36b77c0fce29c9a54930ff311a3787d0253a4b9b5b2726e6ccc219f4c5e964",
+      "result.json": "3186ebb7234f328d76ff4c40ab6e735c8e62ae4382c016fdcf51bf3e9bf2de37",
+      "eval_only/trajectory.jsonl": "528d3a190a3f324df0e9b27231819ab51ce2266bcd2264fe3ee5c7f25992d7d4",
+      "eval_only/contacts.jsonl": "4d92980fd745752ababe7e6c38bf47f8416cde7830ac8038931a52e7d40c7d2e",
+      "robots/r3/rgb/00309.jpg": "c7d3f2baa3abcb332fb18ff7ee6b53652b21d95e6558e89f24bfcac519854950",
+      "robots/r3/rgb/00364.jpg": "48e78d2e24b3c6b64435dc1a3dff827c2d48f1843982ae4a6efa0da8c2501a2c"
+    },
+    "startup_error": "first invocation short SHA rejected before lock/physics; rerun with full SHA unchanged settings"
+  },
+  "replay": {
+    "schema": "ugrp.s2.look_before_move_replay.v1",
+    "runs": [
+      {
+        "seed": 1051,
+        "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-b2de2b30-s1051-landmark-full",
+        "lateral_total": 114,
+        "on_unchanged_lateral": 0,
+        "on_withheld_lateral": 114,
+        "on_uncertified_lateral_permitted": 0,
+        "off_command_bytes_identical": true,
+        "off_commands_sha256": "0e11a2ab88320da7c10a6a3fb1760368f4a5aa9a77ba9678daaf72727145d798",
+        "counterfactual": "veto replay at recorded commands; injected views/paths unavailable in old tape, no closed-loop success claim",
+        "perception": {
+          "frames": 205,
+          "unsupported": 0,
+          "unsettled": 0
+        },
+        "gt_inputs": false,
+        "physics_runs": 0,
+        "input_hashes": {
+          "student_record.json": "3efeffaf5aaca44ea926173ba22f303184f5bcdde1267a0eedc58c879c589bea",
+          "bundle.json": "d59fad3ee300fe7903bd1156700471f4e8525b31fc24d2d3f4643146c27b321c",
+          "robots/r3/frames.jsonl": "e834c379be876b35738f3719aa7e462fb4ea13fab898b8f1804600480d54e442"
+        }
+      },
+      {
+        "seed": 1054,
+        "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1054-v133-reproduction",
+        "lateral_total": 156,
+        "on_unchanged_lateral": 0,
+        "on_withheld_lateral": 156,
+        "on_uncertified_lateral_permitted": 0,
+        "off_command_bytes_identical": true,
+        "off_commands_sha256": "2f67e89f9ed57630f2ce9d01574218827ff23d9baff36d585ac0531495649752",
+        "counterfactual": "veto replay at recorded commands; injected views/paths unavailable in old tape, no closed-loop success claim",
+        "perception": {
+          "frames": 258,
+          "unsupported": 0,
+          "unsettled": 0
+        },
+        "gt_inputs": false,
+        "physics_runs": 0,
+        "input_hashes": {
+          "student_record.json": "6a1dbf2b8f9b01fcfb5985b7d3bfd4f75a6160c8b5d25ebd57c34ac0716dfca8",
+          "bundle.json": "07ee558ad6da458d369ebdc463f36a1aba9984a217ea455de917b7b1aefe3156",
+          "robots/r3/frames.jsonl": "5adbc8cc5ed27f2a95d31ec3426c7fa1bb3290211d8e995ac504a3e56700ff08"
+        }
+      },
+      {
+        "seed": 1053,
+        "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1053-v133-reproduction",
+        "lateral_total": 119,
+        "on_unchanged_lateral": 0,
+        "on_withheld_lateral": 119,
+        "on_uncertified_lateral_permitted": 0,
+        "off_command_bytes_identical": true,
+        "off_commands_sha256": "ff4aab36621c179d2a700074a681f81318f9cd8ef5dece45bb6abaeb4005625d",
+        "counterfactual": "veto replay at recorded commands; injected views/paths unavailable in old tape, no closed-loop success claim",
+        "perception": {
+          "frames": 201,
+          "unsupported": 0,
+          "unsettled": 0
+        },
+        "gt_inputs": false,
+        "physics_runs": 0,
+        "input_hashes": {
+          "student_record.json": "8e3e92e1209131d7c66e6d92e4ae6778a86a6c559b696070aded41bc04632430",
+          "bundle.json": "5446bc4130b50f854754305f05108c5cfdce52ea021c38a480ea735103576b01",
+          "robots/r3/frames.jsonl": "1b57c198767693c6fe32d7e4c373bcf4ff9b463b3c53a41bea4b032ede0e8614"
+        }
+      }
+    ],
+    "physical_runs": 0,
+    "full_admission": "user s2v48 explicitly requests two closed-loop DEV after diagnostic and replay accounting, not a replay success claim"
+  },
+  "full": [
+    {
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-88f5fbbb-s1054-v135-look-before-move",
+      "seed": 1054,
+      "source_sha": "88f5fbbbb9bc8b1a4aac3ef215fc1871d97752e7",
+      "status": "PHYSICAL_FAILURE",
+      "failure": {
+        "type": "PhysicalStop",
+        "message": "STAGNATION_120S_LT_1CM",
+        "class": "PHYSICAL_FAILURE"
+      },
+      "evaluation": {
+        "status": "PROVISIONAL_GEOMETRIC_JUDGE",
+        "success": false,
+        "lifted": false,
+        "inside": false,
+        "floor": true,
+        "stable": true,
+        "settled_s": 2.0,
+        "qualification": "post-run DEV only; no study/physical hardware success claim"
+      },
+      "posthoc": {
+        "scope": "POSTHOC_EVAL_ONLY_NO_CONTROL_FEEDBACK",
+        "seed": 1054,
+        "cargo_remaining_to_B_region_m": 4.2110717163206415,
+        "cargo_distance_to_B_center_m": 4.646302293221376,
+        "robot_remaining_to_B_region_m": 4.874612680989654,
+        "final_cargo_xy_m": [
+          0.12500000000040296,
+          -0.8500000000008708
+        ],
+        "final_robot_xy_m": [
+          -0.5347381477453658,
+          -0.777781523578049
+        ],
+        "carry_window": null,
+        "visual_updates": 0,
+        "max_update_gap_sim_s": null,
+        "carry_xy_rmse_m": null,
+        "actual_visibility": null,
+        "status": "NO_CARRY_PHASE"
+      },
+      "wall_s": 176.80315287498524,
+      "sim_s": 176.45,
+      "wall_per_sim": 0.994673152601886,
+      "duration_delta_vs_old1054_sim_s": -254.55,
+      "duration_delta_vs_old1054_wall_s": -540.280409375031,
+      "time_comparison": "same seed1054 paired only;1055 unpaired descriptive",
+      "peer_contact_points": 0,
+      "peer_contact_samples": 0,
+      "peer_contact_episodes": 0,
+      "peer_contacts": [],
+      "look": {
+        "option": "rgb_sweep_v1",
+        "parameters": {
+          "recent_s": 3.0,
+          "margin_m": 0.02,
+          "grid_m": 0.025,
+          "frame_interval_s": 0.25,
+          "max_range_m": 3.0,
+          "settle_s": 2.0,
+          "observe_s": 0.75,
+          "wait_s": 1.0,
+          "communication_condition_invariant": true
+        },
+        "denied": 579,
+        "allowed": 0,
+        "unconfirmed_lateral_issued": 0,
+        "alternate_forward_or_turn": 145,
+        "gt_inputs": false,
+        "communication_inputs": false,
+        "free_from_no_detection": false,
+        "perception": {
+          "frames": 566,
+          "unsupported": 0,
+          "unsettled": 931
+        }
+      },
+      "scan_count": 3,
+      "actual_lateral_commands": 0,
+      "would_stop": {
+        "ARM_COLLISION_GUARD": 7,
+        "POSE_UNCERTAIN": 741
+      },
+      "pose": {
+        "opportunities": 739,
+        "rows": 739,
+        "missing_pose": [],
+        "nees_available": 735,
+        "nees_exceeded": 635,
+        "nees_rate": 0.8639455782312925,
+        "unflagged_above_25cm": 0,
+        "unavailable_covariance": [
+          23.95,
+          24.15,
+          24.35,
+          24.55
+        ]
+      },
+      "GT": "posthoc only, after runtime close",
+      "physical_runs": 1,
+      "model_calls": 0,
+      "lock": {
+        "acquired": {
+          "owner": "codex",
+          "branch": "codex/s2-realism",
+          "purpose": "s2v48 own RGB look-before-move full seed1054",
+          "pid": 22271,
+          "acquired_unix": 1791431084.721229,
+          "expected_end_unix": 1791433184.721229,
+          "loadavg_at_acquire": [
+            2.94970703125,
+            3.2919921875,
+            4.2333984375
+          ],
+          "timing_sensitive": true
+        },
+        "released": {
+          "owner": "codex",
+          "branch": "codex/s2-realism",
+          "purpose": "s2v48 own RGB look-before-move full seed1054",
+          "pid": 22271,
+          "acquired_unix": 1791431084.721229,
+          "expected_end_unix": 1791433184.721229,
+          "loadavg_at_acquire": [
+            2.94970703125,
+            3.2919921875,
+            4.2333984375
+          ],
+          "timing_sensitive": true,
+          "pid_alive": true
+        },
+        "status_after": null
+      },
+      "criteria_pass": {
+        "peer_contact_zero": true,
+        "success": false,
+        "nees": false,
+        "unflagged": true
+      },
+      "input_hashes": {
+        "result.json": "80eba8bfbd8e80d2efe989ea2893a9e38fcfdfd6bcce14e56687e2db8af34f7b",
+        "student_record.json": "509dfe73a30fa2e21712539270d99d5539b81ebefcaede4aa3c166cd9c63e859",
+        "bundle.json": "52ed7426c4f7fb250aacbf448501253fe1eebb45a7412ceaefac50caff70b753",
+        "eval_only/trajectory.jsonl": "2ee9cdd69d267ffafe8576e5c25c38ee7bcf79a56818bd1b28d489432d2a8b3f",
+        "eval_only/contacts.jsonl": "24ab452a0422e466e40d236c73365ff07ae18efe3722ebb24cadd56efab6452e"
+      },
+      "root_cause": {
+        "estimated_waypoint_distance_m": 0.015905538563516407,
+        "estimated_yaw_deg": 4.7333255987612946,
+        "required_yaw_rad": 0.06,
+        "max_observed_corridor_fraction": 0.07028753993610223,
+        "description": "new detour XY-complete handoff omits final goal heading; legacy planner requests fine lateral, unknown veto repeats; no post-outcome fix applied"
+      }
+    },
+    {
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-88f5fbbb-s1055-v135-look-before-move",
+      "seed": 1055,
+      "source_sha": "88f5fbbbb9bc8b1a4aac3ef215fc1871d97752e7",
+      "status": "PHYSICAL_FAILURE",
+      "failure": {
+        "type": "PhysicalStop",
+        "message": "STAGNATION_120S_LT_1CM",
+        "class": "PHYSICAL_FAILURE"
+      },
+      "evaluation": {
+        "status": "PROVISIONAL_GEOMETRIC_JUDGE",
+        "success": false,
+        "lifted": false,
+        "inside": false,
+        "floor": true,
+        "stable": true,
+        "settled_s": 2.0,
+        "qualification": "post-run DEV only; no study/physical hardware success claim"
+      },
+      "posthoc": {
+        "scope": "POSTHOC_EVAL_ONLY_NO_CONTROL_FEEDBACK",
+        "seed": 1055,
+        "cargo_remaining_to_B_region_m": 4.211071716320647,
+        "cargo_distance_to_B_center_m": 4.646302293221636,
+        "robot_remaining_to_B_region_m": 4.921061889848799,
+        "final_cargo_xy_m": [
+          0.12500000000063377,
+          -0.8499999999990753
+        ],
+        "final_robot_xy_m": [
+          -0.5803339815107345,
+          -0.7681848746398858
+        ],
+        "carry_window": null,
+        "visual_updates": 0,
+        "max_update_gap_sim_s": null,
+        "carry_xy_rmse_m": null,
+        "actual_visibility": null,
+        "status": "NO_CARRY_PHASE"
+      },
+      "wall_s": 184.7756989999907,
+      "sim_s": 184.39999999999998,
+      "wall_per_sim": 0.9950226117393146,
+      "duration_delta_vs_old1054_sim_s": -246.60000000000002,
+      "duration_delta_vs_old1054_wall_s": -532.3078632500255,
+      "time_comparison": "same seed1054 paired only;1055 unpaired descriptive",
+      "peer_contact_points": 0,
+      "peer_contact_samples": 0,
+      "peer_contact_episodes": 0,
+      "peer_contacts": [],
+      "look": {
+        "option": "rgb_sweep_v1",
+        "parameters": {
+          "recent_s": 3.0,
+          "margin_m": 0.02,
+          "grid_m": 0.025,
+          "frame_interval_s": 0.25,
+          "max_range_m": 3.0,
+          "settle_s": 2.0,
+          "observe_s": 0.75,
+          "wait_s": 1.0,
+          "communication_condition_invariant": true
+        },
+        "denied": 581,
+        "allowed": 0,
+        "unconfirmed_lateral_issued": 0,
+        "alternate_forward_or_turn": 147,
+        "gt_inputs": false,
+        "communication_inputs": false,
+        "free_from_no_detection": false,
+        "perception": {
+          "frames": 576,
+          "unsupported": 0,
+          "unsettled": 1048
+        }
+      },
+      "scan_count": 4,
+      "actual_lateral_commands": 0,
+      "would_stop": {
+        "ARM_COLLISION_GUARD": 7,
+        "POSE_UNCERTAIN": 92
+      },
+      "pose": {
+        "opportunities": 748,
+        "rows": 748,
+        "missing_pose": [],
+        "nees_available": 748,
+        "nees_exceeded": 656,
+        "nees_rate": 0.8770053475935828,
+        "unflagged_above_25cm": 0,
+        "unavailable_covariance": []
+      },
+      "GT": "posthoc only, after runtime close",
+      "physical_runs": 1,
+      "model_calls": 0,
+      "lock": {
+        "acquired": {
+          "owner": "codex",
+          "branch": "codex/s2-realism",
+          "purpose": "s2v48 own RGB look-before-move full seed1055",
+          "pid": 23003,
+          "acquired_unix": 1791431305.2604291,
+          "expected_end_unix": 1791433405.2604291,
+          "loadavg_at_acquire": [
+            3.72216796875,
+            3.4443359375,
+            4.07177734375
+          ],
+          "timing_sensitive": true
+        },
+        "released": {
+          "owner": "codex",
+          "branch": "codex/s2-realism",
+          "purpose": "s2v48 own RGB look-before-move full seed1055",
+          "pid": 23003,
+          "acquired_unix": 1791431305.2604291,
+          "expected_end_unix": 1791433405.2604291,
+          "loadavg_at_acquire": [
+            3.72216796875,
+            3.4443359375,
+            4.07177734375
+          ],
+          "timing_sensitive": true,
+          "pid_alive": true
+        },
+        "status_after": null
+      },
+      "criteria_pass": {
+        "peer_contact_zero": true,
+        "success": false,
+        "nees": false,
+        "unflagged": true
+      },
+      "input_hashes": {
+        "result.json": "f284c5fec65d1af41272adacfa360e5d9cb1aea1c4581c3de620fdaab6ce9fd1",
+        "student_record.json": "3113f4848952ec660bd234bff4cdf52d2f2773ebb0a6aa297dd6aa56ebf1bd40",
+        "bundle.json": "ee67d181075c26ccd3a238088f163c4946ab53ed3dc0783e922f4525ded054c9",
+        "eval_only/trajectory.jsonl": "0d3513b65b9a7061a7f64eb1a7b0c045f7d80928cf61281039c4f11f00a560d9",
+        "eval_only/contacts.jsonl": "173be1fdb7898b4e1e59f30737af969b85d5aab9979ff05e683087232a5d6603"
+      },
+      "root_cause": {
+        "estimated_waypoint_distance_m": 0.014818146088164083,
+        "estimated_yaw_deg": 3.5385974159064393,
+        "required_yaw_rad": 0.06,
+        "max_observed_corridor_fraction": 0.022857142857142857,
+        "description": "new detour XY-complete handoff omits final goal heading; legacy planner requests fine lateral, unknown veto repeats; no post-outcome fix applied"
+      }
+    }
+  ],
+  "verdict": "FAIL_NOT_ADOPTED",
+  "threshold_changes_after_outcomes": 0,
+  "additional_physics_after_same_cause_twice": 0,
+  "source_sha": "88f5fbbbb9bc8b1a4aac3ef215fc1871d97752e7",
+  "execution_bundles": [
+    "zone-s2-realism-v134",
+    "zone-s2-realism-v135"
+  ],
+  "tests": "12 passed; changed guard + diagnostic tests",
+  "note": "stable=true is untouched cargo on original floor, not successful placement; no carry metrics; failed early runtime is not speed improvement",
+  "videos": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-32776381-s1054-v134-side-scan/execution-4x.mp4",
+      "sha256": "fec1a495139b02adbc7dfc78e233d4db1bec822e9d2565f7539341b9ffc176e6",
+      "source_frames": 435,
+      "source_manifest_sha256": "82e3b5ff986114cc6f030f135531176cc8b380458591ab187d05fae4d71f9c28",
+      "speedup": 4,
+      "fps": 20,
+      "full_decode": true,
+      "ffprobe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 640,
+            "height": 480
+          }
+        ],
+        "format": {
+          "duration": "5.450000"
+        }
+      },
+      "native_export_alias": "/Users/changmin/projects/ugrp/outputs/s2-realism-32776381-s1054-v134-side-scan/execution.mp4"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-88f5fbbb-s1054-v135-look-before-move/execution-4x.mp4",
+      "sha256": "f71df59ffb1d02d5b5a5ee3565dd7cb93b98bdf2f1c86a1644d29d26602b54f2",
+      "source_frames": 3529,
+      "source_manifest_sha256": "6da6bb0fbb2f7636ca1c2001dd81a11f7d0c75cba52068967acb23b6fd3eb657",
+      "speedup": 4,
+      "fps": 20,
+      "full_decode": true,
+      "ffprobe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 640,
+            "height": 480
+          }
+        ],
+        "format": {
+          "duration": "44.100000"
+        }
+      },
+      "native_export_alias": "/Users/changmin/projects/ugrp/outputs/s2-realism-88f5fbbb-s1054-v135-look-before-move/execution.mp4"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-88f5fbbb-s1055-v135-look-before-move/execution-4x.mp4",
+      "sha256": "34a67a60f3d4987b33923d6b3fed727549984ed376e28da35795774e342627d3",
+      "source_frames": 3688,
+      "source_manifest_sha256": "3349fdf2428fa79bc10fed543a307597ba9834aa79e92ce7c56c360a21366700",
+      "speedup": 4,
+      "fps": 20,
+      "full_decode": true,
+      "ffprobe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 640,
+            "height": 480
+          }
+        ],
+        "format": {
+          "duration": "46.100000"
+        }
+      },
+      "native_export_alias": "/Users/changmin/projects/ugrp/outputs/s2-realism-88f5fbbb-s1055-v135-look-before-move/execution.mp4"
+    }
+  ]
+}

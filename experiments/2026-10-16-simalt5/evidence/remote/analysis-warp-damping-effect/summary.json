@@ -1,0 +1,111 @@
+{
+  "reference": "/home/ugrp/ugrp-sim/runs/simalt4/legacy-r3-grip",
+  "candidate": "/home/ugrp/ugrp-sim/runs/simalt5/warp-compiled312-grip",
+  "case": "grip",
+  "steps": 173600,
+  "dt": 0.00025,
+  "complete": true,
+  "reference_rows": 173600,
+  "candidate_rows": 173600,
+  "candidate_status": "complete",
+  "analysis_script_sha256": "77f050404a7f34127d6b54f3d0c7aa6ed801f189fc42fe73cd7941cf959fee40",
+  "same_MuJoCo_version": true,
+  "C_version": "3.16.0",
+  "candidate_MuJoCo": "3.16.0",
+  "physics_hashes_equal": false,
+  "first_raw_qpos_difference": {
+    "step_1based": 1,
+    "SIM_s": 0.00025
+  },
+  "first_contact_or_constraint_count_difference": {
+    "step_1based": 23,
+    "SIM_s": 0.00575
+  },
+  "topology_count_different_steps": 41700,
+  "first_pad_contact_presence_difference": {
+    "step_1based": 54074,
+    "SIM_s": 13.5185
+  },
+  "first_reference_pad_contact": {
+    "step_1based": 54079,
+    "SIM_s": 13.51975
+  },
+  "first_candidate_pad_contact": {
+    "step_1based": 54074,
+    "SIM_s": 13.5185
+  },
+  "reference_max_ncon": 17,
+  "candidate_max_ncon": 17,
+  "reference_max_nefc": 87,
+  "candidate_max_nefc": 87,
+  "candidate_overflow_steps": 0,
+  "candidate_capacities": {
+    "nconmax": 32,
+    "njmax": 256,
+    "naconmax": 32
+  },
+  "base_endpoint_m": 0.004342602371705205,
+  "base_endpoint_deg": 0.10644003197922652,
+  "box_endpoint_m": 0.0029095940696104916,
+  "box_endpoint_deg": 0.09556118870693044,
+  "endpoint_pass": true,
+  "reproduce": [
+    "/home/ugrp/ugrp-sim/src/e89ff153/scripts/simalt_step_analysis.py",
+    "--fixture",
+    "/home/ugrp/ugrp-sim/runs/simalt3/fixture",
+    "--reference",
+    "/home/ugrp/ugrp-sim/runs/simalt4/legacy-r3-grip",
+    "--candidate",
+    "/home/ugrp/ugrp-sim/runs/simalt5/warp-compiled312-grip",
+    "--out",
+    "/home/ugrp/ugrp-sim/runs/simalt5/analysis-warp-damping-effect"
+  ],
+  "force_semantics": "contact-frame normal and tangential resultant; force API after noslip; no controller feedback",
+  "missing_distance_semantics": "zero if no penetrating contact; consult count before interpreting",
+  "max_abs_difference_by_metric": {
+    "ncon": 5.0,
+    "nefc": 15.0,
+    "overflow": 0.0,
+    "left_contacts": 4.0,
+    "right_contacts": 4.0,
+    "left_min_dist": 4.922406060359208e-05,
+    "right_min_dist": 7.272449511219747e-05,
+    "left_normal_N": 0.23106838762760162,
+    "right_normal_N": 0.08210916817188263,
+    "left_tangent_N": 6.295856475830078,
+    "right_tangent_N": 6.389725685119629,
+    "plane_mesh_contacts": 2.0,
+    "minimum_dist": 0.00027842726558446884,
+    "left_joint": 7.811521936673671e-05,
+    "right_joint": 8.553328916605096e-05,
+    "left_condim": 3.0,
+    "right_condim": 3.0
+  },
+  "hold": {
+    "samples": 30,
+    "reference_bilateral": 30,
+    "candidate_bilateral": 30,
+    "reference_min_bottom_m": 0.07074271301537449,
+    "candidate_min_bottom_m": 0.07073483357473867,
+    "initial_support_bottom_m": -0.00010775542026314477,
+    "reference_min_lift_clearance_m": 0.07085046843563764,
+    "candidate_min_lift_clearance_m": 0.07084258899500182,
+    "max_abs_height_difference_m": 7.8794406358218e-06,
+    "reference_pad_force_min_N": [
+      5.202431678771973,
+      5.202112197875977
+    ],
+    "candidate_pad_force_min_N": [
+      5.202521800994873,
+      5.202157020568848
+    ],
+    "height_proposal_pass": true
+  },
+  "every_step_table": {
+    "path": "/home/ugrp/ugrp-sim/runs/simalt5/analysis-warp-damping-effect/every-step.csv.zst",
+    "uncompressed_sha256": "7c82f678071d28da113fb0a47f1fb1f83b8923e6408057480b5b66ab4cea6d8c",
+    "compressed_sha256": "b3cf0a457564d56106f284a5283e90397d5326eb6834b8b3d469b66cb5f6ec2b",
+    "rows": 173600,
+    "restored_hash_verified": true
+  }
+}

@@ -84,10 +84,17 @@ bash scripts/open_simulation.command workflow run tensorboard -- \
 
 표준 설정 실행과 기존 공동 출하·공통 RGB adapter는 `sim.session_scenes.Scene`의 출하장 XML 생성·초기화를 공유한다. 기존 출하장 실행기의 전역 XML 생성기 교체를 제거하고 세계 인스턴스마다 같은 장면 정의를 적용한다. 카메라 배치/FOV, 초기 servo 명령과 안정화 시간, weld OFF를 보존한다.
 
-접촉 설정과 제어기까지 무조건 하나의 기본값으로 합치지는 않는다. 과거 `local_contact_fine` 성공과 `legacy` adapter 진단은 서로 다른 실험 조건이다. 실행 시 선택한 프로필과 실제 적용값을 기록하고 [실행 번들 버전](execution_versioning.md)으로 검증한다. 현재 표준 장면 연결 후보는 `rgb-standard-dispatch-v2`; 기존 `rgb-adapter-legacy-v1` JSON은 변경하지 않고 원래 소스로 재현한다.
+접촉 설정과 제어기까지 무조건 하나의 기본값으로 합치지는 않는다. 과거 `local_contact_fine` 성공과 `legacy` adapter 진단은 서로 다른 실험 조건이다. 실행 시 선택한 프로필과 실제 적용값을 기록하고 [실행 번들 버전](execution_versioning.md)으로 검증한다. 현재 표준 장면 연결 후보는 `rgb-standard-dispatch-v7`; 표준 dispatch의 촬영 최적화·독립 경로 자동 선택과 관찰 창 pacing·렌더링 최적화를 버전으로 기록한다. 기존 v1/v2/v3/v4/v5/v6 번들 JSON은 변경하지 않고 각 원래 소스로 재현한다.
 
 나머지 연구 실행기는 같은 관리 계층에 등록된 호환 어댑터다. 전체 제어 루프를 `Simulation.step()`으로 재작성했다는 의미는 아니다. 기존 스크립트 직접 호출과 Python API 직접 사용도 호환을 위해 남아 있지만 그 자체로 공통 실행 기록이 생성되지는 않는다. 신규 실험과 신규 workflow는 표준 관리 진입점에 연결하며 독립적인 버전·결과 관리 체계를 추가하지 않는다.
 
 ## 새 실행 경로 추가
 
 `configs/simulation_workflows.json`에 ID·버전·진입점·출력 규칙·실행 요구사항을 등록하고 관련 테스트를 추가한다. 공통 장면·초기화 구현을 재사용하며, 다른 물리·카메라·명령 조건이 필요하면 명시적 프로필/버전으로 추가한다. 기존 성공 조건의 변경 전후 차이와 검증 범위를 기록한다. 카탈로그 등록이나 자동 검사 통과는 연구 과제 완주 검증을 대신하지 않는다.
+
+기본 catalog가 기존 실행 등록에 고정돼 있으면 같은 schema의
+`configs/simulation_workflows.d/<후보>.json`을 추가한다. `sim_cli workflow list/plan/run`은
+기본 파일과 이 추가 파일들을 함께 읽고 hash에 포함한다. 기존 ID와 같은 ID를 추가해
+실행기를 바꾸는 것은 거부한다. 기본 catalog·등록 번들의 bytes를 보존하는 경로이며,
+별도 실행 관리자나 별도 결과 기록 체계를 만들지 않는다. v84를 보존한 v87 예시는
+[PHYSICS_HANDOFF](../PHYSICS_HANDOFF.md)에 있다.

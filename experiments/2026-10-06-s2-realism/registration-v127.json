@@ -1,0 +1,130 @@
+{
+  "schema": "ugrp.s2_dev_full_registration.v2",
+  "execution_bundle_id": "zone-s2-realism-v127",
+  "workflow_version": "7.20.0",
+  "user_authorization": "2026-10-07 administrator intentional deviation from replay gate; one closed-loop S2 DEV",
+  "registration_kind": "s2-dev-full",
+  "research_result": false,
+  "confirmation_sample": false,
+  "dev_confirmation": false,
+  "preregistered_run": true,
+  "dev_runs": [
+    {
+      "seed": 1052,
+      "slot": "P1-2",
+      "stage": "place",
+      "role": "fresh_one_closed_loop_dev"
+    }
+  ],
+  "same_failure_stop_count": 2,
+  "prior_same_cause_failures": {},
+  "stop_after_this_probe": false,
+  "full_route_admitted": true,
+  "model_calls": 0,
+  "pool_with_previous_s2": false,
+  "comparison_metrics": [
+    "descriptive_side_by_side_only"
+  ],
+  "options": {
+    "camera_profile": "masterpi-camera-user-observation-target-review-v3",
+    "drive_profile": "masterpi_drive_friction_v7",
+    "setdown_relook": "off",
+    "grasp_check": "pickup_site_v1",
+    "min_wheel_cmd": "real_v1",
+    "dead_reckoning": "v7_diag_v1",
+    "stagnation_watch": "window120_v1",
+    "alignment_pulse": "real_fine_v1",
+    "hover_check": "real_pregrasp_v1",
+    "idle_robot_contacts": "freeze_v1",
+    "site_check": "off",
+    "hold_check": "inhand_rgb_v1",
+    "dev_grasp_policy": "log_only_v1",
+    "eval_camera_trace": "pose_v1",
+    "pulse_motion_model": "v7_pulse_cal_v1",
+    "visual_update": "accepted_scan_v1",
+    "visual_stall": "lk_pulse_v1",
+    "carry_pose": "real_delivery_v1",
+    "camera_calibration": "v3_unloaded_sag_v1",
+    "measurement_model": "amcl_likelihood_field_v1",
+    "visibility_mask": "command_geometry_v1",
+    "amcl_update": "ros_motion_v1",
+    "dev_search": "repeat_views_v1",
+    "visibility_policy": "nav2_observed_v1",
+    "contact_filter": "floor_appearance_v1",
+    "slip_detection": "slip_detect_v1",
+    "stall_recovery": "off"
+  },
+  "host_error": "ENOSPC or execution failure; preserve all partial raw; no seed reuse",
+  "case_cap_s": 900,
+  "wall_cap_s": 10800,
+  "exploration_seeds": [
+    1045,
+    1046,
+    1047,
+    1050,
+    1051
+  ],
+  "stop_after_this_run": true,
+  "stop_policy": "Unknown grasp evidence and conservative uncertainty log only; physical drop/grip loss/tilt, errors, stagnation or finite cap stop. One run only.",
+  "pulse_model_sha256": "2245bb9fdcb69d872893dd6ffafb57151750dd42916394a287b6d10bab11d69d",
+  "scope": "S2 solo DEV only, not research cohort or independent confirmation; do not pool",
+  "user_decision": {
+    "user_decision_date": "2026-10-07",
+    "approved": true,
+    "classification": "intentional_deviation_from_preregistered_replay_admission",
+    "replay_admission_pass": false,
+    "failed_gates": [
+      "updates",
+      "max_gap"
+    ],
+    "rationale": "Administrator authorizes one closed-loop DEV: fixed-command replay cannot change subsequent navigation actions when the estimated pose changes. Update/gap degradation may reflect this limitation; this remains a hypothesis, not proof.",
+    "not_retroactive_pass": true,
+    "full_runs_authorized": 1
+  },
+  "extrinsic_sha256": "3e873ab133ebe3ac4e4f7dc028fa177dcb694e24d089082ff5777f7dddeb2c3f",
+  "metrics": [
+    "lifted",
+    "inside",
+    "carry_visual_updates",
+    "max_update_gap_sim_s",
+    "carry_xy_rmse_m_eval_only",
+    "actual_wall_bottom_visibility_eval_only",
+    "remaining_B_distance_eval_only",
+    "dev_light_would_stop",
+    "wall_per_sim",
+    "lateral_command_vs_actual_displacement_ratio_eval_only"
+  ],
+  "criteria_sha256": "6ef9bc21d78f94a4efd898e61ddbd1932b66e203130080efac4b8b4d3a3197a6",
+  "replay_summary_sha256": "94cb9904cc485184263f1b7ebecca40008e942d55dc0fd059534d78257d058bf",
+  "floor_appearance_sha256": "9b928d8c1ae6a49c2808501f526c6f0e711adec24ee7be93bb14b10f371e43f2",
+  "intentional_deviation": {
+    "user_decision_date": "2026-10-07",
+    "approved": true,
+    "classification": "intentional_deviation_from_preregistered_replay_admission",
+    "replay_admission_pass": false,
+    "failed_gates": [
+      "updates",
+      "max_gap"
+    ],
+    "rationale": "Administrator authorizes one closed-loop DEV: fixed-command replay cannot change subsequent navigation actions when the estimated pose changes. Update/gap degradation may reflect this limitation; this remains a hypothesis, not proof.",
+    "not_retroactive_pass": true,
+    "full_runs_authorized": 1
+  },
+  "slip_source_sha256": "b4ea724e795706ec966220f9b62603753a6b54d185e47523818add43b9965b06",
+  "pulse_predictor_sha256": "44a51b1bc5a95aa35f87d039741c2813101a90c87c287873947150f2d85d89be",
+  "lateral_evaluation": {
+    "group_by": [
+      "load",
+      "pulse_profile",
+      "slip_replaced"
+    ],
+    "metrics": [
+      "sum_predicted_distance/sum_actual_distance",
+      "pulse_ratio_quantiles",
+      "xy_yaw_error"
+    ],
+    "zero_actual": "report separately",
+    "reference": "PR405 egomap15 1.54m/0.69m user-provided reference only, never pooled/fitted",
+    "ground_truth": "posthoc evaluation only"
+  }
+}

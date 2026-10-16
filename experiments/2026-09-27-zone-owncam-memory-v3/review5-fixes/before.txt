@@ -1,0 +1,131 @@
+Numerical thread caps: 1; OpenCV threads: 1; pytest worker: main process
+FFFFFFF                                                                  [100%]
+=================================== FAILURES ===================================
+_________ test_p1_marginal_full_fix_must_not_reset_retry_budget[False] _________
+
+loaded = False
+
+    @pytest.mark.parametrize('loaded', [False, True])
+    def test_p1_marginal_full_fix_must_not_reset_retry_budget(loaded):
+        leg, loc, _ = leg_fixture(loaded, yaw=math.radians(2.9))
+        fix(leg.memory, loc.t)
+        # At 2.9 degrees the real loaded PF exceeds the 3 degree drive gate after
+        # restoring carry. It must refix, not certify success and erase failures.
+>       assert leg._should_refix(True)
+E       assert False
+E        +  where False = _should_refix(True)
+E        +    where _should_refix = <harness.owncam_drive_mem_v3.LegDriverMemV3 object at 0x1108d92b0>._should_refix
+
+tests/test_owncam_memory_v3_review5.py:30: AssertionError
+_________ test_p1_marginal_full_fix_must_not_reset_retry_budget[True] __________
+
+loaded = True
+
+    @pytest.mark.parametrize('loaded', [False, True])
+    def test_p1_marginal_full_fix_must_not_reset_retry_budget(loaded):
+        leg, loc, _ = leg_fixture(loaded, yaw=math.radians(2.9))
+        fix(leg.memory, loc.t)
+        # At 2.9 degrees the real loaded PF exceeds the 3 degree drive gate after
+        # restoring carry. It must refix, not certify success and erase failures.
+>       assert leg._should_refix(True)
+E       assert False
+E        +  where False = _should_refix(True)
+E        +    where _should_refix = <harness.owncam_drive_mem_v3.LegDriverMemV3 object at 0x110e59520>._should_refix
+
+tests/test_owncam_memory_v3_review5.py:30: AssertionError
+________ test_p1_repeated_good_fixes_without_movement_have_separate_cap ________
+
+    def test_p1_repeated_good_fixes_without_movement_have_separate_cap():
+        leg, loc, est = leg_fixture(True, yaw=.005)
+        leg.servo = dict(CARRY_POSTURE)
+        for attempt in range(8):
+            loc.t = 2. + attempt
+            leg._start_look(loc.t, 'uncertain')
+            if leg.outcome:
+                break
+            loc.t += .2
+            fix(leg.memory, loc.t, (est['x'], est['y']))
+            assert not leg._should_refix(True)
+            assert leg.unverified_looks == 0
+>       assert leg.outcome == 'look_stagnation'
+E       AssertionError: assert None == 'look_stagnation'
+E        +  where None = <harness.owncam_drive_mem_v3.LegDriverMemV3 object at 0x110e5ba70>.outcome
+
+tests/test_owncam_memory_v3_review5.py:46: AssertionError
+______ test_p2_saved_s151_rejected_initial_look_gets_stationary_recapture ______
+
+    def test_p2_saved_s151_rejected_initial_look_gets_stationary_recapture():
+        ctl = saved_init_controller()
+        rep = ctl.pose.report(1.8)
+        assert rep.x_m == pytest.approx(-.868, abs=.002)
+        assert rep.std_xy_m == pytest.approx(.168, abs=.002)
+        decisions = [ctl.decide(t) for t in (1.8, 1.9, 2., 2.1)]
+>       assert ctl.outcome is None
+E       AssertionError: assert 'LOOK_COLLISION_UNVERIFIED' is None
+E        +  where 'LOOK_COLLISION_UNVERIFIED' = <harness.m1_owncam_memory_v3.M1OwnCamDeliveryMemV3 object at 0x1102f80e0>.outcome
+
+tests/test_owncam_memory_v3_review5.py:81: AssertionError
+___________ test_p2_initial_recapture_times_out_with_no_observations ___________
+
+    def test_p2_initial_recapture_times_out_with_no_observations():
+        ctl = saved_init_controller()
+        ctl.decide(1.8)
+        result = ctl.decide(12.)
+>       assert result == {'mode': 'done', 'outcome': 'NOT_INITIALIZED'}
+E       AssertionError: assert {'mode': 'don...N_UNVERIFIED'} == {'mode': 'don..._INITIALIZED'}
+E         
+E         Omitting 1 identical items, use -vv to show
+E         Differing items:
+E         {'outcome': 'LOOK_COLLISION_UNVERIFIED'} != {'outcome': 'NOT_INITIALIZED'}
+E         Use -v to get more diff
+
+tests/test_owncam_memory_v3_review5.py:90: AssertionError
+_____________ test_comparison_off_blocks_same_current_sigma_as_on ______________
+
+    def test_comparison_off_blocks_same_current_sigma_as_on():
+        from scripts.run_m1_owncam_memory_v3 import controller_class
+        for condition in ('off', 'memory_v3'):
+            ctl = controller(controller_class(condition))
+            ctl.servo = dict(CARRY_POSTURE)
+            ctl._start_leg((1., -.85), loaded=True)
+            leg = ctl.leg
+            est = dict(initialized=True, x=-.47, y=-.85, yaw=0., std_xy_m=.02,
+                       std_yaw_rad=math.radians(3.1), cov=np.diag([.0002, .0002, math.radians(3.1)**2]),
+                       since_tag_s=0.)
+            leg.state, leg.state_since, leg.last_look_xy = 'drive', 1., (-.47, -.85)
+            leg.loc.predict_to = lambda now: None
+            leg.loc.estimate = lambda: est
+            if hasattr(ctl, 'memory'):
+                fix(ctl.memory, 2.)
+            commands = leg.tick(2.)
+>           assert not any(c['kind'] == 'mecanum' for c in commands), condition
+E           AssertionError: off
+E           assert not True
+E            +  where True = any(<generator object test_comparison_off_blocks_same_current_sigma_as_on.<locals>.<genexpr> at 0x110eb8ee0>)
+
+tests/test_owncam_memory_v3_review5.py:110: AssertionError
+_____________ test_comparison_off_rejects_same_unsafe_sweep_as_on ______________
+
+    def test_comparison_off_rejects_same_unsafe_sweep_as_on():
+        from scripts.run_m1_owncam_memory_v3 import controller_class
+        from tests.test_owncam_memory_v3_review3 import door_map
+        for condition in ('off', 'memory_v3'):
+            ctl = controller(controller_class(condition))
+            ctl.map, ctl.servo, ctl.phase = door_map(), dict(CARRY_POSTURE), 'skill'
+            ctl.pose.report = lambda t: report(t, x=2., y=-.5, sigma=.001)
+            ctl._start_sweep(2., 'look', LOOK_P20, [1500], CARRY_POSTURE, 'gate:test')
+>           assert ctl.outcome == 'LOOK_COLLISION_UNVERIFIED', condition
+E           AssertionError: off
+E           assert None == 'LOOK_COLLISION_UNVERIFIED'
+E            +  where None = <harness.m1_owncam_delivery.M1OwnCamDelivery object at 0x110e36630>.outcome
+
+tests/test_owncam_memory_v3_review5.py:121: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_owncam_memory_v3_review5.py::test_p1_marginal_full_fix_must_not_reset_retry_budget[False]
+FAILED tests/test_owncam_memory_v3_review5.py::test_p1_marginal_full_fix_must_not_reset_retry_budget[True]
+FAILED tests/test_owncam_memory_v3_review5.py::test_p1_repeated_good_fixes_without_movement_have_separate_cap
+FAILED tests/test_owncam_memory_v3_review5.py::test_p2_saved_s151_rejected_initial_look_gets_stationary_recapture
+FAILED tests/test_owncam_memory_v3_review5.py::test_p2_initial_recapture_times_out_with_no_observations
+FAILED tests/test_owncam_memory_v3_review5.py::test_comparison_off_blocks_same_current_sigma_as_on
+FAILED tests/test_owncam_memory_v3_review5.py::test_comparison_off_rejects_same_unsafe_sweep_as_on
+7 failed in 0.84s

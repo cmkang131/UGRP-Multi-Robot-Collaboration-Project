@@ -1,0 +1,129 @@
+{
+  "schema": "ugrp.can_skill_dependencies.v1",
+  "base_main_sha": "26545c2499f94c3f99a5d650f7cc8ea992f24196",
+  "merged_predecessors": {
+    "302": {
+      "sha": "09081b3c46f0d51e02ef625e4be8c7d6f6e67963",
+      "scope": "static audit/task requirements, not physical success"
+    },
+    "328": {
+      "sha": "6a57435e6e24f7f7a3f082d9458d3d9f4ebc010e",
+      "scope": "offline pytest without host lock"
+    },
+    "300": {
+      "sha": "e6cc2a8850f35dd8e29cb20a7615c7e0901f795f",
+      "scope": "existing CI configuration, unchanged"
+    }
+  },
+  "unmerged_sibling": {
+    "pr": 325,
+    "dependency": false,
+    "coordination": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/325#issuecomment-5913422877"
+  },
+  "skill_profile": {
+    "skill_id": "can-ownrgb-v1-dev",
+    "kind": "can",
+    "role": "any",
+    "diameter_m": 0.038,
+    "height_m": 0.05,
+    "mass_kg": 0.08,
+    "grasp_height_m": 0.024,
+    "grasp_forward_m": 0.2,
+    "lift_heights_m": [
+      0.08,
+      0.1
+    ],
+    "open_pwm": 2000,
+    "close_pwm": 1500,
+    "max_sim_s": 900.0,
+    "evidence": "offline_only; physical_visibility_and_grasp_unverified",
+    "sha256": "c512047e902886b9a3008fc2384e8c3ea75fbb578133094de63a0a20b4ad9354"
+  },
+  "control_code_sha256": "75be746ed66ca3574f05282761c23e33136eaa9c501a216b7ca1f0cf45479d85",
+  "role_assignment": {
+    "scope": "synthetic_tests_only",
+    "robot_id": "r1",
+    "grasp_role": "any"
+  },
+  "role_assignment_sha256": "0475608b76cda8962daca8c6ddbf4cd013a8e206200f5ef3b82c54b740071bfb",
+  "source_files_sha256": {
+    "harness/__init__.py": "953d3229d4ed66dc30e1ddeab38440397fc01303fcd022fb147d45d4345abdcf",
+    "harness/action_queue.py": "98d59281bbe3b67747ccdf928f957df191b9b4b884bd29d92e10279aa50d1eb9",
+    "harness/approach_geometry.py": "107f1b36bb6ca44f21aa9813218cf5d1fb17a442ec7a4e2165f8708f9347cba4",
+    "harness/can_skill_registry.py": "c78aa57962ac2025903a7e1d98b0c7b59472bbc992088d6992867e8c8fb0918d",
+    "harness/catalog.py": "02641a93eb119ac2b1c5754599364a51f42d0a6c0dc5a255a910c8e8dd44b344",
+    "harness/chat.py": "b6f20946c138beb8746a9128509aa4564efa4bf5002597532434bc8852895694",
+    "harness/executive.py": "535a2e9a75886a19c26c174007dcad750e782e94d9950a0d6eb736ae0be302b8",
+    "harness/goals.py": "ca5d4fb9e6f8cee372fdf8f42b01e7a73bf5d3b5427d499abaa8a122be3cec28",
+    "harness/loop.py": "6872dd3d2b7ae669290b6e46db0838241f35bf559d0625374ec9e47ddc5d8761",
+    "harness/m1_contract.py": "9fe6d855e0b2d74d64ed2e7f144a360e32447fe6e81ae4b8c50cc25efa189075",
+    "harness/m1_owncam_contract.py": "0e261ab85311f7127b6f09d5c16a37837873b70adb5140091b1f85d374846f5d",
+    "harness/m1_owncam_delivery.py": "767cda1a6b523e19c0f7ef0f32e6b453799978e623b8e37bfa493b23f9993e09",
+    "harness/map_goto.py": "97970eb906d7d780de150cfbdfea074c8d3c758cc049bd9ff078aef34e30eda0",
+    "harness/markerless_box.py": "f1bc74126d91b17dbe7527c5444e5dff7c3a2ce469a1a90834f85dbae57bd46c",
+    "harness/markerless_face.py": "1f829650c9f8da508ee521f6721f2c0fb6d80872053b8c622d79bf49037e9134",
+    "harness/monocular_box.py": "51dfde31095b0c9c0c39cb2b3b87cfb71129f6cec19072b4ac1ee95db9933c14",
+    "harness/own_beam_edge.py": "f72118c5c1faeb91094347469dd15fa6059dd99bd6acede4760eec96411f3e8d",
+    "harness/owncam_carry_v6e.py": "ec3b42b3502e21491585360bc588663f89003f8e6ed09ab829ae617d867737ec",
+    "harness/owncam_drive.py": "a8aede7813956e2de12c25b139b02f48e11dab5be8cbf82a2d25344547d51e82",
+    "harness/owncam_drive_v2.py": "217423249775b024504b56b59203a1eab50b667bf273387ba23c0974c0ad4462",
+    "harness/owncam_localizer.py": "9793f74b008b96d4b6659a5251bde7374c697ac7d4bbb23758d5433098402347",
+    "harness/owncam_observability_v6.py": "04c3bd8cc85b4e77f6a413f140542714251573adb38863a57f139443c0b80f0d",
+    "harness/owncam_pose_guard_provider.py": "95ea139155a6ee41df39548c2b086b50757975c6f8cc76782d8dfc7f0f6100e1",
+    "harness/owncam_pose_guard_v3.py": "035db19886b687cb64d5b11e74bfaf4b43ef66f088c4aaf93d3e94be1571f4a6",
+    "harness/owncam_pose_source.py": "b5c151742ba8d716c2f83423ce64a06cf07bdff8e8cf08b278ff84903529074e",
+    "harness/owncam_time.py": "64a1dd738de3ed73f44f21b8709af3f81efd54c8e8d5fd721d3ab9f7368fe5d4",
+    "harness/owncam_view.py": "d8dbda447e9ec2a4ccd96e5a19d751bf80676b18ff4e636002724528cdd97260",
+    "harness/perception.py": "a1bc0d8ff03cf70ca6ec3b9479aa85860cc54d8a3bc1adb1e809db8a0e5ac925",
+    "harness/pose_provider.py": "362ccd8e06600e0f7046a10ae00caa252ef17d46d7c86afd305081776e1717a2",
+    "harness/protocol.py": "eb8b935668b0e7dcc09522f1011077d910f6abd1f46d1c0b51bb7d80174a3d24",
+    "harness/recovery_act_client.py": "befc0700ad16a530ba437df44db740443cfd151b87b3efce225ef7131e487060",
+    "harness/registry.py": "57111cc2054502cb24804e681343a9130bf042792f527beebf624319567e9d90",
+    "harness/state.py": "7f23b4f276326fb6d646c989614c204739f4e89e8f35f78bfe85b29836cc3ffd",
+    "harness/team_bus.py": "c3936f1fb0041358b02f8c73809b6cc3a02bbee7b9ec483817eba6e95026c9de",
+    "harness/vision_loc_client.py": "7dcb96d25b7c6256e7bdb4f8b87ffd1dfcd467821720025cf2e5d90f38da50d0",
+    "harness/vision_loc_protocol.py": "14eada5ab3106af129cfc37723bf87b72528c027ed088caaef2faa41d3386b2d",
+    "harness/vision_motion_init.py": "4cc94461fb869f7589711ca9f3da357d40e6159094e5a0f40df1b873c4009316",
+    "harness/vision_pose_source.py": "dc5d5f8d0c0eafae500992ef82635ee6810ba1f71e49f04dc21a298955f6aba7",
+    "harness/visual_arm.py": "f60e4829fb734da2cdf52619a5e38c0de87da6137bac6fd42516560361de527a",
+    "harness/visual_arm_v3.py": "b6b1f9ebf3b6e6510e4068e264b9472b2d83bea24996590f678e69805dbb1100",
+    "harness/visual_attachment.py": "3f7378be87807f2b044ad8ec62956518e2d6b39c7172b10e427d38894aab280e",
+    "harness/visual_box_skill.py": "65fcaf24e4f3409941438304d3cdc6451514d65bac93a16f0b72d904f13850ab",
+    "harness/visual_box_surface.py": "bbc04aa79388acfb617145a3b642992bdce08fca0b55fc028cef52635944fbbc",
+    "harness/visual_floor.py": "2415658edcd03df6347136c9b3f17a32d16b950d4365a237d547dcd3a9d42e26",
+    "harness/vlm.py": "6b38dad79afe0fcb365e396976f9e346288acdd523f2200fa3e2891155cea6c1",
+    "harness/wall_tags.py": "eb0327012047cc413b7bb930fb7884cdfe4c18239058d954b1cce56593e0336e",
+    "harness/wrist_can.py": "d6614b99fcf68137becf6e591548c7c0ba2198b152f467ab64d4c228670307f2",
+    "harness/wrist_zone_skill.py": "964e337eccdaef0bad17fec204b54234875bbb6a9e6e3300847e4c967d5312cd",
+    "harness/wrist_zone_skill_v2.py": "70f9f9a2b0d81e0477a87cc9fa1a07f90eae0c2365e76244b5e28636be90ae6a",
+    "harness/wrist_zone_skill_v3.py": "81114b8053b0d7f687c205f55d036e8a33fb5d66f50c846450b934654d8a8689",
+    "harness/wrist_zone_skill_v4.py": "2864710c767fdf43b77f7662ecda8ad042830a072ab8437d315f3d901b419d22",
+    "harness/wrist_zone_skill_v5.py": "9b90dc16468ebce3369a782c3e51306b49ef5eae657e6eb8a6e0763d62b95c64",
+    "harness/zone_can_skill.py": "46e4636500038c21a291dc4cdbd958d4223047d862285e5fc2ce4d278338d505",
+    "harness/zone_color_boxes.py": "9b38265c27f86a735333b25326a10177ed073cc6c3e0f945ee5c318398813966",
+    "harness/zone_own_guards.py": "dbf49db31b8c24d2f1358105aee5a8474190d624f1ebf01709ac65226324ec0e",
+    "harness/zone_own_guards_v3.py": "677b5355d8f434a90deea01022615e67b341e139436c83f9fa56b54dadf54112",
+    "harness/zone_perception.py": "c612f2360649c25ace00e7a4fa14d1c845ca2fd870bb9edc7ae424c1d4e1571d",
+    "harness/zone_study_pose_delay.py": "5d8cdca5f4b734b640945c49a3e6aeb519b207c4dfb80cb72982ae0c066d2894",
+    "sim/__init__.py": "21113ac356c2bf0704db91edc1dce9e3f999d2ff2d1b576e8d34395562c452d5",
+    "sim/masterpi_camera_profile.py": "ec224a88f07b7f1e30b9f306951818ec3907c27554daab1361db6cc8b00f3a1a",
+    "sim/masterpi_geometry_v3.py": "bed49926f11cba9fe338ee228866771efd29d0a94c5ca3a0c65d67e7e82aa942"
+  },
+  "test_inputs_sha256": {
+    "tests/test_zone_own_executor_can.py": "e2b4dcba45374b1d690fafad557fba8473315931106cf780718623a6a7284b4a",
+    "maps/zones/zone_wide_door_geometry_v3.json": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17",
+    "sim/zone_cargo.py": "84cc956c22ca0d1b0d76fabcb4da61c33c73fcf77600d3079bced5658aa04a6b"
+  },
+  "execution_bundle_id": null,
+  "qualification": "static import closure and fake profile, not a sealed E2E execution bundle",
+  "python": "3.12.13",
+  "initial_base_main_sha": "6a57435e6e24f7f7a3f082d9458d3d9f4ebc010e",
+  "base_refresh": {
+    "received_unmodified_prs": [
+      307,
+      332
+    ],
+    "runtime_closure_and_test_inputs_unchanged": true,
+    "ci_configuration_diff_vs_origin_main": []
+  }
+}

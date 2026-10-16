@@ -1,0 +1,47 @@
+{
+  "기준_HEAD": "364c48c7a9edae26a83c594bed3d4e9b7554c329",
+  "브랜치": "codex/zone-pair-beam-relative",
+  "커밋_push_게시_병합": "수행하지 않음",
+  "최종_회귀": {
+    "통과": 366,
+    "실패": 0,
+    "wall_s": 271.97,
+    "종료코드": 0,
+    "로그": "pytest.txt",
+    "로그_sha256": "70b30c096eb68ef3a1e561a2314a788fd94bc7be180374673b101e654bb96081",
+    "명령": "OMP_NUM_THREADS=2 ../../ugrp/.venv-sim/bin/python -m pytest -q -p no:cacheprovider --basetemp=./.pytest_tmp tests/test_zone_pair_v6*.py tests/test_zone_pair_status.py tests/test_zone_pair_grasp.py tests/test_zone_pair_preclose.py tests/test_zone_pair_standoff.py tests/test_zone_pair_v5h.py",
+    "테스트_소스_sha256": {
+      "tests/test_zone_pair_v6.py": "32032289a320323c99318b38ca02d8e5d3d3c56c74d56fb1122b4394d7da1661",
+      "tests/test_zone_pair_v6_final_review.py": "c20edf3d1aa873880b85300f37972524641351bbd661b45f488ca90a13edb011",
+      "tests/test_zone_pair_v6_review1.py": "0bea55225bbf576c6df3979b72598ee884d0a63721ff0077a1eb44a7ef6c4fc5",
+      "tests/test_zone_pair_v6_review2.py": "89e7ed56e0ef4006d645028da63709975a45d0841d18a1d09fd659e9ab62eb56",
+      "tests/test_zone_pair_v6_review3.py": "cbeae4ebd6beecf8ea3924de258256b8a997831f3c23c0379bc149afc786048d",
+      "tests/test_zone_pair_v6_verification.py": "15f7336dc49a686fd14b32a89c7096618a25d40ee58bb109fc82264be3a4db21",
+      "tests/test_zone_pair_status.py": "6e39c94da07b30bff6f3289943f5267752ba1e37ffbde33a692d6678542722ca",
+      "tests/test_zone_pair_grasp.py": "28a1c927f3b8c6f3aa36db3a8ffda5439be8f622715f9fec73e5b3e837e5278d",
+      "tests/test_zone_pair_preclose.py": "0d1f41c18ea0e8e430afa29b3cd3a7c1d6d169bd7435b73f49a73d0641f59970",
+      "tests/test_zone_pair_standoff.py": "9fd73f881ece385a873615a2378bdbad1f6b37dc384c23f42b95819a19fd4025",
+      "tests/test_zone_pair_v5h.py": "52231b742da67300da9cd7a9659a748c486000e01c5a8d349de17995681b3f6b"
+    }
+  },
+  "별도_반례_최종검토_재실행": {
+    "통과": 129,
+    "실패": 0,
+    "wall_s": 130.01,
+    "중복_합산": false
+  },
+  "등록_sha256": "2453df542e8c7ac7d40af7d7d66593be8cfb4bfda342a13f56a2bdd93f6b5d74",
+  "등록_소스_일치": 72,
+  "등록_실행_설정": "기준 HEAD와 동일; DRAFT 및 승인 null; 동일 seed는 id/pair_policy만 다름",
+  "pytest_tmp_삭제": true,
+  "git_diff_check": "통과",
+  "물리_에피소드": 0,
+  "모델_호출": 0,
+  "판정_범위": "오프라인 코드 회귀만 검증. 실제 운반·태그 없는 환경의 준비 완료는 미검증.",
+  "관리자_후속": [
+    "최신 원격에서 v70 외부 실행·결과·등록 사용 여부 재확인",
+    "테스트 재실행 및 git add --sparse -A",
+    "COMMIT_MSG_CODEX.txt로 커밋·push",
+    "PR_COMMENT_CODEX.md 게시; 병합하지 않음"
+  ]
+}

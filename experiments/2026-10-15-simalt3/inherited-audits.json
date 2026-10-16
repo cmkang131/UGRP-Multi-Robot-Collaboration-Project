@@ -1,0 +1,65 @@
+{
+  "audits": [
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/simalt-pilot/experiments/2026-10-15-simalt2/audit-intact.json",
+      "bytes": 308721,
+      "sha256": "8314bb2477c4f421425bd779838c62e2dc8cde63b78fbf163d2c117331eb0930",
+      "source_sha": "4f64528b",
+      "status": "numeric_import_pass_only",
+      "steps": 0,
+      "conversion_failure": null,
+      "zero_allocated_fields": null,
+      "source_tolerance": 1e-08,
+      "converted_tolerance": null
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/simalt-pilot/experiments/2026-10-15-simalt2/audit-perturbed.json",
+      "bytes": 1338684,
+      "sha256": "a71dfa12d1c0e07660439458d99b249778616ec16eca3a5a8986530ee7050005",
+      "source_sha": "4f64528b",
+      "status": "rejected",
+      "steps": 0,
+      "conversion_failure": {
+        "field": "efm_c",
+        "caller": "put_data",
+        "caller_lineno": 2347,
+        "target_dtype": "<class 'warp._src.types.float32'>"
+      },
+      "zero_allocated_fields": null,
+      "source_tolerance": 1e-08,
+      "converted_tolerance": null
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/simalt-pilot/experiments/2026-10-15-simalt2/audit-safe.json",
+      "bytes": 1337570,
+      "sha256": "83e7ce8bfb55cb55cc1242db2aabe03e89aeedf9ca0de94fa3be3ef5f9387b24",
+      "source_sha": "a21a6e72",
+      "status": "numeric_import_pass_only",
+      "steps": 0,
+      "conversion_failure": null,
+      "zero_allocated_fields": [
+        "efm_c",
+        "efm_diag",
+        "efm_fluid",
+        "efm_ca"
+      ],
+      "source_tolerance": 1e-08,
+      "converted_tolerance": 9.999999974752427e-07
+    }
+  ],
+  "prior_commits": [
+    "17b19ae7f05f20aa8fdb2ff5d9390942b12c2ad2 Resolve restored persistent asset paths on evaluator host",
+    "bfbeb6b87ee4940c175bab75422b7b7ed70fcdab Match parent camera hardware and mission-overlay visibility groups",
+    "a0730f9244d10974188fa5d0d934991201f33260 Add headless gcp1 replay strips and preserve absent second-camera boundary",
+    "916b74284e5e02d6e23db414c46b2b133c9fb3dc Add gcp1-only evaluator comparison of frozen physics traces",
+    "23cb63c5aed5b2de67230a0859507182510318c1 Preserve partial numeric failure states and runner digest",
+    "79ea474f735fbeef4f4c636635edd5fea0713337 Include actual 3.16 reset contact counts in import buffer sizes",
+    "aa9be6bb8f7efad26e1400c43be6c64b2571e363 Preserve simalt1 diagnostic bounds and record interrupted resource caps",
+    "d351e8b492cebc4aa1ed8ebf545ad5f77f970cdb Use one integer tick clock for command interpolation",
+    "700089a713fb520b7bd0a5823b016641b48c4bf0 Read batched Warp solver tolerance explicitly",
+    "32b957f8e64c2224e5c70eb49bbd3255eb233724 Add frozen command-tape CPU and MJWarp comparison for one robot and box",
+    "a21a6e72e8fa81714219e89072afc1f000e14bde Avoid copying inactive EFM scratch arrays using upstream zero allocation",
+    "4f64528b5a452f341d1c5ebe9b03eb17a8aaf30b Add field-level MJWarp numeric import audit for simalt2"
+  ],
+  "boundary": "simalt2 imported data only; no completed step inferred"
+}

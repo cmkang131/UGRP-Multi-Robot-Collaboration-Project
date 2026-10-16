@@ -1,0 +1,49 @@
+{
+  "schema": "ugrp.vision_loc.dev_plan.v4",
+  "status": "FROZEN_BEFORE_VIS4_DEV_COMPARISON_NOT_COMMITTED_USER_REQUEST",
+  "base_sha": "1aa8f0c7e78dd3395cd04bfa04c5d9b53c5e1e48",
+  "scope": "Offline replay only. No MuJoCo render, no new segmentation training, no test access for fitting or selection.",
+  "fit_episodes": ["vl-dev-s909", "vl-dev-s910", "vl-dev-s911", "vl3-dev-s941", "vl3-dev-s942", "vl3-dev-s943"],
+  "validation_episodes": ["vl3-dev-s945", "vl3-dev-s946", "vl3-dev-s947"],
+  "excluded_from_selection": "Every train/test episode, including all round-2 and round-3 test episodes. Old test metadata may only be used for future split-overlap design.",
+  "fixed": {
+    "config": "selected_config_v3.json",
+    "camera_calibration": "calibration_train.json",
+    "segmentation_sha256": "348539030fda962cc5ba64e21c956619bc4db9321a99cd3ae6746611a9939fd9",
+    "particles": 2000,
+    "pf_seed": "original episode seed, paired across variants",
+    "observations": "existing r3/obs-w6 and r3/oracle-w6, provenance checked; RGB cache vs teacher-label oracle separately",
+    "robust": "unchanged empty block (no recovery or stuck injection)"
+  },
+  "diagnostics": [
+    "Signed world-x and body-forward errors, load state, motion profile, speed, phase, doorway; per episode and pooled",
+    "Frame/evaluation/label time alignment and commanded-servo replay audit; equal-time frame precedes command",
+    "Issued-command duration vs integration steps; start/stop transient residuals",
+    "Teacher-supervised motion target vs gain/lag/delay on fitting dev only; held-out dev reports separately",
+    "Measurement-only likelihood around GT at deterministic every-10th settled door frame: x offsets -0.10..0.10 m, 0.01 m step, same y/yaw; oracle and vision; diagnostic only, never controller input"
+  ],
+  "variants": [
+    {"id": "b0", "description": "VIS3 a1 unchanged; reuse complete baseline estimates with source hashes, verify regression on synthetic input"},
+    {"id": "x1", "description": "Expiry-aligned prediction and analytic first-order velocity integral with midpoint yaw; same M1 parameters"},
+    {"id": "m1", "description": "x1 plus dev-fitted default unloaded/loaded command gains, lag and nonnegative command delay; fine profile unchanged"}
+  ],
+  "fit_rule": {
+    "targets": "Body-frame displacement over timestamped teacher trajectory intervals (offline GT permitted only here)",
+    "profiles": ["default_unloaded", "default_loaded"],
+    "gain": "One output scale per axis multiplying the original M1 gain rows; robust through-origin fit clipped to [0.5, 1.5]",
+    "tau_grid_s": [0.05, 0.1, 0.2, 0.3, 0.5, 0.8, 1.2],
+    "delay_grid_s": [0.0, 0.05, 0.1, 0.15],
+    "stop_tau_s": "retain original M1 stop tau; default unloaded uses candidate spin-up tau",
+    "objective": "Episode-balanced mean Huber loss of body velocity residual, delta [0.03,0.03,0.10] m/s,m/s,rad/s; at least 100 excited intervals per axis; fit moving teacher intervals, stationary commanded intervals reported as stuck diagnosis",
+    "moving_mask": "body translation speed > 0.005 m/s OR abs yaw speed > 0.02 rad/s; exclude fine profile and profile/load transitions within 1.5 s",
+    "tie": "lowest loss, then smaller delay, then smaller tau; no parameter refit using validation episodes"
+  },
+  "selection_rule": {
+    "metrics": "vision door_loaded position p90 P, abs lateral p99 L, yaw p90 Y; all-frame p90 A and lost frames (>0.30 m); report oracle alongside",
+    "eligibility": "Against b0, on BOTH validation-only and all-dev: P <= b0.P+0.003 m; L <= b0.L+0.003 m; Y <= b0.Y+0.3 deg; A <= b0.A+0.02 m; lost <= b0.lost+ceil(0.01*n). Oracle all-dev P must not worsen by >0.005 m. Missing or partial episode is ineligible, never dropped.",
+    "improvement": "Validation P improves by >=0.003 m AND all-dev P improves by >=0.003 m",
+    "rank": "Among eligible improving candidates: lowest validation P, then L, then all-dev lost, then simpler x1 before m1. If none qualifies retain b0 and report negative result.",
+    "no_adaptive_grid": "No further PF variants in this plan. Any follow-up requires a new pre-run file; no test selection. Do not relax physical gates to admit dev winner."
+  },
+  "execution": {"max_concurrent_replays": 1, "omp_threads": 1, "source_freeze": "sha256 snapshot of all runtime/analysis/config inputs before replay; no git commit per user", "outputs": "this worktree outputs/vision-loc-v4/", "test_allowed": false}
+}

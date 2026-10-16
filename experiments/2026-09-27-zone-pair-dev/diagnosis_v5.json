@@ -1,0 +1,5085 @@
+{
+  "schema": "ugrp.zone_pair_dev_diagnosis.v5",
+  "date": "2026-09-27",
+  "language": "ko",
+  "labels": [
+    "tags_temporary",
+    "dev",
+    "연구 결과 아님"
+  ],
+  "research_result": false,
+  "source_sha": "8effc2cee5c3534d553adb75a0d82b49097e5286",
+  "prereg": "prereg_v4.json",
+  "scope": "dev07/dev08 primary diagnosis; dev05-dev08 are four run IDs across two prereg cohorts, not a pooled research success rate",
+  "constraints": {
+    "source_access": "read_only",
+    "new_physics_steps": 0,
+    "new_model_calls": 0,
+    "code_modified": false,
+    "git_commit_performed": false,
+    "allowed_control_inputs": [
+      "own RGB",
+      "static map and fixed calibration",
+      "own issued commands",
+      "existing STATUS enums only"
+    ],
+    "gt_for_control": false,
+    "weld": false,
+    "contact_profile": "cargo_noslip_v1"
+  },
+  "findings": {
+    "dev07": {
+      "primary_reason": "PREGRASP_NOT_READY",
+      "subreason_log": "BEAM_UNCERTAIN",
+      "first_failed_predicate": "RestingBeamTrack.estimate: partial.reason != BAND_CLIPPED; actual END_CLIPPED",
+      "not_causes": [
+        "standoff acquisition failure",
+        "propagated beam sigma exceeding limit",
+        "pose sigma exceeding limit",
+        "partial support below 0.95",
+        "negative clearance (not reached online)"
+      ],
+      "r1_abort_s": 202.7999999969324,
+      "r2_outcome": "PARTNER_ABORT same SIM time",
+      "wait_close_reached": true,
+      "close_ready_or_go": false,
+      "closing_command_count": 0,
+      "reconstruction": {
+        "anchor": {
+          "robot_id": "r1",
+          "event": "beam_standoff",
+          "sim_s": 200.7999999969797,
+          "accepted": true,
+          "frame_id": 1702,
+          "sha256": "89f06bb8b0bb6af56996896aa500218290eeead3ab7c4b9123eb598cf7e82455",
+          "beam": {
+            "visible": true,
+            "reason": "BAND_VISIBLE",
+            "end_visible": true,
+            "points": 1850,
+            "axis_heading_rad": -0.06537024393225829,
+            "near_end_base_m": [
+              0.14267293746981294,
+              -0.002459306406963694
+            ],
+            "grip_base_m": [
+              0.17264275227221831,
+              -0.0038047434027101913
+            ],
+            "visible_length_m": 0.12500198842803031,
+            "lateral_spread_m": 0.011200805671128031,
+            "provenance": "own_rgb_lime_hue+issued_pwm_camera_fk+beam_top_plane+black_grip_band_centre",
+            "perception": "owncam_pair_beam_perception_v2",
+            "band": {
+              "near_m": 0.0265,
+              "far_m": 0.0616,
+              "length_m": 0.0352,
+              "points": 3944,
+              "touches_invalid_border": false
+            },
+            "grip_source": "band_centre",
+            "std_xy_m": 0.015,
+            "std_yaw_rad": 0.035432760565226595,
+            "axis_fit": "equal_length_paired_edges",
+            "edge_strips": 7,
+            "edge_span_m": 0.12102982374202578,
+            "edge_residual_m": 0.001645108171939821,
+            "anchor_time_s": 200.7999999969797,
+            "anchor_frame_id": 1702,
+            "anchor_sha256": "89f06bb8b0bb6af56996896aa500218290eeead3ab7c4b9123eb598cf7e82455",
+            "anchor_servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            },
+            "prediction_time_s": 200.7999999969797,
+            "source": "own RGB standoff + issued commands"
+          }
+        },
+        "frame": {
+          "frame": 1721,
+          "t": 202.8,
+          "frame_id": 1722,
+          "sha256": "2b613b886920cff5486227063b33cac4a86349dc422c3a10e4e7a1c9c4369afd",
+          "robot_id": "r1",
+          "camera": "robot_cam",
+          "commanded_servo": {
+            "1": 2000,
+            "3": 1161,
+            "4": 1904,
+            "5": 2500,
+            "6": 1486
+          },
+          "report": {
+            "t_est": 202.8,
+            "initialized": true,
+            "xyyaw": [
+              0.56794,
+              0.03694,
+              0.063824
+            ],
+            "std_xy_m": 0.02383,
+            "std_yaw_rad": 0.01208,
+            "since_tag_s": 2.9,
+            "last_valid_obs": {
+              "t": 199.9,
+              "tag_ids": [
+                54,
+                55,
+                64,
+                65
+              ],
+              "n_tags": 4
+            },
+            "n_eff": 1337.1,
+            "load_state": "unloaded",
+            "source": "owncam_pf_v2:04f56834"
+          }
+        },
+        "raw_beam": {
+          "visible": true,
+          "reason": "END_CLIPPED",
+          "end_visible": false,
+          "points": 147,
+          "axis_heading_rad": -1.5883706602659389,
+          "near_end_base_m": [
+            0.18090329213453749,
+            0.009563296612400726
+          ],
+          "grip_base_m": [
+            0.18037608926978396,
+            -0.020432070648884734
+          ],
+          "visible_length_m": 0.02925846225246597,
+          "lateral_spread_m": 0.0002785184506487053,
+          "provenance": "own_rgb_lime_hue+issued_pwm_camera_fk+beam_top_plane",
+          "perception": "owncam_pair_beam_perception_v2",
+          "grip_source": "end_plus_inset_v1"
+        },
+        "stationary_estimate": null,
+        "track_after_commands": {
+          "visible": true,
+          "reason": "BAND_VISIBLE",
+          "end_visible": true,
+          "points": 1850,
+          "axis_heading_rad": -0.06537024393225829,
+          "near_end_base_m": [
+            0.14267293746981294,
+            -0.002459306406963694
+          ],
+          "grip_base_m": [
+            0.17264275227221831,
+            -0.0038047434027101913
+          ],
+          "visible_length_m": 0.12500198842803031,
+          "lateral_spread_m": 0.011200805671128031,
+          "provenance": "own_rgb_lime_hue+issued_pwm_camera_fk+beam_top_plane+black_grip_band_centre",
+          "perception": "owncam_pair_beam_perception_v2",
+          "band": {
+            "near_m": 0.0265,
+            "far_m": 0.0616,
+            "length_m": 0.0352,
+            "points": 3944,
+            "touches_invalid_border": false
+          },
+          "grip_source": "band_centre",
+          "std_xy_m": 0.018945000001510198,
+          "std_yaw_rad": 0.04232276056673675,
+          "axis_fit": "equal_length_paired_edges",
+          "edge_strips": 7,
+          "edge_span_m": 0.12102982374202578,
+          "edge_residual_m": 0.001645108171939821,
+          "anchor_time_s": 200.7999999969797,
+          "anchor_frame_id": 1702,
+          "anchor_sha256": "89f06bb8b0bb6af56996896aa500218290eeead3ab7c4b9123eb598cf7e82455",
+          "anchor_servo": {
+            "1": 2000,
+            "3": 508,
+            "4": 2432,
+            "5": 1320,
+            "6": 1500
+          },
+          "prediction_time_s": 202.8,
+          "source": "own RGB standoff + issued commands"
+        },
+        "track_result": null,
+        "total_pwm_delta": 2945,
+        "command_count": 214,
+        "partial_points": 147,
+        "partial_support_fraction": 1.0,
+        "partial_bounds": {
+          "along": [
+            0.0074042705671564825,
+            0.011999954634944696
+          ],
+          "across": [
+            -0.015539830949431692,
+            0.014058561474582598
+          ],
+          "pad_m": 0.0886773126831045
+        },
+        "grip_view": {
+          "seen": true,
+          "dark_fraction": 0.4931,
+          "top_beam_fraction": 0.4343,
+          "bottom_beam_fraction": 0.2384
+        },
+        "camera": {
+          "origin_base_m": [
+            0.16735753212333634,
+            -0.0036809777598634423,
+            0.05937029360345278
+          ],
+          "optical_axis_base": [
+            0.6224894201174933,
+            -0.013691464507938188,
+            -0.7825084444537419
+          ],
+          "optical_pitch_deg": -51.49082346953774,
+          "optical_yaw_deg": -1.2600000000000005
+        },
+        "camera_servo_matches_frame": true,
+        "servo": {
+          "1": 2000,
+          "3": 1161,
+          "4": 1904,
+          "5": 2500,
+          "6": 1486
+        }
+      },
+      "own_inputs_offline_diagnostics": {
+        "guard_not_reached_online": true,
+        "clearance_if_existing_track_geometry_were_evaluated_m": 0.6808772693404916,
+        "wall_id": "wall_divider_1",
+        "note": "reason gate bypass only for diagnosis; not an online pass or new evidence"
+      },
+      "colour_diagnostic": {
+        "v1_lime_eligible_points": 147,
+        "v2_grip_beam_hue_eligible_points": 16751,
+        "v1_hue": "see lime_mask source"
+      },
+      "eval_only": {
+        "trace_t": 202.7999999969324,
+        "beam_corners": [
+          [
+            0.7000000000000002,
+            0.02999999999999862,
+            -0.00010775546091837821
+          ],
+          [
+            0.6999999999956585,
+            0.02999999999999862,
+            0.03189224453908163
+          ],
+          [
+            0.7,
+            0.06999999999999862,
+            -0.00010775546091838037
+          ],
+          [
+            0.6999999999956583,
+            0.06999999999999862,
+            0.03189224453908162
+          ],
+          [
+            1.3,
+            0.030000000000001383,
+            -0.0001077553795139591
+          ],
+          [
+            1.2999999999956584,
+            0.030000000000001383,
+            0.031892244620486045
+          ],
+          [
+            1.2999999999999998,
+            0.07000000000000138,
+            -0.00010775537951396126
+          ],
+          [
+            1.2999999999956584,
+            0.07000000000000138,
+            0.03189224462048604
+          ]
+        ],
+        "actual_beam_to_static_walls_xy_clearance": [
+          {
+            "wall": "wall_divider_2",
+            "xy_surface_clearance_m": 0.9047237147328461
+          },
+          {
+            "wall": "wall_divider_1",
+            "xy_surface_clearance_m": 0.9047237147328465
+          },
+          {
+            "wall": "post_door_1_hi",
+            "xy_surface_clearance_m": 0.9060077262363716
+          },
+          {
+            "wall": "post_door_1_lo",
+            "xy_surface_clearance_m": 0.9060077262363722
+          },
+          {
+            "wall": "wall_north",
+            "xy_surface_clearance_m": 1.3549999999999986
+          },
+          {
+            "wall": "wall_west",
+            "xy_surface_clearance_m": 1.7249999999956585
+          },
+          {
+            "wall": "wall_south",
+            "xy_surface_clearance_m": 3.1549999999999985
+          },
+          {
+            "wall": "wall_east",
+            "xy_surface_clearance_m": 4.075
+          }
+        ],
+        "finger_n": {
+          "r1": [
+            0.0,
+            0.0
+          ],
+          "r2": [
+            0.0,
+            0.0
+          ]
+        },
+        "robot_gt_xyyaw": {
+          "r1": [
+            0.5615710790667049,
+            0.04365488054359071,
+            0.06050777328969209
+          ],
+          "r2": [
+            1.4384718870336164,
+            0.045368885717627615,
+            -3.129762529125418
+          ],
+          "r3": [
+            -0.6499971456259003,
+            0.5500000064931718,
+            1.2185433520110734e-09
+          ]
+        },
+        "use_for_control": false,
+        "scope": "saved full beam footprint to map wall/post surfaces; not future swept motion or grasp success"
+      },
+      "rounding_note": "robots reports round XY/sigma to 5 decimals and yaw to 6; commands use decimal timestamps. Replay ends at 202.8 to avoid 3e-9 s backward-time artifact against 202.7999999969. All discriminating sigma margins far exceed rounding."
+    },
+    "dev08": {
+      "primary_reason": "POSE_UNCERTAIN",
+      "robot": "r2",
+      "abort_s": 175.5999999975756,
+      "state": "align",
+      "gate_profile": "loaded",
+      "localizer_load_state": "unloaded",
+      "std_xy_m": 0.07004,
+      "xy_high_m": 0.07,
+      "std_yaw_rad": 0.02639,
+      "std_yaw_deg": 1.5120356213502426,
+      "yaw_high_rad": 0.05235987755982989,
+      "prior_frame_std_xy_m": 0.06993,
+      "last_tag_s": 160.3,
+      "tag_gap_s": 15.3,
+      "tagless_frames": 153,
+      "max_frame_gap_s": 0.10000000000002274,
+      "postures": [
+        {
+          "t_s": 160.2,
+          "posture": "p45",
+          "command_fk_optical_pitch_deg": -37.5408234695377
+        },
+        {
+          "t_s": 166.5,
+          "posture": "inspect",
+          "command_fk_optical_pitch_deg": -51.58082346953771
+        }
+      ],
+      "camera_frame": "own base, forward yaw 0 degrees; command FK only, not measured camera pose",
+      "later_pose_uncertain_event_s": 176.2,
+      "later_event_not_abort_trigger": true,
+      "dev06_comparison": "same accepted-tag information gap family; different immediate cause (dev06 loaded process-noise wait_lift yaw sigma 0.05238 rad, dev08 unloaded align XY sigma 0.07004 m)",
+      "intervention_not_reached": true
+    },
+    "structural": "Downward beam alignment removes wall-tag information while shared PF keeps predicting from issued commands. Pregrasp-only relook is too late for dev08; dev07 proves that relook can refresh the common pose in that run but then exposes a separate close-view evidence mismatch. Four dev runs do not establish frequency/generalization or communication effects."
+  },
+  "runs": {
+    "dev05": {
+      "raw_path": "/Users/changmin/projects/ugrp/outputs/zone-pair-dev-v3-4a17e7d47616056db85f35933327c6b63581853d/dev05",
+      "source_sha": "4a17e7d47616056db85f35933327c6b63581853d",
+      "robots": {
+        "r1": {
+          "state_events": [
+            {
+              "robot_id": "r1",
+              "event": "state",
+              "sim_s": 109.89999999912918,
+              "state": "wait_approach"
+            },
+            {
+              "robot_id": "r1",
+              "event": "state",
+              "sim_s": 152.99999999811,
+              "state": "align_start"
+            },
+            {
+              "robot_id": "r1",
+              "event": "state",
+              "sim_s": 153.09999999810765,
+              "state": "align"
+            },
+            {
+              "robot_id": "r1",
+              "event": "state",
+              "sim_s": 189.69999999724217,
+              "state": "grasp",
+              "grip_base_m": [
+                0.1728,
+                -0.0041
+              ]
+            }
+          ],
+          "special_events": [
+            {
+              "robot_id": "r1",
+              "event": "barrier_go",
+              "sim_s": 152.99999999811,
+              "barrier": "approach"
+            },
+            {
+              "robot_id": "r1",
+              "event": "vo_pose",
+              "sim_s": 189.69999999724217,
+              "pose": [
+                0.5848,
+                0.0481,
+                0.0313
+              ],
+              "observations": 71
+            }
+          ],
+          "last_preabort_frame": {
+            "frame": 1597,
+            "t": 190.4,
+            "frame_id": 1598,
+            "sha256": "aa9468612ba3608fd89ddf737666d4896fcb44eddfdf314aa5d07d23de96c776",
+            "robot_id": "r1",
+            "camera": "robot_cam",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 672,
+              "4": 1885,
+              "5": 1999,
+              "6": 1489
+            },
+            "report": {
+              "t_est": 190.4,
+              "initialized": true,
+              "xyyaw": [
+                1.31836,
+                0.09247,
+                0.067231
+              ],
+              "std_xy_m": 0.05985,
+              "std_yaw_rad": 0.02378,
+              "since_tag_s": 28.2,
+              "last_valid_obs": {
+                "t": 162.2,
+                "tag_ids": [
+                  53,
+                  54,
+                  55,
+                  64,
+                  65
+                ],
+                "n_tags": 5
+              },
+              "n_eff": 2000.0,
+              "load_state": "unloaded",
+              "source": "owncam_pf_v2:04f56834"
+            }
+          },
+          "last_tag_frame": {
+            "frame": 1315,
+            "t": 162.2,
+            "frame_id": 1316,
+            "sha256": "49864b69ce29fb9a0c178d18097a9d0d2f5a87d0a2686016da657c92078d5bc7",
+            "robot_id": "r1",
+            "camera": "robot_cam",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 741,
+              "4": 2313,
+              "5": 1331,
+              "6": 1500
+            },
+            "report": {
+              "t_est": 162.2,
+              "initialized": true,
+              "xyyaw": [
+                0.43567,
+                0.06328,
+                -0.027537
+              ],
+              "std_xy_m": 0.03114,
+              "std_yaw_rad": 0.01349,
+              "since_tag_s": 0.0,
+              "last_valid_obs": {
+                "t": 162.2,
+                "tag_ids": [
+                  53,
+                  54,
+                  55,
+                  64,
+                  65
+                ],
+                "n_tags": 5
+              },
+              "n_eff": 2000.0,
+              "load_state": "unloaded",
+              "source": "owncam_pf_v2:04f56834"
+            }
+          },
+          "tag_gap_frames": 282,
+          "tag_gap_s": 28.200000000000017,
+          "max_gap_between_frames_s": 0.10000000000002274,
+          "align_start_frame": {
+            "frame": 1224,
+            "t": 153.1,
+            "frame_id": 1225,
+            "sha256": "7b08cb78eb057a24f044919bb8c2590bd21673cdcae29719b82ab35c0befa960",
+            "robot_id": "r1",
+            "camera": "robot_cam",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 740,
+              "4": 2320,
+              "5": 1320,
+              "6": 1500
+            },
+            "report": {
+              "t_est": 153.1,
+              "initialized": true,
+              "xyyaw": [
+                0.30198,
+                -0.03017,
+                -0.003234
+              ],
+              "std_xy_m": 0.02878,
+              "std_yaw_rad": 0.01224,
+              "since_tag_s": 0.0,
+              "last_valid_obs": {
+                "t": 153.1,
+                "tag_ids": [
+                  53,
+                  54,
+                  55,
+                  64,
+                  65
+                ],
+                "n_tags": 5
+              },
+              "n_eff": 2000.0,
+              "load_state": "unloaded",
+              "source": "owncam_pf_v2:04f56834"
+            }
+          },
+          "tag_updates_during_align": 92,
+          "last_align_tag_frame": {
+            "frame": 1315,
+            "t": 162.2,
+            "frame_id": 1316,
+            "sha256": "49864b69ce29fb9a0c178d18097a9d0d2f5a87d0a2686016da657c92078d5bc7",
+            "robot_id": "r1",
+            "camera": "robot_cam",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 741,
+              "4": 2313,
+              "5": 1331,
+              "6": 1500
+            },
+            "report": {
+              "t_est": 162.2,
+              "initialized": true,
+              "xyyaw": [
+                0.43567,
+                0.06328,
+                -0.027537
+              ],
+              "std_xy_m": 0.03114,
+              "std_yaw_rad": 0.01349,
+              "since_tag_s": 0.0,
+              "last_valid_obs": {
+                "t": 162.2,
+                "tag_ids": [
+                  53,
+                  54,
+                  55,
+                  64,
+                  65
+                ],
+                "n_tags": 5
+              },
+              "n_eff": 2000.0,
+              "load_state": "unloaded",
+              "source": "owncam_pf_v2:04f56834"
+            }
+          },
+          "camera": {
+            "origin_base_m": [
+              0.14459036020735627,
+              -0.002498590734719274,
+              0.15384737484904376
+            ],
+            "optical_axis_base": [
+              0.6598923510213383,
+              -0.011403256149369143,
+              -0.751273619138009
+            ],
+            "optical_pitch_deg": -48.70082346953771,
+            "optical_yaw_deg": -0.9900000000000004
+          },
+          "eval_only": {
+            "trace_t": 190.39999999722562,
+            "xyyaw": [
+              0.5605934720145427,
+              0.04569741015643899,
+              0.049727500278666674
+            ],
+            "pose_xy_error_m": 0.7592086578114141,
+            "last_tag_to_report_estimated_displacement_m": 0.8831725155370269,
+            "last_tag_to_report_actual_displacement_m": 0.15687926865385934,
+            "displacement_ratio": 5.629631774263758
+          }
+        },
+        "r2": {
+          "state_events": [
+            {
+              "robot_id": "r2",
+              "event": "state",
+              "sim_s": 152.6999999981171,
+              "state": "wait_approach"
+            },
+            {
+              "robot_id": "r2",
+              "event": "state",
+              "sim_s": 152.99999999811,
+              "state": "align_start"
+            },
+            {
+              "robot_id": "r2",
+              "event": "state",
+              "sim_s": 153.09999999810765,
+              "state": "align"
+            },
+            {
+              "robot_id": "r2",
+              "event": "state",
+              "sim_s": 188.19999999727764,
+              "state": "grasp",
+              "grip_base_m": [
+                0.1728,
+                -0.0058
+              ]
+            }
+          ],
+          "special_events": [
+            {
+              "robot_id": "r2",
+              "event": "barrier_go",
+              "sim_s": 152.99999999811,
+              "barrier": "approach"
+            },
+            {
+              "robot_id": "r2",
+              "event": "vo_pose",
+              "sim_s": 188.19999999727764,
+              "pose": [
+                1.4197,
+                0.0448,
+                -3.1263
+              ],
+              "observations": 68
+            }
+          ],
+          "last_preabort_frame": {
+            "frame": 1598,
+            "t": 190.4,
+            "frame_id": 1599,
+            "sha256": "34a92906c44807a3f0e6f7e902e668ad9d0b8f83065496b0a4d02ed05e1f5d82",
+            "robot_id": "r2",
+            "camera": "robot_cam",
+            "commanded_servo": {
+              "1": 1824,
+              "3": 1198,
+              "4": 1944,
+              "5": 2486,
+              "6": 1479
+            },
+            "report": {
+              "t_est": 190.4,
+              "initialized": true,
+              "xyyaw": [
+                0.55214,
+                0.03163,
+                3.131828
+              ],
+              "std_xy_m": 0.05441,
+              "std_yaw_rad": 0.01994,
+              "since_tag_s": 26.7,
+              "last_valid_obs": {
+                "t": 163.7,
+                "tag_ids": [
+                  33,
+                  34,
+                  35,
+                  36,
+                  37
+                ],
+                "n_tags": 5
+              },
+              "n_eff": 2000.0,
+              "load_state": "unloaded",
+              "source": "owncam_pf_v2:04f56834"
+            }
+          },
+          "last_tag_frame": {
+            "frame": 1331,
+            "t": 163.7,
+            "frame_id": 1332,
+            "sha256": "6ab50acbba2835757bb4eacbb49b49f115604f9160ced9c65f683815b238ab5f",
+            "robot_id": "r2",
+            "camera": "robot_cam",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 741,
+              "4": 2313,
+              "5": 1331,
+              "6": 1500
+            },
+            "report": {
+              "t_est": 163.7,
+              "initialized": true,
+              "xyyaw": [
+                1.52521,
+                0.02813,
+                3.135069
+              ],
+              "std_xy_m": 0.03404,
+              "std_yaw_rad": 0.01106,
+              "since_tag_s": 0.0,
+              "last_valid_obs": {
+                "t": 163.7,
+                "tag_ids": [
+                  33,
+                  34,
+                  35,
+                  36,
+                  37
+                ],
+                "n_tags": 5
+              },
+              "n_eff": 2000.0,
+              "load_state": "unloaded",
+              "source": "owncam_pf_v2:04f56834"
+            }
+          },
+          "tag_gap_frames": 267,
+          "tag_gap_s": 26.700000000000017,
+          "max_gap_between_frames_s": 0.10000000000002274,
+          "align_start_frame": {
+            "frame": 1225,
+            "t": 153.1,
+            "frame_id": 1226,
+            "sha256": "503c25ba8396f6f949e85444eb3b00a2452f281c5009d6e0ce42e162faa8d0fb",
+            "robot_id": "r2",
+            "camera": "robot_cam",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 740,
+              "4": 2320,
+              "5": 1320,
+              "6": 1500
+            },
+            "report": {
+              "t_est": 153.1,
+              "initialized": true,
+              "xyyaw": [
+                1.72361,
+                0.02724,
+                3.141429
+              ],
+              "std_xy_m": 0.0301,
+              "std_yaw_rad": 0.00921,
+              "since_tag_s": 0.0,
+              "last_valid_obs": {
+                "t": 153.1,
+                "tag_ids": [
+                  33,
+                  34,
+                  35,
+                  36,
+                  37
+                ],
+                "n_tags": 5
+              },
+              "n_eff": 1137.9,
+              "load_state": "unloaded",
+              "source": "owncam_pf_v2:04f56834"
+            }
+          },
+          "tag_updates_during_align": 107,
+          "last_align_tag_frame": {
+            "frame": 1331,
+            "t": 163.7,
+            "frame_id": 1332,
+            "sha256": "6ab50acbba2835757bb4eacbb49b49f115604f9160ced9c65f683815b238ab5f",
+            "robot_id": "r2",
+            "camera": "robot_cam",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 741,
+              "4": 2313,
+              "5": 1331,
+              "6": 1500
+            },
+            "report": {
+              "t_est": 163.7,
+              "initialized": true,
+              "xyyaw": [
+                1.52521,
+                0.02813,
+                3.135069
+              ],
+              "std_xy_m": 0.03404,
+              "std_yaw_rad": 0.01106,
+              "since_tag_s": 0.0,
+              "last_valid_obs": {
+                "t": 163.7,
+                "tag_ids": [
+                  33,
+                  34,
+                  35,
+                  36,
+                  37
+                ],
+                "n_tags": 5
+              },
+              "n_eff": 2000.0,
+              "load_state": "unloaded",
+              "source": "owncam_pf_v2:04f56834"
+            }
+          },
+          "camera": {
+            "origin_base_m": [
+              0.1668960646777014,
+              -0.005507351937714539,
+              0.059290013220954486
+            ],
+            "optical_axis_base": [
+              0.6357211016870388,
+              -0.020977965226341936,
+              -0.7716337251862311
+            ],
+            "optical_pitch_deg": -50.50082346953771,
+            "optical_yaw_deg": -1.8900000000000006
+          },
+          "eval_only": {
+            "trace_t": 190.39999999722562,
+            "xyyaw": [
+              1.4386831182146345,
+              0.04443783369673282,
+              -3.1398368081766703
+            ],
+            "pose_xy_error_m": 0.8866356303790924,
+            "last_tag_to_report_estimated_displacement_m": 0.9730762944908277,
+            "last_tag_to_report_actual_displacement_m": 0.15406634544854406,
+            "displacement_ratio": 6.3159562307903325
+          }
+        }
+      },
+      "result": {
+        "schema": "ugrp.zone_pair_dev_evaluation.v1",
+        "labels": [
+          "tags_temporary",
+          "dev",
+          "연구 결과 아님"
+        ],
+        "research_result": false,
+        "physical_success": false,
+        "dev_physical_success": false,
+        "verdict": "DEV_NOT_CONFIRMED",
+        "checks": {
+          "applied": true,
+          "trace_complete": true,
+          "contacts_complete": true,
+          "approach": true,
+          "joint_grasp": false,
+          "lift": false,
+          "door": false,
+          "placement_release": false,
+          "no_drop": false,
+          "contacts": true,
+          "r3": true,
+          "weld_off": true,
+          "protocol": false,
+          "video": false
+        },
+        "evidence": {
+          "coverage": {
+            "start_s": 1.3000000000000178,
+            "end_s": 192.92899999716582,
+            "timestep_s": 0.00025,
+            "expected_physics_steps": 766516,
+            "observed_physics_steps": 766516
+          },
+          "planned_setdowns": [],
+          "grasp_at_s": null,
+          "lifted_at_s": null,
+          "door_at_s": null,
+          "drop_samples": [],
+          "final_stable_at_s": null,
+          "approach": {
+            "r1": true,
+            "r2": true
+          }
+        },
+        "protocol": {
+          "ok": false,
+          "go_seen": true,
+          "go_pairs": 1,
+          "go_errors": [],
+          "missing_go": [
+            "carry_go_0",
+            "carry_go_1",
+            "carry_go_2",
+            "carry_go_3",
+            "carry_go_4",
+            "carry_go_5",
+            "carry_go_6",
+            "carry_go_7",
+            "lift_go_0",
+            "lift_go_1",
+            "lift_go_2",
+            "lift_go_3",
+            "lift_go_4",
+            "lift_go_5",
+            "lift_go_6",
+            "lift_go_7",
+            "lower_go_0",
+            "lower_go_1",
+            "lower_go_2",
+            "lower_go_3",
+            "lower_go_4",
+            "lower_go_5",
+            "lower_go_6",
+            "lower_go_7",
+            "open_go_0",
+            "open_go_1",
+            "open_go_2",
+            "open_go_3",
+            "open_go_4",
+            "open_go_5",
+            "open_go_6",
+            "open_go_7"
+          ],
+          "go_times": {
+            "approach_go_0": 152.99999999811
+          },
+          "abort_seen": true,
+          "abort_check": "checked",
+          "abort_queues_empty": true,
+          "post_abort_observation_complete": true,
+          "post_abort_motion_count": 0,
+          "command_order_metadata_complete": true
+        },
+        "errors": [],
+        "sequence_done_is_success": false,
+        "video_review": {
+          "verified": false,
+          "reason": "manual review pending"
+        },
+        "abort_diagnostic": {
+          "intervention_exercised_with_pending_motion": false,
+          "passed": false
+        },
+        "run_id": "dev05",
+        "seed": 901,
+        "condition": "tags_temporary_dev_none",
+        "source_sha": "4a17e7d47616056db85f35933327c6b63581853d",
+        "wall_s": 692.0840127499541,
+        "sim_s": 192.92899999716582,
+        "commands": 2098,
+        "model_calls": 0,
+        "model_response_time": "not_applicable_no_model_calls",
+        "scope": "tags_temporary, dev, 연구 결과 아님",
+        "clock": "synchronous SIM",
+        "policy": "PairTeam/M2DoorStudent-v3",
+        "case": "dev05",
+        "limits": {
+          "sim_s": 900.0,
+          "wall_s": 57600.0,
+          "submit_at_s": 60.0,
+          "post_terminal_s": 2.0,
+          "outer_wall_timeout_s": 57660.0,
+          "model_calls": 0
+        },
+        "config": {
+          "contact_profile": "cargo_noslip_v1"
+        },
+        "command_count_scope": "issued arm/look/drive/mecanum commands, not successful physical actions",
+        "input_sha256": {
+          "manifest.json": "bddbf7674bbdec9da85fc9ed3fa9c2f3134d2503f623151c6c20d23fcb926678",
+          "prereg.json": "9470d95261c464cd37705cdebde87d6cdd8f5166bbd02cb10236489611853b6e",
+          "pair_records.json": "5c1944e424ed65784fea736ec56cfa568089a3cffe8141642546dc416c6dd96b",
+          "status.jsonl": "ebb6514cd9b8de371b3e87a7effd3c67e461f15746ccbed564130b7f00e89d7f",
+          "commands.jsonl": "3be73ded3794c827b3ef173e44a91d8ac1b3465cb8f31491df9f058fbc0eba3c",
+          "shutdown.jsonl": "5da28947a16398456a81c5a40b149636ac52ece9d18cd3b32c1d3a808875a6f9",
+          "eval_only/trace.jsonl": "2358fca19356040af860fa9fd122631de8951eb98a1b972577ceb9437a2258d8",
+          "eval_only/contacts.json": "6bd43112c180e43ec608096561cbf413697ee7a0ec9a84bc096b31d9c1774caa"
+        }
+      },
+      "manifest_summary": {
+        "seed": 901,
+        "intervention": "none",
+        "applied": {
+          "map": "zone_wide_door_tags_v2_dock_v3",
+          "participants": [
+            "r1",
+            "r2"
+          ],
+          "world_robots": [
+            "r1",
+            "r2",
+            "r3"
+          ],
+          "cargo": [
+            {
+              "item_id": "cargoX",
+              "kind": "long_beam"
+            }
+          ],
+          "other_objects": 0,
+          "weld": false,
+          "contact_profile": "cargo_noslip_v1",
+          "noslip_iterations": 10,
+          "timestep_s": 0.00025
+        },
+        "model_calls": 0,
+        "wall_s": 692.0840127499541,
+        "simulator_start_s": 1.3000000000000178,
+        "sim_end_s": 192.92899999716582,
+        "source_changed": false,
+        "inputs_changed": false,
+        "intervention_not_reached": null,
+        "environment": {
+          "python": "3.12.13",
+          "executable": "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+          "platform": "macOS-27.2-arm64-arm-64bit",
+          "packages": {
+            "mujoco": "3.12.0",
+            "numpy": "2.5.2",
+            "opencv-python": null,
+            "opencv-python-headless": "5.0.0.93",
+            "Pillow": "12.3.0",
+            "torch": null,
+            "gymnasium": "1.3.0"
+          },
+          "loadavg_at_start": [
+            6.38134765625,
+            8.63134765625,
+            9.2109375
+          ],
+          "loadavg_at_end": [
+            6.9658203125,
+            7.7861328125,
+            8.96728515625
+          ]
+        }
+      },
+      "events": [
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "job_started",
+          "sim_s": 1.3,
+          "job_id": "r1-job-001",
+          "job_kind": "look_around",
+          "detail": {
+            "arguments": {
+              "observe": "wide_look"
+            }
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "job_started",
+          "sim_s": 1.3,
+          "job_id": "r2-job-001",
+          "job_kind": "look_around",
+          "detail": {
+            "arguments": {
+              "observe": "wide_look"
+            }
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "job_done",
+          "sim_s": 10.8,
+          "job_id": "r2-job-001",
+          "job_kind": "look_around",
+          "detail": {
+            "confirmation": "own_camera_confirmed",
+            "outcome": "LOOKED",
+            "level": "low",
+            "std_xy_m": 0.0256
+          },
+          "scheduler_trigger": "idle"
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "job_done",
+          "sim_s": 13.5,
+          "job_id": "r1-job-001",
+          "job_kind": "look_around",
+          "detail": {
+            "confirmation": "own_camera_confirmed",
+            "outcome": "LOOKED",
+            "level": "medium",
+            "std_xy_m": 0.0399
+          },
+          "scheduler_trigger": "idle"
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "job_started",
+          "sim_s": 60.0,
+          "job_id": "r1-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "arguments": {
+              "order_id": "cargoX",
+              "target_ref": "B",
+              "role": "end_neg"
+            }
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "job_started",
+          "sim_s": 60.0,
+          "job_id": "r2-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "arguments": {
+              "order_id": "cargoX",
+              "target_ref": "B",
+              "role": "end_pos"
+            }
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "pair_progress",
+          "sim_s": 60.0,
+          "job_id": "r2-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "approach"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "pair_progress",
+          "sim_s": 60.05,
+          "job_id": "r1-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "approach"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "pair_progress",
+          "sim_s": 109.9,
+          "job_id": "r1-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "wait_approach"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "pair_progress",
+          "sim_s": 152.7,
+          "job_id": "r2-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "wait_approach"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "pair_progress",
+          "sim_s": 153.0,
+          "job_id": "r1-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "align_start"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "pair_progress",
+          "sim_s": 153.0,
+          "job_id": "r2-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "align_start"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "pair_progress",
+          "sim_s": 153.1,
+          "job_id": "r1-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "align"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "pair_progress",
+          "sim_s": 153.1,
+          "job_id": "r2-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "align"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "pair_progress",
+          "sim_s": 188.2,
+          "job_id": "r2-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "grasp"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "pair_progress",
+          "sim_s": 189.7,
+          "job_id": "r1-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "grasp"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "job_failed",
+          "sim_s": 190.429,
+          "job_id": "r1-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "reason": "PAIR_COLLISION_GUARD"
+          },
+          "scheduler_trigger": "failure"
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "job_failed",
+          "sim_s": 190.429,
+          "job_id": "r2-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "reason": "PARTNER_ABORT"
+          },
+          "scheduler_trigger": "failure"
+        }
+      ],
+      "status_matches_pair_record": true,
+      "motion_commands": 2098,
+      "closing_commands": 4,
+      "contacts": {
+        "physics_steps": 766516,
+        "observation_start_s": 1.3000000000000178,
+        "observation_end_s": 192.92899999716582,
+        "timestep_s": 0.00025,
+        "max_step_gap_s": 0.00025000000000829914,
+        "invalid_step_intervals": 0,
+        "counts": {
+          "robot_robot": 0,
+          "robot_wall": 0,
+          "beam_wall": 0,
+          "robot_beam_approach": 0,
+          "r3_interference": 0
+        },
+        "max_eq_active": 0,
+        "r3_max_displacement_m": 5.854634587042695e-12,
+        "r3_motion_commands": 0,
+        "r3_api_calls": 0
+      }
+    },
+    "dev06": {
+      "raw_path": "/Users/changmin/projects/ugrp/outputs/zone-pair-dev-v3-4a17e7d47616056db85f35933327c6b63581853d/dev06",
+      "source_sha": "4a17e7d47616056db85f35933327c6b63581853d",
+      "robots": {
+        "r1": {
+          "state_events": [
+            {
+              "robot_id": "r1",
+              "event": "state",
+              "sim_s": 81.19999999980784,
+              "state": "wait_approach"
+            },
+            {
+              "robot_id": "r1",
+              "event": "state",
+              "sim_s": 154.49999999807454,
+              "state": "align_start"
+            },
+            {
+              "robot_id": "r1",
+              "event": "state",
+              "sim_s": 154.59999999807218,
+              "state": "align"
+            },
+            {
+              "robot_id": "r1",
+              "event": "state",
+              "sim_s": 192.69999999717123,
+              "state": "grasp",
+              "grip_base_m": [
+                0.1737,
+                0.0006
+              ]
+            }
+          ],
+          "special_events": [
+            {
+              "robot_id": "r1",
+              "event": "barrier_go",
+              "sim_s": 154.49999999807454,
+              "barrier": "approach"
+            },
+            {
+              "robot_id": "r1",
+              "event": "vo_pose",
+              "sim_s": 192.69999999717123,
+              "pose": [
+                0.5165,
+                0.0042,
+                -0.0365
+              ],
+              "observations": 74
+            }
+          ],
+          "last_preabort_frame": {
+            "frame": 1630,
+            "t": 193.7,
+            "frame_id": 1631,
+            "sha256": "6f34c535c9b679cba4a648fbd890f2a1d99f3de56907741c19ccfc6bd2d30b45",
+            "robot_id": "r1",
+            "camera": "robot_cam",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 791,
+              "4": 1757,
+              "5": 2221,
+              "6": 1502
+            },
+            "report": {
+              "t_est": 193.7,
+              "initialized": true,
+              "xyyaw": [
+                1.19231,
+                0.0455,
+                0.072281
+              ],
+              "std_xy_m": 0.05653,
+              "std_yaw_rad": 0.02413,
+              "since_tag_s": 26.9,
+              "last_valid_obs": {
+                "t": 166.8,
+                "tag_ids": [
+                  53,
+                  54,
+                  55,
+                  64
+                ],
+                "n_tags": 4
+              },
+              "n_eff": 1517.2,
+              "load_state": "unloaded",
+              "source": "owncam_pf_v2:04f56834"
+            }
+          },
+          "last_tag_frame": {
+            "frame": 1361,
+            "t": 166.8,
+            "frame_id": 1362,
+            "sha256": "a903d6c9929a4e6c780214be36806526c69c9de6a57f50f1a042c24071a3065b",
+            "robot_id": "r1",
+            "camera": "robot_cam",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 745,
+              "4": 2267,
+              "5": 1407,
+              "6": 1500
+            },
+            "report": {
+              "t_est": 166.8,
+              "initialized": true,
+              "xyyaw": [
+                0.36347,
+                0.01616,
+                -0.042001
+              ],
+              "std_xy_m": 0.028,
+              "std_yaw_rad": 0.01171,
+              "since_tag_s": 0.0,
+              "last_valid_obs": {
+                "t": 166.8,
+                "tag_ids": [
+                  53,
+                  54,
+                  55,
+                  64
+                ],
+                "n_tags": 4
+              },
+              "n_eff": 1517.2,
+              "load_state": "unloaded",
+              "source": "owncam_pf_v2:04f56834"
+            }
+          },
+          "tag_gap_frames": 269,
+          "tag_gap_s": 26.899999999999977,
+          "max_gap_between_frames_s": 0.10000000000002274,
+          "align_start_frame": {
+            "frame": 1239,
+            "t": 154.6,
+            "frame_id": 1240,
+            "sha256": "c5f38e37eaae341c5aaf155a13b1edd6341598a1800255d43b547e445155fadb",
+            "robot_id": "r1",
+            "camera": "robot_cam",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 740,
+              "4": 2320,
+              "5": 1320,
+              "6": 1500
+            },
+            "report": {
+              "t_est": 154.6,
+              "initialized": true,
+              "xyyaw": [
+                0.18523,
+                -0.01217,
+                0.019774
+              ],
+              "std_xy_m": 0.02714,
+              "std_yaw_rad": 0.01097,
+              "since_tag_s": 0.0,
+              "last_valid_obs": {
+                "t": 154.6,
+                "tag_ids": [
+                  53,
+                  54,
+                  55,
+                  64,
+                  65
+                ],
+                "n_tags": 5
+              },
+              "n_eff": 1305.6,
+              "load_state": "unloaded",
+              "source": "owncam_pf_v2:04f56834"
+            }
+          },
+          "tag_updates_during_align": 123,
+          "last_align_tag_frame": {
+            "frame": 1361,
+            "t": 166.8,
+            "frame_id": 1362,
+            "sha256": "a903d6c9929a4e6c780214be36806526c69c9de6a57f50f1a042c24071a3065b",
+            "robot_id": "r1",
+            "camera": "robot_cam",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 745,
+              "4": 2267,
+              "5": 1407,
+              "6": 1500
+            },
+            "report": {
+              "t_est": 166.8,
+              "initialized": true,
+              "xyyaw": [
+                0.36347,
+                0.01616,
+                -0.042001
+              ],
+              "std_xy_m": 0.028,
+              "std_yaw_rad": 0.01171,
+              "since_tag_s": 0.0,
+              "last_valid_obs": {
+                "t": 166.8,
+                "tag_ids": [
+                  53,
+                  54,
+                  55,
+                  64
+                ],
+                "n_tags": 4
+              },
+              "n_eff": 1517.2,
+              "load_state": "unloaded",
+              "source": "owncam_pf_v2:04f56834"
+            }
+          },
+          "camera": {
+            "origin_base_m": [
+              0.1648493690852237,
+              0.0005178912706621601,
+              0.13068035869909267
+            ],
+            "optical_axis_base": [
+              0.6889735054007005,
+              0.002164481223947338,
+              -0.7247832944245489
+            ],
+            "optical_pitch_deg": -46.45082346953772,
+            "optical_yaw_deg": 0.17999999999999997
+          },
+          "eval_only": {
+            "trace_t": 193.6999999971476,
+            "xyyaw": [
+              0.4910111089109221,
+              -0.00110448061551056,
+              -0.004900258392645326
+            ],
+            "pose_xy_error_m": 0.7028457243636129,
+            "last_tag_to_report_estimated_displacement_m": 0.8293591388536091,
+            "last_tag_to_report_actual_displacement_m": 0.1580907937155862,
+            "displacement_ratio": 5.246093838618273
+          }
+        },
+        "r2": {
+          "state_events": [
+            {
+              "robot_id": "r2",
+              "event": "state",
+              "sim_s": 154.099999998084,
+              "state": "wait_approach"
+            },
+            {
+              "robot_id": "r2",
+              "event": "state",
+              "sim_s": 154.49999999807454,
+              "state": "align_start"
+            },
+            {
+              "robot_id": "r2",
+              "event": "state",
+              "sim_s": 154.59999999807218,
+              "state": "align"
+            },
+            {
+              "robot_id": "r2",
+              "event": "state",
+              "sim_s": 186.6999999973131,
+              "state": "grasp",
+              "grip_base_m": [
+                0.174,
+                0.0077
+              ]
+            },
+            {
+              "robot_id": "r2",
+              "event": "state",
+              "sim_s": 189.59999999724454,
+              "state": "wait_lift"
+            }
+          ],
+          "special_events": [
+            {
+              "robot_id": "r2",
+              "event": "barrier_go",
+              "sim_s": 154.49999999807454,
+              "barrier": "approach"
+            },
+            {
+              "robot_id": "r2",
+              "event": "vo_pose",
+              "sim_s": 186.6999999973131,
+              "pose": [
+                1.3512,
+                -0.0359,
+                3.1076
+              ],
+              "observations": 62
+            }
+          ],
+          "last_preabort_frame": {
+            "frame": 1631,
+            "t": 193.7,
+            "frame_id": 1632,
+            "sha256": "256515099be3ee7e520f8f88b5ed46a01fb761dbbf94e632890a0725d8318073",
+            "robot_id": "r2",
+            "camera": "robot_cam",
+            "commanded_servo": {
+              "1": 1500,
+              "3": 1215,
+              "4": 1947,
+              "5": 2490,
+              "6": 1528
+            },
+            "report": {
+              "t_est": 193.7,
+              "initialized": true,
+              "xyyaw": [
+                0.42094,
+                -0.09166,
+                2.881649
+              ],
+              "std_xy_m": 0.05753,
+              "std_yaw_rad": 0.05238,
+              "since_tag_s": 30.5,
+              "last_valid_obs": {
+                "t": 163.2,
+                "tag_ids": [
+                  33,
+                  34,
+                  35,
+                  36
+                ],
+                "n_tags": 4
+              },
+              "n_eff": 2000.0,
+              "load_state": "loaded",
+              "source": "owncam_pf_v2:04f56834"
+            }
+          },
+          "last_tag_frame": {
+            "frame": 1326,
+            "t": 163.2,
+            "frame_id": 1327,
+            "sha256": "6ee8f5626ee2f432dd59cdfa34f2935b9e2d7b752c66c0f42b682aa87f57d312",
+            "robot_id": "r2",
+            "camera": "robot_cam",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 741,
+              "4": 2313,
+              "5": 1331,
+              "6": 1500
+            },
+            "report": {
+              "t_est": 163.2,
+              "initialized": true,
+              "xyyaw": [
+                1.45936,
+                -0.08134,
+                3.100095
+              ],
+              "std_xy_m": 0.03034,
+              "std_yaw_rad": 0.00972,
+              "since_tag_s": 0.0,
+              "last_valid_obs": {
+                "t": 163.2,
+                "tag_ids": [
+                  33,
+                  34,
+                  35,
+                  36
+                ],
+                "n_tags": 4
+              },
+              "n_eff": 2000.0,
+              "load_state": "unloaded",
+              "source": "owncam_pf_v2:04f56834"
+            }
+          },
+          "tag_gap_frames": 305,
+          "tag_gap_s": 30.5,
+          "max_gap_between_frames_s": 0.10000000000002274,
+          "align_start_frame": {
+            "frame": 1240,
+            "t": 154.6,
+            "frame_id": 1241,
+            "sha256": "ae62724850d664613e2b20af23a4889518464a624920911517882ceb9fd91cf7",
+            "robot_id": "r2",
+            "camera": "robot_cam",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 740,
+              "4": 2320,
+              "5": 1320,
+              "6": 1500
+            },
+            "report": {
+              "t_est": 154.6,
+              "initialized": true,
+              "xyyaw": [
+                1.62889,
+                -0.02855,
+                -3.141365
+              ],
+              "std_xy_m": 0.03094,
+              "std_yaw_rad": 0.00996,
+              "since_tag_s": 0.0,
+              "last_valid_obs": {
+                "t": 154.6,
+                "tag_ids": [
+                  33,
+                  34,
+                  35,
+                  36
+                ],
+                "n_tags": 4
+              },
+              "n_eff": 1130.4,
+              "load_state": "unloaded",
+              "source": "owncam_pf_v2:04f56834"
+            }
+          },
+          "tag_updates_during_align": 87,
+          "last_align_tag_frame": {
+            "frame": 1326,
+            "t": 163.2,
+            "frame_id": 1327,
+            "sha256": "6ee8f5626ee2f432dd59cdfa34f2935b9e2d7b752c66c0f42b682aa87f57d312",
+            "robot_id": "r2",
+            "camera": "robot_cam",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 741,
+              "4": 2313,
+              "5": 1331,
+              "6": 1500
+            },
+            "report": {
+              "t_est": 163.2,
+              "initialized": true,
+              "xyyaw": [
+                1.45936,
+                -0.08134,
+                3.100095
+              ],
+              "std_xy_m": 0.03034,
+              "std_yaw_rad": 0.00972,
+              "since_tag_s": 0.0,
+              "last_valid_obs": {
+                "t": 163.2,
+                "tag_ids": [
+                  33,
+                  34,
+                  35,
+                  36
+                ],
+                "n_tags": 4
+              },
+              "n_eff": 2000.0,
+              "load_state": "unloaded",
+              "source": "owncam_pf_v2:04f56834"
+            }
+          },
+          "camera": {
+            "origin_base_m": [
+              0.1673610196270657,
+              0.007365672198917207,
+              0.05902074076186461
+            ],
+            "optical_axis_base": [
+              0.6474821922775369,
+              0.028496131259117603,
+              -0.761547622402393
+            ],
+            "optical_pitch_deg": -49.6008234695377,
+            "optical_yaw_deg": 2.520000000000001
+          },
+          "eval_only": {
+            "trace_t": 193.6999999971476,
+            "xyyaw": [
+              1.3690344214580952,
+              -0.05119326787146817,
+              3.0222907976858324
+            ],
+            "pose_xy_error_m": 0.9489576325680312,
+            "last_tag_to_report_estimated_displacement_m": 1.0384712797184137,
+            "last_tag_to_report_actual_displacement_m": 0.15712561295399108,
+            "displacement_ratio": 6.609178861389676
+          }
+        }
+      },
+      "result": {
+        "schema": "ugrp.zone_pair_dev_evaluation.v1",
+        "labels": [
+          "tags_temporary",
+          "dev",
+          "연구 결과 아님"
+        ],
+        "research_result": false,
+        "physical_success": false,
+        "dev_physical_success": false,
+        "verdict": "DEV_NOT_CONFIRMED",
+        "checks": {
+          "applied": true,
+          "trace_complete": true,
+          "contacts_complete": true,
+          "approach": true,
+          "joint_grasp": false,
+          "lift": false,
+          "door": false,
+          "placement_release": false,
+          "no_drop": false,
+          "contacts": true,
+          "r3": true,
+          "weld_off": true,
+          "protocol": true,
+          "video": false
+        },
+        "evidence": {
+          "coverage": {
+            "start_s": 1.3000000000000178,
+            "end_s": 196.20024999708846,
+            "timestep_s": 0.00025,
+            "expected_physics_steps": 779601,
+            "observed_physics_steps": 779601
+          },
+          "planned_setdowns": [],
+          "grasp_at_s": null,
+          "lifted_at_s": null,
+          "door_at_s": null,
+          "drop_samples": [],
+          "final_stable_at_s": null,
+          "approach": {
+            "r1": true,
+            "r2": true
+          }
+        },
+        "protocol": {
+          "ok": true,
+          "go_seen": true,
+          "go_pairs": 1,
+          "go_errors": [],
+          "missing_go": [],
+          "go_times": {
+            "approach_go_0": 154.49999999807454
+          },
+          "abort_seen": true,
+          "abort_check": "checked",
+          "abort_queues_empty": true,
+          "post_abort_observation_complete": true,
+          "post_abort_motion_count": 0,
+          "command_order_metadata_complete": true
+        },
+        "errors": [],
+        "sequence_done_is_success": false,
+        "video_review": {
+          "verified": false,
+          "reason": "manual review pending"
+        },
+        "abort_diagnostic": {
+          "intervention_exercised_with_pending_motion": false,
+          "passed": false
+        },
+        "run_id": "dev06",
+        "seed": 902,
+        "condition": "tags_temporary_dev_abort_after_carry_go",
+        "source_sha": "4a17e7d47616056db85f35933327c6b63581853d",
+        "wall_s": 846.1290316659724,
+        "sim_s": 196.20024999708846,
+        "commands": 1893,
+        "model_calls": 0,
+        "model_response_time": "not_applicable_no_model_calls",
+        "scope": "tags_temporary, dev, 연구 결과 아님",
+        "clock": "synchronous SIM",
+        "policy": "PairTeam/M2DoorStudent-v3",
+        "case": "dev06",
+        "limits": {
+          "sim_s": 900.0,
+          "wall_s": 57600.0,
+          "submit_at_s": 60.0,
+          "post_terminal_s": 2.0,
+          "outer_wall_timeout_s": 57660.0,
+          "model_calls": 0
+        },
+        "config": {
+          "contact_profile": "cargo_noslip_v1"
+        },
+        "command_count_scope": "issued arm/look/drive/mecanum commands, not successful physical actions",
+        "input_sha256": {
+          "manifest.json": "b58d287e53857d85ece0f7990060e2bf04efb809ba3e0d9260de6844e0d37b93",
+          "prereg.json": "9470d95261c464cd37705cdebde87d6cdd8f5166bbd02cb10236489611853b6e",
+          "pair_records.json": "bf1aa1bf6f5599f11d160045816dd8f6cb53367daebdadf43a1a34cb6ec82e04",
+          "status.jsonl": "36f38c26709f2117b7f6e973933423f57dc56b426f2f5f649bd610b313fb4388",
+          "commands.jsonl": "a155d348b37c105a8ad2fe53a96b9ff1bc8747931b39c525174c702bd2d16878",
+          "shutdown.jsonl": "f7f9ffc6e535e1a69b98891d4c474d6dd0ef71d09afcd50a6679450a5b8e4245",
+          "eval_only/trace.jsonl": "bbaa7df7cd2e73647ebe796ee6bdd8e5c7ab376756c88ed2e0ab057eee3bcccb",
+          "eval_only/contacts.json": "95106df17adaef7e5dcd9b86cf4a240294c1e01159d8d469ac332ce1a7080a8e"
+        }
+      },
+      "manifest_summary": {
+        "seed": 902,
+        "intervention": "abort_after_carry_go",
+        "applied": {
+          "map": "zone_wide_door_tags_v2_dock_v3",
+          "participants": [
+            "r1",
+            "r2"
+          ],
+          "world_robots": [
+            "r1",
+            "r2",
+            "r3"
+          ],
+          "cargo": [
+            {
+              "item_id": "cargoX",
+              "kind": "long_beam"
+            }
+          ],
+          "other_objects": 0,
+          "weld": false,
+          "contact_profile": "cargo_noslip_v1",
+          "noslip_iterations": 10,
+          "timestep_s": 0.00025
+        },
+        "model_calls": 0,
+        "wall_s": 846.1290316659724,
+        "simulator_start_s": 1.3000000000000178,
+        "sim_end_s": 196.20024999708846,
+        "source_changed": false,
+        "inputs_changed": false,
+        "intervention_not_reached": true,
+        "environment": {
+          "python": "3.12.13",
+          "executable": "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+          "platform": "macOS-27.2-arm64-arm-64bit",
+          "packages": {
+            "mujoco": "3.12.0",
+            "numpy": "2.5.2",
+            "opencv-python": null,
+            "opencv-python-headless": "5.0.0.93",
+            "Pillow": "12.3.0",
+            "torch": null,
+            "gymnasium": "1.3.0"
+          },
+          "loadavg_at_start": [
+            6.64794921875,
+            7.70654296875,
+            8.93212890625
+          ],
+          "loadavg_at_end": [
+            8.02783203125,
+            8.25146484375,
+            8.38330078125
+          ]
+        }
+      },
+      "events": [
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "job_started",
+          "sim_s": 1.3,
+          "job_id": "r1-job-001",
+          "job_kind": "look_around",
+          "detail": {
+            "arguments": {
+              "observe": "wide_look"
+            }
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "job_started",
+          "sim_s": 1.3,
+          "job_id": "r2-job-001",
+          "job_kind": "look_around",
+          "detail": {
+            "arguments": {
+              "observe": "wide_look"
+            }
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "job_done",
+          "sim_s": 11.1,
+          "job_id": "r1-job-001",
+          "job_kind": "look_around",
+          "detail": {
+            "confirmation": "own_camera_confirmed",
+            "outcome": "LOOKED",
+            "level": "low",
+            "std_xy_m": 0.0277
+          },
+          "scheduler_trigger": "idle"
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "job_done",
+          "sim_s": 16.4,
+          "job_id": "r2-job-001",
+          "job_kind": "look_around",
+          "detail": {
+            "confirmation": "own_camera_confirmed",
+            "outcome": "LOOKED",
+            "level": "low",
+            "std_xy_m": 0.0283
+          },
+          "scheduler_trigger": "idle"
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "job_started",
+          "sim_s": 60.0,
+          "job_id": "r1-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "arguments": {
+              "order_id": "cargoX",
+              "target_ref": "B",
+              "role": "end_neg"
+            }
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "job_started",
+          "sim_s": 60.0,
+          "job_id": "r2-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "arguments": {
+              "order_id": "cargoX",
+              "target_ref": "B",
+              "role": "end_pos"
+            }
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "pair_progress",
+          "sim_s": 60.0,
+          "job_id": "r2-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "approach"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "pair_progress",
+          "sim_s": 60.05,
+          "job_id": "r1-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "approach"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "pair_progress",
+          "sim_s": 81.2,
+          "job_id": "r1-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "wait_approach"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "pair_progress",
+          "sim_s": 154.1,
+          "job_id": "r2-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "wait_approach"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "pair_progress",
+          "sim_s": 154.5,
+          "job_id": "r1-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "align_start"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "pair_progress",
+          "sim_s": 154.5,
+          "job_id": "r2-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "align_start"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "pair_progress",
+          "sim_s": 154.6,
+          "job_id": "r1-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "align"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "pair_progress",
+          "sim_s": 154.6,
+          "job_id": "r2-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "align"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "pair_progress",
+          "sim_s": 186.7,
+          "job_id": "r2-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "grasp"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "pair_progress",
+          "sim_s": 189.6,
+          "job_id": "r2-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "wait_lift"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "pair_progress",
+          "sim_s": 192.7,
+          "job_id": "r1-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "grasp"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "pose_uncertain",
+          "sim_s": 193.7,
+          "job_id": "r2-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "level": "medium",
+            "gate_profile": "loaded",
+            "ends_job": true,
+            "reason": "POSE_UNCERTAIN"
+          },
+          "scheduler_trigger": "failure"
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "job_failed",
+          "sim_s": 193.7,
+          "job_id": "r2-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "reason": "POSE_UNCERTAIN"
+          },
+          "scheduler_trigger": "failure"
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "job_failed",
+          "sim_s": 193.7,
+          "job_id": "r1-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "reason": "PARTNER_ABORT"
+          },
+          "scheduler_trigger": "failure"
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "pose_uncertain",
+          "sim_s": 194.3,
+          "job_id": null,
+          "job_kind": null,
+          "detail": {
+            "level": "medium",
+            "gate_profile": "loaded",
+            "std_xy_m": 0.0576,
+            "ends_job": false
+          },
+          "scheduler_trigger": "failure"
+        }
+      ],
+      "status_matches_pair_record": true,
+      "motion_commands": 1893,
+      "closing_commands": 10,
+      "contacts": {
+        "physics_steps": 779601,
+        "observation_start_s": 1.3000000000000178,
+        "observation_end_s": 196.20024999708846,
+        "timestep_s": 0.00025,
+        "max_step_gap_s": 0.00025000000000829914,
+        "invalid_step_intervals": 0,
+        "counts": {
+          "robot_robot": 0,
+          "robot_wall": 0,
+          "beam_wall": 0,
+          "robot_beam_approach": 0,
+          "r3_interference": 0
+        },
+        "max_eq_active": 0,
+        "r3_max_displacement_m": 5.852774574663515e-12,
+        "r3_motion_commands": 0,
+        "r3_api_calls": 0
+      }
+    },
+    "dev07": {
+      "raw_path": "/Users/changmin/projects/ugrp/outputs/zone-pair-dev-v4-8effc2cee5c3534d553adb75a0d82b49097e5286/dev07",
+      "source_sha": "8effc2cee5c3534d553adb75a0d82b49097e5286",
+      "robots": {
+        "r1": {
+          "state_events": [
+            {
+              "robot_id": "r1",
+              "event": "state",
+              "sim_s": 99.89999999936565,
+              "state": "wait_approach"
+            },
+            {
+              "robot_id": "r1",
+              "event": "state",
+              "sim_s": 154.6999999980698,
+              "state": "align_start"
+            },
+            {
+              "robot_id": "r1",
+              "event": "state",
+              "sim_s": 154.79999999806745,
+              "state": "align"
+            },
+            {
+              "robot_id": "r1",
+              "event": "state",
+              "sim_s": 190.39999999722562,
+              "state": "pregrasp_look",
+              "sweep": 1,
+              "profile": "zone_pair_grasp_relook_v1"
+            },
+            {
+              "robot_id": "r1",
+              "event": "state",
+              "sim_s": 199.59999999700807,
+              "state": "pregrasp_standoff"
+            },
+            {
+              "robot_id": "r1",
+              "event": "state",
+              "sim_s": 200.7999999969797,
+              "state": "pregrasp_descend"
+            },
+            {
+              "robot_id": "r1",
+              "event": "state",
+              "sim_s": 202.7999999969324,
+              "state": "wait_close"
+            },
+            {
+              "robot_id": "r1",
+              "event": "state",
+              "sim_s": 202.7999999969324,
+              "state": "failed",
+              "reason": "PREGRASP_NOT_READY"
+            }
+          ],
+          "special_events": [
+            {
+              "robot_id": "r1",
+              "event": "barrier_go",
+              "sim_s": 154.6999999980698,
+              "barrier": "approach"
+            },
+            {
+              "robot_id": "r1",
+              "event": "pregrasp_fix",
+              "sim_s": 199.59999999700807,
+              "ok": true,
+              "sweep": 1,
+              "std_xy_m": 0.022342962427299794,
+              "std_yaw_rad": 0.010424823104421313,
+              "report_t": 199.6,
+              "source": "shared own.pose/last_report"
+            },
+            {
+              "robot_id": "r1",
+              "event": "preclose_beam_guard",
+              "sim_s": 202.7999999969324,
+              "clear": false,
+              "reason": "BEAM_UNCERTAIN"
+            }
+          ],
+          "last_preabort_frame": {
+            "frame": 1721,
+            "t": 202.8,
+            "frame_id": 1722,
+            "sha256": "2b613b886920cff5486227063b33cac4a86349dc422c3a10e4e7a1c9c4369afd",
+            "robot_id": "r1",
+            "camera": "robot_cam",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 1161,
+              "4": 1904,
+              "5": 2500,
+              "6": 1486
+            },
+            "report": {
+              "t_est": 202.8,
+              "initialized": true,
+              "xyyaw": [
+                0.56794,
+                0.03694,
+                0.063824
+              ],
+              "std_xy_m": 0.02383,
+              "std_yaw_rad": 0.01208,
+              "since_tag_s": 2.9,
+              "last_valid_obs": {
+                "t": 199.9,
+                "tag_ids": [
+                  54,
+                  55,
+                  64,
+                  65
+                ],
+                "n_tags": 4
+              },
+              "n_eff": 1337.1,
+              "load_state": "unloaded",
+              "source": "owncam_pf_v2:04f56834"
+            }
+          },
+          "last_tag_frame": {
+            "frame": 1692,
+            "t": 199.9,
+            "frame_id": 1693,
+            "sha256": "63a6decd23b84f8675cf533393fcb2808a1e9efe8fbed9dc3510618d438750a4",
+            "robot_id": "r1",
+            "camera": "robot_cam",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 941,
+              "4": 2407,
+              "5": 1444,
+              "6": 1500
+            },
+            "report": {
+              "t_est": 199.9,
+              "initialized": true,
+              "xyyaw": [
+                0.56789,
+                0.03698,
+                0.063944
+              ],
+              "std_xy_m": 0.02307,
+              "std_yaw_rad": 0.01083,
+              "since_tag_s": 0.0,
+              "last_valid_obs": {
+                "t": 199.9,
+                "tag_ids": [
+                  54,
+                  55,
+                  64,
+                  65
+                ],
+                "n_tags": 4
+              },
+              "n_eff": 1337.1,
+              "load_state": "unloaded",
+              "source": "owncam_pf_v2:04f56834"
+            }
+          },
+          "tag_gap_frames": 29,
+          "tag_gap_s": 2.9000000000000057,
+          "max_gap_between_frames_s": 0.10000000000002274,
+          "align_start_frame": {
+            "frame": 1241,
+            "t": 154.8,
+            "frame_id": 1242,
+            "sha256": "b9539799ec5ca4d7b44e68cb77ac2cd1f7aa3f9356f1c2efb4de253feef59e16",
+            "robot_id": "r1",
+            "camera": "robot_cam",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 740,
+              "4": 2320,
+              "5": 1320,
+              "6": 1500
+            },
+            "report": {
+              "t_est": 154.8,
+              "initialized": true,
+              "xyyaw": [
+                0.28179,
+                -0.0027,
+                -0.013297
+              ],
+              "std_xy_m": 0.02548,
+              "std_yaw_rad": 0.01096,
+              "since_tag_s": 0.0,
+              "last_valid_obs": {
+                "t": 154.8,
+                "tag_ids": [
+                  53,
+                  54,
+                  55,
+                  64,
+                  65
+                ],
+                "n_tags": 5
+              },
+              "n_eff": 1153.1,
+              "load_state": "unloaded",
+              "source": "owncam_pf_v2:04f56834"
+            }
+          },
+          "tag_updates_during_align": 191,
+          "last_align_tag_frame": {
+            "frame": 1692,
+            "t": 199.9,
+            "frame_id": 1693,
+            "sha256": "63a6decd23b84f8675cf533393fcb2808a1e9efe8fbed9dc3510618d438750a4",
+            "robot_id": "r1",
+            "camera": "robot_cam",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 941,
+              "4": 2407,
+              "5": 1444,
+              "6": 1500
+            },
+            "report": {
+              "t_est": 199.9,
+              "initialized": true,
+              "xyyaw": [
+                0.56789,
+                0.03698,
+                0.063944
+              ],
+              "std_xy_m": 0.02307,
+              "std_yaw_rad": 0.01083,
+              "since_tag_s": 0.0,
+              "last_valid_obs": {
+                "t": 199.9,
+                "tag_ids": [
+                  54,
+                  55,
+                  64,
+                  65
+                ],
+                "n_tags": 4
+              },
+              "n_eff": 1337.1,
+              "load_state": "unloaded",
+              "source": "owncam_pf_v2:04f56834"
+            }
+          },
+          "camera": {
+            "origin_base_m": [
+              0.16735753212333634,
+              -0.0036809777598634423,
+              0.05937029360345278
+            ],
+            "optical_axis_base": [
+              0.6224894201174933,
+              -0.013691464507938188,
+              -0.7825084444537419
+            ],
+            "optical_pitch_deg": -51.49082346953774,
+            "optical_yaw_deg": -1.2600000000000005
+          },
+          "eval_only": {
+            "trace_t": 202.7999999969324,
+            "xyyaw": [
+              0.5615710790667049,
+              0.04365488054359071,
+              0.06050777328969209
+            ],
+            "pose_xy_error_m": 0.00925487842001491,
+            "last_tag_to_report_estimated_displacement_m": 6.403124237432316e-05,
+            "last_tag_to_report_actual_displacement_m": 0.00026509733780742944,
+            "displacement_ratio": 0.24153860956852155,
+            "pre_relook_xy_error_m": 0.912763369899402
+          },
+          "pre_relook_frame": {
+            "frame": 1596,
+            "t": 190.3,
+            "frame_id": 1597,
+            "sha256": "808450aa43f2d8f100dbb27694f88c9c1948ca7b602cec75ec5440e765ee419c",
+            "robot_id": "r1",
+            "camera": "robot_cam",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            },
+            "report": {
+              "t_est": 190.3,
+              "initialized": true,
+              "xyyaw": [
+                1.47424,
+                0.02317,
+                0.049507
+              ],
+              "std_xy_m": 0.05744,
+              "std_yaw_rad": 0.02464,
+              "since_tag_s": 25.4,
+              "last_valid_obs": {
+                "t": 164.9,
+                "tag_ids": [
+                  53,
+                  54,
+                  55,
+                  64,
+                  65
+                ],
+                "n_tags": 5
+              },
+              "n_eff": 1415.8,
+              "load_state": "unloaded",
+              "source": "owncam_pf_v2:04f56834"
+            }
+          }
+        },
+        "r2": {
+          "state_events": [
+            {
+              "robot_id": "r2",
+              "event": "state",
+              "sim_s": 154.29999999807927,
+              "state": "wait_approach"
+            },
+            {
+              "robot_id": "r2",
+              "event": "state",
+              "sim_s": 154.6999999980698,
+              "state": "align_start"
+            },
+            {
+              "robot_id": "r2",
+              "event": "state",
+              "sim_s": 154.79999999806745,
+              "state": "align"
+            },
+            {
+              "robot_id": "r2",
+              "event": "state",
+              "sim_s": 190.39999999722562,
+              "state": "pregrasp_look",
+              "sweep": 1,
+              "profile": "zone_pair_grasp_relook_v1"
+            },
+            {
+              "robot_id": "r2",
+              "event": "state",
+              "sim_s": 199.59999999700807,
+              "state": "pregrasp_standoff"
+            },
+            {
+              "robot_id": "r2",
+              "event": "state",
+              "sim_s": 200.7999999969797,
+              "state": "pregrasp_descend"
+            }
+          ],
+          "special_events": [
+            {
+              "robot_id": "r2",
+              "event": "barrier_go",
+              "sim_s": 154.6999999980698,
+              "barrier": "approach"
+            },
+            {
+              "robot_id": "r2",
+              "event": "pregrasp_fix",
+              "sim_s": 199.59999999700807,
+              "ok": true,
+              "sweep": 1,
+              "std_xy_m": 0.0284765241275273,
+              "std_yaw_rad": 0.00848285620618506,
+              "report_t": 199.6,
+              "source": "shared own.pose/last_report"
+            }
+          ],
+          "last_preabort_frame": {
+            "frame": 1721,
+            "t": 202.7,
+            "frame_id": 1722,
+            "sha256": "63525abfae0bb632724980229a938e8113d79e7f92945cb75b433fa56797059e",
+            "robot_id": "r2",
+            "camera": "robot_cam",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 1144,
+              "4": 1922,
+              "5": 2465,
+              "6": 1476
+            },
+            "report": {
+              "t_est": 202.7,
+              "initialized": true,
+              "xyyaw": [
+                1.43385,
+                0.05319,
+                -3.127299
+              ],
+              "std_xy_m": 0.02676,
+              "std_yaw_rad": 0.00939,
+              "since_tag_s": 2.8,
+              "last_valid_obs": {
+                "t": 199.9,
+                "tag_ids": [
+                  33,
+                  34,
+                  35,
+                  36
+                ],
+                "n_tags": 4
+              },
+              "n_eff": 1205.8,
+              "load_state": "unloaded",
+              "source": "owncam_pf_v2:04f56834"
+            }
+          },
+          "last_tag_frame": {
+            "frame": 1693,
+            "t": 199.9,
+            "frame_id": 1694,
+            "sha256": "468222002200f5e4d890941202c76a94573e3101ff1c8896270216c68b573cb4",
+            "robot_id": "r2",
+            "camera": "robot_cam",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 941,
+              "4": 2407,
+              "5": 1444,
+              "6": 1500
+            },
+            "report": {
+              "t_est": 199.9,
+              "initialized": true,
+              "xyyaw": [
+                1.43389,
+                0.05313,
+                -3.127353
+              ],
+              "std_xy_m": 0.02629,
+              "std_yaw_rad": 0.00809,
+              "since_tag_s": 0.0,
+              "last_valid_obs": {
+                "t": 199.9,
+                "tag_ids": [
+                  33,
+                  34,
+                  35,
+                  36
+                ],
+                "n_tags": 4
+              },
+              "n_eff": 1205.8,
+              "load_state": "unloaded",
+              "source": "owncam_pf_v2:04f56834"
+            }
+          },
+          "tag_gap_frames": 28,
+          "tag_gap_s": 2.799999999999983,
+          "max_gap_between_frames_s": 0.10000000000002274,
+          "align_start_frame": {
+            "frame": 1242,
+            "t": 154.8,
+            "frame_id": 1243,
+            "sha256": "38851985a1fcb3f1df9ab11f6c707d75e19cce274abc90a9ace1022a5cab1e0c",
+            "robot_id": "r2",
+            "camera": "robot_cam",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 740,
+              "4": 2320,
+              "5": 1320,
+              "6": 1500
+            },
+            "report": {
+              "t_est": 154.8,
+              "initialized": true,
+              "xyyaw": [
+                1.73366,
+                -0.02777,
+                -3.141194
+              ],
+              "std_xy_m": 0.03017,
+              "std_yaw_rad": 0.00897,
+              "since_tag_s": 0.0,
+              "last_valid_obs": {
+                "t": 154.8,
+                "tag_ids": [
+                  32,
+                  33,
+                  34,
+                  35,
+                  36,
+                  37
+                ],
+                "n_tags": 6
+              },
+              "n_eff": 1601.5,
+              "load_state": "unloaded",
+              "source": "owncam_pf_v2:04f56834"
+            }
+          },
+          "tag_updates_during_align": 199,
+          "last_align_tag_frame": {
+            "frame": 1693,
+            "t": 199.9,
+            "frame_id": 1694,
+            "sha256": "468222002200f5e4d890941202c76a94573e3101ff1c8896270216c68b573cb4",
+            "robot_id": "r2",
+            "camera": "robot_cam",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 941,
+              "4": 2407,
+              "5": 1444,
+              "6": 1500
+            },
+            "report": {
+              "t_est": 199.9,
+              "initialized": true,
+              "xyyaw": [
+                1.43389,
+                0.05313,
+                -3.127353
+              ],
+              "std_xy_m": 0.02629,
+              "std_yaw_rad": 0.00809,
+              "since_tag_s": 0.0,
+              "last_valid_obs": {
+                "t": 199.9,
+                "tag_ids": [
+                  33,
+                  34,
+                  35,
+                  36
+                ],
+                "n_tags": 4
+              },
+              "n_eff": 1205.8,
+              "load_state": "unloaded",
+              "source": "owncam_pf_v2:04f56834"
+            }
+          },
+          "camera": {
+            "origin_base_m": [
+              0.16732603174720367,
+              -0.006311032863503032,
+              0.06441956446005666
+            ],
+            "optical_axis_base": [
+              0.6221975689650514,
+              -0.023467414270976136,
+              -0.7825084444537419
+            ],
+            "optical_pitch_deg": -51.49082346953774,
+            "optical_yaw_deg": -2.16
+          },
+          "eval_only": {
+            "trace_t": 202.69999999693476,
+            "xyyaw": [
+              1.4385226729262677,
+              0.04536815811247032,
+              -3.1297627321021
+            ],
+            "pose_xy_error_m": 0.009111261317149679,
+            "last_tag_to_report_estimated_displacement_m": 7.211102550930572e-05,
+            "last_tag_to_report_actual_displacement_m": 0.00031503697842528576,
+            "displacement_ratio": 0.22889701986653474,
+            "pre_relook_xy_error_m": 0.8687791750595661
+          },
+          "pre_relook_frame": {
+            "frame": 1597,
+            "t": 190.3,
+            "frame_id": 1598,
+            "sha256": "7b056d8b8107236ed0f2b2db82dc321a3a378fd664a6e14ce21b1812f5db3f58",
+            "robot_id": "r2",
+            "camera": "robot_cam",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            },
+            "report": {
+              "t_est": 190.3,
+              "initialized": true,
+              "xyyaw": [
+                0.57899,
+                0.17307,
+                -3.13324
+              ],
+              "std_xy_m": 0.05691,
+              "std_yaw_rad": 0.02067,
+              "since_tag_s": 24.5,
+              "last_valid_obs": {
+                "t": 165.8,
+                "tag_ids": [
+                  33,
+                  34,
+                  35,
+                  36
+                ],
+                "n_tags": 4
+              },
+              "n_eff": 1608.2,
+              "load_state": "unloaded",
+              "source": "owncam_pf_v2:04f56834"
+            }
+          }
+        }
+      },
+      "result": {
+        "schema": "ugrp.zone_pair_dev_evaluation.v1",
+        "labels": [
+          "tags_temporary",
+          "dev",
+          "연구 결과 아님"
+        ],
+        "research_result": false,
+        "physical_success": false,
+        "dev_physical_success": false,
+        "verdict": "DEV_NOT_CONFIRMED",
+        "checks": {
+          "applied": true,
+          "trace_complete": true,
+          "contacts_complete": true,
+          "approach": true,
+          "joint_grasp": false,
+          "lift": false,
+          "door": false,
+          "placement_release": false,
+          "no_drop": false,
+          "contacts": true,
+          "r3": true,
+          "weld_off": true,
+          "protocol": false,
+          "video": false
+        },
+        "evidence": {
+          "coverage": {
+            "start_s": 1.3000000000000178,
+            "end_s": 205.30024999687328,
+            "timestep_s": 0.00025,
+            "expected_physics_steps": 816001,
+            "observed_physics_steps": 816001
+          },
+          "planned_setdowns": [],
+          "grasp_at_s": null,
+          "lifted_at_s": null,
+          "door_at_s": null,
+          "drop_samples": [],
+          "final_stable_at_s": null,
+          "approach": {
+            "r1": true,
+            "r2": true
+          }
+        },
+        "protocol": {
+          "ok": false,
+          "go_seen": true,
+          "go_pairs": 1,
+          "go_errors": [],
+          "missing_go": [
+            "carry_go_0",
+            "carry_go_1",
+            "carry_go_2",
+            "carry_go_3",
+            "carry_go_4",
+            "carry_go_5",
+            "carry_go_6",
+            "carry_go_7",
+            "lift_go_0",
+            "lift_go_1",
+            "lift_go_2",
+            "lift_go_3",
+            "lift_go_4",
+            "lift_go_5",
+            "lift_go_6",
+            "lift_go_7",
+            "lower_go_0",
+            "lower_go_1",
+            "lower_go_2",
+            "lower_go_3",
+            "lower_go_4",
+            "lower_go_5",
+            "lower_go_6",
+            "lower_go_7",
+            "open_go_0",
+            "open_go_1",
+            "open_go_2",
+            "open_go_3",
+            "open_go_4",
+            "open_go_5",
+            "open_go_6",
+            "open_go_7"
+          ],
+          "go_times": {
+            "approach_go_0": 154.6999999980698
+          },
+          "abort_seen": true,
+          "abort_check": "checked",
+          "abort_queues_empty": true,
+          "post_abort_observation_complete": true,
+          "post_abort_motion_count": 0,
+          "command_order_metadata_complete": true
+        },
+        "errors": [],
+        "sequence_done_is_success": false,
+        "video_review": {
+          "verified": false,
+          "reason": "manual review pending"
+        },
+        "abort_diagnostic": {
+          "intervention_exercised_with_pending_motion": false,
+          "passed": false
+        },
+        "run_id": "dev07",
+        "seed": 903,
+        "condition": "tags_temporary_dev_none",
+        "source_sha": "8effc2cee5c3534d553adb75a0d82b49097e5286",
+        "wall_s": 699.6244774999795,
+        "sim_s": 205.30024999687328,
+        "commands": 2591,
+        "model_calls": 0,
+        "model_response_time": "not_applicable_no_model_calls",
+        "scope": "tags_temporary, dev, 연구 결과 아님",
+        "clock": "synchronous SIM",
+        "policy": "PairTeam/M2DoorStudent-v3",
+        "case": "dev07",
+        "limits": {
+          "sim_s": 900.0,
+          "wall_s": 57600.0,
+          "submit_at_s": 60.0,
+          "post_terminal_s": 2.0,
+          "outer_wall_timeout_s": 57660.0,
+          "model_calls": 0
+        },
+        "config": {
+          "contact_profile": "cargo_noslip_v1"
+        },
+        "command_count_scope": "issued arm/look/drive/mecanum commands, not successful physical actions",
+        "input_sha256": {
+          "manifest.json": "89e7448ef0868d012e2720b4e1a894961d83fea52a650df7c9a589ad2cf6fdec",
+          "prereg.json": "ca8e2d6b7cf1fda6056e8939a568bc11affc9c9b413b07f97e2d134af98d7fb8",
+          "pair_records.json": "bd670dce3f139373209eabf81cf5d020fb8ddfc589606f5e3aa77954c4ccba79",
+          "status.jsonl": "e624d457b597adb9c578a699fd5c71d1a68c7a0cf1be02eb05637fb507400c29",
+          "commands.jsonl": "c018ae0880c4a1fa0342250a2910aeb8091b5ca433a2a7026b38385d7efa7d23",
+          "shutdown.jsonl": "6a496bc78abf3f6d940a1f7cd7bc0100cb2c25ab409e1010516ade6b60072a07",
+          "eval_only/trace.jsonl": "7f20cf9b663d1ee811649b90049220177fe155203aa75756e31ac3bd7f87dac9",
+          "eval_only/contacts.json": "3205d7d5a409b73b7bb0d9848288c0ce1e8e4de8478b13e61e0472f1d1a20ae9"
+        }
+      },
+      "manifest_summary": {
+        "seed": 903,
+        "intervention": "none",
+        "applied": {
+          "map": "zone_wide_door_tags_v2_dock_v3",
+          "participants": [
+            "r1",
+            "r2"
+          ],
+          "world_robots": [
+            "r1",
+            "r2",
+            "r3"
+          ],
+          "cargo": [
+            {
+              "item_id": "cargoX",
+              "kind": "long_beam"
+            }
+          ],
+          "other_objects": 0,
+          "weld": false,
+          "contact_profile": "cargo_noslip_v1",
+          "noslip_iterations": 10,
+          "timestep_s": 0.00025
+        },
+        "model_calls": 0,
+        "wall_s": 699.6244774999795,
+        "simulator_start_s": 1.3000000000000178,
+        "sim_end_s": 205.30024999687328,
+        "source_changed": false,
+        "inputs_changed": false,
+        "intervention_not_reached": null,
+        "environment": {
+          "python": "3.12.13",
+          "executable": "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+          "platform": "macOS-27.2-arm64-arm-64bit",
+          "packages": {
+            "mujoco": "3.12.0",
+            "numpy": "2.5.2",
+            "opencv-python": null,
+            "opencv-python-headless": "5.0.0.93",
+            "Pillow": "12.3.0",
+            "torch": null,
+            "gymnasium": "1.3.0"
+          },
+          "loadavg_at_start": [
+            4.42041015625,
+            7.19384765625,
+            9.5341796875
+          ],
+          "loadavg_at_end": [
+            4.39013671875,
+            5.15869140625,
+            7.09765625
+          ]
+        }
+      },
+      "events": [
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "job_started",
+          "sim_s": 1.3,
+          "job_id": "r1-job-001",
+          "job_kind": "look_around",
+          "detail": {
+            "arguments": {
+              "observe": "wide_look"
+            }
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "job_started",
+          "sim_s": 1.3,
+          "job_id": "r2-job-001",
+          "job_kind": "look_around",
+          "detail": {
+            "arguments": {
+              "observe": "wide_look"
+            }
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "job_done",
+          "sim_s": 10.5,
+          "job_id": "r1-job-001",
+          "job_kind": "look_around",
+          "detail": {
+            "confirmation": "own_camera_confirmed",
+            "outcome": "LOOKED",
+            "level": "low",
+            "std_xy_m": 0.0291
+          },
+          "scheduler_trigger": "idle"
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "job_done",
+          "sim_s": 12.0,
+          "job_id": "r2-job-001",
+          "job_kind": "look_around",
+          "detail": {
+            "confirmation": "own_camera_confirmed",
+            "outcome": "LOOKED",
+            "level": "low",
+            "std_xy_m": 0.0304
+          },
+          "scheduler_trigger": "idle"
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "job_started",
+          "sim_s": 60.0,
+          "job_id": "r1-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "arguments": {
+              "order_id": "cargoX",
+              "target_ref": "B",
+              "role": "end_neg"
+            }
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "job_started",
+          "sim_s": 60.0,
+          "job_id": "r2-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "arguments": {
+              "order_id": "cargoX",
+              "target_ref": "B",
+              "role": "end_pos"
+            }
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "pair_progress",
+          "sim_s": 60.0,
+          "job_id": "r2-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "approach"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "pair_progress",
+          "sim_s": 60.05,
+          "job_id": "r1-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "approach"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "pair_progress",
+          "sim_s": 99.9,
+          "job_id": "r1-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "wait_approach"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "pair_progress",
+          "sim_s": 154.3,
+          "job_id": "r2-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "wait_approach"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "pair_progress",
+          "sim_s": 154.7,
+          "job_id": "r1-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "align_start"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "pair_progress",
+          "sim_s": 154.7,
+          "job_id": "r2-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "align_start"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "pair_progress",
+          "sim_s": 154.8,
+          "job_id": "r1-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "align"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "pair_progress",
+          "sim_s": 154.8,
+          "job_id": "r2-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "align"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "pair_progress",
+          "sim_s": 190.4,
+          "job_id": "r1-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "pregrasp_look"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "pair_progress",
+          "sim_s": 190.4,
+          "job_id": "r2-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "pregrasp_look"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "pose_uncertain",
+          "sim_s": 191.1,
+          "job_id": "r1-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "level": "high",
+            "gate_profile": "loaded",
+            "std_xy_m": 0.3716,
+            "ends_job": false
+          },
+          "scheduler_trigger": "failure"
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "pose_uncertain",
+          "sim_s": 191.1,
+          "job_id": "r2-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "level": "high",
+            "gate_profile": "loaded",
+            "std_xy_m": 0.5116,
+            "ends_job": false
+          },
+          "scheduler_trigger": "failure"
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "pair_progress",
+          "sim_s": 199.6,
+          "job_id": "r1-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "pregrasp_standoff"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "pair_progress",
+          "sim_s": 199.6,
+          "job_id": "r2-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "pregrasp_standoff"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "pair_progress",
+          "sim_s": 200.8,
+          "job_id": "r1-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "pregrasp_descend"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "pair_progress",
+          "sim_s": 200.8,
+          "job_id": "r2-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "pregrasp_descend"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "job_failed",
+          "sim_s": 202.8,
+          "job_id": "r1-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "reason": "PREGRASP_NOT_READY"
+          },
+          "scheduler_trigger": "failure"
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "job_failed",
+          "sim_s": 202.8,
+          "job_id": "r2-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "reason": "PARTNER_ABORT"
+          },
+          "scheduler_trigger": "failure"
+        }
+      ],
+      "status_matches_pair_record": true,
+      "motion_commands": 2591,
+      "closing_commands": 0,
+      "contacts": {
+        "physics_steps": 816001,
+        "observation_start_s": 1.3000000000000178,
+        "observation_end_s": 205.30024999687328,
+        "timestep_s": 0.00025,
+        "max_step_gap_s": 0.00025000000000829914,
+        "invalid_step_intervals": 0,
+        "counts": {
+          "robot_robot": 0,
+          "robot_wall": 0,
+          "beam_wall": 0,
+          "robot_beam_approach": 0,
+          "r3_interference": 0
+        },
+        "max_eq_active": 0,
+        "r3_max_displacement_m": 5.8545317648653895e-12,
+        "r3_motion_commands": 0,
+        "r3_api_calls": 0
+      }
+    },
+    "dev08": {
+      "raw_path": "/Users/changmin/projects/ugrp/outputs/zone-pair-dev-v4-8effc2cee5c3534d553adb75a0d82b49097e5286/dev08",
+      "source_sha": "8effc2cee5c3534d553adb75a0d82b49097e5286",
+      "robots": {
+        "r1": {
+          "state_events": [
+            {
+              "robot_id": "r1",
+              "event": "state",
+              "sim_s": 113.79999999903696,
+              "state": "wait_approach"
+            },
+            {
+              "robot_id": "r1",
+              "event": "state",
+              "sim_s": 152.0999999981313,
+              "state": "align_start"
+            },
+            {
+              "robot_id": "r1",
+              "event": "state",
+              "sim_s": 152.19999999812893,
+              "state": "align"
+            }
+          ],
+          "special_events": [
+            {
+              "robot_id": "r1",
+              "event": "barrier_go",
+              "sim_s": 152.0999999981313,
+              "barrier": "approach"
+            }
+          ],
+          "last_preabort_frame": {
+            "frame": 1449,
+            "t": 175.6,
+            "frame_id": 1450,
+            "sha256": "e43c9791b8b063a7f355c53a5c9e3dd8f14707c6c8789cc348d6421cb32dd841",
+            "robot_id": "r1",
+            "camera": "robot_cam",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            },
+            "report": {
+              "t_est": 175.6,
+              "initialized": true,
+              "xyyaw": [
+                1.11933,
+                -0.06292,
+                0.127568
+              ],
+              "std_xy_m": 0.04265,
+              "std_yaw_rad": 0.02067,
+              "since_tag_s": 10.8,
+              "last_valid_obs": {
+                "t": 164.8,
+                "tag_ids": [
+                  53,
+                  54,
+                  55,
+                  64,
+                  65
+                ],
+                "n_tags": 5
+              },
+              "n_eff": 1494.8,
+              "load_state": "unloaded",
+              "source": "owncam_pf_v2:04f56834"
+            }
+          },
+          "last_tag_frame": {
+            "frame": 1341,
+            "t": 164.8,
+            "frame_id": 1342,
+            "sha256": "8cfec9d2d757cc8a01c61edaf06d3ec1c70eb11c443ffeb69be2bf6b4386f29e",
+            "robot_id": "r1",
+            "camera": "robot_cam",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 741,
+              "4": 2313,
+              "5": 1331,
+              "6": 1500
+            },
+            "report": {
+              "t_est": 164.8,
+              "initialized": true,
+              "xyyaw": [
+                0.37774,
+                -0.00384,
+                -0.02799
+              ],
+              "std_xy_m": 0.03607,
+              "std_yaw_rad": 0.01628,
+              "since_tag_s": 0.0,
+              "last_valid_obs": {
+                "t": 164.8,
+                "tag_ids": [
+                  53,
+                  54,
+                  55,
+                  64,
+                  65
+                ],
+                "n_tags": 5
+              },
+              "n_eff": 1494.8,
+              "load_state": "unloaded",
+              "source": "owncam_pf_v2:04f56834"
+            }
+          },
+          "tag_gap_frames": 108,
+          "tag_gap_s": 10.799999999999983,
+          "max_gap_between_frames_s": 0.10000000000002274,
+          "align_start_frame": {
+            "frame": 1215,
+            "t": 152.2,
+            "frame_id": 1216,
+            "sha256": "1089148f0e4dc3d7ec3c457e4252019d4fd4d54143a77e93149a8f70b71e4a5b",
+            "robot_id": "r1",
+            "camera": "robot_cam",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 740,
+              "4": 2320,
+              "5": 1320,
+              "6": 1500
+            },
+            "report": {
+              "t_est": 152.2,
+              "initialized": true,
+              "xyyaw": [
+                0.18623,
+                0.04905,
+                -0.011656
+              ],
+              "std_xy_m": 0.02592,
+              "std_yaw_rad": 0.01084,
+              "since_tag_s": 0.0,
+              "last_valid_obs": {
+                "t": 152.2,
+                "tag_ids": [
+                  53,
+                  54,
+                  55,
+                  64,
+                  65
+                ],
+                "n_tags": 5
+              },
+              "n_eff": 1079.3,
+              "load_state": "unloaded",
+              "source": "owncam_pf_v2:04f56834"
+            }
+          },
+          "tag_updates_during_align": 127,
+          "last_align_tag_frame": {
+            "frame": 1341,
+            "t": 164.8,
+            "frame_id": 1342,
+            "sha256": "8cfec9d2d757cc8a01c61edaf06d3ec1c70eb11c443ffeb69be2bf6b4386f29e",
+            "robot_id": "r1",
+            "camera": "robot_cam",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 741,
+              "4": 2313,
+              "5": 1331,
+              "6": 1500
+            },
+            "report": {
+              "t_est": 164.8,
+              "initialized": true,
+              "xyyaw": [
+                0.37774,
+                -0.00384,
+                -0.02799
+              ],
+              "std_xy_m": 0.03607,
+              "std_yaw_rad": 0.01628,
+              "since_tag_s": 0.0,
+              "last_valid_obs": {
+                "t": 164.8,
+                "tag_ids": [
+                  53,
+                  54,
+                  55,
+                  64,
+                  65
+                ],
+                "n_tags": 5
+              },
+              "n_eff": 1494.8,
+              "load_state": "unloaded",
+              "source": "owncam_pf_v2:04f56834"
+            }
+          },
+          "camera": {
+            "origin_base_m": [
+              0.07019974929964232,
+              0.0,
+              0.16997557354005033
+            ],
+            "optical_axis_base": [
+              0.6214100426641279,
+              0.0,
+              -0.7834855192511008
+            ],
+            "optical_pitch_deg": -51.58082346953771,
+            "optical_yaw_deg": 0.0
+          },
+          "eval_only": {
+            "trace_t": 175.5999999975756,
+            "xyyaw": [
+              0.4400027920070765,
+              0.007965814927299423,
+              0.02201566491847684
+            ],
+            "pose_xy_error_m": 0.6830155593230421,
+            "last_tag_to_report_estimated_displacement_m": 0.7439396309513292,
+            "last_tag_to_report_actual_displacement_m": 0.1047388078420717,
+            "displacement_ratio": 7.102807892114484
+          }
+        },
+        "r2": {
+          "state_events": [
+            {
+              "robot_id": "r2",
+              "event": "state",
+              "sim_s": 151.69999999814075,
+              "state": "wait_approach"
+            },
+            {
+              "robot_id": "r2",
+              "event": "state",
+              "sim_s": 152.0999999981313,
+              "state": "align_start"
+            },
+            {
+              "robot_id": "r2",
+              "event": "state",
+              "sim_s": 152.19999999812893,
+              "state": "align"
+            }
+          ],
+          "special_events": [
+            {
+              "robot_id": "r2",
+              "event": "barrier_go",
+              "sim_s": 152.0999999981313,
+              "barrier": "approach"
+            }
+          ],
+          "last_preabort_frame": {
+            "frame": 1450,
+            "t": 175.6,
+            "frame_id": 1451,
+            "sha256": "93c0228dda3e2d7d1906337214433c39ae2bfe12b9457191bcedd063934cead9",
+            "robot_id": "r2",
+            "camera": "robot_cam",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            },
+            "report": {
+              "t_est": 175.6,
+              "initialized": true,
+              "xyyaw": [
+                0.69574,
+                -0.36768,
+                2.913079
+              ],
+              "std_xy_m": 0.07004,
+              "std_yaw_rad": 0.02639,
+              "since_tag_s": 15.3,
+              "last_valid_obs": {
+                "t": 160.3,
+                "tag_ids": [
+                  33,
+                  34,
+                  35,
+                  36,
+                  37
+                ],
+                "n_tags": 5
+              },
+              "n_eff": 1027.0,
+              "load_state": "unloaded",
+              "source": "owncam_pf_v2:04f56834"
+            }
+          },
+          "last_tag_frame": {
+            "frame": 1297,
+            "t": 160.3,
+            "frame_id": 1298,
+            "sha256": "466b636a420dfd3c72fe53cf26c167083e3249b40e8381ed2517b950925fa7b9",
+            "robot_id": "r2",
+            "camera": "robot_cam",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 741,
+              "4": 2313,
+              "5": 1331,
+              "6": 1500
+            },
+            "report": {
+              "t_est": 160.3,
+              "initialized": true,
+              "xyyaw": [
+                1.43981,
+                -0.12896,
+                3.062733
+              ],
+              "std_xy_m": 0.04615,
+              "std_yaw_rad": 0.01622,
+              "since_tag_s": 0.0,
+              "last_valid_obs": {
+                "t": 160.3,
+                "tag_ids": [
+                  33,
+                  34,
+                  35,
+                  36,
+                  37
+                ],
+                "n_tags": 5
+              },
+              "n_eff": 1027.0,
+              "load_state": "unloaded",
+              "source": "owncam_pf_v2:04f56834"
+            }
+          },
+          "tag_gap_frames": 153,
+          "tag_gap_s": 15.299999999999983,
+          "max_gap_between_frames_s": 0.10000000000002274,
+          "align_start_frame": {
+            "frame": 1216,
+            "t": 152.2,
+            "frame_id": 1217,
+            "sha256": "90e32adfbab63ae78650e5f103006d7c1837909da169a0399ab14b0b50c07668",
+            "robot_id": "r2",
+            "camera": "robot_cam",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 740,
+              "4": 2320,
+              "5": 1320,
+              "6": 1500
+            },
+            "report": {
+              "t_est": 152.2,
+              "initialized": true,
+              "xyyaw": [
+                1.6188,
+                0.01615,
+                3.136594
+              ],
+              "std_xy_m": 0.02851,
+              "std_yaw_rad": 0.00878,
+              "since_tag_s": 0.0,
+              "last_valid_obs": {
+                "t": 152.2,
+                "tag_ids": [
+                  33,
+                  34,
+                  35,
+                  36,
+                  37
+                ],
+                "n_tags": 5
+              },
+              "n_eff": 1400.5,
+              "load_state": "unloaded",
+              "source": "owncam_pf_v2:04f56834"
+            }
+          },
+          "tag_updates_during_align": 82,
+          "last_align_tag_frame": {
+            "frame": 1297,
+            "t": 160.3,
+            "frame_id": 1298,
+            "sha256": "466b636a420dfd3c72fe53cf26c167083e3249b40e8381ed2517b950925fa7b9",
+            "robot_id": "r2",
+            "camera": "robot_cam",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 741,
+              "4": 2313,
+              "5": 1331,
+              "6": 1500
+            },
+            "report": {
+              "t_est": 160.3,
+              "initialized": true,
+              "xyyaw": [
+                1.43981,
+                -0.12896,
+                3.062733
+              ],
+              "std_xy_m": 0.04615,
+              "std_yaw_rad": 0.01622,
+              "since_tag_s": 0.0,
+              "last_valid_obs": {
+                "t": 160.3,
+                "tag_ids": [
+                  33,
+                  34,
+                  35,
+                  36,
+                  37
+                ],
+                "n_tags": 5
+              },
+              "n_eff": 1027.0,
+              "load_state": "unloaded",
+              "source": "owncam_pf_v2:04f56834"
+            }
+          },
+          "camera": {
+            "origin_base_m": [
+              0.07019974929964232,
+              0.0,
+              0.16997557354005033
+            ],
+            "optical_axis_base": [
+              0.6214100426641279,
+              0.0,
+              -0.7834855192511008
+            ],
+            "optical_pitch_deg": -51.58082346953771,
+            "optical_yaw_deg": 0.0
+          },
+          "eval_only": {
+            "trace_t": 175.5999999975756,
+            "xyyaw": [
+              1.3881969413446067,
+              -0.053347502610089866,
+              3.0230230554217927
+            ],
+            "pose_xy_error_m": 0.7604613958194761,
+            "last_tag_to_report_estimated_displacement_m": 0.7814265181704547,
+            "last_tag_to_report_actual_displacement_m": 0.1368861014526399,
+            "displacement_ratio": 5.708589183839194
+          }
+        }
+      },
+      "result": {
+        "schema": "ugrp.zone_pair_dev_evaluation.v1",
+        "labels": [
+          "tags_temporary",
+          "dev",
+          "연구 결과 아님"
+        ],
+        "research_result": false,
+        "physical_success": false,
+        "dev_physical_success": false,
+        "verdict": "DEV_NOT_CONFIRMED",
+        "checks": {
+          "applied": true,
+          "trace_complete": true,
+          "contacts_complete": true,
+          "approach": true,
+          "joint_grasp": false,
+          "lift": false,
+          "door": false,
+          "placement_release": false,
+          "no_drop": false,
+          "contacts": true,
+          "r3": true,
+          "weld_off": true,
+          "protocol": true,
+          "video": false
+        },
+        "evidence": {
+          "coverage": {
+            "start_s": 1.3000000000000178,
+            "end_s": 178.10024999751647,
+            "timestep_s": 0.00025,
+            "expected_physics_steps": 707201,
+            "observed_physics_steps": 707201
+          },
+          "planned_setdowns": [],
+          "grasp_at_s": null,
+          "lifted_at_s": null,
+          "door_at_s": null,
+          "drop_samples": [],
+          "final_stable_at_s": null,
+          "approach": {
+            "r1": true,
+            "r2": true
+          }
+        },
+        "protocol": {
+          "ok": true,
+          "go_seen": true,
+          "go_pairs": 1,
+          "go_errors": [],
+          "missing_go": [],
+          "go_times": {
+            "approach_go_0": 152.0999999981313
+          },
+          "abort_seen": true,
+          "abort_check": "checked",
+          "abort_queues_empty": true,
+          "post_abort_observation_complete": true,
+          "post_abort_motion_count": 0,
+          "command_order_metadata_complete": true
+        },
+        "errors": [],
+        "sequence_done_is_success": false,
+        "video_review": {
+          "verified": false,
+          "reason": "manual review pending"
+        },
+        "abort_diagnostic": {
+          "intervention_exercised_with_pending_motion": false,
+          "passed": false
+        },
+        "run_id": "dev08",
+        "seed": 904,
+        "condition": "tags_temporary_dev_abort_after_carry_go",
+        "source_sha": "8effc2cee5c3534d553adb75a0d82b49097e5286",
+        "wall_s": 645.7196646669763,
+        "sim_s": 178.10024999751647,
+        "commands": 1799,
+        "model_calls": 0,
+        "model_response_time": "not_applicable_no_model_calls",
+        "scope": "tags_temporary, dev, 연구 결과 아님",
+        "clock": "synchronous SIM",
+        "policy": "PairTeam/M2DoorStudent-v3",
+        "case": "dev08",
+        "limits": {
+          "sim_s": 900.0,
+          "wall_s": 57600.0,
+          "submit_at_s": 60.0,
+          "post_terminal_s": 2.0,
+          "outer_wall_timeout_s": 57660.0,
+          "model_calls": 0
+        },
+        "config": {
+          "contact_profile": "cargo_noslip_v1"
+        },
+        "command_count_scope": "issued arm/look/drive/mecanum commands, not successful physical actions",
+        "input_sha256": {
+          "manifest.json": "dfb46784bdb71b697b456e85e63e348bfab511c5695d5bbffbcfaddb3f76eae2",
+          "prereg.json": "ca8e2d6b7cf1fda6056e8939a568bc11affc9c9b413b07f97e2d134af98d7fb8",
+          "pair_records.json": "e1031c7cf72c7126031fe3ba65f808d8901e358dded62edc46d5d7bad2db33db",
+          "status.jsonl": "13c6e822e1b1351883cbbe9779177ac4f9e013d1832cb00e3271d95cbdc152ef",
+          "commands.jsonl": "40ea965124f873255e6edc7dcdb2f7ac49849cda346f6c45a98122b7e403e198",
+          "shutdown.jsonl": "f230f33756da1ce12bb258f282686d7fe356208e8ecacf70e226bf09ed63d81c",
+          "eval_only/trace.jsonl": "deae5cb858e2fc97259f18000ab335d573aca2c6a72ec0a8c8babb22fb207118",
+          "eval_only/contacts.json": "1f8a5ee32f09e2cc78a9cbad606dd10542699f6ab56450e1057a94f9afd4d0cb"
+        }
+      },
+      "manifest_summary": {
+        "seed": 904,
+        "intervention": "abort_after_carry_go",
+        "applied": {
+          "map": "zone_wide_door_tags_v2_dock_v3",
+          "participants": [
+            "r1",
+            "r2"
+          ],
+          "world_robots": [
+            "r1",
+            "r2",
+            "r3"
+          ],
+          "cargo": [
+            {
+              "item_id": "cargoX",
+              "kind": "long_beam"
+            }
+          ],
+          "other_objects": 0,
+          "weld": false,
+          "contact_profile": "cargo_noslip_v1",
+          "noslip_iterations": 10,
+          "timestep_s": 0.00025
+        },
+        "model_calls": 0,
+        "wall_s": 645.7196646669763,
+        "simulator_start_s": 1.3000000000000178,
+        "sim_end_s": 178.10024999751647,
+        "source_changed": false,
+        "inputs_changed": false,
+        "intervention_not_reached": true,
+        "environment": {
+          "python": "3.12.13",
+          "executable": "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+          "platform": "macOS-27.2-arm64-arm-64bit",
+          "packages": {
+            "mujoco": "3.12.0",
+            "numpy": "2.5.2",
+            "opencv-python": null,
+            "opencv-python-headless": "5.0.0.93",
+            "Pillow": "12.3.0",
+            "torch": null,
+            "gymnasium": "1.3.0"
+          },
+          "loadavg_at_start": [
+            4.35888671875,
+            5.13916015625,
+            7.0791015625
+          ],
+          "loadavg_at_end": [
+            6.00927734375,
+            6.24853515625,
+            6.6259765625
+          ]
+        }
+      },
+      "events": [
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "job_started",
+          "sim_s": 1.3,
+          "job_id": "r1-job-001",
+          "job_kind": "look_around",
+          "detail": {
+            "arguments": {
+              "observe": "wide_look"
+            }
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "job_started",
+          "sim_s": 1.3,
+          "job_id": "r2-job-001",
+          "job_kind": "look_around",
+          "detail": {
+            "arguments": {
+              "observe": "wide_look"
+            }
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "job_done",
+          "sim_s": 10.3,
+          "job_id": "r2-job-001",
+          "job_kind": "look_around",
+          "detail": {
+            "confirmation": "own_camera_confirmed",
+            "outcome": "LOOKED",
+            "level": "low",
+            "std_xy_m": 0.0279
+          },
+          "scheduler_trigger": "idle"
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "job_done",
+          "sim_s": 11.3,
+          "job_id": "r1-job-001",
+          "job_kind": "look_around",
+          "detail": {
+            "confirmation": "own_camera_confirmed",
+            "outcome": "LOOKED",
+            "level": "low",
+            "std_xy_m": 0.0311
+          },
+          "scheduler_trigger": "idle"
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "job_started",
+          "sim_s": 60.0,
+          "job_id": "r1-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "arguments": {
+              "order_id": "cargoX",
+              "target_ref": "B",
+              "role": "end_neg"
+            }
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "job_started",
+          "sim_s": 60.0,
+          "job_id": "r2-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "arguments": {
+              "order_id": "cargoX",
+              "target_ref": "B",
+              "role": "end_pos"
+            }
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "pair_progress",
+          "sim_s": 60.0,
+          "job_id": "r2-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "approach"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "pair_progress",
+          "sim_s": 60.05,
+          "job_id": "r1-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "approach"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "pair_progress",
+          "sim_s": 113.8,
+          "job_id": "r1-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "wait_approach"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "pair_progress",
+          "sim_s": 151.7,
+          "job_id": "r2-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "wait_approach"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "pair_progress",
+          "sim_s": 152.1,
+          "job_id": "r1-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "align_start"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "pair_progress",
+          "sim_s": 152.1,
+          "job_id": "r2-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "align_start"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "pair_progress",
+          "sim_s": 152.2,
+          "job_id": "r1-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "align"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "pair_progress",
+          "sim_s": 152.2,
+          "job_id": "r2-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "phase": "align"
+          },
+          "scheduler_trigger": null
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "pose_uncertain",
+          "sim_s": 175.6,
+          "job_id": "r2-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "level": "medium",
+            "gate_profile": "loaded",
+            "ends_job": true,
+            "reason": "POSE_UNCERTAIN"
+          },
+          "scheduler_trigger": "failure"
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "job_failed",
+          "sim_s": 175.6,
+          "job_id": "r2-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "reason": "POSE_UNCERTAIN"
+          },
+          "scheduler_trigger": "failure"
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r1",
+          "event": "job_failed",
+          "sim_s": 175.6,
+          "job_id": "r1-job-003",
+          "job_kind": "pair_carry",
+          "detail": {
+            "reason": "PARTNER_ABORT"
+          },
+          "scheduler_trigger": "failure"
+        },
+        {
+          "schema": "ugrp.zone_own_executor_event.v1",
+          "robot_id": "r2",
+          "event": "pose_uncertain",
+          "sim_s": 176.2,
+          "job_id": null,
+          "job_kind": null,
+          "detail": {
+            "level": "medium",
+            "gate_profile": "loaded",
+            "std_xy_m": 0.0704,
+            "ends_job": false
+          },
+          "scheduler_trigger": "failure"
+        }
+      ],
+      "status_matches_pair_record": true,
+      "motion_commands": 1799,
+      "closing_commands": 0,
+      "contacts": {
+        "physics_steps": 707201,
+        "observation_start_s": 1.3000000000000178,
+        "observation_end_s": 178.10024999751647,
+        "timestep_s": 0.00025,
+        "max_step_gap_s": 0.00025000000000829914,
+        "invalid_step_intervals": 0,
+        "counts": {
+          "robot_robot": 0,
+          "robot_wall": 0,
+          "beam_wall": 0,
+          "robot_beam_approach": 0,
+          "r3_interference": 0
+        },
+        "max_eq_active": 0,
+        "r3_max_displacement_m": 5.854634587042695e-12,
+        "r3_motion_commands": 0,
+        "r3_api_calls": 0
+      }
+    }
+  },
+  "candidates": [
+    {
+      "id": "A",
+      "priority": 1,
+      "name": "align 전/중 태그 재관측과 공통 pose 갱신",
+      "basis": "dev08 15.3 s 태그 갱신 공백과 inspect 하향 시야; dev07 pregrasp_fix 양쪽 성공",
+      "proposal": "align 시작 전 전용 look에서 실제 새 태그를 얻고, p45/inspect 전환 이후에는 태그 age와 자기 명령 누적에 한정 예산을 두어 정지 재관측한다. 새 관측은 guard와 동일 own.pose/last_report에 반영한다. 양쪽 준비는 기존 STATUS enum과 TTL/GO만 사용한다.",
+      "limits": "GT/peer 좌표/이미지/σ를 전송하지 않는다. 한 번의 align 전 look만으로 이후 긴 공백은 해결되지 않는다. 잡은 뒤 일방 sweep 금지. 기존 collision guard와 유한 재관측 예산 유지.",
+      "validation": "비물리: 태그 없는 low-sigma/VO-only 준비 거부, 오래된 준비·한쪽 준비 GO 거부, 자기 pose 갱신, relook 금지 상태/예산. 물리 효과는 별도 사전등록 후 전체 유한 dev 필요."
+    },
+    {
+      "id": "B",
+      "priority": 2,
+      "name": "preclose 구간의 관측 계약 보완",
+      "basis": "dev07의 유효 standoff 후 END_CLIPPED를 BAND_CLIPPED 전용 계약이 거부; grip_view는 다른 색상 마스크로 통과",
+      "proposal": "근접 전용 beam evidence를 검토한다. fresh full anchor + 시간/명령 전파 σ + 충분한 own-RGB patch 일치 + 동일 camera PWM + 전체 빔 clearance를 모두 유지하며 END_CLIPPED/색상 변화 조건을 구별한다. 부분 strip의 PCA/그립점으로 anchor를 새로 초기화하거나 σ/age를 재설정하지 않는다.",
+      "limits": "END_CLIPPED를 일괄 허용하거나 임계값을 완화하지 않는다. partial support 1.0만으로 안전·물체 동일성·잡힘을 확정할 수 없다.",
+      "validation": "저장 dev07 r1 실제 JPEG/PWM을 추가 회귀 후보로 삼고, dev06/07 r2와 비교. 다른 물체/잘못된 hue/누락·오래된 anchor/σ 초과/부분 불일치/문기둥 반례를 계속 차단해야 한다."
+    },
+    {
+      "id": "C",
+      "priority": 3,
+      "name": "align 자세별 자기 명령 운동 모델과 phase별 gate 계약",
+      "basis": "낮춘 팔 align에 drive 자세 운동 모델을 쓰는 한계는 동결 M2 주석에도 명시; loaded gate가 open-align에도 적용",
+      "proposal": "별도 승인된 offline calibration에서 자세·펄스별 운동 불확실성을 검증하고 자기 RGB 상대 변위를 보수적으로 결합하는 후보를 비교한다. 접촉 전 정지 재관측과 실제 운반의 허용 동작을 phase 계약으로 구분하되 안전 interlock을 유지한다.",
+      "limits": "실행 중 입력은 자기 RGB·정적 지도/보정·자기 명령만. VO로 PF를 직접 덮거나 stationary를 실제 정지로 단정하지 않는다. gate를 unloaded로 바꾸는 것만으로 실패를 뒤로 미루지 않는다.",
+      "validation": "보정 provenance/held-out 조건/σ calibration 및 반례 검증을 먼저 수행한다. 이 진단의 eval_only 여유·GT 오차를 온라인 값/임계값 설정 근거로 쓰지 않는다."
+    }
+  ],
+  "recommendation": {
+    "order": [
+      "A",
+      "B",
+      "C"
+    ],
+    "threshold_relaxation": "last resort only after own-observation/phase-contract and uncertainty calibration evidence; not recommended for these runs",
+    "peer_exchange": "status synchronization only; no observation, pose, covariance or free-text data payload"
+  },
+  "verification": {
+    "raw_v4_all_artifacts": {
+      "dev07": {
+        "artifact_count": 9001,
+        "artifact_bytes": 99030368,
+        "artifact_mismatches": [],
+        "source_files_checked": [
+          "harness/owncam_drive.py",
+          "harness/owncam_drive_v2.py",
+          "harness/owncam_localizer.py",
+          "harness/owncam_pair_beam.py",
+          "harness/owncam_pair_beam_v2.py",
+          "harness/owncam_pair_hold_v3.py",
+          "harness/owncam_pair_lift_v3.py",
+          "harness/owncam_pose_source.py",
+          "harness/owncam_view.py",
+          "harness/visual_arm.py",
+          "harness/zone_own_contract.py",
+          "harness/zone_own_deliver.py",
+          "harness/zone_own_driver.py",
+          "harness/zone_own_executor.py",
+          "harness/zone_own_guards.py",
+          "harness/zone_own_outcome.py",
+          "harness/zone_own_outcome_v2.py",
+          "harness/zone_own_perception.py",
+          "harness/zone_own_perception_v2.py",
+          "harness/zone_own_status.py",
+          "harness/zone_own_sweep.py",
+          "harness/zone_own_team_host.py",
+          "harness/zone_pair_admission.py",
+          "harness/zone_pair_beam_track.py",
+          "harness/zone_pair_executor.py",
+          "harness/zone_pair_geometry.py",
+          "harness/zone_pair_grasp.py",
+          "harness/zone_pair_guards.py",
+          "harness/zone_pair_status.py",
+          "harness/zone_pair_vision.py",
+          "scripts/run_m2_pair.py",
+          "scripts/run_zone_pair_dev.py",
+          "scripts/zone_pair_dev_contract.py",
+          "scripts/zone_pair_dev_runtime.py",
+          "scripts/zone_pair_grasp_contract.py",
+          "sim/masterpi_camera_profile.py"
+        ],
+        "source_mismatches": [],
+        "index_sha256": "77f2983e5f88b031a280791a6ac87be8122d4c7806b1f61c31b4b98abd80d24b"
+      },
+      "dev08": {
+        "artifact_count": 7641,
+        "artifact_bytes": 82867066,
+        "artifact_mismatches": [],
+        "source_files_checked": [
+          "harness/owncam_drive.py",
+          "harness/owncam_drive_v2.py",
+          "harness/owncam_localizer.py",
+          "harness/owncam_pair_beam.py",
+          "harness/owncam_pair_beam_v2.py",
+          "harness/owncam_pair_hold_v3.py",
+          "harness/owncam_pair_lift_v3.py",
+          "harness/owncam_pose_source.py",
+          "harness/owncam_view.py",
+          "harness/visual_arm.py",
+          "harness/zone_own_contract.py",
+          "harness/zone_own_deliver.py",
+          "harness/zone_own_driver.py",
+          "harness/zone_own_executor.py",
+          "harness/zone_own_guards.py",
+          "harness/zone_own_outcome.py",
+          "harness/zone_own_outcome_v2.py",
+          "harness/zone_own_perception.py",
+          "harness/zone_own_perception_v2.py",
+          "harness/zone_own_status.py",
+          "harness/zone_own_sweep.py",
+          "harness/zone_own_team_host.py",
+          "harness/zone_pair_admission.py",
+          "harness/zone_pair_beam_track.py",
+          "harness/zone_pair_executor.py",
+          "harness/zone_pair_geometry.py",
+          "harness/zone_pair_grasp.py",
+          "harness/zone_pair_guards.py",
+          "harness/zone_pair_status.py",
+          "harness/zone_pair_vision.py",
+          "scripts/run_m2_pair.py",
+          "scripts/run_zone_pair_dev.py",
+          "scripts/zone_pair_dev_contract.py",
+          "scripts/zone_pair_dev_runtime.py",
+          "scripts/zone_pair_grasp_contract.py",
+          "sim/masterpi_camera_profile.py"
+        ],
+        "source_mismatches": [],
+        "index_sha256": "4a610a5762bcd1ddae14888aff76b3619d3968895ae04103d61ed3290aa7ce76"
+      }
+    },
+    "used_source_hashes": {
+      "dev05": {
+        "commands.jsonl": {
+          "bytes": 326118,
+          "sha256": "3be73ded3794c827b3ef173e44a91d8ac1b3465cb8f31491df9f058fbc0eba3c",
+          "index_match": true
+        },
+        "eval_only/contacts.json": {
+          "bytes": 475,
+          "sha256": "6bd43112c180e43ec608096561cbf413697ee7a0ec9a84bc096b31d9c1774caa",
+          "index_match": true
+        },
+        "eval_only/overview.mp4": {
+          "bytes": 1467482,
+          "sha256": "2c7fa3ca5adfe6ea5a3b867c2a44d04426e30a68893fcb16f08232106423f3e2",
+          "index_match": true
+        },
+        "eval_only/result.json": {
+          "bytes": 3836,
+          "sha256": "086301690fb252152e19f07cbf132de993b961a7ffcfade8f8a07d57572bd2c8",
+          "index_match": true
+        },
+        "eval_only/trace.jsonl": {
+          "bytes": 4193033,
+          "sha256": "2358fca19356040af860fa9fd122631de8951eb98a1b972577ceb9437a2258d8",
+          "index_match": true
+        },
+        "events.jsonl": {
+          "bytes": 4199,
+          "sha256": "c7a15e56d5c4434952e6cb59018a8cbd814b14f33e9f3f72db65a1e897bf3c9d",
+          "index_match": true
+        },
+        "frames/r1/01315.jpg": {
+          "bytes": 22874,
+          "sha256": "49864b69ce29fb9a0c178d18097a9d0d2f5a87d0a2686016da657c92078d5bc7",
+          "index_match": true
+        },
+        "frames/r1/01597.jpg": {
+          "bytes": 15283,
+          "sha256": "aa9468612ba3608fd89ddf737666d4896fcb44eddfdf314aa5d07d23de96c776",
+          "index_match": true
+        },
+        "frames/r2/01331.jpg": {
+          "bytes": 22565,
+          "sha256": "6ab50acbba2835757bb4eacbb49b49f115604f9160ced9c65f683815b238ab5f",
+          "index_match": true
+        },
+        "frames/r2/01598.jpg": {
+          "bytes": 11915,
+          "sha256": "34a92906c44807a3f0e6f7e902e668ad9d0b8f83065496b0a4d02ed05e1f5d82",
+          "index_match": true
+        },
+        "inputs/r1/01315.json": {
+          "bytes": 474,
+          "sha256": "e5f2a03155598797fce609c948988364aeacc951c941f4972778bad7a0421684",
+          "index_match": true
+        },
+        "inputs/r1/01597.json": {
+          "bytes": 474,
+          "sha256": "6bd205033818b5ef6691df46859a447f8664fc8147b40f5adc13f120c4040cf9",
+          "index_match": true
+        },
+        "inputs/r2/01331.json": {
+          "bytes": 472,
+          "sha256": "bd74c557dc00c025132cc2f3e3d72573a8af6e8687e311c9a192deba1f9dd58c",
+          "index_match": true
+        },
+        "inputs/r2/01598.json": {
+          "bytes": 475,
+          "sha256": "7762aedf4ef2dcaeb578f1c235ce7bcaf075d702584d3f04a6559bd84a14f87c",
+          "index_match": true
+        },
+        "inputs/static.json": {
+          "bytes": 38168,
+          "sha256": "74d24768552a0bed8ef5cb621abb946ba9e603949722fd16dea3990591aeb439",
+          "index_match": true
+        },
+        "manifest.json": {
+          "bytes": 143393,
+          "sha256": "bddbf7674bbdec9da85fc9ed3fa9c2f3134d2503f623151c6c20d23fcb926678",
+          "index_match": true
+        },
+        "pair_records.json": {
+          "bytes": 1939030,
+          "sha256": "5c1944e424ed65784fea736ec56cfa568089a3cffe8141642546dc416c6dd96b",
+          "index_match": true
+        },
+        "prereg.json": {
+          "bytes": 21533,
+          "sha256": "9470d95261c464cd37705cdebde87d6cdd8f5166bbd02cb10236489611853b6e",
+          "index_match": true
+        },
+        "robots.json": {
+          "bytes": 4043326,
+          "sha256": "2d6253ab9ccebbe6fbd5d698590829ca1bcf88b060bb8316ebe41303581343fa",
+          "index_match": true
+        },
+        "status.jsonl": {
+          "bytes": 1118907,
+          "sha256": "ebb6514cd9b8de371b3e87a7effd3c67e461f15746ccbed564130b7f00e89d7f",
+          "index_match": true
+        }
+      },
+      "dev06": {
+        "commands.jsonl": {
+          "bytes": 288736,
+          "sha256": "a155d348b37c105a8ad2fe53a96b9ff1bc8747931b39c525174c702bd2d16878",
+          "index_match": true
+        },
+        "eval_only/contacts.json": {
+          "bytes": 475,
+          "sha256": "95106df17adaef7e5dcd9b86cf4a240294c1e01159d8d469ac332ce1a7080a8e",
+          "index_match": true
+        },
+        "eval_only/overview.mp4": {
+          "bytes": 1488430,
+          "sha256": "fe5fb1a594290ff8e48767ea8be75a7c64f2818a2bf29e8f6e2f3ee76f9de484",
+          "index_match": true
+        },
+        "eval_only/result.json": {
+          "bytes": 3225,
+          "sha256": "6f806299054f1a9421042369531a1fe3cb8d43c6486ed0d12f7a19b81ca00dec",
+          "index_match": true
+        },
+        "eval_only/trace.jsonl": {
+          "bytes": 4541266,
+          "sha256": "bbaa7df7cd2e73647ebe796ee6bdd8e5c7ab376756c88ed2e0ab057eee3bcccb",
+          "index_match": true
+        },
+        "events.jsonl": {
+          "bytes": 4963,
+          "sha256": "b68dcdf36cd40b25867afb7a0ff2afa4bbc837304bd055c08e75767a3df70d9a",
+          "index_match": true
+        },
+        "frames/r1/01361.jpg": {
+          "bytes": 21598,
+          "sha256": "a903d6c9929a4e6c780214be36806526c69c9de6a57f50f1a042c24071a3065b",
+          "index_match": true
+        },
+        "frames/r1/01630.jpg": {
+          "bytes": 15078,
+          "sha256": "6f34c535c9b679cba4a648fbd890f2a1d99f3de56907741c19ccfc6bd2d30b45",
+          "index_match": true
+        },
+        "frames/r2/01326.jpg": {
+          "bytes": 22095,
+          "sha256": "6ee8f5626ee2f432dd59cdfa34f2935b9e2d7b752c66c0f42b682aa87f57d312",
+          "index_match": true
+        },
+        "frames/r2/01631.jpg": {
+          "bytes": 14572,
+          "sha256": "256515099be3ee7e520f8f88b5ed46a01fb761dbbf94e632890a0725d8318073",
+          "index_match": true
+        },
+        "inputs/r1/01361.json": {
+          "bytes": 473,
+          "sha256": "470d47ae04215fe97a32c155c2c8e2bffa8dd6f2e7be8ed9bff877e16cd80d41",
+          "index_match": true
+        },
+        "inputs/r1/01630.json": {
+          "bytes": 473,
+          "sha256": "2d6f0be3c0cda99b479944f5c27479315dda815027367f164d3c73ee32984998",
+          "index_match": true
+        },
+        "inputs/r2/01326.json": {
+          "bytes": 474,
+          "sha256": "1aa3ff9db58373a1a73a1b36428739b83765220f499a8fd45538f74c1df8270c",
+          "index_match": true
+        },
+        "inputs/r2/01631.json": {
+          "bytes": 474,
+          "sha256": "68f9b5a2e25bd08cdb0de72f6254bda68ba9e733bcf56d7668328119674f8f36",
+          "index_match": true
+        },
+        "inputs/static.json": {
+          "bytes": 38168,
+          "sha256": "6f7a96c62f248d15ed8495d06ea60f3c0d9df7f7b34255cdcbd78ed5b8790ef0",
+          "index_match": true
+        },
+        "manifest.json": {
+          "bytes": 143451,
+          "sha256": "b58d287e53857d85ece0f7990060e2bf04efb809ba3e0d9260de6844e0d37b93",
+          "index_match": true
+        },
+        "pair_records.json": {
+          "bytes": 2032605,
+          "sha256": "bf1aa1bf6f5599f11d160045816dd8f6cb53367daebdadf43a1a34cb6ec82e04",
+          "index_match": true
+        },
+        "prereg.json": {
+          "bytes": 21533,
+          "sha256": "9470d95261c464cd37705cdebde87d6cdd8f5166bbd02cb10236489611853b6e",
+          "index_match": true
+        },
+        "robots.json": {
+          "bytes": 4127822,
+          "sha256": "e76170173ef82a555e8c528dd3add6e6118cfed6eaedd1edfb9619b3ff6fa0dd",
+          "index_match": true
+        },
+        "status.jsonl": {
+          "bytes": 1197832,
+          "sha256": "36f38c26709f2117b7f6e973933423f57dc56b426f2f5f649bd610b313fb4388",
+          "index_match": true
+        }
+      },
+      "dev07": {
+        "commands.jsonl": {
+          "bytes": 366572,
+          "sha256": "c018ae0880c4a1fa0342250a2910aeb8091b5ca433a2a7026b38385d7efa7d23",
+          "index_match": true
+        },
+        "eval_only/contacts.json": {
+          "bytes": 476,
+          "sha256": "3205d7d5a409b73b7bb0d9848288c0ce1e8e4de8478b13e61e0472f1d1a20ae9",
+          "index_match": true
+        },
+        "eval_only/overview.mp4": {
+          "bytes": 1575325,
+          "sha256": "34f085ad19f209f19d1f863845077142d2bef4722d79763f881ad3e766397a7e",
+          "index_match": true
+        },
+        "eval_only/result.json": {
+          "bytes": 3838,
+          "sha256": "5f8127de789a1975bd4ed25d864193a8ea86c2000409b2c092cd9a15f2510d65",
+          "index_match": true
+        },
+        "eval_only/trace.jsonl": {
+          "bytes": 4485011,
+          "sha256": "7f20cf9b663d1ee811649b90049220177fe155203aa75756e31ac3bd7f87dac9",
+          "index_match": true
+        },
+        "events.jsonl": {
+          "bytes": 5669,
+          "sha256": "b7939baef4a3ac905b60e318397b0409f846af550c7d494015c9a67ad628f28d",
+          "index_match": true
+        },
+        "frames/r1/01596.jpg": {
+          "bytes": 16488,
+          "sha256": "808450aa43f2d8f100dbb27694f88c9c1948ca7b602cec75ec5440e765ee419c",
+          "index_match": true
+        },
+        "frames/r1/01692.jpg": {
+          "bytes": 23369,
+          "sha256": "63a6decd23b84f8675cf533393fcb2808a1e9efe8fbed9dc3510618d438750a4",
+          "index_match": true
+        },
+        "frames/r1/01721.jpg": {
+          "bytes": 15678,
+          "sha256": "2b613b886920cff5486227063b33cac4a86349dc422c3a10e4e7a1c9c4369afd",
+          "index_match": true
+        },
+        "frames/r2/01597.jpg": {
+          "bytes": 14935,
+          "sha256": "7b056d8b8107236ed0f2b2db82dc321a3a378fd664a6e14ce21b1812f5db3f58",
+          "index_match": true
+        },
+        "frames/r2/01693.jpg": {
+          "bytes": 24046,
+          "sha256": "468222002200f5e4d890941202c76a94573e3101ff1c8896270216c68b573cb4",
+          "index_match": true
+        },
+        "frames/r2/01721.jpg": {
+          "bytes": 12687,
+          "sha256": "63525abfae0bb632724980229a938e8113d79e7f92945cb75b433fa56797059e",
+          "index_match": true
+        },
+        "inputs/r1/01596.json": {
+          "bytes": 474,
+          "sha256": "354908f48a546ad38c3ee6e41b1b32cec903293e97ece0c7961852cd532dd50c",
+          "index_match": true
+        },
+        "inputs/r1/01692.json": {
+          "bytes": 474,
+          "sha256": "72335767aa10e3ec76578bc5977289ab7162b9144a3d09b01945742a1c12e319",
+          "index_match": true
+        },
+        "inputs/r1/01721.json": {
+          "bytes": 474,
+          "sha256": "bdef6b409d5f8decb6ff2d5d98fd395a09b2d5d7171f578cab135f7030c49a3e",
+          "index_match": true
+        },
+        "inputs/r2/01597.json": {
+          "bytes": 474,
+          "sha256": "eebc62081b4757619dba62a42644121a49635f1ca2ff699f56ec42daf87436bc",
+          "index_match": true
+        },
+        "inputs/r2/01693.json": {
+          "bytes": 474,
+          "sha256": "15da0796f0ad0b771e9aabe8df74bc573e0280dcae32aeca9a8951ff2d5822da",
+          "index_match": true
+        },
+        "inputs/r2/01721.json": {
+          "bytes": 475,
+          "sha256": "71d7e3765a71a4526b7d63bda355703bf42590f3bf16eb9a68537c35f292e025",
+          "index_match": true
+        },
+        "inputs/static.json": {
+          "bytes": 38168,
+          "sha256": "74d24768552a0bed8ef5cb621abb946ba9e603949722fd16dea3990591aeb439",
+          "index_match": true
+        },
+        "manifest.json": {
+          "bytes": 147761,
+          "sha256": "89e7448ef0868d012e2720b4e1a894961d83fea52a650df7c9a589ad2cf6fdec",
+          "index_match": true
+        },
+        "pair_records.json": {
+          "bytes": 2363164,
+          "sha256": "bd670dce3f139373209eabf81cf5d020fb8ddfc589606f5e3aa77954c4ccba79",
+          "index_match": true
+        },
+        "prereg.json": {
+          "bytes": 25943,
+          "sha256": "ca8e2d6b7cf1fda6056e8939a568bc11affc9c9b413b07f97e2d134af98d7fb8",
+          "index_match": true
+        },
+        "robots.json": {
+          "bytes": 4368371,
+          "sha256": "28ff854363b8f381eb7359d8f4729aaa5767b76a3e29ba9ea2b99cc493ce452b",
+          "index_match": true
+        },
+        "status.jsonl": {
+          "bytes": 1237218,
+          "sha256": "e624d457b597adb9c578a699fd5c71d1a68c7a0cf1be02eb05637fb507400c29",
+          "index_match": true
+        }
+      },
+      "dev08": {
+        "commands.jsonl": {
+          "bytes": 294218,
+          "sha256": "40ea965124f873255e6edc7dcdb2f7ac49849cda346f6c45a98122b7e403e198",
+          "index_match": true
+        },
+        "eval_only/contacts.json": {
+          "bytes": 475,
+          "sha256": "1f8a5ee32f09e2cc78a9cbad606dd10542699f6ab56450e1057a94f9afd4d0cb",
+          "index_match": true
+        },
+        "eval_only/overview.mp4": {
+          "bytes": 1364654,
+          "sha256": "00ed7ad2cf7969073f17cf20d7bc7bddc534bf0c90daf4d611c95e740f227883",
+          "index_match": true
+        },
+        "eval_only/result.json": {
+          "bytes": 3224,
+          "sha256": "c985c31381e6f45f8e6b7cc92f0549cdbc20f7dd35b5f57fd69033c9dea46bb4",
+          "index_match": true
+        },
+        "eval_only/trace.jsonl": {
+          "bytes": 4090521,
+          "sha256": "deae5cb858e2fc97259f18000ab335d573aca2c6a72ec0a8c8babb22fb207118",
+          "index_match": true
+        },
+        "events.jsonl": {
+          "bytes": 4321,
+          "sha256": "8d74d13e9c8ed786c3ca5bfad8c0ac97624e6fad1f0a16a647e4fa9df9131321",
+          "index_match": true
+        },
+        "frames/r1/01341.jpg": {
+          "bytes": 22423,
+          "sha256": "8cfec9d2d757cc8a01c61edaf06d3ec1c70eb11c443ffeb69be2bf6b4386f29e",
+          "index_match": true
+        },
+        "frames/r1/01449.jpg": {
+          "bytes": 15553,
+          "sha256": "e43c9791b8b063a7f355c53a5c9e3dd8f14707c6c8789cc348d6421cb32dd841",
+          "index_match": true
+        },
+        "frames/r2/01297.jpg": {
+          "bytes": 22889,
+          "sha256": "466b636a420dfd3c72fe53cf26c167083e3249b40e8381ed2517b950925fa7b9",
+          "index_match": true
+        },
+        "frames/r2/01450.jpg": {
+          "bytes": 14608,
+          "sha256": "93c0228dda3e2d7d1906337214433c39ae2bfe12b9457191bcedd063934cead9",
+          "index_match": true
+        },
+        "inputs/r1/01341.json": {
+          "bytes": 474,
+          "sha256": "98bb64c03f4875ebec1d1a997d98015d31203682b3f846f696a551527f9f7003",
+          "index_match": true
+        },
+        "inputs/r1/01449.json": {
+          "bytes": 540,
+          "sha256": "0538166128266f98e982f2bb6c5d195b9fed2f5915d2a0a7824fb6890653ba62",
+          "index_match": true
+        },
+        "inputs/r2/01297.json": {
+          "bytes": 473,
+          "sha256": "c683facf5ca84e9c367d5ea9e170376142e8cbcd1452c28dbd26ded9f5810e01",
+          "index_match": true
+        },
+        "inputs/r2/01450.json": {
+          "bytes": 473,
+          "sha256": "7bf7c817bc325af975b918530caf593964cfad8e8a690edee3b6ac62635ad935",
+          "index_match": true
+        },
+        "inputs/static.json": {
+          "bytes": 38168,
+          "sha256": "6f7a96c62f248d15ed8495d06ea60f3c0d9df7f7b34255cdcbd78ed5b8790ef0",
+          "index_match": true
+        },
+        "manifest.json": {
+          "bytes": 147815,
+          "sha256": "dfb46784bdb71b697b456e85e63e348bfab511c5695d5bbffbcfaddb3f76eae2",
+          "index_match": true
+        },
+        "pair_records.json": {
+          "bytes": 1858799,
+          "sha256": "e1031c7cf72c7126031fe3ba65f808d8901e358dded62edc46d5d7bad2db33db",
+          "index_match": true
+        },
+        "prereg.json": {
+          "bytes": 25943,
+          "sha256": "ca8e2d6b7cf1fda6056e8939a568bc11affc9c9b413b07f97e2d134af98d7fb8",
+          "index_match": true
+        },
+        "robots.json": {
+          "bytes": 3687478,
+          "sha256": "e61d2c9f065c274f8b0abe2453aa82560e9bfd512b66bfcfc4d28edc0f7f7b57",
+          "index_match": true
+        },
+        "status.jsonl": {
+          "bytes": 991779,
+          "sha256": "13c6e822e1b1351883cbbe9779177ac4f9e013d1832cb00e3271d95cbdc152ef",
+          "index_match": true
+        }
+      }
+    },
+    "frozen_source_comparison": "owncam_localizer.py, zone_own_guards.py, scripts/run_m2_pair.py unchanged between 4a17e7d4 and 8effc2ce",
+    "pytest": {
+      "args": [
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp=./.pytest_tmp",
+        "tests/test_zone_pair_grasp.py",
+        "tests/test_zone_pair_preclose.py",
+        "tests/test_zone_pair_standoff.py",
+        "tests/test_zone_pair_review7.py"
+      ],
+      "exit_code": 0,
+      "wall_s": 4.050453584000934,
+      "OMP_NUM_THREADS": "1",
+      "forbidden_imports": [
+        "mujoco",
+        "torch",
+        "tensorflow"
+      ],
+      "passed": 81,
+      "pytest_reported_s": 4.0,
+      "pytest_tmp_removed": true
+    },
+    "reconstruction_assertions": [
+      "both dev07 200.8 s standoff anchors reproduced byte-equivalent JSON from saved own JPEG and commanded PWM",
+      "dev07 r1 final frame hash and commanded camera match",
+      "status.jsonl equals pair_records status_messages for all four runs",
+      "no physics/torch/tensorflow import allowed during replay and tests"
+    ],
+    "visual_review": {
+      "scope": "8 selected own RGB frames; not full-video stage approval",
+      "contact_sheet_temporary": "/tmp/pair_v5_frames.jpg",
+      "frames": [
+        {
+          "run": "dev07",
+          "robot": "r1",
+          "frame_ids": [
+            1702,
+            1722
+          ]
+        },
+        {
+          "run": "dev07",
+          "robot": "r2",
+          "frame_ids": [
+            1703,
+            1722
+          ],
+          "note": "r2 last pre-abort input is 202.7, not the future 202.9 frame; no r2 READY/guard pass inferred"
+        },
+        {
+          "run": "dev08",
+          "robot": "r1",
+          "frame_ids": [
+            1342,
+            1450
+          ]
+        },
+        {
+          "run": "dev08",
+          "robot": "r2",
+          "frame_ids": [
+            1298,
+            1451
+          ]
+        }
+      ]
+    },
+    "limitations": [
+      "PF RNG state not replayed; saved reports used",
+      "partial-support/clearance after reason gate calculated offline only",
+      "GT saved trace is only post-hoc eval_only; no model/plant stepping",
+      "full overview video review remains pending in original result"
+    ],
+    "document_validation": {
+      "json_finite_and_parseable": true,
+      "source_metrics_checked": true,
+      "discriminating_conditions_asserted": true,
+      "v4_zero_close_command_and_zero_close_ready_go_asserted": true,
+      "readme_result_rows_present": true,
+      "git_diff_check": "passed",
+      "only_requested_three_document_paths_changed": true
+    }
+  },
+  "tensorboard": {
+    "snapshot": "/tmp/pair-v5-tensorboard-20260927",
+    "runs": {
+      "dev07__eval_only__6da07b98": {
+        "scalars": {
+          "result/wall_s": 699.6244506835938,
+          "result/sim_s": 205.3002471923828,
+          "result/commands": 2591.0,
+          "result/model_calls": 0.0,
+          "evaluation/reported_success": 0.0
+        },
+        "tensor_tags": [
+          "result/summary",
+          "evaluation/referee_only",
+          "media/overview.mp4",
+          "provenance/source",
+          "_hparams_/experiment",
+          "_hparams_/session_start_info",
+          "_hparams_/session_end_info"
+        ],
+        "manifest_sha256": "1c77488f31ec5be47c372177a3c2efa0183ce1e3520e149a76358e2a831af9ec"
+      },
+      "dev08__eval_only__64e81341": {
+        "scalars": {
+          "result/wall_s": 645.7196655273438,
+          "result/sim_s": 178.10025024414062,
+          "result/commands": 1799.0,
+          "result/model_calls": 0.0,
+          "evaluation/reported_success": 0.0
+        },
+        "tensor_tags": [
+          "result/summary",
+          "evaluation/referee_only",
+          "media/overview.mp4",
+          "provenance/source",
+          "_hparams_/experiment",
+          "_hparams_/session_start_info",
+          "_hparams_/session_end_info"
+        ],
+        "manifest_sha256": "b01be02fdf45a2520a0299d4f715fa85890db2f35cda651d2ad29a0f8640568e"
+      }
+    },
+    "shared_manifests_checked": 1141,
+    "shared_v4_source_matches": 0,
+    "shared_publish_complete": false,
+    "ui_verified": false,
+    "media_registered_runs": 2,
+    "response_time": "not applicable; model_calls=0",
+    "shared_dashboard_url": "http://127.0.0.1:6006",
+    "shared_view_key": "zone_pair_dev_v2_20260927",
+    "baseline": "existing prereg v1/v2 snapshots; dev05/06 have previous temporary snapshot only",
+    "sim_s_semantics": "exported result/sim_s is original absolute SIM end, not elapsed; subtract simulator_start_s=1.3 for elapsed",
+    "blockers": [
+      "primary outputs outside allowed write roots; do not publish via workaround",
+      "ps denied; viewer PID/ownership/logdir unverified; server not started/stopped",
+      "new runs, baselines, pins, HParams columns and video HTTP playback not verified in UI"
+    ]
+  },
+  "git": {
+    "head_matches_run_source": true,
+    "fetch": "failed: shared FETCH_HEAD Operation not permitted",
+    "gh_pr_list": "failed: api.github.com network connection",
+    "remote": "https://github.com/kcm0127-dotcom/ugrp.git",
+    "commit": false,
+    "push": false,
+    "pr_write": false,
+    "merge": false,
+    "primary_updated": false
+  },
+  "preservation": {
+    "raw_read_only": true,
+    "old_diagnoses_preserved": true,
+    "drive_used": false,
+    "remote_backup_claim": false,
+    "permanent_outputs": [
+      "diagnosis_v5.md",
+      "diagnosis_v5.json",
+      "README.md"
+    ]
+  }
+}

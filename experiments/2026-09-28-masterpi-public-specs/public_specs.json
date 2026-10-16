@@ -1,0 +1,3368 @@
+{
+  "schema": "ugrp.masterpi_public_specs.v1",
+  "protocol": "docs/sim2real_measurement_protocol.md",
+  "hardware_unit": null,
+  "measured_by": null,
+  "measured_at": null,
+  "measurement_source": null,
+  "_instructions": [
+    "공개 참고값이며 실측 파일이 아니다. 측정 템플릿의 키 경로만 대응한다.",
+    "값 객체는 value/unit/source/source_type/confidence/derivation이다. 미확인은 null이다.",
+    "hardware_unit/measured_by/measured_at/measurement_source를 채우지 않았고 보정 도구 입력으로 쓰지 않는다.",
+    "source_type은 출처 종류, confidence는 해당 종류의 근거 신뢰도다. high도 우리 로봇에 대한 확증이 아니다.",
+    "모델·제어기·실행 번들에 자동 적용하지 않는다. 코드 단위 변환은 code_scale을 따른다."
+  ],
+  "conditions": {
+    "battery_mv_start": null,
+    "battery_mv_end": null,
+    "room_temp_c": null,
+    "floor_material": null,
+    "floor_photo": null,
+    "notes": "인터넷·공개 소스·기존 참조 이미지 열람만 수행. 실물 측정, 물리, 모델 호출 없음."
+  },
+  "static_geometry": {
+    "sonar_center_height_mm": {
+      "value": 61.9,
+      "unit": "mm",
+      "source": [
+        "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111"
+      ],
+      "source_ids": [
+        "D1"
+      ],
+      "source_type": "official drawing scaled",
+      "confidence": "medium",
+      "status": "public_reference",
+      "derivation": "도면 픽셀 차 × 해당 축척. 소자 쌍 중심 바닥 높이. 약 62 mm; #249 61.7 mm와 축척 선택 차이.",
+      "pixel_measurement": {
+        "scale_id": "vertical",
+        "delta_px": 145.5,
+        "anchors": {
+          "floor_y": 992,
+          "transducer_center_y": 846.5
+        },
+        "unrounded_mm": 61.91873449131514
+      },
+      "reading_uncertainty_mm": 2.0,
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):SONAR_CENTER_Z_FLOOR_M; harness/ultrasonic_model.py:UltrasonicSpec.mount_z_floor_m",
+      "code_unit": "m",
+      "code_scale": 0.001,
+      "repeats": []
+    },
+    "sonar_face_forward_mm": {
+      "value": 87.9,
+      "unit": "mm",
+      "source": [
+        "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111"
+      ],
+      "source_ids": [
+        "D1"
+      ],
+      "source_type": "official drawing scaled",
+      "confidence": "medium",
+      "status": "public_reference",
+      "derivation": "도면 픽셀 차 × 해당 축척. 차축 중점→전면. 하우징 중심 78 mm와 기준점이 다름.",
+      "pixel_measurement": {
+        "scale_id": "side_x",
+        "delta_px": 207.75,
+        "anchors": {
+          "front_axle_x": 740,
+          "rear_axle_x": 1020.5,
+          "face_x": 672.5
+        },
+        "unrounded_mm": 87.94908466819223
+      },
+      "reading_uncertainty_mm": 2.0,
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):SONAR_FACE_X_M; UltrasonicSpec.mount_x_m (v2 centre 78)",
+      "code_unit": "m",
+      "code_scale": 0.001,
+      "repeats": []
+    },
+    "sonar_pitch_deg": {
+      "value": 0,
+      "unit": "deg",
+      "source": [
+        "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111"
+      ],
+      "source_ids": [
+        "D1"
+      ],
+      "source_type": "official drawing scaled",
+      "confidence": "low",
+      "status": "public_reference",
+      "derivation": "옆 도면에서 송수신기 축이 수평. 인쇄 각도/조립 공차 없음.",
+      "reading_uncertainty_deg": null,
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):SONAR_PITCH_DEG; UltrasonicSpec.mount_pitch_deg",
+      "repeats": []
+    },
+    "sonar_center_lateral_mm": {
+      "value": 0,
+      "unit": "mm",
+      "source": [
+        "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111"
+      ],
+      "source_ids": [
+        "D1"
+      ],
+      "source_type": "official drawing scaled",
+      "confidence": "medium",
+      "status": "public_reference",
+      "derivation": "앞 도면 소자 중심 x=(242+304)/2=273 px, 외폭 중점=(81+464)/2=272.5 px; 차이 0.21 mm를 명목 0으로 반올림.",
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):SONAR_CENTER_Y_M; UltrasonicSpec.mount_y_m",
+      "code_unit": "m",
+      "code_scale": 0.001,
+      "repeats": []
+    },
+    "sonar_transducer_spacing_mm": {
+      "value": 26.6,
+      "unit": "mm",
+      "source": [
+        "https://www.hiwonder.com/products/glowing-ultrasonic-sensor"
+      ],
+      "source_ids": [
+        "D2"
+      ],
+      "source_type": "official drawing scaled",
+      "confidence": "medium",
+      "status": "public_reference",
+      "derivation": "도면 픽셀 차 × 해당 축척. 외곽 원 중심 간격. #249 26.7 mm와 일치 범위.",
+      "pixel_measurement": {
+        "scale_id": "module_x",
+        "delta_px": 458.0,
+        "anchors": {
+          "left_center_x": 416.5,
+          "right_center_x": 874.5
+        },
+        "unrounded_mm": 26.60484076433121
+      },
+      "reading_uncertainty_mm": 0.5,
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):SONAR_TRANSDUCER_SPACING_M",
+      "code_unit": "m",
+      "code_scale": 0.001,
+      "repeats": []
+    },
+    "yaw_axis_forward_mm": {
+      "value": 47.6,
+      "unit": "mm",
+      "source": [
+        "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111"
+      ],
+      "source_ids": [
+        "D1"
+      ],
+      "source_type": "official drawing scaled",
+      "confidence": "medium",
+      "status": "public_reference",
+      "derivation": "도면 픽셀 차 × 해당 축척. horn 중심 판독; shoulder hub x≈765와 1.2 mm 차이. 약 48 mm.",
+      "pixel_measurement": {
+        "scale_id": "side_x",
+        "delta_px": 112.5,
+        "anchors": {
+          "front_axle_x": 740,
+          "rear_axle_x": 1020.5,
+          "yaw_horn_center_x": 767.75
+        },
+        "unrounded_mm": 47.6258581235698
+      },
+      "reading_uncertainty_mm": 2.0,
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):YAW_AXIS_X_M",
+      "code_unit": "m",
+      "code_scale": 0.001,
+      "repeats": []
+    },
+    "yaw_axis_lateral_mm": {
+      "value": 0,
+      "unit": "mm",
+      "source": [
+        "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111"
+      ],
+      "source_ids": [
+        "D1"
+      ],
+      "source_type": "official drawing scaled",
+      "confidence": "medium",
+      "status": "public_reference",
+      "derivation": "앞 도면 받침·horn 중심이 차체 중앙선 약 x273 px. 명목 중앙 배치.",
+      "code_constant": "(new) yaw axis y offset",
+      "code_unit": "m",
+      "code_scale": 0.001,
+      "repeats": []
+    },
+    "shoulder_axis_height_mm": {
+      "value": 128.3,
+      "unit": "mm",
+      "source": [
+        "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111"
+      ],
+      "source_ids": [
+        "D1"
+      ],
+      "source_type": "official drawing scaled",
+      "confidence": "medium",
+      "status": "public_reference",
+      "derivation": "도면 픽셀 차 × 해당 축척. 215 mm 라벨 별도 검산: (690.5−186)×343/806=214.69 mm.",
+      "pixel_measurement": {
+        "scale_id": "vertical",
+        "delta_px": 301.5,
+        "anchors": {
+          "floor_y": 992,
+          "shoulder_y": 690.5
+        },
+        "unrounded_mm": 128.3058312655087
+      },
+      "reading_uncertainty_mm": 2.0,
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):SHOULDER_AXIS_Z_FLOOR_M",
+      "code_unit": "m",
+      "code_scale": 0.001,
+      "repeats": []
+    },
+    "upper_arm_mm": {
+      "value": 57.9,
+      "unit": "mm",
+      "source": [
+        "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111"
+      ],
+      "source_ids": [
+        "D1"
+      ],
+      "source_type": "official drawing scaled",
+      "confidence": "low",
+      "status": "public_reference",
+      "derivation": "도면 픽셀 차 × 해당 축척. 도면값은 약 57.9 mm; SDK 65 mm와 유의한 차이.",
+      "pixel_measurement": {
+        "scale_id": "vertical",
+        "delta_px": 136.0,
+        "anchors": {
+          "shoulder_y": 690.5,
+          "elbow_y": 554.5
+        },
+        "unrounded_mm": 57.87593052109182
+      },
+      "reading_uncertainty_mm": 2.0,
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):DRAWING_UPPER_ARM_M; CONTROLLER_UPPER_ARM_M; harness/real_geometry.py:LINK_2_CM",
+      "code_unit": "m",
+      "code_scale": 0.001,
+      "repeats": [],
+      "alternatives": [
+        {
+          "value": 65,
+          "unit": "mm",
+          "source": [
+            "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/kinematics_sdk/kinematics/inversekinematics.py",
+            "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/kinematics_sdk/kinematics/arm_move_ik.py"
+          ],
+          "source_ids": [
+            "S2",
+            "S3"
+          ],
+          "source_type": "SDK constant",
+          "confidence": "high",
+          "status": "public_reference",
+          "derivation": "l2=6.50 cm; 상수 채택 신뢰도이며 물리 길이 확증 아님."
+        }
+      ],
+      "recommendation": "제어기는 SDK 65 mm 유지. 물리 후보도 65 mm를 우선 검토하되 도면의 57.9 mm와 불일치를 남김. 이번 기록은 자동 적용하지 않음."
+    },
+    "forearm_mm": {
+      "value": 62.6,
+      "unit": "mm",
+      "source": [
+        "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111"
+      ],
+      "source_ids": [
+        "D1"
+      ],
+      "source_type": "official drawing scaled",
+      "confidence": "medium",
+      "status": "public_reference",
+      "derivation": "도면 픽셀 차 × 해당 축척. SDK 62 mm와 판독 범위 안.",
+      "pixel_measurement": {
+        "scale_id": "vertical",
+        "delta_px": 147.0,
+        "anchors": {
+          "elbow_y": 554.5,
+          "wrist_y": 407.5
+        },
+        "unrounded_mm": 62.55707196029777
+      },
+      "reading_uncertainty_mm": 2.0,
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):DRAWING_FOREARM_M; CONTROLLER_FOREARM_M; LINK_3_CM",
+      "code_unit": "m",
+      "code_scale": 0.001,
+      "repeats": [],
+      "alternatives": [
+        {
+          "value": 62,
+          "unit": "mm",
+          "source": [
+            "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/kinematics_sdk/kinematics/inversekinematics.py"
+          ],
+          "source_ids": [
+            "S2"
+          ],
+          "source_type": "SDK constant",
+          "confidence": "high",
+          "status": "public_reference",
+          "derivation": "l3=6.20 cm."
+        }
+      ],
+      "recommendation": "명목 62 mm 권장; 62.6 mm 도면값은 공차 측정이 아님."
+    },
+    "wrist_to_closed_tip_mm": {
+      "value": 94.3,
+      "unit": "mm",
+      "source": [
+        "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111"
+      ],
+      "source_ids": [
+        "D1"
+      ],
+      "source_type": "official drawing scaled",
+      "confidence": "low",
+      "status": "public_reference",
+      "derivation": "도면 픽셀 차 × 해당 축척. 도면에 집게 펄스/완전 폐쇄 조건이 적혀 있지 않아 그려진 끝점의 후보값만 제공.",
+      "pixel_measurement": {
+        "scale_id": "vertical",
+        "delta_px": 221.5,
+        "anchors": {
+          "wrist_y": 407.5,
+          "drawn_tip_y": 186
+        },
+        "unrounded_mm": 94.26116625310173
+      },
+      "reading_uncertainty_mm": 2.0,
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):DRAWING_WRIST_TO_TIP_M; CONTROLLER_TOOL_M",
+      "code_unit": "m",
+      "code_scale": 0.001,
+      "repeats": [],
+      "alternatives": [
+        {
+          "value": 100,
+          "unit": "mm",
+          "source": [
+            "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/kinematics_sdk/kinematics/inversekinematics.py"
+          ],
+          "source_ids": [
+            "S2"
+          ],
+          "source_type": "SDK constant",
+          "confidence": "high",
+          "status": "public_reference",
+          "derivation": "arm 타입 l4=10.00 cm. 주석은 닫힌 끝을 뜻하지만 16.6 cm라는 오래된 숫자도 남아 있음; 실행 상수를 우선."
+        }
+      ],
+      "recommendation": "SDK 목표점 100 mm, 도면 형상 끝 약94 mm, 패드 접촉 중심은 각각 별개. 물리 끝/완전 폐쇄 일치 확정은 보류."
+    },
+    "straight_up_tip_height_mm": {
+      "value": 343,
+      "unit": "mm",
+      "source": [
+        "https://www.hiwonder.com/products/masterpi",
+        "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111"
+      ],
+      "source_ids": [
+        "P1",
+        "D1"
+      ],
+      "source_type": "official spec",
+      "confidence": "high",
+      "status": "public_reference",
+      "derivation": "제품 전체 높이·도면 수직 치수. 모든 펄스·집게 개구에서 이 높이라고 보장하지 않음.",
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):OFFICIAL_TOTAL_HEIGHT_M (check only)",
+      "code_unit": "m",
+      "code_scale": 0.001,
+      "repeats": []
+    },
+    "straight_up_residual_deg": {
+      "value": null,
+      "unit": "deg",
+      "source": [
+        "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/6c91f2ded2181d5022780af411d749826533d9b2/configs/real_measurements_template.json"
+      ],
+      "source_ids": [
+        "I3"
+      ],
+      "source_type": "repo baseline",
+      "confidence": "not_found",
+      "status": "not_found",
+      "derivation": "해당 실물 항목의 공개 확정값을 찾지 못함. 템플릿 expected 값은 실측값으로 승격하지 않음.",
+      "code_constant": "harness/real_geometry.py:SERVO_DEVIATION",
+      "repeats": []
+    },
+    "camera_lens_along_mm": {
+      "value": 53.0,
+      "unit": "mm",
+      "source": [
+        "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111"
+      ],
+      "source_ids": [
+        "D1"
+      ],
+      "source_type": "official drawing scaled",
+      "confidence": "low",
+      "status": "public_reference",
+      "derivation": "도면 픽셀 차 × 해당 축척. 순정 렌즈 전면. 내부 optical centre는 찾지 못함.",
+      "pixel_measurement": {
+        "scale_id": "vertical",
+        "delta_px": 124.5,
+        "anchors": {
+          "wrist_y": 407.5,
+          "lens_front_y": 283
+        },
+        "unrounded_mm": 52.982009925558316
+      },
+      "reading_uncertainty_mm": 2.0,
+      "code_constant": "sim/masterpi_camera_profile.py:CAMERA_LOCAL_POS_M[0]; REAL_CAPTURE_CAMERA_LINK_M",
+      "code_unit": "m",
+      "code_scale": 0.001,
+      "repeats": []
+    },
+    "camera_lens_up_mm": {
+      "value": 28.2,
+      "unit": "mm",
+      "source": [
+        "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111"
+      ],
+      "source_ids": [
+        "D1"
+      ],
+      "source_type": "official drawing scaled",
+      "confidence": "low",
+      "status": "public_reference",
+      "derivation": "도면 픽셀 차 × 해당 축척. 팔 세운 도면에서 오른쪽이 공구축 위 방향. #249 27.8 mm와 근접.",
+      "pixel_measurement": {
+        "scale_id": "side_x",
+        "delta_px": 66.5,
+        "anchors": {
+          "tool_axis_x": 765,
+          "lens_axis_x": 831.5
+        },
+        "unrounded_mm": 28.15217391304348
+      },
+      "reading_uncertainty_mm": 2.0,
+      "code_constant": "CAMERA_LOCAL_POS_M[2]; REAL_CAPTURE_CAMERA_LOCAL_Z_M",
+      "code_unit": "m",
+      "code_scale": 0.001,
+      "repeats": []
+    },
+    "camera_lens_lateral_mm": {
+      "value": null,
+      "unit": "mm",
+      "source": [
+        "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111",
+        "https://docs.hiwonder.com/projects/MasterPi/en/latest/_static/media/1.getting_ready/1.2/step5-1.jpg"
+      ],
+      "source_ids": [
+        "D1",
+        "A2"
+      ],
+      "source_type": "official drawing scaled",
+      "confidence": "not_found",
+      "status": "not_found",
+      "derivation": "카메라가 앞 도면에서 가려져 정확한 좌우 오프셋 미확인. 0은 대칭 가정일 뿐.",
+      "code_constant": "CAMERA_LOCAL_POS_M[1]",
+      "code_unit": "m",
+      "code_scale": 0.001,
+      "repeats": []
+    },
+    "camera_pitch_deg": {
+      "value": 0,
+      "unit": "deg",
+      "source": [
+        "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111",
+        "https://docs.hiwonder.com/projects/MasterPi/en/latest/_static/media/1.getting_ready/1.2/step5-1.jpg"
+      ],
+      "source_ids": [
+        "D1",
+        "A2"
+      ],
+      "source_type": "photo estimate",
+      "confidence": "low",
+      "status": "public_reference",
+      "derivation": "순정 도면에서 렌즈 광축과 세운 공구축이 평행하게 그려짐. 실제 장착각/각도 치수 미공개. ugrp1의 −7.95°와 섞지 않음.",
+      "code_constant": "CAMERA_LOCAL_QUAT_WXYZ; REAL_CAPTURE_CAMERA_PITCH_OFFSET_DEG",
+      "repeats": []
+    },
+    "camera_model": {
+      "value": "HBVCAM-V2101 V11",
+      "unit": null,
+      "source": [
+        "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/7e29db14e5705c63b085c49c4e34136d.jpg?v=1716199523"
+      ],
+      "source_ids": [
+        "C1"
+      ],
+      "source_type": "official spec",
+      "confidence": "high",
+      "status": "public_reference",
+      "derivation": "MasterPi 페이지 카메라 사양 이미지의 모델명. 우리 로봇 부품 확인은 안 함.",
+      "code_constant": "sim/masterpi_camera_profile.py:CAMERA_CALIBRATION_ID",
+      "repeats": []
+    },
+    "wheel_track_mm": {
+      "value": 129.9,
+      "unit": "mm",
+      "source": [
+        "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111"
+      ],
+      "source_ids": [
+        "D1"
+      ],
+      "source_type": "official drawing scaled",
+      "confidence": "medium",
+      "status": "public_reference",
+      "derivation": "도면 픽셀 차 × 해당 축척. 윤거: 바퀴 폭 중심 간격. 약130 mm.",
+      "pixel_measurement": {
+        "scale_id": "front_x",
+        "delta_px": 307.0,
+        "anchors": {
+          "left_wheel_center_x": 119.5,
+          "right_wheel_center_x": 426.5
+        },
+        "unrounded_mm": 129.8537859007833
+      },
+      "reading_uncertainty_mm": 2.0,
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):DRAWING_TRACK_M; sim/masterpi_geometry.py:NOMINAL_TRACK_M",
+      "code_unit": "m",
+      "code_scale": 0.001,
+      "repeats": []
+    },
+    "wheelbase_mm": {
+      "value": 118.7,
+      "unit": "mm",
+      "source": [
+        "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111"
+      ],
+      "source_ids": [
+        "D1"
+      ],
+      "source_type": "official drawing scaled",
+      "confidence": "medium",
+      "status": "public_reference",
+      "derivation": "도면 픽셀 차 × 해당 축척. 축거: 앞뒤 허브 중심 간격. 약119 mm.",
+      "pixel_measurement": {
+        "scale_id": "side_x",
+        "delta_px": 280.5,
+        "anchors": {
+          "front_axle_x": 740,
+          "rear_axle_x": 1020.5
+        },
+        "unrounded_mm": 118.7471395881007
+      },
+      "reading_uncertainty_mm": 2.0,
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):DRAWING_WHEELBASE_M; NOMINAL_WHEELBASE_M",
+      "code_unit": "m",
+      "code_scale": 0.001,
+      "repeats": []
+    },
+    "wheel_width_mm": {
+      "value": 30,
+      "unit": "mm",
+      "source": [
+        "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111"
+      ],
+      "source_ids": [
+        "D1"
+      ],
+      "source_type": "official spec",
+      "confidence": "high",
+      "status": "public_reference",
+      "derivation": "MasterPi 치수도에 인쇄된 폭 30 mm.",
+      "alternatives": [
+        {
+          "value": 31,
+          "unit": "mm",
+          "source": [
+            "https://www.hiwonder.com/products/mecanum-wheel-65mm-orange"
+          ],
+          "source_ids": [
+            "W1"
+          ],
+          "source_type": "official spec",
+          "confidence": "high",
+          "status": "public_reference",
+          "derivation": "별매 휠 사양; MasterPi 탑재 revision 동일 여부 미확인."
+        }
+      ],
+      "recommendation": "MasterPi 고유 도면 30 mm를 명목값으로 권장; 31 mm 대안 보존.",
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):OFFICIAL_WHEEL_WIDTH_M; NOMINAL_WHEEL_WIDTH_M",
+      "code_unit": "m",
+      "code_scale": 0.001,
+      "repeats": []
+    },
+    "wheel_diameter_mm": {
+      "value": 65,
+      "unit": "mm",
+      "source": [
+        "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111",
+        "https://www.hiwonder.com/products/mecanum-wheel-65mm-orange",
+        "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/common_sdk/common/mecanum.py"
+      ],
+      "source_ids": [
+        "D1",
+        "W1",
+        "S4"
+      ],
+      "source_type": "official drawing scaled",
+      "confidence": "high",
+      "status": "public_reference",
+      "derivation": "제품 치수도/별매 휠/SDK 공통 명목 지름.",
+      "code_constant": "OFFICIAL_WHEEL_DIAMETER_M; NOMINAL_WHEEL_RADIUS_M (x0.5)",
+      "code_unit": "m",
+      "code_scale": 0.001,
+      "repeats": []
+    },
+    "wheel_rolling_diameter_mm": {
+      "value": null,
+      "unit": "mm",
+      "source": [
+        "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/6c91f2ded2181d5022780af411d749826533d9b2/configs/real_measurements_template.json"
+      ],
+      "source_ids": [
+        "I3"
+      ],
+      "source_type": "repo baseline",
+      "confidence": "not_found",
+      "status": "not_found",
+      "derivation": "해당 실물 항목의 공개 확정값을 찾지 못함. 템플릿 expected 값은 실측값으로 승격하지 않음.",
+      "code_constant": "(effective) distance of 5 turns / (5*pi)",
+      "code_unit": "m",
+      "code_scale": 0.001,
+      "repeats": []
+    },
+    "chassis_length_mm": {
+      "value": null,
+      "unit": "mm",
+      "source": [
+        "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111",
+        "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/d5bd208e45331a73f1f71dd9b3e129c26c5eaac6/sim/masterpi_geometry.py",
+        "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/961271a44ad34cf17e94f36217589af7cde2fa2a/sim/masterpi_geometry_v3.py"
+      ],
+      "source_ids": [
+        "D1",
+        "I1",
+        "I2"
+      ],
+      "source_type": "official drawing scaled",
+      "confidence": "not_found",
+      "status": "not_found",
+      "derivation": "185 mm 라벨은 바퀴 포함 전체 전장. bare tray 앞뒤 끝이 바퀴에 가려져 별도 길이 확정 불가. v2 120 mm 및 v3 185 mm를 실측으로 취급하지 않음.",
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):CHASSIS_LENGTH_M; NOMINAL_DECK_LENGTH_M",
+      "code_unit": "m",
+      "code_scale": 0.001,
+      "repeats": []
+    },
+    "overall_length_mm": {
+      "value": 185,
+      "unit": "mm",
+      "source": [
+        "https://www.hiwonder.com/products/masterpi",
+        "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111"
+      ],
+      "source_ids": [
+        "P1",
+        "D1"
+      ],
+      "source_type": "official spec",
+      "confidence": "high",
+      "status": "public_reference",
+      "derivation": "바퀴를 포함하는 전체 외형 전장.",
+      "code_constant": "OFFICIAL_TOTAL_LENGTH_M",
+      "code_unit": "m",
+      "code_scale": 0.001,
+      "repeats": []
+    },
+    "overall_width_mm": {
+      "value": 162,
+      "unit": "mm",
+      "source": [
+        "https://www.hiwonder.com/products/masterpi",
+        "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111"
+      ],
+      "source_ids": [
+        "P1",
+        "D1"
+      ],
+      "source_type": "official spec",
+      "confidence": "high",
+      "status": "public_reference",
+      "derivation": "바퀴 외측면 간 전체 폭.",
+      "code_constant": "OFFICIAL_TOTAL_WIDTH_M",
+      "code_unit": "m",
+      "code_scale": 0.001,
+      "repeats": []
+    },
+    "chassis_bottom_height_mm": {
+      "value": 17.0,
+      "unit": "mm",
+      "source": [
+        "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111"
+      ],
+      "source_ids": [
+        "D1"
+      ],
+      "source_type": "official drawing scaled",
+      "confidence": "medium",
+      "status": "public_reference",
+      "derivation": "도면 픽셀 차 × 해당 축척. 앞면 트레이 하단의 바닥 여유.",
+      "pixel_measurement": {
+        "scale_id": "vertical",
+        "delta_px": 40,
+        "anchors": {
+          "floor_y": 992,
+          "tray_bottom_y": 952
+        },
+        "unrounded_mm": 17.022332506203476
+      },
+      "reading_uncertainty_mm": 2.0,
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):CHASSIS_BOTTOM_Z_FLOOR_M",
+      "code_unit": "m",
+      "code_scale": 0.001,
+      "repeats": []
+    },
+    "chassis_top_height_mm": {
+      "value": 50.2,
+      "unit": "mm",
+      "source": [
+        "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111"
+      ],
+      "source_ids": [
+        "D1"
+      ],
+      "source_type": "official drawing scaled",
+      "confidence": "medium",
+      "status": "public_reference",
+      "derivation": "도면 픽셀 차 × 해당 축척. 앞면 하부 트레이 상면.",
+      "pixel_measurement": {
+        "scale_id": "vertical",
+        "delta_px": 118,
+        "anchors": {
+          "floor_y": 992,
+          "tray_top_y": 874
+        },
+        "unrounded_mm": 50.21588089330025
+      },
+      "reading_uncertainty_mm": 2.0,
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):CHASSIS_TOP_Z_FLOOR_M",
+      "code_unit": "m",
+      "code_scale": 0.001,
+      "repeats": []
+    },
+    "cover_top_height_mm": {
+      "value": 101,
+      "unit": "mm",
+      "source": [
+        "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111"
+      ],
+      "source_ids": [
+        "D1"
+      ],
+      "source_type": "official spec",
+      "confidence": "high",
+      "status": "public_reference",
+      "derivation": "바닥부터 뒤 전자부 덮개 윗면까지 인쇄 치수.",
+      "code_constant": "OFFICIAL_COVER_TOP_Z_FLOOR_M",
+      "code_unit": "m",
+      "code_scale": 0.001,
+      "repeats": []
+    },
+    "arm_box_front_forward_mm": {
+      "value": 76.7,
+      "unit": "mm",
+      "source": [
+        "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111"
+      ],
+      "source_ids": [
+        "D1"
+      ],
+      "source_type": "official drawing scaled",
+      "confidence": "medium",
+      "status": "public_reference",
+      "derivation": "도면 픽셀 차 × 해당 축척. 초음파 전면이 아니라 받침 상자 앞면.",
+      "pixel_measurement": {
+        "scale_id": "side_x",
+        "delta_px": 181.25,
+        "anchors": {
+          "axle_midpoint_x": 880.25,
+          "arm_box_front_x": 699
+        },
+        "unrounded_mm": 76.73054919908468
+      },
+      "reading_uncertainty_mm": 2.0,
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):ARM_BOX_FRONT_X_M",
+      "code_unit": "m",
+      "code_scale": 0.001,
+      "repeats": []
+    },
+    "robot_mass_kg": {
+      "value": 1.1,
+      "unit": "kg",
+      "source": [
+        "https://www.hiwonder.com/products/masterpi"
+      ],
+      "source_ids": [
+        "P1"
+      ],
+      "source_type": "official spec",
+      "confidence": "high",
+      "status": "public_reference",
+      "derivation": "제품 중량 1100 g. 배터리/Pi variant 포함 조건 명시 부족; 개별 로봇 질량 미확인.",
+      "alternatives": [
+        {
+          "value": 1.56036,
+          "unit": "kg",
+          "source": [
+            "https://device.report/asin/B0CP97SZPJ"
+          ],
+          "source_ids": [
+            "R2"
+          ],
+          "source_type": "retailer",
+          "confidence": "low",
+          "status": "public_reference",
+          "derivation": "3.44 lb × 0.45359237; 포장치수와 함께 있는 값이어서 작동 로봇 질량으로 채택하지 않음."
+        }
+      ],
+      "code_constant": "sim/masterpi_geometry.py:OFFICIAL_TOTAL_MASS_KG",
+      "repeats": []
+    },
+    "shoulder_servo_model": {
+      "value": "LD-1501MG",
+      "unit": null,
+      "source": [
+        "https://www.hiwonder.com/products/masterpi",
+        "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111",
+        "https://docs.hiwonder.com/projects/MasterPi/en/latest/_static/media/1.getting_ready/1.2/step5-1.jpg"
+      ],
+      "source_ids": [
+        "P1",
+        "D1",
+        "A2"
+      ],
+      "source_type": "photo estimate",
+      "confidence": "medium",
+      "status": "public_reference",
+      "derivation": "제품표의 두 종류와 대형 ID5 형상 대응. 관절별 BOM은 없어 사진 기반 배정.",
+      "alternatives": [
+        {
+          "value": "LDX-218",
+          "unit": null,
+          "source": [
+            "https://www.xboom.in/masterpi/"
+          ],
+          "source_ids": [
+            "R1"
+          ],
+          "source_type": "retailer",
+          "confidence": "low",
+          "status": "public_reference",
+          "derivation": "판매처가 LDX-218을 명시하지만 개별 관절/생산 revision 미지정."
+        }
+      ],
+      "recommendation": "LD-1501MG를 문서상 기본 후보로 두고 ID5의 실제 revision은 미확인으로 보존.",
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):LD1501_BODY_M",
+      "repeats": []
+    },
+    "sonar_transducer_diameter_mm": {
+      "value": 15.9,
+      "unit": "mm",
+      "source": [
+        "https://www.hiwonder.com/products/glowing-ultrasonic-sensor"
+      ],
+      "source_ids": [
+        "D2"
+      ],
+      "source_type": "official drawing scaled",
+      "confidence": "medium",
+      "status": "public_reference",
+      "derivation": "도면 픽셀 차 × 해당 축척. 소자 외곽 링 지름; 유효 진동면 구경은 별도 미확인.",
+      "pixel_measurement": {
+        "scale_id": "module_x",
+        "delta_px": 273,
+        "anchors": {
+          "outer_left_x": 281,
+          "outer_right_x": 554
+        },
+        "unrounded_mm": 15.858343949044587
+      },
+      "reading_uncertainty_mm": 0.5
+    },
+    "chassis_width_mm": {
+      "value": 93.1,
+      "unit": "mm",
+      "source": [
+        "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111"
+      ],
+      "source_ids": [
+        "D1"
+      ],
+      "source_type": "official drawing scaled",
+      "confidence": "low",
+      "status": "public_reference",
+      "derivation": "도면 픽셀 차 × 해당 축척. 앞 하부 트레이 가시 윤곽 폭 약93 mm. 돌출 나사·축·바퀴 제외.",
+      "pixel_measurement": {
+        "scale_id": "front_x",
+        "delta_px": 220,
+        "anchors": {
+          "tray_left_x": 163,
+          "tray_right_x": 383
+        },
+        "unrounded_mm": 93.05483028720627
+      },
+      "reading_uncertainty_mm": 2.0
+    },
+    "chassis_height_mm": {
+      "value": 33.2,
+      "unit": "mm",
+      "source": [
+        "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111"
+      ],
+      "source_ids": [
+        "D1"
+      ],
+      "source_type": "official drawing scaled",
+      "confidence": "low",
+      "status": "public_reference",
+      "derivation": "도면 픽셀 차 × 해당 축척. 하부 트레이의 높이. 상부 전자부 덮개 높이 101 mm와 구분.",
+      "pixel_measurement": {
+        "scale_id": "vertical",
+        "delta_px": 78,
+        "anchors": {
+          "tray_bottom_y": 952,
+          "tray_top_y": 874
+        },
+        "unrounded_mm": 33.193548387096776
+      },
+      "reading_uncertainty_mm": 2.0
+    }
+  },
+  "ultrasonic": {
+    "i2c_address_seen": {
+      "value": null,
+      "unit": null,
+      "source": [
+        "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/common_sdk/common/sonar.py"
+      ],
+      "source_ids": [
+        "S1"
+      ],
+      "source_type": "SDK constant",
+      "confidence": "not_found",
+      "status": "not_found",
+      "derivation": "버스 스캔 미실행; 사양 주소는 published.i2c_address에 분리."
+    },
+    "sdk_path": {
+      "value": "masterpi_sdk/common_sdk/common/sonar.py",
+      "unit": null,
+      "source": [
+        "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/common_sdk/common/sonar.py"
+      ],
+      "source_ids": [
+        "S1"
+      ],
+      "source_type": "SDK constant",
+      "confidence": "high",
+      "status": "public_reference",
+      "derivation": "공식 공개 소스 경로. 우리 로봇 설치 경로·버전은 조회하지 않음."
+    },
+    "tests": {
+      "U1_accuracy": {
+        "description": "flat board, 50..3000 mm, 50 reads each",
+        "csv": null,
+        "csv_sha256": null,
+        "per_distance_summary": null,
+        "notes": "미실행. 공개 조사는 이 물리 시험을 수행한 것으로 기록하지 않는다."
+      },
+      "U2_incidence": {
+        "description": "flat board rotated 0..60 deg at 300/500/1000 mm",
+        "csv": null,
+        "csv_sha256": null,
+        "max_visible_incidence_deg_by_distance": null,
+        "notes": "미실행. 공개 조사는 이 물리 시험을 수행한 것으로 기록하지 않는다."
+      },
+      "U3_cone": {
+        "description": "40 mm strip moved sideways/up at 300/500/1000/1500 mm",
+        "csv": null,
+        "csv_sha256": null,
+        "edge_offset_left_mm_by_distance": null,
+        "edge_offset_right_mm_by_distance": null,
+        "edge_offset_up_mm_by_distance": null,
+        "half_angle_deg_by_distance": null,
+        "interpretation": null,
+        "notes": "미실행. 공개 조사는 이 물리 시험을 수행한 것으로 기록하지 않는다."
+      },
+      "U4_min_range": {
+        "description": "board at <=5..100 mm",
+        "csv": null,
+        "csv_sha256": null,
+        "reliable_min_mm": null,
+        "values_below_min": null,
+        "notes": "미실행. 공개 조사는 이 물리 시험을 수행한 것으로 기록하지 않는다."
+      },
+      "U5_no_echo": {
+        "description": "open space >=5 m and blanket at 45 deg",
+        "csv": null,
+        "csv_sha256": null,
+        "open_space_values": null,
+        "blanket_values": null,
+        "notes": "미실행. 공개 조사는 이 물리 시험을 수행한 것으로 기록하지 않는다."
+      },
+      "U6_update_period": {
+        "description": "moving board, 5 ms polling, 2000 reads",
+        "csv": null,
+        "csv_sha256": null,
+        "median_change_interval_s": null,
+        "median_read_s": null,
+        "triggered_per_read": null,
+        "notes": "미실행. 공개 조사는 이 물리 시험을 수행한 것으로 기록하지 않는다."
+      },
+      "U7_crosstalk": {
+        "description": "two robots facing (500/1000 mm) and side by side; B off / idle / reading",
+        "csv": null,
+        "csv_sha256": null,
+        "bad_reading_rate_by_condition": null,
+        "notes": "미실행. 공개 조사는 이 물리 시험을 수행한 것으로 기록하지 않는다."
+      },
+      "U8_mount_check": {
+        "description": "optional: axis height check with a strip target",
+        "csv": null,
+        "csv_sha256": null,
+        "axis_height_mm_estimate": null,
+        "notes": "미실행. 공개 조사는 이 물리 시험을 수행한 것으로 기록하지 않는다."
+      }
+    },
+    "spec": {
+      "mount_x_m": {
+        "value": 0.0879,
+        "unit": "m",
+        "source": [
+          "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111"
+        ],
+        "source_ids": [
+          "D1"
+        ],
+        "source_type": "official drawing scaled",
+        "confidence": "medium",
+        "status": "public_reference",
+        "derivation": "도면 픽셀 차 × 해당 축척. 차축 중점→전면. 하우징 중심 78 mm와 기준점이 다름. static_geometry 환산값; mount_x는 소자 전면 기준.",
+        "pixel_measurement": {
+          "scale_id": "side_x",
+          "delta_px": 207.75,
+          "anchors": {
+            "front_axle_x": 740,
+            "rear_axle_x": 1020.5,
+            "face_x": 672.5
+          },
+          "unrounded_mm": 87.94908466819223
+        },
+        "reading_uncertainty_mm": 2.0,
+        "code_constant": "sim/masterpi_geometry_v3.py (PR #249):SONAR_FACE_X_M; UltrasonicSpec.mount_x_m (v2 centre 78)",
+        "code_unit": "m",
+        "code_scale": 0.001,
+        "repeats": []
+      },
+      "mount_y_m": {
+        "value": 0.0,
+        "unit": "m",
+        "source": [
+          "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111"
+        ],
+        "source_ids": [
+          "D1"
+        ],
+        "source_type": "official drawing scaled",
+        "confidence": "medium",
+        "status": "public_reference",
+        "derivation": "앞 도면 소자 중심 x=(242+304)/2=273 px, 외폭 중점=(81+464)/2=272.5 px; 차이 0.21 mm를 명목 0으로 반올림. static_geometry 환산값; mount_x는 소자 전면 기준.",
+        "code_constant": "sim/masterpi_geometry_v3.py (PR #249):SONAR_CENTER_Y_M; UltrasonicSpec.mount_y_m",
+        "code_unit": "m",
+        "code_scale": 0.001,
+        "repeats": []
+      },
+      "mount_z_floor_m": {
+        "value": 0.0619,
+        "unit": "m",
+        "source": [
+          "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111"
+        ],
+        "source_ids": [
+          "D1"
+        ],
+        "source_type": "official drawing scaled",
+        "confidence": "medium",
+        "status": "public_reference",
+        "derivation": "도면 픽셀 차 × 해당 축척. 소자 쌍 중심 바닥 높이. 약 62 mm; #249 61.7 mm와 축척 선택 차이. static_geometry 환산값; mount_x는 소자 전면 기준.",
+        "pixel_measurement": {
+          "scale_id": "vertical",
+          "delta_px": 145.5,
+          "anchors": {
+            "floor_y": 992,
+            "transducer_center_y": 846.5
+          },
+          "unrounded_mm": 61.91873449131514
+        },
+        "reading_uncertainty_mm": 2.0,
+        "code_constant": "sim/masterpi_geometry_v3.py (PR #249):SONAR_CENTER_Z_FLOOR_M; harness/ultrasonic_model.py:UltrasonicSpec.mount_z_floor_m",
+        "code_unit": "m",
+        "code_scale": 0.001,
+        "repeats": []
+      },
+      "mount_pitch_deg": {
+        "value": 0,
+        "unit": "deg",
+        "source": [
+          "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111"
+        ],
+        "source_ids": [
+          "D1"
+        ],
+        "source_type": "official drawing scaled",
+        "confidence": "low",
+        "status": "public_reference",
+        "derivation": "옆 도면에서 송수신기 축이 수평. 인쇄 각도/조립 공차 없음. static_geometry 환산값; mount_x는 소자 전면 기준.",
+        "reading_uncertainty_deg": null,
+        "code_constant": "sim/masterpi_geometry_v3.py (PR #249):SONAR_PITCH_DEG; UltrasonicSpec.mount_pitch_deg",
+        "repeats": []
+      },
+      "min_range_m": {
+        "value": 0.02,
+        "unit": "m",
+        "source": [
+          "https://www.hiwonder.com/products/glowing-ultrasonic-sensor",
+          "https://github.com/Hiwonder-docs/Glowing-Ultrasonic-Sensor/blob/d4def3269dcf45f59e4c8f0317cb972c7c06b54a/source/docs/1.Glowing_Ultrasonic_Sensor.md"
+        ],
+        "source_ids": [
+          "P2",
+          "U1"
+        ],
+        "source_type": "official spec",
+        "confidence": "high",
+        "status": "public_reference",
+        "derivation": "공식 2–400 cm를 m로 환산. 경계 내 모든 재질의 검출 보장은 아님."
+      },
+      "max_range_m": {
+        "value": 4.0,
+        "unit": "m",
+        "source": [
+          "https://www.hiwonder.com/products/glowing-ultrasonic-sensor",
+          "https://github.com/Hiwonder-docs/Glowing-Ultrasonic-Sensor/blob/d4def3269dcf45f59e4c8f0317cb972c7c06b54a/source/docs/1.Glowing_Ultrasonic_Sensor.md"
+        ],
+        "source_ids": [
+          "P2",
+          "U1"
+        ],
+        "source_type": "official spec",
+        "confidence": "high",
+        "status": "public_reference",
+        "derivation": "공식 2–400 cm를 m로 환산. 경계 내 모든 재질의 검출 보장은 아님."
+      },
+      "sdk_clamp_m": {
+        "value": 5.0,
+        "unit": "m",
+        "source": [
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/common_sdk/common/sonar.py",
+          "https://github.com/Hiwonder-docs/Glowing-Ultrasonic-Sensor/blob/d4def3269dcf45f59e4c8f0317cb972c7c06b54a/source/docs/3.Raspberry_Pi_Development_Tutorial.md"
+        ],
+        "source_ids": [
+          "S1",
+          "U2"
+        ],
+        "source_type": "SDK constant",
+        "confidence": "high",
+        "status": "public_reference",
+        "derivation": "두 바이트 해석값이 5000 mm보다 크면 5000으로 제한. 5 m 검출 성능이 아님."
+      },
+      "half_angle_deg": {
+        "value": null,
+        "unit": "deg",
+        "source": [
+          "https://www.hiwonder.com/products/glowing-ultrasonic-sensor",
+          "https://github.com/Hiwonder-docs/Glowing-Ultrasonic-Sensor/blob/d4def3269dcf45f59e4c8f0317cb972c7c06b54a/source/docs/1.Glowing_Ultrasonic_Sensor.md"
+        ],
+        "source_ids": [
+          "P2",
+          "U1"
+        ],
+        "source_type": "official spec",
+        "confidence": "not_found",
+        "status": "not_found",
+        "derivation": "Measurement angle 15°만 있고 half/full, -3/-6 dB, 수직/수평 정의 없음. 7.5°와 15° 반각 시나리오를 구분할 것.",
+        "alternatives": [
+          {
+            "interpretation": "전체각15°이면 반각7.5°",
+            "value": 7.5
+          },
+          {
+            "interpretation": "반각15°이면 전체각30°",
+            "value": 15.0
+          }
+        ]
+      },
+      "incidence_sigma_deg": {
+        "value": null,
+        "unit": "deg",
+        "source": [
+          "https://www.hiwonder.com/products/glowing-ultrasonic-sensor",
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/common_sdk/common/sonar.py",
+          "https://github.com/Hiwonder-docs/Glowing-Ultrasonic-Sensor/blob/d4def3269dcf45f59e4c8f0317cb972c7c06b54a/source/docs/1.Glowing_Ultrasonic_Sensor.md",
+          "https://github.com/Hiwonder-docs/Glowing-Ultrasonic-Sensor/blob/d4def3269dcf45f59e4c8f0317cb972c7c06b54a/source/docs/3.Raspberry_Pi_Development_Tutorial.md"
+        ],
+        "source_ids": [
+          "P2",
+          "S1",
+          "U1",
+          "U2"
+        ],
+        "source_type": "official spec",
+        "confidence": "not_found",
+        "status": "not_found",
+        "derivation": "공개 확정값 없음. 기존 초음파 모델의 가정은 명세로 채택하지 않음."
+      },
+      "echo_threshold": {
+        "value": null,
+        "unit": "dimensionless",
+        "source": [
+          "https://www.hiwonder.com/products/glowing-ultrasonic-sensor",
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/common_sdk/common/sonar.py",
+          "https://github.com/Hiwonder-docs/Glowing-Ultrasonic-Sensor/blob/d4def3269dcf45f59e4c8f0317cb972c7c06b54a/source/docs/1.Glowing_Ultrasonic_Sensor.md",
+          "https://github.com/Hiwonder-docs/Glowing-Ultrasonic-Sensor/blob/d4def3269dcf45f59e4c8f0317cb972c7c06b54a/source/docs/3.Raspberry_Pi_Development_Tutorial.md"
+        ],
+        "source_ids": [
+          "P2",
+          "S1",
+          "U1",
+          "U2"
+        ],
+        "source_type": "official spec",
+        "confidence": "not_found",
+        "status": "not_found",
+        "derivation": "공개 확정값 없음. 기존 초음파 모델의 가정은 명세로 채택하지 않음."
+      },
+      "noise_sigma0_m": {
+        "value": null,
+        "unit": "m",
+        "source": [
+          "https://www.hiwonder.com/products/glowing-ultrasonic-sensor",
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/common_sdk/common/sonar.py",
+          "https://github.com/Hiwonder-docs/Glowing-Ultrasonic-Sensor/blob/d4def3269dcf45f59e4c8f0317cb972c7c06b54a/source/docs/1.Glowing_Ultrasonic_Sensor.md",
+          "https://github.com/Hiwonder-docs/Glowing-Ultrasonic-Sensor/blob/d4def3269dcf45f59e4c8f0317cb972c7c06b54a/source/docs/3.Raspberry_Pi_Development_Tutorial.md"
+        ],
+        "source_ids": [
+          "P2",
+          "S1",
+          "U1",
+          "U2"
+        ],
+        "source_type": "official spec",
+        "confidence": "not_found",
+        "status": "not_found",
+        "derivation": "공개 확정값 없음. 기존 초음파 모델의 가정은 명세로 채택하지 않음."
+      },
+      "noise_rel": {
+        "value": null,
+        "unit": "dimensionless",
+        "source": [
+          "https://www.hiwonder.com/products/glowing-ultrasonic-sensor",
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/common_sdk/common/sonar.py",
+          "https://github.com/Hiwonder-docs/Glowing-Ultrasonic-Sensor/blob/d4def3269dcf45f59e4c8f0317cb972c7c06b54a/source/docs/1.Glowing_Ultrasonic_Sensor.md",
+          "https://github.com/Hiwonder-docs/Glowing-Ultrasonic-Sensor/blob/d4def3269dcf45f59e4c8f0317cb972c7c06b54a/source/docs/3.Raspberry_Pi_Development_Tutorial.md"
+        ],
+        "source_ids": [
+          "P2",
+          "S1",
+          "U1",
+          "U2"
+        ],
+        "source_type": "official spec",
+        "confidence": "not_found",
+        "status": "not_found",
+        "derivation": "공개 확정값 없음. 기존 초음파 모델의 가정은 명세로 채택하지 않음."
+      },
+      "period_s": {
+        "value": null,
+        "unit": "s",
+        "source": [
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/common_sdk/common/sonar.py",
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/functions/avoidance.py",
+          "https://github.com/Hiwonder-docs/Glowing-Ultrasonic-Sensor/blob/d4def3269dcf45f59e4c8f0317cb972c7c06b54a/source/docs/1.Glowing_Ultrasonic_Sensor.md",
+          "https://github.com/Hiwonder-docs/Glowing-Ultrasonic-Sensor/blob/d4def3269dcf45f59e4c8f0317cb972c7c06b54a/source/docs/3.Raspberry_Pi_Development_Tutorial.md"
+        ],
+        "source_ids": [
+          "S1",
+          "S5",
+          "U1",
+          "U2"
+        ],
+        "source_type": "SDK constant",
+        "confidence": "not_found",
+        "status": "not_found",
+        "derivation": "공식 예제 sleep(0.1)은 폴링 주기뿐이다. 40 kHz는 음파 반송파. U1 표의 40 Hz는 본문의 40 kHz와 상충해 25 ms 갱신이라고 해석하지 않음. 60 ms도 근거 미확인."
+      },
+      "dropout_prob": {
+        "value": null,
+        "unit": "probability",
+        "source": [
+          "https://www.hiwonder.com/products/glowing-ultrasonic-sensor",
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/common_sdk/common/sonar.py",
+          "https://github.com/Hiwonder-docs/Glowing-Ultrasonic-Sensor/blob/d4def3269dcf45f59e4c8f0317cb972c7c06b54a/source/docs/1.Glowing_Ultrasonic_Sensor.md",
+          "https://github.com/Hiwonder-docs/Glowing-Ultrasonic-Sensor/blob/d4def3269dcf45f59e4c8f0317cb972c7c06b54a/source/docs/3.Raspberry_Pi_Development_Tutorial.md"
+        ],
+        "source_ids": [
+          "P2",
+          "S1",
+          "U1",
+          "U2"
+        ],
+        "source_type": "official spec",
+        "confidence": "not_found",
+        "status": "not_found",
+        "derivation": "공개 확정값 없음. 기존 초음파 모델의 가정은 명세로 채택하지 않음."
+      },
+      "outlier_prob": {
+        "value": null,
+        "unit": "probability",
+        "source": [
+          "https://www.hiwonder.com/products/glowing-ultrasonic-sensor",
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/common_sdk/common/sonar.py",
+          "https://github.com/Hiwonder-docs/Glowing-Ultrasonic-Sensor/blob/d4def3269dcf45f59e4c8f0317cb972c7c06b54a/source/docs/1.Glowing_Ultrasonic_Sensor.md",
+          "https://github.com/Hiwonder-docs/Glowing-Ultrasonic-Sensor/blob/d4def3269dcf45f59e4c8f0317cb972c7c06b54a/source/docs/3.Raspberry_Pi_Development_Tutorial.md"
+        ],
+        "source_ids": [
+          "P2",
+          "S1",
+          "U1",
+          "U2"
+        ],
+        "source_type": "official spec",
+        "confidence": "not_found",
+        "status": "not_found",
+        "derivation": "공개 확정값 없음. 기존 초음파 모델의 가정은 명세로 채택하지 않음."
+      },
+      "crosstalk": {
+        "value": null,
+        "unit": "boolean",
+        "source": [
+          "https://www.hiwonder.com/products/glowing-ultrasonic-sensor",
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/common_sdk/common/sonar.py",
+          "https://github.com/Hiwonder-docs/Glowing-Ultrasonic-Sensor/blob/d4def3269dcf45f59e4c8f0317cb972c7c06b54a/source/docs/1.Glowing_Ultrasonic_Sensor.md",
+          "https://github.com/Hiwonder-docs/Glowing-Ultrasonic-Sensor/blob/d4def3269dcf45f59e4c8f0317cb972c7c06b54a/source/docs/3.Raspberry_Pi_Development_Tutorial.md"
+        ],
+        "source_ids": [
+          "P2",
+          "S1",
+          "U1",
+          "U2"
+        ],
+        "source_type": "official spec",
+        "confidence": "not_found",
+        "status": "not_found",
+        "derivation": "공개 확정값 없음. 기존 초음파 모델의 가정은 명세로 채택하지 않음."
+      },
+      "no_echo_value_mm": {
+        "value": null,
+        "unit": "mm",
+        "source": [
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/common_sdk/common/sonar.py",
+          "https://github.com/Hiwonder-docs/Glowing-Ultrasonic-Sensor/blob/d4def3269dcf45f59e4c8f0317cb972c7c06b54a/source/docs/3.Raspberry_Pi_Development_Tutorial.md"
+        ],
+        "source_ids": [
+          "S1",
+          "U2"
+        ],
+        "source_type": "SDK constant",
+        "confidence": "not_found",
+        "status": "not_found",
+        "derivation": "SDK는 수신 정수를 반환/상한 제한할 뿐 이 상태의 펌웨어 반환값을 명세하지 않는다. 5000/99999를 실제 무반사 코드로 확정하지 않음."
+      },
+      "below_min_value_mm": {
+        "value": null,
+        "unit": "mm",
+        "source": [
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/common_sdk/common/sonar.py",
+          "https://github.com/Hiwonder-docs/Glowing-Ultrasonic-Sensor/blob/d4def3269dcf45f59e4c8f0317cb972c7c06b54a/source/docs/3.Raspberry_Pi_Development_Tutorial.md"
+        ],
+        "source_ids": [
+          "S1",
+          "U2"
+        ],
+        "source_type": "SDK constant",
+        "confidence": "not_found",
+        "status": "not_found",
+        "derivation": "SDK는 수신 정수를 반환/상한 제한할 뿐 이 상태의 펌웨어 반환값을 명세하지 않는다. 5000/99999를 실제 무반사 코드로 확정하지 않음."
+      }
+    },
+    "published": {
+      "measurement_angle_deg": {
+        "value": 15,
+        "unit": "deg",
+        "source": [
+          "https://www.hiwonder.com/products/glowing-ultrasonic-sensor",
+          "https://github.com/Hiwonder-docs/Glowing-Ultrasonic-Sensor/blob/d4def3269dcf45f59e4c8f0317cb972c7c06b54a/source/docs/1.Glowing_Ultrasonic_Sensor.md"
+        ],
+        "source_ids": [
+          "P2",
+          "U1"
+        ],
+        "source_type": "official spec",
+        "confidence": "high",
+        "status": "public_reference",
+        "derivation": "원문 수치 그대로; 반각/전체각 미정."
+      },
+      "carrier_frequency_hz": {
+        "value": 40000,
+        "unit": "Hz",
+        "source": [
+          "https://www.hiwonder.com/products/glowing-ultrasonic-sensor",
+          "https://github.com/Hiwonder-docs/Glowing-Ultrasonic-Sensor/blob/d4def3269dcf45f59e4c8f0317cb972c7c06b54a/source/docs/1.Glowing_Ultrasonic_Sensor.md"
+        ],
+        "source_ids": [
+          "P2",
+          "U1"
+        ],
+        "source_type": "official spec",
+        "confidence": "high",
+        "status": "public_reference",
+        "derivation": "제품표와 U1 본문의 8펄스 ×40 kHz. U1 표는40 Hz로 상충하므로 판독 갱신률로 쓰지 않음."
+      },
+      "i2c_address": {
+        "value": "0x77",
+        "unit": "7-bit",
+        "source": [
+          "https://www.hiwonder.com/products/glowing-ultrasonic-sensor",
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/common_sdk/common/sonar.py"
+        ],
+        "source_ids": [
+          "P2",
+          "S1"
+        ],
+        "source_type": "official spec",
+        "confidence": "high",
+        "status": "public_reference",
+        "derivation": "센서 명목 I2C 주소."
+      },
+      "board_width_mm": {
+        "value": 45.6,
+        "unit": "mm",
+        "source": [
+          "https://www.hiwonder.com/products/glowing-ultrasonic-sensor"
+        ],
+        "source_ids": [
+          "P2"
+        ],
+        "source_type": "official spec",
+        "confidence": "high",
+        "status": "public_reference",
+        "derivation": "치수도 폭."
+      },
+      "board_height_mm": {
+        "value": 28.5,
+        "unit": "mm",
+        "source": [
+          "https://www.hiwonder.com/products/glowing-ultrasonic-sensor"
+        ],
+        "source_ids": [
+          "P2"
+        ],
+        "source_type": "official spec",
+        "confidence": "high",
+        "status": "public_reference",
+        "derivation": "치수도 높이. U1의46×20 mm와 다름; 장착 부품 도면 우선."
+      },
+      "supply_voltage_v": {
+        "value": 5,
+        "unit": "V",
+        "source": [
+          "https://www.hiwonder.com/products/glowing-ultrasonic-sensor"
+        ],
+        "source_ids": [
+          "P2"
+        ],
+        "source_type": "official spec",
+        "confidence": "high",
+        "status": "public_reference",
+        "derivation": "명목 DC 입력."
+      },
+      "working_current_ma": {
+        "value": 2,
+        "unit": "mA",
+        "source": [
+          "https://www.hiwonder.com/products/glowing-ultrasonic-sensor"
+        ],
+        "source_ids": [
+          "P2"
+        ],
+        "source_type": "official spec",
+        "confidence": "high",
+        "status": "public_reference",
+        "derivation": "공식 표; LED 동작 조건 미상."
+      },
+      "temperature_c": {
+        "value": [
+          0,
+          50
+        ],
+        "unit": "degC",
+        "source": [
+          "https://www.hiwonder.com/products/glowing-ultrasonic-sensor"
+        ],
+        "source_ids": [
+          "P2"
+        ],
+        "source_type": "official spec",
+        "confidence": "high",
+        "status": "public_reference",
+        "derivation": "공식 작동 온도."
+      },
+      "output_unit": {
+        "value": "mm",
+        "unit": "mm",
+        "source": [
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/common_sdk/common/sonar.py",
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/functions/avoidance.py",
+          "https://github.com/Hiwonder/TonyPi/blob/main/HiwonderSDK/hiwonder/Sonar.py"
+        ],
+        "source_ids": [
+          "S1",
+          "S5",
+          "M6"
+        ],
+        "source_type": "SDK constant",
+        "confidence": "high",
+        "status": "public_reference",
+        "derivation": "unsigned little-endian 2 bytes; avoidance는10으로 나누어 cm 표시."
+      },
+      "output_quantization_mm": {
+        "value": 1,
+        "unit": "mm",
+        "source": [
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/common_sdk/common/sonar.py"
+        ],
+        "source_ids": [
+          "S1"
+        ],
+        "source_type": "SDK constant",
+        "confidence": "high",
+        "status": "public_reference",
+        "derivation": "정수 반환 분해능. 정확도 또는 반복성 1 mm라는 뜻은 아님."
+      },
+      "sdk_error_value_mm": {
+        "value": 99999,
+        "unit": "mm",
+        "source": [
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/common_sdk/common/sonar.py",
+          "https://github.com/SquirrelRobotics/MasterPi/blob/98b85647eab1614f3fcce28aba959c679cfc72eb/HiwonderSDK/Sonar.py",
+          "https://github.com/Hiwonder/TonyPi/blob/main/HiwonderSDK/hiwonder/Sonar.py"
+        ],
+        "source_ids": [
+          "S1",
+          "M3",
+          "M6"
+        ],
+        "source_type": "SDK constant",
+        "confidence": "high",
+        "status": "public_reference",
+        "derivation": "try 진입 전 초기값. SMBus 열기/전송/읽기 예외이면 이 값을 유지."
+      },
+      "tutorial_error_value_mm": {
+        "value": 5000,
+        "unit": "mm",
+        "source": [
+          "https://github.com/Hiwonder-docs/Glowing-Ultrasonic-Sensor/blob/d4def3269dcf45f59e4c8f0317cb972c7c06b54a/source/docs/3.Raspberry_Pi_Development_Tutorial.md"
+        ],
+        "source_ids": [
+          "U2"
+        ],
+        "source_type": "SDK constant",
+        "confidence": "high",
+        "status": "public_reference",
+        "derivation": "별도 튜토리얼은 초기값5000. 실패와 상한값이 합쳐짐. SMBus는 __init__에서 생성되어 getDistance의 try/except 범위 밖이다."
+      },
+      "number_of_ranges_per_read": {
+        "value": 1,
+        "unit": "count",
+        "source": [
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/common_sdk/common/sonar.py"
+        ],
+        "source_ids": [
+          "S1"
+        ],
+        "source_type": "SDK constant",
+        "confidence": "high",
+        "status": "public_reference",
+        "derivation": "두 원형 소자는 송신/수신 쌍; API는 스칼라 1개. 좌우 독립 거리 2개가 아니다."
+      },
+      "demo_poll_period_s": {
+        "value": 0.1,
+        "unit": "s",
+        "source": [
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/common_sdk/common/sonar.py",
+          "https://github.com/Hiwonder-docs/Glowing-Ultrasonic-Sensor/blob/d4def3269dcf45f59e4c8f0317cb972c7c06b54a/source/docs/3.Raspberry_Pi_Development_Tutorial.md"
+        ],
+        "source_ids": [
+          "S1",
+          "U2"
+        ],
+        "source_type": "SDK constant",
+        "confidence": "high",
+        "status": "public_reference",
+        "derivation": "예제 sleep(0.1); 전송 소요를 제외한 대기시간. 센서 갱신 보장 아님."
+      },
+      "per_read_trigger": {
+        "value": null,
+        "unit": null,
+        "source": [
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/common_sdk/common/sonar.py",
+          "https://github.com/Hiwonder-docs/Glowing-Ultrasonic-Sensor/blob/d4def3269dcf45f59e4c8f0317cb972c7c06b54a/source/docs/3.Raspberry_Pi_Development_Tutorial.md"
+        ],
+        "source_ids": [
+          "S1",
+          "U2"
+        ],
+        "source_type": "SDK constant",
+        "confidence": "not_found",
+        "status": "not_found",
+        "derivation": "[0]은 읽을 레지스터 지정이다. 읽기마다 새 ping을 발사하는지 펌웨어 근거 없음."
+      }
+    }
+  },
+  "wrist_camera": {
+    "intrinsics": {
+      "_code": "sim/masterpi_camera_profile.py; OpenCV fisheye, native 640x480",
+      "capture_path": {
+        "value": null,
+        "unit": null,
+        "source": [
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/CameraCalibration/calibration_param.npz",
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/CameraCalibration/Calibration.py",
+          "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/d5bd208e45331a73f1f71dd9b3e129c26c5eaac6/sim/masterpi_camera_profile.py"
+        ],
+        "source_ids": [
+          "S6",
+          "S7",
+          "I4"
+        ],
+        "source_type": "SDK constant",
+        "confidence": "not_found",
+        "status": "not_found",
+        "derivation": "우리 로봇의 공개 확정 보정값 없음. 공식 NPZ는 일반 5계수 모델로 별도 기록; fisheye 입력에 넣지 않음."
+      },
+      "width": {
+        "value": null,
+        "unit": null,
+        "source": [
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/CameraCalibration/calibration_param.npz",
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/CameraCalibration/Calibration.py",
+          "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/d5bd208e45331a73f1f71dd9b3e129c26c5eaac6/sim/masterpi_camera_profile.py"
+        ],
+        "source_ids": [
+          "S6",
+          "S7",
+          "I4"
+        ],
+        "source_type": "SDK constant",
+        "confidence": "not_found",
+        "status": "not_found",
+        "derivation": "우리 로봇의 공개 확정 보정값 없음. 공식 NPZ는 일반 5계수 모델로 별도 기록; fisheye 입력에 넣지 않음."
+      },
+      "height": {
+        "value": null,
+        "unit": null,
+        "source": [
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/CameraCalibration/calibration_param.npz",
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/CameraCalibration/Calibration.py",
+          "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/d5bd208e45331a73f1f71dd9b3e129c26c5eaac6/sim/masterpi_camera_profile.py"
+        ],
+        "source_ids": [
+          "S6",
+          "S7",
+          "I4"
+        ],
+        "source_type": "SDK constant",
+        "confidence": "not_found",
+        "status": "not_found",
+        "derivation": "우리 로봇의 공개 확정 보정값 없음. 공식 NPZ는 일반 5계수 모델로 별도 기록; fisheye 입력에 넣지 않음."
+      },
+      "board_inner_corners": {
+        "value": null,
+        "unit": null,
+        "source": [
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/CameraCalibration/calibration_param.npz",
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/CameraCalibration/Calibration.py",
+          "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/d5bd208e45331a73f1f71dd9b3e129c26c5eaac6/sim/masterpi_camera_profile.py"
+        ],
+        "source_ids": [
+          "S6",
+          "S7",
+          "I4"
+        ],
+        "source_type": "SDK constant",
+        "confidence": "not_found",
+        "status": "not_found",
+        "derivation": "우리 로봇의 공개 확정 보정값 없음. 공식 NPZ는 일반 5계수 모델로 별도 기록; fisheye 입력에 넣지 않음."
+      },
+      "board_square_mm_measured": {
+        "value": null,
+        "unit": null,
+        "source": [
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/CameraCalibration/calibration_param.npz",
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/CameraCalibration/Calibration.py",
+          "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/d5bd208e45331a73f1f71dd9b3e129c26c5eaac6/sim/masterpi_camera_profile.py"
+        ],
+        "source_ids": [
+          "S6",
+          "S7",
+          "I4"
+        ],
+        "source_type": "SDK constant",
+        "confidence": "not_found",
+        "status": "not_found",
+        "derivation": "우리 로봇의 공개 확정 보정값 없음. 공식 NPZ는 일반 5계수 모델로 별도 기록; fisheye 입력에 넣지 않음."
+      },
+      "n_images_fit": {
+        "value": null,
+        "unit": null,
+        "source": [
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/CameraCalibration/calibration_param.npz",
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/CameraCalibration/Calibration.py",
+          "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/d5bd208e45331a73f1f71dd9b3e129c26c5eaac6/sim/masterpi_camera_profile.py"
+        ],
+        "source_ids": [
+          "S6",
+          "S7",
+          "I4"
+        ],
+        "source_type": "SDK constant",
+        "confidence": "not_found",
+        "status": "not_found",
+        "derivation": "우리 로봇의 공개 확정 보정값 없음. 공식 NPZ는 일반 5계수 모델로 별도 기록; fisheye 입력에 넣지 않음."
+      },
+      "n_images_holdout": {
+        "value": null,
+        "unit": null,
+        "source": [
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/CameraCalibration/calibration_param.npz",
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/CameraCalibration/Calibration.py",
+          "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/d5bd208e45331a73f1f71dd9b3e129c26c5eaac6/sim/masterpi_camera_profile.py"
+        ],
+        "source_ids": [
+          "S6",
+          "S7",
+          "I4"
+        ],
+        "source_type": "SDK constant",
+        "confidence": "not_found",
+        "status": "not_found",
+        "derivation": "우리 로봇의 공개 확정 보정값 없음. 공식 NPZ는 일반 5계수 모델로 별도 기록; fisheye 입력에 넣지 않음."
+      },
+      "CAMERA_FX_PX": {
+        "value": null,
+        "unit": "px",
+        "source": [
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/CameraCalibration/calibration_param.npz",
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/CameraCalibration/Calibration.py",
+          "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/d5bd208e45331a73f1f71dd9b3e129c26c5eaac6/sim/masterpi_camera_profile.py"
+        ],
+        "source_ids": [
+          "S6",
+          "S7",
+          "I4"
+        ],
+        "source_type": "SDK constant",
+        "confidence": "not_found",
+        "status": "not_found",
+        "derivation": "우리 로봇의 공개 확정 보정값 없음. 공식 NPZ는 일반 5계수 모델로 별도 기록; fisheye 입력에 넣지 않음."
+      },
+      "CAMERA_FY_PX": {
+        "value": null,
+        "unit": "px",
+        "source": [
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/CameraCalibration/calibration_param.npz",
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/CameraCalibration/Calibration.py",
+          "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/d5bd208e45331a73f1f71dd9b3e129c26c5eaac6/sim/masterpi_camera_profile.py"
+        ],
+        "source_ids": [
+          "S6",
+          "S7",
+          "I4"
+        ],
+        "source_type": "SDK constant",
+        "confidence": "not_found",
+        "status": "not_found",
+        "derivation": "우리 로봇의 공개 확정 보정값 없음. 공식 NPZ는 일반 5계수 모델로 별도 기록; fisheye 입력에 넣지 않음."
+      },
+      "CAMERA_CX_PX": {
+        "value": null,
+        "unit": "px",
+        "source": [
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/CameraCalibration/calibration_param.npz",
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/CameraCalibration/Calibration.py",
+          "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/d5bd208e45331a73f1f71dd9b3e129c26c5eaac6/sim/masterpi_camera_profile.py"
+        ],
+        "source_ids": [
+          "S6",
+          "S7",
+          "I4"
+        ],
+        "source_type": "SDK constant",
+        "confidence": "not_found",
+        "status": "not_found",
+        "derivation": "우리 로봇의 공개 확정 보정값 없음. 공식 NPZ는 일반 5계수 모델로 별도 기록; fisheye 입력에 넣지 않음."
+      },
+      "CAMERA_CY_PX": {
+        "value": null,
+        "unit": "px",
+        "source": [
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/CameraCalibration/calibration_param.npz",
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/CameraCalibration/Calibration.py",
+          "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/d5bd208e45331a73f1f71dd9b3e129c26c5eaac6/sim/masterpi_camera_profile.py"
+        ],
+        "source_ids": [
+          "S6",
+          "S7",
+          "I4"
+        ],
+        "source_type": "SDK constant",
+        "confidence": "not_found",
+        "status": "not_found",
+        "derivation": "우리 로봇의 공개 확정 보정값 없음. 공식 NPZ는 일반 5계수 모델로 별도 기록; fisheye 입력에 넣지 않음."
+      },
+      "CAMERA_FISHEYE_D": {
+        "value": null,
+        "unit": null,
+        "source": [
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/CameraCalibration/calibration_param.npz",
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/CameraCalibration/Calibration.py",
+          "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/d5bd208e45331a73f1f71dd9b3e129c26c5eaac6/sim/masterpi_camera_profile.py"
+        ],
+        "source_ids": [
+          "S6",
+          "S7",
+          "I4"
+        ],
+        "source_type": "SDK constant",
+        "confidence": "not_found",
+        "status": "not_found",
+        "derivation": "우리 로봇의 공개 확정 보정값 없음. 공식 NPZ는 일반 5계수 모델로 별도 기록; fisheye 입력에 넣지 않음."
+      },
+      "rms_px_fit": {
+        "value": null,
+        "unit": null,
+        "source": [
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/CameraCalibration/calibration_param.npz",
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/CameraCalibration/Calibration.py",
+          "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/d5bd208e45331a73f1f71dd9b3e129c26c5eaac6/sim/masterpi_camera_profile.py"
+        ],
+        "source_ids": [
+          "S6",
+          "S7",
+          "I4"
+        ],
+        "source_type": "SDK constant",
+        "confidence": "not_found",
+        "status": "not_found",
+        "derivation": "우리 로봇의 공개 확정 보정값 없음. 공식 NPZ는 일반 5계수 모델로 별도 기록; fisheye 입력에 넣지 않음."
+      },
+      "reproj_px_holdout_mean": {
+        "value": null,
+        "unit": null,
+        "source": [
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/CameraCalibration/calibration_param.npz",
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/CameraCalibration/Calibration.py",
+          "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/d5bd208e45331a73f1f71dd9b3e129c26c5eaac6/sim/masterpi_camera_profile.py"
+        ],
+        "source_ids": [
+          "S6",
+          "S7",
+          "I4"
+        ],
+        "source_type": "SDK constant",
+        "confidence": "not_found",
+        "status": "not_found",
+        "derivation": "우리 로봇의 공개 확정 보정값 없음. 공식 NPZ는 일반 5계수 모델로 별도 기록; fisheye 입력에 넣지 않음."
+      }
+    },
+    "hand_eye": {
+      "_code": "scripts/benchmarks/fit_masterpi_hand_eye.py output; manifest keys",
+      "trials_file": {
+        "value": null,
+        "unit": null,
+        "source": [
+          "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111",
+          "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/d5bd208e45331a73f1f71dd9b3e129c26c5eaac6/sim/masterpi_camera_profile.py"
+        ],
+        "source_ids": [
+          "D1",
+          "I4"
+        ],
+        "source_type": "official drawing scaled",
+        "confidence": "not_found",
+        "status": "not_found",
+        "derivation": "우리 로봇 hand-eye 검증 미실행. 도면 참고 위치는 static_geometry에만 기록."
+      },
+      "trials_sha256": {
+        "value": null,
+        "unit": null,
+        "source": [
+          "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111",
+          "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/d5bd208e45331a73f1f71dd9b3e129c26c5eaac6/sim/masterpi_camera_profile.py"
+        ],
+        "source_ids": [
+          "D1",
+          "I4"
+        ],
+        "source_type": "official drawing scaled",
+        "confidence": "not_found",
+        "status": "not_found",
+        "derivation": "우리 로봇 hand-eye 검증 미실행. 도면 참고 위치는 static_geometry에만 기록."
+      },
+      "camera_link_cm": {
+        "value": null,
+        "unit": null,
+        "source": [
+          "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111",
+          "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/d5bd208e45331a73f1f71dd9b3e129c26c5eaac6/sim/masterpi_camera_profile.py"
+        ],
+        "source_ids": [
+          "D1",
+          "I4"
+        ],
+        "source_type": "official drawing scaled",
+        "confidence": "not_found",
+        "status": "not_found",
+        "derivation": "우리 로봇 hand-eye 검증 미실행. 도면 참고 위치는 static_geometry에만 기록."
+      },
+      "camera_z_offset_cm": {
+        "value": null,
+        "unit": null,
+        "source": [
+          "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111",
+          "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/d5bd208e45331a73f1f71dd9b3e129c26c5eaac6/sim/masterpi_camera_profile.py"
+        ],
+        "source_ids": [
+          "D1",
+          "I4"
+        ],
+        "source_type": "official drawing scaled",
+        "confidence": "not_found",
+        "status": "not_found",
+        "derivation": "우리 로봇 hand-eye 검증 미실행. 도면 참고 위치는 static_geometry에만 기록."
+      },
+      "camera_pitch_offset_deg": {
+        "value": null,
+        "unit": null,
+        "source": [
+          "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111",
+          "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/d5bd208e45331a73f1f71dd9b3e129c26c5eaac6/sim/masterpi_camera_profile.py"
+        ],
+        "source_ids": [
+          "D1",
+          "I4"
+        ],
+        "source_type": "official drawing scaled",
+        "confidence": "not_found",
+        "status": "not_found",
+        "derivation": "우리 로봇 hand-eye 검증 미실행. 도면 참고 위치는 static_geometry에만 기록."
+      },
+      "servo6_center_pwm": {
+        "value": null,
+        "unit": null,
+        "source": [
+          "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111",
+          "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/d5bd208e45331a73f1f71dd9b3e129c26c5eaac6/sim/masterpi_camera_profile.py"
+        ],
+        "source_ids": [
+          "D1",
+          "I4"
+        ],
+        "source_type": "official drawing scaled",
+        "confidence": "not_found",
+        "status": "not_found",
+        "derivation": "우리 로봇 hand-eye 검증 미실행. 도면 참고 위치는 static_geometry에만 기록."
+      },
+      "holdout_position_mae_m": {
+        "value": null,
+        "unit": null,
+        "source": [
+          "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111",
+          "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/d5bd208e45331a73f1f71dd9b3e129c26c5eaac6/sim/masterpi_camera_profile.py"
+        ],
+        "source_ids": [
+          "D1",
+          "I4"
+        ],
+        "source_type": "official drawing scaled",
+        "confidence": "not_found",
+        "status": "not_found",
+        "derivation": "우리 로봇 hand-eye 검증 미실행. 도면 참고 위치는 static_geometry에만 기록."
+      },
+      "acceptance_mae_m_max": {
+        "value": null,
+        "unit": null,
+        "source": [
+          "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111",
+          "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/d5bd208e45331a73f1f71dd9b3e129c26c5eaac6/sim/masterpi_camera_profile.py"
+        ],
+        "source_ids": [
+          "D1",
+          "I4"
+        ],
+        "source_type": "official drawing scaled",
+        "confidence": "not_found",
+        "status": "not_found",
+        "derivation": "우리 로봇 hand-eye 검증 미실행. 도면 참고 위치는 static_geometry에만 기록."
+      }
+    },
+    "published": {
+      "sensor_model": {
+        "value": "GC0308 (1/6.5 inch)",
+        "unit": null,
+        "source": [
+          "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/7e29db14e5705c63b085c49c4e34136d.jpg?v=1716199523"
+        ],
+        "source_ids": [
+          "C1"
+        ],
+        "source_type": "official spec",
+        "confidence": "high",
+        "status": "public_reference",
+        "derivation": "제품 사양 이미지."
+      },
+      "module_size_mm": {
+        "value": [
+          30,
+          25,
+          25
+        ],
+        "unit": "mm",
+        "source": [
+          "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/7e29db14e5705c63b085c49c4e34136d.jpg?v=1716199523"
+        ],
+        "source_ids": [
+          "C1"
+        ],
+        "source_type": "official spec",
+        "confidence": "high",
+        "status": "public_reference",
+        "derivation": "공식 모듈 크기 ±0.5 mm."
+      },
+      "resolution_px": {
+        "value": [
+          640,
+          480
+        ],
+        "unit": "px",
+        "source": [
+          "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/7e29db14e5705c63b085c49c4e34136d.jpg?v=1716199523",
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/CameraCalibration/calibration_images/1.jpg"
+        ],
+        "source_ids": [
+          "C1",
+          "S10"
+        ],
+        "source_type": "official spec",
+        "confidence": "high",
+        "status": "public_reference",
+        "derivation": "명시 최대 해상도; SDK 보정 샘플 크기도640×480 확인."
+      },
+      "fov_deg": {
+        "value": 170,
+        "unit": "deg",
+        "source": [
+          "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/7e29db14e5705c63b085c49c4e34136d.jpg?v=1716199523"
+        ],
+        "source_ids": [
+          "C1"
+        ],
+        "source_type": "official spec",
+        "confidence": "high",
+        "status": "public_reference",
+        "derivation": "FOV 축(H/V/D)은 명시 없음. 170°를 수직 FOV로 넣지 않음.",
+        "alternatives": [
+          {
+            "value": 120,
+            "unit": "deg",
+            "source": [
+              "https://www.xboom.in/masterpi/"
+            ],
+            "source_ids": [
+              "R1"
+            ],
+            "source_type": "retailer",
+            "confidence": "low",
+            "status": "public_reference",
+            "derivation": "판매처120°. 구체 모델·축 미지정; 공식 모델표 우선."
+          }
+        ]
+      },
+      "horizontal_fov_deg": {
+        "value": null,
+        "unit": "deg",
+        "source": [
+          "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/7e29db14e5705c63b085c49c4e34136d.jpg?v=1716199523"
+        ],
+        "source_ids": [
+          "C1"
+        ],
+        "source_type": "official spec",
+        "confidence": "not_found",
+        "status": "not_found",
+        "derivation": "수평 FOV 별도 수치 not found."
+      },
+      "vertical_fov_deg": {
+        "value": null,
+        "unit": "deg",
+        "source": [
+          "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/7e29db14e5705c63b085c49c4e34136d.jpg?v=1716199523"
+        ],
+        "source_ids": [
+          "C1"
+        ],
+        "source_type": "official spec",
+        "confidence": "not_found",
+        "status": "not_found",
+        "derivation": "수직 FOV 별도 수치 not found."
+      },
+      "focal_length_mm": {
+        "value": null,
+        "unit": "mm",
+        "source": [
+          "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/7e29db14e5705c63b085c49c4e34136d.jpg?v=1716199523"
+        ],
+        "source_ids": [
+          "C1"
+        ],
+        "source_type": "official spec",
+        "confidence": "not_found",
+        "status": "not_found",
+        "derivation": "초점거리 not found. 170°만으로 pinhole f를 역산하지 않음."
+      },
+      "pixel_size_um": {
+        "value": [
+          3.4,
+          3.4
+        ],
+        "unit": "um",
+        "source": [
+          "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/7e29db14e5705c63b085c49c4e34136d.jpg?v=1716199523"
+        ],
+        "source_ids": [
+          "C1"
+        ],
+        "source_type": "official spec",
+        "confidence": "high",
+        "status": "public_reference",
+        "derivation": "사양 이미지 pixel size."
+      },
+      "focus_distance_m": {
+        "value": [
+          0.3,
+          null
+        ],
+        "unit": "m",
+        "source": [
+          "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/7e29db14e5705c63b085c49c4e34136d.jpg?v=1716199523"
+        ],
+        "source_ids": [
+          "C1"
+        ],
+        "source_type": "official spec",
+        "confidence": "high",
+        "status": "public_reference",
+        "derivation": "고정 초점, 표기0.3 m–무한대; 근거리 인식 보장은 아님."
+      },
+      "interface": {
+        "value": "USB 2.0 UVC",
+        "unit": null,
+        "source": [
+          "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/7e29db14e5705c63b085c49c4e34136d.jpg?v=1716199523"
+        ],
+        "source_ids": [
+          "C1"
+        ],
+        "source_type": "official spec",
+        "confidence": "high",
+        "status": "public_reference",
+        "derivation": "USB bus power, 5 V ±5%, 표기400 mW."
+      },
+      "sdk_requested_fps": {
+        "value": 30,
+        "unit": "Hz",
+        "source": [
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/Camera.py"
+        ],
+        "source_ids": [
+          "S8"
+        ],
+        "source_type": "SDK constant",
+        "confidence": "high",
+        "status": "public_reference",
+        "derivation": "CAP_PROP_FPS 요청값. 실제 프레임률 보장 미확인."
+      }
+    },
+    "public_reference_intrinsics": {
+      "model": {
+        "value": "OpenCV calibrateCamera; radial/tangential 5 coefficients",
+        "unit": null,
+        "source": [
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/CameraCalibration/Calibration.py",
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/Camera.py"
+        ],
+        "source_ids": [
+          "S7",
+          "S8"
+        ],
+        "source_type": "SDK constant",
+        "confidence": "high",
+        "status": "public_reference",
+        "derivation": "cv2.calibrateCamera/initUndistortRectifyMap 사용. cv2.fisheye가 아님."
+      },
+      "K": {
+        "value": [
+          [
+            1266.9258200661907,
+            0,
+            324.82760876528357
+          ],
+          [
+            0,
+            1285.5144320144632,
+            116.0909553740869
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "unit": "px",
+        "source": [
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/CameraCalibration/calibration_param.npz"
+        ],
+        "source_ids": [
+          "S6"
+        ],
+        "source_type": "SDK constant",
+        "confidence": "high",
+        "status": "public_reference",
+        "derivation": "NPZ mtx_array를 allow_pickle=False로 읽음. 공개 샘플의 수치이지 개별 카메라 공장 명세가 아님."
+      },
+      "D": {
+        "value": [
+          -0.46330440526985905,
+          -1.3069063152512517,
+          -0.0035339629326752984,
+          -0.005185913664714308,
+          19.159043885972334
+        ],
+        "unit": null,
+        "source": [
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/CameraCalibration/calibration_param.npz"
+        ],
+        "source_ids": [
+          "S6"
+        ],
+        "source_type": "SDK constant",
+        "confidence": "high",
+        "status": "public_reference",
+        "derivation": "NPZ dist_array; 순서 k1,k2,p1,p2,k3. 모델이 달라 CAMERA_FISHEYE_D로 복사 금지."
+      },
+      "image_size": {
+        "value": [
+          640,
+          480
+        ],
+        "unit": "px",
+        "source": [
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/CameraCalibration/calibration_images/1.jpg"
+        ],
+        "source_ids": [
+          "S10"
+        ],
+        "source_type": "SDK constant",
+        "confidence": "high",
+        "status": "public_reference",
+        "derivation": "동일 커밋 보정 영상1.jpg의 실제 크기. NPZ 자체는 해상도/일련번호 필드를 포함하지 않음."
+      },
+      "applicability_confidence": "low",
+      "deployment_allowed": false,
+      "reason": "렌즈/개체/보정 시각/RMS/홀드아웃 없음. 카메라170° 명목값을 검증하지 않는다. 현재 ugrp1 icspring 프로필을 대체하지 않는다.",
+      "npz_sha256": "e2329e57b70887f30e032702b3acd48e34e083bf6387b867129f7a10480115d6"
+    }
+  },
+  "servo_angle_tables": {
+    "_format": "list of {pulse, angle_deg, direction: up|down}; angle 0 = straight up (servo 3/4/5) or robot forward (servo 6, left +)",
+    "_code": "harness/real_geometry.py:PULSE_PER_DEGREE (2000/180), SERVO_DEVIATION {3:54,4:53,5:89,6:64}, BASE_CENTER 1500",
+    "servo3": [],
+    "servo4": [],
+    "servo5": [],
+    "servo6": [],
+    "servo6_center_pwm_caliper": null,
+    "pan_pwm_for_plus90": null,
+    "pan_pwm_for_minus90": null,
+    "pan_endstop_notes": null,
+    "servo_trials_file": "calibration/masterpi/servo_trials.jsonl",
+    "servo_trials_sha256": null
+  },
+  "gripper": {
+    "_code": "scripts/red_block/poses.py: GRIPPER_CLOSED 1500, GRIPPER_OPEN 2000; carry_handoff.py: GRIPPER_CLOSED_MAX_PULSE 1700",
+    "tip_gap_mm_by_pulse": {
+      "1500": null,
+      "1600": null,
+      "1700": null,
+      "1800": null,
+      "1900": null,
+      "2000": null
+    },
+    "finger_outer_span_mm_open": {
+      "value": null,
+      "expected": 46.7,
+      "tolerance": 2.0,
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):FINGER_OPEN_SPAN_M"
+    },
+    "gripper_contact_pwm_30mm": null,
+    "finger_pad_length_mm": {
+      "value": null,
+      "expected": 14.3,
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):FINGER_PAD_LENGTH_M"
+    },
+    "finger_plate_thickness_mm": {
+      "value": null,
+      "expected": 3.7,
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):FINGER_PLATE_THICKNESS_M"
+    },
+    "notes": null
+  },
+  "drive": {
+    "_code": "scripts/masterpi_control.py drive; scripts/study_owncam_pair_beam.py SPEED_M_S 0.06, CARRY_ODOM_SCALE {axial 0.772, lateral 0.697} (SIM-derived)",
+    "method": "공개 SDK/도면 읽기 전용; 주행 시험 없음.",
+    "marker_separation_mm": null,
+    "trials_csv": null,
+    "trials_csv_sha256": null,
+    "_trial_row_format": [
+      "trial_id",
+      "direction",
+      "command",
+      "drive_s",
+      "payload_kg",
+      "payload_mount",
+      "battery_mv",
+      "dx_m",
+      "dy_m",
+      "dyaw_deg",
+      "notes"
+    ],
+    "chassis_trials_file": "calibration/masterpi/chassis_trials.jsonl",
+    "chassis_trials_sha256": null,
+    "speed_fit": null,
+    "payload_effect": {
+      "_format": "{payload_kg: {mount: {direction: speed ratio vs 0 kg}}}",
+      "0.2": null,
+      "0.3": null
+    },
+    "odometry_scale": {
+      "axial": null,
+      "lateral": null,
+      "rotation": null,
+      "_note": "real-floor value; do not overwrite CARRY_ODOM_SCALE"
+    },
+    "sdk_geometry": {
+      "a_mm": {
+        "value": 67,
+        "unit": "mm",
+        "source": [
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/common_sdk/common/mecanum.py"
+        ],
+        "source_ids": [
+          "S4"
+        ],
+        "source_type": "SDK constant",
+        "confidence": "high",
+        "status": "public_reference",
+        "derivation": "생성자 기본값."
+      },
+      "b_mm": {
+        "value": 59,
+        "unit": "mm",
+        "source": [
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/common_sdk/common/mecanum.py"
+        ],
+        "source_ids": [
+          "S4"
+        ],
+        "source_type": "SDK constant",
+        "confidence": "high",
+        "status": "public_reference",
+        "derivation": "생성자 기본값."
+      },
+      "a_plus_b_mm": {
+        "value": 126,
+        "unit": "mm",
+        "source": [
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/common_sdk/common/mecanum.py"
+        ],
+        "source_ids": [
+          "S4"
+        ],
+        "source_type": "SDK constant",
+        "confidence": "high",
+        "status": "public_reference",
+        "derivation": "회전 혼합항에 실제 쓰이는 것은 a+b뿐."
+      },
+      "inferred_track_mm": {
+        "value": 134,
+        "unit": "mm",
+        "source": [
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/common_sdk/common/mecanum.py",
+          "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111"
+        ],
+        "source_ids": [
+          "S4",
+          "D1"
+        ],
+        "source_type": "SDK constant",
+        "confidence": "low",
+        "status": "public_reference",
+        "derivation": "a를 반윤거로 해석하면2×67. 소스가 a/b축 의미를 직접 정의하지 않아 공식 치수로 단정 불가."
+      },
+      "inferred_wheelbase_mm": {
+        "value": 118,
+        "unit": "mm",
+        "source": [
+          "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/common_sdk/common/mecanum.py",
+          "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111"
+        ],
+        "source_ids": [
+          "S4",
+          "D1"
+        ],
+        "source_type": "SDK constant",
+        "confidence": "low",
+        "status": "public_reference",
+        "derivation": "b를 반축거로 해석하면2×59. 축 의미는 도면 대조에 의한 추론."
+      }
+    }
+  },
+  "dynamics_manifest_static": {
+    "_code": "calibration/masterpi/static_measurements.json -> scripts/benchmarks/apply_masterpi_static_measurements.py (SI units)",
+    "wheel_radius_m": {
+      "value": 0.0325,
+      "unit": "m",
+      "source": [
+        "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111",
+        "https://www.hiwonder.com/products/mecanum-wheel-65mm-orange",
+        "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/common_sdk/common/mecanum.py"
+      ],
+      "source_ids": [
+        "D1",
+        "W1",
+        "S4"
+      ],
+      "source_type": "official drawing scaled",
+      "confidence": "high",
+      "status": "public_reference",
+      "derivation": "제품 치수도/별매 휠/SDK 공통 명목 지름. 코드 단위 참고 환산; 적용하지 않음.",
+      "code_constant": "OFFICIAL_WHEEL_DIAMETER_M; NOMINAL_WHEEL_RADIUS_M (x0.5)",
+      "code_unit": "m",
+      "code_scale": 0.001,
+      "repeats": []
+    },
+    "wheelbase_m": {
+      "value": 0.1187,
+      "unit": "m",
+      "source": [
+        "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111"
+      ],
+      "source_ids": [
+        "D1"
+      ],
+      "source_type": "official drawing scaled",
+      "confidence": "medium",
+      "status": "public_reference",
+      "derivation": "도면 픽셀 차 × 해당 축척. 축거: 앞뒤 허브 중심 간격. 약119 mm. 코드 단위 참고 환산; 적용하지 않음.",
+      "pixel_measurement": {
+        "scale_id": "side_x",
+        "delta_px": 280.5,
+        "anchors": {
+          "front_axle_x": 740,
+          "rear_axle_x": 1020.5
+        },
+        "unrounded_mm": 118.7471395881007
+      },
+      "reading_uncertainty_mm": 2.0,
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):DRAWING_WHEELBASE_M; NOMINAL_WHEELBASE_M",
+      "code_unit": "m",
+      "code_scale": 0.001,
+      "repeats": []
+    },
+    "track_m": {
+      "value": 0.12990000000000002,
+      "unit": "m",
+      "source": [
+        "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111"
+      ],
+      "source_ids": [
+        "D1"
+      ],
+      "source_type": "official drawing scaled",
+      "confidence": "medium",
+      "status": "public_reference",
+      "derivation": "도면 픽셀 차 × 해당 축척. 윤거: 바퀴 폭 중심 간격. 약130 mm. 코드 단위 참고 환산; 적용하지 않음.",
+      "pixel_measurement": {
+        "scale_id": "front_x",
+        "delta_px": 307.0,
+        "anchors": {
+          "left_wheel_center_x": 119.5,
+          "right_wheel_center_x": 426.5
+        },
+        "unrounded_mm": 129.8537859007833
+      },
+      "reading_uncertainty_mm": 2.0,
+      "code_constant": "sim/masterpi_geometry_v3.py (PR #249):DRAWING_TRACK_M; sim/masterpi_geometry.py:NOMINAL_TRACK_M",
+      "code_unit": "m",
+      "code_scale": 0.001,
+      "repeats": []
+    },
+    "block_mass_kg": null,
+    "block_floor_friction": null,
+    "beam_mass_kg": null
+  },
+  "raw_files": [],
+  "_raw_file_format": {
+    "path": "outputs/real-measurements/<robot>-<date>/...",
+    "sha256": null,
+    "what": null
+  },
+  "template_schema": "ugrp.real_measurements.v1",
+  "template_source": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/6c91f2ded2181d5022780af411d749826533d9b2/configs/real_measurements_template.json",
+  "template_git_blob_sha": "8cd230be602ef4fd8566f65a8c4692c5e12b5b96",
+  "investigated_at": "2026-09-28",
+  "base_code_sha": "d5bd208e45331a73f1f71dd9b3e129c26c5eaac6",
+  "deployment_allowed": false,
+  "confidence_legend": {
+    "high": "공식 명시값/고정 SHA 소스의 직접 확인. 개별 로봇 일치는 별도.",
+    "medium": "축척 또는 여러 출처가 뒷받침하는 명목값; 공차 인증 아님.",
+    "low": "버전·기준점·장착/폐쇄 상태 불명확 또는 사진 추정.",
+    "not_found": "공개 근거로 결정 불가; value=null."
+  },
+  "coordinate_convention": {
+    "static_geometry": "x: 앞뒤 차축 중점에서 전방+, y: 좌우 바퀴 중심 중점에서 좌측+, z_floor: 바닥에서 위+",
+    "camera": "ID3 손목 축에서 공구축 방향 along+, 공구축에 수직으로 카메라 쪽 up+; 렌즈 전면 중심이지 광학 입사동공의 실측 위치가 아님",
+    "sdk": "SDK의 x=가로, y=전방 좌표는 위 x/y와 별개; l1=93 mm는 SDK 원점 상대이며 바닥 높이로 쓰지 않음"
+  },
+  "drawing_scales": {
+    "front_x": {
+      "source_id": "D1",
+      "reference_mm": 162,
+      "pixel_start": 81,
+      "pixel_end": 464,
+      "mm_per_px": 0.42297650130548303
+    },
+    "side_x": {
+      "source_id": "D1",
+      "reference_mm": 185,
+      "pixel_start": 659,
+      "pixel_end": 1096,
+      "mm_per_px": 0.4233409610983982
+    },
+    "vertical": {
+      "source_id": "D1",
+      "reference_mm": 343,
+      "pixel_start": 186,
+      "pixel_end": 992,
+      "mm_per_px": 0.42555831265508687
+    },
+    "module_x": {
+      "source_id": "D2",
+      "reference_mm": 45.6,
+      "pixel_start": 253,
+      "pixel_end": 1038,
+      "mm_per_px": 0.0580891719745223
+    }
+  },
+  "arm_sdk": {
+    "l1_base_mm": {
+      "value": 80,
+      "unit": "mm",
+      "source": [
+        "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/kinematics_sdk/kinematics/inversekinematics.py"
+      ],
+      "source_ids": [
+        "S2"
+      ],
+      "source_type": "SDK constant",
+      "confidence": "high",
+      "status": "public_reference",
+      "derivation": "실행 상수8.00 cm. 복사된 주석6.10 cm는 실행값 아님."
+    },
+    "l1_effective_mm": {
+      "value": 93,
+      "unit": "mm",
+      "source": [
+        "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/kinematics_sdk/kinematics/inversekinematics.py",
+        "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/kinematics_sdk/kinematics/arm_move_ik.py"
+      ],
+      "source_ids": [
+        "S2",
+        "S3"
+      ],
+      "source_type": "SDK constant",
+      "confidence": "high",
+      "status": "public_reference",
+      "derivation": "8.00+1.30 cm. 바닥 기준 어깨 높이 또는 yaw축 높이로 등치하지 않음."
+    },
+    "l2_mm": {
+      "value": 65,
+      "unit": "mm",
+      "source": [
+        "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/kinematics_sdk/kinematics/inversekinematics.py"
+      ],
+      "source_ids": [
+        "S2"
+      ],
+      "source_type": "SDK constant",
+      "confidence": "high",
+      "status": "public_reference",
+      "derivation": "6.50 cm ×10. 주석10.16 cm 배제."
+    },
+    "l3_mm": {
+      "value": 62,
+      "unit": "mm",
+      "source": [
+        "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/kinematics_sdk/kinematics/inversekinematics.py"
+      ],
+      "source_ids": [
+        "S2"
+      ],
+      "source_type": "SDK constant",
+      "confidence": "high",
+      "status": "public_reference",
+      "derivation": "6.20 cm ×10. 주석9.64 cm 배제."
+    },
+    "l4_arm_mm": {
+      "value": 100,
+      "unit": "mm",
+      "source": [
+        "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/kinematics_sdk/kinematics/inversekinematics.py"
+      ],
+      "source_ids": [
+        "S2"
+      ],
+      "source_type": "SDK constant",
+      "confidence": "high",
+      "status": "public_reference",
+      "derivation": "arm 생성자10.00 cm ×10. 기본l4=0/pump 타입과 구분; 주석16.6 cm 배제."
+    }
+  },
+  "servo_specs": {
+    "LD-1501MG": {
+      "stall_torque": [
+        {
+          "value": 13,
+          "unit": "kgf cm",
+          "source": [
+            "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/1501.jpg?v=1716199523"
+          ],
+          "source_ids": [
+            "V1"
+          ],
+          "source_type": "official spec",
+          "confidence": "high",
+          "status": "public_reference",
+          "derivation": "전압별 표기 stall/locked torque. 연속 토크나 운반 하중 한계가 아님.",
+          "voltage_v": 6,
+          "torque_nm": 1.274865
+        },
+        {
+          "value": 15,
+          "unit": "kgf cm",
+          "source": [
+            "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/1501.jpg?v=1716199523"
+          ],
+          "source_ids": [
+            "V1"
+          ],
+          "source_type": "official spec",
+          "confidence": "high",
+          "status": "public_reference",
+          "derivation": "전압별 표기 stall/locked torque. 연속 토크나 운반 하중 한계가 아님.",
+          "voltage_v": 6.5,
+          "torque_nm": 1.470997
+        },
+        {
+          "value": 17,
+          "unit": "kgf cm",
+          "source": [
+            "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/1501.jpg?v=1716199523"
+          ],
+          "source_ids": [
+            "V1"
+          ],
+          "source_type": "official spec",
+          "confidence": "high",
+          "status": "public_reference",
+          "derivation": "전압별 표기 stall/locked torque. 연속 토크나 운반 하중 한계가 아님.",
+          "voltage_v": 7.4,
+          "torque_nm": 1.667131
+        }
+      ],
+      "body_size_mm": {
+        "value": [
+          40,
+          20,
+          40.5
+        ],
+        "unit": "mm",
+        "source": [
+          "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/1501.jpg?v=1716199523"
+        ],
+        "source_ids": [
+          "V1"
+        ],
+        "source_type": "official spec",
+        "confidence": "high",
+        "status": "public_reference",
+        "derivation": "몸체; spline 포함45.5 mm/귀 포함54.4 mm는 별도."
+      },
+      "mass_g": {
+        "value": 61,
+        "unit": "g",
+        "source": [
+          "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/1501.jpg?v=1716199523"
+        ],
+        "source_ids": [
+          "V1"
+        ],
+        "source_type": "official spec",
+        "confidence": "high",
+        "status": "public_reference",
+        "derivation": "사양 이미지."
+      }
+    },
+    "LDX-218": {
+      "stall_torque": [
+        {
+          "value": 15,
+          "unit": "kgf cm",
+          "source": [
+            "https://www.hiwonder.com/products/ldx-218"
+          ],
+          "source_ids": [
+            "V3"
+          ],
+          "source_type": "official spec",
+          "confidence": "high",
+          "status": "public_reference",
+          "derivation": "전압별 표기 stall/locked torque. 연속 토크나 운반 하중 한계가 아님.",
+          "voltage_v": 6,
+          "torque_nm": 1.470997
+        },
+        {
+          "value": 17,
+          "unit": "kgf cm",
+          "source": [
+            "https://www.hiwonder.com/products/ldx-218"
+          ],
+          "source_ids": [
+            "V3"
+          ],
+          "source_type": "official spec",
+          "confidence": "high",
+          "status": "public_reference",
+          "derivation": "전압별 표기 stall/locked torque. 연속 토크나 운반 하중 한계가 아님.",
+          "voltage_v": 7.4,
+          "torque_nm": 1.667131
+        }
+      ],
+      "overall_size_mm": {
+        "value": [
+          40,
+          20,
+          51.4
+        ],
+        "unit": "mm",
+        "source": [
+          "https://www.hiwonder.com/products/ldx-218"
+        ],
+        "source_ids": [
+          "V3"
+        ],
+        "source_type": "official spec",
+        "confidence": "high",
+        "status": "public_reference",
+        "derivation": "현재 제품표 치수. 40.5 mm 본체와 기준점/부속 포함 여부를 섞지 않음."
+      },
+      "mass_g": {
+        "value": 56,
+        "unit": "g",
+        "source": [
+          "https://www.hiwonder.com/products/ldx-218"
+        ],
+        "source_ids": [
+          "V3"
+        ],
+        "source_type": "official spec",
+        "confidence": "high",
+        "status": "public_reference",
+        "derivation": "현재 제품표."
+      },
+      "disagreement": "본문20kg 문구와 상세17kg·cm@7.4V가 충돌. 전압 명시 상세표를 우선."
+    },
+    "LFD-01M": {
+      "stall_torque": [
+        {
+          "value": 1.5,
+          "unit": "kgf cm",
+          "source": [
+            "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/LFD-01M.jpg?v=1716199523"
+          ],
+          "source_ids": [
+            "V4"
+          ],
+          "source_type": "official spec",
+          "confidence": "high",
+          "status": "public_reference",
+          "derivation": "전압별 표기 stall/locked torque. 연속 토크나 운반 하중 한계가 아님.",
+          "voltage_v": 4.8,
+          "torque_nm": 0.1471
+        },
+        {
+          "value": 1.8,
+          "unit": "kgf cm",
+          "source": [
+            "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/LFD-01M.jpg?v=1716199523"
+          ],
+          "source_ids": [
+            "V4"
+          ],
+          "source_type": "official spec",
+          "confidence": "high",
+          "status": "public_reference",
+          "derivation": "전압별 표기 stall/locked torque. 연속 토크나 운반 하중 한계가 아님.",
+          "voltage_v": 6,
+          "torque_nm": 0.17652
+        }
+      ],
+      "current_stall_torque": {
+        "value": 1.8,
+        "unit": "kgf cm",
+        "source": [
+          "https://www.hiwonder.com/products/lfd-01m"
+        ],
+        "source_ids": [
+          "V2"
+        ],
+        "source_type": "official spec",
+        "confidence": "high",
+        "status": "public_reference",
+        "derivation": "현재 제품표는6V에서 ≥1.8 kg·cm.",
+        "relation": ">=",
+        "voltage_v": 6,
+        "torque_nm": 0.1765197
+      },
+      "body_size_mm": {
+        "value": [
+          22.3,
+          12,
+          23.2
+        ],
+        "unit": "mm",
+        "source": [
+          "https://www.hiwonder.com/products/lfd-01m"
+        ],
+        "source_ids": [
+          "V2"
+        ],
+        "source_type": "official spec",
+        "confidence": "high",
+        "status": "public_reference",
+        "derivation": "현재 제품표; 구형 귀/축 포함32.5×12×29.85 mm와 정의/세대 다를 수 있음."
+      },
+      "mass_g": {
+        "value": 14,
+        "unit": "g",
+        "source": [
+          "https://www.hiwonder.com/products/lfd-01m",
+          "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/LFD-01M.jpg?v=1716199523"
+        ],
+        "source_ids": [
+          "V2",
+          "V4"
+        ],
+        "source_type": "official spec",
+        "confidence": "high",
+        "status": "public_reference",
+        "derivation": "현재표/구형표 공통."
+      }
+    }
+  },
+  "servo_joint_assignment": {
+    "servo6_yaw": {
+      "value": "LD-1501MG",
+      "unit": null,
+      "source": [
+        "https://www.hiwonder.com/products/masterpi",
+        "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111",
+        "https://docs.hiwonder.com/projects/MasterPi/en/latest/_static/media/1.getting_ready/1.2/step5-1.jpg"
+      ],
+      "source_ids": [
+        "P1",
+        "D1",
+        "A2"
+      ],
+      "source_type": "photo estimate",
+      "confidence": "medium",
+      "status": "public_reference",
+      "derivation": "공식 제품표의 서보 종류와 도면/조립 이미지 대형2개·소형3개 대응. 관절별 SKU BOM 미공개; 개별 로봇 확정 배정 아님.",
+      "actual_unit_model": null
+    },
+    "servo5_shoulder": {
+      "value": "LD-1501MG",
+      "unit": null,
+      "source": [
+        "https://www.hiwonder.com/products/masterpi",
+        "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111",
+        "https://docs.hiwonder.com/projects/MasterPi/en/latest/_static/media/1.getting_ready/1.2/step5-1.jpg"
+      ],
+      "source_ids": [
+        "P1",
+        "D1",
+        "A2"
+      ],
+      "source_type": "photo estimate",
+      "confidence": "medium",
+      "status": "public_reference",
+      "derivation": "공식 제품표의 서보 종류와 도면/조립 이미지 대형2개·소형3개 대응. 관절별 SKU BOM 미공개; 개별 로봇 확정 배정 아님.",
+      "actual_unit_model": null,
+      "alternatives": [
+        {
+          "value": "LDX-218",
+          "unit": null,
+          "source": [
+            "https://www.xboom.in/masterpi/"
+          ],
+          "source_ids": [
+            "R1"
+          ],
+          "source_type": "retailer",
+          "confidence": "low",
+          "status": "public_reference",
+          "derivation": "대체 후보; 생산 시점과 joint별 배정 미확인."
+        }
+      ]
+    },
+    "servo4_elbow": {
+      "value": "LFD-01M",
+      "unit": null,
+      "source": [
+        "https://www.hiwonder.com/products/masterpi",
+        "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111",
+        "https://docs.hiwonder.com/projects/MasterPi/en/latest/_static/media/1.getting_ready/1.2/step5-1.jpg"
+      ],
+      "source_ids": [
+        "P1",
+        "D1",
+        "A2"
+      ],
+      "source_type": "photo estimate",
+      "confidence": "medium",
+      "status": "public_reference",
+      "derivation": "공식 제품표의 서보 종류와 도면/조립 이미지 대형2개·소형3개 대응. 관절별 SKU BOM 미공개; 개별 로봇 확정 배정 아님.",
+      "actual_unit_model": null
+    },
+    "servo3_wrist": {
+      "value": "LFD-01M",
+      "unit": null,
+      "source": [
+        "https://www.hiwonder.com/products/masterpi",
+        "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111",
+        "https://docs.hiwonder.com/projects/MasterPi/en/latest/_static/media/1.getting_ready/1.2/step5-1.jpg"
+      ],
+      "source_ids": [
+        "P1",
+        "D1",
+        "A2"
+      ],
+      "source_type": "photo estimate",
+      "confidence": "medium",
+      "status": "public_reference",
+      "derivation": "공식 제품표의 서보 종류와 도면/조립 이미지 대형2개·소형3개 대응. 관절별 SKU BOM 미공개; 개별 로봇 확정 배정 아님.",
+      "actual_unit_model": null
+    },
+    "servo1_gripper": {
+      "value": "LFD-01M",
+      "unit": null,
+      "source": [
+        "https://www.hiwonder.com/products/masterpi",
+        "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111",
+        "https://docs.hiwonder.com/projects/MasterPi/en/latest/_static/media/1.getting_ready/1.2/step5-1.jpg"
+      ],
+      "source_ids": [
+        "P1",
+        "D1",
+        "A2"
+      ],
+      "source_type": "photo estimate",
+      "confidence": "medium",
+      "status": "public_reference",
+      "derivation": "공식 제품표의 서보 종류와 도면/조립 이미지 대형2개·소형3개 대응. 관절별 SKU BOM 미공개; 개별 로봇 확정 배정 아님.",
+      "actual_unit_model": null
+    }
+  },
+  "sources": {
+    "P1": {
+      "title": "공식 MasterPi 제품표",
+      "url": "https://www.hiwonder.com/products/masterpi",
+      "source_type": "official spec",
+      "accessed_at": "2026-09-28"
+    },
+    "D1": {
+      "title": "공식 MasterPi 치수도, 1200×1200",
+      "url": "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111",
+      "source_type": "official drawing scaled",
+      "accessed_at": "2026-09-28"
+    },
+    "P2": {
+      "title": "공식 발광 초음파 제품표·치수도",
+      "url": "https://www.hiwonder.com/products/glowing-ultrasonic-sensor",
+      "source_type": "official spec",
+      "accessed_at": "2026-09-28"
+    },
+    "D2": {
+      "title": "발광 초음파 모듈 치수도(제품 페이지 Dimensional Diagram)",
+      "url": "https://www.hiwonder.com/products/glowing-ultrasonic-sensor",
+      "source_type": "official drawing scaled",
+      "accessed_at": "2026-09-28"
+    },
+    "S1": {
+      "title": "공식 MasterPi sonar.py",
+      "url": "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/common_sdk/common/sonar.py",
+      "source_type": "SDK constant",
+      "accessed_at": "2026-09-28",
+      "git_blob_sha": "c90f4353b87b622d6b548f636077186dcbfe6622"
+    },
+    "S2": {
+      "title": "공식 MasterPi inversekinematics.py",
+      "url": "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/kinematics_sdk/kinematics/inversekinematics.py",
+      "source_type": "SDK constant",
+      "accessed_at": "2026-09-28",
+      "git_blob_sha": "5d2df14b35384ea0fa7281037cb6b0a40adba9b9"
+    },
+    "S3": {
+      "title": "공식 MasterPi arm_move_ik.py",
+      "url": "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/kinematics_sdk/kinematics/arm_move_ik.py",
+      "source_type": "SDK constant",
+      "accessed_at": "2026-09-28",
+      "git_blob_sha": "03d26e5050460421a091966b0c582a7c0f3cddf2"
+    },
+    "S4": {
+      "title": "공식 MasterPi mecanum.py",
+      "url": "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/masterpi_sdk/common_sdk/common/mecanum.py",
+      "source_type": "SDK constant",
+      "accessed_at": "2026-09-28",
+      "git_blob_sha": "958f569ae7f25ce5bf1bed77720ef97a6363cbcb"
+    },
+    "S5": {
+      "title": "공식 MasterPi avoidance.py",
+      "url": "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/functions/avoidance.py",
+      "source_type": "SDK constant",
+      "accessed_at": "2026-09-28",
+      "git_blob_sha": "a025581d3521241fde794a3237b84fba479006c2"
+    },
+    "S6": {
+      "title": "공식 MasterPi 카메라 보정 NPZ",
+      "url": "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/CameraCalibration/calibration_param.npz",
+      "source_type": "SDK constant",
+      "accessed_at": "2026-09-28",
+      "git_blob_sha": "be6490e52388d8b8035e155b339e06b778ae51b9",
+      "sha256": "e2329e57b70887f30e032702b3acd48e34e083bf6387b867129f7a10480115d6",
+      "bytes": 1056
+    },
+    "S7": {
+      "title": "공식 MasterPi Calibration.py",
+      "url": "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/CameraCalibration/Calibration.py",
+      "source_type": "SDK constant",
+      "accessed_at": "2026-09-28",
+      "git_blob_sha": "381b506464127a01ef41d4903869d835923d7af4"
+    },
+    "S8": {
+      "title": "공식 MasterPi Camera.py",
+      "url": "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/Camera.py",
+      "source_type": "SDK constant",
+      "accessed_at": "2026-09-28",
+      "git_blob_sha": "b931a97f91afa19955db72ebc2b4e56172e04d41"
+    },
+    "S9": {
+      "title": "공식 MasterPi CalibrationConfig.py",
+      "url": "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/CameraCalibration/CalibrationConfig.py",
+      "source_type": "SDK constant",
+      "accessed_at": "2026-09-28",
+      "git_blob_sha": "d4047eba68d17c2b97a542f8679902217a97d6f1"
+    },
+    "S10": {
+      "title": "공식 저장소 보정 영상 1.jpg",
+      "url": "https://github.com/Hiwonder/MasterPi/blob/11b0cb04ada14be7c391e6c865ac705f903a95e7/CameraCalibration/calibration_images/1.jpg",
+      "source_type": "SDK constant",
+      "accessed_at": "2026-09-28",
+      "sha256": "b84d9714ab6ebf1ec5a8594e02fced2ce1852ff529a5b5d7c44926ce56cfce8f"
+    },
+    "U1": {
+      "title": "공식 초음파 문서 원문 1장",
+      "url": "https://github.com/Hiwonder-docs/Glowing-Ultrasonic-Sensor/blob/d4def3269dcf45f59e4c8f0317cb972c7c06b54a/source/docs/1.Glowing_Ultrasonic_Sensor.md",
+      "source_type": "official spec",
+      "accessed_at": "2026-09-28",
+      "git_blob_sha": "a8e0a8cf4dec5b482d6f3db750bf1f4466e588b9"
+    },
+    "U2": {
+      "title": "공식 초음파 Raspberry Pi 예제",
+      "url": "https://github.com/Hiwonder-docs/Glowing-Ultrasonic-Sensor/blob/d4def3269dcf45f59e4c8f0317cb972c7c06b54a/source/docs/3.Raspberry_Pi_Development_Tutorial.md",
+      "source_type": "SDK constant",
+      "accessed_at": "2026-09-28",
+      "git_blob_sha": "cafd287257dd51cd484db9c042cd6579f70e3e55"
+    },
+    "U3": {
+      "title": "공식 초음파 Arduino 예제",
+      "url": "https://github.com/Hiwonder-docs/Glowing-Ultrasonic-Sensor/blob/d4def3269dcf45f59e4c8f0317cb972c7c06b54a/source/docs/2.Arduino_Development_Tutorial.md",
+      "source_type": "SDK constant",
+      "accessed_at": "2026-09-28",
+      "git_blob_sha": "6c7c192246a6558bd6e35bc0a02a9c2f09e19b86"
+    },
+    "C1": {
+      "title": "제품 페이지 HBVCAM-V2101 V11 사양 이미지",
+      "url": "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/7e29db14e5705c63b085c49c4e34136d.jpg?v=1716199523",
+      "source_type": "official spec",
+      "accessed_at": "2026-09-28"
+    },
+    "V1": {
+      "title": "제품 페이지 LD-1501MG 사양 이미지",
+      "url": "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/1501.jpg?v=1716199523",
+      "source_type": "official spec",
+      "accessed_at": "2026-09-28"
+    },
+    "V2": {
+      "title": "LFD-01M 현재 제품표",
+      "url": "https://www.hiwonder.com/products/lfd-01m",
+      "source_type": "official spec",
+      "accessed_at": "2026-09-28"
+    },
+    "V3": {
+      "title": "LDX-218 현재 제품표",
+      "url": "https://www.hiwonder.com/products/ldx-218",
+      "source_type": "official spec",
+      "accessed_at": "2026-09-28"
+    },
+    "V4": {
+      "title": "보존된 LFD-01M 구형 사양 이미지; 현재 직접 URL 접근 실패",
+      "url": "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/LFD-01M.jpg?v=1716199523",
+      "source_type": "official spec",
+      "accessed_at": "2026-09-28"
+    },
+    "W1": {
+      "title": "별매 65 mm 주황 메카넘 휠",
+      "url": "https://www.hiwonder.com/products/mecanum-wheel-65mm-orange",
+      "source_type": "official spec",
+      "accessed_at": "2026-09-28"
+    },
+    "A1": {
+      "title": "MasterPi 공식 조립·편차 문서",
+      "url": "https://docs.hiwonder.com/projects/MasterPi/en/latest/docs/1.getting_ready.html",
+      "source_type": "official spec",
+      "accessed_at": "2026-09-28"
+    },
+    "A2": {
+      "title": "공식 팔 조립 렌더",
+      "url": "https://docs.hiwonder.com/projects/MasterPi/en/latest/_static/media/1.getting_ready/1.2/step5-1.jpg",
+      "source_type": "photo estimate",
+      "accessed_at": "2026-09-28"
+    },
+    "R1": {
+      "title": "xboom MasterPi 판매 사양",
+      "url": "https://www.xboom.in/masterpi/",
+      "source_type": "retailer",
+      "accessed_at": "2026-09-28"
+    },
+    "R2": {
+      "title": "Amazon ASIN 사양 집계",
+      "url": "https://device.report/asin/B0CP97SZPJ",
+      "source_type": "retailer",
+      "accessed_at": "2026-09-28"
+    },
+    "M1": {
+      "title": "MasterPi 공개 사본 IK",
+      "url": "https://github.com/SquirrelRobotics/MasterPi/blob/98b85647eab1614f3fcce28aba959c679cfc72eb/ArmIK/InverseKinematics.py",
+      "source_type": "SDK constant",
+      "accessed_at": "2026-09-28",
+      "git_blob_sha": "258296e5d23406f0c443dbcd0e39823922d696b8"
+    },
+    "M2": {
+      "title": "MasterPi 공개 사본 ArmMoveIK",
+      "url": "https://github.com/SquirrelRobotics/MasterPi/blob/98b85647eab1614f3fcce28aba959c679cfc72eb/ArmIK/ArmMoveIK.py",
+      "source_type": "SDK constant",
+      "accessed_at": "2026-09-28",
+      "git_blob_sha": "635d9bbc8d9c554a8b035d67c100b1b8f61a37fc"
+    },
+    "M3": {
+      "title": "MasterPi 공개 사본 Sonar",
+      "url": "https://github.com/SquirrelRobotics/MasterPi/blob/98b85647eab1614f3fcce28aba959c679cfc72eb/HiwonderSDK/Sonar.py",
+      "source_type": "SDK constant",
+      "accessed_at": "2026-09-28",
+      "git_blob_sha": "82ef05d4e1f3d7dbe40b655b74b6611baf52d4fa"
+    },
+    "M4": {
+      "title": "MasterPi 공개 사본 mecanum",
+      "url": "https://github.com/SquirrelRobotics/MasterPi/blob/98b85647eab1614f3fcce28aba959c679cfc72eb/HiwonderSDK/mecanum.py",
+      "source_type": "SDK constant",
+      "accessed_at": "2026-09-28",
+      "git_blob_sha": "92f34eb0fab93782abd6a90e65454064dbc72914"
+    },
+    "M5": {
+      "title": "MasterPi 공개 사본 CalibrationConfig",
+      "url": "https://github.com/SquirrelRobotics/MasterPi/blob/98b85647eab1614f3fcce28aba959c679cfc72eb/CameraCalibration/CalibrationConfig.py",
+      "source_type": "SDK constant",
+      "accessed_at": "2026-09-28",
+      "git_blob_sha": "347d8226937fef9fd05ab419192e66eb717d7df2"
+    },
+    "M6": {
+      "title": "Hiwonder TonyPi의 같은 계열 Sonar",
+      "url": "https://github.com/Hiwonder/TonyPi/blob/main/HiwonderSDK/hiwonder/Sonar.py",
+      "source_type": "SDK constant",
+      "accessed_at": "2026-09-28",
+      "git_blob_sha": "0e22ebb685921c1b8644eef59d5c3264c567d7f1"
+    },
+    "R3": {
+      "title": "커뮤니티 MasterPi MJCF(실측이 아님)",
+      "url": "https://github.com/techadnank9/masterpi-mujoco",
+      "source_type": "community model",
+      "accessed_at": "2026-09-28"
+    },
+    "R4": {
+      "title": "HandSync ROS2 프로젝트",
+      "url": "https://github.com/itswinzie/HandSync",
+      "source_type": "community project",
+      "accessed_at": "2026-09-28"
+    },
+    "R5": {
+      "title": "Ramasamy 박사학위 논문 §3.3, PDF 114–116쪽",
+      "url": "https://pab47.github.io/reports/Subramanian_Ramasamy_PhD_Thesis.pdf",
+      "source_type": "research paper",
+      "accessed_at": "2026-09-28"
+    },
+    "R6": {
+      "title": "ASU Nguyen 포스터, 1쪽",
+      "url": "https://forge.engineering.asu.edu/wp-content/uploads/2025/03/Nguyen_Phuong_Uyen_Luna.pdf",
+      "source_type": "research paper",
+      "accessed_at": "2026-09-28"
+    },
+    "I1": {
+      "title": "기존 UGRP v2 형상",
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/d5bd208e45331a73f1f71dd9b3e129c26c5eaac6/sim/masterpi_geometry.py",
+      "source_type": "repo baseline",
+      "accessed_at": "2026-09-28"
+    },
+    "I2": {
+      "title": "PR #249 형상 v3 스냅샷",
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/961271a44ad34cf17e94f36217589af7cde2fa2a/sim/masterpi_geometry_v3.py",
+      "source_type": "repo baseline",
+      "accessed_at": "2026-09-28"
+    },
+    "I3": {
+      "title": "PR #251 측정 템플릿",
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/6c91f2ded2181d5022780af411d749826533d9b2/configs/real_measurements_template.json",
+      "source_type": "repo baseline",
+      "accessed_at": "2026-09-28"
+    },
+    "I4": {
+      "title": "현재 손목 카메라 프로필",
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/d5bd208e45331a73f1f71dd9b3e129c26c5eaac6/sim/masterpi_camera_profile.py",
+      "source_type": "repo baseline",
+      "accessed_at": "2026-09-28"
+    },
+    "I5": {
+      "title": "PR #248 초음파 설계 스냅샷",
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/29fedc3e0638d680da32d4753d645925a20edbef/docs/ultrasonic_range_sensor.md",
+      "source_type": "repo baseline",
+      "accessed_at": "2026-09-28"
+    },
+    "I6": {
+      "title": "기존 실물 제어기 FK",
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/d5bd208e45331a73f1f71dd9b3e129c26c5eaac6/harness/real_geometry.py",
+      "source_type": "repo baseline",
+      "accessed_at": "2026-09-28"
+    },
+    "I7": {
+      "title": "PR #251 실측 절차: 정적 치수 및 템플릿 규칙",
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/6c91f2ded2181d5022780af411d749826533d9b2/docs/sim2real_measurement_protocol.md",
+      "source_type": "repo baseline",
+      "accessed_at": "2026-09-28"
+    }
+  },
+  "reference_files": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/masterpi-visual-v3/reference/hiwonder_masterpi_dimension_drawing.jpg",
+      "sha256": "58f8d736a2d284d1f2b7e83ca816088ad6b16658a25eea104eabdbf55dadf11a",
+      "bytes": 125036,
+      "source_id": "D1",
+      "source_url": "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/masterpi_01173667-020d-4baa-8ec8-6ff4a45b6220.jpg?v=1716200111",
+      "what": "기존 로컬 참고 이미지 읽기·해시 검증. 이 작업에서 다운로드/복제/업로드하지 않음.",
+      "license": "재배포 허가 확인 안 됨; 링크와 숫자만 제공",
+      "retrieval_status": "기존 보존본 열람; 원격 현재 바이트와 동일성은 미검증"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/masterpi-visual-v3/reference/hiwonder_glowing_ultrasonic_dimension.jpg",
+      "sha256": "96717724ac2c394806493a7018007877c451ef250cc90ee979ec5f3e54d43841",
+      "bytes": 45998,
+      "source_id": "D2",
+      "source_url": "https://www.hiwonder.com/products/glowing-ultrasonic-sensor",
+      "what": "기존 로컬 참고 이미지 읽기·해시 검증. 이 작업에서 다운로드/복제/업로드하지 않음.",
+      "license": "재배포 허가 확인 안 됨; 링크와 숫자만 제공",
+      "retrieval_status": "기존 보존본 열람; 원격 현재 바이트와 동일성은 미검증"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/masterpi-visual-v3/reference/hiwonder_hd_camera_datasheet.jpg",
+      "sha256": "18afbc30ed30534356936fa02f9082d2911d1cfc377fe7b4e343ad903da0fcce",
+      "bytes": 56902,
+      "source_id": "C1",
+      "source_url": "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/7e29db14e5705c63b085c49c4e34136d.jpg?v=1716199523",
+      "what": "기존 로컬 참고 이미지 읽기·해시 검증. 이 작업에서 다운로드/복제/업로드하지 않음.",
+      "license": "재배포 허가 확인 안 됨; 링크와 숫자만 제공",
+      "retrieval_status": "기존 보존본 열람; 원격 현재 바이트와 동일성은 미검증"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/masterpi-visual-v3/reference/hiwonder_ld1501mg_datasheet.jpg",
+      "sha256": "0645abb6d23e8db03bcd2fe8ec28d8216dfaa8c219a622b505ae2f2276cff7ac",
+      "bytes": 55910,
+      "source_id": "V1",
+      "source_url": "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/1501.jpg?v=1716199523",
+      "what": "기존 로컬 참고 이미지 읽기·해시 검증. 이 작업에서 다운로드/복제/업로드하지 않음.",
+      "license": "재배포 허가 확인 안 됨; 링크와 숫자만 제공",
+      "retrieval_status": "기존 보존본 열람; 원격 현재 바이트와 동일성은 미검증"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/masterpi-visual-v3/reference/hiwonder_lfd01m_datasheet.jpg",
+      "sha256": "2589e3215b8c3358273223ec162c74c9fea1074aa7bf5c40358757a5138e36fb",
+      "bytes": 47147,
+      "source_id": "V4",
+      "source_url": "https://cdn.shopify.com/s/files/1/0084/2799/5187/files/LFD-01M.jpg?v=1716199523",
+      "what": "기존 로컬 참고 이미지 읽기·해시 검증. 이 작업에서 다운로드/복제/업로드하지 않음.",
+      "license": "재배포 허가 확인 안 됨; 링크와 숫자만 제공",
+      "retrieval_status": "기존 보존본 열람; 원격 현재 바이트와 동일성은 미검증"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/masterpi-visual-v3/reference/hiwonder_masterpi_arm_assembled.png",
+      "sha256": "f954e6dbf1bebcd34b8879413702b7ea03056ea82725eee479715ba31e7cd4b1",
+      "bytes": 809666,
+      "source_id": "A1",
+      "source_url": "https://docs.hiwonder.com/projects/MasterPi/en/latest/docs/1.getting_ready.html",
+      "what": "기존 로컬 참고 이미지 읽기·해시 검증. 이 작업에서 다운로드/복제/업로드하지 않음.",
+      "license": "재배포 허가 확인 안 됨; 링크와 숫자만 제공",
+      "retrieval_status": "기존 팔 조립 그림 보존본 열람. 원문 부모 문서를 연결하며 정확한 원격 asset URL 및 동일 바이트는 미확인.",
+      "asset_url_verified": false
+    }
+  ],
+  "not_found_summary": [
+    "초음파 반각/전체각 정의·실제 갱신 주기·blind/no_echo 펌웨어 값·빔 감도 곡선·잡음/누락/간섭률",
+    "실제 로봇 센서/카메라/서보 revision와 조립 오차",
+    "태그 없는 손목 카메라 개체별 내부·외부 파라미터",
+    "bare chassis 전장과 질량 분포/관성, 바퀴 유효 구름 지름",
+    "그려진 집게 끝의 완전 폐쇄 조건·패드 접촉점; 실물 토크/주행 성능"
+  ]
+}

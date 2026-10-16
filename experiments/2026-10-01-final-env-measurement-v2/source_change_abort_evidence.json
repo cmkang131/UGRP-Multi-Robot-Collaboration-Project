@@ -1,0 +1,21 @@
+{
+  "case": "test_managed_cli_owned_lock_receipt_and_no_overwrite[True]",
+  "observed_result_subset": {
+    "status": "HOST_ERROR",
+    "source_unchanged": false,
+    "cases": [
+      {
+        "status": "COLLECTED_UNQUALIFIED",
+        "protocol_complete": true,
+        "check_sim_s": 230.0,
+        "reset_sim_s": 1.0,
+        "physical_success": null
+      }
+    ]
+  },
+  "observed_source_differences": [
+    "harness/measurement_path_clearance.py"
+  ],
+  "verification": "Read result.json and compared every recorded source hash to current files before pytest temporary-directory cleanup. The original temp files later expired; this is a readback record, not a copy of the full raw fixture.",
+  "reason": "Author added finite overflow guard while broad offline suite was running. Source freeze check correctly refused completion; final source fixed and entire changed scope rerun (63 passed)."
+}

@@ -1,0 +1,64 @@
+{
+  "equal": {
+    "state_sha256": true,
+    "generated_sha256": true,
+    "frames": true
+  },
+  "timing_measured": false,
+  "simulation_runs": 0,
+  "concurrent_lock": {
+    "owner": "codex",
+    "branch": "claude/ego-wall-map",
+    "purpose": "egomap58 55003 P1 DEV",
+    "pid": 3811,
+    "acquired_unix": 1791544286.335138,
+    "expected_end_unix": 1791547886.335138,
+    "loadavg_at_acquire": [
+      14.0341796875,
+      14.03955078125,
+      12.6904296875
+    ],
+    "timing_sensitive": false,
+    "pid_alive": true
+  },
+  "reports": {
+    "baseline": {
+      "source": "0a6908215e7788f697d3d7c616846e9f6b82e608",
+      "implementation_sha": "3ad3bdc88c6e3eec745ab19c63822ce840699bc2",
+      "replay_script_sha256": "29cd824ca263c509f1f1b3c6867b1ee9068ee6db073968f515349ea51bea85ae",
+      "raw": "/Users/changmin/projects/ugrp/outputs/s3-continue-0a690821-s14201-v147",
+      "accelerated": false,
+      "simulation_runs": 0,
+      "frames": 442,
+      "profiled_wall_s": null,
+      "timing_measured": false,
+      "error": "Traceback (most recent call last):\n  File \"experiments/2026-10-09-s3-no-prior/s3fix2/profile_replay.py\", line 73, in replay\n    rt.on_frames(now,batch);actions=rt.step(now)\n    ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_s3_no_prior.py\", line 203, in on_frames\n    self.pair.on_frames(now, {r: frames[r] for r in ('r1', 'r2')})\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_final_pair_runtime.py\", line 51, in on_frames\n    self.actors[rid].on_frame(now, obs, rgb)\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_own_executor.py\", line 230, in on_frame\n    self.pose.on_frame(now, rgb)\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_s3_no_prior.py\", line 83, in on_frame\n    self.localizer.on_frames(now, {self.localizer.robot_id: (obs, rgb)})\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_s3_localization_certification.py\", line 39, in frames\n    result = old_frames(now, images)\n             ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_solo_cyan_rotation_envelope.py\", line 149, in frames\n    result = old_frames(now, images)\n             ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_solo_cyan_best_cluster.py\", line 145, in on_frames\n    super().on_frames(now, frames)\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_solo_cyan_visual_fix.py\", line 124, in on_frames\n    super().on_frames(now,frames)\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_solo_cyan_camera_v3.py\", line 113, in on_frames\n    super().on_frames(now, frames)\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_solo_cyan_v106.py\", line 204, in on_frames\n    self.last_report = self.pose.on_frame(now, rgb if verdict == frame_gate.VALID else None)\n                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_study_pose_delay_p03.py\", line 121, in on_frame\n    return self.report(now)\n           ^^^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_study_pose_delay_p03.py\", line 137, in report\n    getattr(self.provider, method)(*args)\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_solo_cyan_flow_fusion.py\", line 177, in command\n    return self.command0(row)\n           ^^^^^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_solo_cyan_real_carry_dev.py\", line 54, in command\n    old_command(row)\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/vision_pose_source_highpose.py\", line 134, in on_command\n    super().on_command(row)\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/vision_pose_source_p03.py\", line 199, in on_command\n    self.loc._pf.command(row)\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_solo_cyan_pulse_cal.py\", line 96, in command\n    old_command(row)  # predicts previous pulse first, then tracks own grip\n    ^^^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_solo_cyan_pulse_cal.py\", line 98, in command\n    k=profile_key(row,pf.load.loaded)\n      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_solo_cyan_pulse_cal.py\", line 20, in profile_key\n    raise ValueError('calibrated motion requires one axis')\nValueError: calibrated motion requires one axis\n",
+      "generated_sha256": "95c7bb1babc22263fd45c83e16f352b6ba746a5f97a9cf8ecf93bcca838d4065",
+      "state_sha256": "6138376fcdab9317a77c4ef47ac1625beaa71b4f4d04311f0b0160e06762bb8a",
+      "robots": {
+        "r1": "18faf6c333dfe45d9f9bc10ba7ce202d24d2630091ce85fe8dda4b0ca8ce6c1a",
+        "r2": "43edfdc2f2b2ff138cb97b8e631bfaf759a2b526e1fa14bbbc074fadbd1b08b9",
+        "r3": "c6ff2caaa4ed95362f51053daf21e5599cb5be243770786b5e54ce03dd3defb3"
+      }
+    },
+    "cache": {
+      "source": "0a6908215e7788f697d3d7c616846e9f6b82e608",
+      "implementation_sha": "3ad3bdc88c6e3eec745ab19c63822ce840699bc2",
+      "replay_script_sha256": "29cd824ca263c509f1f1b3c6867b1ee9068ee6db073968f515349ea51bea85ae",
+      "raw": "/Users/changmin/projects/ugrp/outputs/s3-continue-0a690821-s14201-v147",
+      "accelerated": true,
+      "simulation_runs": 0,
+      "frames": 442,
+      "profiled_wall_s": null,
+      "timing_measured": false,
+      "error": "Traceback (most recent call last):\n  File \"experiments/2026-10-09-s3-no-prior/s3fix2/profile_replay.py\", line 73, in replay\n    rt.on_frames(now,batch);actions=rt.step(now)\n    ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_s3_no_prior.py\", line 203, in on_frames\n    self.pair.on_frames(now, {r: frames[r] for r in ('r1', 'r2')})\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_final_pair_runtime.py\", line 51, in on_frames\n    self.actors[rid].on_frame(now, obs, rgb)\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_own_executor.py\", line 230, in on_frame\n    self.pose.on_frame(now, rgb)\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_s3_no_prior.py\", line 83, in on_frame\n    self.localizer.on_frames(now, {self.localizer.robot_id: (obs, rgb)})\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_s3_localization_certification.py\", line 39, in frames\n    result = old_frames(now, images)\n             ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_solo_cyan_rotation_envelope.py\", line 149, in frames\n    result = old_frames(now, images)\n             ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_solo_cyan_best_cluster.py\", line 145, in on_frames\n    super().on_frames(now, frames)\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_solo_cyan_visual_fix.py\", line 124, in on_frames\n    super().on_frames(now,frames)\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_solo_cyan_camera_v3.py\", line 113, in on_frames\n    super().on_frames(now, frames)\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_solo_cyan_v106.py\", line 204, in on_frames\n    self.last_report = self.pose.on_frame(now, rgb if verdict == frame_gate.VALID else None)\n                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_study_pose_delay_p03.py\", line 121, in on_frame\n    return self.report(now)\n           ^^^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_study_pose_delay_p03.py\", line 137, in report\n    getattr(self.provider, method)(*args)\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_solo_cyan_flow_fusion.py\", line 177, in command\n    return self.command0(row)\n           ^^^^^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_solo_cyan_real_carry_dev.py\", line 54, in command\n    old_command(row)\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/vision_pose_source_highpose.py\", line 134, in on_command\n    super().on_command(row)\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/vision_pose_source_p03.py\", line 199, in on_command\n    self.loc._pf.command(row)\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_solo_cyan_pulse_cal.py\", line 96, in command\n    old_command(row)  # predicts previous pulse first, then tracks own grip\n    ^^^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_solo_cyan_pulse_cal.py\", line 98, in command\n    k=profile_key(row,pf.load.loaded)\n      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/changmin/projects/ugrp-wt/s3-host/harness/zone_solo_cyan_pulse_cal.py\", line 20, in profile_key\n    raise ValueError('calibrated motion requires one axis')\nValueError: calibrated motion requires one axis\n",
+      "generated_sha256": "95c7bb1babc22263fd45c83e16f352b6ba746a5f97a9cf8ecf93bcca838d4065",
+      "state_sha256": "6138376fcdab9317a77c4ef47ac1625beaa71b4f4d04311f0b0160e06762bb8a",
+      "robots": {
+        "r1": "18faf6c333dfe45d9f9bc10ba7ce202d24d2630091ce85fe8dda4b0ca8ce6c1a",
+        "r2": "43edfdc2f2b2ff138cb97b8e631bfaf759a2b526e1fa14bbbc074fadbd1b08b9",
+        "r3": "c6ff2caaa4ed95362f51053daf21e5599cb5be243770786b5e54ce03dd3defb3"
+      }
+    }
+  }
+}

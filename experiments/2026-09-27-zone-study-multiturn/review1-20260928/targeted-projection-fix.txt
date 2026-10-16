@@ -1,0 +1,12 @@
+..F....................................................................  [100%]
+=================================== FAILURES ===================================
+__ test_90s_wait_preserves_v64_inputs_and_calls_in_all_conditions[leader_ko] ___
+tests/test_zone_study_multiturn.py:149: in test_90s_wait_preserves_v64_inputs_and_calls_in_all_conditions
+    assert common(actual['requests']) == common(golden['conditions']['no_comm']['requests'])
+E   AssertionError: assert [('r1', 0.0, ...c9602e'), ...] == [('r1', 0.0, ...312c21'), ...]
+E     
+E     At index 0 diff: ('r1', 0.0, '1eb51a3ed3db7332ba55a19aa6b2645220beabd48e1dfbc508e577f7ae6ea2e6') != ('r1', 0.0, 'ce74a73ad8bdd40dd7a99e8e45a180384a72cd9155be9f504b713aced0447e9e')
+E     Use -v to get more diff
+=========================== short test summary info ============================
+FAILED tests/test_zone_study_multiturn.py::test_90s_wait_preserves_v64_inputs_and_calls_in_all_conditions[leader_ko]
+1 failed, 70 passed in 12.94s

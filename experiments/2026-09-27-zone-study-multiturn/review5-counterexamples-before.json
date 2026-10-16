@@ -1,0 +1,80 @@
+{
+  "base_sha": "8d25d30aabe2c759e86c79d6089b37508f658ade",
+  "source_sha256": "f5d743fb85796749ad986abb383f6ac4164838bc8926350db2f5c66b45f6f270",
+  "model_calls": 0,
+  "physics_steps": 0,
+  "rows": [
+    {
+      "case": "retry_refund",
+      "condition": "peer_ko",
+      "status": "failed",
+      "counterexample": "[0.0, 6.1, 10.1, 12.1]"
+    },
+    {
+      "case": "retry_refund",
+      "condition": "leader_ko",
+      "status": "failed",
+      "counterexample": "[0.0, 6.1, 10.1, 12.1]"
+    },
+    {
+      "case": "retry_refund",
+      "condition": "structured",
+      "status": "failed",
+      "counterexample": "[0.0, 6.1, 10.1, 12.1]"
+    },
+    {
+      "case": "retry_held_refund",
+      "condition": "peer_ko",
+      "status": "failed",
+      "counterexample": "[0.0, 6.1, 10.2, 12.2]"
+    },
+    {
+      "case": "retry_held_refund",
+      "condition": "leader_ko",
+      "status": "failed",
+      "counterexample": "[0.0, 6.1, 10.2, 12.2]"
+    },
+    {
+      "case": "retry_held_refund",
+      "condition": "structured",
+      "status": "failed",
+      "counterexample": "[0.0, 6.1, 10.2, 12.2]"
+    },
+    {
+      "case": "boundary_refund",
+      "condition": "peer_ko",
+      "status": "failed",
+      "counterexample": "[0.0]"
+    },
+    {
+      "case": "boundary_refund",
+      "condition": "leader_ko",
+      "status": "failed",
+      "counterexample": "[0.0]"
+    },
+    {
+      "case": "boundary_refund",
+      "condition": "structured",
+      "status": "failed",
+      "counterexample": "[0.0]"
+    },
+    {
+      "case": "reservation_refund",
+      "condition": "peer_ko",
+      "status": "failed",
+      "counterexample": "[0.0]"
+    },
+    {
+      "case": "reservation_refund",
+      "condition": "leader_ko",
+      "status": "failed",
+      "counterexample": "[0.0]"
+    },
+    {
+      "case": "reservation_refund",
+      "condition": "structured",
+      "status": "failed",
+      "counterexample": "[0.0]"
+    }
+  ]
+}

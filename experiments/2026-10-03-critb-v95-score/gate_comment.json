@@ -1,0 +1,11 @@
+{
+  "schema": "ugrp.criterion_B_v95_comment_snapshot.v1",
+  "role": "gate",
+  "id": 5968809408,
+  "html_url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/219#issuecomment-5968809408",
+  "issue_url": "https://api.github.com/repos/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/219",
+  "created_at": "2026-10-03T11:40:41Z",
+  "updated_at": "2026-10-03T11:40:41Z",
+  "body": "## v95 수집 완료와 운동 관문 결과 — 채점 전 기록 (2026-10-03)\n\n약속 comment 5968608872 뒤에 수집했다. 아래는 **채점 전** 기록이다. 예측 오차·점수는 계산하지 않았다.\n\n- 수집: 소스 `2fe14826fc6b79f0121cfe6d7e6d8b4a1722957b`, 11:13:06Z → 11:38:40Z, 종료 코드 0. 두 지도 모두 `COLLECTED_UNQUALIFIED`이고 프로토콜이 완료되었다(370 SIM s). 파일 3,722개씩 해시가 모두 일치한다. 폴더 `outputs/final-pair-v95-heldout-2fe14826-20261003T111306Z`(로컬 보관, 원격 백업 아님).\n  - 문 지도 사례 `result.json` `7967daa86089f75bf1008a19829e8d891da1df227a945731463383d4beb9452a`, `artifacts.sha256.json` `ad0bd5df8d6983f292c9b4377d5cb8ffcedd2d24f81f85590cd1667ee6e2a938`\n  - 복도 지도 사례 `result.json` `a7437ce0f36233848fcfde25bf54c9de5bb083375308855f01402a94e5373851`, `artifacts.sha256.json` `020f01ab4b8527a108cd24155f42dcae408165a53b22ca33c6eeeb7183f916b8`\n- 운동 관문 1, 고정 검증기 `validate_consumer_criterion_b_v95.py`(`89d24d70…`) `--pose` 4개: 이전 자료 38개와 152건 모두 겹치지 않음(`DISJOINT`). `kinematic_gate.json` `8b19208449a43023e384589d4b011ab24ca6df45a688d3d1055a5d994502688c`.\n- 운동 관문 2, 새 궤적끼리 6쌍: 모두 `DISJOINT`. `within_collection_overlap.json` `c936df73ca6a9bcf8e7239029324d0632f812ccd2f4978317d1d21df6ef3b4c2`. 약속 문구는 \"또는 서로와\"라고 썼지만 고정 검증기는 이전 자료와의 비교만 한다(#365 검토 지적 1). 그래서 검증기는 바꾸지 않고 같은 `overlap()`(`kinematic_overlap.py` `472f984a…`, 허용오차 1e-6, 창 0.2 s)으로 따로 확인했다.\n- 수집 궤적의 운동 해시 4개는 사전검사(`heldout-v95-precheck-20261003T085307Z`) 값과 같다.\n- 다음: 채점 어댑터 PR → 독립 검토 → 어댑터 해시를 여기에 게시 → 그 뒤에만 채점. 결과 문구는 \"새 시작점 검증\"이다.\n",
+  "body_sha256": "84a20cb0fa8d26370256762cbcb0067ae128d1947a82ad9681034c8e3a03a747"
+}

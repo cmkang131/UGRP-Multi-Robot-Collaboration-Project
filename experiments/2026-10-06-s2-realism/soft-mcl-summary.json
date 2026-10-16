@@ -1,0 +1,686 @@
+{
+  "schema": "ugrp.s2.soft_mcl.summary.v1",
+  "criteria_commit": "9a38ae45",
+  "candidate_commit": "dc1ed79b",
+  "criteria": {
+    "schema": "ugrp.s2.soft_mcl.criteria.v1",
+    "seeds": [
+      1045,
+      1046,
+      1047
+    ],
+    "variant": "amcl_likelihood_field_v1",
+    "camera_variant": "unloaded_constant_delta",
+    "comparison": [
+      "legacy",
+      "unloaded_constant_delta"
+    ],
+    "max_update_gap_sim_s": 30.0,
+    "min_independent_updates": 6,
+    "independent_spacing_sim_s": 1.0,
+    "accuracy": "carry xy RMSE strictly lower than both saved-original and same-calibration hard-receipt baselines in every seed; carry xy p90 no worse than either baseline",
+    "all_seeds_required": true,
+    "replay_math_input": "own RGB, own commands, static map, fixed calibration only",
+    "gt_usage": "separate posthoc scoring and admission comparison; never fit/filter input",
+    "update_receipt": "nonconstant likelihood changes particle weights by KL > 1e-12; not an absolute fix; unchanged RGB stationary repeats not counted",
+    "parameters": {
+      "z_hit": 0.5,
+      "z_rand": 0.5,
+      "sigma_hit_m": 0.2,
+      "max_occ_dist_m": 2.0,
+      "max_beams": 60,
+      "range_max_m": 100.0,
+      "grid_resolution_m": 0.01,
+      "update_min_d_m": 0.25,
+      "update_min_a_rad": 0.2,
+      "do_beamskip": false
+    },
+    "source_nav2_commit": "235fc5ce55bdf94d9be360fdbca39d89dc0e4f74",
+    "fixed_budget": "one frozen candidate, three saved runs; no tuning after result inspection; no physical run unless all pass"
+  },
+  "rows": [
+    {
+      "seed": 1045,
+      "variant": "legacy",
+      "carry_window": [
+        87.95,
+        672.45
+      ],
+      "updates": 313,
+      "independent_updates": 27,
+      "max_update_gap_sim_s": 267.45,
+      "frequency_pass": false,
+      "accuracy": {
+        "n": 11690,
+        "rmse_m": 1.7748953735175812,
+        "p50_m": 1.2984710325264135,
+        "p90_m": 3.2995519839103147,
+        "end_m": 3.8393438295447013
+      },
+      "measurement_receipt": "legacy hard receipt"
+    },
+    {
+      "seed": 1045,
+      "variant": "unloaded_constant_delta",
+      "carry_window": [
+        87.95,
+        672.45
+      ],
+      "updates": 1224,
+      "independent_updates": 90,
+      "max_update_gap_sim_s": 107.69999999999999,
+      "frequency_pass": false,
+      "accuracy": {
+        "n": 11690,
+        "rmse_m": 1.825898938508187,
+        "p50_m": 1.1448497852846047,
+        "p90_m": 3.9483122426280124,
+        "end_m": 4.103206187589173
+      },
+      "measurement_receipt": "legacy hard receipt"
+    },
+    {
+      "seed": 1045,
+      "variant": "amcl_likelihood_field_v1",
+      "carry_window": [
+        87.95,
+        672.45
+      ],
+      "updates": 62,
+      "independent_updates": 61,
+      "max_update_gap_sim_s": 184.85000000000002,
+      "frequency_pass": false,
+      "accuracy": {
+        "n": 11690,
+        "rmse_m": 1.6444577065047072,
+        "p50_m": 1.6111648245121748,
+        "p90_m": 2.1281364338673328,
+        "end_m": 1.9148616538425933
+      },
+      "measurement_receipt": "soft weight update, not absolute fix",
+      "accuracy_pass": true,
+      "admission_pass": false
+    },
+    {
+      "seed": 1046,
+      "variant": "legacy",
+      "carry_window": [
+        67.5,
+        307.85
+      ],
+      "updates": 104,
+      "independent_updates": 6,
+      "max_update_gap_sim_s": 222.7,
+      "frequency_pass": false,
+      "accuracy": {
+        "n": 4807,
+        "rmse_m": 1.6819610801858036,
+        "p50_m": 0.4263986239856447,
+        "p90_m": 3.4274731488310133,
+        "end_m": 3.3479475790156936
+      },
+      "measurement_receipt": "legacy hard receipt"
+    },
+    {
+      "seed": 1046,
+      "variant": "unloaded_constant_delta",
+      "carry_window": [
+        67.5,
+        307.85
+      ],
+      "updates": 228,
+      "independent_updates": 12,
+      "max_update_gap_sim_s": 190.70000000000002,
+      "frequency_pass": false,
+      "accuracy": {
+        "n": 4807,
+        "rmse_m": 1.9959707586471018,
+        "p50_m": 0.594874450129949,
+        "p90_m": 3.7915147945399355,
+        "end_m": 3.541830328294815
+      },
+      "measurement_receipt": "legacy hard receipt"
+    },
+    {
+      "seed": 1046,
+      "variant": "amcl_likelihood_field_v1",
+      "carry_window": [
+        67.5,
+        307.85
+      ],
+      "updates": 30,
+      "independent_updates": 30,
+      "max_update_gap_sim_s": 20.200000000000017,
+      "frequency_pass": true,
+      "accuracy": {
+        "n": 4807,
+        "rmse_m": 2.1326956575148834,
+        "p50_m": 0.6020058011853481,
+        "p90_m": 3.9448256012654275,
+        "end_m": 3.759262772847761
+      },
+      "measurement_receipt": "soft weight update, not absolute fix",
+      "accuracy_pass": false,
+      "admission_pass": false
+    },
+    {
+      "seed": 1047,
+      "variant": "legacy",
+      "carry_window": [
+        70.1,
+        237.9
+      ],
+      "updates": 0,
+      "independent_updates": 0,
+      "max_update_gap_sim_s": 167.8,
+      "frequency_pass": false,
+      "accuracy": {
+        "n": 3356,
+        "rmse_m": 0.3510182453133552,
+        "p50_m": 0.25810270846473093,
+        "p90_m": 0.5713375717635356,
+        "end_m": 0.6225955247922654
+      },
+      "measurement_receipt": "legacy hard receipt"
+    },
+    {
+      "seed": 1047,
+      "variant": "unloaded_constant_delta",
+      "carry_window": [
+        70.1,
+        237.9
+      ],
+      "updates": 0,
+      "independent_updates": 0,
+      "max_update_gap_sim_s": 167.8,
+      "frequency_pass": false,
+      "accuracy": {
+        "n": 3356,
+        "rmse_m": 0.6071163434185421,
+        "p50_m": 0.40611989296126416,
+        "p90_m": 0.8930032506942035,
+        "end_m": 0.35745292696235836
+      },
+      "measurement_receipt": "legacy hard receipt"
+    },
+    {
+      "seed": 1047,
+      "variant": "amcl_likelihood_field_v1",
+      "carry_window": [
+        70.1,
+        237.9
+      ],
+      "updates": 21,
+      "independent_updates": 21,
+      "max_update_gap_sim_s": 40.0,
+      "frequency_pass": false,
+      "accuracy": {
+        "n": 3356,
+        "rmse_m": 0.6228687687435803,
+        "p50_m": 0.37896646941257195,
+        "p90_m": 0.923668417104104,
+        "end_m": 0.3675083048697951
+      },
+      "measurement_receipt": "soft weight update, not absolute fix",
+      "accuracy_pass": false,
+      "admission_pass": false
+    }
+  ],
+  "residual_decomposition": {
+    "physics_runs": 0,
+    "gt_usage": "evaluation only; all mean transforms confined to this file",
+    "ordering": "nominal -> mean height -> mean xy -> mean R -> actual per frame -> detector",
+    "attribution_limit": "nonlinear ordered decomposition; median magnitudes do not add; chassis roll/pitch and joints unlogged so separate sag/chassis contributions not identifiable",
+    "lens": {
+      "K_max_difference": 0.0,
+      "roundtrip_x_px": {
+        "n": 307200,
+        "signed_median": 3.0517578125e-05,
+        "abs_median": 0.0001220703125,
+        "p05": -0.000270843505859375,
+        "p95": 0.0003662109375,
+        "std": 0.00018527389125025308
+      },
+      "roundtrip_y_px": {
+        "n": 307200,
+        "signed_median": 1.52587890625e-05,
+        "abs_median": 9.1552734375e-05,
+        "p05": -0.000194549560546875,
+        "p95": 0.000244140625,
+        "std": 0.00013172078675127775
+      },
+      "scope": "numerical coordinate remaps only, not real hardware intrinsics validation"
+    },
+    "summaries": [
+      {
+        "seed": 1045,
+        "carry_window": [
+          87.95,
+          672.45
+        ],
+        "mean_origin_eval_only": [
+          0.19681818135478932,
+          -7.177027447207456e-07,
+          0.18716996876458145
+        ],
+        "mean_rotation_eval_only": [
+          [
+            7.657362249391397e-06,
+            -0.5406525558137389,
+            0.8412459888958974
+          ],
+          [
+            -0.99999999992856,
+            3.5813874229573273e-06,
+            1.1404094211575622e-05
+          ],
+          [
+            -9.178480486426999e-06,
+            -0.8412459889231243,
+            -0.5406525557476909
+          ]
+        ],
+        "pitch_deg": {
+          "n": 11690,
+          "signed_median": -32.728547832099395,
+          "abs_median": 32.728547832099395,
+          "p05": -32.77626510699025,
+          "p95": -32.678316320314856,
+          "std": 0.029582591455206593
+        },
+        "height_m": {
+          "n": 11690,
+          "signed_median": 0.1871717140743751,
+          "abs_median": 0.1871717140743751,
+          "p05": 0.1869649629117252,
+          "p95": 0.18736267943893323,
+          "std": 0.00012297819490900372
+        },
+        "tilt_deg": {
+          "n": 11690,
+          "signed_median": 0.10987803571971143,
+          "abs_median": 0.10987803571971143,
+          "p05": 0.05600252512717966,
+          "p95": 0.22174805497448394,
+          "std": 0.04688146829560312
+        },
+        "sample_frames": 585,
+        "visible_sample_frames": 26,
+        "signed_telescoping_contributions": {
+          "mean_height": {
+            "n": 2104,
+            "signed_median": 7.691449393639459,
+            "abs_median": 7.691449393639459,
+            "p05": 5.647267774601484,
+            "p95": 10.602125219932674,
+            "std": 1.5726852800764928
+          },
+          "mean_xy": {
+            "n": 2104,
+            "signed_median": -1.053129373751716,
+            "abs_median": 1.053129373751716,
+            "p05": -3.182957648431798,
+            "p95": -0.4691174516690126,
+            "std": 0.8420895769866347
+          },
+          "mean_rotation": {
+            "n": 2104,
+            "signed_median": 14.32353337602747,
+            "abs_median": 14.32353337602747,
+            "p05": 13.856371829076462,
+            "p95": 15.069995908834954,
+            "std": 0.40365000340706253
+          },
+          "dynamic_total": {
+            "n": 2104,
+            "signed_median": 0.3042125653346659,
+            "abs_median": 0.3724045044051252,
+            "p05": -0.7046450375335397,
+            "p95": 0.9321053317839414,
+            "std": 0.5191680751412812
+          },
+          "detector_and_raster": {
+            "n": 2104,
+            "signed_median": 0.4272357994725624,
+            "abs_median": 0.49006733527044943,
+            "p05": -1.794678676904374,
+            "p95": 0.8391110816435683,
+            "std": 0.8775699317089221
+          },
+          "total": {
+            "n": 2104,
+            "signed_median": 21.12415621819868,
+            "abs_median": 21.12415621819868,
+            "p05": 19.692383302317154,
+            "p95": 22.4789418897656,
+            "std": 0.8670976642270259
+          },
+          "tilt_first_order_envelope_px": {
+            "n": 2104,
+            "signed_median": 1.8917886479400075,
+            "abs_median": 1.8917886479400075,
+            "p05": 0.8708643191107682,
+            "p95": 3.029199156157211,
+            "std": 0.758057615978823
+          }
+        },
+        "dynamic_by_command": {
+          "False": {
+            "n": 15,
+            "signed_median": 0.5428646455477093,
+            "abs_median": 0.5428646455477093,
+            "p05": 0.26779050902421486,
+            "p95": 0.9231473441012056,
+            "std": 0.25287262964441315
+          },
+          "True": {
+            "n": 11,
+            "signed_median": 0.3305966087286265,
+            "abs_median": 0.3305966087286265,
+            "p05": 0.09001160978037603,
+            "p95": 0.7629916522432296,
+            "std": 0.25462522690227624
+          }
+        },
+        "detected_columns": 42100,
+        "actual_wall_outside_columns": 39996
+      },
+      {
+        "seed": 1046,
+        "carry_window": [
+          67.5,
+          307.85
+        ],
+        "mean_origin_eval_only": [
+          0.19670805398803015,
+          3.4647942839158576e-05,
+          0.18726338518679728
+        ],
+        "mean_rotation_eval_only": [
+          [
+            8.79030636567607e-05,
+            -0.5401789109189306,
+            0.8415501984263862
+          ],
+          [
+            -0.9999999875019363,
+            -0.0001580733850478494,
+            2.9887148532137253e-06
+          ],
+          [
+            0.00013141224781848537,
+            -0.8415501881713552,
+            -0.5401789180628749
+          ]
+        ],
+        "pitch_deg": {
+          "n": 4807,
+          "signed_median": -32.69690869557795,
+          "abs_median": 32.69690869557795,
+          "p05": -32.82948878572304,
+          "p95": -32.60276710375424,
+          "std": 0.14811279896684892
+        },
+        "height_m": {
+          "n": 4807,
+          "signed_median": 0.18717123265390992,
+          "abs_median": 0.18717123265390992,
+          "p05": 0.18685801396536575,
+          "p95": 0.18851341984473272,
+          "std": 0.0004070313259607415
+        },
+        "tilt_deg": {
+          "n": 4807,
+          "signed_median": 0.10054651183215012,
+          "abs_median": 0.10054651183215012,
+          "p05": 0.032389258324470024,
+          "p95": 0.19158696805573258,
+          "std": 0.050844911990720935
+        },
+        "sample_frames": 240,
+        "visible_sample_frames": 150,
+        "signed_telescoping_contributions": {
+          "mean_height": {
+            "n": 6359,
+            "signed_median": 7.8825790679159695,
+            "abs_median": 7.8825790679159695,
+            "p05": 5.498540850828567,
+            "p95": 15.920828630415839,
+            "std": 3.0847551500841566
+          },
+          "mean_xy": {
+            "n": 6359,
+            "signed_median": -0.9067192190227047,
+            "abs_median": 0.9067938926526153,
+            "p05": -1.9983881580153593,
+            "p95": -0.3951231488260164,
+            "std": 1.112782540672474
+          },
+          "mean_rotation": {
+            "n": 6359,
+            "signed_median": 13.94101193395133,
+            "abs_median": 13.94101193395133,
+            "p05": 13.470920739513875,
+            "p95": 17.21905630019352,
+            "std": 6.315385012872689
+          },
+          "dynamic_total": {
+            "n": 6359,
+            "signed_median": 0.20969012378515117,
+            "abs_median": 0.35293121164838226,
+            "p05": -1.0531972698528365,
+            "p95": 2.5807043856684793,
+            "std": 6.720215389827673
+          },
+          "detector_and_raster": {
+            "n": 6359,
+            "signed_median": 0.5068206397421875,
+            "abs_median": 0.555489250900763,
+            "p05": -2.018957938452513,
+            "p95": 2.017934348166133,
+            "std": 6.304363770945169
+          },
+          "total": {
+            "n": 6359,
+            "signed_median": 21.355138004685273,
+            "abs_median": 21.355200815853777,
+            "p05": 19.62561548707433,
+            "p95": 31.21456143753815,
+            "std": 7.545073096017136
+          },
+          "tilt_first_order_envelope_px": {
+            "n": 6359,
+            "signed_median": 1.4758643819099346,
+            "abs_median": 1.4758643819099346,
+            "p05": 0.3699803386553145,
+            "p95": 3.842559544426635,
+            "std": 1.2438571427629397
+          }
+        },
+        "dynamic_by_command": {
+          "False": {
+            "n": 131,
+            "signed_median": 0.3958078487036545,
+            "abs_median": 0.3958078487036545,
+            "p05": 0.03871611668361652,
+            "p95": 3.1316598164955707,
+            "std": 3.8164043232887344
+          },
+          "True": {
+            "n": 19,
+            "signed_median": 1.3289684451984272,
+            "abs_median": 1.3289684451984272,
+            "p05": 0.2280929486437941,
+            "p95": 2.633558315849182,
+            "std": 0.8150333690415544
+          }
+        },
+        "detected_columns": 16247,
+        "actual_wall_outside_columns": 9888
+      },
+      {
+        "seed": 1047,
+        "carry_window": [
+          70.1,
+          237.9
+        ],
+        "mean_origin_eval_only": [
+          0.19679549042259512,
+          -1.2818463256051644e-05,
+          0.18713061856142163
+        ],
+        "mean_rotation_eval_only": [
+          [
+            1.7763976162959993e-05,
+            -0.5405360038563966,
+            0.8413208830282288
+          ],
+          [
+            -0.9999999960823119,
+            6.335465217335856e-05,
+            6.18187990504282e-05
+          ],
+          [
+            -8.671687851236065e-05,
+            -0.8413208808303438,
+            -0.5405360006133145
+          ]
+        ],
+        "pitch_deg": {
+          "n": 3356,
+          "signed_median": -32.71989570653302,
+          "abs_median": 32.71989570653302,
+          "p05": -32.76904824734363,
+          "p95": -32.670445115051585,
+          "std": 0.03195796007928121
+        },
+        "height_m": {
+          "n": 3356,
+          "signed_median": 0.18711857490348088,
+          "abs_median": 0.18711857490348088,
+          "p05": 0.1868126759998957,
+          "p95": 0.1874323109818083,
+          "std": 0.000175649535459682
+        },
+        "tilt_deg": {
+          "n": 3356,
+          "signed_median": 0.1006701553293585,
+          "abs_median": 0.1006701553293585,
+          "p05": 0.027966269439345208,
+          "p95": 0.16808636082316708,
+          "std": 0.04295726749728072
+        },
+        "sample_frames": 167,
+        "visible_sample_frames": 28,
+        "signed_telescoping_contributions": {
+          "mean_height": {
+            "n": 529,
+            "signed_median": 6.1292805030067825,
+            "abs_median": 6.1292805030067825,
+            "p05": 5.5419773593380794,
+            "p95": 9.569715004602484,
+            "std": 1.330145325995817
+          },
+          "mean_xy": {
+            "n": 529,
+            "signed_median": -0.576540870022086,
+            "abs_median": 0.576540870022086,
+            "p05": -0.9988994561834943,
+            "p95": -0.4140189502780176,
+            "std": 0.19979363611071133
+          },
+          "mean_rotation": {
+            "n": 529,
+            "signed_median": 14.728589069186683,
+            "abs_median": 14.728589069186683,
+            "p05": 14.051519420676069,
+            "p95": 15.921685113407381,
+            "std": 0.4926729921207347
+          },
+          "dynamic_total": {
+            "n": 529,
+            "signed_median": 0.19882751604839655,
+            "abs_median": 0.27868595201726976,
+            "p05": -0.9655185614832533,
+            "p95": 0.6055905858509192,
+            "std": 0.5142840147171394
+          },
+          "detector_and_raster": {
+            "n": 529,
+            "signed_median": 0.5270498835469866,
+            "abs_median": 0.5270498835469866,
+            "p05": 0.34536006997718693,
+            "p95": 66.00996381448799,
+            "std": 27.696894088724797
+          },
+          "total": {
+            "n": 529,
+            "signed_median": 21.0136719330689,
+            "abs_median": 21.0136719330689,
+            "p05": 19.673764826157658,
+            "p95": 89.21371954700511,
+            "std": 28.836196176057307
+          },
+          "tilt_first_order_envelope_px": {
+            "n": 529,
+            "signed_median": 1.581708131210463,
+            "abs_median": 1.581708131210463,
+            "p05": 0.36025952577248055,
+            "p95": 2.680496919950892,
+            "std": 0.5941442460124621
+          }
+        },
+        "dynamic_by_command": {
+          "False": {
+            "n": 28,
+            "signed_median": 0.2711679403003373,
+            "abs_median": 0.2711679403003373,
+            "p05": 0.11154484750404947,
+            "p95": 0.9117865509262285,
+            "std": 0.25537528728908776
+          },
+          "True": {
+            "n": 0
+          }
+        },
+        "detected_columns": 10445,
+        "actual_wall_outside_columns": 9916
+      }
+    ],
+    "source_hashes": {
+      "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/eval_only/camera-pose.jsonl": "1ba65659c32701d5851a35e80f2c9a98dca952cc81287eb64309d9f88f125d2e",
+      "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/eval_only/trajectory.jsonl": "90a43f3a354ba171cbacb8a99ea11c62a729d9399d3aeb21e295d9542d43692c",
+      "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/eval_only/supervisor.jsonl": "1d2d7a07f3757375a9547c591d5c2f99f82a808e257a0b404509cb86d3168b27",
+      "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/robots/r3/frames.jsonl": "b28472fdda75a2bef4ea5fe25cde4a244800c03d0f4b2345c011a27d9342e739",
+      "/Users/changmin/projects/ugrp/outputs/s2-realism-e619ee57-s1046-P1-2-place/eval_only/camera-pose.jsonl": "83d6eca192116b73487501a3b94cdad1dd25564088588a72b2fad927c368ccb6",
+      "/Users/changmin/projects/ugrp/outputs/s2-realism-e619ee57-s1046-P1-2-place/eval_only/trajectory.jsonl": "00d8b9bffe358b2748df045807f2eef6a50948e969b7904f13236c9a11ebdcb4",
+      "/Users/changmin/projects/ugrp/outputs/s2-realism-e619ee57-s1046-P1-2-place/eval_only/supervisor.jsonl": "5bcf091e5eb5ddb2bf515b22732ab8941940761b81badaf239fb9f5da56a55c0",
+      "/Users/changmin/projects/ugrp/outputs/s2-realism-e619ee57-s1046-P1-2-place/robots/r3/frames.jsonl": "e3ec694af3b6d7299117be62e63f027089f79275c3daccb06b3a47594cd5a3fe",
+      "/Users/changmin/projects/ugrp/outputs/s2-realism-1a2dbf5e-s1047-P1-2-place/eval_only/camera-pose.jsonl": "a1815c76f7e88fa0dc7238aa952df1127f1c225cdcc8279104a057cc93bb3c81",
+      "/Users/changmin/projects/ugrp/outputs/s2-realism-1a2dbf5e-s1047-P1-2-place/eval_only/trajectory.jsonl": "93d4b5f98e3efa0b3de659e5bb1258b4ab60f431cea31f151f28d90fa1de1f66",
+      "/Users/changmin/projects/ugrp/outputs/s2-realism-1a2dbf5e-s1047-P1-2-place/eval_only/supervisor.jsonl": "02ab34aa3ae5668d46d08af3c320dfb7d19d42286283f0a178dc2cc2d5eab1d7",
+      "/Users/changmin/projects/ugrp/outputs/s2-realism-1a2dbf5e-s1047-P1-2-place/robots/r3/frames.jsonl": "6ca5e07d2491090e910fe207c9ffdb5afdb174ea80c441f6866a10d3552323e8"
+    }
+  },
+  "full_dev_permitted": false,
+  "physical_runs": 0,
+  "model_calls": 0,
+  "new_seed": null,
+  "baseline_reproduction": "prior full legacy replay max delta 0; default-off byte tests passed",
+  "source_hashes": {
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-f0bb26e7-s1045-P1-2-place/eval_only/trajectory.jsonl": "90a43f3a354ba171cbacb8a99ea11c62a729d9399d3aeb21e295d9542d43692c",
+    "/Users/changmin/projects/ugrp/outputs/s2-unloaded-sag-replay-20261007/s1045-legacy.json": "861f3e6ccccee02096f0894593092c1c78a5ba702dcb161f794d16f0f8f02351",
+    "/Users/changmin/projects/ugrp/outputs/s2-unloaded-sag-replay-20261007/s1045-unloaded_constant_delta.json": "f26786549a131ea588ff77695e27d64c786f9914214f4c27bdf8a86b88f98f49",
+    "/Users/changmin/projects/ugrp/outputs/s2-soft-mcl-20261007/s1045-amcl_likelihood_field_v1.json": "b801a709f3bf3cd94f47dadc8c34d272f994fde8990d1e561968d2c760fc52de",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-e619ee57-s1046-P1-2-place/eval_only/trajectory.jsonl": "00d8b9bffe358b2748df045807f2eef6a50948e969b7904f13236c9a11ebdcb4",
+    "/Users/changmin/projects/ugrp/outputs/s2-unloaded-sag-replay-20261007/s1046-legacy.json": "21963ffe3ce2bc4ff1073a3fd8cc48bd3699a1ead88df137750a91a1a970b8b2",
+    "/Users/changmin/projects/ugrp/outputs/s2-unloaded-sag-replay-20261007/s1046-unloaded_constant_delta.json": "411163a93a495bd80a4d4a9fb2bba08c1ea2ff7c7b7a99ca407f361fd81ebd73",
+    "/Users/changmin/projects/ugrp/outputs/s2-soft-mcl-20261007/s1046-amcl_likelihood_field_v1.json": "812e0748b347d0d9ac50535a1b171acc38004b55725608f8f6f06910cdd853de",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-1a2dbf5e-s1047-P1-2-place/eval_only/trajectory.jsonl": "93d4b5f98e3efa0b3de659e5bb1258b4ab60f431cea31f151f28d90fa1de1f66",
+    "/Users/changmin/projects/ugrp/outputs/s2-unloaded-sag-replay-20261007/s1047-legacy.json": "3ef6ce60649bd7db476ccd9a23e18d1a386ddb21499b864a08afa0f00a73d21f",
+    "/Users/changmin/projects/ugrp/outputs/s2-unloaded-sag-replay-20261007/s1047-unloaded_constant_delta.json": "0cfdaebfe30aa0f356f207af080ea2d639b78672e5e36dacb7640f8d2e16d40a",
+    "/Users/changmin/projects/ugrp/outputs/s2-soft-mcl-20261007/s1047-amcl_likelihood_field_v1.json": "a4cf22ae3249b31bdfc7002eb0089046b73d01e8a41ee015f0913dd45ad88fe8",
+    "/Users/changmin/projects/ugrp/outputs/s2-soft-mcl-20261007/residual-decomposition.json": "18a67ded9bcf94fb5aeef6a3ea5295a9bdc0045d40af871a1c8e6d3004af59dc"
+  },
+  "scope": "fixed saved commands; GT only separate scoring, no closed-loop/mission claim"
+}

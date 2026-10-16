@@ -1,0 +1,227 @@
+[
+ {
+  "run": "preflight-02-v63",
+  "condition": "peer_ko",
+  "message_id": "w1-r1-1",
+  "sender": "r1",
+  "recipients": [
+   "r2",
+   "r3"
+  ],
+  "body": {
+   "text": "현재 cyan 물건을 확인하여 order-1을 맡고 destination_zone A로 배송을 진행하겠습니다."
+  },
+  "created_at_sim_s": 5.4,
+  "delivered_at_sim_s": 5.5,
+  "status": "delivered"
+ },
+ {
+  "run": "preflight-02-v63",
+  "condition": "leader_ko",
+  "message_id": "w1-r1-1",
+  "sender": "r1",
+  "recipients": [
+   "r3"
+  ],
+  "body": {
+   "text": "현재 위치에서 cyan 물품을 확인하여 order-1(구역 A) 작업을 진행하겠습니다."
+  },
+  "created_at_sim_s": 5.4,
+  "delivered_at_sim_s": 5.5,
+  "status": "delivered"
+ },
+ {
+  "run": "preflight-02-v63",
+  "condition": "structured",
+  "message_id": "w1-r1-1",
+  "sender": "r1",
+  "recipients": [
+   "r2",
+   "r3"
+  ],
+  "body": {
+   "act": "propose",
+   "confidence": "high",
+   "item": "order-1",
+   "location_ref": "P1-1",
+   "observed_at_sim_s": 0.0,
+   "passage": null,
+   "reply_to": null,
+   "role": "west",
+   "state": "present",
+   "zone": "A"
+  },
+  "created_at_sim_s": 6.6,
+  "delivered_at_sim_s": 6.7,
+  "status": "delivered"
+ },
+ {
+  "run": "cohort-01-v63",
+  "condition": "peer_ko",
+  "message_id": "w1-r1-1",
+  "sender": "r1",
+  "recipients": [
+   "r2",
+   "r3"
+  ],
+  "body": {
+   "text": "cyan 물품을 확인하여 order-1 작업을 맡고 destination_zone A로 이동합니다."
+  },
+  "created_at_sim_s": 5.4,
+  "delivered_at_sim_s": 5.5,
+  "status": "delivered"
+ },
+ {
+  "run": "cohort-01-v63",
+  "condition": "peer_ko",
+  "message_id": "w1-r2-2",
+  "sender": "r2",
+  "recipients": [
+   "r1",
+   "r3"
+  ],
+  "body": {
+   "text": "현재 cyan 물품을 확인하여 order-1(A 구역)을 맡겠습니다."
+  },
+  "created_at_sim_s": 5.4,
+  "delivered_at_sim_s": 5.5,
+  "status": "delivered"
+ },
+ {
+  "run": "cohort-01-v63",
+  "condition": "peer_ko",
+  "message_id": "w1-r3-3",
+  "sender": "r3",
+  "recipients": [
+   "r1",
+   "r2"
+  ],
+  "body": {
+   "text": "현재 cyan 물품을 확인하여 order-1(목적지 A)을 담당하겠습니다."
+  },
+  "created_at_sim_s": 5.4,
+  "delivered_at_sim_s": 5.5,
+  "status": "delivered"
+ },
+ {
+  "run": "cohort-01-v63",
+  "condition": "leader_ko",
+  "message_id": "w1-r1-1",
+  "sender": "r1",
+  "recipients": [
+   "r3"
+  ],
+  "body": {
+   "text": "현재 cyan 상자를 확인하여 order-1(A 구역 배송, role west) 작업을 시작합니다."
+  },
+  "created_at_sim_s": 5.4,
+  "delivered_at_sim_s": 5.5,
+  "status": "delivered"
+ },
+ {
+  "run": "cohort-01-v63",
+  "condition": "leader_ko",
+  "message_id": "w1-r2-2",
+  "sender": "r2",
+  "recipients": [
+   "r3"
+  ],
+  "body": {
+   "text": "현재 cyan 물품을 확인하여 order-1을 맡고 구역 A로 운반하겠습니다."
+  },
+  "created_at_sim_s": 5.3,
+  "delivered_at_sim_s": 5.4,
+  "status": "delivered"
+ },
+ {
+  "run": "cohort-01-v63",
+  "condition": "leader_ko",
+  "message_id": "w1-r3-3",
+  "sender": "r3",
+  "recipients": [
+   "r1",
+   "r2"
+  ],
+  "body": {
+   "text": "r3는 order-1(cyan, 목적지 A)을 담당합니다. r1은 order-2(red, 목적지 B), r2는 order-3(can, 목적지 C) 확인 후 진행해 주세요."
+  },
+  "created_at_sim_s": 6.0,
+  "delivered_at_sim_s": 6.1,
+  "status": "delivered"
+ },
+ {
+  "run": "cohort-01-v63",
+  "condition": "structured",
+  "message_id": "w1-r1-1",
+  "sender": "r1",
+  "recipients": [
+   "r2",
+   "r3"
+  ],
+  "body": {
+   "act": "inform",
+   "confidence": "high",
+   "item": null,
+   "location_ref": "P1-1",
+   "observed_at_sim_s": 0.0,
+   "passage": null,
+   "reply_to": null,
+   "role": "west",
+   "state": "present",
+   "zone": "A"
+  },
+  "created_at_sim_s": 6.5,
+  "delivered_at_sim_s": 6.6,
+  "status": "delivered"
+ },
+ {
+  "run": "cohort-01-v63",
+  "condition": "structured",
+  "message_id": "w1-r2-2",
+  "sender": "r2",
+  "recipients": [
+   "r1",
+   "r3"
+  ],
+  "body": {
+   "act": "inform",
+   "confidence": "high",
+   "item": "cyan",
+   "location_ref": "P1-1",
+   "observed_at_sim_s": 0.0,
+   "passage": null,
+   "reply_to": null,
+   "role": "west",
+   "state": "present",
+   "zone": "A"
+  },
+  "created_at_sim_s": 6.6,
+  "delivered_at_sim_s": 6.7,
+  "status": "delivered"
+ },
+ {
+  "run": "cohort-01-v63",
+  "condition": "structured",
+  "message_id": "w1-r3-3",
+  "sender": "r3",
+  "recipients": [
+   "r1",
+   "r2"
+  ],
+  "body": {
+   "act": "propose",
+   "confidence": "high",
+   "item": null,
+   "location_ref": "P1-1",
+   "observed_at_sim_s": 0.0,
+   "passage": null,
+   "reply_to": null,
+   "role": "west",
+   "state": null,
+   "zone": "A"
+  },
+  "created_at_sim_s": 6.5,
+  "delivered_at_sim_s": 6.6,
+  "status": "delivered"
+ }
+]

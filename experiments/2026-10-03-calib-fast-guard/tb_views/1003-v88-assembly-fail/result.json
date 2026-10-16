@@ -1,0 +1,38 @@
+{
+  "offline_source": {
+    "path": "/Users/changmin/projects/ugrp/outputs/final-pair-v88-measured-20261003/fit_report.json",
+    "sha256": "4b99d1c4f728418f4ee0490c2843f94e0db6fa06d0c11186f53bbe8be2bee067"
+  },
+  "offline_scalar_scope": "Failed #351 assembly attempts on the three v88 collections: audit pass/fail counts only (no fit values).",
+  "offline_scalars": {
+    "offline/collections_audit_pass": 0.0,
+    "offline/collections_audit_fail": 3.0,
+    "offline/attempts": 2.0
+  },
+  "outcome": "PARTIAL_AUDIT_FAIL",
+  "family": "calibration-assembly",
+  "policy": "v88-351",
+  "case": "three_collections",
+  "condition": "assembler-clock-key",
+  "split": "calibration",
+  "seed": 911,
+  "source_sha": "04043e27",
+  "scope": "assembly failure record",
+  "offline_source_pointer": "fit_report.json (attempt 2); attempt 1 had no output (ModuleNotFoundError scipy)",
+  "texts": {
+    "notes/operational": {
+      "attempt_1": "ModuleNotFoundError: scipy; fixed by installing the requirements-test.txt pin scipy==1.17.1 into .venv-sim-worker-mac (numpy 2.5.2 and mujoco 3.12.0 unchanged); no output kept",
+      "reason": "r1 frame clock must be a finite numeric time",
+      "root_cause": "assembler reads frames.jsonl key `t` but the runner writes `sim_time`",
+      "fix": "separate PR on branch claude/calib-assembly-clock (referenced only; not fixed here)"
+    }
+  },
+  "hparam_metrics": [
+    "offline/collections_audit_pass",
+    "offline/collections_audit_fail",
+    "offline/attempts"
+  ],
+  "schema": "ugrp.offline_audit_view.v1",
+  "derived_view_only": true,
+  "run_id": "1003-v88-assembly-fail"
+}

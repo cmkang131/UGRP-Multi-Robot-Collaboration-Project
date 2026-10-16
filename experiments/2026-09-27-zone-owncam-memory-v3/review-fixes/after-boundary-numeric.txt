@@ -1,0 +1,26 @@
+..........................................F............................. [ 80%]
+..................                                                       [100%]
+=================================== FAILURES ===================================
+_____________________ test_self_clear_cone_edges[0.5-True] _____________________
+
+slope = 0.5, clear = True
+
+    @pytest.mark.parametrize('slope,clear', [(0., True), (.5, True), (-.001, False), (.501, False)])
+    def test_self_clear_cone_edges(slope, clear):
+        from harness.owncam_visibility_v3 import self_arm_clear
+        from harness.visual_arm import tool_pose
+        wrist = tool_pose(SEARCH_POSE, tool_length_cm=0.)
+        pitch = math.radians(wrist.pitch_deg)
+        ex = np.array([math.cos(pitch), 0., math.sin(pitch)])
+        ez = np.array([-math.sin(pitch), 0., math.cos(pitch)])
+        pt = np.array([wrist.x_m, wrist.y_m, wrist.z_m]) + .567*ex + (.0136 + slope*.5)*ez
+>       assert self_arm_clear((0., 0., 0.), SEARCH_POSE, np.array([pt])) == clear
+E       assert False == True
+E        +  where False = <function self_arm_clear at 0x111063920>((0.0, 0.0, 0.0), {1: 2000, 3: 740, 4: 2320, 5: 1320, ...}, array([[0.64138401, 0.        , 0.19444413]]))
+E        +    where array([[0.64138401, 0.        , 0.19444413]]) = <built-in function array>([array([0.64138401, 0.        , 0.19444413])])
+E        +      where <built-in function array> = np.array
+
+tests/test_owncam_memory_v3_review.py:300: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_owncam_memory_v3_review.py::test_self_clear_cone_edges[0.5-True]
+1 failed, 89 passed in 6.09s

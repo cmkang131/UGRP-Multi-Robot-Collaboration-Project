@@ -1,0 +1,283 @@
+{
+  "schema": "ugrp.act14.pilot_funnel.v2",
+  "evaluation_source_sha": "8a43837598504e774532df463ff67836785958d6",
+  "execution_source_sha": "3bd9e013ed99ea0b05982bb90e2a6852529eb2a8",
+  "N": 6,
+  "stages": {
+    "approach": 5,
+    "alignment": 2,
+    "grasp": 2,
+    "lift_confirmation": 2
+  },
+  "frame_gate_counts": {
+    "evaluation_frames": 5064,
+    "approach": 3714,
+    "alignment": 1483,
+    "grasp": 1483,
+    "lift_confirmation": 1405
+  },
+  "rejection_distribution": {
+    "alignment_not_passed": 3,
+    "approach_not_passed": 1,
+    "cap_end_after_stable_lift_no_student_done": 2
+  },
+  "cap_end": 4,
+  "completed": 0,
+  "stable_lift": 2,
+  "runs": [
+    {
+      "run": "act14-pilot-p0-91441-3bd9e013",
+      "arm": "p0",
+      "seed": 91441,
+      "stable_lift": false,
+      "automated_physical_success": false,
+      "completed": false,
+      "cap_end": false,
+      "failure_stage": "alignment",
+      "category": "alignment_not_passed",
+      "funnel": {
+        "approach": 1,
+        "alignment": 0,
+        "grasp": 0,
+        "lift_confirmation": 0
+      },
+      "counts": {
+        "evaluation_frames": 603,
+        "approach": 510
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/act14-pilot-p0-91441-3bd9e013/raw",
+      "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/pilot-recount/act14-pilot-p0-91441-3bd9e013/analysis.json.zst",
+      "analysis_sha256": "0ac826cdd0f08760a70daa18803ba8b73560c4227768d61be734060f56b0a031",
+      "audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 72,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "frames": [
+        1.3000000000000178,
+        13.299999999991678,
+        25.30000000002979,
+        37.400000000087566,
+        49.400000000144864,
+        61.50000000020264
+      ]
+    },
+    {
+      "run": "act14-pilot-p02-91441-3bd9e013",
+      "arm": "p02",
+      "seed": 91441,
+      "stable_lift": false,
+      "automated_physical_success": false,
+      "completed": false,
+      "cap_end": true,
+      "failure_stage": "alignment",
+      "category": "alignment_not_passed",
+      "funnel": {
+        "approach": 1,
+        "alignment": 0,
+        "grasp": 0,
+        "lift_confirmation": 0
+      },
+      "counts": {
+        "evaluation_frames": 900,
+        "approach": 778
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/act14-pilot-p02-91441-3bd9e013/raw",
+      "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/pilot-recount/act14-pilot-p02-91441-3bd9e013/analysis.json.zst",
+      "analysis_sha256": "5620f2275a9e674d2048eb3ac3035ae422a09eb7e4a24deaab3dff216bf4f7d0",
+      "audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 113,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "frames": [
+        1.3000000000000178,
+        19.200000000000664,
+        37.20000000008661,
+        55.20000000017256,
+        73.19999999999702,
+        91.19999999957138
+      ]
+    },
+    {
+      "run": "act14-pilot-p0-91440-3bd9e013",
+      "arm": "p0",
+      "seed": 91440,
+      "stable_lift": false,
+      "automated_physical_success": false,
+      "completed": false,
+      "cap_end": true,
+      "failure_stage": "alignment",
+      "category": "alignment_not_passed",
+      "funnel": {
+        "approach": 1,
+        "alignment": 0,
+        "grasp": 0,
+        "lift_confirmation": 0
+      },
+      "counts": {
+        "evaluation_frames": 900,
+        "approach": 830
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/act14-pilot-p0-91440-3bd9e013/raw",
+      "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/pilot-recount/act14-pilot-p0-91440-3bd9e013/analysis.json.zst",
+      "analysis_sha256": "5f5a87f22bda0d698d3d56c9a3db547026d407cc943ea4bb2850d041ef6ada8d",
+      "audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 113,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "frames": [
+        1.3000000000000178,
+        19.200000000000664,
+        37.20000000008661,
+        55.20000000017256,
+        73.19999999999702,
+        91.19999999957138
+      ]
+    },
+    {
+      "run": "act14-pilot-p02-91440-3bd9e013",
+      "arm": "p02",
+      "seed": 91440,
+      "stable_lift": false,
+      "automated_physical_success": false,
+      "completed": false,
+      "cap_end": false,
+      "failure_stage": "approach",
+      "category": "approach_not_passed",
+      "funnel": {
+        "approach": 0,
+        "alignment": 0,
+        "grasp": 0,
+        "lift_confirmation": 0
+      },
+      "counts": {
+        "evaluation_frames": 861
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/act14-pilot-p02-91440-3bd9e013/raw",
+      "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/pilot-recount/act14-pilot-p02-91440-3bd9e013/analysis.json.zst",
+      "analysis_sha256": "c06ec352830f19cce4c5a7e9667470032a84dcaa31e1a861449b8eb5cc2bf8f5",
+      "audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 104,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "frames": [
+        1.3000000000000178,
+        18.49999999999732,
+        35.70000000007945,
+        52.900000000161576,
+        70.10000000007032,
+        87.2999999996636
+      ]
+    },
+    {
+      "run": "act14-pilot-p0-91442-3bd9e013",
+      "arm": "p0",
+      "seed": 91442,
+      "stable_lift": true,
+      "automated_physical_success": true,
+      "completed": false,
+      "cap_end": true,
+      "failure_stage": "lift_confirmation",
+      "category": "cap_end_after_stable_lift_no_student_done",
+      "funnel": {
+        "approach": 1,
+        "alignment": 1,
+        "grasp": 1,
+        "lift_confirmation": 1
+      },
+      "counts": {
+        "evaluation_frames": 900,
+        "approach": 800,
+        "alignment": 744,
+        "grasp": 744,
+        "lift_confirmation": 704
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/act14-pilot-p0-91442-3bd9e013/raw",
+      "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/pilot-recount/act14-pilot-p0-91442-3bd9e013/analysis.json.zst",
+      "analysis_sha256": "d2e44e95e17c2df87cb6408bc7315dd4a0d535959c75016b2093a57556dee5b1",
+      "audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 113,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "frames": [
+        1.3000000000000178,
+        19.200000000000664,
+        37.20000000008661,
+        55.20000000017256,
+        73.19999999999702,
+        91.19999999957138
+      ]
+    },
+    {
+      "run": "act14-pilot-p02-91442-3bd9e013",
+      "arm": "p02",
+      "seed": 91442,
+      "stable_lift": true,
+      "automated_physical_success": true,
+      "completed": false,
+      "cap_end": true,
+      "failure_stage": "lift_confirmation",
+      "category": "cap_end_after_stable_lift_no_student_done",
+      "funnel": {
+        "approach": 1,
+        "alignment": 1,
+        "grasp": 1,
+        "lift_confirmation": 1
+      },
+      "counts": {
+        "evaluation_frames": 900,
+        "approach": 796,
+        "alignment": 739,
+        "grasp": 739,
+        "lift_confirmation": 701
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/act14-pilot-p02-91442-3bd9e013/raw",
+      "analysis": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/pilot-recount/act14-pilot-p02-91442-3bd9e013/analysis.json.zst",
+      "analysis_sha256": "4845cf78cbb837fec88e47de65b858da63a475c0bb70b44b6e54a49da113f7a5",
+      "audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 113,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "frames": [
+        1.3000000000000178,
+        19.200000000000664,
+        37.20000000008661,
+        55.20000000017256,
+        73.19999999999702,
+        91.19999999957138
+      ]
+    }
+  ],
+  "raw_reproduce": "python -m scripts.analyze_grasp_act_act14 --root <raw run root> --output NEW_DIR",
+  "gate_definitions": "approach .08m or functional alignment; alignment nominal .008m/.04rad OR bilateral .5N; grasp bilateral .5N; lift12mm/10deg/.5N/3SIMs. Contact/lift logically imply earlier functional gates. Student done is separate.",
+  "independent_haiku_recount": "pending"
+}

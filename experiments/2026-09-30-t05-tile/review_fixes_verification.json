@@ -1,0 +1,344 @@
+{
+  "schema": "t05.review_fixes.v1",
+  "created_utc": "2026-09-30T16:43:08.116280+00:00",
+  "controller": "tile-west-manipulation-dev2",
+  "reviewed_pr_head": "a4a0bacb51d46d69c1107277c4d11e67b60e4693",
+  "source_parent_sha": "3f271c4902ec51cc0236204ceaf2099a6fc1fa32",
+  "source_sha256": {
+    "harness/tile_own_skill.py": "3471800c90a3860c8f4dab35486310b80637779575327fd04ebb0a06d7d61a6b",
+    "harness/tile_own_vision.py": "63813b165f73c1c40829e388dddcd5b7760745f42e49a2bdf21cc36e8fe1878a",
+    "tests/test_zone_own_executor_tile.py": "ea01dfeab38cb1b850fb514228189431d4198bf7f78e315f666a7c0ca6cf8b71",
+    "tests/test_review_e2e_batch_h.py": "0475bf6197e5982befce5aa756c6b0b81f90f0b60183e735ebd8e972dc1a0636",
+    "tests/test_zone_own_executor_tile_review_h.py": "59e402f0f9644c14bf1e46ed6e118ce6f816a27bc7dc9dd199240815b9305007",
+    "experiments/2026-09-30-t05-tile/mutation_check.py": "37ece6b62e61141bb7dcbb3e8f2d21557fcc398d8b700d2b74692a04acf8f12a",
+    "experiments/2026-09-30-t05-tile/offline_guard.py": "2bef8680db89014b97259c4867503d28c0f0d589f4c87e3abfd8830c3e5d8fda"
+  },
+  "environment": {
+    "python": "3.12.13",
+    "pytest": "9.1.1",
+    "numpy": "2.5.2",
+    "opencv": "5.0.0",
+    "platform": "macOS-27.2-arm64-arm-64bit",
+    "python_executable": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python"
+  },
+  "results": {
+    "before": {
+      "tests": 2,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 0,
+      "per_file": {
+        "tests.test_review_e2e_batch_h": 2
+      }
+    },
+    "tile": {
+      "tests": 106,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "per_file": {
+        "tests.test_zone_own_executor_tile": 104,
+        "tests.test_zone_own_executor_tile_review_h": 2
+      }
+    },
+    "tile-final": {
+      "tests": 107,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "per_file": {
+        "tests.test_zone_own_executor_tile": 105,
+        "tests.test_zone_own_executor_tile_review_h": 2
+      }
+    },
+    "related": {
+      "tests": 223,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "per_file": {
+        "tests.test_zone_own_executor": 14,
+        "tests.test_zone_own_perception_v3": 27,
+        "tests.test_zone_own_perception_v3_1": 126,
+        "tests.test_zone_pair_registered_source": 22,
+        "tests.test_zone_study_source_pinning": 34
+      }
+    }
+  },
+  "final_unique_passed": 330,
+  "deselected": {
+    "test_team_host_feeds_each_executor_only_its_own_camera": "native host physics explicitly excluded"
+  },
+  "preservation": {
+    "review_commit": "d17327aeacf858108179ebbad2a85d0a9e357608",
+    "merged_main": "394f9cda5d67a9d1b94ad1688f39f5616fc00e7b",
+    "merge_head": "3f271c4902ec51cc0236204ceaf2099a6fc1fa32",
+    "review_assertion_bodies_unchanged": true,
+    "review_xfail_removed": true,
+    "protected": {
+      "tests/test_zone_pair_registered_source.py": {
+        "sha256": "4884b81bb2c31eba434a0fca6e021a34eafae31082a90f4281509132f56d67fb",
+        "origin_main_sha256": "4884b81bb2c31eba434a0fca6e021a34eafae31082a90f4281509132f56d67fb",
+        "reviewed_pr_sha256": "4884b81bb2c31eba434a0fca6e021a34eafae31082a90f4281509132f56d67fb"
+      },
+      "tests/test_zone_study_source_pinning.py": {
+        "sha256": "757ab9ffcf6d00322a46dba23d08af6b56a6b4594e86c6f76b3a601fff9697b5",
+        "origin_main_sha256": "757ab9ffcf6d00322a46dba23d08af6b56a6b4594e86c6f76b3a601fff9697b5",
+        "reviewed_pr_sha256": "757ab9ffcf6d00322a46dba23d08af6b56a6b4594e86c6f76b3a601fff9697b5"
+      },
+      ".github/workflows/tests.yml": {
+        "sha256": "8831e19de2f6afa377d9d1835445917804821519e1eb572f4483d1f66bb7f866",
+        "origin_main_sha256": "8831e19de2f6afa377d9d1835445917804821519e1eb572f4483d1f66bb7f866",
+        "reviewed_pr_sha256": "8831e19de2f6afa377d9d1835445917804821519e1eb572f4483d1f66bb7f866"
+      }
+    },
+    "v6e_source_count": 85,
+    "v6e_sources_match": true,
+    "v6e_source_sha256": {
+      "harness/owncam_memory.py": "7bd8caa80e035db4a17da2e68e72e5b23aff85bfbccd3e6ce347d9ecb21d2c2a",
+      "harness/owncam_memory_time.py": "c527d63698474dc346ffa0d2508fe18eb8b9229466e139870ba99d20976ad2d0",
+      "harness/owncam_delivery_shared.py": "b1e025625f0671adc5d6da794fafdde4085abc5e2ceae30cc8eb76c94bbdf1ba",
+      "harness/owncam_memory_delivery.py": "986ecabb7ca07bfab54ea0edf4b529437b043bcb1d9c1816be8176d41c115a50",
+      "harness/owncam_memory_inputs.py": "7cc072cf18b13b790e4f03ec8bdee2f0cfaef89c4b9481e89444e14d3bc2ea83",
+      "harness/owncam_pose_guard_provider.py": "95ea139155a6ee41df39548c2b086b50757975c6f8cc76782d8dfc7f0f6100e1",
+      "harness/owncam_pose_guard_v3.py": "035db19886b687cb64d5b11e74bfaf4b43ef66f088c4aaf93d3e94be1571f4a6",
+      "configs/zone_pair_authorization.json": "8ab7e83e18850205804f9837cd8409a6472ecb0260c21f1c41134a59659a308e",
+      "harness/owncam_drive_mem_v3.py": "771dee9697630686ed68595a5e09dcd27c42d2283b5f5f44d9db4373ba3bf425",
+      "harness/m1_owncam_memory_v3.py": "ff31821b6e685ce72cd49dc69a3ccc0a14fa3e28b3dbb327114eea40ebddede2",
+      "harness/vision_motion_init.py": "4cc94461fb869f7589711ca9f3da357d40e6159094e5a0f40df1b873c4009316",
+      "harness/m2_provider_adapter.py": "3802711add344c2911cd28c45e4ab597305dc8d9a2728ec5b916ce709534b624",
+      "harness/zone_own_deliver.py": "0f347000d39642b24630bccc86d70433ce96329e959867ce0b09ce3d409e2bab",
+      "harness/zone_own_team_host.py": "eecf5a1c87acb396464b1e9d39494df08dfb009644ce380811c5ea56641fca64",
+      "scripts/zone_pair_authorization.py": "14770bc564bc14ff0e8d00bb0fb0fd1a961e2a7b1a09415c6f924fc72efbc649",
+      "scripts/run_zone_study_integration.py": "85508cc58e1cba0f1fc11e3b7ef656c0c7648202ff1086c274c3dbaa64a99edd",
+      "scripts/run_m1_owncam_memory_v3.py": "7b1d233ba04e4e05e151bc0b16398d62c15df0227c571a9108b2d97c8941f1b8",
+      "sim/zone_geometry_scene.py": "39e2644d7650eed49417978df01b9eb5f1601664371b81c418e9d689e949e4b0",
+      "configs/zone_study_integration/pose_providers.json": "7d05c622d91e4229ba7707bffff32b4e4191f39af59d7b3fa94c48a3be13365d",
+      "maps/zones/zone_wide_door_geometry_v2.json": "0a8f5fdc3b3ad01710971a9f5caf020eb76c7e90f3da5713e669d035b4e7ebaf",
+      "harness/pose_provider.py": "362ccd8e06600e0f7046a10ae00caa252ef17d46d7c86afd305081776e1717a2",
+      "harness/vision_pose_source.py": "dc5d5f8d0c0eafae500992ef82635ee6810ba1f71e49f04dc21a298955f6aba7",
+      "harness/zone_study_pose_delay.py": "5d8cdca5f4b734b640945c49a3e6aeb519b207c4dfb80cb72982ae0c066d2894",
+      "harness/zone_own_driver.py": "69d6a9ea8d3b40c52754a53e8950a202ee16c9baa50fa251bc234c764d0b146d",
+      "harness/owncam_drive_shared.py": "e624d57b842637a226480efc59e2a18106a4dfdebc5a0e26fa953d55351f1792",
+      "sim/zone_own_scene_provider.py": "68b3f649b957af34db30ebec39b93ee45d8f7aee7b84c479154cd2ffc833e48b",
+      "harness/owncam_time.py": "64a1dd738de3ed73f44f21b8709af3f81efd54c8e8d5fd721d3ab9f7368fe5d4",
+      "harness/zone_own_contract.py": "afb3fdfab54d7ae34cff050a99a84959308608ba5eb4bbee8354c9f3cc374301",
+      "harness/zone_own_executor.py": "55ed01bba2271a647e5df1718b6876f3b887c33e1d9b0617e43d52cc46fbb4c5",
+      "harness/zone_own_status.py": "cf7ad337830461a9cc23096ccbd74b44639257d87019628b53e6807e5504f6e3",
+      "harness/zone_own_perception.py": "07f8cbf959555bd49f12b3f8a5f93ef14ee5bb559d9385e236d7e8ecd0d694ff",
+      "harness/zone_pair_obstruction.py": "f40bd166ec152436a7d30938f16aee4acfb21b5ead569cc660769143e963a0dd",
+      "harness/zone_pair_grasp.py": "c8dc5418406655009fc9bdedc061edc85d5ca9714455afe2711621cd250f9565",
+      "harness/zone_pair_executor.py": "36813f20315e6e9cd7640a7e6fb47bbb9741df69ba027e576e8171b2e6a90465",
+      "harness/zone_pair_beam_track.py": "7b0870a80a200ee6eaa99d6ca86653094d420dd527bf7b8fcf385b2ff030ce9e",
+      "harness/zone_pair_align.py": "54080303b5d0ae7cb6991dc9ea04435a6dc927c9d8ca9eda3c86c29820fa320e",
+      "harness/zone_pair_guards.py": "cf1dfc6efa374ffd7b9efca4e349e2bacd5df5cb81f949e4cebd84a3b5cb9fde",
+      "harness/zone_pair_geometry.py": "5a58e32eb04a5fbbd4bd2e75aceb0d8a33cfd750470224408f4d43f0f458471d",
+      "harness/zone_pair_status.py": "99bd02f2f3be227ccc84e4903bb5c0d1a37d92d6b382dc5edd5dbce44dd68646",
+      "harness/zone_pair_vision.py": "cce72504edf01d119aafbefc8cb4ea1aa5a407196f9809f6cb5b8ec0bfecc9fc",
+      "harness/owncam_pose_source.py": "b5c151742ba8d716c2f83423ce64a06cf07bdff8e8cf08b278ff84903529074e",
+      "harness/owncam_localizer.py": "9793f74b008b96d4b6659a5251bde7374c697ac7d4bbb23758d5433098402347",
+      "harness/owncam_pair_beam.py": "6bc959a766676ba62fe9126e2d90fcfa62c7353ee79f83fa1ac8caeb4eae82d6",
+      "harness/owncam_pair_beam_v2.py": "b4dad971e241542460a9f7ae259356039033d18c9d4f16c940b2370ced388f97",
+      "harness/owncam_view.py": "d8dbda447e9ec2a4ccd96e5a19d751bf80676b18ff4e636002724528cdd97260",
+      "harness/zone_own_guards.py": "dbf49db31b8c24d2f1358105aee5a8474190d624f1ebf01709ac65226324ec0e",
+      "scripts/run_zone_pair_dev.py": "3e812ead33db3e2c0b214f2ee829954ceca371057eeaf9e2d57b033c1439f6ec",
+      "scripts/zone_pair_dev_runtime.py": "d51af5954094cbd019047455fd5c36f7cdc3d1b00ec3379bfd24ad38e1b80877",
+      "scripts/zone_pair_grasp_contract.py": "60549476ff1c2bafd5429674bd6c16e68ab7da87af0e70eb6607b2bba352fa85",
+      "scripts/evaluate_zone_pair_dev.py": "f331dbea28c14572cd8055d68a7d3cdf2c00217b5da744b6f2589feb70606b53",
+      "configs/simulation_workflows.json": "d0b0d57f6c02902743a8124e6e162ba8af7c5a477c06faeee692878a0d0be140",
+      "sim/zone_start_dock.py": "6a1977ed99bd9f92a5b4dcda3f9e96dbee28fd7957f6c709a242f8b1dfe1bdb4",
+      "sim/zone_dock_scene.py": "8f6c5a27e9dd546238d34d0b1b2f5b64519e72cbb7c096d89c16a6e27a7a0498",
+      "sim/zone_arena.py": "191c1aac15b2796514ea21a290be1b2e5b497754c12abd6f7d15df614a1630c8",
+      "sim/zone_landmarks.py": "2de8bf3a32673c5305d87639894e90deb9932ac015b697ddb8a05dcccf56e5f1",
+      "sim/zone_scene.py": "ca814adfdd02ff9ac09b7288f45d10b249306d7a0e98e9c159ebe63a328ba714",
+      "sim/zone_tagged_cargo_scene.py": "c979b48b97b67abf42ba3bd024dc46569e79b1ec7565bfc7400bf7fb480c8cb7",
+      "scripts/zone_pair_dev_contract.py": "7af8cd28af9559bcd4ec39aeaa6ae3fd07a2649f1623f8722c58c087c446cd1e",
+      "harness/zone_study_integration.py": "5997f0b431fa85c4d5df51f96297924c7f0c9df63b052d853f963662ad997d06",
+      "harness/zone_pair_v6_policy.py": "dcf1d3804f3ccf02622fc8410d00478b171975a0e1f0b299fdd46d2e323ee9bd",
+      "harness/zone_pair_relative.py": "63471d200f1da274ec653d0bb17ce6a7d9cbef6ba200d40b14e299812f8fe7af",
+      "harness/zone_pair_global.py": "4bd00fd86703baf4874c4c333f3d3580166aca95e26ab99337fc2a85cdce16ed",
+      "harness/owncam_recovery_v6.py": "3909f45ecc856ca2f666f9e3c3ee2327ad813c15449f0b0b0f04173492c92f67",
+      "harness/owncam_observability_v6.py": "04c3bd8cc85b4e77f6a413f140542714251573adb38863a57f139443c0b80f0d",
+      "scripts/zone_pair_v6_contract.py": "eee037e6a9a64bf0ac9c1448275aee958bdc70a40b9b79040ee7133639483e8b",
+      "harness/zone_own_sweep.py": "130534457cedb5eb238e650fdf9100358cf6a81bc2262905abd190243887faa6",
+      "harness/pair_owncam_approach.py": "75058e95ff0f78dc388e9e34deba59f0524ef0647fb4e8a2597852ae0440f184",
+      "harness/owncam_drive.py": "a8aede7813956e2de12c25b139b02f48e11dab5be8cbf82a2d25344547d51e82",
+      "scripts/run_m2_pair.py": "3432df1fbefd4779921dc89a20f60fb67299fcdd02aa4568c6ecd14e27978783",
+      "scripts/study_owncam_pair_beam.py": "6f3b7776b17804269fe9060bb355d5fecb17172c10c343672394bc7f1d771a00",
+      "harness/visual_arm.py": "f60e4829fb734da2cdf52619a5e38c0de87da6137bac6fd42516560361de527a",
+      "harness/m1_owncam_delivery.py": "767cda1a6b523e19c0f7ef0f32e6b453799978e623b8e37bfa493b23f9993e09",
+      "harness/owncam_bootstrap_v6b.py": "58156479838caf17318f2b91858e931c5a54360b2c4af45c2db624277ada7b90",
+      "harness/owncam_recovery_v6c.py": "1a1c1a421be2b4dc38f73a7287a23aec1f6edb00b15e6cb1a04e79c9683534dd",
+      "harness/zone_pair_grasp_entry_v6c.py": "b757d7350b0afd9b7f236e32a1d21e85b93247906ce3f45baef49313bc777c7e",
+      "harness/owncam_pair_beam_v6d.py": "cfa4eb80fd0c9402f0effe5e3f9125a488438f03143ffd495b51f4d8787faa12",
+      "harness/owncam_align_motion_v6d.py": "4ac391e60c0d3930576c9daacbd066495fad8f9bb5863dc3ce8eaab6cff8d879",
+      "experiments/2026-09-26-zone-m1-owncam/calibration_m1_dev.json": "126cadaa9265ed2ae2b034f675e67c227193a2e1678f6b0c82dd53b186e6fc72",
+      "harness/owncam_carry_v6e.py": "ec3b42b3502e21491585360bc588663f89003f8e6ed09ab829ae617d867737ec",
+      "harness/own_beam_edge.py": "f72118c5c1faeb91094347469dd15fa6059dd99bd6acede4760eec96411f3e8d",
+      "experiments/2026-09-29-pair-v6e-carry/carry_dr_fit_cal1.json": "5788d0893dfa419af6cee4f40c85f8725f665b406d9d797de226eb3177805a5d",
+      "experiments/2026-09-29-pair-v6e-carry/carry_pair_fit.json": "5dfa75587ae19fbe7278f8fd783cfb71638b160f3aa7247f91ca416f6ff7a88b",
+      "experiments/2026-09-29-pair-v6e-carry/carry_general_fit.json": "9603ce32924b2778943d8232a39ce48237e2881b4d0e2dbdd5310a108fad4a0b",
+      "sim/zone_masterpi_v3_scene.py": "ae0a95499a40d6522f59fd628bce7ae1262b3e1a0bf9a62acd312e565e783fca",
+      "sim/zone_model_conventions.py": "a7f72b9bdf07eff6e2ec945984b7f1a1c1bc0e2a57cc4d10fdd8bf41aaab7aff"
+    },
+    "workflow_diff_empty": true,
+    "workflow_tree": "d16776ce7b241a0ab49132f65bfa6a5ac17895e7"
+  },
+  "mutations": {
+    "schema": "t05.offline_mutation.v1",
+    "physical_steps": 0,
+    "render_calls": 0,
+    "model_calls": 0,
+    "worktree_mutated": false,
+    "source_sha256": {
+      "tile_own_vision.py": "63813b165f73c1c40829e388dddcd5b7760745f42e49a2bdf21cc36e8fe1878a",
+      "tile_own_skill.py": "3471800c90a3860c8f4dab35486310b80637779575327fd04ebb0a06d7d61a6b"
+    },
+    "mutations": [
+      {
+        "name": "role_guard_removed",
+        "module": "tile_own_skill.py",
+        "before": "if role != 'west' or FORMATIONS['tile'] != ('west',):",
+        "after": "if False:",
+        "test_selector": "wrong_role_rejected",
+        "pytest_exit": 1,
+        "killed": true,
+        "log_sha256": "3216836364bfa5c28af499c9a7910bca98aa09027f77d864ae0a21c71e89f23d"
+      },
+      {
+        "name": "box_height_substituted",
+        "module": "tile_own_skill.py",
+        "before": "height_m=vision.GRASP_HEIGHT_M",
+        "after": "height_m=.024",
+        "test_selector": "normal_low_grasp_hold_and_release",
+        "pytest_exit": 1,
+        "killed": true,
+        "log_sha256": "541ccc89848c86007f43dcb8eda0451095632c5fdf22f0494a98b38d07b70f91"
+      },
+      {
+        "name": "hold_confirmation_removed",
+        "module": "tile_own_skill.py",
+        "before": "self.state == 'verify_hold' and self.hold_streak >= CONFIRM_FRAMES",
+        "after": "self.state == 'verify_hold'",
+        "test_selector": "hold_and_release_need_two_post_transition_frames",
+        "pytest_exit": 1,
+        "killed": true,
+        "log_sha256": "bab2f57c8c59ed1cb663628305e12c9a0e80f979dd287bc7a6995b86928cab43"
+      },
+      {
+        "name": "release_evidence_removed",
+        "module": "tile_own_skill.py",
+        "before": "released = (self.view.holding == 'no' and xy is not None and math.dist(xy, self.target_xy) <= .025)",
+        "after": "released = True",
+        "test_selector": "open_command_alone_and_absence_without_visible_floor_tile",
+        "pytest_exit": 1,
+        "killed": true,
+        "log_sha256": "4acdc386442c98340c16037923d9a0f7997356915c1a6711724857ad5f43fd24"
+      },
+      {
+        "name": "own_camera_guard_removed",
+        "module": "tile_own_skill.py",
+        "before": " or obs.get('camera') != 'robot_cam'",
+        "after": "",
+        "test_selector": "bad_camera_input_fails_closed",
+        "pytest_exit": 1,
+        "killed": true,
+        "log_sha256": "f595158aa52788a863da79164676f26883774fb70d9457438a9ca682d1de5a83"
+      },
+      {
+        "name": "background_boundary_removed",
+        "module": "tile_own_vision.py",
+        "before": "fill >= .60 and containment >= .75 and boundary",
+        "after": "fill >= .60 and containment >= .75",
+        "test_selector": "real_holding_requires_tile_boundary",
+        "pytest_exit": 1,
+        "killed": true,
+        "log_sha256": "df4b4d4a1a2e31fefe7449acc93af1984ef4c3d468fcb04ce97f1ccfd42add48"
+      },
+      {
+        "name": "native_duration_reverted",
+        "module": "tile_own_skill.py",
+        "before": "('forward', 'left', 'turn', 'duration_s')",
+        "after": "('forward', 'left', 'turn', 'duration')",
+        "test_selector": "overlapping_native_motion_keeps_latest_end",
+        "pytest_exit": 1,
+        "killed": true,
+        "log_sha256": "f1d9e4f5b6b982da3c48bd3a082f17aeb1fceba3d3bc93d5e9122ef7b2124e0a"
+      },
+      {
+        "name": "motion_end_gate_removed",
+        "module": "tile_own_skill.py",
+        "before": " and self.frame_time >= self.motion_until",
+        "after": "",
+        "test_selector": "overlapping_native_motion_keeps_latest_end",
+        "pytest_exit": 1,
+        "killed": true,
+        "log_sha256": "848e46ea517564ecd3d348313ab1adaa0e4d27b1b01e6ff41d9662f1f2fb15b0"
+      },
+      {
+        "name": "post_command_capture_gate_removed",
+        "module": "tile_own_skill.py",
+        "before": "and self.frame_time > self.motion_time",
+        "after": "and True",
+        "test_selector": "native_motion_waits_for_post_motion_capture",
+        "pytest_exit": 1,
+        "killed": true,
+        "log_sha256": "ba264a68fdd10226c79b3aebd8a4dd67491110086ae2917c1dc42183ec81765f"
+      },
+      {
+        "name": "duplicate_capture_accepted",
+        "module": "tile_own_skill.py",
+        "before": "or t <= self.frame_time",
+        "after": "or t < self.frame_time",
+        "test_selector": "same_capture_time_with_new_id",
+        "pytest_exit": 1,
+        "killed": true,
+        "log_sha256": "4e40b96dbcfe194e75ae0e06ecfa43ec3882d3bcde5b3a43eabed0f0378eba88"
+      }
+    ],
+    "all_killed": true
+  },
+  "local_scope": {
+    "physics_steps": 0,
+    "render_calls": 0,
+    "model_calls": 0,
+    "host_lock_used": false,
+    "guard": "experiments/2026-09-30-t05-tile/offline_guard.py",
+    "input_boundary": "own RGB, static public order/map/calibration, own issued history, delivered cancellation only; private envelope ignored",
+    "native_integration": "pure macro conversion and raw action validation only; no native dispatch/world construction",
+    "tensorboard_snapshot_created": false,
+    "tensorboard_reason": "software regression checks, no robot trial or experiment/evaluation results"
+  },
+  "cleanup": {
+    "private_tmp_extraction_directories_created": [],
+    "remaining_t05_mutation_copies": [],
+    "method": "TemporaryDirectory context cleanup; temp root verified"
+  },
+  "raw_root": "/Users/changmin/projects/ugrp/outputs/t05-tile/review-fixes-20261001",
+  "raw_backup": "local only",
+  "artifacts": {
+    "before.log": "88f4a8709f24cae91ab099969a32df865d2f6c6baf89434d33f80b8805ca4c37",
+    "before.xml": "d60ce557769a3a44a45b804f8038417c4695eede6cf40447645ed95b5eb69ce3",
+    "ci-shards.json": "bc0753ed538423da19ab9bcad165d807257d127f94fcb80f253b834ec45ad404",
+    "mutations/background_boundary_removed.log": "df4b4d4a1a2e31fefe7449acc93af1984ef4c3d468fcb04ce97f1ccfd42add48",
+    "mutations/box_height_substituted.log": "541ccc89848c86007f43dcb8eda0451095632c5fdf22f0494a98b38d07b70f91",
+    "mutations/duplicate_capture_accepted.log": "4e40b96dbcfe194e75ae0e06ecfa43ec3882d3bcde5b3a43eabed0f0378eba88",
+    "mutations/hold_confirmation_removed.log": "bab2f57c8c59ed1cb663628305e12c9a0e80f979dd287bc7a6995b86928cab43",
+    "mutations/motion_end_gate_removed.log": "848e46ea517564ecd3d348313ab1adaa0e4d27b1b01e6ff41d9662f1f2fb15b0",
+    "mutations/mutation.json": "154d622024b771701ac62940ada37ff80c18d1d456292e94c41fd5f78e54f2aa",
+    "mutations/native_duration_reverted.log": "f1d9e4f5b6b982da3c48bd3a082f17aeb1fceba3d3bc93d5e9122ef7b2124e0a",
+    "mutations/own_camera_guard_removed.log": "f595158aa52788a863da79164676f26883774fb70d9457438a9ca682d1de5a83",
+    "mutations/post_command_capture_gate_removed.log": "ba264a68fdd10226c79b3aebd8a4dd67491110086ae2917c1dc42183ec81765f",
+    "mutations/release_evidence_removed.log": "4acdc386442c98340c16037923d9a0f7997356915c1a6711724857ad5f43fd24",
+    "mutations/role_guard_removed.log": "3216836364bfa5c28af499c9a7910bca98aa09027f77d864ae0a21c71e89f23d",
+    "preservation.json": "4befbf51f8a72d1c1f07f3df35b70b18115e9ff065aa57a1225594ecae266f06",
+    "related.log": "4174895c486bc63afe5228679d6796c707ca4d74c584a69f2663006fd7c61f90",
+    "related.xml": "06c29251bfc03914ecf3086ede7497b0f4ed49d4e6adae909971b94dc8c01d10",
+    "review-counterexamples-original.py": "415edd801fa5bc923119aa76a0790484916394d6e0a79ffb641f8c8ea81885fc",
+    "tile-final.log": "83dfd0cfdf2bdcd79efd34454c36d399bd80e6f0538cff51006fa1d5c30698fc",
+    "tile-final.xml": "65dff0866e52d5097d28ef8f01b8007050f3ac860b7de5a8e3c4f385e68141ac",
+    "tile.log": "a59f2786beee9b16f564b3857e6b08e2cba999b3bd0f72c5de616ae96f5ea880",
+    "tile.xml": "ac91447cb689506656b46e6451b58a7fdceb25ea14076b1556746ff009876bf4"
+  },
+  "github_ci": "normal CI pending push; final status belongs to the PR comment"
+}

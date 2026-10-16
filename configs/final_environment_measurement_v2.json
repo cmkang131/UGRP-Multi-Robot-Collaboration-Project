@@ -1,0 +1,617 @@
+{
+  "schema": "ugrp.final_environment_measurement.v2",
+  "status": "DRAFT_DIAGNOSTIC_COMMANDS",
+  "robot_id": "r1",
+  "load_state": "unloaded",
+  "map_id": "zone_wide_two_doors_final_v3",
+  "axes": [
+    "forward",
+    "left"
+  ],
+  "control_period_s": 0.05,
+  "eval_pose_period_s": 0.05,
+  "camera_period_s": 5.0,
+  "reset_cap_s": 5.0,
+  "initial_hold_s": 2.0,
+  "sim_cap_s": 230.0,
+  "total_including_reset_cap_s": 235.0,
+  "command_lease_s": 0.05,
+  "spawn_xy_yaw": [
+    3.25,
+    -0.85,
+    0.0
+  ],
+  "clearance": {
+    "minimum_m": 0.3,
+    "abort_buffer_m": 0.05,
+    "robot_radius_bound_m": 0.35,
+    "max_substep_displacement_m": 0.01
+  },
+  "design_drive_tau_s": {
+    "forward": 1.44,
+    "left": 3.0
+  },
+  "max_design_drive_tau_s": 3.0,
+  "step_duration_s": 15.0,
+  "magnitudes": [
+    0.01,
+    0.02,
+    0.03
+  ],
+  "prbs": {
+    "polynomial": "x^5+x^2+1",
+    "initial_bits": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "bits": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      -1,
+      -1,
+      -1,
+      1,
+      1,
+      -1,
+      1,
+      1,
+      1,
+      -1,
+      1,
+      -1,
+      1,
+      -1,
+      -1,
+      -1,
+      -1,
+      1,
+      -1,
+      -1,
+      1,
+      -1,
+      1,
+      1,
+      -1,
+      -1
+    ],
+    "chip_s": 0.5,
+    "magnitude": 0.02
+  },
+  "segments": [
+    {
+      "axis": "forward",
+      "duration_s": 15.0,
+      "value": 0.01,
+      "phase": "step"
+    },
+    {
+      "axis": "forward",
+      "duration_s": 1.0,
+      "value": 0.0,
+      "phase": "coast"
+    },
+    {
+      "axis": "forward",
+      "duration_s": 15.0,
+      "value": -0.01,
+      "phase": "step"
+    },
+    {
+      "axis": "forward",
+      "duration_s": 1.0,
+      "value": 0.0,
+      "phase": "coast"
+    },
+    {
+      "axis": "forward",
+      "duration_s": 15.0,
+      "value": 0.02,
+      "phase": "step"
+    },
+    {
+      "axis": "forward",
+      "duration_s": 1.0,
+      "value": 0.0,
+      "phase": "coast"
+    },
+    {
+      "axis": "forward",
+      "duration_s": 15.0,
+      "value": -0.02,
+      "phase": "step"
+    },
+    {
+      "axis": "forward",
+      "duration_s": 1.0,
+      "value": 0.0,
+      "phase": "coast"
+    },
+    {
+      "axis": "forward",
+      "duration_s": 15.0,
+      "value": 0.03,
+      "phase": "step"
+    },
+    {
+      "axis": "forward",
+      "duration_s": 1.0,
+      "value": 0.0,
+      "phase": "coast"
+    },
+    {
+      "axis": "forward",
+      "duration_s": 15.0,
+      "value": -0.03,
+      "phase": "step"
+    },
+    {
+      "axis": "forward",
+      "duration_s": 1.0,
+      "value": 0.0,
+      "phase": "coast"
+    },
+    {
+      "axis": "forward",
+      "duration_s": 0.5,
+      "value": 0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "forward",
+      "duration_s": 0.5,
+      "value": 0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "forward",
+      "duration_s": 0.5,
+      "value": 0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "forward",
+      "duration_s": 0.5,
+      "value": 0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "forward",
+      "duration_s": 0.5,
+      "value": 0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "forward",
+      "duration_s": 0.5,
+      "value": -0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "forward",
+      "duration_s": 0.5,
+      "value": -0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "forward",
+      "duration_s": 0.5,
+      "value": -0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "forward",
+      "duration_s": 0.5,
+      "value": 0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "forward",
+      "duration_s": 0.5,
+      "value": 0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "forward",
+      "duration_s": 0.5,
+      "value": -0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "forward",
+      "duration_s": 0.5,
+      "value": 0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "forward",
+      "duration_s": 0.5,
+      "value": 0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "forward",
+      "duration_s": 0.5,
+      "value": 0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "forward",
+      "duration_s": 0.5,
+      "value": -0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "forward",
+      "duration_s": 0.5,
+      "value": 0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "forward",
+      "duration_s": 0.5,
+      "value": -0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "forward",
+      "duration_s": 0.5,
+      "value": 0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "forward",
+      "duration_s": 0.5,
+      "value": -0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "forward",
+      "duration_s": 0.5,
+      "value": -0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "forward",
+      "duration_s": 0.5,
+      "value": -0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "forward",
+      "duration_s": 0.5,
+      "value": -0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "forward",
+      "duration_s": 0.5,
+      "value": 0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "forward",
+      "duration_s": 0.5,
+      "value": -0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "forward",
+      "duration_s": 0.5,
+      "value": -0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "forward",
+      "duration_s": 0.5,
+      "value": 0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "forward",
+      "duration_s": 0.5,
+      "value": -0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "forward",
+      "duration_s": 0.5,
+      "value": 0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "forward",
+      "duration_s": 0.5,
+      "value": 0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "forward",
+      "duration_s": 0.5,
+      "value": -0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "forward",
+      "duration_s": 0.5,
+      "value": -0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "forward",
+      "duration_s": 2.5,
+      "value": 0.0,
+      "phase": "coast"
+    },
+    {
+      "axis": "left",
+      "duration_s": 15.0,
+      "value": 0.01,
+      "phase": "step"
+    },
+    {
+      "axis": "left",
+      "duration_s": 1.0,
+      "value": 0.0,
+      "phase": "coast"
+    },
+    {
+      "axis": "left",
+      "duration_s": 15.0,
+      "value": -0.01,
+      "phase": "step"
+    },
+    {
+      "axis": "left",
+      "duration_s": 1.0,
+      "value": 0.0,
+      "phase": "coast"
+    },
+    {
+      "axis": "left",
+      "duration_s": 15.0,
+      "value": 0.02,
+      "phase": "step"
+    },
+    {
+      "axis": "left",
+      "duration_s": 1.0,
+      "value": 0.0,
+      "phase": "coast"
+    },
+    {
+      "axis": "left",
+      "duration_s": 15.0,
+      "value": -0.02,
+      "phase": "step"
+    },
+    {
+      "axis": "left",
+      "duration_s": 1.0,
+      "value": 0.0,
+      "phase": "coast"
+    },
+    {
+      "axis": "left",
+      "duration_s": 15.0,
+      "value": 0.03,
+      "phase": "step"
+    },
+    {
+      "axis": "left",
+      "duration_s": 1.0,
+      "value": 0.0,
+      "phase": "coast"
+    },
+    {
+      "axis": "left",
+      "duration_s": 15.0,
+      "value": -0.03,
+      "phase": "step"
+    },
+    {
+      "axis": "left",
+      "duration_s": 1.0,
+      "value": 0.0,
+      "phase": "coast"
+    },
+    {
+      "axis": "left",
+      "duration_s": 0.5,
+      "value": 0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "left",
+      "duration_s": 0.5,
+      "value": 0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "left",
+      "duration_s": 0.5,
+      "value": 0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "left",
+      "duration_s": 0.5,
+      "value": 0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "left",
+      "duration_s": 0.5,
+      "value": 0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "left",
+      "duration_s": 0.5,
+      "value": -0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "left",
+      "duration_s": 0.5,
+      "value": -0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "left",
+      "duration_s": 0.5,
+      "value": -0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "left",
+      "duration_s": 0.5,
+      "value": 0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "left",
+      "duration_s": 0.5,
+      "value": 0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "left",
+      "duration_s": 0.5,
+      "value": -0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "left",
+      "duration_s": 0.5,
+      "value": 0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "left",
+      "duration_s": 0.5,
+      "value": 0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "left",
+      "duration_s": 0.5,
+      "value": 0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "left",
+      "duration_s": 0.5,
+      "value": -0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "left",
+      "duration_s": 0.5,
+      "value": 0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "left",
+      "duration_s": 0.5,
+      "value": -0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "left",
+      "duration_s": 0.5,
+      "value": 0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "left",
+      "duration_s": 0.5,
+      "value": -0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "left",
+      "duration_s": 0.5,
+      "value": -0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "left",
+      "duration_s": 0.5,
+      "value": -0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "left",
+      "duration_s": 0.5,
+      "value": -0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "left",
+      "duration_s": 0.5,
+      "value": 0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "left",
+      "duration_s": 0.5,
+      "value": -0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "left",
+      "duration_s": 0.5,
+      "value": -0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "left",
+      "duration_s": 0.5,
+      "value": 0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "left",
+      "duration_s": 0.5,
+      "value": -0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "left",
+      "duration_s": 0.5,
+      "value": 0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "left",
+      "duration_s": 0.5,
+      "value": 0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "left",
+      "duration_s": 0.5,
+      "value": -0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "left",
+      "duration_s": 0.5,
+      "value": -0.02,
+      "phase": "prbs"
+    },
+    {
+      "axis": "left",
+      "duration_s": 2.5,
+      "value": 0.0,
+      "phase": "coast"
+    }
+  ],
+  "qualification": "unloaded forward/lateral drive gain and lag design only; no camera pan, yaw fit, stop-tau qualification, loaded/fine or student success"
+}

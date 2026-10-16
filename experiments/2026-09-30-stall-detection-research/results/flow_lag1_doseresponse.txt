@@ -1,0 +1,27 @@
+dose-response, STALL+MOVING windows n= 4194
+ Spearman(mad_dark, GT displacement mm)=0.588
+ MOVING only n=3460 Spearman(mad_dark, GT disp)=0.274
+ GT disp  0.0- 2.0 mm  n= 214  mad_dark median 0.0132 p90 0.0174
+ GT disp  2.0- 5.0 mm  n= 398  mad_dark median 0.0071 p90 0.0304
+ GT disp  5.0-10.0 mm  n= 120  mad_dark median 0.0260 p90 0.0448
+ GT disp 10.0-20.0 mm  n=   2  mad_dark median 0.0283 p90 0.0284
+ GT disp 20.0-30.0 mm  n=  96  mad_dark median 0.0553 p90 0.1005
+ GT disp 30.0-45.0 mm  n= 308  mad_dark median 0.0700 p90 0.1209
+ GT disp 45.0-60.0 mm  n=3056  mad_dark median 0.0993 p90 0.1484
+within positive-control case (moving windows before contact vs stalled windows after):
+  her_E_y+0.300_h+0.0_b-0.250_+0.0_s911_ stall n=76 med 0.0151 | moving n=12 med 0.0801 | AUC 1.000
+  her_E_y+0.300_h+0.0_b-0.290_+0.0_s911_ stall n=76 med 0.0151 | moving n=12 med 0.0785 | AUC 0.999
+  her_E_y+0.340_h+0.0_b-0.250_+0.0_s911_ stall n=76 med 0.0127 | moving n=12 med 0.0727 | AUC 1.000
+  her_E_y+0.340_h+0.0_b-0.290_+0.0_s911_ stall n=76 med 0.0111 | moving n=12 med 0.0729 | AUC 0.999
+  her_E_y-0.200_h+0.0_b+0.250_+0.0_s911_ stall n=76 med 0.0141 | moving n=12 med 0.1063 | AUC 1.000
+  her_E_y-0.200_h+0.0_b+0.290_+0.0_s911_ stall n=76 med 0.0132 | moving n=12 med 0.1054 | AUC 1.000
+  her_E_y-0.240_h+0.0_b+0.250_+0.0_s911_ stall n=76 med 0.0139 | moving n=12 med 0.1000 | AUC 0.999
+  her_E_y-0.240_h+0.0_b+0.290_+0.0_s911_ stall n=76 med 0.0134 | moving n=12 med 0.0968 | AUC 0.998
+  her_E_y+0.200_h+0.0_b-0.150_+0.0_s911_ stall n=2 med 0.0339 | moving n=88 med 0.1203 | AUC 1.000
+  her_E_y+0.200_h+0.0_b-0.200_+0.0_s911_ stall n=2 med 0.0366 | moving n=88 med 0.1199 | AUC 1.000
+  her_E_y+0.200_h+0.0_b-0.250_+0.0_s911_ stall n=2 med 0.0355 | moving n=88 med 0.1175 | AUC 1.000
+  her_E_y-0.100_h+0.0_b+0.150_+0.0_s911_ stall n=2 med 0.0411 | moving n=88 med 0.1375 | AUC 1.000
+  her_E_y-0.100_h+0.0_b+0.200_+0.0_s911_ stall n=2 med 0.0399 | moving n=88 med 0.1404 | AUC 1.000
+  her_E_y-0.100_h+0.0_b+0.250_+0.0_s911_ stall n=76 med 0.0197 | moving n=12 med 0.1063 | AUC 1.000
+ threshold=moving p5 floor 0.0492 -> stall flagged as stalled (below): 0.985 ; moving flagged stalled 0.050
+ threshold=moving p1 floor 0.0427 -> stall flagged as stalled (below): 0.962 ; moving flagged stalled 0.010

@@ -1,0 +1,35 @@
+rows: cfg/mode robot leg(axis,u,t0) n_seeds | median d_err_mm  e_abs_mm  ratio_est  ratio_vel(D_vel/truth)  nees2
+rec  meas   r1 forward+0.0443 t0=  93.2 n=4 |     -5.3      nan   0.9884   0.9876    0.06
+rec  meas   r1 forward+0.0443 t0= 120.3 n=4 |     -9.7      nan   0.9871   0.9871    0.01
+rec  meas   r1 forward+0.0443 t0= 210.8 n=4 |     -9.4      nan   0.9875   0.9871    0.20
+rec  meas   r1 left   -0.0622 t0= 242.8 n=4 |    -54.7     66.6   0.9289   0.9288    2.28
+rec  meas   r1 left   -0.0622 t0= 335.0 n=4 |    -55.0     87.9   0.9285   0.9288    3.47
+rec  meas   r1 left   +0.0208 t0= 419.6 n=4 |      5.5     31.6   1.2426   1.2325    0.86
+rec  meas   r2 forward-0.0443 t0=  93.2 n=3 |     -5.7      nan   0.9875   0.9875    0.44
+rec  meas   r2 forward-0.0443 t0= 120.3 n=3 |     -9.6      nan   0.9873   0.9871    0.19
+rec  meas   r2 forward-0.0443 t0= 210.8 n=3 |    -10.1      nan   0.9866   0.9871    0.25
+rec  meas   r2 left   +0.0622 t0= 242.8 n=3 |    -54.6    -39.6   0.9291   0.9289    1.05
+rec  meas   r2 left   +0.0622 t0= 335.0 n=3 |    -55.2    -74.7   0.9283   0.9289    3.17
+v102 meas   r1 forward+0.0443 t0=  93.2 n=5 |      0.2      nan   1.0005   0.9998    0.20
+v102 meas   r1 forward+0.0443 t0= 120.3 n=5 |      0.9      nan   1.0012   1.0013    0.14
+v102 meas   r1 forward+0.0443 t0= 210.8 n=5 |      1.5      nan   1.0020   1.0013    0.16
+v102 meas   r1 left   -0.0622 t0= 242.8 n=5 |      1.2     10.3   1.0016   1.0017    0.12
+v102 meas   r1 left   -0.0622 t0= 335.0 n=5 |      1.1     -3.6   1.0015   1.0017    0.08
+v102 meas   r1 left   +0.0208 t0= 419.6 n=5 |      7.2     -6.2   1.3205   1.3061    0.15
+v102 meas   r2 forward-0.0443 t0=  93.2 n=5 |     -0.1      nan   0.9998   0.9998    0.41
+v102 meas   r2 forward-0.0443 t0= 120.3 n=5 |      0.8      nan   1.0010   1.0013    0.23
+v102 meas   r2 forward-0.0443 t0= 210.8 n=5 |      0.7      nan   1.0010   1.0013    0.12
+v102 meas   r2 left   +0.0622 t0= 242.8 n=5 |      1.2     13.6   1.0015   1.0018    0.08
+v102 meas   r2 left   +0.0622 t0= 335.0 n=5 |      1.0     -1.8   1.0014   1.0018    0.11
+
+registered criterion (nomeas; legs with |u|>0.04 of r1 and r2 (the 0.0208 align leg is excluded); median over seeds and legs of |est - truth| displacement error over the leg):
+  left    rec  : median |d_err| = nan mm over 0 (seed, leg, robot) values
+  left    v102 : median |d_err| = nan mm over 0 (seed, leg, robot) values
+  forward rec  : median |d_err| = nan mm over 0 (seed, leg, robot) values
+  forward v102 : median |d_err| = nan mm over 0 (seed, leg, robot) values
+
+registered criterion (meas; legs with |u|>0.04 of r1 and r2 (the 0.0208 align leg is excluded); median over seeds and legs of |est - truth| displacement error over the leg):
+  left    rec  : median |d_err| = 54.9 mm over 14 (seed, leg, robot) values
+  left    v102 : median |d_err| = 1.1 mm over 20 (seed, leg, robot) values
+  forward rec  : median |d_err| = 9.3 mm over 21 (seed, leg, robot) values
+  forward v102 : median |d_err| = 0.6 mm over 30 (seed, leg, robot) values

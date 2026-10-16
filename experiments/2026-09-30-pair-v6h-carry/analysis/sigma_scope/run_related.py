@@ -1,0 +1,15 @@
+"""Run saved offline test groups under the caller's run_ci_tests.run_locked lock."""
+import json
+import subprocess
+import sys
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+manifest = json.loads((HERE/'test_files.json').read_text())
+for group in sys.argv[1:] or ('primary', 'related'):
+    command = [sys.executable, '-m', 'pytest', '-q', '-p', 'no:cacheprovider',
+               '-p', 'tests.pose_provider_no_physics',
+               *manifest[group], '--junitxml', str(HERE/f'pytest-{group}.xml')]
+    code = subprocess.call(command)
+    if code:
+        raise SystemExit(code)

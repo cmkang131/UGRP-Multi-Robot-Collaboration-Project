@@ -1,0 +1,43 @@
+NOTE: 'SELF_POSE_UNCERTAIN gate_not_ok_dwell_or_hysteresis' in the first-failure column is the name the existing classifier (harness/pair_stage_probe.py ~855-868) gives an abort; the raw controller reason in these runs is POSE_UNCERTAIN_PROGRESS (ProgressMonitor no-progress stop), not a pose gate.
+
+== tS: b-v6h-gain-5bfd95f0-tS n=24 load start/end=[19.3, 18.5, 20.3]/[18.8, 21.2, 21.6] source=5bfd95f0 changed=False
+case | L0: class, sigma_yaw start/end deg, end_err mm, min clr beam/chassis mm | L1: class, sigma_yaw start/end deg, end_err mm, min clr beam/chassis mm | first failure
+  S01:s911:pPOST:VENVS | PASS_CLEAN, 0.53/2.25, 57, 448.4/197.6 | PASS_CLEAN, 0.88/2.88, 51, 226.7/156.8 | -
+  S01:s913:pPOST:VENVS | PASS_CLEAN, 0.55/2.25, 57, 447.5/199.1 | PASS_CLEAN, 0.86/2.83, 50, 227.2/157.3 | -
+  S02:s911:pPOST:VENVS | PASS_CLEAN, 0.57/2.19, 41, 436.5/191.4 | PASS_CLEAN, 0.89/2.98, 35, 233.3/163.3 | -
+  S02:s913:pPOST:VENVS | PASS_CLEAN, 0.58/2.23, 41, 436.5/191.4 | PASS_CLEAN, 0.97/2.96, 35, 233.2/163.2 | -
+  S03:s911:pPOST:VENVS | PASS_CLEAN, 0.56/2.19, 25, 382.3/144.5 | PASS_CLEAN, 0.89/2.88, 20, 220.0/140.9 | -
+  S03:s913:pPOST:VENVS | PASS_CLEAN, 0.56/2.23, 27, 381.4/142.6 | PASS_CLEAN, 0.93/2.86, 21, 218.0/138.9 | -
+  S04:s911:pPOST:VENVS | PASS_CLEAN, 0.59/2.00, 56, 438.8/187.0 | PASS_CLEAN, 0.94/2.93, 47, 225.8/155.8 | -
+  S04:s913:pPOST:VENVS | PASS_CLEAN, 0.59/2.03, 56, 438.1/185.6 | PASS_CLEAN, 0.82/2.90, 47, 223.6/153.6 | -
+  S05:s911:pPOST:VENVS | PASS_CLEAN, 0.58/2.22, 44, 418.2/160.7 | PASS_CLEAN, 0.82/2.94, 47, 201.4/131.4 | -
+  S05:s913:pPOST:VENVS | PASS_CLEAN, 0.57/2.22, 44, 417.6/159.5 | PASS_CLEAN, 0.97/2.97, 48, 200.1/130.1 | -
+  S06:s911:pPOST:VENVS | PASS_CLEAN, 0.57/2.22, 48, 365.9/114.5 | PASS_CLEAN, 0.75/2.92, 67, 174.9/105.0 | -
+  S06:s913:pPOST:VENVS | PASS_CLEAN, 0.55/2.23, 47, 366.3/115.4 | PASS_CLEAN, 0.87/2.95, 66, 175.8/105.9 | -
+  S07:s911:pPOST:VENVS | PASS_CLEAN, 0.55/2.44, 58, 346.7/85.6 | PASS_CLEAN, 0.83/2.91, 72, 176.1/80.2 | -
+  S07:s913:pPOST:VENVS | PASS_CLEAN, 0.57/2.51, 57, 347.0/86.3 | PASS_CLEAN, 0.77/2.85, 66, 182.1/81.0 | -
+  S08:s911:pPOST:VENVS | PASS_CLEAN, 0.55/2.18, 16, 390.2/164.6 | PASS_CLEAN, 0.92/2.89, 15, 228.9/158.9 | -
+  S08:s913:pPOST:VENVS | PASS_CLEAN, 0.56/2.25, 18, 388.9/161.9 | PASS_CLEAN, 0.88/2.88, 16, 226.5/156.5 | -
+  S09:s911:pPOST:VENVS | PASS_CLEAN, 0.53/2.26, 13, 401.4/174.3 | PASS_CLEAN, 0.89/2.86, 8, 231.5/161.6 | -
+  S09:s913:pPOST:VENVS | PASS_CLEAN, 0.55/2.24, 14, 400.7/172.9 | PASS_CLEAN, 0.74/2.83, 6, 234.3/164.4 | -
+  S10:s911:pPOST:VENVS | PASS_CLEAN, 0.57/2.22, 57, 414.5/153.6 | PASS_CLEAN, 0.88/2.94, 55, 192.1/122.2 | -
+  S10:s913:pPOST:VENVS | PASS_CLEAN, 0.58/2.23, 56, 415.0/154.3 | PASS_CLEAN, 0.81/2.89, 58, 189.3/119.4 | -
+  S11:s911:pPOST:VENVS | PASS_CLEAN, 0.55/2.24, 35, 366.0/133.1 | PASS_CLEAN, 0.88/2.89, 51, 197.6/127.7 | -
+  S11:s913:pPOST:VENVS | PASS_CLEAN, 0.59/2.28, 35, 366.0/133.1 | PASS_CLEAN, 0.86/2.92, 51, 197.5/127.6 | -
+  S12:s911:pPOST:VENVS | PASS_CLEAN, 0.57/2.42, 30, 367.0/124.5 | PASS_CLEAN, 0.94/2.89, 41, 209.4/120.8 | -
+  S12:s913:pPOST:VENVS | PASS_CLEAN, 0.58/2.45, 31, 367.0/124.6 | PASS_CLEAN, 0.99/2.95, 50, 198.6/120.9 | -
+L0: n=24 PASS_CLEAN=24/24 [86-100%] PASS_any=24/24 [86-100%] PASS_CONTACT_RECOVERED=0 FAIL_HARD_LIMIT=0 FAIL=0
+L1: n=24 PASS_CLEAN=24/24 [86-100%] PASS_any=24/24 [86-100%] PASS_CONTACT_RECOVERED=0 FAIL_HARD_LIMIT=0 FAIL=0
+chain L0->L1 both legs pass: 24/24 [86-100%]
+hard limit (pen > 5 mm or tilt > 15 deg) anywhere in the run (all legs, set-down, regrasp): 0/24 cases
+PF honesty all at the leg ends (case-robot samples): n=96 meanNEES=0.63 median=0.36 cov2sigma x/y/yaw=[1.0, 1.0, 1.0]
+PF honesty L0 at the leg ends (case-robot samples): n=48 meanNEES=0.91 median=0.70 cov2sigma x/y/yaw=[1.0, 1.0, 1.0]
+PF honesty L1 at the leg ends (case-robot samples): n=48 meanNEES=0.35 median=0.20 cov2sigma x/y/yaw=[1.0, 1.0, 1.0]
+L0: cases pass 24/24 [86-100%] (clean 24); independent units (placements) strict 12/12 [76-100%], any-seed 12/12 [76-100%]; classes {'PASS_CLEAN': 24}
+L1: cases pass 24/24 [86-100%] (clean 24); independent units (placements) strict 12/12 [76-100%], any-seed 12/12 [76-100%]; classes {'PASS_CLEAN': 24}
+chain L0->L1: cases 24/24 [86-100%]; units strict 12/12 [76-100%], any 12/12 [76-100%]
+honesty L0 (samples=48, observed placements=12/12): mean e x/y/yaw = +1.6 mm / +14.7 mm / +1.12 deg; mean z^2 x/y/yaw = [0.03, 0.58, 0.55]; +-2sigma coverage (samples) [1.0, 1.0, 1.0]; NEES3 mean 0.91
+  L0 placement-level +-2sigma coverage (covered = all samples of the placement inside; n = observed placements): x 12/12 [76-100%] / y 12/12 [76-100%] / yaw 12/12 [76-100%]; unverified placements: 0
+honesty L1 (samples=48, observed placements=12/12): mean e x/y/yaw = -7.4 mm / +14.3 mm / +0.32 deg; mean z^2 x/y/yaw = [0.08, 0.22, 0.03]; +-2sigma coverage (samples) [1.0, 1.0, 1.0]; NEES3 mean 0.35
+  L1 placement-level +-2sigma coverage (covered = all samples of the placement inside; n = observed placements): x 12/12 [76-100%] / y 12/12 [76-100%] / yaw 12/12 [76-100%]; unverified placements: 0
+contact episodes (both legs): 0; first-failure codes: {}

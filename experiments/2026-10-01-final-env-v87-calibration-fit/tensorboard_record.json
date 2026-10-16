@@ -1,0 +1,80 @@
+{
+  "schema": "ugrp.offline_calibration_tensorboard_record.v1",
+  "active_logdir": "/Users/changmin/projects/ugrp/outputs/tensorboard",
+  "snapshot": "/Users/changmin/projects/ugrp/outputs/tensorboard/1001-v87-unloaded-fit",
+  "url": "http://127.0.0.1:6006/?pinnedCards=%5B%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fforward_gain_candidate%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Flateral_gain_candidate%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Frotate_gain_candidate%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fforward_residual_rms%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Flateral_residual_rms%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Frotate_residual_rms%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fpan_rad_per_pwm%22%7D%5D&smoothing=0&runFilter=%5E1001-v87-unloaded-fit%2F#timeseries",
+  "run_filter": "^1001-v87-unloaded-fit/",
+  "pinned_tags": [
+    "offline/forward_gain_candidate",
+    "offline/lateral_gain_candidate",
+    "offline/rotate_gain_candidate",
+    "offline/forward_residual_rms",
+    "offline/lateral_residual_rms",
+    "offline/rotate_residual_rms",
+    "offline/pan_rad_per_pwm"
+  ],
+  "hparams_visible_columns": [
+    "condition",
+    "case",
+    "outcome",
+    "offline/forward_gain_candidate",
+    "offline/lateral_gain_candidate",
+    "offline/rotate_gain_candidate"
+  ],
+  "live_scalar_values_verified": {
+    "1001-v87-unloaded-fit/corridor": {
+      "offline/forward_gain_candidate": 1.784589171409607,
+      "offline/forward_lag_candidate_s": 1.440000057220459,
+      "offline/forward_residual_rms": 8.979937410913408e-05,
+      "offline/lateral_gain_candidate": 2.40679931640625,
+      "offline/lateral_lag_candidate_s": 3.0,
+      "offline/lateral_residual_rms": 7.759209256619215e-05,
+      "offline/rotate_gain_candidate": 1.1499640941619873,
+      "offline/rotate_lag_candidate_s": 0.17000000178813934,
+      "offline/rotate_residual_rms": 0.00016149190196301788,
+      "offline/pan_rad_per_pwm": 1.5287916710349236e-08
+    },
+    "1001-v87-unloaded-fit/v2-reference": {
+      "offline/forward_gain_candidate": 1.465499997138977,
+      "offline/forward_lag_candidate_s": 0.30000001192092896,
+      "offline/lateral_gain_candidate": 0.9271000027656555,
+      "offline/lateral_lag_candidate_s": 0.30000001192092896,
+      "offline/rotate_gain_candidate": 1.4884999990463257,
+      "offline/rotate_lag_candidate_s": 0.30000001192092896
+    },
+    "1001-v87-unloaded-fit/two-doors": {
+      "offline/forward_gain_candidate": 1.784589171409607,
+      "offline/forward_lag_candidate_s": 1.440000057220459,
+      "offline/forward_residual_rms": 8.979937410913408e-05,
+      "offline/lateral_gain_candidate": 2.40679931640625,
+      "offline/lateral_lag_candidate_s": 3.0,
+      "offline/lateral_residual_rms": 7.759209256619215e-05,
+      "offline/rotate_gain_candidate": 1.1499640941619873,
+      "offline/rotate_lag_candidate_s": 0.17000000178813934,
+      "offline/rotate_residual_rms": 0.00016149190196301788,
+      "offline/pan_rad_per_pwm": 1.5287916710349236e-08
+    },
+    "1001-v87-unloaded-fit/door": {
+      "offline/forward_gain_candidate": 1.784589171409607,
+      "offline/forward_lag_candidate_s": 1.440000057220459,
+      "offline/forward_residual_rms": 8.979937410913408e-05,
+      "offline/lateral_gain_candidate": 2.40679931640625,
+      "offline/lateral_lag_candidate_s": 3.0,
+      "offline/lateral_residual_rms": 7.759209256619215e-05,
+      "offline/rotate_gain_candidate": 1.1499640941619873,
+      "offline/rotate_lag_candidate_s": 0.17000000178813934,
+      "offline/rotate_residual_rms": 0.00016149190196301788,
+      "offline/pan_rad_per_pwm": 1.5287916710349236e-08
+    }
+  },
+  "server_logdir_verified": "/Users/changmin/projects/ugrp/outputs/tensorboard",
+  "display_verified": false,
+  "display_blocker": "CUA browser inventory empty; Chrome native getApp failed cgWindowNotFound. Pinned cards/HParams UI not verified.",
+  "video_registration": "none: offline numeric fit; no video generated",
+  "manifests_sha256": {
+    "corridor/manifest.json": "e3c469991a4365d8205b23e2e8d33d76be39d0d74658e1927ed0236fdd45d3f0",
+    "v2-reference/manifest.json": "c84bbdaae19f11ad56da82fdea0e6133bafb417107a8427c1c558bb9186d391f",
+    "two-doors/manifest.json": "8420295eac3c3490632718125fa85ee95c8f25831095e822a7162e3c5f195308",
+    "door/manifest.json": "5bc3b66324c1e0b3f07bcc8523ea2f646a68b86eb948dcccb30e76ad2c4ae521"
+  }
+}

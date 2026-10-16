@@ -1,0 +1,13 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [{
+    "id": "navfn-start-recovery", "version": "1.0.0",
+    "purpose": "egomap47 one B+NavFn-start360s seed47001, exclusive lock",
+    "entry": "scripts/run_active_navfn_start.py", "runner": "scripts.run_active_navfn_start",
+    "docs": "experiments/2026-10-08-navfn-start-recovery/README.md",
+    "requires": "Frozen source, offline4/4, exclusive lock, no freeze or model",
+    "output_flag": "--output", "output_kind": "directory",
+    "required_inputs": ["--expected-source-sha"], "side_effect": "local_simulation",
+    "adapter": "managed_legacy_cli"
+  }]
+}

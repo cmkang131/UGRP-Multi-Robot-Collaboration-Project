@@ -1,0 +1,311 @@
+{
+  "scope": "Stored own RGB, own issued servo commands, own pose reports and static order only. No rollout replay or new success claim. Saved pose sigmas are used as a diagonal test covariance; v3 consistency evidence is supplied explicitly by the gate fixture, not claimed from v2 logs.",
+  "items": [
+    {
+      "seed": 162,
+      "source": "/Users/changmin/projects/ugrp/outputs/owncam-memory-20260926/test-a1/memory_v2/m1mem-s162",
+      "frames_index_sha256": "4f3664c845c0b55c08f4839db4d8f71cf59a0d5a928608ff63572190e74d6c21",
+      "slot_id": "B1",
+      "slot_xy": [
+        4.6,
+        -2.5
+      ],
+      "release_posture_command": {
+        "t": 222.25,
+        "skill_phase": "pre_release",
+        "action": {
+          "kind": "pose",
+          "pulses": {
+            "3": 696,
+            "4": 1757,
+            "5": 2194,
+            "6": 1540,
+            "1": 1500
+          }
+        }
+      },
+      "reference": {
+        "t": 237.712,
+        "frame_id": 1274,
+        "sha256": "4b9519a769aecddad0b6ed32878c6b624a80de2a50382f40ca6e3ccb7052e20b",
+        "commanded_servo": {
+          "1": 1500,
+          "3": 696,
+          "4": 1757,
+          "5": 2142,
+          "6": 1540
+        },
+        "report": {
+          "t_est": 237.712,
+          "initialized": true,
+          "xyyaw": [
+            4.44182,
+            -2.48677,
+            -0.01201
+          ],
+          "std_xy_m": 0.02677,
+          "std_yaw_rad": 0.02934,
+          "since_tag_s": 1.0,
+          "last_valid_obs": {
+            "t": 236.712,
+            "tag_ids": [
+              41
+            ],
+            "n_tags": 1
+          },
+          "n_eff": 2000.0,
+          "load_state": "loaded",
+          "source": "owncam_pf_v2:757f7f09"
+        },
+        "file": "s162-reference.jpg",
+        "source_file": "frames/01273.jpg"
+      },
+      "current": {
+        "t": 237.912,
+        "frame_id": 1276,
+        "sha256": "7f3f7985f4606fc1aebe1fff390e48db3aaf3d28618691ac5f9d0205dea93b67",
+        "commanded_servo": {
+          "1": 1500,
+          "3": 696,
+          "4": 1757,
+          "5": 2194,
+          "6": 1540
+        },
+        "report": {
+          "t_est": 237.912,
+          "initialized": true,
+          "xyyaw": [
+            4.4418,
+            -2.48677,
+            -0.012012
+          ],
+          "std_xy_m": 0.02684,
+          "std_yaw_rad": 0.03085,
+          "since_tag_s": 1.2,
+          "last_valid_obs": {
+            "t": 236.712,
+            "tag_ids": [
+              41
+            ],
+            "n_tags": 1
+          },
+          "n_eff": 2000.0,
+          "load_state": "loaded",
+          "source": "owncam_pf_v2:757f7f09"
+        },
+        "file": "s162-current.jpg",
+        "source_file": "frames/01275.jpg"
+      },
+      "preplace_goal": [
+        4.4381230958193925,
+        -2.510184431562574
+      ]
+    },
+    {
+      "seed": 164,
+      "source": "/Users/changmin/projects/ugrp/outputs/owncam-memory-20260926/test-a1/memory_v2/m1mem-s164",
+      "frames_index_sha256": "7250069439449e82f14ad3fda5a66bcd4b016823a0c9e8054c8fdfe5955af0bb",
+      "slot_id": "A3",
+      "slot_xy": [
+        4.6,
+        0.8
+      ],
+      "release_posture_command": {
+        "t": 209.695,
+        "skill_phase": "pre_release",
+        "action": {
+          "kind": "pose",
+          "pulses": {
+            "3": 699,
+            "4": 1763,
+            "5": 2191,
+            "6": 1476,
+            "1": 1500
+          }
+        }
+      },
+      "reference": {
+        "t": 210.4952,
+        "frame_id": 1127,
+        "sha256": "2c67dbd2f0d31a38eb5ca34dd33a0d328392c943ef39ffecf6ce40aa959fca43",
+        "commanded_servo": {
+          "1": 1500,
+          "3": 701,
+          "4": 1772,
+          "5": 2174,
+          "6": 1477
+        },
+        "report": {
+          "t_est": 210.4952,
+          "initialized": true,
+          "xyyaw": [
+            4.43997,
+            0.79426,
+            -0.009105
+          ],
+          "std_xy_m": 0.02518,
+          "std_yaw_rad": 0.02901,
+          "since_tag_s": 0.8,
+          "last_valid_obs": {
+            "t": 209.6952,
+            "tag_ids": [
+              47,
+              48
+            ],
+            "n_tags": 2
+          },
+          "n_eff": 1158.9,
+          "load_state": "loaded",
+          "source": "owncam_pf_v2:757f7f09"
+        },
+        "file": "s164-reference.jpg",
+        "source_file": "frames/01126.jpg"
+      },
+      "current": {
+        "t": 210.7525,
+        "frame_id": 1129,
+        "sha256": "d0f5d9d9d28225087d9b634277d15811a964189955dd5c36a9625b2c6a1e66d4",
+        "commanded_servo": {
+          "1": 1500,
+          "3": 699,
+          "4": 1763,
+          "5": 2191,
+          "6": 1476
+        },
+        "report": {
+          "t_est": 210.7525,
+          "initialized": true,
+          "xyyaw": [
+            4.43991,
+            0.79427,
+            -0.008645
+          ],
+          "std_xy_m": 0.02527,
+          "std_yaw_rad": 0.03079,
+          "since_tag_s": 1.057,
+          "last_valid_obs": {
+            "t": 209.6952,
+            "tag_ids": [
+              47,
+              48
+            ],
+            "n_tags": 2
+          },
+          "n_eff": 1158.9,
+          "load_state": "loaded",
+          "source": "owncam_pf_v2:757f7f09"
+        },
+        "file": "s164-current.jpg",
+        "source_file": "frames/01128.jpg"
+      },
+      "preplace_goal": [
+        4.438187315651463,
+        0.8061030860410178
+      ]
+    },
+    {
+      "seed": 165,
+      "source": "/Users/changmin/projects/ugrp/outputs/owncam-memory-20260926/test-a1/memory_v2/m1mem-s165",
+      "frames_index_sha256": "9179ca60ca63f5cebda3cac9d1b17ed7ae42ac1e3fb0a37a8e84b915e7dc930a",
+      "slot_id": "B2",
+      "slot_xy": [
+        4.6,
+        -2.1
+      ],
+      "release_posture_command": {
+        "t": 183.396,
+        "skill_phase": "pre_release",
+        "action": {
+          "kind": "pose",
+          "pulses": {
+            "3": 695,
+            "4": 1754,
+            "5": 2196,
+            "6": 1497,
+            "1": 1500
+          }
+        }
+      },
+      "reference": {
+        "t": 190.2627,
+        "frame_id": 1030,
+        "sha256": "ccaf389ce7566eb6a290d774f9e4cc1beb25a78d224c3ad18658ee00357679da",
+        "commanded_servo": {
+          "1": 1500,
+          "3": 695,
+          "4": 1754,
+          "5": 2142,
+          "6": 1497
+        },
+        "report": {
+          "t_est": 190.2627,
+          "initialized": true,
+          "xyyaw": [
+            4.43865,
+            -2.10406,
+            -0.032962
+          ],
+          "std_xy_m": 0.03116,
+          "std_yaw_rad": 0.02729,
+          "since_tag_s": 1.0,
+          "last_valid_obs": {
+            "t": 189.2627,
+            "tag_ids": [
+              43,
+              44,
+              45
+            ],
+            "n_tags": 3
+          },
+          "n_eff": 2000.0,
+          "load_state": "loaded",
+          "source": "owncam_pf_v2:757f7f09"
+        },
+        "file": "s165-reference.jpg",
+        "source_file": "frames/01029.jpg"
+      },
+      "current": {
+        "t": 190.4627,
+        "frame_id": 1032,
+        "sha256": "d5d8056fbb7e1718ba775bc9cd331810d846f8c132f73c8bb0ba7031a5c27e48",
+        "commanded_servo": {
+          "1": 1500,
+          "3": 695,
+          "4": 1754,
+          "5": 2196,
+          "6": 1497
+        },
+        "report": {
+          "t_est": 190.4627,
+          "initialized": true,
+          "xyyaw": [
+            4.43864,
+            -2.10407,
+            -0.03344
+          ],
+          "std_xy_m": 0.03117,
+          "std_yaw_rad": 0.0286,
+          "since_tag_s": 1.2,
+          "last_valid_obs": {
+            "t": 189.2627,
+            "tag_ids": [
+              43,
+              44,
+              45
+            ],
+            "n_tags": 3
+          },
+          "n_eff": 2000.0,
+          "load_state": "loaded",
+          "source": "owncam_pf_v2:757f7f09"
+        },
+        "file": "s165-current.jpg",
+        "source_file": "frames/01031.jpg"
+      },
+      "preplace_goal": [
+        4.437758500287235,
+        -2.0992354492852243
+      ]
+    }
+  ]
+}

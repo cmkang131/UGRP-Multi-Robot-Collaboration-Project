@@ -1,0 +1,34 @@
+{
+  "left": {
+    "gain": 1.1049453391322106,
+    "ci95": [
+      1.0138920052057299,
+      1.1959986730586913
+    ],
+    "train_n": 6,
+    "check_n": 4,
+    "independent_repeat_n": 3,
+    "mode_gains": {
+      "single": 1.1113270595654052,
+      "continuous": 1.098563618699016
+    },
+    "relative_mode_gap": 0.011551196619747054,
+    "check_rmse_deg_per_pulse_off": 0.434668038519325,
+    "check_rmse_deg_per_pulse_on": 0.2096242565799855,
+    "systematic_error_deg_per_pulse": 0.5634659797382238,
+    "residual_std_deg_per_pulse": 0.2696595496889007
+  },
+  "left_gate": {
+    "under_gain_ci_lower_gt1": true,
+    "single_continuous_agree": true,
+    "check_rmse_improves": true
+  },
+  "right": {
+    "gain": 1.0,
+    "byte_identity_required": true,
+    "check_rmse_deg_per_pulse_off": 0.0463144367531852,
+    "check_rmse_deg_per_pulse_on": 0.0463144367531852
+  },
+  "user_authorized_rule": "CW original identity passes; egomap32 bilateral failure preserved",
+  "eligible": true
+}

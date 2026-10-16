@@ -1,0 +1,188 @@
+
+== base_door: pair-stage-probes-1b776a34-dBase  n=20  pass(standard)=6  load start/end=[65.0, 63.8, 51.3]/[34.9, 49.7, 77.9]  source=1b776a34  source_changed=False
+leg | n | PASS_CLEAN | PASS_CONTACT_RECOVERED | FAIL_HARD_LIMIT | FAIL (causes)
+ L0 | 10 | 4 | 0 | 0 | 6 {'COLLISION_GUARD': 6}
+ L1 | 10 | 2 | 0 | 0 | 8 {'COLLISION_GUARD': 8}
+case | outcome | first failure | contact (who, walls, max pen mm, first t) | min clear beam/chassis to door posts (mm) | to any wall/post beam/chassis (mm) | overrides | NEES r1/r2
+  hR2_01:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 386.4 / 138.3 | 383.6 / 133.5 | - | 1.7/3.9
+  hR2_02:s911:pPOST:VhR2 | FAIL | r2 PAIR_COLLISION_GUARD @24.3 | none | 407.5 / 147.3 | 404.8 / 142.9 | - | 1.6/3.8
+  hR2_03:s911:pPOST:VhR2 | FAIL | r2 PAIR_COLLISION_GUARD @24.6 | none | 394.1 / 139.5 | 391.4 / 134.9 | - | 1.7/4.0
+  hR2_04:s911:pPOST:VhR2 | FAIL | r2 PAIR_COLLISION_GUARD @24.5 | none | 435.6 / 150.1 | 433.7 / 147.6 | - | 2.3/1.8
+  hR2_05:s911:pPOST:VhR2 | FAIL | r2 PAIR_COLLISION_GUARD @24.6 | none | 432.8 / 149.1 | 430.9 / 146.3 | - | 2.0/1.3
+  hR2_06:s911:pPOST:VhR2 | FAIL | r2 PAIR_COLLISION_GUARD @24.5 | none | 436.7 / 152.3 | 434.8 / 149.6 | - | 2.0/1.6
+  hR2_07:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 389.0 / 144.8 | 386.2 / 140.0 | - | 1.3/3.8
+  hR2_08:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 385.1 / 135.8 | 382.3 / 131.0 | - | 1.4/3.4
+  hR2_09:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 386.9 / 139.7 | 384.1 / 134.9 | - | 1.7/3.8
+  hR2_10:s911:pPOST:VhR2 | FAIL | r2 PAIR_COLLISION_GUARD @24.3 | none | 411.2 / 158.6 | 408.4 / 154.1 | - | 1.2/3.4
+  hR2_01:s911:pPOST:L1:VhR2 | FAIL | r1 PAIR_COLLISION_GUARD @31.0 | none | 223.1 / 158.6 | 218.1 / 153.6 | - | 3.9/5.5
+  hR2_02:s911:pPOST:L1:VhR2 | FAIL | r1 PAIR_COLLISION_GUARD @31.0 | none | 222.1 / 158.0 | 217.1 / 153.0 | - | 4.1/8.3
+  hR2_03:s911:pPOST:L1:VhR2 | FAIL | r1 PAIR_COLLISION_GUARD @31.0 | none | 222.1 / 158.0 | 217.1 / 153.0 | - | 4.1/8.4
+  hR2_04:s911:pPOST:L1:VhR2 | FAIL | r2 PAIR_COLLISION_GUARD @6.4 | none | 330.3 / 67.1 | 328.2 / 62.4 | - | 5.6/2.7
+  hR2_05:s911:pPOST:L1:VhR2 | FAIL | r2 PAIR_COLLISION_GUARD @6.4 | none | 330.3 / 67.1 | 328.2 / 62.4 | - | 4.6/2.2
+  hR2_06:s911:pPOST:L1:VhR2 | FAIL | r2 PAIR_COLLISION_GUARD @6.4 | none | 330.3 / 67.1 | 328.2 / 62.4 | - | 4.2/2.5
+  hR2_07:s911:pPOST:L1:VhR2 | FAIL | r1 PAIR_COLLISION_GUARD @30.7 | none | 227.7 / 160.7 | 222.7 / 155.7 | - | 3.0/5.2
+  hR2_08:s911:pPOST:L1:VhR2 | FAIL | r1 PAIR_COLLISION_GUARD @31.0 | none | 221.6 / 156.7 | 216.6 / 151.7 | - | 3.8/5.3
+  hR2_09:s911:pPOST:L1:VhR2 | PASS_CLEAN | - | none | 225.8 / 159.6 | 220.8 / 154.6 | - | 3.7/7.0
+  hR2_10:s911:pPOST:L1:VhR2 | PASS_CLEAN | - | none | 229.6 / 162.4 | 224.6 / 157.4 | - | 2.8/6.4
+PF honesty at the last sample of every case-robot (stage window): n=40 meanNEES=3.52 median=3.56 cov2sigma x/y/yaw=[1.0, 1.0, 0.95]
+
+== k1: pair-stage-probes-1b776a34-dK1  n=20  pass(standard)=14  load start/end=[15.1, 24.0, 21.4]/[15.0, 19.1, 19.5]  source=1b776a34  source_changed=False
+leg | n | PASS_CLEAN | PASS_CONTACT_RECOVERED | FAIL_HARD_LIMIT | FAIL (causes)
+ L0 | 10 | 10 | 0 | 0 | 0 
+ L1 | 10 | 4 | 0 | 0 | 6 {'SELF_POSE_UNCERTAIN:yaw': 5, 'MOTION_ERROR:end_error': 1}
+case | outcome | first failure | contact (who, walls, max pen mm, first t) | min clear beam/chassis to door posts (mm) | to any wall/post beam/chassis (mm) | overrides | NEES r1/r2
+  hR2_01:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 386.4 / 138.3 | 383.6 / 133.5 | 0 | 1.7/3.9
+  hR2_02:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 385.8 / 135.5 | 383.1 / 130.8 | 0 | 1.7/3.9
+  hR2_03:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 385.8 / 135.4 | 383.0 / 130.7 | 0 | 1.7/4.0
+  hR2_04:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 316.9 / 69.0 | 314.5 / 64.0 | 0 | 2.4/2.2
+  hR2_05:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 319.9 / 77.2 | 317.4 / 72.2 | 0 | 2.4/1.9
+  hR2_06:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 318.8 / 74.8 | 316.3 / 69.8 | 0 | 2.2/2.0
+  hR2_07:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 389.0 / 144.8 | 386.2 / 140.0 | 0 | 1.3/3.8
+  hR2_08:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 385.1 / 135.8 | 382.3 / 131.0 | 0 | 1.4/3.4
+  hR2_09:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 386.9 / 139.7 | 384.1 / 134.9 | 0 | 1.7/3.8
+  hR2_10:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 390.0 / 148.7 | 387.2 / 143.9 | 0 | 1.3/3.5
+  hR2_01:s911:pPOST:L1:VhR2 | FAIL | r1 POSE_UNCERTAIN @31.2 | none | 223.1 / 158.6 | 218.1 / 153.6 | 0 | 3.6/5.3
+  hR2_02:s911:pPOST:L1:VhR2 | FAIL | r1 POSE_UNCERTAIN @31.2 | none | 222.1 / 158.0 | 217.1 / 153.0 | 0 | 3.8/8.1
+  hR2_03:s911:pPOST:L1:VhR2 | FAIL | r1 POSE_UNCERTAIN @31.2 | none | 222.1 / 158.0 | 217.1 / 153.0 | 0 | 3.7/8.1
+  hR2_04:s911:pPOST:L1:VhR2 | FAIL | r2 POSE_UNCERTAIN @31.1 | none | 159.8 / 67.0 | 154.9 / 62.2 | 0 | 2.0/3.2
+  hR2_05:s911:pPOST:L1:VhR2 | FAIL | - | none | 164.1 / 67.0 | 159.1 / 62.2 | 0 | 2.0/2.9
+  hR2_06:s911:pPOST:L1:VhR2 | FAIL | r1 POSE_UNCERTAIN @31.1 | none | 162.3 / 67.0 | 157.3 / 62.2 | 0 | 1.9/3.1
+  hR2_07:s911:pPOST:L1:VhR2 | PASS_CLEAN | - | none | 227.7 / 160.7 | 222.7 / 155.7 | 0 | 3.2/5.3
+  hR2_08:s911:pPOST:L1:VhR2 | PASS_CLEAN | - | none | 221.6 / 156.7 | 216.6 / 151.7 | 0 | 3.5/5.1
+  hR2_09:s911:pPOST:L1:VhR2 | PASS_CLEAN | - | none | 225.8 / 159.6 | 220.8 / 154.6 | 0 | 3.7/7.0
+  hR2_10:s911:pPOST:L1:VhR2 | PASS_CLEAN | - | none | 229.6 / 162.4 | 224.6 / 157.4 | 0 | 2.8/6.4
+PF honesty at the last sample of every case-robot (stage window): n=40 meanNEES=3.37 median=3.18 cov2sigma x/y/yaw=[1.0, 1.0, 1.0]
+
+== k0: pair-stage-probes-1b776a34-dK0  n=20  pass(standard)=14  load start/end=[14.3, 18.8, 19.4]/[19.3, 22.8, 23.6]  source=1b776a34  source_changed=False
+leg | n | PASS_CLEAN | PASS_CONTACT_RECOVERED | FAIL_HARD_LIMIT | FAIL (causes)
+ L0 | 10 | 10 | 0 | 0 | 0 
+ L1 | 10 | 4 | 0 | 0 | 6 {'SELF_POSE_UNCERTAIN:yaw': 5, 'MOTION_ERROR:end_error': 1}
+case | outcome | first failure | contact (who, walls, max pen mm, first t) | min clear beam/chassis to door posts (mm) | to any wall/post beam/chassis (mm) | overrides | NEES r1/r2
+  hR2_01:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 386.4 / 138.3 | 383.6 / 133.5 | 0 | 1.7/3.9
+  hR2_02:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 385.8 / 135.5 | 383.1 / 130.8 | 0 | 1.7/3.9
+  hR2_03:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 385.8 / 135.4 | 383.0 / 130.7 | 0 | 1.7/4.0
+  hR2_04:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 316.9 / 69.0 | 314.5 / 64.0 | 0 | 2.4/2.2
+  hR2_05:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 319.9 / 77.2 | 317.4 / 72.2 | 0 | 2.4/1.9
+  hR2_06:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 318.8 / 74.8 | 316.3 / 69.8 | 0 | 2.2/2.0
+  hR2_07:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 389.0 / 144.8 | 386.2 / 140.0 | 0 | 1.3/3.8
+  hR2_08:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 385.1 / 135.8 | 382.3 / 131.0 | 0 | 1.4/3.4
+  hR2_09:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 386.9 / 139.7 | 384.1 / 134.9 | 0 | 1.7/3.8
+  hR2_10:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 390.0 / 148.7 | 387.2 / 143.9 | 0 | 1.3/3.5
+  hR2_01:s911:pPOST:L1:VhR2 | FAIL | r1 POSE_UNCERTAIN @31.2 | none | 223.1 / 158.6 | 218.1 / 153.6 | 0 | 3.6/5.3
+  hR2_02:s911:pPOST:L1:VhR2 | FAIL | r1 POSE_UNCERTAIN @31.2 | none | 222.1 / 158.0 | 217.1 / 153.0 | 0 | 3.8/8.1
+  hR2_03:s911:pPOST:L1:VhR2 | FAIL | r1 POSE_UNCERTAIN @31.2 | none | 222.1 / 158.0 | 217.1 / 153.0 | 0 | 3.7/6.8
+  hR2_04:s911:pPOST:L1:VhR2 | FAIL | r2 POSE_UNCERTAIN @31.1 | none | 159.8 / 67.0 | 154.9 / 62.2 | 0 | 2.0/3.2
+  hR2_05:s911:pPOST:L1:VhR2 | FAIL | - | none | 164.1 / 67.0 | 159.1 / 62.2 | 0 | 2.0/2.9
+  hR2_06:s911:pPOST:L1:VhR2 | FAIL | r1 POSE_UNCERTAIN @31.1 | none | 162.3 / 67.0 | 157.3 / 62.2 | 0 | 1.9/3.1
+  hR2_07:s911:pPOST:L1:VhR2 | PASS_CLEAN | - | none | 227.7 / 160.7 | 222.7 / 155.7 | 0 | 3.2/5.3
+  hR2_08:s911:pPOST:L1:VhR2 | PASS_CLEAN | - | none | 221.6 / 156.7 | 216.6 / 151.7 | 0 | 3.5/5.1
+  hR2_09:s911:pPOST:L1:VhR2 | PASS_CLEAN | - | none | 225.8 / 159.6 | 220.8 / 154.6 | 0 | 3.7/7.0
+  hR2_10:s911:pPOST:L1:VhR2 | PASS_CLEAN | - | none | 229.6 / 162.4 | 224.6 / 157.4 | 0 | 2.8/6.4
+PF honesty at the last sample of every case-robot (stage window): n=40 meanNEES=3.34 median=3.18 cov2sigma x/y/yaw=[1.0, 1.0, 1.0]
+
+== k0g: pair-stage-probes-1b776a34-dK0g  n=20  pass(standard)=17  load start/end=[13.3, 16.2, 16.6]/[15.9, 16.4, 17.0]  source=1b776a34  source_changed=False
+leg | n | PASS_CLEAN | PASS_CONTACT_RECOVERED | FAIL_HARD_LIMIT | FAIL (causes)
+ L0 | 10 | 10 | 0 | 0 | 0 
+ L1 | 10 | 7 | 0 | 0 | 3 {'MOTION_ERROR:end_error': 3}
+case | outcome | first failure | contact (who, walls, max pen mm, first t) | min clear beam/chassis to door posts (mm) | to any wall/post beam/chassis (mm) | overrides | NEES r1/r2
+  hR2_01:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 386.4 / 138.3 | 383.6 / 133.5 | 0 | 1.7/3.9
+  hR2_02:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 385.8 / 135.5 | 383.1 / 130.8 | 0 | 1.7/3.9
+  hR2_03:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 385.8 / 135.4 | 383.0 / 130.7 | 0 | 1.7/4.0
+  hR2_04:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 316.9 / 69.0 | 314.5 / 64.0 | 0 | 2.4/2.2
+  hR2_05:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 319.9 / 77.2 | 317.4 / 72.2 | 0 | 2.4/1.9
+  hR2_06:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 318.8 / 74.8 | 316.3 / 69.8 | 0 | 2.2/2.0
+  hR2_07:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 389.0 / 144.8 | 386.2 / 140.0 | 0 | 1.3/3.8
+  hR2_08:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 385.1 / 135.8 | 382.3 / 131.0 | 0 | 1.4/3.4
+  hR2_09:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 386.9 / 139.7 | 384.1 / 134.9 | 0 | 1.7/3.8
+  hR2_10:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 390.0 / 148.7 | 387.2 / 143.9 | 0 | 1.3/3.5
+  hR2_01:s911:pPOST:L1:VhR2 | PASS_CLEAN | - | none | 223.1 / 158.6 | 218.1 / 153.6 | 0 | 3.6/5.3
+  hR2_02:s911:pPOST:L1:VhR2 | PASS_CLEAN | - | none | 222.1 / 158.0 | 217.1 / 153.0 | 0 | 3.8/8.1
+  hR2_03:s911:pPOST:L1:VhR2 | PASS_CLEAN | - | none | 222.1 / 158.0 | 217.1 / 153.0 | 0 | 3.7/8.1
+  hR2_04:s911:pPOST:L1:VhR2 | FAIL | - | none | 159.3 / 67.0 | 154.3 / 62.2 | 0 | 2.0/3.2
+  hR2_05:s911:pPOST:L1:VhR2 | FAIL | - | none | 164.1 / 67.0 | 159.1 / 62.2 | 0 | 2.0/2.9
+  hR2_06:s911:pPOST:L1:VhR2 | FAIL | - | none | 161.7 / 67.0 | 156.7 / 62.2 | 0 | 1.9/3.1
+  hR2_07:s911:pPOST:L1:VhR2 | PASS_CLEAN | - | none | 227.7 / 160.7 | 222.7 / 155.7 | 0 | 3.2/5.3
+  hR2_08:s911:pPOST:L1:VhR2 | PASS_CLEAN | - | none | 221.6 / 156.7 | 216.6 / 151.7 | 0 | 3.5/5.1
+  hR2_09:s911:pPOST:L1:VhR2 | PASS_CLEAN | - | none | 225.8 / 159.6 | 220.8 / 154.6 | 0 | 3.7/7.0
+  hR2_10:s911:pPOST:L1:VhR2 | PASS_CLEAN | - | none | 229.6 / 162.4 | 224.6 / 157.4 | 0 | 2.8/6.4
+PF honesty at the last sample of every case-robot (stage window): n=40 meanNEES=3.37 median=3.18 cov2sigma x/y/yaw=[1.0, 1.0, 1.0]
+
+== adv: pair-stage-probes-1b776a34-dAdv  n=20  pass(standard)=17  load start/end=[14.9, 16.2, 16.9]/[15.1, 24.0, 21.4]  source=1b776a34  source_changed=False
+leg | n | PASS_CLEAN | PASS_CONTACT_RECOVERED | FAIL_HARD_LIMIT | FAIL (causes)
+ L0 | 10 | 10 | 0 | 0 | 0 
+ L1 | 10 | 7 | 0 | 0 | 3 {'MOTION_ERROR:end_error': 3}
+case | outcome | first failure | contact (who, walls, max pen mm, first t) | min clear beam/chassis to door posts (mm) | to any wall/post beam/chassis (mm) | overrides | NEES r1/r2
+  hR2_01:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 386.4 / 138.3 | 383.6 / 133.5 | 0 | 1.7/3.9
+  hR2_02:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 385.8 / 135.5 | 383.1 / 130.8 | 0 | 1.7/3.9
+  hR2_03:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 385.8 / 135.4 | 383.0 / 130.7 | 0 | 1.7/4.0
+  hR2_04:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 316.9 / 69.0 | 314.5 / 64.0 | 0 | 2.4/2.2
+  hR2_05:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 319.9 / 77.2 | 317.4 / 72.2 | 0 | 2.4/1.9
+  hR2_06:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 318.8 / 74.8 | 316.3 / 69.8 | 0 | 2.2/2.0
+  hR2_07:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 389.0 / 144.8 | 386.2 / 140.0 | 0 | 1.3/3.8
+  hR2_08:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 385.1 / 135.8 | 382.3 / 131.0 | 0 | 1.4/3.4
+  hR2_09:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 386.9 / 139.7 | 384.1 / 134.9 | 0 | 1.7/3.8
+  hR2_10:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 390.0 / 148.7 | 387.2 / 143.9 | 0 | 1.3/3.5
+  hR2_01:s911:pPOST:L1:VhR2 | PASS_CLEAN | - | none | 223.1 / 158.6 | 218.1 / 153.6 | 0 | 3.6/5.3
+  hR2_02:s911:pPOST:L1:VhR2 | PASS_CLEAN | - | none | 222.1 / 158.0 | 217.1 / 153.0 | 0 | 3.8/8.1
+  hR2_03:s911:pPOST:L1:VhR2 | PASS_CLEAN | - | none | 222.1 / 158.0 | 217.1 / 153.0 | 0 | 3.7/8.1
+  hR2_04:s911:pPOST:L1:VhR2 | FAIL | - | none | 159.3 / 67.0 | 154.3 / 62.2 | 0 | 2.0/3.2
+  hR2_05:s911:pPOST:L1:VhR2 | FAIL | - | none | 164.1 / 67.0 | 159.1 / 62.2 | 0 | 2.0/2.9
+  hR2_06:s911:pPOST:L1:VhR2 | FAIL | - | none | 161.7 / 67.0 | 156.7 / 62.2 | 0 | 1.9/3.1
+  hR2_07:s911:pPOST:L1:VhR2 | PASS_CLEAN | - | none | 227.7 / 160.7 | 222.7 / 155.7 | 0 | 3.2/5.3
+  hR2_08:s911:pPOST:L1:VhR2 | PASS_CLEAN | - | none | 221.6 / 156.7 | 216.6 / 151.7 | 0 | 3.5/5.1
+  hR2_09:s911:pPOST:L1:VhR2 | PASS_CLEAN | - | none | 225.8 / 159.6 | 220.8 / 154.6 | 0 | 3.7/7.0
+  hR2_10:s911:pPOST:L1:VhR2 | PASS_CLEAN | - | none | 229.6 / 162.4 | 224.6 / 157.4 | 0 | 2.8/6.4
+PF honesty at the last sample of every case-robot (stage window): n=40 meanNEES=3.37 median=3.18 cov2sigma x/y/yaw=[1.0, 1.0, 1.0]
+
+== base_nondoor: pair-stage-probes-1b776a34-nBase  n=10  pass(standard)=10  load start/end=[72.7, 64.5, 45.1]/[66.5, 64.1, 51.3]  source=1b776a34  source_changed=False
+leg | n | PASS_CLEAN | PASS_CONTACT_RECOVERED | FAIL_HARD_LIMIT | FAIL (causes)
+ L2 | 2 | 2 | 0 | 0 | 0 
+ L3 | 2 | 2 | 0 | 0 | 0 
+ L4 | 2 | 2 | 0 | 0 | 0 
+ L5 | 2 | 2 | 0 | 0 | 0 
+ L6 | 2 | 2 | 0 | 0 | 0 
+case | outcome | first failure | contact (who, walls, max pen mm, first t) | min clear beam/chassis to door posts (mm) | to any wall/post beam/chassis (mm) | overrides | NEES r1/r2
+  hR2_04:s911:pPOST:L2:VhR2 | PASS_CLEAN | - | none | 177.9 / 137.6 | 172.9 / 132.8 | - | 1.8/2.0
+  hR2_07:s911:pPOST:L2:VhR2 | PASS_CLEAN | - | none | 232.6 / 158.3 | 227.6 / 153.3 | - | 2.3/5.6
+  hR2_04:s911:pPOST:L3:VhR2 | PASS_CLEAN | - | none | 682.8 / 401.2 | 659.5 / 372.4 | - | 2.0/0.5
+  hR2_07:s911:pPOST:L3:VhR2 | PASS_CLEAN | - | none | 673.3 / 387.8 | 672.2 / 386.0 | - | 1.4/1.0
+  hR2_04:s911:pPOST:L4:VhR2 | PASS_CLEAN | - | none | 793.6 / 512.1 | 658.5 / 371.3 | - | 2.2/0.6
+  hR2_07:s911:pPOST:L4:VhR2 | PASS_CLEAN | - | none | 760.5 / 482.4 | 672.2 / 386.0 | - | 1.4/1.1
+  hR2_04:s911:pPOST:L5:VhR2 | PASS_CLEAN | - | none | 1288.2 / 1084.1 | 659.0 / 371.8 | - | 2.1/0.6
+  hR2_07:s911:pPOST:L5:VhR2 | PASS_CLEAN | - | none | 1263.0 / 1070.2 | 672.2 / 386.0 | - | 1.4/0.9
+  hR2_04:s911:pPOST:L6:VhR2 | PASS_CLEAN | - | none | 1928.4 / 1765.5 | 704.2 / 417.5 | - | 2.1/2.8
+  hR2_07:s911:pPOST:L6:VhR2 | PASS_CLEAN | - | none | 1907.7 / 1756.4 | 674.6 / 389.2 | - | 2.3/5.3
+PF honesty at the last sample of every case-robot (stage window): n=20 meanNEES=1.98 median=1.94 cov2sigma x/y/yaw=[1.0, 1.0, 1.0]
+
+== k0g_nondoor: pair-stage-probes-1b776a34-nK0g  n=10  pass(standard)=10  load start/end=[15.9, 21.8, 23.2]/[75.0, 64.8, 45.1]  source=1b776a34  source_changed=False
+leg | n | PASS_CLEAN | PASS_CONTACT_RECOVERED | FAIL_HARD_LIMIT | FAIL (causes)
+ L2 | 2 | 2 | 0 | 0 | 0 
+ L3 | 2 | 2 | 0 | 0 | 0 
+ L4 | 2 | 2 | 0 | 0 | 0 
+ L5 | 2 | 2 | 0 | 0 | 0 
+ L6 | 2 | 2 | 0 | 0 | 0 
+case | outcome | first failure | contact (who, walls, max pen mm, first t) | min clear beam/chassis to door posts (mm) | to any wall/post beam/chassis (mm) | overrides | NEES r1/r2
+  hR2_04:s911:pPOST:L2:VhR2 | PASS_CLEAN | - | none | 177.9 / 137.6 | 172.9 / 132.8 | 0 | 1.8/2.0
+  hR2_07:s911:pPOST:L2:VhR2 | PASS_CLEAN | - | none | 232.6 / 158.3 | 227.6 / 153.3 | 0 | 2.3/5.6
+  hR2_04:s911:pPOST:L3:VhR2 | PASS_CLEAN | - | none | 682.8 / 401.2 | 659.5 / 372.4 | 0 | 2.0/0.5
+  hR2_07:s911:pPOST:L3:VhR2 | PASS_CLEAN | - | none | 673.3 / 387.8 | 672.2 / 386.0 | 0 | 1.4/1.0
+  hR2_04:s911:pPOST:L4:VhR2 | PASS_CLEAN | - | none | 793.6 / 512.1 | 658.5 / 371.3 | 0 | 2.2/0.6
+  hR2_07:s911:pPOST:L4:VhR2 | PASS_CLEAN | - | none | 760.5 / 482.4 | 672.2 / 386.0 | 0 | 1.4/1.1
+  hR2_04:s911:pPOST:L5:VhR2 | PASS_CLEAN | - | none | 1288.2 / 1084.1 | 659.0 / 371.8 | 0 | 2.1/0.6
+  hR2_07:s911:pPOST:L5:VhR2 | PASS_CLEAN | - | none | 1263.0 / 1070.2 | 672.2 / 386.0 | 0 | 1.4/0.9
+  hR2_04:s911:pPOST:L6:VhR2 | PASS_CLEAN | - | none | 1928.4 / 1765.5 | 704.2 / 417.5 | 0 | 2.1/2.8
+  hR2_07:s911:pPOST:L6:VhR2 | PASS_CLEAN | - | none | 1907.7 / 1756.4 | 674.6 / 389.2 | 0 | 2.3/5.3
+PF honesty at the last sample of every case-robot (stage window): n=20 meanNEES=1.98 median=1.94 cov2sigma x/y/yaw=[1.0, 1.0, 1.0]
+
+== smoke_k0: pair-stage-probes-1b776a34-dsmokeK0  n=6  pass(standard)=3  load start/end=[13.5, 15.2, 16.3]/[17.1, 17.1, 16.9]  source=1b776a34  source_changed=False
+leg | n | PASS_CLEAN | PASS_CONTACT_RECOVERED | FAIL_HARD_LIMIT | FAIL (causes)
+ L0 | 3 | 3 | 0 | 0 | 0 
+ L1 | 3 | 0 | 0 | 0 | 3 {'SELF_POSE_UNCERTAIN:yaw': 3}
+case | outcome | first failure | contact (who, walls, max pen mm, first t) | min clear beam/chassis to door posts (mm) | to any wall/post beam/chassis (mm) | overrides | NEES r1/r2
+  hR2_01:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 386.4 / 138.3 | 383.6 / 133.5 | 0 | 1.7/3.9
+  hR2_02:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 385.8 / 135.5 | 383.1 / 130.8 | 0 | 1.7/3.9
+  hR2_04:s911:pPOST:VhR2 | PASS_CLEAN | - | none | 316.9 / 69.0 | 314.5 / 64.0 | 0 | 2.4/2.2
+  hR2_01:s911:pPOST:L1:VhR2 | FAIL | r1 POSE_UNCERTAIN @31.2 | none | 223.1 / 158.6 | 218.1 / 153.6 | 0 | 3.6/5.3
+  hR2_02:s911:pPOST:L1:VhR2 | FAIL | r1 POSE_UNCERTAIN @31.2 | none | 222.1 / 158.0 | 217.1 / 153.0 | 0 | 3.8/8.1
+  hR2_04:s911:pPOST:L1:VhR2 | FAIL | r2 POSE_UNCERTAIN @31.1 | none | 159.8 / 67.0 | 154.9 / 62.2 | 0 | 2.0/3.2
+PF honesty at the last sample of every case-robot (stage window): n=12 meanNEES=3.48 median=3.41 cov2sigma x/y/yaw=[1.0, 1.0, 1.0]

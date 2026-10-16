@@ -1,0 +1,306 @@
+{
+  "manifest": {
+    "entries": 5869,
+    "failed": [],
+    "raw_unique_paths": 5627
+  },
+  "camera": {
+    "maps": 3,
+    "poses_per_map": 21,
+    "max_origin_or_rotation_entry_diff": 0.0,
+    "max_angle_residual_diff_deg": 5.001290227774544e-07,
+    "all_rotations_SO3": true
+  },
+  "r3": {
+    "simple_refit": [
+      {
+        "axis": "forward",
+        "parameters": {
+          "gain": 1.2417454479157843,
+          "tau_run_s": 0.8358115892327262,
+          "tau_stop_s": 0.06439155709602515
+        }
+      },
+      {
+        "axis": "left",
+        "parameters": {
+          "gain": 0.8547672927264841,
+          "tau_run_s": 0.8309730366198295,
+          "tau_stop_s": 0.061940826881183485
+        }
+      }
+    ],
+    "metric_tables": [
+      {
+        "axis": "forward",
+        "model": "gain_first_order",
+        "split": "steps",
+        "scalar_count": 822,
+        "max_abs_diff": 0
+      },
+      {
+        "axis": "forward",
+        "model": "gain_first_order",
+        "split": "prbs",
+        "scalar_count": 1038,
+        "max_abs_diff": 0
+      },
+      {
+        "axis": "forward",
+        "model": "grey_box",
+        "split": "steps",
+        "scalar_count": 822,
+        "max_abs_diff": 0
+      },
+      {
+        "axis": "forward",
+        "model": "grey_box",
+        "split": "prbs",
+        "scalar_count": 1038,
+        "max_abs_diff": 0
+      },
+      {
+        "axis": "left",
+        "model": "gain_first_order",
+        "split": "steps",
+        "scalar_count": 822,
+        "max_abs_diff": 0
+      },
+      {
+        "axis": "left",
+        "model": "gain_first_order",
+        "split": "prbs",
+        "scalar_count": 1038,
+        "max_abs_diff": 0
+      },
+      {
+        "axis": "left",
+        "model": "grey_box",
+        "split": "steps",
+        "scalar_count": 822,
+        "max_abs_diff": 0
+      },
+      {
+        "axis": "left",
+        "model": "grey_box",
+        "split": "prbs",
+        "scalar_count": 1038,
+        "max_abs_diff": 0
+      }
+    ],
+    "p95_3_2_s": [
+      {
+        "axis": "forward",
+        "model": "gain_first_order",
+        "n": 297,
+        "position_p95_mm": 6.79451862576517,
+        "coverage_2sigma": [
+          1.0,
+          0.1919191919191919,
+          0.2053872053872054
+        ],
+        "nees": [
+          0.3826459909786357,
+          25.5397654884115,
+          38.84320481545791
+        ]
+      },
+      {
+        "axis": "forward",
+        "model": "grey_box",
+        "n": 297,
+        "position_p95_mm": 0.37041123204746806,
+        "coverage_2sigma": [
+          0.31986531986531985,
+          0.1919191919191919,
+          0.2053872053872054
+        ],
+        "nees": [
+          17.298767033531803,
+          25.539750752836692,
+          38.84311699910281
+        ]
+      },
+      {
+        "axis": "left",
+        "model": "gain_first_order",
+        "n": 297,
+        "position_p95_mm": 5.501298255393499,
+        "coverage_2sigma": [
+          1.0,
+          0.9158249158249159,
+          0.9494949494949495
+        ],
+        "nees": [
+          0.2771667347024445,
+          1.0397889970684886,
+          1.1447503898186189
+        ]
+      },
+      {
+        "axis": "left",
+        "model": "grey_box",
+        "n": 297,
+        "position_p95_mm": 0.43303725209037996,
+        "coverage_2sigma": [
+          0.6127946127946128,
+          0.9259259259259259,
+          1.0
+        ],
+        "nees": [
+          4.617861184037923,
+          0.984458763744877,
+          0.8241511437875685
+        ]
+      }
+    ]
+  },
+  "r4": {
+    "numeric_values_compared": 710,
+    "max_abs_diff": 0.0,
+    "parameters": {
+      "forward": {
+        "gain": 1.2371430923959086,
+        "tau_s": 0.7977909566698789,
+        "tau_stop_s": 0.08897855686817813
+      },
+      "left": {
+        "gain": 0.8509603197221365,
+        "tau_s": 0.7877102182037926,
+        "tau_stop_s": 0.08846192007410676
+      },
+      "rotate": null
+    },
+    "noise_abs": [
+      0.01538,
+      0.012767691858458299,
+      0.01406
+    ],
+    "minimum_training_2sigma_coverage": 0.9500648508430609
+  },
+  "reviewed_head": "65ce28cf7da3c8c33de97a03b19cd1665b45f831",
+  "verdict": "MERGE AFTER FIXES",
+  "physics_runs": 0,
+  "rendering_runs": 0,
+  "model_calls": 0,
+  "r1_refit_byte_equal": [
+    "fit_report.json",
+    "calibration_partial.json",
+    "input_manifest.tsv"
+  ],
+  "raw_after_review": {
+    "raw_unique_files": 5627,
+    "after_review_failed": []
+  },
+  "synthetic_counterexamples": [
+    {
+      "case": "missing_chronology",
+      "load_accepted": true,
+      "axis_pass": {
+        "forward": true,
+        "left": null,
+        "rotate": null
+      },
+      "scope": "HELD_OUT",
+      "post_hash_check_accepted": true,
+      "synthetic": true
+    },
+    {
+      "case": "result_check",
+      "load_accepted": true,
+      "axis_pass": {
+        "forward": true,
+        "left": null,
+        "rotate": null
+      },
+      "scope": "HELD_OUT",
+      "post_hash_check_accepted": true,
+      "synthetic": true
+    },
+    {
+      "case": "result_map",
+      "load_accepted": true,
+      "axis_pass": {
+        "forward": true,
+        "left": null,
+        "rotate": null
+      },
+      "scope": "HELD_OUT",
+      "post_hash_check_accepted": true,
+      "synthetic": true
+    },
+    {
+      "case": "pose_check",
+      "load_accepted": true,
+      "axis_pass": {
+        "forward": true,
+        "left": null,
+        "rotate": null
+      },
+      "scope": "HELD_OUT",
+      "post_hash_check_accepted": true,
+      "synthetic": true
+    },
+    {
+      "case": "failed_parent",
+      "load_accepted": true,
+      "axis_pass": {
+        "forward": true,
+        "left": null,
+        "rotate": null
+      },
+      "scope": "HELD_OUT",
+      "post_hash_check_accepted": true,
+      "synthetic": true
+    },
+    {
+      "case": "missing_coast",
+      "load_accepted": true,
+      "axis_pass": {
+        "forward": true,
+        "left": null,
+        "rotate": null
+      },
+      "scope": "HELD_OUT",
+      "post_hash_check_accepted": true,
+      "synthetic": true
+    },
+    {
+      "case": "root_changed",
+      "load_accepted": true,
+      "axis_pass": {
+        "forward": true,
+        "left": null,
+        "rotate": null
+      },
+      "scope": "HELD_OUT",
+      "post_hash_check_accepted": true,
+      "synthetic": true
+    }
+  ],
+  "tests": {
+    "related_offline": {
+      "passed": 286,
+      "failed": 0,
+      "skipped": 0
+    },
+    "review": {
+      "passed": 10,
+      "strict_xfailed": 7,
+      "failed": 0,
+      "skipped_other": 0
+    }
+  },
+  "local_evidence_sha256": {
+    "/Users/changmin/projects/ugrp/outputs/review-346-65ce28cf/recompute.py": "2c4a860658d21f3cd25423a006e5b0d6804da8a23db08c314782def88e9e35b4",
+    "/Users/changmin/projects/ugrp/outputs/review-346-65ce28cf/recompute.log": "039c60f1327d0de53e36b8294e5be6b0e92f9fa01b9373a6526cd79fcdaa0269",
+    "/Users/changmin/projects/ugrp/outputs/review-346-65ce28cf/counterexamples-final.xml": "516829d6cd217141c4911ece4383d9bf944889c4c963d16075295c4b595e1b4b",
+    "/Users/changmin/projects/ugrp/outputs/review-346-offline-tests.xml": "6cd8a82250c01677bb7dd705cccc4adb2d6031403de7961d002d3195c42c5817",
+    "/Users/changmin/projects/ugrp/outputs/review-346-65ce28cf/v89-smoke.json": "6f493956fb68d115a57207079c546e05312bbd8da4644d26ac9b5d82bfc4c765"
+  },
+  "cleanup": {
+    "scratch_path": "/private/tmp/review346.uTxPwi",
+    "removed": true,
+    "raw_inputs_deleted": false
+  }
+}

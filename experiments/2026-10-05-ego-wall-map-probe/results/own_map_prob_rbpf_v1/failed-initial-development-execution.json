@@ -1,0 +1,75 @@
+{
+  "lock": {
+    "owner": "codex",
+    "branch": "claude/ego-wall-map",
+    "purpose": "PR405 offline probabilistic map replay timing",
+    "pid": 10327,
+    "acquired_unix": 1791296776.3357491,
+    "expected_end_unix": 1791303976.3357499,
+    "loadavg_at_acquire": [
+      4.361328125,
+      3.69140625,
+      3.92626953125
+    ],
+    "timing_sensitive": true
+  },
+  "runs": [
+    {
+      "condition": "prob",
+      "case": "s911-r1",
+      "command": [
+        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+        "/Users/changmin/projects/ugrp-wt/ego-wall-map/experiments/2026-10-05-ego-wall-map-probe/code/own_map_prob_replay.py",
+        "--case",
+        "s911-r1",
+        "--condition",
+        "prob",
+        "--output",
+        "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-prob-rbpf-v1"
+      ],
+      "exit_code": 0,
+      "started_unix": 1791296776.335912,
+      "process_wall_s": 2.445319175720215,
+      "stdout": "{\"name\": \"s911-r1\", \"condition\": \"prob\", \"end_m\": 0.8714542605193258, \"wall_s\": 0.5861629589926451, \"rss_mib\": 118.140625, \"success\": false, \"checks\": {\"terminal_30pct_and_075m\": false, \"path_median_not_worse\": true, \"path_p95_not_worse\": true, \"path_rmse_20pct\": false, \"map_precision_not_worse\": true, \"map_recall_within_2pp\": true, \"map_rmse_20pct\": true}}\n",
+      "stderr": ""
+    },
+    {
+      "condition": "prob",
+      "case": "s911-r2",
+      "command": [
+        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+        "/Users/changmin/projects/ugrp-wt/ego-wall-map/experiments/2026-10-05-ego-wall-map-probe/code/own_map_prob_replay.py",
+        "--case",
+        "s911-r2",
+        "--condition",
+        "prob",
+        "--output",
+        "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-prob-rbpf-v1"
+      ],
+      "exit_code": 0,
+      "started_unix": 1791296778.7815738,
+      "process_wall_s": 4.057868242263794,
+      "stdout": "{\"name\": \"s911-r2\", \"condition\": \"prob\", \"end_m\": 0.6262083229716481, \"wall_s\": 1.2923964579822496, \"rss_mib\": 159.640625, \"success\": true, \"checks\": {\"terminal_30pct_and_075m\": true, \"path_median_not_worse\": true, \"path_p95_not_worse\": true, \"path_rmse_20pct\": true, \"map_precision_not_worse\": true, \"map_recall_within_2pp\": true, \"map_rmse_20pct\": true}}\n",
+      "stderr": ""
+    },
+    {
+      "condition": "rbpf30",
+      "case": "s911-r1",
+      "command": [
+        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+        "/Users/changmin/projects/ugrp-wt/ego-wall-map/experiments/2026-10-05-ego-wall-map-probe/code/own_map_prob_replay.py",
+        "--case",
+        "s911-r1",
+        "--condition",
+        "rbpf30",
+        "--output",
+        "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-prob-rbpf-v1"
+      ],
+      "exit_code": 1,
+      "started_unix": 1791296782.839784,
+      "process_wall_s": 12.338738918304443,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/Users/changmin/projects/ugrp-wt/ego-wall-map/experiments/2026-10-05-ego-wall-map-probe/code/own_map_prob_replay.py\", line 154, in <module>\n    run_case(args.case, args.condition, args.baseline, args.output)\n  File \"/Users/changmin/projects/ugrp-wt/ego-wall-map/experiments/2026-10-05-ego-wall-map-probe/code/own_map_prob_replay.py\", line 102, in run_case\n    base.dump(target/'final_particles.json',\n  File \"/Users/changmin/projects/ugrp-wt/ego-wall-map/experiments/2026-10-05-ego-wall-map-probe/code/odom_grid_replay.py\", line 40, in dump\n    Path(path).write_text(json.dumps(value, indent=2, allow_nan=False)+'\\n')\n                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/__init__.py\", line 238, in dumps\n    **kw).encode(obj)\n          ^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/encoder.py\", line 202, in encode\n    chunks = list(chunks)\n             ^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/encoder.py\", line 430, in _iterencode\n    yield from _iterencode_list(o, _current_indent_level)\n  File \"/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/encoder.py\", line 326, in _iterencode_list\n    yield from chunks\n  File \"/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/encoder.py\", line 406, in _iterencode_dict\n    yield from chunks\n  File \"/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/encoder.py\", line 326, in _iterencode_list\n    yield from chunks\n  File \"/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/encoder.py\", line 326, in _iterencode_list\n    yield from chunks\n  File \"/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/encoder.py\", line 439, in _iterencode\n    o = _default(o)\n        ^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/encoder.py\", line 180, in default\n    raise TypeError(f'Object of type {o.__class__.__name__} '\nTypeError: Object of type int64 is not JSON serializable\n"
+    }
+  ]
+}

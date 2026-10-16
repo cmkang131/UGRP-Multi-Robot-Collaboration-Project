@@ -1,0 +1,934 @@
+FFFFFFFFFFFF                                                             [100%]
+=================================== FAILURES ===================================
+__________ test_review5_chained_counterexamples[peer_ko-retry_refund] __________
+
+case = 'retry_refund', condition = 'peer_ko'
+
+    @pytest.mark.parametrize('case', CHAIN_CASES)
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS[1:])
+    def test_review5_chained_counterexamples(case, condition):
+>       run_chain(case, condition)
+
+tests/test_zone_study_multiturn_review5.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'retry_refund', condition = 'peer_ko', trial_cls = None
+
+    def run_chain(case, condition, *, trial_cls=None):
+        """Keep failures, own boundaries and common timers exogenous in all channels."""
+        faults = []
+    
+        def fail(stage, call):
+            faults.append({'stage': stage, 'actor': call.actor, 'at': call.started_sim_s,
+                           'call_id': call.call_id, 'retry_of': call.retry_of})
+            raise OSError('review5 ' + stage)
+    
+        def wire(payload, turn):
+            if (case.startswith('retry_') and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (6.1, 10.1)):
+                raise OSError('review5 failed message send')
+    
+        def snapshot(call):
+            if call.actor == 'r1' and (
+                    (case.startswith('retry_') and call.started_sim_s == 8.1)
+                    or (case == 'boundary_refund' and call.started_sim_s == 9.)):
+                fail('snapshot', call)
+    
+        def prepare(call):
+            if (case == 'boundary_refund' and call.actor == 'r1' and call.started_sim_s == 7.
+                    or case == 'reservation_refund' and call.actor == 'r3' and call.started_sim_s == 6.
+                    or case == 'retry_held_refund' and call.actor == 'r1' and call.started_sim_s == 6.2):
+                fail('prepare', call)
+    
+        trial, clock, links, requests = fixture.make_trial(
+            condition, first='claim' if case == 'boundary_refund' else 'continue',
+            follow_claim=False, horizon=30., trial_cls=trial_cls,
+            policy=CallPolicy(max_retries=1),
+            limits=DecisionLimits(max_calls_total=5 if case == 'reservation_refund' else 90),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        # Tick the real event queue, so a pending call spans the 7.2 own boundary
+        # before its minimum-cost reply resolution at 7.4 (likewise 6.4 refunds).
+        s.arm_observations(period_s=.1, first_at=.1)
+        if case == 'retry_held_refund':
+            s.timer('r1', at=6.2)
+        elif case == 'boundary_refund':
+            s.timer('r1', at=7.)
+        elif case == 'reservation_refund':
+            s.timer('r2', at=5.5)  # fourth send, charged later
+            s.timer('r3', at=6.)   # final slot reserved, 0-send refund at 6.4
+        fixture.advance(trial, clock, links, 30. if case == 'boundary_refund' else 14.,
+                        boundary=7.2 if case == 'boundary_refund' else None)
+        r1 = [p for p in requests if p['robot_id'] == 'r1']
+        times = [p['sim_time_s'] for p in r1]
+        if condition != 'no_comm':
+            if case.startswith('retry_'):
+>               assert times == [0., 6.1, 10.1], times
+E               AssertionError: [0.0, 6.1, 10.1, 12.1]
+E               assert [0.0, 6.1, 10.1, 12.1] == [0.0, 6.1, 10.1]
+E                 
+E                 Left contains one more item: 12.1
+E                 Use -v to get more diff
+
+tests/test_zone_study_multiturn_review5.py:66: AssertionError
+_______ test_review5_chained_counterexamples[peer_ko-retry_held_refund] ________
+
+case = 'retry_held_refund', condition = 'peer_ko'
+
+    @pytest.mark.parametrize('case', CHAIN_CASES)
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS[1:])
+    def test_review5_chained_counterexamples(case, condition):
+>       run_chain(case, condition)
+
+tests/test_zone_study_multiturn_review5.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'retry_held_refund', condition = 'peer_ko', trial_cls = None
+
+    def run_chain(case, condition, *, trial_cls=None):
+        """Keep failures, own boundaries and common timers exogenous in all channels."""
+        faults = []
+    
+        def fail(stage, call):
+            faults.append({'stage': stage, 'actor': call.actor, 'at': call.started_sim_s,
+                           'call_id': call.call_id, 'retry_of': call.retry_of})
+            raise OSError('review5 ' + stage)
+    
+        def wire(payload, turn):
+            if (case.startswith('retry_') and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (6.1, 10.1)):
+                raise OSError('review5 failed message send')
+    
+        def snapshot(call):
+            if call.actor == 'r1' and (
+                    (case.startswith('retry_') and call.started_sim_s == 8.1)
+                    or (case == 'boundary_refund' and call.started_sim_s == 9.)):
+                fail('snapshot', call)
+    
+        def prepare(call):
+            if (case == 'boundary_refund' and call.actor == 'r1' and call.started_sim_s == 7.
+                    or case == 'reservation_refund' and call.actor == 'r3' and call.started_sim_s == 6.
+                    or case == 'retry_held_refund' and call.actor == 'r1' and call.started_sim_s == 6.2):
+                fail('prepare', call)
+    
+        trial, clock, links, requests = fixture.make_trial(
+            condition, first='claim' if case == 'boundary_refund' else 'continue',
+            follow_claim=False, horizon=30., trial_cls=trial_cls,
+            policy=CallPolicy(max_retries=1),
+            limits=DecisionLimits(max_calls_total=5 if case == 'reservation_refund' else 90),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        # Tick the real event queue, so a pending call spans the 7.2 own boundary
+        # before its minimum-cost reply resolution at 7.4 (likewise 6.4 refunds).
+        s.arm_observations(period_s=.1, first_at=.1)
+        if case == 'retry_held_refund':
+            s.timer('r1', at=6.2)
+        elif case == 'boundary_refund':
+            s.timer('r1', at=7.)
+        elif case == 'reservation_refund':
+            s.timer('r2', at=5.5)  # fourth send, charged later
+            s.timer('r3', at=6.)   # final slot reserved, 0-send refund at 6.4
+        fixture.advance(trial, clock, links, 30. if case == 'boundary_refund' else 14.,
+                        boundary=7.2 if case == 'boundary_refund' else None)
+        r1 = [p for p in requests if p['robot_id'] == 'r1']
+        times = [p['sim_time_s'] for p in r1]
+        if condition != 'no_comm':
+            if case.startswith('retry_'):
+>               assert times == [0., 6.1, 10.1], times
+E               AssertionError: [0.0, 6.1, 8.2]
+E               assert [0.0, 6.1, 8.2] == [0.0, 6.1, 10.1]
+E                 
+E                 At index 2 diff: 8.2 != 10.1
+E                 Use -v to get more diff
+
+tests/test_zone_study_multiturn_review5.py:66: AssertionError
+________ test_review5_chained_counterexamples[peer_ko-boundary_refund] _________
+
+case = 'boundary_refund', condition = 'peer_ko'
+
+    @pytest.mark.parametrize('case', CHAIN_CASES)
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS[1:])
+    def test_review5_chained_counterexamples(case, condition):
+>       run_chain(case, condition)
+
+tests/test_zone_study_multiturn_review5.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'boundary_refund', condition = 'peer_ko', trial_cls = None
+
+    def run_chain(case, condition, *, trial_cls=None):
+        """Keep failures, own boundaries and common timers exogenous in all channels."""
+        faults = []
+    
+        def fail(stage, call):
+            faults.append({'stage': stage, 'actor': call.actor, 'at': call.started_sim_s,
+                           'call_id': call.call_id, 'retry_of': call.retry_of})
+            raise OSError('review5 ' + stage)
+    
+        def wire(payload, turn):
+            if (case.startswith('retry_') and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (6.1, 10.1)):
+                raise OSError('review5 failed message send')
+    
+        def snapshot(call):
+            if call.actor == 'r1' and (
+                    (case.startswith('retry_') and call.started_sim_s == 8.1)
+                    or (case == 'boundary_refund' and call.started_sim_s == 9.)):
+                fail('snapshot', call)
+    
+        def prepare(call):
+            if (case == 'boundary_refund' and call.actor == 'r1' and call.started_sim_s == 7.
+                    or case == 'reservation_refund' and call.actor == 'r3' and call.started_sim_s == 6.
+                    or case == 'retry_held_refund' and call.actor == 'r1' and call.started_sim_s == 6.2):
+                fail('prepare', call)
+    
+        trial, clock, links, requests = fixture.make_trial(
+            condition, first='claim' if case == 'boundary_refund' else 'continue',
+            follow_claim=False, horizon=30., trial_cls=trial_cls,
+            policy=CallPolicy(max_retries=1),
+            limits=DecisionLimits(max_calls_total=5 if case == 'reservation_refund' else 90),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        # Tick the real event queue, so a pending call spans the 7.2 own boundary
+        # before its minimum-cost reply resolution at 7.4 (likewise 6.4 refunds).
+        s.arm_observations(period_s=.1, first_at=.1)
+        if case == 'retry_held_refund':
+            s.timer('r1', at=6.2)
+        elif case == 'boundary_refund':
+            s.timer('r1', at=7.)
+        elif case == 'reservation_refund':
+            s.timer('r2', at=5.5)  # fourth send, charged later
+            s.timer('r3', at=6.)   # final slot reserved, 0-send refund at 6.4
+        fixture.advance(trial, clock, links, 30. if case == 'boundary_refund' else 14.,
+                        boundary=7.2 if case == 'boundary_refund' else None)
+        r1 = [p for p in requests if p['robot_id'] == 'r1']
+        times = [p['sim_time_s'] for p in r1]
+        if condition != 'no_comm':
+            if case.startswith('retry_'):
+                assert times == [0., 6.1, 10.1], times
+                rows = [r for r in s.ledger.values() if r['actor'] == 'r1'
+                        and r['started_sim_s'] in (6.1, 8.1, 10.1)]
+                assert [r['started_sim_s'] for r in rows] == [6.1, 8.1, 10.1]
+                root = rows[0]['call_id']
+                assert [r['retry_of'] for r in rows] == ['', root, root]
+                assert s._retries[root] == 1
+                assert sum(trial.send_ledger.sends(r['call_id']) for r in rows) == 2
+            elif case == 'boundary_refund':
+>               assert times == [0., 11.], times
+E               AssertionError: [0.0]
+E               assert [0.0] == [0.0, 11.0]
+E                 
+E                 Right contains one more item: 11.0
+E                 Use -v to get more diff
+
+tests/test_zone_study_multiturn_review5.py:75: AssertionError
+_______ test_review5_chained_counterexamples[peer_ko-reservation_refund] _______
+
+case = 'reservation_refund', condition = 'peer_ko'
+
+    @pytest.mark.parametrize('case', CHAIN_CASES)
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS[1:])
+    def test_review5_chained_counterexamples(case, condition):
+>       run_chain(case, condition)
+
+tests/test_zone_study_multiturn_review5.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'reservation_refund', condition = 'peer_ko', trial_cls = None
+
+    def run_chain(case, condition, *, trial_cls=None):
+        """Keep failures, own boundaries and common timers exogenous in all channels."""
+        faults = []
+    
+        def fail(stage, call):
+            faults.append({'stage': stage, 'actor': call.actor, 'at': call.started_sim_s,
+                           'call_id': call.call_id, 'retry_of': call.retry_of})
+            raise OSError('review5 ' + stage)
+    
+        def wire(payload, turn):
+            if (case.startswith('retry_') and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (6.1, 10.1)):
+                raise OSError('review5 failed message send')
+    
+        def snapshot(call):
+            if call.actor == 'r1' and (
+                    (case.startswith('retry_') and call.started_sim_s == 8.1)
+                    or (case == 'boundary_refund' and call.started_sim_s == 9.)):
+                fail('snapshot', call)
+    
+        def prepare(call):
+            if (case == 'boundary_refund' and call.actor == 'r1' and call.started_sim_s == 7.
+                    or case == 'reservation_refund' and call.actor == 'r3' and call.started_sim_s == 6.
+                    or case == 'retry_held_refund' and call.actor == 'r1' and call.started_sim_s == 6.2):
+                fail('prepare', call)
+    
+        trial, clock, links, requests = fixture.make_trial(
+            condition, first='claim' if case == 'boundary_refund' else 'continue',
+            follow_claim=False, horizon=30., trial_cls=trial_cls,
+            policy=CallPolicy(max_retries=1),
+            limits=DecisionLimits(max_calls_total=5 if case == 'reservation_refund' else 90),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        # Tick the real event queue, so a pending call spans the 7.2 own boundary
+        # before its minimum-cost reply resolution at 7.4 (likewise 6.4 refunds).
+        s.arm_observations(period_s=.1, first_at=.1)
+        if case == 'retry_held_refund':
+            s.timer('r1', at=6.2)
+        elif case == 'boundary_refund':
+            s.timer('r1', at=7.)
+        elif case == 'reservation_refund':
+            s.timer('r2', at=5.5)  # fourth send, charged later
+            s.timer('r3', at=6.)   # final slot reserved, 0-send refund at 6.4
+        fixture.advance(trial, clock, links, 30. if case == 'boundary_refund' else 14.,
+                        boundary=7.2 if case == 'boundary_refund' else None)
+        r1 = [p for p in requests if p['robot_id'] == 'r1']
+        times = [p['sim_time_s'] for p in r1]
+        if condition != 'no_comm':
+            if case.startswith('retry_'):
+                assert times == [0., 6.1, 10.1], times
+                rows = [r for r in s.ledger.values() if r['actor'] == 'r1'
+                        and r['started_sim_s'] in (6.1, 8.1, 10.1)]
+                assert [r['started_sim_s'] for r in rows] == [6.1, 8.1, 10.1]
+                root = rows[0]['call_id']
+                assert [r['retry_of'] for r in rows] == ['', root, root]
+                assert s._retries[root] == 1
+                assert sum(trial.send_ledger.sends(r['call_id']) for r in rows) == 2
+            elif case == 'boundary_refund':
+                assert times == [0., 11.], times
+                assert r1[-1]['inbox']
+                assert not any(e.active for e in s.event_inputs if e.actor == 'r1')
+            else:
+>               assert times == [0., 6.4], times
+E               AssertionError: [0.0]
+E               assert [0.0] == [0.0, 6.4]
+E                 
+E                 Right contains one more item: 6.4
+E                 Use -v to get more diff
+
+tests/test_zone_study_multiturn_review5.py:79: AssertionError
+_________ test_review5_chained_counterexamples[leader_ko-retry_refund] _________
+
+case = 'retry_refund', condition = 'leader_ko'
+
+    @pytest.mark.parametrize('case', CHAIN_CASES)
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS[1:])
+    def test_review5_chained_counterexamples(case, condition):
+>       run_chain(case, condition)
+
+tests/test_zone_study_multiturn_review5.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'retry_refund', condition = 'leader_ko', trial_cls = None
+
+    def run_chain(case, condition, *, trial_cls=None):
+        """Keep failures, own boundaries and common timers exogenous in all channels."""
+        faults = []
+    
+        def fail(stage, call):
+            faults.append({'stage': stage, 'actor': call.actor, 'at': call.started_sim_s,
+                           'call_id': call.call_id, 'retry_of': call.retry_of})
+            raise OSError('review5 ' + stage)
+    
+        def wire(payload, turn):
+            if (case.startswith('retry_') and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (6.1, 10.1)):
+                raise OSError('review5 failed message send')
+    
+        def snapshot(call):
+            if call.actor == 'r1' and (
+                    (case.startswith('retry_') and call.started_sim_s == 8.1)
+                    or (case == 'boundary_refund' and call.started_sim_s == 9.)):
+                fail('snapshot', call)
+    
+        def prepare(call):
+            if (case == 'boundary_refund' and call.actor == 'r1' and call.started_sim_s == 7.
+                    or case == 'reservation_refund' and call.actor == 'r3' and call.started_sim_s == 6.
+                    or case == 'retry_held_refund' and call.actor == 'r1' and call.started_sim_s == 6.2):
+                fail('prepare', call)
+    
+        trial, clock, links, requests = fixture.make_trial(
+            condition, first='claim' if case == 'boundary_refund' else 'continue',
+            follow_claim=False, horizon=30., trial_cls=trial_cls,
+            policy=CallPolicy(max_retries=1),
+            limits=DecisionLimits(max_calls_total=5 if case == 'reservation_refund' else 90),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        # Tick the real event queue, so a pending call spans the 7.2 own boundary
+        # before its minimum-cost reply resolution at 7.4 (likewise 6.4 refunds).
+        s.arm_observations(period_s=.1, first_at=.1)
+        if case == 'retry_held_refund':
+            s.timer('r1', at=6.2)
+        elif case == 'boundary_refund':
+            s.timer('r1', at=7.)
+        elif case == 'reservation_refund':
+            s.timer('r2', at=5.5)  # fourth send, charged later
+            s.timer('r3', at=6.)   # final slot reserved, 0-send refund at 6.4
+        fixture.advance(trial, clock, links, 30. if case == 'boundary_refund' else 14.,
+                        boundary=7.2 if case == 'boundary_refund' else None)
+        r1 = [p for p in requests if p['robot_id'] == 'r1']
+        times = [p['sim_time_s'] for p in r1]
+        if condition != 'no_comm':
+            if case.startswith('retry_'):
+>               assert times == [0., 6.1, 10.1], times
+E               AssertionError: [0.0, 6.1, 10.1, 12.1]
+E               assert [0.0, 6.1, 10.1, 12.1] == [0.0, 6.1, 10.1]
+E                 
+E                 Left contains one more item: 12.1
+E                 Use -v to get more diff
+
+tests/test_zone_study_multiturn_review5.py:66: AssertionError
+______ test_review5_chained_counterexamples[leader_ko-retry_held_refund] _______
+
+case = 'retry_held_refund', condition = 'leader_ko'
+
+    @pytest.mark.parametrize('case', CHAIN_CASES)
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS[1:])
+    def test_review5_chained_counterexamples(case, condition):
+>       run_chain(case, condition)
+
+tests/test_zone_study_multiturn_review5.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'retry_held_refund', condition = 'leader_ko', trial_cls = None
+
+    def run_chain(case, condition, *, trial_cls=None):
+        """Keep failures, own boundaries and common timers exogenous in all channels."""
+        faults = []
+    
+        def fail(stage, call):
+            faults.append({'stage': stage, 'actor': call.actor, 'at': call.started_sim_s,
+                           'call_id': call.call_id, 'retry_of': call.retry_of})
+            raise OSError('review5 ' + stage)
+    
+        def wire(payload, turn):
+            if (case.startswith('retry_') and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (6.1, 10.1)):
+                raise OSError('review5 failed message send')
+    
+        def snapshot(call):
+            if call.actor == 'r1' and (
+                    (case.startswith('retry_') and call.started_sim_s == 8.1)
+                    or (case == 'boundary_refund' and call.started_sim_s == 9.)):
+                fail('snapshot', call)
+    
+        def prepare(call):
+            if (case == 'boundary_refund' and call.actor == 'r1' and call.started_sim_s == 7.
+                    or case == 'reservation_refund' and call.actor == 'r3' and call.started_sim_s == 6.
+                    or case == 'retry_held_refund' and call.actor == 'r1' and call.started_sim_s == 6.2):
+                fail('prepare', call)
+    
+        trial, clock, links, requests = fixture.make_trial(
+            condition, first='claim' if case == 'boundary_refund' else 'continue',
+            follow_claim=False, horizon=30., trial_cls=trial_cls,
+            policy=CallPolicy(max_retries=1),
+            limits=DecisionLimits(max_calls_total=5 if case == 'reservation_refund' else 90),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        # Tick the real event queue, so a pending call spans the 7.2 own boundary
+        # before its minimum-cost reply resolution at 7.4 (likewise 6.4 refunds).
+        s.arm_observations(period_s=.1, first_at=.1)
+        if case == 'retry_held_refund':
+            s.timer('r1', at=6.2)
+        elif case == 'boundary_refund':
+            s.timer('r1', at=7.)
+        elif case == 'reservation_refund':
+            s.timer('r2', at=5.5)  # fourth send, charged later
+            s.timer('r3', at=6.)   # final slot reserved, 0-send refund at 6.4
+        fixture.advance(trial, clock, links, 30. if case == 'boundary_refund' else 14.,
+                        boundary=7.2 if case == 'boundary_refund' else None)
+        r1 = [p for p in requests if p['robot_id'] == 'r1']
+        times = [p['sim_time_s'] for p in r1]
+        if condition != 'no_comm':
+            if case.startswith('retry_'):
+>               assert times == [0., 6.1, 10.1], times
+E               AssertionError: [0.0, 6.1, 8.2]
+E               assert [0.0, 6.1, 8.2] == [0.0, 6.1, 10.1]
+E                 
+E                 At index 2 diff: 8.2 != 10.1
+E                 Use -v to get more diff
+
+tests/test_zone_study_multiturn_review5.py:66: AssertionError
+_______ test_review5_chained_counterexamples[leader_ko-boundary_refund] ________
+
+case = 'boundary_refund', condition = 'leader_ko'
+
+    @pytest.mark.parametrize('case', CHAIN_CASES)
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS[1:])
+    def test_review5_chained_counterexamples(case, condition):
+>       run_chain(case, condition)
+
+tests/test_zone_study_multiturn_review5.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'boundary_refund', condition = 'leader_ko', trial_cls = None
+
+    def run_chain(case, condition, *, trial_cls=None):
+        """Keep failures, own boundaries and common timers exogenous in all channels."""
+        faults = []
+    
+        def fail(stage, call):
+            faults.append({'stage': stage, 'actor': call.actor, 'at': call.started_sim_s,
+                           'call_id': call.call_id, 'retry_of': call.retry_of})
+            raise OSError('review5 ' + stage)
+    
+        def wire(payload, turn):
+            if (case.startswith('retry_') and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (6.1, 10.1)):
+                raise OSError('review5 failed message send')
+    
+        def snapshot(call):
+            if call.actor == 'r1' and (
+                    (case.startswith('retry_') and call.started_sim_s == 8.1)
+                    or (case == 'boundary_refund' and call.started_sim_s == 9.)):
+                fail('snapshot', call)
+    
+        def prepare(call):
+            if (case == 'boundary_refund' and call.actor == 'r1' and call.started_sim_s == 7.
+                    or case == 'reservation_refund' and call.actor == 'r3' and call.started_sim_s == 6.
+                    or case == 'retry_held_refund' and call.actor == 'r1' and call.started_sim_s == 6.2):
+                fail('prepare', call)
+    
+        trial, clock, links, requests = fixture.make_trial(
+            condition, first='claim' if case == 'boundary_refund' else 'continue',
+            follow_claim=False, horizon=30., trial_cls=trial_cls,
+            policy=CallPolicy(max_retries=1),
+            limits=DecisionLimits(max_calls_total=5 if case == 'reservation_refund' else 90),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        # Tick the real event queue, so a pending call spans the 7.2 own boundary
+        # before its minimum-cost reply resolution at 7.4 (likewise 6.4 refunds).
+        s.arm_observations(period_s=.1, first_at=.1)
+        if case == 'retry_held_refund':
+            s.timer('r1', at=6.2)
+        elif case == 'boundary_refund':
+            s.timer('r1', at=7.)
+        elif case == 'reservation_refund':
+            s.timer('r2', at=5.5)  # fourth send, charged later
+            s.timer('r3', at=6.)   # final slot reserved, 0-send refund at 6.4
+        fixture.advance(trial, clock, links, 30. if case == 'boundary_refund' else 14.,
+                        boundary=7.2 if case == 'boundary_refund' else None)
+        r1 = [p for p in requests if p['robot_id'] == 'r1']
+        times = [p['sim_time_s'] for p in r1]
+        if condition != 'no_comm':
+            if case.startswith('retry_'):
+                assert times == [0., 6.1, 10.1], times
+                rows = [r for r in s.ledger.values() if r['actor'] == 'r1'
+                        and r['started_sim_s'] in (6.1, 8.1, 10.1)]
+                assert [r['started_sim_s'] for r in rows] == [6.1, 8.1, 10.1]
+                root = rows[0]['call_id']
+                assert [r['retry_of'] for r in rows] == ['', root, root]
+                assert s._retries[root] == 1
+                assert sum(trial.send_ledger.sends(r['call_id']) for r in rows) == 2
+            elif case == 'boundary_refund':
+>               assert times == [0., 11.], times
+E               AssertionError: [0.0]
+E               assert [0.0] == [0.0, 11.0]
+E                 
+E                 Right contains one more item: 11.0
+E                 Use -v to get more diff
+
+tests/test_zone_study_multiturn_review5.py:75: AssertionError
+______ test_review5_chained_counterexamples[leader_ko-reservation_refund] ______
+
+case = 'reservation_refund', condition = 'leader_ko'
+
+    @pytest.mark.parametrize('case', CHAIN_CASES)
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS[1:])
+    def test_review5_chained_counterexamples(case, condition):
+>       run_chain(case, condition)
+
+tests/test_zone_study_multiturn_review5.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'reservation_refund', condition = 'leader_ko', trial_cls = None
+
+    def run_chain(case, condition, *, trial_cls=None):
+        """Keep failures, own boundaries and common timers exogenous in all channels."""
+        faults = []
+    
+        def fail(stage, call):
+            faults.append({'stage': stage, 'actor': call.actor, 'at': call.started_sim_s,
+                           'call_id': call.call_id, 'retry_of': call.retry_of})
+            raise OSError('review5 ' + stage)
+    
+        def wire(payload, turn):
+            if (case.startswith('retry_') and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (6.1, 10.1)):
+                raise OSError('review5 failed message send')
+    
+        def snapshot(call):
+            if call.actor == 'r1' and (
+                    (case.startswith('retry_') and call.started_sim_s == 8.1)
+                    or (case == 'boundary_refund' and call.started_sim_s == 9.)):
+                fail('snapshot', call)
+    
+        def prepare(call):
+            if (case == 'boundary_refund' and call.actor == 'r1' and call.started_sim_s == 7.
+                    or case == 'reservation_refund' and call.actor == 'r3' and call.started_sim_s == 6.
+                    or case == 'retry_held_refund' and call.actor == 'r1' and call.started_sim_s == 6.2):
+                fail('prepare', call)
+    
+        trial, clock, links, requests = fixture.make_trial(
+            condition, first='claim' if case == 'boundary_refund' else 'continue',
+            follow_claim=False, horizon=30., trial_cls=trial_cls,
+            policy=CallPolicy(max_retries=1),
+            limits=DecisionLimits(max_calls_total=5 if case == 'reservation_refund' else 90),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        # Tick the real event queue, so a pending call spans the 7.2 own boundary
+        # before its minimum-cost reply resolution at 7.4 (likewise 6.4 refunds).
+        s.arm_observations(period_s=.1, first_at=.1)
+        if case == 'retry_held_refund':
+            s.timer('r1', at=6.2)
+        elif case == 'boundary_refund':
+            s.timer('r1', at=7.)
+        elif case == 'reservation_refund':
+            s.timer('r2', at=5.5)  # fourth send, charged later
+            s.timer('r3', at=6.)   # final slot reserved, 0-send refund at 6.4
+        fixture.advance(trial, clock, links, 30. if case == 'boundary_refund' else 14.,
+                        boundary=7.2 if case == 'boundary_refund' else None)
+        r1 = [p for p in requests if p['robot_id'] == 'r1']
+        times = [p['sim_time_s'] for p in r1]
+        if condition != 'no_comm':
+            if case.startswith('retry_'):
+                assert times == [0., 6.1, 10.1], times
+                rows = [r for r in s.ledger.values() if r['actor'] == 'r1'
+                        and r['started_sim_s'] in (6.1, 8.1, 10.1)]
+                assert [r['started_sim_s'] for r in rows] == [6.1, 8.1, 10.1]
+                root = rows[0]['call_id']
+                assert [r['retry_of'] for r in rows] == ['', root, root]
+                assert s._retries[root] == 1
+                assert sum(trial.send_ledger.sends(r['call_id']) for r in rows) == 2
+            elif case == 'boundary_refund':
+                assert times == [0., 11.], times
+                assert r1[-1]['inbox']
+                assert not any(e.active for e in s.event_inputs if e.actor == 'r1')
+            else:
+>               assert times == [0., 6.4], times
+E               AssertionError: [0.0]
+E               assert [0.0] == [0.0, 6.4]
+E                 
+E                 Right contains one more item: 6.4
+E                 Use -v to get more diff
+
+tests/test_zone_study_multiturn_review5.py:79: AssertionError
+________ test_review5_chained_counterexamples[structured-retry_refund] _________
+
+case = 'retry_refund', condition = 'structured'
+
+    @pytest.mark.parametrize('case', CHAIN_CASES)
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS[1:])
+    def test_review5_chained_counterexamples(case, condition):
+>       run_chain(case, condition)
+
+tests/test_zone_study_multiturn_review5.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'retry_refund', condition = 'structured', trial_cls = None
+
+    def run_chain(case, condition, *, trial_cls=None):
+        """Keep failures, own boundaries and common timers exogenous in all channels."""
+        faults = []
+    
+        def fail(stage, call):
+            faults.append({'stage': stage, 'actor': call.actor, 'at': call.started_sim_s,
+                           'call_id': call.call_id, 'retry_of': call.retry_of})
+            raise OSError('review5 ' + stage)
+    
+        def wire(payload, turn):
+            if (case.startswith('retry_') and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (6.1, 10.1)):
+                raise OSError('review5 failed message send')
+    
+        def snapshot(call):
+            if call.actor == 'r1' and (
+                    (case.startswith('retry_') and call.started_sim_s == 8.1)
+                    or (case == 'boundary_refund' and call.started_sim_s == 9.)):
+                fail('snapshot', call)
+    
+        def prepare(call):
+            if (case == 'boundary_refund' and call.actor == 'r1' and call.started_sim_s == 7.
+                    or case == 'reservation_refund' and call.actor == 'r3' and call.started_sim_s == 6.
+                    or case == 'retry_held_refund' and call.actor == 'r1' and call.started_sim_s == 6.2):
+                fail('prepare', call)
+    
+        trial, clock, links, requests = fixture.make_trial(
+            condition, first='claim' if case == 'boundary_refund' else 'continue',
+            follow_claim=False, horizon=30., trial_cls=trial_cls,
+            policy=CallPolicy(max_retries=1),
+            limits=DecisionLimits(max_calls_total=5 if case == 'reservation_refund' else 90),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        # Tick the real event queue, so a pending call spans the 7.2 own boundary
+        # before its minimum-cost reply resolution at 7.4 (likewise 6.4 refunds).
+        s.arm_observations(period_s=.1, first_at=.1)
+        if case == 'retry_held_refund':
+            s.timer('r1', at=6.2)
+        elif case == 'boundary_refund':
+            s.timer('r1', at=7.)
+        elif case == 'reservation_refund':
+            s.timer('r2', at=5.5)  # fourth send, charged later
+            s.timer('r3', at=6.)   # final slot reserved, 0-send refund at 6.4
+        fixture.advance(trial, clock, links, 30. if case == 'boundary_refund' else 14.,
+                        boundary=7.2 if case == 'boundary_refund' else None)
+        r1 = [p for p in requests if p['robot_id'] == 'r1']
+        times = [p['sim_time_s'] for p in r1]
+        if condition != 'no_comm':
+            if case.startswith('retry_'):
+>               assert times == [0., 6.1, 10.1], times
+E               AssertionError: [0.0, 6.1, 10.1, 12.1]
+E               assert [0.0, 6.1, 10.1, 12.1] == [0.0, 6.1, 10.1]
+E                 
+E                 Left contains one more item: 12.1
+E                 Use -v to get more diff
+
+tests/test_zone_study_multiturn_review5.py:66: AssertionError
+______ test_review5_chained_counterexamples[structured-retry_held_refund] ______
+
+case = 'retry_held_refund', condition = 'structured'
+
+    @pytest.mark.parametrize('case', CHAIN_CASES)
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS[1:])
+    def test_review5_chained_counterexamples(case, condition):
+>       run_chain(case, condition)
+
+tests/test_zone_study_multiturn_review5.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'retry_held_refund', condition = 'structured', trial_cls = None
+
+    def run_chain(case, condition, *, trial_cls=None):
+        """Keep failures, own boundaries and common timers exogenous in all channels."""
+        faults = []
+    
+        def fail(stage, call):
+            faults.append({'stage': stage, 'actor': call.actor, 'at': call.started_sim_s,
+                           'call_id': call.call_id, 'retry_of': call.retry_of})
+            raise OSError('review5 ' + stage)
+    
+        def wire(payload, turn):
+            if (case.startswith('retry_') and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (6.1, 10.1)):
+                raise OSError('review5 failed message send')
+    
+        def snapshot(call):
+            if call.actor == 'r1' and (
+                    (case.startswith('retry_') and call.started_sim_s == 8.1)
+                    or (case == 'boundary_refund' and call.started_sim_s == 9.)):
+                fail('snapshot', call)
+    
+        def prepare(call):
+            if (case == 'boundary_refund' and call.actor == 'r1' and call.started_sim_s == 7.
+                    or case == 'reservation_refund' and call.actor == 'r3' and call.started_sim_s == 6.
+                    or case == 'retry_held_refund' and call.actor == 'r1' and call.started_sim_s == 6.2):
+                fail('prepare', call)
+    
+        trial, clock, links, requests = fixture.make_trial(
+            condition, first='claim' if case == 'boundary_refund' else 'continue',
+            follow_claim=False, horizon=30., trial_cls=trial_cls,
+            policy=CallPolicy(max_retries=1),
+            limits=DecisionLimits(max_calls_total=5 if case == 'reservation_refund' else 90),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        # Tick the real event queue, so a pending call spans the 7.2 own boundary
+        # before its minimum-cost reply resolution at 7.4 (likewise 6.4 refunds).
+        s.arm_observations(period_s=.1, first_at=.1)
+        if case == 'retry_held_refund':
+            s.timer('r1', at=6.2)
+        elif case == 'boundary_refund':
+            s.timer('r1', at=7.)
+        elif case == 'reservation_refund':
+            s.timer('r2', at=5.5)  # fourth send, charged later
+            s.timer('r3', at=6.)   # final slot reserved, 0-send refund at 6.4
+        fixture.advance(trial, clock, links, 30. if case == 'boundary_refund' else 14.,
+                        boundary=7.2 if case == 'boundary_refund' else None)
+        r1 = [p for p in requests if p['robot_id'] == 'r1']
+        times = [p['sim_time_s'] for p in r1]
+        if condition != 'no_comm':
+            if case.startswith('retry_'):
+>               assert times == [0., 6.1, 10.1], times
+E               AssertionError: [0.0, 6.1, 8.2]
+E               assert [0.0, 6.1, 8.2] == [0.0, 6.1, 10.1]
+E                 
+E                 At index 2 diff: 8.2 != 10.1
+E                 Use -v to get more diff
+
+tests/test_zone_study_multiturn_review5.py:66: AssertionError
+_______ test_review5_chained_counterexamples[structured-boundary_refund] _______
+
+case = 'boundary_refund', condition = 'structured'
+
+    @pytest.mark.parametrize('case', CHAIN_CASES)
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS[1:])
+    def test_review5_chained_counterexamples(case, condition):
+>       run_chain(case, condition)
+
+tests/test_zone_study_multiturn_review5.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'boundary_refund', condition = 'structured', trial_cls = None
+
+    def run_chain(case, condition, *, trial_cls=None):
+        """Keep failures, own boundaries and common timers exogenous in all channels."""
+        faults = []
+    
+        def fail(stage, call):
+            faults.append({'stage': stage, 'actor': call.actor, 'at': call.started_sim_s,
+                           'call_id': call.call_id, 'retry_of': call.retry_of})
+            raise OSError('review5 ' + stage)
+    
+        def wire(payload, turn):
+            if (case.startswith('retry_') and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (6.1, 10.1)):
+                raise OSError('review5 failed message send')
+    
+        def snapshot(call):
+            if call.actor == 'r1' and (
+                    (case.startswith('retry_') and call.started_sim_s == 8.1)
+                    or (case == 'boundary_refund' and call.started_sim_s == 9.)):
+                fail('snapshot', call)
+    
+        def prepare(call):
+            if (case == 'boundary_refund' and call.actor == 'r1' and call.started_sim_s == 7.
+                    or case == 'reservation_refund' and call.actor == 'r3' and call.started_sim_s == 6.
+                    or case == 'retry_held_refund' and call.actor == 'r1' and call.started_sim_s == 6.2):
+                fail('prepare', call)
+    
+        trial, clock, links, requests = fixture.make_trial(
+            condition, first='claim' if case == 'boundary_refund' else 'continue',
+            follow_claim=False, horizon=30., trial_cls=trial_cls,
+            policy=CallPolicy(max_retries=1),
+            limits=DecisionLimits(max_calls_total=5 if case == 'reservation_refund' else 90),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        # Tick the real event queue, so a pending call spans the 7.2 own boundary
+        # before its minimum-cost reply resolution at 7.4 (likewise 6.4 refunds).
+        s.arm_observations(period_s=.1, first_at=.1)
+        if case == 'retry_held_refund':
+            s.timer('r1', at=6.2)
+        elif case == 'boundary_refund':
+            s.timer('r1', at=7.)
+        elif case == 'reservation_refund':
+            s.timer('r2', at=5.5)  # fourth send, charged later
+            s.timer('r3', at=6.)   # final slot reserved, 0-send refund at 6.4
+        fixture.advance(trial, clock, links, 30. if case == 'boundary_refund' else 14.,
+                        boundary=7.2 if case == 'boundary_refund' else None)
+        r1 = [p for p in requests if p['robot_id'] == 'r1']
+        times = [p['sim_time_s'] for p in r1]
+        if condition != 'no_comm':
+            if case.startswith('retry_'):
+                assert times == [0., 6.1, 10.1], times
+                rows = [r for r in s.ledger.values() if r['actor'] == 'r1'
+                        and r['started_sim_s'] in (6.1, 8.1, 10.1)]
+                assert [r['started_sim_s'] for r in rows] == [6.1, 8.1, 10.1]
+                root = rows[0]['call_id']
+                assert [r['retry_of'] for r in rows] == ['', root, root]
+                assert s._retries[root] == 1
+                assert sum(trial.send_ledger.sends(r['call_id']) for r in rows) == 2
+            elif case == 'boundary_refund':
+>               assert times == [0., 11.], times
+E               AssertionError: [0.0]
+E               assert [0.0] == [0.0, 11.0]
+E                 
+E                 Right contains one more item: 11.0
+E                 Use -v to get more diff
+
+tests/test_zone_study_multiturn_review5.py:75: AssertionError
+_____ test_review5_chained_counterexamples[structured-reservation_refund] ______
+
+case = 'reservation_refund', condition = 'structured'
+
+    @pytest.mark.parametrize('case', CHAIN_CASES)
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS[1:])
+    def test_review5_chained_counterexamples(case, condition):
+>       run_chain(case, condition)
+
+tests/test_zone_study_multiturn_review5.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'reservation_refund', condition = 'structured', trial_cls = None
+
+    def run_chain(case, condition, *, trial_cls=None):
+        """Keep failures, own boundaries and common timers exogenous in all channels."""
+        faults = []
+    
+        def fail(stage, call):
+            faults.append({'stage': stage, 'actor': call.actor, 'at': call.started_sim_s,
+                           'call_id': call.call_id, 'retry_of': call.retry_of})
+            raise OSError('review5 ' + stage)
+    
+        def wire(payload, turn):
+            if (case.startswith('retry_') and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (6.1, 10.1)):
+                raise OSError('review5 failed message send')
+    
+        def snapshot(call):
+            if call.actor == 'r1' and (
+                    (case.startswith('retry_') and call.started_sim_s == 8.1)
+                    or (case == 'boundary_refund' and call.started_sim_s == 9.)):
+                fail('snapshot', call)
+    
+        def prepare(call):
+            if (case == 'boundary_refund' and call.actor == 'r1' and call.started_sim_s == 7.
+                    or case == 'reservation_refund' and call.actor == 'r3' and call.started_sim_s == 6.
+                    or case == 'retry_held_refund' and call.actor == 'r1' and call.started_sim_s == 6.2):
+                fail('prepare', call)
+    
+        trial, clock, links, requests = fixture.make_trial(
+            condition, first='claim' if case == 'boundary_refund' else 'continue',
+            follow_claim=False, horizon=30., trial_cls=trial_cls,
+            policy=CallPolicy(max_retries=1),
+            limits=DecisionLimits(max_calls_total=5 if case == 'reservation_refund' else 90),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        # Tick the real event queue, so a pending call spans the 7.2 own boundary
+        # before its minimum-cost reply resolution at 7.4 (likewise 6.4 refunds).
+        s.arm_observations(period_s=.1, first_at=.1)
+        if case == 'retry_held_refund':
+            s.timer('r1', at=6.2)
+        elif case == 'boundary_refund':
+            s.timer('r1', at=7.)
+        elif case == 'reservation_refund':
+            s.timer('r2', at=5.5)  # fourth send, charged later
+            s.timer('r3', at=6.)   # final slot reserved, 0-send refund at 6.4
+        fixture.advance(trial, clock, links, 30. if case == 'boundary_refund' else 14.,
+                        boundary=7.2 if case == 'boundary_refund' else None)
+        r1 = [p for p in requests if p['robot_id'] == 'r1']
+        times = [p['sim_time_s'] for p in r1]
+        if condition != 'no_comm':
+            if case.startswith('retry_'):
+                assert times == [0., 6.1, 10.1], times
+                rows = [r for r in s.ledger.values() if r['actor'] == 'r1'
+                        and r['started_sim_s'] in (6.1, 8.1, 10.1)]
+                assert [r['started_sim_s'] for r in rows] == [6.1, 8.1, 10.1]
+                root = rows[0]['call_id']
+                assert [r['retry_of'] for r in rows] == ['', root, root]
+                assert s._retries[root] == 1
+                assert sum(trial.send_ledger.sends(r['call_id']) for r in rows) == 2
+            elif case == 'boundary_refund':
+                assert times == [0., 11.], times
+                assert r1[-1]['inbox']
+                assert not any(e.active for e in s.event_inputs if e.actor == 'r1')
+            else:
+>               assert times == [0., 6.4], times
+E               AssertionError: [0.0]
+E               assert [0.0] == [0.0, 6.4]
+E                 
+E                 Right contains one more item: 6.4
+E                 Use -v to get more diff
+
+tests/test_zone_study_multiturn_review5.py:79: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_zone_study_multiturn_review5.py::test_review5_chained_counterexamples[peer_ko-retry_refund]
+FAILED tests/test_zone_study_multiturn_review5.py::test_review5_chained_counterexamples[peer_ko-retry_held_refund]
+FAILED tests/test_zone_study_multiturn_review5.py::test_review5_chained_counterexamples[peer_ko-boundary_refund]
+FAILED tests/test_zone_study_multiturn_review5.py::test_review5_chained_counterexamples[peer_ko-reservation_refund]
+FAILED tests/test_zone_study_multiturn_review5.py::test_review5_chained_counterexamples[leader_ko-retry_refund]
+FAILED tests/test_zone_study_multiturn_review5.py::test_review5_chained_counterexamples[leader_ko-retry_held_refund]
+FAILED tests/test_zone_study_multiturn_review5.py::test_review5_chained_counterexamples[leader_ko-boundary_refund]
+FAILED tests/test_zone_study_multiturn_review5.py::test_review5_chained_counterexamples[leader_ko-reservation_refund]
+FAILED tests/test_zone_study_multiturn_review5.py::test_review5_chained_counterexamples[structured-retry_refund]
+FAILED tests/test_zone_study_multiturn_review5.py::test_review5_chained_counterexamples[structured-retry_held_refund]
+FAILED tests/test_zone_study_multiturn_review5.py::test_review5_chained_counterexamples[structured-boundary_refund]
+FAILED tests/test_zone_study_multiturn_review5.py::test_review5_chained_counterexamples[structured-reservation_refund]
+12 failed, 4 deselected in 1.67s

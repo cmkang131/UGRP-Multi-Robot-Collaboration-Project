@@ -1,0 +1,26 @@
+{
+  "schema": "ugrp.s2.slip_full.local_verification.v1",
+  "preregistration_commit": "e8bff34f",
+  "tests": [
+    {
+      "files": [
+        "tests/test_s2_slip_detect.py"
+      ],
+      "passed": 5,
+      "wall_s": 1.59,
+      "scope": "before preregistration commit"
+    },
+    {
+      "files": [
+        "tests/test_s2_slip_full.py",
+        "tests/test_s2_slip_detect.py"
+      ],
+      "passed": 8,
+      "wall_s": 20.64,
+      "scope": "new bundle/runner, default-off equivalence, real Runtime construction, synthetic host failure, workflow"
+    }
+  ],
+  "initial_integration_failures": "Compared all bundle options to NEW_OPTIONS subset and wrong catalog API name; corrected to exact preregistered options and existing catalog(root). No simulator ran.",
+  "physics_runs": 0,
+  "model_calls": 0
+}

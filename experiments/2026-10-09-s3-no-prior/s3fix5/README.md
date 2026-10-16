@@ -1,0 +1,88 @@
+# S3 s3fix5 — 명령 이동과 관측 보정 분리
+
+2026-10-09, v149 저장 입력 재생과 새 DEV smoke 1회. GT는 이 문서의 사후 평가와 **기존 독립 보정 실행**의 오프라인 시스템 식별에서만 읽는다. v149 GT로 평균·잡음·seed·문턱을 적합하지 않는다. 제어 입력은 자기 영상/발행 명령/정적 지도 그대로다. speed PR423 경로는 수정하지 않는다.
+
+## 후보 재생 전 고정
+
+- 회전 XY 평균은 기존 egomap32 seed32001의 반복1–3, 양방향 각각33펄스로 다시 적합한다. 반복4–5 각각22펄스는 확인 자료로 남긴다. 단발/연속 모두 포함하며 기존0.20초 horizon과20Hz 원본을 유지한다. 보정 조건은 무하중 SEARCH·v7 drive·real_v1 servo다. loaded/전진/옆걸음/yaw 평균/기존모델 JSON은 변경하지 않는다.
+- `pulse_odometry=rotation_xy_alpha_v1`, 기본off. 복사한 보정 테이블에만 회전 XY 곡선과 공정 분산을 적용한다. 공유 함수는 S3/S2의 PF와 자기 지도에서 같은 테이블을 받아 쓸 수 있는 데이터 변환이다. 자기 지도 PR405의 별도 복사본/속도 캐시는 수정하지 않으며 채택 상태를 별도로 기록한다.
+- 표준 근거: [Thrun/Burgard/Fox Probabilistic Robotics](https://robots.stanford.edu/probabilistic-robotics/) 5.4, [Nav2 differential motion model](https://api.nav2.org/nav2-rolling/html/differential__motion__model_8cpp_source.html) p136 구현. 회전/병진 제곱에 비례하는 α1–α4 분산과 제자리 회전의 translation uncertainty를 사용한다. 메카넘은 회전 중 미끄러짐 방향이 고정되지 않으므로 α4의 병진 분산을 XY 두 축에 절반씩 배분한다(차동구동 sampling의 그대로 이식은 아님). 기존 평균과 시간 분할을 유지하고 전체 펄스 분산을 경과 시간 비율로 누적한다.
+- α1(회전→yaw)/α4(회전→XY)는 독립 회전 보정 잔차로, α2(전진→yaw)/α3(전진→XY)는 v122의 기존 training split 전진 잔차로 적합한다. 새 회전 분산은 기존 분산/기존 바닥값보다 줄이지 않는다. 회전 밖의 공정 분산은 그대로다. 결과를 본 뒤 계수·수렴 문턱을 늘리지 않는다.
+- 저장 v149 r2의 자기 RGB와 **실제 발행 명령**을 off/on 재생한다. 초기화 seed14202와 프레임 순서 동일. 기준 재생과 원본 pose의 일치를 확인하고, 평가용 GT는 예측 파일 봉인 뒤 별도 프로그램에서 읽는다. 명령 제안은 새 물리 실행으로 해석하지 않는다.
+- 확인 자료의 회전 XY RMSE가 줄고 전체 r2 재생 종료 오차와 >3σ 비율이 모두 악화하지 않으면 smoke에 on, 아니면 off로 기록한다. pre-GO 재대기 수정은 포함한다. DEV smoke1회, 새 최댓값+1 번들, 기존 heading/v3 mount/dev_light·공동 파지 옆걸음 예외 유지. 추가 재실행0, CI 대기0, agent_lock 종료 순서 준수. 실제 물리 실패만 정지. ENOSPC=HOST_ERROR, 기존 raw 예산 유지.
+
+## v149 사후 진단 (후보 적합 전)
+
+회전120회: 예측 XY 이동거리0.321630m, 실제0.084679m. 초기 차체 좌표의 횡이동 합은 −0.320896m 대 −0.039755m다. 그러나 서로 다른 yaw의 길이/차체 좌표 합을 종료 세계 좌표 오차에 그대로 더할 수 없다. 전진254회는3.282547m 대2.842355m이고 옆걸음0회다. 110초 부근 `cargo_beam_1__bar`–`r2__v3_wheel_fl_roller_6_body_contact`가 저장 접촉 로그에 있다. 회전 편향만으로0.388m 전체를 설명하지 않는다.
+
+|r2 명령 종류|횟수|예측 XY 길이(m)|실제 XY 길이(m)|펄스 시작 차체 좌표 잔차 합 dx/dy(m)|세계 좌표 예측−실제 누적 dx/dy(m)|
+|---|---:|---:|---:|---|---|
+|회전|120|0.321630|0.084679|+0.026488 / −0.281140|−0.017231 / −0.018910|
+|전진|254|3.282547|2.842355|+0.455923 / −0.038649|+0.455646 / −0.041646|
+|옆걸음|0|0|0|0 / 0|0 / 0|
+
+앞의 길이·차체 합은 각 펄스의0.20초 보정 horizon 비교다. 마지막 열은 실제 발행 이력을 실행 predictor(잡음0)로 적분하고 이전 posterior의 yaw에 붙여 전체 pose 간격을 계산한 값이다. 서로 다른 정의를 같은 기여율로 나누지 않는다. [수치/원본 해시](audit-summary.json), [실행 가능한 평가기](audit.py).
+
+13.34초부터275.74초까지 세계 좌표 오차 벡터의 합산 검산: 초기[+0.019189,−0.034568] + 회전[−0.017231,−0.018910] + 전진[+0.455646,−0.041646] + 잔여/idle[+0.064982,+0.021043] + 관측/필터 보정[−0.144597,+0.161497] = 종료[+0.377988,+0.087415]m, norm0.387965m. 잔여/idle은 정지 후 실제 미끄러짐·시각 경계 등을 포함한다. 보정에는 표본화/관측/지도 prior의 효과도 포함하므로 순수 영상 정합 인과량이라고 부르지 않는다. 검산 잔차2.8e−16m. 초기 전역 위치찾기 구간을 빼고 >3σ4006/5249프레임, 종료σ0.005400m.
+
+빔 접촉은 저장20Hz 평가에서149프레임(102.55–210.0초)에 있다. 전진 펄스0.20초 창과 겹친34회는 예측0.43918/실제0.21092m, 겹치지 않은220회는2.84177/2.61411m다. 전진 차이0.45592m의 약 절반0.22826m가 접촉 창에 집중되며 비접촉 창의0.22766m도 남는다. 회전/전진 길이는 모델 horizon에서 비교하며 그 뒤 자연 이동은 벡터 검산의 잔여에 포함한다. [접촉별 평가](contact-evaluation.json).
+
+회전 보정 후보 `0fff3a3a`의 변경 시험9개 PASS. 공통 변환은 `harness/pulse_rotation_odometry.py` 한 곳이며 S3/S2 실제 PF와 planner가 같은 반환 테이블을 사용한다. 자기 지도 PR405는 현재 별도 복사본 경로여서 아직 이 함수를 호출하지 않는다. [연결 필요 상태를 공유한 PR 코멘트](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/405#issuecomment-6082733224)에 API·범위를 남겼다. 자기 지도에서 새 보정의 적용/재생/개선을 완료했다고 보고하지 않는다. 새 회귀 파일은 기존 CI `test_s3_host*.py` 수집에 들어가도록 이름을 맞춘다.
+
+## 봉인된 저장 입력 재생 — 후보 채택 실패
+
+세 로봇 각각5493프레임 baseline pose record가 원본과 dict 전체 동일하다. off/on 모두 실제 저장 명령만 발행 이력으로 넣었고 HOST_ERROR0, 새 물리0이다. 아래 과신 분모는 초기 찾기 이후13.34–275.74초의5249프레임이다. σ는 원래 best-cluster 출력의 XY 표준편차이며 >3σ를 정규분포 보장이나 완전한 NEES 검정으로 부르지 않는다.
+
+|r2 저장 입력|기존 off|회전 XY+α 옵션 on|
+|---|---:|---:|
+|종료 XY 오차(m)|0.387965|0.372113|
+|종료 σ XY(m)|0.005400|0.005532|
+|오차/σ|71.84|67.26|
+|전 구간 XY RMSE(m)|0.348725|0.320581|
+|>3σ 프레임|4006/5249 (76.32%)|4545/5249 (86.59%)|
+|거짓 인증 프레임|2549|2925|
+|종료 yaw 오차(도)|0.2714|4.3404|
+
+회전 평균 편향과 calibration RMSE는 개선했지만 과신은 해결하지 못했다. 확인 RMSE: CW2.184→0.553mm, CCW2.622→0.694mm; α1–α4는[0.00676946,0.28049326,0.00935053,0.0000503534]. v149 결과를 본 뒤 계수/문턱 재적합0. 옵션은 보존하되 사전 기준에 따라 **새 smoke에는 off**다. [전후 평가와 예측 SHA](replay-evaluation.json). 이 재생만으로 접촉 시 전진 예측 편향, posterior 소실/관측 가중치의 각각 인과 기여를 완전히 분리했다고 주장하지 않는다. 기존 slip detector는 loaded coarse translation용이며 r2의 unloaded 0.10초 전진에 대체 관측을 적용하지 않는다. 이 한계의 변경은 이번 motion-only 범위 밖이다.
+
+## v150 물리 전 확정
+
+`zone-s3-odometry-v150` / `7.43.0`, seed14201, 회전 보정off, pre-GO DEV 재대기on, 기존 heading/v3 호스트 마운트/공동 파지 옆걸음 예외 유지. 전체 main/열린 PR의 최대149 다음150을 예약했다. 기존1800 SIM초/10800 wall초 유한 cap을 유지하고 raw 예산4GiB+여유10GiB를 확인한다. 기존 v149와 차이는 pre-GO timeout 후 재대기이며, 같은 물리 궤적의 첫277초를 보정 성공으로 보고하지 않는다. 로컬 최소 회귀 초록→commit/push→agent_lock 순서의 물리1회이며 추가 시도0.
+
+실행 전 변경 시험12개 PASS(선택 제외16), v150 실제 구성의 합성 sweep 58건/native 명령3165건/오류0. pre-GO 재대기2창 및 실제 GO 실패 hard stop을 함께 확인했다. root workflow 카탈로그는 main 바이트 동일이며 새 항목은 조각 파일만 추가했다. [검증/해시](preflight.json), [합성 사례](sweep-cases.json).
+
+### 물리 시작 전 잠금 경쟁 수정
+
+첫 v150 CLI 시도(소스 `0ec20647`)는 잠금 반환 확인 후 번들을 구성하는 동안 egomap55004가 먼저 취득해 거부됐다. MuJoCo 생성/새 raw/물리 실행 모두0회이며 실패 workflow receipt는 원위치에 보존한다. 실행기는 번들 검증을 끝낸 뒤 원자적 `agent_lock.acquire` 자체를 유한 대기하며, 취득 뒤 source SHA를 다시 확인한다. 다른 작업의 release/신호 호출은 없다. [Python lock acquire](https://docs.python.org/3/library/threading.html#threading.Lock.acquire)의 취득 성공을 경계로 사용하는 표준 방식이다. 상태 조회는 취득 보장이 아니다. 해당 변경 시험 파일5개 PASS(56.63s); 물리 횟수는 여전히0이다.
+
+[추가 사후 검산](secondary-checks.json): v149 전진254회와 보정 training83회의 발행 arm pose는 같다. 추가0.20–0.35초 tail의 전진 합은 −0.00901m여서 빠진 양의 전진 거리를 설명하지 못한다. 같은 발행 pose를 같은 실제 관절/하중 증거로 해석하지 않는다.
+
+오프라인 TensorBoard snapshot `1009-s3-odometry-replay`의 off/on 각13 scalar를 원본과 대조하고 Chrome 강 프로필에서 두 실행·핀·HParams 열을 확인했다. 물리 결과는 아직 포함하지 않는다.
+
+## v150 단일 DEV smoke 결과 (10/10 KST)
+
+실행 SHA **`4c9eb3aa4730c6f6b72b4bb5a36b7ee2d418673a`**, seed14201, 한 번만 실행했다. egomap55004의 정상 반환 뒤 자기 PID56533/nice0 잠금을 취득·해제했다. 추가 물리0, CI 대기0, 원본/기준 변경0. 보정 후보는 사전 기준에 따라off였으며 기본off 모델의 성능 개선을 주장하지 않는다.
+
+|로봇|첫 위치 전환: 오차 / σ(m), 경과시간|후속 정확 인증|최종 단계|집기 / B 배달|
+|---|---|---|---|---|
+|r1|0.02630 / 1.84041, 12.2s|36.95 SIM초, 오차0.02551m|접근 후 wait_approach|없음 / 실패|
+|r2|0.03954 / 0.20861, 12.2s|없음; 첫 인증은112.3초·오차0.32010m의 허위 인증|approach 재관측/팔 복귀|없음 / 실패|
+|r3|0.00389 / 0.05831, 12.2s|없음|문 예약 대기|없음 / 실패|
+
+첫 전환의 점 추정 정확성3/3과 σ·posterior 인증까지 정확한 수렴1/3을 구별한다. 점 추정이 맞았다는 이유로 σ/인증을 변경하지 않았다. 마지막 유한 추정은 r1/r2/r3 오차0.17246/0.40904/0.00745m, σ0.02470/0.08188/0.05831m다. r2 마지막 프레임은 비유한 값이므로 유한 오차로 채우지 않았다.
+
+- pre-GO: r1의 `BARRIER_APPROACH_TIMEOUT`을275.9 SIM초에1회 would_stop으로 기록하고 **실제 상호 GO를 기다리는 상태**로 갱신했다. GO를 합성하지 않았다. v149 종료 구간을 넘겼지만 집기·공동 운반·놓기·귀환은 미도달이다. cyan/beam 모두 held0/6285표본, 최대COM높이0.01589/0.01650m로 실제 들기0이다.
+- 실제 종료: **HOST_ERROR 1실행, 결함2종**. r2의315.5초 pose 마지막행에 x/y/yaw/σxy/σyaw NaN5개가 생겼고, `zone_own_driver._arm_step`→`zone_own_sweep.check`가 None pose의`.x`를 읽어 중단했다. 이어 strict JSON 기록기가 NaN을 거부해 원본 student_record가 저장되지 않았다. NaN을 처음 만든 계산 원인은 아직 미분리이며 회전 보정off에서 발생했다. 이번 motion-only 범위에서 guard/속도 공통 경로를 추가 수정하지 않았다.
+- would_stop **6496회**: ARM_COLLISION_GUARD23, POSE_CLUSTER_UNCERTAIN60, GLOBAL_START_UNRESOLVED3, POSE_UNCERTAIN2562, SWEEP_TRANSITION_BLOCKED431, SELF_UNCERTAIN4, PAIR_COLLISION_GUARD80, PAIR_REOBSERVE_TIMEOUT3325, APPROACH_ARRIVAL_UNCONFIRMED1, APPROACH_TIMEOUT1, APPROACH_LOST2, BARRIER_APPROACH_TIMEOUT1, APPROACH_SWEEP_TRANSITION_BLOCKED3. 이는 각 가드 hook 호출 수이며 물리 실패/독립 실행/I/O 수가 아니다.
+- 문 REQUEST 각1회, 대기 r1/r2/r3=0.05/0.05/302.0 robot-s, 사전120초 창 교착0, robot-robot 충돌 episode0. 실제 문 통과·공동 운반 성공을 뜻하지 않는다.
+- wall **1039.258861s / 제어 SIM314.2s = 3.307635**, 목표≤3 미달. reset1.3초는 분모 제외. 명령1909/3874/6626=12409, 모델/HTTP0, 응답시간0. 렌더207.56s, 물리advance336.73s, capture237.15s(렌더 포함), JSONL append2.90s. 중첩 timer를 더하지 않고 이번 기록을 cProfile 분해로 부르지 않는다.
+
+### 기록 복구와 전달 검증
+
+저장 자기 RGB와 실제 발행 명령만 소스4c9eb3aa에 재생해 **12409명령 모두 JSON 동일**,6284성공프레임 뒤 원본 마지막315.5초에 같은 AttributeError를 재현했다. GT는 이 재생이 끝난 뒤 평가기에만 입력했다. 복구된 student record의 NaN은 원형 그대로 별도 파일에 보존하고, strict 파생 요약에서만 null과 필드 경로로 표현한다. 원본에 student_record를 추가하거나 manifest를 재봉인하지 않았다. [명령 일치](recovery-command-equality.json), [traceback](recovery-result.json), [결과 요약](smoke-summary.json).
+
+원본 `/Users/changmin/projects/ugrp/outputs/s3-odometry-4c9eb3aa-s14201-v150`의18887파일/450830386바이트 SHA를 전부 대조했다. 자기 카메라 기록 모두 S2 v3 마운트와 일치한다. [원본 검증](raw-verification.json), [4배속 영상](http://127.0.0.1:6007/video/7708c54a02eb3a0a2273), [영상 해시](video-verification.json). 영상1572프레임/20fps/78.6초,1920×480, 새 렌더0이며 브라우저 실제 로딩·Range206을 확인했다.
+
+TensorBoard `1010-s3-v150-report`의31 scalar를 원본과 대조하고 v149와 별도 실행으로 표시했다. 성공0·wall1039.2589·SIM314.2·명령12409를 화면에서 확인하고, 핀9개·HParams case/policy/seed/source_sha를 적용했다. 원본 영상 등록은 보존된 `1010-s3-v150-result` manifest를 사용한다. 잘못된 오프라인 변환 진입점의 실패2개와 응답시간 태그 추가 전 snapshot도 덮어쓰지 않고 보존했다. 기존 다른 작업의 서버는 재시작하지 않았다. [화면/값 검증](tensorboard-verification.json), [대시보드 설정과 링크](tensorboard-link.json).
+
+다음 물리 제안: **먼저 r2 재관측에서 NaN이 처음 생기는 계산과 None 포즈 계약을 저장 재생 회귀로 고친 뒤, 별도 승인된 한 회에서 집기 이후 진입을 재검증한다.** 전진 접촉 편향과 과신, 자기 지도 소비자의 공유 모델 연결은 미해결이며 이 결과를 S3 통과로 보고하지 않는다.

@@ -1,0 +1,21 @@
+........................................................................ [ 27%]
+........................................................................ [ 55%]
+........................................................................ [ 83%]
+............................F...............                             [100%]
+=================================== FAILURES ===================================
+__________________ test_endpoint_at_exact_tilt_limit_is_safe ___________________
+
+    def test_endpoint_at_exact_tilt_limit_is_safe():
+        row, result, trace = record()
+        for leg in row["chain"]["legs"]:
+            leg["tilt_deg"] = 15.
+>       assert cp.classify_case(row, result, trace, confirmatory=True)["class"] == "PASS_CLEAN"
+E       AssertionError: assert 'FAIL' == 'PASS_CLEAN'
+E
+E         - PASS_CLEAN
+E         + FAIL
+
+tests/test_classify_review_299.py:307: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_classify_review_299.py::test_endpoint_at_exact_tilt_limit_is_safe
+1 failed, 259 passed in 11.72s

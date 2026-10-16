@@ -1,0 +1,392 @@
+{
+  "scanned_at": "2026-09-30T19:56:38.413803+00:00",
+  "method": "git fetch origin; gh pr list --state open --limit 100; verify all heads; git grep bundle constants/configs + all workflow catalogs",
+  "refs": [
+    {
+      "number": null,
+      "headRefName": "main",
+      "headRefOid": "78ce79162d907d88d38ef3afcfc0c62e4a72aaba",
+      "verified_sha": "78ce79162d907d88d38ef3afcfc0c62e4a72aaba",
+      "max_bundle_number": 84,
+      "max_workflow": [
+        "zone-m1-owncam-memory-v3-run",
+        "3.0.0"
+      ],
+      "max_zone_workflow": [
+        "zone-m1-owncam-memory-v3-run",
+        "3.0.0"
+      ],
+      "rgb_runnable_lines": [
+        "origin/main:harness/rgb_execution_bundle.py:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/main:harness/rgb_execution_bundle.py:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/main:harness/rgb_execution_bundle.py:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/main:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/main:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID:"
+      ]
+    },
+    {
+      "headRefName": "claude/phys-v87-rec",
+      "headRefOid": "668d5d4f2af7a0d9599b6762460351c3dd7f5fdf",
+      "number": 343,
+      "title": "P01·무하중 보정 수집: 최종 환경 v87 밝은 렌더 (#342)",
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/343",
+      "verified_sha": "668d5d4f2af7a0d9599b6762460351c3dd7f5fdf",
+      "max_bundle_number": 84,
+      "max_workflow": [
+        "zone-m1-owncam-memory-v3-run",
+        "3.0.0"
+      ],
+      "max_zone_workflow": [
+        "zone-m1-owncam-memory-v3-run",
+        "3.0.0"
+      ],
+      "rgb_runnable_lines": [
+        "origin/claude/phys-v87-rec:harness/rgb_execution_bundle.py:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/claude/phys-v87-rec:harness/rgb_execution_bundle.py:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/claude/phys-v87-rec:harness/rgb_execution_bundle.py:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/claude/phys-v87-rec:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/claude/phys-v87-rec:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID:"
+      ]
+    },
+    {
+      "headRefName": "codex/final-env-floor-light",
+      "headRefOid": "04eb11c6a001f2a7d2ab916765d59b3661c06efe",
+      "number": 342,
+      "title": "feat: 최종 환경 v87 floor_light_v1 P01·unloaded 수집 등록",
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/342",
+      "verified_sha": "04eb11c6a001f2a7d2ab916765d59b3661c06efe",
+      "max_bundle_number": 87,
+      "max_workflow": [
+        "zone-m1-owncam-memory-v3-run",
+        "3.0.0"
+      ],
+      "max_zone_workflow": [
+        "zone-m1-owncam-memory-v3-run",
+        "3.0.0"
+      ],
+      "rgb_runnable_lines": [
+        "origin/codex/final-env-floor-light:harness/rgb_execution_bundle.py:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/final-env-floor-light:harness/rgb_execution_bundle.py:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/codex/final-env-floor-light:harness/rgb_execution_bundle.py:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/codex/final-env-floor-light:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/codex/final-env-floor-light:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID:"
+      ]
+    },
+    {
+      "headRefName": "claude/phys-p01-1001",
+      "headRefOid": "339d281e05d80ff19bb1a78a4a9c020c9653eff6",
+      "number": 341,
+      "title": "P01: 최종 환경 v84 물리 점검 3×30 SIM초 결과 (COLLECTED_UNQUALIFIED)",
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/341",
+      "verified_sha": "339d281e05d80ff19bb1a78a4a9c020c9653eff6",
+      "max_bundle_number": 84,
+      "max_workflow": [
+        "zone-m1-owncam-memory-v3-run",
+        "3.0.0"
+      ],
+      "max_zone_workflow": [
+        "zone-m1-owncam-memory-v3-run",
+        "3.0.0"
+      ],
+      "rgb_runnable_lines": [
+        "origin/claude/phys-p01-1001:harness/rgb_execution_bundle.py:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/claude/phys-p01-1001:harness/rgb_execution_bundle.py:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/claude/phys-p01-1001:harness/rgb_execution_bundle.py:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/claude/phys-p01-1001:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/claude/phys-p01-1001:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID:"
+      ]
+    },
+    {
+      "headRefName": "codex/integ-target-backend",
+      "headRefOid": "9912bb15bb492bab0f9278fc493feed1547ff8ee",
+      "number": 339,
+      "title": "T13: 표적 backend 검토 수정·최종 v3 환경 계약 (v86, 실행 차단)",
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/339",
+      "verified_sha": "9912bb15bb492bab0f9278fc493feed1547ff8ee",
+      "max_bundle_number": 86,
+      "max_workflow": [
+        "zone-m1-owncam-memory-v3-run",
+        "3.0.0"
+      ],
+      "max_zone_workflow": [
+        "zone-m1-owncam-memory-v3-run",
+        "3.0.0"
+      ],
+      "rgb_runnable_lines": [
+        "origin/codex/integ-target-backend:harness/rgb_execution_bundle.py:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/integ-target-backend:harness/rgb_execution_bundle.py:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/codex/integ-target-backend:harness/rgb_execution_bundle.py:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/codex/integ-target-backend:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/codex/integ-target-backend:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID:"
+      ]
+    },
+    {
+      "headRefName": "codex/review-e2e-batch-f",
+      "headRefOid": "887b4d5e73823733a39d10060734080e46668548",
+      "number": 327,
+      "title": "review: E2E batch F 독립 검토 (#320/#323/#324)",
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/327",
+      "verified_sha": "887b4d5e73823733a39d10060734080e46668548",
+      "max_bundle_number": 81,
+      "max_workflow": [
+        "zone-m1-owncam-memory-v3-run",
+        "3.0.0"
+      ],
+      "max_zone_workflow": [
+        "zone-m1-owncam-memory-v3-run",
+        "3.0.0"
+      ],
+      "rgb_runnable_lines": [
+        "origin/codex/review-e2e-batch-f:harness/rgb_execution_bundle.py:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/review-e2e-batch-f:harness/rgb_execution_bundle.py:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/codex/review-e2e-batch-f:harness/rgb_execution_bundle.py:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/codex/review-e2e-batch-f:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/codex/review-e2e-batch-f:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID:"
+      ]
+    },
+    {
+      "headRefName": "codex/review-e2e-batch-d",
+      "headRefOid": "cd4a71ab7c7cca801fe6dba163a8bb8a1179aa91",
+      "number": 322,
+      "title": "review: E2E batch D 독립 검토 (#313/#314/#315)",
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/322",
+      "verified_sha": "cd4a71ab7c7cca801fe6dba163a8bb8a1179aa91",
+      "max_bundle_number": 81,
+      "max_workflow": [
+        "zone-m1-owncam-memory-v3-run",
+        "3.0.0"
+      ],
+      "max_zone_workflow": [
+        "zone-m1-owncam-memory-v3-run",
+        "3.0.0"
+      ],
+      "rgb_runnable_lines": [
+        "origin/codex/review-e2e-batch-d:harness/rgb_execution_bundle.py:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/review-e2e-batch-d:harness/rgb_execution_bundle.py:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/codex/review-e2e-batch-d:harness/rgb_execution_bundle.py:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/codex/review-e2e-batch-d:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/codex/review-e2e-batch-d:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID:"
+      ]
+    },
+    {
+      "headRefName": "codex/review-e2e-batch-e",
+      "headRefOid": "585cf9c01d4396d6f5f1d94f5a187cd9b71425f4",
+      "number": 321,
+      "title": "review: E2E Batch E — #316/#306 독립 검토",
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/321",
+      "verified_sha": "585cf9c01d4396d6f5f1d94f5a187cd9b71425f4",
+      "max_bundle_number": 81,
+      "max_workflow": [
+        "zone-m1-owncam-memory-v3-run",
+        "3.0.0"
+      ],
+      "max_zone_workflow": [
+        "zone-m1-owncam-memory-v3-run",
+        "3.0.0"
+      ],
+      "rgb_runnable_lines": [
+        "origin/codex/review-e2e-batch-e:harness/rgb_execution_bundle.py:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/review-e2e-batch-e:harness/rgb_execution_bundle.py:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/codex/review-e2e-batch-e:harness/rgb_execution_bundle.py:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/codex/review-e2e-batch-e:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/codex/review-e2e-batch-e:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID:"
+      ]
+    },
+    {
+      "headRefName": "codex/review-e2e-batch-a",
+      "headRefOid": "933bb1d63f2de7d5df16ede55c4235e4a65cc1f4",
+      "number": 319,
+      "title": "review: E2E batch A 독립 검토 — P06 증거 연결·P01 회귀",
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/319",
+      "verified_sha": "933bb1d63f2de7d5df16ede55c4235e4a65cc1f4",
+      "max_bundle_number": 81,
+      "max_workflow": [
+        "zone-m1-owncam-memory-v3-run",
+        "3.0.0"
+      ],
+      "max_zone_workflow": [
+        "zone-m1-owncam-memory-v3-run",
+        "3.0.0"
+      ],
+      "rgb_runnable_lines": [
+        "origin/codex/review-e2e-batch-a:harness/rgb_execution_bundle.py:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/review-e2e-batch-a:harness/rgb_execution_bundle.py:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/codex/review-e2e-batch-a:harness/rgb_execution_bundle.py:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/codex/review-e2e-batch-a:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/codex/review-e2e-batch-a:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID:"
+      ]
+    },
+    {
+      "headRefName": "codex/review-e2e-batch-c",
+      "headRefOid": "7ee20a048c6b29089dbcd3c332d734bf43cd77c0",
+      "number": 318,
+      "title": "docs: E2E batch C 독립 검토 (#310·#311·#312)",
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/318",
+      "verified_sha": "7ee20a048c6b29089dbcd3c332d734bf43cd77c0",
+      "max_bundle_number": 81,
+      "max_workflow": [
+        "zone-m1-owncam-memory-v3-run",
+        "3.0.0"
+      ],
+      "max_zone_workflow": [
+        "zone-m1-owncam-memory-v3-run",
+        "3.0.0"
+      ],
+      "rgb_runnable_lines": [
+        "origin/codex/review-e2e-batch-c:harness/rgb_execution_bundle.py:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/review-e2e-batch-c:harness/rgb_execution_bundle.py:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/codex/review-e2e-batch-c:harness/rgb_execution_bundle.py:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/codex/review-e2e-batch-c:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/codex/review-e2e-batch-c:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID:"
+      ]
+    },
+    {
+      "headRefName": "codex/review-e2e-batch-b",
+      "headRefOid": "ec0f85807ddb55927a81ac071b407b8ea53802d8",
+      "number": 317,
+      "title": "review: E2E Batch B — #307/#308/#302 독립 검토",
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/317",
+      "verified_sha": "ec0f85807ddb55927a81ac071b407b8ea53802d8",
+      "max_bundle_number": 81,
+      "max_workflow": [
+        "zone-m1-owncam-memory-v3-run",
+        "3.0.0"
+      ],
+      "max_zone_workflow": [
+        "zone-m1-owncam-memory-v3-run",
+        "3.0.0"
+      ],
+      "rgb_runnable_lines": [
+        "origin/codex/review-e2e-batch-b:harness/rgb_execution_bundle.py:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/review-e2e-batch-b:harness/rgb_execution_bundle.py:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/codex/review-e2e-batch-b:harness/rgb_execution_bundle.py:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/codex/review-e2e-batch-b:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/codex/review-e2e-batch-b:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID:"
+      ]
+    },
+    {
+      "headRefName": "codex/outputs-retention",
+      "headRefOid": "c8379bbe16492687af9d7b2d04f85e4ae4c610cc",
+      "number": 309,
+      "title": "feat: outputs 보존 3차·참조 보호와 0.568 GiB 캐시 후보",
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/309",
+      "verified_sha": "c8379bbe16492687af9d7b2d04f85e4ae4c610cc",
+      "max_bundle_number": 81,
+      "max_workflow": [
+        "zone-m1-owncam-memory-v3-run",
+        "3.0.0"
+      ],
+      "max_zone_workflow": [
+        "zone-m1-owncam-memory-v3-run",
+        "3.0.0"
+      ],
+      "rgb_runnable_lines": [
+        "origin/codex/outputs-retention:harness/rgb_execution_bundle.py:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/outputs-retention:harness/rgb_execution_bundle.py:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/codex/outputs-retention:harness/rgb_execution_bundle.py:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/codex/outputs-retention:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/codex/outputs-retention:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID:"
+      ]
+    },
+    {
+      "headRefName": "codex/evidence-referee",
+      "headRefOid": "39b5cc870ef064083fa41c19e1f8ece2644c025f",
+      "number": 303,
+      "title": "P06: 평가 심판·raw manifest·TensorBoard synthetic 연결 검사",
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/303",
+      "verified_sha": "39b5cc870ef064083fa41c19e1f8ece2644c025f",
+      "max_bundle_number": 84,
+      "max_workflow": [
+        "zone-m1-owncam-memory-v3-run",
+        "3.0.0"
+      ],
+      "max_zone_workflow": [
+        "zone-m1-owncam-memory-v3-run",
+        "3.0.0"
+      ],
+      "rgb_runnable_lines": [
+        "origin/codex/evidence-referee:harness/rgb_execution_bundle.py:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/evidence-referee:harness/rgb_execution_bundle.py:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/codex/evidence-referee:harness/rgb_execution_bundle.py:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/codex/evidence-referee:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/codex/evidence-referee:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID:"
+      ]
+    },
+    {
+      "headRefName": "codex/stall-d1-prereg",
+      "headRefOid": "d86cc82eedbe0c6693eaf808c54ce43387723f1d",
+      "number": 293,
+      "title": "D1 정체 검출 사전 등록 초안과 NumPy 오프라인 참조",
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/293",
+      "verified_sha": "d86cc82eedbe0c6693eaf808c54ce43387723f1d",
+      "max_bundle_number": 81,
+      "max_workflow": [
+        "zone-m1-owncam-memory-v3-run",
+        "3.0.0"
+      ],
+      "max_zone_workflow": [
+        "zone-m1-owncam-memory-v3-run",
+        "3.0.0"
+      ],
+      "rgb_runnable_lines": [
+        "origin/codex/stall-d1-prereg:harness/rgb_execution_bundle.py:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/stall-d1-prereg:harness/rgb_execution_bundle.py:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/codex/stall-d1-prereg:harness/rgb_execution_bundle.py:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/codex/stall-d1-prereg:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/codex/stall-d1-prereg:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID:"
+      ]
+    },
+    {
+      "headRefName": "codex/pair-v6h-register",
+      "headRefOid": "266118d2c2337bbf1cff507690da131c63e2db11",
+      "number": 292,
+      "title": "봉인 — 독립 검토 필요",
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/292",
+      "verified_sha": "266118d2c2337bbf1cff507690da131c63e2db11",
+      "max_bundle_number": 83,
+      "max_workflow": [
+        "zone-m1-owncam-memory-v3-run",
+        "3.0.0"
+      ],
+      "max_zone_workflow": [
+        "zone-m1-owncam-memory-v3-run",
+        "3.0.0"
+      ],
+      "rgb_runnable_lines": [
+        "origin/codex/pair-v6h-register:harness/rgb_execution_bundle.py:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/pair-v6h-register:harness/rgb_execution_bundle.py:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/codex/pair-v6h-register:harness/rgb_execution_bundle.py:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/codex/pair-v6h-register:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/codex/pair-v6h-register:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID:"
+      ]
+    },
+    {
+      "headRefName": "claude/b-v6h-gain",
+      "headRefOid": "1f0e4eb501a8f1b87077df943382fc1f0777dc69",
+      "number": 285,
+      "title": "b-v6h gain fix + p2f: 연쇄 탐색 실험 및 v6h 등록 준비 초안 (봉인·실행 없음)",
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/285",
+      "verified_sha": "1f0e4eb501a8f1b87077df943382fc1f0777dc69",
+      "max_bundle_number": 81,
+      "max_workflow": [
+        "zone-m1-owncam-memory-v3-run",
+        "3.0.0"
+      ],
+      "max_zone_workflow": [
+        "zone-m1-owncam-memory-v3-run",
+        "3.0.0"
+      ],
+      "rgb_runnable_lines": [
+        "origin/claude/b-v6h-gain:harness/rgb_execution_bundle.py:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/claude/b-v6h-gain:harness/rgb_execution_bundle.py:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/claude/b-v6h-gain:harness/rgb_execution_bundle.py:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/claude/b-v6h-gain:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/claude/b-v6h-gain:harness/rgb_execution_bundle.py:    if bundle_id == RUNNABLE_ID:"
+      ]
+    }
+  ],
+  "max_bundle_number": 87,
+  "chosen_bundle": "zone-final-pair-v88",
+  "chosen_workflow_version": "3.1.0",
+  "reason": "Concurrent PR342/343 used v87 after initial reservation; this candidate has no executed cohort and is renamed before commit."
+}

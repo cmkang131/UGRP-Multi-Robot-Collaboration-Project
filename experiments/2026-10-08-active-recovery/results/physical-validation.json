@@ -1,0 +1,37 @@
+{
+  "execution_source_sha": "00e4cebd749c56765936312d22d82c82cf4ebbce",
+  "source_unchanged_during_run": true,
+  "frozen_hashes_verified": 15,
+  "raw_seal_verified": true,
+  "physical_runs": 1,
+  "seed": 29001,
+  "duration_sim_s": 180,
+  "model_calls": 0,
+  "freeze": false,
+  "lock_pid": 44906,
+  "session": "egomap29-seed29001",
+  "session_stopped": true,
+  "lock_released": true,
+  "supervisor_resume": {
+    "source_sha": "00e4cebd749c56765936312d22d82c82cf4ebbce",
+    "seed": 29001,
+    "seconds": 180,
+    "physical_attempt_limit": 1,
+    "supervisor_override": "2026-10-08 user: fixed-pose replay cannot assess exhaustion; proceed dev_light with source 00e4cebd unchanged",
+    "free_bytes": 16188788736
+  },
+  "tests": {
+    "passed": 9,
+    "command": "python -m pytest -q tests/test_active_wall_recovery.py tests/test_active_wall_wide.py tests/test_simulation_workflow_manager.py::WorkflowManagerTests::test_every_catalog_workflow_has_a_read_only_explicit_plan",
+    "stage": "before physical run, source 00e4cebd"
+  },
+  "video": {
+    "full_decode": true,
+    "ffprobe_verified": true,
+    "chronological_snapshot_count": 20,
+    "visual_check": "start/middle/end reviewed"
+  },
+  "original_untracked_hashes_preserved": true,
+  "configuration_threshold_changes_after_results": false,
+  "remaining": "frontier exhaustion at elapsed89.2s; quality/2sigma gates failed; retry-budget exhaustion branch not exercised"
+}

@@ -1,0 +1,295 @@
+{
+  "reviewed_t10b_sha": "25beb0694027b2d6d8db646a043de51fabc479dc",
+  "merged_main_sha": "f5cd3a2b7754236a7b416cca1e1f9fe76fe8dd14",
+  "text_conflicts": [],
+  "api_adaptations": [],
+  "qualification": "T10a re-exports UnsupportedCorridor and require_door_runtime from zone_corridor_admission; existing T10b API remains compatible.",
+  "unchanged_reviewed_t10b_sha256": {
+    "harness/zone_corridor_control.py": "04867a8cd1f6b0987a9ee6ee8efc43f21081f43df91fa06c16938a2b49df7736",
+    "harness/zone_corridor_control_plan.py": "5ba80f3aa90be6ea10a2e4b57867edc4323c3d53a77c9a071ea60081b779cf28",
+    "tests/test_zone_own_executor_corridor_control.py": "36788a7f03bfa234cd2183104da1e2098af300793e65ff0b4c717070f2955464"
+  },
+  "identical_to_main_sha256": {
+    "harness/zone_corridor_contract.py": "4206fa64f83ef82bb4b51591a9348d7c1ed5b51de65ec7ffe602ec54974a1d4c",
+    "harness/zone_corridor_admission.py": "ec0cd04b155df8683b097accccdb5184909445ebae08cca83d44c245c54fcaef",
+    "sim/zone_study_admission.py": "1a4b7c51308c61ea55453661413eb63300a885cfffc5434e9599e50fee298aad",
+    "tests/test_zone_own_executor_corridor_contract.py": "4e76edb7a8a08a3889625d60ef8caa2b584027c2f358498e0ff2fa2c584eff3d",
+    "tests/test_zone_pair_registered_source.py": "4884b81bb2c31eba434a0fca6e021a34eafae31082a90f4281509132f56d67fb",
+    "tests/test_zone_study_source_pinning.py": "757ab9ffcf6d00322a46dba23d08af6b56a6b4594e86c6f76b3a601fff9697b5",
+    ".github/workflows/tests.yml": "8831e19de2f6afa377d9d1835445917804821519e1eb572f4483d1f66bb7f866"
+  },
+  "schema": "ugrp.t10b_main_integration.v1",
+  "scope": "offline only; no host lock; physics/render/model calls 0",
+  "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+  "raw_root": "/Users/changmin/projects/ugrp/outputs/2026-10-01-t10b-main-integration",
+  "pytest_args": [
+    "tests/test_zone_own_executor_corridor_control.py",
+    "tests/test_zone_own_executor_corridor_contract.py",
+    "tests/test_zone_pair_registered_source.py",
+    "tests/test_zone_study_source_pinning.py",
+    "tests/test_zone_pair_status.py",
+    "tests/test_pair_passage_plan.py",
+    "tests/test_zone_hard_routes.py",
+    "tests/test_execution_dependency_contract.py",
+    "--junitxml=/Users/changmin/projects/ugrp/outputs/2026-10-01-t10b-main-integration/related-01/junit.xml"
+  ],
+  "passed": 295,
+  "tests_by_file": {
+    "tests.test_zone_own_executor_corridor_control": 78,
+    "tests.test_zone_own_executor_corridor_contract": 55,
+    "tests.test_zone_pair_registered_source": 22,
+    "tests.test_zone_study_source_pinning": 34,
+    "tests.test_zone_pair_status": 16,
+    "tests.test_pair_passage_plan": 44,
+    "tests.test_zone_hard_routes": 11,
+    "tests.test_execution_dependency_contract": 35
+  },
+  "pinned_source_count": 85,
+  "pinned_sources_unchanged": true,
+  "test_files_sha256": {
+    "tests/test_zone_own_executor_corridor_control.py": "36788a7f03bfa234cd2183104da1e2098af300793e65ff0b4c717070f2955464",
+    "tests/test_zone_own_executor_corridor_contract.py": "4e76edb7a8a08a3889625d60ef8caa2b584027c2f358498e0ff2fa2c584eff3d",
+    "tests/test_zone_pair_registered_source.py": "4884b81bb2c31eba434a0fca6e021a34eafae31082a90f4281509132f56d67fb",
+    "tests/test_zone_study_source_pinning.py": "757ab9ffcf6d00322a46dba23d08af6b56a6b4594e86c6f76b3a601fff9697b5",
+    "tests/test_zone_pair_status.py": "6e39c94da07b30bff6f3289943f5267752ba1e37ffbde33a692d6678542722ca",
+    "tests/test_pair_passage_plan.py": "ceb5572bb8299f90b237598ab629f4d3b8beb62c9ebe14a310ebbe59c3a06866",
+    "tests/test_zone_hard_routes.py": "ecf473b9ec517f28ed786d8d177c54445850c163dc3bdfde543ff1ee48631801",
+    "tests/test_execution_dependency_contract.py": "eee022f7d58bffcb873f80de2aacee096df881de172ebf65e41acab4eecff820"
+  },
+  "mutations": [
+    {
+      "mutation": {
+        "name": "remove_control",
+        "module": "harness.zone_corridor_control",
+        "selected_test": "test_solo_entry_translation_full_exit_not_waypoint_or_delivery",
+        "original_sha256": "04867a8cd1f6b0987a9ee6ee8efc43f21081f43df91fa06c16938a2b49df7736",
+        "mutated_in_memory_sha256": "350f7855936bd52798ef557e0828c57d679f515f6a3373669d14d54af799eaad",
+        "file_bytes_unchanged": true
+      },
+      "pytest_exit_code": 1,
+      "failed_tests": [
+        "tests/test_zone_own_executor_corridor_control.py::test_solo_entry_translation_full_exit_not_waypoint_or_delivery[False]",
+        "tests/test_zone_own_executor_corridor_control.py::test_solo_entry_translation_full_exit_not_waypoint_or_delivery[True]"
+      ],
+      "passed_tests": [],
+      "setup_teardown_errors": [],
+      "original_file_unchanged": true,
+      "mutation_caught": true,
+      "host_lock_required": false,
+      "scope": "fake only; physics/render/model calls 0"
+    },
+    {
+      "mutation": {
+        "name": "remove_yield",
+        "module": "harness.zone_corridor_control",
+        "selected_test": "test_capable_solo_decides_to_yield_then_reenters_on_own_clear_frames",
+        "original_sha256": "04867a8cd1f6b0987a9ee6ee8efc43f21081f43df91fa06c16938a2b49df7736",
+        "mutated_in_memory_sha256": "0820cd3c801d5c9b818b8c0dfd5ff8ae02cde6500e935f586c68dc57e90beb1f",
+        "file_bytes_unchanged": true
+      },
+      "pytest_exit_code": 1,
+      "failed_tests": [
+        "tests/test_zone_own_executor_corridor_control.py::test_capable_solo_decides_to_yield_then_reenters_on_own_clear_frames"
+      ],
+      "passed_tests": [],
+      "setup_teardown_errors": [],
+      "original_file_unchanged": true,
+      "mutation_caught": true,
+      "host_lock_required": false,
+      "scope": "fake only; physics/render/model calls 0"
+    },
+    {
+      "mutation": {
+        "name": "remove_heartbeat",
+        "module": "harness.zone_corridor_control",
+        "selected_test": "test_heartbeat_boundary_uses_actual_delivery_not_private_partner_state",
+        "original_sha256": "04867a8cd1f6b0987a9ee6ee8efc43f21081f43df91fa06c16938a2b49df7736",
+        "mutated_in_memory_sha256": "a524aba482221f83b64203c6bc939ff94297fbe8e7192660c9425d9cb62275c1",
+        "file_bytes_unchanged": true
+      },
+      "pytest_exit_code": 1,
+      "failed_tests": [
+        "tests/test_zone_own_executor_corridor_control.py::test_heartbeat_boundary_uses_actual_delivery_not_private_partner_state[0.15-ABORTED]",
+        "tests/test_zone_own_executor_corridor_control.py::test_heartbeat_boundary_uses_actual_delivery_not_private_partner_state[0.151-ABORTED]"
+      ],
+      "passed_tests": [
+        "tests/test_zone_own_executor_corridor_control.py::test_heartbeat_boundary_uses_actual_delivery_not_private_partner_state[0.149-FOLLOW]"
+      ],
+      "setup_teardown_errors": [],
+      "original_file_unchanged": true,
+      "mutation_caught": true,
+      "host_lock_required": false,
+      "scope": "fake only; physics/render/model calls 0"
+    },
+    {
+      "mutation": {
+        "name": "remove_wait_timeout",
+        "module": "harness.zone_corridor_control",
+        "selected_test": "test_wait_timeout_boundary",
+        "original_sha256": "04867a8cd1f6b0987a9ee6ee8efc43f21081f43df91fa06c16938a2b49df7736",
+        "mutated_in_memory_sha256": "a1a64d9e05050519bf867b8ca289d691cb86d2a877faa96deed9e02e8e091acb",
+        "file_bytes_unchanged": true
+      },
+      "pytest_exit_code": 1,
+      "failed_tests": [
+        "tests/test_zone_own_executor_corridor_control.py::test_wait_timeout_boundary[0.2-ABORTED]",
+        "tests/test_zone_own_executor_corridor_control.py::test_wait_timeout_boundary[0.201-ABORTED]"
+      ],
+      "passed_tests": [
+        "tests/test_zone_own_executor_corridor_control.py::test_wait_timeout_boundary[0.199-WAIT_LANE]"
+      ],
+      "setup_teardown_errors": [],
+      "original_file_unchanged": true,
+      "mutation_caught": true,
+      "host_lock_required": false,
+      "scope": "fake only; physics/render/model calls 0"
+    },
+    {
+      "mutation": {
+        "name": "remove_exit_check",
+        "module": "harness.zone_corridor_control",
+        "selected_test": "test_waypoint_proximity_cannot_override_full_exit",
+        "original_sha256": "04867a8cd1f6b0987a9ee6ee8efc43f21081f43df91fa06c16938a2b49df7736",
+        "mutated_in_memory_sha256": "e1978839a4b9ed6af52a7a5bb1a02b2cf7a5e35685b536fa312294f55d7f48c8",
+        "file_bytes_unchanged": true
+      },
+      "pytest_exit_code": 1,
+      "failed_tests": [
+        "tests/test_zone_own_executor_corridor_control.py::test_waypoint_proximity_cannot_override_full_exit"
+      ],
+      "passed_tests": [],
+      "setup_teardown_errors": [],
+      "original_file_unchanged": true,
+      "mutation_caught": true,
+      "host_lock_required": false,
+      "scope": "fake only; physics/render/model calls 0"
+    },
+    {
+      "mutation": {
+        "name": "remove_route_refusal",
+        "module": "harness.zone_corridor_control_plan",
+        "selected_test": "test_impossible_and_disconnected_routes_refused",
+        "original_sha256": "5ba80f3aa90be6ea10a2e4b57867edc4323c3d53a77c9a071ea60081b779cf28",
+        "mutated_in_memory_sha256": "6817a59dcbc335b07a44636ed16e38990c2f23f8318ca3bc65e0be4946e29471",
+        "file_bytes_unchanged": true
+      },
+      "pytest_exit_code": 1,
+      "failed_tests": [
+        "tests/test_zone_own_executor_corridor_control.py::test_impossible_and_disconnected_routes_refused"
+      ],
+      "passed_tests": [],
+      "setup_teardown_errors": [],
+      "original_file_unchanged": true,
+      "mutation_caught": true,
+      "host_lock_required": false,
+      "scope": "fake only; physics/render/model calls 0"
+    }
+  ],
+  "review_test_selection": {
+    "command": [
+      "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "/Users/changmin/projects/ugrp/outputs/2026-10-01-t10b-main-integration/review-selection/test_review_e2e_batch_i.py",
+      "-k",
+      "test_t10b or test_corridor or pr331",
+      "--basetemp=/Users/changmin/projects/ugrp/outputs/2026-10-01-t10b-main-integration/review-selection/selection-tmp"
+    ],
+    "exit_code": 5,
+    "qualification": "No #331 cases; initial broad -k matched parent directory name and incorrectly selected the two unrelated cases; their archive setup errors are not corridor product failures.",
+    "remaining_extraction_dirs": []
+  },
+  "raw_evidence": {
+    "related-01/junit.xml": {
+      "bytes": 44103,
+      "sha256": "75e1a5794038921bfd7b587926427c61f8b0c618a53940721a4f8930c86dafb9"
+    },
+    "related-01/mutations/remove_control/pytest.log": {
+      "bytes": 3041,
+      "sha256": "151124c91f4980df1190bdfe05509bd1c154234d06d778a01e9bf2573674386f"
+    },
+    "related-01/mutations/remove_control/receipt.json": {
+      "bytes": 914,
+      "sha256": "e107e1d03b0f12d159db5fa4f081d852281bcebedaefef3fa14213657a51c58b"
+    },
+    "related-01/mutations/remove_exit_check/pytest.log": {
+      "bytes": 1288,
+      "sha256": "e87f3b4f3bba601df1ce19202f908f364077318d4a5c8e6e2428d1916a0e15f8"
+    },
+    "related-01/mutations/remove_exit_check/receipt.json": {
+      "bytes": 758,
+      "sha256": "f252b9e6554136a32722bc92004db907b24f6af1764b9bfe2b7a94c8eb3bea5e"
+    },
+    "related-01/mutations/remove_heartbeat/pytest.log": {
+      "bytes": 2353,
+      "sha256": "43cb9e54271e91bd27dbed8f3e72544c41cce37d215becca19cff41e0fb1f982"
+    },
+    "related-01/mutations/remove_heartbeat/receipt.json": {
+      "bytes": 1100,
+      "sha256": "1ee366a903073074f4f992eb66ccbdc270071bcef61b6110a0021c91294115d0"
+    },
+    "related-01/mutations/remove_route_refusal/pytest.log": {
+      "bytes": 1106,
+      "sha256": "fe6bc7a31bbde5b15bd11c0312d6b0168c256688a66493e882a4a81ba1f4a373"
+    },
+    "related-01/mutations/remove_route_refusal/receipt.json": {
+      "bytes": 762,
+      "sha256": "93addc5cdb5e2e839194a85387424fb82cfcab05a9e3f02c7d88bcdb3c2653bc"
+    },
+    "related-01/mutations/remove_wait_timeout/pytest.log": {
+      "bytes": 2276,
+      "sha256": "9650d34cbce6fb082c507f5f51e524fe5bbf584e3b3e93fc3b860fadb93769a7"
+    },
+    "related-01/mutations/remove_wait_timeout/receipt.json": {
+      "bytes": 929,
+      "sha256": "fa626d3563b142ff44493e2a95f72f824139a6d9d7d3a56085a7e0af78c61a4d"
+    },
+    "related-01/mutations/remove_yield/pytest.log": {
+      "bytes": 1254,
+      "sha256": "aa1cec10de53e16af901c6ba14d22785ec7fb38fe4bc843440100222099bc68d"
+    },
+    "related-01/mutations/remove_yield/receipt.json": {
+      "bytes": 791,
+      "sha256": "e094f01d78e67966f26575fd9ab387f96122bcfdc3591034109136398e072a44"
+    },
+    "related-01/pytest.log": {
+      "bytes": 432,
+      "sha256": "4f5952f0a93e7a828b93bac2b8e341b270ab11e86133b99c57b4839b866caa71"
+    },
+    "related-01/receipt.json": {
+      "bytes": 12063,
+      "sha256": "0ab86bef0fdc7670b4636166e4270b6326440ae22e2d99f20d58a3b85dc5f1db"
+    },
+    "related-01/validate_offline.py": {
+      "bytes": 4275,
+      "sha256": "27b782c563143fe1db92ea00599fda84b35886c4e2d3ff56df3a1db45e0cd478"
+    },
+    "review-selection/pytest.log": {
+      "bytes": 3271,
+      "sha256": "105ec82cd92fd0abdd604830c88d6483c9aeabf93e28f580e7eeb5c04f12d5a3"
+    },
+    "review-selection/receipt.json": {
+      "bytes": 933,
+      "sha256": "5e16981629927e4a75d385c4a5e1d0f6d84d4bd031ab0c5efb189f56219130c0"
+    },
+    "review-selection/selection-corrected.json": {
+      "bytes": 711,
+      "sha256": "84f4fdef8b666f1ea00aecfd7dbf1de3d84b703edabc9f1708c043474e9fbccf"
+    },
+    "review-selection/selection-corrected.log": {
+      "bytes": 23,
+      "sha256": "24025ab47082d488070dfe23311549c35df428512b478426643ff7269946abb4"
+    },
+    "review-selection/test_review_e2e_batch_i.py": {
+      "bytes": 5778,
+      "sha256": "80552a74647afd1a5cdc72e97fa73edfd41656922c90d94ff5c4c3eb43582aaf"
+    },
+    "source-audit.json": {
+      "bytes": 1540,
+      "sha256": "b323c53bab10ac8e8b40f19e2dacf824b72e4aaec9746d9dccab090c4992232c"
+    }
+  }
+}

@@ -1,0 +1,1596 @@
+{
+  "schema": "ugrp.s3_release_ack.delivery.v1",
+  "status": "COMPLETED_EVALUATED_ARCHIVED",
+  "pr": 416,
+  "execution_bundle_id": "zone-s3-release-ack-v187",
+  "workflow_version": "7.80.0",
+  "physical_source_sha": "78ba0b0ad7aa751eb0ad48eb0420739965f0071c",
+  "planned": 8,
+  "completed": 8,
+  "pose_diagnosis": {
+    "n": 12,
+    "classification": "unconverged map-uniform posterior in synthetic alignment-entry diagnostic",
+    "evaluation_bug": false,
+    "coordinate_transform_bug": false,
+    "estimator_parameters_changed": false,
+    "raw_truth_and_own_report_max_difference_m": 0,
+    "frame": "world metres; x east, y north; MuJoCo robot body origin and static-map PF",
+    "map_center_m": [
+      2.175,
+      -0.85
+    ],
+    "initial_mean_center_distance_m": [
+      0.001401312012094253,
+      0.003734273868168146
+    ],
+    "carry_std_xy_m": [
+      2.2266282925948286,
+      2.278957423196045
+    ],
+    "unqualified_carry_reports": 24,
+    "stage_translation_m": [
+      -1.2749148886483785,
+      -0.00011256421084960416
+    ],
+    "rigid_transform_best_possible_max_error_lower_bound_m": [
+      0.4142687578208791,
+      0.45184940530091344
+    ],
+    "mechanism": [
+      "stage runner sets boot_finished_at and directly enters pair alignment; skips global startup scan",
+      "new no-prior localizers sample static free-space in world metres and full yaw",
+      "first base command downsamples global particles to2000 before a useful localization scan",
+      "large connected global mode still reports a near-map-centre mean; existing convergence certificate is false",
+      "DEV light continues with this explicitly uncertain estimate; distance targets share the same startup prefix"
+    ],
+    "audit": {
+      "path": "pose-origin-audit.json",
+      "compressed_path": "pose-origin-audit.json.zst",
+      "bytes": 86340,
+      "compressed_bytes": 7060,
+      "sha256": "0c3c5abfc9ae14bc2997fa9b9ca0e0922e3069d74637da0faa21ba848570695e",
+      "compressed_sha256": "7275db8b973a51129f84eb1ffedebf3f56b208bd36eb02e4c90e013d92e1eff9",
+      "codec": "zstd",
+      "verified": true
+    },
+    "fix_decision": "No coordinate/evaluation correction justified. This stage diagnostic omits startup global scan; PF remains correctly flagged uncertain. No fitted GT offset or hidden pose prior. Actual localization remains unverified.",
+    "verified_raw_text_files": 96,
+    "latency_sensitivity": [
+      {
+        "seed": 18601,
+        "robot_id": "r1",
+        "report_time": 29.1,
+        "estimate_time": 28.94,
+        "nearest_truth_time": 28.95,
+        "truth_motion_over_latency_m": 2.033368549014354e-05,
+        "nominal_error_m": 2.7645709946653145,
+        "latency_aligned_error_m": 2.7645900036934035
+      },
+      {
+        "seed": 18601,
+        "robot_id": "r2",
+        "report_time": 29.1,
+        "estimate_time": 28.94,
+        "nearest_truth_time": 28.95,
+        "truth_motion_over_latency_m": 4.025108099448358e-06,
+        "nominal_error_m": 1.9628257732982293,
+        "latency_aligned_error_m": 1.9628280356902452
+      },
+      {
+        "seed": 18602,
+        "robot_id": "r1",
+        "report_time": 29.1,
+        "estimate_time": 28.94,
+        "nearest_truth_time": 28.95,
+        "truth_motion_over_latency_m": 4.661160794242027e-06,
+        "nominal_error_m": 2.805833045292095,
+        "latency_aligned_error_m": 2.805834005458823
+      },
+      {
+        "seed": 18602,
+        "robot_id": "r2",
+        "report_time": 29.1,
+        "estimate_time": 28.94,
+        "nearest_truth_time": 28.95,
+        "truth_motion_over_latency_m": 2.147642392648441e-05,
+        "nominal_error_m": 1.9491003309368284,
+        "latency_aligned_error_m": 1.9490788870886082
+      },
+      {
+        "seed": 18603,
+        "robot_id": "r1",
+        "report_time": 29.1,
+        "estimate_time": 28.94,
+        "nearest_truth_time": 28.95,
+        "truth_motion_over_latency_m": 2.1771523266442524e-05,
+        "nominal_error_m": 2.8586147208962966,
+        "latency_aligned_error_m": 2.8585946130083237
+      },
+      {
+        "seed": 18603,
+        "robot_id": "r2",
+        "report_time": 29.1,
+        "estimate_time": 28.94,
+        "nearest_truth_time": 28.95,
+        "truth_motion_over_latency_m": 5.4326432343117194e-05,
+        "nominal_error_m": 1.9292690209981707,
+        "latency_aligned_error_m": 1.9292156465519124
+      }
+    ],
+    "source_locations": [
+      "scripts/run_s3_alignment_probe.py:152-154 (skip startup)",
+      "harness/zone_solo_cyan_unknown_start.py:42-51 (uniform free space)",
+      "harness/zone_solo_cyan_kld_start.py:106-114 (first-motion downsample)",
+      "scripts/run_s3_continuous_distance.py:62-74 (same-ID world telemetry)",
+      "scripts/evaluate_s3_continuous_distance.py:74-76 (Euclidean world metres)"
+    ],
+    "seed18601_example": {
+      "r1_truth_m": [
+        -0.4564820180891611,
+        0.06954797625054536
+      ],
+      "r1_estimate_m": [
+        2.1280187161818556,
+        -0.9118840076878951
+      ],
+      "r1_error_m": 2.7645709946653145,
+      "r2_truth_m": [
+        0.46462919937144215,
+        0.028038120456039366
+      ],
+      "r2_estimate_m": [
+        2.2107965782245325,
+        -0.8683906281643518
+      ],
+      "r2_error_m": 1.9628257732982293
+    },
+    "units_and_identity": {
+      "translation": "world origin unchanged; stage setup translates only beam and two robots by [-1.27491488865,-0.00011256421]m before controller creation",
+      "axes": "static map world x east/y north and MuJoCo x/y; arbitrary rigid axis corrections rejected by pair-separation lower bound",
+      "units": "same metre map bounds [-1.05,5.4,-3.15,1.45]; no scale conversion in evaluator",
+      "robot_identity": "24 robot series match own localizer reports and same-ID body trajectory exactly; foreign or stale frames refused by OwnPosePort",
+      "estimate_latency": "0.16s; nearest truth alignment changes entrance position by at most0.000054327m, far below metre errors"
+    },
+    "within_seed_entrance_error_range_across_four_distances_m": {
+      "18601": {
+        "r1": 0.0,
+        "r2": 0.0
+      },
+      "18602": {
+        "r1": 0.0,
+        "r2": 0.0
+      },
+      "18603": {
+        "r1": 0.0,
+        "r2": 0.0
+      }
+    }
+  },
+  "release_fix": {
+    "option": "issued_open_v1",
+    "default": "off",
+    "semantics": "Keep wait_open until own post-request OPEN=2000 receipt after host.issue, then released/cp_open. No GT observation, physical guard or trajectory change."
+  },
+  "tests": {
+    "files": [
+      "tests/test_s3_release_ack.py",
+      "tests/test_s3_continuous_distance.py"
+    ],
+    "passed": 8,
+    "mac_physics": false
+  },
+  "runs": [
+    {
+      "name": "s3ack-d0p85-s18601-off",
+      "distance_m": 0.85,
+      "seed": 18601,
+      "option": "off",
+      "source_sha": "78ba0b0ad7aa751eb0ad48eb0420739965f0071c",
+      "status": "PHYSICAL_STOP",
+      "exit_code": 0,
+      "wall_s": 825.7424122110006,
+      "sim_s": 54.699999999999996,
+      "carry_start_sim_s": 29.1,
+      "carry_end_sim_s": 42.55,
+      "actual_continuous_distance_m": 0.8572750655028041,
+      "tilt_max_deg": 1.4115124204931933,
+      "drop": false,
+      "max_grip_loss_s": {
+        "r1": 0.0,
+        "r2": 0.0
+      },
+      "carrier_axis_error_max_m": [
+        0.018098660813339773,
+        0.014575180583967
+      ],
+      "localization_error_m": {
+        "r1": {
+          "initial": 2.7645709946653145,
+          "max": 2.7645709946653145,
+          "final": 1.9199245051912228,
+          "rms": 2.3650878460227505
+        },
+        "r2": {
+          "initial": 1.9628257732982293,
+          "max": 1.9628298351803484,
+          "final": 1.2371570399411846,
+          "rms": 1.600931055553561
+        }
+      },
+      "carry_completed": true,
+      "whole_episode_completed": false,
+      "safe": true,
+      "reasons": [],
+      "mechanical_hold_safe": true,
+      "raw_manifest_sha256": "3a5f25a620e66b982fc61679b15351b0a3c8587d40884eeee11dcb027398a632",
+      "verified_files": 3324,
+      "release_ack": {
+        "r1": {
+          "option": "off",
+          "audit": []
+        },
+        "r2": {
+          "option": "off",
+          "audit": []
+        }
+      },
+      "model_calls": 0,
+      "failure_code": "sim.zone_s3_no_prior.PhysicalStop: LOAD_DROP:beam_1",
+      "raw_azure": "/home/ugrp/ugrp-sim/runs/s3-release-ack-20261011-v187/cohort/s3ack-d0p85-s18601-off/raw",
+      "raw_arm": "/home/ubuntu/ugrp-archive/runs/shutdown-s3-release-ack-20261011-v187/cohort/s3ack-d0p85-s18601-off/raw"
+    },
+    {
+      "name": "s3ack-d0p85-s18601-on",
+      "distance_m": 0.85,
+      "seed": 18601,
+      "option": "issued_open_v1",
+      "source_sha": "78ba0b0ad7aa751eb0ad48eb0420739965f0071c",
+      "status": "DEV_STAGE_FINISHED",
+      "exit_code": 0,
+      "wall_s": 862.7033493879999,
+      "sim_s": 57.199999999999996,
+      "carry_start_sim_s": 29.1,
+      "carry_end_sim_s": 42.55,
+      "actual_continuous_distance_m": 0.8572750655028041,
+      "tilt_max_deg": 1.4115124204931933,
+      "drop": false,
+      "max_grip_loss_s": {
+        "r1": 0.0,
+        "r2": 0.0
+      },
+      "carrier_axis_error_max_m": [
+        0.018098660813339773,
+        0.014575180583967
+      ],
+      "localization_error_m": {
+        "r1": {
+          "initial": 2.7645709946653145,
+          "max": 2.7645709946653145,
+          "final": 1.9199245051912228,
+          "rms": 2.3650878460227505
+        },
+        "r2": {
+          "initial": 1.9628257732982293,
+          "max": 1.9628298351803484,
+          "final": 1.2371570399411846,
+          "rms": 1.600931055553561
+        }
+      },
+      "carry_completed": true,
+      "whole_episode_completed": true,
+      "safe": true,
+      "reasons": [],
+      "mechanical_hold_safe": true,
+      "raw_manifest_sha256": "32f0638db96fd241f5bd9d323995a94c44ce6dc35feee8b26588aa892bfc4a28",
+      "verified_files": 3475,
+      "release_ack": {
+        "r1": {
+          "option": "issued_open_v1",
+          "runtime_gt": false,
+          "audit": [
+            {
+              "event": "open_queued",
+              "t": 57.0,
+              "target": "released",
+              "issued_pwm": 1500
+            },
+            {
+              "event": "open_host_issued",
+              "t": 57.4,
+              "pulse": 2000
+            },
+            {
+              "event": "release_state_after_ack",
+              "t": 57.5,
+              "acknowledged_t": 57.4,
+              "target": "released"
+            }
+          ],
+          "scope": "host accepted own OPEN command; not measured finger position"
+        },
+        "r2": {
+          "option": "issued_open_v1",
+          "runtime_gt": false,
+          "audit": [
+            {
+              "event": "open_queued",
+              "t": 57.0,
+              "target": "released",
+              "issued_pwm": 1500
+            },
+            {
+              "event": "open_host_issued",
+              "t": 57.4,
+              "pulse": 2000
+            },
+            {
+              "event": "release_state_after_ack",
+              "t": 57.5,
+              "acknowledged_t": 57.4,
+              "target": "released"
+            }
+          ],
+          "scope": "host accepted own OPEN command; not measured finger position"
+        }
+      },
+      "model_calls": 0,
+      "failure_code": null,
+      "raw_azure": "/home/ugrp/ugrp-sim/runs/s3-release-ack-20261011-v187/cohort/s3ack-d0p85-s18601-on/raw",
+      "raw_arm": "/home/ubuntu/ugrp-archive/runs/shutdown-s3-release-ack-20261011-v187/cohort/s3ack-d0p85-s18601-on/raw"
+    },
+    {
+      "name": "s3ack-d0p85-s18602-off",
+      "distance_m": 0.85,
+      "seed": 18602,
+      "option": "off",
+      "source_sha": "78ba0b0ad7aa751eb0ad48eb0420739965f0071c",
+      "status": "PHYSICAL_STOP",
+      "exit_code": 0,
+      "wall_s": 860.0744621309996,
+      "sim_s": 54.699999999999996,
+      "carry_start_sim_s": 29.1,
+      "carry_end_sim_s": 42.55,
+      "actual_continuous_distance_m": 0.8534340805627453,
+      "tilt_max_deg": 1.1582709254750323,
+      "drop": false,
+      "max_grip_loss_s": {
+        "r1": 0.0,
+        "r2": 0.0
+      },
+      "carrier_axis_error_max_m": [
+        0.02190956444301051,
+        0.026732796089312755
+      ],
+      "localization_error_m": {
+        "r1": {
+          "initial": 2.805833045292095,
+          "max": 2.805842812136763,
+          "final": 2.0245016549395833,
+          "rms": 2.434318643999927
+        },
+        "r2": {
+          "initial": 1.9491003309368284,
+          "max": 1.9491489672617153,
+          "final": 1.1766160099783438,
+          "rms": 1.5753937463686247
+        }
+      },
+      "carry_completed": true,
+      "whole_episode_completed": false,
+      "safe": false,
+      "reasons": [
+        "axis_disagreement"
+      ],
+      "mechanical_hold_safe": true,
+      "raw_manifest_sha256": "b96bf6ba9496268c6d5cbb789e9bb3d6ff83c61b3b70626cbfa80c80f10bac85",
+      "verified_files": 3324,
+      "release_ack": {
+        "r1": {
+          "option": "off",
+          "audit": []
+        },
+        "r2": {
+          "option": "off",
+          "audit": []
+        }
+      },
+      "model_calls": 0,
+      "failure_code": "sim.zone_s3_no_prior.PhysicalStop: LOAD_DROP:beam_1",
+      "raw_azure": "/home/ugrp/ugrp-sim/runs/s3-release-ack-20261011-v187/cohort/s3ack-d0p85-s18602-off/raw",
+      "raw_arm": "/home/ubuntu/ugrp-archive/runs/shutdown-s3-release-ack-20261011-v187/cohort/s3ack-d0p85-s18602-off/raw"
+    },
+    {
+      "name": "s3ack-d0p85-s18602-on",
+      "distance_m": 0.85,
+      "seed": 18602,
+      "option": "issued_open_v1",
+      "source_sha": "78ba0b0ad7aa751eb0ad48eb0420739965f0071c",
+      "status": "DEV_STAGE_FINISHED",
+      "exit_code": 0,
+      "wall_s": 875.1052937699997,
+      "sim_s": 57.199999999999996,
+      "carry_start_sim_s": 29.1,
+      "carry_end_sim_s": 42.55,
+      "actual_continuous_distance_m": 0.8534340805627453,
+      "tilt_max_deg": 1.1582709254750323,
+      "drop": false,
+      "max_grip_loss_s": {
+        "r1": 0.0,
+        "r2": 0.0
+      },
+      "carrier_axis_error_max_m": [
+        0.02190956444301051,
+        0.026732796089312755
+      ],
+      "localization_error_m": {
+        "r1": {
+          "initial": 2.805833045292095,
+          "max": 2.805842812136763,
+          "final": 2.0245016549395833,
+          "rms": 2.434318643999927
+        },
+        "r2": {
+          "initial": 1.9491003309368284,
+          "max": 1.9491489672617153,
+          "final": 1.1766160099783438,
+          "rms": 1.5753937463686247
+        }
+      },
+      "carry_completed": true,
+      "whole_episode_completed": true,
+      "safe": false,
+      "reasons": [
+        "axis_disagreement"
+      ],
+      "mechanical_hold_safe": true,
+      "raw_manifest_sha256": "9e9d2dee8450162d5d8cdc9b3d68d2312711125893df425c9d64e7bd46c50ed2",
+      "verified_files": 3475,
+      "release_ack": {
+        "r1": {
+          "option": "issued_open_v1",
+          "runtime_gt": false,
+          "audit": [
+            {
+              "event": "open_queued",
+              "t": 57.0,
+              "target": "released",
+              "issued_pwm": 1500
+            },
+            {
+              "event": "open_host_issued",
+              "t": 57.4,
+              "pulse": 2000
+            },
+            {
+              "event": "release_state_after_ack",
+              "t": 57.5,
+              "acknowledged_t": 57.4,
+              "target": "released"
+            }
+          ],
+          "scope": "host accepted own OPEN command; not measured finger position"
+        },
+        "r2": {
+          "option": "issued_open_v1",
+          "runtime_gt": false,
+          "audit": [
+            {
+              "event": "open_queued",
+              "t": 57.0,
+              "target": "released",
+              "issued_pwm": 1500
+            },
+            {
+              "event": "open_host_issued",
+              "t": 57.4,
+              "pulse": 2000
+            },
+            {
+              "event": "release_state_after_ack",
+              "t": 57.5,
+              "acknowledged_t": 57.4,
+              "target": "released"
+            }
+          ],
+          "scope": "host accepted own OPEN command; not measured finger position"
+        }
+      },
+      "model_calls": 0,
+      "failure_code": null,
+      "raw_azure": "/home/ugrp/ugrp-sim/runs/s3-release-ack-20261011-v187/cohort/s3ack-d0p85-s18602-on/raw",
+      "raw_arm": "/home/ubuntu/ugrp-archive/runs/shutdown-s3-release-ack-20261011-v187/cohort/s3ack-d0p85-s18602-on/raw"
+    },
+    {
+      "name": "s3ack-d1p5-s18601-off",
+      "distance_m": 1.5,
+      "seed": 18601,
+      "option": "off",
+      "source_sha": "78ba0b0ad7aa751eb0ad48eb0420739965f0071c",
+      "status": "PHYSICAL_STOP",
+      "exit_code": 0,
+      "wall_s": 989.9516313449994,
+      "sim_s": 64.80000000000001,
+      "carry_start_sim_s": 29.1,
+      "carry_end_sim_s": 52.55,
+      "actual_continuous_distance_m": 1.5084747806445042,
+      "tilt_max_deg": 1.4957211919236302,
+      "drop": false,
+      "max_grip_loss_s": {
+        "r1": 0.0,
+        "r2": 0.0
+      },
+      "carrier_axis_error_max_m": [
+        0.021543340271172662,
+        0.021473992126403288
+      ],
+      "localization_error_m": {
+        "r1": {
+          "initial": 2.7645709946653145,
+          "max": 3.7689725797255234,
+          "final": 1.7818652822998435,
+          "rms": 2.4914050350163106
+        },
+        "r2": {
+          "initial": 1.9628257732982293,
+          "max": 1.9628298351803484,
+          "final": 1.2138615088418248,
+          "rms": 1.4720693443539694
+        }
+      },
+      "carry_completed": true,
+      "whole_episode_completed": false,
+      "safe": false,
+      "reasons": [
+        "axis_disagreement"
+      ],
+      "mechanical_hold_safe": true,
+      "raw_manifest_sha256": "78b995d38c57510d5430729f1cc2c39fca13a443a26f2b5a9218cffa8a7dd381",
+      "verified_files": 3930,
+      "release_ack": {
+        "r1": {
+          "option": "off",
+          "audit": []
+        },
+        "r2": {
+          "option": "off",
+          "audit": []
+        }
+      },
+      "model_calls": 0,
+      "failure_code": "sim.zone_s3_no_prior.PhysicalStop: LOAD_DROP:beam_1",
+      "raw_azure": "/home/ugrp/ugrp-sim/runs/s3-release-ack-20261011-v187/cohort/s3ack-d1p5-s18601-off/raw",
+      "raw_arm": "/home/ubuntu/ugrp-archive/runs/shutdown-s3-release-ack-20261011-v187/cohort/s3ack-d1p5-s18601-off/raw"
+    },
+    {
+      "name": "s3ack-d1p5-s18601-on",
+      "distance_m": 1.5,
+      "seed": 18601,
+      "option": "issued_open_v1",
+      "source_sha": "78ba0b0ad7aa751eb0ad48eb0420739965f0071c",
+      "status": "DEV_STAGE_FINISHED",
+      "exit_code": 0,
+      "wall_s": 1018.3080768580003,
+      "sim_s": 67.30000000000001,
+      "carry_start_sim_s": 29.1,
+      "carry_end_sim_s": 52.55,
+      "actual_continuous_distance_m": 1.5084747806445042,
+      "tilt_max_deg": 1.4957211919236302,
+      "drop": false,
+      "max_grip_loss_s": {
+        "r1": 0.0,
+        "r2": 0.0
+      },
+      "carrier_axis_error_max_m": [
+        0.021543340271172662,
+        0.021473992126403288
+      ],
+      "localization_error_m": {
+        "r1": {
+          "initial": 2.7645709946653145,
+          "max": 3.7689725797255234,
+          "final": 1.7818652822998435,
+          "rms": 2.4914050350163106
+        },
+        "r2": {
+          "initial": 1.9628257732982293,
+          "max": 1.9628298351803484,
+          "final": 1.2138615088418248,
+          "rms": 1.4720693443539694
+        }
+      },
+      "carry_completed": true,
+      "whole_episode_completed": true,
+      "safe": false,
+      "reasons": [
+        "axis_disagreement"
+      ],
+      "mechanical_hold_safe": true,
+      "raw_manifest_sha256": "7c0fe07f56230d941d655f5183f061aa8027f470c2dcc4941992aba8f22323d0",
+      "verified_files": 4081,
+      "release_ack": {
+        "r1": {
+          "option": "issued_open_v1",
+          "runtime_gt": false,
+          "audit": [
+            {
+              "event": "open_queued",
+              "t": 67.1,
+              "target": "released",
+              "issued_pwm": 1500
+            },
+            {
+              "event": "open_host_issued",
+              "t": 67.5,
+              "pulse": 2000
+            },
+            {
+              "event": "release_state_after_ack",
+              "t": 67.6,
+              "acknowledged_t": 67.5,
+              "target": "released"
+            }
+          ],
+          "scope": "host accepted own OPEN command; not measured finger position"
+        },
+        "r2": {
+          "option": "issued_open_v1",
+          "runtime_gt": false,
+          "audit": [
+            {
+              "event": "open_queued",
+              "t": 67.1,
+              "target": "released",
+              "issued_pwm": 1500
+            },
+            {
+              "event": "open_host_issued",
+              "t": 67.5,
+              "pulse": 2000
+            },
+            {
+              "event": "release_state_after_ack",
+              "t": 67.6,
+              "acknowledged_t": 67.5,
+              "target": "released"
+            }
+          ],
+          "scope": "host accepted own OPEN command; not measured finger position"
+        }
+      },
+      "model_calls": 0,
+      "failure_code": null,
+      "raw_azure": "/home/ugrp/ugrp-sim/runs/s3-release-ack-20261011-v187/cohort/s3ack-d1p5-s18601-on/raw",
+      "raw_arm": "/home/ubuntu/ugrp-archive/runs/shutdown-s3-release-ack-20261011-v187/cohort/s3ack-d1p5-s18601-on/raw"
+    },
+    {
+      "name": "s3ack-d1p5-s18602-off",
+      "distance_m": 1.5,
+      "seed": 18602,
+      "option": "off",
+      "source_sha": "78ba0b0ad7aa751eb0ad48eb0420739965f0071c",
+      "status": "PHYSICAL_STOP",
+      "exit_code": 0,
+      "wall_s": 998.6982037219996,
+      "sim_s": 64.80000000000001,
+      "carry_start_sim_s": 29.1,
+      "carry_end_sim_s": 52.55,
+      "actual_continuous_distance_m": 1.5031870249552284,
+      "tilt_max_deg": 1.2172846274700138,
+      "drop": false,
+      "max_grip_loss_s": {
+        "r1": 0.0,
+        "r2": 0.0
+      },
+      "carrier_axis_error_max_m": [
+        0.02762030750629485,
+        0.03995665071588751
+      ],
+      "localization_error_m": {
+        "r1": {
+          "initial": 2.805833045292095,
+          "max": 2.805842812136763,
+          "final": 1.776321244016781,
+          "rms": 2.2481584154940344
+        },
+        "r2": {
+          "initial": 1.9491003309368284,
+          "max": 1.9491489672617153,
+          "final": 0.6922801518667012,
+          "rms": 1.373811818953227
+        }
+      },
+      "carry_completed": true,
+      "whole_episode_completed": false,
+      "safe": false,
+      "reasons": [
+        "axis_disagreement"
+      ],
+      "mechanical_hold_safe": true,
+      "raw_manifest_sha256": "0bd312809b954bc3fa61bba2530ed86fcffac8db441dc0a85ca303131a89489c",
+      "verified_files": 3930,
+      "release_ack": {
+        "r1": {
+          "option": "off",
+          "audit": []
+        },
+        "r2": {
+          "option": "off",
+          "audit": []
+        }
+      },
+      "model_calls": 0,
+      "failure_code": "sim.zone_s3_no_prior.PhysicalStop: LOAD_DROP:beam_1",
+      "raw_azure": "/home/ugrp/ugrp-sim/runs/s3-release-ack-20261011-v187/cohort/s3ack-d1p5-s18602-off/raw",
+      "raw_arm": "/home/ubuntu/ugrp-archive/runs/shutdown-s3-release-ack-20261011-v187/cohort/s3ack-d1p5-s18602-off/raw"
+    },
+    {
+      "name": "s3ack-d1p5-s18602-on",
+      "distance_m": 1.5,
+      "seed": 18602,
+      "option": "issued_open_v1",
+      "source_sha": "78ba0b0ad7aa751eb0ad48eb0420739965f0071c",
+      "status": "DEV_STAGE_FINISHED",
+      "exit_code": 0,
+      "wall_s": 1036.0009642969999,
+      "sim_s": 67.30000000000001,
+      "carry_start_sim_s": 29.1,
+      "carry_end_sim_s": 52.55,
+      "actual_continuous_distance_m": 1.5031870249552284,
+      "tilt_max_deg": 1.2172846274700138,
+      "drop": false,
+      "max_grip_loss_s": {
+        "r1": 0.0,
+        "r2": 0.0
+      },
+      "carrier_axis_error_max_m": [
+        0.02762030750629485,
+        0.03995665071588751
+      ],
+      "localization_error_m": {
+        "r1": {
+          "initial": 2.805833045292095,
+          "max": 2.805842812136763,
+          "final": 1.776321244016781,
+          "rms": 2.2481584154940344
+        },
+        "r2": {
+          "initial": 1.9491003309368284,
+          "max": 1.9491489672617153,
+          "final": 0.6922801518667012,
+          "rms": 1.373811818953227
+        }
+      },
+      "carry_completed": true,
+      "whole_episode_completed": true,
+      "safe": false,
+      "reasons": [
+        "axis_disagreement"
+      ],
+      "mechanical_hold_safe": true,
+      "raw_manifest_sha256": "a9fac6fecc3a50336e52cf4000d416fa383d892b10b1a4022ac10cf6c6be3d67",
+      "verified_files": 4081,
+      "release_ack": {
+        "r1": {
+          "option": "issued_open_v1",
+          "runtime_gt": false,
+          "audit": [
+            {
+              "event": "open_queued",
+              "t": 67.1,
+              "target": "released",
+              "issued_pwm": 1500
+            },
+            {
+              "event": "open_host_issued",
+              "t": 67.5,
+              "pulse": 2000
+            },
+            {
+              "event": "release_state_after_ack",
+              "t": 67.6,
+              "acknowledged_t": 67.5,
+              "target": "released"
+            }
+          ],
+          "scope": "host accepted own OPEN command; not measured finger position"
+        },
+        "r2": {
+          "option": "issued_open_v1",
+          "runtime_gt": false,
+          "audit": [
+            {
+              "event": "open_queued",
+              "t": 67.1,
+              "target": "released",
+              "issued_pwm": 1500
+            },
+            {
+              "event": "open_host_issued",
+              "t": 67.5,
+              "pulse": 2000
+            },
+            {
+              "event": "release_state_after_ack",
+              "t": 67.6,
+              "acknowledged_t": 67.5,
+              "target": "released"
+            }
+          ],
+          "scope": "host accepted own OPEN command; not measured finger position"
+        }
+      },
+      "model_calls": 0,
+      "failure_code": null,
+      "raw_azure": "/home/ugrp/ugrp-sim/runs/s3-release-ack-20261011-v187/cohort/s3ack-d1p5-s18602-on/raw",
+      "raw_arm": "/home/ubuntu/ugrp-archive/runs/shutdown-s3-release-ack-20261011-v187/cohort/s3ack-d1p5-s18602-on/raw"
+    }
+  ],
+  "resources": {
+    "storage_preflight": {
+      "azure_projected_free_bytes": 15427665920,
+      "arm_projected_free_bytes": 88749424640,
+      "mac_projected_free_bytes": 136673619968
+    },
+    "per_run_raw_mib": 512,
+    "planned_raw_mib": 4096,
+    "reserved_remote_mib": 4096,
+    "vm_started": false,
+    "vm_stopped": false,
+    "launch": {
+      "loadavg": [
+        12.2724609375,
+        11.53125,
+        16.390625
+      ],
+      "free_bytes": 19446730752,
+      "planned_raw_bytes": 4294967296,
+      "reserved_other_bytes": 4294967296,
+      "utc": 1791717599.0664394
+    },
+    "cpu_affinity": {
+      "own_runs": 8,
+      "cpus": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "threads_per_run": 26,
+      "nice": 0,
+      "other_processes_changed": 0
+    },
+    "completion": {
+      "archive_registered": true,
+      "own_processes_remaining": [],
+      "own_lease_released": true,
+      "vm_started": false,
+      "vm_stopped": false,
+      "other_leases": [
+        {
+          "name": "e2eaz1-gemini-s61001-on",
+          "age_s": 5657.5
+        },
+        {
+          "name": "egomap72-b-return-29c0c169",
+          "age_s": 12.9
+        },
+        {
+          "name": "s3-continuous-20261011-v186",
+          "age_s": 2239.4
+        },
+        {
+          "name": "egomap72-delivery",
+          "age_s": 25.3
+        },
+        {
+          "name": "e2e433-bootstrap",
+          "age_s": 5539.9
+        }
+      ]
+    }
+  },
+  "references": [
+    {
+      "url": "https://design.ros2.org/articles/actions.html",
+      "accessed": "2026-10-11",
+      "method": "Separate accepted/queued, executing and completed. Transition after own host-issued OPEN receipt; receipt is not physical release."
+    },
+    {
+      "url": "https://github.com/ros-infrastructure/rep/blob/master/rep-0105.rst",
+      "accessed": "2026-10-11",
+      "method": "Name map/odom/base frames before comparing poses. Here both use world metres; test rigid offsets, axes, IDs and report time."
+    },
+    {
+      "url": "https://github.com/ros-navigation/navigation2/blob/main/nav2_amcl/src/pf/pf.c",
+      "method": "Current Nav2 pf.c inspected: pf_init_model, pf_update_converged and cluster statistics. Existing posterior_consensus_v1 certificate retained.",
+      "accessed": "2026-10-11"
+    }
+  ],
+  "initial_checks": {
+    "s3ack-d0p85-s18601-off": {
+      "name": "s3ack-d0p85-s18601-off",
+      "host": "ugrp-sim-azure",
+      "checked_at_utc": "2026-10-11T11:23:03Z",
+      "progress_samples": 8,
+      "sim_s": 9.35,
+      "frames": 140,
+      "motion_m": {
+        "r1": {
+          "base_xyz_m": 0.016812643943425222,
+          "finger_xyz_m": 0.16131663859671705
+        },
+        "r2": {
+          "base_xyz_m": 0.029009933671610137,
+          "finger_xyz_m": 0.16959001583004557
+        }
+      },
+      "seen_states": [
+        "align",
+        "grasp",
+        "pregrasp_descend",
+        "wait_close"
+      ],
+      "healthy": true,
+      "reasons": [],
+      "completed": false,
+      "elapsed_wall_s": 180.23172063600032
+    },
+    "s3ack-d0p85-s18602-on": {
+      "name": "s3ack-d0p85-s18602-on",
+      "host": "ugrp-sim-azure",
+      "checked_at_utc": "2026-10-11T11:23:03Z",
+      "progress_samples": 9,
+      "sim_s": 10.35,
+      "frames": 160,
+      "motion_m": {
+        "r1": {
+          "base_xyz_m": 0.01692287316806159,
+          "finger_xyz_m": 0.16137352456884474
+        },
+        "r2": {
+          "base_xyz_m": 0.028166856577211536,
+          "finger_xyz_m": 0.16889586057791034
+        }
+      },
+      "seen_states": [
+        "align",
+        "grasp",
+        "lift",
+        "pregrasp_descend",
+        "wait_close"
+      ],
+      "healthy": true,
+      "reasons": [],
+      "completed": false,
+      "elapsed_wall_s": 180.1531567460006
+    },
+    "s3ack-d0p85-s18602-off": {
+      "name": "s3ack-d0p85-s18602-off",
+      "host": "ugrp-sim-azure",
+      "checked_at_utc": "2026-10-11T11:23:03Z",
+      "progress_samples": 9,
+      "sim_s": 10.35,
+      "frames": 160,
+      "motion_m": {
+        "r1": {
+          "base_xyz_m": 0.01692287316806159,
+          "finger_xyz_m": 0.16137352456884474
+        },
+        "r2": {
+          "base_xyz_m": 0.028166856577211536,
+          "finger_xyz_m": 0.16889586057791034
+        }
+      },
+      "seen_states": [
+        "align",
+        "grasp",
+        "lift",
+        "pregrasp_descend",
+        "wait_close"
+      ],
+      "healthy": true,
+      "reasons": [],
+      "completed": false,
+      "elapsed_wall_s": 180.14763226700052
+    },
+    "s3ack-d1p5-s18601-on": {
+      "name": "s3ack-d1p5-s18601-on",
+      "host": "ugrp-sim-azure",
+      "checked_at_utc": "2026-10-11T11:23:03Z",
+      "progress_samples": 9,
+      "sim_s": 10.35,
+      "frames": 160,
+      "motion_m": {
+        "r1": {
+          "base_xyz_m": 0.016812643943425222,
+          "finger_xyz_m": 0.16131663859671705
+        },
+        "r2": {
+          "base_xyz_m": 0.029009933671610137,
+          "finger_xyz_m": 0.16959001583004557
+        }
+      },
+      "seen_states": [
+        "align",
+        "grasp",
+        "lift",
+        "pregrasp_descend",
+        "wait_close"
+      ],
+      "healthy": true,
+      "reasons": [],
+      "completed": false,
+      "elapsed_wall_s": 180.1261610499996
+    },
+    "s3ack-d1p5-s18602-off": {
+      "name": "s3ack-d1p5-s18602-off",
+      "host": "ugrp-sim-azure",
+      "checked_at_utc": "2026-10-11T11:23:03Z",
+      "progress_samples": 10,
+      "sim_s": 11.35,
+      "frames": 180,
+      "motion_m": {
+        "r1": {
+          "base_xyz_m": 0.023479391494847766,
+          "finger_xyz_m": 0.16137352456884474
+        },
+        "r2": {
+          "base_xyz_m": 0.028166856577211536,
+          "finger_xyz_m": 0.16889586057791034
+        }
+      },
+      "seen_states": [
+        "align",
+        "grasp",
+        "lift",
+        "pregrasp_descend",
+        "wait_close"
+      ],
+      "healthy": true,
+      "reasons": [],
+      "completed": false,
+      "elapsed_wall_s": 180.14402864100066
+    },
+    "s3ack-d1p5-s18601-off": {
+      "name": "s3ack-d1p5-s18601-off",
+      "host": "ugrp-sim-azure",
+      "checked_at_utc": "2026-10-11T11:23:03Z",
+      "progress_samples": 9,
+      "sim_s": 10.35,
+      "frames": 160,
+      "motion_m": {
+        "r1": {
+          "base_xyz_m": 0.016812643943425222,
+          "finger_xyz_m": 0.16131663859671705
+        },
+        "r2": {
+          "base_xyz_m": 0.029009933671610137,
+          "finger_xyz_m": 0.16959001583004557
+        }
+      },
+      "seen_states": [
+        "align",
+        "grasp",
+        "lift",
+        "pregrasp_descend",
+        "wait_close"
+      ],
+      "healthy": true,
+      "reasons": [],
+      "completed": false,
+      "elapsed_wall_s": 180.0869813899999
+    },
+    "s3ack-d1p5-s18602-on": {
+      "name": "s3ack-d1p5-s18602-on",
+      "host": "ugrp-sim-azure",
+      "checked_at_utc": "2026-10-11T11:23:03Z",
+      "progress_samples": 7,
+      "sim_s": 8.35,
+      "frames": 120,
+      "motion_m": {
+        "r1": {
+          "base_xyz_m": 0.016707335245367702,
+          "finger_xyz_m": 0.1610354937229948
+        },
+        "r2": {
+          "base_xyz_m": 0.028166856577211536,
+          "finger_xyz_m": 0.16769887217786064
+        }
+      },
+      "seen_states": [
+        "align",
+        "pregrasp_descend",
+        "wait_close"
+      ],
+      "healthy": true,
+      "reasons": [],
+      "completed": false,
+      "elapsed_wall_s": 180.12316125600046
+    },
+    "s3ack-d0p85-s18601-on": {
+      "name": "s3ack-d0p85-s18601-on",
+      "host": "ugrp-sim-azure",
+      "checked_at_utc": "2026-10-11T11:23:03Z",
+      "progress_samples": 9,
+      "sim_s": 10.35,
+      "frames": 160,
+      "motion_m": {
+        "r1": {
+          "base_xyz_m": 0.016812643943425222,
+          "finger_xyz_m": 0.16131663859671705
+        },
+        "r2": {
+          "base_xyz_m": 0.029009933671610137,
+          "finger_xyz_m": 0.16959001583004557
+        }
+      },
+      "seen_states": [
+        "align",
+        "grasp",
+        "lift",
+        "pregrasp_descend",
+        "wait_close"
+      ],
+      "healthy": true,
+      "reasons": [],
+      "completed": false,
+      "elapsed_wall_s": 180.13913550899997
+    }
+  },
+  "ci": {
+    "run_id": 38135075790,
+    "source_sha": "78ba0b0ad7aa751eb0ad48eb0420739965f0071c",
+    "job": "ubuntu-simulation-runtime",
+    "job_id": 114457316885,
+    "status": "FAILURE",
+    "failed": 6,
+    "passed": 15,
+    "cause": "Historical S2 v127/v128 registration SHA guard rejects zone_solo_cyan_pulse_cal.py; v128 tests also expect a later guard error string.",
+    "path": "harness/zone_solo_cyan_pulse_cal.py",
+    "expected_sha256": "44a51b1bc5a95aa35f87d039741c2813101a90c87c287873947150f2d85d89be",
+    "actual_sha256": "95b29f2d05ae7fb974e7f8c916d577d5dea78f7f1b0e4d8ac1188c88bb134ad5",
+    "same_bytes_as_parent_3dddba5e": true,
+    "changed_in_this_task": false,
+    "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/38135075790/job/114457316885",
+    "log_sha256": "94bcdf0b52f61c6a77175d9d3c190cca82d9f53433ef7a66e3180d3453c0f41d"
+  },
+  "counts": {
+    "off": {
+      "n": 4,
+      "stage_completed": 0,
+      "post_carry_guard_false_positive": 4
+    },
+    "on": {
+      "n": 4,
+      "stage_completed": 4,
+      "post_carry_guard_false_positive": 0
+    },
+    "distance_reached_with_grip": 8,
+    "carry_drop": 0,
+    "host_error": 0,
+    "initial_checks_healthy": 8,
+    "exact_command_prefix_pairs": 4
+  },
+  "registration_sha256": "230b117b17a39bd47c6d70800d2f5736f1c6b70df995dc0edb2e911f2e0daf49",
+  "terminal_audit": {
+    "schema": "ugrp.s3_release_ack.terminal_audit.v1",
+    "pairs": [
+      {
+        "distance_m": 0.85,
+        "seed": 18601,
+        "commands_through_open_request": {
+          "r1": {
+            "through_t": 57.0,
+            "on_commands": 1267,
+            "off_commands": 1267,
+            "exact_match": true,
+            "sha256": "666950f8a870158898c68711461ab6bdd75b65bf6003dfd2de83de08655fbb10"
+          },
+          "r2": {
+            "through_t": 57.0,
+            "on_commands": 1270,
+            "off_commands": 1270,
+            "exact_match": true,
+            "sha256": "319aec053a7e0438e5e5cc71a66baa94498cc5337ff6c1615c3294a7c1625637"
+          }
+        },
+        "off_last_support": {
+          "t": 57.0,
+          "states": {
+            "r1": "wait_open",
+            "r2": "wait_open"
+          },
+          "fingers": {
+            "r1": [
+              true,
+              true
+            ],
+            "r2": [
+              true,
+              true
+            ]
+          },
+          "floor_normal_n": 2.4218770031907617,
+          "cargo_z_m": 0.01590880420304436,
+          "body_origin_z_m": -8.943253763750825e-05,
+          "vertical_speed_m_s": 0.00033805409251021744,
+          "cargo_tilt_deg": 0.8506280920078572,
+          "controller_feedback": false
+        },
+        "on_final_support": {
+          "t": 59.55,
+          "states": {
+            "r1": "released",
+            "r2": "released"
+          },
+          "fingers": {
+            "r1": [
+              false,
+              false
+            ],
+            "r2": [
+              false,
+              false
+            ]
+          },
+          "floor_normal_n": 2.943000000000004,
+          "cargo_z_m": 0.015892244579783797,
+          "body_origin_z_m": -0.00010775542021617055,
+          "vertical_speed_m_s": 0.0,
+          "cargo_tilt_deg": 3.52019892386405e-06,
+          "controller_feedback": false
+        },
+        "release_epoch_events": [
+          {
+            "t": 57.45,
+            "states": {
+              "r1": "wait_open",
+              "r2": "wait_open"
+            },
+            "fingers": {
+              "r1": [
+                false,
+                false
+              ],
+              "r2": [
+                false,
+                false
+              ]
+            },
+            "floor_normal_n": 2.9429702723015376,
+            "cargo_z_m": 0.01589217997612616,
+            "body_origin_z_m": -0.00010782002384040294,
+            "vertical_speed_m_s": 7.854892328517546e-06,
+            "cargo_tilt_deg": 0.00011714135345732936,
+            "controller_feedback": false,
+            "event": "supported_release_disarms_previous_lift",
+            "rearm": "unchanged height > .08 guard on the next actual lift"
+          }
+        ]
+      },
+      {
+        "distance_m": 0.85,
+        "seed": 18602,
+        "commands_through_open_request": {
+          "r1": {
+            "through_t": 57.0,
+            "on_commands": 1267,
+            "off_commands": 1267,
+            "exact_match": true,
+            "sha256": "666950f8a870158898c68711461ab6bdd75b65bf6003dfd2de83de08655fbb10"
+          },
+          "r2": {
+            "through_t": 57.0,
+            "on_commands": 1270,
+            "off_commands": 1270,
+            "exact_match": true,
+            "sha256": "5df098882007e9b20625a9390ac851a93cafd9b72d5f3464738e8d536fb2769d"
+          }
+        },
+        "off_last_support": {
+          "t": 57.0,
+          "states": {
+            "r1": "wait_open",
+            "r2": "wait_open"
+          },
+          "fingers": {
+            "r1": [
+              true,
+              true
+            ],
+            "r2": [
+              true,
+              true
+            ]
+          },
+          "floor_normal_n": 2.564702065968784,
+          "cargo_z_m": 0.015887575920445304,
+          "body_origin_z_m": -0.00011151966240348307,
+          "vertical_speed_m_s": 0.00028677864110608875,
+          "cargo_tilt_deg": 0.6092058702433419,
+          "controller_feedback": false
+        },
+        "on_final_support": {
+          "t": 59.55,
+          "states": {
+            "r1": "released",
+            "r2": "released"
+          },
+          "fingers": {
+            "r1": [
+              false,
+              false
+            ],
+            "r2": [
+              false,
+              false
+            ]
+          },
+          "floor_normal_n": 2.9430000000000036,
+          "cargo_z_m": 0.01589224457978382,
+          "body_origin_z_m": -0.00010775542021617024,
+          "vertical_speed_m_s": 0.0,
+          "cargo_tilt_deg": 1.4787793334710982e-06,
+          "controller_feedback": false
+        },
+        "release_epoch_events": [
+          {
+            "t": 57.45,
+            "states": {
+              "r1": "wait_open",
+              "r2": "wait_open"
+            },
+            "fingers": {
+              "r1": [
+                false,
+                false
+              ],
+              "r2": [
+                false,
+                false
+              ]
+            },
+            "floor_normal_n": 2.9429914055787956,
+            "cargo_z_m": 0.01589222588726678,
+            "body_origin_z_m": -0.00010777411272997583,
+            "vertical_speed_m_s": 2.2697077936560125e-06,
+            "cargo_tilt_deg": 3.6493206013101826e-05,
+            "controller_feedback": false,
+            "event": "supported_release_disarms_previous_lift",
+            "rearm": "unchanged height > .08 guard on the next actual lift"
+          }
+        ]
+      },
+      {
+        "distance_m": 1.5,
+        "seed": 18601,
+        "commands_through_open_request": {
+          "r1": {
+            "through_t": 67.1,
+            "on_commands": 1317,
+            "off_commands": 1317,
+            "exact_match": true,
+            "sha256": "edad0cc0dc686389919fdbd9b03a391230d9ac01aafe759e3a79f4ca8b556f42"
+          },
+          "r2": {
+            "through_t": 67.1,
+            "on_commands": 1320,
+            "off_commands": 1320,
+            "exact_match": true,
+            "sha256": "29b5319f0927e0b67a3dbb4df3a58cf5c44c4ae0fbcc9b68b789f04c861bf4ad"
+          }
+        },
+        "off_last_support": {
+          "t": 67.1,
+          "states": {
+            "r1": "wait_open",
+            "r2": "wait_open"
+          },
+          "fingers": {
+            "r1": [
+              true,
+              true
+            ],
+            "r2": [
+              true,
+              true
+            ]
+          },
+          "floor_normal_n": 4.605852782290671,
+          "cargo_z_m": 0.015800641448277846,
+          "body_origin_z_m": -0.0001984778590601171,
+          "vertical_speed_m_s": 0.0001146982948652879,
+          "cargo_tilt_deg": 0.6011624142796729,
+          "controller_feedback": false
+        },
+        "on_final_support": {
+          "t": 69.65,
+          "states": {
+            "r1": "released",
+            "r2": "released"
+          },
+          "fingers": {
+            "r1": [
+              false,
+              false
+            ],
+            "r2": [
+              false,
+              false
+            ]
+          },
+          "floor_normal_n": 2.9430000000000027,
+          "cargo_z_m": 0.015892244579783797,
+          "body_origin_z_m": -0.0001077554202161704,
+          "vertical_speed_m_s": 0.0,
+          "cargo_tilt_deg": 3.52019892386405e-06,
+          "controller_feedback": false
+        },
+        "release_epoch_events": [
+          {
+            "t": 67.55,
+            "states": {
+              "r1": "wait_open",
+              "r2": "wait_open"
+            },
+            "fingers": {
+              "r1": [
+                false,
+                false
+              ],
+              "r2": [
+                false,
+                false
+              ]
+            },
+            "floor_normal_n": 2.942986250050562,
+            "cargo_z_m": 0.01589221457626641,
+            "body_origin_z_m": -0.00010778542373161494,
+            "vertical_speed_m_s": 3.62240045639915e-06,
+            "cargo_tilt_deg": 2.8457698550067317e-05,
+            "controller_feedback": false,
+            "event": "supported_release_disarms_previous_lift",
+            "rearm": "unchanged height > .08 guard on the next actual lift"
+          }
+        ]
+      },
+      {
+        "distance_m": 1.5,
+        "seed": 18602,
+        "commands_through_open_request": {
+          "r1": {
+            "through_t": 67.1,
+            "on_commands": 1317,
+            "off_commands": 1317,
+            "exact_match": true,
+            "sha256": "edad0cc0dc686389919fdbd9b03a391230d9ac01aafe759e3a79f4ca8b556f42"
+          },
+          "r2": {
+            "through_t": 67.1,
+            "on_commands": 1320,
+            "off_commands": 1320,
+            "exact_match": true,
+            "sha256": "fdf5efe13cf478ba9d2e740e1e0bfc4340b2cfd987ae5b1e710154ebe75a1fe4"
+          }
+        },
+        "off_last_support": {
+          "t": 67.1,
+          "states": {
+            "r1": "wait_open",
+            "r2": "wait_open"
+          },
+          "fingers": {
+            "r1": [
+              true,
+              true
+            ],
+            "r2": [
+              true,
+              true
+            ]
+          },
+          "floor_normal_n": 1.855717141263944,
+          "cargo_z_m": 0.015854924167952623,
+          "body_origin_z_m": -0.00014425455899800803,
+          "vertical_speed_m_s": -0.00019657379958606675,
+          "cargo_tilt_deg": 0.5805281481820456,
+          "controller_feedback": false
+        },
+        "on_final_support": {
+          "t": 69.65,
+          "states": {
+            "r1": "released",
+            "r2": "released"
+          },
+          "fingers": {
+            "r1": [
+              false,
+              false
+            ],
+            "r2": [
+              false,
+              false
+            ]
+          },
+          "floor_normal_n": 2.943000000000005,
+          "cargo_z_m": 0.0158922445797838,
+          "body_origin_z_m": -0.00010775542021617027,
+          "vertical_speed_m_s": -6.938893903905651e-17,
+          "cargo_tilt_deg": 3.4150945850063763e-06,
+          "controller_feedback": false
+        },
+        "release_epoch_events": [
+          {
+            "t": 67.55,
+            "states": {
+              "r1": "wait_open",
+              "r2": "wait_open"
+            },
+            "fingers": {
+              "r1": [
+                false,
+                false
+              ],
+              "r2": [
+                false,
+                false
+              ]
+            },
+            "floor_normal_n": 2.942988875485839,
+            "cargo_z_m": 0.01589222038204928,
+            "body_origin_z_m": -0.00010777961795060709,
+            "vertical_speed_m_s": 2.9376859671250147e-06,
+            "cargo_tilt_deg": 6.830189170012755e-06,
+            "controller_feedback": false,
+            "event": "supported_release_disarms_previous_lift",
+            "rearm": "unchanged height > .08 guard on the next actual lift"
+          }
+        ]
+      }
+    ],
+    "all_prefixes_identical": true
+  },
+  "provenance": {
+    "raw_original_files_verified": 29620,
+    "all_server_raw_hashes_match": true,
+    "raw_azure": "azure:/home/ugrp/ugrp-sim/runs/s3-release-ack-20261011-v187",
+    "raw_arm": "oracle-codex:/home/ubuntu/ugrp-archive/runs/shutdown-s3-release-ack-20261011-v187",
+    "archive": {
+      "verified": true,
+      "path": "/home/ubuntu/ugrp-archive/runs/shutdown-s3-release-ack-20261011-v187",
+      "files": 29744,
+      "bytes": 466140526,
+      "tar_sha256": "d74ca9db00483395b232a095b298d16aad974bc69a286a7ccd1527bf7cf5ead2",
+      "inventory_sha256": "5eee9b0836ce24cfbafcb749b26a3ce026066a34029023bcb98f18f93565dad6",
+      "decompressed_originals_verified": 161,
+      "method": "packed copy; ARM full-file SHA256; compressed original SHA256"
+    },
+    "mac": {
+      "mode": "fetch-lite",
+      "verified": true,
+      "files": 456,
+      "bytes": 92649273,
+      "media_files": 0,
+      "raw_inventory_compressed_sha256": "fe7170cfe50410328b81e2f37a17e661e0a3dae183fb80c1d24fa40a7de493a0",
+      "local": "/Users/changmin/projects/ugrp/outputs/azure-runs/s3-release-ack-20261011-v187",
+      "source": "azure:/home/ugrp/ugrp-sim/runs/s3-release-ack-20261011-v187"
+    },
+    "first_version_success_milestone": "s3ack-d0p85-s18601-on",
+    "audit_script": "scripts/diagnose_s3_pose_origin.py",
+    "audit_script_sha256": "11ab8ba2b6e8fdb0a2a55b5b9a16fe61f4c3776887f1116ba4dabe2057755ebb"
+  },
+  "remaining_issues": {
+    "localization": "No coordinate/evaluation arithmetic bug: synthetic stage skipped startup scan. PF remains unconverged; own RGB global localization accuracy is not fixed or validated.",
+    "axis_sync": "Fixed20mm criterion passes1/4 in each on/off condition. Max axis error39.95665mm; identical on/off. Release completion is not overall transport-accuracy acceptance.",
+    "validation_scope": "DEV alignment-entry stage only; no dock-to-B full mission, real robot or formal study.",
+    "ci": "Existing S2 v127/v128 pulse predictor seal mismatch:6 Ubuntu runtime failures; source unchanged from parent. PR remains draft; no merge."
+  },
+  "next_candidates": [
+    "Run the existing own-RGB global startup scan before handing off to alignment; never inject stage truth or fitted offsets.",
+    "Use existing own-camera/issued-command synchronized-carry correction for the separately observed20mm axis error; new cohort required."
+  ]
+}

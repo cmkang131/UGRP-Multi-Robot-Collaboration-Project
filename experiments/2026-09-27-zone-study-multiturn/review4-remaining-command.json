@@ -1,0 +1,15 @@
+{
+  "cwd": "/Users/changmin/projects/ugrp-wt/codex-multiturn",
+  "OMP_NUM_THREADS": "1",
+  "command": [
+    "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+    "-m",
+    "pytest",
+    "tests/test_zone_study_multiturn_properties.py",
+    "-k",
+    "not bitwise_equivalent and not binding_budgets",
+    "--basetemp=./.pytest_tmp",
+    "-q",
+    "-x"
+  ]
+}

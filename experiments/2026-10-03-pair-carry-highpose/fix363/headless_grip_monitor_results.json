@@ -1,0 +1,357 @@
+{
+ "schema": "ugrp.pr363_grip_monitor_diagnostic.v1",
+ "source_sha": "255a4401b7521ef418a075a81c21209221ce8af9",
+ "driver": "experiments/2026-10-03-pair-carry-highpose/fix363/headless_grip_monitor.py",
+ "scope": "reviewer 3 headless conditions (52 SIM s, no render, no model, weld OFF); geometric stand-in own view (actual camera + actual beam boxes; no lighting/texture/JPEG/jaw occlusion) fed to the v96 decision code with own issued PWM. Not RGB detector validation, not a student run, not P03.",
+ "verdict": "P1-4 NOT RESOLVED: grip.relation() fails on 100% of NOMINAL samples (raise 0/172, HIGH 0/68, lower 0/136 per robot), so the v96 runtime would abort every normal raise at its first transit sample (10.0 s). Grip-loss \"detection\" is therefore not meaningful (no nominal/fault separation). Floor/hold IoU values are uninformative here: the stand-in does not paint jaws/floor that hold_view_mask relies on. Worse: in raise_grip_loss the partner r1 (beam tilted up to 11.5 deg, bar down to 0.075 m) PASSES the relation on 98/172 raise and 68/68 HIGH samples, i.e. the command-geometry check is closer to inverted than conservative on real geometry; r2 (opened) passes 1/172.",
+ "conditions": {
+  "nominal": {
+   "status": "HEADLESS_CHECK_COMPLETE",
+   "commands": 1948,
+   "sim_s": 52.0,
+   "renders": 0,
+   "model_calls": 0,
+   "weld": false,
+   "loadavg_start": [
+    16.068359375,
+    34.6640625,
+    39.90185546875
+   ],
+   "loadavg_end": [
+    22.7919921875,
+    25.89990234375,
+    34.3740234375
+   ],
+   "eval_only_beam": {
+    "max_tilt_deg_raise_high": 0.01569014033632958,
+    "min_bar_z_high_m": 0.13094439473352817
+   },
+   "robots": {
+    "r1": {
+     "raise": {
+      "samples": 172,
+      "relation_ok": 0,
+      "coverage_min": 0.0
+     },
+     "high": {
+      "samples": 68,
+      "relation_ok": 0,
+      "hold_iou_min": null,
+      "hold_ok": 0,
+      "coverage_min": 0.383270911360799
+     },
+     "lower": {
+      "samples": 136,
+      "relation_ok": 0,
+      "coverage_min": 0.0
+     },
+     "floor_return": {
+      "samples": 14,
+      "relation_ok": 0,
+      "floor_iou_max": 0.0,
+      "floor_iou_min": 0.0,
+      "coverage_min": 0.0
+     },
+     "first_relation_failure_s": {
+      "raise": 10.0,
+      "high": 27.2,
+      "lower": 34.0,
+      "floor_return": 47.6
+     },
+     "rgb_monitor_first_abort_s": 10.0
+    },
+    "r2": {
+     "raise": {
+      "samples": 172,
+      "relation_ok": 0,
+      "coverage_min": 0.0
+     },
+     "high": {
+      "samples": 68,
+      "relation_ok": 0,
+      "hold_iou_min": null,
+      "hold_ok": 0,
+      "coverage_min": 0.40752630640271087
+     },
+     "lower": {
+      "samples": 136,
+      "relation_ok": 0,
+      "coverage_min": 0.0
+     },
+     "floor_return": {
+      "samples": 14,
+      "relation_ok": 0,
+      "floor_iou_max": 0.0,
+      "floor_iou_min": 0.0,
+      "coverage_min": 0.0
+     },
+     "first_relation_failure_s": {
+      "raise": 10.0,
+      "high": 27.2,
+      "lower": 34.0,
+      "floor_return": 47.6
+     },
+     "rgb_monitor_first_abort_s": 10.0
+    }
+   }
+  },
+  "partner_delay_2s": {
+   "status": "HEADLESS_CHECK_COMPLETE",
+   "commands": 1948,
+   "sim_s": 52.0,
+   "renders": 0,
+   "model_calls": 0,
+   "weld": false,
+   "loadavg_start": [
+    28.173828125,
+    26.9638671875,
+    34.69970703125
+   ],
+   "loadavg_end": [
+    14.44873046875,
+    20.53515625,
+    30.29541015625
+   ],
+   "eval_only_beam": {
+    "max_tilt_deg_raise_high": 1.6779620548172702,
+    "min_bar_z_high_m": 0.13100276597346217
+   },
+   "robots": {
+    "r1": {
+     "raise": {
+      "samples": 172,
+      "relation_ok": 0,
+      "coverage_min": 0.0
+     },
+     "high": {
+      "samples": 68,
+      "relation_ok": 0,
+      "hold_iou_min": null,
+      "hold_ok": 0,
+      "coverage_min": 0.38808632067059035
+     },
+     "lower": {
+      "samples": 136,
+      "relation_ok": 0,
+      "coverage_min": 0.0
+     },
+     "floor_return": {
+      "samples": 14,
+      "relation_ok": 0,
+      "floor_iou_max": 0.0,
+      "floor_iou_min": 0.0,
+      "coverage_min": 0.0
+     },
+     "first_relation_failure_s": {
+      "raise": 10.0,
+      "high": 27.2,
+      "lower": 34.0,
+      "floor_return": 47.6
+     },
+     "rgb_monitor_first_abort_s": 10.0
+    },
+    "r2": {
+     "raise": {
+      "samples": 172,
+      "relation_ok": 0,
+      "coverage_min": 0.0
+     },
+     "high": {
+      "samples": 68,
+      "relation_ok": 0,
+      "hold_iou_min": null,
+      "hold_ok": 0,
+      "coverage_min": 0.41448189762796506
+     },
+     "lower": {
+      "samples": 136,
+      "relation_ok": 0,
+      "coverage_min": 0.0
+     },
+     "floor_return": {
+      "samples": 0,
+      "relation_ok": 0,
+      "floor_iou_max": null,
+      "floor_iou_min": null,
+      "coverage_min": null
+     },
+     "first_relation_failure_s": {
+      "raise": 12.0,
+      "high": 29.2,
+      "lower": 36.0
+     },
+     "rgb_monitor_first_abort_s": 12.0
+    }
+   }
+  },
+  "raise_grip_loss": {
+   "status": "HEADLESS_CHECK_COMPLETE",
+   "commands": 1797,
+   "sim_s": 52.0,
+   "renders": 0,
+   "model_calls": 0,
+   "weld": false,
+   "loadavg_start": [
+    13.61181640625,
+    20.26025390625,
+    30.14111328125
+   ],
+   "loadavg_end": [
+    17.33984375,
+    20.0908203125,
+    28.44140625
+   ],
+   "eval_only_beam": {
+    "max_tilt_deg_raise_high": 11.468277477740967,
+    "min_bar_z_high_m": 0.07517560716221781
+   },
+   "robots": {
+    "r1": {
+     "raise": {
+      "samples": 172,
+      "relation_ok": 98,
+      "coverage_min": 0.0
+     },
+     "high": {
+      "samples": 68,
+      "relation_ok": 68,
+      "hold_iou_min": 0.989617177567453,
+      "hold_ok": 68,
+      "coverage_min": 0.8303905831995719
+     },
+     "lower": {
+      "samples": 136,
+      "relation_ok": 55,
+      "coverage_min": 0.0
+     },
+     "floor_return": {
+      "samples": 14,
+      "relation_ok": 0,
+      "floor_iou_max": 0.0,
+      "floor_iou_min": 0.0,
+      "coverage_min": 0.0
+     },
+     "first_relation_failure_s": {
+      "raise": 10.0,
+      "lower": 39.5,
+      "floor_return": 47.6
+     },
+     "rgb_monitor_first_abort_s": 10.0
+    },
+    "r2": {
+     "raise": {
+      "samples": 172,
+      "relation_ok": 1,
+      "coverage_min": 0.0
+     },
+     "high": {
+      "samples": 68,
+      "relation_ok": 0,
+      "hold_iou_min": null,
+      "hold_ok": 0,
+      "coverage_min": 0.201533797039415
+     },
+     "lower": {
+      "samples": 136,
+      "relation_ok": 0,
+      "coverage_min": 0.0
+     },
+     "floor_return": {
+      "samples": 14,
+      "relation_ok": 0,
+      "floor_iou_max": 0.0,
+      "floor_iou_min": 0.0,
+      "coverage_min": 0.0
+     },
+     "first_relation_failure_s": {
+      "raise": 10.0,
+      "high": 27.2,
+      "lower": 34.0,
+      "floor_return": 47.6
+     },
+     "rgb_monitor_first_abort_s": 10.0
+    }
+   }
+  }
+ },
+ "root_cause": {
+  "method": "projection_check.py: same nominal physics; controller command-geometry camera/pad vs actual MuJoCo robot_cam/grip_site/beam in the robot floor-heading frame",
+  "low_lift_t8": {
+   "camera_z_actual_m": 0.1077,
+   "camera_z_model_m": 0.1189,
+   "camera_pitch_error_deg": 5.33,
+   "grip_z_actual_m": 0.0842,
+   "grip_z_command_m": 0.095,
+   "bar_center_actual": [
+    0.4711,
+    -0.0001,
+    0.0799
+   ],
+   "relation_command_geometry": {
+    "ok": false,
+    "support": 3215,
+    "coverage": 0.0,
+    "iou": 0.0,
+    "edge_slope_delta": null
+   }
+  },
+  "high_t30": {
+   "camera_z_actual_m": 0.16,
+   "camera_z_model_m": 0.173,
+   "camera_pitch_error_deg": 6.45,
+   "grip_z_actual_m": 0.1363,
+   "grip_z_command_m": 0.1499,
+   "bar_center_actual": [
+    0.4713,
+    0.0003,
+    0.1317
+   ],
+   "relation_command_geometry": {
+    "ok": false,
+    "support": 5607,
+    "coverage": 0.383,
+    "iou": 0.352,
+    "edge_slope_delta": 0.004
+   }
+  },
+  "findings": [
+   "under load the arm sits ~11 mm (low lift) to ~14 mm (HIGH) below command geometry and the camera pitches 5-8 deg further down",
+   "pad is rigid with the camera (both on the gripper body): carrying the commanded pad with the actual camera reproduces the actual grip site to 0.1 mm",
+   "at HIGH the whole visible bar is 0.015-0.031 m ahead of the pad, i.e. inside the jaw/grip-band near field, 12-16 mm below the lens near the 2.2 cm near plane",
+   "actual bar centre sits 4.6 mm below the pad vs 8 mm in the catalogue grip height (3.4 mm), which flips large near-field image areas"
+  ],
+  "fix_attempts": [
+   {
+    "attempt": 1,
+    "change": "project with a measured loaded camera (D5 camera_models.loaded, here the actual camera as an ideal measurement) and carry the pad rigidly",
+    "result": "HIGH coverage 0.38 -> 0.50 (r1) / 0.53 (r2); still below MIN_COVERAGE 0.65; low pose still 0 colour"
+   },
+   {
+    "attempt": 2,
+    "change": "a priori far-field only (bar > 0.06 m beyond the pad)",
+    "result": "support 0 at every pose: no far-field bar is ever visible"
+   }
+  ],
+  "decision": "stopped after two attempts (CLAUDE.md stop rule); both edits reverted; projection-based relation needs a redesign (see README)."
+ },
+ "raw": {
+  "grip_monitor_root": "/Users/changmin/projects/ugrp/outputs/pr363-fix-grip-monitor-20261003",
+  "projection_check_root": "/Users/changmin/projects/ugrp/outputs/pr363-fix-projection-check-20261003",
+  "sha256": {
+   "grip/headless_grip_monitor.json": "2c902789b8aaac8adf2298805775328b4fbc367601073243f1788ed6a1abb8be",
+   "grip/nominal/artifacts.sha256.json": "9e74493e87bdfc1290d00e2262152951e6f2073006f98f75b1954c31876f5ce1",
+   "grip/nominal/samples.json": "a4300f7acd6d890e8b32c7d709e12295ede2646853b56b5b91a129086cde60c1",
+   "grip/nominal/summary.json": "da23c8cd310e79f43b328e8f69613a776a85fafa00255150d5d2cca6bb80242d",
+   "grip/partner_delay_2s/artifacts.sha256.json": "bdada5002838643d9b2621288fdda0e8d1348bdaf17c7492b2b642b718a7e179",
+   "grip/partner_delay_2s/samples.json": "0bd8127455549fdc2aa1e46a9439112f50a36848fed95750e63ad70df5c315fe",
+   "grip/partner_delay_2s/summary.json": "9fbb5708c413a805a927356792d750b96de0f59a6fcebb52a76a0bc45b62cfa1",
+   "grip/raise_grip_loss/artifacts.sha256.json": "198a2f1be94bbd746d307b693b49d651a459a5ac6a94c37b34fcbfe397667cb8",
+   "grip/raise_grip_loss/samples.json": "3a7ef28ea54398438f6d05d3efa01018f18bef54aaced5134533c4d87af13c4d",
+   "grip/raise_grip_loss/summary.json": "cc978b0079a55a4ded9cfc1f2d7cd1faf87483e7e715581c652d2e98fb04ad07",
+   "projection/projection_check.json": "694cc16060b86d0126e6bf5ede0ef40bc971b1ea8fc68a7423ac5809578ab06c"
+  },
+  "log": "/Users/changmin/projects/ugrp/outputs/pr363-fix-grip-monitor-20261003.log",
+  "log_sha256": "fe0dad67ecc0be8f1941c6503dbf274ab17321e1f6c4b4b0f1b3ef7151adf7ba",
+  "note": "local raw only, not a remote backup"
+ }
+}

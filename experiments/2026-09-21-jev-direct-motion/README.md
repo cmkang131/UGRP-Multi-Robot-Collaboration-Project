@@ -88,3 +88,5 @@ python scripts/render_jev_motion.py /absolute/raw/final-v2 /new/video-output
 ```
 
 감사는 source 4931196 이후 동일한 관측 로직을 사용하는 체크아웃에서 수행해야 한다. 원본 데이터가 없는 새 clone에서는 해시 목록만으로 영상을 재생성할 수 없다.
+
+코드는 커밋 `888447674318bc311e1ef65f71c654692b2b76bb`에서 재현(퇴역 전 소스 복구 기준). 당시 실행 SHA·설정·결과는 본문 기록을 따르며, [퇴역 목록](../../docs/retired_modules.md)을 참고한다.

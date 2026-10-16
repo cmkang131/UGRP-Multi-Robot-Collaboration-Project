@@ -1,0 +1,85 @@
+{
+  "base_sha": "9134d7e12de1d4748a85904dee63c12b682f2dca",
+  "review_sha": "a1ed666f212f81ba77a6f5987c5ffb4f1d50a02a",
+  "scope": "offline synthetic related tests only; no physical acceptance",
+  "baseline": {
+    "tests": 4,
+    "failures": 4,
+    "errors": 0,
+    "strict_xfail_removed": true
+  },
+  "related": {
+    "tests": 604,
+    "passed": 604,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "xfail": 0,
+    "modules": {
+      "tests.test_final_pair_calibration_assembly": 363,
+      "tests.test_review_351": 6,
+      "tests.test_review_351b": 18,
+      "tests.test_consumer_criterion_b": 69,
+      "tests.test_final_environment_unloaded_fit": 12,
+      "tests.test_zone_final_pair_v3": 31,
+      "tests.test_zone_final_pair_review_fixes": 37,
+      "tests.test_ci_sharding": 68
+    }
+  },
+  "added_malformed_time_cases": 180,
+  "source_hashes_unchanged_after_tests": true,
+  "offline_guard": "import socket, sys\nfor name in ('mujoco', 'torch', 'torchvision', 'sim.multi_masterpi_production'):\n    sys.modules[name] = None\ndef forbidden(*a, **kw):\n    raise RuntimeError('PR351b validation forbids physics/render/network/model calls')\nsocket.socket.connect = forbidden\n",
+  "pytest_environment": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
+    "PYTHONPATH": "/private/tmp/ugrp-fix-351b-_rw23_h8/guard:."
+  },
+  "python": "/opt/anaconda3/bin/python3 (3.13.5)",
+  "versions": {
+    "numpy": "2.4.4",
+    "scipy": "1.17.1",
+    "pytest": "8.3.4"
+  },
+  "ci_preflight_frozen_fixture_count": 3,
+  "file_hashes": {
+    "before.txt": {
+      "bytes": 8027,
+      "sha256": "93643d83ca60e1a1d8e0da5ec100d0110b84fc70b0283aed07a3d6fe76276913"
+    },
+    "before.xml": {
+      "bytes": 9252,
+      "sha256": "5a50691ef3c9f54da0d47fda50641741300e7d7945847ffbc0dee87880fe11eb"
+    },
+    "related.txt": {
+      "bytes": 833,
+      "sha256": "810fbb1a940d7a16b4569be5b4b05f9588482a600f495ba88dd26836cf083f8a"
+    },
+    "related.xml": {
+      "bytes": 93105,
+      "sha256": "387b32a0ddbcd66cbb6f05b1b9e63600e4e961adae66906dfa060ab377d7187d"
+    },
+    "static.json": {
+      "bytes": 3981,
+      "sha256": "e4720f9f35d08c77c75888458c81f71aacce88fe727b2eb923b60be9ee44faca"
+    },
+    "tested-source.json": {
+      "bytes": 526,
+      "sha256": "5efc983a973015e4523cbd66cfb674b9fa342314ff080c724e843e84156de8d2"
+    }
+  },
+  "physics_render_model_calls": 0,
+  "shared_outputs_accessed": false,
+  "extraction_directories_created": false,
+  "remote_ci": "pending push; not inherited from baseline",
+  "draft_required": true,
+  "merged": false,
+  "test_output_export": "Trailing whitespace stripped for git diff --check; original output hashes retained below.",
+  "original_test_output_hashes": {
+    "before.xml": "c5394921fe3ae41cc959f39a49ccd54d1609a2fdbe2a88cb12e4ff14ff91a950",
+    "before.log": "45a667a78df2376cea632db8f3f94d8f5ee693dbfca61af7c68281158745a40f",
+    "related.xml": "ed6f05a9257cb6162d4a405f71bd5d4b81a82f028a865917a3aeb88e7be1662d",
+    "related.log": "810fbb1a940d7a16b4569be5b4b05f9588482a600f495ba88dd26836cf083f8a"
+  }
+}

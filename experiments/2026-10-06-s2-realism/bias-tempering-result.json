@@ -1,0 +1,395 @@
+{
+  "criteria": {
+    "version": "s2v45-prereg-v1",
+    "baseline": "unchanged v133, no v42/v44 rejected candidate",
+    "seeds": [
+      1051,
+      1053,
+      1054
+    ],
+    "holdouts": [
+      {
+        "fit": [
+          1053,
+          1054
+        ],
+        "check": 1051
+      },
+      {
+        "fit": [
+          1051,
+          1054
+        ],
+        "check": 1053
+      },
+      {
+        "fit": [
+          1051,
+          1053
+        ],
+        "check": 1054
+      }
+    ],
+    "conditions": [
+      "scale",
+      "temper",
+      "combined"
+    ],
+    "primary_universe": "same 1602 v44 single-cluster matching-covariance decision times; unavailable candidate covariance fails coverage",
+    "chi2_95_xy": 5.991464547107979,
+    "admission_each_holdout": {
+      "xy_nees_exceedance_rate_max": 0.2,
+      "unflagged_xy_above_25cm_max": 0,
+      "carry_rmse_increase_m_max": 1e-09,
+      "off_pose_serialization_identical": true
+    },
+    "scale_fit": {
+      "method": "origin-constrained least squares: sum(predicted_dx*measured_dx)/sum(predicted_dx^2)",
+      "gt": "offline calibration only, authorized s2v45 and supervisor 06:05; no live GT",
+      "group": "own commanded servo3,4,5,6 + inferred loaded profile + forward speed and duration; positive forward only",
+      "minimum_training_pulses_per_group": 20,
+      "minimum_training_runs_per_group": 2,
+      "exclude": "overlapping next nonzero drive before profile horizon; arm command during horizon; recorded wall contact during horizon (calibration only)",
+      "unmeasured": "unchanged v122; no transfer between postures/load/speed",
+      "correction": "multiply forward mean_curve x and mean_delta x only; yaw/lateral means and all noise unchanged"
+    },
+    "tempering": {
+      "method": "Thrun et al. 2005 sections 6.3.4 and 6.7: joint measurement likelihood to power alpha",
+      "alpha": 0.5,
+      "parameter_status": "a priori half-information comparison, not a book default or a value fit to evaluation GT; no alpha sweep",
+      "fit_split": "no learned observation parameters; training pair used for overconfidence diagnosis only; the same fixed exponent tested on each held-out run",
+      "scope": "entire existing wall times landmark score; first scan included; no threshold, detection, association, motion or resampling change"
+    },
+    "audit": "each measurement: ESS and XY/yaw covariance prior after prediction, posterior before resampling, after resampling and reported covariance; wall/landmark likelihood correlation across particles is overlap evidence, not proof of independent noise correlation",
+    "physical": "only a condition passes all three held-out runs; then new seed registration and agent_lock/ugrp_session",
+    "threshold_change_after_results": false,
+    "host_error": "ENOSPC is HOST_ERROR, not a physical failure"
+  },
+  "runs": [
+    {
+      "seed": 1051,
+      "conditions": {
+        "off": {
+          "nees_available": 493,
+          "primary_n": 493,
+          "nees_exceeded": 445,
+          "nees_rate": 0.9026369168356998,
+          "all_warnings": 293,
+          "all_misses": 44,
+          "carry_rmse_m": 0.21797712620042028,
+          "carry_frames": 4145,
+          "unavailable_times": []
+        },
+        "scale": {
+          "nees_available": 493,
+          "primary_n": 493,
+          "nees_exceeded": 341,
+          "nees_rate": 0.691683569979716,
+          "all_warnings": 338,
+          "all_misses": 0,
+          "carry_rmse_m": 0.15637900779093325,
+          "carry_frames": 4145,
+          "unavailable_times": []
+        },
+        "temper": {
+          "nees_available": 493,
+          "primary_n": 493,
+          "nees_exceeded": 297,
+          "nees_rate": 0.6024340770791075,
+          "all_warnings": 493,
+          "all_misses": 0,
+          "carry_rmse_m": 0.23959403567305845,
+          "carry_frames": 4145,
+          "unavailable_times": []
+        },
+        "combined": {
+          "nees_available": 493,
+          "primary_n": 493,
+          "nees_exceeded": 0,
+          "nees_rate": 0.0,
+          "all_warnings": 411,
+          "all_misses": 0,
+          "carry_rmse_m": 0.07462053836133561,
+          "carry_frames": 4145,
+          "unavailable_times": []
+        }
+      },
+      "gates": {
+        "scale": {
+          "covariance_coverage": true,
+          "nees": false,
+          "misses": true,
+          "carry_rmse": true,
+          "off_byte_identical": true,
+          "passed": false
+        },
+        "temper": {
+          "covariance_coverage": true,
+          "nees": false,
+          "misses": true,
+          "carry_rmse": false,
+          "off_byte_identical": true,
+          "passed": false
+        },
+        "combined": {
+          "covariance_coverage": true,
+          "nees": true,
+          "misses": true,
+          "carry_rmse": true,
+          "off_byte_identical": true,
+          "passed": true
+        }
+      },
+      "fit_seeds": [
+        1053,
+        1054
+      ]
+    },
+    {
+      "seed": 1053,
+      "conditions": {
+        "off": {
+          "nees_available": 486,
+          "primary_n": 486,
+          "nees_exceeded": 248,
+          "nees_rate": 0.5102880658436214,
+          "all_warnings": 200,
+          "all_misses": 0,
+          "carry_rmse_m": 0.1115193587580202,
+          "carry_frames": 3829,
+          "unavailable_times": []
+        },
+        "scale": {
+          "nees_available": 486,
+          "primary_n": 486,
+          "nees_exceeded": 49,
+          "nees_rate": 0.10082304526748971,
+          "all_warnings": 378,
+          "all_misses": 0,
+          "carry_rmse_m": 0.048418642014107914,
+          "carry_frames": 3829,
+          "unavailable_times": []
+        },
+        "temper": {
+          "nees_available": 486,
+          "primary_n": 486,
+          "nees_exceeded": 192,
+          "nees_rate": 0.3950617283950617,
+          "all_warnings": 486,
+          "all_misses": 0,
+          "carry_rmse_m": 0.11784023005786692,
+          "carry_frames": 3829,
+          "unavailable_times": []
+        },
+        "combined": {
+          "nees_available": 447,
+          "primary_n": 486,
+          "nees_exceeded": 0,
+          "nees_rate": 0.0,
+          "all_warnings": 486,
+          "all_misses": 0,
+          "carry_rmse_m": 0.047666416517293635,
+          "carry_frames": 3829,
+          "unavailable_times": [
+            21.35,
+            21.75,
+            22.15,
+            22.55,
+            22.95,
+            23.35,
+            23.75,
+            24.15,
+            24.55,
+            24.95,
+            25.35,
+            25.75,
+            26.15,
+            26.55,
+            26.95,
+            27.35,
+            27.75,
+            28.15,
+            28.55,
+            28.95,
+            29.35,
+            29.75,
+            30.15,
+            30.55,
+            30.95,
+            31.35,
+            31.75,
+            32.15,
+            32.55,
+            32.95,
+            33.35,
+            33.75,
+            34.15,
+            34.55,
+            34.95,
+            35.35,
+            35.75,
+            36.7,
+            37.65
+          ]
+        }
+      },
+      "gates": {
+        "scale": {
+          "covariance_coverage": true,
+          "nees": true,
+          "misses": true,
+          "carry_rmse": true,
+          "off_byte_identical": true,
+          "passed": true
+        },
+        "temper": {
+          "covariance_coverage": true,
+          "nees": false,
+          "misses": true,
+          "carry_rmse": false,
+          "off_byte_identical": true,
+          "passed": false
+        },
+        "combined": {
+          "covariance_coverage": false,
+          "nees": true,
+          "misses": true,
+          "carry_rmse": true,
+          "off_byte_identical": true,
+          "passed": false
+        }
+      },
+      "fit_seeds": [
+        1051,
+        1054
+      ]
+    },
+    {
+      "seed": 1054,
+      "conditions": {
+        "off": {
+          "nees_available": 623,
+          "primary_n": 623,
+          "nees_exceeded": 590,
+          "nees_rate": 0.9470304975922953,
+          "all_warnings": 312,
+          "all_misses": 0,
+          "carry_rmse_m": 0.21583948997751365,
+          "carry_frames": 4132,
+          "unavailable_times": []
+        },
+        "scale": {
+          "nees_available": 623,
+          "primary_n": 623,
+          "nees_exceeded": 203,
+          "nees_rate": 0.3258426966292135,
+          "all_warnings": 482,
+          "all_misses": 0,
+          "carry_rmse_m": 0.10930905816831175,
+          "carry_frames": 4132,
+          "unavailable_times": []
+        },
+        "temper": {
+          "nees_available": 623,
+          "primary_n": 623,
+          "nees_exceeded": 547,
+          "nees_rate": 0.8780096308186196,
+          "all_warnings": 638,
+          "all_misses": 0,
+          "carry_rmse_m": 0.22826911723761842,
+          "carry_frames": 4132,
+          "unavailable_times": []
+        },
+        "combined": {
+          "nees_available": 622,
+          "primary_n": 623,
+          "nees_exceeded": 192,
+          "nees_rate": 0.3086816720257235,
+          "all_warnings": 638,
+          "all_misses": 0,
+          "carry_rmse_m": 0.1338754363705241,
+          "carry_frames": 4132,
+          "unavailable_times": [
+            19.1
+          ]
+        }
+      },
+      "gates": {
+        "scale": {
+          "covariance_coverage": true,
+          "nees": false,
+          "misses": true,
+          "carry_rmse": true,
+          "off_byte_identical": true,
+          "passed": false
+        },
+        "temper": {
+          "covariance_coverage": true,
+          "nees": false,
+          "misses": true,
+          "carry_rmse": false,
+          "off_byte_identical": true,
+          "passed": false
+        },
+        "combined": {
+          "covariance_coverage": false,
+          "nees": false,
+          "misses": true,
+          "carry_rmse": true,
+          "off_byte_identical": true,
+          "passed": false
+        }
+      },
+      "fit_seeds": [
+        1051,
+        1053
+      ]
+    }
+  ],
+  "physics": 0,
+  "gt_use": "scale fit in training runs only; all trajectory/NEES and heldout GT posthoc",
+  "hashes": {
+    "/Users/changmin/projects/ugrp/outputs/s2-bias-tempering-v45-20261008/replay/s1051-off.json": "424bf3130e243702537ce7ff06613861c8b12899b9658ef75a6923e8501e043a",
+    "/Users/changmin/projects/ugrp/outputs/s2-bias-tempering-v45-20261008/replay/s1051-scale.json": "d32b6a59116d14c9d8175953ceeb3fb8efe91f17b54a6723c7be684a2380b19e",
+    "/Users/changmin/projects/ugrp/outputs/s2-bias-tempering-v45-20261008/replay/s1051-temper.json": "8923b513ce8e1fb8eccb1e0c09128e4a0c721c18181257ef5dd5f9e33e6d4c9f",
+    "/Users/changmin/projects/ugrp/outputs/s2-bias-tempering-v45-20261008/replay/s1051-combined.json": "41911bb8068497bfd019738bdf281c0863f1427e675ee7b3e68acb6f6f1bd6d4",
+    "/Users/changmin/projects/ugrp/outputs/s2-bias-tempering-v45-20261008/replay/s1053-off.json": "f212572a4f89afb90f786fb913ab8ea9173e6ff43bdd33c8a9e66891eb604413",
+    "/Users/changmin/projects/ugrp/outputs/s2-bias-tempering-v45-20261008/replay/s1053-scale.json": "7616019166ab842fad48f92d3dad033e0126e04d62eeab0b5059d669d0879e33",
+    "/Users/changmin/projects/ugrp/outputs/s2-bias-tempering-v45-20261008/replay/s1053-temper.json": "35d726631444ff671dd4c35a07ae3b49d1f866386255953aceecee8c349290bc",
+    "/Users/changmin/projects/ugrp/outputs/s2-bias-tempering-v45-20261008/replay/s1053-combined.json": "7d0a840f38a41db2a599d21868d0d67b20d428065e42f2b874dc76e25007d141",
+    "/Users/changmin/projects/ugrp/outputs/s2-bias-tempering-v45-20261008/replay/s1054-off.json": "14e34cb4882d5f6c760c525d24a73431e89e097ca07605f80d2685c806fc6391",
+    "/Users/changmin/projects/ugrp/outputs/s2-bias-tempering-v45-20261008/replay/s1054-scale.json": "88e6da053854e44fcaf443a8ab862e01721885f1f81c2841948d9c417c1ad4ec",
+    "/Users/changmin/projects/ugrp/outputs/s2-bias-tempering-v45-20261008/replay/s1054-temper.json": "5d45ff477da0194dd232fd3f6c0b4e06748e66cdac507283b31b9e0813b05cca",
+    "/Users/changmin/projects/ugrp/outputs/s2-bias-tempering-v45-20261008/replay/s1054-combined.json": "c0b676d3b9542af7ee202f6de08f7b3339489414235aae85e4966b53652df4b9"
+  },
+  "admitted_conditions": [],
+  "physical_admitted": false,
+  "totals": {
+    "off": {
+      "nees_exceeded": 1283,
+      "nees_available": 1602,
+      "misses": 44,
+      "warnings": 805
+    },
+    "scale": {
+      "nees_exceeded": 593,
+      "nees_available": 1602,
+      "misses": 0,
+      "warnings": 1198
+    },
+    "temper": {
+      "nees_exceeded": 1036,
+      "nees_available": 1602,
+      "misses": 0,
+      "warnings": 1617
+    },
+    "combined": {
+      "nees_exceeded": 192,
+      "nees_available": 1562,
+      "misses": 0,
+      "warnings": 1535
+    }
+  },
+  "raw_source": "/Users/changmin/projects/ugrp/outputs/s2-bias-tempering-v45-20261008/result.json",
+  "raw_sha256": "ed3f899993d7e122ba5989c79191687b0f88cd7b928f19eb5f0464438c3188f9"
+}

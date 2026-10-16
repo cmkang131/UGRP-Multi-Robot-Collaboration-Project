@@ -1,0 +1,35 @@
+{
+  "command": [
+    "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+    "-m",
+    "pytest",
+    "tests/test_pair_llm_s4_host.py",
+    "tests/test_pair_llm_s4_routing.py",
+    "tests/test_pair_llm_decisions.py",
+    "-q",
+    "--junitxml=/Users/changmin/projects/ugrp/outputs/s4-llm-offline-resume-20261006T141809/pytest.xml"
+  ],
+  "exit_code": 0,
+  "elapsed_wall_s": 1.5710554999968736,
+  "scope": "offline unit tests only; no simulation or real model calls",
+  "result": "45 passed in 1.38s",
+  "source_sha256": {
+    "harness/pair_llm_dispatch.py": "c83bc0ac006cd0e99b0a0b88920fbf03cebfdb4a6c395f2160d19d32558a4cdc",
+    "harness/s4_llm_host.py": "d9530286878c0ca6a338456a05feef7e4f80ad920fc7548102da9d1b69452f9b",
+    "harness/s4_llm_inputs.py": "58756d76b927f4bcd97988cbf2ee5bb0304b4df7dc34653993edd6bdd3ef3eb8",
+    "harness/s4_llm_routing.py": "c7cb2a05c8695bbad5303609d43ac88d73536b2bbf260ad987ca9080d65ad28d",
+    "tests/test_pair_llm_s4_host.py": "a38ed0ee80d6c78b2873f5ea1e2a048c2b74afbca6aa2f2a1e6c88897a9b8225",
+    "tests/test_pair_llm_s4_routing.py": "9c9233442a9c7941c926bcafa287728929fc428ff372dec156483a4868e81536",
+    "tests/test_pair_llm_decisions.py": "25e9868d4735978c94f7a39b5a72faff95f1ee34dc7825569c44adac81ab59d6",
+    "tests/fixtures/s4_llm_replies.json": "d3cb1ed50188e6aabaa20e7b9bea9f9ec47ab29fd739c3861e34db634ba4de8a"
+  },
+  "evidence_root": "/Users/changmin/projects/ugrp/outputs/s4-llm-offline-resume-20261006T141809",
+  "evidence_sha256": {
+    "pytest.log": "4d0d75c1bdb670be98205aafb58c4df01e52224bc5ecfabe592a6c05d60167a2",
+    "pytest.xml": "f8e032ea1de807e18da341dce1436a3577c513913e52e417a7a93ae6d325cfc6",
+    "test_run.json": "7cb1386e4e8381eaeef5fe7da25432cc70979340ef5a969f65b23a0579f04cb0"
+  },
+  "s3_reviewed_sha": "e4b72aaffb0d756560397b7f0a30995da12da89f",
+  "physical_verified": false,
+  "live_model_calls": 0
+}

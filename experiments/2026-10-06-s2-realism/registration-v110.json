@@ -1,0 +1,45 @@
+{
+  "schema": "ugrp.s2_realism_registration.v1",
+  "execution_bundle_id": "zone-s2-realism-v110",
+  "workflow_version": "7.3.0",
+  "cohort": "FUNCTIONAL_DEV_NOT_CONFIRMATORY",
+  "runs": [
+    {
+      "order": 1,
+      "seed": 1033,
+      "slot": "P1-2",
+      "stage": "pick",
+      "role": "probe"
+    },
+    {
+      "order": 2,
+      "seed": 1029,
+      "slot": "P1-1",
+      "stage": "place",
+      "role": "full"
+    },
+    {
+      "order": 3,
+      "seed": 1030,
+      "slot": "P2-1",
+      "stage": "place",
+      "role": "full"
+    },
+    {
+      "order": 4,
+      "seed": 1031,
+      "slot": "P1-2",
+      "stage": "place",
+      "role": "full"
+    }
+  ],
+  "same_failure_stop_count": 2,
+  "per_run_sim_cap_s": 900,
+  "per_run_wall_cap_s": 10800,
+  "tuning_or_retries_between_runs": false,
+  "enospc": "HOST_ERROR",
+  "pool_with_previous_s2": false,
+  "raw_retention": "preserve all raw throughout this task/open PR; no deletion",
+  "model_calls": 0,
+  "supersedes": "v109 initialization failed before task reset/commands/frames; s1032 is not reused"
+}

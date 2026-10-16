@@ -1,0 +1,76 @@
+{
+  "schema": "ugrp.pair_stage_probe.v1",
+  "labels": [
+    "stage_probe",
+    "not_e2e_success",
+    "dev",
+    "연구 결과 아님"
+  ],
+  "stages": {
+    "carry": {
+      "cases": 5,
+      "passed": 3,
+      "pass_rate": 0.6,
+      "staging_infeasible": 0,
+      "staged_cases": 5,
+      "staged_pass_rate": 0.6,
+      "by_source": {
+        "teacher_grid": {
+          "cases": 5,
+          "passed": 3
+        }
+      },
+      "failures": {
+        "GT_CRITERIA:end_error,leg_error": 1,
+        "INVALID_OWN_IMAGE": 1
+      },
+      "causes": {
+        "MOTION_ERROR": 1,
+        "OWN_IMAGE_INVALID": 1
+      },
+      "by_leg": {
+        "0": {
+          "cases": 1,
+          "passed": 1
+        },
+        "1": {
+          "cases": 1,
+          "passed": 1
+        },
+        "3": {
+          "cases": 1,
+          "passed": 0
+        },
+        "6": {
+          "cases": 1,
+          "passed": 1
+        },
+        "7": {
+          "cases": 1,
+          "passed": 0
+        }
+      },
+      "wall_s_median": 231.81,
+      "wall_s_max": 290.35,
+      "stage_sim_s_median": 22.5,
+      "by_policy": {
+        "b-v6c": {
+          "cases": 5,
+          "passed": 3,
+          "by_source": {
+            "teacher_grid": {
+              "cases": 5,
+              "passed": 3
+            }
+          },
+          "failures": {
+            "GT_CRITERIA:end_error,leg_error": 1,
+            "INVALID_OWN_IMAGE": 1
+          }
+        }
+      }
+    }
+  },
+  "wall_s_total": 1179.8,
+  "unavailable_e2e": []
+}

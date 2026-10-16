@@ -1,0 +1,1349 @@
+........................................................................ [  8%]
+........................................................................ [ 17%]
+........................................................................ [ 26%]
+........................................................................ [ 34%]
+........................................................................ [ 43%]
+..........................................FF.FF.FF.FF.FF.FF.FF.FF.FF.FF. [ 52%]
+FF.FF.FF.FF.FF.FF.FF.FF.FF.FF.FF.FF.FF.FF.FF.FF.FF.FF.FF.FF.FF.FF.FF.... [ 60%]
+........................................................................ [ 69%]
+........................................................................ [ 78%]
+........................................................................ [ 86%]
+....................................................................F... [ 95%]
+.....................................                                    [100%]
+=================================== FAILURES ===================================
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[1] ___________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 1
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 1
+E   assert {'calls': [{'... 10.8}]', ...} == {'calls': [{'... 10.8}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}} != {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[2] ___________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 2
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 2
+E   assert {'calls': [{'... 11.5}]', ...} == {'calls': [{'... 11.5}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}} != {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[4] ___________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 4
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 4
+E   assert {'calls': [{'... 11.3}]', ...} == {'calls': [{'... 11.3}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}} != {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[5] ___________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 5
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 5
+E   assert {'calls': [{'... 11.5}]', ...} == {'calls': [{'... 11.5}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}} != {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[7] ___________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 7
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 7
+E   assert {'calls': [{'...: 6.0}]', ...} == {'calls': [{'...: 6.0}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}} != {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[8] ___________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 8
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 8
+E   assert {'calls': [{'... 11.5}]', ...} == {'calls': [{'... 11.5}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}} != {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[10] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 10
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 10
+E   assert {'calls': [{'... 11.3}]', ...} == {'calls': [{'... 11.3}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}} != {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[11] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 11
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 11
+E   assert {'calls': [{'... 13.3}]', ...} == {'calls': [{'... 13.3}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 300, 'total': 2, 'used': {'r3': 1, 'r1': 1}, 'used_total': 2, ...}} != {'budget': {'per_actor': 300, 'total': 2, 'used': {'r3': 1, 'r1': 1}, 'used_total': 2, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[13] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 13
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 13
+E   assert {'calls': [{'... 11.3}]', ...} == {'calls': [{'... 11.3}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}} != {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[14] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 14
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 14
+E   assert {'calls': [{'... 11.5}]', ...} == {'calls': [{'... 11.5}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}} != {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[16] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 16
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 16
+E   assert {'calls': [{'... 11.3}]', ...} == {'calls': [{'... 11.3}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}} != {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[17] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 17
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 17
+E   assert {'calls': [{'... 11.5}]', ...} == {'calls': [{'... 11.5}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}} != {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[19] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 19
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 19
+E   assert {'calls': [{'... 10.8}]', ...} == {'calls': [{'... 10.8}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 1, 'total': 900, 'used': {'r3': 1, 'r1': 1, 'r2': 1}, 'used_total': 3, ...}} != {'budget': {'per_actor': 1, 'total': 900, 'used': {'r3': 1, 'r1': 1, 'r2': 1}, 'used_total': 3, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[20] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 20
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 20
+E   assert {'calls': [{'... 12.0}]', ...} == {'calls': [{'... 12.0}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}} != {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[22] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 22
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 22
+E   assert {'calls': [{'... 10.8}]', ...} == {'calls': [{'... 10.8}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}} != {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[23] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 23
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 23
+E   assert {'calls': [{'... 11.5}]', ...} == {'calls': [{'... 11.5}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}} != {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[25] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 25
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 25
+E   assert {'calls': [{'... 11.3}]', ...} == {'calls': [{'... 11.3}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 1, 'total': 900, 'used': {'r3': 1, 'r2': 1, 'r1': 1}, 'used_total': 3, ...}} != {'budget': {'per_actor': 1, 'total': 900, 'used': {'r3': 1, 'r2': 1, 'r1': 1}, 'used_total': 3, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[26] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 26
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 26
+E   assert {'calls': [{'... 12.1}]', ...} == {'calls': [{'... 12.1}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}} != {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[28] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 28
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 28
+E   assert {'calls': [{'...: 7.7}]', ...} == {'calls': [{'...: 7.7}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}} != {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[29] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 29
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 29
+E   assert {'calls': [{'... 11.5}]', ...} == {'calls': [{'... 11.5}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}} != {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[31] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 31
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 31
+E   assert {'calls': [{'... 10.8}]', ...} == {'calls': [{'... 10.8}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}} != {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[32] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 32
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 32
+E   assert {'calls': [{'... 12.1}]', ...} == {'calls': [{'... 12.1}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}} != {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[34] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 34
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 34
+E   assert {'calls': [{'... 11.4}]', ...} == {'calls': [{'... 11.4}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}} != {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[35] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 35
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 35
+E   assert {'calls': [{'... 12.0}]', ...} == {'calls': [{'... 12.0}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}} != {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[37] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 37
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 37
+E   assert {'calls': [{'... 11.5}]', ...} == {'calls': [{'... 11.5}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r1': 1, 'r3': 1}, 'used_total': 3, ...}} != {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r1': 1, 'r3': 1}, 'used_total': 3, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[38] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 38
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 38
+E   assert {'calls': [{'... 11.0}]', ...} == {'calls': [{'... 11.0}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}} != {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[40] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 40
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 40
+E   assert {'calls': [{'... 11.3}]', ...} == {'calls': [{'... 11.3}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}} != {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[41] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 41
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 41
+E   assert {'calls': [{'... 11.5}]', ...} == {'calls': [{'... 11.5}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}} != {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[43] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 43
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 43
+E   assert {'calls': [{'... 11.3}]', ...} == {'calls': [{'... 11.3}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}} != {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[44] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 44
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 44
+E   assert {'calls': [{'... 11.5}]', ...} == {'calls': [{'... 11.5}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}} != {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[46] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 46
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 46
+E   assert {'calls': [{'... 10.8}]', ...} == {'calls': [{'... 10.8}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}} != {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[47] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 47
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 47
+E   assert {'calls': [{'... 11.5}]', ...} == {'calls': [{'... 11.5}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}} != {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[49] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 49
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 49
+E   assert {'calls': [{'... 11.3}]', ...} == {'calls': [{'... 11.3}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}} != {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[50] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 50
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 50
+E   assert {'calls': [{'... 11.5}]', ...} == {'calls': [{'... 11.5}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}} != {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[52] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 52
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 52
+E   assert {'calls': [{'... 11.3}]', ...} == {'calls': [{'... 11.3}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 1, 'total': 900, 'used': {'r3': 1, 'r2': 1, 'r1': 1}, 'used_total': 3, ...}} != {'budget': {'per_actor': 1, 'total': 900, 'used': {'r3': 1, 'r2': 1, 'r1': 1}, 'used_total': 3, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[53] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 53
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 53
+E   assert {'calls': [{'... 11.5}]', ...} == {'calls': [{'... 11.5}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}} != {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[55] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 55
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 55
+E   assert {'calls': [{'... 10.8}]', ...} == {'calls': [{'... 10.8}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}} != {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[56] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 56
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 56
+E   assert {'calls': [{'... 11.5}]', ...} == {'calls': [{'... 11.5}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}} != {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[58] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 58
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 58
+E   assert {'calls': [{'... 11.3}]', ...} == {'calls': [{'... 11.3}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}} != {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[59] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 59
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 59
+E   assert {'calls': [{'... 12.1}]', ...} == {'calls': [{'... 12.1}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}} != {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[61] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 61
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 61
+E   assert {'calls': [{'... 11.4}]', ...} == {'calls': [{'... 11.4}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}} != {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[62] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 62
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 62
+E   assert {'calls': [{'... 12.0}]', ...} == {'calls': [{'... 12.0}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}} != {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[64] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 64
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 64
+E   assert {'calls': [{'... 10.8}]', ...} == {'calls': [{'... 10.8}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}} != {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[65] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 65
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 65
+E   assert {'calls': [{'... 12.0}]', ...} == {'calls': [{'... 12.0}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}} != {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[67] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 67
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 67
+E   assert {'calls': [{'...: 6.0}]', ...} == {'calls': [{'...: 6.0}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r1': 1, 'r3': 1}, 'used_total': 3, ...}} != {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r1': 1, 'r3': 1}, 'used_total': 3, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[68] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 68
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 68
+E   assert {'calls': [{'... 11.5}]', ...} == {'calls': [{'... 11.5}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}} != {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[70] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 70
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 70
+E   assert {'calls': [{'... 10.7}]', ...} == {'calls': [{'... 10.7}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}} != {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[71] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 71
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 71
+E   assert {'calls': [{'... 11.5}]', ...} == {'calls': [{'... 11.5}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}} != {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[73] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 73
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 73
+E   assert {'calls': [{'... 10.8}]', ...} == {'calls': [{'... 10.8}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}} != {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[74] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 74
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 74
+E   assert {'calls': [{'... 12.0}]', ...} == {'calls': [{'... 12.0}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}} != {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[76] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 76
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 76
+E   assert {'calls': [{'... 10.8}]', ...} == {'calls': [{'... 10.8}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}} != {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[77] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 77
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 77
+E   assert {'calls': [{'... 11.5}]', ...} == {'calls': [{'... 11.5}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 300, 'total': 2, 'used': {'r3': 1, 'r2': 1}, 'used_total': 2, ...}} != {'budget': {'per_actor': 300, 'total': 2, 'used': {'r3': 1, 'r2': 1}, 'used_total': 2, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[79] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 79
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 79
+E   assert {'calls': [{'...: 6.0}]', ...} == {'calls': [{'...: 6.0}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}} != {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[80] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 80
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 80
+E   assert {'calls': [{'... 11.5}]', ...} == {'calls': [{'... 11.5}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}} != {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[82] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 82
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 82
+E   assert {'calls': [{'... 10.8}]', ...} == {'calls': [{'... 10.8}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}} != {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[83] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 83
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 83
+E   assert {'calls': [{'... 13.3}]', ...} == {'calls': [{'... 13.3}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r1': 1}, 'used_total': 2, ...}} != {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r1': 1}, 'used_total': 2, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[85] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 85
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 85
+E   assert {'calls': [{'... 10.8}]', ...} == {'calls': [{'... 10.8}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}} != {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[86] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 86
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 86
+E   assert {'calls': [{'... 12.0}]', ...} == {'calls': [{'... 12.0}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}} != {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[88] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 88
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 88
+E   assert {'calls': [{'... 11.4}]', ...} == {'calls': [{'... 11.4}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}} != {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[89] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 89
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 89
+E   assert {'calls': [{'... 11.5}]', ...} == {'calls': [{'... 11.5}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}} != {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[91] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 91
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 91
+E   assert {'calls': [{'... 11.3}]', ...} == {'calls': [{'... 11.3}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}} != {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[92] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 92
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 92
+E   assert {'calls': [{'... 12.0}]', ...} == {'calls': [{'... 12.0}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}} != {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[94] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 94
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 94
+E   assert {'calls': [{'...: 6.0}]', ...} == {'calls': [{'...: 6.0}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}} != {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[95] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 95
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 95
+E   assert {'calls': [{'... 11.5}]', ...} == {'calls': [{'... 11.5}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}} != {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[97] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 97
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 97
+E   assert {'calls': [{'... 10.8}]', ...} == {'calls': [{'... 10.8}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}} != {'budget': {'per_actor': 1, 'total': 900, 'used': {'r2': 1, 'r3': 1, 'r1': 1}, 'used_total': 3, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+__________ test_generated_binding_budgets_keep_no_comm_v64_parity[98] __________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 98
+
+        'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        'budget': trial.scheduler.budget.to_dict(),
+        'ledger': trial.scheduler.ledger,
+>   }
+E   AssertionError: 98
+E   assert {'calls': [{'... 11.5}]', ...} == {'calls': [{'... 11.5}]', ...}
+E     
+E     Omitting 7 identical items, use -vv to show
+E     Differing items:
+E     {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}} != {'budget': {'per_actor': 300, 'total': 2, 'used': {'r2': 1, 'r3': 1}, 'used_total': 2, ...}}
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:187: AssertionError
+________ test_three_communication_conditions_keep_common_schedule[287] _________
+
+seed = 287
+
+>   ???
+E   AssertionError: (287, 'peer_ko')
+E   assert [('r1', 0.0, ...), None), ...] == [('r1', 0.0, ...), None), ...]
+E     
+E     At index 8 diff: ('r1', 31.3, 'idle', (), None) != ('r3', 32.0, 'failure', (), None)
+E     Left contains 2 more items, first extra item: ('r1', 85.9, 'retry', (), None)
+E     Use -v to get more diff
+
+tests/test_zone_study_multiturn_properties.py:214: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[1]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[2]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[4]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[5]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[7]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[8]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[10]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[11]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[13]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[14]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[16]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[17]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[19]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[20]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[22]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[23]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[25]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[26]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[28]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[29]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[31]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[32]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[34]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[35]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[37]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[38]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[40]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[41]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[43]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[44]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[46]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[47]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[49]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[50]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[52]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[53]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[55]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[56]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[58]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[59]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[61]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[62]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[64]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[65]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[67]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[68]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[70]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[71]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[73]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[74]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[76]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[77]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[79]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[80]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[82]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[83]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[85]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[86]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[88]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[89]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[91]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[92]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[94]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[95]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[97]
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity[98]
+FAILED tests/test_zone_study_multiturn_properties.py::test_three_communication_conditions_keep_common_schedule[287]
+67 failed, 762 passed in 903.16s (0:15:03)

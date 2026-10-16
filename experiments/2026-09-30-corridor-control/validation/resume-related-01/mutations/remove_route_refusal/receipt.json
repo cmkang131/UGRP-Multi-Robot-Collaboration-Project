@@ -1,0 +1,20 @@
+{
+  "mutation": {
+    "name": "remove_route_refusal",
+    "module": "harness.zone_corridor_control_plan",
+    "selected_test": "test_impossible_and_disconnected_routes_refused",
+    "original_sha256": "5ba80f3aa90be6ea10a2e4b57867edc4323c3d53a77c9a071ea60081b779cf28",
+    "mutated_in_memory_sha256": "6817a59dcbc335b07a44636ed16e38990c2f23f8318ca3bc65e0be4946e29471",
+    "file_bytes_unchanged": true
+  },
+  "pytest_exit_code": 1,
+  "failed_tests": [
+    "tests/test_zone_own_executor_corridor_control.py::test_impossible_and_disconnected_routes_refused"
+  ],
+  "passed_tests": [],
+  "setup_teardown_errors": [],
+  "original_file_unchanged": true,
+  "mutation_caught": true,
+  "host_lock_required": false,
+  "scope": "fake only; physics/render/model calls 0"
+}

@@ -1,0 +1,98 @@
+{
+  "seed": 49003,
+  "acquisition": {
+    "status": "PHYSICAL_FAILURE",
+    "source_sha": "b3cc09dce60e8b93ec2bea7f8e81afe4c3c94b61",
+    "model_calls": 0,
+    "freeze": false,
+    "qualification": "one MuJoCo DEV attempt, not real hardware or confirmation cohort",
+    "loadavg_start": [
+      3.4931640625,
+      3.84033203125,
+      3.5732421875
+    ],
+    "start_sim_s": 1.3,
+    "frames": 179,
+    "total_sim_s": 36.9,
+    "failure": {
+      "type": "PhysicalStop",
+      "message": "WALL_CONTACT"
+    },
+    "enospc": false,
+    "wall_s": 68.42522666696459,
+    "loadavg_end": [
+      2.72216796875,
+      3.5390625,
+      3.4794921875
+    ]
+  },
+  "started": true,
+  "arrived": false,
+  "false_declarations": 0,
+  "final_xy_m": 0.04350372456980685,
+  "final_sigma_xy_m": 0.17361077967944336,
+  "final_error_sigma_ratio": 0.250581931894624,
+  "final_nees_xy": 0.07527521135308612,
+  "over_3sigma": false,
+  "goal_observed": false,
+  "failure_class": "other",
+  "excluded": false,
+  "thresholds_unchanged": true,
+  "goal": null,
+  "target_assignment": null,
+  "loss_t": null,
+  "correct_convergence": false,
+  "false_convergence_frames": 0,
+  "post_loss_frames": 0,
+  "declarations": [],
+  "final_yaw_deg": 15.825089838980942,
+  "final_sigma_definition": "frontend_reported_max_axis",
+  "post_loss_over_3sigma": 0,
+  "path_rmse_m": 0.12557817904404095,
+  "error_samples": 169,
+  "missing_gt_trace_samples": 0,
+  "final_error_t": 36.9,
+  "last_truth_t": 36.9,
+  "sim_s": 35.6,
+  "wall_s": 68.42522666696459,
+  "arrival_after_loss_s": null,
+  "contacts": {
+    "wall": {
+      "frames": 1,
+      "episodes": 1
+    },
+    "robot": {
+      "frames": 0,
+      "episodes": 0
+    }
+  },
+  "contact_samples": 179,
+  "contact_scope": "5Hz samples/contiguous sampled episodes, plus native failure reason; not exhaustive",
+  "command_frames": 169,
+  "hold_frames": 1,
+  "return_statuses": {},
+  "return_navigation": {},
+  "travelled_m": 1.310812884164303,
+  "map": {
+    "quality": {
+      "occupied_cells": 173,
+      "precision_015": 0.5549132947976878,
+      "precision_cell": 0.20809248554913296,
+      "wall_coverage": 0.40425531914893614,
+      "wall_error_rmse_m": 0.38209378639937597
+    },
+    "occupied_cells": 173,
+    "inserted_scans": 15,
+    "visible_samples": 108,
+    "total_wall_samples": 329,
+    "covered_samples": 133,
+    "coverage": 0.40425531914893614
+  },
+  "insertion_gate_counts": {
+    "bootstrap/bootstrap": 1,
+    "deferred/gmapping_motion_gate": 154,
+    "rejected/low_overlap": 6,
+    "accepted/improved_proposal": 1,
+    "rejected/high_residual": 7
+  }
+}

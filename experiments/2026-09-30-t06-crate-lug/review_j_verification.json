@@ -1,0 +1,349 @@
+{
+  "review_commit": "b77a811970f95a9a69ee3ee15f9d09c3b99a137e",
+  "reviewed_candidate": "98ff3a1e3f3ecf7df18b339ae2e476327ac63ddd",
+  "merged_main": "318f03731b4c0ba649faccc0bedd6b14c5da6a97",
+  "post_merge_head": "761928409c27d82e4c2c1c50179b82eb990297a9",
+  "scope": "J1 regression coverage only; runtime controller and input boundary unchanged; local physics/render/model calls 0; no host lock",
+  "baseline": {
+    "passed": 4,
+    "strict_xfailed": 2,
+    "surviving_mutants": [
+      "peer_holding",
+      "missed_go"
+    ]
+  },
+  "final_related": {
+    "scope": "offline regression; physics/render/model calls 0; no host lock",
+    "base_head": "761928409c27d82e4c2c1c50179b82eb990297a9",
+    "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+    "runs": [
+      {
+        "group": "logic",
+        "command": [
+          "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+          "/Users/changmin/projects/ugrp-wt/cap-t06-crate/experiments/2026-09-30-t06-crate-lug/offline_checks.py",
+          "--child",
+          "logic",
+          "--output",
+          "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/related"
+        ],
+        "exit_code": 0
+      },
+      {
+        "group": "integration",
+        "command": [
+          "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+          "/Users/changmin/projects/ugrp-wt/cap-t06-crate/experiments/2026-09-30-t06-crate-lug/offline_checks.py",
+          "--child",
+          "integration",
+          "--output",
+          "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/related"
+        ],
+        "exit_code": 0
+      },
+      {
+        "group": "pinning",
+        "command": [
+          "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+          "/Users/changmin/projects/ugrp-wt/cap-t06-crate/experiments/2026-09-30-t06-crate-lug/offline_checks.py",
+          "--child",
+          "pinning",
+          "--output",
+          "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/related"
+        ],
+        "exit_code": 0
+      },
+      {
+        "group": "review_j",
+        "command": [
+          "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+          "/Users/changmin/projects/ugrp-wt/cap-t06-crate/experiments/2026-09-30-t06-crate-lug/offline_checks.py",
+          "--child",
+          "review_j",
+          "--output",
+          "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/related"
+        ],
+        "exit_code": 0
+      }
+    ],
+    "exit_code": 0,
+    "tests": 361,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "source_sha256": {
+      "harness/zone_crate_skill.py": "691a6f1d50d4b869dc0c8e0e522c78d25853f8a0514d098678a2e83ffcb13262",
+      "harness/zone_crate_dispatch.py": "8554ad69f91e9e89ee2621180e852add60118f0cba946cd028d07972fe6a4f1d",
+      "harness/zone_pair_executor.py": "36813f20315e6e9cd7640a7e6fb47bbb9741df69ba027e576e8171b2e6a90465",
+      "harness/zone_study_integration.py": "5997f0b431fa85c4d5df51f96297924c7f0c9df63b052d853f963662ad997d06",
+      "tests/test_zone_own_executor_crate.py": "cce57518d1441c021d296e4273236319dbe3b993af7998ac1e226fd3cf406007",
+      "tests/test_zone_pair_executor.py": "e046181fc70fe73c7ccb0f32fb86f010df637fe2fff007c20b7df3acc2fdbc4c",
+      "tests/test_zone_pair_status.py": "6e39c94da07b30bff6f3289943f5267752ba1e37ffbde33a692d6678542722ca",
+      "tests/test_zone_pair_admission.py": "d41249e100792743a73c39924da9ef8d4065d0b0e0de2088beda0a2719cbf130",
+      "tests/test_zone_pair_review.py": "0755c9528a15ca007dcdd54bc79ace98f41a2b3a2f1bf3c6259d03cf8a04a6d6",
+      "tests/test_zone_pair_review2.py": "e4ad02498d88a174fb3631e789bb8e6965f319f4f0e8ad108738dede08b2098d",
+      "tests/test_zone_study_integration.py": "6f2c66102304ff7295c9a42955368061fdb7b008c982089f1ce4df98aeb65131",
+      "tests/test_zone_study_integration_pair.py": "4618cdc93ecf6a19ea43199ceee82bc3b65480a4747753aa27eaf5fb22bbcfb7",
+      "tests/test_zone_study_integration_seams.py": "79fcb1a8fca41127f523628df4c446b36fcc74fe8eb1065a9ac3a60810782aef",
+      "tests/test_zone_pair_registered_source.py": "4884b81bb2c31eba434a0fca6e021a34eafae31082a90f4281509132f56d67fb",
+      "tests/test_zone_study_source_pinning.py": "757ab9ffcf6d00322a46dba23d08af6b56a6b4594e86c6f76b3a601fff9697b5",
+      "tests/test_zone_own_executor_crate_review_j.py": "508e880ca0b909c1372dcc22efbd6fe83ec5c1aa855f3abebc6540f9dc20a132"
+    },
+    "raw": {
+      "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/related/integration.log": "f386bd53faed16abf8ba326aa58f0c60a204a219fac0d1c09723fed6797df30b",
+      "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/related/integration.xml": "3c7eb9a20a0aa63b2df83cad17fcd91b4c55d052ea4a2734ac619908c306c5f0",
+      "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/related/logic.log": "434507d71be9ceb1b7f812a6be7d6752f42c71353f4ab4d9304e3621b3b84542",
+      "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/related/logic.xml": "856e534541a6f71fcdbe45e61f0e1bce4a58ce4319bdb45365fb31d6bad0a5b2",
+      "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/related/pinning.log": "48701e9df39a045d5a7921f1d01ebdb98bf18319802c9bc35e7aef1380693225",
+      "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/related/pinning.xml": "edac430ef18604605a88d01fca806e49ce99d932fc09d2efc03263aadeded835",
+      "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/related/review_j.log": "b4cdf1b3c0b41055dcb7390d089defec2837ef2e3cccd10f121f895dc4c63f98",
+      "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/related/review_j.xml": "05372edf2ae58b599f3cade240b09870af4ec438bcd77e59cb93ac2382191fee"
+    }
+  },
+  "mutations": {
+    "scope": "offline mutations only; no physical or vision success",
+    "source_sha256": "691a6f1d50d4b869dc0c8e0e522c78d25853f8a0514d098678a2e83ffcb13262",
+    "mutants": [
+      {
+        "name": "own_ready_without_partner",
+        "removed_or_changed": "return result['phase'] == 'GO'",
+        "replacement": "return ready",
+        "test": "tests/test_zone_own_executor_crate.py::test_one_side_not_ready_or_wrong_lug_never_closes",
+        "exit_code": 1,
+        "assertion_failures": 3,
+        "collection_errors": 0,
+        "skipped": 0,
+        "killed": true,
+        "log": "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/mutations/own_ready_without_partner.log",
+        "log_sha256": "289d8af970278e17a63a47db414eede36be215e93c2d55c3995d50401726ab0e"
+      },
+      {
+        "name": "omit_grasp_gate",
+        "removed_or_changed": "fresh and lug and ev.grasped == 'yes'",
+        "replacement": "True",
+        "test": "tests/test_zone_own_executor_crate.py::test_missing_one_side_grasp_or_holding_blocks_next_phase",
+        "exit_code": 1,
+        "assertion_failures": 1,
+        "collection_errors": 0,
+        "skipped": 0,
+        "killed": true,
+        "log": "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/mutations/omit_grasp_gate.log",
+        "log_sha256": "762fc1bf39cb51fbcab415067b49c05dcc047fa93d469c6fbcb41ea9a22e7444"
+      },
+      {
+        "name": "omit_holding_gate",
+        "removed_or_changed": "fresh and lug and ev.holding == 'yes'",
+        "replacement": "True",
+        "test": "tests/test_zone_own_executor_crate.py::test_missing_one_side_grasp_or_holding_blocks_next_phase",
+        "exit_code": 1,
+        "assertion_failures": 1,
+        "collection_errors": 0,
+        "skipped": 0,
+        "killed": true,
+        "log": "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/mutations/omit_holding_gate.log",
+        "log_sha256": "b9178db48d0470df2269966e69b5f6dc9f22df87b1df2032c42a3acb86030577"
+      },
+      {
+        "name": "ignore_holding_loss",
+        "removed_or_changed": "if not lug or ev.holding != 'yes':",
+        "replacement": "if False:",
+        "test": "tests/test_zone_own_executor_crate.py::test_holding_loss_stops_carry_and_peer_before_any_further_motion",
+        "exit_code": 1,
+        "assertion_failures": 1,
+        "collection_errors": 0,
+        "skipped": 0,
+        "killed": true,
+        "log": "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/mutations/ignore_holding_loss.log",
+        "log_sha256": "409cdfb1652eb5a926316fdcb9647932a24cc6c33e630812a585a39d4520c868"
+      },
+      {
+        "name": "ignore_peer_holding",
+        "removed_or_changed": "if not self._peer_holding(now):",
+        "replacement": "if False:",
+        "test": "tests/test_zone_own_executor_crate.py::test_fresh_peer_status_without_holding_stops_carry",
+        "exit_code": 1,
+        "assertion_failures": 8,
+        "collection_errors": 0,
+        "skipped": 0,
+        "killed": true,
+        "log": "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/mutations/ignore_peer_holding.log",
+        "log_sha256": "7585fd38aabd0f7f183c5a740d490570dc5950e4b71a8bb823e12c38f6a4021d"
+      },
+      {
+        "name": "ignore_peer_missed_go",
+        "removed_or_changed": "if self.status.grant and now > self.status.grant[1] + EPS:",
+        "replacement": "if False:",
+        "test": "tests/test_zone_own_executor_crate.py::test_one_peer_misses_go_stops_before_next_barrier",
+        "exit_code": 1,
+        "assertion_failures": 10,
+        "collection_errors": 0,
+        "skipped": 0,
+        "killed": true,
+        "log": "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/mutations/ignore_peer_missed_go.log",
+        "log_sha256": "1eceaaed51f5bffbb3305b6278a0a634273c126bc9c53ae8962fd14c1c8caa6f"
+      },
+      {
+        "name": "ignore_heartbeat_loss",
+        "removed_or_changed": "if not peer['alive'] and (self.peer_seen or peer['age_s'] is not None):",
+        "replacement": "if False:",
+        "test": "tests/test_zone_own_executor_crate.py::test_heartbeat_break_at_every_phase_terminates",
+        "exit_code": 1,
+        "assertion_failures": 6,
+        "collection_errors": 0,
+        "skipped": 0,
+        "killed": true,
+        "log": "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/mutations/ignore_heartbeat_loss.log",
+        "log_sha256": "85f16278e9bed8766ceff5f8f8f90be6687ce2dd58a9947aa0e1cf6d2a691b81"
+      },
+      {
+        "name": "grasp_crate_body",
+        "removed_or_changed": "'part': 'lug_' + role",
+        "replacement": "'part': 'box'",
+        "test": "tests/test_zone_own_executor_crate.py::test_lug_contract_matches_static_catalogue_without_copying_beam",
+        "exit_code": 1,
+        "assertion_failures": 1,
+        "collection_errors": 0,
+        "skipped": 0,
+        "killed": true,
+        "log": "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/mutations/grasp_crate_body.log",
+        "log_sha256": "f641d405bd3ca22b912676f057a1742739301b20bdbdcdc5ff71189e248cb3ca"
+      },
+      {
+        "name": "claim_physical_support",
+        "removed_or_changed": "'native_adapter': False, 'physical_supported': False",
+        "replacement": "'native_adapter': False, 'physical_supported': True",
+        "test": "tests/test_zone_own_executor_crate.py::test_complete_decision_sequence_has_simultaneous_lift_but_no_physical_success",
+        "exit_code": 1,
+        "assertion_failures": 2,
+        "collection_errors": 0,
+        "skipped": 0,
+        "killed": true,
+        "log": "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/mutations/claim_physical_support.log",
+        "log_sha256": "0ad34d295f82b097c5b68cc3be4367b92b01b1ba866cb6ccd6622cba0df21c32"
+      }
+    ],
+    "source_unchanged": true
+  },
+  "preservation": {
+    "v6_contract": {
+      "count": 85,
+      "mismatches": []
+    },
+    "scene_contract": {
+      "count": 12,
+      "mismatches": []
+    },
+    "protected_files": {
+      "harness/zone_crate_skill.py": {
+        "sha256": "691a6f1d50d4b869dc0c8e0e522c78d25853f8a0514d098678a2e83ffcb13262",
+        "matches_reviewed_head": true
+      },
+      "harness/zone_crate_dispatch.py": {
+        "sha256": "8554ad69f91e9e89ee2621180e852add60118f0cba946cd028d07972fe6a4f1d",
+        "matches_reviewed_head": true
+      },
+      "tests/test_zone_pair_registered_source.py": {
+        "sha256": "4884b81bb2c31eba434a0fca6e021a34eafae31082a90f4281509132f56d67fb",
+        "matches_reviewed_head": true
+      },
+      "tests/test_zone_study_source_pinning.py": {
+        "sha256": "757ab9ffcf6d00322a46dba23d08af6b56a6b4594e86c6f76b3a601fff9697b5",
+        "matches_reviewed_head": true
+      }
+    },
+    "workflows": {
+      ".github/workflows/tests.yml": {
+        "sha256": "8831e19de2f6afa377d9d1835445917804821519e1eb572f4483d1f66bb7f866",
+        "matches_origin_main": true
+      }
+    },
+    "scenarios": {
+      "configs/zone_study_scenarios/s1_normal_mixed.json": "97709cbd901c15d2f45fd996659b836763ae9f197e15109e2fdaf12fb16f730b",
+      "configs/zone_study_scenarios/s2_unmapped_blockage.json": "7a08d478d2adf91ed9da60f48cd55bef7aa10fc1c8988aa23531b84540d50632",
+      "configs/zone_study_scenarios/s3_late_rendezvous.json": "db261ce07a558947fcece3158b8fc7c3d120dd0b5fbd7262d8071b054c871c0f",
+      "configs/zone_study_scenarios/s4_narrow_door_standoff.json": "a108895c7740186ad784e321325f4b7e885c8c4568e4972e49613fcfc953e595",
+      "configs/zone_study_scenarios/s5_moved_dropped_item.json": "6720b8f03fb480ee21e8667fa5c1483924a4acb4ca20d3c1b1b7b11d54fbdd80",
+      "configs/zone_study_scenarios/s6_novel_relation.json": "2c165d0971717ca8cc27d9558bc1458740edcc45985882f2ba458a9a402ba22b",
+      "configs/zone_study_scenarios_v2/s1_normal_mixed_v2.json": "8e1e98d936cb1e06c8dbd38fb8cb8bbea08c66f0963ca7a96f5aebe07dc0bd04",
+      "configs/zone_study_scenarios_v2/s2_unmapped_blockage_v2.json": "59828ecf8c56918dbd52e72cb2deaee3b469c755dd7d1373a821ccc99c2fb6de",
+      "configs/zone_study_scenarios_v2/s3_late_rendezvous_v2.json": "d49cd32bfaa4446be50d0366c231fb39c4ad801ee3f4e5be080021b0f7c494ce",
+      "configs/zone_study_scenarios_v2/s4_narrow_door_standoff_v2.json": "eb7fd21d856b8db5673f150754e6d27a0d643d8c07f6263f349ee13bb307793a",
+      "configs/zone_study_scenarios_v2/s5_moved_dropped_item_v2.json": "6aa1171c158a830bfe2fb4c4958dabe2522144175c40465009c52d77ec9d8e5a",
+      "configs/zone_study_scenarios_v2/s6_novel_relation_v2.json": "c5930160d4cfff2e6f7e20c1222697dd865498a6c16e01796e8ef6e7132165f1"
+    },
+    "scenario_mismatches": [],
+    "ci_collection": {
+      "tests/test_zone_own_executor_crate.py": [
+        7
+      ],
+      "tests/test_zone_own_executor_crate_review_j.py": [
+        0
+      ]
+    },
+    "ci_coverage_verified": true
+  },
+  "changed_code_sha256": {
+    "tests/test_review_e2e_batch_j.py": "8ae0dcd90c7ea97afb8e56673cefd374e377dc8552d135c806fa27aa9b3bc06a",
+    "tests/test_zone_own_executor_crate_review_j.py": "508e880ca0b909c1372dcc22efbd6fe83ec5c1aa855f3abebc6540f9dc20a132",
+    "tests/test_zone_own_executor_crate.py": "cce57518d1441c021d296e4273236319dbe3b993af7998ac1e226fd3cf406007",
+    "experiments/2026-09-30-t06-crate-lug/offline_checks.py": "4d4c831cf4057d5b7465c30433aa924f17a5f7155fbe743e0032446b869f0426",
+    "experiments/2026-09-30-t06-crate-lug/mutation_check.py": "5760ed1f08bac3492970bd47e1e2fb32bd209e53efc3e07d48aa55be76879cc3"
+  },
+  "cleanup": {
+    "extraction_directories_created": [],
+    "remaining_owned_extraction_directories": [],
+    "note": "Default review uses the current tree; no git archive extraction was used in this run."
+  },
+  "raw_sha256": {
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/baseline-tmp/test_pr_suite_must_detect_remo0/peer_holding.log": "80eb5c8460e98b9487b819516885b3243349384827f0499aa4240dabf65ec32c",
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/baseline-tmp/test_pr_suite_must_detect_remo0/peer_holding.xml": "391c03668ac32ab1b88b692661a8c5e190053ec794763340226cf9e2419b91c3",
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/baseline-tmp/test_pr_suite_must_detect_remo1/missed_go.log": "6217d33498920a9c69a9f5e10870a227bf9640f8efa1f28c168e4a9c98664476",
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/baseline-tmp/test_pr_suite_must_detect_remo1/missed_go.xml": "6a3de26b41277c1023f212b4564f88fea88a48acca6e3084e95000a246763b5d",
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/baseline.log": "049b5245de9d0034d19056a603294f3937fc06847b50f15137bfc7bbc8ba59a1",
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/baseline.xml": "a47f3b05095c5c732ca050b383b4a89b041b10ba23612c2cc7a605da4307d782",
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/ci-collection.json": "9677f1a7bffe2ac84d6a9599069e8c2e8b9323abaca71f0f5411e587e9fcfe9a",
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/focused-tmp/test_pr_suite_must_detect_remo0/peer_holding.log": "e6f968604f4cc271d583661356af6062c867931e38954b48950053f86bf8bb81",
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/focused-tmp/test_pr_suite_must_detect_remo0/peer_holding.xml": "82bf199bef78517b377aae757ecd04ec30925e68aee7608902b7ddab150cac67",
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/focused-tmp/test_pr_suite_must_detect_remo1/missed_go.log": "64a88050c93ead73a8a094afbb145547b701eb701ff9fafddb37e68a002fe87e",
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/focused-tmp/test_pr_suite_must_detect_remo1/missed_go.xml": "5d1bd440d3da2aac5ca8b244474b80f0ac8c7f28abacd5a596c9d65ab8a299f5",
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/focused.log": "ecb7ef541620791f68e9834c5f1367087a3ae711af3f753dd38ad8f38b83a646",
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/focused.xml": "9bcdfb132c3e33ce7710fd6291b553a97d6d9b76c501dc757a7b5c356423d4e7",
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/mutations/claim_physical_support.log": "0ad34d295f82b097c5b68cc3be4367b92b01b1ba866cb6ccd6622cba0df21c32",
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/mutations/claim_physical_support.xml": "6236849b0120f2a6a52eb6f5606732403e94cc86470b73acb617420ff63b117b",
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/mutations/grasp_crate_body.log": "f641d405bd3ca22b912676f057a1742739301b20bdbdcdc5ff71189e248cb3ca",
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/mutations/grasp_crate_body.xml": "aee9f9fd661d13e8c2a2c1a0079aaa225a1b486820b9f65facdc7a76249e7b6d",
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/mutations/ignore_heartbeat_loss.log": "85f16278e9bed8766ceff5f8f8f90be6687ce2dd58a9947aa0e1cf6d2a691b81",
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/mutations/ignore_heartbeat_loss.xml": "e92e4a6600c56e3cd334a854c3ad9569348eec80a7b0a6a9fb86d188b027177d",
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/mutations/ignore_holding_loss.log": "409cdfb1652eb5a926316fdcb9647932a24cc6c33e630812a585a39d4520c868",
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/mutations/ignore_holding_loss.xml": "0064ae09400049bb5aca6b267617b9229ef5e4fef62319c2bf257a2a416412cc",
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/mutations/ignore_peer_holding.log": "7585fd38aabd0f7f183c5a740d490570dc5950e4b71a8bb823e12c38f6a4021d",
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/mutations/ignore_peer_holding.xml": "0060a70f4e1e3767d423ffb626c338ae32365ac2fbc2b186750d04cdc13632b5",
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/mutations/ignore_peer_missed_go.log": "1eceaaed51f5bffbb3305b6278a0a634273c126bc9c53ae8962fd14c1c8caa6f",
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/mutations/ignore_peer_missed_go.xml": "38d39fa9be66c56b5511555f345e9eb1083a5f940f7c7d75c33a8ddf97cc5656",
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/mutations/omit_grasp_gate.log": "762fc1bf39cb51fbcab415067b49c05dcc047fa93d469c6fbcb41ea9a22e7444",
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/mutations/omit_grasp_gate.xml": "0f9aef1d0dbc695fb7f5c4aa8384d50164736f7fe1bc109c8859a83c45fa2504",
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/mutations/omit_holding_gate.log": "b9178db48d0470df2269966e69b5f6dc9f22df87b1df2032c42a3acb86030577",
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/mutations/omit_holding_gate.xml": "4ff7fdcccfd39013afd5fff1a7b9b1448a0aee0a32d3baead6282878fe72cb6d",
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/mutations/own_ready_without_partner.log": "289d8af970278e17a63a47db414eede36be215e93c2d55c3995d50401726ab0e",
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/mutations/own_ready_without_partner.xml": "c1093b6eb68f602ba31c5acaa0311e8ef58b47fbce2027a34f9036189f7f94e3",
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/mutations/summary.json": "6337b09b80e953fc7f54a3309d09aa03a0a86f5ad25edc249babacde4da09768",
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/mutations.log": "6337b09b80e953fc7f54a3309d09aa03a0a86f5ad25edc249babacde4da09768",
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/preservation.json": "f93e906f40f60900c831e22cdf7f2e254eb91ad677d86e513520ad9bdeb8c4be",
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/related/integration.log": "f386bd53faed16abf8ba326aa58f0c60a204a219fac0d1c09723fed6797df30b",
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/related/integration.xml": "3c7eb9a20a0aa63b2df83cad17fcd91b4c55d052ea4a2734ac619908c306c5f0",
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/related/logic.log": "434507d71be9ceb1b7f812a6be7d6752f42c71353f4ab4d9304e3621b3b84542",
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/related/logic.xml": "856e534541a6f71fcdbe45e61f0e1bce4a58ce4319bdb45365fb31d6bad0a5b2",
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/related/pinning.log": "48701e9df39a045d5a7921f1d01ebdb98bf18319802c9bc35e7aef1380693225",
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/related/pinning.xml": "edac430ef18604605a88d01fca806e49ce99d932fc09d2efc03263aadeded835",
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/related/review_j.log": "b4cdf1b3c0b41055dcb7390d089defec2837ef2e3cccd10f121f895dc4c63f98",
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/related/review_j.xml": "05372edf2ae58b599f3cade240b09870af4ec438bcd77e59cb93ac2382191fee",
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/related/summary.json": "06f4cbbaf14f1d8aed46d471d4593c684bf8b5c87f233abbbceadbc5e62d5cb3",
+    "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/review-j-20261001/related.log": "15c18e048aac9c14b4f233b8ee999fdd83c4778aaafc1f881228cefd71ac7573"
+  },
+  "ci": "Normal CI starts on push. Exact pushed SHA and final check state are recorded separately in the PR comment and local CI metadata.",
+  "limitations": [
+    "Own-RGB fixtures are synthetic; real JPEG perception, native arm/navigation adapter and runner integration remain unavailable.",
+    "No new physical acceptance or TensorBoard experiment snapshot. Raw is local, not a remote backup.",
+    "PR remains draft; do not merge."
+  ]
+}

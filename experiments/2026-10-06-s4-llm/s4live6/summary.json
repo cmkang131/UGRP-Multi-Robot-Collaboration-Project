@@ -1,0 +1,243 @@
+{
+  "schema": "ugrp.s4live6.summary.v1",
+  "research_result": false,
+  "status": "DEV_BATCH_EVALUATED",
+  "execution_source_sha": "c545118b2b7469a3d9107ab576627cc6ab9ef49c",
+  "S3_frozen_source_sha": "60eaf042bbf95e31fd7bdd50a84c69dcd38112c7",
+  "execution_bundle_id": "zone-s4-pair-live-v169",
+  "workflow_version": "7.62.0",
+  "default_carry_lease_renewal": "off",
+  "seed": 601,
+  "cap_sim_s": 90,
+  "weld": "off",
+  "GT_control_inputs": false,
+  "preregistration": "plan.json",
+  "preregistration_sha256": "41f6c8661019d65e3111a97cf3b9b0981f0201f137e28216f1b30209f0b3bd43",
+  "groups": {
+    "off": {
+      "claim": {
+        "n": 4,
+        "N": 4
+      },
+      "go_ack": {
+        "n": 3,
+        "N": 4
+      },
+      "simultaneous_departure": {
+        "n": 3,
+        "N": 4
+      },
+      "first_carry_20mm": {
+        "n": 3,
+        "N": 4
+      },
+      "continue_transport": {
+        "n": 0,
+        "N": 4
+      },
+      "goal_transport": {
+        "n": 0,
+        "N": 4
+      },
+      "lowering": {
+        "n": 0,
+        "N": 4
+      },
+      "lease_both_renewed": {
+        "n": 0,
+        "N": 4
+      },
+      "lower_state_entered": {
+        "n": 3,
+        "N": 4
+      },
+      "S3_load_drop_guard_stops": {
+        "n": 0,
+        "N": 4
+      },
+      "unsupported_descent_20mm_drop": {
+        "n": 0,
+        "N": 4
+      },
+      "model_calls": 62,
+      "tokens": 440039,
+      "message_count": 26
+    },
+    "accepted_carry_reply_v1": {
+      "claim": {
+        "n": 4,
+        "N": 4
+      },
+      "go_ack": {
+        "n": 4,
+        "N": 4
+      },
+      "simultaneous_departure": {
+        "n": 4,
+        "N": 4
+      },
+      "first_carry_20mm": {
+        "n": 4,
+        "N": 4
+      },
+      "continue_transport": {
+        "n": 0,
+        "N": 4
+      },
+      "goal_transport": {
+        "n": 0,
+        "N": 4
+      },
+      "lowering": {
+        "n": 0,
+        "N": 4
+      },
+      "lease_both_renewed": {
+        "n": 3,
+        "N": 4
+      },
+      "lower_state_entered": {
+        "n": 4,
+        "N": 4
+      },
+      "S3_load_drop_guard_stops": {
+        "n": 2,
+        "N": 4
+      },
+      "unsupported_descent_20mm_drop": {
+        "n": 0,
+        "N": 4
+      },
+      "model_calls": 85,
+      "tokens": 613251,
+      "message_count": 25
+    }
+  },
+  "causes": [
+    "carry_decision lease mapping verified7/7 accepted renewals; bilateral renewal3/4 on; no next-segment transport in either arm",
+    "carry continue still rejected by frozen S3 own sigma/window rules; admitted set_down extends lease without changing them",
+    "on peer_ko/structured expire at oldest endpoint response+10SIMs during lowering; recurring/rejected carry decisions do not refresh",
+    "S3 LOAD_DROP guard stops2/4 on while final bilateral contacts remain and COM49.80/47.49mm; source guard uses body origin<=35mm before gripper release during commanded lowering. Unsupported-descent20mm0/4; actual drop not established, stop censors completion.",
+    "off structured GO timeout with3 invalid notification responses; actual model variability prevents treating seed601 as identical replies",
+    "physical-stop scheduler leaves4 charged/unreleased calls recorded outstanding; raw preserved, no action/message released"
+  ],
+  "next_candidates": [
+    "separate phase-aware own-RGB held heartbeat from carry action/window admission",
+    "S3 lowering guard distinguish commanded lowering/body origin from COM and verify own-contact evidence in evaluation",
+    "terminal bookkeeping finalize outstanding model costs/replies without releasing actions"
+  ],
+  "initial_health": {
+    "n": 8,
+    "N": 8,
+    "receipt_path": "/Users/changmin/projects/ugrp/outputs/s4live6-offline/admissions-r2.json",
+    "sha256": "a557b14b2f79db3534e69170050f11c78a1a8bf40e1a10d38b7734f3fffa08b1",
+    "followup_path": "/Users/changmin/projects/ugrp/outputs/s4live6-offline/health-3min.json",
+    "followup_sha256": "0bea4d9371b3a03766c8fb02e5612109e600751578e3181420c033419d260dd6"
+  },
+  "model_audit": {
+    "posts_reconciled": {
+      "n": 147,
+      "N": 147
+    },
+    "image_sha256_checked": 294,
+    "api_http_200": {
+      "n": 147,
+      "N": 147
+    },
+    "renewal_model_image_command_binding": {
+      "n": 7,
+      "N": 7
+    },
+    "all_response_text_preserved": true,
+    "ledger_http_status_unset": "success statuses supplied by per-POST audited proxy receipts",
+    "upstream_finish_verified": false,
+    "upstream_attempts_exact": null,
+    "provider_billing_verified": false,
+    "audit_path": "/Users/changmin/projects/ugrp/outputs/s4live6-offline/final-audit.json",
+    "audit_sha256": "64a88605c4203423c67314b5c5d8312b63385cff52c73b64c4ca7058e7668cbf",
+    "raw_inventory_totals": {
+      "runs": 8,
+      "files": 28544,
+      "bytes": 842343411
+    }
+  },
+  "credential_cleanup": {
+    "scope": "own s4live6 run command/log/JSON text, not entire server",
+    "scanned_files": 846,
+    "secret_pattern_matches": 0,
+    "active_driver_pids": [],
+    "remote_tunnel_listener": false,
+    "local_relay_alive": [],
+    "mac_relay_listener": false,
+    "original_proxy_listener": true
+  },
+  "validation": {
+    "pytest_passed": 27,
+    "pytest_failed": 0,
+    "files": [
+      "tests/test_s4_live6.py",
+      "tests/test_pair_llm_s4_pair.py"
+    ],
+    "Mac_physics_render_model_calls": 0
+  },
+  "host_preflight": {
+    "initial_disk_guard_failures": {
+      "n": 8,
+      "N": 8
+    },
+    "physics_started": 0,
+    "model_calls": 0,
+    "same_SHA_argv_resubmitted": true,
+    "preserved_receipts_path": "/Users/changmin/projects/ugrp/outputs/s4live6-offline/preflight-preservation.json",
+    "preserved_receipts_sha256": "87b7ede80d563aac383bb8dd5af25ba91af20bc9683a43f938c12ded20056d1d",
+    "source_cache_hardlink_files": 160,
+    "source_cache_bytes_reclaimed": 1736110080,
+    "cache_preservation_path": "/Users/changmin/projects/ugrp/outputs/s4live6-offline/cache-preservation.json",
+    "cache_preservation_sha256": "696a0813ca668ccf4f0f7200398a585f70d05334f2a8d35f37d58fca2f2f99f3"
+  },
+  "evidence": {
+    "raw-cause.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s4live6-offline/raw-cause.json",
+      "sha256": "29fc2b52d66caf9dd3d62191da41fc2b9377484464977e906954ffcc29c52bb4"
+    },
+    "lease-evidence.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s4live6-offline/lease-evidence.json",
+      "sha256": "2d8a956c4be91b83944495bcffbd7f1c903c1e79c5d41a8b192a376ab43a8bcf"
+    },
+    "lowering-evidence.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s4live6-offline/lowering-evidence.json",
+      "sha256": "2ab57258250280210dfce0a9d50c58c84fe6e86b9faa9548546d8b873e981e5d"
+    },
+    "model-failure-evidence.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s4live6-offline/model-failure-evidence.json",
+      "sha256": "bde8e2194a31dce311409356088b0e73382347dda6e244a38f425ff1fcccad57"
+    },
+    "final-security-audit.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s4live6-offline/final-security-audit.json",
+      "sha256": "44d4e1016515815bbf6d767ce86f0d4d0a3004e09ad85e57595e714b41fa30f4"
+    },
+    "server-process-audit.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s4live6-offline/server-process-audit.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    "validation.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s4live6-offline/validation.json",
+      "sha256": "07e055790a6939702890e5e2333adf3f1b3f74dc90e63618d3893b5179fe687c"
+    },
+    "number-scan.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s4live6-offline/number-scan.json",
+      "sha256": "5e813a5a810dfc68377830964d69bd4a63c253cac1e450d61b3a448ee1cc97a6"
+    }
+  }
+,
+  "runs": [
+    {"name":"s4live6-off-no_comm-s601-v169","variant":"off","condition":"no_comm","status":"PAIR_STOP","stop_sim_s":51.15,"claim":{"n":1,"N":1},"go_ack":{"n":1,"N":1},"simultaneous_departure":{"n":1,"N":1},"first_carry_mm":194.740545296781,"first_carry_20mm":{"n":1,"N":1},"continue_transport":{"n":0,"N":1,"contact_supported_segment_excursion_m":{"0":0.194740545296781}},"goal_transport":{"n":0,"N":1,"goal_xy_m":[4.6,-2.1],"minimum_error_m":3.791432247483211},"lowering":{"n":0,"N":1,"entered":1,"stable_floor_placement":false,"drop":false,"drop_first_t":null,"first_lower_t_absolute":53.1,"S3_load_drop_guard":null,"last_COM_z_mm":85.62832837917104,"after_stop_unobserved":true,"drop_interpretation":"pre-registered unsupported descent only; guard label stored separately; no inference after stop"},"lease":{"renewed_robots":[],"last_response_at":{"r1":41.15,"r2":41.15},"failure":"PAIR_VISUAL_LEASE_EXPIRED","stop_age_s":10.0,"accepted_renewal_call_ids":[],"accepted_renewal_count":0},"model":{"calls":16,"tokens":106460,"response_wall_s":{"n":16,"mean":4.7285750625,"max":6.97452},"api_errors":0,"invalid_protocol_responses":[],"scheduler_statuses":{"done":14,"censored":2},"unreleased_charged":[{"call_id":"call-0015-r1","recorded_status":"censored","reason":"charged_after_horizon"},{"call_id":"call-0016-r2","recorded_status":"censored","reason":"charged_after_horizon"}],"carry_command_rejection_counts":{"OVER_BUDGET":1,"ALREADY_LATCHED":1}},"messages":{"sent":0,"accepted":0,"delivery_edges":0,"rejected":0},"initial_health":{"status":"PASS","checked_after_s":108.19944520900026,"sim_s":[2.0,10.0],"frames":[41,201],"base_delta_mm":{"r1":16.091107956490983,"r2":28.793016437656064},"arm_delta_mm":{"r1":161.88351436854117,"r2":170.203940960557},"log_exceptions":[],"commands_normal":true,"core_phase_entered":true},"raw_path":"/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live6-off-no_comm-s601-v169/raw","result_sha256":"a9a7a6e9053a4a836a7452034f8f3d54cd166acfcf7a629f6665b971cf8b042b","artifact_manifest_sha256":"fe49dcca4960f06eb310aef83d8d6483f1216a1a717eacdf981b898fa34f2151","source_sha":"c545118b2b7469a3d9107ab576627cc6ab9ef49c"},
+    {"name":"s4live6-off-peer_ko-s601-v169","variant":"off","condition":"peer_ko","status":"PAIR_STOP","stop_sim_s":55.25,"claim":{"n":1,"N":1},"go_ack":{"n":1,"N":1},"simultaneous_departure":{"n":1,"N":1},"first_carry_mm":181.95937815017356,"first_carry_20mm":{"n":1,"N":1},"continue_transport":{"n":0,"N":1,"contact_supported_segment_excursion_m":{"0":0.18195937815017357}},"goal_transport":{"n":0,"N":1,"goal_xy_m":[4.6,-2.1],"minimum_error_m":3.799879145102173},"lowering":{"n":0,"N":1,"entered":1,"stable_floor_placement":false,"drop":false,"drop_first_t":null,"first_lower_t_absolute":57.0,"S3_load_drop_guard":null,"last_COM_z_mm":85.27398709027456,"after_stop_unobserved":true,"drop_interpretation":"pre-registered unsupported descent only; guard label stored separately; no inference after stop"},"lease":{"renewed_robots":[],"last_response_at":{"r1":45.2,"r2":45.3},"failure":"PAIR_VISUAL_LEASE_EXPIRED","stop_age_s":10.049999999999997,"accepted_renewal_call_ids":[],"accepted_renewal_count":0},"model":{"calls":18,"tokens":130731,"response_wall_s":{"n":18,"mean":4.8071441111111115,"max":7.991966000000001},"api_errors":0,"invalid_protocol_responses":[],"scheduler_statuses":{"done":16,"censored":2},"unreleased_charged":[{"call_id":"call-0017-r1","recorded_status":"censored","reason":"charged_after_horizon"},{"call_id":"call-0018-r2","recorded_status":"censored","reason":"charged_after_horizon"}],"carry_command_rejection_counts":{"OVER_BUDGET":2}},"messages":{"sent":12,"accepted":11,"delivery_edges":12,"rejected":0},"initial_health":{"status":"PASS","checked_after_s":129.69500574999256,"sim_s":[2.0,15.0],"frames":[41,301],"base_delta_mm":{"r1":26.71118032874998,"r2":41.237853844998185},"arm_delta_mm":{"r1":119.49652294198333,"r2":131.8416465806797},"log_exceptions":[],"commands_normal":true,"core_phase_entered":true},"raw_path":"/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live6-off-peer_ko-s601-v169/raw","result_sha256":"cc46a91ba3041a77e023b659347f169d345432d6ff2d2550628d90216a5c684f","artifact_manifest_sha256":"b0a0a39d2cf1665881f244941f0b7c5ea9d67caeba118a17a14932a12b4fcee7","source_sha":"c545118b2b7469a3d9107ab576627cc6ab9ef49c"},
+    {"name":"s4live6-off-leader_ko-s601-v169","variant":"off","condition":"leader_ko","status":"PAIR_STOP","stop_sim_s":56.25,"claim":{"n":1,"N":1},"go_ack":{"n":1,"N":1},"simultaneous_departure":{"n":1,"N":1},"first_carry_mm":194.9167006690057,"first_carry_20mm":{"n":1,"N":1},"continue_transport":{"n":0,"N":1,"contact_supported_segment_excursion_m":{"0":0.1949167006690057}},"goal_transport":{"n":0,"N":1,"goal_xy_m":[4.6,-2.1],"minimum_error_m":3.7878321042229612},"lowering":{"n":0,"N":1,"entered":1,"stable_floor_placement":false,"drop":false,"drop_first_t":null,"first_lower_t_absolute":58.1,"S3_load_drop_guard":null,"last_COM_z_mm":84.88603079015927,"after_stop_unobserved":true,"drop_interpretation":"pre-registered unsupported descent only; guard label stored separately; no inference after stop"},"lease":{"renewed_robots":[],"last_response_at":{"r1":46.25,"r2":46.25},"failure":"PAIR_VISUAL_LEASE_EXPIRED","stop_age_s":10.0,"accepted_renewal_call_ids":[],"accepted_renewal_count":0},"model":{"calls":17,"tokens":123373,"response_wall_s":{"n":17,"mean":5.233028,"max":13.422085},"api_errors":0,"invalid_protocol_responses":[],"scheduler_statuses":{"done":15,"censored":2},"unreleased_charged":[{"call_id":"call-0016-r2","recorded_status":"censored","reason":"charged_after_horizon"},{"call_id":"call-0017-r1","recorded_status":"censored","reason":"charged_after_horizon"}],"carry_command_rejection_counts":{"OVER_BUDGET":2,"DEADLINE_PASSED":1}},"messages":{"sent":10,"accepted":10,"delivery_edges":10,"rejected":0},"initial_health":{"status":"PASS","checked_after_s":118.93530816701241,"sim_s":[1.0,12.0],"frames":[21,241],"base_delta_mm":{"r1":15.86078268639634,"r2":27.963322868794442},"arm_delta_mm":{"r1":161.86612593252661,"r2":169.4963237570314},"log_exceptions":[],"commands_normal":true,"core_phase_entered":true},"raw_path":"/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live6-off-leader_ko-s601-v169/raw","result_sha256":"2f6dbf81ef02aa6ac0c322035d6ed2f5722843b01dca4a0682767ee8bae690b1","artifact_manifest_sha256":"53e778c46bd5611a9bc626166369667a54f0b0d01ed7c018f78ecbed53dd01b4","source_sha":"c545118b2b7469a3d9107ab576627cc6ab9ef49c"},
+    {"name":"s4live6-off-structured-s601-v169","variant":"off","condition":"structured","status":"PAIR_STOP","stop_sim_s":49.75,"claim":{"n":1,"N":1},"go_ack":{"n":0,"N":1},"simultaneous_departure":{"n":0,"N":1},"first_carry_mm":0.0,"first_carry_20mm":{"n":0,"N":1},"continue_transport":{"n":0,"N":1,"contact_supported_segment_excursion_m":{}},"goal_transport":{"n":0,"N":1,"goal_xy_m":[4.6,-2.1],"minimum_error_m":null},"lowering":{"n":0,"N":1,"entered":0,"stable_floor_placement":false,"drop":false,"drop_first_t":null,"first_lower_t_absolute":null,"S3_load_drop_guard":null,"last_COM_z_mm":94.45531935809589,"after_stop_unobserved":true,"drop_interpretation":"pre-registered unsupported descent only; guard label stored separately; no inference after stop"},"lease":{"renewed_robots":[],"last_response_at":{"r1":35.8,"r2":42.3},"failure":"PAIR_GO_TIMEOUT","stop_age_s":13.950000000000003,"accepted_renewal_call_ids":[],"accepted_renewal_count":0},"model":{"calls":11,"tokens":79475,"response_wall_s":{"n":11,"mean":6.0054882727272725,"max":13.637360000000001},"api_errors":0,"invalid_protocol_responses":[{"call_id":"call-0008-r1","actor":null,"status":"invalid_json","error":"pair GO/ACK/loss needs a condition-channel notification"},{"call_id":"call-0010-r2","actor":null,"status":"invalid_json","error":"pair GO/ACK/loss needs a condition-channel notification"},{"call_id":"call-0011-r1","actor":null,"status":"invalid_json","error":"pair GO/ACK/loss needs a condition-channel notification"}],"scheduler_statuses":{"done":8,"failed":3},"unreleased_charged":[],"carry_command_rejection_counts":{}},"messages":{"sent":4,"accepted":4,"delivery_edges":4,"rejected":0},"initial_health":{"status":"PASS","checked_after_s":108.19950233399868,"sim_s":[1.0,10.0],"frames":[21,201],"base_delta_mm":{"r1":16.091107956490983,"r2":28.793016437656064},"arm_delta_mm":{"r1":161.88351436854117,"r2":170.203940960557},"log_exceptions":[],"commands_normal":true,"core_phase_entered":true},"raw_path":"/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live6-off-structured-s601-v169/raw","result_sha256":"d626e9ac7ff0de9fa17b349cd65a1ab5dea28d94b9b066ed69a55ca4421391a8","artifact_manifest_sha256":"b48ac7099809158c09f504d0fca9a4a0d91bbf3697788c1708140e3c0f0d33a5","source_sha":"c545118b2b7469a3d9107ab576627cc6ab9ef49c"},
+    {"name":"s4live6-on-no_comm-s601-v169","variant":"accepted_carry_reply_v1","condition":"no_comm","status":"PHYSICAL_STOP","stop_sim_s":63.300000000000004,"claim":{"n":1,"N":1},"go_ack":{"n":1,"N":1},"simultaneous_departure":{"n":1,"N":1},"first_carry_mm":183.37735775196057,"first_carry_20mm":{"n":1,"N":1},"continue_transport":{"n":0,"N":1,"contact_supported_segment_excursion_m":{"0":0.18337735775196057}},"goal_transport":{"n":0,"N":1,"goal_xy_m":[4.6,-2.1],"minimum_error_m":3.800627551152525},"lowering":{"n":0,"N":1,"entered":1,"stable_floor_placement":false,"drop":false,"drop_first_t":null,"first_lower_t_absolute":53.2,"S3_load_drop_guard":"sim.zone_s3_no_prior.PhysicalStop: LOAD_DROP:beam_1","last_COM_z_mm":49.798620282985816,"after_stop_unobserved":true,"drop_interpretation":"pre-registered unsupported descent only; guard label stored separately; no inference after stop"},"lease":{"renewed_robots":["r1","r2"],"last_response_at":{"r1":59.75,"r2":59.65},"failure":null,"stop_age_s":3.6500000000000057,"accepted_renewal_call_ids":["call-0013-r2","call-0014-r1"],"accepted_renewal_count":2},"model":{"calls":22,"tokens":148877,"response_wall_s":{"n":22,"mean":4.4933784090909095,"max":5.451517},"api_errors":0,"invalid_protocol_responses":[],"scheduler_statuses":{"done":20,"outstanding":2},"unreleased_charged":[{"call_id":"call-0021-r2","recorded_status":"outstanding","reason":null},{"call_id":"call-0022-r1","recorded_status":"outstanding","reason":null}],"carry_command_rejection_counts":{"OVER_BUDGET":2,"DEADLINE_PASSED":2}},"messages":{"sent":0,"accepted":0,"delivery_edges":0,"rejected":0},"initial_health":{"status":"PASS","checked_after_s":108.19950870895991,"sim_s":[2.0,10.0],"frames":[41,201],"base_delta_mm":{"r1":16.091107956490983,"r2":28.793016437656064},"arm_delta_mm":{"r1":161.88351436854117,"r2":170.203940960557},"log_exceptions":[],"commands_normal":true,"core_phase_entered":true},"raw_path":"/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live6-on-no_comm-s601-v169/raw","result_sha256":"6cdc3ce4cd7130f2601f854f031eb8b6fff1364f1225754a878103f227812efa","artifact_manifest_sha256":"a622eab64918a5e269f7a5fd3f8e6e8a05793a8ebf1d049ae13a4fb907c7dbfa","source_sha":"c545118b2b7469a3d9107ab576627cc6ab9ef49c"},
+    {"name":"s4live6-on-peer_ko-s601-v169","variant":"accepted_carry_reply_v1","condition":"peer_ko","status":"PAIR_STOP","stop_sim_s":60.25,"claim":{"n":1,"N":1},"go_ack":{"n":1,"N":1},"simultaneous_departure":{"n":1,"N":1},"first_carry_mm":183.93178850863765,"first_carry_20mm":{"n":1,"N":1},"continue_transport":{"n":0,"N":1,"contact_supported_segment_excursion_m":{"0":0.18393178850863764}},"goal_transport":{"n":0,"N":1,"goal_xy_m":[4.6,-2.1],"minimum_error_m":3.798401675169411},"lowering":{"n":0,"N":1,"entered":1,"stable_floor_placement":false,"drop":false,"drop_first_t":null,"first_lower_t_absolute":57.2,"S3_load_drop_guard":null,"last_COM_z_mm":71.50923675108474,"after_stop_unobserved":true,"drop_interpretation":"pre-registered unsupported descent only; guard label stored separately; no inference after stop"},"lease":{"renewed_robots":["r1","r2"],"last_response_at":{"r1":50.25,"r2":59.35},"failure":"PAIR_VISUAL_LEASE_EXPIRED","stop_age_s":10.0,"accepted_renewal_call_ids":["call-0013-r1","call-0014-r2"],"accepted_renewal_count":2},"model":{"calls":20,"tokens":150935,"response_wall_s":{"n":20,"mean":5.6789458999999995,"max":16.717999},"api_errors":0,"invalid_protocol_responses":[],"scheduler_statuses":{"done":18,"censored":2},"unreleased_charged":[{"call_id":"call-0019-r1","recorded_status":"censored","reason":"charged_after_horizon"},{"call_id":"call-0020-r2","recorded_status":"censored","reason":"charged_after_horizon"}],"carry_command_rejection_counts":{"ALREADY_LATCHED":1,"DEADLINE_PASSED":2}},"messages":{"sent":12,"accepted":12,"delivery_edges":13,"rejected":0},"initial_health":{"status":"PASS","checked_after_s":118.93536641699029,"sim_s":[2.0,13.0],"frames":[41,261],"base_delta_mm":{"r1":16.76706504534448,"r2":26.61795373987665},"arm_delta_mm":{"r1":137.7670179407565,"r2":145.697532956357},"log_exceptions":[],"commands_normal":true,"core_phase_entered":true},"raw_path":"/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live6-on-peer_ko-s601-v169/raw","result_sha256":"3e941fd9fefecd7df62b565193ead9011bdb44af8d2fd9721a05494d17b06b9a","artifact_manifest_sha256":"fe666290d343af4f5895b76f380640e91baf99029eda4b6c5f87b4fd49dc6427","source_sha":"c545118b2b7469a3d9107ab576627cc6ab9ef49c"},
+    {"name":"s4live6-on-leader_ko-s601-v169","variant":"accepted_carry_reply_v1","condition":"leader_ko","status":"PHYSICAL_STOP","stop_sim_s":67.45,"claim":{"n":1,"N":1},"go_ack":{"n":1,"N":1},"simultaneous_departure":{"n":1,"N":1},"first_carry_mm":182.25006832787673,"first_carry_20mm":{"n":1,"N":1},"continue_transport":{"n":0,"N":1,"contact_supported_segment_excursion_m":{"0":0.18225006832787674}},"goal_transport":{"n":0,"N":1,"goal_xy_m":[4.6,-2.1],"minimum_error_m":3.806742242793018},"lowering":{"n":0,"N":1,"entered":1,"stable_floor_placement":false,"drop":false,"drop_first_t":null,"first_lower_t_absolute":57.3,"S3_load_drop_guard":"sim.zone_s3_no_prior.PhysicalStop: LOAD_DROP:beam_1","last_COM_z_mm":47.48900539506566,"after_stop_unobserved":true,"drop_interpretation":"pre-registered unsupported descent only; guard label stored separately; no inference after stop"},"lease":{"renewed_robots":["r1","r2"],"last_response_at":{"r1":66.85,"r2":66.75},"failure":null,"stop_age_s":0.7000000000000028,"accepted_renewal_call_ids":["call-0014-r2","call-0015-r1"],"accepted_renewal_count":2},"model":{"calls":26,"tokens":189900,"response_wall_s":{"n":26,"mean":4.965571730769231,"max":10.314079},"api_errors":0,"invalid_protocol_responses":[{"call_id":"call-0010-r2","actor":null,"status":"invalid_json","error":"pair GO/ACK/loss needs a condition-channel notification"}],"scheduler_statuses":{"done":21,"failed":3,"outstanding":2},"unreleased_charged":[{"call_id":"call-0025-r2","recorded_status":"outstanding","reason":null},{"call_id":"call-0026-r1","recorded_status":"outstanding","reason":null}],"carry_command_rejection_counts":{"OVER_BUDGET":1,"DEADLINE_PASSED":1}},"messages":{"sent":9,"accepted":0,"delivery_edges":0,"rejected":0},"initial_health":{"status":"PASS","checked_after_s":118.93536041700281,"sim_s":[1.0,12.0],"frames":[21,241],"base_delta_mm":{"r1":17.159115245622477,"r2":28.994878663950207},"arm_delta_mm":{"r1":162.35035980260398,"r2":170.53813243404974},"log_exceptions":[],"commands_normal":true,"core_phase_entered":true},"raw_path":"/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live6-on-leader_ko-s601-v169/raw","result_sha256":"be46f594f082ea81a7c17e9c536392abb8755098928bf688822f496df6875b07","artifact_manifest_sha256":"edbc45c2f396997fc97f9ec3c6fc37c338b8ab8e73646104434a48de5b78e91a","source_sha":"c545118b2b7469a3d9107ab576627cc6ab9ef49c"},
+    {"name":"s4live6-on-structured-s601-v169","variant":"accepted_carry_reply_v1","condition":"structured","status":"PAIR_STOP","stop_sim_s":56.15,"claim":{"n":1,"N":1},"go_ack":{"n":1,"N":1},"simultaneous_departure":{"n":1,"N":1},"first_carry_mm":179.44921730114405,"first_carry_20mm":{"n":1,"N":1},"continue_transport":{"n":0,"N":1,"contact_supported_segment_excursion_m":{"0":0.17944921730114405}},"goal_transport":{"n":0,"N":1,"goal_xy_m":[4.6,-2.1],"minimum_error_m":3.805318555449597},"lowering":{"n":0,"N":1,"entered":1,"stable_floor_placement":false,"drop":false,"drop_first_t":null,"first_lower_t_absolute":58.0,"S3_load_drop_guard":null,"last_COM_z_mm":86.39762277018433,"after_stop_unobserved":true,"drop_interpretation":"pre-registered unsupported descent only; guard label stored separately; no inference after stop"},"lease":{"renewed_robots":["r2"],"last_response_at":{"r1":46.15,"r2":53.55},"failure":"PAIR_VISUAL_LEASE_EXPIRED","stop_age_s":10.0,"accepted_renewal_call_ids":["call-0014-r2"],"accepted_renewal_count":1},"model":{"calls":17,"tokens":123539,"response_wall_s":{"n":17,"mean":5.139021941176471,"max":8.53402},"api_errors":0,"invalid_protocol_responses":[{"call_id":"call-0007-r1","actor":null,"status":"invalid_json","error":"pair GO/ACK/loss needs a condition-channel notification"},{"call_id":"call-0012-r1","actor":null,"status":"invalid_json","error":"each message needs exactly message, recipients, reply_to"}],"scheduler_statuses":{"done":13,"failed":2,"censored":2},"unreleased_charged":[{"call_id":"call-0016-r2","recorded_status":"censored","reason":"charged_after_horizon"},{"call_id":"call-0017-r1","recorded_status":"censored","reason":"charged_after_horizon"}],"carry_command_rejection_counts":{"OVER_BUDGET":1,"DEADLINE_PASSED":1}},"messages":{"sent":4,"accepted":4,"delivery_edges":4,"rejected":0},"initial_health":{"status":"PASS","checked_after_s":108.19951237499481,"sim_s":[2.0,10.0],"frames":[41,201],"base_delta_mm":{"r1":16.091107956490983,"r2":28.793016437656064},"arm_delta_mm":{"r1":161.88351436854117,"r2":170.203940960557},"log_exceptions":[],"commands_normal":true,"core_phase_entered":true},"raw_path":"/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live6-on-structured-s601-v169/raw","result_sha256":"485e4a2ec00284c29f77fed190d83afd5702fde42784adcba4693e241b789660","artifact_manifest_sha256":"bb715a7e3f3f008c81420f11556d1249a5f5253deb6e774e56b5456598d4c8e3","source_sha":"c545118b2b7469a3d9107ab576627cc6ab9ef49c"}
+  ]
+}

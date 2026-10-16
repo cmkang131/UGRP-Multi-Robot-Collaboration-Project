@@ -119,3 +119,26 @@ RGB로 지속 미끄러짐이 보이면 내려놓고 한 번 재파지하며, �
 보존한다. 공동 운반 등록 지도는 원본과 바이트 단위로 같고, 단독 주행 지도는
 그 벽 배치에서 파생했다. 두 버전을 수정할 때 `verify_terrain_maps.py`로 출처·배치
 일치를 검사하고, 새 실험 결과는 새 SHA와 함께 기록한다.
+
+## 구역 벽 AprilTag 지도 (2026-09-25)
+
+`zones/zone_wide_door_tags_v1.json`, `zones/zone_wide_two_doors_tags_v1.json`, `zones/zone_wide_corridor_tags_v1.json`은 같은 이름의 base 지도에 벽·문기둥 tag36h11 목록(`landmarks`)을 더한 새 버전이다.
+- base 지도 파일은 바꾸지 않는다. 태그 지도는 base의 `static_map_sha256`을 기록한다.
+- 태그는 벽면에 붙인 시각 전용 geom이며 물리는 같다. 화물과 로봇에는 태그를 붙이지 않는다.
+- 배치 파라미터와 새 버전을 만드는 방법은 [자기 카메라 위치 추정](../docs/zone_owncam_localization.md)을 따른다.
+
+## 최종 환경 지도: walls_v3, 표식 0개 (2026-09-28, #218)
+
+본연구 최종 환경의 지도다. 모든 벽이 0.40 m(`walls_v3`)이고 표식 필드가 없다. 시나리오 v2(`configs/zone_study_scenarios_v2/`)가 이 지도를 고정한다.
+- 문 1개: 기존 `zones/zone_wide_door_geometry_v2.json`을 그대로 재사용한다.
+- 문 2개·복도: 같은 규칙으로 만든 `zones_final/zone_wide_two_doors_final_v1.json`, `zones_final/zone_wide_corridor_final_v1.json`.
+- 해시와 v1→v2 변경 경로는 [catalog.json](zones_final/catalog.json)에 있다. 생성·검사는 `python -m harness.zone_final_env [--write]`로 하며 기존 파일은 덮어쓰지 않는다. 재고와 검증 범위는 [실험 기록](../experiments/2026-09-28-final-map-scenario-v2/README.md)을 따른다.
+
+## hardmaps1 보류 시험 맵 (2026-10-09, 준비 전용)
+
+`zones_final_v3/hardmaps1_catalog.json`은 기본 실행 목록과 분리한 held-out 2개다.
+[H1](zones_final_v3/zone_hardmaps1_h1_final_v3.json)은 방 4개·막다른 목표 방·복수 접근,
+[H2](zones_final_v3/zone_hardmaps1_h2_final_v3.json)는 56cm 문·엇갈린 장애물·막힌 분기다.
+6.45×4.60m 경기장, pickup/A/B/C·슬롯·시작 규칙·벽 높이·색/체커/벽 테이프 규칙을 유지한다.
+**개발 튜닝/귀환 실행에 사용하지 않는다.** 정적 도달 가능성은 학생 탐색·귀환 성공이 아니다.
+[설계·단서 표·통행 검사·하네스 연결 한계](../experiments/2026-10-09-hardmaps1-heldout/README.md).

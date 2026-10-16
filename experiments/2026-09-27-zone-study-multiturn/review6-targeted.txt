@@ -1,0 +1,2696 @@
+..................FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF...................... [ 21%]
+........................................................................ [ 42%]
+........................................................................ [ 63%]
+........................................................................ [ 84%]
+.....................................................                    [100%]
+=================================== FAILURES ===================================
+_______ test_refundable_reservation_cannot_cancel_v64_reask[4.9-no_comm] _______
+
+v64 = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+condition = 'no_comm', at = 4.9
+
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+    @pytest.mark.parametrize('at', [4.9, 5., 5.1, 5.2, 5.3, 5.4, 5.5, 5.6])
+    def test_refundable_reservation_cannot_cancel_v64_reask(v64, condition, at):
+>       old, old_requests, _ = run_review6('timer_reservation', 'no_comm', trial_cls=v64, at=at)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_zone_study_multiturn_review6.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'timer_reservation', condition = 'no_comm'
+trial_cls = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+at = 4.9
+
+    def run_review6(case, condition, *, trial_cls=None, at=5.5):
+        def wire(payload, turn):
+            if (case == 'separate_roots' and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (at, round(at + 4., 6))):
+                raise OSError('common failure or fresh message failure')
+    
+        def snapshot(call):
+            if (case == 'separate_roots' and call.actor == 'r1'
+                    and call.started_sim_s == round(at + 2., 6)):
+                raise OSError('common retry consumes a fresh message, then refunds')
+            if (case == 'refund_horizon' and call.actor in ('r1', 'r2')
+                    and call.started_sim_s == 6.4):
+                raise OSError('recipient snapshot sends nothing')
+    
+        def prepare(call):
+            if (case == 'timer_reservation' and call.actor == 'r3'
+                    and call.started_sim_s in (0., at)):
+                raise OSError('last slot reserved but refunded')
+            if case == 'refund_horizon' and call.actor == 'r3' and call.started_sim_s == 6.:
+                raise OSError('last slot refunded after delivery refusal')
+    
+        cap = {'separate_roots': 90, 'timer_reservation': 3, 'refund_horizon': 4}[case]
+        trial, clock, links, requests = fixture.make_trial(
+            condition, trial_cls=trial_cls, first='continue', follow_claim=False,
+            send=case != 'timer_reservation', horizon=30.,
+            policy=core.CallPolicy(max_retries=1, max_attempts_total=cap),
+            limits=zi.DecisionLimits(max_calls_total=cap),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        s.arm_observations(period_s=.1, first_at=.1)
+        s.timer('r1' if case == 'separate_roots' else 'r3',
+                at=6. if case == 'refund_horizon' else at)
+        end = {'separate_roots': 14., 'timer_reservation': 30., 'refund_horizon': 6.7}[case]
+        fixture.advance(trial, clock, links, end)
+        result = trial.finish(end)
+        if case == 'separate_roots' and condition != 'no_comm':
+            assert [p['sim_time_s'] for p in requests if p['robot_id'] == 'r1'] == [
+                0., at, round(at + 4., 6), round(at + 6., 6)]
+            rows = [r for r in s.ledger.values() if r['actor'] == 'r1']
+            assert [r['retry_of'] for r in rows[:5]] == [
+                '', '', rows[1]['call_id'], '', rows[3]['call_id']]
+            assert s._retries[core.RetryRoot('common', rows[1]['call_id'])] == 1
+            assert s._retries[core.RetryRoot('message', rows[3]['call_id'])] == 1
+        elif case == 'timer_reservation':
+            assert [(p['robot_id'], p['sim_time_s']) for p in requests] == [
+                ('r1', 0.), ('r2', 0.), ('r1', 15.3)]
+        elif case == 'refund_horizon' and condition != 'no_comm':
+            assert sum(m['budget_refused'] for m in s.metrics.values()) > 0
+            assert s.budget.used_total() == 3 and s.budget.remaining() == 1
+            assert not s.holding() and not trial.decision_budget_spent()
+            assert result.end_reason == 'sim_horizon'
+        assert not s.send_violations
+        return trial, requests, {
+            'path': case, 'message_state': condition, 'handling': 'review6_chain', 'exception': None,
+            'calls': [{'at': r['started_sim_s'], 'actor': r['actor'], 'id': cid,
+                       'retry_of': r['retry_of'], 'sends': s.send_ledger.sends(cid)}
+                      for cid, r in s.ledger.items()],
+            'events': s.events, 'ledger': s.ledger, 'budget': s.budget.to_dict(),
+            'end_reason': result.end_reason, 'holding': s.holding(),
+>           'decision_budget_spent': trial.decision_budget_spent(),
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        }
+E       AttributeError: 'LegacyTimingTrial' object has no attribute 'decision_budget_spent'
+
+tests/test_zone_study_multiturn_review6.py:72: AttributeError
+_______ test_refundable_reservation_cannot_cancel_v64_reask[4.9-peer_ko] _______
+
+v64 = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+condition = 'peer_ko', at = 4.9
+
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+    @pytest.mark.parametrize('at', [4.9, 5., 5.1, 5.2, 5.3, 5.4, 5.5, 5.6])
+    def test_refundable_reservation_cannot_cancel_v64_reask(v64, condition, at):
+>       old, old_requests, _ = run_review6('timer_reservation', 'no_comm', trial_cls=v64, at=at)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_zone_study_multiturn_review6.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'timer_reservation', condition = 'no_comm'
+trial_cls = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+at = 4.9
+
+    def run_review6(case, condition, *, trial_cls=None, at=5.5):
+        def wire(payload, turn):
+            if (case == 'separate_roots' and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (at, round(at + 4., 6))):
+                raise OSError('common failure or fresh message failure')
+    
+        def snapshot(call):
+            if (case == 'separate_roots' and call.actor == 'r1'
+                    and call.started_sim_s == round(at + 2., 6)):
+                raise OSError('common retry consumes a fresh message, then refunds')
+            if (case == 'refund_horizon' and call.actor in ('r1', 'r2')
+                    and call.started_sim_s == 6.4):
+                raise OSError('recipient snapshot sends nothing')
+    
+        def prepare(call):
+            if (case == 'timer_reservation' and call.actor == 'r3'
+                    and call.started_sim_s in (0., at)):
+                raise OSError('last slot reserved but refunded')
+            if case == 'refund_horizon' and call.actor == 'r3' and call.started_sim_s == 6.:
+                raise OSError('last slot refunded after delivery refusal')
+    
+        cap = {'separate_roots': 90, 'timer_reservation': 3, 'refund_horizon': 4}[case]
+        trial, clock, links, requests = fixture.make_trial(
+            condition, trial_cls=trial_cls, first='continue', follow_claim=False,
+            send=case != 'timer_reservation', horizon=30.,
+            policy=core.CallPolicy(max_retries=1, max_attempts_total=cap),
+            limits=zi.DecisionLimits(max_calls_total=cap),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        s.arm_observations(period_s=.1, first_at=.1)
+        s.timer('r1' if case == 'separate_roots' else 'r3',
+                at=6. if case == 'refund_horizon' else at)
+        end = {'separate_roots': 14., 'timer_reservation': 30., 'refund_horizon': 6.7}[case]
+        fixture.advance(trial, clock, links, end)
+        result = trial.finish(end)
+        if case == 'separate_roots' and condition != 'no_comm':
+            assert [p['sim_time_s'] for p in requests if p['robot_id'] == 'r1'] == [
+                0., at, round(at + 4., 6), round(at + 6., 6)]
+            rows = [r for r in s.ledger.values() if r['actor'] == 'r1']
+            assert [r['retry_of'] for r in rows[:5]] == [
+                '', '', rows[1]['call_id'], '', rows[3]['call_id']]
+            assert s._retries[core.RetryRoot('common', rows[1]['call_id'])] == 1
+            assert s._retries[core.RetryRoot('message', rows[3]['call_id'])] == 1
+        elif case == 'timer_reservation':
+            assert [(p['robot_id'], p['sim_time_s']) for p in requests] == [
+                ('r1', 0.), ('r2', 0.), ('r1', 15.3)]
+        elif case == 'refund_horizon' and condition != 'no_comm':
+            assert sum(m['budget_refused'] for m in s.metrics.values()) > 0
+            assert s.budget.used_total() == 3 and s.budget.remaining() == 1
+            assert not s.holding() and not trial.decision_budget_spent()
+            assert result.end_reason == 'sim_horizon'
+        assert not s.send_violations
+        return trial, requests, {
+            'path': case, 'message_state': condition, 'handling': 'review6_chain', 'exception': None,
+            'calls': [{'at': r['started_sim_s'], 'actor': r['actor'], 'id': cid,
+                       'retry_of': r['retry_of'], 'sends': s.send_ledger.sends(cid)}
+                      for cid, r in s.ledger.items()],
+            'events': s.events, 'ledger': s.ledger, 'budget': s.budget.to_dict(),
+            'end_reason': result.end_reason, 'holding': s.holding(),
+>           'decision_budget_spent': trial.decision_budget_spent(),
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        }
+E       AttributeError: 'LegacyTimingTrial' object has no attribute 'decision_budget_spent'
+
+tests/test_zone_study_multiturn_review6.py:72: AttributeError
+______ test_refundable_reservation_cannot_cancel_v64_reask[4.9-leader_ko] ______
+
+v64 = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+condition = 'leader_ko', at = 4.9
+
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+    @pytest.mark.parametrize('at', [4.9, 5., 5.1, 5.2, 5.3, 5.4, 5.5, 5.6])
+    def test_refundable_reservation_cannot_cancel_v64_reask(v64, condition, at):
+>       old, old_requests, _ = run_review6('timer_reservation', 'no_comm', trial_cls=v64, at=at)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_zone_study_multiturn_review6.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'timer_reservation', condition = 'no_comm'
+trial_cls = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+at = 4.9
+
+    def run_review6(case, condition, *, trial_cls=None, at=5.5):
+        def wire(payload, turn):
+            if (case == 'separate_roots' and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (at, round(at + 4., 6))):
+                raise OSError('common failure or fresh message failure')
+    
+        def snapshot(call):
+            if (case == 'separate_roots' and call.actor == 'r1'
+                    and call.started_sim_s == round(at + 2., 6)):
+                raise OSError('common retry consumes a fresh message, then refunds')
+            if (case == 'refund_horizon' and call.actor in ('r1', 'r2')
+                    and call.started_sim_s == 6.4):
+                raise OSError('recipient snapshot sends nothing')
+    
+        def prepare(call):
+            if (case == 'timer_reservation' and call.actor == 'r3'
+                    and call.started_sim_s in (0., at)):
+                raise OSError('last slot reserved but refunded')
+            if case == 'refund_horizon' and call.actor == 'r3' and call.started_sim_s == 6.:
+                raise OSError('last slot refunded after delivery refusal')
+    
+        cap = {'separate_roots': 90, 'timer_reservation': 3, 'refund_horizon': 4}[case]
+        trial, clock, links, requests = fixture.make_trial(
+            condition, trial_cls=trial_cls, first='continue', follow_claim=False,
+            send=case != 'timer_reservation', horizon=30.,
+            policy=core.CallPolicy(max_retries=1, max_attempts_total=cap),
+            limits=zi.DecisionLimits(max_calls_total=cap),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        s.arm_observations(period_s=.1, first_at=.1)
+        s.timer('r1' if case == 'separate_roots' else 'r3',
+                at=6. if case == 'refund_horizon' else at)
+        end = {'separate_roots': 14., 'timer_reservation': 30., 'refund_horizon': 6.7}[case]
+        fixture.advance(trial, clock, links, end)
+        result = trial.finish(end)
+        if case == 'separate_roots' and condition != 'no_comm':
+            assert [p['sim_time_s'] for p in requests if p['robot_id'] == 'r1'] == [
+                0., at, round(at + 4., 6), round(at + 6., 6)]
+            rows = [r for r in s.ledger.values() if r['actor'] == 'r1']
+            assert [r['retry_of'] for r in rows[:5]] == [
+                '', '', rows[1]['call_id'], '', rows[3]['call_id']]
+            assert s._retries[core.RetryRoot('common', rows[1]['call_id'])] == 1
+            assert s._retries[core.RetryRoot('message', rows[3]['call_id'])] == 1
+        elif case == 'timer_reservation':
+            assert [(p['robot_id'], p['sim_time_s']) for p in requests] == [
+                ('r1', 0.), ('r2', 0.), ('r1', 15.3)]
+        elif case == 'refund_horizon' and condition != 'no_comm':
+            assert sum(m['budget_refused'] for m in s.metrics.values()) > 0
+            assert s.budget.used_total() == 3 and s.budget.remaining() == 1
+            assert not s.holding() and not trial.decision_budget_spent()
+            assert result.end_reason == 'sim_horizon'
+        assert not s.send_violations
+        return trial, requests, {
+            'path': case, 'message_state': condition, 'handling': 'review6_chain', 'exception': None,
+            'calls': [{'at': r['started_sim_s'], 'actor': r['actor'], 'id': cid,
+                       'retry_of': r['retry_of'], 'sends': s.send_ledger.sends(cid)}
+                      for cid, r in s.ledger.items()],
+            'events': s.events, 'ledger': s.ledger, 'budget': s.budget.to_dict(),
+            'end_reason': result.end_reason, 'holding': s.holding(),
+>           'decision_budget_spent': trial.decision_budget_spent(),
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        }
+E       AttributeError: 'LegacyTimingTrial' object has no attribute 'decision_budget_spent'
+
+tests/test_zone_study_multiturn_review6.py:72: AttributeError
+_____ test_refundable_reservation_cannot_cancel_v64_reask[4.9-structured] ______
+
+v64 = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+condition = 'structured', at = 4.9
+
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+    @pytest.mark.parametrize('at', [4.9, 5., 5.1, 5.2, 5.3, 5.4, 5.5, 5.6])
+    def test_refundable_reservation_cannot_cancel_v64_reask(v64, condition, at):
+>       old, old_requests, _ = run_review6('timer_reservation', 'no_comm', trial_cls=v64, at=at)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_zone_study_multiturn_review6.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'timer_reservation', condition = 'no_comm'
+trial_cls = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+at = 4.9
+
+    def run_review6(case, condition, *, trial_cls=None, at=5.5):
+        def wire(payload, turn):
+            if (case == 'separate_roots' and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (at, round(at + 4., 6))):
+                raise OSError('common failure or fresh message failure')
+    
+        def snapshot(call):
+            if (case == 'separate_roots' and call.actor == 'r1'
+                    and call.started_sim_s == round(at + 2., 6)):
+                raise OSError('common retry consumes a fresh message, then refunds')
+            if (case == 'refund_horizon' and call.actor in ('r1', 'r2')
+                    and call.started_sim_s == 6.4):
+                raise OSError('recipient snapshot sends nothing')
+    
+        def prepare(call):
+            if (case == 'timer_reservation' and call.actor == 'r3'
+                    and call.started_sim_s in (0., at)):
+                raise OSError('last slot reserved but refunded')
+            if case == 'refund_horizon' and call.actor == 'r3' and call.started_sim_s == 6.:
+                raise OSError('last slot refunded after delivery refusal')
+    
+        cap = {'separate_roots': 90, 'timer_reservation': 3, 'refund_horizon': 4}[case]
+        trial, clock, links, requests = fixture.make_trial(
+            condition, trial_cls=trial_cls, first='continue', follow_claim=False,
+            send=case != 'timer_reservation', horizon=30.,
+            policy=core.CallPolicy(max_retries=1, max_attempts_total=cap),
+            limits=zi.DecisionLimits(max_calls_total=cap),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        s.arm_observations(period_s=.1, first_at=.1)
+        s.timer('r1' if case == 'separate_roots' else 'r3',
+                at=6. if case == 'refund_horizon' else at)
+        end = {'separate_roots': 14., 'timer_reservation': 30., 'refund_horizon': 6.7}[case]
+        fixture.advance(trial, clock, links, end)
+        result = trial.finish(end)
+        if case == 'separate_roots' and condition != 'no_comm':
+            assert [p['sim_time_s'] for p in requests if p['robot_id'] == 'r1'] == [
+                0., at, round(at + 4., 6), round(at + 6., 6)]
+            rows = [r for r in s.ledger.values() if r['actor'] == 'r1']
+            assert [r['retry_of'] for r in rows[:5]] == [
+                '', '', rows[1]['call_id'], '', rows[3]['call_id']]
+            assert s._retries[core.RetryRoot('common', rows[1]['call_id'])] == 1
+            assert s._retries[core.RetryRoot('message', rows[3]['call_id'])] == 1
+        elif case == 'timer_reservation':
+            assert [(p['robot_id'], p['sim_time_s']) for p in requests] == [
+                ('r1', 0.), ('r2', 0.), ('r1', 15.3)]
+        elif case == 'refund_horizon' and condition != 'no_comm':
+            assert sum(m['budget_refused'] for m in s.metrics.values()) > 0
+            assert s.budget.used_total() == 3 and s.budget.remaining() == 1
+            assert not s.holding() and not trial.decision_budget_spent()
+            assert result.end_reason == 'sim_horizon'
+        assert not s.send_violations
+        return trial, requests, {
+            'path': case, 'message_state': condition, 'handling': 'review6_chain', 'exception': None,
+            'calls': [{'at': r['started_sim_s'], 'actor': r['actor'], 'id': cid,
+                       'retry_of': r['retry_of'], 'sends': s.send_ledger.sends(cid)}
+                      for cid, r in s.ledger.items()],
+            'events': s.events, 'ledger': s.ledger, 'budget': s.budget.to_dict(),
+            'end_reason': result.end_reason, 'holding': s.holding(),
+>           'decision_budget_spent': trial.decision_budget_spent(),
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        }
+E       AttributeError: 'LegacyTimingTrial' object has no attribute 'decision_budget_spent'
+
+tests/test_zone_study_multiturn_review6.py:72: AttributeError
+_______ test_refundable_reservation_cannot_cancel_v64_reask[5.0-no_comm] _______
+
+v64 = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+condition = 'no_comm', at = 5.0
+
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+    @pytest.mark.parametrize('at', [4.9, 5., 5.1, 5.2, 5.3, 5.4, 5.5, 5.6])
+    def test_refundable_reservation_cannot_cancel_v64_reask(v64, condition, at):
+>       old, old_requests, _ = run_review6('timer_reservation', 'no_comm', trial_cls=v64, at=at)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_zone_study_multiturn_review6.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'timer_reservation', condition = 'no_comm'
+trial_cls = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+at = 5.0
+
+    def run_review6(case, condition, *, trial_cls=None, at=5.5):
+        def wire(payload, turn):
+            if (case == 'separate_roots' and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (at, round(at + 4., 6))):
+                raise OSError('common failure or fresh message failure')
+    
+        def snapshot(call):
+            if (case == 'separate_roots' and call.actor == 'r1'
+                    and call.started_sim_s == round(at + 2., 6)):
+                raise OSError('common retry consumes a fresh message, then refunds')
+            if (case == 'refund_horizon' and call.actor in ('r1', 'r2')
+                    and call.started_sim_s == 6.4):
+                raise OSError('recipient snapshot sends nothing')
+    
+        def prepare(call):
+            if (case == 'timer_reservation' and call.actor == 'r3'
+                    and call.started_sim_s in (0., at)):
+                raise OSError('last slot reserved but refunded')
+            if case == 'refund_horizon' and call.actor == 'r3' and call.started_sim_s == 6.:
+                raise OSError('last slot refunded after delivery refusal')
+    
+        cap = {'separate_roots': 90, 'timer_reservation': 3, 'refund_horizon': 4}[case]
+        trial, clock, links, requests = fixture.make_trial(
+            condition, trial_cls=trial_cls, first='continue', follow_claim=False,
+            send=case != 'timer_reservation', horizon=30.,
+            policy=core.CallPolicy(max_retries=1, max_attempts_total=cap),
+            limits=zi.DecisionLimits(max_calls_total=cap),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        s.arm_observations(period_s=.1, first_at=.1)
+        s.timer('r1' if case == 'separate_roots' else 'r3',
+                at=6. if case == 'refund_horizon' else at)
+        end = {'separate_roots': 14., 'timer_reservation': 30., 'refund_horizon': 6.7}[case]
+        fixture.advance(trial, clock, links, end)
+        result = trial.finish(end)
+        if case == 'separate_roots' and condition != 'no_comm':
+            assert [p['sim_time_s'] for p in requests if p['robot_id'] == 'r1'] == [
+                0., at, round(at + 4., 6), round(at + 6., 6)]
+            rows = [r for r in s.ledger.values() if r['actor'] == 'r1']
+            assert [r['retry_of'] for r in rows[:5]] == [
+                '', '', rows[1]['call_id'], '', rows[3]['call_id']]
+            assert s._retries[core.RetryRoot('common', rows[1]['call_id'])] == 1
+            assert s._retries[core.RetryRoot('message', rows[3]['call_id'])] == 1
+        elif case == 'timer_reservation':
+            assert [(p['robot_id'], p['sim_time_s']) for p in requests] == [
+                ('r1', 0.), ('r2', 0.), ('r1', 15.3)]
+        elif case == 'refund_horizon' and condition != 'no_comm':
+            assert sum(m['budget_refused'] for m in s.metrics.values()) > 0
+            assert s.budget.used_total() == 3 and s.budget.remaining() == 1
+            assert not s.holding() and not trial.decision_budget_spent()
+            assert result.end_reason == 'sim_horizon'
+        assert not s.send_violations
+        return trial, requests, {
+            'path': case, 'message_state': condition, 'handling': 'review6_chain', 'exception': None,
+            'calls': [{'at': r['started_sim_s'], 'actor': r['actor'], 'id': cid,
+                       'retry_of': r['retry_of'], 'sends': s.send_ledger.sends(cid)}
+                      for cid, r in s.ledger.items()],
+            'events': s.events, 'ledger': s.ledger, 'budget': s.budget.to_dict(),
+            'end_reason': result.end_reason, 'holding': s.holding(),
+>           'decision_budget_spent': trial.decision_budget_spent(),
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        }
+E       AttributeError: 'LegacyTimingTrial' object has no attribute 'decision_budget_spent'
+
+tests/test_zone_study_multiturn_review6.py:72: AttributeError
+_______ test_refundable_reservation_cannot_cancel_v64_reask[5.0-peer_ko] _______
+
+v64 = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+condition = 'peer_ko', at = 5.0
+
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+    @pytest.mark.parametrize('at', [4.9, 5., 5.1, 5.2, 5.3, 5.4, 5.5, 5.6])
+    def test_refundable_reservation_cannot_cancel_v64_reask(v64, condition, at):
+>       old, old_requests, _ = run_review6('timer_reservation', 'no_comm', trial_cls=v64, at=at)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_zone_study_multiturn_review6.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'timer_reservation', condition = 'no_comm'
+trial_cls = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+at = 5.0
+
+    def run_review6(case, condition, *, trial_cls=None, at=5.5):
+        def wire(payload, turn):
+            if (case == 'separate_roots' and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (at, round(at + 4., 6))):
+                raise OSError('common failure or fresh message failure')
+    
+        def snapshot(call):
+            if (case == 'separate_roots' and call.actor == 'r1'
+                    and call.started_sim_s == round(at + 2., 6)):
+                raise OSError('common retry consumes a fresh message, then refunds')
+            if (case == 'refund_horizon' and call.actor in ('r1', 'r2')
+                    and call.started_sim_s == 6.4):
+                raise OSError('recipient snapshot sends nothing')
+    
+        def prepare(call):
+            if (case == 'timer_reservation' and call.actor == 'r3'
+                    and call.started_sim_s in (0., at)):
+                raise OSError('last slot reserved but refunded')
+            if case == 'refund_horizon' and call.actor == 'r3' and call.started_sim_s == 6.:
+                raise OSError('last slot refunded after delivery refusal')
+    
+        cap = {'separate_roots': 90, 'timer_reservation': 3, 'refund_horizon': 4}[case]
+        trial, clock, links, requests = fixture.make_trial(
+            condition, trial_cls=trial_cls, first='continue', follow_claim=False,
+            send=case != 'timer_reservation', horizon=30.,
+            policy=core.CallPolicy(max_retries=1, max_attempts_total=cap),
+            limits=zi.DecisionLimits(max_calls_total=cap),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        s.arm_observations(period_s=.1, first_at=.1)
+        s.timer('r1' if case == 'separate_roots' else 'r3',
+                at=6. if case == 'refund_horizon' else at)
+        end = {'separate_roots': 14., 'timer_reservation': 30., 'refund_horizon': 6.7}[case]
+        fixture.advance(trial, clock, links, end)
+        result = trial.finish(end)
+        if case == 'separate_roots' and condition != 'no_comm':
+            assert [p['sim_time_s'] for p in requests if p['robot_id'] == 'r1'] == [
+                0., at, round(at + 4., 6), round(at + 6., 6)]
+            rows = [r for r in s.ledger.values() if r['actor'] == 'r1']
+            assert [r['retry_of'] for r in rows[:5]] == [
+                '', '', rows[1]['call_id'], '', rows[3]['call_id']]
+            assert s._retries[core.RetryRoot('common', rows[1]['call_id'])] == 1
+            assert s._retries[core.RetryRoot('message', rows[3]['call_id'])] == 1
+        elif case == 'timer_reservation':
+            assert [(p['robot_id'], p['sim_time_s']) for p in requests] == [
+                ('r1', 0.), ('r2', 0.), ('r1', 15.3)]
+        elif case == 'refund_horizon' and condition != 'no_comm':
+            assert sum(m['budget_refused'] for m in s.metrics.values()) > 0
+            assert s.budget.used_total() == 3 and s.budget.remaining() == 1
+            assert not s.holding() and not trial.decision_budget_spent()
+            assert result.end_reason == 'sim_horizon'
+        assert not s.send_violations
+        return trial, requests, {
+            'path': case, 'message_state': condition, 'handling': 'review6_chain', 'exception': None,
+            'calls': [{'at': r['started_sim_s'], 'actor': r['actor'], 'id': cid,
+                       'retry_of': r['retry_of'], 'sends': s.send_ledger.sends(cid)}
+                      for cid, r in s.ledger.items()],
+            'events': s.events, 'ledger': s.ledger, 'budget': s.budget.to_dict(),
+            'end_reason': result.end_reason, 'holding': s.holding(),
+>           'decision_budget_spent': trial.decision_budget_spent(),
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        }
+E       AttributeError: 'LegacyTimingTrial' object has no attribute 'decision_budget_spent'
+
+tests/test_zone_study_multiturn_review6.py:72: AttributeError
+______ test_refundable_reservation_cannot_cancel_v64_reask[5.0-leader_ko] ______
+
+v64 = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+condition = 'leader_ko', at = 5.0
+
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+    @pytest.mark.parametrize('at', [4.9, 5., 5.1, 5.2, 5.3, 5.4, 5.5, 5.6])
+    def test_refundable_reservation_cannot_cancel_v64_reask(v64, condition, at):
+>       old, old_requests, _ = run_review6('timer_reservation', 'no_comm', trial_cls=v64, at=at)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_zone_study_multiturn_review6.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'timer_reservation', condition = 'no_comm'
+trial_cls = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+at = 5.0
+
+    def run_review6(case, condition, *, trial_cls=None, at=5.5):
+        def wire(payload, turn):
+            if (case == 'separate_roots' and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (at, round(at + 4., 6))):
+                raise OSError('common failure or fresh message failure')
+    
+        def snapshot(call):
+            if (case == 'separate_roots' and call.actor == 'r1'
+                    and call.started_sim_s == round(at + 2., 6)):
+                raise OSError('common retry consumes a fresh message, then refunds')
+            if (case == 'refund_horizon' and call.actor in ('r1', 'r2')
+                    and call.started_sim_s == 6.4):
+                raise OSError('recipient snapshot sends nothing')
+    
+        def prepare(call):
+            if (case == 'timer_reservation' and call.actor == 'r3'
+                    and call.started_sim_s in (0., at)):
+                raise OSError('last slot reserved but refunded')
+            if case == 'refund_horizon' and call.actor == 'r3' and call.started_sim_s == 6.:
+                raise OSError('last slot refunded after delivery refusal')
+    
+        cap = {'separate_roots': 90, 'timer_reservation': 3, 'refund_horizon': 4}[case]
+        trial, clock, links, requests = fixture.make_trial(
+            condition, trial_cls=trial_cls, first='continue', follow_claim=False,
+            send=case != 'timer_reservation', horizon=30.,
+            policy=core.CallPolicy(max_retries=1, max_attempts_total=cap),
+            limits=zi.DecisionLimits(max_calls_total=cap),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        s.arm_observations(period_s=.1, first_at=.1)
+        s.timer('r1' if case == 'separate_roots' else 'r3',
+                at=6. if case == 'refund_horizon' else at)
+        end = {'separate_roots': 14., 'timer_reservation': 30., 'refund_horizon': 6.7}[case]
+        fixture.advance(trial, clock, links, end)
+        result = trial.finish(end)
+        if case == 'separate_roots' and condition != 'no_comm':
+            assert [p['sim_time_s'] for p in requests if p['robot_id'] == 'r1'] == [
+                0., at, round(at + 4., 6), round(at + 6., 6)]
+            rows = [r for r in s.ledger.values() if r['actor'] == 'r1']
+            assert [r['retry_of'] for r in rows[:5]] == [
+                '', '', rows[1]['call_id'], '', rows[3]['call_id']]
+            assert s._retries[core.RetryRoot('common', rows[1]['call_id'])] == 1
+            assert s._retries[core.RetryRoot('message', rows[3]['call_id'])] == 1
+        elif case == 'timer_reservation':
+            assert [(p['robot_id'], p['sim_time_s']) for p in requests] == [
+                ('r1', 0.), ('r2', 0.), ('r1', 15.3)]
+        elif case == 'refund_horizon' and condition != 'no_comm':
+            assert sum(m['budget_refused'] for m in s.metrics.values()) > 0
+            assert s.budget.used_total() == 3 and s.budget.remaining() == 1
+            assert not s.holding() and not trial.decision_budget_spent()
+            assert result.end_reason == 'sim_horizon'
+        assert not s.send_violations
+        return trial, requests, {
+            'path': case, 'message_state': condition, 'handling': 'review6_chain', 'exception': None,
+            'calls': [{'at': r['started_sim_s'], 'actor': r['actor'], 'id': cid,
+                       'retry_of': r['retry_of'], 'sends': s.send_ledger.sends(cid)}
+                      for cid, r in s.ledger.items()],
+            'events': s.events, 'ledger': s.ledger, 'budget': s.budget.to_dict(),
+            'end_reason': result.end_reason, 'holding': s.holding(),
+>           'decision_budget_spent': trial.decision_budget_spent(),
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        }
+E       AttributeError: 'LegacyTimingTrial' object has no attribute 'decision_budget_spent'
+
+tests/test_zone_study_multiturn_review6.py:72: AttributeError
+_____ test_refundable_reservation_cannot_cancel_v64_reask[5.0-structured] ______
+
+v64 = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+condition = 'structured', at = 5.0
+
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+    @pytest.mark.parametrize('at', [4.9, 5., 5.1, 5.2, 5.3, 5.4, 5.5, 5.6])
+    def test_refundable_reservation_cannot_cancel_v64_reask(v64, condition, at):
+>       old, old_requests, _ = run_review6('timer_reservation', 'no_comm', trial_cls=v64, at=at)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_zone_study_multiturn_review6.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'timer_reservation', condition = 'no_comm'
+trial_cls = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+at = 5.0
+
+    def run_review6(case, condition, *, trial_cls=None, at=5.5):
+        def wire(payload, turn):
+            if (case == 'separate_roots' and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (at, round(at + 4., 6))):
+                raise OSError('common failure or fresh message failure')
+    
+        def snapshot(call):
+            if (case == 'separate_roots' and call.actor == 'r1'
+                    and call.started_sim_s == round(at + 2., 6)):
+                raise OSError('common retry consumes a fresh message, then refunds')
+            if (case == 'refund_horizon' and call.actor in ('r1', 'r2')
+                    and call.started_sim_s == 6.4):
+                raise OSError('recipient snapshot sends nothing')
+    
+        def prepare(call):
+            if (case == 'timer_reservation' and call.actor == 'r3'
+                    and call.started_sim_s in (0., at)):
+                raise OSError('last slot reserved but refunded')
+            if case == 'refund_horizon' and call.actor == 'r3' and call.started_sim_s == 6.:
+                raise OSError('last slot refunded after delivery refusal')
+    
+        cap = {'separate_roots': 90, 'timer_reservation': 3, 'refund_horizon': 4}[case]
+        trial, clock, links, requests = fixture.make_trial(
+            condition, trial_cls=trial_cls, first='continue', follow_claim=False,
+            send=case != 'timer_reservation', horizon=30.,
+            policy=core.CallPolicy(max_retries=1, max_attempts_total=cap),
+            limits=zi.DecisionLimits(max_calls_total=cap),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        s.arm_observations(period_s=.1, first_at=.1)
+        s.timer('r1' if case == 'separate_roots' else 'r3',
+                at=6. if case == 'refund_horizon' else at)
+        end = {'separate_roots': 14., 'timer_reservation': 30., 'refund_horizon': 6.7}[case]
+        fixture.advance(trial, clock, links, end)
+        result = trial.finish(end)
+        if case == 'separate_roots' and condition != 'no_comm':
+            assert [p['sim_time_s'] for p in requests if p['robot_id'] == 'r1'] == [
+                0., at, round(at + 4., 6), round(at + 6., 6)]
+            rows = [r for r in s.ledger.values() if r['actor'] == 'r1']
+            assert [r['retry_of'] for r in rows[:5]] == [
+                '', '', rows[1]['call_id'], '', rows[3]['call_id']]
+            assert s._retries[core.RetryRoot('common', rows[1]['call_id'])] == 1
+            assert s._retries[core.RetryRoot('message', rows[3]['call_id'])] == 1
+        elif case == 'timer_reservation':
+            assert [(p['robot_id'], p['sim_time_s']) for p in requests] == [
+                ('r1', 0.), ('r2', 0.), ('r1', 15.3)]
+        elif case == 'refund_horizon' and condition != 'no_comm':
+            assert sum(m['budget_refused'] for m in s.metrics.values()) > 0
+            assert s.budget.used_total() == 3 and s.budget.remaining() == 1
+            assert not s.holding() and not trial.decision_budget_spent()
+            assert result.end_reason == 'sim_horizon'
+        assert not s.send_violations
+        return trial, requests, {
+            'path': case, 'message_state': condition, 'handling': 'review6_chain', 'exception': None,
+            'calls': [{'at': r['started_sim_s'], 'actor': r['actor'], 'id': cid,
+                       'retry_of': r['retry_of'], 'sends': s.send_ledger.sends(cid)}
+                      for cid, r in s.ledger.items()],
+            'events': s.events, 'ledger': s.ledger, 'budget': s.budget.to_dict(),
+            'end_reason': result.end_reason, 'holding': s.holding(),
+>           'decision_budget_spent': trial.decision_budget_spent(),
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        }
+E       AttributeError: 'LegacyTimingTrial' object has no attribute 'decision_budget_spent'
+
+tests/test_zone_study_multiturn_review6.py:72: AttributeError
+_______ test_refundable_reservation_cannot_cancel_v64_reask[5.1-no_comm] _______
+
+v64 = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+condition = 'no_comm', at = 5.1
+
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+    @pytest.mark.parametrize('at', [4.9, 5., 5.1, 5.2, 5.3, 5.4, 5.5, 5.6])
+    def test_refundable_reservation_cannot_cancel_v64_reask(v64, condition, at):
+>       old, old_requests, _ = run_review6('timer_reservation', 'no_comm', trial_cls=v64, at=at)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_zone_study_multiturn_review6.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'timer_reservation', condition = 'no_comm'
+trial_cls = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+at = 5.1
+
+    def run_review6(case, condition, *, trial_cls=None, at=5.5):
+        def wire(payload, turn):
+            if (case == 'separate_roots' and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (at, round(at + 4., 6))):
+                raise OSError('common failure or fresh message failure')
+    
+        def snapshot(call):
+            if (case == 'separate_roots' and call.actor == 'r1'
+                    and call.started_sim_s == round(at + 2., 6)):
+                raise OSError('common retry consumes a fresh message, then refunds')
+            if (case == 'refund_horizon' and call.actor in ('r1', 'r2')
+                    and call.started_sim_s == 6.4):
+                raise OSError('recipient snapshot sends nothing')
+    
+        def prepare(call):
+            if (case == 'timer_reservation' and call.actor == 'r3'
+                    and call.started_sim_s in (0., at)):
+                raise OSError('last slot reserved but refunded')
+            if case == 'refund_horizon' and call.actor == 'r3' and call.started_sim_s == 6.:
+                raise OSError('last slot refunded after delivery refusal')
+    
+        cap = {'separate_roots': 90, 'timer_reservation': 3, 'refund_horizon': 4}[case]
+        trial, clock, links, requests = fixture.make_trial(
+            condition, trial_cls=trial_cls, first='continue', follow_claim=False,
+            send=case != 'timer_reservation', horizon=30.,
+            policy=core.CallPolicy(max_retries=1, max_attempts_total=cap),
+            limits=zi.DecisionLimits(max_calls_total=cap),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        s.arm_observations(period_s=.1, first_at=.1)
+        s.timer('r1' if case == 'separate_roots' else 'r3',
+                at=6. if case == 'refund_horizon' else at)
+        end = {'separate_roots': 14., 'timer_reservation': 30., 'refund_horizon': 6.7}[case]
+        fixture.advance(trial, clock, links, end)
+        result = trial.finish(end)
+        if case == 'separate_roots' and condition != 'no_comm':
+            assert [p['sim_time_s'] for p in requests if p['robot_id'] == 'r1'] == [
+                0., at, round(at + 4., 6), round(at + 6., 6)]
+            rows = [r for r in s.ledger.values() if r['actor'] == 'r1']
+            assert [r['retry_of'] for r in rows[:5]] == [
+                '', '', rows[1]['call_id'], '', rows[3]['call_id']]
+            assert s._retries[core.RetryRoot('common', rows[1]['call_id'])] == 1
+            assert s._retries[core.RetryRoot('message', rows[3]['call_id'])] == 1
+        elif case == 'timer_reservation':
+            assert [(p['robot_id'], p['sim_time_s']) for p in requests] == [
+                ('r1', 0.), ('r2', 0.), ('r1', 15.3)]
+        elif case == 'refund_horizon' and condition != 'no_comm':
+            assert sum(m['budget_refused'] for m in s.metrics.values()) > 0
+            assert s.budget.used_total() == 3 and s.budget.remaining() == 1
+            assert not s.holding() and not trial.decision_budget_spent()
+            assert result.end_reason == 'sim_horizon'
+        assert not s.send_violations
+        return trial, requests, {
+            'path': case, 'message_state': condition, 'handling': 'review6_chain', 'exception': None,
+            'calls': [{'at': r['started_sim_s'], 'actor': r['actor'], 'id': cid,
+                       'retry_of': r['retry_of'], 'sends': s.send_ledger.sends(cid)}
+                      for cid, r in s.ledger.items()],
+            'events': s.events, 'ledger': s.ledger, 'budget': s.budget.to_dict(),
+            'end_reason': result.end_reason, 'holding': s.holding(),
+>           'decision_budget_spent': trial.decision_budget_spent(),
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        }
+E       AttributeError: 'LegacyTimingTrial' object has no attribute 'decision_budget_spent'
+
+tests/test_zone_study_multiturn_review6.py:72: AttributeError
+_______ test_refundable_reservation_cannot_cancel_v64_reask[5.1-peer_ko] _______
+
+v64 = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+condition = 'peer_ko', at = 5.1
+
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+    @pytest.mark.parametrize('at', [4.9, 5., 5.1, 5.2, 5.3, 5.4, 5.5, 5.6])
+    def test_refundable_reservation_cannot_cancel_v64_reask(v64, condition, at):
+>       old, old_requests, _ = run_review6('timer_reservation', 'no_comm', trial_cls=v64, at=at)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_zone_study_multiturn_review6.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'timer_reservation', condition = 'no_comm'
+trial_cls = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+at = 5.1
+
+    def run_review6(case, condition, *, trial_cls=None, at=5.5):
+        def wire(payload, turn):
+            if (case == 'separate_roots' and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (at, round(at + 4., 6))):
+                raise OSError('common failure or fresh message failure')
+    
+        def snapshot(call):
+            if (case == 'separate_roots' and call.actor == 'r1'
+                    and call.started_sim_s == round(at + 2., 6)):
+                raise OSError('common retry consumes a fresh message, then refunds')
+            if (case == 'refund_horizon' and call.actor in ('r1', 'r2')
+                    and call.started_sim_s == 6.4):
+                raise OSError('recipient snapshot sends nothing')
+    
+        def prepare(call):
+            if (case == 'timer_reservation' and call.actor == 'r3'
+                    and call.started_sim_s in (0., at)):
+                raise OSError('last slot reserved but refunded')
+            if case == 'refund_horizon' and call.actor == 'r3' and call.started_sim_s == 6.:
+                raise OSError('last slot refunded after delivery refusal')
+    
+        cap = {'separate_roots': 90, 'timer_reservation': 3, 'refund_horizon': 4}[case]
+        trial, clock, links, requests = fixture.make_trial(
+            condition, trial_cls=trial_cls, first='continue', follow_claim=False,
+            send=case != 'timer_reservation', horizon=30.,
+            policy=core.CallPolicy(max_retries=1, max_attempts_total=cap),
+            limits=zi.DecisionLimits(max_calls_total=cap),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        s.arm_observations(period_s=.1, first_at=.1)
+        s.timer('r1' if case == 'separate_roots' else 'r3',
+                at=6. if case == 'refund_horizon' else at)
+        end = {'separate_roots': 14., 'timer_reservation': 30., 'refund_horizon': 6.7}[case]
+        fixture.advance(trial, clock, links, end)
+        result = trial.finish(end)
+        if case == 'separate_roots' and condition != 'no_comm':
+            assert [p['sim_time_s'] for p in requests if p['robot_id'] == 'r1'] == [
+                0., at, round(at + 4., 6), round(at + 6., 6)]
+            rows = [r for r in s.ledger.values() if r['actor'] == 'r1']
+            assert [r['retry_of'] for r in rows[:5]] == [
+                '', '', rows[1]['call_id'], '', rows[3]['call_id']]
+            assert s._retries[core.RetryRoot('common', rows[1]['call_id'])] == 1
+            assert s._retries[core.RetryRoot('message', rows[3]['call_id'])] == 1
+        elif case == 'timer_reservation':
+            assert [(p['robot_id'], p['sim_time_s']) for p in requests] == [
+                ('r1', 0.), ('r2', 0.), ('r1', 15.3)]
+        elif case == 'refund_horizon' and condition != 'no_comm':
+            assert sum(m['budget_refused'] for m in s.metrics.values()) > 0
+            assert s.budget.used_total() == 3 and s.budget.remaining() == 1
+            assert not s.holding() and not trial.decision_budget_spent()
+            assert result.end_reason == 'sim_horizon'
+        assert not s.send_violations
+        return trial, requests, {
+            'path': case, 'message_state': condition, 'handling': 'review6_chain', 'exception': None,
+            'calls': [{'at': r['started_sim_s'], 'actor': r['actor'], 'id': cid,
+                       'retry_of': r['retry_of'], 'sends': s.send_ledger.sends(cid)}
+                      for cid, r in s.ledger.items()],
+            'events': s.events, 'ledger': s.ledger, 'budget': s.budget.to_dict(),
+            'end_reason': result.end_reason, 'holding': s.holding(),
+>           'decision_budget_spent': trial.decision_budget_spent(),
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        }
+E       AttributeError: 'LegacyTimingTrial' object has no attribute 'decision_budget_spent'
+
+tests/test_zone_study_multiturn_review6.py:72: AttributeError
+______ test_refundable_reservation_cannot_cancel_v64_reask[5.1-leader_ko] ______
+
+v64 = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+condition = 'leader_ko', at = 5.1
+
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+    @pytest.mark.parametrize('at', [4.9, 5., 5.1, 5.2, 5.3, 5.4, 5.5, 5.6])
+    def test_refundable_reservation_cannot_cancel_v64_reask(v64, condition, at):
+>       old, old_requests, _ = run_review6('timer_reservation', 'no_comm', trial_cls=v64, at=at)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_zone_study_multiturn_review6.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'timer_reservation', condition = 'no_comm'
+trial_cls = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+at = 5.1
+
+    def run_review6(case, condition, *, trial_cls=None, at=5.5):
+        def wire(payload, turn):
+            if (case == 'separate_roots' and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (at, round(at + 4., 6))):
+                raise OSError('common failure or fresh message failure')
+    
+        def snapshot(call):
+            if (case == 'separate_roots' and call.actor == 'r1'
+                    and call.started_sim_s == round(at + 2., 6)):
+                raise OSError('common retry consumes a fresh message, then refunds')
+            if (case == 'refund_horizon' and call.actor in ('r1', 'r2')
+                    and call.started_sim_s == 6.4):
+                raise OSError('recipient snapshot sends nothing')
+    
+        def prepare(call):
+            if (case == 'timer_reservation' and call.actor == 'r3'
+                    and call.started_sim_s in (0., at)):
+                raise OSError('last slot reserved but refunded')
+            if case == 'refund_horizon' and call.actor == 'r3' and call.started_sim_s == 6.:
+                raise OSError('last slot refunded after delivery refusal')
+    
+        cap = {'separate_roots': 90, 'timer_reservation': 3, 'refund_horizon': 4}[case]
+        trial, clock, links, requests = fixture.make_trial(
+            condition, trial_cls=trial_cls, first='continue', follow_claim=False,
+            send=case != 'timer_reservation', horizon=30.,
+            policy=core.CallPolicy(max_retries=1, max_attempts_total=cap),
+            limits=zi.DecisionLimits(max_calls_total=cap),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        s.arm_observations(period_s=.1, first_at=.1)
+        s.timer('r1' if case == 'separate_roots' else 'r3',
+                at=6. if case == 'refund_horizon' else at)
+        end = {'separate_roots': 14., 'timer_reservation': 30., 'refund_horizon': 6.7}[case]
+        fixture.advance(trial, clock, links, end)
+        result = trial.finish(end)
+        if case == 'separate_roots' and condition != 'no_comm':
+            assert [p['sim_time_s'] for p in requests if p['robot_id'] == 'r1'] == [
+                0., at, round(at + 4., 6), round(at + 6., 6)]
+            rows = [r for r in s.ledger.values() if r['actor'] == 'r1']
+            assert [r['retry_of'] for r in rows[:5]] == [
+                '', '', rows[1]['call_id'], '', rows[3]['call_id']]
+            assert s._retries[core.RetryRoot('common', rows[1]['call_id'])] == 1
+            assert s._retries[core.RetryRoot('message', rows[3]['call_id'])] == 1
+        elif case == 'timer_reservation':
+            assert [(p['robot_id'], p['sim_time_s']) for p in requests] == [
+                ('r1', 0.), ('r2', 0.), ('r1', 15.3)]
+        elif case == 'refund_horizon' and condition != 'no_comm':
+            assert sum(m['budget_refused'] for m in s.metrics.values()) > 0
+            assert s.budget.used_total() == 3 and s.budget.remaining() == 1
+            assert not s.holding() and not trial.decision_budget_spent()
+            assert result.end_reason == 'sim_horizon'
+        assert not s.send_violations
+        return trial, requests, {
+            'path': case, 'message_state': condition, 'handling': 'review6_chain', 'exception': None,
+            'calls': [{'at': r['started_sim_s'], 'actor': r['actor'], 'id': cid,
+                       'retry_of': r['retry_of'], 'sends': s.send_ledger.sends(cid)}
+                      for cid, r in s.ledger.items()],
+            'events': s.events, 'ledger': s.ledger, 'budget': s.budget.to_dict(),
+            'end_reason': result.end_reason, 'holding': s.holding(),
+>           'decision_budget_spent': trial.decision_budget_spent(),
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        }
+E       AttributeError: 'LegacyTimingTrial' object has no attribute 'decision_budget_spent'
+
+tests/test_zone_study_multiturn_review6.py:72: AttributeError
+_____ test_refundable_reservation_cannot_cancel_v64_reask[5.1-structured] ______
+
+v64 = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+condition = 'structured', at = 5.1
+
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+    @pytest.mark.parametrize('at', [4.9, 5., 5.1, 5.2, 5.3, 5.4, 5.5, 5.6])
+    def test_refundable_reservation_cannot_cancel_v64_reask(v64, condition, at):
+>       old, old_requests, _ = run_review6('timer_reservation', 'no_comm', trial_cls=v64, at=at)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_zone_study_multiturn_review6.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'timer_reservation', condition = 'no_comm'
+trial_cls = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+at = 5.1
+
+    def run_review6(case, condition, *, trial_cls=None, at=5.5):
+        def wire(payload, turn):
+            if (case == 'separate_roots' and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (at, round(at + 4., 6))):
+                raise OSError('common failure or fresh message failure')
+    
+        def snapshot(call):
+            if (case == 'separate_roots' and call.actor == 'r1'
+                    and call.started_sim_s == round(at + 2., 6)):
+                raise OSError('common retry consumes a fresh message, then refunds')
+            if (case == 'refund_horizon' and call.actor in ('r1', 'r2')
+                    and call.started_sim_s == 6.4):
+                raise OSError('recipient snapshot sends nothing')
+    
+        def prepare(call):
+            if (case == 'timer_reservation' and call.actor == 'r3'
+                    and call.started_sim_s in (0., at)):
+                raise OSError('last slot reserved but refunded')
+            if case == 'refund_horizon' and call.actor == 'r3' and call.started_sim_s == 6.:
+                raise OSError('last slot refunded after delivery refusal')
+    
+        cap = {'separate_roots': 90, 'timer_reservation': 3, 'refund_horizon': 4}[case]
+        trial, clock, links, requests = fixture.make_trial(
+            condition, trial_cls=trial_cls, first='continue', follow_claim=False,
+            send=case != 'timer_reservation', horizon=30.,
+            policy=core.CallPolicy(max_retries=1, max_attempts_total=cap),
+            limits=zi.DecisionLimits(max_calls_total=cap),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        s.arm_observations(period_s=.1, first_at=.1)
+        s.timer('r1' if case == 'separate_roots' else 'r3',
+                at=6. if case == 'refund_horizon' else at)
+        end = {'separate_roots': 14., 'timer_reservation': 30., 'refund_horizon': 6.7}[case]
+        fixture.advance(trial, clock, links, end)
+        result = trial.finish(end)
+        if case == 'separate_roots' and condition != 'no_comm':
+            assert [p['sim_time_s'] for p in requests if p['robot_id'] == 'r1'] == [
+                0., at, round(at + 4., 6), round(at + 6., 6)]
+            rows = [r for r in s.ledger.values() if r['actor'] == 'r1']
+            assert [r['retry_of'] for r in rows[:5]] == [
+                '', '', rows[1]['call_id'], '', rows[3]['call_id']]
+            assert s._retries[core.RetryRoot('common', rows[1]['call_id'])] == 1
+            assert s._retries[core.RetryRoot('message', rows[3]['call_id'])] == 1
+        elif case == 'timer_reservation':
+            assert [(p['robot_id'], p['sim_time_s']) for p in requests] == [
+                ('r1', 0.), ('r2', 0.), ('r1', 15.3)]
+        elif case == 'refund_horizon' and condition != 'no_comm':
+            assert sum(m['budget_refused'] for m in s.metrics.values()) > 0
+            assert s.budget.used_total() == 3 and s.budget.remaining() == 1
+            assert not s.holding() and not trial.decision_budget_spent()
+            assert result.end_reason == 'sim_horizon'
+        assert not s.send_violations
+        return trial, requests, {
+            'path': case, 'message_state': condition, 'handling': 'review6_chain', 'exception': None,
+            'calls': [{'at': r['started_sim_s'], 'actor': r['actor'], 'id': cid,
+                       'retry_of': r['retry_of'], 'sends': s.send_ledger.sends(cid)}
+                      for cid, r in s.ledger.items()],
+            'events': s.events, 'ledger': s.ledger, 'budget': s.budget.to_dict(),
+            'end_reason': result.end_reason, 'holding': s.holding(),
+>           'decision_budget_spent': trial.decision_budget_spent(),
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        }
+E       AttributeError: 'LegacyTimingTrial' object has no attribute 'decision_budget_spent'
+
+tests/test_zone_study_multiturn_review6.py:72: AttributeError
+_______ test_refundable_reservation_cannot_cancel_v64_reask[5.2-no_comm] _______
+
+v64 = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+condition = 'no_comm', at = 5.2
+
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+    @pytest.mark.parametrize('at', [4.9, 5., 5.1, 5.2, 5.3, 5.4, 5.5, 5.6])
+    def test_refundable_reservation_cannot_cancel_v64_reask(v64, condition, at):
+>       old, old_requests, _ = run_review6('timer_reservation', 'no_comm', trial_cls=v64, at=at)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_zone_study_multiturn_review6.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'timer_reservation', condition = 'no_comm'
+trial_cls = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+at = 5.2
+
+    def run_review6(case, condition, *, trial_cls=None, at=5.5):
+        def wire(payload, turn):
+            if (case == 'separate_roots' and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (at, round(at + 4., 6))):
+                raise OSError('common failure or fresh message failure')
+    
+        def snapshot(call):
+            if (case == 'separate_roots' and call.actor == 'r1'
+                    and call.started_sim_s == round(at + 2., 6)):
+                raise OSError('common retry consumes a fresh message, then refunds')
+            if (case == 'refund_horizon' and call.actor in ('r1', 'r2')
+                    and call.started_sim_s == 6.4):
+                raise OSError('recipient snapshot sends nothing')
+    
+        def prepare(call):
+            if (case == 'timer_reservation' and call.actor == 'r3'
+                    and call.started_sim_s in (0., at)):
+                raise OSError('last slot reserved but refunded')
+            if case == 'refund_horizon' and call.actor == 'r3' and call.started_sim_s == 6.:
+                raise OSError('last slot refunded after delivery refusal')
+    
+        cap = {'separate_roots': 90, 'timer_reservation': 3, 'refund_horizon': 4}[case]
+        trial, clock, links, requests = fixture.make_trial(
+            condition, trial_cls=trial_cls, first='continue', follow_claim=False,
+            send=case != 'timer_reservation', horizon=30.,
+            policy=core.CallPolicy(max_retries=1, max_attempts_total=cap),
+            limits=zi.DecisionLimits(max_calls_total=cap),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        s.arm_observations(period_s=.1, first_at=.1)
+        s.timer('r1' if case == 'separate_roots' else 'r3',
+                at=6. if case == 'refund_horizon' else at)
+        end = {'separate_roots': 14., 'timer_reservation': 30., 'refund_horizon': 6.7}[case]
+        fixture.advance(trial, clock, links, end)
+        result = trial.finish(end)
+        if case == 'separate_roots' and condition != 'no_comm':
+            assert [p['sim_time_s'] for p in requests if p['robot_id'] == 'r1'] == [
+                0., at, round(at + 4., 6), round(at + 6., 6)]
+            rows = [r for r in s.ledger.values() if r['actor'] == 'r1']
+            assert [r['retry_of'] for r in rows[:5]] == [
+                '', '', rows[1]['call_id'], '', rows[3]['call_id']]
+            assert s._retries[core.RetryRoot('common', rows[1]['call_id'])] == 1
+            assert s._retries[core.RetryRoot('message', rows[3]['call_id'])] == 1
+        elif case == 'timer_reservation':
+            assert [(p['robot_id'], p['sim_time_s']) for p in requests] == [
+                ('r1', 0.), ('r2', 0.), ('r1', 15.3)]
+        elif case == 'refund_horizon' and condition != 'no_comm':
+            assert sum(m['budget_refused'] for m in s.metrics.values()) > 0
+            assert s.budget.used_total() == 3 and s.budget.remaining() == 1
+            assert not s.holding() and not trial.decision_budget_spent()
+            assert result.end_reason == 'sim_horizon'
+        assert not s.send_violations
+        return trial, requests, {
+            'path': case, 'message_state': condition, 'handling': 'review6_chain', 'exception': None,
+            'calls': [{'at': r['started_sim_s'], 'actor': r['actor'], 'id': cid,
+                       'retry_of': r['retry_of'], 'sends': s.send_ledger.sends(cid)}
+                      for cid, r in s.ledger.items()],
+            'events': s.events, 'ledger': s.ledger, 'budget': s.budget.to_dict(),
+            'end_reason': result.end_reason, 'holding': s.holding(),
+>           'decision_budget_spent': trial.decision_budget_spent(),
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        }
+E       AttributeError: 'LegacyTimingTrial' object has no attribute 'decision_budget_spent'
+
+tests/test_zone_study_multiturn_review6.py:72: AttributeError
+_______ test_refundable_reservation_cannot_cancel_v64_reask[5.2-peer_ko] _______
+
+v64 = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+condition = 'peer_ko', at = 5.2
+
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+    @pytest.mark.parametrize('at', [4.9, 5., 5.1, 5.2, 5.3, 5.4, 5.5, 5.6])
+    def test_refundable_reservation_cannot_cancel_v64_reask(v64, condition, at):
+>       old, old_requests, _ = run_review6('timer_reservation', 'no_comm', trial_cls=v64, at=at)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_zone_study_multiturn_review6.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'timer_reservation', condition = 'no_comm'
+trial_cls = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+at = 5.2
+
+    def run_review6(case, condition, *, trial_cls=None, at=5.5):
+        def wire(payload, turn):
+            if (case == 'separate_roots' and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (at, round(at + 4., 6))):
+                raise OSError('common failure or fresh message failure')
+    
+        def snapshot(call):
+            if (case == 'separate_roots' and call.actor == 'r1'
+                    and call.started_sim_s == round(at + 2., 6)):
+                raise OSError('common retry consumes a fresh message, then refunds')
+            if (case == 'refund_horizon' and call.actor in ('r1', 'r2')
+                    and call.started_sim_s == 6.4):
+                raise OSError('recipient snapshot sends nothing')
+    
+        def prepare(call):
+            if (case == 'timer_reservation' and call.actor == 'r3'
+                    and call.started_sim_s in (0., at)):
+                raise OSError('last slot reserved but refunded')
+            if case == 'refund_horizon' and call.actor == 'r3' and call.started_sim_s == 6.:
+                raise OSError('last slot refunded after delivery refusal')
+    
+        cap = {'separate_roots': 90, 'timer_reservation': 3, 'refund_horizon': 4}[case]
+        trial, clock, links, requests = fixture.make_trial(
+            condition, trial_cls=trial_cls, first='continue', follow_claim=False,
+            send=case != 'timer_reservation', horizon=30.,
+            policy=core.CallPolicy(max_retries=1, max_attempts_total=cap),
+            limits=zi.DecisionLimits(max_calls_total=cap),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        s.arm_observations(period_s=.1, first_at=.1)
+        s.timer('r1' if case == 'separate_roots' else 'r3',
+                at=6. if case == 'refund_horizon' else at)
+        end = {'separate_roots': 14., 'timer_reservation': 30., 'refund_horizon': 6.7}[case]
+        fixture.advance(trial, clock, links, end)
+        result = trial.finish(end)
+        if case == 'separate_roots' and condition != 'no_comm':
+            assert [p['sim_time_s'] for p in requests if p['robot_id'] == 'r1'] == [
+                0., at, round(at + 4., 6), round(at + 6., 6)]
+            rows = [r for r in s.ledger.values() if r['actor'] == 'r1']
+            assert [r['retry_of'] for r in rows[:5]] == [
+                '', '', rows[1]['call_id'], '', rows[3]['call_id']]
+            assert s._retries[core.RetryRoot('common', rows[1]['call_id'])] == 1
+            assert s._retries[core.RetryRoot('message', rows[3]['call_id'])] == 1
+        elif case == 'timer_reservation':
+            assert [(p['robot_id'], p['sim_time_s']) for p in requests] == [
+                ('r1', 0.), ('r2', 0.), ('r1', 15.3)]
+        elif case == 'refund_horizon' and condition != 'no_comm':
+            assert sum(m['budget_refused'] for m in s.metrics.values()) > 0
+            assert s.budget.used_total() == 3 and s.budget.remaining() == 1
+            assert not s.holding() and not trial.decision_budget_spent()
+            assert result.end_reason == 'sim_horizon'
+        assert not s.send_violations
+        return trial, requests, {
+            'path': case, 'message_state': condition, 'handling': 'review6_chain', 'exception': None,
+            'calls': [{'at': r['started_sim_s'], 'actor': r['actor'], 'id': cid,
+                       'retry_of': r['retry_of'], 'sends': s.send_ledger.sends(cid)}
+                      for cid, r in s.ledger.items()],
+            'events': s.events, 'ledger': s.ledger, 'budget': s.budget.to_dict(),
+            'end_reason': result.end_reason, 'holding': s.holding(),
+>           'decision_budget_spent': trial.decision_budget_spent(),
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        }
+E       AttributeError: 'LegacyTimingTrial' object has no attribute 'decision_budget_spent'
+
+tests/test_zone_study_multiturn_review6.py:72: AttributeError
+______ test_refundable_reservation_cannot_cancel_v64_reask[5.2-leader_ko] ______
+
+v64 = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+condition = 'leader_ko', at = 5.2
+
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+    @pytest.mark.parametrize('at', [4.9, 5., 5.1, 5.2, 5.3, 5.4, 5.5, 5.6])
+    def test_refundable_reservation_cannot_cancel_v64_reask(v64, condition, at):
+>       old, old_requests, _ = run_review6('timer_reservation', 'no_comm', trial_cls=v64, at=at)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_zone_study_multiturn_review6.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'timer_reservation', condition = 'no_comm'
+trial_cls = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+at = 5.2
+
+    def run_review6(case, condition, *, trial_cls=None, at=5.5):
+        def wire(payload, turn):
+            if (case == 'separate_roots' and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (at, round(at + 4., 6))):
+                raise OSError('common failure or fresh message failure')
+    
+        def snapshot(call):
+            if (case == 'separate_roots' and call.actor == 'r1'
+                    and call.started_sim_s == round(at + 2., 6)):
+                raise OSError('common retry consumes a fresh message, then refunds')
+            if (case == 'refund_horizon' and call.actor in ('r1', 'r2')
+                    and call.started_sim_s == 6.4):
+                raise OSError('recipient snapshot sends nothing')
+    
+        def prepare(call):
+            if (case == 'timer_reservation' and call.actor == 'r3'
+                    and call.started_sim_s in (0., at)):
+                raise OSError('last slot reserved but refunded')
+            if case == 'refund_horizon' and call.actor == 'r3' and call.started_sim_s == 6.:
+                raise OSError('last slot refunded after delivery refusal')
+    
+        cap = {'separate_roots': 90, 'timer_reservation': 3, 'refund_horizon': 4}[case]
+        trial, clock, links, requests = fixture.make_trial(
+            condition, trial_cls=trial_cls, first='continue', follow_claim=False,
+            send=case != 'timer_reservation', horizon=30.,
+            policy=core.CallPolicy(max_retries=1, max_attempts_total=cap),
+            limits=zi.DecisionLimits(max_calls_total=cap),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        s.arm_observations(period_s=.1, first_at=.1)
+        s.timer('r1' if case == 'separate_roots' else 'r3',
+                at=6. if case == 'refund_horizon' else at)
+        end = {'separate_roots': 14., 'timer_reservation': 30., 'refund_horizon': 6.7}[case]
+        fixture.advance(trial, clock, links, end)
+        result = trial.finish(end)
+        if case == 'separate_roots' and condition != 'no_comm':
+            assert [p['sim_time_s'] for p in requests if p['robot_id'] == 'r1'] == [
+                0., at, round(at + 4., 6), round(at + 6., 6)]
+            rows = [r for r in s.ledger.values() if r['actor'] == 'r1']
+            assert [r['retry_of'] for r in rows[:5]] == [
+                '', '', rows[1]['call_id'], '', rows[3]['call_id']]
+            assert s._retries[core.RetryRoot('common', rows[1]['call_id'])] == 1
+            assert s._retries[core.RetryRoot('message', rows[3]['call_id'])] == 1
+        elif case == 'timer_reservation':
+            assert [(p['robot_id'], p['sim_time_s']) for p in requests] == [
+                ('r1', 0.), ('r2', 0.), ('r1', 15.3)]
+        elif case == 'refund_horizon' and condition != 'no_comm':
+            assert sum(m['budget_refused'] for m in s.metrics.values()) > 0
+            assert s.budget.used_total() == 3 and s.budget.remaining() == 1
+            assert not s.holding() and not trial.decision_budget_spent()
+            assert result.end_reason == 'sim_horizon'
+        assert not s.send_violations
+        return trial, requests, {
+            'path': case, 'message_state': condition, 'handling': 'review6_chain', 'exception': None,
+            'calls': [{'at': r['started_sim_s'], 'actor': r['actor'], 'id': cid,
+                       'retry_of': r['retry_of'], 'sends': s.send_ledger.sends(cid)}
+                      for cid, r in s.ledger.items()],
+            'events': s.events, 'ledger': s.ledger, 'budget': s.budget.to_dict(),
+            'end_reason': result.end_reason, 'holding': s.holding(),
+>           'decision_budget_spent': trial.decision_budget_spent(),
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        }
+E       AttributeError: 'LegacyTimingTrial' object has no attribute 'decision_budget_spent'
+
+tests/test_zone_study_multiturn_review6.py:72: AttributeError
+_____ test_refundable_reservation_cannot_cancel_v64_reask[5.2-structured] ______
+
+v64 = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+condition = 'structured', at = 5.2
+
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+    @pytest.mark.parametrize('at', [4.9, 5., 5.1, 5.2, 5.3, 5.4, 5.5, 5.6])
+    def test_refundable_reservation_cannot_cancel_v64_reask(v64, condition, at):
+>       old, old_requests, _ = run_review6('timer_reservation', 'no_comm', trial_cls=v64, at=at)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_zone_study_multiturn_review6.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'timer_reservation', condition = 'no_comm'
+trial_cls = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+at = 5.2
+
+    def run_review6(case, condition, *, trial_cls=None, at=5.5):
+        def wire(payload, turn):
+            if (case == 'separate_roots' and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (at, round(at + 4., 6))):
+                raise OSError('common failure or fresh message failure')
+    
+        def snapshot(call):
+            if (case == 'separate_roots' and call.actor == 'r1'
+                    and call.started_sim_s == round(at + 2., 6)):
+                raise OSError('common retry consumes a fresh message, then refunds')
+            if (case == 'refund_horizon' and call.actor in ('r1', 'r2')
+                    and call.started_sim_s == 6.4):
+                raise OSError('recipient snapshot sends nothing')
+    
+        def prepare(call):
+            if (case == 'timer_reservation' and call.actor == 'r3'
+                    and call.started_sim_s in (0., at)):
+                raise OSError('last slot reserved but refunded')
+            if case == 'refund_horizon' and call.actor == 'r3' and call.started_sim_s == 6.:
+                raise OSError('last slot refunded after delivery refusal')
+    
+        cap = {'separate_roots': 90, 'timer_reservation': 3, 'refund_horizon': 4}[case]
+        trial, clock, links, requests = fixture.make_trial(
+            condition, trial_cls=trial_cls, first='continue', follow_claim=False,
+            send=case != 'timer_reservation', horizon=30.,
+            policy=core.CallPolicy(max_retries=1, max_attempts_total=cap),
+            limits=zi.DecisionLimits(max_calls_total=cap),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        s.arm_observations(period_s=.1, first_at=.1)
+        s.timer('r1' if case == 'separate_roots' else 'r3',
+                at=6. if case == 'refund_horizon' else at)
+        end = {'separate_roots': 14., 'timer_reservation': 30., 'refund_horizon': 6.7}[case]
+        fixture.advance(trial, clock, links, end)
+        result = trial.finish(end)
+        if case == 'separate_roots' and condition != 'no_comm':
+            assert [p['sim_time_s'] for p in requests if p['robot_id'] == 'r1'] == [
+                0., at, round(at + 4., 6), round(at + 6., 6)]
+            rows = [r for r in s.ledger.values() if r['actor'] == 'r1']
+            assert [r['retry_of'] for r in rows[:5]] == [
+                '', '', rows[1]['call_id'], '', rows[3]['call_id']]
+            assert s._retries[core.RetryRoot('common', rows[1]['call_id'])] == 1
+            assert s._retries[core.RetryRoot('message', rows[3]['call_id'])] == 1
+        elif case == 'timer_reservation':
+            assert [(p['robot_id'], p['sim_time_s']) for p in requests] == [
+                ('r1', 0.), ('r2', 0.), ('r1', 15.3)]
+        elif case == 'refund_horizon' and condition != 'no_comm':
+            assert sum(m['budget_refused'] for m in s.metrics.values()) > 0
+            assert s.budget.used_total() == 3 and s.budget.remaining() == 1
+            assert not s.holding() and not trial.decision_budget_spent()
+            assert result.end_reason == 'sim_horizon'
+        assert not s.send_violations
+        return trial, requests, {
+            'path': case, 'message_state': condition, 'handling': 'review6_chain', 'exception': None,
+            'calls': [{'at': r['started_sim_s'], 'actor': r['actor'], 'id': cid,
+                       'retry_of': r['retry_of'], 'sends': s.send_ledger.sends(cid)}
+                      for cid, r in s.ledger.items()],
+            'events': s.events, 'ledger': s.ledger, 'budget': s.budget.to_dict(),
+            'end_reason': result.end_reason, 'holding': s.holding(),
+>           'decision_budget_spent': trial.decision_budget_spent(),
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        }
+E       AttributeError: 'LegacyTimingTrial' object has no attribute 'decision_budget_spent'
+
+tests/test_zone_study_multiturn_review6.py:72: AttributeError
+_______ test_refundable_reservation_cannot_cancel_v64_reask[5.3-no_comm] _______
+
+v64 = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+condition = 'no_comm', at = 5.3
+
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+    @pytest.mark.parametrize('at', [4.9, 5., 5.1, 5.2, 5.3, 5.4, 5.5, 5.6])
+    def test_refundable_reservation_cannot_cancel_v64_reask(v64, condition, at):
+>       old, old_requests, _ = run_review6('timer_reservation', 'no_comm', trial_cls=v64, at=at)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_zone_study_multiturn_review6.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'timer_reservation', condition = 'no_comm'
+trial_cls = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+at = 5.3
+
+    def run_review6(case, condition, *, trial_cls=None, at=5.5):
+        def wire(payload, turn):
+            if (case == 'separate_roots' and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (at, round(at + 4., 6))):
+                raise OSError('common failure or fresh message failure')
+    
+        def snapshot(call):
+            if (case == 'separate_roots' and call.actor == 'r1'
+                    and call.started_sim_s == round(at + 2., 6)):
+                raise OSError('common retry consumes a fresh message, then refunds')
+            if (case == 'refund_horizon' and call.actor in ('r1', 'r2')
+                    and call.started_sim_s == 6.4):
+                raise OSError('recipient snapshot sends nothing')
+    
+        def prepare(call):
+            if (case == 'timer_reservation' and call.actor == 'r3'
+                    and call.started_sim_s in (0., at)):
+                raise OSError('last slot reserved but refunded')
+            if case == 'refund_horizon' and call.actor == 'r3' and call.started_sim_s == 6.:
+                raise OSError('last slot refunded after delivery refusal')
+    
+        cap = {'separate_roots': 90, 'timer_reservation': 3, 'refund_horizon': 4}[case]
+        trial, clock, links, requests = fixture.make_trial(
+            condition, trial_cls=trial_cls, first='continue', follow_claim=False,
+            send=case != 'timer_reservation', horizon=30.,
+            policy=core.CallPolicy(max_retries=1, max_attempts_total=cap),
+            limits=zi.DecisionLimits(max_calls_total=cap),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        s.arm_observations(period_s=.1, first_at=.1)
+        s.timer('r1' if case == 'separate_roots' else 'r3',
+                at=6. if case == 'refund_horizon' else at)
+        end = {'separate_roots': 14., 'timer_reservation': 30., 'refund_horizon': 6.7}[case]
+        fixture.advance(trial, clock, links, end)
+        result = trial.finish(end)
+        if case == 'separate_roots' and condition != 'no_comm':
+            assert [p['sim_time_s'] for p in requests if p['robot_id'] == 'r1'] == [
+                0., at, round(at + 4., 6), round(at + 6., 6)]
+            rows = [r for r in s.ledger.values() if r['actor'] == 'r1']
+            assert [r['retry_of'] for r in rows[:5]] == [
+                '', '', rows[1]['call_id'], '', rows[3]['call_id']]
+            assert s._retries[core.RetryRoot('common', rows[1]['call_id'])] == 1
+            assert s._retries[core.RetryRoot('message', rows[3]['call_id'])] == 1
+        elif case == 'timer_reservation':
+            assert [(p['robot_id'], p['sim_time_s']) for p in requests] == [
+                ('r1', 0.), ('r2', 0.), ('r1', 15.3)]
+        elif case == 'refund_horizon' and condition != 'no_comm':
+            assert sum(m['budget_refused'] for m in s.metrics.values()) > 0
+            assert s.budget.used_total() == 3 and s.budget.remaining() == 1
+            assert not s.holding() and not trial.decision_budget_spent()
+            assert result.end_reason == 'sim_horizon'
+        assert not s.send_violations
+        return trial, requests, {
+            'path': case, 'message_state': condition, 'handling': 'review6_chain', 'exception': None,
+            'calls': [{'at': r['started_sim_s'], 'actor': r['actor'], 'id': cid,
+                       'retry_of': r['retry_of'], 'sends': s.send_ledger.sends(cid)}
+                      for cid, r in s.ledger.items()],
+            'events': s.events, 'ledger': s.ledger, 'budget': s.budget.to_dict(),
+            'end_reason': result.end_reason, 'holding': s.holding(),
+>           'decision_budget_spent': trial.decision_budget_spent(),
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        }
+E       AttributeError: 'LegacyTimingTrial' object has no attribute 'decision_budget_spent'
+
+tests/test_zone_study_multiturn_review6.py:72: AttributeError
+_______ test_refundable_reservation_cannot_cancel_v64_reask[5.3-peer_ko] _______
+
+v64 = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+condition = 'peer_ko', at = 5.3
+
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+    @pytest.mark.parametrize('at', [4.9, 5., 5.1, 5.2, 5.3, 5.4, 5.5, 5.6])
+    def test_refundable_reservation_cannot_cancel_v64_reask(v64, condition, at):
+>       old, old_requests, _ = run_review6('timer_reservation', 'no_comm', trial_cls=v64, at=at)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_zone_study_multiturn_review6.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'timer_reservation', condition = 'no_comm'
+trial_cls = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+at = 5.3
+
+    def run_review6(case, condition, *, trial_cls=None, at=5.5):
+        def wire(payload, turn):
+            if (case == 'separate_roots' and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (at, round(at + 4., 6))):
+                raise OSError('common failure or fresh message failure')
+    
+        def snapshot(call):
+            if (case == 'separate_roots' and call.actor == 'r1'
+                    and call.started_sim_s == round(at + 2., 6)):
+                raise OSError('common retry consumes a fresh message, then refunds')
+            if (case == 'refund_horizon' and call.actor in ('r1', 'r2')
+                    and call.started_sim_s == 6.4):
+                raise OSError('recipient snapshot sends nothing')
+    
+        def prepare(call):
+            if (case == 'timer_reservation' and call.actor == 'r3'
+                    and call.started_sim_s in (0., at)):
+                raise OSError('last slot reserved but refunded')
+            if case == 'refund_horizon' and call.actor == 'r3' and call.started_sim_s == 6.:
+                raise OSError('last slot refunded after delivery refusal')
+    
+        cap = {'separate_roots': 90, 'timer_reservation': 3, 'refund_horizon': 4}[case]
+        trial, clock, links, requests = fixture.make_trial(
+            condition, trial_cls=trial_cls, first='continue', follow_claim=False,
+            send=case != 'timer_reservation', horizon=30.,
+            policy=core.CallPolicy(max_retries=1, max_attempts_total=cap),
+            limits=zi.DecisionLimits(max_calls_total=cap),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        s.arm_observations(period_s=.1, first_at=.1)
+        s.timer('r1' if case == 'separate_roots' else 'r3',
+                at=6. if case == 'refund_horizon' else at)
+        end = {'separate_roots': 14., 'timer_reservation': 30., 'refund_horizon': 6.7}[case]
+        fixture.advance(trial, clock, links, end)
+        result = trial.finish(end)
+        if case == 'separate_roots' and condition != 'no_comm':
+            assert [p['sim_time_s'] for p in requests if p['robot_id'] == 'r1'] == [
+                0., at, round(at + 4., 6), round(at + 6., 6)]
+            rows = [r for r in s.ledger.values() if r['actor'] == 'r1']
+            assert [r['retry_of'] for r in rows[:5]] == [
+                '', '', rows[1]['call_id'], '', rows[3]['call_id']]
+            assert s._retries[core.RetryRoot('common', rows[1]['call_id'])] == 1
+            assert s._retries[core.RetryRoot('message', rows[3]['call_id'])] == 1
+        elif case == 'timer_reservation':
+            assert [(p['robot_id'], p['sim_time_s']) for p in requests] == [
+                ('r1', 0.), ('r2', 0.), ('r1', 15.3)]
+        elif case == 'refund_horizon' and condition != 'no_comm':
+            assert sum(m['budget_refused'] for m in s.metrics.values()) > 0
+            assert s.budget.used_total() == 3 and s.budget.remaining() == 1
+            assert not s.holding() and not trial.decision_budget_spent()
+            assert result.end_reason == 'sim_horizon'
+        assert not s.send_violations
+        return trial, requests, {
+            'path': case, 'message_state': condition, 'handling': 'review6_chain', 'exception': None,
+            'calls': [{'at': r['started_sim_s'], 'actor': r['actor'], 'id': cid,
+                       'retry_of': r['retry_of'], 'sends': s.send_ledger.sends(cid)}
+                      for cid, r in s.ledger.items()],
+            'events': s.events, 'ledger': s.ledger, 'budget': s.budget.to_dict(),
+            'end_reason': result.end_reason, 'holding': s.holding(),
+>           'decision_budget_spent': trial.decision_budget_spent(),
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        }
+E       AttributeError: 'LegacyTimingTrial' object has no attribute 'decision_budget_spent'
+
+tests/test_zone_study_multiturn_review6.py:72: AttributeError
+______ test_refundable_reservation_cannot_cancel_v64_reask[5.3-leader_ko] ______
+
+v64 = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+condition = 'leader_ko', at = 5.3
+
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+    @pytest.mark.parametrize('at', [4.9, 5., 5.1, 5.2, 5.3, 5.4, 5.5, 5.6])
+    def test_refundable_reservation_cannot_cancel_v64_reask(v64, condition, at):
+>       old, old_requests, _ = run_review6('timer_reservation', 'no_comm', trial_cls=v64, at=at)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_zone_study_multiturn_review6.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'timer_reservation', condition = 'no_comm'
+trial_cls = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+at = 5.3
+
+    def run_review6(case, condition, *, trial_cls=None, at=5.5):
+        def wire(payload, turn):
+            if (case == 'separate_roots' and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (at, round(at + 4., 6))):
+                raise OSError('common failure or fresh message failure')
+    
+        def snapshot(call):
+            if (case == 'separate_roots' and call.actor == 'r1'
+                    and call.started_sim_s == round(at + 2., 6)):
+                raise OSError('common retry consumes a fresh message, then refunds')
+            if (case == 'refund_horizon' and call.actor in ('r1', 'r2')
+                    and call.started_sim_s == 6.4):
+                raise OSError('recipient snapshot sends nothing')
+    
+        def prepare(call):
+            if (case == 'timer_reservation' and call.actor == 'r3'
+                    and call.started_sim_s in (0., at)):
+                raise OSError('last slot reserved but refunded')
+            if case == 'refund_horizon' and call.actor == 'r3' and call.started_sim_s == 6.:
+                raise OSError('last slot refunded after delivery refusal')
+    
+        cap = {'separate_roots': 90, 'timer_reservation': 3, 'refund_horizon': 4}[case]
+        trial, clock, links, requests = fixture.make_trial(
+            condition, trial_cls=trial_cls, first='continue', follow_claim=False,
+            send=case != 'timer_reservation', horizon=30.,
+            policy=core.CallPolicy(max_retries=1, max_attempts_total=cap),
+            limits=zi.DecisionLimits(max_calls_total=cap),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        s.arm_observations(period_s=.1, first_at=.1)
+        s.timer('r1' if case == 'separate_roots' else 'r3',
+                at=6. if case == 'refund_horizon' else at)
+        end = {'separate_roots': 14., 'timer_reservation': 30., 'refund_horizon': 6.7}[case]
+        fixture.advance(trial, clock, links, end)
+        result = trial.finish(end)
+        if case == 'separate_roots' and condition != 'no_comm':
+            assert [p['sim_time_s'] for p in requests if p['robot_id'] == 'r1'] == [
+                0., at, round(at + 4., 6), round(at + 6., 6)]
+            rows = [r for r in s.ledger.values() if r['actor'] == 'r1']
+            assert [r['retry_of'] for r in rows[:5]] == [
+                '', '', rows[1]['call_id'], '', rows[3]['call_id']]
+            assert s._retries[core.RetryRoot('common', rows[1]['call_id'])] == 1
+            assert s._retries[core.RetryRoot('message', rows[3]['call_id'])] == 1
+        elif case == 'timer_reservation':
+            assert [(p['robot_id'], p['sim_time_s']) for p in requests] == [
+                ('r1', 0.), ('r2', 0.), ('r1', 15.3)]
+        elif case == 'refund_horizon' and condition != 'no_comm':
+            assert sum(m['budget_refused'] for m in s.metrics.values()) > 0
+            assert s.budget.used_total() == 3 and s.budget.remaining() == 1
+            assert not s.holding() and not trial.decision_budget_spent()
+            assert result.end_reason == 'sim_horizon'
+        assert not s.send_violations
+        return trial, requests, {
+            'path': case, 'message_state': condition, 'handling': 'review6_chain', 'exception': None,
+            'calls': [{'at': r['started_sim_s'], 'actor': r['actor'], 'id': cid,
+                       'retry_of': r['retry_of'], 'sends': s.send_ledger.sends(cid)}
+                      for cid, r in s.ledger.items()],
+            'events': s.events, 'ledger': s.ledger, 'budget': s.budget.to_dict(),
+            'end_reason': result.end_reason, 'holding': s.holding(),
+>           'decision_budget_spent': trial.decision_budget_spent(),
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        }
+E       AttributeError: 'LegacyTimingTrial' object has no attribute 'decision_budget_spent'
+
+tests/test_zone_study_multiturn_review6.py:72: AttributeError
+_____ test_refundable_reservation_cannot_cancel_v64_reask[5.3-structured] ______
+
+v64 = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+condition = 'structured', at = 5.3
+
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+    @pytest.mark.parametrize('at', [4.9, 5., 5.1, 5.2, 5.3, 5.4, 5.5, 5.6])
+    def test_refundable_reservation_cannot_cancel_v64_reask(v64, condition, at):
+>       old, old_requests, _ = run_review6('timer_reservation', 'no_comm', trial_cls=v64, at=at)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_zone_study_multiturn_review6.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'timer_reservation', condition = 'no_comm'
+trial_cls = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+at = 5.3
+
+    def run_review6(case, condition, *, trial_cls=None, at=5.5):
+        def wire(payload, turn):
+            if (case == 'separate_roots' and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (at, round(at + 4., 6))):
+                raise OSError('common failure or fresh message failure')
+    
+        def snapshot(call):
+            if (case == 'separate_roots' and call.actor == 'r1'
+                    and call.started_sim_s == round(at + 2., 6)):
+                raise OSError('common retry consumes a fresh message, then refunds')
+            if (case == 'refund_horizon' and call.actor in ('r1', 'r2')
+                    and call.started_sim_s == 6.4):
+                raise OSError('recipient snapshot sends nothing')
+    
+        def prepare(call):
+            if (case == 'timer_reservation' and call.actor == 'r3'
+                    and call.started_sim_s in (0., at)):
+                raise OSError('last slot reserved but refunded')
+            if case == 'refund_horizon' and call.actor == 'r3' and call.started_sim_s == 6.:
+                raise OSError('last slot refunded after delivery refusal')
+    
+        cap = {'separate_roots': 90, 'timer_reservation': 3, 'refund_horizon': 4}[case]
+        trial, clock, links, requests = fixture.make_trial(
+            condition, trial_cls=trial_cls, first='continue', follow_claim=False,
+            send=case != 'timer_reservation', horizon=30.,
+            policy=core.CallPolicy(max_retries=1, max_attempts_total=cap),
+            limits=zi.DecisionLimits(max_calls_total=cap),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        s.arm_observations(period_s=.1, first_at=.1)
+        s.timer('r1' if case == 'separate_roots' else 'r3',
+                at=6. if case == 'refund_horizon' else at)
+        end = {'separate_roots': 14., 'timer_reservation': 30., 'refund_horizon': 6.7}[case]
+        fixture.advance(trial, clock, links, end)
+        result = trial.finish(end)
+        if case == 'separate_roots' and condition != 'no_comm':
+            assert [p['sim_time_s'] for p in requests if p['robot_id'] == 'r1'] == [
+                0., at, round(at + 4., 6), round(at + 6., 6)]
+            rows = [r for r in s.ledger.values() if r['actor'] == 'r1']
+            assert [r['retry_of'] for r in rows[:5]] == [
+                '', '', rows[1]['call_id'], '', rows[3]['call_id']]
+            assert s._retries[core.RetryRoot('common', rows[1]['call_id'])] == 1
+            assert s._retries[core.RetryRoot('message', rows[3]['call_id'])] == 1
+        elif case == 'timer_reservation':
+            assert [(p['robot_id'], p['sim_time_s']) for p in requests] == [
+                ('r1', 0.), ('r2', 0.), ('r1', 15.3)]
+        elif case == 'refund_horizon' and condition != 'no_comm':
+            assert sum(m['budget_refused'] for m in s.metrics.values()) > 0
+            assert s.budget.used_total() == 3 and s.budget.remaining() == 1
+            assert not s.holding() and not trial.decision_budget_spent()
+            assert result.end_reason == 'sim_horizon'
+        assert not s.send_violations
+        return trial, requests, {
+            'path': case, 'message_state': condition, 'handling': 'review6_chain', 'exception': None,
+            'calls': [{'at': r['started_sim_s'], 'actor': r['actor'], 'id': cid,
+                       'retry_of': r['retry_of'], 'sends': s.send_ledger.sends(cid)}
+                      for cid, r in s.ledger.items()],
+            'events': s.events, 'ledger': s.ledger, 'budget': s.budget.to_dict(),
+            'end_reason': result.end_reason, 'holding': s.holding(),
+>           'decision_budget_spent': trial.decision_budget_spent(),
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        }
+E       AttributeError: 'LegacyTimingTrial' object has no attribute 'decision_budget_spent'
+
+tests/test_zone_study_multiturn_review6.py:72: AttributeError
+_______ test_refundable_reservation_cannot_cancel_v64_reask[5.4-no_comm] _______
+
+v64 = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+condition = 'no_comm', at = 5.4
+
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+    @pytest.mark.parametrize('at', [4.9, 5., 5.1, 5.2, 5.3, 5.4, 5.5, 5.6])
+    def test_refundable_reservation_cannot_cancel_v64_reask(v64, condition, at):
+>       old, old_requests, _ = run_review6('timer_reservation', 'no_comm', trial_cls=v64, at=at)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_zone_study_multiturn_review6.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'timer_reservation', condition = 'no_comm'
+trial_cls = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+at = 5.4
+
+    def run_review6(case, condition, *, trial_cls=None, at=5.5):
+        def wire(payload, turn):
+            if (case == 'separate_roots' and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (at, round(at + 4., 6))):
+                raise OSError('common failure or fresh message failure')
+    
+        def snapshot(call):
+            if (case == 'separate_roots' and call.actor == 'r1'
+                    and call.started_sim_s == round(at + 2., 6)):
+                raise OSError('common retry consumes a fresh message, then refunds')
+            if (case == 'refund_horizon' and call.actor in ('r1', 'r2')
+                    and call.started_sim_s == 6.4):
+                raise OSError('recipient snapshot sends nothing')
+    
+        def prepare(call):
+            if (case == 'timer_reservation' and call.actor == 'r3'
+                    and call.started_sim_s in (0., at)):
+                raise OSError('last slot reserved but refunded')
+            if case == 'refund_horizon' and call.actor == 'r3' and call.started_sim_s == 6.:
+                raise OSError('last slot refunded after delivery refusal')
+    
+        cap = {'separate_roots': 90, 'timer_reservation': 3, 'refund_horizon': 4}[case]
+        trial, clock, links, requests = fixture.make_trial(
+            condition, trial_cls=trial_cls, first='continue', follow_claim=False,
+            send=case != 'timer_reservation', horizon=30.,
+            policy=core.CallPolicy(max_retries=1, max_attempts_total=cap),
+            limits=zi.DecisionLimits(max_calls_total=cap),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        s.arm_observations(period_s=.1, first_at=.1)
+        s.timer('r1' if case == 'separate_roots' else 'r3',
+                at=6. if case == 'refund_horizon' else at)
+        end = {'separate_roots': 14., 'timer_reservation': 30., 'refund_horizon': 6.7}[case]
+        fixture.advance(trial, clock, links, end)
+        result = trial.finish(end)
+        if case == 'separate_roots' and condition != 'no_comm':
+            assert [p['sim_time_s'] for p in requests if p['robot_id'] == 'r1'] == [
+                0., at, round(at + 4., 6), round(at + 6., 6)]
+            rows = [r for r in s.ledger.values() if r['actor'] == 'r1']
+            assert [r['retry_of'] for r in rows[:5]] == [
+                '', '', rows[1]['call_id'], '', rows[3]['call_id']]
+            assert s._retries[core.RetryRoot('common', rows[1]['call_id'])] == 1
+            assert s._retries[core.RetryRoot('message', rows[3]['call_id'])] == 1
+        elif case == 'timer_reservation':
+            assert [(p['robot_id'], p['sim_time_s']) for p in requests] == [
+                ('r1', 0.), ('r2', 0.), ('r1', 15.3)]
+        elif case == 'refund_horizon' and condition != 'no_comm':
+            assert sum(m['budget_refused'] for m in s.metrics.values()) > 0
+            assert s.budget.used_total() == 3 and s.budget.remaining() == 1
+            assert not s.holding() and not trial.decision_budget_spent()
+            assert result.end_reason == 'sim_horizon'
+        assert not s.send_violations
+        return trial, requests, {
+            'path': case, 'message_state': condition, 'handling': 'review6_chain', 'exception': None,
+            'calls': [{'at': r['started_sim_s'], 'actor': r['actor'], 'id': cid,
+                       'retry_of': r['retry_of'], 'sends': s.send_ledger.sends(cid)}
+                      for cid, r in s.ledger.items()],
+            'events': s.events, 'ledger': s.ledger, 'budget': s.budget.to_dict(),
+            'end_reason': result.end_reason, 'holding': s.holding(),
+>           'decision_budget_spent': trial.decision_budget_spent(),
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        }
+E       AttributeError: 'LegacyTimingTrial' object has no attribute 'decision_budget_spent'
+
+tests/test_zone_study_multiturn_review6.py:72: AttributeError
+_______ test_refundable_reservation_cannot_cancel_v64_reask[5.4-peer_ko] _______
+
+v64 = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+condition = 'peer_ko', at = 5.4
+
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+    @pytest.mark.parametrize('at', [4.9, 5., 5.1, 5.2, 5.3, 5.4, 5.5, 5.6])
+    def test_refundable_reservation_cannot_cancel_v64_reask(v64, condition, at):
+>       old, old_requests, _ = run_review6('timer_reservation', 'no_comm', trial_cls=v64, at=at)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_zone_study_multiturn_review6.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'timer_reservation', condition = 'no_comm'
+trial_cls = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+at = 5.4
+
+    def run_review6(case, condition, *, trial_cls=None, at=5.5):
+        def wire(payload, turn):
+            if (case == 'separate_roots' and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (at, round(at + 4., 6))):
+                raise OSError('common failure or fresh message failure')
+    
+        def snapshot(call):
+            if (case == 'separate_roots' and call.actor == 'r1'
+                    and call.started_sim_s == round(at + 2., 6)):
+                raise OSError('common retry consumes a fresh message, then refunds')
+            if (case == 'refund_horizon' and call.actor in ('r1', 'r2')
+                    and call.started_sim_s == 6.4):
+                raise OSError('recipient snapshot sends nothing')
+    
+        def prepare(call):
+            if (case == 'timer_reservation' and call.actor == 'r3'
+                    and call.started_sim_s in (0., at)):
+                raise OSError('last slot reserved but refunded')
+            if case == 'refund_horizon' and call.actor == 'r3' and call.started_sim_s == 6.:
+                raise OSError('last slot refunded after delivery refusal')
+    
+        cap = {'separate_roots': 90, 'timer_reservation': 3, 'refund_horizon': 4}[case]
+        trial, clock, links, requests = fixture.make_trial(
+            condition, trial_cls=trial_cls, first='continue', follow_claim=False,
+            send=case != 'timer_reservation', horizon=30.,
+            policy=core.CallPolicy(max_retries=1, max_attempts_total=cap),
+            limits=zi.DecisionLimits(max_calls_total=cap),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        s.arm_observations(period_s=.1, first_at=.1)
+        s.timer('r1' if case == 'separate_roots' else 'r3',
+                at=6. if case == 'refund_horizon' else at)
+        end = {'separate_roots': 14., 'timer_reservation': 30., 'refund_horizon': 6.7}[case]
+        fixture.advance(trial, clock, links, end)
+        result = trial.finish(end)
+        if case == 'separate_roots' and condition != 'no_comm':
+            assert [p['sim_time_s'] for p in requests if p['robot_id'] == 'r1'] == [
+                0., at, round(at + 4., 6), round(at + 6., 6)]
+            rows = [r for r in s.ledger.values() if r['actor'] == 'r1']
+            assert [r['retry_of'] for r in rows[:5]] == [
+                '', '', rows[1]['call_id'], '', rows[3]['call_id']]
+            assert s._retries[core.RetryRoot('common', rows[1]['call_id'])] == 1
+            assert s._retries[core.RetryRoot('message', rows[3]['call_id'])] == 1
+        elif case == 'timer_reservation':
+            assert [(p['robot_id'], p['sim_time_s']) for p in requests] == [
+                ('r1', 0.), ('r2', 0.), ('r1', 15.3)]
+        elif case == 'refund_horizon' and condition != 'no_comm':
+            assert sum(m['budget_refused'] for m in s.metrics.values()) > 0
+            assert s.budget.used_total() == 3 and s.budget.remaining() == 1
+            assert not s.holding() and not trial.decision_budget_spent()
+            assert result.end_reason == 'sim_horizon'
+        assert not s.send_violations
+        return trial, requests, {
+            'path': case, 'message_state': condition, 'handling': 'review6_chain', 'exception': None,
+            'calls': [{'at': r['started_sim_s'], 'actor': r['actor'], 'id': cid,
+                       'retry_of': r['retry_of'], 'sends': s.send_ledger.sends(cid)}
+                      for cid, r in s.ledger.items()],
+            'events': s.events, 'ledger': s.ledger, 'budget': s.budget.to_dict(),
+            'end_reason': result.end_reason, 'holding': s.holding(),
+>           'decision_budget_spent': trial.decision_budget_spent(),
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        }
+E       AttributeError: 'LegacyTimingTrial' object has no attribute 'decision_budget_spent'
+
+tests/test_zone_study_multiturn_review6.py:72: AttributeError
+______ test_refundable_reservation_cannot_cancel_v64_reask[5.4-leader_ko] ______
+
+v64 = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+condition = 'leader_ko', at = 5.4
+
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+    @pytest.mark.parametrize('at', [4.9, 5., 5.1, 5.2, 5.3, 5.4, 5.5, 5.6])
+    def test_refundable_reservation_cannot_cancel_v64_reask(v64, condition, at):
+>       old, old_requests, _ = run_review6('timer_reservation', 'no_comm', trial_cls=v64, at=at)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_zone_study_multiturn_review6.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'timer_reservation', condition = 'no_comm'
+trial_cls = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+at = 5.4
+
+    def run_review6(case, condition, *, trial_cls=None, at=5.5):
+        def wire(payload, turn):
+            if (case == 'separate_roots' and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (at, round(at + 4., 6))):
+                raise OSError('common failure or fresh message failure')
+    
+        def snapshot(call):
+            if (case == 'separate_roots' and call.actor == 'r1'
+                    and call.started_sim_s == round(at + 2., 6)):
+                raise OSError('common retry consumes a fresh message, then refunds')
+            if (case == 'refund_horizon' and call.actor in ('r1', 'r2')
+                    and call.started_sim_s == 6.4):
+                raise OSError('recipient snapshot sends nothing')
+    
+        def prepare(call):
+            if (case == 'timer_reservation' and call.actor == 'r3'
+                    and call.started_sim_s in (0., at)):
+                raise OSError('last slot reserved but refunded')
+            if case == 'refund_horizon' and call.actor == 'r3' and call.started_sim_s == 6.:
+                raise OSError('last slot refunded after delivery refusal')
+    
+        cap = {'separate_roots': 90, 'timer_reservation': 3, 'refund_horizon': 4}[case]
+        trial, clock, links, requests = fixture.make_trial(
+            condition, trial_cls=trial_cls, first='continue', follow_claim=False,
+            send=case != 'timer_reservation', horizon=30.,
+            policy=core.CallPolicy(max_retries=1, max_attempts_total=cap),
+            limits=zi.DecisionLimits(max_calls_total=cap),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        s.arm_observations(period_s=.1, first_at=.1)
+        s.timer('r1' if case == 'separate_roots' else 'r3',
+                at=6. if case == 'refund_horizon' else at)
+        end = {'separate_roots': 14., 'timer_reservation': 30., 'refund_horizon': 6.7}[case]
+        fixture.advance(trial, clock, links, end)
+        result = trial.finish(end)
+        if case == 'separate_roots' and condition != 'no_comm':
+            assert [p['sim_time_s'] for p in requests if p['robot_id'] == 'r1'] == [
+                0., at, round(at + 4., 6), round(at + 6., 6)]
+            rows = [r for r in s.ledger.values() if r['actor'] == 'r1']
+            assert [r['retry_of'] for r in rows[:5]] == [
+                '', '', rows[1]['call_id'], '', rows[3]['call_id']]
+            assert s._retries[core.RetryRoot('common', rows[1]['call_id'])] == 1
+            assert s._retries[core.RetryRoot('message', rows[3]['call_id'])] == 1
+        elif case == 'timer_reservation':
+            assert [(p['robot_id'], p['sim_time_s']) for p in requests] == [
+                ('r1', 0.), ('r2', 0.), ('r1', 15.3)]
+        elif case == 'refund_horizon' and condition != 'no_comm':
+            assert sum(m['budget_refused'] for m in s.metrics.values()) > 0
+            assert s.budget.used_total() == 3 and s.budget.remaining() == 1
+            assert not s.holding() and not trial.decision_budget_spent()
+            assert result.end_reason == 'sim_horizon'
+        assert not s.send_violations
+        return trial, requests, {
+            'path': case, 'message_state': condition, 'handling': 'review6_chain', 'exception': None,
+            'calls': [{'at': r['started_sim_s'], 'actor': r['actor'], 'id': cid,
+                       'retry_of': r['retry_of'], 'sends': s.send_ledger.sends(cid)}
+                      for cid, r in s.ledger.items()],
+            'events': s.events, 'ledger': s.ledger, 'budget': s.budget.to_dict(),
+            'end_reason': result.end_reason, 'holding': s.holding(),
+>           'decision_budget_spent': trial.decision_budget_spent(),
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        }
+E       AttributeError: 'LegacyTimingTrial' object has no attribute 'decision_budget_spent'
+
+tests/test_zone_study_multiturn_review6.py:72: AttributeError
+_____ test_refundable_reservation_cannot_cancel_v64_reask[5.4-structured] ______
+
+v64 = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+condition = 'structured', at = 5.4
+
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+    @pytest.mark.parametrize('at', [4.9, 5., 5.1, 5.2, 5.3, 5.4, 5.5, 5.6])
+    def test_refundable_reservation_cannot_cancel_v64_reask(v64, condition, at):
+>       old, old_requests, _ = run_review6('timer_reservation', 'no_comm', trial_cls=v64, at=at)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_zone_study_multiturn_review6.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'timer_reservation', condition = 'no_comm'
+trial_cls = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+at = 5.4
+
+    def run_review6(case, condition, *, trial_cls=None, at=5.5):
+        def wire(payload, turn):
+            if (case == 'separate_roots' and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (at, round(at + 4., 6))):
+                raise OSError('common failure or fresh message failure')
+    
+        def snapshot(call):
+            if (case == 'separate_roots' and call.actor == 'r1'
+                    and call.started_sim_s == round(at + 2., 6)):
+                raise OSError('common retry consumes a fresh message, then refunds')
+            if (case == 'refund_horizon' and call.actor in ('r1', 'r2')
+                    and call.started_sim_s == 6.4):
+                raise OSError('recipient snapshot sends nothing')
+    
+        def prepare(call):
+            if (case == 'timer_reservation' and call.actor == 'r3'
+                    and call.started_sim_s in (0., at)):
+                raise OSError('last slot reserved but refunded')
+            if case == 'refund_horizon' and call.actor == 'r3' and call.started_sim_s == 6.:
+                raise OSError('last slot refunded after delivery refusal')
+    
+        cap = {'separate_roots': 90, 'timer_reservation': 3, 'refund_horizon': 4}[case]
+        trial, clock, links, requests = fixture.make_trial(
+            condition, trial_cls=trial_cls, first='continue', follow_claim=False,
+            send=case != 'timer_reservation', horizon=30.,
+            policy=core.CallPolicy(max_retries=1, max_attempts_total=cap),
+            limits=zi.DecisionLimits(max_calls_total=cap),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        s.arm_observations(period_s=.1, first_at=.1)
+        s.timer('r1' if case == 'separate_roots' else 'r3',
+                at=6. if case == 'refund_horizon' else at)
+        end = {'separate_roots': 14., 'timer_reservation': 30., 'refund_horizon': 6.7}[case]
+        fixture.advance(trial, clock, links, end)
+        result = trial.finish(end)
+        if case == 'separate_roots' and condition != 'no_comm':
+            assert [p['sim_time_s'] for p in requests if p['robot_id'] == 'r1'] == [
+                0., at, round(at + 4., 6), round(at + 6., 6)]
+            rows = [r for r in s.ledger.values() if r['actor'] == 'r1']
+            assert [r['retry_of'] for r in rows[:5]] == [
+                '', '', rows[1]['call_id'], '', rows[3]['call_id']]
+            assert s._retries[core.RetryRoot('common', rows[1]['call_id'])] == 1
+            assert s._retries[core.RetryRoot('message', rows[3]['call_id'])] == 1
+        elif case == 'timer_reservation':
+            assert [(p['robot_id'], p['sim_time_s']) for p in requests] == [
+                ('r1', 0.), ('r2', 0.), ('r1', 15.3)]
+        elif case == 'refund_horizon' and condition != 'no_comm':
+            assert sum(m['budget_refused'] for m in s.metrics.values()) > 0
+            assert s.budget.used_total() == 3 and s.budget.remaining() == 1
+            assert not s.holding() and not trial.decision_budget_spent()
+            assert result.end_reason == 'sim_horizon'
+        assert not s.send_violations
+        return trial, requests, {
+            'path': case, 'message_state': condition, 'handling': 'review6_chain', 'exception': None,
+            'calls': [{'at': r['started_sim_s'], 'actor': r['actor'], 'id': cid,
+                       'retry_of': r['retry_of'], 'sends': s.send_ledger.sends(cid)}
+                      for cid, r in s.ledger.items()],
+            'events': s.events, 'ledger': s.ledger, 'budget': s.budget.to_dict(),
+            'end_reason': result.end_reason, 'holding': s.holding(),
+>           'decision_budget_spent': trial.decision_budget_spent(),
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        }
+E       AttributeError: 'LegacyTimingTrial' object has no attribute 'decision_budget_spent'
+
+tests/test_zone_study_multiturn_review6.py:72: AttributeError
+_______ test_refundable_reservation_cannot_cancel_v64_reask[5.5-no_comm] _______
+
+v64 = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+condition = 'no_comm', at = 5.5
+
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+    @pytest.mark.parametrize('at', [4.9, 5., 5.1, 5.2, 5.3, 5.4, 5.5, 5.6])
+    def test_refundable_reservation_cannot_cancel_v64_reask(v64, condition, at):
+>       old, old_requests, _ = run_review6('timer_reservation', 'no_comm', trial_cls=v64, at=at)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_zone_study_multiturn_review6.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'timer_reservation', condition = 'no_comm'
+trial_cls = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+at = 5.5
+
+    def run_review6(case, condition, *, trial_cls=None, at=5.5):
+        def wire(payload, turn):
+            if (case == 'separate_roots' and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (at, round(at + 4., 6))):
+                raise OSError('common failure or fresh message failure')
+    
+        def snapshot(call):
+            if (case == 'separate_roots' and call.actor == 'r1'
+                    and call.started_sim_s == round(at + 2., 6)):
+                raise OSError('common retry consumes a fresh message, then refunds')
+            if (case == 'refund_horizon' and call.actor in ('r1', 'r2')
+                    and call.started_sim_s == 6.4):
+                raise OSError('recipient snapshot sends nothing')
+    
+        def prepare(call):
+            if (case == 'timer_reservation' and call.actor == 'r3'
+                    and call.started_sim_s in (0., at)):
+                raise OSError('last slot reserved but refunded')
+            if case == 'refund_horizon' and call.actor == 'r3' and call.started_sim_s == 6.:
+                raise OSError('last slot refunded after delivery refusal')
+    
+        cap = {'separate_roots': 90, 'timer_reservation': 3, 'refund_horizon': 4}[case]
+        trial, clock, links, requests = fixture.make_trial(
+            condition, trial_cls=trial_cls, first='continue', follow_claim=False,
+            send=case != 'timer_reservation', horizon=30.,
+            policy=core.CallPolicy(max_retries=1, max_attempts_total=cap),
+            limits=zi.DecisionLimits(max_calls_total=cap),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        s.arm_observations(period_s=.1, first_at=.1)
+        s.timer('r1' if case == 'separate_roots' else 'r3',
+                at=6. if case == 'refund_horizon' else at)
+        end = {'separate_roots': 14., 'timer_reservation': 30., 'refund_horizon': 6.7}[case]
+        fixture.advance(trial, clock, links, end)
+        result = trial.finish(end)
+        if case == 'separate_roots' and condition != 'no_comm':
+            assert [p['sim_time_s'] for p in requests if p['robot_id'] == 'r1'] == [
+                0., at, round(at + 4., 6), round(at + 6., 6)]
+            rows = [r for r in s.ledger.values() if r['actor'] == 'r1']
+            assert [r['retry_of'] for r in rows[:5]] == [
+                '', '', rows[1]['call_id'], '', rows[3]['call_id']]
+            assert s._retries[core.RetryRoot('common', rows[1]['call_id'])] == 1
+            assert s._retries[core.RetryRoot('message', rows[3]['call_id'])] == 1
+        elif case == 'timer_reservation':
+            assert [(p['robot_id'], p['sim_time_s']) for p in requests] == [
+                ('r1', 0.), ('r2', 0.), ('r1', 15.3)]
+        elif case == 'refund_horizon' and condition != 'no_comm':
+            assert sum(m['budget_refused'] for m in s.metrics.values()) > 0
+            assert s.budget.used_total() == 3 and s.budget.remaining() == 1
+            assert not s.holding() and not trial.decision_budget_spent()
+            assert result.end_reason == 'sim_horizon'
+        assert not s.send_violations
+        return trial, requests, {
+            'path': case, 'message_state': condition, 'handling': 'review6_chain', 'exception': None,
+            'calls': [{'at': r['started_sim_s'], 'actor': r['actor'], 'id': cid,
+                       'retry_of': r['retry_of'], 'sends': s.send_ledger.sends(cid)}
+                      for cid, r in s.ledger.items()],
+            'events': s.events, 'ledger': s.ledger, 'budget': s.budget.to_dict(),
+            'end_reason': result.end_reason, 'holding': s.holding(),
+>           'decision_budget_spent': trial.decision_budget_spent(),
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        }
+E       AttributeError: 'LegacyTimingTrial' object has no attribute 'decision_budget_spent'
+
+tests/test_zone_study_multiturn_review6.py:72: AttributeError
+_______ test_refundable_reservation_cannot_cancel_v64_reask[5.5-peer_ko] _______
+
+v64 = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+condition = 'peer_ko', at = 5.5
+
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+    @pytest.mark.parametrize('at', [4.9, 5., 5.1, 5.2, 5.3, 5.4, 5.5, 5.6])
+    def test_refundable_reservation_cannot_cancel_v64_reask(v64, condition, at):
+>       old, old_requests, _ = run_review6('timer_reservation', 'no_comm', trial_cls=v64, at=at)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_zone_study_multiturn_review6.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'timer_reservation', condition = 'no_comm'
+trial_cls = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+at = 5.5
+
+    def run_review6(case, condition, *, trial_cls=None, at=5.5):
+        def wire(payload, turn):
+            if (case == 'separate_roots' and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (at, round(at + 4., 6))):
+                raise OSError('common failure or fresh message failure')
+    
+        def snapshot(call):
+            if (case == 'separate_roots' and call.actor == 'r1'
+                    and call.started_sim_s == round(at + 2., 6)):
+                raise OSError('common retry consumes a fresh message, then refunds')
+            if (case == 'refund_horizon' and call.actor in ('r1', 'r2')
+                    and call.started_sim_s == 6.4):
+                raise OSError('recipient snapshot sends nothing')
+    
+        def prepare(call):
+            if (case == 'timer_reservation' and call.actor == 'r3'
+                    and call.started_sim_s in (0., at)):
+                raise OSError('last slot reserved but refunded')
+            if case == 'refund_horizon' and call.actor == 'r3' and call.started_sim_s == 6.:
+                raise OSError('last slot refunded after delivery refusal')
+    
+        cap = {'separate_roots': 90, 'timer_reservation': 3, 'refund_horizon': 4}[case]
+        trial, clock, links, requests = fixture.make_trial(
+            condition, trial_cls=trial_cls, first='continue', follow_claim=False,
+            send=case != 'timer_reservation', horizon=30.,
+            policy=core.CallPolicy(max_retries=1, max_attempts_total=cap),
+            limits=zi.DecisionLimits(max_calls_total=cap),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        s.arm_observations(period_s=.1, first_at=.1)
+        s.timer('r1' if case == 'separate_roots' else 'r3',
+                at=6. if case == 'refund_horizon' else at)
+        end = {'separate_roots': 14., 'timer_reservation': 30., 'refund_horizon': 6.7}[case]
+        fixture.advance(trial, clock, links, end)
+        result = trial.finish(end)
+        if case == 'separate_roots' and condition != 'no_comm':
+            assert [p['sim_time_s'] for p in requests if p['robot_id'] == 'r1'] == [
+                0., at, round(at + 4., 6), round(at + 6., 6)]
+            rows = [r for r in s.ledger.values() if r['actor'] == 'r1']
+            assert [r['retry_of'] for r in rows[:5]] == [
+                '', '', rows[1]['call_id'], '', rows[3]['call_id']]
+            assert s._retries[core.RetryRoot('common', rows[1]['call_id'])] == 1
+            assert s._retries[core.RetryRoot('message', rows[3]['call_id'])] == 1
+        elif case == 'timer_reservation':
+            assert [(p['robot_id'], p['sim_time_s']) for p in requests] == [
+                ('r1', 0.), ('r2', 0.), ('r1', 15.3)]
+        elif case == 'refund_horizon' and condition != 'no_comm':
+            assert sum(m['budget_refused'] for m in s.metrics.values()) > 0
+            assert s.budget.used_total() == 3 and s.budget.remaining() == 1
+            assert not s.holding() and not trial.decision_budget_spent()
+            assert result.end_reason == 'sim_horizon'
+        assert not s.send_violations
+        return trial, requests, {
+            'path': case, 'message_state': condition, 'handling': 'review6_chain', 'exception': None,
+            'calls': [{'at': r['started_sim_s'], 'actor': r['actor'], 'id': cid,
+                       'retry_of': r['retry_of'], 'sends': s.send_ledger.sends(cid)}
+                      for cid, r in s.ledger.items()],
+            'events': s.events, 'ledger': s.ledger, 'budget': s.budget.to_dict(),
+            'end_reason': result.end_reason, 'holding': s.holding(),
+>           'decision_budget_spent': trial.decision_budget_spent(),
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        }
+E       AttributeError: 'LegacyTimingTrial' object has no attribute 'decision_budget_spent'
+
+tests/test_zone_study_multiturn_review6.py:72: AttributeError
+______ test_refundable_reservation_cannot_cancel_v64_reask[5.5-leader_ko] ______
+
+v64 = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+condition = 'leader_ko', at = 5.5
+
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+    @pytest.mark.parametrize('at', [4.9, 5., 5.1, 5.2, 5.3, 5.4, 5.5, 5.6])
+    def test_refundable_reservation_cannot_cancel_v64_reask(v64, condition, at):
+>       old, old_requests, _ = run_review6('timer_reservation', 'no_comm', trial_cls=v64, at=at)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_zone_study_multiturn_review6.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'timer_reservation', condition = 'no_comm'
+trial_cls = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+at = 5.5
+
+    def run_review6(case, condition, *, trial_cls=None, at=5.5):
+        def wire(payload, turn):
+            if (case == 'separate_roots' and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (at, round(at + 4., 6))):
+                raise OSError('common failure or fresh message failure')
+    
+        def snapshot(call):
+            if (case == 'separate_roots' and call.actor == 'r1'
+                    and call.started_sim_s == round(at + 2., 6)):
+                raise OSError('common retry consumes a fresh message, then refunds')
+            if (case == 'refund_horizon' and call.actor in ('r1', 'r2')
+                    and call.started_sim_s == 6.4):
+                raise OSError('recipient snapshot sends nothing')
+    
+        def prepare(call):
+            if (case == 'timer_reservation' and call.actor == 'r3'
+                    and call.started_sim_s in (0., at)):
+                raise OSError('last slot reserved but refunded')
+            if case == 'refund_horizon' and call.actor == 'r3' and call.started_sim_s == 6.:
+                raise OSError('last slot refunded after delivery refusal')
+    
+        cap = {'separate_roots': 90, 'timer_reservation': 3, 'refund_horizon': 4}[case]
+        trial, clock, links, requests = fixture.make_trial(
+            condition, trial_cls=trial_cls, first='continue', follow_claim=False,
+            send=case != 'timer_reservation', horizon=30.,
+            policy=core.CallPolicy(max_retries=1, max_attempts_total=cap),
+            limits=zi.DecisionLimits(max_calls_total=cap),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        s.arm_observations(period_s=.1, first_at=.1)
+        s.timer('r1' if case == 'separate_roots' else 'r3',
+                at=6. if case == 'refund_horizon' else at)
+        end = {'separate_roots': 14., 'timer_reservation': 30., 'refund_horizon': 6.7}[case]
+        fixture.advance(trial, clock, links, end)
+        result = trial.finish(end)
+        if case == 'separate_roots' and condition != 'no_comm':
+            assert [p['sim_time_s'] for p in requests if p['robot_id'] == 'r1'] == [
+                0., at, round(at + 4., 6), round(at + 6., 6)]
+            rows = [r for r in s.ledger.values() if r['actor'] == 'r1']
+            assert [r['retry_of'] for r in rows[:5]] == [
+                '', '', rows[1]['call_id'], '', rows[3]['call_id']]
+            assert s._retries[core.RetryRoot('common', rows[1]['call_id'])] == 1
+            assert s._retries[core.RetryRoot('message', rows[3]['call_id'])] == 1
+        elif case == 'timer_reservation':
+            assert [(p['robot_id'], p['sim_time_s']) for p in requests] == [
+                ('r1', 0.), ('r2', 0.), ('r1', 15.3)]
+        elif case == 'refund_horizon' and condition != 'no_comm':
+            assert sum(m['budget_refused'] for m in s.metrics.values()) > 0
+            assert s.budget.used_total() == 3 and s.budget.remaining() == 1
+            assert not s.holding() and not trial.decision_budget_spent()
+            assert result.end_reason == 'sim_horizon'
+        assert not s.send_violations
+        return trial, requests, {
+            'path': case, 'message_state': condition, 'handling': 'review6_chain', 'exception': None,
+            'calls': [{'at': r['started_sim_s'], 'actor': r['actor'], 'id': cid,
+                       'retry_of': r['retry_of'], 'sends': s.send_ledger.sends(cid)}
+                      for cid, r in s.ledger.items()],
+            'events': s.events, 'ledger': s.ledger, 'budget': s.budget.to_dict(),
+            'end_reason': result.end_reason, 'holding': s.holding(),
+>           'decision_budget_spent': trial.decision_budget_spent(),
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        }
+E       AttributeError: 'LegacyTimingTrial' object has no attribute 'decision_budget_spent'
+
+tests/test_zone_study_multiturn_review6.py:72: AttributeError
+_____ test_refundable_reservation_cannot_cancel_v64_reask[5.5-structured] ______
+
+v64 = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+condition = 'structured', at = 5.5
+
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+    @pytest.mark.parametrize('at', [4.9, 5., 5.1, 5.2, 5.3, 5.4, 5.5, 5.6])
+    def test_refundable_reservation_cannot_cancel_v64_reask(v64, condition, at):
+>       old, old_requests, _ = run_review6('timer_reservation', 'no_comm', trial_cls=v64, at=at)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_zone_study_multiturn_review6.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'timer_reservation', condition = 'no_comm'
+trial_cls = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+at = 5.5
+
+    def run_review6(case, condition, *, trial_cls=None, at=5.5):
+        def wire(payload, turn):
+            if (case == 'separate_roots' and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (at, round(at + 4., 6))):
+                raise OSError('common failure or fresh message failure')
+    
+        def snapshot(call):
+            if (case == 'separate_roots' and call.actor == 'r1'
+                    and call.started_sim_s == round(at + 2., 6)):
+                raise OSError('common retry consumes a fresh message, then refunds')
+            if (case == 'refund_horizon' and call.actor in ('r1', 'r2')
+                    and call.started_sim_s == 6.4):
+                raise OSError('recipient snapshot sends nothing')
+    
+        def prepare(call):
+            if (case == 'timer_reservation' and call.actor == 'r3'
+                    and call.started_sim_s in (0., at)):
+                raise OSError('last slot reserved but refunded')
+            if case == 'refund_horizon' and call.actor == 'r3' and call.started_sim_s == 6.:
+                raise OSError('last slot refunded after delivery refusal')
+    
+        cap = {'separate_roots': 90, 'timer_reservation': 3, 'refund_horizon': 4}[case]
+        trial, clock, links, requests = fixture.make_trial(
+            condition, trial_cls=trial_cls, first='continue', follow_claim=False,
+            send=case != 'timer_reservation', horizon=30.,
+            policy=core.CallPolicy(max_retries=1, max_attempts_total=cap),
+            limits=zi.DecisionLimits(max_calls_total=cap),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        s.arm_observations(period_s=.1, first_at=.1)
+        s.timer('r1' if case == 'separate_roots' else 'r3',
+                at=6. if case == 'refund_horizon' else at)
+        end = {'separate_roots': 14., 'timer_reservation': 30., 'refund_horizon': 6.7}[case]
+        fixture.advance(trial, clock, links, end)
+        result = trial.finish(end)
+        if case == 'separate_roots' and condition != 'no_comm':
+            assert [p['sim_time_s'] for p in requests if p['robot_id'] == 'r1'] == [
+                0., at, round(at + 4., 6), round(at + 6., 6)]
+            rows = [r for r in s.ledger.values() if r['actor'] == 'r1']
+            assert [r['retry_of'] for r in rows[:5]] == [
+                '', '', rows[1]['call_id'], '', rows[3]['call_id']]
+            assert s._retries[core.RetryRoot('common', rows[1]['call_id'])] == 1
+            assert s._retries[core.RetryRoot('message', rows[3]['call_id'])] == 1
+        elif case == 'timer_reservation':
+            assert [(p['robot_id'], p['sim_time_s']) for p in requests] == [
+                ('r1', 0.), ('r2', 0.), ('r1', 15.3)]
+        elif case == 'refund_horizon' and condition != 'no_comm':
+            assert sum(m['budget_refused'] for m in s.metrics.values()) > 0
+            assert s.budget.used_total() == 3 and s.budget.remaining() == 1
+            assert not s.holding() and not trial.decision_budget_spent()
+            assert result.end_reason == 'sim_horizon'
+        assert not s.send_violations
+        return trial, requests, {
+            'path': case, 'message_state': condition, 'handling': 'review6_chain', 'exception': None,
+            'calls': [{'at': r['started_sim_s'], 'actor': r['actor'], 'id': cid,
+                       'retry_of': r['retry_of'], 'sends': s.send_ledger.sends(cid)}
+                      for cid, r in s.ledger.items()],
+            'events': s.events, 'ledger': s.ledger, 'budget': s.budget.to_dict(),
+            'end_reason': result.end_reason, 'holding': s.holding(),
+>           'decision_budget_spent': trial.decision_budget_spent(),
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        }
+E       AttributeError: 'LegacyTimingTrial' object has no attribute 'decision_budget_spent'
+
+tests/test_zone_study_multiturn_review6.py:72: AttributeError
+_______ test_refundable_reservation_cannot_cancel_v64_reask[5.6-no_comm] _______
+
+v64 = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+condition = 'no_comm', at = 5.6
+
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+    @pytest.mark.parametrize('at', [4.9, 5., 5.1, 5.2, 5.3, 5.4, 5.5, 5.6])
+    def test_refundable_reservation_cannot_cancel_v64_reask(v64, condition, at):
+>       old, old_requests, _ = run_review6('timer_reservation', 'no_comm', trial_cls=v64, at=at)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_zone_study_multiturn_review6.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'timer_reservation', condition = 'no_comm'
+trial_cls = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+at = 5.6
+
+    def run_review6(case, condition, *, trial_cls=None, at=5.5):
+        def wire(payload, turn):
+            if (case == 'separate_roots' and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (at, round(at + 4., 6))):
+                raise OSError('common failure or fresh message failure')
+    
+        def snapshot(call):
+            if (case == 'separate_roots' and call.actor == 'r1'
+                    and call.started_sim_s == round(at + 2., 6)):
+                raise OSError('common retry consumes a fresh message, then refunds')
+            if (case == 'refund_horizon' and call.actor in ('r1', 'r2')
+                    and call.started_sim_s == 6.4):
+                raise OSError('recipient snapshot sends nothing')
+    
+        def prepare(call):
+            if (case == 'timer_reservation' and call.actor == 'r3'
+                    and call.started_sim_s in (0., at)):
+                raise OSError('last slot reserved but refunded')
+            if case == 'refund_horizon' and call.actor == 'r3' and call.started_sim_s == 6.:
+                raise OSError('last slot refunded after delivery refusal')
+    
+        cap = {'separate_roots': 90, 'timer_reservation': 3, 'refund_horizon': 4}[case]
+        trial, clock, links, requests = fixture.make_trial(
+            condition, trial_cls=trial_cls, first='continue', follow_claim=False,
+            send=case != 'timer_reservation', horizon=30.,
+            policy=core.CallPolicy(max_retries=1, max_attempts_total=cap),
+            limits=zi.DecisionLimits(max_calls_total=cap),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        s.arm_observations(period_s=.1, first_at=.1)
+        s.timer('r1' if case == 'separate_roots' else 'r3',
+                at=6. if case == 'refund_horizon' else at)
+        end = {'separate_roots': 14., 'timer_reservation': 30., 'refund_horizon': 6.7}[case]
+        fixture.advance(trial, clock, links, end)
+        result = trial.finish(end)
+        if case == 'separate_roots' and condition != 'no_comm':
+            assert [p['sim_time_s'] for p in requests if p['robot_id'] == 'r1'] == [
+                0., at, round(at + 4., 6), round(at + 6., 6)]
+            rows = [r for r in s.ledger.values() if r['actor'] == 'r1']
+            assert [r['retry_of'] for r in rows[:5]] == [
+                '', '', rows[1]['call_id'], '', rows[3]['call_id']]
+            assert s._retries[core.RetryRoot('common', rows[1]['call_id'])] == 1
+            assert s._retries[core.RetryRoot('message', rows[3]['call_id'])] == 1
+        elif case == 'timer_reservation':
+            assert [(p['robot_id'], p['sim_time_s']) for p in requests] == [
+                ('r1', 0.), ('r2', 0.), ('r1', 15.3)]
+        elif case == 'refund_horizon' and condition != 'no_comm':
+            assert sum(m['budget_refused'] for m in s.metrics.values()) > 0
+            assert s.budget.used_total() == 3 and s.budget.remaining() == 1
+            assert not s.holding() and not trial.decision_budget_spent()
+            assert result.end_reason == 'sim_horizon'
+        assert not s.send_violations
+        return trial, requests, {
+            'path': case, 'message_state': condition, 'handling': 'review6_chain', 'exception': None,
+            'calls': [{'at': r['started_sim_s'], 'actor': r['actor'], 'id': cid,
+                       'retry_of': r['retry_of'], 'sends': s.send_ledger.sends(cid)}
+                      for cid, r in s.ledger.items()],
+            'events': s.events, 'ledger': s.ledger, 'budget': s.budget.to_dict(),
+            'end_reason': result.end_reason, 'holding': s.holding(),
+>           'decision_budget_spent': trial.decision_budget_spent(),
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        }
+E       AttributeError: 'LegacyTimingTrial' object has no attribute 'decision_budget_spent'
+
+tests/test_zone_study_multiturn_review6.py:72: AttributeError
+_______ test_refundable_reservation_cannot_cancel_v64_reask[5.6-peer_ko] _______
+
+v64 = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+condition = 'peer_ko', at = 5.6
+
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+    @pytest.mark.parametrize('at', [4.9, 5., 5.1, 5.2, 5.3, 5.4, 5.5, 5.6])
+    def test_refundable_reservation_cannot_cancel_v64_reask(v64, condition, at):
+>       old, old_requests, _ = run_review6('timer_reservation', 'no_comm', trial_cls=v64, at=at)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_zone_study_multiturn_review6.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'timer_reservation', condition = 'no_comm'
+trial_cls = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+at = 5.6
+
+    def run_review6(case, condition, *, trial_cls=None, at=5.5):
+        def wire(payload, turn):
+            if (case == 'separate_roots' and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (at, round(at + 4., 6))):
+                raise OSError('common failure or fresh message failure')
+    
+        def snapshot(call):
+            if (case == 'separate_roots' and call.actor == 'r1'
+                    and call.started_sim_s == round(at + 2., 6)):
+                raise OSError('common retry consumes a fresh message, then refunds')
+            if (case == 'refund_horizon' and call.actor in ('r1', 'r2')
+                    and call.started_sim_s == 6.4):
+                raise OSError('recipient snapshot sends nothing')
+    
+        def prepare(call):
+            if (case == 'timer_reservation' and call.actor == 'r3'
+                    and call.started_sim_s in (0., at)):
+                raise OSError('last slot reserved but refunded')
+            if case == 'refund_horizon' and call.actor == 'r3' and call.started_sim_s == 6.:
+                raise OSError('last slot refunded after delivery refusal')
+    
+        cap = {'separate_roots': 90, 'timer_reservation': 3, 'refund_horizon': 4}[case]
+        trial, clock, links, requests = fixture.make_trial(
+            condition, trial_cls=trial_cls, first='continue', follow_claim=False,
+            send=case != 'timer_reservation', horizon=30.,
+            policy=core.CallPolicy(max_retries=1, max_attempts_total=cap),
+            limits=zi.DecisionLimits(max_calls_total=cap),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        s.arm_observations(period_s=.1, first_at=.1)
+        s.timer('r1' if case == 'separate_roots' else 'r3',
+                at=6. if case == 'refund_horizon' else at)
+        end = {'separate_roots': 14., 'timer_reservation': 30., 'refund_horizon': 6.7}[case]
+        fixture.advance(trial, clock, links, end)
+        result = trial.finish(end)
+        if case == 'separate_roots' and condition != 'no_comm':
+            assert [p['sim_time_s'] for p in requests if p['robot_id'] == 'r1'] == [
+                0., at, round(at + 4., 6), round(at + 6., 6)]
+            rows = [r for r in s.ledger.values() if r['actor'] == 'r1']
+            assert [r['retry_of'] for r in rows[:5]] == [
+                '', '', rows[1]['call_id'], '', rows[3]['call_id']]
+            assert s._retries[core.RetryRoot('common', rows[1]['call_id'])] == 1
+            assert s._retries[core.RetryRoot('message', rows[3]['call_id'])] == 1
+        elif case == 'timer_reservation':
+            assert [(p['robot_id'], p['sim_time_s']) for p in requests] == [
+                ('r1', 0.), ('r2', 0.), ('r1', 15.3)]
+        elif case == 'refund_horizon' and condition != 'no_comm':
+            assert sum(m['budget_refused'] for m in s.metrics.values()) > 0
+            assert s.budget.used_total() == 3 and s.budget.remaining() == 1
+            assert not s.holding() and not trial.decision_budget_spent()
+            assert result.end_reason == 'sim_horizon'
+        assert not s.send_violations
+        return trial, requests, {
+            'path': case, 'message_state': condition, 'handling': 'review6_chain', 'exception': None,
+            'calls': [{'at': r['started_sim_s'], 'actor': r['actor'], 'id': cid,
+                       'retry_of': r['retry_of'], 'sends': s.send_ledger.sends(cid)}
+                      for cid, r in s.ledger.items()],
+            'events': s.events, 'ledger': s.ledger, 'budget': s.budget.to_dict(),
+            'end_reason': result.end_reason, 'holding': s.holding(),
+>           'decision_budget_spent': trial.decision_budget_spent(),
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        }
+E       AttributeError: 'LegacyTimingTrial' object has no attribute 'decision_budget_spent'
+
+tests/test_zone_study_multiturn_review6.py:72: AttributeError
+______ test_refundable_reservation_cannot_cancel_v64_reask[5.6-leader_ko] ______
+
+v64 = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+condition = 'leader_ko', at = 5.6
+
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+    @pytest.mark.parametrize('at', [4.9, 5., 5.1, 5.2, 5.3, 5.4, 5.5, 5.6])
+    def test_refundable_reservation_cannot_cancel_v64_reask(v64, condition, at):
+>       old, old_requests, _ = run_review6('timer_reservation', 'no_comm', trial_cls=v64, at=at)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_zone_study_multiturn_review6.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'timer_reservation', condition = 'no_comm'
+trial_cls = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+at = 5.6
+
+    def run_review6(case, condition, *, trial_cls=None, at=5.5):
+        def wire(payload, turn):
+            if (case == 'separate_roots' and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (at, round(at + 4., 6))):
+                raise OSError('common failure or fresh message failure')
+    
+        def snapshot(call):
+            if (case == 'separate_roots' and call.actor == 'r1'
+                    and call.started_sim_s == round(at + 2., 6)):
+                raise OSError('common retry consumes a fresh message, then refunds')
+            if (case == 'refund_horizon' and call.actor in ('r1', 'r2')
+                    and call.started_sim_s == 6.4):
+                raise OSError('recipient snapshot sends nothing')
+    
+        def prepare(call):
+            if (case == 'timer_reservation' and call.actor == 'r3'
+                    and call.started_sim_s in (0., at)):
+                raise OSError('last slot reserved but refunded')
+            if case == 'refund_horizon' and call.actor == 'r3' and call.started_sim_s == 6.:
+                raise OSError('last slot refunded after delivery refusal')
+    
+        cap = {'separate_roots': 90, 'timer_reservation': 3, 'refund_horizon': 4}[case]
+        trial, clock, links, requests = fixture.make_trial(
+            condition, trial_cls=trial_cls, first='continue', follow_claim=False,
+            send=case != 'timer_reservation', horizon=30.,
+            policy=core.CallPolicy(max_retries=1, max_attempts_total=cap),
+            limits=zi.DecisionLimits(max_calls_total=cap),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        s.arm_observations(period_s=.1, first_at=.1)
+        s.timer('r1' if case == 'separate_roots' else 'r3',
+                at=6. if case == 'refund_horizon' else at)
+        end = {'separate_roots': 14., 'timer_reservation': 30., 'refund_horizon': 6.7}[case]
+        fixture.advance(trial, clock, links, end)
+        result = trial.finish(end)
+        if case == 'separate_roots' and condition != 'no_comm':
+            assert [p['sim_time_s'] for p in requests if p['robot_id'] == 'r1'] == [
+                0., at, round(at + 4., 6), round(at + 6., 6)]
+            rows = [r for r in s.ledger.values() if r['actor'] == 'r1']
+            assert [r['retry_of'] for r in rows[:5]] == [
+                '', '', rows[1]['call_id'], '', rows[3]['call_id']]
+            assert s._retries[core.RetryRoot('common', rows[1]['call_id'])] == 1
+            assert s._retries[core.RetryRoot('message', rows[3]['call_id'])] == 1
+        elif case == 'timer_reservation':
+            assert [(p['robot_id'], p['sim_time_s']) for p in requests] == [
+                ('r1', 0.), ('r2', 0.), ('r1', 15.3)]
+        elif case == 'refund_horizon' and condition != 'no_comm':
+            assert sum(m['budget_refused'] for m in s.metrics.values()) > 0
+            assert s.budget.used_total() == 3 and s.budget.remaining() == 1
+            assert not s.holding() and not trial.decision_budget_spent()
+            assert result.end_reason == 'sim_horizon'
+        assert not s.send_violations
+        return trial, requests, {
+            'path': case, 'message_state': condition, 'handling': 'review6_chain', 'exception': None,
+            'calls': [{'at': r['started_sim_s'], 'actor': r['actor'], 'id': cid,
+                       'retry_of': r['retry_of'], 'sends': s.send_ledger.sends(cid)}
+                      for cid, r in s.ledger.items()],
+            'events': s.events, 'ledger': s.ledger, 'budget': s.budget.to_dict(),
+            'end_reason': result.end_reason, 'holding': s.holding(),
+>           'decision_budget_spent': trial.decision_budget_spent(),
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        }
+E       AttributeError: 'LegacyTimingTrial' object has no attribute 'decision_budget_spent'
+
+tests/test_zone_study_multiturn_review6.py:72: AttributeError
+_____ test_refundable_reservation_cannot_cancel_v64_reask[5.6-structured] ______
+
+v64 = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+condition = 'structured', at = 5.6
+
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+    @pytest.mark.parametrize('at', [4.9, 5., 5.1, 5.2, 5.3, 5.4, 5.5, 5.6])
+    def test_refundable_reservation_cannot_cancel_v64_reask(v64, condition, at):
+>       old, old_requests, _ = run_review6('timer_reservation', 'no_comm', trial_cls=v64, at=at)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_zone_study_multiturn_review6.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+case = 'timer_reservation', condition = 'no_comm'
+trial_cls = <class 'tests.test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+at = 5.6
+
+    def run_review6(case, condition, *, trial_cls=None, at=5.5):
+        def wire(payload, turn):
+            if (case == 'separate_roots' and payload['robot_id'] == 'r1'
+                    and payload['sim_time_s'] in (at, round(at + 4., 6))):
+                raise OSError('common failure or fresh message failure')
+    
+        def snapshot(call):
+            if (case == 'separate_roots' and call.actor == 'r1'
+                    and call.started_sim_s == round(at + 2., 6)):
+                raise OSError('common retry consumes a fresh message, then refunds')
+            if (case == 'refund_horizon' and call.actor in ('r1', 'r2')
+                    and call.started_sim_s == 6.4):
+                raise OSError('recipient snapshot sends nothing')
+    
+        def prepare(call):
+            if (case == 'timer_reservation' and call.actor == 'r3'
+                    and call.started_sim_s in (0., at)):
+                raise OSError('last slot reserved but refunded')
+            if case == 'refund_horizon' and call.actor == 'r3' and call.started_sim_s == 6.:
+                raise OSError('last slot refunded after delivery refusal')
+    
+        cap = {'separate_roots': 90, 'timer_reservation': 3, 'refund_horizon': 4}[case]
+        trial, clock, links, requests = fixture.make_trial(
+            condition, trial_cls=trial_cls, first='continue', follow_claim=False,
+            send=case != 'timer_reservation', horizon=30.,
+            policy=core.CallPolicy(max_retries=1, max_attempts_total=cap),
+            limits=zi.DecisionLimits(max_calls_total=cap),
+            wire_fault=wire, snapshot_fault=snapshot, prepare_fault=prepare)
+        s = trial.scheduler
+        s.arm_observations(period_s=.1, first_at=.1)
+        s.timer('r1' if case == 'separate_roots' else 'r3',
+                at=6. if case == 'refund_horizon' else at)
+        end = {'separate_roots': 14., 'timer_reservation': 30., 'refund_horizon': 6.7}[case]
+        fixture.advance(trial, clock, links, end)
+        result = trial.finish(end)
+        if case == 'separate_roots' and condition != 'no_comm':
+            assert [p['sim_time_s'] for p in requests if p['robot_id'] == 'r1'] == [
+                0., at, round(at + 4., 6), round(at + 6., 6)]
+            rows = [r for r in s.ledger.values() if r['actor'] == 'r1']
+            assert [r['retry_of'] for r in rows[:5]] == [
+                '', '', rows[1]['call_id'], '', rows[3]['call_id']]
+            assert s._retries[core.RetryRoot('common', rows[1]['call_id'])] == 1
+            assert s._retries[core.RetryRoot('message', rows[3]['call_id'])] == 1
+        elif case == 'timer_reservation':
+            assert [(p['robot_id'], p['sim_time_s']) for p in requests] == [
+                ('r1', 0.), ('r2', 0.), ('r1', 15.3)]
+        elif case == 'refund_horizon' and condition != 'no_comm':
+            assert sum(m['budget_refused'] for m in s.metrics.values()) > 0
+            assert s.budget.used_total() == 3 and s.budget.remaining() == 1
+            assert not s.holding() and not trial.decision_budget_spent()
+            assert result.end_reason == 'sim_horizon'
+        assert not s.send_violations
+        return trial, requests, {
+            'path': case, 'message_state': condition, 'handling': 'review6_chain', 'exception': None,
+            'calls': [{'at': r['started_sim_s'], 'actor': r['actor'], 'id': cid,
+                       'retry_of': r['retry_of'], 'sends': s.send_ledger.sends(cid)}
+                      for cid, r in s.ledger.items()],
+            'events': s.events, 'ledger': s.ledger, 'budget': s.budget.to_dict(),
+            'end_reason': result.end_reason, 'holding': s.holding(),
+>           'decision_budget_spent': trial.decision_budget_spent(),
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        }
+E       AttributeError: 'LegacyTimingTrial' object has no attribute 'decision_budget_spent'
+
+tests/test_zone_study_multiturn_review6.py:72: AttributeError
+=========================== short test summary info ============================
+FAILED tests/test_zone_study_multiturn_review6.py::test_refundable_reservation_cannot_cancel_v64_reask[4.9-no_comm]
+FAILED tests/test_zone_study_multiturn_review6.py::test_refundable_reservation_cannot_cancel_v64_reask[4.9-peer_ko]
+FAILED tests/test_zone_study_multiturn_review6.py::test_refundable_reservation_cannot_cancel_v64_reask[4.9-leader_ko]
+FAILED tests/test_zone_study_multiturn_review6.py::test_refundable_reservation_cannot_cancel_v64_reask[4.9-structured]
+FAILED tests/test_zone_study_multiturn_review6.py::test_refundable_reservation_cannot_cancel_v64_reask[5.0-no_comm]
+FAILED tests/test_zone_study_multiturn_review6.py::test_refundable_reservation_cannot_cancel_v64_reask[5.0-peer_ko]
+FAILED tests/test_zone_study_multiturn_review6.py::test_refundable_reservation_cannot_cancel_v64_reask[5.0-leader_ko]
+FAILED tests/test_zone_study_multiturn_review6.py::test_refundable_reservation_cannot_cancel_v64_reask[5.0-structured]
+FAILED tests/test_zone_study_multiturn_review6.py::test_refundable_reservation_cannot_cancel_v64_reask[5.1-no_comm]
+FAILED tests/test_zone_study_multiturn_review6.py::test_refundable_reservation_cannot_cancel_v64_reask[5.1-peer_ko]
+FAILED tests/test_zone_study_multiturn_review6.py::test_refundable_reservation_cannot_cancel_v64_reask[5.1-leader_ko]
+FAILED tests/test_zone_study_multiturn_review6.py::test_refundable_reservation_cannot_cancel_v64_reask[5.1-structured]
+FAILED tests/test_zone_study_multiturn_review6.py::test_refundable_reservation_cannot_cancel_v64_reask[5.2-no_comm]
+FAILED tests/test_zone_study_multiturn_review6.py::test_refundable_reservation_cannot_cancel_v64_reask[5.2-peer_ko]
+FAILED tests/test_zone_study_multiturn_review6.py::test_refundable_reservation_cannot_cancel_v64_reask[5.2-leader_ko]
+FAILED tests/test_zone_study_multiturn_review6.py::test_refundable_reservation_cannot_cancel_v64_reask[5.2-structured]
+FAILED tests/test_zone_study_multiturn_review6.py::test_refundable_reservation_cannot_cancel_v64_reask[5.3-no_comm]
+FAILED tests/test_zone_study_multiturn_review6.py::test_refundable_reservation_cannot_cancel_v64_reask[5.3-peer_ko]
+FAILED tests/test_zone_study_multiturn_review6.py::test_refundable_reservation_cannot_cancel_v64_reask[5.3-leader_ko]
+FAILED tests/test_zone_study_multiturn_review6.py::test_refundable_reservation_cannot_cancel_v64_reask[5.3-structured]
+FAILED tests/test_zone_study_multiturn_review6.py::test_refundable_reservation_cannot_cancel_v64_reask[5.4-no_comm]
+FAILED tests/test_zone_study_multiturn_review6.py::test_refundable_reservation_cannot_cancel_v64_reask[5.4-peer_ko]
+FAILED tests/test_zone_study_multiturn_review6.py::test_refundable_reservation_cannot_cancel_v64_reask[5.4-leader_ko]
+FAILED tests/test_zone_study_multiturn_review6.py::test_refundable_reservation_cannot_cancel_v64_reask[5.4-structured]
+FAILED tests/test_zone_study_multiturn_review6.py::test_refundable_reservation_cannot_cancel_v64_reask[5.5-no_comm]
+FAILED tests/test_zone_study_multiturn_review6.py::test_refundable_reservation_cannot_cancel_v64_reask[5.5-peer_ko]
+FAILED tests/test_zone_study_multiturn_review6.py::test_refundable_reservation_cannot_cancel_v64_reask[5.5-leader_ko]
+FAILED tests/test_zone_study_multiturn_review6.py::test_refundable_reservation_cannot_cancel_v64_reask[5.5-structured]
+FAILED tests/test_zone_study_multiturn_review6.py::test_refundable_reservation_cannot_cancel_v64_reask[5.6-no_comm]
+FAILED tests/test_zone_study_multiturn_review6.py::test_refundable_reservation_cannot_cancel_v64_reask[5.6-peer_ko]
+FAILED tests/test_zone_study_multiturn_review6.py::test_refundable_reservation_cannot_cancel_v64_reask[5.6-leader_ko]
+FAILED tests/test_zone_study_multiturn_review6.py::test_refundable_reservation_cannot_cancel_v64_reask[5.6-structured]
+32 failed, 309 passed in 8.50s

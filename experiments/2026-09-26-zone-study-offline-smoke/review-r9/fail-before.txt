@@ -1,0 +1,64 @@
+FFFF                                                                     [100%]
+=================================== FAILURES ===================================
+__________ test_r9_length_valid_json_is_failed_not_executed[no_comm] ___________
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/kiro-study-core/.tmp/r9/before/test_r9_length_valid_json_is_f0')
+condition = 'no_comm'
+
+    @pytest.mark.parametrize('condition', MAIN_CONDITIONS)
+    def test_r9_length_valid_json_is_failed_not_executed(tmp_path, condition):
+        trial, budget = trial_for(tmp_path, condition)
+        result = trial.run_adapter()
+>       assert not result['actions'], 'length reply executed an action'
+E       AssertionError: length reply executed an action
+E       assert not [{'schema': 'ugrp.zone_study_action.v1', 'run_id': 'r9-no_comm', 'condition': 'no_comm', 'seed': 11, ...}]
+
+tests/test_zone_study_review_r9.py:52: AssertionError
+__________ test_r9_length_valid_json_is_failed_not_executed[peer_ko] ___________
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/kiro-study-core/.tmp/r9/before/test_r9_length_valid_json_is_f1')
+condition = 'peer_ko'
+
+    @pytest.mark.parametrize('condition', MAIN_CONDITIONS)
+    def test_r9_length_valid_json_is_failed_not_executed(tmp_path, condition):
+        trial, budget = trial_for(tmp_path, condition)
+        result = trial.run_adapter()
+>       assert not result['actions'], 'length reply executed an action'
+E       AssertionError: length reply executed an action
+E       assert not [{'schema': 'ugrp.zone_study_action.v1', 'run_id': 'r9-peer_ko', 'condition': 'peer_ko', 'seed': 11, ...}]
+
+tests/test_zone_study_review_r9.py:52: AssertionError
+_________ test_r9_length_valid_json_is_failed_not_executed[leader_ko] __________
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/kiro-study-core/.tmp/r9/before/test_r9_length_valid_json_is_f2')
+condition = 'leader_ko'
+
+    @pytest.mark.parametrize('condition', MAIN_CONDITIONS)
+    def test_r9_length_valid_json_is_failed_not_executed(tmp_path, condition):
+        trial, budget = trial_for(tmp_path, condition)
+        result = trial.run_adapter()
+>       assert not result['actions'], 'length reply executed an action'
+E       AssertionError: length reply executed an action
+E       assert not [{'schema': 'ugrp.zone_study_action.v1', 'run_id': 'r9-leader_ko', 'condition': 'leader_ko', 'seed': 11, ...}]
+
+tests/test_zone_study_review_r9.py:52: AssertionError
+_________ test_r9_length_valid_json_is_failed_not_executed[structured] _________
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/kiro-study-core/.tmp/r9/before/test_r9_length_valid_json_is_f3')
+condition = 'structured'
+
+    @pytest.mark.parametrize('condition', MAIN_CONDITIONS)
+    def test_r9_length_valid_json_is_failed_not_executed(tmp_path, condition):
+        trial, budget = trial_for(tmp_path, condition)
+        result = trial.run_adapter()
+>       assert not result['actions'], 'length reply executed an action'
+E       AssertionError: length reply executed an action
+E       assert not [{'schema': 'ugrp.zone_study_action.v1', 'run_id': 'r9-structured', 'condition': 'structured', 'seed': 11, ...}]
+
+tests/test_zone_study_review_r9.py:52: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_zone_study_review_r9.py::test_r9_length_valid_json_is_failed_not_executed[no_comm]
+FAILED tests/test_zone_study_review_r9.py::test_r9_length_valid_json_is_failed_not_executed[peer_ko]
+FAILED tests/test_zone_study_review_r9.py::test_r9_length_valid_json_is_failed_not_executed[leader_ko]
+FAILED tests/test_zone_study_review_r9.py::test_r9_length_valid_json_is_failed_not_executed[structured]
+4 failed in 0.28s

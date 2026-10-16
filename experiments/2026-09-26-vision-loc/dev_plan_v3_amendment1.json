@@ -1,0 +1,18 @@
+{
+ "schema": "ugrp.vision_loc.dev_plan_amendment.v3",
+ "amends": "dev_plan_v3.json",
+ "registered": "2026-09-27, Kiro, after the dev runs of b0/a1/a2 on 3-6 dev episodes and a3 on vl-dev-s910 only; before any of the variants below ran",
+ "reason": "a3 (stuck mode, enter 0.05/s, exit 0.2/s) on dev s910 lost track for 45 frames (p90 0.188 m vs 0.081 m for a2): its steady-state stuck share is enter/(enter+exit) = 20 %, and along uninformative stretches (a long wall) the stuck particles cannot be excluded, so the weighted mean trails the robot. a4/a5 contain that stuck mode, so augmented MCL alone was never tested. A lower-share stuck mode (2 %) and augmented MCL without the stuck mode are added; only the pair of AMCL variants that fits the adopted base is run.",
+ "variants": {
+  "a3b_open_scale_stuck_low": "a2 + stuck mode enter 0.01/s, exit 0.5/s (steady-state share 2 %)",
+  "a6_open_scale_amcl": "a2 + augmented MCL, Nav2 alphas, uniform injection (no stuck mode)",
+  "a7_open_scale_amcl_local": "a2 + augmented MCL, 10 % cap, 20 % uniform / 80 % local (no stuck mode)",
+  "a8_open_scale_stuck_low_amcl": "a3b + augmented MCL, Nav2 alphas, uniform injection",
+  "a9_open_scale_stuck_low_amcl_local": "a3b + augmented MCL, 10 % cap, 20 % uniform / 80 % local"
+ },
+ "rule_changes": [
+  "Stuck step: the candidate is the better of a3 and a3b by (lost, then L, then A; ties within 1 % of frames / 0.2 cm go to the lower share a3b); it is adopted against the current base by the dev_plan_v3 rule.",
+  "AMCL step: candidates built on the base after the stuck step - stuck a3 adopted: {a4, a5}; a3b adopted: {a8, a9}; none adopted: {a6, a7}. The better by (lost, then L, then A; ties -> the Nav2 variant) is adopted against the base by the dev_plan_v3 rule.",
+  "Everything else in dev_plan_v3.json (dev set, metrics, thresholds, gate) is unchanged."
+ ]
+}

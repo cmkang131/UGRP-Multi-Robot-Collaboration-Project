@@ -1,0 +1,46 @@
+{
+  "preregistration": "8a2fb7c8",
+  "seeds": [
+    49001,
+    49002,
+    49003,
+    49004,
+    49005,
+    49006
+  ],
+  "explore_sim_s": 360,
+  "suffix_sim_s": 270,
+  "host_s": 3600,
+  "egomap47_acceleration_admission": {
+    "harness/active_navfn_start.py": {
+      "original_sha256": "98e8edaa01457231fcfde08c32304d3001c9d85e2ea7f35daeadcd887a96d2c9",
+      "accelerated_sha256": "54b207e9ac96763c08a8cf582f901e2e947ccdfab66531f44526a19db57d5182",
+      "reason": "egomap47 post-run scalar_rays_v1 default-off dispatch only; egomap48 141 trace/map/path bytes identical"
+    }
+  },
+  "files": {
+    "configs/simulation_workflows.d/own-map-return-repeat.json": "c7e395868ad355cc420094db0f0033c46c60e994b532423b6dc2ba816186d2a5",
+    "experiments/2026-10-08-own-map-closed-loop/code/physical_report.py": "90a881f83a0cae85ba465b1a1e04f9bbbe0dfbb36b243d8d6fd5203e742a1a53",
+    "experiments/2026-10-08-own-map-return-repeat/code/report.py": "0fa75c29da53b998a536a41edadd5256112b2d1a1cfe2977a8e8bbca07144d87",
+    "harness/grid_acceleration.py": "cfcecd86b81f4db4be80c6d815228f277fca4ff2f6b1c0a970e47cb27ba3ea14",
+    "harness/own_map_amcl_vendor/__init__.py": "e218ea3e3ab9e7028b7af46b4612876729153224ef1fcd8f4a2f10bf1abcf2f7",
+    "harness/own_map_amcl_vendor/augmented.py": "d5a58785e0eea945171a57fcc31a950d0488bf99fa588632631cd22e3f5727d3",
+    "harness/own_map_amcl_vendor/field.py": "50d41043ead89ddbc5c2c253d281e43ac5c53a1743213b47fdcb482c54b9362b",
+    "harness/own_map_amcl_vendor/kld.py": "9178538410ddce3523e3ef92a70fc5e5deb9612627298c7a41432f3b7594f726",
+    "harness/own_map_amcl_vendor/landmark_color.py": "6c7f355831a03c0cd40e44862c7f68f9d13acd8e978eb2696da062f32ad54702",
+    "harness/own_map_amcl_vendor/landmarks.py": "7c7ad9230d3a0415da6d96924663254cbf59e85a66198924e796ec00d4ea54d9",
+    "harness/own_map_amcl_vendor/motion.py": "ab7b2fd0dfe37ac8526404db4e908f7c703ac5812a83a8f4c9ebedfd2a942657",
+    "harness/own_map_amcl_vendor/tempering.py": "b36571f6ee9737154e1402a1b1dc771a9f14224bb14fcac44137ee1d80cdfdc2",
+    "harness/own_map_amcl_vendor/visibility.py": "9bf722e2410dfa7ce773d78066c61fe4cd56b1dab6ecdf7239a7ab3c39f98b5e",
+    "harness/self_graph_cache.py": "f006f908cc0829883209a45e7503326cf5d91ba99d52be664919983d1de2dd34",
+    "harness/self_map_causal.py": "73611c2a96d0ac6d5a26c1b4fce45df0f456f140f837e71140d228a6d5ae2860",
+    "harness/self_map_closed_loop.py": "5504f5a21db783c6d856f68b834ba59b2f3c8fe08aeade384cdd65817bfa008f",
+    "harness/self_map_landmark_sensor.py": "3927dfb9c6ddbc0e669a764f11b171eb98f5ff2480258a59ee04faed7e5c5d39",
+    "harness/self_map_relocalize.py": "2a203e40fb1ede38714a8da2db2627073cf8f79b351925bfda3d2141afa8647d",
+    "harness/self_map_return_repeat.py": "8e3d2dda45a4690d516cbbf4b52d646be2831e8abeb41a2d80c8ceecfa74ea78",
+    "scripts/run_own_map_goal_dev.py": "0f206d07c8fe00a41b9359ff1b5c9d9ac34a4efec2b85a7c6d31e898b3c5db9b",
+    "scripts/run_own_map_return_repeat.py": "4769fbd0dd3003a1928bd08863c3bd119ba225e2d38bf462362842bd15898bfa",
+    "sim/own_map_closed_loop.py": "1d19fcd86227956da8c1bc68399e779f952d8fe57d184aa86e87bc22d3c8427a",
+    "tests/test_self_map_return_repeat.py": "61f20e30324bbab042e0b70ce78de31fa81a332a5843cb32dfc8ea3a782d94a5"
+  }
+}

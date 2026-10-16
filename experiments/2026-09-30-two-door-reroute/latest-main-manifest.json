@@ -1,0 +1,67 @@
+{
+  "mutation": "suite",
+  "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+  "head": "6cdfe47515e69d8e44ccbca3f044b8a1fa605385",
+  "load_start": [
+    159.50439453125,
+    121.3134765625,
+    105.38623046875
+  ],
+  "physics_steps": 0,
+  "render_calls": 0,
+  "model_calls": 0,
+  "pending_merge_head": "26545c2499f94c3f99a5d650f7cc8ea992f24196",
+  "host_lock_acquired": false,
+  "timing_sensitive_lock_seen": false,
+  "source_sha256": {
+    "harness/zone_observed_door_reroute.py": "54d3fa6079c1b68993104d0b1e106a6120008054e7cb49a1f4101f19debbd824",
+    "harness/zone_static_door_routes.py": "cec5fd95847496d5492b73dba67bf4393eef0c57394510ee7d2a22e597d9d24c",
+    "harness/zone_pair_status.py": "99bd02f2f3be227ccc84e4903bb5c0d1a37d92d6b382dc5edd5dbce44dd68646",
+    "harness/zone_study_protocol.py": "07e315ca26a94333d15d67ebf2446019987cf00dde92b2756be17dd4178c4890",
+    "harness/zone_study_contract.py": "f6e4c5fef3bdb7e332d2871b309bec1a46e3d1d98533050e723094200dc460f6",
+    "scripts/run_ci_tests.py": "77784249088591f5d33dd179d4050a6ea925c5ebb35fca0e691b5ed6845a0c06",
+    "tests/test_zone_own_executor_observed_reroute.py": "8de9c37c9efc0f3d3cb93e956cbb42bb343ef94e0f8d8267373afe85a5e9e1c3",
+    "tests/test_zone_own_executor_door_routes.py": "9d4e213efb6834e72265132f8b6aa94588879fe8945e1fe9713a7f00ac3befd9",
+    "tests/test_pair_passage_plan.py": "ceb5572bb8299f90b237598ab629f4d3b8beb62c9ebe14a310ebbe59c3a06866",
+    "tests/test_zone_model_conventions.py": "3fe1828c05cf3cba72ab41e62bde04f8939a11838e8589e7143072c3af2ed3a6",
+    "tests/test_zone_pair_status.py": "6e39c94da07b30bff6f3289943f5267752ba1e37ffbde33a692d6678542722ca",
+    "tests/test_zone_pair_registered_source.py": "4884b81bb2c31eba434a0fca6e021a34eafae31082a90f4281509132f56d67fb",
+    "tests/test_zone_study_source_pinning.py": "757ab9ffcf6d00322a46dba23d08af6b56a6b4594e86c6f76b3a601fff9697b5",
+    "tests/test_zone_study_protocol.py": "f59b9c624178814acc2b4c9ff39236efdd7a905376989b4f08d37105ed70190e",
+    "tests/test_ci_fast_path.py": "7cbce2fb52492b6adf3e5d53f5e98c3f7928b98bbdc6d5fa387c424ade570aab",
+    "experiments/2026-09-30-two-door-reroute/run_checks.py": "1370577eea53bd6ecce5d7365bf2235664e627138a74410bf27006fd42cbaaa7"
+  },
+  "runs": [
+    {
+      "mutation": "none",
+      "exit_code": 0
+    },
+    {
+      "mutation": "ignore_observation",
+      "exit_code": 1
+    },
+    {
+      "mutation": "ignore_replan",
+      "exit_code": 1
+    },
+    {
+      "mutation": "skip_stop",
+      "exit_code": 1
+    },
+    {
+      "mutation": "ignore_messages",
+      "exit_code": 1
+    },
+    {
+      "mutation": "ignore_pair_failure",
+      "exit_code": 1
+    }
+  ],
+  "exit_code": 0,
+  "source_unchanged": true,
+  "load_end": [
+    127.2099609375,
+    75.9619140625,
+    71.9072265625
+  ]
+}

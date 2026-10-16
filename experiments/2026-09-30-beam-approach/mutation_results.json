@@ -1,0 +1,176 @@
+{
+  "source_sha256": "f1bba4c4c74edfab4b4c7bf926e1a0eb152ddc021b09a3127f6fc411931a0c16",
+  "test_sha256": "598eeb95740768e45a87399fdf8f0594459f4952968d64e5977736e314faff06",
+  "production_bytes_unchanged": true,
+  "physics_sim_render_model_calls": 0,
+  "host_lock_used": false,
+  "runs": [
+    {
+      "mutation": "normal",
+      "exit_code": 0,
+      "tests": 63,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "failed_tests": [],
+      "log_sha256": "593c00d2fb87ee80bfe887e58907ce4fb0e1f13a52b45ab0952eab31b4424942"
+    },
+    {
+      "mutation": "navigation_removed",
+      "exit_code": 1,
+      "tests": 63,
+      "failures": 25,
+      "errors": 0,
+      "skipped": 0,
+      "failed_tests": [
+        "test_new_prestation_headings_and_true_history_handoff[end_neg-1.5707963267948966-0]",
+        "test_new_prestation_headings_and_true_history_handoff[end_neg-1.5707963267948966-1]",
+        "test_new_prestation_headings_and_true_history_handoff[end_neg-1.5707963267948966-2]",
+        "test_new_prestation_headings_and_true_history_handoff[end_pos--1.5707963267948966-0]",
+        "test_new_prestation_headings_and_true_history_handoff[end_pos--1.5707963267948966-1]",
+        "test_new_prestation_headings_and_true_history_handoff[end_pos--1.5707963267948966-2]",
+        "test_real_static_navigation_commands_from_own_pose_and_no_path",
+        "test_repeated_frame_cannot_confirm_arrival_or_alignment",
+        "test_command_failures_stop_and_do_not_forge_history[wrong_ack]",
+        "test_command_failures_stop_and_do_not_forge_history[guard]",
+        "test_cross_approach_relative_refusal[grip_base_m-value0]",
+        "test_cross_approach_relative_refusal[axis_heading_rad-3.141592653589793]",
+        "test_cross_approach_relative_refusal[grip_base_m-value2]",
+        "test_relative_failure_status_without_reset[missing]",
+        "test_relative_failure_status_without_reset[nan]",
+        "test_relative_failure_status_without_reset[std]",
+        "test_relative_failure_status_without_reset[clipped]",
+        "test_v3_relative_target_is_not_legacy_point_one_five_five",
+        "test_world_estimate_cannot_jump_to_other_end_after_handoff",
+        "test_uncertainty_after_entry_blocks_handoff_and_never_refills_deadline",
+        "test_dependency_errors_fail_closed[guard]",
+        "test_dependency_errors_fail_closed[observer]",
+        "test_r3_role_selection_does_not_route_commands_to_another_actor[end_neg]",
+        "test_r3_role_selection_does_not_route_commands_to_another_actor[end_pos]",
+        "test_continuous_route_sweep_is_checked_after_grid_planning"
+      ],
+      "log_sha256": "9e15b15388dcc46409c0b340cb3edbd2741be05f9192e1dfea160b96d1d3dacf"
+    },
+    {
+      "mutation": "pose_gate_removed",
+      "exit_code": 1,
+      "tests": 63,
+      "failures": 8,
+      "errors": 0,
+      "skipped": 0,
+      "failed_tests": [
+        "test_self_pose_uncertain_stops_without_hidden_reset[std]",
+        "test_self_pose_uncertain_stops_without_hidden_reset[uninitialized]",
+        "test_self_pose_uncertain_stops_without_hidden_reset[nan]",
+        "test_self_pose_uncertain_stops_without_hidden_reset[negative_std]",
+        "test_self_pose_uncertain_stops_without_hidden_reset[gt]",
+        "test_self_pose_uncertain_stops_without_hidden_reset[stale_fix]",
+        "test_self_pose_uncertain_stops_without_hidden_reset[future_fix]",
+        "test_uncertainty_after_entry_blocks_handoff_and_never_refills_deadline"
+      ],
+      "log_sha256": "1191a812bd884f5b2e181f64e24c6c6a65a20e78514f73556f6adb32bb309bcd"
+    },
+    {
+      "mutation": "relative_alignment_removed",
+      "exit_code": 1,
+      "tests": 63,
+      "failures": 17,
+      "errors": 0,
+      "skipped": 0,
+      "failed_tests": [
+        "test_new_prestation_headings_and_true_history_handoff[end_neg-1.5707963267948966-0]",
+        "test_new_prestation_headings_and_true_history_handoff[end_neg-1.5707963267948966-1]",
+        "test_new_prestation_headings_and_true_history_handoff[end_neg-1.5707963267948966-2]",
+        "test_new_prestation_headings_and_true_history_handoff[end_pos--1.5707963267948966-0]",
+        "test_new_prestation_headings_and_true_history_handoff[end_pos--1.5707963267948966-1]",
+        "test_new_prestation_headings_and_true_history_handoff[end_pos--1.5707963267948966-2]",
+        "test_repeated_frame_cannot_confirm_arrival_or_alignment",
+        "test_cross_approach_relative_refusal[grip_base_m-value0]",
+        "test_cross_approach_relative_refusal[axis_heading_rad-3.141592653589793]",
+        "test_cross_approach_relative_refusal[grip_base_m-value2]",
+        "test_relative_failure_status_without_reset[missing]",
+        "test_relative_failure_status_without_reset[nan]",
+        "test_relative_failure_status_without_reset[std]",
+        "test_relative_failure_status_without_reset[clipped]",
+        "test_v3_relative_target_is_not_legacy_point_one_five_five",
+        "test_world_estimate_cannot_jump_to_other_end_after_handoff",
+        "test_dependency_errors_fail_closed[observer]"
+      ],
+      "log_sha256": "2dbd3b2c999deaf47e8a3326559ea82946ea220050a126c53df66d339d71d5bc"
+    },
+    {
+      "mutation": "handoff_posterior_reinitialized",
+      "exit_code": 1,
+      "tests": 63,
+      "failures": 6,
+      "errors": 0,
+      "skipped": 0,
+      "failed_tests": [
+        "test_new_prestation_headings_and_true_history_handoff[end_neg-1.5707963267948966-0]",
+        "test_new_prestation_headings_and_true_history_handoff[end_neg-1.5707963267948966-1]",
+        "test_new_prestation_headings_and_true_history_handoff[end_neg-1.5707963267948966-2]",
+        "test_new_prestation_headings_and_true_history_handoff[end_pos--1.5707963267948966-0]",
+        "test_new_prestation_headings_and_true_history_handoff[end_pos--1.5707963267948966-1]",
+        "test_new_prestation_headings_and_true_history_handoff[end_pos--1.5707963267948966-2]"
+      ],
+      "log_sha256": "ad421ba4ef665f25451c4e06fb1d7b7c10bbad9d17b8f1ac9092349f6b78fa49"
+    },
+    {
+      "mutation": "command_guard_removed",
+      "exit_code": 1,
+      "tests": 63,
+      "failures": 10,
+      "errors": 0,
+      "skipped": 0,
+      "failed_tests": [
+        "test_new_prestation_headings_and_true_history_handoff[end_neg-1.5707963267948966-0]",
+        "test_new_prestation_headings_and_true_history_handoff[end_neg-1.5707963267948966-1]",
+        "test_new_prestation_headings_and_true_history_handoff[end_neg-1.5707963267948966-2]",
+        "test_new_prestation_headings_and_true_history_handoff[end_pos--1.5707963267948966-0]",
+        "test_new_prestation_headings_and_true_history_handoff[end_pos--1.5707963267948966-1]",
+        "test_new_prestation_headings_and_true_history_handoff[end_pos--1.5707963267948966-2]",
+        "test_real_static_navigation_commands_from_own_pose_and_no_path",
+        "test_arm_transition_uses_issued_servo_and_waits_for_ack_and_image_after_settle",
+        "test_command_failures_stop_and_do_not_forge_history[guard]",
+        "test_dependency_errors_fail_closed[guard]"
+      ],
+      "log_sha256": "e5e91b26845cdfcba9dab0c8941fbd37afd276c1b0dbe2b218e076ec4d1ce8c1"
+    },
+    {
+      "mutation": "image_hash_check_removed",
+      "exit_code": 1,
+      "tests": 63,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "failed_tests": [
+        "test_invalid_own_images_never_reach_provider_or_motion[hash]"
+      ],
+      "log_sha256": "ac45b108e1ad3040b409cb161e67e7178e411bcf749ac9efe915e0a960eae88b"
+    },
+    {
+      "mutation": "delivered_abort_check_removed",
+      "exit_code": 1,
+      "tests": 63,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "failed_tests": [
+        "test_delivered_status_failure_is_terminal[abort]"
+      ],
+      "log_sha256": "321b844116bf921dbbff5fec1de323c87024d12da036356d2ce2b756578f0f35"
+    },
+    {
+      "mutation": "sim_cap_boundary_weakened",
+      "exit_code": 1,
+      "tests": 63,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "failed_tests": [
+        "test_sim_cap_includes_posture_and_staging_and_boundary_is_failure"
+      ],
+      "log_sha256": "7a2ffb557f2882bff1d461af074f6cf6f29816eff70c47d2d15219044e782519"
+    }
+  ]
+}

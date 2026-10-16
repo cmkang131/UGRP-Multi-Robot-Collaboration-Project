@@ -1,0 +1,54 @@
+{
+  "schema": "ugrp.pair_stage_probe.v1",
+  "labels": [
+    "stage_probe",
+    "not_e2e_success",
+    "dev",
+    "연구 결과 아님"
+  ],
+  "stages": {
+    "setdown": {
+      "cases": 1,
+      "passed": 0,
+      "pass_rate": 0.0,
+      "by_source": {
+        "teacher_grid": {
+          "cases": 1,
+          "passed": 0
+        }
+      },
+      "failures": {
+        "ENTRY:ADMISSION_SELF_INVALID_IMAGE": 1
+      },
+      "causes": {
+        "ENTRY_ERROR": 1
+      },
+      "by_leg": {
+        "8": {
+          "cases": 1,
+          "passed": 0
+        }
+      },
+      "wall_s_median": 23.43,
+      "wall_s_max": 23.43,
+      "stage_sim_s_median": null,
+      "by_policy": {
+        "b-v6c": {
+          "cases": 1,
+          "passed": 0,
+          "by_source": {
+            "teacher_grid": {
+              "cases": 1,
+              "passed": 0
+            }
+          },
+          "failures": {
+            "ENTRY:ADMISSION_SELF_INVALID_IMAGE": 1
+          }
+        }
+      }
+    }
+  },
+  "wall_s_total": 24.0,
+  "unavailable_e2e": []
+}

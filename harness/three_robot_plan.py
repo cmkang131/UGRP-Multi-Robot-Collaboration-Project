@@ -49,10 +49,22 @@ def digest(plan):
     return hashlib.sha256(json.dumps(plan, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
 
 
-def parse(raw):
+def unwrap_json_fence(raw):
+    """Unwrap exactly one complete json/unlabelled fence, never extract prose.
+
+    Shared by zone coordination, study protocol and completion admission.
+    JSON/schema validation remains the caller's responsibility. The bool is
+    formatting provenance, not evidence of a valid or accepted model reply.
+    """
     text = raw.strip()
-    fenced = re.fullmatch(r'```(?:json)?\s*\n([\s\S]*?)\n```', text, re.IGNORECASE)
-    return json.loads(fenced.group(1) if fenced else text)
+    fenced = re.fullmatch(r'```(?:json)?[ \t]*\r?\n([\s\S]*?)\r?\n```', text)
+    if fenced and not re.search(r'(?m)^[ \t]*`{3,}', fenced.group(1)):
+        return fenced.group(1), True
+    return text, False
+
+
+def parse(raw):
+    return json.loads(unwrap_json_fence(raw)[0])
 
 
 def text_fields(value):
@@ -138,6 +150,27 @@ class TeamAgreement:
             self.pending = None
             self.version += 1
         return None
+
+    def commit_claims(self, plan, claims, turn):
+        """Commit when every robot's own self-claim already fits one valid plan.
+
+        Each robot declared only its own work; the host verified consistency
+        and edited nothing. Conflicts must go through ``receive`` instead.
+        """
+        if self.committed is not None or self.pending is not None:
+            raise ValueError('claims can only commit before any negotiation state')
+        if turn <= self.last_turn:
+            raise ValueError('stale negotiation turn')
+        if set(claims) != set(ROBOTS) or any(not c for c in claims.values()):
+            raise ValueError('every robot must submit its own claim')
+        plan = self.plan_validator(copy.deepcopy(plan))
+        self.last_turn = turn
+        self.committed = {'proposal_id': f'{self.run_id}-claims-v{self.version}',
+                          'version': self.version, 'plan_hash': digest(plan),
+                          'plan': plan, 'proposer': 'consistent_self_claims'}
+        self.events.append({'event': 'COMMITTED_FROM_CLAIMS', 'turn': turn,
+                            'claims': copy.deepcopy(claims), **copy.deepcopy(self.committed)})
+        return copy.deepcopy(self.committed)
 
     def invalidate(self, reason):
         """Revokes eligibility; physical execution must first be stopped externally."""

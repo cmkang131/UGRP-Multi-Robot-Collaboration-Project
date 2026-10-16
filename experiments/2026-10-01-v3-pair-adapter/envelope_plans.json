@@ -1,0 +1,175 @@
+{
+  "schema": "ugrp.v88_conservative_envelope_receipts.v1",
+  "scope": "OFFLINE_ARITHMETIC_ONLY",
+  "map_id": "zone_wide_two_doors_final_v3",
+  "sign_cancellation": "none",
+  "physics_steps": 0,
+  "collections": {
+    "calibration-unloaded": {
+      "admitted": false,
+      "reason": "CONSERVATIVE_ENVELOPE_EXCEEDS_WALLS",
+      "method": "whole_schedule_absolute_command_integral",
+      "sign_cancellation": "none",
+      "sim_window_s": [
+        0.0,
+        370.0
+      ],
+      "gain_upper": {
+        "forward": 2.62,
+        "left": 1.86,
+        "turn": 2.299928292866358
+      },
+      "robot_radius_bound_m": 0.4,
+      "wall_margin_m": 0.3,
+      "numeric_guard_m": 1e-10,
+      "bodies": {
+        "r1": {
+          "start_xy_yaw": [
+            3.25,
+            -0.85,
+            0.0
+          ],
+          "absolute_command_integral_s": {
+            "forward": 1.51,
+            "left": 1.51,
+            "turn": 1.51
+          },
+          "translation_bound_m": 6.764800000000001,
+          "absolute_yaw_bound_rad": 3.4728917222282,
+          "tip_radius_from_chassis_m": 0.4,
+          "yaw_tip_excursion_bound_m": 0.8,
+          "excursion_bound_m": 7.564800000000001,
+          "beam_radius_added_m": 0.0,
+          "disc_radius_m": 8.264800000000001,
+          "wall_distance_from_start_m": 1.0250000000000004,
+          "remaining_clearance_m": -7.239800000000001,
+          "wall_free": false
+        }
+      }
+    },
+    "calibration-fine": {
+      "admitted": false,
+      "reason": "CONSERVATIVE_ENVELOPE_EXCEEDS_WALLS",
+      "method": "whole_schedule_absolute_command_integral",
+      "sign_cancellation": "none",
+      "sim_window_s": [
+        0.0,
+        370.0
+      ],
+      "gain_upper": {
+        "forward": 2.62,
+        "left": 1.86,
+        "turn": 2.299928292866358
+      },
+      "robot_radius_bound_m": 0.4,
+      "wall_margin_m": 0.3,
+      "numeric_guard_m": 1e-10,
+      "bodies": {
+        "r1": {
+          "start_xy_yaw": [
+            3.25,
+            -0.85,
+            0.0
+          ],
+          "absolute_command_integral_s": {
+            "forward": 1.2080000000000002,
+            "left": 1.2080000000000002,
+            "turn": 1.2080000000000002
+          },
+          "translation_bound_m": 5.4118400000000015,
+          "absolute_yaw_bound_rad": 2.7783133777825606,
+          "tip_radius_from_chassis_m": 0.4,
+          "yaw_tip_excursion_bound_m": 0.8,
+          "excursion_bound_m": 6.211840000000001,
+          "beam_radius_added_m": 0.0,
+          "disc_radius_m": 6.9118400000000015,
+          "wall_distance_from_start_m": 1.0250000000000004,
+          "remaining_clearance_m": -5.886840000000001,
+          "wall_free": false
+        }
+      }
+    },
+    "calibration-loaded": {
+      "admitted": false,
+      "reason": "CONSERVATIVE_ENVELOPE_EXCEEDS_WALLS",
+      "method": "whole_schedule_absolute_command_integral",
+      "sign_cancellation": "none",
+      "sim_window_s": [
+        0.0,
+        370.0
+      ],
+      "gain_upper": {
+        "forward": 2.62,
+        "left": 1.86,
+        "turn": 2.299928292866358
+      },
+      "robot_radius_bound_m": 0.4,
+      "wall_margin_m": 0.3,
+      "numeric_guard_m": 1e-10,
+      "bodies": {
+        "r1": {
+          "start_xy_yaw": [
+            3.0768,
+            -0.85,
+            0.0
+          ],
+          "absolute_command_integral_s": {
+            "forward": 1.9525000000000001,
+            "left": 1.9525000000000001,
+            "turn": 1.9525000000000001
+          },
+          "translation_bound_m": 8.747200000000001,
+          "absolute_yaw_bound_rad": 4.490609991821564,
+          "tip_radius_from_chassis_m": 0.773865927567458,
+          "yaw_tip_excursion_bound_m": 1.547731855134916,
+          "excursion_bound_m": 10.294931855134918,
+          "beam_radius_added_m": 0.30066592756745814,
+          "disc_radius_m": 11.295597782702377,
+          "wall_distance_from_start_m": 0.8518000000000008,
+          "remaining_clearance_m": -10.443797782702376,
+          "wall_free": false
+        },
+        "r2": {
+          "start_xy_yaw": [
+            4.0232,
+            -0.85,
+            3.141592653589793
+          ],
+          "absolute_command_integral_s": {
+            "forward": 1.9525000000000001,
+            "left": 1.9525000000000001,
+            "turn": 1.9525000000000001
+          },
+          "translation_bound_m": 8.747200000000001,
+          "absolute_yaw_bound_rad": 4.490609991821564,
+          "tip_radius_from_chassis_m": 0.7738659275674584,
+          "yaw_tip_excursion_bound_m": 1.5477318551349168,
+          "excursion_bound_m": 10.294931855134918,
+          "beam_radius_added_m": 0.30066592756745814,
+          "disc_radius_m": 11.295597782702377,
+          "wall_distance_from_start_m": 1.3518000000000008,
+          "remaining_clearance_m": -9.943797782702376,
+          "wall_free": false
+        },
+        "beam": {
+          "start_xy_yaw": [
+            3.55,
+            -0.85,
+            0.0
+          ],
+          "disc_radius_m": 11.768797782702377,
+          "excursion_bound_m": 10.768131855134918,
+          "contains_carrier_discs": [
+            "r1",
+            "r2"
+          ],
+          "half_length_m": 0.3,
+          "half_diagonal_m": 0.30066592756745814,
+          "wall_distance_from_start_m": 1.3249999999999993,
+          "remaining_clearance_m": -10.443797782702378,
+          "wall_free": false
+        }
+      }
+    }
+  }
+}

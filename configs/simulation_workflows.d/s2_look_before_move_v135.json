@@ -1,0 +1,10 @@
+{
+  "schema":"ugrp.local_workflow_catalog.v1",
+  "workflows":[{"id":"zone-s2-look-before-move-v135","version":"7.28.0",
+    "purpose":"s2v48 own RGB unknown-space lateral guard and look-before-move, two DEV seeds",
+    "entry":"scripts/run_s2_look_before_move.py","runner":"scripts.run_s2_look_before_move",
+    "docs":"experiments/2026-10-06-s2-realism/README.md",
+    "requires":"committed registration; exclusive agent_lock; frozen thresholds",
+    "output_flag":"--output","output_kind":"directory","required_inputs":["--expected-source-sha","--seed"],
+    "side_effect":"local_simulation","adapter":"managed_legacy_cli"}]
+}

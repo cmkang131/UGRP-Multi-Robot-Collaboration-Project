@@ -1,0 +1,45 @@
+{
+  "passed": false,
+  "checks": {
+    "candidate_precision": false,
+    "candidate_recall": false,
+    "confirmed_precision": false,
+    "zero_false_confirmations": true,
+    "nonempty_confirmed": false
+  },
+  "combined": {
+    "off": {
+      "tp": 9,
+      "fp": 3748,
+      "n": 3757,
+      "eligible_tp": 9,
+      "eligible_n": 10,
+      "precision": 0.0023955283470854403,
+      "recall_visible": 0.9,
+      "recall_all": 0.75
+    },
+    "on": {
+      "tp": 3,
+      "fp": 719,
+      "n": 722,
+      "eligible_tp": 3,
+      "eligible_n": 10,
+      "precision": 0.004155124653739612,
+      "recall_visible": 0.3,
+      "recall_all": 0.25
+    },
+    "confirmed": {
+      "tp": 0,
+      "fp": 0,
+      "n": 0,
+      "eligible_tp": 0,
+      "eligible_n": 10,
+      "precision": null,
+      "recall_visible": 0.0,
+      "recall_all": 0.0
+    }
+  },
+  "cohort_size": 6,
+  "frozen_criteria_commit": "4a03c66a",
+  "physical_runs_authorized_if_passed_only": true
+}

@@ -1,0 +1,14 @@
+FF                                                                       [100%]
+=================================== FAILURES ===================================
+_ test_real_50ms_neighbour_is_rejected_with_original_clock_and_index[both-pose] _
+tests/test_final_pair_calibration_assembly.py:799: in test_real_50ms_neighbour_is_rejected_with_original_clock_and_index
+    with pytest.raises(ValueError, match=('camera label chassis pose differs' if target == 'label'
+E   Failed: DID NOT RAISE ValueError
+_ test_real_50ms_neighbour_is_rejected_with_original_clock_and_index[rotation-label] _
+tests/test_final_pair_calibration_assembly.py:799: in test_real_50ms_neighbour_is_rejected_with_original_clock_and_index
+    with pytest.raises(ValueError, match=('camera label chassis pose differs' if target == 'label'
+E   Failed: DID NOT RAISE ValueError
+=========================== short test summary info ============================
+FAILED tests/test_final_pair_calibration_assembly.py::test_real_50ms_neighbour_is_rejected_with_original_clock_and_index[both-pose]
+FAILED tests/test_final_pair_calibration_assembly.py::test_real_50ms_neighbour_is_rejected_with_original_clock_and_index[rotation-label]
+2 failed in 14.43s

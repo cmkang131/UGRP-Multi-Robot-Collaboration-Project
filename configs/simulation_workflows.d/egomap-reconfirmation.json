@@ -1,0 +1,21 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "egomap-reconfirmation-dev",
+      "version": "1.0.0",
+      "purpose": "egomap71 paired default-off own RGB verification and covariance inflation DEV",
+      "entry": "scripts/run_egomap_reconfirmation.py",
+      "runner": "scripts.run_egomap_reconfirmation",
+      "docs": "experiments/2026-10-11-egomap-reconfirmation/README.md",
+      "requires": "Azure x86 OSMesa; immutable source; ARM egomap63 checkpoints and egomap68 causal RGB banks",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--mode"
+      ],
+      "side_effect": "remote_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

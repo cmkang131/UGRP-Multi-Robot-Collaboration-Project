@@ -1,0 +1,62 @@
+{
+  "source_sha256": "d0e2bc66d1e24cc5dcd822b1473f5ee741cec46a1478a17cc1b58af5e6f2074a",
+  "source_unchanged": true,
+  "killed": 6,
+  "survived": 0,
+  "results": [
+    {
+      "mutation": "cross_stream_order_removed",
+      "baseline_pass": true,
+      "mutant": "KILLED",
+      "verdict_assertions_failed": 3,
+      "witnesses": 3,
+      "deleted": "        starts = [t for _, boundary, t in boundaries if boundary == 0]\n        if starts:\n            # The pinned producer snapshots entry, then host.run submits the\n            # command at submit_t before either robot enters its carry window.\n            # Use each raw stream, not the later robot's derived row boundary.\n            # A HOST abort before any carry start need not have these fields.\n            entry = time((result.get(\"gt_at_entry\") or {}).get(\"t\"), \"gt_at_entry.t\")\n            submit = time(result.get(\"submit_t\"), \"result submit_t\")\n            row_submit = time(row.get(\"submit_t\"), \"row submit_t\")\n            if abs(submit - row_submit) > 1e-9:\n                raise EvidenceError(\"submit source/derived timestamp contradiction\")\n            first_start = min(starts)\n            if not entry < first_start:\n                raise EvidenceError(rid + \": gt_at_entry.t must strictly precede carry start\")\n            if not submit < first_start or not row_submit < first_start:\n                raise EvidenceError(rid + \": submit_t must strictly precede carry start\")\n            if not entry < submit or not entry < row_submit:\n                raise EvidenceError(\"gt_at_entry.t must strictly precede submit_t\")\n",
+      "replacement": ""
+    },
+    {
+      "mutation": "submit_equality_allowed",
+      "baseline_pass": true,
+      "mutant": "KILLED",
+      "verdict_assertions_failed": 1,
+      "witnesses": 1,
+      "deleted": "if not submit < first_start or not row_submit < first_start:",
+      "replacement": "if not submit <= first_start or not row_submit <= first_start:"
+    },
+    {
+      "mutation": "entry_submit_equality_allowed",
+      "baseline_pass": true,
+      "mutant": "KILLED",
+      "verdict_assertions_failed": 1,
+      "witnesses": 1,
+      "deleted": "if not entry < submit or not entry < row_submit:",
+      "replacement": "if not entry <= submit or not entry <= row_submit:"
+    },
+    {
+      "mutation": "last_carry_start_used",
+      "baseline_pass": true,
+      "mutant": "KILLED",
+      "verdict_assertions_failed": 1,
+      "witnesses": 2,
+      "deleted": "first_start = min(starts)",
+      "replacement": "first_start = max(starts)"
+    },
+    {
+      "mutation": "row_submit_binding_removed",
+      "baseline_pass": true,
+      "mutant": "KILLED",
+      "verdict_assertions_failed": 1,
+      "witnesses": 1,
+      "deleted": "if abs(submit - row_submit) > 1e-9:",
+      "replacement": "if False:"
+    },
+    {
+      "mutation": "r1_stream_skipped",
+      "baseline_pass": true,
+      "mutant": "KILLED",
+      "verdict_assertions_failed": 1,
+      "witnesses": 1,
+      "deleted": "    for rid, stream in raw.items():\n",
+      "replacement": "    for rid, stream in raw.items():\n        if rid == \"r1\":\n            continue\n"
+    }
+  ]
+}

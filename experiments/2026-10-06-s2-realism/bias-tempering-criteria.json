@@ -1,0 +1,31 @@
+{
+  "version": "s2v45-prereg-v1",
+  "baseline": "unchanged v133, no v42/v44 rejected candidate",
+  "seeds": [1051,1053,1054],
+  "holdouts": [{"fit":[1053,1054],"check":1051},{"fit":[1051,1054],"check":1053},{"fit":[1051,1053],"check":1054}],
+  "conditions": ["scale","temper","combined"],
+  "primary_universe": "same 1602 v44 single-cluster matching-covariance decision times; unavailable candidate covariance fails coverage",
+  "chi2_95_xy": 5.991464547107979,
+  "admission_each_holdout": {"xy_nees_exceedance_rate_max":0.2,"unflagged_xy_above_25cm_max":0,"carry_rmse_increase_m_max":1e-9,"off_pose_serialization_identical":true},
+  "scale_fit": {
+    "method":"origin-constrained least squares: sum(predicted_dx*measured_dx)/sum(predicted_dx^2)",
+    "gt":"offline calibration only, authorized s2v45 and supervisor 06:05; no live GT",
+    "group":"own commanded servo3,4,5,6 + inferred loaded profile + forward speed and duration; positive forward only",
+    "minimum_training_pulses_per_group":20,
+    "minimum_training_runs_per_group":2,
+    "exclude":"overlapping next nonzero drive before profile horizon; arm command during horizon; recorded wall contact during horizon (calibration only)",
+    "unmeasured":"unchanged v122; no transfer between postures/load/speed",
+    "correction":"multiply forward mean_curve x and mean_delta x only; yaw/lateral means and all noise unchanged"
+  },
+  "tempering": {
+    "method":"Thrun et al. 2005 sections 6.3.4 and 6.7: joint measurement likelihood to power alpha",
+    "alpha":0.5,
+    "parameter_status":"a priori half-information comparison, not a book default or a value fit to evaluation GT; no alpha sweep",
+    "fit_split":"no learned observation parameters; training pair used for overconfidence diagnosis only; the same fixed exponent tested on each held-out run",
+    "scope":"entire existing wall times landmark score; first scan included; no threshold, detection, association, motion or resampling change"
+  },
+  "audit":"each measurement: ESS and XY/yaw covariance prior after prediction, posterior before resampling, after resampling and reported covariance; wall/landmark likelihood correlation across particles is overlap evidence, not proof of independent noise correlation",
+  "physical":"only a condition passes all three held-out runs; then new seed registration and agent_lock/ugrp_session",
+  "threshold_change_after_results":false,
+  "host_error":"ENOSPC is HOST_ERROR, not a physical failure"
+}

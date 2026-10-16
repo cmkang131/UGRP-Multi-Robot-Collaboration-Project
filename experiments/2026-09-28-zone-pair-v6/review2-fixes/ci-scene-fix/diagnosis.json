@@ -1,0 +1,102 @@
+{
+  "source_commit": "3ea2edc08e5addafaf3cedc934c463ad8e1635c8",
+  "registration_sha256": "c1f35505ed4983537c89b3c0b901c1d9920aadf2229ae44561e5d5074d9f7977",
+  "catalogue_blob": {
+    "path": "experiments/2026-09-25-zone-cargo-catalogue/results.json",
+    "sha256": "7263e9a58e9d4a6cc08889676a94cf796b0f9cb48abe482d56e31e626ca48d9f",
+    "commit": "3ea2edc08e5addafaf3cedc934c463ad8e1635c8"
+  },
+  "native_catalogue_sha256": "89245cca1497da4d6537eeed3dc7160882b006e0922542c2a0a7a3a23f926c6a",
+  "registered_catalogue_sha256": "89245cca1497da4d6537eeed3dc7160882b006e0922542c2a0a7a3a23f926c6a",
+  "perturbed_catalogue_sha256": "7f47be14914a8757a07eda385c93f4519bf0c729105d2acd79ca4db822ff0636",
+  "perturbation": {
+    "field": "kinds.tri_frame.parts[0].center[1]",
+    "before": 0.08660254037844388,
+    "after": 0.08660254037844389,
+    "scope": "one-ULP portability counterexample, not measured Ubuntu libm output"
+  },
+  "scenes": [
+    {
+      "catalogue": "native",
+      "run": "dev09",
+      "resolved_sha256": "1fb4a9bc42e73d7f24e6069f15d5a60d2213985b7de0f5dfd9ecaccea95f7ab0",
+      "registered_sha256": "1fb4a9bc42e73d7f24e6069f15d5a60d2213985b7de0f5dfd9ecaccea95f7ab0",
+      "only_catalogue_differs": true,
+      "scene_guard": "accepted"
+    },
+    {
+      "catalogue": "native",
+      "run": "dev10",
+      "resolved_sha256": "b873253215cb6ab732f1ec6252a5cfc13e94aacff9fe6c27925e11df78d0e540",
+      "registered_sha256": "b873253215cb6ab732f1ec6252a5cfc13e94aacff9fe6c27925e11df78d0e540",
+      "only_catalogue_differs": true,
+      "scene_guard": "accepted"
+    },
+    {
+      "catalogue": "registered",
+      "run": "dev09",
+      "resolved_sha256": "1fb4a9bc42e73d7f24e6069f15d5a60d2213985b7de0f5dfd9ecaccea95f7ab0",
+      "registered_sha256": "1fb4a9bc42e73d7f24e6069f15d5a60d2213985b7de0f5dfd9ecaccea95f7ab0",
+      "only_catalogue_differs": true,
+      "scene_guard": "accepted"
+    },
+    {
+      "catalogue": "registered",
+      "run": "dev10",
+      "resolved_sha256": "b873253215cb6ab732f1ec6252a5cfc13e94aacff9fe6c27925e11df78d0e540",
+      "registered_sha256": "b873253215cb6ab732f1ec6252a5cfc13e94aacff9fe6c27925e11df78d0e540",
+      "only_catalogue_differs": true,
+      "scene_guard": "accepted"
+    },
+    {
+      "catalogue": "one_ulp",
+      "run": "dev09",
+      "resolved_sha256": "67f08f56e68b1d26c944f5925deee81070be53bbadd0bcfe805223cdec139946",
+      "registered_sha256": "1fb4a9bc42e73d7f24e6069f15d5a60d2213985b7de0f5dfd9ecaccea95f7ab0",
+      "only_catalogue_differs": true,
+      "scene_guard": "resolved scene configuration hash mismatch"
+    },
+    {
+      "catalogue": "one_ulp",
+      "run": "dev10",
+      "resolved_sha256": "3829e3528b34750081fa0cb32629b299c8b8a1dd384cf6cf16343780da6eade7",
+      "registered_sha256": "b873253215cb6ab732f1ec6252a5cfc13e94aacff9fe6c27925e11df78d0e540",
+      "only_catalogue_differs": true,
+      "scene_guard": "resolved scene configuration hash mismatch"
+    }
+  ],
+  "sparse_omitted_files": 1555,
+  "sparse_omitted_bytes": 984923280,
+  "missing_scene_inputs": [],
+  "scene_read_paths": [
+    "experiments/2026-09-27-zone-pair-dev/prereg_v5b.json",
+    "maps/zones/zone_wide_door.json",
+    "maps/zones/zone_wide_door_tags_v2.json",
+    "maps/zones/zone_wide_door_tags_v2_dock_v3.json",
+    "scripts/__pycache__/__init__.cpython-312.pyc",
+    "scripts/__pycache__/run_zone_pair_dev.cpython-312.pyc",
+    "scripts/__pycache__/zone_pair_dev_contract.cpython-312.pyc",
+    "scripts/__pycache__/zone_pair_dev_runtime.cpython-312.pyc",
+    "scripts/__pycache__/zone_pair_registered_source.cpython-312.pyc",
+    "sim/__pycache__/__init__.cpython-312.pyc",
+    "sim/__pycache__/dispatch_contact_profile.cpython-312.pyc",
+    "sim/__pycache__/research_dispatch_arena.cpython-312.pyc",
+    "sim/__pycache__/session_scenes.cpython-312.pyc",
+    "sim/__pycache__/zone_arena.cpython-312.pyc",
+    "sim/__pycache__/zone_cargo.cpython-312.pyc",
+    "sim/__pycache__/zone_cargo_contact.cpython-312.pyc",
+    "sim/__pycache__/zone_cargo_scene.cpython-312.pyc",
+    "sim/__pycache__/zone_dock_scene.cpython-312.pyc",
+    "sim/__pycache__/zone_landmarks.cpython-312.pyc",
+    "sim/__pycache__/zone_scene.cpython-312.pyc",
+    "sim/__pycache__/zone_start_dock.cpython-312.pyc",
+    "sim/__pycache__/zone_tag_rule_v3.cpython-312.pyc",
+    "sim/__pycache__/zone_tagged_cargo_scene.cpython-312.pyc",
+    "sim/dispatch_contact_profile.py",
+    "sim/zone_cargo_contact.py"
+  ],
+  "full_checkout_hydration": "not needed for scene inputs; all accessed files already present; omitted files are media/archives",
+  "native_ubuntu_run": false,
+  "physics_steps": 0,
+  "model_calls": 0
+}

@@ -1,0 +1,37 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "s2-stiff-camera-capture-v1",
+      "version": "1.0.0",
+      "purpose": "S2 DEV free-chassis stationary RGB planar-target camera calibration",
+      "entry": "scripts/capture_s2_stiff_camera.py",
+      "runner": "scripts.capture_s2_stiff_camera",
+      "docs": "experiments/2026-10-06-s2-realism/README.md",
+      "requires": "committed source, owned lock, 180 SIM s cap; no loaded jig",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    },
+    {
+      "id": "s2-stiff-start-capture-v1",
+      "version": "1.0.0",
+      "purpose": "S2 DEV fixed seed1052 stationary own-command prefix; no controller/full task",
+      "entry": "scripts/capture_s2_stiff_start.py",
+      "runner": "scripts.capture_s2_stiff_start",
+      "docs": "experiments/2026-10-06-s2-realism/README.md",
+      "requires": "committed source, owned lock, 12 SIM s cap; no base commands",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

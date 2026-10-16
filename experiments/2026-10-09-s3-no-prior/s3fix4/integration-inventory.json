@@ -1,0 +1,34 @@
+{
+  "offline_before_smoke": [
+    {
+      "cause": "carry GO wire lift normalization rejected first actor",
+      "reproduction": "real two consumed GO; r1 first carry",
+      "fixed": true
+    },
+    {
+      "cause": "navigation 3cm deadband applied to final 3mm grip alignment",
+      "reproduction": "1cm/2cm lateral RGB residual; pair and solo",
+      "fixed": true
+    },
+    {
+      "cause": "reset rebuilt legacy ports",
+      "reproduction": "three native port resets then heading expiry",
+      "fixed": true,
+      "scope": "v148 follow-up already present"
+    }
+  ],
+  "physical_followup": {
+    "cause": "pre-GO approach wait cap was classified with GO failures",
+    "fixed_offline": true,
+    "physics_after_fix": 0,
+    "actual_go_required": true
+  },
+  "unimplemented": [
+    "return-to-start stage"
+  ],
+  "unresolved": [
+    "r2 moving localization drift",
+    "pick/carry/place physical qualification",
+    "wall/SIM target <=3"
+  ]
+}

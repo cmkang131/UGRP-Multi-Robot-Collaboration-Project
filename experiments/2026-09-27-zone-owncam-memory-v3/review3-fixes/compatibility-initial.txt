@@ -1,0 +1,314 @@
+Numerical thread caps: 1; OpenCV threads: 1; pytest worker: main process
+..................F..................F....F...........F................. [ 62%]
+...................F.........FF...........F.                             [100%]
+=================================== FAILURES ===================================
+________ BoxFailureTests.test_far_keepout_overlapping_slot_is_occupied _________
+
+self = <test_owncam_memory_v3.BoxFailureTests testMethod=test_far_keepout_overlapping_slot_is_occupied>
+
+    def test_far_keepout_overlapping_slot_is_occupied(self):
+        mem = memory(rows=[('red', 'far_coarse', 1.5, 0.)])
+        feed(mem, 1.)
+>       self.assertEqual(mem.slot_state(1., mem.tracks[0].x, (.06, .06))['state'], 'occupied')
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_owncam_memory_v3.py:432: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <harness.owncam_memory_v3.OwnCamMemoryV3 object at 0x110aae6c0>
+now = 1.0, centre_xy = array([ 0.85598229, -0.85      ]), half_xy = (0.06, 0.06)
+exclude = (), since = None, max_age_s = 8.0
+
+    def slot_state(self, now, centre_xy, half_xy, exclude=(), *, since=None, max_age_s=TARGET_MAX_AGE_S):
+        self._decay_to(now)
+        c, h = np.asarray(centre_xy), np.asarray(half_xy)
+        occupants = [tr.record(now) for tr in self.blocking_tracks(exclude)
+>                    and np.all(np.abs(tr.x-c) <= h + v2.KEEPOUT_BASE_HALF_M + 2*tr.sigma_m())]
+                                       ^^
+E       NameError: name 'tr' is not defined
+
+harness/owncam_memory_v3.py:389: NameError
+_________ ControllerAndBoundaryTests.test_no_frames_stop_without_grasp _________
+
+self = <test_owncam_memory_v3.ControllerAndBoundaryTests testMethod=test_no_frames_stop_without_grasp>
+
+    def test_no_frames_stop_without_grasp(self):
+        ctl = controller()
+        now = 0.
+        for _ in range(2200):
+            result = ctl.decide(now)
+            if result['mode'] == 'done':
+                break
+            for cmd in result.get('commands', []):
+                ctl.on_command({'t': now, **cmd})
+            now += .1
+>       self.assertEqual(ctl.outcome, 'NOT_INITIALIZED')
+E       AssertionError: 'LOOK_COLLISION_UNVERIFIED' != 'NOT_INITIALIZED'
+E       - LOOK_COLLISION_UNVERIFIED
+E       + NOT_INITIALIZED
+
+tests/test_owncam_memory_v3.py:591: AssertionError
+_ ControllerAndBoundaryTests.test_search_blind_spot_gets_bounded_second_viewpoint_pass _
+
+self = <test_owncam_memory_v3.ControllerAndBoundaryTests testMethod=test_search_blind_spot_gets_bounded_second_viewpoint_pass>
+
+    def test_search_blind_spot_gets_bounded_second_viewpoint_pass(self):
+        from harness.m1_owncam_memory import M1OwnCamDeliveryMem
+        for cls in (M1OwnCamDeliveryMem, None):
+            ctl = controller(cls)
+            ctl.viewpoints, ctl.view_index = [(-.47, .75)], 0
+            with mock.patch.object(ctl, '_start_leg') as start:
+                ctl._search_decide(1.)
+            if cls is not None:
+                self.assertEqual(ctl.outcome, 'SEARCH_NOT_FOUND')
+    
+            else:
+                self.assertTrue(ctl.blind_spot_retry)
+>               self.assertTrue(ctl.revisit)
+E               AssertionError: False is not true
+
+tests/test_owncam_memory_v3.py:550: AssertionError
+_ test_place_gate_rejects_missing_or_contradictory_release_evidence[occupied] __
+
+failure = 'occupied'
+
+    @pytest.mark.parametrize('failure', ['occupied', 'no_cargo', 'wrong_posture', 'wrong_position',
+                                       'wrong_heading', 'stale_image', 'future_image', 'old_fix',
+                                       'uninitialized', 'large_sigma'])
+    def test_place_gate_rejects_missing_or_contradictory_release_evidence(failure):
+        ctl, now, _, _, _ = saved_place(SAVED[0])
+        explicit_empty_slot_evidence(ctl, now)
+        rep = ctl.pose.report(now)
+        if failure == 'occupied':
+            _, tr = track_at(*ctl.slot_xy)
+            tr.t = tr.last_seen_t = now
+            ctl.memory.tracks.append(tr)
+        elif failure == 'no_cargo':
+            import cv2
+            image = cv2.imencode('.jpg', np.zeros((480, 640, 3), np.uint8))[1].tobytes()
+            ctl.last_obs['image'] = base64.b64encode(image).decode()
+            ctl.last_obs['sha256'] = hashlib.sha256(image).hexdigest()
+        elif failure == 'wrong_posture':
+            ctl.last_obs['actuator_state'] = {'servo_pulses': {str(k): v for k, v in CARRY_POSTURE.items()}}
+        elif failure == 'wrong_position':
+            rep = replace(rep, x_m=rep.x_m-.10)
+        elif failure == 'wrong_heading':
+            rep = replace(rep, yaw_rad=.08)
+        elif failure == 'stale_image':
+            ctl.last_obs['sim_time'] = now-.251
+        elif failure == 'future_image':
+            ctl.last_obs['sim_time'] = now+.01
+        elif failure == 'old_fix':
+            ctl.memory.last_look_fix['t'] = now-1.
+        elif failure == 'uninitialized':
+            rep = replace(rep, initialized=False, x_m=None, y_m=None, yaw_rad=None)
+        else:
+            rep = replace(rep, std_xy_m=.051)
+        ctl.pose.report = lambda t: rep
+        with mock.patch.object(ctl, '_gate_look', return_value={'mode': 'capture'}):
+>           assert ctl._boundary_gate(now, 'place') is not None
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_owncam_memory_v3_review.py:168: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+harness/m1_owncam_memory_v3.py:209: in _boundary_gate
+    state = self._slot_state(now)
+            ^^^^^^^^^^^^^^^^^^^^^
+harness/owncam_slot_inspection_v3.py:51: in _slot_state
+    self.slot_record = self.memory.slot_state(now, self.slot_xy, self._slot_half(),
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <harness.owncam_memory_v3.OwnCamMemoryV3 object at 0x112b5a1e0>
+now = 237.912, centre_xy = (4.6, -2.5), half_xy = (0.06, 0.06), exclude = [None]
+since = 237.412, max_age_s = 60.0
+
+    def slot_state(self, now, centre_xy, half_xy, exclude=(), *, since=None, max_age_s=TARGET_MAX_AGE_S):
+        self._decay_to(now)
+        c, h = np.asarray(centre_xy), np.asarray(half_xy)
+        occupants = [tr.record(now) for tr in self.blocking_tracks(exclude)
+>                    and np.all(np.abs(tr.x-c) <= h + v2.KEEPOUT_BASE_HALF_M + 2*tr.sigma_m())]
+                                       ^^
+E       NameError: name 'tr' is not defined
+
+harness/owncam_memory_v3.py:389: NameError
+_____________ test_p1_time_decay_cannot_remove_slot_occupancy_veto _____________
+
+    def test_p1_time_decay_cannot_remove_slot_occupancy_veto():
+        ctl, now, _, _, _ = saved_place(SAVED[0])
+        tr = BoxTrackV3('old-obstacle', 'red', np.array(ctl.slot_xy), np.eye(2)*.01,
+                        now-225., 1, 'far_coarse', .001)
+        tr.evidence(now-225., detected=True, range_class='far_coarse', pose_sigma=.02)
+        ctl.memory.tracks.append(tr)
+        ctl.memory.log_odds[:] = -2.
+        ctl.memory.free_observed_at[:] = now
+>       state = ctl.memory.slot_state(now, ctl.slot_xy, ctl._slot_half())
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_owncam_memory_v3_review2.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <harness.owncam_memory_v3.OwnCamMemoryV3 object at 0x110b1d4f0>
+now = 237.912, centre_xy = (4.6, -2.5), half_xy = (0.06, 0.06), exclude = ()
+since = None, max_age_s = 8.0
+
+    def slot_state(self, now, centre_xy, half_xy, exclude=(), *, since=None, max_age_s=TARGET_MAX_AGE_S):
+        self._decay_to(now)
+        c, h = np.asarray(centre_xy), np.asarray(half_xy)
+        occupants = [tr.record(now) for tr in self.blocking_tracks(exclude)
+>                    and np.all(np.abs(tr.x-c) <= h + v2.KEEPOUT_BASE_HALF_M + 2*tr.sigma_m())]
+                                       ^^
+E       NameError: name 'tr' is not defined
+
+harness/owncam_memory_v3.py:389: NameError
+_______ test_inspection_leg_failure_does_not_release_or_relabel_success ________
+
+    def test_inspection_leg_failure_does_not_release_or_relabel_success():
+        ctl, now, _, _, _ = saved_place(SAVED[0])
+        with mock.patch.object(ctl, '_start_leg'):
+            ctl._boundary_gate(now, 'place')
+        with mock.patch.object(ctl, '_drive_leg', return_value=([], 'no_path')):
+>           result = ctl.decide(now+.1)
+                     ^^^^^^^^^^^^^^^^^^
+
+tests/test_owncam_memory_v3_review2.py:136: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+harness/owncam_slot_inspection_v3.py:93: in decide
+    return self._tick_slot_inspection(now)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+harness/owncam_slot_inspection_v3.py:105: in _tick_slot_inspection
+    self._slot_carry_frame(now, obs)
+harness/owncam_slot_inspection_v3.py:43: in _slot_carry_frame
+    action = box.decide(obs)
+             ^^^^^^^^^^^^^^^
+harness/wrist_zone_skill_v8.py:131: in decide
+    return super().decide(observation)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+harness/wrist_zone_skill_v6.py:299: in decide
+    return super().decide(observation)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+harness/wrist_zone_skill.py:132: in decide
+    action = super().decide(observation)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+harness/visual_box_skill.py:311: in decide
+    return self._carry(obs, pose)
+           ^^^^^^^^^^^^^^^^^^^^^^
+harness/visual_box_skill.py:593: in _carry
+    self.last_attachment = self._compare_attachment(self._carry_previous_image, obs["image"])
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+harness/visual_box_skill.py:119: in _compare_attachment
+    return compare_box_comotion(*args,**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+harness/visual_attachment.py:72: in compare_box_comotion
+    before = _decode_jpeg(before_image)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+image = None
+
+    def _decode_jpeg(image):
+        if not isinstance(image, str) or not image:
+>           raise ValueError("INVALID_BASE64_JPEG")
+E           ValueError: INVALID_BASE64_JPEG
+
+harness/monocular_box.py:50: ValueError
+______ test_slot_inspection_moves_looks_returns_and_only_then_dispatches _______
+
+    def test_slot_inspection_moves_looks_returns_and_only_then_dispatches():
+        ctl, now, _, _, _ = saved_place(SAVED[0])
+        with mock.patch.object(ctl, '_start_leg') as start:
+            ctl._boundary_gate(now, 'place')
+            with mock.patch.object(ctl, '_drive_leg', return_value=([], 'arrived')):
+>               ctl.decide(now+.1)
+
+tests/test_owncam_memory_v3_review2.py:147: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+harness/owncam_slot_inspection_v3.py:93: in decide
+    return self._tick_slot_inspection(now)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+harness/owncam_slot_inspection_v3.py:105: in _tick_slot_inspection
+    self._slot_carry_frame(now, obs)
+harness/owncam_slot_inspection_v3.py:43: in _slot_carry_frame
+    action = box.decide(obs)
+             ^^^^^^^^^^^^^^^
+harness/wrist_zone_skill_v8.py:131: in decide
+    return super().decide(observation)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+harness/wrist_zone_skill_v6.py:299: in decide
+    return super().decide(observation)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+harness/wrist_zone_skill.py:132: in decide
+    action = super().decide(observation)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+harness/visual_box_skill.py:311: in decide
+    return self._carry(obs, pose)
+           ^^^^^^^^^^^^^^^^^^^^^^
+harness/visual_box_skill.py:593: in _carry
+    self.last_attachment = self._compare_attachment(self._carry_previous_image, obs["image"])
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+harness/visual_box_skill.py:119: in _compare_attachment
+    return compare_box_comotion(*args,**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+harness/visual_attachment.py:72: in compare_box_comotion
+    before = _decode_jpeg(before_image)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+image = None
+
+    def _decode_jpeg(image):
+        if not isinstance(image, str) or not image:
+>           raise ValueError("INVALID_BASE64_JPEG")
+E           ValueError: INVALID_BASE64_JPEG
+
+harness/monocular_box.py:50: ValueError
+____ test_new_obstacle_or_expired_floor_certificate_blocks_returned_release ____
+
+    def test_new_obstacle_or_expired_floor_certificate_blocks_returned_release():
+        from harness.owncam_memory_v3 import SLOT_CLEAR_MAX_AGE_S
+        ctl, now, _, _, _ = saved_place(SAVED[0])
+        explicit_empty_slot_evidence(ctl, now)
+        assert ctl._boundary_gate(now, 'place') is None
+        # Certificate expiration cannot be repaired by a new pose/attachment image.
+        mask = ctl.memory.slot_cells(ctl.slot_xy, ctl._slot_half())
+        ctl.memory.free_observed_at[mask] = now-SLOT_CLEAR_MAX_AGE_S-.01
+        with mock.patch.object(ctl, '_start_leg'):
+            assert ctl._boundary_gate(now, 'place') is not None
+        explicit_empty_slot_evidence(ctl, now)
+        _, tr = track_at(*ctl.slot_xy)
+        tr.t = now
+        ctl.memory.tracks.append(tr)
+>       result = ctl._boundary_gate(now, 'place')
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_owncam_memory_v3_review2.py:277: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+harness/m1_owncam_memory_v3.py:209: in _boundary_gate
+    state = self._slot_state(now)
+            ^^^^^^^^^^^^^^^^^^^^^
+harness/owncam_slot_inspection_v3.py:51: in _slot_state
+    self.slot_record = self.memory.slot_state(now, self.slot_xy, self._slot_half(),
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <harness.owncam_memory_v3.OwnCamMemoryV3 object at 0x111af6360>
+now = 237.912, centre_xy = (4.6, -2.5), half_xy = (0.06, 0.06), exclude = [None]
+since = 237.412, max_age_s = 60.0
+
+    def slot_state(self, now, centre_xy, half_xy, exclude=(), *, since=None, max_age_s=TARGET_MAX_AGE_S):
+        self._decay_to(now)
+        c, h = np.asarray(centre_xy), np.asarray(half_xy)
+        occupants = [tr.record(now) for tr in self.blocking_tracks(exclude)
+>                    and np.all(np.abs(tr.x-c) <= h + v2.KEEPOUT_BASE_HALF_M + 2*tr.sigma_m())]
+                                       ^^
+E       NameError: name 'tr' is not defined
+
+harness/owncam_memory_v3.py:389: NameError
+=========================== short test summary info ============================
+FAILED tests/test_owncam_memory_v3.py::BoxFailureTests::test_far_keepout_overlapping_slot_is_occupied
+FAILED tests/test_owncam_memory_v3.py::ControllerAndBoundaryTests::test_no_frames_stop_without_grasp
+FAILED tests/test_owncam_memory_v3.py::ControllerAndBoundaryTests::test_search_blind_spot_gets_bounded_second_viewpoint_pass
+FAILED tests/test_owncam_memory_v3_review.py::test_place_gate_rejects_missing_or_contradictory_release_evidence[occupied]
+FAILED tests/test_owncam_memory_v3_review2.py::test_p1_time_decay_cannot_remove_slot_occupancy_veto
+FAILED tests/test_owncam_memory_v3_review2.py::test_inspection_leg_failure_does_not_release_or_relabel_success
+FAILED tests/test_owncam_memory_v3_review2.py::test_slot_inspection_moves_looks_returns_and_only_then_dispatches
+FAILED tests/test_owncam_memory_v3_review2.py::test_new_obstacle_or_expired_floor_certificate_blocks_returned_release
+8 failed, 108 passed in 16.87s

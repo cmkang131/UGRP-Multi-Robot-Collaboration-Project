@@ -1,0 +1,449 @@
+{
+  "baseline_sha": "330e650e6dc2959d33d917fec31f40a18acc7656",
+  "first_ci_run": 36744665856,
+  "first_ci_result": "30 successful jobs, shard 6 exceeded 10 minutes, Ubuntu scenarios package install exceeded 15 minutes, required aggregation failed",
+  "change": "module-scoped genuine controller source receipt; fresh deep copy for each fake host; only T12 test fixture changed",
+  "test_definitions": {
+    "baseline_sha": "330e650e6dc2959d33d917fec31f40a18acc7656",
+    "all_test_definitions_and_parametrizations_unchanged": true,
+    "test_functions": [
+      "test_r3_host_40_seconds_late_needs_a_new_request_and_new_partner_readiness",
+      "test_r3_host_private_changes_cannot_select_new_partner",
+      "test_r3_host_reassigns_only_after_own_cancel_and_clears_old_jobs",
+      "test_r3_host_submission_boundaries",
+      "test_r3_role_exchange_requires_independent_complementary_request"
+    ]
+  },
+  "runtime_dependency_sources_unchanged": 202,
+  "workflow_delta_against_merged_main": [],
+  "local_host_lock": false,
+  "local_physics_render_model_calls": 0,
+  "checks": [
+    {
+      "name": "core",
+      "command": [
+        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "offline_guard",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_zone_pair_rendezvous.py",
+        "tests/test_zone_pair_rendezvous_t07.py",
+        "tests/test_zone_pair_role_exchange.py",
+        "tests/test_zone_pair_executor.py",
+        "tests/test_zone_pair_registered_source.py",
+        "tests/test_zone_study_source_pinning.py",
+        "--junitxml=/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-checks-q3dxp1j9/core.xml"
+      ],
+      "exit_code": 0,
+      "assertion_failures": 0,
+      "tests": 447,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "mutation_baseline",
+      "command": [
+        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "offline_guard",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_zone_pair_rendezvous.py",
+        "tests/test_zone_pair_rendezvous_t07.py",
+        "tests/test_zone_pair_role_exchange.py",
+        "--junitxml=/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-checks-q3dxp1j9/mutation_baseline.xml",
+        "-k",
+        "explicit_reassignment_cancels_only_old_job or host_reassigns_only_after_own_cancel or before_just_before_at_and_after_deadline or role_exchange_requires_independent_complementary_request or fixed_beam_and_partner_exclusion_geometry or fixed_role_exclusion_geometry or fixed_role_exclusion_geometry"
+      ],
+      "exit_code": 0,
+      "assertion_failures": 0,
+      "tests": 79,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "stale_cancel_removed",
+      "command": [
+        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "offline_guard",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_zone_pair_rendezvous.py",
+        "tests/test_zone_pair_rendezvous_t07.py",
+        "--junitxml=/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-checks-q3dxp1j9/stale_cancel_removed.xml",
+        "-k",
+        "explicit_reassignment_cancels_only_old_job or host_reassigns_only_after_own_cancel"
+      ],
+      "exit_code": 1,
+      "assertion_failures": 18,
+      "tests": 18,
+      "failures": 18,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "timeout_removed",
+      "command": [
+        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "offline_guard",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_zone_pair_rendezvous.py",
+        "tests/test_zone_pair_rendezvous_t07.py",
+        "--junitxml=/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-checks-q3dxp1j9/timeout_removed.xml",
+        "-k",
+        "before_just_before_at_and_after_deadline"
+      ],
+      "exit_code": 1,
+      "assertion_failures": 32,
+      "tests": 48,
+      "failures": 32,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "legacy_fixture_restored",
+      "command": [
+        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "offline_guard",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_zone_pair_rendezvous_t07.py",
+        "--junitxml=/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-checks-q3dxp1j9/legacy_fixture_restored.xml",
+        "-k",
+        "role_exchange_requires_independent_complementary_request"
+      ],
+      "exit_code": 1,
+      "assertion_failures": 1,
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "role_keepouts_removed",
+      "command": [
+        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "offline_guard",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_zone_pair_role_exchange.py",
+        "--junitxml=/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-checks-q3dxp1j9/role_keepouts_removed.xml",
+        "-k",
+        "fixed_beam_and_partner_exclusion_geometry or fixed_role_exclusion_geometry"
+      ],
+      "exit_code": 1,
+      "assertion_failures": 12,
+      "tests": 12,
+      "failures": 12,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "driver_wrong_role",
+      "command": [
+        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "offline_guard",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_zone_pair_role_exchange.py",
+        "--junitxml=/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-checks-q3dxp1j9/driver_wrong_role.xml",
+        "-k",
+        "fixed_role_exclusion_geometry"
+      ],
+      "exit_code": 1,
+      "assertion_failures": 6,
+      "tests": 6,
+      "failures": 6,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "mutation_restored",
+      "command": [
+        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "offline_guard",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_zone_pair_rendezvous.py",
+        "tests/test_zone_pair_rendezvous_t07.py",
+        "tests/test_zone_pair_role_exchange.py",
+        "--junitxml=/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-checks-q3dxp1j9/mutation_restored.xml",
+        "-k",
+        "explicit_reassignment_cancels_only_old_job or host_reassigns_only_after_own_cancel or before_just_before_at_and_after_deadline or role_exchange_requires_independent_complementary_request or fixed_beam_and_partner_exclusion_geometry or fixed_role_exclusion_geometry or fixed_role_exclusion_geometry"
+      ],
+      "exit_code": 0,
+      "assertion_failures": 0,
+      "tests": 79,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-checks-q3dxp1j9/checks.jsonl",
+      "bytes": 4893,
+      "sha256": "f580cb96986af430f84224e364510401ce35b41e2a81c5df489420733f6e401f"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-checks-q3dxp1j9/core.log",
+      "bytes": 592,
+      "sha256": "ed8e7b42dea1df9068082f39f45e3de2a4d95e06c4e4be7cfd65f093b7755537"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-checks-q3dxp1j9/core.xml",
+      "bytes": 67495,
+      "sha256": "01582eea332d080337dad8d51c61380e0c86a03aed55edc17520ea371eb0cd5a"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-checks-q3dxp1j9/core_command.json",
+      "bytes": 523,
+      "sha256": "e9e37b0424ddefe6f456688ac5d4e385a0cb5d12706f24044a975c2c48980206"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-checks-q3dxp1j9/driver.py",
+      "bytes": 8069,
+      "sha256": "f106621c24ccb8bc41016a81e879f0ce82f77f162f3085c2dc7e7960d82ec023"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-checks-q3dxp1j9/driver_wrong_role.log",
+      "bytes": 13951,
+      "sha256": "7a4432a9e7186bb944f180ca1e400b58e33b43b38b888c718da9502ad1188968"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-checks-q3dxp1j9/driver_wrong_role.xml",
+      "bytes": 15695,
+      "sha256": "e84d5b331770df1c307a0ef443fadfd13099fce9a48aef46ac4950277f23b240"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-checks-q3dxp1j9/driver_wrong_role_command.json",
+      "bytes": 365,
+      "sha256": "b1f38eeb72967610b9530ba0d80b8b085e801bbd33225294abf3f0d1f3475401"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-checks-q3dxp1j9/driver_wrong_role_mutation.json",
+      "bytes": 342,
+      "sha256": "54dda1be56d77fe09abd55aa64ab1efac4174bdc76ebef6ab2667c5539795816"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-checks-q3dxp1j9/environment.json",
+      "bytes": 201,
+      "sha256": "47c430dc4eb632ecf02d8889de91b0b9ff250ea48012ca3e536c70562f99d001"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-checks-q3dxp1j9/legacy_fixture_restored.log",
+      "bytes": 1153,
+      "sha256": "fb2efd74b761d81052a43bb852b17b0e20f97846585db26f2ff96972a5e31ba9"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-checks-q3dxp1j9/legacy_fixture_restored.xml",
+      "bytes": 1326,
+      "sha256": "a1f03974486afb2ef0c073b6539ae84a89bd2d7c8f3c1f96015ebf0f051d3ff5"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-checks-q3dxp1j9/legacy_fixture_restored_command.json",
+      "bytes": 399,
+      "sha256": "5b568804ed010a10efa9ea55b6ae322acc70e5235c3d699e74b7e14c45d59fc3"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-checks-q3dxp1j9/legacy_fixture_restored_mutation.json",
+      "bytes": 368,
+      "sha256": "3c53d51b360eaa02efcc1c8a5cfa8e4cc949852747f5a9e3d2232808c839bc6c"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-checks-q3dxp1j9/mutation_baseline.log",
+      "bytes": 196,
+      "sha256": "c70b78da54204b0a88fc35042d44ffe4682c671855e70b3f43c56f1000ddfa44"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-checks-q3dxp1j9/mutation_baseline.xml",
+      "bytes": 12673,
+      "sha256": "172cba1e76d0f3de42aafaac3e566e5be3847efcb4539719305b5a8b82f94ddb"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-checks-q3dxp1j9/mutation_baseline_command.json",
+      "bytes": 717,
+      "sha256": "284228d310783576b0675e26b69566fd0747c2cb1b8afeba2594cd677f95df1a"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-checks-q3dxp1j9/mutation_restored.log",
+      "bytes": 196,
+      "sha256": "b65d03971b85d74cb754d9b84b72657eb16bee8d27df51e863deff629671e66e"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-checks-q3dxp1j9/mutation_restored.xml",
+      "bytes": 12673,
+      "sha256": "60dbfb4a99600ffd93e22383c40c825ada1bb165d9742345dc75370074cb9412"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-checks-q3dxp1j9/mutation_restored_command.json",
+      "bytes": 717,
+      "sha256": "7caa4825a2a3b6b062bb64b4d3cde489892f19633fcfd0d7b9c8d41ebc13b292"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-checks-q3dxp1j9/role_keepouts_removed.log",
+      "bytes": 17588,
+      "sha256": "ca32c0f3405f790f0a52ba550fb5f0461799e747724b8dc757ffc144b4858278"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-checks-q3dxp1j9/role_keepouts_removed.xml",
+      "bytes": 19537,
+      "sha256": "72c9d56db813f0a16d6340e7aba5bb6f9406824f707965e03d1715782c0ae1a4"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-checks-q3dxp1j9/role_keepouts_removed_command.json",
+      "bytes": 414,
+      "sha256": "ceb3991f994ae8d29bb07c76942b9533587ec4410b66af4e2b167e07e652eb83"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-checks-q3dxp1j9/role_keepouts_removed_mutation.json",
+      "bytes": 499,
+      "sha256": "359604abc5cb5c0922fef5397221c8f107e09ce4d389110704ffbaecabdb4090"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-checks-q3dxp1j9/source_sha256.json",
+      "bytes": 240777,
+      "sha256": "b3e30ca369529973476cf1e644a75fb1caacc3a32c4b9a82e71008df96c224ef"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-checks-q3dxp1j9/stale_cancel_removed.log",
+      "bytes": 41045,
+      "sha256": "e149c7c0d741cff0648820b9a0c77d97aa5086ac113ec5e9f0ea9b11a8c8a4ae"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-checks-q3dxp1j9/stale_cancel_removed.xml",
+      "bytes": 42646,
+      "sha256": "07f87bccd8986de4d51cf6e9fd31a1b45df7efbf45628e33117597bf28386b19"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-checks-q3dxp1j9/stale_cancel_removed_command.json",
+      "bytes": 462,
+      "sha256": "fee2212b5e6b53a3fc4cf5c541d921a3c9c99f10a07f8ddcae586fa117408145"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-checks-q3dxp1j9/stale_cancel_removed_mutation.json",
+      "bytes": 339,
+      "sha256": "10276c00dfb5468cfaaba692fc45420da5c9e398d3a3158983333911799d2bbd"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-checks-q3dxp1j9/test_definitions.json",
+      "bytes": 484,
+      "sha256": "0fac283a8f7a1fa7db86df10605ef36de80286911edb1f679a7a4f6589a871ff"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-checks-q3dxp1j9/timeout_removed.log",
+      "bytes": 37316,
+      "sha256": "13ff743561a0d644c4b197f7460142186855a473e713c27d034778a2e6751edc"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-checks-q3dxp1j9/timeout_removed.xml",
+      "bytes": 42174,
+      "sha256": "bc9de667b791d3b9d826f4f10d8f171cd6e431726c0b4d85e1acb888031b0ef2"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-checks-q3dxp1j9/timeout_removed_command.json",
+      "bytes": 415,
+      "sha256": "60fe4515e9d1b38bf95b20ce288507717c8d8f6196e20ae3b851579f3db43989"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-checks-q3dxp1j9/timeout_removed_mutation.json",
+      "bytes": 301,
+      "sha256": "0b4354ce40545acc7a3747e3c4e710c53b0e53aec04bc56e71390762813a05b7"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-ci-330e650e/20260930T163212.json",
+      "bytes": 3834,
+      "sha256": "c90b45bfe5ad34b4ade5dff8550eaa3cd00d9ab0f5ca45bb4aaa0c147eef5efc"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-ci-330e650e/20260930T163439.json",
+      "bytes": 3959,
+      "sha256": "bac38d7cb02408cae1d711ad332945ea7e2e3a4418943a30ece9e9f6efa6f225"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-ci-330e650e/20260930T163604.json",
+      "bytes": 3974,
+      "sha256": "252dccd135f2357a07f76b8f36f6c1b43b237df52b4a612fba9901f645fccb52"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-ci-330e650e/20260930T163808.json",
+      "bytes": 3974,
+      "sha256": "252dccd135f2357a07f76b8f36f6c1b43b237df52b4a612fba9901f645fccb52"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-ci-330e650e/20260930T164014.json",
+      "bytes": 3979,
+      "sha256": "889b24f9398fe53bbe1c7d3b74efb53f4a3d6a8bb941ccdfc7d8c8f011addace"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-ci-330e650e/20260930T164206.json",
+      "bytes": 4095,
+      "sha256": "9fd66c3230bf7175376d443dfd680a6a13cd0a167911c312d64f098ff2121b4f"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-ci-330e650e/20260930T164840.json",
+      "bytes": 4109,
+      "sha256": "86c719fec7b50c16407792a9a29bf4c8361c8965c046129e40a5d7c26179c52b"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-ci-330e650e/post_push_git_receipt.json",
+      "bytes": 1658,
+      "sha256": "16bbc0be719df7be3e3570d116ceda260be06a23db4e5ea47f6f17b2faa6a1c2"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-ci-330e650e/shard6-annotations.json",
+      "bytes": 2429,
+      "sha256": "082ee7e100342434fbdcf75dbc4c26aec69440e144e3ef32d8237b5f07e791a7"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-ci-330e650e/shard6-raw.log",
+      "bytes": 38889,
+      "sha256": "b5b07d8939a7d53d43cd79839d6a5ba05d647bbe17d43848b47766f65c4496e5"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-ci-330e650e/shard6.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t12-r3-delay/review-ci-330e650e/ubuntu-scenarios-annotations.json",
+      "bytes": 3338,
+      "sha256": "fe00adbb7c430392dabd789ad2ae373aff25a1f7163811d5b98a9d47b5bac90f"
+    }
+  ],
+  "qualification": "offline test infrastructure correction, not a controller or physical performance change; latest normal CI outcome belongs to final PR comment"
+}

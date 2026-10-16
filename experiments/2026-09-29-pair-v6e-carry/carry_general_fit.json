@@ -1,0 +1,130 @@
+{
+ "slope_to_yaw_ratio": 1.0056026743977224,
+ "b_rad_s": {
+  "pm": 0.0022820207984445367,
+  "edge": 0.0022587183209880155,
+  "pm+edge": 0.0020436654285428957
+ },
+ "estimators": {
+  "e0_registered": {
+   "balanced_rms_rad_s": 0.002551203114832435,
+   "per_cell_rms_rad_s": {
+    "nominal": 0.0014632096399559513,
+    "lat-/opp": 0.0037274678211434782,
+    "yaw-/opp": 0.0023632530835051256,
+    "yaw+/same": 0.002101091475330442
+   },
+   "n_per_cell": {
+    "nominal": 42,
+    "lat-/opp": 42,
+    "yaw-/opp": 44,
+    "yaw+/same": 44
+   }
+  },
+  "pm": {
+   "balanced_rms_rad_s": 0.0022820207984445367,
+   "per_cell_rms_rad_s": {
+    "nominal": 0.0012129477548316287,
+    "lat-/opp": 0.0033040576763171668,
+    "yaw-/opp": 0.002153392208277763,
+    "yaw+/same": 0.0019507276363144347
+   },
+   "n_per_cell": {
+    "nominal": 42,
+    "lat-/opp": 42,
+    "yaw-/opp": 44,
+    "yaw+/same": 44
+   }
+  },
+  "edge": {
+   "balanced_rms_rad_s": 0.0022587183209880155,
+   "per_cell_rms_rad_s": {
+    "nominal": 0.0014626542849556089,
+    "lat-/opp": 0.002853854271345659,
+    "yaw-/opp": 0.002382880480203372,
+    "yaw+/same": 0.002108381529030399
+   },
+   "n_per_cell": {
+    "nominal": 42,
+    "lat-/opp": 42,
+    "yaw-/opp": 44,
+    "yaw+/same": 44
+   }
+  },
+  "pm+edge": {
+   "balanced_rms_rad_s": 0.0020436654285428957,
+   "per_cell_rms_rad_s": {
+    "nominal": 0.0012058309402530687,
+    "lat-/opp": 0.0026046569839090557,
+    "yaw-/opp": 0.0021616224941066044,
+    "yaw+/same": 0.001948177473424893
+   },
+   "n_per_cell": {
+    "nominal": 42,
+    "lat-/opp": 42,
+    "yaw-/opp": 44,
+    "yaw+/same": 44
+   }
+  }
+ },
+ "deadband_cmd": {
+  "c0": [
+   0.0,
+   0.0002,
+   0.0
+  ],
+  "u1": [
+   0.0,
+   0.0292,
+   0.0
+  ]
+ },
+ "drift_ratio_std": 0.01586462697204749,
+ "steer_phase": {
+  "n_case_robots": 200,
+  "rms_mm_new": 3.8462875588352037,
+  "rms_mm_linear_model": 32.82836784643153,
+  "diagnostic_not_fitted": {
+   "n": 20,
+   "rms_new_mm": 4.428081271960459,
+   "rms_linear_pf_mm": 33.9010237186234,
+   "mean_signed_new_mm": -0.2637712339369212,
+   "mean_signed_linear_mm": 33.84605347953341
+  }
+ },
+ "drift": {
+  "per_cell_rms": {
+   "lat-/opp": 0.024453885767575567,
+   "nominal": 0.003406272516387878,
+   "yaw+/same": 0.003525798270025656,
+   "yaw-/opp": 0.01961425708046105
+  },
+  "n_per_cell": {
+   "lat-/opp": 42,
+   "nominal": 70,
+   "yaw+/same": 44,
+   "yaw-/opp": 44
+  }
+ },
+ "rule": "deadband ramp (c0, u1) least squares on steer-phase GT body-lateral travel; drift_ratio_std = cell-balanced RMS of leg-phase cross-axis residual per GT axis travel; ratio and b as fit_carry_pair_yaw.py on the same raws",
+ "inputs": [
+  {
+   "raw": "pair-stage-probes-ece01311-fcal",
+   "cases_jsonl_sha256": "261796438d939e2319350b801601c70e17d575a29f43fe601ae725ebc48ba660"
+  },
+  {
+   "raw": "pair-stage-probes-7cecaf9b-fcal2",
+   "cases_jsonl_sha256": "711fc4215348e6435885117da2c7c313cb107efad2d7bff446f25394c875555e"
+  },
+  {
+   "raw": "pair-stage-probes-7cecaf9b-fcal3",
+   "cases_jsonl_sha256": "e0f7bec2cfa029bcb7dbd27337b638cabb36cb73b3c2ef4ced5653c90a1061d3"
+  },
+  {
+   "raw": "pair-stage-probes-7cecaf9b-fcal4",
+   "cases_jsonl_sha256": "81d4738c7ea0a6dd2090ff361df448764611349945c43290e0476c2920f8b2d8"
+  }
+ ],
+ "not_read": "hB, hC, hD, the 33-cell grid; hA only as a diagnostic score of the deadband (never fitted)",
+ "n_case_robots": 172
+}

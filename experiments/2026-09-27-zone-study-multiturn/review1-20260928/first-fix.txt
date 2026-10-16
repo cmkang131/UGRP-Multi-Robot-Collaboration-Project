@@ -1,0 +1,82 @@
+.FFF................FFFF.........................F..FF.....              [100%]
+=================================== FAILURES ===================================
+___ test_90s_wait_preserves_v64_inputs_and_calls_in_all_conditions[peer_ko] ____
+tests/test_zone_study_multiturn.py:148: in test_90s_wait_preserves_v64_inputs_and_calls_in_all_conditions
+    assert common(actual['requests']) == common(golden['conditions']['no_comm']['requests'])
+E   AssertionError: assert [('r1', 0.0, ...37f0f7'), ...] == [('r1', 0.0, ...312c21'), ...]
+E     
+E     At index 0 diff: ('r1', 0.0, 'af55c0695be499cc02e12704cff742be2b88516277d88ab59f86c93ab3d8a975') != ('r1', 0.0, 'ce74a73ad8bdd40dd7a99e8e45a180384a72cd9155be9f504b713aced0447e9e')
+E     Use -v to get more diff
+__ test_90s_wait_preserves_v64_inputs_and_calls_in_all_conditions[leader_ko] ___
+tests/test_zone_study_multiturn.py:148: in test_90s_wait_preserves_v64_inputs_and_calls_in_all_conditions
+    assert common(actual['requests']) == common(golden['conditions']['no_comm']['requests'])
+E   AssertionError: assert [('r1', 0.0, ...4641b0'), ...] == [('r1', 0.0, ...312c21'), ...]
+E     
+E     At index 0 diff: ('r1', 0.0, '7e8989ff5c07f9378ddc23ba77b0d9e2e99521274303c485be51fde2d474d0e7') != ('r1', 0.0, 'ce74a73ad8bdd40dd7a99e8e45a180384a72cd9155be9f504b713aced0447e9e')
+E     Use -v to get more diff
+__ test_90s_wait_preserves_v64_inputs_and_calls_in_all_conditions[structured] __
+tests/test_zone_study_multiturn.py:148: in test_90s_wait_preserves_v64_inputs_and_calls_in_all_conditions
+    assert common(actual['requests']) == common(golden['conditions']['no_comm']['requests'])
+E   AssertionError: assert [('r1', 0.0, ...37f0f7'), ...] == [('r1', 0.0, ...312c21'), ...]
+E     
+E     At index 0 diff: ('r1', 0.0, 'af55c0695be499cc02e12704cff742be2b88516277d88ab59f86c93ab3d8a975') != ('r1', 0.0, 'ce74a73ad8bdd40dd7a99e8e45a180384a72cd9155be9f504b713aced0447e9e')
+E     Use -v to get more diff
+_______ test_waiting_robot_redecides_immediately_after_delivery[no_comm] _______
+tests/test_zone_study_multiturn.py:217: in test_waiting_robot_redecides_immediately_after_delivery
+    assert len(r1) == 1 and links['r1'].job() is None
+E   AssertionError: assert (1 == 1 and {'kind': 'hold', 'order_id': None, 'job_id': 'r1-job-001'} is None)
+E    +  where 1 = len([{'channel': {'can_receive_from': [], 'can_send_to': [], 'condition': 'no_comm', 'encoding': 'none', ...}, 'condition'... 계획 정보다. 현재 위치·재고·배송 완료를 보장하지 않는다. 현재 상황은 자기 RGB, 자기 발행 명령과 허용된 수신 메시지로만 판단한다.', ...}, 'own_command_history': [], ...}])
+E    +  and   {'kind': 'hold', 'order_id': None, 'job_id': 'r1-job-001'} = job()
+E    +    where job = <tests.test_zone_study_integration.FakeLink object at 0x1121ae6f0>.job
+_______ test_waiting_robot_redecides_immediately_after_delivery[peer_ko] _______
+tests/test_zone_study_multiturn.py:219: in test_waiting_robot_redecides_immediately_after_delivery
+    assert [p['sim_time_s'] for p in r1] == [0., 6.1]
+E   assert [0.0] == [0.0, 6.1]
+E     
+E     Right contains one more item: 6.1
+E     Use -v to get more diff
+______ test_waiting_robot_redecides_immediately_after_delivery[leader_ko] ______
+tests/test_zone_study_multiturn.py:219: in test_waiting_robot_redecides_immediately_after_delivery
+    assert [p['sim_time_s'] for p in r1] == [0., 6.1]
+E   assert [0.0] == [0.0, 6.1]
+E     
+E     Right contains one more item: 6.1
+E     Use -v to get more diff
+_____ test_waiting_robot_redecides_immediately_after_delivery[structured] ______
+tests/test_zone_study_multiturn.py:219: in test_waiting_robot_redecides_immediately_after_delivery
+    assert [p['sim_time_s'] for p in r1] == [0., 6.1]
+E   assert [0.0] == [0.0, 6.1]
+E     
+E     Right contains one more item: 6.1
+E     Use -v to get more diff
+_________ test_episode_cap_during_inflight_still_charges_and_finishes __________
+tests/test_zone_study_multiturn.py:286: in test_episode_cap_during_inflight_still_charges_and_finishes
+    assert len(requests) == 4
+E   AssertionError: assert 3 == 4
+E    +  where 3 = len([{'channel': {'can_receive_from': ['r3'], 'can_send_to': ['r3'], 'condition': 'leader_ko', 'encoding': 'free_ko', ...}...alogue_window': {'max_utterances': 6, 'max_your_utterances': 2, 'sent': [], 'window_id': 'w1', ...}, 'inbox': [], ...}])
+____ test_message_arriving_during_decision_is_used_once_after_busy_boundary ____
+tests/test_zone_study_multiturn.py:322: in test_message_arriving_during_decision_is_used_once_after_busy_boundary
+    assert [p['sim_time_s'] for p in starts] == [0., 5.5]
+E   assert [0.0, 5.5, 10.8] == [0.0, 5.5]
+E     
+E     Left contains one more item: 10.8
+E     Use -v to get more diff
+__________ test_idle_message_still_obeys_common_minimum_call_interval __________
+tests/test_zone_study_multiturn.py:336: in test_idle_message_still_obeys_common_minimum_call_interval
+    assert [p['sim_time_s'] for p in requests if p['robot_id'] == 'r1'] == [0., 10.]
+E   assert [0.0, 15.3] == [0.0, 10.0]
+E     
+E     At index 1 diff: 15.3 != 10.0
+E     Use -v to get more diff
+=========================== short test summary info ============================
+FAILED tests/test_zone_study_multiturn.py::test_90s_wait_preserves_v64_inputs_and_calls_in_all_conditions[peer_ko]
+FAILED tests/test_zone_study_multiturn.py::test_90s_wait_preserves_v64_inputs_and_calls_in_all_conditions[leader_ko]
+FAILED tests/test_zone_study_multiturn.py::test_90s_wait_preserves_v64_inputs_and_calls_in_all_conditions[structured]
+FAILED tests/test_zone_study_multiturn.py::test_waiting_robot_redecides_immediately_after_delivery[no_comm]
+FAILED tests/test_zone_study_multiturn.py::test_waiting_robot_redecides_immediately_after_delivery[peer_ko]
+FAILED tests/test_zone_study_multiturn.py::test_waiting_robot_redecides_immediately_after_delivery[leader_ko]
+FAILED tests/test_zone_study_multiturn.py::test_waiting_robot_redecides_immediately_after_delivery[structured]
+FAILED tests/test_zone_study_multiturn.py::test_episode_cap_during_inflight_still_charges_and_finishes
+FAILED tests/test_zone_study_multiturn.py::test_message_arriving_during_decision_is_used_once_after_busy_boundary
+FAILED tests/test_zone_study_multiturn.py::test_idle_message_still_obeys_common_minimum_call_interval
+10 failed, 49 passed in 11.38s

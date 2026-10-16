@@ -1,0 +1,69 @@
+{
+  "issue_comments": [
+    {
+      "body": "**코디네이터 결정 (2026-09-27): 공동 운반 v5 수정 방향**\n- **근거 (diagnosis_v5, PR #240):** dev05부터 dev08까지 네 회차 모두 공동 파지 직전 구간에서 멈췄다.\n  - dev07: 파지 자세에서 빔 끝이 화면에 잘린 입력(END_CLIPPED)을 추적기가 받지 않았다. 추적기는 BAND_CLIPPED만 허용한다.\n  - dev08: 자리 맞춤(align) 중 태그가 15.3초 동안 갱신되지 않아 XY σ가 0.07004 m로 기준 0.07 m를 넘었다.\n  - VIS5 검토(PR #243)에서도 같은 결론이 나왔다: 관측을 스스로 고르는 능동 재관측이 우선이다.\n- **결정:**\n  1. 자리 맞춤 전과 도중에 관측 자세를 잡아 재관측한다. 기존 카메라로 관측 방향을 고르고, 기준 시간 동안 갱신이 없으면 이동을 멈추고 먼저 본다.\n  2. 근접 preclose 관측 계약을 보완한다. END_CLIPPED도 부분 관측으로 받되 과신하지 않는다.\n  - 임계값은 완화하지 않는다.\n- **진행:** Codex가 같은 PR에서 grasp v5와 prereg v5(dev09·dev10)로 구현하고, 검토를 거친 뒤 실행한다.",
+      "id": 5856308924,
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/221#issuecomment-5856308924"
+    },
+    {
+      "body": "**코디네이터 결정 (2026-09-27): 공동 운반 진단 방식 전환 (사용자: \"좋은 방식으로 해줘봐 알아서\")**\n- **근거:** 같은 2대 운반이 9/26 M2 러너에서는 GT 없이 성공했다. 열린 바닥은 test 8/8, 문 2b단계는 4/5(1회는 중단으로 판정 없음)였다. 그런데 공통 실행기로 옮긴 뒤로 dev05부터 dev08까지 4회 모두, 새로 넣은 안전 기준에 걸려 공동 파지 전에 멈췄다. 실제 충돌은 0건이었다. 회차마다 한 가지씩 고치는 방식은 수렴하지 않았다.\n- **결정:** 차분 비교로 바꾼다. M2 성공 실행의 저장 입력(자기 RGB·자기 명령)을 공통 실행기의 기준과 판정 경로에 오프라인으로 재생한다. 성공한 실행을 어느 기준이 어느 시점에 막았을지, 동작 순서·명령·관측 주기가 어디서 달라지는지를 한 번에 찾는다(Codex, 브랜치 codex/zone-pair-parity, 물리 실행 없음).\n- **기준 처리:** 기준은 무작정 완화하지 않는다. 다만 M2와 다르게 새로 넣은 기준은 근거를 다시 검토한다.\n- **병행:** v5(dev09·dev10)는 검토를 통과하면 그대로 실행하고, 그 결과도 이 비교에 넣는다.",
+      "id": 5856549507,
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/221#issuecomment-5856549507"
+    },
+    {
+      "body": "**차분 진단 결과 (PR #244, Codex, 검토 전)와 다음 계획**\n- M2 성공 49회를 공통 실행기 판정에 다시 넣으면, 98/98 로봇 trace가 짐을 든 단계(wait_lift·carry)의 yaw 3° gate에 걸린다(조건부 재생). 즉 **파지 전 문제를 v5로 넘겨도 운반 단계에서 같은 계열로 막힐 가능성이 높다.**\n- 공통 실행기의 shared PF는 파지 직전 사후 XY 오차가 0.68–0.95 m인데 σ는 작았다. 과신이 핵심이다. M2는 파지용 VO를 따로 계산해서 이 문제를 피했다.\n- v5(PR #240)는 dev05·dev07·dev08의 직접 원인을 해소하는 것으로 재생에서 확인됐다.\n- **다음:**\n  1. #240 수정·검토 → dev09·dev10 실행. 파지 통과 여부를 확인한다.\n  2. 병행으로 Codex가 **짐을 든 단계의 관측·불확실성 예산**을 설계한다. 설계만 하고, 구현은 #240 병합 뒤에 한다.\n  - 임계값 일괄 완화는 하지 않는다.",
+      "id": 5856789331,
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/221#issuecomment-5856789331"
+    },
+    {
+      "body": "**dev09·dev10 결과 (prereg v5b, #240):** 두 회차 모두 실패했다.\n- 두 로봇은 approach를 마친 뒤 align 재관측으로 들어갔다.\n- 그 뒤 r1이 **ALIGN_RELOOK_NO_FIX**로 중단했고(dev09 179.5 s, dev10 156.7 s), r2는 PARTNER_ABORT로 따라 멈췄다.\n- 재관측을 해도 태그로 위치를 고정하지 못했다.\n- 공동 파지까지는 가지 못했다. 접촉은 0이고 weld는 OFF였다.\n\n**누적 판단 (dev03–dev10, 8회):** 파지 구간에서 전역 PF에 의존하는 설계가 계속 막힌다.\n- 파지 위치에서는 손목 카메라로 태그를 보기 어렵다.\n- PF는 과신한다. 오차가 σ의 11–16배였다.\n- M2 러너는 파지 구간에서 빔을 기준으로 한 상대 자세(도착 자세 + 자기 RGB로 본 빔 변위)를 썼고, 이 방식으로 성공했다.\n\n**다음:** Codex가 dev09·dev10 원인을 확정하고, **빔 기준 상대 좌표계로 파지·들기를 수행하는 설계**를 평가한다.\n- 전역 PF는 이동과 벽 여유에만 쓴다.\n- 빔 근처 정적 여유가 크다는 사실을 안전 근거로 쓴다.\n- 기준을 완화하지 않고, 기준을 적용하는 좌표계를 바로잡는 방향이다.",
+      "id": 5857067742,
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/221#issuecomment-5857067742"
+    }
+  ],
+  "open_prs": [
+    {
+      "number": 245,
+      "title": "한국어 대화 연구: 다회 결정 루프 (v66, Codex, 검토 전)",
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/245"
+    },
+    {
+      "number": 244,
+      "title": "공동 운반 차분 진단: M2 성공 49회 vs 공통 실행기 실패 6회 (Codex, 검토 전)",
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/244"
+    },
+    {
+      "number": 243,
+      "title": "태그 없는 비전 위치 추정 5차: yaw·σ·소실 검출 후보 기각, b0/u0 유지 (#216, Codex, 검토 전)",
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/243"
+    },
+    {
+      "number": 242,
+      "title": "태그 없는 비전 위치 추정 4차: 움직임 모델·σ 보정 후보 기각, b0/u0 유지 (#216, Codex, 검토 전)",
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/242"
+    },
+    {
+      "number": 241,
+      "title": "캡처 프로필: dev 1 Hz + 결정 프레임 (정책 모듈, 러너 미연결)",
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/241"
+    },
+    {
+      "number": 240,
+      "title": "공동 운반 파지 v4: 파지 전 재관측·빔 부착 영역 지연·양쪽 READY 후 집게 닫기 (Codex 구현, 검토 전)",
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/240"
+    },
+    {
+      "number": 239,
+      "title": "기록: 2026-09-27 디스크 정리 (무손실 항목만, raw 결정 제안)",
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/239"
+    }
+  ],
+  "checked_at_utc": "2026-09-27 15:13:23 UTC",
+  "pr240": {
+    "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/240",
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "head_sha": "3ea2edc08e5addafaf3cedc934c463ad8e1635c8"
+  }
+}

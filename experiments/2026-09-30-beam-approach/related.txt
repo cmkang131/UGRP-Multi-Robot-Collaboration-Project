@@ -1,0 +1,21 @@
+........................................................................ [ 30%]
+..................................................F..................... [ 61%]
+........................................................................ [ 91%]
+...................                                                      [100%]
+=================================== FAILURES ===================================
+_________________________ test_registered_in_normal_ci _________________________
+
+    def test_registered_in_normal_ci():
+        from scripts import run_ci_tests as ci
+        files = ci.collect_test_files(ROOT, ci.TEST_PATTERNS)
+        shards = ci.shard_test_files(files, 8)
+        ci.validate_shards(files, shards)
+>       assert sum(path == 'tests/test_beam_initial_pose_plan.py'
+                   for shard in shards for path in shard) == 1
+E       assert 0 == 1
+E        +  where 0 = sum(<generator object test_registered_in_normal_ci.<locals>.<genexpr> at 0x1122ffd80>)
+
+tests/test_beam_initial_pose_plan.py:402: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_beam_initial_pose_plan.py::test_registered_in_normal_ci - a...
+1 failed, 234 passed in 666.06s (0:11:06)

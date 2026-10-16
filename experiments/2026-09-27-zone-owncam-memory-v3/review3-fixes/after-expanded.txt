@@ -1,0 +1,24 @@
+Numerical thread caps: 1; OpenCV threads: 1; pytest worker: main process
+.................................F...................................... [ 52%]
+.................................................................        [100%]
+=================================== FAILURES ===================================
+______ test_slot_inspection_moves_looks_returns_and_only_then_dispatches _______
+
+    def test_slot_inspection_moves_looks_returns_and_only_then_dispatches():
+        ctl, now, _, _, _ = saved_place(SAVED[0])
+        with mock.patch.object(ctl, '_start_leg') as start:
+            ctl._boundary_gate(now, 'place')
+            with mock.patch.object(ctl, '_drive_leg', return_value=([], 'arrived')):
+                ctl.decide(now+.1)
+>           assert ctl.sweep['pose'] == {**SEARCH_POSE, 1: 1500}
+E           assert {1: 1500, 3: ...2320, 5: 1320} == {1: 1500, 3: ... 5: 1320, ...}
+E             
+E             Omitting 4 identical items, use -vv to show
+E             Right contains 1 more item:
+E             {6: 1500}
+E             Use -v to get more diff
+
+tests/test_owncam_memory_v3_review2.py:148: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_owncam_memory_v3_review2.py::test_slot_inspection_moves_looks_returns_and_only_then_dispatches
+1 failed, 136 passed in 16.75s

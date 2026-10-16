@@ -1,0 +1,27 @@
+{
+  "schema": "ugrp.pair_llm.v99",
+  "execution_bundle_id": "zone-pair-llm-v99",
+  "workflow_id": "zone-pair-llm-v99",
+  "workflow_version": "3.11.0",
+  "status": "DRAFT_UNSEALED",
+  "research_result": false,
+  "note_ko": "두 로봇 짝 운반의 LLM 판단 층 첫 가능성 시험(Refs #219). 2026-10-03 사용자 결정(\"걍 한국어 조건 뺴주라\")으로 한국어 요구 조건은 없고 통신 조건은 자연어 대화(peer_nl)이다. 스크립트 기술(v88)은 그대로 두고 LLM이 그 위에서 청구(claim)·메시지·계속/중단을 결정한다. 연구 결과가 아니며 봉인·사전 등록·학생 승인과 무관하다.",
+  "map_id": "zone_wide_door_geometry_v3",
+  "conditions": {
+    "rule": {"arm": "C-rule", "llm": false, "channel": "none"},
+    "no_comm": {"arm": "C-llm-nocomm", "llm": true, "channel": "closed"},
+    "peer_nl": {"arm": "C-llm-nl", "llm": true, "channel": "natural_language_peer_dialogue"}
+  },
+  "caps": {"per_case_s": 300.0, "reset_per_case_s": 5.0},
+  "decision_limits": {"max_calls_total": 24, "max_utterances_per_actor": 3, "max_utterances_total": 6},
+  "model": {
+    "driver_profiles_file": "configs/zone_study_integration/llm_driver.json",
+    "driver_profile": "main_study_gemini_v1",
+    "seed": null,
+    "seed_statement": "No seed: the Gemini proxy request carries no seed field, so a live model run is not reproducible bit for bit. Temperature is recorded; per-call request/response bytes and hashes are the replay record."
+  },
+  "render_profile": "floor_light_v1",
+  "contact_profile": "cargo_noslip_v1",
+  "weld": "off",
+  "sensors": {"ultrasonic_front": "off"}
+}

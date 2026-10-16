@@ -19,8 +19,8 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 REGISTRY = Path("config/rgb_execution_bundles")
 SCHEMA = "ugrp.rgb_execution_bundle.v1"
-RUNNABLE_ID = "rgb-standard-dispatch-v2"
-RETIRED_IDS = frozenset({"rgb-adapter-legacy-v1"})
+RUNNABLE_ID = "rgb-standard-dispatch-v63"
+RETIRED_IDS = frozenset({"rgb-adapter-contact-fine-boundary-identity-v5", "rgb-adapter-contact-fine-component-identity-v4", "rgb-adapter-contact-fine-progress-budget-v7", "rgb-adapter-contact-fine-replay-v2", "rgb-adapter-contact-fine-role-binding-v6", "rgb-adapter-contact-fine-solo-parity-v1", "rgb-adapter-contact-fine-visual-recovery-v3", "rgb-adapter-contact-fine-yaw-wheel-anchor-v8", "rgb-adapter-legacy-v1", "rgb-standard-dispatch-v10", "rgb-standard-dispatch-v11", "rgb-standard-dispatch-v12", "rgb-standard-dispatch-v13", "rgb-standard-dispatch-v14", "rgb-standard-dispatch-v15", "rgb-standard-dispatch-v16", "rgb-standard-dispatch-v17", "rgb-standard-dispatch-v18", "rgb-standard-dispatch-v19", "rgb-standard-dispatch-v2", "rgb-standard-dispatch-v20", "rgb-standard-dispatch-v21", "rgb-standard-dispatch-v22", "rgb-standard-dispatch-v23", "rgb-standard-dispatch-v24", "rgb-standard-dispatch-v25", "rgb-standard-dispatch-v26", "rgb-standard-dispatch-v27", "rgb-standard-dispatch-v28", "rgb-standard-dispatch-v29", "rgb-standard-dispatch-v3", "rgb-standard-dispatch-v30", "rgb-standard-dispatch-v31", "rgb-standard-dispatch-v32", "rgb-standard-dispatch-v33", "rgb-standard-dispatch-v4", "rgb-standard-dispatch-v40", "rgb-standard-dispatch-v41", "rgb-standard-dispatch-v42", "rgb-standard-dispatch-v43", "rgb-standard-dispatch-v44", "rgb-standard-dispatch-v46", "rgb-standard-dispatch-v47", "rgb-standard-dispatch-v48", "rgb-standard-dispatch-v49", "rgb-standard-dispatch-v5", "rgb-standard-dispatch-v50", "rgb-standard-dispatch-v53", "rgb-standard-dispatch-v54", "rgb-standard-dispatch-v56", "rgb-standard-dispatch-v6", "rgb-standard-dispatch-v7", "rgb-standard-dispatch-v8", "rgb-standard-dispatch-v9", "rgb-standard-dispatch-v45", "rgb-standard-dispatch-v51", "rgb-standard-dispatch-v55", "rgb-standard-dispatch-v57", "rgb-standard-dispatch-v58", "rgb-standard-dispatch-v59", "rgb-standard-dispatch-v60", "rgb-standard-dispatch-v61", "rgb-standard-dispatch-v62"})
 BASELINE_ID = "dispatch-f1-local-contact-fine-v1"
 REQUIRED_SOURCE_PATHS = frozenset({
     "harness/rgb_execution_bundle.py", "harness/rgb_skill_execution.py",
@@ -36,6 +36,9 @@ REQUIRED_SOURCE_PATHS = frozenset({
     "scripts/research_dispatch_scene.py", "scripts/run_dispatch_e2e.py",
     "scripts/probe_dual_grasp_sync.py", "scripts/prepare_rgb_communication_replay.py",
     "scripts/run_rgb_communication_study.py", "scripts/submit_rgb_communication_study.py",
+    # These subprocess entry points are launched by file path, so an import
+    # closure alone cannot discover their inference/model implementation.
+    "scripts/carry_input_worker.py", "scripts/pair_carry_act_worker.py",
     "sim/research_dispatch_arena.py", "sim/multi_masterpi_production.py",
     "sim/dispatch_contact_profile.py", "sim/camera_robot_port.py", "sim/act_map_suite.py",
 })

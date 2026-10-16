@@ -1,0 +1,82 @@
+{
+  "base_head": "d434fba95364bcf4a994ccf01943301c23989a7e",
+  "metadata_commit": "e78ef70fb5004fed1dfef1866aaf99bbf0bdda41",
+  "cwd": "/Users/changmin/projects/ugrp-wt/v6h-fixcls",
+  "commands": [
+    {
+      "command": [
+        "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_v6h_classify_placements.py",
+        "tests/test_classify_review_299.py",
+        "tests/test_classify_review_299b.py",
+        "tests/test_classify_review_299c.py",
+        "tests/test_v6h_recorder_contract.py",
+        "tests/test_v6h_classifier_properties.py",
+        "tests/test_ci_sharding.py",
+        "tests/test_chain_analysis_hard_limit.py",
+        "tests/test_pair_chain_probe.py",
+        "tests/test_b_v6h_gain.py",
+        "tests/test_classify_review_299d.py",
+        "tests/test_zone_pair_registered_source.py",
+        "tests/test_zone_study_source_pinning.py",
+        "tests/test_v6h_blinded_run_manifest.py"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 972.0479961250676,
+      "source_unchanged": true
+    },
+    {
+      "command": [
+        "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+        "experiments/2026-09-30-pair-v6h-carry/analysis/verify_recorder_contract.py",
+        "--output",
+        "/Users/changmin/projects/ugrp/outputs/v6h-classifier-run-manifest-20261001/acceptance.json"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 3.0472914159763604,
+      "source_unchanged": true
+    },
+    {
+      "command": [
+        "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+        "experiments/2026-09-30-pair-v6h-carry/analysis/revalidate_published.py",
+        "--output",
+        "/Users/changmin/projects/ugrp/outputs/v6h-classifier-run-manifest-20261001/published"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 19.181161541957408,
+      "source_unchanged": true
+    }
+  ],
+  "source_sha256": {
+    "experiments/2026-09-30-pair-v6h-carry/analysis/classify_placements.py": "221ec78833e05e3ef082b9451c45dea131d19a8833a192a825e94a5baff525d0",
+    "experiments/2026-09-30-pair-v6h-carry/analysis/recorder_v4c6b.py": "3ef5ed80d88adc5ff79c8e86edd53ce3cfd8f8af0f734aacfbd62e18fd0b9f61",
+    "experiments/2026-09-30-pair-v6h-carry/analysis/check_299d_mutations.py": "d364d30e3698f40535c679b521e748ea65ecd4bc3e37435f275e75f9a70f0092",
+    "harness/pair_chain_probe.py": "2b3082da0b97da2db0ddf1f06b3478b550853489d90c5400f9acc936358c59d4",
+    "scripts/run_ci_tests.py": "d4bb883ad7f1770be2fdfee580c6e37ab561b3265b39704a2625404ace7d70e2",
+    ".github/workflows/tests.yml": "8831e19de2f6afa377d9d1835445917804821519e1eb572f4483d1f66bb7f866",
+    "tests/test_v6h_classify_placements.py": "7e6453cb08413f90567c9f0a0fa40ebd3b0fcfb2796763971f43494fe2fa4054",
+    "tests/test_classify_review_299.py": "4cff2297f428d3735c373d395791275645df8dbe2bff406523325ea43e65647f",
+    "tests/test_classify_review_299b.py": "6ace1e5298a629e22fee7701e68a188c9826be6e0bccef7c261f62d95dd0ddb3",
+    "tests/test_classify_review_299c.py": "c0d862485b5d059dce109e424ef1f9bb4e36be6f0dc0a4f9969287dd7d599cb8",
+    "tests/test_v6h_recorder_contract.py": "d8aceed981172e91874d48cdafa6013b0f2fd71343c1bccdf967ef30e31e0282",
+    "tests/test_v6h_classifier_properties.py": "cf0718a9bf74008a81fd0ddf1cdfc84bbd4123a4099ec4357e80b4d6a04c6b97",
+    "tests/test_ci_sharding.py": "7ce9a79d7bf9cb413169cdf9239014873ba5474b81e2485c8384e0e6ff9cbcca",
+    "tests/test_chain_analysis_hard_limit.py": "4e285e6abbd264c73f2f9c6339fb07de309b0fab652f7ee65aa9dc3f8785647a",
+    "tests/test_pair_chain_probe.py": "10d9b3963cfc5c295b395670baf105b13542649e523dd6dcb7f6733d601170f6",
+    "tests/test_b_v6h_gain.py": "ca0a7143901db334df61bda51e1b760708cd422f50899f723215fa64a99d61ce",
+    "tests/test_classify_review_299d.py": "cc4effd911e9eb3116871dbc568af8be02bb8d56cc75b0a033f08d57fe415a7f",
+    "tests/test_zone_pair_registered_source.py": "4884b81bb2c31eba434a0fca6e021a34eafae31082a90f4281509132f56d67fb",
+    "tests/test_zone_study_source_pinning.py": "757ab9ffcf6d00322a46dba23d08af6b56a6b4594e86c6f76b3a601fff9697b5",
+    "tests/test_v6h_blinded_run_manifest.py": "ee41b2b7032a24c989889d9e52de621150fbe71b633f66ebadb5d484eaba7822",
+    "tests/fixtures/v6h_blinded_run_metadata/plan.json": "d627f9cda827d07bab5b86c04f9e45ffceb474e97a8dda566c4956372d5fb026",
+    "tests/fixtures/v6h_blinded_run_metadata/README.md": "253d9097e6c59e0fc97b9bb98db8e7935efed5c700590c0259de2023d10209dc",
+    "tests/fixtures/v6h_blinded_run_metadata/RUN_MANIFEST.json": "99723de36d20a55f348ea5b25ca203cf1db910dd9a620d3a8c4a17f27407f210"
+  },
+  "scope": "Offline metadata adapter tests, public acceptance and historical reconciliation. No blinded raw listing/read, physics, render, model calls, registration sealing or merge."
+}

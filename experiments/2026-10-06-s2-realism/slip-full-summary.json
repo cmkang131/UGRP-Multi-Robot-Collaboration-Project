@@ -1,0 +1,607 @@
+{
+  "schema": "ugrp.s2.slip_closed_loop.full.v1",
+  "physics_runs": 1,
+  "new_seed": 1052,
+  "source_sha": "18e5e42ed6ade8727d39b8a6f8d2b8cf0aab4daf",
+  "registration_commit": "e8bff34f",
+  "intentional_deviation": {
+    "user_decision_date": "2026-10-07",
+    "approved": true,
+    "classification": "intentional_deviation_from_preregistered_replay_admission",
+    "replay_admission_pass": false,
+    "failed_gates": [
+      "updates",
+      "max_gap"
+    ],
+    "rationale": "Administrator authorizes one closed-loop DEV: fixed-command replay cannot change subsequent navigation actions when the estimated pose changes. Update/gap degradation may reflect this limitation; this remains a hypothesis, not proof.",
+    "not_retroactive_pass": true,
+    "full_runs_authorized": 1
+  },
+  "prior_replay_still_failed": true,
+  "baseline": {
+    "seed": 1051,
+    "source_sha": "c26e9afd5454e41d7192311924853dc00147b0d7",
+    "bundle": "zone-s2-realism-v126",
+    "status": "STAGE_REACHED_UNQUALIFIED",
+    "failure": null,
+    "evaluation": {
+      "status": "PROVISIONAL_GEOMETRIC_JUDGE",
+      "success": false,
+      "lifted": true,
+      "inside": false,
+      "floor": true,
+      "stable": true,
+      "settled_s": 2.0,
+      "qualification": "post-run DEV only; no study/physical hardware success claim"
+    },
+    "options": {
+      "camera_profile": "masterpi-camera-user-observation-target-review-v3",
+      "drive_profile": "masterpi_drive_friction_v7",
+      "setdown_relook": "off",
+      "grasp_check": "pickup_site_v1",
+      "min_wheel_cmd": "real_v1",
+      "dead_reckoning": "v7_diag_v1",
+      "stagnation_watch": "window120_v1",
+      "alignment_pulse": "real_fine_v1",
+      "hover_check": "real_pregrasp_v1",
+      "idle_robot_contacts": "freeze_v1",
+      "site_check": "off",
+      "hold_check": "inhand_rgb_v1",
+      "dev_grasp_policy": "log_only_v1",
+      "eval_camera_trace": "pose_v1",
+      "pulse_motion_model": "v7_pulse_cal_v1",
+      "visual_update": "accepted_scan_v1",
+      "visual_stall": "lk_pulse_v1",
+      "carry_pose": "real_delivery_v1",
+      "camera_calibration": "v3_unloaded_sag_v1",
+      "measurement_model": "amcl_likelihood_field_v1",
+      "visibility_mask": "command_geometry_v1",
+      "amcl_update": "ros_motion_v1",
+      "dev_search": "repeat_views_v1",
+      "visibility_policy": "nav2_observed_v1",
+      "contact_filter": "floor_appearance_v1"
+    },
+    "posthoc": {
+      "scope": "POSTHOC_EVAL_ONLY_NO_CONTROL_FEEDBACK",
+      "seed": 1051,
+      "cargo_remaining_to_B_region_m": 2.178372040792117,
+      "cargo_distance_to_B_center_m": 2.649794874801724,
+      "robot_remaining_to_B_region_m": 2.3799496062273113,
+      "final_cargo_xy_m": [
+        2.140484001405085,
+        -1.1140010490973407
+      ],
+      "final_robot_xy_m": [
+        1.9389399171438302,
+        -1.100741895139411
+      ],
+      "carry_window": [
+        87.0,
+        241.05
+      ],
+      "visual_updates": 27,
+      "max_update_gap_sim_s": 33.85000000000002,
+      "carry_xy_rmse_m": 2.0235827759068257,
+      "actual_visibility": {
+        "sample_hz": 1.0,
+        "sample_frames": 155,
+        "all_columns": {
+          "above": 5090,
+          "clear": 4869,
+          "below": 4781,
+          "cargo_gt": 140
+        },
+        "detected_columns": {
+          "above": 3487,
+          "clear": 4155
+        },
+        "all_clear_fraction": 0.32721774193548386,
+        "detected_clear_fraction": 0.5437058361685423,
+        "method": "saved actual camera/cargo + static walls, conservative command-body bounds, undistorted rows4..470; not live perception input"
+      },
+      "measurement_claim": "nonconstant AMCL weight updates, not full-rank absolute pose fixes",
+      "update_times": [
+        96.35,
+        97.95,
+        99.25,
+        100.85,
+        102.15,
+        103.75,
+        105.05,
+        106.7,
+        108.05,
+        109.7,
+        111.4,
+        113.0,
+        115.15,
+        116.7,
+        150.35,
+        158.75,
+        167.15,
+        184.35,
+        186.05,
+        187.75,
+        189.2,
+        190.95,
+        192.75,
+        194.6,
+        196.5,
+        198.45,
+        207.2
+      ],
+      "carry_xy_p90_m": 2.2967761910424884,
+      "carry_end_error_m": 2.5920966525542695,
+      "carry_pose_samples": 3081,
+      "visibility_measurement": {
+        "attempts": 480,
+        "less_than_six_columns": 453,
+        "detected_columns": 1868,
+        "kept_columns": 1868
+      },
+      "status": "COMPLETE"
+    },
+    "wall_s": 347.86575812500087,
+    "sim_s": 264.35,
+    "wall_per_sim": 1.3159287237563868,
+    "commands": 3818,
+    "model_calls": 0,
+    "would_stop": {
+      "ARM_COLLISION_GUARD": 7,
+      "POSE_UNCERTAIN": 341,
+      "VISUAL_STALL_SUSPECTED": 1
+    },
+    "hold_status": "probable_held_inhand_rgb",
+    "regrasp_count": 0,
+    "source": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-c26e9afd-s1051-P1-2-place",
+      "hashes": {
+        "result.json": "205ee8cf22e6f754a17e528e195c38b01c9e4689a7abc530840503770ae71902",
+        "bundle.json": "38c8696c13e063d1d60feceda794ebc5a92da604985462f0cd1d746023e5a43e",
+        "student_record.json": "a3c622edc12b1e141711bbbacf109afc015559454b077249d2bc79974cbf563c",
+        "eval_only/trajectory.jsonl": "86f135c2039c650990c77286a7023212934581968f9dc51ffe522fcf5bf2a3e2"
+      },
+      "source_sha": "c26e9afd5454e41d7192311924853dc00147b0d7"
+    },
+    "lateral_all": {
+      "n": 141,
+      "nominal_sum_xy_m": 6.596039512728505,
+      "applied_sum_xy_m": 6.596039512728505,
+      "actual_sum_xy_m": 5.60556628124792,
+      "nominal_distance_ratio": 1.1766945892324878,
+      "applied_distance_ratio": 1.1766945892324878,
+      "sum_abs_nominal_lateral_m": 6.595962376666415,
+      "sum_abs_actual_lateral_m": 5.592981139802417,
+      "lateral_component_ratio": 1.179328556952622,
+      "zero_actual_count": 0,
+      "pulse_ratio_quantiles": [
+        0.8065878436166707,
+        0.9088011419938579,
+        1.013230653620935,
+        4.4141923626280875,
+        201.93836959274665
+      ],
+      "nominal_xy_rms_m": 0.033214628705529624,
+      "applied_xy_rms_m": 0.033214628705529624,
+      "replaced": 0
+    },
+    "lateral_carry": {
+      "n": 72,
+      "nominal_sum_xy_m": 6.1040851548266915,
+      "applied_sum_xy_m": 6.1040851548266915,
+      "actual_sum_xy_m": 5.112716009302888,
+      "nominal_distance_ratio": 1.193902642689316,
+      "applied_distance_ratio": 1.193902642689316,
+      "sum_abs_nominal_lateral_m": 6.104019418597266,
+      "sum_abs_actual_lateral_m": 5.1017941151962045,
+      "lateral_component_ratio": 1.1964456582863336,
+      "zero_actual_count": 0,
+      "pulse_ratio_quantiles": [
+        0.9523452782224618,
+        0.9806392987423626,
+        1.0789454440740216,
+        61.00161649858328,
+        201.93836959274665
+      ],
+      "nominal_xy_rms_m": 0.04647188240152065,
+      "applied_xy_rms_m": 0.04647188240152065,
+      "replaced": 0
+    },
+    "lateral_by_load": {
+      "False": {
+        "n": 69,
+        "nominal_sum_xy_m": 0.49195435790181397,
+        "applied_sum_xy_m": 0.49195435790181397,
+        "actual_sum_xy_m": 0.4928502719450309,
+        "nominal_distance_ratio": 0.9981821780483529,
+        "applied_distance_ratio": 0.9981821780483529,
+        "sum_abs_nominal_lateral_m": 0.49194295806914773,
+        "sum_abs_actual_lateral_m": 0.4911870246062115,
+        "lateral_component_ratio": 1.0015389931432783,
+        "zero_actual_count": 0,
+        "pulse_ratio_quantiles": [
+          0.8065878436166707,
+          0.8989876561264041,
+          0.960501393261209,
+          1.1907729775761393,
+          1.490814703629051
+        ],
+        "nominal_xy_rms_m": 0.0009250811384551487,
+        "applied_xy_rms_m": 0.0009250811384551487,
+        "replaced": 0
+      },
+      "True": {
+        "n": 72,
+        "nominal_sum_xy_m": 6.1040851548266915,
+        "applied_sum_xy_m": 6.1040851548266915,
+        "actual_sum_xy_m": 5.112716009302888,
+        "nominal_distance_ratio": 1.193902642689316,
+        "applied_distance_ratio": 1.193902642689316,
+        "sum_abs_nominal_lateral_m": 6.104019418597266,
+        "sum_abs_actual_lateral_m": 5.1017941151962045,
+        "lateral_component_ratio": 1.1964456582863336,
+        "zero_actual_count": 0,
+        "pulse_ratio_quantiles": [
+          0.9523452782224618,
+          0.9806392987423626,
+          1.0789454440740216,
+          61.00161649858328,
+          201.93836959274665
+        ],
+        "nominal_xy_rms_m": 0.04647188240152065,
+        "applied_xy_rms_m": 0.04647188240152065,
+        "replaced": 0
+      }
+    },
+    "lateral_by_profile": {
+      "0:left:-0.35:0.06": {
+        "n": 36,
+        "nominal_sum_xy_m": 0.26364173588856543,
+        "applied_sum_xy_m": 0.26364173588856543,
+        "actual_sum_xy_m": 0.2643891287977442,
+        "nominal_distance_ratio": 0.9971731329779807,
+        "applied_distance_ratio": 0.9971731329779807,
+        "sum_abs_nominal_lateral_m": 0.2636337061531605,
+        "sum_abs_actual_lateral_m": 0.26341755634158615,
+        "lateral_component_ratio": 1.0008205596262312,
+        "zero_actual_count": 0,
+        "pulse_ratio_quantiles": [
+          0.9224774866681981,
+          0.930827995343808,
+          0.9602987037171393,
+          1.1204720345162844,
+          1.147292128127996
+        ],
+        "nominal_xy_rms_m": 0.0008256413232712659,
+        "applied_xy_rms_m": 0.0008256413232712659,
+        "replaced": 0
+      },
+      "0:left:0.35:0.06": {
+        "n": 33,
+        "nominal_sum_xy_m": 0.22831262201324853,
+        "applied_sum_xy_m": 0.22831262201324853,
+        "actual_sum_xy_m": 0.22846114314728672,
+        "nominal_distance_ratio": 0.9993499063692314,
+        "applied_distance_ratio": 0.9993499063692314,
+        "sum_abs_nominal_lateral_m": 0.2283092519159871,
+        "sum_abs_actual_lateral_m": 0.2277694682646253,
+        "lateral_component_ratio": 1.0023698683386955,
+        "zero_actual_count": 0,
+        "pulse_ratio_quantiles": [
+          0.8065878436166707,
+          0.8837223177499268,
+          0.960501393261209,
+          1.2913472718207517,
+          1.490814703629051
+        ],
+        "nominal_xy_rms_m": 0.0010225913809519059,
+        "applied_xy_rms_m": 0.0010225913809519059,
+        "replaced": 0
+      },
+      "1:left:-0.35:0.06": {
+        "n": 5,
+        "nominal_sum_xy_m": 0.03641817082989451,
+        "applied_sum_xy_m": 0.03641817082989451,
+        "actual_sum_xy_m": 0.03317703766711281,
+        "nominal_distance_ratio": 1.0976920602527005,
+        "applied_distance_ratio": 1.0976920602527005,
+        "sum_abs_nominal_lateral_m": 0.03641704950271779,
+        "sum_abs_actual_lateral_m": 0.03264908157911092,
+        "lateral_component_ratio": 1.1154080832098394,
+        "zero_actual_count": 0,
+        "pulse_ratio_quantiles": [
+          1.023747734814864,
+          1.0281969859195528,
+          1.0640972172844176,
+          1.2383854223766588,
+          1.2683334705694467
+        ],
+        "nominal_xy_rms_m": 0.0014994372754779236,
+        "applied_xy_rms_m": 0.0014994372754779236,
+        "replaced": 0
+      },
+      "1:left:-0.65:0.65": {
+        "n": 16,
+        "nominal_sum_xy_m": 2.6711461039120237,
+        "applied_sum_xy_m": 2.6711461039120237,
+        "actual_sum_xy_m": 2.7130277049840696,
+        "nominal_distance_ratio": 0.9845627816497761,
+        "applied_distance_ratio": 0.9845627816497761,
+        "sum_abs_nominal_lateral_m": 2.6711247231547657,
+        "sum_abs_actual_lateral_m": 2.7127900842526502,
+        "lateral_component_ratio": 0.9846411407429768,
+        "zero_actual_count": 0,
+        "pulse_ratio_quantiles": [
+          0.980102863747707,
+          0.9801142818441502,
+          0.9856092991430563,
+          0.98806787828103,
+          0.9890872507787091
+        ],
+        "nominal_xy_rms_m": 0.0031339490013098685,
+        "applied_xy_rms_m": 0.0031339490013098685,
+        "replaced": 0
+      },
+      "1:left:0.35:0.06": {
+        "n": 32,
+        "nominal_sum_xy_m": 0.2196807844310733,
+        "applied_sum_xy_m": 0.2196807844310733,
+        "actual_sum_xy_m": 0.12822758610727708,
+        "nominal_distance_ratio": 1.713210012760321,
+        "applied_distance_ratio": 1.713210012760321,
+        "sum_abs_nominal_lateral_m": 0.21967749097092373,
+        "sum_abs_actual_lateral_m": 0.12160048385558601,
+        "lateral_component_ratio": 1.8065511255022224,
+        "zero_actual_count": 0,
+        "pulse_ratio_quantiles": [
+          0.9523452782224618,
+          1.0451571800442674,
+          1.6506961772946593,
+          4.2763573095235685,
+          5.178710716818346
+        ],
+        "nominal_xy_rms_m": 0.0038000540045773344,
+        "applied_xy_rms_m": 0.0038000540045773344,
+        "replaced": 0
+      },
+      "1:left:0.65:0.65": {
+        "n": 19,
+        "nominal_sum_xy_m": 3.1768400956537004,
+        "applied_sum_xy_m": 3.1768400956537004,
+        "actual_sum_xy_m": 2.238283680544429,
+        "nominal_distance_ratio": 1.4193196882358459,
+        "applied_distance_ratio": 1.4193196882358459,
+        "sum_abs_nominal_lateral_m": 3.17680015496886,
+        "sum_abs_actual_lateral_m": 2.2347544655088574,
+        "lateral_component_ratio": 1.4215432630293445,
+        "zero_actual_count": 0,
+        "pulse_ratio_quantiles": [
+          0.9806747980332671,
+          0.981140472429792,
+          0.9892981892483375,
+          189.7855552530691,
+          201.93836959274665
+        ],
+        "nominal_xy_rms_m": 0.09028122746161109,
+        "applied_xy_rms_m": 0.09028122746161109,
+        "replaced": 0
+      }
+    },
+    "lateral_carry_by_slip": {
+      "False": {
+        "n": 72,
+        "nominal_sum_xy_m": 6.1040851548266915,
+        "applied_sum_xy_m": 6.1040851548266915,
+        "actual_sum_xy_m": 5.112716009302888,
+        "nominal_distance_ratio": 1.193902642689316,
+        "applied_distance_ratio": 1.193902642689316,
+        "sum_abs_nominal_lateral_m": 6.104019418597266,
+        "sum_abs_actual_lateral_m": 5.1017941151962045,
+        "lateral_component_ratio": 1.1964456582863336,
+        "zero_actual_count": 0,
+        "pulse_ratio_quantiles": [
+          0.9523452782224618,
+          0.9806392987423626,
+          1.0789454440740216,
+          61.00161649858328,
+          201.93836959274665
+        ],
+        "nominal_xy_rms_m": 0.04647188240152065,
+        "applied_xy_rms_m": 0.04647188240152065,
+        "replaced": 0
+      },
+      "True": {
+        "n": 0
+      }
+    },
+    "slip_status_counts": {},
+    "excluded": []
+  },
+  "current": {
+    "seed": 1052,
+    "source_sha": "18e5e42ed6ade8727d39b8a6f8d2b8cf0aab4daf",
+    "bundle": "zone-s2-realism-v127",
+    "status": "STAGE_FAILED",
+    "failure": "LOCAL_TIMEOUT",
+    "evaluation": {
+      "status": "PROVISIONAL_GEOMETRIC_JUDGE",
+      "success": false,
+      "lifted": false,
+      "inside": false,
+      "floor": true,
+      "stable": true,
+      "settled_s": 2.0,
+      "qualification": "post-run DEV only; no study/physical hardware success claim"
+    },
+    "options": {
+      "camera_profile": "masterpi-camera-user-observation-target-review-v3",
+      "drive_profile": "masterpi_drive_friction_v7",
+      "setdown_relook": "off",
+      "grasp_check": "pickup_site_v1",
+      "min_wheel_cmd": "real_v1",
+      "dead_reckoning": "v7_diag_v1",
+      "stagnation_watch": "window120_v1",
+      "alignment_pulse": "real_fine_v1",
+      "hover_check": "real_pregrasp_v1",
+      "idle_robot_contacts": "freeze_v1",
+      "site_check": "off",
+      "hold_check": "inhand_rgb_v1",
+      "dev_grasp_policy": "log_only_v1",
+      "eval_camera_trace": "pose_v1",
+      "pulse_motion_model": "v7_pulse_cal_v1",
+      "visual_update": "accepted_scan_v1",
+      "visual_stall": "lk_pulse_v1",
+      "carry_pose": "real_delivery_v1",
+      "camera_calibration": "v3_unloaded_sag_v1",
+      "measurement_model": "amcl_likelihood_field_v1",
+      "visibility_mask": "command_geometry_v1",
+      "amcl_update": "ros_motion_v1",
+      "dev_search": "repeat_views_v1",
+      "visibility_policy": "nav2_observed_v1",
+      "contact_filter": "floor_appearance_v1",
+      "slip_detection": "slip_detect_v1",
+      "stall_recovery": "off"
+    },
+    "posthoc": {
+      "scope": "POSTHOC_EVAL_ONLY_NO_CONTROL_FEEDBACK",
+      "seed": 1052,
+      "cargo_remaining_to_B_region_m": 4.211071716321632,
+      "cargo_distance_to_B_center_m": 4.646302293222309,
+      "robot_remaining_to_B_region_m": 4.703355812028683,
+      "final_cargo_xy_m": [
+        0.12499999999937812,
+        -0.8500000000010686
+      ],
+      "final_robot_xy_m": [
+        -0.40335581202868254,
+        -2.121785725187111
+      ],
+      "carry_window": null,
+      "visual_updates": 0,
+      "max_update_gap_sim_s": null,
+      "carry_xy_rmse_m": null,
+      "actual_visibility": null,
+      "status": "NO_CARRY_PHASE"
+    },
+    "wall_s": 1095.5776613750204,
+    "sim_s": 901.3,
+    "wall_per_sim": 1.2155527142738494,
+    "commands": 37014,
+    "model_calls": 0,
+    "would_stop": {
+      "ARM_COLLISION_GUARD": 7,
+      "POSE_UNCERTAIN": 1074,
+      "CYAN_NOT_UNIQUELY_VISIBLE": 37
+    },
+    "hold_status": "unconfirmed",
+    "regrasp_count": 0,
+    "source": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-18e5e42e-s1052-P1-2-place",
+      "hashes": {
+        "result.json": "ff13ce697e06dd5c4bf1a24a1e291701d73f1c3d714a3b5908f2782dc41bd3cc",
+        "bundle.json": "227038b62aace41f5e5092c42fa07e2591c0f633cd15f43c77d2095ecee28be4",
+        "student_record.json": "d39eb3d591cd475fcadd4ecce74fdf7e531292b503bf85924c18007605b72d21",
+        "eval_only/trajectory.jsonl": "ff81aa3fd7f28ddacc6808d05b7c6d358d0a37634dc944beaefcd98a47ac9fc9"
+      },
+      "source_sha": "18e5e42ed6ade8727d39b8a6f8d2b8cf0aab4daf"
+    },
+    "lateral_all": {
+      "n": 23,
+      "nominal_sum_xy_m": 0.15912697897893077,
+      "applied_sum_xy_m": 0.15912697897893077,
+      "actual_sum_xy_m": 0.15678703850999634,
+      "nominal_distance_ratio": 1.014924323408183,
+      "applied_distance_ratio": 1.014924323408183,
+      "sum_abs_nominal_lateral_m": 0.15912463012326372,
+      "sum_abs_actual_lateral_m": 0.1558678247453093,
+      "lateral_component_ratio": 1.0208946611224998,
+      "zero_actual_count": 0,
+      "pulse_ratio_quantiles": [
+        0.8116153235557466,
+        0.8354324286618239,
+        1.0299014398781983,
+        1.3930907630669982,
+        1.4834345042652728
+      ],
+      "nominal_xy_rms_m": 0.0013040417538322418,
+      "applied_xy_rms_m": 0.0013040417538322418,
+      "replaced": 0
+    },
+    "lateral_carry": {
+      "n": 0
+    },
+    "lateral_by_load": {
+      "False": {
+        "n": 23,
+        "nominal_sum_xy_m": 0.15912697897893077,
+        "applied_sum_xy_m": 0.15912697897893077,
+        "actual_sum_xy_m": 0.15678703850999634,
+        "nominal_distance_ratio": 1.014924323408183,
+        "applied_distance_ratio": 1.014924323408183,
+        "sum_abs_nominal_lateral_m": 0.15912463012326372,
+        "sum_abs_actual_lateral_m": 0.1558678247453093,
+        "lateral_component_ratio": 1.0208946611224998,
+        "zero_actual_count": 0,
+        "pulse_ratio_quantiles": [
+          0.8116153235557466,
+          0.8354324286618239,
+          1.0299014398781983,
+          1.3930907630669982,
+          1.4834345042652728
+        ],
+        "nominal_xy_rms_m": 0.0013040417538322418,
+        "applied_xy_rms_m": 0.0013040417538322418,
+        "replaced": 0
+      },
+      "True": {
+        "n": 0
+      }
+    },
+    "lateral_by_profile": {
+      "0:left:0.35:0.06": {
+        "n": 23,
+        "nominal_sum_xy_m": 0.15912697897893077,
+        "applied_sum_xy_m": 0.15912697897893077,
+        "actual_sum_xy_m": 0.15678703850999634,
+        "nominal_distance_ratio": 1.014924323408183,
+        "applied_distance_ratio": 1.014924323408183,
+        "sum_abs_nominal_lateral_m": 0.15912463012326372,
+        "sum_abs_actual_lateral_m": 0.1558678247453093,
+        "lateral_component_ratio": 1.0208946611224998,
+        "zero_actual_count": 0,
+        "pulse_ratio_quantiles": [
+          0.8116153235557466,
+          0.8354324286618239,
+          1.0299014398781983,
+          1.3930907630669982,
+          1.4834345042652728
+        ],
+        "nominal_xy_rms_m": 0.0013040417538322418,
+        "applied_xy_rms_m": 0.0013040417538322418,
+        "replaced": 0
+      }
+    },
+    "lateral_carry_by_slip": {
+      "False": {
+        "n": 0
+      },
+      "True": {
+        "n": 0
+      }
+    },
+    "slip_status_counts": {},
+    "excluded": []
+  },
+  "frames_verified": 18001,
+  "source_changed_during_run": false,
+  "input_changed_during_run": false,
+  "gt_use": "evaluation only",
+  "reference_egomap15": {
+    "source": "user-provided PR405 egomap15",
+    "command_m": 1.54,
+    "actual_m": 0.69,
+    "ratio": 2.2318840579710146,
+    "pooled": false,
+    "used_to_fit": false
+  },
+  "managed_exit": 1
+}

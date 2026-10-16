@@ -1,0 +1,34 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+__________ test_scope_wording_matches_not_approach_gate_and_progress ___________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10adb8140>
+
+    def test_scope_wording_matches_not_approach_gate_and_progress(monkeypatch):
+        from tests.test_zone_pair_executor import active
+        h = pair_policy('b-v6h1')
+        host = _team(monkeypatch, 'scope', {k: v for k, v in vars(h).items() if k != 'name'})
+        ep = active(host)['r1']; guard = ep.command_guard
+        for phase in ('align', 'grasp', 'carry', 'lower', 'cp_open'):
+            ep.controller.state = phase
+            assert not getattr(ep.controller, 'beam_grasp_receipt', None)
+            guard.check(0., [{'kind': 'hold'}])
+            assert not guard.approach
+            assert ep.own.gate.profile.high_yaw_rad == pytest.approx(math.radians(5.))
+            guard.monitor.reset()
+            guard.on_command({'t': 0., 'kind': 'mecanum', 'forward': .01, 'duration_s': .1})
+            assert guard.monitor.move_t0 == 0.
+        ep.controller.state = 'approach'; guard.monitor.reset()
+        guard.check(0., [{'kind': 'hold'}])
+        guard.on_command({'t': 0., 'kind': 'mecanum', 'forward': .01, 'duration_s': .1})
+        assert ep.own.gate.profile is guards.GATE_UNLOADED and guard.monitor.move_t0 is None
+        # Guard-scope documentation is part of the registration, not a grasp-only promise.
+        for name in ('REGISTRATION_PLAN.md', 'README.md'):
+            text = (BUILDER.HERE/name).read_text()
+>           assert 'not approach' in text and 'confirmed grasp' in text
+E           AssertionError: assert ('not approach' in '# b-v6h 등록 구현 계획 (초안 — 아직 등록·봉인·실행하지 않았다) (2026-09-30, Claude)\n\nRefs #216. 이 문서는 `experiments/2026-09-30-b-v6h-gain...시 보정하면(보수성을 줄이면) 이 완화가 필요한지가 달라질 수 있다.\n- 접근·팔 스윕에 대한 완화 영향은 (권장안대로) 범위에서 뺀 만큼만 안전하다. 프로세스 전체로 등록하면 그 부분은 시험된 적이 없다.\n')
+
+tests/test_zone_pair_v6h.py:528: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_zone_pair_v6h.py::test_scope_wording_matches_not_approach_gate_and_progress
+1 failed, 104 deselected in 0.71s

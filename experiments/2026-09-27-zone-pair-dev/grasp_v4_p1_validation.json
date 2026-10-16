@@ -1,0 +1,132 @@
+{
+  "schema": "ugrp.zone_pair_grasp_p1_fix.v1",
+  "date": "2026-09-27",
+  "pr": 240,
+  "source_head": "dff7b3ca38f05616763dc98046f90503454640f3",
+  "committed": false,
+  "scope": "P1 preclose stationary own RGB beam safety; no physics/models; P2 deferred",
+  "counterexample": {
+    "HEAD_methods": {
+      "r1": [
+        1986,
+        1948,
+        1892,
+        1824,
+        1750,
+        1676,
+        1608,
+        1552,
+        1514,
+        1500
+      ],
+      "r2": [
+        1986,
+        1948,
+        1892,
+        1824,
+        1750,
+        1676,
+        1608,
+        1552,
+        1514,
+        1500
+      ],
+      "r1_ready": true
+    },
+    "fixed": {
+      "r1": [],
+      "r2": [],
+      "r1_ready": false
+    }
+  },
+  "own_pose_fixture": {
+    "x_m": 1.5,
+    "y_m": 0.4,
+    "yaw_rad": 0.0,
+    "std_xy_m": 0.001,
+    "std_yaw_rad": 0.001,
+    "arm_clearance_m": 0.4229504974404525,
+    "beam_raw_clearance_m": -0.02749545416973504
+  },
+  "tests": {
+    "passed": 406,
+    "elapsed_s": 18.9,
+    "files": [
+      "tests/test_zone_pair_preclose.py",
+      "tests/test_zone_pair_grasp.py",
+      "tests/test_zone_pair_executor.py",
+      "tests/test_zone_pair_status.py",
+      "tests/test_zone_pair_review.py",
+      "tests/test_zone_pair_review2.py",
+      "tests/test_zone_pair_review3.py",
+      "tests/test_zone_pair_review4.py",
+      "tests/test_zone_pair_review5.py",
+      "tests/test_zone_pair_review6.py",
+      "tests/test_zone_pair_review7.py",
+      "tests/test_zone_pair_admission.py",
+      "tests/test_zone_pair_dev.py"
+    ],
+    "args": [
+      "-q",
+      "--basetemp=./.pytest_tmp",
+      "-p",
+      "no:cacheprovider"
+    ],
+    "env": {
+      "OMP_NUM_THREADS": "1",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "runner": "/private/tmp/zone_pair_240_pytest.py",
+    "runner_sha256": "111b4734c7b38bf4c81bbf798ac9b57f633f03acecadef353ef5c902b34314d6",
+    "interlocks": "mj_step/mj_step1/mj_step2 raise; mujoco.rollout and model SDK imports blocked",
+    "physical_step_attempts": 0,
+    "physical_steps_executed": 0,
+    "model_calls": 0,
+    "pytest_tmp_removed": true,
+    "new_regressions": 23
+  },
+  "earlier_checks": [
+    "58 passed, 1 failed: prereg source hash intentionally stale before refresh",
+    "390 passed, 16 failed: 3 scheduling fixtures lacked own beam geometry; 13 MuJoCo imports blocked before any step. Added explicit beam-fit observation fixture; permitted module import with all step entrypoints blocked."
+  ],
+  "checks": {
+    "git_diff_check": "passed",
+    "python_ast": "passed",
+    "old_experiments_hashes_match": 19,
+    "frozen_imports_hashes_match": 32,
+    "unchanged_v3_fields": [
+      "criteria",
+      "stage_rules",
+      "planned_setdown",
+      "limits",
+      "timing",
+      "safety_coverage",
+      "environment",
+      "inputs"
+    ],
+    "prereg_grasp_contract_matches": true
+  },
+  "prereg_sha256": "cb424b1197f2d5f77c103276aa91ef1c353706929a37cdda8964cefa34653431",
+  "grasp_contract_sha256": "059d507e9516333be7e76bec31a3d0d8bc29f1b41d820fbd8a671514d2f5bc4b",
+  "changed_files_sha256": {
+    "experiments/2026-09-27-zone-pair-dev/grasp_v4.md": "4a14a1ea9d8aead3745f919fd2efc69ca34d47daefee1c5b84b97f0eff20c49b",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v4.json": "cb424b1197f2d5f77c103276aa91ef1c353706929a37cdda8964cefa34653431",
+    "harness/zone_pair_executor.py": "6a5ba509a7488b74f6a1a1083cf49c32070da1fbd8afe9e3d2d9bec7adfc3c7e",
+    "harness/zone_pair_geometry.py": "5a58e32eb04a5fbbd4bd2e75aceb0d8a33cfd750470224408f4d43f0f458471d",
+    "harness/zone_pair_grasp.py": "0207713345cc7d6918a1a9d4efb6238ac21bf3c577564dbbc2f58bba5fc55337",
+    "harness/zone_pair_guards.py": "75dc6024c2484b88058cb55299bf83defde03e4dd47b71d0f2183d68e2049d07",
+    "scripts/zone_pair_grasp_contract.py": "4ce345b24429f666c11751c27ceaee11576d996f90f5b07bb2097a007094d99f",
+    "tests/test_zone_pair_dev.py": "16ca26af0f11dd4c43d95d16562f4dc220c896a70085d08d417019b5fe0a470a",
+    "tests/test_zone_pair_executor.py": "0445c9c2bd809307f0e5354525266ff4a4ad1e1ddd58d61d236b278bbe6ca905",
+    "tests/test_zone_pair_grasp.py": "de55ebb325bb351e0d6f012a39e26bc1a6f3cbef83fdce3e6ea74fba9befebc1",
+    "tests/test_zone_pair_review.py": "0755c9528a15ca007dcdd54bc79ace98f41a2b3a2f1bf3c6259d03cf8a04a6d6",
+    "tests/test_zone_pair_preclose.py": "0d1f41c18ea0e8e430afa29b3cd3a7c1d6d169bd7435b73f49a73d0641f59970"
+  },
+  "limitations": [
+    "No physical validation of the new RGB fit, grasp, carry or dev07/dev08.",
+    "Clipped grip images safely abort even when the old grip-view classifier passes; scatter/length bounds are a dev heuristic, not calibrated confidence.",
+    "P2 STATUS v5 integration after #229 merge requires a follow-up PR with a new bundle and preregistration.",
+    "No new experiment result: TensorBoard conversion not applicable. No Google Drive per project exception.",
+    "git fetch denied shared Git-directory writes; gh network unavailable; connector verified PR #240 head dff7b3ca. No commit, push, PR mutation or merge."
+  ]
+}

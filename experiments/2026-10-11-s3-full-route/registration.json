@@ -1,0 +1,291 @@
+{
+  "host": "oracle-x86",
+  "bundle_id": "zone-s3-full-route-v175",
+  "runs": [
+    {
+      "name": "s3fix23-baseline-multi-left-s14201-r1",
+      "case": "pair",
+      "candidate": "baseline",
+      "condition": 0,
+      "route_case": "multi-left",
+      "route": [
+        [
+          1.3,
+          0.05
+        ],
+        [
+          1.4518,
+          0.05
+        ],
+        [
+          1.4518,
+          0.21694529519717284
+        ]
+      ],
+      "seed": 14201,
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_full_route",
+        "--expected-source-sha",
+        "<committed SHA>",
+        "--output",
+        "outputs/s3fix23-baseline-multi-left-s14201-r1/raw",
+        "--condition",
+        "0",
+        "--route-case",
+        "multi-left",
+        "--seed",
+        "14201",
+        "--candidate",
+        "baseline",
+        "--execute"
+      ],
+      "cap_sim_s": 170
+    },
+    {
+      "name": "s3fix23-baseline-multi-left-s15201-r1",
+      "case": "pair",
+      "candidate": "baseline",
+      "condition": 0,
+      "route_case": "multi-left",
+      "route": [
+        [
+          1.3,
+          0.05
+        ],
+        [
+          1.4518,
+          0.05
+        ],
+        [
+          1.4518,
+          0.21694529519717284
+        ]
+      ],
+      "seed": 15201,
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_full_route",
+        "--expected-source-sha",
+        "<committed SHA>",
+        "--output",
+        "outputs/s3fix23-baseline-multi-left-s15201-r1/raw",
+        "--condition",
+        "0",
+        "--route-case",
+        "multi-left",
+        "--seed",
+        "15201",
+        "--candidate",
+        "baseline",
+        "--execute"
+      ],
+      "cap_sim_s": 170
+    },
+    {
+      "name": "s3fix23-pan-multi-right-s14204-r1",
+      "case": "pair",
+      "candidate": "pan",
+      "condition": 3,
+      "route_case": "multi-right",
+      "route": [
+        [
+          1.3,
+          0.05
+        ],
+        [
+          1.4518,
+          0.05
+        ],
+        [
+          1.4518,
+          -0.11694529519717285
+        ]
+      ],
+      "seed": 14204,
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_full_route",
+        "--expected-source-sha",
+        "<committed SHA>",
+        "--output",
+        "outputs/s3fix23-pan-multi-right-s14204-r1/raw",
+        "--condition",
+        "3",
+        "--route-case",
+        "multi-right",
+        "--seed",
+        "14204",
+        "--candidate",
+        "pan",
+        "--execute"
+      ],
+      "cap_sim_s": 170
+    },
+    {
+      "name": "s3fix23-pan-multi-right-s15204-r1",
+      "case": "pair",
+      "candidate": "pan",
+      "condition": 3,
+      "route_case": "multi-right",
+      "route": [
+        [
+          1.3,
+          0.05
+        ],
+        [
+          1.4518,
+          0.05
+        ],
+        [
+          1.4518,
+          -0.11694529519717285
+        ]
+      ],
+      "seed": 15204,
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_full_route",
+        "--expected-source-sha",
+        "<committed SHA>",
+        "--output",
+        "outputs/s3fix23-pan-multi-right-s15204-r1/raw",
+        "--condition",
+        "3",
+        "--route-case",
+        "multi-right",
+        "--seed",
+        "15204",
+        "--candidate",
+        "pan",
+        "--execute"
+      ],
+      "cap_sim_s": 170
+    },
+    {
+      "name": "s3fix23-pan_backoff-multi-three-s14206-r1",
+      "case": "pair",
+      "candidate": "pan_backoff",
+      "condition": 5,
+      "route_case": "multi-three",
+      "route": [
+        [
+          1.3,
+          0.05
+        ],
+        [
+          1.4518,
+          0.05
+        ],
+        [
+          1.4518,
+          0.21694529519717284
+        ],
+        [
+          1.348290225509269,
+          0.21694529519717284
+        ]
+      ],
+      "seed": 14206,
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_full_route",
+        "--expected-source-sha",
+        "<committed SHA>",
+        "--output",
+        "outputs/s3fix23-pan_backoff-multi-three-s14206-r1/raw",
+        "--condition",
+        "5",
+        "--route-case",
+        "multi-three",
+        "--seed",
+        "14206",
+        "--candidate",
+        "pan_backoff",
+        "--execute"
+      ],
+      "cap_sim_s": 240
+    },
+    {
+      "name": "s3fix23-pan_backoff-multi-three-s15206-r1",
+      "case": "pair",
+      "candidate": "pan_backoff",
+      "condition": 5,
+      "route_case": "multi-three",
+      "route": [
+        [
+          1.3,
+          0.05
+        ],
+        [
+          1.4518,
+          0.05
+        ],
+        [
+          1.4518,
+          0.21694529519717284
+        ],
+        [
+          1.348290225509269,
+          0.21694529519717284
+        ]
+      ],
+      "seed": 15206,
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_s3_full_route",
+        "--expected-source-sha",
+        "<committed SHA>",
+        "--output",
+        "outputs/s3fix23-pan_backoff-multi-three-s15206-r1/raw",
+        "--condition",
+        "5",
+        "--route-case",
+        "multi-three",
+        "--seed",
+        "15206",
+        "--candidate",
+        "pan_backoff",
+        "--execute"
+      ],
+      "cap_sim_s": 240
+    }
+  ],
+  "wall_cap_s": 3600,
+  "load_max": 51,
+  "mem_min_gib": 6,
+  "disk_reserve_gib": 10,
+  "raw_root": "/home/ubuntu/ugrp-sim/runs",
+  "scope": "Unbroken synthetic registered route from alignment through final settled release; not dock-to-B mission. Route-assigned exploratory variants, no matched candidate ranking.",
+  "selection": "Every planned leg actual held transport >=20mm and corner <=20mm; final settled floor release; no drop/tilt/HOST. Horizon incomplete. Seeds/tolerances/calibration unchanged.",
+  "candidate_options": {
+    "baseline": [
+      false,
+      false
+    ],
+    "pan": [
+      true,
+      false
+    ],
+    "pan_backoff": [
+      true,
+      true
+    ]
+  },
+  "references": [
+    {
+      "url": "https://faculty.cc.gatech.edu/~seth/ResPages/pdfs/HutHagCor96.pdf",
+      "use": "General visual-servo overview; scanned author PDF obtained, specific FOV passage not text-verified this round. Canonical inspect restoration is our constrained implementation, not a quoted algorithm."
+    },
+    {
+      "url": "https://www.cs.cmu.edu/~lew/PUBLICATION%20PDFs/VISUAL%20SERVOING/JRA%201987.pdf",
+      "use": "p407 static look-and-move: move then stationary fresh observation; existing calibrated reverse pulse, <=2/segment, only own RGB clipped while both unloaded."
+    }
+  ]
+}

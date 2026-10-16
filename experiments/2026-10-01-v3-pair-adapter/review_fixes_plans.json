@@ -1,0 +1,152 @@
+{
+  "scope": "dry plan during uncommitted main integration; source_sha is requested commit, file closure pinned separately",
+  "plans": {
+    "p03": {
+      "execution_bundle_id": "zone-final-pair-v88",
+      "status": "DRAFT_UNSEALED",
+      "check": "p03",
+      "execution_started": false,
+      "cases": [
+        {
+          "id": "before_door",
+          "map_id": "zone_wide_door_geometry_v3",
+          "checkpoint": "before_door",
+          "sim_cap_s": 120.0
+        },
+        {
+          "id": "after_door",
+          "map_id": "zone_wide_door_geometry_v3",
+          "checkpoint": "after_door",
+          "sim_cap_s": 120.0
+        },
+        {
+          "id": "before_destination",
+          "map_id": "zone_wide_door_geometry_v3",
+          "checkpoint": "before_destination",
+          "sim_cap_s": 120.0
+        }
+      ],
+      "denominator": 3,
+      "runnable": false,
+      "blocked_on": [
+        "MEASURED_V3_CALIBRATION_REQUIRED"
+      ],
+      "source_sha": "05630ead7cff17e52bcad90ca4e58bb976366d1d",
+      "seed": 911,
+      "bundles_sha256": [
+        "43590429399521a368969ab3a15b7967f65ea45efe48e9446cc9502249b1b301",
+        "3d64c4cfd1d98712e030b62d0d1a703c3c2d9dfcf03e56449313a2a19c42aab1",
+        "b8175c9129b8e3e560895422eb6c0379e7585710b12b8f3736f729b3dd71908f"
+      ],
+      "physical_success": null
+    },
+    "carry": {
+      "execution_bundle_id": "zone-final-pair-v88",
+      "status": "DRAFT_UNSEALED",
+      "check": "carry",
+      "execution_started": false,
+      "cases": [
+        {
+          "id": "zone_wide_door_geometry_v3",
+          "map_id": "zone_wide_door_geometry_v3",
+          "checkpoint": null,
+          "sim_cap_s": 120.0
+        },
+        {
+          "id": "zone_wide_two_doors_final_v3",
+          "map_id": "zone_wide_two_doors_final_v3",
+          "checkpoint": null,
+          "sim_cap_s": 120.0
+        },
+        {
+          "id": "zone_wide_corridor_final_v3",
+          "map_id": "zone_wide_corridor_final_v3",
+          "checkpoint": null,
+          "sim_cap_s": 120.0
+        }
+      ],
+      "denominator": 3,
+      "runnable": false,
+      "blocked_on": [
+        "MEASURED_V3_CALIBRATION_REQUIRED"
+      ],
+      "source_sha": "05630ead7cff17e52bcad90ca4e58bb976366d1d",
+      "seed": 911,
+      "bundles_sha256": [
+        "deda0bf713d087cb5ea8ffd59e305768a98a575b19ffd821deb101d326027856",
+        "0fe61a5d4064cc96514d030a49035caada25a222909b6e54cd7713c0f8146d7f",
+        "88fdeb74d45e4acd1d85d9144bc1132adac3f2c9c7011bbd6c64ede7e0ed418b"
+      ],
+      "physical_success": null
+    },
+    "calibration-unloaded": {
+      "execution_bundle_id": "zone-final-pair-v88",
+      "status": "DRAFT_UNSEALED",
+      "check": "calibration-unloaded",
+      "execution_started": false,
+      "cases": [
+        {
+          "id": "zone_wide_two_doors_final_v3",
+          "map_id": "zone_wide_two_doors_final_v3",
+          "checkpoint": null,
+          "sim_cap_s": 370.0
+        }
+      ],
+      "denominator": 1,
+      "runnable": true,
+      "blocked_on": [],
+      "source_sha": "05630ead7cff17e52bcad90ca4e58bb976366d1d",
+      "seed": 911,
+      "bundles_sha256": [
+        "b2394b4f6d22162481e4acc0a14cc92038d15ece0fbba77240dbfb530ae39b3e"
+      ],
+      "physical_success": null
+    },
+    "calibration-loaded": {
+      "execution_bundle_id": "zone-final-pair-v88",
+      "status": "DRAFT_UNSEALED",
+      "check": "calibration-loaded",
+      "execution_started": false,
+      "cases": [
+        {
+          "id": "zone_wide_two_doors_final_v3",
+          "map_id": "zone_wide_two_doors_final_v3",
+          "checkpoint": null,
+          "sim_cap_s": 370.0
+        }
+      ],
+      "denominator": 1,
+      "runnable": true,
+      "blocked_on": [],
+      "source_sha": "05630ead7cff17e52bcad90ca4e58bb976366d1d",
+      "seed": 911,
+      "bundles_sha256": [
+        "e5b4c248c4704f3efe9e8d41910012aa2f1d7deadf20be28f56a8866fb8da1ac"
+      ],
+      "physical_success": null
+    },
+    "calibration-fine": {
+      "execution_bundle_id": "zone-final-pair-v88",
+      "status": "DRAFT_UNSEALED",
+      "check": "calibration-fine",
+      "execution_started": false,
+      "cases": [
+        {
+          "id": "zone_wide_two_doors_final_v3",
+          "map_id": "zone_wide_two_doors_final_v3",
+          "checkpoint": null,
+          "sim_cap_s": 370.0
+        }
+      ],
+      "denominator": 1,
+      "runnable": true,
+      "blocked_on": [],
+      "source_sha": "05630ead7cff17e52bcad90ca4e58bb976366d1d",
+      "seed": 911,
+      "bundles_sha256": [
+        "30cb4b64265800aaaa820ea92acc15898dd5c6e03ae42aca64f025c75ccfd235"
+      ],
+      "physical_success": null
+    }
+  }
+}

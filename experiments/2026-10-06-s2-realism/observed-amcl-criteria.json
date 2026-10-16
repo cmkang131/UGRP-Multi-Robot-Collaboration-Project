@@ -1,0 +1,24 @@
+{
+  "schema": "ugrp.s2.observed_amcl.criteria.v1",
+  "source_seed": 1050,
+  "source_sha": "97fcb5d2be8cf714d0866e7b53ed461e1c59ccbf",
+  "source_raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-97fcb5d2-s1050-P1-2-place",
+  "baseline_replay_max_pose_delta": 1e-9,
+  "candidate": "nav2_observed_v1",
+  "measurement_model": "ros_motion_v1",
+  "changes": "Remove PF prior visibility veto entirely; retain measured-pixel own-body/cyan preprocessing only. Fixed Nav2 hit/random cubic likelihood, motion thresholds and resampling unchanged.",
+  "no_threshold_tuning": true,
+  "no_projection_fix": true,
+  "admission": {
+    "carry_updates_strictly_greater_than": 0,
+    "carry_rmse_strictly_less_than_saved_m": 2.1909388706847515,
+    "initial_stationary_max_error_at_most_m": 0.5,
+    "off_replay_exact_required": true
+  },
+  "carry_window_sim_s": [71.0, 236.8],
+  "gap_policy": "Report longest carry update gap; latest user permits one DEV on update-count and RMSE improvement. Historical 30 s is a reference, not a new admission gate.",
+  "replay": "All 5117 saved own RGB frames and own issued commands, seed1050; no controller action generation or simulator. Open truth only after Runtime close. Exploration, not a fresh confirmation.",
+  "projection_audit": "One posthoc 1 Hz carry sample using GT chassis yaw/xy only for scoring. Compare fixed camera and logged actual camera on identical detected/true wall-bottom pixels; report all valid and visible subsets, signed range and endpoint errors. No tuning or control feedback.",
+  "full_dev": "If admitted, reserve fresh seed/bundle and commit before one freeze-ON S2 full DEV. agent_lock and ugrp_session, dev_light, no model calls. Otherwise no SIM.",
+  "host_failure": "ENOSPC is HOST_ERROR; preserve raw. No retry of the one full attempt."
+}

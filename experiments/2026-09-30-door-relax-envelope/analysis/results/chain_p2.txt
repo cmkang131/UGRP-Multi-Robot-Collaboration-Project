@@ -1,0 +1,30 @@
+NOTE: 'SELF_POSE_UNCERTAIN gate_not_ok_dwell_or_hysteresis' in the first-failure column is the name the existing classifier (harness/pair_stage_probe.py ~855-868) gives an abort; the raw controller reason in these runs is POSE_UNCERTAIN_PROGRESS (ProgressMonitor no-progress stop), not a pose gate.
+
+== k1g+p2: door-relax-envelope-77fde5f6-chK1gP2 n=20 load start/end=[10.8, 11.9, 12.0]/[13.6, 10.9, 11.0] source=77fde5f6 changed=False
+case | L0: class, sigma_yaw start/end deg, end_err mm, min clr beam/chassis mm | L1: class, sigma_yaw start/end deg, end_err mm, min clr beam/chassis mm | first failure
+  hR2_01:s911:pPOST:VhR2 | PASS_CLEAN, 0.56/2.24, 8, 390.3/140.0 | PASS_CLEAN, 0.84/2.96, 64, 204.7/134.8 | -
+  hR2_01:s912:pPOST:VhR2 | PASS_CLEAN, 0.59/2.22, 8, 390.3/139.9 | PASS_CLEAN, 0.90/2.98, 64, 204.9/135.0 | -
+  hR2_02:s911:pPOST:VhR2 | PASS_CLEAN, 0.61/2.24, 9, 389.7/137.4 | PASS_CLEAN, 0.91/2.96, 65, 203.3/133.4 | -
+  hR2_02:s912:pPOST:VhR2 | PASS_CLEAN, 0.65/2.23, 9, 389.7/137.1 | PASS_CLEAN, 0.88/3.02, 64, 204.5/134.7 | -
+  hR2_03:s911:pPOST:VhR2 | PASS_CLEAN, 0.59/2.24, 9, 389.7/137.2 | PASS_CLEAN, 0.85/2.95, 65, 202.9/133.0 | -
+  hR2_03:s912:pPOST:VhR2 | PASS_CLEAN, 0.63/2.23, 9, 389.7/137.2 | PASS_CLEAN, 0.90/3.02, 65, 203.5/133.6 | -
+  hR2_04:s911:pPOST:VhR2 | PASS_CLEAN, 0.53/2.54, 84, 321.0/69.5 | FAIL, 0.78/2.98, 106, 189.5/70.5 | carry L1 MOTION_ERROR end_error (gt_criterion)
+  hR2_04:s912:pPOST:VhR2 | PASS_CLEAN, 0.57/2.47, 83, 321.5/71.1 | FAIL, 0.82/3.08, 107, 188.8/72.1 | carry L1 MOTION_ERROR end_error (gt_criterion)
+  hR2_05:s911:pPOST:VhR2 | PASS_CLEAN, 0.54/2.51, 80, 324.0/77.7 | FAIL, 0.88/3.01, 102, 197.1/78.7 | carry L1 MOTION_ERROR end_error (gt_criterion)
+  hR2_05:s912:pPOST:VhR2 | PASS_CLEAN, 0.57/2.46, 79, 324.5/79.2 | FAIL, 0.88/3.04, 110, 184.4/80.3 | carry L1 MOTION_ERROR end_error (gt_criterion)
+  hR2_06:s911:pPOST:VhR2 | PASS_CLEAN, 0.53/2.51, 82, 322.8/75.3 | FAIL, 0.84/3.06, 103, 194.8/76.4 | carry L1 MOTION_ERROR end_error (gt_criterion)
+  hR2_06:s912:pPOST:VhR2 | PASS_CLEAN, 0.56/2.47, 81, 323.6/77.6 | FAIL, 0.83/3.00, 105, 191.9/78.6 | carry L1 MOTION_ERROR end_error (gt_criterion)
+  hR2_07:s911:pPOST:VhR2 | PASS_CLEAN, 0.58/2.23, 6, 392.8/146.3 | PASS_CLEAN, 0.88/3.02, 59, 211.6/141.6 | -
+  hR2_07:s912:pPOST:VhR2 | PASS_CLEAN, 0.58/2.24, 6, 392.8/146.3 | PASS_CLEAN, 0.91/3.01, 59, 212.0/142.0 | -
+  hR2_08:s911:pPOST:VhR2 | PASS_CLEAN, 0.57/2.20, 10, 389.0/137.5 | PASS_CLEAN, 0.90/3.03, 66, 201.0/131.0 | -
+  hR2_08:s912:pPOST:VhR2 | PASS_CLEAN, 0.56/2.23, 10, 389.0/137.5 | PASS_CLEAN, 0.89/3.04, 66, 201.0/131.1 | -
+  hR2_09:s911:pPOST:VhR2 | PASS_CLEAN, 0.57/2.22, 8, 390.7/141.4 | PASS_CLEAN, 0.90/3.04, 63, 207.1/137.2 | -
+  hR2_09:s912:pPOST:VhR2 | PASS_CLEAN, 0.57/2.23, 8, 390.7/141.3 | PASS_CLEAN, 0.89/2.99, 62, 207.3/137.4 | -
+  hR2_10:s911:pPOST:VhR2 | PASS_CLEAN, 0.58/2.26, 5, 393.8/150.2 | PASS_CLEAN, 0.91/2.95, 59, 215.3/145.3 | -
+  hR2_10:s912:pPOST:VhR2 | PASS_CLEAN, 0.57/2.21, 5, 393.8/150.2 | PASS_CLEAN, 0.94/3.06, 59, 215.4/145.4 | -
+L0: n=20 PASS_CLEAN=20/20 [84-100%] PASS_any=20/20 [84-100%] PASS_CONTACT_RECOVERED=0 FAIL_HARD_LIMIT=0 FAIL=0
+L1: n=20 PASS_CLEAN=14/20 [48-85%] PASS_any=14/20 [48-85%] PASS_CONTACT_RECOVERED=0 FAIL_HARD_LIMIT=0 FAIL=6
+chain L0->L1 both legs pass: 14/20 [48-85%]
+PF honesty all at the leg ends (case-robot samples): n=80 meanNEES=3.53 median=3.65 cov2sigma x/y/yaw=[0.75, 1.0, 1.0]
+PF honesty L0 at the leg ends (case-robot samples): n=40 meanNEES=2.55 median=2.24 cov2sigma x/y/yaw=[1.0, 1.0, 1.0]
+PF honesty L1 at the leg ends (case-robot samples): n=40 meanNEES=4.51 median=4.58 cov2sigma x/y/yaw=[0.5, 1.0, 1.0]

@@ -1,0 +1,897 @@
+{
+  "schema": "ugrp.review3_sweep_nonphysics.v1",
+  "head": "499e4fd6445614a8b647eaea11f7bb9c77e5e2bd",
+  "working_tree_uncommitted": true,
+  "scope": "static geometry and scripted own-estimate regression; not measured s703 PF or physical success",
+  "startup": {
+    "r3": [
+      -0.85,
+      -2.25,
+      0.032355118817659255,
+      0.0
+    ],
+    "r2": [
+      -0.85,
+      -0.85,
+      0.032355118817659255,
+      0.0
+    ],
+    "r1": [
+      -0.85,
+      0.55,
+      0.032355118817659255,
+      0.0
+    ]
+  },
+  "initial_issued_pwm": {
+    "1": 2000,
+    "3": 740,
+    "4": 2320,
+    "5": 1320,
+    "6": 1500
+  },
+  "requested_look_pwm": {
+    "3": 1072,
+    "4": 2400,
+    "5": 1482
+  },
+  "requested_pans": [
+    1500,
+    1230,
+    970,
+    1770,
+    2030,
+    1500
+  ],
+  "wait_budget_sim_s": 10.0,
+  "files_sha256": {
+    "harness/zone_own_guards.py": "eec5b4942e4fa186fd7a40c3d47b087614055d35dad900d8126adb97d381f617",
+    "harness/zone_own_executor.py": "59868a535153aeba0765d27d961d93c24eb2b8c1639feb343a2c5b0142fef9a9",
+    "harness/zone_own_driver.py": "6bdfd044584288f85627d32fb8541b8f68a86b807d7b779f37f42571afd9c732",
+    "harness/zone_own_deliver.py": "7ef8e5ed262975fb2362072d52da8c5f9190a650fd602d82061df90cecd8fd87",
+    "harness/zone_own_sweep.py": "e3cf253c5a6eef0167a8f2cbac164cc88285fd92dd460711a88985c0b42ff478",
+    "tests/test_zone_own_executor_sweep_start.py": "5e413bf105e5f54a2a7356a1b1d3c135a9c995b0e156b22ae586e1e3ea250006",
+    "maps/zones/zone_wide_door_tags_v2.json": "f9b0ef0d9f35457b34711c0ec5d11688af3130238560195c982660137ad3e73b",
+    "experiments/2026-09-26-zone-own-executor/body_model_calibration.json": "a775a476ff52ef1b79f3970220ec26ed7be1dd8d9bd97ad31244b59d78df0975"
+  },
+  "review3_before_sha256": {
+    "zone_own_driver.py": "9fdb9fadf9003b292d573dda8b411ccf2a625ed396ef0dd61adb10a90c096b5d",
+    "zone_own_guards.py": "c480976dcc77802bf6deeac3c8b81c621152e67b2378d91a12ca7c29c068ced2",
+    "zone_own_deliver.py": "763b39cb5d0b579ee06d948997a389ad1e172b00d233ffb9b3c3561e0f5c06db",
+    "zone_own_executor.py": "b57e173aba4f39f5d7fd580b70e0971b7eab3238090a2d90e743921e09848351"
+  },
+  "cases": [
+    {
+      "robot": "r3",
+      "diagnostic_sigma_xy": 0.0,
+      "plan": {
+        "pans": [
+          1500,
+          1230,
+          970,
+          1770,
+          2030,
+          1500
+        ],
+        "dropped": [],
+        "backoff": null,
+        "interval": [
+          970,
+          2030
+        ],
+        "reason": "clear",
+        "transition_clear": true,
+        "margin_m": 0.035
+      },
+      "diagnostic": {
+        "source": "own_estimate_and_issued_pwm_static_map",
+        "loaded": false,
+        "current_pwm": {
+          "1": 2000,
+          "3": 740,
+          "4": 2320,
+          "5": 1320,
+          "6": 1500
+        },
+        "target_pwm": {
+          "1": 2000,
+          "3": 1072,
+          "4": 2400,
+          "5": 1482,
+          "6": 1500
+        },
+        "own_estimate": {
+          "x_m": -0.85,
+          "y_m": -2.25,
+          "yaw_rad": 0.0,
+          "std_xy_m": 0.0,
+          "std_yaw_rad": 0.0
+        },
+        "limiting": {
+          "sample_pwm": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          },
+          "sphere_index": 0,
+          "sphere_part": "yaw_bearing",
+          "sphere_center_base_m": [
+            0.0,
+            0.0,
+            0.085
+          ],
+          "sphere_radius_m": 0.045,
+          "wall_id": "wall_west",
+          "raw_clearance_mm": 130.00000000000006,
+          "margin_mm": 35.0,
+          "clearance_mm": 95.00000000000006,
+          "overlap_mm": 0.0
+        }
+      }
+    },
+    {
+      "robot": "r3",
+      "diagnostic_sigma_xy": 0.01,
+      "plan": {
+        "pans": [
+          1500,
+          1230,
+          970,
+          1770,
+          2030,
+          1500
+        ],
+        "dropped": [],
+        "backoff": null,
+        "interval": [
+          970,
+          2030
+        ],
+        "reason": "clear",
+        "transition_clear": true,
+        "margin_m": 0.063
+      },
+      "diagnostic": {
+        "source": "own_estimate_and_issued_pwm_static_map",
+        "loaded": false,
+        "current_pwm": {
+          "1": 2000,
+          "3": 740,
+          "4": 2320,
+          "5": 1320,
+          "6": 1500
+        },
+        "target_pwm": {
+          "1": 2000,
+          "3": 1072,
+          "4": 2400,
+          "5": 1482,
+          "6": 1500
+        },
+        "own_estimate": {
+          "x_m": -0.85,
+          "y_m": -2.25,
+          "yaw_rad": 0.0,
+          "std_xy_m": 0.01,
+          "std_yaw_rad": 0.02
+        },
+        "limiting": {
+          "sample_pwm": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          },
+          "sphere_index": 0,
+          "sphere_part": "yaw_bearing",
+          "sphere_center_base_m": [
+            0.0,
+            0.0,
+            0.085
+          ],
+          "sphere_radius_m": 0.045,
+          "wall_id": "wall_west",
+          "raw_clearance_mm": 130.00000000000006,
+          "margin_mm": 55.00000000000001,
+          "clearance_mm": 75.00000000000006,
+          "overlap_mm": 0.0
+        }
+      }
+    },
+    {
+      "robot": "r3",
+      "diagnostic_sigma_xy": 0.05,
+      "plan": {
+        "pans": [],
+        "dropped": [
+          1500,
+          1230,
+          970,
+          1770,
+          2030,
+          1500
+        ],
+        "backoff": null,
+        "interval": null,
+        "reason": "no_clear_pan",
+        "transition_clear": false,
+        "margin_m": 0.143
+      },
+      "diagnostic": {
+        "source": "own_estimate_and_issued_pwm_static_map",
+        "loaded": false,
+        "current_pwm": {
+          "1": 2000,
+          "3": 740,
+          "4": 2320,
+          "5": 1320,
+          "6": 1500
+        },
+        "target_pwm": {
+          "1": 2000,
+          "3": 1072,
+          "4": 2400,
+          "5": 1482,
+          "6": 1500
+        },
+        "own_estimate": {
+          "x_m": -0.85,
+          "y_m": -2.25,
+          "yaw_rad": 0.0,
+          "std_xy_m": 0.05,
+          "std_yaw_rad": 0.02
+        },
+        "limiting": {
+          "sample_pwm": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          },
+          "sphere_index": 3,
+          "sphere_part": "upper_arm",
+          "sphere_center_base_m": [
+            -0.026655344468303754,
+            0.0,
+            0.18478315621891322
+          ],
+          "sphere_radius_m": 0.022,
+          "wall_id": "wall_west",
+          "raw_clearance_mm": 126.34465553169633,
+          "margin_mm": 136.06621377873216,
+          "clearance_mm": -9.721558247035828,
+          "overlap_mm": 9.721558247035828
+        }
+      }
+    },
+    {
+      "robot": "r3",
+      "diagnostic_sigma_xy": 0.15,
+      "plan": {
+        "pans": [],
+        "dropped": [
+          1500,
+          1230,
+          970,
+          1770,
+          2030,
+          1500
+        ],
+        "backoff": null,
+        "interval": null,
+        "reason": "no_clear_pan",
+        "transition_clear": false,
+        "margin_m": 0.343
+      },
+      "diagnostic": {
+        "source": "own_estimate_and_issued_pwm_static_map",
+        "loaded": false,
+        "current_pwm": {
+          "1": 2000,
+          "3": 740,
+          "4": 2320,
+          "5": 1320,
+          "6": 1500
+        },
+        "target_pwm": {
+          "1": 2000,
+          "3": 1072,
+          "4": 2400,
+          "5": 1482,
+          "6": 1500
+        },
+        "own_estimate": {
+          "x_m": -0.85,
+          "y_m": -2.25,
+          "yaw_rad": 0.0,
+          "std_xy_m": 0.15,
+          "std_yaw_rad": 0.02
+        },
+        "limiting": {
+          "sample_pwm": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          },
+          "sphere_index": 3,
+          "sphere_part": "upper_arm",
+          "sphere_center_base_m": [
+            -0.026655344468303754,
+            0.0,
+            0.18478315621891322
+          ],
+          "sphere_radius_m": 0.022,
+          "wall_id": "wall_west",
+          "raw_clearance_mm": 126.34465553169633,
+          "margin_mm": 336.06621377873216,
+          "clearance_mm": -209.7215582470358,
+          "overlap_mm": 209.7215582470358
+        }
+      }
+    },
+    {
+      "robot": "r2",
+      "diagnostic_sigma_xy": 0.0,
+      "plan": {
+        "pans": [
+          1500,
+          1230,
+          970,
+          1770,
+          2030,
+          1500
+        ],
+        "dropped": [],
+        "backoff": null,
+        "interval": [
+          970,
+          2030
+        ],
+        "reason": "clear",
+        "transition_clear": true,
+        "margin_m": 0.035
+      },
+      "diagnostic": {
+        "source": "own_estimate_and_issued_pwm_static_map",
+        "loaded": false,
+        "current_pwm": {
+          "1": 2000,
+          "3": 740,
+          "4": 2320,
+          "5": 1320,
+          "6": 1500
+        },
+        "target_pwm": {
+          "1": 2000,
+          "3": 1072,
+          "4": 2400,
+          "5": 1482,
+          "6": 1500
+        },
+        "own_estimate": {
+          "x_m": -0.85,
+          "y_m": -0.85,
+          "yaw_rad": 0.0,
+          "std_xy_m": 0.0,
+          "std_yaw_rad": 0.0
+        },
+        "limiting": {
+          "sample_pwm": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          },
+          "sphere_index": 0,
+          "sphere_part": "yaw_bearing",
+          "sphere_center_base_m": [
+            0.0,
+            0.0,
+            0.085
+          ],
+          "sphere_radius_m": 0.045,
+          "wall_id": "wall_west",
+          "raw_clearance_mm": 130.00000000000006,
+          "margin_mm": 35.0,
+          "clearance_mm": 95.00000000000006,
+          "overlap_mm": 0.0
+        }
+      }
+    },
+    {
+      "robot": "r2",
+      "diagnostic_sigma_xy": 0.01,
+      "plan": {
+        "pans": [
+          1500,
+          1230,
+          970,
+          1770,
+          2030,
+          1500
+        ],
+        "dropped": [],
+        "backoff": null,
+        "interval": [
+          970,
+          2030
+        ],
+        "reason": "clear",
+        "transition_clear": true,
+        "margin_m": 0.063
+      },
+      "diagnostic": {
+        "source": "own_estimate_and_issued_pwm_static_map",
+        "loaded": false,
+        "current_pwm": {
+          "1": 2000,
+          "3": 740,
+          "4": 2320,
+          "5": 1320,
+          "6": 1500
+        },
+        "target_pwm": {
+          "1": 2000,
+          "3": 1072,
+          "4": 2400,
+          "5": 1482,
+          "6": 1500
+        },
+        "own_estimate": {
+          "x_m": -0.85,
+          "y_m": -0.85,
+          "yaw_rad": 0.0,
+          "std_xy_m": 0.01,
+          "std_yaw_rad": 0.02
+        },
+        "limiting": {
+          "sample_pwm": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          },
+          "sphere_index": 0,
+          "sphere_part": "yaw_bearing",
+          "sphere_center_base_m": [
+            0.0,
+            0.0,
+            0.085
+          ],
+          "sphere_radius_m": 0.045,
+          "wall_id": "wall_west",
+          "raw_clearance_mm": 130.00000000000006,
+          "margin_mm": 55.00000000000001,
+          "clearance_mm": 75.00000000000006,
+          "overlap_mm": 0.0
+        }
+      }
+    },
+    {
+      "robot": "r2",
+      "diagnostic_sigma_xy": 0.05,
+      "plan": {
+        "pans": [],
+        "dropped": [
+          1500,
+          1230,
+          970,
+          1770,
+          2030,
+          1500
+        ],
+        "backoff": null,
+        "interval": null,
+        "reason": "no_clear_pan",
+        "transition_clear": false,
+        "margin_m": 0.143
+      },
+      "diagnostic": {
+        "source": "own_estimate_and_issued_pwm_static_map",
+        "loaded": false,
+        "current_pwm": {
+          "1": 2000,
+          "3": 740,
+          "4": 2320,
+          "5": 1320,
+          "6": 1500
+        },
+        "target_pwm": {
+          "1": 2000,
+          "3": 1072,
+          "4": 2400,
+          "5": 1482,
+          "6": 1500
+        },
+        "own_estimate": {
+          "x_m": -0.85,
+          "y_m": -0.85,
+          "yaw_rad": 0.0,
+          "std_xy_m": 0.05,
+          "std_yaw_rad": 0.02
+        },
+        "limiting": {
+          "sample_pwm": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          },
+          "sphere_index": 3,
+          "sphere_part": "upper_arm",
+          "sphere_center_base_m": [
+            -0.026655344468303754,
+            0.0,
+            0.18478315621891322
+          ],
+          "sphere_radius_m": 0.022,
+          "wall_id": "wall_west",
+          "raw_clearance_mm": 126.34465553169633,
+          "margin_mm": 136.06621377873216,
+          "clearance_mm": -9.721558247035828,
+          "overlap_mm": 9.721558247035828
+        }
+      }
+    },
+    {
+      "robot": "r2",
+      "diagnostic_sigma_xy": 0.15,
+      "plan": {
+        "pans": [],
+        "dropped": [
+          1500,
+          1230,
+          970,
+          1770,
+          2030,
+          1500
+        ],
+        "backoff": null,
+        "interval": null,
+        "reason": "no_clear_pan",
+        "transition_clear": false,
+        "margin_m": 0.343
+      },
+      "diagnostic": {
+        "source": "own_estimate_and_issued_pwm_static_map",
+        "loaded": false,
+        "current_pwm": {
+          "1": 2000,
+          "3": 740,
+          "4": 2320,
+          "5": 1320,
+          "6": 1500
+        },
+        "target_pwm": {
+          "1": 2000,
+          "3": 1072,
+          "4": 2400,
+          "5": 1482,
+          "6": 1500
+        },
+        "own_estimate": {
+          "x_m": -0.85,
+          "y_m": -0.85,
+          "yaw_rad": 0.0,
+          "std_xy_m": 0.15,
+          "std_yaw_rad": 0.02
+        },
+        "limiting": {
+          "sample_pwm": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          },
+          "sphere_index": 3,
+          "sphere_part": "upper_arm",
+          "sphere_center_base_m": [
+            -0.026655344468303754,
+            0.0,
+            0.18478315621891322
+          ],
+          "sphere_radius_m": 0.022,
+          "wall_id": "wall_west",
+          "raw_clearance_mm": 126.34465553169633,
+          "margin_mm": 336.06621377873216,
+          "clearance_mm": -209.7215582470358,
+          "overlap_mm": 209.7215582470358
+        }
+      }
+    },
+    {
+      "robot": "r1",
+      "diagnostic_sigma_xy": 0.0,
+      "plan": {
+        "pans": [
+          1500,
+          1230,
+          970,
+          1770,
+          2030,
+          1500
+        ],
+        "dropped": [],
+        "backoff": null,
+        "interval": [
+          970,
+          2030
+        ],
+        "reason": "clear",
+        "transition_clear": true,
+        "margin_m": 0.035
+      },
+      "diagnostic": {
+        "source": "own_estimate_and_issued_pwm_static_map",
+        "loaded": false,
+        "current_pwm": {
+          "1": 2000,
+          "3": 740,
+          "4": 2320,
+          "5": 1320,
+          "6": 1500
+        },
+        "target_pwm": {
+          "1": 2000,
+          "3": 1072,
+          "4": 2400,
+          "5": 1482,
+          "6": 1500
+        },
+        "own_estimate": {
+          "x_m": -0.85,
+          "y_m": 0.55,
+          "yaw_rad": 0.0,
+          "std_xy_m": 0.0,
+          "std_yaw_rad": 0.0
+        },
+        "limiting": {
+          "sample_pwm": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          },
+          "sphere_index": 0,
+          "sphere_part": "yaw_bearing",
+          "sphere_center_base_m": [
+            0.0,
+            0.0,
+            0.085
+          ],
+          "sphere_radius_m": 0.045,
+          "wall_id": "wall_west",
+          "raw_clearance_mm": 130.00000000000006,
+          "margin_mm": 35.0,
+          "clearance_mm": 95.00000000000006,
+          "overlap_mm": 0.0
+        }
+      }
+    },
+    {
+      "robot": "r1",
+      "diagnostic_sigma_xy": 0.01,
+      "plan": {
+        "pans": [
+          1500,
+          1230,
+          970,
+          1770,
+          2030,
+          1500
+        ],
+        "dropped": [],
+        "backoff": null,
+        "interval": [
+          970,
+          2030
+        ],
+        "reason": "clear",
+        "transition_clear": true,
+        "margin_m": 0.063
+      },
+      "diagnostic": {
+        "source": "own_estimate_and_issued_pwm_static_map",
+        "loaded": false,
+        "current_pwm": {
+          "1": 2000,
+          "3": 740,
+          "4": 2320,
+          "5": 1320,
+          "6": 1500
+        },
+        "target_pwm": {
+          "1": 2000,
+          "3": 1072,
+          "4": 2400,
+          "5": 1482,
+          "6": 1500
+        },
+        "own_estimate": {
+          "x_m": -0.85,
+          "y_m": 0.55,
+          "yaw_rad": 0.0,
+          "std_xy_m": 0.01,
+          "std_yaw_rad": 0.02
+        },
+        "limiting": {
+          "sample_pwm": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          },
+          "sphere_index": 0,
+          "sphere_part": "yaw_bearing",
+          "sphere_center_base_m": [
+            0.0,
+            0.0,
+            0.085
+          ],
+          "sphere_radius_m": 0.045,
+          "wall_id": "wall_west",
+          "raw_clearance_mm": 130.00000000000006,
+          "margin_mm": 55.00000000000001,
+          "clearance_mm": 75.00000000000006,
+          "overlap_mm": 0.0
+        }
+      }
+    },
+    {
+      "robot": "r1",
+      "diagnostic_sigma_xy": 0.05,
+      "plan": {
+        "pans": [],
+        "dropped": [
+          1500,
+          1230,
+          970,
+          1770,
+          2030,
+          1500
+        ],
+        "backoff": null,
+        "interval": null,
+        "reason": "no_clear_pan",
+        "transition_clear": false,
+        "margin_m": 0.143
+      },
+      "diagnostic": {
+        "source": "own_estimate_and_issued_pwm_static_map",
+        "loaded": false,
+        "current_pwm": {
+          "1": 2000,
+          "3": 740,
+          "4": 2320,
+          "5": 1320,
+          "6": 1500
+        },
+        "target_pwm": {
+          "1": 2000,
+          "3": 1072,
+          "4": 2400,
+          "5": 1482,
+          "6": 1500
+        },
+        "own_estimate": {
+          "x_m": -0.85,
+          "y_m": 0.55,
+          "yaw_rad": 0.0,
+          "std_xy_m": 0.05,
+          "std_yaw_rad": 0.02
+        },
+        "limiting": {
+          "sample_pwm": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          },
+          "sphere_index": 3,
+          "sphere_part": "upper_arm",
+          "sphere_center_base_m": [
+            -0.026655344468303754,
+            0.0,
+            0.18478315621891322
+          ],
+          "sphere_radius_m": 0.022,
+          "wall_id": "wall_west",
+          "raw_clearance_mm": 126.34465553169633,
+          "margin_mm": 136.06621377873216,
+          "clearance_mm": -9.721558247035828,
+          "overlap_mm": 9.721558247035828
+        }
+      }
+    },
+    {
+      "robot": "r1",
+      "diagnostic_sigma_xy": 0.15,
+      "plan": {
+        "pans": [],
+        "dropped": [
+          1500,
+          1230,
+          970,
+          1770,
+          2030,
+          1500
+        ],
+        "backoff": null,
+        "interval": null,
+        "reason": "no_clear_pan",
+        "transition_clear": false,
+        "margin_m": 0.343
+      },
+      "diagnostic": {
+        "source": "own_estimate_and_issued_pwm_static_map",
+        "loaded": false,
+        "current_pwm": {
+          "1": 2000,
+          "3": 740,
+          "4": 2320,
+          "5": 1320,
+          "6": 1500
+        },
+        "target_pwm": {
+          "1": 2000,
+          "3": 1072,
+          "4": 2400,
+          "5": 1482,
+          "6": 1500
+        },
+        "own_estimate": {
+          "x_m": -0.85,
+          "y_m": 0.55,
+          "yaw_rad": 0.0,
+          "std_xy_m": 0.15,
+          "std_yaw_rad": 0.02
+        },
+        "limiting": {
+          "sample_pwm": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          },
+          "sphere_index": 3,
+          "sphere_part": "upper_arm",
+          "sphere_center_base_m": [
+            -0.026655344468303754,
+            0.0,
+            0.18478315621891322
+          ],
+          "sphere_radius_m": 0.022,
+          "wall_id": "wall_west",
+          "raw_clearance_mm": 126.34465553169633,
+          "margin_mm": 336.06621377873216,
+          "clearance_mm": -209.7215582470358,
+          "overlap_mm": 209.7215582470358
+        }
+      }
+    }
+  ],
+  "tests": {
+    "passed": 179,
+    "deselected_physics": 1,
+    "subtests_passed": 177,
+    "new_cases": 17,
+    "existing_including_review3": 162,
+    "review3_cases_retained": 24,
+    "before_behavioral_failures": 8
+  },
+  "physical_test": "not verified; one accidental inclusion failed in renderer construction with invalid CoreGraphics connection before the host run loop"
+}

@@ -1,0 +1,65 @@
+{
+  "verified_at_utc": "2026-09-30T11:22:37.525411+00:00",
+  "checks": [
+    {
+      "name": "synthetic_unit_tests",
+      "argv": [
+        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+        "-m",
+        "unittest",
+        "tests.test_carry_lateral_error_model",
+        "-v"
+      ],
+      "exit_code": 0,
+      "output": "test_both_leg_euclidean_gate_and_inclusive_boundary (tests.test_carry_lateral_error_model.LateralModelTests.test_both_leg_euclidean_gate_and_inclusive_boundary) ... ok\ntest_cohort_bootstrap_is_reproducible_and_omits_whole_families (tests.test_carry_lateral_error_model.LateralModelTests.test_cohort_bootstrap_is_reproducible_and_omits_whole_families) ... ok\ntest_duplicate_seeds_are_one_unit_and_incomplete_chains_are_excluded (tests.test_carry_lateral_error_model.LateralModelTests.test_duplicate_seeds_are_one_unit_and_incomplete_chains_are_excluded) ... ok\ntest_equal_family_weight_not_duplicate_row_weight (tests.test_carry_lateral_error_model.LateralModelTests.test_equal_family_weight_not_duplicate_row_weight) ... ok\ntest_fit_recovers_two_outputs_and_rejects_singular_data (tests.test_carry_lateral_error_model.LateralModelTests.test_fit_recovers_two_outputs_and_rejects_singular_data) ... ok\ntest_hash_verifies_exact_bytes_and_detects_input_change (tests.test_carry_lateral_error_model.LateralModelTests.test_hash_verifies_exact_bytes_and_detects_input_change) ... ok\ntest_holdout_purges_repeated_geometry_across_families (tests.test_carry_lateral_error_model.LateralModelTests.test_holdout_purges_repeated_geometry_across_families) ... ok\ntest_holdout_target_never_enters_its_fit (tests.test_carry_lateral_error_model.LateralModelTests.test_holdout_target_never_enters_its_fit) ... ok\ntest_joint_probability_is_not_product_of_leg_marginals (tests.test_carry_lateral_error_model.LateralModelTests.test_joint_probability_is_not_product_of_leg_marginals) ... ok\ntest_new_sheet_does_not_create_a_new_station_placement (tests.test_carry_lateral_error_model.LateralModelTests.test_new_sheet_does_not_create_a_new_station_placement) ... ok\ntest_phase_compression_retains_original_tick_weights (tests.test_carry_lateral_error_model.LateralModelTests.test_phase_compression_retains_original_tick_weights) ... ok\ntest_residual_draw_preserves_pair_and_shared_prior (tests.test_carry_lateral_error_model.LateralModelTests.test_residual_draw_preserves_pair_and_shared_prior) ... ok\ntest_seed_mean_is_not_treated_as_a_single_seed_forecast (tests.test_carry_lateral_error_model.LateralModelTests.test_seed_mean_is_not_treated_as_a_single_seed_forecast) ... ok\ntest_signed_route_coordinates_rotate_without_losing_side (tests.test_carry_lateral_error_model.LateralModelTests.test_signed_route_coordinates_rotate_without_losing_side) ... ok\n\n----------------------------------------------------------------------\nRan 14 tests in 0.050s\n\nOK\n"
+    },
+    {
+      "name": "raw_inputs_unchanged",
+      "argv": [
+        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+        "experiments/2026-09-30-l1-lateral-error/extract.py",
+        "--verify-only"
+      ],
+      "exit_code": 0,
+      "output": "verified 3661 unchanged raw inputs; no writes\n"
+    },
+    {
+      "name": "ci_shard_enumeration",
+      "argv": [
+        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+        "scripts/run_ci_tests.py",
+        "--shard-count",
+        "8",
+        "--list-shards"
+      ],
+      "exit_code": 0,
+      "output": "full enumeration sha256=2112b8b32d9e08214cd6ae10dfe803146e44ab6f52fb0533e64fb0ef3e306c32; saved transiently for membership inspection",
+      "total_files": 329,
+      "shards": 8,
+      "coverage_verified": true,
+      "new_test_occurrences": 1
+    },
+    {
+      "name": "whitespace",
+      "argv": [
+        "git",
+        "diff",
+        "--cached",
+        "--check"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "name": "python_syntax",
+      "files": 4,
+      "status": "passed_no_bytecode_write"
+    },
+    {
+      "name": "CSV_line_endings",
+      "status": "normalized_to_LF_in_both_writers_and_11_derived_csvs",
+      "parsed_values_identical": true
+    }
+  ],
+  "scope": "offline arithmetic/extraction only; no pytest suite, physics, rendering, model calls, or outputs writes"
+}

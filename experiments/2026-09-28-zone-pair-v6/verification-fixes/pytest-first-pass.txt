@@ -1,0 +1,26 @@
+..........F............................................................. [ 19%]
+........................................................................ [ 39%]
+........................................................................ [ 59%]
+........................................................................ [ 78%]
+........................................................................ [ 98%]
+.....                                                                    [100%]
+=================================== FAILURES ===================================
+_ test_relative_report_gauge_independence_partial_duplicate_movement_and_loaded _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x11428c050>
+
+    def test_relative_report_gauge_independence_partial_duplicate_movement_and_loaded(monkeypatch):
+        from harness import zone_pair_relative as rel
+        monkeypatch.setattr(rel,'shape_fit',lambda *a:(fit(),()))
+        track=RelativeBeamTrack();o=shape_observation();servo=o['actuator_state']['servo_pulses']
+        r=track.observe(o,servo,0,now=0.)
+        assert r.ready(0.) and not r.marker_dependency
+>       assert track.observe(o,servo,0,now=.1) is r
+E       AssertionError: assert BeamRelativeReport(frame_id=1, sha256='shape', captured_at_s=0.0, segment=0, camera_pwm=((3, 800), (4, 2380), (5, 1380...chor_time_s=0.0, anchor_sha256='shape', identity_time_s=0.0, view_sha256=(), calibrated=False, marker_dependency=False) is BeamRelativeReport(frame_id=1, sha256='shape', captured_at_s=0.0, segment=0, camera_pwm=((3, 800), (4, 2380), (5, 1380...chor_time_s=0.0, anchor_sha256='shape', identity_time_s=0.0, view_sha256=(), calibrated=False, marker_dependency=False)
+E        +  where BeamRelativeReport(frame_id=1, sha256='shape', captured_at_s=0.0, segment=0, camera_pwm=((3, 800), (4, 2380), (5, 1380...chor_time_s=0.0, anchor_sha256='shape', identity_time_s=0.0, view_sha256=(), calibrated=False, marker_dependency=False) = observe({'frame_id': 1, 'sha256': 'shape', 'sim_time': 0.0, 'image': b'fake', ...}, {1: 2000, 3: 800, 4: 2380, 5: 1380, ...}, 0, now=0.1)
+E        +    where observe = <harness.zone_pair_relative.RelativeBeamTrack object at 0x11428caa0>.observe
+
+tests/test_zone_pair_v6.py:154: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_zone_pair_v6.py::test_relative_report_gauge_independence_partial_duplicate_movement_and_loaded
+1 failed, 364 passed in 347.45s (0:05:47)

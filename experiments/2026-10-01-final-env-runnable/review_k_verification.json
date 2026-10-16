@@ -1,0 +1,107 @@
+{
+  "schema": "ugrp.final_environment_review_k_verification.v1",
+  "created_at_utc": "2026-09-30T18:50:26.202113+00:00",
+  "review_sha": "84f672ae97e2d7a6c7b4b299a2f90e5ba3f552a6",
+  "candidate_parent_sha": "6df8f1ae6ff36b8a779fb36c1cb1c0ab6548e069",
+  "merged_main_sha": "f3fbbf9a08c0ba96b22858b573ab5d4da52e9011",
+  "status": "DRAFT_K1_FIXED_P03_BLOCKED",
+  "environment": {
+    "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+    "executable": "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+    "platform": "macOS-27.2-arm64-arm-64bit"
+  },
+  "red": {
+    "failed": 1,
+    "log": "/Users/changmin/projects/ugrp/outputs/final-env-v84-k1-20261001/red.log",
+    "sha256": "4710dee092ed0f3ad966ee7979f3523214915c347a4c949a93e561797cc6cee6"
+  },
+  "validation": [
+    {
+      "name": "ci-collection",
+      "passed": 165,
+      "skipped": 0,
+      "deselected": 0,
+      "subtests_passed": 0,
+      "junit_includes_subtests": true,
+      "junit": "/Users/changmin/projects/ugrp/outputs/final-env-v84-k1-20261001/ci-collection.xml",
+      "junit_sha256": "4da9c944c044188500ce091c6d31218f5d8f5f1f6a19a60c86581050bfc5aac8",
+      "log": "/Users/changmin/projects/ugrp/outputs/final-env-v84-k1-20261001/ci-collection.log",
+      "log_sha256": "07929d9c640c69d4f584fdac5f10f39b3e1ac8a00bba745f9e52e4de1b620570"
+    },
+    {
+      "name": "related",
+      "passed": 369,
+      "skipped": 4,
+      "deselected": 1,
+      "subtests_passed": 4,
+      "junit_includes_subtests": true,
+      "junit": "/Users/changmin/projects/ugrp/outputs/final-env-v84-k1-20261001/related.xml",
+      "junit_sha256": "c64d4ae25c2239e742902e14591d0483342ebaae36323559fcdfedeea9aeee1e",
+      "log": "/Users/changmin/projects/ugrp/outputs/final-env-v84-k1-20261001/related.log",
+      "log_sha256": "6c7f54fd14319c6d50e5686ff752dcf285072265996058c2623c1126a38363b3"
+    },
+    {
+      "name": "post-mutation",
+      "passed": 9,
+      "skipped": 0,
+      "deselected": 0,
+      "subtests_passed": 0,
+      "junit_includes_subtests": true,
+      "junit": "/Users/changmin/projects/ugrp/outputs/final-env-v84-k1-20261001/post-mutation.xml",
+      "junit_sha256": "a481f3ca7b12f975b997f3e17d2c17e2ad17cde97bc283c1e7d66d2eafc383d7",
+      "log": "/Users/changmin/projects/ugrp/outputs/final-env-v84-k1-20261001/post-mutation.log",
+      "log_sha256": "705317e68dd9bc1e6aeed6f42c58890abf69fc058c42906c0aaf818e4c5c4fcf"
+    }
+  ],
+  "mutation_summary": "review_k_mutations.json",
+  "preservation": "review_k_preservation.json",
+  "reservation": "review_k_reservation.json",
+  "host_lock_used": false,
+  "local_physics_render_model_llm_executions": 0,
+  "temp_extraction_directories_created": [],
+  "local_exclusions": [
+    "tests/test_simulation_workflow_manager.py::WorkflowManagerTests::test_parent_exit_cleans_background_child"
+  ],
+  "local_exclusion_reason": "ps process listing is denied in this sandbox; CI keeps this test",
+  "static_checks": {
+    "rgb_current_v63_sha256": "ef4fe391e57c145b6625ba052e651542745bfcb6244d8e25736827ee8122aa01",
+    "rgb_registry_immutable_against": "f3fbbf9a08c0ba96b22858b573ab5d4da52e9011",
+    "frozen_fixtures_present": 3,
+    "github_workflow_diff_against_origin_main": "",
+    "protected_tests_modified": false
+  },
+  "candidate": {
+    "execution_bundle_id": "zone-final-environment-v84",
+    "workflow_version": "2.17.0",
+    "p01_runnable": true,
+    "p03_runnable": false,
+    "controller_inputs": [
+      "own_rgb",
+      "static_map",
+      "own_command_history",
+      "delivered_messages"
+    ],
+    "physical_success": null
+  },
+  "files_sha256": {
+    "configs/calibration/zone_final_v3_contract.json": "2613d263a86e975ed34c8bb08d4084bfca867168212d5ab507887b024d573d42",
+    "configs/final_environment_measurement_v1.json": "7d19bcc3e88dac4f906d4f0db9b5aef7fb7969e795b3c709a632ea45962d045e",
+    "configs/simulation_workflows.d/final_environment_v84.json": "38e47154c995f60726bae8b53441916a31c0535401a2eed7f414ea4d1412c369",
+    "configs/zone_final_environment_v84.json": "ab25531d0fec6caefd934a22865e372bc2df723aefe25de2d98ed75d3dce697a",
+    "harness/vision_pose_source_final.py": "15be5965211f5c653a8b8264eac36bb44a20e1e8bd262f297d702ecbae524195",
+    "harness/zone_final_environment.py": "a7924468234b4ecc78fb2eb94ea6e21ad9c157f60d6616c68c633e34237bef7d",
+    "maps/zones_final_v3/zone_wide_corridor_final_v3.json": "6973f0a74dc4339c5a3981af9bf58eefde7c878f891808c1baefa818a0f472f2",
+    "maps/zones_final_v3/zone_wide_two_doors_final_v3.json": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b",
+    "scripts/run_ci_tests.py": "2401dd419e7ff2417aecb2c81d993ad679a8fbeac446f610cc0bf953cfd71287",
+    "scripts/run_final_environment_checks.py": "d631275737b82f53025f1fe3074155f5f0754133f4bc68a59ae70e70c0a6538d",
+    "scripts/zone_environment_bundle.py": "d3ed940b7b439d2a10e2d6762edd10fa563ce17ad01bc21d171f810a04440193",
+    "sim/final_environment_checks.py": "84f272746c8629297328d6acc5fbf4807c01c318dd01935c1f762020eee3178c",
+    "sim/workflow_manager.py": "37e4797a3991e69ca860cdfff1bbe30c67f50e0fe0ffd740ebd2b9e5c989f322",
+    "sim/zone_final_v3_scene.py": "cf93fc65637c178ee18654edebd891408010e2b4b89a96758a879fbc8ee97b92",
+    "tests/test_simulation_workflow_manager.py": "68c7f25ccbd9579f373472dda1fd7dc240dbb484c90ef88f92fad3f0f23c1f26",
+    "tests/test_zone_final_env.py": "06367aa22321a42bf3c65f46573510dec64867368381070c0d04f759ac075ad7",
+    "tests/test_zone_final_environment_runnable.py": "94f7451b52e465faaf208a86ad883f2a60d5bc655bfc7acbf35751ebd0c2e14f",
+    "tests/test_review_e2e_batch_k.py": "8dd0e231f9ace939179044d1e27beb8950c3a8e20a00363d1fa672718ddad885",
+    "experiments/2026-10-01-final-env-runnable/mutation_check.py": "8d5abb35289f6496793d4c88227aad016e994906abe5f54090de10ba08ab5811"
+  }
+}

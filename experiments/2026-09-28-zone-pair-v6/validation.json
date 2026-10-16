@@ -1,0 +1,132 @@
+{
+  "schema": "zone_pair_v6_validation.v1",
+  "branch": "codex/zone-pair-beam-relative",
+  "base_head": "f87921dc52f7a3f12d41b4bc6ab5c30227890e8e",
+  "candidate_source": "uncommitted",
+  "git_commit_created": false,
+  "passed": 853,
+  "failed": 0,
+  "subtests_passed": 198,
+  "test_execution": {
+    "pytest_args": [
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "--basetemp=./.pytest_tmp",
+      "--junitxml=/Users/changmin/projects/ugrp-wt/codex-pair-beamrel/experiments/2026-09-28-zone-pair-v6/pytest.xml",
+      "tests/test_zone_pair_admission.py",
+      "tests/test_zone_pair_authorization.py",
+      "tests/test_zone_pair_dev.py",
+      "tests/test_zone_pair_executor.py",
+      "tests/test_zone_pair_grasp.py",
+      "tests/test_zone_pair_preclose.py",
+      "tests/test_zone_pair_provider_init.py",
+      "tests/test_zone_pair_review.py",
+      "tests/test_zone_pair_review2.py",
+      "tests/test_zone_pair_review3.py",
+      "tests/test_zone_pair_review4.py",
+      "tests/test_zone_pair_review5.py",
+      "tests/test_zone_pair_review6.py",
+      "tests/test_zone_pair_review7.py",
+      "tests/test_zone_pair_standoff.py",
+      "tests/test_zone_pair_status.py",
+      "tests/test_zone_pair_tag_boundary_matrix.py",
+      "tests/test_zone_pair_v5.py",
+      "tests/test_zone_pair_v5c.py",
+      "tests/test_zone_pair_v5h.py",
+      "tests/test_zone_pair_v6.py",
+      "tests/test_zone_study_integration_pair.py",
+      "tests/test_zone_study_source_pinning.py",
+      "tests/test_zone_study_pair_delay.py",
+      "tests/test_owncam_localizer.py",
+      "tests/test_m1_owncam.py"
+    ],
+    "exit_code": 0,
+    "elapsed_wall_s": 122.98153591156006,
+    "sentinels": {
+      "physics": 0,
+      "network": 0
+    },
+    "physics_step_forbidden": true,
+    "model_calls": 0,
+    "model_scope": "fake providers only; no model worker execution",
+    "temporary_directory_removed": true
+  },
+  "offline_replay": {
+    "dev_runs": 10,
+    "dev_endpoints": 20,
+    "m2_runs": 49,
+    "m2_endpoints": 98,
+    "source_files_hashed": 228,
+    "unknown_completions": 118,
+    "physics_steps": 0,
+    "model_calls": 0
+  },
+  "prior_attempts": [
+    {
+      "scope": "initial expanded regression",
+      "passed": 837,
+      "failed": 6,
+      "subtests_passed": 197,
+      "resolution": "Legacy source hashes, import allowlist and workflow documentation expectations updated; original frozen artifacts unchanged."
+    },
+    {
+      "scope": "selected rerun",
+      "passed": 283,
+      "failed": 0,
+      "subtests_passed": 106
+    },
+    {
+      "scope": "logging harness startup",
+      "outcome": "pytest exit 3: Tee missing isatty; fixed __getattr__, no tests or physics executed"
+    },
+    {
+      "scope": "test path preflight",
+      "outcome": "assertion rejected misspelled delay-test path before pytest; corrected to test_zone_study_pair_delay.py"
+    }
+  ],
+  "source_sha256": {
+    "configs/simulation_workflows.json": "6c9ba38f23a2c1a31fab26a3c299ef7f9004643ac29c2c7d62948f4575f119c8",
+    "harness/owncam_observability_v6.py": "04c3bd8cc85b4e77f6a413f140542714251573adb38863a57f139443c0b80f0d",
+    "harness/owncam_pose_source.py": "46809a556ecb7915f8dd49b03d7eb0f57181261599173b439477466f1940a538",
+    "harness/owncam_recovery_v6.py": "74d90f36dd3f170091ed7c3e8b73432d81cb9ee0ca36d8472b063c9af92b5b46",
+    "harness/zone_own_team_host.py": "d1f28d4993f93ec5f0e14d54c3cb7ed4748d66ebfd3affc5a4730571558cda0d",
+    "harness/zone_pair_align.py": "c38b344c24d620790bb007913afa06ddacc4e466bee6628004d8fd06d2c2bd93",
+    "harness/zone_pair_executor.py": "97ade4c46ec8c9951f3e6f148435237dd4f9b874fa56d7b337fd5baf94c577c7",
+    "harness/zone_pair_global.py": "242f70d2c28909a09331cfea14336c26313c541be7cb2ef356d6899ea1cded3c",
+    "harness/zone_pair_grasp.py": "2d025e547bbd3d901a6330e096b5880bf216ded0c1df60dc26d360bb04005fde",
+    "harness/zone_pair_guards.py": "7a8f59073e3bba7eeb01a81b7aed36e95eac2485b169d94e1ad6aef29703ea4a",
+    "harness/zone_pair_relative.py": "fbc0c27ce287496e181d9c4bc162d9a6b33f2a8bbd4626e1176f17de660b15d9",
+    "harness/zone_pair_v6_policy.py": "3b7da7ef0bb89edafd7e9dcbe08c7b6d938aa83fdfb5d010515472a37ee20d63",
+    "harness/zone_study_integration.py": "1ba0ced7d9e06c5a98bd2cccd3459a9fc0ccaa4865d6dfc19ee0f83285e62789",
+    "harness/zone_study_pose_delay.py": "5d8cdca5f4b734b640945c49a3e6aeb519b207c4dfb80cb72982ae0c066d2894",
+    "scripts/replay_zone_pair_v6.py": "33c9d7923a8a7bbb8e8296001ef9b1bd6f954a2955676317f93960113b486366",
+    "scripts/run_zone_pair_dev.py": "1ffd9740a4a08407b6aea103a4862bd4d9c05ce56fc4df89b7cd436398bccea6",
+    "scripts/zone_pair_dev_runtime.py": "d51af5954094cbd019047455fd5c36f7cdc3d1b00ec3379bfd24ad38e1b80877",
+    "scripts/zone_pair_v6_contract.py": "f15a7c326675254563f1708063ae22f82e7b2590199cc0656dec8c6643aed3d5",
+    "tests/fixtures/zone_pair_v6/dev13_r2_1435.jpg": "60cf05e27f81ee7a306585e66eb90ff208074e296622a46997a1035fe5550701",
+    "tests/fixtures/zone_pair_v6/dev13_r2_1446.jpg": "68ca58b108cda150abb5e6463ea7298dbc142e00dd7b887d9efe11c119320e45",
+    "tests/fixtures/zone_pair_v6/dev13_r2_1457.jpg": "6cfbbc17c40f0b5fb0293d233368c0575930136d5dd02d24e5dd36527097091b",
+    "tests/fixtures/zone_pair_v6/dev14_r2_1320.jpg": "eb0a55fbdf6c534af94fc787d50a83ba2c06904bcc34dd39555f59a1a6bfb665",
+    "tests/fixtures/zone_pair_v6/reports.json": "72010be1594dab351a8a56c4384a7cae54b309e063d7edd6f22a970b68993d94",
+    "tests/test_m1_owncam.py": "9752cac31a56a9b27cd0e2bf97597e80354fd44005bdd53e1cf1835513535f41",
+    "tests/test_zone_pair_authorization.py": "81b4bdd235d3835eadec0359d777d58a58c95f76805ca4ebc4c2c46ed87a8f36",
+    "tests/test_zone_pair_executor.py": "9a5c7e22099acaab3eb25a63051c19ff204fcd9abb3532f8333775124d9ab366",
+    "tests/test_zone_pair_grasp.py": "407f78e08aac9259bafc97c1f5b16088a5ba871be68e16e07e846c70cedab311",
+    "tests/test_zone_pair_v5c.py": "f1e4981e59d795ec713e7af0a054c74c86d697e03a688f7e63d4dd8cc0fcbace",
+    "tests/test_zone_pair_v6.py": "eef8cbf6f6c18eeb7b832f5890ae682e7bece2d0e81909ae5808d5514b5d2f36",
+    "tests/test_zone_study_integration_pair.py": "189c3c85bc6b967b338ebb1a51c8bde76a411302fe91bd6a13efee5d5477b084",
+    "tests/test_zone_study_source_pinning.py": "794ee833f08156106a7bdacd9020a8b4d8b28df2beaf8299f690f69900485d1f"
+  },
+  "no_physics_or_model_execution": true,
+  "source_contract_matches": true,
+  "git_diff_check": true,
+  "remaining": [
+    "Uncalibrated depth/FK/command reachability uncertainty bounds; no physical completion evidence.",
+    "Shape-only relative alignment/close gate; legacy post-close grip/co-motion/hold receipts still use bands.",
+    "Production markerless recovery not connected; fake-provider contract tested.",
+    "All counterfactual continuations after a new branch are unknown; saved data lack v6 informative absolute-fix receipts.",
+    "Bundle v68 reserved locally only; PR comment blocked by approval policy never.",
+    "TensorBoard local export/readback complete; shared publication and native UI check blocked by write scope."
+  ]
+}

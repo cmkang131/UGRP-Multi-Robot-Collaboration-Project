@@ -1,0 +1,61 @@
+...FFF.FFF............................FFFF......................         [100%]
+=================================== FAILURES ===================================
+______________ test_formal_north_south_geometry_is_static_only[0] ______________
+tests/test_beam_initial_pose_plan.py:130: in test_formal_north_south_geometry_is_static_only
+    assert len(endpoints) == 4
+E   assert 2 == 4
+E    +  where 2 = len([[(-0.30500000000000005, 0.105), (-0.5732, 0.105), (-0.5732, -0.105), (-0.30500000000000005, -0.105)], [(-0.555, 0.105), (-0.8232, 0.105), (-0.8232, -0.105), (-0.555, -0.105)]])
+______________ test_formal_north_south_geometry_is_static_only[1] ______________
+tests/test_beam_initial_pose_plan.py:130: in test_formal_north_south_geometry_is_static_only
+    assert len(endpoints) == 4
+E   assert 2 == 4
+E    +  where 2 = len([[(-0.30500000000000005, 0.105), (-0.5732, 0.105), (-0.5732, -0.105), (-0.30500000000000005, -0.105)], [(-0.555, 0.105), (-0.8232, 0.105), (-0.8232, -0.105), (-0.555, -0.105)]])
+______________ test_formal_north_south_geometry_is_static_only[2] ______________
+tests/test_beam_initial_pose_plan.py:130: in test_formal_north_south_geometry_is_static_only
+    assert len(endpoints) == 4
+E   assert 2 == 4
+E    +  where 2 = len([[(-0.30500000000000005, 0.105), (-0.5732, 0.105), (-0.5732, -0.105), (-0.30500000000000005, -0.105)], [(-0.555, 0.105), (-0.8232, 0.105), (-0.8232, -0.105), (-0.555, -0.105)]])
+_ test_continuous_uncertainty_box_contains_original_and_all_carrier_sweeps[0] __
+tests/test_beam_initial_pose_plan.py:170: in test_continuous_uncertainty_box_contains_original_and_all_carrier_sweeps
+    assert y0 + MARGIN - 1e-12 <= y <= y1 - MARGIN + 1e-12
+E   assert 0.19154989049060736 <= ((0.17531257853201176 - 0.02) + 1e-12)
+_ test_continuous_uncertainty_box_contains_original_and_all_carrier_sweeps[1] __
+tests/test_beam_initial_pose_plan.py:170: in test_continuous_uncertainty_box_contains_original_and_all_carrier_sweeps
+    assert y0 + MARGIN - 1e-12 <= y <= y1 - MARGIN + 1e-12
+E   assert 0.19154989049060736 <= ((0.17531257853201176 - 0.02) + 1e-12)
+_ test_continuous_uncertainty_box_contains_original_and_all_carrier_sweeps[2] __
+tests/test_beam_initial_pose_plan.py:170: in test_continuous_uncertainty_box_contains_original_and_all_carrier_sweeps
+    assert y0 + MARGIN - 1e-12 <= y <= y1 - MARGIN + 1e-12
+E   assert -1.0084501095093925 <= ((-1.0246874214679884 - 0.02) + 1e-12)
+_ test_carrier_approach_and_arm_blockers_outside_search[station_arm_envelope-obstacles-end_neg] _
+tests/test_beam_initial_pose_plan.py:267: in test_carrier_approach_and_arm_blockers_outside_search
+    with pytest.raises(bp.PlanRefusal, match='INITIAL_APPROACH_BLOCKED') as exc:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE PlanRefusal
+_ test_carrier_approach_and_arm_blockers_outside_search[station_arm_envelope-obstacles-end_pos] _
+tests/test_beam_initial_pose_plan.py:267: in test_carrier_approach_and_arm_blockers_outside_search
+    with pytest.raises(bp.PlanRefusal, match='INITIAL_APPROACH_BLOCKED') as exc:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE PlanRefusal
+_ test_carrier_approach_and_arm_blockers_outside_search[station_arm_envelope-terrain-end_neg] _
+tests/test_beam_initial_pose_plan.py:267: in test_carrier_approach_and_arm_blockers_outside_search
+    with pytest.raises(bp.PlanRefusal, match='INITIAL_APPROACH_BLOCKED') as exc:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE PlanRefusal
+_ test_carrier_approach_and_arm_blockers_outside_search[station_arm_envelope-terrain-end_pos] _
+tests/test_beam_initial_pose_plan.py:267: in test_carrier_approach_and_arm_blockers_outside_search
+    with pytest.raises(bp.PlanRefusal, match='INITIAL_APPROACH_BLOCKED') as exc:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE PlanRefusal
+=========================== short test summary info ============================
+FAILED tests/test_beam_initial_pose_plan.py::test_formal_north_south_geometry_is_static_only[0]
+FAILED tests/test_beam_initial_pose_plan.py::test_formal_north_south_geometry_is_static_only[1]
+FAILED tests/test_beam_initial_pose_plan.py::test_formal_north_south_geometry_is_static_only[2]
+FAILED tests/test_beam_initial_pose_plan.py::test_continuous_uncertainty_box_contains_original_and_all_carrier_sweeps[0]
+FAILED tests/test_beam_initial_pose_plan.py::test_continuous_uncertainty_box_contains_original_and_all_carrier_sweeps[1]
+FAILED tests/test_beam_initial_pose_plan.py::test_continuous_uncertainty_box_contains_original_and_all_carrier_sweeps[2]
+FAILED tests/test_beam_initial_pose_plan.py::test_carrier_approach_and_arm_blockers_outside_search[station_arm_envelope-obstacles-end_neg]
+FAILED tests/test_beam_initial_pose_plan.py::test_carrier_approach_and_arm_blockers_outside_search[station_arm_envelope-obstacles-end_pos]
+FAILED tests/test_beam_initial_pose_plan.py::test_carrier_approach_and_arm_blockers_outside_search[station_arm_envelope-terrain-end_neg]
+FAILED tests/test_beam_initial_pose_plan.py::test_carrier_approach_and_arm_blockers_outside_search[station_arm_envelope-terrain-end_pos]
+10 failed, 54 passed in 0.64s

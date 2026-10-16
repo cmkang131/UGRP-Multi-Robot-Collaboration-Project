@@ -1,0 +1,69 @@
+{
+  "schema": "ugrp.pair_stage_probe.v1",
+  "labels": [
+    "stage_probe",
+    "not_e2e_success",
+    "dev",
+    "연구 결과 아님"
+  ],
+  "stages": {
+    "align": {
+      "cases": 41,
+      "passed": 0,
+      "pass_rate": 0.0,
+      "by_source": {
+        "e2e_checkpoint": {
+          "cases": 6,
+          "passed": 0
+        },
+        "teacher_grid": {
+          "cases": 35,
+          "passed": 0
+        }
+      },
+      "failures": {
+        "ALIGN_RELOOK_NO_FIX": 32,
+        "ALIGN_RELOOK_TIMEOUT": 4,
+        "PARTNER_ABORT": 2,
+        "PAIR_COLLISION_GUARD": 2,
+        "ALIGN_RELOOK_FIX_EXPIRED": 1
+      },
+      "wall_s_median": 272.83,
+      "wall_s_max": 618.82,
+      "stage_sim_s_median": 21.2
+    },
+    "grasp_lift": {
+      "cases": 35,
+      "passed": 17,
+      "pass_rate": 0.4857,
+      "by_source": {
+        "teacher_grid": {
+          "cases": 35,
+          "passed": 17
+        }
+      },
+      "failures": {
+        "PREGRASP_NOT_READY": 10,
+        "PREGRASP_BEAM_UNCERTAIN": 8
+      },
+      "wall_s_median": 72.82,
+      "wall_s_max": 126.56,
+      "stage_sim_s_median": 4.1
+    }
+  },
+  "wall_s_total": 3716.1,
+  "unavailable_e2e": [
+    {
+      "unavailable": true,
+      "run": "v6-s911-v5h",
+      "stage": "grasp_lift",
+      "reason": "not both robots entered pregrasp_standoff: []"
+    },
+    {
+      "unavailable": true,
+      "run": "v6-s912-v5h",
+      "stage": "grasp_lift",
+      "reason": "not both robots entered pregrasp_standoff: ['r2']"
+    }
+  ]
+}

@@ -1,0 +1,889 @@
+{
+  "source_sha": "257953ec36353c37acc61c4cb86563db7c937de2",
+  "measurement_manifest_sha256": "fee2cea5330704c338085a7fb03903ce2312c7049ff7c4b2987aded29324ee23",
+  "contract_sha256": "4ad461c3b980d885b9743f32cb763fb14f2b1d46a695c3acacae6b4a8e3c8e78",
+  "maps": {
+    "zone_wide_door_geometry_v3": "2302d273bcd30a9cc9d3166c753f2d40fcf3f03654369d23cd00324b4ca4688d",
+    "zone_wide_two_doors_final_v3": "ecbed849464b3dcc7c5f3679dffed419069391b4e72dc53276ed04dca2d64af5",
+    "zone_wide_corridor_final_v3": "0429b535107feda865a02821e4ceb2b695b58cd0c06c07e2fde96320bd2d9b0e"
+  },
+  "loaded_measurement_bundle_id": "zone-final-pair-v92",
+  "loaded_pose_id": "masterpi-v3-pair-high-150mm-minus40-v1",
+  "loaded_camera_scope": "high_only",
+  "loaded_schedule_sha256": "b6ebf872ac1f47bb6f13c336ca49c74343ffe592c5cb1bbd0916449a6208bcbe",
+  "criterion_sha256": "5f7d8905c49625a7125647eaf713575e4e659ca658274b8734fd2a4952da4d4a",
+  "assembler_sha256": "a61ac39db76661c6bfb489e2835784fd9628dd324d4ce93db89b593f823cc5b9",
+  "robot_model": "masterpi_v3",
+  "render_profile": "floor_light_v1",
+  "criterion_B_double_prime_sha256": "5f7d8905c49625a7125647eaf713575e4e659ca658274b8734fd2a4952da4d4a",
+  "criterion_B_sha256": "74c312b5eff11e27be2b30d103f6d955f03b0c4b91595dfc9843c366b2c49b5f",
+  "collection_sources": {
+    "unloaded": "747d2b9f1eb43e21804ccef58fff4db241d1a844",
+    "fine": "747d2b9f1eb43e21804ccef58fff4db241d1a844",
+    "loaded": "257953ec36353c37acc61c4cb86563db7c937de2"
+  },
+  "schema": "ugrp.final_environment_measured_calibration.v92",
+  "loader_contract_version": 2,
+  "status": "PARTIAL",
+  "params": {
+    "motion": {
+      "gain": null,
+      "tau_s": null,
+      "tau_axis_s": null,
+      "tau_stop_s": null,
+      "noise_rel": null,
+      "noise_abs": null,
+      "scale_std": null,
+      "scale_walk": null,
+      "use_scale": null,
+      "rest_noise": null
+    },
+    "motion_profiles": {
+      "fine": {
+        "gain": [
+          [
+            1.2343633830421075,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.8465206614876801,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.057962354519254
+          ]
+        ],
+        "tau_s": 0.858834228876382,
+        "tau_axis_s": [
+          0.858834228876382,
+          0.8554046876918863,
+          0.1634521669854569
+        ],
+        "tau_stop_s": 0.06965110936636022,
+        "noise_rel": [
+          0.3176,
+          0.4438,
+          0.1116
+        ],
+        "noise_abs": [
+          0.01538,
+          0.012017159467223952,
+          0.016568425019454016
+        ],
+        "scale_std": 0.0,
+        "scale_walk": 0.0,
+        "use_scale": false,
+        "rest_noise": true
+      }
+    },
+    "motion_loaded": {
+      "gain": null,
+      "tau_s": null,
+      "tau_axis_s": null,
+      "tau_stop_s": null,
+      "noise_rel": null,
+      "noise_abs": null,
+      "scale_std": null,
+      "scale_walk": null,
+      "use_scale": null,
+      "rest_noise": null,
+      "load_transition": {
+        "scale_std": null,
+        "unloaded_scale_std": null
+      },
+      "deadband": {
+        "c0": null,
+        "u1": null
+      },
+      "drift_ratio_std": null,
+      "yaw_bias_std_rad_s": null
+    }
+  },
+  "pair_model": {
+    "slope_to_yaw_ratio": null,
+    "b_rad_s": {
+      "": null,
+      "pm": null,
+      "edge": null,
+      "pm+edge": null
+    }
+  },
+  "pan_base_yaw": {
+    "unloaded": 1.5303380175179718e-08,
+    "loaded": -0.0011782219763573187
+  },
+  "camera_models": {
+    "unloaded": {
+      "1072,2400,1482,1230": {
+        "frame": "optical_to_actual_chassis",
+        "origin_m": [
+          0.152296853524278,
+          -0.04700136650330373,
+          0.17144232266997284
+        ],
+        "rotation": [
+          [
+            -0.4115131584278725,
+            -0.2172888970585651,
+            0.8851228477763896
+          ],
+          [
+            -0.9114038185352931,
+            0.09810935449401594,
+            -0.39964688678888866
+          ],
+          [
+            8.59410558062964e-17,
+            -0.971164295974598,
+            -0.23841122084365116
+          ]
+        ],
+        "chassis_to_floor": {
+          "origin_m": [
+            0.0,
+            0.0,
+            0.032358135686209946
+          ],
+          "rotation": [
+            [
+              0.9999999215933394,
+              2.126204330496119e-08,
+              0.000395996608378839
+            ],
+            [
+              -4.2225250496156516e-21,
+              0.9999999985585579,
+              -5.369248833052832e-05
+            ],
+            [
+              -0.000395996608949645,
+              5.3692484120679634e-05,
+              0.9999999201518979
+            ]
+          ]
+        }
+      },
+      "1072,2400,1482,1500": {
+        "frame": "optical_to_actual_chassis",
+        "origin_m": [
+          0.16241597452175427,
+          2.415756147991512e-10,
+          0.17144229060625493
+        ],
+        "rotation": [
+          [
+            2.1139633950991884e-09,
+            -0.2384114656018525,
+            0.9711642358888471
+          ],
+          [
+            -0.9999999999999959,
+            -5.039929744423784e-10,
+            2.053005664437058e-09
+          ],
+          [
+            -1.0599718656755476e-16,
+            -0.9711642358888473,
+            -0.23841146560185242
+          ]
+        ],
+        "chassis_to_floor": {
+          "origin_m": [
+            0.0,
+            0.0,
+            0.032358163112138405
+          ],
+          "rotation": [
+            [
+              0.9999999156885016,
+              -7.505371113708303e-11,
+              0.0004106372962022268
+            ],
+            [
+              1.433466048506983e-22,
+              0.9999999999999829,
+              1.8277373202774462e-07
+            ],
+            [
+              -0.0004106372962022337,
+              -1.8277371661781746e-07,
+              0.9999999156884849
+            ]
+          ]
+        }
+      },
+      "1072,2400,1482,1770": {
+        "frame": "optical_to_actual_chassis",
+        "origin_m": [
+          0.15229685354263944,
+          0.04700136662072027,
+          0.17144232323653516
+        ],
+        "rotation": [
+          [
+            0.41151315631854835,
+            -0.21728889405656787,
+            0.8851228494940234
+          ],
+          [
+            -0.9114038194876878,
+            -0.09810935253315861,
+            0.3996468850983057
+          ],
+          [
+            -7.271112216698202e-17,
+            -0.9711642968443588,
+            -0.2384112173007008
+          ]
+        ],
+        "chassis_to_floor": {
+          "origin_m": [
+            0.0,
+            0.0,
+            0.03235813583076464
+          ],
+          "rotation": [
+            [
+              0.9999999215905764,
+              -2.14105849344061e-08,
+              0.00039600359023116773
+            ],
+            [
+              -1.0769657874264523e-20,
+              0.9999999985384005,
+              5.406664341256544e-05
+            ],
+            [
+              -0.00039600359080996705,
+              -5.406663917323102e-05,
+              0.9999999201289758
+            ]
+          ]
+        }
+      },
+      "1072,2400,1482,2030": {
+        "frame": "optical_to_actual_chassis",
+        "origin_m": [
+          0.12506891617319288,
+          0.08447744542814146,
+          0.17144240808051336
+        ],
+        "rotation": [
+          [
+            0.7396295438530203,
+            -0.1604537143390232,
+            0.6536074842094276
+          ],
+          [
+            -0.6730142181705866,
+            -0.1763355131912146,
+            0.7183019204539396
+          ],
+          [
+            -7.687298811040317e-17,
+            -0.9711644517497512,
+            -0.2384105862951514
+          ]
+        ],
+        "chassis_to_floor": {
+          "origin_m": [
+            0.0,
+            0.0,
+            0.0323580628184851
+          ],
+          "rotation": [
+            [
+              0.9999999364113504,
+              -3.460979504645052e-08,
+              0.00035661925605789653
+            ],
+            [
+              1.178131491530538e-20,
+              0.999999995290677,
+              9.70497086052876e-05
+            ],
+            [
+              -0.0003566192577373318,
+              -9.704970243402769e-05,
+              0.9999999317020277
+            ]
+          ]
+        }
+      },
+      "1072,2400,1482,2300": {
+        "frame": "optical_to_actual_chassis",
+        "origin_m": [
+          0.08349492919866466,
+          0.10862558207670925,
+          0.17144252546010935
+        ],
+        "rotation": [
+          [
+            0.9510556463990387,
+            -0.0736732880628159,
+            0.3001089870005807
+          ],
+          [
+            -0.3090196716270688,
+            -0.22674089397610497,
+            0.9236316416983612
+          ],
+          [
+            5.413483874748842e-19,
+            -0.9711646686452944,
+            -0.23840970277039888
+          ]
+        ],
+        "chassis_to_floor": {
+          "origin_m": [
+            0.0,
+            0.0,
+            0.03235795369222498
+          ],
+          "rotation": [
+            [
+              0.9999999560411839,
+              -3.700346773141224e-08,
+              0.000296509066977348
+            ],
+            [
+              -9.87436281430595e-23,
+              0.9999999922128427,
+              0.00012479708570293374
+            ],
+            [
+              -0.0002965090692863105,
+              -0.00012479708021700175,
+              0.9999999482540279
+            ]
+          ]
+        }
+      },
+      "1072,2400,1482,700": {
+        "frame": "optical_to_actual_chassis",
+        "origin_m": [
+          0.08349492934043036,
+          -0.10862558197214407,
+          0.17144252390773848
+        ],
+        "rotation": [
+          [
+            -0.9510556456468224,
+            -0.07367329460130387,
+            0.3001089877792628
+          ],
+          [
+            -0.30901967394213625,
+            0.22674091222130907,
+            -0.9236316364448236
+          ],
+          [
+            1.604735390825893e-16,
+            -0.971164663889516,
+            -0.23840972214312464
+          ]
+        ],
+        "chassis_to_floor": {
+          "origin_m": [
+            0.0,
+            0.0,
+            0.032357953686428596
+          ],
+          "rotation": [
+            [
+              0.9999999560411733,
+              3.689452803095152e-08,
+              0.00029650910302806566
+            ],
+            [
+              4.1144221632662745e-21,
+              0.9999999922586286,
+              -0.00012442966292959713
+            ],
+            [
+              -0.00029650910532345246,
+              0.00012442965745981525,
+              0.9999999482998033
+            ]
+          ]
+        }
+      },
+      "1072,2400,1482,970": {
+        "frame": "optical_to_actual_chassis",
+        "origin_m": [
+          0.12506891651602425,
+          -0.08447744584158585,
+          0.17144240640697933
+        ],
+        "rotation": [
+          [
+            -0.7396295523538736,
+            -0.16045371912015144,
+            0.6536074734160556
+          ],
+          [
+            -0.6730142088283191,
+            0.1763355229200297,
+            -0.7183019268188768
+          ],
+          [
+            8.48489869280686e-17,
+            -0.9711644491933541,
+            -0.2384105967086379
+          ]
+        ],
+        "chassis_to_floor": {
+          "origin_m": [
+            0.0,
+            0.0,
+            0.032358062845742545
+          ],
+          "rotation": [
+            [
+              0.9999999364102092,
+              3.4480900305928274e-08,
+              0.00035662246026135313
+            ],
+            [
+              2.634985916329146e-21,
+              0.9999999953257743,
+              -9.668740471223041e-05
+            ],
+            [
+              -0.0003566224619282876,
+              9.668739856389844e-05,
+              0.9999999317359825
+            ]
+          ]
+        }
+      },
+      "1269,2052,2494,1500": {
+        "frame": "optical_to_actual_chassis",
+        "origin_m": [
+          0.20382753670393142,
+          7.751836574478758e-10,
+          0.012128659100203328
+        ],
+        "rotation": [
+          [
+            4.987206267917327e-09,
+            -0.8289287270486716,
+            0.5593542397027684
+          ],
+          [
+            -0.9999999999999967,
+            -4.134038504413006e-09,
+            2.789615049226704e-09
+          ],
+          [
+            -7.655421248506988e-17,
+            -0.5593542397027685,
+            -0.8289287270486716
+          ]
+        ],
+        "chassis_to_floor": {
+          "origin_m": [
+            0.0,
+            0.0,
+            0.03235879078384295
+          ],
+          "rotation": [
+            [
+              0.9999997966298855,
+              -1.1562587404834634e-10,
+              0.0006377618595993352
+            ],
+            [
+              -7.209464735311218e-19,
+              0.9999999999999845,
+              1.8129944867678486e-07
+            ],
+            [
+              -0.0006377618595993457,
+              -1.812994118058942e-07,
+              0.9999997966298692
+            ]
+          ]
+        }
+      },
+      "508,2432,1320,1500": {
+        "frame": "optical_to_actual_chassis",
+        "origin_m": [
+          0.11822768106483261,
+          4.566602700738071e-11,
+          0.13869694420952244
+        ],
+        "rotation": [
+          [
+            6.54589770937568e-10,
+            -0.7910554500982313,
+            0.6117444522591814
+          ],
+          [
+            -1.0000000000000007,
+            -5.178167382137741e-10,
+            4.0044165247456475e-10
+          ],
+          [
+            -1.190458170488214e-18,
+            -0.6117444522591814,
+            -0.7910554500982313
+          ]
+        ],
+        "chassis_to_floor": {
+          "origin_m": [
+            0.0,
+            0.0,
+            0.03235791952544235
+          ],
+          "rotation": [
+            [
+              0.9999999558141658,
+              -5.392480972235814e-11,
+              0.00029727372436765963
+            ],
+            [
+              1.2736402140473552e-18,
+              0.9999999999999839,
+              1.813978378489536e-07
+            ],
+            [
+              -0.0002972737243676645,
+              -1.813978298337387e-07,
+              0.9999999558141492
+            ]
+          ]
+        }
+      },
+      "740,2320,1320,1500": {
+        "frame": "optical_to_actual_chassis",
+        "origin_m": [
+          0.13106551947039688,
+          7.237457308467932e-11,
+          0.17746357071732674
+        ],
+        "rotation": [
+          [
+            8.733979309474331e-10,
+            -0.3673568683274482,
+            0.9300800671408064
+          ],
+          [
+            -0.9999999999999986,
+            -3.208487010623973e-10,
+            8.123300681209716e-10
+          ],
+          [
+            -3.337104458145939e-17,
+            -0.9300800671408065,
+            -0.36735686832744824
+          ]
+        ],
+        "chassis_to_floor": {
+          "origin_m": [
+            0.0,
+            0.0,
+            0.03235795208700485
+          ],
+          "rotation": [
+            [
+              0.9999999507714257,
+              -5.7362805666210044e-11,
+              0.0003137788164068544
+            ],
+            [
+              0.0,
+              0.9999999999999831,
+              1.8281286902373816e-07
+            ],
+            [
+              -0.00031377881640685967,
+              -1.8281286002412133e-07,
+              0.999999950771409
+            ]
+          ]
+        }
+      },
+      "770,1982,1876,1500": {
+        "frame": "optical_to_actual_chassis",
+        "origin_m": [
+          0.18971857775381087,
+          5.284972741360985e-10,
+          0.13983331440379754
+        ],
+        "rotation": [
+          [
+            3.73477456539032e-09,
+            -0.6286039772791108,
+            0.7777255555457113
+          ],
+          [
+            -1.000000000000001,
+            -2.3476941658885004e-09,
+            2.9046295700738454e-09
+          ],
+          [
+            6.489908638627476e-17,
+            -0.7777255555457114,
+            -0.6286039772791109
+          ]
+        ],
+        "chassis_to_floor": {
+          "origin_m": [
+            0.0,
+            0.0,
+            0.03235849550954731
+          ],
+          "rotation": [
+            [
+              0.9999998546534522,
+              -9.783980012786486e-11,
+              0.0005391596038464867
+            ],
+            [
+              1.2327974023139984e-19,
+              0.9999999999999856,
+              1.8146723170926906e-07
+            ],
+            [
+              -0.0005391596038464956,
+              -1.8146720533363423e-07,
+              0.9999998546534359
+            ]
+          ]
+        }
+      },
+      "807,1897,2187,1500": {
+        "frame": "optical_to_actual_chassis",
+        "origin_m": [
+          0.2051716292866015,
+          7.520440430613498e-10,
+          0.08309145115368789
+        ],
+        "rotation": [
+          [
+            4.791053125139162e-09,
+            -0.8293557354676911,
+            0.5587209178533082
+          ],
+          [
+            -0.999999999999999,
+            -3.9734873972603035e-09,
+            2.6768616191623977e-09
+          ],
+          [
+            -1.9004914355831595e-18,
+            -0.5587209178533081,
+            -0.8293557354676914
+          ]
+        ],
+        "chassis_to_floor": {
+          "origin_m": [
+            0.0,
+            0.0,
+            0.03235874464753265
+          ],
+          "rotation": [
+            [
+              0.9999998058786054,
+              -1.129862665415421e-10,
+              0.0006230912896960052
+            ],
+            [
+              2.0737347563054068e-19,
+              0.9999999999999856,
+              1.813318019329956e-07
+            ],
+            [
+              -0.0006230912896960154,
+              -1.8133176673261372e-07,
+              0.999999805878589
+            ]
+          ]
+        }
+      }
+    },
+    "loaded": {
+      "896,2035,1894,1500": {
+        "frame": "optical_to_actual_chassis",
+        "origin_m": [
+          0.19674637557415145,
+          4.80701361336126e-07,
+          0.12767257691486614
+        ],
+        "rotation": [
+          [
+            3.4083021358585897e-06,
+            -0.6298998885129289,
+            0.7766763357021936
+          ],
+          [
+            -0.9999999999941935,
+            -2.146889135408325e-06,
+            2.6471476138753233e-06
+          ],
+          [
+            -1.8592318505251614e-17,
+            -0.7766763357067049,
+            -0.6298998885165876
+          ]
+        ],
+        "chassis_to_floor": {
+          "origin_m": [
+            0.0,
+            0.0,
+            0.032347892647313914
+          ],
+          "rotation": [
+            [
+              0.9999987726615843,
+              -5.754103518382085e-08,
+              0.0015667403484161595
+            ],
+            [
+              2.1156002318179943e-21,
+              0.9999999993255775,
+              3.6726593020389536e-05
+            ],
+            [
+              -0.0015667403494728023,
+              -3.672654794443109e-05,
+              0.9999987719871639
+            ]
+          ]
+        }
+      }
+    }
+  },
+  "missing": [
+    {
+      "field": "params.motion.gain",
+      "reason": "r4/r5 are axis-only candidates; no accepted complete three-axis/scalar-stop unloaded product. Supplied v91 results do not validate a new combined profile."
+    },
+    {
+      "field": "params.motion.tau_s",
+      "reason": "r4/r5 are axis-only candidates; no accepted complete three-axis/scalar-stop unloaded product. Supplied v91 results do not validate a new combined profile."
+    },
+    {
+      "field": "params.motion.tau_axis_s",
+      "reason": "r4/r5 are axis-only candidates; no accepted complete three-axis/scalar-stop unloaded product. Supplied v91 results do not validate a new combined profile."
+    },
+    {
+      "field": "params.motion.tau_stop_s",
+      "reason": "r4/r5 are axis-only candidates; no accepted complete three-axis/scalar-stop unloaded product. Supplied v91 results do not validate a new combined profile."
+    },
+    {
+      "field": "params.motion.noise_rel",
+      "reason": "r4/r5 are axis-only candidates; no accepted complete three-axis/scalar-stop unloaded product. Supplied v91 results do not validate a new combined profile."
+    },
+    {
+      "field": "params.motion.noise_abs",
+      "reason": "r4/r5 are axis-only candidates; no accepted complete three-axis/scalar-stop unloaded product. Supplied v91 results do not validate a new combined profile."
+    },
+    {
+      "field": "params.motion.scale_std",
+      "reason": "r4/r5 are axis-only candidates; no accepted complete three-axis/scalar-stop unloaded product. Supplied v91 results do not validate a new combined profile."
+    },
+    {
+      "field": "params.motion.scale_walk",
+      "reason": "r4/r5 are axis-only candidates; no accepted complete three-axis/scalar-stop unloaded product. Supplied v91 results do not validate a new combined profile."
+    },
+    {
+      "field": "params.motion.use_scale",
+      "reason": "r4/r5 are axis-only candidates; no accepted complete three-axis/scalar-stop unloaded product. Supplied v91 results do not validate a new combined profile."
+    },
+    {
+      "field": "params.motion.rest_noise",
+      "reason": "r4/r5 are axis-only candidates; no accepted complete three-axis/scalar-stop unloaded product. Supplied v91 results do not validate a new combined profile."
+    },
+    {
+      "field": "params.motion_loaded.gain",
+      "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+    },
+    {
+      "field": "params.motion_loaded.tau_s",
+      "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+    },
+    {
+      "field": "params.motion_loaded.tau_axis_s",
+      "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+    },
+    {
+      "field": "params.motion_loaded.tau_stop_s",
+      "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+    },
+    {
+      "field": "params.motion_loaded.noise_rel",
+      "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+    },
+    {
+      "field": "params.motion_loaded.noise_abs",
+      "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+    },
+    {
+      "field": "params.motion_loaded.scale_std",
+      "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+    },
+    {
+      "field": "params.motion_loaded.scale_walk",
+      "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+    },
+    {
+      "field": "params.motion_loaded.use_scale",
+      "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+    },
+    {
+      "field": "params.motion_loaded.rest_noise",
+      "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+    },
+    {
+      "field": "params.motion_loaded.load_transition.scale_std",
+      "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+    },
+    {
+      "field": "params.motion_loaded.load_transition.unloaded_scale_std",
+      "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+    },
+    {
+      "field": "params.motion_loaded.deadband.c0",
+      "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+    },
+    {
+      "field": "params.motion_loaded.deadband.u1",
+      "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+    },
+    {
+      "field": "params.motion_loaded.drift_ratio_std",
+      "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+    },
+    {
+      "field": "params.motion_loaded.yaw_bias_std_rad_s",
+      "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+    },
+    {
+      "field": "pair_model.slope_to_yaw_ratio",
+      "reason": "measurement not available"
+    },
+    {
+      "field": "pair_model.b_rad_s[\"\"]",
+      "reason": "measurement not available"
+    },
+    {
+      "field": "pair_model.b_rad_s.pm",
+      "reason": "measurement not available"
+    },
+    {
+      "field": "pair_model.b_rad_s.edge",
+      "reason": "measurement not available"
+    },
+    {
+      "field": "pair_model.b_rad_s.pm+edge",
+      "reason": "measurement not available"
+    }
+  ],
+  "qualification": "offline calibration only; no student/P03/carry or physical task acceptance"
+}

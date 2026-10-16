@@ -1,0 +1,40 @@
+{
+  "reviewed_sha": "823ca2ced2fb65e771ce2be9c08a2864e08db804",
+  "merged_main_parent": "b10907c5f2c84f2712030f48fb38061fd4f51281",
+  "fixed_cases_detecting_geometry_removal": [
+    "test_carrier_approach_and_arm_blockers_outside_search[approach_chassis-obstacles-end_neg]",
+    "test_carrier_approach_and_arm_blockers_outside_search[approach_chassis-obstacles-end_pos]",
+    "test_carrier_approach_and_arm_blockers_outside_search[approach_chassis-terrain-end_neg]",
+    "test_carrier_approach_and_arm_blockers_outside_search[approach_chassis-terrain-end_pos]",
+    "test_carrier_approach_and_arm_blockers_outside_search[station_arm_envelope-obstacles-end_neg]",
+    "test_carrier_approach_and_arm_blockers_outside_search[station_arm_envelope-obstacles-end_pos]",
+    "test_carrier_approach_and_arm_blockers_outside_search[station_arm_envelope-terrain-end_neg]",
+    "test_carrier_approach_and_arm_blockers_outside_search[station_arm_envelope-terrain-end_pos]",
+    "test_carrier_outer_corner_blocked_even_when_beam_and_centres_clear[obstacles-end_neg]",
+    "test_carrier_outer_corner_blocked_even_when_beam_and_centres_clear[obstacles-end_pos]",
+    "test_carrier_outer_corner_blocked_even_when_beam_and_centres_clear[terrain-end_neg]",
+    "test_carrier_outer_corner_blocked_even_when_beam_and_centres_clear[terrain-end_pos]",
+    "test_continuous_uncertainty_box_contains_original_and_all_carrier_sweeps[0]",
+    "test_continuous_uncertainty_box_contains_original_and_all_carrier_sweeps[1]",
+    "test_continuous_uncertainty_box_contains_original_and_all_carrier_sweeps[2]",
+    "test_formal_north_south_geometry_is_static_only[0]",
+    "test_formal_north_south_geometry_is_static_only[1]",
+    "test_formal_north_south_geometry_is_static_only[2]"
+  ],
+  "origin_main_observed": "ad496486271f441f00eb7d95fbd44dc454999004",
+  "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+  "protected_files_unchanged": 44,
+  "sim_seconds": 0,
+  "physics_model_imports_blocked": true,
+  "network_blocked": true,
+  "loadavg_after": [
+    16.0029296875,
+    14.33154296875,
+    13.40673828125
+  ],
+  "tested_sha256": {
+    "tests/test_beam_initial_pose_plan.py": "1946fde8afd303170ac863bd2c7dfe51f0856db827247769b8b2dc2393f0644a",
+    "harness/beam_initial_pose_plan.py": "532ec0718114c117a2df1ce5fb2ad17bb3379a51ba9c3a213ac6db0936bf6f64",
+    "experiments/2026-09-30-beam-initial-pose-contract/review_d2_verify.py": "ec9aac13aa9cd3d9b5d66231a9eadae5eb8d0fee03930ec17bd73e15a9874633"
+  }
+}

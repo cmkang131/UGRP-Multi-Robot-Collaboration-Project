@@ -1,0 +1,127 @@
+........................................................................ [  7%]
+........................................................................ [ 15%]
+........................................................................ [ 23%]
+........................................................................ [ 31%]
+........................................................................ [ 39%]
+........................................................................ [ 47%]
+........................................................................ [ 55%]
+..................FFF................................................... [ 63%]
+........................................................................ [ 71%]
+........................................................................ [ 79%]
+........................................................................ [ 87%]
+........................................................................ [ 94%]
+..............................................                           [100%]
+=================================== FAILURES ===================================
+_ test_r7_p2_frozen_records_keep_their_hashes_and_audit_under_their_own_version[v3-example_trial_record.json.gz-ugrp.zone_study_contract.v1-clean] _
+
+folder = 'v3', name = 'example_trial_record.json.gz'
+version = 'ugrp.zone_study_contract.v1', status = 'clean'
+
+    @pytest.mark.parametrize('folder, name, version, status', FROZEN)
+    def test_r7_p2_frozen_records_keep_their_hashes_and_audit_under_their_own_version(folder, name, version,
+                                                                                      status):
+        path = SMOKE / folder / name
+        index = json.loads((SMOKE / folder / 'raw_index.json').read_text())
+>       assert hashlib.sha256(path.read_bytes()).hexdigest() == index['committed'][name]
+                              ^^^^^^^^^^^^^^^^^
+
+tests/test_zone_study_review_r7_contract.py:177: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1019: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/Users/changmin/projects/ugrp-wt/codex-multiturn/experiments/2026-09-26-zone-study-offline-smoke/v3/example_trial_record.json.gz')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/Users/changmin/projects/ugrp-wt/codex-multiturn/experiments/2026-09-26-zone-study-offline-smoke/v3/example_trial_record.json.gz'
+
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1013: FileNotFoundError
+_ test_r7_p2_frozen_records_keep_their_hashes_and_audit_under_their_own_version[v4-example_trial_record.json.gz-ugrp.zone_study_contract.v1-clean] _
+
+folder = 'v4', name = 'example_trial_record.json.gz'
+version = 'ugrp.zone_study_contract.v1', status = 'clean'
+
+    @pytest.mark.parametrize('folder, name, version, status', FROZEN)
+    def test_r7_p2_frozen_records_keep_their_hashes_and_audit_under_their_own_version(folder, name, version,
+                                                                                      status):
+        path = SMOKE / folder / name
+        index = json.loads((SMOKE / folder / 'raw_index.json').read_text())
+>       assert hashlib.sha256(path.read_bytes()).hexdigest() == index['committed'][name]
+                              ^^^^^^^^^^^^^^^^^
+
+tests/test_zone_study_review_r7_contract.py:177: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1019: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/Users/changmin/projects/ugrp-wt/codex-multiturn/experiments/2026-09-26-zone-study-offline-smoke/v4/example_trial_record.json.gz')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/Users/changmin/projects/ugrp-wt/codex-multiturn/experiments/2026-09-26-zone-study-offline-smoke/v4/example_trial_record.json.gz'
+
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1013: FileNotFoundError
+_ test_r7_p2_frozen_records_keep_their_hashes_and_audit_under_their_own_version[v5-example_trial_record.json.gz-ugrp.zone_study_contract.v2-clean] _
+
+folder = 'v5', name = 'example_trial_record.json.gz'
+version = 'ugrp.zone_study_contract.v2', status = 'clean'
+
+    @pytest.mark.parametrize('folder, name, version, status', FROZEN)
+    def test_r7_p2_frozen_records_keep_their_hashes_and_audit_under_their_own_version(folder, name, version,
+                                                                                      status):
+        path = SMOKE / folder / name
+        index = json.loads((SMOKE / folder / 'raw_index.json').read_text())
+>       assert hashlib.sha256(path.read_bytes()).hexdigest() == index['committed'][name]
+                              ^^^^^^^^^^^^^^^^^
+
+tests/test_zone_study_review_r7_contract.py:177: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1019: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/Users/changmin/projects/ugrp-wt/codex-multiturn/experiments/2026-09-26-zone-study-offline-smoke/v5/example_trial_record.json.gz')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/Users/changmin/projects/ugrp-wt/codex-multiturn/experiments/2026-09-26-zone-study-offline-smoke/v5/example_trial_record.json.gz'
+
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1013: FileNotFoundError
+=========================== short test summary info ============================
+FAILED tests/test_zone_study_review_r7_contract.py::test_r7_p2_frozen_records_keep_their_hashes_and_audit_under_their_own_version[v3-example_trial_record.json.gz-ugrp.zone_study_contract.v1-clean]
+FAILED tests/test_zone_study_review_r7_contract.py::test_r7_p2_frozen_records_keep_their_hashes_and_audit_under_their_own_version[v4-example_trial_record.json.gz-ugrp.zone_study_contract.v1-clean]
+FAILED tests/test_zone_study_review_r7_contract.py::test_r7_p2_frozen_records_keep_their_hashes_and_audit_under_their_own_version[v5-example_trial_record.json.gz-ugrp.zone_study_contract.v2-clean]
+3 failed, 907 passed in 235.49s (0:03:55)

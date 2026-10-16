@@ -1,0 +1,57 @@
+{
+  "schema": "ugrp.pair_stage_probe.v1",
+  "labels": [
+    "stage_probe",
+    "not_e2e_success",
+    "dev",
+    "연구 결과 아님"
+  ],
+  "stages": {
+    "setdown": {
+      "cases": 5,
+      "passed": 0,
+      "pass_rate": 0.0,
+      "staging_infeasible": 0,
+      "staged_cases": 5,
+      "staged_pass_rate": 0.0,
+      "by_source": {
+        "teacher_grid": {
+          "cases": 5,
+          "passed": 0
+        }
+      },
+      "failures": {
+        "PAIR_COLLISION_GUARD": 5
+      },
+      "causes": {
+        "COLLISION_GUARD": 5
+      },
+      "by_leg": {
+        "8": {
+          "cases": 5,
+          "passed": 0
+        }
+      },
+      "wall_s_median": 96.96,
+      "wall_s_max": 97.5,
+      "stage_sim_s_median": 7.2,
+      "by_policy": {
+        "b-v6c": {
+          "cases": 5,
+          "passed": 0,
+          "by_source": {
+            "teacher_grid": {
+              "cases": 5,
+              "passed": 0
+            }
+          },
+          "failures": {
+            "PAIR_COLLISION_GUARD": 5
+          }
+        }
+      }
+    }
+  },
+  "wall_s_total": 488.5,
+  "unavailable_e2e": []
+}

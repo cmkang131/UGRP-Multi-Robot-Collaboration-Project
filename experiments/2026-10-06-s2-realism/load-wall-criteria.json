@@ -1,0 +1,77 @@
+{
+  "schema": "ugrp.s2.load_wall.criteria.v1",
+  "created": "2026-10-08",
+  "diagnostic_seed": 1051,
+  "task_success_claim": false,
+  "options": {
+    "servo_stiffness": "real_v1",
+    "idle_robot_contacts": "freeze_v1",
+    "camera": "v3",
+    "drive": "v7",
+    "roller_collision": "mesh",
+    "carry_pose_candidate": "look_ahead_v1"
+  },
+  "look_ahead": {
+    "servo": {
+      "1": 1500,
+      "3": 1050,
+      "4": 2035,
+      "5": 1894,
+      "6": 1500
+    },
+    "source": "user 2026-10-08 look ahead when carrying one box; HIGH wrist +154 PWM; mount/FOV unchanged"
+  },
+  "cases": 14,
+  "staging": "initial manual placement in HIGH fingers; no weld/clamp or ongoing GT correction, real sequential servo transition",
+  "pulse_times_s": [
+    0,
+    0.95,
+    1.9,
+    2.85,
+    3.8,
+    6.35
+  ],
+  "pulse": {
+    "left": 0.65,
+    "duration_s": 0.65
+  },
+  "locations": {
+    "far": [
+      3,
+      -1,
+      0.0325,
+      0
+    ],
+    "near": [
+      3,
+      1.3495,
+      0.0325,
+      0
+    ]
+  },
+  "gates": {
+    "free_load_relative_lateral_difference_max": 0.1,
+    "free_load_yaw_difference_deg_max": 1.0,
+    "wall_vs_free_progress_ratio_blocked_max": 0.2,
+    "calibration_holdout_rms_px_max": 1.0,
+    "look_ahead_loaded_unloaded_pitch_difference_deg_max": 0.5,
+    "grasp_bilateral_fraction_min": 0.99,
+    "look_ahead_visibility_improvement_fraction_min": 0.1
+  },
+  "decision": "attribute fixed factors; do not change gates after results. No compensation tuning. Sim change only with identified defect and source specification. Full DEV only if grip/calibration valid; otherwise not runnable.",
+  "failure": "two identical physical causes stop; HOST errors preserved; push errors excluded by supervisor",
+  "sources": [
+    {
+      "url": "https://www.hiwonder.com/products/masterpi",
+      "use": "official total mass 1.1kg; component mass distribution remains unmeasured"
+    },
+    {
+      "url": "https://mujoco.readthedocs.io/en/stable/APIreference/APIfunctions.html#mj-contactforce",
+      "use": "mj_contactForce contact-frame wrench, evaluation only"
+    },
+    {
+      "url": "https://docs.opencv.org/4.x/d5/d1f/calib3d_solvePnP.html",
+      "use": "known board corners + fixed intrinsic/distortion; solvePnP and LM, held-out reprojection"
+    }
+  ]
+}

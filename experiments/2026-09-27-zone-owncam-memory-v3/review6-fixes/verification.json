@@ -1,0 +1,48 @@
+{
+  "base_sha": "7400c4262156f85ccdee946d8d96c075e0cdaa79",
+  "review_source": "/private/tmp/claude-501/-Users-changmin-projects-ugrp/ecd247bf-a1a7-45d6-9190-dad34be56468/scratchpad/codex-234-review6.md",
+  "review_sha256": "106a9bc807d3c4efee526042743f0ac2cceb45dc7f3d9dc682b86e986338cdbd",
+  "scope": "offline synthetic input/state-machine regressions; no physics or model calls",
+  "commit_created": false,
+  "remote_ci_verified": false,
+  "baseline_expected_failures": 2,
+  "new_tests_passed": 13,
+  "related": {
+    "passed": 305,
+    "subtests_passed": 360,
+    "failed": 0
+  },
+  "thread_caps": "process caps=1; test caps pinned/restored with mock.patch.dict; OpenCV threads=1",
+  "pytest_basetemp": "./.pytest_tmp",
+  "pytest_temp_removed": true,
+  "stationary_recovery_sim_s": 8.0,
+  "total_init_sim_s": 30.0,
+  "counterexample": {
+    "conditions": [
+      "off",
+      "memory_v3"
+    ],
+    "refused_s": 1.8,
+    "sweep_start_s": 2.0,
+    "baseline_failure_s": 9.8,
+    "fixed_sweep_done_s": 11.0,
+    "fixed_search_leg_s": 11.1
+  },
+  "sha256": {
+    "harness/owncam_safety_v3.py": "158134a9ace112dbc035e58c536a9ed6c0acec0e6aeb1965af62ae17a8aab86e",
+    "tests/test_owncam_memory_v3_review6.py": "76b67e6d061bcac22b9f88c1b46a8ee909dd6d961f1905fc0509754568f05a44",
+    "scripts/run_ci_tests.py": "3e2478a57f1ca4de71a94420b79a03dcaa0ca7a13d8e90697d44dcf67e904dbc",
+    "docs/design/2026-09-27-owncam-memory-v3.md": "ddbc0615045e63c5e13ae1029908c8a887785c791c745f2389d9aa63d5f0bcc4",
+    "experiments/2026-09-27-zone-owncam-memory-v3/prereg_DRAFT.json": "9961d889be4ca41f167062a32782ab628bd287b4ffd9c26322959526fb5b344d",
+    "experiments/2026-09-27-zone-owncam-memory-v3/README.md": "adfddc00270fad0612fe933e8782197a803f848fb577742779776ec893c83b35",
+    "experiments/2026-09-27-zone-owncam-memory-v3/review6-fixes/README.md": "eafe934ffcaddffc703a1deac0ccd456a033db0e67920fd08ecd871f1d9c894b",
+    "experiments/2026-09-27-zone-owncam-memory-v3/review6-fixes/after-expanded.txt": "76906282fafecf659d09cf07d96de2b876d3bc9acdc4f4bb0591c7c26b49b942",
+    "experiments/2026-09-27-zone-owncam-memory-v3/review6-fixes/after-initial.txt": "3bf271864478fef13197d20d35be31b6a31bc4b9625962e51c968c94cd9b7c45",
+    "experiments/2026-09-27-zone-owncam-memory-v3/review6-fixes/after.txt": "6ccfddf452c3e2cd590c88e67be6e110423ba6b158f2495dbd5558b2f635a01c",
+    "experiments/2026-09-27-zone-owncam-memory-v3/review6-fixes/before-confirmed.txt": "5178d1d503397f6f3013f6eb50b68f3daee537539630bef72e673945dd621cfb",
+    "experiments/2026-09-27-zone-owncam-memory-v3/review6-fixes/before-final-tests.txt": "466488eeda89f6e5734b1aa6b4570f173de899fdccf8c97621f26a239b3cba2a",
+    "experiments/2026-09-27-zone-owncam-memory-v3/review6-fixes/before.txt": "5b8ec83cf67680b7b5fb0acbd9a22891a5d59cb77b37b11217f8bf760ba8537b",
+    "experiments/2026-09-27-zone-owncam-memory-v3/review6-fixes/related-tests.txt": "7eb0b5273ad6db0a3db175a66fe303527f5ee8f96f1e959ae8e810deb3fd321a",
+    "experiments/2026-09-27-zone-owncam-memory-v3/review6-fixes/reproduce_baseline.py": "17ad3dce56c61b878f4b4dd6c9b0d3e8dc3429ef7d6e733997c18b16b2c04144"
+  }
+}

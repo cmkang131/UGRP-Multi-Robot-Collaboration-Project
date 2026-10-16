@@ -1,0 +1,110 @@
+{
+  "source": "/Users/changmin/projects/ugrp/outputs/s3-sweep-b73ce193-s14201-v149",
+  "scope": "evaluation only; body sums are not endpoint errors",
+  "input_hashes": {
+    "robots/r2/commands.jsonl": "5fba210195a3ea77f8a99ef51bbda719f54aaa0a4ec4a01912a2cb95d2f35ba2",
+    "student_record.json": "5a7135b1176d814edf256a5df4ae5661f7de2edad7b7e7e1b73cabff3f9fef4c",
+    "eval_only/r2/trajectory.jsonl": "b1c5f27c5d05333d702ef21fa3201f6d7a362e460f2373e57a21505f1478fa68"
+  },
+  "command_table": [
+    {
+      "axis": "turn",
+      "n": 120,
+      "predicted_xy_length_m": 0.3216296303525118,
+      "actual_xy_length_m": 0.0846791757510936,
+      "predicted_body_sum": [
+        0.008630490622841342,
+        -0.320895628130424,
+        7.891157214026403
+      ],
+      "actual_body_sum": [
+        -0.01785741268950941,
+        -0.03975518097113745,
+        8.354837054219267
+      ],
+      "residual_body_sum": [
+        0.026487903312350763,
+        -0.28114044715928566,
+        -0.4636798401928478
+      ]
+    },
+    {
+      "axis": "forward",
+      "n": 254,
+      "predicted_xy_length_m": 3.2825470983845477,
+      "actual_xy_length_m": 2.842355469950655,
+      "predicted_body_sum": [
+        3.2809580739361377,
+        -0.1021252671283086,
+        -0.07462254205177607
+      ],
+      "actual_body_sum": [
+        2.825035529031861,
+        -0.06347579123273005,
+        0.17274841165348853
+      ],
+      "residual_body_sum": [
+        0.4559225449042835,
+        -0.038649475895579016,
+        -0.24737095370526457
+      ]
+    },
+    {
+      "axis": "left",
+      "n": 0,
+      "predicted_xy_length_m": 0.0,
+      "actual_xy_length_m": 0.0,
+      "predicted_body_sum": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "actual_body_sum": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "residual_body_sum": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "initial_error_vector": [
+    0.019189234118130227,
+    -0.034568229388333704
+  ],
+  "final_error_vector": [
+    0.37798810697796825,
+    0.087415359259745
+  ],
+  "additive_error_vectors": {
+    "idle": [
+      0.06498188839243416,
+      0.02104289087420356
+    ],
+    "posterior_correction": [
+      -0.1445974955169264,
+      0.16149650041947877
+    ],
+    "turn": [
+      -0.0172312632315121,
+      -0.018910079301372885
+    ],
+    "forward": [
+      0.45564574321584267,
+      -0.04164572334423066
+    ]
+  },
+  "interval_counts": {
+    "idle": 3380,
+    "turn": 598,
+    "forward": 1270
+  },
+  "final_error_m": 0.3879645010194854,
+  "final_sigma_m": 0.005400484834371477,
+  "over_3sigma": 4006,
+  "frames": 5249,
+  "closure_residual_m": 2.830524433501838e-16
+}

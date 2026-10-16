@@ -1,0 +1,25 @@
+{
+  "status": "INCOMPLETE_AWAITING_COMMITTED_INVENTORY_WRITER",
+  "original_seal_commit": "266118d2c2337bbf1cff507690da131c63e2db11",
+  "execution_commit": "4c6b439f3f7c9a147c901f8b260a1e214d4eb396",
+  "merged_main_pending_commit": "78ce79162d907d88d38ef3afcfc0c62e4a72aaba",
+  "metadata_commit": "e78ef70fb5004fed1dfef1866aaf99bbf0bdda41",
+  "blocker": "The permitted branch/commit has only RUN_MANIFEST.json, plan.json and placements_seed943_first12.json under the supplied directory; no committed raw_manifest writer was found. Format must not be guessed or learned from blinded raw.",
+  "implemented_not_yet_wired": "AcquisitionReader checks consumed input hashes/paths and preserves during-analysis checks; classifier accepts an explicit reader; seal builder supports a separate v2 revision. main still needs the verified inventory-format adapter and fail-closed result routing.",
+  "baseline": "Two original strict xfails reproduced as 2 failed with --runxfail, due to PASS on missing inventory and pre-analysis trace edit.",
+  "reader_tests": "32 passed; synthetic only",
+  "reader_mutation": "Removing AcquisitionReader.read checks produces 21 assertion failures. This does not yet validate the full sealed command.",
+  "new_seal_created": false,
+  "original_seal_bytes_changed": false,
+  "blinded_raw_access": false,
+  "physics_or_rendering": false,
+  "commit_push_comment_or_merge": false,
+  "own_temporary_review_clone_cleanup": {
+    "/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/ugrp-seal-test-u_ptrqu2": true
+  },
+  "private_tmp_extraction_directories_created": [],
+  "related_offline_tests": "190 passed in 357.52s; guard physical/model/network attempts all zero",
+  "git_diff_check": "passed",
+  "old_seal_bytes_vs_266118d2": "identical",
+  "github_workflows_vs_origin_main": "identical; merge inherited main only"
+}

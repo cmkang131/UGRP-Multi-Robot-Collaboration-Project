@@ -1,0 +1,208 @@
+{
+  "schema": "ugrp.v92_calibration_criterion_B_double_prime.v1",
+  "criterion": "B-double-prime",
+  "frozen_at": "2026-10-03T06:07:37.591281+00:00",
+  "freeze_scope": "D3/D4 승인 후, v92 첫 수집 전 고정. 이미 본 v88은 탐색용이며 새 확증 자료가 아니다.",
+  "parent_sha256": "74c312b5eff11e27be2b30d103f6d955f03b0c4b91595dfc9843c366b2c49b5f",
+  "parent_text": {
+    "schema": "ugrp.motion_consumer_criterion.v2",
+    "criterion": "B",
+    "frozen_on": "2026-10-01",
+    "status": "FROZEN_BEFORE_NEW_DATA_AFTER_R3",
+    "coordinator_decision": "Criterion A was frozen before r3, FAILED, remains failed and is not re-scored. For the own-camera PF with dead-reckoning between visual fixes, conservative process noise is acceptable and standard for robustness to under-modelled dynamics (Thrun, Burgard and Fox 2005, chapters 4-5, noise inflation). Criterion B is defined now, after seeing r3 but before any new data. All v89 steps and PRBS are training. Only NEW held-out v88 unloaded data on other maps may validate B. An axis without step/PRBS excitation or a frozen candidate remains null.",
+    "criterion_A": "FAILED_NOT_RESCORED",
+    "consumer": "harness/owncam_localizer.py:OwnCamLocalizer.predict_to",
+    "reference": "https://robots.stanford.edu/probabilistic-robotics/",
+    "horizons_s": [
+      0.2,
+      0.5,
+      1.0,
+      2.0,
+      3.0,
+      3.2
+    ],
+    "components": [
+      "forward_m",
+      "left_m",
+      "yaw_rad"
+    ],
+    "pf_step_s": 0.05,
+    "mean": {
+      "family": "sign-common gain, running tau, stop tau; three parameters per excited axis",
+      "law": "v_next=v+(1-exp(-dt/tau))*(gain*u-v); displacement=v_next*dt, as in the existing consumer. tau is running while any issued body command is nonzero, otherwise stop. Other-axis mean and cross gains are zero in an axis-only prediction, not fitted cross coupling.",
+      "fit": "Unweighted least squares of driven-component endpoint errors for all listed horizons, pooling all v89 step+stop and PRBS+stop windows. Positive log parameters, bounds gain [0.05,4], running tau [0.01,4] s, stop tau [0.005,0.5] s; initial [1,0.8,0.06].",
+      "initial_state": "Velocity starts at zero at recording start and is warmed ONLY by issued commands. Each window has an ideal start-pose fix. Measured velocity, future poses, contacts and simulator state are never predictor inputs."
+    },
+    "noise": {
+      "form": "sigma_velocity[j]=noise_rel[j]*abs(v_next[j])+noise_abs[j]",
+      "floor_source": "experiments/2026-09-26-zone-m1-owncam/calibration_m1_dev.json:params.motion",
+      "floor_noise_rel": [
+        0.3176,
+        0.4438,
+        0.1116
+      ],
+      "floor_noise_abs": [
+        0.01538,
+        0.00504,
+        0.01406
+      ],
+      "selection": "Choose the smallest coefficients at or above M1 attaining >=0.95 two-sigma training coverage in EVERY axis, split (steps and PRBS separately), horizon and component. There is no unique componentwise least pair when relative and absolute noise trade off. Freeze this tie-break: lexicographically minimize (noise_rel[0],noise_rel[1],noise_rel[2],noise_abs[2],noise_abs[0],noise_abs[1]), sharing the vector across forward/left profiles. Thus keep relative slopes at M1 floors, find the minimum yaw absolute floor, then the minimum forward and left absolute floors. With the zero-yaw mean and axis-only translation these constraints are triangular; each absolute minimum is the maximum, across groups, of the ceil(0.95*n)-th smallest per-window quadratic threshold. Add only 1e-12 numerical slack to an inflated coefficient. This is an exact lexicographic/Pareto minimum under the declared ordering, not a claim that all possible relative/absolute trade-offs have one componentwise minimum.",
+      "propagation": "Independent per-tick velocity noise contributes diag((sigma_velocity*dt)^2). Propagate pose covariance with first-order heading coupling in the start-pose frame, using the existing Euler consumer mean. No initial pose, scale_std, scale_walk, reset, measurement, roughening or map-prior covariance is credited. This is a linearized process budget, not a full PF posterior test.",
+      "coverage_upper_bound": null,
+      "inflation_allowed": true,
+      "report": [
+        "coverage_1sigma",
+        "coverage_2sigma",
+        "mean_NEES_per_component",
+        "mean_joint_NEES"
+      ]
+    },
+    "windows": "Every 0.05 s start with a complete horizon within each signed step plus following coast, or the continuous PRBS plus following coast. Do not bridge these segments. Include onset, zero-command, reversal and stopping windows; do not thin or centre residuals. Gate every map/case/split separately, never pool away a failing group. Overlapping windows are descriptive, not independent samples.",
+    "held_out": {
+      "execution_bundle_id": "zone-final-pair-v88",
+      "check": "calibration-unloaded",
+      "training_map": "zone_wide_two_doors_final_v3",
+      "allowed_maps": [
+        "zone_wide_door_geometry_v3",
+        "zone_wide_corridor_final_v3"
+      ],
+      "requirements": "Completed NEW acquisition after this freeze on other maps; raw result/bundle/measurement schedule, issued commands and 0.05 s eval_only poses required. Previously inspected v87/v89 data and identical recorded pose bytes are ineligible regardless of renamed paths. v89 is automatically labelled TRAINING_SMOKE, never validation. No refitting in validation. Incomplete or malformed input is an error, not a pass.",
+      "axis_support": "Both signed step and signed PRBS commands are required on that axis, and at least one complete window per horizon in each split. A missing split, missing frozen mean or insufficient horizon support gives null for the axis. Missing axes cannot yield an overall pass."
+    },
+    "acceptance": {
+      "every_horizon_component": true,
+      "normalized_abs_error_p95_max": 2.0,
+      "coverage_2sigma_min": 0.9,
+      "coverage_1sigma_informational_only": true,
+      "nees_informational_only": true,
+      "p95_definition": "Because sigma varies by window, p95(abs(error)/sigma) <= 2 (NumPy linear percentile). Also report p95 absolute error and sigma min/median/max in physical units; comparing two unrelated marginal percentiles is forbidden.",
+      "overall": "false if any validated axis fails; null if no failures but any axis is unvalidated; true only if all axes pass. Training reports always have null validation decisions."
+    },
+    "candidate_status": "CANDIDATE_UNVALIDATED",
+    "promotion": "No MEASURED_SIM promotion or loader/controller modification. A validation report does not mutate the candidate. Loaded, fine, camera availability, full PF behaviour, hardware and robot task success are outside B."
+  },
+  "profiles": [
+    "fine",
+    "loaded"
+  ],
+  "split": {
+    "fit": "Every signed step and its following coast; all complete windows only.",
+    "validate": "Continuous PRBS block and following coast per axis; no window crosses split/valid-load boundary.",
+    "hidden_state": "Warm from recording start using issued commands only, never reset at split boundaries or use measured velocity.",
+    "minimum_windows_per_group": 100
+  },
+  "changes_from_B": [
+    "B-prime applies the same horizons, components, Euler mean law, noise floors/order, 95% training coverage and 90%/p95<=2 validation gates to fine and loaded separately.",
+    "Fit steps only; validate PRBS only within the same collection. This is time-block validation, not an independent collection or map.",
+    "All three axes fitted; axis-only candidates first. Loader product refits one shared scalar stop tau with three gains and three run taus on steps, then fits noise and validates that exact product. No averaging of axis stop taus.",
+    "Rotation noise uses the same linearized covariance and lexicographic minimum; numerical order-statistic roots generalize the translation-only r4 formula.",
+    "Loaded selection is offline only. Exclude complete windows touching a non-lifted/contact-invalid sample; preserve excluded sample counts and reasons.",
+    "Loaded deadband uses v6g ramp u*clip((abs(u)-c0)/(u1-c0),0,1); fit on signed step blocks and re-score the exact resulting mean with B-prime. No unexplained linear-axis default."
+  ],
+  "loaded_selection": {
+    "beam_bottom_min_m": 0.01,
+    "minimum_contact_robots": 2,
+    "contact_max_dist_m": 0.0,
+    "active_welds_allowed": false,
+    "whole_window_required": true,
+    "geometry": "beam bottom from recorded beam rotation and static long_beam dimensions; contact beam with each robot gripper only; no support contact with non-robot geom"
+  },
+  "camera": {
+    "settled_s": 1.0,
+    "minimum_frames_per_pose": 5,
+    "origin_max_residual_m": 0.001,
+    "rotation_max_residual_deg": 0.1,
+    "method": "r1 median origin and nearest recorded SO(3) to elementwise median, separately for optical_to_actual_chassis and chassis_to_floor; no interpolation/FK/defaults",
+    "pan": "same-arm and same stationary visit-group center pan=1500 reference; through-origin yaw versus pan-1500; both pan signs and at least 5 samples per sign",
+    "pan_residual_p95_deg_max": 0.1
+  },
+  "loaded_spread": {
+    "method": "v6e NNLS e^2 = a*T + scale_var*distance^2, yaw e^2 = a*T + bias_var*T^2; maximum leave-one-signed-step-out spread; all 6 B horizons; steps only",
+    "drift": "v6g cell-balanced RMS cross-axis residual / along-axis travel, abs travel >=0.3m; cell=axis+magnitude, both robots grouped",
+    "deadband": "steps-only position residual least squares, c0 below first moving command and above an observed near-zero level; two ramp magnitudes and one saturated magnitude required; rank and interior bounds required",
+    "unloaded_scale_std": "0, fixed by criterion B white-only use_scale=false; not a measured population slip claim"
+  },
+  "pair_model": {
+    "method": "v6e BeamEdgeTracker on recorded RGB only; ratio through-origin LS(smoothed slope change, GT relative yaw change); b each variant cell-balanced RMS((GT yaw change-estimate)/T)",
+    "variants": [
+      "",
+      "pm",
+      "edge",
+      "pm+edge"
+    ],
+    "minimum_window_s": 8.0,
+    "minimum_fit_windows": 3,
+    "relative_yaw_energy_min_rad2": 1e-06,
+    "ratio_bounds_exclusive": [
+      0.0,
+      3.0
+    ],
+    "split": "signed steps fit, PRBS validate; loaded throughout; no valid edge reference/endpoint gives missing, never edge=0 fallback",
+    "validation": "every variant PRBS absolute residual rate <= 2*b fitted on steps; ratio PRBS yaw residual p95 <= 0.02rad; no threshold tuned from raw"
+  },
+  "promotion": "All required loader fields must have accepted evidence, exact input hashes and finite values. Frozen unloaded B still runs unchanged and can veto. Unsupported scalar stop conversion, missing settled poses/contact/edge data -> PARTIAL; never replace missing measurements with v2 values.",
+  "parent_B_prime_sha256": "3f863f81bea8b4401d980e1c39ec8438b75b34d8f80792d41dbfbcd331f66b33",
+  "changes_from_B_prime": [
+    "loaded 전진/옆 c0 적합 하한만 .006에서 0으로 변경한다. 나머지 운동 범위·초깃값·내부해·정지/램프/포화 지지와 판정은 B-prime 그대로다.",
+    "loaded 카메라 선택은 사전 등록한 8초 준비 뒤 8초 반열린 측정 구간 [start_s,end_s)만 사용한다. fine은 기존 1초 조건을 유지한다. 개별 잔차·프레임 수·접촉 판정은 그대로다."
+  ],
+  "loaded_motion_bounds": {
+    "parameter_order": [
+      "forward",
+      "left",
+      "turn"
+    ],
+    "c0_lower": [
+      0.0,
+      0.0,
+      0.006
+    ],
+    "c0_upper": [
+      0.015,
+      0.015,
+      0.015
+    ],
+    "u1_lower": [
+      0.025,
+      0.025,
+      0.025
+    ],
+    "u1_upper": [
+      0.04,
+      0.04,
+      0.04
+    ],
+    "initial_c0": [
+      0.01,
+      0.01,
+      0.01
+    ],
+    "initial_u1": [
+      0.032,
+      0.032,
+      0.032
+    ],
+    "interior_distance_min": 1e-06,
+    "basis_path": "experiments/2026-10-03-v92-loaded-schedule/revision_d1_d4/v88_c0_basis.json",
+    "basis_sha256": "44b1f048bc6328f9d7dad54e0f619ce318d5bd38f18af6d30b094728af0f8d51",
+    "interpretation": "탐색 공간 하한이며 측정한 정지 경계가 아니다. .001/.002/.004도 관측 전 정지로 지정하지 않는다. 양수 정지 수준·두 램프 수준·포화 수준을 관측으로 지지하지 못하면 PARTIAL. 경계해를 수락하지 않는다.",
+    "unchanged_fitter_path": "scripts/final_pair_calibration_motion.py",
+    "unchanged_fitter_sha256": "24acced13f296d7805536a2bd3d790a9186a61906d86de79fa0412e213b9e925"
+  },
+  "loaded_camera_selection": {
+    "settled_s": 8.0,
+    "measurement_window_s": 8.0,
+    "interval": "[start_s,end_s)",
+    "windows_source": "bundle.measurement.camera_windows",
+    "pose": "edge_view_150",
+    "pan_pwm": [
+      1480,
+      1500,
+      1520
+    ],
+    "clock": "수집 시작 SIM 시각 기준. 0.2초 표본을 보간하거나 채우지 않는다.",
+    "preparation": "마지막 arm/look 변경 또는 마지막 비영 이동 명령의 lease 종료 뒤 8초 이상. 모든 준비/전이 원본 보존.",
+    "unchanged_gates": "camera의 settled_s만 loaded에서 8초로 덮어쓴다. 나머지 camera, loaded_selection, loaded_spread, pair_model, split, parent_text, promotion 그대로.",
+    "analyzer": "v92 전용 새 분석기에서만 적용. v88 조립기는 수정하지 않는다."
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "off": {
+    "option": "off",
+    "fixed_recorded_commands": true,
+    "physics_runs": 0,
+    "model_calls": 0,
+    "poses": 6500,
+    "max_difference_from_saved": 0.0,
+    "mismatches": 0,
+    "stats": null,
+    "path": "/Users/changmin/projects/ugrp/outputs/s2-visual-fix-20261007/replay-off.json",
+    "sha256": "81a462111037d18f2d642da3b17c7806f45201c7e6832a61fc91031654375a69",
+    "last": {
+      "t": 326.25,
+      "x": 4.41384494569056,
+      "y": -2.079538877427389,
+      "yaw": 0.0027660348928391087,
+      "last_fix_t": 295.95,
+      "std_xy": 0.03165243350964691,
+      "gate": {
+        "accepted": true,
+        "informative": false,
+        "old_informative": false,
+        "settled": true,
+        "ambiguous": true,
+        "inlier_fraction": 0.0,
+        "posterior_support": 0.0,
+        "saturated": false,
+        "geometric_curvature": 0.0,
+        "eigenvalues": [
+          -1672.8297051331742,
+          0.0,
+          308.4884351083652
+        ],
+        "observed_rank": 1,
+        "weakest_direction_xy_yaw": [
+          -0.8913293851397881,
+          0.0,
+          -0.45335629165847824
+        ],
+        "partial": false,
+        "rule": "v98_partial_fix_second_eigenvalue_v1",
+        "reason": "residual_or_geometry_inconsistent"
+      }
+    },
+    "eval_only_final_error_m": 3.3456075784171087
+  },
+  "accepted_scan_v1": {
+    "option": "accepted_scan_v1",
+    "fixed_recorded_commands": true,
+    "physics_runs": 0,
+    "model_calls": 0,
+    "poses": 6500,
+    "max_difference_from_saved": 4.85032619416994,
+    "mismatches": 4269,
+    "stats": {
+      "candidates": 4705,
+      "accepted": 0,
+      "rejected": 4705
+    },
+    "path": "/Users/changmin/projects/ugrp/outputs/s2-visual-fix-20261007/replay-accepted_scan_v1.json",
+    "sha256": "1ea5e8041a63f6d4b97d54255739e0b2b59a075448ea477aa8f567b925f99aa0",
+    "last": {
+      "t": 326.25,
+      "x": -0.1450245495169517,
+      "y": -2.610844460068207,
+      "yaw": -1.5088111635542498,
+      "last_fix_t": 32.85,
+      "std_xy": 0.03164565568359226,
+      "gate": {
+        "accepted": true,
+        "informative": false,
+        "old_informative": false,
+        "settled": true,
+        "ambiguous": true,
+        "inlier_fraction": 0.06666666666666667,
+        "posterior_support": 0.0,
+        "saturated": false,
+        "geometric_curvature": 0.0,
+        "eigenvalues": [
+          0.0,
+          560.9575252165239,
+          24355.677286416245
+        ],
+        "observed_rank": 2,
+        "weakest_direction_xy_yaw": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "partial": false,
+        "rule": "v98_partial_fix_second_eigenvalue_v1",
+        "reason": "residual_or_geometry_inconsistent"
+      }
+    },
+    "eval_only_final_error_m": 3.702345660943598
+  }
+}

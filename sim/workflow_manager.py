@@ -27,7 +27,7 @@ from uuid import uuid4
 SCHEMA = "ugrp.simulation_run.v1"
 CATALOG = Path("configs/simulation_workflows.json")
 RECORDS = Path("outputs/simulation-runs")
-SOURCE_DIRS = ("harness", "sim", "scripts", "config", "configs", "maps", "calibration", "examples", "dashboard")
+SOURCE_DIRS = ("harness", "sim", "scripts", "config", "configs", "maps", "calibration", "examples")
 SOURCE_SUFFIXES = {".py", ".json", ".jsonl", ".xml", ".yaml", ".yml", ".toml", ".command",
                    ".txt", ".csv", ".png", ".jpg", ".jpeg", ".npy", ".npz"}
 SECRET = re.compile(r"(?:^|[-_])(?:token|password|secret|api[-_]?key|authorization|cookie|credential)(?:$|[-_])", re.I)
@@ -35,7 +35,8 @@ MANAGED_CHILD = "UGRP_SIM_MANAGED_CHILD"
 INPUT_PATH_FLAGS = ("--plan-replay", "--grasp-model-dir", "--stage-model-dir", "--protocol", "--manifest",
                     "--artifacts", "--map-file", "--map", "--act-python", "--mjpython", "--grasp",
                     "--stages", "--cases-json", "--dataset", "--evidence-root", "--inventory", "--config",
-                    "--carry-act-model", "--carry-act-python", "--reference-top", "--spec")
+                    "--carry-act-model", "--carry-act-python", "--reference-top", "--spec", "--prereg",
+                    "--calibration")
 
 
 def _sha(path: Path) -> str:
@@ -167,6 +168,19 @@ def catalog(root: Path) -> tuple[dict, str]:
     data = json.loads(path.read_text(encoding="utf-8"))
     if data.get("schema") != "ugrp.local_workflow_catalog.v1":
         raise ValueError("unsupported workflow catalog schema")
+    # The original catalog is pinned by historical/current registrations. New
+    # opt-in workflows can be added without editing those bytes or replacing a
+    # registered ID. Include every fragment in the effective catalog identity.
+    fragments = sorted((root / "configs/simulation_workflows.d").glob("*.json"))
+    receipts = {str(CATALOG): _sha(path)}
+    for fragment in fragments:
+        if fragment.is_symlink():
+            raise ValueError("workflow catalog fragment must be a local regular file")
+        extra = json.loads(fragment.read_text(encoding="utf-8"))
+        if extra.get("schema") != "ugrp.local_workflow_catalog.v1":
+            raise ValueError("unsupported workflow catalog fragment schema")
+        data["workflows"].extend(extra.get("workflows", []))
+        receipts[str(fragment.relative_to(root))] = _sha(fragment)
     rows = data.get("workflows", [])
     if not rows or len({r["id"] for r in rows}) != len(rows):
         raise ValueError("workflow catalog must have distinct workflows")
@@ -175,7 +189,9 @@ def catalog(root: Path) -> tuple[dict, str]:
             raise ValueError(f"incomplete workflow declaration: {row.get('id')}")
         if not (root / row["entry"]).is_file():
             raise ValueError(f"workflow entry missing: {row['entry']}")
-    return data, _sha(path)
+    digest = (hashlib.sha256(json.dumps(receipts, sort_keys=True).encode()).hexdigest()
+              if fragments else _sha(path))
+    return data, digest
 
 
 def _row(root: Path, workflow_id: str) -> tuple[dict, str]:
@@ -274,6 +290,12 @@ def _workflow_inputs(root: Path, workflow_id: str, argv: list[str], extra: list[
         paths.append(root / "experiments/dispatch-skill-integration-20260917/models.zip")
     if workflow_id == "dispatch-skills" and _option(argv, "--reference-top") is None:
         paths.append(root / "tests/fixtures/camera_goal_transport/reference-top.jpg")
+    if workflow_id == "zone-pair-dev":
+        prereg_path = _at_root(root, _option(argv, "--prereg"))
+        prereg = json.loads(prereg_path.read_text())
+        paths.extend(root / prereg['inputs'][name]['path'] for name in ('map', 'calibration'))
+        if prereg.get('scene_contract'):
+            paths.append(root / prereg['scene_contract']['parent_map']['path'])
     return _input_paths(root, argv, paths)
 
 
@@ -353,6 +375,12 @@ def _validate_args(row: dict, argv: list[str]) -> str | None:
 def _runner_command(root: Path, row: dict, args: list[str], *, record: Path | None) -> tuple[list[str], Path | None]:
     argv = list(args)
     output_flag = _validate_args(row, argv)
+    if row["runner"] in ("scripts.run_e2e_ownmap_live", "scripts.run_e2e_reviewed"):
+        if any(a == "--expected-workflow-id" or a.startswith("--expected-workflow-id=") for a in argv):
+            raise ValueError("WORKFLOW_OWNS_BUNDLE_ID")
+        # Preserve historical catalogs while making their selected identity an
+        # explicit runner contract, checked before preparation or execution.
+        argv.extend(["--expected-workflow-id", row["id"]])
     output = _at_root(root, _option(argv, output_flag)) if output_flag and _option(argv, output_flag) else None
     if output is not None and output.exists():
         raise FileExistsError(f"workflow output already exists: {output}")
@@ -384,6 +412,10 @@ def plan(root: Path, workflow_id: str, args: list[str], *, inputs: list[Path] | 
     argv = list(args)
     _validate_args(row, argv)
     _validate_input_paths(root, workflow_id, argv)
+    if workflow_id == "zone-study-integration-run":
+        # Admission precedes records/subprocesses; the sealed host stays intact.
+        from sim.zone_study_admission import require_study_runtime
+        require_study_runtime(root, _at_root(root, _option(argv, "--prereg")), _option(argv, "--episode"))
     if row["id"] == "physical" and not _at_root(root, argv[0]).is_dir():
         raise ValueError("physical trace directory does not exist")
     if row["id"] == "physical" and (root / RECORDS).resolve().is_relative_to(_at_root(root, argv[0])):
@@ -509,8 +541,10 @@ def _finish(manifest: dict, record: Path, *, exit_code: int | None, output: Path
 
 
 def _select_python(row: dict, argv: list[str]) -> str:
-    native = (row["id"] in ("local", "dispatch") and "--headless" not in argv or
-              row["id"] == "dispatch-skills" and "--viewer" in argv or
+    isolated = row["id"] in ("dispatch", "dispatch-skills") and "--realtime-control" in argv
+    native = (row["id"] == "local" and "--headless" not in argv or
+              row["id"] == "dispatch" and "--headless" not in argv and not isolated or
+              row["id"] == "dispatch-skills" and "--viewer" in argv and not isolated or
               row["id"] == "act-map-suite" and "--render" in argv)
     if native and sys.platform == "darwin":
         candidate = Path(sys.executable).with_name("mjpython")
@@ -518,6 +552,19 @@ def _select_python(row: dict, argv: list[str]) -> str:
             raise ValueError(f"native macOS viewer requires mjpython next to {sys.executable}; use --headless")
         return str(candidate)
     return sys.executable
+
+
+def _signal_owned_group(child, signum):
+    """An exited macOS group may report EPERM rather than ESRCH."""
+    try:
+        os.killpg(child.pid, signum)
+    except ProcessLookupError:
+        return False
+    except PermissionError:
+        if child.poll() is None:
+            raise
+        return False
+    return True
 
 
 def run_workflow(root: Path, workflow_id: str, argv: list[str], *, inputs: list[Path] | None = None,
@@ -550,7 +597,20 @@ def run_workflow(root: Path, workflow_id: str, argv: list[str], *, inputs: list[
     output_thread = None
     log = None
     previous = {}
+    pending_signal = None
+    def forward(signum, _frame):
+        nonlocal pending_signal
+        # Popen can receive a signal after creating the process but before
+        # returning its handle. Defer interruption until we own that handle.
+        if child is None:
+            pending_signal = signum
+            return
+        if child.poll() is None:
+            _signal_owned_group(child, signum)
+        raise KeyboardInterrupt
     try:
+        for sig in (signal.SIGINT, signal.SIGTERM):
+            previous[sig] = signal.signal(sig, forward)
         command, output = _runner_command(root, row, argv, record=record)
         command[0] = _select_python(row, argv)
         manifest["command"] = redact_argv(command)
@@ -561,6 +621,9 @@ def run_workflow(root: Path, workflow_id: str, argv: list[str], *, inputs: list[
         log = (record / "console.log").open("xb")
         child = subprocess.Popen(command, cwd=root, env=env, stdin=None, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                                  start_new_session=True)
+        manifest["child_pid"] = child.pid
+        if pending_signal is not None:
+            forward(pending_signal, None)
         def tee():
             assert child is not None and child.stdout is not None
             for chunk in iter(lambda: os.read(child.stdout.fileno(), 4096), b""):
@@ -573,59 +636,56 @@ def run_workflow(root: Path, workflow_id: str, argv: list[str], *, inputs: list[
                     pass
         output_thread = threading.Thread(target=tee, daemon=True)
         output_thread.start()
-        manifest["child_pid"] = child.pid
         _write(record / "manifest.json", {k: v for k, v in manifest.items() if not k.startswith("_")})
-        def forward(signum, _frame):
-            if child and child.poll() is None:
-                os.killpg(child.pid, signum)
-            raise KeyboardInterrupt
-        for sig in (signal.SIGINT, signal.SIGTERM):
-            previous[sig] = signal.signal(sig, forward)
         try:
             code = child.wait(timeout=timeout)
             status = "process_completed" if code == 0 else "process_failed"
         except subprocess.TimeoutExpired:
             status, failure = "timeout", f"timeout after {timeout}s"
-            os.killpg(child.pid, signal.SIGTERM)
+            _signal_owned_group(child, signal.SIGTERM)
             try:
-                child.wait(timeout=3)
+                child.wait(timeout=float(row.get('shutdown_grace_s',3)))
             except subprocess.TimeoutExpired:
-                os.killpg(child.pid, signal.SIGKILL)
+                _signal_owned_group(child, signal.SIGKILL)
                 child.wait()
             code = 124
     except KeyboardInterrupt:
         status, failure, code = "interrupted", "keyboard interrupt", 130
+        for sig in previous:
+            signal.signal(sig, signal.SIG_IGN)
         if child is not None and child.poll() is None:
-            os.killpg(child.pid, signal.SIGTERM)
+            _signal_owned_group(child, signal.SIGTERM)
             try:
-                child.wait(timeout=3)
+                child.wait(timeout=float(row.get('shutdown_grace_s',3)))
             except subprocess.TimeoutExpired:
-                os.killpg(child.pid, signal.SIGKILL)
+                _signal_owned_group(child, signal.SIGKILL)
                 child.wait()
     except BaseException as error:
         failure = f"{type(error).__name__}: {error}"
         status, code = "launcher_failed", 2
     finally:
-        for sig, handler in previous.items():
-            signal.signal(sig, handler)
-        if child is not None:
-            # The leader can exit while its children continue running. Always
-            # clean our own process group, including on process exit 0.
-            for sig in (signal.SIGTERM, signal.SIGKILL):
-                try:
-                    os.killpg(child.pid, sig)
-                except ProcessLookupError:
-                    break
-                if sig == signal.SIGTERM:
-                    time.sleep(0.1)
-            child.wait()
-        if output_thread is not None:
-            output_thread.join(timeout=3)
-        if child is not None and child.stdout is not None:
-            child.stdout.close()
-        if log is not None:
-            log.close()
-        _finish(manifest, record, exit_code=code, output=output, status=status, failure=failure)
+        for sig in previous:
+            signal.signal(sig, signal.SIG_IGN)
+        try:
+            if child is not None:
+                # The leader can exit while its children continue running. Always
+                # clean our own process group, including on process exit 0.
+                for sig in (signal.SIGTERM, signal.SIGKILL):
+                    if not _signal_owned_group(child, sig):
+                        break
+                    if sig == signal.SIGTERM:
+                        time.sleep(0.1)
+                child.wait()
+            if output_thread is not None:
+                output_thread.join(timeout=3)
+            if child is not None and child.stdout is not None:
+                child.stdout.close()
+            if log is not None:
+                log.close()
+            _finish(manifest, record, exit_code=code, output=output, status=status, failure=failure)
+        finally:
+            for sig, handler in previous.items():
+                signal.signal(sig, handler)
     return record
 
 

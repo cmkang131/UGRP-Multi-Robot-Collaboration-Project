@@ -1,0 +1,452 @@
+{
+  "round": "egomap66",
+  "host": "oracle-x86",
+  "checkpoint_source_sha": "6f1fa9251a2d78afcad29e3655a20aee02086761",
+  "checkpoints": [
+    {
+      "seed": 63001,
+      "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63001/checkpoints/ckpt_00378_t00076.900.pkl.zlib",
+      "file": "ckpt_00378_t00076.900.pkl.zlib",
+      "sha256": "f5ab5467bb1de487fd95cf6d377eedc4ad8bb139204da917c08621908aa7a256",
+      "tick": 378,
+      "sim_s": 76.9,
+      "triggers": [
+        "first_own_B_confirmation"
+      ],
+      "bytes": 18600304
+    },
+    {
+      "seed": 63002,
+      "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63002/checkpoints/ckpt_00199_t00041.100.pkl.zlib",
+      "file": "ckpt_00199_t00041.100.pkl.zlib",
+      "sha256": "f39ffb0e5f8654f2808e88408a4321763c850ca47b2bf555764bde2a7da52943",
+      "tick": 199,
+      "sim_s": 41.1,
+      "triggers": [
+        "first_own_B_confirmation"
+      ],
+      "bytes": 12883161
+    },
+    {
+      "seed": 63003,
+      "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63003/checkpoints/ckpt_00071_t00015.500.pkl.zlib",
+      "file": "ckpt_00071_t00015.500.pkl.zlib",
+      "sha256": "fbb1159a172daa9b4151fbd05ba74dda29d9d9f65b908ee08db8d0f041dc4824",
+      "tick": 71,
+      "sim_s": 15.5,
+      "triggers": [
+        "first_own_B_confirmation"
+      ],
+      "bytes": 8453302
+    },
+    {
+      "seed": 63004,
+      "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63004/checkpoints/ckpt_00332_t00067.700.pkl.zlib",
+      "file": "ckpt_00332_t00067.700.pkl.zlib",
+      "sha256": "8de23b945657ebc3fa09a051b8411284937df363e1aec00b57096b7d3be6d1c2",
+      "tick": 332,
+      "sim_s": 67.7,
+      "triggers": [
+        "first_own_B_confirmation"
+      ],
+      "bytes": 16163572
+    },
+    {
+      "seed": 63005,
+      "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63005/checkpoints/ckpt_00167_t00034.700.pkl.zlib",
+      "file": "ckpt_00167_t00034.700.pkl.zlib",
+      "sha256": "81c8c4a4eef2fe82f87a92b713bbc0e445ad93368489faa755bbe9424fd51d24",
+      "tick": 167,
+      "sim_s": 34.7,
+      "triggers": [
+        "first_own_B_confirmation"
+      ],
+      "bytes": 11897690
+    },
+    {
+      "seed": 63006,
+      "path": "/home/ubuntu/ugrp-sim/runs/egomap63-batch/data/prepare-63006/checkpoints/ckpt_00135_t00028.300.pkl.zlib",
+      "file": "ckpt_00135_t00028.300.pkl.zlib",
+      "sha256": "dc782d73c2e7c621d987309aadf205022f2423e7cc26cbbee8cd8014ca067174",
+      "tick": 135,
+      "sim_s": 28.3,
+      "triggers": [
+        "first_own_B_confirmation"
+      ],
+      "bytes": 10922284
+    }
+  ],
+  "seeds": [
+    63001,
+    63002,
+    63003,
+    63004,
+    63005,
+    63006
+  ],
+  "conditions": [
+    "baseline",
+    "progress_lookahead",
+    "return_local_vtr",
+    "return_own_free_astar",
+    "arrival_verify_fsm",
+    "combined"
+  ],
+  "n": 36,
+  "population": 100,
+  "heading_stability": "off",
+  "stage_budgets_sim_s": {
+    "B_approach": 270,
+    "return_leg": 270
+  },
+  "gates": {
+    "arrival_distance_m": 0.2,
+    "consecutive_frames": 5,
+    "current_confirmed_same_B_required": true,
+    "GT": "evaluation only; never controller goals"
+  },
+  "frozen": [
+    "detector",
+    "motion model",
+    "RBPF gates",
+    "CSM acceptance",
+    "eg64/65 checkpoints",
+    "pulse/coast contract"
+  ],
+  "host_alarm_s": 8715,
+  "host_alarm_source": "eg65 max wall/SIM 7.791, 2x margin plus 300s; not outcome gate",
+  "fixed_parameters": {
+    "lookahead_m": 0.6,
+    "lookahead_source": "Nav2 Jazzy default",
+    "progress": "adjacent segment projection only; existing .05m endpoint radius",
+    "local_match_interval_s": 10,
+    "local_reference_nodes": 5,
+    "local_match": "existing TraversalGraph.match, no threshold changes",
+    "local_match_failure": "stop translation and retry next observation interval; no forced global reset or sweep",
+    "unknown": "blocked",
+    "planner": "vendored NavFn Dijkstra; option name astar denotes own-free planner family, not different search kernel",
+    "visual_reobserve_angles_deg": [
+      0,
+      27.25,
+      -27.25
+    ],
+    "visual_phase_timeout_s": 10,
+    "visual_association": "existing floor v3 temporal_center_max_m",
+    "visual_reobserve": "bounded rotation only; success still requires current .20m + 5 frames"
+  },
+  "adaptations": [
+    "retain calibrated single-axis finite pulses instead of continuous RPP curvature/acceleration",
+    "fixed monocular RGB wall submaps replace stereo/gimbal VT&R; localization failure stops repeat; no new 360 spin",
+    "no global nearest-route jump; temporal adjacent segment only",
+    "state latch does not waive .20m at declaration; same B current confirmed patch mandatory",
+    "reuse existing observed-free NavFn kernel and inflation; no static map goals or invented free corridors"
+  ],
+  "early_check": {
+    "wall_seconds": 180,
+    "no_physics_motion_m": 0.01,
+    "no_physics_motion_yaw_rad": 0.01,
+    "minimum_sim_s_for_stall": 10,
+    "turn_only_fraction": 0.9,
+    "stop_owned_anomaly": true,
+    "retain_all_attempts": true
+  },
+  "batch_admission": {
+    "loadavg_less_than": 51,
+    "available_gib_min": 6,
+    "pending60s_cpu_reservation": 2,
+    "pending60s_gib_reservation": 1.5,
+    "no_fixed10_cap": true
+  },
+  "sources": [
+    {
+      "title": "RPP",
+      "url": "https://raw.githubusercontent.com/ros-navigation/navigation2/jazzy/nav2_regulated_pure_pursuit_controller/src/regulated_pure_pursuit_controller.cpp",
+      "sha256": "9f5f23dc174e2bfae10c502fdebecc37b65d5397039d0c2c4504404557101d85",
+      "lines": "361-407",
+      "license": "Apache-2.0",
+      "status": "original read"
+    },
+    {
+      "title": "RPP pruning",
+      "url": "https://raw.githubusercontent.com/ros-navigation/navigation2/jazzy/nav2_regulated_pure_pursuit_controller/src/path_handler.cpp",
+      "sha256": "d44f57fb6a1c277ca378196ce4675a5f6377bb3fdcff162cdbe96842874d71b1",
+      "lines": "61-79,127-130",
+      "license": "Apache-2.0",
+      "status": "original read"
+    },
+    {
+      "title": "RPP defaults",
+      "url": "https://raw.githubusercontent.com/ros-navigation/navigation2/jazzy/nav2_regulated_pure_pursuit_controller/src/parameter_handler.cpp",
+      "sha256": "19c6af2e3308868a034d869f8dc2ca3333a625349fcc4f11eb2c33e98cd22969",
+      "lines": "34-51",
+      "license": "Apache-2.0",
+      "status": "original read"
+    },
+    {
+      "title": "NavFn",
+      "url": "https://raw.githubusercontent.com/ros-navigation/navigation2/main/nav2_navfn_planner/src/navfn_planner.cpp",
+      "sha256": "457833cf7fa6fdb0b423db267f0d4311a728e4505dda61d561422fb1d020bbd4",
+      "lines": "makePlan,clearRobotCell",
+      "license": "Apache-2.0",
+      "status": "original read"
+    },
+    {
+      "title": "stateful goal",
+      "url": "https://raw.githubusercontent.com/ros-navigation/navigation2/main/nav2_controller/plugins/simple_goal_checker.cpp",
+      "sha256": "5fe6b36acdaa331a19ed3da3cc717a69f5855a5f8f2b842298c56f5e0ecb5592",
+      "lines": "134-166",
+      "license": "Apache-2.0",
+      "status": "original read"
+    },
+    {
+      "title": "Visual Teach and Repeat for Emergency Return",
+      "url": "https://arxiv.org/html/1809.05757",
+      "section": "III-A; III-C Path-Following Reference equations",
+      "status": "full HTML read"
+    },
+    {
+      "title": "Furgale Barfoot 2010",
+      "url": "https://onlinelibrary.wiley.com/doi/10.1002/rob.20342",
+      "status": "publisher abstract only; full text unverified"
+    }
+  ],
+  "prior_raw": "experiments/2026-10-10-own-route-heading-stability/results/comparison-v2.json",
+  "prior_counts": {
+    "baseline100": {
+      "B": "2/6",
+      "returned": "0/6",
+      "turn_reversals": 1271,
+      "turn_frames": 8163,
+      "total_frames": 13611
+    },
+    "heading65on": {
+      "B": "0/6",
+      "hold_fraction": 0.6726
+    },
+    "survey": {
+      "reversals": 1419,
+      "target_bearing_dominant": 1256,
+      "target_dominant_fraction": 0.8851303735024665,
+      "near_B_frames63002": 701,
+      "no_patch_frames63002": 691
+    }
+  },
+  "jobs": [
+    {
+      "name": "egomap66-63001-baseline",
+      "seed": 63001,
+      "condition": "baseline",
+      "command": ".venv-sim/bin/python -m scripts.run_own_route_references --mode stage --seed 63001 --condition baseline --output outputs/egomap66-batch/data/egomap66-63001-baseline"
+    },
+    {
+      "name": "egomap66-63001-progress_lookahead",
+      "seed": 63001,
+      "condition": "progress_lookahead",
+      "command": ".venv-sim/bin/python -m scripts.run_own_route_references --mode stage --seed 63001 --condition progress_lookahead --output outputs/egomap66-batch/data/egomap66-63001-progress_lookahead"
+    },
+    {
+      "name": "egomap66-63001-return_local_vtr",
+      "seed": 63001,
+      "condition": "return_local_vtr",
+      "command": ".venv-sim/bin/python -m scripts.run_own_route_references --mode stage --seed 63001 --condition return_local_vtr --output outputs/egomap66-batch/data/egomap66-63001-return_local_vtr"
+    },
+    {
+      "name": "egomap66-63001-return_own_free_astar",
+      "seed": 63001,
+      "condition": "return_own_free_astar",
+      "command": ".venv-sim/bin/python -m scripts.run_own_route_references --mode stage --seed 63001 --condition return_own_free_astar --output outputs/egomap66-batch/data/egomap66-63001-return_own_free_astar"
+    },
+    {
+      "name": "egomap66-63001-arrival_verify_fsm",
+      "seed": 63001,
+      "condition": "arrival_verify_fsm",
+      "command": ".venv-sim/bin/python -m scripts.run_own_route_references --mode stage --seed 63001 --condition arrival_verify_fsm --output outputs/egomap66-batch/data/egomap66-63001-arrival_verify_fsm"
+    },
+    {
+      "name": "egomap66-63001-combined",
+      "seed": 63001,
+      "condition": "combined",
+      "command": ".venv-sim/bin/python -m scripts.run_own_route_references --mode stage --seed 63001 --condition combined --output outputs/egomap66-batch/data/egomap66-63001-combined"
+    },
+    {
+      "name": "egomap66-63002-baseline",
+      "seed": 63002,
+      "condition": "baseline",
+      "command": ".venv-sim/bin/python -m scripts.run_own_route_references --mode stage --seed 63002 --condition baseline --output outputs/egomap66-batch/data/egomap66-63002-baseline"
+    },
+    {
+      "name": "egomap66-63002-progress_lookahead",
+      "seed": 63002,
+      "condition": "progress_lookahead",
+      "command": ".venv-sim/bin/python -m scripts.run_own_route_references --mode stage --seed 63002 --condition progress_lookahead --output outputs/egomap66-batch/data/egomap66-63002-progress_lookahead"
+    },
+    {
+      "name": "egomap66-63002-return_local_vtr",
+      "seed": 63002,
+      "condition": "return_local_vtr",
+      "command": ".venv-sim/bin/python -m scripts.run_own_route_references --mode stage --seed 63002 --condition return_local_vtr --output outputs/egomap66-batch/data/egomap66-63002-return_local_vtr"
+    },
+    {
+      "name": "egomap66-63002-return_own_free_astar",
+      "seed": 63002,
+      "condition": "return_own_free_astar",
+      "command": ".venv-sim/bin/python -m scripts.run_own_route_references --mode stage --seed 63002 --condition return_own_free_astar --output outputs/egomap66-batch/data/egomap66-63002-return_own_free_astar"
+    },
+    {
+      "name": "egomap66-63002-arrival_verify_fsm",
+      "seed": 63002,
+      "condition": "arrival_verify_fsm",
+      "command": ".venv-sim/bin/python -m scripts.run_own_route_references --mode stage --seed 63002 --condition arrival_verify_fsm --output outputs/egomap66-batch/data/egomap66-63002-arrival_verify_fsm"
+    },
+    {
+      "name": "egomap66-63002-combined",
+      "seed": 63002,
+      "condition": "combined",
+      "command": ".venv-sim/bin/python -m scripts.run_own_route_references --mode stage --seed 63002 --condition combined --output outputs/egomap66-batch/data/egomap66-63002-combined"
+    },
+    {
+      "name": "egomap66-63003-baseline",
+      "seed": 63003,
+      "condition": "baseline",
+      "command": ".venv-sim/bin/python -m scripts.run_own_route_references --mode stage --seed 63003 --condition baseline --output outputs/egomap66-batch/data/egomap66-63003-baseline"
+    },
+    {
+      "name": "egomap66-63003-progress_lookahead",
+      "seed": 63003,
+      "condition": "progress_lookahead",
+      "command": ".venv-sim/bin/python -m scripts.run_own_route_references --mode stage --seed 63003 --condition progress_lookahead --output outputs/egomap66-batch/data/egomap66-63003-progress_lookahead"
+    },
+    {
+      "name": "egomap66-63003-return_local_vtr",
+      "seed": 63003,
+      "condition": "return_local_vtr",
+      "command": ".venv-sim/bin/python -m scripts.run_own_route_references --mode stage --seed 63003 --condition return_local_vtr --output outputs/egomap66-batch/data/egomap66-63003-return_local_vtr"
+    },
+    {
+      "name": "egomap66-63003-return_own_free_astar",
+      "seed": 63003,
+      "condition": "return_own_free_astar",
+      "command": ".venv-sim/bin/python -m scripts.run_own_route_references --mode stage --seed 63003 --condition return_own_free_astar --output outputs/egomap66-batch/data/egomap66-63003-return_own_free_astar"
+    },
+    {
+      "name": "egomap66-63003-arrival_verify_fsm",
+      "seed": 63003,
+      "condition": "arrival_verify_fsm",
+      "command": ".venv-sim/bin/python -m scripts.run_own_route_references --mode stage --seed 63003 --condition arrival_verify_fsm --output outputs/egomap66-batch/data/egomap66-63003-arrival_verify_fsm"
+    },
+    {
+      "name": "egomap66-63003-combined",
+      "seed": 63003,
+      "condition": "combined",
+      "command": ".venv-sim/bin/python -m scripts.run_own_route_references --mode stage --seed 63003 --condition combined --output outputs/egomap66-batch/data/egomap66-63003-combined"
+    },
+    {
+      "name": "egomap66-63004-baseline",
+      "seed": 63004,
+      "condition": "baseline",
+      "command": ".venv-sim/bin/python -m scripts.run_own_route_references --mode stage --seed 63004 --condition baseline --output outputs/egomap66-batch/data/egomap66-63004-baseline"
+    },
+    {
+      "name": "egomap66-63004-progress_lookahead",
+      "seed": 63004,
+      "condition": "progress_lookahead",
+      "command": ".venv-sim/bin/python -m scripts.run_own_route_references --mode stage --seed 63004 --condition progress_lookahead --output outputs/egomap66-batch/data/egomap66-63004-progress_lookahead"
+    },
+    {
+      "name": "egomap66-63004-return_local_vtr",
+      "seed": 63004,
+      "condition": "return_local_vtr",
+      "command": ".venv-sim/bin/python -m scripts.run_own_route_references --mode stage --seed 63004 --condition return_local_vtr --output outputs/egomap66-batch/data/egomap66-63004-return_local_vtr"
+    },
+    {
+      "name": "egomap66-63004-return_own_free_astar",
+      "seed": 63004,
+      "condition": "return_own_free_astar",
+      "command": ".venv-sim/bin/python -m scripts.run_own_route_references --mode stage --seed 63004 --condition return_own_free_astar --output outputs/egomap66-batch/data/egomap66-63004-return_own_free_astar"
+    },
+    {
+      "name": "egomap66-63004-arrival_verify_fsm",
+      "seed": 63004,
+      "condition": "arrival_verify_fsm",
+      "command": ".venv-sim/bin/python -m scripts.run_own_route_references --mode stage --seed 63004 --condition arrival_verify_fsm --output outputs/egomap66-batch/data/egomap66-63004-arrival_verify_fsm"
+    },
+    {
+      "name": "egomap66-63004-combined",
+      "seed": 63004,
+      "condition": "combined",
+      "command": ".venv-sim/bin/python -m scripts.run_own_route_references --mode stage --seed 63004 --condition combined --output outputs/egomap66-batch/data/egomap66-63004-combined"
+    },
+    {
+      "name": "egomap66-63005-baseline",
+      "seed": 63005,
+      "condition": "baseline",
+      "command": ".venv-sim/bin/python -m scripts.run_own_route_references --mode stage --seed 63005 --condition baseline --output outputs/egomap66-batch/data/egomap66-63005-baseline"
+    },
+    {
+      "name": "egomap66-63005-progress_lookahead",
+      "seed": 63005,
+      "condition": "progress_lookahead",
+      "command": ".venv-sim/bin/python -m scripts.run_own_route_references --mode stage --seed 63005 --condition progress_lookahead --output outputs/egomap66-batch/data/egomap66-63005-progress_lookahead"
+    },
+    {
+      "name": "egomap66-63005-return_local_vtr",
+      "seed": 63005,
+      "condition": "return_local_vtr",
+      "command": ".venv-sim/bin/python -m scripts.run_own_route_references --mode stage --seed 63005 --condition return_local_vtr --output outputs/egomap66-batch/data/egomap66-63005-return_local_vtr"
+    },
+    {
+      "name": "egomap66-63005-return_own_free_astar",
+      "seed": 63005,
+      "condition": "return_own_free_astar",
+      "command": ".venv-sim/bin/python -m scripts.run_own_route_references --mode stage --seed 63005 --condition return_own_free_astar --output outputs/egomap66-batch/data/egomap66-63005-return_own_free_astar"
+    },
+    {
+      "name": "egomap66-63005-arrival_verify_fsm",
+      "seed": 63005,
+      "condition": "arrival_verify_fsm",
+      "command": ".venv-sim/bin/python -m scripts.run_own_route_references --mode stage --seed 63005 --condition arrival_verify_fsm --output outputs/egomap66-batch/data/egomap66-63005-arrival_verify_fsm"
+    },
+    {
+      "name": "egomap66-63005-combined",
+      "seed": 63005,
+      "condition": "combined",
+      "command": ".venv-sim/bin/python -m scripts.run_own_route_references --mode stage --seed 63005 --condition combined --output outputs/egomap66-batch/data/egomap66-63005-combined"
+    },
+    {
+      "name": "egomap66-63006-baseline",
+      "seed": 63006,
+      "condition": "baseline",
+      "command": ".venv-sim/bin/python -m scripts.run_own_route_references --mode stage --seed 63006 --condition baseline --output outputs/egomap66-batch/data/egomap66-63006-baseline"
+    },
+    {
+      "name": "egomap66-63006-progress_lookahead",
+      "seed": 63006,
+      "condition": "progress_lookahead",
+      "command": ".venv-sim/bin/python -m scripts.run_own_route_references --mode stage --seed 63006 --condition progress_lookahead --output outputs/egomap66-batch/data/egomap66-63006-progress_lookahead"
+    },
+    {
+      "name": "egomap66-63006-return_local_vtr",
+      "seed": 63006,
+      "condition": "return_local_vtr",
+      "command": ".venv-sim/bin/python -m scripts.run_own_route_references --mode stage --seed 63006 --condition return_local_vtr --output outputs/egomap66-batch/data/egomap66-63006-return_local_vtr"
+    },
+    {
+      "name": "egomap66-63006-return_own_free_astar",
+      "seed": 63006,
+      "condition": "return_own_free_astar",
+      "command": ".venv-sim/bin/python -m scripts.run_own_route_references --mode stage --seed 63006 --condition return_own_free_astar --output outputs/egomap66-batch/data/egomap66-63006-return_own_free_astar"
+    },
+    {
+      "name": "egomap66-63006-arrival_verify_fsm",
+      "seed": 63006,
+      "condition": "arrival_verify_fsm",
+      "command": ".venv-sim/bin/python -m scripts.run_own_route_references --mode stage --seed 63006 --condition arrival_verify_fsm --output outputs/egomap66-batch/data/egomap66-63006-arrival_verify_fsm"
+    },
+    {
+      "name": "egomap66-63006-combined",
+      "seed": 63006,
+      "condition": "combined",
+      "command": ".venv-sim/bin/python -m scripts.run_own_route_references --mode stage --seed 63006 --condition combined --output outputs/egomap66-batch/data/egomap66-63006-combined"
+    }
+  ]
+}

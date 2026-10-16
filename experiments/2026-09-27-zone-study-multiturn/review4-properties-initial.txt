@@ -1,0 +1,29 @@
+........................................................................ [  9%]
+........................................................................ [ 19%]
+........................................................................ [ 29%]
+........................................................................ [ 38%]
+........................................................................ [ 48%]
+..........................................F
+=================================== FAILURES ===================================
+____________ test_generated_zero_send_gap_cannot_strand_messages[2] ____________
+
+v64 = <class 'test_zone_study_multiturn_properties.v64.<locals>.LegacyTimingTrial'>
+seed = 2
+
+    @pytest.mark.parametrize('seed', range(12))
+    def test_generated_zero_send_gap_cannot_strand_messages(v64, seed):
+        old, old_requests = run_stream(seed, trial_cls=v64, zero_send_gap=True)
+        baseline, requests = run_stream(seed, zero_send_gap=True)
+        assert signature(baseline, requests) == signature(old, old_requests)
+        for condition in zi.MAIN_CONDITIONS[1:]:
+            trial, requests = run_stream(seed, condition, communication=True, zero_send_gap=True)
+            assert common_schedule(trial) == common_schedule(baseline)
+>           received = next(p for p in requests if p['robot_id'] == 'r1' and p['sim_time_s'] == 8.)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           StopIteration
+
+tests/test_zone_study_multiturn_properties.py:232: StopIteration
+=========================== short test summary info ============================
+FAILED tests/test_zone_study_multiturn_properties.py::test_generated_zero_send_gap_cannot_strand_messages[2]
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 402 passed in 343.06s (0:05:43)

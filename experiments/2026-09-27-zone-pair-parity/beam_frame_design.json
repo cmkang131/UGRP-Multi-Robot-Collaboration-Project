@@ -1,0 +1,561 @@
+{
+  "schema": "ugrp.beam_frame_design.v1",
+  "language": "ko",
+  "status": "DESIGN_DRAFT_NOT_RUN",
+  "runnable": false,
+  "scope": {
+    "production_code_changes": 0,
+    "physics_steps": 0,
+    "model_calls": 0,
+    "git_commits": 0,
+    "GT_runtime": false,
+    "google_drive_used": false
+  },
+  "sources": {
+    "run_sha": "3ea2edc08e5addafaf3cedc934c463ad8e1635c8",
+    "analysis_checkout": "6d1125a531377726ddc2a47d2e616ba937a15b89",
+    "issue_comment": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/221#issuecomment-5857067742",
+    "source_receipt": "beam_frame_sources.json",
+    "diagnosis": "dev09_10_diagnosis.json",
+    "previous_loaded_design": "loaded_stage_design.md",
+    "previous_loaded_design_sha256": "ece82b4d2cc71ea89a580d479eddf519ab13da614bebb22993adbc97709ea2df"
+  },
+  "recommendation": {
+    "candidate": "beam-relative manipulation plus independent global swept-envelope certificate and fixed set-down checkpoints",
+    "first_step": "Repair rounded tag-time comparison independently of beam-frame redesign",
+    "dev_ready": false,
+    "adoption": false,
+    "not_merely_a_coordinate_rotation": true,
+    "numerical_thresholds_preserved_but_admission_semantics_changed": true
+  },
+  "frame_contract": {
+    "world": "static map frame W",
+    "own": "own base R_i",
+    "beam": "segment-local B",
+    "relative": "T_Ri_B",
+    "world_anchor": "T_W_Ri(t0) * T_Ri_B(t0)",
+    "global_gauge_shrink_from_beam_only": false,
+    "peer_covariance_fusion": false,
+    "runtime_inputs": [
+      "own wrist RGB",
+      "static map and fixed camera/object calibration",
+      "own issued commands",
+      "fixed task sheet",
+      "fixed STATUS enums"
+    ],
+    "forbidden": [
+      "GT poses",
+      "measured joints",
+      "contact/success truth",
+      "TOP",
+      "peer image/pose/covariance",
+      "host-generated readiness"
+    ],
+    "resting_ground_plane_for_loaded": false,
+    "unobservable_axes": "unknown, never zero variance"
+  },
+  "unchanged_values": {
+    "align_forward_m": 0.012,
+    "align_lateral_m": 0.008,
+    "align_angle_rad": 0.035,
+    "aligned_streak": 2,
+    "preclose_sigma_xy_m": 0.05,
+    "preclose_sigma_yaw_rad": 0.05235987755982989,
+    "loaded_high_xy_m": 0.07,
+    "loaded_high_yaw_deg": 3,
+    "loaded_low_xy_m": 0.06,
+    "loaded_low_yaw_deg": 2.5,
+    "geometry_margin_m": 0.035,
+    "k_sigma": 2,
+    "lift_iou": 0.45,
+    "carry_fullframe_iou": 0.7,
+    "control_s": 0.1,
+    "arm_s": 0.05,
+    "heartbeat_s": 0.05,
+    "heartbeat_timeout_s": 0.15,
+    "readiness_ttl_s": 0.6,
+    "max_segments": 8,
+    "weld": false
+  },
+  "global_budget": {
+    "certificate": "all swept points/poses/times including stop and lower; signed clearance exceeds .035+sampling+bias+stop+relative+k*sqrt(n^T J P J^T n)",
+    "legacy_conservative_sigma_xy_max": "(d-.035-B-relative-stop-sampling-2*L*sigma_yaw)/2",
+    "directional_sigma": "sqrt(n^T P_xy n), preserve XY-yaw correlations",
+    "sigma_clipping_allowed": false,
+    "multimodal": "union of credible modes, not mean-only",
+    "nonpositive_budget": "REJECT",
+    "missing_bound": "INSUFFICIENT_EVIDENCE",
+    "gaussian_95pct_claim": false,
+    "example": {
+      "clearance_m": 0.5,
+      "lever_m": 0.9,
+      "yaw_sigma_deg": 3,
+      "sigma_xy_max_bias0_m": 0.1853761101961531,
+      "sigma_xy_max_bias0p1_m": 0.1353761101961531
+    },
+    "static_calculations": [
+      {
+        "robot": "r1",
+        "position_basis": "prestation",
+        "xyyaw": [
+          0.27499999999999997,
+          0.0,
+          0.0
+        ],
+        "posture": "LOOK_P20",
+        "limiting": {
+          "wall": "wall_west",
+          "clearance_m": 1.1500000000000001,
+          "lever_m": 0.17492855684535902,
+          "sigma_xy_cap_at_yaw3deg_bias0_m": 0.5483407621818593
+        },
+        "min_nominal_clearance_m": 1.1500000000000001,
+        "max_lever_m": 0.20380469656301725
+      },
+      {
+        "robot": "r1",
+        "position_basis": "prestation",
+        "xyyaw": [
+          0.27499999999999997,
+          0.0,
+          0.0
+        ],
+        "posture": "search",
+        "limiting": {
+          "wall": "wall_west",
+          "clearance_m": 1.1500000000000001,
+          "lever_m": 0.17492855684535902,
+          "sigma_xy_cap_at_yaw3deg_bias0_m": 0.5483407621818593
+        },
+        "min_nominal_clearance_m": 1.1500000000000001,
+        "max_lever_m": 0.17492855684535902
+      },
+      {
+        "robot": "r1",
+        "position_basis": "prestation",
+        "xyyaw": [
+          0.27499999999999997,
+          0.0,
+          0.0
+        ],
+        "posture": "p45",
+        "limiting": {
+          "wall": "wall_west",
+          "clearance_m": 1.1500000000000001,
+          "lever_m": 0.17492855684535902,
+          "sigma_xy_cap_at_yaw3deg_bias0_m": 0.5483407621818593
+        },
+        "min_nominal_clearance_m": 1.1500000000000001,
+        "max_lever_m": 0.2141057781804936
+      },
+      {
+        "robot": "r1",
+        "position_basis": "prestation",
+        "xyyaw": [
+          0.27499999999999997,
+          0.0,
+          0.0
+        ],
+        "posture": "inspect",
+        "limiting": {
+          "wall": "wall_west",
+          "clearance_m": 1.1500000000000001,
+          "lever_m": 0.17492855684535902,
+          "sigma_xy_cap_at_yaw3deg_bias0_m": 0.5483407621818593
+        },
+        "min_nominal_clearance_m": 1.1500000000000001,
+        "max_lever_m": 0.17492855684535902
+      },
+      {
+        "robot": "r1",
+        "position_basis": "nominal_grasp_station",
+        "xyyaw": [
+          0.575,
+          0.0,
+          0.0
+        ],
+        "posture": "LOOK_P20",
+        "limiting": {
+          "wall": "wall_divider_1",
+          "clearance_m": 0.8846914486347462,
+          "lever_m": 0.737503911711026,
+          "sigma_xy_cap_at_yaw3deg_bias0_m": 0.3862301098002882
+        },
+        "min_nominal_clearance_m": 0.8846914486347462,
+        "max_lever_m": 0.737503911711026
+      },
+      {
+        "robot": "r1",
+        "position_basis": "nominal_grasp_station",
+        "xyyaw": [
+          0.575,
+          0.0,
+          0.0
+        ],
+        "posture": "search",
+        "limiting": {
+          "wall": "wall_divider_1",
+          "clearance_m": 0.9186089999763356,
+          "lever_m": 0.7027719072893531,
+          "sigma_xy_cap_at_yaw3deg_bias0_m": 0.4050074489700091
+        },
+        "min_nominal_clearance_m": 0.9186089999763356,
+        "max_lever_m": 0.7027719072893531
+      },
+      {
+        "robot": "r1",
+        "position_basis": "nominal_grasp_station",
+        "xyyaw": [
+          0.575,
+          0.0,
+          0.0
+        ],
+        "posture": "p45",
+        "limiting": {
+          "wall": "wall_divider_1",
+          "clearance_m": 0.8701061427804537,
+          "lever_m": 0.7524590967264978,
+          "sigma_xy_cap_at_yaw3deg_bias0_m": 0.37815440521684723
+        },
+        "min_nominal_clearance_m": 0.8701061427804537,
+        "max_lever_m": 0.7524590967264978
+      },
+      {
+        "robot": "r1",
+        "position_basis": "nominal_grasp_station",
+        "xyyaw": [
+          0.575,
+          0.0,
+          0.0
+        ],
+        "posture": "inspect",
+        "limiting": {
+          "wall": "wall_divider_1",
+          "clearance_m": 0.9477192563064154,
+          "lever_m": 0.6730093455599335,
+          "sigma_xy_cap_at_yaw3deg_bias0_m": 0.4211209412230683
+        },
+        "min_nominal_clearance_m": 0.9477192563064154,
+        "max_lever_m": 0.6730093455599335
+      },
+      {
+        "robot": "r2",
+        "position_basis": "prestation",
+        "xyyaw": [
+          1.725,
+          3.6739403974420595e-17,
+          -3.141592653589793
+        ],
+        "posture": "LOOK_P20",
+        "limiting": {
+          "wall": "wall_divider_1",
+          "clearance_m": 0.31953090617340935,
+          "lever_m": 0.17492855684535902,
+          "sigma_xy_cap_at_yaw3deg_bias0_m": 0.13310621526856395
+        },
+        "min_nominal_clearance_m": 0.31953090617340935,
+        "max_lever_m": 0.20380469656301725
+      },
+      {
+        "robot": "r2",
+        "position_basis": "prestation",
+        "xyyaw": [
+          1.725,
+          3.6739403974420595e-17,
+          -3.141592653589793
+        ],
+        "posture": "search",
+        "limiting": {
+          "wall": "wall_divider_1",
+          "clearance_m": 0.31953090617340935,
+          "lever_m": 0.17492855684535902,
+          "sigma_xy_cap_at_yaw3deg_bias0_m": 0.13310621526856395
+        },
+        "min_nominal_clearance_m": 0.31953090617340935,
+        "max_lever_m": 0.17492855684535902
+      },
+      {
+        "robot": "r2",
+        "position_basis": "prestation",
+        "xyyaw": [
+          1.725,
+          3.6739403974420595e-17,
+          -3.141592653589793
+        ],
+        "posture": "p45",
+        "limiting": {
+          "wall": "wall_divider_1",
+          "clearance_m": 0.31953090617340935,
+          "lever_m": 0.17492855684535902,
+          "sigma_xy_cap_at_yaw3deg_bias0_m": 0.13310621526856395
+        },
+        "min_nominal_clearance_m": 0.31953090617340935,
+        "max_lever_m": 0.2141057781804936
+      },
+      {
+        "robot": "r2",
+        "position_basis": "prestation",
+        "xyyaw": [
+          1.725,
+          3.6739403974420595e-17,
+          -3.141592653589793
+        ],
+        "posture": "inspect",
+        "limiting": {
+          "wall": "wall_divider_1",
+          "clearance_m": 0.31953090617340935,
+          "lever_m": 0.17492855684535902,
+          "sigma_xy_cap_at_yaw3deg_bias0_m": 0.13310621526856395
+        },
+        "min_nominal_clearance_m": 0.31953090617340935,
+        "max_lever_m": 0.17492855684535902
+      },
+      {
+        "robot": "r2",
+        "position_basis": "nominal_grasp_station",
+        "xyyaw": [
+          1.425,
+          0.0,
+          -3.141592653589793
+        ],
+        "posture": "LOOK_P20",
+        "limiting": {
+          "wall": "wall_divider_1",
+          "clearance_m": 0.6100000000000002,
+          "lever_m": 0.17492855684535902,
+          "sigma_xy_cap_at_yaw3deg_bias0_m": 0.2783407621818593
+        },
+        "min_nominal_clearance_m": 0.6100000000000002,
+        "max_lever_m": 0.737503911711026
+      },
+      {
+        "robot": "r2",
+        "position_basis": "nominal_grasp_station",
+        "xyyaw": [
+          1.425,
+          0.0,
+          -3.141592653589793
+        ],
+        "posture": "search",
+        "limiting": {
+          "wall": "wall_divider_1",
+          "clearance_m": 0.6100000000000002,
+          "lever_m": 0.17492855684535902,
+          "sigma_xy_cap_at_yaw3deg_bias0_m": 0.2783407621818593
+        },
+        "min_nominal_clearance_m": 0.6100000000000002,
+        "max_lever_m": 0.7027719072893531
+      },
+      {
+        "robot": "r2",
+        "position_basis": "nominal_grasp_station",
+        "xyyaw": [
+          1.425,
+          0.0,
+          -3.141592653589793
+        ],
+        "posture": "p45",
+        "limiting": {
+          "wall": "wall_divider_1",
+          "clearance_m": 0.6100000000000002,
+          "lever_m": 0.17492855684535902,
+          "sigma_xy_cap_at_yaw3deg_bias0_m": 0.2783407621818593
+        },
+        "min_nominal_clearance_m": 0.6100000000000002,
+        "max_lever_m": 0.7524590967264978
+      },
+      {
+        "robot": "r2",
+        "position_basis": "nominal_grasp_station",
+        "xyyaw": [
+          1.425,
+          0.0,
+          -3.141592653589793
+        ],
+        "posture": "inspect",
+        "limiting": {
+          "wall": "wall_divider_1",
+          "clearance_m": 0.6100000000000002,
+          "lever_m": 0.17492855684535902,
+          "sigma_xy_cap_at_yaw3deg_bias0_m": 0.2783407621818593
+        },
+        "min_nominal_clearance_m": 0.6100000000000002,
+        "max_lever_m": 0.6730093455599335
+      }
+    ],
+    "live_safety_certified": false
+  },
+  "synchronization": {
+    "new_enum_required_for_initial_candidate": false,
+    "barriers": [
+      "approach",
+      "close",
+      "lift",
+      "carry",
+      "lower",
+      "open"
+    ],
+    "wire_fields": [
+      "robot_id",
+      "task_id",
+      "seq",
+      "state",
+      "sent_at_s",
+      "observed_at_s",
+      "frame_id",
+      "ready_until_s"
+    ],
+    "ready_requires": [
+      "own relative certificate",
+      "own global future-sweep certificate",
+      "fresh own evidence"
+    ],
+    "host_role": "validate/relay independent submissions and common GO time only",
+    "heartbeat_renews_evidence": false,
+    "loaded_unilateral_pan": false,
+    "abort_clears_both_queues": true,
+    "checkpoint": "budgeted stop/lower/open, confirm own support and separation on both endpoints, sequential look, new segment/anchor/refix"
+  },
+  "loaded_design_integration": {
+    "preserve": [
+      "mode and dt/bias calibration",
+      "B safe set-down checkpoints",
+      "C future error budget",
+      "no global beam-only fix",
+      "support unknown blocks release"
+    ],
+    "extend": [
+      "A beam-relative manipulation report",
+      "directional global certificate in local stages"
+    ],
+    "supersedes_prior_recommendation_scope": "Scalar gate substitution is now a separate OFF-by-default design candidate, not an already-approved implementation"
+  },
+  "offline_audit": {
+    "m2_runs": 49,
+    "m2_traces": 98,
+    "m2_valid_vo_traces": 46,
+    "m2_open_floor_runs": 21,
+    "m2_door_runs": 28,
+    "new_first_align_shape_fits": 96,
+    "new_last_align_shape_fits": 93,
+    "shape_fit_denominator": 98,
+    "m2_close_necessary_input_pass": 0,
+    "m2_close_attempts": 206,
+    "m2_full_design_verdict": {
+      "INSUFFICIENT_EVIDENCE": 49
+    },
+    "dev": [
+      {
+        "id": "dev03",
+        "verdict": "ORIGINAL_ADMISSION_REJECT_NOT_REACHED",
+        "reason": "r1 SELF_UNCERTAIN, r2 rendezvous timeout; local manipulation policy does not change dock/admission"
+      },
+      {
+        "id": "dev04",
+        "verdict": "ORIGINAL_ADMISSION_REJECT_NOT_REACHED",
+        "reason": "r2 SELF_UNCERTAIN, r1 rendezvous timeout; abort intervention not reached"
+      },
+      {
+        "id": "dev05",
+        "verdict": "INSUFFICIENT_EVIDENCE",
+        "conditional_result": "Existing v5 unattached-beam predicate removes old false attached sweep; new relative/global certificate absent"
+      },
+      {
+        "id": "dev06",
+        "verdict": "INSUFFICIENT_EVIDENCE",
+        "conditional_result": "wait_lift global yaw gate can be separated from hold, but lift readiness requires new dual certificate"
+      },
+      {
+        "id": "dev07",
+        "verdict": "INSUFFICIENT_EVIDENCE",
+        "conditional_result": "Existing v5 partial-view predicate passes; new closed-grip/loaded views absent"
+      },
+      {
+        "id": "dev08",
+        "verdict": "INSUFFICIENT_EVIDENCE",
+        "conditional_result": "Old v5 relook branch at 166.3 s; new beam-relative policy has no proven world bound"
+      },
+      {
+        "id": "dev09",
+        "verdict": "INSUFFICIENT_EVIDENCE",
+        "clock_only_first_branch_s": {
+          "r1": 177.3,
+          "r2": 177.3
+        }
+      },
+      {
+        "id": "dev10",
+        "verdict": "INSUFFICIENT_EVIDENCE",
+        "clock_only_first_branch_s": {
+          "r1": 155.6,
+          "r2": 154.5
+        }
+      }
+    ],
+    "new_verified_jpegs": 351,
+    "exact_replay_stops_at_first_changed_view_or_command": true,
+    "success_selection_bias": true,
+    "new_success_rate": null,
+    "image_reads_including_duplicate_blockage": 352
+  },
+  "implementation_files": [
+    "harness/zone_pair_align.py",
+    "harness/zone_own_contract.py",
+    "harness/owncam_pose_source.py",
+    "harness/zone_pair_beam_track.py",
+    "harness/zone_pair_relative.py (proposed)",
+    "harness/zone_pair_budget.py (proposed)",
+    "harness/zone_pair_geometry.py",
+    "harness/zone_pair_guards.py",
+    "harness/zone_pair_executor.py",
+    "harness/zone_pair_grasp.py",
+    "harness/zone_pair_status.py",
+    "harness/zone_own_status.py",
+    "harness/zone_own_perception.py",
+    "scripts/run_zone_pair_dev.py",
+    "configs/simulation_workflows.json"
+  ],
+  "tests_required": [
+    "both-sign floating clock rounding and strict new-tag provenance",
+    "stale/black/partial/identity ambiguity",
+    "common SE2 gauge unobservability",
+    "correlated/multimodal covariance and bias bounds",
+    "signed wall/door/beam/stop/lower sweep",
+    "stale/duplicate/cross-segment/late GO and asymmetric abort/silence",
+    "target blockage and simultaneous unrelated obstacle",
+    "GT/peer read sentinel",
+    "cadence 10/25/50/100 ms invariance",
+    "baseline profile unchanged"
+  ],
+  "preregistration": {
+    "status": "DRAFT_NOT_RUN",
+    "source_sha": null,
+    "bundle_id": null,
+    "calibration_hash": null,
+    "new_seeds": null,
+    "bias_bounds": null,
+    "relative_loaded_model": null,
+    "max_segment_length_m": null,
+    "wall_budget_s": null,
+    "raw_output_location": null,
+    "reason": "Implement and review offline before separately authorizing any physical cohort"
+  },
+  "remaining": [
+    "P1 time predicate implementation",
+    "calibrated relative and global bias/coverage",
+    "loaded metric observability/support evidence",
+    "full future-sweep certificates",
+    "independent endpoint synchronization verification",
+    "new fixed-source physical cohort",
+    "shared TensorBoard publication/UI"
+  ],
+  "artifacts": {
+    "dev09_10_diagnosis.json": "8f3c3c4cc47064cbd9884c47079d121a7a90cb451fe946a919422e63167893c1",
+    "beam_frame_analysis.py": "cc815ca0b6a29e99e3b1f15684ef279977a634fcf0ec61a92823eca5201f1778",
+    "beam_frame_design.md": "6b3158cb5908fd5317c2dbf712e4d034d87b4f824aa152a77acf53c5a3513413",
+    "dev09_10_diagnosis.md": "dc3ec9c073d4ad507de2c24f42d25a1ff842cead725c2e4864e383b20717cdc9",
+    "beam_frame_sources.json": "874d4606ca5b850b6128877c14db4eddea14d166404dbeaef45ed24a002b65d5",
+    "beam_frame_pr240.json": "4cecf72e04adccfc535a00d63b26c98a225c104d5962fd35d18df1128d505c22",
+    "beam_frame_tensorboard.json": "570b535b548137d7770d1024a55f1bbe3fbedf3e8ea0290db823a903eca5ec4a"
+  }
+}

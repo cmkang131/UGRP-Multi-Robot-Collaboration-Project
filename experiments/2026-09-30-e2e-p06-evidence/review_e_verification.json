@@ -1,0 +1,702 @@
+{
+  "recorded_at": "2026-09-30T17:36:03.568844+00:00",
+  "scope": "offline synthetic code and actual TensorBoard event readback; no physics, rendering, inference, host lock or shared UI",
+  "source": {
+    "base_head": "746b040b024fcb6bfd0d1f57b0db96305f4e7590",
+    "merged_main": "7e081d7047aa2df737cc1890c963b1d3a14302c0",
+    "observed_origin_main": "fb8ee9fbde4f5a458d1c9c7efa625110dd196edc",
+    "review_commit": "f80a8f98a84d9d308e48ebca42994d489f121a80",
+    "review_tests_sha256": "efeb6ebe36f3d5351a5fcfdf4378ab9911b6dbfc7b13348edcdddf931abfaa78",
+    "environment": {
+      "python": "3.12.13",
+      "platform": "macOS-27.2-arm64-arm-64bit",
+      "pytest": "9.1.1",
+      "tensorboard": "2.21.0"
+    },
+    "frozen_preregistrations": [
+      {
+        "path": "experiments/2026-09-16-act-recovery/preregistration-audit.json",
+        "sha256": "557c22cfbf65cd03aebdb5bdc484acce6ce53ac129fb3a03501dca3f3258d291",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-25-zc3-prereg-draft/analysis/measured_runs.json",
+        "sha256": "aa086d24142165f0a1cfd092234ba1c75fa37924cd26c9bd4b05955b8b692480",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-25-zc3-prereg-draft/analysis/power.json",
+        "sha256": "441a0309e27810de140b355e0b1d10d984df2cab7eae808ed80a389e2e60625a",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-25-zc3-prereg-draft/analysis/seed_plan.json",
+        "sha256": "ff89434072cd104db79bb0e8a97e5d26522c32abd322885f7166cd323d4b9064",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-25-zc3-prereg-draft/budget.json",
+        "sha256": "a9415eae7346ac6d899c11325d14a84a91f6abf183344fdff6a24bc622933ab8",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-25-zone-owncam-loop/prereg.json",
+        "sha256": "38873a0da0d8933790759647e3839b6f3670cdb7b645aa62573a59731b2d7e30",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-25-zone-owncam-loop/prereg_amendments.json",
+        "sha256": "6978a675a136e384c94053288f4b68f7cc5df8af85275d26333519a499b7f9a8",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-26-markerless-probe/prereg.json",
+        "sha256": "d5f8c3c54085d21a10737f7af3ea9d435f45d746e9332186eb4b06bed41514c5",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-26-sim-speed/prereg_default_check_DRAFT.json",
+        "sha256": "501604af22eaf9a17cdc742cdb4b38caca902709d8bc2596002a605989506b2f",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-26-vision-loc/prereg.json",
+        "sha256": "84edad4d700b33500de26e686e102dc40af77e509a8eb6ba01af9ebcbbfba822",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-26-vision-loc/prereg_v3.json",
+        "sha256": "b1f86fdd2d0f2da71d6bd8f044e81bdfa3d206bf0907c92bf221cf4175771f82",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-26-vision-loc/prereg_v4_DRAFT.json",
+        "sha256": "92b194c0972b70c66af942ffbf9fdad97a118a1ab5aaabcfa58af368fe7e1cef",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-26-zone-env-v3/loop/prereg.json",
+        "sha256": "1b982d32bacaec220bc8838dc97d2537dc1f8874253fd75409d07827edd8f950",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-26-zone-env-v3/loop/prereg_a1.json",
+        "sha256": "9b84d3f7ed9122ccd1aa941af9ad065bb9d0bc45058c94b17af5a27239830321",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-26-zone-env-v3/m1/prereg.json",
+        "sha256": "e4a79708f371f92ecc28805c620ce1c3a5511105c8277368cf5c723a200bc7dd",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-26-zone-env-v3/m1/prereg_a1.json",
+        "sha256": "3183f89ed727a84eb5956dda074e90748397a7d11522b26080fc60f4a89fcd5a",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-26-zone-env-v3/prereg.json",
+        "sha256": "15310deae07c39e4df56407f0a6387942cd482b3ed76fbff503a1264fd97722d",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-26-zone-env-v3/prereg_amendments.json",
+        "sha256": "6ea5f64e758bc974c7c7d7095b925874110a129c5084f71af5c7f3e09c4a40e1",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-26-zone-eval-topcam/prereg.json",
+        "sha256": "1d7113a7fca218961bb6213e288f1b2acfd3c8a9c433dc14416cf2d0cc96ba0a",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-26-zone-eval-topcam/prereg_amendments.json",
+        "sha256": "2645974d99a875ab2c03cdea14bcef43762558bebaae5b6efc3cf6195c9d53bf",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-26-zone-m1-owncam/prereg.json",
+        "sha256": "d1994c785c2c42b717b7e1e5fee007db7a4d431a7f3e1a8ba4fa30a33a8a44c8",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-26-zone-m1-owncam/prereg_amendments.json",
+        "sha256": "585a607d695e71430721f1f7e9f466317d3d308f99d9d0a2bac2f10b3b6f1767",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-26-zone-own-executor/prereg.json",
+        "sha256": "82dccdcbf1663465dae9591db491d106eac817c4f8012caaeab07cbaaea02a67",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-26-zone-own-executor/prereg_v2.json",
+        "sha256": "03f7df961f35762c9f890820a7307203b02f95ff91c6ddd8ceb9aad9fd7fbc48",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-26-zone-own-executor/prereg_v3.json",
+        "sha256": "290e9ce0e041ee659fc2f6570a80725f3e94d853a653faf03bf35b08e3e6ac6b",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-26-zone-owncam-loop-v2/prereg.json",
+        "sha256": "9d59911a1a85e532cabcbb28fc2ae5997e90ad2d20b425eaa794190bcdc059f9",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-26-zone-owncam-memory/prereg.json",
+        "sha256": "b2dc241a150a64527d6e353615258af8a2b43825814fa97eb08ffc6f15f63770",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-26-zone-owncam-memory/prereg_amendments.json",
+        "sha256": "31ec9d638b7357084dc11938205a71847288a620e5236c3db49a1444ebb3741c",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-26-zone-study-integration/prereg.json",
+        "sha256": "6e2585c0a3d539623d848e631e7228e22ac007bbff98d1ad4665a53eab24b3d0",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-26-zone-study-integration/prereg_v2.json",
+        "sha256": "a3ef97cb4989807f495fe4ba7598ebe0011328fbdec9084ca62a34fd82cb65aa",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-27-zone-owncam-memory-v3/prereg_DRAFT.json",
+        "sha256": "9961d889be4ca41f167062a32782ab628bd287b4ffd9c26322959526fb5b344d",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-27-zone-owncam-memory-v3/review-fixes/prereg_review_DRAFT.json",
+        "sha256": "fbbd8659212fa670fa5a9db3f76e99557d5510e307e870f918bb7bfe96385a0c",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-27-zone-pair-dev/prereg_DRAFT.json",
+        "sha256": "85334a68bae0d35c197c612cd610c84307c0eba268a34247e71f4e233a0fe0f3",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-27-zone-pair-dev/prereg_v2_DRAFT.json",
+        "sha256": "896091d17022d569dfb34123587712395bf9870d065ce2b438d38acedee9108b",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-27-zone-pair-dev/prereg_v3.json",
+        "sha256": "9470d95261c464cd37705cdebde87d6cdd8f5166bbd02cb10236489611853b6e",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-27-zone-pair-dev/prereg_v3_DRAFT.json",
+        "sha256": "34ab87dc51467226221ca8c991e960bc0715a9bad9c67764b98b99049e9683c4",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-27-zone-pair-dev/prereg_v4.json",
+        "sha256": "ca8e2d6b7cf1fda6056e8939a568bc11affc9c9b413b07f97e2d134af98d7fb8",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-27-zone-pair-dev/prereg_v5.json",
+        "sha256": "bcf02558167a9140a97b961bdc612b45679b3ff1e91fe496e9863ac8e9f3568e",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-27-zone-pair-dev/prereg_v5b.json",
+        "sha256": "c1f35505ed4983537c89b3c0b901c1d9920aadf2229ae44561e5d5074d9f7977",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-27-zone-pair-dev/prereg_v5c.json",
+        "sha256": "be6a7a0f4779e713e3c78921176688c765190dfafd4d49f339bd6ee9ca4568ec",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-27-zone-pair-dev/prereg_v5d.json",
+        "sha256": "93ff696a2b73100c9307824bed12c6a4a1c65665f4573dbf1783f522cd589cd0",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-27-zone-pair-dev/prereg_v5e.json",
+        "sha256": "babe4cac26a4aa4e3312f0e8e68e25df76e6466786a939699ab7ae1d6bd3d934",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-27-zone-pair-dev/prereg_v5f.json",
+        "sha256": "a9764dded0588fb871200354ff590b976c7bdd2c4524c7f1d4482c5c1f6870df",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-27-zone-pair-dev/prereg_v5g.json",
+        "sha256": "fa216827dcc4a6fc39f539621518f8207beaba47eaea7ef09796f96d542111ca",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-27-zone-pair-dev/prereg_v5h.json",
+        "sha256": "7b9c13b0ed829b7cb9b22cf58b47fd1862b247fe7bc8d0a4a4704686ca6994e9",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-28-main-study-prereg-draft/prereg_main_DRAFT.json",
+        "sha256": "f3864cdd68eff75fa350ab8441490f6569d2cc8c41556cd3ef992c05e2bdae29",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-28-zone-pair-v5f/prepare-before-canonical-hardening/dev11/prereg.json",
+        "sha256": "2004c6128056e457403595093a46d435b9282f24d8c71b40256458a5f700663d",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-28-zone-pair-v5f/prepare-before-canonical-hardening/dev12/prereg.json",
+        "sha256": "2004c6128056e457403595093a46d435b9282f24d8c71b40256458a5f700663d",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-28-zone-pair-v5f/prepare-before-index-seal-check/dev11/prereg.json",
+        "sha256": "7b835a51b3be17e3c0db62421bdfe78ab969be483915bc6ea6ed411e3abae899",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-28-zone-pair-v5f/prepare-before-index-seal-check/dev12/prereg.json",
+        "sha256": "7b835a51b3be17e3c0db62421bdfe78ab969be483915bc6ea6ed411e3abae899",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-28-zone-pair-v5f/prepare/dev11/prereg.json",
+        "sha256": "a9764dded0588fb871200354ff590b976c7bdd2c4524c7f1d4482c5c1f6870df",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-28-zone-pair-v5f/prepare/dev12/prereg.json",
+        "sha256": "a9764dded0588fb871200354ff590b976c7bdd2c4524c7f1d4482c5c1f6870df",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-28-zone-pair-v6/prereg_v6.json",
+        "sha256": "649a00e65d1f53bf38014ac4a1f5e93094dad3ee11acccf3d1343cefa1298b42",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-28-zone-pair-v6b-boot/prereg_v6b.json",
+        "sha256": "3fecc73b7b44c6dab1e752d276fe8b2442be7119016ff2b5783599579ffc9605",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-29-pair-v6c/prereg_v6c.json",
+        "sha256": "64acc04a8c08af61b0fa488440c70a8bec4338881c7a32b4895d4b07970ca95e",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-29-pair-v6d-align/prereg_v6d.json",
+        "sha256": "cbdb4b2503d928e141131b893cb56060fd6fe54292ef1667da9f57bdeea39972",
+        "unchanged": true
+      },
+      {
+        "path": "experiments/2026-09-29-pair-v6e-carry/prereg_v6e.json",
+        "sha256": "64c2680781f1b989312c3ac091c6e0458579ced7ed65d9e9730aadbc416f4bfd",
+        "unchanged": true
+      }
+    ],
+    "frozen_preregistration_count": 57,
+    "registered_runner_sha256": "85508cc58e1cba0f1fc11e3b7ef656c0c7648202ff1086c274c3dbaa64a99edd",
+    "workflow_diff": "",
+    "workflow_merge_base_diff": ""
+  },
+  "tested_candidate_sha256": {
+    "experiments/2026-09-30-e2e-p06-evidence/event_replay_mutations.py": "c57ba479b901964489cbdc9b3690c735db948e5e458d1271aa07050447d2e712",
+    "experiments/2026-09-30-e2e-p06-evidence/redesign_test_driver.py": "458c9bccf71db2a276aa7833e8724b79d8e865b143229a8ff898ba7cb722ec88",
+    "experiments/2026-09-30-e2e-p06-evidence/redesign_test_selectors.json": "b63c8529c42c40a3ba295619718c7df41dc00cb6a74e499d70bacce77f7a20fe",
+    "harness/zone_evidence_key.py": "ab75158d6792d155285e5ab965b3d3c1119530e90e9b4bd1b716978943d929ff",
+    "harness/zone_referee_replay.py": "7bff0258953c025ef50652643a505d6979b178d1b010cb947cd0899d1b440b6c",
+    "harness/zone_study_referee.py": "7ab76e9dadb95cea7a7827d5baef392f2c22c1a1cd230a2c0b0382663f590456",
+    "scripts/run_ci_tests.py": "292a88a7939a83aa6d9ae6faf74b28716c89039b0a1704a822ca31b12a9d5205",
+    "scripts/tensorboard_tools/zone_study.py": "7743bac6d0c349614f68e288c2f562177ac8d200ca61069464cd03d8f3c82758",
+    "scripts/zone_study_evidence_cohort.py": "f40adf374a315cb85157614a926a414c93b3065cbde44b6299bda36a7e273e0e",
+    "scripts/zone_study_evidence_contract.py": "7fcc29d48360338d3f4373d185adbe32e0606020226dc4c0e7abf5475597a8de",
+    "scripts/zone_study_evidence_join.py": "4b6b517c039558c20da1c6c7d88bbb4639763c8f138809a833efccf9a6baaf25",
+    "tests/test_review_303c.py": "df3c8775c50708a0f87375f5a2f440e6127e305abc511783e9b9388165c42e26",
+    "tests/test_review_303d.py": "84f0ade896d1077ca3e8af9b9fb9a8ac83e07f77d12ea6bf4b0483350b4b584a",
+    "tests/test_review_303e.py": "4bd02f0198a1d890c26183c7d978b152559678d62f1aceb66d48d11c4e3d963e",
+    "tests/test_tensorboard_export.py": "4fd1b982611be001a6383e2ec1f03d8ab7aac10ec1928b6a8c6e6fd17ddda7ae",
+    "tests/test_zone_referee_ownership.py": "5e616ca748e4910d2f4f92968a002f53577af1b692b683ee9dbe160770435fa3",
+    "tests/test_zone_referee_replay.py": "82e53ed5789824920a610281387599d5ae6aadcefefd51551f8cc1e0a4a28663",
+    "tests/test_zone_study_evidence.py": "bc5226d2e6977a3e9bcaf50976df3a49a50f004d2819ebfc200c9224dc45759c",
+    "tests/test_zone_study_evidence_review_c303.py": "af2fde5f35da7ecbbb5f80075450cda2b4580146ac47b914c60de5653dc497d9",
+    "tests/zone_evidence_fixtures.py": "d2255dc91902314a42badd9a437c179de880970c097fc035db783ce3e67481a8"
+  },
+  "before": {
+    "tests": 8,
+    "failures": 8,
+    "errors": 0,
+    "skipped": 0
+  },
+  "early_implementation_check": {
+    "passed": 90,
+    "failed": 51,
+    "errors": 0,
+    "cause": "local variable key shadowed composite key before bounded replay",
+    "log": "targeted.txt"
+  },
+  "targeted_after_shadow_fix": {
+    "passed": 173,
+    "failed": 0,
+    "deselected": 4,
+    "log": "targeted-v2.txt"
+  },
+  "related_including_24000_generated": {
+    "tests": 665,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "final_related_after_manifest_type_guard_and_ci_bridge": {
+    "tests": 663,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "deselected": 8
+  },
+  "distinct_passing_pytest_items": 671,
+  "xfail_review_303e": 0,
+  "review_assertions_preserved": 16,
+  "generated_cases": {
+    "relational": 12000,
+    "event_replay": 12000,
+    "raw_permute_duplicate_move": 192,
+    "total": 24192
+  },
+  "selection_note": "The final batch repeats every non-12000 selector after the last manifest-only guard. The eight 12000-case items exercise unchanged pure replay/join code. Counts are a union of test IDs, not a sum of repeated runs.",
+  "tensorboard_ci_bridge": {
+    "tests": 2,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "mutations": [
+    {
+      "mutation": "late_prefix",
+      "returncode": 1,
+      "tests": 2,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 0,
+      "detected": true
+    },
+    {
+      "mutation": "policy_pin",
+      "returncode": 1,
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "detected": true
+    },
+    {
+      "mutation": "code_pin",
+      "returncode": 1,
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "detected": true
+    },
+    {
+      "mutation": "settle_window",
+      "returncode": 1,
+      "tests": 4,
+      "failures": 4,
+      "errors": 0,
+      "skipped": 0,
+      "detected": true
+    },
+    {
+      "mutation": "summary_trust",
+      "returncode": 1,
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "detected": true
+    },
+    {
+      "mutation": "eager_tensorboard",
+      "returncode": 1,
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "detected": true
+    },
+    {
+      "mutation": "event_key",
+      "returncode": 1,
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "detected": true
+    },
+    {
+      "mutation": "source_key",
+      "returncode": 1,
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "detected": true
+    },
+    {
+      "mutation": "rejected_owner",
+      "returncode": 1,
+      "tests": 8,
+      "failures": 8,
+      "errors": 0,
+      "skipped": 0,
+      "detected": true
+    },
+    {
+      "mutation": "owner_union",
+      "returncode": 1,
+      "tests": 8,
+      "failures": 8,
+      "errors": 0,
+      "skipped": 0,
+      "detected": true
+    },
+    {
+      "mutation": "manifest_key",
+      "returncode": 1,
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "detected": true
+    },
+    {
+      "mutation": "seal_rekey",
+      "returncode": 1,
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "detected": true
+    }
+  ],
+  "manifest_mutation_after_final_guard": {
+    "tests": 1,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0
+  },
+  "commands": [
+    "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-09-30-e2e-p06-evidence/redesign_test_driver.py --tb=short --junitxml=/Users/changmin/projects/ugrp/outputs/p06-review-e-fix/related.xml",
+    "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-09-30-e2e-p06-evidence/redesign_test_driver.py -k 'not 12000' --tb=short --junitxml=/Users/changmin/projects/ugrp/outputs/p06-review-e-fix/final-related.xml",
+    "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-09-30-e2e-p06-evidence/event_replay_mutations.py <mutation> --tb=short"
+  ],
+  "artifacts": {
+    "before.txt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/p06-review-e-fix/before.txt",
+      "bytes": 12090,
+      "sha256": "df35c7c0d2c8ac5fca682722ed72370499aed27c0e0d17d81498b8946001c13f"
+    },
+    "before.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/p06-review-e-fix/before.xml",
+      "bytes": 7615,
+      "sha256": "8c1c0dbaad3dbdb6fc5e3f1a681d60105538de9833aeae57734a3b00c4b34a0d"
+    },
+    "candidate-source.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/p06-review-e-fix/candidate-source.json",
+      "bytes": 2224,
+      "sha256": "fd38632f81daf948e6911ff6f1f8b4a968970dfa5468a4b00cb9d79b057f5260"
+    },
+    "ci-bridges.txt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/p06-review-e-fix/ci-bridges.txt",
+      "bytes": 109,
+      "sha256": "9a117ac3e8b1cf68d77f2a0eeaa83cb0ee120a4eb7a30327daa7978c45184c29"
+    },
+    "ci-bridges.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/p06-review-e-fix/ci-bridges.xml",
+      "bytes": 522,
+      "sha256": "863f982d6ac50b185560f2da4c5412392288f515818d38b7b640b656ba76ef9f"
+    },
+    "final-related.txt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/p06-review-e-fix/final-related.txt",
+      "bytes": 846,
+      "sha256": "ec45a8c5f6c1280a31edd08a08056ef7caa020bf382987080bc621bd37720761"
+    },
+    "final-related.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/p06-review-e-fix/final-related.xml",
+      "bytes": 93624,
+      "sha256": "709e0b870b647c200f0fad8fce1a190dffaca94181988f3ceb07c1bba881a06c"
+    },
+    "mutation-code_pin.txt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/p06-review-e-fix/mutation-code_pin.txt",
+      "bytes": 758,
+      "sha256": "0ddd82f518f0acbb776d1106d2bc3767dd35e079c7523d45c7042813dff2081f"
+    },
+    "mutation-code_pin.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/p06-review-e-fix/mutation-code_pin.xml",
+      "bytes": 681,
+      "sha256": "452674c802cbf350078b5f168d12029d586f62a80590b26f1e326a6136189640"
+    },
+    "mutation-eager_tensorboard.txt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/p06-review-e-fix/mutation-eager_tensorboard.txt",
+      "bytes": 859,
+      "sha256": "bf5956a221b6bda8737e3066f154e1fef1a00da8cad859c001db9d316d7003e8"
+    },
+    "mutation-eager_tensorboard.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/p06-review-e-fix/mutation-eager_tensorboard.xml",
+      "bytes": 807,
+      "sha256": "e0389eb29516521977832870bdd33aa7fd474dc4a2aeb9342fbbf54ff174c631"
+    },
+    "mutation-event_key.txt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/p06-review-e-fix/mutation-event_key.txt",
+      "bytes": 804,
+      "sha256": "24335c571fe8b6738383aecfb3ea4d287a9b30d97a9d7ce35b6b03bd1b16bf0f"
+    },
+    "mutation-event_key.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/p06-review-e-fix/mutation-event_key.xml",
+      "bytes": 709,
+      "sha256": "cab3ae4eeb0b0caf82a22d43625d23a66b19a678d9a1bff188b1ac08f26dbaf3"
+    },
+    "mutation-late_prefix.txt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/p06-review-e-fix/mutation-late_prefix.txt",
+      "bytes": 1883,
+      "sha256": "8f9018ff8589c28403989f2b1c718088f6ca964fa7b99760b2f7f537a63eb70f"
+    },
+    "mutation-late_prefix.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/p06-review-e-fix/mutation-late_prefix.xml",
+      "bytes": 2024,
+      "sha256": "429141611f9d80ac688725a15c2e2e4ac8984b7f321e4e55127640ce57453821"
+    },
+    "mutation-manifest-key-final.txt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/p06-review-e-fix/mutation-manifest-key-final.txt",
+      "bytes": 835,
+      "sha256": "a0e9fd6411a1976f5193cfc490ae472f01ae233ac4249aedabf9e47db3524358"
+    },
+    "mutation-manifest-key-final.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/p06-review-e-fix/mutation-manifest-key-final.xml",
+      "bytes": 725,
+      "sha256": "925f698c57eee752fcb4036e5abc575216970377d86e5de9abb3e55c71245517"
+    },
+    "mutation-manifest_key.txt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/p06-review-e-fix/mutation-manifest_key.txt",
+      "bytes": 835,
+      "sha256": "4d4330818e00cc343a86f8e9a4cb44939a5d8b8f33c1e06d70cab4c6dac8388a"
+    },
+    "mutation-manifest_key.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/p06-review-e-fix/mutation-manifest_key.xml",
+      "bytes": 725,
+      "sha256": "776c8e8519e0335ae062ffffbeec9ac23a383fe0ab18c4ae515b06aefb709675"
+    },
+    "mutation-owner_union.txt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/p06-review-e-fix/mutation-owner_union.txt",
+      "bytes": 4781,
+      "sha256": "41f6797bac11fac27d7199962f90c8f6ddbaa100786b4b7acc020d984d231f4f"
+    },
+    "mutation-owner_union.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/p06-review-e-fix/mutation-owner_union.xml",
+      "bytes": 5922,
+      "sha256": "380d023652a628a659bad2395fef44ab6120c5602d6858cf48ab0c75ce6511f8"
+    },
+    "mutation-policy_pin.txt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/p06-review-e-fix/mutation-policy_pin.txt",
+      "bytes": 826,
+      "sha256": "059adefaf69eb99250b58b7bea028b77604c8b2c03b6160e847a0c5bcfddb1a9"
+    },
+    "mutation-policy_pin.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/p06-review-e-fix/mutation-policy_pin.xml",
+      "bytes": 725,
+      "sha256": "bec9bbee67af0cc8be833293627793e10ac74f0aee176a73c40ea9aab9a5e774"
+    },
+    "mutation-rejected_owner.txt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/p06-review-e-fix/mutation-rejected_owner.txt",
+      "bytes": 12202,
+      "sha256": "c38585ba700b9139024870a08b147457bd62fc8ee8838a9fc1fb104e01927309"
+    },
+    "mutation-rejected_owner.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/p06-review-e-fix/mutation-rejected_owner.xml",
+      "bytes": 7614,
+      "sha256": "be99a874ae891af2fe07dde82605bd699efd99c28c4c3b5b543f3ebd9048dc00"
+    },
+    "mutation-seal_rekey.txt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/p06-review-e-fix/mutation-seal_rekey.txt",
+      "bytes": 1135,
+      "sha256": "97f0242b18d37e94f36d2c348eb277fb81a8c28264a64b468355a62ebc30b9cb"
+    },
+    "mutation-seal_rekey.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/p06-review-e-fix/mutation-seal_rekey.xml",
+      "bytes": 1413,
+      "sha256": "d3c58d923cfabad0924e91610911ee6da15853ecb172090bee61b4bced6c8338"
+    },
+    "mutation-settle_window.txt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/p06-review-e-fix/mutation-settle_window.txt",
+      "bytes": 6970,
+      "sha256": "e7d896f0bbf2f689ae597cf250bc2c26f586f3a2ad2f5f69826c2c1870a905e4"
+    },
+    "mutation-settle_window.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/p06-review-e-fix/mutation-settle_window.xml",
+      "bytes": 12183,
+      "sha256": "65988f5586f08f67fb1a0354814dd66a6ffde76fe32ae8c9b15aff84efe470f4"
+    },
+    "mutation-source_key.txt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/p06-review-e-fix/mutation-source_key.txt",
+      "bytes": 807,
+      "sha256": "c43c833472757858b4bfd38b23cee2ca0b0c880215ac4737a93a6b8ceb6285f1"
+    },
+    "mutation-source_key.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/p06-review-e-fix/mutation-source_key.xml",
+      "bytes": 710,
+      "sha256": "4b473e9b98baa7ad2f043ae2a318a14bca9446ca879eb2f04f647c516d43df3b"
+    },
+    "mutation-summary_trust.txt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/p06-review-e-fix/mutation-summary_trust.txt",
+      "bytes": 1014,
+      "sha256": "37a0cbb08a2bfdb5bdf94dbcea37b2d0ee5f0f4b1a7d89d4b3ec448c79ab0618"
+    },
+    "mutation-summary_trust.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/p06-review-e-fix/mutation-summary_trust.xml",
+      "bytes": 759,
+      "sha256": "b3ba53d72e0f67711ff639348c37b7e815003ff8d977aacbff48b0f1ab44e7b1"
+    },
+    "mutations.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/p06-review-e-fix/mutations.json",
+      "bytes": 1833,
+      "sha256": "26eea64aefed8ea54faa61ef001ab713dc1b36d75184e3acf41dce8de0d47d46"
+    },
+    "related.txt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/p06-review-e-fix/related.txt",
+      "bytes": 832,
+      "sha256": "d13c72bb59d4f0abd015a427978b197deb6e7f2fa2c62d7a2ab38b45db0fb5b8"
+    },
+    "related.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/p06-review-e-fix/related.xml",
+      "bytes": 93790,
+      "sha256": "9ec019e90817700cdb737562867e51a2943e410833f8be653b95a826cdece4a6"
+    },
+    "source-verification.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/p06-review-e-fix/source-verification.json",
+      "bytes": 11936,
+      "sha256": "1e5071c28cadac5c60b7ebfbf7a701704a4861156c9930302b0785caea20d22f"
+    },
+    "targeted-v2.txt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/p06-review-e-fix/targeted-v2.txt",
+      "bytes": 275,
+      "sha256": "85c4d1882fae93fdd7871087ee6c955a4ba5732267bdb0fe241d6b7fc9cc3316"
+    },
+    "targeted.txt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/p06-review-e-fix/targeted.txt",
+      "bytes": 49041,
+      "sha256": "5ae237569a78d06974d340f77ac3b83e7757f20f9523619e40d52949f29f5135"
+    }
+  },
+  "private_tmp_extraction_directories_created": [],
+  "delivery": {
+    "draft": true,
+    "merge": false,
+    "normal_ci": "Triggered after commit/push; result belongs in the PR checks and the one response comment."
+  }
+}

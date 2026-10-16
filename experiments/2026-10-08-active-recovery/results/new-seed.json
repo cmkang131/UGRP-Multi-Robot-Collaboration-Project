@@ -1,0 +1,235 @@
+{
+  "case": "new-seed",
+  "acquisition": {
+    "status": "RECORDED",
+    "source_sha": "00e4cebd749c56765936312d22d82c82cf4ebbce",
+    "case": "new-seed",
+    "model_calls": 0,
+    "freeze": false,
+    "loadavg_start": [
+      7.3017578125,
+      6.57470703125,
+      7.3212890625
+    ],
+    "start_sim_s": 1.3,
+    "frames": 901,
+    "total_sim_s": 181.3,
+    "prediction_view": "completed_graph",
+    "wall_s": 479.1087916249817,
+    "loadavg_end": [
+      11.96044921875,
+      9.34423828125,
+      8.24658203125
+    ]
+  },
+  "full_map": {
+    "occupied_cells": 174,
+    "precision_015": 0.27011494252873564,
+    "precision_cell": 0.16091954022988506,
+    "wall_coverage": 0.1398176291793313,
+    "wall_error_rmse_m": 0.3920953098975392
+  },
+  "wall_sample_count": 329,
+  "prediction_view": "completed_graph",
+  "observed_region": {
+    "precision": 0.32222222222222224,
+    "precision_correct": 29,
+    "precision_cells": 90,
+    "recall": 0.21621621621621623,
+    "recalled_samples": 16,
+    "visible_samples": 74,
+    "visible_wall_fraction": 0.22492401215805471,
+    "sampled_wall_length_proxy_m": 7.4,
+    "qualification": "actual camera poses/FOV/range and wall-only occlusion; object/self occlusion not modelled"
+  },
+  "coverage": {
+    "travelled_m": 4.225362688081592,
+    "footprint_union_m2": 1.5225000000000002,
+    "footprint_cells_005m": 609,
+    "frames": 901,
+    "mapped_frames": 20,
+    "occupied_cells": 174
+  },
+  "path": {
+    "n": 891,
+    "rmse_m": 0.4699532769035522,
+    "end_m": 0.5724732011467965,
+    "missing_gt_samples": 0
+  },
+  "b": {
+    "first_own_confirmation_s": null,
+    "reached_gt": false,
+    "first_gt_reach_s": null
+  },
+  "wall_contacts": 0,
+  "wrong_door_attempts": [
+    {
+      "t": 17.1,
+      "door": "r3:opening_001"
+    },
+    {
+      "t": 69.7,
+      "door": "r3:opening_026"
+    }
+  ],
+  "door_exposure": {
+    "candidate_frames": 473,
+    "feasible_rows": 29,
+    "selected_path_rows": 22
+  },
+  "loop_counts": {
+    "member_scan": 30,
+    "low_probability": 6,
+    "insufficient_points": 2,
+    "temporal_separation": 2
+  },
+  "switch_counts": {},
+  "calibration": {
+    "occupancy_ece_diagnostic": {
+      "n": 174,
+      "bins": [
+        {
+          "lo": 0.0,
+          "n": 0,
+          "score": null,
+          "precision": null
+        },
+        {
+          "lo": 0.1,
+          "n": 0,
+          "score": null,
+          "precision": null
+        },
+        {
+          "lo": 0.2,
+          "n": 0,
+          "score": null,
+          "precision": null
+        },
+        {
+          "lo": 0.3,
+          "n": 0,
+          "score": null,
+          "precision": null
+        },
+        {
+          "lo": 0.4,
+          "n": 0,
+          "score": null,
+          "precision": null
+        },
+        {
+          "lo": 0.5,
+          "n": 163,
+          "score": 0.5287887942762544,
+          "precision": 0.24539877300613497
+        },
+        {
+          "lo": 0.6,
+          "n": 9,
+          "score": 0.6533773846649767,
+          "precision": 0.5555555555555556
+        },
+        {
+          "lo": 0.7,
+          "n": 2,
+          "score": 0.733704076021382,
+          "precision": 1.0
+        },
+        {
+          "lo": 0.8,
+          "n": 0,
+          "score": null,
+          "precision": null
+        },
+        {
+          "lo": 0.9,
+          "n": 0,
+          "score": null,
+          "precision": null
+        }
+      ],
+      "gap": 0.2735951826262729
+    },
+    "support_score_gap": {
+      "n": 174,
+      "bins": [
+        {
+          "lo": 0.0,
+          "n": 115,
+          "score": 0.04551196221118021,
+          "precision": 0.28695652173913044
+        },
+        {
+          "lo": 0.1,
+          "n": 35,
+          "score": 0.14268886623258684,
+          "precision": 0.2
+        },
+        {
+          "lo": 0.2,
+          "n": 24,
+          "score": 0.23141082787281975,
+          "precision": 0.2916666666666667
+        },
+        {
+          "lo": 0.3,
+          "n": 0,
+          "score": null,
+          "precision": null
+        },
+        {
+          "lo": 0.4,
+          "n": 0,
+          "score": null,
+          "precision": null
+        },
+        {
+          "lo": 0.5,
+          "n": 0,
+          "score": null,
+          "precision": null
+        },
+        {
+          "lo": 0.6,
+          "n": 0,
+          "score": null,
+          "precision": null
+        },
+        {
+          "lo": 0.7,
+          "n": 0,
+          "score": null,
+          "precision": null
+        },
+        {
+          "lo": 0.8,
+          "n": 0,
+          "score": null,
+          "precision": null
+        },
+        {
+          "lo": 0.9,
+          "n": 0,
+          "score": null,
+          "precision": null
+        }
+      ],
+      "gap": 0.17941467907256362
+    },
+    "qualification": "TSDF support is NOT probability"
+  },
+  "criteria": {
+    "recorded": true,
+    "no_contact": true,
+    "no_wrong_door": false,
+    "distance": true,
+    "area": true,
+    "visible_samples": true,
+    "precision": false,
+    "recall": false,
+    "wall_rmse": false,
+    "path_rmse": false
+  },
+  "passed": false
+}

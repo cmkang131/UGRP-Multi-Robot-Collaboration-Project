@@ -1,0 +1,28 @@
+{
+  "schema": "ugrp.vision_loc_worker_config.v1",
+  "provider_id": "vision_zero_tag_v1",
+  "note_ko": "태그 없는 비전 위치 추정(PR #233 VIS3 학생) 폐루프 제공자의 추론 worker 설정. worker는 기존 ACT 환경(torch)에서 별도 프로세스로 돌고, MuJoCo 프로세스에는 torch가 없다. 새 환경을 만들지 않는다.",
+  "python": "/Users/changmin/Project-Runtimes/ugrp/.venv-reference-act/bin/python",
+  "python_env": {
+    "requirements": "requirements-reference-act.txt",
+    "override_env_var": "UGRP_VISION_WORKER_PYTHON",
+    "reuse_note": "docs/model_artifacts.md: Mac의 기존 ACT 환경을 재사용 (torch 2.11.0, torchvision 0.26.0, opencv 4.13.0, numpy 2.2.6 확인 2026-09-27)"
+  },
+  "model": {
+    "artifact_id": "vision-loc-seg-lraspp-mbv3-20260926-v2",
+    "release": "models-20260927-vision-loc-v1",
+    "entrypoint": "seg/seg_lraspp_mbv3.pt",
+    "checkpoint": "/Users/changmin/projects/ugrp/outputs/vision-loc-20260926/model/seg-v2/seg_lraspp_mbv3.pt",
+    "sha256": "348539030fda962cc5ba64e21c956619bc4db9321a99cd3ae6746611a9939fd9",
+    "bytes": 13071401
+  },
+  "device": "cpu",
+  "torch_threads": 1,
+  "startup_timeout_s": 180,
+  "frame_timeout_s": 30,
+  "sim_time_charge": {
+    "charged": false,
+    "why": "연구 설계의 SIM 비용 모형(#223, harness/zone_sim_cost.py)은 LLM 생각·발화만 부과한다. 인식 추론 비용은 설계에 없다. SYNC SIM에서 물리는 worker 응답을 기다리므로 SIM 시간 0, wall 시간만 기록한다. 부과 여부는 사용자 결정 필요(미결).",
+    "recorded_as": "VisionPoseSource.timing / record()['inference_wall_ms']"
+  }
+}

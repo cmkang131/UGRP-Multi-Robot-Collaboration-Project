@@ -1,0 +1,24 @@
+{
+  "version": "s2v47-prereg-v1",
+  "replay_seeds": [1051, 1053, 1054],
+  "baseline": "v133 + frozen s2v45 forward_scale_v1 + pr_likelihood_half_v1",
+  "proposed_option": {"name": "peer_clearance", "value": "nav2_padding_v1", "default": "off", "status": "not implemented; metric peer observation prerequisite unresolved"},
+  "method": "observed obstacle footprint padding and swept path checks; never convert missing observations into free space",
+  "planning_gate": {
+    "all_three_recordings_required": true,
+    "minimum_center_separation": "r_own + r_peer + 2 * (sigma_own + sigma_peer)",
+    "sigma_rule": "largest-axis positional standard deviations; sum is conservative without assuming independent world-frame estimates",
+    "footprint": "circumscribed radius of the existing [-0.18,0.28] x [-0.18,0.18] m navigation envelope for each robot",
+    "missing_peer_position_or_sigma": "unknown, not pass; no substitution from setup, trajectory, contacts, or renderer",
+    "coverage": "whole commanded pulse curve, not endpoints alone; current observation coverage and source provenance required",
+    "changed_actions": "count and list changes; keep any already-certified safe pulse byte-identical",
+    "off": "unchanged controller source and byte-identical replay required"
+  },
+  "physical_gate": {"peer_contact_points_max": 0, "lifted": true, "inside": true, "stable": true},
+  "pose_report": {"xy_nees_95_exceedance_rate_max": 0.2, "unflagged_xy_above_25cm_max": 0, "missing_covariance": "report coverage, never drop from denominator silently"},
+  "physical_order": "only after valid replay clearance gate: seed1054 then a preregistered unused seed, agent_lock and ugrp_session, one at a time",
+  "new_observation_diagnostic": "not authorized by the strict replay-before-physics order; pending user answer to explicit exception request",
+  "gt": "evaluation only; initial registered peer anchors are not live truth or allowed controller observations",
+  "threshold_changes_after_results": false,
+  "host_error": "ENOSPC is HOST_ERROR"
+}

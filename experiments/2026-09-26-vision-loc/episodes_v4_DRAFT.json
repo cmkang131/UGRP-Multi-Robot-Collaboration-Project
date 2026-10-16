@@ -1,0 +1,672 @@
+{
+ "schema": "ugrp.vision_loc_episodes.v2",
+ "base_map": "zone_wide_door",
+ "map": "zone_wide_door_walls_v3_notags (maps/, base + walls_v3 + zero tags)",
+ "controller": {
+  "controller": "harness/m1_owncam_delivery.py",
+  "skill": "v9",
+  "skill_module": "harness/wrist_zone_skill_v9.py (PR #181 frozen 04a5e3c, read-only), run with mode='diagnostic' (teacher pose)",
+  "calibration": "experiments/2026-09-26-zone-m1-owncam/calibration_m1_dev.json",
+  "pose_source": "teacher_gt_eval_only (simulator truth; run_vl_teacher_render.TeacherPoseSource) -- the M1 student used owncam_pf_v2",
+  "order_kind": "own_rgb_bay",
+  "controller_schema": "ugrp.m1_owncam_delivery.v3",
+  "bay_half_m": [
+   0.25,
+   0.25
+  ],
+  "contact_profile": "cargo_noslip_v1",
+  "runner_schema": "ugrp.m1_owncam_run.v3",
+  "contact_profile_status": "approved by the user 2026-09-26 (study-wide)",
+  "source_note": "M1 effective student (A1-A6b) as copied in kiro/zone-map-v3 experiments/2026-09-26-zone-env-v3/m1/prereg.json; used here as the TEACHER controller: pose source replaced by the simulator truth (run_vl_teacher_render.py), skill v9 mode diagnostic"
+ },
+ "status": "DRAFT_DO_NOT_RENDER",
+ "episodes": [
+  {
+   "episode_id": "vl4-test-s1002",
+   "split": "test",
+   "role": "primary",
+   "seed": 1002,
+   "spawn_y": 0.55,
+   "slot_id": "C1",
+   "goal": {
+    "C": {
+     "cyan": 1
+    }
+   },
+   "extra_boxes": {
+    "red": 2,
+    "green": 1
+   },
+   "cyan_cell": [
+    1.6,
+    -0.05
+   ],
+   "spawn_offset": [
+    0.0,
+    0.055,
+    -1.101
+   ],
+   "teacher_pose_bias": [
+    0.0106,
+    -0.0197,
+    -0.217
+   ]
+  },
+  {
+   "episode_id": "vl4-test-s1008",
+   "split": "test",
+   "role": "primary",
+   "seed": 1008,
+   "spawn_y": -0.85,
+   "slot_id": "B2",
+   "goal": {
+    "B": {
+     "cyan": 1
+    }
+   },
+   "extra_boxes": {
+    "red": 2,
+    "green": 1
+   },
+   "cyan_cell": [
+    0.4,
+    -0.05
+   ],
+   "spawn_offset": [
+    0.0145,
+    -0.0551,
+    2.778
+   ],
+   "teacher_pose_bias": [
+    -0.0027,
+    0.0298,
+    -0.005
+   ]
+  },
+  {
+   "episode_id": "vl4-test-s1009",
+   "split": "test",
+   "role": "primary",
+   "seed": 1009,
+   "spawn_y": -2.25,
+   "slot_id": "A3",
+   "goal": {
+    "A": {
+     "cyan": 1
+    }
+   },
+   "extra_boxes": {
+    "red": 2,
+    "green": 1
+   },
+   "cyan_cell": [
+    1.0,
+    -1.65
+   ],
+   "spawn_offset": [
+    0.0419,
+    0.0507,
+    0.986
+   ],
+   "teacher_pose_bias": [
+    0.0187,
+    0.01,
+    0.608
+   ]
+  },
+  {
+   "episode_id": "vl4-test-s1010",
+   "split": "test",
+   "role": "primary",
+   "seed": 1010,
+   "spawn_y": 0.55,
+   "slot_id": "B3",
+   "goal": {
+    "B": {
+     "cyan": 1
+    }
+   },
+   "extra_boxes": {
+    "red": 2,
+    "green": 1
+   },
+   "cyan_cell": [
+    0.4,
+    0.75
+   ],
+   "spawn_offset": [
+    0.0247,
+    -0.0452,
+    0.742
+   ],
+   "teacher_pose_bias": [
+    -0.0292,
+    -0.0067,
+    0.822
+   ]
+  },
+  {
+   "episode_id": "vl4-test-s1011",
+   "split": "test",
+   "role": "primary",
+   "seed": 1011,
+   "spawn_y": -0.85,
+   "slot_id": "C2",
+   "goal": {
+    "C": {
+     "cyan": 1
+    }
+   },
+   "extra_boxes": {
+    "red": 2,
+    "green": 1
+   },
+   "cyan_cell": [
+    0.4,
+    0.75
+   ],
+   "spawn_offset": [
+    0.0112,
+    -0.0219,
+    -1.525
+   ],
+   "teacher_pose_bias": [
+    -0.0161,
+    0.0018,
+    0.682
+   ]
+  },
+  {
+   "episode_id": "vl4-test-s1015",
+   "split": "test",
+   "role": "primary",
+   "seed": 1015,
+   "spawn_y": -2.25,
+   "slot_id": "A1",
+   "goal": {
+    "A": {
+     "cyan": 1
+    }
+   },
+   "extra_boxes": {
+    "red": 2,
+    "green": 1
+   },
+   "cyan_cell": [
+    1.6,
+    -0.85
+   ],
+   "spawn_offset": [
+    -0.0377,
+    0.0481,
+    1.145
+   ],
+   "teacher_pose_bias": [
+    0.0138,
+    0.0127,
+    0.127
+   ]
+  },
+  {
+   "episode_id": "vl4-test-s1021",
+   "split": "test",
+   "role": "primary",
+   "seed": 1021,
+   "spawn_y": 0.55,
+   "slot_id": "A2",
+   "goal": {
+    "A": {
+     "cyan": 1
+    }
+   },
+   "extra_boxes": {
+    "red": 2,
+    "green": 1
+   },
+   "cyan_cell": [
+    1.0,
+    -0.85
+   ],
+   "spawn_offset": [
+    0.0115,
+    -0.0428,
+    -1.235
+   ],
+   "teacher_pose_bias": [
+    -0.0025,
+    -0.0264,
+    -0.339
+   ]
+  },
+  {
+   "episode_id": "vl4-test-s1023",
+   "split": "test",
+   "role": "primary",
+   "seed": 1023,
+   "spawn_y": -0.85,
+   "slot_id": "B1",
+   "goal": {
+    "B": {
+     "cyan": 1
+    }
+   },
+   "extra_boxes": {
+    "red": 2,
+    "green": 1
+   },
+   "cyan_cell": [
+    -0.2,
+    -1.65
+   ],
+   "spawn_offset": [
+    0.0075,
+    0.036,
+    1.218
+   ],
+   "teacher_pose_bias": [
+    -0.0261,
+    -0.0046,
+    0.724
+   ]
+  },
+  {
+   "episode_id": "vl4-test-s1024",
+   "split": "test",
+   "role": "reserve",
+   "seed": 1024,
+   "spawn_y": -2.25,
+   "slot_id": "C3",
+   "goal": {
+    "C": {
+     "cyan": 1
+    }
+   },
+   "extra_boxes": {
+    "red": 2,
+    "green": 1
+   },
+   "cyan_cell": [
+    1.0,
+    0.75
+   ],
+   "spawn_offset": [
+    0.034,
+    0.0399,
+    -3.014
+   ],
+   "teacher_pose_bias": [
+    -0.0111,
+    -0.014,
+    0.994
+   ]
+  },
+  {
+   "episode_id": "vl4-test-s1025",
+   "split": "test",
+   "role": "reserve",
+   "seed": 1025,
+   "spawn_y": 0.55,
+   "slot_id": "A1",
+   "goal": {
+    "A": {
+     "cyan": 1
+    }
+   },
+   "extra_boxes": {
+    "red": 2,
+    "green": 1
+   },
+   "cyan_cell": [
+    1.6,
+    -2.45
+   ],
+   "spawn_offset": [
+    0.0197,
+    -0.0236,
+    -5.336
+   ],
+   "teacher_pose_bias": [
+    -0.0103,
+    -0.0189,
+    0.632
+   ]
+  },
+  {
+   "episode_id": "vl4-test-s1037",
+   "split": "test",
+   "role": "reserve",
+   "seed": 1037,
+   "spawn_y": -0.85,
+   "slot_id": "C1",
+   "goal": {
+    "C": {
+     "cyan": 1
+    }
+   },
+   "extra_boxes": {
+    "red": 2,
+    "green": 1
+   },
+   "cyan_cell": [
+    1.0,
+    -0.85
+   ],
+   "spawn_offset": [
+    -0.0222,
+    -0.0236,
+    4.251
+   ],
+   "teacher_pose_bias": [
+    0.0064,
+    0.0166,
+    -0.318
+   ]
+  },
+  {
+   "episode_id": "vl4-test-s1038",
+   "split": "test",
+   "role": "reserve",
+   "seed": 1038,
+   "spawn_y": -2.25,
+   "slot_id": "B2",
+   "goal": {
+    "B": {
+     "cyan": 1
+    }
+   },
+   "extra_boxes": {
+    "red": 2,
+    "green": 1
+   },
+   "cyan_cell": [
+    -0.2,
+    -1.65
+   ],
+   "spawn_offset": [
+    0.0229,
+    0.053,
+    -4.654
+   ],
+   "teacher_pose_bias": [
+    0.0221,
+    -0.0013,
+    0.706
+   ]
+  }
+ ],
+ "rejected_seeds": [
+  {
+   "seed": 1001,
+   "spawn_y": 0.55,
+   "slot_id": "C1",
+   "cyan_cell": [
+    1.6,
+    0.75
+   ]
+  },
+  {
+   "seed": 1003,
+   "spawn_y": -0.85,
+   "slot_id": "B2",
+   "cyan_cell": [
+    1.0,
+    -2.45
+   ]
+  },
+  {
+   "seed": 1004,
+   "spawn_y": -0.85,
+   "slot_id": "B2",
+   "cyan_cell": [
+    1.0,
+    -1.65
+   ]
+  },
+  {
+   "seed": 1005,
+   "spawn_y": -0.85,
+   "slot_id": "B2",
+   "cyan_cell": [
+    -0.2,
+    -0.05
+   ]
+  },
+  {
+   "seed": 1006,
+   "spawn_y": -0.85,
+   "slot_id": "B2",
+   "cyan_cell": [
+    0.4,
+    -1.65
+   ]
+  },
+  {
+   "seed": 1007,
+   "spawn_y": -0.85,
+   "slot_id": "B2",
+   "cyan_cell": [
+    1.0,
+    -1.65
+   ]
+  },
+  {
+   "seed": 1012,
+   "spawn_y": -2.25,
+   "slot_id": "A1",
+   "cyan_cell": [
+    1.0,
+    -0.05
+   ]
+  },
+  {
+   "seed": 1013,
+   "spawn_y": -2.25,
+   "slot_id": "A1",
+   "cyan_cell": [
+    0.4,
+    -0.85
+   ]
+  },
+  {
+   "seed": 1014,
+   "spawn_y": -2.25,
+   "slot_id": "A1",
+   "cyan_cell": [
+    1.0,
+    -0.05
+   ]
+  },
+  {
+   "seed": 1016,
+   "spawn_y": 0.55,
+   "slot_id": "A2",
+   "cyan_cell": [
+    -0.2,
+    -0.85
+   ]
+  },
+  {
+   "seed": 1017,
+   "spawn_y": 0.55,
+   "slot_id": "A2",
+   "cyan_cell": [
+    -0.2,
+    -0.85
+   ]
+  },
+  {
+   "seed": 1018,
+   "spawn_y": 0.55,
+   "slot_id": "A2",
+   "cyan_cell": [
+    1.6,
+    -1.65
+   ]
+  },
+  {
+   "seed": 1019,
+   "spawn_y": 0.55,
+   "slot_id": "A2",
+   "cyan_cell": [
+    -0.2,
+    -2.45
+   ]
+  },
+  {
+   "seed": 1020,
+   "spawn_y": 0.55,
+   "slot_id": "A2",
+   "cyan_cell": [
+    0.4,
+    -0.85
+   ]
+  },
+  {
+   "seed": 1022,
+   "spawn_y": -0.85,
+   "slot_id": "B1",
+   "cyan_cell": [
+    1.6,
+    0.75
+   ]
+  },
+  {
+   "seed": 1026,
+   "spawn_y": -0.85,
+   "slot_id": "C1",
+   "cyan_cell": [
+    1.0,
+    -1.65
+   ]
+  },
+  {
+   "seed": 1027,
+   "spawn_y": -0.85,
+   "slot_id": "C1",
+   "cyan_cell": [
+    1.6,
+    -0.05
+   ]
+  },
+  {
+   "seed": 1028,
+   "spawn_y": -0.85,
+   "slot_id": "C1",
+   "cyan_cell": [
+    1.0,
+    -1.65
+   ]
+  },
+  {
+   "seed": 1029,
+   "spawn_y": -0.85,
+   "slot_id": "C1",
+   "cyan_cell": [
+    0.4,
+    -0.85
+   ]
+  },
+  {
+   "seed": 1030,
+   "spawn_y": -0.85,
+   "slot_id": "C1",
+   "cyan_cell": [
+    1.6,
+    -2.45
+   ]
+  },
+  {
+   "seed": 1031,
+   "spawn_y": -0.85,
+   "slot_id": "C1",
+   "cyan_cell": [
+    0.4,
+    0.75
+   ]
+  },
+  {
+   "seed": 1032,
+   "spawn_y": -0.85,
+   "slot_id": "C1",
+   "cyan_cell": [
+    0.4,
+    -1.65
+   ]
+  },
+  {
+   "seed": 1033,
+   "spawn_y": -0.85,
+   "slot_id": "C1",
+   "cyan_cell": [
+    0.4,
+    -2.45
+   ]
+  },
+  {
+   "seed": 1034,
+   "spawn_y": -0.85,
+   "slot_id": "C1",
+   "cyan_cell": [
+    -0.2,
+    0.75
+   ]
+  },
+  {
+   "seed": 1035,
+   "spawn_y": -0.85,
+   "slot_id": "C1",
+   "cyan_cell": [
+    -0.2,
+    -1.65
+   ]
+  },
+  {
+   "seed": 1036,
+   "spawn_y": -0.85,
+   "slot_id": "C1",
+   "cyan_cell": [
+    0.4,
+    -0.05
+   ]
+  }
+ ],
+ "reference_metadata_sha256": {
+  "episodes.json": "75a9512e57b6416b232eb8b52b9b3f64d4641e34c9be50c5befb9402049e1015",
+  "episodes_v3.json": "82a83210b34dd3ba145a884f94568fc190d7b7c8a28a3804e35eeb3374d0515d"
+ },
+ "reference_episode_ids": [
+  "vl-train-s901",
+  "vl-train-s902",
+  "vl-train-s903",
+  "vl-train-s904",
+  "vl-train-s905",
+  "vl-train-s906",
+  "vl-train-s907",
+  "vl-train-s908",
+  "vl-dev-s909",
+  "vl-dev-s910",
+  "vl-dev-s911",
+  "vl-test-s912",
+  "vl-test-s913",
+  "vl-test-s914",
+  "vl-test-s915",
+  "vl-test-s916",
+  "vl-test-s917",
+  "vl3-dev-s941",
+  "vl3-dev-s942",
+  "vl3-dev-s943",
+  "vl3-dev-s945",
+  "vl3-dev-s946",
+  "vl3-dev-s947",
+  "vl3-test-s951",
+  "vl3-test-s954",
+  "vl3-test-s955",
+  "vl3-test-s956",
+  "vl3-test-s959",
+  "vl3-test-s961",
+  "vl3-test-s962",
+  "vl3-test-s964"
+ ],
+ "independence": "New seed and both route-pair keys unused in all old train/dev/test metadata. Rendered overlap audit still mandatory.",
+ "rng": "random.Random('vl4-<seed>'); dx [-.04,.06], dy [-.08,.08], yaw [-6,6] deg; teacher bias radius [.012,.030], yaw [-1,1] deg"
+}

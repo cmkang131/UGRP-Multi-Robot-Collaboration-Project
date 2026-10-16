@@ -1,0 +1,20 @@
+{
+  "historical_frozen": {
+    "harness/owncam_drive.py": "a8aede7813956e2de12c25b139b02f48e11dab5be8cbf82a2d25344547d51e82",
+    "harness/owncam_drive_v2.py": "217423249775b024504b56b59203a1eab50b667bf273387ba23c0974c0ad4462",
+    "harness/pair_owncam_approach.py": "75058e95ff0f78dc388e9e34deba59f0524ef0647fb4e8a2597852ae0440f184",
+    "scripts/run_m2_pair.py": "3432df1fbefd4779921dc89a20f60fb67299fcdd02aa4568c6ecd14e27978783"
+  },
+  "providers": [
+    "harness/owncam_pose_source.py",
+    "harness/owncam_localizer.py",
+    "harness/vision_pose_source.py",
+    "harness/zone_study_pose_delay.py",
+    "harness/pose_provider.py",
+    "sim/zone_own_scene_provider.py"
+  ],
+  "evaluation": [
+    "scripts/evaluate_zone_pair_dev.py",
+    "scripts/diagnose_zone_pair_dev.py"
+  ]
+}

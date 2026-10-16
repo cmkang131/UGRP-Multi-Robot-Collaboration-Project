@@ -1,0 +1,28 @@
+{
+  "status": "IMPLEMENTED_UNTESTED_BLOCKED_ON_SHARED_LOCK",
+  "source_head_before_edits": "e25d7509d78af711b9a33ae62bd5c103a425200e",
+  "source_sha256": {
+    "harness/runtime_provenance.py": "29ed55831e18ca433b9d72e17b94433a74fb376dc1aa7c4aa3080759fe7fa7ab",
+    "scripts/trace_execution_dependencies.py": "1904017e8d600fc35177c76d632775037ca4c6cfd2e16abc72903d2a3b66eec7",
+    "tests/test_seal_runtime_provenance.py": "697e3da470d2df3e17947d9dc22326a30ea9298c8624f6b467a67d0d356b8d7b",
+    "scripts/run_ci_tests.py": "bc713de0ae8e1a8d00b2471e79bf70c2457f2fd17bb9edc59041f92e50534c64",
+    "docs/runtime_provenance.md": "ce0d1c34b9201c4f844664b83e307e57ef150d1888d14f9b13542759612211e4",
+    "docs/execution_versioning.md": "ec91426389a2317a05d9c5e0bec96e530b224994e6dabc18bc1fd464316f83ab"
+  },
+  "syntax_checked": [
+    "harness/runtime_provenance.py",
+    "scripts/trace_execution_dependencies.py",
+    "tests/test_seal_runtime_provenance.py",
+    "scripts/run_ci_tests.py"
+  ],
+  "pytest": {
+    "started": false,
+    "passed": null,
+    "attempt_exit_code": 3,
+    "reason": "shared host lock owned by live claude/v6h1-confirm-run"
+  },
+  "scope": "Offline tracer and design only; no physics, rendering, model calls, native admission, or legacy migration",
+  "workflow_edits": false,
+  "commit": null,
+  "push": null
+}

@@ -1,0 +1,60 @@
+{
+  "schema": "ugrp.s2_merge_preparation.v1",
+  "parents": {
+    "s2_before": "4162acc96d6bbb1196c745fcc9fa1936d40217b5",
+    "main": "7ff07d62d21bcdcd5a9874827ae36ee7093c0c78"
+  },
+  "conflict_files": [
+    "scripts/run_ci_tests.py"
+  ],
+  "resolution": "Keep origin/main CI lists and durations; preserve S2 code, workflow fragments, records and recorded bundle bytes. No ID collision or new bundle.",
+  "checks": {
+    "passed": true,
+    "s2_record_blobs_unchanged": 507,
+    "catalog_registry_files_by_parent": {
+      "s2_before": 57,
+      "main": 20
+    },
+    "retired_sources_and_tests_absent": 89,
+    "main_files_unchanged": {
+      "docs/decision_log.md": true,
+      "docs/retired_modules.md": true,
+      "AGENTS.md": true,
+      "scripts/run_ci_tests.py": true,
+      "configs/ci_test_durations.json": true,
+      ".github/workflows/tests.yml": true
+    }
+  },
+  "tests": {
+    "files": [
+      "tests/test_ci_sharding.py",
+      "tests/test_ci_fast_path.py",
+      "tests/test_simulation_workflow_manager.py"
+    ],
+    "passed": 96,
+    "subtests_passed": 280,
+    "seconds": 5.46,
+    "exit_code": 0
+  },
+  "simulation_runs": 0,
+  "model_calls": 0,
+  "new_experiment_results": false,
+  "full_ci": "not awaited; independent controller review remains assigned by supervisor",
+  "artifacts": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-merge-prep-20261009/preservation-check.json",
+      "sha256": "7d86252a9d403c8036f1e11172f8d755b0ac2aaac951f8cab116d0e42c307799",
+      "bytes": 116109
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-merge-prep-20261009/targeted-tests.log",
+      "sha256": "b8f24bb1e16fc83dfc92f2c949441f4197dead40f6f444045d0230a84bd5801c",
+      "bytes": 208
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-merge-prep-20261009/targeted-tests.xml",
+      "sha256": "e4d1ce4671ce25a29d95e2078cf8976e1e579f4f1f954f0d05df18cfbf6fb37a",
+      "bytes": 13441
+    }
+  ]
+}

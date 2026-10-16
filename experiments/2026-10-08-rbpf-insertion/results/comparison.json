@@ -1,0 +1,248 @@
+{
+  "qualification": "same-input frontend; graph covariance not invented; physical path unchanged; lifecycle conformance gate, not a map accuracy gate; physical zero",
+  "legacy_byte_verification": {
+    "equal": {
+      "poses": true,
+      "grid": true,
+      "decisions": true,
+      "ledger": true
+    },
+    "prediction_sha256": "2a8d8e1a5a2efc6654a083f08f64abeac65fcd71e764eed727c96bfb655887fd"
+  },
+  "source_frames": 901,
+  "acquisition_coverage": {
+    "travelled_m": 7.378768056526994,
+    "footprint_union_m2": 2.3125000000000004,
+    "footprint_cells_005m": 925,
+    "frames": 901,
+    "mapped_frames": 7,
+    "occupied_cells": 25
+  },
+  "b": {
+    "first_own_confirmation_s": 41.7,
+    "reached_gt": false,
+    "first_gt_reach_s": null
+  },
+  "wall_contacts": 0,
+  "modes": {
+    "off": {
+      "endpoint_error_m": 1.7414917622606245,
+      "sigma_xy_m": 0.008149128752020748,
+      "error_sigma_ratio": 213.7028160008866,
+      "error_2sigma_ratio": 106.8514080004433,
+      "path_rmse_m": 1.666881045395152,
+      "over_2sigma": 729,
+      "pose_n": 891,
+      "resamples": 21,
+      "ancestors": 1,
+      "rejected_resamples": 21,
+      "sensor_updates": 51,
+      "reasons": {
+        "bootstrap": 1,
+        "gmapping_motion_gate": 836,
+        "improved_proposal": 3,
+        "low_overlap": 47,
+        "insufficient_match_points": 3,
+        "search_boundary": 1
+      },
+      "occupied_cells": 25,
+      "inserted_frames": 7,
+      "full_map": {
+        "occupied_cells": 25,
+        "precision_015": 0.56,
+        "precision_cell": 0.12,
+        "wall_coverage": 0.060790273556231005,
+        "wall_error_rmse_m": 0.3909477703910535
+      },
+      "observed_region": {
+        "precision_correct": 14,
+        "precision_cells": 17,
+        "precision": 0.8235294117647058,
+        "recalled_samples": 20,
+        "visible_samples": 137,
+        "total_samples": 329,
+        "recall": 0.145985401459854,
+        "visible_wall_fraction": 0.41641337386018235
+      },
+      "seal": {
+        "sha256": "2a8d8e1a5a2efc6654a083f08f64abeac65fcd71e764eed727c96bfb655887fd",
+        "gt_read": false,
+        "source_sha": "96b3ef3fda995580d9bc662feb99232374524bd6",
+        "inputs": {
+          "own-contacts.jsonl": "fca96d1ebf83b615c76eaf29ec784db57ace0f5de5ceebf519fe2d76764ce81c",
+          "robots/r3/commands.jsonl": "3b90ec1182da8f731171bdba4d8d52b1de30da12142d2e11d4db61de1866a06c",
+          "artifacts.sha256.json": "2fd52845042223a86c22b1e87063aac9d4d780cf50db1e54364672794baa903c"
+        }
+      },
+      "range_segments": [
+        {
+          "segments": 449,
+          "inserted_segments": 5
+        },
+        {
+          "segments": 1736,
+          "inserted_segments": 3
+        },
+        {
+          "segments": 1409,
+          "inserted_segments": 0
+        },
+        {
+          "segments": 971,
+          "inserted_segments": 4
+        },
+        {
+          "segments": 0,
+          "inserted_segments": 0
+        }
+      ],
+      "inserted_times": [
+        3.3,
+        8.9,
+        12.1,
+        13.7,
+        15.3,
+        28.3,
+        36.1
+      ]
+    },
+    "on": {
+      "endpoint_error_m": 1.4505923741762374,
+      "sigma_xy_m": 0.0238272482358981,
+      "error_sigma_ratio": 60.87955939413839,
+      "error_2sigma_ratio": 30.439779697069195,
+      "path_rmse_m": 1.7532190389774591,
+      "over_2sigma": 729,
+      "pose_n": 891,
+      "resamples": 29,
+      "ancestors": 1,
+      "rejected_resamples": 19,
+      "sensor_updates": 51,
+      "reasons": {
+        "bootstrap": 1,
+        "gmapping_motion_gate": 836,
+        "improved_proposal": 25,
+        "low_overlap": 13,
+        "insufficient_match_points": 3,
+        "high_residual": 13
+      },
+      "occupied_cells": 446,
+      "inserted_frames": 55,
+      "full_map": {
+        "occupied_cells": 446,
+        "precision_015": 0.10762331838565023,
+        "precision_cell": 0.04932735426008968,
+        "wall_coverage": 0.1945288753799392,
+        "wall_error_rmse_m": 1.2541956567819819
+      },
+      "observed_region": {
+        "precision_correct": 35,
+        "precision_cells": 241,
+        "precision": 0.14522821576763487,
+        "recalled_samples": 38,
+        "visible_samples": 137,
+        "total_samples": 329,
+        "recall": 0.2773722627737226,
+        "visible_wall_fraction": 0.41641337386018235
+      },
+      "seal": {
+        "sha256": "5e0453ea1c9936109ff6b5ef83880b6f6be8e46a520a89094cc8895217664949",
+        "gt_read": false,
+        "source_sha": "96b3ef3fda995580d9bc662feb99232374524bd6",
+        "inputs": {
+          "own-contacts.jsonl": "fca96d1ebf83b615c76eaf29ec784db57ace0f5de5ceebf519fe2d76764ce81c",
+          "robots/r3/commands.jsonl": "3b90ec1182da8f731171bdba4d8d52b1de30da12142d2e11d4db61de1866a06c",
+          "artifacts.sha256.json": "2fd52845042223a86c22b1e87063aac9d4d780cf50db1e54364672794baa903c"
+        }
+      },
+      "range_segments": [
+        {
+          "segments": 449,
+          "inserted_segments": 36
+        },
+        {
+          "segments": 1736,
+          "inserted_segments": 117
+        },
+        {
+          "segments": 1409,
+          "inserted_segments": 90
+        },
+        {
+          "segments": 971,
+          "inserted_segments": 43
+        },
+        {
+          "segments": 0,
+          "inserted_segments": 0
+        }
+      ],
+      "inserted_times": [
+        3.3,
+        8.9,
+        10.3,
+        12.1,
+        13.7,
+        15.3,
+        28.3,
+        36.1,
+        37.3,
+        38.5,
+        39.7,
+        44.5,
+        54.1,
+        55.5,
+        56.7,
+        57.9,
+        59.1,
+        60.3,
+        61.5,
+        72.5,
+        78.5,
+        80.9,
+        82.1,
+        83.3,
+        84.3,
+        96.9,
+        110.3,
+        111.9,
+        113.1,
+        114.3,
+        121.3,
+        124.3,
+        125.3,
+        127.9,
+        129.3,
+        130.3,
+        131.3,
+        132.3,
+        137.7,
+        138.7,
+        139.9,
+        141.9,
+        143.5,
+        144.5,
+        145.9,
+        147.1,
+        148.9,
+        150.3,
+        152.3,
+        153.9,
+        161.7,
+        164.1,
+        171.9,
+        174.3,
+        180.7
+      ]
+    }
+  },
+  "gate": {
+    "off_bytes": true,
+    "admitted_55": true,
+    "deferred_836": true,
+    "on_inserted_55": true,
+    "on_late_inserted_47": true
+  },
+  "software_gate_passed": true,
+  "physical_admitted": false
+}

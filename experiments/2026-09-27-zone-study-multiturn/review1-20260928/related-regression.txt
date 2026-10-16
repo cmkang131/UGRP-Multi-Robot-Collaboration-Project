@@ -1,0 +1,17 @@
+........................................................................ [ 13%]
+.................................................................F...... [ 26%]
+........................................................................ [ 40%]
+........................................................................ [ 53%]
+........................................................................ [ 66%]
+........................................................................ [ 80%]
+........................................................................ [ 93%]
+..................................                                       [100%]
+=================================== FAILURES ===================================
+_________ test_at_most_one_pending_own_reask_timer_per_robot[no_comm] __________
+tests/test_zone_study_integration.py:507: in test_at_most_one_pending_own_reask_timer_per_robot
+    assert any(counts['skipped'] for counts in trial.scheduler.reask_counts.values()) == (condition != 'no_comm')
+E   AssertionError: assert True == ('no_comm' != 'no_comm')
+E    +  where True = any(<generator object test_at_most_one_pending_own_reask_timer_per_robot.<locals>.<genexpr> at 0x1165ddff0>)
+=========================== short test summary info ============================
+FAILED tests/test_zone_study_integration.py::test_at_most_one_pending_own_reask_timer_per_robot[no_comm]
+1 failed, 537 passed in 178.32s (0:02:58)

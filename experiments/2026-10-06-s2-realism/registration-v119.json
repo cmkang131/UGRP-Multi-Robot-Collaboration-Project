@@ -1,0 +1,47 @@
+{
+  "schema": "ugrp.s2_dev_probe_registration.v1",
+  "execution_bundle_id": "zone-s2-realism-v119",
+  "workflow_version": "7.12.0",
+  "user_authorization": "2026-10-06-s1042-site-check",
+  "registration_kind": "s2-dev-probe",
+  "research_result": false,
+  "confirmation_sample": false,
+  "dev_confirmation": true,
+  "preregistered_run": true,
+  "dev_runs": [
+    {
+      "seed": 1043,
+      "slot": "P1-2",
+      "stage": "pick",
+      "role": "probe"
+    }
+  ],
+  "same_failure_stop_count": 2,
+  "prior_same_cause_failures": {
+    "EXPANDED_SITE_ROI_UNAVAILABLE": 1
+  },
+  "stop_after_this_probe": true,
+  "full_route_admitted": false,
+  "model_calls": 0,
+  "pool_with_previous_s2": false,
+  "comparison_metrics": [
+    "wall_per_sim"
+  ],
+  "options": {
+    "camera_profile": "masterpi-camera-user-observation-target-review-v3",
+    "drive_profile": "masterpi_drive_friction_v7",
+    "setdown_relook": "off",
+    "grasp_check": "pickup_site_v1",
+    "min_wheel_cmd": "real_v1",
+    "dead_reckoning": "v7_diag_v1",
+    "stagnation_watch": "window120_v1",
+    "alignment_pulse": "real_fine_v1",
+    "hover_check": "real_pregrasp_v1",
+    "idle_robot_contacts": "freeze_v1",
+    "site_check": "real_floor_v1"
+  },
+  "probe_gate": "stage reached AND RGB probable_held_floor_clear AND independent eval lifted; no physical hardware or formal research claim",
+  "host_error": "ENOSPC or execution failure; preserve all partial raw; no seed reuse",
+  "case_cap_s": 1800,
+  "wall_cap_s": 10800
+}

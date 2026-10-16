@@ -1,0 +1,227 @@
+{
+  "cases": {
+    "tape-north": {
+      "eligible_frames": 89,
+      "counts": {
+        "unsettled": 2,
+        "calibrated_unloaded": 89,
+        "reset_tracks": 0,
+        "seeded": 41,
+        "insufficient_views": 23,
+        "zero_baseline": 266,
+        "accepted": 5,
+        "outside_wall_roi": 13,
+        "lk_failure": 22,
+        "reprojection": 61,
+        "low_parallax": 75
+      },
+      "event_count": 465,
+      "event_fractions": {
+        "low_parallax": 0.16129032258064516,
+        "zero_baseline": 0.5720430107526882,
+        "reprojection": 0.13118279569892474,
+        "behind_camera": 0.0,
+        "outside_wall_roi": 0.02795698924731183,
+        "lk_failure": 0.047311827956989246,
+        "insufficient_views": 0.04946236559139785,
+        "range": 0.0
+      },
+      "actual_xy_extent_m": [
+        0.015845304789963335,
+        0.6882767067696131
+      ],
+      "dr_xy_extent_m": [
+        0.3224157859747873,
+        1.5385702128634637
+      ],
+      "dr_over_actual_lateral": 2.2353948604256186,
+      "actual_path_m": 1.3803639566915527,
+      "actual_yaw_span_deg": 4.796844663440624,
+      "dr_path_error_m": {
+        "n": 91,
+        "median": 0.09385697590836437,
+        "p90": 0.901421996387299,
+        "max": 0.9139380073624059
+      },
+      "dr_end_error_m": 0.0021963503262466275,
+      "available_10view_dr_baseline_m": {
+        "n": 82,
+        "median": 0.34706253656266395,
+        "p90": 0.6993030061662847,
+        "max": 0.7415009936567357
+      },
+      "available_10view_actual_baseline_m": {
+        "n": 82,
+        "median": 0.1710239084163988,
+        "p90": 0.3167192130979612,
+        "max": 0.3442085915306106
+      },
+      "accepted_unique_tracks": 5,
+      "accepted_frame_ids": [
+        53
+      ],
+      "accepted_parallax_deg": {
+        "n": 5,
+        "median": 1.627582894503826,
+        "p90": 1.6562614958073958,
+        "max": 1.6576592597387605
+      },
+      "confidence": {
+        "n": 5,
+        "median": 0.0003987139948231476,
+        "p90": 0.00042780922284108757,
+        "max": 0.0004309744409552427
+      },
+      "depth_sigma_m": {
+        "n": 5,
+        "median": 2.0983460806621705,
+        "p90": 2.6790406776533273,
+        "rmse": 2.3183021852140406
+      },
+      "seed_ratio_to_off": 4.1,
+      "visual_planes": 24,
+      "acquisition": {
+        "status": "RECORDED",
+        "source_sha": "956283d1476794b21729a6d0a487215e630dff9f",
+        "case": "tape-north",
+        "model_calls": 0,
+        "loadavg_start": [
+          3.14990234375,
+          3.6884765625,
+          3.83447265625
+        ],
+        "qualification": "authored data acquisition, not navigation or hardware success",
+        "frames": 181,
+        "total_sim_s": 19.3,
+        "wall_s": 23.673539250012254,
+        "loadavg_end": [
+          2.82275390625,
+          3.578125,
+          3.791015625
+        ]
+      },
+      "commands_identical_to_off": true,
+      "actual_trajectory_max_difference_to_off_m": 0.0,
+      "passed": false,
+      "evaluation_sources": {
+        "/Users/changmin/projects/ugrp/outputs/wall-parallax-texture-v1/tape-north/eval_only/trajectory.jsonl": "c60f50b163b637b3334a0e039e374fab1234910fac8fbc1c74923d3975036c58",
+        "/Users/changmin/projects/ugrp/outputs/wall-parallax-texture-v1/tape-north/eval_only/camera.jsonl": "eca5141dfb87f8f01dd41ee364bf5c215885e5fb16847c87ef77258fc78bb2e9",
+        "/Users/changmin/projects/ugrp/outputs/wall-parallax-texture-v1/tape-north/scene.xml": "6d8df5b4da18280e25376a5765b305d797c3d3245da55bd1bdc58c01bd27b885"
+      }
+    },
+    "tape-south": {
+      "eligible_frames": 89,
+      "counts": {
+        "unsettled": 2,
+        "calibrated_unloaded": 89,
+        "reset_tracks": 0,
+        "seeded": 39,
+        "insufficient_views": 20,
+        "zero_baseline": 119,
+        "accepted": 6,
+        "lk_failure": 20,
+        "reprojection": 27,
+        "outside_wall_roi": 13,
+        "low_parallax": 84
+      },
+      "event_count": 289,
+      "event_fractions": {
+        "low_parallax": 0.2906574394463668,
+        "zero_baseline": 0.4117647058823529,
+        "reprojection": 0.09342560553633218,
+        "behind_camera": 0.0,
+        "outside_wall_roi": 0.04498269896193772,
+        "lk_failure": 0.06920415224913495,
+        "insufficient_views": 0.06920415224913495,
+        "range": 0.0
+      },
+      "actual_xy_extent_m": [
+        0.01753837670588962,
+        0.6889870750436318
+      ],
+      "dr_xy_extent_m": [
+        0.052664225862028936,
+        1.5710337557512175
+      ],
+      "dr_over_actual_lateral": 2.2802078771241505,
+      "actual_path_m": 1.3795425594239652,
+      "actual_yaw_span_deg": 4.461478645836303,
+      "dr_path_error_m": {
+        "n": 91,
+        "median": 0.09521071130738949,
+        "p90": 0.8728338042528139,
+        "max": 0.8853178324149342
+      },
+      "dr_end_error_m": 0.005514770262613868,
+      "available_10view_dr_baseline_m": {
+        "n": 82,
+        "median": 0.347062536562664,
+        "p90": 0.6993030061662848,
+        "max": 0.7415009936567358
+      },
+      "available_10view_actual_baseline_m": {
+        "n": 82,
+        "median": 0.17116472820709877,
+        "p90": 0.3170597104358941,
+        "max": 0.34409456909763586
+      },
+      "accepted_unique_tracks": 6,
+      "accepted_frame_ids": [
+        53
+      ],
+      "accepted_parallax_deg": {
+        "n": 6,
+        "median": 1.6485559998271535,
+        "p90": 1.7118997907613318,
+        "max": 1.7424100933129394
+      },
+      "confidence": {
+        "n": 6,
+        "median": 0.0004431362924282737,
+        "p90": 0.00046539094181727016,
+        "max": 0.00047920360627558436
+      },
+      "depth_sigma_m": {
+        "n": 6,
+        "median": 1.9896193222456553,
+        "p90": 2.7795527727732283,
+        "rmse": 2.266792354524418
+      },
+      "seed_ratio_to_off": 6.5,
+      "visual_planes": 24,
+      "acquisition": {
+        "status": "RECORDED",
+        "source_sha": "956283d1476794b21729a6d0a487215e630dff9f",
+        "case": "tape-south",
+        "model_calls": 0,
+        "loadavg_start": [
+          2.77587890625,
+          3.54248046875,
+          3.775390625
+        ],
+        "qualification": "authored data acquisition, not navigation or hardware success",
+        "frames": 181,
+        "total_sim_s": 19.3,
+        "wall_s": 23.774397458997555,
+        "loadavg_end": [
+          2.55517578125,
+          3.44189453125,
+          3.73291015625
+        ]
+      },
+      "commands_identical_to_off": true,
+      "actual_trajectory_max_difference_to_off_m": 0.0,
+      "passed": false,
+      "evaluation_sources": {
+        "/Users/changmin/projects/ugrp/outputs/wall-parallax-texture-v1/tape-south/eval_only/trajectory.jsonl": "bb7c8ddc4e01d5aab37fb8f7373a7dc5801a8f3bd27387428ee13e66678c0414",
+        "/Users/changmin/projects/ugrp/outputs/wall-parallax-texture-v1/tape-south/eval_only/camera.jsonl": "6b557c855b1f95fd03ea57644e642388c182b90652086bc2947f4682201100a6",
+        "/Users/changmin/projects/ugrp/outputs/wall-parallax-texture-v1/tape-south/scene.xml": "04be56b174a7c20603ff7840716819dcdd3028ead5419e4f185088380f55b98c"
+      }
+    }
+  },
+  "passed": 0,
+  "texture_tuning": 0,
+  "detector_tuning": 0,
+  "mapping_replays": 0,
+  "decision": "STOP_GATE_FAILED"
+}

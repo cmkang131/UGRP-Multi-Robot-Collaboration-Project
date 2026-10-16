@@ -1,0 +1,47 @@
+{
+  "date": "2026-10-01",
+  "pr": 346,
+  "pre_merge_head": "6ed94e4c341cbca206bcd8a92d0ef64194590f60",
+  "merged_main": "2c45b137c480eecff3dac871277cf48914dd5cf4",
+  "scope": "main integration and offline regressions only; no recalibration or held-out evaluation",
+  "conflict_resolution": "scripts/run_ci_tests.py keeps exact union of both parents TEST_PATTERNS",
+  "tests": {
+    "tests": 349,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "sharding": {
+    "coverage_verified": true,
+    "total_files": 386,
+    "shard_count": 8,
+    "balance": "durations",
+    "new_tests": [
+      "tests/test_final_environment_unloaded_fit.py",
+      "tests/test_unloaded_hammerstein.py",
+      "tests/test_unloaded_consumer.py",
+      "tests/test_consumer_criterion_b.py"
+    ],
+    "automatic_median_seconds": 0.4
+  },
+  "preserved_existing_record_count": 24,
+  "frozen_sha256": {
+    "experiments/2026-10-01-final-env-v87-calibration-fit/calibration_candidate_r4.json": "fa7d3aa2e791086a9e73280b2dd4122bff5186d82503b56e17d5be27ca9bf071",
+    "experiments/2026-10-01-final-env-v87-calibration-fit/calibration_partial.json": "e44f2306da3879c54402357b005597939ad5aecf41b65a0b8786569781a0d93a",
+    "experiments/2026-10-01-final-env-v87-calibration-fit/calibration_partial_r2.json": "0b5d0c6b693fb7ead37c406dc2ae88d87f52c194058f58faf922cad8d12a5ba1",
+    "experiments/2026-10-01-final-env-v87-calibration-fit/calibration_partial_r3.json": "ab07da27ac44e204d4fc2c2a16721a4d53d684020895a618ccb216b53be516bb",
+    "experiments/2026-10-01-final-env-v87-calibration-fit/consumer_criterion_B.json": "74c312b5eff11e27be2b30d103f6d955f03b0c4b91595dfc9843c366b2c49b5f",
+    "experiments/2026-10-01-final-env-v87-calibration-fit/consumer_criterion_r3.json": "49b7ffbbc07425dda3d2f2410c480ea6ee1315a1c831f97e75efc6989164391c"
+  },
+  "workflows": "byte-identical to merged origin/main; no branch-specific edits",
+  "ci_duration_data": "byte-identical to origin/main; new files use automatic median",
+  "local_physics_runs": 0,
+  "local_render_runs": 0,
+  "model_calls": 0,
+  "private_tmp_extraction_dirs_created": [],
+  "private_tmp_extraction_dirs_remaining": [],
+  "logs": "/Users/changmin/projects/ugrp/outputs/pr346-main-sync-20261001",
+  "junit_sha256": "024bdc072dd2547ea947ed9d2eb92d8cc2bc9835ccab4b79cfa954243e2c1eaf",
+  "remote_ci": "pending push; final status recorded separately under local logs",
+  "scientific_status": "criterion A FAILED_NOT_RESCORED; r4 CANDIDATE_UNVALIDATED; no new B held-out validation"
+}

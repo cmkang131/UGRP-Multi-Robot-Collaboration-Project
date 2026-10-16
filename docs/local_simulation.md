@@ -15,13 +15,13 @@ Windows 11 PowerShell에서는 UTF-8 기록과 GLFW 렌더링을 적용하는 �
 
 ## 터미널 간편 메뉴
 
-설치된 환경에서 저장소 루트의 다음 명령을 실행하면 메뉴가 열린다. **실행 방식·맵·관찰 속도**를 고르고, LLM 협업 출하에서는 **모델 ID·자연어 지시**도 입력한다. 실제 세계는 MuJoCo 기본 창에서 열린다. 자세한 물리·접촉·카메라 설정은 아래 CLI와 설정 파일에서 관리한다.
+설치된 환경에서 저장소 루트의 다음 명령을 실행하면 메뉴가 열린다. **실행 방식·맵·속도**(LLM 출하는 재생 속도, 장면 미리보기는 관찰 속도)를 고르고, LLM 협업 출하에서는 **모델 ID·자연어 지시**도 입력한다. 실제 세계는 MuJoCo 기본 창에서 열린다. 자세한 물리·접촉·카메라 설정은 아래 CLI와 설정 파일에서 관리한다.
 
 ```bash
 bash scripts/open_simulation.command
 ```
 
-선택 메뉴는 번호를 표시한다. 실행 방식은 `1` LLM 공동 계획, `2` 장면 미리보기, `3` 기타 실행이다. 출하 지도 5종은 번호로 고른다. 장면 미리보기는 먼저 번호로 그룹을 고른 다음 그룹 안의 장면 번호를 고른다. 관찰 속도는 `1`=0.5×, `2`=1×(기본), `3`=2×, `4`=4×다. 모델은 `1`=현재 기본 모델, `2`=모델 ID 직접 입력이다. Enter는 각 단계의 기본값을 고른다. 자연어 지시는 텍스트로 입력하며, 장면 ID 직접 입력과 `/검색어`도 계속 사용할 수 있다.
+선택 메뉴는 번호를 표시한다. 실행 방식은 `1` LLM 공동 계획, `2` 장면 미리보기, `3` 기타 실행이다. 출하 지도 5종은 번호로 고른다. 장면 미리보기는 먼저 번호로 그룹을 고른 다음 그룹 안의 장면 번호를 고른다. 속도는 `1`=0.5×, `2`=1×(기본), `3`=2×, `4`=4×다. 모델은 `1`=현재 기본 모델, `2`=모델 ID 직접 입력이다. Enter는 각 단계의 기본값을 고른다. 자연어 지시는 텍스트로 입력하며, 장면 ID 직접 입력과 `/검색어`도 계속 사용할 수 있다.
 
 **LLM 협업 출하**는 기존 빔·상자 출하 임무와 지원 지도 5종에 한정된다. 자연어 지시를 비우면 기본 출하 임무가 전달된다. 지시는 실행 전 계획에 전달되며, 실행 도중 임의의 새 물체 작업을 추가하지 않는다. 모델 프록시가 준비되지 않았다면 모델 요청은 실패하며 메뉴가 로그인하거나 프록시를 시작하지 않는다. **지도 장면 보기**는 등록된 장면을 MuJoCo 창에서 정지 상태로 확인한다. ACT 지도도 볼 수 있지만 LLM 제어나 운반 평가가 아니다. 새 지도 구조를 생성하려면 지도 suite/설정 파일과 표준 workflow를 사용한다. 저장 plan 재생·수동 명령·설정 파일 실행은 메뉴의 **기타 실행**에서 계속 사용할 수 있다.
 
@@ -43,6 +43,8 @@ bash scripts/open_simulation.command run configs/simulation/drive.json --paused 
 Ubuntu 24.04는 먼저 [설치 안내](ubuntu_quickstart.md)를 따른다. 창을 띄우려면 데스크톱의 X11/Wayland 그래픽 세션이 필요하다. WSL은 WSLg가 필요하며 각 PC의 그래픽 지원은 따로 확인한다. 서버에서는 `--headless`를 사용한다. Linux에서 RGB를 저장하는 headless 실행에는 `libosmesa6`와 `MUJOCO_GL=osmesa`를 사용할 수 있다. 네이티브 창에는 기본 GLFW를 사용한다.
 
 실행기는 저장소 또는 기본 worktree의 `.venv-sim-worker-mac`, `.venv-dev`를 찾는다. 외부 환경은 `UGRP_SIM_PYTHON=/absolute/path/bin/python`으로 지정한다. macOS의 네이티브 창은 MuJoCo가 제공하는 **`mjpython`**으로 실행해야 하며 실행기가 자동 선택한다. 환경을 활성화했다면 `mjpython -m scripts.sim_cli ...`(Mac 창), `python -m scripts.sim_cli ...`(Linux 또는 headless)를 직접 써도 된다.
+
+출하 실행의 실험 옵션 `dispatch --realtime-control`은 일반 Python에서 물리 owner를 실행하고, 별도 `mjpython` 프로세스에 MuJoCo 창을 연다. 기존 실행기에 이 옵션을 추가하면 된다. RGB의 실제 촬영 SIM 시각과 판단 지연을 저장하고, 오래된 판단은 정지 처리한다. 녹화가 밀리면 이전 프레임을 표시하고 화면에 반복 표시 및 `execution.frames.json`에 횟수를 남기므로 영상 길이를 줄여 빠르게 보이게 하지 않는다. 이 옵션은 open RGB 경로의 별도 검증 후보이며 ACT·회전 운반의 검증을 대신하지 않는다. `result.json`의 `timing`은 물리 진행/실제 시간과 준비·정리 시간을 나눠 기록하며 최종 `wall_s`는 정리까지 포함한다. 실행 구조와 기록 해석은 [실시간 출하 실행](realtime_dispatch.md), 상세 근거는 [실시간 실행 검증](../experiments/2026-09-23-realtime-dispatch/README.md)을 따른다.
 
 ## 터미널에서 구성하기
 
@@ -92,7 +94,7 @@ MuJoCo 패널은 표시 옵션 외에 물리·actuator 상태도 바꿀 수 있�
 ```bash
 bash scripts/open_simulation.command
 # 1 LLM 공동 계획 → 기존 RGB 스킬 / 2 장면 미리보기 / 3 기타 실행
-# 1에서는 지원 출하 맵·관찰 속도·계획 모델·자연어 지시를 고른다.
+# 1에서는 지원 출하 맵·재생 속도·계획 모델·자연어 지시를 고른다.
 # 2에서는 등록된 장면을 그룹 또는 /검색어로 찾아 MuJoCo 기본 창에서 본다.
 # 저장된 plan 재생·수동·설정 실행은 3에서 고른다.
 
@@ -107,15 +109,50 @@ bash scripts/open_simulation.command dispatch --plan-replay outputs/my-run/commi
 
 `dispatch`는 **기존** `run_dispatch_e2e.py --executor skills`의 진입점이다. 세 로봇의 자기 RGB·공용 TOP·자기 명령 이력·허용 정적 지도·동료 메시지로 계획을 협상하고, 동일 plan ID/hash에 전원 합의해야 `SkillBindings`가 로봇별 프로그램을 만든다. 담당 물체, 운반 파트너, 경로, 목적지, 선행 작업은 plan에서 가져온다. pair RGB 접근·파지·운반과 solo box 스킬을 공통 물리 시계에서 진행하며, 공동 동작·점유 자원·선행 작업의 기존 허가를 유지한다. 별도 프로세스 세 개의 실시간 분산 제어를 뜻하지 않는다.
 
-자연어는 **실행 전 계획 지시**다. 현재 계약은 기존 beam 1개·box 1개, 로봇 3대, dock_a/b, north/south 경로다. 자유로운 새 작업이나 임의 맵에 필요한 스킬을 자동으로 만드는 기능은 없다. 목적지처럼 반드시 지켜야 하는 조건은 `--required-dock`으로도 지정한다. 실행 중 새 자연어 지시로 이미 승인된 plan을 바꾸는 기능은 아직 없다. 새 작업은 종료 후 다시 실행한다. 저장된 plan 재생에는 새 `--task`를 함께 넣을 수 없다.
+> 현행 규칙(2026-10-03 [#366](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/366))상 공용 top 카메라는 평가·검토 영상 전용이며 제어·지도 만들기·위치 추정 입력으로 금지한다. 이 기존 경로는 아직 TOP 사용(미이행)이다.
+
+`--live-view` 관찰 창 왼쪽 아래에서 최근 동료 메시지와 발신·수신 로봇을 볼 수 있다. 계산 후 재생 창도 왼쪽 아래 `TEAM TALK`에 그 SIM 시각까지 보낸 최근 동료 메시지 3개(30 SIM초 이내)를 보여 준다. 재생 표시는 출력의 대화 기록을 읽는 관찰 전용이며 제어 입력이 아니다. 전체 대화는 출력 폴더의 `team/conversation.jsonl`과 터미널 `peer_delivery` 행에 남는다. 현재 새 자연어 대화는 주로 계획 협상에서 발생하며, 저장 계획 재생과 RGB 운반 중에는 새 대화가 없을 수 있다. [대화 관찰·원문 기록](communication_observer.md)을 참고한다.
+
+**동적 협업 (실험, 2026-09-25):** `dispatch --coordination dynamic`(메뉴 1번의 협업 방식 2)은 전체 계획에 먼저 합의하지 않는다.
+
+> 현행 규칙(2026-10-03 [#366](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/366))상 공용 top 카메라는 평가·검토 영상 전용이며 제어·지도 만들기·위치 추정 입력으로 금지한다. 이 기존 경로는 아직 TOP 사용(미이행)이다. 아래 시작·실행 중 대화의 TOP 전달은 기존 구현 설명이다.
+
+- **시작:** 세 로봇이 동시에 한 번씩, 자기 영상·TOP 영상·자기 식별 동작만 보고 **자기 할 일**을 밝힌다. 할 일은 물체, 빔이면 위/아래 끝, 경로, dock이다. 셋의 선언이 서로 맞고 기존 RGB/지도 가능성 검사를 통과하면 대화 없이 바로 출발한다. 겹치거나 거절되면 그때 기존 방식으로 대화해 합의한다. 호스트는 선언이 맞는지 확인만 하고 누구의 일도 정하거나 고치지 않는다.
+- **실행 중 대화:** 실패가 나면 시뮬레이션이 멈춘 상태에서 해당 로봇들이 자기 영상·TOP·자기 명령 이력·실패 이유를 보고 정해진 선택지 중 하나를 만장일치로 고른다. 의견이 갈리거나 응답이 없으면 안전한 쪽을 택한다. 대화 메시지는 그 결정에 참여한 로봇에게만 간다.
+
+  | 사건 | 결정하는 로봇 | 선택지(합의 실패 시) | 다시 하기 |
+  |---|---|---|---|
+  | 빔 접근 실패(거친 접근 한도·방향 미해결, 미세 정렬 범위 이탈, 도킹 실패) | 빔 짝 둘 | `retry` / `abort`(abort) | 20구간 후진, RGB로 추적한 바퀴 창 재정렬, 새 접근. 최대 `--approach-retries`(기본 2) |
+  | 빔 파지 실패(닫기 전 RGB 지원 밖, 또는 짐을 싣고 이동하기 전의 운반 감시 정지) | 빔 짝 둘 | `regrasp` / `abort`(abort) | 닫았으면 내려놓고 열기, 팔 접기, 후진, 새 접근·파지. 최대 `--approach-retries`회 |
+  | 상자 로봇 실패(접근 중 대상·자세 판단 실패, 들기 미확인) | 상자 로봇 | `retry` / `abort`(abort) | 집게 열고 팔 접기, 후진, 새 상자 스킬. 최대 `--box-retries`(기본 2) |
+  | 한 작업을 포기하게 됨(위 abort, 재시도 소진, 싣고 가던 중 실패 등) | 세 로봇 모두 | `continue_others` / `stop_all`(stop_all) | `continue_others`면 그 작업만 계획에서 빼고(빔 짝은 먼저 내려놓고 멈춤) 나머지가 자기 일을 끝낸다. 결과는 `FINISHED_PARTIAL`, 전체 성공이 아니다 |
+
+- **범위:** 동기 실행 전용이며 저장 계획 재생과 함께 쓸 수 없다. 싣고 가던 도중의 실패는 다시 하지 않고 작업 포기 결정으로 간다. 포기한 상자 로봇은 그 자리에 멈춘다. 새 작업 추가나 역할 교대(다른 로봇이 대신 옮기기)는 없다.
+- **진단:** `--diagnostic-fail-approach-once`, `--diagnostic-fail-grasp-once`, `--diagnostic-fail-box-once`는 각 경로를 확인하려고 첫 접근·첫 파지·상자 첫 접근 완료 때 실패를 한 번 넣는다. 로봇에게는 실제 제어기 정지 이유만 보이고, 주입 사실은 결과(`diagnostic_injection`)에만 남는다. 기록은 `result.json`의 `coordination`(`recoveries`, `box_events`, `dropped_jobs`)과 `team/conversation.jsonl`에 남는다.
+
+자연어는 **실행 전 계획 지시**다. 현재 계약은 기존 beam 1개·box 1개, 로봇 3대, dock_a/b, north/south 경로다. 자유로운 새 작업이나 임의 맵에 필요한 스킬을 자동으로 만드는 기능은 없다. 목적지처럼 반드시 지켜야 하는 조건은 `--required-dock`으로도 지정한다. 실행 중 새 자연어 지시로 이미 승인된 plan을 바꾸는 기능은 아직 없다(동적 협업의 실패 대화는 다시 하기와 실패한 작업 빼기까지만 정한다). 새 작업은 종료 후 다시 실행한다. 저장된 plan 재생에는 새 `--task`를 함께 넣을 수 없다.
 
 출하 스킬에 필요한 기존 모델은 저장소의 `experiments/dispatch-skill-integration-20260917/models.zip`에서 `outputs/dispatch-models/<bundle-hash>/`로 복원한다. 기존 파일을 덮어쓰거나 새로 학습하지 않는다. 자기 모델은 `--grasp-model-dir DIR --stage-model-dir DIR`를 함께 지정한다. 이 모델의 과거 성공 범위가 임의 조건의 성공을 보장하지는 않는다.
 
 새 계획에는 접근 가능한 기존 모델 프록시가 필요하다. `GEMINI_PROXY_URL`은 자신의 `/v1/chat/completions` 주소이며 기존 기본은 로컬 8391이다. 모델은 `--model` 또는 `UGRP_SIM_MODEL`, 기본은 `gemini-3.8-flash`다. 실행기는 계정이나 프록시 서버를 자동으로 만들지 않는다. 저장된 계획 재생은 새 모델 협상을 하지 않는다.
 
-주요 옵션은 `--variant open|shared_crossing|north_blocked|narrow_south|rough_south`, `--seed`, `--max-wall-s`(기본 1200초), `--timeout`(요청당 기본 60초), `--planning-rounds`(합의 시도당 기본 8라운드), `--max-replans`(실행 전 적합성 재협상 기본 2회), `--max-input-tokens`다. 기존 실행기의 나머지 옵션도 전달할 수 있다. headless는 `--headless`, 관찰 재생 속도는 `--realtime-factor`로 바꾼다. 속도는 물리 timestep이나 제어기를 바꾸지 않는다.
+주요 옵션은 `--variant open|shared_crossing|north_blocked|narrow_south|rough_south`, `--seed`, `--max-wall-s`(기본 1200초), `--timeout`(요청당 기본 60초), `--planning-rounds`(합의 시도당 기본 8라운드), `--max-replans`(실행 전 적합성 재협상 기본 2회), `--max-input-tokens`다. 기존 실행기의 나머지 옵션도 전달할 수 있다. headless는 `--headless`, 재생 속도는 `--realtime-factor`로 바꾼다. 속도는 물리 timestep이나 제어기를 바꾸지 않는다.
 
-MuJoCo **dispatch 관찰 창**은 마우스 회전/확대, **Space** 일시정지/재개, **Q 또는 창 닫기** 종료를 지원한다. 모델 대기 중 물리는 멈춘다. 관찰 창은 model/data의 별도 복사본을 사용하므로 패널 초기화·actuator 조작·물체 드래그가 실제 제어 세계에 전달되지 않는다. 실제 물체 조작은 아래 수동 경로를 사용한다. 종료 중 이미 진행된 모델 요청은 제한 시간 안에 끝날 때까지 기록을 회수하며, 서버 측 취소를 보장하지 않는다.
+표준 `dispatch`는 pair 판단에 쓰지 않는 카메라 촬영을 생략한다. 로봇이 실제로 받은 자기·TOP 영상과 연속 기록 영상의 조건은 유지한다. 합의한 계획이 열린 맵의 독립된 경로·자원을 사용하면 기존 병렬 운반 경로도 자동 선택한다. 선행 작업이나 공유 경로가 있으면 직렬 실행을 유지하고, 병렬 실행에서도 공용 하역 구역은 한 팀씩 사용한다. 실제 선택과 이유는 `skill-bindings.json`과 `result.json`의 `overlap_selection`에 남는다. 계획의 역할·경로·선행 조건은 자동 수정하지 않는다.
+
+> 현행 규칙(2026-10-03 [#366](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/366))상 공용 top 카메라는 평가·검토 영상 전용이며 제어·지도 만들기·위치 추정 입력으로 금지한다. 이 기존 경로는 아직 TOP 사용(미이행)이다.
+
+이전 촬영·자원 일정과 비교하려면 `dispatch --full-capture --serial-route`를 사용한다. 연구 실행기 `run_dispatch_e2e.py`와 `dispatch-skills` workflow의 기본값은 그대로이며 새 자동 선택은 `--auto-route-overlap`, 촬영 최적화는 `--efficient-capture`로 명시한다. 기본 병렬 진입은 봉의 운반 명령 이후이고, `--overlap-start grasp`는 파지부터 겹치는 별도 조건이다. 창의 배속, 렌더 처리량, 계획 협상 시간, 실제 동시 운반 시간은 각각 구분해 측정한다.
+
+계획 협상의 판단 기준은 `--plan-guidance`로 명시적으로 고른다. 기본 `legacy`는 기존 프롬프트 그대로다. 목표를 따로 주지 않고, 선행 조건 예시는 "box 먼저, beam 나중" 하나뿐이다. `objective`는 "충돌·낙하 없이 모두 배달한 뒤 총 SIM 시간을 줄인다"는 목표와, 선행 조건을 걸 때·비울 때 실행기가 어떻게 동작하는지를 중립적으로 알려 준다. `objective_preview`는 동결된 제안마다 대략적 일정 미리보기를 추가한다. 로봇별 예상 대기, 직렬/동시 여부, 예상 총 SIM 시간을 보여 주며, 과거 동기 실행 두 번의 명목 단계 시간을 사용한다. 미리보기는 추정일 뿐 현재 장면 관측·성공 검사가 아니다. 호스트는 시간을 이유로 계획을 고치거나 거절하지 않는다. 사용한 모드와 prior 해시는 `result.json`의 `plan_guidance`, 로봇에게 보여 준 미리보기는 `plan-previews.json`에 남는다.
+
+```sh
+bash scripts/open_simulation.command dispatch --variant open --plan-guidance objective_preview --task 'beam과 box를 dock_b로 옮겨'
+```
+
+**2026-09-24부터 표준 `dispatch`는 계산을 먼저 끝낸 뒤 재생한다.** 창 없이 끝까지 최대 속도로 계산하고, 그동안 관찰 전용 상태(관절·mocap 위치, SIM 30Hz)를 `replay/`에 기록한다. 끝나면 MuJoCo 기본 창에서 선택한 속도로 재생한다. 성공·실패와 관계없이 기록된 구간을 재생하며 종료 코드는 원래 실행의 값이다. 재생은 저장된 위치를 운동학적으로 보여 줄 뿐 물리를 다시 계산하지 않는다. 기록은 로봇·제어기·평가의 입력이 아니며 제어 동작은 바뀌지 않는다. 재생 창은 마우스 회전/확대, **Space** 일시정지/재개, **←/→** 5초 이동, **R** 처음부터, **Q 또는 창 닫기** 종료를 지원한다. 지난 실행은 `bash scripts/open_simulation.command replay outputs/<실행 폴더> --speed 2`로 다시 볼 수 있다. `replay/replay.json`의 파일 해시가 달라지면 재생을 거부한다. `--headless`는 기록도 창도 만들지 않으며, 필요하면 `--record-replay`를 추가한다.
+
+계산 중에 보려면 `dispatch --live-view`를 쓴다. 이전 기본 **dispatch 관찰 창**이며 마우스 회전/확대, **Space** 일시정지/재개, **Q 또는 창 닫기** 종료를 지원한다. 모델 대기 중 물리는 멈춘다. 관찰 창은 model/data의 별도 복사본을 사용하므로 패널 초기화·actuator 조작·물체 드래그가 실제 제어 세계에 전달되지 않는다. 실제 물체 조작은 아래 수동 경로를 사용한다. 종료 중 이미 진행된 모델 요청은 제한 시간 안에 끝날 때까지 기록을 회수하며, 서버 측 취소를 보장하지 않는다.
 
 결과 폴더에는 원래 실행기가 만드는 `actor-mission.json`, `team/`의 로봇별 실제 요청/응답, `committed-plan.json`, `robot-programs.json`, `skill-bindings.json`, 발행 명령·RGB·영상·별도 평가·`result.json`이 남는다. plan 합의, 스킬 프로토콜 완료, 실제 운반 성공은 각각 다른 판정이다. 출력 폴더는 덮어쓰지 않는다. 기존 연구 실행기와 동일하게 실제 실행 전 변경 소스를 커밋해야 한다.
 
@@ -193,6 +230,8 @@ with Simulation(config, render=True) as sim:
 
 `observe()`는 `render=True`일 때 기존 보정·왜곡을 적용한 자기 RGB와 공용 top RGB를 반환한다. 네이티브 고정 카메라 미리보기는 MuJoCo 투영이며 이 보정 RGB와 픽셀 단위로 동일하지 않다. 실제 모델 입력은 `observe()` 결과를 사용한다. 초기 위치·평가 좌표·관절 측정·접촉·성공 판정은 관측에 포함하지 않는다. `evaluation_state()`는 별도 평가 전용이며 제어기에 전달하지 않는다. 창을 사용하는 사람이 물체를 조작해도 이 경계가 자동으로 연구 프로토콜을 보장하는 것은 아니다.
 
+> 현행 규칙(2026-10-03 [#366](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/366))상 공용 top 카메라는 평가·검토 영상 전용이며 제어·지도 만들기·위치 추정 입력으로 금지한다. 이 기존 경로는 아직 TOP 사용(미이행)이다. `observe()` 반환 API·필드와 기존 모델 전달 경로는 유지되어 있으며, 반환된 TOP 필드가 현행 제어 입력으로 허용된다는 뜻은 아니다.
+
 ## 기록과 코드 위치
 
 CLI는 매번 `outputs/sim-<날짜>-<ID>/`를 만든다. `config.json`은 적용된 전체 설정, `session.json`은 소스 SHA/dirty 상태와 실행 환경, `model.mjb`는 컴파일된 모델, `physics.json`은 물리 설정·실제 선택 장면의 화물 목록, `commands.jsonl`은 초기화와 실제 발행 명령, `*-evaluation.json`은 별도 정답 진단, `result.json`은 종료 이유·시간·파일 해시다. `--capture`는 시작/종료의 실제 입력 RGB와 관측 JSON을 추가한다. `extensions.json`과 `extensions/`에는 실행한 확장 진입 파일·해시·최종 추가 형상을 보관한다. 제어기를 쓰면 `controller-decisions.jsonl`에 매 호출의 실제 RGB 입력·응답·발행 명령을 저장한다. `--video`는 ffmpeg로 관찰용 `motion.mp4`를 녹화한다. `--video-camera cctv_top --video-fps 10`처럼 시점을 지정할 수 있다. `video-frames.jsonl`에 프레임별 에피소드/SIM 시각을 남기며 pause 시간은 생략한다. 전체 상태·제어기 기억의 checkpoint replay는 제공하지 않는다.
@@ -269,3 +308,9 @@ headless에서 SIM 시간에 도달하지 못한 wall timeout은 종료 코드 2
 로컬 Mac/Linux에서 호출할 수 있다. 인자는 해당 subcommand의 `--help`와
 [연구 실행기 계약](research_parallel/d2-study-runner.md)을 따른다. 출처가 동결된 manifest와
 증거·예산·모델 admission이 필요하며, native 장면을 연 것만으로 이 조건이 충족되지는 않는다.
+
+### 관찰 창 속도와 시뮬레이션 시간
+
+`--realtime-factor`는 SIM 시간의 목표 진행 속도이며, 컴퓨터가 물리·영상 처리·화면 표시를 따라가지 못하면 그 속도를 보장하지 않는다. 예를 들어 SIM140초에 현실331초가 걸리면 실제 진행률은 약0.42배속이다. 이는 저장 영상을 느리게 재생하는 것이 아니라 시뮬레이션 진행 자체가 늦은 상태다. 결과의 SIM 시간과 `wall_s`를 나눠 확인한다.
+
+표준 관찰 창은 별도 복제 모델의 그림자·반사를 생략하고 state-only sync 및 묶음 pacing을 사용한다. 로봇이 입력으로 받는 RGB와 저장 원본 영상, 물리 timestep은 이 관찰 창 설정에 영향받지 않는다. 검증 범위는 [속도·병렬 실행 기록](../experiments/2026-09-23-local-dispatch-performance/README.md)을 따른다.

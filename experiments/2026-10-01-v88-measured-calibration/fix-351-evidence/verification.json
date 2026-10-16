@@ -1,0 +1,66 @@
+{
+  "date": "2026-10-02",
+  "scope": "synthetic offline regressions only; no physics/render/model calls or shared outputs access",
+  "review_source_sha": "ef1320b164f337afa7f9d1a43967f8c5d86f46df",
+  "latest_unique_related_passed": 338,
+  "runs": [
+    {
+      "file": "related-initial.xml",
+      "summary": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "6",
+        "skipped": "0",
+        "tests": "338",
+        "time": "340.743",
+        "timestamp": "2026-10-02T13:56:09.159739+09:00",
+        "hostname": "gangchangmin-ui-MacBookAir.local"
+      }
+    },
+    {
+      "file": "step-selection-final.xml",
+      "summary": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0",
+        "tests": "24",
+        "time": "4.039",
+        "timestamp": "2026-10-02T13:59:50.705592+09:00",
+        "hostname": "gangchangmin-ui-MacBookAir.local"
+      }
+    },
+    {
+      "file": "sharding-before.xml",
+      "summary": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "1",
+        "skipped": "0",
+        "tests": "68",
+        "time": "0.870",
+        "timestamp": "2026-10-02T13:56:18.671262+09:00",
+        "hostname": "gangchangmin-ui-MacBookAir.local"
+      }
+    }
+  ],
+  "source_sha256": {
+    "scripts/assemble_final_pair_calibration.py": "b70f8dd23e4e5372ad33c638ebb4e13e2ea4c644bcf355c8d51d5fe03b9b6fba",
+    "scripts/final_pair_calibration_io.py": "c70fb98d67c475c9fe4bcabceebd15b819a6304c5584b3e2558692cc649e7253",
+    "scripts/final_pair_calibration_motion.py": "24acced13f296d7805536a2bd3d790a9186a61906d86de79fa0412e213b9e925",
+    "scripts/run_ci_tests.py": "85891d8c2c2e361f30e5dc3364a518139b7aaab2393934da7f6650ef2d247085",
+    "tests/test_final_pair_calibration_assembly.py": "f952189713b4a33cd548732289f858db4d7aabadfc016d3eab5c8d12f7f5ad62",
+    "tests/test_review_351.py": "883b6f584970288f837a5bfd23edfea67afdb362e922e9d23616c479c36155ac"
+  },
+  "evidence_sha256": {
+    "step-selection-final.xml": "39101b552d1ebd312ddb10720462ad83ef7d063e516a1182a7ad7a965f70ca19",
+    "related-initial.xml": "2406010941ea0cd34e4f40cc4c5039c56d7be930b27084ffe9c1db4ef7fd8997",
+    "sharding-before.xml": "4e52cf4592b91a5a852498b92dfd8281374a8d64e00bba83519ed5b0bf5b7cf1"
+  },
+  "original_junit_sha256": {
+    "related-initial.xml": "48522c5a02c659d9afeee835a3dfec113dc6a6ebb2bd99afdc7244c71fae918a",
+    "step-selection-final.xml": "a27f6903c0e6774409bb0902ed58eae2b50d9e3c256e957f824ce2abcce63134",
+    "sharding-before.xml": "8eed775b8d12e9334e24def789f59da4edf47aaefff9b6dd986afec5becdddfc"
+  },
+  "junit_copy_format": "Trailing horizontal whitespace removed from copied XML lines; test outcomes unchanged."
+}

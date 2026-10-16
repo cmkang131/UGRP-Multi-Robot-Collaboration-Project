@@ -1,0 +1,111 @@
+{
+  "wall_boundary_samples": 349,
+  "wall_tolerance_m": 0.15,
+  "final": {
+    "t": 60.7,
+    "occupied_cells": 353,
+    "precision_015": 0.43626062322946174,
+    "precision_cell": 0.2237960339943343,
+    "wall_coverage": 0.2492836676217765,
+    "wall_error_rmse_m": 0.43535368550727505,
+    "wall_coverage_ever": 0.30945558739255014,
+    "oracle_precision_015": 0.5038167938931297,
+    "oracle_wall_coverage": 0.2607449856733524,
+    "oracle_wall_error_rmse_m": 0.42358317946262236
+  },
+  "end_sim_s": 93.65,
+  "last_wall_sim_s": 60.7,
+  "end_position_error_m": 0.05618498005524892,
+  "end_yaw_error_deg": 13.605862496407685,
+  "end_4m_point_error_bound_m": 1.0038231256532326,
+  "mapped_endpoint_pose_rmse_m": 0.46499895104365835,
+  "last_wall_endpoint_pose_rmse_m": 0.5855524908830179,
+  "alignment": "actual grid: start GT SE(2) only; oracle grid: eval-only counterfactual per-frame GT",
+  "origin_eval_only": [
+    1.7731954362722948,
+    0.04999999400227847,
+    -3.141592648899993
+  ],
+  "path_position_error": {
+    "median_m": 0.11293094852506558,
+    "p90_m": 0.34592802597124894,
+    "p95_m": 0.41686109378870406,
+    "max_m": 0.6471239751079741,
+    "rmse_m": 0.18915316071651117,
+    "count": 1848
+  },
+  "name": "s911-r2",
+  "condition": "rbpf100",
+  "source_sha": "fe70e641e0d2a39a44f240830fd6a19fe2774745",
+  "split": "development",
+  "inserted_frames": 164,
+  "resources": {
+    "prediction_wall_s": 96.03480041600415,
+    "peak_rss_mib": 138.109375,
+    "loadavg_start": [
+      2.78173828125,
+      3.19970703125,
+      3.65380859375
+    ],
+    "loadavg_end": [
+      3.7978515625,
+      3.392578125,
+      3.67578125
+    ],
+    "scope": "fresh process peak through prediction; wall excludes file writing and GT evaluation",
+    "pid": 10885,
+    "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+    "platform": "darwin"
+  },
+  "correction_status_counts": {
+    "bootstrap": 1,
+    "deferred": 142,
+    "rejected": 7,
+    "accepted": 22
+  },
+  "correction_reason_counts": {
+    "bootstrap": 1,
+    "keyframe_interval": 142,
+    "high_residual": 3,
+    "improved_proposal": 22,
+    "low_overlap": 1,
+    "search_boundary": 3
+  },
+  "sources": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-a3415342-s911-wtA/zone_wide_door_geometry_v3/robots/r2/commands.jsonl",
+      "sha256": "bddbe350a4e41759e6dda0079e7b8b3351011e94e1676c7736f5c601e61c5214"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-a3415342-s911-wtA/zone_wide_door_geometry_v3/robots/r2/frames.jsonl",
+      "sha256": "aa32369bcb81492b67722b543d040d9643ae4fe818bf62fef0b9a1c252714d18"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/ego-wall-map/outputs/self-map-odom-grid-v1-complete/s911-r2/observations.jsonl",
+      "sha256": "7a7c4662ab8b27d48907fe108fa825253d9195b74c1de9fa615c3b397861a00d"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-a3415342-s911-wtA/zone_wide_door_geometry_v3/scene.xml",
+      "sha256": "c0ca59eaff06c191f6e933c1e680350b64dc0839efe7271794b977b438faa5e3"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-a3415342-s911-wtA/zone_wide_door_geometry_v3/eval_only/trajectory.jsonl",
+      "sha256": "d9b0ef6dbc3ba7a4ce287922a59764fccc6c0b838bf8aabf44c44266e7579714"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-a3415342-s911-wtA/zone_wide_door_geometry_v3/inputs/static_map.json",
+      "sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    }
+  ],
+  "resamples": 13,
+  "neff_min": 1.806585693581153,
+  "particle_reasons": {
+    "bootstrap": 100,
+    "keyframe_interval": 14200,
+    "low_overlap": 179,
+    "high_residual": 711,
+    "improved_proposal": 1946,
+    "search_boundary": 64
+  },
+  "selection": "online MAP path; final map belongs to final selected particle; no GT selection"
+}

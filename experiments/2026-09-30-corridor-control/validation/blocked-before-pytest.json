@@ -1,0 +1,32 @@
+{
+  "recorded_utc": "2026-09-30T14:26:45.806596+00:00",
+  "status": "BLOCKED_BEFORE_PYTEST",
+  "wait_cap_s": 1200,
+  "wait_exit_code": 1,
+  "tests_started": false,
+  "mutation_checks_started": false,
+  "physics_render_model_calls": 0,
+  "blocking_lock_snapshot": {
+    "owner": "claude",
+    "branch": "claude/v6h1-confirm-run",
+    "purpose": "v6h1 blinded confirmatory 72",
+    "pid": 21249,
+    "acquired_unix": 1790777189.111208,
+    "expected_end_unix": 1790786189.111208,
+    "loadavg_at_acquire": [
+      25.142578125,
+      20.54443359375,
+      18.224609375
+    ]
+  },
+  "head": "e1876c7e28acaffc61347330ce7e71022e7dca09",
+  "uncommitted_candidate_sha256": {
+    "harness/zone_corridor_control.py": "04867a8cd1f6b0987a9ee6ee8efc43f21081f43df91fa06c16938a2b49df7736",
+    "harness/zone_corridor_control_plan.py": "5ba80f3aa90be6ea10a2e4b57867edc4323c3d53a77c9a071ea60081b779cf28",
+    "tests/test_zone_own_executor_corridor_control.py": "36788a7f03bfa234cd2183104da1e2098af300793e65ff0b4c717070f2955464"
+  },
+  "new_code_committed": false,
+  "pushed": false,
+  "draft_pr_created": false,
+  "next_step": "Run README final validation command after lock release or on an explicitly selected independent host; commit only after tests and mutation checks pass."
+}

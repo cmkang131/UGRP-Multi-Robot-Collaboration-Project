@@ -1,0 +1,169 @@
+{
+  "scope": "post-run diagnosis only; GT never enters controller; no retuning",
+  "source_sha": "d4fee717587ecc3b549aff948252b156b6c05d83",
+  "trigger": {
+    "t": 117.8,
+    "event": "progress_failed_stop",
+    "trigger": {
+      "t": 117.6,
+      "since": 107.35,
+      "n": 11,
+      "visual_delta": [
+        -0.019305404939437273,
+        0.01965123270731257,
+        0.20088050124481988
+      ],
+      "direction": [
+        0.0,
+        1.0
+      ]
+    },
+    "block": {
+      "xy": [
+        0.8275232610347533,
+        -0.4219573591813524
+      ],
+      "direction": [
+        0.3594355450431272,
+        0.9331699143026151
+      ]
+    }
+  },
+  "backup_end": {
+    "t": 127.9,
+    "event": "backup_end",
+    "progress_m": 0.1544305938609646,
+    "timeout": true,
+    "measured_success": false,
+    "pulses": 25
+  },
+  "backup_eval": {
+    "interval": [
+      117.9,
+      127.9
+    ],
+    "net_actual_xy_m": 0.18214369705476124,
+    "actual_body_delta_m": [
+      0.0054314285018234295,
+      -0.1820626978851138
+    ],
+    "measured_opposite_progress_m": 0.1544305938609646
+  },
+  "replan": {
+    "t": 127.9,
+    "event": "replan",
+    "found": true,
+    "keepouts": [
+      {
+        "id": "slip_failed_target_0",
+        "center_m": [
+          0.863466815539066,
+          -0.3286403677510909
+        ],
+        "half_extents_m": [
+          0.04,
+          0.04
+        ],
+        "source": "own_rgb_progress_failure_not_wall_truth"
+      }
+    ],
+    "path": [
+      [
+        1.0375000000000016,
+        -0.5875000000000088
+      ],
+      [
+        1.6500000000000001,
+        0.05
+      ]
+    ]
+  },
+  "event_counts": {
+    "progress_failed_stop": 1,
+    "inverse_backup_pulse": 25,
+    "backup_end": 1,
+    "replan": 1,
+    "blocked_translation_suppressed": 1197
+  },
+  "last_motion": {
+    "t": 132.45,
+    "kind": "mecanum",
+    "forward": 0.35,
+    "left": 0.0,
+    "turn": 0.0,
+    "duration_s": 0.1
+  },
+  "post_last_motion_actual_net_m": 0.0006606141125076698,
+  "last_pose": {
+    "t": 252.15,
+    "x": 1.0391095972979743,
+    "y": -0.6303175402413956,
+    "yaw": -0.07242579134393745,
+    "std_xy_m": 0.6199903453065123,
+    "last_fix_t": 129.15
+  },
+  "deadlock": {
+    "distance_to_block_m": 0.2969557925763813,
+    "block_radius_m": 0.5,
+    "distance_to_waypoint_m": 0.04284778355743063,
+    "waypoint_advance_radius_m": 0.035,
+    "body_error_m": [
+      -0.004703761392683203,
+      0.04258881525171985
+    ],
+    "unfiltered_pulse": {
+      "kind": "mecanum",
+      "forward": 0.0,
+      "left": 0.35,
+      "turn": 0.0,
+      "duration_s": 0.06
+    },
+    "filtered_pulse": null,
+    "score_before": 0.0018915166603727278,
+    "unfiltered_cost": 0.0013940687577745406,
+    "filtered_cost": 0.0018915166603727278,
+    "direction_dot": 0.956733165734063,
+    "replan_count": 1,
+    "interpretation": "A* succeeds but local direction veto removes the only cost-decreasing pulse; no-path selection returns hold instead of propagating failure to another recovery/replan. No new slip can accrue while holding."
+  },
+  "would_stop": {
+    "ARM_COLLISION_GUARD": 7,
+    "POSE_UNCERTAIN": 2487,
+    "VISUAL_STALL_SUSPECTED": 2,
+    "PULSE_RESOLUTION_LIMIT": 1194
+  },
+  "pose_uncertain_double_count_note": "raw count includes both original proposal and filtered-selector call at each suppressed action; not independent uncertainty events",
+  "slip_replacements": 11,
+  "replaced_actual_under_1cm": 10,
+  "equivalence": {
+    "scene_equal": true,
+    "commands_prefix": 2209,
+    "first_command_difference": [
+      {
+        "t": 117.8,
+        "kind": "mecanum",
+        "forward": 0.0,
+        "left": 0.65,
+        "turn": 0.0,
+        "duration_s": 0.65
+      },
+      {
+        "t": 117.8,
+        "kind": "hold"
+      }
+    ],
+    "rgb_prefix": 2331,
+    "rgb_last_same_t": 117.8,
+    "rgb_first_different_t": 117.85
+  },
+  "stagnation_failure": {
+    "type": "PhysicalStop",
+    "message": "STAGNATION_120S_LT_1CM",
+    "class": "PHYSICAL_FAILURE"
+  },
+  "sources": {
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-d4fee717-s1051-P1-2-place-slip-recovery/student_record.json": "aadc3cdaad6ae1aab72b76994193f258b4ce2a7511a5e8b11db6e0934c1d2413",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-d4fee717-s1051-P1-2-place-slip-recovery/result.json": "e1ba955fbabcf2c105c60781c83ed20a76962af8ce5417b3b2efbb7a99fa9fef",
+    "/Users/changmin/projects/ugrp/outputs/s2-realism-d4fee717-s1051-P1-2-place-slip-recovery/eval_only/trajectory.jsonl": "ab531d661b7548e4c55427e694ae3d9c4f5be7db61fcf70ffa7b43cdf0ecd1f7"
+  }
+}

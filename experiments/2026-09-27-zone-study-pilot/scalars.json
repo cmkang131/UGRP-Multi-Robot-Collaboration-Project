@@ -1,0 +1,227 @@
+{
+ "runs": [
+  {
+   "run": "preflight-01/no_comm",
+   "step": 0,
+   "scalars": {
+    "evaluation/accepted_calls": 0,
+    "evaluation/rejected_calls": 1,
+    "result/release_sim_s": 3.6,
+    "result/commands": 0,
+    "result/model_calls": 1,
+    "result/tokens_total": 10622,
+    "result/reserved_tokens": 235408,
+    "result/think_sim_s": 3.6,
+    "result/talk_sim_s": 0.0,
+    "dialogue/messages": 0,
+    "result/json_fence_removed_calls": 0
+   },
+   "hparams": {
+    "condition": "no_comm",
+    "stage": "preflight",
+    "bundle": "rgb-standard-dispatch-v62",
+    "model_effective": "gemini-3.8-flash-low"
+   }
+  },
+  {
+   "run": "preflight-02-v63/no_comm",
+   "step": 0,
+   "scalars": {
+    "evaluation/accepted_calls": 1,
+    "evaluation/rejected_calls": 0,
+    "result/release_sim_s": 4.1,
+    "result/commands": 1,
+    "result/model_calls": 1,
+    "result/tokens_total": 10594,
+    "result/reserved_tokens": 235408,
+    "result/think_sim_s": 4.1,
+    "result/talk_sim_s": 0.0,
+    "dialogue/messages": 0,
+    "result/json_fence_removed_calls": 1,
+    "result/model_response_s_mean": 3.846,
+    "result/model_response_s_max": 3.846
+   },
+   "hparams": {
+    "condition": "no_comm",
+    "stage": "preflight",
+    "bundle": "rgb-standard-dispatch-v63",
+    "model_effective": "gemini-3.8-flash-low"
+   }
+  },
+  {
+   "run": "preflight-02-v63/peer_ko",
+   "step": 0,
+   "scalars": {
+    "evaluation/accepted_calls": 1,
+    "evaluation/rejected_calls": 0,
+    "result/release_sim_s": 5.4,
+    "result/commands": 1,
+    "result/model_calls": 1,
+    "result/tokens_total": 10977,
+    "result/reserved_tokens": 237348,
+    "result/think_sim_s": 5.1,
+    "result/talk_sim_s": 0.3,
+    "dialogue/messages": 1,
+    "result/json_fence_removed_calls": 1,
+    "result/model_response_s_mean": 3.634,
+    "result/model_response_s_max": 3.634
+   },
+   "hparams": {
+    "condition": "peer_ko",
+    "stage": "preflight",
+    "bundle": "rgb-standard-dispatch-v63",
+    "model_effective": "gemini-3.8-flash-low"
+   }
+  },
+  {
+   "run": "preflight-02-v63/leader_ko",
+   "step": 0,
+   "scalars": {
+    "evaluation/accepted_calls": 1,
+    "evaluation/rejected_calls": 0,
+    "result/release_sim_s": 5.4,
+    "result/commands": 1,
+    "result/model_calls": 1,
+    "result/tokens_total": 10871,
+    "result/reserved_tokens": 237664,
+    "result/think_sim_s": 5.1,
+    "result/talk_sim_s": 0.3,
+    "dialogue/messages": 1,
+    "result/json_fence_removed_calls": 1,
+    "result/model_response_s_mean": 2.918,
+    "result/model_response_s_max": 2.918
+   },
+   "hparams": {
+    "condition": "leader_ko",
+    "stage": "preflight",
+    "bundle": "rgb-standard-dispatch-v63",
+    "model_effective": "gemini-3.8-flash-low"
+   }
+  },
+  {
+   "run": "preflight-02-v63/structured",
+   "step": 0,
+   "scalars": {
+    "evaluation/accepted_calls": 1,
+    "evaluation/rejected_calls": 0,
+    "result/release_sim_s": 6.6,
+    "result/commands": 1,
+    "result/model_calls": 1,
+    "result/tokens_total": 10871,
+    "result/reserved_tokens": 238856,
+    "result/think_sim_s": 6.3,
+    "result/talk_sim_s": 0.3,
+    "dialogue/messages": 1,
+    "result/json_fence_removed_calls": 1,
+    "result/model_response_s_mean": 4.491,
+    "result/model_response_s_max": 4.491
+   },
+   "hparams": {
+    "condition": "structured",
+    "stage": "preflight",
+    "bundle": "rgb-standard-dispatch-v63",
+    "model_effective": "gemini-3.8-flash-low"
+   }
+  },
+  {
+   "run": "cohort-01-v63/no_comm",
+   "step": 0,
+   "scalars": {
+    "evaluation/accepted_calls": 3,
+    "evaluation/rejected_calls": 0,
+    "result/release_sim_s": 4.1,
+    "result/commands": 3,
+    "result/model_calls": 3,
+    "result/tokens_total": 31780,
+    "result/reserved_tokens": 719440,
+    "result/think_sim_s": 12.3,
+    "result/talk_sim_s": 0.0,
+    "dialogue/messages": 0,
+    "result/json_fence_removed_calls": 3,
+    "result/model_response_s_mean": 4.76,
+    "result/model_response_s_max": 5.45
+   },
+   "hparams": {
+    "condition": "no_comm",
+    "stage": "cohort",
+    "bundle": "rgb-standard-dispatch-v63",
+    "model_effective": "gemini-3.8-flash-low"
+   }
+  },
+  {
+   "run": "cohort-01-v63/peer_ko",
+   "step": 0,
+   "scalars": {
+    "evaluation/accepted_calls": 3,
+    "evaluation/rejected_calls": 0,
+    "result/release_sim_s": 5.4,
+    "result/commands": 3,
+    "result/model_calls": 3,
+    "result/tokens_total": 32160,
+    "result/reserved_tokens": 725260,
+    "result/think_sim_s": 15.3,
+    "result/talk_sim_s": 0.9,
+    "dialogue/messages": 3,
+    "result/json_fence_removed_calls": 3,
+    "result/model_response_s_mean": 4.757,
+    "result/model_response_s_max": 7.066
+   },
+   "hparams": {
+    "condition": "peer_ko",
+    "stage": "cohort",
+    "bundle": "rgb-standard-dispatch-v63",
+    "model_effective": "gemini-3.8-flash-low"
+   }
+  },
+  {
+   "run": "cohort-01-v63/leader_ko",
+   "step": 0,
+   "scalars": {
+    "evaluation/accepted_calls": 3,
+    "evaluation/rejected_calls": 0,
+    "result/release_sim_s": 6.0,
+    "result/commands": 3,
+    "result/model_calls": 3,
+    "result/tokens_total": 32289,
+    "result/reserved_tokens": 726506,
+    "result/think_sim_s": 15.8,
+    "result/talk_sim_s": 0.9,
+    "dialogue/messages": 3,
+    "result/json_fence_removed_calls": 3,
+    "result/model_response_s_mean": 3.802,
+    "result/model_response_s_max": 3.906
+   },
+   "hparams": {
+    "condition": "leader_ko",
+    "stage": "cohort",
+    "bundle": "rgb-standard-dispatch-v63",
+    "model_effective": "gemini-3.8-flash-low"
+   }
+  },
+  {
+   "run": "cohort-01-v63/structured",
+   "step": 0,
+   "scalars": {
+    "evaluation/accepted_calls": 3,
+    "evaluation/rejected_calls": 0,
+    "result/release_sim_s": 6.6,
+    "result/commands": 3,
+    "result/model_calls": 3,
+    "result/tokens_total": 34843,
+    "result/reserved_tokens": 729784,
+    "result/think_sim_s": 18.7,
+    "result/talk_sim_s": 0.9,
+    "dialogue/messages": 3,
+    "result/json_fence_removed_calls": 3,
+    "result/model_response_s_mean": 5.504,
+    "result/model_response_s_max": 7.459
+   },
+   "hparams": {
+    "condition": "structured",
+    "stage": "cohort",
+    "bundle": "rgb-standard-dispatch-v63",
+    "model_effective": "gemini-3.8-flash-low"
+   }
+  }
+ ]
+}

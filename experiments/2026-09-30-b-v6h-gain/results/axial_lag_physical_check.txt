@@ -1,0 +1,150 @@
+
+## tX1: 12 cases, 6 placements (axial lag ON)
+   along - plant-model prediction (PR #286, closer tick phase)  n 12 mean    +0.2 med    +0.3 p90    +0.7 range [   -0.7,    +0.7]
+L0: pass 12/12 [76-100%] cases; placements strict 6/6 [61-100%]; end error > 100 mm: 0
+   end error mm         n 12 mean   +45.3 med   +46.7 p90   +55.0 range [  +33.3,   +55.8]
+   along error mm       n 12 mean    +2.8 med   +20.3 p90   +31.0 range [  -43.9,   +31.5]
+   along - dx mm        n 12 mean    -8.5 med    -8.3 p90    -7.4 range [   -9.9,    -7.3]
+   |cross| mm           n 12 mean   +29.1 med   +33.2 p90   +48.5 range [   +5.6,   +49.3]
+   signed cross mm      n 12 mean   -16.8 med   -21.6 p90   +25.7 range [  -49.2,   +28.7]
+   cross - PR286 model  n 12 mean    -6.3 med    -6.9 p90    +8.4 range [  -22.1,    +9.4]  (model residual sd 12.6 mm)
+   along - plant-model prediction (PR #286, closer tick phase)  n 12 mean    +0.7 med    +0.6 p90    +1.8 range [   -0.8,    +1.9]
+L1: pass 12/12 [76-100%] cases; placements strict 6/6 [61-100%]; end error > 100 mm: 0
+   end error mm         n 12 mean   +51.5 med   +45.3 p90   +78.2 range [  +28.7,   +81.9]
+   along error mm       n 12 mean    +9.3 med   +27.2 p90   +36.9 range [  -37.5,   +37.7]
+   along - dx mm        n 12 mean    -2.0 med    -2.2 p90    -0.2 range [   -3.5,    +0.0]
+   |cross| mm           n 12 mean   +36.5 med   +29.9 p90   +71.1 range [   +4.8,   +72.9]
+   signed cross mm      n 12 mean   -31.3 med   -28.2 p90   +10.5 range [  -72.8,   +18.4]
+   cross - PR286 model  n 12 mean   -22.0 med   -24.3 p90    +1.1 range [  -51.9,    +8.2]  (model residual sd 26.4 mm)
+
+## tX1b: 2 cases, 1 placements (axial lag ON)
+   along - plant-model prediction (PR #286, closer tick phase)  n  2 mean    +0.0 med    +0.0 p90    +0.0 range [   +0.0,    +0.0]
+L0: pass 2/2 [34-100%] cases; placements strict 1/1 [21-100%]; end error > 100 mm: 0
+   end error mm         n  2 mean   +49.0 med   +49.0 p90   +49.2 range [  +48.9,   +49.2]
+   along error mm       n  2 mean    +8.7 med    +8.7 p90    +8.7 range [   +8.7,    +8.7]
+   along - dx mm        n  2 mean   -10.3 med   -10.3 p90   -10.3 range [  -10.3,   -10.3]
+   |cross| mm           n  2 mean   +48.3 med   +48.3 p90   +48.4 range [  +48.1,   +48.4]
+   signed cross mm      n  2 mean   -48.2 med   -48.2 p90   -48.0 range [  -48.3,   -48.0]
+   cross - PR286 model  n  2 mean   -15.2 med   -15.2 p90   -15.1 range [  -15.3,   -15.0]  (model residual sd 12.6 mm)
+   along - plant-model prediction (PR #286, closer tick phase)  n  2 mean    +0.1 med    +0.1 p90    +0.1 range [   +0.1,    +0.1]
+L1: pass 2/2 [34-100%] cases; placements strict 1/1 [21-100%]; end error > 100 mm: 0
+   end error mm         n  2 mean   +61.8 med   +61.8 p90   +62.3 range [  +61.2,   +62.4]
+   along error mm       n  2 mean   +14.8 med   +14.8 p90   +14.8 range [  +14.7,   +14.8]
+   along - dx mm        n  2 mean    -4.2 med    -4.2 p90    -4.2 range [   -4.3,    -4.2]
+   |cross| mm           n  2 mean   +60.0 med   +60.0 p90   +60.5 range [  +59.3,   +60.6]
+   signed cross mm      n  2 mean   -59.9 med   -59.9 p90   -59.4 range [  -60.6,   -59.3]
+   cross - PR286 model  n  2 mean   -34.7 med   -34.7 p90   -34.2 range [  -35.3,   -34.0]  (model residual sd 26.4 mm)
+
+## tX1all: 14 cases, 7 placements (axial lag ON)
+   along - plant-model prediction (PR #286, closer tick phase)  n 14 mean    +0.1 med    +0.2 p90    +0.7 range [   -0.7,    +0.7]
+L0: pass 14/14 [78-100%] cases; placements strict 7/7 [65-100%]; end error > 100 mm: 0
+   end error mm         n 14 mean   +45.8 med   +49.0 p90   +54.1 range [  +33.3,   +55.8]
+   along error mm       n 14 mean    +3.7 med   +18.7 p90   +29.9 range [  -43.9,   +31.5]
+   along - dx mm        n 14 mean    -8.7 med    -8.5 p90    -7.4 range [  -10.3,    -7.3]
+   |cross| mm           n 14 mean   +31.9 med   +37.6 p90   +48.7 range [   +5.6,   +49.3]
+   signed cross mm      n 14 mean   -21.3 med   -37.5 p90   +22.0 range [  -49.2,   +28.7]
+   cross - PR286 model  n 14 mean    -7.6 med   -15.2 p90    +8.3 range [  -22.1,    +9.4]  (model residual sd 12.6 mm)
+   along - plant-model prediction (PR #286, closer tick phase)  n 14 mean    +0.6 med    +0.4 p90    +1.8 range [   -0.8,    +1.9]
+L1: pass 14/14 [78-100%] cases; placements strict 7/7 [65-100%]; end error > 100 mm: 0
+   end error mm         n 14 mean   +52.9 med   +52.9 p90   +77.8 range [  +28.7,   +81.9]
+   along error mm       n 14 mean   +10.1 med   +26.0 p90   +35.9 range [  -37.5,   +37.7]
+   along - dx mm        n 14 mean    -2.3 med    -2.5 p90    -0.5 range [   -4.3,    +0.0]
+   |cross| mm           n 14 mean   +39.8 med   +44.7 p90   +70.0 range [   +4.8,   +72.9]
+   signed cross mm      n 14 mean   -35.4 med   -44.6 p90    +7.1 range [  -72.8,   +18.4]
+   cross - PR286 model  n 14 mean   -23.8 med   -33.7 p90    +0.1 range [  -51.9,    +8.2]  (model residual sd 26.4 mm)
+
+## tS: 24 cases, 12 placements (axial lag ON)
+   along - plant-model prediction (PR #286, closer tick phase)  n 24 mean    +0.3 med    +0.4 p90    +0.8 range [   -0.8,    +1.0]
+L0: pass 24/24 [86-100%] cases; placements strict 12/12 [76-100%]; end error > 100 mm: 0
+   end error mm         n 24 mean   +40.1 med   +42.3 p90   +56.6 range [  +12.6,   +57.9]
+   along error mm       n 24 mean   -11.4 med    +2.0 p90   +23.4 range [  -55.8,   +23.7]
+   along - dx mm        n 24 mean    -9.4 med    -9.7 p90    -8.3 range [  -10.3,    -6.8]
+   |cross| mm           n 24 mean   +24.7 med   +23.1 p90   +46.7 range [   +2.7,   +53.0]
+   signed cross mm      n 24 mean    -3.3 med   +11.2 p90   +24.3 range [  -52.8,   +25.8]
+   cross - PR286 model  n 24 mean    -6.4 med    -8.0 p90   +16.3 range [  -23.0,   +16.6]  (model residual sd 12.6 mm)
+   along - plant-model prediction (PR #286, closer tick phase)  n 24 mean    +0.9 med    +0.9 p90    +1.7 range [   -0.4,    +2.2]
+L1: pass 24/24 [86-100%] cases; placements strict 12/12 [76-100%]; end error > 100 mm: 0
+   end error mm         n 24 mean   +42.6 med   +47.4 p90   +66.1 range [   +5.5,   +72.1]
+   along error mm       n 24 mean    -4.8 med    +8.9 p90   +29.9 range [  -49.6,   +30.0]
+   along - dx mm        n 24 mean    -2.8 med    -3.1 p90    -1.3 range [   -4.5,    -0.0]
+   |cross| mm           n 24 mean   +27.8 med   +22.9 p90   +62.7 range [   +2.5,   +65.7]
+   signed cross mm      n 24 mean   -10.6 med    -0.7 p90   +34.0 range [  -65.6,   +42.3]
+   cross - PR286 model  n 24 mean   -13.5 med   -19.2 p90   +23.2 range [  -54.8,   +29.1]  (model residual sd 26.4 mm)
+
+## tR: 20 cases, 10 placements (axial lag ON)
+   along - plant-model prediction (PR #286, closer tick phase)  n 20 mean    -0.4 med    -0.4 p90    -0.1 range [   -0.7,    -0.0]
+L0: pass 20/20 [84-100%] cases; placements strict 10/10 [72-100%]; end error > 100 mm: 0
+   end error mm         n 20 mean   +29.2 med   +13.4 p90   +68.7 range [  +10.6,   +70.8]
+   along error mm       n 20 mean    -1.0 med   -10.7 p90   +21.9 range [  -11.2,   +22.0]
+   along - dx mm        n 20 mean    -9.9 med   -10.7 p90    -7.9 range [  -11.0,    -7.9]
+   |cross| mm           n 20 mean   +23.5 med    +7.6 p90   +65.1 range [   +1.7,   +67.3]
+   signed cross mm      n 20 mean   -15.2 med    +4.8 p90    +7.6 range [  -67.2,    +8.1]
+   cross - PR286 model  n 20 mean    +4.6 med   +10.1 p90   +13.1 range [  -13.8,   +13.5]  (model residual sd 12.6 mm)
+   along - plant-model prediction (PR #286, closer tick phase)  n 20 mean    -0.2 med    -0.1 p90    +0.3 range [   -1.3,    +1.1]
+L1: pass 20/20 [84-100%] cases; placements strict 10/10 [72-100%]; end error > 100 mm: 0
+   end error mm         n 20 mean   +41.4 med   +34.9 p90   +67.2 range [  +22.6,   +67.6]
+   along error mm       n 20 mean    +5.1 med    -4.5 p90   +28.1 range [   -5.4,   +28.2]
+   along - dx mm        n 20 mean    -3.8 med    -4.5 p90    -1.7 range [   -5.6,    -1.6]
+   |cross| mm           n 20 mean   +39.2 med   +34.5 p90   +61.0 range [  +22.4,   +61.6]
+   signed cross mm      n 20 mean    +4.7 med   +28.3 p90   +35.8 range [  -61.5,   +39.4]
+   cross - PR286 model  n 20 mean   +23.9 med   +34.5 p90   +42.2 range [  -12.0,   +45.6]  (model residual sd 26.4 mm)
+
+## tX0: 14 cases, 7 placements (no axial lag)
+L0: pass 13/14 [69-99%] cases; placements strict 6/7 [49-97%]; end error > 100 mm: 0
+   end error mm         n 13 mean   +52.6 med   +54.6 p90   +71.3 range [  +23.6,   +72.2]
+   along error mm       n 13 mean   +23.4 med   +44.3 p90   +56.0 range [  -28.5,   +57.1]
+   along - dx mm        n 13 mean   +12.0 med   +17.0 p90   +17.9 range [   +5.1,   +18.3]
+   |cross| mm           n 13 mean   +32.9 med   +39.1 p90   +49.6 range [   +5.8,   +50.2]
+   signed cross mm      n 13 mean   -25.6 med   -39.0 p90    +8.9 range [  -50.1,   +29.8]
+   cross - PR286 model  n 13 mean    -9.3 med   -16.0 p90    +7.3 range [  -22.3,   +10.5]  (model residual sd 12.6 mm)
+L1: pass 7/14 [27-73%] cases; placements strict 3/7 [16-75%]; end error > 100 mm: 6
+   end error mm         n 13 mean   +83.2 med   +95.2 p90  +122.4 range [  +24.3,  +124.3]
+   along error mm       n 13 mean   +70.8 med   +92.5 p90  +103.2 range [  +18.9,  +104.4]
+   along - dx mm        n 13 mean   +59.4 med   +64.3 p90   +65.1 range [  +52.4,   +66.5]
+   |cross| mm           n 13 mean   +42.1 med   +53.5 p90   +67.4 range [   +6.5,   +68.1]
+   signed cross mm      n 13 mean   -38.5 med   -53.4 p90    -6.5 range [  -68.0,   +22.5]
+   cross - PR286 model  n 13 mean   -23.9 med   -33.2 p90    -4.0 range [  -48.3,    +9.3]  (model residual sd 26.4 mm)
+
+## sB: 24 cases, 12 placements (no axial lag)
+L0: pass 24/24 [86-100%] cases; placements strict 12/12 [76-100%]; end error > 100 mm: 0
+   end error mm         n 24 mean   +41.9 med   +44.0 p90   +53.4 range [  +17.5,   +73.3]
+   along error mm       n 24 mean    +4.9 med   +17.4 p90   +46.3 range [  -47.7,   +48.9]
+   along - dx mm        n 24 mean    +6.9 med    +5.5 p90   +16.9 range [   -1.7,   +17.3]
+   |cross| mm           n 24 mean   +24.9 med   +23.9 p90   +47.1 range [   +2.6,   +54.6]
+   signed cross mm      n 24 mean    -3.4 med   +10.9 p90   +24.5 range [  -54.5,   +26.0]
+   cross - PR286 model  n 24 mean    -6.5 med    -8.3 p90   +16.6 range [  -24.7,   +17.8]  (model residual sd 12.6 mm)
+L1: pass 22/24 [74-98%] cases; placements strict 11/12 [65-99%]; end error > 100 mm: 2
+   end error mm         n 24 mean   +62.4 med   +65.7 p90   +99.0 range [   +7.9,  +116.5]
+   along error mm       n 24 mean   +52.4 med   +65.2 p90   +94.5 range [   +0.0,   +96.3]
+   along - dx mm        n 24 mean   +54.4 med   +53.1 p90   +64.3 range [  +46.0,   +65.5]
+   |cross| mm           n 24 mean   +27.2 med   +20.9 p90   +65.3 range [   +2.8,   +68.5]
+   signed cross mm      n 24 mean   -11.6 med    -1.1 p90   +26.7 range [  -68.5,   +36.0]
+   cross - PR286 model  n 24 mean   -14.6 med   -19.5 p90   +11.4 range [  -57.9,   +27.8]  (model residual sd 26.4 mm)
+
+## rB: 20 cases, 10 placements (no axial lag)
+L0: pass 20/20 [84-100%] cases; placements strict 10/10 [72-100%]; end error > 100 mm: 0
+   end error mm         n 20 mean   +30.0 med    +9.1 p90   +82.0 range [   +5.3,   +83.8]
+   along error mm       n 20 mean   +17.4 med    +4.6 p90   +47.5 range [   +4.2,   +47.5]
+   along - dx mm        n 20 mean    +8.5 med    +4.6 p90   +17.7 range [   +4.3,   +17.7]
+   |cross| mm           n 20 mean   +24.3 med    +8.1 p90   +66.8 range [   +2.0,   +69.2]
+   signed cross mm      n 20 mean   -15.5 med    +5.2 p90    +8.1 range [  -69.0,    +8.6]
+   cross - PR286 model  n 20 mean    +4.4 med   +10.5 p90   +13.6 range [  -15.7,   +14.0]  (model residual sd 12.6 mm)
+L1: pass 14/20 [48-85%] cases; placements strict 7/10 [40-89%]; end error > 100 mm: 6
+   end error mm         n 20 mean   +76.9 med   +64.4 p90  +111.2 range [  +57.9,  +112.5]
+   along error mm       n 20 mean   +64.5 med   +51.7 p90   +94.7 range [  +50.9,   +94.8]
+   along - dx mm        n 20 mean   +55.6 med   +51.8 p90   +64.8 range [  +50.6,   +64.9]
+   |cross| mm           n 20 mean   +41.6 med   +38.8 p90   +58.7 range [  +23.3,   +61.1]
+   signed cross mm      n 20 mean    +6.8 med   +31.0 p90   +40.0 range [  -61.0,   +42.4]
+   cross - PR286 model  n 20 mean   +26.0 med   +37.2 p90   +46.3 range [  -11.5,   +48.6]  (model residual sd 26.4 mm)
+   pair tS minus sB, L0 (n=24): along n 24 mean   -16.2 med   -15.4 p90   -15.4 range [  -25.6,    -5.1]
+        end n 24 mean    -1.8 med    -5.3 p90   +15.2 range [  -21.4,   +15.3]
+   pair tS minus sB, L1 (n=24): along n 24 mean   -57.2 med   -56.4 p90   -56.0 range [  -67.1,   -46.0]
+        end n 24 mean   -19.8 med   -38.4 p90   +35.6 range [  -57.9,   +38.7]
+   pair tR minus rB, L0 (n=20): along n 20 mean   -18.4 med   -15.4 p90   -15.3 range [  -25.6,   -15.3]
+        end n 20 mean    -0.8 med    +4.3 p90    +5.2 range [  -13.6,    +5.4]
+   pair tR minus rB, L1 (n=20): along n 20 mean   -59.4 med   -56.3 p90   -56.1 range [  -66.7,   -56.1]
+        end n 20 mean   -35.5 med   -31.9 p90   -28.2 range [  -52.8,   -26.5]
+   pair tX1all minus tX0, L0 (n=13): along n 13 mean   -20.9 med   -25.6 p90   -15.4 range [  -25.6,   -15.4]
+        end n 13 mean    -5.8 med   -15.7 p90   +15.1 range [  -20.1,   +15.1]
+   pair tX1all minus tX0, L1 (n=13): along n 13 mean   -61.9 med   -66.2 p90   -56.3 range [  -67.0,   -56.2]
+        end n 13 mean   -28.6 med   -40.8 p90   +13.9 range [  -66.6,   +16.1]

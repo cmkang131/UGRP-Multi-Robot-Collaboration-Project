@@ -1,0 +1,748 @@
+{
+  "version": "s2v51",
+  "bundle": "zone-s2-realism-v138",
+  "workflow": "7.31.0",
+  "source_sha": "d5fd85dd39793721588fc2eeb5e9a3cc495b65d9",
+  "runs": [
+    {
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-d5fd85dd-s1054-v138-staging-only",
+      "seed": 1054,
+      "source_sha": "d5fd85dd39793721588fc2eeb5e9a3cc495b65d9",
+      "status": "STAGE_REACHED_UNQUALIFIED",
+      "failure": null,
+      "evaluation": {
+        "status": "PROVISIONAL_GEOMETRIC_JUDGE",
+        "success": false,
+        "lifted": true,
+        "inside": false,
+        "floor": true,
+        "stable": true,
+        "settled_s": 2.0,
+        "qualification": "post-run DEV only; no study/physical hardware success claim"
+      },
+      "wall_s": 469.29064745799406,
+      "sim_s": 302.95,
+      "wall_per_sim": 1.5424507722530618,
+      "peer_contact_points": 0,
+      "peer_contact_samples": 0,
+      "peer_contact_episodes": 0,
+      "would_stop": {
+        "ARM_COLLISION_GUARD": 7,
+        "POSE_UNCERTAIN": 743,
+        "VISUAL_STALL_SUSPECTED": 35
+      },
+      "pose": {
+        "opportunities": 738,
+        "rows": 738,
+        "missing_pose": [],
+        "nees_available": 734,
+        "nees_exceeded": 634,
+        "nees_rate": 0.8637602179836512,
+        "unflagged_above_25cm": 0,
+        "unavailable_covariance": [
+          23.95,
+          24.15,
+          24.35,
+          24.55
+        ]
+      },
+      "criteria_pass": {
+        "peer_contact_zero": true,
+        "success": false,
+        "uncertified_navigation_lateral_zero": true
+      },
+      "input_hashes": {
+        "result.json": "4fa19aee36bb329fe77e8d3ac764ec689d3c10b13a039faf60b64da5d69c6eaa",
+        "student_record.json": "c773ec84599ac46c7bed4a1500dd1474b1b83ad44bae5c8f21e304e4e222f415",
+        "bundle.json": "311a6bb8368d81f36b423e736b1a874830ca609d8719d30d12915c51e257ed66",
+        "eval_only/trajectory.jsonl": "aa6221eeaf965f421ac46a0942b31190e14dbb9db404cc542591d2d4ee0c340f",
+        "eval_only/contacts.jsonl": "62d4b6a460a5aa6575b1a53089ad7062e6d1b6ab8ac0eefbb90f5765e39addc5"
+      },
+      "lock": {
+        "acquired": {
+          "owner": "codex",
+          "branch": "codex/s2-realism",
+          "purpose": "s2v51 staging-only condition A seed1054",
+          "pid": 35722,
+          "acquired_unix": 1791435624.67265,
+          "expected_end_unix": 1791437724.67265,
+          "loadavg_at_acquire": [
+            4.56298828125,
+            5.5830078125,
+            4.98486328125
+          ],
+          "timing_sensitive": true
+        },
+        "released": {
+          "owner": "codex",
+          "branch": "codex/s2-realism",
+          "purpose": "s2v51 staging-only condition A seed1054",
+          "pid": 35722,
+          "acquired_unix": 1791435624.67265,
+          "expected_end_unix": 1791437724.67265,
+          "loadavg_at_acquire": [
+            4.56298828125,
+            5.5830078125,
+            4.98486328125
+          ],
+          "timing_sensitive": true,
+          "pid_alive": true
+        },
+        "status_after": null
+      },
+      "posthoc": {
+        "scope": "POSTHOC_EVAL_ONLY_NO_CONTROL_FEEDBACK",
+        "seed": 1054,
+        "cargo_remaining_to_B_region_m": 2.4054483612318234,
+        "cargo_distance_to_B_center_m": 3.0839487797417777,
+        "robot_remaining_to_B_region_m": 2.5793791874086343,
+        "final_cargo_xy_m": [
+          2.352061569075662,
+          0.011282284973808654
+        ],
+        "final_robot_xy_m": [
+          2.1458186864967295,
+          0.01869653590545986
+        ],
+        "carry_window": [
+          103.8,
+          282.25
+        ],
+        "visual_updates": 23,
+        "max_update_gap_sim_s": 30.650000000000006,
+        "carry_xy_rmse_m": 1.197724542721036,
+        "measurement_claim": "nonconstant AMCL weight updates, not full-rank absolute pose fixes",
+        "carry_xy_p90_m": 2.388472230716566,
+        "carry_end_error_m": 3.081179886942855,
+        "carry_pose_samples": 3569,
+        "visibility_measurement": {
+          "attempts": 40,
+          "less_than_six_columns": 9,
+          "detected_columns": 2253,
+          "kept_columns": 2253
+        },
+        "status": "COMPLETE",
+        "wall_lower_visibility_fraction": 0.7785730912476723,
+        "detected_wall_lower_visibility_fraction": 0.8993264481365065
+      },
+      "options": {
+        "camera_profile": "masterpi-camera-user-observation-target-review-v3",
+        "drive_profile": "masterpi_drive_friction_v7",
+        "setdown_relook": "off",
+        "grasp_check": "pickup_site_v1",
+        "min_wheel_cmd": "real_v1",
+        "dead_reckoning": "v7_diag_v1",
+        "stagnation_watch": "window120_v1",
+        "alignment_pulse": "real_fine_v1",
+        "hover_check": "real_pregrasp_v1",
+        "idle_robot_contacts": "freeze_v1",
+        "site_check": "off",
+        "hold_check": "inhand_rgb_v1",
+        "dev_grasp_policy": "log_only_v1",
+        "eval_camera_trace": "pose_v1",
+        "pulse_motion_model": "v7_pulse_cal_v1",
+        "visual_update": "accepted_scan_v1",
+        "visual_stall": "lk_pulse_v1",
+        "carry_pose": "look_ahead_v1",
+        "camera_calibration": "v3_unloaded_sag_v1",
+        "measurement_model": "amcl_likelihood_field_v1",
+        "visibility_mask": "command_geometry_v1",
+        "amcl_update": "ros_motion_v1",
+        "dev_search": "repeat_views_v1",
+        "visibility_policy": "nav2_observed_v1",
+        "contact_filter": "floor_appearance_v1",
+        "slip_detection": "slip_detect_v1",
+        "stall_recovery": "off",
+        "slip_recovery": "slip_recovery_v1",
+        "servo_stiffness": "real_v1",
+        "camera_pitch": "stiff_target_v1",
+        "pregrasp_policy": "log_only_v1",
+        "sensor_landmarks": "floor_zones_doors_v1",
+        "sensor_model": "amcl_likelihood_field_v1",
+        "pose_estimate": "amcl_best_cluster_v1",
+        "look_before_move": "rgb_sweep_v1",
+        "forward_scale": "forward_scale_v1",
+        "likelihood_tempering": "pr_likelihood_half_v1",
+        "final_approach": "staging_v133_v1"
+      },
+      "bundle_sha256": "49071e3ca3a314b98fdf8b0ded93377c95b9740d878f2cdada975a85ad746d2b",
+      "controller_states": [
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 1.3,
+          "state": "scan"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 10.4,
+          "state": "search_move"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 58.1,
+          "state": "search"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 58.2,
+          "state": "align"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 77.8,
+          "state": "real_pregrasp"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 78.6,
+          "state": "hover"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 79.9,
+          "state": "blind_descent"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 81.1,
+          "state": "grasp"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 82.0,
+          "state": "lift"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 103.2,
+          "state": "real_carry_transition"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 103.8,
+          "state": "carry"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 282.25,
+          "state": "real_carry_return"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 282.85,
+          "state": "lower"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 296.45,
+          "state": "released"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 301.25,
+          "state": "done"
+        }
+      ],
+      "appearance_monitor_created": false,
+      "actual_lateral_commands": 20,
+      "uncertified_navigation_lateral": 0,
+      "navigation_denied": 10,
+      "navigation_allowed": 0,
+      "carry_detour_commands": 447,
+      "carry_detour_profiles": [
+        {
+          "forward": 0.0,
+          "turn": 0.35,
+          "duration_s": 0.1,
+          "count": 8
+        },
+        {
+          "forward": 0.35,
+          "turn": 0.0,
+          "duration_s": 0.1,
+          "count": 409
+        },
+        {
+          "forward": 0.0,
+          "turn": -0.35,
+          "duration_s": 0.1,
+          "count": 30
+        }
+      ],
+      "slip_rows": 0,
+      "slip_minimum_expected_m": 0.05,
+      "forward_fine_prediction_m": 0.012938978064088115,
+      "robot_wall_contacts": [
+        {
+          "pair": "zone_wall_divider_1 / r3__right_finger",
+          "points": 598,
+          "samples": 490,
+          "first_t": 252.3,
+          "last_t": 277.05,
+          "episodes": 5
+        },
+        {
+          "pair": "zone_wall_divider_2 / r3__left_finger",
+          "points": 365,
+          "samples": 243,
+          "first_t": 187.25,
+          "last_t": 204.75,
+          "episodes": 12
+        }
+      ],
+      "before_lower": {
+        "scope": "before lower or terminal if no lower",
+        "t": 282.25,
+        "estimated": [
+          4.3828784057048225,
+          -2.1033781756126366,
+          -0.011343969563326907
+        ],
+        "truth": [
+          2.1470819447900333,
+          0.016731544847320527,
+          -0.02359379225483156
+        ],
+        "xy_error_m": 3.081176892265015,
+        "std_xy_m": 0.18142077446248714
+      },
+      "video": "/Users/changmin/projects/ugrp/outputs/s2-realism-d5fd85dd-s1054-v138-staging-only/execution.mp4"
+    },
+    {
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-d5fd85dd-s1055-v138-staging-only",
+      "seed": 1055,
+      "source_sha": "d5fd85dd39793721588fc2eeb5e9a3cc495b65d9",
+      "status": "PHYSICAL_FAILURE",
+      "failure": {
+        "type": "PhysicalStop",
+        "message": "STAGNATION_120S_LT_1CM",
+        "class": "PHYSICAL_FAILURE"
+      },
+      "evaluation": {
+        "status": "PROVISIONAL_GEOMETRIC_JUDGE",
+        "success": false,
+        "lifted": true,
+        "inside": false,
+        "floor": false,
+        "stable": true,
+        "settled_s": 2.0,
+        "qualification": "post-run DEV only; no study/physical hardware success claim"
+      },
+      "wall_s": 589.199630749994,
+      "sim_s": 380.0,
+      "wall_per_sim": 1.5452390001311145,
+      "peer_contact_points": 0,
+      "peer_contact_samples": 0,
+      "peer_contact_episodes": 0,
+      "would_stop": {
+        "ARM_COLLISION_GUARD": 7,
+        "POSE_UNCERTAIN": 2708,
+        "GRASP_INHAND_UNCONFIRMED": 1,
+        "VISUAL_STALL_SUSPECTED": 1
+      },
+      "pose": {
+        "opportunities": 601,
+        "rows": 601,
+        "missing_pose": [],
+        "nees_available": 601,
+        "nees_exceeded": 509,
+        "nees_rate": 0.8469217970049917,
+        "unflagged_above_25cm": 75,
+        "unavailable_covariance": []
+      },
+      "criteria_pass": {
+        "peer_contact_zero": true,
+        "success": false,
+        "uncertified_navigation_lateral_zero": true
+      },
+      "input_hashes": {
+        "result.json": "6ba318fc7f5051e52c9a179ae69cbcc8cf3c7f16214b26f70db55184ef482e7a",
+        "student_record.json": "f1d7aad95afee410a20a3874128d5888261240d193f636f41ce477277d11a883",
+        "bundle.json": "e3fd430af124c5acfe4e77b8c31d1eef03f258e4f9ab27ffb7b22a0dab04975b",
+        "eval_only/trajectory.jsonl": "886f539e3cdb1960f415bab26672c267fa397e03f28cf431f691d5404a1c52f8",
+        "eval_only/contacts.jsonl": "d17afade647f66ecc2e9660672aecb52f7d1b2baecb7a01d9a019ecd995a1e1f"
+      },
+      "lock": {
+        "acquired": {
+          "owner": "codex",
+          "branch": "codex/s2-realism",
+          "purpose": "s2v51 staging-only condition A seed1055",
+          "pid": 36799,
+          "acquired_unix": 1791436136.8847759,
+          "expected_end_unix": 1791438236.8847759,
+          "loadavg_at_acquire": [
+            5.775390625,
+            4.66162109375,
+            4.63525390625
+          ],
+          "timing_sensitive": true
+        },
+        "released": {
+          "owner": "codex",
+          "branch": "codex/s2-realism",
+          "purpose": "s2v51 staging-only condition A seed1055",
+          "pid": 36799,
+          "acquired_unix": 1791436136.8847759,
+          "expected_end_unix": 1791438236.8847759,
+          "loadavg_at_acquire": [
+            5.775390625,
+            4.66162109375,
+            4.63525390625
+          ],
+          "timing_sensitive": true,
+          "pid_alive": true
+        },
+        "status_after": null
+      },
+      "posthoc": {
+        "scope": "POSTHOC_EVAL_ONLY_NO_CONTROL_FEEDBACK",
+        "seed": 1055,
+        "cargo_remaining_to_B_region_m": 1.4588503808943236,
+        "cargo_distance_to_B_center_m": 2.0134273916528893,
+        "robot_remaining_to_B_region_m": 1.6260412672743756,
+        "final_cargo_xy_m": [
+          2.884931042104394,
+          -1.045282819367657
+        ],
+        "final_robot_xy_m": [
+          2.7657513154745073,
+          -0.861398870302843
+        ],
+        "carry_window": [
+          113.55,
+          381.3
+        ],
+        "visual_updates": 22,
+        "max_update_gap_sim_s": 122.19999999999999,
+        "carry_xy_rmse_m": 0.5481444797698473,
+        "measurement_claim": "nonconstant AMCL weight updates, not full-rank absolute pose fixes",
+        "carry_xy_p90_m": 0.6869959378365026,
+        "carry_end_error_m": 0.621844980130343,
+        "carry_pose_samples": 5355,
+        "visibility_measurement": {
+          "attempts": 23,
+          "less_than_six_columns": 0,
+          "detected_columns": 1602,
+          "kept_columns": 1602
+        },
+        "status": "COMPLETE",
+        "wall_lower_visibility_fraction": 0.9298429726368159,
+        "detected_wall_lower_visibility_fraction": 0.9971833721833722
+      },
+      "options": {
+        "camera_profile": "masterpi-camera-user-observation-target-review-v3",
+        "drive_profile": "masterpi_drive_friction_v7",
+        "setdown_relook": "off",
+        "grasp_check": "pickup_site_v1",
+        "min_wheel_cmd": "real_v1",
+        "dead_reckoning": "v7_diag_v1",
+        "stagnation_watch": "window120_v1",
+        "alignment_pulse": "real_fine_v1",
+        "hover_check": "real_pregrasp_v1",
+        "idle_robot_contacts": "freeze_v1",
+        "site_check": "off",
+        "hold_check": "inhand_rgb_v1",
+        "dev_grasp_policy": "log_only_v1",
+        "eval_camera_trace": "pose_v1",
+        "pulse_motion_model": "v7_pulse_cal_v1",
+        "visual_update": "accepted_scan_v1",
+        "visual_stall": "lk_pulse_v1",
+        "carry_pose": "look_ahead_v1",
+        "camera_calibration": "v3_unloaded_sag_v1",
+        "measurement_model": "amcl_likelihood_field_v1",
+        "visibility_mask": "command_geometry_v1",
+        "amcl_update": "ros_motion_v1",
+        "dev_search": "repeat_views_v1",
+        "visibility_policy": "nav2_observed_v1",
+        "contact_filter": "floor_appearance_v1",
+        "slip_detection": "slip_detect_v1",
+        "stall_recovery": "off",
+        "slip_recovery": "slip_recovery_v1",
+        "servo_stiffness": "real_v1",
+        "camera_pitch": "stiff_target_v1",
+        "pregrasp_policy": "log_only_v1",
+        "sensor_landmarks": "floor_zones_doors_v1",
+        "sensor_model": "amcl_likelihood_field_v1",
+        "pose_estimate": "amcl_best_cluster_v1",
+        "look_before_move": "rgb_sweep_v1",
+        "forward_scale": "forward_scale_v1",
+        "likelihood_tempering": "pr_likelihood_half_v1",
+        "final_approach": "staging_v133_v1"
+      },
+      "bundle_sha256": "3f2699a8476d4223cfed9f8ead79e3be111102d4c19105dfdfe1b3ad05a49144",
+      "controller_states": [
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 1.3,
+          "state": "scan"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 10.4,
+          "state": "search_move"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 65.65,
+          "state": "search"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 65.75,
+          "state": "align"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 87.55,
+          "state": "real_pregrasp"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 88.35,
+          "state": "hover"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 89.65,
+          "state": "blind_descent"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 90.85,
+          "state": "grasp"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 91.75,
+          "state": "lift"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 112.95,
+          "state": "real_carry_transition"
+        },
+        {
+          "robot_id": "r3",
+          "event": "state",
+          "t": 113.55,
+          "state": "carry"
+        }
+      ],
+      "appearance_monitor_created": false,
+      "actual_lateral_commands": 24,
+      "uncertified_navigation_lateral": 0,
+      "navigation_denied": 12,
+      "navigation_allowed": 0,
+      "carry_detour_commands": 309,
+      "carry_detour_profiles": [
+        {
+          "forward": 0.0,
+          "turn": 0.35,
+          "duration_s": 0.1,
+          "count": 10
+        },
+        {
+          "forward": 0.35,
+          "turn": 0.0,
+          "duration_s": 0.1,
+          "count": 269
+        },
+        {
+          "forward": 0.0,
+          "turn": -0.35,
+          "duration_s": 0.1,
+          "count": 30
+        }
+      ],
+      "slip_rows": 0,
+      "slip_minimum_expected_m": 0.05,
+      "forward_fine_prediction_m": 0.012938978064088115,
+      "robot_wall_contacts": [
+        {
+          "pair": "zone_wall_divider_2 / r3__left_finger",
+          "points": 175,
+          "samples": 120,
+          "first_t": 198.75,
+          "last_t": 206.0,
+          "episodes": 10
+        },
+        {
+          "pair": "zone_wall_divider_2 / r3__v3_wheel_fl_roller_1_body_contact",
+          "points": 32,
+          "samples": 11,
+          "first_t": 210.5,
+          "last_t": 211.2,
+          "episodes": 3
+        },
+        {
+          "pair": "zone_wall_divider_2 / r3__v3_wheel_fl_roller_2_body_contact",
+          "points": 12,
+          "samples": 5,
+          "first_t": 216.6,
+          "last_t": 216.95,
+          "episodes": 2
+        },
+        {
+          "pair": "zone_wall_divider_2 / r3__v3_wheel_fl_roller_3_body_contact",
+          "points": 10,
+          "samples": 5,
+          "first_t": 217.0,
+          "last_t": 217.35,
+          "episodes": 2
+        }
+      ],
+      "before_lower": {
+        "scope": "before lower or terminal if no lower",
+        "t": 381.25,
+        "estimated": [
+          3.3875746619526717,
+          -0.8665956724453154,
+          -0.9730372607593967
+        ],
+        "truth": [
+          2.7657513971609986,
+          -0.8613988775550493,
+          -0.9963029305823228
+        ],
+        "xy_error_m": 0.621844980130343,
+        "std_xy_m": 0.0986936420579589
+      },
+      "video": "/Users/changmin/projects/ugrp/outputs/s2-realism-d5fd85dd-s1055-v138-staging-only/execution.mp4"
+    }
+  ],
+  "preregistered_seeds": [
+    1054,
+    1055
+  ],
+  "regression1053": "not_run_first_two_not_both_success",
+  "outcome": "FAILED",
+  "physical_runs": 2,
+  "threshold_changes_after_outcome": 0,
+  "controller_changes_after_outcome": 0,
+  "gt_scope": "posthoc evaluation only",
+  "floor_line_false_positive_fix": "deferred unchanged",
+  "recommendation": "No v51 patch or extra physics. Next investigate carried gripper clearance and own-RGB progress for fine forward detours; separately validate rotation/translation separation in detour pulse selection against the standard navigation controller, before a new candidate.",
+  "terminal_selector": {
+    "seed": 1055,
+    "t": 381.25,
+    "waypoint": [
+      4.3968,
+      -2.1
+    ],
+    "own_estimated_error_body_m": [
+      1.5875140976984665,
+      0.1400750077493875
+    ],
+    "heading_error_deg": -5.0424594644910385,
+    "turn_only_gate_deg": 5,
+    "turn_only": true,
+    "selected_pulse": null,
+    "score": {
+      "before": 2.5401044098120087,
+      "after": 2.5401044098120087,
+      "body_error_m": [
+        1.5875140976984665,
+        0.1400750077493875
+      ],
+      "yaw_rad": -0.08800752005371872
+    },
+    "scope": "fixed recorded terminal estimate and registered profiles; no tuning; GT not input",
+    "holds_after_last_motion": 2399
+  },
+  "failure_causes": {
+    "1054": "Carried fingers contact fixed divider; fine forward detours remain command-predicted (1.294cm below 5cm slip scope), no slip rows; before lower position error3.081m, deposited outside B.",
+    "1055": "After prior divider contact, terminal detour yaw=-5.042459deg triggers turn-only pool; fixed original cost selects no pulse;2399 holds lead to STAGNATION_120S_LT_1CM. Not a final-approach RGB monitor stop."
+  },
+  "videos": [
+    {
+      "seed": 1054,
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-d5fd85dd-s1054-v138-staging-only/execution.mp4",
+      "sha256": "d67c5e9785d476edb9b5d1b9c73d678f184fca6389c385b5e11f8add2bd49a9d",
+      "bytes": 1421726,
+      "speed": 4,
+      "input_hz": 20,
+      "frame_count": 6000,
+      "sim_window": [
+        1.3,
+        301.25
+      ],
+      "duration_s": 75.0,
+      "decode_pass": true,
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 640,
+            "height": 480,
+            "r_frame_rate": "20/1",
+            "nb_frames": "1500"
+          }
+        ],
+        "format": {
+          "duration": "75.000000"
+        }
+      }
+    },
+    {
+      "seed": 1055,
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-d5fd85dd-s1055-v138-staging-only/execution.mp4",
+      "sha256": "b4053cc1c7a720006234073eab3f48d82381d0d6eba3c61dfe35a52adce692bb",
+      "bytes": 1402856,
+      "speed": 4,
+      "input_hz": 20,
+      "frame_count": 7600,
+      "sim_window": [
+        1.3,
+        381.25
+      ],
+      "duration_s": 95.0,
+      "decode_pass": true,
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "width": 640,
+            "height": 480,
+            "r_frame_rate": "20/1",
+            "nb_frames": "1900"
+          }
+        ],
+        "format": {
+          "duration": "95.000000"
+        }
+      }
+    }
+  ],
+  "analysis_sources": {
+    "/Users/changmin/projects/ugrp/outputs/s2-staging-only-v51-20261008/collect_result.py": "ed330f34d7fde2db34fb70d2f67fe8a24dcfa544ba03a38baa265d83832556e6",
+    "/Users/changmin/projects/ugrp/outputs/s2-staging-only-v51-20261008/terminal-selector.json": "484299473cd9a3005ab7c4885c83e98c4217f68283a0b80baeb37ae518272ffd",
+    "/Users/changmin/projects/ugrp/outputs/s2-staging-only-v51-20261008/replay.json": "25993bc48c0957579db9d99a3e1f45be495712d7c2b3ed0bb3d500027011ac2e"
+  }
+}

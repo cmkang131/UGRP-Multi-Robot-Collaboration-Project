@@ -1,0 +1,11 @@
+{
+  "source": "cb4b872c451de99c883fde13026deb24923ddf6c",
+  "ci_run": 38052613774,
+  "failure": "KeyError: lazy-camera-abba",
+  "test": "tests/test_simulation_workflow_manager.py::WorkflowManagerTests::test_every_catalog_workflow_has_a_read_only_explicit_plan",
+  "cause": "New catalog workflow omitted from existing explicit planning sample table",
+  "fix": "Add required --kind, --expected-source-sha, --archive-manifest and --archive-manifest-sha256 sample; retain Popen guard and exact catalog/sample set comparison",
+  "runtime_code_changed": false,
+  "log_path": "/Users/changmin/projects/ugrp/outputs/speedctrl3-delivery/ci-cb4b-failed.log",
+  "log_sha256": "a22bb759921cb7cbd46c08315f88dc5035740669d773c37565b395a2ee3a2efc"
+}

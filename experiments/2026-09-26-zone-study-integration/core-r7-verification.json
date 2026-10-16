@@ -1,0 +1,104 @@
+{
+  "schema": "ugrp.zone_study_integration_code_verification.v1",
+  "date": "2026-09-27",
+  "worktree": "/Users/changmin/projects/ugrp-wt/kiro-study-integration",
+  "head": "844d9dfbca49c4c15693c8e84ab6be13d0c1253b",
+  "merge_head": "3b86842cf745410021ab5c937e56b6ed74682f12",
+  "git_index_modified": false,
+  "working_conflict_markers": 0,
+  "index_still_unmerged": [
+    "experiments/README.md",
+    "harness/zone_study_contract.py",
+    "scripts/run_ci_tests.py"
+  ],
+  "registry_sha256": "c9bb55567a82eef535e7b296ae69f35d5a08e8372479a56ef14c1ac76f08037c",
+  "upstream_byte_identical": {
+    "harness/zone_study_contract.py": "origin/kiro/zone-study-core",
+    "sim/zone_eval_top.py": "origin/kiro/zone-eval-topcam"
+  },
+  "union_checks": {
+    "ci_patterns": 170,
+    "experiment_links": 97
+  },
+  "source_sha256": {
+    "experiments/README.md": "45b046e1bd75c0cbd5486eadae937abfd723e697e11b68e9f03c0d7b08e43fde",
+    "scripts/run_ci_tests.py": "a6009f0aaabd3ee153cae2ef62e8f700f549ba63ace8131ee53ddaf4da71eab6",
+    "harness/zone_study_contract.py": "f6e4c5fef3bdb7e332d2871b309bec1a46e3d1d98533050e723094200dc460f6",
+    "harness/zone_study_integration.py": "99b7e5011ad78d16664c91dd326f003bc65b0717c39b4d8a7a36756f80854b1a",
+    "scripts/run_zone_study_integration.py": "3e6f1d8d75302c28d416fee3d411b919db7044dd11072cc8fdf94f10c8357738",
+    "sim/zone_eval_top.py": "22512d20f097af908433e91a1c67e0fc0b716e92408423aae7afbc387df9ab6d",
+    "tests/test_zone_study_integration.py": "f9e8b2b1a09a2566186f14a132bfb8f51350724890acfce55caa93335c12cdaf",
+    "tests/test_zone_study_integration_seams.py": "1d6cc2232804923b41ccfd8d9742c7bf2cd5d542ee89310317585580ed18d852",
+    "tests/test_zone_own_executor.py": "9e979c6731104c25fba887e083de2db807d8021767c7c97265e1045576e1bd9b"
+  },
+  "focused": {
+    "passed": 100,
+    "elapsed_s": 25.49
+  },
+  "runs": [
+    {
+      "name": "regression",
+      "junit_path": "tmp/core-r7-regression.xml",
+      "junit_sha256": "c1c18905a94cebe3c8941a43eadd90cecf2b8ec79aac830079243ea884b3a160",
+      "log_path": "tmp/core-r7-regression.log",
+      "log_sha256": "27f019c1e496625857d16d05f387bb8c39328708058691b1767050513cfa9ccc",
+      "counts": {
+        "tests": 953,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0
+      },
+      "elapsed_s": 212.026,
+      "failed_tests": [
+        {
+          "test": "tests.test_zone_own_executor.test_action_record_adapter_matches_package_a_schema",
+          "message": "assert [\"unknown con...lm_scripted'\"] == []\n  \n  Left contains one more item: \"unknown condition: 'no_llm_scripted'\"\n  Use -v to get more diff"
+        },
+        {
+          "test": "tests.test_simulation_workflow_manager.WorkflowManagerTests.test_parent_exit_cleans_background_child",
+          "message": "PermissionError: [Errno 1] Operation not permitted: 'ps'"
+        }
+      ]
+    },
+    {
+      "name": "executor-fix",
+      "junit_path": "tmp/core-r7-executor-fix.xml",
+      "junit_sha256": "f6c37c9fd94ee050b93b72f3f7c6e1f5d978c9d080e24be97681b8df7671d393",
+      "log_path": "tmp/core-r7-executor-fix.log",
+      "log_sha256": "c952b5c568a02b83362e5cf5a0f46f1c733434977b415fd71a83aa63e7031707",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "elapsed_s": 0.773,
+      "failed_tests": []
+    }
+  ],
+  "commands": {
+    "regression": "OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q -p no:cacheprovider --basetemp=/Users/changmin/projects/ugrp-wt/kiro-study-integration/tmp/pytest-core-r7-regression --junitxml=/Users/changmin/projects/ugrp-wt/kiro-study-integration/tmp/core-r7-regression.xml tests/test_zone_study*.py tests/test_zone_event_scheduler.py tests/test_zone_sim_cost.py tests/test_zone_own_executor.py tests/test_zone_own_perception.py tests/test_zone_own_perception_v2.py tests/test_simulation_workflow_manager.py -k 'not test_team_host_feeds_each_executor_only_its_own_camera'",
+    "executor-fix": "OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q -p no:cacheprovider --basetemp=/Users/changmin/projects/ugrp-wt/kiro-study-integration/tmp/pytest-core-r7-executor-fix --junitxml=/Users/changmin/projects/ugrp-wt/kiro-study-integration/tmp/core-r7-executor-fix.xml tests/test_zone_own_executor.py::test_action_record_adapter_matches_package_a_schema"
+  },
+  "final_unique_test_status": {
+    "passed": 952,
+    "blocked_by_sandbox_ps": 1,
+    "physical_test_deselected": 1,
+    "note": "951 passed in broad run plus one corrected fixture passing on targeted rerun; not a single fully green broad run"
+  },
+  "bundle_only": {
+    "sha256": "8867b98fe117d5a636fd10954e72a21bb486b8e88384d7db0945660664a02d75",
+    "previous_prereg_sha256": "6e949fc84f9d5f5eeaa3d3ff4dbc766910d08220a308219171179d9956e76376",
+    "eval_top_profile": "zone_eval_top_v1"
+  },
+  "physical_runs": 0,
+  "live_model_requests": 0,
+  "video_renders": 0,
+  "remaining": [
+    "coordinator stages and completes merge commit",
+    "new prereg/bundle before coordinator physical smoke",
+    "ps process-exit assertion needs a permitted environment",
+    "corridor cohort needs registered pose provider/map/scenario"
+  ],
+  "note_ko": "tags_temporary / 임시, 표식 사용, 연구 결과 아님"
+}

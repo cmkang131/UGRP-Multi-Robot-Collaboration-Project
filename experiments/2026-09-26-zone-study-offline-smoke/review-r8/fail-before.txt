@@ -1,0 +1,77 @@
+FF                                                                       [100%]
+=================================== FAILURES ===================================
+__________________ test_redirect_never_makes_a_second_request __________________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x106d626c0>
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/kiro-study-core/.tmp/r8/before/test_redirect_never_makes_a_se0')
+
+    def test_redirect_never_makes_a_second_request(monkeypatch, tmp_path):
+        requests = []
+    
+        def http_open(self, req):
+            requests.append(req.get_method())
+            headers = Message()
+            if len(requests) == 1:
+                headers['Location'] = 'http://127.0.0.1:1/redirect'
+            response = addinfourl(io.BytesIO(b'{}'), headers, req.full_url,
+                                  302 if len(requests) == 1 else 200)
+            response.msg = 'mock'
+            return response
+    
+        monkeypatch.setattr(HTTPHandler, 'http_open', http_open)
+        ledger = live_send_ledger(store_dir=tmp_path / 'wire')
+        ledger.attach(lambda _: None, owner='test')
+>       with pytest.raises(HTTPError, match='302'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE HTTPError
+
+tests/test_zone_study_review_r8.py:32: Failed
+__________________ test_cap_two_retry_race_cannot_send_three ___________________
+
+    def test_cap_two_retry_race_cannot_send_three():
+        # R8 schedule: first send; retry pauses AFTER reading remaining=1;
+        # r2 reserves/sends; retry resumes and used+reserved becomes 3 at cap=2.
+        budget = AttemptBudget(total=2)
+        assert budget.reserve('r1')
+        sent = ['first']
+        paused, resume = threading.Event(), threading.Event()
+        original = budget.remaining
+        errors = []
+    
+        def remaining(actor=None):
+            left = original(actor)
+            if threading.current_thread().name == 'retry':
+                paused.set()
+                assert resume.wait(2)
+            return left
+    
+        budget.remaining = remaining
+    
+        def retry():
+            try:
+                if budget.reserve('r1'):
+                    sent.append('retry')
+            except RuntimeError as exc:
+                errors.append(str(exc))
+            finally:
+                paused.set()
+    
+        worker = threading.Thread(target=retry, name='retry')
+        worker.start()
+        assert paused.wait(2)
+        try:
+            if budget.reserve('r2'):
+                sent.append('r2')
+        finally:
+            resume.set()
+            worker.join(2)
+>       assert len(sent) <= 2, f'cap=2 -> sends={len(sent)}: {sent}'
+E       AssertionError: cap=2 -> sends=3: ['first', 'r2', 'retry']
+E       assert 3 <= 2
+E        +  where 3 = len(['first', 'r2', 'retry'])
+
+tests/test_zone_study_review_r8.py:75: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_zone_study_review_r8.py::test_redirect_never_makes_a_second_request
+FAILED tests/test_zone_study_review_r8.py::test_cap_two_retry_race_cannot_send_three
+2 failed in 0.59s

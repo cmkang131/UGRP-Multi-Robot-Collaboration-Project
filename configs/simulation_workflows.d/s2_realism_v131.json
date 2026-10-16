@@ -1,0 +1,21 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "zone-s2-realism-v131",
+      "version": "7.24.0",
+      "purpose": "One explicitly authorized seed1051 rerun: pregrasp log-only plus calibrated look-ahead",
+      "entry": "scripts/run_s2_look_ahead_dev.py",
+      "runner": "scripts.run_s2_look_ahead_dev",
+      "docs": "experiments/2026-10-06-s2-realism/README.md",
+      "requires": "committed source, owned exclusive lock, calibrated look-ahead; S2 DEV only",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

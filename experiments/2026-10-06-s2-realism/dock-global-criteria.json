@@ -1,0 +1,44 @@
+{
+  "schema": "ugrp.s2.start_global.criteria.v1",
+  "option": "amcl_global_active_v1",
+  "default": "off",
+  "input_contract": "own RGB, command history, static map, fixed calibration only; dock row unknown",
+  "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-18e5e42e-s1052-P1-2-place",
+  "window_sim_s": [
+    1.3,
+    12.0
+  ],
+  "stop_before_first_translation": true,
+  "physics_runs": 0,
+  "model_calls": 0,
+  "parameters": {
+    "particles": 2000,
+    "sampling": "uniform free map and uniform [-pi,pi) yaw",
+    "cluster_bin_xy_m": 0.5,
+    "cluster_bin_yaw_rad": 0.17453292519943295,
+    "spin_distance_rad": 1.57,
+    "max_spin_sectors": 4,
+    "spin_time_allowance_s": 60,
+    "active_global_budget_s": 120,
+    "turn_profile": "0:turn:0.35:0.10",
+    "observe_after_horizon_s": 0.6
+  },
+  "replay_candidates": [
+    "off",
+    "amcl_global_active_v1"
+  ],
+  "replay_gate": {
+    "default_off_pose_bytes_equal": true,
+    "position_error_final_m_at_most": 0.25,
+    "position_rmse_improves": true,
+    "position_error_max_m_at_most": 0.5,
+    "no_false_convergence": true
+  },
+  "selection": "one fixed candidate; no retuning on seed1052; if fail retain experimental off only",
+  "active_scan_limit": "recorded commands fixed: no new spin RGB exists; replay cannot establish benefit of counterfactual active scan; inspect shadow commands separately; no render or physics",
+  "references": [
+    "https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_amcl/src/amcl_node.cpp",
+    "https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/core_servers/bt_plugins/actions/Spin/",
+    "https://www.cs.cmu.edu/~dfox/abstracts/active-ras-special.abstract.html"
+  ]
+}

@@ -1,0 +1,442 @@
+{
+  "option": "sensor_beamskip=nav2_prob_v1",
+  "source_sha": "2f898e5569ea7fe1531bde927d27bf955f438acc",
+  "scope": "wall-only Nav2 probability model; fixed original RGB and commands; no GT inputs",
+  "runs": [
+    {
+      "seed": 1051,
+      "parameters": {
+        "sigma_hit": 0.2,
+        "z_hit": 0.5,
+        "z_rand": 0.5,
+        "max_beams": 60,
+        "laser_likelihood_max_dist": 2.0,
+        "range_max_m": 100.0,
+        "beam_skip_distance": 0.5,
+        "beam_skip_threshold": 0.3,
+        "beam_skip_error_threshold": 0.9,
+        "beam_skip_converged_distance": 0.5,
+        "do_beamskip": true
+      },
+      "updates": 32,
+      "skip_enabled": 25,
+      "skipped": 185,
+      "fallback": 6,
+      "valid_beams": 558,
+      "first": {
+        "t": 2.25,
+        "ess": 11.379543674490844,
+        "n": 2000,
+        "wall": 14,
+        "joint_ratio": 1.2347479390201495e+34,
+        "factor_ratios": [
+          {
+            "kind": "wall",
+            "ratio": 1.8716995476634512e+27
+          },
+          {
+            "kind": "floor_line",
+            "ratio": 12950.057589389979
+          },
+          {
+            "kind": "floor_line",
+            "ratio": 1.0
+          },
+          {
+            "kind": "floor_line",
+            "ratio": 10076.924099180562
+          },
+          {
+            "kind": "floor_line",
+            "ratio": 5559.614861498165
+          }
+        ]
+      },
+      "covariance_missing": 0
+    },
+    {
+      "seed": 1053,
+      "parameters": {
+        "sigma_hit": 0.2,
+        "z_hit": 0.5,
+        "z_rand": 0.5,
+        "max_beams": 60,
+        "laser_likelihood_max_dist": 2.0,
+        "range_max_m": 100.0,
+        "beam_skip_distance": 0.5,
+        "beam_skip_threshold": 0.3,
+        "beam_skip_error_threshold": 0.9,
+        "beam_skip_converged_distance": 0.5,
+        "do_beamskip": true
+      },
+      "updates": 36,
+      "skip_enabled": 35,
+      "skipped": 207,
+      "fallback": 5,
+      "valid_beams": 968,
+      "first": {
+        "t": 2.25,
+        "ess": 3.0860209649343697,
+        "n": 2000,
+        "wall": 19,
+        "joint_ratio": 1.404870856615856e+46,
+        "factor_ratios": [
+          {
+            "kind": "wall",
+            "ratio": 8.84491086988179e+37
+          },
+          {
+            "kind": "floor_line",
+            "ratio": 12943.927388283808
+          },
+          {
+            "kind": "floor_line",
+            "ratio": 13059.747687230007
+          },
+          {
+            "kind": "floor_line",
+            "ratio": 1.0
+          },
+          {
+            "kind": "floor_line",
+            "ratio": 7052.371514773209
+          }
+        ]
+      },
+      "covariance_missing": 0
+    },
+    {
+      "seed": 1054,
+      "parameters": {
+        "sigma_hit": 0.2,
+        "z_hit": 0.5,
+        "z_rand": 0.5,
+        "max_beams": 60,
+        "laser_likelihood_max_dist": 2.0,
+        "range_max_m": 100.0,
+        "beam_skip_distance": 0.5,
+        "beam_skip_threshold": 0.3,
+        "beam_skip_error_threshold": 0.9,
+        "beam_skip_converged_distance": 0.5,
+        "do_beamskip": true
+      },
+      "updates": 37,
+      "skip_enabled": 36,
+      "skipped": 172,
+      "fallback": 8,
+      "valid_beams": 783,
+      "first": {
+        "t": 2.25,
+        "ess": 2.349365083666467,
+        "n": 2000,
+        "wall": 18,
+        "joint_ratio": 1.0577898194929017e+44,
+        "factor_ratios": [
+          {
+            "kind": "wall",
+            "ratio": 9.984483950916151e+35
+          },
+          {
+            "kind": "floor_line",
+            "ratio": 10990.058308896767
+          },
+          {
+            "kind": "floor_line",
+            "ratio": 12989.473150404065
+          },
+          {
+            "kind": "floor_line",
+            "ratio": 1.0
+          },
+          {
+            "kind": "floor_line",
+            "ratio": 7979.088477279647
+          }
+        ]
+      },
+      "covariance_missing": 0
+    },
+    {
+      "seed": 1056,
+      "parameters": {
+        "sigma_hit": 0.2,
+        "z_hit": 0.5,
+        "z_rand": 0.5,
+        "max_beams": 60,
+        "laser_likelihood_max_dist": 2.0,
+        "range_max_m": 100.0,
+        "beam_skip_distance": 0.5,
+        "beam_skip_threshold": 0.3,
+        "beam_skip_error_threshold": 0.9,
+        "beam_skip_converged_distance": 0.5,
+        "do_beamskip": true
+      },
+      "updates": 36,
+      "skip_enabled": 35,
+      "skipped": 230,
+      "fallback": 11,
+      "valid_beams": 783,
+      "first": {
+        "t": 2.25,
+        "ess": 6.727799861805327,
+        "n": 2000,
+        "wall": 18,
+        "joint_ratio": 4.004389948945824e+43,
+        "factor_ratios": [
+          {
+            "kind": "wall",
+            "ratio": 2.648216946678347e+35
+          },
+          {
+            "kind": "floor_line",
+            "ratio": 1.0
+          },
+          {
+            "kind": "floor_line",
+            "ratio": 12924.634985930557
+          },
+          {
+            "kind": "floor_line",
+            "ratio": 13042.429617412407
+          },
+          {
+            "kind": "floor_line",
+            "ratio": 9621.51473735051
+          }
+        ]
+      },
+      "covariance_missing": 0
+    },
+    {
+      "seed": 1057,
+      "parameters": {
+        "sigma_hit": 0.2,
+        "z_hit": 0.5,
+        "z_rand": 0.5,
+        "max_beams": 60,
+        "laser_likelihood_max_dist": 2.0,
+        "range_max_m": 100.0,
+        "beam_skip_distance": 0.5,
+        "beam_skip_threshold": 0.3,
+        "beam_skip_error_threshold": 0.9,
+        "beam_skip_converged_distance": 0.5,
+        "do_beamskip": true
+      },
+      "updates": 32,
+      "skip_enabled": 20,
+      "skipped": 286,
+      "fallback": 3,
+      "valid_beams": 992,
+      "first": {
+        "t": 2.25,
+        "ess": 13.45966226363666,
+        "n": 2000,
+        "wall": 14,
+        "joint_ratio": 5.1073089586593985e+31,
+        "factor_ratios": [
+          {
+            "kind": "wall",
+            "ratio": 4.0042307270030384e+27
+          },
+          {
+            "kind": "floor_line",
+            "ratio": 1.0
+          },
+          {
+            "kind": "floor_line",
+            "ratio": 13036.08096076825
+          },
+          {
+            "kind": "floor_line",
+            "ratio": 1.0
+          },
+          {
+            "kind": "floor_line",
+            "ratio": 3432.491009708831
+          }
+        ]
+      },
+      "covariance_missing": 1
+    },
+    {
+      "seed": 1058,
+      "parameters": {
+        "sigma_hit": 0.2,
+        "z_hit": 0.5,
+        "z_rand": 0.5,
+        "max_beams": 60,
+        "laser_likelihood_max_dist": 2.0,
+        "range_max_m": 100.0,
+        "beam_skip_distance": 0.5,
+        "beam_skip_threshold": 0.3,
+        "beam_skip_error_threshold": 0.9,
+        "beam_skip_converged_distance": 0.5,
+        "do_beamskip": true
+      },
+      "updates": 36,
+      "skip_enabled": 35,
+      "skipped": 195,
+      "fallback": 8,
+      "valid_beams": 920,
+      "first": {
+        "t": 2.25,
+        "ess": 2.1448589594898952,
+        "n": 2000,
+        "wall": 19,
+        "joint_ratio": 3.6413520046721585e+45,
+        "factor_ratios": [
+          {
+            "kind": "wall",
+            "ratio": 4.20464381910072e+37
+          },
+          {
+            "kind": "floor_line",
+            "ratio": 1.0
+          },
+          {
+            "kind": "floor_line",
+            "ratio": 12318.176241522717
+          },
+          {
+            "kind": "floor_line",
+            "ratio": 13050.821511802254
+          },
+          {
+            "kind": "floor_line",
+            "ratio": 6955.103893776832
+          }
+        ]
+      },
+      "covariance_missing": 0
+    },
+    {
+      "seed": 1059,
+      "parameters": {
+        "sigma_hit": 0.2,
+        "z_hit": 0.5,
+        "z_rand": 0.5,
+        "max_beams": 60,
+        "laser_likelihood_max_dist": 2.0,
+        "range_max_m": 100.0,
+        "beam_skip_distance": 0.5,
+        "beam_skip_threshold": 0.3,
+        "beam_skip_error_threshold": 0.9,
+        "beam_skip_converged_distance": 0.5,
+        "do_beamskip": true
+      },
+      "updates": 41,
+      "skip_enabled": 34,
+      "skipped": 134,
+      "fallback": 11,
+      "valid_beams": 989,
+      "first": {
+        "t": 2.25,
+        "ess": 1.0546425226172476,
+        "n": 100000,
+        "wall": 48,
+        "joint_ratio": 4.7472275789287415e+93,
+        "factor_ratios": [
+          {
+            "kind": "wall",
+            "ratio": 6.203993455825846e+89
+          },
+          {
+            "kind": "floor_line",
+            "ratio": 12944.069616586263
+          }
+        ]
+      },
+      "covariance_missing": 0
+    },
+    {
+      "seed": 1060,
+      "parameters": {
+        "sigma_hit": 0.2,
+        "z_hit": 0.5,
+        "z_rand": 0.5,
+        "max_beams": 60,
+        "laser_likelihood_max_dist": 2.0,
+        "range_max_m": 100.0,
+        "beam_skip_distance": 0.5,
+        "beam_skip_threshold": 0.3,
+        "beam_skip_error_threshold": 0.9,
+        "beam_skip_converged_distance": 0.5,
+        "do_beamskip": true
+      },
+      "updates": 41,
+      "skip_enabled": 37,
+      "skipped": 484,
+      "fallback": 2,
+      "valid_beams": 1216,
+      "first": {
+        "t": 2.25,
+        "ess": 2.1716049461083524,
+        "n": 100000,
+        "wall": 48,
+        "joint_ratio": 1.5405893428237438e+91,
+        "factor_ratios": [
+          {
+            "kind": "wall",
+            "ratio": 1.5211624748467285e+87
+          },
+          {
+            "kind": "floor_line",
+            "ratio": 12751.874984797616
+          },
+          {
+            "kind": "floor_line",
+            "ratio": 13038.025600691455
+          }
+        ]
+      },
+      "covariance_missing": 1
+    },
+    {
+      "seed": 1061,
+      "parameters": {
+        "sigma_hit": 0.2,
+        "z_hit": 0.5,
+        "z_rand": 0.5,
+        "max_beams": 60,
+        "laser_likelihood_max_dist": 2.0,
+        "range_max_m": 100.0,
+        "beam_skip_distance": 0.5,
+        "beam_skip_threshold": 0.3,
+        "beam_skip_error_threshold": 0.9,
+        "beam_skip_converged_distance": 0.5,
+        "do_beamskip": true
+      },
+      "updates": 42,
+      "skip_enabled": 37,
+      "skipped": 116,
+      "fallback": 7,
+      "valid_beams": 883,
+      "first": {
+        "t": 2.25,
+        "ess": 2.0526454935752585,
+        "n": 100000,
+        "wall": 30,
+        "joint_ratio": 1.8312779948874305e+68,
+        "factor_ratios": [
+          {
+            "kind": "wall",
+            "ratio": 1.3478489153329172e+60
+          },
+          {
+            "kind": "floor_line",
+            "ratio": 13051.893476072524
+          },
+          {
+            "kind": "floor_line",
+            "ratio": 13033.361089068276
+          },
+          {
+            "kind": "floor_line",
+            "ratio": 13064.055302160688
+          }
+        ]
+      },
+      "covariance_missing": 1
+    }
+  ]
+}

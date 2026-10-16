@@ -1,0 +1,71 @@
+{
+  "base_commit": "eebab596748b6905a62bfa585a6bf15f6215172d",
+  "review_source": "/private/tmp/claude-501/-Users-changmin-projects-ugrp/ecd247bf-a1a7-45d6-9190-dad34be56468/scratchpad/codex-234-review.md",
+  "review_sha256": "ebac94209084ef7efb8831e0bbe5295cfe2611512a125724570269818101c47e",
+  "threads": {
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "VECLIB_MAXIMUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "opencv": 1,
+    "opencv_method": "setNumThreads(0), GCD backend: parallel regions disabled, getNumThreads()==1"
+  },
+  "python": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+  "basetemp": "./.pytest_tmp",
+  "tests": {
+    "initial_before": "9 assertion failures before runtime edits (OMP caps 1; OpenCV default 8)",
+    "final_baseline_single_thread": "9 failed, 36 deselected (four findings; eebab596 read-only, final regression tests)",
+    "final_all_single_thread": "203 passed, 382 subtests passed",
+    "final_composition": {
+      "review_regressions_and_boundaries": 45,
+      "existing_v3": 45,
+      "related_existing": 113
+    },
+    "final_baseline_log": "before-single-thread.txt",
+    "final_after_log": "final-single-thread.txt"
+  },
+  "v2_hashes_checked": 23,
+  "v2_hash_mismatches": [],
+  "tracked_experiment_record_changes": [],
+  "new_ci_pattern_matches": 1,
+  "source_sha256": {
+    "harness/m1_owncam_memory_v3.py": "16150e3827e50d45d6b32e8faa9d36213277e01c9d6c4da7c9a4b58d0a593be5",
+    "harness/owncam_drive_mem_v3.py": "36b3c6de818b2a52b51cab0c7c631fd310268144deee68b33fd0f7e2b22a1661",
+    "harness/owncam_memory_v3.py": "03652d10eecfba31f9d4a779e04efae3d47f8281110e692dd663dc5f168c9567",
+    "harness/owncam_visibility_v3.py": "c1b84afbf8fc532bacb011c98ed93212faf54a5d46d54deb665b37c677e8535a",
+    "scripts/run_ci_tests.py": "456085ad2e0248a7dadeb63058d3be15632c0890f575f59698440de05ad9d7e5",
+    "scripts/run_m1_owncam_memory_v3.py": "50abb79d9a0bac04c35ba157d5043753e16c538c2a6c0fd0c04f41a360a74b4d",
+    "tests/test_owncam_memory_v3.py": "4ed282ead4d8c6670873c942964ce473cb5c2a69bbc778e1ab25932a4b0169f8",
+    "tests/test_owncam_memory_v3_review.py": "96e8fecf6420689e8d575f5e514631e465ed23cec97b5086378c70896d6b2770"
+  },
+  "log_sha256": {
+    "after-boundaries-initial.txt": "13aca6a2c7040a18d73e4087154fd3cabcc2214bb7267563967c70f582f0c141",
+    "after-boundary-numeric.txt": "86644677b99bde36563390677d4b91582fca8763404b25bc75d5a646b56e7ffc",
+    "after-initial.txt": "86fa45a37f6ed8508f74e89e4326c4b7ec32897927847e2f03bb2e5428e74e77",
+    "after.txt": "dba986635c96a50b48bdf7e46b2190751b50ac8437fa63b66f38e75c40838bb7",
+    "before-confirmed.txt": "67b677ea79d85871f5701eceb5a11fb5a7b2ad6cbe2828f1030c8aaa6b1989b2",
+    "before-single-thread.txt": "b353d32bd7a4d562c81328af3a886b6ca3d9e334a6ddc8b6bf90b92453114aa2",
+    "before.txt": "d18fefd93c72c39dbfd64cfa2d79fece7abbac9a2f620b3d54dd6c6a4dabe263",
+    "final-single-thread.txt": "29923775f51b51ef5872e2c38f343c6a5ea1b473f478d7ee22b42b521a5b6702",
+    "opencv-thread-preflight.txt": "19ca4b1484d3b2b629b56f4c3e754d2c73191d75d9acdb98b78a9e8b99946733",
+    "related-tests.txt": "076f8e14899bcc5e642829fa5e0269b4c89b3a9e2449f931999ba7fc6cd68dd2"
+  },
+  "cohort_run": false,
+  "physics_run": false,
+  "commit_created": false,
+  "git_metadata_written": false,
+  "scope": "Unit scenarios and saved own-input gate checks; not a v3 replay of s162/s164/s165 and not a success-rate claim.",
+  "fixture_sha256": {
+    "tests/fixtures/owncam_memory_v3_place/provenance.json": "a3f86b4a1627c9371324cb0797d0a05450940af1f350bef8adc8117c40adf838",
+    "tests/fixtures/owncam_memory_v3_place/s162-current.jpg": "7f3f7985f4606fc1aebe1fff390e48db3aaf3d28618691ac5f9d0205dea93b67",
+    "tests/fixtures/owncam_memory_v3_place/s162-reference.jpg": "4b9519a769aecddad0b6ed32878c6b624a80de2a50382f40ca6e3ccb7052e20b",
+    "tests/fixtures/owncam_memory_v3_place/s164-current.jpg": "d0f5d9d9d28225087d9b634277d15811a964189955dd5c36a9625b2c6a1e66d4",
+    "tests/fixtures/owncam_memory_v3_place/s164-reference.jpg": "2c67dbd2f0d31a38eb5ca34dd33a0d328392c943ef39ffecf6ce40aa959fca43",
+    "tests/fixtures/owncam_memory_v3_place/s165-current.jpg": "d5d8056fbb7e1718ba775bc9cd331810d846f8c132f73c8bb0ba7031a5c27e48",
+    "tests/fixtures/owncam_memory_v3_place/s165-reference.jpg": "ccaf389ce7566eb6a290d774f9e4cc1beb25a78d224c3ad18658ee00357679da"
+  },
+  "diff_check": "pass",
+  "prior_opencv_default_threads": 8,
+  "prior_opencv_thread_audit": "Intermediate tests retained separately; final before/after and related suite rerun with OpenCV parallel regions disabled.",
+  "prereg_review_status": "DRAFT"
+}

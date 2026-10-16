@@ -1,0 +1,21 @@
+{
+  "issue_url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/221",
+  "comments": [
+    {
+      "id": 5853660231,
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/221#issuecomment-5853660231",
+      "body": "**코디네이터 결정 (2026-09-27): 공동 운반 파지 단계 수정 방향**\n- **근거:** dev05·dev06(prereg v3)에서 두 로봇 모두 상자 앞까지 접근했지만, 둘 다 파지 단계에서 중단됐다(진단: PR #235 diagnosis_v4).\n  - dev05: 충돌 방지 장치 오탐. 위치 추정(PF) 오차 0.76 m와, 아직 잡지 않은 빔을 손목에 붙인 것으로 계산한 영역 때문에 벽 여유가 −0.4 mm로 판정됐다. 실제 금지 접촉은 0건이었다.\n  - dev06: yaw σ 3.001° > 3°. 태그가 30.5초 동안 보이지 않았다.\n- **결정:** 진단 권고안을 채택한다.\n  1. 파지 직전에 다시 둘러봐 충돌 방지 장치가 쓰는 위치 추정을 갱신한다.\n  2. 빔을 실제로 잡기 전에는 빔을 손목에 붙인 영역으로 계산하지 않는다.\n  3. 두 로봇이 모두 준비된 뒤에 집게를 닫는다.\n  - 임계값은 완화하지 않는다.\n- **진행:** 구현은 Codex가 브랜치 codex/zone-pair-grasp-relook에서 한다. 검토 뒤 새 사전등록으로 dev07·dev08을 실행한다."
+    },
+    {
+      "id": 5856308924,
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/221#issuecomment-5856308924",
+      "body": "**코디네이터 결정 (2026-09-27): 공동 운반 v5 수정 방향**\n- **근거 (diagnosis_v5, PR #240):** dev05부터 dev08까지 네 회차 모두 공동 파지 직전 구간에서 멈췄다.\n  - dev07: 파지 자세에서 빔 끝이 화면에 잘린 입력(END_CLIPPED)을 추적기가 받지 않았다. 추적기는 BAND_CLIPPED만 허용한다.\n  - dev08: 자리 맞춤(align) 중 태그가 15.3초 동안 갱신되지 않아 XY σ가 0.07004 m로 기준 0.07 m를 넘었다.\n  - VIS5 검토(PR #243)에서도 같은 결론이 나왔다: 관측을 스스로 고르는 능동 재관측이 우선이다.\n- **결정:**\n  1. 자리 맞춤 전과 도중에 관측 자세를 잡아 재관측한다. 기존 카메라로 관측 방향을 고르고, 기준 시간 동안 갱신이 없으면 이동을 멈추고 먼저 본다.\n  2. 근접 preclose 관측 계약을 보완한다. END_CLIPPED도 부분 관측으로 받되 과신하지 않는다.\n  - 임계값은 완화하지 않는다.\n- **진행:** Codex가 같은 PR에서 grasp v5와 prereg v5(dev09·dev10)로 구현하고, 검토를 거친 뒤 실행한다."
+    },
+    {
+      "id": 5856549507,
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/221#issuecomment-5856549507",
+      "body": "**코디네이터 결정 (2026-09-27): 공동 운반 진단 방식 전환 (사용자: \"좋은 방식으로 해줘봐 알아서\")**\n- **근거:** 같은 2대 운반이 9/26 M2 러너에서는 GT 없이 성공했다. 열린 바닥은 test 8/8, 문 2b단계는 4/5(1회는 중단으로 판정 없음)였다. 그런데 공통 실행기로 옮긴 뒤로 dev05부터 dev08까지 4회 모두, 새로 넣은 안전 기준에 걸려 공동 파지 전에 멈췄다. 실제 충돌은 0건이었다. 회차마다 한 가지씩 고치는 방식은 수렴하지 않았다.\n- **결정:** 차분 비교로 바꾼다. M2 성공 실행의 저장 입력(자기 RGB·자기 명령)을 공통 실행기의 기준과 판정 경로에 오프라인으로 재생한다. 성공한 실행을 어느 기준이 어느 시점에 막았을지, 동작 순서·명령·관측 주기가 어디서 달라지는지를 한 번에 찾는다(Codex, 브랜치 codex/zone-pair-parity, 물리 실행 없음).\n- **기준 처리:** 기준은 무작정 완화하지 않는다. 다만 M2와 다르게 새로 넣은 기준은 근거를 다시 검토한다.\n- **병행:** v5(dev09·dev10)는 검토를 통과하면 그대로 실행하고, 그 결과도 이 비교에 넣는다."
+    }
+  ],
+  "retrieval": "GitHub connector read; no comments posted"
+}

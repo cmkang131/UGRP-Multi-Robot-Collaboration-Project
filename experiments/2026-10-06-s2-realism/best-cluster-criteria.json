@@ -1,0 +1,59 @@
+{
+  "schema": "ugrp.s2.best_cluster.criteria.v1",
+  "base_sha": "53f5804d98181b81f2cc67b45fe9d03d3cddd66c",
+  "option": "pose_estimate=amcl_best_cluster_v1",
+  "default": "off",
+  "recordings": {
+    "start1052": {
+      "seed": 1052,
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-stiff-cal-20261007/start",
+      "baseline_poses": "/Users/changmin/projects/ugrp/outputs/s2-kld-start-20261007/replay/on.json",
+      "window": [
+        1.3,
+        12.0
+      ],
+      "configuration": "stiff_target_v1 + real_v1 + augmented_active_v1 + kld_global_v1; static saved RGB; no known dock"
+    },
+    "carry1051": {
+      "seed": 1051,
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-b5fbe149-s1051-P1-2-lookahead",
+      "baseline_poses": "/Users/changmin/projects/ugrp/outputs/s2-realism-b5fbe149-s1051-P1-2-lookahead/student_record.json",
+      "window": [
+        71.85,
+        249.25
+      ],
+      "configuration": "exact v131 options and commands"
+    }
+  },
+  "conditions": [
+    "off",
+    "on"
+  ],
+  "runs_per_condition": 1,
+  "cluster_bins_m_m_deg": [
+    0.5,
+    0.5,
+    10.0
+  ],
+  "weight_pruning": false,
+  "yaw_wrap": false,
+  "reported_covariance": "overall filter; Nav2 publishAmclPose",
+  "uncertainty": {
+    "multiple_clusters": true,
+    "maximum_cluster_mass_below": 0.5,
+    "basis": "S2 diagnostic majority convention, not a Nav2 default",
+    "action": "log_only; never stop dev_light"
+  },
+  "gates": {
+    "start_final_error_m_max": 0.25,
+    "particle_trajectory_bytes_unchanged": true,
+    "amcl_updates_unchanged": true,
+    "baseline_pose_max_delta": 1e-09
+  },
+  "carry_metrics": "report RMSE/pre-setdown error without adding a new admission threshold",
+  "physical_sequence": "if all offline gates pass, seed1052 start only once; if final error <=.25m, seed1051 full once; agent_lock and ugrp_session mandatory",
+  "gt_use": "scoring only after off/on predictions close",
+  "retuning_after_results": false,
+  "performance_comparison": false,
+  "physics_before_admission": 0
+}

@@ -1,0 +1,218 @@
+{
+  "schema": "ugrp.s3_v142_failure_audit.v1",
+  "source_sha": "6c6571244e33a6e9e39b00afcd38d805035aed7d",
+  "seed": 14201,
+  "scope": "one completed mixed S3 DEV diagnostic; not formal E2E, hardware or research qualification",
+  "status": "HOST_ERROR",
+  "simulation_attempts": 1,
+  "offline_replay_is_additional_simulation": false,
+  "robots": {
+    "r1": {
+      "success": false,
+      "outcome": "CONTROLLER_FAILED",
+      "cargo": "beam_1",
+      "first_sigma_convergence": null,
+      "first_correct_convergence": null,
+      "convergence_scope": "saved-input replay states matched all original commands; correctness is post-run eval_only",
+      "control_observation_end_s": 42.25,
+      "own_failure": "LOOK_RECOVERY_EXHAUSTED",
+      "commands": 1060,
+      "nonzero_base_commands": 0,
+      "max_position_drift_from_start_m": 0.004497766985620196,
+      "final_localizer_state": "search_move",
+      "delivery_complete": false
+    },
+    "r2": {
+      "success": false,
+      "outcome": "INCOMPLETE_AFTER_R1_FAILURE",
+      "cargo": "beam_1",
+      "first_sigma_convergence": {
+        "released_sim_s": 13.95,
+        "elapsed_control_s": 12.649999999999999,
+        "estimate_sim_s": 13.79,
+        "std_xy_m": 0.028012320178902962,
+        "actual_xy_error_m": 2.0569774538031025,
+        "actual_yaw_error_deg": 0.328803214781568
+      },
+      "first_correct_convergence": null,
+      "convergence_scope": "saved-input replay states matched all original commands; correctness is post-run eval_only",
+      "control_observation_end_s": 42.25,
+      "own_failure": null,
+      "commands": 1182,
+      "nonzero_base_commands": 0,
+      "max_position_drift_from_start_m": 0.006515533684781234,
+      "final_localizer_state": "search_move",
+      "delivery_complete": false
+    },
+    "r3": {
+      "success": false,
+      "outcome": "INCOMPLETE_AFTER_R1_FAILURE",
+      "cargo": "cyan_1",
+      "first_sigma_convergence": null,
+      "first_correct_convergence": null,
+      "convergence_scope": "saved-input replay states matched all original commands; correctness is post-run eval_only",
+      "control_observation_end_s": 42.25,
+      "own_failure": null,
+      "commands": 1114,
+      "nonzero_base_commands": 0,
+      "max_position_drift_from_start_m": 0.003192815990658217,
+      "final_localizer_state": "search_move",
+      "delivery_complete": false
+    }
+  },
+  "cargo": {
+    "cyan_1": {
+      "final_pose": {
+        "kind": "cyan",
+        "x": -0.20000000000003867,
+        "y": -2.45000000000117,
+        "yaw": 6.475293342175985e-17,
+        "z": 0.015892244579783686,
+        "held": false,
+        "speed": 8.131258064456005e-11
+      },
+      "inside_B_samples": 0,
+      "total_samples": 906,
+      "delivery_complete": false,
+      "verdict_scope": "necessary B footprint containment failed for every raw sample; full referee rejected height and remains unavailable",
+      "max_xy_displacement_m": 1.7904719522015655e-12,
+      "negative_height_samples": 0,
+      "first_negative_height_s": null,
+      "min_z_m": 0.015892244579783686
+    },
+    "beam_1": {
+      "final_pose": {
+        "kind": "long_beam",
+        "x": 1.275,
+        "y": 0.05,
+        "yaw": 1.0219904979882288e-15,
+        "z": -0.00010775542021616909,
+        "held": false,
+        "speed": 8.730160192999951e-13
+      },
+      "inside_B_samples": 0,
+      "total_samples": 906,
+      "delivery_complete": false,
+      "verdict_scope": "necessary B footprint containment failed for every raw sample; full referee rejected height and remains unavailable",
+      "max_xy_displacement_m": 0.0,
+      "negative_height_samples": 905,
+      "first_negative_height_s": 1.35,
+      "min_z_m": -0.0005436780313244055
+    }
+  },
+  "failure_counts": {
+    "controller_terminal_LOCALIZATION_LOOK_RECOVERY_EXHAUSTED": 1,
+    "internal_SWEEP_TRANSITION_BLOCKED_events": 3,
+    "robots_without_correct_convergence": 3,
+    "HOST_REFEREE_INVALID_HEIGHT": 1,
+    "HOST_RECORD_NONE_FALLBACK": 1,
+    "record_files_not_written": 2,
+    "incomplete_cargo_orders": 2
+  },
+  "count_scope": "one simulation; terminal/root causes, internal events, affected robots/files/orders are separate denominators; serialization has one root cause affecting two files",
+  "door": {
+    "request_episodes": {
+      "r1": 1,
+      "r2": 1,
+      "r3": 1
+    },
+    "wait_robot_s": {
+      "r1": 0.05000000000000071,
+      "r2": 0.05000000000000071,
+      "r3": 33.05
+    },
+    "events": [
+      {
+        "sim_s": 10.55,
+        "signals": [
+          {
+            "robot_id": "r1",
+            "resource": "door_1",
+            "round": 0,
+            "state": "REQUEST"
+          },
+          {
+            "robot_id": "r2",
+            "resource": "door_1",
+            "round": 0,
+            "state": "REQUEST"
+          },
+          {
+            "robot_id": "r3",
+            "resource": "door_1",
+            "round": 0,
+            "state": "REQUEST"
+          }
+        ]
+      },
+      {
+        "sim_s": 10.55,
+        "signals": [
+          {
+            "robot_id": "r1",
+            "resource": "door_1",
+            "round": 1,
+            "state": "USING"
+          },
+          {
+            "robot_id": "r2",
+            "resource": "door_1",
+            "round": 1,
+            "state": "USING"
+          },
+          {
+            "robot_id": "r3",
+            "resource": "door_1",
+            "round": 1,
+            "state": "REQUEST"
+          }
+        ]
+      }
+    ],
+    "deadlock_episodes": 0,
+    "deadlock_scope": "no episode reaches preregistered 120 second duration; no passage completed; deadlock-free operation unverified"
+  },
+  "robot_robot_collision_episodes": [],
+  "robot_robot_contact_samples": 0,
+  "active_weld_samples": 0,
+  "wall_s": 271.7412479999475,
+  "sim_s": 45.25,
+  "wall_per_sim": 6.005331447512653,
+  "control_s": 42.25,
+  "settle_s": 3.0,
+  "commands": 3356,
+  "commands_scope": "3356 control-loop commands, excludes 3 initial and 3 final settle holds",
+  "model_calls": 0,
+  "model_latency_s": 0.0,
+  "raw": "/Users/changmin/projects/ugrp/outputs/s3-no-prior-6c657124-s14201-v142",
+  "recovery": "/Users/changmin/projects/ugrp/outputs/s3-v142-recovery-6c657124-20261009",
+  "raw_manifest_sha256": "b5b9131f66d32d8d6194c5b0302458bf4ea5cfa0c0dc8efb9d2476d7238e1a76",
+  "raw_files_verified": 2561,
+  "raw_hash_mismatches": [],
+  "replay": {
+    "source_sha": "6c6571244e33a6e9e39b00afcd38d805035aed7d",
+    "matched_frames_per_robot": 846,
+    "matched_control_commands": 3356,
+    "all_control_commands_match": true,
+    "replay_wall_s": 103.84665683301864
+  },
+  "video": {
+    "path": "/Users/changmin/projects/ugrp/outputs/s3-v142-recovery-6c657124-20261009/s14201-mixed-4x/execution.mp4",
+    "sha256": "9e4f7a63a255521fb56b8bb7013736c425c4e6caadab114fd5df395eee17052e",
+    "frames": 212,
+    "decoded_frames": 212,
+    "fps": 20.0,
+    "playback_speed": 4,
+    "source_frames_per_robot": 846,
+    "source_tick_s": 0.05,
+    "stride": 4,
+    "scope": "Own-camera diagnostic video; no top camera; first 42.25 SIM seconds through controller termination. Final 3 second settle has no captured RGB."
+  },
+  "limitations": [
+    "Original student_record.json and trial.json absent; derived state recovery is separately labeled.",
+    "Full referee is invalid, negative height was not clamped or overwritten.",
+    "Legacy in_run_drop_tilt_contact_detection=false metadata conflicts with opt-in backend physical stop implementation; original bundle retained.",
+    "dev_light did not disable inherited pair arm sweep guard; early guard stop is not a physical collision.",
+    "Built-in pair look recovery attempted the same blocked sweep three times within this one smoke; no second simulation or tuning."
+  ]
+}

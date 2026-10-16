@@ -1,0 +1,153 @@
+{
+  "schema": "ugrp.p05.fake_contract_verification.v1",
+  "recorded_utc": "2026-09-30T11:35:16.071917+00:00",
+  "fake_only": true,
+  "audit_sha": "a8094cc14e098a55483f53a3c49bf6a0b116043d",
+  "starting_main_sha": "d17ca4345affef8cf027e121cf1f3197b36c23e0",
+  "tested_code_commit": "8d01d02ca231181d95cc1706c026fe4e65f14e7b",
+  "branch": "codex/dialogue-ledger-wire",
+  "worktree": "/Users/changmin/projects/ugrp-wt/e2e-p05-dialogue",
+  "result": {
+    "tests": 656,
+    "passed": 656,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "new_p05_cases": 84,
+    "junit_elapsed_s": 135.127,
+    "elapsed_scope": "pytest record, not a performance comparison",
+    "new_case_counts": {
+      "test_p05_dialogue_ids_own_boundary_and_wire_accounting": 24,
+      "test_p05_host_truth_and_peer_private_mutations_keep_common_calls": 8,
+      "test_p05_pair_status_and_execution_settings_are_identical_across_conditions": 2,
+      "test_p05_effective_episode_caps_stop_actual_sends_but_keep_generated_cost": 6,
+      "test_p05_post_failure_costs_and_no_attempt_replay": 32,
+      "test_p05_enospc_real_send_boundary_retry_is_once_only_before_any_post": 4,
+      "test_p05_cap_stops_before_another_boundary_and_never_replays_paid_posts": 4,
+      "test_p05_driver_refuses_scheduler_retry_configuration_before_any_send": 4
+    }
+  },
+  "invocation": {
+    "command": [
+      "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/test_zone_study_llm_driver.py",
+      "tests/test_zone_study_multiturn.py",
+      "tests/test_zone_study_integration.py",
+      "tests/test_zone_study_inputs.py",
+      "tests/test_zone_study_protocol.py",
+      "tests/test_zone_event_scheduler.py",
+      "tests/test_zone_sim_cost.py",
+      "tests/test_zone_study_review_r7_transport.py",
+      "tests/test_zone_study_fenced_reply.py",
+      "tests/test_zone_study_source_pinning.py",
+      "tests/test_gemini_reasoning_effort.py",
+      "--basetemp",
+      "/Users/changmin/projects/ugrp/outputs/e2e-p05-dialogue/regressions-icl2cruy/raw",
+      "--junitxml",
+      "/Users/changmin/projects/ugrp/outputs/e2e-p05-dialogue/regressions-icl2cruy/junit.xml"
+    ],
+    "cwd": "/Users/changmin/projects/ugrp-wt/e2e-p05-dialogue",
+    "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+    "platform": "macOS-27.2-arm64-arm-64bit",
+    "shared_lock_root": "/Users/changmin/projects/ugrp/outputs/agent-locks",
+    "source_sha256": {
+      "harness/zone_study_llm_driver.py": "ac2758f9dd4cfb7c3059698f9eb2a76c5c76f55f4c469877e95f6d5f3eb60054",
+      "harness/zone_study_integration.py": "de47e507ce6f97967d73301c8e7ba1f760550c6f38877f3b6abb54d16bc7093f",
+      "docs/zone_study_llm_failure_rules.md": "7f782050d4e9a52b76999979031341993ba16a2d4101334eaeddfbe080da1acc",
+      "tests/test_zone_study_llm_driver.py": "3da1547daaca345ea6068b1690aadcf30186d6c2943d8343063c3db0a21f8ee4",
+      "tests/test_zone_study_multiturn.py": "b2afb57c9b6c94c6f0fc7d82ab4a8e2b15f73dbfe86fabfa4d5fdd2f4a961f36",
+      "tests/test_zone_study_integration.py": "6f2c66102304ff7295c9a42955368061fdb7b008c982089f1ce4df98aeb65131",
+      "tests/test_zone_study_inputs.py": "2c6cdb1f0fe7250934d7384d776321a65ede8b918ee4788f2880da3c6d7f640e",
+      "tests/test_zone_study_protocol.py": "f59b9c624178814acc2b4c9ff39236efdd7a905376989b4f08d37105ed70190e",
+      "tests/test_zone_event_scheduler.py": "93ccbf22c01ce040c6b01648c23e0247de47038369fbcd5849f88d2454bc0676",
+      "tests/test_zone_sim_cost.py": "360524b361db92b3959fa4669fa82c986264266f9f6f5973d49a78d44c74c593",
+      "tests/test_zone_study_review_r7_transport.py": "54b483853829aebbce6632f8926cb02d63f95847600cf3e85534ba2dbad034bf",
+      "tests/test_zone_study_fenced_reply.py": "78aac93b71b70a6a7c9ce3fe0d30fbfa309cda6e9877158e849e95bc92156c34",
+      "tests/test_zone_study_source_pinning.py": "98b1f59ce0af4c81102612ee9e8d9e1a12912e1635341cb7b439c920738ad1ef",
+      "tests/test_gemini_reasoning_effort.py": "387a54d1e05a9d21dcd8a36ce22c10266cd9a6b42eb87b07d53e55a8d4a79c57"
+    },
+    "scope": "offline fake-wire regression only; no model or physics"
+  },
+  "lock": {
+    "method": "scripts.run_ci_tests.run_locked",
+    "shared_root": "/Users/changmin/projects/ugrp/outputs/agent-locks",
+    "run_locked_exit_code": 0,
+    "cleanup": "wrapper returned after owned test process group cleanup and lock release; other tasks untouched"
+  },
+  "raw": {
+    "root": "/Users/changmin/projects/ugrp/outputs/e2e-p05-dialogue/regressions-icl2cruy",
+    "remote_backup": false,
+    "preserved": true,
+    "file_manifest": "/Users/changmin/projects/ugrp/outputs/e2e-p05-dialogue/regressions-icl2cruy/raw_manifest.json",
+    "file_manifest_sha256": "af618b46d575c59d89ccc6f9b93d5fcc1e96eead9d0033e210708dedb5fa605c",
+    "file_count": 3548,
+    "total_bytes": 88972457,
+    "junit_sha256": "6300fee731001978a81435af89afe3d7918f6f01228a1cbf66cfb72918570912",
+    "invocation_sha256": "b030d2903018a02b8065fddea83bebe6d78320128d2be4f3c892392d7a738542",
+    "exit_code_sha256": "124fd50cb6d223cdd18fedc166d00af7254199b6e6dedf9be82f71db87af6d01",
+    "launcher_sha256": "f92c771e84c6dd8d94857466f49cc20fce40efd4587845e413dbe20c565c93c1"
+  },
+  "matrix": {
+    "trials": 24,
+    "robots_per_trial": 3,
+    "turns_per_robot": 3,
+    "fake_wire_requests": 216,
+    "delivered_messages": 72,
+    "conditions": {
+      "leader_ko": 6,
+      "no_comm": 6,
+      "peer_ko": 6,
+      "structured": 6
+    },
+    "seeds": {
+      "700": 8,
+      "701": 8,
+      "702": 8
+    },
+    "speech_profiles": {
+      "main_pilot_10_30": 12,
+      "v66_default": 12
+    },
+    "pair_status_sha256": [
+      "d21822f338c067fd96483276efaa08cf0c3c469c1cc5a329d02b2c3d715de8f4"
+    ]
+  },
+  "preserved_counterexamples": [
+    {
+      "root": "/Users/changmin/projects/ugrp/outputs/e2e-p05-dialogue/check-et73pr5q",
+      "scope": "pre-fix HTTP 429: automatic new-call resend, 6 POSTs instead of 3"
+    },
+    {
+      "root": "/Users/changmin/projects/ugrp/outputs/e2e-p05-dialogue/regressions-ysxi0fte",
+      "passed": 651,
+      "failed": 5,
+      "scope": "four missing-provider-usage known/unknown mismatches; one test helper omitted pre-next-step health check"
+    }
+  ],
+  "boundaries": {
+    "network_fixture": "socket connect/connect_ex/create_connection/getaddrinfo blocked in driver tests",
+    "physics_runs": 0,
+    "simulation_runs": 0,
+    "mujoco_renders": 0,
+    "vision_inferences": 0,
+    "real_model_calls": 0,
+    "real_proxy_or_budget_db_changes": false,
+    "dummy_db_only": true,
+    "drive_operations": 0,
+    "merge_or_seal": false,
+    "real_multiturn_pilot": "not run",
+    "tensorboard": "unit regression only; no new robot-success/model-effect experiment run"
+  },
+  "before_real_cohort": [
+    "Independent review of controller/contract changes",
+    "New cap, unknown-usage charge, model/effective model, effort, temperature, max_tokens and timeout approval",
+    "Speech profile and explicit call_policy.max_retries=0 approval",
+    "New absolute DB/output paths and source/bundle/config/map/input hash pinning",
+    "call_id -> transport ledger -> raw wire -> proxy receipt -> upstream attempts/usage reconciliation",
+    "Separately approved real Korean multi-turn pilot; retain failed/infra/censored trials in the denominator",
+    "Do not infer effective model or remaining budget from historical values"
+  ]
+}

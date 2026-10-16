@@ -1,0 +1,1130 @@
+{
+  "schema": "ugrp.s2_v133_baseline_v52.result.v1",
+  "scope": "DEV descriptive aggregate; existing three known successes separated from three preregistered unseen seeds; GT posthoc only",
+  "registration_sha": "2eb830e3ebf6d9a641dba10d6221d411b821a010",
+  "frozen_source_sha": "027c567c45ec05968d7243212fbce1b4aa4d2d59",
+  "verified_runtime_files": 436,
+  "new_physics_runs": 3,
+  "new_model_calls": 0,
+  "controller_changes_after_results": 0,
+  "threshold_changes": 0,
+  "counts": {
+    "seen_success": 3,
+    "seen_n": 3,
+    "fresh_success": 3,
+    "fresh_n": 3,
+    "total_success": 6,
+    "total_n": 6
+  },
+  "runs": [
+    {
+      "seed": 1051,
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-b2de2b30-s1051-landmark-full",
+      "source_sha": "b2de2b30e2a0191d6b911125a9cc8ddb697614bb",
+      "reproduction": null,
+      "bundle_sha256": "6f33b3f3a4e3aa6a9b9aa3d16a157649d99011601264ccb2d192b63bbb3f708e",
+      "options": {
+        "camera_profile": "masterpi-camera-user-observation-target-review-v3",
+        "drive_profile": "masterpi_drive_friction_v7",
+        "setdown_relook": "off",
+        "grasp_check": "pickup_site_v1",
+        "min_wheel_cmd": "real_v1",
+        "dead_reckoning": "v7_diag_v1",
+        "stagnation_watch": "window120_v1",
+        "alignment_pulse": "real_fine_v1",
+        "hover_check": "real_pregrasp_v1",
+        "idle_robot_contacts": "freeze_v1",
+        "site_check": "off",
+        "hold_check": "inhand_rgb_v1",
+        "dev_grasp_policy": "log_only_v1",
+        "eval_camera_trace": "pose_v1",
+        "pulse_motion_model": "v7_pulse_cal_v1",
+        "visual_update": "accepted_scan_v1",
+        "visual_stall": "lk_pulse_v1",
+        "carry_pose": "look_ahead_v1",
+        "camera_calibration": "v3_unloaded_sag_v1",
+        "measurement_model": "amcl_likelihood_field_v1",
+        "visibility_mask": "command_geometry_v1",
+        "amcl_update": "ros_motion_v1",
+        "dev_search": "repeat_views_v1",
+        "visibility_policy": "nav2_observed_v1",
+        "contact_filter": "floor_appearance_v1",
+        "slip_detection": "slip_detect_v1",
+        "stall_recovery": "off",
+        "slip_recovery": "slip_recovery_v1",
+        "servo_stiffness": "real_v1",
+        "camera_pitch": "stiff_target_v1",
+        "pregrasp_policy": "log_only_v1",
+        "sensor_landmarks": "floor_zones_doors_v1",
+        "sensor_model": "amcl_likelihood_field_v1",
+        "pose_estimate": "amcl_best_cluster_v1"
+      },
+      "status": "STAGE_REACHED_UNQUALIFIED",
+      "failure": null,
+      "evaluation": {
+        "status": "PROVISIONAL_GEOMETRIC_JUDGE",
+        "success": true,
+        "lifted": true,
+        "inside": true,
+        "floor": true,
+        "stable": true,
+        "settled_s": 2.0,
+        "qualification": "post-run DEV only; no study/physical hardware success claim"
+      },
+      "sim_s": 309.8,
+      "wall_s": 612.9400550000137,
+      "wall_per_sim": 1.9702348280296162,
+      "initial_pose": {
+        "t": 12.0,
+        "t_est": 11.84,
+        "estimated_xy_m": [
+          -0.7237460214474597,
+          -0.40543832580019074
+        ],
+        "truth_xy_m": [
+          -0.8957712230845268,
+          -0.8504581463549655
+        ],
+        "xy_error_m": 0.4771114237627072,
+        "yaw_error_deg": -7.159864178860875,
+        "std_xy_m": 0.3646672991705532
+      },
+      "posthoc": {
+        "scope": "POSTHOC_EVAL_ONLY_NO_CONTROL_FEEDBACK",
+        "seed": 1051,
+        "cargo_remaining_to_B_region_m": 0.0,
+        "cargo_distance_to_B_center_m": 0.1382751052649664,
+        "robot_remaining_to_B_region_m": 0.04518602067288652,
+        "final_cargo_xy_m": [
+          4.4617294023344565,
+          -2.1011164932830177
+        ],
+        "final_robot_xy_m": [
+          4.254813979327113,
+          -2.1070424373308376
+        ],
+        "carry_window": [
+          81.85,
+          289.1
+        ],
+        "visual_updates": 28,
+        "max_update_gap_sim_s": 23.30000000000001,
+        "carry_xy_rmse_m": 0.21797712620042028,
+        "measurement_claim": "nonconstant AMCL weight updates, not full-rank absolute pose fixes",
+        "carry_xy_p90_m": 0.3078492310452682,
+        "carry_end_error_m": 0.13946582942989463,
+        "carry_pose_samples": 4145,
+        "visibility_measurement": {
+          "attempts": 28,
+          "less_than_six_columns": 2,
+          "detected_columns": 958,
+          "kept_columns": 958
+        },
+        "status": "COMPLETE"
+      },
+      "peer_contact_points": 0,
+      "peer_contact_samples": 0,
+      "peer_contact_episodes": [],
+      "peer_pairs": [],
+      "walls": {},
+      "would_stop": {
+        "ARM_COLLISION_GUARD": 7,
+        "POSE_UNCERTAIN": 293
+      },
+      "pose": {
+        "decision_rows": 493,
+        "alarm_rows": 293,
+        "nees_available": 493,
+        "nees_exceeded": 445,
+        "nees_rate": 0.9026369168356998,
+        "unflagged_above_25cm": 44,
+        "scope": "pulse selection + carry checkpoint + search-entry decision times; XY single-cluster matching covariance only; information, not gate"
+      },
+      "contact_failure_causality": "no_failure",
+      "input_hashes": {
+        "result.json": "01d6fa04b017c39edd2ed1d8e5b98e592df448a4ddd6aca1f262cd3017c0fa67",
+        "student_record.json": "3efeffaf5aaca44ea926173ba22f303184f5bcdde1267a0eedc58c879c589bea",
+        "bundle.json": "d59fad3ee300fe7903bd1156700471f4e8525b31fc24d2d3f4643146c27b321c",
+        "eval_only/trajectory.jsonl": "c66c183fe432f3a481476ddab73fb936a13c30875d8313bd7c40bf7f4489b8fb",
+        "eval_only/contacts.jsonl": "171e724c11406497b3b230ec924f587aa86825e781a02a2aa3b43f1a82b054f6",
+        "eval_only/wall-contacts.jsonl": "3f39dc575f6fc45ec05f46ef75a210315112466da169eee062cbb47895344f02"
+      },
+      "gt_scope": "posthoc only after runtime closed",
+      "model_calls": 0,
+      "lock": {
+        "acquired": {
+          "owner": "codex",
+          "branch": "codex/s2-realism",
+          "purpose": "s2v39 one full DEV landmark admission",
+          "pid": 58202,
+          "acquired_unix": 1791396617.816385,
+          "expected_end_unix": 1791398417.816386,
+          "loadavg_at_acquire": [
+            7.6728515625,
+            8.34619140625,
+            8.5244140625
+          ],
+          "timing_sensitive": true
+        },
+        "released": {
+          "owner": "codex",
+          "branch": "codex/s2-realism",
+          "purpose": "s2v39 one full DEV landmark admission",
+          "pid": 58202,
+          "acquired_unix": 1791396617.816385,
+          "expected_end_unix": 1791398417.816386,
+          "loadavg_at_acquire": [
+            7.6728515625,
+            8.34619140625,
+            8.5244140625
+          ],
+          "timing_sensitive": true,
+          "pid_alive": true
+        },
+        "status_after": null
+      }
+    },
+    {
+      "seed": 1053,
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1053-v133-reproduction",
+      "source_sha": "027c567c45ec05968d7243212fbce1b4aa4d2d59",
+      "reproduction": {
+        "registration_sha": "ebb24028e13c45115bdcdd116f76fce92be5c968",
+        "registration_sha256": "5809cce8c836df21dcd651bf231bb243000788e614a6f7ddf1b61424857ee153",
+        "baseline_bundle_sha256": "d59fad3ee300fe7903bd1156700471f4e8525b31fc24d2d3f4643146c27b321c",
+        "baseline_execution_sha": "b2de2b30e2a0191d6b911125a9cc8ddb697614bb",
+        "scope": "new DEV seed only; frozen v133 runtime, options, calibration and thresholds"
+      },
+      "bundle_sha256": "4425c89572536ff56316b8deb4192dc1242bae25f68c107e3c79204d92e08c23",
+      "options": {
+        "camera_profile": "masterpi-camera-user-observation-target-review-v3",
+        "drive_profile": "masterpi_drive_friction_v7",
+        "setdown_relook": "off",
+        "grasp_check": "pickup_site_v1",
+        "min_wheel_cmd": "real_v1",
+        "dead_reckoning": "v7_diag_v1",
+        "stagnation_watch": "window120_v1",
+        "alignment_pulse": "real_fine_v1",
+        "hover_check": "real_pregrasp_v1",
+        "idle_robot_contacts": "freeze_v1",
+        "site_check": "off",
+        "hold_check": "inhand_rgb_v1",
+        "dev_grasp_policy": "log_only_v1",
+        "eval_camera_trace": "pose_v1",
+        "pulse_motion_model": "v7_pulse_cal_v1",
+        "visual_update": "accepted_scan_v1",
+        "visual_stall": "lk_pulse_v1",
+        "carry_pose": "look_ahead_v1",
+        "camera_calibration": "v3_unloaded_sag_v1",
+        "measurement_model": "amcl_likelihood_field_v1",
+        "visibility_mask": "command_geometry_v1",
+        "amcl_update": "ros_motion_v1",
+        "dev_search": "repeat_views_v1",
+        "visibility_policy": "nav2_observed_v1",
+        "contact_filter": "floor_appearance_v1",
+        "slip_detection": "slip_detect_v1",
+        "stall_recovery": "off",
+        "slip_recovery": "slip_recovery_v1",
+        "servo_stiffness": "real_v1",
+        "camera_pitch": "stiff_target_v1",
+        "pregrasp_policy": "log_only_v1",
+        "sensor_landmarks": "floor_zones_doors_v1",
+        "sensor_model": "amcl_likelihood_field_v1",
+        "pose_estimate": "amcl_best_cluster_v1"
+      },
+      "status": "STAGE_REACHED_UNQUALIFIED",
+      "failure": null,
+      "evaluation": {
+        "status": "PROVISIONAL_GEOMETRIC_JUDGE",
+        "success": true,
+        "lifted": true,
+        "inside": true,
+        "floor": true,
+        "stable": true,
+        "settled_s": 2.0,
+        "qualification": "post-run DEV only; no study/physical hardware success claim"
+      },
+      "sim_s": 306.95,
+      "wall_s": 545.3518480000203,
+      "wall_per_sim": 1.7691868548256942,
+      "initial_pose": {
+        "t": 12.0,
+        "t_est": 11.84,
+        "estimated_xy_m": [
+          -0.8882566566875747,
+          -2.190736490876192
+        ],
+        "truth_xy_m": [
+          -0.8951053278907434,
+          -2.2504645440151885
+        ],
+        "xy_error_m": 0.06011941973292745,
+        "yaw_error_deg": -0.6821315130152378,
+        "std_xy_m": 0.1304874279708379
+      },
+      "posthoc": {
+        "scope": "POSTHOC_EVAL_ONLY_NO_CONTROL_FEEDBACK",
+        "seed": 1053,
+        "cargo_remaining_to_B_region_m": 0.0,
+        "cargo_distance_to_B_center_m": 0.12056892067795368,
+        "robot_remaining_to_B_region_m": 0.005621609643045755,
+        "final_cargo_xy_m": [
+          4.490647131158281,
+          -2.1507820313647703
+        ],
+        "final_robot_xy_m": [
+          4.294378390356954,
+          -2.153418903283476
+        ],
+        "carry_window": [
+          94.8,
+          286.25
+        ],
+        "visual_updates": 28,
+        "max_update_gap_sim_s": 20.650000000000006,
+        "carry_xy_rmse_m": 0.1115193587580202,
+        "measurement_claim": "nonconstant AMCL weight updates, not full-rank absolute pose fixes",
+        "carry_xy_p90_m": 0.18830149724423592,
+        "carry_end_error_m": 0.1053307922181495,
+        "carry_pose_samples": 3829,
+        "visibility_measurement": {
+          "attempts": 28,
+          "less_than_six_columns": 1,
+          "detected_columns": 1497,
+          "kept_columns": 1497
+        },
+        "status": "COMPLETE"
+      },
+      "peer_contact_points": 0,
+      "peer_contact_samples": 0,
+      "peer_contact_episodes": [],
+      "peer_pairs": [],
+      "walls": {},
+      "would_stop": {
+        "ARM_COLLISION_GUARD": 7,
+        "POSE_UNCERTAIN": 200,
+        "GRASP_INHAND_UNCONFIRMED": 1
+      },
+      "pose": {
+        "decision_rows": 486,
+        "alarm_rows": 200,
+        "nees_available": 486,
+        "nees_exceeded": 248,
+        "nees_rate": 0.5102880658436214,
+        "unflagged_above_25cm": 0,
+        "scope": "pulse selection + carry checkpoint + search-entry decision times; XY single-cluster matching covariance only; information, not gate"
+      },
+      "contact_failure_causality": "no_failure",
+      "input_hashes": {
+        "result.json": "2c9d9417c5a9eb86c830c6e7f037ea6810a7cb294bbbe5a5997fb7bb0eb66f46",
+        "student_record.json": "8e3e92e1209131d7c66e6d92e4ae6778a86a6c559b696070aded41bc04632430",
+        "bundle.json": "5446bc4130b50f854754305f05108c5cfdce52ea021c38a480ea735103576b01",
+        "eval_only/trajectory.jsonl": "7abb90985dc9106a800696cda652948bc2aa3ec2b1b93c61ea0fb592bfcba197",
+        "eval_only/contacts.jsonl": "2d8acb60496ec3e8f3b6d8f5539b0526e5890b1c9fb79bf4d3bb6b6e18132dd5",
+        "eval_only/wall-contacts.jsonl": "960fc8b32bb1199e961dba66b6730c4c8edc2b77e3b3664d0bcbddfd9d114f79"
+      },
+      "gt_scope": "posthoc only after runtime closed",
+      "model_calls": 0,
+      "lock": {
+        "acquired": {
+          "owner": "codex",
+          "branch": "codex/s2-realism",
+          "purpose": "s2v40 frozen v133 reproduction seed 1053",
+          "pid": 65383,
+          "acquired_unix": 1791399077.530572,
+          "expected_end_unix": 1791401177.5305731,
+          "loadavg_at_acquire": [
+            6.517578125,
+            9.47705078125,
+            9.11328125
+          ],
+          "timing_sensitive": true
+        },
+        "released": {
+          "owner": "codex",
+          "branch": "codex/s2-realism",
+          "purpose": "s2v40 frozen v133 reproduction seed 1053",
+          "pid": 65383,
+          "acquired_unix": 1791399077.530572,
+          "expected_end_unix": 1791401177.5305731,
+          "loadavg_at_acquire": [
+            6.517578125,
+            9.47705078125,
+            9.11328125
+          ],
+          "timing_sensitive": true,
+          "pid_alive": true
+        },
+        "status_after": null
+      }
+    },
+    {
+      "seed": 1054,
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1054-v133-reproduction",
+      "source_sha": "027c567c45ec05968d7243212fbce1b4aa4d2d59",
+      "reproduction": {
+        "registration_sha": "ebb24028e13c45115bdcdd116f76fce92be5c968",
+        "registration_sha256": "5809cce8c836df21dcd651bf231bb243000788e614a6f7ddf1b61424857ee153",
+        "baseline_bundle_sha256": "d59fad3ee300fe7903bd1156700471f4e8525b31fc24d2d3f4643146c27b321c",
+        "baseline_execution_sha": "b2de2b30e2a0191d6b911125a9cc8ddb697614bb",
+        "scope": "new DEV seed only; frozen v133 runtime, options, calibration and thresholds"
+      },
+      "bundle_sha256": "2eb5d74c49cb3e8fc7b191983e2e8a7638f38a2c05eb9fc637e5f7476f890574",
+      "options": {
+        "camera_profile": "masterpi-camera-user-observation-target-review-v3",
+        "drive_profile": "masterpi_drive_friction_v7",
+        "setdown_relook": "off",
+        "grasp_check": "pickup_site_v1",
+        "min_wheel_cmd": "real_v1",
+        "dead_reckoning": "v7_diag_v1",
+        "stagnation_watch": "window120_v1",
+        "alignment_pulse": "real_fine_v1",
+        "hover_check": "real_pregrasp_v1",
+        "idle_robot_contacts": "freeze_v1",
+        "site_check": "off",
+        "hold_check": "inhand_rgb_v1",
+        "dev_grasp_policy": "log_only_v1",
+        "eval_camera_trace": "pose_v1",
+        "pulse_motion_model": "v7_pulse_cal_v1",
+        "visual_update": "accepted_scan_v1",
+        "visual_stall": "lk_pulse_v1",
+        "carry_pose": "look_ahead_v1",
+        "camera_calibration": "v3_unloaded_sag_v1",
+        "measurement_model": "amcl_likelihood_field_v1",
+        "visibility_mask": "command_geometry_v1",
+        "amcl_update": "ros_motion_v1",
+        "dev_search": "repeat_views_v1",
+        "visibility_policy": "nav2_observed_v1",
+        "contact_filter": "floor_appearance_v1",
+        "slip_detection": "slip_detect_v1",
+        "stall_recovery": "off",
+        "slip_recovery": "slip_recovery_v1",
+        "servo_stiffness": "real_v1",
+        "camera_pitch": "stiff_target_v1",
+        "pregrasp_policy": "log_only_v1",
+        "sensor_landmarks": "floor_zones_doors_v1",
+        "sensor_model": "amcl_likelihood_field_v1",
+        "pose_estimate": "amcl_best_cluster_v1"
+      },
+      "status": "STAGE_REACHED_UNQUALIFIED",
+      "failure": null,
+      "evaluation": {
+        "status": "PROVISIONAL_GEOMETRIC_JUDGE",
+        "success": true,
+        "lifted": true,
+        "inside": true,
+        "floor": true,
+        "stable": true,
+        "settled_s": 2.0,
+        "qualification": "post-run DEV only; no study/physical hardware success claim"
+      },
+      "sim_s": 431.0,
+      "wall_s": 717.0835622500163,
+      "wall_per_sim": 1.6587637340967296,
+      "initial_pose": {
+        "t": 12.0,
+        "t_est": 11.84,
+        "estimated_xy_m": [
+          -0.8752901862315332,
+          -2.264945892098699
+        ],
+        "truth_xy_m": [
+          -0.9034034295942919,
+          -2.2499602187564576
+        ],
+        "xy_error_m": 0.03185788533305462,
+        "yaw_error_deg": 0.6134769211424084,
+        "std_xy_m": 0.15123596033027548
+      },
+      "posthoc": {
+        "scope": "POSTHOC_EVAL_ONLY_NO_CONTROL_FEEDBACK",
+        "seed": 1054,
+        "cargo_remaining_to_B_region_m": 0.0,
+        "cargo_distance_to_B_center_m": 0.24497386524181725,
+        "robot_remaining_to_B_region_m": 0.06063728929659257,
+        "final_cargo_xy_m": [
+          4.4411821748683655,
+          -1.9134816548647997
+        ],
+        "final_robot_xy_m": [
+          4.239362710703407,
+          -1.9483758394735786
+        ],
+        "carry_window": [
+          203.7,
+          410.3
+        ],
+        "visual_updates": 28,
+        "max_update_gap_sim_s": 24.25,
+        "carry_xy_rmse_m": 0.21583948997751365,
+        "measurement_claim": "nonconstant AMCL weight updates, not full-rank absolute pose fixes",
+        "carry_xy_p90_m": 0.24209440348044994,
+        "carry_end_error_m": 0.1911100404812973,
+        "carry_pose_samples": 4132,
+        "visibility_measurement": {
+          "attempts": 28,
+          "less_than_six_columns": 0,
+          "detected_columns": 1177,
+          "kept_columns": 1177
+        },
+        "status": "COMPLETE"
+      },
+      "peer_contact_points": 35,
+      "peer_contact_samples": 10,
+      "peer_contact_episodes": [
+        {
+          "first_t": 24.1,
+          "last_t": 24.55,
+          "samples": 10,
+          "points": 35,
+          "before": {
+            "t": 24.05,
+            "t_est": 23.89,
+            "estimated_xy_m": [
+              -0.7457961814817506,
+              -1.0739856072218448
+            ],
+            "truth_xy_m": [
+              -0.7399711171984088,
+              -1.0156205049454936
+            ],
+            "xy_error_m": 0.058655064040831095,
+            "yaw_error_deg": 1.731286599133822,
+            "std_xy_m": 0.10493372274199218
+          },
+          "after": {
+            "t": 24.6,
+            "t_est": 24.44,
+            "estimated_xy_m": [
+              -0.7472700192006136,
+              -0.9616526492040028
+            ],
+            "truth_xy_m": [
+              -0.7344516148955152,
+              -0.9180183594321334
+            ],
+            "xy_error_m": 0.045478156655964365,
+            "yaw_error_deg": -12.410408434779027,
+            "std_xy_m": 0.10740631267881634
+          },
+          "after_one_second": {
+            "t": 25.55,
+            "t_est": 25.39,
+            "estimated_xy_m": [
+              -0.720341098456492,
+              -0.9358592016515979
+            ],
+            "truth_xy_m": [
+              -0.7175160690922247,
+              -0.8987101504283915
+            ],
+            "xy_error_m": 0.03725631218590187,
+            "yaw_error_deg": -18.325562616126824,
+            "std_xy_m": 0.10718943685917086
+          }
+        }
+      ],
+      "peer_pairs": [
+        "r1__base_lower_collision / r3__v3_wheel_rl_roller_6_body_contact",
+        "r1__base_top / r3__v3_wheel_rl_roller_6_body_contact",
+        "r3__base_lower_collision / r1__v3_wheel_fr_roller_0_body_contact",
+        "r3__base_lower_collision / r1__v3_wheel_fr_roller_1_body_contact",
+        "r3__base_top / r1__v3_wheel_fr_roller_1_body_contact",
+        "r3__rear_cage_collision / r1__v3_wheel_fr_roller_1_body_contact",
+        "r3__rear_cage_collision / r1__v3_wheel_fr_roller_2_body_contact"
+      ],
+      "walls": {},
+      "would_stop": {
+        "ARM_COLLISION_GUARD": 7,
+        "POSE_UNCERTAIN": 312,
+        "CYAN_NOT_UNIQUELY_VISIBLE": 5
+      },
+      "pose": {
+        "decision_rows": 638,
+        "alarm_rows": 312,
+        "nees_available": 623,
+        "nees_exceeded": 590,
+        "nees_rate": 0.9470304975922953,
+        "unflagged_above_25cm": 0,
+        "scope": "pulse selection + carry checkpoint + search-entry decision times; XY single-cluster matching covariance only; information, not gate"
+      },
+      "contact_failure_causality": "no_failure",
+      "input_hashes": {
+        "result.json": "705c768ba61fdc9bfde5f190870c8f653a0f81edfff58c9130290bbae92f1b6f",
+        "student_record.json": "6a1dbf2b8f9b01fcfb5985b7d3bfd4f75a6160c8b5d25ebd57c34ac0716dfca8",
+        "bundle.json": "07ee558ad6da458d369ebdc463f36a1aba9984a217ea455de917b7b1aefe3156",
+        "eval_only/trajectory.jsonl": "629f1d6bf90715d98ff06750c73fe1ce26e1b1a66e6b1ba9f1cf33c5240589ae",
+        "eval_only/contacts.jsonl": "b0a967d562308015cbc252a593e9366ea53b310835582a216bc0800d547188f7",
+        "eval_only/wall-contacts.jsonl": "e71833b32c05a782b69eff7be2e696d10dea41c25e072cf32b28473929f8f711"
+      },
+      "gt_scope": "posthoc only after runtime closed",
+      "model_calls": 0,
+      "lock": {
+        "acquired": {
+          "owner": "codex",
+          "branch": "codex/s2-realism",
+          "purpose": "s2v40 frozen v133 reproduction seed 1054",
+          "pid": 68425,
+          "acquired_unix": 1791399764.805998,
+          "expected_end_unix": 1791401864.805998,
+          "loadavg_at_acquire": [
+            6.779296875,
+            7.3017578125,
+            8.04443359375
+          ],
+          "timing_sensitive": true
+        },
+        "released": {
+          "owner": "codex",
+          "branch": "codex/s2-realism",
+          "purpose": "s2v40 frozen v133 reproduction seed 1054",
+          "pid": 68425,
+          "acquired_unix": 1791399764.805998,
+          "expected_end_unix": 1791401864.805998,
+          "loadavg_at_acquire": [
+            6.779296875,
+            7.3017578125,
+            8.04443359375
+          ],
+          "timing_sensitive": true,
+          "pid_alive": true
+        },
+        "status_after": null
+      }
+    },
+    {
+      "seed": 1056,
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1056-v133-reproduction",
+      "source_sha": "027c567c45ec05968d7243212fbce1b4aa4d2d59",
+      "reproduction": {
+        "registration_sha": "2eb830e3ebf6d9a641dba10d6221d411b821a010",
+        "registration_sha256": "bccae63ff574c581c1f1837812186e2e0911ed053a385a4a8cea3276b97c58a1",
+        "baseline_bundle_sha256": "d59fad3ee300fe7903bd1156700471f4e8525b31fc24d2d3f4643146c27b321c",
+        "baseline_execution_sha": "b2de2b30e2a0191d6b911125a9cc8ddb697614bb",
+        "scope": "new DEV seed only; frozen v133 runtime, options, calibration and thresholds"
+      },
+      "bundle_sha256": "e45d29f43c6b248bcb44d57afd193fcf64e30439a521a72d6712ed73e6ead2ae",
+      "options": {
+        "camera_profile": "masterpi-camera-user-observation-target-review-v3",
+        "drive_profile": "masterpi_drive_friction_v7",
+        "setdown_relook": "off",
+        "grasp_check": "pickup_site_v1",
+        "min_wheel_cmd": "real_v1",
+        "dead_reckoning": "v7_diag_v1",
+        "stagnation_watch": "window120_v1",
+        "alignment_pulse": "real_fine_v1",
+        "hover_check": "real_pregrasp_v1",
+        "idle_robot_contacts": "freeze_v1",
+        "site_check": "off",
+        "hold_check": "inhand_rgb_v1",
+        "dev_grasp_policy": "log_only_v1",
+        "eval_camera_trace": "pose_v1",
+        "pulse_motion_model": "v7_pulse_cal_v1",
+        "visual_update": "accepted_scan_v1",
+        "visual_stall": "lk_pulse_v1",
+        "carry_pose": "look_ahead_v1",
+        "camera_calibration": "v3_unloaded_sag_v1",
+        "measurement_model": "amcl_likelihood_field_v1",
+        "visibility_mask": "command_geometry_v1",
+        "amcl_update": "ros_motion_v1",
+        "dev_search": "repeat_views_v1",
+        "visibility_policy": "nav2_observed_v1",
+        "contact_filter": "floor_appearance_v1",
+        "slip_detection": "slip_detect_v1",
+        "stall_recovery": "off",
+        "slip_recovery": "slip_recovery_v1",
+        "servo_stiffness": "real_v1",
+        "camera_pitch": "stiff_target_v1",
+        "pregrasp_policy": "log_only_v1",
+        "sensor_landmarks": "floor_zones_doors_v1",
+        "sensor_model": "amcl_likelihood_field_v1",
+        "pose_estimate": "amcl_best_cluster_v1"
+      },
+      "status": "STAGE_REACHED_UNQUALIFIED",
+      "failure": null,
+      "evaluation": {
+        "status": "PROVISIONAL_GEOMETRIC_JUDGE",
+        "success": true,
+        "lifted": true,
+        "inside": true,
+        "floor": true,
+        "stable": true,
+        "settled_s": 2.0,
+        "qualification": "post-run DEV only; no study/physical hardware success claim"
+      },
+      "sim_s": 294.5,
+      "wall_s": 399.3314679999894,
+      "wall_per_sim": 1.3500049628126753,
+      "initial_pose": {
+        "t": 12.0,
+        "t_est": 11.84,
+        "estimated_xy_m": [
+          -0.8791343657713131,
+          0.48481914938698095
+        ],
+        "truth_xy_m": [
+          -0.8950554162600454,
+          0.5498102814860505
+        ],
+        "xy_error_m": 0.06691283210404017,
+        "yaw_error_deg": 0.49647011384558426,
+        "std_xy_m": 0.15386978217579947
+      },
+      "posthoc": {
+        "scope": "POSTHOC_EVAL_ONLY_NO_CONTROL_FEEDBACK",
+        "seed": 1056,
+        "cargo_remaining_to_B_region_m": 0.0,
+        "cargo_distance_to_B_center_m": 0.15637563933213824,
+        "robot_remaining_to_B_region_m": 0.05942888254319262,
+        "final_cargo_xy_m": [
+          4.443730542835176,
+          -2.0942382872384657
+        ],
+        "final_robot_xy_m": [
+          4.240571117456807,
+          -2.1035421090869653
+        ],
+        "carry_window": [
+          85.55,
+          273.8
+        ],
+        "visual_updates": 29,
+        "max_update_gap_sim_s": 18.049999999999983,
+        "carry_xy_rmse_m": 0.16729722720212437,
+        "measurement_claim": "nonconstant AMCL weight updates, not full-rank absolute pose fixes",
+        "carry_xy_p90_m": 0.2620462193110673,
+        "carry_end_error_m": 0.1365946709567949,
+        "carry_pose_samples": 3765,
+        "visibility_measurement": {
+          "attempts": 29,
+          "less_than_six_columns": 1,
+          "detected_columns": 1271,
+          "kept_columns": 1271
+        },
+        "status": "COMPLETE"
+      },
+      "peer_contact_points": 0,
+      "peer_contact_samples": 0,
+      "peer_contact_episodes": [],
+      "peer_pairs": [],
+      "walls": {},
+      "would_stop": {
+        "ARM_COLLISION_GUARD": 7,
+        "POSE_UNCERTAIN": 318
+      },
+      "pose": {
+        "decision_rows": 442,
+        "alarm_rows": 318,
+        "nees_available": 427,
+        "nees_exceeded": 364,
+        "nees_rate": 0.8524590163934426,
+        "unflagged_above_25cm": 2,
+        "scope": "pulse selection + carry checkpoint + search-entry decision times; XY single-cluster matching covariance only; information, not gate"
+      },
+      "contact_failure_causality": "no_failure",
+      "input_hashes": {
+        "result.json": "0df5348cd3bb109aab1c55ae087d0d7e5e473fea36e186ce3e7a9b265605b9d7",
+        "student_record.json": "3823ea69b52bef118d1bd822434e72962f1b3edd379801c66d12b2db3af95fda",
+        "bundle.json": "ba979165b4ca82b1fddeb26b70eb18281d6cbc01c1f05823baf52ceb8acf25dd",
+        "eval_only/trajectory.jsonl": "89db92015ae2a83f1735b5024f191001b4b55f6368ed19d8162753dc51b31cdd",
+        "eval_only/contacts.jsonl": "f5fbe9b6e6e445ee3fe9d963560fd732f37426186ab5854e178d01d55cc2b5c1",
+        "eval_only/wall-contacts.jsonl": "49097ba66f05aaeaacf145d696169a3cf8bf78ebdbaeb49025b384568a413f6d"
+      },
+      "gt_scope": "posthoc only after runtime closed",
+      "model_calls": 0,
+      "lock": {
+        "acquired": {
+          "owner": "codex",
+          "branch": "codex/s2-realism",
+          "purpose": "s2v52 frozen v133 baseline seed 1056",
+          "pid": 44861,
+          "acquired_unix": 1791437664.856607,
+          "expected_end_unix": 1791439764.856607,
+          "loadavg_at_acquire": [
+            3.0556640625,
+            4.1083984375,
+            5.58349609375
+          ],
+          "timing_sensitive": true
+        },
+        "released": {
+          "owner": "codex",
+          "branch": "codex/s2-realism",
+          "purpose": "s2v52 frozen v133 baseline seed 1056",
+          "pid": 44861,
+          "acquired_unix": 1791437664.856607,
+          "expected_end_unix": 1791439764.856607,
+          "loadavg_at_acquire": [
+            3.0556640625,
+            4.1083984375,
+            5.58349609375
+          ],
+          "timing_sensitive": true,
+          "pid_alive": true
+        },
+        "status_after": null
+      }
+    },
+    {
+      "seed": 1057,
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1057-v133-reproduction",
+      "source_sha": "027c567c45ec05968d7243212fbce1b4aa4d2d59",
+      "reproduction": {
+        "registration_sha": "2eb830e3ebf6d9a641dba10d6221d411b821a010",
+        "registration_sha256": "bccae63ff574c581c1f1837812186e2e0911ed053a385a4a8cea3276b97c58a1",
+        "baseline_bundle_sha256": "d59fad3ee300fe7903bd1156700471f4e8525b31fc24d2d3f4643146c27b321c",
+        "baseline_execution_sha": "b2de2b30e2a0191d6b911125a9cc8ddb697614bb",
+        "scope": "new DEV seed only; frozen v133 runtime, options, calibration and thresholds"
+      },
+      "bundle_sha256": "fcb3a773f11b3c77f7e103fbfc505b9e4b9998c0d428ae48183e5eb67a90cdf9",
+      "options": {
+        "camera_profile": "masterpi-camera-user-observation-target-review-v3",
+        "drive_profile": "masterpi_drive_friction_v7",
+        "setdown_relook": "off",
+        "grasp_check": "pickup_site_v1",
+        "min_wheel_cmd": "real_v1",
+        "dead_reckoning": "v7_diag_v1",
+        "stagnation_watch": "window120_v1",
+        "alignment_pulse": "real_fine_v1",
+        "hover_check": "real_pregrasp_v1",
+        "idle_robot_contacts": "freeze_v1",
+        "site_check": "off",
+        "hold_check": "inhand_rgb_v1",
+        "dev_grasp_policy": "log_only_v1",
+        "eval_camera_trace": "pose_v1",
+        "pulse_motion_model": "v7_pulse_cal_v1",
+        "visual_update": "accepted_scan_v1",
+        "visual_stall": "lk_pulse_v1",
+        "carry_pose": "look_ahead_v1",
+        "camera_calibration": "v3_unloaded_sag_v1",
+        "measurement_model": "amcl_likelihood_field_v1",
+        "visibility_mask": "command_geometry_v1",
+        "amcl_update": "ros_motion_v1",
+        "dev_search": "repeat_views_v1",
+        "visibility_policy": "nav2_observed_v1",
+        "contact_filter": "floor_appearance_v1",
+        "slip_detection": "slip_detect_v1",
+        "stall_recovery": "off",
+        "slip_recovery": "slip_recovery_v1",
+        "servo_stiffness": "real_v1",
+        "camera_pitch": "stiff_target_v1",
+        "pregrasp_policy": "log_only_v1",
+        "sensor_landmarks": "floor_zones_doors_v1",
+        "sensor_model": "amcl_likelihood_field_v1",
+        "pose_estimate": "amcl_best_cluster_v1"
+      },
+      "status": "STAGE_REACHED_UNQUALIFIED",
+      "failure": null,
+      "evaluation": {
+        "status": "PROVISIONAL_GEOMETRIC_JUDGE",
+        "success": true,
+        "lifted": true,
+        "inside": true,
+        "floor": true,
+        "stable": true,
+        "settled_s": 2.0,
+        "qualification": "post-run DEV only; no study/physical hardware success claim"
+      },
+      "sim_s": 260.5,
+      "wall_s": 470.4933962500072,
+      "wall_per_sim": 1.7971481904125561,
+      "initial_pose": {
+        "t": 12.0,
+        "t_est": 11.84,
+        "estimated_xy_m": [
+          -0.869593849722132,
+          -0.8850782974036845
+        ],
+        "truth_xy_m": [
+          -0.8957977551763865,
+          -0.8498640287985288
+        ],
+        "xy_error_m": 0.043894069923527894,
+        "yaw_error_deg": 0.5038369050828018,
+        "std_xy_m": 0.8390001152018295
+      },
+      "posthoc": {
+        "scope": "POSTHOC_EVAL_ONLY_NO_CONTROL_FEEDBACK",
+        "seed": 1057,
+        "cargo_remaining_to_B_region_m": 0.0,
+        "cargo_distance_to_B_center_m": 0.07598423552766807,
+        "robot_remaining_to_B_region_m": 0.0,
+        "final_cargo_xy_m": [
+          4.550928440081032,
+          -2.0419863287160407
+        ],
+        "final_robot_xy_m": [
+          4.352090671305943,
+          -2.0667091188060494
+        ],
+        "carry_window": [
+          76.3,
+          239.7
+        ],
+        "visual_updates": 28,
+        "max_update_gap_sim_s": 18.200000000000017,
+        "carry_xy_rmse_m": 0.18006637129310255,
+        "measurement_claim": "nonconstant AMCL weight updates, not full-rank absolute pose fixes",
+        "carry_xy_p90_m": 0.3181056556180443,
+        "carry_end_error_m": 0.05987200473847042,
+        "carry_pose_samples": 3268,
+        "visibility_measurement": {
+          "attempts": 28,
+          "less_than_six_columns": 1,
+          "detected_columns": 1819,
+          "kept_columns": 1819
+        },
+        "status": "COMPLETE"
+      },
+      "peer_contact_points": 0,
+      "peer_contact_samples": 0,
+      "peer_contact_episodes": [],
+      "peer_pairs": [],
+      "walls": {},
+      "would_stop": {
+        "ARM_COLLISION_GUARD": 7,
+        "POSE_UNCERTAIN": 302,
+        "REAL_PREGRASP_UNCONFIRMED": 1,
+        "GRASP_INHAND_UNCONFIRMED": 1
+      },
+      "pose": {
+        "decision_rows": 362,
+        "alarm_rows": 302,
+        "nees_available": 362,
+        "nees_exceeded": 138,
+        "nees_rate": 0.3812154696132597,
+        "unflagged_above_25cm": 0,
+        "scope": "pulse selection + carry checkpoint + search-entry decision times; XY single-cluster matching covariance only; information, not gate"
+      },
+      "contact_failure_causality": "no_failure",
+      "input_hashes": {
+        "result.json": "830af6813f908821b132b47a1ab22031fc47a8c8c62024c7bcf2e7fa252bb0e1",
+        "student_record.json": "29aa65f0e64546fa73ed905b0d05bf1d29eb0e4e55bf5f8d15fb153e95d3529e",
+        "bundle.json": "90e6e8b7db9d423b64f95d90b95c24b8d28927d5d87b370d8d68d2ed950d355c",
+        "eval_only/trajectory.jsonl": "d4be28d55e02e25f6542c00f244977f82be1489c38481137038b016c9e2a8ce4",
+        "eval_only/contacts.jsonl": "9d1aefc35dfd4196f746763fa369695c2855ebb19b5aa57452180a08650c9678",
+        "eval_only/wall-contacts.jsonl": "56ecf947d3be2d7b009308baae185328a48ceca66c6a1acb534e733b7748848b"
+      },
+      "gt_scope": "posthoc only after runtime closed",
+      "model_calls": 0,
+      "lock": {
+        "acquired": {
+          "owner": "codex",
+          "branch": "codex/s2-realism",
+          "purpose": "s2v52 frozen v133 baseline seed 1057",
+          "pid": 54941,
+          "acquired_unix": 1791441512.536309,
+          "expected_end_unix": 1791443612.536309,
+          "loadavg_at_acquire": [
+            2.94189453125,
+            3.33056640625,
+            4.392578125
+          ],
+          "timing_sensitive": true
+        },
+        "released": {
+          "owner": "codex",
+          "branch": "codex/s2-realism",
+          "purpose": "s2v52 frozen v133 baseline seed 1057",
+          "pid": 54941,
+          "acquired_unix": 1791441512.536309,
+          "expected_end_unix": 1791443612.536309,
+          "loadavg_at_acquire": [
+            2.94189453125,
+            3.33056640625,
+            4.392578125
+          ],
+          "timing_sensitive": true,
+          "pid_alive": true
+        },
+        "status_after": null
+      }
+    },
+    {
+      "seed": 1058,
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-027c567c-s1058-v133-reproduction",
+      "source_sha": "027c567c45ec05968d7243212fbce1b4aa4d2d59",
+      "reproduction": {
+        "registration_sha": "2eb830e3ebf6d9a641dba10d6221d411b821a010",
+        "registration_sha256": "bccae63ff574c581c1f1837812186e2e0911ed053a385a4a8cea3276b97c58a1",
+        "baseline_bundle_sha256": "d59fad3ee300fe7903bd1156700471f4e8525b31fc24d2d3f4643146c27b321c",
+        "baseline_execution_sha": "b2de2b30e2a0191d6b911125a9cc8ddb697614bb",
+        "scope": "new DEV seed only; frozen v133 runtime, options, calibration and thresholds"
+      },
+      "bundle_sha256": "ef80fe34e1dc45f0e73041d4fcc6a4e37e9cb2c7d7f0d04bcd1c8ac422ad07cd",
+      "options": {
+        "camera_profile": "masterpi-camera-user-observation-target-review-v3",
+        "drive_profile": "masterpi_drive_friction_v7",
+        "setdown_relook": "off",
+        "grasp_check": "pickup_site_v1",
+        "min_wheel_cmd": "real_v1",
+        "dead_reckoning": "v7_diag_v1",
+        "stagnation_watch": "window120_v1",
+        "alignment_pulse": "real_fine_v1",
+        "hover_check": "real_pregrasp_v1",
+        "idle_robot_contacts": "freeze_v1",
+        "site_check": "off",
+        "hold_check": "inhand_rgb_v1",
+        "dev_grasp_policy": "log_only_v1",
+        "eval_camera_trace": "pose_v1",
+        "pulse_motion_model": "v7_pulse_cal_v1",
+        "visual_update": "accepted_scan_v1",
+        "visual_stall": "lk_pulse_v1",
+        "carry_pose": "look_ahead_v1",
+        "camera_calibration": "v3_unloaded_sag_v1",
+        "measurement_model": "amcl_likelihood_field_v1",
+        "visibility_mask": "command_geometry_v1",
+        "amcl_update": "ros_motion_v1",
+        "dev_search": "repeat_views_v1",
+        "visibility_policy": "nav2_observed_v1",
+        "contact_filter": "floor_appearance_v1",
+        "slip_detection": "slip_detect_v1",
+        "stall_recovery": "off",
+        "slip_recovery": "slip_recovery_v1",
+        "servo_stiffness": "real_v1",
+        "camera_pitch": "stiff_target_v1",
+        "pregrasp_policy": "log_only_v1",
+        "sensor_landmarks": "floor_zones_doors_v1",
+        "sensor_model": "amcl_likelihood_field_v1",
+        "pose_estimate": "amcl_best_cluster_v1"
+      },
+      "status": "STAGE_REACHED_UNQUALIFIED",
+      "failure": null,
+      "evaluation": {
+        "status": "PROVISIONAL_GEOMETRIC_JUDGE",
+        "success": true,
+        "lifted": true,
+        "inside": true,
+        "floor": true,
+        "stable": true,
+        "settled_s": 2.0,
+        "qualification": "post-run DEV only; no study/physical hardware success claim"
+      },
+      "sim_s": 285.75,
+      "wall_s": 413.907333457988,
+      "wall_per_sim": 1.4419346227416407,
+      "initial_pose": {
+        "t": 12.0,
+        "t_est": 11.84,
+        "estimated_xy_m": [
+          -0.8704919258572008,
+          -2.2267517306899407
+        ],
+        "truth_xy_m": [
+          -0.8991104427399611,
+          -2.2498068735797387
+        ],
+        "xy_error_m": 0.03674995404402352,
+        "yaw_error_deg": 1.4741615569191673,
+        "std_xy_m": 0.14056566393899667
+      },
+      "posthoc": {
+        "scope": "POSTHOC_EVAL_ONLY_NO_CONTROL_FEEDBACK",
+        "seed": 1058,
+        "cargo_remaining_to_B_region_m": 0.0,
+        "cargo_distance_to_B_center_m": 0.15660862077504153,
+        "robot_remaining_to_B_region_m": 0.031335422399188684,
+        "final_cargo_xy_m": [
+          4.466621886928085,
+          -2.182076422037247
+        ],
+        "final_robot_xy_m": [
+          4.268664577600811,
+          -2.1735910448200033
+        ],
+        "carry_window": [
+          83.05,
+          265.05
+        ],
+        "visual_updates": 29,
+        "max_update_gap_sim_s": 18.349999999999994,
+        "carry_xy_rmse_m": 0.13000217032371023,
+        "measurement_claim": "nonconstant AMCL weight updates, not full-rank absolute pose fixes",
+        "carry_xy_p90_m": 0.1916554827761585,
+        "carry_end_error_m": 0.13666736257649922,
+        "carry_pose_samples": 3640,
+        "visibility_measurement": {
+          "attempts": 29,
+          "less_than_six_columns": 1,
+          "detected_columns": 1594,
+          "kept_columns": 1594
+        },
+        "status": "COMPLETE"
+      },
+      "peer_contact_points": 0,
+      "peer_contact_samples": 0,
+      "peer_contact_episodes": [],
+      "peer_pairs": [],
+      "walls": {},
+      "would_stop": {
+        "ARM_COLLISION_GUARD": 7,
+        "POSE_UNCERTAIN": 274,
+        "GRASP_INHAND_UNCONFIRMED": 1
+      },
+      "pose": {
+        "decision_rows": 437,
+        "alarm_rows": 274,
+        "nees_available": 437,
+        "nees_exceeded": 238,
+        "nees_rate": 0.5446224256292906,
+        "unflagged_above_25cm": 0,
+        "scope": "pulse selection + carry checkpoint + search-entry decision times; XY single-cluster matching covariance only; information, not gate"
+      },
+      "contact_failure_causality": "no_failure",
+      "input_hashes": {
+        "result.json": "419139c1e4087af6d7f794e3deae7a56f0fa6c8933fe8d45fc4698b7aa711412",
+        "student_record.json": "2b589c8f64430499f30dc0e75b420bd113fa49ff069b1dadb1eda29832c43019",
+        "bundle.json": "d375a3c41835ab8e1c1168ca03b2977a15c508ebbcb58e8197eb8f62750ae933",
+        "eval_only/trajectory.jsonl": "cf951c3bddb3fc47d3d2d92e99ad876d934208e2d98e5f8118778511c52a5e0e",
+        "eval_only/contacts.jsonl": "12de2e91c2a9571a95082e387defde156f93bdf756bb71a7538b90e2c3996859",
+        "eval_only/wall-contacts.jsonl": "9161a656dff9757494b9b9b0134f6eea888a36f9484655522c439433a27b7caf"
+      },
+      "gt_scope": "posthoc only after runtime closed",
+      "model_calls": 0,
+      "lock": {
+        "acquired": {
+          "owner": "codex",
+          "branch": "codex/s2-realism",
+          "purpose": "s2v52 frozen v133 baseline seed 1058",
+          "pid": 57682,
+          "acquired_unix": 1791444935.0586061,
+          "expected_end_unix": 1791447035.0586061,
+          "loadavg_at_acquire": [
+            8.23828125,
+            17.51220703125,
+            12.88232421875
+          ],
+          "timing_sensitive": true
+        },
+        "released": {
+          "owner": "codex",
+          "branch": "codex/s2-realism",
+          "purpose": "s2v52 frozen v133 baseline seed 1058",
+          "pid": 57682,
+          "acquired_unix": 1791444935.0586061,
+          "expected_end_unix": 1791447035.0586061,
+          "loadavg_at_acquire": [
+            8.23828125,
+            17.51220703125,
+            12.88232421875
+          ],
+          "timing_sensitive": true,
+          "pid_alive": true
+        },
+        "status_after": null
+      }
+    }
+  ],
+  "lock_wait": {
+    "seed": 1057,
+    "session": "s2v52-s1057",
+    "time": "2026-10-08T14:42:13.998757+09:00",
+    "status": "LOCK_ACQUISITION_REJECTED_BEFORE_PHYSICS",
+    "lock_owner_pid": 46718,
+    "lock_purpose": "egomap46 conditionA seed46001 360s",
+    "raw_created": false,
+    "physics_runs": 0,
+    "counts_as_seed_outcome": false,
+    "action": "wait then first physical attempt with unchanged source and seed"
+  }
+}

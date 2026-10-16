@@ -1,0 +1,76 @@
+{
+  "source_parent": "d92efd8d7381a270ff266c01d7534dc8ab1c89f8",
+  "merged_main": "11e9aa26954d3f1ce58c5116ddd14ec2b2738037",
+  "review_source": "f5eb5636343525f41728ce6c4932c25e6ec3a273",
+  "python": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+  "command_prefix": "PYTHONDONTWRITEBYTECODE=1 <python> experiments/2026-10-01-calib-heldout-maps/review_fixes/guarded_pytest.py -q -p no:cacheprovider",
+  "runs": [
+    {
+      "name": "heldout",
+      "tests": [
+        "tests/test_zone_final_pair_heldout.py",
+        "tests/test_review_352.py"
+      ],
+      "passed": 65,
+      "failed": 0,
+      "skipped": 0,
+      "summary": "65 passed in 185.35s (0:03:05)"
+    },
+    {
+      "name": "related",
+      "tests": [
+        "tests/test_zone_final_pair_v3.py",
+        "tests/test_zone_final_pair_review_fixes.py"
+      ],
+      "passed": 68,
+      "failed": 0,
+      "skipped": 0,
+      "summary": "68 passed in 54.44s"
+    },
+    {
+      "name": "ci_workflow",
+      "tests": [
+        "tests/test_ci_sharding.py",
+        "tests/test_simulation_workflow_manager.py::WorkflowManagerTests::test_catalog_has_thirty_selectable_workflows_and_distinct_adapters",
+        "tests/test_simulation_workflow_manager.py::WorkflowManagerTests::test_every_catalog_workflow_has_a_read_only_explicit_plan",
+        "tests/test_simulation_workflow_manager.py::WorkflowManagerTests::test_plan_is_read_only_and_resolves_default_artifact"
+      ],
+      "passed": 71,
+      "failed": 0,
+      "skipped": 0,
+      "summary": "71 passed in 1.85s"
+    }
+  ],
+  "total_passed": 204,
+  "failed": 0,
+  "skipped": 0,
+  "xfail": 0,
+  "scope": "Offline regressions with fake backends only; not physics, rendering, model calls, collection or criterion B evidence.",
+  "shared_outputs_access": "denied by audit hook during all pytest runs; no deliberate access",
+  "source_sha256": {
+    "harness/zone_final_pair_contract.py": "c0c6a81cf40ba8221d644c39deafb5ec29d92410f4a897af3f51ed68380a7987",
+    "harness/zone_final_pair_clearance.py": "6a2beb3e39d1e7870388368f28748ebf848cd76ea8cdbcadf218640ce78979bf",
+    "harness/zone_final_pair_heldout.py": "8e3398346148314a5bb1b20b5be5512a06390c6d3e4a72902d80b016deef6279",
+    "harness/zone_final_pair_heldout_clearance.py": "03e6bde6833355e71460dd63cffa14241c6d769f52f90ed9bbf7292e8e9629eb",
+    "scripts/run_final_pair_v3.py": "f3519aa956e24df39697adafe607af3e8aebc3e45bccd77200f7877a31782f5c",
+    "scripts/run_final_pair_heldout.py": "e3ce5517074abae556513b964bf93fe7d4ccdcd1d67c553f46c9d88c224bcb24",
+    "sim/final_pair_v3.py": "5d5b9097ec041559276688fd9f851457d86ae2df09c527ab305f8b00a6925477",
+    "sim/final_pair_heldout.py": "1f50ebc04ed93e35b7e07a4a8961cdfe260c300fff077b017fd89e6e966be472",
+    "tests/test_zone_final_pair_heldout.py": "3245d6142f22e560cd73827ff847ba8aaedb2de4083ea2e4f1b6eab438a8c79c",
+    "tests/test_review_352.py": "5d90a59a338a3e7305aca98fa2dba86ffd5aaa6f2ec9f464197ea6ea025a4e89",
+    "scripts/run_ci_tests.py": "f08bae2476e7f9576806c201257fc8e34e9c4b7ecdd2c94f96ad78b1a4911c81",
+    "configs/ci_test_durations.json": "2081572d177d87827cb2f242e0e78639af10b42b8b7055cdf8b973fdbb7f10bb"
+  },
+  "log_xml_sha256": {
+    "ci_workflow.log": "f3ffd90f357226318d09baec506ef665d6b151d3713d4f764c33edb51eabac37",
+    "ci_workflow.xml": "d616420455e962bb33c9741f51675fa039e6062992a9b80d8ac6696aa161a385",
+    "durations_refresh.log": "053e6da1ddc691b4e5e6fa853c7dff3d223ad15713f0dbc622d022285161c5eb",
+    "heldout.log": "47e03fe9725ccd851140b9bdc24551a0392c311ff872631ed466cad861d87452",
+    "heldout.xml": "2103f532cda7f37ea3594d1c1f23cb6a47e767f5ff8c31cad641c817089f3f14",
+    "related.log": "89c34db1e379688b2a2c66ee2c9775e5465532d429b0d4094da033e5505b0f5f",
+    "related.xml": "41e377a7e19b15105359f61d9df32b7e7f9ff921e0cfb2b1fc713aeb5966244b"
+  },
+  "frozen_fixtures": "3 present; scripts/check_ci_fixtures.py exit 0",
+  "extraction_directories_created": [],
+  "pr_policy": "draft; do not merge"
+}

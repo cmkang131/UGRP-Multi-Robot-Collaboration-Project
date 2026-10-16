@@ -38,6 +38,65 @@ python3.12 -m venv .venv-test
 
 정확한 CI 테스트 명령과 포함 범위는 [workflow](.github/workflows/tests.yml)를 따른다. 테스트 전용 의존성과 실제 실험 의존성은 구분한다.
 
+오프라인 회귀 목록은 `scripts/run_ci_tests.py`의 `TEST_PATTERNS`를 glob 확장한 뒤
+중복 제거·정렬한다. CI에서는 이 목록을 파일 단위로 8개 shard에 나누며,
+각 실행 전에 전체 shard의 합집합과 원래 목록이 같고 각 파일이 정확히 한 번
+포함되는지 검사한다. 목록만 확인하는 다음 명령은 pytest나 공용 잠금을 시작하지 않는다.
+
+```sh
+python scripts/run_ci_tests.py --shard-count 8 --list-shards
+```
+
+한 shard 실행은 `--shard-count 8 --shard-index 0`처럼 지정한다(번호 0–7).
+옵션을 생략하면 기존처럼 전체 목록을 실행한다. `--durations-json <파일>`은
+`{"tests/test_example.py": 12.5}` 형태의 초 단위 JSON으로, 긴 파일부터 누적 시간이
+가장 작은 shard에 배치하고(pytest-split의 least_duration 방식) 새 파일에는 측정된 시간의
+중앙값을 쓴다. 같은 입력은 항상 같은 분할을 만든다. 옵션이 없으면 파일 수로 나눈다.
+CI의 shard 실행과 전체 shard 목록 검사는 모두 `configs/ci_test_durations.json`을
+전달한다(2026-09-30: 파일 수 분할에서 shard 하나가 10분 제한에 걸려 도입). 파일 수 균등은
+시간 균등을 보장하지 않는다. 제한 시간 25분(2026-10-02에 15분에서 늘림)은 여유이고 균형은 이 시간 자료가 맡는다.
+
+시간 자료 갱신은 사람이 필요할 때 실행한다(예약 자동화 없음). 성공·실패 실행 모두
+`offline-shard-*` JUnit artifact가 남으므로, 최근 main 실행 몇 개를 받아 합친다.
+
+```sh
+for run in <run-id> <run-id>; do
+  gh run download "$run" -D "outputs/ci-durations/$run" -p 'offline-shard-*'
+done
+python3 scripts/refresh_ci_durations.py outputs/ci-durations/* --output configs/ci_test_durations.json
+```
+
+파일별로 테스트 시간을 합산하고 실행 사이 최댓값을 쓴다. 현재 목록에 없는 파일은 버리고,
+측정이 없는 파일(시간 초과로 JUnit이 남지 않은 shard 등)은 경고로 알리며 중앙값이 쓰인다.
+갱신한 JSON에 사용한 실행 ID를 PR 본문에 적는다.
+
+CI는 feature branch의 push 대신 PR에서 실행하고, main push에서도 전체 검사를
+유지한다. 같은 PR의 새 커밋은 이전 실행을 취소한다. `ci-preflight`는 의존성
+설치 전에 필수 frozen fixture 3개와 CI 분기·집계 로직을 검사한다.
+root Markdown, `docs/`의 문서·이미지 등 허용된 문서 형식,
+`experiments/`의 Markdown만 바뀐 PR은 문서 전용 경로를 쓴다.
+코드·설정·테스트·알 수 없는 경로, 비교 실패, main push는 전체 검사를 쓴다.
+사전 등록·판정 문서의 독립 검토는 문서 전용 CI에서도 유지한다.
+
+`offline-regression-checks`는 bundle/registry 검증과 기존 protocol fixture를
+한 번씩 실행하고, 분할 전용 단위 테스트와 전체 shard 목록도 검증한다.
+기존 required check 이름인 **`offline-regressions`**는 이 공통 job과
+`offline-regression-shards` matrix 전체를 기다리는 집계 job이다.
+전체 검사에서는 둘 다 `success`일 때만 통과하며 실패·취소·건너뜀은
+통과시키지 않는다. 문서 전용 경로는 `ci-preflight` 성공과 명시적인 문서
+판정이 있을 때만 두 suite의 의도된 건너뜀을 허용한다. 집계 job은 항상
+실행하며 branch protection의 required check 이름을 유지한다.
+
+로컬 `run_ci_tests.py`도 pytest와 공용 잠금 시작 전에 frozen fixture 누락을
+거부한다. `python3 scripts/check_ci_fixtures.py`로 먼저 확인할 수 있으며,
+오류 메시지의 sparse 추가 명령은 기존 기록을 다시 체크아웃한다.
+새 worktree의 sparse 규칙에는 이 작은 fixture 3개가 포함된다.
+`--list-shards`는 fixture·pytest·잠금을 시작하지 않는 목록 확인으로 유지한다.
+
+로컬 `run_ci_tests.py`는 기본적으로 공용 호스트 잠금 없이 실행하며, `agent_lock.py acquire --timing-sensitive`로 표시된 잠금이 있으면 경고만 출력한다(표시 기본값 false).
+wall 시간 측정 때문에 직렬 실행이 필요하면 `--host-lock` 또는 `UGRP_TEST_HOST_LOCK=1`을 사용한다. 기존처럼 점유 시 종료 코드 3을 반환하고 자식 정리 확인 뒤 잠금을 반환한다.
+GitHub CI·별도 clone은 Mac 잠금을 만들지 않으며, 오프라인 목록에서 제외된 native 물리·렌더 테스트는 계속 제외한다.
+
 ## 실제 실험 재현
 
 실행은 [표준 시뮬레이션 관리](docs/simulation_management.md)의 `sim_cli`를 사용한다. 새 연구 경로를 추가할 때는 공통 카탈로그·실행 기록·입력 및 결과 해시 검증을 함께 연결한다. 기존 스크립트를 직접 호출한 과거 기록은 유지하지만, 이를 공통 관리 기록이 있는 실행으로 소급 표시하지 않는다.
@@ -78,9 +137,11 @@ PYTHONPATH=. .venv-sim-worker-mac/bin/python scripts/verify_gemini_budget_run.py
 
 - `tests/fixtures/`: 작은 재현용 입력, 출처와 SHA를 함께 저장한다.
 - `experiments/<ID>/`: 코드 SHA, 환경, 설정, 모든 결과, 원본 해시, 실제 저장 위치.
+- 새 제어기·정책 버전의 측정 기록을 남길 때 [버전별 대표 영상 색인](docs/version_videos.md)에 대표 영상 행을 채운다(영상은 파일당 1 MiB 미만, 원본은 `outputs/`와 해시).
 - `outputs/`: raw 영상과 로그. 현재 로컬 보관이며 Git에서 제외된다. 다른 사람이 필요로 하면 허가된 저장소에 공유하고 접근 가능한 위치를 결과 기록에 추가한다.
 - 보관만 한 해시는 백업이 아니다. raw 자료가 공유·백업되지 않았으면 그대로 명시한다.
 - 실험 중복 ZIP, 개인 계정 설정, 키·토큰, 가상환경과 의존성 폴더를 커밋하지 않는다.
+- 결과에 사용한 학습 모델은 [모델 배포](docs/model_artifacts.md)에 따라 버전별 GitHub Release에 보존한다. 저장소에는 모델 목록·출처·해시를 넣고, 가중치는 Release asset으로 올린 뒤 재다운로드·파일 검증·로딩 결과를 남긴다. 학습 도중 임시 체크포인트 전부를 업로드할 필요는 없지만 선택 모델과 보고한 비교/실패 모델은 재현 가능하게 보존한다. 누락된 원본은 배포 완료로 표시하지 않는다.
 
 ## 과거 실패 재생 도구
 

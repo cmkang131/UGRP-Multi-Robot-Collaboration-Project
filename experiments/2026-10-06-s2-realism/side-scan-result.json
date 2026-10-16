@@ -1,0 +1,105 @@
+{
+  "source_sha": "32776381a244dabd611da94c4b621360c8ff6c5c",
+  "bundle": "zone-s2-realism-v134",
+  "seed": 1054,
+  "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-32776381-s1054-v134-side-scan",
+  "status": "STAGE_REACHED_UNQUALIFIED",
+  "trigger": {
+    "t": 12.0,
+    "withheld": [
+      [
+        "r3",
+        {
+          "kind": "mecanum",
+          "forward": 0.0,
+          "left": 0.65,
+          "turn": 0.0,
+          "duration_s": 0.65
+        }
+      ]
+    ],
+    "state": "search_move"
+  },
+  "completed_t": 23.0,
+  "wall_s": 24.344189875002485,
+  "sim_s": 24.7,
+  "wall_per_sim": 0.9363149951924032,
+  "frames_by_pan": {
+    "1500": {
+      "frames": 32,
+      "detections": 0,
+      "orange_pixels": [
+        0,
+        0
+      ]
+    },
+    "2300": {
+      "frames": 16,
+      "detections": 16,
+      "orange_pixels": [
+        2716,
+        2716
+      ]
+    },
+    "700": {
+      "frames": 16,
+      "detections": 0,
+      "orange_pixels": [
+        0,
+        0
+      ]
+    }
+  },
+  "peer_contact_points": 0,
+  "nonzero_drive_commands": 0,
+  "own_rgb_review": {
+    "positive": "robots/r3/rgb/00309.jpg",
+    "negative": "robots/r3/rgb/00364.jpg",
+    "claim": "visible orange robot; controller does not know robot ID",
+    "independent_positive_viewpoints": 1
+  },
+  "limitation": "16 frames at one settled pose, not 16 independent trials; no depth/free-space inference from no detection",
+  "physical_runs": 1,
+  "model_calls": 0,
+  "lock": {
+    "acquired": {
+      "owner": "codex",
+      "branch": "codex/s2-realism",
+      "purpose": "s2v48 one seed1054 own RGB side scan, no transport",
+      "pid": 17825,
+      "acquired_unix": 1791429634.456974,
+      "expected_end_unix": 1791430534.4569752,
+      "loadavg_at_acquire": [
+        2.66650390625,
+        5.67333984375,
+        8.1708984375
+      ],
+      "timing_sensitive": true
+    },
+    "released": {
+      "owner": "codex",
+      "branch": "codex/s2-realism",
+      "purpose": "s2v48 one seed1054 own RGB side scan, no transport",
+      "pid": 17825,
+      "acquired_unix": 1791429634.456974,
+      "expected_end_unix": 1791430534.4569752,
+      "loadavg_at_acquire": [
+        2.66650390625,
+        5.67333984375,
+        8.1708984375
+      ],
+      "timing_sensitive": true,
+      "pid_alive": true
+    },
+    "status_after": null
+  },
+  "source_hashes": {
+    "student_record.json": "fa36b77c0fce29c9a54930ff311a3787d0253a4b9b5b2726e6ccc219f4c5e964",
+    "result.json": "3186ebb7234f328d76ff4c40ab6e735c8e62ae4382c016fdcf51bf3e9bf2de37",
+    "eval_only/trajectory.jsonl": "528d3a190a3f324df0e9b27231819ab51ce2266bcd2264fe3ee5c7f25992d7d4",
+    "eval_only/contacts.jsonl": "4d92980fd745752ababe7e6c38bf47f8416cde7830ac8038931a52e7d40c7d2e",
+    "robots/r3/rgb/00309.jpg": "c7d3f2baa3abcb332fb18ff7ee6b53652b21d95e6558e89f24bfcac519854950",
+    "robots/r3/rgb/00364.jpg": "48e78d2e24b3c6b64435dc1a3dff827c2d48f1843982ae4a6efa0da8c2501a2c"
+  },
+  "startup_error": "first invocation short SHA rejected before lock/physics; rerun with full SHA unchanged settings"
+}

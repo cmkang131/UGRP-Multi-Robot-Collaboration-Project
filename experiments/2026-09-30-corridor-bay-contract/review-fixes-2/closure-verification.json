@@ -1,0 +1,270 @@
+{
+  "head_before_commit": "8033d78deb1134b61277a31684accfd6dbc9c81b",
+  "merged_main": "7e081d7047aa2df737cc1890c963b1d3a14302c0",
+  "ci_regression": {
+    "run": 36750153176,
+    "failed_job": 110007722373,
+    "failing_test": "tests/test_seal_v2_review_301.py::test_real_communication_workflow_omits_standard_launcher",
+    "reason": "undeclared dynamic import: harness/zone_own_team_host.py",
+    "separate_cancelled_job": 110007722100
+  },
+  "fix": "Separate lightweight shared corridor admission from executor factory; retain conservative source closure and pinned files",
+  "results": {
+    "baseline": {
+      "mode": "baseline",
+      "args": [
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp=/Users/changmin/projects/ugrp/outputs/2026-10-01-cap-t10a-f310-1/closure-fix/baseline/pytest-tmp",
+        "--junitxml=/Users/changmin/projects/ugrp/outputs/2026-10-01-cap-t10a-f310-1/closure-fix/baseline/junit.xml",
+        "tests/test_execution_dependency_contract.py",
+        "tests/test_seal_v2_fail_closed.py",
+        "tests/test_seal_v2_review_301.py",
+        "tests/test_seal_v2_review_301b.py",
+        "tests/test_seal_v2_review_301c.py",
+        "tests/test_seal_v2_review_301d.py",
+        "tests/test_ci_fast_path.py",
+        "tests/test_ci_sharding.py",
+        "tests/test_ci_host_lock.py",
+        "tests/test_zone_own_executor_corridor_contract.py",
+        "tests/test_zone_own_executor.py",
+        "tests/test_zone_own_executor_host.py",
+        "tests/test_zone_pair_registered_source.py",
+        "tests/test_zone_study_source_pinning.py",
+        "tests/test_zone_hard_routes.py",
+        "tests/test_simulation_workflow_manager.py",
+        "--deselect=tests/test_zone_own_executor.py::test_team_host_feeds_each_executor_only_its_own_camera",
+        "--deselect=tests/test_zone_own_executor_host.py::test_team_host_isolation_abort_and_horizon_on_the_real_world",
+        "--deselect=tests/test_simulation_workflow_manager.py::WorkflowManagerTests::test_parent_exit_cleans_background_child"
+      ],
+      "exit_code": 0,
+      "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+      "head_before_commit": "8033d78deb1134b61277a31684accfd6dbc9c81b",
+      "merged_main": "7e081d7047aa2df737cc1890c963b1d3a14302c0",
+      "all_scanned_files_unchanged": true,
+      "protected_files_unchanged": true,
+      "protected_files_count": 87,
+      "v6e_count": 85,
+      "scope": "offline static/fake, import/network guard; no physics, model or host lock",
+      "junit": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "13",
+        "tests": "693",
+        "time": "324.279",
+        "timestamp": "2026-10-01T02:30:59.214615+09:00",
+        "hostname": "gangchangmin-ui-MacBookAir.local"
+      },
+      "files_scanned": 4738,
+      "source_sha256": {
+        "harness/zone_corridor_admission.py": "ec0cd04b155df8683b097accccdb5184909445ebae08cca83d44c245c54fcaef",
+        "harness/zone_corridor_contract.py": "4206fa64f83ef82bb4b51591a9348d7c1ed5b51de65ec7ffe602ec54974a1d4c",
+        "sim/workflow_manager.py": "742353d3afe79f55774593670ba60295915263853bdc7b16cf9c39cce8190a07",
+        "sim/zone_study_admission.py": "1a4b7c51308c61ea55453661413eb63300a885cfffc5434e9599e50fee298aad",
+        "tests/test_zone_own_executor_corridor_contract.py": "4e76edb7a8a08a3889625d60ef8caa2b584027c2f358498e0ff2fa2c584eff3d",
+        "tests/test_seal_v2_review_301.py": "39f38f23b5b763d3eb6185ed3cf76dcfa4ab7bc03a05ba63f70843f970dedf37"
+      }
+    },
+    "admission_noop": {
+      "mode": "admission_noop",
+      "args": [
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp=/Users/changmin/projects/ugrp/outputs/2026-10-01-cap-t10a-f310-1/closure-fix/admission_noop/pytest-tmp",
+        "--junitxml=/Users/changmin/projects/ugrp/outputs/2026-10-01-cap-t10a-f310-1/closure-fix/admission_noop/junit.xml",
+        "tests/test_zone_own_executor_corridor_contract.py",
+        "-k",
+        "test_managed_"
+      ],
+      "exit_code": 1,
+      "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+      "head_before_commit": "8033d78deb1134b61277a31684accfd6dbc9c81b",
+      "merged_main": "7e081d7047aa2df737cc1890c963b1d3a14302c0",
+      "all_scanned_files_unchanged": true,
+      "protected_files_unchanged": true,
+      "protected_files_count": 87,
+      "v6e_count": 85,
+      "scope": "offline static/fake, import/network guard; no physics, model or host lock",
+      "junit": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "22",
+        "skipped": "0",
+        "tests": "24",
+        "time": "27.905",
+        "timestamp": "2026-10-01T02:31:18.032949+09:00",
+        "hostname": "gangchangmin-ui-MacBookAir.local"
+      },
+      "files_scanned": 4738,
+      "source_sha256": {
+        "harness/zone_corridor_admission.py": "ec0cd04b155df8683b097accccdb5184909445ebae08cca83d44c245c54fcaef",
+        "harness/zone_corridor_contract.py": "4206fa64f83ef82bb4b51591a9348d7c1ed5b51de65ec7ffe602ec54974a1d4c",
+        "sim/workflow_manager.py": "742353d3afe79f55774593670ba60295915263853bdc7b16cf9c39cce8190a07",
+        "sim/zone_study_admission.py": "1a4b7c51308c61ea55453661413eb63300a885cfffc5434e9599e50fee298aad",
+        "tests/test_zone_own_executor_corridor_contract.py": "4e76edb7a8a08a3889625d60ef8caa2b584027c2f358498e0ff2fa2c584eff3d",
+        "tests/test_seal_v2_review_301.py": "39f38f23b5b763d3eb6185ed3cf76dcfa4ab7bc03a05ba63f70843f970dedf37"
+      }
+    },
+    "door_gate_noop": {
+      "mode": "door_gate_noop",
+      "args": [
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp=/Users/changmin/projects/ugrp/outputs/2026-10-01-cap-t10a-f310-1/closure-fix/door_gate_noop/pytest-tmp",
+        "--junitxml=/Users/changmin/projects/ugrp/outputs/2026-10-01-cap-t10a-f310-1/closure-fix/door_gate_noop/junit.xml",
+        "tests/test_zone_own_executor_corridor_contract.py",
+        "-k",
+        "test_managed_"
+      ],
+      "exit_code": 1,
+      "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+      "head_before_commit": "8033d78deb1134b61277a31684accfd6dbc9c81b",
+      "merged_main": "7e081d7047aa2df737cc1890c963b1d3a14302c0",
+      "all_scanned_files_unchanged": true,
+      "protected_files_unchanged": true,
+      "protected_files_count": 87,
+      "v6e_count": 85,
+      "scope": "offline static/fake, import/network guard; no physics, model or host lock",
+      "junit": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "17",
+        "skipped": "0",
+        "tests": "24",
+        "time": "27.446",
+        "timestamp": "2026-10-01T02:31:18.022132+09:00",
+        "hostname": "gangchangmin-ui-MacBookAir.local"
+      },
+      "files_scanned": 4738,
+      "source_sha256": {
+        "harness/zone_corridor_admission.py": "ec0cd04b155df8683b097accccdb5184909445ebae08cca83d44c245c54fcaef",
+        "harness/zone_corridor_contract.py": "4206fa64f83ef82bb4b51591a9348d7c1ed5b51de65ec7ffe602ec54974a1d4c",
+        "sim/workflow_manager.py": "742353d3afe79f55774593670ba60295915263853bdc7b16cf9c39cce8190a07",
+        "sim/zone_study_admission.py": "1a4b7c51308c61ea55453661413eb63300a885cfffc5434e9599e50fee298aad",
+        "tests/test_zone_own_executor_corridor_contract.py": "4e76edb7a8a08a3889625d60ef8caa2b584027c2f358498e0ff2fa2c584eff3d",
+        "tests/test_seal_v2_review_301.py": "39f38f23b5b763d3eb6185ed3cf76dcfa4ab7bc03a05ba63f70843f970dedf37"
+      }
+    },
+    "heavy_import": {
+      "mode": "heavy_import",
+      "args": [
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp=/Users/changmin/projects/ugrp/outputs/2026-10-01-cap-t10a-f310-1/closure-fix/heavy_import/pytest-tmp",
+        "--junitxml=/Users/changmin/projects/ugrp/outputs/2026-10-01-cap-t10a-f310-1/closure-fix/heavy_import/junit.xml",
+        "tests/test_zone_own_executor_corridor_contract.py::test_managed_admission_keeps_unrelated_workflow_sealable",
+        "tests/test_seal_v2_review_301.py::test_real_communication_workflow_omits_standard_launcher"
+      ],
+      "exit_code": 1,
+      "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+      "head_before_commit": "8033d78deb1134b61277a31684accfd6dbc9c81b",
+      "merged_main": "7e081d7047aa2df737cc1890c963b1d3a14302c0",
+      "all_scanned_files_unchanged": true,
+      "protected_files_unchanged": true,
+      "protected_files_count": 87,
+      "v6e_count": 85,
+      "scope": "offline static/fake, import/network guard; no physics, model or host lock",
+      "junit": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "2",
+        "skipped": "0",
+        "tests": "2",
+        "time": "19.370",
+        "timestamp": "2026-10-01T02:31:17.935261+09:00",
+        "hostname": "gangchangmin-ui-MacBookAir.local"
+      },
+      "files_scanned": 4738,
+      "source_sha256": {
+        "harness/zone_corridor_admission.py": "ec0cd04b155df8683b097accccdb5184909445ebae08cca83d44c245c54fcaef",
+        "harness/zone_corridor_contract.py": "4206fa64f83ef82bb4b51591a9348d7c1ed5b51de65ec7ffe602ec54974a1d4c",
+        "sim/workflow_manager.py": "742353d3afe79f55774593670ba60295915263853bdc7b16cf9c39cce8190a07",
+        "sim/zone_study_admission.py": "1a4b7c51308c61ea55453661413eb63300a885cfffc5434e9599e50fee298aad",
+        "tests/test_zone_own_executor_corridor_contract.py": "4e76edb7a8a08a3889625d60ef8caa2b584027c2f358498e0ff2fa2c584eff3d",
+        "tests/test_seal_v2_review_301.py": "39f38f23b5b763d3eb6185ed3cf76dcfa4ab7bc03a05ba63f70843f970dedf37"
+      }
+    }
+  },
+  "baseline_summary": {
+    "passed": 400,
+    "subtests_passed": 280,
+    "deselected": 3,
+    "existing_xfailed": 13
+  },
+  "protected_source_and_test_count": 87,
+  "protected_unchanged": true,
+  "workflows_identical_to_main": true,
+  "raw_root": "/Users/changmin/projects/ugrp/outputs/2026-10-01-cap-t10a-f310-1",
+  "raw_manifest": {
+    "closure-fix/baseline.txt": {
+      "bytes": 567,
+      "sha256": "4b937da5f37fcb1d66c49aa0223e3e1fdfd0b09ba3ebea869c53ea116629abb3"
+    },
+    "closure-fix/baseline/receipt.json": {
+      "bytes": 638423,
+      "sha256": "615000890bdf2879aa0ba73834824bebee76b6ff1c9a3f63306fac90d592a260"
+    },
+    "closure-fix/baseline/junit.xml": {
+      "bytes": 61505,
+      "sha256": "39ad36b3c04d5ff3d05cfe4d948b75606d44544956d2dede6b343ec17d3f52b1"
+    },
+    "closure-fix/admission_noop.txt": {
+      "bytes": 62418,
+      "sha256": "b6fc8f771ebc77c41ded31a6a6d80eb85b321dda68a42a74b7c988bc91716a2a"
+    },
+    "closure-fix/admission_noop/receipt.json": {
+      "bytes": 637503,
+      "sha256": "a3f87ac3cca0c046c0817af5d75336fe8b0f08d4b3b4dfd6b9bbdc77b17c902d"
+    },
+    "closure-fix/admission_noop/junit.xml": {
+      "bytes": 51070,
+      "sha256": "195470326f311a71624d29a88dd1577261ec492319b2c83912dae569dd0c32c4"
+    },
+    "closure-fix/door_gate_noop.txt": {
+      "bytes": 49307,
+      "sha256": "5a9d054af25d4d0dda9c2dc6f2df1564f3d03b402ecc4e815714a86433e58972"
+    },
+    "closure-fix/door_gate_noop/receipt.json": {
+      "bytes": 637503,
+      "sha256": "85e9ba80c8e5d0c13524ec25decf1d365ceb0c30cf679b89f3634229ea523b6f"
+    },
+    "closure-fix/door_gate_noop/junit.xml": {
+      "bytes": 38377,
+      "sha256": "629f8f2d4c4d8e361d5cf2ae16a269bcbe56c969a671ad448b5e3953ea366d44"
+    },
+    "closure-fix/heavy_import.txt": {
+      "bytes": 6568,
+      "sha256": "7f4d09875cef8cc4ce9ad9b8e696d255c6f732cc132718878db01bd84e524c76"
+    },
+    "closure-fix/heavy_import/receipt.json": {
+      "bytes": 637622,
+      "sha256": "fd1de4ed6f275d7b7aca62cc9ceb5be8de8b2bbbe38a8d01c26410c31c5055a9"
+    },
+    "closure-fix/heavy_import/junit.xml": {
+      "bytes": 6699,
+      "sha256": "1f120c07f52222dad04d1c02cd61d47d1f693fa220eb76ba5ff1917c547ee75d"
+    },
+    "closure-fix/verify_offline.py": {
+      "bytes": 4499,
+      "sha256": "65b09d16a59702127d448c0563f44f8f3f4557ce0f79d921a79cb4b54fb59da0"
+    },
+    "closure-before.txt": {
+      "bytes": 3380,
+      "sha256": "71225041788345961e522315bd0c5f6fcb868e5aef8b9749687bf5aa2489e539"
+    },
+    "ci-shard7-job.txt": {
+      "bytes": 45612,
+      "sha256": "12db59e472d40e77dc59a61f2d05e1d800255d2edf7e08a4a4a8f1e6796670d5"
+    },
+    "ci-runtime-job.txt": {
+      "bytes": 127365,
+      "sha256": "c6b0b8167ec3456df5a77ea5deed6db73a6d693f0358e26be82fe15e62286a5f"
+    }
+  },
+  "scope": "Offline static/fake only; no local physics/model/host lock; no tmp extraction dirs created"
+}

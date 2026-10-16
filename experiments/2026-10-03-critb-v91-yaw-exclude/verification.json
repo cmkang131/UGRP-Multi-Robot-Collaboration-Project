@@ -1,0 +1,93 @@
+{
+  "recorded_utc": "2026-10-03T07:05:58.233827+00:00",
+  "base_sha": "89ea80d536b3d2406848ba6e85ead4150ac06bd6",
+  "implementation_sha": "2d9d31e69f7c4600f3e65635bf80014af36f99ef",
+  "branch": "codex/critb-v91-yaw-exclude",
+  "python": "3.13.5 | packaged by Anaconda, Inc. | (main, Jun 12 2025, 11:23:37) [Clang 14.0.6 ]",
+  "numpy": "2.4.4",
+  "scipy": "1.17.1",
+  "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+  "commands": {
+    "yaw": [
+      "python3",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/test_consumer_criterion_b_v91_yaw.py",
+      "--junitxml=experiments/2026-10-03-critb-v91-yaw-exclude/yaw-tests.xml"
+    ],
+    "related": [
+      "python3",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/test_consumer_criterion_b_v91_yaw.py",
+      "tests/test_consumer_criterion_b_v91.py",
+      "tests/test_consumer_criterion_b_rotation.py",
+      "tests/test_consumer_criterion_b.py",
+      "tests/test_unloaded_consumer.py",
+      "tests/test_unloaded_hammerstein.py",
+      "tests/test_review_346.py",
+      "--junitxml=experiments/2026-10-03-critb-v91-yaw-exclude/related-tests.xml"
+    ]
+  },
+  "results": {
+    "yaw": {
+      "tests": 87,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "pass_line": "87 passed in 23.96s"
+    },
+    "related": {
+      "tests": 305,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "pass_line": "305 passed in 39.61s"
+    }
+  },
+  "source_sha256": {
+    "scripts/validate_consumer_criterion_b_v91.py": "971b2b0dec59432b70455cd7e50d5fc3cedd8b9b0a8d9f71163022dfefb99429",
+    "tests/test_consumer_criterion_b_v91_yaw.py": "a9a2832dd04fd2a0de70e995eca63aba7edc616fe6dfeba4884231da5e14c109",
+    "tests/test_consumer_criterion_b_v91.py": "12d1b21aa32a0ad80e8cfb0bed4627309ef9839b6a86f03a2d1c3e53ae0f9a0f",
+    "tests/test_consumer_criterion_b_rotation.py": "4039a2eb0289f8119cdda7d6182d45d6506b32f8f62a208a04c116b1683ce570",
+    "tests/test_consumer_criterion_b.py": "f1f236c7bc7119ee3718d7d79b8023e8cf6f59db68dc54827ba28dd04062d5fd",
+    "tests/test_unloaded_consumer.py": "2e4a8b7ce93dbdfd353a6fb260fcb2aecf0cb31141e433d4a66a9dc206bbd525",
+    "tests/test_unloaded_hammerstein.py": "db80f1456910ee3b0b50624db0ac3b79fdbd8b0adf6e1dee5bff0490b720be72",
+    "tests/test_review_346.py": "a39bf7dc1ef27ed9c50776ec867ff2aba7497e5868508efe4c7f850afc36aff2"
+  },
+  "preservation": {
+    "files_byte_identical": 66,
+    "functions_byte_identical": 15,
+    "validate_changed_only_by_yaw_summary_metadata": true,
+    "frozen_thresholds_changed": false
+  },
+  "forward_left_original_B_serialized_bytes_equal_with_and_without_yaw": true,
+  "remaining_yaw_metrics_equal_frozen_evaluator": true,
+  "real_v91_access": "Only 4 known pose file paths, sizes and SHA-256; no pose rows parsed or score report read. Compared with SHA-256 of 2 v88 training poses.",
+  "real_v91_scored": false,
+  "physics_runs": 0,
+  "render_runs": 0,
+  "model_calls": 0,
+  "coordinator_previous_score": {
+    "source": "User task report, not opened or rerun by implementer",
+    "path": "/Users/changmin/projects/ugrp/outputs/criterion-b-v91-score-20261003/criterion_B_v91_with_yaw.json",
+    "rc": 2
+  },
+  "tensorboard": "No new real evaluation results; synthetic regressions only. Coordinator owns rescore and result registration.",
+  "remaining_at_recording": [
+    "GitHub CI",
+    "Independent PR review",
+    "Coordinator single real v91 rescore after review"
+  ],
+  "artifacts_sha256": {
+    "README.md": "cbe1859e5eed67a59f19fc9c7498ab0cbd911df5506a2e155e285827b6eb4b5e",
+    "pose_identity.json": "db2cc5eb9816984babd5492dc68b6a902489868273ef04af6b5fc259dcda4f40",
+    "preservation.json": "919e57441ba2055c0a7944368e9c43946fae154dd848306edcd38a6ca1576ac0",
+    "related-tests.txt": "3feab0ceb6cf4ae473c09fac1cc70fc4b6c605da1769ff2dfe951455d6e109d7",
+    "related-tests.xml": "82bb6b085983941a670c96f2c4cc5df11a681b893aaa6eef826180ee9340adcf",
+    "yaw-tests.txt": "858a83c68d97cc060ae424c53675181f33622ffc9e92230feed463c79ec4a13f",
+    "yaw-tests.xml": "85cd3b174138adda0200d34c171d10162a45e668ed5b77c85d6f09cd9756a3bb"
+  }
+}

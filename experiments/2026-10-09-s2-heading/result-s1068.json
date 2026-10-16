@@ -1,0 +1,123 @@
+{
+  "seed": 1068,
+  "raw": "/Users/changmin/projects/ugrp/outputs/s2-heading-b60acdca-s1068-v143",
+  "source_sha": "b60acdca6e1c0c477d650b47717b84edb3f08a06",
+  "condition": "path_tangent_v1",
+  "success": false,
+  "evaluation": {
+    "status": "PROVISIONAL_GEOMETRIC_JUDGE",
+    "success": false,
+    "lifted": false,
+    "inside": false,
+    "floor": true,
+    "stable": true,
+    "settled_s": 2.0,
+    "qualification": "post-run DEV only; no study/physical hardware success claim"
+  },
+  "status": "STAGE_FAILED",
+  "failure": "LOCAL_TIMEOUT",
+  "commands": {
+    "moving_s": 189.59999999999695,
+    "lateral_s": 0.599999999999568,
+    "forward_s": 99.69999999999912,
+    "turn_s": 89.29999999999825,
+    "lateral_fraction_moving": 0.0031645569620230886,
+    "elapsed_sim_s": 900.0,
+    "lateral_fraction_sim": 0.0006666666666661867
+  },
+  "carry_angles": [],
+  "wall_contacts": {
+    "body": {
+      "samples": 0,
+      "sampled_s": 0,
+      "episodes": 0
+    },
+    "wheel": {
+      "samples": 0,
+      "sampled_s": 0,
+      "episodes": 0
+    },
+    "finger": {
+      "samples": 0,
+      "sampled_s": 0,
+      "episodes": 0
+    },
+    "cargo": {
+      "samples": 0,
+      "sampled_s": 0,
+      "episodes": 0
+    },
+    "any": {
+      "samples": 0,
+      "sampled_s": 0,
+      "episodes": 0
+    }
+  },
+  "robot_contacts": {
+    "samples": 0,
+    "sampled_s": 0,
+    "episodes": 0
+  },
+  "motion": {
+    "min_speed_m_s": 0.01,
+    "moving_s": 240.54999999999893,
+    "path_m": 12.316846785387305,
+    "direction_within_20deg_fraction": 0.8532529619621717,
+    "lateral_speed_fraction": 0.05741292786131193,
+    "definition": "actual velocity vs midpoint chassis yaw, time fraction within +/-20deg; integral abs(body lateral velocity) / integral speed; speed>=0.01m/s; GT evaluation only"
+  },
+  "door": {
+    "robot": {
+      "crossings": [],
+      "passed_center": false,
+      "definition": "center crossed divider west-to-east within authored opening; full clearance assessed separately by contact logs"
+    },
+    "cargo": {
+      "crossings": [],
+      "passed_center": false,
+      "definition": "center crossed divider west-to-east within authored opening; full clearance assessed separately by contact logs"
+    }
+  },
+  "active_observations": [
+    {
+      "start_s": 252.7,
+      "end_s": 254.8,
+      "max_abs_deg": 5.652615318831665
+    },
+    {
+      "start_s": 334.05,
+      "end_s": 336.15,
+      "max_abs_deg": 5.720121032765611
+    },
+    {
+      "start_s": 488.95,
+      "end_s": 491.05,
+      "max_abs_deg": 5.533880288242715
+    },
+    {
+      "start_s": 565.65,
+      "end_s": 567.95,
+      "max_abs_deg": 11.314716375922512
+    },
+    {
+      "start_s": 718.8,
+      "end_s": 720.9,
+      "max_abs_deg": 5.6284331851262905
+    }
+  ],
+  "active_actual_90deg_exceeded": false,
+  "wall_per_sim": 1.468061996791283,
+  "wall_s": 1323.1642777079833,
+  "sim_s": 901.3,
+  "commands_issued": 12584,
+  "model_calls": 0,
+  "carry_visibility": null,
+  "provenance": {
+    "result.json": "3d641cbd6da20f2bae1f93bfc3bd0205a8ddf40efeb58c0bc7294effc92d8ba3",
+    "student_record.json": "3339a312ac83cc0b0fa3212b121142126183db15c515f7735a315d01d1ce79c8",
+    "eval_only/trajectory.jsonl": "9e2e1f79183a63fc9953f4465ea4bdb7e66ab1228663f92e32baef2a7c2fd3f9",
+    "eval_only/wall-contacts.jsonl": "93ad0f973614ea8b450967e2c1fcad77ca4778ae60d1c2882397b95a2f8555dd",
+    "eval_only/contacts.jsonl": "ee148a82d45578fc0489a1ea32140afae563f4c6580c5d8ff36a99e6780aaa19"
+  },
+  "scope": "post-run evaluation only; simulated plant, no hardware success claim"
+}

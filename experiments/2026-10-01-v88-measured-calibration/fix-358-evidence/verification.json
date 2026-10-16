@@ -1,0 +1,36 @@
+{
+  "tested_source_sha": "d36ffc3f9a34749770b995bc8f92d5aa5c97091d",
+  "pytest_argv": [
+    "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/test_final_pair_calibration_assembly.py",
+    "tests/test_review_355.py",
+    "--junitxml=/tmp/fix358-evidence/related.xml"
+  ],
+  "pytest_exit_code": 0,
+  "pass_line": "423 passed in 507.47s (0:08:27)",
+  "passed_by_file": {
+    "tests.test_final_pair_calibration_assembly": 384,
+    "tests.test_review_355": 39
+  },
+  "failed": 0,
+  "errors": 0,
+  "skipped": 0,
+  "regression_before_source_sha": "9b8a89c45b94264ff83708e062df04403344b7a0",
+  "regression_before_expected_failures": [
+    "both-pose: DID NOT RAISE ValueError",
+    "rotation-label: DID NOT RAISE ValueError"
+  ],
+  "evidence_sha256": {
+    "related.txt": "598b5097aba05300727d86657bc923b17643d46425cd333d85941b4835d3bc89",
+    "related.xml": "e79639e85a0cf97baf06590edfb534636eca295b44ed0e5b7f971565fbf64b0e",
+    "regression-before.txt": "0c87d53658ce3b77a89d811e7a0515d91f94ca10afc5028f29834812357dbdc9",
+    "assembly.txt": "874a7e135cf015e0fca72a161c9b1c2c91a286d8d662fc54a8fda5df335d050c",
+    "assembly-command.json": "9bae8259cfa3596d8cb7c86cebdda61a58709a6ed1a9097fe752d1b5692bc6c2",
+    "assembly-verification.json": "93f3d72a5bcbd07d75039266372cf7fcbb1ebb5c00337c4f3d353375516b75a6",
+    "real-audit.json": "e83b126aa916db22b5b3a7aa6b630327cbb25d49ce0929cebc845d4e30b604ab",
+    "unchanged.json": "f6958ca6b675ed14b423a2b8bd6038d8d4e7def6b024486c7f1d65869b7cbca9"
+  }
+}

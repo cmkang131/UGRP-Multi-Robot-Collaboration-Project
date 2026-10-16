@@ -1,0 +1,1107 @@
+{
+ "status": "COMPLETE",
+ "run_class": "dev",
+ "pr": 447,
+ "branch": "claude/vm-bench",
+ "date": "2026-10-12",
+ "question": "Is the slow E2E (11-16 wall s per SIM s on Azure D16as_v5) caused by the VM? Paired same-source benchmark on three sizes.",
+ "subscription": "88b7ee7f-f2f3-4a0d-a0ce-cf7306943676",
+ "resource_group": "UGRP-SIM-RG",
+ "region": "koreacentral",
+ "payg_subscription_touched": false,
+ "source": {
+  "sha": "641d9c6e9488bf694aad2c5f0214d7d9670b5678",
+  "ref": "origin/codex/e2e-integration HEAD at 2026-10-12T00:40Z",
+  "workflow": "e2e-stall-budget-v199",
+  "configuration": "12th round A (experiments/2026-10-11-e2e12-budget-fix): seed 61001, Gemma 4 31B via OpenRouter/DeepInfra, rpp_v1, rgb_pulse_gate_v1, backup_replan_v1, amcl_alpha_v1, case_cap_v1, dev_light",
+  "measurement": "--measure-sim-s 60 (scripts/e2e_speed_measure.py: external stop at 60 SIM s, bundle horizon unchanged; per-frame RBPF digest always on; no profiler)",
+  "source_snapshot": "ugrp-sim-azure2-source-20261012 (created 00:17Z by another task from ugrp-sim-azure OS disk; reused, kept)"
+ },
+ "design": {
+  "per_vm": [
+   "solo: 1 run alone",
+   "concurrent6: 6 identical runs started together"
+  ],
+  "sim_s_per_run": 60,
+  "waves": "Regional vCPU quota 65 with 32 in use: wave1 D16as_v5 + D16as_v6 in parallel, wave2 F16as_v6 after deleting v6.",
+  "llm": "Dedicated Mac idempotent relay (listen 18392 -> VM 18393) with per-VM run names, so every VM made its own live calls (3 per run). LLM wait subtracted in wall_per_sim_minus_rbpf_llm.",
+  "process_env": "MUJOCO_GL=osmesa, OMP/LP/OPENBLAS/MKL threads=1, nice 0",
+  "launcher": "scripts/vmb_batch.py (no lease/archive helpers)"
+ },
+ "vms": {
+  "d16v5": {
+   "vm": "ugrp-vmbench-d16v5",
+   "size": "Standard_D16as_v5",
+   "cpu_model": "AMD EPYC 7763 64-Core Processor (Zen3)",
+   "vcpus": 16,
+   "physical_cores": 8,
+   "threads_per_core": 2,
+   "memory_gib": 64,
+   "usd_per_hour": 0.848,
+   "disk_controller": "SCSI",
+   "vm_lifetime": {
+    "start_utc_approx": "2026-10-12T00:50:30Z",
+    "deallocated_utc": "2026-10-12T01:28:00Z",
+    "minutes": 37.5,
+    "compute_usd_estimate": 0.53
+   },
+   "solo": {
+    "N": 1,
+    "valid": 1,
+    "wall_per_sim_median": 11.349,
+    "cpu_per_sim_median": 15.368,
+    "wall_per_sim_minus_rbpf_llm_median": 9.416,
+    "steady_slope_median": 12.001,
+    "physics_s_median": 131.168,
+    "capture_s_median": 73.46,
+    "render_s_median": 71.981,
+    "rest_s_median": 476.286,
+    "rbpf_hash_s_median": 107.834,
+    "llm_wait_s_median": 8.126,
+    "loadavg1_median": 1.195,
+    "loadavg1_max": 2.326,
+    "cpu_busy_frac_median": 0.086,
+    "batch_wall_s": 690.077,
+    "sim_s_total": 60.0,
+    "sim_s_per_usd": 369.114,
+    "per_run": {
+     "vmb-d16v5-solo": {
+      "status": "EARLY_STOP",
+      "failure": "MEASUREMENT_SIM_LIMIT",
+      "exit_rc": 1,
+      "sim_s": 60.0,
+      "wall_s": 680.91,
+      "cpu_s": 922.07,
+      "wall_per_sim": 11.349,
+      "cpu_per_sim": 15.368,
+      "wall_per_sim_minus_rbpf_llm": 9.416,
+      "steady_slope_wall_per_sim": 12.001,
+      "physics_advance_s": 131.2,
+      "capture_s": 73.5,
+      "render_s": 72.0,
+      "rest_s": 476.3,
+      "rbpf_hash_wall_s": 107.8,
+      "llm_wait_s": 8.13,
+      "model_calls": 3,
+      "commands_sha256": {
+       "r1": "996a94911cfbcfec1230934834293e5c93716777a7cce28933d05f786910b6c1",
+       "r2": "5c4bb4448f35e4373a2957fd4f9c37d3c72358056d17bfa87263c2f97a6a4e66",
+       "r3": "82a3eae1e52ebe29f3f55404a34c3e5ff166ba38ef6864840a03addba22e62f0"
+      },
+      "image_list_sha256": {
+       "r1": "7dc7296bf0bc068f9f15176091d1bfe2fac2e3629d4cc2140f84310d64115d40",
+       "r2": "7a63489d31380631bd0f04227bf62f00aaa3d4202cd69aad700ae42cef09cc14",
+       "r3": "0baf68309abb53c7ab9af1f2abc500fe999123e07b3f069cadf272c2025ff5b9"
+      },
+      "rbpf_sha256": "241422e197bdea80334712986b7915d1140869e45497b2d1e3c23eabc34199be",
+      "files": 983,
+      "bytes": 28220866,
+      "all_hashes_sha256": "9d1fb21b413add6a1592152123489a8784b99072f50247313dc075c3e1e145f1"
+     }
+    }
+   },
+   "concurrent6": {
+    "N": 6,
+    "valid": 6,
+    "wall_per_sim_median": 13.228,
+    "cpu_per_sim_median": 18.627,
+    "wall_per_sim_minus_rbpf_llm_median": 10.978,
+    "steady_slope_median": 13.853,
+    "physics_s_median": 144.755,
+    "capture_s_median": 88.596,
+    "render_s_median": 86.591,
+    "rest_s_median": 560.014,
+    "rbpf_hash_s_median": 124.34,
+    "llm_wait_s_median": 10.215,
+    "loadavg1_median": 10.823,
+    "loadavg1_max": 17.271,
+    "cpu_busy_frac_median": 0.533,
+    "batch_wall_s": 810.171,
+    "sim_s_total": 360.0,
+    "sim_s_per_usd": 1886.395,
+    "per_run": {
+     "vmb-d16v5-c1": {
+      "status": "EARLY_STOP",
+      "failure": "MEASUREMENT_SIM_LIMIT",
+      "exit_rc": 1,
+      "sim_s": 60.0,
+      "wall_s": 800.39,
+      "cpu_s": 1123.57,
+      "wall_per_sim": 13.34,
+      "cpu_per_sim": 18.726,
+      "wall_per_sim_minus_rbpf_llm": 10.962,
+      "steady_slope_wall_per_sim": 13.986,
+      "physics_advance_s": 146.2,
+      "capture_s": 88.6,
+      "render_s": 86.6,
+      "rest_s": 565.6,
+      "rbpf_hash_wall_s": 132.3,
+      "llm_wait_s": 10.39,
+      "model_calls": 3,
+      "commands_sha256": {
+       "r1": "996a94911cfbcfec1230934834293e5c93716777a7cce28933d05f786910b6c1",
+       "r2": "5c4bb4448f35e4373a2957fd4f9c37d3c72358056d17bfa87263c2f97a6a4e66",
+       "r3": "82a3eae1e52ebe29f3f55404a34c3e5ff166ba38ef6864840a03addba22e62f0"
+      },
+      "image_list_sha256": {
+       "r1": "7dc7296bf0bc068f9f15176091d1bfe2fac2e3629d4cc2140f84310d64115d40",
+       "r2": "7a63489d31380631bd0f04227bf62f00aaa3d4202cd69aad700ae42cef09cc14",
+       "r3": "0baf68309abb53c7ab9af1f2abc500fe999123e07b3f069cadf272c2025ff5b9"
+      },
+      "rbpf_sha256": "241422e197bdea80334712986b7915d1140869e45497b2d1e3c23eabc34199be",
+      "files": 983,
+      "bytes": 28220911,
+      "all_hashes_sha256": "91c722a2d3e29373790f2685d230aa820837500ee1343fe60325448eaf433ba0"
+     },
+     "vmb-d16v5-c2": {
+      "status": "EARLY_STOP",
+      "failure": "MEASUREMENT_SIM_LIMIT",
+      "exit_rc": 1,
+      "sim_s": 60.0,
+      "wall_s": 790.77,
+      "cpu_s": 1112.83,
+      "wall_per_sim": 13.179,
+      "cpu_per_sim": 18.547,
+      "wall_per_sim_minus_rbpf_llm": 10.912,
+      "steady_slope_wall_per_sim": 13.798,
+      "physics_advance_s": 144.5,
+      "capture_s": 88.6,
+      "render_s": 86.6,
+      "rest_s": 557.7,
+      "rbpf_hash_wall_s": 125.0,
+      "llm_wait_s": 11.03,
+      "model_calls": 3,
+      "commands_sha256": {
+       "r1": "996a94911cfbcfec1230934834293e5c93716777a7cce28933d05f786910b6c1",
+       "r2": "5c4bb4448f35e4373a2957fd4f9c37d3c72358056d17bfa87263c2f97a6a4e66",
+       "r3": "82a3eae1e52ebe29f3f55404a34c3e5ff166ba38ef6864840a03addba22e62f0"
+      },
+      "image_list_sha256": {
+       "r1": "7dc7296bf0bc068f9f15176091d1bfe2fac2e3629d4cc2140f84310d64115d40",
+       "r2": "7a63489d31380631bd0f04227bf62f00aaa3d4202cd69aad700ae42cef09cc14",
+       "r3": "0baf68309abb53c7ab9af1f2abc500fe999123e07b3f069cadf272c2025ff5b9"
+      },
+      "rbpf_sha256": "241422e197bdea80334712986b7915d1140869e45497b2d1e3c23eabc34199be",
+      "files": 983,
+      "bytes": 28220970,
+      "all_hashes_sha256": "31bb5f54742c8daa36f870a520b4ca834109c2d4ae8d7eafa33b963c65c68a38"
+     },
+     "vmb-d16v5-c3": {
+      "status": "EARLY_STOP",
+      "failure": "MEASUREMENT_SIM_LIMIT",
+      "exit_rc": 1,
+      "sim_s": 60.0,
+      "wall_s": 794.89,
+      "cpu_s": 1118.81,
+      "wall_per_sim": 13.248,
+      "cpu_per_sim": 18.647,
+      "wall_per_sim_minus_rbpf_llm": 11.012,
+      "steady_slope_wall_per_sim": 13.866,
+      "physics_advance_s": 144.7,
+      "capture_s": 88.3,
+      "render_s": 86.3,
+      "rest_s": 561.9,
+      "rbpf_hash_wall_s": 124.2,
+      "llm_wait_s": 10.04,
+      "model_calls": 3,
+      "commands_sha256": {
+       "r1": "996a94911cfbcfec1230934834293e5c93716777a7cce28933d05f786910b6c1",
+       "r2": "5c4bb4448f35e4373a2957fd4f9c37d3c72358056d17bfa87263c2f97a6a4e66",
+       "r3": "82a3eae1e52ebe29f3f55404a34c3e5ff166ba38ef6864840a03addba22e62f0"
+      },
+      "image_list_sha256": {
+       "r1": "7dc7296bf0bc068f9f15176091d1bfe2fac2e3629d4cc2140f84310d64115d40",
+       "r2": "7a63489d31380631bd0f04227bf62f00aaa3d4202cd69aad700ae42cef09cc14",
+       "r3": "0baf68309abb53c7ab9af1f2abc500fe999123e07b3f069cadf272c2025ff5b9"
+      },
+      "rbpf_sha256": "241422e197bdea80334712986b7915d1140869e45497b2d1e3c23eabc34199be",
+      "files": 983,
+      "bytes": 28220916,
+      "all_hashes_sha256": "5f721b8f63d331b132eb4641dec39d609d7097087e66bd0370d6fe1471490719"
+     },
+     "vmb-d16v5-c4": {
+      "status": "EARLY_STOP",
+      "failure": "MEASUREMENT_SIM_LIMIT",
+      "exit_rc": 1,
+      "sim_s": 60.0,
+      "wall_s": 792.16,
+      "cpu_s": 1116.6,
+      "wall_per_sim": 13.203,
+      "cpu_per_sim": 18.61,
+      "wall_per_sim_minus_rbpf_llm": 10.967,
+      "steady_slope_wall_per_sim": 13.819,
+      "physics_advance_s": 144.8,
+      "capture_s": 89.2,
+      "render_s": 87.2,
+      "rest_s": 558.1,
+      "rbpf_hash_wall_s": 124.1,
+      "llm_wait_s": 10.04,
+      "model_calls": 3,
+      "commands_sha256": {
+       "r1": "996a94911cfbcfec1230934834293e5c93716777a7cce28933d05f786910b6c1",
+       "r2": "5c4bb4448f35e4373a2957fd4f9c37d3c72358056d17bfa87263c2f97a6a4e66",
+       "r3": "82a3eae1e52ebe29f3f55404a34c3e5ff166ba38ef6864840a03addba22e62f0"
+      },
+      "image_list_sha256": {
+       "r1": "7dc7296bf0bc068f9f15176091d1bfe2fac2e3629d4cc2140f84310d64115d40",
+       "r2": "7a63489d31380631bd0f04227bf62f00aaa3d4202cd69aad700ae42cef09cc14",
+       "r3": "0baf68309abb53c7ab9af1f2abc500fe999123e07b3f069cadf272c2025ff5b9"
+      },
+      "rbpf_sha256": "241422e197bdea80334712986b7915d1140869e45497b2d1e3c23eabc34199be",
+      "files": 983,
+      "bytes": 28220874,
+      "all_hashes_sha256": "9a6bdccfa37f6c2be61f9c3b46d2d2311bc0133e4a202740e935a77a2ff716eb"
+     },
+     "vmb-d16v5-c5": {
+      "status": "EARLY_STOP",
+      "failure": "MEASUREMENT_SIM_LIMIT",
+      "exit_rc": 1,
+      "sim_s": 60.0,
+      "wall_s": 797.84,
+      "cpu_s": 1118.62,
+      "wall_per_sim": 13.297,
+      "cpu_per_sim": 18.644,
+      "wall_per_sim_minus_rbpf_llm": 10.989,
+      "steady_slope_wall_per_sim": 13.85,
+      "physics_advance_s": 144.4,
+      "capture_s": 87.8,
+      "render_s": 85.9,
+      "rest_s": 565.6,
+      "rbpf_hash_wall_s": 124.5,
+      "llm_wait_s": 13.99,
+      "model_calls": 3,
+      "commands_sha256": {
+       "r1": "996a94911cfbcfec1230934834293e5c93716777a7cce28933d05f786910b6c1",
+       "r2": "5c4bb4448f35e4373a2957fd4f9c37d3c72358056d17bfa87263c2f97a6a4e66",
+       "r3": "82a3eae1e52ebe29f3f55404a34c3e5ff166ba38ef6864840a03addba22e62f0"
+      },
+      "image_list_sha256": {
+       "r1": "7dc7296bf0bc068f9f15176091d1bfe2fac2e3629d4cc2140f84310d64115d40",
+       "r2": "7a63489d31380631bd0f04227bf62f00aaa3d4202cd69aad700ae42cef09cc14",
+       "r3": "0baf68309abb53c7ab9af1f2abc500fe999123e07b3f069cadf272c2025ff5b9"
+      },
+      "rbpf_sha256": "241422e197bdea80334712986b7915d1140869e45497b2d1e3c23eabc34199be",
+      "files": 983,
+      "bytes": 28220884,
+      "all_hashes_sha256": "9020d1e8147c0fb0ad621a644a32126e2f4d0690fae2aef7eae26f9f08ae2c29"
+     },
+     "vmb-d16v5-c6": {
+      "status": "EARLY_STOP",
+      "failure": "MEASUREMENT_SIM_LIMIT",
+      "exit_rc": 1,
+      "sim_s": 60.0,
+      "wall_s": 792.49,
+      "cpu_s": 1116.29,
+      "wall_per_sim": 13.208,
+      "cpu_per_sim": 18.605,
+      "wall_per_sim_minus_rbpf_llm": 10.997,
+      "steady_slope_wall_per_sim": 13.855,
+      "physics_advance_s": 146.9,
+      "capture_s": 88.6,
+      "render_s": 86.7,
+      "rest_s": 557.0,
+      "rbpf_hash_wall_s": 123.2,
+      "llm_wait_s": 9.44,
+      "model_calls": 3,
+      "commands_sha256": {
+       "r1": "996a94911cfbcfec1230934834293e5c93716777a7cce28933d05f786910b6c1",
+       "r2": "5c4bb4448f35e4373a2957fd4f9c37d3c72358056d17bfa87263c2f97a6a4e66",
+       "r3": "82a3eae1e52ebe29f3f55404a34c3e5ff166ba38ef6864840a03addba22e62f0"
+      },
+      "image_list_sha256": {
+       "r1": "7dc7296bf0bc068f9f15176091d1bfe2fac2e3629d4cc2140f84310d64115d40",
+       "r2": "7a63489d31380631bd0f04227bf62f00aaa3d4202cd69aad700ae42cef09cc14",
+       "r3": "0baf68309abb53c7ab9af1f2abc500fe999123e07b3f069cadf272c2025ff5b9"
+      },
+      "rbpf_sha256": "241422e197bdea80334712986b7915d1140869e45497b2d1e3c23eabc34199be",
+      "files": 983,
+      "bytes": 28220951,
+      "all_hashes_sha256": "195ceca3b6373474c4d6babb3390c217a97d96e953bb3e283c51c3fcc2428c5a"
+     }
+    }
+   }
+  },
+  "d16v6": {
+   "vm": "ugrp-vmbench-d16v6",
+   "size": "Standard_D16as_v6",
+   "cpu_model": "AMD EPYC 9V74 80-Core Processor (Zen4)",
+   "vcpus": 16,
+   "physical_cores": 8,
+   "threads_per_core": 2,
+   "memory_gib": 64,
+   "usd_per_hour": 0.894,
+   "disk_controller": "NVMe",
+   "vm_lifetime": {
+    "start_utc_approx": "2026-10-12T00:48:30Z",
+    "deallocated_utc": "2026-10-12T01:24:11Z",
+    "minutes": 35.7,
+    "compute_usd_estimate": 0.532
+   },
+   "solo": {
+    "N": 1,
+    "valid": 1,
+    "wall_per_sim_median": 8.953,
+    "cpu_per_sim_median": 12.086,
+    "wall_per_sim_minus_rbpf_llm_median": 7.337,
+    "steady_slope_median": 9.389,
+    "physics_s_median": 115.984,
+    "capture_s_median": 60.489,
+    "render_s_median": 59.357,
+    "rest_s_median": 360.696,
+    "rbpf_hash_s_median": 87.254,
+    "llm_wait_s_median": 9.675,
+    "loadavg1_median": 1.583,
+    "loadavg1_max": 2.996,
+    "cpu_busy_frac_median": 0.086,
+    "batch_wall_s": 545.055,
+    "sim_s_total": 60.0,
+    "sim_s_per_usd": 443.278,
+    "per_run": {
+     "vmb-d16v6-solo": {
+      "status": "EARLY_STOP",
+      "failure": "MEASUREMENT_SIM_LIMIT",
+      "exit_rc": 1,
+      "sim_s": 60.0,
+      "wall_s": 537.17,
+      "cpu_s": 725.16,
+      "wall_per_sim": 8.953,
+      "cpu_per_sim": 12.086,
+      "wall_per_sim_minus_rbpf_llm": 7.337,
+      "steady_slope_wall_per_sim": 9.389,
+      "physics_advance_s": 116.0,
+      "capture_s": 60.5,
+      "render_s": 59.4,
+      "rest_s": 360.7,
+      "rbpf_hash_wall_s": 87.3,
+      "llm_wait_s": 9.68,
+      "model_calls": 3,
+      "commands_sha256": {
+       "r1": "996a94911cfbcfec1230934834293e5c93716777a7cce28933d05f786910b6c1",
+       "r2": "5c4bb4448f35e4373a2957fd4f9c37d3c72358056d17bfa87263c2f97a6a4e66",
+       "r3": "82a3eae1e52ebe29f3f55404a34c3e5ff166ba38ef6864840a03addba22e62f0"
+      },
+      "image_list_sha256": {
+       "r1": "7dc7296bf0bc068f9f15176091d1bfe2fac2e3629d4cc2140f84310d64115d40",
+       "r2": "1f18ec35f53e8b77f44374274da4b6e53cc7089fa16af6c576d93f80aaf280e7",
+       "r3": "2589e1ef146bd64e463e90b36c64e24bd0185e3658479adfcc7ece4c47ecad6d"
+      },
+      "rbpf_sha256": "e4673b5e6454ba36d5aba8290368a89b613888d3c373ee95f4019c8f10093159",
+      "files": 984,
+      "bytes": 28220494,
+      "all_hashes_sha256": "a2adf2b5b16cc12f2991ec54ef954fc715c0743b400866cac34740dc57d3a4ff"
+     }
+    }
+   },
+   "concurrent6": {
+    "N": 6,
+    "valid": 6,
+    "wall_per_sim_median": 10.189,
+    "cpu_per_sim_median": 14.485,
+    "wall_per_sim_minus_rbpf_llm_median": 8.377,
+    "steady_slope_median": 10.664,
+    "physics_s_median": 121.003,
+    "capture_s_median": 71.673,
+    "render_s_median": 70.229,
+    "rest_s_median": 418.272,
+    "rbpf_hash_s_median": 98.821,
+    "llm_wait_s_median": 9.812,
+    "loadavg1_median": 11.016,
+    "loadavg1_max": 14.252,
+    "cpu_busy_frac_median": 0.539,
+    "batch_wall_s": 625.108,
+    "sim_s_total": 360.0,
+    "sim_s_per_usd": 2319.064,
+    "per_run": {
+     "vmb-d16v6-c1": {
+      "status": "EARLY_STOP",
+      "failure": "MEASUREMENT_SIM_LIMIT",
+      "exit_rc": 1,
+      "sim_s": 60.0,
+      "wall_s": 614.18,
+      "cpu_s": 873.75,
+      "wall_per_sim": 10.236,
+      "cpu_per_sim": 14.563,
+      "wall_per_sim_minus_rbpf_llm": 8.461,
+      "steady_slope_wall_per_sim": 10.763,
+      "physics_advance_s": 125.0,
+      "capture_s": 70.7,
+      "render_s": 69.2,
+      "rest_s": 418.5,
+      "rbpf_hash_wall_s": 97.7,
+      "llm_wait_s": 8.83,
+      "model_calls": 3,
+      "commands_sha256": {
+       "r1": "996a94911cfbcfec1230934834293e5c93716777a7cce28933d05f786910b6c1",
+       "r2": "5c4bb4448f35e4373a2957fd4f9c37d3c72358056d17bfa87263c2f97a6a4e66",
+       "r3": "82a3eae1e52ebe29f3f55404a34c3e5ff166ba38ef6864840a03addba22e62f0"
+      },
+      "image_list_sha256": {
+       "r1": "7dc7296bf0bc068f9f15176091d1bfe2fac2e3629d4cc2140f84310d64115d40",
+       "r2": "1f18ec35f53e8b77f44374274da4b6e53cc7089fa16af6c576d93f80aaf280e7",
+       "r3": "2589e1ef146bd64e463e90b36c64e24bd0185e3658479adfcc7ece4c47ecad6d"
+      },
+      "rbpf_sha256": "e4673b5e6454ba36d5aba8290368a89b613888d3c373ee95f4019c8f10093159",
+      "files": 984,
+      "bytes": 28220582,
+      "all_hashes_sha256": "011ab8bd062faba8e1f7a3eb2437251040c01890ebd67211372a3892ec2f4d51"
+     },
+     "vmb-d16v6-c2": {
+      "status": "EARLY_STOP",
+      "failure": "MEASUREMENT_SIM_LIMIT",
+      "exit_rc": 1,
+      "sim_s": 60.0,
+      "wall_s": 611.14,
+      "cpu_s": 869.63,
+      "wall_per_sim": 10.186,
+      "cpu_per_sim": 14.494,
+      "wall_per_sim_minus_rbpf_llm": 8.366,
+      "steady_slope_wall_per_sim": 10.65,
+      "physics_advance_s": 120.1,
+      "capture_s": 72.2,
+      "render_s": 70.8,
+      "rest_s": 418.8,
+      "rbpf_hash_wall_s": 99.3,
+      "llm_wait_s": 9.92,
+      "model_calls": 3,
+      "commands_sha256": {
+       "r1": "996a94911cfbcfec1230934834293e5c93716777a7cce28933d05f786910b6c1",
+       "r2": "5c4bb4448f35e4373a2957fd4f9c37d3c72358056d17bfa87263c2f97a6a4e66",
+       "r3": "82a3eae1e52ebe29f3f55404a34c3e5ff166ba38ef6864840a03addba22e62f0"
+      },
+      "image_list_sha256": {
+       "r1": "7dc7296bf0bc068f9f15176091d1bfe2fac2e3629d4cc2140f84310d64115d40",
+       "r2": "1f18ec35f53e8b77f44374274da4b6e53cc7089fa16af6c576d93f80aaf280e7",
+       "r3": "2589e1ef146bd64e463e90b36c64e24bd0185e3658479adfcc7ece4c47ecad6d"
+      },
+      "rbpf_sha256": "e4673b5e6454ba36d5aba8290368a89b613888d3c373ee95f4019c8f10093159",
+      "files": 984,
+      "bytes": 28220485,
+      "all_hashes_sha256": "f6e6d9195649a2ebb783abe5e32ac1abd3b8d3359a106ad78f6ef2b64cf7c25f"
+     },
+     "vmb-d16v6-c3": {
+      "status": "EARLY_STOP",
+      "failure": "MEASUREMENT_SIM_LIMIT",
+      "exit_rc": 1,
+      "sim_s": 60.0,
+      "wall_s": 608.78,
+      "cpu_s": 868.6,
+      "wall_per_sim": 10.146,
+      "cpu_per_sim": 14.477,
+      "wall_per_sim_minus_rbpf_llm": 8.388,
+      "steady_slope_wall_per_sim": 10.672,
+      "physics_advance_s": 121.9,
+      "capture_s": 71.6,
+      "render_s": 70.1,
+      "rest_s": 415.3,
+      "rbpf_hash_wall_s": 97.8,
+      "llm_wait_s": 7.69,
+      "model_calls": 3,
+      "commands_sha256": {
+       "r1": "996a94911cfbcfec1230934834293e5c93716777a7cce28933d05f786910b6c1",
+       "r2": "5c4bb4448f35e4373a2957fd4f9c37d3c72358056d17bfa87263c2f97a6a4e66",
+       "r3": "82a3eae1e52ebe29f3f55404a34c3e5ff166ba38ef6864840a03addba22e62f0"
+      },
+      "image_list_sha256": {
+       "r1": "7dc7296bf0bc068f9f15176091d1bfe2fac2e3629d4cc2140f84310d64115d40",
+       "r2": "1f18ec35f53e8b77f44374274da4b6e53cc7089fa16af6c576d93f80aaf280e7",
+       "r3": "2589e1ef146bd64e463e90b36c64e24bd0185e3658479adfcc7ece4c47ecad6d"
+      },
+      "rbpf_sha256": "e4673b5e6454ba36d5aba8290368a89b613888d3c373ee95f4019c8f10093159",
+      "files": 984,
+      "bytes": 28220543,
+      "all_hashes_sha256": "0a73b19f96ecb93d463b912bca7868f14f24e9c3bb9fd5ce25dfa51faa348bec"
+     },
+     "vmb-d16v6-c4": {
+      "status": "EARLY_STOP",
+      "failure": "MEASUREMENT_SIM_LIMIT",
+      "exit_rc": 1,
+      "sim_s": 60.0,
+      "wall_s": 608.78,
+      "cpu_s": 867.43,
+      "wall_per_sim": 10.146,
+      "cpu_per_sim": 14.457,
+      "wall_per_sim_minus_rbpf_llm": 8.325,
+      "steady_slope_wall_per_sim": 10.656,
+      "physics_advance_s": 119.7,
+      "capture_s": 71.7,
+      "render_s": 70.3,
+      "rest_s": 417.4,
+      "rbpf_hash_wall_s": 99.4,
+      "llm_wait_s": 9.85,
+      "model_calls": 3,
+      "commands_sha256": {
+       "r1": "996a94911cfbcfec1230934834293e5c93716777a7cce28933d05f786910b6c1",
+       "r2": "5c4bb4448f35e4373a2957fd4f9c37d3c72358056d17bfa87263c2f97a6a4e66",
+       "r3": "82a3eae1e52ebe29f3f55404a34c3e5ff166ba38ef6864840a03addba22e62f0"
+      },
+      "image_list_sha256": {
+       "r1": "7dc7296bf0bc068f9f15176091d1bfe2fac2e3629d4cc2140f84310d64115d40",
+       "r2": "1f18ec35f53e8b77f44374274da4b6e53cc7089fa16af6c576d93f80aaf280e7",
+       "r3": "2589e1ef146bd64e463e90b36c64e24bd0185e3658479adfcc7ece4c47ecad6d"
+      },
+      "rbpf_sha256": "e4673b5e6454ba36d5aba8290368a89b613888d3c373ee95f4019c8f10093159",
+      "files": 984,
+      "bytes": 28220525,
+      "all_hashes_sha256": "d121245542045f5045bcf991fecd8dbecbb010e446e279676d61c16825c86206"
+     },
+     "vmb-d16v6-c5": {
+      "status": "EARLY_STOP",
+      "failure": "MEASUREMENT_SIM_LIMIT",
+      "exit_rc": 1,
+      "sim_s": 60.0,
+      "wall_s": 611.52,
+      "cpu_s": 868.0,
+      "wall_per_sim": 10.192,
+      "cpu_per_sim": 14.467,
+      "wall_per_sim_minus_rbpf_llm": 8.335,
+      "steady_slope_wall_per_sim": 10.625,
+      "physics_advance_s": 119.4,
+      "capture_s": 72.6,
+      "render_s": 71.1,
+      "rest_s": 419.5,
+      "rbpf_hash_wall_s": 99.9,
+      "llm_wait_s": 11.54,
+      "model_calls": 3,
+      "commands_sha256": {
+       "r1": "996a94911cfbcfec1230934834293e5c93716777a7cce28933d05f786910b6c1",
+       "r2": "5c4bb4448f35e4373a2957fd4f9c37d3c72358056d17bfa87263c2f97a6a4e66",
+       "r3": "82a3eae1e52ebe29f3f55404a34c3e5ff166ba38ef6864840a03addba22e62f0"
+      },
+      "image_list_sha256": {
+       "r1": "7dc7296bf0bc068f9f15176091d1bfe2fac2e3629d4cc2140f84310d64115d40",
+       "r2": "1f18ec35f53e8b77f44374274da4b6e53cc7089fa16af6c576d93f80aaf280e7",
+       "r3": "2589e1ef146bd64e463e90b36c64e24bd0185e3658479adfcc7ece4c47ecad6d"
+      },
+      "rbpf_sha256": "e4673b5e6454ba36d5aba8290368a89b613888d3c373ee95f4019c8f10093159",
+      "files": 984,
+      "bytes": 28220600,
+      "all_hashes_sha256": "c5074a478d6d7208bd60b9b232b4457a393d7832704d86bc2d40e6f1357975fe"
+     },
+     "vmb-d16v6-c6": {
+      "status": "EARLY_STOP",
+      "failure": "MEASUREMENT_SIM_LIMIT",
+      "exit_rc": 1,
+      "sim_s": 60.0,
+      "wall_s": 615.02,
+      "cpu_s": 873.66,
+      "wall_per_sim": 10.25,
+      "cpu_per_sim": 14.561,
+      "wall_per_sim_minus_rbpf_llm": 8.448,
+      "steady_slope_wall_per_sim": 10.708,
+      "physics_advance_s": 125.7,
+      "capture_s": 71.3,
+      "render_s": 69.8,
+      "rest_s": 418.0,
+      "rbpf_hash_wall_s": 98.4,
+      "llm_wait_s": 9.77,
+      "model_calls": 3,
+      "commands_sha256": {
+       "r1": "996a94911cfbcfec1230934834293e5c93716777a7cce28933d05f786910b6c1",
+       "r2": "5c4bb4448f35e4373a2957fd4f9c37d3c72358056d17bfa87263c2f97a6a4e66",
+       "r3": "82a3eae1e52ebe29f3f55404a34c3e5ff166ba38ef6864840a03addba22e62f0"
+      },
+      "image_list_sha256": {
+       "r1": "7dc7296bf0bc068f9f15176091d1bfe2fac2e3629d4cc2140f84310d64115d40",
+       "r2": "1f18ec35f53e8b77f44374274da4b6e53cc7089fa16af6c576d93f80aaf280e7",
+       "r3": "2589e1ef146bd64e463e90b36c64e24bd0185e3658479adfcc7ece4c47ecad6d"
+      },
+      "rbpf_sha256": "e4673b5e6454ba36d5aba8290368a89b613888d3c373ee95f4019c8f10093159",
+      "files": 984,
+      "bytes": 28220530,
+      "all_hashes_sha256": "083d7a14a3f9f43a0fb64fea46d70021b31a00e4ad05bb61f9be3222da9727e2"
+     }
+    }
+   }
+  },
+  "f16v6": {
+   "vm": "ugrp-vmbench-f16v6",
+   "size": "Standard_F16as_v6",
+   "cpu_model": "AMD EPYC 9V74 80-Core Processor (Zen4)",
+   "vcpus": 16,
+   "physical_cores": 16,
+   "threads_per_core": 1,
+   "memory_gib": 64,
+   "usd_per_hour": 1.347,
+   "disk_controller": "NVMe",
+   "vm_lifetime": {
+    "start_utc_approx": "2026-10-12T01:25:04Z",
+    "deallocated_utc": "2026-10-12T01:51:58Z",
+    "minutes": 26.9,
+    "compute_usd_estimate": 0.604
+   },
+   "solo": {
+    "N": 1,
+    "valid": 1,
+    "wall_per_sim_median": 9.232,
+    "cpu_per_sim_median": 12.003,
+    "wall_per_sim_minus_rbpf_llm_median": 7.565,
+    "steady_slope_median": 9.47,
+    "physics_s_median": 116.181,
+    "capture_s_median": 63.943,
+    "render_s_median": 62.821,
+    "rest_s_median": 373.778,
+    "rbpf_hash_s_median": 87.237,
+    "llm_wait_s_median": 12.737,
+    "loadavg1_median": 1.281,
+    "loadavg1_max": 2.262,
+    "cpu_busy_frac_median": 0.084,
+    "batch_wall_s": 590.06,
+    "sim_s_total": 60.0,
+    "sim_s_per_usd": 271.763,
+    "per_run": {
+     "vmb-f16v6-solo": {
+      "status": "EARLY_STOP",
+      "failure": "MEASUREMENT_SIM_LIMIT",
+      "exit_rc": 1,
+      "sim_s": 60.0,
+      "wall_s": 553.9,
+      "cpu_s": 720.17,
+      "wall_per_sim": 9.232,
+      "cpu_per_sim": 12.003,
+      "wall_per_sim_minus_rbpf_llm": 7.565,
+      "steady_slope_wall_per_sim": 9.47,
+      "physics_advance_s": 116.2,
+      "capture_s": 63.9,
+      "render_s": 62.8,
+      "rest_s": 373.8,
+      "rbpf_hash_wall_s": 87.2,
+      "llm_wait_s": 12.74,
+      "model_calls": 3,
+      "commands_sha256": {
+       "r1": "996a94911cfbcfec1230934834293e5c93716777a7cce28933d05f786910b6c1",
+       "r2": "5c4bb4448f35e4373a2957fd4f9c37d3c72358056d17bfa87263c2f97a6a4e66",
+       "r3": "82a3eae1e52ebe29f3f55404a34c3e5ff166ba38ef6864840a03addba22e62f0"
+      },
+      "image_list_sha256": {
+       "r1": "7dc7296bf0bc068f9f15176091d1bfe2fac2e3629d4cc2140f84310d64115d40",
+       "r2": "1f18ec35f53e8b77f44374274da4b6e53cc7089fa16af6c576d93f80aaf280e7",
+       "r3": "2589e1ef146bd64e463e90b36c64e24bd0185e3658479adfcc7ece4c47ecad6d"
+      },
+      "rbpf_sha256": "e4673b5e6454ba36d5aba8290368a89b613888d3c373ee95f4019c8f10093159",
+      "files": 983,
+      "bytes": 28220347,
+      "all_hashes_sha256": "ec8b62702efe81b511be7512955f06fc3577dd365d60fb4884ef754977282396"
+     }
+    }
+   },
+   "concurrent6": {
+    "N": 6,
+    "valid": 6,
+    "wall_per_sim_median": 9.104,
+    "cpu_per_sim_median": 12.534,
+    "wall_per_sim_minus_rbpf_llm_median": 7.414,
+    "steady_slope_median": 9.541,
+    "physics_s_median": 112.982,
+    "capture_s_median": 61.641,
+    "render_s_median": 60.461,
+    "rest_s_median": 371.461,
+    "rbpf_hash_s_median": 89.508,
+    "llm_wait_s_median": 11.331,
+    "loadavg1_median": 13.09,
+    "loadavg1_max": 21.104,
+    "cpu_busy_frac_median": 0.526,
+    "batch_wall_s": 560.086,
+    "sim_s_total": 360.0,
+    "sim_s_per_usd": 1717.841,
+    "per_run": {
+     "vmb-f16v6-c1": {
+      "status": "EARLY_STOP",
+      "failure": "MEASUREMENT_SIM_LIMIT",
+      "exit_rc": 1,
+      "sim_s": 60.0,
+      "wall_s": 541.22,
+      "cpu_s": 749.81,
+      "wall_per_sim": 9.02,
+      "cpu_per_sim": 12.497,
+      "wall_per_sim_minus_rbpf_llm": 7.382,
+      "steady_slope_wall_per_sim": 9.538,
+      "physics_advance_s": 110.4,
+      "capture_s": 61.5,
+      "render_s": 60.3,
+      "rest_s": 369.3,
+      "rbpf_hash_wall_s": 88.5,
+      "llm_wait_s": 9.86,
+      "model_calls": 3,
+      "commands_sha256": {
+       "r1": "996a94911cfbcfec1230934834293e5c93716777a7cce28933d05f786910b6c1",
+       "r2": "5c4bb4448f35e4373a2957fd4f9c37d3c72358056d17bfa87263c2f97a6a4e66",
+       "r3": "82a3eae1e52ebe29f3f55404a34c3e5ff166ba38ef6864840a03addba22e62f0"
+      },
+      "image_list_sha256": {
+       "r1": "7dc7296bf0bc068f9f15176091d1bfe2fac2e3629d4cc2140f84310d64115d40",
+       "r2": "1f18ec35f53e8b77f44374274da4b6e53cc7089fa16af6c576d93f80aaf280e7",
+       "r3": "2589e1ef146bd64e463e90b36c64e24bd0185e3658479adfcc7ece4c47ecad6d"
+      },
+      "rbpf_sha256": "e4673b5e6454ba36d5aba8290368a89b613888d3c373ee95f4019c8f10093159",
+      "files": 983,
+      "bytes": 28220492,
+      "all_hashes_sha256": "d3d41b8cc45c463407de6b69866b8bbdb6aa80fda2ad7249c5e45071e3b7787b"
+     },
+     "vmb-f16v6-c2": {
+      "status": "EARLY_STOP",
+      "failure": "MEASUREMENT_SIM_LIMIT",
+      "exit_rc": 1,
+      "sim_s": 60.0,
+      "wall_s": 552.55,
+      "cpu_s": 755.62,
+      "wall_per_sim": 9.209,
+      "cpu_per_sim": 12.594,
+      "wall_per_sim_minus_rbpf_llm": 7.46,
+      "steady_slope_wall_per_sim": 9.551,
+      "physics_advance_s": 116.7,
+      "capture_s": 61.7,
+      "render_s": 60.5,
+      "rest_s": 374.1,
+      "rbpf_hash_wall_s": 89.5,
+      "llm_wait_s": 15.43,
+      "model_calls": 3,
+      "commands_sha256": {
+       "r1": "996a94911cfbcfec1230934834293e5c93716777a7cce28933d05f786910b6c1",
+       "r2": "5c4bb4448f35e4373a2957fd4f9c37d3c72358056d17bfa87263c2f97a6a4e66",
+       "r3": "82a3eae1e52ebe29f3f55404a34c3e5ff166ba38ef6864840a03addba22e62f0"
+      },
+      "image_list_sha256": {
+       "r1": "7dc7296bf0bc068f9f15176091d1bfe2fac2e3629d4cc2140f84310d64115d40",
+       "r2": "1f18ec35f53e8b77f44374274da4b6e53cc7089fa16af6c576d93f80aaf280e7",
+       "r3": "2589e1ef146bd64e463e90b36c64e24bd0185e3658479adfcc7ece4c47ecad6d"
+      },
+      "rbpf_sha256": "e4673b5e6454ba36d5aba8290368a89b613888d3c373ee95f4019c8f10093159",
+      "files": 983,
+      "bytes": 28220531,
+      "all_hashes_sha256": "85adccf0056880b56b9fad7f8463f21545c8a6367d6cf0789da482f2eef4e9c9"
+     },
+     "vmb-f16v6-c3": {
+      "status": "EARLY_STOP",
+      "failure": "MEASUREMENT_SIM_LIMIT",
+      "exit_rc": 1,
+      "sim_s": 60.0,
+      "wall_s": 548.7,
+      "cpu_s": 751.57,
+      "wall_per_sim": 9.145,
+      "cpu_per_sim": 12.526,
+      "wall_per_sim_minus_rbpf_llm": 7.435,
+      "steady_slope_wall_per_sim": 9.525,
+      "physics_advance_s": 115.3,
+      "capture_s": 61.9,
+      "render_s": 60.8,
+      "rest_s": 371.4,
+      "rbpf_hash_wall_s": 88.1,
+      "llm_wait_s": 14.46,
+      "model_calls": 3,
+      "commands_sha256": {
+       "r1": "996a94911cfbcfec1230934834293e5c93716777a7cce28933d05f786910b6c1",
+       "r2": "5c4bb4448f35e4373a2957fd4f9c37d3c72358056d17bfa87263c2f97a6a4e66",
+       "r3": "82a3eae1e52ebe29f3f55404a34c3e5ff166ba38ef6864840a03addba22e62f0"
+      },
+      "image_list_sha256": {
+       "r1": "7dc7296bf0bc068f9f15176091d1bfe2fac2e3629d4cc2140f84310d64115d40",
+       "r2": "1f18ec35f53e8b77f44374274da4b6e53cc7089fa16af6c576d93f80aaf280e7",
+       "r3": "2589e1ef146bd64e463e90b36c64e24bd0185e3658479adfcc7ece4c47ecad6d"
+      },
+      "rbpf_sha256": "e4673b5e6454ba36d5aba8290368a89b613888d3c373ee95f4019c8f10093159",
+      "files": 983,
+      "bytes": 28220403,
+      "all_hashes_sha256": "2e857b7505c09773da9e6396616f9fe6668ae148ceb48d26c8306cd7f4832473"
+     },
+     "vmb-f16v6-c4": {
+      "status": "EARLY_STOP",
+      "failure": "MEASUREMENT_SIM_LIMIT",
+      "exit_rc": 1,
+      "sim_s": 60.0,
+      "wall_s": 542.57,
+      "cpu_s": 751.19,
+      "wall_per_sim": 9.043,
+      "cpu_per_sim": 12.52,
+      "wall_per_sim_minus_rbpf_llm": 7.388,
+      "steady_slope_wall_per_sim": 9.54,
+      "physics_advance_s": 110.0,
+      "capture_s": 61.7,
+      "render_s": 60.5,
+      "rest_s": 370.9,
+      "rbpf_hash_wall_s": 89.5,
+      "llm_wait_s": 9.8,
+      "model_calls": 3,
+      "commands_sha256": {
+       "r1": "996a94911cfbcfec1230934834293e5c93716777a7cce28933d05f786910b6c1",
+       "r2": "5c4bb4448f35e4373a2957fd4f9c37d3c72358056d17bfa87263c2f97a6a4e66",
+       "r3": "82a3eae1e52ebe29f3f55404a34c3e5ff166ba38ef6864840a03addba22e62f0"
+      },
+      "image_list_sha256": {
+       "r1": "7dc7296bf0bc068f9f15176091d1bfe2fac2e3629d4cc2140f84310d64115d40",
+       "r2": "1f18ec35f53e8b77f44374274da4b6e53cc7089fa16af6c576d93f80aaf280e7",
+       "r3": "2589e1ef146bd64e463e90b36c64e24bd0185e3658479adfcc7ece4c47ecad6d"
+      },
+      "rbpf_sha256": "e4673b5e6454ba36d5aba8290368a89b613888d3c373ee95f4019c8f10093159",
+      "files": 983,
+      "bytes": 28220462,
+      "all_hashes_sha256": "f77de8855bb8747be653c0ff8bd27e235378c8857eff749737891aa653ce2578"
+     },
+     "vmb-f16v6-c5": {
+      "status": "EARLY_STOP",
+      "failure": "MEASUREMENT_SIM_LIMIT",
+      "exit_rc": 1,
+      "sim_s": 60.0,
+      "wall_s": 543.75,
+      "cpu_s": 752.46,
+      "wall_per_sim": 9.063,
+      "cpu_per_sim": 12.541,
+      "wall_per_sim_minus_rbpf_llm": 7.393,
+      "steady_slope_wall_per_sim": 9.542,
+      "physics_advance_s": 110.7,
+      "capture_s": 61.6,
+      "render_s": 60.4,
+      "rest_s": 371.5,
+      "rbpf_hash_wall_s": 89.8,
+      "llm_wait_s": 10.41,
+      "model_calls": 3,
+      "commands_sha256": {
+       "r1": "996a94911cfbcfec1230934834293e5c93716777a7cce28933d05f786910b6c1",
+       "r2": "5c4bb4448f35e4373a2957fd4f9c37d3c72358056d17bfa87263c2f97a6a4e66",
+       "r3": "82a3eae1e52ebe29f3f55404a34c3e5ff166ba38ef6864840a03addba22e62f0"
+      },
+      "image_list_sha256": {
+       "r1": "7dc7296bf0bc068f9f15176091d1bfe2fac2e3629d4cc2140f84310d64115d40",
+       "r2": "1f18ec35f53e8b77f44374274da4b6e53cc7089fa16af6c576d93f80aaf280e7",
+       "r3": "2589e1ef146bd64e463e90b36c64e24bd0185e3658479adfcc7ece4c47ecad6d"
+      },
+      "rbpf_sha256": "e4673b5e6454ba36d5aba8290368a89b613888d3c373ee95f4019c8f10093159",
+      "files": 983,
+      "bytes": 28220440,
+      "all_hashes_sha256": "d7f62462703d75e7cfe915f6b4b7570d9cf5969be25b5f204f1a9f621b2d003e"
+     },
+     "vmb-f16v6-c6": {
+      "status": "EARLY_STOP",
+      "failure": "MEASUREMENT_SIM_LIMIT",
+      "exit_rc": 1,
+      "sim_s": 60.0,
+      "wall_s": 551.41,
+      "cpu_s": 758.13,
+      "wall_per_sim": 9.19,
+      "cpu_per_sim": 12.636,
+      "wall_per_sim_minus_rbpf_llm": 7.492,
+      "steady_slope_wall_per_sim": 9.578,
+      "physics_advance_s": 116.0,
+      "capture_s": 61.4,
+      "render_s": 60.2,
+      "rest_s": 373.9,
+      "rbpf_hash_wall_s": 89.6,
+      "llm_wait_s": 12.25,
+      "model_calls": 3,
+      "commands_sha256": {
+       "r1": "996a94911cfbcfec1230934834293e5c93716777a7cce28933d05f786910b6c1",
+       "r2": "5c4bb4448f35e4373a2957fd4f9c37d3c72358056d17bfa87263c2f97a6a4e66",
+       "r3": "82a3eae1e52ebe29f3f55404a34c3e5ff166ba38ef6864840a03addba22e62f0"
+      },
+      "image_list_sha256": {
+       "r1": "7dc7296bf0bc068f9f15176091d1bfe2fac2e3629d4cc2140f84310d64115d40",
+       "r2": "1f18ec35f53e8b77f44374274da4b6e53cc7089fa16af6c576d93f80aaf280e7",
+       "r3": "2589e1ef146bd64e463e90b36c64e24bd0185e3658479adfcc7ece4c47ecad6d"
+      },
+      "rbpf_sha256": "e4673b5e6454ba36d5aba8290368a89b613888d3c373ee95f4019c8f10093159",
+      "files": 983,
+      "bytes": 28220389,
+      "all_hashes_sha256": "64504fc388741b520c32471df86d38fdfd84ffc446b906700055938cdcff2bc8"
+     }
+    }
+   }
+  }
+ },
+ "comparison": {
+  "solo_wall_per_sim": {
+   "d16v5": 11.349,
+   "d16v6": 8.953,
+   "f16v6": 9.232
+  },
+  "concurrent6_wall_per_sim_median": {
+   "d16v5": 13.228,
+   "d16v6": 10.189,
+   "f16v6": 9.104
+  },
+  "d16v6_vs_d16v5_solo_speedup": 1.268,
+  "d16v6_vs_d16v5_concurrent6_speedup": 1.298,
+  "concurrency6_slowdown": {
+   "d16v5": 1.166,
+   "d16v6": 1.138,
+   "f16v6": 0.986
+  },
+  "sim_s_per_usd_concurrent6": {
+   "d16v5": 1886.395,
+   "d16v6": 2319.064,
+   "f16v6": 1717.841
+  },
+  "sim_s_per_usd_solo": {
+   "d16v5": 369.114,
+   "d16v6": 443.278,
+   "f16v6": 271.763
+  },
+  "sim_s_per_usd_definition": "sum of valid SIM s in batch / (batch wall hours incl. setup+finalization * Linux list USD/h); compute only, excludes disk/IP/model",
+  "phase_seconds_solo": {
+   "d16v5": {
+    "physics": 131,
+    "capture": 73,
+    "rest": 476
+   },
+   "d16v6": {
+    "physics": 116,
+    "capture": 60,
+    "rest": 361
+   },
+   "f16v6": {
+    "physics": 116,
+    "capture": 64,
+    "rest": 374
+   }
+  },
+  "same_sku_reference": {
+   "note": "Read-only from ugrp-sim-azure (D16as_v5) e2e13 batch, 9-10 concurrent, load avg ~33 on 16 vCPU; v200 off path, same 60 SIM s measurement; not part of this cohort",
+   "e2e13_off_wall_per_sim": [
+    15.46,
+    15.56,
+    15.49
+   ],
+   "e2e13_both_wall_per_sim": [
+    13.36,
+    13.3,
+    13.17
+   ]
+  }
+ },
+ "trajectory": {
+  "all_runs": {
+   "N": 21,
+   "distinct_command_sets": 1,
+   "distinct_image_sets": 2,
+   "distinct_rbpf": 2
+  },
+  "per_vm": {
+   "d16v5": {
+    "distinct_command_sets": 1,
+    "distinct_image_sets": 1,
+    "distinct_rbpf": 1,
+    "runs": 7
+   },
+   "d16v6": {
+    "distinct_command_sets": 1,
+    "distinct_image_sets": 1,
+    "distinct_rbpf": 1,
+    "runs": 7
+   },
+   "f16v6": {
+    "distinct_command_sets": 1,
+    "distinct_image_sets": 1,
+    "distinct_rbpf": 1,
+    "runs": 7
+   }
+  },
+  "cross_vm": {
+   "commands_equal": true,
+   "image_lists_equal": false,
+   "rbpf_equal": false,
+   "detail": "21/21 runs share one command set (r1/r2/r3 commands.jsonl sha256). Image lists and RBPF state: identical within each VM (7/7) and between the two Zen4 sizes (d16v6 = f16v6), different between Zen3 (d16v5) and Zen4. Likely llvmpipe/OSMesa and numeric SIMD paths differ by CPU (not root-caused); within 60 SIM s this did not change issued commands.",
+   "commands_sha256": {
+    "r1": "996a94911cfbcfec1230934834293e5c93716777a7cce28933d05f786910b6c1",
+    "r2": "5c4bb4448f35e4373a2957fd4f9c37d3c72358056d17bfa87263c2f97a6a4e66",
+    "r3": "82a3eae1e52ebe29f3f55404a34c3e5ff166ba38ef6864840a03addba22e62f0"
+   }
+  }
+ },
+ "model_accounting": {
+  "provider_calls": 63,
+  "status_200": 63,
+  "known_cost_usd": 0.00785476,
+  "prompt_tokens": 96852,
+  "completion_tokens": 3048,
+  "provider": "OpenRouter -> DeepInfra",
+  "receipts": "outputs/azure-vm-bench-20261012/relay2/receipts.jsonl"
+ },
+ "cost": {
+  "vm_compute_usd_estimate": 1.67,
+  "budget_usd": 5,
+  "note": "Start times from guest uptime (+-1 min); excludes ~0.02 USD of disks/public IPs; Microsoft for Startups credit."
+ },
+ "recommendation": {
+  "size": "Standard_D16as_v6",
+  "reason": "Best measured SIM s per USD (2319 vs 1886 D16as_v5, 1718 F16as_v6 at 6 concurrent) and 21-23% faster per run than D16as_v5 for +5% price. F16as_v6 has no SMT penalty (6 concurrent = solo) but costs 51% more; it would only win at >~9-10 concurrent runs, which was not measured.",
+  "unverified": "Concurrency above 6 and F16 at 10+ runs not measured; resize of the existing VM not performed (other tasks own it).",
+  "cohort_caveat": "Zen3 (D16as_v5) and Zen4 (D16as_v6/F16as_v6) produce different RGB and RBPF bytes for the same source. After a resize, do not pool v5 and v6 results in one cohort; record the host CPU model with the execution bundle hash."
+ },
+ "answer": {
+  "vm_share": "Same code: D16as_v5 (Zen3) is 1.27x slower solo and 1.30x slower at 6 concurrent than D16as_v6 (Zen4). So about 21-23% of the per-run wall time is attributable to the CPU generation.",
+  "concurrency_share": "On D16as_v5, 6 concurrent adds +16.6% (11.35 -> 13.23); the e2e13 batch at 9-10 concurrent (load ~33) reached ~15.5. The 11-16 spread is mostly concurrency/oversubscription on 8 physical cores.",
+  "code_share": "Even on Zen4 the current code needs ~9 wall s per SIM s solo (7.3 without the measurement-only RBPF digest and LLM wait). \"rest\" (Python control/perception/map plus the measurement-only RBPF digest of 87-108 s) is 67-70% of wall; physics 18-21%, capture 11%. The old e2e3 6-7 s on Oracle E6 Zen5 used different code/workload; Zen5 was not measured here (unverified)."
+ },
+ "cleanup": {
+  "deleted": [
+   "ugrp-vmbench-d16v5",
+   "ugrp-vmbench-d16v6",
+   "ugrp-vmbench-f16v6 (VM, OS disk, NIC via delete options)",
+   "3 public IPs",
+   "ugrp-vmbench-nsg"
+  ],
+  "kept": [
+   "snapshot ugrp-sim-azure2-source-20261012 (owned by another task)"
+  ],
+  "verified_utc": "2026-10-12T01:52Z",
+  "az_vm_list_after": [
+   "ugrp-sim-azure (running, not touched)",
+   "ugrp-sim-azure2 (running, not touched)"
+  ],
+  "remaining_vmbench_resources": 0
+ },
+ "guards": {
+  "guest_idle_guard": "ugrp-azure-guard.timer active on all three clones (busy=true every minute).",
+  "deallocate_path": "Not functional on clones: guard deallocates via IMDS managed identity and the clones had no identity (IAM forbidden by task). Real backstops: Mac one-shot deadline deallocate (allowlisted names, 04:30Z, stopped after deletion) and the existing subscription Automation runbook (cost cap/daily).",
+  "clone_side_changes": "On each clone right after boot: stopped+disabled ugrp-azure-recover.service and ugrp-auto-archive.timer so cloned evidence was not re-archived to ARM. Boot recovery on d16v6 had already tried e2e13-profile-s61001 3 times and failed (\"ARM mount unavailable\"); ARM listing showed no clone-originated copy."
+ },
+ "incidents": [
+  {
+   "what": "First solo attempt on d16v5/d16v6 HOST_ERROR: relay rejected vmb-* call ids (HTTP 400, allowlist in scripts/s4_proxy_relay.py). 0 provider calls.",
+   "fix": "Scratch copy of the 641d9c6e relay patched with one vmb-* pattern (relay-allowlist.diff; patched sha256 48934cb0..., original 1db4a7c0...). Not committed. Failed runs kept as runs-*/vmb-attempt1-relay400/."
+  },
+  {
+   "what": "d16v5 first create hit an NSG creation race (two scripts creating ugrp-vmbench-nsg); second: macOS bash empty-array bug in create_vm.sh.",
+   "fix": "Re-ran; no extra resources left."
+  },
+  {
+   "what": "F16 reverse tunnel dropped (server not responding) after all 18 concurrent model calls had completed (200).",
+   "fix": "No run affected."
+  }
+ ],
+ "records": {
+  "local_root": "/Users/changmin/projects/ugrp/outputs/azure-vm-bench-20261012",
+  "local_sha256_list": "outputs/azure-vm-bench-20261012/SHA256SUMS.local",
+  "local_files": 1956,
+  "per_vm_collect": {
+   "d16v5": "collect-d16v5.json.zst",
+   "d16v6": "collect-d16v6.json.zst",
+   "f16v6": "collect-f16v6.json.zst"
+  },
+  "fetched": "lite only: no JPEG/PNG/npz, no image-bearing wire requests; per-run ALL-hashes.json lists every original file sha256; >64KiB JSON zstd with COMPRESSED.json manifests",
+  "originals": "Deleted with the temporary VM disks (as instructed); not archived to ARM."
+ },
+ "not_verified": [
+  "Oracle E6 Zen5 on current code",
+  "Concurrency >6",
+  "F16 at 10+ concurrent",
+  "Root cause of Zen3/Zen4 image/RBPF byte differences",
+  "Effect on full-length (330+ SIM s) runs"
+ ],
+ "references": [
+  {
+   "url": "https://learn.microsoft.com/en-us/rest/api/cost-management/retail-prices/azure-retail-prices",
+   "use": "prices (koreacentral Linux: D16as_v5 0.848, D16as_v6 0.894, F16as_v6 1.347 USD/h, queried 2026-10-12T00:42Z)"
+  },
+  {
+   "url": "https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/general-purpose/dasv6-series",
+   "use": "Dasv6 Zen4 EPYC 9004, NVMe-only"
+  },
+  {
+   "url": "https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/compute-optimized/fasv6-series",
+   "use": "Fasv6 one vCPU per physical core"
+  },
+  {
+   "url": "https://learn.microsoft.com/en-us/azure/virtual-machines/nvme-overview",
+   "use": "NVMe disk controller for v6 sizes"
+  }
+ ]
+}

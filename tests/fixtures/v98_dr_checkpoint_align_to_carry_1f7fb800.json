@@ -1,0 +1,169 @@
+{
+  "schema": "ugrp.test_fixture.v98_dr_checkpoint_record.v1",
+  "source": {
+    "path": "/Users/changmin/projects/ugrp/outputs/v98-dev-probe-align_to_carry-1f7fb800/zone_wide_door_geometry_v3/student_record.json",
+    "sha256": "a609368e4e7b44361ea2cc011c0ad668aef4351466e17b9ebef6a75d9fdda2e2",
+    "run": "v98-dev-probe-align_to_carry-1f7fb800 (DEV_PILOT FUNCTIONAL_DEV, seed 911, full route)"
+  },
+  "note": "Copied verbatim from the own controller/provider record; no ground truth.",
+  "robots": {
+    "r1": {
+      "begin_relocalization": {
+        "event": "begin_relocalization",
+        "t": 101.73999999931836,
+        "previous_fix_t": 51.95000000015704,
+        "belief_preserved": true,
+        "before": {
+          "pf_id": 4650160096,
+          "particles_sha256": "0493f998366b0f94bb5eb5723b0cd0ec324e0f54e5509bbaef5a02be13f44ee2",
+          "std": [
+            [
+              0.00079077,
+              1.953e-05,
+              -6.925e-05
+            ],
+            [
+              1.953e-05,
+              0.0005548,
+              8.682e-05
+            ],
+            [
+              -6.925e-05,
+              8.682e-05,
+              0.00040865
+            ]
+          ],
+          "last_scan_t": 51.95000000015704
+        },
+        "after": {
+          "pf_id": 4650160096,
+          "particles_sha256": "0493f998366b0f94bb5eb5723b0cd0ec324e0f54e5509bbaef5a02be13f44ee2",
+          "last_scan_t": null
+        }
+      },
+      "last_loaded_gate_check": {
+        "robot_id": "r1",
+        "event": "loaded_gate_check",
+        "sim_s": 101.29999999933254,
+        "state": "carry",
+        "seg": 0,
+        "report_t_est": 101.14,
+        "std_xy_m": 0.0364,
+        "std_yaw_rad": 0.020076,
+        "std_yaw_deg": 1.15,
+        "fix_age_s": 49.19,
+        "gate_state": "ok",
+        "gate_ok": true,
+        "profile": "loaded",
+        "high_xy_m": 0.07,
+        "low_xy_m": 0.06,
+        "high_yaw_rad": 0.05235987755982989,
+        "low_yaw_rad": 0.04363323129985824,
+        "classify": "low",
+        "moving": true,
+        "passed": true,
+        "terminal": false
+      },
+      "checkpoint_high_stop": {
+        "robot_id": "r1",
+        "event": "checkpoint_high_stop",
+        "sim_s": 101.89999999931835,
+        "seg": 1,
+        "high": true,
+        "opened": false,
+        "epoch": 1
+      },
+      "job_failed": {
+        "schema": "ugrp.zone_own_executor_event.v1",
+        "robot_id": "r1",
+        "event": "job_failed",
+        "sim_s": 110.0,
+        "job_id": "r1-job-003",
+        "job_kind": "pair_carry",
+        "detail": {
+          "reason": "HIGH_CHECKPOINT_REOBSERVE_TIMEOUT"
+        },
+        "scheduler_trigger": "failure"
+      }
+    },
+    "r2": {
+      "begin_relocalization": {
+        "event": "begin_relocalization",
+        "t": 101.73999999931836,
+        "previous_fix_t": 58.05000000018617,
+        "belief_preserved": true,
+        "before": {
+          "pf_id": 4652757888,
+          "particles_sha256": "2de979f3dc8592a94c85d4ef062455d35e904cb307e2b411126a6b0f898c5cde",
+          "std": [
+            [
+              0.00073073,
+              5.23e-06,
+              -1.85e-06
+            ],
+            [
+              5.23e-06,
+              0.00080111,
+              0.00025383
+            ],
+            [
+              -1.85e-06,
+              0.00025383,
+              0.00039468
+            ]
+          ],
+          "last_scan_t": 58.05000000018617
+        },
+        "after": {
+          "pf_id": 4652757888,
+          "particles_sha256": "2de979f3dc8592a94c85d4ef062455d35e904cb307e2b411126a6b0f898c5cde",
+          "last_scan_t": null
+        }
+      },
+      "last_loaded_gate_check": {
+        "robot_id": "r2",
+        "event": "loaded_gate_check",
+        "sim_s": 101.29999999933254,
+        "state": "carry",
+        "seg": 0,
+        "report_t_est": 101.14,
+        "std_xy_m": 0.0388,
+        "std_yaw_rad": 0.019699,
+        "std_yaw_deg": 1.129,
+        "fix_age_s": 43.09,
+        "gate_state": "ok",
+        "gate_ok": true,
+        "profile": "loaded",
+        "high_xy_m": 0.07,
+        "low_xy_m": 0.06,
+        "high_yaw_rad": 0.05235987755982989,
+        "low_yaw_rad": 0.04363323129985824,
+        "classify": "low",
+        "moving": true,
+        "passed": true,
+        "terminal": false
+      },
+      "checkpoint_high_stop": {
+        "robot_id": "r2",
+        "event": "checkpoint_high_stop",
+        "sim_s": 101.89999999931835,
+        "seg": 1,
+        "high": true,
+        "opened": false,
+        "epoch": 1
+      },
+      "job_failed": {
+        "schema": "ugrp.zone_own_executor_event.v1",
+        "robot_id": "r2",
+        "event": "job_failed",
+        "sim_s": 110.0,
+        "job_id": "r2-job-003",
+        "job_kind": "pair_carry",
+        "detail": {
+          "reason": "PARTNER_ABORT"
+        },
+        "scheduler_trigger": "failure"
+      }
+    }
+  }
+}

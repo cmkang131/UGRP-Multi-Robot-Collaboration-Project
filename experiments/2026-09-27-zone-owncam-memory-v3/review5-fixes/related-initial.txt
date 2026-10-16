@@ -1,0 +1,115 @@
+Numerical thread caps: 1; OpenCV threads: 1; pytest worker: main process
+.....................................F...F.............................F [ 40%]
+F...........................F................................F.......... [ 80%]
+....................................                                     [100%]
+=================================== FAILURES ===================================
+_________ ControllerAndBoundaryTests.test_no_frames_stop_without_grasp _________
+
+self = <test_owncam_memory_v3.ControllerAndBoundaryTests testMethod=test_no_frames_stop_without_grasp>
+
+    def test_no_frames_stop_without_grasp(self):
+        ctl = controller()
+        now = 0.
+        for _ in range(2200):
+            result = ctl.decide(now)
+            if result['mode'] == 'done':
+                break
+            for cmd in result.get('commands', []):
+                ctl.on_command({'t': now, **cmd})
+            now += .1
+>       self.assertEqual(ctl.outcome, 'LOOK_COLLISION_UNVERIFIED')
+E       AssertionError: 'NOT_INITIALIZED' != 'LOOK_COLLISION_UNVERIFIED'
+E       - NOT_INITIALIZED
+E       + LOOK_COLLISION_UNVERIFIED
+
+tests/test_owncam_memory_v3.py:593: AssertionError
+_ ControllerAndBoundaryTests.test_runner_selects_all_versions_and_draft_is_refused_before_launch _
+
+self = <test_owncam_memory_v3.ControllerAndBoundaryTests testMethod=test_runner_selects_all_versions_and_draft_is_refused_before_launch>
+
+    def test_runner_selects_all_versions_and_draft_is_refused_before_launch(self):
+        from scripts import run_m1_owncam_memory_v3 as runner
+        from harness.m1_owncam_memory import M1OwnCamDeliveryMem
+        from harness.m1_owncam_memory_v3 import M1OwnCamDeliveryMemV3
+        from harness.m1_owncam_delivery import M1OwnCamDelivery
+>       self.assertIs(runner.controller_class('off'), M1OwnCamDelivery)
+E       AssertionError: <class 'harness.m1_owncam_memory_v3.M1OwnCamDeliveryOffV3'> is not <class 'harness.m1_owncam_delivery.M1OwnCamDelivery'>
+
+tests/test_owncam_memory_v3.py:618: AssertionError
+__ test_yaw_threshold_and_recovery_reset_budget_only_when_drive_ready[False] ___
+
+loaded = False
+
+    @pytest.mark.parametrize('loaded', [False, True])
+    def test_yaw_threshold_and_recovery_reset_budget_only_when_drive_ready(loaded):
+        from harness.owncam_drive import LOOK_IF_STD_YAW_RAD
+        leg, loc, est = leg_fixture(loaded)
+        fix(leg.memory, loc.t)
+        assert leg._should_refix(True)
+        assert leg.unverified_looks == 1
+        est['std_yaw_rad'] = LOOK_IF_STD_YAW_RAD
+        est['cov'][2, 2] = LOOK_IF_STD_YAW_RAD**2
+        assert not leg._should_refix(True)
+>       assert leg.unverified_looks == 0
+E       assert 2 == 0
+E        +  where 2 = <harness.owncam_drive_mem_v3.LegDriverMemV3 object at 0x110b93ef0>.unverified_looks
+
+tests/test_owncam_memory_v3_review.py:232: AssertionError
+___ test_yaw_threshold_and_recovery_reset_budget_only_when_drive_ready[True] ___
+
+loaded = True
+
+    @pytest.mark.parametrize('loaded', [False, True])
+    def test_yaw_threshold_and_recovery_reset_budget_only_when_drive_ready(loaded):
+        from harness.owncam_drive import LOOK_IF_STD_YAW_RAD
+        leg, loc, est = leg_fixture(loaded)
+        fix(leg.memory, loc.t)
+        assert leg._should_refix(True)
+        assert leg.unverified_looks == 1
+        est['std_yaw_rad'] = LOOK_IF_STD_YAW_RAD
+        est['cov'][2, 2] = LOOK_IF_STD_YAW_RAD**2
+        assert not leg._should_refix(True)
+>       assert leg.unverified_looks == 0
+E       assert 2 == 0
+E        +  where 2 = <harness.owncam_drive_mem_v3.LegDriverMemV3 object at 0x110c48380>.unverified_looks
+
+tests/test_owncam_memory_v3_review.py:232: AssertionError
+__________ test_inspection_timeout_terminates_even_without_new_frames __________
+
+    def test_inspection_timeout_terminates_even_without_new_frames():
+        from harness.owncam_slot_inspection_v3 import SLOT_INSPECTION_TIMEOUT_S
+        ctl, now, _, _, _ = saved_place(SAVED[0])
+        with mock.patch.object(ctl, '_start_leg'):
+            ctl._boundary_gate(now, 'place')
+        ctl.slot_inspection['stage'] = 'checked_view'
+        ctl.reanchor_needed = True
+        ctl.last_obs = None
+        assert ctl.decide(now+1.)['mode'] == 'tick'
+        result = ctl.decide(now+SLOT_INSPECTION_TIMEOUT_S)
+>       assert result['handoff']['reason'] == 'inspection_timeout'
+               ^^^^^^^^^^^^^^^^^
+E       KeyError: 'handoff'
+
+tests/test_owncam_memory_v3_review2.py:127: KeyError
+____________ test_stale_roundtrip_frame_holds_until_finite_deadline ____________
+
+    def test_stale_roundtrip_frame_holds_until_finite_deadline():
+        ctl, now, _, _, _ = saved_place(SAVED[0])
+        ctl.slot_inspection = {'stage': 'outbound'}
+        ctl.verification['place']['slot_deadline'] = now+120.
+        with mock.patch.object(ctl, '_drive_leg') as drive:
+            assert ctl.decide(now+1.) == ctl._hold()
+            drive.assert_not_called()
+>       assert ctl.decide(now+120.)['handoff']['reason'] == 'inspection_timeout'
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'handoff'
+
+tests/test_owncam_memory_v3_review3.py:259: KeyError
+=========================== short test summary info ============================
+FAILED tests/test_owncam_memory_v3.py::ControllerAndBoundaryTests::test_no_frames_stop_without_grasp
+FAILED tests/test_owncam_memory_v3.py::ControllerAndBoundaryTests::test_runner_selects_all_versions_and_draft_is_refused_before_launch
+FAILED tests/test_owncam_memory_v3_review.py::test_yaw_threshold_and_recovery_reset_budget_only_when_drive_ready[False]
+FAILED tests/test_owncam_memory_v3_review.py::test_yaw_threshold_and_recovery_reset_budget_only_when_drive_ready[True]
+FAILED tests/test_owncam_memory_v3_review2.py::test_inspection_timeout_terminates_even_without_new_frames
+FAILED tests/test_owncam_memory_v3_review3.py::test_stale_roundtrip_frame_holds_until_finite_deadline
+6 failed, 174 passed in 19.35s

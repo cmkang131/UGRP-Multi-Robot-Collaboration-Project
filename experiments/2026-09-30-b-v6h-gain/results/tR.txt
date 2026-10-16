@@ -1,0 +1,39 @@
+NOTE: 'SELF_POSE_UNCERTAIN gate_not_ok_dwell_or_hysteresis' in the first-failure column is the name the existing classifier (harness/pair_stage_probe.py ~855-868) gives an abort; the raw controller reason in these runs is POSE_UNCERTAIN_PROGRESS (ProgressMonitor no-progress stop), not a pose gate.
+
+== tR: b-v6h-gain-5bfd95f0-tR n=20 load start/end=[20.2, 21.4, 21.7]/[22.6, 18.0, 18.8] source=5bfd95f0 changed=False
+case | L0: class, sigma_yaw start/end deg, end_err mm, min clr beam/chassis mm | L1: class, sigma_yaw start/end deg, end_err mm, min clr beam/chassis mm | first failure
+  hR2_01:s911:pPOST:VhR2 | PASS_CLEAN, 0.56/2.20, 13, 403.5/147.0 | PASS_CLEAN, 0.85/2.97, 33, 207.5/137.6 | -
+  hR2_01:s913:pPOST:VhR2 | PASS_CLEAN, 0.55/2.21, 13, 403.6/146.9 | PASS_CLEAN, 0.95/2.93, 33, 207.5/137.6 | -
+  hR2_02:s911:pPOST:VhR2 | PASS_CLEAN, 0.61/2.21, 13, 403.0/144.6 | PASS_CLEAN, 0.88/2.95, 33, 207.6/137.7 | -
+  hR2_02:s913:pPOST:VhR2 | PASS_CLEAN, 0.62/2.21, 14, 403.0/144.5 | PASS_CLEAN, 0.93/2.89, 35, 205.5/135.7 | -
+  hR2_03:s911:pPOST:VhR2 | PASS_CLEAN, 0.59/2.20, 13, 403.0/144.5 | PASS_CLEAN, 0.91/2.99, 36, 205.0/135.1 | -
+  hR2_03:s913:pPOST:VhR2 | PASS_CLEAN, 0.58/2.20, 14, 403.0/144.5 | PASS_CLEAN, 0.99/2.95, 34, 206.4/136.5 | -
+  hR2_04:s911:pPOST:VhR2 | PASS_CLEAN, 0.53/2.48, 71, 344.4/77.7 | PASS_CLEAN, 0.98/2.94, 67, 178.5/77.4 | -
+  hR2_04:s913:pPOST:VhR2 | PASS_CLEAN, 0.56/2.50, 70, 344.8/78.8 | PASS_CLEAN, 0.73/2.84, 68, 178.0/78.5 | -
+  hR2_05:s911:pPOST:VhR2 | PASS_CLEAN, 0.54/2.45, 66, 347.1/84.9 | PASS_CLEAN, 0.81/2.89, 57, 188.3/84.8 | -
+  hR2_05:s913:pPOST:VhR2 | PASS_CLEAN, 0.57/2.46, 66, 347.4/85.7 | PASS_CLEAN, 0.96/2.89, 63, 182.4/85.6 | -
+  hR2_06:s911:pPOST:VhR2 | PASS_CLEAN, 0.53/2.45, 69, 346.0/82.7 | PASS_CLEAN, 0.90/2.89, 61, 184.2/82.5 | -
+  hR2_06:s913:pPOST:VhR2 | PASS_CLEAN, 0.57/2.48, 68, 346.6/84.2 | PASS_CLEAN, 0.87/2.89, 67, 178.4/84.1 | -
+  hR2_07:s911:pPOST:VhR2 | PASS_CLEAN, 0.58/2.19, 11, 405.9/152.7 | PASS_CLEAN, 0.80/2.97, 25, 215.2/145.2 | -
+  hR2_07:s913:pPOST:VhR2 | PASS_CLEAN, 0.59/2.24, 11, 405.6/152.2 | PASS_CLEAN, 0.76/2.90, 28, 212.5/142.5 | -
+  hR2_08:s911:pPOST:VhR2 | PASS_CLEAN, 0.57/2.17, 13, 402.3/144.6 | PASS_CLEAN, 0.90/2.91, 38, 202.8/132.9 | -
+  hR2_08:s913:pPOST:VhR2 | PASS_CLEAN, 0.57/2.22, 13, 402.2/144.4 | PASS_CLEAN, 0.95/2.93, 40, 201.6/131.7 | -
+  hR2_09:s911:pPOST:VhR2 | PASS_CLEAN, 0.57/2.18, 12, 403.9/148.1 | PASS_CLEAN, 0.86/2.98, 32, 208.1/138.2 | -
+  hR2_09:s913:pPOST:VhR2 | PASS_CLEAN, 0.57/2.22, 12, 403.9/148.0 | PASS_CLEAN, 0.89/2.89, 30, 210.3/140.3 | -
+  hR2_10:s911:pPOST:VhR2 | PASS_CLEAN, 0.58/2.23, 11, 406.8/156.3 | PASS_CLEAN, 0.80/2.90, 23, 216.7/146.7 | -
+  hR2_10:s913:pPOST:VhR2 | PASS_CLEAN, 0.58/2.21, 11, 406.9/156.5 | PASS_CLEAN, 0.93/2.92, 24, 215.8/145.9 | -
+L0: n=20 PASS_CLEAN=20/20 [84-100%] PASS_any=20/20 [84-100%] PASS_CONTACT_RECOVERED=0 FAIL_HARD_LIMIT=0 FAIL=0
+L1: n=20 PASS_CLEAN=20/20 [84-100%] PASS_any=20/20 [84-100%] PASS_CONTACT_RECOVERED=0 FAIL_HARD_LIMIT=0 FAIL=0
+chain L0->L1 both legs pass: 20/20 [84-100%]
+hard limit (pen > 5 mm or tilt > 15 deg) anywhere in the run (all legs, set-down, regrasp): 0/20 cases
+PF honesty all at the leg ends (case-robot samples): n=80 meanNEES=0.61 median=0.25 cov2sigma x/y/yaw=[1.0, 1.0, 1.0]
+PF honesty L0 at the leg ends (case-robot samples): n=40 meanNEES=1.03 median=0.55 cov2sigma x/y/yaw=[1.0, 1.0, 1.0]
+PF honesty L1 at the leg ends (case-robot samples): n=40 meanNEES=0.19 median=0.18 cov2sigma x/y/yaw=[1.0, 1.0, 1.0]
+L0: cases pass 20/20 [84-100%] (clean 20); independent units (placements) strict 10/10 [72-100%], any-seed 10/10 [72-100%]; classes {'PASS_CLEAN': 20}
+L1: cases pass 20/20 [84-100%] (clean 20); independent units (placements) strict 10/10 [72-100%], any-seed 10/10 [72-100%]; classes {'PASS_CLEAN': 20}
+chain L0->L1: cases 20/20 [84-100%]; units strict 10/10 [72-100%], any 10/10 [72-100%]
+honesty L0 (samples=40, observed placements=10/10): mean e x/y/yaw = +1.6 mm / -1.2 mm / -0.90 deg; mean z^2 x/y/yaw = [0.03, 0.13, 0.66]; +-2sigma coverage (samples) [1.0, 1.0, 1.0]; NEES3 mean 1.03
+  L0 placement-level +-2sigma coverage (covered = all samples of the placement inside; n = observed placements): x 10/10 [72-100%] / y 10/10 [72-100%] / yaw 10/10 [72-100%]; unverified placements: 0
+honesty L1 (samples=40, observed placements=10/10): mean e x/y/yaw = -1.0 mm / +2.3 mm / -0.54 deg; mean z^2 x/y/yaw = [0.03, 0.04, 0.06]; +-2sigma coverage (samples) [1.0, 1.0, 1.0]; NEES3 mean 0.19
+  L1 placement-level +-2sigma coverage (covered = all samples of the placement inside; n = observed placements): x 10/10 [72-100%] / y 10/10 [72-100%] / yaw 10/10 [72-100%]; unverified placements: 0
+contact episodes (both legs): 0; first-failure codes: {}

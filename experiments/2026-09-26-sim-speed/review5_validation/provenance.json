@@ -1,0 +1,38 @@
+{
+  "base_head": "db8ed92140b4cb15b8530c35f7a189d7ec4046fc",
+  "source_sha256": {
+    "scripts/sim_slots.py": "fa9cd783d1286c2753f3ee435409019036234dbd2963432b27f7af213b220c15",
+    "scripts/run_ci_tests.py": "4904209e09879d14b110f697ede087819dba4f5ae5b332fd7565d56ed1977feb",
+    "tests/test_sim_speed_review5.py": "d2e0a15923b1e3c4adc8d9b4d67fd30da326ac7590b82b75355a2da3faf84cd8",
+    "tests/test_sim_speed_review4.py": "054a2bd82df443ec9b8f0592f15fb2741a1450bac5415852fa29998849d90144",
+    "tests/test_sim_speed_review3.py": "a653b825a218746156cb63e5b32d126b512ee28ea1807794cbe3215ea2da1131",
+    "tests/test_sim_speed_review2.py": "7e52496b735e9514ccfb544106f63353e94484caf97ccd00264795c59994e1b1",
+    "tests/test_sim_speed_tools.py": "52e09c14d0103b0f8e45e21e1b7e35aa53b6a24136400742c21d0b32d9599847",
+    "tests/test_sim_slots.py": "5be8c163eca6438a6bfda4ebf25b38df385ced33aaef71db7134f70d4b51a937",
+    "tests/test_exact_speedups.py": "425faed70b76ef91d79a2a5624ae58257e532715071f1aa26be9f260c80c4e1f",
+    "tests/test_sim_speed_runtime.py": "da7a053a6d610ad5ce0d2acd9c136b2c4a27b77ad6668b9ad3811687842a4051",
+    "tests/test_m1_owncam.py": "02bbfad67e091443b34bbcd351a8453d0274fcd57ce8e8318d99ebee0811b678"
+  },
+  "baseline_sim_slots_sha256": {
+    "78945a3c": "bc7900a97d2d978931157f50649956f1286b08f1d0ead3b32cba8d44597ea865",
+    "db8ed921": "78d8ec05e42108217653c244f54a1c365f298174355982f258cf326c744e02ac"
+  },
+  "python": "3.12.13",
+  "platform": "macOS-27.2-arm64-arm-64bit",
+  "pytest_env": {
+    "OMP_NUM_THREADS": "1",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "pytest_basetemp": "./.pytest_tmp",
+  "basetemp_removed": true,
+  "results": {
+    "78945a3c": "2 passed",
+    "db8ed921": "2 failed",
+    "working_tree": "209 passed, 122 subtests passed"
+  },
+  "logs_sha256": {
+    "pytest_final.txt": "7dfcd4d54bb591440a1ab916686c756d900664cdab4622cf3bfd74435258887b",
+    "pytest_db8ed921.txt": "7a90c87ae69beffb44f78a52aa44a8eabaa5d5e1fb51a82a49cca990ce6ce056",
+    "pytest_78945a3c.txt": "c1a36664c50178c1f408d42ce9815904a7aca78cc9d72e0f0f550093170b3271"
+  }
+}

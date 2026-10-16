@@ -1,0 +1,89 @@
+{
+  "execution_bundle_id": "zone-s3-host-heading-v146",
+  "source_sha": "3daa830f65f6ed72b94a95b376accc4949b7b7e6",
+  "seed": 14201,
+  "status": "DEV_NOT_DELIVERED",
+  "research_result": false,
+  "physical_success": null,
+  "model_calls": 0,
+  "http_attempts": 0,
+  "tokens": 0,
+  "commands_issued": {
+    "r1": 1104,
+    "r2": 1060,
+    "r3": 1114
+  },
+  "known_start_information": false,
+  "evaluation": {
+    "orders_complete": false,
+    "orders": {
+      "order-1": {
+        "destination_zone": "B",
+        "ordered": 1,
+        "delivered": 0,
+        "complete": false,
+        "item_delivered_sim_s": {},
+        "completed_sim_s": null
+      },
+      "order-5": {
+        "destination_zone": "B",
+        "ordered": 1,
+        "delivered": 0,
+        "complete": false,
+        "item_delivered_sim_s": {},
+        "completed_sim_s": null
+      }
+    },
+    "samples": 906,
+    "profile": {
+      "profile": "zone_study_referee.v3",
+      "settle_s": 2.0,
+      "on_floor_max_z_m": 0.05,
+      "settled_speed_m_s": 0.01,
+      "held_depart_s": 1.0,
+      "landing_rule": "harness.zone_scenario_feasibility.landing_fits",
+      "order_rule": "harness.zone_study_eval.delivery_state",
+      "metrics": "harness.zone_study_eval.efficiency_metrics",
+      "penalty_factor": 2.0,
+      "success_end_reason": "orders_complete",
+      "confirmation_window": "confirmation must precede observed end and SIM cap",
+      "missing_sample": "break settling window; invalidate standing delivery",
+      "scope": "evaluation only; stops the episode on orders_complete; never a robot input",
+      "sha256": "e129da05eb6298cfd2bc1a3030075446e64393e7419af21fafd4e963ba6476b9"
+    },
+    "feedback_to_controller": false,
+    "source": "post_run_truth_replay",
+    "qualification": "DEV simulator delivery only; not S2 graduation or real robot success"
+  },
+  "loadavg_start": [
+    1.96240234375,
+    2.89208984375,
+    3.65283203125
+  ],
+  "reset_sim_s": 1.3,
+  "check_sim_s": 45.25,
+  "controller_failures": {
+    "r2": "LOOK_RECOVERY_EXHAUSTED"
+  },
+  "commands_complete": false,
+  "end_reason": "controller_failure",
+  "wall_s": 159.57002641703002,
+  "loadavg_end": [
+    4.501953125,
+    3.31494140625,
+    3.671875
+  ],
+  "wall_per_sim": 3.526409423580774,
+  "runtime_speedups": {
+    "schema": "ugrp.v7_exact_speedups.v1",
+    "mode": "relay-cache-v1",
+    "enabled": true,
+    "fallback": null,
+    "module_sha256": "2e9414bfeaac46e16937a3cd58d778862c92fb806b910dd04e6d79a5f602abe3",
+    "cache_maxsize": 256,
+    "physics_changed": false,
+    "log_buffering": false
+  },
+  "heading_mode": "path_tangent_v1",
+  "heading_visual_lock": "off"
+}

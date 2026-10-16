@@ -1,0 +1,162 @@
+{
+  "own60_B_confirmed_before_loss": false,
+  "remembered_edges": 612,
+  "remembered_edge_actual_regions": {
+    "not_static_floor_edge": 517,
+    "pickup": 47,
+    "zone_C": 24,
+    "zone_B": 4,
+    "zone_A": 20
+  },
+  "rows": [
+    {
+      "mode": "off",
+      "updated_frames": 83,
+      "resamples": 32,
+      "posterior_ess_min": 3.109215352458287,
+      "posterior_ess_median": 1181.2832898265885,
+      "correspondences": 237,
+      "current_regions": {
+        "not_static_floor_edge": 156,
+        "pickup": 26,
+        "zone_C": 42,
+        "zone_B": 13
+      },
+      "associated_regions": {
+        "not_static_floor_edge": 174,
+        "pickup": 3,
+        "zone_C": 42,
+        "zone_B": 18
+      },
+      "known_region_mismatch": 0,
+      "false_stable_correspondences": 84,
+      "false_stable_region_mismatch": 0,
+      "current_B": 13,
+      "current_B_to_other": 1
+    },
+    {
+      "mode": "tempered",
+      "updated_frames": 83,
+      "resamples": 28,
+      "posterior_ess_min": 69.75235961872407,
+      "posterior_ess_median": 1166.922697177873,
+      "correspondences": 237,
+      "current_regions": {
+        "not_static_floor_edge": 156,
+        "pickup": 26,
+        "zone_C": 42,
+        "zone_B": 13
+      },
+      "associated_regions": {
+        "not_static_floor_edge": 173,
+        "zone_C": 42,
+        "pickup": 6,
+        "zone_B": 16
+      },
+      "known_region_mismatch": 0,
+      "false_stable_correspondences": 50,
+      "false_stable_region_mismatch": 0,
+      "current_B": 13,
+      "current_B_to_other": 1
+    }
+  ],
+  "tempered_unique_after_resample_min": 327,
+  "tempered_resample_median_unique_fraction": 0.4447776111944028,
+  "first_tempered_update": {
+    "t": 61.5,
+    "alpha": 0.5,
+    "prior": {
+      "mean": [
+        -0.4464931250569012,
+        -0.025760442325327242,
+        0.7043580637091097
+      ],
+      "cov": [
+        [
+          1.481112585849401,
+          -0.20813469423710715,
+          0.0
+        ],
+        [
+          -0.20813469423710712,
+          0.39205204005851385,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          12.40300733496135
+        ]
+      ],
+      "ess": 100000.00000000017,
+      "xy_trace": 1.8731646259079149,
+      "unique_poses": 100000
+    },
+    "posterior": {
+      "mean": [
+        -0.6205837885048647,
+        -0.13359227387385814,
+        -1.4162084110076416
+      ],
+      "cov": [
+        [
+          1.3890690692348289,
+          0.024817935300934076,
+          0.0
+        ],
+        [
+          0.02481793530093407,
+          0.34111551780866994,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.6571201604524934
+        ]
+      ],
+      "ess": 8093.970459934632,
+      "xy_trace": 1.7301845870434989,
+      "unique_poses": 100000
+    },
+    "wall_count": 59,
+    "features": 1,
+    "log_score_correlation": 0.30284036602959985,
+    "resampled": {
+      "mean": [
+        -0.613730666834221,
+        -0.1317822904962934,
+        -1.4108997154275271
+      ],
+      "cov": [
+        [
+          1.3964388875923899,
+          0.021512326658201308,
+          0.0
+        ],
+        [
+          0.02151232665820129,
+          0.3358391830490128,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.6602527147657056
+        ]
+      ],
+      "ess": 11028.999999999965,
+      "xy_trace": 1.7322780706414027,
+      "unique_poses": 6590
+    }
+  },
+  "evaluation_tolerance_m": 0.15,
+  "caution": "Region attribution uses evaluation geometry and 0.15m matching only. Not a semantic label or runtime filter; cannot prove single causal mechanism.",
+  "evidence_sha256": {
+    "/Users/changmin/projects/ugrp/outputs/own-map-causal-landmarks-v1/own-on-0.json": "df3bafda928528f63a58f1fe8206dfff12d9071ecc7b51378cdbe768df536c9f",
+    "/Users/changmin/projects/ugrp/outputs/own-map-closed-loop-v1/offline/own-tempered-0.json": "62ca59917dd74fdcff9290621fab3df008427f26271266041a701ce43441f80a",
+    "/Users/changmin/projects/ugrp/outputs/own-map-causal-landmarks-v1/own-inputs.json": "98fe8bfd42fc2ea3ffe731e5a29fed7865125a5a8af5c798baeea061dba74371",
+    "/Users/changmin/projects/ugrp/outputs/own-map-causal-landmarks-v1/maps/own-0-landmarks.json": "0db5fe4580f8912aff733984984ca71c7f289fd674648b4d7b6434b9c32b8e67",
+    "/Users/changmin/projects/ugrp/outputs/wall-segment-dev-v1/new-seed/eval_only/trajectory.jsonl": "c06c2d964971d4ee1eaaa90760f8f04bea15555a64ea481849a903f18f211ee0"
+  }
+}

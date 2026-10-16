@@ -1,0 +1,77 @@
+...............FF...FFFF.....F.FF....................................... [ 94%]
+....                                                                     [100%]
+=================================== FAILURES ===================================
+_ test_both_candidates_and_shortest_selection_are_order_independent[west_to_east-west_heading] _
+tests/test_zone_own_executor_door_routes.py:163: in test_both_candidates_and_shortest_selection_are_order_independent
+    assert_full_beam_route_clear(route, static)
+tests/test_zone_own_executor_door_routes.py:56: in assert_full_beam_route_clear
+    assert not beam_hits(a, b, rects), (route.passage_id, a, b, beam_hits(a, b, rects))
+E   AssertionError: ('door_narrow', (2.575, 0.05, 3.141592653589793), (2.575, -0.575, 3.141592653589793), {'end_pos_arm', 'end_pos_chassis'})
+E   assert not {'end_pos_arm', 'end_pos_chassis'}
+E    +  where {'end_pos_arm', 'end_pos_chassis'} = beam_hits((2.575, 0.05, 3.141592653589793), (2.575, -0.575, 3.141592653589793), ((2.1750000000000003, 1.45, 3.25, 0.025, 0.0), (2.1750000000000003, -3.15, 3.25, 0.025, 0.0), (-1.05, -0.85, 0.025, 2.3, 0.0), (5.4, -0.85, 0.025, 2.3, 0.0), (2.2, -1.1625, 0.025, 0.9625, 0.0), (2.2, 0.875, 0.025, 0.575, 0.0)))
+_ test_both_candidates_and_shortest_selection_are_order_independent[east_to_west-east_heading] _
+tests/test_zone_own_executor_door_routes.py:163: in test_both_candidates_and_shortest_selection_are_order_independent
+    assert_full_beam_route_clear(route, static)
+tests/test_zone_own_executor_door_routes.py:56: in assert_full_beam_route_clear
+    assert not beam_hits(a, b, rects), (route.passage_id, a, b, beam_hits(a, b, rects))
+E   AssertionError: ('door_narrow', (1.8250000000000002, 0.05, 0.0), (1.8250000000000002, -0.575, 0.0), {'end_pos_arm', 'end_pos_chassis'})
+E   assert not {'end_pos_arm', 'end_pos_chassis'}
+E    +  where {'end_pos_arm', 'end_pos_chassis'} = beam_hits((1.8250000000000002, 0.05, 0.0), (1.8250000000000002, -0.575, 0.0), ((2.1750000000000003, 1.45, 3.25, 0.025, 0.0), (2.1750000000000003, -3.15, 3.25, 0.025, 0.0), (-1.05, -0.85, 0.025, 2.3, 0.0), (5.4, -0.85, 0.025, 2.3, 0.0), (2.2, -1.1625, 0.025, 0.9625, 0.0), (2.2, 0.875, 0.025, 0.575, 0.0)))
+_ test_full_team_clears_each_door_before_lateral_exit[west_to_east-west_heading-door_narrow] _
+tests/test_zone_own_executor_door_routes.py:193: in test_full_team_clears_each_door_before_lateral_exit
+    assert_full_beam_route_clear(route, static)
+tests/test_zone_own_executor_door_routes.py:56: in assert_full_beam_route_clear
+    assert not beam_hits(a, b, rects), (route.passage_id, a, b, beam_hits(a, b, rects))
+E   AssertionError: ('door_narrow', (2.575, 0.05, 3.141592653589793), (2.575, -0.575, 3.141592653589793), {'end_pos_arm', 'end_pos_chassis'})
+E   assert not {'end_pos_arm', 'end_pos_chassis'}
+E    +  where {'end_pos_arm', 'end_pos_chassis'} = beam_hits((2.575, 0.05, 3.141592653589793), (2.575, -0.575, 3.141592653589793), ((2.1750000000000003, 1.45, 3.25, 0.025, 0.0), (2.1750000000000003, -3.15, 3.25, 0.025, 0.0), (-1.05, -0.85, 0.025, 2.3, 0.0), (5.4, -0.85, 0.025, 2.3, 0.0), (2.2, -1.1625, 0.025, 0.9625, 0.0), (2.2, 0.875, 0.025, 0.575, 0.0)))
+_ test_full_team_clears_each_door_before_lateral_exit[west_to_east-west_heading-door_wide] _
+tests/test_zone_own_executor_door_routes.py:193: in test_full_team_clears_each_door_before_lateral_exit
+    assert_full_beam_route_clear(route, static)
+tests/test_zone_own_executor_door_routes.py:56: in assert_full_beam_route_clear
+    assert not beam_hits(a, b, rects), (route.passage_id, a, b, beam_hits(a, b, rects))
+E   AssertionError: ('door_wide', (2.575, -2.625, 3.141592653589793), (2.575, -1.9125, 3.141592653589793), {'end_pos_arm', 'end_pos_chassis'})
+E   assert not {'end_pos_arm', 'end_pos_chassis'}
+E    +  where {'end_pos_arm', 'end_pos_chassis'} = beam_hits((2.575, -2.625, 3.141592653589793), (2.575, -1.9125, 3.141592653589793), ((2.1750000000000003, 1.45, 3.25, 0.025, 0.0), (2.1750000000000003, -3.15, 3.25, 0.025, 0.0), (-1.05, -0.85, 0.025, 2.3, 0.0), (5.4, -0.85, 0.025, 2.3, 0.0), (2.2, -1.1625, 0.025, 0.9625, 0.0), (2.2, 0.875, 0.025, 0.575, 0.0)))
+_ test_full_team_clears_each_door_before_lateral_exit[east_to_west-east_heading-door_narrow] _
+tests/test_zone_own_executor_door_routes.py:193: in test_full_team_clears_each_door_before_lateral_exit
+    assert_full_beam_route_clear(route, static)
+tests/test_zone_own_executor_door_routes.py:56: in assert_full_beam_route_clear
+    assert not beam_hits(a, b, rects), (route.passage_id, a, b, beam_hits(a, b, rects))
+E   AssertionError: ('door_narrow', (1.8250000000000002, 0.05, 0.0), (1.8250000000000002, -0.575, 0.0), {'end_pos_arm', 'end_pos_chassis'})
+E   assert not {'end_pos_arm', 'end_pos_chassis'}
+E    +  where {'end_pos_arm', 'end_pos_chassis'} = beam_hits((1.8250000000000002, 0.05, 0.0), (1.8250000000000002, -0.575, 0.0), ((2.1750000000000003, 1.45, 3.25, 0.025, 0.0), (2.1750000000000003, -3.15, 3.25, 0.025, 0.0), (-1.05, -0.85, 0.025, 2.3, 0.0), (5.4, -0.85, 0.025, 2.3, 0.0), (2.2, -1.1625, 0.025, 0.9625, 0.0), (2.2, 0.875, 0.025, 0.575, 0.0)))
+_ test_full_team_clears_each_door_before_lateral_exit[east_to_west-east_heading-door_wide] _
+tests/test_zone_own_executor_door_routes.py:193: in test_full_team_clears_each_door_before_lateral_exit
+    assert_full_beam_route_clear(route, static)
+tests/test_zone_own_executor_door_routes.py:56: in assert_full_beam_route_clear
+    assert not beam_hits(a, b, rects), (route.passage_id, a, b, beam_hits(a, b, rects))
+E   AssertionError: ('door_wide', (1.8250000000000002, -2.625, 0.0), (1.8250000000000002, -1.9125, 0.0), {'end_pos_arm', 'end_pos_chassis'})
+E   assert not {'end_pos_arm', 'end_pos_chassis'}
+E    +  where {'end_pos_arm', 'end_pos_chassis'} = beam_hits((1.8250000000000002, -2.625, 0.0), (1.8250000000000002, -1.9125, 0.0), ((2.1750000000000003, 1.45, 3.25, 0.025, 0.0), (2.1750000000000003, -3.15, 3.25, 0.025, 0.0), (-1.05, -0.85, 0.025, 2.3, 0.0), (5.4, -0.85, 0.025, 2.3, 0.0), (2.2, -1.1625, 0.025, 0.9625, 0.0), (2.2, 0.875, 0.025, 0.575, 0.0)))
+_ test_complete_team_corner_blocks_cropped_disc_and_point_counterexample[east_heading-end_pos] _
+tests/test_zone_own_executor_door_routes.py:232: in test_complete_team_corner_blocks_cropped_disc_and_point_counterexample
+    assert result.selected is None and reasons(result) == {'STATIC_SWEEP_BLOCKED'}
+E   AssertionError: assert (DoorRoute(passage_id='door_narrow', direction='west_to_east', poses_m_rad=((1.0, -1.0, 0.0), (1.0, -0.475, 0.0), (1.0,...2.8482, 0.05, 0.0), (3.5, 0.05, 0.0)), travel_heading_rad=(1.5707963267948966, 1.5707963267948966, 0.0, 0.0, 0.0, 0.0)) is None)
+E    +  where DoorRoute(passage_id='door_narrow', direction='west_to_east', poses_m_rad=((1.0, -1.0, 0.0), (1.0, -0.475, 0.0), (1.0,...2.8482, 0.05, 0.0), (3.5, 0.05, 0.0)), travel_heading_rad=(1.5707963267948966, 1.5707963267948966, 0.0, 0.0, 0.0, 0.0)) = DoorPlans(routes=(DoorRoute(passage_id='door_narrow', direction='west_to_east', poses_m_rad=((1.0, -1.0, 0.0), (1.0, -...0), (3.5, 0.05, 0.0)), travel_heading_rad=(1.5707963267948966, 1.5707963267948966, 0.0, 0.0, 0.0, 0.0)),), refusals=()).selected
+_ test_complete_team_corner_blocks_cropped_disc_and_point_counterexample[west_heading-end_pos] _
+tests/test_zone_own_executor_door_routes.py:232: in test_complete_team_corner_blocks_cropped_disc_and_point_counterexample
+    assert result.selected is None and reasons(result) == {'STATIC_SWEEP_BLOCKED'}
+E   AssertionError: assert (DoorRoute(passage_id='door_narrow', direction='west_to_east', poses_m_rad=((1.0, -1.0, 3.141592653589793), (1.0, -0.47...793), (3.5, 0.05, 3.141592653589793)), travel_heading_rad=(1.5707963267948966, 1.5707963267948966, 0.0, 0.0, 0.0, 0.0)) is None)
+E    +  where DoorRoute(passage_id='door_narrow', direction='west_to_east', poses_m_rad=((1.0, -1.0, 3.141592653589793), (1.0, -0.47...793), (3.5, 0.05, 3.141592653589793)), travel_heading_rad=(1.5707963267948966, 1.5707963267948966, 0.0, 0.0, 0.0, 0.0)) = DoorPlans(routes=(DoorRoute(passage_id='door_narrow', direction='west_to_east', poses_m_rad=((1.0, -1.0, 3.14159265358..., 3.141592653589793)), travel_heading_rad=(1.5707963267948966, 1.5707963267948966, 0.0, 0.0, 0.0, 0.0)),), refusals=()).selected
+_____________ test_full_footprint_at_goal_not_just_reference_point _____________
+tests/test_zone_own_executor_door_routes.py:237: in test_full_footprint_at_goal_not_just_reference_point
+    assert result.selected is None and reasons(result) == {'GOAL_FOOTPRINT_BLOCKED'}
+E   AssertionError: assert (DoorRoute(passage_id='door_narrow', direction='west_to_east', poses_m_rad=((1.0, 0.05, 0.0), (1.6160666666666668, 0.05...6666, 0.05, 0.0), (4.282733333333333, 0.05, 0.0), (5.0, 0.05, 0.0)), travel_heading_rad=(0.0, 0.0, 0.0, 0.0, 0.0, 0.0)) is None)
+E    +  where DoorRoute(passage_id='door_narrow', direction='west_to_east', poses_m_rad=((1.0, 0.05, 0.0), (1.6160666666666668, 0.05...6666, 0.05, 0.0), (4.282733333333333, 0.05, 0.0), (5.0, 0.05, 0.0)), travel_heading_rad=(0.0, 0.0, 0.0, 0.0, 0.0, 0.0)) = DoorPlans(routes=(DoorRoute(passage_id='door_narrow', direction='west_to_east', poses_m_rad=((1.0, 0.05, 0.0), (1.6160..._rad=(0.0, 0.0, 0.0, 0.0, 0.0, 0.0)),), refusals=(Refusal(passage_id='door_wide', reason='CONTROLLER_SEGMENT_LIMIT'),)).selected
+=========================== short test summary info ============================
+FAILED tests/test_zone_own_executor_door_routes.py::test_both_candidates_and_shortest_selection_are_order_independent[west_to_east-west_heading]
+FAILED tests/test_zone_own_executor_door_routes.py::test_both_candidates_and_shortest_selection_are_order_independent[east_to_west-east_heading]
+FAILED tests/test_zone_own_executor_door_routes.py::test_full_team_clears_each_door_before_lateral_exit[west_to_east-west_heading-door_narrow]
+FAILED tests/test_zone_own_executor_door_routes.py::test_full_team_clears_each_door_before_lateral_exit[west_to_east-west_heading-door_wide]
+FAILED tests/test_zone_own_executor_door_routes.py::test_full_team_clears_each_door_before_lateral_exit[east_to_west-east_heading-door_narrow]
+FAILED tests/test_zone_own_executor_door_routes.py::test_full_team_clears_each_door_before_lateral_exit[east_to_west-east_heading-door_wide]
+FAILED tests/test_zone_own_executor_door_routes.py::test_complete_team_corner_blocks_cropped_disc_and_point_counterexample[east_heading-end_pos]
+FAILED tests/test_zone_own_executor_door_routes.py::test_complete_team_corner_blocks_cropped_disc_and_point_counterexample[west_heading-end_pos]
+FAILED tests/test_zone_own_executor_door_routes.py::test_full_footprint_at_goal_not_just_reference_point
+9 failed, 67 passed in 0.55s

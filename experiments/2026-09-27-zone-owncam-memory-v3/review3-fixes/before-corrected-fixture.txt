@@ -1,0 +1,153 @@
+Numerical thread caps: 1; OpenCV threads: 1; pytest worker: main process
+FFFFFFF                                                                  [100%]
+=================================== FAILURES ===================================
+________________ test_p1_leg_relook_filters_jamb_collision_pan _________________
+
+    def test_p1_leg_relook_filters_jamb_collision_pan():
+        leg, _, est = leg_fixture(True, yaw=.005)
+        est.update(x=2.08, y=.18, std_xy_m=.001)
+        leg.map, leg.servo = door_map(), dict(CARRY_POSTURE)
+        leg._start_look(2., 'refix')
+>       assert 2030 not in leg.look_queue
+E       assert 2030 not in [1500, 1230, 970, 1770, 2030, 1500]
+E        +  where [1500, 1230, 970, 1770, 2030, 1500] = <harness.owncam_drive_mem_v3.LegDriverMemV3 object at 0x11113ff50>.look_queue
+
+tests/test_owncam_memory_v3_review3.py:34: AssertionError
+_____________ test_p1_slot_sweep_checks_posture_and_pan_collision ______________
+
+    def test_p1_slot_sweep_checks_posture_and_pan_collision():
+        ctl, now, _, _, _ = saved_place(SAVED[0])
+        ctl.map, ctl.servo = door_map(), dict(CARRY_POSTURE)
+        ctl.pose.report = lambda t: report(t, x=2.08, y=.18, sigma=.001)
+        ctl.slot_inspection = {'stage': 'inspect'}
+        ctl._start_sweep(now, 'slot_inspection', LOOK_P20, WIDE_LOOK_PANS, CARRY_POSTURE, 'test')
+>       assert ctl.sweep is None or 2030 not in ctl.sweep['queue']
+E       AssertionError: assert ({'purpose': 'slot_inspection', 'pose': {3: 1072, 4: 2400, 5: 1482}, 'queue': [1500, 1230, 970, 1770, 2030, 1500], 'restore': {1: 1500, 3: 777, 4: 2053, 5: 1646, ...}, ...} is None or 2030 not in [1500, 1230, 970, 1770, 2030, 1500])
+E        +  where {'purpose': 'slot_inspection', 'pose': {3: 1072, 4: 2400, 5: 1482}, 'queue': [1500, 1230, 970, 1770, 2030, 1500], 'restore': {1: 1500, 3: 777, 4: 2053, 5: 1646, ...}, ...} = <harness.m1_owncam_memory_v3.M1OwnCamDeliveryMemV3 object at 0x1111aa540>.sweep
+
+tests/test_owncam_memory_v3_review3.py:43: AssertionError
+_____________ test_p1_aged_slot_blocker_stays_in_driving_keepouts ______________
+
+    def test_p1_aged_slot_blocker_stays_in_driving_keepouts():
+        ctl, now, xy, _, _ = saved_place(SAVED[0])
+        tr = BoxTrackV3('obstacle', 'red', np.array([4.02, -2.5]), np.eye(2)*.0001,
+                        now-225., 1, 'far_coarse', .001)
+        tr.evidence(now-225., detected=True, range_class='far_coarse', pose_sigma=.02)
+        ctl.memory.tracks.append(tr)
+        ctl.memory._decay_to(now)
+        assert tr.existence_p < .20 and tr.slot_blocking
+        keepouts = ctl.memory.keepouts()
+>       assert tr.track_id in [k['id'] for k in keepouts]
+E       AssertionError: assert 'obstacle' in []
+E        +  where 'obstacle' = <harness.owncam_memory_v3.BoxTrackV3 object at 0x1105d48c0>.track_id
+
+tests/test_owncam_memory_v3_review3.py:55: AssertionError
+___ test_p1_inspection_cargo_disappearance_stops_before_next_move[outbound] ____
+
+stage = 'outbound'
+
+    @pytest.mark.parametrize('stage', ['outbound', 'return'])
+    def test_p1_inspection_cargo_disappearance_stops_before_next_move(stage):
+        ctl, now, _, _, image = saved_place(SAVED[0])
+        ctl.skill.box._carry_previous_image = image
+        ctl.slot_inspection = {'stage': stage, 'goal': [3.65, -2.5]}
+        ctl.verification['place']['slot_deadline'] = now+120.
+        ctl.leg = SimpleNamespace(state='drive', on_command=lambda row: None)
+        jpeg = cv2.imencode('.jpg', np.zeros((480, 640, 3), np.uint8))[1].tobytes()
+        obs = {**ctl.last_obs, 'frame_id': ctl.last_obs['frame_id']+1, 'sim_time': now+.2,
+               'image': base64.b64encode(jpeg).decode(), 'sha256': hashlib.sha256(jpeg).hexdigest()}
+        with mock.patch.object(ctl.pose, 'on_frame', return_value=ctl.pose.report(now)), \
+             mock.patch.object(ctl.memory, 'observe_frame'), \
+             mock.patch.object(ctl, '_drive_leg', return_value=([{'kind': 'mecanum', 'forward': -.05}], None)) as drive, \
+             mock.patch.object(ctl.skill.box, '_carry', wraps=ctl.skill.box._carry) as carry:
+            ctl.pose.last_raw_report = ctl.pose.report(now)
+            ctl.on_frame(now+.2, obs, np.zeros((480, 640, 3), np.uint8))
+            result = ctl.decide(now+.2)
+>       assert result['mode'] == 'done'
+E       AssertionError: assert 'tick' == 'done'
+E         
+E         - done
+E         + tick
+
+tests/test_owncam_memory_v3_review3.py:78: AssertionError
+____ test_p1_inspection_cargo_disappearance_stops_before_next_move[return] _____
+
+stage = 'return'
+
+    @pytest.mark.parametrize('stage', ['outbound', 'return'])
+    def test_p1_inspection_cargo_disappearance_stops_before_next_move(stage):
+        ctl, now, _, _, image = saved_place(SAVED[0])
+        ctl.skill.box._carry_previous_image = image
+        ctl.slot_inspection = {'stage': stage, 'goal': [3.65, -2.5]}
+        ctl.verification['place']['slot_deadline'] = now+120.
+        ctl.leg = SimpleNamespace(state='drive', on_command=lambda row: None)
+        jpeg = cv2.imencode('.jpg', np.zeros((480, 640, 3), np.uint8))[1].tobytes()
+        obs = {**ctl.last_obs, 'frame_id': ctl.last_obs['frame_id']+1, 'sim_time': now+.2,
+               'image': base64.b64encode(jpeg).decode(), 'sha256': hashlib.sha256(jpeg).hexdigest()}
+        with mock.patch.object(ctl.pose, 'on_frame', return_value=ctl.pose.report(now)), \
+             mock.patch.object(ctl.memory, 'observe_frame'), \
+             mock.patch.object(ctl, '_drive_leg', return_value=([{'kind': 'mecanum', 'forward': -.05}], None)) as drive, \
+             mock.patch.object(ctl.skill.box, '_carry', wraps=ctl.skill.box._carry) as carry:
+            ctl.pose.last_raw_report = ctl.pose.report(now)
+            ctl.on_frame(now+.2, obs, np.zeros((480, 640, 3), np.uint8))
+            result = ctl.decide(now+.2)
+>       assert result['mode'] == 'done'
+E       AssertionError: assert 'tick' == 'done'
+E         
+E         - done
+E         + tick
+
+tests/test_owncam_memory_v3_review3.py:78: AssertionError
+___ test_p2_blind_search_retreat_is_projected_to_reachable_body_clear_point ____
+
+    def test_p2_blind_search_retreat_is_projected_to_reachable_body_clear_point():
+        ctl = controller()
+        ctl.viewpoints, ctl.view_index = [(-.47, .75)], 0
+        ctl.pose.report = lambda t: report(t, x=-.47, y=.75)
+        with mock.patch.object(ctl, '_start_leg') as start:
+            ctl._search_decide(1.)
+        assert ctl.outcome is None
+        goal = start.call_args.args[0]
+        assert goal[0] < -.47
+>       assert plan_path(ctl.map, [-.47, .75], goal, UNLOADED_ENVELOPE, obstacles=ctl._keepouts()) is not None
+E       AssertionError: assert None is not None
+E        +  where None = plan_path({'schema': 'ugrp.zone_arena.v1', 'map_id': 'zone_wide_door_tags_v1', 'version': 1, 'frame': 'world metres; x east, y north', ...}, [-0.47, 0.75], (-0.9199999999999999, 0.75), {'x_m': [-0.15, 0.15], 'y_m': [-0.15, 0.15]}, obstacles=[])
+E        +    where {'schema': 'ugrp.zone_arena.v1', 'map_id': 'zone_wide_door_tags_v1', 'version': 1, 'frame': 'world metres; x east, y north', ...} = <harness.m1_owncam_memory_v3.M1OwnCamDeliveryMemV3 object at 0x11117d1c0>.map
+E        +    and   [] = _keepouts()
+E        +      where _keepouts = <harness.m1_owncam_memory_v3.M1OwnCamDeliveryMemV3 object at 0x11117d1c0>._keepouts
+
+tests/test_owncam_memory_v3_review3.py:93: AssertionError
+____________ test_external_sim_limit_persists_pending_slot_handoff _____________
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-memory-v3/.pytest_tmp/test_external_sim_limit_persis0')
+
+    def test_external_sim_limit_persists_pending_slot_handoff(tmp_path):
+        from scripts import run_m1_owncam_memory_v3 as runner
+        from scripts import run_m1_owncam as base_runner
+        ctl, now, _, _, _ = saved_place(SAVED[0])
+        ctl.slot_inspection = {'stage': 'outbound', 'goal': [3.65, -2.5]}
+        ctl.skill.events = []
+        ctl.verification['place'].update(slot_deadline=now+120., slot_attempts=1)
+        def fake_run(spec, out, student):
+            out.mkdir()
+            result = {'outcome': 'SIM_LIMIT', 'sim_s': now+5., 'controller': ctl.summary()}
+            (out/'result.json').write_text(json.dumps(result))
+            (out/'manifest.json').write_text('{}')
+            return result, {}
+        out = tmp_path/'stopped'
+        with mock.patch.object(base_runner, 'run', side_effect=fake_run), mock.patch.object(runner, 'free_gib', return_value=100.):
+            result, _, rec = runner.run_episode({'episode_id': 'unit-limit'}, out, {}, 'memory_v3', prereg_sha256='test')
+        handoff = result['controller']['slot_handoff_v3']
+>       assert handoff is not None
+E       assert None is not None
+
+tests/test_owncam_memory_v3_review3.py:113: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_owncam_memory_v3_review3.py::test_p1_leg_relook_filters_jamb_collision_pan
+FAILED tests/test_owncam_memory_v3_review3.py::test_p1_slot_sweep_checks_posture_and_pan_collision
+FAILED tests/test_owncam_memory_v3_review3.py::test_p1_aged_slot_blocker_stays_in_driving_keepouts
+FAILED tests/test_owncam_memory_v3_review3.py::test_p1_inspection_cargo_disappearance_stops_before_next_move[outbound]
+FAILED tests/test_owncam_memory_v3_review3.py::test_p1_inspection_cargo_disappearance_stops_before_next_move[return]
+FAILED tests/test_owncam_memory_v3_review3.py::test_p2_blind_search_retreat_is_projected_to_reachable_body_clear_point
+FAILED tests/test_owncam_memory_v3_review3.py::test_external_sim_limit_persists_pending_slot_handoff
+7 failed in 0.89s

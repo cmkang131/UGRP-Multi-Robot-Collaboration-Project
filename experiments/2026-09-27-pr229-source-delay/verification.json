@@ -1,0 +1,53 @@
+{
+  "command": "OMP_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest tests/test_zone_study_source_pinning.py tests/test_zone_study_pair_delay.py tests/test_zone_study_integration.py tests/test_zone_study_integration_seams.py tests/test_zone_study_integration_pair.py tests/test_zone_pair_executor.py tests/test_zone_pair_status.py tests/test_zone_pair_review.py --basetemp=./.pytest_tmp -q",
+  "exit_code": 0,
+  "passed": 208,
+  "failed": 0,
+  "pytest_reported_wall_s": 75.59,
+  "test_source_sha256": {
+    "tests/test_zone_study_source_pinning.py": "8573c6cfa223f249c297eeb669d21567f85bb48958f603f9e2bd9a5efb504c08",
+    "tests/test_zone_study_pair_delay.py": "9e30bbd0121bd0be0be9d28ad61a7aa2e9476ca0858ff42890714ff239452f37",
+    "tests/test_zone_study_integration.py": "5fe94cd22e8aa2b43d34ff101da18031c4ddfca5d13b912c7faabf9b55fd09e4",
+    "tests/test_zone_study_integration_seams.py": "a20a543a44c78c185931a18307e2ad0561ec0c052d425bcd21c141a9fe9d3a21",
+    "tests/test_zone_study_integration_pair.py": "64ef64c9d2efb1d7e822f141955f0a086dcfc6f2538ef943e4b2061d487d4b73",
+    "tests/test_zone_pair_executor.py": "fb11bb688c98aa7ab90904026f36672ee1c8555bd68bbc7a2863b317607a4c04",
+    "tests/test_zone_pair_status.py": "90b3be94169e3750b2cdd879d2b180988066f76a8368eeee090df907fd8b95e4",
+    "tests/test_zone_pair_review.py": "646a7a38e0b18cba624913767df2cdd39fef70172f1b6dada113e2e409238f3c"
+  },
+  "runtime_file_count": 166,
+  "loaded_local_module_audit": {
+    "loaded": 77,
+    "missing_from_bundle": []
+  },
+  "unchanged_tracked_paths": [
+    "config/rgb_execution_bundles",
+    "experiments/2026-09-26-zone-study-integration",
+    "configs/zone_study_integration/pair_dev_DRAFT.json"
+  ],
+  "pytest_tmp_removed": true,
+  "mujoco_physics_steps": 0,
+  "model_calls": 0,
+  "committed": false,
+  "tensorboard": "not applicable: offline regression only; no new experiment/training/evaluation cohort",
+  "fixture_sha256": {
+    "tests/fixtures/zone_study_pair_delay/frames.json": "718cdd4ca4aa1296215b86bb36e21ece4ec47a057fe41edc542e8e98cd49576f",
+    "tests/fixtures/zone_study_pair_delay/r1-00472.jpg": "372a6480c69bdb79c6178b55c3eae45f19126f8dd01986f3ba05dac2e7517d07",
+    "tests/fixtures/zone_study_pair_delay/r1-00473.jpg": "003e7ffb9c557ac14fa46337d6a80d4374b743c9f40fd2447dad6a7d7c0d6d33",
+    "tests/fixtures/zone_study_pair_delay/r1-00474.jpg": "47b9b70c83aaf2e7a18d5a06db4c346bcc6ffb87ad064d4253f579b2b2774b37",
+    "tests/fixtures/zone_study_pair_delay/r1-00475.jpg": "20dda0a34fbecf12883a93bbe78adfc2f41bff440c5814c205ecd17c50ca35d0",
+    "tests/fixtures/zone_study_pair_delay/r1-00476.jpg": "7ec2be2dfdfba3d336695e56515c26a3eb42141b61235f38316bd1ad76e19962",
+    "tests/fixtures/zone_study_pair_delay/r1-00477.jpg": "e4d07fc8737177f4842d7bff48ecc8fd6f598c6dcb79b97418d4c647bccdebf8",
+    "tests/fixtures/zone_study_pair_delay/r1-00478.jpg": "a198f71002e4b6c46647d1ca1d1f5cb8471d82b66958de009cba5953e2c1f34f",
+    "tests/fixtures/zone_study_pair_delay/r1-00479.jpg": "22630a73b1e71ab0b02edb50f3131114afee5988b3b9a414c424185257311b68",
+    "tests/fixtures/zone_study_pair_delay/r1-00480.jpg": "2bb58d5fbc6c87f1ccec10ccb78f750e4cefd7128e2c916f4fb2c9a3f9e0d624",
+    "tests/fixtures/zone_study_pair_delay/r2-00665.jpg": "bade65943136f64b7c527de3dc214cc69e96d8a19cbb2621a8b0b82f28d3382c",
+    "tests/fixtures/zone_study_pair_delay/r2-00666.jpg": "4e0643c9fb57c9a9149b7a6c03e938350a63640fd21b110f14feecc403600d92",
+    "tests/fixtures/zone_study_pair_delay/r2-00667.jpg": "76049cae9192a6cd10864a37e0fa028eb3aa8c6b671c2e61729424140aec14b2",
+    "tests/fixtures/zone_study_pair_delay/r2-00668.jpg": "e95c8cd7e6f7702dcf3a5964fe0dfa11860f304c19fba2ced9d1e96349c9ecda",
+    "tests/fixtures/zone_study_pair_delay/r2-00669.jpg": "59b6aee422a369385465510c6bf0005060ea178380dec2aa53692af9803f951e",
+    "tests/fixtures/zone_study_pair_delay/r2-00670.jpg": "007f2d11d3e6583325cd19054e66721712d4857c23621826744c2f30faa15dd9",
+    "tests/fixtures/zone_study_pair_delay/r2-00671.jpg": "f74aac6eb2cddfff00b21d47d9efc89fe134c34e92492563966498b429ac9cd7",
+    "tests/fixtures/zone_study_pair_delay/r2-00672.jpg": "e5cba51f3ddaef5ea4070fe943ae3025a32e759ee36c60c81d772258a62ca9e1",
+    "tests/fixtures/zone_study_pair_delay/r2-00681.jpg": "73dfe142739502ed973ec61ed27ce2f65282f9f0a3cac4f9230ccdd3adf0c6eb"
+  }
+}

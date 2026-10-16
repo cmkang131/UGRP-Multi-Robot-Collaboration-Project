@@ -1,0 +1,70 @@
+........................................................................ [ 14%]
+........................................................................ [ 29%]
+........................................................................ [ 43%]
+........................................................................ [ 58%]
+........................................................................ [ 73%]
+........................................................................ [ 87%]
+..........................................................FF             [100%]
+=================================== FAILURES ===================================
+___ test_registered_prepare_and_workflow_inputs_without_mujoco_import[dev07] ___
+
+tmp_path = PosixPath('/private/tmp/pr240-before-275ez7f5/.pytest_tmp/test_registered_prepare_and_wo0')
+run_id = 'dev07'
+
+    @pytest.mark.parametrize('run_id', ['dev07', 'dev08'])
+    def test_registered_prepare_and_workflow_inputs_without_mujoco_import(tmp_path, run_id):
+        code = '''
+    import builtins, sys
+    original = builtins.__import__
+    def guarded(name, *args, **kwargs):
+        if name == 'mujoco' or name.startswith('mujoco.'):
+            raise AssertionError('prepare imported MuJoCo')
+        return original(name, *args, **kwargs)
+    builtins.__import__ = guarded
+    from scripts.run_zone_pair_dev import main
+    raise SystemExit(main(sys.argv[1:]))
+    '''
+        out = tmp_path / run_id
+        argv = ['--prereg', str(dev.PREREG_V4), '--run-id', run_id, '--output', str(out)]
+        result = subprocess.run([sys.executable, '-c', code, *argv], cwd=dev.ROOT, text=True, capture_output=True,
+                                env={**os.environ, 'OMP_NUM_THREADS': '1', 'PYTHONDONTWRITEBYTECODE': '1'})
+>       assert result.returncode == 0, result.stderr
+E       AssertionError: ValueError: scene contract/hash mismatch
+E         
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python', '-c', "\nimport builti.../test_registered_prepare_and_wo0/dev07'], returncode=2, stdout='', stderr='ValueError: scene contract/hash mismatch\n').returncode
+
+tests/test_zone_start_dock.py:204: AssertionError
+___ test_registered_prepare_and_workflow_inputs_without_mujoco_import[dev08] ___
+
+tmp_path = PosixPath('/private/tmp/pr240-before-275ez7f5/.pytest_tmp/test_registered_prepare_and_wo1')
+run_id = 'dev08'
+
+    @pytest.mark.parametrize('run_id', ['dev07', 'dev08'])
+    def test_registered_prepare_and_workflow_inputs_without_mujoco_import(tmp_path, run_id):
+        code = '''
+    import builtins, sys
+    original = builtins.__import__
+    def guarded(name, *args, **kwargs):
+        if name == 'mujoco' or name.startswith('mujoco.'):
+            raise AssertionError('prepare imported MuJoCo')
+        return original(name, *args, **kwargs)
+    builtins.__import__ = guarded
+    from scripts.run_zone_pair_dev import main
+    raise SystemExit(main(sys.argv[1:]))
+    '''
+        out = tmp_path / run_id
+        argv = ['--prereg', str(dev.PREREG_V4), '--run-id', run_id, '--output', str(out)]
+        result = subprocess.run([sys.executable, '-c', code, *argv], cwd=dev.ROOT, text=True, capture_output=True,
+                                env={**os.environ, 'OMP_NUM_THREADS': '1', 'PYTHONDONTWRITEBYTECODE': '1'})
+>       assert result.returncode == 0, result.stderr
+E       AssertionError: ValueError: scene contract/hash mismatch
+E         
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python', '-c', "\nimport builti.../test_registered_prepare_and_wo1/dev08'], returncode=2, stdout='', stderr='ValueError: scene contract/hash mismatch\n').returncode
+
+tests/test_zone_start_dock.py:204: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_zone_start_dock.py::test_registered_prepare_and_workflow_inputs_without_mujoco_import[dev07]
+FAILED tests/test_zone_start_dock.py::test_registered_prepare_and_workflow_inputs_without_mujoco_import[dev08]
+2 failed, 490 passed in 28.83s

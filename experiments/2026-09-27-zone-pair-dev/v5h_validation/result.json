@@ -1,0 +1,39 @@
+{
+  "passed": 1687,
+  "failed": 0,
+  "skipped": 2,
+  "subtests_passed": 275,
+  "elapsed_s": 141.34,
+  "guard_counts": {
+    "physical_step_attempts": 0,
+    "real_vision_worker_attempts": 0,
+    "network_attempts": 0
+  },
+  "command": "OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q -p tests.pose_provider_no_physics tests/test_zone_pair*.py tests/test_zone_start_dock*.py tests/test_owncam*.py tests/test_zone_own*.py tests/test_pose_provider*.py tests/test_vision_pose_source.py tests/test_zone_study_pair_delay.py tests/test_zone_study_integration*.py tests/test_real_scene_memory.py --basetemp=./.pytest_tmp",
+  "skipped_tests": [
+    "tests/test_zone_own_executor.py::test_team_host_feeds_each_executor_only_its_own_camera",
+    "tests/test_zone_own_executor_host.py::test_team_host_isolation_abort_and_horizon_on_the_real_world"
+  ],
+  "skip_reason": "explicit nonphysical suite; these two tests require real MuJoCo stepping",
+  "pytest_tmp_removed": true,
+  "prepare": {
+    "dev13": {
+      "file": "experiments/2026-09-27-zone-pair-dev/v5h_validation/dev13_prepare_manifest.json",
+      "sha256": "681cbdc1b5d3167c7213bafc0e0cf5b7182a08fe4dd9aeafb320bedd0b9fb91c",
+      "state": "prepared_not_executed",
+      "model_calls": 0,
+      "physical_success": null,
+      "applied": null
+    },
+    "dev14": {
+      "file": "experiments/2026-09-27-zone-pair-dev/v5h_validation/dev14_prepare_manifest.json",
+      "sha256": "22fcb372cf788dadef2827e6d0994a5498f2304c52fb1d964ebfbdd37e62dda7",
+      "state": "prepared_not_executed",
+      "model_calls": 0,
+      "physical_success": null,
+      "applied": null
+    }
+  },
+  "head": "c38f94e6c551d8c0fa9993945ff4df087754672e",
+  "committed": false
+}

@@ -1,0 +1,57 @@
+{
+  "artifacts": {
+    "pilot-manifest-preview.json": "0a012b12603073c217d5a45c83fda762de4c3cdac9cfca6f4968ae3754def81d",
+    "pytest.xml": "6251eb796b0debaa5a3e27d75da8ac55f3a4dfecdce05456cc49b4ed730bf35d"
+  },
+  "base_head": "043f72cdca1ac2b4dd8577bc44a59e65faa67880",
+  "bundle_id": "rgb-standard-dispatch-v62",
+  "bundle_sha256": "6601192a6da7ac018dd3a7104364065bb9afb9dce0d61e79021f824648b07f69",
+  "copied_proxy_created": false,
+  "deselected_test": {
+    "alternative": "verify-registry --base HEAD and --base origin/main both passed",
+    "reason": "creates a temporary git commit; user requested no git commits",
+    "test": "test_existing_registry_bytes_cannot_change_or_disappear"
+  },
+  "environment_failure": {
+    "child_exists_after_test": false,
+    "reason": "PermissionError: [Errno 1] Operation not permitted: 'ps'",
+    "test": "tests/test_simulation_workflow_manager.py::WorkflowManagerTests::test_parent_exit_cleans_background_child",
+    "test_child_pid": 58087
+  },
+  "expanded_tests": {
+    "deselected": 1,
+    "errors": 0,
+    "failures": 1,
+    "pytest_passed": 1036,
+    "seconds": 68.37,
+    "skipped": 0,
+    "subtests_passed": 26,
+    "tests": 1063
+  },
+  "git_commit_created": false,
+  "installed_proxy_modified": false,
+  "installed_proxy_sha256": "7d4c4e8c2addf9e0dc159de6ba0f4ec4374f876d915a6bc0752d3fd18db3e556",
+  "physical_runs": 0,
+  "pytest_environment": {
+    "OMP_NUM_THREADS": "1",
+    "basetemp": "./.pytest_tmp",
+    "basetemp_removed": true
+  },
+  "real_model_calls": 0,
+  "remote_verification": "git fetch blocked at FETCH_HEAD by sandbox; gh connection failed; connector redirect failed; latest remote CI unverified",
+  "source_closure_count": 174,
+  "static_checks": {
+    "ci_selects_r10": "passed",
+    "git_diff_check": "passed",
+    "load_bundle_RUNNABLE_ID": "passed",
+    "verify_current_v62": "passed",
+    "verify_registry_HEAD": "passed",
+    "verify_registry_origin_main": "passed"
+  },
+  "targeted_tests": {
+    "deselected": 1,
+    "passed": 208,
+    "seconds": 23.76
+  },
+  "v61_sha256": "98b77ad6878548f21d97f4575f37fe5c0dfdbdcdf8b68087ca1f5ea2e829790b"
+}

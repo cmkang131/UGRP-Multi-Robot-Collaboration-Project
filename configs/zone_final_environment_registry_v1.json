@@ -1,0 +1,92 @@
+{
+  "schema": "ugrp.zone_final_environment_registry.v1",
+  "status": "DRAFT_UNSEALED",
+  "catalogs": {
+    "final": {
+      "file": "maps/zones_final/catalog.json",
+      "sha256": "2b9080dd51b52c3a6ad4f88c844785cda3be7cd6ac4844dfe8a2aa56f2b05577"
+    },
+    "robot_v3": {
+      "file": "configs/masterpi_v3_scenes.json",
+      "sha256": "5cee4f4d3f8aed9b969407507d9f6d69483dc8204df4e8c6033d1e377e6d5b8f"
+    }
+  },
+  "maps": {
+    "zone_wide_door_geometry_v2": {
+      "catalog": "final",
+      "scene_factory": "sim.zone_geometry_scene:GeometryCargoZoneScene",
+      "robot_model": "masterpi_v2",
+      "wall_profile": "walls_v3",
+      "providers": {
+        "vision_zero_tag_v2": {
+          "supported": true,
+          "calibration": "experiments/2026-09-26-zone-m1-owncam/calibration_m1_dev.json",
+          "calibration_sha256": "126cadaa9265ed2ae2b034f675e67c227193a2e1678f6b0c82dd53b186e6fc72",
+          "reason": "existing v2 construction contract; physical qualification not inherited"
+        }
+      },
+      "research_result": false
+    },
+    "zone_wide_two_doors_final_v1": {
+      "catalog": "final",
+      "scene_factory": "sim.zone_final_scene:FinalGeometryCargoZoneScene",
+      "robot_model": "masterpi_v2",
+      "wall_profile": "walls_v3",
+      "providers": {
+        "vision_zero_tag_v2": {
+          "supported": false,
+          "calibration": null,
+          "calibration_sha256": null,
+          "reason": "new map localisation/calibration not validated or registered by P03"
+        }
+      },
+      "research_result": false
+    },
+    "zone_wide_corridor_final_v1": {
+      "catalog": "final",
+      "scene_factory": "sim.zone_final_scene:FinalGeometryCargoZoneScene",
+      "robot_model": "masterpi_v2",
+      "wall_profile": "walls_v3",
+      "providers": {
+        "vision_zero_tag_v2": {
+          "supported": false,
+          "calibration": null,
+          "calibration_sha256": null,
+          "reason": "new map localisation/calibration not validated or registered by P03"
+        }
+      },
+      "research_result": false
+    },
+    "zone_wide_door_geometry_v3": {
+      "catalog": "robot_v3",
+      "scene_factory": "sim.zone_masterpi_v3_scene:MasterPiV3ZoneScene",
+      "robot_model": "masterpi_v3",
+      "wall_profile": "walls_v3",
+      "providers": {
+        "vision_zero_tag_v2": {
+          "supported": false,
+          "calibration": null,
+          "calibration_sha256": null,
+          "reason": "v2 motion/camera calibration cannot qualify robot v3"
+        }
+      },
+      "research_result": false
+    },
+    "zone_wide_door_geometry_v3_dock_v1": {
+      "catalog": "robot_v3",
+      "scene_factory": "sim.zone_masterpi_v3_scene:MasterPiV3ZoneScene",
+      "robot_model": "masterpi_v3",
+      "wall_profile": "walls_v3",
+      "providers": {
+        "vision_zero_tag_v2": {
+          "supported": false,
+          "calibration": null,
+          "calibration_sha256": null,
+          "reason": "v2 motion/camera calibration cannot qualify robot v3"
+        }
+      },
+      "research_result": false
+    }
+  },
+  "note_ko": "walls_v3와 masterpi_v3는 별개. 기존 지도/장면 bytes 보존. P03 provider 등록부는 읽기 전용. 미검증 조합은 실행 거부; 봉인과 물리 검증은 코디네이터 담당."
+}

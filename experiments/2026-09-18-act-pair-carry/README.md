@@ -101,3 +101,5 @@ MJ_PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/mjpython
 ```
 
 학습부터 새로 실행하려면 새 출력 경로에서 `--reuse-training`을 생략한다. 결과 감사는 scripts/audit_carry_act_experiment.py, 사후 분석은 scripts/analyze_carry_act_experiment.py, 영상 비교는 scripts/render_carry_act_comparison.py의 도움말을 따른다. 실행기는 깨끗한 Git 상태를 요구한다. 로그·모델·영상의 로컬 원본과 GitHub의 기록을 구분한다.
+
+코드는 커밋 `888447674318bc311e1ef65f71c654692b2b76bb`에서 재현(퇴역 전 소스 복구 기준). 당시 실행 SHA·설정·결과는 본문 기록을 따르며, [퇴역 목록](../../docs/retired_modules.md)을 참고한다.

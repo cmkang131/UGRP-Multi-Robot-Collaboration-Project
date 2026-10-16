@@ -1,0 +1,55 @@
+Baseline 7400c4262156f85ccdee946d8d96c075e0cdaa79; original safety module in memory; no checkout/index changes
+off terminated: 9.8 NOT_INITIALIZED {'t': 9.8, 'event': 'init_recovery_exhausted', 'phase': 'init', 'reason': 'stationary_deadline', 'recovery': {'since': 1.8, 'deadline': 9.8, 'captures': 1, 'next_capture': 2.1, 'last_frame': 20}}
+Fmemory_v3 terminated: 9.8 NOT_INITIALIZED {'t': 9.8, 'event': 'init_recovery_exhausted', 'phase': 'init', 'reason': 'stationary_deadline', 'recovery': {'since': 1.8, 'deadline': 9.8, 'captures': 1, 'next_capture': 2.1, 'last_frame': 20}}
+F
+=================================== FAILURES ===================================
+___ test_resumed_initial_sweep_completes_after_old_stationary_deadline[off] ____
+
+condition = 'off'
+
+    @pytest.mark.parametrize('condition', ['off', 'memory_v3'])
+    def test_resumed_initial_sweep_completes_after_old_stationary_deadline(condition):
+        ctl = initial_controller(condition)
+        for step in range(18, 112):
+            result = decide_tick(ctl, step)
+            if step == 18:
+                assert ctl.sweep is None and ctl.init_looks == 0
+                assert ctl.init_recovery['deadline'] == pytest.approx(9.8)
+            if step == 20:
+                assert ctl.sweep['queue'] == list(WIDE_LOOK_PANS)
+                assert ctl.init_looks == 1
+            if ctl.outcome:
+                print(condition, 'terminated:', step / 10, ctl.outcome, ctl.events[-1])
+>           assert ctl.outcome is None, (step / 10, result)
+E           AssertionError: (9.8, {'mode': 'done', 'outcome': 'NOT_INITIALIZED'})
+E           assert 'NOT_INITIALIZED' is None
+E            +  where 'NOT_INITIALIZED' = <harness.m1_owncam_memory_v3.M1OwnCamDeliveryOffV3 object at 0x1148a65a0>.outcome
+
+tests/test_owncam_memory_v3_review6.py:58: AssertionError
+_ test_resumed_initial_sweep_completes_after_old_stationary_deadline[memory_v3] _
+
+condition = 'memory_v3'
+
+    @pytest.mark.parametrize('condition', ['off', 'memory_v3'])
+    def test_resumed_initial_sweep_completes_after_old_stationary_deadline(condition):
+        ctl = initial_controller(condition)
+        for step in range(18, 112):
+            result = decide_tick(ctl, step)
+            if step == 18:
+                assert ctl.sweep is None and ctl.init_looks == 0
+                assert ctl.init_recovery['deadline'] == pytest.approx(9.8)
+            if step == 20:
+                assert ctl.sweep['queue'] == list(WIDE_LOOK_PANS)
+                assert ctl.init_looks == 1
+            if ctl.outcome:
+                print(condition, 'terminated:', step / 10, ctl.outcome, ctl.events[-1])
+>           assert ctl.outcome is None, (step / 10, result)
+E           AssertionError: (9.8, {'mode': 'done', 'outcome': 'NOT_INITIALIZED'})
+E           assert 'NOT_INITIALIZED' is None
+E            +  where 'NOT_INITIALIZED' = <harness.m1_owncam_memory_v3.M1OwnCamDeliveryMemV3 object at 0x1147e2630>.outcome
+
+tests/test_owncam_memory_v3_review6.py:58: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_owncam_memory_v3_review6.py::test_resumed_initial_sweep_completes_after_old_stationary_deadline[off]
+FAILED tests/test_owncam_memory_v3_review6.py::test_resumed_initial_sweep_completes_after_old_stationary_deadline[memory_v3]
+2 failed, 11 deselected in 0.18s

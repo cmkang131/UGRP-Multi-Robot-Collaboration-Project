@@ -1,0 +1,117 @@
+{
+  "tested_worktree_parents": [
+    "9738a3d2feeae818162533326c64c75b3a557633",
+    "ad496486271f441f00eb7d95fbd44dc454999004"
+  ],
+  "tests_passed": 283,
+  "by_class": {
+    "tests.test_zone_own_executor_door_routes": 76,
+    "tests.test_pair_passage_plan": 44,
+    "tests.test_zone_team_jobs": 41,
+    "tests.test_zone_hard_routes": 1,
+    "tests.test_zone_final_env": 2,
+    "tests.test_zone_pair_registered_source": 22,
+    "tests.test_zone_study_source_pinning": 33,
+    "tests.test_ci_fast_path.CiFastPathTests": 11,
+    "tests.test_stall_observation_contract": 40,
+    "experiments.2026-09-30-s6-order-design.test_audit": 13
+  },
+  "manifest": {
+    "mutation": "none",
+    "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+    "lock": {
+      "owner": "codex",
+      "branch": "codex/two-door-route-interface",
+      "purpose": "PR314 D1 offline regression/mutation, no physics/render/model",
+      "pid": 1980,
+      "acquired_unix": 1790775737.484108,
+      "expected_end_unix": 1790775917.4841092,
+      "loadavg_at_acquire": [
+        22.43115234375,
+        21.69287109375,
+        19.6689453125
+      ]
+    },
+    "pytest_args": [
+      "tests/test_zone_own_executor_door_routes.py",
+      "tests/test_pair_passage_plan.py",
+      "tests/test_zone_team_jobs.py",
+      "tests/test_zone_hard_routes.py::test_rect_keepouts_rotated_and_footprint_interface",
+      "tests/test_zone_final_env.py::test_v1_scenarios_and_tag_maps_are_unchanged",
+      "tests/test_zone_final_env.py::test_catalog_matches_the_files_and_pins_every_hash",
+      "tests/test_zone_pair_registered_source.py",
+      "tests/test_zone_study_source_pinning.py",
+      "tests/test_ci_fast_path.py",
+      "tests/test_stall_observation_contract.py",
+      "experiments/2026-09-30-s6-order-design/test_audit.py"
+    ],
+    "before_tests": null,
+    "source_sha256": {
+      "harness/zone_static_door_routes.py": "cec5fd95847496d5492b73dba67bf4393eef0c57394510ee7d2a22e597d9d24c",
+      "tests/test_zone_own_executor_door_routes.py": "9d4e213efb6834e72265132f8b6aa94588879fe8945e1fe9713a7f00ac3befd9",
+      "tests/test_ci_fast_path.py": "3c071ebed62051dee2fbe890702a4d9cfb0ffae1f2c2b4188e874aa0601fb30d",
+      ".github/workflows/tests.yml": "1eef4d2ea2d85905ad93b7e34d0f589ed29337295ce0fdbe67c6df37eb66d551"
+    },
+    "exit_code": 0,
+    "released": {
+      "owner": "codex",
+      "branch": "codex/two-door-route-interface",
+      "purpose": "PR314 D1 offline regression/mutation, no physics/render/model",
+      "pid": 1980,
+      "acquired_unix": 1790775737.484108,
+      "expected_end_unix": 1790775917.4841092,
+      "loadavg_at_acquire": [
+        22.43115234375,
+        21.69287109375,
+        19.6689453125
+      ],
+      "pid_alive": true
+    },
+    "load_end": [
+      23.751953125,
+      22.04296875,
+      19.9462890625
+    ]
+  },
+  "additional_source_sha256": {
+    "scripts/run_ci_tests.py": "33f32ce47983729446c521a102989dbd5653a62812fedb92551b4c2504cf7d01",
+    "tests/test_stall_observation_contract.py": "130536538590fba8e9fd3200ad74eeed5d0052673f5eca948eb739bbe431d620",
+    "experiments/2026-09-30-s6-order-design/test_audit.py": "dd02bfa82ece1c5b6da265a3fe71da75c8113aebaa57b5f30809bd9a8bd5c42f",
+    "experiments/2026-09-30-s6-order-design/audit.py": "df519d5287c23ada6e158953ff78546e933fae7345419c6bd3e275e99395d31a",
+    "experiments/2026-09-30-p08-stall-contract/observation_contract.py": "c541506d9e9f1e3e0f204f80b438e2e144d5bc737ee6d515a3c9e49ba5241e5c",
+    "experiments/2026-09-30-p08-stall-contract/fake_stop_contract.py": "26b6949e3edec4caaf2b2b22e6dc2bbb2f24a427fa38fd1487a2fb716db299e9",
+    "experiments/2026-09-30-two-door-route-interface/review_d1/run_checks.py": "58e564d5f6549cbce573297f46c93d2b63475fec7921ca03f10bf0227eed4f53"
+  },
+  "pythonpath": "experiments/2026-09-30-s6-order-design",
+  "attempts": [
+    {
+      "id": "integrated-02",
+      "exit_code": 2,
+      "reason": "Collection error: missing audit module search path; source unchanged"
+    },
+    {
+      "id": "integrated-03",
+      "exit_code": 130,
+      "pytest_started": false,
+      "reason": "Own lock-waiting process interrupted; restarted with shorter lock polling"
+    },
+    {
+      "id": "integrated-04",
+      "exit_code": 0,
+      "passed": 283
+    }
+  ],
+  "local_physics_runs": 0,
+  "local_render_runs": 0,
+  "local_model_calls": 0,
+  "protected_files_unchanged_after_merge": 549,
+  "sha256": {
+    "integrated-02/junit.xml": "50ad15b6acff501b8fddeb2162ac88b52d99f6a8d8b235a47e21736f603441ff",
+    "integrated-02/manifest.json": "c22b7a1eb611584c1ab490b77da9a4cf7e60f2e1f8390736b05160d7d1b1fe8b",
+    "integrated-04/junit.xml": "da38c08d23f63bc4cd79a37b5a869140d25f69e1e1d6e93f8ffc755daef483f3",
+    "integrated-04/manifest.json": "2a18a3d509d2d20a89e279dd24829aef69f20f188f51114df64c77077892a1d9",
+    "integrated-02.log": "d4606c2ead2309ac44959bb29c4efb2053cf4592f49786e6616d94ad4f2477f3",
+    "integrated-03.log": "a13dfb5f4def90059852d5eef5680edf6e13e2e250cd63593454f22bf55b71f6",
+    "integrated-04.log": "443296102ebee3f37d36a404a22e0dc82a4616d363538aa845a8d4aa10e9cc3d"
+  }
+}

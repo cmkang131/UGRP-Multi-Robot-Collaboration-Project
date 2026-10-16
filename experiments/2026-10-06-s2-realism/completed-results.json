@@ -1,0 +1,775 @@
+{
+  "source_sha": "ab27cffd8f70cfbf51ccbb0dbf5b4ced286c91f7",
+  "cohort": {
+    "source_sha": "ab27cffd8f70cfbf51ccbb0dbf5b4ced286c91f7",
+    "execution_bundle_id": "zone-s2-realism-v114",
+    "runs": [
+      {
+        "order": 1,
+        "seed": 1039,
+        "slot": "P1-2",
+        "stage": "pick",
+        "role": "probe",
+        "output": "/Users/changmin/projects/ugrp/outputs/s2-realism-ab27cffd-s1039-P1-2-pick",
+        "exit_code": 1,
+        "managed_wall_s": 392.53661995899165,
+        "status": "STAGE_FAILED",
+        "result_sha256": "1f1c044c41fcfcdfd2890524843599b7f2272b023f7e9215999af7ddcbee6f37",
+        "probe_gate_passed": false,
+        "failure": "CYAN_ALIGN_VIEW_LOST"
+      },
+      {
+        "order": 2,
+        "seed": 1029,
+        "slot": "P1-1",
+        "stage": "place",
+        "role": "full",
+        "output": "/Users/changmin/projects/ugrp/outputs/s2-realism-ab27cffd-s1029-P1-1-place",
+        "status": "NOT_RUN",
+        "reason": "probe gate did not pass"
+      },
+      {
+        "order": 3,
+        "seed": 1030,
+        "slot": "P2-1",
+        "stage": "place",
+        "role": "full",
+        "output": "/Users/changmin/projects/ugrp/outputs/s2-realism-ab27cffd-s1030-P2-1-place",
+        "status": "NOT_RUN",
+        "reason": "probe gate did not pass"
+      },
+      {
+        "order": 4,
+        "seed": 1031,
+        "slot": "P1-2",
+        "stage": "place",
+        "role": "full",
+        "output": "/Users/changmin/projects/ugrp/outputs/s2-realism-ab27cffd-s1031-P1-2-place",
+        "status": "NOT_RUN",
+        "reason": "probe gate did not pass"
+      }
+    ],
+    "driver_sha256": "aa29dd7f980a7e16dde34e4ceb0aa73901a3d3b82cafe379140bd4fdb16e18b7",
+    "started_unix": 1791287257.834099,
+    "completed": true,
+    "ended_unix": 1791287650.374084,
+    "failure_counts": {
+      "CYAN_ALIGN_VIEW_LOST": 1
+    }
+  },
+  "rows": [
+    {
+      "seed": 1032,
+      "slot": "P1-2",
+      "stage": "pick",
+      "role": "initialization-error",
+      "output": "/Users/changmin/projects/ugrp/outputs/s2-realism-45fbf96a-s1032-P1-2-pick",
+      "status": "HOST_ERROR",
+      "source_sha": "45fbf96afc9d94057aa3f7b0df2380d907076bfe",
+      "bundle": "zone-s2-realism-v109",
+      "failure": {
+        "type": "ValueError",
+        "message": "v3 camera not applied",
+        "class": "HOST_ERROR"
+      },
+      "lifted": null,
+      "inside": null,
+      "geometric_success": null,
+      "independent_geometry": null,
+      "frames": 0,
+      "pickup_site_status": null,
+      "regrasp_count": null,
+      "pickup_site_before_cyan_area_px": null,
+      "pickup_site_after_cyan_area_px": null,
+      "scene_checks": [],
+      "wall_s": 0.8772292499779724,
+      "sim_s": null,
+      "check_sim_s": null,
+      "wall_per_sim": null,
+      "commands": 0,
+      "model_calls": 0,
+      "would_stop": {},
+      "physical_success": null,
+      "raw_remote_backup": false
+    },
+    {
+      "seed": 1037,
+      "slot": "P1-2",
+      "stage": "pick",
+      "role": "reset-host-error",
+      "output": "/Users/changmin/projects/ugrp/outputs/s2-realism-0c8eb624-s1037-P1-2-pick",
+      "status": "HOST_ERROR",
+      "source_sha": "0c8eb6243569b54c336ba355f0c5dbd9414a46f4",
+      "bundle": "zone-s2-realism-v113",
+      "failure": {
+        "type": "ValueError",
+        "message": "forward must be between -0.05 and 0.15",
+        "class": "HOST_ERROR"
+      },
+      "lifted": false,
+      "inside": false,
+      "geometric_success": false,
+      "independent_geometry": {
+        "lifted": false,
+        "inside": false,
+        "floor": true,
+        "stable": true,
+        "settled_s": 2.0,
+        "success": false
+      },
+      "frames": 215,
+      "pickup_site_status": "unconfirmed",
+      "regrasp_count": 0,
+      "pickup_site_before_cyan_area_px": null,
+      "pickup_site_after_cyan_area_px": null,
+      "scene_checks": [],
+      "wall_s": 38.273409500019625,
+      "sim_s": 12.0,
+      "check_sim_s": 10.7,
+      "wall_per_sim": 3.189450791668302,
+      "commands": 519,
+      "model_calls": 0,
+      "would_stop": {
+        "ARM_COLLISION_GUARD": 7,
+        "POSE_UNCERTAIN": 1
+      },
+      "physical_success": null,
+      "raw_remote_backup": false,
+      "max_wheel_input": 0.0,
+      "moving_branch_samples": 0,
+      "supervisor_samples": 215,
+      "max_external_force": 0.0,
+      "max_robot_tilt_deg": 0.06802151758372733,
+      "max_cyan_z_m": 0.015892244579783603,
+      "robot_xy_displacement_m": 0.0005827768938399019,
+      "capture_start_sim_s": 1.3,
+      "capture_end_sim_s": 12.0,
+      "capture_fps": 20
+    },
+    {
+      "order": 1,
+      "seed": 1039,
+      "slot": "P1-2",
+      "stage": "pick",
+      "role": "probe",
+      "output": "/Users/changmin/projects/ugrp/outputs/s2-realism-ab27cffd-s1039-P1-2-pick",
+      "exit_code": 1,
+      "managed_wall_s": 392.53661995899165,
+      "status": "STAGE_FAILED",
+      "result_sha256": "1f1c044c41fcfcdfd2890524843599b7f2272b023f7e9215999af7ddcbee6f37",
+      "probe_gate_passed": false,
+      "failure": "CYAN_ALIGN_VIEW_LOST",
+      "source_sha": "ab27cffd8f70cfbf51ccbb0dbf5b4ced286c91f7",
+      "bundle": "zone-s2-realism-v114",
+      "lifted": false,
+      "inside": false,
+      "geometric_success": false,
+      "independent_geometry": {
+        "lifted": false,
+        "inside": false,
+        "floor": true,
+        "stable": true,
+        "settled_s": 2.0,
+        "success": false
+      },
+      "frames": 2612,
+      "pickup_site_status": "unconfirmed",
+      "regrasp_count": 0,
+      "pickup_site_before_cyan_area_px": null,
+      "pickup_site_after_cyan_area_px": null,
+      "scene_checks": [],
+      "wall_s": 386.5142035000026,
+      "sim_s": 134.85,
+      "check_sim_s": 133.54999999999998,
+      "wall_per_sim": 2.8662528995180026,
+      "commands": 1188,
+      "model_calls": 0,
+      "would_stop": {
+        "ARM_COLLISION_GUARD": 5,
+        "POSE_UNCERTAIN": 43
+      },
+      "physical_success": null,
+      "raw_remote_backup": false,
+      "max_wheel_input": 0.65,
+      "moving_branch_samples": 1863,
+      "supervisor_samples": 2672,
+      "max_external_force": 0.0,
+      "max_robot_tilt_deg": 0.31663839688163187,
+      "max_cyan_z_m": 0.015892244579783672,
+      "robot_xy_displacement_m": 1.7304854086032646,
+      "capture_start_sim_s": 1.3,
+      "capture_end_sim_s": 131.85,
+      "capture_fps": 20
+    },
+    {
+      "order": 2,
+      "seed": 1029,
+      "slot": "P1-1",
+      "stage": "place",
+      "role": "full",
+      "output": "/Users/changmin/projects/ugrp/outputs/s2-realism-ab27cffd-s1029-P1-1-place",
+      "status": "NOT_RUN",
+      "reason": "probe gate did not pass",
+      "lifted": null,
+      "inside": null
+    },
+    {
+      "order": 3,
+      "seed": 1030,
+      "slot": "P2-1",
+      "stage": "place",
+      "role": "full",
+      "output": "/Users/changmin/projects/ugrp/outputs/s2-realism-ab27cffd-s1030-P2-1-place",
+      "status": "NOT_RUN",
+      "reason": "probe gate did not pass",
+      "lifted": null,
+      "inside": null
+    },
+    {
+      "order": 4,
+      "seed": 1031,
+      "slot": "P1-2",
+      "stage": "place",
+      "role": "full",
+      "output": "/Users/changmin/projects/ugrp/outputs/s2-realism-ab27cffd-s1031-P1-2-place",
+      "status": "NOT_RUN",
+      "reason": "probe gate did not pass",
+      "lifted": null,
+      "inside": null
+    }
+  ],
+  "raw_manifests": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-ab27cffd-analysis/s1032-raw-sha256.json",
+      "sha256": "e9486572e454b7d03032fd566c7c7ed6358d787060efa83ec6baa4c31a3b51c1",
+      "files": 4,
+      "bytes": 41894
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-ab27cffd-analysis/s1037-raw-sha256.json",
+      "sha256": "b3976b509b97e03ce60c9c57a8494331095fd483b173b6dfcad945382f2c4137",
+      "files": 237,
+      "bytes": 5099511
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-ab27cffd-analysis/s1039-raw-sha256.json",
+      "sha256": "10efe2f56e3d11dcaac7a822d3e90f7524add951717accb30d349c44e18a9761",
+      "files": 2635,
+      "bytes": 53650419
+    }
+  ],
+  "old_condition_pooled": false,
+  "separate_failures_and_diagnostics": [
+    {
+      "source_sha": "5e1831a8700d035d3f974e033d973f23815d4832",
+      "bundle": "zone-s2-realism-v110",
+      "seed": 1033,
+      "status": "CONTROL_FAILURE",
+      "failure": "COMMAND_BELOW_START_THRESHOLD",
+      "termination": "user-coordinator stopped driver/session/runner",
+      "host_error": false,
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-5e1831a8-s1033-P1-2-pick",
+      "raw_unchanged": true,
+      "raw_manifest": "/Users/changmin/projects/ugrp/outputs/s2-realism-5e1831a8-abort-assessment/raw-sha256.json",
+      "raw_manifest_sha256": "4be0e3ab0d5905bb2438e516ddeb8eabda810231c881c53dd707a73ed0c629d4",
+      "recorded_sim_start": 1.3,
+      "recorded_sim_end": 786.7,
+      "recorded_duration_s": 785.4000000000001,
+      "max_wheel_input": 0.17855879475885958,
+      "median_peak_wheel_input": 0.10959391417637643,
+      "relay_active_samples": 0,
+      "net_xy_displacement_m": 0.005961046767639103,
+      "max_xy_excursion_m": 0.005961046767639103,
+      "lifted": false,
+      "inside": false,
+      "pickup_site_status": "NOT_REACHED",
+      "before_cyan_area_px": null,
+      "after_cyan_area_px": null,
+      "regrasp_count": 0,
+      "controller_state": "search_move",
+      "model_calls": 0,
+      "full_seeds_not_started": [
+        1029,
+        1030,
+        1031
+      ],
+      "seed_reuse_forbidden": true,
+      "limitation": "raw final result/student record absent after external termination; driver NO_RESULT is transport bookkeeping, not failure cause; no two physical failures observed",
+      "role": "previous-command-failure",
+      "assessment_source": {
+        "path": "/Users/changmin/projects/ugrp-wt/drive-friction/experiments/2026-10-06-s2-realism/s1033-abort-assessment.json",
+        "sha256": "d456c55d2d4dd31efca200ae6fc27f55bc0b2671071a36aa212e00b3d46a2ca0"
+      },
+      "offline_scalars": {
+        "offline/host_error": 0,
+        "offline/max_wheel_input": 0.17855879475885958,
+        "offline/median_peak_wheel_input": 0.10959391417637643,
+        "offline/relay_active_samples": 0.0,
+        "offline/net_xy_displacement_m": 0.005961046767639103,
+        "offline/max_xy_excursion_m": 0.005961046767639103,
+        "offline/lifted": 0.0,
+        "offline/regrasp_count": 0.0,
+        "offline/recorded_sim_duration_s": 785.4000000000001,
+        "offline/wall_s_lower_bound": 2294.3627170420077
+      }
+    },
+    {
+      "source_sha": "18c2495b6dcaf5d26255529c07a3c90c91324aec",
+      "bundle": "zone-s2-real-output-diag-v111",
+      "seed": 1034,
+      "status": "HOST_ERROR",
+      "failure": "NUMPY_BOOLEAN_JSON_SERIALIZATION",
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-18c2495b-s1034-1036-motion-diag",
+      "scope": "first pulse executed; trajectory and result were not saved; no usable motion evidence",
+      "unstarted_seeds": [
+        1035,
+        1036
+      ],
+      "replacement_forward_seed": 1038,
+      "raw_unchanged": true,
+      "role": "diagnostic-host-error",
+      "assessment_source": {
+        "path": "/Users/changmin/projects/ugrp-wt/drive-friction/experiments/2026-10-06-s2-realism/s1034-diagnostic-host-error.json",
+        "sha256": "6333088b9b6707a72dbe803c8b8420806450c070ad0c887498f3aa9e6bfadb8c"
+      },
+      "offline_scalars": {
+        "offline/host_error": 1
+      }
+    },
+    {
+      "seed": 1038,
+      "case": "forward",
+      "status": "MEASURED_DEV",
+      "model_calls": 0,
+      "source_sha": "1b6b092188268738cc74417bec5e6d72e4b3136a",
+      "execution_bundle_id": "zone-s2-real-output-diag-v112",
+      "scope": "unloaded setup-only exploration; no mission/hardware claim",
+      "loadavg_start": [
+        5.60888671875,
+        5.822265625,
+        5.26123046875
+      ],
+      "command": {
+        "kind": "mecanum",
+        "forward": 0.35,
+        "left": 0.0,
+        "turn": 0.0,
+        "duration_s": 0.1
+      },
+      "request": {
+        "kind": "mecanum",
+        "forward": 0.1,
+        "left": 0.0,
+        "turn": 0.0,
+        "duration_s": 0.1
+      },
+      "sim_s": 4.1,
+      "observed_delta_body": [
+        0.016640343350768343,
+        -5.745821073754753e-05,
+        -7.252568935586357e-05
+      ],
+      "inherited_prediction": [
+        0.0547205027263524,
+        0.0,
+        0.0
+      ],
+      "error": [
+        -0.03808015937558405,
+        -5.745821073754753e-05,
+        -7.252568935586357e-05
+      ],
+      "relative_main_axis_error": 2.2884238968437964,
+      "refit_required": true,
+      "max_tilt_deg": 0.11264885018787514,
+      "applied_drive_profile": {
+        "profile": "masterpi_drive_friction_v7",
+        "parameters": {
+          "no_load_rpm": 150.0,
+          "torque_cap_nm": 0.1176798,
+          "sliding_mu": 0.8,
+          "start_fraction": 0.325,
+          "no_load_current_a": 0.1,
+          "stall_current_a": 1.2
+        },
+        "qualification": "INPUT_STICK_SLIP_CANDIDATE",
+        "installed_motor_and_floor_verified": false,
+        "actuator_model": "native motor T0*(u-sign(u)*bk) on input-latched sliding branch; zero source torque on stick branch",
+        "roller_geometry": "unmodified FUJI barrel mesh; uniform 65/205 scale; MasterPi 9 rollers",
+        "roller_bearing": "FUJI damping/frictionloss scaled with mass*length^2",
+        "wheel_mass": "legacy 50g; FUJI hub:roller mass proportions at 9 rollers",
+        "public_model": {
+          "repository": "https://github.com/DaiGuard/fuji_mecanum",
+          "commit": "646431a5e107448e0e2bdeeba4575db9aa3665ff",
+          "license": "MIT, Copyright (c) 2022 DaiGuard",
+          "mesh_original_path": "mesh/collision/roller.stl",
+          "mesh_sha256": "2bea3228aa5766e2ce42f4f4a46cdf4bc3e63802958fa7f0ffb9688d9393a424",
+          "mesh_modified": false,
+          "source_radius_m": 0.1025,
+          "roller_ring_radius_m": 0.0895,
+          "roller_count": 15,
+          "roller_angle_deg": 45,
+          "roller_mass_kg": 0.3,
+          "roller_inertia_kg_m2": [
+            0.00024,
+            0.00076,
+            0.00076
+          ],
+          "hub_mass_kg": 2.0,
+          "hub_inertia_kg_m2": [
+            0.042025,
+            0.024279,
+            0.024279
+          ],
+          "roller_damping": 0.001,
+          "roller_frictionloss": 0.0001,
+          "roller_sliding_friction": 0.8,
+          "contact_model": "URDF mesh collision; MuJoCo convex hull port with condim 3",
+          "source_self_collide": "SDF model default false; equivalent wheel assembly exclusions in port"
+        },
+        "self_collision": "roller versus own robot excluded, matching source assembly self_collide=false",
+        "zero_command": "input relay resets; passive DC speed loss remains",
+        "state_scope": "per-wheel command sign/history only; not measured motion or policy observation",
+        "reset_rule": "world.reset clears all input relay states before normal scene reset",
+        "friction_model": "input hysteresis replaces wheel joint dry loss; roller contact/bearing unchanged",
+        "start_source": "user observation <=30 rest >=35 sustained; midpoint32.5 fixed before v6",
+        "kinetic_fraction": 0.08333333333333334,
+        "kinetic_torque_nm": 0.009806650000000002,
+        "kinetic_source": "Hiwonder encoder TT I0=.1A Is=1.2A; Tc/T0=I0/Is conditional all no-load loss Coulomb",
+        "diagnostic_scope": "v6 stall contact normal torque is external geometry/load resistance; not subtracted from motor I0/Is",
+        "speed_loss_nm_s": 0.006867418019757396,
+        "implementation_source": "MathWorks Relay on/off hysteresis; Karnopp stick/slip principle adapted to user-requested input state",
+        "unconfirmed": [
+          "installed TT and stall torque",
+          "PWM transfer",
+          "Coulomb versus viscous no-load split",
+          "load-dependent start threshold",
+          "external stall/re-stick",
+          "brake versus coast"
+        ],
+        "sha256": "b89758e59272aad5db8bb60637bc43e5bb7d56fc10d861de1cf5df376abda3fd",
+        "xml_sha256": "e36f93d33568dd4b3951cef925254477ac1ad9773f68eb41839e0cca3be1c927"
+      },
+      "wall_s": 8.681633625004906,
+      "loadavg_end": [
+        5.31982421875,
+        5.7587890625,
+        5.24169921875
+      ],
+      "role": "exploratory-forward",
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-1b6b0921-s1038-1035-1036-motion-diag/s1038-forward",
+      "assessment_source": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-1b6b0921-s1038-1035-1036-motion-diag/s1038-forward/result.json",
+        "sha256": "97327f1a3a6e565447d460b077232c059a48430852ecd741fd54d38c59f9b238"
+      },
+      "bundle": "zone-s2-real-output-diag-v112",
+      "fit_reference": {
+        "path": "/Users/changmin/projects/ugrp-wt/drive-friction/configs/s2_motion_v7_diag_v1.json",
+        "sha256": "9b391f381e43ba511a91a294425203c34d30c58459eb340651d953ba5b1d0cbe"
+      },
+      "offline_scalars": {
+        "offline/host_error": 0.0,
+        "offline/refit_required": 1.0,
+        "offline/inherited_relative_error": 2.2884238968437964,
+        "offline/measured_forward_m": 0.016640343350768343,
+        "offline/inherited_forward_m": 0.0547205027263524,
+        "offline/measured_left_m": -5.745821073754753e-05,
+        "offline/inherited_left_m": 0.0,
+        "offline/measured_yaw_rad": -7.252568935586357e-05,
+        "offline/inherited_yaw_rad": 0.0,
+        "offline/training_max_xy_error_m": 0.0023343367286499024,
+        "offline/training_max_yaw_error_rad": 0.000276083929075724
+      }
+    },
+    {
+      "seed": 1035,
+      "case": "turn",
+      "status": "MEASURED_DEV",
+      "model_calls": 0,
+      "source_sha": "1b6b092188268738cc74417bec5e6d72e4b3136a",
+      "execution_bundle_id": "zone-s2-real-output-diag-v112",
+      "scope": "unloaded setup-only exploration; no mission/hardware claim",
+      "loadavg_start": [
+        5.31982421875,
+        5.7587890625,
+        5.24169921875
+      ],
+      "command": {
+        "kind": "mecanum",
+        "forward": 0.0,
+        "left": 0.0,
+        "turn": 0.35,
+        "duration_s": 0.1
+      },
+      "request": {
+        "kind": "mecanum",
+        "forward": 0.0,
+        "left": 0.0,
+        "turn": 0.1,
+        "duration_s": 0.1
+      },
+      "sim_s": 4.1,
+      "observed_delta_body": [
+        0.0021384360020327313,
+        7.391283879511868e-05,
+        0.11596814156148895
+      ],
+      "inherited_prediction": [
+        0.0,
+        0.0,
+        0.04796058808802686
+      ],
+      "error": [
+        0.0021384360020327313,
+        7.391283879511868e-05,
+        0.06800755347346209
+      ],
+      "relative_main_axis_error": 0.586433071684631,
+      "refit_required": true,
+      "max_tilt_deg": 0.0668642243987029,
+      "applied_drive_profile": {
+        "profile": "masterpi_drive_friction_v7",
+        "parameters": {
+          "no_load_rpm": 150.0,
+          "torque_cap_nm": 0.1176798,
+          "sliding_mu": 0.8,
+          "start_fraction": 0.325,
+          "no_load_current_a": 0.1,
+          "stall_current_a": 1.2
+        },
+        "qualification": "INPUT_STICK_SLIP_CANDIDATE",
+        "installed_motor_and_floor_verified": false,
+        "actuator_model": "native motor T0*(u-sign(u)*bk) on input-latched sliding branch; zero source torque on stick branch",
+        "roller_geometry": "unmodified FUJI barrel mesh; uniform 65/205 scale; MasterPi 9 rollers",
+        "roller_bearing": "FUJI damping/frictionloss scaled with mass*length^2",
+        "wheel_mass": "legacy 50g; FUJI hub:roller mass proportions at 9 rollers",
+        "public_model": {
+          "repository": "https://github.com/DaiGuard/fuji_mecanum",
+          "commit": "646431a5e107448e0e2bdeeba4575db9aa3665ff",
+          "license": "MIT, Copyright (c) 2022 DaiGuard",
+          "mesh_original_path": "mesh/collision/roller.stl",
+          "mesh_sha256": "2bea3228aa5766e2ce42f4f4a46cdf4bc3e63802958fa7f0ffb9688d9393a424",
+          "mesh_modified": false,
+          "source_radius_m": 0.1025,
+          "roller_ring_radius_m": 0.0895,
+          "roller_count": 15,
+          "roller_angle_deg": 45,
+          "roller_mass_kg": 0.3,
+          "roller_inertia_kg_m2": [
+            0.00024,
+            0.00076,
+            0.00076
+          ],
+          "hub_mass_kg": 2.0,
+          "hub_inertia_kg_m2": [
+            0.042025,
+            0.024279,
+            0.024279
+          ],
+          "roller_damping": 0.001,
+          "roller_frictionloss": 0.0001,
+          "roller_sliding_friction": 0.8,
+          "contact_model": "URDF mesh collision; MuJoCo convex hull port with condim 3",
+          "source_self_collide": "SDF model default false; equivalent wheel assembly exclusions in port"
+        },
+        "self_collision": "roller versus own robot excluded, matching source assembly self_collide=false",
+        "zero_command": "input relay resets; passive DC speed loss remains",
+        "state_scope": "per-wheel command sign/history only; not measured motion or policy observation",
+        "reset_rule": "world.reset clears all input relay states before normal scene reset",
+        "friction_model": "input hysteresis replaces wheel joint dry loss; roller contact/bearing unchanged",
+        "start_source": "user observation <=30 rest >=35 sustained; midpoint32.5 fixed before v6",
+        "kinetic_fraction": 0.08333333333333334,
+        "kinetic_torque_nm": 0.009806650000000002,
+        "kinetic_source": "Hiwonder encoder TT I0=.1A Is=1.2A; Tc/T0=I0/Is conditional all no-load loss Coulomb",
+        "diagnostic_scope": "v6 stall contact normal torque is external geometry/load resistance; not subtracted from motor I0/Is",
+        "speed_loss_nm_s": 0.006867418019757396,
+        "implementation_source": "MathWorks Relay on/off hysteresis; Karnopp stick/slip principle adapted to user-requested input state",
+        "unconfirmed": [
+          "installed TT and stall torque",
+          "PWM transfer",
+          "Coulomb versus viscous no-load split",
+          "load-dependent start threshold",
+          "external stall/re-stick",
+          "brake versus coast"
+        ],
+        "sha256": "b89758e59272aad5db8bb60637bc43e5bb7d56fc10d861de1cf5df376abda3fd",
+        "xml_sha256": "c067d55085ad741175cc0456283953d89a3615d42382d9e77a61c9ad74775934"
+      },
+      "wall_s": 9.602543791988865,
+      "loadavg_end": [
+        4.72900390625,
+        5.6181640625,
+        5.19775390625
+      ],
+      "role": "exploratory-turn",
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-1b6b0921-s1038-1035-1036-motion-diag/s1035-turn",
+      "assessment_source": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-1b6b0921-s1038-1035-1036-motion-diag/s1035-turn/result.json",
+        "sha256": "6a07b4120d62084785d5a57a5547f13b4e2396d86ec8583c281809f1cb18ae50"
+      },
+      "bundle": "zone-s2-real-output-diag-v112",
+      "fit_reference": {
+        "path": "/Users/changmin/projects/ugrp-wt/drive-friction/configs/s2_motion_v7_diag_v1.json",
+        "sha256": "9b391f381e43ba511a91a294425203c34d30c58459eb340651d953ba5b1d0cbe"
+      },
+      "offline_scalars": {
+        "offline/host_error": 0.0,
+        "offline/refit_required": 1.0,
+        "offline/inherited_relative_error": 0.586433071684631,
+        "offline/measured_forward_m": 0.0021384360020327313,
+        "offline/inherited_forward_m": 0.0,
+        "offline/measured_left_m": 7.391283879511868e-05,
+        "offline/inherited_left_m": 0.0,
+        "offline/measured_yaw_rad": 0.11596814156148895,
+        "offline/inherited_yaw_rad": 0.04796058808802686,
+        "offline/training_max_xy_error_m": 0.0010653848147708935,
+        "offline/training_max_yaw_error_rad": 0.007857862064905602
+      }
+    },
+    {
+      "seed": 1036,
+      "case": "left",
+      "status": "MEASURED_DEV",
+      "model_calls": 0,
+      "source_sha": "1b6b092188268738cc74417bec5e6d72e4b3136a",
+      "execution_bundle_id": "zone-s2-real-output-diag-v112",
+      "scope": "unloaded setup-only exploration; no mission/hardware claim",
+      "loadavg_start": [
+        4.72900390625,
+        5.6181640625,
+        5.19775390625
+      ],
+      "command": {
+        "kind": "mecanum",
+        "forward": 0.0,
+        "left": 0.65,
+        "turn": 0.0,
+        "duration_s": 0.65
+      },
+      "request": {
+        "kind": "mecanum",
+        "forward": 0.0,
+        "left": 0.1,
+        "turn": 0.0,
+        "duration_s": 0.1
+      },
+      "sim_s": 4.65,
+      "observed_delta_body": [
+        0.0027665560276181065,
+        0.1715193075249239,
+        -0.0071062911585966166
+      ],
+      "inherited_prediction": [
+        0.0,
+        0.46517351919884037,
+        0.0
+      ],
+      "error": [
+        0.0027665560276181065,
+        -0.2936542116739165,
+        -0.0071062911585966166
+      ],
+      "relative_main_axis_error": 1.7120767096803073,
+      "refit_required": true,
+      "max_tilt_deg": 0.2831937472606628,
+      "applied_drive_profile": {
+        "profile": "masterpi_drive_friction_v7",
+        "parameters": {
+          "no_load_rpm": 150.0,
+          "torque_cap_nm": 0.1176798,
+          "sliding_mu": 0.8,
+          "start_fraction": 0.325,
+          "no_load_current_a": 0.1,
+          "stall_current_a": 1.2
+        },
+        "qualification": "INPUT_STICK_SLIP_CANDIDATE",
+        "installed_motor_and_floor_verified": false,
+        "actuator_model": "native motor T0*(u-sign(u)*bk) on input-latched sliding branch; zero source torque on stick branch",
+        "roller_geometry": "unmodified FUJI barrel mesh; uniform 65/205 scale; MasterPi 9 rollers",
+        "roller_bearing": "FUJI damping/frictionloss scaled with mass*length^2",
+        "wheel_mass": "legacy 50g; FUJI hub:roller mass proportions at 9 rollers",
+        "public_model": {
+          "repository": "https://github.com/DaiGuard/fuji_mecanum",
+          "commit": "646431a5e107448e0e2bdeeba4575db9aa3665ff",
+          "license": "MIT, Copyright (c) 2022 DaiGuard",
+          "mesh_original_path": "mesh/collision/roller.stl",
+          "mesh_sha256": "2bea3228aa5766e2ce42f4f4a46cdf4bc3e63802958fa7f0ffb9688d9393a424",
+          "mesh_modified": false,
+          "source_radius_m": 0.1025,
+          "roller_ring_radius_m": 0.0895,
+          "roller_count": 15,
+          "roller_angle_deg": 45,
+          "roller_mass_kg": 0.3,
+          "roller_inertia_kg_m2": [
+            0.00024,
+            0.00076,
+            0.00076
+          ],
+          "hub_mass_kg": 2.0,
+          "hub_inertia_kg_m2": [
+            0.042025,
+            0.024279,
+            0.024279
+          ],
+          "roller_damping": 0.001,
+          "roller_frictionloss": 0.0001,
+          "roller_sliding_friction": 0.8,
+          "contact_model": "URDF mesh collision; MuJoCo convex hull port with condim 3",
+          "source_self_collide": "SDF model default false; equivalent wheel assembly exclusions in port"
+        },
+        "self_collision": "roller versus own robot excluded, matching source assembly self_collide=false",
+        "zero_command": "input relay resets; passive DC speed loss remains",
+        "state_scope": "per-wheel command sign/history only; not measured motion or policy observation",
+        "reset_rule": "world.reset clears all input relay states before normal scene reset",
+        "friction_model": "input hysteresis replaces wheel joint dry loss; roller contact/bearing unchanged",
+        "start_source": "user observation <=30 rest >=35 sustained; midpoint32.5 fixed before v6",
+        "kinetic_fraction": 0.08333333333333334,
+        "kinetic_torque_nm": 0.009806650000000002,
+        "kinetic_source": "Hiwonder encoder TT I0=.1A Is=1.2A; Tc/T0=I0/Is conditional all no-load loss Coulomb",
+        "diagnostic_scope": "v6 stall contact normal torque is external geometry/load resistance; not subtracted from motor I0/Is",
+        "speed_loss_nm_s": 0.006867418019757396,
+        "implementation_source": "MathWorks Relay on/off hysteresis; Karnopp stick/slip principle adapted to user-requested input state",
+        "unconfirmed": [
+          "installed TT and stall torque",
+          "PWM transfer",
+          "Coulomb versus viscous no-load split",
+          "load-dependent start threshold",
+          "external stall/re-stick",
+          "brake versus coast"
+        ],
+        "sha256": "b89758e59272aad5db8bb60637bc43e5bb7d56fc10d861de1cf5df376abda3fd",
+        "xml_sha256": "fd61b98929f446cc414d0f9cd34e1626b54148d6dc38fdf88e3a396d779c0f62"
+      },
+      "wall_s": 10.175882957992144,
+      "loadavg_end": [
+        4.4755859375,
+        5.53173828125,
+        5.17138671875
+      ],
+      "role": "exploratory-left",
+      "raw": "/Users/changmin/projects/ugrp/outputs/s2-realism-1b6b0921-s1038-1035-1036-motion-diag/s1036-left",
+      "assessment_source": {
+        "path": "/Users/changmin/projects/ugrp/outputs/s2-realism-1b6b0921-s1038-1035-1036-motion-diag/s1036-left/result.json",
+        "sha256": "9dbc07f9ff520574e99688bc4fd9b36e3a25268ccd8de28fd4ce77bcd43d9035"
+      },
+      "bundle": "zone-s2-real-output-diag-v112",
+      "fit_reference": {
+        "path": "/Users/changmin/projects/ugrp-wt/drive-friction/configs/s2_motion_v7_diag_v1.json",
+        "sha256": "9b391f381e43ba511a91a294425203c34d30c58459eb340651d953ba5b1d0cbe"
+      },
+      "offline_scalars": {
+        "offline/host_error": 0.0,
+        "offline/refit_required": 1.0,
+        "offline/inherited_relative_error": 1.7120767096803073,
+        "offline/measured_forward_m": 0.0027665560276181065,
+        "offline/inherited_forward_m": 0.0,
+        "offline/measured_left_m": 0.1715193075249239,
+        "offline/inherited_left_m": 0.46517351919884037,
+        "offline/measured_yaw_rad": -0.0071062911585966166,
+        "offline/inherited_yaw_rad": 0.0,
+        "offline/training_max_xy_error_m": 0.0015470334042552351,
+        "offline/training_max_yaw_error_rad": 0.009639653203411862
+      }
+    }
+  ]
+}

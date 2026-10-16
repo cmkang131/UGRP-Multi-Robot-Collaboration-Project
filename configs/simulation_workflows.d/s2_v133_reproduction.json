@@ -1,0 +1,22 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "zone-s2-v133-reproduction",
+      "version": "7.26.0",
+      "purpose": "Administrative two new seed reproduction; frozen v133 runtime/options",
+      "entry": "scripts/run_s2_v133_reproduction.py",
+      "runner": "scripts.run_s2_v133_reproduction",
+      "docs": "experiments/2026-10-06-s2-realism/README.md",
+      "requires": "committed preregistration; frozen027c567c/source hashes; exclusive agent_lock",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-registration-sha",
+        "--seed"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

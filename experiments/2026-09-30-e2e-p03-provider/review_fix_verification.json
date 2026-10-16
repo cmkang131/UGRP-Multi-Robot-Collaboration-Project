@@ -1,0 +1,77 @@
+{
+  "schema": "ugrp.p03_review_fix_verification.v1",
+  "reviewed_head": "919f78ef6ebaf2495633338bcb1b9510f46399bd",
+  "merged_main": "b10907c5f2c84f2712030f48fb38061fd4f51281",
+  "verification_scope": "local fake/numeric contracts only; source hashes identify the pre-commit working tree; no physics, rendering, model inference or LLM calls",
+  "source_files_sha256": {
+    "configs/vision_loc_provider_p03.json": "4498f91323a8ba8958f9f34c7d54239dcff4fecbdf7975d999a25dd0db4459bc",
+    "configs/vision_loc_worker.json": "c2fe0499ba5c85f353b2c977ef98336cf9bec3bbb8cf75a5ecacbfbe051f9eaa",
+    "experiments/2026-09-30-e2e-p03-provider/offline_checks.py": "1901749eed86d065360c9e67ced1a3cf0f697c23de49475537373ed2a8e71d06",
+    "experiments/2026-09-30-e2e-p03-provider/offline_guard.py": "ef740d519b371644e3dedb218f005d0e4532204666d7e85b76cc533deb09648b",
+    "harness/vision_loc_contract_p03.py": "f7fc98ec73c62115eefc1deefa2c3aeb0079fb7dd246fa34033fb1b9b92dedd2",
+    "harness/vision_loc_protocol.py": "80f65edff1f0f3715b5695b092dbe047457189700e4f57abd6ae0c21f4be3708",
+    "harness/vision_pose_source_p03.py": "ada0417b35987a1012b1ab9dcb643f137e0201f92039a5d824f7d73b42e76284",
+    "harness/zone_study_pose_delay_p03.py": "a62c11fae1c220adde50998d42fa9bfb991fafa3e2cdf957b6bef2ea5c4220a3",
+    "scripts/zone_study_provider_p03.py": "7ba5aae4f8242f766e888914d1815e156760bba72c3fdb580d718b2ddfdbe1dd",
+    "tests/test_vision_loc_p03_source_pinning.py": "bf38fd9a140876de48607f4b6b0d16ae90f49ade3297542efd95e330eec46581",
+    "tests/test_vision_loc_provider_lifecycle.py": "bb0faac516f656b3f73d752d5ac3d5f0965ffe8c56623ab4c53381e8914f7d4e"
+  },
+  "v6e_preserved_source_count": 85,
+  "unchanged_existing_prereg_json_count": 53,
+  "required_tests_unchanged_from_main": [
+    "tests/test_zone_pair_registered_source.py",
+    "tests/test_zone_study_source_pinning.py"
+  ],
+  "regressions": {
+    "passed": 327,
+    "failed": 0,
+    "deselected": 10,
+    "pytest_seconds": 92.0,
+    "test_counts": {
+      "tests.test_pose_provider_boundary": 12,
+      "tests.test_pose_provider_contract": 48,
+      "tests.test_vision_loc_p03_source_pinning": 11,
+      "tests.test_vision_loc_provider_lifecycle": 28,
+      "tests.test_vision_pose_source": 58,
+      "tests.test_zone_pair_door_relax": 20,
+      "tests.test_zone_pair_provider_init": 18,
+      "tests.test_zone_pair_registered_source": 22,
+      "tests.test_zone_pair_tag_boundary_matrix": 77,
+      "tests.test_zone_study_source_pinning": 33
+    },
+    "first_attempt": {
+      "passed": 319,
+      "failed": 8,
+      "deselected": 10,
+      "reason": "new candidate type compatibility and dated source paths; corrected before final suite"
+    }
+  },
+  "p07_pin_compatibility": {
+    "p07_sha": "f7a3ac29678af5a2b5639504572679d20a1adf56",
+    "scope": "stdlib P03 JSON/reference pin compatibility only; no full composition or execution",
+    "status": "blocked",
+    "references": 15,
+    "file": {
+      "path": "configs/vision_loc_provider_p03.json",
+      "sha256": "4498f91323a8ba8958f9f34c7d54239dcff4fecbdf7975d999a25dd0db4459bc"
+    }
+  },
+  "raw_local_root": "/Users/changmin/projects/ugrp/outputs/e2e-p03-review-fixes-20260930",
+  "raw_files_sha256": {
+    "p07-pin-compatibility.json": "be05e1b266f15f1a39c21d54eabf20e352bedc0b3bcb9db2e96570a7e271cf21",
+    "p07_manifest_review_dependency.py": "e4ce4e125afb3fb7573b49693ef55e85425c5a115bc52d1c03990f5a084b37c0",
+    "regressions-1.log": "b8e6549017cc37def694de331c75ba95f6a0baa6ac51ea98b796c5ad741c4776",
+    "regressions-1.xml": "0c7175832dda4d9cd02a1d3f6ac8dd7b39a00f28a1d55427d16cf6ad16666b51",
+    "regressions-2.log": "d0bf9ddfd4fdaea356d241542f3ae56f919556a0e3ba74f3b01178cb5392f18e",
+    "regressions-2.xml": "c28caee1ea092d6e2a86dfc60619e7dda353eefed033e45a2244f9fbc58e6c91",
+    "source-before-tests-2.json": "ec91346f34938876dfa9fc4e5efeb7c84b90b2ae6d9d4f87a0f6139e8d7bfc1b",
+    "source-before-tests.json": "3093f90c9d53f24a7f5ecd81bc3d0d0edb2d4833bb3b5cb9643b7f1ce42c67e5"
+  },
+  "github_ci": "normal CI required after push; status recorded in PR comment, not inferred from local tests",
+  "limitations": [
+    "No new workflow/bundle registration or seal",
+    "No physical acceptance or accuracy claim",
+    "No C_mix_rgb Release download/load or final calibration",
+    "Independent review of fixes remains pending"
+  ]
+}

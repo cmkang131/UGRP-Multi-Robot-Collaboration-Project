@@ -1,0 +1,350 @@
+{
+  "schema": "ugrp.t08b.offline_verification.v1",
+  "date": "2026-09-30",
+  "implementation_commit": "bd6340ed38ef1b84a65ad46b4b9307e1c66ee9e8",
+  "integration_head": "a7092661c7032aeb046148b3c8e4ed8117c470c6",
+  "base_main": "26545c2499f94c3f99a5d650f7cc8ea992f24196",
+  "t08a_head": "86847071f0332c23e5858c93607e2b0bbeb6dc98",
+  "t08a_state": "OPEN",
+  "t08a_merge_commit": null,
+  "tested_source_sha256": {
+    "harness/beam_approach.py": "f1bba4c4c74edfab4b4c7bf926e1a0eb152ddc021b09a3127f6fc411931a0c16",
+    "harness/beam_initial_pose_plan.py": "532ec0718114c117a2df1ce5fb2ad17bb3379a51ba9c3a213ac6db0936bf6f64",
+    "tests/test_pair_navigation_beam_approach.py": "598eeb95740768e45a87399fdf8f0594459f4952968d64e5977736e314faff06",
+    "tests/test_pair_navigation_beam_initial_pose_plan.py": "736c0fef5df6a6c1e2a8e344d5e39ca0dcbac0140138e0af26124e0468f03b88",
+    "tests/test_beam_initial_pose_plan.py": "ae7b5bd41bd69f526938912704d51f1cb3c75f0f65cef36c0d7b4c918986de49"
+  },
+  "committed_bytes_match": true,
+  "local_environment": {
+    "python": "3.14.6 (main, Jun 10 2026, 10:03:53) [Clang 21.0.0 (clang-2100.0.123.102)]",
+    "interpreter": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+    "host_lock_used": false,
+    "sim_physics_render_model_calls": 0,
+    "network_model_imports_blocked": true
+  },
+  "test_runs": {
+    "related.xml": {
+      "tests": 235,
+      "failures": 1,
+      "errors": 0,
+      "skips": 0,
+      "by_module": {
+        "tests.test_pair_navigation_beam_approach": 59,
+        "tests.test_beam_initial_pose_plan": 64,
+        "tests.test_zone_pair_registered_source": 22,
+        "tests.test_zone_study_source_pinning": 34,
+        "tests.test_pair_owncam_approach": 12,
+        "tests.test_pair_passage_plan": 44
+      }
+    },
+    "t08a-ci-bridge.xml": {
+      "tests": 64,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "by_module": {
+        "tests.test_pair_navigation_beam_initial_pose_plan": 64
+      }
+    },
+    "t08b-boundary-final.xml": {
+      "tests": 63,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "by_module": {
+        "tests.test_pair_navigation_beam_approach": 63
+      }
+    },
+    "post-main.xml": {
+      "tests": 128,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "by_module": {
+        "tests.test_pair_navigation_beam_approach": 63,
+        "tests.test_pair_navigation_beam_initial_pose_plan": 64,
+        "tests.test_zone_pair_registered_source": 1
+      }
+    }
+  },
+  "final_unique_tests": 239,
+  "final_unique_detail": {
+    "t08b": 63,
+    "t08a": 64,
+    "registered_source": 22,
+    "study_source_pinning": 34,
+    "legacy_approach": 12,
+    "passage": 44
+  },
+  "qualification": "239 is the deduplicated union of latest successful targeted reruns and unchanged passing regression modules, not a single clean 239-test invocation. First related run: 234 passed / 1 failed (CI bridge expectation), corrected bridge: 64 passed. After main merge: 128 passed.",
+  "initial_draft_collection_error": "Missing ')' caused SyntaxError; fixed before first 48-test pass, no execution/physics occurred.",
+  "mutation_checks": {
+    "source_sha256": "f1bba4c4c74edfab4b4c7bf926e1a0eb152ddc021b09a3127f6fc411931a0c16",
+    "test_sha256": "598eeb95740768e45a87399fdf8f0594459f4952968d64e5977736e314faff06",
+    "production_bytes_unchanged": true,
+    "physics_sim_render_model_calls": 0,
+    "host_lock_used": false,
+    "runs": [
+      {
+        "mutation": "normal",
+        "exit_code": 0,
+        "tests": 63,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "failed_tests": [],
+        "log_sha256": "593c00d2fb87ee80bfe887e58907ce4fb0e1f13a52b45ab0952eab31b4424942"
+      },
+      {
+        "mutation": "navigation_removed",
+        "exit_code": 1,
+        "tests": 63,
+        "failures": 25,
+        "errors": 0,
+        "skipped": 0,
+        "failed_tests": [
+          "test_new_prestation_headings_and_true_history_handoff[end_neg-1.5707963267948966-0]",
+          "test_new_prestation_headings_and_true_history_handoff[end_neg-1.5707963267948966-1]",
+          "test_new_prestation_headings_and_true_history_handoff[end_neg-1.5707963267948966-2]",
+          "test_new_prestation_headings_and_true_history_handoff[end_pos--1.5707963267948966-0]",
+          "test_new_prestation_headings_and_true_history_handoff[end_pos--1.5707963267948966-1]",
+          "test_new_prestation_headings_and_true_history_handoff[end_pos--1.5707963267948966-2]",
+          "test_real_static_navigation_commands_from_own_pose_and_no_path",
+          "test_repeated_frame_cannot_confirm_arrival_or_alignment",
+          "test_command_failures_stop_and_do_not_forge_history[wrong_ack]",
+          "test_command_failures_stop_and_do_not_forge_history[guard]",
+          "test_cross_approach_relative_refusal[grip_base_m-value0]",
+          "test_cross_approach_relative_refusal[axis_heading_rad-3.141592653589793]",
+          "test_cross_approach_relative_refusal[grip_base_m-value2]",
+          "test_relative_failure_status_without_reset[missing]",
+          "test_relative_failure_status_without_reset[nan]",
+          "test_relative_failure_status_without_reset[std]",
+          "test_relative_failure_status_without_reset[clipped]",
+          "test_v3_relative_target_is_not_legacy_point_one_five_five",
+          "test_world_estimate_cannot_jump_to_other_end_after_handoff",
+          "test_uncertainty_after_entry_blocks_handoff_and_never_refills_deadline",
+          "test_dependency_errors_fail_closed[guard]",
+          "test_dependency_errors_fail_closed[observer]",
+          "test_r3_role_selection_does_not_route_commands_to_another_actor[end_neg]",
+          "test_r3_role_selection_does_not_route_commands_to_another_actor[end_pos]",
+          "test_continuous_route_sweep_is_checked_after_grid_planning"
+        ],
+        "log_sha256": "9e15b15388dcc46409c0b340cb3edbd2741be05f9192e1dfea160b96d1d3dacf"
+      },
+      {
+        "mutation": "pose_gate_removed",
+        "exit_code": 1,
+        "tests": 63,
+        "failures": 8,
+        "errors": 0,
+        "skipped": 0,
+        "failed_tests": [
+          "test_self_pose_uncertain_stops_without_hidden_reset[std]",
+          "test_self_pose_uncertain_stops_without_hidden_reset[uninitialized]",
+          "test_self_pose_uncertain_stops_without_hidden_reset[nan]",
+          "test_self_pose_uncertain_stops_without_hidden_reset[negative_std]",
+          "test_self_pose_uncertain_stops_without_hidden_reset[gt]",
+          "test_self_pose_uncertain_stops_without_hidden_reset[stale_fix]",
+          "test_self_pose_uncertain_stops_without_hidden_reset[future_fix]",
+          "test_uncertainty_after_entry_blocks_handoff_and_never_refills_deadline"
+        ],
+        "log_sha256": "1191a812bd884f5b2e181f64e24c6c6a65a20e78514f73556f6adb32bb309bcd"
+      },
+      {
+        "mutation": "relative_alignment_removed",
+        "exit_code": 1,
+        "tests": 63,
+        "failures": 17,
+        "errors": 0,
+        "skipped": 0,
+        "failed_tests": [
+          "test_new_prestation_headings_and_true_history_handoff[end_neg-1.5707963267948966-0]",
+          "test_new_prestation_headings_and_true_history_handoff[end_neg-1.5707963267948966-1]",
+          "test_new_prestation_headings_and_true_history_handoff[end_neg-1.5707963267948966-2]",
+          "test_new_prestation_headings_and_true_history_handoff[end_pos--1.5707963267948966-0]",
+          "test_new_prestation_headings_and_true_history_handoff[end_pos--1.5707963267948966-1]",
+          "test_new_prestation_headings_and_true_history_handoff[end_pos--1.5707963267948966-2]",
+          "test_repeated_frame_cannot_confirm_arrival_or_alignment",
+          "test_cross_approach_relative_refusal[grip_base_m-value0]",
+          "test_cross_approach_relative_refusal[axis_heading_rad-3.141592653589793]",
+          "test_cross_approach_relative_refusal[grip_base_m-value2]",
+          "test_relative_failure_status_without_reset[missing]",
+          "test_relative_failure_status_without_reset[nan]",
+          "test_relative_failure_status_without_reset[std]",
+          "test_relative_failure_status_without_reset[clipped]",
+          "test_v3_relative_target_is_not_legacy_point_one_five_five",
+          "test_world_estimate_cannot_jump_to_other_end_after_handoff",
+          "test_dependency_errors_fail_closed[observer]"
+        ],
+        "log_sha256": "2dbd3b2c999deaf47e8a3326559ea82946ea220050a126c53df66d339d71d5bc"
+      },
+      {
+        "mutation": "handoff_posterior_reinitialized",
+        "exit_code": 1,
+        "tests": 63,
+        "failures": 6,
+        "errors": 0,
+        "skipped": 0,
+        "failed_tests": [
+          "test_new_prestation_headings_and_true_history_handoff[end_neg-1.5707963267948966-0]",
+          "test_new_prestation_headings_and_true_history_handoff[end_neg-1.5707963267948966-1]",
+          "test_new_prestation_headings_and_true_history_handoff[end_neg-1.5707963267948966-2]",
+          "test_new_prestation_headings_and_true_history_handoff[end_pos--1.5707963267948966-0]",
+          "test_new_prestation_headings_and_true_history_handoff[end_pos--1.5707963267948966-1]",
+          "test_new_prestation_headings_and_true_history_handoff[end_pos--1.5707963267948966-2]"
+        ],
+        "log_sha256": "ad421ba4ef665f25451c4e06fb1d7b7c10bbad9d17b8f1ac9092349f6b78fa49"
+      },
+      {
+        "mutation": "command_guard_removed",
+        "exit_code": 1,
+        "tests": 63,
+        "failures": 10,
+        "errors": 0,
+        "skipped": 0,
+        "failed_tests": [
+          "test_new_prestation_headings_and_true_history_handoff[end_neg-1.5707963267948966-0]",
+          "test_new_prestation_headings_and_true_history_handoff[end_neg-1.5707963267948966-1]",
+          "test_new_prestation_headings_and_true_history_handoff[end_neg-1.5707963267948966-2]",
+          "test_new_prestation_headings_and_true_history_handoff[end_pos--1.5707963267948966-0]",
+          "test_new_prestation_headings_and_true_history_handoff[end_pos--1.5707963267948966-1]",
+          "test_new_prestation_headings_and_true_history_handoff[end_pos--1.5707963267948966-2]",
+          "test_real_static_navigation_commands_from_own_pose_and_no_path",
+          "test_arm_transition_uses_issued_servo_and_waits_for_ack_and_image_after_settle",
+          "test_command_failures_stop_and_do_not_forge_history[guard]",
+          "test_dependency_errors_fail_closed[guard]"
+        ],
+        "log_sha256": "e5e91b26845cdfcba9dab0c8941fbd37afd276c1b0dbe2b218e076ec4d1ce8c1"
+      },
+      {
+        "mutation": "image_hash_check_removed",
+        "exit_code": 1,
+        "tests": 63,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0,
+        "failed_tests": [
+          "test_invalid_own_images_never_reach_provider_or_motion[hash]"
+        ],
+        "log_sha256": "ac45b108e1ad3040b409cb161e67e7178e411bcf749ac9efe915e0a960eae88b"
+      },
+      {
+        "mutation": "delivered_abort_check_removed",
+        "exit_code": 1,
+        "tests": 63,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0,
+        "failed_tests": [
+          "test_delivered_status_failure_is_terminal[abort]"
+        ],
+        "log_sha256": "321b844116bf921dbbff5fec1de323c87024d12da036356d2ce2b756578f0f35"
+      },
+      {
+        "mutation": "sim_cap_boundary_weakened",
+        "exit_code": 1,
+        "tests": 63,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0,
+        "failed_tests": [
+          "test_sim_cap_includes_posture_and_staging_and_boundary_is_failure"
+        ],
+        "log_sha256": "7a2ffb557f2882bff1d461af074f6cf6f29816eff70c47d2d15219044e782519"
+      }
+    ]
+  },
+  "sealed_v6e": {
+    "source_count": 85,
+    "mismatch_count": 0,
+    "registration_sha256": "64c2680781f1b989312c3ac091c6e0458579ced7ed65d9e9730aadbc416f4bfd",
+    "raw_record": "/Users/changmin/projects/ugrp/outputs/t08b-beam-approach-20260930/sealed-v6e.json",
+    "raw_record_sha256": "2bd79f2ed7c6a9d9a8ff5c3cae9e4446cd88afb850159c511e9b742d8c3994b8"
+  },
+  "ci_collection_occurrences": {
+    "tests/test_pair_navigation_beam_approach.py": 1,
+    "tests/test_pair_navigation_beam_initial_pose_plan.py": 1
+  },
+  "ci_workflow_and_configuration_diff_from_base": [],
+  "original_maps_configs_sim_diff_from_base": [],
+  "raw_root": "/Users/changmin/projects/ugrp/outputs/t08b-beam-approach-20260930",
+  "raw_storage": "local only, not a remote backup",
+  "physics_handoff": "PHYSICS_HANDOFF.md",
+  "physics_cells": 6,
+  "physics_cap_sim_s": 5400,
+  "physics_ready": false,
+  "remaining": [
+    "v3 RGB observer/provider/command guard physical adapter admission",
+    "standard simulation management adapter and frozen candidate bundle",
+    "independent review",
+    "real spawn-to-alignment six cells and posterior error evaluation",
+    "physical raw/TensorBoard loading and display"
+  ],
+  "github_ci": "Normal PR CI will run after push; final status will be reported on the PR, no skip/cancellation.",
+  "raw_files_sha256": {
+    "t08a-ci-bridge.xml": "38f82b3a6d29debd630496a59058fd03424fed66bb88931b23858c9729f7b634",
+    "sealed-v6e.json": "2bd79f2ed7c6a9d9a8ff5c3cae9e4446cd88afb850159c511e9b742d8c3994b8",
+    "t08b-final.xml": "32032271a4c7aa7bd866d16a91c255a41cbc2f9aae01a3f7c05d424f1c0c1fbb",
+    "t08a-ci-bridge.txt": "08c567af41d8f5296f0359ed91aa1f9e38393a1ec20083405e70796dd3e50ca5",
+    "t08b-final.txt": "36dafe8646845d5396d13da78385873290e6c71d48dc7bd252a190eaa14e2817",
+    "post-main.txt": "31d7e5196c5fd38b41089a3c2b6ceffe7ab1d871ab9704afa26c84158c7d3edb",
+    "t08b-boundary-final.txt": "3a60e8ea2da9b31cf7dad833461fb9ad24526e631d1ec6b53f5d9423463dca81",
+    "related.xml": "a2f04cc9cde040aa650a3f581689b024bda256dfd1bcded74709ea66b4b3f31f",
+    "t08b-boundary-final.xml": "ead22c43f371f6fd6662fcd9e896b552a17964d10eefa8bb15f454ead723ff82",
+    "post-main.xml": "4843f49534b6ed2938c3cf765298261950ba87133a6e52d80ed826bcda591efc",
+    "related.txt": "a35384ecc2d0f5ef38114ce7497bdc99d7fad435135749dab16ab22edf3b328c",
+    "mutations-v1/delivered_abort_check_removed.xml": "442d0587f43942d8446148c8f0693fc3c8bc911cfd7c541e936c881f49b7b18b",
+    "mutations-v1/image_hash_check_removed.xml": "af420565d11c2e7eeefc83474f6de2f47d2b27fc25f76cb975bf665d765d32de",
+    "mutations-v1/pose_gate_removed.xml": "6a220ab84412459f49ecec7cd52d85eef24d17e5442937baf2a197d15162022f",
+    "mutations-v1/command_guard_removed.txt": "e90bb95cf84fb8f71c9816ab9aafabb7dab0a000d29de964dd32f403a2c0c8b2",
+    "mutations-v1/relative_alignment_removed.txt": "b1834718a00a2f01cd5a0c723775150e5e582584319a0a7f5143bac6ec7f7fd3",
+    "mutations-v1/handoff_posterior_reinitialized.xml": "bcbebdbb446696808d57e4585f5575f3e833119ead257c3d20b73ddc977836bb",
+    "mutations-v1/navigation_removed.xml": "6cf4788422596eaad927a51ba3f3ad5cba173959743d622111186d9b8d07187a",
+    "mutations-v1/pose_gate_removed.txt": "1a7e8feae55630dba584c5e03858f7e49b84e0373ffbf1d757aa376399afc565",
+    "mutations-v1/image_hash_check_removed.txt": "1705e9cc9eb5c08e3a8cfef9f862fbe883f6310dcb4d13660b0a9f82df7195bf",
+    "mutations-v1/delivered_abort_check_removed.txt": "8bd1a2704f298d1ebd649401dc3855ebaca0d0796c99034816e2b510515441b9",
+    "mutations-v1/command_guard_removed.xml": "64c18d4db83a6f12632b4aaec6a0332c7819198a1324ffd1d011adb45aa6ca2e",
+    "mutations-v1/results.json": "684d9a4fa311011279d835c1859eeb02114eb2e3bd55bd3e2e9e6df3afb184eb",
+    "mutations-v1/handoff_posterior_reinitialized.txt": "b5d9b299de87df34a0d8458c6ea4a683d052551742953355776d30d5b36777d7",
+    "mutations-v1/relative_alignment_removed.xml": "f256bb6e78e27ad1ce23c4f89c49ae866528c17e29b8fa1d5003d520261796c0",
+    "mutations-v1/navigation_removed.txt": "ba02698b0301a04f363ab44abb7f4aa1b5b743b510b84101fc45a35a001ca359",
+    "mutations-v1/normal.xml": "b80ad6ec08e0c00e786a176455cffb526f64b1119baa760dfcc9d411fc3ab44b",
+    "mutations-v1/normal.txt": "1f16dd8a6af86d36968a8a9b821d1d85822d9de150ef5902dcccc23b6cb0c485",
+    "mutations-final/delivered_abort_check_removed.xml": "757138216446ce8ef4953010e3c005163e469d94d8bcc2d97d9afdce9134cac1",
+    "mutations-final/image_hash_check_removed.xml": "5193e4f2a94c5292ca04bac952ffc48e87829367887accf3df160fecb8ff1dce",
+    "mutations-final/pose_gate_removed.xml": "a56624bfb5e25d99fd4e3cf38b7c979198ecf13cf58bf2ab52101cf43eb4f513",
+    "mutations-final/command_guard_removed.txt": "48957c6d5ba547f76649e519deef1c22e7605bcacc867f610480bdfa4426c1f8",
+    "mutations-final/relative_alignment_removed.txt": "22d3b606b6a307772e04043b39a6df22fce5f9ec72ac175ad041dafceb2bc5cd",
+    "mutations-final/handoff_posterior_reinitialized.xml": "fc46c0f7365e22dba59f1d575e39c5971e1308c62efaa597080a9c4a6ae246b5",
+    "mutations-final/navigation_removed.xml": "3566c5baeb61e12eaca20f11d5cb500b28523138ff633a9c9c3d085270a14f08",
+    "mutations-final/pose_gate_removed.txt": "964db95e5190c4613f63df206ef924aa3b59fed32f5b8f33ee16a101b2cdf379",
+    "mutations-final/image_hash_check_removed.txt": "f662313368c28a4fe594e0df55843d44b24fdfa3980a501bd9a4983581437500",
+    "mutations-final/delivered_abort_check_removed.txt": "51fc354d3bf5045a05fe401067d8cd7cd9fb237a8f78a844826ac50fa5a5b237",
+    "mutations-final/command_guard_removed.xml": "d1a2286eee73b60636f25d40113e52e0c31e47fe228eb876d765523f4ed8b070",
+    "mutations-final/results.json": "5ab9cda86cf35f5862c293a27da4c066fdb5f64275fccca3dd45b8711b4e4cb7",
+    "mutations-final/handoff_posterior_reinitialized.txt": "c895bec5c796353265aea6accafb9b1e56cf6f8b509f84b98885b960b4ac457b",
+    "mutations-final/relative_alignment_removed.xml": "b08b31e8e5050228fe395dce1ab5cae909b3f275610d033d6db01cebff3f5921",
+    "mutations-final/navigation_removed.txt": "a9b160e3739e55b55175dfe9df178778cf14075e2d01b2083f61ccd0ecdb0050",
+    "mutations-final/normal.xml": "3eaf86fc9756fea9a148d129ef69c6cee4e5a9d25fdc5589d9676e30eafc9049",
+    "mutations-final/normal.txt": "f98169cdaf2c5862cdf13bc5ff6e5e6917909724b0bbf5db75a766c225e1d40e",
+    "mutations-final2/delivered_abort_check_removed.xml": "99776b5c0799cc1c9b12a1bfa880223f0462b53324412cb483c3c8379a034e16",
+    "mutations-final2/image_hash_check_removed.xml": "e79e89aaf9c5507bba1dc2e5bf61cf945995f0e7fd224e84315f82b5c0264cd4",
+    "mutations-final2/pose_gate_removed.xml": "cd459f9e24afdae628d7b8bd454789f19f13b2fc5d6ecd743486f4319aaf4197",
+    "mutations-final2/command_guard_removed.txt": "e5e91b26845cdfcba9dab0c8941fbd37afd276c1b0dbe2b218e076ec4d1ce8c1",
+    "mutations-final2/relative_alignment_removed.txt": "2dbd3b2c999deaf47e8a3326559ea82946ea220050a126c53df66d339d71d5bc",
+    "mutations-final2/handoff_posterior_reinitialized.xml": "762f3151126abddc989154c1135a7a5d8cf22f0aff26a6ead417c2847c2b4af7",
+    "mutations-final2/navigation_removed.xml": "d9c91b09208dca5a3ed7a59d59c526f387a1a04d392823197d2c9f7d7800c482",
+    "mutations-final2/pose_gate_removed.txt": "1191a812bd884f5b2e181f64e24c6c6a65a20e78514f73556f6adb32bb309bcd",
+    "mutations-final2/image_hash_check_removed.txt": "ac45b108e1ad3040b409cb161e67e7178e411bcf749ac9efe915e0a960eae88b",
+    "mutations-final2/delivered_abort_check_removed.txt": "321b844116bf921dbbff5fec1de323c87024d12da036356d2ce2b756578f0f35",
+    "mutations-final2/command_guard_removed.xml": "5f207cf4c2f0681687180aabc2fe3ac524ef08c0794511508fc27f19e200bdeb",
+    "mutations-final2/results.json": "dac4fb7457daad0c1f9ec0f8cc987cf4184c4818b2d90e7e3958d80c3f34eead",
+    "mutations-final2/handoff_posterior_reinitialized.txt": "ad421ba4ef665f25451c4e06fb1d7b7c10bbad9d17b8f1ac9092349f6b78fa49",
+    "mutations-final2/relative_alignment_removed.xml": "1ccd46d37a7a0db88e2669bd94205abb8d490f91bc88facd1f1cb803360c666c",
+    "mutations-final2/navigation_removed.txt": "9e15b15388dcc46409c0b340cb3edbd2741be05f9192e1dfea160b96d1d3dacf",
+    "mutations-final2/sim_cap_boundary_weakened.txt": "7a2ffb557f2882bff1d461af074f6cf6f29816eff70c47d2d15219044e782519",
+    "mutations-final2/normal.xml": "a5ad538e4a5b01e82ac740a115543229c002a3073d2b2ca4e124d70521c920db",
+    "mutations-final2/sim_cap_boundary_weakened.xml": "56636395a69dee9c81806273d4fb1dbc9f9cec51854731158082ea4964805d61",
+    "mutations-final2/normal.txt": "593c00d2fb87ee80bfe887e58907ce4fb0e1f13a52b45ab0952eab31b4424942"
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "source_sha256": "d0e2bc66d1e24cc5dcd822b1473f5ee741cec46a1478a17cc1b58af5e6f2074a",
+  "source_unchanged": true,
+  "killed": 7,
+  "survived": 0,
+  "results": [
+    {
+      "mutation": "D1_adapter",
+      "baseline_pass": true,
+      "mutant": "KILLED",
+      "failure": "D1 real producer must be accepted",
+      "changes": [
+        {
+          "deleted": "if recorder_context is not None:\n            recorder = rv.adapt",
+          "replacement": "if False:\n            recorder = rv.adapt"
+        }
+      ]
+    },
+    {
+      "mutation": "D2_host_accounting",
+      "baseline_pass": true,
+      "mutant": "KILLED",
+      "failure": "D2 host is not a measured task failure",
+      "changes": [
+        {
+          "deleted": "state, outcome, reason = \"HOST_SAFE\", None,",
+          "replacement": "state, outcome, reason = \"HOST_SAFE\", \"FAIL\","
+        }
+      ]
+    },
+    {
+      "mutation": "D3_absorbing_handover",
+      "baseline_pass": true,
+      "mutant": "KILLED",
+      "failure": "D3 completed failure is absorbing",
+      "changes": [
+        {
+          "deleted": "if completed_handover_failure(chain, trace):",
+          "replacement": "if False:"
+        }
+      ]
+    },
+    {
+      "mutation": "D4_source_gt",
+      "baseline_pass": true,
+      "mutant": "KILLED",
+      "failure": "endpoint_gt must be INVALID",
+      "changes": [
+        {
+          "deleted": "            validate_source_to_derived(row, result)",
+          "replacement": "            pass  # deleted source check"
+        }
+      ]
+    },
+    {
+      "mutation": "D4_host_copies",
+      "baseline_pass": true,
+      "mutant": "KILLED",
+      "failure": "result_host_error must be INVALID",
+      "changes": [
+        {
+          "deleted": "            validate_source_to_derived(row, result)",
+          "replacement": "            pass  # deleted source check"
+        }
+      ]
+    },
+    {
+      "mutation": "D5_teacher_window",
+      "baseline_pass": true,
+      "mutant": "KILLED",
+      "failure": "missing_teacher_prefix must be INVALID",
+      "changes": [
+        {
+          "deleted": "if not EVALUATION_PROTOCOL[\"include_teacher\"]:",
+          "replacement": "if True:"
+        }
+      ]
+    },
+    {
+      "mutation": "D5_contact_window",
+      "baseline_pass": true,
+      "mutant": "KILLED",
+      "failure": "impossible_contact_coverage must be INVALID",
+      "changes": [
+        {
+          "deleted": "            or wall[\"start_sim_s\"] < 0 or wall[\"end_sim_s\"] <= wall[\"start_sim_s\"]\n            or type(count) is not int or count < 2\n            or abs((count - 1) * period - (wall[\"end_sim_s\"] - wall[\"start_sim_s\"])) > period + 1e-9\n            or (count - 1) * wall[\"max_gap_s\"] < wall[\"end_sim_s\"] - wall[\"start_sim_s\"] - 1e-9\n",
+          "replacement": "            or type(count) is not int or count < 2\n"
+        }
+      ]
+    }
+  ]
+}

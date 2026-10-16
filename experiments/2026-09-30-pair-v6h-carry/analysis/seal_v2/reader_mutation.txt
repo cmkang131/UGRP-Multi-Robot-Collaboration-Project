@@ -1,0 +1,531 @@
+FFFFFFFFFFFFFFFFFFFFF                                                    [100%]
+=================================== FAILURES ===================================
+___ test_every_consumed_input_is_checked_before_return[unlisted-cases.jsonl] ___
+
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1629/test_every_consumed_input_is_c0')
+relative = 'cases.jsonl', damage = 'unlisted'
+
+    @pytest.mark.parametrize('relative', ['cases.jsonl', 'plan.json', 'case/result.json',
+        'case/eval_only/trace.jsonl', 'case/case.json', 'case/commands.json', 'future_input.json'])
+    @pytest.mark.parametrize('damage', ['unlisted', 'changed', 'missing'])
+    def test_every_consumed_input_is_checked_before_return(tmp_path, relative, damage):
+        reader, path = reader_with_input(tmp_path, relative)
+        if damage == 'unlisted':
+            del reader.expected[relative]
+            expected = 'UNLISTED_ACQUISITION_INPUT'
+        elif damage == 'changed':
+            path.write_text('{"synthetic": false}\n')
+            expected = 'ACQUISITION_HASH_MISMATCH'
+        else:
+            path.unlink()
+            expected = 'MISSING_EVIDENCE'
+>       with pytest.raises(cp.EvidenceError, match=expected):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE EvidenceError
+
+tests/test_v6h_acquisition_reader.py:40: Failed
+____ test_every_consumed_input_is_checked_before_return[unlisted-plan.json] ____
+
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1629/test_every_consumed_input_is_c1')
+relative = 'plan.json', damage = 'unlisted'
+
+    @pytest.mark.parametrize('relative', ['cases.jsonl', 'plan.json', 'case/result.json',
+        'case/eval_only/trace.jsonl', 'case/case.json', 'case/commands.json', 'future_input.json'])
+    @pytest.mark.parametrize('damage', ['unlisted', 'changed', 'missing'])
+    def test_every_consumed_input_is_checked_before_return(tmp_path, relative, damage):
+        reader, path = reader_with_input(tmp_path, relative)
+        if damage == 'unlisted':
+            del reader.expected[relative]
+            expected = 'UNLISTED_ACQUISITION_INPUT'
+        elif damage == 'changed':
+            path.write_text('{"synthetic": false}\n')
+            expected = 'ACQUISITION_HASH_MISMATCH'
+        else:
+            path.unlink()
+            expected = 'MISSING_EVIDENCE'
+>       with pytest.raises(cp.EvidenceError, match=expected):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE EvidenceError
+
+tests/test_v6h_acquisition_reader.py:40: Failed
+_ test_every_consumed_input_is_checked_before_return[unlisted-case/result.json] _
+
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1629/test_every_consumed_input_is_c2')
+relative = 'case/result.json', damage = 'unlisted'
+
+    @pytest.mark.parametrize('relative', ['cases.jsonl', 'plan.json', 'case/result.json',
+        'case/eval_only/trace.jsonl', 'case/case.json', 'case/commands.json', 'future_input.json'])
+    @pytest.mark.parametrize('damage', ['unlisted', 'changed', 'missing'])
+    def test_every_consumed_input_is_checked_before_return(tmp_path, relative, damage):
+        reader, path = reader_with_input(tmp_path, relative)
+        if damage == 'unlisted':
+            del reader.expected[relative]
+            expected = 'UNLISTED_ACQUISITION_INPUT'
+        elif damage == 'changed':
+            path.write_text('{"synthetic": false}\n')
+            expected = 'ACQUISITION_HASH_MISMATCH'
+        else:
+            path.unlink()
+            expected = 'MISSING_EVIDENCE'
+>       with pytest.raises(cp.EvidenceError, match=expected):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE EvidenceError
+
+tests/test_v6h_acquisition_reader.py:40: Failed
+_ test_every_consumed_input_is_checked_before_return[unlisted-case/eval_only/trace.jsonl] _
+
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1629/test_every_consumed_input_is_c3')
+relative = 'case/eval_only/trace.jsonl', damage = 'unlisted'
+
+    @pytest.mark.parametrize('relative', ['cases.jsonl', 'plan.json', 'case/result.json',
+        'case/eval_only/trace.jsonl', 'case/case.json', 'case/commands.json', 'future_input.json'])
+    @pytest.mark.parametrize('damage', ['unlisted', 'changed', 'missing'])
+    def test_every_consumed_input_is_checked_before_return(tmp_path, relative, damage):
+        reader, path = reader_with_input(tmp_path, relative)
+        if damage == 'unlisted':
+            del reader.expected[relative]
+            expected = 'UNLISTED_ACQUISITION_INPUT'
+        elif damage == 'changed':
+            path.write_text('{"synthetic": false}\n')
+            expected = 'ACQUISITION_HASH_MISMATCH'
+        else:
+            path.unlink()
+            expected = 'MISSING_EVIDENCE'
+>       with pytest.raises(cp.EvidenceError, match=expected):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE EvidenceError
+
+tests/test_v6h_acquisition_reader.py:40: Failed
+_ test_every_consumed_input_is_checked_before_return[unlisted-case/case.json] __
+
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1629/test_every_consumed_input_is_c4')
+relative = 'case/case.json', damage = 'unlisted'
+
+    @pytest.mark.parametrize('relative', ['cases.jsonl', 'plan.json', 'case/result.json',
+        'case/eval_only/trace.jsonl', 'case/case.json', 'case/commands.json', 'future_input.json'])
+    @pytest.mark.parametrize('damage', ['unlisted', 'changed', 'missing'])
+    def test_every_consumed_input_is_checked_before_return(tmp_path, relative, damage):
+        reader, path = reader_with_input(tmp_path, relative)
+        if damage == 'unlisted':
+            del reader.expected[relative]
+            expected = 'UNLISTED_ACQUISITION_INPUT'
+        elif damage == 'changed':
+            path.write_text('{"synthetic": false}\n')
+            expected = 'ACQUISITION_HASH_MISMATCH'
+        else:
+            path.unlink()
+            expected = 'MISSING_EVIDENCE'
+>       with pytest.raises(cp.EvidenceError, match=expected):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE EvidenceError
+
+tests/test_v6h_acquisition_reader.py:40: Failed
+_ test_every_consumed_input_is_checked_before_return[unlisted-case/commands.json] _
+
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1629/test_every_consumed_input_is_c5')
+relative = 'case/commands.json', damage = 'unlisted'
+
+    @pytest.mark.parametrize('relative', ['cases.jsonl', 'plan.json', 'case/result.json',
+        'case/eval_only/trace.jsonl', 'case/case.json', 'case/commands.json', 'future_input.json'])
+    @pytest.mark.parametrize('damage', ['unlisted', 'changed', 'missing'])
+    def test_every_consumed_input_is_checked_before_return(tmp_path, relative, damage):
+        reader, path = reader_with_input(tmp_path, relative)
+        if damage == 'unlisted':
+            del reader.expected[relative]
+            expected = 'UNLISTED_ACQUISITION_INPUT'
+        elif damage == 'changed':
+            path.write_text('{"synthetic": false}\n')
+            expected = 'ACQUISITION_HASH_MISMATCH'
+        else:
+            path.unlink()
+            expected = 'MISSING_EVIDENCE'
+>       with pytest.raises(cp.EvidenceError, match=expected):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE EvidenceError
+
+tests/test_v6h_acquisition_reader.py:40: Failed
+_ test_every_consumed_input_is_checked_before_return[unlisted-future_input.json] _
+
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1629/test_every_consumed_input_is_c6')
+relative = 'future_input.json', damage = 'unlisted'
+
+    @pytest.mark.parametrize('relative', ['cases.jsonl', 'plan.json', 'case/result.json',
+        'case/eval_only/trace.jsonl', 'case/case.json', 'case/commands.json', 'future_input.json'])
+    @pytest.mark.parametrize('damage', ['unlisted', 'changed', 'missing'])
+    def test_every_consumed_input_is_checked_before_return(tmp_path, relative, damage):
+        reader, path = reader_with_input(tmp_path, relative)
+        if damage == 'unlisted':
+            del reader.expected[relative]
+            expected = 'UNLISTED_ACQUISITION_INPUT'
+        elif damage == 'changed':
+            path.write_text('{"synthetic": false}\n')
+            expected = 'ACQUISITION_HASH_MISMATCH'
+        else:
+            path.unlink()
+            expected = 'MISSING_EVIDENCE'
+>       with pytest.raises(cp.EvidenceError, match=expected):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE EvidenceError
+
+tests/test_v6h_acquisition_reader.py:40: Failed
+___ test_every_consumed_input_is_checked_before_return[changed-cases.jsonl] ____
+
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1629/test_every_consumed_input_is_c7')
+relative = 'cases.jsonl', damage = 'changed'
+
+    @pytest.mark.parametrize('relative', ['cases.jsonl', 'plan.json', 'case/result.json',
+        'case/eval_only/trace.jsonl', 'case/case.json', 'case/commands.json', 'future_input.json'])
+    @pytest.mark.parametrize('damage', ['unlisted', 'changed', 'missing'])
+    def test_every_consumed_input_is_checked_before_return(tmp_path, relative, damage):
+        reader, path = reader_with_input(tmp_path, relative)
+        if damage == 'unlisted':
+            del reader.expected[relative]
+            expected = 'UNLISTED_ACQUISITION_INPUT'
+        elif damage == 'changed':
+            path.write_text('{"synthetic": false}\n')
+            expected = 'ACQUISITION_HASH_MISMATCH'
+        else:
+            path.unlink()
+            expected = 'MISSING_EVIDENCE'
+>       with pytest.raises(cp.EvidenceError, match=expected):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE EvidenceError
+
+tests/test_v6h_acquisition_reader.py:40: Failed
+____ test_every_consumed_input_is_checked_before_return[changed-plan.json] _____
+
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1629/test_every_consumed_input_is_c8')
+relative = 'plan.json', damage = 'changed'
+
+    @pytest.mark.parametrize('relative', ['cases.jsonl', 'plan.json', 'case/result.json',
+        'case/eval_only/trace.jsonl', 'case/case.json', 'case/commands.json', 'future_input.json'])
+    @pytest.mark.parametrize('damage', ['unlisted', 'changed', 'missing'])
+    def test_every_consumed_input_is_checked_before_return(tmp_path, relative, damage):
+        reader, path = reader_with_input(tmp_path, relative)
+        if damage == 'unlisted':
+            del reader.expected[relative]
+            expected = 'UNLISTED_ACQUISITION_INPUT'
+        elif damage == 'changed':
+            path.write_text('{"synthetic": false}\n')
+            expected = 'ACQUISITION_HASH_MISMATCH'
+        else:
+            path.unlink()
+            expected = 'MISSING_EVIDENCE'
+>       with pytest.raises(cp.EvidenceError, match=expected):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE EvidenceError
+
+tests/test_v6h_acquisition_reader.py:40: Failed
+_ test_every_consumed_input_is_checked_before_return[changed-case/result.json] _
+
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1629/test_every_consumed_input_is_c9')
+relative = 'case/result.json', damage = 'changed'
+
+    @pytest.mark.parametrize('relative', ['cases.jsonl', 'plan.json', 'case/result.json',
+        'case/eval_only/trace.jsonl', 'case/case.json', 'case/commands.json', 'future_input.json'])
+    @pytest.mark.parametrize('damage', ['unlisted', 'changed', 'missing'])
+    def test_every_consumed_input_is_checked_before_return(tmp_path, relative, damage):
+        reader, path = reader_with_input(tmp_path, relative)
+        if damage == 'unlisted':
+            del reader.expected[relative]
+            expected = 'UNLISTED_ACQUISITION_INPUT'
+        elif damage == 'changed':
+            path.write_text('{"synthetic": false}\n')
+            expected = 'ACQUISITION_HASH_MISMATCH'
+        else:
+            path.unlink()
+            expected = 'MISSING_EVIDENCE'
+>       with pytest.raises(cp.EvidenceError, match=expected):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE EvidenceError
+
+tests/test_v6h_acquisition_reader.py:40: Failed
+_ test_every_consumed_input_is_checked_before_return[changed-case/eval_only/trace.jsonl] _
+
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1629/test_every_consumed_input_is_c10')
+relative = 'case/eval_only/trace.jsonl', damage = 'changed'
+
+    @pytest.mark.parametrize('relative', ['cases.jsonl', 'plan.json', 'case/result.json',
+        'case/eval_only/trace.jsonl', 'case/case.json', 'case/commands.json', 'future_input.json'])
+    @pytest.mark.parametrize('damage', ['unlisted', 'changed', 'missing'])
+    def test_every_consumed_input_is_checked_before_return(tmp_path, relative, damage):
+        reader, path = reader_with_input(tmp_path, relative)
+        if damage == 'unlisted':
+            del reader.expected[relative]
+            expected = 'UNLISTED_ACQUISITION_INPUT'
+        elif damage == 'changed':
+            path.write_text('{"synthetic": false}\n')
+            expected = 'ACQUISITION_HASH_MISMATCH'
+        else:
+            path.unlink()
+            expected = 'MISSING_EVIDENCE'
+>       with pytest.raises(cp.EvidenceError, match=expected):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE EvidenceError
+
+tests/test_v6h_acquisition_reader.py:40: Failed
+__ test_every_consumed_input_is_checked_before_return[changed-case/case.json] __
+
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1629/test_every_consumed_input_is_c11')
+relative = 'case/case.json', damage = 'changed'
+
+    @pytest.mark.parametrize('relative', ['cases.jsonl', 'plan.json', 'case/result.json',
+        'case/eval_only/trace.jsonl', 'case/case.json', 'case/commands.json', 'future_input.json'])
+    @pytest.mark.parametrize('damage', ['unlisted', 'changed', 'missing'])
+    def test_every_consumed_input_is_checked_before_return(tmp_path, relative, damage):
+        reader, path = reader_with_input(tmp_path, relative)
+        if damage == 'unlisted':
+            del reader.expected[relative]
+            expected = 'UNLISTED_ACQUISITION_INPUT'
+        elif damage == 'changed':
+            path.write_text('{"synthetic": false}\n')
+            expected = 'ACQUISITION_HASH_MISMATCH'
+        else:
+            path.unlink()
+            expected = 'MISSING_EVIDENCE'
+>       with pytest.raises(cp.EvidenceError, match=expected):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE EvidenceError
+
+tests/test_v6h_acquisition_reader.py:40: Failed
+_ test_every_consumed_input_is_checked_before_return[changed-case/commands.json] _
+
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1629/test_every_consumed_input_is_c12')
+relative = 'case/commands.json', damage = 'changed'
+
+    @pytest.mark.parametrize('relative', ['cases.jsonl', 'plan.json', 'case/result.json',
+        'case/eval_only/trace.jsonl', 'case/case.json', 'case/commands.json', 'future_input.json'])
+    @pytest.mark.parametrize('damage', ['unlisted', 'changed', 'missing'])
+    def test_every_consumed_input_is_checked_before_return(tmp_path, relative, damage):
+        reader, path = reader_with_input(tmp_path, relative)
+        if damage == 'unlisted':
+            del reader.expected[relative]
+            expected = 'UNLISTED_ACQUISITION_INPUT'
+        elif damage == 'changed':
+            path.write_text('{"synthetic": false}\n')
+            expected = 'ACQUISITION_HASH_MISMATCH'
+        else:
+            path.unlink()
+            expected = 'MISSING_EVIDENCE'
+>       with pytest.raises(cp.EvidenceError, match=expected):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE EvidenceError
+
+tests/test_v6h_acquisition_reader.py:40: Failed
+_ test_every_consumed_input_is_checked_before_return[changed-future_input.json] _
+
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1629/test_every_consumed_input_is_c13')
+relative = 'future_input.json', damage = 'changed'
+
+    @pytest.mark.parametrize('relative', ['cases.jsonl', 'plan.json', 'case/result.json',
+        'case/eval_only/trace.jsonl', 'case/case.json', 'case/commands.json', 'future_input.json'])
+    @pytest.mark.parametrize('damage', ['unlisted', 'changed', 'missing'])
+    def test_every_consumed_input_is_checked_before_return(tmp_path, relative, damage):
+        reader, path = reader_with_input(tmp_path, relative)
+        if damage == 'unlisted':
+            del reader.expected[relative]
+            expected = 'UNLISTED_ACQUISITION_INPUT'
+        elif damage == 'changed':
+            path.write_text('{"synthetic": false}\n')
+            expected = 'ACQUISITION_HASH_MISMATCH'
+        else:
+            path.unlink()
+            expected = 'MISSING_EVIDENCE'
+>       with pytest.raises(cp.EvidenceError, match=expected):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE EvidenceError
+
+tests/test_v6h_acquisition_reader.py:40: Failed
+___ test_every_consumed_input_is_checked_before_return[missing-cases.jsonl] ____
+
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1629/test_every_consumed_input_is_c14')
+relative = 'cases.jsonl', damage = 'missing'
+
+    @pytest.mark.parametrize('relative', ['cases.jsonl', 'plan.json', 'case/result.json',
+        'case/eval_only/trace.jsonl', 'case/case.json', 'case/commands.json', 'future_input.json'])
+    @pytest.mark.parametrize('damage', ['unlisted', 'changed', 'missing'])
+    def test_every_consumed_input_is_checked_before_return(tmp_path, relative, damage):
+        reader, path = reader_with_input(tmp_path, relative)
+        if damage == 'unlisted':
+            del reader.expected[relative]
+            expected = 'UNLISTED_ACQUISITION_INPUT'
+        elif damage == 'changed':
+            path.write_text('{"synthetic": false}\n')
+            expected = 'ACQUISITION_HASH_MISMATCH'
+        else:
+            path.unlink()
+            expected = 'MISSING_EVIDENCE'
+>       with pytest.raises(cp.EvidenceError, match=expected):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE EvidenceError
+
+tests/test_v6h_acquisition_reader.py:40: Failed
+____ test_every_consumed_input_is_checked_before_return[missing-plan.json] _____
+
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1629/test_every_consumed_input_is_c15')
+relative = 'plan.json', damage = 'missing'
+
+    @pytest.mark.parametrize('relative', ['cases.jsonl', 'plan.json', 'case/result.json',
+        'case/eval_only/trace.jsonl', 'case/case.json', 'case/commands.json', 'future_input.json'])
+    @pytest.mark.parametrize('damage', ['unlisted', 'changed', 'missing'])
+    def test_every_consumed_input_is_checked_before_return(tmp_path, relative, damage):
+        reader, path = reader_with_input(tmp_path, relative)
+        if damage == 'unlisted':
+            del reader.expected[relative]
+            expected = 'UNLISTED_ACQUISITION_INPUT'
+        elif damage == 'changed':
+            path.write_text('{"synthetic": false}\n')
+            expected = 'ACQUISITION_HASH_MISMATCH'
+        else:
+            path.unlink()
+            expected = 'MISSING_EVIDENCE'
+>       with pytest.raises(cp.EvidenceError, match=expected):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE EvidenceError
+
+tests/test_v6h_acquisition_reader.py:40: Failed
+_ test_every_consumed_input_is_checked_before_return[missing-case/result.json] _
+
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1629/test_every_consumed_input_is_c16')
+relative = 'case/result.json', damage = 'missing'
+
+    @pytest.mark.parametrize('relative', ['cases.jsonl', 'plan.json', 'case/result.json',
+        'case/eval_only/trace.jsonl', 'case/case.json', 'case/commands.json', 'future_input.json'])
+    @pytest.mark.parametrize('damage', ['unlisted', 'changed', 'missing'])
+    def test_every_consumed_input_is_checked_before_return(tmp_path, relative, damage):
+        reader, path = reader_with_input(tmp_path, relative)
+        if damage == 'unlisted':
+            del reader.expected[relative]
+            expected = 'UNLISTED_ACQUISITION_INPUT'
+        elif damage == 'changed':
+            path.write_text('{"synthetic": false}\n')
+            expected = 'ACQUISITION_HASH_MISMATCH'
+        else:
+            path.unlink()
+            expected = 'MISSING_EVIDENCE'
+>       with pytest.raises(cp.EvidenceError, match=expected):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE EvidenceError
+
+tests/test_v6h_acquisition_reader.py:40: Failed
+_ test_every_consumed_input_is_checked_before_return[missing-case/eval_only/trace.jsonl] _
+
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1629/test_every_consumed_input_is_c17')
+relative = 'case/eval_only/trace.jsonl', damage = 'missing'
+
+    @pytest.mark.parametrize('relative', ['cases.jsonl', 'plan.json', 'case/result.json',
+        'case/eval_only/trace.jsonl', 'case/case.json', 'case/commands.json', 'future_input.json'])
+    @pytest.mark.parametrize('damage', ['unlisted', 'changed', 'missing'])
+    def test_every_consumed_input_is_checked_before_return(tmp_path, relative, damage):
+        reader, path = reader_with_input(tmp_path, relative)
+        if damage == 'unlisted':
+            del reader.expected[relative]
+            expected = 'UNLISTED_ACQUISITION_INPUT'
+        elif damage == 'changed':
+            path.write_text('{"synthetic": false}\n')
+            expected = 'ACQUISITION_HASH_MISMATCH'
+        else:
+            path.unlink()
+            expected = 'MISSING_EVIDENCE'
+>       with pytest.raises(cp.EvidenceError, match=expected):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE EvidenceError
+
+tests/test_v6h_acquisition_reader.py:40: Failed
+__ test_every_consumed_input_is_checked_before_return[missing-case/case.json] __
+
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1629/test_every_consumed_input_is_c18')
+relative = 'case/case.json', damage = 'missing'
+
+    @pytest.mark.parametrize('relative', ['cases.jsonl', 'plan.json', 'case/result.json',
+        'case/eval_only/trace.jsonl', 'case/case.json', 'case/commands.json', 'future_input.json'])
+    @pytest.mark.parametrize('damage', ['unlisted', 'changed', 'missing'])
+    def test_every_consumed_input_is_checked_before_return(tmp_path, relative, damage):
+        reader, path = reader_with_input(tmp_path, relative)
+        if damage == 'unlisted':
+            del reader.expected[relative]
+            expected = 'UNLISTED_ACQUISITION_INPUT'
+        elif damage == 'changed':
+            path.write_text('{"synthetic": false}\n')
+            expected = 'ACQUISITION_HASH_MISMATCH'
+        else:
+            path.unlink()
+            expected = 'MISSING_EVIDENCE'
+>       with pytest.raises(cp.EvidenceError, match=expected):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE EvidenceError
+
+tests/test_v6h_acquisition_reader.py:40: Failed
+_ test_every_consumed_input_is_checked_before_return[missing-case/commands.json] _
+
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1629/test_every_consumed_input_is_c19')
+relative = 'case/commands.json', damage = 'missing'
+
+    @pytest.mark.parametrize('relative', ['cases.jsonl', 'plan.json', 'case/result.json',
+        'case/eval_only/trace.jsonl', 'case/case.json', 'case/commands.json', 'future_input.json'])
+    @pytest.mark.parametrize('damage', ['unlisted', 'changed', 'missing'])
+    def test_every_consumed_input_is_checked_before_return(tmp_path, relative, damage):
+        reader, path = reader_with_input(tmp_path, relative)
+        if damage == 'unlisted':
+            del reader.expected[relative]
+            expected = 'UNLISTED_ACQUISITION_INPUT'
+        elif damage == 'changed':
+            path.write_text('{"synthetic": false}\n')
+            expected = 'ACQUISITION_HASH_MISMATCH'
+        else:
+            path.unlink()
+            expected = 'MISSING_EVIDENCE'
+>       with pytest.raises(cp.EvidenceError, match=expected):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE EvidenceError
+
+tests/test_v6h_acquisition_reader.py:40: Failed
+_ test_every_consumed_input_is_checked_before_return[missing-future_input.json] _
+
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1629/test_every_consumed_input_is_c20')
+relative = 'future_input.json', damage = 'missing'
+
+    @pytest.mark.parametrize('relative', ['cases.jsonl', 'plan.json', 'case/result.json',
+        'case/eval_only/trace.jsonl', 'case/case.json', 'case/commands.json', 'future_input.json'])
+    @pytest.mark.parametrize('damage', ['unlisted', 'changed', 'missing'])
+    def test_every_consumed_input_is_checked_before_return(tmp_path, relative, damage):
+        reader, path = reader_with_input(tmp_path, relative)
+        if damage == 'unlisted':
+            del reader.expected[relative]
+            expected = 'UNLISTED_ACQUISITION_INPUT'
+        elif damage == 'changed':
+            path.write_text('{"synthetic": false}\n')
+            expected = 'ACQUISITION_HASH_MISMATCH'
+        else:
+            path.unlink()
+            expected = 'MISSING_EVIDENCE'
+>       with pytest.raises(cp.EvidenceError, match=expected):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE EvidenceError
+
+tests/test_v6h_acquisition_reader.py:40: Failed
+Nonphysical suite guard: {'physical_step_attempts': 0, 'real_vision_worker_attempts': 0, 'network_attempts': 0}
+=========================== short test summary info ============================
+FAILED tests/test_v6h_acquisition_reader.py::test_every_consumed_input_is_checked_before_return[unlisted-cases.jsonl]
+FAILED tests/test_v6h_acquisition_reader.py::test_every_consumed_input_is_checked_before_return[unlisted-plan.json]
+FAILED tests/test_v6h_acquisition_reader.py::test_every_consumed_input_is_checked_before_return[unlisted-case/result.json]
+FAILED tests/test_v6h_acquisition_reader.py::test_every_consumed_input_is_checked_before_return[unlisted-case/eval_only/trace.jsonl]
+FAILED tests/test_v6h_acquisition_reader.py::test_every_consumed_input_is_checked_before_return[unlisted-case/case.json]
+FAILED tests/test_v6h_acquisition_reader.py::test_every_consumed_input_is_checked_before_return[unlisted-case/commands.json]
+FAILED tests/test_v6h_acquisition_reader.py::test_every_consumed_input_is_checked_before_return[unlisted-future_input.json]
+FAILED tests/test_v6h_acquisition_reader.py::test_every_consumed_input_is_checked_before_return[changed-cases.jsonl]
+FAILED tests/test_v6h_acquisition_reader.py::test_every_consumed_input_is_checked_before_return[changed-plan.json]
+FAILED tests/test_v6h_acquisition_reader.py::test_every_consumed_input_is_checked_before_return[changed-case/result.json]
+FAILED tests/test_v6h_acquisition_reader.py::test_every_consumed_input_is_checked_before_return[changed-case/eval_only/trace.jsonl]
+FAILED tests/test_v6h_acquisition_reader.py::test_every_consumed_input_is_checked_before_return[changed-case/case.json]
+FAILED tests/test_v6h_acquisition_reader.py::test_every_consumed_input_is_checked_before_return[changed-case/commands.json]
+FAILED tests/test_v6h_acquisition_reader.py::test_every_consumed_input_is_checked_before_return[changed-future_input.json]
+FAILED tests/test_v6h_acquisition_reader.py::test_every_consumed_input_is_checked_before_return[missing-cases.jsonl]
+FAILED tests/test_v6h_acquisition_reader.py::test_every_consumed_input_is_checked_before_return[missing-plan.json]
+FAILED tests/test_v6h_acquisition_reader.py::test_every_consumed_input_is_checked_before_return[missing-case/result.json]
+FAILED tests/test_v6h_acquisition_reader.py::test_every_consumed_input_is_checked_before_return[missing-case/eval_only/trace.jsonl]
+FAILED tests/test_v6h_acquisition_reader.py::test_every_consumed_input_is_checked_before_return[missing-case/case.json]
+FAILED tests/test_v6h_acquisition_reader.py::test_every_consumed_input_is_checked_before_return[missing-case/commands.json]
+FAILED tests/test_v6h_acquisition_reader.py::test_every_consumed_input_is_checked_before_return[missing-future_input.json]
+21 failed, 11 deselected in 0.26s
+MUTANT_KILLED: acquisition read checks removed; tests failed

@@ -1,0 +1,60 @@
+{
+  "schema": "ugrp.zone_scenario.v1",
+  "scenario_id": "i2_pair_long_beam",
+  "map_id": "zone_wide_door_tags_v2",
+  "landmark_detail": "full",
+  "seeds": [
+    700,
+    701,
+    702
+  ],
+  "orders": [
+    {
+      "order_id": "cargoX",
+      "kind": "long_beam",
+      "count": 1,
+      "identity": "specific_item",
+      "item_ids": [
+        "cargoX"
+      ],
+      "required_robots": 2,
+      "destination_zone": "B",
+      "initial_location": {
+        "pickup_bay": "P2",
+        "slot": "P2-3"
+      }
+    }
+  ],
+  "eval": {
+    "schema": "ugrp.zone_study_scenario_private.v1",
+    "design_notes_ko": "PairTeam 통합 dev 연결 검사. r1/end_neg, r2/end_pos의 독립 claim만 지원하며 연구 시나리오 성공 증거가 아니다.",
+    "tests_ko": "네 조건 동일 PairTeam 상태 채널, 자기 프레임, 재결정, 프로필/지연 기록.",
+    "setup": {
+      "arena_variant": "zone_wide_door",
+      "map_file_sha256": "f9b0ef0d9f35457b34711c0ec5d11688af3130238560195c982660137ad3e73b",
+      "contact_profile": "cargo_noslip_v1",
+      "weld": "off",
+      "robot_spawns": "arena_default",
+      "placements": [
+        {
+          "item_id": "cargoX",
+          "kind": "long_beam",
+          "order_id": "cargoX",
+          "slot": "P2-3",
+          "pose_m": [
+            1.2,
+            0.05,
+            0.0
+          ]
+        }
+      ]
+    },
+    "hidden_events": [],
+    "budget": {
+      "sim_seconds": 480,
+      "http_attempts_per_trial": 90,
+      "http_attempts_per_actor": 30,
+      "output_tokens_per_call": 768
+    }
+  }
+}

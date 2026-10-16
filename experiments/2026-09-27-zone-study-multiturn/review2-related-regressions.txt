@@ -1,0 +1,92 @@
+........................................................................ [ 12%]
+........................................................................ [ 25%]
+..............FFF....................................................... [ 38%]
+........................................................................ [ 51%]
+........................................................................ [ 64%]
+........................................................................ [ 77%]
+........................................................................ [ 90%]
+......................................................                   [100%]
+=================================== FAILURES ===================================
+_________ test_at_most_one_pending_own_reask_timer_per_robot[peer_ko] __________
+
+condition = 'peer_ko'
+
+    @pytest.mark.parametrize('condition', CONDITIONS)
+    def test_at_most_one_pending_own_reask_timer_per_robot(condition):
+        """Close calls (start + message wakes) must not start several perpetual re-ask chains."""
+        def idle_actor(rid):
+            fixture = zo.FixtureActor(rid, condition, SEED)
+            def script(payload):
+                value = json.loads(fixture.respond({'messages': [{}, {'content': json.dumps(payload)}]}))
+                # An idle continue leaves no job. Explicit wait is the v64 timed
+                # hold, whose subsequent abort/terminal events also arm re-asks.
+                value['action'] = {'kind': 'continue'}
+                return value
+            return Scripted(script)
+        trial, result, _ = run(condition, horizon=200., actors={rid: idle_actor(rid) for rid in zox.ROBOTS})
+        for rid in zox.ROBOTS:
+            timers = [row['sim_s'] for row in trial.scheduler.events if row.get('kind') == 'timer' and row['actor'] == rid]
+            assert all(b - a >= trial.policy.idle_reask_s - 1e-9 for a, b in zip(timers, timers[1:])), (rid, timers)
+        assert trial.study_config()['reask_policy'] == zi.REASK_POLICY
+>       assert any(counts['skipped'] for counts in trial.scheduler.reask_counts.values()) == (condition != 'no_comm')
+E       AssertionError: assert False == ('peer_ko' != 'no_comm')
+E        +  where False = any(<generator object test_at_most_one_pending_own_reask_timer_per_robot.<locals>.<genexpr> at 0x117054860>)
+
+tests/test_zone_study_integration.py:509: AssertionError
+________ test_at_most_one_pending_own_reask_timer_per_robot[leader_ko] _________
+
+condition = 'leader_ko'
+
+    @pytest.mark.parametrize('condition', CONDITIONS)
+    def test_at_most_one_pending_own_reask_timer_per_robot(condition):
+        """Close calls (start + message wakes) must not start several perpetual re-ask chains."""
+        def idle_actor(rid):
+            fixture = zo.FixtureActor(rid, condition, SEED)
+            def script(payload):
+                value = json.loads(fixture.respond({'messages': [{}, {'content': json.dumps(payload)}]}))
+                # An idle continue leaves no job. Explicit wait is the v64 timed
+                # hold, whose subsequent abort/terminal events also arm re-asks.
+                value['action'] = {'kind': 'continue'}
+                return value
+            return Scripted(script)
+        trial, result, _ = run(condition, horizon=200., actors={rid: idle_actor(rid) for rid in zox.ROBOTS})
+        for rid in zox.ROBOTS:
+            timers = [row['sim_s'] for row in trial.scheduler.events if row.get('kind') == 'timer' and row['actor'] == rid]
+            assert all(b - a >= trial.policy.idle_reask_s - 1e-9 for a, b in zip(timers, timers[1:])), (rid, timers)
+        assert trial.study_config()['reask_policy'] == zi.REASK_POLICY
+>       assert any(counts['skipped'] for counts in trial.scheduler.reask_counts.values()) == (condition != 'no_comm')
+E       AssertionError: assert False == ('leader_ko' != 'no_comm')
+E        +  where False = any(<generator object test_at_most_one_pending_own_reask_timer_per_robot.<locals>.<genexpr> at 0x116e68d40>)
+
+tests/test_zone_study_integration.py:509: AssertionError
+________ test_at_most_one_pending_own_reask_timer_per_robot[structured] ________
+
+condition = 'structured'
+
+    @pytest.mark.parametrize('condition', CONDITIONS)
+    def test_at_most_one_pending_own_reask_timer_per_robot(condition):
+        """Close calls (start + message wakes) must not start several perpetual re-ask chains."""
+        def idle_actor(rid):
+            fixture = zo.FixtureActor(rid, condition, SEED)
+            def script(payload):
+                value = json.loads(fixture.respond({'messages': [{}, {'content': json.dumps(payload)}]}))
+                # An idle continue leaves no job. Explicit wait is the v64 timed
+                # hold, whose subsequent abort/terminal events also arm re-asks.
+                value['action'] = {'kind': 'continue'}
+                return value
+            return Scripted(script)
+        trial, result, _ = run(condition, horizon=200., actors={rid: idle_actor(rid) for rid in zox.ROBOTS})
+        for rid in zox.ROBOTS:
+            timers = [row['sim_s'] for row in trial.scheduler.events if row.get('kind') == 'timer' and row['actor'] == rid]
+            assert all(b - a >= trial.policy.idle_reask_s - 1e-9 for a, b in zip(timers, timers[1:])), (rid, timers)
+        assert trial.study_config()['reask_policy'] == zi.REASK_POLICY
+>       assert any(counts['skipped'] for counts in trial.scheduler.reask_counts.values()) == (condition != 'no_comm')
+E       AssertionError: assert False == ('structured' != 'no_comm')
+E        +  where False = any(<generator object test_at_most_one_pending_own_reask_timer_per_robot.<locals>.<genexpr> at 0x116da4ad0>)
+
+tests/test_zone_study_integration.py:509: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_zone_study_integration.py::test_at_most_one_pending_own_reask_timer_per_robot[peer_ko]
+FAILED tests/test_zone_study_integration.py::test_at_most_one_pending_own_reask_timer_per_robot[leader_ko]
+FAILED tests/test_zone_study_integration.py::test_at_most_one_pending_own_reask_timer_per_robot[structured]
+3 failed, 555 passed, 600 deselected in 162.18s (0:02:42)

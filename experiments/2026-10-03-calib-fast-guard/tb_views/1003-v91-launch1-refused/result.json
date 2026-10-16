@@ -1,0 +1,34 @@
+{
+  "offline_source": {
+    "path": "/Users/changmin/projects/ugrp/outputs/final-pair-v91-heldout-04043e27-20261003/driver_log.txt",
+    "sha256": "419d8e8ab793d3e618beb7ca56ff7003420e5958c1ccf8792c2f64dde4793a8d"
+  },
+  "offline_scalar_scope": "Failed first launch: refused by the slot rule before any collection. No data; load average only.",
+  "offline_scalars": {
+    "offline/load_exit_1m": 16.77,
+    "offline/collections_started": 0.0
+  },
+  "outcome": "REFUSED_NO_DATA",
+  "family": "calibration-collection",
+  "policy": "v91",
+  "case": "both_maps",
+  "condition": "first-launch",
+  "split": "heldout-unscored",
+  "seed": 911,
+  "source_sha": "04043e27",
+  "scope": "launch refusal; nothing ran",
+  "offline_source_pointer": "driver_log.txt line '=== driver exit 2026-10-02T18:01:10Z'",
+  "texts": {
+    "notes/operational": {
+      "reason": "slot coordinator PID must be the lock holder that outlives workers",
+      "relaunch": "waited for r8 driver to exit, took exclusive coordinator lock (pid 47703) at 18:33:47Z, load 7.87 10.29 10.06"
+    }
+  },
+  "hparam_metrics": [
+    "offline/load_exit_1m",
+    "offline/collections_started"
+  ],
+  "schema": "ugrp.offline_audit_view.v1",
+  "derived_view_only": true,
+  "run_id": "1003-v91-launch1-refused"
+}

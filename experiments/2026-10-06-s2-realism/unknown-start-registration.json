@@ -1,0 +1,107 @@
+{
+  "schema": "ugrp.s2.unknown_start.registration.v1",
+  "seeds": [
+    1059,
+    1060,
+    1061
+  ],
+  "order": [
+    1059,
+    1060,
+    1061
+  ],
+  "runs_per_seed": 1,
+  "template": "configs/s2_v133_full_template.json",
+  "template_sha256": "d59fad3ee300fe7903bd1156700471f4e8525b31fc24d2d3f4643146c27b321c",
+  "baseline_source_sha": "027c567c45ec05968d7243212fbce1b4aa4d2d59",
+  "baseline_raw_sha256": "d59fad3ee300fe7903bd1156700471f4e8525b31fc24d2d3f4643146c27b321c",
+  "baseline_options": {
+    "camera_profile": "masterpi-camera-user-observation-target-review-v3",
+    "drive_profile": "masterpi_drive_friction_v7",
+    "setdown_relook": "off",
+    "grasp_check": "pickup_site_v1",
+    "min_wheel_cmd": "real_v1",
+    "dead_reckoning": "v7_diag_v1",
+    "stagnation_watch": "window120_v1",
+    "alignment_pulse": "real_fine_v1",
+    "hover_check": "real_pregrasp_v1",
+    "idle_robot_contacts": "freeze_v1",
+    "site_check": "off",
+    "hold_check": "inhand_rgb_v1",
+    "dev_grasp_policy": "log_only_v1",
+    "eval_camera_trace": "pose_v1",
+    "pulse_motion_model": "v7_pulse_cal_v1",
+    "visual_update": "accepted_scan_v1",
+    "visual_stall": "lk_pulse_v1",
+    "carry_pose": "look_ahead_v1",
+    "camera_calibration": "v3_unloaded_sag_v1",
+    "measurement_model": "amcl_likelihood_field_v1",
+    "visibility_mask": "command_geometry_v1",
+    "amcl_update": "ros_motion_v1",
+    "dev_search": "repeat_views_v1",
+    "visibility_policy": "nav2_observed_v1",
+    "contact_filter": "floor_appearance_v1",
+    "slip_detection": "slip_detect_v1",
+    "stall_recovery": "off",
+    "slip_recovery": "slip_recovery_v1",
+    "servo_stiffness": "real_v1",
+    "camera_pitch": "stiff_target_v1",
+    "pregrasp_policy": "log_only_v1",
+    "sensor_landmarks": "floor_zones_doors_v1",
+    "sensor_model": "amcl_likelihood_field_v1",
+    "pose_estimate": "amcl_best_cluster_v1"
+  },
+  "new_options": {
+    "start_prior": "none_v1",
+    "global_localization": "augmented_active_v1",
+    "particle_sampling": "kld_global_v1"
+  },
+  "user_decision": "2026-10-08 A: no starting area/row/dock information; full DEV revalidation",
+  "success": "unchanged sim.solo_cyan_v106.evaluate: lifted/inside/floor/stable/success",
+  "convergence": {
+    "std_xy_m_lte": 0.05,
+    "scope": "first initialized released report; no GT gate",
+    "wrong_mode_xy_error_m_gt": 0.25,
+    "secondary_yaw_deg": 15.0,
+    "movement": "posthoc actual XY arc length until first released convergence report"
+  },
+  "nees": {
+    "chi2_95": 5.991464547107979,
+    "primary": "same one-cluster matching-covariance scope as v133; include denominator",
+    "extra": "all nonsingular reported XY covariance; descriptive Gaussian approximation",
+    "unflagged_xy_error_m_gt": 0.25
+  },
+  "constants": "existing augmented and KLD parameters, 120s wrist scan ceiling and first-motion 2000-particle handoff; no tuning",
+  "controls": "v133 options unchanged except three explicit initialization options",
+  "budget": {
+    "case_cap_s": 900.0,
+    "runs": 3,
+    "model_calls": 0,
+    "expected_wall_minutes_per_run": 45
+  },
+  "gt_use": "posthoc evaluation only; no runtime control inputs",
+  "dev_light": true,
+  "freeze_scope": "S2 solo DEV only",
+  "cohort_policy": "exactly once each; no replacement or tuning; exclusions and partial/host failures retained; denominator always disclosed",
+  "host_errors": "ENOSPC and execution errors retained, no silent replacement",
+  "comparison": "v133 with public spawn-region prior 6/6 vs no-prior full DEV new 3 runs; no claim that baseline knew no starting location",
+  "sources": [
+    {
+      "title": "Thrun et al. 2005 Augmented MCL Table8.3",
+      "url": "https://robots.stanford.edu/probabilistic-robotics/"
+    },
+    {
+      "title": "Fox 2001 KLD and Fox 2003 adaptive sample sets",
+      "url": "https://papers.neurips.cc/paper/1998-kld-sampling-adaptive-particle-filters.pdf"
+    },
+    {
+      "title": "Fox2003 IJRR adaptive KLD sampling, author-hosted original",
+      "url": "https://rse-lab.cs.washington.edu/papers/adaptive-ijrr-2003.pdf"
+    },
+    {
+      "title": "Nav2 pf.c frozen algorithm reused without parameter changes",
+      "url": "https://github.com/ros-navigation/navigation2/blob/235fc5ce55bdf94d9be360fdbca39d89dc0e4f74/nav2_amcl/src/pf/pf.c"
+    }
+  ],
+  "failure_categories": "physical stop -> transport physical; otherwise false first convergence -> wrong mode; never converged -> global convergence failure; remaining -> other (retain all secondary facts)"
+}

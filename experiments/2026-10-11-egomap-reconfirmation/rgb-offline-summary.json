@@ -1,0 +1,128 @@
+{
+  "kind": "historical_geometry_replay",
+  "class_": "dev",
+  "pr": 405,
+  "source_root": "/home/ugrp/ugrp-sim/src/5bd1f03ef40d640595bb5ea856417fb689f46e4a",
+  "script_sha256": "14be5d7d7b60c77022efd3d11b1e03b059dab75a32687173652e7907d76e91c9",
+  "module_sha256": {
+    "harness.own_rgb_reconfirmation": "4bf11e2a791469062017685f2546736b83f6a42acf0466c2065c761849372bd4",
+    "harness.own_rgb_homing": "9201dac71a7abb8f6debecd69f3ed855b03337713985554abc5a84b411a85b36"
+  },
+  "gate_option": "two_view_rgb_v1",
+  "gate_params": {
+    "features": 1000,
+    "scale_factor": 1.2,
+    "levels": 8,
+    "ratio": 0.75,
+    "min_matches": 15,
+    "min_pose_inliers": 50,
+    "chi2": 5.991,
+    "confidence": 0.99,
+    "iterations": 300,
+    "max_cos_parallax": 0.9998,
+    "neighbor_keyframes": 20,
+    "candidate_keyframes": 5,
+    "match_interval_s": 10.0,
+    "arrival_m": 0.2,
+    "arrival_frames": 5,
+    "homography_px": 3.0,
+    "essential_px": 1.0,
+    "metric_scale": "own_motion_only"
+  },
+  "minimum_angle_rad": 0.05235987755982989,
+  "seeds": [
+    63001,
+    63002
+  ],
+  "condition": "calib_traversed",
+  "max_frames_per_event": 20,
+  "physics_runs": 0,
+  "model_calls": 0,
+  "images_exported": 0,
+  "thresholds_changed": false,
+  "counterfactual_actions_executed": false,
+  "aggregate": {
+    "goal_reached": {
+      "declarations": 1,
+      "truth_scored": 1,
+      "truth_valid": 1,
+      "truth_false": 0,
+      "fully_replayed": 0,
+      "geometry_last_five_accepted": 0,
+      "false_geometry_accepted": 0,
+      "false_geometry_rejected": 0,
+      "true_geometry_rejected": 0,
+      "full_B_semantic_acceptance": null
+    },
+    "return_start_declared": {
+      "declarations": 1,
+      "truth_scored": 1,
+      "truth_valid": 0,
+      "truth_false": 1,
+      "fully_replayed": 0,
+      "geometry_last_five_accepted": 0,
+      "false_geometry_accepted": 0,
+      "false_geometry_rejected": 0,
+      "true_geometry_rejected": 0,
+      "full_B_semantic_acceptance": "not_applicable"
+    }
+  },
+  "runs": [
+    {
+      "seed": 63001,
+      "condition": "calib_traversed",
+      "raw": "/home/ugrp/ugrp-sim/arm/egomap70-wave1/data/egomap70-63001-calib_traversed",
+      "original_status": "PHYSICAL_FAILURE",
+      "start_sim_s": 76.9,
+      "result_sha256": "30829aa2a0eb1b5be854573e831f345efa640594fb829a940d4fc5b3e7098eef",
+      "declarations": [],
+      "model_calls": 0,
+      "physics_runs": 0,
+      "selected_for": "available historical RGB, not a random cohort",
+      "status": "NO_DECLARATIONS",
+      "event_denominator": 0
+    },
+    {
+      "seed": 63002,
+      "condition": "calib_traversed",
+      "raw": "/home/ugrp/ugrp-sim/arm/egomap70-wave1/data/egomap70-63002-calib_traversed",
+      "original_status": "RECORDED",
+      "start_sim_s": 41.1,
+      "result_sha256": "27bbd51fd3a0cf351378c09e9c4d51fddfe1aaa3d971622665d5b6cb5b48835a",
+      "declarations": [
+        {
+          "t": 151.9,
+          "kind": "goal_reached",
+          "complete": false,
+          "status": "INPUT_ERROR",
+          "last_five_geometry_accepted": null,
+          "truth_valid": true,
+          "actual_B_boundary_distance_m": 0.0
+        },
+        {
+          "t": 255.1,
+          "kind": "return_start_declared",
+          "complete": false,
+          "status": "INPUT_ERROR",
+          "last_five_geometry_accepted": null,
+          "truth_valid": false,
+          "actual_distance_to_start_m": 0.8564282745538161
+        }
+      ],
+      "model_calls": 0,
+      "physics_runs": 0,
+      "selected_for": "available historical RGB, not a random cohort",
+      "event_denominator": 2,
+      "status": "INPUT_ERROR",
+      "error": "FileNotFoundError('/home/ugrp/ugrp-sim/arm/egomap68-banks/data/bank-63002.npz')",
+      "evaluation_trajectory_sha256": "4a438d89dd267beb99f9376f1719b522bb439e906df44cea298877993cc1e713"
+    }
+  ],
+  "limitations": [
+    "Historical frames only: missing active other-angle views cannot be synthesized or counted as a runtime failure.",
+    "B semantics and candidate association were not replayed; geometric acceptance is necessary, not sufficient.",
+    "The last five historical frames approximate the original streak; modified earlier actions and graph corrections are not replayed.",
+    "Missing inputs and missing GT remain explicit; zero declarations are not successful return or evidence of gate benefit.",
+    "Same development seeds, bounded selected windows, no E2E/causal improvement/independent confirmation claim."
+  ]
+}

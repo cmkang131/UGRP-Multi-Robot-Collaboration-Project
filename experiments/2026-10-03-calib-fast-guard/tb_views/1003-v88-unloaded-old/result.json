@@ -1,0 +1,49 @@
+{
+  "offline_source": {
+    "path": "/Users/changmin/projects/ugrp/outputs/final-pair-v88-cal-747d2b9f-20261001/calibration-unloaded/zone_wide_two_doors_final_v3/result.json",
+    "sha256": "0ce6e0a9530524e85031029758ebb8e4036cf5b225d56262c0a67cd42a83f970"
+  },
+  "offline_scalar_scope": "Operational record only: completion, timing, load average. Not a motion/pose/fit metric and not a robot success.",
+  "offline_scalars": {
+    "offline/load_start_1m": 15.4306640625,
+    "offline/load_end_1m": 332.9765625,
+    "offline/reset_sim_s": 1.3000000000000178,
+    "offline/protocol_complete": 1.0,
+    "offline/file_count": 3725,
+    "offline/total_bytes": 115240620
+  },
+  "sim_s": 369.9999999929479,
+  "wall_s": 7673.0,
+  "outcome": "COLLECTED_UNQUALIFIED",
+  "family": "calibration-collection",
+  "policy": "v88-unloaded",
+  "case": "two_doors",
+  "condition": "unloaded-old-guard",
+  "split": "calibration",
+  "seed": 911,
+  "source_sha": "747d2b9f",
+  "scope": "collection completion and timing only",
+  "offline_source_pointer": "wall_s = driver_log.txt start/end timestamps (2026-09-30T23:32:47Z to 2026-10-01T01:40:40Z); sim_s = check_sim_s; load = result.json loadavg_start/end (1-minute)",
+  "texts": {
+    "notes/operational": {
+      "bundle": "zone-final-pair-v88",
+      "workflow": "zone-final-pair-v3 (older run)",
+      "guard": "OLD (pre-fast-guard) code",
+      "profile": "unloaded",
+      "result_json_sha256": "0ce6e0a9530524e85031029758ebb8e4036cf5b225d56262c0a67cd42a83f970",
+      "artifacts_sha256_json_sha256": "190d70b117285e0c497fc4acb409f6edd8fddc5afcc2d3f0aa3f345128dce659",
+      "raw_path": "/Users/changmin/projects/ugrp/outputs/final-pair-v88-cal-747d2b9f-20261001/calibration-unloaded",
+      "limit": "Wall time differs in profile, guard code, map, host load and concurrency; not a controlled speed comparison. Local raw is not a remote backup."
+    }
+  },
+  "hparam_metrics": [
+    "result/wall_s",
+    "result/sim_s",
+    "offline/load_start_1m",
+    "offline/load_end_1m",
+    "offline/protocol_complete"
+  ],
+  "schema": "ugrp.offline_audit_view.v1",
+  "derived_view_only": true,
+  "run_id": "1003-v88-unloaded-old"
+}

@@ -1,0 +1,1242 @@
+{
+  "runs": [
+    {
+      "name": "s3fix17-pair-c0-r2",
+      "source_sha": "bf1c9b6acaacefa4200786e42a971eeb94dc3943",
+      "host": "oracle-x86",
+      "case": "pair",
+      "condition": 0,
+      "seed": 14201,
+      "status": "PHYSICAL_STOP",
+      "failure": "Traceback (most recent call last):\n  File \"/home/ubuntu/ugrp-sim/src/bf1c9b6acaacefa4200786e42a971eeb94dc3943/scripts/run_s3_alignment_probe.py\", line 156, in run\n    now=host.now;host.eval_sample()\n                 ^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/bf1c9b6acaacefa4200786e42a971eeb94dc3943/sim/s3_synchronized_carry.py\", line 31, in eval_sample\n    super().eval_sample()\n  File \"/home/ubuntu/ugrp-sim/src/bf1c9b6acaacefa4200786e42a971eeb94dc3943/sim/s3_stage_safety.py\", line 37, in eval_sample\n    super().eval_sample()\n  File \"/home/ubuntu/ugrp-sim/src/bf1c9b6acaacefa4200786e42a971eeb94dc3943/sim/s3_buffered_io.py\", line 67, in eval_sample\n    return super().eval_sample()\n           ^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/bf1c9b6acaacefa4200786e42a971eeb94dc3943/sim/zone_s3_no_prior.py\", line 131, in eval_sample\n    raise PhysicalStop('LOAD_DROP:'+item)\nsim.zone_s3_no_prior.PhysicalStop: LOAD_DROP:beam_1\n",
+      "physical_stop": "LOAD_DROP:beam_1",
+      "wall_s": 334.58973354499904,
+      "sim_s": 52.3,
+      "robots": {
+        "r1": {
+          "alignment": 4.4,
+          "hover": 4.4,
+          "descent": 5.9,
+          "close": 8.8,
+          "lift_entry": 10.1,
+          "carry_entry": 29.1,
+          "turn_reversals": 0,
+          "commands": 1238,
+          "fine_pan_commands": 1,
+          "grasp": 9.15,
+          "lift": 10.9,
+          "carry_xy_m": 0.22809605191787743,
+          "carry": true,
+          "contact_lift_samples": 873,
+          "max_cargo_z_m": 0.10312121161029317,
+          "restore_collisions": 0,
+          "last_visible_uses": 0,
+          "endpoint_rejected_frames": 0,
+          "endpoint_stall": false
+        },
+        "r2": {
+          "alignment": 5.9,
+          "hover": 5.9,
+          "descent": 7.4,
+          "close": 8.8,
+          "lift_entry": 10.1,
+          "carry_entry": 29.1,
+          "turn_reversals": 0,
+          "commands": 1241,
+          "fine_pan_commands": 1,
+          "grasp": 9.15,
+          "lift": 10.9,
+          "carry_xy_m": 0.22809605191787743,
+          "carry": true,
+          "contact_lift_samples": 873,
+          "max_cargo_z_m": 0.10312121161029317,
+          "restore_collisions": 0,
+          "last_visible_uses": 0,
+          "endpoint_rejected_frames": 0,
+          "endpoint_stall": false
+        }
+      },
+      "model_calls": 0,
+      "artifact_verification": {
+        "files": 3174,
+        "all_hashes_match": true
+      },
+      "host_timing": {
+        "option": "buffered_jsonl_v1",
+        "timers": {
+          "jsonl_append": {
+            "calls": 15042,
+            "wall_s": 1.0536676520332549
+          },
+          "physics_advance": {
+            "calls": 1048,
+            "wall_s": 123.6103744529828
+          },
+          "eval_sample_including_io": {
+            "calls": 1047,
+            "wall_s": 1.009405824010173
+          },
+          "render_rgb": {
+            "calls": 3138,
+            "wall_s": 106.65753471900825
+          },
+          "capture_including_render_io": {
+            "calls": 1046,
+            "wall_s": 114.96046319102607
+          }
+        },
+        "nested_timers_not_additive": true,
+        "controller_feedback": false,
+        "cprofile": false
+      },
+      "scope": "DEV stage regression; not E2E or confirmation",
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "commands": 2479,
+      "target_distance_m": 0.1518,
+      "robot_max_tilt_deg": {
+        "r1": 0.38960710733851783,
+        "r2": 0.5328668279647717
+      },
+      "cargo_max_tilt_deg": 1.419539192023091,
+      "tilt_aborts": 0,
+      "drop_aborts": 1,
+      "final_controller_states": null,
+      "force_scope": "evaluation only; exact contact forces stored in raw, never controller input",
+      "contact_forces_n": {
+        "r1": {
+          "max_normal_sum": 13.90974497802955,
+          "max_resultant": 1.8992608804928148
+        },
+        "r2": {
+          "max_normal_sum": 13.95195490174751,
+          "max_resultant": 2.064358844315331
+        }
+      },
+      "report_sha256": "51c2ed452dbca4dc0b3f81a6c2b741134ec209d5a2b9032adeb672af22d4d94c",
+      "video": {
+        "path": "outputs/s3fix17-eval-r2/evaluation/s3fix17-pair-c0-r2/execution.mp4",
+        "sha256": "36dd9e5b877fde4e3c42cff8ea2c330f97ab878a14798fef97ffa250187f2e24",
+        "frames": 262,
+        "fps": 20.0,
+        "duration_s": 13.1,
+        "playback": 4
+      }
+    },
+    {
+      "name": "s3fix17-pair-c1-r2",
+      "source_sha": "bf1c9b6acaacefa4200786e42a971eeb94dc3943",
+      "host": "oracle-x86",
+      "case": "pair",
+      "condition": 1,
+      "seed": 14202,
+      "status": "PHYSICAL_STOP",
+      "failure": "Traceback (most recent call last):\n  File \"/home/ubuntu/ugrp-sim/src/bf1c9b6acaacefa4200786e42a971eeb94dc3943/scripts/run_s3_alignment_probe.py\", line 156, in run\n    now=host.now;host.eval_sample()\n                 ^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/bf1c9b6acaacefa4200786e42a971eeb94dc3943/sim/s3_synchronized_carry.py\", line 31, in eval_sample\n    super().eval_sample()\n  File \"/home/ubuntu/ugrp-sim/src/bf1c9b6acaacefa4200786e42a971eeb94dc3943/sim/s3_stage_safety.py\", line 37, in eval_sample\n    super().eval_sample()\n  File \"/home/ubuntu/ugrp-sim/src/bf1c9b6acaacefa4200786e42a971eeb94dc3943/sim/s3_buffered_io.py\", line 67, in eval_sample\n    return super().eval_sample()\n           ^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/bf1c9b6acaacefa4200786e42a971eeb94dc3943/sim/zone_s3_no_prior.py\", line 131, in eval_sample\n    raise PhysicalStop('LOAD_DROP:'+item)\nsim.zone_s3_no_prior.PhysicalStop: LOAD_DROP:beam_1\n",
+      "physical_stop": "LOAD_DROP:beam_1",
+      "wall_s": 334.8313334809991,
+      "sim_s": 51.8,
+      "robots": {
+        "r1": {
+          "alignment": 3.9,
+          "hover": 3.9,
+          "descent": 5.4,
+          "close": 8.3,
+          "lift_entry": 9.6,
+          "carry_entry": 28.6,
+          "turn_reversals": 0,
+          "commands": 1236,
+          "fine_pan_commands": 1,
+          "grasp": 8.65,
+          "lift": 10.45,
+          "carry_xy_m": 0.22843818349993572,
+          "carry": true,
+          "contact_lift_samples": 872,
+          "max_cargo_z_m": 0.09755132664618076,
+          "restore_collisions": 0,
+          "last_visible_uses": 0,
+          "endpoint_rejected_frames": 0,
+          "endpoint_stall": false
+        },
+        "r2": {
+          "alignment": 5.4,
+          "hover": 5.4,
+          "descent": 6.9,
+          "close": 8.3,
+          "lift_entry": 9.6,
+          "carry_entry": 28.6,
+          "turn_reversals": 0,
+          "commands": 1240,
+          "fine_pan_commands": 1,
+          "grasp": 8.65,
+          "lift": 10.45,
+          "carry_xy_m": 0.22843818349993572,
+          "carry": true,
+          "contact_lift_samples": 872,
+          "max_cargo_z_m": 0.09755132664618076,
+          "restore_collisions": 0,
+          "last_visible_uses": 0,
+          "endpoint_rejected_frames": 0,
+          "endpoint_stall": false
+        }
+      },
+      "model_calls": 0,
+      "artifact_verification": {
+        "files": 3144,
+        "all_hashes_match": true
+      },
+      "host_timing": {
+        "option": "buffered_jsonl_v1",
+        "timers": {
+          "jsonl_append": {
+            "calls": 14919,
+            "wall_s": 0.9794689810023556
+          },
+          "physics_advance": {
+            "calls": 1038,
+            "wall_s": 120.77206289804599
+          },
+          "eval_sample_including_io": {
+            "calls": 1037,
+            "wall_s": 1.0076178350263945
+          },
+          "render_rgb": {
+            "calls": 3108,
+            "wall_s": 104.46316407896484
+          },
+          "capture_including_render_io": {
+            "calls": 1036,
+            "wall_s": 112.66213674196479
+          }
+        },
+        "nested_timers_not_additive": true,
+        "controller_feedback": false,
+        "cprofile": false
+      },
+      "scope": "DEV stage regression; not E2E or confirmation",
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "commands": 2476,
+      "target_distance_m": 0.1518,
+      "robot_max_tilt_deg": {
+        "r1": 0.36870948562929134,
+        "r2": 0.3678294702626643
+      },
+      "cargo_max_tilt_deg": 0.6082514649272325,
+      "tilt_aborts": 0,
+      "drop_aborts": 1,
+      "final_controller_states": null,
+      "force_scope": "evaluation only; exact contact forces stored in raw, never controller input",
+      "contact_forces_n": {
+        "r1": {
+          "max_normal_sum": 13.974073092810626,
+          "max_resultant": 1.800377386331426
+        },
+        "r2": {
+          "max_normal_sum": 14.006839850966639,
+          "max_resultant": 2.0072481207705635
+        }
+      },
+      "report_sha256": "514b240e79e9677c9987f8b3d97b301362b63b215a8363caae49b41d6c7e163d",
+      "video": {
+        "path": "outputs/s3fix17-eval-r2/evaluation/s3fix17-pair-c1-r2/execution.mp4",
+        "sha256": "cc83fd27bb42543cb1e5299838b2c0d83cbce8674392fff3ce3a5184cb16b4d8",
+        "frames": 259,
+        "fps": 20.0,
+        "duration_s": 12.95,
+        "playback": 4
+      }
+    },
+    {
+      "name": "s3fix17-pair-c2-r2",
+      "source_sha": "bf1c9b6acaacefa4200786e42a971eeb94dc3943",
+      "host": "oracle-x86",
+      "case": "pair",
+      "condition": 2,
+      "seed": 14203,
+      "status": "DEV_STAGE_FINISHED",
+      "failure": null,
+      "physical_stop": null,
+      "wall_s": 343.87808944099925,
+      "sim_s": 54.55,
+      "robots": {
+        "r1": {
+          "alignment": 4.9,
+          "hover": 4.9,
+          "descent": 6.4,
+          "close": 9.8,
+          "lift_entry": 11.1,
+          "carry_entry": 30.1,
+          "turn_reversals": 0,
+          "commands": 1318,
+          "fine_pan_commands": 1,
+          "grasp": 10.15,
+          "lift": 11.95,
+          "carry_xy_m": 0.185277228633361,
+          "carry": true,
+          "contact_lift_samples": 871,
+          "max_cargo_z_m": 0.09383684978925634,
+          "restore_collisions": 0,
+          "last_visible_uses": 0,
+          "endpoint_rejected_frames": 0,
+          "endpoint_stall": false
+        },
+        "r2": {
+          "alignment": 6.9,
+          "hover": 6.9,
+          "descent": 8.4,
+          "close": 9.8,
+          "lift_entry": 11.1,
+          "carry_entry": 30.1,
+          "turn_reversals": 0,
+          "commands": 1322,
+          "fine_pan_commands": 1,
+          "grasp": 10.15,
+          "lift": 11.95,
+          "carry_xy_m": 0.185277228633361,
+          "carry": true,
+          "contact_lift_samples": 871,
+          "max_cargo_z_m": 0.09383684978925634,
+          "restore_collisions": 0,
+          "last_visible_uses": 0,
+          "endpoint_rejected_frames": 0,
+          "endpoint_stall": false
+        }
+      },
+      "model_calls": 0,
+      "artifact_verification": {
+        "files": 3312,
+        "all_hashes_match": true
+      },
+      "host_timing": {
+        "option": "buffered_jsonl_v1",
+        "timers": {
+          "jsonl_append": {
+            "calls": 15750,
+            "wall_s": 1.0353667559738824
+          },
+          "physics_advance": {
+            "calls": 1093,
+            "wall_s": 125.05002194099507
+          },
+          "eval_sample_including_io": {
+            "calls": 1092,
+            "wall_s": 1.0493265879977116
+          },
+          "render_rgb": {
+            "calls": 3276,
+            "wall_s": 110.35212660005345
+          },
+          "capture_including_render_io": {
+            "calls": 1092,
+            "wall_s": 118.95602609596972
+          }
+        },
+        "nested_timers_not_additive": true,
+        "controller_feedback": false,
+        "cprofile": false
+      },
+      "scope": "DEV stage regression; not E2E or confirmation",
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "commands": 2640,
+      "target_distance_m": 0.1518,
+      "robot_max_tilt_deg": {
+        "r1": 0.5457366716340458,
+        "r2": 0.5616878907593397
+      },
+      "cargo_max_tilt_deg": 0.5805696473828124,
+      "tilt_aborts": 0,
+      "drop_aborts": 0,
+      "final_controller_states": {
+        "r1": {
+          "state": "failed",
+          "failure": "FLOOR_POSE_NOT_COMMANDED"
+        },
+        "r2": {
+          "state": "lower",
+          "failure": null
+        }
+      },
+      "force_scope": "evaluation only; exact contact forces stored in raw, never controller input",
+      "contact_forces_n": {
+        "r1": {
+          "max_normal_sum": 13.719293476960619,
+          "max_resultant": 4.271261582059068
+        },
+        "r2": {
+          "max_normal_sum": 13.300256781990285,
+          "max_resultant": 4.411398733463548
+        }
+      },
+      "report_sha256": "fbc0bc33ff5a58c3c486bb194b96f74860dd46e69099a68b3de900d63eb30dc4",
+      "video": {
+        "path": "outputs/s3fix17-eval-r2/evaluation/s3fix17-pair-c2-r2/execution.mp4",
+        "sha256": "8f6691acb3fd43e0fa257843ac92513bfbdbdbdeee289c3c8c8489710cdd14c2",
+        "frames": 273,
+        "fps": 20.0,
+        "duration_s": 13.65,
+        "playback": 4
+      }
+    },
+    {
+      "name": "s3fix17-pair-c3-r2",
+      "source_sha": "bf1c9b6acaacefa4200786e42a971eeb94dc3943",
+      "host": "oracle-x86",
+      "case": "pair",
+      "condition": 3,
+      "seed": 14204,
+      "status": "DEV_STAGE_FINISHED",
+      "failure": null,
+      "physical_stop": null,
+      "wall_s": 344.61111561800135,
+      "sim_s": 55.05,
+      "robots": {
+        "r1": {
+          "alignment": 5.9,
+          "hover": 5.9,
+          "descent": 7.4,
+          "close": 10.3,
+          "lift_entry": 11.6,
+          "carry_entry": 30.6,
+          "turn_reversals": 0,
+          "commands": 1322,
+          "fine_pan_commands": 1,
+          "grasp": 10.65,
+          "lift": 12.45,
+          "carry_xy_m": 0.21075650729426154,
+          "carry": true,
+          "contact_lift_samples": 868,
+          "max_cargo_z_m": 0.09256241587161973,
+          "restore_collisions": 0,
+          "last_visible_uses": 3,
+          "endpoint_rejected_frames": 3,
+          "endpoint_stall": false
+        },
+        "r2": {
+          "alignment": 7.4,
+          "hover": 7.4,
+          "descent": 8.9,
+          "close": 10.3,
+          "lift_entry": 11.6,
+          "carry_entry": 30.6,
+          "turn_reversals": 0,
+          "commands": 1325,
+          "fine_pan_commands": 1,
+          "grasp": 10.65,
+          "lift": 12.45,
+          "carry_xy_m": 0.21075650729426154,
+          "carry": true,
+          "contact_lift_samples": 868,
+          "max_cargo_z_m": 0.09256241587161973,
+          "restore_collisions": 0,
+          "last_visible_uses": 3,
+          "endpoint_rejected_frames": 3,
+          "endpoint_stall": false
+        }
+      },
+      "model_calls": 0,
+      "artifact_verification": {
+        "files": 3342,
+        "all_hashes_match": true
+      },
+      "host_timing": {
+        "option": "buffered_jsonl_v1",
+        "timers": {
+          "jsonl_append": {
+            "calls": 15877,
+            "wall_s": 1.0286147879814962
+          },
+          "physics_advance": {
+            "calls": 1103,
+            "wall_s": 125.95848009697693
+          },
+          "eval_sample_including_io": {
+            "calls": 1102,
+            "wall_s": 1.0521998509884725
+          },
+          "render_rgb": {
+            "calls": 3306,
+            "wall_s": 110.53693752203435
+          },
+          "capture_including_render_io": {
+            "calls": 1102,
+            "wall_s": 119.04843293795966
+          }
+        },
+        "nested_timers_not_additive": true,
+        "controller_feedback": false,
+        "cprofile": false
+      },
+      "scope": "DEV stage regression; not E2E or confirmation",
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "commands": 2647,
+      "target_distance_m": 0.1518,
+      "robot_max_tilt_deg": {
+        "r1": 1.166017935090155,
+        "r2": 1.1278238948236197
+      },
+      "cargo_max_tilt_deg": 0.5115396631559215,
+      "tilt_aborts": 0,
+      "drop_aborts": 0,
+      "final_controller_states": {
+        "r1": {
+          "state": "failed",
+          "failure": "FLOOR_POSE_NOT_COMMANDED"
+        },
+        "r2": {
+          "state": "lower",
+          "failure": null
+        }
+      },
+      "force_scope": "evaluation only; exact contact forces stored in raw, never controller input",
+      "contact_forces_n": {
+        "r1": {
+          "max_normal_sum": 13.331422549387398,
+          "max_resultant": 4.544417242455607
+        },
+        "r2": {
+          "max_normal_sum": 13.787628754577657,
+          "max_resultant": 4.4815826187263905
+        }
+      },
+      "report_sha256": "5635d98a3ec3013b1066eb2a52248588aa43a35ba06433b78b1cc4f7ad9c302b",
+      "video": {
+        "path": "outputs/s3fix17-eval-r2/evaluation/s3fix17-pair-c3-r2/execution.mp4",
+        "sha256": "3cfc5e434d334a8a151a7995c3dbede66d534b39dc6ab47bdc3ffbfd2467a0ce",
+        "frames": 276,
+        "fps": 20.0,
+        "duration_s": 13.8,
+        "playback": 4
+      }
+    },
+    {
+      "name": "s3fix17-pair-c4-r2",
+      "source_sha": "bf1c9b6acaacefa4200786e42a971eeb94dc3943",
+      "host": "oracle-x86",
+      "case": "pair",
+      "condition": 4,
+      "seed": 14205,
+      "status": "PHYSICAL_STOP",
+      "failure": "Traceback (most recent call last):\n  File \"/home/ubuntu/ugrp-sim/src/bf1c9b6acaacefa4200786e42a971eeb94dc3943/scripts/run_s3_alignment_probe.py\", line 156, in run\n    now=host.now;host.eval_sample()\n                 ^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/bf1c9b6acaacefa4200786e42a971eeb94dc3943/sim/s3_synchronized_carry.py\", line 31, in eval_sample\n    super().eval_sample()\n  File \"/home/ubuntu/ugrp-sim/src/bf1c9b6acaacefa4200786e42a971eeb94dc3943/sim/s3_stage_safety.py\", line 37, in eval_sample\n    super().eval_sample()\n  File \"/home/ubuntu/ugrp-sim/src/bf1c9b6acaacefa4200786e42a971eeb94dc3943/sim/s3_buffered_io.py\", line 67, in eval_sample\n    return super().eval_sample()\n           ^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/bf1c9b6acaacefa4200786e42a971eeb94dc3943/sim/zone_s3_no_prior.py\", line 131, in eval_sample\n    raise PhysicalStop('LOAD_DROP:'+item)\nsim.zone_s3_no_prior.PhysicalStop: LOAD_DROP:beam_1\n",
+      "physical_stop": "LOAD_DROP:beam_1",
+      "wall_s": 327.2340607620008,
+      "sim_s": 51.25,
+      "robots": {
+        "r1": {
+          "alignment": 4.4,
+          "hover": 4.4,
+          "descent": 5.9,
+          "close": 7.8,
+          "lift_entry": 9.1,
+          "carry_entry": 28.1,
+          "turn_reversals": 0,
+          "commands": 1233,
+          "fine_pan_commands": 1,
+          "grasp": 8.2,
+          "lift": 9.95,
+          "carry_xy_m": 0.22554753480824796,
+          "carry": true,
+          "contact_lift_samples": 870,
+          "max_cargo_z_m": 0.0966409608314373,
+          "restore_collisions": 0,
+          "last_visible_uses": 0,
+          "endpoint_rejected_frames": 0,
+          "endpoint_stall": false
+        },
+        "r2": {
+          "alignment": 4.9,
+          "hover": 4.9,
+          "descent": 6.4,
+          "close": 7.8,
+          "lift_entry": 9.1,
+          "carry_entry": 28.1,
+          "turn_reversals": 0,
+          "commands": 1234,
+          "fine_pan_commands": 1,
+          "grasp": 8.15,
+          "lift": 9.95,
+          "carry_xy_m": 0.22554753480824796,
+          "carry": true,
+          "contact_lift_samples": 870,
+          "max_cargo_z_m": 0.0966409608314373,
+          "restore_collisions": 0,
+          "last_visible_uses": 0,
+          "endpoint_rejected_frames": 0,
+          "endpoint_stall": false
+        }
+      },
+      "model_calls": 0,
+      "artifact_verification": {
+        "files": 3111,
+        "all_hashes_match": true
+      },
+      "host_timing": {
+        "option": "buffered_jsonl_v1",
+        "timers": {
+          "jsonl_append": {
+            "calls": 14778,
+            "wall_s": 0.9830576089389069
+          },
+          "physics_advance": {
+            "calls": 1027,
+            "wall_s": 121.24244163102958
+          },
+          "eval_sample_including_io": {
+            "calls": 1026,
+            "wall_s": 1.0088420399879396
+          },
+          "render_rgb": {
+            "calls": 3075,
+            "wall_s": 103.2212152330012
+          },
+          "capture_including_render_io": {
+            "calls": 1025,
+            "wall_s": 111.35044442204344
+          }
+        },
+        "nested_timers_not_additive": true,
+        "controller_feedback": false,
+        "cprofile": false
+      },
+      "scope": "DEV stage regression; not E2E or confirmation",
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "commands": 2467,
+      "target_distance_m": 0.1518,
+      "robot_max_tilt_deg": {
+        "r1": 0.329475449627967,
+        "r2": 0.4629166793375161
+      },
+      "cargo_max_tilt_deg": 1.1757855655469895,
+      "tilt_aborts": 0,
+      "drop_aborts": 1,
+      "final_controller_states": null,
+      "force_scope": "evaluation only; exact contact forces stored in raw, never controller input",
+      "contact_forces_n": {
+        "r1": {
+          "max_normal_sum": 12.241137628915773,
+          "max_resultant": 1.662419082849185
+        },
+        "r2": {
+          "max_normal_sum": 13.936172380923855,
+          "max_resultant": 1.6673263514591459
+        }
+      },
+      "report_sha256": "d9d3c81f35bc6e5431c4a8c22f9e4ecb31fc2ecf31afbeafd0c115b01ae971dc",
+      "video": {
+        "path": "outputs/s3fix17-eval-r2/evaluation/s3fix17-pair-c4-r2/execution.mp4",
+        "sha256": "92dbab4538e4b84a1fb056dd055b38a47a553ab05c8f81596560d5b1a75d48bb",
+        "frames": 257,
+        "fps": 20.0,
+        "duration_s": 12.85,
+        "playback": 4
+      }
+    },
+    {
+      "name": "s3fix17-pair-c5-r2",
+      "source_sha": "bf1c9b6acaacefa4200786e42a971eeb94dc3943",
+      "host": "oracle-x86",
+      "case": "pair",
+      "condition": 5,
+      "seed": 14206,
+      "status": "PHYSICAL_STOP",
+      "failure": "Traceback (most recent call last):\n  File \"/home/ubuntu/ugrp-sim/src/bf1c9b6acaacefa4200786e42a971eeb94dc3943/scripts/run_s3_alignment_probe.py\", line 156, in run\n    now=host.now;host.eval_sample()\n                 ^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/bf1c9b6acaacefa4200786e42a971eeb94dc3943/sim/s3_synchronized_carry.py\", line 31, in eval_sample\n    super().eval_sample()\n  File \"/home/ubuntu/ugrp-sim/src/bf1c9b6acaacefa4200786e42a971eeb94dc3943/sim/s3_stage_safety.py\", line 37, in eval_sample\n    super().eval_sample()\n  File \"/home/ubuntu/ugrp-sim/src/bf1c9b6acaacefa4200786e42a971eeb94dc3943/sim/s3_buffered_io.py\", line 67, in eval_sample\n    return super().eval_sample()\n           ^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/ugrp-sim/src/bf1c9b6acaacefa4200786e42a971eeb94dc3943/sim/zone_s3_no_prior.py\", line 131, in eval_sample\n    raise PhysicalStop('LOAD_DROP:'+item)\nsim.zone_s3_no_prior.PhysicalStop: LOAD_DROP:beam_1\n",
+      "physical_stop": "LOAD_DROP:beam_1",
+      "wall_s": 335.08655511600045,
+      "sim_s": 52.8,
+      "robots": {
+        "r1": {
+          "alignment": 4.4,
+          "hover": 4.4,
+          "descent": 5.9,
+          "close": 9.3,
+          "lift_entry": 10.6,
+          "carry_entry": 29.6,
+          "turn_reversals": 0,
+          "commands": 1239,
+          "fine_pan_commands": 1,
+          "grasp": 9.65,
+          "lift": 11.45,
+          "carry_xy_m": 0.22841990656643105,
+          "carry": true,
+          "contact_lift_samples": 872,
+          "max_cargo_z_m": 0.09794194949607062,
+          "restore_collisions": 0,
+          "last_visible_uses": 0,
+          "endpoint_rejected_frames": 0,
+          "endpoint_stall": false
+        },
+        "r2": {
+          "alignment": 6.4,
+          "hover": 6.4,
+          "descent": 7.9,
+          "close": 9.3,
+          "lift_entry": 10.6,
+          "carry_entry": 29.6,
+          "turn_reversals": 0,
+          "commands": 1243,
+          "fine_pan_commands": 1,
+          "grasp": 9.65,
+          "lift": 11.45,
+          "carry_xy_m": 0.22841990656643105,
+          "carry": true,
+          "contact_lift_samples": 872,
+          "max_cargo_z_m": 0.09794194949607062,
+          "restore_collisions": 0,
+          "last_visible_uses": 3,
+          "endpoint_rejected_frames": 3,
+          "endpoint_stall": false
+        }
+      },
+      "model_calls": 0,
+      "artifact_verification": {
+        "files": 3204,
+        "all_hashes_match": true
+      },
+      "host_timing": {
+        "option": "buffered_jsonl_v1",
+        "timers": {
+          "jsonl_append": {
+            "calls": 15165,
+            "wall_s": 0.9981900719012629
+          },
+          "physics_advance": {
+            "calls": 1058,
+            "wall_s": 124.75149520703417
+          },
+          "eval_sample_including_io": {
+            "calls": 1057,
+            "wall_s": 1.049021978969904
+          },
+          "render_rgb": {
+            "calls": 3168,
+            "wall_s": 106.33384603300692
+          },
+          "capture_including_render_io": {
+            "calls": 1056,
+            "wall_s": 114.70571846800522
+          }
+        },
+        "nested_timers_not_additive": true,
+        "controller_feedback": false,
+        "cprofile": false
+      },
+      "scope": "DEV stage regression; not E2E or confirmation",
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "commands": 2482,
+      "target_distance_m": 0.1518,
+      "robot_max_tilt_deg": {
+        "r1": 0.39760024912872866,
+        "r2": 0.35679335596403466
+      },
+      "cargo_max_tilt_deg": 0.8277517844513641,
+      "tilt_aborts": 0,
+      "drop_aborts": 1,
+      "final_controller_states": null,
+      "force_scope": "evaluation only; exact contact forces stored in raw, never controller input",
+      "contact_forces_n": {
+        "r1": {
+          "max_normal_sum": 13.296576809710784,
+          "max_resultant": 1.700438416568633
+        },
+        "r2": {
+          "max_normal_sum": 13.717118963980766,
+          "max_resultant": 1.8643417165474006
+        }
+      },
+      "report_sha256": "b07eb55267058a3a94dbde47496e3e91f3e9e330f25fe8be1d4d79849fec88e9",
+      "video": {
+        "path": "outputs/s3fix17-eval-r2/evaluation/s3fix17-pair-c5-r2/execution.mp4",
+        "sha256": "6cf27e6c71145e81c37147d7f04211ae5fc6b37e5661223cb8d92269498bb001",
+        "frames": 264,
+        "fps": 20.0,
+        "duration_s": 13.2,
+        "playback": 4
+      }
+    },
+    {
+      "name": "s3fix17-cyan-c0-r2",
+      "source_sha": "bf1c9b6acaacefa4200786e42a971eeb94dc3943",
+      "host": "oracle-x86",
+      "case": "cyan",
+      "condition": 0,
+      "seed": 14201,
+      "status": "DEV_STAGE_FINISHED",
+      "failure": null,
+      "physical_stop": null,
+      "wall_s": 407.0392060060003,
+      "sim_s": 60.0,
+      "robots": {
+        "r3": {
+          "alignment": 4.85,
+          "hover": 4.85,
+          "descent": 6.15,
+          "close": 7.35,
+          "lift_entry": 8.25,
+          "carry_entry": 30.05,
+          "turn_reversals": 1,
+          "commands": 1146,
+          "fine_pan_commands": 1,
+          "grasp": 7.75,
+          "lift": 9.05,
+          "carry_xy_m": 0.6315798127733844,
+          "carry": true,
+          "contact_lift_samples": 1067,
+          "max_cargo_z_m": 0.16058571015458917,
+          "restore_collisions": 0,
+          "last_visible_uses": 0,
+          "endpoint_rejected_frames": 0,
+          "endpoint_stall": false
+        }
+      },
+      "model_calls": 0,
+      "artifact_verification": {
+        "files": 3637,
+        "all_hashes_match": true
+      },
+      "host_timing": {
+        "option": "buffered_jsonl_v1",
+        "timers": {
+          "jsonl_append": {
+            "calls": 16765,
+            "wall_s": 1.1004289349511964
+          },
+          "physics_advance": {
+            "calls": 1202,
+            "wall_s": 106.92661060898718
+          },
+          "eval_sample_including_io": {
+            "calls": 1201,
+            "wall_s": 1.031722298988825
+          },
+          "render_rgb": {
+            "calls": 3600,
+            "wall_s": 114.75395930203558
+          },
+          "capture_including_render_io": {
+            "calls": 1200,
+            "wall_s": 124.25200328598658
+          }
+        },
+        "nested_timers_not_additive": true,
+        "controller_feedback": false,
+        "cprofile": false
+      },
+      "scope": "DEV stage regression; not E2E or confirmation",
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "commands": 1146,
+      "target_distance_m": 0.1,
+      "robot_max_tilt_deg": {
+        "r3": 0.23075655825940725
+      },
+      "cargo_max_tilt_deg": 24.007881855100173,
+      "tilt_aborts": 0,
+      "drop_aborts": 0,
+      "final_controller_states": {
+        "r3": {
+          "state": "carry",
+          "failure": null
+        }
+      },
+      "force_scope": "evaluation only; exact contact forces stored in raw, never controller input",
+      "contact_forces_n": {
+        "r1": {
+          "max_normal_sum": 0.0,
+          "max_resultant": 0.0
+        },
+        "r2": {
+          "max_normal_sum": 0.0,
+          "max_resultant": 0.0
+        }
+      },
+      "report_sha256": "a3c2d38af00d9b7a593396973b74148c59fa381ef571800dd8a78fd5046fc63b",
+      "video": {
+        "path": "outputs/s3fix17-eval-r2/evaluation/s3fix17-cyan-c0-r2/execution.mp4",
+        "sha256": "0cff8cc3f73f4c745543439d2cfbb84f5b141d84c4caadecf2f4234f94bf747e",
+        "frames": 300,
+        "fps": 20.0,
+        "duration_s": 15.0,
+        "playback": 4
+      }
+    },
+    {
+      "name": "s3fix17-cyan-c3-r2",
+      "source_sha": "bf1c9b6acaacefa4200786e42a971eeb94dc3943",
+      "host": "oracle-x86",
+      "case": "cyan",
+      "condition": 3,
+      "seed": 14204,
+      "status": "DEV_STAGE_FINISHED",
+      "failure": null,
+      "physical_stop": null,
+      "wall_s": 410.1898858120003,
+      "sim_s": 60.0,
+      "robots": {
+        "r3": {
+          "alignment": 4.85,
+          "hover": 4.85,
+          "descent": 6.15,
+          "close": 7.35,
+          "lift_entry": 8.25,
+          "carry_entry": 30.05,
+          "turn_reversals": 4,
+          "commands": 1146,
+          "fine_pan_commands": 1,
+          "grasp": 7.7,
+          "lift": 9.05,
+          "carry_xy_m": 0.2747275759755554,
+          "carry": true,
+          "contact_lift_samples": 1067,
+          "max_cargo_z_m": 0.16110467922222532,
+          "restore_collisions": 0,
+          "last_visible_uses": 0,
+          "endpoint_rejected_frames": 0,
+          "endpoint_stall": false
+        }
+      },
+      "model_calls": 0,
+      "artifact_verification": {
+        "files": 3637,
+        "all_hashes_match": true
+      },
+      "host_timing": {
+        "option": "buffered_jsonl_v1",
+        "timers": {
+          "jsonl_append": {
+            "calls": 16765,
+            "wall_s": 1.114852890957991
+          },
+          "physics_advance": {
+            "calls": 1202,
+            "wall_s": 107.54869161100214
+          },
+          "eval_sample_including_io": {
+            "calls": 1201,
+            "wall_s": 1.0670186639745225
+          },
+          "render_rgb": {
+            "calls": 3600,
+            "wall_s": 116.23961975493512
+          },
+          "capture_including_render_io": {
+            "calls": 1200,
+            "wall_s": 125.54336143600631
+          }
+        },
+        "nested_timers_not_additive": true,
+        "controller_feedback": false,
+        "cprofile": false
+      },
+      "scope": "DEV stage regression; not E2E or confirmation",
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "commands": 1146,
+      "target_distance_m": 0.1,
+      "robot_max_tilt_deg": {
+        "r3": 0.2108600825126829
+      },
+      "cargo_max_tilt_deg": 23.92296009580853,
+      "tilt_aborts": 0,
+      "drop_aborts": 0,
+      "final_controller_states": {
+        "r3": {
+          "state": "carry",
+          "failure": null
+        }
+      },
+      "force_scope": "evaluation only; exact contact forces stored in raw, never controller input",
+      "contact_forces_n": {
+        "r1": {
+          "max_normal_sum": 0.0,
+          "max_resultant": 0.0
+        },
+        "r2": {
+          "max_normal_sum": 0.0,
+          "max_resultant": 0.0
+        }
+      },
+      "report_sha256": "2f46708725ff01a7172720237c4e170707d1868fa3daf027767f9a00a2f4bc4e",
+      "video": {
+        "path": "outputs/s3fix17-eval-r2/evaluation/s3fix17-cyan-c3-r2/execution.mp4",
+        "sha256": "2dfdb7745858fa43ed24efd5a9dfc025c2c4249fa95d690347ac8c8bf0b050fc",
+        "frames": 300,
+        "fps": 20.0,
+        "duration_s": 15.0,
+        "playback": 4
+      }
+    },
+    {
+      "name": "s3fix17-cyan-c4-r2",
+      "source_sha": "bf1c9b6acaacefa4200786e42a971eeb94dc3943",
+      "host": "oracle-x86",
+      "case": "cyan",
+      "condition": 4,
+      "seed": 14205,
+      "status": "DEV_STAGE_FINISHED",
+      "failure": null,
+      "physical_stop": null,
+      "wall_s": 430.04658233100054,
+      "sim_s": 60.0,
+      "robots": {
+        "r3": {
+          "alignment": 4.85,
+          "hover": 4.85,
+          "descent": 6.15,
+          "close": 7.35,
+          "lift_entry": 8.25,
+          "carry_entry": 30.05,
+          "turn_reversals": 1,
+          "commands": 1146,
+          "fine_pan_commands": 1,
+          "grasp": 7.7,
+          "lift": 9.05,
+          "carry_xy_m": 0.5752221733470659,
+          "carry": true,
+          "contact_lift_samples": 1067,
+          "max_cargo_z_m": 0.1607301733583738,
+          "restore_collisions": 0,
+          "last_visible_uses": 0,
+          "endpoint_rejected_frames": 0,
+          "endpoint_stall": false
+        }
+      },
+      "model_calls": 0,
+      "artifact_verification": {
+        "files": 3637,
+        "all_hashes_match": true
+      },
+      "host_timing": {
+        "option": "buffered_jsonl_v1",
+        "timers": {
+          "jsonl_append": {
+            "calls": 16765,
+            "wall_s": 1.106767170920648
+          },
+          "physics_advance": {
+            "calls": 1202,
+            "wall_s": 107.00161087097695
+          },
+          "eval_sample_including_io": {
+            "calls": 1201,
+            "wall_s": 1.0169519670162117
+          },
+          "render_rgb": {
+            "calls": 3600,
+            "wall_s": 136.41423106600087
+          },
+          "capture_including_render_io": {
+            "calls": 1200,
+            "wall_s": 145.78665298099077
+          }
+        },
+        "nested_timers_not_additive": true,
+        "controller_feedback": false,
+        "cprofile": false
+      },
+      "scope": "DEV stage regression; not E2E or confirmation",
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "commands": 1146,
+      "target_distance_m": 0.1,
+      "robot_max_tilt_deg": {
+        "r3": 0.20787525672749835
+      },
+      "cargo_max_tilt_deg": 24.226980325617344,
+      "tilt_aborts": 0,
+      "drop_aborts": 0,
+      "final_controller_states": {
+        "r3": {
+          "state": "carry",
+          "failure": null
+        }
+      },
+      "force_scope": "evaluation only; exact contact forces stored in raw, never controller input",
+      "contact_forces_n": {
+        "r1": {
+          "max_normal_sum": 0.0,
+          "max_resultant": 0.0
+        },
+        "r2": {
+          "max_normal_sum": 0.0,
+          "max_resultant": 0.0
+        }
+      },
+      "report_sha256": "36689fecb12731733f486f9a27cc1e8550c41048aa276ff9dfff755c415dc44c",
+      "video": {
+        "path": "outputs/s3fix17-eval-r2/evaluation/s3fix17-cyan-c4-r2/execution.mp4",
+        "sha256": "e8e71ec58a27febb9238e922f29598988f4b9d3f2594d4a775a915f410d2efdc",
+        "frames": 300,
+        "fps": 20.0,
+        "duration_s": 15.0,
+        "playback": 4
+      }
+    },
+    {
+      "name": "s3fix17-cyan-c5-r2",
+      "source_sha": "bf1c9b6acaacefa4200786e42a971eeb94dc3943",
+      "host": "oracle-x86",
+      "case": "cyan",
+      "condition": 5,
+      "seed": 14206,
+      "status": "DEV_STAGE_FINISHED",
+      "failure": null,
+      "physical_stop": null,
+      "wall_s": 430.66675535799914,
+      "sim_s": 60.0,
+      "robots": {
+        "r3": {
+          "alignment": 4.85,
+          "hover": 4.85,
+          "descent": 6.15,
+          "close": 7.35,
+          "lift_entry": 8.25,
+          "carry_entry": 30.05,
+          "turn_reversals": 1,
+          "commands": 1146,
+          "fine_pan_commands": 1,
+          "grasp": 7.75,
+          "lift": 9.05,
+          "carry_xy_m": 0.6620247939781052,
+          "carry": true,
+          "contact_lift_samples": 1067,
+          "max_cargo_z_m": 0.16064314848720854,
+          "restore_collisions": 0,
+          "last_visible_uses": 0,
+          "endpoint_rejected_frames": 0,
+          "endpoint_stall": false
+        }
+      },
+      "model_calls": 0,
+      "artifact_verification": {
+        "files": 3637,
+        "all_hashes_match": true
+      },
+      "host_timing": {
+        "option": "buffered_jsonl_v1",
+        "timers": {
+          "jsonl_append": {
+            "calls": 16765,
+            "wall_s": 1.1395144059733866
+          },
+          "physics_advance": {
+            "calls": 1202,
+            "wall_s": 107.84303672601345
+          },
+          "eval_sample_including_io": {
+            "calls": 1201,
+            "wall_s": 1.0348085070054367
+          },
+          "render_rgb": {
+            "calls": 3600,
+            "wall_s": 137.58842618999188
+          },
+          "capture_including_render_io": {
+            "calls": 1200,
+            "wall_s": 147.06494851301613
+          }
+        },
+        "nested_timers_not_additive": true,
+        "controller_feedback": false,
+        "cprofile": false
+      },
+      "scope": "DEV stage regression; not E2E or confirmation",
+      "joint": {
+        "alignment": true,
+        "grasp": true,
+        "lift": true,
+        "carry": true,
+        "target_distance": true
+      },
+      "commands": 1146,
+      "target_distance_m": 0.1,
+      "robot_max_tilt_deg": {
+        "r3": 0.21782905325892823
+      },
+      "cargo_max_tilt_deg": 24.074704880097475,
+      "tilt_aborts": 0,
+      "drop_aborts": 0,
+      "final_controller_states": {
+        "r3": {
+          "state": "carry",
+          "failure": null
+        }
+      },
+      "force_scope": "evaluation only; exact contact forces stored in raw, never controller input",
+      "contact_forces_n": {
+        "r1": {
+          "max_normal_sum": 0.0,
+          "max_resultant": 0.0
+        },
+        "r2": {
+          "max_normal_sum": 0.0,
+          "max_resultant": 0.0
+        }
+      },
+      "report_sha256": "b5b4e09531fc2d603a0320bc285dc2939c834ad96fb5f49da709306e0e319619",
+      "video": {
+        "path": "outputs/s3fix17-eval-r2/evaluation/s3fix17-cyan-c5-r2/execution.mp4",
+        "sha256": "7f3ce70854de8ec046ed71fb301509c6395bde1c8a3e8129a9a49c63496d80a7",
+        "frames": 300,
+        "fps": 20.0,
+        "duration_s": 15.0,
+        "playback": 4
+      }
+    }
+  ],
+  "n": 10,
+  "counts": {
+    "alignment": 10,
+    "grasp": 10,
+    "lift": 10,
+    "carry": 10,
+    "target_distance": 10
+  }
+}

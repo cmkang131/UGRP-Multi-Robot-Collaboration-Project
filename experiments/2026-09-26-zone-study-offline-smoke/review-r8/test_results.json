@@ -1,0 +1,95 @@
+{
+  "scope": "R8 offline implementation verification; no live model/HTTP/physics",
+  "base_head": "3b86842cf745410021ab5c937e56b6ed74682f12",
+  "branch": "kiro/zone-study-core",
+  "source_state": "uncommitted; coordinator commits",
+  "fail_before": {
+    "failed": 2,
+    "counterexamples": [
+      "redirect followup",
+      "cap=2 -> sends=3"
+    ]
+  },
+  "final_r8": {
+    "passed": 51
+  },
+  "final_regression": {
+    "passed": 845,
+    "deselected": 1
+  },
+  "blocked_check": {
+    "test": "test_parent_exit_cleans_background_child",
+    "error": "PermissionError: [Errno 1] Operation not permitted: 'ps'"
+  },
+  "live_calls": 0,
+  "proxy_modified": false,
+  "source_files_sha256": {
+    "configs/simulation_workflows.json": "627edc6e8d6085f9a6f02a98e95133e0f19b38284031d25110eff6cb93e67740",
+    "docs/zone_study_pilot.md": "1e81a22a186dddc3702501b41440f6c41a2a961a5c754293041a77d78da8d2a8",
+    "harness/zone_event_scheduler.py": "1389e097ac401beaaf4897fdec9a4cf180f45bc757fa02b8385d728f12c96445",
+    "harness/zone_pilot_budget.py": "a86caa3e063850235d360f525eb0ce083c1d7fc7db826ff40b23126b687c6c72",
+    "harness/zone_pilot_ledger.py": "e151c632b707ecbcfd9bdde4f80126b883409540fa4b4a3f0cea447d57370594",
+    "harness/zone_pilot_network.py": "ff1b9df59293ad42b8ac3ac85f712f270ecf0f7c2d0cf0736df8fc1091ef9d65",
+    "harness/zone_pilot_reconcile.py": "1e577aa83bd6f77962bffb00d223aad336e0cd36e97c0c207a1d3af55041b77b",
+    "harness/zone_send_ledger.py": "91e339e581aa2c121aa946cc419c3e7700f8a298efa157aa17f98940aa0a694d",
+    "harness/zone_study_llm_transport.py": "46bf28a6959ad311ae73947a4d6a82a3ee68e9c58f2b18453c71a27fcb91f874",
+    "harness/zone_study_offline.py": "871b8f83285dc6560533d9f82d46b8f4624cc6709fc9988e95d89389424bde2e",
+    "scripts/run_ci_tests.py": "a07291709f414eb1a5e59152cf940ffa40500a2b87538fd6fb0d35379f62934a",
+    "scripts/run_zone_study_pilot.py": "12d74d15409cf0250da6c7877a52b65b1729985d2b1d41e59bac5fd9c6721722",
+    "tests/test_simulation_workflow_manager.py": "8cbac6f34f530683be209a8b7629d62723e49fd8b70912d88485b96420959b41",
+    "tests/test_zone_study_review_r7_transport.py": "54b483853829aebbce6632f8926cb02d63f95847600cf3e85534ba2dbad034bf",
+    "tests/test_zone_study_review_r8.py": "aa9bbe703d036bf0820e74f1925fb854c2e348bf5734c340d7d5d77464187b6b"
+  },
+  "raw_artifacts": {
+    "fail-before.txt": {
+      "path": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.tmp/r8/fail-before.txt",
+      "bytes": 3174,
+      "sha256": "5d62000e8f10f37367a4ba1ae42f1af0c496bcb357048ebff4cc6f21ca30160e"
+    },
+    "first-after.txt": {
+      "path": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.tmp/r8/first-after.txt",
+      "bytes": 100,
+      "sha256": "337bb44637cd0cf8c4c81998361a251c45b623b75c1babf4ec28df2424642558"
+    },
+    "regression.txt": {
+      "path": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.tmp/r8/regression.txt",
+      "bytes": 10392,
+      "sha256": "72225f577c18c03c629742ea38a96360c414357034ae3fb8656c70b9e9d5f6c1"
+    },
+    "final-regression.txt": {
+      "path": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.tmp/r8/final-regression.txt",
+      "bytes": 1006,
+      "sha256": "835f326714be3c0b56616aeea4a576b10ef3072d8c99bc193de7ee606888c956"
+    },
+    "final-targeted.txt": {
+      "path": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.tmp/r8/final-targeted.txt",
+      "bytes": 173,
+      "sha256": "87f3c69f537de3bc4e7e7a5394a49d099a0871a6f0cc9cbe6f6dcc2a14eb40ab"
+    },
+    "final-r8.txt": {
+      "path": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.tmp/r8/final-r8.txt",
+      "bytes": 99,
+      "sha256": "61b8cebdad99ed51274e323f86e1a065469c0abb7e3dacc1cc0f104bece5d732"
+    },
+    "cohort-complete.txt": {
+      "path": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.tmp/r8/cohort-complete.txt",
+      "bytes": 98,
+      "sha256": "69ecfaf567d422eefd466e0fe6d916331525411012bbb3614286aa68e60a291c"
+    },
+    "dry-run.txt": {
+      "path": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.tmp/r8/dry-run.txt",
+      "bytes": 170,
+      "sha256": "2649015c6f87494437504f831a26969bba55063f6d89d056e5d6173873cc9926"
+    },
+    "init-validation.txt": {
+      "path": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.tmp/r8/init-validation.txt",
+      "bytes": 167,
+      "sha256": "a4aa691cf1d369e3d4e8386e1561cb5cce5ba718bafc01ec74ef7f2ffd475489"
+    },
+    "workflow-plan-verified.json": {
+      "path": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.tmp/r8/workflow-plan-verified.json",
+      "bytes": 758,
+      "sha256": "67a3e960bca5ce3188283b9b6a0480aed569b2e360b7b22c65f8e09b986b53d5"
+    }
+  }
+}

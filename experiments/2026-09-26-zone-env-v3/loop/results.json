@@ -1,0 +1,3078 @@
+{
+ "schema": "ugrp.zone_env_v3.loop_results.v1",
+ "raw_root": "/Users/changmin/projects/ugrp/outputs/zone-env-v3-20260926/loop",
+ "cohorts": {
+  "v3-dev": {
+   "prereg": "loop/prereg.json",
+   "prereg_sha256": "1b982d32bacaec220bc8838dc97d2537dc1f8874253fd75409d07827edd8f950",
+   "raw_folder": "dev",
+   "runs": [
+    {
+     "episode": "envdev-nobox-s711",
+     "split": "dev",
+     "condition": "nobox",
+     "robot_id": "r1",
+     "seed": 711,
+     "spawn_y": 0.55,
+     "map_id": "zone_wide_door_tags_v3",
+     "static_map_sha256": "90561b95a559eec8631347256870af2c457879912edd4ae27d484a679d947491",
+     "landmarks_sha256": "3e7468457b5ed6c0766d5f65c504c2d4f4cc505e2013f0a324f7d494fe4f645c",
+     "scene_xml_sha256": "d12b70769ae5e57940d7e48f65a3b2cd5975b07d3860ea24b975e28766235b5c",
+     "contact_profile": "cargo_noslip_v1",
+     "noslip_iterations_in_scene_xml": true,
+     "weld": "off",
+     "calibration_sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558",
+     "student": {
+      "driver": "v2",
+      "driver_module": "harness.owncam_drive_v2",
+      "calibration": "experiments/2026-09-26-zone-owncam-loop-v2/calibration_loop_v2.json",
+      "calibration_sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558"
+     },
+     "code_sha": "82a18cbc87238976bccd1444937c07bced96b56d",
+     "code_dirty": false,
+     "outcome": "arrived",
+     "pass": false,
+     "R1_pass": true,
+     "R1_gt_distance_m": 0.0666,
+     "R2_wall_contacts": 0,
+     "R3_pass": false,
+     "R3_p90_pos_m": 0.098381,
+     "R3_p90_yaw_deg": 1.8215899999999998,
+     "R3_frames": 280,
+     "R3_uninitialized": 0,
+     "R4_pass": null,
+     "R4_min_box_z_m": null,
+     "student_sim_s": 91.2,
+     "teacher_sim_s": null,
+     "looks": 6,
+     "look_reasons": [
+      "uncertain",
+      "door_checkpoint_1.5",
+      "door_checkpoint_0.6",
+      "no_tag",
+      "no_tag",
+      "arrival_check"
+     ],
+     "student_commands": 1272,
+     "student_frames": 457,
+     "tag_visibility": 0.781,
+     "contacts_student": {
+      "wall": 0,
+      "peer_robot": 0,
+      "other_box": 0
+     },
+     "wall_s": 400.8,
+     "load_average": {
+      "start": [
+       9.48,
+       11.39,
+       25.15
+      ],
+      "end": [
+       15.74,
+       31.76,
+       32.99
+      ]
+     },
+     "threads": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1"
+     },
+     "top_recording_frames": 185,
+     "posthoc_door_bands": {
+      "x1.60-2.00": {
+       "frames": 72,
+       "p50_m": 0.0038,
+       "p90_m": 0.0417,
+       "mean_dx_m": 0.0074,
+       "mean_dy_m": 0.0082,
+       "mean_dyaw_deg": -0.61,
+       "frames_without_tag": 24,
+       "tag_sightings_by_site": {
+        "site_00": 14,
+        "site_02": 69,
+        "site_05": 11,
+        "site_08": 3,
+        "site_09": 2,
+        "site_10": 19
+       }
+      },
+      "x2.00-2.20": {
+       "frames": 60,
+       "p50_m": 0.0792,
+       "p90_m": 0.1192,
+       "mean_dx_m": 0.0545,
+       "mean_dy_m": 0.0577,
+       "mean_dyaw_deg": -1.145,
+       "frames_without_tag": 31,
+       "tag_sightings_by_site": {
+        "site_08": 41,
+        "site_10": 43
+       }
+      },
+      "x2.20-2.45": {
+       "frames": 64,
+       "p50_m": 0.0882,
+       "p90_m": 0.1313,
+       "mean_dx_m": 0.0522,
+       "mean_dy_m": 0.0708,
+       "mean_dyaw_deg": -1.369,
+       "frames_without_tag": 20,
+       "tag_sightings_by_site": {
+        "site_08": 52,
+        "site_09": 2,
+        "site_10": 59
+       }
+      },
+      "x2.45-2.80": {
+       "frames": 84,
+       "p50_m": 0.0881,
+       "p90_m": 0.0972,
+       "mean_dx_m": 0.0198,
+       "mean_dy_m": 0.0736,
+       "mean_dyaw_deg": -1.465,
+       "frames_without_tag": 10,
+       "tag_sightings_by_site": {
+        "site_08": 87,
+        "site_09": 18,
+        "site_10": 102
+       }
+      }
+     },
+     "raw": {
+      "dir": "/Users/changmin/projects/ugrp/outputs/zone-env-v3-20260926/loop/dev/envdev-nobox-s711",
+      "result_sha256": "25840dbbc3a00e479b3d4006e826434a3795450d99bafdcecf893af79f7b39fb",
+      "manifest_sha256": "35a66e361dd4915af87b02809dcdcf574c0bbc1468f8158aebf0762fa26d5d3e",
+      "map_file_sha256": "74a3a95925a9531878b43a9c63d26f34ce391ede852d90b4f592e54c793fee0e",
+      "files": 654,
+      "bytes": 16351547,
+      "file_list_sha256": "0c65bb3da1d767e0cb832247cba84982c79d8796eb050668a152b2007ac7af51"
+     }
+    },
+    {
+     "episode": "envdev-box-s712",
+     "split": "dev",
+     "condition": "box",
+     "robot_id": "r1",
+     "seed": 712,
+     "spawn_y": -0.85,
+     "map_id": "zone_wide_door_tags_v3",
+     "static_map_sha256": "90561b95a559eec8631347256870af2c457879912edd4ae27d484a679d947491",
+     "landmarks_sha256": "3e7468457b5ed6c0766d5f65c504c2d4f4cc505e2013f0a324f7d494fe4f645c",
+     "scene_xml_sha256": "bfe080af8ea4d193b07c221d7b7924362d180995d600774b2351cc793825af28",
+     "contact_profile": "cargo_noslip_v1",
+     "noslip_iterations_in_scene_xml": true,
+     "weld": "off",
+     "calibration_sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558",
+     "student": {
+      "driver": "v2",
+      "driver_module": "harness.owncam_drive_v2",
+      "calibration": "experiments/2026-09-26-zone-owncam-loop-v2/calibration_loop_v2.json",
+      "calibration_sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558"
+     },
+     "code_sha": "82a18cbc87238976bccd1444937c07bced96b56d",
+     "code_dirty": false,
+     "outcome": "arrived",
+     "pass": false,
+     "R1_pass": true,
+     "R1_gt_distance_m": 0.0384,
+     "R2_wall_contacts": 0,
+     "R3_pass": false,
+     "R3_p90_pos_m": 0.06810200000000001,
+     "R3_p90_yaw_deg": 4.761539999999999,
+     "R3_frames": 473,
+     "R3_uninitialized": 0,
+     "R4_pass": true,
+     "R4_min_box_z_m": 0.0853,
+     "student_sim_s": 203.5,
+     "teacher_sim_s": 18.9,
+     "looks": 15,
+     "look_reasons": [
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "travel",
+      "door_checkpoint_1.5",
+      "travel",
+      "door_checkpoint_0.6",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "arrival_check"
+     ],
+     "student_commands": 3049,
+     "student_frames": 1018,
+     "tag_visibility": 0.539,
+     "contacts_student": {
+      "wall": 0,
+      "peer_robot": 0,
+      "other_box": 0
+     },
+     "wall_s": 995.3,
+     "load_average": {
+      "start": [
+       9.48,
+       11.39,
+       25.15
+      ],
+      "end": [
+       95.96,
+       59.2,
+       42.12
+      ]
+     },
+     "threads": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1"
+     },
+     "top_recording_frames": 445,
+     "posthoc_door_bands": {
+      "x1.60-2.00": {
+       "frames": 192,
+       "p50_m": 0.0239,
+       "p90_m": 0.0466,
+       "mean_dx_m": 0.0065,
+       "mean_dy_m": 0.016,
+       "mean_dyaw_deg": 2.143,
+       "frames_without_tag": 155,
+       "tag_sightings_by_site": {
+        "site_05": 15,
+        "site_08": 39
+       }
+      },
+      "x2.00-2.20": {
+       "frames": 62,
+       "p50_m": 0.0662,
+       "p90_m": 0.0718,
+       "mean_dx_m": 0.0153,
+       "mean_dy_m": 0.0609,
+       "mean_dyaw_deg": -0.871,
+       "frames_without_tag": 29,
+       "tag_sightings_by_site": {
+        "site_08": 46,
+        "site_09": 6,
+        "site_10": 64
+       }
+      },
+      "x2.20-2.45": {
+       "frames": 14,
+       "p50_m": 0.0727,
+       "p90_m": 0.0728,
+       "mean_dx_m": 0.0087,
+       "mean_dy_m": 0.0721,
+       "mean_dyaw_deg": -1.333,
+       "frames_without_tag": 14,
+       "tag_sightings_by_site": {}
+      },
+      "x2.45-2.80": {
+       "frames": 205,
+       "p50_m": 0.0144,
+       "p90_m": 0.0546,
+       "mean_dx_m": 0.0095,
+       "mean_dy_m": 0.0073,
+       "mean_dyaw_deg": -0.011,
+       "frames_without_tag": 96,
+       "tag_sightings_by_site": {
+        "site_08": 192,
+        "site_09": 38,
+        "site_10": 191
+       }
+      }
+     },
+     "raw": {
+      "dir": "/Users/changmin/projects/ugrp/outputs/zone-env-v3-20260926/loop/dev/envdev-box-s712",
+      "result_sha256": "f8f91e7bb6ae324df1d9483472b15dab7628cd3b4be27c1f6c98680468a6f800",
+      "manifest_sha256": "c020615f21fb8fede3a93b93e28cd82b606024b6b5fbd9dae9104330d99a45c4",
+      "map_file_sha256": "74a3a95925a9531878b43a9c63d26f34ce391ede852d90b4f592e54c793fee0e",
+      "files": 1563,
+      "bytes": 38735731,
+      "file_list_sha256": "e0476047dc687ff161c888f18c67bcaf7cb04272c166a1df44c8354ed764314c"
+     }
+    }
+   ]
+  },
+  "v3-dev-plain": {
+   "prereg": "loop/prereg.json",
+   "prereg_sha256": "1b982d32bacaec220bc8838dc97d2537dc1f8874253fd75409d07827edd8f950",
+   "raw_folder": "dev-plain",
+   "runs": [
+    {
+     "episode": "envdev-nobox-s711",
+     "split": "dev",
+     "condition": "nobox",
+     "robot_id": "r1",
+     "seed": 711,
+     "spawn_y": 0.55,
+     "map_id": "zone_wide_door_tags_v3",
+     "static_map_sha256": "90561b95a559eec8631347256870af2c457879912edd4ae27d484a679d947491",
+     "landmarks_sha256": "3e7468457b5ed6c0766d5f65c504c2d4f4cc505e2013f0a324f7d494fe4f645c",
+     "scene_xml_sha256": "d12b70769ae5e57940d7e48f65a3b2cd5975b07d3860ea24b975e28766235b5c",
+     "contact_profile": "cargo_noslip_v1",
+     "noslip_iterations_in_scene_xml": true,
+     "weld": "off",
+     "calibration_sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558",
+     "student": {
+      "driver": "v2",
+      "driver_module": "harness.owncam_drive_v2",
+      "calibration": "experiments/2026-09-26-zone-owncam-loop-v2/calibration_loop_v2.json",
+      "calibration_sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558"
+     },
+     "code_sha": "8b3614411cb92ff9b79529e83f6a62b20d8617e2",
+     "code_dirty": false,
+     "outcome": "arrived",
+     "pass": false,
+     "R1_pass": true,
+     "R1_gt_distance_m": 0.0666,
+     "R2_wall_contacts": 0,
+     "R3_pass": false,
+     "R3_p90_pos_m": 0.098381,
+     "R3_p90_yaw_deg": 1.8215899999999998,
+     "R3_frames": 280,
+     "R3_uninitialized": 0,
+     "R4_pass": null,
+     "R4_min_box_z_m": null,
+     "student_sim_s": 91.2,
+     "teacher_sim_s": null,
+     "looks": 6,
+     "look_reasons": [
+      "uncertain",
+      "door_checkpoint_1.5",
+      "door_checkpoint_0.6",
+      "no_tag",
+      "no_tag",
+      "arrival_check"
+     ],
+     "student_commands": 1272,
+     "student_frames": 457,
+     "tag_visibility": 0.781,
+     "contacts_student": {
+      "wall": 0,
+      "peer_robot": 0,
+      "other_box": 0
+     },
+     "wall_s": 296.0,
+     "load_average": {
+      "start": [
+       22.49,
+       21.13,
+       27.11
+      ],
+      "end": [
+       93.07,
+       63.96,
+       44.78
+      ]
+     },
+     "threads": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1"
+     },
+     "top_recording_frames": null,
+     "posthoc_door_bands": {
+      "x1.60-2.00": {
+       "frames": 72,
+       "p50_m": 0.0038,
+       "p90_m": 0.0417,
+       "mean_dx_m": 0.0074,
+       "mean_dy_m": 0.0082,
+       "mean_dyaw_deg": -0.61,
+       "frames_without_tag": 24,
+       "tag_sightings_by_site": {
+        "site_00": 14,
+        "site_02": 69,
+        "site_05": 11,
+        "site_08": 3,
+        "site_09": 2,
+        "site_10": 19
+       }
+      },
+      "x2.00-2.20": {
+       "frames": 60,
+       "p50_m": 0.0792,
+       "p90_m": 0.1192,
+       "mean_dx_m": 0.0545,
+       "mean_dy_m": 0.0577,
+       "mean_dyaw_deg": -1.145,
+       "frames_without_tag": 31,
+       "tag_sightings_by_site": {
+        "site_08": 41,
+        "site_10": 43
+       }
+      },
+      "x2.20-2.45": {
+       "frames": 64,
+       "p50_m": 0.0882,
+       "p90_m": 0.1313,
+       "mean_dx_m": 0.0522,
+       "mean_dy_m": 0.0708,
+       "mean_dyaw_deg": -1.369,
+       "frames_without_tag": 20,
+       "tag_sightings_by_site": {
+        "site_08": 52,
+        "site_09": 2,
+        "site_10": 59
+       }
+      },
+      "x2.45-2.80": {
+       "frames": 84,
+       "p50_m": 0.0881,
+       "p90_m": 0.0972,
+       "mean_dx_m": 0.0198,
+       "mean_dy_m": 0.0736,
+       "mean_dyaw_deg": -1.465,
+       "frames_without_tag": 10,
+       "tag_sightings_by_site": {
+        "site_08": 87,
+        "site_09": 18,
+        "site_10": 102
+       }
+      }
+     },
+     "raw": {
+      "dir": "/Users/changmin/projects/ugrp/outputs/zone-env-v3-20260926/loop/dev-plain/envdev-nobox-s711",
+      "result_sha256": "25840dbbc3a00e479b3d4006e826434a3795450d99bafdcecf893af79f7b39fb",
+      "manifest_sha256": "72ab07ad4b16fcfb0526a943027348cad9aeb5e5588dc588d7eddca65b36264c",
+      "map_file_sha256": "74a3a95925a9531878b43a9c63d26f34ce391ede852d90b4f592e54c793fee0e",
+      "files": 467,
+      "bytes": 9178729,
+      "file_list_sha256": "807782f7c8eeac2f7a20d91d3dc4bd16f65ccc6de0ff9d001f0fa6dadec51fcd"
+     }
+    }
+   ]
+  },
+  "v3-test": {
+   "prereg": "loop/prereg.json",
+   "prereg_sha256": "1b982d32bacaec220bc8838dc97d2537dc1f8874253fd75409d07827edd8f950",
+   "raw_folder": "test",
+   "runs": [
+    {
+     "episode": "envtest-nobox-s721",
+     "split": "test",
+     "condition": "nobox",
+     "robot_id": "r3",
+     "seed": 721,
+     "spawn_y": 0.55,
+     "map_id": "zone_wide_door_tags_v3",
+     "static_map_sha256": "90561b95a559eec8631347256870af2c457879912edd4ae27d484a679d947491",
+     "landmarks_sha256": "3e7468457b5ed6c0766d5f65c504c2d4f4cc505e2013f0a324f7d494fe4f645c",
+     "scene_xml_sha256": "c7d1100f1a34d9120aece9bbb7193a7eea7caecd7a7e2e90e31a195a977f9ca3",
+     "contact_profile": "cargo_noslip_v1",
+     "noslip_iterations_in_scene_xml": true,
+     "weld": "off",
+     "calibration_sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558",
+     "student": {
+      "driver": "v2",
+      "driver_module": "harness.owncam_drive_v2",
+      "calibration": "experiments/2026-09-26-zone-owncam-loop-v2/calibration_loop_v2.json",
+      "calibration_sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558"
+     },
+     "code_sha": "8b3614411cb92ff9b79529e83f6a62b20d8617e2",
+     "code_dirty": false,
+     "outcome": "arrived",
+     "pass": false,
+     "R1_pass": true,
+     "R1_gt_distance_m": 0.0524,
+     "R2_wall_contacts": 0,
+     "R3_pass": false,
+     "R3_p90_pos_m": 0.08659,
+     "R3_p90_yaw_deg": 0.702,
+     "R3_frames": 211,
+     "R3_uninitialized": 0,
+     "R4_pass": null,
+     "R4_min_box_z_m": null,
+     "student_sim_s": 76.4,
+     "teacher_sim_s": null,
+     "looks": 5,
+     "look_reasons": [
+      "uncertain",
+      "door_checkpoint_1.5",
+      "door_checkpoint_0.6",
+      "no_tag",
+      "arrival_check"
+     ],
+     "student_commands": 1064,
+     "student_frames": 383,
+     "tag_visibility": 0.799,
+     "contacts_student": {
+      "wall": 0,
+      "peer_robot": 0,
+      "other_box": 0
+     },
+     "wall_s": 123.0,
+     "load_average": {
+      "start": [
+       12.45,
+       12.37,
+       19.64
+      ],
+      "end": [
+       4.3,
+       9.25,
+       17.4
+      ]
+     },
+     "threads": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1"
+     },
+     "top_recording_frames": 156,
+     "posthoc_door_bands": {
+      "x1.60-2.00": {
+       "frames": 72,
+       "p50_m": 0.0041,
+       "p90_m": 0.0294,
+       "mean_dx_m": -0.01,
+       "mean_dy_m": -0.0002,
+       "mean_dyaw_deg": -0.091,
+       "frames_without_tag": 22,
+       "tag_sightings_by_site": {
+        "site_00": 14,
+        "site_02": 71,
+        "site_05": 10,
+        "site_09": 1,
+        "site_10": 18
+       }
+      },
+      "x2.00-2.20": {
+       "frames": 59,
+       "p50_m": 0.0524,
+       "p90_m": 0.0978,
+       "mean_dx_m": -0.0568,
+       "mean_dy_m": -0.0031,
+       "mean_dyaw_deg": 0.03,
+       "frames_without_tag": 29,
+       "tag_sightings_by_site": {
+        "site_08": 31,
+        "site_09": 1,
+        "site_10": 34
+       }
+      },
+      "x2.20-2.45": {
+       "frames": 12,
+       "p50_m": 0.1005,
+       "p90_m": 0.1128,
+       "mean_dx_m": -0.0972,
+       "mean_dy_m": -0.0125,
+       "mean_dyaw_deg": 0.385,
+       "frames_without_tag": 3,
+       "tag_sightings_by_site": {
+        "site_08": 6,
+        "site_10": 8
+       }
+      },
+      "x2.45-2.80": {
+       "frames": 68,
+       "p50_m": 0.0411,
+       "p90_m": 0.072,
+       "mean_dx_m": -0.0369,
+       "mean_dy_m": -0.0254,
+       "mean_dyaw_deg": 0.579,
+       "frames_without_tag": 12,
+       "tag_sightings_by_site": {
+        "site_08": 81,
+        "site_09": 5,
+        "site_10": 86
+       }
+      }
+     },
+     "raw": {
+      "dir": "/Users/changmin/projects/ugrp/outputs/zone-env-v3-20260926/loop/test/envtest-nobox-s721",
+      "result_sha256": "4359bd359e7b611f5a97073f6b779391d2b7f7702100f3fe0964a5cb471198ae",
+      "manifest_sha256": "5d42bfc66f1a120c08d2bdd4eda951f1ff326422cb623a5d0e7b3abec9956b0c",
+      "map_file_sha256": "74a3a95925a9531878b43a9c63d26f34ce391ede852d90b4f592e54c793fee0e",
+      "files": 551,
+      "bytes": 13925811,
+      "file_list_sha256": "8ad9beb70ffdd2dbb7350b1a5915de668fde22c1824616e661f6e04c0f09fc95"
+     }
+    },
+    {
+     "episode": "envtest-nobox-s722",
+     "split": "test",
+     "condition": "nobox",
+     "robot_id": "r3",
+     "seed": 722,
+     "spawn_y": -0.85,
+     "map_id": "zone_wide_door_tags_v3",
+     "static_map_sha256": "90561b95a559eec8631347256870af2c457879912edd4ae27d484a679d947491",
+     "landmarks_sha256": "3e7468457b5ed6c0766d5f65c504c2d4f4cc505e2013f0a324f7d494fe4f645c",
+     "scene_xml_sha256": "ff5d873128df9d1373420f6f54a0f7323b15879a06ffa4bb5100ca3691e817cd",
+     "contact_profile": "cargo_noslip_v1",
+     "noslip_iterations_in_scene_xml": true,
+     "weld": "off",
+     "calibration_sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558",
+     "student": {
+      "driver": "v2",
+      "driver_module": "harness.owncam_drive_v2",
+      "calibration": "experiments/2026-09-26-zone-owncam-loop-v2/calibration_loop_v2.json",
+      "calibration_sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558"
+     },
+     "code_sha": "8b3614411cb92ff9b79529e83f6a62b20d8617e2",
+     "code_dirty": false,
+     "outcome": "arrived",
+     "pass": false,
+     "R1_pass": true,
+     "R1_gt_distance_m": 0.0558,
+     "R2_wall_contacts": 4,
+     "R3_pass": true,
+     "R3_p90_pos_m": 0.056388,
+     "R3_p90_yaw_deg": 0.9214400000000001,
+     "R3_frames": 350,
+     "R3_uninitialized": 0,
+     "R4_pass": null,
+     "R4_min_box_z_m": null,
+     "student_sim_s": 124.9,
+     "teacher_sim_s": null,
+     "looks": 9,
+     "look_reasons": [
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "door_checkpoint_1.5",
+      "door_checkpoint_0.6",
+      "no_tag",
+      "no_tag",
+      "no_tag",
+      "arrival_check"
+     ],
+     "student_commands": 1789,
+     "student_frames": 625,
+     "tag_visibility": 0.71,
+     "contacts_student": {
+      "wall": 4,
+      "peer_robot": 0,
+      "other_box": 0
+     },
+     "wall_s": 186.7,
+     "load_average": {
+      "start": [
+       4.3,
+       9.25,
+       17.4
+      ],
+      "end": [
+       4.06,
+       6.73,
+       14.74
+      ]
+     },
+     "threads": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1"
+     },
+     "top_recording_frames": 253,
+     "posthoc_door_bands": {
+      "x1.60-2.00": {
+       "frames": 190,
+       "p50_m": 0.0075,
+       "p90_m": 0.0493,
+       "mean_dx_m": -0.0077,
+       "mean_dy_m": 0.0125,
+       "mean_dyaw_deg": -0.057,
+       "frames_without_tag": 122,
+       "tag_sightings_by_site": {
+        "site_00": 39,
+        "site_02": 23,
+        "site_05": 33
+       }
+      },
+      "x2.00-2.20": {
+       "frames": 62,
+       "p50_m": 0.0517,
+       "p90_m": 0.0578,
+       "mean_dx_m": -0.008,
+       "mean_dy_m": 0.0317,
+       "mean_dyaw_deg": -0.769,
+       "frames_without_tag": 28,
+       "tag_sightings_by_site": {
+        "site_08": 45,
+        "site_09": 5,
+        "site_10": 56
+       }
+      },
+      "x2.20-2.45": {
+       "frames": 13,
+       "p50_m": 0.0546,
+       "p90_m": 0.0556,
+       "mean_dx_m": -0.0086,
+       "mean_dy_m": 0.0529,
+       "mean_dyaw_deg": -0.844,
+       "frames_without_tag": 2,
+       "tag_sightings_by_site": {
+        "site_08": 4,
+        "site_10": 11
+       }
+      },
+      "x2.45-2.80": {
+       "frames": 85,
+       "p50_m": 0.0228,
+       "p90_m": 0.055,
+       "mean_dx_m": -0.0094,
+       "mean_dy_m": 0.0262,
+       "mean_dyaw_deg": -0.505,
+       "frames_without_tag": 10,
+       "tag_sightings_by_site": {
+        "site_08": 104,
+        "site_09": 9,
+        "site_10": 102
+       }
+      }
+     },
+     "raw": {
+      "dir": "/Users/changmin/projects/ugrp/outputs/zone-env-v3-20260926/loop/test/envtest-nobox-s722",
+      "result_sha256": "1f3c30b8a085946fb2d6b04f0d3ebf9ad4d9521a2b7db79e3ba4e288de035fba",
+      "manifest_sha256": "f4f9d2861d561d74cd16e96f20025aaace5ee6c65a64379cf55eaece32bdc2b2",
+      "map_file_sha256": "74a3a95925a9531878b43a9c63d26f34ce391ede852d90b4f592e54c793fee0e",
+      "files": 890,
+      "bytes": 21979955,
+      "file_list_sha256": "d409c8753a01ecc2c26ac7a9c9f7e322a8b184daed8d89cfe32055de2530f143"
+     }
+    },
+    {
+     "episode": "envtest-nobox-s723",
+     "split": "test",
+     "condition": "nobox",
+     "robot_id": "r1",
+     "seed": 723,
+     "spawn_y": -2.25,
+     "map_id": "zone_wide_door_tags_v3",
+     "static_map_sha256": "90561b95a559eec8631347256870af2c457879912edd4ae27d484a679d947491",
+     "landmarks_sha256": "3e7468457b5ed6c0766d5f65c504c2d4f4cc505e2013f0a324f7d494fe4f645c",
+     "scene_xml_sha256": "16e111ed81c6d5532b66996d4953402c1a08a8cb402a5aea8958925640b1ae87",
+     "contact_profile": "cargo_noslip_v1",
+     "noslip_iterations_in_scene_xml": true,
+     "weld": "off",
+     "calibration_sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558",
+     "student": {
+      "driver": "v2",
+      "driver_module": "harness.owncam_drive_v2",
+      "calibration": "experiments/2026-09-26-zone-owncam-loop-v2/calibration_loop_v2.json",
+      "calibration_sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558"
+     },
+     "code_sha": "8b3614411cb92ff9b79529e83f6a62b20d8617e2",
+     "code_dirty": false,
+     "outcome": "arrived",
+     "pass": false,
+     "R1_pass": true,
+     "R1_gt_distance_m": 0.0344,
+     "R2_wall_contacts": 3,
+     "R3_pass": true,
+     "R3_p90_pos_m": 0.023004,
+     "R3_p90_yaw_deg": 0.57652,
+     "R3_frames": 277,
+     "R3_uninitialized": 0,
+     "R4_pass": null,
+     "R4_min_box_z_m": null,
+     "student_sim_s": 108.5,
+     "teacher_sim_s": null,
+     "looks": 6,
+     "look_reasons": [
+      "uncertain",
+      "door_checkpoint_1.5",
+      "door_checkpoint_0.6",
+      "no_tag",
+      "no_tag",
+      "arrival_check"
+     ],
+     "student_commands": 1445,
+     "student_frames": 543,
+     "tag_visibility": 0.761,
+     "contacts_student": {
+      "wall": 3,
+      "peer_robot": 0,
+      "other_box": 0
+     },
+     "wall_s": 264.1,
+     "load_average": {
+      "start": [
+       7.29,
+       10.13,
+       21.69
+      ],
+      "end": [
+       12.45,
+       12.37,
+       19.64
+      ]
+     },
+     "threads": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1"
+     },
+     "top_recording_frames": 220,
+     "posthoc_door_bands": {
+      "x1.60-2.00": {
+       "frames": 136,
+       "p50_m": 0.0049,
+       "p90_m": 0.0179,
+       "mean_dx_m": -0.0009,
+       "mean_dy_m": 0.0044,
+       "mean_dyaw_deg": -0.154,
+       "frames_without_tag": 68,
+       "tag_sightings_by_site": {
+        "site_00": 67,
+        "site_02": 17,
+        "site_05": 25
+       }
+      },
+      "x2.00-2.20": {
+       "frames": 62,
+       "p50_m": 0.0151,
+       "p90_m": 0.0211,
+       "mean_dx_m": -0.0019,
+       "mean_dy_m": 0.0052,
+       "mean_dyaw_deg": -0.134,
+       "frames_without_tag": 32,
+       "tag_sightings_by_site": {
+        "site_08": 42,
+        "site_09": 2,
+        "site_10": 54
+       }
+      },
+      "x2.20-2.45": {
+       "frames": 13,
+       "p50_m": 0.0209,
+       "p90_m": 0.0257,
+       "mean_dx_m": -0.0049,
+       "mean_dy_m": 0.014,
+       "mean_dyaw_deg": -0.136,
+       "frames_without_tag": 4,
+       "tag_sightings_by_site": {
+        "site_08": 7,
+        "site_10": 8
+       }
+      },
+      "x2.45-2.80": {
+       "frames": 66,
+       "p50_m": 0.0128,
+       "p90_m": 0.031,
+       "mean_dx_m": -0.0163,
+       "mean_dy_m": 0.0061,
+       "mean_dyaw_deg": -0.099,
+       "frames_without_tag": 11,
+       "tag_sightings_by_site": {
+        "site_08": 82,
+        "site_09": 9,
+        "site_10": 88
+       }
+      }
+     },
+     "raw": {
+      "dir": "/Users/changmin/projects/ugrp/outputs/zone-env-v3-20260926/loop/test/envtest-nobox-s723",
+      "result_sha256": "01c141d1b57f466174ec4217ca6e7807c93d832b0db0e850635da9d0a359039f",
+      "manifest_sha256": "9b041c650dfa04e6499a346e5fb40ce5cc8fc35c53f01f366557f0a7e686ba25",
+      "map_file_sha256": "74a3a95925a9531878b43a9c63d26f34ce391ede852d90b4f592e54c793fee0e",
+      "files": 775,
+      "bytes": 19245075,
+      "file_list_sha256": "b99fbe009393f2d70c2ba0c152794732bad3c6d2a364ea6abd57c8834923a4a6"
+     }
+    },
+    {
+     "episode": "envtest-box-s724",
+     "split": "test",
+     "condition": "box",
+     "robot_id": "r1",
+     "seed": 724,
+     "spawn_y": 0.55,
+     "map_id": "zone_wide_door_tags_v3",
+     "static_map_sha256": "90561b95a559eec8631347256870af2c457879912edd4ae27d484a679d947491",
+     "landmarks_sha256": "3e7468457b5ed6c0766d5f65c504c2d4f4cc505e2013f0a324f7d494fe4f645c",
+     "scene_xml_sha256": "ca9c47a588c737db8ed5dd7c957b6d063535179c3da8f336985c4ca0ef628250",
+     "contact_profile": "cargo_noslip_v1",
+     "noslip_iterations_in_scene_xml": true,
+     "weld": "off",
+     "calibration_sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558",
+     "student": {
+      "driver": "v2",
+      "driver_module": "harness.owncam_drive_v2",
+      "calibration": "experiments/2026-09-26-zone-owncam-loop-v2/calibration_loop_v2.json",
+      "calibration_sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558"
+     },
+     "code_sha": "8b3614411cb92ff9b79529e83f6a62b20d8617e2",
+     "code_dirty": false,
+     "outcome": "time_limit",
+     "pass": false,
+     "R1_pass": false,
+     "R1_gt_distance_m": 0.0391,
+     "R2_wall_contacts": 0,
+     "R3_pass": true,
+     "R3_p90_pos_m": 0.048506,
+     "R3_p90_yaw_deg": 3.4205799999999997,
+     "R3_frames": 449,
+     "R3_uninitialized": 0,
+     "R4_pass": true,
+     "R4_min_box_z_m": 0.0852,
+     "student_sim_s": 240.1,
+     "teacher_sim_s": 33.1,
+     "looks": 18,
+     "look_reasons": [
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "travel",
+      "travel",
+      "door_checkpoint_1.5",
+      "travel",
+      "travel",
+      "door_checkpoint_0.6",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "uncertain"
+     ],
+     "student_commands": 3607,
+     "student_frames": 1201,
+     "tag_visibility": 0.553,
+     "contacts_student": {
+      "wall": 0,
+      "peer_robot": 0,
+      "other_box": 0
+     },
+     "wall_s": 1540.3,
+     "load_average": {
+      "start": [
+       91.73,
+       64.67,
+       45.25
+      ],
+      "end": [
+       7.69,
+       20.83,
+       43.55
+      ]
+     },
+     "threads": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1"
+     },
+     "top_recording_frames": 547,
+     "posthoc_door_bands": {
+      "x1.60-2.00": {
+       "frames": 245,
+       "p50_m": 0.0263,
+       "p90_m": 0.0434,
+       "mean_dx_m": 0.0209,
+       "mean_dy_m": 0.0085,
+       "mean_dyaw_deg": -1.027,
+       "frames_without_tag": 184,
+       "tag_sightings_by_site": {
+        "site_02": 16,
+        "site_05": 22,
+        "site_08": 37
+       }
+      },
+      "x2.00-2.20": {
+       "frames": 62,
+       "p50_m": 0.0427,
+       "p90_m": 0.0524,
+       "mean_dx_m": 0.0061,
+       "mean_dy_m": 0.0395,
+       "mean_dyaw_deg": -0.453,
+       "frames_without_tag": 28,
+       "tag_sightings_by_site": {
+        "site_08": 40,
+        "site_09": 8,
+        "site_10": 53
+       }
+      },
+      "x2.20-2.45": {
+       "frames": 13,
+       "p50_m": 0.048,
+       "p90_m": 0.0505,
+       "mean_dx_m": 0.0045,
+       "mean_dy_m": 0.0477,
+       "mean_dyaw_deg": -0.601,
+       "frames_without_tag": 13,
+       "tag_sightings_by_site": {}
+      },
+      "x2.45-2.80": {
+       "frames": 129,
+       "p50_m": 0.019,
+       "p90_m": 0.0505,
+       "mean_dx_m": 0.0094,
+       "mean_dy_m": -0.0021,
+       "mean_dyaw_deg": 0.24,
+       "frames_without_tag": 55,
+       "tag_sightings_by_site": {
+        "site_08": 131,
+        "site_09": 27,
+        "site_10": 121
+       }
+      }
+     },
+     "raw": {
+      "dir": "/Users/changmin/projects/ugrp/outputs/zone-env-v3-20260926/loop/test/envtest-box-s724",
+      "result_sha256": "b5743dcb056b67b89a4b9d4802a76cbd3a6d507dd32b0d7b934af943896c2f51",
+      "manifest_sha256": "70ffde306865b1287574f7b22df35f688bd8b1076734f9ab31a4c2505dd74a9a",
+      "map_file_sha256": "74a3a95925a9531878b43a9c63d26f34ce391ede852d90b4f592e54c793fee0e",
+      "files": 1919,
+      "bytes": 47717014,
+      "file_list_sha256": "ae006217d2d9fb8d2f314b455d0110640fb025dc67a75cc182947aee2af68e72"
+     }
+    },
+    {
+     "episode": "envtest-box-s725",
+     "split": "test",
+     "condition": "box",
+     "robot_id": "r1",
+     "seed": 725,
+     "spawn_y": -0.85,
+     "map_id": "zone_wide_door_tags_v3",
+     "static_map_sha256": "90561b95a559eec8631347256870af2c457879912edd4ae27d484a679d947491",
+     "landmarks_sha256": "3e7468457b5ed6c0766d5f65c504c2d4f4cc505e2013f0a324f7d494fe4f645c",
+     "scene_xml_sha256": "96274d33aadc42ff4fb1eec70872610355b0e9dfe831fcfb12d82dfba3443640",
+     "contact_profile": "cargo_noslip_v1",
+     "noslip_iterations_in_scene_xml": true,
+     "weld": "off",
+     "calibration_sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558",
+     "student": {
+      "driver": "v2",
+      "driver_module": "harness.owncam_drive_v2",
+      "calibration": "experiments/2026-09-26-zone-owncam-loop-v2/calibration_loop_v2.json",
+      "calibration_sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558"
+     },
+     "code_sha": "8b3614411cb92ff9b79529e83f6a62b20d8617e2",
+     "code_dirty": false,
+     "outcome": "arrived",
+     "pass": true,
+     "R1_pass": true,
+     "R1_gt_distance_m": 0.0426,
+     "R2_wall_contacts": 0,
+     "R3_pass": true,
+     "R3_p90_pos_m": 0.024119000000000015,
+     "R3_p90_yaw_deg": 1.75634,
+     "R3_frames": 328,
+     "R3_uninitialized": 0,
+     "R4_pass": true,
+     "R4_min_box_z_m": 0.0849,
+     "student_sim_s": 115.6,
+     "teacher_sim_s": 22.9,
+     "looks": 9,
+     "look_reasons": [
+      "uncertain",
+      "uncertain",
+      "door_checkpoint_1.5",
+      "travel",
+      "door_checkpoint_0.6",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "arrival_check"
+     ],
+     "student_commands": 1768,
+     "student_frames": 579,
+     "tag_visibility": 0.542,
+     "contacts_student": {
+      "wall": 0,
+      "peer_robot": 0,
+      "other_box": 0
+     },
+     "wall_s": 665.5,
+     "load_average": {
+      "start": [
+       7.69,
+       20.83,
+       43.55
+      ],
+      "end": [
+       13.02,
+       16.35,
+       29.18
+      ]
+     },
+     "threads": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1"
+     },
+     "top_recording_frames": 277,
+     "posthoc_door_bands": {
+      "x1.60-2.00": {
+       "frames": 129,
+       "p50_m": 0.0089,
+       "p90_m": 0.0191,
+       "mean_dx_m": 0.0033,
+       "mean_dy_m": 0.0055,
+       "mean_dyaw_deg": 0.296,
+       "frames_without_tag": 74,
+       "tag_sightings_by_site": {
+        "site_00": 7,
+        "site_02": 1,
+        "site_05": 5,
+        "site_08": 46,
+        "site_09": 2,
+        "site_10": 59
+       }
+      },
+      "x2.00-2.20": {
+       "frames": 12,
+       "p50_m": 0.0077,
+       "p90_m": 0.0131,
+       "mean_dx_m": 0.004,
+       "mean_dy_m": 0.0061,
+       "mean_dyaw_deg": -0.124,
+       "frames_without_tag": 12,
+       "tag_sightings_by_site": {}
+      },
+      "x2.20-2.45": {
+       "frames": 65,
+       "p50_m": 0.0101,
+       "p90_m": 0.0134,
+       "mean_dx_m": 0.003,
+       "mean_dy_m": 0.0051,
+       "mean_dyaw_deg": -0.052,
+       "frames_without_tag": 33,
+       "tag_sightings_by_site": {
+        "site_08": 45,
+        "site_10": 55
+       }
+      },
+      "x2.45-2.80": {
+       "frames": 122,
+       "p50_m": 0.0122,
+       "p90_m": 0.0302,
+       "mean_dx_m": 0.0064,
+       "mean_dy_m": -0.0065,
+       "mean_dyaw_deg": 0.225,
+       "frames_without_tag": 48,
+       "tag_sightings_by_site": {
+        "site_08": 130,
+        "site_09": 16,
+        "site_10": 124
+       }
+      }
+     },
+     "raw": {
+      "dir": "/Users/changmin/projects/ugrp/outputs/zone-env-v3-20260926/loop/test/envtest-box-s725",
+      "result_sha256": "e98dff52080a1a4615a72ccf6c7778e702e7701f2829c10df4ecd9599020cd1d",
+      "manifest_sha256": "b963cc7f296deaeeceece510032a06cc2d402dd82203404635d206b404873667",
+      "map_file_sha256": "74a3a95925a9531878b43a9c63d26f34ce391ede852d90b4f592e54c793fee0e",
+      "files": 976,
+      "bytes": 24213947,
+      "file_list_sha256": "c4f682ce40f86ad36fa16ca08cf83038cddce8a973733b88922b45b9ae680522"
+     }
+    },
+    {
+     "episode": "envtest-box-s726",
+     "split": "test",
+     "condition": "box",
+     "robot_id": "r2",
+     "seed": 726,
+     "spawn_y": -2.25,
+     "map_id": "zone_wide_door_tags_v3",
+     "static_map_sha256": "90561b95a559eec8631347256870af2c457879912edd4ae27d484a679d947491",
+     "landmarks_sha256": "3e7468457b5ed6c0766d5f65c504c2d4f4cc505e2013f0a324f7d494fe4f645c",
+     "scene_xml_sha256": "62c3aa67a4cfd0c2cfa3857bf5297772fad274d567eb8e9c424749b076dda0b8",
+     "contact_profile": "cargo_noslip_v1",
+     "noslip_iterations_in_scene_xml": true,
+     "weld": "off",
+     "calibration_sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558",
+     "student": {
+      "driver": "v2",
+      "driver_module": "harness.owncam_drive_v2",
+      "calibration": "experiments/2026-09-26-zone-owncam-loop-v2/calibration_loop_v2.json",
+      "calibration_sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558"
+     },
+     "code_sha": "8b3614411cb92ff9b79529e83f6a62b20d8617e2",
+     "code_dirty": false,
+     "outcome": "arrived",
+     "pass": true,
+     "R1_pass": true,
+     "R1_gt_distance_m": 0.03,
+     "R2_wall_contacts": 0,
+     "R3_pass": true,
+     "R3_p90_pos_m": 0.044078,
+     "R3_p90_yaw_deg": 2.920000000000001,
+     "R3_frames": 403,
+     "R3_uninitialized": 0,
+     "R4_pass": true,
+     "R4_min_box_z_m": 0.0853,
+     "student_sim_s": 235.8,
+     "teacher_sim_s": 16.1,
+     "looks": 19,
+     "look_reasons": [
+      "uncertain",
+      "uncertain",
+      "travel",
+      "door_checkpoint_1.5",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "door_checkpoint_0.6",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "arrival_check"
+     ],
+     "student_commands": 3635,
+     "student_frames": 1180,
+     "tag_visibility": 0.257,
+     "contacts_student": {
+      "wall": 0,
+      "peer_robot": 0,
+      "other_box": 0
+     },
+     "wall_s": 636.2,
+     "load_average": {
+      "start": [
+       13.02,
+       16.35,
+       29.18
+      ],
+      "end": [
+       12.45,
+       12.37,
+       19.64
+      ]
+     },
+     "threads": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1"
+     },
+     "top_recording_frames": 504,
+     "posthoc_door_bands": {
+      "x1.60-2.00": {
+       "frames": 196,
+       "p50_m": 0.027,
+       "p90_m": 0.0447,
+       "mean_dx_m": 0.0223,
+       "mean_dy_m": 0.0058,
+       "mean_dyaw_deg": -1.025,
+       "frames_without_tag": 142,
+       "tag_sightings_by_site": {
+        "site_02": 8,
+        "site_05": 9,
+        "site_08": 62,
+        "site_10": 50
+       }
+      },
+      "x2.00-2.20": {
+       "frames": 12,
+       "p50_m": 0.0151,
+       "p90_m": 0.0174,
+       "mean_dx_m": -0.0055,
+       "mean_dy_m": 0.0139,
+       "mean_dyaw_deg": 0.167,
+       "frames_without_tag": 12,
+       "tag_sightings_by_site": {}
+      },
+      "x2.20-2.45": {
+       "frames": 64,
+       "p50_m": 0.0307,
+       "p90_m": 0.0488,
+       "mean_dx_m": 0.0113,
+       "mean_dy_m": -0.0137,
+       "mean_dyaw_deg": 0.383,
+       "frames_without_tag": 27,
+       "tag_sightings_by_site": {
+        "site_08": 46,
+        "site_09": 4,
+        "site_10": 52
+       }
+      },
+      "x2.45-2.80": {
+       "frames": 131,
+       "p50_m": 0.0262,
+       "p90_m": 0.0372,
+       "mean_dx_m": 0.0083,
+       "mean_dy_m": -0.0221,
+       "mean_dyaw_deg": 0.585,
+       "frames_without_tag": 57,
+       "tag_sightings_by_site": {
+        "site_08": 134,
+        "site_09": 15,
+        "site_10": 135
+       }
+      }
+     },
+     "raw": {
+      "dir": "/Users/changmin/projects/ugrp/outputs/zone-env-v3-20260926/loop/test/envtest-box-s726",
+      "result_sha256": "ad64651c56d6679f1ea7b39ee6336ce8b6029ac3353f6128748d33d5db0c43cb",
+      "manifest_sha256": "c7a91bf27ccea7eba274bff72ff483a524cc7a2e613c28e094873dcf66ac8bde",
+      "map_file_sha256": "74a3a95925a9531878b43a9c63d26f34ce391ede852d90b4f592e54c793fee0e",
+      "files": 1770,
+      "bytes": 41850706,
+      "file_list_sha256": "3d5b347c0bca03b5aa33ccea72ba08ec751e8d37c816645541bf52b7b42ad138"
+     }
+    },
+    {
+     "episode": "envtest-box-s727",
+     "split": "test",
+     "condition": "box",
+     "robot_id": "r1",
+     "seed": 727,
+     "spawn_y": 0.55,
+     "map_id": "zone_wide_door_tags_v3",
+     "static_map_sha256": "90561b95a559eec8631347256870af2c457879912edd4ae27d484a679d947491",
+     "landmarks_sha256": "3e7468457b5ed6c0766d5f65c504c2d4f4cc505e2013f0a324f7d494fe4f645c",
+     "scene_xml_sha256": "06bf828c99779f8da4288e1a24958eb8dfcd025471c77375ad06078e9385d8ae",
+     "contact_profile": "cargo_noslip_v1",
+     "noslip_iterations_in_scene_xml": true,
+     "weld": "off",
+     "calibration_sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558",
+     "student": {
+      "driver": "v2",
+      "driver_module": "harness.owncam_drive_v2",
+      "calibration": "experiments/2026-09-26-zone-owncam-loop-v2/calibration_loop_v2.json",
+      "calibration_sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558"
+     },
+     "code_sha": "8b3614411cb92ff9b79529e83f6a62b20d8617e2",
+     "code_dirty": false,
+     "outcome": "arrived",
+     "pass": false,
+     "R1_pass": true,
+     "R1_gt_distance_m": 0.0315,
+     "R2_wall_contacts": 110,
+     "R3_pass": false,
+     "R3_p90_pos_m": 0.234895,
+     "R3_p90_yaw_deg": 5.2442,
+     "R3_frames": 606,
+     "R3_uninitialized": 0,
+     "R4_pass": true,
+     "R4_min_box_z_m": 0.0849,
+     "student_sim_s": 150.1,
+     "teacher_sim_s": 22.5,
+     "looks": 11,
+     "look_reasons": [
+      "door_checkpoint_1.5",
+      "travel",
+      "door_checkpoint_0.6",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "arrival_check"
+     ],
+     "student_commands": 2243,
+     "student_frames": 751,
+     "tag_visibility": 0.417,
+     "contacts_student": {
+      "wall": 110,
+      "peer_robot": 0,
+      "other_box": 0
+     },
+     "wall_s": 1074.9,
+     "load_average": {
+      "start": [
+       91.73,
+       64.67,
+       45.25
+      ],
+      "end": [
+       28.05,
+       56.6,
+       66.37
+      ]
+     },
+     "threads": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1"
+     },
+     "top_recording_frames": 346,
+     "posthoc_door_bands": {
+      "x1.60-2.00": {
+       "frames": 178,
+       "p50_m": 0.0803,
+       "p90_m": 0.1016,
+       "mean_dx_m": -0.0523,
+       "mean_dy_m": 0.0591,
+       "mean_dyaw_deg": -1.532,
+       "frames_without_tag": 175,
+       "tag_sightings_by_site": {
+        "site_08": 5
+       }
+      },
+      "x2.00-2.20": {
+       "frames": 201,
+       "p50_m": 0.1793,
+       "p90_m": 0.2892,
+       "mean_dx_m": 0.111,
+       "mean_dy_m": 0.1383,
+       "mean_dyaw_deg": -3.548,
+       "frames_without_tag": 117,
+       "tag_sightings_by_site": {
+        "site_08": 126,
+        "site_09": 7,
+        "site_10": 96
+       }
+      },
+      "x2.20-2.45": {
+       "frames": 14,
+       "p50_m": 0.1466,
+       "p90_m": 0.16,
+       "mean_dx_m": 0.0893,
+       "mean_dy_m": 0.1147,
+       "mean_dyaw_deg": -1.767,
+       "frames_without_tag": 14,
+       "tag_sightings_by_site": {}
+      },
+      "x2.45-2.80": {
+       "frames": 213,
+       "p50_m": 0.0259,
+       "p90_m": 0.1004,
+       "mean_dx_m": 0.0112,
+       "mean_dy_m": 0.0188,
+       "mean_dyaw_deg": -0.142,
+       "frames_without_tag": 102,
+       "tag_sightings_by_site": {
+        "site_08": 206,
+        "site_09": 45,
+        "site_10": 201
+       }
+      }
+     },
+     "raw": {
+      "dir": "/Users/changmin/projects/ugrp/outputs/zone-env-v3-20260926/loop/test/envtest-box-s727",
+      "result_sha256": "e3c83f8d7c7ec30c983f30012f2bc0c20b4bdc6db2c694c5f50f6ff362ea8ef5",
+      "manifest_sha256": "ef87641d44632b00378364728c214c512b450f67fbfbbf697621c3e31c03e0ca",
+      "map_file_sha256": "74a3a95925a9531878b43a9c63d26f34ce391ede852d90b4f592e54c793fee0e",
+      "files": 1215,
+      "bytes": 29089355,
+      "file_list_sha256": "d7578a6f0804cd1a148e13c952b159f52e86b31e65b3099fd1719a5eba27f948"
+     }
+    },
+    {
+     "episode": "envtest-box-s728",
+     "split": "test",
+     "condition": "box",
+     "robot_id": "r1",
+     "seed": 728,
+     "spawn_y": -0.85,
+     "map_id": "zone_wide_door_tags_v3",
+     "static_map_sha256": "90561b95a559eec8631347256870af2c457879912edd4ae27d484a679d947491",
+     "landmarks_sha256": "3e7468457b5ed6c0766d5f65c504c2d4f4cc505e2013f0a324f7d494fe4f645c",
+     "scene_xml_sha256": "ddadf7f32e34264b81fdee00001d1258d3956c3f198644c5ad4c1ed044fd3e3d",
+     "contact_profile": "cargo_noslip_v1",
+     "noslip_iterations_in_scene_xml": true,
+     "weld": "off",
+     "calibration_sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558",
+     "student": {
+      "driver": "v2",
+      "driver_module": "harness.owncam_drive_v2",
+      "calibration": "experiments/2026-09-26-zone-owncam-loop-v2/calibration_loop_v2.json",
+      "calibration_sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558"
+     },
+     "code_sha": "8b3614411cb92ff9b79529e83f6a62b20d8617e2",
+     "code_dirty": false,
+     "outcome": "time_limit",
+     "pass": false,
+     "R1_pass": false,
+     "R1_gt_distance_m": 0.0233,
+     "R2_wall_contacts": 106,
+     "R3_pass": false,
+     "R3_p90_pos_m": 0.16041200000000003,
+     "R3_p90_yaw_deg": 5.059380000000002,
+     "R3_frames": 435,
+     "R3_uninitialized": 0,
+     "R4_pass": true,
+     "R4_min_box_z_m": 0.0852,
+     "student_sim_s": 240.1,
+     "teacher_sim_s": 16.8,
+     "looks": 20,
+     "look_reasons": [
+      "uncertain",
+      "uncertain",
+      "travel",
+      "door_checkpoint_1.5",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "refix",
+      "uncertain",
+      "uncertain",
+      "door_checkpoint_0.6",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "uncertain"
+     ],
+     "student_commands": 3672,
+     "student_frames": 1201,
+     "tag_visibility": 0.223,
+     "contacts_student": {
+      "wall": 106,
+      "peer_robot": 0,
+      "other_box": 0
+     },
+     "wall_s": 1192.5,
+     "load_average": {
+      "start": [
+       28.05,
+       56.6,
+       66.37
+      ],
+      "end": [
+       16.26,
+       16.36,
+       28.22
+      ]
+     },
+     "threads": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1"
+     },
+     "top_recording_frames": 514,
+     "posthoc_door_bands": {
+      "x1.60-2.00": {
+       "frames": 71,
+       "p50_m": 0.1208,
+       "p90_m": 0.1216,
+       "mean_dx_m": -0.1124,
+       "mean_dy_m": 0.0218,
+       "mean_dyaw_deg": 0.118,
+       "frames_without_tag": 71,
+       "tag_sightings_by_site": {}
+      },
+      "x2.00-2.20": {
+       "frames": 259,
+       "p50_m": 0.0993,
+       "p90_m": 0.171,
+       "mean_dx_m": 0.0217,
+       "mean_dy_m": 0.0591,
+       "mean_dyaw_deg": -0.879,
+       "frames_without_tag": 172,
+       "tag_sightings_by_site": {
+        "site_08": 153,
+        "site_09": 3,
+        "site_10": 75
+       }
+      },
+      "x2.20-2.45": {
+       "frames": 14,
+       "p50_m": 0.0389,
+       "p90_m": 0.0671,
+       "mean_dx_m": -0.0369,
+       "mean_dy_m": 0.0004,
+       "mean_dyaw_deg": 0.467,
+       "frames_without_tag": 14,
+       "tag_sightings_by_site": {}
+      },
+      "x2.45-2.80": {
+       "frames": 91,
+       "p50_m": 0.02,
+       "p90_m": 0.0395,
+       "mean_dx_m": -0.0127,
+       "mean_dy_m": -0.0126,
+       "mean_dyaw_deg": 0.346,
+       "frames_without_tag": 36,
+       "tag_sightings_by_site": {
+        "site_08": 82,
+        "site_09": 15,
+        "site_10": 95
+       }
+      }
+     },
+     "raw": {
+      "dir": "/Users/changmin/projects/ugrp/outputs/zone-env-v3-20260926/loop/test/envtest-box-s728",
+      "result_sha256": "389d87786afbe1b2085bdd016dc8f555469f1f1bfb88d34299b67ed9d85ba286",
+      "manifest_sha256": "e09ee546507f2f6131a187b25dc38ed62872c85c314a8d828cab557a6e9e33dd",
+      "map_file_sha256": "74a3a95925a9531878b43a9c63d26f34ce391ede852d90b4f592e54c793fee0e",
+      "files": 1805,
+      "bytes": 41323232,
+      "file_list_sha256": "71a4e4836ae2594a926b65c2e4b285fdea98a69e9d201deabc77136cef63d2fe"
+     }
+    },
+    {
+     "episode": "envtest-box-s729",
+     "split": "test",
+     "condition": "box",
+     "robot_id": "r1",
+     "seed": 729,
+     "spawn_y": -2.25,
+     "map_id": "zone_wide_door_tags_v3",
+     "static_map_sha256": "90561b95a559eec8631347256870af2c457879912edd4ae27d484a679d947491",
+     "landmarks_sha256": "3e7468457b5ed6c0766d5f65c504c2d4f4cc505e2013f0a324f7d494fe4f645c",
+     "scene_xml_sha256": "50de202f91572af552245e8cf4796958b2fa9a08352c53e595386b7d0c4c202c",
+     "contact_profile": "cargo_noslip_v1",
+     "noslip_iterations_in_scene_xml": true,
+     "weld": "off",
+     "calibration_sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558",
+     "student": {
+      "driver": "v2",
+      "driver_module": "harness.owncam_drive_v2",
+      "calibration": "experiments/2026-09-26-zone-owncam-loop-v2/calibration_loop_v2.json",
+      "calibration_sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558"
+     },
+     "code_sha": "8b3614411cb92ff9b79529e83f6a62b20d8617e2",
+     "code_dirty": false,
+     "outcome": "arrived",
+     "pass": true,
+     "R1_pass": true,
+     "R1_gt_distance_m": 0.0585,
+     "R2_wall_contacts": 0,
+     "R3_pass": true,
+     "R3_p90_pos_m": 0.03820200000000001,
+     "R3_p90_yaw_deg": 2.003060000000001,
+     "R3_frames": 373,
+     "R3_uninitialized": 0,
+     "R4_pass": true,
+     "R4_min_box_z_m": 0.0848,
+     "student_sim_s": 101.9,
+     "teacher_sim_s": 29.1,
+     "looks": 8,
+     "look_reasons": [
+      "door_checkpoint_1.5",
+      "travel",
+      "door_checkpoint_0.6",
+      "uncertain",
+      "uncertain",
+      "refix",
+      "uncertain",
+      "arrival_check"
+     ],
+     "student_commands": 1536,
+     "student_frames": 510,
+     "tag_visibility": 0.529,
+     "contacts_student": {
+      "wall": 0,
+      "peer_robot": 0,
+      "other_box": 0
+     },
+     "wall_s": 307.4,
+     "load_average": {
+      "start": [
+       16.26,
+       16.36,
+       28.22
+      ],
+      "end": [
+       7.29,
+       10.13,
+       21.69
+      ]
+     },
+     "threads": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1"
+     },
+     "top_recording_frames": 262,
+     "posthoc_door_bands": {
+      "x1.60-2.00": {
+       "frames": 129,
+       "p50_m": 0.0162,
+       "p90_m": 0.0264,
+       "mean_dx_m": 0.0093,
+       "mean_dy_m": -0.0007,
+       "mean_dyaw_deg": 0.388,
+       "frames_without_tag": 79,
+       "tag_sightings_by_site": {
+        "site_00": 6,
+        "site_05": 3,
+        "site_08": 35,
+        "site_09": 1,
+        "site_10": 53
+       }
+      },
+      "x2.00-2.20": {
+       "frames": 12,
+       "p50_m": 0.0205,
+       "p90_m": 0.0235,
+       "mean_dx_m": 0.0099,
+       "mean_dy_m": -0.0172,
+       "mean_dyaw_deg": 0.142,
+       "frames_without_tag": 12,
+       "tag_sightings_by_site": {}
+      },
+      "x2.20-2.45": {
+       "frames": 105,
+       "p50_m": 0.0297,
+       "p90_m": 0.0375,
+       "mean_dx_m": 0.0027,
+       "mean_dy_m": -0.024,
+       "mean_dyaw_deg": 0.438,
+       "frames_without_tag": 45,
+       "tag_sightings_by_site": {
+        "site_08": 68,
+        "site_10": 98
+       }
+      },
+      "x2.45-2.80": {
+       "frames": 127,
+       "p50_m": 0.0322,
+       "p90_m": 0.0595,
+       "mean_dx_m": 0.01,
+       "mean_dy_m": -0.0307,
+       "mean_dyaw_deg": 0.645,
+       "frames_without_tag": 59,
+       "tag_sightings_by_site": {
+        "site_08": 138,
+        "site_09": 6,
+        "site_10": 135
+       }
+      }
+     },
+     "raw": {
+      "dir": "/Users/changmin/projects/ugrp/outputs/zone-env-v3-20260926/loop/test/envtest-box-s729",
+      "result_sha256": "9d2a4e75bc684754510eb2957a4f657e53118e6f85f2b436f7f153695aec9835",
+      "manifest_sha256": "9798c6f36d230d4d07ae532853e0234b38198ba15f0dbb5e8a3945d6d2faf1a2",
+      "map_file_sha256": "74a3a95925a9531878b43a9c63d26f34ce391ede852d90b4f592e54c793fee0e",
+      "files": 923,
+      "bytes": 22455083,
+      "file_list_sha256": "9bb647a5787a69958547c495dc411b85a6088b752b3510b6eb7d853e0739dc9e"
+     }
+    }
+   ],
+   "cohort_gate": {
+    "missing": [],
+    "LG1_box": "3/6",
+    "LG1_pass": false,
+    "LG2_nobox": "0/3",
+    "LG2_pass": false,
+    "LG3_wall_contacts": 223,
+    "LG3_box_drops": 0,
+    "LG3_pass": false,
+    "pass": false,
+    "blocked": false
+   }
+  },
+  "v3a1-test": {
+   "prereg": "loop/prereg_a1.json",
+   "prereg_sha256": "9b84d3f7ed9122ccd1aa941af9ad065bb9d0bc45058c94b17af5a27239830321",
+   "raw_folder": "a1-test",
+   "runs": [
+    {
+     "episode": "a1test-nobox-s741",
+     "split": "test",
+     "condition": "nobox",
+     "robot_id": "r1",
+     "seed": 741,
+     "spawn_y": 0.55,
+     "map_id": "zone_wide_door_tags_v3a1",
+     "static_map_sha256": "79e1fdc64099039b357853db98ad747457c8473d167028bc8d2d4e0143e0fdea",
+     "landmarks_sha256": "79ec7cb0051b9e8a5116357505a7d253b546e13042da76b3376e36ce13b6ee0a",
+     "scene_xml_sha256": "1137feaf12627d6a17775cdbd4efc5302f61a43dbf9c029a127a17a29c08c7c5",
+     "contact_profile": "cargo_noslip_v1",
+     "noslip_iterations_in_scene_xml": true,
+     "weld": "off",
+     "calibration_sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558",
+     "student": {
+      "driver": "v2",
+      "driver_module": "harness.owncam_drive_v2",
+      "calibration": "experiments/2026-09-26-zone-owncam-loop-v2/calibration_loop_v2.json",
+      "calibration_sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558"
+     },
+     "code_sha": "23f068a14de523da7c1582e239c56c427ea52c79",
+     "code_dirty": false,
+     "outcome": "arrived",
+     "pass": true,
+     "R1_pass": true,
+     "R1_gt_distance_m": 0.0247,
+     "R2_wall_contacts": 0,
+     "R3_pass": true,
+     "R3_p90_pos_m": 0.055818,
+     "R3_p90_yaw_deg": 0.99712,
+     "R3_frames": 223,
+     "R3_uninitialized": 0,
+     "R4_pass": null,
+     "R4_min_box_z_m": null,
+     "student_sim_s": 98.5,
+     "teacher_sim_s": null,
+     "looks": 7,
+     "look_reasons": [
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "door_checkpoint_1.5",
+      "door_checkpoint_0.6",
+      "no_tag",
+      "arrival_check"
+     ],
+     "student_commands": 1405,
+     "student_frames": 493,
+     "tag_visibility": 0.842,
+     "contacts_student": {
+      "wall": 0,
+      "peer_robot": 0,
+      "other_box": 0
+     },
+     "wall_s": 367.0,
+     "load_average": {
+      "start": [
+       25.82,
+       50.97,
+       65.77
+      ],
+      "end": [
+       21.84,
+       35.18,
+       53.18
+      ]
+     },
+     "threads": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1"
+     },
+     "top_recording_frames": 200,
+     "posthoc_door_bands": {
+      "x1.60-2.00": {
+       "frames": 73,
+       "p50_m": 0.0032,
+       "p90_m": 0.0211,
+       "mean_dx_m": -0.0048,
+       "mean_dy_m": 0.0047,
+       "mean_dyaw_deg": -0.403,
+       "frames_without_tag": 26,
+       "tag_sightings_by_site": {
+        "site_00": 14,
+        "site_02": 71,
+        "site_05": 12,
+        "site_10": 18,
+        "site_11": 10
+       }
+      },
+      "x2.00-2.20": {
+       "frames": 62,
+       "p50_m": 0.0314,
+       "p90_m": 0.059,
+       "mean_dx_m": -0.012,
+       "mean_dy_m": 0.0328,
+       "mean_dyaw_deg": -0.661,
+       "frames_without_tag": 21,
+       "tag_sightings_by_site": {
+        "site_08": 43,
+        "site_09": 2,
+        "site_10": 51,
+        "site_14": 37
+       }
+      },
+      "x2.20-2.45": {
+       "frames": 13,
+       "p50_m": 0.0476,
+       "p90_m": 0.0558,
+       "mean_dx_m": -0.0294,
+       "mean_dy_m": 0.0322,
+       "mean_dyaw_deg": -0.558,
+       "frames_without_tag": 3,
+       "tag_sightings_by_site": {
+        "site_08": 3,
+        "site_10": 9
+       }
+      },
+      "x2.45-2.80": {
+       "frames": 75,
+       "p50_m": 0.0389,
+       "p90_m": 0.0572,
+       "mean_dx_m": -0.0137,
+       "mean_dy_m": 0.0296,
+       "mean_dyaw_deg": -0.576,
+       "frames_without_tag": 4,
+       "tag_sightings_by_site": {
+        "site_08": 89,
+        "site_09": 10,
+        "site_10": 88,
+        "site_14": 20
+       }
+      }
+     },
+     "raw": {
+      "dir": "/Users/changmin/projects/ugrp/outputs/zone-env-v3-20260926/loop/a1-test/a1test-nobox-s741",
+      "result_sha256": "3cbb585e9589e6c7e8c1f1a4e4c288cdabae42b64b3974ad27dbcfff2a501f97",
+      "manifest_sha256": "1ed18d40404cba27f67f61822669d55a514d02a9c9cc4fa2d0a20fd38744d82a",
+      "map_file_sha256": "23de1456e5d38a89bd8cf0b0e7e31521599bb71d39272f80d5d295ae46d8bd3c",
+      "files": 705,
+      "bytes": 18347134,
+      "file_list_sha256": "cd68069d3e17b2d8a06b78521923ef3e8313b389c65ef7245f5bf9220e72c375"
+     }
+    },
+    {
+     "episode": "a1test-nobox-s742",
+     "split": "test",
+     "condition": "nobox",
+     "robot_id": "r2",
+     "seed": 742,
+     "spawn_y": -0.85,
+     "map_id": "zone_wide_door_tags_v3a1",
+     "static_map_sha256": "79e1fdc64099039b357853db98ad747457c8473d167028bc8d2d4e0143e0fdea",
+     "landmarks_sha256": "79ec7cb0051b9e8a5116357505a7d253b546e13042da76b3376e36ce13b6ee0a",
+     "scene_xml_sha256": "3d0b7da47f5e0469dd771d88aa37ac3df9ec66c674295a014f2ebad997981c6d",
+     "contact_profile": "cargo_noslip_v1",
+     "noslip_iterations_in_scene_xml": true,
+     "weld": "off",
+     "calibration_sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558",
+     "student": {
+      "driver": "v2",
+      "driver_module": "harness.owncam_drive_v2",
+      "calibration": "experiments/2026-09-26-zone-owncam-loop-v2/calibration_loop_v2.json",
+      "calibration_sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558"
+     },
+     "code_sha": "23f068a14de523da7c1582e239c56c427ea52c79",
+     "code_dirty": false,
+     "outcome": "arrived",
+     "pass": false,
+     "R1_pass": true,
+     "R1_gt_distance_m": 0.0174,
+     "R2_wall_contacts": 2,
+     "R3_pass": true,
+     "R3_p90_pos_m": 0.02595,
+     "R3_p90_yaw_deg": 1.0428,
+     "R3_frames": 283,
+     "R3_uninitialized": 0,
+     "R4_pass": null,
+     "R4_min_box_z_m": null,
+     "student_sim_s": 93.0,
+     "teacher_sim_s": null,
+     "looks": 6,
+     "look_reasons": [
+      "uncertain",
+      "door_checkpoint_1.5",
+      "door_checkpoint_0.6",
+      "no_tag",
+      "no_tag",
+      "arrival_check"
+     ],
+     "student_commands": 1290,
+     "student_frames": 466,
+     "tag_visibility": 0.8,
+     "contacts_student": {
+      "wall": 2,
+      "peer_robot": 0,
+      "other_box": 0
+     },
+     "wall_s": 450.4,
+     "load_average": {
+      "start": [
+       21.84,
+       35.18,
+       53.18
+      ],
+      "end": [
+       23.41,
+       23.95,
+       39.86
+      ]
+     },
+     "threads": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1"
+     },
+     "top_recording_frames": 189,
+     "posthoc_door_bands": {
+      "x1.60-2.00": {
+       "frames": 134,
+       "p50_m": 0.0041,
+       "p90_m": 0.0222,
+       "mean_dx_m": -0.0019,
+       "mean_dy_m": 0.0018,
+       "mean_dyaw_deg": 0.369,
+       "frames_without_tag": 57,
+       "tag_sightings_by_site": {
+        "site_00": 46,
+        "site_02": 16,
+        "site_05": 25,
+        "site_11": 33,
+        "site_12": 18,
+        "site_13": 3,
+        "site_14": 56
+       }
+      },
+      "x2.00-2.20": {
+       "frames": 63,
+       "p50_m": 0.0175,
+       "p90_m": 0.0282,
+       "mean_dx_m": 0.0057,
+       "mean_dy_m": -0.0073,
+       "mean_dyaw_deg": 0.214,
+       "frames_without_tag": 24,
+       "tag_sightings_by_site": {
+        "site_08": 34,
+        "site_10": 54,
+        "site_14": 29
+       }
+      },
+      "x2.20-2.45": {
+       "frames": 13,
+       "p50_m": 0.0159,
+       "p90_m": 0.0229,
+       "mean_dx_m": -0.0096,
+       "mean_dy_m": -0.0024,
+       "mean_dyaw_deg": 0.131,
+       "frames_without_tag": 3,
+       "tag_sightings_by_site": {
+        "site_08": 6,
+        "site_10": 6
+       }
+      },
+      "x2.45-2.80": {
+       "frames": 73,
+       "p50_m": 0.0192,
+       "p90_m": 0.0268,
+       "mean_dx_m": -0.0095,
+       "mean_dy_m": -0.0136,
+       "mean_dyaw_deg": 0.281,
+       "frames_without_tag": 6,
+       "tag_sightings_by_site": {
+        "site_08": 87,
+        "site_09": 11,
+        "site_10": 89,
+        "site_14": 18
+       }
+      }
+     },
+     "raw": {
+      "dir": "/Users/changmin/projects/ugrp/outputs/zone-env-v3-20260926/loop/a1-test/a1test-nobox-s742",
+      "result_sha256": "c7f14489a47e7f0b87148cd0b7ebc770e43ee4f29056ce4bd7c1093187e226fe",
+      "manifest_sha256": "61af5aabdf067db8fae338835afe98c1f8756d3f25736e19d0dab5e5f2f65af8",
+      "map_file_sha256": "23de1456e5d38a89bd8cf0b0e7e31521599bb71d39272f80d5d295ae46d8bd3c",
+      "files": 667,
+      "bytes": 17570094,
+      "file_list_sha256": "e5caad4d7cd7635e1cb75539efcdd7fbb50e05dc213137d4250d2200f6feb5b7"
+     }
+    },
+    {
+     "episode": "a1test-nobox-s743",
+     "split": "test",
+     "condition": "nobox",
+     "robot_id": "r3",
+     "seed": 743,
+     "spawn_y": -2.25,
+     "map_id": "zone_wide_door_tags_v3a1",
+     "static_map_sha256": "79e1fdc64099039b357853db98ad747457c8473d167028bc8d2d4e0143e0fdea",
+     "landmarks_sha256": "79ec7cb0051b9e8a5116357505a7d253b546e13042da76b3376e36ce13b6ee0a",
+     "scene_xml_sha256": "7a6892e9e7f54c30bee8d4df596ce915592dcd910b28c1ff4afd5da5b229db02",
+     "contact_profile": "cargo_noslip_v1",
+     "noslip_iterations_in_scene_xml": true,
+     "weld": "off",
+     "calibration_sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558",
+     "student": {
+      "driver": "v2",
+      "driver_module": "harness.owncam_drive_v2",
+      "calibration": "experiments/2026-09-26-zone-owncam-loop-v2/calibration_loop_v2.json",
+      "calibration_sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558"
+     },
+     "code_sha": "23f068a14de523da7c1582e239c56c427ea52c79",
+     "code_dirty": false,
+     "outcome": "arrived",
+     "pass": true,
+     "R1_pass": true,
+     "R1_gt_distance_m": 0.0262,
+     "R2_wall_contacts": 0,
+     "R3_pass": true,
+     "R3_p90_pos_m": 0.03911000000000003,
+     "R3_p90_yaw_deg": 0.85909,
+     "R3_frames": 302,
+     "R3_uninitialized": 0,
+     "R4_pass": null,
+     "R4_min_box_z_m": null,
+     "student_sim_s": 115.4,
+     "teacher_sim_s": null,
+     "looks": 6,
+     "look_reasons": [
+      "uncertain",
+      "door_checkpoint_1.5",
+      "door_checkpoint_0.6",
+      "no_tag",
+      "no_tag",
+      "arrival_check"
+     ],
+     "student_commands": 1514,
+     "student_frames": 578,
+     "tag_visibility": 0.83,
+     "contacts_student": {
+      "wall": 0,
+      "peer_robot": 0,
+      "other_box": 0
+     },
+     "wall_s": 629.7,
+     "load_average": {
+      "start": [
+       24.1,
+       24.88,
+       38.25
+      ],
+      "end": [
+       61.5,
+       81.08,
+       62.87
+      ]
+     },
+     "threads": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1"
+     },
+     "top_recording_frames": 234,
+     "posthoc_door_bands": {
+      "x1.60-2.00": {
+       "frames": 139,
+       "p50_m": 0.0054,
+       "p90_m": 0.0189,
+       "mean_dx_m": -0.0026,
+       "mean_dy_m": -0.0001,
+       "mean_dyaw_deg": 0.515,
+       "frames_without_tag": 59,
+       "tag_sightings_by_site": {
+        "site_00": 46,
+        "site_02": 15,
+        "site_05": 27,
+        "site_11": 34,
+        "site_12": 12,
+        "site_13": 5,
+        "site_14": 62
+       }
+      },
+      "x2.00-2.20": {
+       "frames": 63,
+       "p50_m": 0.027,
+       "p90_m": 0.0333,
+       "mean_dx_m": -0.0001,
+       "mean_dy_m": -0.0225,
+       "mean_dyaw_deg": 0.663,
+       "frames_without_tag": 25,
+       "tag_sightings_by_site": {
+        "site_08": 39,
+        "site_09": 3,
+        "site_10": 52,
+        "site_14": 21
+       }
+      },
+      "x2.20-2.45": {
+       "frames": 13,
+       "p50_m": 0.0337,
+       "p90_m": 0.0455,
+       "mean_dx_m": -0.0237,
+       "mean_dy_m": -0.0173,
+       "mean_dyaw_deg": 0.484,
+       "frames_without_tag": 3,
+       "tag_sightings_by_site": {
+        "site_08": 6,
+        "site_10": 10
+       }
+      },
+      "x2.45-2.80": {
+       "frames": 87,
+       "p50_m": 0.0305,
+       "p90_m": 0.0518,
+       "mean_dx_m": -0.0171,
+       "mean_dy_m": -0.0231,
+       "mean_dyaw_deg": 0.489,
+       "frames_without_tag": 7,
+       "tag_sightings_by_site": {
+        "site_08": 107,
+        "site_09": 6,
+        "site_10": 106,
+        "site_14": 18
+       }
+      }
+     },
+     "raw": {
+      "dir": "/Users/changmin/projects/ugrp/outputs/zone-env-v3-20260926/loop/a1-test/a1test-nobox-s743",
+      "result_sha256": "f2b70ed4d1c708923730c42fb4fb2068eef12e6f935ad0a7f4db6b17332628e2",
+      "manifest_sha256": "1080fb1a2f30d08fa6fab72ae013ee2bb13186698d99caa5aa57698546a8f7f2",
+      "map_file_sha256": "23de1456e5d38a89bd8cf0b0e7e31521599bb71d39272f80d5d295ae46d8bd3c",
+      "files": 824,
+      "bytes": 21406120,
+      "file_list_sha256": "13357e022c617535ab4cf7e0c3f9e1cd98069ffcfc3b4aa933b2a11aafce6f13"
+     }
+    },
+    {
+     "episode": "a1test-box-s744",
+     "split": "test",
+     "condition": "box",
+     "robot_id": "r2",
+     "seed": 744,
+     "spawn_y": 0.55,
+     "map_id": "zone_wide_door_tags_v3a1",
+     "static_map_sha256": "79e1fdc64099039b357853db98ad747457c8473d167028bc8d2d4e0143e0fdea",
+     "landmarks_sha256": "79ec7cb0051b9e8a5116357505a7d253b546e13042da76b3376e36ce13b6ee0a",
+     "scene_xml_sha256": "b54d2bba96903ddf16df2c08185b95863f95ab2f3841aa5c1ba4da9a4308d86b",
+     "contact_profile": "cargo_noslip_v1",
+     "noslip_iterations_in_scene_xml": true,
+     "weld": "off",
+     "calibration_sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558",
+     "student": {
+      "driver": "v2",
+      "driver_module": "harness.owncam_drive_v2",
+      "calibration": "experiments/2026-09-26-zone-owncam-loop-v2/calibration_loop_v2.json",
+      "calibration_sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558"
+     },
+     "code_sha": "23f068a14de523da7c1582e239c56c427ea52c79",
+     "code_dirty": false,
+     "outcome": "arrived",
+     "pass": true,
+     "R1_pass": true,
+     "R1_gt_distance_m": 0.0514,
+     "R2_wall_contacts": 0,
+     "R3_pass": true,
+     "R3_p90_pos_m": 0.031586,
+     "R3_p90_yaw_deg": 1.26489,
+     "R3_frames": 262,
+     "R3_uninitialized": 0,
+     "R4_pass": true,
+     "R4_min_box_z_m": 0.0849,
+     "student_sim_s": 65.7,
+     "teacher_sim_s": 20.1,
+     "looks": 5,
+     "look_reasons": [
+      "door_checkpoint_1.5",
+      "door_checkpoint_0.6",
+      "uncertain",
+      "uncertain",
+      "arrival_check"
+     ],
+     "student_commands": 1003,
+     "student_frames": 329,
+     "tag_visibility": 0.626,
+     "contacts_student": {
+      "wall": 0,
+      "peer_robot": 0,
+      "other_box": 0
+     },
+     "wall_s": 573.3,
+     "load_average": {
+      "start": [
+       102.87,
+       116.57,
+       101.6
+      ],
+      "end": [
+       65.37,
+       94.68,
+       100.68
+      ]
+     },
+     "threads": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1"
+     },
+     "top_recording_frames": 172,
+     "posthoc_door_bands": {
+      "x1.60-2.00": {
+       "frames": 70,
+       "p50_m": 0.0126,
+       "p90_m": 0.0165,
+       "mean_dx_m": 0.0081,
+       "mean_dy_m": 0.004,
+       "mean_dyaw_deg": -0.11,
+       "frames_without_tag": 32,
+       "tag_sightings_by_site": {
+        "site_00": 13,
+        "site_02": 14,
+        "site_05": 10,
+        "site_08": 15,
+        "site_10": 24,
+        "site_11": 7,
+        "site_12": 7,
+        "site_13": 1
+       }
+      },
+      "x2.00-2.20": {
+       "frames": 58,
+       "p50_m": 0.0237,
+       "p90_m": 0.0368,
+       "mean_dx_m": 0.0164,
+       "mean_dy_m": -0.0062,
+       "mean_dyaw_deg": 0.061,
+       "frames_without_tag": 21,
+       "tag_sightings_by_site": {
+        "site_08": 34,
+        "site_10": 42,
+        "site_14": 36
+       }
+      },
+      "x2.20-2.45": {
+       "frames": 63,
+       "p50_m": 0.0236,
+       "p90_m": 0.0324,
+       "mean_dx_m": 0.021,
+       "mean_dy_m": -0.0043,
+       "mean_dyaw_deg": 0.013,
+       "frames_without_tag": 25,
+       "tag_sightings_by_site": {
+        "site_08": 56,
+        "site_09": 1,
+        "site_10": 50,
+        "site_14": 24
+       }
+      },
+      "x2.45-2.80": {
+       "frames": 71,
+       "p50_m": 0.0198,
+       "p90_m": 0.0325,
+       "mean_dx_m": 0.019,
+       "mean_dy_m": -0.0021,
+       "mean_dyaw_deg": -0.005,
+       "frames_without_tag": 31,
+       "tag_sightings_by_site": {
+        "site_08": 67,
+        "site_09": 4,
+        "site_10": 61,
+        "site_14": 18
+       }
+      }
+     },
+     "raw": {
+      "dir": "/Users/changmin/projects/ugrp/outputs/zone-env-v3-20260926/loop/a1-test/a1test-box-s744",
+      "result_sha256": "6b70790b492359fa4b1caca9ab1360cbf8e1bc997617dba86d04f85a0a357c96",
+      "manifest_sha256": "bdb08b6b0956627a753b8ea228b8bc92506755eff24edc73036fd3f0c2d335af",
+      "map_file_sha256": "23de1456e5d38a89bd8cf0b0e7e31521599bb71d39272f80d5d295ae46d8bd3c",
+      "files": 607,
+      "bytes": 15284938,
+      "file_list_sha256": "995f0300596e8c8539fa5672ceebcafc3aac2857fb6547cb1d63668f97c3bc8e"
+     }
+    },
+    {
+     "episode": "a1test-box-s745",
+     "split": "test",
+     "condition": "box",
+     "robot_id": "r3",
+     "seed": 745,
+     "spawn_y": -0.85,
+     "map_id": "zone_wide_door_tags_v3a1",
+     "static_map_sha256": "79e1fdc64099039b357853db98ad747457c8473d167028bc8d2d4e0143e0fdea",
+     "landmarks_sha256": "79ec7cb0051b9e8a5116357505a7d253b546e13042da76b3376e36ce13b6ee0a",
+     "scene_xml_sha256": "68065d8e5ada8913e4a839876c4b0634f4dce5b032c11d107c4964806c16c1c2",
+     "contact_profile": "cargo_noslip_v1",
+     "noslip_iterations_in_scene_xml": true,
+     "weld": "off",
+     "calibration_sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558",
+     "student": {
+      "driver": "v2",
+      "driver_module": "harness.owncam_drive_v2",
+      "calibration": "experiments/2026-09-26-zone-owncam-loop-v2/calibration_loop_v2.json",
+      "calibration_sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558"
+     },
+     "code_sha": "23f068a14de523da7c1582e239c56c427ea52c79",
+     "code_dirty": false,
+     "outcome": "arrived",
+     "pass": true,
+     "R1_pass": true,
+     "R1_gt_distance_m": 0.0405,
+     "R2_wall_contacts": 0,
+     "R3_pass": true,
+     "R3_p90_pos_m": 0.04165500000000001,
+     "R3_p90_yaw_deg": 3.44227,
+     "R3_frames": 410,
+     "R3_uninitialized": 0,
+     "R4_pass": true,
+     "R4_min_box_z_m": 0.0853,
+     "student_sim_s": 146.1,
+     "teacher_sim_s": 10.5,
+     "looks": 11,
+     "look_reasons": [
+      "uncertain",
+      "uncertain",
+      "travel",
+      "door_checkpoint_1.5",
+      "travel",
+      "door_checkpoint_0.6",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "arrival_check"
+     ],
+     "student_commands": 2210,
+     "student_frames": 731,
+     "tag_visibility": 0.573,
+     "contacts_student": {
+      "wall": 0,
+      "peer_robot": 0,
+      "other_box": 0
+     },
+     "wall_s": 710.9,
+     "load_average": {
+      "start": [
+       64.3,
+       93.97,
+       100.4
+      ],
+      "end": [
+       33.93,
+       46.64,
+       70.32
+      ]
+     },
+     "threads": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1"
+     },
+     "top_recording_frames": 314,
+     "posthoc_door_bands": {
+      "x1.60-2.00": {
+       "frames": 195,
+       "p50_m": 0.0265,
+       "p90_m": 0.063,
+       "mean_dx_m": 0.0099,
+       "mean_dy_m": 0.0186,
+       "mean_dyaw_deg": -1.42,
+       "frames_without_tag": 134,
+       "tag_sightings_by_site": {
+        "site_02": 5,
+        "site_05": 9,
+        "site_08": 43,
+        "site_10": 28,
+        "site_12": 4,
+        "site_14": 90
+       }
+      },
+      "x2.00-2.20": {
+       "frames": 12,
+       "p50_m": 0.0281,
+       "p90_m": 0.0303,
+       "mean_dx_m": -0.0065,
+       "mean_dy_m": 0.027,
+       "mean_dyaw_deg": -0.074,
+       "frames_without_tag": 12,
+       "tag_sightings_by_site": {}
+      },
+      "x2.20-2.45": {
+       "frames": 64,
+       "p50_m": 0.0209,
+       "p90_m": 0.0322,
+       "mean_dx_m": 0.0068,
+       "mean_dy_m": 0.0099,
+       "mean_dyaw_deg": -0.167,
+       "frames_without_tag": 25,
+       "tag_sightings_by_site": {
+        "site_08": 58,
+        "site_09": 5,
+        "site_10": 54,
+        "site_14": 21
+       }
+      },
+      "x2.45-2.80": {
+       "frames": 139,
+       "p50_m": 0.0196,
+       "p90_m": 0.036,
+       "mean_dx_m": 0.0115,
+       "mean_dy_m": -0.0046,
+       "mean_dyaw_deg": 0.177,
+       "frames_without_tag": 56,
+       "tag_sightings_by_site": {
+        "site_08": 138,
+        "site_09": 18,
+        "site_10": 137,
+        "site_14": 36
+       }
+      }
+     },
+     "raw": {
+      "dir": "/Users/changmin/projects/ugrp/outputs/zone-env-v3-20260926/loop/a1-test/a1test-box-s745",
+      "result_sha256": "98379c8199550a3fd9f6ff74df9b25c209524678df6cfcfd8876442e03f1294e",
+      "manifest_sha256": "4e3bceaf271bbf57075ef0f0c174acd963f6fff7d51c0b09a30579091c235c69",
+      "map_file_sha256": "23de1456e5d38a89bd8cf0b0e7e31521599bb71d39272f80d5d295ae46d8bd3c",
+      "files": 1103,
+      "bytes": 28564199,
+      "file_list_sha256": "4bc9a93e3028e0b8f90461cc9956be3c58cfc274f90c8f93a8a0400a49bedb0d"
+     }
+    },
+    {
+     "episode": "a1test-box-s746",
+     "split": "test",
+     "condition": "box",
+     "robot_id": "r2",
+     "seed": 746,
+     "spawn_y": -2.25,
+     "map_id": "zone_wide_door_tags_v3a1",
+     "static_map_sha256": "79e1fdc64099039b357853db98ad747457c8473d167028bc8d2d4e0143e0fdea",
+     "landmarks_sha256": "79ec7cb0051b9e8a5116357505a7d253b546e13042da76b3376e36ce13b6ee0a",
+     "scene_xml_sha256": "942bea5bef6a6783d054240b7fbbb4d03cdbfc63313ac2f98fc665851cabfc23",
+     "contact_profile": "cargo_noslip_v1",
+     "noslip_iterations_in_scene_xml": true,
+     "weld": "off",
+     "calibration_sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558",
+     "student": {
+      "driver": "v2",
+      "driver_module": "harness.owncam_drive_v2",
+      "calibration": "experiments/2026-09-26-zone-owncam-loop-v2/calibration_loop_v2.json",
+      "calibration_sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558"
+     },
+     "code_sha": "23f068a14de523da7c1582e239c56c427ea52c79",
+     "code_dirty": false,
+     "outcome": "arrived",
+     "pass": true,
+     "R1_pass": true,
+     "R1_gt_distance_m": 0.0607,
+     "R2_wall_contacts": 0,
+     "R3_pass": true,
+     "R3_p90_pos_m": 0.03798,
+     "R3_p90_yaw_deg": 1.2657600000000002,
+     "R3_frames": 267,
+     "R3_uninitialized": 0,
+     "R4_pass": true,
+     "R4_min_box_z_m": 0.0849,
+     "student_sim_s": 66.9,
+     "teacher_sim_s": 33.2,
+     "looks": 5,
+     "look_reasons": [
+      "door_checkpoint_1.5",
+      "door_checkpoint_0.6",
+      "uncertain",
+      "uncertain",
+      "arrival_check"
+     ],
+     "student_commands": 1016,
+     "student_frames": 335,
+     "tag_visibility": 0.594,
+     "contacts_student": {
+      "wall": 0,
+      "peer_robot": 0,
+      "other_box": 0
+     },
+     "wall_s": 402.5,
+     "load_average": {
+      "start": [
+       33.93,
+       46.64,
+       70.32
+      ],
+      "end": [
+       25.82,
+       50.97,
+       65.77
+      ]
+     },
+     "threads": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1"
+     },
+     "top_recording_frames": 201,
+     "posthoc_door_bands": {
+      "x1.60-2.00": {
+       "frames": 117,
+       "p50_m": 0.013,
+       "p90_m": 0.0251,
+       "mean_dx_m": 0.0072,
+       "mean_dy_m": -0.0008,
+       "mean_dyaw_deg": 0.126,
+       "frames_without_tag": 49,
+       "tag_sightings_by_site": {
+        "site_00": 13,
+        "site_02": 12,
+        "site_05": 10,
+        "site_08": 70,
+        "site_09": 1,
+        "site_10": 56,
+        "site_11": 7,
+        "site_12": 8,
+        "site_14": 19
+       }
+      },
+      "x2.00-2.20": {
+       "frames": 12,
+       "p50_m": 0.0204,
+       "p90_m": 0.0243,
+       "mean_dx_m": 0.0112,
+       "mean_dy_m": -0.0166,
+       "mean_dyaw_deg": 0.285,
+       "frames_without_tag": 12,
+       "tag_sightings_by_site": {}
+      },
+      "x2.20-2.45": {
+       "frames": 63,
+       "p50_m": 0.0296,
+       "p90_m": 0.035,
+       "mean_dx_m": 0.0195,
+       "mean_dy_m": -0.0132,
+       "mean_dyaw_deg": 0.209,
+       "frames_without_tag": 23,
+       "tag_sightings_by_site": {
+        "site_08": 56,
+        "site_09": 2,
+        "site_10": 56,
+        "site_14": 21
+       }
+      },
+      "x2.45-2.80": {
+       "frames": 75,
+       "p50_m": 0.0309,
+       "p90_m": 0.0459,
+       "mean_dx_m": 0.0271,
+       "mean_dy_m": -0.012,
+       "mean_dyaw_deg": 0.211,
+       "frames_without_tag": 38,
+       "tag_sightings_by_site": {
+        "site_08": 55,
+        "site_09": 6,
+        "site_10": 54,
+        "site_14": 18
+       }
+      }
+     },
+     "raw": {
+      "dir": "/Users/changmin/projects/ugrp/outputs/zone-env-v3-20260926/loop/a1-test/a1test-box-s746",
+      "result_sha256": "e7fad500678e3018f353a03802bb4609caead7035a5303af3ddef4e9c4a5f19a",
+      "manifest_sha256": "4dc3de519887ec88c9c91a198d890d117a107b46bf89633b95347f2c20dfe6fc",
+      "map_file_sha256": "23de1456e5d38a89bd8cf0b0e7e31521599bb71d39272f80d5d295ae46d8bd3c",
+      "files": 708,
+      "bytes": 17783661,
+      "file_list_sha256": "4f4832917e7f969512fd18ba3ed45a58ac6393a17f50c5434120f9da577babb0"
+     }
+    },
+    {
+     "episode": "a1test-box-s747",
+     "split": "test",
+     "condition": "box",
+     "robot_id": "r1",
+     "seed": 747,
+     "spawn_y": 0.55,
+     "map_id": "zone_wide_door_tags_v3a1",
+     "static_map_sha256": "79e1fdc64099039b357853db98ad747457c8473d167028bc8d2d4e0143e0fdea",
+     "landmarks_sha256": "79ec7cb0051b9e8a5116357505a7d253b546e13042da76b3376e36ce13b6ee0a",
+     "scene_xml_sha256": "9d001ef5c2123fc8e11f9ed60361980ae3894063d553a4021d6561783068b348",
+     "contact_profile": "cargo_noslip_v1",
+     "noslip_iterations_in_scene_xml": true,
+     "weld": "off",
+     "calibration_sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558",
+     "student": {
+      "driver": "v2",
+      "driver_module": "harness.owncam_drive_v2",
+      "calibration": "experiments/2026-09-26-zone-owncam-loop-v2/calibration_loop_v2.json",
+      "calibration_sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558"
+     },
+     "code_sha": "23f068a14de523da7c1582e239c56c427ea52c79",
+     "code_dirty": false,
+     "outcome": "arrived",
+     "pass": false,
+     "R1_pass": true,
+     "R1_gt_distance_m": 0.0642,
+     "R2_wall_contacts": 0,
+     "R3_pass": false,
+     "R3_p90_pos_m": 0.07230199999999999,
+     "R3_p90_yaw_deg": 1.5026499999999998,
+     "R3_frames": 334,
+     "R3_uninitialized": 0,
+     "R4_pass": true,
+     "R4_min_box_z_m": 0.0848,
+     "student_sim_s": 130.5,
+     "teacher_sim_s": 11.2,
+     "looks": 10,
+     "look_reasons": [
+      "uncertain",
+      "travel",
+      "travel",
+      "door_checkpoint_1.5",
+      "travel",
+      "door_checkpoint_0.6",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "arrival_check"
+     ],
+     "student_commands": 1987,
+     "student_frames": 653,
+     "tag_visibility": 0.565,
+     "contacts_student": {
+      "wall": 0,
+      "peer_robot": 0,
+      "other_box": 0
+     },
+     "wall_s": 826.9,
+     "load_average": {
+      "start": [
+       102.87,
+       116.57,
+       101.6
+      ],
+      "end": [
+       67.14,
+       76.96,
+       90.95
+      ]
+     },
+     "threads": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1"
+     },
+     "top_recording_frames": 284,
+     "posthoc_door_bands": {
+      "x1.60-2.00": {
+       "frames": 128,
+       "p50_m": 0.042,
+       "p90_m": 0.0724,
+       "mean_dx_m": 0.0104,
+       "mean_dy_m": -0.0335,
+       "mean_dyaw_deg": 0.806,
+       "frames_without_tag": 71,
+       "tag_sightings_by_site": {
+        "site_00": 7,
+        "site_02": 3,
+        "site_05": 9,
+        "site_08": 40,
+        "site_09": 1,
+        "site_10": 60,
+        "site_11": 5
+       }
+      },
+      "x2.00-2.20": {
+       "frames": 11,
+       "p50_m": 0.0764,
+       "p90_m": 0.0804,
+       "mean_dx_m": 0.0184,
+       "mean_dy_m": -0.0736,
+       "mean_dyaw_deg": 0.853,
+       "frames_without_tag": 11,
+       "tag_sightings_by_site": {}
+      },
+      "x2.20-2.45": {
+       "frames": 64,
+       "p50_m": 0.0475,
+       "p90_m": 0.082,
+       "mean_dx_m": 0.0167,
+       "mean_dy_m": -0.0429,
+       "mean_dyaw_deg": 0.554,
+       "frames_without_tag": 25,
+       "tag_sightings_by_site": {
+        "site_08": 42,
+        "site_09": 2,
+        "site_10": 59,
+        "site_14": 23
+       }
+      },
+      "x2.45-2.80": {
+       "frames": 131,
+       "p50_m": 0.0318,
+       "p90_m": 0.0449,
+       "mean_dx_m": 0.0214,
+       "mean_dy_m": -0.0205,
+       "mean_dyaw_deg": 0.321,
+       "frames_without_tag": 48,
+       "tag_sightings_by_site": {
+        "site_08": 125,
+        "site_09": 16,
+        "site_10": 121,
+        "site_14": 37
+       }
+      }
+     },
+     "raw": {
+      "dir": "/Users/changmin/projects/ugrp/outputs/zone-env-v3-20260926/loop/a1-test/a1test-box-s747",
+      "result_sha256": "4a89b9bcf1e6d4a227d45eec646c464ddbbf5016a6ae4bf024e661d6a6bc3c5e",
+      "manifest_sha256": "f61200bd8a23b7bfb6399282bf12384f75a7433e53371a263e3f78b08e5f87ed",
+      "map_file_sha256": "23de1456e5d38a89bd8cf0b0e7e31521599bb71d39272f80d5d295ae46d8bd3c",
+      "files": 999,
+      "bytes": 25403320,
+      "file_list_sha256": "dd0fe71e4462e0e0eb6a424e03221ca7f7eb6b934dba140466cc00e5e47b3978"
+     }
+    },
+    {
+     "episode": "a1test-box-s748",
+     "split": "test",
+     "condition": "box",
+     "robot_id": "r2",
+     "seed": 748,
+     "spawn_y": -0.85,
+     "map_id": "zone_wide_door_tags_v3a1",
+     "static_map_sha256": "79e1fdc64099039b357853db98ad747457c8473d167028bc8d2d4e0143e0fdea",
+     "landmarks_sha256": "79ec7cb0051b9e8a5116357505a7d253b546e13042da76b3376e36ce13b6ee0a",
+     "scene_xml_sha256": "1017376f2b9af42bd93d378fcc1f2b1b463ccf3f4a11c866659590e3f421229b",
+     "contact_profile": "cargo_noslip_v1",
+     "noslip_iterations_in_scene_xml": true,
+     "weld": "off",
+     "calibration_sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558",
+     "student": {
+      "driver": "v2",
+      "driver_module": "harness.owncam_drive_v2",
+      "calibration": "experiments/2026-09-26-zone-owncam-loop-v2/calibration_loop_v2.json",
+      "calibration_sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558"
+     },
+     "code_sha": "23f068a14de523da7c1582e239c56c427ea52c79",
+     "code_dirty": false,
+     "outcome": "time_limit",
+     "pass": false,
+     "R1_pass": false,
+     "R1_gt_distance_m": 0.9123,
+     "R2_wall_contacts": 0,
+     "R3_pass": false,
+     "R3_p90_pos_m": 0.077326,
+     "R3_p90_yaw_deg": 3.4506300000000003,
+     "R3_frames": 18,
+     "R3_uninitialized": 0,
+     "R4_pass": true,
+     "R4_min_box_z_m": 0.0852,
+     "student_sim_s": 240.1,
+     "teacher_sim_s": 23.2,
+     "looks": 22,
+     "look_reasons": [
+      "uncertain",
+      "refix",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "door_checkpoint_1.5",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "door_checkpoint_0.6",
+      "uncertain"
+     ],
+     "student_commands": 3790,
+     "student_frames": 1201,
+     "tag_visibility": 0.109,
+     "contacts_student": {
+      "wall": 0,
+      "peer_robot": 0,
+      "other_box": 0
+     },
+     "wall_s": 1109.8,
+     "load_average": {
+      "start": [
+       65.93,
+       76.54,
+       90.72
+      ],
+      "end": [
+       35.18,
+       42.95,
+       58.3
+      ]
+     },
+     "threads": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1"
+     },
+     "top_recording_frames": 527,
+     "posthoc_door_bands": {
+      "x1.60-2.00": {
+       "frames": 18,
+       "p50_m": 0.0766,
+       "p90_m": 0.0773,
+       "mean_dx_m": 0.0642,
+       "mean_dy_m": 0.0365,
+       "mean_dyaw_deg": -2.958,
+       "frames_without_tag": 18,
+       "tag_sightings_by_site": {}
+      }
+     },
+     "raw": {
+      "dir": "/Users/changmin/projects/ugrp/outputs/zone-env-v3-20260926/loop/a1-test/a1test-box-s748",
+      "result_sha256": "4c2a178db5c7020f8961e7682dfcc7d9405f1a11ea5279a22463ee91d38b1e6f",
+      "manifest_sha256": "2f47e03dc0b4f67677be89f985c479b4a87602f61cc6d8d016ad79e9380f43a6",
+      "map_file_sha256": "23de1456e5d38a89bd8cf0b0e7e31521599bb71d39272f80d5d295ae46d8bd3c",
+      "files": 1850,
+      "bytes": 42356801,
+      "file_list_sha256": "da78a265ca1fd38696d90e78cfad66ca2a051999fadeedf42fa43817474a0a9f"
+     }
+    },
+    {
+     "episode": "a1test-box-s749",
+     "split": "test",
+     "condition": "box",
+     "robot_id": "r1",
+     "seed": 749,
+     "spawn_y": -2.25,
+     "map_id": "zone_wide_door_tags_v3a1",
+     "static_map_sha256": "79e1fdc64099039b357853db98ad747457c8473d167028bc8d2d4e0143e0fdea",
+     "landmarks_sha256": "79ec7cb0051b9e8a5116357505a7d253b546e13042da76b3376e36ce13b6ee0a",
+     "scene_xml_sha256": "11395b3d32f81bfd03af0250cb18f92f8146fe02c57e5bb4ae9ebd717937b636",
+     "contact_profile": "cargo_noslip_v1",
+     "noslip_iterations_in_scene_xml": true,
+     "weld": "off",
+     "calibration_sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558",
+     "student": {
+      "driver": "v2",
+      "driver_module": "harness.owncam_drive_v2",
+      "calibration": "experiments/2026-09-26-zone-owncam-loop-v2/calibration_loop_v2.json",
+      "calibration_sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558"
+     },
+     "code_sha": "23f068a14de523da7c1582e239c56c427ea52c79",
+     "code_dirty": false,
+     "outcome": "arrived",
+     "pass": true,
+     "R1_pass": true,
+     "R1_gt_distance_m": 0.0475,
+     "R2_wall_contacts": 0,
+     "R3_pass": true,
+     "R3_p90_pos_m": 0.050826,
+     "R3_p90_yaw_deg": 2.6985400000000004,
+     "R3_frames": 407,
+     "R3_uninitialized": 0,
+     "R4_pass": true,
+     "R4_min_box_z_m": 0.085,
+     "student_sim_s": 117.2,
+     "teacher_sim_s": 21.6,
+     "looks": 9,
+     "look_reasons": [
+      "door_checkpoint_1.5",
+      "travel",
+      "door_checkpoint_0.6",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "uncertain",
+      "arrival_check"
+     ],
+     "student_commands": 1782,
+     "student_frames": 586,
+     "tag_visibility": 0.51,
+     "contacts_student": {
+      "wall": 0,
+      "peer_robot": 0,
+      "other_box": 0
+     },
+     "wall_s": 680.7,
+     "load_average": {
+      "start": [
+       34.12,
+       42.6,
+       58.09
+      ],
+      "end": [
+       24.1,
+       24.88,
+       38.25
+      ]
+     },
+     "threads": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1"
+     },
+     "top_recording_frames": 278,
+     "posthoc_door_bands": {
+      "x1.60-2.00": {
+       "frames": 140,
+       "p50_m": 0.027,
+       "p90_m": 0.0518,
+       "mean_dx_m": 0.0236,
+       "mean_dy_m": 0.0181,
+       "mean_dyaw_deg": -1.588,
+       "frames_without_tag": 91,
+       "tag_sightings_by_site": {
+        "site_02": 9,
+        "site_05": 9,
+        "site_08": 35,
+        "site_14": 65
+       }
+      },
+      "x2.00-2.20": {
+       "frames": 63,
+       "p50_m": 0.0307,
+       "p90_m": 0.0434,
+       "mean_dx_m": 0.0176,
+       "mean_dy_m": 0.021,
+       "mean_dyaw_deg": -0.355,
+       "frames_without_tag": 24,
+       "tag_sightings_by_site": {
+        "site_08": 39,
+        "site_09": 2,
+        "site_10": 56,
+        "site_14": 21
+       }
+      },
+      "x2.20-2.45": {
+       "frames": 14,
+       "p50_m": 0.0541,
+       "p90_m": 0.0618,
+       "mean_dx_m": 0.0447,
+       "mean_dy_m": 0.0288,
+       "mean_dyaw_deg": -0.367,
+       "frames_without_tag": 14,
+       "tag_sightings_by_site": {}
+      },
+      "x2.45-2.80": {
+       "frames": 190,
+       "p50_m": 0.027,
+       "p90_m": 0.0401,
+       "mean_dx_m": 0.0236,
+       "mean_dy_m": 0.005,
+       "mean_dyaw_deg": -0.047,
+       "frames_without_tag": 63,
+       "tag_sightings_by_site": {
+        "site_08": 194,
+        "site_09": 36,
+        "site_10": 179,
+        "site_14": 52
+       }
+      }
+     },
+     "raw": {
+      "dir": "/Users/changmin/projects/ugrp/outputs/zone-env-v3-20260926/loop/a1-test/a1test-box-s749",
+      "result_sha256": "5310e7187a2bbd125a02f01bbc7c4ff7bb7796746a7f64afb1fe3d8042c74d89",
+      "manifest_sha256": "8b3239aba3596657333a293d76a73068e33b970d8608537f70ea92ab434d22c6",
+      "map_file_sha256": "23de1456e5d38a89bd8cf0b0e7e31521599bb71d39272f80d5d295ae46d8bd3c",
+      "files": 978,
+      "bytes": 24616098,
+      "file_list_sha256": "ed2430f2000ba79e55a0f29237fbbc7aef1518d4f1542597c8d6adf89509775a"
+     }
+    }
+   ],
+   "cohort_gate": {
+    "missing": [],
+    "LG1_box": "4/6",
+    "LG1_pass": false,
+    "LG2_nobox": "2/3",
+    "LG2_pass": false,
+    "LG3_wall_contacts": 2,
+    "LG3_box_drops": 0,
+    "LG3_pass": false,
+    "pass": false,
+    "blocked": false
+   }
+  }
+ }
+}

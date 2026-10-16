@@ -1,0 +1,264 @@
+{
+  "case": "baseline",
+  "acquisition": {
+    "status": "RECORDED",
+    "source_sha": "85554a9605ad8b89cab36b1e40d06fcef136d33d",
+    "case": "baseline",
+    "model_calls": 0,
+    "freeze": false,
+    "loadavg_start": [
+      7.1728515625,
+      7.63330078125,
+      9.2294921875
+    ],
+    "start_sim_s": 1.3,
+    "frames": 901,
+    "total_sim_s": 181.3,
+    "prediction_view": "completed_graph",
+    "wall_s": 454.17665562499315,
+    "loadavg_end": [
+      7.34765625,
+      7.68701171875,
+      8.61181640625
+    ]
+  },
+  "full_map": {
+    "occupied_cells": 25,
+    "precision_015": 0.56,
+    "precision_cell": 0.12,
+    "wall_coverage": 0.060790273556231005,
+    "wall_error_rmse_m": 0.3909477703910535
+  },
+  "wall_sample_count": 329,
+  "prediction_view": "completed_graph",
+  "observed_region": {
+    "precision": 0.8235294117647058,
+    "precision_correct": 14,
+    "precision_cells": 17,
+    "recall": 0.145985401459854,
+    "recalled_samples": 20,
+    "visible_samples": 137,
+    "visible_wall_fraction": 0.41641337386018235,
+    "sampled_wall_length_proxy_m": 13.700000000000001,
+    "qualification": "actual camera poses/FOV/range and wall-only occlusion; object/self occlusion not modelled"
+  },
+  "coverage": {
+    "travelled_m": 7.378768056526994,
+    "footprint_union_m2": 2.3125000000000004,
+    "footprint_cells_005m": 925,
+    "frames": 901,
+    "mapped_frames": 7,
+    "occupied_cells": 25
+  },
+  "path": {
+    "n": 891,
+    "rmse_m": 1.666881045395152,
+    "end_m": 1.7414917622606245,
+    "missing_gt_samples": 0
+  },
+  "b": {
+    "first_own_confirmation_s": 41.7,
+    "reached_gt": false,
+    "first_gt_reach_s": null
+  },
+  "wall_contacts": 0,
+  "wrong_door_attempts": [
+    {
+      "t": 58.9,
+      "door": "r3:opening_004"
+    },
+    {
+      "t": 61.9,
+      "door": "r3:opening_005"
+    },
+    {
+      "t": 62.9,
+      "door": "r3:opening_004"
+    },
+    {
+      "t": 65.9,
+      "door": "r3:opening_046"
+    },
+    {
+      "t": 69.9,
+      "door": "r3:opening_004"
+    },
+    {
+      "t": 72.5,
+      "door": "r3:opening_048"
+    },
+    {
+      "t": 85.7,
+      "door": "r3:opening_059"
+    },
+    {
+      "t": 138.7,
+      "door": "r3:opening_013"
+    },
+    {
+      "t": 145.3,
+      "door": "r3:opening_090"
+    },
+    {
+      "t": 149.9,
+      "door": "r3:opening_089"
+    }
+  ],
+  "door_exposure": {
+    "candidate_frames": 727,
+    "feasible_rows": 163,
+    "selected_path_rows": 44
+  },
+  "loop_counts": {
+    "member_scan": 7
+  },
+  "switch_counts": {},
+  "calibration": {
+    "occupancy_ece_diagnostic": {
+      "n": 25,
+      "bins": [
+        {
+          "lo": 0.0,
+          "n": 0,
+          "score": null,
+          "precision": null
+        },
+        {
+          "lo": 0.1,
+          "n": 0,
+          "score": null,
+          "precision": null
+        },
+        {
+          "lo": 0.2,
+          "n": 0,
+          "score": null,
+          "precision": null
+        },
+        {
+          "lo": 0.3,
+          "n": 0,
+          "score": null,
+          "precision": null
+        },
+        {
+          "lo": 0.4,
+          "n": 0,
+          "score": null,
+          "precision": null
+        },
+        {
+          "lo": 0.5,
+          "n": 18,
+          "score": 0.5290217771455299,
+          "precision": 0.3888888888888889
+        },
+        {
+          "lo": 0.6,
+          "n": 2,
+          "score": 0.656598451804286,
+          "precision": 1.0
+        },
+        {
+          "lo": 0.7,
+          "n": 2,
+          "score": 0.7552601688670068,
+          "precision": 1.0
+        },
+        {
+          "lo": 0.8,
+          "n": 3,
+          "score": 0.8669031189395446,
+          "precision": 1.0
+        },
+        {
+          "lo": 0.9,
+          "n": 0,
+          "score": null,
+          "precision": null
+        }
+      ],
+      "gap": 0.16391861561833274
+    },
+    "support_score_gap": {
+      "n": 25,
+      "bins": [
+        {
+          "lo": 0.0,
+          "n": 15,
+          "score": 0.03155219659714797,
+          "precision": 0.26666666666666666
+        },
+        {
+          "lo": 0.1,
+          "n": 3,
+          "score": 0.14637134952858813,
+          "precision": 1.0
+        },
+        {
+          "lo": 0.2,
+          "n": 3,
+          "score": 0.2645457379922543,
+          "precision": 1.0
+        },
+        {
+          "lo": 0.3,
+          "n": 4,
+          "score": 0.3081143672763498,
+          "precision": 1.0
+        },
+        {
+          "lo": 0.4,
+          "n": 0,
+          "score": null,
+          "precision": null
+        },
+        {
+          "lo": 0.5,
+          "n": 0,
+          "score": null,
+          "precision": null
+        },
+        {
+          "lo": 0.6,
+          "n": 0,
+          "score": null,
+          "precision": null
+        },
+        {
+          "lo": 0.7,
+          "n": 0,
+          "score": null,
+          "precision": null
+        },
+        {
+          "lo": 0.8,
+          "n": 0,
+          "score": null,
+          "precision": null
+        },
+        {
+          "lo": 0.9,
+          "n": 0,
+          "score": null,
+          "precision": null
+        }
+      ],
+      "gap": 0.44246033277499414
+    },
+    "qualification": "TSDF support is NOT probability"
+  },
+  "criteria": {
+    "recorded": true,
+    "no_contact": true,
+    "no_wrong_door": false,
+    "distance": true,
+    "area": true,
+    "visible_samples": true,
+    "precision": true,
+    "recall": false,
+    "wall_rmse": false,
+    "path_rmse": false
+  },
+  "passed": false
+}

@@ -1,0 +1,1560 @@
+{
+  "schema": "ugrp.act6.stall.v1",
+  "complete_available_saved_analysis": true,
+  "physical_runs": 0,
+  "inference_calls": 0,
+  "training_steps": 0,
+  "teacher_coverage": {
+    "available_N": 2,
+    "cohort_N": 50,
+    "missing_seeds": [
+      86002,
+      86003,
+      86004,
+      86005,
+      86006,
+      86007,
+      86008,
+      86009,
+      86010,
+      86011,
+      86012,
+      86013,
+      86014,
+      86015,
+      86016,
+      86017,
+      86018,
+      86019,
+      86020,
+      86021,
+      86022,
+      86023,
+      86024,
+      86025,
+      86026,
+      86027,
+      86028,
+      86029,
+      86030,
+      86031,
+      86032,
+      86033,
+      86034,
+      86035,
+      86036,
+      86037,
+      86038,
+      86039,
+      86040,
+      86041,
+      86042,
+      86043,
+      86044,
+      86045,
+      86046,
+      86047,
+      86048,
+      86049
+    ]
+  },
+  "teacher": [
+    {
+      "seed": 86000,
+      "local": {
+        "N": 344,
+        "zero": 194,
+        "per_wheel_zero": [
+          194,
+          194,
+          194,
+          194
+        ],
+        "wheel_median": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "phase": {
+          "approach": {
+            "N": 76,
+            "zero": 0,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          },
+          "align": {
+            "N": 18,
+            "zero": 4,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          },
+          "hover": {
+            "N": 10,
+            "zero": 10,
+            "pan_changed": 8,
+            "pwm_changed": 8
+          },
+          "descent": {
+            "N": 16,
+            "zero": 16,
+            "pan_changed": 0,
+            "pwm_changed": 15
+          },
+          "close": {
+            "N": 12,
+            "zero": 12,
+            "pan_changed": 0,
+            "pwm_changed": 8
+          },
+          "lift": {
+            "N": 15,
+            "zero": 15,
+            "pan_changed": 0,
+            "pwm_changed": 12
+          },
+          "lift_settle": {
+            "N": 32,
+            "zero": 32,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          },
+          "lookback_pose": {
+            "N": 11,
+            "zero": 11,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          },
+          "lookback": {
+            "N": 21,
+            "zero": 1,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          },
+          "lookback_settle": {
+            "N": 5,
+            "zero": 5,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          },
+          "verify_lift": {
+            "N": 11,
+            "zero": 11,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          },
+          "hold": {
+            "N": 30,
+            "zero": 30,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          },
+          "lookback_return": {
+            "N": 21,
+            "zero": 1,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          },
+          "lower": {
+            "N": 20,
+            "zero": 20,
+            "pan_changed": 0,
+            "pwm_changed": 8
+          },
+          "open": {
+            "N": 7,
+            "zero": 7,
+            "pan_changed": 0,
+            "pwm_changed": 5
+          },
+          "retract": {
+            "N": 18,
+            "zero": 18,
+            "pan_changed": 8,
+            "pwm_changed": 16
+          },
+          "backoff": {
+            "N": 21,
+            "zero": 1,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          }
+        }
+      },
+      "all_recorded": {
+        "N": 430,
+        "zero": 280,
+        "per_wheel_zero": [
+          280,
+          280,
+          280,
+          280
+        ],
+        "wheel_median": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "phase": {
+          "start": {
+            "N": 1,
+            "zero": 1,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          },
+          "fold": {
+            "N": 6,
+            "zero": 6,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          },
+          "approach": {
+            "N": 76,
+            "zero": 0,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          },
+          "align": {
+            "N": 18,
+            "zero": 4,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          },
+          "hover": {
+            "N": 10,
+            "zero": 10,
+            "pan_changed": 8,
+            "pwm_changed": 8
+          },
+          "descent": {
+            "N": 16,
+            "zero": 16,
+            "pan_changed": 0,
+            "pwm_changed": 15
+          },
+          "close": {
+            "N": 12,
+            "zero": 12,
+            "pan_changed": 0,
+            "pwm_changed": 8
+          },
+          "lift": {
+            "N": 15,
+            "zero": 15,
+            "pan_changed": 0,
+            "pwm_changed": 12
+          },
+          "lift_settle": {
+            "N": 32,
+            "zero": 32,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          },
+          "lookback_pose": {
+            "N": 11,
+            "zero": 11,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          },
+          "lookback": {
+            "N": 21,
+            "zero": 1,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          },
+          "lookback_settle": {
+            "N": 5,
+            "zero": 5,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          },
+          "verify_lift": {
+            "N": 11,
+            "zero": 11,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          },
+          "hold": {
+            "N": 30,
+            "zero": 30,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          },
+          "lookback_return": {
+            "N": 21,
+            "zero": 1,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          },
+          "lower": {
+            "N": 20,
+            "zero": 20,
+            "pan_changed": 0,
+            "pwm_changed": 8
+          },
+          "open": {
+            "N": 7,
+            "zero": 7,
+            "pan_changed": 0,
+            "pwm_changed": 5
+          },
+          "retract": {
+            "N": 18,
+            "zero": 18,
+            "pan_changed": 8,
+            "pwm_changed": 16
+          },
+          "backoff": {
+            "N": 21,
+            "zero": 1,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          },
+          "lookaround": {
+            "N": 59,
+            "zero": 59,
+            "pan_changed": 6,
+            "pwm_changed": 6
+          },
+          "complete": {
+            "N": 20,
+            "zero": 20,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          }
+        }
+      }
+    },
+    {
+      "seed": 86001,
+      "local": {
+        "N": 375,
+        "zero": 193,
+        "per_wheel_zero": [
+          193,
+          193,
+          195,
+          193
+        ],
+        "wheel_median": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "phase": {
+          "approach": {
+            "N": 107,
+            "zero": 0,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          },
+          "align": {
+            "N": 19,
+            "zero": 4,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          },
+          "hover": {
+            "N": 10,
+            "zero": 10,
+            "pan_changed": 8,
+            "pwm_changed": 8
+          },
+          "descent": {
+            "N": 16,
+            "zero": 16,
+            "pan_changed": 0,
+            "pwm_changed": 15
+          },
+          "close": {
+            "N": 11,
+            "zero": 11,
+            "pan_changed": 0,
+            "pwm_changed": 8
+          },
+          "lift": {
+            "N": 15,
+            "zero": 15,
+            "pan_changed": 0,
+            "pwm_changed": 12
+          },
+          "lift_settle": {
+            "N": 32,
+            "zero": 32,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          },
+          "lookback_pose": {
+            "N": 11,
+            "zero": 11,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          },
+          "lookback": {
+            "N": 21,
+            "zero": 1,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          },
+          "lookback_settle": {
+            "N": 5,
+            "zero": 5,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          },
+          "verify_lift": {
+            "N": 11,
+            "zero": 11,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          },
+          "hold": {
+            "N": 30,
+            "zero": 30,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          },
+          "lookback_return": {
+            "N": 21,
+            "zero": 1,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          },
+          "lower": {
+            "N": 20,
+            "zero": 20,
+            "pan_changed": 0,
+            "pwm_changed": 8
+          },
+          "open": {
+            "N": 7,
+            "zero": 7,
+            "pan_changed": 0,
+            "pwm_changed": 5
+          },
+          "retract": {
+            "N": 18,
+            "zero": 18,
+            "pan_changed": 8,
+            "pwm_changed": 16
+          },
+          "backoff": {
+            "N": 21,
+            "zero": 1,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          }
+        }
+      },
+      "all_recorded": {
+        "N": 464,
+        "zero": 279,
+        "per_wheel_zero": [
+          279,
+          279,
+          281,
+          279
+        ],
+        "wheel_median": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "phase": {
+          "start": {
+            "N": 1,
+            "zero": 1,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          },
+          "fold": {
+            "N": 6,
+            "zero": 6,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          },
+          "approach": {
+            "N": 110,
+            "zero": 0,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          },
+          "align": {
+            "N": 19,
+            "zero": 4,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          },
+          "hover": {
+            "N": 10,
+            "zero": 10,
+            "pan_changed": 8,
+            "pwm_changed": 8
+          },
+          "descent": {
+            "N": 16,
+            "zero": 16,
+            "pan_changed": 0,
+            "pwm_changed": 15
+          },
+          "close": {
+            "N": 11,
+            "zero": 11,
+            "pan_changed": 0,
+            "pwm_changed": 8
+          },
+          "lift": {
+            "N": 15,
+            "zero": 15,
+            "pan_changed": 0,
+            "pwm_changed": 12
+          },
+          "lift_settle": {
+            "N": 32,
+            "zero": 32,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          },
+          "lookback_pose": {
+            "N": 11,
+            "zero": 11,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          },
+          "lookback": {
+            "N": 21,
+            "zero": 1,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          },
+          "lookback_settle": {
+            "N": 5,
+            "zero": 5,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          },
+          "verify_lift": {
+            "N": 11,
+            "zero": 11,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          },
+          "hold": {
+            "N": 30,
+            "zero": 30,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          },
+          "lookback_return": {
+            "N": 21,
+            "zero": 1,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          },
+          "lower": {
+            "N": 20,
+            "zero": 20,
+            "pan_changed": 0,
+            "pwm_changed": 8
+          },
+          "open": {
+            "N": 7,
+            "zero": 7,
+            "pan_changed": 0,
+            "pwm_changed": 5
+          },
+          "retract": {
+            "N": 18,
+            "zero": 18,
+            "pan_changed": 8,
+            "pwm_changed": 16
+          },
+          "backoff": {
+            "N": 21,
+            "zero": 1,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          },
+          "lookaround": {
+            "N": 59,
+            "zero": 59,
+            "pan_changed": 6,
+            "pwm_changed": 6
+          },
+          "complete": {
+            "N": 20,
+            "zero": 20,
+            "pan_changed": 0,
+            "pwm_changed": 0
+          }
+        }
+      }
+    }
+  ],
+  "teacher_local_combined": {
+    "N": 719,
+    "zero": 387,
+    "per_wheel_zero": [
+      387,
+      387,
+      389,
+      387
+    ],
+    "wheel_median": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "phase": {
+      "approach": {
+        "N": 183,
+        "zero": 0,
+        "pan_changed": 0,
+        "pwm_changed": 0
+      },
+      "align": {
+        "N": 37,
+        "zero": 8,
+        "pan_changed": 0,
+        "pwm_changed": 0
+      },
+      "hover": {
+        "N": 20,
+        "zero": 20,
+        "pan_changed": 16,
+        "pwm_changed": 16
+      },
+      "descent": {
+        "N": 32,
+        "zero": 32,
+        "pan_changed": 0,
+        "pwm_changed": 30
+      },
+      "close": {
+        "N": 23,
+        "zero": 23,
+        "pan_changed": 0,
+        "pwm_changed": 16
+      },
+      "lift": {
+        "N": 30,
+        "zero": 30,
+        "pan_changed": 0,
+        "pwm_changed": 24
+      },
+      "lift_settle": {
+        "N": 64,
+        "zero": 64,
+        "pan_changed": 0,
+        "pwm_changed": 0
+      },
+      "lookback_pose": {
+        "N": 22,
+        "zero": 22,
+        "pan_changed": 0,
+        "pwm_changed": 0
+      },
+      "lookback": {
+        "N": 42,
+        "zero": 2,
+        "pan_changed": 0,
+        "pwm_changed": 0
+      },
+      "lookback_settle": {
+        "N": 10,
+        "zero": 10,
+        "pan_changed": 0,
+        "pwm_changed": 0
+      },
+      "verify_lift": {
+        "N": 22,
+        "zero": 22,
+        "pan_changed": 0,
+        "pwm_changed": 0
+      },
+      "hold": {
+        "N": 60,
+        "zero": 60,
+        "pan_changed": 0,
+        "pwm_changed": 0
+      },
+      "lookback_return": {
+        "N": 42,
+        "zero": 2,
+        "pan_changed": 0,
+        "pwm_changed": 0
+      },
+      "lower": {
+        "N": 40,
+        "zero": 40,
+        "pan_changed": 0,
+        "pwm_changed": 16
+      },
+      "open": {
+        "N": 14,
+        "zero": 14,
+        "pan_changed": 0,
+        "pwm_changed": 10
+      },
+      "retract": {
+        "N": 36,
+        "zero": 36,
+        "pan_changed": 16,
+        "pwm_changed": 32
+      },
+      "backoff": {
+        "N": 42,
+        "zero": 2,
+        "pan_changed": 0,
+        "pwm_changed": 0
+      }
+    }
+  },
+  "teacher_normalized_median": [
+    -0.2205067527911927,
+    -0.26474727187101615,
+    -0.2267054670865366,
+    -0.11678936029475391
+  ],
+  "teacher_normalized_zero": [
+    -0.2205067527911927,
+    -0.26474727187101615,
+    -0.2267054670865366,
+    -0.11678936029475391
+  ],
+  "heldout_direction_proxy": {
+    "grasp": {
+      "N": 1398,
+      "all_drive_axes_stationary": 732
+    },
+    "release": {
+      "N": 435,
+      "all_drive_axes_stationary": 235
+    }
+  },
+  "student": {
+    "N": 900,
+    "zero": 755,
+    "visible": 868,
+    "visible_and_zero": 723,
+    "last_nonzero_s": 25.6,
+    "zero_at_inference_boundary": [
+      88,
+      113
+    ],
+    "late_zero_at_new_inference": [
+      80,
+      80
+    ],
+    "predictions_observation_age_s": {
+      "mean": 0.34911111111111104,
+      "max": 0.7
+    },
+    "done_requested": 0
+  },
+  "history_shift": {
+    "start_max_abs_age_z": 24.903473976452506,
+    "ticks_any_age_above_3sigma": 14,
+    "last_tick_any_age_above_3sigma": 13,
+    "local_teacher_ticks_any_age_above_3sigma": 11,
+    "local_teacher_N": 719
+  },
+  "saved_probes": [
+    {
+      "row": 0,
+      "elapsed_s": 0.0,
+      "raw_wheels": [
+        0.4085059643990449,
+        0.36960531428307597,
+        0.28465135011053927,
+        0.1416534344553644
+      ],
+      "max_abs_wheel": 0.4085059643990449,
+      "raw_durations_s": [
+        0.040242351352167346,
+        0.020153454723254166,
+        0.05635630201111231,
+        0.014683804206763844
+      ],
+      "wheel_below_deadzone": 1,
+      "pulse_below_minimum": 0,
+      "decoded_wheels": [
+        0.4,
+        0.36960531428307597,
+        0.31,
+        0.0
+      ],
+      "done": false,
+      "normalized_wheel": [
+        1.5556668043136597,
+        1.3589897155761719,
+        1.0152431726455688,
+        0.48988556861877436
+      ],
+      "normalized_zero_command": [
+        -0.2205067527911927,
+        -0.26474727187101615,
+        -0.2267054670865366,
+        -0.11678936029475391
+      ]
+    },
+    {
+      "row": 32,
+      "elapsed_s": 3.2,
+      "raw_wheels": [
+        0.3307712107841209,
+        0.37322392551411754,
+        0.3697528450837328,
+        -0.3189459633976964
+      ],
+      "max_abs_wheel": 0.37322392551411754,
+      "raw_durations_s": [
+        0.021529401174990043,
+        0.08620384391067079,
+        0.1099195564532137,
+        -0.0006764419714603953
+      ],
+      "wheel_below_deadzone": 0,
+      "pulse_below_minimum": 1,
+      "decoded_wheels": [
+        0.3307712107841209,
+        0.37322392551411754,
+        0.3697528450837328,
+        0.0
+      ],
+      "done": false,
+      "normalized_wheel": [
+        1.2176780700683594,
+        1.3748868703842163,
+        1.3865454196929932,
+        -1.4827747344970703
+      ],
+      "normalized_zero_command": [
+        -0.2205067527911927,
+        -0.26474727187101615,
+        -0.2267054670865366,
+        -0.11678936029475391
+      ]
+    },
+    {
+      "row": 56,
+      "elapsed_s": 5.6000000000000005,
+      "raw_wheels": [
+        -0.42585287018089013,
+        0.3881316106386123,
+        0.3828097269687772,
+        -0.3807374519267156
+      ],
+      "max_abs_wheel": 0.42585287018089013,
+      "raw_durations_s": [
+        0.03801615262598852,
+        0.043149456925633496,
+        0.040883079033888,
+        0.039737100843337515
+      ],
+      "wheel_below_deadzone": 0,
+      "pulse_below_minimum": 0,
+      "decoded_wheels": [
+        -0.4,
+        0.3881316106386123,
+        0.3828097269687772,
+        -0.3807374519267156
+      ],
+      "done": false,
+      "normalized_wheel": [
+        -2.0721042156219482,
+        1.4403787851333618,
+        1.44351327419281,
+        -1.7474160194396975
+      ],
+      "normalized_zero_command": [
+        -0.2205067527911927,
+        -0.26474727187101615,
+        -0.2267054670865366,
+        -0.11678936029475391
+      ]
+    },
+    {
+      "row": 112,
+      "elapsed_s": 11.200000000000001,
+      "raw_wheels": [
+        0.08147470537825813,
+        0.054732610506310314,
+        0.038872610131299314,
+        0.07869035617682621
+      ],
+      "max_abs_wheel": 0.08147470537825813,
+      "raw_durations_s": [
+        0.0019970422313251176,
+        0.0016177514843861707,
+        -0.0015463339673802616,
+        0.003994696118157541
+      ],
+      "wheel_below_deadzone": 4,
+      "pulse_below_minimum": 1,
+      "decoded_wheels": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "done": false,
+      "normalized_wheel": [
+        0.1337431967258453,
+        -0.02429790422320366,
+        -0.05710224807262421,
+        0.22022658586502075
+      ],
+      "normalized_zero_command": [
+        -0.2205067527911927,
+        -0.26474727187101615,
+        -0.2267054670865366,
+        -0.11678936029475391
+      ]
+    },
+    {
+      "row": 448,
+      "elapsed_s": 44.800000000000004,
+      "raw_wheels": [
+        -0.002456414279363814,
+        -0.0001372949538597512,
+        0.002915853570907824,
+        -0.002586572504023693
+      ],
+      "max_abs_wheel": 0.002915853570907824,
+      "raw_durations_s": [
+        4.470865286220482e-05,
+        -0.00041710381011800246,
+        -0.0014392022347247014,
+        -0.00027646263132676956
+      ],
+      "wheel_below_deadzone": 4,
+      "pulse_below_minimum": 4,
+      "decoded_wheels": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "done": false,
+      "normalized_wheel": [
+        -0.23118717968463898,
+        -0.26535043120384216,
+        -0.2139834463596344,
+        -0.12786716222763062
+      ],
+      "normalized_zero_command": [
+        -0.2205067527911927,
+        -0.26474727187101615,
+        -0.2267054670865366,
+        -0.11678936029475391
+      ]
+    },
+    {
+      "row": 896,
+      "elapsed_s": 89.60000000000001,
+      "raw_wheels": [
+        -0.0006049376122113301,
+        0.0021259482165430083,
+        0.0028059968119253723,
+        0.0002680876214696086
+      ],
+      "max_abs_wheel": 0.0028059968119253723,
+      "raw_durations_s": [
+        -0.000164339748501241,
+        -0.00044422352682248754,
+        -0.0017432186205659326,
+        -0.000509467084286394
+      ],
+      "wheel_below_deadzone": 4,
+      "pulse_below_minimum": 4,
+      "decoded_wheels": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "done": false,
+      "normalized_wheel": [
+        -0.22313700616359713,
+        -0.2554076313972473,
+        -0.2144627571105957,
+        -0.11564119160175323
+      ],
+      "normalized_zero_command": [
+        -0.2205067527911927,
+        -0.26474727187101615,
+        -0.2267054670865366,
+        -0.11678936029475391
+      ]
+    }
+  ],
+  "similar_visible_states": [
+    {
+      "row": 0,
+      "elapsed_s": 0.0,
+      "student_zero": false,
+      "student_geometry": {
+        "pixels": 3554,
+        "center": [
+          0.4610337823579066,
+          0.6127907522040893
+        ],
+        "wh": [
+          73,
+          65
+        ]
+      },
+      "distance_definition": "Euclidean(cx,cy,width/640,height/480); not identical camera/arm/history",
+      "nearest_distance": 0.2386224043081122,
+      "teacher_zero_n": 0,
+      "N": 10,
+      "teacher_phases": {
+        "approach": 10
+      },
+      "nearest": {
+        "seed": 86000,
+        "sample_id": "train-86000:7:r1",
+        "t": 2.0000000000002514,
+        "phase": "approach",
+        "kind": "cyan",
+        "geometry": {
+          "pixels": 2990,
+          "center": [
+            0.22481657608695654,
+            0.5840071070234114
+          ],
+          "wh": [
+            63,
+            61
+          ]
+        },
+        "command": {
+          "t": 2.0000000000002514,
+          "wheels": [
+            0.35,
+            0.35,
+            0.35,
+            -0.35
+          ],
+          "duration_s": [
+            0.02766280147239847,
+            0.02688543593342092,
+            0.06402829307627807,
+            0.009480055670458681
+          ],
+          "pwm": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        },
+        "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-record-86000-6f057f7e/raw/rgb/r1/000007.jpg",
+        "sha256": "768a496a2c4f9d8b251d028670723461a355b2ae56d95f8956b988151527261b",
+        "pwm": {
+          "1": 2000,
+          "3": 740,
+          "4": 2320,
+          "5": 1320,
+          "6": 1500
+        }
+      }
+    },
+    {
+      "row": 32,
+      "elapsed_s": 3.2,
+      "student_zero": false,
+      "student_geometry": {
+        "pixels": 7585,
+        "center": [
+          0.36812005603164144,
+          0.8541751812788398
+        ],
+        "wh": [
+          102,
+          103
+        ]
+      },
+      "distance_definition": "Euclidean(cx,cy,width/640,height/480); not identical camera/arm/history",
+      "nearest_distance": 0.07971471508137548,
+      "teacher_zero_n": 0,
+      "N": 10,
+      "teacher_phases": {
+        "approach": 10
+      },
+      "nearest": {
+        "seed": 86000,
+        "sample_id": "train-86000:67:r1",
+        "t": 8.00000000000403,
+        "phase": "approach",
+        "kind": "cyan",
+        "geometry": {
+          "pixels": 11085,
+          "center": [
+            0.32540285295444293,
+            0.873837580814915
+          ],
+          "wh": [
+            143,
+            106
+          ]
+        },
+        "command": {
+          "t": 8.00000000000403,
+          "wheels": [
+            -0.35,
+            0.35,
+            0.35,
+            -0.35
+          ],
+          "duration_s": [
+            0.051209499186438245,
+            0.051209499186438245,
+            0.05164764367070461,
+            0.05164764367070461
+          ],
+          "pwm": {
+            "1": 2000,
+            "3": 600,
+            "4": 2440,
+            "5": 1320,
+            "6": 1920
+          }
+        },
+        "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-record-86000-6f057f7e/raw/rgb/r1/000067.jpg",
+        "sha256": "5c3ff0a846e00cdadf1dec3e270aaaf385707c98f9ad8ade8b31f8b3658f110c",
+        "pwm": {
+          "1": 2000,
+          "3": 640,
+          "4": 2380,
+          "5": 1320,
+          "6": 1860
+        }
+      }
+    },
+    {
+      "row": 56,
+      "elapsed_s": 5.6,
+      "student_zero": false,
+      "student_geometry": {
+        "pixels": 15200,
+        "center": [
+          0.6958379934210527,
+          0.6597441063596492
+        ],
+        "wh": [
+          152,
+          164
+        ]
+      },
+      "distance_definition": "Euclidean(cx,cy,width/640,height/480); not identical camera/arm/history",
+      "nearest_distance": 0.05454950162113183,
+      "teacher_zero_n": 6,
+      "N": 10,
+      "teacher_phases": {
+        "align": 8,
+        "hover": 2
+      },
+      "nearest": {
+        "seed": 86000,
+        "sample_id": "train-86000:95:r1",
+        "t": 10.799999999997505,
+        "phase": "align",
+        "kind": "cyan",
+        "geometry": {
+          "pixels": 21849,
+          "center": [
+            0.7070513095565014,
+            0.6435571040627336
+          ],
+          "wh": [
+            174,
+            182
+          ]
+        },
+        "command": {
+          "t": 10.799999999997505,
+          "wheels": [
+            -0.35,
+            0.35,
+            0.35,
+            -0.35
+          ],
+          "duration_s": [
+            0.04,
+            0.04,
+            0.04,
+            0.04
+          ],
+          "pwm": {
+            "1": 2000,
+            "3": 500,
+            "4": 2500,
+            "5": 1320,
+            "6": 1740
+          }
+        },
+        "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-record-86000-6f057f7e/raw/rgb/r1/000095.jpg",
+        "sha256": "2d4a6d470f0330f7a3ef937c26843eab3c855ba3fd0867bc59517b7b81a1d650",
+        "pwm": {
+          "1": 2000,
+          "3": 500,
+          "4": 2500,
+          "5": 1320,
+          "6": 1740
+        }
+      }
+    },
+    {
+      "row": 112,
+      "elapsed_s": 11.2,
+      "student_zero": true,
+      "student_geometry": {
+        "pixels": 17476,
+        "center": [
+          0.8298540677214465,
+          0.570015902761883
+        ],
+        "wh": [
+          152,
+          173
+        ]
+      },
+      "distance_definition": "Euclidean(cx,cy,width/640,height/480); not identical camera/arm/history",
+      "nearest_distance": 0.12740537651341066,
+      "teacher_zero_n": 5,
+      "N": 10,
+      "teacher_phases": {
+        "align": 9,
+        "hover": 1
+      },
+      "nearest": {
+        "seed": 86000,
+        "sample_id": "train-86000:94:r1",
+        "t": 10.699999999997738,
+        "phase": "align",
+        "kind": "cyan",
+        "geometry": {
+          "pixels": 21439,
+          "center": [
+            0.7597748262512244,
+            0.6616142505091965
+          ],
+          "wh": [
+            182,
+            186
+          ]
+        },
+        "command": {
+          "t": 10.699999999997738,
+          "wheels": [
+            -0.35,
+            0.35,
+            0.35,
+            -0.35
+          ],
+          "duration_s": [
+            0.04,
+            0.04,
+            0.04,
+            0.04
+          ],
+          "pwm": {
+            "1": 2000,
+            "3": 500,
+            "4": 2500,
+            "5": 1320,
+            "6": 1740
+          }
+        },
+        "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-record-86000-6f057f7e/raw/rgb/r1/000094.jpg",
+        "sha256": "42701d96873d1d7212a3b5c2ba210436d317a649667d5f334fcbb9d2cc0a9f20",
+        "pwm": {
+          "1": 2000,
+          "3": 500,
+          "4": 2500,
+          "5": 1320,
+          "6": 1800
+        }
+      }
+    },
+    {
+      "row": 256,
+      "elapsed_s": 25.6,
+      "student_zero": false,
+      "student_geometry": {
+        "pixels": 10712,
+        "center": [
+          0.8812702751587006,
+          0.6167642986059249
+        ],
+        "wh": [
+          95,
+          172
+        ]
+      },
+      "distance_definition": "Euclidean(cx,cy,width/640,height/480); not identical camera/arm/history",
+      "nearest_distance": 0.19000621211331326,
+      "teacher_zero_n": 5,
+      "N": 10,
+      "teacher_phases": {
+        "align": 9,
+        "hover": 1
+      },
+      "nearest": {
+        "seed": 86000,
+        "sample_id": "train-86000:94:r1",
+        "t": 10.699999999997738,
+        "phase": "align",
+        "kind": "cyan",
+        "geometry": {
+          "pixels": 21439,
+          "center": [
+            0.7597748262512244,
+            0.6616142505091965
+          ],
+          "wh": [
+            182,
+            186
+          ]
+        },
+        "command": {
+          "t": 10.699999999997738,
+          "wheels": [
+            -0.35,
+            0.35,
+            0.35,
+            -0.35
+          ],
+          "duration_s": [
+            0.04,
+            0.04,
+            0.04,
+            0.04
+          ],
+          "pwm": {
+            "1": 2000,
+            "3": 500,
+            "4": 2500,
+            "5": 1320,
+            "6": 1740
+          }
+        },
+        "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-record-86000-6f057f7e/raw/rgb/r1/000094.jpg",
+        "sha256": "42701d96873d1d7212a3b5c2ba210436d317a649667d5f334fcbb9d2cc0a9f20",
+        "pwm": {
+          "1": 2000,
+          "3": 500,
+          "4": 2500,
+          "5": 1320,
+          "6": 1800
+        }
+      }
+    },
+    {
+      "row": 448,
+      "elapsed_s": 44.8,
+      "student_zero": true,
+      "student_geometry": {
+        "pixels": 3681,
+        "center": [
+          0.9106348478674274,
+          0.7130897401068551
+        ],
+        "wh": [
+          46,
+          151
+        ]
+      },
+      "distance_definition": "Euclidean(cx,cy,width/640,height/480); not identical camera/arm/history",
+      "nearest_distance": 0.27194943754633055,
+      "teacher_zero_n": 6,
+      "N": 10,
+      "teacher_phases": {
+        "align": 8,
+        "hover": 2
+      },
+      "nearest": {
+        "seed": 86000,
+        "sample_id": "train-86000:91:r1",
+        "t": 10.399999999998437,
+        "phase": "align",
+        "kind": "cyan",
+        "geometry": {
+          "pixels": 20718,
+          "center": [
+            0.7622355107877208,
+            0.75178940615246
+          ],
+          "wh": [
+            181,
+            188
+          ]
+        },
+        "command": {
+          "t": 10.399999999998437,
+          "wheels": [
+            -0.35,
+            0.35,
+            0.35,
+            -0.35
+          ],
+          "duration_s": [
+            0.04,
+            0.04,
+            0.04,
+            0.04
+          ],
+          "pwm": {
+            "1": 2000,
+            "3": 500,
+            "4": 2500,
+            "5": 1320,
+            "6": 1800
+          }
+        },
+        "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-record-86000-6f057f7e/raw/rgb/r1/000091.jpg",
+        "sha256": "60787eda60907ee1777a590cbfb021876f0217a654a63d3b8b0ae91544505de6",
+        "pwm": {
+          "1": 2000,
+          "3": 540,
+          "4": 2500,
+          "5": 1320,
+          "6": 1860
+        }
+      }
+    },
+    {
+      "row": 896,
+      "elapsed_s": 89.6,
+      "student_zero": true,
+      "student_geometry": {
+        "pixels": 5279,
+        "center": [
+          0.9064320302140556,
+          0.6708179421607628
+        ],
+        "wh": [
+          56,
+          168
+        ]
+      },
+      "distance_definition": "Euclidean(cx,cy,width/640,height/480); not identical camera/arm/history",
+      "nearest_distance": 0.24851369990246533,
+      "teacher_zero_n": 5,
+      "N": 10,
+      "teacher_phases": {
+        "align": 9,
+        "hover": 1
+      },
+      "nearest": {
+        "seed": 86000,
+        "sample_id": "train-86000:94:r1",
+        "t": 10.699999999997738,
+        "phase": "align",
+        "kind": "cyan",
+        "geometry": {
+          "pixels": 21439,
+          "center": [
+            0.7597748262512244,
+            0.6616142505091965
+          ],
+          "wh": [
+            182,
+            186
+          ]
+        },
+        "command": {
+          "t": 10.699999999997738,
+          "wheels": [
+            -0.35,
+            0.35,
+            0.35,
+            -0.35
+          ],
+          "duration_s": [
+            0.04,
+            0.04,
+            0.04,
+            0.04
+          ],
+          "pwm": {
+            "1": 2000,
+            "3": 500,
+            "4": 2500,
+            "5": 1320,
+            "6": 1740
+          }
+        },
+        "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-record-86000-6f057f7e/raw/rgb/r1/000094.jpg",
+        "sha256": "42701d96873d1d7212a3b5c2ba210436d317a649667d5f334fcbb9d2cc0a9f20",
+        "pwm": {
+          "1": 2000,
+          "3": 500,
+          "4": 2500,
+          "5": 1320,
+          "6": 1800
+        }
+      }
+    }
+  ],
+  "visual_review": {
+    "student_frames_s": [
+      0,
+      3,
+      5,
+      8,
+      12,
+      18,
+      36,
+      54,
+      72,
+      89.9
+    ],
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act5-offline-40a21045/contact-sheet.jpg",
+    "observation": "solo cyan shifts right and remains clipped; late frames nearly unchanged; no partner",
+    "nearest_comparison_path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act6-bd140578/nearest-review.jpg",
+    "nearest_comparison_sha256": "29b1d8cce17aad21615240886e742acdb6a9103321402fccf8c0b6d0b8fa7b3e",
+    "teacher_unique_frames_sim_s": [
+      2.0,
+      8.0,
+      10.4,
+      10.7,
+      10.8
+    ],
+    "nearest_comparison_student_s": [
+      0.0,
+      3.2,
+      5.6,
+      11.2,
+      25.6,
+      44.8,
+      89.6
+    ],
+    "comparison_observation": "nearest teacher frames before grasp have uncut cyan box; late student remains at far right clipped edge; geometric matches are not identical states"
+  },
+  "limits": [
+    "48 teacher command/RGB originals unavailable locally: census is 2/50, not 50/50",
+    "No exact teacher counterfactual for 91100; nearest image box geometry is descriptive only",
+    "No causal allocation of L1/history/chunk without matched interventions and closed-loop trials",
+    "Full signed heldout residuals unavailable; off-diagonal covariance unidentifiable from absolute errors"
+  ],
+  "artifacts": {
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act-student-main-91100-f609979c/raw/student-inputs.jsonl": "f2cef69b983993205b441714a9967c50f544f07c24e427bfd39a831ffe2cf8e8",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act-student-main-91100-f609979c/raw/commands.jsonl": "44ac6ea42d19f3b9e62db0080bffe6ec40639ffd8f7eb785ab24b096fa1c6845",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act5-offline-40a21045/pixel-trace.json.zst": "5fe7dfacc962fdc45747ae9833778b8b83ce96bfcd0b783a6b53a3188441b9f3",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act5-offline-40a21045/probes.json.zst": "9392abdaf16f91c627bfdd18c87a27b8de6d5961152ad4ef1a41776c2c62a678",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act4-offline-f609979c/actor/adapter.json": "324cc4c02cc814f4f72fbd1df211e8b61814649066dd29b40917f9c5cb1984a7",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act4-40a21045-ops/measurement/baseline-analysis/timesteps.jsonl.zst": "49c23f19829fdac03be22bdabd17b7724d0541a7d2e95d72ac48717fae20ad4e",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-record-86000-6f057f7e/raw/student-r1.jsonl.zst": "8220e4a3d44db5cb4c69c07bfb87ef92e50ece2a7517daeb38eb7d3dac0229ba",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-record-86000-6f057f7e/raw/teacher-r1.jsonl.zst": "0394e2b4f4edb48145392e589e17fdd93e87c4209769aa1744134afd46f692be",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-record-86001-6f057f7e/raw/student-r1.jsonl.zst": "826451ef71fc3fa640f1a58f57df4679f58c63a8891b4bad40147f35c752d685",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-record-86001-6f057f7e/raw/teacher-r1.jsonl.zst": "4c2b658b6d5438202f197edfcbc886a2df625d17ce7f9f45b9d9152ab7550641"
+  }
+}

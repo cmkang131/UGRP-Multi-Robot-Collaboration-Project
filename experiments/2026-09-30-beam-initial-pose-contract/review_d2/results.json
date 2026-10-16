@@ -1,0 +1,339 @@
+[
+  {
+    "label": "before-normal",
+    "mutation": "normal",
+    "returncode": 0,
+    "tests": 56,
+    "failures": [],
+    "command": [
+      "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+      "/Users/changmin/projects/ugrp-wt/cap-t08a-beam-plan/experiments/2026-09-30-beam-initial-pose-contract/review_d2_verify.py",
+      "--child",
+      "normal",
+      "/Users/changmin/projects/ugrp-wt/cap-t08a-beam-plan/.t08a-d2-qy9k2lw9/test_before_d2.py",
+      "-q",
+      "--tb=short",
+      "--disable-warnings",
+      "--junitxml=/Users/changmin/projects/ugrp/outputs/beam-initial-pose-contract/review-d2-20260930-b/before-normal.xml"
+    ],
+    "errors": 0
+  },
+  {
+    "label": "before-carriers-both",
+    "mutation": "carriers:both",
+    "returncode": 0,
+    "tests": 56,
+    "failures": [],
+    "command": [
+      "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+      "/Users/changmin/projects/ugrp-wt/cap-t08a-beam-plan/experiments/2026-09-30-beam-initial-pose-contract/review_d2_verify.py",
+      "--child",
+      "carriers:both",
+      "/Users/changmin/projects/ugrp-wt/cap-t08a-beam-plan/.t08a-d2-qy9k2lw9/test_before_d2.py",
+      "-q",
+      "--tb=short",
+      "--disable-warnings",
+      "--junitxml=/Users/changmin/projects/ugrp/outputs/beam-initial-pose-contract/review-d2-20260930-b/before-carriers-both.xml"
+    ],
+    "errors": 0
+  },
+  {
+    "label": "before-arms-both",
+    "mutation": "arms:both",
+    "returncode": 0,
+    "tests": 56,
+    "failures": [],
+    "command": [
+      "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+      "/Users/changmin/projects/ugrp-wt/cap-t08a-beam-plan/experiments/2026-09-30-beam-initial-pose-contract/review_d2_verify.py",
+      "--child",
+      "arms:both",
+      "/Users/changmin/projects/ugrp-wt/cap-t08a-beam-plan/.t08a-d2-qy9k2lw9/test_before_d2.py",
+      "-q",
+      "--tb=short",
+      "--disable-warnings",
+      "--junitxml=/Users/changmin/projects/ugrp/outputs/beam-initial-pose-contract/review-d2-20260930-b/before-arms-both.xml"
+    ],
+    "errors": 0
+  },
+  {
+    "label": "after-related",
+    "mutation": "normal",
+    "returncode": 0,
+    "tests": 164,
+    "failures": [],
+    "command": [
+      "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+      "/Users/changmin/projects/ugrp-wt/cap-t08a-beam-plan/experiments/2026-09-30-beam-initial-pose-contract/review_d2_verify.py",
+      "--child",
+      "normal",
+      "tests/test_beam_initial_pose_plan.py",
+      "tests/test_pair_passage_plan.py",
+      "tests/test_zone_pair_registered_source.py",
+      "tests/test_zone_study_source_pinning.py",
+      "tests/test_zone_pair_executor.py::test_destination_route_reaches_zone_b_and_uses_bounded_segments",
+      "-q",
+      "--tb=short",
+      "--disable-warnings",
+      "--junitxml=/Users/changmin/projects/ugrp/outputs/beam-initial-pose-contract/review-d2-20260930-b/after-related.xml"
+    ],
+    "errors": 0
+  },
+  {
+    "label": "after-carriers-both",
+    "mutation": "carriers:both",
+    "returncode": 1,
+    "tests": 64,
+    "failures": [
+      "test_formal_north_south_geometry_is_static_only[0]",
+      "test_formal_north_south_geometry_is_static_only[1]",
+      "test_formal_north_south_geometry_is_static_only[2]",
+      "test_continuous_uncertainty_box_contains_original_and_all_carrier_sweeps[0]",
+      "test_continuous_uncertainty_box_contains_original_and_all_carrier_sweeps[1]",
+      "test_continuous_uncertainty_box_contains_original_and_all_carrier_sweeps[2]",
+      "test_carrier_outer_corner_blocked_even_when_beam_and_centres_clear[obstacles-end_neg]",
+      "test_carrier_outer_corner_blocked_even_when_beam_and_centres_clear[obstacles-end_pos]",
+      "test_carrier_outer_corner_blocked_even_when_beam_and_centres_clear[terrain-end_neg]",
+      "test_carrier_outer_corner_blocked_even_when_beam_and_centres_clear[terrain-end_pos]",
+      "test_carrier_approach_and_arm_blockers_outside_search[approach_chassis-obstacles-end_neg]",
+      "test_carrier_approach_and_arm_blockers_outside_search[approach_chassis-obstacles-end_pos]",
+      "test_carrier_approach_and_arm_blockers_outside_search[approach_chassis-terrain-end_neg]",
+      "test_carrier_approach_and_arm_blockers_outside_search[approach_chassis-terrain-end_pos]",
+      "test_carrier_approach_and_arm_blockers_outside_search[station_arm_envelope-obstacles-end_neg]",
+      "test_carrier_approach_and_arm_blockers_outside_search[station_arm_envelope-obstacles-end_pos]",
+      "test_carrier_approach_and_arm_blockers_outside_search[station_arm_envelope-terrain-end_neg]",
+      "test_carrier_approach_and_arm_blockers_outside_search[station_arm_envelope-terrain-end_pos]"
+    ],
+    "command": [
+      "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+      "/Users/changmin/projects/ugrp-wt/cap-t08a-beam-plan/experiments/2026-09-30-beam-initial-pose-contract/review_d2_verify.py",
+      "--child",
+      "carriers:both",
+      "tests/test_beam_initial_pose_plan.py",
+      "-q",
+      "--tb=short",
+      "--disable-warnings",
+      "--junitxml=/Users/changmin/projects/ugrp/outputs/beam-initial-pose-contract/review-d2-20260930-b/after-carriers-both.xml"
+    ],
+    "errors": 0
+  },
+  {
+    "label": "after-carriers-end_neg",
+    "mutation": "carriers:end_neg",
+    "returncode": 1,
+    "tests": 64,
+    "failures": [
+      "test_formal_north_south_geometry_is_static_only[0]",
+      "test_formal_north_south_geometry_is_static_only[1]",
+      "test_formal_north_south_geometry_is_static_only[2]",
+      "test_continuous_uncertainty_box_contains_original_and_all_carrier_sweeps[0]",
+      "test_continuous_uncertainty_box_contains_original_and_all_carrier_sweeps[1]",
+      "test_continuous_uncertainty_box_contains_original_and_all_carrier_sweeps[2]",
+      "test_carrier_outer_corner_blocked_even_when_beam_and_centres_clear[obstacles-end_neg]",
+      "test_carrier_outer_corner_blocked_even_when_beam_and_centres_clear[terrain-end_neg]",
+      "test_carrier_approach_and_arm_blockers_outside_search[approach_chassis-obstacles-end_neg]",
+      "test_carrier_approach_and_arm_blockers_outside_search[approach_chassis-terrain-end_neg]",
+      "test_carrier_approach_and_arm_blockers_outside_search[station_arm_envelope-obstacles-end_neg]",
+      "test_carrier_approach_and_arm_blockers_outside_search[station_arm_envelope-terrain-end_neg]"
+    ],
+    "command": [
+      "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+      "/Users/changmin/projects/ugrp-wt/cap-t08a-beam-plan/experiments/2026-09-30-beam-initial-pose-contract/review_d2_verify.py",
+      "--child",
+      "carriers:end_neg",
+      "tests/test_beam_initial_pose_plan.py",
+      "-q",
+      "--tb=short",
+      "--disable-warnings",
+      "--junitxml=/Users/changmin/projects/ugrp/outputs/beam-initial-pose-contract/review-d2-20260930-b/after-carriers-end_neg.xml"
+    ],
+    "errors": 0
+  },
+  {
+    "label": "after-carriers-end_pos",
+    "mutation": "carriers:end_pos",
+    "returncode": 1,
+    "tests": 64,
+    "failures": [
+      "test_formal_north_south_geometry_is_static_only[0]",
+      "test_formal_north_south_geometry_is_static_only[1]",
+      "test_formal_north_south_geometry_is_static_only[2]",
+      "test_continuous_uncertainty_box_contains_original_and_all_carrier_sweeps[0]",
+      "test_continuous_uncertainty_box_contains_original_and_all_carrier_sweeps[1]",
+      "test_continuous_uncertainty_box_contains_original_and_all_carrier_sweeps[2]",
+      "test_carrier_outer_corner_blocked_even_when_beam_and_centres_clear[obstacles-end_pos]",
+      "test_carrier_outer_corner_blocked_even_when_beam_and_centres_clear[terrain-end_pos]",
+      "test_carrier_approach_and_arm_blockers_outside_search[approach_chassis-obstacles-end_pos]",
+      "test_carrier_approach_and_arm_blockers_outside_search[approach_chassis-terrain-end_pos]",
+      "test_carrier_approach_and_arm_blockers_outside_search[station_arm_envelope-obstacles-end_pos]",
+      "test_carrier_approach_and_arm_blockers_outside_search[station_arm_envelope-terrain-end_pos]"
+    ],
+    "command": [
+      "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+      "/Users/changmin/projects/ugrp-wt/cap-t08a-beam-plan/experiments/2026-09-30-beam-initial-pose-contract/review_d2_verify.py",
+      "--child",
+      "carriers:end_pos",
+      "tests/test_beam_initial_pose_plan.py",
+      "-q",
+      "--tb=short",
+      "--disable-warnings",
+      "--junitxml=/Users/changmin/projects/ugrp/outputs/beam-initial-pose-contract/review-d2-20260930-b/after-carriers-end_pos.xml"
+    ],
+    "errors": 0
+  },
+  {
+    "label": "after-arms-both",
+    "mutation": "arms:both",
+    "returncode": 1,
+    "tests": 64,
+    "failures": [
+      "test_formal_north_south_geometry_is_static_only[0]",
+      "test_formal_north_south_geometry_is_static_only[1]",
+      "test_formal_north_south_geometry_is_static_only[2]",
+      "test_continuous_uncertainty_box_contains_original_and_all_carrier_sweeps[0]",
+      "test_continuous_uncertainty_box_contains_original_and_all_carrier_sweeps[1]",
+      "test_continuous_uncertainty_box_contains_original_and_all_carrier_sweeps[2]",
+      "test_carrier_approach_and_arm_blockers_outside_search[station_arm_envelope-obstacles-end_neg]",
+      "test_carrier_approach_and_arm_blockers_outside_search[station_arm_envelope-obstacles-end_pos]",
+      "test_carrier_approach_and_arm_blockers_outside_search[station_arm_envelope-terrain-end_neg]",
+      "test_carrier_approach_and_arm_blockers_outside_search[station_arm_envelope-terrain-end_pos]"
+    ],
+    "command": [
+      "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+      "/Users/changmin/projects/ugrp-wt/cap-t08a-beam-plan/experiments/2026-09-30-beam-initial-pose-contract/review_d2_verify.py",
+      "--child",
+      "arms:both",
+      "tests/test_beam_initial_pose_plan.py",
+      "-q",
+      "--tb=short",
+      "--disable-warnings",
+      "--junitxml=/Users/changmin/projects/ugrp/outputs/beam-initial-pose-contract/review-d2-20260930-b/after-arms-both.xml"
+    ],
+    "errors": 0
+  },
+  {
+    "label": "after-arms-end_neg",
+    "mutation": "arms:end_neg",
+    "returncode": 1,
+    "tests": 64,
+    "failures": [
+      "test_formal_north_south_geometry_is_static_only[0]",
+      "test_formal_north_south_geometry_is_static_only[1]",
+      "test_formal_north_south_geometry_is_static_only[2]",
+      "test_continuous_uncertainty_box_contains_original_and_all_carrier_sweeps[0]",
+      "test_continuous_uncertainty_box_contains_original_and_all_carrier_sweeps[1]",
+      "test_continuous_uncertainty_box_contains_original_and_all_carrier_sweeps[2]",
+      "test_carrier_approach_and_arm_blockers_outside_search[station_arm_envelope-obstacles-end_neg]",
+      "test_carrier_approach_and_arm_blockers_outside_search[station_arm_envelope-terrain-end_neg]"
+    ],
+    "command": [
+      "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+      "/Users/changmin/projects/ugrp-wt/cap-t08a-beam-plan/experiments/2026-09-30-beam-initial-pose-contract/review_d2_verify.py",
+      "--child",
+      "arms:end_neg",
+      "tests/test_beam_initial_pose_plan.py",
+      "-q",
+      "--tb=short",
+      "--disable-warnings",
+      "--junitxml=/Users/changmin/projects/ugrp/outputs/beam-initial-pose-contract/review-d2-20260930-b/after-arms-end_neg.xml"
+    ],
+    "errors": 0
+  },
+  {
+    "label": "after-arms-end_pos",
+    "mutation": "arms:end_pos",
+    "returncode": 1,
+    "tests": 64,
+    "failures": [
+      "test_formal_north_south_geometry_is_static_only[0]",
+      "test_formal_north_south_geometry_is_static_only[1]",
+      "test_formal_north_south_geometry_is_static_only[2]",
+      "test_continuous_uncertainty_box_contains_original_and_all_carrier_sweeps[0]",
+      "test_continuous_uncertainty_box_contains_original_and_all_carrier_sweeps[1]",
+      "test_continuous_uncertainty_box_contains_original_and_all_carrier_sweeps[2]",
+      "test_carrier_approach_and_arm_blockers_outside_search[station_arm_envelope-obstacles-end_pos]",
+      "test_carrier_approach_and_arm_blockers_outside_search[station_arm_envelope-terrain-end_pos]"
+    ],
+    "command": [
+      "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+      "/Users/changmin/projects/ugrp-wt/cap-t08a-beam-plan/experiments/2026-09-30-beam-initial-pose-contract/review_d2_verify.py",
+      "--child",
+      "arms:end_pos",
+      "tests/test_beam_initial_pose_plan.py",
+      "-q",
+      "--tb=short",
+      "--disable-warnings",
+      "--junitxml=/Users/changmin/projects/ugrp/outputs/beam-initial-pose-contract/review-d2-20260930-b/after-arms-end_pos.xml"
+    ],
+    "errors": 0
+  },
+  {
+    "label": "after-chassis-both",
+    "mutation": "chassis:both",
+    "returncode": 1,
+    "tests": 64,
+    "failures": [
+      "test_formal_north_south_geometry_is_static_only[0]",
+      "test_formal_north_south_geometry_is_static_only[1]",
+      "test_formal_north_south_geometry_is_static_only[2]"
+    ],
+    "command": [
+      "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+      "/Users/changmin/projects/ugrp-wt/cap-t08a-beam-plan/experiments/2026-09-30-beam-initial-pose-contract/review_d2_verify.py",
+      "--child",
+      "chassis:both",
+      "tests/test_beam_initial_pose_plan.py",
+      "-q",
+      "--tb=short",
+      "--disable-warnings",
+      "--junitxml=/Users/changmin/projects/ugrp/outputs/beam-initial-pose-contract/review-d2-20260930-b/after-chassis-both.xml"
+    ],
+    "errors": 0
+  },
+  {
+    "label": "after-chassis-end_neg",
+    "mutation": "chassis:end_neg",
+    "returncode": 1,
+    "tests": 64,
+    "failures": [
+      "test_formal_north_south_geometry_is_static_only[0]",
+      "test_formal_north_south_geometry_is_static_only[1]",
+      "test_formal_north_south_geometry_is_static_only[2]"
+    ],
+    "command": [
+      "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+      "/Users/changmin/projects/ugrp-wt/cap-t08a-beam-plan/experiments/2026-09-30-beam-initial-pose-contract/review_d2_verify.py",
+      "--child",
+      "chassis:end_neg",
+      "tests/test_beam_initial_pose_plan.py",
+      "-q",
+      "--tb=short",
+      "--disable-warnings",
+      "--junitxml=/Users/changmin/projects/ugrp/outputs/beam-initial-pose-contract/review-d2-20260930-b/after-chassis-end_neg.xml"
+    ],
+    "errors": 0
+  },
+  {
+    "label": "after-chassis-end_pos",
+    "mutation": "chassis:end_pos",
+    "returncode": 1,
+    "tests": 64,
+    "failures": [
+      "test_formal_north_south_geometry_is_static_only[0]",
+      "test_formal_north_south_geometry_is_static_only[1]",
+      "test_formal_north_south_geometry_is_static_only[2]"
+    ],
+    "command": [
+      "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+      "/Users/changmin/projects/ugrp-wt/cap-t08a-beam-plan/experiments/2026-09-30-beam-initial-pose-contract/review_d2_verify.py",
+      "--child",
+      "chassis:end_pos",
+      "tests/test_beam_initial_pose_plan.py",
+      "-q",
+      "--tb=short",
+      "--disable-warnings",
+      "--junitxml=/Users/changmin/projects/ugrp/outputs/beam-initial-pose-contract/review-d2-20260930-b/after-chassis-end_pos.xml"
+    ],
+    "errors": 0
+  }
+]

@@ -1,0 +1,20 @@
+{
+  "mutation": {
+    "name": "remove_yield",
+    "module": "harness.zone_corridor_control",
+    "selected_test": "test_capable_solo_decides_to_yield_then_reenters_on_own_clear_frames",
+    "original_sha256": "04867a8cd1f6b0987a9ee6ee8efc43f21081f43df91fa06c16938a2b49df7736",
+    "mutated_in_memory_sha256": "0820cd3c801d5c9b818b8c0dfd5ff8ae02cde6500e935f586c68dc57e90beb1f",
+    "file_bytes_unchanged": true
+  },
+  "pytest_exit_code": 1,
+  "failed_tests": [
+    "tests/test_zone_own_executor_corridor_control.py::test_capable_solo_decides_to_yield_then_reenters_on_own_clear_frames"
+  ],
+  "passed_tests": [],
+  "setup_teardown_errors": [],
+  "original_file_unchanged": true,
+  "mutation_caught": true,
+  "host_lock_required": false,
+  "scope": "fake only; physics/render/model calls 0"
+}

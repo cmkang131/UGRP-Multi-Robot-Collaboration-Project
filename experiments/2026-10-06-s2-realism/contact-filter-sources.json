@@ -1,0 +1,22 @@
+{
+  "schema": "ugrp.s2.contact_sources.v1",
+  "sources": [
+    {
+      "title": "Ulrich and Nourbakhsh AAAI 2000",
+      "url": "https://cdn.aaai.org/AAAI/2000/AAAI00-133.pdf",
+      "verified": "web PDF text, sections4-6 and evaluation limitations",
+      "local_download": "urllib HTTP403; browser contents verified"
+    },
+    {
+      "title": "OpenCV histogram backprojection",
+      "url": "https://docs.opencv.org/4.x/dc/df6/tutorial_py_histogram_backprojection.html",
+      "verified": "official rendered docs; manual ROI example"
+    }
+  ],
+  "cross_pr": {
+    "pr": 405,
+    "scope": "read only",
+    "single_frame_failure": "0/6, not pooled"
+  },
+  "scope": "fixed multi-reference floor appearance rejection only; no end-to-end replication claim"
+}

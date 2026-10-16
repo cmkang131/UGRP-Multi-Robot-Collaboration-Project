@@ -1,0 +1,337 @@
+{
+  "base_sha": "3839555dc0de0880f74a40c831044e2b5be2d2d7",
+  "branch": "codex/zone-pair-grasp-relook",
+  "committed": false,
+  "imports_blocked": [
+    "mujoco",
+    "torch",
+    "tensorflow",
+    "openai",
+    "anthropic"
+  ],
+  "prepare": [
+    {
+      "run": "dev09",
+      "seed": 905,
+      "state": "prepared_not_executed",
+      "applied": null,
+      "physical_success": null,
+      "model_calls": 0,
+      "output": "/private/tmp/ugrp240-v5b-prepare-5xn46ohd/dev09",
+      "files": {
+        "prereg.json": "c1f35505ed4983537c89b3c0b901c1d9920aadf2229ae44561e5d5074d9f7977",
+        "manifest.json": "a449cdfb515aafb3756a7b4c2f94d843309fab4456317d67cd9aa41628119f67",
+        "inputs/static.json": "74d24768552a0bed8ef5cb621abb946ba9e603949722fd16dea3990591aeb439",
+        "eval_only/setup.json": "af681f449e5bcd5aa902c9c50d5c2537432f96f0c87756a0b98bb846a217a53d"
+      },
+      "prereg_byte_identical": true,
+      "setup_scene_hash": "1fb4a9bc42e73d7f24e6069f15d5a60d2213985b7de0f5dfd9ecaccea95f7ab0"
+    },
+    {
+      "run": "dev10",
+      "seed": 906,
+      "state": "prepared_not_executed",
+      "applied": null,
+      "physical_success": null,
+      "model_calls": 0,
+      "output": "/private/tmp/ugrp240-v5b-prepare-5xn46ohd/dev10",
+      "files": {
+        "prereg.json": "c1f35505ed4983537c89b3c0b901c1d9920aadf2229ae44561e5d5074d9f7977",
+        "manifest.json": "00e3df4f1959e7a7e47af19ff7451470951a647629a3f9407fe1c12411b493fc",
+        "inputs/static.json": "6f7a96c62f248d15ed8495d06ea60f3c0d9df7f7b34255cdcbd78ed5b8790ef0",
+        "eval_only/setup.json": "07f2682f1960df9791e35dcfea7efb098d678f4bc5601dd2af0d4214e1d12104"
+      },
+      "prereg_byte_identical": true,
+      "setup_scene_hash": "b873253215cb6ab732f1ec6252a5cfc13e94aacff9fe6c27925e11df78d0e540"
+    }
+  ],
+  "prereg_v5b_sha256": "c1f35505ed4983537c89b3c0b901c1d9920aadf2229ae44561e5d5074d9f7977",
+  "scene_contract_sha256": "10eed2859a66c02eaea42c6413f32a76c0c7c06ceec947be126254f7fa958f05",
+  "grasp_contract_sha256": "ef93ec5c6ddf3b3e2df5c77065f29ca3d2f73ea3bf8b504d8941130fa79b959e",
+  "preserved_against_HEAD": {
+    "files": 112,
+    "sha256": {
+      "config/rgb_execution_bundles/dispatch-f1-local-contact-fine-v1.json": "119cf3529285a6854bec3022a11564f3e33199f53a3fd83dff32de417815f647",
+      "config/rgb_execution_bundles/rgb-adapter-contact-fine-boundary-identity-v5.json": "bf197ffd371b9294e3420f0cfe0f6cd0838cfeac48e59e88886bf239b6d0feea",
+      "config/rgb_execution_bundles/rgb-adapter-contact-fine-component-identity-v4.json": "fe9a7e256fa0c70e4104b5dc88f29d556f5b2a19e0a24ef70bb7133853cbf88c",
+      "config/rgb_execution_bundles/rgb-adapter-contact-fine-progress-budget-v7.json": "0a4d811993771982864f5d6b0a5d3c81a51336f849f0df1a562e16257635db5c",
+      "config/rgb_execution_bundles/rgb-adapter-contact-fine-replay-v2.json": "f320480a7985325da4fbcf0f5bbcd3c9948914e9373ae28f3326de92aee894ec",
+      "config/rgb_execution_bundles/rgb-adapter-contact-fine-role-binding-v6.json": "6d93803a0afb0ef43abfbd438f8362856fb180b1791f4858062d9a4e5cbe00f3",
+      "config/rgb_execution_bundles/rgb-adapter-contact-fine-solo-parity-v1.json": "c9be8e97181dc1c9855442de3cb2aff17350b1ee5bd2b4b0d6c23c8d44ef504b",
+      "config/rgb_execution_bundles/rgb-adapter-contact-fine-visual-recovery-v3.json": "09e0f4936b518bf745871ccd6f31b6b5903cf4d125693f00c1440647cc6f4fe2",
+      "config/rgb_execution_bundles/rgb-adapter-contact-fine-yaw-wheel-anchor-v8.json": "6abb07042f3723fb987c10f5d934a18981535d4501f055eb46899a04ba4a64c8",
+      "config/rgb_execution_bundles/rgb-adapter-legacy-v1.json": "e5d89e7fcebf7f59132c4f9b2c3e455989165da9aa07cb310ef0f3ec04f2f970",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v10.json": "aa3a4373fcbe2970b1ce95062d684704ea8c342cab77a0fce913720bb71eb606",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v11.json": "2ccc0a79d25d7a7cb32a9f909127a26655ebe32309616cb8a5cc6c1c7a19c4aa",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v12.json": "4577c8d906715ab98341f97aa6afa656e704acafd03ef20a2a4ac67adb41a54a",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v13.json": "fce4968d73ec94f38fde438ab74989a0a4199ec6e93c295ca50b85501a8089a2",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v14.json": "9fa9bd26155e66a60bb636be2c1334420024e40ed89357ac7698b4a43046aa72",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v15.json": "1933cd0e277e6249f5b6125d006bdca2fe8d9a4edf02603efb01514bfe12edaa",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v16.json": "9d11f82ca02fb60d283fe6908fe1f696b2d31aabfc1acd9bf779c56a94b98958",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v17.json": "8a686939f6505bfaae2f4ebadb3e637b0e229b63e25dfb96877c411235bf6125",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v18.json": "a6891549ad88372a168fca34813ae96dd5c387447cc2ec4b352d3c96d5b891e4",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v19.json": "5516e639e7a31029a7cfb2a5d92844eeee784e32a8aca629735bac8e0dc16e32",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v2.json": "771a1cb51feeeecb55174d0e68e0dad30bfedfb748149dcd7c9e1cf3f1e2d120",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v20.json": "c55ce2163f89d6db069f47a18b7cf46f92e27887611370019e5b2fc25dab3ad5",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v21.json": "0c50a3f5d842d675dc1c78fc33e5a17eab014c87cbf6bed167d228bb371815b3",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v22.json": "89fadd2c963025a8514a24c6c435b8f06b5caf4e7561b944506e1645c55ea157",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v23.json": "abc0d78e520fa5994003c36f1e9193352c08fabcbf75fdf99fc5ba5c595d0745",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v24.json": "d1dc432c4bcb176fd5c73cfa65c555c8ba856070b067e4ad8b37ec637c2a6173",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v25.json": "e591f30cc8318d2decad6c961da5912d96a81503f8a2b42998398cd1f18ace1f",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v26.json": "4900ac0cb6f2933c4acbe6275a3567cfb1af3714cabb48c68c7a2a195c951514",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v27.json": "74ac7aa8fb6c70a4f5781128a472a6722e993a8d9f731d430d365e3c01d75373",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v28.json": "3414ab8c93995bf8692f71ce4205fb17dd05698c10efc1edab97ae5c81775d25",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v29.json": "484b6b7692a07b3fc0b0dec4ffcd0123a163e566185879550fdd0cac2b00a472",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v3.json": "a1a975381e4097c6e0c324d2153ab1cf6e886873f9068afe7c8cba604d235732",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v30.json": "53502d8267792b92b5058b2608c5cc9cc5a4481e94cc0a7d8dfd9f65650ce8fb",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v31.json": "95b34426376d395b5f4a043a3a5c13349d53b3ee000fa1a7631ddbda66aaa699",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v32.json": "0530406ff15386f03c14194ec6e02ef722c51719d419bd92520c9c5384490254",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v33.json": "8ceb961bc3947d7dcb1a066b421e9106be69104fbb0e50305d48ca79a40b5140",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v4.json": "16cf1053ff07372cb86921d52dfebb7f2a938e6d275d9923f4f11320eb158379",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v40.json": "73273a67afa5bd47d4d76be824a1091a9b4356a969fbce723c59e97d1be87083",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v41.json": "dd04d35cdc976941190c0fb75f0fe9b963075a24b3ef9c67c4a1d992b4f2f583",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v42.json": "09c11352258b07fd678d7f01fd7d744fc3c52e275699fc3331c5679de93ea408",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v43.json": "7509360909e7015e592f741151413bf443484203e22755f1690ecaa683b7e260",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v44.json": "005c833efd5f1a3afdbad51a0e36da2e740043750f7a7aff3b2b9765504e612f",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v45.json": "8eccb79037d4d4a2b1600c463ce5e70db03f7dc977b5d7ad83be8f004d10c28c",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v46.json": "825469d961ac32c5a90e9951d54d96ab1d833d04a7e0e55e4ba37fec1b4b6bd4",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v47.json": "f47844c224801ecdded15c764475d680e0806ae234da2c9d64981b58ca5706a4",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v48.json": "c4f40a2b701fc0cd05172b5ea0d4f18410a48f9a26a2de7077ce7475f4437c78",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v49.json": "77cbad29275a06460dae831e20f901f0daa93f3f5c0fe0ef2d114855a9e8a62c",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v5.json": "8ab2b8a67141d769c425065b01015c5f5a0cd1c6c6bebc8474a0d55e10d2fd3f",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v50.json": "d00d9403dfb0048a2135ad5e208e8f27e743f8eb1e05dc7fd237c5d3449a33b2",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v51.json": "4fd6c800cdad69164d9f950fef5161502f515676bbe91b538aa0ef6afb2ad26b",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v53.json": "f81af754bdda7c34ab7b69d5207d30b4064a4bc6877d10a5f55e99be6966f20d",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v54.json": "ae0eb8ca604f8dddae6119bb0bf82aa5115086349fa50ab96214a40e7d25164a",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v55.json": "54a7d2be2126c58bde8a5b4a7309e03b9c8badf128b6514311d87191747d0984",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v56.json": "fcf38e5b90d1511a7038bbb516e72566db8033e2bd7496c05c53518a5419dc7b",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v57.json": "1d512106caabbbc0fb2e15f88f8c4dbe037744b618da028bb9424d4f76b636be",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v58.json": "83dd89d987fbc5a4df6ae6f9f9c2c75b8ed1045eeae875a06f936dbe6fb96011",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v59.json": "8032aef817b431e1d9cd63311307f02367a1233b6048fa1049b9867be93408a9",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v6.json": "f07581649e84418c0ad31fc4577aaaebc680b34928ce3485fa8cb813d04d8045",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v60.json": "52b5e6d34fe862c8aeac50cdfa41f16cb8cc37ec5ae296c0700c688d82925355",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v61.json": "98b77ad6878548f21d97f4575f37fe5c0dfdbdcdf8b68087ca1f5ea2e829790b",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v62.json": "6601192a6da7ac018dd3a7104364065bb9afb9dce0d61e79021f824648b07f69",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v63.json": "ef4fe391e57c145b6625ba052e651542745bfcb6244d8e25736827ee8122aa01",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v7.json": "86f22c3d05280a5d8ab35a57b646852768520e0fcd536f7a54cc8018144544be",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v8.json": "a312cac4acb581c5c97b41d042049fa83ac6636d35f15f1579525c44119fb93e",
+      "config/rgb_execution_bundles/rgb-standard-dispatch-v9.json": "d50e4a2e2ebcac796daec1b4eca1c203da8b15b12d5182465f72d93865f0428c",
+      "configs/simulation_workflows.json": "a2f7020d59b3043c4bdd9040d52229c1b6dd20dc0269c2b9d96c33be1c2a4671",
+      "experiments/2026-09-27-zone-pair-dev/README.md": "8131637f923feaebff39abd5a90e1da6cacc5ca69a254d29555d6f547bd4d106",
+      "experiments/2026-09-27-zone-pair-dev/dev_review2_fixes.md": "4152fe36297eae2e99ea5ac982beaf5e74fb5e2e326d85a965a0527d345045c6",
+      "experiments/2026-09-27-zone-pair-dev/dev_review_fixes.md": "2bac91614aef796c22d66aa435ee76445866e329024fdf1e082d424103478be7",
+      "experiments/2026-09-27-zone-pair-dev/diagnosis_v3.json": "db565a1c76008c7dbade041a69167d9ea1e178e5f70c897f18f7c2efddea8514",
+      "experiments/2026-09-27-zone-pair-dev/diagnosis_v3.md": "64fb15e7bf6c5d2da342381fb2b31a84bddb60273a2cdbd98084ed537c28ba7e",
+      "experiments/2026-09-27-zone-pair-dev/diagnosis_v4.json": "48ab4218641b535633ab31e4aeefd92f3eef3b09c8d12655728b082bd5ab6b78",
+      "experiments/2026-09-27-zone-pair-dev/diagnosis_v4.md": "fef3250c42273fbbeff22c14e947ffc1126a4727bf114f355d5053e56b954126",
+      "experiments/2026-09-27-zone-pair-dev/diagnosis_v5.json": "015cfe328ad098114b1415c8d82b7976dbaa2fe5966a170810feeeb7bec5d399",
+      "experiments/2026-09-27-zone-pair-dev/diagnosis_v5.md": "524616af95ac67d4aeaef1f1b7a254d64728c818ddfec7921457c6a00891d304",
+      "experiments/2026-09-27-zone-pair-dev/dock_v3.md": "2e826d77704ff0b2fafff155cdf7b2b5b7cf803929454c7695a197f8703207d8",
+      "experiments/2026-09-27-zone-pair-dev/dock_v3_ref_inventory.json": "2884a3f07546d09f0b2b461022584f5492a24bb422cbdb733aa14cca0bf963e4",
+      "experiments/2026-09-27-zone-pair-dev/dock_v3_validation.json": "66430ac29bf1ffd5c0cb930e4f7b2158d87bd245d48ec4a3f1b694dd30ee561e",
+      "experiments/2026-09-27-zone-pair-dev/grasp_v4.md": "4a14a1ea9d8aead3745f919fd2efc69ca34d47daefee1c5b84b97f0eff20c49b",
+      "experiments/2026-09-27-zone-pair-dev/grasp_v4_p1_validation.json": "ed8000d413e3d1ef31b2abf918e1793d473d056cb5e11a67866c3ab4a1213e6a",
+      "experiments/2026-09-27-zone-pair-dev/grasp_v4_ref_inventory.json": "0d3299b377368b830d311bcc5fca1239159172f9e293e1fc7f4e0cb5d23b9707",
+      "experiments/2026-09-27-zone-pair-dev/grasp_v4_standoff_fix.md": "1dc5314004c0de1ff73ad2a972b9d7bbbb6bfb9be3e01ac3f4363a5aed0aa085",
+      "experiments/2026-09-27-zone-pair-dev/grasp_v4_standoff_validation.json": "62679c5ef363343d1c9bf9a8e2c968ebaaea42d2229da5a5c0ad4a25d4e43182",
+      "experiments/2026-09-27-zone-pair-dev/grasp_v4_validation.json": "912bddc797f52bf127826f6823c7f3bda016da16f8bc0d15e306868ea0164dfa",
+      "experiments/2026-09-27-zone-pair-dev/grasp_v5_validation.json": "f767205d5ca79e9205bbdc920f0f8822db6b13b3ffd505e1216272622ca2e357",
+      "experiments/2026-09-27-zone-pair-dev/implementation_record.md": "061cca1a22557d885aa6931f0a3b36169f190cb6b2b656c494d3ffd167ff0b42",
+      "experiments/2026-09-27-zone-pair-dev/implementation_validation.json": "6e4c93874473c53c23a1b04e297ae80e7676de90e567e6cedbea04b191e7ea4f",
+      "experiments/2026-09-27-zone-pair-dev/merge-main-v65/README.md": "54cd32acb78d28a4832ed083a9d79bee3ed40c0012514f1c0f9d77e83da31259",
+      "experiments/2026-09-27-zone-pair-dev/merge-main-v65/before-delay.txt": "17c3138963f70c3b62900fadc7d6033f0ff85c483528a52654f696b808c3bad9",
+      "experiments/2026-09-27-zone-pair-dev/merge-main-v65/before-head.txt": "d93ad540cfd2d3092d4d88bd0704d1109d01542e388320df489b75a6cbd50f79",
+      "experiments/2026-09-27-zone-pair-dev/merge-main-v65/ci_registration.json": "8c59929a796eacf7d78ccf66a074528956348f70876945c3f5cc83b1f80b7997",
+      "experiments/2026-09-27-zone-pair-dev/merge-main-v65/full.txt": "1875b387d337f11e6e1f984208ed1007143ae6284bb6274925291355d5e0889e",
+      "experiments/2026-09-27-zone-pair-dev/merge-main-v65/integration-v65.json": "6d3d39e899b266cae998c0198015a764312faa50887e5438322e5a0803d510db",
+      "experiments/2026-09-27-zone-pair-dev/merge-main-v65/no_physics.py": "9b2f989e07388cabb7cb0dc78fd981fd0b401e40de39fdfce8cfd67f2e5a7050",
+      "experiments/2026-09-27-zone-pair-dev/merge-main-v65/preserved.json": "ac6100825ed6a30bbac6ca4911ff7105e9f44b54462bd0f40d26e2870f073ca4",
+      "experiments/2026-09-27-zone-pair-dev/merge-main-v65/remote_id_audit.json": "3deeab91bfd0fb9cb46368be37fc0f757483a371a95eb91b192cc419fd0832cb",
+      "experiments/2026-09-27-zone-pair-dev/merge-main-v65/targeted.txt": "2e6e75ef8d49f73242d40c312b6185a45d42a23ee9e4f51afa9888c43f2c8e1a",
+      "experiments/2026-09-27-zone-pair-dev/merge-main-v65/verification.json": "d6f91d3016ff8f643063a9927670727829f8246ea0312be49d16d7f43a738147",
+      "experiments/2026-09-27-zone-pair-dev/prereg_DRAFT.json": "85334a68bae0d35c197c612cd610c84307c0eba268a34247e71f4e233a0fe0f3",
+      "experiments/2026-09-27-zone-pair-dev/prereg_v2_DRAFT.json": "896091d17022d569dfb34123587712395bf9870d065ce2b438d38acedee9108b",
+      "experiments/2026-09-27-zone-pair-dev/prereg_v2_fixes.md": "06d06cf47a608b18a78b9cb44ed7ab578e0159de5ba7c77b1bbde4561b41d6f5",
+      "experiments/2026-09-27-zone-pair-dev/prereg_v3.json": "9470d95261c464cd37705cdebde87d6cdd8f5166bbd02cb10236489611853b6e",
+      "experiments/2026-09-27-zone-pair-dev/prereg_v3_DRAFT.json": "34ab87dc51467226221ca8c991e960bc0715a9bad9c67764b98b99049e9683c4",
+      "experiments/2026-09-27-zone-pair-dev/prereg_v4.json": "ca8e2d6b7cf1fda6056e8939a568bc11affc9c9b413b07f97e2d134af98d7fb8",
+      "experiments/2026-09-27-zone-pair-dev/prereg_v5.json": "bcf02558167a9140a97b961bdc612b45679b3ff1e91fe496e9863ac8e9f3568e",
+      "experiments/2026-09-27-zone-pair-dev/results.md": "e04acc55c118a5e18b182dae95c73b1543b85e544ba989a8821b002c199ba7b6",
+      "experiments/2026-09-27-zone-pair-dev/tensorboard_overview_check.json": "a94831c041529cbf0ba888998cbea919ce57902a489132f544b97755feb8b229",
+      "harness/owncam_localizer.py": "0304d7c491dfe6ae68cea6550f7a13e3c99e8e1d3f8e8b6c4b7b1d06893b1d63",
+      "harness/zone_own_guards.py": "eec5b4942e4fa186fd7a40c3d47b087614055d35dad900d8126adb97d381f617",
+      "harness/zone_pair_status.py": "bdacc2369212bdd8810d2f91498e971af572e1ef037a34baf76828a2702b1926",
+      "scripts/run_m2_pair.py": "3432df1fbefd4779921dc89a20f60fb67299fcdd02aa4568c6ecd14e27978783",
+      "scripts/study_owncam_pair_beam.py": "3e4c77e279cde780e19b1a1eb2643c626c46dac15e4671001607c5fa6b9c3cff"
+    },
+    "exceptions": [
+      "grasp_v5.md explicitly updated execution instructions"
+    ]
+  },
+  "v5b_unchanged_fields": [
+    "runs",
+    "criteria",
+    "stage_rules",
+    "planned_setdown",
+    "limits",
+    "timing",
+    "safety_coverage",
+    "environment",
+    "inputs",
+    "scene_instances",
+    "contact_profile_contract"
+  ],
+  "conditions": {
+    "physical_steps": 0,
+    "model_calls": 0,
+    "runtime_GT_contact_measured_joints_eval_only_added": false,
+    "weld": false,
+    "contact_profile": "cargo_noslip_v1",
+    "lock_acquired": false,
+    "commit_push_merge": false,
+    "drive_used": false
+  },
+  "prepare_matches_current_source_fingerprint": "660606c892d70ea0ac3ca22db55b313770bd6fed9a6c389ddfc2fdce39909330",
+  "static_validation": {
+    "changed_python_AST": "pass",
+    "diff_check": "pass"
+  },
+  "git_remote_checks": {
+    "fetch": "blocked: shared FETCH_HEAD Operation not permitted",
+    "gh_pr_list_view": "blocked: api.github.com connection failure",
+    "primary_updated": false
+  },
+  "tensorboard": {
+    "new_physical_training_evaluation_result": false,
+    "conversion_or_viewer_started": false,
+    "scope": "offline regression and prepare-only receipts; no new experimental result to convert"
+  },
+  "pytest": {
+    "passed": 545,
+    "skipped": 14,
+    "deselected": 4,
+    "elapsed_s": 53.734,
+    "files": [
+      "tests/test_zone_pair_admission.py",
+      "tests/test_zone_pair_dev.py",
+      "tests/test_zone_pair_executor.py",
+      "tests/test_zone_pair_grasp.py",
+      "tests/test_zone_pair_preclose.py",
+      "tests/test_zone_pair_review.py",
+      "tests/test_zone_pair_review2.py",
+      "tests/test_zone_pair_review3.py",
+      "tests/test_zone_pair_review4.py",
+      "tests/test_zone_pair_review5.py",
+      "tests/test_zone_pair_review6.py",
+      "tests/test_zone_pair_review7.py",
+      "tests/test_zone_pair_standoff.py",
+      "tests/test_zone_pair_status.py",
+      "tests/test_zone_pair_v5.py",
+      "tests/test_zone_study_pair_delay.py",
+      "tests/test_zone_start_dock.py",
+      "tests/test_zone_own_executor_guards.py",
+      "tests/test_zone_own_executor_sweep_start.py",
+      "tests/test_zone_study_integration_pair.py"
+    ],
+    "selection": "not pair_and_multiple_real_adapter_calls",
+    "env": {
+      "OMP_NUM_THREADS": "1",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "args": [
+      "-q",
+      "--basetemp=./.pytest_tmp",
+      "-p",
+      "no:cacheprovider"
+    ],
+    "mujoco_and_model_import_blocked": true,
+    "network_connect_blocked": true,
+    "junit_xml": "/private/tmp/ugrp240-review4-final.xml",
+    "junit_sha256": "46098a3e9446ff8f8c405dc42977d188fbaddca0e75d29ed23f3762b2b1a4b54",
+    "skipped_cases": [
+      {
+        "name": "test_real_pairteam_fake_host_abort_is_auditable_without_physics",
+        "reason": "frozen M2 controller imports MuJoCo; this case uses a fake world, no physical steps"
+      },
+      {
+        "name": "test_physical_entry_finalizes_real_host_pair_scheduler_on_fake_world[2-False-0]",
+        "reason": "frozen M2 import required; physical world/observer replaced with fakes"
+      },
+      {
+        "name": "test_physical_entry_finalizes_real_host_pair_scheduler_on_fake_world[2-False-1]",
+        "reason": "frozen M2 import required; physical world/observer replaced with fakes"
+      },
+      {
+        "name": "test_physical_entry_finalizes_real_host_pair_scheduler_on_fake_world[2-True-0]",
+        "reason": "frozen M2 import required; physical world/observer replaced with fakes"
+      },
+      {
+        "name": "test_physical_entry_finalizes_real_host_pair_scheduler_on_fake_world[2-True-1]",
+        "reason": "frozen M2 import required; physical world/observer replaced with fakes"
+      },
+      {
+        "name": "test_physical_entry_finalizes_real_host_pair_scheduler_on_fake_world[3-False-0]",
+        "reason": "frozen M2 import required; physical world/observer replaced with fakes"
+      },
+      {
+        "name": "test_physical_entry_finalizes_real_host_pair_scheduler_on_fake_world[3-False-1]",
+        "reason": "frozen M2 import required; physical world/observer replaced with fakes"
+      },
+      {
+        "name": "test_physical_entry_finalizes_real_host_pair_scheduler_on_fake_world[3-True-0]",
+        "reason": "frozen M2 import required; physical world/observer replaced with fakes"
+      },
+      {
+        "name": "test_physical_entry_finalizes_real_host_pair_scheduler_on_fake_world[3-True-1]",
+        "reason": "frozen M2 import required; physical world/observer replaced with fakes"
+      },
+      {
+        "name": "test_physical_entry_finalizes_real_host_pair_scheduler_on_fake_world[4-False-0]",
+        "reason": "frozen M2 import required; physical world/observer replaced with fakes"
+      },
+      {
+        "name": "test_physical_entry_finalizes_real_host_pair_scheduler_on_fake_world[4-False-1]",
+        "reason": "frozen M2 import required; physical world/observer replaced with fakes"
+      },
+      {
+        "name": "test_physical_entry_finalizes_real_host_pair_scheduler_on_fake_world[4-True-0]",
+        "reason": "frozen M2 import required; physical world/observer replaced with fakes"
+      },
+      {
+        "name": "test_physical_entry_finalizes_real_host_pair_scheduler_on_fake_world[4-True-1]",
+        "reason": "frozen M2 import required; physical world/observer replaced with fakes"
+      },
+      {
+        "name": "test_initial_posture_is_production_command_not_a_measured_pose",
+        "reason": "could not import 'mujoco': import of mujoco halted; None in sys.modules"
+      }
+    ],
+    "basetemp_removed": true
+  },
+  "resolved_intermediate_failures": [
+    "Baseline new delay regression failed before fix at 2.30 PF replacement with t_est=2.14.",
+    "Three new invalid-report test cases initially used unloaded profile / unsettled gate fixture; corrected to production align loaded profile and explicit uncertain fixture, then passed.",
+    "Legacy diagnostic initially used wrong super class cell; corrected and reproduced 2.35 POSE_UNCERTAIN only after motion.",
+    "First broader suite: 498 passed, 14 skipped, 5 dock-source-reference failures; corrected successor to exact v5b contract, final full suite passed."
+  ],
+  "changed_files_sha256": {
+    "experiments/2026-09-27-zone-pair-dev/grasp_v5.md": "03117878486ba2b580b3111da6d1d07acdfeed7ae1cae7fe9502c4063363e148",
+    "harness/zone_pair_align.py": "87f0299ec4fe7ba74754db9d528e9b5ee6ccaeec645beaab1fbde81a4e5583bf",
+    "harness/zone_pair_executor.py": "d23d8d5820b49e7364f7e686ad800a55cf0459dc7ede31d10508f274193a9951",
+    "harness/zone_pair_guards.py": "ffb4d8bb1c142e1496d55a9d37de98cbbea9bed409ef7faaf6efe3f837c3cffd",
+    "scripts/run_zone_pair_dev.py": "cf3f69c482db91117ece37965984e03479e71bc1b655dc7be56d69c6fbbaf1d2",
+    "scripts/zone_pair_grasp_contract.py": "1fa872c6d85083b03b0a9dd1f8ae6e57671d274abd3c52f5c24faae72afce0ba",
+    "tests/test_zone_pair_grasp.py": "bf50c3c6fd319eee1bf311a7700ab070f2d1619ebb31f63877cc6c0af7c9729b",
+    "tests/test_zone_pair_v5.py": "f57d67c4fdd8ea7dcb3c095157b6ea7d64b04a0120424cabc4bddd905aded636",
+    "tests/test_zone_start_dock.py": "c794342fda80252885478e43ce884ddb513447a78e4cb4e6f7136506f19ede85",
+    "tests/test_zone_study_pair_delay.py": "724a15493ef8baf7dccdc24804dec8ea4f075d8be5bb36e07100cc41b481f5e9",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v5b.json": "c1f35505ed4983537c89b3c0b901c1d9920aadf2229ae44561e5d5074d9f7977",
+    "experiments/2026-09-27-zone-pair-dev/review4_align_replay.json": "59877d04ea7e5e36f4efc8b9b8d948b9be201122ddc3c70e95139efa36e611fa",
+    "experiments/2026-09-27-zone-pair-dev/review4_fixes.md": "8d608547534e45abccc78b13433011053ca0b79cda744c767572d3da2e547647"
+  },
+  "evidence_limits": [
+    "no physical steps, trained model inference, remote CI, source commit or physical-readiness claim",
+    "prepare receipts are local temporary files, not remote backup",
+    "saved RGB / fake-clock protocol replay does not prove physical movement or recovery success"
+  ]
+}

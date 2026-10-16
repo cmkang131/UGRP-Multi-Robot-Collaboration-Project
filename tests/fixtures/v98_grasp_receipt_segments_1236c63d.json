@@ -1,0 +1,215 @@
+{
+ "schema": "ugrp.test_fixture.v98_grasp_receipt_segments.v1",
+ "source": {
+  "path": "/Users/changmin/projects/ugrp/outputs/v98-dev-probe-align_to_carry-1236c63d/zone_wide_door_geometry_v3/student_record.json",
+  "sha256": "366f72cf962c1895490487138f1be60f671c8b37b63a35efc2cc45d50d7fdae8",
+  "run": "v98-dev-probe-align_to_carry-1236c63d (DEV_PILOT FUNCTIONAL_DEV, seed 911, staged align_to_carry)"
+ },
+ "note": "Copied verbatim from the own controller record; no ground truth. The grasp receipt is minted in segment 0; each intermediate HIGH stop increments seg with the gripper still closed (no open issued).",
+ "robots": {
+  "r1": [
+   {
+    "robot_id": "r1",
+    "event": "beam_grasp_confirmed",
+    "sim_s": 62.900000000209324,
+    "segment": 0,
+    "frame_id": 1233,
+    "sha256": "d63c2b7a020edf04b0a40093bb03b36f66b671f9c8b1e9046c391c38e01daadd",
+    "observed_at_s": 62.900000000209324,
+    "closed_command_at_s": 62.500000000207415,
+    "source": "own RGB + issued close"
+   },
+   {
+    "robot_id": "r1",
+    "event": "checkpoint_high_stop",
+    "sim_s": 97.89999999941294,
+    "seg": 1,
+    "high": true,
+    "opened": false,
+    "epoch": 1
+   },
+   {
+    "robot_id": "r1",
+    "event": "checkpoint_high_dr_receipt",
+    "sim_s": 99.1999999993822,
+    "seg": 1,
+    "high": true,
+    "opened": false,
+    "epoch": 1,
+    "std_xy_m": 0.03599400442034376,
+    "std_yaw_rad": 0.01979381497090052,
+    "fix_t": null,
+    "fix_age_s": null,
+    "fix_receipt_voided": true,
+    "report_t_est": 99.04,
+    "stop_s": 1.299999999969259,
+    "x_m": 0.964686215262125,
+    "y_m": 0.04516820352069689,
+    "yaw_rad": 0.005795420745968727,
+    "cov": [
+     [
+      0.00076583,
+      8.8e-06,
+      -7.627e-05
+     ],
+     [
+      8.8e-06,
+      0.00052974,
+      7.72e-05
+     ],
+     [
+      -7.627e-05,
+      7.72e-05,
+      0.0003918
+     ]
+    ]
+   },
+   {
+    "robot_id": "r1",
+    "event": "checkpoint_high_stop",
+    "sim_s": 120.19999999888562,
+    "seg": 2,
+    "high": true,
+    "opened": false,
+    "epoch": 1
+   },
+   {
+    "robot_id": "r1",
+    "event": "checkpoint_high_dr_receipt",
+    "sim_s": 121.49999999885488,
+    "seg": 2,
+    "high": true,
+    "opened": false,
+    "epoch": 1,
+    "std_xy_m": 0.04907562232127177,
+    "std_yaw_rad": 0.02444844344372491,
+    "fix_t": null,
+    "fix_age_s": null,
+    "fix_receipt_voided": true,
+    "report_t_est": 121.34,
+    "stop_s": 1.299999999969259,
+    "x_m": 1.7098143058749415,
+    "y_m": 0.04929085969505836,
+    "yaw_rad": 0.006286046773842369,
+    "cov": [
+     [
+      0.00126955,
+      -7.417e-05,
+      -8.42e-05
+     ],
+     [
+      -7.417e-05,
+      0.00113886,
+      0.00047
+     ],
+     [
+      -8.42e-05,
+      0.00047,
+      0.00059773
+     ]
+    ]
+   }
+  ],
+  "r2": [
+   {
+    "robot_id": "r2",
+    "event": "beam_grasp_confirmed",
+    "sim_s": 62.900000000209324,
+    "segment": 0,
+    "frame_id": 1233,
+    "sha256": "2bc340566e860758e911d0fc9d3d934f651016ed3d40cb639265794b886e68ba",
+    "observed_at_s": 62.900000000209324,
+    "closed_command_at_s": 62.500000000207415,
+    "source": "own RGB + issued close"
+   },
+   {
+    "robot_id": "r2",
+    "event": "checkpoint_high_stop",
+    "sim_s": 97.89999999941294,
+    "seg": 1,
+    "high": true,
+    "opened": false,
+    "epoch": 1
+   },
+   {
+    "robot_id": "r2",
+    "event": "checkpoint_high_dr_receipt",
+    "sim_s": 99.1999999993822,
+    "seg": 1,
+    "high": true,
+    "opened": false,
+    "epoch": 1,
+    "std_xy_m": 0.03829237239750098,
+    "std_yaw_rad": 0.01958171151677704,
+    "fix_t": null,
+    "fix_age_s": null,
+    "fix_receipt_voided": true,
+    "report_t_est": 99.04,
+    "stop_s": 1.299999999969259,
+    "x_m": 1.948200643663544,
+    "y_m": 0.04052804407680398,
+    "yaw_rad": 3.1389571556061977,
+    "cov": [
+     [
+      0.00070728,
+      3.62e-06,
+      1.001e-05
+     ],
+     [
+      3.62e-06,
+      0.00075903,
+      0.00024621
+     ],
+     [
+      1.001e-05,
+      0.00024621,
+      0.00038344
+     ]
+    ]
+   },
+   {
+    "robot_id": "r2",
+    "event": "checkpoint_high_stop",
+    "sim_s": 120.19999999888562,
+    "seg": 2,
+    "high": true,
+    "opened": false,
+    "epoch": 1
+   },
+   {
+    "robot_id": "r2",
+    "event": "checkpoint_high_dr_over_budget",
+    "sim_s": 121.49999999885488,
+    "seg": 2,
+    "high": true,
+    "std_xy_m": 0.054074321091752746,
+    "std_yaw_rad": 0.02382183690802619,
+    "fix_t": null,
+    "fix_age_s": null,
+    "fix_receipt_voided": true,
+    "report_t_est": 121.34,
+    "stop_s": 1.299999999969259,
+    "x_m": 2.6935264308029554,
+    "y_m": 0.03846553100138284,
+    "yaw_rad": 3.1389124106751094,
+    "cov": [
+     [
+      0.00133338,
+      1.138e-05,
+      -1.069e-05
+     ],
+     [
+      1.138e-05,
+      0.00159066,
+      0.0006038
+     ],
+     [
+      -1.069e-05,
+      0.0006038,
+      0.00056748
+     ]
+    ]
+   }
+  ]
+ }
+}

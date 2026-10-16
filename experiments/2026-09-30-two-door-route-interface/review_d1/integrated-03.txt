@@ -1,0 +1,18 @@
+Traceback (most recent call last):
+  File "/Users/changmin/projects/ugrp-wt/cap-t09a-two-door/experiments/2026-09-30-two-door-route-interface/review_d1/run_checks.py", line 50, in main
+    lock = agent_lock.acquire(
+           ^^^^^^^^^^^^^^^^^^^
+  File "/Users/changmin/projects/ugrp-wt/cap-t09a-two-door/scripts/agent_lock.py", line 52, in acquire
+    raise RuntimeError(f'lock held: {json.dumps(held, ensure_ascii=False)}') from None
+RuntimeError: lock held: {"owner": "codex", "branch": "codex/review-fixes-1", "purpose": "local offline regression tests", "pid": 88436, "acquired_unix": 1790775463.152724, "expected_end_unix": 1790776063.152724, "loadavg_at_acquire": [19.1962890625, 25.81201171875, 19.97119140625], "pid_alive": true}
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/changmin/projects/ugrp-wt/cap-t09a-two-door/experiments/2026-09-30-two-door-route-interface/review_d1/run_checks.py", line 111, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/Users/changmin/projects/ugrp-wt/cap-t09a-two-door/experiments/2026-09-30-two-door-route-interface/review_d1/run_checks.py", line 62, in main
+    time.sleep(.1)
+    ^^^^^^^^^^^^^
+KeyboardInterrupt

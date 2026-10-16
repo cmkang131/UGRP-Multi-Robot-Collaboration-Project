@@ -41,14 +41,24 @@ def main(argv=None):
     parser.add_argument('--task', help='three peers receive this instruction within the existing beam/box dispatch mission')
     parser.add_argument('--plan-replay', type=Path, help='explicit saved-plan diagnostic instead of new LLM negotiation')
     parser.add_argument('--headless', action='store_true')
+    parser.add_argument('--live-view', action='store_true',
+                        help='watch while computing (paced native window) instead of the default post-run replay')
     parser.add_argument('--output', type=Path)
     parser.add_argument('--grasp-model-dir', type=Path)
     parser.add_argument('--stage-model-dir', type=Path)
     parser.add_argument('--model', default=os.environ.get('UGRP_SIM_MODEL', 'gemini-3.8-flash'))
+    parser.add_argument('--full-capture', action='store_true',
+                        help='keep the original extra pair camera and overview captures')
+    parser.add_argument('--serial-route', action='store_true',
+                        help='keep the original serial resource gate even for independent open routes')
     # Remaining options use the original runner's parser and validation.
     args, rest = parser.parse_known_args(argv)
     if '--executor' in rest or any(a.startswith('--executor=') for a in rest):
         parser.error('dispatch uses the existing skills executor; raw diagnostics have a separate entry point')
+    if args.serial_route and any(flag in rest for flag in ('--route-overlap', '--auto-route-overlap')):
+        parser.error('--serial-route conflicts with explicit route overlap')
+    if args.full_capture and '--efficient-capture' in rest:
+        parser.error('--full-capture conflicts with --efficient-capture')
     if bool(args.grasp_model_dir) != bool(args.stage_model_dir):
         parser.error('supply both --grasp-model-dir and --stage-model-dir')
     if not args.headless and sys.platform.startswith('linux') and not (os.environ.get('DISPLAY') or os.environ.get('WAYLAND_DISPLAY')):
@@ -64,8 +74,19 @@ def main(argv=None):
     forwarded = ['--executor', 'skills', '--output', str(output),
                  '--grasp-model-dir', str(args.grasp_model_dir),
                  '--stage-model-dir', str(args.stage_model_dir), '--model', args.model]
-    if not args.headless:
+    if not args.full_capture and '--efficient-capture' not in rest:
+        forwarded.append('--efficient-capture')
+    if not args.serial_route and not any(flag in rest for flag in ('--route-overlap', '--auto-route-overlap')):
+        forwarded.append('--auto-route-overlap')
+    realtime = '--realtime-control' in rest
+    if args.live_view and (args.headless or realtime):
+        parser.error('--live-view is the synchronous native window; omit --headless and --realtime-control')
+    # Default: compute headless as fast as possible, then replay in MuJoCo's window.
+    replay = not args.headless and not args.live_view and not realtime
+    if not args.headless and not replay:
         forwarded.append('--viewer')
+    if replay:
+        forwarded.append('--record-replay')
     if args.task:
         forwarded += ['--task', args.task]
     if args.plan_replay:
@@ -73,8 +94,27 @@ def main(argv=None):
     print('기존 계획 합의 → 로봇별 프로그램 → RGB 스킬 실행' if not args.plan_replay
           else '저장된 계획 재생 진단 → 기존 RGB 스킬 실행 (새 LLM 계획 아님)', flush=True)
     print(f'결과: {output.resolve()}', flush=True)
+    if replay:
+        print('창 없이 끝까지 계산한 뒤 MuJoCo 창에서 재생합니다 (계산 중 보기: --live-view).', flush=True)
     from scripts.run_dispatch_e2e import main as run_dispatch
-    return run_dispatch(forwarded + rest)
+    code = run_dispatch(forwarded + rest)
+    if replay:
+        from scripts.dispatch_replay import play
+        try:
+            play(output, speed=_speed(rest))
+        except ValueError as error:
+            print(f'재생할 수 없습니다: {error}', file=sys.stderr, flush=True)
+    return code
+
+
+def _speed(rest):
+    """Playback speed follows the existing --realtime-factor observer option."""
+    for index, arg in enumerate(rest):
+        if arg == '--realtime-factor' and index + 1 < len(rest):
+            return float(rest[index + 1])
+        if arg.startswith('--realtime-factor='):
+            return float(arg.split('=', 1)[1])
+    return 1.
 
 
 def choose():

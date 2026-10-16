@@ -1,0 +1,10 @@
+{
+  "initial_classifier_sha256": "6489616360db2253469cdde6c4f6bb6c7f768ebb998a4ef3391e199b98cefec7",
+  "final_classifier_sha256": "d0e2bc66d1e24cc5dcd822b1473f5ee741cec46a1478a17cc1b58af5e6f2074a",
+  "functions_changed_after_full_suite_started": [
+    "validate_recorder_chronology"
+  ],
+  "final_addition": "Both row/result submit copies obey strict entry/carry boundaries even within the copy tolerance.",
+  "expensive_property_unchanged": "test_ten_thousand_generated_evidence_chains passes no recorder_context; its event path cannot enter validate_recorder_chronology. All other related tests are rerun on final source.",
+  "property_test_sha256": "cf0718a9bf74008a81fd0ddf1cdfc84bbd4123a4099ec4357e80b4d6a04c6b97"
+}

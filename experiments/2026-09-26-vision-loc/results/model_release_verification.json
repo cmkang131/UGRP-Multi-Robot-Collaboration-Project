@@ -1,0 +1,85 @@
+{
+ "schema": "ugrp.vision_loc.model_release_verification.v1",
+ "model_id": "vision-loc-seg-lraspp-mbv3-20260926-v2",
+ "release": {
+  "tag": "models-20260927-vision-loc-v1",
+  "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/tag/models-20260927-vision-loc-v1",
+  "target_commit": "b2d6d56ddc8cb4ac923ce30e3e23330033fd8b32",
+  "assets": [
+   "vision-loc-seg-lraspp-mbv3-20260926-v2.zip",
+   "SHA256SUMS",
+   "model_artifacts.json"
+  ]
+ },
+ "download": {
+  "direct_asset_sha256": "165679736e426748bcdaa1c4c341781482198c2135bd8974494ab4f41f27a936",
+  "registry_archive_sha256": "165679736e426748bcdaa1c4c341781482198c2135bd8974494ab4f41f27a936"
+ },
+ "fetch": {
+  "id": "vision-loc-seg-lraspp-mbv3-20260926-v2",
+  "path": "/Users/changmin/projects/ugrp/outputs/model-release-20260927-vision-loc/verify/installed",
+  "verified_files": 9,
+  "verified_bytes": 13088535,
+  "installed": true
+ },
+ "verify": {
+  "id": "vision-loc-seg-lraspp-mbv3-20260926-v2",
+  "path": "/Users/changmin/projects/ugrp/outputs/model-release-20260927-vision-loc/verify/installed",
+  "verified_files": 9,
+  "verified_bytes": 13088535
+ },
+ "load_check": {
+  "checkpoint_sha256": "348539030fda962cc5ba64e21c956619bc4db9321a99cd3ae6746611a9939fd9",
+  "device": "cpu",
+  "infer_size": [
+   480,
+   360
+  ],
+  "episode": "vl3-dev-s942",
+  "cache": "r3/obs-w6 (MPS segmentation)",
+  "frames": [
+   {
+    "frame": 0,
+    "probs_shape": [
+     480,
+     640,
+     5
+    ],
+    "kinds_equal_cache": true,
+    "b_lo_max_abs_diff_px": 3.603837065213611e-06
+   },
+   {
+    "frame": 400,
+    "probs_shape": [
+     480,
+     640,
+     5
+    ],
+    "kinds_equal_cache": true,
+    "b_lo_max_abs_diff_px": 0.0
+   },
+   {
+    "frame": 800,
+    "probs_shape": [
+     480,
+     640,
+     5
+    ],
+    "kinds_equal_cache": true,
+    "b_lo_max_abs_diff_px": 2.929942539253716e-06
+   },
+   {
+    "frame": 1200,
+    "probs_shape": [
+     480,
+     640,
+     5
+    ],
+    "kinds_equal_cache": true,
+    "b_lo_max_abs_diff_px": 1.3564997715320715e-05
+   }
+  ]
+ },
+ "scope": "download + full file hashes + model loading (CPU) reproducing the cached MPS column observations; not a localization or navigation result",
+ "local_record": "/Users/changmin/projects/ugrp/outputs/model-release-20260927-vision-loc/verify"
+}

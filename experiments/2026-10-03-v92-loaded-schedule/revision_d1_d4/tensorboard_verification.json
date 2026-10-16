@@ -1,0 +1,56 @@
+{
+  "schema": "ugrp.v92_d1d4_tensorboard.v1",
+  "snapshot": "/Users/changmin/projects/ugrp/outputs/tensorboard/1003-v92-high-d1d4",
+  "run": "1003-v92-high-d1d4/high-prefix",
+  "values": {
+    "offline/full_collection_complete": 0.0,
+    "offline/rendered_frames": 0.0,
+    "offline/controller_edge_columns": 0.0,
+    "offline/candidate_edge_columns": 90.0,
+    "offline/lifted_selected_samples": 1240.0,
+    "offline/selected_samples": 1240.0,
+    "result/sim_s": 70.0,
+    "result/commands": 1244.0,
+    "result/model_calls": 0.0
+  },
+  "api_values": {
+    "offline/full_collection_complete": 0.0,
+    "offline/rendered_frames": 0.0,
+    "offline/controller_edge_columns": 0.0,
+    "offline/candidate_edge_columns": 90.0,
+    "offline/lifted_selected_samples": 1240.0,
+    "offline/selected_samples": 1240.0,
+    "result/sim_s": 70.0,
+    "result/commands": 1244.0,
+    "result/model_calls": 0.0
+  },
+  "server_logdir": "/Users/changmin/projects/ugrp/outputs/tensorboard",
+  "server_changed": false,
+  "server_pid_command": "샌드박스 /bin/ps 접근 차단. 서버 변경 없음. data/environment의 logdir/flags 대조.",
+  "hparams_metadata_verified": true,
+  "pinned_tags": [
+    "result/sim_s",
+    "result/commands",
+    "result/model_calls",
+    "offline/lifted_selected_samples",
+    "offline/controller_edge_columns",
+    "offline/candidate_edge_columns"
+  ],
+  "hparams_visible_columns": [
+    "outcome",
+    "result/wall_s",
+    "result/commands",
+    "result/model_calls"
+  ],
+  "url": "http://127.0.0.1:6006/?runFilter=%5E1003-v92-%28high-d1d4%7Cloaded-design-r2%29%2F&tagFilter=%5E%28result%2F%28sim_s%7Ccommands%7Cmodel_calls%29%7Coffline%2F%28lifted_selected_samples%7Ccontroller_edge_columns%7Ccandidate_edge_columns%29%29%24&pinnedCards=%5B%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fsim_s%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fcommands%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fmodel_calls%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Flifted_selected_samples%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fcontroller_edge_columns%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fcandidate_edge_columns%22%7D%5D&scalarSmoothing=0#timeseries",
+  "baseline": "기존 두 짧은 검사(loaded-design-r2)는 별도 일정/소스. 재현 성공으로 합산하지 않음.",
+  "video_registrations": 0,
+  "scope": "무렌더 짧은 진단, 전체 수집/실제 RGB/적합/학생 인수 아님",
+  "manifest_sha256": "9fe56df88585a45b95659ac9332d2a8d25c64ddc045515752dd36ea7752e8c17",
+  "ui_verified": true,
+  "ui_scope": "Chrome 강. 새 high-prefix와 기존 posture/motion 선택. 카드 6개 title=Unpin card 및 값 90/0/1240/1244/70/0 확인. HParams 네 열을 다시 적용하고 헤더 대조. 개별 새 HParams 행은 미확인.",
+  "hparams_columns_ui_verified": true,
+  "hparams_new_row_ui_verified": false,
+  "ui_final_restore": true,
+  "browser_tab": "964000577"
+}

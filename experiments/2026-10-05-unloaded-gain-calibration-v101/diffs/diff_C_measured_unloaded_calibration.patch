@@ -1,0 +1,3787 @@
+diff --git a/configs/zone_pair_highpose_v98.json b/configs/zone_pair_highpose_v98.json
+index bbe0d8d..6810288 100644
+--- a/configs/zone_pair_highpose_v98.json
++++ b/configs/zone_pair_highpose_v98.json
+@@ -80,7 +80,8 @@
+     "calibration_status": "DEV_PILOT",
+     "rule": "DEV_PILOT_C0_ZERO_v1",
+     "admitted_calibration_sha256": [
+-      "398372ae6b9b0fef7344d7f29146ce75b309d334b3ce31af527bc071c0e582f5"
++      "398372ae6b9b0fef7344d7f29146ce75b309d334b3ce31af527bc071c0e582f5",
++      "aba4ac586b2554844ad5b4b17efe968a4247278664ffb433f83f6785ca1769c4"
+     ],
+     "runnable": true,
+     "run_status": "FUNCTIONAL_DEV",
+@@ -159,6 +160,20 @@
+         "pr": 369,
+         "rule": "DEV_PILOT_C0_ZERO_v1",
+         "admitted_by": "coordinator message 2026-10-03"
++      },
++      "aba4ac586b2554844ad5b4b17efe968a4247278664ffb433f83f6785ca1769c4": {
++        "path": "experiments/2026-10-05-unloaded-gain-calibration-v101/products/C/calibration_dev_pilot_unloaded_v101.json",
++        "pr": 363,
++        "rule": "DEV_PILOT_C0_ZERO_v1",
++        "admitted_by": "coordinator decision 2026-10-05 (classic calibrate-then-correct, Borenstein and Feng 1996)",
++        "calibration_bundle": "zone-final-environment-gaincal-v101",
++        "calibration_variant": "C (measured unloaded gain/lag, registered r4/r5 measured noise)",
++        "fills": "all ten unloaded params.motion fields (missing == []); the DEV code-default fill is not used",
++        "heldout_status": "VALIDATED_DEV (mean model only; not MEASURED_SIM, not a confirmation sample)",
++        "fit": "experiments/2026-10-05-unloaded-gain-calibration-v101/products/fit/fit.json",
++        "heldout": "experiments/2026-10-05-unloaded-gain-calibration-v101/products/heldout/heldout.json",
++        "parent": {"path": "/Users/changmin/projects/ugrp/outputs/v92-dev-pilot-c0zero-20261003T104043Z/result/calibration_dev_pilot.json",
++                   "sha256": "398372ae6b9b0fef7344d7f29146ce75b309d334b3ce31af527bc071c0e582f5"}
+       }
+     }
+   },
+diff --git a/experiments/2026-10-05-unloaded-gain-calibration-v101/products/C/calibration_dev_pilot_unloaded_v101.json b/experiments/2026-10-05-unloaded-gain-calibration-v101/products/C/calibration_dev_pilot_unloaded_v101.json
+new file mode 100644
+index 0000000..fb275c3
+--- /dev/null
++++ b/experiments/2026-10-05-unloaded-gain-calibration-v101/products/C/calibration_dev_pilot_unloaded_v101.json
+@@ -0,0 +1,966 @@
++{
++  "camera_models": {
++    "loaded": {
++      "896,2035,1894,1500": {
++        "chassis_to_floor": {
++          "origin_m": [
++            0.0,
++            0.0,
++            0.032347892647313914
++          ],
++          "rotation": [
++            [
++              0.9999987726615843,
++              -5.754103518382085e-08,
++              0.0015667403484161595
++            ],
++            [
++              2.1156002318179943e-21,
++              0.9999999993255775,
++              3.6726593020389536e-05
++            ],
++            [
++              -0.0015667403494728023,
++              -3.672654794443109e-05,
++              0.9999987719871639
++            ]
++          ]
++        },
++        "frame": "optical_to_actual_chassis",
++        "origin_m": [
++          0.19674637557415145,
++          4.80701361336126e-07,
++          0.12767257691486614
++        ],
++        "rotation": [
++          [
++            3.4083021358585897e-06,
++            -0.6298998885129289,
++            0.7766763357021936
++          ],
++          [
++            -0.9999999999941935,
++            -2.146889135408325e-06,
++            2.6471476138753233e-06
++          ],
++          [
++            -1.8592318505251614e-17,
++            -0.7766763357067049,
++            -0.6298998885165876
++          ]
++        ]
++      }
++    },
++    "unloaded": {
++      "1072,2400,1482,1230": {
++        "chassis_to_floor": {
++          "origin_m": [
++            0.0,
++            0.0,
++            0.032358135686209946
++          ],
++          "rotation": [
++            [
++              0.9999999215933394,
++              2.126204330496119e-08,
++              0.000395996608378839
++            ],
++            [
++              -4.2225250496156516e-21,
++              0.9999999985585579,
++              -5.369248833052832e-05
++            ],
++            [
++              -0.000395996608949645,
++              5.3692484120679634e-05,
++              0.9999999201518979
++            ]
++          ]
++        },
++        "frame": "optical_to_actual_chassis",
++        "origin_m": [
++          0.152296853524278,
++          -0.04700136650330373,
++          0.17144232266997284
++        ],
++        "rotation": [
++          [
++            -0.4115131584278725,
++            -0.2172888970585651,
++            0.8851228477763896
++          ],
++          [
++            -0.9114038185352931,
++            0.09810935449401594,
++            -0.39964688678888866
++          ],
++          [
++            8.59410558062964e-17,
++            -0.971164295974598,
++            -0.23841122084365116
++          ]
++        ]
++      },
++      "1072,2400,1482,1500": {
++        "chassis_to_floor": {
++          "origin_m": [
++            0.0,
++            0.0,
++            0.032358163112138405
++          ],
++          "rotation": [
++            [
++              0.9999999156885016,
++              -7.505371113708303e-11,
++              0.0004106372962022268
++            ],
++            [
++              1.433466048506983e-22,
++              0.9999999999999829,
++              1.8277373202774462e-07
++            ],
++            [
++              -0.0004106372962022337,
++              -1.8277371661781746e-07,
++              0.9999999156884849
++            ]
++          ]
++        },
++        "frame": "optical_to_actual_chassis",
++        "origin_m": [
++          0.16241597452175427,
++          2.415756147991512e-10,
++          0.17144229060625493
++        ],
++        "rotation": [
++          [
++            2.1139633950991884e-09,
++            -0.2384114656018525,
++            0.9711642358888471
++          ],
++          [
++            -0.9999999999999959,
++            -5.039929744423784e-10,
++            2.053005664437058e-09
++          ],
++          [
++            -1.0599718656755476e-16,
++            -0.9711642358888473,
++            -0.23841146560185242
++          ]
++        ]
++      },
++      "1072,2400,1482,1770": {
++        "chassis_to_floor": {
++          "origin_m": [
++            0.0,
++            0.0,
++            0.03235813583076464
++          ],
++          "rotation": [
++            [
++              0.9999999215905764,
++              -2.14105849344061e-08,
++              0.00039600359023116773
++            ],
++            [
++              -1.0769657874264523e-20,
++              0.9999999985384005,
++              5.406664341256544e-05
++            ],
++            [
++              -0.00039600359080996705,
++              -5.406663917323102e-05,
++              0.9999999201289758
++            ]
++          ]
++        },
++        "frame": "optical_to_actual_chassis",
++        "origin_m": [
++          0.15229685354263944,
++          0.04700136662072027,
++          0.17144232323653516
++        ],
++        "rotation": [
++          [
++            0.41151315631854835,
++            -0.21728889405656787,
++            0.8851228494940234
++          ],
++          [
++            -0.9114038194876878,
++            -0.09810935253315861,
++            0.3996468850983057
++          ],
++          [
++            -7.271112216698202e-17,
++            -0.9711642968443588,
++            -0.2384112173007008
++          ]
++        ]
++      },
++      "1072,2400,1482,2030": {
++        "chassis_to_floor": {
++          "origin_m": [
++            0.0,
++            0.0,
++            0.0323580628184851
++          ],
++          "rotation": [
++            [
++              0.9999999364113504,
++              -3.460979504645052e-08,
++              0.00035661925605789653
++            ],
++            [
++              1.178131491530538e-20,
++              0.999999995290677,
++              9.70497086052876e-05
++            ],
++            [
++              -0.0003566192577373318,
++              -9.704970243402769e-05,
++              0.9999999317020277
++            ]
++          ]
++        },
++        "frame": "optical_to_actual_chassis",
++        "origin_m": [
++          0.12506891617319288,
++          0.08447744542814146,
++          0.17144240808051336
++        ],
++        "rotation": [
++          [
++            0.7396295438530203,
++            -0.1604537143390232,
++            0.6536074842094276
++          ],
++          [
++            -0.6730142181705866,
++            -0.1763355131912146,
++            0.7183019204539396
++          ],
++          [
++            -7.687298811040317e-17,
++            -0.9711644517497512,
++            -0.2384105862951514
++          ]
++        ]
++      },
++      "1072,2400,1482,2300": {
++        "chassis_to_floor": {
++          "origin_m": [
++            0.0,
++            0.0,
++            0.03235795369222498
++          ],
++          "rotation": [
++            [
++              0.9999999560411839,
++              -3.700346773141224e-08,
++              0.000296509066977348
++            ],
++            [
++              -9.87436281430595e-23,
++              0.9999999922128427,
++              0.00012479708570293374
++            ],
++            [
++              -0.0002965090692863105,
++              -0.00012479708021700175,
++              0.9999999482540279
++            ]
++          ]
++        },
++        "frame": "optical_to_actual_chassis",
++        "origin_m": [
++          0.08349492919866466,
++          0.10862558207670925,
++          0.17144252546010935
++        ],
++        "rotation": [
++          [
++            0.9510556463990387,
++            -0.0736732880628159,
++            0.3001089870005807
++          ],
++          [
++            -0.3090196716270688,
++            -0.22674089397610497,
++            0.9236316416983612
++          ],
++          [
++            5.413483874748842e-19,
++            -0.9711646686452944,
++            -0.23840970277039888
++          ]
++        ]
++      },
++      "1072,2400,1482,700": {
++        "chassis_to_floor": {
++          "origin_m": [
++            0.0,
++            0.0,
++            0.032357953686428596
++          ],
++          "rotation": [
++            [
++              0.9999999560411733,
++              3.689452803095152e-08,
++              0.00029650910302806566
++            ],
++            [
++              4.1144221632662745e-21,
++              0.9999999922586286,
++              -0.00012442966292959713
++            ],
++            [
++              -0.00029650910532345246,
++              0.00012442965745981525,
++              0.9999999482998033
++            ]
++          ]
++        },
++        "frame": "optical_to_actual_chassis",
++        "origin_m": [
++          0.08349492934043036,
++          -0.10862558197214407,
++          0.17144252390773848
++        ],
++        "rotation": [
++          [
++            -0.9510556456468224,
++            -0.07367329460130387,
++            0.3001089877792628
++          ],
++          [
++            -0.30901967394213625,
++            0.22674091222130907,
++            -0.9236316364448236
++          ],
++          [
++            1.604735390825893e-16,
++            -0.971164663889516,
++            -0.23840972214312464
++          ]
++        ]
++      },
++      "1072,2400,1482,970": {
++        "chassis_to_floor": {
++          "origin_m": [
++            0.0,
++            0.0,
++            0.032358062845742545
++          ],
++          "rotation": [
++            [
++              0.9999999364102092,
++              3.4480900305928274e-08,
++              0.00035662246026135313
++            ],
++            [
++              2.634985916329146e-21,
++              0.9999999953257743,
++              -9.668740471223041e-05
++            ],
++            [
++              -0.0003566224619282876,
++              9.668739856389844e-05,
++              0.9999999317359825
++            ]
++          ]
++        },
++        "frame": "optical_to_actual_chassis",
++        "origin_m": [
++          0.12506891651602425,
++          -0.08447744584158585,
++          0.17144240640697933
++        ],
++        "rotation": [
++          [
++            -0.7396295523538736,
++            -0.16045371912015144,
++            0.6536074734160556
++          ],
++          [
++            -0.6730142088283191,
++            0.1763355229200297,
++            -0.7183019268188768
++          ],
++          [
++            8.48489869280686e-17,
++            -0.9711644491933541,
++            -0.2384105967086379
++          ]
++        ]
++      },
++      "1269,2052,2494,1500": {
++        "chassis_to_floor": {
++          "origin_m": [
++            0.0,
++            0.0,
++            0.03235879078384295
++          ],
++          "rotation": [
++            [
++              0.9999997966298855,
++              -1.1562587404834634e-10,
++              0.0006377618595993352
++            ],
++            [
++              -7.209464735311218e-19,
++              0.9999999999999845,
++              1.8129944867678486e-07
++            ],
++            [
++              -0.0006377618595993457,
++              -1.812994118058942e-07,
++              0.9999997966298692
++            ]
++          ]
++        },
++        "frame": "optical_to_actual_chassis",
++        "origin_m": [
++          0.20382753670393142,
++          7.751836574478758e-10,
++          0.012128659100203328
++        ],
++        "rotation": [
++          [
++            4.987206267917327e-09,
++            -0.8289287270486716,
++            0.5593542397027684
++          ],
++          [
++            -0.9999999999999967,
++            -4.134038504413006e-09,
++            2.789615049226704e-09
++          ],
++          [
++            -7.655421248506988e-17,
++            -0.5593542397027685,
++            -0.8289287270486716
++          ]
++        ]
++      },
++      "508,2432,1320,1500": {
++        "chassis_to_floor": {
++          "origin_m": [
++            0.0,
++            0.0,
++            0.03235791952544235
++          ],
++          "rotation": [
++            [
++              0.9999999558141658,
++              -5.392480972235814e-11,
++              0.00029727372436765963
++            ],
++            [
++              1.2736402140473552e-18,
++              0.9999999999999839,
++              1.813978378489536e-07
++            ],
++            [
++              -0.0002972737243676645,
++              -1.813978298337387e-07,
++              0.9999999558141492
++            ]
++          ]
++        },
++        "frame": "optical_to_actual_chassis",
++        "origin_m": [
++          0.11822768106483261,
++          4.566602700738071e-11,
++          0.13869694420952244
++        ],
++        "rotation": [
++          [
++            6.54589770937568e-10,
++            -0.7910554500982313,
++            0.6117444522591814
++          ],
++          [
++            -1.0000000000000007,
++            -5.178167382137741e-10,
++            4.0044165247456475e-10
++          ],
++          [
++            -1.190458170488214e-18,
++            -0.6117444522591814,
++            -0.7910554500982313
++          ]
++        ]
++      },
++      "740,2320,1320,1500": {
++        "chassis_to_floor": {
++          "origin_m": [
++            0.0,
++            0.0,
++            0.03235795208700485
++          ],
++          "rotation": [
++            [
++              0.9999999507714257,
++              -5.7362805666210044e-11,
++              0.0003137788164068544
++            ],
++            [
++              0.0,
++              0.9999999999999831,
++              1.8281286902373816e-07
++            ],
++            [
++              -0.00031377881640685967,
++              -1.8281286002412133e-07,
++              0.999999950771409
++            ]
++          ]
++        },
++        "frame": "optical_to_actual_chassis",
++        "origin_m": [
++          0.13106551947039688,
++          7.237457308467932e-11,
++          0.17746357071732674
++        ],
++        "rotation": [
++          [
++            8.733979309474331e-10,
++            -0.3673568683274482,
++            0.9300800671408064
++          ],
++          [
++            -0.9999999999999986,
++            -3.208487010623973e-10,
++            8.123300681209716e-10
++          ],
++          [
++            -3.337104458145939e-17,
++            -0.9300800671408065,
++            -0.36735686832744824
++          ]
++        ]
++      },
++      "770,1982,1876,1500": {
++        "chassis_to_floor": {
++          "origin_m": [
++            0.0,
++            0.0,
++            0.03235849550954731
++          ],
++          "rotation": [
++            [
++              0.9999998546534522,
++              -9.783980012786486e-11,
++              0.0005391596038464867
++            ],
++            [
++              1.2327974023139984e-19,
++              0.9999999999999856,
++              1.8146723170926906e-07
++            ],
++            [
++              -0.0005391596038464956,
++              -1.8146720533363423e-07,
++              0.9999998546534359
++            ]
++          ]
++        },
++        "frame": "optical_to_actual_chassis",
++        "origin_m": [
++          0.18971857775381087,
++          5.284972741360985e-10,
++          0.13983331440379754
++        ],
++        "rotation": [
++          [
++            3.73477456539032e-09,
++            -0.6286039772791108,
++            0.7777255555457113
++          ],
++          [
++            -1.000000000000001,
++            -2.3476941658885004e-09,
++            2.9046295700738454e-09
++          ],
++          [
++            6.489908638627476e-17,
++            -0.7777255555457114,
++            -0.6286039772791109
++          ]
++        ]
++      },
++      "807,1897,2187,1500": {
++        "chassis_to_floor": {
++          "origin_m": [
++            0.0,
++            0.0,
++            0.03235874464753265
++          ],
++          "rotation": [
++            [
++              0.9999998058786054,
++              -1.129862665415421e-10,
++              0.0006230912896960052
++            ],
++            [
++              2.0737347563054068e-19,
++              0.9999999999999856,
++              1.813318019329956e-07
++            ],
++            [
++              -0.0006230912896960154,
++              -1.8133176673261372e-07,
++              0.999999805878589
++            ]
++          ]
++        },
++        "frame": "optical_to_actual_chassis",
++        "origin_m": [
++          0.2051716292866015,
++          7.520440430613498e-10,
++          0.08309145115368789
++        ],
++        "rotation": [
++          [
++            4.791053125139162e-09,
++            -0.8293557354676911,
++            0.5587209178533082
++          ],
++          [
++            -0.999999999999999,
++            -3.9734873972603035e-09,
++            2.6768616191623977e-09
++          ],
++          [
++            -1.9004914355831595e-18,
++            -0.5587209178533081,
++            -0.8293557354676914
++          ]
++        ]
++      }
++    }
++  },
++  "collection_sources": {
++    "fine": "747d2b9f1eb43e21804ccef58fff4db241d1a844",
++    "loaded": "257953ec36353c37acc61c4cb86563db7c937de2",
++    "unloaded": "747d2b9f1eb43e21804ccef58fff4db241d1a844"
++  },
++  "confirmatory": false,
++  "contract_sha256": "4ad461c3b980d885b9743f32cb763fb14f2b1d46a695c3acacae6b4a8e3c8e78",
++  "criterion_B_double_prime_sha256": "5f7d8905c49625a7125647eaf713575e4e659ca658274b8734fd2a4952da4d4a",
++  "criterion_B_sha256": "74c312b5eff11e27be2b30d103f6d955f03b0c4b91595dfc9843c366b2c49b5f",
++  "criterion_sha256": "5f7d8905c49625a7125647eaf713575e4e659ca658274b8734fd2a4952da4d4a",
++  "dev_manifest_sha256": "211f2bf2b578bbf05859b09f3fd0cd2d9ac72ef2b579d046026dd89fe2a8b4df",
++  "dev_rule": "DEV_PILOT_C0_ZERO_v1",
++  "field_provenance": {
++    "camera_models.loaded.896,2035,1894,1500.chassis_to_floor.origin_m": "copied_from_measured_v92_assembly",
++    "camera_models.loaded.896,2035,1894,1500.chassis_to_floor.rotation": "copied_from_measured_v92_assembly",
++    "camera_models.loaded.896,2035,1894,1500.frame": "copied_from_measured_v92_assembly",
++    "camera_models.loaded.896,2035,1894,1500.origin_m": "copied_from_measured_v92_assembly",
++    "camera_models.loaded.896,2035,1894,1500.rotation": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.1072,2400,1482,1230.chassis_to_floor.origin_m": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.1072,2400,1482,1230.chassis_to_floor.rotation": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.1072,2400,1482,1230.frame": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.1072,2400,1482,1230.origin_m": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.1072,2400,1482,1230.rotation": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.1072,2400,1482,1500.chassis_to_floor.origin_m": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.1072,2400,1482,1500.chassis_to_floor.rotation": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.1072,2400,1482,1500.frame": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.1072,2400,1482,1500.origin_m": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.1072,2400,1482,1500.rotation": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.1072,2400,1482,1770.chassis_to_floor.origin_m": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.1072,2400,1482,1770.chassis_to_floor.rotation": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.1072,2400,1482,1770.frame": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.1072,2400,1482,1770.origin_m": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.1072,2400,1482,1770.rotation": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.1072,2400,1482,2030.chassis_to_floor.origin_m": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.1072,2400,1482,2030.chassis_to_floor.rotation": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.1072,2400,1482,2030.frame": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.1072,2400,1482,2030.origin_m": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.1072,2400,1482,2030.rotation": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.1072,2400,1482,2300.chassis_to_floor.origin_m": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.1072,2400,1482,2300.chassis_to_floor.rotation": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.1072,2400,1482,2300.frame": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.1072,2400,1482,2300.origin_m": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.1072,2400,1482,2300.rotation": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.1072,2400,1482,700.chassis_to_floor.origin_m": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.1072,2400,1482,700.chassis_to_floor.rotation": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.1072,2400,1482,700.frame": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.1072,2400,1482,700.origin_m": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.1072,2400,1482,700.rotation": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.1072,2400,1482,970.chassis_to_floor.origin_m": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.1072,2400,1482,970.chassis_to_floor.rotation": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.1072,2400,1482,970.frame": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.1072,2400,1482,970.origin_m": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.1072,2400,1482,970.rotation": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.1269,2052,2494,1500.chassis_to_floor.origin_m": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.1269,2052,2494,1500.chassis_to_floor.rotation": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.1269,2052,2494,1500.frame": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.1269,2052,2494,1500.origin_m": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.1269,2052,2494,1500.rotation": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.508,2432,1320,1500.chassis_to_floor.origin_m": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.508,2432,1320,1500.chassis_to_floor.rotation": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.508,2432,1320,1500.frame": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.508,2432,1320,1500.origin_m": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.508,2432,1320,1500.rotation": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.740,2320,1320,1500.chassis_to_floor.origin_m": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.740,2320,1320,1500.chassis_to_floor.rotation": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.740,2320,1320,1500.frame": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.740,2320,1320,1500.origin_m": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.740,2320,1320,1500.rotation": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.770,1982,1876,1500.chassis_to_floor.origin_m": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.770,1982,1876,1500.chassis_to_floor.rotation": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.770,1982,1876,1500.frame": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.770,1982,1876,1500.origin_m": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.770,1982,1876,1500.rotation": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.807,1897,2187,1500.chassis_to_floor.origin_m": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.807,1897,2187,1500.chassis_to_floor.rotation": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.807,1897,2187,1500.frame": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.807,1897,2187,1500.origin_m": "copied_from_measured_v92_assembly",
++    "camera_models.unloaded.807,1897,2187,1500.rotation": "copied_from_measured_v92_assembly",
++    "pair_model.b_rad_s.edge": "dev_refit_DEV_PILOT_C0_ZERO_v1",
++    "pair_model.b_rad_s.pm": "dev_refit_DEV_PILOT_C0_ZERO_v1",
++    "pair_model.b_rad_s.pm+edge": "dev_refit_DEV_PILOT_C0_ZERO_v1",
++    "pair_model.b_rad_s[\"\"]": "dev_refit_DEV_PILOT_C0_ZERO_v1",
++    "pair_model.slope_to_yaw_ratio": "dev_refit_DEV_PILOT_C0_ZERO_v1",
++    "pan_base_yaw.loaded": "copied_from_measured_v92_assembly",
++    "pan_base_yaw.unloaded": "copied_from_measured_v92_assembly",
++    "params.motion.gain": "measured_unloaded_gain_calibration_v101",
++    "params.motion.noise_abs": "registered_r4_r5_measured_noise",
++    "params.motion.noise_rel": "registered_r4_r5_measured_noise",
++    "params.motion.rest_noise": "measured_unloaded_gain_calibration_v101",
++    "params.motion.scale_std": "measured_unloaded_gain_calibration_v101",
++    "params.motion.scale_walk": "measured_unloaded_gain_calibration_v101",
++    "params.motion.tau_axis_s": "measured_unloaded_gain_calibration_v101",
++    "params.motion.tau_s": "measured_unloaded_gain_calibration_v101",
++    "params.motion.tau_stop_s": "measured_unloaded_gain_calibration_v101",
++    "params.motion.use_scale": "measured_unloaded_gain_calibration_v101",
++    "params.motion_loaded.deadband.c0": "dev_refit_DEV_PILOT_C0_ZERO_v1",
++    "params.motion_loaded.deadband.u1": "dev_refit_DEV_PILOT_C0_ZERO_v1",
++    "params.motion_loaded.drift_ratio_std": "dev_refit_DEV_PILOT_C0_ZERO_v1",
++    "params.motion_loaded.gain": "dev_refit_DEV_PILOT_C0_ZERO_v1",
++    "params.motion_loaded.load_transition.scale_std": "dev_refit_DEV_PILOT_C0_ZERO_v1",
++    "params.motion_loaded.load_transition.unloaded_scale_std": "dev_refit_DEV_PILOT_C0_ZERO_v1",
++    "params.motion_loaded.noise_abs": "dev_refit_DEV_PILOT_C0_ZERO_v1",
++    "params.motion_loaded.noise_rel": "dev_refit_DEV_PILOT_C0_ZERO_v1",
++    "params.motion_loaded.rest_noise": "dev_refit_DEV_PILOT_C0_ZERO_v1",
++    "params.motion_loaded.scale_std": "dev_refit_DEV_PILOT_C0_ZERO_v1",
++    "params.motion_loaded.scale_walk": "dev_refit_DEV_PILOT_C0_ZERO_v1",
++    "params.motion_loaded.tau_axis_s": "dev_refit_DEV_PILOT_C0_ZERO_v1",
++    "params.motion_loaded.tau_s": "dev_refit_DEV_PILOT_C0_ZERO_v1",
++    "params.motion_loaded.tau_stop_s": "dev_refit_DEV_PILOT_C0_ZERO_v1",
++    "params.motion_loaded.use_scale": "dev_refit_DEV_PILOT_C0_ZERO_v1",
++    "params.motion_loaded.yaw_bias_std_rad_s": "dev_refit_DEV_PILOT_C0_ZERO_v1",
++    "params.motion_profiles.fine.gain": "copied_from_measured_v92_assembly",
++    "params.motion_profiles.fine.noise_abs": "copied_from_measured_v92_assembly",
++    "params.motion_profiles.fine.noise_rel": "copied_from_measured_v92_assembly",
++    "params.motion_profiles.fine.rest_noise": "copied_from_measured_v92_assembly",
++    "params.motion_profiles.fine.scale_std": "copied_from_measured_v92_assembly",
++    "params.motion_profiles.fine.scale_walk": "copied_from_measured_v92_assembly",
++    "params.motion_profiles.fine.tau_axis_s": "copied_from_measured_v92_assembly",
++    "params.motion_profiles.fine.tau_s": "copied_from_measured_v92_assembly",
++    "params.motion_profiles.fine.tau_stop_s": "copied_from_measured_v92_assembly",
++    "params.motion_profiles.fine.use_scale": "copied_from_measured_v92_assembly"
++  },
++  "loaded_camera_scope": "high_only",
++  "loaded_measurement_bundle_id": "zone-final-pair-v92",
++  "loaded_pose_id": "masterpi-v3-pair-high-150mm-minus40-v1",
++  "loaded_schedule_sha256": "b6ebf872ac1f47bb6f13c336ca49c74343ffe592c5cb1bbd0916449a6208bcbe",
++  "loader_contract_version": 2,
++  "maps": {
++    "zone_wide_corridor_final_v3": "0429b535107feda865a02821e4ceb2b695b58cd0c06c07e2fde96320bd2d9b0e",
++    "zone_wide_door_geometry_v3": "2302d273bcd30a9cc9d3166c753f2d40fcf3f03654369d23cd00324b4ca4688d",
++    "zone_wide_two_doors_final_v3": "ecbed849464b3dcc7c5f3679dffed419069391b4e72dc53276ed04dca2d64af5"
++  },
++  "measured_parent": {
++    "path": "/Users/changmin/projects/ugrp/outputs/final-pair-v92-measured-20261003T091812Z/assembly/calibration.json",
++    "sha256": "852426d2efbe4400516fc6227279923c4a1b7747e0f2b48a6df6131d7ade4109",
++    "status": "PARTIAL"
++  },
++  "missing": [],
++  "pair_model": {
++    "b_rad_s": {
++      "": 0.017297860859899213,
++      "edge": 0.017414682577576703,
++      "pm": 0.0003040749588932083,
++      "pm+edge": 0.00022873574660705327
++    },
++    "slope_to_yaw_ratio": 1.1066809450069606
++  },
++  "pan_base_yaw": {
++    "loaded": -0.0011782219763573187,
++    "unloaded": 1.5303380175179718e-08
++  },
++  "params": {
++    "motion": {
++      "gain": [
++        [
++          1.56344293503864,
++          0.0,
++          0.0
++        ],
++        [
++          0.0,
++          1.1010024123049476,
++          0.0
++        ],
++        [
++          0.0,
++          0.0,
++          1.3703025168007674
++        ]
++      ],
++      "noise_abs": [
++        0.01538,
++        0.012767691858458299,
++        0.015461140772925479
++      ],
++      "noise_rel": [
++        0.3176,
++        0.4438,
++        0.1116
++      ],
++      "rest_noise": false,
++      "scale_std": 5.811457263722095e-08,
++      "scale_walk": 0.0,
++      "tau_axis_s": [
++        1.0130610686146653,
++        1.0128027768773051,
++        0.17031804438807943
++      ],
++      "tau_s": 1.0130610686146653,
++      "tau_stop_s": 0.07050329844380564,
++      "use_scale": false
++    },
++    "motion_loaded": {
++      "deadband": {
++        "c0": [
++          0.0,
++          0.0,
++          0.0
++        ],
++        "u1": [
++          0.026556708949971457,
++          0.028235672526345113,
++          0.031909184676893604
++        ]
++      },
++      "drift_ratio_std": 0.0010101039283118686,
++      "gain": [
++        [
++          1.3550711149042434,
++          0.0,
++          0.0
++        ],
++        [
++          0.0,
++          0.9642052319923683,
++          0.0
++        ],
++        [
++          0.0,
++          0.0,
++          0.9073154343172743
++        ]
++      ],
++      "load_transition": {
++        "scale_std": [
++          0.015438183016723523,
++          0.028375634454031292,
++          0.0
++        ],
++        "unloaded_scale_std": 0.0
++      },
++      "noise_abs": [
++        0.01538,
++        0.015991912314310134,
++        0.01406
++      ],
++      "noise_rel": [
++        0.3176,
++        0.4438,
++        0.1116
++      ],
++      "rest_noise": true,
++      "scale_std": 0.0,
++      "scale_walk": 0.0,
++      "tau_axis_s": [
++        0.9659095671490097,
++        0.9677901571181826,
++        0.6555100032553108
++      ],
++      "tau_s": 0.9659095671490097,
++      "tau_stop_s": 0.08517977552355656,
++      "use_scale": false,
++      "yaw_bias_std_rad_s": 0.00023380193446118067
++    },
++    "motion_profiles": {
++      "fine": {
++        "gain": [
++          [
++            1.2343633830421075,
++            0.0,
++            0.0
++          ],
++          [
++            0.0,
++            0.8465206614876801,
++            0.0
++          ],
++          [
++            0.0,
++            0.0,
++            1.057962354519254
++          ]
++        ],
++        "noise_abs": [
++          0.01538,
++          0.012017159467223952,
++          0.016568425019454016
++        ],
++        "noise_rel": [
++          0.3176,
++          0.4438,
++          0.1116
++        ],
++        "rest_noise": true,
++        "scale_std": 0.0,
++        "scale_walk": 0.0,
++        "tau_axis_s": [
++          0.858834228876382,
++          0.8554046876918863,
++          0.1634521669854569
++        ],
++        "tau_s": 0.858834228876382,
++        "tau_stop_s": 0.06965110936636022,
++        "use_scale": false
++      }
++    }
++  },
++  "parent_calibration": {
++    "path": "/Users/changmin/projects/ugrp/outputs/v92-dev-pilot-c0zero-20261003T104043Z/result/calibration_dev_pilot.json",
++    "sha256": "398372ae6b9b0fef7344d7f29146ce75b309d334b3ce31af527bc071c0e582f5"
++  },
++  "qualification": "NON-CONFIRMATORY DEV PILOT ONLY. Not MEASURED_SIM; rejected by the v92 loader. v92 loaded data were already inspected before this rule; confirmation needs a re-collection under a newly frozen rule. No task-success claim.",
++  "render_profile": "floor_light_v1",
++  "robot_model": "masterpi_v3",
++  "schema": "ugrp.final_environment_measured_calibration.v92",
++  "source_sha": "341ce3b9aeda6aca38fac57c6d5030b9c458760d",
++  "status": "DEV_PILOT",
++  "unloaded_gain_calibration": {
++    "bundle_id": "zone-final-environment-gaincal-v101",
++    "fit_sha256": "8335c075ede24bbb31e6ae35227317e18e86d7f77729417e46241ccbf7a08567",
++    "form": "linear_diag",
++    "heldout_sha256": "10811dedc7f4a1a8b288301fba090923ecf7432c589a6d17e4b4123d4d1551fe",
++    "heldout_status": "VALIDATED_DEV",
++    "noise_source": "registered r4/r5 measured noise (diff C)",
++    "qualification": "DEV_PILOT unloaded profile measured at the approach command amplitudes; NOT MEASURED_SIM, not a confirmation sample; unloaded, floor_light_v1, masterpi_v3 standard reset arm pose",
++    "registered_noise_source": {
++      "path": "experiments/2026-10-03-critb-rotation/calibration_candidate_r5_yaw.json",
++      "sha256": "978727fcacc5e368efe2a0fdf6d9d8dc3756573c41e896e06ba11d78cf86fb97"
++    },
++    "variant": "C"
++  }
++}
+diff --git a/experiments/2026-10-05-unloaded-gain-calibration-v101/products/C/input_manifest_dev.json b/experiments/2026-10-05-unloaded-gain-calibration-v101/products/C/input_manifest_dev.json
+new file mode 100644
+index 0000000..435e0bf
+--- /dev/null
++++ b/experiments/2026-10-05-unloaded-gain-calibration-v101/products/C/input_manifest_dev.json
+@@ -0,0 +1,9 @@
++{
++  "execution_source_sha": "341ce3b9aeda6aca38fac57c6d5030b9c458760d",
++  "fit_sha256": "8335c075ede24bbb31e6ae35227317e18e86d7f77729417e46241ccbf7a08567",
++  "heldout_sha256": "10811dedc7f4a1a8b288301fba090923ecf7432c589a6d17e4b4123d4d1551fe",
++  "purpose": "unloaded gain calibration v101 variant C",
++  "schema": "ugrp.v92_dev_pilot_inputs.v1",
++  "script_sha256": "45eb1313a3fd09f0a43bb85946c7e72485affd3f9aa4074ef6a029829822662b",
++  "working_tree_dirty": false
++}
+diff --git a/experiments/2026-10-05-unloaded-gain-calibration-v101/products/fit/fit.json b/experiments/2026-10-05-unloaded-gain-calibration-v101/products/fit/fit.json
+new file mode 100644
+index 0000000..26494b8
+--- /dev/null
++++ b/experiments/2026-10-05-unloaded-gain-calibration-v101/products/fit/fit.json
+@@ -0,0 +1,812 @@
++{
++  "blocks": [
++    {
++      "axis": "forward",
++      "level": 0.03,
++      "run": "fitA1",
++      "sign": 1.0,
++      "v_ss_cross": [
++        5.285064919268847e-11,
++        1.318408493489187e-09
++      ],
++      "v_ss_over_u": 1.2876378904517578,
++      "v_ss_own_axis": 0.03862913671355273
++    },
++    {
++      "axis": "forward",
++      "level": 0.06,
++      "run": "fitA1",
++      "sign": 1.0,
++      "v_ss_cross": [
++        -1.4184940348299653e-10,
++        -2.481643039213092e-10
++      ],
++      "v_ss_over_u": 1.4132777135871617,
++      "v_ss_own_axis": 0.0847966628152297
++    },
++    {
++      "axis": "forward",
++      "level": 0.09,
++      "run": "fitA1",
++      "sign": 1.0,
++      "v_ss_cross": [
++        -4.5076108433327104e-11,
++        -1.5668971305634234e-09
++      ],
++      "v_ss_over_u": 1.4551544200355038,
++      "v_ss_own_axis": 0.13096389780319534
++    },
++    {
++      "axis": "forward",
++      "level": 0.12,
++      "run": "fitA1",
++      "sign": 1.0,
++      "v_ss_cross": [
++        2.4647258794822435e-09,
++        2.138989430022775e-09
++      ],
++      "v_ss_over_u": 1.476083225241259,
++      "v_ss_own_axis": 0.17712998702895108
++    },
++    {
++      "axis": "left",
++      "level": 0.02,
++      "run": "fitA1",
++      "sign": 1.0,
++      "v_ss_cross": [
++        -7.567435534938408e-06,
++        -0.0009049184370077216
++      ],
++      "v_ss_over_u": 0.7841493567270841,
++      "v_ss_own_axis": 0.015682987134541682
++    },
++    {
++      "axis": "left",
++      "level": 0.02,
++      "run": "fitA1",
++      "sign": -1.0,
++      "v_ss_cross": [
++        -7.565021615491144e-06,
++        0.0009049167459728539
++      ],
++      "v_ss_over_u": 0.7841494571330291,
++      "v_ss_own_axis": -0.015682989142660583
++    },
++    {
++      "axis": "left",
++      "level": 0.04,
++      "run": "fitA1",
++      "sign": 1.0,
++      "v_ss_cross": [
++        -3.0038625825690935e-05,
++        -0.0010817771301894947
++      ],
++      "v_ss_over_u": 0.9681052059031214,
++      "v_ss_own_axis": 0.03872420823612486
++    },
++    {
++      "axis": "left",
++      "level": 0.04,
++      "run": "fitA1",
++      "sign": -1.0,
++      "v_ss_cross": [
++        -3.0034070882378557e-05,
++        0.0010817750966335045
++      ],
++      "v_ss_over_u": 0.9681051292540072,
++      "v_ss_own_axis": -0.038724205170160286
++    },
++    {
++      "axis": "left",
++      "level": 0.06,
++      "run": "fitA1",
++      "sign": 1.0,
++      "v_ss_cross": [
++        -6.163037976664366e-05,
++        -0.0011933778936989252
++      ],
++      "v_ss_over_u": 1.0299175140530494,
++      "v_ss_own_axis": 0.06179505084318296
++    },
++    {
++      "axis": "left",
++      "level": 0.06,
++      "run": "fitA1",
++      "sign": -1.0,
++      "v_ss_cross": [
++        -6.162640596590656e-05,
++        0.0011933748763620262
++      ],
++      "v_ss_over_u": 1.029917494980191,
++      "v_ss_own_axis": -0.06179504969881146
++    },
++    {
++      "axis": "left",
++      "level": 0.08,
++      "run": "fitA1",
++      "sign": 1.0,
++      "v_ss_cross": [
++        -0.00010189734917969562,
++        -0.0012909962079644306
++      ],
++      "v_ss_over_u": 1.0608882418801195,
++      "v_ss_own_axis": 0.08487105935040956
++    },
++    {
++      "axis": "left",
++      "level": 0.08,
++      "run": "fitA1",
++      "sign": -1.0,
++      "v_ss_cross": [
++        -0.00010189344932202163,
++        0.0012909929778091762
++      ],
++      "v_ss_over_u": 1.060888225290203,
++      "v_ss_own_axis": -0.08487105802321625
++    },
++    {
++      "axis": "turn",
++      "level": 0.02,
++      "run": "fitA1",
++      "sign": 1.0,
++      "v_ss_cross": [
++        -4.671897929531546e-08,
++        -0.00017089440051738873
++      ],
++      "v_ss_over_u": 1.0083682172420172,
++      "v_ss_own_axis": 0.020167364344840344
++    },
++    {
++      "axis": "turn",
++      "level": 0.02,
++      "run": "fitA1",
++      "sign": -1.0,
++      "v_ss_cross": [
++        2.651207628347714e-07,
++        0.000170895919901679
++      ],
++      "v_ss_over_u": 1.0083681577085353,
++      "v_ss_own_axis": -0.020167363154170708
++    },
++    {
++      "axis": "turn",
++      "level": 0.05,
++      "run": "fitA1",
++      "sign": 1.0,
++      "v_ss_cross": [
++        7.5025523712077925e-06,
++        -0.00032074717517032597
++      ],
++      "v_ss_over_u": 1.276980084107165,
++      "v_ss_own_axis": 0.06384900420535826
++    },
++    {
++      "axis": "turn",
++      "level": 0.05,
++      "run": "fitA1",
++      "sign": -1.0,
++      "v_ss_cross": [
++        8.003424471405666e-06,
++        0.0003207618989481355
++      ],
++      "v_ss_over_u": 1.276979924263788,
++      "v_ss_own_axis": -0.0638489962131894
++    },
++    {
++      "axis": "turn",
++      "level": 0.08,
++      "run": "fitA1",
++      "sign": 1.0,
++      "v_ss_cross": [
++        3.405818709251623e-05,
++        -0.0003931931442412365
++      ],
++      "v_ss_over_u": 1.3555122422085377,
++      "v_ss_own_axis": 0.10844097937668302
++    },
++    {
++      "axis": "turn",
++      "level": 0.08,
++      "run": "fitA1",
++      "sign": -1.0,
++      "v_ss_cross": [
++        3.453726799288464e-05,
++        0.0003932221169813484
++      ],
++      "v_ss_over_u": 1.3555120560806544,
++      "v_ss_own_axis": -0.10844096448645235
++    },
++    {
++      "axis": "turn",
++      "level": 0.1,
++      "run": "fitA1",
++      "sign": 1.0,
++      "v_ss_cross": [
++        6.433078206025049e-05,
++        -0.0004265059104621145
++      ],
++      "v_ss_over_u": 1.382969585860881,
++      "v_ss_own_axis": 0.13829695858608812
++    },
++    {
++      "axis": "turn",
++      "level": 0.1,
++      "run": "fitA1",
++      "sign": -1.0,
++      "v_ss_cross": [
++        6.473127250096121e-05,
++        0.0004265391120518363
++      ],
++      "v_ss_over_u": 1.3829694227823615,
++      "v_ss_own_axis": -0.13829694227823616
++    },
++    {
++      "axis": "forward",
++      "level": 0.12,
++      "run": "fitA2",
++      "sign": 1.0,
++      "v_ss_cross": [
++        2.827832349112487e-10,
++        -6.108888210102729e-10
++      ],
++      "v_ss_over_u": 1.4760832254191711,
++      "v_ss_own_axis": 0.17712998705030053
++    },
++    {
++      "axis": "forward",
++      "level": 0.09,
++      "run": "fitA2",
++      "sign": 1.0,
++      "v_ss_cross": [
++        1.3278517016017216e-10,
++        -1.1638248883135323e-09
++      ],
++      "v_ss_over_u": 1.4551544190581354,
++      "v_ss_own_axis": 0.13096389771523217
++    },
++    {
++      "axis": "forward",
++      "level": 0.06,
++      "run": "fitA2",
++      "sign": 1.0,
++      "v_ss_cross": [
++        3.927373329364155e-10,
++        9.133951373030413e-10
++      ],
++      "v_ss_over_u": 1.41327771635098,
++      "v_ss_own_axis": 0.0847966629810588
++    },
++    {
++      "axis": "forward",
++      "level": 0.03,
++      "run": "fitA2",
++      "sign": 1.0,
++      "v_ss_cross": [
++        1.3663648143780223e-10,
++        1.5514126279943714e-09
++      ],
++      "v_ss_over_u": 1.2876379586662952,
++      "v_ss_own_axis": 0.03862913875998885
++    },
++    {
++      "axis": "left",
++      "level": 0.08,
++      "run": "fitA2",
++      "sign": -1.0,
++      "v_ss_cross": [
++        -0.00010189345137694119,
++        0.0012909849823582082
++      ],
++      "v_ss_over_u": 1.0608882280114738,
++      "v_ss_own_axis": -0.08487105824091791
++    },
++    {
++      "axis": "left",
++      "level": 0.08,
++      "run": "fitA2",
++      "sign": 1.0,
++      "v_ss_cross": [
++        -0.00010189737653929917,
++        -0.001290988277737733
++      ],
++      "v_ss_over_u": 1.0608882440101477,
++      "v_ss_own_axis": 0.08487105952081182
++    },
++    {
++      "axis": "left",
++      "level": 0.06,
++      "run": "fitA2",
++      "sign": -1.0,
++      "v_ss_cross": [
++        -6.16264293140231e-05,
++        0.001193368340268286
++      ],
++      "v_ss_over_u": 1.0299174960120803,
++      "v_ss_own_axis": -0.06179504976072481
++    },
++    {
++      "axis": "left",
++      "level": 0.06,
++      "run": "fitA2",
++      "sign": 1.0,
++      "v_ss_cross": [
++        -6.163077974391123e-05,
++        -0.0011933713968968658
++      ],
++      "v_ss_over_u": 1.0299175127135114,
++      "v_ss_own_axis": 0.06179505076281069
++    },
++    {
++      "axis": "left",
++      "level": 0.04,
++      "run": "fitA2",
++      "sign": -1.0,
++      "v_ss_cross": [
++        -3.0034122293992618e-05,
++        0.0010817704069676637
++      ],
++      "v_ss_over_u": 0.9681051274581657,
++      "v_ss_own_axis": -0.03872420509832663
++    },
++    {
++      "axis": "left",
++      "level": 0.04,
++      "run": "fitA2",
++      "sign": 1.0,
++      "v_ss_cross": [
++        -3.0038134995848555e-05,
++        -0.0010817728134457916
++      ],
++      "v_ss_over_u": 0.9681051446166582,
++      "v_ss_own_axis": 0.03872420578466633
++    },
++    {
++      "axis": "left",
++      "level": 0.02,
++      "run": "fitA2",
++      "sign": -1.0,
++      "v_ss_cross": [
++        -7.564877559692885e-06,
++        0.000904914243010276
++      ],
++      "v_ss_over_u": 0.7841494411677983,
++      "v_ss_own_axis": -0.015682988823355965
++    },
++    {
++      "axis": "left",
++      "level": 0.02,
++      "run": "fitA2",
++      "sign": 1.0,
++      "v_ss_cross": [
++        -7.567427947935985e-06,
++        -0.0009049156875917674
++      ],
++      "v_ss_over_u": 0.7841494354442752,
++      "v_ss_own_axis": 0.015682988708885504
++    },
++    {
++      "axis": "turn",
++      "level": 0.1,
++      "run": "fitA2",
++      "sign": -1.0,
++      "v_ss_cross": [
++        6.456564855820011e-05,
++        0.00042654141463156347
++      ],
++      "v_ss_over_u": 1.3829692383653376,
++      "v_ss_own_axis": -0.13829692383653377
++    },
++    {
++      "axis": "turn",
++      "level": 0.1,
++      "run": "fitA2",
++      "sign": 1.0,
++      "v_ss_cross": [
++        6.416518673604178e-05,
++        -0.0004265082046725204
++      ],
++      "v_ss_over_u": 1.3829693962493101,
++      "v_ss_own_axis": 0.13829693962493103
++    },
++    {
++      "axis": "turn",
++      "level": 0.08,
++      "run": "fitA2",
++      "sign": -1.0,
++      "v_ss_cross": [
++        3.4427203889228906e-05,
++        0.0003932241787543603
++      ],
++      "v_ss_over_u": 1.355511874579925,
++      "v_ss_own_axis": -0.10844094996639402
++    },
++    {
++      "axis": "turn",
++      "level": 0.08,
++      "run": "fitA2",
++      "sign": 1.0,
++      "v_ss_cross": [
++        3.39481509705683e-05,
++        -0.00039319517422667263
++      ],
++      "v_ss_over_u": 1.3555120348985685,
++      "v_ss_own_axis": 0.10844096279188549
++    },
++    {
++      "axis": "turn",
++      "level": 0.05,
++      "run": "fitA2",
++      "sign": -1.0,
++      "v_ss_cross": [
++        7.962947073047467e-06,
++        0.00032076283123366414
++      ],
++      "v_ss_over_u": 1.2769797612737783,
++      "v_ss_own_axis": -0.06384898806368892
++    },
++    {
++      "axis": "turn",
++      "level": 0.05,
++      "run": "fitA2",
++      "sign": 1.0,
++      "v_ss_cross": [
++        7.462115428613942e-06,
++        -0.00032074855469360066
++      ],
++      "v_ss_over_u": 1.2769799061881817,
++      "v_ss_own_axis": 0.06384899530940909
++    },
++    {
++      "axis": "turn",
++      "level": 0.02,
++      "run": "fitA2",
++      "sign": -1.0,
++      "v_ss_cross": [
++        2.616419181723938e-07,
++        0.0001708962383944531
++      ],
++      "v_ss_over_u": 1.0083681481434088,
++      "v_ss_own_axis": -0.02016736296286818
++    },
++    {
++      "axis": "turn",
++      "level": 0.02,
++      "run": "fitA2",
++      "sign": 1.0,
++      "v_ss_cross": [
++        -5.0241953824174866e-08,
++        -0.00017089477800822243
++      ],
++      "v_ss_over_u": 1.0083681528856747,
++      "v_ss_own_axis": 0.020167363057713494
++    }
++  ],
++  "comparators": {
++    "dev_fill": {
++      "gain": [
++        1.15,
++        0.94,
++        1.4
++      ],
++      "tau_axis_s": [
++        0.12,
++        0.12,
++        0.12
++      ],
++      "tau_stop_s": 0.12
++    },
++    "r4r5": {
++      "gain": [
++        1.2371430923959086,
++        0.8509603197221365,
++        1.0725221565695355
++      ],
++      "source": [
++        "experiments/2026-10-03-critb-rotation/calibration_candidate_r5_yaw.json",
++        "978727fcacc5e368efe2a0fdf6d9d8dc3756573c41e896e06ba11d78cf86fb97"
++      ],
++      "tau_axis_s": [
++        0.7977909566698789,
++        0.7877102182037926,
++        0.16770868665607128
++      ],
++      "tau_stop_s": 0.08897855686817813
++    }
++  },
++  "direct_usage_weighted_gain": {
++    "forward": 1.472712340676518,
++    "left": 1.037273463547972,
++    "turn": 1.3827082875768806
++  },
++  "environment": {
++    "numpy": "2.5.2",
++    "python": "3.12.13",
++    "scipy": "1.17.1"
++  },
++  "fit_runs": [
++    {
++      "commands_sha256": "6d6f99d642e08e3db0d6fc1e4cafca320097ab4f7e01820b8b0040176bb7b620",
++      "id": "fitA1",
++      "pose_sha256": "1a4d24e75b44ef77db38ebd078f3abd9ae1c42038ce56ba1c864767e74f848e0",
++      "result_sha256": "74943d0b5fddc548612076ae2408edba1907faf92506aed7182a55214971f46a"
++    },
++    {
++      "commands_sha256": "bd2f334ff030515adc925798ea809f2e56447745363f37318288f8f7752d3a8f",
++      "id": "fitA2",
++      "pose_sha256": "b4f96cb9e8d21bea1cbb1173eabb2b90ce70a4b69dfca76295f438574d0baf1b",
++      "result_sha256": "4cbbf6ff5d0bc8c382745c4d8f3a8ce68f35ddcb1634e4a8b7e5da1568d14f2c"
++    }
++  ],
++  "forms": {
++    "deadband_diag": {
++      "boundary_params": [],
++      "cost": 0.02765445291845557,
++      "deadband": {
++        "c0": [
++          0.003973584565436779,
++          0.0029997912851982915,
++          0.0031636622377341586
++        ],
++        "u1": [
++          0.033635204606699956,
++          0.025447509238463152,
++          0.02623790480412901
++        ]
++      },
++      "form": "deadband_diag",
++      "gain": [
++        [
++          1.564299027100073,
++          0.0,
++          0.0
++        ],
++        [
++          0.0,
++          1.104911820346516,
++          0.0
++        ],
++        [
++          0.0,
++          0.0,
++          1.3713705105753444
++        ]
++      ],
++      "n_params": 13,
++      "nfev": 7,
++      "params": [
++        1.564299027100073,
++        1.104911820346516,
++        1.3713705105753444,
++        1.013069841294043,
++        1.0128806412608873,
++        0.1703146836520061,
++        0.07050425291108942,
++        0.003973584565436779,
++        0.0029997912851982915,
++        0.0031636622377341586,
++        0.033635204606699956,
++        0.025447509238463152,
++        0.02623790480412901
++      ],
++      "rank": 10,
++      "rmse_weighted": 0.002037724284103804,
++      "status": 2,
++      "success": true,
++      "tau_axis_s": [
++        1.013069841294043,
++        1.0128806412608873,
++        0.1703146836520061
++      ],
++      "tau_stop_s": 0.07050425291108942
++    },
++    "linear_diag": {
++      "boundary_params": [],
++      "cost": 0.047807708162243306,
++      "form": "linear_diag",
++      "gain": [
++        [
++          1.56344293503864,
++          0.0,
++          0.0
++        ],
++        [
++          0.0,
++          1.1010024123049476,
++          0.0
++        ],
++        [
++          0.0,
++          0.0,
++          1.3703025168007674
++        ]
++      ],
++      "n_params": 7,
++      "nfev": 8,
++      "params": [
++        1.56344293503864,
++        1.1010024123049476,
++        1.3703025168007674,
++        1.0130610686146653,
++        1.0128027768773051,
++        0.17031804438807943,
++        0.07050329844380564
++      ],
++      "rank": 7,
++      "rmse_weighted": 0.0026792414148216264,
++      "status": 2,
++      "success": true,
++      "tau_axis_s": [
++        1.0130610686146653,
++        1.0128027768773051,
++        0.17031804438807943
++      ],
++      "tau_stop_s": 0.07050329844380564
++    },
++    "linear_full": {
++      "boundary_params": [],
++      "cost": 0.03996094580859044,
++      "form": "linear_full",
++      "gain": [
++        [
++          1.563467546894221,
++          -4.2305628968118566e-08,
++          -2.34728827311482e-06
++        ],
++        [
++          1.987029590333108e-07,
++          1.1010046428746492,
++          -0.0073672212520193795
++        ],
++        [
++          3.2051826901690136e-07,
++          -0.04822935945989212,
++          1.3699972170046835
++        ]
++      ],
++      "n_params": 13,
++      "nfev": 8,
++      "params": [
++        1.563467546894221,
++        -4.2305628968118566e-08,
++        -2.34728827311482e-06,
++        1.987029590333108e-07,
++        1.1010046428746492,
++        -0.0073672212520193795,
++        3.2051826901690136e-07,
++        -0.04822935945989212,
++        1.3699972170046835,
++        1.0130959772953723,
++        1.0127007248251718,
++        0.16959578639592798,
++        0.07047788831818767
++      ],
++      "rank": 13,
++      "rmse_weighted": 0.0024495187309555052,
++      "status": 2,
++      "success": true,
++      "tau_axis_s": [
++        1.0130959772953723,
++        1.0127007248251718,
++        0.16959578639592798
++      ],
++      "tau_stop_s": 0.07047788831818767
++    }
++  },
++  "inputs_sha256": "898f506de286342e14d966a1af683c2af7bdf32e185ae51c436a48331a0ccc19",
++  "n_windows": 40,
++  "noise_measured": {
++    "detail": {
++      "forward/driven/H0.5": {
++        "implied_std": 0.016086281870559896,
++        "n": 80,
++        "vbar": 0.11356313824374956
++      },
++      "forward/idle/H0.5": {
++        "implied_std": 0.0013600297435241362,
++        "n": 320,
++        "vbar": 0.0
++      },
++      "forward/rest/H0.5": {
++        "implied_std": 1.5481069998017266e-06,
++        "n": 520,
++        "vbar": 2.140624853425055e-06
++      },
++      "forward/rest/H1.0": {
++        "implied_std": 1.8510359298955302e-06,
++        "n": 120,
++        "vbar": 4.28222750088983e-06
++      },
++      "left/driven/H0.5": {
++        "implied_std": 0.01088866179604622,
++        "n": 160,
++        "vbar": 0.05331688117722557
++      },
++      "left/idle/H0.5": {
++        "implied_std": 0.0007893464852707873,
++        "n": 240,
++        "vbar": 0.0
++      },
++      "left/rest/H0.5": {
++        "implied_std": 1.244910869554127e-05,
++        "n": 520,
++        "vbar": 2.009991085440102e-06
++      },
++      "left/rest/H1.0": {
++        "implied_std": 1.8178987952279096e-05,
++        "n": 120,
++        "vbar": 4.02090029406283e-06
++      },
++      "turn/driven/H0.5": {
++        "implied_std": 0.013843818667737283,
++        "n": 960,
++        "vbar": 0.08556767771396583
++      },
++      "turn/driven/H1.0": {
++        "implied_std": 0.0195973240945546,
++        "n": 800,
++        "vbar": 0.08559412141358724
++      },
++      "turn/driven/H2.0": {
++        "implied_std": 0.02772245903628121,
++        "n": 480,
++        "vbar": 0.08560132424484257
++      },
++      "turn/idle/H0.5": {
++        "implied_std": 0.0027395446980128246,
++        "n": 240,
++        "vbar": 0.0
++      },
++      "turn/rest/H0.5": {
++        "implied_std": 1.9568958146183433e-05,
++        "n": 520,
++        "vbar": 3.1884594822245398e-06
++      },
++      "turn/rest/H1.0": {
++        "implied_std": 2.861420658115288e-05,
++        "n": 120,
++        "vbar": 6.378375388106227e-06
++      }
++    },
++    "noise_abs": [
++      0.002,
++      0.002,
++      0.002
++    ],
++    "noise_rel": [
++      0.1376504237414595,
++      0.20000893820688376,
++      0.2116450140211502
++    ]
++  },
++  "plan_sha256": "bcbf250f2029e9cfc9c3b1a331e4e993fcd8627ee6863c836a2de25dc53b851b",
++  "replicate_pairs": 20,
++  "replicate_spread_rel": 5.811457263722095e-08,
++  "rest": {
++    "n_windows": 120,
++    "rest_noise": false,
++    "rms_displacement_1s_m": 6.467082144474206e-06
++  },
++  "scale_std_rule": {
++    "scale_std": 5.811457263722095e-08,
++    "scale_walk": 0.0,
++    "use_scale": false
++  },
++  "schema": "ugrp.unloaded_gain_calibration_fit.v101",
++  "script_sha256": "45eb1313a3fd09f0a43bb85946c7e72485affd3f9aa4074ef6a029829822662b",
++  "source_sha": "341ce3b9aeda6aca38fac57c6d5030b9c458760d",
++  "stage": "fit",
++  "weights": {
++    "forward/0.03": 0.37761056597051573,
++    "forward/0.06": 0.5585971843740841,
++    "forward/0.09": 1.3305383118564502,
++    "forward/0.12": 4.399924160020224,
++    "left/0.02": 0.42599721973407473,
++    "left/0.04": 0.7871197901013894,
++    "left/0.06": 1.1527116926102152,
++    "left/0.08": 0.9675037419990024,
++    "turn/0.02": 0.21237327670045955,
++    "turn/0.05": 0.16666662222223408,
++    "turn/0.08": 0.16666662222223408,
++    "turn/0.1": 2.787625923299754
++  }
++}
+diff --git a/experiments/2026-10-05-unloaded-gain-calibration-v101/products/fit/fit.json.sha256 b/experiments/2026-10-05-unloaded-gain-calibration-v101/products/fit/fit.json.sha256
+new file mode 100644
+index 0000000..0d8c3c4
+--- /dev/null
++++ b/experiments/2026-10-05-unloaded-gain-calibration-v101/products/fit/fit.json.sha256
+@@ -0,0 +1 @@
++8335c075ede24bbb31e6ae35227317e18e86d7f77729417e46241ccbf7a08567
+diff --git a/experiments/2026-10-05-unloaded-gain-calibration-v101/products/heldout/heldout.json b/experiments/2026-10-05-unloaded-gain-calibration-v101/products/heldout/heldout.json
+new file mode 100644
+index 0000000..d2526ff
+--- /dev/null
++++ b/experiments/2026-10-05-unloaded-gain-calibration-v101/products/heldout/heldout.json
+@@ -0,0 +1,1844 @@
++{
++  "candidates": {
++    "deadband_diag": {
++      "leg_rms_pos_err_m": 0.051484965839266573,
++      "leg_windows": [
++        {
++          "axis": "replay",
++          "end_err_m": 0.03800219563259348,
++          "end_over_path": 0.025652787899842162,
++          "end_pos_err_m": 0.037706522930752426,
++          "end_yaw_err_rad": -0.013517940119178774,
++          "kind": "replay",
++          "level": 0.0,
++          "max_pos_err_m": 0.04135017548854443,
++          "path_len_m": 1.4698801189941788,
++          "rms_pos_err_m": 0.027195317199836377,
++          "run": "heldP1",
++          "sign": 0.0
++        },
++        {
++          "axis": "replay",
++          "end_err_m": 0.10271365955693995,
++          "end_over_path": 0.05322086059092996,
++          "end_pos_err_m": 0.10270202670693378,
++          "end_yaw_err_rad": -0.004416638177805909,
++          "kind": "replay",
++          "level": 0.0,
++          "max_pos_err_m": 0.10344221551338394,
++          "path_len_m": 1.9297325440926172,
++          "rms_pos_err_m": 0.06754123286808715,
++          "run": "heldP2",
++          "sign": 0.0
++        }
++      ],
++      "sel_rms_end_err_m": 0.00899569861180469,
++      "selection_windows": [
++        {
++          "axis": "forward",
++          "end_err_m": 0.014470334976595611,
++          "end_over_path": 0.07155711933473893,
++          "end_pos_err_m": 0.014470334976594147,
++          "end_yaw_err_rad": -1.8599092044269128e-08,
++          "kind": "step",
++          "level": 0.045,
++          "max_pos_err_m": 0.015259422139378788,
++          "path_len_m": 0.20222075890035462,
++          "rms_pos_err_m": 0.009834972902225066,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "forward",
++          "end_err_m": 0.00785230148412586,
++          "end_over_path": 0.022225621612971428,
++          "end_pos_err_m": 0.00785230148410701,
++          "end_yaw_err_rad": 4.915728690768617e-08,
++          "kind": "step",
++          "level": 0.075,
++          "max_pos_err_m": 0.009561708114950877,
++          "path_len_m": 0.35329952164416456,
++          "rms_pos_err_m": 0.00547604648597806,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "forward",
++          "end_err_m": 0.0012905740748132802,
++          "end_over_path": 0.002559028022406715,
++          "end_pos_err_m": 0.0012905740747981532,
++          "end_yaw_err_rad": 1.7853128086997572e-08,
++          "kind": "step",
++          "level": 0.105,
++          "max_pos_err_m": 0.003928141791030749,
++          "path_len_m": 0.5043219783050261,
++          "rms_pos_err_m": 0.001803609438743938,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "left",
++          "end_err_m": 0.01312518745039053,
++          "end_over_path": 0.14562181887742529,
++          "end_pos_err_m": 0.012971346831987002,
++          "end_yaw_err_rad": 0.005724781056103856,
++          "kind": "step",
++          "level": 0.03,
++          "max_pos_err_m": 0.013145103394253729,
++          "path_len_m": 0.08907557213596827,
++          "rms_pos_err_m": 0.00878159056938625,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "left",
++          "end_err_m": 0.013125098564493929,
++          "end_over_path": 0.1456207549710505,
++          "end_pos_err_m": 0.012971264015715137,
++          "end_yaw_err_rad": -0.005724649289529982,
++          "kind": "step",
++          "level": 0.03,
++          "max_pos_err_m": 0.013145020764763198,
++          "path_len_m": 0.08907565421078768,
++          "rms_pos_err_m": 0.008781522904001715,
++          "run": "heldA3",
++          "sign": -1.0
++        },
++        {
++          "axis": "left",
++          "end_err_m": 0.00638508200741972,
++          "end_over_path": 0.03444654737333141,
++          "end_pos_err_m": 0.005665862350357625,
++          "end_yaw_err_rad": 0.00841149653906692,
++          "kind": "step",
++          "level": 0.05,
++          "max_pos_err_m": 0.006338716532970982,
++          "path_len_m": 0.16448273578629094,
++          "rms_pos_err_m": 0.0038743433122515607,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "left",
++          "end_err_m": 0.006385053703467732,
++          "end_over_path": 0.03444650930212885,
++          "end_pos_err_m": 0.0056658561455137455,
++          "end_yaw_err_rad": -0.008411355266815246,
++          "kind": "step",
++          "level": 0.05,
++          "max_pos_err_m": 0.0063387109616986756,
++          "path_len_m": 0.16448273744717543,
++          "rms_pos_err_m": 0.0038743393584880696,
++          "run": "heldA3",
++          "sign": -1.0
++        },
++        {
++          "axis": "left",
++          "end_err_m": 0.004658211031973987,
++          "end_over_path": 0.010838797539206541,
++          "end_pos_err_m": 0.0026006069404571064,
++          "end_yaw_err_rad": 0.011041951010559492,
++          "kind": "step",
++          "level": 0.07,
++          "max_pos_err_m": 0.0026353381264779185,
++          "path_len_m": 0.23993500487946978,
++          "rms_pos_err_m": 0.001854567409622397,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "left",
++          "end_err_m": 0.004658137899655893,
++          "end_over_path": 0.010838646315336781,
++          "end_pos_err_m": 0.0026005706697343448,
++          "end_yaw_err_rad": -0.01104176889257169,
++          "kind": "step",
++          "level": 0.07,
++          "max_pos_err_m": 0.0026353021448835773,
++          "path_len_m": 0.23993500609522742,
++          "rms_pos_err_m": 0.0018545458189572108,
++          "run": "heldA3",
++          "sign": -1.0
++        },
++        {
++          "axis": "turn",
++          "end_err_m": 0.009121330290034453,
++          "end_over_path": 0.9940782222838134,
++          "end_pos_err_m": 0.0010572200257322664,
++          "end_yaw_err_rad": 0.02588529676060164,
++          "kind": "step",
++          "level": 0.035,
++          "max_pos_err_m": 0.0010594425104177713,
++          "path_len_m": 0.0010635179425854335,
++          "rms_pos_err_m": 0.0007610920102387375,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "turn",
++          "end_err_m": 0.009121321748933047,
++          "end_over_path": 0.9940762444935123,
++          "end_pos_err_m": 0.0010572160633465718,
++          "end_yaw_err_rad": -0.025885273512955165,
++          "kind": "step",
++          "level": 0.035,
++          "max_pos_err_m": 0.001059443023213928,
++          "path_len_m": 0.001063516072537504,
++          "rms_pos_err_m": 0.0007610905130985197,
++          "run": "heldA3",
++          "sign": -1.0
++        },
++        {
++          "axis": "turn",
++          "end_err_m": 0.005536106502935802,
++          "end_over_path": 0.9707832426988446,
++          "end_pos_err_m": 0.0015818206500538448,
++          "end_yaw_err_rad": 0.015158029768830295,
++          "kind": "step",
++          "level": 0.065,
++          "max_pos_err_m": 0.0015998630383507418,
++          "path_len_m": 0.0016294272299718256,
++          "rms_pos_err_m": 0.0011670745736045633,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "turn",
++          "end_err_m": 0.0055361331895512605,
++          "end_over_path": 0.9707813921625463,
++          "end_pos_err_m": 0.0015818324113203155,
++          "end_yaw_err_rad": -0.015158099314092732,
++          "kind": "step",
++          "level": 0.065,
++          "max_pos_err_m": 0.001599864269169144,
++          "path_len_m": 0.0016294424512985058,
++          "rms_pos_err_m": 0.0011670777921425277,
++          "run": "heldA3",
++          "sign": -1.0
++        },
++        {
++          "axis": "turn",
++          "end_err_m": 0.0026030650718097525,
++          "end_over_path": 0.9487425651449056,
++          "end_pos_err_m": 0.0019129925655393194,
++          "end_yaw_err_rad": 0.005043813921592533,
++          "kind": "step",
++          "level": 0.09,
++          "max_pos_err_m": 0.0019473156621234932,
++          "path_len_m": 0.0020163452508817708,
++          "rms_pos_err_m": 0.001439606296131946,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "turn",
++          "end_err_m": 0.002603070429690978,
++          "end_over_path": 0.9487380343085828,
++          "end_pos_err_m": 0.0019129837253346938,
++          "end_yaw_err_rad": -0.005043863864333364,
++          "kind": "step",
++          "level": 0.09,
++          "max_pos_err_m": 0.0019473191442857102,
++          "path_len_m": 0.0020163455623752134,
++          "rms_pos_err_m": 0.0014396042129046613,
++          "run": "heldA3",
++          "sign": -1.0
++        },
++        {
++          "axis": "mixed",
++          "end_err_m": 0.0043523378811504455,
++          "end_over_path": 0.007589823235240292,
++          "end_pos_err_m": 0.003804408211636548,
++          "end_yaw_err_rad": -0.006040221100784615,
++          "kind": "mixed",
++          "level": 0.1,
++          "max_pos_err_m": 0.004093090657456708,
++          "path_len_m": 0.5012512272976672,
++          "rms_pos_err_m": 0.002933325602435672,
++          "run": "heldM1",
++          "sign": 0.0
++        },
++        {
++          "axis": "mixed",
++          "end_err_m": 0.012466081182465116,
++          "end_over_path": 0.03368681628796826,
++          "end_pos_err_m": 0.011191428941877376,
++          "end_yaw_err_rad": 0.015689616555120023,
++          "kind": "mixed",
++          "level": 0.06,
++          "max_pos_err_m": 0.01172438178241571,
++          "path_len_m": 0.33221984666667825,
++          "rms_pos_err_m": 0.007538387185355579,
++          "run": "heldM1",
++          "sign": 0.0
++        },
++        {
++          "axis": "mixed",
++          "end_err_m": 0.014293396764078212,
++          "end_over_path": 0.04017416858165771,
++          "end_pos_err_m": 0.00818693031385962,
++          "end_yaw_err_rad": -0.03347559124062077,
++          "kind": "mixed",
++          "level": 0.08,
++          "max_pos_err_m": 0.008280675066092287,
++          "path_len_m": 0.2037859301859335,
++          "rms_pos_err_m": 0.005511310485943961,
++          "run": "heldM1",
++          "sign": 0.0
++        },
++        {
++          "axis": "mixed",
++          "end_err_m": 0.011806113546922278,
++          "end_over_path": 0.08826162982439117,
++          "end_pos_err_m": 0.008434550376817968,
++          "end_yaw_err_rad": 0.02360260743529896,
++          "kind": "mixed",
++          "level": 0.1,
++          "max_pos_err_m": 0.00855343858131919,
++          "path_len_m": 0.0955630481059514,
++          "rms_pos_err_m": 0.005415753000480661,
++          "run": "heldM1",
++          "sign": 0.0
++        },
++        {
++          "axis": "mixed",
++          "end_err_m": 0.012699123552719363,
++          "end_over_path": 0.02803218171107251,
++          "end_pos_err_m": 0.012492959991949926,
++          "end_yaw_err_rad": 0.006511333696274978,
++          "kind": "mixed",
++          "level": 0.12,
++          "max_pos_err_m": 0.01251711310253555,
++          "path_len_m": 0.4456649190103993,
++          "rms_pos_err_m": 0.008049885449629344,
++          "run": "heldM1",
++          "sign": 0.0
++        },
++        {
++          "axis": "mixed",
++          "end_err_m": 0.004244194377623962,
++          "end_over_path": 0.027421701922721666,
++          "end_pos_err_m": 0.004224188064864583,
++          "end_yaw_err_rad": -0.0011760227254171921,
++          "kind": "mixed",
++          "level": 0.08,
++          "max_pos_err_m": 0.004224188080007655,
++          "path_len_m": 0.1540454373243848,
++          "rms_pos_err_m": 0.0027824262670148293,
++          "run": "heldM1",
++          "sign": 0.0
++        },
++        {
++          "axis": "mixed",
++          "end_err_m": 0.007420794879229296,
++          "end_over_path": 0.982614600138706,
++          "end_pos_err_m": 0.0013457123249015668,
++          "end_yaw_err_rad": 0.02085073384470887,
++          "kind": "mixed",
++          "level": 0.05,
++          "max_pos_err_m": 0.0013550709649569918,
++          "path_len_m": 0.0013695220127113985,
++          "rms_pos_err_m": 0.0009806641207687253,
++          "run": "heldM1",
++          "sign": 0.0
++        },
++        {
++          "axis": "mixed",
++          "end_err_m": 0.011198380059255598,
++          "end_over_path": 0.032544513284210985,
++          "end_pos_err_m": 0.010364381873363217,
++          "end_yaw_err_rad": 0.01211620750748163,
++          "kind": "mixed",
++          "level": 0.1,
++          "max_pos_err_m": 0.010928436624209559,
++          "path_len_m": 0.31846787146119376,
++          "rms_pos_err_m": 0.0064148600373813746,
++          "run": "heldM1",
++          "sign": 0.0
++        }
++      ]
++    },
++    "dev_fill": {
++      "leg_rms_pos_err_m": 0.20737413356630233,
++      "leg_windows": [
++        {
++          "axis": "replay",
++          "end_err_m": 0.2962892775479465,
++          "end_over_path": 0.20155703501665417,
++          "end_pos_err_m": 0.2962646786143935,
++          "end_yaw_err_rad": -0.010908223968950755,
++          "kind": "replay",
++          "level": 0.0,
++          "max_pos_err_m": 0.29645197794405714,
++          "path_len_m": 1.4698801189941788,
++          "rms_pos_err_m": 0.19349809360921694,
++          "run": "heldP1",
++          "sign": 0.0
++        },
++        {
++          "axis": "replay",
++          "end_err_m": 0.3488933835715025,
++          "end_over_path": 0.18079776274551118,
++          "end_pos_err_m": 0.3488913266691487,
++          "end_yaw_err_rad": 0.0034229418221942837,
++          "kind": "replay",
++          "level": 0.0,
++          "max_pos_err_m": 0.35185315432491676,
++          "path_len_m": 1.9297325440926172,
++          "rms_pos_err_m": 0.22037819836442057,
++          "run": "heldP2",
++          "sign": 0.0
++        }
++      ],
++      "sel_rms_end_err_m": 0.01984894979964294,
++      "selection_windows": [
++        {
++          "axis": "forward",
++          "end_err_m": 0.004779222444649661,
++          "end_over_path": 0.023633688601674252,
++          "end_pos_err_m": 0.004779222444645228,
++          "end_yaw_err_rad": -1.8599092044269128e-08,
++          "kind": "step",
++          "level": 0.045,
++          "max_pos_err_m": 0.024275878818049438,
++          "path_len_m": 0.20222075890035462,
++          "rms_pos_err_m": 0.015111856701825242,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "forward",
++          "end_err_m": 0.008299552735880313,
++          "end_over_path": 0.023491548183361556,
++          "end_pos_err_m": 0.00829955273586248,
++          "end_yaw_err_rad": 4.915728690768617e-08,
++          "kind": "step",
++          "level": 0.075,
++          "max_pos_err_m": 0.03735518286075516,
++          "path_len_m": 0.35329952164416456,
++          "rms_pos_err_m": 0.021560371821187998,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "forward",
++          "end_err_m": 0.021322021833397854,
++          "end_over_path": 0.04227858937470471,
++          "end_pos_err_m": 0.02132202183339694,
++          "end_yaw_err_rad": 1.7853128086997572e-08,
++          "kind": "step",
++          "level": 0.105,
++          "max_pos_err_m": 0.05072014530850146,
++          "path_len_m": 0.5043219783050261,
++          "rms_pos_err_m": 0.030243815848785126,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "left",
++          "end_err_m": 0.023811455043227337,
++          "end_over_path": 0.26636936147317253,
++          "end_pos_err_m": 0.02372700327271539,
++          "end_yaw_err_rad": 0.005724781056103856,
++          "kind": "step",
++          "level": 0.03,
++          "max_pos_err_m": 0.02372700327271539,
++          "path_len_m": 0.08907557213596827,
++          "rms_pos_err_m": 0.019959849366512742,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "left",
++          "end_err_m": 0.023811368956766856,
++          "end_over_path": 0.26636818987843425,
++          "end_pos_err_m": 0.023726920774364845,
++          "end_yaw_err_rad": -0.005724649289529982,
++          "kind": "step",
++          "level": 0.03,
++          "max_pos_err_m": 0.023726920774364845,
++          "path_len_m": 0.08907565421078768,
++          "rms_pos_err_m": 0.01995977631396022,
++          "run": "heldA3",
++          "sign": -1.0
++        },
++        {
++          "axis": "left",
++          "end_err_m": 0.023721381793314896,
++          "end_over_path": 0.14310306560974684,
++          "end_pos_err_m": 0.023537983730896248,
++          "end_yaw_err_rad": 0.00841149653906692,
++          "kind": "step",
++          "level": 0.05,
++          "max_pos_err_m": 0.02767938625276978,
++          "path_len_m": 0.16448273578629094,
++          "rms_pos_err_m": 0.02346480224841395,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "left",
++          "end_err_m": 0.023721372799566525,
++          "end_over_path": 0.14310304665845405,
++          "end_pos_err_m": 0.023537980851413395,
++          "end_yaw_err_rad": -0.008411355266815246,
++          "kind": "step",
++          "level": 0.05,
++          "max_pos_err_m": 0.027679385366348983,
++          "path_len_m": 0.16448273744717543,
++          "rms_pos_err_m": 0.023464800754261154,
++          "run": "heldA3",
++          "sign": -1.0
++        },
++        {
++          "axis": "left",
++          "end_err_m": 0.023664157343861802,
++          "end_over_path": 0.09730321184294713,
++          "end_pos_err_m": 0.0233464466083256,
++          "end_yaw_err_rad": 0.011041951010559492,
++          "kind": "step",
++          "level": 0.07,
++          "max_pos_err_m": 0.03555363407486943,
++          "path_len_m": 0.23993500487946978,
++          "rms_pos_err_m": 0.027427903723466762,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "left",
++          "end_err_m": 0.023664141194496027,
++          "end_over_path": 0.09730318710283037,
++          "end_pos_err_m": 0.02334644079060266,
++          "end_yaw_err_rad": -0.01104176889257169,
++          "kind": "step",
++          "level": 0.07,
++          "max_pos_err_m": 0.03555363397442704,
++          "path_len_m": 0.23993500609522742,
++          "rms_pos_err_m": 0.027427901669643217,
++          "run": "heldA3",
++          "sign": -1.0
++        },
++        {
++          "axis": "turn",
++          "end_err_m": 0.012156785704714903,
++          "end_over_path": 0.9940782222838134,
++          "end_pos_err_m": 0.0010572200257322664,
++          "end_yaw_err_rad": 0.03460207903244783,
++          "kind": "step",
++          "level": 0.035,
++          "max_pos_err_m": 0.0010594425104177713,
++          "path_len_m": 0.0010635179425854335,
++          "rms_pos_err_m": 0.0007610920102387375,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "turn",
++          "end_err_m": 0.012156777254275693,
++          "end_over_path": 0.9940762444935123,
++          "end_pos_err_m": 0.0010572160633465718,
++          "end_yaw_err_rad": -0.034602055784801355,
++          "kind": "step",
++          "level": 0.035,
++          "max_pos_err_m": 0.001059443023213928,
++          "path_len_m": 0.001063516072537504,
++          "rms_pos_err_m": 0.0007610905130985197,
++          "run": "heldA3",
++          "sign": -1.0
++        },
++        {
++          "axis": "turn",
++          "end_err_m": 0.011084665111237664,
++          "end_over_path": 0.9707832426988446,
++          "end_pos_err_m": 0.0015818206500538448,
++          "end_yaw_err_rad": 0.03134633970225886,
++          "kind": "step",
++          "level": 0.065,
++          "max_pos_err_m": 0.0015998630383507418,
++          "path_len_m": 0.0016294272299718256,
++          "rms_pos_err_m": 0.0011670745736045633,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "turn",
++          "end_err_m": 0.011084690881339761,
++          "end_over_path": 0.9707813921625463,
++          "end_pos_err_m": 0.0015818324113203155,
++          "end_yaw_err_rad": -0.0313464092475213,
++          "kind": "step",
++          "level": 0.065,
++          "max_pos_err_m": 0.001599864269169144,
++          "path_len_m": 0.0016294424512985058,
++          "rms_pos_err_m": 0.0011670777921425277,
++          "run": "heldA3",
++          "sign": -1.0
++        },
++        {
++          "axis": "turn",
++          "end_err_m": 0.009798983454287808,
++          "end_over_path": 0.9487425651449056,
++          "end_pos_err_m": 0.0019129925655393194,
++          "end_yaw_err_rad": 0.02745839690634,
++          "kind": "step",
++          "level": 0.09,
++          "max_pos_err_m": 0.0019473156621234932,
++          "path_len_m": 0.0020163452508817708,
++          "rms_pos_err_m": 0.001439606296131946,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "turn",
++          "end_err_m": 0.009798998872102217,
++          "end_over_path": 0.9487380343085828,
++          "end_pos_err_m": 0.0019129837253346938,
++          "end_yaw_err_rad": -0.02745844684908083,
++          "kind": "step",
++          "level": 0.09,
++          "max_pos_err_m": 0.0019473191442857102,
++          "path_len_m": 0.0020163455623752134,
++          "rms_pos_err_m": 0.0014396042129046613,
++          "run": "heldA3",
++          "sign": -1.0
++        },
++        {
++          "axis": "mixed",
++          "end_err_m": 0.023892850331658635,
++          "end_over_path": 0.04747946098271426,
++          "end_pos_err_m": 0.02379913808901723,
++          "end_yaw_err_rad": -0.006040221100784615,
++          "kind": "mixed",
++          "level": 0.1,
++          "max_pos_err_m": 0.05177190675843026,
++          "path_len_m": 0.5012512272976672,
++          "rms_pos_err_m": 0.03225089184053792,
++          "run": "heldM1",
++          "sign": 0.0
++        },
++        {
++          "axis": "mixed",
++          "end_err_m": 0.01403222111059811,
++          "end_over_path": 0.04134088312323447,
++          "end_pos_err_m": 0.013734261852266023,
++          "end_yaw_err_rad": 0.00821808889353759,
++          "kind": "mixed",
++          "level": 0.06,
++          "max_pos_err_m": 0.038154388145659086,
++          "path_len_m": 0.33221984666667825,
++          "rms_pos_err_m": 0.02444921208723706,
++          "run": "heldM1",
++          "sign": 0.0
++        },
++        {
++          "axis": "mixed",
++          "end_err_m": 0.022082382587426376,
++          "end_over_path": 0.10583161975547913,
++          "end_pos_err_m": 0.02156699507495433,
++          "end_yaw_err_rad": -0.013551517476401043,
++          "kind": "mixed",
++          "level": 0.08,
++          "max_pos_err_m": 0.03003242471624246,
++          "path_len_m": 0.2037859301859335,
++          "rms_pos_err_m": 0.023873097696321424,
++          "run": "heldM1",
++          "sign": 0.0
++        },
++        {
++          "axis": "mixed",
++          "end_err_m": 0.01696577238299788,
++          "end_over_path": 0.17747075896770106,
++          "end_pos_err_m": 0.016959646676630122,
++          "end_yaw_err_rad": -0.0013024847699762976,
++          "kind": "mixed",
++          "level": 0.1,
++          "max_pos_err_m": 0.016959646676630122,
++          "path_len_m": 0.0955630481059514,
++          "rms_pos_err_m": 0.015010253987986876,
++          "run": "heldM1",
++          "sign": 0.0
++        },
++        {
++          "axis": "mixed",
++          "end_err_m": 0.04975994813903158,
++          "end_over_path": 0.11156082332969662,
++          "end_pos_err_m": 0.04971874529396271,
++          "end_yaw_err_rad": 0.005784430328907924,
++          "kind": "mixed",
++          "level": 0.12,
++          "max_pos_err_m": 0.05251587196462828,
++          "path_len_m": 0.4456649190103993,
++          "rms_pos_err_m": 0.04091584762371053,
++          "run": "heldM1",
++          "sign": 0.0
++        },
++        {
++          "axis": "mixed",
++          "end_err_m": 0.0018295780321013599,
++          "end_over_path": 0.005435462879858164,
++          "end_pos_err_m": 0.0008373082563882109,
++          "end_yaw_err_rad": 0.004647817709843497,
++          "kind": "mixed",
++          "level": 0.08,
++          "max_pos_err_m": 0.03179509176683933,
++          "path_len_m": 0.1540454373243848,
++          "rms_pos_err_m": 0.018176385856938714,
++          "run": "heldM1",
++          "sign": 0.0
++        },
++        {
++          "axis": "mixed",
++          "end_err_m": 0.011733572662649686,
++          "end_over_path": 0.982614600138706,
++          "end_pos_err_m": 0.0013457123249015668,
++          "end_yaw_err_rad": 0.0333032799473465,
++          "kind": "mixed",
++          "level": 0.05,
++          "max_pos_err_m": 0.0013550709649569918,
++          "path_len_m": 0.0013695220127113985,
++          "rms_pos_err_m": 0.0009806641207687253,
++          "run": "heldM1",
++          "sign": 0.0
++        },
++        {
++          "axis": "mixed",
++          "end_err_m": 0.015562003152203912,
++          "end_over_path": 0.048745683867428474,
++          "end_pos_err_m": 0.015523934184180199,
++          "end_yaw_err_rad": -0.0031081322621057117,
++          "kind": "mixed",
++          "level": 0.1,
++          "max_pos_err_m": 0.032396580319773605,
++          "path_len_m": 0.31846787146119376,
++          "rms_pos_err_m": 0.02269080981216104,
++          "run": "heldM1",
++          "sign": 0.0
++        }
++      ]
++    },
++    "linear_diag": {
++      "leg_rms_pos_err_m": 0.030600016615857883,
++      "leg_windows": [
++        {
++          "axis": "replay",
++          "end_err_m": 0.05194259276691296,
++          "end_over_path": 0.03524029355850104,
++          "end_pos_err_m": 0.0517990068891593,
++          "end_yaw_err_rad": -0.01102717557642693,
++          "kind": "replay",
++          "level": 0.0,
++          "max_pos_err_m": 0.051799007130928894,
++          "path_len_m": 1.4698801189941788,
++          "rms_pos_err_m": 0.031786400726946495,
++          "run": "heldP1",
++          "sign": 0.0
++        },
++        {
++          "axis": "replay",
++          "end_err_m": 0.046586702676683696,
++          "end_over_path": 0.024134239721166913,
++          "end_pos_err_m": 0.04657262781686852,
++          "end_yaw_err_rad": 0.003271652540271239,
++          "kind": "replay",
++          "level": 0.0,
++          "max_pos_err_m": 0.04943401734521817,
++          "path_len_m": 1.9297325440926172,
++          "rms_pos_err_m": 0.029365741308666676,
++          "run": "heldP2",
++          "sign": 0.0
++        }
++      ],
++      "sel_rms_end_err_m": 0.008878376142052107,
++      "selection_windows": [
++        {
++          "axis": "forward",
++          "end_err_m": 0.01435224511102291,
++          "end_over_path": 0.07097315423533536,
++          "end_pos_err_m": 0.014352245111021435,
++          "end_yaw_err_rad": -1.8599092044269128e-08,
++          "kind": "step",
++          "level": 0.045,
++          "max_pos_err_m": 0.015143223110664688,
++          "path_len_m": 0.20222075890035462,
++          "rms_pos_err_m": 0.009754993276993676,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "forward",
++          "end_err_m": 0.007655485041505972,
++          "end_over_path": 0.021668540636171803,
++          "end_pos_err_m": 0.007655485041486639,
++          "end_yaw_err_rad": 4.915728690768617e-08,
++          "kind": "step",
++          "level": 0.075,
++          "max_pos_err_m": 0.009368043067094375,
++          "path_len_m": 0.35329952164416456,
++          "rms_pos_err_m": 0.005345007945722996,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "forward",
++          "end_err_m": 0.0010150310552280147,
++          "end_over_path": 0.002012664723873814,
++          "end_pos_err_m": 0.0010150310552087811,
++          "end_yaw_err_rad": 1.7853128086997572e-08,
++          "kind": "step",
++          "level": 0.105,
++          "max_pos_err_m": 0.00365701072403806,
++          "path_len_m": 0.5043219783050261,
++          "rms_pos_err_m": 0.0017087653356000502,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "left",
++          "end_err_m": 0.012770873221447621,
++          "end_over_path": 0.1415956291417286,
++          "end_pos_err_m": 0.012612711677751857,
++          "end_yaw_err_rad": 0.005724781056103856,
++          "kind": "step",
++          "level": 0.03,
++          "max_pos_err_m": 0.01279204923881204,
++          "path_len_m": 0.08907557213596827,
++          "rms_pos_err_m": 0.008538384508661854,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "left",
++          "end_err_m": 0.01277078417578883,
++          "end_over_path": 0.14159456872474166,
++          "end_pos_err_m": 0.012612628841850701,
++          "end_yaw_err_rad": -0.005724649289529982,
++          "kind": "step",
++          "level": 0.03,
++          "max_pos_err_m": 0.012791966591075335,
++          "path_len_m": 0.08907565421078768,
++          "rms_pos_err_m": 0.008538316826005296,
++          "run": "heldA3",
++          "sign": -1.0
++        },
++        {
++          "axis": "left",
++          "end_err_m": 0.005868617720233655,
++          "end_over_path": 0.030864945772078697,
++          "end_pos_err_m": 0.005076750720487018,
++          "end_yaw_err_rad": 0.00841149653906692,
++          "kind": "step",
++          "level": 0.05,
++          "max_pos_err_m": 0.005756542811870597,
++          "path_len_m": 0.16448273578629094,
++          "rms_pos_err_m": 0.0034779430566611543,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "left",
++          "end_err_m": 0.00586858711076814,
++          "end_over_path": 0.030864904662357,
++          "end_pos_err_m": 0.005076744009910567,
++          "end_yaw_err_rad": -0.008411355266815246,
++          "kind": "step",
++          "level": 0.05,
++          "max_pos_err_m": 0.005756536860576691,
++          "path_len_m": 0.16448273744717543,
++          "rms_pos_err_m": 0.003477938799331722,
++          "run": "heldA3",
++          "sign": -1.0
++        },
++        {
++          "axis": "left",
++          "end_err_m": 0.0050456680520154385,
++          "end_over_path": 0.013519979026665657,
++          "end_pos_err_m": 0.0032439162337333538,
++          "end_yaw_err_rad": 0.011041951010559492,
++          "kind": "step",
++          "level": 0.07,
++          "max_pos_err_m": 0.00328420414688433,
++          "path_len_m": 0.23993500487946978,
++          "rms_pos_err_m": 0.002266488839799011,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "left",
++          "end_err_m": 0.005045600809884548,
++          "end_over_path": 0.013519859546249216,
++          "end_pos_err_m": 0.0032438875826359243,
++          "end_yaw_err_rad": -0.01104176889257169,
++          "kind": "step",
++          "level": 0.07,
++          "max_pos_err_m": 0.003284175681075382,
++          "path_len_m": 0.23993500609522742,
++          "rms_pos_err_m": 0.0022664714271478197,
++          "run": "heldA3",
++          "sign": -1.0
++        },
++        {
++          "axis": "turn",
++          "end_err_m": 0.009070557145574192,
++          "end_over_path": 0.9940782222838134,
++          "end_pos_err_m": 0.0010572200257322664,
++          "end_yaw_err_rad": 0.025739240708132105,
++          "kind": "step",
++          "level": 0.035,
++          "max_pos_err_m": 0.0010594425104177713,
++          "path_len_m": 0.0010635179425854335,
++          "rms_pos_err_m": 0.0007610920102387375,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "turn",
++          "end_err_m": 0.009070548602519785,
++          "end_over_path": 0.9940762444935123,
++          "end_pos_err_m": 0.0010572160633465718,
++          "end_yaw_err_rad": -0.02573921746048563,
++          "kind": "step",
++          "level": 0.035,
++          "max_pos_err_m": 0.001059443023213928,
++          "path_len_m": 0.001063516072537504,
++          "rms_pos_err_m": 0.0007610905130985197,
++          "run": "heldA3",
++          "sign": -1.0
++        },
++        {
++          "axis": "turn",
++          "end_err_m": 0.005445195463190405,
++          "end_over_path": 0.9707832426988446,
++          "end_pos_err_m": 0.0015818206500538448,
++          "end_yaw_err_rad": 0.014886782814243993,
++          "kind": "step",
++          "level": 0.065,
++          "max_pos_err_m": 0.0015998630383507418,
++          "path_len_m": 0.0016294272299718256,
++          "rms_pos_err_m": 0.0011670745736045633,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "turn",
++          "end_err_m": 0.0054452221709758416,
++          "end_over_path": 0.9707813921625463,
++          "end_pos_err_m": 0.0015818324113203155,
++          "end_yaw_err_rad": -0.01488685235950643,
++          "kind": "step",
++          "level": 0.065,
++          "max_pos_err_m": 0.001599864269169144,
++          "path_len_m": 0.0016294424512985058,
++          "rms_pos_err_m": 0.0011670777921425277,
++          "run": "heldA3",
++          "sign": -1.0
++        },
++        {
++          "axis": "turn",
++          "end_err_m": 0.002515774010351604,
++          "end_over_path": 0.9487425651449056,
++          "end_pos_err_m": 0.0019129925655393194,
++          "end_yaw_err_rad": 0.004668241215242508,
++          "kind": "step",
++          "level": 0.09,
++          "max_pos_err_m": 0.0019473156621234932,
++          "path_len_m": 0.0020163452508817708,
++          "rms_pos_err_m": 0.001439606296131946,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "turn",
++          "end_err_m": 0.002515778640802747,
++          "end_over_path": 0.9487380343085828,
++          "end_pos_err_m": 0.0019129837253346938,
++          "end_yaw_err_rad": -0.00466829115798334,
++          "kind": "step",
++          "level": 0.09,
++          "max_pos_err_m": 0.0019473191442857102,
++          "path_len_m": 0.0020163455623752134,
++          "rms_pos_err_m": 0.0014396042129046613,
++          "run": "heldA3",
++          "sign": -1.0
++        },
++        {
++          "axis": "mixed",
++          "end_err_m": 0.004771796109980207,
++          "end_over_path": 0.008534509752043467,
++          "end_pos_err_m": 0.004277933487595698,
++          "end_yaw_err_rad": -0.006040221100784615,
++          "kind": "mixed",
++          "level": 0.1,
++          "max_pos_err_m": 0.004307545364486383,
++          "path_len_m": 0.5012512272976672,
++          "rms_pos_err_m": 0.003205199581090035,
++          "run": "heldM1",
++          "sign": 0.0
++        },
++        {
++          "axis": "mixed",
++          "end_err_m": 0.012740218982362978,
++          "end_over_path": 0.03454029002469746,
++          "end_pos_err_m": 0.011474969855827587,
++          "end_yaw_err_rad": 0.015814807457236735,
++          "kind": "mixed",
++          "level": 0.06,
++          "max_pos_err_m": 0.011931252237575626,
++          "path_len_m": 0.33221984666667825,
++          "rms_pos_err_m": 0.0077286179983983155,
++          "run": "heldM1",
++          "sign": 0.0
++        },
++        {
++          "axis": "mixed",
++          "end_err_m": 0.014368796138662168,
++          "end_over_path": 0.03999679215073534,
++          "end_pos_err_m": 0.008150783492891044,
++          "end_yaw_err_rad": -0.03380943364626515,
++          "kind": "mixed",
++          "level": 0.08,
++          "max_pos_err_m": 0.008171310035748842,
++          "path_len_m": 0.2037859301859335,
++          "rms_pos_err_m": 0.005510026166570573,
++          "run": "heldM1",
++          "sign": 0.0
++        },
++        {
++          "axis": "mixed",
++          "end_err_m": 0.011709545146412283,
++          "end_over_path": 0.08529288581788744,
++          "end_pos_err_m": 0.008150848150510197,
++          "end_yaw_err_rad": 0.024019910442354075,
++          "kind": "mixed",
++          "level": 0.1,
++          "max_pos_err_m": 0.008270712863218024,
++          "path_len_m": 0.0955630481059514,
++          "rms_pos_err_m": 0.005233326690496457,
++          "run": "heldM1",
++          "sign": 0.0
++        },
++        {
++          "axis": "mixed",
++          "end_err_m": 0.007636063143370298,
++          "end_over_path": 0.015906013013411702,
++          "end_pos_err_m": 0.007088752001400483,
++          "end_yaw_err_rad": 0.008110992989954637,
++          "kind": "mixed",
++          "level": 0.12,
++          "max_pos_err_m": 0.007109021846339773,
++          "path_len_m": 0.4456649190103993,
++          "rms_pos_err_m": 0.004440471612175992,
++          "run": "heldM1",
++          "sign": 0.0
++        },
++        {
++          "axis": "mixed",
++          "end_err_m": 0.006753628443704451,
++          "end_over_path": 0.04376132318469455,
++          "end_pos_err_m": 0.006741232167880012,
++          "end_yaw_err_rad": -0.0011685889427732743,
++          "kind": "mixed",
++          "level": 0.08,
++          "max_pos_err_m": 0.006741232176291434,
++          "path_len_m": 0.1540454373243848,
++          "rms_pos_err_m": 0.004099771997799898,
++          "run": "heldM1",
++          "sign": 0.0
++        },
++        {
++          "axis": "mixed",
++          "end_err_m": 0.0073489896023504735,
++          "end_over_path": 0.982614600138706,
++          "end_pos_err_m": 0.0013457123249015668,
++          "end_yaw_err_rad": 0.02064208234118131,
++          "kind": "mixed",
++          "level": 0.05,
++          "max_pos_err_m": 0.0013550709649569918,
++          "path_len_m": 0.0013695220127113985,
++          "rms_pos_err_m": 0.0009806641207687253,
++          "run": "heldM1",
++          "sign": 0.0
++        },
++        {
++          "axis": "mixed",
++          "end_err_m": 0.013352228393169987,
++          "end_over_path": 0.04064843410654106,
++          "end_pos_err_m": 0.012945220288140722,
++          "end_yaw_err_rad": 0.009347388483873231,
++          "kind": "mixed",
++          "level": 0.1,
++          "max_pos_err_m": 0.013333717621054647,
++          "path_len_m": 0.31846787146119376,
++          "rms_pos_err_m": 0.008257786296648613,
++          "run": "heldM1",
++          "sign": 0.0
++        }
++      ]
++    },
++    "linear_full": {
++      "leg_rms_pos_err_m": 0.03449901301605838,
++      "leg_windows": [
++        {
++          "axis": "replay",
++          "end_err_m": 0.06240737951824541,
++          "end_over_path": 0.04229413384589103,
++          "end_pos_err_m": 0.062167306490154034,
++          "end_yaw_err_rad": 0.01562494658761663,
++          "kind": "replay",
++          "level": 0.0,
++          "max_pos_err_m": 0.062167306490154034,
++          "path_len_m": 1.4698801189941788,
++          "rms_pos_err_m": 0.03835016645281546,
++          "run": "heldP1",
++          "sign": 0.0
++        },
++        {
++          "axis": "replay",
++          "end_err_m": 0.04801692520908314,
++          "end_over_path": 0.024869657581708497,
++          "end_pos_err_m": 0.04799178759586258,
++          "end_yaw_err_rad": -0.004438633627128032,
++          "kind": "replay",
++          "level": 0.0,
++          "max_pos_err_m": 0.05073585623300358,
++          "path_len_m": 1.9297325440926172,
++          "rms_pos_err_m": 0.030160048594219453,
++          "run": "heldP2",
++          "sign": 0.0
++        }
++      ],
++      "sel_rms_end_err_m": 0.008586387571602985,
++      "selection_windows": [
++        {
++          "axis": "forward",
++          "end_err_m": 0.01435173817168224,
++          "end_over_path": 0.07097064737427909,
++          "end_pos_err_m": 0.014351738171676178,
++          "end_yaw_err_rad": 3.768917692217087e-08,
++          "kind": "step",
++          "level": 0.045,
++          "max_pos_err_m": 0.01514435408244149,
++          "path_len_m": 0.20222075890035462,
++          "rms_pos_err_m": 0.009754995539985723,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "forward",
++          "end_err_m": 0.007654640143126807,
++          "end_over_path": 0.021666149185089557,
++          "end_pos_err_m": 0.007654640142963247,
++          "end_yaw_err_rad": 1.429710685184195e-07,
++          "kind": "step",
++          "level": 0.075,
++          "max_pos_err_m": 0.00936992802034824,
++          "path_len_m": 0.35329952164416456,
++          "rms_pos_err_m": 0.005345021058203968,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "forward",
++          "end_err_m": 0.001013848205846925,
++          "end_over_path": 0.002010319296235432,
++          "end_pos_err_m": 0.0010138482045022208,
++          "end_yaw_err_rad": 1.4919242234202428e-07,
++          "kind": "step",
++          "level": 0.105,
++          "max_pos_err_m": 0.00365964966020426,
++          "path_len_m": 0.5043219783050261,
++          "rms_pos_err_m": 0.0017088495368998418,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "left",
++          "end_err_m": 0.012610899848895003,
++          "end_over_path": 0.1415749553221683,
++          "end_pos_err_m": 0.012610870145446287,
++          "end_yaw_err_rad": 7.820295686010968e-05,
++          "kind": "step",
++          "level": 0.03,
++          "max_pos_err_m": 0.012791283378505467,
++          "path_len_m": 0.08907557213596827,
++          "rms_pos_err_m": 0.008537975895218743,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "left",
++          "end_err_m": 0.01261081767600819,
++          "end_over_path": 0.14157390348811633,
++          "end_pos_err_m": 0.012610788072378878,
++          "end_yaw_err_rad": -7.807119028623542e-05,
++          "kind": "step",
++          "level": 0.03,
++          "max_pos_err_m": 0.012791201462857648,
++          "path_len_m": 0.08907565421078768,
++          "rms_pos_err_m": 0.008537908720079234,
++          "run": "heldA3",
++          "sign": -1.0
++        },
++        {
++          "axis": "left",
++          "end_err_m": 0.00500693705707641,
++          "end_over_path": 0.030366117724930645,
++          "end_pos_err_m": 0.004994702118605174,
++          "end_yaw_err_rad": -0.0009994669596726565,
++          "kind": "step",
++          "level": 0.05,
++          "max_pos_err_m": 0.005690197423107092,
++          "path_len_m": 0.16448273578629094,
++          "rms_pos_err_m": 0.003430265329380549,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "left",
++          "end_err_m": 0.005006938484580146,
++          "end_over_path": 0.030366105062972302,
++          "end_pos_err_m": 0.0049947000863662175,
++          "end_yaw_err_rad": 0.0009996082319243312,
++          "kind": "step",
++          "level": 0.05,
++          "max_pos_err_m": 0.005690195457807249,
++          "path_len_m": 0.16448273744717543,
++          "rms_pos_err_m": 0.003430263882255736,
++          "run": "heldA3",
++          "sign": -1.0
++        },
++        {
++          "axis": "left",
++          "end_err_m": 0.0027706252311610878,
++          "end_over_path": 0.011120142997203607,
++          "end_pos_err_m": 0.002668111564294449,
++          "end_yaw_err_rad": -0.0021333978876759176,
++          "kind": "step",
++          "level": 0.07,
++          "max_pos_err_m": 0.002717244371744277,
++          "path_len_m": 0.23993500487946978,
++          "rms_pos_err_m": 0.0019322986079831543,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "left",
++          "end_err_m": 0.002770641828373042,
++          "end_over_path": 0.011120140422507347,
++          "end_pos_err_m": 0.0026681109600540853,
++          "end_yaw_err_rad": 0.002133580005663719,
++          "kind": "step",
++          "level": 0.07,
++          "max_pos_err_m": 0.002717243725250432,
++          "path_len_m": 0.23993500609522742,
++          "rms_pos_err_m": 0.0019322976070388603,
++          "run": "heldA3",
++          "sign": -1.0
++        },
++        {
++          "axis": "turn",
++          "end_err_m": 0.009009671049208832,
++          "end_over_path": 0.2493749755162883,
++          "end_pos_err_m": 0.00026521476089337576,
++          "end_yaw_err_rad": 0.02573076195094051,
++          "kind": "step",
++          "level": 0.035,
++          "max_pos_err_m": 0.0002794961951995108,
++          "path_len_m": 0.0010635179425854335,
++          "rms_pos_err_m": 0.00023383088176219668,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "turn",
++          "end_err_m": 0.009009664067247252,
++          "end_over_path": 0.24941218296399786,
++          "end_pos_err_m": 0.00026525386526887637,
++          "end_yaw_err_rad": -0.025730738703294037,
++          "kind": "step",
++          "level": 0.035,
++          "max_pos_err_m": 0.00027953429809083246,
++          "path_len_m": 0.001063516072537504,
++          "rms_pos_err_m": 0.00023385051338173647,
++          "run": "heldA3",
++          "sign": -1.0
++        },
++        {
++          "axis": "turn",
++          "end_err_m": 0.005206168986732989,
++          "end_over_path": 0.07156748335878631,
++          "end_pos_err_m": 0.0001166140061653619,
++          "end_yaw_err_rad": 0.014871036550888062,
++          "kind": "step",
++          "level": 0.065,
++          "max_pos_err_m": 0.0003404286915310238,
++          "path_len_m": 0.0016294272299718256,
++          "rms_pos_err_m": 0.00023355005170172348,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "turn",
++          "end_err_m": 0.005206198046035577,
++          "end_over_path": 0.0716961452048345,
++          "end_pos_err_m": 0.00011682474259121914,
++          "end_yaw_err_rad": -0.0148711060961505,
++          "kind": "step",
++          "level": 0.065,
++          "max_pos_err_m": 0.0003404292883556165,
++          "path_len_m": 0.0016294424512985058,
++          "rms_pos_err_m": 0.00023359127521466235,
++          "run": "heldA3",
++          "sign": -1.0
++        },
++        {
++          "axis": "turn",
++          "end_err_m": 0.0016300985573578061,
++          "end_over_path": 0.05549447108556734,
++          "end_pos_err_m": 0.00011189601322357946,
++          "end_yaw_err_rad": 0.004646438696749411,
++          "kind": "step",
++          "level": 0.09,
++          "max_pos_err_m": 0.0004336842815299651,
++          "path_len_m": 0.0020163452508817708,
++          "rms_pos_err_m": 0.00025557853164595486,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "turn",
++          "end_err_m": 0.0016301227771520124,
++          "end_over_path": 0.0555434343268879,
++          "end_pos_err_m": 0.00011199475732409952,
++          "end_yaw_err_rad": -0.004646488639490243,
++          "kind": "step",
++          "level": 0.09,
++          "max_pos_err_m": 0.0004336834012736643,
++          "path_len_m": 0.0020163455623752134,
++          "rms_pos_err_m": 0.0002555882775063616,
++          "run": "heldA3",
++          "sign": -1.0
++        },
++        {
++          "axis": "mixed",
++          "end_err_m": 0.006357758187980907,
++          "end_over_path": 0.012641110252325604,
++          "end_pos_err_m": 0.006336372028383333,
++          "end_yaw_err_rad": 0.001488674783249197,
++          "kind": "mixed",
++          "level": 0.1,
++          "max_pos_err_m": 0.006365416337784695,
++          "path_len_m": 0.5012512272976672,
++          "rms_pos_err_m": 0.004386871319312142,
++          "run": "heldM1",
++          "sign": 0.0
++        },
++        {
++          "axis": "mixed",
++          "end_err_m": 0.012897925200968385,
++          "end_over_path": 0.038231409373703985,
++          "end_pos_err_m": 0.012701232959982944,
++          "end_yaw_err_rad": 0.00641118651568684,
++          "kind": "mixed",
++          "level": 0.06,
++          "max_pos_err_m": 0.013112589103380166,
++          "path_len_m": 0.33221984666667825,
++          "rms_pos_err_m": 0.008462810388699263,
++          "run": "heldM1",
++          "sign": 0.0
++        },
++        {
++          "axis": "mixed",
++          "end_err_m": 0.012376969813308929,
++          "end_over_path": 0.04680494113821677,
++          "end_pos_err_m": 0.009538188467149369,
++          "end_yaw_err_rad": -0.022535657464216208,
++          "kind": "mixed",
++          "level": 0.08,
++          "max_pos_err_m": 0.00967699758901698,
++          "path_len_m": 0.2037859301859335,
++          "rms_pos_err_m": 0.00632986315139327,
++          "run": "heldM1",
++          "sign": 0.0
++        },
++        {
++          "axis": "mixed",
++          "end_err_m": 0.011988616121277385,
++          "end_over_path": 0.10582105549170735,
++          "end_pos_err_m": 0.010112582616576582,
++          "end_yaw_err_rad": 0.018397557363658446,
++          "kind": "mixed",
++          "level": 0.1,
++          "max_pos_err_m": 0.0102171376385856,
++          "path_len_m": 0.0955630481059514,
++          "rms_pos_err_m": 0.006512614369773356,
++          "run": "heldM1",
++          "sign": 0.0
++        },
++        {
++          "axis": "mixed",
++          "end_err_m": 0.008688429233221162,
++          "end_over_path": 0.019495069444616896,
++          "end_pos_err_m": 0.008688268545137299,
++          "end_yaw_err_rad": -0.00015097582641743343,
++          "kind": "mixed",
++          "level": 0.12,
++          "max_pos_err_m": 0.008709140507291702,
++          "path_len_m": 0.4456649190103993,
++          "rms_pos_err_m": 0.005363498863559875,
++          "run": "heldM1",
++          "sign": 0.0
++        },
++        {
++          "axis": "mixed",
++          "end_err_m": 0.006811105065679502,
++          "end_over_path": 0.0414593512046217,
++          "end_pos_err_m": 0.00638662388750121,
++          "end_yaw_err_rad": 0.006762554483736256,
++          "kind": "mixed",
++          "level": 0.08,
++          "max_pos_err_m": 0.0063866238961263165,
++          "path_len_m": 0.1540454373243848,
++          "rms_pos_err_m": 0.0038304627391881844,
++          "run": "heldM1",
++          "sign": 0.0
++        },
++        {
++          "axis": "mixed",
++          "end_err_m": 0.007223723609967153,
++          "end_over_path": 0.1578190012610249,
++          "end_pos_err_m": 0.00021613659625110157,
++          "end_yaw_err_rad": 0.020629969830907313,
++          "kind": "mixed",
++          "level": 0.05,
++          "max_pos_err_m": 0.0002932734239723338,
++          "path_len_m": 0.0013695220127113985,
++          "rms_pos_err_m": 0.000240708479684302,
++          "run": "heldM1",
++          "sign": 0.0
++        },
++        {
++          "axis": "mixed",
++          "end_err_m": 0.012121005304559732,
++          "end_over_path": 0.03586877366707016,
++          "end_pos_err_m": 0.011423052001675153,
++          "end_yaw_err_rad": 0.011582059511683007,
++          "kind": "mixed",
++          "level": 0.1,
++          "max_pos_err_m": 0.011985366108269916,
++          "path_len_m": 0.31846787146119376,
++          "rms_pos_err_m": 0.007328387257861299,
++          "run": "heldM1",
++          "sign": 0.0
++        }
++      ]
++    },
++    "r4r5": {
++      "leg_rms_pos_err_m": 0.20172035833156804,
++      "leg_windows": [
++        {
++          "axis": "replay",
++          "end_err_m": 0.25642421282515954,
++          "end_over_path": 0.17443010803056283,
++          "end_pos_err_m": 0.2563913479481312,
++          "end_yaw_err_rad": -0.011729474593044348,
++          "kind": "replay",
++          "level": 0.0,
++          "max_pos_err_m": 0.2566052477644785,
++          "path_len_m": 1.4698801189941788,
++          "rms_pos_err_m": 0.18119476092208378,
++          "run": "heldP1",
++          "sign": 0.0
++        },
++        {
++          "axis": "replay",
++          "end_err_m": 0.332585983532784,
++          "end_over_path": 0.17234798367308665,
++          "end_pos_err_m": 0.33258551300269834,
++          "end_yaw_err_rad": 0.0015984257593149552,
++          "kind": "replay",
++          "level": 0.0,
++          "max_pos_err_m": 0.3331179806857432,
++          "path_len_m": 1.9297325440926172,
++          "rms_pos_err_m": 0.22034215335523372,
++          "run": "heldP2",
++          "sign": 0.0
++        }
++      ],
++      "sel_rms_end_err_m": 0.04104075792406798,
++      "selection_windows": [
++        {
++          "axis": "forward",
++          "end_err_m": 0.0186190155635114,
++          "end_over_path": 0.09207272124166481,
++          "end_pos_err_m": 0.01861901556351026,
++          "end_yaw_err_rad": -1.8599092044269128e-08,
++          "kind": "step",
++          "level": 0.045,
++          "max_pos_err_m": 0.01891846046406973,
++          "path_len_m": 0.20222075890035462,
++          "rms_pos_err_m": 0.012101908269778968,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "forward",
++          "end_err_m": 0.0472966160827695,
++          "end_over_path": 0.133871157998347,
++          "end_pos_err_m": 0.04729661608276637,
++          "end_yaw_err_rad": 4.915728690768617e-08,
++          "kind": "step",
++          "level": 0.075,
++          "max_pos_err_m": 0.04768144425442316,
++          "path_len_m": 0.35329952164416456,
++          "rms_pos_err_m": 0.03109215719771563,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "forward",
++          "end_err_m": 0.07591791051908045,
++          "end_over_path": 0.15053460643185215,
++          "end_pos_err_m": 0.07591791051908019,
++          "end_yaw_err_rad": 1.7853128086997572e-08,
++          "kind": "step",
++          "level": 0.105,
++          "max_pos_err_m": 0.0764059357589925,
++          "path_len_m": 0.5043219783050261,
++          "rms_pos_err_m": 0.05005178385099631,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "left",
++          "end_err_m": 0.0050578453521726895,
++          "end_over_path": 0.052135936775933256,
++          "end_pos_err_m": 0.004644038397160924,
++          "end_yaw_err_rad": 0.005724781056103856,
++          "kind": "step",
++          "level": 0.03,
++          "max_pos_err_m": 0.0048618704136245425,
++          "path_len_m": 0.08907557213596827,
++          "rms_pos_err_m": 0.002975026171976532,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "left",
++          "end_err_m": 0.005057900415330649,
++          "end_over_path": 0.052136785354527565,
++          "end_pos_err_m": 0.004644118263901957,
++          "end_yaw_err_rad": -0.005724649289529982,
++          "kind": "step",
++          "level": 0.03,
++          "max_pos_err_m": 0.004861950258296689,
++          "path_len_m": 0.08907565421078768,
++          "rms_pos_err_m": 0.0029750804697627965,
++          "run": "heldA3",
++          "sign": -1.0
++        },
++        {
++          "axis": "left",
++          "end_err_m": 0.023944161963278438,
++          "end_over_path": 0.14446794831978144,
++          "end_pos_err_m": 0.023762483373070145,
++          "end_yaw_err_rad": 0.00841149653906692,
++          "kind": "step",
++          "level": 0.05,
++          "max_pos_err_m": 0.02400144167396294,
++          "path_len_m": 0.16448273578629094,
++          "rms_pos_err_m": 0.01565006441021976,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "left",
++          "end_err_m": 0.023944156644838295,
++          "end_over_path": 0.1444679515229453,
++          "end_pos_err_m": 0.02376248413987988,
++          "end_yaw_err_rad": -0.008411355266815246,
++          "kind": "step",
++          "level": 0.05,
++          "max_pos_err_m": 0.024001442414533843,
++          "path_len_m": 0.16448273744717543,
++          "rms_pos_err_m": 0.01565006499504498,
++          "run": "heldA3",
++          "sign": -1.0
++        },
++        {
++          "axis": "left",
++          "end_err_m": 0.043111432157099706,
++          "end_over_path": 0.17895621307238596,
++          "end_pos_err_m": 0.04293785985673436,
++          "end_yaw_err_rad": 0.011041951010559492,
++          "kind": "step",
++          "level": 0.07,
++          "max_pos_err_m": 0.043216609031651566,
++          "path_len_m": 0.23993500487946978,
++          "rms_pos_err_m": 0.028423343234578072,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "left",
++          "end_err_m": 0.043111425830196316,
++          "end_over_path": 0.17895620960074585,
++          "end_pos_err_m": 0.042937859241333746,
++          "end_yaw_err_rad": -0.01104176889257169,
++          "kind": "step",
++          "level": 0.07,
++          "max_pos_err_m": 0.043216608357482277,
++          "path_len_m": 0.23993500609522742,
++          "rms_pos_err_m": 0.028423342816980744,
++          "run": "heldA3",
++          "sign": -1.0
++        },
++        {
++          "axis": "turn",
++          "end_err_m": 0.00506727808167271,
++          "end_over_path": 0.9940782222838134,
++          "end_pos_err_m": 0.0010572200257322664,
++          "end_yaw_err_rad": -0.014159324604609669,
++          "kind": "step",
++          "level": 0.035,
++          "max_pos_err_m": 0.0010594425104177713,
++          "path_len_m": 0.0010635179425854335,
++          "rms_pos_err_m": 0.0007610920102387375,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "turn",
++          "end_err_m": 0.005067285212591046,
++          "end_over_path": 0.9940762444935123,
++          "end_pos_err_m": 0.0010572160633465718,
++          "end_yaw_err_rad": 0.014159347852256143,
++          "kind": "step",
++          "level": 0.035,
++          "max_pos_err_m": 0.001059443023213928,
++          "path_len_m": 0.001063516072537504,
++          "rms_pos_err_m": 0.0007610905130985197,
++          "run": "heldA3",
++          "sign": -1.0
++        },
++        {
++          "axis": "turn",
++          "end_err_m": 0.0207839752582816,
++          "end_over_path": 0.9707832426988446,
++          "end_pos_err_m": 0.0015818206500538448,
++          "end_yaw_err_rad": -0.05921055276656212,
++          "kind": "step",
++          "level": 0.065,
++          "max_pos_err_m": 0.0015998630383507418,
++          "path_len_m": 0.0016294272299718256,
++          "rms_pos_err_m": 0.0011670745736045633,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "turn",
++          "end_err_m": 0.020783951883165296,
++          "end_over_path": 0.9707813921625463,
++          "end_pos_err_m": 0.0015818324113203155,
++          "end_yaw_err_rad": 0.05921048322129968,
++          "kind": "step",
++          "level": 0.065,
++          "max_pos_err_m": 0.001599864269169144,
++          "path_len_m": 0.0016294424512985058,
++          "rms_pos_err_m": 0.0011670777921425277,
++          "run": "heldA3",
++          "sign": -1.0
++        },
++        {
++          "axis": "turn",
++          "end_err_m": 0.0343281681014231,
++          "end_over_path": 0.9487425651449056,
++          "end_pos_err_m": 0.0019129925655393194,
++          "end_yaw_err_rad": -0.09792806958895084,
++          "kind": "step",
++          "level": 0.09,
++          "max_pos_err_m": 0.0019473156621234932,
++          "path_len_m": 0.0020163452508817708,
++          "rms_pos_err_m": 0.001439606296131946,
++          "run": "heldA3",
++          "sign": 1.0
++        },
++        {
++          "axis": "turn",
++          "end_err_m": 0.034328150155992755,
++          "end_over_path": 0.9487380343085828,
++          "end_pos_err_m": 0.0019129837253346938,
++          "end_yaw_err_rad": 0.09792801964621001,
++          "kind": "step",
++          "level": 0.09,
++          "max_pos_err_m": 0.0019473191442857102,
++          "path_len_m": 0.0020163455623752134,
++          "rms_pos_err_m": 0.0014396042129046613,
++          "run": "heldA3",
++          "sign": -1.0
++        },
++        {
++          "axis": "mixed",
++          "end_err_m": 0.0782662990213501,
++          "end_over_path": 0.15608488822027572,
++          "end_pos_err_m": 0.07823774178303242,
++          "end_yaw_err_rad": -0.006040221100784615,
++          "kind": "mixed",
++          "level": 0.1,
++          "max_pos_err_m": 0.07871586989382774,
++          "path_len_m": 0.5012512272976672,
++          "rms_pos_err_m": 0.05162110701623872,
++          "run": "heldM1",
++          "sign": 0.0
++        },
++        {
++          "axis": "mixed",
++          "end_err_m": 0.05317678772582633,
++          "end_over_path": 0.15114416089737778,
++          "end_pos_err_m": 0.050213089957890596,
++          "end_yaw_err_rad": 0.05001357772530113,
++          "kind": "mixed",
++          "level": 0.06,
++          "max_pos_err_m": 0.05057489732085005,
++          "path_len_m": 0.33221984666667825,
++          "rms_pos_err_m": 0.03320885931585174,
++          "run": "heldM1",
++          "sign": 0.0
++        },
++        {
++          "axis": "mixed",
++          "end_err_m": 0.05573725490893716,
++          "end_over_path": 0.16944746510272582,
++          "end_pos_err_m": 0.03453100929360749,
++          "end_yaw_err_rad": -0.1250061543611038,
++          "kind": "mixed",
++          "level": 0.08,
++          "max_pos_err_m": 0.03479623506668573,
++          "path_len_m": 0.2037859301859335,
++          "rms_pos_err_m": 0.023087484796419065,
++          "run": "heldM1",
++          "sign": 0.0
++        },
++        {
++          "axis": "mixed",
++          "end_err_m": 0.04951151213994523,
++          "end_over_path": 0.11365459582924553,
++          "end_pos_err_m": 0.010861179608692654,
++          "end_yaw_err_rad": 0.13801581133590257,
++          "kind": "mixed",
++          "level": 0.1,
++          "max_pos_err_m": 0.011067512164329826,
++          "path_len_m": 0.0955630481059514,
++          "rms_pos_err_m": 0.007528376109644701,
++          "run": "heldM1",
++          "sign": 0.0
++        },
++        {
++          "axis": "mixed",
++          "end_err_m": 0.07031189087430471,
++          "end_over_path": 0.15768309842048603,
++          "end_pos_err_m": 0.07027382528687473,
++          "end_yaw_err_rad": 0.006609503281802764,
++          "kind": "mixed",
++          "level": 0.12,
++          "max_pos_err_m": 0.07064850690801994,
++          "path_len_m": 0.4456649190103993,
++          "rms_pos_err_m": 0.047660292560616845,
++          "run": "heldM1",
++          "sign": 0.0
++        },
++        {
++          "axis": "mixed",
++          "end_err_m": 0.02408440865804787,
++          "end_over_path": 0.15623576698261538,
++          "end_pos_err_m": 0.024067407050547666,
++          "end_yaw_err_rad": 0.002585135327606394,
++          "kind": "mixed",
++          "level": 0.08,
++          "max_pos_err_m": 0.02430560322918406,
++          "path_len_m": 0.1540454373243848,
++          "rms_pos_err_m": 0.017886205444800875,
++          "run": "heldM1",
++          "sign": 0.0
++        },
++        {
++          "axis": "mixed",
++          "end_err_m": 0.012795515308537694,
++          "end_over_path": 0.982614600138706,
++          "end_pos_err_m": 0.0013457123249015668,
++          "end_yaw_err_rad": -0.03635586810559294,
++          "kind": "mixed",
++          "level": 0.05,
++          "max_pos_err_m": 0.0013550709649569918,
++          "path_len_m": 0.0013695220127113985,
++          "rms_pos_err_m": 0.0009806641207687253,
++          "run": "heldM1",
++          "sign": 0.0
++        },
++        {
++          "axis": "mixed",
++          "end_err_m": 0.04479545627032486,
++          "end_over_path": 0.1278089387452858,
++          "end_pos_err_m": 0.04070304067592526,
++          "end_yaw_err_rad": 0.05344425913314066,
++          "kind": "mixed",
++          "level": 0.1,
++          "max_pos_err_m": 0.04107713046051786,
++          "path_len_m": 0.31846787146119376,
++          "rms_pos_err_m": 0.025988391396070697,
++          "run": "heldM1",
++          "sign": 0.0
++        }
++      ]
++    }
++  },
++  "checks": {
++    "legs_end_over_path_ok": true,
++    "legs_max_pos_err_ok": true,
++    "legs_vs_dev_ok": true,
++    "noise_measured_coverage_ok": false,
++    "sel_vs_dev_ok": true,
++    "sel_vs_r4r5_ok": true
++  },
++  "chosen_form": "linear_diag",
++  "chosen_reason": "baseline form",
++  "fit_sha256": "8335c075ede24bbb31e6ae35227317e18e86d7f77729417e46241ccbf7a08567",
++  "heldout_runs": [
++    {
++      "commands_sha256": "50fd16acbf2863fef9aeed553d5fb75d0da36a2f1f235a76a8f8d0d18e399e10",
++      "id": "heldA3",
++      "pose_sha256": "41ef00965a09bc50951ac8439e1cdc0ca5e77584030e556a05e341664b807fab",
++      "result_sha256": "12869d7765ecf2444fa0a6f6e263efed4ed04a9b1dff5e42dd9cabca69260353"
++    },
++    {
++      "commands_sha256": "75cc670cc2b18d3da0acc63e917aff1b554848a3fd49e511ea7a759307768523",
++      "id": "heldM1",
++      "pose_sha256": "4b286e560ff1a3c51c8b311987f4205af840dde7fe2f459c21ca14ed904a2fca",
++      "result_sha256": "54822ec9b75bf81c1f01dd2bac382c22650d7c0b6f2c026f3ef89f809f177833"
++    },
++    {
++      "commands_sha256": "27ce9b5e7b489fa76a28b1b59cb9ec4798d0c764775fd70693bb1c64657620aa",
++      "id": "heldP1",
++      "pose_sha256": "31e84669aafef4e580554b56f49d10b6f1254005b2abc59a0339fcbbeb302567",
++      "result_sha256": "9725ac298868b81fda4a3df3de234eca943a1ed505eed2cfee5ced0979db3804"
++    },
++    {
++      "commands_sha256": "e42258c41f11945ace837df1b470f5607bf7447ebf6f4407bc1cc012e4809bc7",
++      "id": "heldP2",
++      "pose_sha256": "f633554471ec66eafe0cabef2cc60618ee5d98ff29e31e74ae63ad897dffe744",
++      "result_sha256": "1f167cf30cf360916ec2a84d1e4ec83af8c7241859a2f984f10ef7eae6d69743"
++    }
++  ],
++  "noise_measured_coverage": {
++    "overall": 0.7879402267778028,
++    "per_horizon": {
++      "H1.0": 0.84217232043319,
++      "H2.0": 0.7707695448050622,
++      "H4.0": 0.6680691912108462
++    }
++  },
++  "note": "status concerns the mean model (gain, lag); noise_measured_coverage_ok gates only the measured-noise variant C2",
++  "schema": "ugrp.unloaded_gain_calibration_heldout.v101",
++  "script_sha256": "45eb1313a3fd09f0a43bb85946c7e72485affd3f9aa4074ef6a029829822662b",
++  "stage": "evaluate",
++  "status": "VALIDATED_DEV"
++}
+diff --git a/experiments/2026-10-05-unloaded-gain-calibration-v101/products/heldout/heldout.json.sha256 b/experiments/2026-10-05-unloaded-gain-calibration-v101/products/heldout/heldout.json.sha256
+new file mode 100644
+index 0000000..74c6e82
+--- /dev/null
++++ b/experiments/2026-10-05-unloaded-gain-calibration-v101/products/heldout/heldout.json.sha256
+@@ -0,0 +1 @@
++10811dedc7f4a1a8b288301fba090923ecf7432c589a6d17e4b4123d4d1551fe
+diff --git a/tests/test_highpose_dev_pilot.py b/tests/test_highpose_dev_pilot.py
+index 45ee44e..7069c56 100644
+--- a/tests/test_highpose_dev_pilot.py
++++ b/tests/test_highpose_dev_pilot.py
+@@ -24,6 +24,10 @@ UNLOADED = ['gain', 'tau_s', 'tau_axis_s', 'tau_stop_s', 'noise_rel', 'noise_abs
+             'scale_std', 'scale_walk', 'use_scale', 'rest_noise']
+ REAL = Path('/Users/changmin/projects/ugrp/outputs/v92-dev-pilot-c0zero-20261003T104043Z/result/calibration_dev_pilot.json')
+ REAL_SHA = '398372ae6b9b0fef7344d7f29146ce75b309d334b3ce31af527bc071c0e582f5'
++C_SHA = 'aba4ac586b2554844ad5b4b17efe968a4247278664ffb433f83f6785ca1769c4'
++V101 = Path(__file__).resolve().parents[1]/'experiments'/'2026-10-05-unloaded-gain-calibration-v101'/'products'
++C_PATH = V101/'C'/'calibration_dev_pilot_unloaded_v101.json'
++BASE_COPY = Path(__file__).resolve().parents[1]/'experiments'/'2026-10-03-v92-dev-pilot'/'calibration_dev_pilot.json'
+ 
+ 
+ def dev_file(tmp_path, *, mutate=None):
+@@ -57,7 +61,7 @@ def test_registry_keeps_measured_list_empty_and_admits_one_exact_dev_sha():
+     adm, _ = c.d5_admission()
+     assert adm['completed_measurements'] == [] and c.registry()['runnable'] is False
+     dev = c.registry()['dev_pilot']
+-    assert dev['admitted_calibration_sha256'] == [REAL_SHA]
++    assert dev['admitted_calibration_sha256'] == [REAL_SHA, C_SHA]
+     assert dev['promotable'] is False and dev['run_status'] == 'FUNCTIONAL_DEV'
+     assert dev['tensorboard_cohort'] != 'FUNCTIONAL_DEV_REPLAY' and dev['cohort_role'] != 'FUNCTIONAL_DEV_REPLAY'
+ 
+@@ -648,3 +652,43 @@ def test_staged_ground_truth_inputs_are_labelled_test_setup_only():
+     enter = inspect.getsource(st.enter)
+     assert enter.count('**TEST_SETUP_GT') == 4            # gripped, lifted, both stage_probe_entry logs
+     assert 'ground_truth_inputs' in inspect.getsource(runner) and '**staging.TEST_SETUP_GT' in inspect.getsource(runner)
++
++
++# ---- measured unloaded calibration C (zone-final-environment-gaincal-v101, coordinator decision 2026-10-05)
++def test_measured_unloaded_calibration_c_is_admitted_by_its_exact_sha_and_fills_every_missing_field():
++    dev = c.registry()['dev_pilot']
++    source = dev['admitted_source'][C_SHA]
++    assert (Path(__file__).resolve().parents[1]/source['path']) == C_PATH and c.base.sha(C_PATH) == C_SHA
++    assert source['heldout_status'].startswith('VALIDATED_DEV') and 'not MEASURED_SIM' in source['heldout_status']
++    cal = c.admitted_calibration(str(C_PATH), C_SHA, MAPS[0])
++    assert cal['missing'] == [] and 'dev_pilot_fill' not in cal and cal['status'] == c.DEV_PILOT
++    motion = cal['params']['motion']
++    assert all(motion.get(k) is not None for k in UNLOADED)
++    assert dev['unloaded_motion_fill']['values'] != {k: motion[k] for k in dev['unloaded_motion_fill']['values']}   # not the DEV code defaults
++    with pytest.raises(ValueError, match=c.NOT_PROMOTABLE):
++        c.require_promotable({'calibration_sha256': C_SHA})
++
++
++def test_measured_unloaded_calibration_c_differs_from_its_parent_only_in_the_registered_fields():
++    cal, base = json.loads(C_PATH.read_text()), json.loads(BASE_COPY.read_text())
++    assert c.base.sha(BASE_COPY) == REAL_SHA and cal['parent_calibration']['sha256'] == REAL_SHA
++    changed = {k for k in set(cal) | set(base) if cal.get(k) != base.get(k)}
++    assert changed == {'params', 'missing', 'field_provenance', 'source_sha', 'dev_manifest_sha256',
++                       'unloaded_gain_calibration', 'parent_calibration'}
++    assert {k for k in cal['params'] if cal['params'][k] != base['params'][k]} == {'motion'}
++    assert cal['params']['motion_loaded'] == base['params']['motion_loaded']            # loaded model untouched
++    motion = cal['params']['motion']
++    assert set(UNLOADED) <= set(motion) and all(motion[k] is not None for k in UNLOADED)
++    prov = cal['field_provenance']
++    assert all(prov['params.motion.' + k] in ('measured_unloaded_gain_calibration_v101', 'registered_r4_r5_measured_noise')
++               for k in UNLOADED)
++    assert prov['params.motion.noise_rel'] == prov['params.motion.noise_abs'] == 'registered_r4_r5_measured_noise'
++
++
++def test_measured_unloaded_calibration_c_pins_its_fit_and_heldout_records():
++    cal = json.loads(C_PATH.read_text())['unloaded_gain_calibration']
++    assert c.base.sha(V101/'fit'/'fit.json') == cal['fit_sha256'] and c.base.sha(V101/'heldout'/'heldout.json') == cal['heldout_sha256']
++    held = json.loads((V101/'heldout'/'heldout.json').read_text())
++    assert held['status'] == cal['heldout_status'] == 'VALIDATED_DEV' and held['fit_sha256'] == cal['fit_sha256']
++    assert cal['bundle_id'] == 'zone-final-environment-gaincal-v101' and cal['variant'] == 'C'
++    assert 'NOT MEASURED_SIM' in cal['qualification']
+diff --git a/tests/test_zone_final_pair_highpose.py b/tests/test_zone_final_pair_highpose.py
+index 6c4f598..552187c 100644
+--- a/tests/test_zone_final_pair_highpose.py
++++ b/tests/test_zone_final_pair_highpose.py
+@@ -203,4 +203,9 @@ def test_v96_registry_retired_byte_identical_and_v98_differs_only_by_ids():
+                        'provider_id', 'frame_gate', 'blind_final_approach', 'case_cap'}
+     # case_cap: v98-cap-3 (user 2026-10-04) 3x300 -> 3x900; the v96 record keeps v96-cap-2.
+     assert (old['case_cap']['sim_cap_s'], new['case_cap']['sim_cap_s']) == (300., 900.)
+-    assert {k for k in old['dev_pilot'] if old['dev_pilot'][k] != new['dev_pilot'][k]} == {'tensorboard_cohort'}
++    # v98 additionally admits the measured unloaded calibration C (zone-final-environment-gaincal-v101); the v96 admission stays a strict prefix.
++    assert {k for k in old['dev_pilot'] if old['dev_pilot'][k] != new['dev_pilot'][k]} == {
++        'tensorboard_cohort', 'admitted_calibration_sha256', 'admitted_source'}
++    admitted = new['dev_pilot']['admitted_calibration_sha256']
++    assert admitted[:len(old['dev_pilot']['admitted_calibration_sha256'])] == old['dev_pilot']['admitted_calibration_sha256']
++    assert len(admitted) == 2 and {k: new['dev_pilot']['admitted_source'][k] for k in old['dev_pilot']['admitted_source']} == old['dev_pilot']['admitted_source']

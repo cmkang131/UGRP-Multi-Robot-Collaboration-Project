@@ -1,0 +1,57 @@
+{
+  "schema": "ugrp.pair_stage_probe.v1",
+  "labels": [
+    "stage_probe",
+    "not_e2e_success",
+    "dev",
+    "연구 결과 아님"
+  ],
+  "stages": {
+    "carry": {
+      "cases": 19,
+      "passed": 0,
+      "pass_rate": 0.0,
+      "by_source": {
+        "teacher_grid": {
+          "cases": 19,
+          "passed": 0
+        }
+      },
+      "failures": {
+        "POSE_UNCERTAIN": 13,
+        "HOST_ERROR": 6
+      },
+      "causes": {
+        "SELF_POSE_UNCERTAIN": 13,
+        "HOST_ERROR": 6
+      },
+      "by_leg": {
+        "0": {
+          "cases": 19,
+          "passed": 0
+        }
+      },
+      "wall_s_median": 55.91,
+      "wall_s_max": 63.94,
+      "stage_sim_s_median": 3.2,
+      "by_policy": {
+        "b-v6c": {
+          "cases": 19,
+          "passed": 0,
+          "by_source": {
+            "teacher_grid": {
+              "cases": 19,
+              "passed": 0
+            }
+          },
+          "failures": {
+            "POSE_UNCERTAIN": 13,
+            "HOST_ERROR": 6
+          }
+        }
+      }
+    }
+  },
+  "wall_s_total": 428.5,
+  "unavailable_e2e": []
+}

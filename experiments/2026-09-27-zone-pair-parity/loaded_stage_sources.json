@@ -1,0 +1,85 @@
+{
+  "fetched_at_utc": {
+    "current_time": "2026-09-27 14:38:26 UTC"
+  },
+  "issue_comments_total": 16,
+  "issue_latest_comments": [
+    {
+      "id": 5852945656,
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/221#issuecomment-5852945656",
+      "body": "## dev PHYSICAL v2 결과 — dev03/dev04 (Claude, tags_temporary · dev · 연구 결과 아님)\n\n소스 `9f28cbf0` 고정(clean), `prereg_v2_DRAFT.json` 그대로(SHA `896091d1…`), 잠금 `claude` 획득·반환, `ugrp_session` + `sim_cli workflow run zone-pair-dev`. 재시도·추가 실행 없음.\n\n| 실행 | 결과 | SIM / wall | 동작 명령 | 판정 |\n|---|---|---|---|---|\n| dev03 (901, 정상) | r1 `pair_carry` 거부 **SELF_UNCERTAIN**(60 s), r2 **PAIR_RENDEZVOUS_TIMEOUT**(65 s) → abort | 67.5 s / 170 s | 22 | DEV_NOT_CONFIRMED |\n| dev04 (902, abort 진단) | r2 거부 **SELF_UNCERTAIN**, r1 랑데부 timeout, carry_go_0 미도달 | 67.5 s / 167 s | 63 | `intervention_not_reached`, 진단 미통과 |\n\n- 두 실행 모두 GO 0건이고 접근·파지·들기·문·B 배치는 시도하지 않았다. 모델 호출 0.\n- `look_around`: dev03 양쪽, dev04 r2가 `SWEEP_TRANSITION_BLOCKED`(서쪽 벽 guard)로 실패.\n- 확인한 것: 적용값 일치(0.25 ms, noslip 10, weld OFF), trace·접촉 coverage 완전, 금지 접촉 0, r3 통과. dev03의 랑데부 실패 abort 뒤 queue가 비고 추가 동작 0건이었다.\n- `SELF_UNCERTAIN`이 `pair_readiness` 중 어느 하위 조건인지는 raw에 기록되지 않아 미확인이다.\n- 영상 검토(Claude, 사람 아님, SHA 연결): 세 로봇이 depot에 머물고 빔도 제자리였다. 모든 단계는 미도달이라 false.\n- TensorBoard: `0927-zone-pair-dev/v2`에 run 2개, view key `zone_pair_dev_v2_20260927`. overview.mp4는 변환기가 `motion.mp4`/`execution.mp4`만 인식해 media로 등록되지 않았다.\n\n기록: `experiments/2026-09-27-zone-pair-dev/results.md` (commit c4dbfd49). Raw(로컬만): `outputs/zone-pair-dev-v2-9f28cbf0…/`.\n"
+    },
+    {
+      "id": 5853073569,
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/221#issuecomment-5853073569",
+      "body": "공동 운반 dev03·dev04 실패 원인(dock 차체 여유 25 mm < 35 mm) → 출발 dock x=−0.65 m 이동 결정을 #218에 기록. 진단 커밋 83222fba (PR #235). 다음: Codex가 dock 변경·prereg v3(dev05/dev06) 확정 → 검토 → 물리 실행."
+    },
+    {
+      "id": 5853660231,
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/221#issuecomment-5853660231",
+      "body": "**코디네이터 결정 (2026-09-27): 공동 운반 파지 단계 수정 방향**\n- **근거:** dev05·dev06(prereg v3)에서 두 로봇 모두 상자 앞까지 접근했지만, 둘 다 파지 단계에서 중단됐다(진단: PR #235 diagnosis_v4).\n  - dev05: 충돌 방지 장치 오탐. 위치 추정(PF) 오차 0.76 m와, 아직 잡지 않은 빔을 손목에 붙인 것으로 계산한 영역 때문에 벽 여유가 −0.4 mm로 판정됐다. 실제 금지 접촉은 0건이었다.\n  - dev06: yaw σ 3.001° > 3°. 태그가 30.5초 동안 보이지 않았다.\n- **결정:** 진단 권고안을 채택한다.\n  1. 파지 직전에 다시 둘러봐 충돌 방지 장치가 쓰는 위치 추정을 갱신한다.\n  2. 빔을 실제로 잡기 전에는 빔을 손목에 붙인 영역으로 계산하지 않는다.\n  3. 두 로봇이 모두 준비된 뒤에 집게를 닫는다.\n  - 임계값은 완화하지 않는다.\n- **진행:** 구현은 Codex가 브랜치 codex/zone-pair-grasp-relook에서 한다. 검토 뒤 새 사전등록으로 dev07·dev08을 실행한다."
+    },
+    {
+      "id": 5856308924,
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/221#issuecomment-5856308924",
+      "body": "**코디네이터 결정 (2026-09-27): 공동 운반 v5 수정 방향**\n- **근거 (diagnosis_v5, PR #240):** dev05부터 dev08까지 네 회차 모두 공동 파지 직전 구간에서 멈췄다.\n  - dev07: 파지 자세에서 빔 끝이 화면에 잘린 입력(END_CLIPPED)을 추적기가 받지 않았다. 추적기는 BAND_CLIPPED만 허용한다.\n  - dev08: 자리 맞춤(align) 중 태그가 15.3초 동안 갱신되지 않아 XY σ가 0.07004 m로 기준 0.07 m를 넘었다.\n  - VIS5 검토(PR #243)에서도 같은 결론이 나왔다: 관측을 스스로 고르는 능동 재관측이 우선이다.\n- **결정:**\n  1. 자리 맞춤 전과 도중에 관측 자세를 잡아 재관측한다. 기존 카메라로 관측 방향을 고르고, 기준 시간 동안 갱신이 없으면 이동을 멈추고 먼저 본다.\n  2. 근접 preclose 관측 계약을 보완한다. END_CLIPPED도 부분 관측으로 받되 과신하지 않는다.\n  - 임계값은 완화하지 않는다.\n- **진행:** Codex가 같은 PR에서 grasp v5와 prereg v5(dev09·dev10)로 구현하고, 검토를 거친 뒤 실행한다."
+    },
+    {
+      "id": 5856549507,
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/221#issuecomment-5856549507",
+      "body": "**코디네이터 결정 (2026-09-27): 공동 운반 진단 방식 전환 (사용자: \"좋은 방식으로 해줘봐 알아서\")**\n- **근거:** 같은 2대 운반이 9/26 M2 러너에서는 GT 없이 성공했다. 열린 바닥은 test 8/8, 문 2b단계는 4/5(1회는 중단으로 판정 없음)였다. 그런데 공통 실행기로 옮긴 뒤로 dev05부터 dev08까지 4회 모두, 새로 넣은 안전 기준에 걸려 공동 파지 전에 멈췄다. 실제 충돌은 0건이었다. 회차마다 한 가지씩 고치는 방식은 수렴하지 않았다.\n- **결정:** 차분 비교로 바꾼다. M2 성공 실행의 저장 입력(자기 RGB·자기 명령)을 공통 실행기의 기준과 판정 경로에 오프라인으로 재생한다. 성공한 실행을 어느 기준이 어느 시점에 막았을지, 동작 순서·명령·관측 주기가 어디서 달라지는지를 한 번에 찾는다(Codex, 브랜치 codex/zone-pair-parity, 물리 실행 없음).\n- **기준 처리:** 기준은 무작정 완화하지 않는다. 다만 M2와 다르게 새로 넣은 기준은 근거를 다시 검토한다.\n- **병행:** v5(dev09·dev10)는 검토를 통과하면 그대로 실행하고, 그 결과도 이 비교에 넣는다."
+    },
+    {
+      "id": 5856789331,
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/221#issuecomment-5856789331",
+      "body": "**차분 진단 결과 (PR #244, Codex, 검토 전)와 다음 계획**\n- M2 성공 49회를 공통 실행기 판정에 다시 넣으면, 98/98 로봇 trace가 짐을 든 단계(wait_lift·carry)의 yaw 3° gate에 걸린다(조건부 재생). 즉 **파지 전 문제를 v5로 넘겨도 운반 단계에서 같은 계열로 막힐 가능성이 높다.**\n- 공통 실행기의 shared PF는 파지 직전 사후 XY 오차가 0.68–0.95 m인데 σ는 작았다. 과신이 핵심이다. M2는 파지용 VO를 따로 계산해서 이 문제를 피했다.\n- v5(PR #240)는 dev05·dev07·dev08의 직접 원인을 해소하는 것으로 재생에서 확인됐다.\n- **다음:**\n  1. #240 수정·검토 → dev09·dev10 실행. 파지 통과 여부를 확인한다.\n  2. 병행으로 Codex가 **짐을 든 단계의 관측·불확실성 예산**을 설계한다. 설계만 하고, 구현은 #240 병합 뒤에 한다.\n  - 임계값 일괄 완화는 하지 않는다."
+    }
+  ],
+  "pr240": {
+    "number": 240,
+    "state": "open",
+    "head_sha": "3839555dc0de0880f74a40c831044e2b5be2d2d7",
+    "head_ref": "codex/zone-pair-grasp-relook",
+    "updated_at": "2026-09-27T14:18:06Z",
+    "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/240",
+    "body": "공동 운반 dev05·dev06의 파지 단계 실패를 고친다. 두 실패의 진단은 PR #235 diagnosis_v4에 있다. 이 PR은 #235 위에 쌓여 있으므로 #235를 먼저 병합해야 한다.\n\n## 변경\n- **파지 직전 재관측:** 파지 직전에 다시 둘러봐서 충돌 방지 장치(guard)가 쓰는 자세 추정을 갱신한다. dev05의 오탐(PF 오차 0.76 m)에 대한 수정이다.\n- **빔 부착 영역 계산 시점:** 빔을 손목에 붙인 영역은 자기 RGB로 파지를 확인한 뒤에만 guard 계산에 넣는다. GT, 접촉 센서, 측정 관절은 쓰지 않는다.\n- **집게 닫기 조건:** 두 로봇이 짝 상태 채널로 모두 READY를 보낸 뒤에만 집게를 닫는다. 짝 상태 채널은 v5가 된다.\n- **임계값:** σ 5 cm, yaw 3°, margin 35 mm는 그대로 두었다.\n- **사전등록:** prereg_v4(dev07/seed 903, dev08/seed 904)를 추가했다. 판정 기준은 v3와 같다.\n\n## 검증\n- Codex 구현 기준 비물리 테스트 581개 통과. 코디네이터가 로컬에서 관련 테스트를 다시 돌렸다.\n- 물리 실행은 아직 하지 않았다. 검토를 통과하면 dev07·dev08을 실행한다.\n- 주의: PR #229(통합)는 `zone_pair_status_v4`를 쓴다. 병합 뒤 v5에 맞춰 조정해야 한다.\n\n## 참고 자료\n- experiments/2026-09-27-zone-pair-dev/diagnosis_v4.md, grasp_v4.md, prereg_v4.json\n- 이슈 #221의 코디네이터 결정 코멘트\n\nRefs #221\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n"
+  },
+  "open_prs": [
+    {
+      "number": 244,
+      "title": "공동 운반 차분 진단: M2 성공 49회 vs 공통 실행기 실패 6회 (Codex, 검토 전)",
+      "sha": "a1a304d1594bbe9b060b48c95b99e65b793a2094",
+      "ref": "codex/zone-pair-parity"
+    },
+    {
+      "number": 243,
+      "title": "태그 없는 비전 위치 추정 5차: yaw·σ·소실 검출 후보 기각, b0/u0 유지 (#216, Codex, 검토 전)",
+      "sha": "5b1aa1b15fb27a35a199fd9f07367cfc346b20db",
+      "ref": "codex/vision-loc-v5"
+    },
+    {
+      "number": 242,
+      "title": "태그 없는 비전 위치 추정 4차: 움직임 모델·σ 보정 후보 기각, b0/u0 유지 (#216, Codex, 검토 전)",
+      "sha": "137ba742493b1f09c68238525cfc44a57054ae48",
+      "ref": "codex/vision-loc-v4"
+    },
+    {
+      "number": 241,
+      "title": "캡처 프로필: dev 1 Hz + 결정 프레임 (정책 모듈, 러너 미연결)",
+      "sha": "56c7f6c93ee48af22ba0508871a6aeba133e6874",
+      "ref": "claude/dev-frame-capture-1hz"
+    },
+    {
+      "number": 240,
+      "title": "공동 운반 파지 v4: 파지 전 재관측·빔 부착 영역 지연·양쪽 READY 후 집게 닫기 (Codex 구현, 검토 전)",
+      "sha": "3839555dc0de0880f74a40c831044e2b5be2d2d7",
+      "ref": "codex/zone-pair-grasp-relook"
+    },
+    {
+      "number": 239,
+      "title": "기록: 2026-09-27 디스크 정리 (무손실 항목만, raw 결정 제안)",
+      "sha": "b1e2d109751df7e065511915db6ac67e0ee9fe6e",
+      "ref": "claude/disk-cleanup-0927"
+    }
+  ]
+}

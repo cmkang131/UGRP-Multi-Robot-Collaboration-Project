@@ -15,6 +15,7 @@ from urllib.request import Request, urlopen
 
 from .groq import _to_groq_messages
 from .vlm import VlmError
+from .llm_completion import assess_completion, normal_completion
 
 
 DEFAULT_URL = "http://127.0.0.1:8391/v1/chat/completions"
@@ -54,6 +55,8 @@ class GeminiProxyCompleter:
         reasoning_effort: str = "none",
         timeout: float | None = None,
         http_open: Callable[..., Any] = urlopen,
+        require_normal_completion: bool = False,
+        require_json_reply: bool = False,
     ) -> None:
         self.model_name = model
         self.url = url or os.environ.get("GEMINI_PROXY_URL", DEFAULT_URL)
@@ -74,6 +77,11 @@ class GeminiProxyCompleter:
             budget = 20
         self.planner_call_budget = max(1, budget)
         self.http_open = http_open
+        self.require_normal_completion = require_normal_completion
+        self.require_json_reply = require_json_reply
+        self.last_finish_reason = None
+        self.last_completion = None
+        self.last_text = None
         self.last_usage: dict[str, int] | None = None
         self.last_model: str | None = None
         self.last_latency_ms: float | None = None
@@ -83,6 +91,9 @@ class GeminiProxyCompleter:
         self.last_usage = None
         self.last_model = None
         self.last_latency_ms = None
+        self.last_finish_reason = None
+        self.last_completion = None
+        self.last_text = None
         if image is not None and images is not None:
             raise ValueError("use image or images, not both")
         payload = json.dumps(
@@ -142,28 +153,35 @@ class GeminiProxyCompleter:
         self.last_latency_ms = (time.monotonic() - started) * 1000
         try:
             body = json.loads(raw.decode("utf-8"))
+            self.last_completion = assess_completion(body, study_json=self.require_json_reply)
+            self.last_finish_reason = self.last_completion['finish_reason']
+            # Preserve usage/reason BEFORE rejecting text or completion status.
+            usage = body.get('usage') if isinstance(body, dict) else None
+            if isinstance(usage, dict):
+                self.last_usage = {k: v for k, v in usage.items()
+                                   if k in {'prompt_tokens', 'completion_tokens', 'total_tokens'}
+                                   and type(v) is int and v >= 0} or None
+            response_model = body.get('model') if isinstance(body, dict) else None
+            if isinstance(response_model, str) and response_model.strip():
+                self.last_model = response_model.strip()
             choices = body["choices"]
             text = choices[0]["message"]["content"]
+            self.last_text = text if isinstance(text, str) else None
         except (KeyError, IndexError, TypeError, UnicodeDecodeError, json.JSONDecodeError) as exc:
             raise GeminiProxyError(
                 "Gemini 프록시가 올바른 completion JSON을 주지 않았습니다.",
                 error_kind="malformed_response", retryable=True,
                 latency_ms=self.last_latency_ms,
             ) from exc
+        if self.require_normal_completion and not normal_completion(self.last_completion):
+            raise GeminiProxyError(
+                'Gemini completion rejected: ' + ','.join(self.last_completion['rejection_reasons']),
+                error_kind='non_normal_completion', retryable=False, latency_ms=self.last_latency_ms)
         if not isinstance(text, str) or not text.strip():
             raise GeminiProxyError(
                 "Gemini 프록시 답이 비어 있습니다.", error_kind="malformed_response",
                 retryable=True, latency_ms=self.last_latency_ms,
             )
-        usage = body.get("usage")
-        if isinstance(usage, dict):
-            measured = {key: value for key, value in usage.items()
-                        if key in {"prompt_tokens", "completion_tokens", "total_tokens"}
-                        and isinstance(value, int) and not isinstance(value, bool) and value >= 0}
-            self.last_usage = measured or None
-        response_model = body.get("model")
-        if isinstance(response_model, str) and response_model.strip():
-            self.last_model = response_model.strip()
         return text.strip()
 
 

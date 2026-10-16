@@ -1,0 +1,74 @@
+{
+  "head": "dde83c3d2501e3b5edf92f52fc1a12195f2d781a",
+  "committed": false,
+  "passed": 1765,
+  "failed": 0,
+  "skipped": 2,
+  "subtests_passed": 381,
+  "elapsed_s": 149.97,
+  "guard_counts": {
+    "physical_step_attempts": 0,
+    "real_vision_worker_attempts": 0,
+    "network_attempts": 0
+  },
+  "baseline_reproduction": {
+    "passed": 0,
+    "failed": 7,
+    "test": "tests/test_record_owncam_time.py (first seven cases before LoggingPort change)",
+    "head": "dde83c3d2501e3b5edf92f52fc1a12195f2d781a"
+  },
+  "first_full": {
+    "passed": 1744,
+    "failed": 4,
+    "skipped": 2,
+    "subtests_passed": 378,
+    "log": "pytest_full.txt"
+  },
+  "focused_after_boundary_updates": {
+    "passed": 59,
+    "failed": 0,
+    "subtests_passed": 269,
+    "log": "pytest_focused.txt"
+  },
+  "command": "OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q -p tests.pose_provider_no_physics tests/test_owncam*.py tests/test_zone_pair*.py tests/test_zone_start_dock*.py tests/test_record_owncam*.py tests/test_m1*.py tests/test_m2_pair_door_v3.py tests/test_pair_owncam_approach.py tests/test_zone_own*.py tests/test_pose_provider*.py tests/test_vision_pose_source.py tests/test_zone_study_pair_delay.py tests/test_zone_study_integration*.py tests/test_real_scene_memory.py tests/test_rgb_execution_bundle.py --basetemp=./.pytest_tmp",
+  "final_log": "pytest_final.txt",
+  "pytest_tmp_removed": true,
+  "skipped_tests": [
+    "tests/test_zone_own_executor.py::test_team_host_feeds_each_executor_only_its_own_camera",
+    "tests/test_zone_own_executor_host.py::test_team_host_isolation_abort_and_horizon_on_the_real_world"
+  ],
+  "skip_reason": "These two real-world host tests require MuJoCo physical steps; explicitly outside the nonphysical suite.",
+  "preservation_checked": 348,
+  "preservation_mismatches": 0,
+  "registration_sha256": "f1425ccff7494c60c53279fa3a2a13aadb1f6710728017e05f5a7f5afc73b45d",
+  "execution_source_sha": null,
+  "execution_authorization": null,
+  "execution_status": "not_run",
+  "prepare": {
+    "dev13": {
+      "path": "experiments/2026-09-27-zone-pair-dev/v5h_review10_validation/dev13_prepare_manifest.json",
+      "sha256": "118c70db20fbd96930ca433a75c34f56ac89307dfb26038b0d7e47fe0f6916e2",
+      "state": "prepared_not_executed",
+      "applied": null,
+      "physical_success": null,
+      "model_calls": 0
+    },
+    "dev14": {
+      "path": "experiments/2026-09-27-zone-pair-dev/v5h_review10_validation/dev14_prepare_manifest.json",
+      "sha256": "e2d6c10a997dfcd93a920634bf11fb059db8552bed20d0a75af295e687f6622b",
+      "state": "prepared_not_executed",
+      "applied": null,
+      "physical_success": null,
+      "model_calls": 0
+    }
+  },
+  "validation_files_sha256": {
+    "dev13_prepare_manifest.json": "118c70db20fbd96930ca433a75c34f56ac89307dfb26038b0d7e47fe0f6916e2",
+    "dev14_prepare_manifest.json": "e2d6c10a997dfcd93a920634bf11fb059db8552bed20d0a75af295e687f6622b",
+    "preservation.json": "16ea767322318a0c68ca0783d94d7b5bc7346598e118606740e6174f058023ac",
+    "pytest_final.txt": "5ff25a536f4d7f985da97af709afad554fa8930725d9afb2955de39f27aa38bd",
+    "pytest_focused.txt": "c732804823fbdf95f2532630e755ee41d9165c83e8f5596419c04d88769bdf11",
+    "pytest_full.txt": "2c85622ef69e7c8f4d9c69bfb02bba280970e25b3a17bf03e73c82608f9ec1bf",
+    "time_audit.json": "c5019007535c8740483c83e7d8c3df834bd88fa365735515dd615b37c69d09c0"
+  }
+}

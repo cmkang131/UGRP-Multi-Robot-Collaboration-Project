@@ -1,0 +1,1502 @@
+{
+  "criteria": {
+    "version": "s2v46-prereg-v1",
+    "baseline": "s2v45 combined forward_scale_v1 and pr_likelihood_half_v1; frozen per-holdout tables",
+    "option": "ground_motion=unloaded_coarse_vo_v1",
+    "seeds": [
+      1051,
+      1053,
+      1054
+    ],
+    "holdouts": [
+      {
+        "fit": [
+          1053,
+          1054
+        ],
+        "check": 1051
+      },
+      {
+        "fit": [
+          1051,
+          1054
+        ],
+        "check": 1053
+      },
+      {
+        "fit": [
+          1051,
+          1053
+        ],
+        "check": 1054
+      }
+    ],
+    "new_fit": "none; reuse each v45 two-run scale table and fixed alpha0.5; new GT use evaluation only",
+    "scope": "unloaded commanded SEARCH 740,2320,1320,1500; settled; existing forward/left profile translation >=0.05m; loaded slip detector unchanged",
+    "method": "Seegmiller2011 II-C--F LK, calibrated ground homography, RANSAC/SVD SE2; complete own-RGB pulse replaces commanded SE2, incomplete retains original profile",
+    "parameters": {
+      "pitch_scale_bound_deg": 0.3,
+      "minimum_expected_m": 0.05,
+      "max_track_gap_s": 0.15,
+      "complete_coverage": 1.0
+    },
+    "parameters_source": "existing ground_vo_v1/stiff preregistration; no new sweep, no GT-derived collision trigger or bias offset",
+    "primary_universe": "unchanged s2v44 1602 times, unavailable matching single-cluster covariance fails coverage; all 1617 warning opportunities",
+    "chi2_95_xy": 5.991464547107979,
+    "admission_each_holdout": {
+      "xy_nees_exceedance_rate_max": 0.2,
+      "unflagged_xy_above_25cm_max": 0,
+      "carry_rmse_increase_m_max": 1e-09,
+      "off_pose_serialization_identical": true
+    },
+    "rmse_reference": "v45 combined for the same heldout seed",
+    "physical": "all three holdouts pass, then register fresh seed and acquire agent_lock; otherwise physics0",
+    "threshold_change_after_results": false,
+    "host_error": "ENOSPC is HOST_ERROR"
+  },
+  "runs": [
+    {
+      "seed": 1051,
+      "fit_seeds": [
+        1053,
+        1054
+      ],
+      "conditions": {
+        "baseline": {
+          "nees_available": 493,
+          "primary_n": 493,
+          "nees_exceeded": 0,
+          "nees_rate": 0.0,
+          "all_warnings": 411,
+          "all_misses": 0,
+          "carry_rmse_m": 0.07462053836133561,
+          "carry_frames": 4145,
+          "unavailable_times": [],
+          "approach_bias_xy_m": [
+            0.046276448779849634,
+            0.11683545065759471
+          ],
+          "approach_rmse_m": 0.2358468925475705,
+          "updates": 28
+        },
+        "candidate": {
+          "nees_available": 493,
+          "primary_n": 493,
+          "nees_exceeded": 27,
+          "nees_rate": 0.05476673427991886,
+          "all_warnings": 443,
+          "all_misses": 0,
+          "carry_rmse_m": 0.08351600030995183,
+          "carry_frames": 4145,
+          "unavailable_times": [],
+          "approach_bias_xy_m": [
+            0.04374784940079449,
+            0.08697642027359814
+          ],
+          "approach_rmse_m": 0.23570187145353655,
+          "updates": 28
+        }
+      },
+      "gates": {
+        "nees": true,
+        "covariance_coverage": true,
+        "misses": true,
+        "carry_rmse": false,
+        "off_bytes": true,
+        "passed": false
+      },
+      "ground_measurements": [
+        {
+          "t": 12.0,
+          "key": "0:left:-0.65:0.65",
+          "end": 12.75,
+          "loaded": false,
+          "status": "unknown_preserved",
+          "complete_visual": false,
+          "coverage": 0.0,
+          "prediction_replaced": false,
+          "source": "command_prediction_fallback",
+          "command_double_counted": false,
+          "expected_delta": [
+            0.00042614519793670696,
+            -0.16785638525949334,
+            0.01113848388591108
+          ],
+          "visual_delta": null,
+          "applied_delta": [
+            0.00042614519793670696,
+            -0.16785638525949334,
+            0.01113848388591108
+          ],
+          "delta": [
+            0.00042614519793670696,
+            -0.16785638525949334,
+            0.01113848388591108
+          ],
+          "progress_ratio": null,
+          "variance": [
+            2.3042844666721447e-06,
+            6.123661214167636e-06,
+            4.737606094904029e-05
+          ],
+          "covariance": null,
+          "pitch_radial_sigma_m": 0.0,
+          "pitch_scale_relative_sigma": null,
+          "pitch_radial_covariance": [
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ]
+          ],
+          "direction": [
+            0.0,
+            -0.65
+          ],
+          "unloaded_coarse_vo": true,
+          "interval_status_counts": {
+            "unknown_texture": 3,
+            "unknown_frame": 12
+          },
+          "eval_actual_delta": [
+            0.0012657344273457637,
+            -0.1694612134095778,
+            0.004759905180786927
+          ],
+          "eval_expected_delta_error": [
+            -0.0008395892294090568,
+            0.0016048281500844475,
+            0.006378578705124153
+          ],
+          "eval_applied_delta_error": [
+            -0.0008395892294090568,
+            0.0016048281500844475,
+            0.006378578705124153
+          ]
+        }
+      ]
+    },
+    {
+      "seed": 1053,
+      "fit_seeds": [
+        1051,
+        1054
+      ],
+      "conditions": {
+        "baseline": {
+          "nees_available": 447,
+          "primary_n": 486,
+          "nees_exceeded": 0,
+          "nees_rate": 0.0,
+          "all_warnings": 486,
+          "all_misses": 0,
+          "carry_rmse_m": 0.047666416517293635,
+          "carry_frames": 3829,
+          "unavailable_times": [
+            21.35,
+            21.75,
+            22.15,
+            22.55,
+            22.95,
+            23.35,
+            23.75,
+            24.15,
+            24.55,
+            24.95,
+            25.35,
+            25.75,
+            26.15,
+            26.55,
+            26.95,
+            27.35,
+            27.75,
+            28.15,
+            28.55,
+            28.95,
+            29.35,
+            29.75,
+            30.15,
+            30.55,
+            30.95,
+            31.35,
+            31.75,
+            32.15,
+            32.55,
+            32.95,
+            33.35,
+            33.75,
+            34.15,
+            34.55,
+            34.95,
+            35.35,
+            35.75,
+            36.7,
+            37.65
+          ],
+          "approach_bias_xy_m": [
+            -0.04318231375052827,
+            0.035645951711964274
+          ],
+          "approach_rmse_m": 0.08067935264825243,
+          "updates": 33
+        },
+        "candidate": {
+          "nees_available": 449,
+          "primary_n": 486,
+          "nees_exceeded": 29,
+          "nees_rate": 0.0645879732739421,
+          "all_warnings": 486,
+          "all_misses": 0,
+          "carry_rmse_m": 0.06206438314344299,
+          "carry_frames": 3829,
+          "unavailable_times": [
+            21.35,
+            21.75,
+            22.15,
+            22.55,
+            22.95,
+            23.35,
+            23.75,
+            24.15,
+            24.55,
+            24.95,
+            25.35,
+            25.75,
+            26.15,
+            26.55,
+            26.95,
+            27.35,
+            27.75,
+            28.15,
+            28.55,
+            28.95,
+            29.35,
+            29.75,
+            30.15,
+            30.55,
+            30.95,
+            31.35,
+            31.75,
+            32.15,
+            32.55,
+            32.95,
+            33.35,
+            33.75,
+            34.15,
+            34.55,
+            34.95,
+            35.35,
+            35.75
+          ],
+          "approach_bias_xy_m": [
+            -0.04443534954259775,
+            0.043443077501768165
+          ],
+          "approach_rmse_m": 0.0846995369066731,
+          "updates": 33
+        }
+      },
+      "gates": {
+        "nees": true,
+        "covariance_coverage": false,
+        "misses": true,
+        "carry_rmse": false,
+        "off_bytes": true,
+        "passed": false
+      },
+      "ground_measurements": [
+        {
+          "t": 12.0,
+          "key": "0:left:0.65:0.65",
+          "end": 12.75,
+          "loaded": false,
+          "status": "unknown_preserved",
+          "complete_visual": false,
+          "coverage": 0.0,
+          "prediction_replaced": false,
+          "source": "command_prediction_fallback",
+          "command_double_counted": false,
+          "expected_delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "visual_delta": null,
+          "applied_delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "progress_ratio": null,
+          "variance": [
+            2.261451144021893e-06,
+            5.7838889723272055e-06,
+            4.7742612776344265e-05
+          ],
+          "covariance": null,
+          "pitch_radial_sigma_m": 0.0,
+          "pitch_scale_relative_sigma": 0.0,
+          "pitch_radial_covariance": [
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ]
+          ],
+          "direction": [
+            0.0,
+            0.65
+          ],
+          "unloaded_coarse_vo": true,
+          "interval_status_counts": {
+            "unknown_rigid_consensus": 5,
+            "measured": 10
+          },
+          "eval_actual_delta": [
+            0.0009414160754922086,
+            0.16933183868000404,
+            -0.006203521181510189
+          ],
+          "eval_expected_delta_error": [
+            -0.0003584717304771888,
+            -0.0008278117717666067,
+            -0.0035308567217546428
+          ],
+          "eval_applied_delta_error": [
+            -0.0003584717304771888,
+            -0.0008278117717666067,
+            -0.0035308567217546428
+          ]
+        },
+        {
+          "t": 35.75,
+          "key": "0:left:0.65:0.65",
+          "end": 36.5,
+          "loaded": false,
+          "status": "unknown_preserved",
+          "complete_visual": false,
+          "coverage": 0.0,
+          "prediction_replaced": false,
+          "source": "command_prediction_fallback",
+          "command_double_counted": false,
+          "expected_delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "visual_delta": null,
+          "applied_delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "progress_ratio": null,
+          "variance": [
+            2.261451144021893e-06,
+            5.7838889723272055e-06,
+            4.7742612776344265e-05
+          ],
+          "covariance": null,
+          "pitch_radial_sigma_m": 0.0,
+          "pitch_scale_relative_sigma": null,
+          "pitch_radial_covariance": [
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ]
+          ],
+          "direction": [
+            0.0,
+            0.65
+          ],
+          "unloaded_coarse_vo": true,
+          "interval_status_counts": {
+            "unknown_texture": 2,
+            "unknown_rigid_consensus": 1,
+            "unknown_frame": 12
+          },
+          "eval_actual_delta": [
+            0.002415339480086339,
+            0.17068351264607323,
+            -0.019144492485202922
+          ],
+          "eval_expected_delta_error": [
+            -0.0018323951350713193,
+            -0.0021794857378358012,
+            0.00941011458193809
+          ],
+          "eval_applied_delta_error": [
+            -0.0018323951350713193,
+            -0.0021794857378358012,
+            0.00941011458193809
+          ]
+        },
+        {
+          "t": 36.7,
+          "key": "0:left:0.65:0.65",
+          "end": 37.45,
+          "loaded": false,
+          "status": "unknown_preserved",
+          "complete_visual": false,
+          "coverage": 0.0,
+          "prediction_replaced": false,
+          "source": "command_prediction_fallback",
+          "command_double_counted": false,
+          "expected_delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "visual_delta": null,
+          "applied_delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "progress_ratio": null,
+          "variance": [
+            2.261451144021893e-06,
+            5.7838889723272055e-06,
+            4.7742612776344265e-05
+          ],
+          "covariance": null,
+          "pitch_radial_sigma_m": 0.0,
+          "pitch_scale_relative_sigma": 0.0,
+          "pitch_radial_covariance": [
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ]
+          ],
+          "direction": [
+            0.0,
+            0.65
+          ],
+          "unloaded_coarse_vo": true,
+          "interval_status_counts": {
+            "measured": 1,
+            "unknown_rigid_consensus": 3,
+            "unknown_frame": 11
+          },
+          "eval_actual_delta": [
+            0.001446365421354986,
+            0.17074143201350422,
+            -0.016424703378253525
+          ],
+          "eval_expected_delta_error": [
+            -0.0008634210763399663,
+            -0.002237405105266793,
+            0.006690325474988693
+          ],
+          "eval_applied_delta_error": [
+            -0.0008634210763399663,
+            -0.002237405105266793,
+            0.006690325474988693
+          ]
+        },
+        {
+          "t": 37.65,
+          "key": "0:left:0.65:0.65",
+          "end": 38.4,
+          "loaded": false,
+          "status": "unknown_preserved",
+          "complete_visual": false,
+          "coverage": 0.0,
+          "prediction_replaced": false,
+          "source": "command_prediction_fallback",
+          "command_double_counted": false,
+          "expected_delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "visual_delta": null,
+          "applied_delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "progress_ratio": null,
+          "variance": [
+            2.261451144021893e-06,
+            5.7838889723272055e-06,
+            4.7742612776344265e-05
+          ],
+          "covariance": null,
+          "pitch_radial_sigma_m": 0.0,
+          "pitch_scale_relative_sigma": null,
+          "pitch_radial_covariance": [
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ]
+          ],
+          "direction": [
+            0.0,
+            0.65
+          ],
+          "unloaded_coarse_vo": true,
+          "interval_status_counts": {
+            "unknown_texture": 3,
+            "unknown_frame": 12
+          },
+          "eval_actual_delta": [
+            -0.0001348074195996294,
+            0.16910182306552798,
+            -0.00045064969588284876
+          ],
+          "eval_expected_delta_error": [
+            0.0007177517646146491,
+            -0.0005977961572905532,
+            -0.009283728207381983
+          ],
+          "eval_applied_delta_error": [
+            0.0007177517646146491,
+            -0.0005977961572905532,
+            -0.009283728207381983
+          ]
+        },
+        {
+          "t": 38.6,
+          "key": "0:left:0.65:0.65",
+          "end": 39.35,
+          "loaded": false,
+          "status": "unknown_preserved",
+          "complete_visual": false,
+          "coverage": 0.0,
+          "prediction_replaced": false,
+          "source": "command_prediction_fallback",
+          "command_double_counted": false,
+          "expected_delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "visual_delta": null,
+          "applied_delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "progress_ratio": null,
+          "variance": [
+            2.261451144021893e-06,
+            5.7838889723272055e-06,
+            4.7742612776344265e-05
+          ],
+          "covariance": null,
+          "pitch_radial_sigma_m": 0.0,
+          "pitch_scale_relative_sigma": null,
+          "pitch_radial_covariance": [
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ]
+          ],
+          "direction": [
+            0.0,
+            0.65
+          ],
+          "unloaded_coarse_vo": true,
+          "interval_status_counts": {
+            "unknown_rigid_consensus": 3,
+            "unknown_frame": 12
+          },
+          "eval_actual_delta": [
+            0.0019150786410033695,
+            0.16968181566522106,
+            -0.009438298144484214
+          ],
+          "eval_expected_delta_error": [
+            -0.0013321342959883497,
+            -0.0011777887569836276,
+            -0.00029607975878061764
+          ],
+          "eval_applied_delta_error": [
+            -0.0013321342959883497,
+            -0.0011777887569836276,
+            -0.00029607975878061764
+          ]
+        },
+        {
+          "t": 39.55,
+          "key": "0:left:0.65:0.65",
+          "end": 40.3,
+          "loaded": false,
+          "status": "unknown_preserved",
+          "complete_visual": false,
+          "coverage": 0.0,
+          "prediction_replaced": false,
+          "source": "command_prediction_fallback",
+          "command_double_counted": false,
+          "expected_delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "visual_delta": null,
+          "applied_delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "progress_ratio": null,
+          "variance": [
+            2.261451144021893e-06,
+            5.7838889723272055e-06,
+            4.7742612776344265e-05
+          ],
+          "covariance": null,
+          "pitch_radial_sigma_m": 0.0,
+          "pitch_scale_relative_sigma": 0.0,
+          "pitch_radial_covariance": [
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ]
+          ],
+          "direction": [
+            0.0,
+            0.65
+          ],
+          "unloaded_coarse_vo": true,
+          "interval_status_counts": {
+            "measured": 1,
+            "unknown_rigid_consensus": 3,
+            "unknown_frame": 11
+          },
+          "eval_actual_delta": [
+            0.002984987225541624,
+            0.16989492181451485,
+            -0.02883784702677053
+          ],
+          "eval_expected_delta_error": [
+            -0.0024020428805266044,
+            -0.0013908949062774179,
+            0.019103469123505697
+          ],
+          "eval_applied_delta_error": [
+            -0.0024020428805266044,
+            -0.0013908949062774179,
+            0.019103469123505697
+          ]
+        }
+      ]
+    },
+    {
+      "seed": 1054,
+      "fit_seeds": [
+        1051,
+        1053
+      ],
+      "conditions": {
+        "baseline": {
+          "nees_available": 622,
+          "primary_n": 623,
+          "nees_exceeded": 192,
+          "nees_rate": 0.3086816720257235,
+          "all_warnings": 638,
+          "all_misses": 0,
+          "carry_rmse_m": 0.1338754363705241,
+          "carry_frames": 4132,
+          "unavailable_times": [
+            19.1
+          ],
+          "approach_bias_xy_m": [
+            -0.06659145638446867,
+            -0.1778092735798869
+          ],
+          "approach_rmse_m": 0.20754418462079555,
+          "updates": 34
+        },
+        "candidate": {
+          "nees_available": 623,
+          "primary_n": 623,
+          "nees_exceeded": 352,
+          "nees_rate": 0.565008025682183,
+          "all_warnings": 638,
+          "all_misses": 0,
+          "carry_rmse_m": 0.1639551957707431,
+          "carry_frames": 4132,
+          "unavailable_times": [],
+          "approach_bias_xy_m": [
+            -0.07818350618309707,
+            -0.1989519368204996
+          ],
+          "approach_rmse_m": 0.23289667576862816,
+          "updates": 34
+        }
+      },
+      "gates": {
+        "nees": false,
+        "covariance_coverage": true,
+        "misses": true,
+        "carry_rmse": false,
+        "off_bytes": true,
+        "passed": false
+      },
+      "ground_measurements": [
+        {
+          "t": 17.2,
+          "key": "0:left:0.65:0.65",
+          "end": 17.95,
+          "loaded": false,
+          "status": "unknown_preserved",
+          "complete_visual": false,
+          "coverage": 0.0,
+          "prediction_replaced": false,
+          "source": "command_prediction_fallback",
+          "command_double_counted": false,
+          "expected_delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "visual_delta": null,
+          "applied_delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "progress_ratio": null,
+          "variance": [
+            2.261451144021893e-06,
+            5.7838889723272055e-06,
+            4.7742612776344265e-05
+          ],
+          "covariance": null,
+          "pitch_radial_sigma_m": 0.0,
+          "pitch_scale_relative_sigma": 0.0,
+          "pitch_radial_covariance": [
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ]
+          ],
+          "direction": [
+            0.0,
+            0.65
+          ],
+          "unloaded_coarse_vo": true,
+          "interval_status_counts": {
+            "unknown_rigid_consensus": 4,
+            "measured": 5,
+            "unknown_texture": 3,
+            "unknown_frame": 3
+          },
+          "eval_actual_delta": [
+            -0.0007410599769979113,
+            0.16987856712297777,
+            -0.001181077871349696
+          ],
+          "eval_expected_delta_error": [
+            0.001324004322012931,
+            -0.001374540214740344,
+            -0.008553300031915135
+          ],
+          "eval_applied_delta_error": [
+            0.001324004322012931,
+            -0.001374540214740344,
+            -0.008553300031915135
+          ]
+        },
+        {
+          "t": 18.15,
+          "key": "0:left:0.65:0.65",
+          "end": 18.9,
+          "loaded": false,
+          "status": "unknown_preserved",
+          "complete_visual": false,
+          "coverage": 0.0,
+          "prediction_replaced": false,
+          "source": "command_prediction_fallback",
+          "command_double_counted": false,
+          "expected_delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "visual_delta": null,
+          "applied_delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "progress_ratio": null,
+          "variance": [
+            2.261451144021893e-06,
+            5.7838889723272055e-06,
+            4.7742612776344265e-05
+          ],
+          "covariance": null,
+          "pitch_radial_sigma_m": 0.0,
+          "pitch_scale_relative_sigma": 0.0,
+          "pitch_radial_covariance": [
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ]
+          ],
+          "direction": [
+            0.0,
+            0.65
+          ],
+          "unloaded_coarse_vo": true,
+          "interval_status_counts": {
+            "measured": 1,
+            "unknown_texture": 3,
+            "unknown_frame": 11
+          },
+          "eval_actual_delta": [
+            0.0016155828762767282,
+            0.17072303250010584,
+            -0.024990945908777006
+          ],
+          "eval_expected_delta_error": [
+            -0.0010326385312617085,
+            -0.0022190055918684115,
+            0.015256568005512174
+          ],
+          "eval_applied_delta_error": [
+            -0.0010326385312617085,
+            -0.0022190055918684115,
+            0.015256568005512174
+          ]
+        },
+        {
+          "t": 19.1,
+          "key": "0:left:0.65:0.65",
+          "end": 19.85,
+          "loaded": false,
+          "status": "unknown_preserved",
+          "complete_visual": false,
+          "coverage": 0.0,
+          "prediction_replaced": false,
+          "source": "command_prediction_fallback",
+          "command_double_counted": false,
+          "expected_delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "visual_delta": null,
+          "applied_delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "progress_ratio": null,
+          "variance": [
+            2.261451144021893e-06,
+            5.7838889723272055e-06,
+            4.7742612776344265e-05
+          ],
+          "covariance": null,
+          "pitch_radial_sigma_m": 0.0,
+          "pitch_scale_relative_sigma": null,
+          "pitch_radial_covariance": [
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ]
+          ],
+          "direction": [
+            0.0,
+            0.65
+          ],
+          "unloaded_coarse_vo": true,
+          "interval_status_counts": {
+            "unknown_texture": 3,
+            "unknown_frame": 12
+          },
+          "eval_actual_delta": [
+            -3.2592440828222696e-05,
+            0.16978438654656747,
+            -0.006113747966012739
+          ],
+          "eval_expected_delta_error": [
+            0.0006155367858432424,
+            -0.0012803596383300364,
+            -0.003620629937252093
+          ],
+          "eval_applied_delta_error": [
+            0.0006155367858432424,
+            -0.0012803596383300364,
+            -0.003620629937252093
+          ]
+        },
+        {
+          "t": 20.05,
+          "key": "0:left:0.65:0.65",
+          "end": 20.8,
+          "loaded": false,
+          "status": "unknown_preserved",
+          "complete_visual": false,
+          "coverage": 0.0,
+          "prediction_replaced": false,
+          "source": "command_prediction_fallback",
+          "command_double_counted": false,
+          "expected_delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "visual_delta": null,
+          "applied_delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "progress_ratio": null,
+          "variance": [
+            2.261451144021893e-06,
+            5.7838889723272055e-06,
+            4.7742612776344265e-05
+          ],
+          "covariance": null,
+          "pitch_radial_sigma_m": 0.0,
+          "pitch_scale_relative_sigma": null,
+          "pitch_radial_covariance": [
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ]
+          ],
+          "direction": [
+            0.0,
+            0.65
+          ],
+          "unloaded_coarse_vo": true,
+          "interval_status_counts": {
+            "unknown_rigid_consensus": 3,
+            "unknown_frame": 12
+          },
+          "eval_actual_delta": [
+            0.00262280003286476,
+            0.16960541362772397,
+            -0.011417654534369583
+          ],
+          "eval_expected_delta_error": [
+            -0.0020398556878497404,
+            -0.0011013867194865357,
+            0.001683276631104751
+          ],
+          "eval_applied_delta_error": [
+            -0.0020398556878497404,
+            -0.0011013867194865357,
+            0.001683276631104751
+          ]
+        },
+        {
+          "t": 21.0,
+          "key": "0:left:0.65:0.65",
+          "end": 21.75,
+          "loaded": false,
+          "status": "unknown_preserved",
+          "complete_visual": false,
+          "coverage": 0.0,
+          "prediction_replaced": false,
+          "source": "command_prediction_fallback",
+          "command_double_counted": false,
+          "expected_delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "visual_delta": null,
+          "applied_delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "progress_ratio": null,
+          "variance": [
+            2.261451144021893e-06,
+            5.7838889723272055e-06,
+            4.7742612776344265e-05
+          ],
+          "covariance": null,
+          "pitch_radial_sigma_m": 0.0,
+          "pitch_scale_relative_sigma": 0.0,
+          "pitch_radial_covariance": [
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ]
+          ],
+          "direction": [
+            0.0,
+            0.65
+          ],
+          "unloaded_coarse_vo": true,
+          "interval_status_counts": {
+            "unknown_rigid_consensus": 3,
+            "measured": 3,
+            "unknown_texture": 2,
+            "unknown_frame": 7
+          },
+          "eval_actual_delta": [
+            0.0017330680434127388,
+            0.17019314906692257,
+            -0.020489753090196735
+          ],
+          "eval_expected_delta_error": [
+            -0.001150123698397719,
+            -0.0016891221586851357,
+            0.010755375186931903
+          ],
+          "eval_applied_delta_error": [
+            -0.001150123698397719,
+            -0.0016891221586851357,
+            0.010755375186931903
+          ]
+        },
+        {
+          "t": 21.95,
+          "key": "0:left:0.65:0.65",
+          "end": 22.7,
+          "loaded": false,
+          "status": "unknown_preserved",
+          "complete_visual": false,
+          "coverage": 0.0,
+          "prediction_replaced": false,
+          "source": "command_prediction_fallback",
+          "command_double_counted": false,
+          "expected_delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "visual_delta": null,
+          "applied_delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "progress_ratio": null,
+          "variance": [
+            2.261451144021893e-06,
+            5.7838889723272055e-06,
+            4.7742612776344265e-05
+          ],
+          "covariance": null,
+          "pitch_radial_sigma_m": 0.0,
+          "pitch_scale_relative_sigma": null,
+          "pitch_radial_covariance": [
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ]
+          ],
+          "direction": [
+            0.0,
+            0.65
+          ],
+          "unloaded_coarse_vo": true,
+          "interval_status_counts": {
+            "unknown_texture": 2,
+            "unknown_rigid_consensus": 1,
+            "unknown_frame": 12
+          },
+          "eval_actual_delta": [
+            0.0022223936161806434,
+            0.16956542077644066,
+            -0.007766998814840789
+          ],
+          "eval_expected_delta_error": [
+            -0.0016394492711656237,
+            -0.0010613938682032253,
+            -0.0019673790884240424
+          ],
+          "eval_applied_delta_error": [
+            -0.0016394492711656237,
+            -0.0010613938682032253,
+            -0.0019673790884240424
+          ]
+        },
+        {
+          "t": 22.9,
+          "key": "0:left:0.65:0.65",
+          "end": 23.65,
+          "loaded": false,
+          "status": "unknown_preserved",
+          "complete_visual": false,
+          "coverage": 0.0,
+          "prediction_replaced": false,
+          "source": "command_prediction_fallback",
+          "command_double_counted": false,
+          "expected_delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "visual_delta": null,
+          "applied_delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "progress_ratio": null,
+          "variance": [
+            2.261451144021893e-06,
+            5.7838889723272055e-06,
+            4.7742612776344265e-05
+          ],
+          "covariance": null,
+          "pitch_radial_sigma_m": 0.0,
+          "pitch_scale_relative_sigma": null,
+          "pitch_radial_covariance": [
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ]
+          ],
+          "direction": [
+            0.0,
+            0.65
+          ],
+          "unloaded_coarse_vo": true,
+          "interval_status_counts": {
+            "unknown_texture": 3,
+            "unknown_frame": 12
+          },
+          "eval_actual_delta": [
+            0.0018376315321450138,
+            0.17050614679219342,
+            -0.016688068807221512
+          ],
+          "eval_expected_delta_error": [
+            -0.001254687187129994,
+            -0.0020021198839559884,
+            0.0069536909039566806
+          ],
+          "eval_applied_delta_error": [
+            -0.001254687187129994,
+            -0.0020021198839559884,
+            0.0069536909039566806
+          ]
+        },
+        {
+          "t": 23.85,
+          "key": "0:left:0.65:0.65",
+          "end": 24.6,
+          "loaded": false,
+          "status": "unknown_preserved",
+          "complete_visual": false,
+          "coverage": 0.0,
+          "prediction_replaced": false,
+          "source": "command_prediction_fallback",
+          "command_double_counted": false,
+          "expected_delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "visual_delta": null,
+          "applied_delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "delta": [
+            0.0005829443450150198,
+            0.16850402690823743,
+            -0.009734377903264832
+          ],
+          "progress_ratio": null,
+          "variance": [
+            2.261451144021893e-06,
+            5.7838889723272055e-06,
+            4.7742612776344265e-05
+          ],
+          "covariance": null,
+          "pitch_radial_sigma_m": 0.0,
+          "pitch_scale_relative_sigma": null,
+          "pitch_radial_covariance": [
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ]
+          ],
+          "direction": [
+            0.0,
+            0.65
+          ],
+          "unloaded_coarse_vo": true,
+          "interval_status_counts": {
+            "unknown_texture": 3,
+            "unknown_frame": 12
+          },
+          "eval_actual_delta": [
+            -0.009029459204463554,
+            0.11351062344458203,
+            0.3322818320807003
+          ],
+          "eval_expected_delta_error": [
+            0.009612403549478574,
+            0.0549934034636554,
+            -0.3420162099839651
+          ],
+          "eval_applied_delta_error": [
+            0.009612403549478574,
+            0.0549934034636554,
+            -0.3420162099839651
+          ]
+        }
+      ]
+    }
+  ],
+  "physics_runs": 0,
+  "gt_use": "posthoc evaluation only; no new fit; frozen v45 two-run forward scale tables",
+  "hashes": {
+    "/Users/changmin/projects/ugrp/outputs/s2-innovation-v46-20261008/replay/s1051-baseline.json": "a38c3d110286ad8b36370d44be7c50ebfb6f0146593237292346f3b13ff94f55",
+    "/Users/changmin/projects/ugrp/outputs/s2-innovation-v46-20261008/replay/s1051-candidate.json": "c35128eab7f77ed31ee706d07ddd230fb0877818106357abc8e190ccb470cf34",
+    "/Users/changmin/projects/ugrp/outputs/s2-innovation-v46-20261008/replay/s1053-baseline.json": "68ae8d6de11482b18af916e79771c53ce33526c5a8bf495eb971519f016341f3",
+    "/Users/changmin/projects/ugrp/outputs/s2-innovation-v46-20261008/replay/s1053-candidate.json": "53d2e9f7907e69f09c8c3b3d2b7f7ac2e2e00971043d3a0c40dea83c63e68c13",
+    "/Users/changmin/projects/ugrp/outputs/s2-innovation-v46-20261008/replay/s1054-baseline.json": "fff9a2ae3ee32810902189a9576199e2b51863c924fd2d184e5eb49cfc1a80f5",
+    "/Users/changmin/projects/ugrp/outputs/s2-innovation-v46-20261008/replay/s1054-candidate.json": "79274c5ae972b68547978ea77d2c8300efd725776723c020a1f36afc9dc1da6a"
+  },
+  "physical_admitted": false,
+  "totals": {
+    "baseline": {
+      "nees_exceeded": 192,
+      "nees_available": 1562,
+      "warnings": 1535,
+      "misses": 0
+    },
+    "candidate": {
+      "nees_exceeded": 408,
+      "nees_available": 1565,
+      "warnings": 1567,
+      "misses": 0
+    }
+  }
+}

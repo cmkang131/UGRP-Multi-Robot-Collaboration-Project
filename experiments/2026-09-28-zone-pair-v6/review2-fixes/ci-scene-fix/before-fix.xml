@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="1.063" timestamp="2026-09-28T08:55:40.812785+09:00" hostname="gangchangmin-ui-MacBookAir.local"><testcase classname="tests.test_zone_pair_v5" name="test_v5_prepare_copies_frozen_registration_without_physics_or_models[current_source_fixture-dev09]" time="0.367"><failure message="TypeError: 'tuple' object does not support item assignment">tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-pair-beamrel/.pytest_tmp/test_v5_prepare_copies_frozen_0')
+run = 'dev09', registration_kind = 'current_source_fixture'
+
+    @pytest.mark.parametrize('run', ['dev09', 'dev10'])
+    @pytest.mark.parametrize('registration_kind', ['historical_v5', 'registered_v5b', 'current_source_fixture'])
+    def test_v5_prepare_copies_frozen_registration_without_physics_or_models(tmp_path, run, registration_kind):
+        import subprocess
+        import sys
+        from scripts import run_zone_pair_dev as dev
+        code = '''
+    import sys, importlib.abc
+    class Forbidden(importlib.abc.MetaPathFinder):
+        def find_spec(self, fullname, path=None, target=None):
+            if fullname.split('.')[0] in {'mujoco','torch','tensorflow','openai','anthropic'}:
+                raise AssertionError('forbidden physics/model import: ' + fullname)
+    sys.meta_path.insert(0, Forbidden())
+    from scripts.run_zone_pair_dev import main
+    raise SystemExit(main(sys.argv[1:]))
+    '''
+        out = tmp_path / run
+        registration = dev.PREREG_V5 if registration_kind == 'historical_v5' else dev.PREREG_V5B
+        if registration_kind == 'current_source_fixture':
+            p = current_registration()
+            registration = tmp_path / 'synthetic-current-prereg.json'
+            registration.write_text(json.dumps(p))
+        result = subprocess.run([sys.executable, '-c', code, '--prereg', str(registration),
+                                 '--run-id', run, '--output', str(out)], cwd=dev.ROOT, capture_output=True, text=True)
+        if registration_kind in ('historical_v5', 'registered_v5b'):
+            assert result.returncode != 0 and 'scene contract/hash mismatch' in result.stderr, result.stderr
+            assert not out.exists()
+            return
+        assert result.returncode == 0, result.stderr
+        m = json.loads((out / 'manifest.json').read_text())
+        assert m['state'] == 'prepared_not_executed' and m['applied'] is None and m['model_calls'] == 0
+        assert m['physical_success'] is None
+        assert (out / 'prereg.json').read_bytes() == registration.read_bytes()
+        assert not (out / 'eval_only/trace.jsonl').exists()
+        p = json.loads(registration.read_text())
+        case = next(r for r in p['runs'] if r['id'] == run)
+        from scripts.zone_pair_dev_runtime import make_scene
+&gt;       scene = make_scene({'map': p['environment']['map'], 'seed': case['seed'], 'goal': {'B': {'cyan': 1}},
+                            'team_cargo': [{'item_id': 'cargoX', 'kind': 'long_beam', 'pose': case['setup_beam_xyyaw']}]})
+
+tests/test_zone_pair_v5.py:364: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+scripts/zone_pair_dev_runtime.py:226: in make_scene
+    scene = scene_cls.from_tagged_cargo(spec['map'], spec['seed'], cargo=spec['team_cargo'],
+sim/zone_tagged_cargo_scene.py:31: in from_tagged_cargo
+    return cls(selected, base_dir)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+sim/session_scenes.py:73: in __init__
+    self._resolve()
+sim/zone_dock_scene.py:21: in _resolve
+    super()._resolve()
+sim/zone_tagged_cargo_scene.py:37: in _resolve
+    self.config['cargo_set'] = {'schema': CARGO_SET_SCHEMA, 'catalogue_sha256': catalogue_record()['sha256'],
+                                                                                ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def alternate():
+     value=copy.deepcopy(original())
+     center=value['kinds']['tri_frame']['parts'][0]['center']
+&gt;    center[1]=math.nextafter(center[1], math.inf)
+     ^^^^^^^^^
+E    TypeError: 'tuple' object does not support item assignment
+
+/private/tmp/v6-ci-platform-repro.py:14: TypeError</failure></testcase><testcase classname="tests.test_zone_pair_v5" name="test_v5_prepare_copies_frozen_registration_without_physics_or_models[current_source_fixture-dev10]" time="0.241"><failure message="TypeError: 'tuple' object does not support item assignment">tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-pair-beamrel/.pytest_tmp/test_v5_prepare_copies_frozen_1')
+run = 'dev10', registration_kind = 'current_source_fixture'
+
+    @pytest.mark.parametrize('run', ['dev09', 'dev10'])
+    @pytest.mark.parametrize('registration_kind', ['historical_v5', 'registered_v5b', 'current_source_fixture'])
+    def test_v5_prepare_copies_frozen_registration_without_physics_or_models(tmp_path, run, registration_kind):
+        import subprocess
+        import sys
+        from scripts import run_zone_pair_dev as dev
+        code = '''
+    import sys, importlib.abc
+    class Forbidden(importlib.abc.MetaPathFinder):
+        def find_spec(self, fullname, path=None, target=None):
+            if fullname.split('.')[0] in {'mujoco','torch','tensorflow','openai','anthropic'}:
+                raise AssertionError('forbidden physics/model import: ' + fullname)
+    sys.meta_path.insert(0, Forbidden())
+    from scripts.run_zone_pair_dev import main
+    raise SystemExit(main(sys.argv[1:]))
+    '''
+        out = tmp_path / run
+        registration = dev.PREREG_V5 if registration_kind == 'historical_v5' else dev.PREREG_V5B
+        if registration_kind == 'current_source_fixture':
+            p = current_registration()
+            registration = tmp_path / 'synthetic-current-prereg.json'
+            registration.write_text(json.dumps(p))
+        result = subprocess.run([sys.executable, '-c', code, '--prereg', str(registration),
+                                 '--run-id', run, '--output', str(out)], cwd=dev.ROOT, capture_output=True, text=True)
+        if registration_kind in ('historical_v5', 'registered_v5b'):
+            assert result.returncode != 0 and 'scene contract/hash mismatch' in result.stderr, result.stderr
+            assert not out.exists()
+            return
+        assert result.returncode == 0, result.stderr
+        m = json.loads((out / 'manifest.json').read_text())
+        assert m['state'] == 'prepared_not_executed' and m['applied'] is None and m['model_calls'] == 0
+        assert m['physical_success'] is None
+        assert (out / 'prereg.json').read_bytes() == registration.read_bytes()
+        assert not (out / 'eval_only/trace.jsonl').exists()
+        p = json.loads(registration.read_text())
+        case = next(r for r in p['runs'] if r['id'] == run)
+        from scripts.zone_pair_dev_runtime import make_scene
+&gt;       scene = make_scene({'map': p['environment']['map'], 'seed': case['seed'], 'goal': {'B': {'cyan': 1}},
+                            'team_cargo': [{'item_id': 'cargoX', 'kind': 'long_beam', 'pose': case['setup_beam_xyyaw']}]})
+
+tests/test_zone_pair_v5.py:364: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+scripts/zone_pair_dev_runtime.py:226: in make_scene
+    scene = scene_cls.from_tagged_cargo(spec['map'], spec['seed'], cargo=spec['team_cargo'],
+sim/zone_tagged_cargo_scene.py:31: in from_tagged_cargo
+    return cls(selected, base_dir)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+sim/session_scenes.py:73: in __init__
+    self._resolve()
+sim/zone_dock_scene.py:21: in _resolve
+    super()._resolve()
+sim/zone_tagged_cargo_scene.py:37: in _resolve
+    self.config['cargo_set'] = {'schema': CARGO_SET_SCHEMA, 'catalogue_sha256': catalogue_record()['sha256'],
+                                                                                ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def alternate():
+     value=copy.deepcopy(original())
+     center=value['kinds']['tri_frame']['parts'][0]['center']
+&gt;    center[1]=math.nextafter(center[1], math.inf)
+     ^^^^^^^^^
+E    TypeError: 'tuple' object does not support item assignment
+
+/private/tmp/v6-ci-platform-repro.py:14: TypeError</failure></testcase></testsuite></testsuites>

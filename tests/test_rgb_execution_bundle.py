@@ -33,6 +33,39 @@ def test_retired_adapter_is_readable_but_cannot_run_as_current_source():
     assert old["status"] == "experimental_unqualified"
     with pytest.raises(ValueError, match="original source checkout"):
         contract.load_bundle("rgb-adapter-legacy-v1")
+    previous, _ = contract.load_bundle("rgb-standard-dispatch-v2", require_runnable=False)
+    assert previous["id"] == "rgb-standard-dispatch-v2"
+    with pytest.raises(ValueError, match="original source checkout"):
+        contract.load_bundle("rgb-standard-dispatch-v2")
+    prior_candidate, _ = contract.load_bundle("rgb-standard-dispatch-v3", require_runnable=False)
+    assert prior_candidate["id"] == "rgb-standard-dispatch-v3"
+    with pytest.raises(ValueError, match="original source checkout"):
+        contract.load_bundle("rgb-standard-dispatch-v3")
+
+    with pytest.raises(ValueError, match="original source checkout"):
+        contract.load_bundle("rgb-standard-dispatch-v4")
+    assert contract.load_bundle("rgb-standard-dispatch-v4", require_runnable=False)[0]["id"] == "rgb-standard-dispatch-v4"
+
+def test_current_bundle_records_dispatch_defaults_without_success_claim():
+    current, _ = contract.load_bundle(contract.RUNNABLE_ID)
+    assert current["parent_bundle_id"] == "rgb-standard-dispatch-v62"
+    assert current["parent_bundle"] == current["parent_bundle_id"]
+    assert current["id"] == "rgb-standard-dispatch-v63"
+    assert "hue<=35" in current["controller_policy"]["dynamic_coordination"]["regrasp_binding"]
+    assert "coarse-ready" in current["controller_policy"]["dynamic_coordination"]["regrasp_coarse_anchor"]
+    assert current["map_goto"]["flag"] == "--navigation planned"
+    assert current["map_goto"]["default"] == "authored"
+    assert "continue_others" in current["controller_policy"]["dynamic_coordination"]["recovery"]
+    assert "8 chunks of 5" in current["controller_policy"]["dynamic_coordination"]["recovery"]
+    assert "--rolling-view-recovery" in current["realtime_dispatch"]["rolling_active_view_recovery"]
+    assert current["realtime_dispatch"]["option"] == "--realtime-control"
+    assert "16px" in current["controller_policy"]["paired_coarse_approach"]
+    assert "--coarse-concurrent-alignment" in current["controller_policy"]["paired_coarse_concurrent_alignment"]
+    assert "1.3s" in current["controller_policy"]["paired_fine_rgb_reobservation"]
+    assert "two" in current["controller_policy"]["paired_fine_rgb_reobservation"]
+    assert current["controller_policy"]["local_dispatch_defaults"]["route_overlap"] == "auto"
+    assert current["controller_policy"]["local_dispatch_defaults"]["efficient_capture"] is True
+    assert current["status"] == "experimental_unqualified"
 
 
 def isolated_registry(tmp_path):
@@ -55,6 +88,8 @@ def test_required_source_set_and_bytes_fail_closed(tmp_path):
     path = root / contract.REGISTRY / (contract.RUNNABLE_ID + ".json")
     removed = "harness/camera_varied_start_student.py"
     assert removed in contract.source_closure()
+    assert {'scripts/carry_input_worker.py', 'scripts/pair_carry_act_worker.py',
+            'harness/carry_input_act.py', 'harness/pair_carry_act.py'} <= contract.source_closure()
     assert len(contract.source_closure()) >= 129
     value["source_files_sha256"].pop(removed)
     path.write_text(json.dumps(value))

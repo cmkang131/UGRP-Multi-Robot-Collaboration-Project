@@ -1,0 +1,121 @@
+{
+  "raw_path": "/Users/changmin/projects/ugrp/outputs/final-env-v84-k1-20261001/mutations.json",
+  "raw_sha256": "fb6a17616bae3de5a023b8cab377571dd358883f782c789a52ea5102452e06c1",
+  "killed": 16,
+  "total": 16,
+  "all_sources_restored": true,
+  "cases": [
+    {
+      "mutation": "k1-substring-regression",
+      "path": "tests/test_zone_final_env.py",
+      "test": "tests/test_review_e2e_batch_k.py::test_pr338_preserves_existing_ci_collection_check",
+      "pytest_exit_code": 1,
+      "killed": true
+    },
+    {
+      "mutation": "k1-remove-legacy-suite",
+      "path": "scripts/run_ci_tests.py",
+      "test": "tests/test_review_e2e_batch_k.py::test_pr338_ci_collects_both_suites_and_counterexample_once",
+      "pytest_exit_code": 1,
+      "killed": true
+    },
+    {
+      "mutation": "k1-remove-runnable-suite",
+      "path": "scripts/run_ci_tests.py",
+      "test": "tests/test_review_e2e_batch_k.py::test_pr338_ci_collects_both_suites_and_counterexample_once",
+      "pytest_exit_code": 1,
+      "killed": true
+    },
+    {
+      "mutation": "k1-remove-counterexample",
+      "path": "scripts/run_ci_tests.py",
+      "test": "tests/test_review_e2e_batch_k.py::test_pr338_ci_collects_both_suites_and_counterexample_once",
+      "pytest_exit_code": 1,
+      "killed": true
+    },
+    {
+      "mutation": "k1-disable-collection-check",
+      "path": "tests/test_zone_final_env.py",
+      "test": "tests/test_review_e2e_batch_k.py::test_pr338_collection_check_uses_expanded_exact_paths",
+      "pytest_exit_code": 1,
+      "killed": true
+    },
+    {
+      "mutation": "map-file-hash",
+      "path": "harness/zone_final_environment.py",
+      "test": "test_changed_map_parent_or_calibration_contract_is_refused[file]",
+      "pytest_exit_code": 1,
+      "killed": true
+    },
+    {
+      "mutation": "measured-calibration-hash",
+      "path": "harness/zone_final_environment.py",
+      "test": "test_measurement_hash_gate_precedes_worker_or_pf",
+      "pytest_exit_code": 1,
+      "killed": true
+    },
+    {
+      "mutation": "runnable-registration",
+      "path": "harness/zone_final_environment.py",
+      "test": "test_registered_maps_resolve_and_new_bundle_is_runnable_without_sealing",
+      "pytest_exit_code": 1,
+      "killed": true
+    },
+    {
+      "mutation": "cap-admission",
+      "path": "scripts/run_final_environment_checks.py",
+      "test": "test_invalid_cap_is_rejected_before_backend",
+      "pytest_exit_code": 1,
+      "killed": true
+    },
+    {
+      "mutation": "owned-cleanup",
+      "path": "scripts/run_final_environment_checks.py",
+      "test": "test_frame_failure_retains_host_error_and_closes_owned_world",
+      "pytest_exit_code": 1,
+      "killed": true
+    },
+    {
+      "mutation": "fresh-cohort-output",
+      "path": "scripts/run_final_environment_checks.py",
+      "test": "test_cli_creates_fresh_parent_and_preserves_case_denominator",
+      "pytest_exit_code": 1,
+      "killed": true
+    },
+    {
+      "mutation": "catalog-registration",
+      "path": "sim/workflow_manager.py",
+      "test": "test_workflow_is_discoverable_and_plan_does_not_execute",
+      "pytest_exit_code": 1,
+      "killed": true
+    },
+    {
+      "mutation": "physics-cap",
+      "path": "sim/final_environment_checks.py",
+      "test": "test_real_backend_advance_rejects_deadline_with_fake_world",
+      "pytest_exit_code": 1,
+      "killed": true
+    },
+    {
+      "mutation": "constructor-step-cap",
+      "path": "sim/zone_final_v3_scene.py",
+      "test": "test_world_step_cap_covers_constructor_and_can_advance_to_check_deadline",
+      "pytest_exit_code": 1,
+      "killed": true
+    },
+    {
+      "mutation": "v3-world-connection",
+      "path": "sim/zone_final_v3_scene.py",
+      "test": "test_world_factory_applies_final_scene_contact_and_v3_robot_hooks",
+      "pytest_exit_code": 1,
+      "killed": true
+    },
+    {
+      "mutation": "unmeasured-posture-fail-closed",
+      "path": "harness/vision_pose_source_final.py",
+      "test": "test_final_provider_only_consumes_own_rgb_after_delay_and_uses_fixed_v3_camera",
+      "pytest_exit_code": 1,
+      "killed": true
+    }
+  ]
+}

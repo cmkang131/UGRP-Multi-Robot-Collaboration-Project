@@ -1,0 +1,74 @@
+{
+  "branch": "kiro/zone-study-integration",
+  "pr": 229,
+  "source_state": "coordinator merge workspace; this task edited files only, no git writes or commits",
+  "base_from_user": "38f6d7ec",
+  "merged_core_from_user": "500fa4bb",
+  "incoming_pr": 235,
+  "physics_runs": 0,
+  "external_model_calls": 0,
+  "new_provider_enabled": false,
+  "provider": "tags_temporary",
+  "perception_delay_s": 0.16,
+  "research_result": false,
+  "workflow_union_unique_ids": 36,
+  "test_results": [
+    {
+      "suite": "regression.txt",
+      "passed": 1050,
+      "deselected": 3,
+      "note": "before final reset/provider lifecycle additions; changed paths rechecked by following suites"
+    },
+    {
+      "suite": "adapter-regression.txt",
+      "passed": 378,
+      "note": "includes final pose reset facade plus core real-adapter transport regressions"
+    },
+    {
+      "suite": "final-integration.txt",
+      "passed": 110,
+      "note": "final source; pair, camera, multiple calls, delay, lifecycle, manifest, Scene setup"
+    }
+  ],
+  "not_verified": [
+    "2 physical tests deliberately excluded",
+    "process cleanup check cannot run ps in this sandbox; initial attempt PermissionError; excluded from broad rerun",
+    "physical pair approach/grasp/carry/release and abort",
+    "fixed perception delay under real motion and readiness clocks",
+    "real model responses and paid resource accounting of a new cohort",
+    "zero-tag provider replacement and tag-PF relocalization adaptation"
+  ],
+  "source_files_sha256": {
+    "configs/simulation_workflows.json": "68749a9016aa1dd724c66ba05fa227024d71c2fae4d03addc9753bca964bc6be",
+    "experiments/README.md": "53ab68814db9dacbbffbe0460861e1ff6cad06e8f2885b8b6b79e8fe7817a0fb",
+    "scripts/run_ci_tests.py": "77dda2f12709b1184034d3e42e792f04c8b60621d744cafcbed3938f8732ffff",
+    "tests/test_simulation_workflow_manager.py": "510817642f29550b1bb036eb6f31861ca000f4ac2377b8d0275227160327efaf",
+    "tests/test_zone_own_executor.py": "87e23e0a971d99a226cd92ff6c91ce858527965f4b8a22e453d5dbfaa26f5119",
+    "harness/zone_study_integration.py": "505a52fe05907831464bc052776f122344511dc7d2bddd4ff340422a14f31651",
+    "harness/zone_study_pose_delay.py": "0d83e90fd8ac00d75f062896b7e2e6bf4d1a6031660a024bee57aed3a1d5f7c3",
+    "scripts/run_zone_study_integration.py": "596a85590a2b463cdd7b63cf2654f5acc01dfa523f38ef3001a51892df387316",
+    "configs/zone_study_integration/pose_providers.json": "6bd6c42ac46811a5b6f5b89800a849b8ba5eefe67344437e4f1d0c10a8847758",
+    "configs/zone_study_integration/i2_pair_long_beam.json": "e6282a18068bc8633c0193ddbfc7f343ea8232869cdf242f31543242e95a401f",
+    "configs/zone_study_integration/pair_dev_DRAFT.json": "749203b424d5cfac3aa1d0ab993d72173e5cda2c335e7d4809d6647ed230a01a",
+    "tests/test_zone_study_integration.py": "5fe94cd22e8aa2b43d34ff101da18031c4ddfca5d13b912c7faabf9b55fd09e4",
+    "tests/test_zone_study_integration_seams.py": "a20a543a44c78c185931a18307e2ad0561ec0c052d425bcd21c141a9fe9d3a21",
+    "tests/test_zone_study_integration_pair.py": "64ef64c9d2efb1d7e822f141955f0a086dcfc6f2538ef943e4b2061d487d4b73",
+    "docs/zone_study_integration.md": "15632a963e6412d9dc15ffe8aa412c1cf1ea03cc10f1044edd2766d6653d2aee",
+    "docs/zone_study_scenarios.md": "8a330debf4f3f95f91796a0c191b8cfdc8489eac6f4d3b4d195618996ea61d65",
+    "experiments/2026-09-26-zone-study-integration/README.md": "ee3719f79c54f373baf8947d71a3d74168486e2f561769939fcbb1b3ef2cd1e7",
+    "configs/zone_study_scenarios/s1_normal_mixed.json": "97709cbd901c15d2f45fd996659b836763ae9f197e15109e2fdaf12fb16f730b",
+    "configs/zone_study_scenarios/s2_unmapped_blockage.json": "7a08d478d2adf91ed9da60f48cd55bef7aa10fc1c8988aa23531b84540d50632",
+    "configs/zone_study_scenarios/s3_late_rendezvous.json": "db261ce07a558947fcece3158b8fc7c3d120dd0b5fbd7262d8071b054c871c0f",
+    "configs/zone_study_scenarios/s4_narrow_door_standoff.json": "a108895c7740186ad784e321325f4b7e885c8c4568e4972e49613fcfc953e595",
+    "configs/zone_study_scenarios/s5_moved_dropped_item.json": "6720b8f03fb480ee21e8667fa5c1483924a4acb4ca20d3c1b1b7b11d54fbdd80",
+    "configs/zone_study_scenarios/s6_novel_relation.json": "2c165d0971717ca8cc27d9558bc1458740edcc45985882f2ba458a9a402ba22b"
+  },
+  "evidence_sha256": {
+    "adapter-regression.txt": "1525fe615d8f9cd11acaae4f00ef0f430a933e7b56df742e16c80b289c3f162c",
+    "final-integration.txt": "ed5bd560c0ee0091375678aaa2eeb30ed372c3119842d8373a4af9521d5581e9",
+    "regression.txt": "60a8810e044eb9357120d3febdb0859a5dd7a0805564b9dcdc59388fca86ab67"
+  },
+  "conflict_markers": 0,
+  "conflict_scan": "rg --hidden --no-ignore across worktree text, only .git excluded",
+  "pytest_tmp_removed": true
+}

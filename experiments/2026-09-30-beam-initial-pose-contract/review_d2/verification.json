@@ -1,0 +1,128 @@
+{
+  "scope": "static and fake regression, no physics/render/model/network calls",
+  "reviewed_sha": "823ca2ced2fb65e771ce2be9c08a2864e08db804",
+  "merged_main_parent": "b10907c5f2c84f2712030f48fb38061fd4f51281",
+  "merge_commit": "d2ac7437905dc4b9d2c8be6725e951e218d22e3a",
+  "raw_directory": "/Users/changmin/projects/ugrp/outputs/beam-initial-pose-contract/review-d2-20260930-b",
+  "suite_counts": {
+    "tests.test_beam_initial_pose_plan": 64,
+    "tests.test_pair_passage_plan": 44,
+    "tests.test_zone_pair_registered_source": 22,
+    "tests.test_zone_study_source_pinning": 33,
+    "tests.test_zone_pair_executor": 1
+  },
+  "related_passed": 164,
+  "geometry_suite_cases": 64,
+  "mutants_detected": 9,
+  "all_fixed_cases_detect_removal": 18,
+  "source_pinning_failures": 0,
+  "protected_files_unchanged": 44,
+  "initial_attempt": {
+    "raw_directory": "/Users/changmin/projects/ugrp/outputs/beam-initial-pose-contract/review-d2-20260930-a",
+    "passed": 161,
+    "failed": 3,
+    "reason": "Test oracle SEARCH vertices started at a different corner; fixed test vertex ordering, no production change."
+  },
+  "artifacts": {
+    "after-arms-both.txt": {
+      "raw_path": "/Users/changmin/projects/ugrp/outputs/beam-initial-pose-contract/review-d2-20260930-b/after-arms-both.txt",
+      "raw_sha256": "193aa96bbe4a6ae7af3eb6e6a649204df9aefd3a25943014840938a9b044c445",
+      "git_sha256": "193aa96bbe4a6ae7af3eb6e6a649204df9aefd3a25943014840938a9b044c445",
+      "normalization": "strip line-end whitespace only"
+    },
+    "after-arms-end_neg.txt": {
+      "raw_path": "/Users/changmin/projects/ugrp/outputs/beam-initial-pose-contract/review-d2-20260930-b/after-arms-end_neg.txt",
+      "raw_sha256": "83d1b825bda31bf0638bc56860b4bf570de97ae99e6df0a349bfd4b9bc723856",
+      "git_sha256": "83d1b825bda31bf0638bc56860b4bf570de97ae99e6df0a349bfd4b9bc723856",
+      "normalization": "strip line-end whitespace only"
+    },
+    "after-arms-end_pos.txt": {
+      "raw_path": "/Users/changmin/projects/ugrp/outputs/beam-initial-pose-contract/review-d2-20260930-b/after-arms-end_pos.txt",
+      "raw_sha256": "dbc422a2c03a5489a7dd4bc6524d635bd3cd53963a7158146c60e5a313fffbfe",
+      "git_sha256": "dbc422a2c03a5489a7dd4bc6524d635bd3cd53963a7158146c60e5a313fffbfe",
+      "normalization": "strip line-end whitespace only"
+    },
+    "after-carriers-both.txt": {
+      "raw_path": "/Users/changmin/projects/ugrp/outputs/beam-initial-pose-contract/review-d2-20260930-b/after-carriers-both.txt",
+      "raw_sha256": "8f169b57a9cad2b5819bb84949148e9044fb50f85fb05200a3e8067e89e70721",
+      "git_sha256": "8f169b57a9cad2b5819bb84949148e9044fb50f85fb05200a3e8067e89e70721",
+      "normalization": "strip line-end whitespace only"
+    },
+    "after-carriers-end_neg.txt": {
+      "raw_path": "/Users/changmin/projects/ugrp/outputs/beam-initial-pose-contract/review-d2-20260930-b/after-carriers-end_neg.txt",
+      "raw_sha256": "c7a8c11e03b51219b67c3a9576499149891088ce5012798d0d946cbe0976fc43",
+      "git_sha256": "c7a8c11e03b51219b67c3a9576499149891088ce5012798d0d946cbe0976fc43",
+      "normalization": "strip line-end whitespace only"
+    },
+    "after-carriers-end_pos.txt": {
+      "raw_path": "/Users/changmin/projects/ugrp/outputs/beam-initial-pose-contract/review-d2-20260930-b/after-carriers-end_pos.txt",
+      "raw_sha256": "aaea86a723e809f9e540d189cb90cd660e70b81e52f7616ce83e5e0301484011",
+      "git_sha256": "aaea86a723e809f9e540d189cb90cd660e70b81e52f7616ce83e5e0301484011",
+      "normalization": "strip line-end whitespace only"
+    },
+    "after-chassis-both.txt": {
+      "raw_path": "/Users/changmin/projects/ugrp/outputs/beam-initial-pose-contract/review-d2-20260930-b/after-chassis-both.txt",
+      "raw_sha256": "d62804ffb7eb57bc0536b718843bd224d07b138e997ee37fbaca697c090054ed",
+      "git_sha256": "d62804ffb7eb57bc0536b718843bd224d07b138e997ee37fbaca697c090054ed",
+      "normalization": "strip line-end whitespace only"
+    },
+    "after-chassis-end_neg.txt": {
+      "raw_path": "/Users/changmin/projects/ugrp/outputs/beam-initial-pose-contract/review-d2-20260930-b/after-chassis-end_neg.txt",
+      "raw_sha256": "d62804ffb7eb57bc0536b718843bd224d07b138e997ee37fbaca697c090054ed",
+      "git_sha256": "d62804ffb7eb57bc0536b718843bd224d07b138e997ee37fbaca697c090054ed",
+      "normalization": "strip line-end whitespace only"
+    },
+    "after-chassis-end_pos.txt": {
+      "raw_path": "/Users/changmin/projects/ugrp/outputs/beam-initial-pose-contract/review-d2-20260930-b/after-chassis-end_pos.txt",
+      "raw_sha256": "b3ffbf4db7e1a0e58cc57cadb217478c67b78486e027f5e65d20ca2a096bf47f",
+      "git_sha256": "b3ffbf4db7e1a0e58cc57cadb217478c67b78486e027f5e65d20ca2a096bf47f",
+      "normalization": "strip line-end whitespace only"
+    },
+    "after-related.txt": {
+      "raw_path": "/Users/changmin/projects/ugrp/outputs/beam-initial-pose-contract/review-d2-20260930-b/after-related.txt",
+      "raw_sha256": "2d7efca17cfc83897e1a9e35d546aa5d0340cdc7cb0d7cf69899472ed226a99e",
+      "git_sha256": "2d7efca17cfc83897e1a9e35d546aa5d0340cdc7cb0d7cf69899472ed226a99e",
+      "normalization": "strip line-end whitespace only"
+    },
+    "before-arms-both.txt": {
+      "raw_path": "/Users/changmin/projects/ugrp/outputs/beam-initial-pose-contract/review-d2-20260930-b/before-arms-both.txt",
+      "raw_sha256": "c71aa2c698f24cb1631f60db83e4e1a2b5a624fdf87f9dd6c2459217a282604f",
+      "git_sha256": "c71aa2c698f24cb1631f60db83e4e1a2b5a624fdf87f9dd6c2459217a282604f",
+      "normalization": "strip line-end whitespace only"
+    },
+    "before-carriers-both.txt": {
+      "raw_path": "/Users/changmin/projects/ugrp/outputs/beam-initial-pose-contract/review-d2-20260930-b/before-carriers-both.txt",
+      "raw_sha256": "913b3086d3f21244f7ba338235ecac4aae6f5787cc6aa1d7be5083dd27b3299d",
+      "git_sha256": "913b3086d3f21244f7ba338235ecac4aae6f5787cc6aa1d7be5083dd27b3299d",
+      "normalization": "strip line-end whitespace only"
+    },
+    "before-normal.txt": {
+      "raw_path": "/Users/changmin/projects/ugrp/outputs/beam-initial-pose-contract/review-d2-20260930-b/before-normal.txt",
+      "raw_sha256": "284470bfc2eba17674f0691dbf5fa802942cbe5248fe5d7515b025397bed54c2",
+      "git_sha256": "284470bfc2eba17674f0691dbf5fa802942cbe5248fe5d7515b025397bed54c2",
+      "normalization": "strip line-end whitespace only"
+    },
+    "initial-fixture-order.txt": {
+      "raw_path": "/Users/changmin/projects/ugrp/outputs/beam-initial-pose-contract/review-d2-20260930-a/after-related.txt",
+      "raw_sha256": "33ba332f91cc9df6acc02791f6fb0076a2b3d9b982ceebd1358c19527136f1d3",
+      "git_sha256": "e2c7ec170e00ba59ef9c04ad1c7f58ca58ce3828968ea16fb56a851e67dae01c",
+      "normalization": "strip line-end whitespace only"
+    },
+    "results.json": {
+      "raw_path": "/Users/changmin/projects/ugrp/outputs/beam-initial-pose-contract/review-d2-20260930-b/results.json",
+      "sha256": "a9a7549bb401b39b95ac9c54730ec6df65cc7f31e75c70233c9744aa107ee0a6"
+    },
+    "summary.json": {
+      "raw_path": "/Users/changmin/projects/ugrp/outputs/beam-initial-pose-contract/review-d2-20260930-b/summary.json",
+      "sha256": "aba9a265f26d963b013de02d8cffe7ea4af440f6236508870564eee64b974237"
+    },
+    "lock.json": {
+      "raw_path": "/Users/changmin/projects/ugrp/outputs/beam-initial-pose-contract/review-d2-20260930-b/lock.json",
+      "sha256": "61cc0bd112d6a47360557856e47288da018c2db8c66ee682f71d91388884b957"
+    },
+    "released.json": {
+      "raw_path": "/Users/changmin/projects/ugrp/outputs/beam-initial-pose-contract/review-d2-20260930-b/released.json",
+      "sha256": "84e80f0e168427ad2ec0fd5ce07a6353bbd718b373e723f5d60d85498427d249"
+    }
+  }
+}

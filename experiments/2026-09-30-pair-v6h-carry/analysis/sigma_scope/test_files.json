@@ -1,0 +1,60 @@
+{
+  "search": "zone_pair_geometry|zone_pair_v6_policy|zone_pair_door_relax|zone_pair_guards|zone_pair_executor|zone_own_guards",
+  "primary": [
+    "tests/test_zone_pair_v6h.py",
+    "tests/test_zone_pair_registered_source.py"
+  ],
+  "related": [
+    "tests/test_door_relax_envelope.py",
+    "tests/test_owncam_bootstrap_v6b.py",
+    "tests/test_pair_passage_plan.py",
+    "tests/test_pair_stage_probe.py",
+    "tests/test_pose_provider_boundary.py",
+    "tests/test_pose_provider_contract.py",
+    "tests/test_zone_own_executor.py",
+    "tests/test_zone_own_executor_boundaries.py",
+    "tests/test_zone_own_executor_guards.py",
+    "tests/test_zone_own_executor_review3.py",
+    "tests/test_zone_own_executor_sweep_start.py",
+    "tests/test_zone_pair_admission.py",
+    "tests/test_zone_pair_dev.py",
+    "tests/test_zone_pair_door_relax.py",
+    "tests/test_zone_pair_executor.py",
+    "tests/test_zone_pair_grasp.py",
+    "tests/test_zone_pair_preclose.py",
+    "tests/test_zone_pair_provider_init.py",
+    "tests/test_zone_pair_review.py",
+    "tests/test_zone_pair_review2.py",
+    "tests/test_zone_pair_review3.py",
+    "tests/test_zone_pair_review4.py",
+    "tests/test_zone_pair_review5.py",
+    "tests/test_zone_pair_review6.py",
+    "tests/test_zone_pair_review7.py",
+    "tests/test_zone_pair_tag_boundary_matrix.py",
+    "tests/test_zone_pair_v5.py",
+    "tests/test_zone_pair_v5h.py",
+    "tests/test_zone_pair_v6.py",
+    "tests/test_zone_pair_v6_final_review.py",
+    "tests/test_zone_pair_v6_review1.py",
+    "tests/test_zone_pair_v6_review2.py",
+    "tests/test_zone_pair_v6_review3.py",
+    "tests/test_zone_pair_v6_verification.py",
+    "tests/test_zone_pair_v6c.py",
+    "tests/test_zone_pair_v6d.py",
+    "tests/test_zone_pair_v6e.py",
+    "tests/test_zone_pair_v6e_yaw.py",
+    "tests/test_zone_pair_v6f.py",
+    "tests/test_zone_pair_v6g.py",
+    "tests/test_zone_start_dock.py",
+    "tests/test_zone_study_integration_pair.py",
+    "tests/test_zone_study_pair_delay.py",
+    "tests/test_zone_study_source_pinning.py"
+  ],
+  "excluded": {
+    "tests/test_render_pair_probe_video.py": "only imports unchanged gate constants; media export outside this controller change",
+    "tests/test_visual_arm_v3.py": "kinematic MuJoCo model checks; arm model unchanged and no physics requested"
+  },
+  "no_physics": [
+    "tests/test_zone_own_executor.py"
+  ]
+}

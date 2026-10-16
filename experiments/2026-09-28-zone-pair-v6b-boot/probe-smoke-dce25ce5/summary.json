@@ -1,0 +1,43 @@
+{
+ "schema": "ugrp.zone_pair_bootstrap_probe.v1",
+ "argv": [
+  "--output",
+  "/Users/changmin/projects/ugrp/outputs/zone-pair-v6b-boot-probe-dce25ce5/smoke",
+  "--seeds",
+  "911",
+  "--docks",
+  "seeded",
+  "--perturb",
+  "0,0,0",
+  "--policy",
+  "b-boot"
+ ],
+ "cases": [
+  {
+   "case": {
+    "seed": 911,
+    "docks": "seeded",
+    "perturb": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "policy": "b-boot",
+    "max_sim_s": 25.0
+   },
+   "r1": {
+    "outcome": "arm_raise_guard_pass",
+    "time_to_result_s": 1.3,
+    "std_xy_m": 0.1293,
+    "job_outcome": null
+   },
+   "r2": {
+    "outcome": "arm_raise_guard_pass",
+    "time_to_result_s": 4.7,
+    "std_xy_m": 0.0795,
+    "job_outcome": null
+   },
+   "host_error": null
+  }
+ ]
+}

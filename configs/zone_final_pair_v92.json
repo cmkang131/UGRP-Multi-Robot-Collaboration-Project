@@ -1,0 +1,36 @@
+{
+  "schema": "ugrp.final_pair_loaded.v92",
+  "execution_bundle_id": "zone-final-pair-v92",
+  "status": "DRAFT_UNSEALED",
+  "workflow_id": "zone-final-pair-loaded-v92",
+  "workflow_version": "3.4.0",
+  "check": "calibration-loaded",
+  "maps": [
+    "zone_wide_two_doors_final_v3"
+  ],
+  "seed": 911,
+  "collection_role": "CALIBRATION_TRAINING",
+  "training_eligible": true,
+  "teacher_only": true,
+  "robot_model": "masterpi_v3",
+  "render_profile": "floor_light_v1",
+  "contact_profile": "cargo_noslip_v1",
+  "weld": "off",
+  "sensors": {
+    "ultrasonic_front": "off"
+  },
+  "sim_cap_s": 720.0,
+  "reset_cap_s": 5.0,
+  "schedule": {
+    "path": "configs/zone_final_pair_v92_schedule.json.gz",
+    "encoding": "gzip of UTF-8 JSON, indent=2, trailing LF",
+    "sha256": "b6ebf872ac1f47bb6f13c336ca49c74343ffe592c5cb1bbd0916449a6208bcbe",
+    "bytes": 5051841,
+    "archive_sha256": "47b0e1f3fc52ed94fb737e5b7a90c1f75035c74d198b8bcce3036890fc9d8b62",
+    "archive_bytes": 62247
+  },
+  "criterion": {
+    "path": "experiments/2026-10-03-v92-loaded-schedule/criterion_B_double_prime.json",
+    "sha256": "5f7d8905c49625a7125647eaf713575e4e659ca658274b8734fd2a4952da4d4a"
+  }
+}

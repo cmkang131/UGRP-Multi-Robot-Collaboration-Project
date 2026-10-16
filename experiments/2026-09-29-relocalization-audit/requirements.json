@@ -1,0 +1,160 @@
+{
+ "schema": "ugrp.relocalization_audit.requirements.v1",
+ "note": "derived from existing gates/constants; not measurements; no gate changed",
+ "gates": {
+  "GATE_LOADED": {
+   "enter_uncertain_above_xy_m": 0.07,
+   "enter_uncertain_above_yaw_deg": 3.0,
+   "exit_at_or_below_xy_m": 0.06,
+   "exit_at_or_below_yaw_deg": 2.5,
+   "enter_dwell_s": 0.6,
+   "exit_dwell_s": 0.4,
+   "source": "harness/zone_own_guards.py"
+  },
+  "GATE_UNLOADED": {
+   "enter_uncertain_above_xy_m": 0.08,
+   "enter_uncertain_above_yaw_deg": 5.73,
+   "exit_at_or_below_xy_m": 0.05,
+   "exit_at_or_below_yaw_deg": 3.44
+  },
+  "M1_LIMITS": {
+   "nav_unloaded": {
+    "max_std_xy_m": 0.08,
+    "max_std_yaw_deg": 5.73,
+    "max_since_look_s": null
+   },
+   "nav_loaded": {
+    "max_std_xy_m": 0.07,
+    "max_std_yaw_deg": 3.0,
+    "max_since_look_s": null
+   },
+   "release": {
+    "max_std_xy_m": 0.05,
+    "max_std_yaw_deg": 2.01,
+    "max_since_look_s": 15.0
+   },
+   "look_back": {
+    "max_std_xy_m": 0.035,
+    "max_std_yaw_deg": 2.01,
+    "max_since_look_s": 3.0
+   }
+  },
+  "sweep_guard": {
+   "BASE_MARGIN_m": 0.02,
+   "BODY_COVERAGE_RESIDUAL_m": 0.015,
+   "K_SIGMA": 2.0,
+   "formula": "margin = 0.02 + 0.015 + 2*sigma_xy + 2*sigma_yaw*lever",
+   "chassis_x_m": [
+    -0.15,
+    0.1
+   ],
+   "chassis_half_y_m": 0.09
+  },
+  "door": {
+   "width_m": 0.5,
+   "loaded_envelope_y_m": [
+    -0.15,
+    0.15
+   ],
+   "align_max_m": 0.15,
+   "align_max_rad": 0.2,
+   "align_s": 6.0
+  },
+  "carry_end_error_m": 0.1,
+  "carry_leg_error_m": 0.1,
+  "setdown": {
+   "max_shift_m": 0.05,
+   "max_tilt_deg": 3.0,
+   "max_rest_height_m": 0.005
+  }
+ },
+ "door_pair_chassis_budget": {
+  "assumptions": "path offset 0.02, tracking 0.010, map/body 0.005 (gates_v4.md new-design budgets, not measured)",
+  "rows": [
+   {
+    "yaw_deg": 0.0,
+    "chassis_half_y_m": 0.09,
+    "lateral_budget_m": 0.125
+   },
+   {
+    "yaw_deg": 1.5,
+    "chassis_half_y_m": 0.0939,
+    "lateral_budget_m": 0.1211
+   },
+   {
+    "yaw_deg": 3.0,
+    "chassis_half_y_m": 0.0977,
+    "lateral_budget_m": 0.1173
+   }
+  ]
+ },
+ "door_yaw_drift_over_L1_m": {
+  "1.0deg": 0.0148,
+  "1.5deg": 0.0223,
+  "3.0deg": 0.0445
+ },
+ "sweep_guard_sigma_xy_limit_at_door_m": {
+  "clearance_m": 0.16,
+  "lever_m": 0.1749,
+  "sigma_yaw_1.5deg": 0.0579,
+  "sigma_yaw_3.0deg": 0.0533,
+  "note": "largest sigma_xy for which margin <= side clearance; the sweep guard covers look sweeps and back-offs, not driving"
+ },
+ "per_leg_end_error_m_from_v6c_diag": {
+  "values": {
+   "L0": 0.0085,
+   "L1": 0.0419,
+   "L2": 0.0371,
+   "L6": 0.0271,
+   "L7": 0.0274
+  },
+  "source": "experiments/2026-09-29-pair-chain-probe/README.md (v6c diagnostic patch, single legs)",
+  "residual_pose_error_allowed_after_fix_m": 0.0581,
+  "note": "if a leg adds up to its measured end error in the same direction, a fix must leave <= 0.10 - worst leg to hold 0.10 at that leg"
+ },
+ "zone_B_long_beam_landing": {
+  "zone_rect_cx_cy_hx_hy": [
+   4.6,
+   -2.1,
+   0.3,
+   0.7
+  ],
+  "beam_half_extents_m": [
+   0.3,
+   0.02
+  ],
+  "by_yaw": {
+   "0deg": {
+    "x_slack_m": 0.0,
+    "y_slack_m": 0.68,
+    "fits_at_center": true
+   },
+   "2deg": {
+    "x_slack_m": -0.0005,
+    "y_slack_m": 0.6695,
+    "fits_at_center": false
+   },
+   "5deg": {
+    "x_slack_m": -0.0006,
+    "y_slack_m": 0.6539,
+    "fits_at_center": false
+   },
+   "10deg": {
+    "x_slack_m": 0.0011,
+    "y_slack_m": 0.6282,
+    "fits_at_center": true
+   },
+   "45deg": {
+    "x_slack_m": 0.0737,
+    "y_slack_m": 0.4737,
+    "fits_at_center": true
+   },
+   "90deg": {
+    "x_slack_m": 0.28,
+    "y_slack_m": 0.4,
+    "fits_at_center": true
+   }
+  },
+  "source": "harness/zone_scenario_feasibility.landing_fits (study referee containment rule)"
+ }
+}

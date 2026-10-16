@@ -1,0 +1,135 @@
+{
+  "base_git_sha": "114349e0adc6d934ceb9a990ee9589aa123b8543",
+  "recorded_utc": "2026-09-30T14:35:25.700306+00:00",
+  "python": "3.12.13",
+  "pytest": "9.1.1",
+  "tensorboard": "2.21.0",
+  "hypothesis_available": false,
+  "result": {
+    "tests": 440,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 440
+  },
+  "by_test_class": {
+    "tests.test_ci_sharding": 66,
+    "tests.test_tensorboard_export": 64,
+    "tests.test_zone_pair_door_relax": 1,
+    "tests.test_zone_pair_registered_source": 22,
+    "tests.test_zone_study_eval.BoundaryTest": 8,
+    "tests.test_zone_study_eval.ChannelTest": 6,
+    "tests.test_zone_study_eval.ComparisonTest": 9,
+    "tests.test_zone_study_eval.DialogueTest": 20,
+    "tests.test_zone_study_eval.EfficiencyTest": 8,
+    "tests.test_zone_study_eval.ParseTest": 9,
+    "tests.test_zone_study_eval.ReportTest": 8,
+    "tests.test_zone_study_eval.SummaryTest": 3,
+    "tests.test_zone_study_evidence": 84,
+    "tests.test_zone_study_evidence_join": 61,
+    "tests.test_zone_study_evidence_review_a303": 4,
+    "tests.test_zone_study_evidence_review_f303": 7,
+    "tests.test_zone_study_referee": 23,
+    "tests.test_zone_study_review_fixes": 3,
+    "tests.test_zone_study_review_r5": 1,
+    "tests.test_zone_study_source_pinning": 33
+  },
+  "generated_cases": 12000,
+  "generated_seed_base": 30320260930,
+  "generated_operations": [
+    "mix",
+    "duplicate",
+    "drop",
+    "reorder"
+  ],
+  "review_counterexamples": {
+    "A303": 4,
+    "F303": 7,
+    "F303_copied_byte_for_byte": true
+  },
+  "negative_control": {
+    "target_sha": "114349e0adc6d934ceb9a990ee9589aa123b8543",
+    "result": {
+      "tests": 7,
+      "failures": 7,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 0
+    },
+    "success_1_0_readbacks": 7
+  },
+  "registered_runner_sha256": "85508cc58e1cba0f1fc11e3b7ef656c0c7648202ff1086c274c3dbaa64a99edd",
+  "workflows_changed": false,
+  "source_files_manifest": "redesign_source_files.sha256",
+  "source_files_manifest_sha256": "d7bb299f98a2f6552e86be688a28727779e5f87c74e438238b2c4ba817a16d01",
+  "selected_tests": "redesign_test_selectors.json",
+  "selected_tests_sha256": "a32b1c06e9885a036ed5ada2a5818ed0786685d31373295aff9358fbf2fefafc",
+  "local_evidence_root": "/Users/changmin/projects/ugrp/outputs/p06-evidence-redesign-20260930",
+  "local_evidence_files": {
+    "edges.log": {
+      "bytes": 286,
+      "sha256": "726bd90b98116818d96020fdf632193f9d5809d9857cd782b91350c5c910cc87"
+    },
+    "edges.xml": {
+      "bytes": 30063,
+      "sha256": "29fc7537391c71c2a60f60b110d99d01a776141b09ab397e031e0736d76b2b50"
+    },
+    "fanout.log": {
+      "bytes": 113,
+      "sha256": "57a61fc77f26d4795494f0a79f33b3d904c2117c717b57cc4a4a364b7b88832b"
+    },
+    "final.log": {
+      "bytes": 592,
+      "sha256": "3d65cbd6453ff9ce19a8ce12ed7e803b6b2ca95c1796a637ef004c0918261fd1"
+    },
+    "focused.log": {
+      "bytes": 9240,
+      "sha256": "431dcd9a156ffbf87c8e0b0b2ccc27c0bd62de838deaab36d305e957823699d8"
+    },
+    "focused.xml": {
+      "bytes": 27354,
+      "sha256": "e06f2ca985b07eec55d44d00a8099cd1dedea907542e5b079f1b60c693703cb1"
+    },
+    "initial.log": {
+      "bytes": 114,
+      "sha256": "813965d058e2221fc824deb533b00dcf669dbe9ac8c2169836b476c6496ec828"
+    },
+    "initial.xml": {
+      "bytes": 5725,
+      "sha256": "1aeb3f9286305e488fdd22bf727a1ef69b4870df383eacba4f988dce1043ee5a"
+    },
+    "negative-control.log": {
+      "bytes": 12822,
+      "sha256": "47c7c195f3f38b354958c11e6a8599aa01f19a2aa12f4b37ad57ca0daef5e507"
+    },
+    "negative-control.xml": {
+      "bytes": 13387,
+      "sha256": "eb65ede007cb6bb26be2a72b051498bd7bfbcda2b8e97e14522dd5df681855ad"
+    },
+    "related-before-fixture-restore.xml": {
+      "bytes": 73933,
+      "sha256": "8d953e86bfc715b80694d5e95acaf47902a48993186c1a9b38b36f5fb5c581a7"
+    },
+    "related.log": {
+      "bytes": 20554,
+      "sha256": "62fbd006fcc645e1d41363313238b88fa55926d40cca06d7ea406d47f2430e1a"
+    },
+    "related.xml": {
+      "bytes": 61594,
+      "sha256": "02e6f75e350fb765f38d378ef2d0f9c038be76019e3e3259f623ccd9a8697d7e"
+    },
+    "test_selectors.json": {
+      "bytes": 1843,
+      "sha256": "a32b1c06e9885a036ed5ada2a5818ed0786685d31373295aff9358fbf2fefafc"
+    }
+  },
+  "physics_runs": 0,
+  "render_runs": 0,
+  "real_provider_calls": 0,
+  "public_tensorboard_changed": false,
+  "pending": [
+    "independent review of redesigned candidate",
+    "new writer runtime integration and frozen-plan registration",
+    "real execution/provider/dashboard acceptance"
+  ]
+}

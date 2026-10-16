@@ -9,6 +9,7 @@ import numpy as np
 from harness.camera_goal_transport import decode
 from harness.visual_box_skill import VisualBoxSkill, SEARCH
 from harness.three_robot_mission import GOALS
+from harness.dispatch_skill_binding import ImageRoute
 
 
 def normalize_own_rgb(observation):
@@ -59,7 +60,8 @@ def solo_top_features(jpeg):
 
 class SoloBoxTransport:
     """Skill-bound curriculum, not a general route planner or raw-action LLM."""
-    def __init__(self, goal=None, *, robot_id='r2', navigator=None, attachment_min_saturation=65, release_refine_ground_fit=False):
+    def __init__(self, goal=None, *, robot_id='r2', navigator=None, attachment_min_saturation=65,
+                 release_refine_ground_fit=False, fast_near_field_servo=False, search_turn=0.12):
         if robot_id not in ('r1','r2','r3'):
             raise ValueError('unknown solo robot')
         if navigator is None and goal not in GOALS:
@@ -68,7 +70,8 @@ class SoloBoxTransport:
         self.navigator = navigator
         self.box = VisualBoxSkill(task='external_navigation', robot_id=robot_id,
                                   attachment_home_reference='previous_endpoint',attachment_min_saturation=attachment_min_saturation,
-                                  release_refine_ground_fit=release_refine_ground_fit)
+                                  release_refine_ground_fit=release_refine_ground_fit,
+                                  fast_near_field_servo=fast_near_field_servo,search_turn=search_turn)
         self.initialized = False
         self.target = None
         self.done = False
@@ -76,6 +79,7 @@ class SoloBoxTransport:
         self.steps = 0
         self.goal_confirmations = 0
         self.grip_reobservations = 0
+        self._release_direct_checked = False
 
     @property
     def phase(self):
@@ -98,6 +102,21 @@ class SoloBoxTransport:
         previous_phase = self.box.phase
         recorder=getattr(self.navigator,'record_attachment_top',None)
         if recorder is not None:recorder(previous_phase,top_jpeg)
+        if (previous_phase=='release' and not self._release_direct_checked
+                and isinstance(self.navigator,ImageRoute)
+                and self.navigator.bounded_carrier_relink):
+            # A final-slot sighting on the previous decision cannot silently
+            # authorize this capture's first lowering pose. Recheck both RGB
+            # views before the release phase mutates the arm state.
+            prior=self.box._carry_previous_image
+            attachment=(self.box._compare_attachment(prior,own['image'])
+                        if isinstance(prior,str) else None)
+            features['release_direct_gate']=self.navigator.verify_release_visual(
+                top_jpeg,(attachment,own['image'],own['image']),
+                observed_at_s=own.get('sim_time'),frame_id=own.get('frame_id'),
+                own_sha256=own.get('sha256'))
+            self.box.last_attachment=attachment
+            self._release_direct_checked=True
         action = self.box.decide(own)
         if previous_phase == 'lift' and self.box.phase == 'verify_lift':
             # Establish the visual attachment anchor after lift settling, not
@@ -121,9 +140,21 @@ class SoloBoxTransport:
             return action, features
         if self.box.phase == 'carry':
             if self.navigator is not None:
-                action, features = self.navigator.observe(top_jpeg)
+                # A cargo-occlusion fallback may use TOP robot motion only for
+                # this same observation, after the own-camera carry guard has
+                # accepted and stored its exact current image.
+                if isinstance(self.navigator, ImageRoute):
+                    attachment=(self.box.last_attachment,own['image'],
+                                self.box._carry_previous_image)
+                    action, features = self.navigator.observe(
+                        top_jpeg, own_attachment=attachment,
+                        observed_at_s=own.get('sim_time'), frame_id=own.get('frame_id'),
+                        own_sha256=own.get('sha256'))
+                else:
+                    action, features = self.navigator.observe(top_jpeg)
                 if features['done']:
                     self.box.phase = 'release'
+                    self._release_direct_checked=False
                     return {'kind':'wait','duration':.1}, features
                 return action, features
             if len(features['boxes']) != 1:

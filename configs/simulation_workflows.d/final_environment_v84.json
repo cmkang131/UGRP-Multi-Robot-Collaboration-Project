@@ -1,0 +1,22 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "zone-final-environment-check",
+      "version": "2.17.0",
+      "purpose": "DRAFT v84: final v3 three-map reset/calibration collection; P03 requires measured calibration and v3 chain integration",
+      "entry": "scripts/run_final_environment_checks.py",
+      "runner": "scripts.run_final_environment_checks",
+      "docs": "PHYSICS_HANDOFF.md",
+      "requires": "Committed source; owned host lock for SIM; own RGB/static map/own commands/delivered messages only; GT in eval_only; no prereg sealing; no v2 calibration inheritance",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--check",
+        "--expected-source-sha"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

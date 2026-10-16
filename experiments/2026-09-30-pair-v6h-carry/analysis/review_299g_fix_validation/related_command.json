@@ -1,0 +1,35 @@
+{
+  "command": [
+    "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "tests/test_v6h_classify_placements.py",
+    "tests/test_classify_review_299.py",
+    "tests/test_classify_review_299b.py",
+    "tests/test_classify_review_299c.py",
+    "tests/test_v6h_recorder_contract.py",
+    "tests/test_v6h_classifier_properties.py",
+    "tests/test_ci_sharding.py",
+    "tests/test_chain_analysis_hard_limit.py",
+    "tests/test_pair_chain_probe.py",
+    "tests/test_b_v6h_gain.py",
+    "tests/test_classify_review_299d.py",
+    "tests/test_zone_pair_registered_source.py",
+    "tests/test_zone_study_source_pinning.py",
+    "tests/test_v6h_blinded_run_manifest.py",
+    "tests/test_classify_review_299g.py"
+  ],
+  "exit_code": 0,
+  "elapsed_s": 587.2347588329576,
+  "scope": "offline public/synthetic regression only",
+  "host_lock": false,
+  "environment": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1"
+  }
+}

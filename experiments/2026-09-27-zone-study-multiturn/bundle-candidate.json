@@ -1,0 +1,627 @@
+{
+ "bundle_sha256": "e5109d2785f1808dee22c733ad86c65ef2dbc71ff097646680da47ca6fdec93e",
+ "bundle": {
+  "execution_bundle_id": "zone-study-integration-v66-multiturn",
+  "schema": "ugrp.zone_study_integration_run.v1",
+  "runtime_files_sha256": {
+   "configs/zone_study_integration/pose_providers.json": "6bd6c42ac46811a5b6f5b89800a849b8ba5eefe67344437e4f1d0c10a8847758",
+   "harness/__init__.py": "953d3229d4ed66dc30e1ddeab38440397fc01303fcd022fb147d45d4345abdcf",
+   "harness/action_queue.py": "98d59281bbe3b67747ccdf928f957df191b9b4b884bd29d92e10279aa50d1eb9",
+   "harness/approach_geometry.py": "107f1b36bb6ca44f21aa9813218cf5d1fb17a442ec7a4e2165f8708f9347cba4",
+   "harness/catalog.py": "02641a93eb119ac2b1c5754599364a51f42d0a6c0dc5a255a910c8e8dd44b344",
+   "harness/chat.py": "b6f20946c138beb8746a9128509aa4564efa4bf5002597532434bc8852895694",
+   "harness/execution_trace.py": "9002a6b25599f7d8c084bc6686750eb2ccb557777047601b767fd0385b0eb0c5",
+   "harness/executive.py": "535a2e9a75886a19c26c174007dcad750e782e94d9950a0d6eb736ae0be302b8",
+   "harness/gemini_proxy.py": "1f9dd59c7280a80c4c51f361a0c8e92aef69ff54fd2e5e0f3fd37aacdce4ea2c",
+   "harness/goals.py": "ca5d4fb9e6f8cee372fdf8f42b01e7a73bf5d3b5427d499abaa8a122be3cec28",
+   "harness/groq.py": "ed686d08ab36b38fcbea050152997f03427f35225d17c923ff6b66d3d2ab0229",
+   "harness/known_map_navigation.py": "484a176a3dbd632fec094d612137e448100f07c1180c2f6abeb490bc5a18fc0b",
+   "harness/llm_completion.py": "ef5c258d5dd1efeddd4402a04ae67aafa027cfb555ef99c6033d4729d4e0b4a3",
+   "harness/loop.py": "6872dd3d2b7ae669290b6e46db0838241f35bf559d0625374ec9e47ddc5d8761",
+   "harness/m1_contract.py": "9fe6d855e0b2d74d64ed2e7f144a360e32447fe6e81ae4b8c50cc25efa189075",
+   "harness/m1_owncam_contract.py": "0e261ab85311f7127b6f09d5c16a37837873b70adb5140091b1f85d374846f5d",
+   "harness/m1_owncam_delivery.py": "767cda1a6b523e19c0f7ef0f32e6b453799978e623b8e37bfa493b23f9993e09",
+   "harness/map_goto.py": "97970eb906d7d780de150cfbdfea074c8d3c758cc049bd9ff078aef34e30eda0",
+   "harness/markerless_box.py": "f1bc74126d91b17dbe7527c5444e5dff7c3a2ce469a1a90834f85dbae57bd46c",
+   "harness/markerless_face.py": "1f829650c9f8da508ee521f6721f2c0fb6d80872053b8c622d79bf49037e9134",
+   "harness/mixed_warehouse_protocol.py": "21dcce5eb992ddccdb6f68f92cda3df0330ec635c6a1719594ebba96232842f0",
+   "harness/monocular_box.py": "51dfde31095b0c9c0c39cb2b3b87cfb71129f6cec19072b4ac1ee95db9933c14",
+   "harness/multi_object_plan.py": "fc7e212ab8c3b93343e75cb915d9754d83070cfb1d2fd2c618e8209fe81da42f",
+   "harness/owncam_drive.py": "a8aede7813956e2de12c25b139b02f48e11dab5be8cbf82a2d25344547d51e82",
+   "harness/owncam_drive_v2.py": "217423249775b024504b56b59203a1eab50b667bf273387ba23c0974c0ad4462",
+   "harness/owncam_localizer.py": "0304d7c491dfe6ae68cea6550f7a13e3c99e8e1d3f8e8b6c4b7b1d06893b1d63",
+   "harness/owncam_pair_beam.py": "6bc959a766676ba62fe9126e2d90fcfa62c7353ee79f83fa1ac8caeb4eae82d6",
+   "harness/owncam_pair_beam_v2.py": "b4dad971e241542460a9f7ae259356039033d18c9d4f16c940b2370ced388f97",
+   "harness/owncam_pair_hold_v3.py": "1af3eeb8351ebefcfd2eca0a24f6e3d1876b288f40ef857f708eca1e78cc5bd2",
+   "harness/owncam_pair_lift_v3.py": "faf725e3b1b1ee1e387c0f8c593b7508b6e170387d010debb551df7bd05d087d",
+   "harness/owncam_pose_source.py": "9e0b458e88969327e51fba73d43fa7e868d57547e5976e279098cde793f9f72b",
+   "harness/owncam_view.py": "d8dbda447e9ec2a4ccd96e5a19d751bf80676b18ff4e636002724528cdd97260",
+   "harness/pair_carry_sync.py": "93a87245359a131551c128e4f6bf197dbf4141301c2564d3afaea924e78351e0",
+   "harness/pair_navigation.py": "354cd47f115574d33a5ae81f1afae41dc78d2e3bc97203f63aaa8316012e3d19",
+   "harness/pair_owncam_approach.py": "75058e95ff0f78dc388e9e34deba59f0524ef0647fb4e8a2597852ae0440f184",
+   "harness/pair_transport_vision.py": "01a5b96d54e8e4be7a2227428df2cd3a21c5f157924bbb17575e1f4646ec5b23",
+   "harness/perception.py": "a1bc0d8ff03cf70ca6ec3b9479aa85860cc54d8a3bc1adb1e809db8a0e5ac925",
+   "harness/pi_camera.py": "d879ca87f61095d10ba2414d8d8cce8c2ee660a16fac4c96c3be2f35bc577479",
+   "harness/protocol.py": "eb8b935668b0e7dcc09522f1011077d910f6abd1f46d1c0b51bb7d80174a3d24",
+   "harness/python_source_closure.py": "992388762ded3be5f945bc9620728ff189423d155d9119209130b570aeebbcea",
+   "harness/real_carry.py": "e3d1c1051e89852aa96af92b7bd4940dfbe73767dd1a45e01eefd2c84a18061d",
+   "harness/real_geometry.py": "54750103563b12770735b4fb07800d4aea72f708fee2e4551d702b1f603aaf2b",
+   "harness/real_pose.py": "368e1c5fb039eba5b920bb36dd8d301aa890d15d7fc0b1bea85d0907685a770f",
+   "harness/registry.py": "57111cc2054502cb24804e681343a9130bf042792f527beebf624319567e9d90",
+   "harness/state.py": "7f23b4f276326fb6d646c989614c204739f4e89e8f35f78bfe85b29836cc3ffd",
+   "harness/static_keepouts.py": "2b4faf26317f45cbdd7cb2deab8fae87a9e460f96778c8af185ec2ac00d57aa3",
+   "harness/task_recovery.py": "9303b1a3a1a01f39414f3a7c4505ea7415caab8c36e686dcb8b3c1a480bb0af6",
+   "harness/team_bus.py": "c3936f1fb0041358b02f8c73809b6cc3a02bbee7b9ec483817eba6e95026c9de",
+   "harness/team_carry_status.py": "1a1822266637ed987c74e8be5c3407227f27cd7b0dac2d1c6e1f84e525d67c29",
+   "harness/three_robot_plan.py": "8fbd2f1e7347965e7fd6a22fd8e0eb78e0e471118f767734162f11180ba255de",
+   "harness/trace_analysis.py": "ef4f75d0f4c4d7ade80c2ab9c7ffe593df7638bce37d8753a77549d1d3395161",
+   "harness/visual_arm.py": "f60e4829fb734da2cdf52619a5e38c0de87da6137bac6fd42516560361de527a",
+   "harness/visual_attachment.py": "3f7378be87807f2b044ad8ec62956518e2d6b39c7172b10e427d38894aab280e",
+   "harness/visual_box_skill.py": "65fcaf24e4f3409941438304d3cdc6451514d65bac93a16f0b72d904f13850ab",
+   "harness/visual_box_surface.py": "bbc04aa79388acfb617145a3b642992bdce08fca0b55fc028cef52635944fbbc",
+   "harness/visual_floor.py": "2415658edcd03df6347136c9b3f17a32d16b950d4365a237d547dcd3a9d42e26",
+   "harness/vlm.py": "6b38dad79afe0fcb365e396976f9e346288acdd523f2200fa3e2891155cea6c1",
+   "harness/wall_tags.py": "eb0327012047cc413b7bb930fb7884cdfe4c18239058d954b1cce56593e0336e",
+   "harness/warehouse_protocol.py": "a1fd765b54718bd942213749bdb1dd53448fbafd0245c821913b093265daede6",
+   "harness/wrist_zone_skill.py": "964e337eccdaef0bad17fec204b54234875bbb6a9e6e3300847e4c967d5312cd",
+   "harness/wrist_zone_skill_v2.py": "70f9f9a2b0d81e0477a87cc9fa1a07f90eae0c2365e76244b5e28636be90ae6a",
+   "harness/wrist_zone_skill_v3.py": "81114b8053b0d7f687c205f55d036e8a33fb5d66f50c846450b934654d8a8689",
+   "harness/wrist_zone_skill_v4.py": "2864710c767fdf43b77f7662ecda8ad042830a072ab8437d315f3d901b419d22",
+   "harness/wrist_zone_skill_v5.py": "9b90dc16468ebce3369a782c3e51306b49ef5eae657e6eb8a6e0763d62b95c64",
+   "harness/wrist_zone_skill_v6.py": "47ec5cd0c36d59c9226d283ce062e6e6b133bd68a06c0cde4b30c7d830ca0234",
+   "harness/wrist_zone_skill_v7.py": "c021fe2b017d95eb37596262506c56138b1dd6f2d219f0e9ae639f4c45630ad9",
+   "harness/wrist_zone_skill_v8.py": "5c2b27e06eeeaf2b51eff585182739afde0597025d7c5f868b7ea7f128a4b12e",
+   "harness/wrist_zone_skill_v9.py": "b51ee37461430fc3d5cb893f2aaa5bf782fab37efdb4a9cafcff1bf5eacd19ea",
+   "harness/zone_color_boxes.py": "9b38265c27f86a735333b25326a10177ed073cc6c3e0f945ee5c318398813966",
+   "harness/zone_dialogue_metrics.py": "0fc5f35af86cc3b56fac896d1ab1ccc3718ceca79424fe6b81326f2407c8c982",
+   "harness/zone_event_scheduler.py": "4ed23c52eb6fe9420f4752ebcbc1d33d5a0f464e46f809885696fa234893750f",
+   "harness/zone_goal_v2.py": "efbfe385e036e151e07993c6d306a111ca1319de5f942af3a7f0320d67cbc36b",
+   "harness/zone_map_schematic.py": "30564ad6a8b1f4e666f90aca682372b9291589c292f7a248acaaee4a6f7c79e8",
+   "harness/zone_own_contract.py": "a09c66cdeee5163a77d2e285694864640e5db6fb7144ed6e8021967cfa76e9c4",
+   "harness/zone_own_deliver.py": "50eaee2c9c5c7734f3795533821a642c1ba001f334a2adc5f160511db2f4dad7",
+   "harness/zone_own_driver.py": "6bdfd044584288f85627d32fb8541b8f68a86b807d7b779f37f42571afd9c732",
+   "harness/zone_own_executor.py": "021fc6096615aa67f4b3a8a1957ecff47d9eb5698db69b88b45dd5f3e8d1ca9c",
+   "harness/zone_own_guards.py": "eec5b4942e4fa186fd7a40c3d47b087614055d35dad900d8126adb97d381f617",
+   "harness/zone_own_perception.py": "93e941da731818dca5ccb6e44273dd1df03ffdd9e42542e262fcc182c34f780e",
+   "harness/zone_own_status.py": "7bd347e9d12182f1e47b07f36f87af167a3739ab096aa46c89e3df5bd77b6828",
+   "harness/zone_own_sweep.py": "130534457cedb5eb238e650fdf9100358cf6a81bc2262905abd190243887faa6",
+   "harness/zone_own_team_host.py": "9a3f94547575c14d33328833fcda96ed8bf9c210478fa7999d1218b8a8284e13",
+   "harness/zone_pair_admission.py": "c45e00ebc15bea88c288bbb26a3931fe05a69408b03f55bdddade3559850857f",
+   "harness/zone_pair_executor.py": "02e3d0f05ead9e0e6a8dfe9a0a3d3d3960bb6dd2341c1be3f1f166f2aa925168",
+   "harness/zone_pair_geometry.py": "938f7308b752491d706e3367ec74d8f7cc68ef10675a041c647cf9d55b604038",
+   "harness/zone_pair_guards.py": "3279911be3464f6f128820cc22c57aeea0a6508329bfb11ae0c8d37616256287",
+   "harness/zone_pair_status.py": "6b69145c893297af90cd441b2e1b9d2b9c9f2fc92d33536bac699f9f06f3b164",
+   "harness/zone_pair_vision.py": "8552c044d498a6c3e02efdc7f53ca72c9b11c4b17b87abfa159e780673d8c7d4",
+   "harness/zone_perception.py": "c612f2360649c25ace00e7a4fa14d1c845ca2fd870bb9edc7ae424c1d4e1571d",
+   "harness/zone_pilot_budget.py": "73f365fce8fc2ddadbb354b9aa135854a44ae2212a80f656405b4bbde17629a2",
+   "harness/zone_pilot_network.py": "ff1b9df59293ad42b8ac3ac85f712f270ecf0f7c2d0cf0736df8fc1091ef9d65",
+   "harness/zone_pilot_proxy_log.py": "f4ecf4560b5f5d8d817381d5b64233e20447511fa9e595d08b1d6502768d967f",
+   "harness/zone_pilot_reconcile.py": "8751bb952a39009523530e5dc5951050a37098c6c4dc7c3ce212e18e429c63e0",
+   "harness/zone_pilot_settlement.py": "3c1b5041bf204dac8718aea1e557bf4e1d11654a2a320b3a4b88b4c24d50630c",
+   "harness/zone_send_ledger.py": "4821a07afc69104cc15a721ae31167f6995b1d0afbd5d1716018e2e863e3681f",
+   "harness/zone_sim_cost.py": "7588003a1db68f11e94426ce241da9a951f30070cdc32db8bbee9f085ef6f292",
+   "harness/zone_study_contract.py": "f6e4c5fef3bdb7e332d2871b309bec1a46e3d1d98533050e723094200dc460f6",
+   "harness/zone_study_decisions.py": "3c4045174087952aa5ba82ef885a725d3f73c6397e7a053ca424782710b5ed47",
+   "harness/zone_study_eval.py": "b324c89da63733b37a7d3ecada4e1f8a14d6c4de810ae5a1483aaf7e793cae67",
+   "harness/zone_study_inputs.py": "179489a24bc76e73a52bebec1f5918b1a1ac0d128480864ae35debf57c007e0a",
+   "harness/zone_study_integration.py": "941c3bfccbe84373437cf61a945ec96d7d29340e885dff54256eb83a8875fc54",
+   "harness/zone_study_llm_transport.py": "bd259235d0d21e7a6584b5d1868f0751716c8fdabe8e0362a77ed33feb523964",
+   "harness/zone_study_offline.py": "d0c1a7506cde90ec93af05a4522b4abb92db38ee55f1228cef47978f9daee003",
+   "harness/zone_study_pose_delay.py": "0d83e90fd8ac00d75f062896b7e2e6bf4d1a6031660a024bee57aed3a1d5f7c3",
+   "harness/zone_study_prompts_ko.py": "85fd1fd95439eb753082cdd348d64070d5a90686f62aca34ba06209a47bf5fe1",
+   "harness/zone_study_protocol.py": "07e315ca26a94333d15d67ebf2446019987cf00dde92b2756be17dd4178c4890",
+   "harness/zone_study_scenarios.py": "69a653ca4e262d22fc6266a02c486c0952a96c45034b2719d46bce69e81e0aa5",
+   "harness/zone_team_footprint.py": "a482d6fdbd42f74fc47178779fc55fe3be6a6f6c168d0b7a385fc399fb575e0b",
+   "harness/zone_team_jobs.py": "c4df3049d4ae21dc176ab0f71d74505d7c75867b113779a3a397895d831783a6",
+   "scripts/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "scripts/agent_lock.py": "ef40c56aad22166db241e7441dc58e1b572d0ec0fc1db0f58c910f819e610529",
+   "scripts/evaluate_zone_pair_dev.py": "04a11822309b5ec7f5fadb7c32746d6aa01f51147f69b265225bb9b6f740c4ab",
+   "scripts/real_observe_scene.py": "89766a0e8b7bc30ce3c393b1b94971b6b9ef4ba1f28f5266b7092478bdf10483",
+   "scripts/real_spatial_observe.py": "a2a275ac2e7bf23e349ebf7e48578465b1b1d7707a3d79375eeda88edb89ea77",
+   "scripts/record_owncam_localization.py": "4e023899e423267736cba7cbf50e32644cf9ede2aae2f03bb1047b6592c89ea3",
+   "scripts/robot_actions.py": "fffb0c4d351294275c9dab497feb201fb045a05939e51ff892c2027af54ba96c",
+   "scripts/run_m2_pair.py": "3432df1fbefd4779921dc89a20f60fb67299fcdd02aa4568c6ecd14e27978783",
+   "scripts/run_zone_pair_dev.py": "ad829b4148aaaf859f47c871f5e0799883b744bf6bb21f46df5495b29b1e88e6",
+   "scripts/run_zone_study_integration.py": "3d6ef4ca6889677891fe88b7eec07e0ba300d0daa3f9c0b91620b52853357b2c",
+   "scripts/study_owncam_pair_beam.py": "3e4c77e279cde780e19b1a1eb2643c626c46dac15e4671001607c5fa6b9c3cff",
+   "scripts/zone_pair_dev_contract.py": "641094904eacaae0a78f877b14b4cb525aefc8695d375176b51e59a3245a2d37",
+   "scripts/zone_pair_dev_runtime.py": "3c1cd30e105a1159ae2757e85e318281e299e916a6f93ed7139c185b76fa9a45",
+   "scripts/zone_teacher.py": "e84742fe788d80c726d79c0a46f7617a0f237edcaa0a325f2592a25c40acd5e4",
+   "sim/__init__.py": "21113ac356c2bf0704db91edc1dce9e3f999d2ff2d1b576e8d34395562c452d5",
+   "sim/act_map_suite.py": "c3f1ad00538fa1a914af332ef987605050416fd7204e05ef72bfd05e0e6a5889",
+   "sim/adaptive_warehouse.py": "a71077c117cb852d386440b810276855bffd42e1e88632dae2cf4ce392e1d3d1",
+   "sim/authored_navigation_map.py": "a75f8991ce6c543768f773cb7ebe81f74f8b221c8f900547baeb8f98e72573a9",
+   "sim/calibration_schema.py": "c99ae814deb16cdac3140bd5be427aa8bb8814fb38134ff330da28553ce3083e",
+   "sim/camera_robot_port.py": "be94c99a2a597a81e55ab0cbaba44f9340d3c2bbb7a3d14a2078f1d903bc8910",
+   "sim/cooperative_payload.py": "384245ed1c872a345bf75e6dbfc228b1996c6e19f2db220a4fc5ad1288468828",
+   "sim/crew_motion_metrics.py": "7121e4b55d57013dbba651b412eaaf26fd5560cbbd5dec95281383dc76058615",
+   "sim/crew_navigation.py": "710bd97869843e88b7107f439023952ae9716a30c08cdd284b11be33beb2681c",
+   "sim/dispatch_contact_profile.py": "472a19b72bdc3b85819d3c7a22ad1c7f0a741b13feba5ac65ce9d5d15e1792d0",
+   "sim/masterpi_camera_profile.py": "ec224a88f07b7f1e30b9f306951818ec3907c27554daab1361db6cc8b00f3a1a",
+   "sim/masterpi_dynamics_v2.py": "100634bb32bfc1751549de2410e5eea9304fcb0ef99589d7a09822e6c557b53a",
+   "sim/masterpi_geometry.py": "2bf71ed3311d22ce25f45879da38f353ce204be38ed9642c43985577a15daeeb",
+   "sim/masterpi_production_v2.py": "ef5243b880fbf5dd41850320f2abe9d662f01881a205c89b588ab48eff729dfa",
+   "sim/mixed_warehouse.py": "66b4f48fd06f24bdf58dd6a1906b9b721b95f02686fefed902e36b1c494239f2",
+   "sim/multi_masterpi_production.py": "715bf66c7dfe0a4a328a75b3cec46541eaefedd29b8a3dd4a251eb14ed789f7e",
+   "sim/multi_object_scene.py": "fd3180d1cacadd06ad36d948de766dd137ba3744ecc52eb72288b1a50c07ea50",
+   "sim/multi_object_suite.py": "b68cf89fc3f49302c07de6657c0f30df8cc488c2d2a012d3fbb750ec95149503",
+   "sim/navigation_camera_profile.py": "20c13dfab01f0f3d83d19aa96388f334d9709cbb641b95dabbf1bd944ce01a3f",
+   "sim/real_stack_adapter.py": "a9e7737ef9e5dcbea1c1f37ddf17e8ed255bf851c7e07f7d242e4a04fe71fb44",
+   "sim/research_dispatch_arena.py": "eb4593ce5d6ce5c9406e903ad885262cc092113b013f50714fde26f01918af52",
+   "sim/research_scene_xml.py": "c70989ccc83fb3f4a685d5cd9e29d1cd5b12437ab8864bbaed5bd7393cab5f4e",
+   "sim/scene_objects.py": "53652d8d9d6fd3368fc122605d9c7c0ca510737247dcd956f92d0cacb9d8131f",
+   "sim/session_config.py": "9fb6ceedefd1d8abb3ec062a912525890a0508f27b465d8848f4146238b0ad45",
+   "sim/session_extensions.py": "4473927b1ce15b750e8de247b2a58f5ea139081c0c2a5f2f29fe62bb19f916db",
+   "sim/session_scenes.py": "2f967bd227db022af4864c8c8c4e9afa1c665d4fc0493e2cacac6a21e63c74f2",
+   "sim/snapshot_contract.py": "37210ab228aace7fe111decfe205738b305b0872d3a1e2ab8a31b2c6f4ce4408",
+   "sim/snapshot_render.py": "7cdd88761532fc4244fbf6a2d1661710a2f5a71fd81fba87fcaab0e54bfb03c1",
+   "sim/solo_cargo_task.py": "6a465a99836fa972739195fa149428e98b7b07934fd93324831936435d2657fa",
+   "sim/team_layout.py": "68fc0eb9e35ac683b938aa9fac59e7d80f35b75164424c363cc1ea8169d02610",
+   "sim/warehouse_arena.py": "3db38897c7dc57195217132577f2d4406e17e728bbb7146d2cfb44a59dae5f9e",
+   "sim/warehouse_crew.py": "f21062e624f299a1330f4f52be6d8da68afc3567225fb7204f66505fbd9bc218",
+   "sim/warehouse_mission.py": "67d033fd50e7f4e851189e96294d6a8f8a0ebd6964de7eb7da2d3f707b6308eb",
+   "sim/warehouse_observation.py": "5dadf9df4be97d708dd8f70801c2e5807b2e471f448dec58da9959551f2ad43b",
+   "sim/warehouse_research.py": "034a1d2898b9f7b2e1ac123a2be192b7e1c9f042b4d771930440db2132ad9058",
+   "sim/workflow_manager.py": "451fe9646510ca9e0dd8b0b5b7a3b663152616a79331b78e0d8755bea42aa3a9",
+   "sim/wrist_load_sensor.py": "93f7fd64fc6a4c59b63b1c2ee860b938ce2ad52d9e7dfe84ba5edfcff390b3f6",
+   "sim/zone_arena.py": "191c1aac15b2796514ea21a290be1b2e5b497754c12abd6f7d15df614a1630c8",
+   "sim/zone_cargo.py": "84cc956c22ca0d1b0d76fabcb4da61c33c73fcf77600d3079bced5658aa04a6b",
+   "sim/zone_cargo_contact.py": "2ce68eafc285ff86261559f612a71c5178d2cf87ee7777cb71c0b9a9a3c28541",
+   "sim/zone_cargo_scene.py": "84d1075c3422b0e2c9aa3db6d9b842e042ee780b1989a90146ea854d3ff94c19",
+   "sim/zone_dock_scene.py": "8f6c5a27e9dd546238d34d0b1b2f5b64519e72cbb7c096d89c16a6e27a7a0498",
+   "sim/zone_eval_top.py": "22512d20f097af908433e91a1c67e0fc0b716e92408423aae7afbc387df9ab6d",
+   "sim/zone_landmarks.py": "2de8bf3a32673c5305d87639894e90deb9932ac015b697ddb8a05dcccf56e5f1",
+   "sim/zone_scene.py": "ca814adfdd02ff9ac09b7288f45d10b249306d7a0e98e9c159ebe63a328ba714",
+   "sim/zone_start_dock.py": "6a1977ed99bd9f92a5b4dcda3f9e96dbee28fd7957f6c709a242f8b1dfe1bdb4",
+   "sim/zone_tag_rule_v3.py": "b28d7bf3440054e1230727382da113445600f78bca417d46be5c47271a58f1bf",
+   "sim/zone_tagged_cargo_scene.py": "c979b48b97b67abf42ba3bd024dc46569e79b1ec7565bfc7400bf7fb480c8cb7"
+  },
+  "scenario": "configs/zone_study_integration/i1_cyan_three_slots.json",
+  "scenario_sha256": "8161c10b12728aacb3c6cf7520069a7caf921fbad6a6fb86358d82d26bfa19f8",
+  "map_id": "zone_wide_door_tags_v2",
+  "map_file_sha256": "f9b0ef0d9f35457b34711c0ec5d11688af3130238560195c982660137ad3e73b",
+  "public_map_sha256": "6c525429746159e5944cfd3b81d6432608f592015ca7747b85b66a1a43daa7a0",
+  "tagged_map_sha256": "fc20c915ac5d3a2c5085c79c07deb2718ca977e3eec2cf9688ab242b2617a083",
+  "physical": {
+   "base_map": "zone_wide_door",
+   "layout_seed": 700,
+   "goal": {
+    "A": {
+     "cyan": 1
+    },
+    "B": {
+     "cyan": 1
+    },
+    "C": {
+     "cyan": 1
+    }
+   },
+   "extra_boxes": {
+    "red": 2,
+    "green": 1
+   },
+   "contact_profile": "cargo_noslip_v1",
+   "job_sim_limit_s": 720
+  },
+  "actor": "fixture_v1",
+  "model_settings_sha256": null,
+  "host_spec": {
+   "map": "zone_wide_door_tags_v2",
+   "goal": {
+    "A": {
+     "cyan": 1
+    },
+    "B": {
+     "cyan": 1
+    },
+    "C": {
+     "cyan": 1
+    }
+   },
+   "extra_boxes": {
+    "red": 2,
+    "green": 1
+   },
+   "contact_profile": "cargo_noslip_v1",
+   "job_sim_limit_s": 720,
+   "seed": 700,
+   "order_sheet": {
+    "schema": "ugrp.zone_order.v1",
+    "scenario_id": "sc_b05869f3b286",
+    "map_id": "zone_wide_door_tags_v2",
+    "map_file_sha256": "f9b0ef0d9f35457b34711c0ec5d11688af3130238560195c982660137ad3e73b",
+    "public_map_sha256": "6c525429746159e5944cfd3b81d6432608f592015ca7747b85b66a1a43daa7a0",
+    "orders": [
+     {
+      "order_id": "order-1",
+      "kind": "cyan",
+      "count": 1,
+      "item_ids": [],
+      "required_robots": 1,
+      "destination_zone": "C",
+      "initial_location": {
+       "pickup_bay": "P2",
+       "slot": "P2-2"
+      },
+      "identity": "kind_fungible"
+     },
+     {
+      "order_id": "order-2",
+      "kind": "cyan",
+      "count": 1,
+      "item_ids": [],
+      "required_robots": 1,
+      "destination_zone": "B",
+      "initial_location": {
+       "pickup_bay": "P2",
+       "slot": "P2-1"
+      },
+      "identity": "kind_fungible"
+     },
+     {
+      "order_id": "order-3",
+      "kind": "cyan",
+      "count": 1,
+      "item_ids": [],
+      "required_robots": 1,
+      "destination_zone": "A",
+      "initial_location": {
+       "pickup_bay": "P1",
+       "slot": "P1-3"
+      },
+      "identity": "kind_fungible"
+     }
+    ],
+    "kinds": {
+     "cyan": {
+      "required_robots": 1,
+      "roles": [
+       "west"
+      ]
+     }
+    },
+    "team_size": 3,
+    "note_ko": "주문서와 initial_location은 설정 시점의 계획 정보다. 현재 위치·재고·배송 완료를 보장하지 않는다. 현재 상황은 자기 RGB, 자기 발행 명령과 허용된 수신 메시지로만 판단한다."
+   },
+   "pair_order_sheets": {},
+   "team_cargo": [],
+   "pose_priors": {}
+  },
+  "contact_profile_expected": {
+   "profile": "cargo_noslip_v1",
+   "base_profile": "local_contact_fine",
+   "cargo_profile": {
+    "name": "cargo_noslip_v1",
+    "version": 1,
+    "base": "local_contact_fine",
+    "option": {
+     "noslip_iterations": "10"
+    },
+    "scope": "global solver option (all contacts)",
+    "evidence": "experiments/2026-09-25-zone-cargo-catalogue (section: slip removal)",
+    "sha256": "2e003d85011354676866f0d73b32604c9b5105e919ba3d979687714d62e90ff4"
+   },
+   "method": "dispatch contact_profile then cargo apply on static XML option probe; no physics",
+   "timestep_s": 0.00025,
+   "noslip_iterations": 10,
+   "source_sha256": {
+    "sim/dispatch_contact_profile.py": "472a19b72bdc3b85819d3c7a22ad1c7f0a741b13feba5ac65ce9d5d15e1792d0",
+    "sim/zone_cargo_contact.py": "2ce68eafc285ff86261559f612a71c5178d2cf87ee7777cb71c0b9a9a3c28541"
+   },
+   "sha256": "17bf3e04918aa9c4a940df2cb0d2be975075714e906d8503fc92e1f29a9ca9b6"
+  },
+  "perception_delay_s": 0.16,
+  "weld": "off",
+  "sync_sim": true,
+  "frame_period_s": 0.2,
+  "executor_tick_s": 0.1,
+  "student": {
+   "executor": "harness/zone_own_executor.py (ZoneOwnExecutor, OwnCamTeamHost; PR #206 c8a2355a)",
+   "mode": "m1",
+   "skill_module": "harness.wrist_zone_skill_v9",
+   "skill_class": "WristZoneDeliveryV9",
+   "calibration": "experiments/2026-09-26-zone-m1-owncam/calibration_m1_dev.json"
+  },
+  "student_calibration_sha256": "126cadaa9265ed2ae2b034f675e67c227193a2e1678f6b0c82dd53b186e6fc72",
+  "pose_provider": {
+   "pose_provider": "tags_temporary",
+   "spec": {
+    "provider_id": "tags_temporary",
+    "factory": "harness.owncam_pose_source:OwnCamPoseSource",
+    "version": "owncam_pf_v2",
+    "source_label_prefix": "owncam_pf_v2:",
+    "maps": [
+     "zone_wide_door_tags_v2",
+     "zone_wide_two_doors_tags_v2",
+     "zone_wide_door_tags_v3"
+    ],
+    "calibration": "experiments/2026-09-26-zone-m1-owncam/calibration_m1_dev.json",
+    "source_files": [
+     "harness/owncam_pose_source.py",
+     "harness/owncam_localizer.py",
+     "harness/wall_tags.py"
+    ],
+    "temporary": true,
+    "research_result": false,
+    "uses_landmark_tags": true,
+    "note_ko": "임시, 표식 사용, 연구 결과 아님"
+   },
+   "source_files_sha256": {
+    "harness/owncam_pose_source.py": "9e0b458e88969327e51fba73d43fa7e868d57547e5976e279098cde793f9f72b",
+    "harness/owncam_localizer.py": "0304d7c491dfe6ae68cea6550f7a13e3c99e8e1d3f8e8b6c4b7b1d06893b1d63",
+    "harness/wall_tags.py": "eb0327012047cc413b7bb930fb7884cdfe4c18239058d954b1cce56593e0336e"
+   },
+   "calibration_sha256": "126cadaa9265ed2ae2b034f675e67c227193a2e1678f6b0c82dd53b186e6fc72",
+   "label": {
+    "pose_provider": "tags_temporary",
+    "temporary": true,
+    "research_result": false,
+    "note_ko": "임시, 표식 사용, 연구 결과 아님"
+   },
+   "record_sha256": "8e3a7580145a81055600349e397a300679a2b58deb06f66fd5b20b33e1699170"
+  },
+  "eval_top_camera": {
+   "profile": {
+    "schema": "ugrp.zone_eval_top.v1",
+    "id": "zone_eval_top_v1",
+    "version": 1,
+    "overrides": {},
+    "scope": "authored TOP cameras of every zone map, unchanged (all records before 2026-09-26 #218)",
+    "sha256": "070d159a0badcefd9dafd1bbc9ed32d16dc9077a9f16e72a70f6dbabefe63439"
+   },
+   "cameras": [
+    {
+     "name": "cctv_top",
+     "position_m": [
+      0.55,
+      -2.0,
+      2.5
+     ],
+     "quaternion_wxyz": [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+     ],
+     "fov_y_deg": 55.0
+    },
+    {
+     "name": "cctv_top_east",
+     "position_m": [
+      3.8499999999999996,
+      -2.0,
+      2.5
+     ],
+     "quaternion_wxyz": [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+     ],
+     "fov_y_deg": 55.0
+    },
+    {
+     "name": "cctv_top_north",
+     "position_m": [
+      0.55,
+      0.2999999999999998,
+      2.5
+     ],
+     "quaternion_wxyz": [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+     ],
+     "fov_y_deg": 55.0
+    },
+    {
+     "name": "cctv_top_north_east",
+     "position_m": [
+      3.8499999999999996,
+      0.2999999999999998,
+      2.5
+     ],
+     "quaternion_wxyz": [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+     ],
+     "fov_y_deg": 55.0
+    }
+   ],
+   "cameras_sha256": "efaf288c23d7af5dfe4ab607df87a5b78da889db8156587f1115d87de6eafce1",
+   "note": "evaluation/video only; never a robot input; apply after scene.setup on replay"
+  },
+  "study_invariant": {
+   "schema": "ugrp.zone_study_integration.v1",
+   "execution_bundle_id": "zone-study-integration-v66-multiturn",
+   "seed": 701,
+   "actor": "fixture_v1",
+   "model": "none-fixture-v1",
+   "model_settings_sha256": "2334d86bdaf94516c623bd433c847653ff46bfa92fa92e281ac0cfdf1e18054a",
+   "planned_model": {
+    "completer": "harness.gemini_proxy.GeminiProxyCompleter",
+    "model": "gemini-3.8-flash",
+    "temperature": 0.2,
+    "reasoning_effort": "none",
+    "enabled": false
+   },
+   "prompt_version": "ugrp.zone_study_prompts_ko.v2",
+   "cost_params": {
+    "version": "zone_sim_cost.v1",
+    "digest": "81b59966e0e23b2eb3608bf7e116272ee5676abebf464f7ab4b6f04884e73934"
+   },
+   "call_policy": {
+    "min_interval_s": 2.0,
+    "max_outstanding_per_actor": 1,
+    "idle_reask_s": 10.0,
+    "busy_reask_s": 60.0,
+    "observe_period_s": 1.0,
+    "trigger_on_message": true,
+    "max_retries": 1,
+    "max_calls_per_actor": 3,
+    "max_http_attempts_per_actor": 3,
+    "max_attempts_total": 9
+   },
+   "quantum_s": 0.1,
+   "perception_delay_s": 0.16,
+   "think_hold_policy": "idle_robot_holds_busy_job_continues",
+   "action_map": {
+    "version": "zone_study_action_map.v3_interruptible_idle",
+    "idle_wait": "native_idle_hold"
+   },
+   "decision_policy": "own_job_boundary_multiturn.v1",
+   "decision_limits": {
+    "max_calls_total": 9,
+    "max_utterances_per_actor": 2,
+    "max_utterances_total": 6
+   },
+   "reask_policy": "single_pending_own_timer.v1",
+   "pair_status": {
+    "profile": "zone_pair_status_v4",
+    "executor_profile": "zone_pair_executor_v4_dev",
+    "states": [
+     "abort",
+     "aligning",
+     "approach_go_0",
+     "approach_go_1",
+     "approach_go_2",
+     "approach_go_3",
+     "approach_go_4",
+     "approach_go_5",
+     "approach_go_6",
+     "approach_go_7",
+     "approach_ready_0",
+     "approach_ready_1",
+     "approach_ready_2",
+     "approach_ready_3",
+     "approach_ready_4",
+     "approach_ready_5",
+     "approach_ready_6",
+     "approach_ready_7",
+     "available",
+     "busy",
+     "carry",
+     "carry_go_0",
+     "carry_go_1",
+     "carry_go_2",
+     "carry_go_3",
+     "carry_go_4",
+     "carry_go_5",
+     "carry_go_6",
+     "carry_go_7",
+     "carry_ready_0",
+     "carry_ready_1",
+     "carry_ready_2",
+     "carry_ready_3",
+     "carry_ready_4",
+     "carry_ready_5",
+     "carry_ready_6",
+     "carry_ready_7",
+     "done",
+     "incompatible",
+     "invalid_image",
+     "lift",
+     "lift_go_0",
+     "lift_go_1",
+     "lift_go_2",
+     "lift_go_3",
+     "lift_go_4",
+     "lift_go_5",
+     "lift_go_6",
+     "lift_go_7",
+     "lift_ready_0",
+     "lift_ready_1",
+     "lift_ready_2",
+     "lift_ready_3",
+     "lift_ready_4",
+     "lift_ready_5",
+     "lift_ready_6",
+     "lift_ready_7",
+     "lower_go_0",
+     "lower_go_1",
+     "lower_go_2",
+     "lower_go_3",
+     "lower_go_4",
+     "lower_go_5",
+     "lower_go_6",
+     "lower_go_7",
+     "lower_ready_0",
+     "lower_ready_1",
+     "lower_ready_2",
+     "lower_ready_3",
+     "lower_ready_4",
+     "lower_ready_5",
+     "lower_ready_6",
+     "lower_ready_7",
+     "not_ready",
+     "occupied",
+     "open_go_0",
+     "open_go_1",
+     "open_go_2",
+     "open_go_3",
+     "open_go_4",
+     "open_go_5",
+     "open_go_6",
+     "open_go_7",
+     "open_ready_0",
+     "open_ready_1",
+     "open_ready_2",
+     "open_ready_3",
+     "open_ready_4",
+     "open_ready_5",
+     "open_ready_6",
+     "open_ready_7",
+     "put_down",
+     "ready",
+     "start_ready",
+     "stopped",
+     "uncertain"
+    ],
+    "fields": [
+     "frame_id",
+     "observed_at_s",
+     "ready_until_s",
+     "robot_id",
+     "sent_at_s",
+     "seq",
+     "state",
+     "task_id"
+    ],
+    "heartbeat_s": 0.05,
+    "heartbeat_timeout_s": 0.15,
+    "readiness_ttl_s": 0.6,
+    "rendezvous_timeout_s": 5.0,
+    "control_s": 0.1,
+    "arm_s": 0.05,
+    "tasks": [],
+    "participants": [
+     "r1",
+     "r2"
+    ],
+    "roles": {
+     "r1": "end_neg",
+     "r2": "end_pos"
+    },
+    "scope": "long_beam only; independent matching submissions; no peer-state arbitration"
+   },
+   "pair_status_sha256": "a905ecc01429241116c746aa813480e2420029fd157a739d626e1352ca217a6b",
+   "order_sheet_sha256": "c590300ec14662147ae19eda49d8801473edcf08c529b8d4b195d08b911bae29",
+   "pose_provider": {
+    "pose_provider": "tags_temporary",
+    "temporary": true,
+    "research_result": false,
+    "note_ko": "임시, 표식 사용, 연구 결과 아님"
+   }
+  },
+  "conditions": [
+   "no_comm",
+   "peer_ko",
+   "leader_ko",
+   "structured"
+  ],
+  "horizon_s": 120
+ }
+}

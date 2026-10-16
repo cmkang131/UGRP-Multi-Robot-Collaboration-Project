@@ -1,0 +1,9 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_______ CiFastPathTests.test_new_commits_preserve_running_and_pending_ci _______
+tests/test_ci_fast_path.py:25: in test_new_commits_preserve_running_and_pending_ci
+    self.assertIn("  group: tests-${{ github.workflow }}-${{ github.run_id }}\n", concurrency)
+E   AssertionError: '  group: tests-${{ github.workflow }}-${{ github.run_id }}\n' not found in "  group: tests-${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.ref || github.run_id }}\n  cancel-in-progress: ${{ github.event_name == 'pull_request' }}\n"
+=========================== short test summary info ============================
+FAILED tests/test_ci_fast_path.py::CiFastPathTests::test_new_commits_preserve_running_and_pending_ci
+1 failed in 0.09s

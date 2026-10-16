@@ -1,0 +1,59 @@
+........................................................................ [ 40%]
+..............................................................F.............................................    [100%]
+=================================== FAILURES ===================================
+_________ test_team_host_isolation_abort_and_horizon_on_the_real_world _________
+
+    def test_team_host_isolation_abort_and_horizon_on_the_real_world():
+        pytest.importorskip('mujoco')
+        spec = {'map': 'zone_wide_door_tags_v2', 'seed': 703, 'goal': {'A': {'cyan': 1}, 'B': {'cyan': 1}, 'C': {'cyan': 1}},
+                'extra_boxes': {'red': 2, 'green': 1}, 'contact_profile': 'cargo_noslip_v1', 'order_sheet': SHEET}
+        student = {'mode': 'm1', 'calibration': 'experiments/2026-09-26-zone-m1-owncam/calibration_m1_dev.json',
+                   'skill_module': 'harness.wrist_zone_skill_v9', 'skill_class': 'WristZoneDeliveryV9'}
+        seen, abort = [], {}
+    
+        def layer(host, kind, event, now):
+            if kind == 'start':
+                for rid in zox.ROBOTS:
+                    host.call(rid, 'look_around')
+            else:
+                seen.append(event)
+    
+>       host = OwnCamTeamHost(spec, student, root=ROOT, study_layer=layer)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_zone_own_executor_host.py:232: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+harness/zone_own_team_host.py:71: in __init__
+    self.world = MultiMasterPiProductionV2(seed=spec['seed'], width=640, height=480, render=True,
+sim/multi_masterpi_production.py:762: in __init__
+    ) = self._render_executor.submit(self._create_renderers).result(timeout=30.0)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/concurrent/futures/_base.py:456: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/concurrent/futures/thread.py:59: in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sim/multi_masterpi_production.py:822: in _create_renderers
+    renderer = mujoco.Renderer(
+../../../Project-Runtimes/ugrp/.venv-sim-worker-mac/lib/python3.12/site-packages/mujoco/rendering/classic/renderer.py:89: in __init__
+    self._gl_context = gl_context.GLContext(width, height)  # type: ignore
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../Project-Runtimes/ugrp/.venv-sim-worker-mac/lib/python3.12/site-packages/mujoco/cgl/__init__.py:47: in __init__
+    cgl.CGLChoosePixelFormat(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (<mujoco.cgl.c_int_Array_17 object at 0x1139b8350>, <cparam 'P' (0x1139bba98)>, <cparam 'P' (0x1139b9518)>)
+
+    def checked_func(*args):
+      err = func(*args)
+      if err:
+>       raise CGLError(_CGLErrorString(err).decode())
+E       mujoco.cgl.cgl.CGLError: invalid CoreGraphics connection
+
+../../../Project-Runtimes/ugrp/.venv-sim-worker-mac/lib/python3.12/site-packages/mujoco/cgl/cgl.py:132: CGLError
+=========================== short test summary info ============================
+FAILED tests/test_zone_own_executor_host.py::test_team_host_isolation_abort_and_horizon_on_the_real_world
+1 failed, 179 passed, 177 subtests passed in 6.74s

@@ -1,0 +1,61 @@
+................................F........F.............................. [ 31%]
+..................................F..................................... [ 63%]
+........................................................................ [ 95%]
+...........                                                              [100%]
+=================================== FAILURES ===================================
+___ test_late_authorization_does_not_change_registration_or_source_receipts ____
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-pair-grasp/.pytest_tmp/test_late_authorization_does_n0')
+
+    def test_late_authorization_does_not_change_registration_or_source_receipts(tmp_path):
+        p = registered()
+        original = copy.deepcopy(p)
+        authorize(p)
+        assert auth.digest(auth.registration_payload(p)) == original['registration_sha256']
+        assert p['grasp_contract'] == original['grasp_contract']
+        assert p['scene_contract'] == original['scene_contract']
+        args = args_for(tmp_path, p)
+>       assert dev.load_config(args)[1]['seed'] == 907
+E       assert 909 == 907
+
+tests/test_zone_pair_authorization.py:67: AssertionError
+____________ test_existing_v5f_is_preserved_and_refuses_new_source _____________
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-pair-grasp/.pytest_tmp/test_existing_v5f_is_preserved0')
+
+    def test_existing_v5f_is_preserved_and_refuses_new_source(tmp_path):
+        p = json.loads(dev.PREREG_V5F.read_text())
+>       assert dev.sha_file(dev.PREREG_V5F) == registered()['supersedes']['sha256']
+E       AssertionError: assert 'a9764dded058...82c5c1f6870df' == 'fa216827dcc4...6f96d542111ca'
+E         
+E         - fa216827dcc4a6fc39f539621518f8207beaba47eaea7ef09796f96d542111ca
+E         + a9764dded0588fb871200354ff590b976c7bdd2c4524c7f1d4482c5c1f6870df
+
+tests/test_zone_pair_authorization.py:94: AssertionError
+_______ test_new_prereg_preserves_all_v3_judgement_and_uses_fresh_cohort _______
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-pair-grasp/.pytest_tmp/test_new_prereg_preserves_all_0')
+
+    def test_new_prereg_preserves_all_v3_judgement_and_uses_fresh_cohort(tmp_path):
+        from scripts import run_zone_pair_dev as dev
+        from scripts.zone_pair_grasp_contract import grasp_contract
+        old = json.loads(dev.PREREG_V3.read_text())
+        p = json.loads(dev.PREREG_V5H.read_text())
+        for key in ('criteria', 'stage_rules', 'planned_setdown', 'limits', 'timing', 'safety_coverage', 'environment', 'inputs'):
+            assert p[key] == old[key], key
+        current_grasp = grasp_contract()
+        assert p['grasp_contract'] == current_grasp
+        assert p['scene_contract'] == dev.scene_contract()
+>       assert p['registration_revision'] == 'v5g'
+E       AssertionError: assert 'v5h' == 'v5g'
+E         
+E         - v5g
+E         + v5h
+
+tests/test_zone_pair_grasp.py:221: AssertionError
+Nonphysical suite guard: {'physical_step_attempts': 0, 'real_vision_worker_attempts': 0, 'network_attempts': 0}
+=========================== short test summary info ============================
+FAILED tests/test_zone_pair_authorization.py::test_late_authorization_does_not_change_registration_or_source_receipts
+FAILED tests/test_zone_pair_authorization.py::test_existing_v5f_is_preserved_and_refuses_new_source
+FAILED tests/test_zone_pair_grasp.py::test_new_prereg_preserves_all_v3_judgement_and_uses_fresh_cohort
+3 failed, 224 passed in 6.07s

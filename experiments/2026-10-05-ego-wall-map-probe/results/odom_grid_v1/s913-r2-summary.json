@@ -1,0 +1,86 @@
+{
+  "wall_boundary_samples": 349,
+  "wall_tolerance_m": 0.15,
+  "final": {
+    "t": 61.8,
+    "occupied_cells": 286,
+    "precision_015": 0.27972027972027974,
+    "precision_cell": 0.1993006993006993,
+    "wall_coverage": 0.16045845272206305,
+    "wall_error_rmse_m": 0.8515888633326828,
+    "wall_coverage_ever": 0.24068767908309455,
+    "oracle_precision_015": 0.4562043795620438,
+    "oracle_wall_coverage": 0.2521489971346705,
+    "oracle_wall_error_rmse_m": 0.5106663387076253
+  },
+  "end_sim_s": 75.4,
+  "last_wall_sim_s": 61.8,
+  "end_position_error_m": 1.0537349481548008,
+  "end_yaw_error_deg": 0.21471967383444726,
+  "end_4m_point_error_bound_m": 1.0687252004917256,
+  "mapped_endpoint_pose_rmse_m": 0.5636829743269134,
+  "last_wall_endpoint_pose_rmse_m": 1.054622812076899,
+  "alignment": "actual grid: start GT SE(2) only; oracle grid: eval-only counterfactual per-frame GT",
+  "origin_eval_only": [
+    1.7731954362722948,
+    0.04999999400227847,
+    -3.141592648899993
+  ],
+  "robot": "r2",
+  "split": "confirmation_replay",
+  "episode": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s913/zone_wide_door_geometry_v3",
+  "source_sha": "d72236215219aba604908a5df5a3e3a9e7841476",
+  "options": {
+    "self_map": "odom_grid_v1",
+    "resolution_m": 0.1,
+    "max_range_m": 4.0,
+    "settle_s": [
+      0.25,
+      2.25
+    ],
+    "p_hit": 0.7,
+    "p_miss": 0.4,
+    "uncertainty_weight": "off",
+    "text_top_k": 6,
+    "text_max_tokens": 384
+  },
+  "calibration": {
+    "path": "experiments/2026-09-26-zone-m1-owncam/calibration_m1_dev.json",
+    "sha256": "126cadaa9265ed2ae2b034f675e67c227193a2e1678f6b0c82dd53b186e6fc72",
+    "scope": "old M1 DEV fit; no v3 refit"
+  },
+  "llm_text": "self_map: own camera, start odom (m; x forward, y left); drift uncorrected; walls (0.45,-1.35)->(2.15,-1.35); (3.85,1.15)->(3.85,2.65); (2.03,2.82)->(3.16,2.16); (2.85,-1.15)->(3.77,-0.27); (1.37,3.37)->(2.02,2.72); (3.77,1.95)->(3.69,2.75)",
+  "frames": 179,
+  "rejected": {
+    "unsettled": 0,
+    "range_segments": 19
+  },
+  "physical_runs": 0,
+  "model_calls": 0,
+  "sources": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s913/zone_wide_door_geometry_v3/robots/r2/commands.jsonl",
+      "sha256": "cd552661254a41025edad1b2a63d5134481ea42758c4e58f67fb5e58d65fff62"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s913/zone_wide_door_geometry_v3/robots/r2/frames.jsonl",
+      "sha256": "88348ab25ce5a9c12884a43577036aea62bdedef23e6e2bc3641d23b5c78edb1"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s913/zone_wide_door_geometry_v3/scene.xml",
+      "sha256": "2d2d0372882c935bd44c3341fc74c1e9b322c8ad3f40784ab77f3879f4f65df9"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s913/zone_wide_door_geometry_v3/inputs/static_map.json",
+      "sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s913/zone_wide_door_geometry_v3/eval_only/trajectory.jsonl",
+      "sha256": "ea44a20ce3cb9d52fd47c84cf08f29599416267b93e9da6571e8f23c950b07d8"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/ego-wall-map/experiments/2026-09-26-zone-m1-owncam/calibration_m1_dev.json",
+      "sha256": "126cadaa9265ed2ae2b034f675e67c227193a2e1678f6b0c82dd53b186e6fc72"
+    }
+  ]
+}

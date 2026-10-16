@@ -1,0 +1,727 @@
+{
+  "vs_v5_8ab8f7ed": {
+    "by_condition": {
+      "leader_ko": {
+        "calls_v5": 429,
+        "calls_v6": 429,
+        "ledger_matches": 6,
+        "ledger_sent": 429,
+        "request_input_identical": 6,
+        "trace_identical": 6,
+        "trials": 6
+      },
+      "no_comm": {
+        "calls_v5": 411,
+        "calls_v6": 411,
+        "ledger_matches": 6,
+        "ledger_sent": 411,
+        "request_input_identical": 6,
+        "trace_identical": 6,
+        "trials": 6
+      },
+      "peer_ko": {
+        "calls_v5": 447,
+        "calls_v6": 447,
+        "ledger_matches": 6,
+        "ledger_sent": 447,
+        "request_input_identical": 6,
+        "trace_identical": 6,
+        "trials": 6
+      },
+      "reference_R": {
+        "calls_v5": 137,
+        "calls_v6": 137,
+        "ledger_matches": 6,
+        "ledger_sent": 137,
+        "request_input_identical": 6,
+        "trace_identical": 6,
+        "trials": 6
+      },
+      "structured": {
+        "calls_v5": 447,
+        "calls_v6": 447,
+        "ledger_matches": 6,
+        "ledger_sent": 447,
+        "request_input_identical": 6,
+        "trace_identical": 6,
+        "trials": 6
+      }
+    },
+    "calls": 1871,
+    "calls_identical_apart_from_provenance": 1871,
+    "code_sha": [
+      "8ab8f7edbc78e7cb27985dfe81dde092823e01b1",
+      "9484173871ea9971784561e5ed759d5fbddc7e3a"
+    ],
+    "ledger_matches_call_log": 30,
+    "ok": true,
+    "provenance_fields_that_differ": {
+      "code_sha": [
+        [
+          "8ab8f7edbc78e7cb27985dfe81dde092823e01b1",
+          "9484173871ea9971784561e5ed759d5fbddc7e3a"
+        ]
+      ],
+      "execution_bundle_id": [
+        [
+          "zone_study_offline_v2",
+          "zone_study_offline_v3"
+        ]
+      ],
+      "model_settings_sha256": [
+        [
+          null,
+          "2334d86bdaf94516c623bd433c847653ff46bfa92fa92e281ac0cfdf1e18054a"
+        ]
+      ]
+    },
+    "raw": [
+      "/Users/changmin/projects/ugrp/outputs/zone-study-offline-smoke-v5",
+      "/Users/changmin/projects/ugrp/outputs/zone-study-offline-smoke-v6"
+    ],
+    "request_input_identical": 30,
+    "smoke_json_sha256": [
+      "d61b7e9be534d6024203c574706f4dc315bb5e82a540d5f953adbf15ccb5ad80",
+      "d61b7e9be534d6024203c574706f4dc315bb5e82a540d5f953adbf15ccb5ad80"
+    ],
+    "trace_identical": 30,
+    "trial_record_fields_that_differ": [
+      "calls",
+      "provenance",
+      "send_ledger"
+    ],
+    "trials": 30,
+    "trials_detail": [
+      {
+        "calls": [
+          72,
+          72
+        ],
+        "calls_identical_apart_from_provenance": true,
+        "condition": "leader_ko",
+        "end_reason": [
+          "sim_horizon",
+          "sim_horizon"
+        ],
+        "ledger_matches_call_log": true,
+        "ledger_sent": 72,
+        "messages": [
+          4,
+          4
+        ],
+        "request_input_identical": true,
+        "run_id": "leader_ko-s1_normal_mixed-s601",
+        "trace_identical": true
+      },
+      {
+        "calls": [
+          72,
+          72
+        ],
+        "calls_identical_apart_from_provenance": true,
+        "condition": "leader_ko",
+        "end_reason": [
+          "sim_horizon",
+          "sim_horizon"
+        ],
+        "ledger_matches_call_log": true,
+        "ledger_sent": 72,
+        "messages": [
+          4,
+          4
+        ],
+        "request_input_identical": true,
+        "run_id": "leader_ko-s2_unmapped_blockage-s611",
+        "trace_identical": true
+      },
+      {
+        "calls": [
+          72,
+          72
+        ],
+        "calls_identical_apart_from_provenance": true,
+        "condition": "leader_ko",
+        "end_reason": [
+          "sim_horizon",
+          "sim_horizon"
+        ],
+        "ledger_matches_call_log": true,
+        "ledger_sent": 72,
+        "messages": [
+          4,
+          4
+        ],
+        "request_input_identical": true,
+        "run_id": "leader_ko-s3_late_rendezvous-s621",
+        "trace_identical": true
+      },
+      {
+        "calls": [
+          69,
+          69
+        ],
+        "calls_identical_apart_from_provenance": true,
+        "condition": "leader_ko",
+        "end_reason": [
+          "sim_horizon",
+          "sim_horizon"
+        ],
+        "ledger_matches_call_log": true,
+        "ledger_sent": 69,
+        "messages": [
+          4,
+          4
+        ],
+        "request_input_identical": true,
+        "run_id": "leader_ko-s4_narrow_door_standoff-s631",
+        "trace_identical": true
+      },
+      {
+        "calls": [
+          72,
+          72
+        ],
+        "calls_identical_apart_from_provenance": true,
+        "condition": "leader_ko",
+        "end_reason": [
+          "sim_horizon",
+          "sim_horizon"
+        ],
+        "ledger_matches_call_log": true,
+        "ledger_sent": 72,
+        "messages": [
+          4,
+          4
+        ],
+        "request_input_identical": true,
+        "run_id": "leader_ko-s5_moved_dropped_item-s641",
+        "trace_identical": true
+      },
+      {
+        "calls": [
+          72,
+          72
+        ],
+        "calls_identical_apart_from_provenance": true,
+        "condition": "leader_ko",
+        "end_reason": [
+          "sim_horizon",
+          "sim_horizon"
+        ],
+        "ledger_matches_call_log": true,
+        "ledger_sent": 72,
+        "messages": [
+          4,
+          4
+        ],
+        "request_input_identical": true,
+        "run_id": "leader_ko-s6_novel_relation-s651",
+        "trace_identical": true
+      },
+      {
+        "calls": [
+          69,
+          69
+        ],
+        "calls_identical_apart_from_provenance": true,
+        "condition": "no_comm",
+        "end_reason": [
+          "sim_horizon",
+          "sim_horizon"
+        ],
+        "ledger_matches_call_log": true,
+        "ledger_sent": 69,
+        "messages": [
+          0,
+          0
+        ],
+        "request_input_identical": true,
+        "run_id": "no_comm-s1_normal_mixed-s601",
+        "trace_identical": true
+      },
+      {
+        "calls": [
+          69,
+          69
+        ],
+        "calls_identical_apart_from_provenance": true,
+        "condition": "no_comm",
+        "end_reason": [
+          "sim_horizon",
+          "sim_horizon"
+        ],
+        "ledger_matches_call_log": true,
+        "ledger_sent": 69,
+        "messages": [
+          0,
+          0
+        ],
+        "request_input_identical": true,
+        "run_id": "no_comm-s2_unmapped_blockage-s611",
+        "trace_identical": true
+      },
+      {
+        "calls": [
+          69,
+          69
+        ],
+        "calls_identical_apart_from_provenance": true,
+        "condition": "no_comm",
+        "end_reason": [
+          "sim_horizon",
+          "sim_horizon"
+        ],
+        "ledger_matches_call_log": true,
+        "ledger_sent": 69,
+        "messages": [
+          0,
+          0
+        ],
+        "request_input_identical": true,
+        "run_id": "no_comm-s3_late_rendezvous-s621",
+        "trace_identical": true
+      },
+      {
+        "calls": [
+          66,
+          66
+        ],
+        "calls_identical_apart_from_provenance": true,
+        "condition": "no_comm",
+        "end_reason": [
+          "sim_horizon",
+          "sim_horizon"
+        ],
+        "ledger_matches_call_log": true,
+        "ledger_sent": 66,
+        "messages": [
+          0,
+          0
+        ],
+        "request_input_identical": true,
+        "run_id": "no_comm-s4_narrow_door_standoff-s631",
+        "trace_identical": true
+      },
+      {
+        "calls": [
+          69,
+          69
+        ],
+        "calls_identical_apart_from_provenance": true,
+        "condition": "no_comm",
+        "end_reason": [
+          "sim_horizon",
+          "sim_horizon"
+        ],
+        "ledger_matches_call_log": true,
+        "ledger_sent": 69,
+        "messages": [
+          0,
+          0
+        ],
+        "request_input_identical": true,
+        "run_id": "no_comm-s5_moved_dropped_item-s641",
+        "trace_identical": true
+      },
+      {
+        "calls": [
+          69,
+          69
+        ],
+        "calls_identical_apart_from_provenance": true,
+        "condition": "no_comm",
+        "end_reason": [
+          "sim_horizon",
+          "sim_horizon"
+        ],
+        "ledger_matches_call_log": true,
+        "ledger_sent": 69,
+        "messages": [
+          0,
+          0
+        ],
+        "request_input_identical": true,
+        "run_id": "no_comm-s6_novel_relation-s651",
+        "trace_identical": true
+      },
+      {
+        "calls": [
+          75,
+          75
+        ],
+        "calls_identical_apart_from_provenance": true,
+        "condition": "peer_ko",
+        "end_reason": [
+          "sim_horizon",
+          "sim_horizon"
+        ],
+        "ledger_matches_call_log": true,
+        "ledger_sent": 75,
+        "messages": [
+          3,
+          3
+        ],
+        "request_input_identical": true,
+        "run_id": "peer_ko-s1_normal_mixed-s601",
+        "trace_identical": true
+      },
+      {
+        "calls": [
+          75,
+          75
+        ],
+        "calls_identical_apart_from_provenance": true,
+        "condition": "peer_ko",
+        "end_reason": [
+          "sim_horizon",
+          "sim_horizon"
+        ],
+        "ledger_matches_call_log": true,
+        "ledger_sent": 75,
+        "messages": [
+          3,
+          3
+        ],
+        "request_input_identical": true,
+        "run_id": "peer_ko-s2_unmapped_blockage-s611",
+        "trace_identical": true
+      },
+      {
+        "calls": [
+          75,
+          75
+        ],
+        "calls_identical_apart_from_provenance": true,
+        "condition": "peer_ko",
+        "end_reason": [
+          "sim_horizon",
+          "sim_horizon"
+        ],
+        "ledger_matches_call_log": true,
+        "ledger_sent": 75,
+        "messages": [
+          3,
+          3
+        ],
+        "request_input_identical": true,
+        "run_id": "peer_ko-s3_late_rendezvous-s621",
+        "trace_identical": true
+      },
+      {
+        "calls": [
+          72,
+          72
+        ],
+        "calls_identical_apart_from_provenance": true,
+        "condition": "peer_ko",
+        "end_reason": [
+          "sim_horizon",
+          "sim_horizon"
+        ],
+        "ledger_matches_call_log": true,
+        "ledger_sent": 72,
+        "messages": [
+          3,
+          3
+        ],
+        "request_input_identical": true,
+        "run_id": "peer_ko-s4_narrow_door_standoff-s631",
+        "trace_identical": true
+      },
+      {
+        "calls": [
+          75,
+          75
+        ],
+        "calls_identical_apart_from_provenance": true,
+        "condition": "peer_ko",
+        "end_reason": [
+          "sim_horizon",
+          "sim_horizon"
+        ],
+        "ledger_matches_call_log": true,
+        "ledger_sent": 75,
+        "messages": [
+          3,
+          3
+        ],
+        "request_input_identical": true,
+        "run_id": "peer_ko-s5_moved_dropped_item-s641",
+        "trace_identical": true
+      },
+      {
+        "calls": [
+          75,
+          75
+        ],
+        "calls_identical_apart_from_provenance": true,
+        "condition": "peer_ko",
+        "end_reason": [
+          "sim_horizon",
+          "sim_horizon"
+        ],
+        "ledger_matches_call_log": true,
+        "ledger_sent": 75,
+        "messages": [
+          3,
+          3
+        ],
+        "request_input_identical": true,
+        "run_id": "peer_ko-s6_novel_relation-s651",
+        "trace_identical": true
+      },
+      {
+        "calls": [
+          23,
+          23
+        ],
+        "calls_identical_apart_from_provenance": true,
+        "condition": "reference_R",
+        "end_reason": [
+          "sim_horizon",
+          "sim_horizon"
+        ],
+        "ledger_matches_call_log": true,
+        "ledger_sent": 23,
+        "messages": [
+          0,
+          0
+        ],
+        "request_input_identical": true,
+        "run_id": "reference_R-s1_normal_mixed-s601",
+        "trace_identical": true
+      },
+      {
+        "calls": [
+          23,
+          23
+        ],
+        "calls_identical_apart_from_provenance": true,
+        "condition": "reference_R",
+        "end_reason": [
+          "sim_horizon",
+          "sim_horizon"
+        ],
+        "ledger_matches_call_log": true,
+        "ledger_sent": 23,
+        "messages": [
+          0,
+          0
+        ],
+        "request_input_identical": true,
+        "run_id": "reference_R-s2_unmapped_blockage-s611",
+        "trace_identical": true
+      },
+      {
+        "calls": [
+          23,
+          23
+        ],
+        "calls_identical_apart_from_provenance": true,
+        "condition": "reference_R",
+        "end_reason": [
+          "sim_horizon",
+          "sim_horizon"
+        ],
+        "ledger_matches_call_log": true,
+        "ledger_sent": 23,
+        "messages": [
+          0,
+          0
+        ],
+        "request_input_identical": true,
+        "run_id": "reference_R-s3_late_rendezvous-s621",
+        "trace_identical": true
+      },
+      {
+        "calls": [
+          22,
+          22
+        ],
+        "calls_identical_apart_from_provenance": true,
+        "condition": "reference_R",
+        "end_reason": [
+          "sim_horizon",
+          "sim_horizon"
+        ],
+        "ledger_matches_call_log": true,
+        "ledger_sent": 22,
+        "messages": [
+          0,
+          0
+        ],
+        "request_input_identical": true,
+        "run_id": "reference_R-s4_narrow_door_standoff-s631",
+        "trace_identical": true
+      },
+      {
+        "calls": [
+          23,
+          23
+        ],
+        "calls_identical_apart_from_provenance": true,
+        "condition": "reference_R",
+        "end_reason": [
+          "sim_horizon",
+          "sim_horizon"
+        ],
+        "ledger_matches_call_log": true,
+        "ledger_sent": 23,
+        "messages": [
+          0,
+          0
+        ],
+        "request_input_identical": true,
+        "run_id": "reference_R-s5_moved_dropped_item-s641",
+        "trace_identical": true
+      },
+      {
+        "calls": [
+          23,
+          23
+        ],
+        "calls_identical_apart_from_provenance": true,
+        "condition": "reference_R",
+        "end_reason": [
+          "sim_horizon",
+          "sim_horizon"
+        ],
+        "ledger_matches_call_log": true,
+        "ledger_sent": 23,
+        "messages": [
+          0,
+          0
+        ],
+        "request_input_identical": true,
+        "run_id": "reference_R-s6_novel_relation-s651",
+        "trace_identical": true
+      },
+      {
+        "calls": [
+          75,
+          75
+        ],
+        "calls_identical_apart_from_provenance": true,
+        "condition": "structured",
+        "end_reason": [
+          "sim_horizon",
+          "sim_horizon"
+        ],
+        "ledger_matches_call_log": true,
+        "ledger_sent": 75,
+        "messages": [
+          3,
+          3
+        ],
+        "request_input_identical": true,
+        "run_id": "structured-s1_normal_mixed-s601",
+        "trace_identical": true
+      },
+      {
+        "calls": [
+          75,
+          75
+        ],
+        "calls_identical_apart_from_provenance": true,
+        "condition": "structured",
+        "end_reason": [
+          "sim_horizon",
+          "sim_horizon"
+        ],
+        "ledger_matches_call_log": true,
+        "ledger_sent": 75,
+        "messages": [
+          3,
+          3
+        ],
+        "request_input_identical": true,
+        "run_id": "structured-s2_unmapped_blockage-s611",
+        "trace_identical": true
+      },
+      {
+        "calls": [
+          75,
+          75
+        ],
+        "calls_identical_apart_from_provenance": true,
+        "condition": "structured",
+        "end_reason": [
+          "sim_horizon",
+          "sim_horizon"
+        ],
+        "ledger_matches_call_log": true,
+        "ledger_sent": 75,
+        "messages": [
+          3,
+          3
+        ],
+        "request_input_identical": true,
+        "run_id": "structured-s3_late_rendezvous-s621",
+        "trace_identical": true
+      },
+      {
+        "calls": [
+          72,
+          72
+        ],
+        "calls_identical_apart_from_provenance": true,
+        "condition": "structured",
+        "end_reason": [
+          "sim_horizon",
+          "sim_horizon"
+        ],
+        "ledger_matches_call_log": true,
+        "ledger_sent": 72,
+        "messages": [
+          3,
+          3
+        ],
+        "request_input_identical": true,
+        "run_id": "structured-s4_narrow_door_standoff-s631",
+        "trace_identical": true
+      },
+      {
+        "calls": [
+          75,
+          75
+        ],
+        "calls_identical_apart_from_provenance": true,
+        "condition": "structured",
+        "end_reason": [
+          "sim_horizon",
+          "sim_horizon"
+        ],
+        "ledger_matches_call_log": true,
+        "ledger_sent": 75,
+        "messages": [
+          3,
+          3
+        ],
+        "request_input_identical": true,
+        "run_id": "structured-s5_moved_dropped_item-s641",
+        "trace_identical": true
+      },
+      {
+        "calls": [
+          75,
+          75
+        ],
+        "calls_identical_apart_from_provenance": true,
+        "condition": "structured",
+        "end_reason": [
+          "sim_horizon",
+          "sim_horizon"
+        ],
+        "ledger_matches_call_log": true,
+        "ledger_sent": 75,
+        "messages": [
+          3,
+          3
+        ],
+        "request_input_identical": true,
+        "run_id": "structured-s6_novel_relation-s651",
+        "trace_identical": true
+      }
+    ]
+  }
+}

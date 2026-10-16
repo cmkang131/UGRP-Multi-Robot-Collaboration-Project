@@ -20,10 +20,16 @@ cd "$project_dir"
 # No arguments opens terminal mode selection plus the native research scene.
 if [[ $# -eq 0 ]]; then set -- start; fi
 runner="$sim_python"
-if [[ "$(uname -s)" == Darwin && ( "$1" == run || "$1" == console || "$1" == start || "$1" == dispatch ) ]]; then
+if [[ "$(uname -s)" == Darwin && ( "$1" == run || "$1" == console || "$1" == start || "$1" == dispatch || "$1" == replay ) ]]; then
   headless=false
-  for arg in "$@"; do [[ "$arg" == --headless ]] && headless=true; done
-  if [[ "$headless" == false ]]; then
+  isolated_viewer=false
+  for arg in "$@"; do
+    [[ "$arg" == --headless ]] && headless=true
+    [[ "$1" == dispatch && "$arg" == --realtime-control ]] && isolated_viewer=true
+  done
+  # Realtime dispatch starts its own mjpython observer. Its physics owner must
+  # stay in ordinary Python instead of creating a second Cocoa application.
+  if [[ "$headless" == false && "$isolated_viewer" == false ]]; then
     runner="$(dirname -- "$sim_python")/mjpython"
     if [[ ! -x "$runner" ]]; then
       echo 'MuJoCo macOS viewer needs mjpython next to the selected Python. Install requirements-sim.txt.' >&2

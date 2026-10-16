@@ -1,0 +1,16 @@
+{
+  "schema": "ugrp.v6h_blinded_analysis_gate.v1",
+  "state": "sealed",
+  "policy": "b-v6h1",
+  "execution_source_sha": "4c6b439f3f7c9a147c901f8b260a1e214d4eb396",
+  "primary": {"seed": 941, "placements": 60, "minimum_pass": 48, "pass_classes": ["PASS_CLEAN", "PASS_CONTACT_RECOVERED"], "claim": "observed fixed-cohort rate; not population success >=80%"},
+  "sensitivity": {"seed": 943, "placements": 12, "selection": "first 12 fixed seed-941 placements", "pool_with_primary": false},
+  "safety": {"whole_chain": true, "include_teacher": true, "hard_limits_first": true, "max_penetration_m": 0.005, "max_tilt_deg": 15, "maximum_hard_limit_cases_any_seed": 0},
+  "sigma_B": {"primary_seed": 941, "legs": ["L0", "L1"], "axes": ["x", "y", "yaw"], "minimum_cov2sigma": 0.9, "maximum_mean_z2": 1.3, "all_six_required": true},
+  "diagnostic_C": "report-only",
+  "missing_rule": {"HOST_ERROR": "UNCLASSIFIED", "ENOSPC": "UNCLASSIFIED", "missing_primary": "UNCLASSIFIED", "invalid_evidence": "UNCLASSIFIED", "denominator": 60, "unclassified_blocks_pass": true, "missing_primary_blocks_wilson": true},
+  "retry": "at most one same-placement/seed/config HOST_SAFE retry; preserve all originals and hard violations; this committed cohort metadata records zero retries",
+  "admission": "analysis sealed after blinded recording; preserve unsealed_stage_probe execution admission",
+  "classifier": "analysis/classify_placements.py at 1f0e4eb501a8f1b87077df943382fc1f0777dc69",
+  "definitions": "analysis/CLASSIFY_NOTES.md; final D1-D5 / reviews 299-299g"
+}

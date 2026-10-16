@@ -1,0 +1,91 @@
+{
+  "head_before_merge": "386afaee24a790f2ac33cb84d5bd0943cd299c02",
+  "integrated_main": "f3fbbf9a08c0ba96b22858b573ab5d4da52e9011",
+  "tested_tree": "3293bf499acdf812553cf5630fc4ecae29804e11",
+  "unchanged_from_reviewed_head": {
+    "harness/zone_static_door_routes.py": "cec5fd95847496d5492b73dba67bf4393eef0c57394510ee7d2a22e597d9d24c",
+    "tests/test_zone_own_executor_door_routes.py": "9d4e213efb6834e72265132f8b6aa94588879fe8945e1fe9713a7f00ac3befd9",
+    "harness/static_keepouts.py": "2b4faf26317f45cbdd7cb2deab8fae87a9e460f96778c8af185ec2ac00d57aa3",
+    "harness/zone_team_footprint.py": "a482d6fdbd42f74fc47178779fc55fe3be6a6f6c168d0b7a385fc399fb575e0b",
+    "harness/zone_team_footprint_v3.py": "916a8f5021f47c9e01ec79589fbe8df5840c55fee8adff49e3f9e6e3b50ebff2"
+  },
+  "conflict_resolution": {
+    "experiments/2026-09-30-p08-stall-contract/README.md": "origin/main verbatim"
+  },
+  "api_adaptations": [],
+  "main_base_preserved_except_t09a": [
+    "harness/zone_static_door_routes.py",
+    "tests/test_zone_own_executor_door_routes.py"
+  ],
+  "workflow_paths": [
+    ".github/workflows/tests.yml"
+  ],
+  "scope": "local offline tests only; no physics, rendering, model calls, host lock, Drive or extraction directories",
+  "raw_root": "/Users/changmin/projects/ugrp/outputs/2026-10-01-t09a-main-sync-01",
+  "by_module": {
+    "tests.test_zone_own_executor_door_routes": 76,
+    "tests.test_pair_passage_plan": 44,
+    "tests.test_zone_team_jobs": 41,
+    "tests.test_zone_hard_routes": 1,
+    "tests.test_zone_final_env": 3,
+    "tests.test_zone_pair_registered_source": 22,
+    "tests.test_zone_study_source_pinning": 34,
+    "tests.test_ci_fast_path.CiFastPathTests": 10,
+    "tests.test_zone_own_executor_corridor_contract": 55,
+    "tests.test_zone_own_executor_corridor_control": 78
+  },
+  "subtests_passed": 280,
+  "command": {
+    "cwd": "/Users/changmin/projects/ugrp-wt/cap-t09a-two-door",
+    "argv": [
+      "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+      "experiments/2026-09-30-two-door-route-interface/review_f314_1/verify.py",
+      "--output",
+      "/Users/changmin/projects/ugrp/outputs/2026-10-01-t09a-main-sync-01/related",
+      "tests/test_zone_own_executor_door_routes.py",
+      "tests/test_pair_passage_plan.py",
+      "tests/test_zone_team_jobs.py",
+      "tests/test_zone_hard_routes.py::test_rect_keepouts_rotated_and_footprint_interface",
+      "tests/test_zone_final_env.py::test_v1_scenarios_and_tag_maps_are_unchanged",
+      "tests/test_zone_final_env.py::test_catalog_matches_the_files_and_pins_every_hash",
+      "tests/test_zone_pair_registered_source.py",
+      "tests/test_zone_study_source_pinning.py",
+      "tests/test_ci_fast_path.py",
+      "tests/test_zone_own_executor_corridor_contract.py",
+      "tests/test_zone_own_executor_corridor_control.py",
+      "tests/test_zone_final_env.py::test_blocking_the_narrow_door_leaves_the_wide_door"
+    ]
+  },
+  "sealed_sources_matched": 85,
+  "protected_file_count": 88,
+  "protected_files_unchanged": true,
+  "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+  "load_start": [
+    16.46923828125,
+    20.28369140625,
+    20.943359375
+  ],
+  "load_end": [
+    15.73095703125,
+    19.3095703125,
+    20.5166015625
+  ],
+  "raw_sha256": {
+    "command.json": "3bbccb87926144f409c820cc283578a1d222b4abf2cdaf1fcad955ff5a8b7dc6",
+    "related/junit.xml": "52cf1c20feac140efdb823aaf33d5cce9d1ecc338a927bff3985538fe7474998",
+    "related/manifest.json": "e0f3e8a8bbcbc3b4ca2c43c6ad150974bd16c0bf75a9de12963fecf75911334e",
+    "related.log": "e5a78638c7fa88013baf5a78180dc4d453feed7651ba99dcbd6c3f71348a56a8",
+    "source-audit.json": "82d0ff2be473659a13c23ab2a8a52f4d3edf3b225ca291a04929c828d07e83e2"
+  },
+  "junit_suite": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "644",
+    "time": "80.328",
+    "timestamp": "2026-10-01T03:45:17.649252+09:00",
+    "hostname": "gangchangmin-ui-MacBookAir.local"
+  },
+  "tests_passed": 364
+}

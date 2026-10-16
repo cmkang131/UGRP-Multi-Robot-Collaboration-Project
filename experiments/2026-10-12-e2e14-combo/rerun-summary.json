@@ -1,0 +1,1113 @@
+{
+  "status": "RUNNING",
+  "updated_unix": 1791785500.3408356,
+  "source_sha": "cc8fc1a2e62d7f331b732e1261be55c70c016355",
+  "branch": "claude/e2e14-combo",
+  "pr": 446,
+  "class": "dev",
+  "host": "azure3",
+  "vm": "ugrp-sim-azure3",
+  "size": "Standard_D16as_v6",
+  "provisioning_pr": 449,
+  "execution_config_revision": "vm3-relay-r2",
+  "groups": {
+    "a": "e2e-combo14-vo2-v205",
+    "b": "e2e-stall-budget-v199"
+  },
+  "exact_speed_toggles": "off both arms",
+  "wall_cap_s": 25200,
+  "workflow_timeout_s": 25200,
+  "seeds": [
+    61001,
+    61002,
+    61003
+  ],
+  "relay_ports": {
+    "mac": 18394,
+    "vm3": 18393
+  },
+  "monitoring": {
+    "initial_s": 205,
+    "health_interval_s": 600,
+    "exception_poll_s": 5,
+    "raw_records": "initial-health.json, progress-checks.jsonl, latest-health.json, final-health.json inside each run",
+    "latest_remote_checks": "Each run passed 15 checks by 2026-10-12 06:07 UTC; remote observer continued during Mac SSH interruption. Exact intervals are in progress-checks.jsonl."
+  },
+  "count": {
+    "N": 6,
+    "submitted": 6,
+    "completed": 0,
+    "all_three": 0,
+    "LLM_operated": 6,
+    "own_map_completed": 0,
+    "start_to_finish_transport": 0,
+    "initial_health_passed": 6
+  },
+  "runs": [
+    {
+      "run": "e2e15r2-a-s61001",
+      "group": "a",
+      "seed": 61001,
+      "exit": null,
+      "status": "RUNNING",
+      "conditions": {
+        "LLM_operated": true,
+        "own_map_completed": false,
+        "start_to_finish_transport": false
+      },
+      "all_three": false,
+      "furthest_phase_entered": "B_candidate",
+      "milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 23.56457392599998
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 23.56457392599998
+        },
+        "B_candidate": {
+          "sim_s": 2.4,
+          "wall_s": 39.718440739000016,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        },
+        "B_view_approach": {
+          "sim_s": 9.6,
+          "wall_s": 106.28184767599998,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        }
+      },
+      "initial_health": {
+        "passed": true,
+        "elapsed_s": 205.15714597702026,
+        "checks": {
+          "first_model_response": true,
+          "sim_frames_increase": true,
+          "actual_movement": true,
+          "straight_commands": true,
+          "mapping_entered": true,
+          "no_exception": true,
+          "vo_recorded": true
+        }
+      },
+      "last_health": {
+        "unix": 1791785233.0988207,
+        "elapsed_s": 8657.784603357315,
+        "no_traceback": true,
+        "sim_s": 533.0
+      },
+      "sim_s": 543.0,
+      "wall_s": 8911.849384763,
+      "model_calls": 3,
+      "model_cost": {
+        "calls": 0,
+        "known_cost_usd": 0,
+        "missing_cost_calls": 0
+      },
+      "failure": null,
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e15r2-a-s61001/e2e15-a-s61001/raw",
+      "archive": {},
+      "fetch_lite": {
+        "path": null,
+        "checksum_verified": null,
+        "files": null,
+        "bytes": null
+      },
+      "robot_diagnostics": {
+        "r1": {
+          "frames": 2666,
+          "forward_commands": 1867,
+          "actual_displacement_m": 5.525392831159985,
+          "control_error_m": {
+            "n": 2666,
+            "max": 2.248879842711854,
+            "median": 1.0999683944199594
+          },
+          "map_error_m": {
+            "n": 2666,
+            "max": 10.806645769411878,
+            "median": 7.598446715298952
+          },
+          "candidate_first_sim_s": 2.4,
+          "boundary_accepted_frames": 10,
+          "boundary_view": {
+            "option": "candidate_views_v1",
+            "pending": true,
+            "active": false,
+            "attempted": 3,
+            "max_views": 3,
+            "phase": null
+          },
+          "latest_boundary_rejections": {
+            "area_below_100": 57,
+            "not_convex_quad": 1
+          },
+          "vo_counts": {
+            "measured": 1678,
+            "fused": 1240,
+            "vo_replaced": 438,
+            "unknown": 987,
+            "unapplied": 274,
+            "substep_mismatch": 0,
+            "gate_zero": 0
+          },
+          "vo_applied_fraction": 0.5266316579144786
+        },
+        "r2": {
+          "frames": 2666,
+          "forward_commands": 1795,
+          "actual_displacement_m": 4.118713757104926,
+          "control_error_m": {
+            "n": 2666,
+            "max": 5.744715189035828,
+            "median": 2.5674221362783314
+          },
+          "map_error_m": {
+            "n": 2666,
+            "max": 6.812512016718187,
+            "median": 6.4346206313975545
+          },
+          "candidate_first_sim_s": 88.8,
+          "boundary_accepted_frames": 27,
+          "boundary_view": {
+            "option": "candidate_views_v1",
+            "pending": true,
+            "active": false,
+            "attempted": 3,
+            "max_views": 3,
+            "phase": null
+          },
+          "latest_boundary_rejections": {
+            "area_below_100": 103,
+            "white_islands_not_three": 1
+          },
+          "vo_counts": {
+            "measured": 1456,
+            "fused": 889,
+            "vo_replaced": 567,
+            "unknown": 1206,
+            "unapplied": 24,
+            "substep_mismatch": 0,
+            "gate_zero": 3
+          },
+          "vo_applied_fraction": 0.5382595648912228
+        }
+      },
+      "wall_per_sim": 16.412245644130756
+    },
+    {
+      "run": "e2e15r2-b-s61001",
+      "group": "b",
+      "seed": 61001,
+      "exit": null,
+      "status": "RUNNING",
+      "conditions": {
+        "LLM_operated": true,
+        "own_map_completed": false,
+        "start_to_finish_transport": false
+      },
+      "all_three": false,
+      "furthest_phase_entered": "B_candidate",
+      "milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 22.846706127999994
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 22.846706127999994
+        },
+        "B_candidate": {
+          "sim_s": 2.4,
+          "wall_s": 38.19660501100003,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        }
+      },
+      "initial_health": {
+        "passed": true,
+        "elapsed_s": 205.18520593643188,
+        "checks": {
+          "first_model_response": true,
+          "sim_frames_increase": true,
+          "actual_movement": true,
+          "straight_commands": true,
+          "mapping_entered": true,
+          "no_exception": true
+        }
+      },
+      "last_health": {
+        "unix": 1791785234.0778806,
+        "elapsed_s": 8658.762469768524,
+        "no_traceback": true,
+        "sim_s": 563.0
+      },
+      "sim_s": 573.0,
+      "wall_s": 8910.73489018,
+      "model_calls": 3,
+      "model_cost": {
+        "calls": 0,
+        "known_cost_usd": 0,
+        "missing_cost_calls": 0
+      },
+      "failure": null,
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e15r2-b-s61001/e2e15-b-s61001/raw",
+      "archive": {},
+      "fetch_lite": {
+        "path": null,
+        "checksum_verified": null,
+        "files": null,
+        "bytes": null
+      },
+      "robot_diagnostics": {
+        "r1": {
+          "frames": 2816,
+          "forward_commands": 299,
+          "actual_displacement_m": 2.5328029748113505,
+          "control_error_m": {
+            "n": 2816,
+            "max": 0.5653240278446475,
+            "median": 0.5649838504535261
+          },
+          "map_error_m": {
+            "n": 2816,
+            "max": 1.8151353090365123,
+            "median": 1.7918412013057838
+          },
+          "candidate_first_sim_s": 2.4,
+          "boundary_accepted_frames": 0,
+          "boundary_view": null,
+          "latest_boundary_rejections": {},
+          "vo_counts": null,
+          "vo_applied_fraction": 0.0
+        },
+        "r2": {
+          "frames": 2816,
+          "forward_commands": 2294,
+          "actual_displacement_m": 3.0862819203473957,
+          "control_error_m": {
+            "n": 2816,
+            "max": 7.429144262297957,
+            "median": 4.131118077525288
+          },
+          "map_error_m": {
+            "n": 2816,
+            "max": 6.892163818920005,
+            "median": 3.3568637610351386
+          },
+          "candidate_first_sim_s": 116.4,
+          "boundary_accepted_frames": 0,
+          "boundary_view": null,
+          "latest_boundary_rejections": {},
+          "vo_counts": null,
+          "vo_applied_fraction": 0.0
+        }
+      },
+      "wall_per_sim": 15.551020750750435
+    },
+    {
+      "run": "e2e15r2-a-s61002",
+      "group": "a",
+      "seed": 61002,
+      "exit": null,
+      "status": "RUNNING",
+      "conditions": {
+        "LLM_operated": true,
+        "own_map_completed": false,
+        "start_to_finish_transport": false
+      },
+      "all_three": false,
+      "furthest_phase_entered": "B_candidate",
+      "milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 24.04674895400001
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 24.04674895400001
+        },
+        "B_candidate": {
+          "sim_s": 4.4,
+          "wall_s": 56.882766756000024,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        },
+        "B_view_approach": {
+          "sim_s": 26.4,
+          "wall_s": 242.591642658,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        }
+      },
+      "initial_health": {
+        "passed": true,
+        "elapsed_s": 205.23525524139404,
+        "checks": {
+          "first_model_response": true,
+          "sim_frames_increase": true,
+          "actual_movement": true,
+          "straight_commands": true,
+          "mapping_entered": true,
+          "no_exception": true,
+          "vo_recorded": true
+        }
+      },
+      "last_health": {
+        "unix": 1791785235.5121455,
+        "elapsed_s": 8660.195937871933,
+        "no_traceback": true,
+        "sim_s": 501.0
+      },
+      "sim_s": 510.0,
+      "wall_s": 8908.716425597,
+      "model_calls": 3,
+      "model_cost": {
+        "calls": 0,
+        "known_cost_usd": 0,
+        "missing_cost_calls": 0
+      },
+      "failure": null,
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e15r2-a-s61002/e2e15-a-s61002/raw",
+      "archive": {},
+      "fetch_lite": {
+        "path": null,
+        "checksum_verified": null,
+        "files": null,
+        "bytes": null
+      },
+      "robot_diagnostics": {
+        "r1": {
+          "frames": 2506,
+          "forward_commands": 841,
+          "actual_displacement_m": 1.903925430260079,
+          "control_error_m": {
+            "n": 2506,
+            "max": 0.9270086195739572,
+            "median": 0.8776421885702643
+          },
+          "map_error_m": {
+            "n": 2506,
+            "max": 1.6121614932744963,
+            "median": 1.6118981107186867
+          },
+          "candidate_first_sim_s": 4.4,
+          "boundary_accepted_frames": 6,
+          "boundary_view": {
+            "option": "candidate_views_v1",
+            "pending": true,
+            "active": false,
+            "attempted": 3,
+            "max_views": 3,
+            "phase": null
+          },
+          "latest_boundary_rejections": {
+            "area_below_100": 70,
+            "white_islands_not_three": 1,
+            "not_convex_quad": 2
+          },
+          "vo_counts": {
+            "measured": 2226,
+            "fused": 2022,
+            "vo_replaced": 204,
+            "unknown": 279,
+            "unapplied": 1399,
+            "substep_mismatch": 0,
+            "gate_zero": 0
+          },
+          "vo_applied_fraction": 0.33000798084596966
+        },
+        "r2": {
+          "frames": 2506,
+          "forward_commands": 654,
+          "actual_displacement_m": 3.992966683591082,
+          "control_error_m": {
+            "n": 2506,
+            "max": 0.4658311650736626,
+            "median": 0.23588981046187224
+          },
+          "map_error_m": {
+            "n": 2506,
+            "max": 0.569028169320969,
+            "median": 0.46857159058565445
+          },
+          "candidate_first_sim_s": 120.6,
+          "boundary_accepted_frames": 11,
+          "boundary_view": {
+            "option": "candidate_views_v1",
+            "pending": true,
+            "active": false,
+            "attempted": 3,
+            "max_views": 3,
+            "phase": null
+          },
+          "latest_boundary_rejections": {
+            "area_below_100": 48,
+            "not_convex_quad": 1
+          },
+          "vo_counts": {
+            "measured": 2333,
+            "fused": 2121,
+            "vo_replaced": 212,
+            "unknown": 172,
+            "unapplied": 1632,
+            "substep_mismatch": 0,
+            "gate_zero": 0
+          },
+          "vo_applied_fraction": 0.2797286512370311
+        }
+      },
+      "wall_per_sim": 17.468071422739214
+    },
+    {
+      "run": "e2e15r2-b-s61002",
+      "group": "b",
+      "seed": 61002,
+      "exit": null,
+      "status": "RUNNING",
+      "conditions": {
+        "LLM_operated": true,
+        "own_map_completed": false,
+        "start_to_finish_transport": false
+      },
+      "all_three": false,
+      "furthest_phase_entered": "B_candidate",
+      "milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 23.012319838999986
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 23.012319838999986
+        },
+        "B_candidate": {
+          "sim_s": 2.4,
+          "wall_s": 38.42516706399999,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        }
+      },
+      "initial_health": {
+        "passed": true,
+        "elapsed_s": 205.25941967964172,
+        "checks": {
+          "first_model_response": true,
+          "sim_frames_increase": true,
+          "actual_movement": true,
+          "straight_commands": true,
+          "mapping_entered": true,
+          "no_exception": true
+        }
+      },
+      "last_health": {
+        "unix": 1791785236.2606122,
+        "elapsed_s": 8660.943681955338,
+        "no_traceback": true,
+        "sim_s": 485.0
+      },
+      "sim_s": 492.0,
+      "wall_s": 8890.478694371,
+      "model_calls": 3,
+      "model_cost": {
+        "calls": 0,
+        "known_cost_usd": 0,
+        "missing_cost_calls": 0
+      },
+      "failure": null,
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e15r2-b-s61002/e2e15-b-s61002/raw",
+      "archive": {},
+      "fetch_lite": {
+        "path": null,
+        "checksum_verified": null,
+        "files": null,
+        "bytes": null
+      },
+      "robot_diagnostics": {
+        "r1": {
+          "frames": 2426,
+          "forward_commands": 2087,
+          "actual_displacement_m": 3.4466806202138125,
+          "control_error_m": {
+            "n": 2426,
+            "max": 5.0103664931865906,
+            "median": 1.5911122146303038
+          },
+          "map_error_m": {
+            "n": 2426,
+            "max": 4.263945247339804,
+            "median": 0.8769313848773244
+          },
+          "candidate_first_sim_s": 2.4,
+          "boundary_accepted_frames": 0,
+          "boundary_view": null,
+          "latest_boundary_rejections": {},
+          "vo_counts": null,
+          "vo_applied_fraction": 0.0
+        },
+        "r2": {
+          "frames": 2426,
+          "forward_commands": 2022,
+          "actual_displacement_m": 3.498159148324164,
+          "control_error_m": {
+            "n": 2426,
+            "max": 6.224311512865857,
+            "median": 2.7360291076951757
+          },
+          "map_error_m": {
+            "n": 2426,
+            "max": 6.694481365252879,
+            "median": 2.779493023886422
+          },
+          "candidate_first_sim_s": 121.0,
+          "boundary_accepted_frames": 0,
+          "boundary_view": null,
+          "latest_boundary_rejections": {},
+          "vo_counts": null,
+          "vo_applied_fraction": 0.0
+        }
+      },
+      "wall_per_sim": 18.070078647095528
+    },
+    {
+      "run": "e2e15r2-a-s61003",
+      "group": "a",
+      "seed": 61003,
+      "exit": null,
+      "status": "RUNNING",
+      "conditions": {
+        "LLM_operated": true,
+        "own_map_completed": false,
+        "start_to_finish_transport": false
+      },
+      "all_three": false,
+      "furthest_phase_entered": "B_candidate",
+      "milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 24.563539144999993
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 24.563539144999993
+        },
+        "B_candidate": {
+          "sim_s": 2.4,
+          "wall_s": 41.39164820000002,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        },
+        "B_view_approach": {
+          "sim_s": 9.6,
+          "wall_s": 108.15446093000003,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        }
+      },
+      "initial_health": {
+        "passed": true,
+        "elapsed_s": 205.30640578269958,
+        "checks": {
+          "first_model_response": true,
+          "sim_frames_increase": true,
+          "actual_movement": true,
+          "straight_commands": true,
+          "mapping_entered": true,
+          "no_exception": true,
+          "vo_recorded": true
+        }
+      },
+      "last_health": {
+        "unix": 1791785237.919274,
+        "elapsed_s": 8662.601642131805,
+        "no_traceback": true,
+        "sim_s": 523.0
+      },
+      "sim_s": 531.0,
+      "wall_s": 8915.994559671999,
+      "model_calls": 3,
+      "model_cost": {
+        "calls": 0,
+        "known_cost_usd": 0,
+        "missing_cost_calls": 0
+      },
+      "failure": null,
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e15r2-a-s61003/e2e15-a-s61003/raw",
+      "archive": {},
+      "fetch_lite": {
+        "path": null,
+        "checksum_verified": null,
+        "files": null,
+        "bytes": null
+      },
+      "robot_diagnostics": {
+        "r1": {
+          "frames": 2616,
+          "forward_commands": 2187,
+          "actual_displacement_m": 3.838328167964536,
+          "control_error_m": {
+            "n": 2616,
+            "max": 1.9104304964748189,
+            "median": 1.0913635725664483
+          },
+          "map_error_m": {
+            "n": 2616,
+            "max": 3.6529814086062613,
+            "median": 1.5345855457266901
+          },
+          "candidate_first_sim_s": 2.4,
+          "boundary_accepted_frames": 59,
+          "boundary_view": {
+            "option": "candidate_views_v1",
+            "pending": true,
+            "active": false,
+            "attempted": 3,
+            "max_views": 3,
+            "phase": null
+          },
+          "latest_boundary_rejections": {
+            "area_below_100": 49,
+            "white_islands_not_three": 1
+          },
+          "vo_counts": {
+            "measured": 1668,
+            "fused": 1388,
+            "vo_replaced": 280,
+            "unknown": 947,
+            "unapplied": 3,
+            "substep_mismatch": 0,
+            "gate_zero": 0
+          },
+          "vo_applied_fraction": 0.6364678899082569
+        },
+        "r2": {
+          "frames": 2616,
+          "forward_commands": 1245,
+          "actual_displacement_m": 3.0984565107572934,
+          "control_error_m": {
+            "n": 2616,
+            "max": 2.7067301932080117,
+            "median": 0.8104727260008169
+          },
+          "map_error_m": {
+            "n": 2616,
+            "max": 2.3876320091522385,
+            "median": 1.92775108795484
+          },
+          "candidate_first_sim_s": 103.6,
+          "boundary_accepted_frames": 0,
+          "boundary_view": {
+            "option": "candidate_views_v1",
+            "pending": true,
+            "active": false,
+            "attempted": 3,
+            "max_views": 3,
+            "phase": null
+          },
+          "latest_boundary_rejections": {
+            "area_below_100": 80,
+            "not_convex_quad": 2,
+            "white_islands_not_three": 1
+          },
+          "vo_counts": {
+            "measured": 2071,
+            "fused": 1669,
+            "vo_replaced": 402,
+            "unknown": 544,
+            "unapplied": 1152,
+            "substep_mismatch": 0,
+            "gate_zero": 0
+          },
+          "vo_applied_fraction": 0.35129969418960244
+        }
+      },
+      "wall_per_sim": 16.790950206538604
+    },
+    {
+      "run": "e2e15r2-b-s61003",
+      "group": "b",
+      "seed": 61003,
+      "exit": null,
+      "status": "RUNNING",
+      "conditions": {
+        "LLM_operated": true,
+        "own_map_completed": false,
+        "start_to_finish_transport": false
+      },
+      "all_three": false,
+      "furthest_phase_entered": "B_candidate",
+      "milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 23.12877745200001
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 23.12877745200001
+        },
+        "B_candidate": {
+          "sim_s": 2.4,
+          "wall_s": 38.60878356799998,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        }
+      },
+      "initial_health": {
+        "passed": true,
+        "elapsed_s": 205.33133959770203,
+        "checks": {
+          "first_model_response": true,
+          "sim_frames_increase": true,
+          "actual_movement": true,
+          "straight_commands": true,
+          "mapping_entered": true,
+          "no_exception": true
+        }
+      },
+      "last_health": {
+        "unix": 1791785238.5809972,
+        "elapsed_s": 8663.262665748596,
+        "no_traceback": true,
+        "sim_s": 467.0
+      },
+      "sim_s": 477.0,
+      "wall_s": 8918.106212798999,
+      "model_calls": 3,
+      "model_cost": {
+        "calls": 0,
+        "known_cost_usd": 0,
+        "missing_cost_calls": 0
+      },
+      "failure": null,
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e15r2-b-s61003/e2e15-b-s61003/raw",
+      "archive": {},
+      "fetch_lite": {
+        "path": null,
+        "checksum_verified": null,
+        "files": null,
+        "bytes": null
+      },
+      "robot_diagnostics": {
+        "r1": {
+          "frames": 2336,
+          "forward_commands": 379,
+          "actual_displacement_m": 1.3489916907308768,
+          "control_error_m": {
+            "n": 2336,
+            "max": 1.3536735244713858,
+            "median": 0.10298484066169389
+          },
+          "map_error_m": {
+            "n": 2336,
+            "max": 1.377225440646267,
+            "median": 0.3203019933465522
+          },
+          "candidate_first_sim_s": 2.4,
+          "boundary_accepted_frames": 0,
+          "boundary_view": null,
+          "latest_boundary_rejections": {},
+          "vo_counts": null,
+          "vo_applied_fraction": 0.0
+        },
+        "r2": {
+          "frames": 2336,
+          "forward_commands": 1810,
+          "actual_displacement_m": 4.072060154300055,
+          "control_error_m": {
+            "n": 2336,
+            "max": 7.1299161213553,
+            "median": 3.7890864658987207
+          },
+          "map_error_m": {
+            "n": 2336,
+            "max": 6.991967276105102,
+            "median": 3.6421418705952813
+          },
+          "candidate_first_sim_s": 165.2,
+          "boundary_accepted_frames": 0,
+          "boundary_view": null,
+          "latest_boundary_rejections": {},
+          "vo_counts": null,
+          "vo_applied_fraction": 0.0
+        }
+      },
+      "wall_per_sim": 18.696239439830187
+    }
+  ],
+  "pairs": [
+    {
+      "seed": 61001,
+      "a": "e2e15r2-a-s61001",
+      "b": "e2e15r2-b-s61001",
+      "both_completed": false
+    },
+    {
+      "seed": 61002,
+      "a": "e2e15r2-a-s61002",
+      "b": "e2e15r2-b-s61002",
+      "both_completed": false
+    },
+    {
+      "seed": 61003,
+      "a": "e2e15r2-a-s61003",
+      "b": "e2e15r2-b-s61003",
+      "both_completed": false
+    }
+  ],
+  "admission_failed_attempts": [
+    {
+      "run": "e2e15-a-s61001",
+      "exit": "1",
+      "status": "HOST_ERROR",
+      "failure_type": "HostError",
+      "failure": "S4 SSH relay identity expired or mismatched",
+      "sim_s": 0.0,
+      "model_calls": 0,
+      "archive": {
+        "verified": true,
+        "schema": "ugrp.archive-native.v1",
+        "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e15-a-s61001",
+        "files": 46,
+        "hash_matches": 46,
+        "inventory_sha256": "28341a5c294b35f1dd90af3f2f1d3a9d5b7ee8c278c175fba29a27da3a899804",
+        "reused": false,
+        "receiver_seconds": 0.2
+      },
+      "mac_light": {
+        "path": "/Users/changmin/projects/ugrp-wt/azure-vm3/outputs/e2e14-rerun/fetch-lite/e2e15-a-s61001",
+        "files": 39,
+        "bytes": 772307,
+        "checksum_verified": true
+      },
+      "initial_health_passed": false
+    },
+    {
+      "run": "e2e15-b-s61001",
+      "exit": "1",
+      "status": "HOST_ERROR",
+      "failure_type": "HostError",
+      "failure": "S4 SSH relay identity expired or mismatched",
+      "sim_s": 0.0,
+      "model_calls": 0,
+      "archive": {
+        "verified": true,
+        "schema": "ugrp.archive-native.v1",
+        "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e15-b-s61001",
+        "files": 46,
+        "hash_matches": 46,
+        "inventory_sha256": "95fe785286c4c1f4c32a4046a3cc90546732aeb7da2f664f571a98bb90ce6a81",
+        "reused": false,
+        "receiver_seconds": 0.201
+      },
+      "mac_light": {
+        "path": "/Users/changmin/projects/ugrp-wt/azure-vm3/outputs/e2e14-rerun/fetch-lite/e2e15-b-s61001",
+        "files": 39,
+        "bytes": 771782,
+        "checksum_verified": true
+      },
+      "initial_health_passed": false
+    },
+    {
+      "run": "e2e15-a-s61002",
+      "exit": "1",
+      "status": "HOST_ERROR",
+      "failure_type": "HostError",
+      "failure": "S4 SSH relay identity expired or mismatched",
+      "sim_s": 0.0,
+      "model_calls": 0,
+      "archive": {
+        "verified": true,
+        "schema": "ugrp.archive-native.v1",
+        "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e15-a-s61002",
+        "files": 46,
+        "hash_matches": 46,
+        "inventory_sha256": "edbfc153c7251ac483e3667834da63ec5648590a235817a5e113ed94872ca9c4",
+        "reused": false,
+        "receiver_seconds": 0.26
+      },
+      "mac_light": {
+        "path": "/Users/changmin/projects/ugrp-wt/azure-vm3/outputs/e2e14-rerun/fetch-lite/e2e15-a-s61002",
+        "files": 39,
+        "bytes": 772333,
+        "checksum_verified": true
+      },
+      "initial_health_passed": false
+    },
+    {
+      "run": "e2e15-b-s61002",
+      "exit": "1",
+      "status": "HOST_ERROR",
+      "failure_type": "HostError",
+      "failure": "S4 SSH relay identity expired or mismatched",
+      "sim_s": 0.0,
+      "model_calls": 0,
+      "archive": {
+        "verified": true,
+        "schema": "ugrp.archive-native.v1",
+        "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e15-b-s61002",
+        "files": 46,
+        "hash_matches": 46,
+        "inventory_sha256": "07dcd3a62f337af49915a2aaca04d7029c75428a4221a88113a16a37ccfbdbb0",
+        "reused": false,
+        "receiver_seconds": 0.21
+      },
+      "mac_light": {
+        "path": "/Users/changmin/projects/ugrp-wt/azure-vm3/outputs/e2e14-rerun/fetch-lite/e2e15-b-s61002",
+        "files": 39,
+        "bytes": 771771,
+        "checksum_verified": true
+      },
+      "initial_health_passed": false
+    },
+    {
+      "run": "e2e15-a-s61003",
+      "exit": "1",
+      "status": "HOST_ERROR",
+      "failure_type": "HostError",
+      "failure": "S4 SSH relay identity expired or mismatched",
+      "sim_s": 0.0,
+      "model_calls": 0,
+      "archive": {
+        "verified": true,
+        "schema": "ugrp.archive-native.v1",
+        "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e15-a-s61003",
+        "files": 46,
+        "hash_matches": 46,
+        "inventory_sha256": "edbf81755e9501e3fed9add00d08d7f5e060def9ee3a038420c42a5232a9dc7c",
+        "reused": false,
+        "receiver_seconds": 0.201
+      },
+      "mac_light": {
+        "path": "/Users/changmin/projects/ugrp-wt/azure-vm3/outputs/e2e14-rerun/fetch-lite/e2e15-a-s61003",
+        "files": 39,
+        "bytes": 772313,
+        "checksum_verified": true
+      },
+      "initial_health_passed": false
+    },
+    {
+      "run": "e2e15-b-s61003",
+      "exit": "1",
+      "status": "HOST_ERROR",
+      "failure_type": "HostError",
+      "failure": "S4 SSH relay identity expired or mismatched",
+      "sim_s": 0.0,
+      "model_calls": 0,
+      "archive": {
+        "verified": true,
+        "schema": "ugrp.archive-native.v1",
+        "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e15-b-s61003",
+        "files": 46,
+        "hash_matches": 46,
+        "inventory_sha256": "9c7a21a0bc3d7a0fa899dc8047cad74be2aa579e30a541216a468a0a389cfdf0",
+        "reused": false,
+        "receiver_seconds": 0.205
+      },
+      "mac_light": {
+        "path": "/Users/changmin/projects/ugrp-wt/azure-vm3/outputs/e2e14-rerun/fetch-lite/e2e15-b-s61003",
+        "files": 39,
+        "bytes": 771790,
+        "checksum_verified": true
+      },
+      "initial_health_passed": false
+    }
+  ],
+  "admission_failure_cause": "README remote18391 mismatched actual Gemma18393; six0SIM/model0 failures preserved; controller source unchanged",
+  "storage_budget": {
+    "x86": {
+      "schema": "ugrp.storage-budget.v1",
+      "ok": true,
+      "checks": [
+        {
+          "host": "x86",
+          "free_bytes": 91957870592,
+          "expected_bytes": 25769803776,
+          "projected_free_bytes": 66188066816,
+          "floor_bytes": 8589934592,
+          "ok": true
+        }
+      ]
+    },
+    "arm": {
+      "schema": "ugrp.storage-budget.v1",
+      "ok": true,
+      "checks": [
+        {
+          "host": "arm",
+          "free_bytes": 84947410944,
+          "expected_bytes": 47244640256,
+          "projected_free_bytes": 37702770688,
+          "floor_bytes": 26843545600,
+          "ok": true
+        }
+      ]
+    },
+    "mac": {
+      "schema": "ugrp.storage-budget.v1",
+      "ok": true,
+      "checks": [
+        {
+          "host": "mac",
+          "free_bytes": 130789912576,
+          "expected_bytes": 201326592,
+          "projected_free_bytes": 130588585984,
+          "floor_bytes": 21474836480,
+          "ok": true
+        }
+      ]
+    }
+  },
+  "final_vm_state": null,
+  "scope": "DEV paired comparison; phase entry is not physical success; unfinished rows are not failures or completed evidence",
+  "remaining": [
+    "completion, archive/hash verification and final VM3 deallocation remain as indicated by each row"
+  ],
+  "failed_attempt_independent_arm_verification": [
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/native-e2e15-a-s61001",
+      "files": 46,
+      "hash_matches": 46
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/native-e2e15-b-s61001",
+      "files": 46,
+      "hash_matches": 46
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/native-e2e15-a-s61002",
+      "files": 46,
+      "hash_matches": 46
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/native-e2e15-b-s61002",
+      "files": 46,
+      "hash_matches": 46
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/native-e2e15-a-s61003",
+      "files": 46,
+      "hash_matches": 46
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/native-e2e15-b-s61003",
+      "files": 46,
+      "hash_matches": 46
+    }
+  ],
+  "batch": "e2e14-rerun-vm3",
+  "attempts_submitted": 12,
+  "local_light_records": "outputs/e2e14-rerun/r2 in codex/azure-vm3 worktree",
+  "source_unchanged_for_transport_fix": true,
+  "execution_files": {
+    "experiments/2026-10-12-azure-vm3/r2/fetch-finish.py": "048678fa3ed11daad5543d3b7a836660d1c9a15244f02ad5a5e349fdceb5bcf2",
+    "experiments/2026-10-12-azure-vm3/r2/export-lite.py": "bc7b91e61da8b0606bc3813d21433ac3836db5979fef526f6ef962d853343f51",
+    "experiments/2026-10-12-azure-vm3/r2/submit-remote.py": "fd8e1bfe94ab40fa0d6acbc861619b91b84660667cc1c374f5b119f6809b18f2",
+    "experiments/2026-10-12-azure-vm3/r2/observe.py": "cab44a49e22c4efb054505d520c34dd767584437e4e871515bcebadaf7762def",
+    "experiments/2026-10-12-azure-vm3/r2/relay.py": "cb84e4721de3ef1d5cbe01b03e84b46357cca3666b370136f5b35415f0120fa4",
+    "experiments/2026-10-12-azure-vm3/r2/watch.py": "669dbc36db09bf8814053e9498ff7aa1d3601c30280bd53324f934cdeeb41c2c",
+    "experiments/2026-10-12-azure-vm3/r2/finish.py": "42d295ebcbc3ae98b37696695dbe3183a638f656f8881b98292618d9e4b83ef4",
+    "experiments/2026-10-12-azure-vm3/r2/poll-remote.py": "03fae307ad138be762051d494ef9a287de1e826dd73ea34f974318191e80b25c"
+  }
+}

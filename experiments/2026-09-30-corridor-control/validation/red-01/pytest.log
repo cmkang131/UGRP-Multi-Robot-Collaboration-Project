@@ -1,0 +1,19 @@
+.......................F...........................................      [100%]
+=================================== FAILURES ===================================
+______ test_pair_one_side_failure_or_heartbeat_loss_is_terminal[traffic] _______
+
+static = {'robot_model': 'masterpi_v3', 'bounds_m': [-4.0, 5.0, -3.0, 3.0], 'obstacles': [], 'passages': [{'id': 'corridor_1', ...'x', 'center_m': [0.0, 0.0], ...}, {'id': 'bay_1', 'kind': 'passing_bay', 'axis': 'y', 'opens_to': 'corridor_1', ...}]}
+fault = 'traffic'
+
+    @pytest.mark.parametrize('fault', ['own_grip', 'heartbeat', 'traffic'])
+    def test_pair_one_side_failure_or_heartbeat_loss_is_terminal(static, fault):
+        _, actors, decisions = run_pair(plan(static, pair=True), modes=('no_comm',), fault=fault)[0]
+>       assert all(d.state == 'ABORTED' for d in decisions[-1]), decisions[-1]
+E       AssertionError: [Decision(state='PASSED', reason='own_rgb_full_formation_exit', command=Command(robot_id='r1', issued_at_s=1.4, durati...d_at_s': None, 'frame_id': None, 'ready_until_s': None}), issued=True, passage_observed=True, delivery_complete=False)]
+E       assert False
+E        +  where False = all(<generator object test_pair_one_side_failure_or_heartbeat_loss_is_terminal.<locals>.<genexpr> at 0x10a94bc60>)
+
+tests/test_zone_own_executor_corridor_control.py:256: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_zone_own_executor_corridor_control.py::test_pair_one_side_failure_or_heartbeat_loss_is_terminal[traffic]
+1 failed, 66 passed in 0.99s

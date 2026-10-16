@@ -1,0 +1,99 @@
+............FFFF........................................................ [ 63%]
+.F........................................                               [100%]
+=================================== FAILURES ===================================
+_ test_deferred_report_never_suppresses_common_timer_or_rearming[65.3-no_comm] _
+
+condition = 'no_comm', boundary = 65.3
+
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+    @pytest.mark.parametrize('boundary', [None, 8., 65.3])
+    def test_deferred_report_never_suppresses_common_timer_or_rearming(condition, boundary):
+        trial, clock, links, requests = make_trial(condition, horizon=150.)
+        advance(trial, clock, links, 150., boundary=boundary)
+        r1 = [p for p in requests if p['robot_id'] == 'r1']
+        expected = [0., 8., 65.3, 130.6] if boundary == 8. else [0., 65.3, 130.6]
+>       assert [p['sim_time_s'] for p in r1] == expected
+E       assert [0.0, 65.3, 70.6, 130.6] == [0.0, 65.3, 130.6]
+E         
+E         At index 2 diff: 70.6 != 130.6
+E         Left contains one more item: 130.6
+E         Use -v to get more diff
+
+tests/test_zone_study_multiturn.py:163: AssertionError
+_ test_deferred_report_never_suppresses_common_timer_or_rearming[65.3-peer_ko] _
+
+condition = 'peer_ko', boundary = 65.3
+
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+    @pytest.mark.parametrize('boundary', [None, 8., 65.3])
+    def test_deferred_report_never_suppresses_common_timer_or_rearming(condition, boundary):
+        trial, clock, links, requests = make_trial(condition, horizon=150.)
+        advance(trial, clock, links, 150., boundary=boundary)
+        r1 = [p for p in requests if p['robot_id'] == 'r1']
+        expected = [0., 8., 65.3, 130.6] if boundary == 8. else [0., 65.3, 130.6]
+>       assert [p['sim_time_s'] for p in r1] == expected
+E       assert [0.0, 65.3, 70.6, 130.6] == [0.0, 65.3, 130.6]
+E         
+E         At index 2 diff: 70.6 != 130.6
+E         Left contains one more item: 130.6
+E         Use -v to get more diff
+
+tests/test_zone_study_multiturn.py:163: AssertionError
+_ test_deferred_report_never_suppresses_common_timer_or_rearming[65.3-leader_ko] _
+
+condition = 'leader_ko', boundary = 65.3
+
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+    @pytest.mark.parametrize('boundary', [None, 8., 65.3])
+    def test_deferred_report_never_suppresses_common_timer_or_rearming(condition, boundary):
+        trial, clock, links, requests = make_trial(condition, horizon=150.)
+        advance(trial, clock, links, 150., boundary=boundary)
+        r1 = [p for p in requests if p['robot_id'] == 'r1']
+        expected = [0., 8., 65.3, 130.6] if boundary == 8. else [0., 65.3, 130.6]
+>       assert [p['sim_time_s'] for p in r1] == expected
+E       assert [0.0, 65.3, 70.6, 130.6] == [0.0, 65.3, 130.6]
+E         
+E         At index 2 diff: 70.6 != 130.6
+E         Left contains one more item: 130.6
+E         Use -v to get more diff
+
+tests/test_zone_study_multiturn.py:163: AssertionError
+_ test_deferred_report_never_suppresses_common_timer_or_rearming[65.3-structured] _
+
+condition = 'structured', boundary = 65.3
+
+    @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+    @pytest.mark.parametrize('boundary', [None, 8., 65.3])
+    def test_deferred_report_never_suppresses_common_timer_or_rearming(condition, boundary):
+        trial, clock, links, requests = make_trial(condition, horizon=150.)
+        advance(trial, clock, links, 150., boundary=boundary)
+        r1 = [p for p in requests if p['robot_id'] == 'r1']
+        expected = [0., 8., 65.3, 130.6] if boundary == 8. else [0., 65.3, 130.6]
+>       assert [p['sim_time_s'] for p in r1] == expected
+E       assert [0.0, 65.3, 70.6, 130.6] == [0.0, 65.3, 130.6]
+E         
+E         At index 2 diff: 70.6 != 130.6
+E         Left contains one more item: 130.6
+E         Use -v to get more diff
+
+tests/test_zone_study_multiturn.py:163: AssertionError
+__________ test_idle_message_still_obeys_common_minimum_call_interval __________
+
+    def test_idle_message_still_obeys_common_minimum_call_interval():
+        trial, clock, links, requests = make_trial('leader_ko', first='continue',
+                                                  policy=CallPolicy(min_interval_s=10.))
+        advance(trial, clock, links, 16.)
+>       assert [p['sim_time_s'] for p in requests if p['robot_id'] == 'r1'] == [0., 10.]
+E       assert [0.0, 10.0, 15.3] == [0.0, 10.0]
+E         
+E         Left contains one more item: 15.3
+E         Use -v to get more diff
+
+tests/test_zone_study_multiturn.py:388: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_zone_study_multiturn.py::test_deferred_report_never_suppresses_common_timer_or_rearming[65.3-no_comm]
+FAILED tests/test_zone_study_multiturn.py::test_deferred_report_never_suppresses_common_timer_or_rearming[65.3-peer_ko]
+FAILED tests/test_zone_study_multiturn.py::test_deferred_report_never_suppresses_common_timer_or_rearming[65.3-leader_ko]
+FAILED tests/test_zone_study_multiturn.py::test_deferred_report_never_suppresses_common_timer_or_rearming[65.3-structured]
+FAILED tests/test_zone_study_multiturn.py::test_idle_message_still_obeys_common_minimum_call_interval
+5 failed, 109 passed in 12.84s

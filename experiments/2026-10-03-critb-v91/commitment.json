@@ -1,0 +1,16 @@
+{
+  "id": 5958329647,
+  "html_url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/219#issuecomment-5958329647",
+  "created_at": "2026-10-02T18:04:39Z",
+  "updated_at": "2026-10-02T18:04:39Z",
+  "body": "## v91 held-out 수집 전 고정 기록 (criterion B 선후관계용) — 2026-10-02T18:04:38Z\n\n이 댓글은 아래 수집이 **시작되기 전**에 남긴다. 현재 실행 폴더에는 `driver_log.txt`(대기 기록)만 있고 pose/명령/영상 raw는 0개다.\n검증기에 수집 시점 확인 기능이 아직 없으므로, 이 GitHub 서버 시각이 나중에 B·후보 → raw 선후를 확인할 외부 시각 근거가 된다. 기준·후보·검증기는 바꾸지 않았다.\n\n| 항목 | 값 |\n|---|---|\n| criterion B | `experiments/2026-10-01-final-env-v87-calibration-fit/consumer_criterion_B.json` sha256 `74c312b5eff11e27be2b30d103f6d955f03b0c4b91595dfc9843c366b2c49b5f` |\n| 후보 r4 (CANDIDATE_UNVALIDATED) | `calibration_candidate_r4.json` sha256 `fa7d3aa2e791086a9e73280b2dd4122bff5186d82503b56e17d5be27ca9bf071` |\n| 검증기 | `scripts/validate_consumer_criterion_b.py` sha256 `8d2a693a6e3bbca79a8214fd388bff79a0609400f07de831ad9be3cf22e85a88` (현재 v88 ID만 허용 — v91 연결은 별도 PR·검토 필요) |\n| 수집 소스 | `04043e274af7351f3d35cb6be77d948cac1b8c6a` (main 0bf41800에 #355로 병합) |\n| 번들 / workflow | `zone-final-pair-v91` / `zone-final-pair-heldout-v91` 3.3.0, config sha256 `a07d412ced2e5e301c327a07f61ca5ab6bc4cfe1f2c8b7b7f33740e4b3a29307` |\n| 조건 | calibration-unloaded, seed 911, 370 SIM s + reset ≤5 s, floor_light_v1, cargo_noslip_v1, weld OFF, teacher_only, HELD_OUT_VALIDATION, training_eligible=false |\n| 지도 | `zone_wide_corridor_final_v3`, `zone_wide_door_geometry_v3` (훈련 지도 `zone_wide_two_doors_final_v3`와 다름) — 두 SIM 슬롯으로 동시 수집 |\n| 출력 | `outputs/final-pair-v91-heldout-04043e27-20261003/<map>` (로컬 raw, 원격 백업 아님) |\n\n판정 규칙은 동결 B 그대로다: 모든 시간(0.2/0.5/1/2/3/3.2 s)·성분에서 `p95(|e|/σ) ≤ 2` 그리고 2σ 포함률 ≥ 90%. 계단/PRBS가 없는 축과 회전축(후보 null)은 미검증(null). 결과가 실패여도 그대로 기록하고 후보를 이 자료로 다시 적합하지 않는다(다시 적합하면 이 자료는 훈련 자료가 된다).\n\nRefs #219 #344\n",
+  "schema": "ugrp.criterion_B_v91_commitment.v1",
+  "body_sha256": "4eb9ed300edc242d1c04051fcb11ce661e9ade2e83372cef4d011c75a2407e77",
+  "listed_sha256": {
+    "experiments/2026-10-01-final-env-v87-calibration-fit/consumer_criterion_B.json": "74c312b5eff11e27be2b30d103f6d955f03b0c4b91595dfc9843c366b2c49b5f",
+    "experiments/2026-10-01-final-env-v87-calibration-fit/calibration_candidate_r4.json": "fa7d3aa2e791086a9e73280b2dd4122bff5186d82503b56e17d5be27ca9bf071",
+    "scripts/validate_consumer_criterion_b.py": "8d2a693a6e3bbca79a8214fd388bff79a0609400f07de831ad9be3cf22e85a88",
+    "configs/zone_final_pair_v91.json": "a07d412ced2e5e301c327a07f61ca5ab6bc4cfe1f2c8b7b7f33740e4b3a29307"
+  },
+  "collection_source_sha": "04043e274af7351f3d35cb6be77d948cac1b8c6a"
+}

@@ -1,0 +1,131 @@
+{
+  "version": "s2v47-input-prerequisite-v1",
+  "source_sha": "aee6a5f2cd41d747dc56a52abcfed5790becca79",
+  "criteria_sha256": "ab101c6f31d4b2cdf9b6722c2135b0db9da2b11d0b7dc163a9443f54e1154142",
+  "state": "BLOCKED_MISSING_ALLOWED_PEER_OBSERVATIONS",
+  "diagnosis": {
+    "path": "/Users/changmin/projects/ugrp/outputs/s2-peer-clearance-v47-20261008/diagnosis.json",
+    "sha256": "a34a9b2ef545f799117f2b8a98363d4592a45368c720c4b5c565b6104d231339"
+  },
+  "controller_changed": false,
+  "option_implemented": false,
+  "controller_replay_run": false,
+  "physical_runs": 0,
+  "new_seeds": [],
+  "new_bundle": null,
+  "planning_gate": "UNKNOWN; no peer observation/covariance, cannot certify three recordings",
+  "off_equivalence": {
+    "frozen_source_files": 436,
+    "all_source_hashes_identical": true,
+    "new_replay_claim": false
+  },
+  "pose_metrics": {
+    "scope": "historical s2v45 combined replay only; not a new avoidance or physical result",
+    "source": "/Users/changmin/projects/ugrp-wt/drive-friction/experiments/2026-10-06-s2-realism/bias-tempering-result.json",
+    "sha256": "027051a36f3d5764705b3189b36e4204b954a4af36a102e9d55d4f47f86c36ea",
+    "seeds": {
+      "1051": {
+        "nees_available": 493,
+        "primary_n": 493,
+        "nees_exceeded": 0,
+        "nees_rate": 0.0,
+        "all_warnings": 411,
+        "all_misses": 0,
+        "carry_rmse_m": 0.07462053836133561,
+        "carry_frames": 4145,
+        "unavailable_times": []
+      },
+      "1053": {
+        "nees_available": 447,
+        "primary_n": 486,
+        "nees_exceeded": 0,
+        "nees_rate": 0.0,
+        "all_warnings": 486,
+        "all_misses": 0,
+        "carry_rmse_m": 0.047666416517293635,
+        "carry_frames": 3829,
+        "unavailable_times": [
+          21.35,
+          21.75,
+          22.15,
+          22.55,
+          22.95,
+          23.35,
+          23.75,
+          24.15,
+          24.55,
+          24.95,
+          25.35,
+          25.75,
+          26.15,
+          26.55,
+          26.95,
+          27.35,
+          27.75,
+          28.15,
+          28.55,
+          28.95,
+          29.35,
+          29.75,
+          30.15,
+          30.55,
+          30.95,
+          31.35,
+          31.75,
+          32.15,
+          32.55,
+          32.95,
+          33.35,
+          33.75,
+          34.15,
+          34.55,
+          34.95,
+          35.35,
+          35.75,
+          36.7,
+          37.65
+        ]
+      },
+      "1054": {
+        "nees_available": 622,
+        "primary_n": 623,
+        "nees_exceeded": 192,
+        "nees_rate": 0.3086816720257235,
+        "all_warnings": 638,
+        "all_misses": 0,
+        "carry_rmse_m": 0.1338754363705241,
+        "carry_frames": 4132,
+        "unavailable_times": [
+          19.1
+        ]
+      }
+    }
+  },
+  "next": "Pending explicit exception for one own-RGB side-scan diagnostic before replay admission; no TOP/GT peer input.",
+  "tests": {
+    "file": "tests/test_s2_peer_contact_audit.py",
+    "passed": 5
+  },
+  "agent_lock": "not acquired; status null",
+  "pr_draft": true,
+  "external_sources": [
+    {
+      "url": "https://raw.githubusercontent.com/ros-navigation/navigation2/e48c3296a9e49ee88e7e22b7a1c584a26f8620a3/nav2_costmap_2d/src/footprint.cpp",
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-peer-clearance-v47-20261008/sources/footprint.cpp",
+      "sha256": "9496ce4f4f178508f089a61605fa594e480bb0aa6f062f6dcce1c0976ccc2e87",
+      "bytes": 7585
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ros-navigation/navigation2/e48c3296a9e49ee88e7e22b7a1c584a26f8620a3/nav2_collision_monitor/src/collision_monitor_node.cpp",
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-peer-clearance-v47-20261008/sources/collision_monitor_node.cpp",
+      "sha256": "73709ddd1dfc091b1975eb8b41502fe1aeaf06880446b846464782bf55058e50",
+      "bytes": 26009
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ros-navigation/navigation2/e48c3296a9e49ee88e7e22b7a1c584a26f8620a3/nav2_costmap_2d/plugins/obstacle_layer.cpp",
+      "path": "/Users/changmin/projects/ugrp/outputs/s2-peer-clearance-v47-20261008/sources/obstacle_layer.cpp",
+      "sha256": "66d1b39fc8f7b1415f738db7ea05c6cc6350cd34ac805531d657e37e84092c11",
+      "bytes": 30501
+    }
+  ]
+}

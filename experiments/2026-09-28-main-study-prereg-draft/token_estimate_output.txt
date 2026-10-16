@@ -1,0 +1,50 @@
+MEASURED first-call usage (raw wire responses, v63, accepted calls)
+  calls=16  runs=('preflight-02-v63', 'cohort-01-v63')
+  prompt      mean=  10477.0 sd=  121.9 min= 10281 max= 10622
+  completion  mean=    165.6 sd=   50.0 min=    98 max=   249
+  reasoning   mean=    256.5 sd=  356.9 min=     0 max=  1305
+  total       mean=  10899.1 sd=  440.1 min= 10512 max= 12168
+  text_chars  mean=  17567.8 sd=  304.5 min= 17131 max= 17985
+  n_img       mean=      1.0 sd=    0.0 min=     1 max=     1
+  total by condition no_comm    n=4 mean= 10593.5
+  total by condition peer_ko    n=4 mean= 10784.2
+  total by condition leader_ko  n=4 mean= 10790.0
+  total by condition structured n=4 mean= 11428.5
+  sum total=174385 (README v63 16 calls: 174,385)
+
+REMAINING pilot budget DB (read-only) budget.sqlite sha256 00e2c0dd213b0af9e8610c3a4ff461cc8b78e3bbde18c50b56563da9d556b16c
+  cap tokens=5000000 attempts=600  used tokens=409793 attempts=18 sends=17
+  remaining tokens=4590207 attempts=582
+
+REFERENCE ZC2 (different pipeline): calls/trial mean=15.2 min=6 max=31; tokens/call mean=6636
+
+PROJECTION (ESTIMATE). tokens/trial = calls/trial x tokens/call x growth
+  plan                                  trials  low(ZC2 mean 15)x1.0  low(ZC2 mean 15)x1.5  mid(10/robot) 30x1.0  mid(10/robot) 30x1.5   cap(90/trial)x1.0   cap(90/trial)x1.5
+  pilot 18 blocks (72 + no replicate)       72               11.8M               17.7M               23.5M               35.3M               70.6M              105.9M
+  main N=36                                192               31.4M               47.1M               62.8M               94.2M              188.3M              282.5M
+  main N=54                                288               47.1M               70.6M               94.2M              141.3M              282.5M              423.8M
+  main N=72                                384               62.8M               94.2M              125.6M              188.3M              376.7M              565.0M
+  main N=108 (N_max)                       576               94.2M              141.3M              188.3M              282.5M              565.0M              847.5M
+  diagnostics (all arms)                   216               35.3M               53.0M               70.6M              105.9M              211.9M              317.8M
+  TOTAL pilot + N_max + diagnostics        864              141.3M              211.9M              282.5M              423.8M              847.5M             1271.3M
+
+  model calls (= HTTP attempts if no retry) for TOTAL: low(ZC2 mean 15): 12,960, mid(10/robot) 30: 25,920, cap(90/trial): 77,760
+  USD: provider cost_usd=null (subscription proxy); USD = tokens x unit price, unit price not recorded.
+
+per-file sha256 (raw inputs):
+  preflight-02-v63/leader_ko/wire/000001-call-0001-r1-response.json 2ef20f5805c8d8e1 req 6f74bc2f3cedbebf
+  preflight-02-v63/no_comm/wire/000001-call-0001-r1-response.json 482055cb366652d3 req e7217253fa6b45bf
+  preflight-02-v63/peer_ko/wire/000001-call-0001-r1-response.json 10736061e1d7eee2 req b918acf39a80b938
+  preflight-02-v63/structured/wire/000001-call-0001-r1-response.json d6807b1f46c110e1 req 365abe57e2763f73
+  cohort-01-v63/leader_ko/wire/000001-call-0001-r1-response.json 4f7c0b28a4b135f3 req 6f74bc2f3cedbebf
+  cohort-01-v63/leader_ko/wire/000002-call-0002-r2-response.json d72a0604540de1e2 req 92d71ea5be92e289
+  cohort-01-v63/leader_ko/wire/000003-call-0003-r3-response.json 9d65a950fa605817 req 8ecbf6b21b0b7f5c
+  cohort-01-v63/no_comm/wire/000001-call-0001-r1-response.json 6eea60f716e511e7 req e7217253fa6b45bf
+  cohort-01-v63/no_comm/wire/000002-call-0002-r2-response.json 4fc6983c7c7c563c req 415fedb32c5ec4ce
+  cohort-01-v63/no_comm/wire/000003-call-0003-r3-response.json 771f7f986d976469 req b399228624835e62
+  cohort-01-v63/peer_ko/wire/000001-call-0001-r1-response.json 84d897d5e6d8cb76 req b918acf39a80b938
+  cohort-01-v63/peer_ko/wire/000002-call-0002-r2-response.json 4db53a7294819e69 req 40aeb4b24193b94d
+  cohort-01-v63/peer_ko/wire/000003-call-0003-r3-response.json 3a65b68842d6f322 req b435776fd245ed9a
+  cohort-01-v63/structured/wire/000001-call-0001-r1-response.json d4fcd40528c1cd3e req 365abe57e2763f73
+  cohort-01-v63/structured/wire/000002-call-0002-r2-response.json 7c9ee010edcffc03 req aee4c60960d249b3
+  cohort-01-v63/structured/wire/000003-call-0003-r3-response.json 2a5ba8543237a1fa req bb2bb8bab5a2f35b

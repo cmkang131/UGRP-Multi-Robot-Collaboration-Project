@@ -1,0 +1,171 @@
+{
+  "schema": "ugrp.test_fixture.v98_receipt_nees_frame_check.v1",
+  "source": {
+    "run": "v98-dev-probe-raise_high_align-1f7fb800 (DEV_PILOT FUNCTIONAL_DEV, seed 911, staged raise_high_align)",
+    "student_record": {
+      "path": "/Users/changmin/projects/ugrp/outputs/v98-dev-probe-raise_high_align-1f7fb800/zone_wide_door_geometry_v3/student_record.json",
+      "sha256": "46a14d09fb073e7a9b729d5a1fd75502724e062a7594776d9ca17a9e029c8ce8"
+    },
+    "camera_labels": {
+      "r1": {
+        "path": "/Users/changmin/projects/ugrp/outputs/v98-dev-probe-raise_high_align-1f7fb800/zone_wide_door_geometry_v3/eval_only/r1/camera_labels.jsonl",
+        "sha256": "afba51cefb47aec4f8022df8e79c28940a8d90d649ac3de2154d74a75ae61e4f"
+      },
+      "r2": {
+        "path": "/Users/changmin/projects/ugrp/outputs/v98-dev-probe-raise_high_align-1f7fb800/zone_wide_door_geometry_v3/eval_only/r2/camera_labels.jsonl",
+        "sha256": "9e88a74948404e81269bbbf0b7fcd06b6e86dcb7574204a8f23398b4cd844952"
+      }
+    }
+  },
+  "note": "Only two own pose means exist in this record (stage_probe_entry.own_report, unloaded, before any HIGH checkpoint). own_report is copied verbatim from the own record; truth rows are eval-only camera_labels (base_position_m, base_rotation) nearest in time. staged_prior_mean_xyyaw is the true staged spawn pose by construction (test setup), compared with the truth row at spawn. No recorded own mean exists during carry/HIGH.",
+  "robots": {
+    "r1": {
+      "own_report": {
+        "t_est": 10.04,
+        "initialized": true,
+        "xyyaw": [
+          0.20958,
+          0.04102,
+          0.004673
+        ],
+        "std_xy_m": 0.02212,
+        "std_yaw_rad": 0.01463,
+        "load_state": "unloaded"
+      },
+      "truth_nearest": {
+        "t": 10.049999999999253,
+        "base_position_m": [
+          0.22698206537969837,
+          0.05009383646235331,
+          0.032357945522005035
+        ],
+        "base_rotation": [
+          [
+            0.999999949574708,
+            -4.5223710800917044e-05,
+            0.00031433326486991113
+          ],
+          [
+            4.5223651104086707e-05,
+            0.9999999989773932,
+            1.970233729417304e-07
+          ],
+          [
+            -0.00031433327345859927,
+            -1.828080651058836e-07,
+            0.9999999505972806
+          ]
+        ]
+      },
+      "truth_at_spawn": {
+        "t": 1.3000000000000178,
+        "base_position_m": [
+          0.22680456372770658,
+          0.05000000599772155,
+          0.032357952087313756
+        ],
+        "base_rotation": [
+          [
+            0.9999999507714254,
+            -4.747165062671722e-09,
+            0.00031377881805706286
+          ],
+          [
+            4.689800013403143e-09,
+            0.9999999999999833,
+            1.8282075410914734e-07
+          ],
+          [
+            -0.00031377881805792545,
+            -1.828192735492371e-07,
+            0.9999999507714088
+          ]
+        ]
+      },
+      "staged_prior_mean_xyyaw": [
+        0.22679999999999995,
+        0.05,
+        0.0
+      ],
+      "staged_prior_std_per_axis": [
+        0.15,
+        0.15,
+        0.174533
+      ]
+    },
+    "r2": {
+      "own_report": {
+        "t_est": 9.94,
+        "initialized": true,
+        "xyyaw": [
+          1.78854,
+          0.04305,
+          -3.141302
+        ],
+        "std_xy_m": 0.03171,
+        "std_yaw_rad": 0.01521,
+        "load_state": "unloaded"
+      },
+      "truth_nearest": {
+        "t": 9.949999999999486,
+        "base_position_m": [
+          1.7730163868595086,
+          0.04990615198058798,
+          0.03235791065773091
+        ],
+        "base_rotation": [
+          [
+            -0.9999999487333552,
+            4.520745698095744e-05,
+            -0.00031700090702688205
+          ],
+          [
+            -4.520739675837928e-05,
+            -0.9999999989781273,
+            -1.971414341571765e-07
+          ],
+          [
+            -0.00031700091561521,
+            -1.8281063827366607e-07,
+            0.9999999497551929
+          ]
+        ]
+      },
+      "truth_at_spawn": {
+        "t": 1.3000000000000178,
+        "base_position_m": [
+          1.7731954362722948,
+          0.04999999400227847,
+          0.032357952087313756
+        ],
+        "base_rotation": [
+          [
+            -0.9999999507714254,
+            4.747164895521119e-09,
+            -0.0003137788180570456
+          ],
+          [
+            -4.6897998463276564e-09,
+            -0.9999999999999833,
+            -1.82820753869737e-07
+          ],
+          [
+            -0.0003137788180579082,
+            -1.8281927330987917e-07,
+            0.9999999507714088
+          ]
+        ]
+      },
+      "staged_prior_mean_xyyaw": [
+        1.7732,
+        0.04999999999999994,
+        3.141592653589793
+      ],
+      "staged_prior_std_per_axis": [
+        0.15,
+        0.15,
+        0.174533
+      ]
+    }
+  }
+}

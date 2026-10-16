@@ -1,0 +1,1898 @@
+{
+  "egomap46_B": {
+    "condition": "B",
+    "seed": 46001,
+    "budget_s": 360,
+    "n": 1,
+    "result": {
+      "case": "new-seed",
+      "acquisition": {
+        "status": "RECORDED",
+        "source_sha": "2473b998212da8b6d869942750dc40f0222c7588",
+        "case": "new-seed",
+        "model_calls": 0,
+        "freeze": false,
+        "loadavg_start": [
+          2.87841796875,
+          3.12841796875,
+          3.8505859375
+        ],
+        "start_sim_s": 1.3,
+        "frames": 1801,
+        "total_sim_s": 361.3,
+        "prediction_view": "completed_graph",
+        "wall_s": 1754.547701457981,
+        "loadavg_end": [
+          2.3486328125,
+          3.314453125,
+          4.4462890625
+        ]
+      },
+      "full_map": {
+        "occupied_cells": 683,
+        "precision_015": 0.5109809663250366,
+        "precision_cell": 0.2445095168374817,
+        "wall_coverage": 0.723404255319149,
+        "wall_error_rmse_m": 0.44702088403329093
+      },
+      "wall_sample_count": 329,
+      "prediction_view": "completed_graph",
+      "observed_region": {
+        "precision": 0.7164179104477612,
+        "precision_correct": 192,
+        "precision_cells": 268,
+        "recall": 0.7428571428571429,
+        "recalled_samples": 130,
+        "visible_samples": 175,
+        "visible_wall_fraction": 0.5319148936170213,
+        "sampled_wall_length_proxy_m": 17.5,
+        "qualification": "actual camera poses/FOV/range and wall-only occlusion; object/self occlusion not modelled"
+      },
+      "coverage": {
+        "travelled_m": 8.860518580007506,
+        "footprint_union_m2": 1.6400000000000003,
+        "footprint_cells_005m": 656,
+        "frames": 1801,
+        "mapped_frames": 203,
+        "occupied_cells": 683
+      },
+      "path": {
+        "n": 1791,
+        "rmse_m": 0.21135416253945213,
+        "end_m": 0.15670493493040444,
+        "missing_gt_samples": 0
+      },
+      "b": {
+        "first_own_confirmation_s": 112.1,
+        "reached_gt": false,
+        "first_gt_reach_s": null
+      },
+      "wall_contacts": 0,
+      "wrong_door_attempts": [
+        {
+          "t": 23.3,
+          "door": "r3:opening_038"
+        },
+        {
+          "t": 23.5,
+          "door": "r3:opening_001"
+        },
+        {
+          "t": 38.9,
+          "door": "r3:opening_005"
+        },
+        {
+          "t": 85.5,
+          "door": "r3:opening_015"
+        },
+        {
+          "t": 112.3,
+          "door": "r3:opening_001"
+        },
+        {
+          "t": 114.9,
+          "door": "r3:opening_068"
+        },
+        {
+          "t": 115.5,
+          "door": "r3:opening_001"
+        },
+        {
+          "t": 119.3,
+          "door": "r3:opening_068"
+        },
+        {
+          "t": 136.3,
+          "door": "r3:opening_138"
+        },
+        {
+          "t": 157.3,
+          "door": "r3:opening_127"
+        },
+        {
+          "t": 158.7,
+          "door": "r3:opening_003"
+        },
+        {
+          "t": 158.9,
+          "door": "r3:opening_009"
+        },
+        {
+          "t": 159.1,
+          "door": "r3:opening_003"
+        },
+        {
+          "t": 160.1,
+          "door": "r3:opening_009"
+        },
+        {
+          "t": 187.1,
+          "door": "r3:opening_006"
+        },
+        {
+          "t": 192.3,
+          "door": "r3:opening_003"
+        },
+        {
+          "t": 196.7,
+          "door": "r3:opening_009"
+        },
+        {
+          "t": 277.1,
+          "door": "r3:opening_003"
+        },
+        {
+          "t": 298.5,
+          "door": "r3:opening_030"
+        },
+        {
+          "t": 298.9,
+          "door": "r3:opening_012"
+        },
+        {
+          "t": 300.7,
+          "door": "r3:opening_030"
+        },
+        {
+          "t": 303.9,
+          "door": "r3:opening_003"
+        },
+        {
+          "t": 306.3,
+          "door": "r3:opening_036"
+        },
+        {
+          "t": 306.5,
+          "door": "r3:opening_003"
+        },
+        {
+          "t": 311.5,
+          "door": "r3:opening_036"
+        },
+        {
+          "t": 323.5,
+          "door": "r3:opening_030"
+        },
+        {
+          "t": 323.9,
+          "door": "r3:opening_003"
+        },
+        {
+          "t": 324.7,
+          "door": "r3:opening_012"
+        },
+        {
+          "t": 325.7,
+          "door": "r3:opening_003"
+        },
+        {
+          "t": 331.3,
+          "door": "r3:opening_030"
+        },
+        {
+          "t": 331.9,
+          "door": "r3:opening_003"
+        },
+        {
+          "t": 348.3,
+          "door": "r3:opening_012"
+        },
+        {
+          "t": 351.1,
+          "door": "r3:opening_074"
+        },
+        {
+          "t": 351.9,
+          "door": "r3:opening_003"
+        },
+        {
+          "t": 354.7,
+          "door": "r3:opening_012"
+        },
+        {
+          "t": 356.5,
+          "door": "r3:opening_003"
+        },
+        {
+          "t": 359.3,
+          "door": "r3:opening_030"
+        },
+        {
+          "t": 359.3,
+          "door": "r3:opening_003"
+        }
+      ],
+      "door_exposure": {
+        "candidate_frames": 1778,
+        "feasible_rows": 364,
+        "selected_path_rows": 163
+      },
+      "loop_counts": {
+        "member_scan": 396,
+        "temporal_separation": 116,
+        "ambiguous_modes": 1299,
+        "insufficient_points": 130,
+        "search_boundary": 357,
+        "low_probability": 1910,
+        "unobservable": 43,
+        "refinement_failed": 5,
+        "accepted": 6,
+        "high_residual": 1
+      },
+      "switch_counts": {
+        "switch_suppressed": 6
+      },
+      "calibration": {
+        "occupancy_ece_diagnostic": {
+          "n": 683,
+          "bins": [
+            {
+              "lo": 0.0,
+              "n": 0,
+              "score": null,
+              "precision": null
+            },
+            {
+              "lo": 0.1,
+              "n": 0,
+              "score": null,
+              "precision": null
+            },
+            {
+              "lo": 0.2,
+              "n": 0,
+              "score": null,
+              "precision": null
+            },
+            {
+              "lo": 0.3,
+              "n": 0,
+              "score": null,
+              "precision": null
+            },
+            {
+              "lo": 0.4,
+              "n": 0,
+              "score": null,
+              "precision": null
+            },
+            {
+              "lo": 0.5,
+              "n": 518,
+              "score": 0.5241816012968173,
+              "precision": 0.4266409266409266
+            },
+            {
+              "lo": 0.6,
+              "n": 73,
+              "score": 0.6420473023168205,
+              "precision": 0.726027397260274
+            },
+            {
+              "lo": 0.7,
+              "n": 34,
+              "score": 0.7453082722356442,
+              "precision": 0.6764705882352942
+            },
+            {
+              "lo": 0.8,
+              "n": 34,
+              "score": 0.8406534457228321,
+              "precision": 0.8235294117647058
+            },
+            {
+              "lo": 0.9,
+              "n": 24,
+              "score": 0.948015170307451,
+              "precision": 1.0
+            }
+          ],
+          "gap": 0.08905849301000421
+        },
+        "support_score_gap": {
+          "n": 683,
+          "bins": [
+            {
+              "lo": 0.0,
+              "n": 152,
+              "score": 0.036648211695110525,
+              "precision": 0.17105263157894737
+            },
+            {
+              "lo": 0.1,
+              "n": 97,
+              "score": 0.1460529094678709,
+              "precision": 0.5154639175257731
+            },
+            {
+              "lo": 0.2,
+              "n": 85,
+              "score": 0.2470318908840761,
+              "precision": 0.4235294117647059
+            },
+            {
+              "lo": 0.3,
+              "n": 57,
+              "score": 0.3497590950297404,
+              "precision": 0.47368421052631576
+            },
+            {
+              "lo": 0.4,
+              "n": 40,
+              "score": 0.44777140477812133,
+              "precision": 0.425
+            },
+            {
+              "lo": 0.5,
+              "n": 50,
+              "score": 0.5591874406203301,
+              "precision": 0.8
+            },
+            {
+              "lo": 0.6,
+              "n": 45,
+              "score": 0.6538380765942766,
+              "precision": 0.7111111111111111
+            },
+            {
+              "lo": 0.7,
+              "n": 32,
+              "score": 0.7472002668046445,
+              "precision": 0.65625
+            },
+            {
+              "lo": 0.8,
+              "n": 23,
+              "score": 0.8546292250222653,
+              "precision": 0.7391304347826086
+            },
+            {
+              "lo": 0.9,
+              "n": 102,
+              "score": 0.9899243314406877,
+              "precision": 0.8137254901960784
+            }
+          ],
+          "gap": 0.1718832997008709
+        },
+        "qualification": "TSDF support is NOT probability"
+      },
+      "criteria": {
+        "recorded": true,
+        "no_contact": true,
+        "no_wrong_door": false,
+        "distance": true,
+        "area": true,
+        "visible_samples": true,
+        "precision": true,
+        "recall": true,
+        "wall_rmse": false,
+        "path_rmse": true
+      },
+      "passed": false
+    },
+    "extra": {
+      "hold_n": 153,
+      "n": 1791,
+      "hold_fraction": 0.08542713567839195,
+      "frontend": {
+        "endpoint_error_m": 0.18833552646783644,
+        "sigma_xy_m": 0.07952334160979553,
+        "overconfidence_ratio": 2.368304986376951,
+        "path_rmse_m": 0.23160937146309277
+      },
+      "insertions": 203,
+      "decisions": {
+        "bootstrap:bootstrap": 1,
+        "deferred:gmapping_motion_gate": 1585,
+        "rejected:low_overlap": 18,
+        "rejected:search_boundary": 2,
+        "rejected:high_residual": 35,
+        "accepted:improved_proposal": 140,
+        "deferred:insufficient_match_points": 7
+      },
+      "geometry_frames": 1788,
+      "rgb_frames": 1801,
+      "door_crossings": [
+        {
+          "t": 229.9,
+          "door": "middle",
+          "y": 0.11115082164534179,
+          "padded_footprint_margin_m": 0.047624574338411524,
+          "later_center_left": true
+        },
+        {
+          "t": 356.5,
+          "door": "middle",
+          "y": -0.05520096634950804,
+          "padded_footprint_margin_m": -0.033348645886484646,
+          "later_center_left": true
+        }
+      ],
+      "confirmed_left_crossings": 2,
+      "contact_frames": {
+        "wall": 0,
+        "robot": 0
+      },
+      "contact_events": {
+        "wall": 0,
+        "robot": 0
+      },
+      "event_counts": {
+        "sensor_sweep_started": 12,
+        "graph_preserved_recovery": 36,
+        "sensor_sweep_completed": 11,
+        "information_cycle_committed": 11,
+        "controller_no_progress": 11,
+        "navigation_action_aborted": 11,
+        "ABORTED_goal_blacklisted": 13,
+        "next_frontier_requested": 11,
+        "sensor_sweep_requested": 11,
+        "sensor_sweep_collision_hold": 120,
+        "sensor_sweep_incomplete": 1,
+        "planner_failed": 4,
+        "recovery_context_clear": 2,
+        "context_clear_planner": 2,
+        "navigation_layer_reset": 3,
+        "recovery_success": 4,
+        "recovery_clear": 1,
+        "recovery_spin": 1
+      },
+      "sweep_events": [
+        {
+          "t": 3.3,
+          "reason": "sensor_sweep_started",
+          "cause": "initial_view"
+        },
+        {
+          "t": 15.5,
+          "reason": "sensor_sweep_completed",
+          "rotation_rad": 6.3126415981073745,
+          "duration_s": 12.2
+        },
+        {
+          "t": 25.9,
+          "reason": "sensor_sweep_requested",
+          "cause": "progress_timeout_sensor_sweep"
+        },
+        {
+          "t": 26.1,
+          "reason": "sensor_sweep_started",
+          "cause": "progress_timeout_sensor_sweep"
+        },
+        {
+          "t": 37.5,
+          "reason": "sensor_sweep_completed",
+          "rotation_rad": 6.265568565717345,
+          "duration_s": 11.399999999999999
+        },
+        {
+          "t": 47.7,
+          "reason": "sensor_sweep_requested",
+          "cause": "progress_timeout_sensor_sweep"
+        },
+        {
+          "t": 47.9,
+          "reason": "sensor_sweep_started",
+          "cause": "progress_timeout_sensor_sweep"
+        },
+        {
+          "t": 53.9,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 54.1,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 54.3,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 54.5,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 54.7,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 54.9,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 55.1,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 55.3,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 55.5,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 55.7,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 55.9,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 56.1,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 56.3,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 56.5,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 56.7,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 56.9,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 57.1,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 57.3,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 57.5,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 57.7,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 57.9,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 58.1,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 58.3,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 58.5,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 58.7,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 58.9,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 59.1,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 59.3,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 59.5,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 59.7,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 59.9,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 60.1,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 60.3,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 60.5,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 60.7,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 60.9,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 61.1,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 61.3,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 61.5,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 61.7,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 61.9,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 62.1,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 62.3,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 62.5,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 62.7,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 62.9,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 63.1,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 63.3,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 63.5,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 63.7,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 63.9,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 64.1,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 64.3,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 64.5,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 64.7,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 64.9,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 65.1,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 65.3,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 65.5,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 65.7,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 65.9,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 66.1,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 66.3,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 66.5,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 66.7,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 66.9,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 67.1,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 67.3,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 67.5,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 67.7,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 67.9,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 68.1,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 68.3,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 68.5,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 68.7,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 68.9,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 69.1,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 69.3,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 69.5,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 69.7,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 69.9,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 70.1,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 70.3,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 70.5,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 70.7,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 70.9,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 71.1,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 71.3,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 71.5,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 71.7,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 71.9,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 72.1,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 72.3,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 72.5,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 72.7,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 72.9,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 73.1,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 73.3,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 73.5,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 73.7,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 73.9,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 74.1,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 74.3,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 74.5,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 74.7,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 74.9,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 75.1,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 75.3,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 75.5,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 75.7,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 75.9,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 76.1,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 76.3,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 76.5,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 76.7,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 76.9,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 77.1,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 77.3,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 77.5,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 77.7,
+          "reason": "sensor_sweep_collision_hold"
+        },
+        {
+          "t": 77.9,
+          "reason": "sensor_sweep_incomplete",
+          "rotation_rad": 2.8347362095370183,
+          "duration_s": 30.000000000000007
+        },
+        {
+          "t": 98.1,
+          "reason": "sensor_sweep_requested",
+          "cause": "progress_timeout_sensor_sweep"
+        },
+        {
+          "t": 98.3,
+          "reason": "sensor_sweep_started",
+          "cause": "progress_timeout_sensor_sweep"
+        },
+        {
+          "t": 110.1,
+          "reason": "sensor_sweep_completed",
+          "rotation_rad": 6.3330843749949555,
+          "duration_s": 11.799999999999997
+        },
+        {
+          "t": 120.3,
+          "reason": "sensor_sweep_requested",
+          "cause": "progress_timeout_sensor_sweep"
+        },
+        {
+          "t": 120.5,
+          "reason": "sensor_sweep_started",
+          "cause": "progress_timeout_sensor_sweep"
+        },
+        {
+          "t": 132.7,
+          "reason": "sensor_sweep_completed",
+          "rotation_rad": 6.329116360130943,
+          "duration_s": 12.199999999999989
+        },
+        {
+          "t": 142.9,
+          "reason": "sensor_sweep_requested",
+          "cause": "progress_timeout_sensor_sweep"
+        },
+        {
+          "t": 143.1,
+          "reason": "sensor_sweep_started",
+          "cause": "progress_timeout_sensor_sweep"
+        },
+        {
+          "t": 155.3,
+          "reason": "sensor_sweep_completed",
+          "rotation_rad": 6.436115437111445,
+          "duration_s": 12.200000000000017
+        },
+        {
+          "t": 174.3,
+          "reason": "sensor_sweep_requested",
+          "cause": "progress_timeout_sensor_sweep"
+        },
+        {
+          "t": 174.5,
+          "reason": "sensor_sweep_started",
+          "cause": "progress_timeout_sensor_sweep"
+        },
+        {
+          "t": 186.9,
+          "reason": "sensor_sweep_completed",
+          "rotation_rad": 6.334077078109431,
+          "duration_s": 12.400000000000006
+        },
+        {
+          "t": 197.3,
+          "reason": "sensor_sweep_requested",
+          "cause": "progress_timeout_sensor_sweep"
+        },
+        {
+          "t": 197.5,
+          "reason": "sensor_sweep_started",
+          "cause": "progress_timeout_sensor_sweep"
+        },
+        {
+          "t": 209.7,
+          "reason": "sensor_sweep_completed",
+          "rotation_rad": 6.281549822480973,
+          "duration_s": 12.199999999999989
+        },
+        {
+          "t": 235.9,
+          "reason": "sensor_sweep_requested",
+          "cause": "progress_timeout_sensor_sweep"
+        },
+        {
+          "t": 236.1,
+          "reason": "sensor_sweep_started",
+          "cause": "progress_timeout_sensor_sweep"
+        },
+        {
+          "t": 248.1,
+          "reason": "sensor_sweep_completed",
+          "rotation_rad": 6.344134360895981,
+          "duration_s": 12.0
+        },
+        {
+          "t": 258.5,
+          "reason": "sensor_sweep_requested",
+          "cause": "progress_timeout_sensor_sweep"
+        },
+        {
+          "t": 258.7,
+          "reason": "sensor_sweep_started",
+          "cause": "progress_timeout_sensor_sweep"
+        },
+        {
+          "t": 270.3,
+          "reason": "sensor_sweep_completed",
+          "rotation_rad": 6.264432388419265,
+          "duration_s": 11.600000000000023
+        },
+        {
+          "t": 280.7,
+          "reason": "sensor_sweep_requested",
+          "cause": "progress_timeout_sensor_sweep"
+        },
+        {
+          "t": 280.9,
+          "reason": "sensor_sweep_started",
+          "cause": "progress_timeout_sensor_sweep"
+        },
+        {
+          "t": 292.5,
+          "reason": "sensor_sweep_completed",
+          "rotation_rad": 6.27469593106403,
+          "duration_s": 11.600000000000023
+        },
+        {
+          "t": 332.1,
+          "reason": "sensor_sweep_requested",
+          "cause": "progress_timeout_sensor_sweep"
+        },
+        {
+          "t": 332.3,
+          "reason": "sensor_sweep_started",
+          "cause": "progress_timeout_sensor_sweep"
+        },
+        {
+          "t": 344.3,
+          "reason": "sensor_sweep_completed",
+          "rotation_rad": 6.303966340140742,
+          "duration_s": 12.0
+        }
+      ],
+      "no_frontier_times": []
+    },
+    "curve": [
+      {
+        "elapsed_s": 120.0,
+        "status": "observed",
+        "coverage": 0.5288753799392097,
+        "covered_wall_samples": 174,
+        "total_wall_samples": 329,
+        "occupied_cells": 368,
+        "mapped_scans": 58,
+        "snapshot_elapsed_s": 114.0,
+        "view": "online_frontend_past_only"
+      },
+      {
+        "elapsed_s": 180.0,
+        "status": "observed",
+        "coverage": 0.5288753799392097,
+        "covered_wall_samples": 174,
+        "total_wall_samples": 329,
+        "occupied_cells": 437,
+        "mapped_scans": 107,
+        "snapshot_elapsed_s": 179.39999999999998,
+        "view": "online_frontend_past_only"
+      },
+      {
+        "elapsed_s": 240.0,
+        "status": "observed",
+        "coverage": 0.5531914893617021,
+        "covered_wall_samples": 182,
+        "total_wall_samples": 329,
+        "occupied_cells": 494,
+        "mapped_scans": 141,
+        "snapshot_elapsed_s": 240.0,
+        "view": "online_frontend_past_only"
+      },
+      {
+        "elapsed_s": 360.0,
+        "status": "observed",
+        "coverage": 0.6808510638297872,
+        "covered_wall_samples": 224,
+        "total_wall_samples": 329,
+        "occupied_cells": 682,
+        "mapped_scans": 203,
+        "snapshot_elapsed_s": 349.2,
+        "view": "online_frontend_past_only"
+      }
+    ],
+    "criteria": {
+      "coverage_ge_080": false,
+      "region_precision_ge_0636": true
+    },
+    "criteria_count": 1,
+    "completed_360s": true,
+    "passed": false,
+    "qualification": "Separate360s_condition; no pooling with180s or across A/B; criterion fixed12915e74"
+  },
+  "egomap47_frontend": {
+    "case": "new-seed",
+    "acquisition": {
+      "status": "HOST_ERROR",
+      "source_sha": "c37f2b23b74d044163b43e139599207f248ae3c1",
+      "case": "new-seed",
+      "model_calls": 0,
+      "freeze": false,
+      "loadavg_start": [
+        2.34814453125,
+        2.38427734375,
+        4.3173828125
+      ],
+      "start_sim_s": 1.3,
+      "frames": 1801,
+      "total_sim_s": 361.3,
+      "failure": {
+        "type": "TimeoutError",
+        "message": "HOST_BUDGET_30_MINUTES"
+      },
+      "enospc": false,
+      "prediction_view": "partial_frontend_unfinished_graph",
+      "wall_s": 1802.3689912919945,
+      "loadavg_end": [
+        3.07958984375,
+        3.50048828125,
+        3.537109375
+      ]
+    },
+    "full_map": {
+      "occupied_cells": 843,
+      "precision_015": 0.3973902728351127,
+      "precision_cell": 0.17319098457888493,
+      "wall_coverage": 0.6960486322188449,
+      "wall_error_rmse_m": 0.6387453404701126
+    },
+    "wall_sample_count": 329,
+    "prediction_view": "partial_frontend_unfinished_graph",
+    "observed_region": {
+      "precision": 0.7325102880658436,
+      "precision_correct": 178,
+      "precision_cells": 243,
+      "recall": 0.6724137931034483,
+      "recalled_samples": 117,
+      "visible_samples": 174,
+      "visible_wall_fraction": 0.5288753799392097,
+      "sampled_wall_length_proxy_m": 17.400000000000002,
+      "qualification": "actual camera poses/FOV/range and wall-only occlusion; object/self occlusion not modelled"
+    },
+    "coverage": {
+      "travelled_m": 9.429081089669438,
+      "footprint_union_m2": 2.5400000000000005,
+      "footprint_cells_005m": 1016,
+      "frames": 1801,
+      "mapped_frames": 204,
+      "occupied_cells": 843
+    },
+    "path": {
+      "n": 1790,
+      "rmse_m": 0.230436423613484,
+      "end_m": 0.49045453418496127,
+      "missing_gt_samples": 1
+    },
+    "b": {
+      "first_own_confirmation_s": 67.1,
+      "reached_gt": false,
+      "first_gt_reach_s": null
+    },
+    "wall_contacts": 0,
+    "wrong_door_attempts": [
+      {
+        "t": 17.1,
+        "door": "r3:opening_036"
+      },
+      {
+        "t": 25.5,
+        "door": "r3:opening_044"
+      },
+      {
+        "t": 44.1,
+        "door": "r3:opening_021"
+      },
+      {
+        "t": 68.1,
+        "door": "r3:opening_002"
+      },
+      {
+        "t": 96.3,
+        "door": "r3:opening_003"
+      },
+      {
+        "t": 96.3,
+        "door": "r3:opening_002"
+      },
+      {
+        "t": 100.3,
+        "door": "r3:opening_019"
+      },
+      {
+        "t": 100.7,
+        "door": "r3:opening_002"
+      },
+      {
+        "t": 101.1,
+        "door": "r3:opening_003"
+      },
+      {
+        "t": 101.9,
+        "door": "r3:opening_002"
+      },
+      {
+        "t": 102.5,
+        "door": "r3:opening_019"
+      },
+      {
+        "t": 102.5,
+        "door": "r3:opening_002"
+      },
+      {
+        "t": 105.1,
+        "door": "r3:opening_003"
+      },
+      {
+        "t": 105.7,
+        "door": "r3:opening_002"
+      },
+      {
+        "t": 107.1,
+        "door": "r3:opening_003"
+      },
+      {
+        "t": 107.5,
+        "door": "r3:opening_002"
+      },
+      {
+        "t": 141.7,
+        "door": "r3:opening_044"
+      },
+      {
+        "t": 141.7,
+        "door": "r3:opening_002"
+      },
+      {
+        "t": 196.9,
+        "door": "r3:opening_247"
+      },
+      {
+        "t": 198.1,
+        "door": "r3:opening_183"
+      },
+      {
+        "t": 213.1,
+        "door": "r3:opening_178"
+      },
+      {
+        "t": 214.7,
+        "door": "r3:opening_224"
+      },
+      {
+        "t": 218.3,
+        "door": "r3:opening_002"
+      },
+      {
+        "t": 220.3,
+        "door": "r3:opening_036"
+      },
+      {
+        "t": 221.5,
+        "door": "r3:opening_001"
+      },
+      {
+        "t": 221.5,
+        "door": "r3:opening_008"
+      },
+      {
+        "t": 236.7,
+        "door": "r3:opening_002"
+      },
+      {
+        "t": 240.1,
+        "door": "r3:opening_008"
+      },
+      {
+        "t": 242.1,
+        "door": "r3:opening_002"
+      },
+      {
+        "t": 243.7,
+        "door": "r3:opening_008"
+      },
+      {
+        "t": 244.1,
+        "door": "r3:opening_002"
+      }
+    ],
+    "door_exposure": {
+      "candidate_frames": 1696,
+      "feasible_rows": 414,
+      "selected_path_rows": 121
+    },
+    "loop_counts": null,
+    "switch_counts": null,
+    "calibration": {
+      "occupancy_ece_diagnostic": {
+        "n": 843,
+        "bins": [
+          {
+            "lo": 0.0,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.1,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.2,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.3,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.4,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.5,
+            "n": 681,
+            "score": 0.5213859864255723,
+            "precision": 0.31718061674008813
+          },
+          {
+            "lo": 0.6,
+            "n": 66,
+            "score": 0.6401384387115864,
+            "precision": 0.7272727272727273
+          },
+          {
+            "lo": 0.7,
+            "n": 39,
+            "score": 0.7520343994835446,
+            "precision": 0.6410256410256411
+          },
+          {
+            "lo": 0.8,
+            "n": 39,
+            "score": 0.8462002323583155,
+            "precision": 0.717948717948718
+          },
+          {
+            "lo": 0.9,
+            "n": 18,
+            "score": 0.9446452733917405,
+            "precision": 1.0
+          }
+        ],
+        "gap": 0.18403589029849493
+      },
+      "support_score_gap": {
+        "n": 843,
+        "bins": [
+          {
+            "lo": 0.0,
+            "n": 281,
+            "score": 0.033634688703474296,
+            "precision": 0.06405693950177936
+          },
+          {
+            "lo": 0.1,
+            "n": 129,
+            "score": 0.15307009799384189,
+            "precision": 0.40310077519379844
+          },
+          {
+            "lo": 0.2,
+            "n": 102,
+            "score": 0.24887024746678688,
+            "precision": 0.6666666666666666
+          },
+          {
+            "lo": 0.3,
+            "n": 91,
+            "score": 0.35324092646668265,
+            "precision": 0.5604395604395604
+          },
+          {
+            "lo": 0.4,
+            "n": 59,
+            "score": 0.4496318802611185,
+            "precision": 0.4915254237288136
+          },
+          {
+            "lo": 0.5,
+            "n": 43,
+            "score": 0.5461727614192831,
+            "precision": 0.5348837209302325
+          },
+          {
+            "lo": 0.6,
+            "n": 37,
+            "score": 0.6451694941883981,
+            "precision": 0.5945945945945946
+          },
+          {
+            "lo": 0.7,
+            "n": 26,
+            "score": 0.7475406651953669,
+            "precision": 0.7307692307692307
+          },
+          {
+            "lo": 0.8,
+            "n": 19,
+            "score": 0.8587967239897918,
+            "precision": 0.7368421052631579
+          },
+          {
+            "lo": 0.9,
+            "n": 56,
+            "score": 0.9839222018415847,
+            "precision": 0.6964285714285714
+          }
+        ],
+        "gap": 0.14941183597585525
+      },
+      "qualification": "TSDF support is NOT probability"
+    },
+    "criteria": {
+      "recorded": false,
+      "no_contact": true,
+      "no_wrong_door": false,
+      "distance": true,
+      "area": true,
+      "visible_samples": true,
+      "precision": true,
+      "recall": true,
+      "wall_rmse": false,
+      "path_rmse": true
+    },
+    "passed": false
+  },
+  "egomap48_final": {
+    "case": "new-seed",
+    "acquisition": {
+      "status": "HOST_ERROR",
+      "source_sha": "c37f2b23b74d044163b43e139599207f248ae3c1",
+      "case": "new-seed",
+      "model_calls": 0,
+      "freeze": false,
+      "loadavg_start": [
+        2.34814453125,
+        2.38427734375,
+        4.3173828125
+      ],
+      "start_sim_s": 1.3,
+      "frames": 1801,
+      "total_sim_s": 361.3,
+      "failure": {
+        "type": "TimeoutError",
+        "message": "HOST_BUDGET_30_MINUTES"
+      },
+      "enospc": false,
+      "prediction_view": "partial_frontend_unfinished_graph",
+      "wall_s": 1802.3689912919945,
+      "loadavg_end": [
+        3.07958984375,
+        3.50048828125,
+        3.537109375
+      ]
+    },
+    "full_map": {
+      "occupied_cells": 831,
+      "precision_015": 0.40673886883273164,
+      "precision_cell": 0.17809867629362214,
+      "wall_coverage": 0.6990881458966566,
+      "wall_error_rmse_m": 0.6255900953566376
+    },
+    "wall_sample_count": 329,
+    "prediction_view": "completed_graph_offline_egomap48",
+    "observed_region": {
+      "precision": 0.7242798353909465,
+      "precision_correct": 176,
+      "precision_cells": 243,
+      "recall": 0.6666666666666666,
+      "recalled_samples": 116,
+      "visible_samples": 174,
+      "visible_wall_fraction": 0.5288753799392097,
+      "sampled_wall_length_proxy_m": 17.400000000000002,
+      "qualification": "Actual camera FOV/range and wall-only occlusion; object/self occlusion unmodelled"
+    },
+    "coverage": {
+      "travelled_m": 9.429081089669438,
+      "footprint_union_m2": 2.5400000000000005,
+      "footprint_cells_005m": 1016,
+      "frames": 1801,
+      "mapped_frames": 204,
+      "occupied_cells": 831
+    },
+    "path": {
+      "n": 1790,
+      "rmse_m": 0.21795774340534535,
+      "end_m": 0.4637819119178216,
+      "missing_gt_samples": 1
+    },
+    "b": {
+      "first_own_confirmation_s": 67.1,
+      "reached_gt": false,
+      "first_gt_reach_s": null
+    },
+    "wall_contacts": 0,
+    "wrong_door_attempts": [
+      {
+        "t": 17.1,
+        "door": "r3:opening_036"
+      },
+      {
+        "t": 25.5,
+        "door": "r3:opening_044"
+      },
+      {
+        "t": 44.1,
+        "door": "r3:opening_021"
+      },
+      {
+        "t": 68.1,
+        "door": "r3:opening_002"
+      },
+      {
+        "t": 96.3,
+        "door": "r3:opening_003"
+      },
+      {
+        "t": 96.3,
+        "door": "r3:opening_002"
+      },
+      {
+        "t": 100.3,
+        "door": "r3:opening_019"
+      },
+      {
+        "t": 100.7,
+        "door": "r3:opening_002"
+      },
+      {
+        "t": 101.1,
+        "door": "r3:opening_003"
+      },
+      {
+        "t": 101.9,
+        "door": "r3:opening_002"
+      },
+      {
+        "t": 102.5,
+        "door": "r3:opening_019"
+      },
+      {
+        "t": 102.5,
+        "door": "r3:opening_002"
+      },
+      {
+        "t": 105.1,
+        "door": "r3:opening_003"
+      },
+      {
+        "t": 105.7,
+        "door": "r3:opening_002"
+      },
+      {
+        "t": 107.1,
+        "door": "r3:opening_003"
+      },
+      {
+        "t": 107.5,
+        "door": "r3:opening_002"
+      },
+      {
+        "t": 141.7,
+        "door": "r3:opening_044"
+      },
+      {
+        "t": 141.7,
+        "door": "r3:opening_002"
+      },
+      {
+        "t": 196.9,
+        "door": "r3:opening_247"
+      },
+      {
+        "t": 198.1,
+        "door": "r3:opening_183"
+      },
+      {
+        "t": 213.1,
+        "door": "r3:opening_178"
+      },
+      {
+        "t": 214.7,
+        "door": "r3:opening_224"
+      },
+      {
+        "t": 218.3,
+        "door": "r3:opening_002"
+      },
+      {
+        "t": 220.3,
+        "door": "r3:opening_036"
+      },
+      {
+        "t": 221.5,
+        "door": "r3:opening_001"
+      },
+      {
+        "t": 221.5,
+        "door": "r3:opening_008"
+      },
+      {
+        "t": 236.7,
+        "door": "r3:opening_002"
+      },
+      {
+        "t": 240.1,
+        "door": "r3:opening_008"
+      },
+      {
+        "t": 242.1,
+        "door": "r3:opening_002"
+      },
+      {
+        "t": 243.7,
+        "door": "r3:opening_008"
+      },
+      {
+        "t": 244.1,
+        "door": "r3:opening_002"
+      }
+    ],
+    "door_exposure": {
+      "candidate_frames": 1696,
+      "feasible_rows": 414,
+      "selected_path_rows": 121
+    },
+    "loop_counts": {
+      "member_scan": 398,
+      "temporal_separation": 135,
+      "ambiguous_modes": 1080,
+      "insufficient_points": 128,
+      "search_boundary": 319,
+      "low_probability": 2160,
+      "accepted": 4,
+      "unobservable": 47,
+      "high_residual": 7,
+      "refinement_failed": 6
+    },
+    "switch_counts": {
+      "switch_suppressed": 3,
+      "switch_retained": 1
+    },
+    "calibration": {
+      "occupancy_ece_diagnostic": {
+        "n": 831,
+        "bins": [
+          {
+            "lo": 0.0,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.1,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.2,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.3,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.4,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.5,
+            "n": 672,
+            "score": 0.5215557712896817,
+            "precision": 0.32142857142857145
+          },
+          {
+            "lo": 0.6,
+            "n": 63,
+            "score": 0.636158078067637,
+            "precision": 0.7301587301587301
+          },
+          {
+            "lo": 0.7,
+            "n": 37,
+            "score": 0.7522070302377603,
+            "precision": 0.6756756756756757
+          },
+          {
+            "lo": 0.8,
+            "n": 37,
+            "score": 0.8479851097732688,
+            "precision": 0.7837837837837838
+          },
+          {
+            "lo": 0.9,
+            "n": 22,
+            "score": 0.9468553581441587,
+            "precision": 1.0
+          }
+        ],
+        "gap": 0.17663515125107282
+      },
+      "support_score_gap": {
+        "n": 831,
+        "bins": [
+          {
+            "lo": 0.0,
+            "n": 278,
+            "score": 0.03345571161584582,
+            "precision": 0.06115107913669065
+          },
+          {
+            "lo": 0.1,
+            "n": 119,
+            "score": 0.15284526038444537,
+            "precision": 0.3949579831932773
+          },
+          {
+            "lo": 0.2,
+            "n": 96,
+            "score": 0.24920559489313932,
+            "precision": 0.6875
+          },
+          {
+            "lo": 0.3,
+            "n": 96,
+            "score": 0.35120982670509165,
+            "precision": 0.5729166666666666
+          },
+          {
+            "lo": 0.4,
+            "n": 57,
+            "score": 0.4446287781818402,
+            "precision": 0.49122807017543857
+          },
+          {
+            "lo": 0.5,
+            "n": 51,
+            "score": 0.5461626756016179,
+            "precision": 0.6078431372549019
+          },
+          {
+            "lo": 0.6,
+            "n": 31,
+            "score": 0.6498831015116485,
+            "precision": 0.6451612903225806
+          },
+          {
+            "lo": 0.7,
+            "n": 26,
+            "score": 0.7462929184844451,
+            "precision": 0.6538461538461539
+          },
+          {
+            "lo": 0.8,
+            "n": 22,
+            "score": 0.8511711000553358,
+            "precision": 0.7727272727272727
+          },
+          {
+            "lo": 0.9,
+            "n": 55,
+            "score": 0.9874400072082911,
+            "precision": 0.7272727272727273
+          }
+        ],
+        "gap": 0.14952787668435422
+      },
+      "qualification": "TSDF support is NOT probability"
+    },
+    "criteria": {
+      "coverage_ge_080": false,
+      "region_precision_ge_0636": true
+    },
+    "passed": false,
+    "criteria_count": 1,
+    "qualification": "Offline finalization only; acquisition HOST_ERROR remains. Last pose has no GT and is excluded. Original egomap47 criteria, no retuning."
+  },
+  "no_pooling": true
+}

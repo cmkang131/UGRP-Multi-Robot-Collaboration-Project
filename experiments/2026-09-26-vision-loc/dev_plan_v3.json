@@ -1,0 +1,39 @@
+{
+ "schema": "ugrp.vision_loc.dev_plan.v3",
+ "registered": "2026-09-26, Kiro, round 3: before any round-3 filter variant was run on any episode",
+ "dev_episodes": {
+  "round2_dev": ["vl-dev-s909", "vl-dev-s910", "vl-dev-s911"],
+  "round3_dev": "every vl3-dev-* episode of episodes_v3.json that passes overlap_check.py against all round-2 episodes",
+  "not_used": "round-2 test vl-test-s912..s917 (scored once in round 2; s917 replays train s903) - no tuning or selection on it"
+ },
+ "student_fixed": {
+  "model": "seg-v2 (sha256 348539030fda962cc5ba64e21c956619bc4db9321a99cd3ae6746611a9939fd9), unchanged",
+  "calibration": "calibration_train.json, unchanged",
+  "observations": "selected_config.json obs block (w6: 480x360, refine 6 px, consistency 4 px), unchanged in this round",
+  "motion_model": "M1 calibration, unchanged (the round-2 refit stays rejected)"
+ },
+ "variants_in_priority_order": {
+  "b0_w6_legacy": "round-2 filter (regression: must equal the round-2 dev estimates of w6 on s910/s911 bit for bit)",
+  "a1_open": "P0 open interval ends / off-screen sentinels in the likelihood",
+  "a2_open_scale": "+ slip scales redrawn on own load-state changes (motion_loaded.scale_std)",
+  "a3_open_scale_stuck": "+ near-stationary motion hypothesis (enter 0.05/s, exit 0.2/s)",
+  "a4_open_scale_stuck_amcl": "+ augmented MCL, Nav2 recommended alphas (slow 0.001, fast 0.1), uniform free-space injection",
+  "a5_open_scale_stuck_amcl_local": "+ augmented MCL, injection capped at 10 %, 20 % uniform / 80 % Gaussian around the estimate"
+ },
+ "metrics": {
+  "filter": "vision (oracle reported alongside, never used for selection)",
+  "L": "pooled dev door_loaded lateral |dy| p99",
+  "P": "pooled dev door_loaded position p90",
+  "Y": "pooled dev door_loaded yaw p90",
+  "A": "pooled dev all-frame position p90",
+  "lost": "pooled dev frames with position error > 0.30 m",
+  "false_triggers": "injection frames while the error is < 0.10 m"
+ },
+ "selection_rule": [
+  "Walk the fixes in the priority order above, starting from b0. A fix is adopted iff against the current base: L and P each rise by no more than 0.3 cm, AND (A or lost decreases, or L or P decreases by at least 0.3 cm).",
+  "a4 and a5 are two parameterisations of one fix (augmented MCL): the better of the two by (lost, then L, then A; differences within 0.2 cm or 1 % of frames count as ties, a tie goes to a4, the Nav2 structure) is the candidate for that step.",
+  "If further dev variants are needed (parameters of an adopted fix), each is added to dev_variants_v3.json with its reason BEFORE it runs, and the same rule applies.",
+  "The selected configuration is frozen in prereg_v3.json before any round-3 test episode is segmented, localized or scored."
+ ],
+ "gate": "unchanged from round 2 (prereg.json): door_loaded pooled test lateral p99 <= 0.06 m AND position p90 <= 0.05 m AND yaw p90 <= 3.0 deg, >= 3 test episodes with >= 20 door_loaded frames. Not re-derived in this round (the round-2 FAIL stands)."
+}

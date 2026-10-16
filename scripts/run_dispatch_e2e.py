@@ -223,10 +223,8 @@ def run(args):
             batch = {r:f.result() for r,f in futures.items()}
             replies = {r:v[0] for r,v in batch.items()}
             for reply,stop,records in batch.values():team.calls.extend(records)
-            for rid,reply in replies.items():
-                if reply and reply['message']:
-                    for peer in ROBOTS:
-                        if peer!=rid:team.inbox[peer].append({'from_robot':rid,'message':reply['message'],'turn':turn})
+            team.deliver_replies(batch,phase='execution',turn=turn,
+                                 sim_time=float(scene.world.data.time))
             frame_id = frames['r1']['frame_id'];now = float(scene.world.data.time)
             commands = gate.batch(replies,frame_id=frame_id,now_s=now)
             row = {'turn':turn,'at_s':now,'stages':{r:p['stage'] if p else 'FINISHED' for r,p in rows.items()},
@@ -297,6 +295,35 @@ def main(argv=None):
     p.add_argument('--model',default='gemini-3.8-flash',help='existing peer planner model')
     p.add_argument('--viewer',action='store_true',help='skills: live native observer window, Space pause/resume, Q quit')
     p.add_argument('--realtime-factor',type=float,default=1.,help='native observer pacing; does not change physics timestep')
+    p.add_argument('--record-replay',action='store_true',
+                   help='skills: save observer-only states for post-run native replay (scripts.dispatch_replay)')
+    p.add_argument('--realtime-control',action='store_true',
+                   help='bounded asynchronous RGB control and isolated observer; separately versioned candidate')
+    p.add_argument('--coarse-concurrent-alignment',action='store_true',
+                   help='experimental paired coarse RGB: keep valid own forward while a peer aligns; requires skills realtime control')
+    p.add_argument('--rolling-visual-servo',action='store_true',
+                   help='experimental solo approach: bounded drive while paired RGB is captured; requires realtime control and open map')
+    p.add_argument('--rolling-view-recovery',action='store_true',
+                   help='experimental solo approach: bounded own-RGB active view after weak visible cyan; requires rolling realtime open-map skill')
+    p.add_argument('--bounded-carrier-relink',action='store_true',
+                   help='experimental solo carry: finite current-RGB carrier revalidation across TOP cargo occlusion; requires rolling realtime open-map skill')
+    p.add_argument('--fine-gain-schedule',action='store_true',
+                   help='skills only, synchronous only: experimental far-field command schedule for paired fine RGB alignment; default off')
+    p.add_argument('--plan-guidance',choices=('legacy','objective','objective_preview'),default='legacy',
+                   help='skills planning prompt condition: legacy text, stated safe-then-fast objective, '
+                        'or objective plus a rough schedule preview of each frozen proposal')
+    p.add_argument('--coordination',choices=('plan_first','dynamic'),default='plan_first',
+                   help='plan_first: negotiate one full plan before motion; dynamic: independent self-claims, '
+                        'talk only on conflict, and discuss supported approach failures (experimental)')
+    p.add_argument('--approach-retries',type=int,default=2,
+                   help='dynamic only: team-approved pair approach retries and, separately, regrasps')
+    p.add_argument('--box-retries',type=int,default=2,help='dynamic only: box-robot-approved box retries')
+    p.add_argument('--diagnostic-fail-approach-once',action='store_true',
+                   help='dynamic diagnostic: inject one approach failure after the first completed approach')
+    p.add_argument('--diagnostic-fail-grasp-once',action='store_true',
+                   help='dynamic diagnostic: inject one carry-guard stop after the first completed pair grasp')
+    p.add_argument('--diagnostic-fail-box-once',action='store_true',
+                   help='dynamic diagnostic: inject one box stop when its first approach completes')
     p.add_argument('--planning-rounds',type=int,default=8)
     p.add_argument('--max-replans',type=int,default=2)
     p.add_argument('--rounds',type=int,default=24)
@@ -320,16 +347,46 @@ def main(argv=None):
     p.add_argument('--video-fps',type=int,default=10)
     p.add_argument('--efficient-capture',action='store_true',help='omit unused pair camera and duplicate overview JPEG; actor inputs/video unchanged')
     p.add_argument('--route-overlap',action='store_true',help='open-map independent routes: overlap loaded travel, queue the box before the shared unload bay')
+    p.add_argument('--auto-route-overlap',action='store_true',
+                   help='use existing overlap gate only when the committed open-map plan has independent routes and resources')
     p.add_argument('--overlap-start',choices=('transit','grasp'),default='transit',help='issued pair stage that admits the box grasp on independent open-map routes')
     p.add_argument('--reference-top',type=Path,default=ROOT/'tests/fixtures/camera_goal_transport/reference-top.jpg')
+    p.add_argument('--navigation',choices=('authored','planned'),default='authored',
+                   help='planned: the models choose the box destination dock and a park place (name or xy_m); '
+                        'map A* plans the box path. Skills executor, synchronous, serial only')
     args = p.parse_args(argv)
     import math
     if not math.isfinite(args.realtime_factor) or args.realtime_factor<=0:p.error('positive finite realtime factor required')
     if args.planning_rounds<1 or args.max_replans<0:p.error('positive planning rounds and nonnegative replans required')
     if args.executor!='skills' and (args.viewer or args.task):p.error('--viewer/--task use the existing skills executor')
+    if args.executor!='skills' and args.record_replay:p.error('--record-replay uses the existing skills executor')
+    if args.rolling_visual_servo and (args.executor!='skills' or not args.realtime_control):
+        p.error('--rolling-visual-servo requires skills --realtime-control')
+    if args.coarse_concurrent_alignment and (args.executor!='skills' or not args.realtime_control):
+        p.error('--coarse-concurrent-alignment requires skills --realtime-control')
+    if args.bounded_carrier_relink and not args.rolling_visual_servo:
+        p.error('--bounded-carrier-relink requires --rolling-visual-servo')
+    if args.rolling_view_recovery and not args.rolling_visual_servo:
+        p.error('--rolling-view-recovery requires --rolling-visual-servo')
+    if args.coordination=='dynamic':
+        if args.executor!='skills' or args.plan_replay or args.realtime_control:
+            p.error('--coordination dynamic uses live skills planning, synchronous only, without --plan-replay')
+    if not 0<=args.approach_retries<=3:p.error('--approach-retries must be 0..3')
+    if not 0<=args.box_retries<=3:p.error('--box-retries must be 0..3')
+    for flag in ('approach','grasp','box'):
+        if getattr(args,f'diagnostic_fail_{flag}_once') and args.coordination!='dynamic':
+            p.error(f'--diagnostic-fail-{flag}-once requires --coordination dynamic')
     if args.task and args.plan_replay:p.error('--task requires new planning; cannot change a replayed plan')
     if args.carry_act_model and not args.carry_act_python:p.error('ACT interpreter required')
     if args.carry_max_steps is not None and args.carry_max_steps<=0:p.error('positive carry-max-steps required')
+    if args.fine_gain_schedule and args.executor!='skills':p.error('--fine-gain-schedule uses the skills executor')
+    if args.fine_gain_schedule and args.realtime_control:p.error('--fine-gain-schedule is calibrated for synchronous execution only; omit --realtime-control')
+    if args.plan_guidance!='legacy' and args.executor!='skills':p.error('--plan-guidance uses the skills executor')
+    if args.plan_guidance!='legacy' and args.coordination!='plan_first':
+        p.error('--plan-guidance is validated for plan_first negotiation only; dynamic self-claims use their own prompt')
+    if args.navigation=='planned' and (args.executor!='skills' or args.realtime_control or args.route_overlap
+                                       or args.coordination!='plan_first' or args.plan_guidance!='legacy'):
+        p.error('--navigation planned uses the synchronous plan-first skills executor without --route-overlap')
     if args.live_replan and (not args.plan_replay or args.executor!='skills'):
         p.error('--live-replan requires a skills --plan-replay diagnostic')
     if args.output.exists():p.error('output exists; choose a new directory')

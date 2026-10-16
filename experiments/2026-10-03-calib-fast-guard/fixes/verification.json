@@ -1,0 +1,108 @@
+{
+  "base_implementation_sha": "54d5e28b3439a4ba3624d7fee01d02b083ac33ae",
+  "review_sha": "fd1e82d2025097729b52efea8ff0dfaae3239f9c",
+  "source_scope": "precommit working tree; exact checked file bytes are below; fixing commit includes these files",
+  "unique_tests": {
+    "passed": 442,
+    "failed": 0,
+    "xfail": 0,
+    "skipped": 0
+  },
+  "former_counterexamples_passed": 18,
+  "legacy_registrations_full_hashes_and_writer_bytes_unchanged": 9,
+  "reports_in_supersession_order": [
+    {
+      "file": "first.xml",
+      "sha256": "5c62101bd291c35debb5e42c0eec269eae49f9a04082b6e7ad1bdb76cb4c1a86",
+      "tests": 86,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "related.xml",
+      "sha256": "f1556f2f97266c1601e5bb03653da924c902b2e7e0ada4a2997da695ac7da807",
+      "tests": 337,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "ci.xml",
+      "sha256": "4b81a8ec55c9bdbb11c99f56ea93fd5edc2a806576860544cc1bd49642f42eab",
+      "tests": 102,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "workflow.xml",
+      "sha256": "59cc02d1d8899f7f6780206cc36675d0b6ef10454f6f11c83d55d79843db6ab4",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "verified_files_sha256": {
+    "PHYSICS_HANDOFF.md": "a7e71a8618d9e6082e22f7fd66c00c44e477d21cf5867e2a3648374098a44bb5",
+    "configs/ci_test_durations.json": "24e4240ff74ec6ee5e86661a73bbe99a5dab87ddaab16b394ad579bc1c5b1b72",
+    "scripts/agent_lock.py": "709db3d87e4d2369171aba10ce3c64b7c8be254e2de7115ae608a022b1783dce",
+    "scripts/agent_sim_slots.py": "9649aa4fdeb64a4c15f844fc6b269d0f6103e23160ed23a675f4e81fba22d6b6",
+    "scripts/run_ci_tests.py": "b55f52ecf38dd476f3bb7902532298ba7e8ca843f4c6fe1dae7da08a9952bd6a",
+    "scripts/run_final_pair_fast.py": "c4b973f6a40ec397e8912e00aaed2a223d8ec9507a056dec307723e3d7747842",
+    "sim/final_pair_fast.py": "c7cbd1cd2fa891cc5475d8ad7876842611ab1eb363b243aa0d37ba4bbf804080",
+    "sim/final_pair_fast_guard.py": "c93c5f0216ef1666f9ddb31733e90de3e4d9d4827a2702c4c3de237cf164cdc7",
+    "tests/fixtures/review_355_legacy.json": "1732dd6176f16b02274568d5eff902a23f72d7af1943fb2825b9fe12d9e6646d",
+    "tests/test_agent_sim_slots.py": "5f7c66752cb7c743b8e36adc2944e7240ba9342090159aba903ef8e38d3526ed",
+    "tests/test_final_environment_measurement_v2.py": "40efd394046c352e309595fd29b4110b6a5c067320049ff7c923696ff64d286a",
+    "tests/test_review_352.py": "c54366b03508867786e54e5079e55e3e69b3bdcdf21f7f2b8fdf3e960837e0bd",
+    "tests/test_review_355.py": "fa8f556d1075250ddc73612b488bed4dffebde021eb55a7a2a861c90aeffe4ea",
+    "tests/test_zone_final_environment_floor_light.py": "261c8cd97f05d66b44b88842bec16e1a5348ae5fca7ab21cfb431836641be7c3",
+    "tests/test_zone_final_pair_fast.py": "a32d8fb670857191f1c0276a1219d0c3a4e535367ca6510f20316e11e190976f",
+    "tests/test_zone_final_pair_heldout.py": "3245d6142f22e560cd73827ff847ba8aaedb2de4083ea2e4f1b6eab438a8c79c"
+  },
+  "duration_coverage": {
+    "known": 414,
+    "total": 417,
+    "fraction": 0.9928057553956835
+  },
+  "durations_updated_from_related_xml": {
+    "tests/test_review_355.py": 44.69,
+    "tests/test_agent_sim_slots.py": 0.03
+  },
+  "shards": {
+    "count": 8,
+    "exact_coverage": true,
+    "files_per_shard": [
+      44,
+      91,
+      47,
+      47,
+      46,
+      47,
+      47,
+      48
+    ]
+  },
+  "static_checks": [
+    "check_ci_fixtures.py: 3 present",
+    "rgb_execution_bundle verify-current v63",
+    "rgb_execution_bundle verify-registry --base origin/main",
+    "check_media_size.py --base origin/main",
+    "git diff --check"
+  ],
+  "commands": [
+    "/opt/anaconda3/bin/python3 -B -m pytest -q tests/test_agent_lock.py tests/test_agent_sim_slots.py tests/test_review_355.py tests/test_review_352.py tests/test_zone_final_pair_fast.py tests/test_zone_final_pair_heldout.py tests/test_zone_final_pair_v3.py tests/test_zone_final_pair_review_fixes.py tests/test_final_pair_fast_guard.py tests/test_final_environment_measurement_v2.py tests/test_zone_final_environment_floor_light.py --junitxml=/private/tmp/pr355-fixes-related.xml",
+    "/opt/anaconda3/bin/python3 -B -m pytest -q tests/test_ci_sharding.py tests/test_ci_fast_path.py tests/test_ci_host_lock.py --junitxml=/private/tmp/pr355-fixes-ci.xml",
+    "/opt/anaconda3/bin/python3 -B -m pytest -q tests/test_simulation_workflow_manager.py -k 'catalog_has or every_catalog or source_fingerprint' --junitxml=/private/tmp/pr355-fixes-workflow.xml",
+    "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -B -m scripts.verify_final_pair_fast_guard --output /private/tmp/pr355-fixes-raw-equivalence.json"
+  ],
+  "new_collection_runs": 0,
+  "rendering": false,
+  "model_calls": 0,
+  "public_lock_writes": 0,
+  "existing_process_changes": 0,
+  "extraction_directories_created": [],
+  "extraction_directories_remaining": []
+}

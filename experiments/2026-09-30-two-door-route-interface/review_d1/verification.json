@@ -1,0 +1,158 @@
+{
+  "reviewed_head": "e9ee23ea89bc8e1c971f0b719cd8971942a14779",
+  "merged_main": "b10907c5f2c84f2712030f48fb38061fd4f51281",
+  "results": {
+    "current-01": {
+      "tests": 230,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 230,
+      "failed_cases": [],
+      "error_cases": [],
+      "exit_code": 0
+    },
+    "before-drop-neg": {
+      "tests": 62,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 62,
+      "failed_cases": [],
+      "error_cases": [],
+      "exit_code": 0
+    },
+    "after-drop-neg": {
+      "tests": 76,
+      "failed": 8,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 68,
+      "failed_cases": [
+        "test_both_candidates_and_shortest_selection_are_order_independent[west_to_east-east_heading]",
+        "test_both_candidates_and_shortest_selection_are_order_independent[east_to_west-west_heading]",
+        "test_full_team_clears_each_door_before_lateral_exit[west_to_east-east_heading-door_narrow]",
+        "test_full_team_clears_each_door_before_lateral_exit[west_to_east-east_heading-door_wide]",
+        "test_full_team_clears_each_door_before_lateral_exit[east_to_west-west_heading-door_narrow]",
+        "test_full_team_clears_each_door_before_lateral_exit[east_to_west-west_heading-door_wide]",
+        "test_complete_team_corner_blocks_cropped_disc_and_point_counterexample[east_heading-end_neg]",
+        "test_complete_team_corner_blocks_cropped_disc_and_point_counterexample[west_heading-end_neg]"
+      ],
+      "error_cases": [],
+      "exit_code": 1
+    },
+    "after-drop-pos": {
+      "tests": 76,
+      "failed": 9,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 67,
+      "failed_cases": [
+        "test_both_candidates_and_shortest_selection_are_order_independent[west_to_east-west_heading]",
+        "test_both_candidates_and_shortest_selection_are_order_independent[east_to_west-east_heading]",
+        "test_full_team_clears_each_door_before_lateral_exit[west_to_east-west_heading-door_narrow]",
+        "test_full_team_clears_each_door_before_lateral_exit[west_to_east-west_heading-door_wide]",
+        "test_full_team_clears_each_door_before_lateral_exit[east_to_west-east_heading-door_narrow]",
+        "test_full_team_clears_each_door_before_lateral_exit[east_to_west-east_heading-door_wide]",
+        "test_complete_team_corner_blocks_cropped_disc_and_point_counterexample[east_heading-end_pos]",
+        "test_complete_team_corner_blocks_cropped_disc_and_point_counterexample[west_heading-end_pos]",
+        "test_full_footprint_at_goal_not_just_reference_point"
+      ],
+      "error_cases": [],
+      "exit_code": 1
+    },
+    "ci-before": {
+      "tests": 1,
+      "failed": 1,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 0,
+      "failed_cases": [
+        "test_new_commits_preserve_running_and_pending_ci"
+      ],
+      "error_cases": [],
+      "exit_code": 1
+    }
+  },
+  "changed_geometry_cases": [
+    "test_both_candidates_and_shortest_selection_are_order_independent[east_to_west-east_heading]",
+    "test_both_candidates_and_shortest_selection_are_order_independent[east_to_west-west_heading]",
+    "test_both_candidates_and_shortest_selection_are_order_independent[west_to_east-east_heading]",
+    "test_both_candidates_and_shortest_selection_are_order_independent[west_to_east-west_heading]",
+    "test_complete_team_corner_blocks_cropped_disc_and_point_counterexample[east_heading-end_neg]",
+    "test_complete_team_corner_blocks_cropped_disc_and_point_counterexample[east_heading-end_pos]",
+    "test_complete_team_corner_blocks_cropped_disc_and_point_counterexample[west_heading-end_neg]",
+    "test_complete_team_corner_blocks_cropped_disc_and_point_counterexample[west_heading-end_pos]",
+    "test_full_team_clears_each_door_before_lateral_exit[east_to_west-east_heading-door_narrow]",
+    "test_full_team_clears_each_door_before_lateral_exit[east_to_west-east_heading-door_wide]",
+    "test_full_team_clears_each_door_before_lateral_exit[east_to_west-west_heading-door_narrow]",
+    "test_full_team_clears_each_door_before_lateral_exit[east_to_west-west_heading-door_wide]",
+    "test_full_team_clears_each_door_before_lateral_exit[west_to_east-east_heading-door_narrow]",
+    "test_full_team_clears_each_door_before_lateral_exit[west_to_east-east_heading-door_wide]",
+    "test_full_team_clears_each_door_before_lateral_exit[west_to_east-west_heading-door_narrow]",
+    "test_full_team_clears_each_door_before_lateral_exit[west_to_east-west_heading-door_wide]"
+  ],
+  "changed_geometry_cases_without_mutation_failure": [],
+  "protected_files": 549,
+  "protected_files_unchanged": true,
+  "local_physics_runs": 0,
+  "local_render_runs": 0,
+  "local_model_calls": 0,
+  "raw_root": "/Users/changmin/projects/ugrp/outputs/2026-09-30-t09a-d1-fixes",
+  "sha256": {
+    "after-drop-neg/junit.xml": "961501fe5eaf8b44f9685bf6a39470b3f2effef43ab5d5f75ce4603ad4267759",
+    "after-drop-neg/manifest.json": "afd58e9cc8c252960f017ebd45aed68ac188320f0b3fde92856ae97342b64587",
+    "after-drop-neg.log": "9451164960fb3599fb1095777afa0826448ea4a5a60d52a5f1e843909f6fccd5",
+    "after-drop-pos/junit.xml": "4f3a7f7fe4b4346af0417a2e75af968b103a86b4b3ce8a33547793ceb2312298",
+    "after-drop-pos/manifest.json": "aa98275cfc32048a0379cc268fc93d78c5b5ec97222c68741870be383eb67bc9",
+    "after-drop-pos.log": "84cf787aa39fa7adde98a05ae7049839f51f1fa264c9984eaaed47ad6750b0c3",
+    "before/tests/test_zone_own_executor_door_routes.py": "60df199c45ca6a410043f79a940e992ac848cb41b863785961e845527ed3152b",
+    "before-drop-neg/junit.xml": "71765f6f2d36309524cdaf3f14a19dec2322cc593000a09093ccc3a67ebe3e15",
+    "before-drop-neg/manifest.json": "dbb91d0e32d1a05d04842cdd02f40a4d1f613bb507f3ee044ce49aa3e8870f11",
+    "before-drop-neg.log": "3d036d282e74136e9f3d21f372df29f7a9d35427aa0476dcd3598ab2ba5da3de",
+    "ci-before/junit.xml": "7231fb92c421f70eb0aaf3fa56d9a4b925fab2e0170a3fb8ce3ca81263ef260f",
+    "ci-before/manifest.json": "453eec6c3defcc28ad1d062ed6bf6a5eb5032b091dc6c3e357031f77cd97e0fd",
+    "ci-before.log": "79bf87aa96887ec200468613bb6d30e4e6d6c2cea74f4302126f17983431e498",
+    "current-01/junit.xml": "28a196b16663ecabf9e8dc06c2959d674762ff346a6adc255a66557bb094a01f",
+    "current-01/manifest.json": "24b82fa7c6a8e0b5208b6124888537e4c42acc6c2ec6ef83e4bd6c88cd1963b0",
+    "current-01.log": "120cf5960b58f62f4ce9a32b42ef583e211b127d87e2133a90033061852573f2",
+    "mutation-commands.json": "b8914f1e78465237871baf21a42a15eb7ead16ab03f4a3e76a090d9a8fd20dde",
+    "protected-blobs.json": "773a89d94c46508a8ec53c1731682ec21986a6bf5adea0fdcde6c8c08f206d1e",
+    "run_remaining.py": "fcacc173ed11319eb1618e0908df81fa5481c77497297484da9b5621f899ef84",
+    "summarize.py": "bd96f6ee05b18a96293bf6c232714b6273b55adf859974d9b1e3e03cc9346ad5",
+    "test_zone_own_executor_door_routes_before.py": "60df199c45ca6a410043f79a940e992ac848cb41b863785961e845527ed3152b"
+  },
+  "source_sha256": {
+    "harness/zone_static_door_routes.py": "cec5fd95847496d5492b73dba67bf4393eef0c57394510ee7d2a22e597d9d24c",
+    "tests/test_zone_own_executor_door_routes.py": "9d4e213efb6834e72265132f8b6aa94588879fe8945e1fe9713a7f00ac3befd9",
+    "tests/test_ci_fast_path.py": "3c071ebed62051dee2fbe890702a4d9cfb0ffae1f2c2b4188e874aa0601fb30d",
+    ".github/workflows/tests.yml": "1eef4d2ea2d85905ad93b7e34d0f589ed29337295ce0fdbe67c6df37eb66d551"
+  },
+  "driver_sha256": "b2e849da66db930e079d4db68922f69dfb9ddec8e777941f20538ed825e5f39a",
+  "normal_pytest_args": [
+    "tests/test_zone_own_executor_door_routes.py",
+    "tests/test_pair_passage_plan.py",
+    "tests/test_zone_team_jobs.py",
+    "tests/test_zone_hard_routes.py::test_rect_keepouts_rotated_and_footprint_interface",
+    "tests/test_zone_final_env.py::test_v1_scenarios_and_tag_maps_are_unchanged",
+    "tests/test_zone_final_env.py::test_catalog_matches_the_files_and_pins_every_hash",
+    "tests/test_zone_pair_registered_source.py",
+    "tests/test_zone_study_source_pinning.py",
+    "tests/test_ci_fast_path.py"
+  ],
+  "normal_passed_subtests": 280,
+  "normal_tests_by_class": {
+    "tests.test_zone_own_executor_door_routes": 76,
+    "tests.test_pair_passage_plan": 44,
+    "tests.test_zone_team_jobs": 41,
+    "tests.test_zone_hard_routes": 1,
+    "tests.test_zone_final_env": 2,
+    "tests.test_zone_pair_registered_source": 22,
+    "tests.test_zone_study_source_pinning": 33,
+    "tests.test_ci_fast_path.CiFastPathTests": 11
+  },
+  "normal_elapsed_pytest_seconds": 67.52,
+  "all_run_locks_released": true,
+  "scope": "local static/fake regression only; no physics/render/model; no new experiment/TensorBoard snapshot",
+  "original_test_blob_sha256": "60df199c45ca6a410043f79a940e992ac848cb41b863785961e845527ed3152b"
+}

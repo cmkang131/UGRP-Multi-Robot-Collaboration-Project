@@ -1,0 +1,21 @@
+{
+ "schema": "ugrp.vision_loc.dev_plan_amendment.v3",
+ "amends": "dev_plan_v3.json + amendments 1, 2",
+ "registered": "2026-09-27, Kiro, after b0/a1/a2/a3b/a3c on all 9 dev episodes; before s1/s2/m1/m2 ran",
+ "rule_steps_so_far": [
+  "a1 (open interval ends) vs b0: L 5.53 -> 4.78 cm, P 7.18 -> 6.45 cm, A 1.512 -> 1.512 m, lost 5279 -> 5279: adopted (L and P fell by >= 0.3 cm).",
+  "a2 (slip scales redrawn on load changes) vs a1: L 4.78 -> 105.9 cm (dev s945 lost from 181 s to the end, door lateral p99 1.06 m): not adopted."
+ ],
+ "reason": "Every stuck variant run so far (a3, a3b, a3c, a3d) and every AMCL variant (a4, a5) contains the a2 change, which the rule rejected, so none of them can be compared with the base a1. The stuck mode itself removed the wedged-robot losses (a3b: dev s909 lost 2870 -> 0, s941 1551 -> 0 frames). The stuck and AMCL steps are therefore repeated on the base a1. Runs of a3, a3d, a4, a5 were stopped (partial outputs kept) to free the saturated machine.",
+ "variants": {
+  "s1_open_stuck_low": "a1 + stuck mode enter 0.01/s, exit 0.5/s, mean pose",
+  "s2_open_stuck_low_dom": "a1 + the same stuck mode, dominant-mode pose",
+  "m1_open_amcl": "a1 + augmented MCL, Nav2 alphas 0.001/0.1, uniform injection",
+  "m2_open_amcl_local": "a1 + augmented MCL, 10 % cap, 20 % uniform / 80 % local std 0.3 m, 0.3 m, 0.35 rad"
+ },
+ "rule_changes": [
+  "Stuck step (base a1): candidate = better of s1, s2 by (lost, then L, then A; ties -> s2); adopted by the dev_plan_v3 rule against a1.",
+  "AMCL step: if the stuck step adopted s1 or s2, the candidates are that variant + {Nav2, local} recovery blocks (configs written then, before they run); otherwise m1, m2. Candidate = better by (lost, L, A; ties -> Nav2); adopted by the same rule against the base.",
+  "a2-based variants (a3, a3b, a3c, a3d, a4, a5) are recorded as diagnostics only."
+ ]
+}

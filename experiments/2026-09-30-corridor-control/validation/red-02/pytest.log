@@ -1,0 +1,157 @@
+............................F..................FF..........FFF.......... [ 98%]
+.                                                                        [100%]
+=================================== FAILURES ===================================
+_____________ test_live_but_never_ready_partner_has_a_bounded_wait _____________
+
+static = {'robot_model': 'masterpi_v3', 'bounds_m': [-4.0, 5.0, -3.0, 3.0], 'obstacles': [], 'passages': [{'id': 'corridor_1', ...'x', 'center_m': [0.0, 0.0], ...}, {'id': 'bay_1', 'kind': 'passing_bay', 'axis': 'y', 'opens_to': 'corridor_1', ...}]}
+
+    def test_live_but_never_ready_partner_has_a_bounded_wait(static):
+        t = Trace(plan(static, pair=True), 'r1', config=replace(ControlConfig(), wait_timeout_s=.2))
+        for seq, at in enumerate((0., .1, .2), 1):
+            d = t.tick(now=at, delivered=(wire(t, seq=seq, at=at),))
+>       assert d.reason == 'PAIR_WAIT_TIMEOUT' and not any(c.moving for c in t.issued)
+E       AssertionError: assert ('entry_observed' == 'PAIR_WAIT_TIMEOUT'
+E         
+E         - PAIR_WAIT_TIMEOUT
+E         + entry_observed)
+
+tests/test_zone_own_executor_corridor_control.py:291: AssertionError
+____________ test_bad_or_uncertain_own_view_cannot_drive[changes4] _____________
+
+static = {'robot_model': 'masterpi_v3', 'bounds_m': [-4.0, 5.0, -3.0, 3.0], 'obstacles': [], 'passages': [{'id': 'corridor_1', ...'x', 'center_m': [0.0, 0.0], ...}, {'id': 'bay_1', 'kind': 'passing_bay', 'axis': 'y', 'opens_to': 'corridor_1', ...}]}
+changes = {'travel': []}
+
+    @pytest.mark.parametrize('changes', [dict(position_error_m=.1), dict(yaw_error_rad=.1),
+                                        dict(reference_pose=(math.nan, 0., 0.)), dict(travel='yes'),
+                                        dict(travel=[]), dict(refuge={}),
+                                        dict(base_yaw_rad=math.pi), dict(position_error_m=-.1)])
+    def test_bad_or_uncertain_own_view_cannot_drive(static, changes):
+        t = Trace(plan(static))
+>       d = t.tick(**changes)
+            ^^^^^^^^^^^^^^^^^
+
+tests/test_zone_own_executor_corridor_control.py:366: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_zone_own_executor_corridor_control.py:69: in tick
+    return self.controller.tick(OwnFrame(self.robot, self.seq, self.now, data),
+harness/zone_corridor_control.py:396: in tick
+    if not self._valid_view(view):
+           ^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <harness.zone_corridor_control.CorridorController object at 0x109197920>
+view = OwnView(reference_pose=(-2.0, 0.0, 0.0), base_yaw_rad=0.0, position_error_m=0.001, yaw_error_rad=0.001, holding='yes', travel=[], refuge='clear')
+
+    def _valid_view(self, view):
+        if not isinstance(view, OwnView):
+            return False
+        p = view.reference_pose
+        if not isinstance(p, tuple) or len(p) != 3 or not all(finite(x) for x in p):
+            return False
+        if not all(finite(x) for x in (view.base_yaw_rad, view.position_error_m, view.yaw_error_rad)):
+            return False
+>       if (view.travel not in VISIBILITY or view.refuge not in VISIBILITY
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                or view.holding not in ('yes', 'no', 'unknown')):
+E               TypeError: unhashable type: 'list'
+
+harness/zone_corridor_control.py:139: TypeError
+____________ test_bad_or_uncertain_own_view_cannot_drive[changes5] _____________
+
+static = {'robot_model': 'masterpi_v3', 'bounds_m': [-4.0, 5.0, -3.0, 3.0], 'obstacles': [], 'passages': [{'id': 'corridor_1', ...'x', 'center_m': [0.0, 0.0], ...}, {'id': 'bay_1', 'kind': 'passing_bay', 'axis': 'y', 'opens_to': 'corridor_1', ...}]}
+changes = {'refuge': {}}
+
+    @pytest.mark.parametrize('changes', [dict(position_error_m=.1), dict(yaw_error_rad=.1),
+                                        dict(reference_pose=(math.nan, 0., 0.)), dict(travel='yes'),
+                                        dict(travel=[]), dict(refuge={}),
+                                        dict(base_yaw_rad=math.pi), dict(position_error_m=-.1)])
+    def test_bad_or_uncertain_own_view_cannot_drive(static, changes):
+        t = Trace(plan(static))
+>       d = t.tick(**changes)
+            ^^^^^^^^^^^^^^^^^
+
+tests/test_zone_own_executor_corridor_control.py:366: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_zone_own_executor_corridor_control.py:69: in tick
+    return self.controller.tick(OwnFrame(self.robot, self.seq, self.now, data),
+harness/zone_corridor_control.py:396: in tick
+    if not self._valid_view(view):
+           ^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <harness.zone_corridor_control.CorridorController object at 0x1091c2720>
+view = OwnView(reference_pose=(-2.0, 0.0, 0.0), base_yaw_rad=0.0, position_error_m=0.001, yaw_error_rad=0.001, holding='yes', travel='clear', refuge={})
+
+    def _valid_view(self, view):
+        if not isinstance(view, OwnView):
+            return False
+        p = view.reference_pose
+        if not isinstance(p, tuple) or len(p) != 3 or not all(finite(x) for x in p):
+            return False
+        if not all(finite(x) for x in (view.base_yaw_rad, view.position_error_m, view.yaw_error_rad)):
+            return False
+>       if (view.travel not in VISIBILITY or view.refuge not in VISIBILITY
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                or view.holding not in ('yes', 'no', 'unknown')):
+E               TypeError: unhashable type: 'dict'
+
+harness/zone_corridor_control.py:139: TypeError
+_______ test_new_sequence_cannot_refresh_an_old_capture_or_exit_evidence _______
+
+static = {'robot_model': 'masterpi_v3', 'bounds_m': [-4.0, 5.0, -3.0, 3.0], 'obstacles': [], 'passages': [{'id': 'corridor_1', ...'x', 'center_m': [0.0, 0.0], ...}, {'id': 'bay_1', 'kind': 'passing_bay', 'axis': 'y', 'opens_to': 'corridor_1', ...}]}
+
+    def test_new_sequence_cannot_refresh_an_old_capture_or_exit_evidence(static):
+        t = Trace(plan(static))
+        t.tick()
+        frame = OwnFrame('r3', 2, 0., b'new ID, old capture')
+        d = t.controller.tick(frame, now_s=.05)
+>       assert d.reason == 'OWN_IMAGE_INVALID' and len(t.observer.calls) == 1
+E       AssertionError: assert ('OWN_VIEW_INV..._OR_UNCERTAIN' == 'OWN_IMAGE_INVALID'
+E         
+E         - OWN_IMAGE_INVALID
+E         + OWN_VIEW_INVALID_OR_UNCERTAIN)
+
+tests/test_zone_own_executor_corridor_control.py:399: AssertionError
+_________ test_arriving_at_refuge_junction_with_new_blockage_can_yield _________
+
+static = {'robot_model': 'masterpi_v3', 'bounds_m': [-4.0, 5.0, -3.0, 3.0], 'obstacles': [], 'passages': [{'id': 'corridor_1', ...'x', 'center_m': [0.0, 0.0], ...}, {'id': 'bay_1', 'kind': 'passing_bay', 'axis': 'y', 'opens_to': 'corridor_1', ...}]}
+
+    def test_arriving_at_refuge_junction_with_new_blockage_can_yield(static):
+        t = Trace(plan(static))
+        t.tick()
+        # First blockage and arrival share a frame; there was no prior clear
+        # waypoint event to advance the remembered prefix.
+        assert not t.tick((0., 0., 0.), travel='blocked').command.moving
+        d = t.tick((0., 0., 0.), travel='blocked')
+>       assert d.state == 'RETREAT'
+E       AssertionError: assert 'WAIT_LANE' == 'RETREAT'
+E         
+E         - RETREAT
+E         + WAIT_LANE
+
+tests/test_zone_own_executor_corridor_control.py:409: AssertionError
+____________ test_drift_out_of_bay_cannot_continue_wait_and_reentry ____________
+
+static = {'robot_model': 'masterpi_v3', 'bounds_m': [-4.0, 5.0, -3.0, 3.0], 'obstacles': [], 'passages': [{'id': 'corridor_1', ...'x', 'center_m': [0.0, 0.0], ...}, {'id': 'bay_1', 'kind': 'passing_bay', 'axis': 'y', 'opens_to': 'corridor_1', ...}]}
+
+    def test_drift_out_of_bay_cannot_continue_wait_and_reentry(static):
+        t = Trace(plan(static))
+        solo_to_junction(t)
+        t.tick((0., 0., 0.), travel='blocked')
+        assert t.tick((0., -1., 0.), travel='blocked').state == 'WAIT_BAY'
+        d = t.tick((.7, -1., 0.), travel='blocked')
+>       assert d.reason == 'BAY_NOT_OCCUPIED_BY_SELF'
+E       AssertionError: assert 'own_rgb_refuge_reached' == 'BAY_NOT_OCCUPIED_BY_SELF'
+E         
+E         - BAY_NOT_OCCUPIED_BY_SELF
+E         + own_rgb_refuge_reached
+
+tests/test_zone_own_executor_corridor_control.py:418: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_zone_own_executor_corridor_control.py::test_live_but_never_ready_partner_has_a_bounded_wait
+FAILED tests/test_zone_own_executor_corridor_control.py::test_bad_or_uncertain_own_view_cannot_drive[changes4]
+FAILED tests/test_zone_own_executor_corridor_control.py::test_bad_or_uncertain_own_view_cannot_drive[changes5]
+FAILED tests/test_zone_own_executor_corridor_control.py::test_new_sequence_cannot_refresh_an_old_capture_or_exit_evidence
+FAILED tests/test_zone_own_executor_corridor_control.py::test_arriving_at_refuge_junction_with_new_blockage_can_yield
+FAILED tests/test_zone_own_executor_corridor_control.py::test_drift_out_of_bay_cannot_continue_wait_and_reentry
+6 failed, 67 passed in 1.23s

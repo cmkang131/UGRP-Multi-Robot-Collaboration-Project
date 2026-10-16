@@ -1,0 +1,36 @@
+{
+  "schema": "ugrp.s2.slip_detect.verification.v1",
+  "source_sha": "adab260bd2f9daa701621defe54e24e7746ad1f9",
+  "input_hash_checks": {
+    "student_record.json": true,
+    "eval_only/trajectory.jsonl": true,
+    "bundle.json": true,
+    "robots/r3/frames.jsonl": true
+  },
+  "committed_source_checks": {
+    "harness/zone_solo_cyan_slip_detect.py": true,
+    "harness/zone_solo_cyan_pulse_cal.py": true,
+    "experiments/2026-10-06-s2-realism/replay_slip_detect.py": true,
+    "experiments/2026-10-06-s2-realism/score_slip_detect.py": true
+  },
+  "criteria_sha256": "6ef9bc21d78f94a4efd898e61ddbd1932b66e203130080efac4b8b4d3a3197a6",
+  "preregistration_commit": "a598929a",
+  "tests": {
+    "files": [
+      "tests/test_s2_slip_detect.py",
+      "tests/test_s2_pulse_cal.py",
+      "tests/test_s2_flow_fusion.py"
+    ],
+    "passed": 17,
+    "wall_s": 17.43
+  },
+  "frames_per_replay": 5202,
+  "default_off_exact": true,
+  "gt_inputs": false,
+  "gt_use": "scoring only after frozen replay",
+  "physics_runs": 0,
+  "model_calls": 0,
+  "lock_acquired": false,
+  "lock_status": null,
+  "session": "s2-slip-detect-offline: stopped"
+}

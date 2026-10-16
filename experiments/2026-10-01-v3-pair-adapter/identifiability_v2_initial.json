@@ -1,0 +1,445 @@
+{
+  "status": "SYNTHETIC_DESIGN_ONLY",
+  "method_source_pr": 347,
+  "real_structure_evidence_pr": 348,
+  "profiles": {
+    "calibration-unloaded": {
+      "forward": {
+        "model": "subtractive_deadband_then_lag",
+        "synthetic_parameters": {
+          "gain": 1.576,
+          "drive_tau_s": 0.84,
+          "stop_tau_s": 0.08,
+          "deadband": 0.005
+        },
+        "samples": 1681,
+        "sample_period_s": 0.05,
+        "samples_per_drive_tau": 16.799999999999997,
+        "step_drive_tau_ratio": 11.904761904761905,
+        "residual_floor": 0.0001,
+        "fisher_rank": 3,
+        "parameter_count": 3,
+        "fisher_min_eigenvalue": 12478107.360893426,
+        "fisher_condition": 255.7114726458731,
+        "profiled_20pct_alternative_rms": {
+          "drive_tau": 0.0013999188137263157,
+          "deadband": 0.0035133851145793837,
+          "knee": null
+        },
+        "within_residual_floor": {
+          "gain": [
+            1.5760000000000005,
+            1.5774168490536593
+          ],
+          "drive_tau_s": [
+            0.84,
+            0.8494234006148834
+          ],
+          "stop_tau_s": [
+            0.08,
+            0.08
+          ],
+          "deadband": [
+            0.005,
+            0.005
+          ]
+        },
+        "practically_separated": true
+      },
+      "left": {
+        "model": "subtractive_deadband_then_lag",
+        "synthetic_parameters": {
+          "gain": 1.18,
+          "drive_tau_s": 0.84,
+          "stop_tau_s": 0.08,
+          "deadband": 0.0065
+        },
+        "samples": 1681,
+        "sample_period_s": 0.05,
+        "samples_per_drive_tau": 16.799999999999997,
+        "step_drive_tau_ratio": 11.904761904761905,
+        "residual_floor": 0.0001,
+        "fisher_rank": 3,
+        "parameter_count": 3,
+        "fisher_min_eigenvalue": 5927528.658328181,
+        "fisher_condition": 272.37973162534576,
+        "profiled_20pct_alternative_rms": {
+          "drive_tau": 0.0009625260879469744,
+          "deadband": 0.0036353847426683922,
+          "knee": null
+        },
+        "within_residual_floor": {
+          "gain": [
+            1.1799999999999982,
+            1.1810614112358195
+          ],
+          "drive_tau_s": [
+            0.84,
+            0.8494234006148834
+          ],
+          "stop_tau_s": [
+            0.08,
+            0.08
+          ],
+          "deadband": [
+            0.0065,
+            0.006500000000000001
+          ]
+        },
+        "practically_separated": true
+      },
+      "turn": {
+        "model": "subtractive_deadband_then_lag",
+        "synthetic_parameters": {
+          "gain": 0.8,
+          "drive_tau_s": 0.84,
+          "stop_tau_s": 0.08,
+          "deadband": 0.005
+        },
+        "samples": 1681,
+        "sample_period_s": 0.05,
+        "samples_per_drive_tau": 16.799999999999997,
+        "step_drive_tau_ratio": 11.904761904761905,
+        "residual_floor": 0.0001,
+        "fisher_rank": 3,
+        "parameter_count": 3,
+        "fisher_min_eigenvalue": 3215261.243754983,
+        "fisher_condition": 255.71147264616093,
+        "profiled_20pct_alternative_rms": {
+          "drive_tau": 0.0007106186871707186,
+          "deadband": 0.0017834442205986725,
+          "knee": null
+        },
+        "within_residual_floor": {
+          "gain": [
+            0.7999999999999992,
+            0.800719212717596
+          ],
+          "drive_tau_s": [
+            0.84,
+            0.8494234006148834
+          ],
+          "stop_tau_s": [
+            0.08,
+            0.08
+          ],
+          "deadband": [
+            0.005,
+            0.005
+          ]
+        },
+        "practically_separated": true
+      }
+    },
+    "calibration-fine": {
+      "forward": {
+        "model": "subtractive_deadband_then_lag",
+        "synthetic_parameters": {
+          "gain": 1.576,
+          "drive_tau_s": 0.84,
+          "stop_tau_s": 0.08,
+          "deadband": 0.005
+        },
+        "samples": 1681,
+        "sample_period_s": 0.05,
+        "samples_per_drive_tau": 16.799999999999997,
+        "step_drive_tau_ratio": 11.904761904761905,
+        "residual_floor": 0.0001,
+        "fisher_rank": 3,
+        "parameter_count": 3,
+        "fisher_min_eigenvalue": 5402544.363167303,
+        "fisher_condition": 283.41097019381135,
+        "profiled_20pct_alternative_rms": {
+          "drive_tau": 0.0008961972177470814,
+          "deadband": 0.002556037772586056,
+          "knee": null
+        },
+        "within_residual_floor": {
+          "gain": [
+            1.5760000000000018,
+            1.5774249636334707
+          ],
+          "drive_tau_s": [
+            0.84,
+            0.8494234006148834
+          ],
+          "stop_tau_s": [
+            0.08,
+            0.08
+          ],
+          "deadband": [
+            0.005,
+            0.005
+          ]
+        },
+        "practically_separated": true
+      },
+      "left": {
+        "model": "subtractive_deadband_then_lag",
+        "synthetic_parameters": {
+          "gain": 1.18,
+          "drive_tau_s": 0.84,
+          "stop_tau_s": 0.08,
+          "deadband": 0.0065
+        },
+        "samples": 1681,
+        "sample_period_s": 0.05,
+        "samples_per_drive_tau": 16.799999999999997,
+        "step_drive_tau_ratio": 11.904761904761905,
+        "residual_floor": 0.0001,
+        "fisher_rank": 3,
+        "parameter_count": 3,
+        "fisher_min_eigenvalue": 2442735.9388379497,
+        "fisher_condition": 315.412317053138,
+        "profiled_20pct_alternative_rms": {
+          "drive_tau": 0.0005984283782957312,
+          "deadband": 0.002680175013797284,
+          "knee": null
+        },
+        "within_residual_floor": {
+          "gain": [
+            1.1800000000000015,
+            1.1810682376652681
+          ],
+          "drive_tau_s": [
+            0.84,
+            0.8494234006148834
+          ],
+          "stop_tau_s": [
+            0.08,
+            0.08
+          ],
+          "deadband": [
+            0.0065,
+            0.006500000000000001
+          ]
+        },
+        "practically_separated": true
+      },
+      "turn": {
+        "model": "subtractive_deadband_then_lag",
+        "synthetic_parameters": {
+          "gain": 0.8,
+          "drive_tau_s": 0.84,
+          "stop_tau_s": 0.08,
+          "deadband": 0.005
+        },
+        "samples": 1681,
+        "sample_period_s": 0.05,
+        "samples_per_drive_tau": 16.799999999999997,
+        "step_drive_tau_ratio": 11.904761904761905,
+        "residual_floor": 0.0001,
+        "fisher_rank": 3,
+        "parameter_count": 3,
+        "fisher_min_eigenvalue": 1392085.4346068304,
+        "fisher_condition": 283.410970194078,
+        "profiled_20pct_alternative_rms": {
+          "drive_tau": 0.0004549224455568932,
+          "deadband": 0.0012974811028355626,
+          "knee": null
+        },
+        "within_residual_floor": {
+          "gain": [
+            0.8000000000000009,
+            0.8007233317936437
+          ],
+          "drive_tau_s": [
+            0.84,
+            0.8494234006148834
+          ],
+          "stop_tau_s": [
+            0.08,
+            0.08
+          ],
+          "deadband": [
+            0.005,
+            0.005
+          ]
+        },
+        "practically_separated": false
+      }
+    },
+    "calibration-loaded": {
+      "forward": {
+        "model": "subtractive_deadband_then_lag",
+        "synthetic_parameters": {
+          "gain": 1.576,
+          "drive_tau_s": 0.84,
+          "stop_tau_s": 0.08,
+          "deadband": 0.005
+        },
+        "samples": 1681,
+        "sample_period_s": 0.05,
+        "samples_per_drive_tau": 16.799999999999997,
+        "step_drive_tau_ratio": 11.904761904761905,
+        "residual_floor": 0.0001,
+        "fisher_rank": 3,
+        "parameter_count": 3,
+        "fisher_min_eigenvalue": 19633086.87640465,
+        "fisher_condition": 260.5313687327426,
+        "profiled_20pct_alternative_rms": {
+          "drive_tau": 0.0017209123328128346,
+          "deadband": 0.004481031043274782,
+          "knee": null
+        },
+        "within_residual_floor": {
+          "gain": [
+            1.5760000000000014,
+            1.5760000000000014
+          ],
+          "drive_tau_s": [
+            0.84,
+            0.84
+          ],
+          "stop_tau_s": [
+            0.08,
+            0.08
+          ],
+          "deadband": [
+            0.005,
+            0.005
+          ]
+        },
+        "practically_separated": true
+      },
+      "left": {
+        "model": "subtractive_deadband_then_lag",
+        "synthetic_parameters": {
+          "gain": 1.18,
+          "drive_tau_s": 0.84,
+          "stop_tau_s": 0.08,
+          "deadband": 0.0065
+        },
+        "samples": 1681,
+        "sample_period_s": 0.05,
+        "samples_per_drive_tau": 16.799999999999997,
+        "step_drive_tau_ratio": 11.904761904761905,
+        "residual_floor": 0.0001,
+        "fisher_rank": 3,
+        "parameter_count": 3,
+        "fisher_min_eigenvalue": 9773880.97508325,
+        "fisher_condition": 269.40169618766805,
+        "profiled_20pct_alternative_rms": {
+          "drive_tau": 0.0012103391064566824,
+          "deadband": 0.004556424058303922,
+          "knee": null
+        },
+        "within_residual_floor": {
+          "gain": [
+            1.1799999999999973,
+            1.1810660259491776
+          ],
+          "drive_tau_s": [
+            0.84,
+            0.8494234006148834
+          ],
+          "stop_tau_s": [
+            0.08,
+            0.08
+          ],
+          "deadband": [
+            0.0065,
+            0.006500000000000001
+          ]
+        },
+        "practically_separated": true
+      },
+      "turn": {
+        "model": "subtractive_deadband_then_lag",
+        "synthetic_parameters": {
+          "gain": 0.8,
+          "drive_tau_s": 0.84,
+          "stop_tau_s": 0.08,
+          "deadband": 0.005
+        },
+        "samples": 1681,
+        "sample_period_s": 0.05,
+        "samples_per_drive_tau": 16.799999999999997,
+        "step_drive_tau_ratio": 11.904761904761905,
+        "residual_floor": 0.0001,
+        "fisher_rank": 3,
+        "parameter_count": 3,
+        "fisher_min_eigenvalue": 5058900.48091874,
+        "fisher_condition": 260.5313687330342,
+        "profiled_20pct_alternative_rms": {
+          "drive_tau": 0.0008735595598034693,
+          "deadband": 0.0022746350473476064,
+          "knee": null
+        },
+        "within_residual_floor": {
+          "gain": [
+            0.8000000000000027,
+            0.8007222854581102
+          ],
+          "drive_tau_s": [
+            0.84,
+            0.8494234006148834
+          ],
+          "stop_tau_s": [
+            0.08,
+            0.08
+          ],
+          "deadband": [
+            0.005,
+            0.005
+          ]
+        },
+        "practically_separated": true
+      },
+      "runtime_ramp": {
+        "model": "ramp_deadband_then_lag",
+        "synthetic_parameters": {
+          "gain": 0.8,
+          "drive_tau_s": 0.84,
+          "stop_tau_s": 0.08,
+          "deadband": 0.01,
+          "knee": 0.03
+        },
+        "samples": 1681,
+        "sample_period_s": 0.05,
+        "samples_per_drive_tau": 16.799999999999997,
+        "step_drive_tau_ratio": 11.904761904761905,
+        "residual_floor": 0.0001,
+        "fisher_rank": 4,
+        "parameter_count": 4,
+        "fisher_min_eigenvalue": 3.0726279442019066e-09,
+        "fisher_condition": 4.855729117107646e+17,
+        "profiled_20pct_alternative_rms": {
+          "drive_tau": 0.0008965104251428992,
+          "deadband": 1.292887597162586e-16,
+          "knee": 1.292887597162586e-16
+        },
+        "within_residual_floor": {
+          "gain": [
+            0.8000000000000012,
+            0.8007251743280734
+          ],
+          "drive_tau_s": [
+            0.84,
+            0.8494234006148834
+          ],
+          "stop_tau_s": [
+            0.08,
+            0.08
+          ],
+          "deadband": [
+            0.01,
+            0.016
+          ],
+          "knee": [
+            0.024,
+            0.03
+          ]
+        },
+        "practically_separated": false
+      }
+    }
+  },
+  "passed": false,
+  "limitations": [
+    "conditional on Hammerstein structure and the stated synthetic parameters/noise floor",
+    "fine/loaded/turn values are assumptions, not measured fits",
+    "stop tau profiled as nuisance; 20 Hz does not qualify fast stopping",
+    "#348 real PRBS residuals remain; no MEASURED_SIM product or physical acceptance"
+  ]
+}

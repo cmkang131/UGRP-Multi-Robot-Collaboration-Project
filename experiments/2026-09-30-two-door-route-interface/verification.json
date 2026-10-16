@@ -1,0 +1,110 @@
+{
+  "scope": "T09a static/fake unit regression only; no robot trial",
+  "base_commit": "6594536b1a1afec6d9d109b35dd85a8426142d01",
+  "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+  "passed": 150,
+  "failed": 0,
+  "skipped": 0,
+  "pytest_reported_seconds": 7.93,
+  "by_module": {
+    "tests.test_zone_own_executor_door_routes": 62,
+    "tests.test_pair_passage_plan": 44,
+    "tests.test_zone_team_jobs": 41,
+    "tests.test_zone_hard_routes": 1,
+    "tests.test_zone_final_env": 2
+  },
+  "pytest_args": [
+    "tests/test_zone_own_executor_door_routes.py",
+    "tests/test_pair_passage_plan.py",
+    "tests/test_zone_team_jobs.py",
+    "tests/test_zone_hard_routes.py::test_rect_keepouts_rotated_and_footprint_interface",
+    "tests/test_zone_final_env.py::test_v1_scenarios_and_tag_maps_are_unchanged",
+    "tests/test_zone_final_env.py::test_catalog_matches_the_files_and_pins_every_hash"
+  ],
+  "source_sha256": {
+    "harness/zone_static_door_routes.py": "cec5fd95847496d5492b73dba67bf4393eef0c57394510ee7d2a22e597d9d24c",
+    "tests/test_zone_own_executor_door_routes.py": "60df199c45ca6a410043f79a940e992ac848cb41b863785961e845527ed3152b"
+  },
+  "role_assignment": null,
+  "role_assignment_scope": "no actor assignment or runtime controller execution in this static API test",
+  "protected_input_count": 40,
+  "protected_input_hashes_unchanged": true,
+  "local_sim_seconds": 0,
+  "local_physics_runs": 0,
+  "local_render_runs": 0,
+  "local_model_calls": 0,
+  "ci_scope": "normal GitHub CI including ACT/local-model tests; separate from local scope",
+  "lock_acquired": {
+    "owner": "codex",
+    "branch": "codex/two-door-route-interface",
+    "purpose": "T09a static fake/regression only; no physics/render/model",
+    "pid": 96899,
+    "acquired_unix": 1790769527.539804,
+    "expected_end_unix": 1790769707.539805,
+    "loadavg_at_acquire": [
+      10.9453125,
+      20.8291015625,
+      23.57470703125
+    ]
+  },
+  "lock_released": {
+    "owner": "codex",
+    "branch": "codex/two-door-route-interface",
+    "purpose": "T09a static fake/regression only; no physics/render/model",
+    "pid": 96899,
+    "acquired_unix": 1790769527.539804,
+    "expected_end_unix": 1790769707.539805,
+    "loadavg_at_acquire": [
+      10.9453125,
+      20.8291015625,
+      23.57470703125
+    ],
+    "pid_alive": true
+  },
+  "load_start": [
+    10.9453125,
+    20.8291015625,
+    23.57470703125
+  ],
+  "load_end": [
+    10.388671875,
+    20.54931640625,
+    23.4599609375
+  ],
+  "raw_root": "/Users/changmin/projects/ugrp/outputs/2026-09-30-t09a-two-door-route",
+  "raw_sha256": {
+    "input-baseline.json": "8d09b642609cd49312b3bcc5122c2246a0e721f49f2759372b0ac98e1c7ec314",
+    "attempt-01-lock.json": "9d870040e3755b3147a98c33e8248370ccceb237a015d55693d223697836b1f5",
+    "attempt-02.log": "edab9a29a1d288fa1c1aa0fb62dde7e6e9b78e96d97b06169473eff8d53649df",
+    "attempt-03.log": "0b102188323b47b4c0a64372eb87d5e9ddca77d9eb001b79cb1757810d441344",
+    "attempt-04.log": "0386519053cc533575f94692221d900f019b7ffb812305019e094748a8cbfd19",
+    "static-test-driver.py": "ee153ddb04fdc11a545b3db0eb0b80e871eb32d2887df5aa82a2afa2db45e8a3",
+    "20260930T205232-96899/junit.xml": "66797606ade336f93d4ab9d6a740e5c0958e9b8a18d5b0d2a72352afc96c0a62",
+    "20260930T205232-96899/manifest.json": "7fdf7b3e737c1695a5bd98a04c913a93ecf87d200c2806165f47d920b0b1a65d"
+  },
+  "attempts": [
+    {
+      "id": "01",
+      "exit_code": 3,
+      "pytest_started": false,
+      "reason": "host lock occupied"
+    },
+    {
+      "id": "02",
+      "exit_code": 130,
+      "pytest_started": false,
+      "reason": "own waiting session stopped to shorten lock polling interval"
+    },
+    {
+      "id": "03",
+      "exit_code": 130,
+      "pytest_started": false,
+      "reason": "own waiting session stopped before numeric-path fix and combined test run"
+    },
+    {
+      "id": "04",
+      "exit_code": 0,
+      "passed": 150
+    }
+  ]
+}

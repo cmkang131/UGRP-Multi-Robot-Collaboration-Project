@@ -1,0 +1,223 @@
+{
+  "criteria": {
+    "version": "s2v44-prereg-v1",
+    "seeds": [
+      1051,
+      1053,
+      1054
+    ],
+    "baseline": "v133; rotation_calibration off; sealed v42 off predictions",
+    "rotation_on": "diagnosis only, to locate the previously reported 47 misses; baseline has 44",
+    "primary_universe": "1602 existing single-cluster matching-XY-covariance decision times; retain the same times off/on",
+    "phase_bins": [
+      "SEARCH",
+      "approach",
+      "carry",
+      "place"
+    ],
+    "motion_bins": [
+      "turn",
+      "forward",
+      "lateral",
+      "stationary"
+    ],
+    "motion_definition": "most recent nonzero own wheel command ending within 1s of report t_est; otherwise stationary",
+    "landmark_age_edges_s": [
+      0,
+      1,
+      5,
+      15,
+      30
+    ],
+    "chi2_95_xy": 5.991464547107979,
+    "chi2_95_yaw": 3.841458820694124,
+    "bias_diagnostic": "component mean and population variance; centered NEES is retrospective explanation only, never a controller correction",
+    "bias_majority_rule": "bias squared contributes >=50% of XY MSE",
+    "residual_inconsistency_rule": "demeaned XY NEES exceedance >20%",
+    "holdouts": [
+      {
+        "fit": [
+          1053,
+          1054
+        ],
+        "check": 1051
+      },
+      {
+        "fit": [
+          1051,
+          1054
+        ],
+        "check": 1053
+      },
+      {
+        "fit": [
+          1051,
+          1053
+        ],
+        "check": 1054
+      }
+    ],
+    "fit_gt_allowed": false,
+    "gt_use": "evaluation only; no GT offset, covariance fit, motion fit, sensor association or action selection",
+    "admission_each_holdout": {
+      "xy_nees_exceedance_rate_max": 0.2,
+      "unflagged_xy_above_25cm_max": 0,
+      "carry_rmse_increase_m_max": 1e-09,
+      "off_pose_serialization_identical": true
+    },
+    "physical": "only all holdouts pass, then supervisor check and separate unused-seed registration before one full DEV with agent_lock and ugrp_session",
+    "threshold_change_after_results": false
+  },
+  "physics": 0,
+  "model_calls": 0,
+  "gt_use": "evaluation only",
+  "fit_gt_inputs": false,
+  "runs": [
+    {
+      "seed": 1051,
+      "fit_seeds": [
+        1053,
+        1054
+      ],
+      "conditions": {
+        "off": {
+          "nees_available": 493,
+          "primary_n": 493,
+          "nees_exceeded": 445,
+          "nees_rate": 0.9026369168356998,
+          "primary_warnings": 293,
+          "primary_misses": 44,
+          "all_warnings": 293,
+          "all_misses": 44,
+          "carry_rmse_m": 0.21797712620042028,
+          "carry_frames": 4145,
+          "unavailable_times": []
+        },
+        "on": {
+          "nees_available": 493,
+          "primary_n": 493,
+          "nees_exceeded": 417,
+          "nees_rate": 0.845841784989858,
+          "primary_warnings": 375,
+          "primary_misses": 40,
+          "all_warnings": 375,
+          "all_misses": 40,
+          "carry_rmse_m": 0.21872567435916737,
+          "carry_frames": 4145,
+          "unavailable_times": []
+        }
+      },
+      "gates": {
+        "covariance_coverage": true,
+        "nees": false,
+        "misses": false,
+        "carry_rmse": false,
+        "off_byte_identical": true
+      },
+      "passed": false
+    },
+    {
+      "seed": 1053,
+      "fit_seeds": [
+        1051,
+        1054
+      ],
+      "conditions": {
+        "off": {
+          "nees_available": 486,
+          "primary_n": 486,
+          "nees_exceeded": 248,
+          "nees_rate": 0.5102880658436214,
+          "primary_warnings": 200,
+          "primary_misses": 0,
+          "all_warnings": 200,
+          "all_misses": 0,
+          "carry_rmse_m": 0.1115193587580202,
+          "carry_frames": 3829,
+          "unavailable_times": []
+        },
+        "on": {
+          "nees_available": 486,
+          "primary_n": 486,
+          "nees_exceeded": 251,
+          "nees_rate": 0.5164609053497943,
+          "primary_warnings": 363,
+          "primary_misses": 0,
+          "all_warnings": 363,
+          "all_misses": 0,
+          "carry_rmse_m": 0.10862684237709297,
+          "carry_frames": 3829,
+          "unavailable_times": []
+        }
+      },
+      "gates": {
+        "covariance_coverage": true,
+        "nees": false,
+        "misses": true,
+        "carry_rmse": true,
+        "off_byte_identical": true
+      },
+      "passed": false
+    },
+    {
+      "seed": 1054,
+      "fit_seeds": [
+        1051,
+        1053
+      ],
+      "conditions": {
+        "off": {
+          "nees_available": 623,
+          "primary_n": 623,
+          "nees_exceeded": 590,
+          "nees_rate": 0.9470304975922953,
+          "primary_warnings": 297,
+          "primary_misses": 0,
+          "all_warnings": 312,
+          "all_misses": 0,
+          "carry_rmse_m": 0.21583948997751365,
+          "carry_frames": 4132,
+          "unavailable_times": []
+        },
+        "on": {
+          "nees_available": 623,
+          "primary_n": 623,
+          "nees_exceeded": 590,
+          "nees_rate": 0.9470304975922953,
+          "primary_warnings": 313,
+          "primary_misses": 0,
+          "all_warnings": 328,
+          "all_misses": 0,
+          "carry_rmse_m": 0.1974660105934706,
+          "carry_frames": 4132,
+          "unavailable_times": []
+        }
+      },
+      "gates": {
+        "covariance_coverage": true,
+        "nees": false,
+        "misses": true,
+        "carry_rmse": true,
+        "off_byte_identical": true
+      },
+      "passed": false
+    }
+  ],
+  "hashes": {
+    "/Users/changmin/projects/ugrp/outputs/s2-consistency-v44-20261008/replay/s1051-on.json": "ceaed7eeecd05b4a1b1deee9a03f31cc3fd91bc8921ba0405005b90ed65d3488",
+    "/Users/changmin/projects/ugrp/outputs/s2-consistency-v44-20261008/rgb-fit/s1051-calibration.json": "7a2aea18c763709f09cd229063c4d8322b0f30cefdf14a2f50efd21f0ee3085e",
+    "/Users/changmin/projects/ugrp/outputs/s2-consistency-v44-20261008/replay/s1053-on.json": "af0758e9cd8b0d5b4d013e86a40f67fcf2716ef4d943fd417b25f633bc6a7d1c",
+    "/Users/changmin/projects/ugrp/outputs/s2-consistency-v44-20261008/rgb-fit/s1053-calibration.json": "4d496cefa86ab85bc952f5abf7155b752bf9afa60bcaa15cb88afaca5c2ecfd5",
+    "/Users/changmin/projects/ugrp/outputs/s2-consistency-v44-20261008/replay/s1054-on.json": "f72ed065e58ea2bea08bda159b5a1245d06b0c9b0a71ff77ebd37d267f13ab1d",
+    "/Users/changmin/projects/ugrp/outputs/s2-consistency-v44-20261008/rgb-fit/s1054-calibration.json": "cf586072b33d8922facacdc5eb10d141fcd6bf562a2c40f2b331cf6babc8aac4"
+  },
+  "physical_admitted": false,
+  "total_off": {
+    "valid": 1602,
+    "exceeded": 1283
+  },
+  "total_on": {
+    "valid": 1602,
+    "exceeded": 1258
+  }
+}
