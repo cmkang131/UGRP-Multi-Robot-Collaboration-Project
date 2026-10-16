@@ -41,9 +41,15 @@ class VisibleOracle:
         self.bodies={x.item_id:x.body for x in scene.cargo}
         self.bodies.update({k:v['body_name'] for k,v in scene.config['setup_only']['objects'].items()})
         m=self.ctx['world'].model
+        import numpy as np
+        from scripts.audit_grasp_act_visibility import BandVisibility
+        geometry=BandVisibility.__new__(BandVisibility)
+        geometry.model,geometry.body_gids=m,{}
+        geometry.groups=np.array([1,1,1,1,0,0],dtype=np.uint8)
         def geoms(body):
-            bid=m.body(body).id
-            return [g for g in range(m.ngeom) if m.geom_bodyid[g]==bid and m.geom_contype[g]]
+            # Frozen teacher's descendant/visual-part selection, including its
+            # existing largest-eight convention; no new visibility threshold.
+            return geometry._body_geoms(m.body(body).id)
         self.geoms=geoms
         self.obstacles=[('robot:'+r,r+'__robot',geoms(r+'__robot')) for r in ('r2','r3')]
         self.obstacles += [(iid,name,geoms(name)) for iid,name in self.bodies.items() if iid!=self.plan['item_id']]
