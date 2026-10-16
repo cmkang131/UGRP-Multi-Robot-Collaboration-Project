@@ -1,16 +1,26 @@
 {
   "utc": "2026-10-16T09:36:38.800953+00:00",
-  "tested_at_head": "7e5d52bd2d2afcfef620c44b43dac4a53c9a6ad6",
-  "command": "PYTHONPATH=.:scripts /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_warp10_host.py tests/test_warp_act_warp5.py tests/test_warp9_first30.py",
-  "result": "21 passed in 0.60s",
+  "tested_at_head": "66638264d22f5cc035c243686045add0024ade6d",
+  "command": "PYTHONPATH=.:scripts /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_warp10_control.py tests/test_warp10_host.py tests/test_warp_act_warp5.py tests/test_warp9_first30.py",
+  "result": "24 passed in 0.52s",
   "diff_check": "PASS",
   "scope": "short non-physics checks only; no Mac renderer/model calls; whole CI not run locally",
   "source_sha256": {
-    "scripts/warp10_host.py": "d71525e3b202c996141fff6f130e86496c87a5598ca9be6349110b769d8b11a7",
-    "scripts/warp5_batch.py": "28019474c07d2f8c637cdf441fc28039581859ce23ac8b19116390a470cc2e27",
+    "scripts/warp10_host.py": "aba6970b6cbfe38f66fa1feb2597d7974fcd5a9e1169cc6717fa780909cbcb1a",
+    "scripts/warp10_control.py": "56fde8ed35c824a5e3c37ce695f124ad0daa3b8c921c5d210be80ca9ba6f9453",
+    "scripts/warp5_batch.py": "42f87f7beab08f158161601340c418f939d87f5cd12e89db77594527e185aed5",
     "scripts/warp5_render.py": "82ebc91ffd7b58326c1fc9618995b6b081e58f2ac88cdbb33bd6ba217342195f",
-    "scripts/run_warp5_batch.py": "1a7d9537f0ad1b0f3fbb5ee6cb25e1a35ab3bb038e481c8bfd8239c7e84f731b",
+    "scripts/run_warp5_batch.py": "4038e051b989f2133a291644bc02aba3059a26c2761cefabe8f0cec42516800d",
     "scripts/warp9_first30.py": "150cc692cbaeb7aaf46b4d0e74e800c2fd9fa8af4c70c9e7122e546e3ea2c0e7",
-    "tests/test_warp10_host.py": "a7140e5ddc3febda6c37ce25c352d9b66553ae1d937a5024ae5f3af9c1e3cb05"
-  }
+    "tests/test_warp10_host.py": "a7140e5ddc3febda6c37ce25c352d9b66553ae1d937a5024ae5f3af9c1e3cb05",
+    "tests/test_warp10_control.py": "4c98d45dd0e034f31d9971ba081c185e597ce9181b9273dc721496648a79d9b5"
+  },
+  "previous_checks": [
+    {
+      "command": "PYTHONPATH=.:scripts /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_warp10_host.py tests/test_warp_act_warp5.py tests/test_warp9_first30.py",
+      "result": "21 passed in 0.60s",
+      "tested_at_head": "7e5d52bd2d2afcfef620c44b43dac4a53c9a6ad6"
+    }
+  ],
+  "notes": "5894d2d8d adds recording-only role annotation after this test; production math/IPC unchanged. zstd analysis is verified against actual decoded original hashes on gcp2."
 }

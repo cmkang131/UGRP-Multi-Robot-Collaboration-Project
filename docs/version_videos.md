@@ -4,6 +4,10 @@
 
 **영상은 stage probe를 다시 그린 것이다.** 위에서 본 그림은 정답 위치(평가용, 로봇 입력 아님)를 그린 도식이며 top 카메라 영상이 아니다(probe는 공용 top 카메라 프레임을 저장하지 않는다). 아래 곡선은 로봇이 추정한 yaw 불확실도 σ다. E2E 성공, 학생 성공, 성공률이 아니다.
 
+## 2026-10-16 warp10 호스트 처리량·CPU 분리 후보 (검증 중)
+
+[직렬 진단의 개요+r1+r2 4배속](../experiments/2026-10-16-warp10/figures/serial-red-approach-4x.mp4), 17994bytes, SHA256 `3ea246eb9aed0d7dcdcb3f765854a05c04f585fbfba9f4e663e88448e723afa7`. source `01bfbae4369d6c4c183c72745d122338e858094b`, gcp4 g2-standard-16. 2.0–11.5 SIM초의 접근 prefix이며 감독 중단·첫30 미완료, 운반/place/완주 성공 영상이 아니다. [직접 검토 범위·타임라인](../experiments/2026-10-16-warp10/playback-review-serial.json), [호스트 후보·전체 계측](../experiments/2026-10-16-warp10/README.md).
+
 ## 2026-10-16 warp9 MJWarp 처리량 후보 (미채택)
 
 source `3da542d67465fc9a1275c3c1a27dc404d7dae3d6`, 기본off NoSlip 버퍼/400틱 graph 후보다.

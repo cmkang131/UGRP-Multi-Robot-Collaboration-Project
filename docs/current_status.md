@@ -1,5 +1,9 @@
 # 현재 상태와 실행 경로
 
+## 2026-10-16 warp10 — 호스트 처리량 개선·CPU 분리 첫30 검증 중
+
+gcp4를 정지 상태에서 g2-standard-16으로 바꾸고 같은 머신 전후 N1/4/16/64×0.3SIM을 완료했다. N16 wall24.819→18.846, N64 86.212→49.464초. 기본off pinned readback·틱당 카메라 완료대기·명령 배열 후보이며 NoSlip/dt/solver는 유지했다. 동일 GPU 상태의 RGB/평가 출력은 정확 일치했으나 별도 실행의 최종 qpos/qvel/warmstart는 비트 불일치이며 원인은 미분리다. 혼합N16 직렬 첫30은10.1SIM에서 감독 중단하고 CPU spawn 후보를 검증 중이다. 학생·완주·live CoreWeave E2E는 미완료, 모델0. [기록·관문표·검토 영상](../experiments/2026-10-16-warp10/README.md).
+
 ## 2026-10-16 warp9 — gcp4 단독 계측·처리량3회 중단 NOT_READY
 
 공식 자료 조사 뒤 gcp4 단독 N1/N4/N16 0.3SIM초 분리 계측을 완료했고 N64는 호스트 OOM으로 HOST_ERROR다. N16 wall24.986→trace26.098→전용 NoSlip 버퍼/400틱 graph29.099초로 개선되지 않아 후보 기본off·미채택, 세 번째 반복 규칙으로 새 제출을 멈췄다. NoSlip·dt·solver 설정은 유지했으나 최종 GPU 상태는 비트 불일치이며 원인은 미분리다. n4 제어 분리·첫30SIM초·운반/place/완주·LLM E2E는 미완료, 모델0. gcp3 자기 대기만 정리·warp8 임대 불변, gcp4 TERMINATED·원본 보존. [전체 계측·funnel·사유·검증](../experiments/2026-10-16-warp9/README.md).
