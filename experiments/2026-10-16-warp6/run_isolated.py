@@ -23,6 +23,7 @@ def main():
     p.add_argument('--debug', action='store_true')
     p.add_argument('--trace', action='store_true')
     p.add_argument('--verify', action='store_true')
+    p.add_argument('--diagnostic-ticks',type=int)
     a = p.parse_args()
     src = ROOT / 'src' / a.source_sha
     jobs = {'beampair': ('beampair', '0,1,2,3', 60),
@@ -52,6 +53,8 @@ def main():
         cmd += ['--warp-workspace-trace-v1']
     if a.verify:
         cmd += ['--warp-verify-cuda-v1']
+    if a.diagnostic_ticks is not None:
+        cmd += ['--diagnostic-ticks',str(a.diagnostic_ticks)]
     if a.memcheck:
         cmd = ['/usr/local/cuda/bin/compute-sanitizer', '--tool', 'memcheck',
                '--error-exitcode', '86', '--print-limit', '20', '--log-file',
@@ -60,16 +63,17 @@ def main():
     env.update(OMP_NUM_THREADS='1', OPENBLAS_NUM_THREADS='1', MUJOCO_GL='osmesa',
                PYTHONFAULTHANDLER='1', PYTHONUNBUFFERED='1')
     started = datetime.datetime.now(datetime.timezone.utc)
+    source_sha=subprocess.check_output(['git','-C',str(src),'rev-parse','HEAD'],text=True).strip()
     with out.with_suffix('.log').open('w') as log:
         child = subprocess.Popen(cmd, cwd=src, env=env, stdin=subprocess.DEVNULL,
                                  stdout=log, stderr=subprocess.STDOUT)
         write(ROOT / 'leases/warp6.json', dict(task='warp6', pid=os.getpid(),
               pids=[child.pid], started_at=started.isoformat(),
               expected_end=(started + datetime.timedelta(hours=7)).isoformat(),
-              source_sha=a.source_sha, stage=a.round + ' ' + a.job,
+              source_sha=source_sha, stage=a.round + ' ' + a.job,
               concurrency=len(indices.split(',')), gpu_shared=False))
         write(out.with_suffix('.command.json'), dict(command=cmd, host='gcp3',
-              source_sha=a.source_sha, planned_world_N=len(indices.split(',')),
+              source_sha=source_sha, planned_world_N=len(indices.split(',')),
               start_utc=started.isoformat(), price_scope='1.096USD/h inherited estimate, not billing'))
         code = child.wait()
     write(out.with_suffix('.receipt.json'), dict(exit_code=code, pid=child.pid,

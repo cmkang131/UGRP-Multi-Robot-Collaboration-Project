@@ -70,6 +70,7 @@ def parser():
     p.add_argument('--warp-debug-v1',action='store_true',help='Warp bounds checks and CUDA line information; default OFF')
     p.add_argument('--warp-workspace-trace-v1',action='store_true',help='synchronize and persist allocations after each existing graph chunk; default OFF')
     p.add_argument('--warp-verify-cuda-v1',action='store_true',help='uncaptured identical physics schedule with launch verification; default OFF')
+    p.add_argument('--diagnostic-ticks',type=int,help='optional finite control-tick budget; never a teacher trial or SIM cap_end')
     p.add_argument('--mps-shared-v1',action='store_true',help='explicit private warp4 MPS runtime cohort; default OFF')
     p.add_argument('--vm-hourly-usd',type=float,required=True)
     return p
@@ -81,6 +82,8 @@ def main():
         p.error('Mac physics/render forbidden; Linux gcp2 required')
     if not 0<a.cap_s<=180 or not 0<a.vm_hourly_usd<float('inf'):
         p.error('finite existing SIM cap and explicit positive hourly price required')
+    if a.diagnostic_ticks is not None and a.diagnostic_ticks<=0:
+        p.error('positive diagnostic control-tick budget required')
     if a.mps_shared_v1 and os.environ.get('CUDA_MPS_PIPE_DIRECTORY')!='/home/ugrp/ugrp-sim/runs/warp4/mps/pipe':
         p.error('private task-owned MPS pipe required; no global GPU configuration changes')
     from simalt_host import gcp2_identity
@@ -140,6 +143,7 @@ def main():
         gcp3_isolated_v1=a.gcp3_isolated_v1,warp_debug_v1=a.warp_debug_v1,
         workspace_trace_v1=a.warp_workspace_trace_v1,
         warp_verify_cuda_v1=a.warp_verify_cuda_v1,
+        diagnostic_ticks=a.diagnostic_ticks,
         gate_eligible=False,shared_load=not a.gcp3_isolated_v1,vm_hourly_usd=a.vm_hourly_usd,
         placement_graspable_filter_v1=a.placement_graspable_filter_v1,
         cuda_runtime_profile=('gcp3_isolated_no_mps_v1' if a.gcp3_isolated_v1 else
@@ -210,7 +214,8 @@ def main():
             ticks+=1
             write(a.out/'progress.json',dict(ticks=ticks,active_N=int(active.sum()),completed_N=len(results),
                 sim_s=ticks*.1,loop_wall_s=time.perf_counter()-loop,timing=dict(hooks.seconds)))
-        report['status']='complete'
+            if a.diagnostic_ticks is not None and ticks>=a.diagnostic_ticks:break
+        report['status']='diagnostic_prefix_complete' if active.any() else 'complete'
     except BaseException as error:
         rejected=type(error).__name__=='PlacementRejected'
         report.update(status='admission_rejected' if rejected else 'HOST_ERROR',HOST_ERROR=0 if rejected else 1,
