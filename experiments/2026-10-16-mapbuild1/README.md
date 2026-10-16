@@ -42,7 +42,7 @@ FAST7은 ORB를 충분히 회복하지 못했다. RGB 열 제외는 LK에 도움
 
 [summary.json](summary.json), [기록 프레임246→246 funnel](capture-rejection-table.json), [추적 funnel·거부 분포·재현 인자](rejection-table.json), [모든8개 호출](attempts.json), [원본 영수증](artifact-receipts.json). 두 알고리즘 라운드(기존, 후보2개 비교)이며 같은 결함을 무제한 재조정하지 않았다. 단계3·4 대기열은 [WITHHELD](next-queue.json)이며 실제 `rejection_table` 절대경로를 연결했다.
 
-- 원격 원본270파일 전체 SHA-256 불일치0. Mac 회수 요약14파일·몽타주6장 해시 불일치0([회수 검사](retrieval-verification.json)). 로컬 회수 약6.2MB이며 원본246 JPEG·큰 궤적·영상은 gcp2에 보존했다. 완전 외부 백업을 의미하지 않는다.
+- 원격 manifest 원본270파일 SHA-256 불일치0. Mac 회수 요약18파일(원본 파일별 SHA 목록4개 포함)·몽타주6장 해시 불일치0([회수 검사](retrieval-verification.json)). 로컬 회수 약6.3MB이며 원본246 JPEG·큰 궤적·영상은 gcp2에 보존했다. 1MiB가 넘는10Hz 몽타주3장은 `/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/mapbuild1/`에 해시 확인 후 옮겼고2Hz3장은 Git에 남겼다. 완전 외부 백업을 의미하지 않는다.
 - 초기 HOST_ERROR1: sparse 기록기 cwd에서 상대 texture asset을 못 찾음 → pinned renderer cwd로 해결. 실패 원본과 로그 보존.
 - 첫 분석 ERROR1: 기존 HIGH 카메라 자격 거부가 예외로 종료 → unknown으로 기록하도록 수정. 보정 자격은 유지.
 - 별도 배포 HOST_ERROR1: source checkout 완료 전에 분석을 시작함 → 완료·SHA 확인 후 재실행. 결과 분모에 넣지 않는다.
