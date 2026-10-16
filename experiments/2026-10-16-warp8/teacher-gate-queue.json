@@ -1,6 +1,6 @@
 {
   "schema": "ugrp.warp8.teacher_gate.v1",
-  "status": "R2_RUNNING",
+  "status": "BEAM_R2_COMPLETE_RELEASE_PENDING",
   "host": "gcp3",
   "project": "ugrp-sim-c-1016",
   "source_sha": "175281c8922453465f8bf32707e22988e78b8812",
@@ -34,14 +34,18 @@
       "flow": "beampair",
       "N": 40,
       "submitted": true,
-      "completed": false,
+      "completed": true,
       "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2",
       "source_sha": "175281c8922453465f8bf32707e22988e78b8812",
       "rejection_table": "/home/ugrp/ugrp-sim/ops-reviews/warp8/beam-r1-rejection_table.json",
       "known_failure_first": 8318706,
       "full_active_dof_workspace_v1": true,
-      "terminal": false,
-      "status": "running"
+      "terminal": true,
+      "status": "complete",
+      "completed_N": 40,
+      "success_N": 40,
+      "cap_end_N": 0,
+      "HOST_ERROR_world_N": 0
     }
   ],
   "placement_graspable_filter_v1": true,
@@ -99,5 +103,24 @@
     "CPU_recount_agrees": true,
     "whole40_gate_complete": false,
     "evidence": "/Users/changmin/projects/ugrp-wt/warp4/experiments/2026-10-16-warp8/R2-known-seed-success.json"
-  }
+  },
+  "R2": {
+    "completed_N": 40,
+    "success_N": 40,
+    "cap_end_N": 0,
+    "HOST_ERROR_world_N": 0,
+    "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2",
+    "source_sha": "175281c8922453465f8bf32707e22988e78b8812",
+    "CPU_recount_agrees_N": 40,
+    "Haiku_generated_code_recount_agrees_N": 40,
+    "whole_run_audit_zero_N": 40,
+    "first30_speed": 5.6024450672083335,
+    "whole_batch_per_world_wall_SIM": 8.20884275889238,
+    "actual_task_wall_SIM": 11.708598650868707,
+    "gate_eligible_source_flag": false,
+    "data_admitted": false
+  },
+  "cleanup_deadline_scope": "14:05UTC belonged to the completed beam session; fresh release deadline will be recorded before submission",
+  "current_VM_state": "TERMINATED;8h STOP restored after a separate post-stop scheduling operation",
+  "beam_measurement_complete": true
 }

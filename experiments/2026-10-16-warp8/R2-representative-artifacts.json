@@ -1,0 +1,178 @@
+{
+  "utc": "2026-10-16T13:40:21.973385+00:00",
+  "CPU_root": "/home/ugrp/ugrp-sim/ops-reviews/warp8/playback/warp8-r2-terminal-native/native-terminal-world-000",
+  "files": {
+    "full-2hz-00.jpg": {
+      "bytes": 271580,
+      "sha256": "aeb1432b2f34844f6f0844ab5a63bcf80d11f63b388ef1fff78fa9a1cb2b5a48"
+    },
+    "full-2hz-01.jpg": {
+      "bytes": 277545,
+      "sha256": "8f5507b4f187acdf1067fd591382ab3a181f501da9d6a8e0d9acad6f807767ff"
+    },
+    "full-2hz-02.jpg": {
+      "bytes": 276649,
+      "sha256": "32443074c00de1cdc7172bf2046ba53600bef105c5eb681e5b7b811bfbd385e9"
+    },
+    "full-2hz-03.jpg": {
+      "bytes": 259881,
+      "sha256": "09a3479c432844fc2d0203e775a2b9fc61a60d69cd1915e0592be295339ee2b5"
+    },
+    "full-2hz-04.jpg": {
+      "bytes": 106643,
+      "sha256": "581c9d54f5c4c0fd3ff6340413f161fdd3b281b2361802a8d5b7b7d0efa17129"
+    },
+    "last10s-10hz-00.jpg": {
+      "bytes": 264335,
+      "sha256": "66b3beb3b52ab38329a2b735a3eb5ebefe01e9ff80085327ef14bc811d9bc71b"
+    },
+    "last10s-10hz-01.jpg": {
+      "bytes": 258987,
+      "sha256": "48131c40e1aca67b690eaa5ffe0f418bc18460d054c5853db0cf471583538aa5"
+    },
+    "last10s-10hz-02.jpg": {
+      "bytes": 257769,
+      "sha256": "cb8efb623270de653113ab607d98936b0de3a394c9b33534d5ac8eecb2a7cb04"
+    },
+    "last10s-10hz-03.jpg": {
+      "bytes": 254119,
+      "sha256": "d8781917494e812c6e5802d49ac03eea6eac4baae66df67707d06257979da68a"
+    },
+    "last10s-10hz-04.jpg": {
+      "bytes": 251880,
+      "sha256": "cdbd40afa79f80916b3cb171ca7eb1be7ff35b88e9c2ad7f10e2a5dfb5ef16e5"
+    },
+    "last10s-10hz-05.jpg": {
+      "bytes": 157231,
+      "sha256": "b337e39ca2b270b07b6274e1020798163a2a26d603458aa67722f9041502d3be"
+    },
+    "playback-full-tail-3x.mp4": {
+      "bytes": 108337,
+      "sha256": "b90495b2efd46a04a04a6d812f6aecaab2c6dd1f2910503d6b8edfc6da268990"
+    },
+    "playback-meta.json": {
+      "bytes": 7523,
+      "sha256": "85f0e0ddb7dbfc46add537d0261fee76295a9124fdd28214e0744c986761d382"
+    }
+  },
+  "Mac_raw_allowed_scope": "representative success video, summary metadata, montages only",
+  "Mac_root": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/warp8-r2-success-w000-native",
+  "Mac_verified_N": 13,
+  "Mac_verified_utc": "2026-10-16T13:40:28.150619+00:00",
+  "GUI_opened": false,
+  "direct_frame_review": {
+    "completed_utc": "2026-10-16T13:42:38.787985+00:00",
+    "full_2hz_frames": 78,
+    "backend_relative_range": [
+      0,
+      38.5
+    ],
+    "tail_10hz_pairs": 100,
+    "tail_backend_relative_range": [
+      28.7,
+      38.6
+    ],
+    "all_montages_viewed": [
+      "full-2hz-00.jpg",
+      "full-2hz-01.jpg",
+      "full-2hz-02.jpg",
+      "full-2hz-03.jpg",
+      "full-2hz-04.jpg",
+      "last10s-10hz-00.jpg",
+      "last10s-10hz-01.jpg",
+      "last10s-10hz-02.jpg",
+      "last10s-10hz-03.jpg",
+      "last10s-10hz-04.jpg",
+      "last10s-10hz-05.jpg"
+    ],
+    "native_evaluator_overlap_bit_equal_N": 381,
+    "missing_terminal_native_row": "last evaluator qpos is used for terminal reconstruction;382 evaluator rows total; no physics step"
+  },
+  "Mac_ffprobe": {
+    "streams": [
+      {
+        "index": 0,
+        "codec_name": "h264",
+        "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+        "profile": "High",
+        "codec_type": "video",
+        "codec_tag_string": "avc1",
+        "codec_tag": "0x31637661",
+        "mime_codec_string": "avc1.64001e",
+        "width": 960,
+        "height": 270,
+        "coded_width": 960,
+        "coded_height": 270,
+        "has_b_frames": 2,
+        "sample_aspect_ratio": "1:1",
+        "display_aspect_ratio": "32:9",
+        "pix_fmt": "yuv420p",
+        "level": 30,
+        "color_range": "tv",
+        "color_space": "bt470bg",
+        "chroma_location": "center",
+        "field_order": "progressive",
+        "is_avc": "true",
+        "nal_length_size": "4",
+        "id": "0x1",
+        "r_frame_rate": "30/1",
+        "avg_frame_rate": "30/1",
+        "time_base": "1/15360",
+        "start_pts": 0,
+        "start_time": "0.000000",
+        "duration_ts": 200192,
+        "duration": "13.033333",
+        "bit_rate": "63081",
+        "bits_per_raw_sample": "8",
+        "nb_frames": "391",
+        "extradata_size": 50,
+        "disposition": {
+          "default": 1,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0,
+          "multilayer": 0
+        },
+        "tags": {
+          "language": "und",
+          "handler_name": "VideoHandler",
+          "encoder": "Lavc60.31.102 libx264"
+        }
+      }
+    ],
+    "format": {
+      "filename": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/warp8-r2-success-w000-native/playback-full-tail-3x.mp4",
+      "nb_streams": 1,
+      "nb_programs": 0,
+      "nb_stream_groups": 0,
+      "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+      "format_long_name": "QuickTime / MOV",
+      "start_time": "0.000000",
+      "duration": "13.033333",
+      "size": "108337",
+      "bit_rate": "66498",
+      "probe_score": 100,
+      "tags": {
+        "major_brand": "isom",
+        "minor_version": "512",
+        "compatible_brands": "isomiso2avc1mp41",
+        "encoder": "Lavf60.16.100"
+      }
+    }
+  },
+  "metadata_scope_note": "Playback helper has a generic whole40 pending string; closed beam40 result is independently verified in R2-summary.json; no global admission inferred from an individual video."
+}

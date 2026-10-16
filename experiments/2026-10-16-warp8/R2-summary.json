@@ -1,0 +1,2006 @@
+{
+  "utc": "2026-10-16T13:35:11.409037+00:00",
+  "simulation_host": "gcp3",
+  "analysis_host": "gcp2_CPU",
+  "project": "ugrp-sim-c-1016",
+  "CPU_results_pooled": false,
+  "attempts": [
+    {
+      "name": "beam40-c312",
+      "host": "gcp3",
+      "source_sha": "f75e3442957e8e00c4ed894056b3e06ee32399f0",
+      "export_only": true,
+      "status": "initialization_only",
+      "terminal": true,
+      "command": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "/home/ugrp/ugrp-sim/src/f75e3442957e8e00c4ed894056b3e06ee32399f0/scripts/run_warp_flow_teacher.py",
+        "--flow",
+        "beampair",
+        "--adapter-source",
+        "/home/ugrp/ugrp-sim/src/835ccef26aa84b08cc8f7e256fd0f43aa1583ef9",
+        "--cases",
+        "/home/ugrp/ugrp-sim/ops-reviews/warp6/warp6-beam-gate-cases.json",
+        "--indices",
+        "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39",
+        "--cap-s",
+        "60",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/warp8/beam40-c312",
+        "--vm-hourly-usd",
+        "1.096",
+        "--gcp3-isolated-v1",
+        "--placement-graspable-filter-v1",
+        "--world-model-parameters-v1",
+        "--native-sleep-policy-compat-v1",
+        "--batch-per-world-speed-v1",
+        "--rejection-table",
+        "/home/ugrp/ugrp-sim/ops-reviews/warp8/prior-rejection_table.json",
+        "--teacher-source",
+        "/home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+        "--export-compiled-only"
+      ],
+      "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-c312",
+      "N": 40,
+      "completed_N": 0,
+      "success_N": 0,
+      "cap_end_N": 0,
+      "HOST_ERROR_world_N": 0,
+      "setup_wall_s": null,
+      "total_wall_s": 319.316125234,
+      "loop_wall_s": null,
+      "aggregate_task_sim_s": 0,
+      "per_world_wall_SIM": null,
+      "batch_sim_s": 0.0,
+      "task_wall_per_SIM": null,
+      "first30": null,
+      "worlds": [],
+      "reason_distribution": [],
+      "funnel": [
+        {
+          "stage": "requested",
+          "passed_cumulative_N": 40,
+          "rejected_N": 0
+        },
+        {
+          "stage": "setup",
+          "passed_cumulative_N": 40,
+          "rejected_N": 0,
+          "not_attempted_N": 0,
+          "pending_N": 0
+        },
+        {
+          "stage": "terminal_teacher_trial",
+          "passed_cumulative_N": 0,
+          "rejected_N": 0,
+          "not_trial_N": 40
+        },
+        {
+          "stage": "physical_success",
+          "passed_cumulative_N": 0,
+          "rejected_N": 0
+        }
+      ]
+    },
+    {
+      "name": "beam40-r1",
+      "host": "gcp3",
+      "source_sha": "f75e3442957e8e00c4ed894056b3e06ee32399f0",
+      "export_only": false,
+      "status": "HOST_ERROR",
+      "terminal": true,
+      "command": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+        "/home/ugrp/ugrp-sim/src/f75e3442957e8e00c4ed894056b3e06ee32399f0/scripts/run_warp_flow_teacher.py",
+        "--flow",
+        "beampair",
+        "--adapter-source",
+        "/home/ugrp/ugrp-sim/src/835ccef26aa84b08cc8f7e256fd0f43aa1583ef9",
+        "--cases",
+        "/home/ugrp/ugrp-sim/ops-reviews/warp6/warp6-beam-gate-cases.json",
+        "--indices",
+        "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39",
+        "--cap-s",
+        "60",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/warp8/beam40-r1",
+        "--vm-hourly-usd",
+        "1.096",
+        "--gcp3-isolated-v1",
+        "--placement-graspable-filter-v1",
+        "--world-model-parameters-v1",
+        "--native-sleep-policy-compat-v1",
+        "--batch-per-world-speed-v1",
+        "--rejection-table",
+        "/home/ugrp/ugrp-sim/ops-reviews/warp8/prior-rejection_table.json",
+        "--teacher-source",
+        "/home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+        "--per-world-model-references-v1",
+        "/home/ugrp/ugrp-sim/runs/warp8/beam40-c312/per-world-references.json"
+      ],
+      "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r1",
+      "N": 40,
+      "completed_N": 1,
+      "success_N": 1,
+      "cap_end_N": 0,
+      "HOST_ERROR_world_N": 39,
+      "setup_wall_s": 407.148714917,
+      "total_wall_s": 4613.074077947999,
+      "loop_wall_s": 4196.638655787,
+      "aggregate_task_sim_s": 17.400000000000002,
+      "per_world_wall_SIM": 4.662931839763333,
+      "batch_sim_s": 22.5,
+      "task_wall_per_SIM": 241.186129642931,
+      "first30": null,
+      "worlds": [
+        {
+          "world": 28,
+          "seed": 8318727,
+          "sim_s": 17.400000000000002,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r1/world-028/raw",
+          "success": true,
+          "cap_end": false,
+          "recount": {
+            "success": true,
+            "dense_evaluator_rows": true,
+            "evaluator_N": 175,
+            "first_evaluator_t": 2.200000000000151,
+            "last_evaluator_t": 19.600000000000154,
+            "max_evaluator_gap_s": 0.10000000000000142,
+            "terminal_hold_s": 3.0000000000000036,
+            "max_hold_s": 3.0000000000000036,
+            "teacher_success_n": 2,
+            "source_success": true,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": {
+            "r1": "success",
+            "r2": "success"
+          }
+        }
+      ],
+      "reason_distribution": [
+        {
+          "reason_category": "peer_destination_reservation",
+          "blocked_object": "reserved:teal_stance",
+          "min_gap_m": 0.6150637599328178,
+          "count": 43,
+          "gap_scope": "minimum of recorded finite gaps; null means absent/nongeometric"
+        }
+      ],
+      "funnel": [
+        {
+          "stage": "requested",
+          "passed_cumulative_N": 40,
+          "rejected_N": 0
+        },
+        {
+          "stage": "setup",
+          "passed_cumulative_N": 40,
+          "rejected_N": 0,
+          "not_attempted_N": 0,
+          "pending_N": 0
+        },
+        {
+          "stage": "terminal_teacher_trial",
+          "passed_cumulative_N": 1,
+          "rejected_N": 39,
+          "not_trial_N": 0
+        },
+        {
+          "stage": "physical_success",
+          "passed_cumulative_N": 1,
+          "rejected_N": 0
+        }
+      ]
+    },
+    {
+      "name": "beam40-r2",
+      "host": "gcp3",
+      "source_sha": "175281c8922453465f8bf32707e22988e78b8812",
+      "export_only": false,
+      "status": "complete",
+      "terminal": true,
+      "command": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+        "/home/ugrp/ugrp-sim/src/175281c8922453465f8bf32707e22988e78b8812/scripts/run_warp_flow_teacher.py",
+        "--flow",
+        "beampair",
+        "--adapter-source",
+        "/home/ugrp/ugrp-sim/src/835ccef26aa84b08cc8f7e256fd0f43aa1583ef9",
+        "--cases",
+        "/home/ugrp/ugrp-sim/ops-reviews/warp6/warp6-beam-gate-cases.json",
+        "--indices",
+        "8,0,1,2,3,4,5,6,7,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39",
+        "--cap-s",
+        "60",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2",
+        "--vm-hourly-usd",
+        "1.096",
+        "--gcp3-isolated-v1",
+        "--placement-graspable-filter-v1",
+        "--world-model-parameters-v1",
+        "--native-sleep-policy-compat-v1",
+        "--batch-per-world-speed-v1",
+        "--rejection-table",
+        "/home/ugrp/ugrp-sim/ops-reviews/warp8/beam-r1-rejection_table.json",
+        "--teacher-source",
+        "/home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+        "--canonical-xml",
+        "/home/ugrp/ugrp-sim/runs/warp8/beam40-c312/canonical-scene.xml",
+        "--full-active-dof-workspace-v1",
+        "--per-world-model-references-v1",
+        "/home/ugrp/ugrp-sim/runs/warp8/beam40-c312/per-world-references.json"
+      ],
+      "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2",
+      "N": 40,
+      "completed_N": 40,
+      "success_N": 40,
+      "cap_end_N": 0,
+      "HOST_ERROR_world_N": 0,
+      "setup_wall_s": 408.885341418,
+      "total_wall_s": 17650.80555556,
+      "loop_wall_s": 17238.569793674,
+      "aggregate_task_sim_s": 1472.3000000000002,
+      "per_world_wall_SIM": 8.20884275889238,
+      "batch_sim_s": 52.5,
+      "task_wall_per_SIM": 11.708598650868707,
+      "first30": {
+        "ticks": 300,
+        "active_N": 33,
+        "completed_N": 7,
+        "sim_s": 30.0,
+        "loop_wall_s": 6722.93408065,
+        "timing": {
+          "render": 86.47650808300335,
+          "readback_remap_jpeg_kinematics": 59.82272517499541,
+          "command_decode_upload": 2.8038160630038647,
+          "physics": 5978.558332767002
+        },
+        "world_sim_s": [
+          30.0,
+          30.0,
+          30.0,
+          27.200000000000003,
+          30.0,
+          30.0,
+          27.5,
+          28.5,
+          30.0,
+          27.5,
+          30.0,
+          30.0,
+          30.0,
+          30.0,
+          30.0,
+          30.0,
+          27.6,
+          30.0,
+          30.0,
+          24.200000000000003,
+          30.0,
+          30.0,
+          30.0,
+          30.0,
+          30.0,
+          30.0,
+          30.0,
+          30.0,
+          17.400000000000002,
+          30.0,
+          30.0,
+          30.0,
+          30.0,
+          30.0,
+          30.0,
+          30.0,
+          30.0,
+          30.0,
+          30.0,
+          30.0
+        ],
+        "aggregate_world_sim_s": 1169.9,
+        "batch_sim_s": 30.0,
+        "per_world_wall_SIM": 5.6024450672083335,
+        "task_wall_per_SIM": 5.746588666253526,
+        "batch_wall_SIM": 224.09780268833336,
+        "scope": "first batch clock >=30 SIM; setup/compile excluded; admission denominator=batch SIM*world count",
+        "basis": "coordinator decision 2026-10-16, user unconfirmed",
+        "block_threshold": 6.0,
+        "warning_threshold": 3.5,
+        "speed_gate_fail": false,
+        "admission_per_world_wall_SIM": 5.6024450672083335,
+        "admission_speed_gate_fail": false,
+        "recorded_task_clock_scope": "source auxiliary metric preserved; completed teacher episodes and active backend clocks can have different startup origins",
+        "teacher_episode_aggregate_SIM": 1153.4,
+        "teacher_episode_wall_per_SIM": 5.828796671276226,
+        "episode_clock_correction": "first evaluator time minus recorded native origin per world; source auxiliary and admission metrics unchanged"
+      },
+      "worlds": [
+        {
+          "world": 0,
+          "seed": 8318706,
+          "sim_s": 38.1,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2/world-000/raw",
+          "success": true,
+          "cap_end": false,
+          "recount": {
+            "success": true,
+            "dense_evaluator_rows": true,
+            "evaluator_N": 382,
+            "first_evaluator_t": 2.200000000000151,
+            "last_evaluator_t": 40.30000000000015,
+            "max_evaluator_gap_s": 0.10000000000000142,
+            "terminal_hold_s": 3.0,
+            "max_hold_s": 3.0,
+            "teacher_success_n": 2,
+            "source_success": true,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": {
+            "r1": "success",
+            "r2": "success"
+          }
+        },
+        {
+          "world": 1,
+          "seed": 8318711,
+          "sim_s": 45.7,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2/world-001/raw",
+          "success": true,
+          "cap_end": false,
+          "recount": {
+            "success": true,
+            "dense_evaluator_rows": true,
+            "evaluator_N": 458,
+            "first_evaluator_t": 2.200000000000151,
+            "last_evaluator_t": 47.900000000000155,
+            "max_evaluator_gap_s": 0.10000000000000142,
+            "terminal_hold_s": 3.0,
+            "max_hold_s": 3.0,
+            "teacher_success_n": 2,
+            "source_success": true,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": {
+            "r1": "success",
+            "r2": "success"
+          }
+        },
+        {
+          "world": 2,
+          "seed": 8318728,
+          "sim_s": 38.800000000000004,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2/world-002/raw",
+          "success": true,
+          "cap_end": false,
+          "recount": {
+            "success": true,
+            "dense_evaluator_rows": true,
+            "evaluator_N": 389,
+            "first_evaluator_t": 2.200000000000151,
+            "last_evaluator_t": 41.000000000000156,
+            "max_evaluator_gap_s": 0.10000000000000142,
+            "terminal_hold_s": 3.0,
+            "max_hold_s": 3.0,
+            "teacher_success_n": 2,
+            "source_success": true,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": {
+            "r1": "success",
+            "r2": "success"
+          }
+        },
+        {
+          "world": 3,
+          "seed": 8318700,
+          "sim_s": 27.200000000000003,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2/world-003/raw",
+          "success": true,
+          "cap_end": false,
+          "recount": {
+            "success": true,
+            "dense_evaluator_rows": true,
+            "evaluator_N": 273,
+            "first_evaluator_t": 2.200000000000151,
+            "last_evaluator_t": 29.400000000000155,
+            "max_evaluator_gap_s": 0.10000000000000142,
+            "terminal_hold_s": 3.0,
+            "max_hold_s": 3.0,
+            "teacher_success_n": 2,
+            "source_success": true,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": {
+            "r1": "success",
+            "r2": "success"
+          }
+        },
+        {
+          "world": 4,
+          "seed": 8318701,
+          "sim_s": 45.6,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2/world-004/raw",
+          "success": true,
+          "cap_end": false,
+          "recount": {
+            "success": true,
+            "dense_evaluator_rows": true,
+            "evaluator_N": 457,
+            "first_evaluator_t": 2.200000000000151,
+            "last_evaluator_t": 47.80000000000015,
+            "max_evaluator_gap_s": 0.10000000000000142,
+            "terminal_hold_s": 3.0,
+            "max_hold_s": 3.0,
+            "teacher_success_n": 2,
+            "source_success": true,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": {
+            "r1": "success",
+            "r2": "success"
+          }
+        },
+        {
+          "world": 5,
+          "seed": 8318702,
+          "sim_s": 40.900000000000006,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2/world-005/raw",
+          "success": true,
+          "cap_end": false,
+          "recount": {
+            "success": true,
+            "dense_evaluator_rows": true,
+            "evaluator_N": 410,
+            "first_evaluator_t": 2.200000000000151,
+            "last_evaluator_t": 43.10000000000016,
+            "max_evaluator_gap_s": 0.10000000000000142,
+            "terminal_hold_s": 3.0,
+            "max_hold_s": 3.0,
+            "teacher_success_n": 2,
+            "source_success": true,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": {
+            "r1": "success",
+            "r2": "success"
+          }
+        },
+        {
+          "world": 6,
+          "seed": 8318703,
+          "sim_s": 27.5,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2/world-006/raw",
+          "success": true,
+          "cap_end": false,
+          "recount": {
+            "success": true,
+            "dense_evaluator_rows": true,
+            "evaluator_N": 276,
+            "first_evaluator_t": 2.200000000000151,
+            "last_evaluator_t": 29.700000000000152,
+            "max_evaluator_gap_s": 0.10000000000000142,
+            "terminal_hold_s": 3.0,
+            "max_hold_s": 3.0,
+            "teacher_success_n": 2,
+            "source_success": true,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": {
+            "r1": "success",
+            "r2": "success"
+          }
+        },
+        {
+          "world": 7,
+          "seed": 8318704,
+          "sim_s": 28.5,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2/world-007/raw",
+          "success": true,
+          "cap_end": false,
+          "recount": {
+            "success": true,
+            "dense_evaluator_rows": true,
+            "evaluator_N": 286,
+            "first_evaluator_t": 2.200000000000151,
+            "last_evaluator_t": 30.700000000000152,
+            "max_evaluator_gap_s": 0.10000000000000142,
+            "terminal_hold_s": 3.0,
+            "max_hold_s": 3.0,
+            "teacher_success_n": 2,
+            "source_success": true,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": {
+            "r1": "success",
+            "r2": "success"
+          }
+        },
+        {
+          "world": 8,
+          "seed": 8318705,
+          "sim_s": 33.800000000000004,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2/world-008/raw",
+          "success": true,
+          "cap_end": false,
+          "recount": {
+            "success": true,
+            "dense_evaluator_rows": true,
+            "evaluator_N": 339,
+            "first_evaluator_t": 2.200000000000151,
+            "last_evaluator_t": 36.000000000000156,
+            "max_evaluator_gap_s": 0.10000000000000142,
+            "terminal_hold_s": 3.000000000000007,
+            "max_hold_s": 3.000000000000007,
+            "teacher_success_n": 2,
+            "source_success": true,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": {
+            "r1": "success",
+            "r2": "success"
+          }
+        },
+        {
+          "world": 9,
+          "seed": 8318707,
+          "sim_s": 27.5,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2/world-009/raw",
+          "success": true,
+          "cap_end": false,
+          "recount": {
+            "success": true,
+            "dense_evaluator_rows": true,
+            "evaluator_N": 276,
+            "first_evaluator_t": 2.200000000000151,
+            "last_evaluator_t": 29.700000000000152,
+            "max_evaluator_gap_s": 0.10000000000000142,
+            "terminal_hold_s": 3.0,
+            "max_hold_s": 3.0,
+            "teacher_success_n": 2,
+            "source_success": true,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": {
+            "r1": "success",
+            "r2": "success"
+          }
+        },
+        {
+          "world": 10,
+          "seed": 8318708,
+          "sim_s": 41.1,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2/world-010/raw",
+          "success": true,
+          "cap_end": false,
+          "recount": {
+            "success": true,
+            "dense_evaluator_rows": true,
+            "evaluator_N": 412,
+            "first_evaluator_t": 2.200000000000151,
+            "last_evaluator_t": 43.30000000000015,
+            "max_evaluator_gap_s": 0.10000000000000142,
+            "terminal_hold_s": 3.0,
+            "max_hold_s": 3.0,
+            "teacher_success_n": 2,
+            "source_success": true,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": {
+            "r1": "success",
+            "r2": "success"
+          }
+        },
+        {
+          "world": 11,
+          "seed": 8318709,
+          "sim_s": 44.1,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2/world-011/raw",
+          "success": true,
+          "cap_end": false,
+          "recount": {
+            "success": true,
+            "dense_evaluator_rows": true,
+            "evaluator_N": 442,
+            "first_evaluator_t": 2.200000000000151,
+            "last_evaluator_t": 46.30000000000015,
+            "max_evaluator_gap_s": 0.10000000000000142,
+            "terminal_hold_s": 3.0,
+            "max_hold_s": 3.0,
+            "teacher_success_n": 2,
+            "source_success": true,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": {
+            "r1": "success",
+            "r2": "success"
+          }
+        },
+        {
+          "world": 12,
+          "seed": 8318710,
+          "sim_s": 44.2,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2/world-012/raw",
+          "success": true,
+          "cap_end": false,
+          "recount": {
+            "success": true,
+            "dense_evaluator_rows": true,
+            "evaluator_N": 443,
+            "first_evaluator_t": 2.200000000000151,
+            "last_evaluator_t": 46.400000000000155,
+            "max_evaluator_gap_s": 0.10000000000000142,
+            "terminal_hold_s": 3.0,
+            "max_hold_s": 3.0,
+            "teacher_success_n": 2,
+            "source_success": true,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": {
+            "r1": "success",
+            "r2": "success"
+          }
+        },
+        {
+          "world": 13,
+          "seed": 8318712,
+          "sim_s": 36.5,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2/world-013/raw",
+          "success": true,
+          "cap_end": false,
+          "recount": {
+            "success": true,
+            "dense_evaluator_rows": true,
+            "evaluator_N": 366,
+            "first_evaluator_t": 2.200000000000151,
+            "last_evaluator_t": 38.70000000000015,
+            "max_evaluator_gap_s": 0.10000000000000142,
+            "terminal_hold_s": 3.0,
+            "max_hold_s": 3.0,
+            "teacher_success_n": 2,
+            "source_success": true,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": {
+            "r1": "success",
+            "r2": "success"
+          }
+        },
+        {
+          "world": 14,
+          "seed": 8318713,
+          "sim_s": 29.6,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2/world-014/raw",
+          "success": true,
+          "cap_end": false,
+          "recount": {
+            "success": true,
+            "dense_evaluator_rows": true,
+            "evaluator_N": 297,
+            "first_evaluator_t": 2.200000000000151,
+            "last_evaluator_t": 31.800000000000153,
+            "max_evaluator_gap_s": 0.10000000000000142,
+            "terminal_hold_s": 3.0,
+            "max_hold_s": 3.0,
+            "teacher_success_n": 2,
+            "source_success": true,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": {
+            "r1": "success",
+            "r2": "success"
+          }
+        },
+        {
+          "world": 15,
+          "seed": 8318714,
+          "sim_s": 42.6,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2/world-015/raw",
+          "success": true,
+          "cap_end": false,
+          "recount": {
+            "success": true,
+            "dense_evaluator_rows": true,
+            "evaluator_N": 427,
+            "first_evaluator_t": 2.200000000000151,
+            "last_evaluator_t": 44.80000000000015,
+            "max_evaluator_gap_s": 0.10000000000000142,
+            "terminal_hold_s": 3.0,
+            "max_hold_s": 3.0,
+            "teacher_success_n": 2,
+            "source_success": true,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": {
+            "r1": "success",
+            "r2": "success"
+          }
+        },
+        {
+          "world": 16,
+          "seed": 8318715,
+          "sim_s": 27.6,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2/world-016/raw",
+          "success": true,
+          "cap_end": false,
+          "recount": {
+            "success": true,
+            "dense_evaluator_rows": true,
+            "evaluator_N": 277,
+            "first_evaluator_t": 2.200000000000151,
+            "last_evaluator_t": 29.800000000000153,
+            "max_evaluator_gap_s": 0.10000000000000142,
+            "terminal_hold_s": 3.0,
+            "max_hold_s": 3.0,
+            "teacher_success_n": 2,
+            "source_success": true,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": {
+            "r1": "success",
+            "r2": "success"
+          }
+        },
+        {
+          "world": 17,
+          "seed": 8318716,
+          "sim_s": 33.800000000000004,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2/world-017/raw",
+          "success": true,
+          "cap_end": false,
+          "recount": {
+            "success": true,
+            "dense_evaluator_rows": true,
+            "evaluator_N": 339,
+            "first_evaluator_t": 2.200000000000151,
+            "last_evaluator_t": 36.000000000000156,
+            "max_evaluator_gap_s": 0.10000000000000142,
+            "terminal_hold_s": 3.000000000000007,
+            "max_hold_s": 3.000000000000007,
+            "teacher_success_n": 2,
+            "source_success": true,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": {
+            "r1": "success",
+            "r2": "success"
+          }
+        },
+        {
+          "world": 18,
+          "seed": 8318717,
+          "sim_s": 34.6,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2/world-018/raw",
+          "success": true,
+          "cap_end": false,
+          "recount": {
+            "success": true,
+            "dense_evaluator_rows": true,
+            "evaluator_N": 347,
+            "first_evaluator_t": 2.200000000000151,
+            "last_evaluator_t": 36.80000000000015,
+            "max_evaluator_gap_s": 0.10000000000000142,
+            "terminal_hold_s": 3.0,
+            "max_hold_s": 3.0,
+            "teacher_success_n": 2,
+            "source_success": true,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": {
+            "r1": "success",
+            "r2": "success"
+          }
+        },
+        {
+          "world": 19,
+          "seed": 8318718,
+          "sim_s": 24.200000000000003,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2/world-019/raw",
+          "success": true,
+          "cap_end": false,
+          "recount": {
+            "success": true,
+            "dense_evaluator_rows": true,
+            "evaluator_N": 243,
+            "first_evaluator_t": 2.200000000000151,
+            "last_evaluator_t": 26.400000000000155,
+            "max_evaluator_gap_s": 0.10000000000000142,
+            "terminal_hold_s": 3.0,
+            "max_hold_s": 3.0,
+            "teacher_success_n": 2,
+            "source_success": true,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": {
+            "r1": "success",
+            "r2": "success"
+          }
+        },
+        {
+          "world": 20,
+          "seed": 8318719,
+          "sim_s": 32.800000000000004,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2/world-020/raw",
+          "success": true,
+          "cap_end": false,
+          "recount": {
+            "success": true,
+            "dense_evaluator_rows": true,
+            "evaluator_N": 329,
+            "first_evaluator_t": 2.200000000000151,
+            "last_evaluator_t": 35.000000000000156,
+            "max_evaluator_gap_s": 0.10000000000000142,
+            "terminal_hold_s": 3.000000000000007,
+            "max_hold_s": 3.000000000000007,
+            "teacher_success_n": 2,
+            "source_success": true,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": {
+            "r1": "success",
+            "r2": "success"
+          }
+        },
+        {
+          "world": 21,
+          "seed": 8318720,
+          "sim_s": 33.5,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2/world-021/raw",
+          "success": true,
+          "cap_end": false,
+          "recount": {
+            "success": true,
+            "dense_evaluator_rows": true,
+            "evaluator_N": 336,
+            "first_evaluator_t": 2.200000000000151,
+            "last_evaluator_t": 35.70000000000015,
+            "max_evaluator_gap_s": 0.10000000000000142,
+            "terminal_hold_s": 3.0,
+            "max_hold_s": 3.0,
+            "teacher_success_n": 2,
+            "source_success": true,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": {
+            "r1": "success",
+            "r2": "success"
+          }
+        },
+        {
+          "world": 22,
+          "seed": 8318721,
+          "sim_s": 36.0,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2/world-022/raw",
+          "success": true,
+          "cap_end": false,
+          "recount": {
+            "success": true,
+            "dense_evaluator_rows": true,
+            "evaluator_N": 361,
+            "first_evaluator_t": 2.200000000000151,
+            "last_evaluator_t": 38.20000000000015,
+            "max_evaluator_gap_s": 0.10000000000000142,
+            "terminal_hold_s": 3.0,
+            "max_hold_s": 3.0,
+            "teacher_success_n": 2,
+            "source_success": true,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": {
+            "r1": "success",
+            "r2": "success"
+          }
+        },
+        {
+          "world": 23,
+          "seed": 8318722,
+          "sim_s": 41.6,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2/world-023/raw",
+          "success": true,
+          "cap_end": false,
+          "recount": {
+            "success": true,
+            "dense_evaluator_rows": true,
+            "evaluator_N": 417,
+            "first_evaluator_t": 2.200000000000151,
+            "last_evaluator_t": 43.80000000000015,
+            "max_evaluator_gap_s": 0.10000000000000142,
+            "terminal_hold_s": 3.0,
+            "max_hold_s": 3.0,
+            "teacher_success_n": 2,
+            "source_success": true,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": {
+            "r1": "success",
+            "r2": "success"
+          }
+        },
+        {
+          "world": 24,
+          "seed": 8318723,
+          "sim_s": 40.0,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2/world-024/raw",
+          "success": true,
+          "cap_end": false,
+          "recount": {
+            "success": true,
+            "dense_evaluator_rows": true,
+            "evaluator_N": 401,
+            "first_evaluator_t": 2.200000000000151,
+            "last_evaluator_t": 42.20000000000015,
+            "max_evaluator_gap_s": 0.10000000000000142,
+            "terminal_hold_s": 3.0,
+            "max_hold_s": 3.0,
+            "teacher_success_n": 2,
+            "source_success": true,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": {
+            "r1": "success",
+            "r2": "success"
+          }
+        },
+        {
+          "world": 25,
+          "seed": 8318724,
+          "sim_s": 32.6,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2/world-025/raw",
+          "success": true,
+          "cap_end": false,
+          "recount": {
+            "success": true,
+            "dense_evaluator_rows": true,
+            "evaluator_N": 327,
+            "first_evaluator_t": 2.200000000000151,
+            "last_evaluator_t": 34.80000000000015,
+            "max_evaluator_gap_s": 0.10000000000000142,
+            "terminal_hold_s": 3.0,
+            "max_hold_s": 3.0,
+            "teacher_success_n": 2,
+            "source_success": true,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": {
+            "r1": "success",
+            "r2": "success"
+          }
+        },
+        {
+          "world": 26,
+          "seed": 8318725,
+          "sim_s": 30.5,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2/world-026/raw",
+          "success": true,
+          "cap_end": false,
+          "recount": {
+            "success": true,
+            "dense_evaluator_rows": true,
+            "evaluator_N": 306,
+            "first_evaluator_t": 2.200000000000151,
+            "last_evaluator_t": 32.70000000000015,
+            "max_evaluator_gap_s": 0.10000000000000142,
+            "terminal_hold_s": 3.099999999999998,
+            "max_hold_s": 3.099999999999998,
+            "teacher_success_n": 2,
+            "source_success": true,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": {
+            "r1": "success",
+            "r2": "success"
+          }
+        },
+        {
+          "world": 27,
+          "seed": 8318726,
+          "sim_s": 37.800000000000004,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2/world-027/raw",
+          "success": true,
+          "cap_end": false,
+          "recount": {
+            "success": true,
+            "dense_evaluator_rows": true,
+            "evaluator_N": 379,
+            "first_evaluator_t": 2.200000000000151,
+            "last_evaluator_t": 40.000000000000156,
+            "max_evaluator_gap_s": 0.10000000000000142,
+            "terminal_hold_s": 3.0,
+            "max_hold_s": 3.0,
+            "teacher_success_n": 2,
+            "source_success": true,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": {
+            "r1": "success",
+            "r2": "success"
+          }
+        },
+        {
+          "world": 28,
+          "seed": 8318727,
+          "sim_s": 17.400000000000002,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2/world-028/raw",
+          "success": true,
+          "cap_end": false,
+          "recount": {
+            "success": true,
+            "dense_evaluator_rows": true,
+            "evaluator_N": 175,
+            "first_evaluator_t": 2.200000000000151,
+            "last_evaluator_t": 19.600000000000154,
+            "max_evaluator_gap_s": 0.10000000000000142,
+            "terminal_hold_s": 3.0000000000000036,
+            "max_hold_s": 3.0000000000000036,
+            "teacher_success_n": 2,
+            "source_success": true,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": {
+            "r1": "success",
+            "r2": "success"
+          }
+        },
+        {
+          "world": 29,
+          "seed": 8318729,
+          "sim_s": 34.1,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2/world-029/raw",
+          "success": true,
+          "cap_end": false,
+          "recount": {
+            "success": true,
+            "dense_evaluator_rows": true,
+            "evaluator_N": 342,
+            "first_evaluator_t": 2.200000000000151,
+            "last_evaluator_t": 36.30000000000015,
+            "max_evaluator_gap_s": 0.10000000000000142,
+            "terminal_hold_s": 3.0,
+            "max_hold_s": 3.0,
+            "teacher_success_n": 2,
+            "source_success": true,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": {
+            "r1": "success",
+            "r2": "success"
+          }
+        },
+        {
+          "world": 30,
+          "seed": 8318730,
+          "sim_s": 32.2,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2/world-030/raw",
+          "success": true,
+          "cap_end": false,
+          "recount": {
+            "success": true,
+            "dense_evaluator_rows": true,
+            "evaluator_N": 323,
+            "first_evaluator_t": 2.200000000000151,
+            "last_evaluator_t": 34.400000000000155,
+            "max_evaluator_gap_s": 0.10000000000000142,
+            "terminal_hold_s": 3.0,
+            "max_hold_s": 3.0,
+            "teacher_success_n": 2,
+            "source_success": true,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": {
+            "r1": "success",
+            "r2": "success"
+          }
+        },
+        {
+          "world": 31,
+          "seed": 8318731,
+          "sim_s": 40.1,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2/world-031/raw",
+          "success": true,
+          "cap_end": false,
+          "recount": {
+            "success": true,
+            "dense_evaluator_rows": true,
+            "evaluator_N": 402,
+            "first_evaluator_t": 2.200000000000151,
+            "last_evaluator_t": 42.30000000000015,
+            "max_evaluator_gap_s": 0.10000000000000142,
+            "terminal_hold_s": 3.0,
+            "max_hold_s": 3.0,
+            "teacher_success_n": 2,
+            "source_success": true,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": {
+            "r1": "success",
+            "r2": "success"
+          }
+        },
+        {
+          "world": 32,
+          "seed": 8318732,
+          "sim_s": 41.1,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2/world-032/raw",
+          "success": true,
+          "cap_end": false,
+          "recount": {
+            "success": true,
+            "dense_evaluator_rows": true,
+            "evaluator_N": 412,
+            "first_evaluator_t": 2.200000000000151,
+            "last_evaluator_t": 43.30000000000015,
+            "max_evaluator_gap_s": 0.10000000000000142,
+            "terminal_hold_s": 3.0,
+            "max_hold_s": 3.0,
+            "teacher_success_n": 2,
+            "source_success": true,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": {
+            "r1": "success",
+            "r2": "success"
+          }
+        },
+        {
+          "world": 33,
+          "seed": 8318733,
+          "sim_s": 47.300000000000004,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2/world-033/raw",
+          "success": true,
+          "cap_end": false,
+          "recount": {
+            "success": true,
+            "dense_evaluator_rows": true,
+            "evaluator_N": 474,
+            "first_evaluator_t": 2.200000000000151,
+            "last_evaluator_t": 49.500000000000156,
+            "max_evaluator_gap_s": 0.10000000000000142,
+            "terminal_hold_s": 3.0,
+            "max_hold_s": 3.0,
+            "teacher_success_n": 2,
+            "source_success": true,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": {
+            "r1": "success",
+            "r2": "success"
+          }
+        },
+        {
+          "world": 34,
+          "seed": 8318734,
+          "sim_s": 38.1,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2/world-034/raw",
+          "success": true,
+          "cap_end": false,
+          "recount": {
+            "success": true,
+            "dense_evaluator_rows": true,
+            "evaluator_N": 382,
+            "first_evaluator_t": 2.200000000000151,
+            "last_evaluator_t": 40.30000000000015,
+            "max_evaluator_gap_s": 0.10000000000000142,
+            "terminal_hold_s": 3.0,
+            "max_hold_s": 3.0,
+            "teacher_success_n": 2,
+            "source_success": true,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": {
+            "r1": "success",
+            "r2": "success"
+          }
+        },
+        {
+          "world": 35,
+          "seed": 8318735,
+          "sim_s": 47.800000000000004,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2/world-035/raw",
+          "success": true,
+          "cap_end": false,
+          "recount": {
+            "success": true,
+            "dense_evaluator_rows": true,
+            "evaluator_N": 479,
+            "first_evaluator_t": 2.200000000000151,
+            "last_evaluator_t": 50.000000000000156,
+            "max_evaluator_gap_s": 0.10000000000000142,
+            "terminal_hold_s": 3.0,
+            "max_hold_s": 3.0,
+            "teacher_success_n": 2,
+            "source_success": true,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": {
+            "r1": "success",
+            "r2": "success"
+          }
+        },
+        {
+          "world": 36,
+          "seed": 8318736,
+          "sim_s": 36.4,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2/world-036/raw",
+          "success": true,
+          "cap_end": false,
+          "recount": {
+            "success": true,
+            "dense_evaluator_rows": true,
+            "evaluator_N": 365,
+            "first_evaluator_t": 2.200000000000151,
+            "last_evaluator_t": 38.60000000000015,
+            "max_evaluator_gap_s": 0.10000000000000142,
+            "terminal_hold_s": 3.0,
+            "max_hold_s": 3.0,
+            "teacher_success_n": 2,
+            "source_success": true,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": {
+            "r1": "success",
+            "r2": "success"
+          }
+        },
+        {
+          "world": 37,
+          "seed": 8318737,
+          "sim_s": 38.6,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2/world-037/raw",
+          "success": true,
+          "cap_end": false,
+          "recount": {
+            "success": true,
+            "dense_evaluator_rows": true,
+            "evaluator_N": 387,
+            "first_evaluator_t": 2.200000000000151,
+            "last_evaluator_t": 40.80000000000015,
+            "max_evaluator_gap_s": 0.10000000000000142,
+            "terminal_hold_s": 3.0,
+            "max_hold_s": 3.0,
+            "teacher_success_n": 2,
+            "source_success": true,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": {
+            "r1": "success",
+            "r2": "success"
+          }
+        },
+        {
+          "world": 38,
+          "seed": 8318738,
+          "sim_s": 52.0,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2/world-038/raw",
+          "success": true,
+          "cap_end": false,
+          "recount": {
+            "success": true,
+            "dense_evaluator_rows": true,
+            "evaluator_N": 521,
+            "first_evaluator_t": 2.200000000000151,
+            "last_evaluator_t": 54.20000000000015,
+            "max_evaluator_gap_s": 0.10000000000000142,
+            "terminal_hold_s": 3.0,
+            "max_hold_s": 3.0,
+            "teacher_success_n": 2,
+            "source_success": true,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": {
+            "r1": "success",
+            "r2": "success"
+          }
+        },
+        {
+          "world": 39,
+          "seed": 8318739,
+          "sim_s": 50.5,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/beam40-r2/world-039/raw",
+          "success": true,
+          "cap_end": false,
+          "recount": {
+            "success": true,
+            "dense_evaluator_rows": true,
+            "evaluator_N": 506,
+            "first_evaluator_t": 2.200000000000151,
+            "last_evaluator_t": 52.70000000000015,
+            "max_evaluator_gap_s": 0.10000000000000142,
+            "terminal_hold_s": 3.0,
+            "max_hold_s": 3.0,
+            "teacher_success_n": 2,
+            "source_success": true,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": {
+            "r1": "success",
+            "r2": "success"
+          }
+        }
+      ],
+      "reason_distribution": [
+        {
+          "reason_category": "peer_destination_reservation",
+          "blocked_object": "reserved:teal_stance",
+          "min_gap_m": -0.23464355610806076,
+          "count": 5795,
+          "gap_scope": "minimum of recorded finite gaps; null means absent/nongeometric"
+        },
+        {
+          "reason_category": "peer_goal",
+          "blocked_object": "r2",
+          "min_gap_m": -0.10046995945664214,
+          "count": 176,
+          "gap_scope": "minimum of recorded finite gaps; null means absent/nongeometric"
+        },
+        {
+          "reason_category": "cargo_goal",
+          "blocked_object": "beam_1",
+          "min_gap_m": 0.05299999999999991,
+          "count": 156,
+          "gap_scope": "minimum of recorded finite gaps; null means absent/nongeometric"
+        },
+        {
+          "reason_category": "reservation_goal",
+          "blocked_object": "reserved:teal_stance",
+          "min_gap_m": -0.3248208657578795,
+          "count": 139,
+          "gap_scope": "minimum of recorded finite gaps; null means absent/nongeometric"
+        },
+        {
+          "reason_category": "peer_goal",
+          "blocked_object": "r1",
+          "min_gap_m": -0.1649075244666828,
+          "count": 125,
+          "gap_scope": "minimum of recorded finite gaps; null means absent/nongeometric"
+        },
+        {
+          "reason_category": "peer_goal",
+          "blocked_object": "r3",
+          "min_gap_m": -0.26725140870068603,
+          "count": 90,
+          "gap_scope": "minimum of recorded finite gaps; null means absent/nongeometric"
+        },
+        {
+          "reason_category": "checked_virtual_start",
+          "blocked_object": "reserved:teal_stance",
+          "min_gap_m": -0.23464355610806076,
+          "count": 3,
+          "gap_scope": "minimum of recorded finite gaps; null means absent/nongeometric"
+        },
+        {
+          "reason_category": "connector_feasible",
+          "blocked_object": "none:all_checks_passed",
+          "min_gap_m": 0.003924156867507966,
+          "count": 3,
+          "gap_scope": "minimum of recorded finite gaps; null means absent/nongeometric"
+        },
+        {
+          "reason_category": "prediction_horizon_elapsed",
+          "blocked_object": "beam_1",
+          "min_gap_m": 0.6837172155736861,
+          "count": 1,
+          "gap_scope": "minimum of recorded finite gaps; null means absent/nongeometric"
+        }
+      ],
+      "funnel": [
+        {
+          "stage": "requested",
+          "passed_cumulative_N": 40,
+          "rejected_N": 0
+        },
+        {
+          "stage": "setup",
+          "passed_cumulative_N": 40,
+          "rejected_N": 0,
+          "not_attempted_N": 0,
+          "pending_N": 0
+        },
+        {
+          "stage": "terminal_teacher_trial",
+          "passed_cumulative_N": 40,
+          "rejected_N": 0,
+          "not_trial_N": 0
+        },
+        {
+          "stage": "physical_success",
+          "passed_cumulative_N": 40,
+          "rejected_N": 0
+        }
+      ]
+    },
+    {
+      "name": "releaseA-s1-c312",
+      "host": "gcp3",
+      "source_sha": "f75e3442957e8e00c4ed894056b3e06ee32399f0",
+      "export_only": true,
+      "status": "initialization_only",
+      "terminal": true,
+      "command": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "/home/ugrp/ugrp-sim/src/f75e3442957e8e00c4ed894056b3e06ee32399f0/scripts/run_warp_flow_teacher.py",
+        "--flow",
+        "release",
+        "--adapter-source",
+        "/home/ugrp/ugrp-sim/src/8e81b7d96c0c73171635348c90631462adfe1eb0",
+        "--cases",
+        "/home/ugrp/ugrp-sim/ops-reviews/warp6/release-gate-cases.json",
+        "--indices",
+        "0,2,6,12,18,24,30,36,42,48,52,58,64,74",
+        "--cap-s",
+        "180",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/warp8/releaseA-s1-c312",
+        "--vm-hourly-usd",
+        "1.096",
+        "--gcp3-isolated-v1",
+        "--placement-graspable-filter-v1",
+        "--world-model-parameters-v1",
+        "--native-sleep-policy-compat-v1",
+        "--batch-per-world-speed-v1",
+        "--rejection-table",
+        "/home/ugrp/ugrp-sim/ops-reviews/warp8/prior-rejection_table.json",
+        "--export-compiled-only"
+      ],
+      "raw": "/home/ugrp/ugrp-sim/runs/warp8/releaseA-s1-c312",
+      "N": 14,
+      "completed_N": 0,
+      "success_N": 0,
+      "cap_end_N": 0,
+      "HOST_ERROR_world_N": 0,
+      "setup_wall_s": null,
+      "total_wall_s": 116.891698239,
+      "loop_wall_s": null,
+      "aggregate_task_sim_s": 0,
+      "per_world_wall_SIM": null,
+      "batch_sim_s": 0.0,
+      "task_wall_per_SIM": null,
+      "first30": null,
+      "worlds": [],
+      "reason_distribution": [],
+      "funnel": [
+        {
+          "stage": "requested",
+          "passed_cumulative_N": 14,
+          "rejected_N": 0
+        },
+        {
+          "stage": "setup",
+          "passed_cumulative_N": 14,
+          "rejected_N": 0,
+          "not_attempted_N": 0,
+          "pending_N": 0
+        },
+        {
+          "stage": "terminal_teacher_trial",
+          "passed_cumulative_N": 0,
+          "rejected_N": 0,
+          "not_trial_N": 14
+        },
+        {
+          "stage": "physical_success",
+          "passed_cumulative_N": 0,
+          "rejected_N": 0
+        }
+      ]
+    },
+    {
+      "name": "releaseA-s3-c312",
+      "host": "gcp3",
+      "source_sha": "f75e3442957e8e00c4ed894056b3e06ee32399f0",
+      "export_only": true,
+      "status": "initialization_only",
+      "terminal": true,
+      "command": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "/home/ugrp/ugrp-sim/src/f75e3442957e8e00c4ed894056b3e06ee32399f0/scripts/run_warp_flow_teacher.py",
+        "--flow",
+        "release",
+        "--adapter-source",
+        "/home/ugrp/ugrp-sim/src/8e81b7d96c0c73171635348c90631462adfe1eb0",
+        "--cases",
+        "/home/ugrp/ugrp-sim/ops-reviews/warp6/release-gate-cases.json",
+        "--indices",
+        "4,8,14,20,26,32,38,44,54,60,66,70,76",
+        "--cap-s",
+        "180",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/warp8/releaseA-s3-c312",
+        "--vm-hourly-usd",
+        "1.096",
+        "--gcp3-isolated-v1",
+        "--placement-graspable-filter-v1",
+        "--world-model-parameters-v1",
+        "--native-sleep-policy-compat-v1",
+        "--batch-per-world-speed-v1",
+        "--rejection-table",
+        "/home/ugrp/ugrp-sim/ops-reviews/warp8/prior-rejection_table.json",
+        "--export-compiled-only"
+      ],
+      "raw": "/home/ugrp/ugrp-sim/runs/warp8/releaseA-s3-c312",
+      "N": 13,
+      "completed_N": 0,
+      "success_N": 0,
+      "cap_end_N": 0,
+      "HOST_ERROR_world_N": 0,
+      "setup_wall_s": null,
+      "total_wall_s": 104.85584702300002,
+      "loop_wall_s": null,
+      "aggregate_task_sim_s": 0,
+      "per_world_wall_SIM": null,
+      "batch_sim_s": 0.0,
+      "task_wall_per_SIM": null,
+      "first30": null,
+      "worlds": [],
+      "reason_distribution": [],
+      "funnel": [
+        {
+          "stage": "requested",
+          "passed_cumulative_N": 13,
+          "rejected_N": 0
+        },
+        {
+          "stage": "setup",
+          "passed_cumulative_N": 13,
+          "rejected_N": 0,
+          "not_attempted_N": 0,
+          "pending_N": 0
+        },
+        {
+          "stage": "terminal_teacher_trial",
+          "passed_cumulative_N": 0,
+          "rejected_N": 0,
+          "not_trial_N": 13
+        },
+        {
+          "stage": "physical_success",
+          "passed_cumulative_N": 0,
+          "rejected_N": 0
+        }
+      ]
+    },
+    {
+      "name": "releaseA-s6-c312",
+      "host": "gcp3",
+      "source_sha": "f75e3442957e8e00c4ed894056b3e06ee32399f0",
+      "export_only": true,
+      "status": "initialization_only",
+      "terminal": true,
+      "command": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "/home/ugrp/ugrp-sim/src/f75e3442957e8e00c4ed894056b3e06ee32399f0/scripts/run_warp_flow_teacher.py",
+        "--flow",
+        "release",
+        "--adapter-source",
+        "/home/ugrp/ugrp-sim/src/8e81b7d96c0c73171635348c90631462adfe1eb0",
+        "--cases",
+        "/home/ugrp/ugrp-sim/ops-reviews/warp6/release-gate-cases.json",
+        "--indices",
+        "10,16,22,28,34,40,46,50,56,62,68,72,78",
+        "--cap-s",
+        "180",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/warp8/releaseA-s6-c312",
+        "--vm-hourly-usd",
+        "1.096",
+        "--gcp3-isolated-v1",
+        "--placement-graspable-filter-v1",
+        "--world-model-parameters-v1",
+        "--native-sleep-policy-compat-v1",
+        "--batch-per-world-speed-v1",
+        "--rejection-table",
+        "/home/ugrp/ugrp-sim/ops-reviews/warp8/prior-rejection_table.json",
+        "--export-compiled-only"
+      ],
+      "raw": "/home/ugrp/ugrp-sim/runs/warp8/releaseA-s6-c312",
+      "N": 13,
+      "completed_N": 0,
+      "success_N": 0,
+      "cap_end_N": 0,
+      "HOST_ERROR_world_N": 0,
+      "setup_wall_s": null,
+      "total_wall_s": 103.42578283199998,
+      "loop_wall_s": null,
+      "aggregate_task_sim_s": 0,
+      "per_world_wall_SIM": null,
+      "batch_sim_s": 0.0,
+      "task_wall_per_SIM": null,
+      "first30": null,
+      "worlds": [],
+      "reason_distribution": [],
+      "funnel": [
+        {
+          "stage": "requested",
+          "passed_cumulative_N": 13,
+          "rejected_N": 0
+        },
+        {
+          "stage": "setup",
+          "passed_cumulative_N": 13,
+          "rejected_N": 0,
+          "not_attempted_N": 0,
+          "pending_N": 0
+        },
+        {
+          "stage": "terminal_teacher_trial",
+          "passed_cumulative_N": 0,
+          "rejected_N": 0,
+          "not_trial_N": 13
+        },
+        {
+          "stage": "physical_success",
+          "passed_cumulative_N": 0,
+          "rejected_N": 0
+        }
+      ]
+    },
+    {
+      "name": "releaseA40-c312",
+      "host": "gcp3",
+      "source_sha": "f75e3442957e8e00c4ed894056b3e06ee32399f0",
+      "export_only": true,
+      "status": "HOST_ERROR",
+      "terminal": true,
+      "command": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+        "/home/ugrp/ugrp-sim/src/f75e3442957e8e00c4ed894056b3e06ee32399f0/scripts/run_warp_flow_teacher.py",
+        "--flow",
+        "release",
+        "--adapter-source",
+        "/home/ugrp/ugrp-sim/src/8e81b7d96c0c73171635348c90631462adfe1eb0",
+        "--cases",
+        "/home/ugrp/ugrp-sim/ops-reviews/warp6/release-gate-cases.json",
+        "--indices",
+        "0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78",
+        "--cap-s",
+        "180",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/warp8/releaseA40-c312",
+        "--vm-hourly-usd",
+        "1.096",
+        "--gcp3-isolated-v1",
+        "--placement-graspable-filter-v1",
+        "--world-model-parameters-v1",
+        "--native-sleep-policy-compat-v1",
+        "--batch-per-world-speed-v1",
+        "--rejection-table",
+        "/home/ugrp/ugrp-sim/ops-reviews/warp8/prior-rejection_table.json",
+        "--export-compiled-only"
+      ],
+      "raw": "/home/ugrp/ugrp-sim/runs/warp8/releaseA40-c312",
+      "N": 40,
+      "completed_N": 0,
+      "success_N": 0,
+      "cap_end_N": 0,
+      "HOST_ERROR_world_N": 0,
+      "setup_wall_s": null,
+      "total_wall_s": 18.008059431999982,
+      "loop_wall_s": null,
+      "aggregate_task_sim_s": 0,
+      "per_world_wall_SIM": null,
+      "batch_sim_s": 0.0,
+      "task_wall_per_SIM": null,
+      "first30": null,
+      "worlds": [],
+      "reason_distribution": [],
+      "funnel": [
+        {
+          "stage": "requested",
+          "passed_cumulative_N": 40,
+          "rejected_N": 0
+        },
+        {
+          "stage": "setup",
+          "passed_cumulative_N": 2,
+          "rejected_N": 1,
+          "not_attempted_N": 37,
+          "pending_N": 0
+        },
+        {
+          "stage": "terminal_teacher_trial",
+          "passed_cumulative_N": 0,
+          "rejected_N": 0,
+          "not_trial_N": 2
+        },
+        {
+          "stage": "physical_success",
+          "passed_cumulative_N": 0,
+          "rejected_N": 0
+        }
+      ]
+    }
+  ],
+  "rejection_table": "/home/ugrp/ugrp-sim/ops-reviews/warp8/terminal-recounts/beam40-r2-terminal/rejection_table.json",
+  "collector_sha256": "0ac59bd0af8249ea5e930724a931cfdbe427699cc81ddac66d337fb263cafdfa",
+  "read_errors": [],
+  "reason_distribution_scope": "record occurrences in diagnostic and teacher trace; not unique candidate IDs",
+  "scope": "terminal raw evaluator recount, not ACT/student success or host root-cause proof"
+}

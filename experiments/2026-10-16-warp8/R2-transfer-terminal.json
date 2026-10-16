@@ -1,0 +1,11 @@
+{
+  "utc": "2026-10-16T13:35:11.438971+00:00",
+  "source_exit": 0,
+  "CPU_exit": 0,
+  "source_stderr": "",
+  "CPU_stdout": "[{\"name\": \"beam40-c312\", \"status\": \"initialization_only\", \"completed\": 0, \"success\": 0}, {\"name\": \"beam40-r1\", \"status\": \"HOST_ERROR\", \"completed\": 1, \"success\": 1}, {\"name\": \"beam40-r2\", \"status\": \"complete\", \"completed\": 40, \"success\": 40}, {\"name\": \"releaseA-s1-c312\", \"status\": \"initialization_only\", \"completed\": 0, \"success\": 0}, {\"name\": \"releaseA-s3-c312\", \"status\": \"initialization_only\", \"completed\": 0, \"success\": 0}, {\"name\": \"releaseA-s6-c312\", \"status\": \"initialization_only\", \"completed\": 0, \"success\": 0}, {\"name\": \"releaseA40-c312\", \"status\": \"HOST_ERROR\", \"completed\": 0, \"success\": 0}]\n{\"utc\": \"2026-10-16T13:35:08.934022+00:00\", \"source_host\": \"gcp3\", \"analysis_host\": \"gcp2_CPU\", \"tags\": [\"beam40-r2\"], \"source_SHA_equal_N\": 925, \"copied_bytes\": 35232001, \"source_manifest\": \"/home/ugrp/ugrp-sim/runs/warp8/beam40-r2.transfer-source.json\", \"receiver_sha256\": \"83089ecd18e11a4a6643386e88e332790fa1071d7163b47733a6b4d8554f7006\", \"original_CPU_batches_overwritten\": false}\n",
+  "CPU_stderr": "",
+  "source_command": "python3 /home/ugrp/ugrp-sim/ops-reviews/warp8/export_terminal_light.py --tags beam40-r2",
+  "CPU_command": "python3 /home/ugrp/ugrp-sim/ops-reviews/warp8/receive_terminal_light.py --tags beam40-r2 --label beam40-r2-terminal",
+  "Mac_raw_file_saved": false
+}

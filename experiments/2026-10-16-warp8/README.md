@@ -1,4 +1,4 @@
-# warp8 — gcp3 빔 짝·release MJWarp 관문 (R1 HOST_ERROR, R2 실행 중)
+# warp8 — gcp3 빔 짝·release MJWarp 관문 (빔 R2 40/40, release 준비)
 
 warp6와 같은 `codex/warp6`, PR #557 DRAFT에서 이어간다. gcp2 R3의 CUDA700은
 gcp3 단독·MPS off·원래 graph 25.3 SIM초에서 **단독 환경에서 미재현**이었다.
@@ -86,3 +86,13 @@ R1의별도재계수는실제`claude-haiku-4-5-20251001`이생성한독립판정
 2Hz77장/마지막10Hz100쌍을모두직접봤다([원본검증](R2-known-seed-success.json)). 전체40완료나CUDA700원인확정으로확대하지않는다.
 
 12:14UTC 진행 스냅샷은42.9SIM·성공31/진행9·오류0·cap_end0이다. 누적환산7.2849는첫30수용5.6024와구분하며전체속도통과를주장하지않는다.
+
+## R2 종료 검증
+
+고정 소스175281c8922453465f8bf32707e22988e78b8812의 빔40 배치는 종료코드0, **성공40/40·cap_end0·HOST_ERROR0**이다. 물리 배치52.5SIM(스케줄러 마지막 tick 표시는52.6), loop17,238.570wall초이며 환산8.2088이다. 실제 교사 작업 합계1,472.3SIM 기준은11.7086이다. 첫30 판정5.6024는 통과/3.5경고이고, 전체 속도 통과로 확대하지 않는다. setup408.9초는 별도다.
+
+CPU 원본 재계수40/40, Haiku 생성 독립 코드 재계수40/40·불일치0, 전체 입력감사40건 held_world_reads=0/invisible_measurements=0, weld off. [원장 재계수](R2-summary.json), [독립계수](R2-haiku-counter-result.json), [검증/자원](R2-terminal-validation.json). GPU 사용률 중앙값100%(1,762표본), physics가 loop94.2%이므로 후반 지연을 GPU가 놀기 때문이라고 단정하지 않는다. NoSlip10은 유지했다.
+
+선언 원본26,060파일/382,010,624바이트 SHA 전수 일치([검증](R2-native-integrity.json)). summary와 manifest 자체는 선언 목록 밖이며, 종료 전송925파일 해시와 대표 선택 snapshot1,558파일 해시에서 따로 확인했다. 대표 성공13파일·108KB 영상과 전체78/최근100쌍을 Mac에서 검증했다([영상](R2-representative-artifacts.json)). R1과 CPU 결과는 합산하지 않는다.
+
+gcp3는 타 lease/작업PID/GPU client 부재를 확인한 뒤 정지했고13:37:28UTC TERMINATED를 확인했다. 정지 직후 별도 set-scheduling 호출로8h 필드가 없어졌음을 감사로그에서 확인하여 정지 상태에서28800초/STOP을 다시 설정했다. 실행 중12:14UTC 변경 시도는 API가 거부했다([로그](R2-scheduling-audit.json),[정지](R2-host-stop.json),[복원](release-scheduling-restored.json)). release는 미제출이며 전체 MJWarp 전환/데이터 수용은 아직 not-ready다. 정상 종료한 빔 세션과 별개의 유한 release 세션에서도8h STOP·idle20·budget-stop을 유지한다.
