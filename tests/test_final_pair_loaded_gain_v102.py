@@ -125,7 +125,8 @@ def test_bundle_is_runnable_and_registered():
     b = env.bundle('fwdA')
     assert b['execution_bundle_id'] == env.BUNDLE_ID == 'zone-final-pair-loaded-gaincal-v102'
     assert b['check'] == 'calibration-loaded' and b['runnable'] and b['seed'] == 1203
-    assert b['contact_profile'] == 'cargo_noslip_v1' and b['render_profile'] == 'floor_light_v1' and b['weld'] == 'off'
+    assert b['contact_profile'] == 'cargo_native_v1' and b['render_profile'] == 'floor_light_v1' and b['weld'] == 'off'
+    assert b['contact_execution_bundle_id'] == 'noslip-off-v445'
     assert b['controller_inputs'] == [] and b['teacher_only'] is True
     for p in (env.CONFIG, env.WORKFLOW, 'harness/final_pair_loaded_gain_v102.py',
               'scripts/run_final_pair_loaded_gain_v102.py', 'sim/final_pair_loaded_gain_v102.py'):
