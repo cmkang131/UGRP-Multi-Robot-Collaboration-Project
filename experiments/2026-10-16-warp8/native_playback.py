@@ -45,8 +45,10 @@ def main():
     qvel={int(t):q for t,q in zip(states['ticks'],states['qvel'])}
     overlap=0;supplement=0
     evaluator=world/'raw/eval-only.jsonl'
-    if evaluator.exists():
-        for line in evaluator.read_text().splitlines():
+    if evaluator.exists() or evaluator.with_name(evaluator.name + '.zst').exists():
+        text = (evaluator.read_text() if evaluator.exists() else
+                subprocess.check_output(['zstd', '-qdc', str(evaluator) + '.zst'], text=True))
+        for line in text.splitlines():
             row=json.loads(line);tick=round(row['t']*10)
             if 'joints' not in row:continue
             q=np.asarray(row['joints'])
