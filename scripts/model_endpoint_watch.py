@@ -69,6 +69,9 @@ def _judge(ep, data, tol):
     if e.get('status', 0) != 0:
         alerts.append(dict(kind='endpoint_status', model=model, provider=provider,
                            status=e.get('status')))
+    if ep.get('quantization') and e.get('quantization') != ep['quantization']:
+        alerts.append(dict(kind='quantization_changed', model=model, provider=provider,
+                           expected=ep['quantization'], now=e.get('quantization')))
     base = ep['baseline_usd_per_million']
     pricing = e.get('pricing') or {}
     if not isinstance(pricing, dict):
