@@ -1,5 +1,5 @@
 """Finite shared-L4 DEV dispatcher. No credentials, no VM lifecycle changes."""
-import copy,datetime,hashlib,json,os,platform,subprocess,sys
+import argparse,copy,datetime,hashlib,json,os,platform,re,subprocess,sys
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[2]
@@ -7,6 +7,9 @@ BASE=Path('/home/ugrp/ugrp-sim');RUN=BASE/'runs/warp7'
 
 
 def main():
+    parser=argparse.ArgumentParser();parser.add_argument('--attempt',default='r1');args=parser.parse_args()
+    if not re.fullmatch(r'r[1-3][a-z]?',args.attempt):raise ValueError('finite attempt name required')
+    name='n16-'+args.attempt
     assert platform.node().startswith('ugrp-act-l4-gcp2')
     sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
     assert not subprocess.check_output(['git','status','--porcelain','--untracked-files=no'],cwd=ROOT)
@@ -45,17 +48,19 @@ def main():
         measured_storage_budget_v1=True,storage_budget=json.loads((RUN/'storage-measured.json').read_text()),
         environment=env,runs=runs,pool_conditions=False,independent_initial_cases=11,
         interpretation='N16 simultaneous DEV:11 baseline initial cases +5 paired removal diagnostics; no full visual/ACT/E2E qualification')
-    path=RUN/'n16-r1-queue.json';path.write_text(json.dumps(q,indent=2)+'\n')
+    path=RUN/(name+'-queue.json')
+    if path.exists() or (RUN/name).exists():raise ValueError('new attempt paths required')
+    path.write_text(json.dumps(q,indent=2)+'\n')
     process_env=dict(os.environ,MUJOCO_GL='osmesa',PYOPENGL_PLATFORM='osmesa',
         PYTHONPATH=str(BASE/'runs/warp5/python-deps')+':'+str(ROOT/'scripts')+':'+str(ROOT),OMP_NUM_THREADS='1',OPENBLAS_NUM_THREADS='1')
     command=['timeout','--signal=INT','--kill-after=60','1500',sys.executable,'-m','scripts.sim_cli','workflow','run','warp5-batch','--',
-        '--execute','--queue',str(path),'--output',str(RUN/'n16-r1')]
-    with (RUN/'n16-r1.log').open('wb') as log:
+        '--execute','--queue',str(path),'--output',str(RUN/name)]
+    with (RUN/(name+'.log')).open('wb') as log:
         p=subprocess.Popen(command,cwd=ROOT,env=process_env,stdout=log,stderr=subprocess.STDOUT,start_new_session=True)
     lease=BASE/'leases/warp7.json';value=json.loads(lease.read_text());value.update(pid=p.pid,source_sha=sha,concurrency=16,stage='N16 transport DEV',
         expected_end=(datetime.datetime.now(datetime.timezone.utc)+datetime.timedelta(seconds=1500)).isoformat())
     lease.write_text(json.dumps(value,indent=2)+'\n')
-    (RUN/'n16-r1-dispatch.json').write_text(json.dumps(dict(pid=p.pid,command=command,source_sha=sha,
+    (RUN/(name+'-dispatch.json')).write_text(json.dumps(dict(pid=p.pid,command=command,source_sha=sha,
         dispatcher_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest()),indent=2)+'\n')
     print(json.dumps(dict(pid=p.pid,source_sha=sha,queue=str(path),runs=16,initial_cases=11)))
 

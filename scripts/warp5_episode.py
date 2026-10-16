@@ -5,7 +5,7 @@ from pathlib import Path
 from scripts.warp5_batch import transform_runner
 
 
-def owned(name):return name.split('.')[0] in ('harness','sim','scripts')
+def owned(name):return name.split('.')[0] in ('harness','sim','scripts','markerless_probe','height_free_wall','ego_wall_map','self_mask')
 
 
 class Lane:
