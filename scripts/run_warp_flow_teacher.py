@@ -238,17 +238,20 @@ def main():
             progress=dict(ticks=ticks,active_N=int(active.sum()),completed_N=len(results),
                 sim_s=ticks*.1,loop_wall_s=elapsed,timing=dict(hooks.seconds))
             if a.batch_per_world_speed_v1:
-                # Coordinator decision 2026-10-16, user unconfirmed: the existing
-                # >6 speed threshold uses batch wall / aggregate world SIM.
-                # Actual clocks avoid crediting completed/frozen lanes as active.
+                # User-supplied coordinator decision 2026-10-16, user
+                # unconfirmed: admission uses wall / (batch SIM * world count).
+                # Task throughput excludes padding and is a separate metric.
                 clocks=world_sim_clocks(contexts,results)
                 aggregate=sum(clocks)
+                batch_sim=getattr(hooks,'tick',ticks)*.1
                 progress.update(world_sim_s=clocks,aggregate_world_sim_s=aggregate,
-                    per_world_wall_SIM=elapsed/aggregate if aggregate else None,
-                    batch_wall_SIM=elapsed/max(clocks) if max(clocks,default=0.) else None)
-                if max(clocks,default=0.)>=30.-1e-8 and not (a.out/'first30-speed.json').exists():
+                    batch_sim_s=batch_sim,
+                    per_world_wall_SIM=elapsed/(batch_sim*len(indices)) if batch_sim else None,
+                    task_wall_per_SIM=elapsed/aggregate if aggregate else None,
+                    batch_wall_SIM=elapsed/batch_sim if batch_sim else None)
+                if batch_sim>=30.-1e-8 and not (a.out/'first30-speed.json').exists():
                     write(a.out/'first30-speed.json',dict(progress,
-                        scope='first batch clock >=30 SIM; setup/compile excluded; completed lanes frozen',
+                        scope='first batch clock >=30 SIM; setup/compile excluded; admission denominator=batch SIM*world count',
                         basis='coordinator decision 2026-10-16, user unconfirmed',
                         block_threshold=6.,warning_threshold=3.5,
                         speed_gate_fail=progress['per_world_wall_SIM']>6.))

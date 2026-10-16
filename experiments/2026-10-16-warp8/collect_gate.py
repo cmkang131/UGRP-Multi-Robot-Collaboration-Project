@@ -152,12 +152,15 @@ def main():
                     {r:t.get('outcome') for r,t in raw.get('teachers', {}).items()}))
         sim = sum(w['sim_s'] for w in results)
         first30 = data(run / 'first30-speed.json')
+        progress = data(run / 'progress.json', {})
+        batch_sim = progress.get('batch_sim_s', max(progress.get('world_sim_s', [0.])))
         if first30 and terminal and len(results) == cmd['planned_world_N']:
             actual = sum(min(w['sim_s'], first30['world_sim_s'][w['world']]) for w in results)
             first30 = dict(first30, corrected_aggregate_world_sim_s=actual,
-                corrected_per_world_wall_SIM=first30['loop_wall_s'] / actual,
-                corrected_speed_gate_fail=first30['loop_wall_s'] / actual > 6.,
-                correction='terminal task durations exclude padding; original first30 JSON preserved')
+                task_wall_per_SIM=first30['loop_wall_s'] / actual,
+                admission_per_world_wall_SIM=first30['loop_wall_s'] / (first30['sim_s']*cmd['planned_world_N']),
+                admission_speed_gate_fail=first30['loop_wall_s'] / (first30['sim_s']*cmd['planned_world_N']) > 6.,
+                correction='task throughput excludes padding; admission uses the requested batch SIM*world count; original JSON preserved')
         table = [dict(reason_category=k[0], blocked_object=k[1], min_gap_m=minimums.get(k), count=v,
                       gap_scope='minimum of recorded finite gaps; null means absent/nongeometric')
                  for k,v in histogram.most_common()]
@@ -171,7 +174,9 @@ def main():
             HOST_ERROR_world_N=n-completed if receipt and receipt['exit_code'] and not export else 0,
             setup_wall_s=summary.get('setup_compile_s'), total_wall_s=summary.get('wall_s'),
             loop_wall_s=summary.get('loop_wall_s'), aggregate_task_sim_s=sim,
-            per_world_wall_SIM=summary['loop_wall_s']/sim if sim and summary.get('loop_wall_s') else None,
+            per_world_wall_SIM=summary['loop_wall_s']/(batch_sim*n) if batch_sim and summary.get('loop_wall_s') else None,
+            batch_sim_s=batch_sim,
+            task_wall_per_SIM=summary['loop_wall_s']/sim if sim and summary.get('loop_wall_s') else None,
             first30=first30, worlds=results, reason_distribution=table,
             funnel=[dict(stage='requested', passed_cumulative_N=n, rejected_N=0),
                 dict(stage='setup', passed_cumulative_N=summary.get('started_N', 0),
