@@ -50,6 +50,7 @@ def launch(n):
                 ep['reloc20_drive_eval_v1']=True
                 ep['reloc20_obstacle_wall_component_v1']=candidate and n==3
                 ep['reloc20_turn_density_v1']=condition=='density'
+                ep['reloc20_rotation_stall_v1']=candidate and n==3
                 p=folder/'input-plan.json';p.write_text(json.dumps(plan,indent=2)+'\n')
                 cmd[cmd.index('--plan')+1]=str(p);cmd[cmd.index('--out')+1]=str(folder/'raw')
             else:

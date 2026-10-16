@@ -133,3 +133,12 @@ def test_turn_density_cannot_execute_old_turn_after_stop_or_direction_change():
     for i in range(3):d.apply(left,[.02]*4,.6+i*.1)
     assert d.apply([.35,-.35,.35,-.35],[.02]*4,.9)==([0.]*4,[0.]*4)
     assert d.debt==pytest.approx(.02)
+
+
+def test_rotation_stationarity_does_not_require_expected_xy_motion(monkeypatch):
+    import harness.e2e_stall_odometry as flow
+    monkeypatch.setattr(flow,'flow_pair',lambda a,b:dict(status='stationary_view',tracks=20,cells=4,median_px=0.,p90_px=0.,mean_abs_diff=0.))
+    d=VisualStall(dict(stationary_thresholds=dict(median_px=.1,p90_px=.3,mean_abs_diff=.04)),rotation=True)
+    rgb=np.zeros((480,640,3),np.uint8)
+    d.observe(rgb,0,{},True);d.issue((0.,0.,2*d.angular_min),.5);d.observe(rgb,.5,{},True)
+    assert d.suppressed and d.last['expected_motion_kind']=='angular_or_mixed'

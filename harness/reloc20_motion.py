@@ -199,10 +199,18 @@ class VisualStall:
     Independent nominal increments keep the test live after suppression.
     Unknown texture/camera motion is never converted into zero displacement.
     """
-    def __init__(self, fit):
+    def __init__(self, fit, *, rotation=False):
         self.fit=fit;self.frames=deque();self.pose=np.zeros(3);self.suppressed=False
         self.last={};self.events=[];self.recovering=False;self.backed=0.;self.started=None
         self.stall_ticks=0;self.stall_s=0.;self.raw_delta=np.zeros(3)
+        self.rotation=rotation;self.angular_min=None
+        if rotation:
+            from harness.e2e_stall_odometry import FLOW
+            from sim.masterpi_camera_profile import scaled_camera_matrix
+            K=scaled_camera_matrix(640,480)
+            # Existing LK 1px scale / fixed camera focal length: nominal
+            # angular resolution, not a metric loaded-camera qualification.
+            self.angular_min=math.atan2(FLOW['median_max_px'],min(K[0,0],K[1,1]))
 
     def issue(self, delta, dt):
         from harness.natural_floor_slam import compose
@@ -222,11 +230,13 @@ class VisualStall:
         else:
             for t,frame,old_servo,pose in reversed(self.frames):
                 d=between(pose,self.pose)
-                if np.linalg.norm(d[:2])<FLOW['minimum_expected_m']:continue
-                if old_servo!=servo or abs(d[2])>FLOW['maximum_expected_yaw_rad']:
+                angular=self.rotation and abs(d[2])>=self.angular_min
+                if np.linalg.norm(d[:2])<FLOW['minimum_expected_m'] and not angular:continue
+                if old_servo!=servo or (not self.rotation and abs(d[2])>FLOW['maximum_expected_yaw_rad']):
                     rec.update(reason='camera_command_or_yaw_changed');break
                 flow=flow_pair(cv2.cvtColor(frame,cv2.COLOR_BGR2RGB),cv2.cvtColor(bgr,cv2.COLOR_BGR2RGB))
-                rec.update(flow,before_t=t,expected_delta=d.tolist(),window_s=now-t)
+                rec.update(flow,before_t=t,expected_delta=d.tolist(),window_s=now-t,
+                           expected_motion_kind='angular_or_mixed' if angular else 'translation')
                 limits=self.fit['stationary_thresholds']
                 qualified=flow['median_px'] is not None and flow['mean_abs_diff'] is not None
                 self.suppressed=bool(qualified and all(flow[k]<=limits[k]+1e-12 for k in limits))
@@ -247,12 +257,13 @@ class VisualStall:
         return (-.05,0.,0.)  # inherited reverse limit; collision-checked by caller
 
     def record(self):
-        return dict(last=self.last,events=self.events,stall_ticks=self.stall_ticks,stall_sim_s=self.stall_s,recovering=self.recovering,metric_vo=False)
+        return dict(last=self.last,events=self.events,stall_ticks=self.stall_ticks,stall_sim_s=self.stall_s,recovering=self.recovering,metric_vo=False,
+                    rotation_stationarity_v1=self.rotation,nominal_one_pixel_angle_rad=self.angular_min)
 
 
 def install(carry,plan):
     """Called once before any integration; every feature is default off."""
-    for key in ('reloc20_heading_forward_v1','reloc20_loaded_footprint_v1','reloc20_visual_stall_v1','reloc20_contact_ode_v1','reloc20_obstacle_wall_mask_v1','reloc20_obstacle_wall_component_v1','reloc20_turn_density_v1'):
+    for key in ('reloc20_heading_forward_v1','reloc20_loaded_footprint_v1','reloc20_visual_stall_v1','reloc20_contact_ode_v1','reloc20_obstacle_wall_mask_v1','reloc20_obstacle_wall_component_v1','reloc20_turn_density_v1','reloc20_rotation_stall_v1'):
         if type(plan.get(key,False)) is not bool:raise ValueError(key+' must be bool')
     carry.reloc20_heading=plan.get('reloc20_heading_forward_v1',False)
     carry.reloc20_route=LoadedRoute(carry.static) if plan.get('reloc20_loaded_footprint_v1',False) else None
@@ -273,7 +284,8 @@ def install(carry,plan):
         carry.obstacles.reloc20_wall_component=True
     if plan.get('reloc20_visual_stall_v1',False):
         fit=json.loads((ROOT/'experiments/2026-10-16-reloc20/flow-fit.json').read_text())
-        carry.reloc20_stall=VisualStall(fit);carry.loc.reloc20_stall=carry.reloc20_stall
+        carry.reloc20_stall=VisualStall(fit,rotation=plan.get('reloc20_rotation_stall_v1',False));carry.loc.reloc20_stall=carry.reloc20_stall
+    elif plan.get('reloc20_rotation_stall_v1',False):raise ValueError('rotation stall requires visual stall')
     if carry.reloc20_route is not None:
         carry.plan_path=carry.reloc20_route.plan
         carry.radius=carry.reloc20_route.radius
