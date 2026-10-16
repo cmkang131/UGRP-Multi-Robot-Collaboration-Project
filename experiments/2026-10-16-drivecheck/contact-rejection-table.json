@@ -1,0 +1,32 @@
+{
+  "raw": "/home/ugrp/ugrp-sim/runs/drivecheck/cpu312-v2",
+  "reproduce": "drivecheck CPU312-v2 frozen tape; group actual contacts by named geom pair",
+  "stages": [
+    {
+      "stage": "requested_pulses",
+      "cumulative_pass_n": 18,
+      "rejected_n": 0
+    },
+    {
+      "stage": "recorded_pulses",
+      "cumulative_pass_n": 18,
+      "rejected_n": 0
+    },
+    {
+      "stage": "initial_base_cargo_nonoverlap",
+      "cumulative_pass_n": 0,
+      "rejected_n": 18
+    }
+  ],
+  "reasons": [
+    {
+      "category": "INITIAL_SCENE_OVERLAP",
+      "reason": "base intersects box before first drive command; rear wheel contact is lost during settle",
+      "blocked_object": "cargo_box_00_geom",
+      "minimum_gap_m": -0.015344881182340743,
+      "initial_contact_rows": 72,
+      "all_sampled_contact_rows": 2017,
+      "affected_cases": 18
+    }
+  ]
+}

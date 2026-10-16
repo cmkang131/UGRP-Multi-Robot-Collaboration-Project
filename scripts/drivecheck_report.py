@@ -27,6 +27,7 @@ def main():
         actual=abs(row['yaw_deg']) if row['axis']=='turn' else row['translation_mm']
         motor=row['no_load_motor_upper_yaw_deg'] if row['axis']=='turn' else row['no_load_motor_upper_distance_mm']
         compact.append(dict(run=row['run'],case=row['case'],phase=row['phase'],translation_mm=row['translation_mm'],
+            dx_mm=row['delta_xyyaw'][0]*1000,dy_mm=row['delta_xyyaw'][1]*1000,
             yaw_deg=row['yaw_deg'],tilt_settled_deg=row['tilt_settled_deg'],tilt_end_deg=row['tilt_end_deg'],
             actual_over_v122=row['actual_over_v122'],actual_over_motor_reference=actual/motor,
             motor_reference= motor,unit='deg' if row['axis']=='turn' else 'mm',

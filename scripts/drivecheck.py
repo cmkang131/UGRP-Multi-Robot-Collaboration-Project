@@ -51,7 +51,7 @@ class OwnRGBRing:
         self.mx,self.my=raw_fisheye_remap(640,480)
         self.opt=mujoco.MjvOption();self.opt.geomgroup[4:]=0
         # User requirement: terminal 10 SIM seconds at 10 Hz, two own cameras.
-        self.rings=[deque(maxlen=100) for _ in range(worlds)]
+        self.rings=[deque(maxlen=101) for _ in range(worlds)]  # both endpoints of the 10s/10Hz window
 
     def capture(self,index,t,qpos,qvel):
         import mujoco
@@ -200,6 +200,8 @@ def run(a):
     import numpy as np
     import mujoco
     m, f, meta, cases = load_fixture(a)
+    if np.any(m.eq_active0):raise ValueError('weld OFF required for diagnostic')
+    if m.opt.noslip_iterations != (0 if a.noslip_off_v1 else 10):raise ValueError('explicit NoSlip 10/0 required')
     a.out.mkdir(parents=True, exist_ok=False)
     q = json.loads(a.queue.read_text())
     if not q.get('enabled') or not Path(q['rejection_table']).is_file():
@@ -210,6 +212,7 @@ def run(a):
         toggles=dict(legacy_plane_v1=a.legacy_plane_v1, dense_capacity_v1=a.dense_capacity_v1,
                      noslip_off_v1=a.noslip_off_v1,clear_overlap_v1=a.clear_overlap_v1), cases=cases, dt=meta['dt'],
         fixture_ablation=a.fixture_ablation,
+        weld_active0_count=int(np.count_nonzero(m.eq_active0)),
         initial_qpos_sha256=hashlib.sha256(f['qpos'].tobytes()).hexdigest(),
         options={k:float(getattr(m.opt,k)) for k in ('timestep','iterations','ls_iterations','noslip_iterations','tolerance','solver','cone','integrator')},
         physics_hashes={key:hashlib.sha256(getattr(m,key).tobytes()).hexdigest() for key in FIELDS},
