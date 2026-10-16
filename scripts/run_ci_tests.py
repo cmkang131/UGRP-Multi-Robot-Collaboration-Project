@@ -499,6 +499,8 @@ TEST_PATTERNS = (
     "tests/test_visual_arm_v3.py",
     "tests/test_masterpi_v3_static_audit.py",
     "tests/test_masterpi_robot_models.py",
+    "tests/test_beamact4.py",
+    "tests/test_beamact4_policy.py",
 )
 
 
