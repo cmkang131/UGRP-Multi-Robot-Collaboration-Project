@@ -1,0 +1,384 @@
+{
+  "scope": "setup-only name resolution; exact original funnel is immutable",
+  "obstacle_index_to_scene_name": {
+    "static_wall_0": "zone_wall_north",
+    "static_wall_1": "zone_wall_south",
+    "static_wall_2": "zone_wall_west",
+    "static_wall_3": "zone_wall_east",
+    "static_wall_4": "zone_wall_divider_1",
+    "static_wall_5": "zone_wall_divider_2"
+  },
+  "rejections": [
+    {
+      "proposal": 1,
+      "population": "main_proposals",
+      "reason_category": "robot_peer_overlap",
+      "blocked_object": "r2",
+      "min_gap_m": -0.17595021645748238,
+      "robot": "r1",
+      "gap_scope": "authored geometric enclosure; not measured control clearance"
+    },
+    {
+      "proposal": 3,
+      "population": "parking_trials",
+      "trial": 0,
+      "reason_category": "parking_overlap",
+      "blocked_object": "zone_wall_divider_1",
+      "min_gap_m": -0.0545125171867326,
+      "original_object_index": "static_wall_4",
+      "gap_scope": "authored geometric enclosure; not measured control clearance"
+    },
+    {
+      "proposal": 5,
+      "population": "parking_trials",
+      "trial": 0,
+      "reason_category": "parking_overlap",
+      "blocked_object": "r1",
+      "min_gap_m": -0.03318099018872006,
+      "gap_scope": "authored geometric enclosure; not measured control clearance"
+    },
+    {
+      "proposal": 6,
+      "population": "parking_trials",
+      "trial": 0,
+      "reason_category": "parking_overlap",
+      "blocked_object": "beam_1",
+      "min_gap_m": -0.22407246605711206,
+      "gap_scope": "authored geometric enclosure; not measured control clearance"
+    },
+    {
+      "proposal": 10,
+      "population": "main_proposals",
+      "reason_category": "beam_cargo_overlap",
+      "blocked_object": "cyan_1",
+      "min_gap_m": -0.05221046031234941,
+      "gap_scope": "authored geometric enclosure; not measured control clearance"
+    },
+    {
+      "proposal": 11,
+      "population": "parking_trials",
+      "trial": 0,
+      "reason_category": "parking_overlap",
+      "blocked_object": "r1",
+      "min_gap_m": -0.0348815652322233,
+      "gap_scope": "authored geometric enclosure; not measured control clearance"
+    },
+    {
+      "proposal": 12,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "zone_wall_divider_1",
+      "min_gap_m": -0.05476253423065251,
+      "robot": "r1",
+      "original_object_index": "static_wall_4",
+      "gap_scope": "authored geometric enclosure; not measured control clearance"
+    },
+    {
+      "proposal": 16,
+      "population": "main_proposals",
+      "reason_category": "beam_cargo_overlap",
+      "blocked_object": "red_1",
+      "min_gap_m": -0.013283998809094835,
+      "gap_scope": "authored geometric enclosure; not measured control clearance"
+    },
+    {
+      "proposal": 18,
+      "population": "main_proposals",
+      "reason_category": "beam_cargo_overlap",
+      "blocked_object": "cyan_1",
+      "min_gap_m": -0.2780327421308977,
+      "gap_scope": "authored geometric enclosure; not measured control clearance"
+    },
+    {
+      "proposal": 19,
+      "population": "parking_trials",
+      "trial": 0,
+      "reason_category": "parking_overlap",
+      "blocked_object": "beam_1",
+      "min_gap_m": -0.04131184398907646,
+      "gap_scope": "authored geometric enclosure; not measured control clearance"
+    },
+    {
+      "proposal": 21,
+      "population": "main_proposals",
+      "reason_category": "certified_end_stances",
+      "blocked_object": "zone_wall_south",
+      "min_gap_m": 0.0,
+      "end": "teal",
+      "free_goal_N": 0,
+      "required_N": 91,
+      "gap_scope": "authored geometric enclosure; not measured control clearance"
+    },
+    {
+      "proposal": 23,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.6237623183249356,
+      "robot": "r1",
+      "gap_scope": "authored geometric enclosure; not measured control clearance"
+    },
+    {
+      "proposal": 24,
+      "population": "main_proposals",
+      "reason_category": "beam_cargo_overlap",
+      "blocked_object": "red_1",
+      "min_gap_m": -0.08647722410535175,
+      "gap_scope": "authored geometric enclosure; not measured control clearance"
+    },
+    {
+      "proposal": 26,
+      "population": "parking_trials",
+      "trial": 0,
+      "reason_category": "parking_overlap",
+      "blocked_object": "r2",
+      "min_gap_m": -0.0848028058311156,
+      "gap_scope": "authored geometric enclosure; not measured control clearance"
+    },
+    {
+      "proposal": 26,
+      "population": "parking_trials",
+      "trial": 1,
+      "reason_category": "parking_overlap",
+      "blocked_object": "beam_1",
+      "min_gap_m": -0.08398866482194318,
+      "gap_scope": "authored geometric enclosure; not measured control clearance"
+    },
+    {
+      "proposal": 27,
+      "population": "main_proposals",
+      "reason_category": "initial_static_los",
+      "blocked_object": "zone_wall_divider_2",
+      "min_gap_m": 0.0,
+      "robot": "r1",
+      "gap_scope": "intersecting_center_ray",
+      "original_object_index": "static_wall_5"
+    },
+    {
+      "proposal": 28,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": -0.12229574808635009,
+      "robot": "r1",
+      "original_object_index": "static_wall_0",
+      "gap_scope": "authored geometric enclosure; not measured control clearance"
+    },
+    {
+      "proposal": 34,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "zone_wall_west",
+      "min_gap_m": -0.068862529624445,
+      "robot": "r1",
+      "original_object_index": "static_wall_2",
+      "gap_scope": "authored geometric enclosure; not measured control clearance"
+    },
+    {
+      "proposal": 35,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.2228137487908693,
+      "robot": "r1",
+      "gap_scope": "authored geometric enclosure; not measured control clearance"
+    },
+    {
+      "proposal": 37,
+      "population": "main_proposals",
+      "reason_category": "beam_cargo_overlap",
+      "blocked_object": "red_1",
+      "min_gap_m": -0.07572405335224883,
+      "gap_scope": "authored geometric enclosure; not measured control clearance"
+    },
+    {
+      "proposal": 39,
+      "population": "main_proposals",
+      "reason_category": "beam_cargo_overlap",
+      "blocked_object": "red_1",
+      "min_gap_m": -0.23117214032895875,
+      "gap_scope": "authored geometric enclosure; not measured control clearance"
+    },
+    {
+      "proposal": 40,
+      "population": "main_proposals",
+      "reason_category": "beam_cargo_overlap",
+      "blocked_object": "cyan_1",
+      "min_gap_m": -0.06244045766100806,
+      "gap_scope": "authored geometric enclosure; not measured control clearance"
+    },
+    {
+      "proposal": 41,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.47777600507053114,
+      "robot": "r1",
+      "gap_scope": "authored geometric enclosure; not measured control clearance"
+    },
+    {
+      "proposal": 42,
+      "population": "main_proposals",
+      "reason_category": "certified_end_stances",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "end": "blue",
+      "free_goal_N": 67,
+      "required_N": 91,
+      "gap_scope": "authored geometric enclosure; not measured control clearance"
+    },
+    {
+      "proposal": 45,
+      "population": "main_proposals",
+      "reason_category": "beam_cargo_overlap",
+      "blocked_object": "cyan_1",
+      "min_gap_m": -0.2734286642333395,
+      "gap_scope": "authored geometric enclosure; not measured control clearance"
+    },
+    {
+      "proposal": 46,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.14718569391928932,
+      "robot": "r1",
+      "gap_scope": "authored geometric enclosure; not measured control clearance"
+    },
+    {
+      "proposal": 47,
+      "population": "main_proposals",
+      "reason_category": "certified_end_stances",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "end": "blue",
+      "free_goal_N": 0,
+      "required_N": 91,
+      "gap_scope": "authored geometric enclosure; not measured control clearance"
+    },
+    {
+      "proposal": 49,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -1.195517456166204,
+      "robot": "r1",
+      "gap_scope": "authored geometric enclosure; not measured control clearance"
+    },
+    {
+      "proposal": 50,
+      "population": "main_proposals",
+      "reason_category": "certified_end_stances",
+      "blocked_object": "zone_wall_south",
+      "min_gap_m": 0.0,
+      "end": "teal",
+      "free_goal_N": 62,
+      "required_N": 91,
+      "gap_scope": "authored geometric enclosure; not measured control clearance"
+    },
+    {
+      "proposal": 55,
+      "population": "main_proposals",
+      "reason_category": "beam_cargo_overlap",
+      "blocked_object": "red_1",
+      "min_gap_m": -0.1741859060479766,
+      "gap_scope": "authored geometric enclosure; not measured control clearance"
+    },
+    {
+      "proposal": 58,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.22191946021913284,
+      "robot": "r1",
+      "gap_scope": "authored geometric enclosure; not measured control clearance"
+    },
+    {
+      "proposal": 59,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.7597986865615921,
+      "robot": "r1",
+      "gap_scope": "authored geometric enclosure; not measured control clearance"
+    },
+    {
+      "proposal": 60,
+      "population": "main_proposals",
+      "reason_category": "initial_static_los",
+      "blocked_object": "zone_wall_divider_1",
+      "min_gap_m": 0.0,
+      "robot": "r1",
+      "gap_scope": "intersecting_center_ray",
+      "original_object_index": "static_wall_4"
+    },
+    {
+      "proposal": 61,
+      "population": "main_proposals",
+      "reason_category": "initial_static_los",
+      "blocked_object": "zone_wall_divider_1",
+      "min_gap_m": 0.0,
+      "robot": "r1",
+      "gap_scope": "intersecting_center_ray",
+      "original_object_index": "static_wall_4"
+    },
+    {
+      "proposal": 62,
+      "population": "main_proposals",
+      "reason_category": "initial_static_los",
+      "blocked_object": "zone_wall_divider_1",
+      "min_gap_m": 0.0,
+      "robot": "r1",
+      "gap_scope": "intersecting_center_ray",
+      "original_object_index": "static_wall_4"
+    },
+    {
+      "proposal": 63,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -1.4330918521080205,
+      "robot": "r1",
+      "gap_scope": "authored geometric enclosure; not measured control clearance"
+    },
+    {
+      "proposal": 67,
+      "population": "main_proposals",
+      "reason_category": "certified_end_stances",
+      "blocked_object": "zone_wall_south",
+      "min_gap_m": 0.0,
+      "end": "teal",
+      "free_goal_N": 5,
+      "required_N": 91,
+      "gap_scope": "authored geometric enclosure; not measured control clearance"
+    },
+    {
+      "proposal": 69,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.5104640334133025,
+      "robot": "r1",
+      "gap_scope": "authored geometric enclosure; not measured control clearance"
+    },
+    {
+      "proposal": 70,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "zone_wall_west",
+      "min_gap_m": -0.027977569015695078,
+      "robot": "r1",
+      "original_object_index": "static_wall_2",
+      "gap_scope": "authored geometric enclosure; not measured control clearance"
+    },
+    {
+      "proposal": 72,
+      "population": "main_proposals",
+      "reason_category": "initial_static_los",
+      "blocked_object": "zone_wall_divider_1",
+      "min_gap_m": 0.0,
+      "robot": "r1",
+      "gap_scope": "intersecting_center_ray",
+      "original_object_index": "static_wall_4"
+    }
+  ]
+}

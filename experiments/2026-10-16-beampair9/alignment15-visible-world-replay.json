@@ -1,0 +1,90 @@
+{
+  "seed": 8328015,
+  "scope": "offline own admitted measurements + actual issued commands, replay VisibleWorld only; no teacher/physics rerun; no FreeSpace/reobserver ghost reconstruction",
+  "pose": [
+    1.1347640148250322,
+    -0.49207872243875106,
+    1.09592747198858
+  ],
+  "local_assigned_end": [
+    0.21475178172056053,
+    -0.010916425075621725,
+    0.023892244543152873
+  ],
+  "errors": [
+    0.00675178172056054,
+    -0.010916425075621725,
+    -0.025762525028988816
+  ],
+  "axis_checks": [
+    {
+      "axis": 0,
+      "error": 0.00675178172056054,
+      "pulse": {
+        "wheels": [
+          0.35,
+          0.35,
+          0.35,
+          0.35
+        ],
+        "duration_s": [
+          0.04,
+          0.04,
+          0.04,
+          0.04
+        ]
+      },
+      "blocked": [
+        {
+          "mode": "off",
+          "blocked_object": "cyan_1",
+          "start_gap_m": 0.0019249277869351489
+        },
+        {
+          "mode": "search17_fixed_v1",
+          "blocked_object": "cyan_1",
+          "start_gap_m": 0.0019249277869351489
+        }
+      ]
+    },
+    {
+      "axis": 1,
+      "error": -0.010916425075621725,
+      "pulse": {
+        "wheels": [
+          0.35,
+          -0.35,
+          -0.35,
+          0.35
+        ],
+        "duration_s": [
+          0.04,
+          0.04,
+          0.04,
+          0.04
+        ]
+      },
+      "blocked": []
+    },
+    {
+      "axis": 2,
+      "error": -0.025762525028988816,
+      "pulse": {
+        "wheels": [
+          0.35,
+          -0.35,
+          0.35,
+          -0.35
+        ],
+        "duration_s": [
+          0.04,
+          0.04,
+          0.04,
+          0.04
+        ]
+      },
+      "blocked": []
+    }
+  ],
+  "logged_alignment_axes_blocked_N": 90
+}

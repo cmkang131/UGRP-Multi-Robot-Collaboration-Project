@@ -1,0 +1,77 @@
+{
+  "ok": true,
+  "source_sha": "72c0e83dab384b4f7d4bb73e37e440e0d1b248f6",
+  "pilots": [
+    {
+      "seed": 8318700,
+      "sim_s": 27.000000000046317,
+      "unique_inode_bytes": 10187990,
+      "decoded_text_overhead_bytes": 7102418,
+      "cap60_peak_estimate": 38423128.88882298
+    },
+    {
+      "seed": 8318728,
+      "sim_s": 38.90000000010314,
+      "unique_inode_bytes": 14655074,
+      "decoded_text_overhead_bytes": 11485052,
+      "cap60_peak_estimate": 40318960.41120415
+    },
+    {
+      "seed": 8318706,
+      "sim_s": 36.50000000009168,
+      "unique_inode_bytes": 14488405,
+      "decoded_text_overhead_bytes": 10076696,
+      "cap60_peak_estimate": 40380987.94510405
+    },
+    {
+      "seed": 8318711,
+      "sim_s": 46.40000000013895,
+      "unique_inode_bytes": 17945586,
+      "decoded_text_overhead_bytes": 13235898,
+      "cap60_peak_estimate": 40320884.482637875
+    }
+  ],
+  "per_run_budget_bytes": 50476235,
+  "recording_N": 200,
+  "recording_bytes": 10095247000,
+  "dataset_archive_workspace_bytes": 112527360000,
+  "dataset_bound_basis": "600 ticks per60SIMs *2actors *uint8(3,240,320), every frame + explicit metadata bytes; archive and expanded copy coexist",
+  "other_leases": {
+    "reloc17.json": {
+      "task": "reloc17",
+      "pid": 255161,
+      "started": "2026-10-15T20:27:17.283565+00:00",
+      "expected_end": "2026-10-16T04:00:00Z; finite investigation + max3 rounds",
+      "concurrency": 4,
+      "owner": "Mac Codex reloc17; supervisor PID updated on launch",
+      "source_sha": "47670d1428abfbb09756627c1a2be31caf650465",
+      "stage": "round2",
+      "pids": [
+        255184,
+        255185,
+        255186,
+        255188
+      ]
+    },
+    "release25.json": {
+      "task": "release25",
+      "pid": 256732,
+      "started": "2026-10-15T20:58:55.281137+00:00",
+      "expected_end": "finite queue; per-run8h cap",
+      "concurrency": 16,
+      "source_sha": "8e81b7d96c0c73171635348c90631462adfe1eb0"
+    }
+  },
+  "other_remaining_runs": {
+    "release25": 80,
+    "reloc17": 4
+  },
+  "other_reserved_bytes": 22548578304,
+  "other_basis": "existing256MiB per-run queue estimate; release full40 over-reservation includes completed runs",
+  "free_bytes": 315402850304,
+  "expected_bytes": 145171185304,
+  "projected_free_bytes": 170231665000,
+  "floor_bytes": 8589934592,
+  "arm": "not used; gcp2-only task, no ARM transfers",
+  "mac": "summary/montage only, checked separately"
+}

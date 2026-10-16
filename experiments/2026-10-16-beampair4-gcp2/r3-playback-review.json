@@ -1,0 +1,39 @@
+{
+  "review_json": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair4-r3-gcp2-8318626/review.json",
+  "review_json_sha256": "65dd5bdf8f085fd881b53393b2c44df6cb8b7bad00ac6943edbebe7f5196ffb4",
+  "full_range_sim_s": [
+    0,
+    27.5
+  ],
+  "full_hz": 2,
+  "full_frames_viewed": 56,
+  "tail_range_sim_s": [
+    17.5,
+    27.5
+  ],
+  "tail_hz": 10,
+  "tail_frames_viewed": 101,
+  "direct_visual_review_completed": true,
+  "video_sha256": "a461567b117b7e302f64992277e0217c1ada67385b5e386ffc2f01ab21f15cd2",
+  "video_bytes": 194066,
+  "original_own_rgb_frames_used": 202,
+  "ffprobe": {
+    "programs": [],
+    "streams": [
+      {
+        "width": 960,
+        "height": 272,
+        "duration": "9.200000",
+        "nb_read_frames": "276"
+      }
+    ]
+  },
+  "max_body_xyz_error_m": 0.0,
+  "timeline": [
+    "0-5.2: r1 approaches teal and becomes READY; r2 searches blue",
+    "5.2-17.5: r1 holds its station; r2 pans around the beam, peer and walls",
+    "17.5-20.7: r2 pans and briefly backs away while reobserving; no same-end conflict",
+    "20.7-27.5: r2 sees the blue end but sends no wheel translation; r1 remains READY; ends in handoff"
+  ],
+  "scope": "Evaluation overview qpos rendering; original 10Hz own RGB for saved failure tail, calibrated qpos own rendering elsewhere. No physics/controller rerun or inferred motion frames."
+}

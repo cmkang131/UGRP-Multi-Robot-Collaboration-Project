@@ -1,0 +1,129 @@
+{
+  "seed": 8328015,
+  "raw": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328015-72c0e83d/raw",
+  "pose": [
+    1.1347640148250322,
+    -0.49207872243875106,
+    1.09592747198858
+  ],
+  "local_assigned_end": [
+    0.21475178172056053,
+    -0.010916425075621725,
+    0.023892244543152873
+  ],
+  "errors": [
+    0.00675178172056054,
+    -0.010916425075621725,
+    -0.025762525028988816
+  ],
+  "axis_checks": [
+    {
+      "axis": 0,
+      "error": 0.00675178172056054,
+      "pulse": {
+        "wheels": [
+          0.35,
+          0.35,
+          0.35,
+          0.35
+        ],
+        "duration_s": [
+          0.04,
+          0.04,
+          0.04,
+          0.04
+        ]
+      },
+      "checks": [
+        {
+          "mode": "off",
+          "admitted": false,
+          "blockers": [
+            {
+              "blocked_object": "cyan_1",
+              "min_gap_m": -0.0015380633828172285,
+              "start_gap_m": 0.0019249277869351489,
+              "reason_category": "native_circle_pulse_rejection"
+            }
+          ]
+        },
+        {
+          "mode": "search17_fixed_v1",
+          "admitted": false,
+          "blockers": [
+            {
+              "blocked_object": "cyan_1",
+              "min_gap_m": -0.0006993369832213603,
+              "start_gap_m": 0.0019249277869351489,
+              "reason_category": "native_circle_pulse_rejection"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "axis": 1,
+      "error": -0.010916425075621725,
+      "pulse": {
+        "wheels": [
+          0.35,
+          -0.35,
+          -0.35,
+          0.35
+        ],
+        "duration_s": [
+          0.04,
+          0.04,
+          0.04,
+          0.04
+        ]
+      },
+      "checks": [
+        {
+          "mode": "off",
+          "admitted": true,
+          "blockers": []
+        },
+        {
+          "mode": "search17_fixed_v1",
+          "admitted": true,
+          "blockers": []
+        }
+      ]
+    },
+    {
+      "axis": 2,
+      "error": -0.025762525028988816,
+      "pulse": {
+        "wheels": [
+          0.35,
+          -0.35,
+          0.35,
+          -0.35
+        ],
+        "duration_s": [
+          0.04,
+          0.04,
+          0.04,
+          0.04
+        ]
+      },
+      "checks": [
+        {
+          "mode": "off",
+          "admitted": true,
+          "blockers": []
+        },
+        {
+          "mode": "search17_fixed_v1",
+          "admitted": true,
+          "blockers": []
+        }
+      ]
+    }
+  ],
+  "logged_alignment_axes_blocked_N": 90,
+  "scope": "Own visible measurements/issued history only, GCP offline diagnostic.\n\nNot a full teacher, FreeSpace/reobserver ghost, or physics replay. Test the\noriginal minimum-width scalar axes against the native circle pulse predicate.\n",
+  "source_script_sha256": "82dfe8e0870bbd985aa0a8bc1a99e5dc372402ffca5adb1b7cfa23cd8c5c35d1",
+  "reproduce": "/home/ugrp/ugrp-sim/ops-reviews/beampair9/replay_alignment.py"
+}

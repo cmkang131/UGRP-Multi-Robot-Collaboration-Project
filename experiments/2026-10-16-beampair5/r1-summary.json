@@ -1,0 +1,196 @@
+{
+  "schema": "ugrp.beampair1.round.v1",
+  "source_sha": "1ead2bb999bbb0e9d07c7d707be727f8ad563f93",
+  "raw_root": "/home/ugrp/ugrp-sim/runs/beampair5-r1-1ead2bb9/round",
+  "planned_N": 6,
+  "N": 1,
+  "unstarted_N": 5,
+  "n": 0,
+  "training_rgb": false,
+  "host": "gcp2",
+  "machine_type": "n4-highcpu-64",
+  "incomplete_N": 1,
+  "cap_end_N": 0,
+  "held_world_reads": 0,
+  "invisible_measurements": 0,
+  "missing_rejection_audit_N": 0,
+  "reason_distribution": {
+    "HOST_ERROR": 1,
+    "memory_margin": 637,
+    "current_geometry": 29395
+  },
+  "blocked_object_distribution": {
+    "none:HOST_ERROR": 1,
+    "zone_wall_west": 637,
+    "zone_wall_north": 637,
+    "zone_wall_north:grid:61:64:-12": 1677,
+    "zone_wall_north:grid:62:64:-11": 1872,
+    "zone_wall_north:grid:62:64:-10": 2184,
+    "zone_wall_north:grid:62:64:-9": 2821,
+    "zone_wall_north:grid:62:64:-8": 2821,
+    "zone_wall_north:grid:62:64:-7": 2821,
+    "zone_wall_north:grid:62:64:-6": 2821,
+    "zone_wall_north:grid:62:64:-5": 2639,
+    "zone_wall_north:grid:62:64:-4": 2145,
+    "zone_wall_north:grid:62:65:-3": 1579,
+    "zone_wall_north:grid:61:63:-13": 1079,
+    "zone_wall_north:grid:61:63:-14": 796,
+    "zone_wall_north:grid:62:65:-2": 624,
+    "zone_wall_north:grid:61:63:-15": 417,
+    "zone_wall_north:grid:62:64:-12": 520,
+    "zone_wall_north:grid:62:63:-13": 312,
+    "zone_wall_north:grid:62:63:-14": 216,
+    "zone_wall_north:grid:61:64:-11": 637,
+    "zone_wall_north:grid:61:64:-10": 637,
+    "zone_wall_north:grid:61:63:-16": 140
+  },
+  "runs": [
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair5-r1-1ead2bb9/round/diagnostic/episode-000/raw",
+      "result_path": "/home/ugrp/ugrp-sim/runs/beampair5-r1-1ead2bb9/round/diagnostic/episode-000/raw/result.json.zst",
+      "result_sha256": "808e4d8a54a387f9f3a846358b20fddaefd43251f143cd78995071e78755a2e4",
+      "status": "HOST_ERROR",
+      "legacy_success": false,
+      "cap_end": false,
+      "sim_s": 26.300000000042974,
+      "outcomes": {
+        "r1": null,
+        "r2": null
+      },
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 921,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "max_strict_hold_s": 0.0,
+      "strict_success": false,
+      "visible_eligible": false,
+      "seed": 8318626,
+      "frame_funnel": [
+        {
+          "gate": "any_assigned_probe",
+          "entered": 528,
+          "passed": 371,
+          "rejected": 157
+        },
+        {
+          "gate": "meaningful_region_5_of_15",
+          "entered": 371,
+          "passed": 369,
+          "rejected": 2
+        },
+        {
+          "gate": "measurement_admitted_not_held",
+          "entered": 369,
+          "passed": 369,
+          "rejected": 0
+        }
+      ],
+      "adapter_sha": "1ead2bb999bbb0e9d07c7d707be727f8ad563f93",
+      "dependency_sha": "26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+      "held_object_hidden_v1": true,
+      "hidden_measurement_ticks": 0,
+      "held_world_reads": 0,
+      "probe_burst_ticks": {
+        "r1": 3,
+        "r2": 10
+      },
+      "probe_executed_ticks": {
+        "r1": 3,
+        "r2": 10
+      },
+      "stages": {
+        "both_align": false,
+        "both_ready": false,
+        "both_pick": false,
+        "both_command_complete": false
+      },
+      "event_funnel": [
+        {
+          "gate": "own_ready",
+          "entered": 2,
+          "passed": 1,
+          "rejected": 1
+        },
+        {
+          "gate": "own_pick_after_go_ack",
+          "entered": 1,
+          "passed": 0,
+          "rejected": 1
+        },
+        {
+          "gate": "own_command_complete",
+          "entered": 0,
+          "passed": 0,
+          "rejected": 0
+        }
+      ],
+      "supervisor_stopped": true
+    }
+  ],
+  "analysis_script_sha256": "1d602385e411ca5df0a3ae0679d9ebe323f2e3813871604912763f5c4a923f28",
+  "reproduce": "cd /home/ugrp/ugrp-sim/src/1ead2bb999bbb0e9d07c7d707be727f8ad563f93 && PYTHONPATH=. /home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python /home/ugrp/ugrp-sim/src/1ead2bb999bbb0e9d07c7d707be727f8ad563f93/scripts/analyze_beampair1.py /home/ugrp/ugrp-sim/runs/beampair5-r1-1ead2bb9/round --out /home/ugrp/ugrp-sim/ops-reviews/beampair5/r1-analysis",
+  "wall_layer": {
+    "8318626": {
+      "robots": {
+        "r1": {
+          "active": false,
+          "scan_N": 0,
+          "ray_N": 0,
+          "miss_cell_updates": 0,
+          "cleared_cell_updates": 0,
+          "cleared_by_object": {},
+          "last": {
+            "t": 28.10000000004316,
+            "event": "wall_scan",
+            "ray_N": 0,
+            "miss_cell_N": 0,
+            "hit_cell_N": 0,
+            "cleared_cell_N": 0,
+            "cleared_by_object": {},
+            "occupied_cell_N": 938,
+            "active": false,
+            "reason_category": "observed_hit_miss_update",
+            "blocked_object": "wall_layer",
+            "min_gap_m": null,
+            "gap_scope": "sensor update; no clearance decision"
+          }
+        },
+        "r2": {
+          "active": true,
+          "scan_N": 30,
+          "ray_N": 79109,
+          "miss_cell_updates": 30876,
+          "cleared_cell_updates": 3,
+          "cleared_by_object": {
+            "zone_wall_north": 3
+          },
+          "last": {
+            "t": 28.10000000004316,
+            "event": "wall_scan",
+            "ray_N": 2640,
+            "miss_cell_N": 1014,
+            "hit_cell_N": 50,
+            "cleared_cell_N": 0,
+            "cleared_by_object": {},
+            "occupied_cell_N": 2421,
+            "active": true,
+            "reason_category": "observed_hit_miss_update",
+            "blocked_object": "wall_layer",
+            "min_gap_m": null,
+            "gap_scope": "sensor update; no clearance decision"
+          }
+        }
+      },
+      "visible_ray_N": 79109,
+      "held_ray_N": 0
+    }
+  },
+  "HOST_ERROR_N": 1,
+  "round": "r1",
+  "cohort_scope": "fresh beampair5, no previous versions/hosts pooled",
+  "operational_end_reason": "supervisor SIGINT during planning; pinned candidate-finally recorder masked it with KeyError(reason); raw HOST_ERROR retained"
+}

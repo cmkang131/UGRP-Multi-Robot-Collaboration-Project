@@ -1,0 +1,1420 @@
+{
+  "status": "READY",
+  "source_batch": "/home/ugrp/ugrp-sim/ops-reviews/beampair8/record200-72c0e83d",
+  "N": 200,
+  "n": 185,
+  "unstarted_N": 0,
+  "heldout_seeds": [
+    8329000,
+    8329001,
+    8329002,
+    8329003,
+    8329004,
+    8329005,
+    8329006,
+    8329007,
+    8329008,
+    8329009,
+    8329010,
+    8329011,
+    8329012,
+    8329013,
+    8329014,
+    8329015,
+    8329016,
+    8329017,
+    8329018,
+    8329019
+  ],
+  "heldout_recorded_N": 0,
+  "scope": "teacher recorded data only; no ACT training/student success",
+  "frames": 139176,
+  "local_rows": 66931,
+  "visibility": {
+    "all_N": 139176,
+    "all_visible": 90412,
+    "local_N": 66931,
+    "local_visible": 43981,
+    "all_ratio": 0.6496234983043053,
+    "local_ratio": 0.6571095605922517
+  },
+  "visibility_definition": "evaluation-only assigned band with >=5 visible probes; existing gate threshold, never used as a dataset filter",
+  "period_s": 0.1,
+  "original_image_size": [
+    640,
+    480
+  ],
+  "teacher_recordings": 370,
+  "dataset": {
+    "path": "/home/ugrp/ugrp-sim/ops-reviews/beampair8/dataset-v1/dataset.tar.zst",
+    "manifest_sha256": "87a1b09461a6816e5fbd3cf4a3963959e2ac5482c842509cdd76a38f5c412fb9",
+    "actor_episodes": 370,
+    "rows": 66931,
+    "load_verified": true,
+    "normalization": "fresh training seeds only; heldout20 absent",
+    "tensor_keys": [
+      "action",
+      "action_is_pad",
+      "observation.images.own_history",
+      "observation.state"
+    ],
+    "archive": {
+      "path": "/home/ugrp/ugrp-sim/ops-reviews/beampair8/dataset-v1/dataset.tar.zst",
+      "sha256": "739a9faeaf35cd0cf3d8c73b05bdab76ccb8866b1b55dc81d1bb9e9e05fae251",
+      "bytes": 3605985004,
+      "verified_members": 1483,
+      "every_decoded_file_sha256_verified": true,
+      "restore": "tar --zstd -xf /home/ugrp/ugrp-sim/ops-reviews/beampair8/dataset-v1/dataset.tar.zst -C NEW_EMPTY_DIRECTORY",
+      "manifest_sha256": "87a1b09461a6816e5fbd3cf4a3963959e2ac5482c842509cdd76a38f5c412fb9"
+    }
+  },
+  "footprint_unique_inode_bytes": 6813405826,
+  "logical_bytes": 8967756035,
+  "file_count": 316434,
+  "file_sha_manifest": {
+    "path": "/home/ugrp/ugrp-sim/ops-reviews/beampair8/dataset-v1/SHA256.jsonl.zst",
+    "sha256": "9fbbd3052f3ca47737b8df8b2a11aa2fdf0a240d6b257ae96fefd8628dd3e063",
+    "decoded_sha256": "b1c7936c3ed22a86fc66915b3379eb12b770a9980fe6dc70e444d757423fa547"
+  },
+  "disk_free_bytes": 301349888000,
+  "runs": [
+    {
+      "seed": 8328003,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328003-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328012,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328012-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328000,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328000-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328015,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328015-72c0e83d",
+      "category": "teacher_failure",
+      "admitted": false
+    },
+    {
+      "seed": 8328013,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328013-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328005,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328005-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328007,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328007-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328004,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328004-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328002,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328002-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328006,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328006-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328001,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328001-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328014,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328014-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328010,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328010-72c0e83d",
+      "category": "teacher_failure",
+      "admitted": false
+    },
+    {
+      "seed": 8328008,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328008-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328011,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328011-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328009,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328009-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328030,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328030-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328031,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328031-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328028,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328028-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328020,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328020-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328016,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328016-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328024,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328024-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328027,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328027-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328018,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328018-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328017,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328017-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328025,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328025-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328026,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328026-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328029,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328029-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328019,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328019-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328021,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328021-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328022,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328022-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328023,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328023-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328032,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328032-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328033,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328033-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328043,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328043-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328039,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328039-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328040,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328040-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328037,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328037-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328041,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328041-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328034,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328034-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328042,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328042-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328036,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328036-72c0e83d",
+      "category": "teacher_failure",
+      "admitted": false
+    },
+    {
+      "seed": 8328045,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328045-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328044,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328044-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328047,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328047-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328035,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328035-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328046,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328046-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328038,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328038-72c0e83d",
+      "category": "teacher_failure",
+      "admitted": false
+    },
+    {
+      "seed": 8328049,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328049-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328055,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328055-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328048,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328048-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328050,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328050-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328053,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328053-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328056,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328056-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328051,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328051-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328058,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328058-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328054,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328054-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328057,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328057-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328052,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328052-72c0e83d",
+      "category": "cap_end",
+      "admitted": false
+    },
+    {
+      "seed": 8328059,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328059-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328062,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328062-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328064,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328064-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328070,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328070-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328067,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328067-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328060,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328060-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328061,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328061-72c0e83d",
+      "category": "teacher_failure",
+      "admitted": false
+    },
+    {
+      "seed": 8328066,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328066-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328065,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328065-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328069,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328069-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328071,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328071-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328063,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328063-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328072,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328072-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328079,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328079-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328080,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328080-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328076,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328076-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328081,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328081-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328073,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328073-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328083,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328083-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328077,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328077-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328074,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328074-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328078,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328078-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328075,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328075-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328084,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328084-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328086,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328086-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328085,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328085-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328082,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328082-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328087,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328087-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328088,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328088-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328090,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328090-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328095,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328095-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328093,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328093-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328092,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328092-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328068,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328068-72c0e83d",
+      "category": "teacher_failure",
+      "admitted": false
+    },
+    {
+      "seed": 8328089,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328089-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328094,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328094-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328098,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328098-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328099,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328099-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328101,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328101-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328096,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328096-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328097,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328097-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328091,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328091-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328100,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328100-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328104,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328104-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328110,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328110-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328106,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328106-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328103,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328103-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328107,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328107-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328109,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328109-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328102,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328102-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328108,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328108-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328105,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328105-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328113,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328113-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328119,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328119-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328116,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328116-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328114,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328114-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328111,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328111-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328117,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328117-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328123,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328123-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328120,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328120-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328115,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328115-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328118,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328118-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328112,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328112-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328121,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328121-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328124,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328124-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328125,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328125-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328126,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328126-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328127,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328127-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328132,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328132-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328130,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328130-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328129,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328129-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328135,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328135-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328133,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328133-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328134,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328134-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328122,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328122-72c0e83d",
+      "category": "cap_end",
+      "admitted": false
+    },
+    {
+      "seed": 8328136,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328136-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328137,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328137-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328138,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328138-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328131,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328131-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328139,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328139-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328128,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328128-72c0e83d",
+      "category": "cap_end",
+      "admitted": false
+    },
+    {
+      "seed": 8328140,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328140-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328142,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328142-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328150,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328150-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328141,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328141-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328144,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328144-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328143,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328143-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328147,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328147-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328148,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328148-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328146,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328146-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328145,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328145-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328159,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328159-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328151,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328151-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328153,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328153-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328149,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328149-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328156,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328156-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328160,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328160-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328163,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328163-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328154,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328154-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328168,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328168-72c0e83d",
+      "category": "teacher_failure",
+      "admitted": false
+    },
+    {
+      "seed": 8328158,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328158-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328157,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328157-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328161,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328161-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328162,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328162-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328166,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328166-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328155,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328155-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328165,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328165-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328167,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328167-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328164,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328164-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328170,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328170-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328171,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328171-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328169,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328169-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328176,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328176-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328175,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328175-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328173,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328173-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328174,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328174-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328172,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328172-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328177,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328177-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328179,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328179-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328178,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328178-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328180,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328180-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328181,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328181-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328190,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328190-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328185,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328185-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328182,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328182-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328186,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328186-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328191,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328191-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328184,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328184-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328189,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328189-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328192,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328192-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328193,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328193-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328187,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328187-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328197,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328197-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328196,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328196-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328194,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328194-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328183,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328183-72c0e83d",
+      "category": "teacher_failure",
+      "admitted": false
+    },
+    {
+      "seed": 8328199,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328199-72c0e83d",
+      "category": "success",
+      "admitted": true
+    },
+    {
+      "seed": 8328195,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328195-72c0e83d",
+      "category": "cap_end",
+      "admitted": false
+    },
+    {
+      "seed": 8328152,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328152-72c0e83d",
+      "category": "teacher_failure",
+      "admitted": false
+    },
+    {
+      "seed": 8328198,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328198-72c0e83d",
+      "category": "cap_end",
+      "admitted": false
+    },
+    {
+      "seed": 8328188,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328188-72c0e83d",
+      "category": "cap_end",
+      "admitted": false
+    }
+  ],
+  "failures": [
+    {
+      "seed": 8328015,
+      "episode": 15,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328015-72c0e83d",
+      "exit": 0,
+      "category": "teacher_failure",
+      "admitted": false,
+      "sim_s": 30.300000000062074
+    },
+    {
+      "seed": 8328010,
+      "episode": 10,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328010-72c0e83d",
+      "exit": 0,
+      "category": "teacher_failure",
+      "admitted": false,
+      "sim_s": 39.500000000106006
+    },
+    {
+      "seed": 8328036,
+      "episode": 36,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328036-72c0e83d",
+      "exit": 0,
+      "category": "teacher_failure",
+      "admitted": false,
+      "sim_s": 56.80000000018861
+    },
+    {
+      "seed": 8328038,
+      "episode": 38,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328038-72c0e83d",
+      "exit": 0,
+      "category": "teacher_failure",
+      "admitted": false,
+      "sim_s": 54.200000000176196
+    },
+    {
+      "seed": 8328052,
+      "episode": 52,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328052-72c0e83d",
+      "exit": 0,
+      "category": "cap_end",
+      "admitted": false,
+      "sim_s": 60.00000000020389
+    },
+    {
+      "seed": 8328061,
+      "episode": 61,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328061-72c0e83d",
+      "exit": 0,
+      "category": "teacher_failure",
+      "admitted": false,
+      "sim_s": 45.80000000013609
+    },
+    {
+      "seed": 8328068,
+      "episode": 68,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328068-72c0e83d",
+      "exit": 0,
+      "category": "teacher_failure",
+      "admitted": false,
+      "sim_s": 10.399999999994057
+    },
+    {
+      "seed": 8328122,
+      "episode": 122,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328122-72c0e83d",
+      "exit": 0,
+      "category": "cap_end",
+      "admitted": false,
+      "sim_s": 60.00000000020389
+    },
+    {
+      "seed": 8328128,
+      "episode": 128,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328128-72c0e83d",
+      "exit": 0,
+      "category": "cap_end",
+      "admitted": false,
+      "sim_s": 60.00000000020389
+    },
+    {
+      "seed": 8328168,
+      "episode": 168,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328168-72c0e83d",
+      "exit": 0,
+      "category": "teacher_failure",
+      "admitted": false,
+      "sim_s": 11.29999999999196
+    },
+    {
+      "seed": 8328183,
+      "episode": 183,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328183-72c0e83d",
+      "exit": 0,
+      "category": "teacher_failure",
+      "admitted": false,
+      "sim_s": 9.499999999996154
+    },
+    {
+      "seed": 8328195,
+      "episode": 195,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328195-72c0e83d",
+      "exit": 0,
+      "category": "cap_end",
+      "admitted": false,
+      "sim_s": 60.00000000020389
+    },
+    {
+      "seed": 8328152,
+      "episode": 152,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328152-72c0e83d",
+      "exit": 0,
+      "category": "teacher_failure",
+      "admitted": false,
+      "sim_s": 8.599999999998252
+    },
+    {
+      "seed": 8328198,
+      "episode": 198,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328198-72c0e83d",
+      "exit": 0,
+      "category": "cap_end",
+      "admitted": false,
+      "sim_s": 60.00000000020389
+    },
+    {
+      "seed": 8328188,
+      "episode": 188,
+      "path": "/home/ugrp/ugrp-sim/runs/beampair8-record-8328188-72c0e83d",
+      "exit": 0,
+      "category": "cap_end",
+      "admitted": false,
+      "sim_s": 22.000000000022442
+    }
+  ],
+  "detailed_audit": "/home/ugrp/ugrp-sim/ops-reviews/beampair8/dataset-v1/data-audit.json"
+}

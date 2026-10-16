@@ -1,0 +1,113 @@
+{
+  "task": "beampair9",
+  "status": "NOT_READY",
+  "execution_sha": "67d65d8e053179b60f6b9e8fd33f791c4e44657a",
+  "base_sha": "65da04efe4d9d51d013cb2fbb755bc52364b8589",
+  "dependency_sha": "26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+  "host": "gcp2",
+  "project": "ugrp-sim-b-1014",
+  "backend": "C MuJoCo3.12 CPU",
+  "rounds_used": 3,
+  "round3": {
+    "planned_N": 20,
+    "N": 20,
+    "n": 5,
+    "teacher_failure_N": 10,
+    "cap_end_N": 5,
+    "HOST_ERROR_N": 0,
+    "unstarted_N": 0,
+    "known_failure_recovered_N": 0,
+    "known_failure_N": 15,
+    "known_success_N": 5,
+    "known_success_planned_N": 5,
+    "scope": "adversarial run-first regression cohort; not a population success-rate estimate"
+  },
+  "gate40": {
+    "submitted_N": 0,
+    "reason": "run-first failures persist at maximum3 rounds; not eligible"
+  },
+  "input_audit": {
+    "invisible_measurements": 0,
+    "held_world_reads": 0
+  },
+  "first30": {
+    "exact_first30_N": 12,
+    "exact_first30_median": 4.079763055708401,
+    "short_completed_N": 4,
+    "short_total_ratios": [
+      5.043740305331787,
+      4.653691499445456,
+      4.605541299735108,
+      5.164665754933945
+    ],
+    "admission_median": 4.252421831158016,
+    "short_scope": "complete finite runs below30SIMs use total wall/SIM; no interpolated30s result"
+  },
+  "saved_teacher_command_rows": 16512,
+  "verified_manifest_files": 5069,
+  "model_calls": 0,
+  "model_cost_usd": 0,
+  "cloud_cost": "not separately metered on shared host",
+  "training_rgb": false,
+  "student_execution": false,
+  "recording_decision": "hold: new teacher not qualified; preserve original185; any later qualified changed teacher data must have a separate version",
+  "original185_archive": {
+    "path": "/home/ugrp/ugrp-sim/ops-reviews/beampair8/dataset-v1/dataset.tar.zst",
+    "sha256": "739a9faeaf35cd0cf3d8c73b05bdab76ccb8866b1b55dc81d1bb9e9e05fae251",
+    "sha256_matches_original": true,
+    "modified": false
+  },
+  "toggles": {
+    "box_geometry": "beampair_box_geometry_v1",
+    "planning_boundary": "beampair_geometry_work_v1",
+    "inflation": "search25_soft_v1",
+    "setup_candidate_only": "beampair_gate_cargo_v3",
+    "defaults": "off"
+  },
+  "scene": "walls_floor_contrast_v5_indigo110_s80",
+  "cohort_pooling": false,
+  "remaining": [
+    "original2 scenes have0/91 certified cargo-clear stances",
+    "current circle alignment pulse guard differs from oriented body planning;8328015 cyan_1",
+    "peer proximity/visibility loss and unstable joint hold remain",
+    "not all inherited motion rejections record named blockers; offline diagnostic is scoped"
+  ],
+  "evidence": {
+    "recount": "round3/summary.json",
+    "rejection_table": "round3/rejection_table.json",
+    "relationships": "robot-relations.json",
+    "original_failures": "failure-table.md",
+    "new_gate_not_run": true
+  },
+  "limitations": [
+    "No new40 gate, training/recording, student/E2E, or physical robot success",
+    "Full raw evidence and original data archive stay on gcp2; no complete separate backup"
+  ],
+  "pr": 542,
+  "pr_url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/542",
+  "pr_status": "DRAFT_NOT_READY",
+  "merged": false,
+  "post_parent_merge_controller_files_equal": {
+    "scripts/run_beampair1.py": true,
+    "harness/beampair_geometry.py": true,
+    "harness/beampair_peer_yield.py": true,
+    "harness/beampair_approach.py": true,
+    "harness/beampair_wall_layer.py": true,
+    "harness/beampair_teacher.py": true,
+    "harness/grasp_act_peer_rendezvous.py": true,
+    "harness/failure_rgb_tail.py": true
+  },
+  "cleanup": {
+    "owned_running_N": 0,
+    "own_lease_removed": true,
+    "VM_stopped": false,
+    "remaining_task": "reloc19",
+    "evidence": "lease-released.json"
+  },
+  "tests": {
+    "nonphysics_unique_tests": 26,
+    "latest_related_run_passed": 22,
+    "additional_setup_tests_passed": 4,
+    "Mac_MuJoCo_physics_render_GUI": false
+  }
+}

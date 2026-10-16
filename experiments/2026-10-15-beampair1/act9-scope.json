@@ -1,0 +1,43 @@
+{
+  "source_sha": "ec0bd6284d82b2302187f9c2722c478b71a3731b",
+  "teacher_dependency_sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+  "profile": "solo_visible_only_v1 / recovery_perturb_v1",
+  "planned_N": 40,
+  "completed_N": 7,
+  "success_n": 6,
+  "supervisor_stopped_N": 10,
+  "unsubmitted_N": 23,
+  "verdict": "STOPPED_CONFIRMED_DEFECT",
+  "failure_diagnosis": {
+    "at": "2026-10-15 16:26:04 KST",
+    "confirmed_defect": true,
+    "reason": "8316902 green: 교란t4.0–4.8s 뒤 t4.5s 대상상실, 원장t5.0이후 접근569틱 가시성0/569·바퀴발행0/569, 바닥만 향하는 정지 시선탐색(PWM3 500–820/PWM6 1140–2280)이 재획득 못함→60.6SIM초 phase_timeout. ACT9는 교란 중 대상기억을 지우고 고정교사 _seek는 미관측 시 정지탐색만 수행; 이 장면의 재탐색 범위 부족이 제어 실패. 접근0–60초 20고유 own/top프레임 직접확인; 고정top은 음수좌표 actor를 덮지 못해 단독증거로 안 씀.",
+    "source_sha": "ec0bd6284d82b2302187f9c2722c478b71a3731b",
+    "teacher_dependency_sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+    "code_evidence": [
+      "harness/grasp_act_dart.py:134-150 (ec0bd628)",
+      "sim/grasp_act_solo_teacher.py:312-317 and :377-388 (teacher6f057f7e)"
+    ],
+    "command_summary": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act9-ec0bd628-ops/failure-8316902-command-summary.json",
+    "fix_scope": "coordinator/new SHA/new queue; operator did not modify teacher",
+    "reviewed_elapsed_sim_s": [
+      0,
+      9,
+      12,
+      18,
+      24,
+      27,
+      36,
+      45,
+      48,
+      60
+    ],
+    "relation_check": "Single controlled teacher. Other robots have static far spawns; no dynamic peer commands. Fixed top cannot cover negative x/y actor; does not by itself establish peer clearance.",
+    "supporting_stopped_cases": {
+      "8316907": "yellow: floor-only own view9–46s",
+      "8316910": "green: floor-only own view8–39s",
+      "8316911": "yellow: floor/wall only6–29s; result incomplete, no final audit"
+    },
+    "partial_scope": "These three corroborate failed reacquisition before supervisor interruption, not additional completed physical failures."
+  }
+}
