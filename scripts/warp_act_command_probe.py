@@ -16,6 +16,12 @@ def main():
     if not a.enabled or sys.platform!='linux':p.error('default OFF, Linux gcp2 only')
     sys.path.insert(0,str(a.api_source/'scripts'))
     from warp_act_rpc import Client
+    sys.path.insert(0,str(a.teacher_source))
+    from harness.grasp_act_contract import command as validate_command, SERVOS
+    # Exact frozen command() range:0 or absolute fraction0.31..0.40.
+    # 0.40 is the allowed endpoint (40%), not a new controller threshold.
+    drive=.40
+    validate_command(dict(t=0.,wheels=[drive]*4,duration_s=[.1]*4,pwm={str(s):1500 for s in SERVOS}))
     import numpy as np
     import mujoco
     plans=json.loads(a.plans.read_text())['episodes'][:2]
@@ -30,15 +36,16 @@ def main():
         wheels=[i for i in range(model.nu) if model.actuator(i).name.startswith('r1__wheel_')]
         if len(wheels)!=4:raise RuntimeError('expected exact four-wheel command interface')
         joint=int(model.body_jntadr[model.body('r1__robot').id]);pos=int(model.jnt_qposadr[joint])
+        if model.jnt_type[joint]!=mujoco.mjtJoint.mjJNT_FREE:raise RuntimeError('expected free-base position metadata')
         with np.load(a.out/'owner/state-latest.npz') as z:before=z['qpos'].copy()
-        # Existing0.1SIM RPC quantum and normalized command endpoint1.0.
+        # Existing0.1SIM RPC quantum and allowed command endpoint0.40.
         # Fixed two transactions, same count as the ACT smoke; no feedback
         # chooses commands and no new physical success tolerance is introduced.
         for _ in range(2):
             actions=[]
             for i in range(2):
                 obs,_=c.read_actor(i);command=deepcopy(obs['issued'][-1]);command['t']=obs['t']
-                command.update(wheels=[1. if i==0 else 0.]*4,duration_s=[.1 if i==0 else 0.]*4)
+                command.update(wheels=[drive if i==0 else 0.]*4,duration_s=[.1 if i==0 else 0.]*4)
                 actions.append(dict(command=command,done=False))
             c.step(actions)
         with np.load(a.out/'owner/state-latest.npz') as z:after=z['qpos'].copy();ctrl=z['ctrl'][:,wheels].copy()
