@@ -55,10 +55,22 @@ def main():
   physical_failure_N=0,physical_failure_scope='none classified; incomplete runs are not physical failures',
   gate_not_submitted=dict(beampair=40,release_A=40,release_B=40))
  write(out/'final-rejection_table.json',table)
+ verification=dict(manifests=0,declared_files=0,matched=0,missing=[],mismatched=[])
+ for manifest in [*root.rglob('manifest.json'),*root.rglob('manifest.json.zst'),*root.glob('*/artifact-sha256.json')]:
+  declarations=read(manifest)
+  if not isinstance(declarations,dict):continue
+  verification['manifests']+=1
+  for name,entry in declarations.items():
+   if not isinstance(entry,dict) or 'sha256' not in entry:continue
+   verification['declared_files']+=1;path=manifest.parent/name
+   if not path.exists():verification['missing'].append(str(path));continue
+   if hashlib.sha256(path.read_bytes()).hexdigest()!=entry['sha256']:verification['mismatched'].append(str(path))
+   else:verification['matched']+=1
+ write(out/'integrity-verification.json',verification)
  write(out/'raw-sha256.json',files);write(out/'raw-input-audits.json',audits)
  report=dict(schema='ugrp.warp4.status.v1',status='NOT_READY',checked_UTC=datetime.datetime.now(datetime.timezone.utc).isoformat(),
   final_round=final,all_attempts=all_attempts,raw_files=len(files),raw_bytes=sum(x['bytes'] for x in files.values()),
-  raw_manifest=str(out/'raw-sha256.json'),raw_manifest_sha256=hashlib.sha256((out/'raw-sha256.json').read_bytes()).hexdigest(),
+  integrity=verification,raw_manifest=str(out/'raw-sha256.json'),raw_manifest_sha256=hashlib.sha256((out/'raw-sha256.json').read_bytes()).hexdigest(),
   rejection_table=str(out/'final-rejection_table.json'),completed_final_world_N=0,HOST_ERROR_final_world_N=12,
   qualified_beampair='not submitted /40',qualified_release_A='not submitted /40',qualified_release_B='not submitted /40',
   throughput=dict(N16=None,N64=None,N256=None,CPU16=None,scope='not admitted; no successful full scenario or completed steady-state comparison'),
