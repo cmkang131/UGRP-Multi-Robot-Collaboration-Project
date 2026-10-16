@@ -1,0 +1,19 @@
+{
+  "schema": "ugrp.act9.perturb.v1",
+  "mode": "recovery_perturb_v1",
+  "default": "off",
+  "probability_per_eligible_tick": 0.1,
+  "minimum_eligible_ticks": 12,
+  "burst_ticks": 9,
+  "max_injections_per_run": 1,
+  "wheel_duty": 0.35,
+  "pulse_s": 0.1,
+  "phases": [
+    "approach",
+    "align"
+  ],
+  "held_noise": false,
+  "arm_noise": false,
+  "perturbation_targets_excluded": true,
+  "scope": "fixed command-only yaw probe, not optimized DART; physical coverage unmeasured"
+}

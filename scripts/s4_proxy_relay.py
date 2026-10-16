@@ -41,8 +41,9 @@ def main():
     p.add_argument('--multi-key-v1', action='store_true', help='multi_key_v1; default off, Mac keys only')
     p.add_argument('--upstream', choices=('default', 'openrouter_v1'), default='default',
                    help='openrouter_v1: paid OpenRouter Gemma 4 31B (Keychain ugrp-openrouter); default off')
-    p.add_argument('--openrouter-providers', default='DeepInfra',
-                   help='comma-separated pinned provider order (recorded in identity.json)')
+    from scripts.openrouter_upstream import PROVIDER_ORDER
+    p.add_argument('--openrouter-providers', default=','.join(PROVIDER_ORDER),
+                   help='CoreWeave fp4 by default; DeepInfra fp4 for explicit replay/comparison only')
     p.add_argument('--driver-profile',choices=('main_study_gemini_v1','study_gemma4_31b_v1'),
                    default='main_study_gemini_v1')
     p.add_argument('--decider',choices=('off','jev_v1'),default='off')
@@ -72,7 +73,7 @@ def main():
     if openrouter:
         from scripts import openrouter_upstream as orp
         orp_cfg = orp.config(tuple(x.strip() for x in a.openrouter_providers.split(',') if x.strip()))
-        fallback = orp.OpenRouter(a.gemma_state/'openrouter', provider_order=orp_cfg['provider_order'])
+        fallback = orp.OpenRouter(a.gemma_state/'openrouter'/orp_cfg['profile'], provider_order=orp_cfg['provider_order'])
     elif a.gemma_fallback or single:
         from scripts.gemma_fallback_proxy import Gemma
         registered = profile['model']['model'] if single else load_registry()['driver_profiles']['dev_gemini_gemma_fallback_v1']['fallback']['model_id']
@@ -99,7 +100,7 @@ def main():
     if openrouter:
         receipt.update(driver_profile=a.driver_profile, single_model=True, fallback_enabled=False,
             upstream='openrouter_v1', openrouter_v1=dict(orp_cfg, source_sha256=hashlib.sha256(fb_source.read_bytes()).hexdigest()),
-            cohort='openrouter_v1; separate from AI Studio runs')
+            cohort=orp_cfg['profile'] + '; separate from other providers/quantizations and AI Studio runs')
     elif fallback:
         from scripts.gemma_fallback_proxy import PROFILE
         receipt.update(driver_profile=PROFILE, dev_only=True, gemma_fallback=dict(

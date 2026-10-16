@@ -1,0 +1,192 @@
+{
+  "schema": "ugrp.warp2.rejection_table.v1",
+  "updated_utc": "2026-10-15T19:49:52.615908+00:00",
+  "stage": "B_STOPPED_NOT_READY",
+  "funnel": [
+    {
+      "population": "source_files",
+      "stage": "git_show_exact_sha",
+      "input_N": 57,
+      "passed_cumulative_N": 57,
+      "rejected_N": 0,
+      "raw": "source-manifest.json",
+      "reproduce": "git show <source-manifest.files.sha>:<source-manifest.files.path>"
+    },
+    {
+      "population": "source_files",
+      "stage": "AST_parse",
+      "input_N": 57,
+      "passed_cumulative_N": 57,
+      "rejected_N": 0,
+      "raw": "access-inventory.csv",
+      "reproduce": "python3 ast.parse on the exact git-show source bytes"
+    },
+    {
+      "population": "flows",
+      "stage": "manual_boundary_classification",
+      "input_N": 5,
+      "passed_cumulative_N": 5,
+      "rejected_N": 0,
+      "raw": "inventory.md",
+      "reproduce": "filter access-inventory.csv by flow and inspect functions at the pinned SHA"
+    },
+    {
+      "population": "C_full_mixed6_N16",
+      "stage": "original_candidate_frame_event_funnels",
+      "raw": "runtime/cpu-mixed6-funnels.json",
+      "reproduce": "see raw.reproduce",
+      "status": "complete"
+    },
+    {
+      "population": "C_full_seed8318631_N16",
+      "stage": "original_candidate_frame_event_funnels",
+      "raw": "runtime/cpu-seed5-funnels.json",
+      "reproduce": "see raw.reproduce",
+      "status": "complete"
+    },
+    {
+      "population": "GPU_R1_supervisor_stop",
+      "stage": "original_candidate_frame_event_funnels",
+      "raw": "runtime/gpu-r1-stop-funnels.json",
+      "reproduce": "see raw.reproduce",
+      "status": "complete"
+    },
+    {
+      "population": "GPU_R2_success_N1",
+      "stage": "original_candidate_frame_event_funnels",
+      "raw": "runtime/gpu-r2-n1-funnels.json",
+      "reproduce": "see raw.reproduce",
+      "status": "complete"
+    },
+    {
+      "population": "GPU_R3_prefix_N16",
+      "stage": "original_candidate_frame_event_funnels",
+      "raw": "runtime/gpu-prefix-n16-funnels.json",
+      "reproduce": "see raw.reproduce",
+      "status": "complete"
+    },
+    {
+      "population": "GPU_R3_prefix_N64",
+      "stage": "original_candidate_frame_event_funnels",
+      "raw": "runtime/gpu-prefix-n64-interrupted-funnels.json",
+      "reproduce": "see raw.reproduce",
+      "status": "supervisor_stop; original per-world HOST_ERROR64 rows are one coordinator interruption, not 64 physical failures"
+    }
+  ],
+  "rejections": [
+    {
+      "reason_category": "dependency_not_yet_integrated",
+      "blocked_object": "warp1_committed_backend_API",
+      "min_gap_m": null,
+      "gap_scope": "software dependency; geometric gap not applicable",
+      "count": 1,
+      "status": "resolved using committed common backend; original A-stage dependency event retained"
+    },
+    {
+      "reason_category": "unbatchable_model_array",
+      "blocked_object": "dof_length",
+      "min_gap_m": null,
+      "gap_scope": "software model field; not a geometric gap",
+      "count": 1,
+      "raw": "rejection_table-before-r3.json",
+      "status": "no field overwritten; route six exact models through shared transport"
+    },
+    {
+      "reason_category": "supervisor_stop",
+      "blocked_object": "none:model_batch_review",
+      "min_gap_m": null,
+      "gap_scope": "software supervision; physical failure not claimed",
+      "count": 1,
+      "raw": "runtime/gpu-r1-stop-funnels.json",
+      "status": "raw HOST_ERROR KeyboardInterrupt retained"
+    },
+    {
+      "reason_category": "single_shared_model_not_batchable",
+      "blocked_object": "dof_length",
+      "min_gap_m": null,
+      "gap_scope": "upstream per-world model field unsupported, not geometry",
+      "count": 1,
+      "status": "stop beam GPU work; NOT_READY",
+      "raw": "runtime/r3-supervisor-stop.json"
+    }
+  ],
+  "known_seed_results": [
+    {
+      "backend": "C",
+      "N": 16,
+      "unique_seeds": 6,
+      "physical_success": 16
+    },
+    {
+      "backend": "mjwarp_batch_v1",
+      "N": 1,
+      "unique_seeds": 1,
+      "seed": 8318631,
+      "physical_success": 1
+    }
+  ],
+  "throughput_results": "runtime/gpu-reconciliation.json; incomplete jobs explicitly running",
+  "queue_status": "HOLD_SCENE",
+  "queue_approved": false,
+  "queue_submitted": false,
+  "rejection_distributions": [
+    {
+      "population": "C_full_mixed6_N16",
+      "reason_distribution": {
+        "peer_goal": 430,
+        "cargo_goal": 4
+      },
+      "scope": "rejected candidate alternatives within successful runs, not 434 failed runs",
+      "raw": "runtime/cpu-mixed6-funnels.json"
+    },
+    {
+      "population": "GPU_R2_success_N1",
+      "reason_distribution": {},
+      "raw": "runtime/gpu-r2-n1-funnels.json"
+    }
+  ],
+  "cap_end_populations": [
+    {
+      "population": "C_prefix_1SIM",
+      "N": 16,
+      "status": "planned_fixed_work_cap",
+      "raw": "runtime/cpu-prefix1-analysis.json"
+    },
+    {
+      "population": "GPU_prefix_1SIM_N16",
+      "N": 16,
+      "status": "planned_fixed_work_cap",
+      "raw": "runtime/gpu-prefix-n16-funnels.json"
+    },
+    {
+      "population": "C_prefix_1SIM_N64",
+      "N": 64,
+      "status": "planned_fixed_work_cap",
+      "raw": "runtime/cpu-prefix1-n64-analysis.json"
+    },
+    {
+      "population": "C_prefix_1SIM_N256",
+      "N": 256,
+      "status": "planned_fixed_work_cap",
+      "raw": "runtime/cpu-prefix1-n256-analysis.json"
+    }
+  ],
+  "verdict": "NOT_READY",
+  "unfinished": [
+    {
+      "population": "GPU_N64",
+      "status": "supervisor_stop",
+      "completed_worlds": 0,
+      "started_worlds": 64
+    },
+    {
+      "population": "GPU_N256",
+      "status": "unstarted"
+    },
+    {
+      "population": "GPU_mixed6_N16",
+      "status": "unstarted"
+    }
+  ],
+  "cost_throughput_raw": "runtime/gpu-reconciliation.json"
+}

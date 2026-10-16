@@ -55,6 +55,8 @@ factory 계약은 `create_controller(*, robot_id, seed, params) -> object`다. �
 
 입력은 자기 보정 RGB JPEG(base64 `image`), 공용 top JPEG(`top_rgb.image`), 자기 발행 상태(`actuator_state`), 현재 에피소드의 자기 `command_history`, 에피소드/SIM 시간이다. 장면 좌표·측정 관절·접촉·성공 판정·다른 로봇의 명령은 전달하지 않는다. 관측 dict는 복사본이다. 공장 함수에도 전체 환경 설정이나 세계 객체를 전달하지 않는다. 자기 명령은 실제 이동 성공이나 측정 관절을 뜻하지 않는다.
 
+> 현행 규칙(2026-10-03 [#366](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/366))상 공용 top 카메라는 평가·검토 영상 전용이며 제어·지도 만들기·위치 추정 입력으로 금지한다. 이 기존 경로는 아직 TOP 사용(미이행)이다. `top_rgb.image` 필드와 제어기 전달 구현은 그대로이며 현행 입력 제한을 자동으로 보장하지 않는다.
+
 제어기가 있으면 RGB 렌더링을 자동 활성화하고 CLI는 매 호출의 실제 입력·응답·오류를 `controller-decisions.jsonl`에 보존한다. 긴 실행은 RGB 로그가 커질 수 있다. 외부 API를 호출하는 제어기의 비용·모델 호출 수는 자동 계측하지 않으며 `controller_calls`와 구분한다. Linux headless RGB는 `MUJOCO_GL=osmesa`로 실행할 수 있다.
 
 자동 제어기에 배정한 로봇은 `actions` 스케줄이나 직접 `sim.apply()`로 동시에 조작할 수 없다. 다른 로봇의 스케줄은 함께 사용할 수 있다. 제어기를 해제하려면 새 설정에서 해당 로봇의 `controllers` 항목을 지운다.
