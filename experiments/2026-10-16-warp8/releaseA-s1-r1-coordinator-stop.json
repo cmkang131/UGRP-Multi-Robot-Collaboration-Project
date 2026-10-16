@@ -1,0 +1,60 @@
+{
+  "utc": "2026-10-16T14:20:38.461128+00:00",
+  "status": "SUPERVISOR_STOP",
+  "classification": "not_a_defect_profile_switch",
+  "reason": "coordinator SIGINT for user native contact profile switch; instruction2026-10-16T23:15KST",
+  "original_summary_status": "HOST_ERROR",
+  "error_type": "KeyboardInterrupt",
+  "progress": {
+    "ticks": 83,
+    "active_N": 14,
+    "completed_N": 0,
+    "sim_s": 8.3,
+    "loop_wall_s": 1227.1689248349999,
+    "timing": {
+      "render": 11.491620232000457,
+      "readback_remap_jpeg_kinematics": 5.907313595000858,
+      "command_decode_upload": 0.2608092759996907,
+      "physics": 1181.4310815380004
+    },
+    "world_sim_s": [
+      8.3,
+      8.3,
+      8.3,
+      8.3,
+      8.3,
+      8.3,
+      8.3,
+      8.3,
+      8.3,
+      8.3,
+      8.3,
+      8.3,
+      8.3,
+      8.3
+    ],
+    "aggregate_world_sim_s": 116.20000000000002,
+    "batch_sim_s": 8.3,
+    "per_world_wall_SIM": 10.560834120783129,
+    "task_wall_per_SIM": 10.560834120783129,
+    "batch_wall_SIM": 147.85167769096384
+  },
+  "whole_gate_complete": false,
+  "exact_process_exit_code": null,
+  "exact_process_exit_code_observed": false,
+  "raw_preserved": true,
+  "stale_lease": {
+    "task": "warp8",
+    "pid": 1738,
+    "pids": [
+      1740
+    ],
+    "started_at": "2026-10-16T13:48:34.312315+00:00",
+    "expected_end": "2026-10-16T21:14:36.683000+00:00",
+    "source_sha": "175281c8922453465f8bf32707e22988e78b8812",
+    "stage": "releaseA-s1-r1",
+    "concurrency": 14,
+    "gpu_shared": false
+  },
+  "old_process_identity_absent": true
+}

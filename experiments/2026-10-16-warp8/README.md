@@ -1,3 +1,34 @@
+# warp8c — native contact 새 관문 (빔40 실행 중)
+
+`nocap-ack nocpu-ack nativecontact-ack cap-ack ownership-ack`.
+사용자 2026-10-16 23:1x 결정에 따라 `warp_native_contact_v1`로 빔40 → release A40 → B40을 새로 잰다.
+warpfit PR #562 / `df5a1f86aad420f2fab2c10e3ee77cdb5ec11807`의
+`sim/warp_native_contact.py`를 byte 그대로 가져왔으며 SHA-256은
+`a5c8d370755034b9f9615f66a94b87883327b7d7ecc4e13082eac2c2d4751c6a`다.
+NoSlip0·elliptic·implicitfast·impratio5·Newton/LS80/50을 전 세계에서 검사한다.
+기존 legacy-plane/dense capacity/C3.16 호환은 유지한다. 관련 비물리33PASS.
+
+noslip10 빔R2의40/40은 역사적 별도 결과다. release A-S1은 조정자 SIGINT로
+`SUPERVISOR_STOP / not_a_defect_profile_switch`이며 미완료다. 정확한 프로세스 exit code는
+회수되지 않아 추정하지 않는다. 새 관문과 noslip10·CPU beampair7/release25·다른 호스트 결과는 합산하지 않는다.
+원본은 gcp3에서 보존한다.
+
+gcp3는 상한 없이 시작했고 live scheduling에서 `maxRunDuration`과
+`instanceTerminationAction`이 없음을 확인했다. 자체 wall 시한도 없다. idle20·budget-stop 유지.
+분석은 gcp3 CPU만 사용하며 CPU VM 시작0. 새 모델키·에이전트 자격증명 전송0.
+[현재 실행 계획](native-gate-plan.json), [호스트 검증](native-host-start.json), [프로필 출처](native-preflight.json).
+
+새 XML 참조80개를 gcp3 CPU에서 C3.12로 재컴파일했고 기존 참조의 actuator/material/geometry
+배열 전수 일치를 확인했다. 빔40을14:25:57Z에 제출했다(driver3149/child3151, source3170d909).
+[현재 대기열](native-gate-queue.json), [제출 근거](beam40-native-r1-submit.json). 준비 중 상대 asset 경로 오류1회와 camera housing 표시그룹 차이2회는
+물리·교사 관문 실행이 아니며 원본/실패 산출물을 보존했다. 표시그룹의 근거는
+`sim/multi_masterpi_production.py:930-933`의 로봇별 camera housing 숨김이다.
+성공 조건·제어·접촉 상수는 추가하지 않았다.
+
+아래는 noslip10 당시 기록이다. 그 안의8h 복원·CPU VM 분석 지시는 최신 사용자 지시로 폐기됐다.
+
+---
+
 # warp8 — gcp3 빔 짝·release MJWarp 관문 (빔 R2 40/40, release A-S1 진행)
 
 warp6와 같은 `codex/warp6`, PR #557 DRAFT에서 이어간다. gcp2 R3의 CUDA700은

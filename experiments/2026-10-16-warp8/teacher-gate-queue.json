@@ -1,6 +1,6 @@
 {
   "schema": "ugrp.warp8.teacher_gate.v1",
-  "status": "RELEASE_A_S1_RUNNING",
+  "status": "SUPERSEDED_NATIVE_CONTACT",
   "host": "gcp3",
   "project": "ugrp-sim-c-1016",
   "source_sha": "175281c8922453465f8bf32707e22988e78b8812",
@@ -55,13 +55,14 @@
       "N": 14,
       "submitted": true,
       "completed": false,
-      "terminal": false,
-      "status": "running",
+      "terminal": true,
+      "status": "SUPERVISOR_STOP",
       "source_sha": "175281c8922453465f8bf32707e22988e78b8812",
       "rejection_table": "/home/ugrp/ugrp-sim/ops-reviews/warp8/release-topology-rejection_table.json",
       "raw": "/home/ugrp/ugrp-sim/runs/warp8/releaseA-s1-r1",
       "driver_PID": 1738,
-      "child_PID": 1740
+      "child_PID": 1740,
+      "classification": "not_a_defect_profile_switch"
     }
   ],
   "placement_graspable_filter_v1": true,
@@ -86,7 +87,7 @@
   "full_active_dof_workspace_v1": true,
   "known_failure_first": 8318706,
   "cleanup_deadline": null,
-  "VM_8h_setting": "INHERITED28800/STOP; removal pending safe A-S1 boundary; do not restore",
+  "VM_8h_setting": "absent verified; do not restore",
   "candidate_source_sha": "175281c8922453465f8bf32707e22988e78b8812",
   "initial_source_sha": "f75e3442957e8e00c4ed894056b3e06ee32399f0",
   "R2_first30": {
@@ -137,8 +138,9 @@
     "data_admitted": false
   },
   "cleanup_deadline_scope": "removed for future groups by user instruction; inherited A-S1 process retains21:14Z until its safe boundary",
-  "current_VM_state": "RUNNING; A-S1 driver1738/child1740 preserved",
+  "current_VM_state": "RUNNING nocap native references preparation",
   "beam_measurement_complete": true,
   "nocap_ack": true,
-  "nocpu_ack": true
+  "nocpu_ack": true,
+  "native_successor": "native-gate-plan.json"
 }

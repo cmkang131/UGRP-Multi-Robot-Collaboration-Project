@@ -57,3 +57,7 @@ R2 독립계수 사본의 원래 생성 코드 trailing whitespace가 새 파일
 warp8: warp8c 새 nativecontact 관문 준비 | nocap-ack nocpu-ack nativecontact-ack | gcp3 TERMINATED·상한필드 없음 live확인; budget-stop ACTIVE/target C/1000KRW순비용 확인 | noslip10 A-S1 감독중단=not_a_defect_profile_switch·미완료/원본보존, 기존빔40/40과합산0 | vendor df5a1f86 SHA a5c8d370... 동일·비물리33PASS; 새빔40→releaseA40→B40,분석gcp3만 | 2026-10-16T14:18:34.909305+00:00 cap-ack ownership-ack
 
 사용자 최신 지시로 noslip10 관문은 종료·비교용 보존한다. 새 XML 해시로 C312 참조를 다시 내보내며 legacy-plane/dense capacity/C3.16 호환 설정은 유지한다. 소스는 실행 전 커밋하고 지정 파일은 수정하지 않는다.
+
+warp8: native-v1 빔40 한배치14:25:57Z 제출 driver3149/child3151 source3170d909089865c45e2cbc6089beb6a2d05e576f | C312 새참조80개 재컴파일·관절/재질/기하전수동일, 준비오류(asset경로1/표시그룹2)보존·교사실행아님 | gcp3단독MPSoff/fullnv/placementON·weldOFF,첫30대기·release미제출 | VM/supervisor상한없음·idle20/budget-stop유지·CPU VM시작0 | 2026-10-16T14:26:39.014136+00:00 nocap-ack nocpu-ack nativecontact-ack cap-ack ownership-ack
+
+고정소스3170d909; 직접 XML 준비가 기존 world의 camera housing group5를 재현하도록 로봇별 접두명을 맞췄다. 세 번째 geometry 대조는80개 모두 통과. 실패 참조폴더v1/v2/v3는 보존, 실제사용v4만. 참조 준비 중 native profile의 물리 step0/GPU context0.
