@@ -20,7 +20,9 @@ def main():
     from PIL import Image,ImageDraw
     p=argparse.ArgumentParser();p.add_argument('--run',type=Path,required=True)
     p.add_argument('--out',type=Path,required=True);p.add_argument('--world',type=int,default=0)
+    p.add_argument('--asset-root',type=Path,required=True,help='exact backend scene asset checkout; XML paths are relative')
     a=p.parse_args();out=a.out;out.mkdir(parents=True,exist_ok=False)
+    os.chdir(a.asset_root)
     world=a.run/f'world-{a.world:03d}';summary=json.loads((a.run/'summary.json').read_text())
     state=np.load(a.run/f'world-{a.world:03d}-states.npz')
     index={int(t):i for i,t in enumerate(state['ticks'])}
@@ -89,6 +91,7 @@ def main():
     if video.stat().st_size>8_000_000:raise ValueError('video exceeds8MB')
     probe=json.loads(subprocess.check_output(['ffprobe','-v','quiet','-show_format','-show_streams','-of','json',str(video)]))
     meta=dict(run=str(a.run),world=a.world,sim_world_range=[times[0],times[-1]],
+        mujoco=mujoco.__version__,asset_root=str(a.asset_root),
         sim_relative_range=[times[0]-origin,times[-1]-origin],full_2hz_frames=len(paths),
         terminal_10hz_frames=len(tail_rows),native_six_times=[tail_rows[i]['world_t'] for i in picks],
         video_bytes=video.stat().st_size,video_sha256=hashlib.sha256(video.read_bytes()).hexdigest(),ffprobe=probe,
