@@ -1,0 +1,178 @@
+{
+  "schema": "ugrp.gcp6setup.v1",
+  "ready": true,
+  "readiness_scope": "GCP infrastructure, ACT environment and beamact3 dataset only",
+  "account": "kcm5781kcm5781@gmail.com",
+  "project": "ugrp-sim-f-1016",
+  "project_number": "503325597974",
+  "billing_account": "010CD7-4B991B-84AAC7",
+  "host": "gcp6",
+  "instance": "ugrp-act-l4-gcp6",
+  "vm_status": "TERMINATED",
+  "machine": "g2-standard-8",
+  "gpu": "NVIDIA L4 x1",
+  "disk_gb": 140,
+  "max_run_s": null,
+  "idle_s": 1200,
+  "default_host": "gcp2",
+  "default_account_unchanged": true,
+  "results_pooled": false,
+  "source_sha": "15d12468c31dead4ad605e13b92c8c9423b3f53e",
+  "dependencies": [
+    "PR #554",
+    "PR #558",
+    "PR #559"
+  ],
+  "first_use": "beamact3 C2; coordinator note supersedes initial act16w interpretation",
+  "budget": {
+    "net_krw": 1000,
+    "credits": "INCLUDE_ALL_CREDITS",
+    "default_billing_iam_email_enabled": true,
+    "email_receipt_verified": false,
+    "manual_publish_stopping_s": 6.659547124989331,
+    "manual_publish_terminated_s": 56.75415187492035,
+    "test_vm_and_disk_deleted": true
+  },
+  "data": {
+    "started_utc": "2026-10-16T09:44:52.988290+00:00",
+    "elapsed_s": 225.61229801177979,
+    "sender_exit": 0,
+    "receiver_exit": 0,
+    "source": "gcp2 L4:/home/ugrp/ugrp-sim/ops-reviews/actdiag/infer-final-v1/dataset-view",
+    "target": "gcp6:/home/ugrp/ugrp-sim/ops-reviews/actdiag/infer-final-v1/dataset-view",
+    "logical_bytes": 21052583548,
+    "mac_raw_bytes_saved": 0,
+    "private_keys_copied": 0,
+    "all_files_sha256_equal": true,
+    "source_stats_unchanged": true,
+    "source_own_lease_removed": true,
+    "source_vm_stop_attempted": false,
+    "files_n": 1483
+  },
+  "runs": [
+    {
+      "name": "budget_stop_test",
+      "status": "PASS"
+    },
+    {
+      "name": "mjwarp_import_batch_step",
+      "status": "PASS",
+      "worlds": 2,
+      "steps": 1,
+      "sim_s_each": 0.002
+    },
+    {
+      "name": "beamact3_dependency_import_attempt1",
+      "status": "HOST_ERROR",
+      "steps": 0,
+      "evidence": "evidence/act-smoke-import-failure.json"
+    },
+    {
+      "name": "beamact3_environment_50steps",
+      "status": "PASS",
+      "steps": 50,
+      "readback_verified": true,
+      "scope": "existing B adapter compatibility only; not C2; no model selected for research"
+    }
+  ],
+  "host_error": 1,
+  "cap_end": 0,
+  "failed_setup_attempts": {
+    "total": 3,
+    "reason_distribution": {
+      "new_service_account_iam_propagation": 1,
+      "dependency_excerpt_incomplete": 1,
+      "torchcodec_local_build_variant": 1
+    },
+    "rejections": [
+      {
+        "category": "new_service_account_iam_propagation",
+        "blocked_object": "budget-stopper@ugrp-sim-f-1016.iam.gserviceaccount.com",
+        "minimum_gap_m": null,
+        "measurement_status": "not_applicable_infrastructure",
+        "evidence": "stopper-compute-retry-command.json",
+        "recovery": "same-project IAM retry succeeded; original failure preserved"
+      },
+      {
+        "category": "dependency_excerpt_incomplete",
+        "blocked_object": "harness.catalog and package initialization dependencies",
+        "minimum_gap_m": null,
+        "measurement_status": "not_applicable_infrastructure",
+        "evidence": "act-smoke-import-failure-command.json",
+        "recovery": "expand committed harness package dependency excerpts; no trainer or model change"
+      },
+      {
+        "category": "torchcodec_local_build_variant",
+        "blocked_object": "torchcodec 0.10.0+cu128 versus gcp2 0.10.0",
+        "minimum_gap_m": null,
+        "measurement_status": "not_applicable_infrastructure",
+        "evidence": "act-freeze-initial.txt",
+        "recovery": "reinstall exact PyPI build without the optional CUDA index; retain completed training probe"
+      }
+    ]
+  },
+  "verification": {
+    "nonphysics_tests": "18 passed",
+    "guest": {
+      "retrieved_hashes_verified": true,
+      "source_hashes_verified": true,
+      "idle_guard_exact": true,
+      "credentials_absent": true,
+      "own_lease_removed": true,
+      "other_jobs_before_stop": false,
+      "runtime_cap_absent": true,
+      "vm_terminated": true,
+      "act_versions_equal": true,
+      "beamact3_50steps_readback": true
+    },
+    "recorded_gcp6_commands_checked": 35,
+    "only_human_iam_member": "kcm5781kcm5781@gmail.com",
+    "first_project_api_calls": 0,
+    "other_project_mutations": 0,
+    "gcp2_l4_reference_read_only": true,
+    "gcp2_source_lease_created_and_removed": true,
+    "mac_physics": 0,
+    "mac_render": 0,
+    "mac_training": 0,
+    "llm_calls": 0
+  },
+  "cost": {
+    "l4_start": "2026-10-16T02:42:47.827-07:00",
+    "l4_stop": "2026-10-16T02:58:12.642-07:00",
+    "l4_elapsed_s": 924.815,
+    "actual_billed": null,
+    "actual_billed_status": "not retrieved",
+    "billing_delay_tested": false,
+    "persistent_after_stop": [
+      "140GB L4 disk",
+      "function/build/artifact storage"
+    ]
+  },
+  "rejection_table": "/Users/changmin/projects/ugrp-wt/gcp6setup/experiments/2026-10-16-gcp6setup/evidence/funnel.json",
+  "remaining": [
+    "C2 implementation/managed trainer gcp6 admission and main training belong to beamact3 task",
+    "Teacher/student/render/E2E gates not tested by setup",
+    "Actual billing and email receipt unverified",
+    "PR CI/review/merge reported separately"
+  ],
+  "pr": 561,
+  "pr_url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/561",
+  "source_versions": {
+    "source_sha": "15d12468c31dead4ad605e13b92c8c9423b3f53e",
+    "provisioning_source_sha": "b53e927020d4faefade35ae95b42166f00891f5e",
+    "final_setup_source_sha": "fb5d26cfd564c3c0a1e2782cdf508880acae44d9"
+  },
+  "nonphysics_verification": {
+    "test_command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_gcp_host.py",
+    "result": "18 passed in 0.16s",
+    "test_source_sha256": "9ede08073109773c7dc331459c4e910e04dcc10636baf8edeec3b102a3ecf664",
+    "ast": "all gcp6 setup Python files parsed",
+    "mac_physics": 0,
+    "mac_render": 0,
+    "mac_training": 0
+  },
+  "manifest": {
+    "path": "evidence/SHA256.json",
+    "sha256": "fc71c732c8bc9e8edb24b8ee4dc02ce9c6cc8ee717002d044355f7d58dffce87"
+  }
+}

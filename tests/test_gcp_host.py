@@ -26,8 +26,13 @@ def test_every_gcloud_call_names_the_project():
     assert run.call_args.args[0][-2:] == ['--project', 'ugrp-sim-b-1014']
 
 
-@pytest.mark.parametrize(('host', 'project'), [('gcp3', 'ugrp-sim-c-1016'), ('gcp4', 'ugrp-sim-d-1016'), ('gcp5', 'ugrp-sim-e-1016')])
-def test_l4_uses_its_project_gpu_image_without_runtime_cap(host, project):
+@pytest.mark.parametrize(('host', 'project', 'account'), [
+    ('gcp3', 'ugrp-sim-c-1016', 'changmin5781@gmail.com'),
+    ('gcp4', 'ugrp-sim-d-1016', 'changmin5781@gmail.com'),
+    ('gcp5', 'ugrp-sim-e-1016', 'changmin5781@gmail.com'),
+    ('gcp6', 'ugrp-sim-f-1016', 'kcm5781kcm5781@gmail.com'),
+])
+def test_l4_uses_its_project_gpu_image_without_runtime_cap(host, project, account):
     command = gcpctl.create_command(host, 'ssh-ed25519 AAAA test')
     for flag, value in (('--project', project), ('--machine-type', 'g2-standard-8'),
                         ('--image-project', 'deeplearning-platform-release'),
@@ -43,7 +48,7 @@ def test_l4_uses_its_project_gpu_image_without_runtime_cap(host, project):
     assert remote_run.DEFAULT_HOST == gcpctl.DEFAULT_HOST == 'gcp2'
     with patch.object(gcpctl.subprocess, 'run') as run:
         gcpctl.gcloud('compute', 'instances', 'describe', 'x', host=host)
-    assert run.call_args.args[0][-4:] == ['--account', 'changmin5781@gmail.com', '--project', project]
+    assert run.call_args.args[0][-4:] == ['--account', account, '--project', project]
 
 
 @pytest.mark.parametrize('duration', [None, 'missing', '8h', '24h'])

@@ -1,0 +1,19 @@
+{
+  "command": [
+    "gcloud",
+    "logging",
+    "read",
+    "resource.type=\"cloud_run_revision\" AND resource.labels.service_name=\"budget-stop\" AND (jsonPayload.action=\"stop_all\" OR textPayload:\"stop_all\")",
+    "--limit=10",
+    "--account",
+    "kcm5781kcm5781@gmail.com",
+    "--project",
+    "ugrp-sim-f-1016",
+    "--quiet",
+    "--format=json"
+  ],
+  "started_utc": "2026-10-16T09:42:07.261953+00:00",
+  "elapsed_s": 2.4609298706054688,
+  "returncode": 0,
+  "stderr": ""
+}
