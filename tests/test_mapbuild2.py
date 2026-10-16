@@ -65,3 +65,11 @@ def test_evaluation_heading_includes_roll_pitch_coupling():
     q=[cy*cp*cr+sy*sp*sr,cy*cp*sr-sy*sp*cr,sy*cp*sr+cy*sp*cr,sy*cp*cr-cy*sp*sr]
     import pytest
     assert quaternion_heading(q)==pytest.approx(yaw)
+
+
+def test_external_pose_grid_does_not_open_unused_motion_calibration(monkeypatch):
+    from scripts.mapbuild2_map import new_grid
+    import harness.self_odom_grid as grid
+    def unavailable():raise FileNotFoundError('unused calibration must not be read')
+    monkeypatch.setattr(grid,'motion_profiles',unavailable)
+    assert new_grid().resolution_m==.1

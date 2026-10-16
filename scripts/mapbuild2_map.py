@@ -8,6 +8,13 @@ import subprocess
 import sys
 
 
+def new_grid():
+    from harness.self_odom_grid import OdomGrid
+    # This adapter receives already-estimated poses and calls insert(), never
+    # observe()/odom.advance(). Avoid loading an unused legacy motion table.
+    return OdomGrid('r1',profiles={})
+
+
 def run(a):
     # Use the complete pinned vision dependency closure, not mixed versions.
     if subprocess.check_output(['git','rev-parse','HEAD'],cwd=a.vision_source,text=True).strip()!='5974a181a2cec9731339a6ce3aadc0464b8dddcf':
@@ -38,7 +45,7 @@ def run(a):
     for frame in manifest['frames']:
         name=frame['sequence'];estimate=poses[name,frame['frame_id']]
         if name not in grids:
-            grids[name]=OdomGrid('r1');walls[name]=set();obstacles[name]=set();destinations[name]=set()
+            grids[name]=new_grid();walls[name]=set();obstacles[name]=set();destinations[name]=set()
         grid=grids[name];servo={int(k):v for k,v in frame['servo'].items()}
         camera,reason=transform_from_commands(servo,camera_pose='servo_fk_v1')
         event=dict(sequence=name,frame_id=frame['frame_id'],category='map_frame',reason=reason,
