@@ -25,14 +25,23 @@ def main():
     forward=f['forward-0.1'];stop=forward[:4000];tail=forward[-4000:]
     cases=[];tapes={}
     for name in ('forward-0.1','left-0.06','left-0.4','turn-0.1'):
-        row=next(r for r in original_meta['cases'] if r['id']==name)
-        tapes[name]=original[name].copy();cases.append(row)
+        source='left-0.5' if name=='left-0.4' else name
+        row=dict(next(r for r in original_meta['cases'] if r['id']==source))
+        if name=='left-0.4':
+            # User requested a400ms diagnostic. Copy the original500ms tape's
+            # first400ms powered segment, followed by its unchanged1s stop.
+            # This does not extrapolate an odometry prediction or tune drive.
+            tapes[name]=np.concatenate([original[source][:5600],original[source][-4000:]])
+            row.update(id=name,duration_s=.4,v122=None,
+                prediction_status='400ms unregistered; no extrapolation',source_tape=source)
+        else:tapes[name]=original[name].copy()
+        cases.append(row)
     for duration in (.06,.4):
-        source=next(r for r in original_meta['cases'] if r['id']==f'left-{duration:g}')
+        source=next(r for r in cases if r['id']==f'left-{duration:g}')
         name=f'warm-left-{duration:g}'
         # Exactly original forward100ms + original1s stop, then original
         # lateral pulse and1s stop. All 35% commands are copied, not inferred.
-        lateral=original[source['id']][4000:]
+        lateral=tapes[source['id']][4000:]
         tapes[name]=np.concatenate([forward,lateral])
         cases.append(dict(source,id=name,settle_s=2.1,warm_forward_s=.1,warm_stop_s=1.,
             v122=None,prediction_status='warm state not registered; no extrapolation'))
