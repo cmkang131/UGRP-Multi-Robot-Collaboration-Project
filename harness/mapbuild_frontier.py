@@ -93,7 +93,8 @@ class FrontierActor:
             self.plan=self.nav.update({},grid=self.grid,pose=self.pose,footprint=self.footprint)
             path=self.plan.get('path_m',[])
             self.target=next((p for p in path if math.dist(p,self.pose[:2])>=.035),None)
-        if self.target is None:axis,value='turn',.35
+        if self.target is None or self.events[-1]['flow']['status'] not in ('bootstrap','measured'):
+            axis,value='turn',.35
         else:
             d=np.asarray(self.target)-self.pose[:2];heading=math.atan2(d[1],d[0])
             error=math.atan2(math.sin(heading-self.pose[2]),math.cos(heading-self.pose[2]))

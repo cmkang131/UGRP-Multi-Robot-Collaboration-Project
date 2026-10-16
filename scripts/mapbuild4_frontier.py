@@ -30,6 +30,14 @@ def run(a):
     harness.__path__.insert(0,str(a.vision_source/'harness'))
     harness.__path__.append(str(ROOT/'harness'))
     from harness.mapbuild_motion import PulsePrediction,OPTION as MOTION
+    queue=json.loads(a.queue.read_text())
+    if hashlib.sha256(a.motion_calibration.read_bytes()).hexdigest()!=queue['motion_calibration_sha256']:
+        raise ValueError('PINNED_MOTION_CALIBRATION_REQUIRED')
+    manifest=a.vision_source/'SOURCE_FILES.json'
+    if hashlib.sha256(manifest.read_bytes()).hexdigest()!=queue['vision_manifest_sha256']:
+        raise ValueError('PINNED_VISION_MANIFEST_REQUIRED')
+    if any(hashlib.sha256((a.vision_source/p).read_bytes()).hexdigest()!=h for p,h in json.loads(manifest.read_text()).items()):
+        raise ValueError('PINNED_VISION_BYTES_REQUIRED')
     spec=importlib.util.spec_from_file_location('mapbuild_frontier',ROOT/'harness/mapbuild_frontier.py')
     mod=importlib.util.module_from_spec(spec);spec.loader.exec_module(mod)
     paths=[a.vision_source/'experiments/2026-10-16-reloc16/colour-calibration.json',
