@@ -46,6 +46,21 @@ def main():
         ma, mb = arrays(A.hooks.wm), arrays(B.hooks.wm)
         report['initial_model_array_differences'] = [k for k, v in ma.items() if not np.array_equal(v, mb[k])]
         (a.out/'initial-audit.json').write_text(json.dumps(report, indent=2)+'\n')
+        # Fork the COMPLETE GPU data workspace, rather than two independent
+        # allocations of upstream wp.empty compact-solver scratch (io.py1819).
+        # This changes only the test's baseline, never actor/teacher physics.
+        def copy_workspace(source, target):
+            copied = []
+            for field in dataclasses.fields(source):
+                x, y = getattr(source, field.name), getattr(target, field.name)
+                if dataclasses.is_dataclass(x): copied += [field.name+'.'+k for k in copy_workspace(x, y)]
+                elif hasattr(x, 'numpy'):
+                    if x.shape != y.shape or x.dtype != y.dtype: raise RuntimeError('paired workspace layout differs')
+                    if x.size: A.hooks.wp.copy(y, x)
+                    copied.append(field.name)
+            return copied
+        report['forked_workspace_fields'] = copy_workspace(A.hooks.wd, B.hooks.wd)
+        A.hooks.wp.synchronize()
         def hold(owner, done=None):
             return [dict(command=dict(owner.previous[i], t=owner.origin+owner.tick*.1,
                 wheels=[0.]*4, duration_s=[0.]*4), done=bool(done is not None and i == done)) for i in range(owner.n)]
