@@ -1,0 +1,1 @@
+gcp5setup: READY project=ugrp-sim-e-1016 alias=gcp5 VM=TERMINATED budget_stop=6.983s MJWarp=PASS ACT50_save_reload=PASS data_SHA=1482/1482 ACT_versions=115/115 C2_main=not_run (host guard 연결은 beamact3) PR=https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/560
