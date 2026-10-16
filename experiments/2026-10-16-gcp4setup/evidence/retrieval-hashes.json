@@ -1,0 +1,11 @@
+{
+  "command": [
+    "ssh",
+    "gcp4",
+    "cd /home/ugrp/ugrp-sim/setup && sha256sum smoke-result.json guest-audit.json warp-freeze.txt cpu-freeze.txt setup_guest.sh smoke.py audit_guest.py"
+  ],
+  "returncode": 0,
+  "elapsed_s": 1.4103612899780273,
+  "stdout": "a852c5a6012aebe83b79969dc3b35f1c25cced933d9af82adb82ded22d3bcb5a  smoke-result.json\neb7d2713d39c3f9bb69f2431e4346e0f450516e094fc0060ebf740deb634310c  guest-audit.json\nd7f5a61637967b535ea82c94b87c0800f5ccf648f1a982f012b6c698490c0828  warp-freeze.txt\n85a5664d7b4e7f82f0cd62a3b3925a1868233025879146ce3cd5f438976d478a  cpu-freeze.txt\ncbc65601e9024e17325efb07d497a00d3ab3d30fc9ad139b6f47229f11f13370  setup_guest.sh\n02f3d204fd195500a268e2f02b14e8f579f0bc649b5b856bfd384ae66193140f  smoke.py\n56f61132779a5dafdebd1eae33ded5285c8ce2687bab862359dc3ec59f9122be  audit_guest.py\n",
+  "stderr": ""
+}

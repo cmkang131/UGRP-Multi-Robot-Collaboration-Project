@@ -1,0 +1,96 @@
+{
+  "schema": "ugrp.gcp4setup.v1",
+  "ready": true,
+  "readiness_scope": "GCP infrastructure only",
+  "project": "ugrp-sim-d-1016",
+  "project_number": "298701037365",
+  "account": "changmin5781@gmail.com",
+  "host": "gcp4",
+  "default_host": "gcp2",
+  "instance": "ugrp-act-l4-gcp4",
+  "vm_status": "TERMINATED",
+  "machine": "g2-standard-8",
+  "gpu": "NVIDIA L4 x1",
+  "disk_gb": 140,
+  "max_run_s": null,
+  "idle_s": 1200,
+  "results_pooled": false,
+  "source_sha": "a66e73821c24076f7ff3ea70c442c345154ccbd4",
+  "dependencies": [
+    "PR #554 codex/gcp3setup",
+    "PR #558 codex/nocap"
+  ],
+  "budget": {
+    "net_krw": 1000,
+    "credits": "INCLUDE_ALL_CREDITS",
+    "project_filter": [
+      "projects/298701037365"
+    ],
+    "default_billing_iam_email_enabled": true,
+    "email_delivery_tested": false,
+    "manual_publish_stopping_s": 6.364076083060354,
+    "manual_publish_terminated_s": 140.30863587500062,
+    "test_vm_and_disk_deleted": true
+  },
+  "runs": [
+    {
+      "name": "budget_stop_test",
+      "status": "PASS",
+      "raw": "/Users/changmin/projects/ugrp-wt/gcp4setup/experiments/2026-10-16-gcp4setup/evidence/test-observations.json"
+    },
+    {
+      "name": "mjwarp_import_batch_step",
+      "status": "PASS",
+      "nworld": 2,
+      "steps": 1,
+      "sim_s_per_world": 0.002,
+      "raw": "gcp4:/home/ugrp/ugrp-sim/setup/smoke-result.json"
+    }
+  ],
+  "host_error": 0,
+  "cap_end": 0,
+  "failed_setup_attempts": [],
+  "verification": {
+    "nonphysics_tests": "17 passed",
+    "guest": {
+      "retrieved_hashes_verified": true,
+      "source_hashes_verified": true,
+      "idle_guard_exact": true,
+      "credentials_absent": true,
+      "own_lease_removed": true,
+      "other_jobs_before_stop": false,
+      "runtime_cap_absent": true,
+      "vm_terminated": true
+    },
+    "gcp2_gcp3_api_calls": 0,
+    "first_project_api_calls": 0,
+    "recorded_gcloud_commands_checked": 38,
+    "mac_physics": 0,
+    "mac_render": 0,
+    "llm_calls": 0,
+    "training": 0
+  },
+  "cost": {
+    "l4_start": "2026-10-16T00:19:57.463-07:00",
+    "l4_stop": "2026-10-16T00:24:36.029-07:00",
+    "l4_elapsed_s": 278.566,
+    "actual_billed": null,
+    "actual_billed_status": "Not retrieved; no zero-cost claim",
+    "persistent_after_stop": [
+      "140GB L4 disk",
+      "Cloud Build/function/source/artifact storage"
+    ],
+    "billing_delay_tested": false
+  },
+  "rejection_table": "/Users/changmin/projects/ugrp-wt/gcp4setup/experiments/2026-10-16-gcp4setup/evidence/funnel.json",
+  "manifest": {
+    "path": "evidence/SHA256.json",
+    "sha256": "aa4aa9d1f214c6c97a6182cdfd8a798aded322b013a299c9955540a16020d6db"
+  },
+  "originals": "gcp4:/home/ugrp/ugrp-sim/setup/; installation and smoke logs retained on disk",
+  "remaining": [
+    "Research scene/render/teacher/student/E2E gates not run by this infrastructure setup",
+    "Actual billing and email receipt unverified",
+    "PR CI/review/merge reported separately"
+  ]
+}
