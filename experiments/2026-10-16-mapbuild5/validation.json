@@ -17,5 +17,21 @@
     "new_test_occurrences": 1
   },
   "managed_workflow_plan": "read-only plan succeeded; no managed physical execution",
-  "full_ci": "not_yet_checked"
+  "full_ci": "not_yet_checked",
+  "native_resume": {
+    "command": "pytest -q tests/test_mapbuild5.py tests/test_mapbuild4.py tests/test_mapbuild2.py tests/test_mapbuild1.py tests/test_rbpf_rejection.py tests/test_rbpf_composition.py tests/test_rbpf_motion_gate.py tests/test_rbpf_insertion.py tests/test_rbpf_manhattan.py",
+    "passed": 53,
+    "scope": "non-physics; distinct union in one invocation, includes fixed floor plane and evaluation transform consistency",
+    "compile": "passed",
+    "diff_check": "passed"
+  },
+  "resume_c3": {
+    "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_mapbuild5.py",
+    "passed": 7,
+    "scope": "non-physics; includes seal tamper rejection and nominal camera lever arm",
+    "diff_check": "passed",
+    "remote_evaluation": "completed with identical recording XML; original prediction seal unchanged",
+    "mac_physics": 0,
+    "mac_render": 0
+  }
 }

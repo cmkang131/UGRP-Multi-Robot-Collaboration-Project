@@ -1,0 +1,34 @@
+{
+  "source": "/home/ugrp/ugrp-sim/src/mapbuild5c-04f4cada7",
+  "source_sha": "04f4cada77819d0d4c8a4c1ef3eb96835dede452",
+  "verified_source_files": 15721,
+  "commands": [
+    [
+      "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+      "/home/ugrp/ugrp-sim/src/mapbuild5c-04f4cada7/scripts/mapbuild5_evaluate.py",
+      "--input",
+      "/home/ugrp/ugrp-sim/runs/mapbuild5/recording-r2",
+      "--vision",
+      "/home/ugrp/ugrp-sim/src/mapbuild5b-complete-vision597",
+      "--prediction",
+      "/home/ugrp/ugrp-sim/runs/mapbuild5/analysis-r2",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/mapbuild5/evaluation-c1",
+      "--queue",
+      "/home/ugrp/ugrp-sim/ops-reviews/mapbuild5/evaluation-queue-c1.json"
+    ],
+    [
+      "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+      "/home/ugrp/ugrp-sim/src/mapbuild5c-04f4cada7/scripts/mapbuild5_playback.py",
+      "--input",
+      "/home/ugrp/ugrp-sim/runs/mapbuild5/recording-r2/roundtrip",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/mapbuild5/playback-c1"
+    ]
+  ],
+  "pids": [
+    8575,
+    8576
+  ],
+  "utc": "2026-10-16T14:42:59.078217+00:00"
+}

@@ -1,0 +1,99 @@
+{
+  "source_sha": "4269ece0550b97ab6e3403d24cee50389e9664ee",
+  "raw": "/home/ugrp/ugrp-sim/runs/mapbuild5/recording-r2",
+  "analysis": "/home/ugrp/ugrp-sim/runs/mapbuild5/analysis-r2",
+  "commands": {
+    "motion_command": [
+      "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+      "/home/ugrp/ugrp-sim/src/mapbuild5-4269ece05/scripts/mapbuild5_motion.py",
+      "--vision",
+      "/home/ugrp/ugrp-sim/src/mapbuild5b-complete-vision597",
+      "--base",
+      "/home/ugrp/ugrp-sim/runs/mapbuild4",
+      "--output",
+      "/home/ugrp/ugrp-sim/ops-reviews/mapbuild5/native-motion-distribution.json"
+    ],
+    "recording_command": [
+      "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+      "/home/ugrp/ugrp-sim/src/mapbuild5-4269ece05/scripts/mapbuild5_capture.py",
+      "--mapbuild5-recording-v1",
+      "--renderer-source",
+      "/home/ugrp/ugrp-sim/src/drivecheck-renderer-5974a181",
+      "--renderer-receipt",
+      "/home/ugrp/ugrp-sim/ops-reviews/mapbuild3/renderer-receipt.json",
+      "--fixture",
+      "/home/ugrp/ugrp-sim/runs/mapbuild3/prepare-r1b",
+      "--queue",
+      "/home/ugrp/ugrp-sim/ops-reviews/mapbuild5/queue-native-r2.json",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/mapbuild5/recording-r2"
+    ],
+    "pipeline_command": [
+      "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+      "/home/ugrp/ugrp-sim/src/mapbuild5-4269ece05/scripts/mapbuild5_pipeline.py",
+      "--input",
+      "/home/ugrp/ugrp-sim/runs/mapbuild5/recording-r2",
+      "--source",
+      "/home/ugrp/ugrp-sim/src/mapbuild5-4269ece05",
+      "--vision",
+      "/home/ugrp/ugrp-sim/src/mapbuild5b-complete-vision597",
+      "--calibration",
+      "/home/ugrp/ugrp-sim/ops-reviews/mapbuild5/native-motion-distribution.json",
+      "--queue",
+      "/home/ugrp/ugrp-sim/ops-reviews/mapbuild5/analysis-queue-native-r2.json",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/mapbuild5/analysis-r2",
+      "--status",
+      "/home/ugrp/ugrp-sim/ops-reviews/mapbuild5/pipeline-native-r2-status.json",
+      "--recorder-pid",
+      "5305"
+    ]
+  },
+  "prerequisites": [
+    "gcp5 only, own lease and no wall caps",
+    "same frozen renderer receipt + clean fixture",
+    "source archive full file hashes",
+    "full renderer5974a181 closure plus byte-identical vision supplement",
+    "existing absolute rejection_table in both queues"
+  ],
+  "no_overwrite": "use new output names and queues; completed artifacts are immutable",
+  "actual_replay": [
+    "/home/ugrp/ugrp-sim/src/mapbuild5-f83a57de1/scripts/mapbuild5_replay.py",
+    "--mapbuild-rbpf-v1",
+    "--input",
+    "/home/ugrp/ugrp-sim/runs/mapbuild5/recording-r2",
+    "--vision",
+    "/home/ugrp/ugrp-sim/src/mapbuild5b-complete-vision597",
+    "--calibration",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild5/native-motion-distribution.json",
+    "--queue",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild5/analysis-queue-native-r2-finalize.json",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/mapbuild5/analysis-r2"
+  ],
+  "completed_evaluation": [
+    [
+      "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+      "/home/ugrp/ugrp-sim/src/mapbuild5c-a6a10a16a/scripts/mapbuild5_evaluate.py",
+      "--input",
+      "/home/ugrp/ugrp-sim/runs/mapbuild5/recording-r2",
+      "--vision",
+      "/home/ugrp/ugrp-sim/src/mapbuild5b-complete-vision597",
+      "--prediction",
+      "/home/ugrp/ugrp-sim/runs/mapbuild5/analysis-r2",
+      "--output",
+      "/home/ugrp/ugrp-sim/runs/mapbuild5/evaluation-c3",
+      "--queue",
+      "/home/ugrp/ugrp-sim/ops-reviews/mapbuild5/evaluation-queue-c3.json"
+    ]
+  ],
+  "playback": [
+    "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+    "/home/ugrp/ugrp-sim/src/mapbuild5c-04f4cada7/scripts/mapbuild5_playback.py",
+    "--input",
+    "/home/ugrp/ugrp-sim/runs/mapbuild5/recording-r2/roundtrip",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/mapbuild5/playback-c1"
+  ],
+  "rerun_policy": "Use new outputs; set renderer_source and renderer_receipt in replay queue for isolated evaluator. Never rerun completed simulation to finish evaluation."
+}

@@ -1,0 +1,43 @@
+{
+  "source_sha": "f83a57de1e5b996cd6f9d07008230f942bfaaa7e",
+  "finalize_command": [
+    "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+    "/home/ugrp/ugrp-sim/src/mapbuild5-f83a57de1/scripts/mapbuild5_capture.py",
+    "--mapbuild5-recording-v1",
+    "--renderer-source",
+    "/home/ugrp/ugrp-sim/src/drivecheck-renderer-5974a181",
+    "--renderer-receipt",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild3/renderer-receipt.json",
+    "--fixture",
+    "/home/ugrp/ugrp-sim/runs/mapbuild3/prepare-r1b",
+    "--queue",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild5/queue-native-r2-finalize.json",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/mapbuild5/recording-r2",
+    "--finalize-saved-recording"
+  ],
+  "pipeline_command": [
+    "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+    "/home/ugrp/ugrp-sim/src/mapbuild5-f83a57de1/scripts/mapbuild5_pipeline.py",
+    "--input",
+    "/home/ugrp/ugrp-sim/runs/mapbuild5/recording-r2",
+    "--source",
+    "/home/ugrp/ugrp-sim/src/mapbuild5-f83a57de1",
+    "--vision",
+    "/home/ugrp/ugrp-sim/src/mapbuild5b-complete-vision597",
+    "--calibration",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild5/native-motion-distribution.json",
+    "--queue",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild5/analysis-queue-native-r2-finalize.json",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/mapbuild5/analysis-r2",
+    "--status",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild5/pipeline-native-r2-finalize-status.json",
+    "--recorder-pid",
+    "6952"
+  ],
+  "pipeline_pid": 6986,
+  "original_files_unchanged": 1205,
+  "physical_runs": 1,
+  "metadata_recovery_no_physics": true
+}

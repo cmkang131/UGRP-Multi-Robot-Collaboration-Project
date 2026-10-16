@@ -4,7 +4,11 @@
       "id": "motion-r1",
       "status": "HOST_ERROR",
       "reason": "relative texture asset paths; missing renderer cwd",
-      "fixed": "make() chdir to frozen renderer"
+      "fixed": "make() chdir to frozen renderer",
+      "category": "runtime_or_evaluation",
+      "blocked_object": "not_observed_runtime_dependency",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
     },
     {
       "id": "motion-r2",
@@ -15,13 +19,21 @@
       "id": "practice-r1",
       "status": "HOST_ERROR",
       "reason": "incomplete renderer-only closure lacked frozen colour JSON",
-      "fixed": "use existing complete mapbuild4-vision597 closure"
+      "fixed": "use existing complete mapbuild4-vision597 closure",
+      "category": "runtime_or_evaluation",
+      "blocked_object": "not_observed_runtime_dependency",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
     },
     {
       "id": "practice-r2",
       "status": "HOST_ERROR",
       "reason": "practice symlink escaped strict own RGB root",
-      "fixed": "hardlink own JPEGs within practice root; guard unchanged"
+      "fixed": "hardlink own JPEGs within practice root; guard unchanged",
+      "category": "runtime_or_evaluation",
+      "blocked_object": "not_observed_runtime_dependency",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
     },
     {
       "id": "practice-r3",
@@ -34,9 +46,120 @@
     },
     {
       "id": "recording-r1",
-      "status": "RUNNING",
+      "status": "SUPERVISOR_STOP",
       "raw": "/home/ugrp/ugrp-sim/runs/mapbuild5/recording-r1",
-      "source_sha": "e57f7db31"
+      "source_sha": "e57f7db31",
+      "reason": "coordinator stopped noslip10 on native v1 user decision",
+      "stopped_utc": "2026-10-16T14:13:53Z",
+      "scope": "incomplete, not a defect; excluded from comparisons",
+      "category": "supervisor_stop",
+      "blocked_object": "not_observed_runtime_dependency",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "id": "native-preparation-r1",
+      "status": "HOST_ERROR",
+      "reason": "partial analysis closure missing map catalog; no new physics started",
+      "blocked_object": "map catalog dependency",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured",
+      "category": "runtime_or_evaluation"
+    },
+    {
+      "id": "native-preparation-r2",
+      "status": "HOST_ERROR",
+      "reason": "partial analysis closure missing environment registry; no new physics started",
+      "fixed": "full proven renderer source plus byte-identical frozen vision supplement",
+      "blocked_object": "environment registry dependency",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured",
+      "category": "runtime_or_evaluation"
+    },
+    {
+      "id": "recording-r2",
+      "status": "cap_end",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild5/recording-r2",
+      "source_sha": "4269ece0550b97ab6e3403d24cee50389e9664ee",
+      "contact_profile": "warp_native_contact_v1",
+      "frames": 401,
+      "metadata_source_sha": "f83a57de1e5b996cd6f9d07008230f942bfaaa7e",
+      "metadata_recovery": "finished saved MJWarp physics/RGB; no new integration",
+      "original_writer_status": "HOST_ERROR: mapbuild2 v122 cannot represent 400ms pulses"
+    },
+    {
+      "id": "original-native-pipeline",
+      "status": "HOST_ERROR",
+      "reason": "recorder ended before metadata completion; monitor exited without retry",
+      "category": "runtime_or_evaluation",
+      "blocked_object": "not_observed_runtime_dependency",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "id": "analysis-r2",
+      "status": "PARTIAL_EVALUATION",
+      "reason": "all predictions sealed; primary metrics written; extended evaluator imported old render profile registry",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild5/analysis-r2",
+      "category": "runtime_or_evaluation",
+      "blocked_object": "not_observed_runtime_dependency",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "id": "evaluation-c1",
+      "status": "HOST_ERROR",
+      "reason": "strict XML identity rejected base noslip10 reconstruction",
+      "source_sha": "04f4cada77819d0d4c8a4c1ef3eb96835dede452",
+      "category": "runtime_or_evaluation",
+      "blocked_object": "not_observed_runtime_dependency",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "id": "evaluation-c2",
+      "status": "HOST_ERROR",
+      "reason": "strict XML identity rejected byte-identical source at different asset absolute paths",
+      "source_sha": "d33298ac75d3f30ac60843de5c65e060a9df2253",
+      "category": "runtime_or_evaluation",
+      "blocked_object": "not_observed_runtime_dependency",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "id": "xml-source-diagnostic",
+      "status": "COMPLETED",
+      "reason": "original renderer root + unchanged native owner transform exactly reproduced dc71d389 XML"
+    },
+    {
+      "id": "evaluation-c3",
+      "status": "COMPLETED",
+      "reason": "sealed predictions unchanged; exact native XML, extended map evaluation and 401 camera forwards complete",
+      "source_sha": "a6a10a16aed40f9191e77bb8271741ecf922a600",
+      "raw": "/home/ugrp/ugrp-sim/runs/mapbuild5/evaluation-c3"
+    },
+    {
+      "id": "optional-plot",
+      "status": "HOST_ERROR",
+      "reason": "matplotlib not installed; optional plot omitted, numerical comparison and ffmpeg review complete",
+      "category": "runtime_or_evaluation",
+      "blocked_object": "not_observed_runtime_dependency",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "id": "summary-retrieval-1",
+      "status": "HOST_ERROR",
+      "reason": "media-final metadata was requested before optional figure phase finished; original files preserved",
+      "category": "runtime_or_evaluation",
+      "blocked_object": "not_observed_runtime_dependency",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "id": "summary-retrieval-2",
+      "status": "COMPLETED",
+      "reason": "summary and all47 review files hashes verified"
     }
   ]
 }

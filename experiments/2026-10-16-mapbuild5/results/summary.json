@@ -1,0 +1,285 @@
+{
+  "status": "EVALUATED_NOT_ADMITTED",
+  "termination": "cap_end",
+  "methods": {
+    "lk": {
+      "ate_xy_rmse_m": 0.02416382250044048,
+      "ate_xy_p95_m": 0.042050736057497116,
+      "ate_yaw_rmse_deg": 3.124388753290301,
+      "final_xy_error_m": 0.02735717317420845,
+      "map": {
+        "geometry": {
+          "wall": {
+            "predicted_n": 12,
+            "truth_n": 263,
+            "predicted_to_truth_m": {
+              "n": 12,
+              "p50": 0.0,
+              "p95": 0.10000000000000009,
+              "max": 0.10000000000000009
+            },
+            "truth_to_predicted_m": {
+              "n": 263,
+              "p50": 4.648655719667784,
+              "p95": 6.528779896056038,
+              "max": 6.800735254367722
+            },
+            "status": "measured"
+          },
+          "door": {
+            "predicted_n": 0,
+            "truth_n": 55,
+            "predicted_to_truth_m": {
+              "n": 0,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "truth_to_predicted_m": {
+              "n": 0,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "status": "unobserved"
+          },
+          "obstacle": {
+            "predicted_n": 0,
+            "truth_n": 0,
+            "predicted_to_truth_m": {
+              "n": 0,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "truth_to_predicted_m": {
+              "n": 0,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "status": "no_truth_target"
+          },
+          "destination": {
+            "predicted_n": 0,
+            "truth_n": 315,
+            "predicted_to_truth_m": {
+              "n": 0,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "truth_to_predicted_m": {
+              "n": 0,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "status": "unobserved"
+          }
+        },
+        "total_truth_cells": 2990,
+        "observed_truth_cells": 49,
+        "coverage": 0.016387959866220735,
+        "unknown_truth_cells": 2941,
+        "out_of_truth_cells": 4,
+        "occupied_tp": 8,
+        "occupied_fp": 0,
+        "occupied_fn_including_unknown": 255,
+        "occupied_iou": 0.030418250950570342,
+        "wrong_free_cells": 2,
+        "false_occupied_area_m2": 0.0,
+        "missed_occupied_area_m2": 2.5500000000000007,
+        "geometry_missing_false_counts": "grid confusion only; object instance identity not inferred from sample points"
+      }
+    },
+    "rbpf": {
+      "ate_xy_rmse_m": 0.020226373561907676,
+      "ate_xy_p95_m": 0.03332042787258373,
+      "ate_yaw_rmse_deg": 2.4335623762191285,
+      "final_xy_error_m": 0.03581574209779589,
+      "map": {
+        "geometry": {
+          "wall": {
+            "predicted_n": 15,
+            "truth_n": 263,
+            "predicted_to_truth_m": {
+              "n": 15,
+              "p50": 0.0,
+              "p95": 0.10000000000000009,
+              "max": 0.10000000000000009
+            },
+            "truth_to_predicted_m": {
+              "n": 263,
+              "p50": 4.6173585522460785,
+              "p95": 6.511528238439883,
+              "max": 6.800735254367722
+            },
+            "status": "measured"
+          },
+          "door": {
+            "predicted_n": 0,
+            "truth_n": 55,
+            "predicted_to_truth_m": {
+              "n": 0,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "truth_to_predicted_m": {
+              "n": 0,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "status": "unobserved"
+          },
+          "obstacle": {
+            "predicted_n": 0,
+            "truth_n": 0,
+            "predicted_to_truth_m": {
+              "n": 0,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "truth_to_predicted_m": {
+              "n": 0,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "status": "no_truth_target"
+          },
+          "destination": {
+            "predicted_n": 0,
+            "truth_n": 315,
+            "predicted_to_truth_m": {
+              "n": 0,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "truth_to_predicted_m": {
+              "n": 0,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "status": "unobserved"
+          }
+        },
+        "total_truth_cells": 2990,
+        "observed_truth_cells": 49,
+        "coverage": 0.016387959866220735,
+        "unknown_truth_cells": 2941,
+        "out_of_truth_cells": 6,
+        "occupied_tp": 9,
+        "occupied_fp": 0,
+        "occupied_fn_including_unknown": 254,
+        "occupied_iou": 0.034220532319391636,
+        "wrong_free_cells": 1,
+        "false_occupied_area_m2": 0.0,
+        "missed_occupied_area_m2": 2.5400000000000005,
+        "geometry_missing_false_counts": "grid confusion only; object instance identity not inferred from sample points"
+      }
+    }
+  },
+  "measured_path_m": 1.1335788559687114,
+  "lateral_roundtrip": {
+    "outbound_sim": [
+      19,
+      29
+    ],
+    "return_sim": [
+      29,
+      39
+    ],
+    "actual_outbound_m": 0.45333898803556477,
+    "actual_return_m": 0.4419515175866068,
+    "return_to_lateral_start_m": 0.015533129596297227
+  },
+  "return_scan_corrections": [
+    {
+      "t": 29.3,
+      "reason": "improved_proposal",
+      "sensor_update": true,
+      "before_xy_m": 0.025011849154741358,
+      "after_xy_m": 0.02767398841132435
+    },
+    {
+      "t": 30.3,
+      "reason": "improved_proposal",
+      "sensor_update": true,
+      "before_xy_m": 0.02318737662473491,
+      "after_xy_m": 0.023468293149277744
+    },
+    {
+      "t": 31.3,
+      "reason": "improved_proposal",
+      "sensor_update": true,
+      "before_xy_m": 0.018220677613462452,
+      "after_xy_m": 0.02928842315599243
+    },
+    {
+      "t": 32.3,
+      "reason": "improved_proposal",
+      "sensor_update": true,
+      "before_xy_m": 0.029328217447750538,
+      "after_xy_m": 0.029602044625722756
+    },
+    {
+      "t": 33.3,
+      "reason": "improved_proposal",
+      "sensor_update": true,
+      "before_xy_m": 0.030829548531730668,
+      "after_xy_m": 0.013672120767160062
+    },
+    {
+      "t": 34.3,
+      "reason": "improved_proposal",
+      "sensor_update": true,
+      "before_xy_m": 0.0198027655205232,
+      "after_xy_m": 0.02884221855370393
+    },
+    {
+      "t": 35.3,
+      "reason": "improved_proposal",
+      "sensor_update": true,
+      "before_xy_m": 0.0316859136120335,
+      "after_xy_m": 0.019404765116411253
+    },
+    {
+      "t": 36.3,
+      "reason": "improved_proposal",
+      "sensor_update": true,
+      "before_xy_m": 0.02114655634404231,
+      "after_xy_m": 0.02030452940702466
+    },
+    {
+      "t": 37.3,
+      "reason": "improved_proposal",
+      "sensor_update": true,
+      "before_xy_m": 0.022817911780345267,
+      "after_xy_m": 0.019651421997757195
+    },
+    {
+      "t": 38.3,
+      "reason": "improved_proposal",
+      "sensor_update": true,
+      "before_xy_m": 0.027559526210616105,
+      "after_xy_m": 0.03416650117756111
+    },
+    {
+      "t": 39.3,
+      "reason": "improved_proposal",
+      "sensor_update": true,
+      "before_xy_m": 0.041033505988733905,
+      "after_xy_m": 0.03620058892707652
+    }
+  ],
+  "input_audit": {
+    "truth_opened_after_prediction_seal": true
+  },
+  "limits": "single fixed stimulus/scene/host, unloaded FOLDED only; static raster excludes dynamic cargo; no task/arrival success"
+}

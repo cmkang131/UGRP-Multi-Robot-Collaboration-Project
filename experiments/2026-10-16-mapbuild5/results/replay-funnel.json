@@ -1,0 +1,67 @@
+{
+  "raw": "/home/ugrp/ugrp-sim/runs/mapbuild5/recording-r2",
+  "reproduction": [
+    "/home/ugrp/ugrp-sim/src/mapbuild5-f83a57de1/scripts/mapbuild5_replay.py",
+    "--mapbuild-rbpf-v1",
+    "--input",
+    "/home/ugrp/ugrp-sim/runs/mapbuild5/recording-r2",
+    "--vision",
+    "/home/ugrp/ugrp-sim/src/mapbuild5b-complete-vision597",
+    "--calibration",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild5/native-motion-distribution.json",
+    "--queue",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild5/analysis-queue-native-r2-finalize.json",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/mapbuild5/analysis-r2"
+  ],
+  "stages": [
+    {
+      "stage": "frames",
+      "cumulative_pass_n": 401,
+      "rejected_n": 0
+    },
+    {
+      "stage": "visible_scan",
+      "cumulative_pass_n": 401,
+      "rejected_n": 0
+    },
+    {
+      "stage": "inserted_keyframe",
+      "cumulative_pass_n": 40,
+      "rejected_n": 361
+    }
+  ],
+  "motion_reasons": {
+    "bootstrap": 1,
+    "unknown_rigid_consensus": 10,
+    "measured": 390
+  },
+  "column_funnel": [
+    {
+      "stage": "input_columns",
+      "cumulative_pass_n": 38496,
+      "rejected_n": 0
+    },
+    {
+      "stage": "returned_contacts",
+      "cumulative_pass_n": 38496,
+      "rejected_n": 0
+    }
+  ],
+  "column_reasons": {
+    "returned_wall_floor_contact": 38496
+  },
+  "reasons": {
+    "unsettled": 3,
+    "bootstrap": 1,
+    "sim_keyframe_interval": 358,
+    "improved_proposal": 39
+  },
+  "work": {
+    "particles": 30,
+    "scans": 401,
+    "proposal_candidates": 1675440,
+    "colour_line_pair_checks": 1828560
+  },
+  "rejection_fields": "scans.json and events.json: reason/blocked_object/minimum_gap_m/gap_status"
+}

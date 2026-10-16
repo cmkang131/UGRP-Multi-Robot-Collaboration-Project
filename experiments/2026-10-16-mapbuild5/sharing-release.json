@@ -1,0 +1,42 @@
+{
+  "path": "/home/ugrp/ugrp-sim/runs/mapbuild5/evaluation-c3/manifest-evaluation-release.json",
+  "sha256": "8ff6dbaf090a555b9ed52e1a6d251567b010df79913021fc60c0ade66a6fd458",
+  "camera": {
+    "path": "/home/ugrp/ugrp-sim/runs/mapbuild5/evaluation-c3/camera-evaluation-only.json",
+    "sha256": "19fc82be265f9d371c63d6f08671591b025ecb02a9e932d7891b72b9dcec41b8"
+  },
+  "trajectory": {
+    "path": "/home/ugrp/ugrp-sim/runs/mapbuild5/analysis-r2/trajectory.json",
+    "sha256": "a7865b9ac2b494522de73d0472824c88e899e62a979f1bc9fb7a65f5ec7606a5"
+  },
+  "estimated_cameras": {
+    "path": "/home/ugrp/ugrp-sim/runs/mapbuild5/evaluation-c3/estimated-cameras.json",
+    "sha256": "3ef8583dfe346818c6c9d641511ffc7c3093a1d439c591626c55c66e5e75cbf7"
+  },
+  "integrity": {
+    "utc": "2026-10-16T14:47:26.954940+00:00",
+    "raw_files": 1217,
+    "raw_mismatches": [],
+    "shared_files": 416,
+    "shared_mismatches": [],
+    "prediction_files": 6,
+    "predictions_unchanged": true,
+    "particle_reasons": {
+      "bootstrap": 30,
+      "improved_proposal": 1170
+    },
+    "resamples": 22,
+    "reason": "offline analysis only; no physical rerun"
+  },
+  "return_summary": {
+    "common_nearest_walls": [
+      "wall_west"
+    ],
+    "matching_attempts": 11,
+    "improved_xy": 5,
+    "worsened_xy": 6,
+    "mean_before_m": 0.026420349893519476,
+    "mean_after_m": 0.025661354117182903,
+    "scope": "XY error only at return updates; nearest wall identity is evaluation-only, not loop admission"
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "source_sha": "4269ece0550b97ab6e3403d24cee50389e9664ee",
+  "source": "/home/ugrp/ugrp-sim/src/mapbuild5-4269ece05",
+  "source_file_count": 15720,
+  "motion_command": [
+    "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+    "/home/ugrp/ugrp-sim/src/mapbuild5-4269ece05/scripts/mapbuild5_motion.py",
+    "--vision",
+    "/home/ugrp/ugrp-sim/src/mapbuild5b-complete-vision597",
+    "--base",
+    "/home/ugrp/ugrp-sim/runs/mapbuild4",
+    "--output",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild5/native-motion-distribution.json"
+  ],
+  "recording_command": [
+    "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+    "/home/ugrp/ugrp-sim/src/mapbuild5-4269ece05/scripts/mapbuild5_capture.py",
+    "--mapbuild5-recording-v1",
+    "--renderer-source",
+    "/home/ugrp/ugrp-sim/src/drivecheck-renderer-5974a181",
+    "--renderer-receipt",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild3/renderer-receipt.json",
+    "--fixture",
+    "/home/ugrp/ugrp-sim/runs/mapbuild3/prepare-r1b",
+    "--queue",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild5/queue-native-r2.json",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/mapbuild5/recording-r2"
+  ],
+  "pipeline_command": [
+    "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+    "/home/ugrp/ugrp-sim/src/mapbuild5-4269ece05/scripts/mapbuild5_pipeline.py",
+    "--input",
+    "/home/ugrp/ugrp-sim/runs/mapbuild5/recording-r2",
+    "--source",
+    "/home/ugrp/ugrp-sim/src/mapbuild5-4269ece05",
+    "--vision",
+    "/home/ugrp/ugrp-sim/src/mapbuild5b-complete-vision597",
+    "--calibration",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild5/native-motion-distribution.json",
+    "--queue",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild5/analysis-queue-native-r2.json",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/mapbuild5/analysis-r2",
+    "--status",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild5/pipeline-native-r2-status.json",
+    "--recorder-pid",
+    "5305"
+  ],
+  "recording_pid": 5305,
+  "pipeline_pid": 5306,
+  "lease": {
+    "task": "mapbuild5",
+    "pid": 5305,
+    "started": "2026-10-16T14:20:14.235040+00:00",
+    "expected_end": "finite SIM40 recording + replay and mast3rcmp ACK; no wall cap",
+    "concurrency": 1,
+    "host": "gcp5",
+    "phase": "recording-native-v1"
+  },
+  "calibration_sha256": "c8400547e9c50e4e6e76291c2a1c5048895ced83c39d43c1c2ac293d1f550b99"
+}

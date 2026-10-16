@@ -1,0 +1,153 @@
+{
+  "raw": "/home/ugrp/ugrp-sim/runs/mapbuild5/recording-r2",
+  "reproduction": [
+    "/home/ugrp/ugrp-sim/src/mapbuild5-f83a57de1/scripts/mapbuild5_replay.py",
+    "--mapbuild-rbpf-v1",
+    "--input",
+    "/home/ugrp/ugrp-sim/runs/mapbuild5/recording-r2",
+    "--vision",
+    "/home/ugrp/ugrp-sim/src/mapbuild5b-complete-vision597",
+    "--calibration",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild5/native-motion-distribution.json",
+    "--queue",
+    "/home/ugrp/ugrp-sim/ops-reviews/mapbuild5/analysis-queue-native-r2-finalize.json",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/mapbuild5/analysis-r2"
+  ],
+  "stages": [
+    {
+      "stage": "frames",
+      "cumulative_pass_n": 401,
+      "rejected_n": 0
+    },
+    {
+      "stage": "visible_scan",
+      "cumulative_pass_n": 401,
+      "rejected_n": 0
+    },
+    {
+      "stage": "inserted_keyframe",
+      "cumulative_pass_n": 40,
+      "rejected_n": 361
+    }
+  ],
+  "motion_reasons": {
+    "bootstrap": 1,
+    "unknown_rigid_consensus": 10,
+    "measured": 390
+  },
+  "column_funnel": [
+    {
+      "stage": "input_columns",
+      "cumulative_pass_n": 38496,
+      "rejected_n": 0
+    },
+    {
+      "stage": "returned_contacts",
+      "cumulative_pass_n": 38496,
+      "rejected_n": 0
+    }
+  ],
+  "column_reasons": {
+    "returned_wall_floor_contact": 38496
+  },
+  "reasons": {
+    "unsettled": 3,
+    "bootstrap": 1,
+    "sim_keyframe_interval": 358,
+    "improved_proposal": 39
+  },
+  "work": {
+    "particles": 30,
+    "scans": 401,
+    "proposal_candidates": 1675440,
+    "colour_line_pair_checks": 1828560
+  },
+  "rejection_fields": "scans.json and events.json: reason/blocked_object/minimum_gap_m/gap_status",
+  "sequential_frame_funnel": [
+    {
+      "stage": "saved_input",
+      "cumulative_pass_n": 401,
+      "rejected_n": 0
+    },
+    {
+      "stage": "visible_scan",
+      "cumulative_pass_n": 401,
+      "rejected_n": 0
+    },
+    {
+      "stage": "settled",
+      "cumulative_pass_n": 398,
+      "rejected_n": 3
+    },
+    {
+      "stage": "sim_keyframe_eligible",
+      "cumulative_pass_n": 40,
+      "rejected_n": 358
+    },
+    {
+      "stage": "inserted",
+      "cumulative_pass_n": 40,
+      "rejected_n": 0
+    }
+  ],
+  "bootstrap_and_matching_branches": {
+    "bootstrap": 1,
+    "matching": 39,
+    "matched": 39,
+    "rejected_matching": 0
+  },
+  "particle_branch": {
+    "bootstrap": 30,
+    "improved_proposal": 1170,
+    "matching_rejected": 0
+  },
+  "evaluation_attempt_funnel": [
+    {
+      "stage": "native_evaluation_attempt",
+      "cumulative_pass_n": 3,
+      "rejected_n": 0
+    },
+    {
+      "stage": "exact_native_xml",
+      "cumulative_pass_n": 1,
+      "rejected_n": 2
+    },
+    {
+      "stage": "completed_extended_evaluation",
+      "cumulative_pass_n": 1,
+      "rejected_n": 0
+    }
+  ],
+  "source_funnel": {
+    "path": "/home/ugrp/ugrp-sim/runs/mapbuild5/analysis-r2/rejection_table.json",
+    "sha256": "0a88f7a87dc66e81f04499b2b907f39a158972bad8b9602fe87f9ffcaa04150b",
+    "note": "downloaded replay JSON preserved as results/replay-funnel.json; additional sequential fields are local summary only"
+  },
+  "gate_rejections": [
+    {
+      "reason": "unsettled",
+      "category": "settling",
+      "count": 3,
+      "blocked_object": "not_observed",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "reason": "sim_keyframe_interval",
+      "category": "sim_schedule",
+      "count": 358,
+      "blocked_object": "not_observed",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    },
+    {
+      "reason": "unknown_rigid_consensus",
+      "category": "visual_motion",
+      "count": 10,
+      "blocked_object": "not_observed",
+      "minimum_gap_m": null,
+      "gap_status": "not_measured"
+    }
+  ]
+}
