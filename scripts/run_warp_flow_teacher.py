@@ -76,7 +76,7 @@ def parser():
     p.add_argument('--native-sleep-policy-compat-v1',action='store_true')
     p.add_argument('--placement-graspable-filter-v1',action='store_true')
     p.add_argument('--gcp3-isolated-v1',action='store_true',help='explicit warp6 L4 host admission; default OFF')
-    p.add_argument('--batch-per-world-speed-v1',action='store_true',help='warp8 recording: batch wall / sum of world SIM seconds; default OFF')
+    p.add_argument('--batch-per-world-speed-v1',action='store_true',help='warp8 admission recording: batch wall / (batch SIM * world count); task throughput separate; default OFF')
     p.add_argument('--rejection-table',type=Path,help='absolute existing prior funnel for the warp8 gate')
     p.add_argument('--warp-debug-v1',action='store_true',help='Warp bounds checks and CUDA line information; default OFF')
     p.add_argument('--warp-workspace-trace-v1',action='store_true',help='synchronize and persist allocations after each existing graph chunk; default OFF')
