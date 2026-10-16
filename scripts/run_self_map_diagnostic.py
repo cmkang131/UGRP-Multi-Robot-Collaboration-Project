@@ -335,7 +335,7 @@ def acquire(out, b, backend_factory, *, controller_factory=make_executor, wall_c
                     record_backend_frame(failure_frames,backend,robot)
                     if playback is not None:playback.observe(backend.now)
                 backend.advance_to(round(start+(tick+1)*interval, 9))
-        result.update(status='HOST_ERROR' if controller.stop_reason == 'selfmap4_relocalization_exhausted' else 'RECORDED', elapsed_sim_s=backend.now-start,
+        result.update(status='CONTROLLER_FAILURE' if controller.stop_reason == 'selfmap4_relocalization_exhausted' else 'RECORDED', elapsed_sim_s=backend.now-start,
             termination_category='cap_end' if controller.stop_reason == 'sim_time_cap' else controller.stop_reason,
             stop_reason=controller.stop_reason, complete=controller.stop_reason == 'self_map_complete')
         ledger, _ = rows(out/f'robots/{robot}/frames.jsonl')

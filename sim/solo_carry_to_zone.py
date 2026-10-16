@@ -254,6 +254,10 @@ class CarryToZone:
         if not self.loc.ready(now):
             self.failure = 'carry_self_pose_unavailable'
             return
+        if hasattr(self,'reloc21_nav'):
+            if not self.reloc21_nav.select(now,grip_xy):
+                self.failure='carry_no_static_route'
+            return
         # Fixed map slot candidates, nearest reachable stand-off first. No
         # pickup position or current cargo world position is consulted.
         discs = self.obstacles.discs(now)
@@ -292,13 +296,19 @@ class CarryToZone:
     def step(self, now):
         if getattr(self,'reloc20_stall',None) is not None and self.reloc20_stall.recovering:
             from harness.reloc20_motion import guard
+            if hasattr(self,'reloc21_nav') and not getattr(self.reloc21_nav,'backing',False):
+                self.reloc21_nav.failed(now,'rgb_stationary_backup_replan',dict(blocked_object='unidentified_own_rgb_stall',minimum_gap_m=None,gap_scope='not_applicable_image_evidence'))
+                self.reloc21_nav.backing=True
             return guard(self,(0.,0.,0.),now), False, None
+        if hasattr(self,'reloc21_nav'):self.reloc21_nav.backing=False
         if self.active_recovery and self.needs_recovery(now):
             return (0., 0., 0.), False, self.failure
         if self.failure:
             return (0., 0., 0.), False, self.failure
         if not self.loc.ready(now):
             return (0., 0., 0.), False, 'carry_self_pose_stale'
+        if hasattr(self,'reloc21_nav'):
+            return self.reloc21_nav.step(now)
         pose = self.loc.pose
         discs = self.obstacles.discs(now)
         if self.active_recovery and (self.goal is None or not free(self.goal, discs, self.rects, self.radius)):
@@ -463,6 +473,7 @@ class CarryToZone:
 
     def record(self):
         return {'toggle': OPTION, 'destination_zone': self.zone, 'slot_xy': self.slot,
+                **({'reloc21_progress':self.reloc21_nav.record()} if hasattr(self,'reloc21_nav') else {}),
                 **({'reloc20_motion':dict(heading_forward=getattr(self,'reloc20_heading',False),
                     footprint=None if getattr(self,'reloc20_route',None) is None else self.reloc20_route.record(),
                     stall=None if getattr(self,'reloc20_stall',None) is None else self.reloc20_stall.record(),

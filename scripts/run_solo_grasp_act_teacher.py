@@ -207,6 +207,8 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
                                 carry_pose_budget_xy_reserve0_v1=plan.get('carry_pose_budget_xy_reserve0_v1', False))
             from harness.reloc20_motion import install as install_reloc20
             install_reloc20(carry,plan)
+            from harness.reloc21_progress import install as install_reloc21
+            install_reloc21(carry,plan)
             if plan.get('destination_visual_acquire_v1',False):
                 from sim.destination_visual_acquire import DestinationAcquire
                 carry.destination_acquire=DestinationAcquire(carry,camera_pan=plan.get('destination_camera_pan_v1',False),
@@ -488,6 +490,7 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
                 **({'map_pose': map_evidence, 'destination_floor_visible': place_visible,
                     'pickup_search': teacher.pickup_search.record(),
                     'carry_obstacles': carry.obstacles.record(),
+                    **({'reloc21_progress':carry.reloc21_nav.record()['last']} if hasattr(carry,'reloc21_nav') else {}),
                     **({'reloc20_motion':dict(
                         footprint=None if carry.reloc20_route is None else carry.reloc20_route.last,
                         stall=None if carry.reloc20_stall is None else carry.reloc20_stall.last)}
