@@ -46,7 +46,7 @@ def main():
         sha=hashlib.sha256(native.encode()).hexdigest()
         folder=a.out/'references'/sha;folder.mkdir(parents=True)
         path=folder/'scene.xml';path.write_text(native)
-        model=mujoco.MjModel.from_xml_path(str(path))
+        model=mujoco.MjModel.from_xml_string(native)
         ref=export_reference(model,path,mujoco.__version__,folder/'compiled-312.json')
         geo=export_geometry(model,path,mujoco.__version__,folder/'compiled-geometry312.npz')
         before=json.loads(Path(previous['actuator']).read_text())
