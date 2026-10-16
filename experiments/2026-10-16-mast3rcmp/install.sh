@@ -12,6 +12,9 @@ PY
 exec > >(tee -a "$ROOT/install.log") 2>&1
 export PATH=/usr/local/cuda-12.9/bin:$PATH
 export CUDA_HOME=/usr/local/cuda-12.9
+sudo env DEBIAN_FRONTEND=noninteractive apt-get update
+sudo env DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential python3.12-dev
+command -v c++ nvcc
 export MAX_JOBS=4
 export TORCH_CUDA_ARCH_LIST=8.9
 export GIT_LFS_SKIP_SMUDGE=1
