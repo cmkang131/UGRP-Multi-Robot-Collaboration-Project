@@ -1,0 +1,1713 @@
+{
+  "dataset": {
+    "path": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset",
+    "manifest_sha256": "314539e8d815eee17dcc8bbf488afaefca18e4fe6cb425ff5bd98b5dcd407b64",
+    "bytes": 5804766891,
+    "episodes": 70,
+    "rows": {
+      "train": 22852,
+      "validation": 1847
+    },
+    "dagger_rows": 6161
+  },
+  "audit": {
+    "raw": "/home/ugrp/ugrp-sim/act15-1535c8a3/dataset-audit.json",
+    "sha256": "2fc6e1a00c935dd8d74aa26dca930346c2e185d797e2a7ecd87400a9905d784e",
+    "audit": {
+      "complete": true,
+      "base_manifest_sha256": "d3e95a6a2db12a72cf5be0d97685a3a9d529c89512a66eb97f6b5d95c5dcd351",
+      "manifest_sha256": "314539e8d815eee17dcc8bbf488afaefca18e4fe6cb425ff5bd98b5dcd407b64",
+      "new_seeds": [
+        87020,
+        87021,
+        87022,
+        87023,
+        87024,
+        87025,
+        87026,
+        87027,
+        87028,
+        87029,
+        87030,
+        87031,
+        87032,
+        87033,
+        87034,
+        87035,
+        87036,
+        87037,
+        87038,
+        87039
+      ],
+      "rows": {
+        "train": 22852,
+        "validation": 1847
+      },
+      "audits": [
+        {
+          "seed": 87020,
+          "rows_all_audited": 900,
+          "rows_labelled": 248,
+          "shadow_audit": {
+            "rows": 900,
+            "input_audit": {
+              "invisible_measurements": 0,
+              "held_world_reads": 0,
+              "blocked_hidden": 899,
+              "blocked_held": 0,
+              "measurements_by_phase": {
+                "start": 1
+              },
+              "scope": "decision input boundary only; evaluation excluded"
+            },
+            "replay_rgb_and_issued_exact": null,
+            "labels_after_hover_invalid": true,
+            "teacher_actions_executed": 0
+          },
+          "source_hashes": {
+            "raw/summary.json.zst": "d1ba77b6d75d353f3184f839464aad3b06d994150e1ae26a6f4c9d6d89620bf9",
+            "raw/shadow-progress.json": "6924a4aa20d2b97e191918d07d5d76ce3c8decca22b04f2a3506434839c27d2f",
+            "raw/shadow-labels.jsonl.zst": "1783cd5691ba1faab3eb3bc33d40a67c145ebe4845412b3498ce032b9dc0b234",
+            "raw/student-inputs.jsonl.zst": "a8a621ce21492646d6b359e4fccd35934e470c9126ab4faccf6a9c6be1a056eb",
+            "raw/commands.jsonl.zst": "2e647dee06f59a1315fc53b1d27a3197bae3f2fd222b5a4e051b2afa84c7649b",
+            "raw/plan.json": "4db350ec360e970582f2e3bb9187f437fc3474c82cdb868a21a395e4c33e120f"
+          }
+        },
+        {
+          "seed": 87021,
+          "rows_all_audited": 183,
+          "rows_labelled": 183,
+          "shadow_audit": {
+            "rows": 183,
+            "input_audit": {
+              "invisible_measurements": 0,
+              "held_world_reads": 0,
+              "blocked_hidden": 112,
+              "blocked_held": 0,
+              "measurements_by_phase": {
+                "start": 1,
+                "fold": 6,
+                "approach": 64
+              },
+              "scope": "decision input boundary only; evaluation excluded"
+            },
+            "replay_rgb_and_issued_exact": null,
+            "labels_after_hover_invalid": true,
+            "teacher_actions_executed": 0
+          },
+          "source_hashes": {
+            "raw/summary.json": "6a0d873c05b73a77a1675b441b1e511f5d7909d0f5783d01becefa50cf11f164",
+            "raw/shadow-progress.json": "e420866a9307ea0775010de05b709e9166bd33c35d801ba7a2702b15e948d5ff",
+            "raw/shadow-labels.jsonl.zst": "ef0c1196bd5575f6b818cbc35d47721010ec64a27e27401be5311f89f1176375",
+            "raw/student-inputs.jsonl.zst": "f9a376f28754d5113b38a82074ff3dc88f3a04cdaa4e28fc52817a147b2c4409",
+            "raw/commands.jsonl": "44812d04d673ed49f15100fef8fc87549db73c5ee6fc78d464304f29b6ab6a9a",
+            "raw/plan.json": "8fa2086b96f32dc90e8100a857924f008e6ffdfd11c10cad63667f8f2c1b81d2"
+          }
+        },
+        {
+          "seed": 87022,
+          "rows_all_audited": 900,
+          "rows_labelled": 258,
+          "shadow_audit": {
+            "rows": 900,
+            "input_audit": {
+              "invisible_measurements": 0,
+              "held_world_reads": 0,
+              "blocked_hidden": 690,
+              "blocked_held": 0,
+              "measurements_by_phase": {
+                "start": 1,
+                "fold": 6,
+                "approach": 61,
+                "align": 89,
+                "relook": 53
+              },
+              "scope": "decision input boundary only; evaluation excluded"
+            },
+            "replay_rgb_and_issued_exact": null,
+            "labels_after_hover_invalid": true,
+            "teacher_actions_executed": 0
+          },
+          "source_hashes": {
+            "raw/summary.json.zst": "7b49543336d4a74f15de59618295608060afbc5f30da73fe7defb3a34898df15",
+            "raw/shadow-progress.json": "f7247d66e49ca27e12fd4a2f59100d2ea409a6f3a5a3d9607f35b50535aab4e6",
+            "raw/shadow-labels.jsonl.zst": "1a6bd8870afdeecb50dc4c733524d178f6f2c970595c05f74cdd7447d3629fde",
+            "raw/student-inputs.jsonl.zst": "8274f97b0ae0614fe3e3335f4e6174c251b5f6e6d5f48d634d606f0fc843d4a4",
+            "raw/commands.jsonl.zst": "3db9d74c45f83cf55d103e6009f5a22deb0ae7eca32e1e8fd0d05e4dadb0748e",
+            "raw/plan.json": "bc447c4d5d448b8a9e3c6f5a60fa4a00ca59ce31201f24a8c9c653884470d8c2"
+          }
+        },
+        {
+          "seed": 87023,
+          "rows_all_audited": 900,
+          "rows_labelled": 607,
+          "shadow_audit": {
+            "rows": 900,
+            "input_audit": {
+              "invisible_measurements": 0,
+              "held_world_reads": 0,
+              "blocked_hidden": 324,
+              "blocked_held": 0,
+              "measurements_by_phase": {
+                "start": 1,
+                "fold": 6,
+                "approach": 569
+              },
+              "scope": "decision input boundary only; evaluation excluded"
+            },
+            "replay_rgb_and_issued_exact": null,
+            "labels_after_hover_invalid": true,
+            "teacher_actions_executed": 0
+          },
+          "source_hashes": {
+            "raw/summary.json.zst": "16db6d4fcb421f954e318386cdf8816e6d24ebe7a2525f0f2e30c3b1701ca4dd",
+            "raw/shadow-progress.json": "9bb5029a64cea199c1efb73b4787e24d6130c673aed7d65d9935643e660cad37",
+            "raw/shadow-labels.jsonl.zst": "d3d20b414b4a30effb49105c1ae3bc99eb1911ae0709489f0948eb4a21321c9f",
+            "raw/student-inputs.jsonl.zst": "99c50326bd24dbd607cd3520fd8eac8dbefd613647e47c748005c15ca0b9285a",
+            "raw/commands.jsonl.zst": "977befcfa051c018fc028a91e2c96b5d1725cd1f6a2cac23c5a75cc12ad21c52",
+            "raw/plan.json": "e7c730baa65b53e0bd67e477f05d0f9aa5ea41e4d0f36649da016f71d3015ab3"
+          }
+        },
+        {
+          "seed": 87024,
+          "rows_all_audited": 900,
+          "rows_labelled": 258,
+          "shadow_audit": {
+            "rows": 900,
+            "input_audit": {
+              "invisible_measurements": 0,
+              "held_world_reads": 0,
+              "blocked_hidden": 883,
+              "blocked_held": 0,
+              "measurements_by_phase": {
+                "start": 1,
+                "fold": 6,
+                "approach": 10
+              },
+              "scope": "decision input boundary only; evaluation excluded"
+            },
+            "replay_rgb_and_issued_exact": null,
+            "labels_after_hover_invalid": true,
+            "teacher_actions_executed": 0
+          },
+          "source_hashes": {
+            "raw/summary.json.zst": "285d79e61d17dc82f881182e27d83bf593fd794177f97cd0f67dec72799b8413",
+            "raw/shadow-progress.json": "39be82f461c3b411d026d922fdabcfea8057895fbb06b4a469a3649b286d4e1e",
+            "raw/shadow-labels.jsonl.zst": "a33452c46566b73f6f792be76c8078625beecacaa4d3b706480658e20ad1888c",
+            "raw/student-inputs.jsonl.zst": "b6d354f2e6bf1e8ce4c4a4ad4d66f1a465ace6818e3f09950223fcc4cb258453",
+            "raw/commands.jsonl.zst": "2e45bae2262f4492851df28469dd4c5cdfe96368bb829ce80a3ec0d575b95f72",
+            "raw/plan.json": "c03cf2f8b308c8e86f661851ed6b74855f9b2669afc76b963b1667cec911e76e"
+          }
+        },
+        {
+          "seed": 87025,
+          "rows_all_audited": 900,
+          "rows_labelled": 288,
+          "shadow_audit": {
+            "rows": 900,
+            "input_audit": {
+              "invisible_measurements": 0,
+              "held_world_reads": 0,
+              "blocked_hidden": 853,
+              "blocked_held": 0,
+              "measurements_by_phase": {
+                "start": 1,
+                "fold": 6,
+                "approach": 40
+              },
+              "scope": "decision input boundary only; evaluation excluded"
+            },
+            "replay_rgb_and_issued_exact": null,
+            "labels_after_hover_invalid": true,
+            "teacher_actions_executed": 0
+          },
+          "source_hashes": {
+            "raw/summary.json.zst": "218a177ed16e0d16af2bc94265ce4d282f455bb61ca0afa9eefc089bae84b24c",
+            "raw/shadow-progress.json": "d68dd2a66959de31997d3251a3fdd8f54f91e9c2cd2c0277fce4c12b71857251",
+            "raw/shadow-labels.jsonl.zst": "b20e351aadfc021c19eee528d2ae8a26394e69a26163bdeae0fd148f5d088d2b",
+            "raw/student-inputs.jsonl.zst": "bc731065cc22d2d390c7c76f2b84bd884071835ecd4e528714e101955288fa7d",
+            "raw/commands.jsonl.zst": "3c355536d65b492632760d855c56e584df6efde61e324449abf5344da20ca1c9",
+            "raw/plan.json": "2f61927453aef2195a8d00bc34c082f943391b1cc03df4712042e235762dd6d3"
+          }
+        },
+        {
+          "seed": 87026,
+          "rows_all_audited": 900,
+          "rows_labelled": 274,
+          "shadow_audit": {
+            "rows": 900,
+            "input_audit": {
+              "invisible_measurements": 0,
+              "held_world_reads": 0,
+              "blocked_hidden": 644,
+              "blocked_held": 0,
+              "measurements_by_phase": {
+                "start": 1,
+                "fold": 6,
+                "approach": 100,
+                "align": 85,
+                "relook": 64
+              },
+              "scope": "decision input boundary only; evaluation excluded"
+            },
+            "replay_rgb_and_issued_exact": null,
+            "labels_after_hover_invalid": true,
+            "teacher_actions_executed": 0
+          },
+          "source_hashes": {
+            "raw/summary.json.zst": "445efb57199ca59cb9f7728ebaf6e61a754f1469cfe71ffeef15b01776cf6664",
+            "raw/shadow-progress.json": "2ee56aeb008ebb1be2758fa6cc37ec60079e71baf28ca19c633466f627ffbec0",
+            "raw/shadow-labels.jsonl.zst": "9456f14101e2a3adab0e905582b92fb45446e0fa8fe3f9e5f5105fdf4f2aca49",
+            "raw/student-inputs.jsonl.zst": "8cb2a4715e8f29c2c3c070f9aec50500d0751f1d0ccba0ee1f113c1e67bb0fc9",
+            "raw/commands.jsonl.zst": "8cd47722c33191787751c8692b3982b2713791a1e2bc430ad886d66ce574ba32",
+            "raw/plan.json": "2a2b2c0a4f19f6b37af78fef88d6847e91c264fd5a1f63ab7ece29aed04cbd47"
+          }
+        },
+        {
+          "seed": 87027,
+          "rows_all_audited": 272,
+          "rows_labelled": 272,
+          "shadow_audit": {
+            "rows": 272,
+            "input_audit": {
+              "invisible_measurements": 0,
+              "held_world_reads": 0,
+              "blocked_hidden": 94,
+              "blocked_held": 0,
+              "measurements_by_phase": {
+                "start": 1,
+                "fold": 6,
+                "approach": 36,
+                "align": 104,
+                "relook": 31
+              },
+              "scope": "decision input boundary only; evaluation excluded"
+            },
+            "replay_rgb_and_issued_exact": null,
+            "labels_after_hover_invalid": true,
+            "teacher_actions_executed": 0
+          },
+          "source_hashes": {
+            "raw/summary.json": "65bf73029097ec017c53045b3a98ca0736d3375f3b1698aef20439e224a1eb84",
+            "raw/shadow-progress.json": "79e8e0f532922c47ef9748531e654809b248f1b55180877768835166b8766918",
+            "raw/shadow-labels.jsonl.zst": "9aaad321b2c8f417a131b4a0d051dbd72b276b830ed6fad810304449a8b1b42c",
+            "raw/student-inputs.jsonl.zst": "a0bd8a5a9bd18dc9f5da5d0575576e75cb748228569acbad409af2e3c222cd8a",
+            "raw/commands.jsonl.zst": "cbd1fdff463989e0bf7280cbd2139e6c5cb2b2c3a8250a118b764dd96ed29b45",
+            "raw/plan.json": "fceb656fadf5f801239da96c4b4f3875115ccf044cbd8ce33416ed9684df625a"
+          }
+        },
+        {
+          "seed": 87028,
+          "rows_all_audited": 377,
+          "rows_labelled": 298,
+          "shadow_audit": {
+            "rows": 377,
+            "input_audit": {
+              "invisible_measurements": 0,
+              "held_world_reads": 0,
+              "blocked_hidden": 102,
+              "blocked_held": 0,
+              "measurements_by_phase": {
+                "start": 1,
+                "fold": 6,
+                "approach": 73,
+                "align": 129,
+                "relook": 66
+              },
+              "scope": "decision input boundary only; evaluation excluded"
+            },
+            "replay_rgb_and_issued_exact": null,
+            "labels_after_hover_invalid": true,
+            "teacher_actions_executed": 0
+          },
+          "source_hashes": {
+            "raw/summary.json": "342eca4bec4abc5a2800da5e87d2019b12b48da93b5647acb7e1546cc4a17ee7",
+            "raw/shadow-progress.json": "9d223c732d2667e36842a9299e88013286d8d81e591708dab4c7ebee77b5e661",
+            "raw/shadow-labels.jsonl.zst": "c79306bccfb6b03f010b61a16eb627331f52899755e942a320ff11351e810524",
+            "raw/student-inputs.jsonl.zst": "7392a00ab75ff5c53e7ea9c1eca1a43983eeb825e5cd18a6c3d2bf3d4ed9c8dd",
+            "raw/commands.jsonl.zst": "29ecd5d25448b2a59ec4278677fa085ed8c2525494b4f0e71d9a46406d049ae5",
+            "raw/plan.json": "78754e08d6212cdf939e2bab34840fa45523765228edecd4546cb84081cec0e6"
+          }
+        },
+        {
+          "seed": 87029,
+          "rows_all_audited": 423,
+          "rows_labelled": 338,
+          "shadow_audit": {
+            "rows": 423,
+            "input_audit": {
+              "invisible_measurements": 0,
+              "held_world_reads": 0,
+              "blocked_hidden": 326,
+              "blocked_held": 0,
+              "measurements_by_phase": {
+                "start": 1,
+                "fold": 6,
+                "approach": 90
+              },
+              "scope": "decision input boundary only; evaluation excluded"
+            },
+            "replay_rgb_and_issued_exact": null,
+            "labels_after_hover_invalid": true,
+            "teacher_actions_executed": 0
+          },
+          "source_hashes": {
+            "raw/summary.json": "614e4454a1f7332f2fda00211d34b2d3f5be8c108f0772eec8e040299325299d",
+            "raw/shadow-progress.json": "2f7633895873df084f84109ce9762d2bde267d10e6ff24aa4c88ed0f5b2b7c40",
+            "raw/shadow-labels.jsonl.zst": "b269b1e726909798321fdce7009fd953b318ea0f86bb4e49f3ae16fc3452177a",
+            "raw/student-inputs.jsonl.zst": "fe62f15620cf8962fd02c1db4d47c5d1d0c6b462f0e8881b752f3c536c1c3a93",
+            "raw/commands.jsonl.zst": "e3b2c3b07b30a5cd5e7482d9b2698a554dc3a4f3c515d36ee8b2689d512ad74b",
+            "raw/plan.json": "ce8287a35bdff6166233c4cb11abcbb75deadb134dcc4f5b7408e0d53855b2ea"
+          }
+        },
+        {
+          "seed": 87030,
+          "rows_all_audited": 296,
+          "rows_labelled": 296,
+          "shadow_audit": {
+            "rows": 296,
+            "input_audit": {
+              "invisible_measurements": 0,
+              "held_world_reads": 0,
+              "blocked_hidden": 98,
+              "blocked_held": 0,
+              "measurements_by_phase": {
+                "start": 1,
+                "fold": 6,
+                "approach": 81,
+                "align": 73,
+                "relook": 37
+              },
+              "scope": "decision input boundary only; evaluation excluded"
+            },
+            "replay_rgb_and_issued_exact": null,
+            "labels_after_hover_invalid": true,
+            "teacher_actions_executed": 0
+          },
+          "source_hashes": {
+            "raw/summary.json": "811dfc087c75f6c073d82b014a3efc367adfbf315df6e962dc680571b3bfa2fa",
+            "raw/shadow-progress.json": "c55f64d5dad4fb2932c7159c0e77384a9dd0a13ede197afb5f25508d494ba2c6",
+            "raw/shadow-labels.jsonl.zst": "d0e2a0fe6e39edce443aa8b069e8da9e0ce6019212e2b43d8f726f591bb48243",
+            "raw/student-inputs.jsonl.zst": "ffd890202e9a903dd01a4a763735f098a7d0d2500d445758b9f4fcc1a28535ec",
+            "raw/commands.jsonl.zst": "d846faf2b5003912284267d2e15bee8f9089ba673a1b5f63e6cb4d4c5f065a37",
+            "raw/plan.json": "434c740349778cf95dcabf3d9fb13f294ecd4fe56873ee815bdd86627c4ddb08"
+          }
+        },
+        {
+          "seed": 87031,
+          "rows_all_audited": 575,
+          "rows_labelled": 309,
+          "shadow_audit": {
+            "rows": 575,
+            "input_audit": {
+              "invisible_measurements": 0,
+              "held_world_reads": 0,
+              "blocked_hidden": 508,
+              "blocked_held": 0,
+              "measurements_by_phase": {
+                "start": 1,
+                "fold": 6,
+                "approach": 39,
+                "align": 21
+              },
+              "scope": "decision input boundary only; evaluation excluded"
+            },
+            "replay_rgb_and_issued_exact": null,
+            "labels_after_hover_invalid": true,
+            "teacher_actions_executed": 0
+          },
+          "source_hashes": {
+            "raw/summary.json": "e3927ede859fdf944a9f6a6861746734ef2c3bfc69da3dbf7b25f628dc4b3d02",
+            "raw/shadow-progress.json": "e4795a8630252579aa99f093ce1aaa6cf4011a92b2ad9a4bc549fcdd0dea8d1e",
+            "raw/shadow-labels.jsonl.zst": "5b198d1a8ec4ff6f934b489b85e96da2caa992eb0f1eb14c9bbe06bfee1fedeb",
+            "raw/student-inputs.jsonl.zst": "78bf1aa44fd4fabec2a806b3d12d53f3cf3bfb0d60b2ee00818753109802f985",
+            "raw/commands.jsonl.zst": "29dc476b2d36b87fc175491653d05836e450cf27d39714199da3c04f259c2415",
+            "raw/plan.json": "3c68b3a3f7f2d124b1178311399dd3c306b511dac91338a067c9152f3192eaf2"
+          }
+        },
+        {
+          "seed": 87032,
+          "rows_all_audited": 900,
+          "rows_labelled": 284,
+          "shadow_audit": {
+            "rows": 900,
+            "input_audit": {
+              "invisible_measurements": 0,
+              "held_world_reads": 0,
+              "blocked_hidden": 857,
+              "blocked_held": 0,
+              "measurements_by_phase": {
+                "start": 1,
+                "fold": 6,
+                "approach": 36
+              },
+              "scope": "decision input boundary only; evaluation excluded"
+            },
+            "replay_rgb_and_issued_exact": null,
+            "labels_after_hover_invalid": true,
+            "teacher_actions_executed": 0
+          },
+          "source_hashes": {
+            "raw/summary.json.zst": "c6fb0368449d3abba7a3d13615d8117ac435fe588ff6bbf8cce4167549d48cf5",
+            "raw/shadow-progress.json": "2b35aa494a2842978763d8a22937194beb9a28c6509aa6a4257dc7e2ef6f19c3",
+            "raw/shadow-labels.jsonl.zst": "0d5673ed1bd9f9004ae1d2f3c9b708bf81e365054596192a5025e6f6cc993b68",
+            "raw/student-inputs.jsonl.zst": "a03e790a39efa397e47f269cf940b07c4b59e7f23e63c16de38e48481ade7341",
+            "raw/commands.jsonl.zst": "1b62a5f6016f4975e05c389264b2b1880755693d28a1e5c8b24859535ab689cf",
+            "raw/plan.json": "a041eb6aee762eb4a8b184950f4ec4ecc6d4d36c068eeb79952056dde6954945"
+          }
+        },
+        {
+          "seed": 87033,
+          "rows_all_audited": 900,
+          "rows_labelled": 335,
+          "shadow_audit": {
+            "rows": 900,
+            "input_audit": {
+              "invisible_measurements": 0,
+              "held_world_reads": 0,
+              "blocked_hidden": 806,
+              "blocked_held": 0,
+              "measurements_by_phase": {
+                "start": 1,
+                "fold": 6,
+                "approach": 63,
+                "align": 24
+              },
+              "scope": "decision input boundary only; evaluation excluded"
+            },
+            "replay_rgb_and_issued_exact": null,
+            "labels_after_hover_invalid": true,
+            "teacher_actions_executed": 0
+          },
+          "source_hashes": {
+            "raw/summary.json.zst": "5c71aa0f36effcf62f479d13a7e811f3346d46051d9696ff9cc344c157058b5b",
+            "raw/shadow-progress.json": "e0e6faf82435e8311a777d1dcfea65354c6571e30d3770d729c32259c466dcc6",
+            "raw/shadow-labels.jsonl.zst": "c21e1cd3ecdbe9de44dfcbe3ae1b52f8d5353841fe96ad38fa1990cb17fff894",
+            "raw/student-inputs.jsonl.zst": "a247205d1ee701b7b187e67b9c0cf3c7d07b311d1a0da5187b39d484562f11ff",
+            "raw/commands.jsonl.zst": "842993f76d76c1de137f992efb1cdd4678ac907f8dc8b7882aae7f172cd485db",
+            "raw/plan.json": "58f762fd239e4e2ecf196842c25a84fcde07662308d8e12c83715a389f0d799e"
+          }
+        },
+        {
+          "seed": 87034,
+          "rows_all_audited": 272,
+          "rows_labelled": 272,
+          "shadow_audit": {
+            "rows": 272,
+            "input_audit": {
+              "invisible_measurements": 0,
+              "held_world_reads": 0,
+              "blocked_hidden": 130,
+              "blocked_held": 0,
+              "measurements_by_phase": {
+                "start": 1,
+                "fold": 6,
+                "approach": 67,
+                "align": 43,
+                "relook": 25
+              },
+              "scope": "decision input boundary only; evaluation excluded"
+            },
+            "replay_rgb_and_issued_exact": null,
+            "labels_after_hover_invalid": true,
+            "teacher_actions_executed": 0
+          },
+          "source_hashes": {
+            "raw/summary.json": "5847ce57b8c516157f0590d0a31d77a26291e37dba44d84734958bdbbef14580",
+            "raw/shadow-progress.json": "29171dc98f4e4969a2271bbc1b5ae9946c5071051a5b3de711e3f53065ff5d28",
+            "raw/shadow-labels.jsonl.zst": "72da8e10aa6aa77009037aa3fbb9ccb982de36e5f70a68132da241d0ba5170f9",
+            "raw/student-inputs.jsonl.zst": "d6e52f1a5d4f682a8a15e97fc1f9f1a10b21d3cc40177d98ba4345dbab00ddae",
+            "raw/commands.jsonl.zst": "a1b1274af54da50fbba9418b991596b417bf47d4045551f45e5c728074dfccf6",
+            "raw/plan.json": "3d0a7d2fc8704b4ba107f21aa8e646cd09f23550f276946f1505e85142f57423"
+          }
+        },
+        {
+          "seed": 87035,
+          "rows_all_audited": 900,
+          "rows_labelled": 255,
+          "shadow_audit": {
+            "rows": 900,
+            "input_audit": {
+              "invisible_measurements": 0,
+              "held_world_reads": 0,
+              "blocked_hidden": 669,
+              "blocked_held": 0,
+              "measurements_by_phase": {
+                "start": 1,
+                "fold": 6,
+                "approach": 65,
+                "align": 96,
+                "relook": 63
+              },
+              "scope": "decision input boundary only; evaluation excluded"
+            },
+            "replay_rgb_and_issued_exact": null,
+            "labels_after_hover_invalid": true,
+            "teacher_actions_executed": 0
+          },
+          "source_hashes": {
+            "raw/summary.json.zst": "413961a5a65df5f251d29b587477fc5c2ad9b6b87e5986885765f8398d6ff501",
+            "raw/shadow-progress.json": "3a15854efee30331fae6d7fcc93862551248c1b26ce90a03983828f536b6c3c8",
+            "raw/shadow-labels.jsonl.zst": "5446e34ffaf7525c32a92ada9419845018a7c7876e1556ab0c6de2edf4d7b81d",
+            "raw/student-inputs.jsonl.zst": "2a83e71850096458dfff41283ebf8dadd29dbdd8ad38da63b55d43872783f24a",
+            "raw/commands.jsonl.zst": "127beef8e744adc2ac57d82f243d101c77212ce638d4329f3c38bab0854e623c",
+            "raw/plan.json": "5ae36d15980522f6bf159be5fef36dc57aeb7b048be77f614f1255fa2c05991a"
+          }
+        },
+        {
+          "seed": 87036,
+          "rows_all_audited": 900,
+          "rows_labelled": 294,
+          "shadow_audit": {
+            "rows": 900,
+            "input_audit": {
+              "invisible_measurements": 0,
+              "held_world_reads": 0,
+              "blocked_hidden": 847,
+              "blocked_held": 0,
+              "measurements_by_phase": {
+                "start": 1,
+                "fold": 6,
+                "approach": 46
+              },
+              "scope": "decision input boundary only; evaluation excluded"
+            },
+            "replay_rgb_and_issued_exact": null,
+            "labels_after_hover_invalid": true,
+            "teacher_actions_executed": 0
+          },
+          "source_hashes": {
+            "raw/summary.json.zst": "446759f2fb0616769f418cffb90040bd4761d6f518d57b6e8dba98167aed1fbd",
+            "raw/shadow-progress.json": "d60e66b4a0b5171913e210ea7b07e353f82b1b771af292e5373d5ff48afbec46",
+            "raw/shadow-labels.jsonl.zst": "9ee5d14b3b85775e11adeeb68427d2889178209e4fc0760569e34286b283b0f7",
+            "raw/student-inputs.jsonl.zst": "e34a7e00bf99df7b999b3278e3135fab5f9e5889550767d0d0f6f2209fbd2eea",
+            "raw/commands.jsonl.zst": "ea99ccdd45d9ce6d1fe4da76349ac80b02dd0877e93e358ad613a6e9b8e32846",
+            "raw/plan.json": "36dfabac8bd144d1abef148a0730002d1247b48733e0d2fc62e92181041d238c"
+          }
+        },
+        {
+          "seed": 87037,
+          "rows_all_audited": 900,
+          "rows_labelled": 246,
+          "shadow_audit": {
+            "rows": 900,
+            "input_audit": {
+              "invisible_measurements": 0,
+              "held_world_reads": 0,
+              "blocked_hidden": 654,
+              "blocked_held": 0,
+              "measurements_by_phase": {
+                "start": 1,
+                "fold": 6,
+                "approach": 64,
+                "align": 103,
+                "relook": 72
+              },
+              "scope": "decision input boundary only; evaluation excluded"
+            },
+            "replay_rgb_and_issued_exact": null,
+            "labels_after_hover_invalid": true,
+            "teacher_actions_executed": 0
+          },
+          "source_hashes": {
+            "raw/summary.json.zst": "fac5a602ac0e26bd844bc73b2cd2bfb84cb419bd664a3208ee42e48321b95692",
+            "raw/shadow-progress.json": "709e0eee6402a2fe254c31215c6da5465721241e74ca0f7251a4a5b7d96a72ac",
+            "raw/shadow-labels.jsonl.zst": "f0881c3efb7f89fce3bac16651977080a27ffbb1430c184361d8f3a6213f4fdd",
+            "raw/student-inputs.jsonl.zst": "4412aaa6a81982898ec4490c54acfc0a85f12845b47032d1b2d532af4388f28e",
+            "raw/commands.jsonl.zst": "69c5cc8cd72e65c1974ac7ad75890422b5e15ff5ebf5c86b6edf44c50fa77f55",
+            "raw/plan.json": "9ad82ccd0f56041417cfded5e4e21452168c9d95b9e70d043f93a756163a6c83"
+          }
+        },
+        {
+          "seed": 87038,
+          "rows_all_audited": 239,
+          "rows_labelled": 239,
+          "shadow_audit": {
+            "rows": 239,
+            "input_audit": {
+              "invisible_measurements": 0,
+              "held_world_reads": 0,
+              "blocked_hidden": 155,
+              "blocked_held": 0,
+              "measurements_by_phase": {
+                "start": 1,
+                "fold": 6,
+                "approach": 77
+              },
+              "scope": "decision input boundary only; evaluation excluded"
+            },
+            "replay_rgb_and_issued_exact": null,
+            "labels_after_hover_invalid": true,
+            "teacher_actions_executed": 0
+          },
+          "source_hashes": {
+            "raw/summary.json": "450d4ac52da6c73603b677bd6e3d20c7473cead47761024507279b2a20f002f9",
+            "raw/shadow-progress.json": "f48c0f5e06b5c282b210a3e556d8ed41e6ab3208db8c63108ca11f651750d733",
+            "raw/shadow-labels.jsonl.zst": "237c57ca325f16eba3702b44dead3e16ff389bade478adf679b432d8d722ed83",
+            "raw/student-inputs.jsonl.zst": "8743a18706c4c3ce4b16b742159719b316f56d672bbfae689bba80ae6301063d",
+            "raw/commands.jsonl.zst": "7305274b7aa6e242ceca5e4289013269bd91399006a3b3481f6734b6c8d2d050",
+            "raw/plan.json": "67ea360b656b7b5946a34d9703e40b873558163d89c0b9f56e6d8b8cb08ec4ec"
+          }
+        },
+        {
+          "seed": 87039,
+          "rows_all_audited": 727,
+          "rows_labelled": 607,
+          "shadow_audit": {
+            "rows": 727,
+            "input_audit": {
+              "invisible_measurements": 0,
+              "held_world_reads": 0,
+              "blocked_hidden": 177,
+              "blocked_held": 0,
+              "measurements_by_phase": {
+                "start": 1,
+                "fold": 6,
+                "approach": 543
+              },
+              "scope": "decision input boundary only; evaluation excluded"
+            },
+            "replay_rgb_and_issued_exact": null,
+            "labels_after_hover_invalid": true,
+            "teacher_actions_executed": 0
+          },
+          "source_hashes": {
+            "raw/summary.json.zst": "0b0dab679b853c6f3418e63ddf970e89fb3eca84b719bc88bc48dd2a60db02f4",
+            "raw/shadow-progress.json": "89e608f9afff1e1ac9dd6591aa0d65ce7b8a9231e30af6498454fab41765accf",
+            "raw/shadow-labels.jsonl.zst": "16838776634af4d0c19ca2dae73ad6e8f9bbfecae5bacf1956d7ae206ecfbe84",
+            "raw/student-inputs.jsonl.zst": "189674218a0c9c1c9547e557d5d3336f18a7fcfc9db4a72a8401ddea2f360aac",
+            "raw/commands.jsonl.zst": "a5088e25256d39cfa9947b6f009090b3f45c194f46bdc8c20ae269d8c47e4734",
+            "raw/plan.json": "4a7b5a63729b56b37b5f412165c88b1768edb7bd9ad0a8eaede1f0b12abf06f5"
+          }
+        }
+      ],
+      "expert_actions_executed": 0
+    }
+  },
+  "collection": [
+    {
+      "name": "act15-collect-87020-1535c8a3",
+      "seed": 87020,
+      "source_sha": "1535c8a3e4e10184669304081aaaf7ce4eff3512",
+      "cap_end": true,
+      "sim_s": 89.999999999569,
+      "wall_s": 263.74179195800025,
+      "stable_lift": false,
+      "physical_success": false,
+      "done": false,
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 113,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "shadow_audit": {
+        "rows": 900,
+        "input_audit": {
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "blocked_hidden": 899,
+          "blocked_held": 0,
+          "measurements_by_phase": {
+            "start": 1
+          },
+          "scope": "decision input boundary only; evaluation excluded"
+        },
+        "replay_rgb_and_issued_exact": null,
+        "labels_after_hover_invalid": true,
+        "teacher_actions_executed": 0
+      },
+      "summary_path": "/home/ugrp/ugrp-sim/runs/act15-collect-87020-1535c8a3/raw/summary.json.zst",
+      "summary_sha256": "d1ba77b6d75d353f3184f839464aad3b06d994150e1ae26a6f4c9d6d89620bf9"
+    },
+    {
+      "name": "act15-collect-87021-1535c8a3",
+      "seed": 87021,
+      "source_sha": "1535c8a3e4e10184669304081aaaf7ce4eff3512",
+      "cap_end": false,
+      "sim_s": 18.200000000002078,
+      "wall_s": 60.78512423200027,
+      "stable_lift": false,
+      "physical_success": false,
+      "done": true,
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 19,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "shadow_audit": {
+        "rows": 183,
+        "input_audit": {
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "blocked_hidden": 112,
+          "blocked_held": 0,
+          "measurements_by_phase": {
+            "start": 1,
+            "fold": 6,
+            "approach": 64
+          },
+          "scope": "decision input boundary only; evaluation excluded"
+        },
+        "replay_rgb_and_issued_exact": null,
+        "labels_after_hover_invalid": true,
+        "teacher_actions_executed": 0
+      },
+      "summary_path": "/home/ugrp/ugrp-sim/runs/act15-collect-87021-1535c8a3/raw/summary.json",
+      "summary_sha256": "6a0d873c05b73a77a1675b441b1e511f5d7909d0f5783d01becefa50cf11f164"
+    },
+    {
+      "name": "act15-collect-87022-1535c8a3",
+      "seed": 87022,
+      "source_sha": "1535c8a3e4e10184669304081aaaf7ce4eff3512",
+      "cap_end": true,
+      "sim_s": 89.999999999569,
+      "wall_s": 262.63265363400023,
+      "stable_lift": false,
+      "physical_success": false,
+      "done": false,
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 113,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "shadow_audit": {
+        "rows": 900,
+        "input_audit": {
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "blocked_hidden": 690,
+          "blocked_held": 0,
+          "measurements_by_phase": {
+            "start": 1,
+            "fold": 6,
+            "approach": 61,
+            "align": 89,
+            "relook": 53
+          },
+          "scope": "decision input boundary only; evaluation excluded"
+        },
+        "replay_rgb_and_issued_exact": null,
+        "labels_after_hover_invalid": true,
+        "teacher_actions_executed": 0
+      },
+      "summary_path": "/home/ugrp/ugrp-sim/runs/act15-collect-87022-1535c8a3/raw/summary.json.zst",
+      "summary_sha256": "7b49543336d4a74f15de59618295608060afbc5f30da73fe7defb3a34898df15"
+    },
+    {
+      "name": "act15-collect-87023-1535c8a3",
+      "seed": 87023,
+      "source_sha": "1535c8a3e4e10184669304081aaaf7ce4eff3512",
+      "cap_end": true,
+      "sim_s": 89.999999999569,
+      "wall_s": 290.41587023899956,
+      "stable_lift": false,
+      "physical_success": false,
+      "done": false,
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 113,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "shadow_audit": {
+        "rows": 900,
+        "input_audit": {
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "blocked_hidden": 324,
+          "blocked_held": 0,
+          "measurements_by_phase": {
+            "start": 1,
+            "fold": 6,
+            "approach": 569
+          },
+          "scope": "decision input boundary only; evaluation excluded"
+        },
+        "replay_rgb_and_issued_exact": null,
+        "labels_after_hover_invalid": true,
+        "teacher_actions_executed": 0
+      },
+      "summary_path": "/home/ugrp/ugrp-sim/runs/act15-collect-87023-1535c8a3/raw/summary.json.zst",
+      "summary_sha256": "16db6d4fcb421f954e318386cdf8816e6d24ebe7a2525f0f2e30c3b1701ca4dd"
+    },
+    {
+      "name": "act15-collect-87024-1535c8a3",
+      "seed": 87024,
+      "source_sha": "efb90d1d9c74e1602a018afad68c87fe33886479",
+      "cap_end": true,
+      "sim_s": 89.999999999569,
+      "wall_s": 276.235366074,
+      "stable_lift": false,
+      "physical_success": false,
+      "done": false,
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 113,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "shadow_audit": {
+        "rows": 900,
+        "input_audit": {
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "blocked_hidden": 883,
+          "blocked_held": 0,
+          "measurements_by_phase": {
+            "start": 1,
+            "fold": 6,
+            "approach": 10
+          },
+          "scope": "decision input boundary only; evaluation excluded"
+        },
+        "replay_rgb_and_issued_exact": null,
+        "labels_after_hover_invalid": true,
+        "teacher_actions_executed": 0
+      },
+      "summary_path": "/home/ugrp/ugrp-sim/runs/act15-collect-87024-1535c8a3/raw/summary.json.zst",
+      "summary_sha256": "285d79e61d17dc82f881182e27d83bf593fd794177f97cd0f67dec72799b8413"
+    },
+    {
+      "name": "act15-collect-87025-1535c8a3",
+      "seed": 87025,
+      "source_sha": "efb90d1d9c74e1602a018afad68c87fe33886479",
+      "cap_end": true,
+      "sim_s": 89.999999999569,
+      "wall_s": 266.467941504,
+      "stable_lift": false,
+      "physical_success": false,
+      "done": false,
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 113,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "shadow_audit": {
+        "rows": 900,
+        "input_audit": {
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "blocked_hidden": 853,
+          "blocked_held": 0,
+          "measurements_by_phase": {
+            "start": 1,
+            "fold": 6,
+            "approach": 40
+          },
+          "scope": "decision input boundary only; evaluation excluded"
+        },
+        "replay_rgb_and_issued_exact": null,
+        "labels_after_hover_invalid": true,
+        "teacher_actions_executed": 0
+      },
+      "summary_path": "/home/ugrp/ugrp-sim/runs/act15-collect-87025-1535c8a3/raw/summary.json.zst",
+      "summary_sha256": "218a177ed16e0d16af2bc94265ce4d282f455bb61ca0afa9eefc089bae84b24c"
+    },
+    {
+      "name": "act15-collect-87026-1535c8a3",
+      "seed": 87026,
+      "source_sha": "efb90d1d9c74e1602a018afad68c87fe33886479",
+      "cap_end": true,
+      "sim_s": 89.999999999569,
+      "wall_s": 275.7624779179996,
+      "stable_lift": false,
+      "physical_success": false,
+      "done": false,
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 113,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "shadow_audit": {
+        "rows": 900,
+        "input_audit": {
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "blocked_hidden": 644,
+          "blocked_held": 0,
+          "measurements_by_phase": {
+            "start": 1,
+            "fold": 6,
+            "approach": 100,
+            "align": 85,
+            "relook": 64
+          },
+          "scope": "decision input boundary only; evaluation excluded"
+        },
+        "replay_rgb_and_issued_exact": null,
+        "labels_after_hover_invalid": true,
+        "teacher_actions_executed": 0
+      },
+      "summary_path": "/home/ugrp/ugrp-sim/runs/act15-collect-87026-1535c8a3/raw/summary.json.zst",
+      "summary_sha256": "445efb57199ca59cb9f7728ebaf6e61a754f1469cfe71ffeef15b01776cf6664"
+    },
+    {
+      "name": "act15-collect-87027-1535c8a3",
+      "seed": 87027,
+      "source_sha": "efb90d1d9c74e1602a018afad68c87fe33886479",
+      "cap_end": false,
+      "sim_s": 27.100000000044574,
+      "wall_s": 101.77521372200044,
+      "stable_lift": false,
+      "physical_success": false,
+      "done": true,
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 31,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "shadow_audit": {
+        "rows": 272,
+        "input_audit": {
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "blocked_hidden": 94,
+          "blocked_held": 0,
+          "measurements_by_phase": {
+            "start": 1,
+            "fold": 6,
+            "approach": 36,
+            "align": 104,
+            "relook": 31
+          },
+          "scope": "decision input boundary only; evaluation excluded"
+        },
+        "replay_rgb_and_issued_exact": null,
+        "labels_after_hover_invalid": true,
+        "teacher_actions_executed": 0
+      },
+      "summary_path": "/home/ugrp/ugrp-sim/runs/act15-collect-87027-1535c8a3/raw/summary.json",
+      "summary_sha256": "65bf73029097ec017c53045b3a98ca0736d3375f3b1698aef20439e224a1eb84"
+    },
+    {
+      "name": "act15-collect-87028-1535c8a3",
+      "seed": 87028,
+      "source_sha": "efb90d1d9c74e1602a018afad68c87fe33886479",
+      "cap_end": false,
+      "sim_s": 37.60000000009471,
+      "wall_s": 127.32823919700058,
+      "stable_lift": false,
+      "physical_success": false,
+      "done": true,
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 44,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "shadow_audit": {
+        "rows": 377,
+        "input_audit": {
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "blocked_hidden": 102,
+          "blocked_held": 0,
+          "measurements_by_phase": {
+            "start": 1,
+            "fold": 6,
+            "approach": 73,
+            "align": 129,
+            "relook": 66
+          },
+          "scope": "decision input boundary only; evaluation excluded"
+        },
+        "replay_rgb_and_issued_exact": null,
+        "labels_after_hover_invalid": true,
+        "teacher_actions_executed": 0
+      },
+      "summary_path": "/home/ugrp/ugrp-sim/runs/act15-collect-87028-1535c8a3/raw/summary.json",
+      "summary_sha256": "342eca4bec4abc5a2800da5e87d2019b12b48da93b5647acb7e1546cc4a17ee7"
+    },
+    {
+      "name": "act15-collect-87029-1535c8a3",
+      "seed": 87029,
+      "source_sha": "efb90d1d9c74e1602a018afad68c87fe33886479",
+      "cap_end": false,
+      "sim_s": 42.200000000116674,
+      "wall_s": 134.48134838999977,
+      "stable_lift": false,
+      "physical_success": false,
+      "done": true,
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 49,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "shadow_audit": {
+        "rows": 423,
+        "input_audit": {
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "blocked_hidden": 326,
+          "blocked_held": 0,
+          "measurements_by_phase": {
+            "start": 1,
+            "fold": 6,
+            "approach": 90
+          },
+          "scope": "decision input boundary only; evaluation excluded"
+        },
+        "replay_rgb_and_issued_exact": null,
+        "labels_after_hover_invalid": true,
+        "teacher_actions_executed": 0
+      },
+      "summary_path": "/home/ugrp/ugrp-sim/runs/act15-collect-87029-1535c8a3/raw/summary.json",
+      "summary_sha256": "614e4454a1f7332f2fda00211d34b2d3f5be8c108f0772eec8e040299325299d"
+    },
+    {
+      "name": "act15-collect-87030-1535c8a3",
+      "seed": 87030,
+      "source_sha": "efb90d1d9c74e1602a018afad68c87fe33886479",
+      "cap_end": false,
+      "sim_s": 29.500000000056033,
+      "wall_s": 103.50748863999979,
+      "stable_lift": false,
+      "physical_success": false,
+      "done": true,
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 34,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "shadow_audit": {
+        "rows": 296,
+        "input_audit": {
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "blocked_hidden": 98,
+          "blocked_held": 0,
+          "measurements_by_phase": {
+            "start": 1,
+            "fold": 6,
+            "approach": 81,
+            "align": 73,
+            "relook": 37
+          },
+          "scope": "decision input boundary only; evaluation excluded"
+        },
+        "replay_rgb_and_issued_exact": null,
+        "labels_after_hover_invalid": true,
+        "teacher_actions_executed": 0
+      },
+      "summary_path": "/home/ugrp/ugrp-sim/runs/act15-collect-87030-1535c8a3/raw/summary.json",
+      "summary_sha256": "811dfc087c75f6c073d82b014a3efc367adfbf315df6e962dc680571b3bfa2fa"
+    },
+    {
+      "name": "act15-collect-87031-1535c8a3",
+      "seed": 87031,
+      "source_sha": "efb90d1d9c74e1602a018afad68c87fe33886479",
+      "cap_end": false,
+      "sim_s": 57.40000000018925,
+      "wall_s": 205.7351806300003,
+      "stable_lift": true,
+      "physical_success": false,
+      "done": true,
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 68,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "shadow_audit": {
+        "rows": 575,
+        "input_audit": {
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "blocked_hidden": 508,
+          "blocked_held": 0,
+          "measurements_by_phase": {
+            "start": 1,
+            "fold": 6,
+            "approach": 39,
+            "align": 21
+          },
+          "scope": "decision input boundary only; evaluation excluded"
+        },
+        "replay_rgb_and_issued_exact": null,
+        "labels_after_hover_invalid": true,
+        "teacher_actions_executed": 0
+      },
+      "summary_path": "/home/ugrp/ugrp-sim/runs/act15-collect-87031-1535c8a3/raw/summary.json",
+      "summary_sha256": "e3927ede859fdf944a9f6a6861746734ef2c3bfc69da3dbf7b25f628dc4b3d02"
+    },
+    {
+      "name": "act15-collect-87032-1535c8a3",
+      "seed": 87032,
+      "source_sha": "efb90d1d9c74e1602a018afad68c87fe33886479",
+      "cap_end": true,
+      "sim_s": 89.999999999569,
+      "wall_s": 281.22771967800054,
+      "stable_lift": false,
+      "physical_success": false,
+      "done": false,
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 113,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "shadow_audit": {
+        "rows": 900,
+        "input_audit": {
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "blocked_hidden": 857,
+          "blocked_held": 0,
+          "measurements_by_phase": {
+            "start": 1,
+            "fold": 6,
+            "approach": 36
+          },
+          "scope": "decision input boundary only; evaluation excluded"
+        },
+        "replay_rgb_and_issued_exact": null,
+        "labels_after_hover_invalid": true,
+        "teacher_actions_executed": 0
+      },
+      "summary_path": "/home/ugrp/ugrp-sim/runs/act15-collect-87032-1535c8a3/raw/summary.json.zst",
+      "summary_sha256": "c6fb0368449d3abba7a3d13615d8117ac435fe588ff6bbf8cce4167549d48cf5"
+    },
+    {
+      "name": "act15-collect-87033-1535c8a3",
+      "seed": 87033,
+      "source_sha": "efb90d1d9c74e1602a018afad68c87fe33886479",
+      "cap_end": true,
+      "sim_s": 89.999999999569,
+      "wall_s": 262.1704885039999,
+      "stable_lift": false,
+      "physical_success": false,
+      "done": false,
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 113,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "shadow_audit": {
+        "rows": 900,
+        "input_audit": {
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "blocked_hidden": 806,
+          "blocked_held": 0,
+          "measurements_by_phase": {
+            "start": 1,
+            "fold": 6,
+            "approach": 63,
+            "align": 24
+          },
+          "scope": "decision input boundary only; evaluation excluded"
+        },
+        "replay_rgb_and_issued_exact": null,
+        "labels_after_hover_invalid": true,
+        "teacher_actions_executed": 0
+      },
+      "summary_path": "/home/ugrp/ugrp-sim/runs/act15-collect-87033-1535c8a3/raw/summary.json.zst",
+      "summary_sha256": "5c71aa0f36effcf62f479d13a7e811f3346d46051d9696ff9cc344c157058b5b"
+    },
+    {
+      "name": "act15-collect-87034-1535c8a3",
+      "seed": 87034,
+      "source_sha": "efb90d1d9c74e1602a018afad68c87fe33886479",
+      "cap_end": false,
+      "sim_s": 27.100000000044574,
+      "wall_s": 93.07929688400054,
+      "stable_lift": false,
+      "physical_success": false,
+      "done": true,
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 31,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "shadow_audit": {
+        "rows": 272,
+        "input_audit": {
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "blocked_hidden": 130,
+          "blocked_held": 0,
+          "measurements_by_phase": {
+            "start": 1,
+            "fold": 6,
+            "approach": 67,
+            "align": 43,
+            "relook": 25
+          },
+          "scope": "decision input boundary only; evaluation excluded"
+        },
+        "replay_rgb_and_issued_exact": null,
+        "labels_after_hover_invalid": true,
+        "teacher_actions_executed": 0
+      },
+      "summary_path": "/home/ugrp/ugrp-sim/runs/act15-collect-87034-1535c8a3/raw/summary.json",
+      "summary_sha256": "5847ce57b8c516157f0590d0a31d77a26291e37dba44d84734958bdbbef14580"
+    },
+    {
+      "name": "act15-collect-87035-1535c8a3",
+      "seed": 87035,
+      "source_sha": "efb90d1d9c74e1602a018afad68c87fe33886479",
+      "cap_end": true,
+      "sim_s": 89.999999999569,
+      "wall_s": 289.6727746610004,
+      "stable_lift": false,
+      "physical_success": false,
+      "done": false,
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 113,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "shadow_audit": {
+        "rows": 900,
+        "input_audit": {
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "blocked_hidden": 669,
+          "blocked_held": 0,
+          "measurements_by_phase": {
+            "start": 1,
+            "fold": 6,
+            "approach": 65,
+            "align": 96,
+            "relook": 63
+          },
+          "scope": "decision input boundary only; evaluation excluded"
+        },
+        "replay_rgb_and_issued_exact": null,
+        "labels_after_hover_invalid": true,
+        "teacher_actions_executed": 0
+      },
+      "summary_path": "/home/ugrp/ugrp-sim/runs/act15-collect-87035-1535c8a3/raw/summary.json.zst",
+      "summary_sha256": "413961a5a65df5f251d29b587477fc5c2ad9b6b87e5986885765f8398d6ff501"
+    },
+    {
+      "name": "act15-collect-87036-1535c8a3",
+      "seed": 87036,
+      "source_sha": "efb90d1d9c74e1602a018afad68c87fe33886479",
+      "cap_end": true,
+      "sim_s": 89.999999999569,
+      "wall_s": 285.6302646940003,
+      "stable_lift": false,
+      "physical_success": false,
+      "done": false,
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 113,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "shadow_audit": {
+        "rows": 900,
+        "input_audit": {
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "blocked_hidden": 847,
+          "blocked_held": 0,
+          "measurements_by_phase": {
+            "start": 1,
+            "fold": 6,
+            "approach": 46
+          },
+          "scope": "decision input boundary only; evaluation excluded"
+        },
+        "replay_rgb_and_issued_exact": null,
+        "labels_after_hover_invalid": true,
+        "teacher_actions_executed": 0
+      },
+      "summary_path": "/home/ugrp/ugrp-sim/runs/act15-collect-87036-1535c8a3/raw/summary.json.zst",
+      "summary_sha256": "446759f2fb0616769f418cffb90040bd4761d6f518d57b6e8dba98167aed1fbd"
+    },
+    {
+      "name": "act15-collect-87037-1535c8a3",
+      "seed": 87037,
+      "source_sha": "efb90d1d9c74e1602a018afad68c87fe33886479",
+      "cap_end": true,
+      "sim_s": 89.999999999569,
+      "wall_s": 251.67766593499982,
+      "stable_lift": false,
+      "physical_success": false,
+      "done": false,
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 113,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "shadow_audit": {
+        "rows": 900,
+        "input_audit": {
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "blocked_hidden": 654,
+          "blocked_held": 0,
+          "measurements_by_phase": {
+            "start": 1,
+            "fold": 6,
+            "approach": 64,
+            "align": 103,
+            "relook": 72
+          },
+          "scope": "decision input boundary only; evaluation excluded"
+        },
+        "replay_rgb_and_issued_exact": null,
+        "labels_after_hover_invalid": true,
+        "teacher_actions_executed": 0
+      },
+      "summary_path": "/home/ugrp/ugrp-sim/runs/act15-collect-87037-1535c8a3/raw/summary.json.zst",
+      "summary_sha256": "fac5a602ac0e26bd844bc73b2cd2bfb84cb419bd664a3208ee42e48321b95692"
+    },
+    {
+      "name": "act15-collect-87038-1535c8a3",
+      "seed": 87038,
+      "source_sha": "efb90d1d9c74e1602a018afad68c87fe33886479",
+      "cap_end": false,
+      "sim_s": 23.800000000028817,
+      "wall_s": 82.08786395100014,
+      "stable_lift": false,
+      "physical_success": false,
+      "done": true,
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 26,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "shadow_audit": {
+        "rows": 239,
+        "input_audit": {
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "blocked_hidden": 155,
+          "blocked_held": 0,
+          "measurements_by_phase": {
+            "start": 1,
+            "fold": 6,
+            "approach": 77
+          },
+          "scope": "decision input boundary only; evaluation excluded"
+        },
+        "replay_rgb_and_issued_exact": null,
+        "labels_after_hover_invalid": true,
+        "teacher_actions_executed": 0
+      },
+      "summary_path": "/home/ugrp/ugrp-sim/runs/act15-collect-87038-1535c8a3/raw/summary.json",
+      "summary_sha256": "450d4ac52da6c73603b677bd6e3d20c7473cead47761024507279b2a20f002f9"
+    },
+    {
+      "name": "act15-collect-87039-1535c8a3",
+      "seed": 87039,
+      "source_sha": "efb90d1d9c74e1602a018afad68c87fe33886479",
+      "cap_end": false,
+      "sim_s": 72.59999999998045,
+      "wall_s": 235.9889259090005,
+      "stable_lift": false,
+      "physical_success": false,
+      "done": true,
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 87,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "shadow_audit": {
+        "rows": 727,
+        "input_audit": {
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "blocked_hidden": 177,
+          "blocked_held": 0,
+          "measurements_by_phase": {
+            "start": 1,
+            "fold": 6,
+            "approach": 543
+          },
+          "scope": "decision input boundary only; evaluation excluded"
+        },
+        "replay_rgb_and_issued_exact": null,
+        "labels_after_hover_invalid": true,
+        "teacher_actions_executed": 0
+      },
+      "summary_path": "/home/ugrp/ugrp-sim/runs/act15-collect-87039-1535c8a3/raw/summary.json.zst",
+      "summary_sha256": "0b0dab679b853c6f3418e63ddf970e89fb3eca84b719bc88bc48dd2a60db02f4"
+    }
+  ],
+  "source_parity": {
+    "actual_sources": [
+      "1535c8a3e4e10184669304081aaaf7ce4eff3512",
+      "efb90d1d9c74e1602a018afad68c87fe33886479"
+    ],
+    "changed_paths": [
+      "experiments/2026-10-15-act-train/act15-rejection-before.json",
+      "experiments/2026-10-15-act-train/act15.md",
+      "tests/test_grasp_act_act15.py"
+    ],
+    "controller_scene_camera_teacher_label_code_equal": true,
+    "reason": "-m imported transport cwd; later transport commits changed tests/records only; original SOURCE_SHA retained"
+  },
+  "collection_hash_and_retention": [
+    {
+      "run": "act15-collect-87020-1535c8a3",
+      "hashes_verified": true,
+      "bytes_uncompressed": 16647352,
+      "actual_bytes": 12105929,
+      "own_lease_released": true,
+      "raw_retained": true
+    },
+    {
+      "run": "act15-collect-87021-1535c8a3",
+      "hashes_verified": true,
+      "bytes_uncompressed": 4004576,
+      "actual_bytes": 3107823,
+      "own_lease_released": true,
+      "raw_retained": true
+    },
+    {
+      "run": "act15-collect-87022-1535c8a3",
+      "hashes_verified": true,
+      "bytes_uncompressed": 16329517,
+      "actual_bytes": 12073267,
+      "own_lease_released": true,
+      "raw_retained": true
+    },
+    {
+      "run": "act15-collect-87023-1535c8a3",
+      "hashes_verified": true,
+      "bytes_uncompressed": 17623079,
+      "actual_bytes": 13242032,
+      "own_lease_released": true,
+      "raw_retained": true
+    },
+    {
+      "run": "act15-collect-87024-1535c8a3",
+      "hashes_verified": true,
+      "bytes_uncompressed": 16658926,
+      "actual_bytes": 12249069,
+      "own_lease_released": true,
+      "raw_retained": true
+    },
+    {
+      "run": "act15-collect-87025-1535c8a3",
+      "hashes_verified": true,
+      "bytes_uncompressed": 15520586,
+      "actual_bytes": 11175750,
+      "own_lease_released": true,
+      "raw_retained": true
+    },
+    {
+      "run": "act15-collect-87026-1535c8a3",
+      "hashes_verified": true,
+      "bytes_uncompressed": 17210206,
+      "actual_bytes": 12910135,
+      "own_lease_released": true,
+      "raw_retained": true
+    },
+    {
+      "run": "act15-collect-87027-1535c8a3",
+      "hashes_verified": true,
+      "bytes_uncompressed": 6039634,
+      "actual_bytes": 4613415,
+      "own_lease_released": true,
+      "raw_retained": true
+    },
+    {
+      "run": "act15-collect-87028-1535c8a3",
+      "hashes_verified": true,
+      "bytes_uncompressed": 7766178,
+      "actual_bytes": 5830209,
+      "own_lease_released": true,
+      "raw_retained": true
+    },
+    {
+      "run": "act15-collect-87029-1535c8a3",
+      "hashes_verified": true,
+      "bytes_uncompressed": 8360387,
+      "actual_bytes": 6085213,
+      "own_lease_released": true,
+      "raw_retained": true
+    },
+    {
+      "run": "act15-collect-87030-1535c8a3",
+      "hashes_verified": true,
+      "bytes_uncompressed": 6546651,
+      "actual_bytes": 4939189,
+      "own_lease_released": true,
+      "raw_retained": true
+    },
+    {
+      "run": "act15-collect-87031-1535c8a3",
+      "hashes_verified": true,
+      "bytes_uncompressed": 10737469,
+      "actual_bytes": 7902674,
+      "own_lease_released": true,
+      "raw_retained": true
+    },
+    {
+      "run": "act15-collect-87032-1535c8a3",
+      "hashes_verified": true,
+      "bytes_uncompressed": 18655046,
+      "actual_bytes": 13502504,
+      "own_lease_released": true,
+      "raw_retained": true
+    },
+    {
+      "run": "act15-collect-87033-1535c8a3",
+      "hashes_verified": true,
+      "bytes_uncompressed": 15297812,
+      "actual_bytes": 11027542,
+      "own_lease_released": true,
+      "raw_retained": true
+    },
+    {
+      "run": "act15-collect-87034-1535c8a3",
+      "hashes_verified": true,
+      "bytes_uncompressed": 5944170,
+      "actual_bytes": 4481663,
+      "own_lease_released": true,
+      "raw_retained": true
+    },
+    {
+      "run": "act15-collect-87035-1535c8a3",
+      "hashes_verified": true,
+      "bytes_uncompressed": 17080079,
+      "actual_bytes": 12841549,
+      "own_lease_released": true,
+      "raw_retained": true
+    },
+    {
+      "run": "act15-collect-87036-1535c8a3",
+      "hashes_verified": true,
+      "bytes_uncompressed": 19124078,
+      "actual_bytes": 13804769,
+      "own_lease_released": true,
+      "raw_retained": true
+    },
+    {
+      "run": "act15-collect-87037-1535c8a3",
+      "hashes_verified": true,
+      "bytes_uncompressed": 16505715,
+      "actual_bytes": 12270292,
+      "own_lease_released": true,
+      "raw_retained": true
+    },
+    {
+      "run": "act15-collect-87038-1535c8a3",
+      "hashes_verified": true,
+      "bytes_uncompressed": 5833474,
+      "actual_bytes": 4438686,
+      "own_lease_released": true,
+      "raw_retained": true
+    },
+    {
+      "run": "act15-collect-87039-1535c8a3",
+      "hashes_verified": true,
+      "bytes_uncompressed": 13751758,
+      "actual_bytes": 9951719,
+      "own_lease_released": true,
+      "raw_retained": true
+    }
+  ],
+  "aggregation_tool": {
+    "source_sha": "363ef070a5611413a3fff6055e64de115d71e5d2",
+    "path": "/home/ugrp/ugrp-sim/act15-tools/363ef070a5611413a3fff6055e64de115d71e5d2/aggregate.py",
+    "sha256": "ff5ddfa9ff2c1c9686d7b4b996e58707191d9abf5de6135ab7337f7c91958661",
+    "dependency_source": "/home/ugrp/ugrp-sim/src/1535c8a3e4e10184669304081aaaf7ce4eff3512"
+  },
+  "training_data_transfer": {
+    "bad": [],
+    "files": 282,
+    "manifest_sha256": "314539e8d815eee17dcc8bbf488afaefca18e4fe6cb425ff5bd98b5dcd407b64",
+    "free": 11142332416,
+    "source_clean": true
+  },
+  "original_50_teacher_episodes_unchanged": true,
+  "validation_seeds": [
+    86865,
+    86866,
+    86867,
+    86868,
+    86869
+  ],
+  "validation_rows_note": "Same five held-out raw episodes; adding their missing start prefix changes selected rows from1811 to1847. No DAgger data in validation. Norm fit unique training rows only.",
+  "teacher_label_limits": "Only before first expert hover transition; expert actions never executed by student. Off-policy consecutive expert labels are not a counterfactual expert rollout.",
+  "base_selected_rows": {
+    "train": 16691,
+    "val": 1847
+  },
+  "dagger_train_rows": 6161,
+  "initial_prefix_rows_original50": {
+    "start_fold": 350,
+    "approach": 102
+  },
+  "original_teacher_perturbation_audit": "User-supplied constant audit: 80/80 9 ticks, rotation correction on/off same result; not independently re-counted in ACT15."
+}

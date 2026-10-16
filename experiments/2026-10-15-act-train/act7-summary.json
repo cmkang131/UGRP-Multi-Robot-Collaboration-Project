@@ -1,0 +1,64 @@
+{
+  "schema": "ugrp.act7.summary.v1",
+  "implementation_base_sha": "d4abe49fa43c4b7af6145cca3319a5dc5e6bede0",
+  "teacher_dependency_sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+  "new_physical_runs": 0,
+  "new_render_runs": 0,
+  "new_training_steps": 0,
+  "remote_host_connections": 0,
+  "tests": {
+    "passed": 26,
+    "failed": 0,
+    "skipped": 0,
+    "junit": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act7-tests-final.xml",
+    "sha256": "c90cac7b6c6880a0d2e120a006da8c2ace27b618d0c20a83e7a4f9608431d685"
+  },
+  "collisions": {
+    "all_files": 1671,
+    "python_modules": 1614,
+    "different_python_files": 8,
+    "resolver_side": "teacher_dependency",
+    "executed_imports": 175,
+    "normal_and_exception_restoration_verified": true
+  },
+  "prior_run": {
+    "seed": 8316600,
+    "source_sha": "d4abe49fa43c4b7af6145cca3319a5dc5e6bede0",
+    "status": "HOST_ERROR",
+    "EXIT": 1,
+    "before_world": true,
+    "preserved": true,
+    "counts_toward_new_gate": false
+  },
+  "census": {
+    "complete": true,
+    "N": 50,
+    "source_files_verified": 100,
+    "source_census_sha256": "df9372a98dd366079b67d2b046afb381ed2ac9a36991d3d70604b736c5d6f52d",
+    "local_result": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act6-census-d4abe49f/full-teacher-stall.json",
+    "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/act6-census-d4abe49f",
+    "scope": "full 50 command stall census; prior teacher physics is not ACT6 success or recovery coverage",
+    "rerun": false
+  },
+  "queue": {
+    "generator": "scripts.queue_grasp_act_act7",
+    "name": "20261015-act7-<committed-SHA8>.json",
+    "gate_runs": 40,
+    "same_seed_reuse_documented": true,
+    "approved": false,
+    "ready": false,
+    "stage_ready": false,
+    "submitted": false,
+    "old_queues_modified": false
+  },
+  "artifacts": {
+    "experiments/2026-10-15-act-train/act7-module-collisions.json": "7a17d7955cac1951387e097be603a8ee3ff2e550e7961ee4dfdca7ecf3292946",
+    "experiments/2026-10-15-act-train/act7-prior-evidence.json": "17393b696af6f2c0a6008e801500342e2597c3e686fd20deb794febaa62ccc82",
+    "experiments/2026-10-15-act-train/act7-import-proof.json": "c1410c659bae28a6b03c24c3d9e1df8eb65acb588b01d3d7c4054ff8fbc4e426",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act7-tests-final.xml": "c90cac7b6c6880a0d2e120a006da8c2ace27b618d0c20a83e7a4f9608431d685"
+  },
+  "pending_execution": [
+    "fresh GCP noisy teacher gate/recovery coverage; not submitted",
+    "new operational approval/live inventory/credit/stop-device checks before activation"
+  ]
+}

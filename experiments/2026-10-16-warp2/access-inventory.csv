@@ -1,0 +1,754 @@
+flow,source_sha,path,line,function,syntactic_categories,text
+beam_adapter,08f129213031255dd188e20df832bb6714dfca9a,scripts/run_beampair1.py,146,run,camera_or_recording,if platform.system()!='Linux':raise RuntimeError('GCP Linux only; Mac physics/render forbidden')
+beam_adapter,08f129213031255dd188e20df832bb6714dfca9a,scripts/run_beampair1.py,169,run,camera_or_recording,from sim.render_profile import install
+beam_adapter,08f129213031255dd188e20df832bb6714dfca9a,scripts/run_beampair1.py,176,run,audit_or_score,from harness import grasp_act_input_audit as audit_module
+beam_adapter,08f129213031255dd188e20df832bb6714dfca9a,scripts/run_beampair1.py,183,run,audit_or_score,original_audit=audit_module.new_input_audit
+beam_adapter,08f129213031255dd188e20df832bb6714dfca9a,scripts/run_beampair1.py,189,snapshot,MjData_or_native_API|camera_or_recording,"if tail is not None:tail.capture(world,plan['roles'],float(world.data.time))"
+beam_adapter,08f129213031255dd188e20df832bb6714dfca9a,scripts/run_beampair1.py,272,step,command_or_advance,"actual,disturbance=self.pair_perturb.apply(clean,phase_before=before,"
+beam_adapter,08f129213031255dd188e20df832bb6714dfca9a,scripts/run_beampair1.py,292,run,audit_or_score,runner.apply=apply;audit_module.new_input_audit=new_audit
+beam_adapter,08f129213031255dd188e20df832bb6714dfca9a,scripts/run_beampair1.py,301,run,audit_or_score,runner.apply=original_apply;audit_module.new_input_audit=original_audit
+beam_adapter,08f129213031255dd188e20df832bb6714dfca9a,scripts/run_beampair1.py,316,run,audit_or_score,"'mode':mode,'held_object_hidden_v1':True,'held_world_reads':guard.held_world_reads,"
+beam_adapter,08f129213031255dd188e20df832bb6714dfca9a,scripts/run_beampair1.py,318,run,audit_or_score,"'input_audit':audit,'training_rgb':False,'profiles':selected,'result':report,"
+beam_adapter,08f129213031255dd188e20df832bb6714dfca9a,scripts/run_beampair1.py,332,run,audit_or_score,"tail.finish(adapter/'failure-tail',failed=not bool(report and report.get('physical_success')))"
+beam_adapter,08f129213031255dd188e20df832bb6714dfca9a,scripts/run_beampair1_batch.py,42,run,MjData_or_native_API,d=root/'diagnostic'/f'episode-{i:03d}';d.mkdir(parents=True)
+beam_adapter,08f129213031255dd188e20df832bb6714dfca9a,scripts/run_beampair1_batch.py,57,run,audit_or_score,if code or not report or not report['physical_success']:
+beam_adapter,08f129213031255dd188e20df832bb6714dfca9a,scripts/run_beampair1_batch.py,59,run,MjData_or_native_API,"write_json(root/'SUPERVISOR_STOP.json',dict(episode=d.name,reason='sentinel_seed_failed',exit=code))"
+beam_adapter,08f129213031255dd188e20df832bb6714dfca9a,scripts/run_beampair1_batch.py,68,run,audit_or_score,"if report and report['status'] in ('complete','HOST_ERROR') and not report['physical_success']:"
+beam_adapter,08f129213031255dd188e20df832bb6714dfca9a,scripts/run_beampair1_batch.py,69,run,MjData_or_native_API,"failure=dict(episode=d.name,result=report['status'],reason=report.get('end_reason') or report.get('error') or 'teacher_failure')"
+beam_adapter,08f129213031255dd188e20df832bb6714dfca9a,scripts/run_beampair1_batch.py,71,run,MjData_or_native_API,"failure=dict(episode=d.name,result='HOST_ERROR',reason='nonzero_exit_before_adapter_result')"
+beam_adapter,08f129213031255dd188e20df832bb6714dfca9a,scripts/run_beampair1_batch.py,85,run,MjData_or_native_API,"exits.append(dict(episode=d.name,exit=p.wait()));l.close()"
+beam_adapter,08f129213031255dd188e20df832bb6714dfca9a,harness/beampair_teacher.py,35,__init__,audit_or_score,self.held_world_reads=0
+beam_adapter,08f129213031255dd188e20df832bb6714dfca9a,harness/beampair_teacher.py,49,validate_measurements,audit_or_score,self.held_world_reads+=bad
+beam_adapter,08f129213031255dd188e20df832bb6714dfca9a,harness/beampair_teacher.py,93,apply,command_or_advance,"return super().apply(clean,phase_before=phase_before,phase_after=phase_after,"
+beam_adapter,08f129213031255dd188e20df832bb6714dfca9a,harness/beampair_approach.py,46,stale_blockers,MjData_or_native_API,"ds = c.get('failure_audit') or [d for d in c.get('collision_audit', []) if d.get('blocked')]"
+beam_adapter,08f129213031255dd188e20df832bb6714dfca9a,harness/beampair_approach.py,48,stale_blockers,MjData_or_native_API,"key = d.get('id', d.get('object'))"
+beam_adapter,08f129213031255dd188e20df832bb6714dfca9a,harness/beampair_approach.py,117,diagnostic,MjData_or_native_API,"d.update(approach_repair=self.approach_repair, approach_repair_log=self.approach_repair_log)"
+beam_adapter,08f129213031255dd188e20df832bb6714dfca9a,harness/beampair_visible_rays.py,19,visible_rays,MjData_or_native_API,"model,data=world.model,world.data;cid=evaluator.cameras[rid]"
+beam_adapter,08f129213031255dd188e20df832bb6714dfca9a,harness/beampair_visible_rays.py,25,visible_rays,MjData_or_native_API,origin=data.cam_xpos[cid].copy();delta=points-origin
+beam_adapter,08f129213031255dd188e20df832bb6714dfca9a,harness/beampair_visible_rays.py,26,visible_rays,MjData_or_native_API,"optical=(delta@data.cam_xmat[cid].reshape(3,3))*np.array([1.,-1.,-1.])"
+beam_adapter,08f129213031255dd188e20df832bb6714dfca9a,harness/beampair_visible_rays.py,37,visible_rays,MjData_or_native_API,"mujoco.mj_multiRay(model,data,origin,vec.reshape(-1),evaluator.groups,True,-1,hit,distance,None,N,RANGE_M)"
+beam_adapter,08f129213031255dd188e20df832bb6714dfca9a,harness/beampair_visible_rays.py,49,visible_rays,MjData_or_native_API,"p=((endpoint-origin)@data.cam_xmat[cid].reshape(3,3))*np.array([1.,-1.,-1.])"
+beam_adapter,08f129213031255dd188e20df832bb6714dfca9a,harness/failure_rgb_tail.py,15,capture,camera_or_recording,"def capture(self, world, roles, now):"
+beam_adapter,08f129213031255dd188e20df832bb6714dfca9a,harness/failure_rgb_tail.py,16,capture,camera_or_recording,"pictures = {rid: bytes(world.render_jpeg(robot_id=rid, camera='robot_cam')) for rid in roles}"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,23,apply,command_or_advance,"port.apply({'kind':'wheel_pulse','wheels':value['wheels'],'duration_s':value['duration_s']},now)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,25,apply,command_or_advance,"port.apply(dict(kind='mecanum',**dict(zip(('forward','left','turn'),value['drive'])),duration_s=value['duration_s']),now)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,30,apply,command_or_advance,"port.apply({'kind':'look','pan_pulse':p} if s==6 else {'kind':'arm','servo_id':s,'pulse':p},now)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,37,snapshot,MjData_or_native_API,"body=world.data.body(inst.body);rot=body.xmat.reshape(3,3);pos=body.xpos"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,41,snapshot,MjData_or_native_API,min_z=min(float((world.data.geom(inst.geom(p.name)).xpos +
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,42,snapshot,MjData_or_native_API,"world.data.geom(inst.geom(p.name)).xmat.reshape(3,3)@np.array([sx*p.size[0],sy*p.size[1],sz*p.size[2]]))[2])"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,46,snapshot,MjData_or_native_API,b=world.data.body(c.body)
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,49,snapshot,MjData_or_native_API,'top_z_bound_m':max(float(world.data.geom(c.geom(p.name)).xpos[2])+float(world.model.geom_rbound[world.model.geom(c.geom(p.name)).id]) for p in c.spec().parts if p.collision)}
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,51,snapshot,MjData_or_native_API,"objects[iid]={'xy':list(map(float,world.data.body(c['body_name']).xpos[:2])),"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,53,snapshot,MjData_or_native_API,'top_z_bound_m':float(world.data.body(c['body_name']).xpos[2])+math.sqrt(sum(float(x)**2 for x in c['half_extents_m']))}
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,54,snapshot,MjData_or_native_API,"return {'objects':objects,'t':float(world.data.time),'beam':{'pose':[float(pos[0]),float(pos[1]),yaw],'ends':ends,"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,57,snapshot,MjData_or_native_API|audit_or_score,"'contacts':FormationTeacher.finger_forces(holder),'joints':world.data.qpos.tolist()}"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,86,audit_visible_input,audit_or_score,audit['invisible_measurements']+=bad
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,90,finalize_outcomes,audit_or_score,"def finalize_outcomes(teachers,*,strict,joint_held):"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,100,finalize_outcomes,audit_or_score,t.outcome='success' if joint_held else 'no_stable_joint_hold_3s'
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,141,run,camera_or_recording,if platform.system()=='Darwin':raise RuntimeError('Mac physics/render disabled; use admitted execution host')
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,172,run,audit_or_score,"from harness.grasp_act_input_audit import AuditedTeacherInput,new_input_audit"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,174,run,audit_or_score,"'joint_held':None,'data_admitted':False,'assignment_source':plan['assignment_source'],"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,177,run,audit_or_score,"'physical_success':False,'teacher_profile':teacher_profile,'action_contract':SCHEMA,'loadavg_at_start':os.getloadavg(),'noise':'DART-inspired_fixed_pilot' if noise else 'off',"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,182,run,audit_or_score,"'input_audit':new_input_audit(strict,self_pose_source),"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,188,run,camera_or_recording,"world=build_world(scene,drive_profile=PROFILE,seed=plan['seed'],width=640 if record_training else 320,height=480 if record_training else 240,render=True,"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,204,run,MjData_or_native_API|command_or_advance,"for rid,port in ports.items():port.apply({'kind':'look','pan_pulse':plan['initial_pan'][rid]},float(world.data.time))"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,205,run,MjData_or_native_API,until=float(world.data.time)+.5
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,208,advance,MjData_or_native_API,while float(world.data.time)<target-1e-8:
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,209,advance,MjData_or_native_API,now=float(world.data.time)
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,210,advance,MjData_or_native_API,if world.data.eq_active.any():raise RuntimeError('WELD_ACTIVE')
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,211,advance,command_or_advance,for port in ports.values():port.tick(now)
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,212,advance,command_or_advance,world._physics_step_for(world.robot('r1'))
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,215,run,MjData_or_native_API,origin=float(world.data.time);previous={};history={};images={};writers={};teachers={};models={};clocks={}
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,250,run,MjData_or_native_API,while float(world.data.time)-origin < cap_s-1e-8:
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,251,run,MjData_or_native_API,now=float(world.data.time);at=time.monotonic()
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,258,run,MjData_or_native_API,"truth['visibility']={rid:visibility.measure(world.data,rid,end) for rid,end in plan['roles'].items()}"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,264,run,audit_or_score,"audit_visible_input(report['input_audit'],ms)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,267,run,audit_or_score,"perceived[rid]=AuditedTeacherInput(models[rid].observe(ms,now,comparison_pose=(truth['robots'][rid]['pose'] if self_pose_source=='perfect_self_comparison' else None)),report['input_audit'])"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,270,run,MjData_or_native_API,"truth['visibility'][rid]['objects']=[iid for iid,b in object_bodies.items() if visibility.body_visible(world.data,rid,b)]"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,271,run,MjData_or_native_API,"truth['visibility'][rid]['peers']=[peer for peer in ('r1','r2','r3') if peer!=rid and visibility.body_visible(world.data,rid,peer+'__robot')]"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,280,run,camera_or_recording,frame=Image.open(io.BytesIO(world.render_team_jpeg(camera=camera['name'])))
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,285,run,camera_or_recording,jpg=base64.b64decode(ports[rid].capture()['image'])
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,292,run,audit_or_score,"'input_audit':report['input_audit'],'teachers':{rid:t.diagnostic() for rid,t in teachers.items()},"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,299,run,audit_or_score,if strict:report['joint_held']=held_s>=3.
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,300,run,audit_or_score,elif len(plan['roles'])==2 and held_s>=1.:report['joint_held']=True
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,308,run,command_or_advance,"permits=sync.tick(ready,now)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,330,run,camera_or_recording,capture=ports[rid].capture();jpg=base64.b64decode(capture['image']);path=f'rgb/{rid}/{i:06d}.jpg';(out/path).write_bytes(jpg)
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,363,run,command_or_advance,models[rid].issue(applied)
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,371,run,audit_or_score,if not probe and (report['joint_held'] or now-all_done_since>=6.):break
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,374,run,audit_or_score,if len(teachers)==1 or report['joint_held'] is True or now-all_done_since>=3.:break
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,377,run,audit_or_score,"finalize_outcomes(teachers,strict=strict,joint_held=report['joint_held'])"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,381,run,audit_or_score,if len(plan['roles'])==2 and report['joint_held'] is None:report['joint_held']=False
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,382,run,MjData_or_native_API,"report.update(status='complete',sim_s=float(world.data.time)-origin,wall_s=time.monotonic()-start,"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,386,run,audit_or_score,report['physical_success']=report['teacher_success_n']==report['teacher_N'] and (len(plan['roles'])==1 or report['joint_held'] is True)
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,390,run,audit_or_score,report['data_admitted']=bool(record_training and not recording_probe and report['physical_success'] and not report['search_handoff'] and not report['approach_handoff'])
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,403,run,audit_or_score,"report.update(cap_end=True,end_reason='planning_wall_safety_cap',physical_success=False,"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/run_grasp_act_teacher.py,404,run,MjData_or_native_API,"data_admitted=False,sim_s=float(world.data.time)-origin,teacher_success_n=0)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/audit_grasp_act_visibility.py,4,<module>,camera_or_recording,"source pinhole render and its raw-fisheye image, and be the first visible ray"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/audit_grasp_act_visibility.py,48,measure,MjData_or_native_API,"points=data.geom_xpos[gid]+self.probes[role]@data.geom_xmat[gid].reshape(3,3).T"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/audit_grasp_act_visibility.py,49,measure,MjData_or_native_API,"camera=(points-data.cam_xpos[cid])@data.cam_xmat[cid].reshape(3,3)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/audit_grasp_act_visibility.py,58,measure,MjData_or_native_API,delta=points[i]-data.cam_xpos[cid];distance=float(np.linalg.norm(delta));direction=delta/distance
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/audit_grasp_act_visibility.py,60,measure,MjData_or_native_API,skip=self.near*distance/z[i];origin=data.cam_xpos[cid]+skip*direction
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/audit_grasp_act_visibility.py,62,measure,MjData_or_native_API,"ray=mujoco.mj_ray(self.model,data,origin,direction,self.groups,True,-1,hit)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/audit_grasp_act_visibility.py,85,body_visible,MjData_or_native_API,points=data.geom_xpos[gids]
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/audit_grasp_act_visibility.py,86,body_visible,MjData_or_native_API,"optical=((points-data.cam_xpos[cid])@data.cam_xmat[cid].reshape(3,3))*np.array([1.,-1.,-1.])"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/audit_grasp_act_visibility.py,92,body_visible,MjData_or_native_API,delta=point-data.cam_xpos[cid];distance=float(np.linalg.norm(delta));direction=delta/distance
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/audit_grasp_act_visibility.py,93,body_visible,MjData_or_native_API,"origin=data.cam_xpos[cid]+self.near*distance/p[2]*direction;hit=np.array([-1],dtype=np.int32)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/audit_grasp_act_visibility.py,94,body_visible,MjData_or_native_API,"mujoco.mj_ray(self.model,data,origin,direction,self.groups,True,-1,hit)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/audit_grasp_act_visibility.py,111,region_visible,MjData_or_native_API,"axes=data.geom_xmat[gid].reshape(3,3);center=data.geom_xpos[gid]"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/audit_grasp_act_visibility.py,117,region_visible,MjData_or_native_API,"p=((point-data.cam_xpos[cid])@data.cam_xmat[cid].reshape(3,3))*np.array([1.,-1.,-1.])"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/audit_grasp_act_visibility.py,122,region_visible,MjData_or_native_API,delta=point-data.cam_xpos[cid];distance=float(np.linalg.norm(delta));direction=delta/distance
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/audit_grasp_act_visibility.py,123,region_visible,MjData_or_native_API,"origin=data.cam_xpos[cid]+self.near*distance/p[2]*direction;hit=np.array([-1],dtype=np.int32)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/audit_grasp_act_visibility.py,124,region_visible,MjData_or_native_API,"mujoco.mj_ray(self.model,data,origin,direction,self.groups,True,-1,hit)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/audit_grasp_act_visibility.py,180,audit,MjData_or_native_API,data=mujoco.MjData(model);evaluator=BandVisibility(model)
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/audit_grasp_act_visibility.py,192,audit,MjData_or_native_API,"data.qpos[:]=row['joints'];mujoco.mj_kinematics(model,data);mujoco.mj_camlight(model,data)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/audit_grasp_act_visibility.py,222,audit,camera_or_recording,"'camera':camera_binding,'camera_scope':'actual old render' if camera_binding=='runtime_legacy' else 'counterfactual v3 projection of OLD saved trajectories; not a new teacher rollout',"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/grasp_act_visible_measurements.py,11,measurements,MjData_or_native_API,data=world.data;model=world.model
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/grasp_act_visible_measurements.py,22,measurements,MjData_or_native_API,"r=data.geom_xmat[gid].reshape(3,3)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/grasp_act_visible_measurements.py,23,measurements,MjData_or_native_API,"rows.append({'id':'band_'+end,'kind':'band','xyz':relative(data.geom_xpos[gid]),"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/grasp_act_visible_measurements.py,31,measurements,MjData_or_native_API,"point=data.body(body).xpos;r=data.body(body).xmat.reshape(3,3)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/grasp_act_visible_measurements.py,32,measurements,MjData_or_native_API,"radius=max((float(np.linalg.norm(data.geom_xpos[g][:2]-point[:2]))+float(model.geom_rbound[g]) for g in gids),default=.2)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/grasp_act_visible_measurements.py,33,measurements,MjData_or_native_API,"top=max((float(data.geom_xpos[g,2]+model.geom_rbound[g]) for g in gids),default=.5)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/grasp_act_visible_measurements.py,42,measurements,MjData_or_native_API,"r=data.geom_xmat[gid].reshape(3,3)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/grasp_act_visible_measurements.py,43,measurements,MjData_or_native_API,"rows.append({'id':name,'kind':'wall','xyz':relative(data.geom_xpos[gid]),"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/grasp_act_visible_measurements.py,46,measurements,MjData_or_native_API,"'top_z_bound_m':float(data.geom_xpos[gid,2]+model.geom_rbound[gid]),'visible_n':visible,'probe_N':total})"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,harness/grasp_act_input_audit.py,3,<module>,audit_or_score,held_world_reads counts attempted access to nonvisual world fields at this
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,harness/grasp_act_input_audit.py,15,__init__,audit_or_score,audit['held_world_reads']+=1
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,harness/grasp_act_input_audit.py,21,__getitem__,audit_or_score,self.audit['held_world_reads']+=1
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,harness/grasp_act_input_audit.py,29,new_input_audit,audit_or_score,"def new_input_audit(enabled,pose_source):"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,harness/grasp_act_input_audit.py,31,new_input_audit,audit_or_score,"'enabled':enabled,'measurement_rows':0,'invisible_measurements':0,"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,harness/grasp_act_input_audit.py,32,new_input_audit,audit_or_score,"'held_world_reads':0,'gt_self_pose_comparison':pose_source!='issued'}"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/grasp_act_teacher_v3.py,971,_step,command_or_advance,arms_done=self.arm.tick(now)
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/grasp_act_port.py,42,apply,command_or_advance,"return super().apply(action, sim_time)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/grasp_act_port.py,85,apply,command_or_advance,"if action.get('kind')!='wheel_pulse':return super().apply(action,sim_time)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/grasp_act_port.py,96,tick,command_or_advance,super().tick(sim_time)
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/camera_robot_port.py,71,<module>,command_or_advance,should use ``world._physics_step_for(world.robot(rid))`` for the current
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/camera_robot_port.py,73,<module>,camera_or_recording,wait on its render thread; callers must never hold ``world.physics_lock``
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/camera_robot_port.py,100,capture,camera_or_recording,"def capture(self, camera: str = ""robot_cam"") -> dict[str, Any]:"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/camera_robot_port.py,105,capture,camera_or_recording,self._world.render_jpeg(
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/camera_robot_port.py,135,apply_bounded,command_or_advance,"result = self.apply(action, sim_time)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/camera_robot_port.py,275,_clock_time,MjData_or_native_API,return float(self._world.data.time)
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/masterpi_drive_friction_v7.py,197,_freeze_wake,MjData_or_native_API,"m,d=self.model,self.data"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/masterpi_drive_friction_v7.py,204,_freeze_wake,MjData_or_native_API,ctrl=d.ctrl[state['ids']]
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/masterpi_drive_friction_v7.py,207,_freeze_wake,MjData_or_native_API,if (changed or np.any(effective)) and d.tree_asleep[state['tree']]>=0:
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/masterpi_drive_friction_v7.py,208,_freeze_wake,MjData_or_native_API,d.qfrc_applied[c.base_dadr]=-0.0  # bytewise non-zero: official manual wake
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/masterpi_drive_friction_v7.py,212,_physics_step_for,command_or_advance,"def _physics_step_for(self,active,commands=None):"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/masterpi_drive_friction_v7.py,227,_physics_step_for,MjData_or_native_API,self.data.ctrl[c.wheel_act]=self.drive_parameters.torque_cap_nm*effective
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/masterpi_drive_friction_v7.py,231,_physics_step_for,MjData_or_native_API,"mujoco.mj_step(self.model,self.data)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/masterpi_drive_friction_v7.py,232,_physics_step_for,MjData_or_native_API,for dof in woken:self.data.qfrc_applied[dof]=0.0
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,30,<module>,camera_or_recording,"from sim.snapshot_render import CameraKey, RenderBatch, SnapshotRenderBroker, TopRenderLatch"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,293,<module>,MjData_or_native_API,"""""""Production controller view bound to one robot inside shared model/data."""""""
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,300,_body,MjData_or_native_API,"idx = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_BODY, actual)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,307,_joint,MjData_or_native_API,"idx = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_JOINT, actual)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,314,_actuator,MjData_or_native_API,"idx = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_ACTUATOR, actual)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,321,_site,MjData_or_native_API,"idx = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_SITE, actual)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,327,_physics_step,command_or_advance,"self._owner._physics_step_for(self, commands)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,357,advance_to_sim_time,MjData_or_native_API,delta = target_time - float(self.data.time)
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,365,render_rgb,camera_or_recording,"def render_rgb(self, camera: str = ""robot_cam"") -> np.ndarray:"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,372,render_rgb,camera_or_recording,"return self._owner._render_rgb_for(self, camera)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,381,_finger_block_contact_unlocked,MjData_or_native_API,"block = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_GEOM, f""{color}_block_geom"")"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,382,_finger_block_contact_unlocked,MjData_or_native_API,"left = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_GEOM, self._n(""left_finger""))"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,383,_finger_block_contact_unlocked,MjData_or_native_API,"right = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_GEOM, self._n(""right_finger""))"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,386,_finger_block_contact_unlocked,MjData_or_native_API,for i in range(self.data.ncon):
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,387,_finger_block_contact_unlocked,MjData_or_native_API,con = self.data.contact[i]
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,396,_finger_block_contact_unlocked,MjData_or_native_API,"mujoco.mj_contactForce(self.model, self.data, i, wrench)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,413,finger_payload_contact,MjData_or_native_API,endpoint_geom = mujoco.mj_name2id(
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,418,finger_payload_contact,MjData_or_native_API,left = mujoco.mj_name2id(
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,421,finger_payload_contact,MjData_or_native_API,right = mujoco.mj_name2id(
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,427,finger_payload_contact,MjData_or_native_API,for i in range(self.data.ncon):
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,428,finger_payload_contact,MjData_or_native_API,con = self.data.contact[i]
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,437,finger_payload_contact,MjData_or_native_API,"mujoco.mj_contactForce(self.model, self.data, i, wrench)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,456,finger_cargo_contact,MjData_or_native_API,cargo_geom = mujoco.mj_name2id(
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,461,finger_cargo_contact,MjData_or_native_API,left = mujoco.mj_name2id(
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,464,finger_cargo_contact,MjData_or_native_API,right = mujoco.mj_name2id(
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,470,finger_cargo_contact,MjData_or_native_API,for i in range(self.data.ncon):
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,471,finger_cargo_contact,MjData_or_native_API,con = self.data.contact[i]
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,480,finger_cargo_contact,MjData_or_native_API,"mujoco.mj_contactForce(self.model, self.data, i, wrench)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,498,_nonfinger_block_contact_force_unlocked,MjData_or_native_API,"block = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_GEOM, f""{color}_block_geom"")"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,499,_nonfinger_block_contact_force_unlocked,MjData_or_native_API,"floor = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_GEOM, ""floor"")"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,501,_nonfinger_block_contact_force_unlocked,MjData_or_native_API,"mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_GEOM, self._n(""left_finger"")),"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,502,_nonfinger_block_contact_force_unlocked,MjData_or_native_API,"mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_GEOM, self._n(""right_finger"")),"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,505,_nonfinger_block_contact_force_unlocked,MjData_or_native_API,for i in range(self.data.ncon):
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,506,_nonfinger_block_contact_force_unlocked,MjData_or_native_API,con = self.data.contact[i]
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,515,_nonfinger_block_contact_force_unlocked,MjData_or_native_API,"mujoco.mj_contactForce(self.model, self.data, i, wrench)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,550,_state_unlocked,MjData_or_native_API,"lg = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_GEOM, self._n(""left_finger""))"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,551,_state_unlocked,MjData_or_native_API,"rg = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_GEOM, self._n(""right_finger""))"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,552,_state_unlocked,MjData_or_native_API,left_xyz = self.data.geom_xpos[lg].copy(); right_xyz = self.data.geom_xpos[rg].copy()
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,620,__init__,camera_or_recording,"render: bool = True,"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,644,__init__,camera_or_recording,"seed=seed, width=max(32, min(width, 160)), height=max(24, min(height, 120)), render=False,"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,732,__init__,MjData_or_native_API,self.data = mujoco.MjData(self.model)
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,741,__init__,camera_or_recording,self.render_lock = threading.RLock()
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,744,__init__,camera_or_recording,self.renderer = None
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,745,__init__,camera_or_recording,self.observer_renderer = None
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,746,__init__,camera_or_recording,self._render_executor: ThreadPoolExecutor | None = None
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,747,__init__,camera_or_recording,self._render_thread_id: int | None = None
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,750,__init__,camera_or_recording,self._render_closed = False
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,752,__init__,camera_or_recording,if render:
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,753,__init__,camera_or_recording,self._render_executor = ThreadPoolExecutor(
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,755,__init__,camera_or_recording,"thread_name_prefix=""ugrp-mujoco-render"","
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,759,__init__,camera_or_recording,"self.renderer,"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,760,__init__,camera_or_recording,"self.observer_renderer,"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,761,__init__,camera_or_recording,"self._render_thread_id,"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,762,__init__,camera_or_recording,) = self._render_executor.submit(self._create_renderers).result(timeout=30.0)
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,764,__init__,camera_or_recording,"self._render_executor.shutdown(wait=False, cancel_futures=True)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,765,__init__,camera_or_recording,self._render_executor = None
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,775,__init__,MjData_or_native_API,"(rid, color): mujoco.mj_name2id("
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,781,__init__,MjData_or_native_API,rid: mujoco.mj_name2id(
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,786,__init__,MjData_or_native_API,self.beam_body_id = mujoco.mj_name2id(
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,789,__init__,MjData_or_native_API,self.beam_joint_id = mujoco.mj_name2id(
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,795,__init__,MjData_or_native_API,spec.cargo_id: mujoco.mj_name2id(
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,801,__init__,MjData_or_native_API,spec.cargo_id: mujoco.mj_name2id(
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,807,__init__,MjData_or_native_API,"(spec.cargo_id, rid): mujoco.mj_name2id("
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,820,_create_renderers,camera_or_recording,def _create_renderers(self):
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,822,_create_renderers,camera_or_recording,renderer = mujoco.Renderer(
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,834,_create_renderers,camera_or_recording,renderer.close()
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,838,_create_renderers,camera_or_recording,"return renderer, observer, threading.get_ident()"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,840,_render_rgb_direct,camera_or_recording,"def _render_rgb_direct(self, robot: NamespacedMasterPi, camera: str) -> np.ndarray:"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,842,_render_rgb_direct,camera_or_recording,if threading.get_ident() != self._render_thread_id:
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,843,_render_rgb_direct,camera_or_recording,"raise RuntimeError(""MuJoCo renderer accessed outside its owner thread"")"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,844,_render_rgb_direct,camera_or_recording,"with self.physics_lock, self.render_lock:"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,845,_render_rgb_direct,camera_or_recording,if self.renderer is None:
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,846,_render_rgb_direct,camera_or_recording,"raise RuntimeError(""multi MasterPi world was created with render=False"")"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,849,_render_rgb_direct,camera_or_recording,self.renderer.update_scene(
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,850,_render_rgb_direct,MjData_or_native_API,"self.data,"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,854,_render_rgb_direct,camera_or_recording,ideal = self.renderer.render().copy()
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,869,_render_rgb_direct,camera_or_recording,self.renderer.update_scene(
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,870,_render_rgb_direct,MjData_or_native_API,"self.data, camera=robot._n(""nav_cam""),"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,873,_render_rgb_direct,camera_or_recording,return self.renderer.render().copy()
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,876,_render_rgb_direct,camera_or_recording,observer = self.observer_renderer or self.renderer
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,877,_render_rgb_direct,MjData_or_native_API,"observer.update_scene(self.data, camera=camera)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,878,_render_rgb_direct,camera_or_recording,return observer.render().copy()
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,880,_render_rgb_for,camera_or_recording,"def _render_rgb_for(self, robot: NamespacedMasterPi, camera: str) -> np.ndarray:"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,881,_render_rgb_for,camera_or_recording,executor = self._render_executor
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,882,_render_rgb_for,camera_or_recording,if executor is None or self.renderer is None:
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,883,_render_rgb_for,camera_or_recording,"raise RuntimeError(""multi MasterPi world was created with render=False"")"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,884,_render_rgb_for,camera_or_recording,if threading.get_ident() == self._render_thread_id:
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,885,_render_rgb_for,camera_or_recording,"return self._render_rgb_direct(robot, camera)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,886,_render_rgb_for,camera_or_recording,"return executor.submit(self._render_rgb_direct, robot, camera).result(timeout=30.0)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,888,_render_team_rgb_direct,camera_or_recording,"def _render_team_rgb_direct(self, camera: str) -> np.ndarray:"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,889,_render_team_rgb_direct,camera_or_recording,if threading.get_ident() != self._render_thread_id:
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,890,_render_team_rgb_direct,camera_or_recording,"raise RuntimeError(""MuJoCo renderer accessed outside its owner thread"")"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,891,_render_team_rgb_direct,camera_or_recording,"with self.physics_lock, self.render_lock:"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,892,_render_team_rgb_direct,camera_or_recording,if self.observer_renderer is None:
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,893,_render_team_rgb_direct,camera_or_recording,"raise RuntimeError(""multi MasterPi world was created with render=False"")"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,896,_render_team_rgb_direct,MjData_or_native_API|camera_or_recording,"self.observer_renderer.update_scene(self.data, camera=camera, scene_option=observer_options)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,897,_render_team_rgb_direct,camera_or_recording,return self.observer_renderer.render().copy()
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,899,_close_renderers,camera_or_recording,def _close_renderers(self) -> None:
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,900,_close_renderers,camera_or_recording,if threading.get_ident() != self._render_thread_id:
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,901,_close_renderers,camera_or_recording,"raise RuntimeError(""MuJoCo renderer closed outside its owner thread"")"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,903,_close_renderers,camera_or_recording,"for renderer in (self.renderer, self.observer_renderer, self._snapshot_broker):"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,904,_close_renderers,camera_or_recording,if renderer is None:
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,907,_close_renderers,camera_or_recording,renderer.close()
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,923,_bind_controller,MjData_or_native_API,c.model = self.model; c.data = self.data
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,925,_bind_controller,camera_or_recording,c.renderer = self.renderer; c.observer_renderer = self.observer_renderer
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,928,_bind_controller,MjData_or_native_API,"c.robot_cam_cid = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_CAMERA, c._n(""robot_cam""))"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,929,_bind_controller,MjData_or_native_API,"c.front_cam_cid = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_CAMERA, ""cctv_front_left"")"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,931,_bind_controller,MjData_or_native_API,"gid = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_GEOM, c._n(geom_name))"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,935,_bind_controller,camera_or_recording,if self.renderer is not None:
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,942,_bind_controller,camera_or_recording,"c._robot_fisheye_map = raw_fisheye_remap(self.width, self.height) if self.renderer is not None else None"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,998,_grasp_constraint_active,MjData_or_native_API,"return bool(self.data.eq_active[self._grasp_constraint_id(robot, color)])"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1013,_activate_grasp_constraint,MjData_or_native_API,"self.data.xpos[robot.gripper_bid], self.data.xquat[robot.gripper_bid],"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1018,_activate_grasp_constraint,MjData_or_native_API,"self.data.xpos[block_bid], self.data.xquat[block_bid],"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1022,_activate_grasp_constraint,MjData_or_native_API,self.data.eq_active[eid] = 1
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1023,_activate_grasp_constraint,MjData_or_native_API,"mujoco.mj_forward(self.model, self.data)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1028,_release_grasp_constraint,MjData_or_native_API,self.data.eq_active[eid] = 0
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1029,_release_grasp_constraint,MjData_or_native_API,"mujoco.mj_forward(self.model, self.data)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1032,_beam_constraint_active,MjData_or_native_API,return bool(self.data.eq_active[int(self.beam_weld_ids[str(rid)])])
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1044,_activate_beam_constraint,MjData_or_native_API,endpoint_bid = mujoco.mj_name2id(
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1055,_activate_beam_constraint,MjData_or_native_API,"self.data.xpos[robot.gripper_bid], self.data.xquat[robot.gripper_bid],"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1060,_activate_beam_constraint,MjData_or_native_API,"self.data.xpos[endpoint_bid], self.data.xquat[endpoint_bid],"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1064,_activate_beam_constraint,MjData_or_native_API,self.data.eq_active[eid] = 1
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1065,_activate_beam_constraint,MjData_or_native_API,"mujoco.mj_forward(self.model, self.data)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1070,_release_beam_constraints,MjData_or_native_API,self.data.eq_active[int(eid)] = 0
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1071,_release_beam_constraints,MjData_or_native_API,"mujoco.mj_forward(self.model, self.data)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1075,beam_state,MjData_or_native_API,"pose = beam_pose(self.data, self.model)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1077,beam_state,MjData_or_native_API,"velocity = np.asarray(self.data.qvel[dadr:dadr + 6], dtype=float)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1101,_cargo_constraint_active,MjData_or_native_API,"return bool(self.data.eq_active[int(self.warehouse_weld_ids[(cargo_id, rid)])])"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1111,_activate_cargo_constraint,MjData_or_native_API,cargo_bid = mujoco.mj_name2id(
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1124,_activate_cargo_constraint,MjData_or_native_API,"self.data.xpos[robot.gripper_bid], self.data.xquat[robot.gripper_bid],"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1129,_activate_cargo_constraint,MjData_or_native_API,"self.data.xpos[cargo_bid], self.data.xquat[cargo_bid],"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1133,_activate_cargo_constraint,MjData_or_native_API,self.data.eq_active[eid] = 1
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1134,_activate_cargo_constraint,MjData_or_native_API,"mujoco.mj_forward(self.model, self.data)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1139,_release_cargo_constraints,MjData_or_native_API,"self.data.eq_active[int(self.warehouse_weld_ids[(cargo_id, rid)])] = 0"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1140,_release_cargo_constraints,MjData_or_native_API,"mujoco.mj_forward(self.model, self.data)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1144,_observe_warehouse_cargo,MjData_or_native_API,"pose = cargo_pose(self.data, self.model, spec)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1145,_observe_warehouse_cargo,MjData_or_native_API,geom_id = mujoco.mj_name2id(
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1167,observe_warehouse_scene,MjData_or_native_API,"pose = cargo_pose(self.data, self.model, spec)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1202,observe_warehouse_scene,MjData_or_native_API,"""sim_time"": round(float(self.data.time), 4),"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1398,warehouse_state,MjData_or_native_API,"pose = cargo_pose(self.data, self.model, spec)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1401,warehouse_state,MjData_or_native_API,"velocity = np.asarray(self.data.qvel[jadr:jadr + 6], dtype=float)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1454,_physics_step_for,command_or_advance,"def _physics_step_for(self, active: NamespacedMasterPi, commands: np.ndarray | None = None) -> None:"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1469,_physics_step_for,command_or_advance,fast_drive.apply(dt)
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1471,_physics_step_for,MjData_or_native_API,"self.data.xfrc_applied[:, :] = 0.0"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1475,_physics_step_for,MjData_or_native_API,self.data.ctrl[c.wheel_act] = c.motor_state * MAX_WHEEL_RAD_S
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1479,_physics_step_for,MjData_or_native_API,qvel = self.data.qvel[c.base_dadr:c.base_dadr + 6]
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1489,_physics_step_for,MjData_or_native_API,"self.data.xfrc_applied[c.robot_bid, 0] = cy * fx_l - sy * fy_l"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1490,_physics_step_for,MjData_or_native_API,"self.data.xfrc_applied[c.robot_bid, 1] = sy * fx_l + cy * fy_l"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1491,_physics_step_for,MjData_or_native_API,"self.data.xfrc_applied[c.robot_bid, 5] = tz"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1492,_physics_step_for,MjData_or_native_API,"mujoco.mj_step(self.model, self.data)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1512,_robot_geoms,MjData_or_native_API,"if (mujoco.mj_id2name(self.model, mujoco.mjtObj.mjOBJ_BODY, int(self.model.geom_bodyid[g])) or """").startswith(prefix)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1525,nearest_peer,MjData_or_native_API,my_pos = self.data.geom_xpos[mine].copy()
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1532,nearest_peer,MjData_or_native_API,"diff = my_pos[:, None, :] - self.data.geom_xpos[theirs][None, :, :]"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1574,_settle,MjData_or_native_API,qvel = self.data.qvel[robot.base_dadr:robot.base_dadr + 6]
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1895,_peer_is_moving,MjData_or_native_API,qvel = self.data.qvel[other.base_dadr:other.base_dadr + 6]
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1959,_team_joint_forward_to_standoffs,command_or_advance,"self._physics_step_for(self.controllers[""r1""])"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,1972,_team_joint_forward_to_standoffs,command_or_advance,"self._physics_step_for(self.controllers[""r1""])"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,2032,_team_joint_move_servos,command_or_advance,"self._physics_step_for(self.controllers[""r1""])"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,2041,_team_joint_move_servos,command_or_advance,"self._physics_step_for(self.controllers[""r1""])"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,2074,_team_joint_turn_to_yaws,command_or_advance,"self._physics_step_for(self.controllers[""r1""])"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,2148,_team_joint_move_base_axis,command_or_advance,"self._physics_step_for(self.controllers[""r1""])"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,2204,_record_beam_phase,MjData_or_native_API,"pose = beam_pose(self.data, self.model)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,2207,_record_beam_phase,MjData_or_native_API,"""sim_time"": round(float(self.data.time), 4),"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,2297,_cooperative_beam_transport,MjData_or_native_API,"initial = beam_pose(self.data, self.model)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,2370,_cooperative_beam_transport,MjData_or_native_API,"lifted = beam_pose(self.data, self.model)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,2391,_cooperative_beam_transport,MjData_or_native_API,"carried_eval = evaluate_beam_mission(beam_pose(self.data, self.model))"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,2404,_cooperative_beam_transport,command_or_advance,"self._physics_step_for(self.controllers[""r1""])"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,2449,_record_warehouse_phase,MjData_or_native_API,"""sim_time"": round(float(self.data.time), 4),"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,2454,_record_warehouse_phase,MjData_or_native_API,"pose = cargo_pose(self.data, self.model, self.warehouse_spec_by_id[cargo_id])"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,2461,_warehouse_camera_pitch_deg,MjData_or_native_API,camera_id = mujoco.mj_name2id(
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,2465,_warehouse_camera_pitch_deg,MjData_or_native_API,"self.data.cam_xmat[camera_id], dtype=float,"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,2505,_warehouse_inward_formation,MjData_or_native_API,"pose = cargo_pose(self.data, self.model, spec)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,2541,_warehouse_cargo_half_extents,MjData_or_native_API,"yaw = float(cargo_pose(self.data, self.model, spec)[""yaw""])"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,2555,_warehouse_loaded_footprint,MjData_or_native_API,"yaw = float(cargo_pose(self.data, self.model, spec)[""yaw""])"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,2571,_warehouse_navigation_observations,MjData_or_native_API,"beam_gid = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_GEOM, ""team_beam_geom"")"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,2573,_warehouse_navigation_observations,MjData_or_native_API,"rotation = np.abs(np.asarray(self.data.geom_xmat[beam_gid]).reshape(3, 3)[:2, :])"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,2576,_warehouse_navigation_observations,MjData_or_native_API,"""fixture:team_beam"", ""fixture"", tuple(float(v) for v in self.data.geom_xpos[beam_gid][:2]),"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,2581,_warehouse_navigation_observations,MjData_or_native_API,"position = cargo_pose(self.data, self.model, cargo_spec)[""position""]"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,2712,_transport_warehouse_cargo_impl,MjData_or_native_API,"pose = cargo_pose(self.data, self.model, spec)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,2821,_transport_warehouse_cargo_impl,MjData_or_native_API,"cargo_pose(self.data, self.model, spec)[""position""][:2], dtype=float,"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,2838,_transport_warehouse_cargo_impl,command_or_advance,self._physics_step_for(self.controllers[carriers[0]])
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,2869,_transport_warehouse_cargo_impl,MjData_or_native_API,"lifted = cargo_pose(self.data, self.model, spec)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,2877,_transport_warehouse_cargo_impl,MjData_or_native_API,"cargo_xy = np.asarray(cargo_pose(self.data, self.model, spec)[""position""][:2], dtype=float)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,2884,move_carriers_by,MjData_or_native_API,"payload_start = float(cargo_pose(self.data, self.model, spec)[""position""][index])"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,2887,move_carriers_by,MjData_or_native_API,"cargo_pose(self.data, self.model, spec)[""position""][:2], dtype=float,"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,2935,move_carriers_by,MjData_or_native_API,"current_xy=tuple(cargo_pose(self.data,self.model,spec)[""position""][:2])"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,2946,move_carriers_by,MjData_or_native_API,"here=cargo_pose(self.data,self.model,spec)[""position""]"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,2950,move_carriers_by,MjData_or_native_API,"current = float(cargo_pose(self.data, self.model, spec)[""position""][index])"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,2958,move_carriers_by,MjData_or_native_API,"current_pose = cargo_pose(self.data, self.model, spec)[""position""]"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,2976,move_carriers_by,command_or_advance,self._physics_step_for(self.controllers[carriers[0]])
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,2985,move_carriers_by,MjData_or_native_API,"current = float(cargo_pose(self.data, self.model, spec)[""position""][index])"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,2993,move_carriers_by,command_or_advance,self._physics_step_for(self.controllers[carriers[0]])
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,2999,move_carriers_by,MjData_or_native_API,"for v in cargo_pose(self.data, self.model, spec)[""position""]"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,3011,move_arena_carriers_to,MjData_or_native_API,"cargo_pose(self.data, self.model, spec)[""position""][:2], dtype=float,"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,3043,record_waypoint_failure,MjData_or_native_API,"self.data, self.model, spec,"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,3057,move_arena_carriers_to,MjData_or_native_API,"cargo_pose(self.data, self.model, spec)[""position""][:2], dtype=float,"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,3090,move_arena_carriers_to,command_or_advance,self._physics_step_for(self.controllers[carriers[0]])
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,3131,move_arena_carriers_to,command_or_advance,self._physics_step_for(self.controllers[carriers[0]])
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,3142,move_arena_carriers_to,MjData_or_native_API,"cargo_pose(self.data, self.model, spec)[""position""][:2], dtype=float,"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,3152,move_arena_carriers_to,MjData_or_native_API,"cargo_pose(self.data, self.model, spec)[""position""][:2], dtype=float,"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,3157,move_arena_carriers_to,MjData_or_native_API,"cargo_pose(self.data, self.model, spec)[""position""][:2], dtype=float,"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,3168,move_arena_carriers_to,MjData_or_native_API,"self.data, self.model, spec,"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,3187,_transport_warehouse_cargo_impl,MjData_or_native_API,"cargo_pose(self.data, self.model, spec)[""position""][:2], dtype=float,"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,3249,_transport_warehouse_cargo_impl,MjData_or_native_API,"cargo_pose(self.data, self.model, spec)[""position""][:2], dtype=float,"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,3259,_transport_warehouse_cargo_impl,MjData_or_native_API,"cargo_pose(self.data, self.model, spec)[""position""][:2], dtype=float,"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,3265,_transport_warehouse_cargo_impl,MjData_or_native_API,"cargo_pose(self.data, self.model, spec)[""position""][:2], dtype=float,"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,3306,_transport_warehouse_cargo_impl,MjData_or_native_API,"yaw = float(cargo_pose(self.data, self.model, spec)[""yaw""])"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,3314,_transport_warehouse_cargo_impl,MjData_or_native_API,"yaw = float(cargo_pose(self.data, self.model, spec)[""yaw""])"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,3322,_transport_warehouse_cargo_impl,command_or_advance,self._physics_step_for(self.controllers[carriers[0]])
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,3332,_transport_warehouse_cargo_impl,command_or_advance,self._physics_step_for(self.controllers[carriers[0]])
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,3336,_transport_warehouse_cargo_impl,MjData_or_native_API,"yaw_deg=round(math.degrees(float(cargo_pose(self.data, self.model, spec)[""yaw""])), 2),"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,3339,_transport_warehouse_cargo_impl,MjData_or_native_API,"cargo_pose(self.data, self.model, spec)[""position""][:2], dtype=float,"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,3347,_transport_warehouse_cargo_impl,MjData_or_native_API,"cargo_pose(self.data, self.model, spec)[""position""][:2], dtype=float,"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,3355,_transport_warehouse_cargo_impl,MjData_or_native_API,"cargo_pose(self.data, self.model, spec)[""position""][:2], dtype=float,"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,3400,_transport_warehouse_cargo_impl,MjData_or_native_API,"yaw_before = float(cargo_pose(self.data, self.model, spec)[""yaw""])"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,3409,_transport_warehouse_cargo_impl,MjData_or_native_API,"yaw = float(cargo_pose(self.data, self.model, spec)[""yaw""])"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,3417,_transport_warehouse_cargo_impl,command_or_advance,self._physics_step_for(self.controllers[carriers[0]])
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,3428,_transport_warehouse_cargo_impl,MjData_or_native_API,"f""yaw={math.degrees(float(cargo_pose(self.data, self.model, spec)['yaw'])):.2f}deg"""
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,3433,_transport_warehouse_cargo_impl,command_or_advance,self._physics_step_for(self.controllers[carriers[0]])
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,3438,_transport_warehouse_cargo_impl,MjData_or_native_API,"yaw_deg=round(math.degrees(float(cargo_pose(self.data, self.model, spec)[""yaw""])), 2),"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,3441,_transport_warehouse_cargo_impl,MjData_or_native_API,"cargo_pose(self.data, self.model, spec)[""position""][:2], dtype=float,"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,3449,_transport_warehouse_cargo_impl,MjData_or_native_API,"cargo_pose(self.data, self.model, spec)[""position""][:2], dtype=float,"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,3472,_transport_warehouse_cargo_impl,command_or_advance,"self._physics_step_for(self.controllers[""r1""])"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,3477,_transport_warehouse_cargo_impl,MjData_or_native_API,"released_pose = cargo_pose(self.data, self.model, spec)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,3496,_transport_warehouse_cargo_impl,MjData_or_native_API,"pose = cargo_pose(self.data, self.model, spec)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,3499,_transport_warehouse_cargo_impl,MjData_or_native_API,"velocity = np.asarray(self.data.qvel[jadr:jadr + 6], dtype=float)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,3542,_warehouse_drive_robot_forward_to,command_or_advance,self._physics_step_for(robot)
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,3622,_warehouse_drive_group_axis,command_or_advance,self._physics_step_for(self.controllers[ids[0]])
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,3636,_warehouse_drive_group_axis,command_or_advance,self._physics_step_for(self.controllers[ids[0]])
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,3706,_cooperative_warehouse_transfer,MjData_or_native_API,"pose = cargo_pose(self.data, self.model, spec)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,3727,_cooperative_warehouse_transfer,MjData_or_native_API,"pose = cargo_pose(self.data, self.model, spec)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4154,reset,MjData_or_native_API,"mujoco.mj_resetData(self.model, self.data)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4195,reset,command_or_advance,"self._physics_step_for(self.controllers[""r1""], STOP)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4505,render_rgb,camera_or_recording,"def render_rgb(self, *, robot_id: object = ""r1"", camera: str = ""robot_cam"") -> np.ndarray:"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4506,render_rgb,camera_or_recording,return self.robot(robot_id).render_rgb(camera)
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4508,render_snapshot_async,camera_or_recording,"def render_snapshot_async(self, cameras: Sequence[CameraKey], *,"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4509,render_snapshot_async,camera_or_recording,capture_on_render_ready: bool = False) -> Future[RenderBatch]:
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4510,render_snapshot_async,camera_or_recording,"""""""Freeze one SIM instant, then render requested RGB views off physics lock."
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4516,render_snapshot_async,camera_or_recording,"``capture_on_render_ready``, the renderer takes the frozen copy when"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4520,render_snapshot_async,camera_or_recording,with the physics owner and rendering uses the isolated copy.
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4522,render_snapshot_async,camera_or_recording,if threading.get_ident() == self._render_thread_id:
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4523,render_snapshot_async,camera_or_recording,"raise RuntimeError(""snapshot capture cannot queue from render owner thread"")"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4524,render_snapshot_async,camera_or_recording,if self._render_executor is None:
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4525,render_snapshot_async,camera_or_recording,"raise RuntimeError(""multi MasterPi world was created with render=False"")"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4527,render_snapshot_async,camera_or_recording,if self._render_closed or self._render_executor is None:
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4531,render_snapshot_async,camera_or_recording,self._snapshot_broker = self._render_executor.submit(
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4537,render_snapshot_async,camera_or_recording,if self._render_closed or self._render_executor is None:
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4540,render_snapshot_async,camera_or_recording,if capture_on_render_ready:
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4541,capture_and_render,camera_or_recording,def capture_and_render():
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4542,capture_and_render,camera_or_recording,"return broker.render(broker.capture(self, selected, slot))"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4543,render_snapshot_async,camera_or_recording,future = self._render_executor.submit(capture_and_render)
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4545,render_snapshot_async,camera_or_recording,"snapshot = broker.capture(self, selected, slot)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4546,render_snapshot_async,camera_or_recording,"future = self._render_executor.submit(broker.render, snapshot)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4556,render_pair_snapshot_with_top_async,camera_or_recording,"def render_pair_snapshot_with_top_async(self, cameras: Sequence[CameraKey]) -> tuple[TopRenderLatch, Future[RenderBatch]]:"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4568,render_pair_snapshot_with_top_async,camera_or_recording,if threading.get_ident() == self._render_thread_id:
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4569,render_pair_snapshot_with_top_async,camera_or_recording,raise RuntimeError('snapshot capture cannot queue from render owner thread')
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4571,render_pair_snapshot_with_top_async,camera_or_recording,if self._render_closed or self._render_executor is None:
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4574,render_pair_snapshot_with_top_async,camera_or_recording,self._snapshot_broker = self._render_executor.submit(
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4581,render_pair_snapshot_with_top_async,camera_or_recording,if self._render_closed or self._render_executor is None:
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4583,capture_and_render,camera_or_recording,def capture_and_render():
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4584,capture_and_render,camera_or_recording,"snapshot = broker.capture(self, selected, slot)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4585,capture_and_render,camera_or_recording,"return broker.render(snapshot, top_latch=latch)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4586,render_pair_snapshot_with_top_async,camera_or_recording,future = self._render_executor.submit(capture_and_render)
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4605,render_jpeg,camera_or_recording,"def render_jpeg(self, *, robot_id: object = ""r1"", camera: str = ""robot_cam"", quality: int = 82) -> bytes:"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4606,render_jpeg,camera_or_recording,"rgb = self.render_rgb(robot_id=robot_id, camera=camera)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4609,render_team_jpeg,camera_or_recording,"def render_team_jpeg(self, camera: str = ""cctv_top"", quality: int = 86) -> bytes:"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4610,render_team_jpeg,camera_or_recording,executor = self._render_executor
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4611,render_team_jpeg,camera_or_recording,if executor is None or self.observer_renderer is None:
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4612,render_team_jpeg,camera_or_recording,"raise RuntimeError(""multi MasterPi world was created with render=False"")"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4613,render_team_jpeg,camera_or_recording,if threading.get_ident() == self._render_thread_id:
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4614,render_team_jpeg,camera_or_recording,rgb = self._render_team_rgb_direct(camera)
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4616,render_team_jpeg,camera_or_recording,"rgb = executor.submit(self._render_team_rgb_direct, camera).result(timeout=30.0)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4624,close,camera_or_recording,self._render_closed = True
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4625,close,camera_or_recording,executor = self._render_executor
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4628,close,camera_or_recording,executor.submit(self._close_renderers).result(timeout=15.0)
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4631,close,camera_or_recording,self._render_executor = None
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4632,close,camera_or_recording,self.renderer = None
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4633,close,camera_or_recording,self.observer_renderer = None
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,sim/multi_masterpi_production.py,4636,close,camera_or_recording,c.renderer = None; c.observer_renderer = None
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,91,record,audit_or_score,"return {'held_object':self.mode,'held_world_reads':sum(self.reads.values()),'held_world_reads_by_site':dict(self.reads),"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,92,record,audit_or_score,"'invisible_measurements':sum(v[1] for ph in self.meas.values() for v in ph.values()),"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,122,visible,MjData_or_native_API,"p=((point-data.cam_xpos[cid])@data.cam_xmat[cid].reshape(3,3))*np.array([1.,-1.,-1.])"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,127,visible,MjData_or_native_API,delta=point-data.cam_xpos[cid];dist=float(np.linalg.norm(delta));direction=delta/dist
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,128,visible,MjData_or_native_API,"skip=b.near*dist/p[2];origin=data.cam_xpos[cid]+skip*direction;hit=np.array([-1],dtype=np.int32)"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,129,visible,MjData_or_native_API,"ray=mujoco.mj_ray(b.model,data,origin,direction,b.groups,True,-1,hit)"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,136,classify,MjData_or_native_API,"p=((point-data.cam_xpos[cid])@data.cam_xmat[cid].reshape(3,3))*np.array([1.,-1.,-1.])"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,142,classify,MjData_or_native_API,delta=point-data.cam_xpos[cid];dist=float(np.linalg.norm(delta));direction=delta/dist
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,143,classify,MjData_or_native_API,"skip=b.near*dist/p[2];origin=data.cam_xpos[cid]+skip*direction;hit=np.array([-1],dtype=np.int32)"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,144,classify,MjData_or_native_API,"ray=mujoco.mj_ray(b.model,data,origin,direction,b.groups,True,-1,hit)"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,168,own_end_world,MjData_or_native_API,"b=world.data.body(inst.body);rot=b.xmat.reshape(3,3)"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,172,run,camera_or_recording,"def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe_mode='gaze_v2',render_dr='off',"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,225,run,camera_or_recording,if platform.system()=='Darwin':raise RuntimeError('Mac physics/render disabled; use VM3')
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,266,run,camera_or_recording,"world=build_world(scene,drive_profile=PROFILE,seed=plan['seed'],width=cw,height=ch,render=True,"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,271,run,camera_or_recording,"from harness.render_randomization import draw as dr_draw,apply as dr_apply"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,272,run,camera_or_recording,"report['render_randomization']=dr_apply(world.model,None if render_dr=='off' else dr_draw(plan['seed'],world.model.nlight))"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,282,run,MjData_or_native_API|command_or_advance,"for rid,port in ports.items():port.apply({'kind':'look','pan_pulse':plan['initial_pan'][rid]},float(world.data.time))"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,284,advance,MjData_or_native_API,while float(world.data.time)<target-1e-8:
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,285,advance,MjData_or_native_API,now=float(world.data.time)
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,286,advance,MjData_or_native_API,if world.data.eq_active.any():raise RuntimeError('WELD_ACTIVE')
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,287,advance,command_or_advance,"for rid,port in ports.items():port.tick(now);wheels[rid].tick(now)"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,289,advance,command_or_advance,world._physics_step_for(world.robot('r1'))
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,290,advance,MjData_or_native_API,"for rid,levels in issued.items():issued_pose[rid].propagate(levels,float(world.data.time)-now)"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,291,run,MjData_or_native_API,advance(float(world.data.time)+.5)
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,292,run,MjData_or_native_API,origin=float(world.data.time);inst=next(x for x in scene.cargo if x.item_id=='beam_1')
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,312,frames,camera_or_recording,jpg=base64.b64decode(ports[rid].capture()['image'])
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,323,run,MjData_or_native_API,while float(world.data.time)-origin<prefix_cap_s:
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,324,run,MjData_or_native_API,"now=float(world.data.time);truth=snapshot(world,inst,roles,scene)"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,325,run,MjData_or_native_API,"truth['visibility']={rid:band.measure(world.data,rid,end) for rid,end in roles.items()}"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,327,run,MjData_or_native_API,"truth['visibility'][rid]['objects']=[k for k,b in object_bodies.items() if band.body_visible(world.data,rid,b)]"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,328,run,MjData_or_native_API,"truth['visibility'][rid]['peers']=[p for p in ('r1','r2','r3') if p!=rid and band.body_visible(world.data,rid,p+'__robot')]"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,342,run,MjData_or_native_API,"report['training_exclusions']['prefix'].update(start_world_t=origin,end_world_t=float(world.data.time))"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,375,look_truth,MjData_or_native_API,"b_=world.robot(rid).base_xyz();cp=np.array([world.data.cam_xpos[cid][0]-b_[0],world.data.cam_xpos[cid][1]-b_[1],world.data.cam_xpos[cid][2]]);cz=world.data.cam_xmat[cid].reshape(3,3)@np.array([0.,0.,-1.])"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,382,look_capture,camera_or_recording,"def look_capture(rid,now):"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,383,look_capture,camera_or_recording,jpeg=base64.b64decode(ports[rid].capture()['image'])
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,399,run,MjData_or_native_API,R=tuple(roles);code=PairReleaseCode(R);release_t0=float(world.data.time)
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,406,run,MjData_or_native_API,b0=world.data.body(inst.body)
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,414,observe,MjData_or_native_API,at=time.monotonic();data=world.data;pose=pose_of(rid);t=rel[rid]
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,425,observe,MjData_or_native_API,"b=data.body(inst.body);rot=b.xmat.reshape(3,3);axis=rot[:,0]"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,441,observe,MjData_or_native_API,"gid=band.bands[roles[rid]];g=data.geom_xpos[gid];rot=data.body(inst.body).xmat.reshape(3,3)"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,460,run_sched,command_or_advance,"ports[rid].apply({'kind':'look','pan_pulse':v} if sid==6 else {'kind':'arm','servo_id':sid,'pulse':v},now);rel[rid].pwm[sid]=v"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,506,regrasp_capture,camera_or_recording,"def regrasp_capture(rid,now,label):"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,507,regrasp_capture,camera_or_recording,jpeg=base64.b64decode(ports[rid].capture()['image'])
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,535,run,MjData_or_native_API,while float(world.data.time)-origin<cap_s:
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,536,run,MjData_or_native_API,now=float(world.data.time);tick_t=now;ph=st['phase'];age=now-st['since']
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,537,run,camera_or_recording,"failure_rgb.capture(now-release_t0,{rid:lambda rid=rid:base64.b64decode(ports[rid].capture()['image']) for rid in roles})"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,561,run,command_or_advance,"for rid,t in rel.items():ports[rid].apply({'kind':'arm','servo_id':1,'pulse':2000},now);t.pwm[1]=2000"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,610,set_servo,command_or_advance,"ports[rid].apply({'kind':'look','pan_pulse':v} if sid==6 else {'kind':'arm','servo_id':sid,'pulse':v},at);t.pwm[sid]=v"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,613,run,command_or_advance,"look_run[rid].tick(now,set_servo=set_servo,set_wheels=set_wheels,"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,615,run,camera_or_recording,"capture=lambda at,rid=rid:look_capture(rid,at))"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,788,run,command_or_advance,"status=line_check.tick(now,regrasp_capture,schedule)"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,827,run,command_or_advance,"status=barrier.tick(now,regrasp_capture,schedule)"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,880,run,MjData_or_native_API,"for rid in roles:audit.assigned_end(st['phase'],rid,band.measure(world.data,rid,roles[rid])['visible_probes']>=3)"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,881,run,MjData_or_native_API,"ev.write(json.dumps({'t':float(world.data.time),'phase':st['phase'],'beam':truth['beam'],'contacts':truth['contacts'],"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,890,run,MjData_or_native_API,"now=float(world.data.time);b=world.data.body(inst.body);rot=b.xmat.reshape(3,3)"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,897,run,MjData_or_native_API,g=world.data.site(f'{rid}__grip_site').xpos
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,921,run,MjData_or_native_API,"lookaround_result=None if lookaround=='off' else {rid:{'localizer':loc[rid].record(),'evaluation':look_eval[rid]} for rid in roles},release_sim_s=(done_at or float(world.data.time))-release_t0,status='complete')"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,938,run,MjData_or_native_API,report['wall_s']=time.monotonic()-start;report['sim_s']=None if world is None else float(world.data.time)-origin
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,939,run,audit_or_score,"report['loadavg_at_end']=os.getloadavg();report['input_audit']={**audit.record(),**top_audit.record()}"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,953,run,audit_or_score,"report['input_audit']['visibility_by_phase']={r:t.get('visible_counts_by_phase') for r,t in report['teachers'].items()}"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,954,run,audit_or_score,"report['input_audit']['max_destination_blind_s_by_phase']={r:t.get('max_destination_blind_s_by_phase') for r,t in report['teachers'].items()}"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,989,main,camera_or_recording,"p.add_argument('--render-dr',choices=('off','on_v1'),default='off',help='appearance randomization (harness/render_randomization.py); off for success measurement')"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,scripts/run_grasp_act_release.py,996,main,camera_or_recording,"print(json.dumps(run(plan,a.out,cap_s=a.cap_s,own_pose_source=a.own_pose_source,observe_mode=a.observe_mode,render_dr=a.render_dr,zone_slots=a.zone_slots,reach_mode=a.reach_mode,held_object=a.held_object,lookaround=a.lookaround,pose_anchor=a.pose_anchor,placement=a.placement,lateral_recovery=a.lateral_recovery,active_recovery=a.active_recovery,command_motion=a.command_motion,localization_support=a.localization_support,regrasp_check=a.regrasp_check,regrasp_recovery=a.regrasp_recovery,release_profile=a.release_profile,release_fov_step=a.release_fov_step,release_settle_reuse=a.release_settle_reuse,release_goal_region=a.release_goal_region,release20_settle=a.release20_settle,release21=a.release21,review_top=a.review_top,record_training=a.record_training,**{k:getattr(a,k) for k in (*release23_control.OPTIONS,*release24_control.OPTIONS)},failure_rgb_recording=a.failure_rgb_recording),ensure_ascii=False,default=str))"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,sim/release_regrasp.py,98,<module>,camera_or_recording,"capture(rid, now, label) returns the fresh own BGR frame and saves its hash."
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,sim/release_regrasp.py,152,fresh,camera_or_recording,"rec = continuity(self.references[rid], capture(rid, now, 'barrier'), **self.evidence_options(rid))"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,sim/release_regrasp.py,206,tick,command_or_advance,"status = self.recovery.tick(now,capture,schedule)"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,sim/release_regrasp.py,244,tick,camera_or_recording,"self.before = capture(rid, now, 'before_test')"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,sim/release_regrasp.py,259,tick,camera_or_recording,"self.after = capture(rid, now, 'lift_complete')"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,sim/release_regrasp.py,263,tick,camera_or_recording,"frame = capture(rid, now, 'settled_test')"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,sim/release_regrasp.py,277,tick,camera_or_recording,"frame = capture(rid, now, 'restored_test')"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,sim/release_regrasp_recovery.py,168,tick,camera_or_recording,"feature=shaft_features(self.undistort(capture(rid,now,'realign_'+('final' if self.returned else 'back'))))"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_self_map_diagnostic.py,19,<module>,audit_or_score,from harness.self_map_input_audit import InputAudit
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_self_map_diagnostic.py,26,bundle,camera_or_recording,"revision_gate='off', multiframe_registration='off', render_profile='floor_light_v1', correction_safety='off', active_relocalization='off',"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_self_map_diagnostic.py,68,bundle,camera_or_recording,"if render_profile not in ('floor_light_v1', 'floor_light_textured_v1'):"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_self_map_diagnostic.py,70,bundle,camera_or_recording,if revision_gate != 'off' or multiframe_registration != 'off' or render_profile != 'floor_light_v1':
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_self_map_diagnostic.py,72,bundle,camera_or_recording,"pool_with_previous_results=False, scene_version=render_profile,"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_self_map_diagnostic.py,75,bundle,camera_or_recording,"required='PR511 official render_profile_selection and nearclip APIs',"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_self_map_diagnostic.py,76,bundle,camera_or_recording,merged_verified=True)] if render_profile == 'floor_light_textured_v1' else []))
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_self_map_diagnostic.py,78,bundle,camera_or_recording,render_profile=render_profile)
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_self_map_diagnostic.py,87,bundle,camera_or_recording,"result.setdefault('scene_version', render_profile)"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_self_map_diagnostic.py,88,bundle,camera_or_recording,"for key, value in dict(render_profile=render_profile, revision_gate=revision_gate,"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_self_map_diagnostic.py,209,acquire,audit_or_score,"model_calls=0, complete=False, physical_success_unverified=True, frames=0)"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_self_map_diagnostic.py,211,acquire,camera_or_recording,"result.update(scene_version=b['scene_version'], render_profile=b['options']['render_profile'],"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_self_map_diagnostic.py,226,acquire,camera_or_recording,if backend_factory.__module__.startswith('sim.') and b['options'].get('render_profile') == 'floor_light_textured_v1':
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_self_map_diagnostic.py,265,acquire,command_or_advance,"backend.issue(robot, action)"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_self_map_diagnostic.py,272,acquire,camera_or_recording,"obs, _ = backend.capture()[robot]"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_self_map_diagnostic.py,293,acquire,command_or_advance,"backend.issue(robot, {k: v for k, v in command.items() if k != 't'})"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_self_map_diagnostic.py,301,acquire,audit_or_score,"input_audit=audit.snapshot(),"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_self_map_diagnostic.py,314,acquire,command_or_advance,"backend.advance_to(round(t+.1,9))"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_self_map_diagnostic.py,319,acquire,command_or_advance,"backend.advance_to(round(start+(tick+1)*interval, 9))"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_self_map_diagnostic.py,341,acquire,command_or_advance,"backend.issue(b['task']['robot_id'], dict(kind='hold'))"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_self_map_diagnostic.py,360,acquire,audit_or_score,result['input_audit'] = audit.snapshot()
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_self_map_diagnostic.py,361,acquire,audit_or_score,result['invisible_measurements'] = result['input_audit']['invisible_measurements']
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_self_map_diagnostic.py,362,acquire,audit_or_score,result['held_world_reads'] = result['input_audit']['held_world_reads']
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_self_map_diagnostic.py,401,main,camera_or_recording,"p.add_argument('--render-profile', choices=['floor_light_v1', 'floor_light_textured_v1'], default='floor_light_v1')"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_self_map_diagnostic.py,406,main,camera_or_recording,"multiframe_registration=a.multiframe_registration, render_profile=a.render_profile,"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/offline_self_map.py,1,<module>,camera_or_recording,"""""""Saved-RGB replay and a separate evaluation-only scoring command; no renderer."""""""
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_reloc10_rotation_check.py,40,run,audit_or_score,"physical_success=None,model_calls=0,training_rgb=False,top_rgb_control_allowed=False)"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_reloc10_rotation_check.py,43,run,camera_or_recording,"world = build_world(scene,drive_profile=PROFILE,seed=episode['seed'],render=True,"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_reloc10_rotation_check.py,45,run,camera_or_recording,if episode.get('render_profile') == 'floor_light_textured_v1':
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_reloc10_rotation_check.py,46,run,camera_or_recording,from sim.grasp_act_scene import audit_render
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_reloc10_rotation_check.py,47,run,camera_or_recording,"write(out/'texture-audit.json',audit_render(world.model,episode))"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_reloc10_rotation_check.py,50,run,MjData_or_native_API,now = float(world.data.time)
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_reloc10_rotation_check.py,71,run,command_or_advance,"port.apply(dict(kind='wheel_pulse',wheels=wheels,duration_s=durations),now)"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_reloc10_rotation_check.py,73,run,MjData_or_native_API,while float(world.data.time) < until-1e-8:
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_reloc10_rotation_check.py,74,run,MjData_or_native_API|command_or_advance,port.tick(float(world.data.time)); world._physics_step_for(world.robot(episode['robot_id']))
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_reloc10_rotation_check.py,75,run,MjData_or_native_API,dt = float(world.data.time)-now
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_reloc10_rotation_check.py,76,run,command_or_advance,"pose.issue(issued,dt); integrated += pose.last_delta[2]"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_reloc10_rotation_check.py,77,run,MjData_or_native_API,now = float(world.data.time)
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_reloc10_rotation_check.py,79,run,camera_or_recording,capture = port.capture()
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_reloc10_rotation_check.py,97,run,MjData_or_native_API,while float(world.data.time) < until-1e-8:
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_reloc10_rotation_check.py,98,run,MjData_or_native_API|command_or_advance,port.tick(float(world.data.time)); world._physics_step_for(world.robot(episode['robot_id']))
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_reloc10_rotation_check.py,99,run,MjData_or_native_API|command_or_advance,"pose.issue(stopped,float(world.data.time)-now)"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_reloc10_rotation_check.py,100,run,MjData_or_native_API,now=float(world.data.time)
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/replay_reloc15_carry.py,34,main,camera_or_recording,"world=build_world(scene,drive_profile=PROFILE,seed=plan['seed'],width=640,height=480,render=True,"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/replay_reloc15_carry.py,37,main,MjData_or_native_API,"scene.setup(world);m,d=world.model,world.data;rid=plan['robot_id'];origin=float(d.time)"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/replay_reloc15_carry.py,58,main,MjData_or_native_API,"now=float(d.time);assert abs(now-r['t'])<1e-6,(i,now,r['t'])"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/replay_reloc15_carry.py,64,main,MjData_or_native_API,for k in range(d.ncon):
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/replay_reloc15_carry.py,65,main,MjData_or_native_API,"c=d.contact[k];g1,g2=int(c.geom1),int(c.geom2)"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/replay_reloc15_carry.py,67,main,MjData_or_native_API,"mujoco.mj_contactForce(m,d,k,force)"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/replay_reloc15_carry.py,74,main,MjData_or_native_API,"mujoco.mj_objectVelocity(m,d,mujoco.mjtObj.mjOBJ_GEOM,roller,velocity,0)"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/replay_reloc15_carry.py,75,main,MjData_or_native_API,"v=velocity[3:]+np.cross(velocity[:3],c.pos-d.geom_xpos[roller])"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/replay_reloc15_carry.py,80,main,MjData_or_native_API,"base_rotation=d.body(rid+'__robot').xmat.reshape(3,3)"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/replay_reloc15_carry.py,81,main,MjData_or_native_API,"actual_rotation=base_rotation.T@d.cam_xmat[cid].reshape(3,3)@np.diag([1.,-1.,-1.])"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/replay_reloc15_carry.py,89,main,MjData_or_native_API,"replay_xyz_error_m=xy,cargo_xyz=d.body(body).xpos.tolist(),contacts=contacts,"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/replay_reloc15_carry.py,90,main,MjData_or_native_API,"wheel_ctrl=d.ctrl[world.controllers[rid].wheel_act].tolist(),"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/replay_reloc15_carry.py,91,main,MjData_or_native_API,"wheel_qvel=d.qvel[m.jnt_dofadr[m.actuator_trnid[world.controllers[rid].wheel_act,0]]].tolist()))"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/replay_reloc15_carry.py,94,main,camera_or_recording,"own=cv2.imdecode(np.frombuffer(base64.b64decode(port.capture()['image']),np.uint8),cv2.IMREAD_COLOR)"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/replay_reloc15_carry.py,95,main,camera_or_recording,"top=cv2.imdecode(np.frombuffer(world.render_team_jpeg(camera=scene.config['static_map']['top_cameras'][0]['name']),np.uint8),cv2.IMREAD_COLOR)"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/replay_reloc15_carry.py,96,main,camera_or_recording,"r2=cv2.imdecode(np.frombuffer(base64.b64decode(DutyActPort(world,'r2',allow_reverse=True,allow_mecanum=True).capture()['image']),np.uint8),cv2.IMREAD_COLOR)"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/replay_reloc15_carry.py,105,main,MjData_or_native_API,while float(d.time)<until-1e-8:
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/replay_reloc15_carry.py,106,main,MjData_or_native_API|command_or_advance,port.tick(float(d.time));world._physics_step_for(world.robot(rid))
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/own_map_closed_loop.py,8,__init__,camera_or_recording,if bundle['options'].get('render_profile') == 'floor_light_textured_v1':
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/own_map_closed_loop.py,9,__init__,camera_or_recording,from sim.render_profile_selection import for_name
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/own_map_closed_loop.py,19,eval_sample,MjData_or_native_API,"m,d=self.world.model,self.world.data"
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/own_map_closed_loop.py,21,eval_sample,MjData_or_native_API,for c in d.contact[:d.ncon]:
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/own_map_closed_loop.py,22,eval_sample,MjData_or_native_API,"names=[mujoco.mj_id2name(m,mujoco.mjtObj.mjOBJ_GEOM,int(i)) or '' for i in (c.geom1,c.geom2)]"
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/active_wall_map.py,27,__init__,camera_or_recording,"render=True,warehouse_layout=self.scene.engine_layout,warehouse_cargo_ids=None)"
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/active_wall_map.py,32,__init__,camera_or_recording,"profile=bundle.get('options',{}).get('render_profile','floor_light_v1')"
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/wall_servo_stiffness.py,51,__init__,camera_or_recording,"render=True,warehouse_layout=self.scene.engine_layout,warehouse_cargo_ids=None)"
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/wall_servo_stiffness.py,73,eval_sample,MjData_or_native_API,"m,d=self.world.model,self.world.data"
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/wall_servo_stiffness.py,79,eval_sample,MjData_or_native_API,"values[str(sid)]=dict(q_rad=float(d.qpos[m.jnt_qposadr[j]]),"
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/wall_servo_stiffness.py,80,eval_sample,MjData_or_native_API,"qvel=float(d.qvel[m.jnt_dofadr[j]]),target_rad=float(d.ctrl[a]),"
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/wall_servo_stiffness.py,81,eval_sample,MjData_or_native_API,"torque_nm=float(d.actuator_force[a]),kp=float(m.actuator_gainprm[a,0]),"
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/final_environment_checks.py,31,__init__,camera_or_recording,"width=640, height=480, render=True,"
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/final_environment_checks.py,44,now,MjData_or_native_API,return float(self.world.data.time) if self.world is not None else 0.
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/final_environment_checks.py,79,reset,MjData_or_native_API,"names = [mujoco.mj_id2name(self.world.model, mujoco.mjtObj.mjOBJ_GEOM, i) or ''"
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/final_environment_checks.py,99,issue,command_or_advance,"self.ports[rid].apply(action, self.now)"
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/final_environment_checks.py,111,advance_to,command_or_advance,port.tick(self.now)
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/final_environment_checks.py,112,advance_to,command_or_advance,self.world._physics_step_for(self.world.robot('r1'))
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/final_environment_checks.py,116,capture,camera_or_recording,def capture(self):
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/final_environment_checks.py,120,capture,camera_or_recording,"rgb = self.world.render_rgb(robot_id=rid, camera='robot_cam')"
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/final_environment_checks.py,131,capture,MjData_or_native_API,base = self.world.data.body(rid + '__robot')
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/final_environment_checks.py,132,capture,MjData_or_native_API,cam = self.world.data.camera(rid + '__robot_cam')
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/final_environment_checks.py,144,eval_sample,MjData_or_native_API,"m, d = self.world.model, self.world.data"
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/final_environment_checks.py,145,eval_sample,MjData_or_native_API,"contacts = [{'geom1': mujoco.mj_id2name(m, mujoco.mjtObj.mjOBJ_GEOM, int(c.geom1)),"
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/final_environment_checks.py,146,eval_sample,MjData_or_native_API,"'geom2': mujoco.mj_id2name(m, mujoco.mjtObj.mjOBJ_GEOM, int(c.geom2)),"
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/final_environment_checks.py,147,eval_sample,MjData_or_native_API,'dist_m': float(c.dist)} for c in d.contact[:d.ncon]]
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/final_environment_checks.py,148,eval_sample,MjData_or_native_API,welds = [int(i) for i in range(m.neq) if m.eq_type[i] == mujoco.mjtEq.mjEQ_WELD and d.eq_active[i]]
+reloc,644289a755ee60df99e916224931c2dec80298eb,harness/self_map_input_audit.py,19,__init__,audit_or_score,"invisible_measurements=0, held_world_reads=0, rejected_inputs=0)"
+reloc,644289a755ee60df99e916224931c2dec80298eb,harness/self_map_input_audit.py,53,snapshot,audit_or_score,"return dict(schema='ugrp.selfmap_input_audit.v1', measured=True,"
+reloc,644289a755ee60df99e916224931c2dec80298eb,harness/failure_rgb_buffer.py,30,record_backend_frame,camera_or_recording,"jpeg=backend.world.render_jpeg(robot_id=robot,camera='robot_cam')"
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,scripts/run_e2e_ownmap_live.py,578,run,command_or_advance,"backend.issue(rid,a);robot.commanded(a,0.)"
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,scripts/run_e2e_ownmap_live.py,655,run,camera_or_recording,raw=backend.capture()
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,scripts/run_e2e_ownmap_live.py,690,run,command_or_advance,"backend.issue(rid,action);robots[rid].commanded(action,now)"
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,scripts/run_e2e_ownmap_live.py,711,run,command_or_advance,backend.advance_to(origin+(tick+1)*.05)
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,scripts/run_e2e_ownmap_live.py,748,run,command_or_advance,"finalizer.attempt(rid+'-hold',lambda:backend.issue(rid,dict(kind='hold')))"
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/e2e_ownmap_live.py,4,<module>,camera_or_recording,Only capture() RGB and commanded actuator history cross to the runtime.
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/e2e_ownmap_live.py,13,make_scene,camera_or_recording,from sim.render_profile import install
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/e2e_ownmap_live.py,60,capture,camera_or_recording,def capture(self):
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/e2e_ownmap_live.py,62,capture,camera_or_recording,return super().capture()
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/e2e_ownmap_live.py,65,capture,camera_or_recording,self._speed3_frames = super().capture()
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/e2e_ownmap_live.py,80,issue,command_or_advance,"return super().issue(rid,action)"
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/e2e_s3_test.py,29,make_scene,camera_or_recording,from sim.render_profile import install
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/e2e_s3_test.py,94,eval_sample,MjData_or_native_API,"m,d=self.world.model,self.world.data"
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/e2e_s3_test.py,98,eval_sample,MjData_or_native_API,"extent=abs(d.geom_xmat[g].reshape(3,3))@m.geom_size[g]"
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/e2e_s3_test.py,99,eval_sample,MjData_or_native_API,"bounds.append((d.geom_xpos[g]-extent,d.geom_xpos[g]+extent))"
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/zone_s3_no_prior.py,28,referee_truth,MjData_or_native_API,row['z'] = float(host.world.data.body(host.objects[item]['body_name']).xipos[2])
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/zone_s3_no_prior.py,35,make_scene,camera_or_recording,from sim.render_profile import install
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/zone_s3_no_prior.py,68,__init__,camera_or_recording,"roller_collision='mesh', seed=seed, width=width, height=height, render=True,"
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/zone_s3_no_prior.py,73,__init__,camera_or_recording,"audit=(lambda rid, row: self._append(f'eval_only/{rid}/render_camera.jsonl', row))"
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/zone_s3_no_prior.py,74,__init__,camera_or_recording,"if bundle.get('eval_render_camera', False) else None)"
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/zone_s3_no_prior.py,86,__init__,MjData_or_native_API,"names = [mujoco.mj_id2name(m, mujoco.mjtObj.mjOBJ_GEOM, i) or '' for i in range(m.ngeom)]"
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/zone_s3_no_prior.py,117,eval_sample,MjData_or_native_API,if not np.isfinite(self.world.data.qpos).all() or not np.isfinite(self.world.data.qvel).all():
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/zone_s3_no_prior.py,120,eval_sample,MjData_or_native_API,b = self.world.data.body(rid+'__robot')
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/zone_s3_no_prior.py,128,eval_sample,MjData_or_native_API,body = self.world.data.body(config['body_name'])
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/zone_s3_no_prior.py,137,eval_sample,MjData_or_native_API,for c in self.world.data.contact[:self.world.data.ncon]:
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/zone_s3_no_prior.py,140,eval_sample,MjData_or_native_API,"touching.update(mujoco.mj_id2name(self.world.model, mujoco.mjtObj.mjOBJ_GEOM, g)"
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/zone_s3_host.py,1,<module>,camera_or_recording,"""""""S3 physics owner. Only capture() is a robot input; truth is written separately."""""""
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/zone_s3_host.py,18,make_scene,camera_or_recording,from sim.render_profile import install
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/zone_s3_host.py,34,__init__,MjData_or_native_API,"names = [mujoco.mj_id2name(m, mujoco.mjtObj.mjOBJ_GEOM, i) or '' for i in range(m.ngeom)]"
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/zone_s3_host.py,62,issue,command_or_advance,"BaseBackend.issue(self, rid, action)"
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/zone_s3_host.py,64,capture,camera_or_recording,def capture(self):
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/solo_cyan_v106.py,3,<module>,camera_or_recording,Only capture() returns student input; evaluation reads stay write-only and
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/solo_cyan_v106.py,21,make_scene,camera_or_recording,from sim.render_profile import install
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/solo_cyan_v106.py,51,__init__,camera_or_recording,"height=480, render=True, warehouse_layout=self.scene.engine_layout, warehouse_cargo_ids=None)"
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/solo_cyan_v106.py,63,reset,camera_or_recording,from sim.render_profile import verify_model
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/solo_cyan_v106.py,65,reset,camera_or_recording,"write(self.out/'eval_only/render.json', verify_model(self.world.model, 'floor_light_v1'))"
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/solo_cyan_v106.py,66,reset,camera_or_recording,"write(self.out/'eval_only/render_nearclip.json', self.nearclip_audit)"
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/solo_cyan_v106.py,76,issue,command_or_advance,"super().issue(rid, action)"
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/solo_cyan_v106.py,78,capture,camera_or_recording,def capture(self):
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/solo_cyan_v106.py,86,eval_sample,MjData_or_native_API,body = self.world.data.body(item['body_name'])
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/solo_cyan_v106.py,87,eval_sample,MjData_or_native_API,robot = self.world.data.body(self.bundle['task']['robot_id']+'__robot')
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/final_environment_checks.py,31,__init__,camera_or_recording,"width=640, height=480, render=True,"
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/final_environment_checks.py,44,now,MjData_or_native_API,return float(self.world.data.time) if self.world is not None else 0.
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/final_environment_checks.py,79,reset,MjData_or_native_API,"names = [mujoco.mj_id2name(self.world.model, mujoco.mjtObj.mjOBJ_GEOM, i) or ''"
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/final_environment_checks.py,99,issue,command_or_advance,"self.ports[rid].apply(action, self.now)"
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/final_environment_checks.py,111,advance_to,command_or_advance,port.tick(self.now)
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/final_environment_checks.py,112,advance_to,command_or_advance,self.world._physics_step_for(self.world.robot('r1'))
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/final_environment_checks.py,116,capture,camera_or_recording,def capture(self):
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/final_environment_checks.py,120,capture,camera_or_recording,"rgb = self.world.render_rgb(robot_id=rid, camera='robot_cam')"
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/final_environment_checks.py,131,capture,MjData_or_native_API,base = self.world.data.body(rid + '__robot')
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/final_environment_checks.py,132,capture,MjData_or_native_API,cam = self.world.data.camera(rid + '__robot_cam')
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/final_environment_checks.py,144,eval_sample,MjData_or_native_API,"m, d = self.world.model, self.world.data"
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/final_environment_checks.py,145,eval_sample,MjData_or_native_API,"contacts = [{'geom1': mujoco.mj_id2name(m, mujoco.mjtObj.mjOBJ_GEOM, int(c.geom1)),"
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/final_environment_checks.py,146,eval_sample,MjData_or_native_API,"'geom2': mujoco.mj_id2name(m, mujoco.mjtObj.mjOBJ_GEOM, int(c.geom2)),"
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/final_environment_checks.py,147,eval_sample,MjData_or_native_API,'dist_m': float(c.dist)} for c in d.contact[:d.ncon]]
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/final_environment_checks.py,148,eval_sample,MjData_or_native_API,welds = [int(i) for i in range(m.neq) if m.eq_type[i] == mujoco.mjtEq.mjEQ_WELD and d.eq_active[i]]
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,harness/zone_s3_host.py,209,finish,audit_or_score,"'physical_success': None, 'research_result': False}"
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,harness/zone_s3_host.py,306,record,audit_or_score,"'physical_success': None, 'in_run_drop_tilt_contact_detection': False}"
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,harness/zone_study_integration.py,160,load_pose_providers,MjData_or_native_API,"if data.get('schema') != PROVIDER_SCHEMA or not isinstance(data.get('providers'), Mapping):"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/cargo_formation_teacher.py,138,cargo_pose,MjData_or_native_API,d = self.world.data.body(self.inst.body)
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/cargo_formation_teacher.py,139,cargo_pose,MjData_or_native_API,q = d.xquat
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/cargo_formation_teacher.py,141,cargo_pose,MjData_or_native_API,"return float(d.xpos[0]), float(d.xpos[1]), yaw"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/cargo_formation_teacher.py,184,_send,command_or_advance,"self.ports[rid].apply({'kind': 'mecanum', 'duration_s': .15,"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/cargo_formation_teacher.py,199,_approach,command_or_advance,"self.ports[rid].apply({'kind': 'mecanum', 'duration_s': .12,"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/cargo_formation_teacher.py,218,finger_forces,audit_or_score,def finger_forces(self):
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/cargo_formation_teacher.py,221,finger_forces,MjData_or_native_API,"m, d = self.world.model, self.world.data"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/cargo_formation_teacher.py,222,finger_forces,MjData_or_native_API,"cargo = {mujoco.mj_name2id(m, mujoco.mjtObj.mjOBJ_GEOM, self.inst.geom(p.name))"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/cargo_formation_teacher.py,228,finger_forces,MjData_or_native_API,"ids[mujoco.mj_name2id(m, mujoco.mjtObj.mjOBJ_GEOM, f'{rid}__{side}_finger')] = (rid, k)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/cargo_formation_teacher.py,230,finger_forces,MjData_or_native_API,for i in range(d.ncon):
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/cargo_formation_teacher.py,231,finger_forces,MjData_or_native_API,c = d.contact[i]
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/cargo_formation_teacher.py,235,finger_forces,MjData_or_native_API,"mujoco.mj_contactForce(m, d, i, f)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/cargo_formation_teacher.py,241,bilateral,audit_or_score,"return {rid: min(v) >= FINGER_MIN_N for rid, v in self.finger_forces().items()}"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/cargo_formation_teacher.py,245,tick,command_or_advance,busy = [not arm.tick(now) for arm in self.arms.values()]
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/cargo_formation_teacher.py,273,tick,audit_or_score,forces = self.finger_forces()
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,scripts/cargo_formation_teacher.py,330,tick,command_or_advance,"self.ports[rid].apply({'kind': 'mecanum', 'forward': -.05, 'left': 0., 'turn': 0.,"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,harness/grasp_act_start_sync.py,51,tick,command_or_advance,"permits=self.sync.tick(ready,now)"
+beam_dependency,26f84d0f0ada1c33473c83cca2d3415ce51bd247,harness/grasp_act_start_sync.py,83,tick,command_or_advance,"permits = self.sync.tick(ready, now)"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,sim/failure_rgb_recording.py,14,capture,camera_or_recording,"def capture(self,t,cameras):"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,sim/failure_rgb_recording.py,16,capture,camera_or_recording,"row={rid:capture() for rid,capture in cameras.items()}"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,sim/release19.py,68,tick,camera_or_recording,capture(now)
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,sim/release19.py,85,tick,camera_or_recording,capture(now)
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,sim/release19.py,92,tick,command_or_advance,"return super().tick(now,set_servo=set_servo,set_wheels=set_wheels,"
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,sim/release19.py,100,<module>,camera_or_recording,returned to a teacher. Private renderer APIs are outside this counter.
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,sim/release19.py,108,install,camera_or_recording,original = world.render_team_jpeg
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,sim/release19.py,115,install,camera_or_recording,world.render_team_jpeg = guarded
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,sim/release19.py,120,evaluation_jpeg,camera_or_recording,return world.render_team_jpeg(**kwargs)
+release,8b7f2f4517d827b39a79246b892fa549bbcec0a8,sim/release19.py,127,record,camera_or_recording,"top_camera_counter_scope='guarded world.render_team_jpeg, from world creation through cleanup; private renderer APIs excluded')"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_solo_grasp_act_teacher.py,32,run,camera_or_recording,raise RuntimeError('Linux gcp1 only; Mac physics/render disabled')
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_solo_grasp_act_teacher.py,87,run,audit_or_score,"'physical_success': None, 'placement_task': 'set down at own picked location',"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_solo_grasp_act_teacher.py,116,run,camera_or_recording,"height=sampling['height'], render=True, warehouse_layout=scene.engine_layout,"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_solo_grasp_act_teacher.py,118,run,camera_or_recording,if plan.get('render_profile') == 'floor_light_textured_v1':
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_solo_grasp_act_teacher.py,119,run,camera_or_recording,from sim.grasp_act_scene import audit_render
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_solo_grasp_act_teacher.py,120,run,camera_or_recording,"write(out/'texture-audit.json',audit_render(world.model,plan))"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_solo_grasp_act_teacher.py,133,run,MjData_or_native_API,"model, data = world.model, world.data"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_solo_grasp_act_teacher.py,160,run,MjData_or_native_API,initial_xy = data.body(body_name).xpos[:2].copy()  # EVALUATION ONLY
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_solo_grasp_act_teacher.py,171,run,MjData_or_native_API,"now=float(data.time), robot_id=rid,"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_solo_grasp_act_teacher.py,217,look_truth,MjData_or_native_API,"cp = np.array([data.cam_xpos[cid][0]-b_[0], data.cam_xpos[cid][1]-b_[1], data.cam_xpos[cid][2]])"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_solo_grasp_act_teacher.py,218,look_truth,MjData_or_native_API,"cz = data.cam_xmat[cid].reshape(3, 3)@np.array([0., 0., -1.])"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_solo_grasp_act_teacher.py,298,refresh_obstacles,MjData_or_native_API,xy = data.body(other+'__robot').xpos[:2]-base[:2]
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_solo_grasp_act_teacher.py,310,refresh_obstacles,MjData_or_native_API,xy = data.body(name).xpos[:2]-base[:2]
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_solo_grasp_act_teacher.py,311,refresh_obstacles,MjData_or_native_API,"radius = max((float(np.linalg.norm(data.geom_xpos[g, :2]-data.body(name).xpos[:2]))"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_solo_grasp_act_teacher.py,320,refresh_obstacles,MjData_or_native_API,"xy = data.geom_xpos[g, :2]-base[:2]"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_solo_grasp_act_teacher.py,321,refresh_obstacles,MjData_or_native_API,"rot = data.geom_xmat[g].reshape(3, 3)"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_solo_grasp_act_teacher.py,325,run,MjData_or_native_API,previous = teacher._hold(float(data.time))
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_solo_grasp_act_teacher.py,333,run,MjData_or_native_API,origin = float(data.time)
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_solo_grasp_act_teacher.py,338,run,MjData_or_native_API,while float(data.time)-origin < cap_s-1e-8:
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_solo_grasp_act_teacher.py,341,run,MjData_or_native_API,now = float(data.time)
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_solo_grasp_act_teacher.py,346,run,MjData_or_native_API,if data.eq_active.any():
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_solo_grasp_act_teacher.py,355,read_relative,MjData_or_native_API,b = data.body(body_name)
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_solo_grasp_act_teacher.py,367,run,camera_or_recording,jpg = base64.b64decode(port.capture()['image'])
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_solo_grasp_act_teacher.py,374,run,command_or_advance,"carry.issue(previous, now-float(previous['t']))"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_solo_grasp_act_teacher.py,440,run,command_or_advance,"lift_observer.issue(value, teacher.phase)"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_solo_grasp_act_teacher.py,455,run,MjData_or_native_API,"body = data.body(body_name); rot = body.xmat.reshape(3, 3)"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_solo_grasp_act_teacher.py,457,run,MjData_or_native_API,"data.geom_xpos[g], data.geom_xmat[g].reshape(3, 3), model.geom_size[g]) for g in gids)"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_solo_grasp_act_teacher.py,460,run,MjData_or_native_API,for i in range(data.ncon):
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_solo_grasp_act_teacher.py,461,run,MjData_or_native_API,"g1, g2 = int(data.contact[i].geom1), int(data.contact[i].geom2)"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_solo_grasp_act_teacher.py,465,run,MjData_or_native_API,"mujoco.mj_contactForce(model, data, i, f)"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_solo_grasp_act_teacher.py,471,run,audit_or_score,"row = {'min_z': min_z, 'support_z': 0., 'tilt_deg': tilt, 'finger_forces': forces,"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_solo_grasp_act_teacher.py,481,run,MjData_or_native_API,"r = data.geom_xmat[g].reshape(3, 3)"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_solo_grasp_act_teacher.py,485,run,MjData_or_native_API,"p = data.geom_xpos[g]+r@(model.geom_size[g]*[sx, sy, sz])"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_solo_grasp_act_teacher.py,506,run,camera_or_recording,(out/'review-top'/f'{tick:06d}.jpg').write_bytes(world.render_team_jpeg(camera=static['top_cameras'][0]['name']))
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_solo_grasp_act_teacher.py,521,run,MjData_or_native_API,while float(data.time) < until-1e-8:
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_solo_grasp_act_teacher.py,522,run,MjData_or_native_API|command_or_advance,port.tick(float(data.time))
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_solo_grasp_act_teacher.py,523,run,command_or_advance,world._physics_step_for(world.robot(rid))
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_solo_grasp_act_teacher.py,524,run,MjData_or_native_API,"report.update(status='complete', sim_s=float(data.time)-origin, wall_s=time.monotonic()-start,"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_solo_grasp_act_teacher.py,525,run,audit_or_score,"teacher=teacher.diagnostic(), input_audit=audit.record(), visibility=visibility_stats.record(),"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_solo_grasp_act_teacher.py,552,run,audit_or_score,report['training_candidate'] = bool(report['physical_success'] and recorder.local_started and approval)
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_solo_grasp_act_teacher.py,558,run,audit_or_score,"input_audit=audit.record(), visibility=visibility_stats.record())"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_solo_grasp_act_teacher.py,618,validate_carry,camera_or_recording,"if plan.get('render_profile','floor_light_v1') not in ('floor_light_v1','floor_light_textured_v1'):"
+reloc,644289a755ee60df99e916224931c2dec80298eb,scripts/run_solo_grasp_act_teacher.py,619,validate_carry,camera_or_recording,raise ValueError('unknown carry render profile')
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/solo_carry_to_zone.py,220,issue,command_or_advance,"self.loc.issue(issued, dt)"
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/solo_carry_to_zone.py,418,record,audit_or_score,"'held_world_reads': 0, 'physical_success': None,"
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/solo_carry_pose.py,146,issue,command_or_advance,"self.tracker.issue(issued,(dx,dy,da))"
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/solo_carry_pose.py,148,issue,command_or_advance,"self.heading.issue(issued,(dx,dy,da))"
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/wall_parallax_strafe.py,14,<module>,camera_or_recording,from sim.render_profile_selection import for_name
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/wall_parallax_strafe.py,24,apply,MjData_or_native_API,"mujoco.mj_forward(controller.model, controller.data)"
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/wall_parallax_strafe.py,53,make_scene,camera_or_recording,"profile=bundle.get('options',{}).get('render_profile','floor_light_v1')"
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/wall_parallax_strafe.py,68,__init__,camera_or_recording,"seed=seed,width=640,height=480,render=True,"
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/wall_parallax_strafe.py,74,__init__,camera_or_recording,"profile=bundle.get('options',{}).get('render_profile','floor_light_v1')"
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/wall_parallax_strafe.py,92,eval_sample,MjData_or_native_API,"m,d=self.world.model,self.world.data"
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/wall_parallax_strafe.py,93,eval_sample,MjData_or_native_API,b=d.body('r3__robot')
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/wall_parallax_strafe.py,94,eval_sample,MjData_or_native_API,cam=d.camera('r3__robot_cam')
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/wall_parallax_strafe.py,97,eval_sample,MjData_or_native_API,if not np.isfinite(d.qpos).all() or not np.isfinite(d.qvel).all():raise PhysicalStop('NONFINITE')
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/wall_parallax_strafe.py,99,eval_sample,MjData_or_native_API,for c in d.contact[:d.ncon]:
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/wall_parallax_strafe.py,100,eval_sample,MjData_or_native_API,"names=[mujoco.mj_id2name(m,mujoco.mjtObj.mjOBJ_GEOM,int(i)) or '' for i in (c.geom1,c.geom2)]"
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/solo_cyan_v106.py,3,<module>,camera_or_recording,Only capture() returns student input; evaluation reads stay write-only and
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/solo_cyan_v106.py,21,make_scene,camera_or_recording,from sim.render_profile import install
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/solo_cyan_v106.py,51,__init__,camera_or_recording,"height=480, render=True, warehouse_layout=self.scene.engine_layout, warehouse_cargo_ids=None)"
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/solo_cyan_v106.py,63,reset,camera_or_recording,from sim.render_profile_selection import for_name
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/solo_cyan_v106.py,65,reset,camera_or_recording,"profile = self.bundle.get('options', {}).get('render_profile', 'floor_light_v1')"
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/solo_cyan_v106.py,66,reset,camera_or_recording,"write(self.out/'eval_only/render.json', for_name(profile).verify_model(self.world.model, profile))"
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/solo_cyan_v106.py,67,reset,camera_or_recording,"write(self.out/'eval_only/render_nearclip.json', self.nearclip_audit)"
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/solo_cyan_v106.py,77,issue,command_or_advance,"super().issue(rid, action)"
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/solo_cyan_v106.py,79,capture,camera_or_recording,def capture(self):
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/solo_cyan_v106.py,87,eval_sample,MjData_or_native_API,body = self.world.data.body(item['body_name'])
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/solo_cyan_v106.py,88,eval_sample,MjData_or_native_API,robot = self.world.data.body(self.bundle['task']['robot_id']+'__robot')
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/lazy_camera.py,1,<module>,camera_or_recording,"""""""Synchronous, demand-rendered own-camera batches with lossless retention."
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/lazy_camera.py,5,<module>,camera_or_recording,"the next capture, or close. Thus a requested historical frame never renders a"
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/lazy_camera.py,74,write_receipt,camera_or_recording,"(host.out/'camera-render.json').write_text(json.dumps(record, indent=2)+'\n')"
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/lazy_camera.py,82,_initialize,camera_or_recording,"offered=0, rendered=0, consumer=0, recording=0, eager=0,"
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/lazy_camera.py,83,_initialize,camera_or_recording,"render_wall_s=0., capture_wall_s=0., skipped=0,"
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/lazy_camera.py,116,capture_robot_frames,camera_or_recording,Keys/len/membership never render. Reading a value does. All legacy recorded
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/lazy_camera.py,135,produce,camera_or_recording,obs = host.ports[rid].capture()
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/lazy_camera.py,136,produce,camera_or_recording,record['render_wall_s'] += time.perf_counter()-started
+reloc,644289a755ee60df99e916224931c2dec80298eb,sim/lazy_camera.py,146,produce,camera_or_recording,record['rendered'] += 1
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,harness/e2e_s4_live.py,95,project,command_or_advance,"system=mem.apply(b,system,memory,commands=llm_memory=='v1_commands')"
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,harness/zone_study_llm_driver.py,75,load_registry,MjData_or_native_API,if data.get('schema') != REGISTRY_SCHEMA:
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/lazy_camera.py,1,<module>,camera_or_recording,"""""""Synchronous, demand-rendered own-camera batches with lossless retention."
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/lazy_camera.py,5,<module>,camera_or_recording,"the next capture, or close. Thus a requested historical frame never renders a"
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/lazy_camera.py,74,write_receipt,camera_or_recording,"(host.out/'camera-render.json').write_text(json.dumps(record, indent=2)+'\n')"
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/lazy_camera.py,82,_initialize,camera_or_recording,"offered=0, rendered=0, consumer=0, recording=0, eager=0,"
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/lazy_camera.py,83,_initialize,camera_or_recording,"render_wall_s=0., capture_wall_s=0., skipped=0,"
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/lazy_camera.py,116,capture_robot_frames,camera_or_recording,Keys/len/membership never render. Reading a value does. All legacy recorded
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/lazy_camera.py,135,produce,camera_or_recording,obs = host.ports[rid].capture()
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/lazy_camera.py,136,produce,camera_or_recording,record['render_wall_s'] += time.perf_counter()-started
+llm_e2e,f529e07823c8643cd87c9bd9d9284c536a29afae,sim/lazy_camera.py,146,produce,camera_or_recording,record['rendered'] += 1

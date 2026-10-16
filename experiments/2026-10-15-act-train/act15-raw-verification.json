@@ -1,0 +1,2912 @@
+[
+  {
+    "run": "act15-eval-91420-2cc64d0c",
+    "exit": "1",
+    "source_sha": "2cc64d0cadae07286608465196e4568a5b55ce48",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-eval-91420-2cc64d0c/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-eval-91420-2cc64d0c/SHA256SUMS-post-compression",
+    "manifest_sha256": "03d51c12f9c61284e557642af547749bfbd56c898a79e8ffa58520b23c52295c",
+    "files_verified": 16,
+    "actual_bytes": 514954,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": []
+  },
+  {
+    "run": "act15-eval-91420-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-eval-91420-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-eval-91420-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "3bd771923526ea0759f50151586a20f6c82f6b279cc977c497b0d981f46c1df8",
+    "files_verified": 923,
+    "actual_bytes": 13810304,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 2191500,
+        "sha256": "b14fd2f659b63ed9e56568f1e3c2e17537329671942e3643d784fcaa2f6b1b8c",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "c939f0c4deeda1f4ed2be2f2ae99e2c099cf6d324580605ee96a01d78acd4768",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 238625,
+        "sha256": "88605bb1487376b2ee87572a7a48abb2255d3546fb5f424f70d66d70ff2d3f5e",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "5432fcd036d32e6814d750cb92222bfb7311c95458b87396b4b1ea9c26d1aa4f",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 311482,
+        "sha256": "901d73c399c098662b459d961693ecec2fc81fbb95d92b16fd63d6797bad31d8",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "526db118f923b6fc509ec3a3f4c87d6d6b7ab1d4d01a4d92357e0b57fbc1af05",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 3822296,
+        "sha256": "cc3302b4da51c9feb05d0b8d5c2bd8fa9caa8a4ace520e7155687f70bc301576",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "ba815a8257fd84a0fe8debb7146b4bf109a504b033acc5f19028ec87fbec2f24",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "summary.json",
+        "bytes": 86998,
+        "sha256": "1cd7f0c0da9099d1363297cc6d5eadbf85f058e6e9f16febf50d79c01df93465",
+        "compressed_path": "summary.json.zst",
+        "compressed_sha256": "7c5ab10868a60ec954ac8f2ec422a4d946e85a3045b04d3a08b321f96d7c1930",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-eval-91421-686cccb6",
+    "exit": "130",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-eval-91421-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-eval-91421-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "403ef2c0a025f6a7f447d02e30102f2396a6fcb0d6db4d10fb1f37aeb061326b",
+    "files_verified": 523,
+    "actual_bytes": 6770027,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 1285576,
+        "sha256": "312e0f8b874544c0da0890ac631233758a204968b6d223190a6a09925746c42b",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "6d994897d59ee43207e19d8c631d976fbf7998f868aa9c7da53168f7f7dba89c",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 110800,
+        "sha256": "d6b4ec3375059d1c42a274388900f94b8e8c82bdb7361b1b679fcd105b57a2e2",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "41b8affd660c31e677368837032f75b228af5c3a4c531208b120e63531e2847a",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 354402,
+        "sha256": "4e26dbe0b4c157c4ec762dd7047f851b90198300288296a00e5279b94d1096b7",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "82545599fbfc944fbe6bd607527c6d710082ecbf91238f5d366687790a3eb3fc",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 1784756,
+        "sha256": "2ed8271c0955d1036fee5fa4d8e50070cffa629b39473a2ff29a592adcb02dfa",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "4b6c1638a722994d3cf844fef9837af43e7ccdfd573dee7c53957afc0280dcff",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-eval-91422-2cc64d0c",
+    "exit": "1",
+    "source_sha": "2cc64d0cadae07286608465196e4568a5b55ce48",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-eval-91422-2cc64d0c/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-eval-91422-2cc64d0c/SHA256SUMS-post-compression",
+    "manifest_sha256": "898f6bf42662b43e6c2cd5bf6a245228c7fe2718c6cc6c1c83758286b8cbe677",
+    "files_verified": 16,
+    "actual_bytes": 517781,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": []
+  },
+  {
+    "run": "act15-eval-91422-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-eval-91422-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-eval-91422-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "feeaa7245cfb057be3d5def365b56dfd736c57f57a69bc7e0fd3ef91cc72b31a",
+    "files_verified": 923,
+    "actual_bytes": 14237210,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 2212770,
+        "sha256": "611416b7632012507ff9ef14f9136e199f78e605240e59d375c010e06a5cd265",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "f3d98d827449c0f8aee03b1594d563f45f571eea78581647c0897e5c8a040405",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 214684,
+        "sha256": "33e45ffca0567162c6d22df9ba070ab037e1998bb10f858a5b4e624dc40d8352",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "2b9398a5ac63d06ad72922e17f0da638d0482b14904d95229e700e68e63dad0e",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 327353,
+        "sha256": "9b1196f549c378157ab521837839600096ce96f6beba5fe0f6350ee906abdfef",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "9c2a7c1bc0aa0266ecc2d06f36b237390ec82ddfcde9816d17081156ed152f90",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 3437249,
+        "sha256": "aa4bcb3c68aa536cf2b446f4ff20c020a736683bc914189ff511517b361e148f",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "3cf88c1d47fc77482d4942315667df88ef886419be98f1f1891da27c6373b71c",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "summary.json",
+        "bytes": 87000,
+        "sha256": "6afe3a8c100291e58b8c3fb1c2658f1f193f1e8c5911d9d63f557a23e0f54d89",
+        "compressed_path": "summary.json.zst",
+        "compressed_sha256": "434afbf59893bb03f5f31413fc1942a7a255f4296feb7c1d66f9cafd7e0b07ce",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-eval-91423-686cccb6",
+    "exit": "130",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-eval-91423-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-eval-91423-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "0b9de83689ab7690c983bc37ec7fd2aecf9e597782af8423ebe31558c1e06ffb",
+    "files_verified": 513,
+    "actual_bytes": 7050501,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 1254199,
+        "sha256": "ec6f1cd234cc7518823787450f9a157eeddd8c89f86b787d45f4635dcb8f6f1f",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "e0b7e5be681ac40dd52dc6b8198d756454903e7df0959dda8229155185e2e405",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 107979,
+        "sha256": "3350e12160ff774143af64567f13c635a3c5608deccd824781d062194a457ab7",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "b3088733739aa5d9fb05364788b5237f1b0e793a1156b332ff9aabee631eaa0b",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 170669,
+        "sha256": "e70863fca8bb034d7138641713aac8768c425829c872cdb68cfb8667113353a9",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "d70d60a1c607af8a6b3b06826c7d8dee18e6e23529d3c804ffcfcef4863b7074",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 1734856,
+        "sha256": "b06509a0636a2fe21deda4793ec0d810a46d5f085a37a2a23adf5ee9aecc2eb6",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "b10f94d3d142b345db492bb0c666e119177f00ecba904a91b7c3dde01a7a2358",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-eval-91424-686cccb6",
+    "exit": "130",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-eval-91424-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-eval-91424-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "9fabfba0d4d6fe28be38029034c19f592370dd280e93081f12d05ece92c9fe15",
+    "files_verified": 512,
+    "actual_bytes": 6777727,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 1210218,
+        "sha256": "4cd7d9814892b42522143b9bf390e72663496c9b07f630fcce5af92cb9053f99",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "19941e96e07cc0227f58948611e8bdb798358ebbdd211b70b15b4ed2deae4654",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 122378,
+        "sha256": "7413d018fe57f0f5426b454e2ccc1ef363939bbbf8a972631da79a80066e0004",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "fa5dc4562f29417596f46f0f4e378394c787b5a8e3a767e7e785191547faf606",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 179799,
+        "sha256": "e82016833604459301c01a2f844c2394d767eebdea1f3290f90398963371fb2d",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "2385ffec1e7d1c52826b0dfb25486fa586489c7d231d5fdccc03ea12ca3a325d",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 1967158,
+        "sha256": "c689c1c7f4d2c7ebd3afe3c63443e7120ea9e59d1131e95156002474b4ff6295",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "3d3eef8d04967ef21ec75691ff2b57ecb190ffdac2f0808ffccaa78c664b45fb",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-eval-91425-686cccb6",
+    "exit": "130",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-eval-91425-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-eval-91425-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "8e498cfb02da9d06f892d32f50f4ee163a0fbee71cb0c6948ddec46e13cee8ff",
+    "files_verified": 504,
+    "actual_bytes": 7876270,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 1175931,
+        "sha256": "2d57968a56b3b5c66ca2d134fdaad480273e4100e84bb5cfe6beb656ea9105cf",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "0fdf4bcf50b1f8030cd50e8b13c8d1d6df889306ff0fc64ecd0615028d11c4a1",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 136766,
+        "sha256": "936bfa84470722c35804389e8d3520e621939f2126287d06099ac885ff551e84",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "462093a3731463c3490a359590aed8ebbf65772b83682b7c934f68a90b861aca",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 281690,
+        "sha256": "d0ed03474da376004292643a69188f0157db56e07c8d363680c28b150c00549a",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "188a7acd8ca6a848fe832d0418a5fc4588daefc6cc4dd1754883cc75d8ad8359",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 2182326,
+        "sha256": "4b59052da5132305a96818bc37c230669b023bee1fe509241dc56f8d66f49eb5",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "e53824defe2cabc037f5f6dbf2ade0e14823edf01cf9387968f07b68a55583ac",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-eval-91426-2cc64d0c",
+    "exit": "1",
+    "source_sha": "2cc64d0cadae07286608465196e4568a5b55ce48",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-eval-91426-2cc64d0c/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-eval-91426-2cc64d0c/SHA256SUMS-post-compression",
+    "manifest_sha256": "88e33d08148bead285dc6d315100b114b4baf567693905b5d4f2ab23b9216eb8",
+    "files_verified": 16,
+    "actual_bytes": 517787,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": []
+  },
+  {
+    "run": "act15-eval-91426-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-eval-91426-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-eval-91426-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "d9c1f7842ea5c3597ed624936f7f6f62edd70c4a3a229a86c7106189d938cf94",
+    "files_verified": 923,
+    "actual_bytes": 11913814,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 2321491,
+        "sha256": "df18cf86774996d6b919637fd6122e306ebd10eabaafba758c3920e4b050a3ae",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "939f51eca76997103f4dd8db4b19201e62d236bc66c5768988945579dddabfda",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 201926,
+        "sha256": "621591f510538fa148b21443c772711f8137de6691d57bf8725ce619ece9cd99",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "9765f32d1aa7431fd39c61b510f943101e996173098a34b70ef81cc7864f1b26",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 853145,
+        "sha256": "4be282a7d04cb20498a40b64e65c279d0b7a4e959727a81e5fa52780ff5a28b1",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "98adc86841fef1bd5d95224b179b08b0d196f389f8b3c930fc1160c147989ec6",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 3247181,
+        "sha256": "5fe63f67845a60cecd1586376471304b5d5929be115a53d1427d9fd2a5bd638d",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "340f6e08591c9216064343616dbdc56a8616a8d487a35ef2b8111df147002054",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "summary.json",
+        "bytes": 87105,
+        "sha256": "8aea8ad4fe424450ee5f4315a0cb667da32c8bf5a76a70e24b0bd55fd7b6ffae",
+        "compressed_path": "summary.json.zst",
+        "compressed_sha256": "a92b8bc643786033380705f64bc7096d38db5af681b0f032edaf962a42a5ce39",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-eval-91427-686cccb6",
+    "exit": "130",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-eval-91427-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-eval-91427-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "2b774edfcf24ab0b3d3c2751c03a8d3b51b30a5260ebf3c89ae102bbb4294b76",
+    "files_verified": 490,
+    "actual_bytes": 6120897,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 1133170,
+        "sha256": "0d552da5ffb9c01c5657afc74f80f3e6e626ec687ab4cdbd365f2ce353968b48",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "f34dc359b4586f54f44246f05aedaf709c3dc9b8a8f0cb39cf8731d0c17106d0",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 132039,
+        "sha256": "20992f51a51c5bc7ff1a54cd5164df965856eec2c5e793ade2453625da9468bd",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "d23399c87fb7da8c462e0bdd64e008ad75c6d46f8f83aeaa6b8b976267df5d42",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 162308,
+        "sha256": "bb38b0fe2b16fcf2be2aac9ca554ae72688550e46e5f6d3b42280ea2f31725ba",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "7d6dca23c4bd21d8630efbc15d1b953d91349c56e22cef0da301cced5df8edfe",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 2110095,
+        "sha256": "893b9bfc724abaa0b03dafab3bc74ad1ee38a5589c09a3445840bc40a5e5f697",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "0a1da0f2e8579808ed6a12e4d6dc737f194875f1e1292d71fc186a60a57358f9",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-eval-91428-686cccb6",
+    "exit": "130",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-eval-91428-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-eval-91428-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "eaef44c13bc5e980ea1ad3eac968fb3841ec0729c578987b1befd42e08e92d25",
+    "files_verified": 491,
+    "actual_bytes": 6760073,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 1143447,
+        "sha256": "c72bcf407a52c7e283f721cc10859bfd8bfea1c6f23950719919bcd124ae021b",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "1db0e01d3802ad7a5ca1dd011bb52fc1530c5bd23d1e4f52639ca38c80310f46",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 123115,
+        "sha256": "03d641248f0936a6901b143ea1ccf5d077243d887f2c729a5779ea41418217e6",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "2eda1967e42fe2da265cffc4bdaf6c8e46a86293f64df5caf636c4d8cb0028a9",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 161188,
+        "sha256": "9a6d2da7ce4dbbb13c5069ae979f7088d5ea03294c7aa2bfc2d03ad6a6c9e29f",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "db49a3026a7123ef767ecabf877a69af94c1a2eae9701c35892abc88ac7a51db",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 1972973,
+        "sha256": "81691310592fbdc79466d1cf6e006c39bb5e4a8bc843491c6ca55315bfc823ad",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "4fa9deb1f06b42364da771692a90c059a3fe7d9032f44142d69fd3453849f3a4",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-eval-91429-686cccb6",
+    "exit": "130",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-eval-91429-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-eval-91429-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "c3d79b80b5daadf35d5a80b2e64b6caa6d8aa11c4df65e0d623b075534750470",
+    "files_verified": 484,
+    "actual_bytes": 6866954,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 1133453,
+        "sha256": "bd0936952a4af0009f4c3b0d6511d83ca9a4acc7e48b9ec18d750873da7110b2",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "2d0ac7e0920d50e7a184ee0a539107a2ac21ef078b15f8784008e6b13391370d",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 115978,
+        "sha256": "64ebb0bbdc1483fcfde5398d62426fb1ac1ee5b4194c5970b22f05317b0d200d",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "3013214e5eb03ab06cadd3a23a77c9cec98f7408e2f3355c40a4e40b33a6800d",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 160237,
+        "sha256": "ebda20e1e37b313d8b7fd21c3e1efab09bc18aff18787b6b7c02b80dda5e045d",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "df9363556581100e76580066dd9a8f3f6fdbfbcd564631dc246312ec3e6189db",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 1856955,
+        "sha256": "26aa2d72f16a0854ae62511b191c5ff406a7859c7300fe622c7cd2790c2b904c",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "ba5fd84ea4ea14b0935a1b09c8ba45939da22c7af04e53a0e031acf193ef1295",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-eval-91430-686cccb6",
+    "exit": "130",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-eval-91430-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-eval-91430-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "eeac78e63fe7b4d0278757640cfccdb493f016f0764e3a114bdd53040765012b",
+    "files_verified": 484,
+    "actual_bytes": 6983993,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 1136954,
+        "sha256": "16943faa4b5941c2eddd26f70d42a469bd2800276ed668e10e456d7ce674638c",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "73b9f1a7764c85ef0748a50cfab4740a88a8f05438b7331e0e246746490f10a2",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 109319,
+        "sha256": "46992cdb355852b9854460bcfc3001856228e85807103fed35044f68e2ef416e",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "dc28b28ae59610d7cd34935383277d085f2486592c968d027c2dd0ec97235a42",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 161093,
+        "sha256": "d64b02a7919afe81f81407bdae6f223f4a0bde555e0071e8f97f3240255cc3ff",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "7fc5fba41da22cde45afa4992111f842a75dc3dcac6773202d3298bf902daae7",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 1754921,
+        "sha256": "a27023fdf1fa63eb76ffd8232b54bf56cbe7856a30e42919ddf41d15a012f252",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "83241a6569a22a21a05699eb79863143c9d6004560238d9448415753b2156e16",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-eval-91434-2cc64d0c",
+    "exit": "1",
+    "source_sha": "2cc64d0cadae07286608465196e4568a5b55ce48",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-eval-91434-2cc64d0c/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-eval-91434-2cc64d0c/SHA256SUMS-post-compression",
+    "manifest_sha256": "5d38352091f06cba55fbcbbd30eb0d7dc54a845de889fc2f14b01b289b5b9602",
+    "files_verified": 16,
+    "actual_bytes": 517788,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": []
+  },
+  {
+    "run": "act15-eval-91434-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-eval-91434-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-eval-91434-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "4f4ec88d02903bdaad8f4516fe5ece2c040370661af5df7b204feefa7cba0e56",
+    "files_verified": 923,
+    "actual_bytes": 11673432,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 2313569,
+        "sha256": "143d7245d80d930565675a5c3a368b5baa8a10efc6f0ba789ae1b22bb273cce9",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "6a8545d2fbe1a7be28df8e3cd17f55989f2dafb1aeb5873e88631890df35b074",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 200749,
+        "sha256": "10316541b91704ce8b081285b327d3450ca0240e5e7e2e93aec3c5a72d3523b0",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "f701ae2f5605119b7a6c33e5b5456700be798145bde2d98f4841944b86bc93b8",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 319835,
+        "sha256": "24fddb92ff8124ca6ebc44eaf29ce9fe7e72075637f14eda2cfe96109afe1fc9",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "a9662057642aea56342dc09f23f584ebb27ddcdf05de91c873f36b8e54db9bb6",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 3226049,
+        "sha256": "e5a9dc75048ca683c86ea9344e6c9857ff4a6ac586ed592481c94f4f5498ee74",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "8aad10e1f0be36a2182492d400a9350f07c8844928ad0ca32f1e454e42f8a452",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "summary.json",
+        "bytes": 87001,
+        "sha256": "66feb1afe0fdf7e575fcaa510e93586a45bff48945b63e0ccbbed33aa758d985",
+        "compressed_path": "summary.json.zst",
+        "compressed_sha256": "1291697060fa2aaa3bd1c4d71a582cf93782ce1afa7cb459c5314f22d99658bc",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-n8-91420-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91420-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-n8-91420-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "3529fb0c1fdabb422f5adea39e1326db3cc504c4a21366e0ed911c025c4fa499",
+    "files_verified": 923,
+    "actual_bytes": 11868817,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 276631,
+        "sha256": "ff98a4d479c465dc009879af202a047959366d7c2369e1440c4f6eda60f89ebb",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "d5776865710be0fa8ac96e68f18f0c9a133094666b5d47df13866099e2d71c01",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 212456,
+        "sha256": "b949c00855257ef04c24584a1d04f33fea7fa26acdc30f658d4efa3a53ed31ec",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "ea4b0d44dfea9cdde48944c196819cbb68ab8b276cc5d6113bb767f8b24bf6ca",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 369022,
+        "sha256": "56f0c474c9c6094b0a413dd9dcbf4ee61ac6fba6504873d2c26ca866ae00a50a",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "67cc980a2336fd2a0025337eb47455871a3b9da863c683dc6b96004e3b958c51",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 3405939,
+        "sha256": "1ee690a786d266a289ef0664d0cf99a8158f2308d645544f7c4ccf31a5c3c3dc",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "8db2247c9ce3b9bba26b2eec7bb4c3c4306bbfa484b1ba45d0a67203834997f7",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "summary.json",
+        "bytes": 86898,
+        "sha256": "1b2c4afaaed4dc34c42f2fe220dd4502f07959105d875cf07cbe290534fc76a9",
+        "compressed_path": "summary.json.zst",
+        "compressed_sha256": "9fe02d1898fb74ec7aace46a1a9e64c115fc6f78ca3823acc6cd8a3937a409b6",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-n8-91421-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91421-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-n8-91421-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "4698e3266684126769a538773680405bea9dcd0412822fd5b3497eadccdbc104",
+    "files_verified": 923,
+    "actual_bytes": 10693240,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 292576,
+        "sha256": "b97c67fe31a381f42e41e62eb5bce685eff9146749fc6dcbe29bfbb49db03924",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "550b40540e620140fe819b10b41288e220ea57979a5aa5f60cf21b93bdba4ac9",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 195614,
+        "sha256": "edf99b2ddb26c9e6f3db0728dd2ad7e51d34049502494d74e07f75e2d20d9f35",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "12786cb5a98cd6632f6c5ab1f41ede33509d938eca090f16f465a1a6b5802a44",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 737637,
+        "sha256": "9a8c62cb6b60320ece534c9e24d905515eb7ba6806f29475ca586fb8df85c4be",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "e1b5bef8c65d7fa4eaab8d77276516ad23ea66cada0ab3815afab59a965d3abe",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 3138249,
+        "sha256": "7be5e61ec1beb72cc97769fae22c58328a3dec88dd9b315bb47c4a1e92b34636",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "d84e83989ed3785c70d2b9cab2d0c7ff0a8e3784c10fbbfbf5a954fef67bb721",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "summary.json",
+        "bytes": 86856,
+        "sha256": "e2f416d83ac2f25054a55471ed1e66cc06609c3da270d2b36e82ecc0c519954b",
+        "compressed_path": "summary.json.zst",
+        "compressed_sha256": "b74325a24c64233a5f8b89de7316e5967f86cd51564956ce2e63d23b6539b0c2",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-n8-91422-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91422-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-n8-91422-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "98bfcf77216491b7ceb652943d20f84a76d8257e3232f6e9aa7c36e2ea10eda6",
+    "files_verified": 478,
+    "actual_bytes": 6572056,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 132995,
+        "sha256": "8252498a60b7e70a1da74c2d6c0082be8a5d11d6dc628827d3bd2fe5ac8c0ca7",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "fa8f40c44032b3e715833a72b751684f37cab9ad51436c954ca4ce2581a05ac2",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 109172,
+        "sha256": "ca790926daf3931fded17c832af247a03f438331f8fe94e98f6afa97d4d40048",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "c0c06e8a5a2cc697363369cd55829572e3637214ba8730da6af00953049766bd",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 166714,
+        "sha256": "f87be09ba7bc05f0019d58992e3264d68ccc27bb22f122013169af92045b023f",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "8fe2101b794882c5b7853e5b6414be0d9557360f6639d98e5419f27c30fda246",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 1753463,
+        "sha256": "923469a65fc1e4c1ec8bb27a728b082946af99fda82a739c8eb3153f3a0e9478",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "addd1f426c0a8e2a723017b85f8d94a2fee01c08b1fdaf2f20612859bf9fd336",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-n8-91423-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91423-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-n8-91423-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "b13d43f349a0a16bf35d68cb9a24416ba99273c1f1d3ba24f938eb7540668120",
+    "files_verified": 622,
+    "actual_bytes": 8158433,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 174782,
+        "sha256": "9dd431e8ba8b36c99e98b5617ccc494ef239de30470b09bebac96c1b5cf6ac50",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "dc1512536bb2ce252d62a5fc3b1edbad5641b52ac668e4b87550337e2ab691a6",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 153451,
+        "sha256": "130d4777bf8f27b5685b20e233fa305eaa51238c69b292903c5bcdb3f7ae75e4",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "a9cd9e5c97633a20a9a94597fb27af77218661f2429fc8525389a251e21a5178",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 233216,
+        "sha256": "440a0e34dcf8e038ff9ffa48427cf82e9abdb499cad2136cdfd2f743380ccc59",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "60acc7f2edcdf6bbcbff9359d4973169aa011036b0da7055595c96541d3696ce",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 2464162,
+        "sha256": "2efa6e59cc14c1f8e372e74e1e27a2bd8b0a3181eb0d174487b83170a3e66c19",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "1314fa2722b3f5e8df8a2fb3a4039223a91c0f7d46ecbc135daf22ac9b0b46d1",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-n8-91424-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91424-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-n8-91424-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "c898d92068ad5f30610eb8ba8d2dd02e6f104f1549820a1163e96e57de37f6b3",
+    "files_verified": 923,
+    "actual_bytes": 10626634,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 285099,
+        "sha256": "1b6b2679f58ff4ecf46b97cc0e213ad13529fb511a04e3330d99edca5ebfeacd",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "bf928d9526edb444a06a9ed9b12fe05c64b32f96e042993bb344ffe87c21c48d",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 209221,
+        "sha256": "daae73edb3612be51000d309b2ea7c947cb760ff6d65680d13e4b4973f4b9cc1",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "219961a418fd39d5bdfdf97b563d2e3e66fd5de8401189540a3fa3032d96fa6d",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 708429,
+        "sha256": "af16658f0a3ce2988a21a18c79370be0bf4007568eb8756d9917a64df1ea7300",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "e31f93c3822d958d31bab6e412efc4c71ecac7fd85e62634852a23271b02c99b",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 3356957,
+        "sha256": "338392353dacb3c35901d1feef4b4ab3a54d666bea8e8a9a6b9b84969d5faa08",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "5fa15fd1410e713ca9b215f0cec4d56831f11198f1149a46c837fcf60d5b8a1e",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "summary.json",
+        "bytes": 87018,
+        "sha256": "c43718fc14910ac5d10d99cbec87608ef9a60f4c8c50a01c53e35f6d8e407318",
+        "compressed_path": "summary.json.zst",
+        "compressed_sha256": "cd331524040dcc472133c81ef37a5a69ca2eaf791d3fe8076b4fbca5aa62ab18",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-n8-91425-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91425-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-n8-91425-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "ecfba7b97c37c8d7d4dc69358f6c70f828253bc9862aabbf183ea43c52b8efcc",
+    "files_verified": 685,
+    "actual_bytes": 9046071,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 193724,
+        "sha256": "ab73cb7f0aad4df97741b65d7d7b2065b4ef5095965a866b5ff1eec4ae4b9e51",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "e0ecceecfafdc52a03b62514038139ad7cbeef229bda182ed9c1f9d66428da97",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 173639,
+        "sha256": "1aee7bfc923b97705db643c9b4e28bee44debc2a1844663602d3eec46bbff569",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "043438f660eb0e356f7ccd081aee1850d57dd337611e26f04ba71ed91b5d9032",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 227837,
+        "sha256": "6c0f3c0fe0bec11b8f3715b440c2158fbd2b30561d24c37ddad5ff29d55f8426",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "3b4473af76ce23794a7c846459bdfc9ed8aab37d50b00c015120a5134281105c",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 2785930,
+        "sha256": "ba761dd938cbe72467ed1ed94d390e44445e4f64fe21da61a61eb80a8b107be5",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "ce984b67c966f96806c3335521598c1abb2a6849125dccc488a0b483268c5f33",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-n8-91426-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91426-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-n8-91426-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "56641db7484b1db5e1c9dbb324909019f23943a61747ac9f702d31107252b215",
+    "files_verified": 262,
+    "actual_bytes": 3900823,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 85159,
+        "sha256": "32404488123fb9479d683ce6c521f79d0d46d3a6187033ad455fb6aa40ed1b08",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "d064e928227a92608603fa23b325b4738b4a78518e9616ff9f97ec4decff59b6",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 1007815,
+        "sha256": "3da14d98deb4a961c59c2beb9f3a2c70f2352ca8a231d2f75f1328a4251441fb",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "0a85cd7e4554d848bab091fd767ee46b742ba75d3a9fcb2a1c2786fdcda39196",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-n8-91427-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91427-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-n8-91427-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "a160d585712d64e9511cca79afdbfa9ff541d3aff341bc4861d567510634f4b7",
+    "files_verified": 574,
+    "actual_bytes": 6584980,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 157845,
+        "sha256": "06591fa0aed96d9a3f3b4d58c8e3b915f54dfa406dd76ad39ddf1beb2a1607a7",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "cce35ff22bc54f4c34accb59171d8168a23143bdf0a9a3264df071d9d8141fc5",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 151627,
+        "sha256": "338813a677c62a85b6885b2c3ad4524bf24d1dc111d931c18951a20519228702",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "c2d376adae48c7aca54b485e9fc55519667b6fd5d22402a9e53cb03febd137e8",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 191459,
+        "sha256": "0720713ba5bd5aee0cfd893eae7371f3ced94ef897fc571577c92cd9822f07fa",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "38646688038fd598a13eff441d6e6c4f812115744e42ca4f9beedfed894c1ba1",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 2434394,
+        "sha256": "39731a8dfb8fc647c97b5265fd6acd5fe219053a07066dacabc86ecd632b48ae",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "2cf578321644d96c2b6013252fb9ab04a24376613db50e6318d986078fe39ffd",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-n8-91428-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91428-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-n8-91428-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "d4c84e3419d31f392c4fd1ad863d66448ba852b0f242bf5e75431c23adbb12f0",
+    "files_verified": 294,
+    "actual_bytes": 3778776,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 73744,
+        "sha256": "9426813ad50e90a600d8d58dab6b35a7142e2540de778bc52f4185bf243d771e",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "6c504507c487846911681f9ac00f0666723046546d8614d2a6e86769d9b77553",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 93641,
+        "sha256": "1faf158ec9f0424aea96c22e6c17e21bd2a9cc2906fc8839f8103a398d7fdaf1",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "2a26ce31277688b76cb189c45ebc58de77da6084fc310da2e33f9d465528edec",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 1043268,
+        "sha256": "e58f149ec639b99ff836c592bc9cc59a03759fece4c35c1349d963d616c2255a",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "b26809a027b47cfc16adcbe63659aad537ca1ccfac47bc3c8da3d1971f200b01",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-n8-91429-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91429-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-n8-91429-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "602e4d7c86e0a9603f55ac81ac7a22f5a60fc0528a055420942d8bfe285b2b51",
+    "files_verified": 923,
+    "actual_bytes": 14254997,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 275562,
+        "sha256": "58431b68901e9ee6b521312cfc31f37685c2667ab80b97091cfc4284946be235",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "a2e0a3dbc966fbef10c1706a192f3b84b4ad3ff17021735b57fe720a57da3a09",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 242580,
+        "sha256": "d2c9b27c2494c03920b826089e9859b2e6ef5cb0ceb4c6991522887849648c35",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "e046240d21bfc21dab90e4df51ab043dbb5efb5f7d52bedf02f6ba4b83ca3e5b",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 527304,
+        "sha256": "d50f727fbf42a947fd412df3de819484a97a866b641badc575a4a1529ed30ed0",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "b05c6f4ac311d643694af825d7bad583ee25910a62273246176f05468bd5f8df",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 3886950,
+        "sha256": "40ceed887cf71fb2a7f205b4cbaa65dbb6e6ba45b2844d3339b8a8b48f7edf31",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "8849774b2a757245d3dbd1d26ea708fcb86acfb445d0627ed67afa24dee78038",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "summary.json",
+        "bytes": 86895,
+        "sha256": "5a117909011d641f030a7d7318737489924bff5844d326c36cc0f22c393460da",
+        "compressed_path": "summary.json.zst",
+        "compressed_sha256": "cb9b3b6b5dd6f1b5e67f49adcf96010f41db017ceed2d64f72bfb3a1821812e9",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-n8-91430-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91430-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-n8-91430-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "50f3da4c711f2381160d65d7e688b2455381c502c422bb9ca8118bfec5a5e13d",
+    "files_verified": 923,
+    "actual_bytes": 11803870,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 282839,
+        "sha256": "e25ab39bf7143ecce391a37955c0f5a120ac2c3f250bb3f3b987eb986a48c5e7",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "676824db20bc75d07318e1f43ac7264d598853dfe0e567d8a7fe7772e62e7084",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 204335,
+        "sha256": "fd1c8fb6497d1cdf7a97fae8df3dbb9d44a804b6023a6f28955dd2d2403ea47f",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "d1e63df9568f84f61536a4c19c6765c041d8234f7164838db11c9f3a80ea1de0",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 315223,
+        "sha256": "d6e129f49fd1932a6a979ee9894c3b13bc36be454b7bcd1bf06864d9a53626c1",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "aa6a0484e55258cbdfc620f4909fc269b93821f36b50aefafce4d4b8dcf52ec8",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 3274177,
+        "sha256": "49640131087be328bfdf4817344d3ffd37ce511c7b4f21b62e313d743d1781b4",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "4f64cdf83cc3bd810259257b0f81dd77ab64e6e2e0e1dcf8e93ee07efbb019c3",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "summary.json",
+        "bytes": 86899,
+        "sha256": "0b87f8117e7ece7bf97e654a3147872f289a64decd24ca01da05b3e0da9d39bf",
+        "compressed_path": "summary.json.zst",
+        "compressed_sha256": "dcdf614d93d629bc747969593d46304f361e0a349a2005722dbc90f480840962",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-n8-91431-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91431-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-n8-91431-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "591802c4ba4d55a3e0be6a52b670a3c1563ae760a73cc7ad91714e5e76193405",
+    "files_verified": 630,
+    "actual_bytes": 8018463,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 177766,
+        "sha256": "d3d1183612f36ff522a3b5c9997390342615ec19708af5b662d032fcd49dc4b6",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "ab90b8f06aee978d2640f3e67ff4d5b304e83279fd7df92bf1ec6740e13f20e9",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 154499,
+        "sha256": "7d748d21806798b2f518967ab64eeb6a8e93a2b292b111aa5e9350324ca089d1",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "df8ea6b5a19c1e0142248adc63eeff048032816cde46753ed7f80cf68b014812",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 211990,
+        "sha256": "af799308cd83b3b01d0c7f4d09440a429409dbb2f3130c5aa81f909d0a073cce",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "c4776eabbcdc6180edeab38b8735fe2bb9bc16e88da6d38ff6c50ce4856c3161",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 2481012,
+        "sha256": "4905caeb30ac45c7ce7bbbea2bc2dd04658dee9df62f485c160d8ea828ac506b",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "b1dec862af450271ec200afa5b323a587bad58729c6660e792acab5798d27c2c",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-n8-91432-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91432-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-n8-91432-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "e9591f3b5edae44f69ba51e8bb48039280f1d049bece0007b02af9a618deba1f",
+    "files_verified": 253,
+    "actual_bytes": 3787454,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 84167,
+        "sha256": "37137324db5a9841865ffbe09c5172e55a7995d7f763e42e12d0b67e5fc4e8ab",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "e0c84a56717f6d43276a0da8459c92ca48409237a83a36b4d0e3c56a201318fc",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 936307,
+        "sha256": "4958bde2a95568e4724f89ec10e0878816b04b0b3f4779a7c5f203328e8023e9",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "a90e086ab2562bfae0e767a73c31daf481ff0bce4610b85708da888ff6a8f30a",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-n8-91433-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91433-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-n8-91433-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "d1a83164c0aa373847d58e42187e9914c11b86964702c97102a496ef5f47d16a",
+    "files_verified": 598,
+    "actual_bytes": 7000293,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 170434,
+        "sha256": "bb6214a537f6aa0d00cf3d0ed2032a9168c9de514ce3d772718170acef3719da",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "fdbc0b44a19a07659be1b1348b4669c888c6319f43d7462dea471eb365d891f0",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 138711,
+        "sha256": "f0f534f84663eaa944d3e08985b818aefcc7cd58f370cd2969f80457768e0d6d",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "2480d162f4bb69fe0b43578396e91b09244c2cf0a1d3d42d3fb429a859969e5f",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 199091,
+        "sha256": "ce4a85d984d8d278dca51ef3c433268e7f11c5732853bcf90aef1d5bd8d66af1",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "b819f5baa66d5ba7e78bc90e800b2b4c403bba92982616185ffbe2cdfefd2018",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 2226304,
+        "sha256": "fc8a18c545039cfb6f8cd20da4b2a66e1abf65ee4aa58a5d99698d99e098337a",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "6859eda033e5cea6911dabaf0063fba953f22162de60264e95e8210e03455ba7",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-n8-91434-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91434-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-n8-91434-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "5cf8479e834595d2f58d3a9cdf7aed4dfc1bf0d376aa304ab4befc46b5155c4e",
+    "files_verified": 923,
+    "actual_bytes": 12914278,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 277678,
+        "sha256": "2bcb853498d39c0a58b50d59fbf18d85e70aafcac43ab3b0c7b989cdf45b3d23",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "77cd120d081977a072ad9c81ceac912bbb0e3428431f4316039f3ca9682e75b5",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 229731,
+        "sha256": "1ee43fa743f28a7ef31303201db14fc7ea743aa3bda1a4459555126360f46c32",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "790c93d1a1705615b16add159195950a900b6c9070d793bb4c17f83cf5aff4e5",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 325497,
+        "sha256": "4d98e2f8b965fd805696464735b52a33e9aba4db1643b3d7ab1f5df57c6af03a",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "de233da3a1d7a40ad1bbc70080aa46dd9f1a08e156d80b795415aeef7d5a44df",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 3681039,
+        "sha256": "3463be2ee107900c1b61ae2707c0ac7e10d80614bca3db0f40181e9646586221",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "bd3b37b206ddf44182eac5e5617b807c5ecc3a333022d5d0feec962b0bbfc907",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "summary.json",
+        "bytes": 86897,
+        "sha256": "211e8451105e9cc4f1b0afe4832ef6605674bd2294cf1a2cfaaf2193c98c6e41",
+        "compressed_path": "summary.json.zst",
+        "compressed_sha256": "2cb0e9a4dc1bbb09bb4697370ac1ce3b5d230ed1bc7b7de759084a4e84548a1d",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-n8-91435-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91435-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-n8-91435-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "2203a1b4c7a71a4b0d0320e3119b57ab1d44b7425ba09e80dc6da1e341c84527",
+    "files_verified": 923,
+    "actual_bytes": 12089104,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 275852,
+        "sha256": "41a834129187fbfbbd52cb3e4108d44f03d6ccb627e2a48b0aa39d63aabd88f6",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "fdc4ae2354121e2d0f86558928688c3ee55db473485ed0539439430beea3dab9",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 227729,
+        "sha256": "5316768e40ae8ddc18787b9f289f4917ed66030e7ae008b9817c18cd2a6b392e",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "eb08a71a0e20c6f9390e098fc65f0456792f0373778a58bd8b5ef2e94cf59d7d",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 330897,
+        "sha256": "2fdb747effe6cf59fb9f95aef77fc9e7aeecfc58df0ee72fba85275bc3d01403",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "75038f24981538ff1c9f015e009d5cff11d62c9cf0d6e8ffe43ba3d2d3f1c189",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 3652391,
+        "sha256": "594a22ed74b4574ec3e67cd132b586a67e43a6a1569085d9e6e3f9b7ccc3433f",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "b9c244cbcea5eb985bcebe89f8696a9154bcbad06e8fa4ef8b1f0cd7bf45ed8f",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "summary.json",
+        "bytes": 86898,
+        "sha256": "47e226f9a3960da5f56e1f445942b4bdea18da70e23c2335a217e98ffe9889e4",
+        "compressed_path": "summary.json.zst",
+        "compressed_sha256": "b83b5d41ab1d0bf37d1d5e76dad8fb8352b20ff27586daca3d55bbc695840480",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-n8-91436-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91436-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-n8-91436-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "dcccacc57fe21d9ababab48e245cf35a7d8a44296912ec2eea3d86624359ca12",
+    "files_verified": 662,
+    "actual_bytes": 8223950,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 188153,
+        "sha256": "c166286c770cbfe1bd7ff686054bbc104a62b480dfc2db445ec830a4af17e19c",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "e2978297fcd09f9fc80fe2c3af487cc3a4045075baf06d3cfd57be72e8d64899",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 152883,
+        "sha256": "6edd33e9fe4136e9629a3a9653fd269028eff60b51c1f26b1ddea7e92522356b",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "f7be0f46a5252f86a40f9b653f75fea82eb38c7359c945b1c583058144e38dd3",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 220507,
+        "sha256": "f196fb5f8aa025cbe7e154c0d8348e305d4c80b8061644548afb5fdd51903a39",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "fc155c18f6ba4c8b78e53370c3cae7b93f0d227d8ccfbce99f5b325879800c68",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 2454352,
+        "sha256": "eee4d78ba6d25ece82f5037344f03e3ef9295e4884d61b890bd6c8aa9cfc07c1",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "159edb68f3578bb2a77a5eb435fd0c777f01f68f2ff4d163eaefbbd0934b7178",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-n8-91437-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91437-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-n8-91437-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "f791c0dd4bfd9d0e122ba6574f2d4900cfb337c58dc1eab6a216c14f791c7df1",
+    "files_verified": 526,
+    "actual_bytes": 6239670,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 148075,
+        "sha256": "730efc707413d72548bd029509f236f4b76a4abb42ba8efd7ad1f3c27f0230df",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "ecc15b195f0e88822cc4c041d4e914d498f6468929693bf7c236cdd1d43b2060",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 121699,
+        "sha256": "24347bf62b11b8c12dd85c06a5c406fb6b48f62fa0b69cb62eba0da4fbdda52e",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "db7b7b45b36128494b41ffcb19c896906cfe9529dd502855b1ab2a773c135897",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 174233,
+        "sha256": "23c9bbd2184702c302a6f622ab9dac5c3da0953fbce57f5fe8f16e7a0462b3f0",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "f0c65c494b9ebc28ce157639f91911821a24eb5e6a00470ddf9b6fbdf49f090b",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 1953390,
+        "sha256": "b82cdad6e59c2fbc6e03f21dd7446cb115253b789554cb23a80de3afc5cb878c",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "43f8aed5759ef21954c4eae2362b25d9a2ed7c959314a44ad7a72e9302c6c99c",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-n8-91438-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91438-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-n8-91438-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "401f7cde590cda3570b90c24dacfc9c5068bc4ab3eeb0c35b7f7dbfeed850ba2",
+    "files_verified": 923,
+    "actual_bytes": 13303194,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 275227,
+        "sha256": "d37e12e5d617d1ae77a4f8a3a259f78e232e62404964b8105d99b8168b3ac9d6",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "13fca2b1e88ff78dfe6e98215e47ea1a2d714b7b90de69ff253924a2356b7d78",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 223660,
+        "sha256": "9f3f9b630a9e61fff84b1b781d508c44abd8eb3795bc7f4c681bb2a063f286b4",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "6c96181a948f98f0b6ef76a83dc8773d26e6f31f44e71eb574d67f2649f8d7d0",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 312619,
+        "sha256": "e41711fbdeab00576f335d62d743c117118039f9988f6dad1e6c7f122c845757",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "68e81801e0d45bd8d83192d0af5989e99d910dcf355fac9194aef1ed9cdc42fa",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 3585524,
+        "sha256": "31b5df47089bab3b69e308c585fb06ba62ff83d66538dd8876cdcef5e999e59e",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "09d00334d09c474ceb1e30ea16eb632f63a26ce15079de8a78e15acc99f7fa27",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "summary.json",
+        "bytes": 86859,
+        "sha256": "a49dd5c91b9b2e118e582e2931f1c8a794a53fc343b118db960cf8a2b4c199ba",
+        "compressed_path": "summary.json.zst",
+        "compressed_sha256": "6dd4d4420645739a24e8e379e0958f36d6050bd79193aaabcf381740ac7db650",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-n8-91439-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91439-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-n8-91439-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "fadf88229bacd73dab739b2c9ca91fb34014869ecb881aa4af833f5d9d7287be",
+    "files_verified": 263,
+    "actual_bytes": 3878054,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 67013,
+        "sha256": "138812bac6cda8f4e4d723609d8b810ee6f9276463af98490d8e1608a70173b0",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "8b10ef08b529364bb68982ef7d9b1424dbb5f0b4134eae5aa644754d011bad8b",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 86547,
+        "sha256": "563f25d7e568b18abb5694aaa26b75d345acc3c1d9c58fb6e6bbf3d5b716ffb0",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "1dc8f102b0cab0af278d6227e80121390613d225747672ed1510dfb4bd998eb6",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 992690,
+        "sha256": "494e88ea31562b29b1ee57303866ac86e08c7f330c7d48dccfe3f1fb2fefaeec",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "a100b7b038d197ada2c50b391946fd9cae107a2157b21de53423b47fe5332ceb",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-n8-91500-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91500-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-n8-91500-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "12911907dcb04e25d33ad499e95e6e87d95f3d192be857a71bbd558fc04bfd13",
+    "files_verified": 923,
+    "actual_bytes": 14383935,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 274111,
+        "sha256": "4614d81dff8aa80ae1f926217ffeb9fd144aa310d6823078fd81c7f978f07979",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "28bb8c0d02a85ba872f9567497ae86e1abb4a792698f9aa04fe92fb5074561d1",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 249550,
+        "sha256": "540fd5fef597c3f2c7d1a29f16a160ffcdb7635cbdb846a0e05d21796a24d1aa",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "85c327465b9168cf8ff51b558f8184671f26b1aec6b21ecb8fb3827f1495d078",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 435255,
+        "sha256": "43d274fb505a2f8c9ad95f21a9623099d3f1bf14e29152dc6af42824b48ca552",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "e7d2980d05587e06161d40cb7c4d9ebc11b436f6f2f0b06eab6518096a9742b4",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 3997171,
+        "sha256": "e900e2c8e363b570dcfacb8a7caa755475038281f17490256692a4312253299a",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "e573ec405e25e1d3683672acb29d5755abf308e49a95051658ae182e85827e69",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "summary.json",
+        "bytes": 86897,
+        "sha256": "ac9da8b8226da31eeac37be9272aeaeb12833eaef6fe9b73c8034914741ed6f5",
+        "compressed_path": "summary.json.zst",
+        "compressed_sha256": "92cf2e1d8b7695ee3c4a11c725fa814bb1f6b57c20bbc217bd0cffae425c34b9",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-n8-91501-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91501-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-n8-91501-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "5003fb81b1ee3768834e562559aefe1f8a8efa82c44f6cec057e080edb2434f0",
+    "files_verified": 638,
+    "actual_bytes": 8727008,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 176340,
+        "sha256": "6eb44eacd2224ed410258737be0a0e38876bce496e181bde5f24fde5d94c1d8f",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "56b286729c1de02b1d3e39d5ed68d3f611e8057a92ae8216596b30648e61c7c5",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 173288,
+        "sha256": "b923484b0efab4db58a1eaccb3a175b5caa6ed01b0f0366c987eab887294053e",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "cec947afd9771f1d73b1525ac751bc333f13e05d1366f30c45a0e1520a7748b8",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 212518,
+        "sha256": "f7a4262e7ec5dcb186c67b41fb12b69dfbdffa18ffc782dfb5233fb2a6961f4c",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "15dae74b79fd258abe2178faec669f4512cc8363e07ecf375822026c76b4e86d",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 2779885,
+        "sha256": "5a94684620840f9c479a50248a87d0aa723f2f53aa08bf4d6fbfdb5e14c4907b",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "c2d5fdca8a1450481a632da9fcd071b6b314d30e9a44a2f9c53534840aa684bb",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-n8-91502-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91502-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-n8-91502-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "17ebee6cca57e9990fa16b42eb2fb963d0f5a512e5e8495b3228feb4252a3618",
+    "files_verified": 606,
+    "actual_bytes": 7284543,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 175351,
+        "sha256": "3b8ac6f35af0bcc89bbedda108741923410c4b738b678dfa1930a59931be810f",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "6e8db690c5387ac2ff03d12decd725b550604eea4cecb193cc430965529098cf",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 133921,
+        "sha256": "d50d492898daa83af1dc494168ad034ba549039ef4d37ad491b0a3b111663c78",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "5ba84571381aa5fb825ecf889ef4340ee30f91be864968ad23440ec8f07591c0",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 203465,
+        "sha256": "c201502e823dd2f7906e647a93e689c506f8dd5e7e6d0a5e70aadccdb27cc86c",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "1d6c2ddabe093824ea78f140b6b86ee93cde53a278cba29081b2f945740686f2",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 2150898,
+        "sha256": "26480676d9b4a4f1918986dc025c924109ea31932aed427c606457e202e072f9",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "25ce5a1640f2347aa23247d9f198cbf47abb592191126b9507dfd28c3e814442",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-n8-91503-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91503-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-n8-91503-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "5319ab089de1fbf73ebdb1d0b9849b79b2bdddcc748471c728cba1879d764381",
+    "files_verified": 795,
+    "actual_bytes": 10506046,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 229005,
+        "sha256": "bfb4f504d89f4788cf76a8dee5c2cd4cfa147cc981092e9e3e6caa2be08c3d07",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "fcbd7fa08d1537129a962c701091451221c319af1bbd77f2f233d11ed07c6945",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 201964,
+        "sha256": "d283fe22627ec119e1a0dce83d49c66714f32d35dc13370b2a7a995a5a45fecf",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "e46ddfe437abe708ce6ecfe16d0e795b6d7dac91c2d9111b29e854d3c9920605",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 304412,
+        "sha256": "2abeddc5c28aa2b7ba7769e5378b445c8180273074ac9a06b1fd7bcc2b11ad13",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "51b3301b985d3228db3b1c599d0d5b380ebdb07a3013e84aa0f98183542e9158",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 3242187,
+        "sha256": "e2f118c3a102cee03fe0f21a9777c44525498442af181c9f9e7164cdace6ba3a",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "f2357b335156c5ac1cc04ef9ed5425b8e3995b1382f76bd751f8112c92684b48",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "summary.json",
+        "bytes": 75025,
+        "sha256": "085137c10c3fa7b12481652d367714b183dcf67364b7a3d668cd71c200eeceb1",
+        "compressed_path": "summary.json.zst",
+        "compressed_sha256": "5e6f2af4a3d7e93692ec04a8ea50997854bebbeb67a426e592e7942fe0fc0edd",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-n8-91504-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91504-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-n8-91504-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "6126132108d2807f2d99d2f60f6e4a5ab550d14b252e39a1e792b8ac5d442c0f",
+    "files_verified": 923,
+    "actual_bytes": 11529398,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 284487,
+        "sha256": "788603b5adfc198de67a8d7558fc289a002732d3cffbd171e432ef2d31e6865c",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "c382771d0884018b86e6bdd29bcc2c0eb9eacd10db1c536d876aa2868af28107",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 206110,
+        "sha256": "f9cc73be940b9dc693e1e0de72ee37c8fa6c74caa38eb4b17a20fe9c9eb48ded",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "d45599d95590718a8705c8ba0ee1039be5793cef0c8bc5b5bb99e1f57689cf79",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 311839,
+        "sha256": "cb86cf9929a0743a2b24f69a39955740253c8090f51582c4494888773047193a",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "b37346e5bb326ed51ac260b40ca687a1420a795be57f5d6077dbc5aefcf464fe",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 3307085,
+        "sha256": "577192c1f0390cc03004ec8383daa9a9c226dbf105b0b1b07256c353813155f8",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "8aafabb9802db5d8860194d6d3d661ad0f12494a0b3504254ac21d5988348859",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "summary.json",
+        "bytes": 86896,
+        "sha256": "3081a662de9a624cefa8bc560b09cb7937f6bb70538c94f0887ba01f130073e4",
+        "compressed_path": "summary.json.zst",
+        "compressed_sha256": "94ee96212fa3bd2cd3b93cbf07efd7b67564a24b59dcbf6f5ca11a69cb568d6d",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-n8-91505-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91505-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-n8-91505-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "7823cc844d6a238fda2c812056c76a11813a3ef6bfe4554393967dd2ea9137e8",
+    "files_verified": 374,
+    "actual_bytes": 5722952,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 96708,
+        "sha256": "1f0b55acf709633187691746888b794948eb5bddc877e8fede78cb937e28b677",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "889f7ad1d6836df37cd24d7fffba62a2f3e4a1e629b284a519767c6ce7f144a9",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 95109,
+        "sha256": "b9429387c971a103ea4b8d94ac3025d4b5b5478e389c78f55ca8bed7e476c221",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "591f68679b0334294d996ba66bdd2acb90af02a086e321c02864ea720469fc59",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 120817,
+        "sha256": "08276272c865b8c6636964bded484714a50f076869290c75b020ab2e3e1d51dd",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "44e2227716e4ea559320f99a0429483c59c677be40d4775f64dea863373722aa",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 1526559,
+        "sha256": "9c8c9b9450f8e57e55fa0a2616eb3d06e6401288e1f58357621ae34fcdd94a60",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "ea8438a3d3628059fa01098ef678174be565f12fe5bda24e35a8fd7ff51d2439",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-n8-91506-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91506-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-n8-91506-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "9d77e7ce7087ff2d6dba4114480acf1b9ffdc5cca3f4741743b38ccc9f388f17",
+    "files_verified": 614,
+    "actual_bytes": 7221776,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 176870,
+        "sha256": "c9cd4cd6bd57721674302bec565263d96e31dfd3964e384b55da0035d7f65a0a",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "b8210dab1a8bed364f5edba662efa966646914179fc434b0ccebb745a7a8c226",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 137605,
+        "sha256": "df9b0c9f327491d6b7d460b9a56631e74cbbbfa80168489caff7272579e54182",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "5d19bcf289740a79f54b59a796f0bae738461cc07daca25935bfaf5c8fc4b2a1",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 205428,
+        "sha256": "15ec6ec55d31b70d68c546d88d0c3b61158d616f2ae0321e981b515251b2160b",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "799826658ba211b3387d06a001197706fb1aafec61bbfdf2d49183a31c91f3f0",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 2209962,
+        "sha256": "752b3229f8714236705c7804dfb41f47177b2f7ff63e56523242eac3fc5ce90e",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "2b6188237e178f54593f4d59dd191373605de2792814636643b6dde86c8095ff",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-n8-91507-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91507-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-n8-91507-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "11231f9eeb639e73a71cf2b851c8d78362c8a4572dcbace3e7191e060cfd1e78",
+    "files_verified": 923,
+    "actual_bytes": 13103408,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 276056,
+        "sha256": "a229d8bacdb21bdb7d1fb06fc8306961754be3fc1b4d93ef92becf9e42568249",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "b95a3418d27d798fcb64941a9c593d8424f28e7e92f9439efbe7169065282ccb",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 238332,
+        "sha256": "9a8820c08ae9190dbf97105933d7b7f892bda980285c14d39ea447d007d0923e",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "d4fe641dda185b5d36407487287b2f36fcdb665c60f570998594b4655b77b9cd",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 326440,
+        "sha256": "36f3347370f7f6d0c4b99bc5b057b3968feb14dd2772157c23a5001346447d74",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "a715c94364098004569f4c864fdb2d3b181a198656ffd634c525b5e47bf20020",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 3819603,
+        "sha256": "b15d3a72973d9bfe0228e5069734a9f291dcd2e4460af7757a15033e09439a07",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "7ee631c78d659b2bd4ca2396379806c25208491fe116e01536a093d014f7963c",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "summary.json",
+        "bytes": 86901,
+        "sha256": "4cc3ed58688df469af715d9dcaa77d45ec323e1043f0d9ee5cc592bbfaa89b51",
+        "compressed_path": "summary.json.zst",
+        "compressed_sha256": "882b12435014a1d62260a03de908c620074b80cc06f4e61866a95fada348b3b2",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-n8-91508-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91508-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-n8-91508-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "ea81c616f11c69a20d33078f2ad63b11b2636fe0dafffeddcb7798c3dafb7cf2",
+    "files_verified": 694,
+    "actual_bytes": 8967841,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 198257,
+        "sha256": "a1eb07390d793c5c9f566436307e8f8a1f5a30be603f1539f7437b16c91a86b4",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "45d950d61bb5edc934903015182bb9842c1fc6e3e5b6b961b767940c6fe4dd89",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 169349,
+        "sha256": "f4ea6b974923f7333727e2614b0667e90952f9e80ad090ded95266b01f5d66db",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "1dc472770d93d07d0885655e3ff9128c3676c39420c12549329dac8fa06b8bf0",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 232489,
+        "sha256": "bff6b8a367454e31d5236b4a23d84142596a964bda838eae10bdbeaa3d87ccea",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "c9705df591caf6058f1cca024da808e2d4a9facf0637414b29150d1e0c1bb012",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 2718008,
+        "sha256": "75c328a613117d8ff581a2b4b2c6651057f9c59585c0806e5f87d46ff5fbd8bd",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "da3061b187ebd28ad6f1f448df67489972d3d9b95fa9182169fe5898f29032f9",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "summary.json",
+        "bytes": 65630,
+        "sha256": "130b100dcf8e4d188139c71eb458a28ce0afdc2540c114aa916cde1e52f9b459",
+        "compressed_path": "summary.json.zst",
+        "compressed_sha256": "896d8bc7e09598654e3b1bae5c19f74c1574b710680d0738f886bb6e53b0b038",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-n8-91509-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91509-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-n8-91509-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "da6a7f52336bedd47b2bd4cfe1255735bb422bfd5dd450a26daa8f44ee4442fb",
+    "files_verified": 923,
+    "actual_bytes": 10840531,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 275545,
+        "sha256": "785b96bb9547da64447b1c661fb342be0973f4ae23d4515cbb35834cdcbee90d",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "78c660201cd6af7066eae267b50ec28c86e7eb4bab5f469386fdf7befaf819dc",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 208529,
+        "sha256": "32564c58c939fe056081e1d3094f5244d590196a4fca56fbf862a18606893de3",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "319e252f06a21687c3005c7b784f3b64b534146f613db5853f1284fad4a8ad9c",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 310187,
+        "sha256": "c72adffabbd6e126bd1777ba069e8e8478ecebc8997383b80a58ac75743efa13",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "998f9d33354b522362923b478317de10c637cd27f3d180f4e49559bf5cabd021",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 3344452,
+        "sha256": "b542794b61eed8e568b0c6c5e3c27ab748f36ac7fabe754b13f0e9fc7cf2c036",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "1db83091bbf50603ef396700ec0e1a219d75fd6ea712a0886f1849d6f7570966",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "summary.json",
+        "bytes": 86857,
+        "sha256": "2d79009656e47a7236e19cf261193f641d249396e0649aa5d929bc17d35b44d9",
+        "compressed_path": "summary.json.zst",
+        "compressed_sha256": "61cd36aedeeae9a4e74bd05ce44a804dbb22270e5abf85802ac9d3cadd2b6665",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-n8-91510-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91510-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-n8-91510-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "44b3f425d19e90704f7da259650a89fc8b41fa48a75f901e1311db62df083a71",
+    "files_verified": 923,
+    "actual_bytes": 10990241,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 291133,
+        "sha256": "a30aeaea0278575a22122d6f5ee85f3c3202620e066c9b635a4e3f1c83778ee3",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "a3654bbf8101bf65188fa1deedbc369d17776e81e44f9b694db9b92952300f59",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 202943,
+        "sha256": "e65f8d06010290ae5ce2452e5ebb9db4a8719f3ecb2bcdd89f446ca9d8cfaf04",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "e040f6f1f4112d4640729fac43337870ddf386d40b5c9cf5db7f8c2d7092dbb5",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 330295,
+        "sha256": "7f08fee234cb01877b82940164f9d758712d08c8e550bd0604ca0ac3cb8b7068",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "f1e1781463ceedafba98256efb9438791450343b7c337b39347ee43f76c43acf",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 3257313,
+        "sha256": "03545dcd0d29d72cc06d8219f31ec5923cec0e1309f1105a9324f731a610e766",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "178235952bac721c1897c58be013d13f6938f13d69efe96b72696dbc6411b1f8",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "summary.json",
+        "bytes": 86900,
+        "sha256": "8cbe7e8c40873b44f22abbaf1bae93b011be5c0a36a84d52d1a725053fc3c4e1",
+        "compressed_path": "summary.json.zst",
+        "compressed_sha256": "9fe9bf46ac819e7afdfd2e3f882516fb485ff26f970bf81560b78613fb9ec787",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-n8-91511-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91511-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-n8-91511-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "a027693998467d1e363b93d75eafe701de50be427157c673256041924286b9b8",
+    "files_verified": 223,
+    "actual_bytes": 3412622,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 70073,
+        "sha256": "c2aab3189ac9d95f0639d0adec84b1c4aa058fe475ef55991e54a88942e47bcd",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "f0469adbceab86014e4de635579a9baf590082cf2e0604d40aa9f05b88f28fbd",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 844452,
+        "sha256": "a315f22a543b962a30ff45677c866511ba97d4446c061c180afa464b7945f6e4",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "b8fbfd4e6c64b0b9a3ca2f91bbab46646f3fbcd288db8109e24dbb57413f4b57",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-n8-91512-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91512-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-n8-91512-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "0ac9228516c8b315f69ea85751ac427196c8e34f43f4c444f3e90e1ccb14de16",
+    "files_verified": 734,
+    "actual_bytes": 9840801,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 206882,
+        "sha256": "240f6647c2558818ce3eb318e23d4fe7a715264e9d3abc581cf9c569b58473c7",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "09569a1fa98d068ba010574eb370f23316463983b1b3976576426e6606ee81dc",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 185185,
+        "sha256": "f9f3c18fe99e64e3174453c0b6f5ede7e3952a36852fa4cf556334353a7b31ff",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "18a60ade6924e8817e3192708814c1f845e5bf28c25f5271a60fcfe02c26f1d5",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 245225,
+        "sha256": "54fb93a3efd4705a366ac5f764aeaf52557b993619c2ccd5ec8ec9065b7a281b",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "00fd82b216678d33cb20fe1cd63452d3b3ee0aef3df3cf6922c05f2904fd90b0",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 2971715,
+        "sha256": "a89878732e48efa9bf4e0d42f566dc63d369b24aac806fc711977fb6958247e5",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "af4e7953c2b2020be7f6cc6927e6a12d20b8127b9e0bb4fefb24a86b79d7ee11",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "summary.json",
+        "bytes": 69311,
+        "sha256": "68bad388fcea6a8b4caa472bf4f3518450f66a58fce60ce52108854842b5fda2",
+        "compressed_path": "summary.json.zst",
+        "compressed_sha256": "84aae266f2e2209bf8489e31c1dfe134c36d3a1128e9b45a4b483d5bd0de2317",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-n8-91513-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91513-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-n8-91513-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "3e9f7eab625df7c68144c63417b4664ffc0cc821c454ab96910bbd3aa40c4cf2",
+    "files_verified": 236,
+    "actual_bytes": 3434892,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 79160,
+        "sha256": "74880e797a270695aaf83e867baf0f37828b6d19a63842431f7952650df35bbc",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "c3d36abca442bd38c7690dece666ab9912c621c6d55261be6ba0c9a9e6136dbe",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 900911,
+        "sha256": "9cf8cee445e4741ea2abde33e4636685745a05cf65cf9ce7894129396ff5ee63",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "a84df6154ecebfc6704b63f322cbbde161b73dfb2efb58fe0c59bcafc9674035",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-n8-91514-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91514-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-n8-91514-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "3b2a9233cfd957f8f4c59c7b9097442d02f5dcb7a6b2026e3b6919e7b645d983",
+    "files_verified": 326,
+    "actual_bytes": 5117072,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 82339,
+        "sha256": "53a414d0374050c14746b3cdbd1d41e91b75cbda6fc0e8cd0b621b1c1fc11cee",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "98fee717dc9544d8ff5c039ef125348f40fccf8f92bc10e415b9aa26b8d01be5",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 81906,
+        "sha256": "32fca96676bf3fa60e3c10e174023408805647f8ba92e10248ff7bbc02cbe06a",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "03d9c1926c485e23a925a14db0b3341b94567347e80bf8ba300c96988cd73159",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 105480,
+        "sha256": "714b4a9b9002d690fcc34bc7758d1effd9b0aefcf6fce03940bdcb73de9d80cd",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "28c38108eebb0990ff604806d67e99dd7e3b7b79327f7815fdaba1d21e5ef0c3",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 1315364,
+        "sha256": "c63aee258076c9a66ef1c315f0bc9a87035f20d1a78586ae38dc987a483a4ab1",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "90efb24ebb22705126415afb0649482ddcfc358755d4248957811c98215ec00d",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-n8-91515-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91515-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-n8-91515-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "571256d4bd221aaf0f1acc2c092584def0b6ea6faaeb9cdd565f4125ee49c245",
+    "files_verified": 638,
+    "actual_bytes": 8465263,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 180676,
+        "sha256": "b23675174331c6eae0eea388e065f4cb11431e97070c34712b99c3fd890b1b1a",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "3c9f16eda7a82602b4d78ffcb3355b477d6f10cf3f4b3f950cbab870158cd96f",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 161950,
+        "sha256": "6a96f3a01ee9773977c491243949f7b2b3e638c1f638f7586185b082f9edb7e0",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "f685037d3ad70b0dc45c3c171ffcd0966cc1f06e71240811c3b02fa9ed88b34a",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 223937,
+        "sha256": "9f534b2c5ed3ded5a9f7de03da34d3f537039944d80575df3594ca3efa932af8",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "52788fa39d0397f9afd6717942af24e27eb3813162e07c0cd3be4aab4d171a06",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 2600354,
+        "sha256": "5277cf57c2f2a78e2c22892ac0fa9cdd51ab3e1cd7937368cf2175ad7f8d175d",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "1099f4f722fa461f8b8e373c4fd9c00a84a6d7375a898856363c8d96a84899b3",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-n8-91516-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91516-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-n8-91516-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "d90062e7909932fd89564cd6a86407cf47257453b646ff7f68cde61206726e55",
+    "files_verified": 894,
+    "actual_bytes": 10665239,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 254599,
+        "sha256": "0fdd1146ad3da1c543dc88e6475579565478ea429e77cc1e21baf1118d2cbb95",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "b722b10693699b7201a80e1abbd365504afc5544f2d083e5a75f1f5aa49817bd",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 251264,
+        "sha256": "5625d9f4ce9aca99fb121eb08a5c40395cd28e0a58913b7faab7b6a0f5274fbf",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "5c50bd68ef48fb14c918697b69d1f57781cddc6f3024a5af1534183ddb4995bd",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 300227,
+        "sha256": "f6748493f7728b42de80e28b5c05b00e015d2a5be53f8c60888072974edd49b0",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "6f784a08b330381dd16bc4e5b39efcfc468e88e57b96ec8d94a66f3936074c77",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 4030259,
+        "sha256": "06779ac7533a836cd523356a1336a070c395233c8d783bd9c6fd7a176b366c8f",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "c13abeab7c25b485d9ea50aee762c1a149c0cd0fc4e32a9831f722444c31ef31",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "summary.json",
+        "bytes": 84194,
+        "sha256": "92d27c360d3af982501794a74bbc79bf957accd3f8b399b25ca093520f89d7a1",
+        "compressed_path": "summary.json.zst",
+        "compressed_sha256": "9ede88b029551d492794cc631781b88f5f74a8e3b7dc514ff38bdbb29fe9effb",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-n8-91517-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91517-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-n8-91517-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "a98c37452d13906d4eede6feec77bf16881da16dff6a7dc89bd727215f72d783",
+    "files_verified": 923,
+    "actual_bytes": 13667664,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 273795,
+        "sha256": "29a66a54af45d4022ea2272f4584d04476cd5ff670836e0147dd71447a00fd2d",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "7a22ae3afe319d7333f56623f2d3fe8cefdc4d5c5e09b73f8b1306a6e991c2a2",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 271352,
+        "sha256": "9d24d5412d0533aa3446574e4a5b803e67a29fb61f7736f04e4775599d07732d",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "3ee16d403435592929b2cb393256159c4ea78fb99e269067e4e7dcccc8437a94",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 460267,
+        "sha256": "768eb8032e9099bbbee426ee044058065bf9c81fbcf9a6c55b7194be3c9149ca",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "c247dae21836944c0e2c03ca59ca5efb0a3d57f71150ee5288e3ae9064f015b3",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 4341712,
+        "sha256": "a40b7406b74b13eed5313cc95d5400cc649ef4806f72d36c75598b7ec7e26d13",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "cc6378e28bd9f4052a424b0e0d5afd86704f2a2577ecc34739f58531e00e169c",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "summary.json",
+        "bytes": 86897,
+        "sha256": "7df4211defde56711ae570f3190709181fb396f18588a48f0b9cd016aff507cb",
+        "compressed_path": "summary.json.zst",
+        "compressed_sha256": "50a485ee81e7640f1f9c7c2b3015b50b9bc1360d479f82b551128217a790f273",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-n8-91518-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91518-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-n8-91518-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "e29f959534ebfdfe2368797ab9b1a6dbf8c128480307be5320559c90ba12749f",
+    "files_verified": 262,
+    "actual_bytes": 4400204,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "commands.jsonl",
+        "bytes": 65983,
+        "sha256": "28e9c5a0fce6c9386dd807edaeae725642c74f4e7748d4b1726201a8a377c5dc",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "11d46b0f0f241daa31f67228a940f62a89a45a2ed9441d036e12ebe301d0da67",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 83136,
+        "sha256": "8a50859dd12aa6b3ac4d02b11e583383aa04980456898511085933c6f3da3229",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "e8bf0ff39b7c27b5cc544e5d4fde06d7f469f4948a9b1cc545819bdeff4ba476",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 1059567,
+        "sha256": "dd1d79249ac43155003fba1c5443bf3ee70ed58ef2c5ae8a95a6001db5e9ab6d",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "54fc78d2c3951f54d9c8bcb69103cc60b855a92d53936a97751ef951f67076be",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-n8-91519-686cccb6",
+    "exit": "0",
+    "source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-n8-91519-686cccb6/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-n8-91519-686cccb6/SHA256SUMS-post-compression",
+    "manifest_sha256": "8ea000004f90c1165a6e9fd3b31fbd4cb09179f424f707dccd30bbb090ce5098",
+    "files_verified": 923,
+    "actual_bytes": 14626215,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "chunk-predictions.jsonl",
+        "bytes": 274925,
+        "sha256": "108679f61c0642e185c926bbeb117f75b1b72c0f3b747f1fb1fa57e06211c137",
+        "compressed_path": "chunk-predictions.jsonl.zst",
+        "compressed_sha256": "f4c9e9a2b732e5938b5d97866fd1895b2099bc8e0479fbba2d10cdfd8f31e8a9",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "commands.jsonl",
+        "bytes": 240756,
+        "sha256": "958e6c9be1773994d785d24c56bafbb278f4233040d3883154cda97f49b8270c",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "71c79df3e09a698769fdc649c46a251fc7e0df7f748b75e760d9981b8c56f23c",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 327355,
+        "sha256": "bb5a7d79903889f17433b5547b386158a6d0e00c43935f7f2b542c975f838d37",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "6e397c99e667c163ff3b0dea6e5acc80d17f95028b87fbba538790b2255f2c95",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 3863085,
+        "sha256": "a558cf469dcf2b2591d6cb53354ef36ce7aa98462144aef8442676641995f550",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "9895507991a351683e87ed5aa6da94d0fd5fa0a8341e84a42e553b6992e6d7d1",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "summary.json",
+        "bytes": 86902,
+        "sha256": "c07e41f2ec4ff2d92c05a4d4df8c888e7bfd54fac08e458ea337bd5dd2c07042",
+        "compressed_path": "summary.json.zst",
+        "compressed_sha256": "3993d19de90da550639cc88675d13dcd1371eef4b7129a923ba7dd8fe6653c55",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-replay-p0-91420-1535c8a3",
+    "exit": "0",
+    "source_sha": "efb90d1d9c74e1602a018afad68c87fe33886479",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-replay-p0-91420-1535c8a3/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-replay-p0-91420-1535c8a3/SHA256SUMS-post-compression",
+    "manifest_sha256": "f67acd400ba652ed242af838ddbff2f55559ec8fd1c4744c4a610c1ed2086412",
+    "files_verified": 373,
+    "actual_bytes": 5224845,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "commands.jsonl",
+        "bytes": 87072,
+        "sha256": "32b3d8a0fff5118f907126990796e1fa05f3666161f5857d31a876aed42faed5",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "4ee33956f7f803260a6eaaf06ea68fb4a4137ce2f82a210ae3ab767c4f902afa",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 121103,
+        "sha256": "db8df731a2f1c5ca50154f6afa456882fd4c628f90ced386c245e91f6bfad4f7",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "5675a393660863a91fa0913ff82b3f678692079e8abdfb5c9c17cfba03527500",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "shadow-labels.jsonl",
+        "bytes": 302970,
+        "sha256": "c8be7b84fba004f435ef628ce585fb9bf3d81192ae64a937752ed98de424eb14",
+        "compressed_path": "shadow-labels.jsonl.zst",
+        "compressed_sha256": "5ef1d6794c5ca447da06aadf93b64f5ffc42fc4b414cf4706aa1e43e64704d50",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 1398256,
+        "sha256": "bfadb1c9f5105d6e878fc6df7a33c9d24bbdbd75f85b28d1ba58ad373fdd861a",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "62e23aad8ca5dacba889741925cb04aca6eb53b3140fec686b3c9ea48b5f5ef4",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-replay-p0-91434-1535c8a3",
+    "exit": "0",
+    "source_sha": "efb90d1d9c74e1602a018afad68c87fe33886479",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-replay-p0-91434-1535c8a3/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-replay-p0-91434-1535c8a3/SHA256SUMS-post-compression",
+    "manifest_sha256": "6af6b51b3d5b804bb5f4b5dfbd3862593ead3b55b529487e507fe796b7620775",
+    "files_verified": 545,
+    "actual_bytes": 7141311,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "commands.jsonl",
+        "bytes": 120135,
+        "sha256": "cc5a21e19ba68036ecc2d6a96f9fbf2a7845d6aaa6bacf1fae492cf6415f5549",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "470609f9ad214db3cf9a3b13b079e291295b49073f8a3818671f1938d76f781b",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 455676,
+        "sha256": "a7011a1c64c74e583b41d1ed9f7c2d3ee2e6e475badb817e3e38c35c6891b7d7",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "166244dc8f0f2f9f07485b198c3f3f12e5e040196f9689383fbd3f47bcbe8b48",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "shadow-labels.jsonl",
+        "bytes": 386566,
+        "sha256": "d35d219cb28063d86162053bba02aab563c3d0ca5a4461c474a5ea9209c15b20",
+        "compressed_path": "shadow-labels.jsonl.zst",
+        "compressed_sha256": "a33ef74b9bb3f27d5027b43b40c5e94c7e620732c9083559e3926286b62ccb29",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 1929603,
+        "sha256": "150df87e2ebc3a60745a2aea6cf481c1c2ab99e96c1f433e4f5a48b19d1e39fb",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "a3c148df2145061cbcc29a9f954d7c23a7307f541e3a873abe1a3b838560595e",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  },
+  {
+    "run": "act15-replay-p02-91420-1535c8a3",
+    "exit": "0",
+    "source_sha": "efb90d1d9c74e1602a018afad68c87fe33886479",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-replay-p02-91420-1535c8a3/raw",
+    "manifest": "/home/ugrp/ugrp-sim/runs/act15-replay-p02-91420-1535c8a3/SHA256SUMS-post-compression",
+    "manifest_sha256": "c3941ccf3d57f186a45489f957f642cbfb3c4d584665da4a7071c8cbcc85c952",
+    "files_verified": 646,
+    "actual_bytes": 7581538,
+    "raw_retained": true,
+    "own_lease_released": true,
+    "compression": [
+      {
+        "path": "commands.jsonl",
+        "bytes": 142165,
+        "sha256": "0686b3a2ed18d13c5edf8d35ebf70c53d724a0ac5d7399385155de7e945972fb",
+        "compressed_path": "commands.jsonl.zst",
+        "compressed_sha256": "be72a56995014042114eea3b6f90d253e7f4b51f070fb32d7f08f31a5c12954b",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "eval-only.jsonl",
+        "bytes": 216511,
+        "sha256": "67f6ddc41e4ce29c9cab8fbd4c2804e9647b4868954fa345a5c1d3198717f8be",
+        "compressed_path": "eval-only.jsonl.zst",
+        "compressed_sha256": "e938db36d4b6e69b4c5e781173dd418c5713a785af5f2400830f389713a79470",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "shadow-labels.jsonl",
+        "bytes": 445725,
+        "sha256": "2141838440769773b730270cd60c47efdf77ebd8070cf22b0932fb24fb43b127",
+        "compressed_path": "shadow-labels.jsonl.zst",
+        "compressed_sha256": "2c1954f3cfedda5df325d9152bd1fff9094f9380e8dac1ccd7b5454dcf7d6c52",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      },
+      {
+        "path": "student-inputs.jsonl",
+        "bytes": 2282648,
+        "sha256": "c324ec5f9183fc2075e972fb2a9f25e65584569cbed461ba1f054e045340d40a",
+        "compressed_path": "student-inputs.jsonl.zst",
+        "compressed_sha256": "28a135545beb3d36cabe425251d2743e383e81cab5ffe7d5fc78730ec0b42223",
+        "verified": "decompressed_sha256",
+        "codec": "zstd -3 -T1"
+      }
+    ]
+  }
+]

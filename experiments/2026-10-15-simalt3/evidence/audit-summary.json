@@ -1,0 +1,115 @@
+{
+  "sha": "25bf9995",
+  "script_sha256": "3c65c385d6a0f1ed3532d967b53d9c856249a83b2d67aa1bfb2dfadafae71d45",
+  "xml": "/home/ugrp/ugrp-sim/runs/simalt3/fixture/scene.xml",
+  "xml_sha256": "ad46cd87ef4188daa9a4dbebd79c470fac6f1b3fcb5e5a1fe0d9dfa3c2261849",
+  "mujoco_version": "3.16.0",
+  "warp_version": "1.15.0",
+  "io_sha256": "d496e51ac392731fd1b20d0cc53c573b38dcf38924dbcd04a2d5f85ffeb84310",
+  "float32_max": 3.4028234663852886e+38,
+  "threshold": 3.4e+38,
+  "steps": 0,
+  "training": false,
+  "option_overrides": {},
+  "status": "numeric_import_pass_only",
+  "unused_efm_v1": true,
+  "zero_allocated_fields": [
+    "efm_c",
+    "efm_diag",
+    "efm_fluid",
+    "efm_ca"
+  ],
+  "efm_activity": {
+    "efm_active": 0,
+    "nefmK": 0,
+    "nefmT": 0,
+    "nefmA": 0
+  },
+  "arena_probe": {
+    "efm_c": {
+      "shares_memory_across_getters": false,
+      "owns_data": true,
+      "base_is_none": true
+    },
+    "efm_ca": {
+      "shares_memory_across_getters": false,
+      "owns_data": true,
+      "base_is_none": true
+    },
+    "efm_diag": {
+      "shares_memory_across_getters": false,
+      "owns_data": true,
+      "base_is_none": true
+    },
+    "efm_fluid": {
+      "shares_memory_across_getters": false,
+      "owns_data": true,
+      "base_is_none": true
+    }
+  },
+  "model_counts": {
+    "nq": 60,
+    "nv": 58,
+    "nu": 10,
+    "ngeom": 469,
+    "nbody": 50,
+    "neq": 0,
+    "nplugin": 0,
+    "nhistory": 0
+  },
+  "source_options": {
+    "ccd_iterations": 35.0,
+    "ccd_tolerance": 1e-06,
+    "cone": 1.0,
+    "density": 0.0,
+    "disableactuator": 0.0,
+    "disableflags": 0.0,
+    "enableflags": 0.0,
+    "impratio": 1.0,
+    "integrator": 3.0,
+    "iterations": 80.0,
+    "jacobian": 2.0,
+    "ls_iterations": 50.0,
+    "ls_tolerance": 0.01,
+    "noslip_iterations": 10.0,
+    "noslip_tolerance": 1e-06,
+    "o_margin": 0.0,
+    "sdf_initpoints": 40.0,
+    "sdf_iterations": 10.0,
+    "sleep_tolerance": 0.001,
+    "solver": 2.0,
+    "timestep": 0.00025,
+    "tolerance": 1e-08,
+    "viscosity": 0.0
+  },
+  "converted_options": {
+    "timestep": 0.0002500000118743628,
+    "tolerance": 9.999999974752427e-07,
+    "ls_tolerance": 0.009999999776482582,
+    "noslip_tolerance": 9.999999974752427e-07,
+    "ccd_tolerance": 9.999999974752427e-07,
+    "sleep_tolerance": 0.0010000000474974513,
+    "density": 0.0,
+    "viscosity": 0.0,
+    "integrator": 3.0,
+    "cone": 1.0,
+    "solver": 2.0,
+    "iterations": 80.0,
+    "ls_iterations": 50.0,
+    "noslip_iterations": 10.0,
+    "ccd_iterations": 35.0,
+    "disableflags": 0.0,
+    "enableflags": 0.0,
+    "sdf_initpoints": 40.0,
+    "sdf_iterations": 10.0,
+    "impratio_invsqrt": 1.0,
+    "broadphase": 0.0,
+    "broadphase_filter": 11.0,
+    "graph_conditional": 1.0,
+    "run_collision_detection": 1.0,
+    "run_rne_postconstraint": 0.0,
+    "contact_sensor_maxmatch": 64.0,
+    "warn_overflow": 4095.0
+  },
+  "wall_s": 0.9258060020000016
+}
