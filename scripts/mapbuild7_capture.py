@@ -49,7 +49,9 @@ def run(a):
     from sim.masterpi_camera_profile import mujoco_pixel_intrinsic,raw_fisheye_remap
     from sim import masterpi_camera_review_v3 as camera
     from sim.zone_cargo_contact import apply as cargo_contact
-    from scripts.warp_act_core import control_tape,runtime_sleep_policy
+    core_spec=importlib.util.spec_from_file_location('mapbuild7_warp_core',vendor/'warp_act_core.py')
+    core=importlib.util.module_from_spec(core_spec);core_spec.loader.exec_module(core)
+    control_tape,runtime_sleep_policy=core.control_tape,core.runtime_sleep_policy
     from scripts.warp5_render import Renderer
     from scripts.simalt_physics_compare import unused_efm
     from scripts import probe_scene_tex2 as st
@@ -73,9 +75,9 @@ def run(a):
     if plan['kind']!='cyan' or plan['item_id']!='cyan_2':raise ValueError('REGISTERED_CYAN2_ONLY')
     expected=q['teacher_class_sha256'];module=Path(sys.modules['sim.grasp_act_solo_teacher'].__file__)
     if sha(module)!=expected:raise ValueError('FROZEN_TEACHER_CLASS_REQUIRED')
-    scene=make_scene(plan);hardware,keys=load_fitted_hardware()
+    scene=make_scene(plan);hardware,_=load_fitted_hardware()
     xml=cargo_contact(scene.transform(build_multi_robot_xml(hardware)),'cargo_noslip_v1')
-    xml=scene.robot_transform(xml,hardware=hardware,calibrated_keys=keys)
+    xml=scene.robot_transform(xml,hardware=hardware,calibrated_keys=hardware)
     xml=transform_xml(xml,DriveParameters(),'mesh','off')
     owner=ROOT/'experiments/2026-10-16-mapbuild4/vendor/warp_native_contact.py'
     if sha(owner)!='a5c8d370755034b9f9615f66a94b87883327b7d7ecc4e13082eac2c2d4751c6a':raise ValueError('OWNER_BYTES_CHANGED')
