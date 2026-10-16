@@ -20,11 +20,18 @@ from scripts.grasp_act_training_guard import source_sha
 
 def vectors(chunk):
     commands=[c.decode_action(v) for v in chunk]
+    # Undo normalization roundoff using the ACT head's exact observed label
+    # alphabet, not a fitted movement threshold. A nominal pure turn has zero
+    # translation; ~1e-9 decode residue must not count as an end reversal.
+    values=np.asarray([-.35,0.,.35])
+    raw=np.asarray([v['wheels'] for v in commands])
+    classes=np.abs(raw[...,None]-values).argmin(-1)
+    canonical=values[classes]
     dose=[]
-    for command in commands:
-        w=np.asarray(command['wheels'])*np.asarray(command['duration_s'])/c.PERIOD_S
+    for command,wheels in zip(commands,canonical):
+        w=wheels*np.asarray(command['duration_s'])/c.PERIOD_S
         dose.append([(w[0]+w[1]+w[2]+w[3])/4,(-w[0]+w[1]+w[2]-w[3])/4,(-w[0]+w[1]-w[2]+w[3])/4])
-    return np.asarray(dose),np.asarray([v['wheels'] for v in commands])
+    return np.asarray(dose),classes
 
 
 def main():
@@ -66,6 +73,7 @@ def main():
                     first_turn_sign_flipped=bool(u[0,2]*v[0,2]<0),chunk_turn_sign_flipped=bool(u[:,2].sum()*v[:,2].sum()<0),
                     first_wheel_classes_changed=not np.array_equal(uw[0],vw[0]),
                     chunk_wheel_classes_changed=not np.array_equal(uw,vw),
+                    original_wheel_classes=uw.tolist(),swapped_wheel_classes=vw.tolist(),
                     original_first_stationary=bool(not np.any(u[0])),swapped_first_stationary=bool(not np.any(v[0])),
                     decoded_chunk_l1=float(np.abs(one-two).mean())))
         metrics={key:sum(r[key] for r in rows) for key in ('first_translation_reversed','chunk_translation_reversed',
@@ -75,6 +83,7 @@ def main():
             N=len(rows),metrics=metrics,rows=rows,input_change='role token only; own RGB/issued history/task clocks identical',
             no_truth_or_labels=True,new_physical_runs=0,checkpoint_selection='fixed final20000; probe never selects model',
             motion_units='wheel * pulse_seconds /0.1 body-axis command dose, never measured pose/speed',
+            roundoff_policy='wheel classes mapped to exact data alphabet -0.35/0/+0.35 before body-axis sums; no fitted deadband',
             scope='saved baseline same20 cold-start counterfactual; not proof of correct end selection in closed loop'))
         print(json.dumps(dict(arm=a.arm,N=len(rows),metrics=metrics)),flush=True)
     finally:lease.unlink()

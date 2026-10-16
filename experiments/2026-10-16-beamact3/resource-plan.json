@@ -40,5 +40,24 @@
   "cpu_available_memory_bytes": 128733241344,
   "cpu_own_expected_raw_bytes": 10737418240,
   "cpu_peer_reserved_runs": 6,
-  "cpu_planned_total": 22
+  "cpu_planned_total": 22,
+  "online_storage_events": [
+    {
+      "at": "2026-10-16T05:44:07.788111+00:00",
+      "instance": "ugrp-act-l4-gcp2",
+      "project": "ugrp-sim-b-1014",
+      "from_GB": 140,
+      "to_GB": 180,
+      "free_GiB_before": 11.1658706665,
+      "basis": "B remaining four 5k actor+optimizer checkpoints plus smoke ~3.1GB against existing8GiB floor; peer writes also ongoing; preserve raw evidence and peers",
+      "latest_budget_notification": {
+        "timestamp": "2026-10-16T05:25:41.990569Z",
+        "costAmount": 0,
+        "budgetAmount": 1000,
+        "currency": "KRW"
+      },
+      "VM_8h_and_budget_stop": "unchanged",
+      "remote_result": "disk180GB READY; nvme0n1p1 online grown to46923515*4096B ext4; df free50G; peer leases unchanged"
+    }
+  ]
 }
