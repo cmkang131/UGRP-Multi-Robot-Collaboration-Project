@@ -4,6 +4,7 @@ import datetime as dt
 import hashlib
 import json
 from pathlib import Path
+import socket
 import subprocess
 
 
@@ -45,10 +46,12 @@ def main():
     p.add_argument('--root', type=Path, default=Path('/home/ugrp/ugrp-sim/runs/warp8'))
     p.add_argument('--out', type=Path, required=True)
     a = p.parse_args()
+    assert socket.gethostname().split('.')[0] == 'ugrp-act-l4-gcp3'
     assert a.root.resolve() == Path('/home/ugrp/ugrp-sim/runs/warp8')
     assert a.out.resolve() != a.root.resolve() and a.root not in a.out.parents
     a.out.mkdir(parents=True, exist_ok=True)
-    assert not (a.out/'compression-manifest.json').exists(), 'already sealed; preserve the prior mapping'
+    assert not any((a.out/name).exists() for name in
+        ('compression-manifest.json','compression-manifest.json.zst')), 'already sealed; preserve the prior mapping'
     commands = sorted(a.root.glob('*.command.json'))
     assert commands
     receipts = []
@@ -94,8 +97,10 @@ def main():
     assert after == second, 'artifact changed during sealing'
     after_file = write('raw-sha256.json', after)
     index_archives = [compress(path) for path in (before_file,after_file) if path.stat().st_size > 65536]
-    write('compression-manifest.json', dict(utc=dt.datetime.now(dt.timezone.utc).isoformat(),
+    compression_file = write('compression-manifest.json', dict(utc=dt.datetime.now(dt.timezone.utc).isoformat(),
         root=str(a.root), files=compressed, index_archives=index_archives))
+    if compression_file.stat().st_size > 65536:
+        write('compression-index-archive.json', compress(compression_file))
     verification = dict(utc=dt.datetime.now(dt.timezone.utc).isoformat(), root=str(a.root),
         attempts=len(commands), receipts=receipts, declared_manifest_verification=declared,
         before_file_N=len(before), before_bytes=sum(v['bytes'] for v in before.values()),
