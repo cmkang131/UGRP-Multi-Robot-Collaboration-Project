@@ -100,9 +100,9 @@ def main():
     playback=a.output/'playback';playback.mkdir();receipts=[]
     for case in origins:
         folder=playback/case;folder.mkdir();ins=[]
-        for camera in ('overview','r1','r2'):ins+=['-framerate','10','-i',str(a.input/case/(camera+'-%04d.jpg'))]
+        for camera in ('overview','r1','r2'):ins+=['-framerate','30','-i',str(a.input/case/(camera+'-%04d.jpg'))]
         video=folder/'review-3x.mp4'
-        call(['ffmpeg','-nostdin','-loglevel','error',*ins,'-filter_complex','[0:v][1:v][2:v]hstack=inputs=3,setpts=PTS/3[v]',
+        call(['ffmpeg','-nostdin','-loglevel','error',*ins,'-filter_complex','[0:v][1:v][2:v]hstack=inputs=3[v]',
               '-map','[v]','-frames:v','41','-fps_mode','vfr','-an','-c:v','libx264','-crf','28','-pix_fmt','yuv420p','-threads','1',video])
         for camera in ('overview','r1','r2'):
             for name,filter_ in [('whole-2hz',r'select=not(mod(n\,5)),scale=320:240,tile=3x3'),
