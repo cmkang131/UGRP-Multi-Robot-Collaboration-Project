@@ -1,11 +1,20 @@
 """Own warpfit outputs only: verify old manifests, associate draft PR, compress losslessly."""
 from pathlib import Path
-import json,hashlib,subprocess,sys,datetime
+import json,hashlib,subprocess,sys,datetime,os,fcntl
 root=Path(sys.argv[1]).resolve()
 if str(root) not in ['/home/ugrp/ugrp-sim/runs/warpfit','/home/ugrp/ugrp-sim/ops-reviews/warpfit/raw']:
  raise ValueError('only own raw root')
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
-def dump(p,x):p.write_text(json.dumps(x,indent=2)+'\n')
+lock=(root/'.warpfit-archive.lock').open('a+')
+fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
+for p in root.glob('R*/**/result.json'):
+ if json.loads(p.read_text()).get('status') not in ('complete','HOST_ERROR'):
+  raise ValueError('unfinished result '+str(p))
+def dump(p,x):
+ temporary=p.with_name(p.name+'.tmp')
+ with temporary.open('w') as stream:
+  stream.write(json.dumps(x,separators=(',',':'))+'\n');stream.flush();os.fsync(stream.fileno())
+ os.replace(temporary,p)
 verified=[];metadata=[]
 for p in sorted(root.glob('R*/**/SHA256.json')):
  x=json.loads(p.read_text())
@@ -26,16 +35,30 @@ for p in sorted(root.glob('R*/**/RUN_META.json')):
   if selected:x['class']='milestone'
   dump(p,x);metadata.append(dict(path=str(p.relative_to(root)),before_sha256=before,after_sha256=sha(p)))
 compressed=[]
+receipt=dict(created_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),
+ original_run_manifests_verified=verified,metadata_association=metadata,compressed=compressed,
+ old_manifests='original SHA256.json retains pre-association logical bytes; preserved RUN_META.before-pr-association.json resolves original hash; final file hashes below')
+dump(root/'archive-receipt.json',receipt)
 for p in sorted(root.rglob('*')):
+ if p.is_symlink():raise ValueError('symlink in own archive root '+str(p))
  if p.suffix not in ('.json','.jsonl') or p.stat().st_size<=65536:continue
+ if p.name=='archive-receipt.json':continue
  before=sha(p);n=p.stat().st_size;out=p.with_name(p.name+'.zst')
  if out.exists():raise ValueError('archive exists '+str(out))
- subprocess.run(['zstd','-q','-3',str(p),'-o',str(out)],check=True)
+ subprocess.run(['zstd','-q','-3','-T1',str(p),'-o',str(out)],check=True)
  restored=subprocess.check_output(['zstd','-q','-dc',str(out)])
  if hashlib.sha256(restored).hexdigest()!=before:raise ValueError('restore mismatch '+str(out))
  compressed.append(dict(path=str(p.relative_to(root)),bytes=n,sha256=before,archive=str(out.relative_to(root)),archive_bytes=out.stat().st_size,archive_sha256=sha(out),restored_sha256_verified=True))
+ # Durable mapping and restored-content check BEFORE removing an original.
+ dump(root/'archive-receipt.json',receipt)
+ if sha(p)!=before:raise ValueError('source changed before removal '+str(p))
  p.unlink()
-dump(root/'archive-receipt.json',dict(created_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),original_run_manifests_verified=verified,metadata_association=metadata,compressed=compressed,old_manifests='original SHA256.json retains pre-association logical bytes; preserved RUN_META.before-pr-association.json resolves original hash; final file hashes below'))
+if (root/'archive-receipt.json').stat().st_size>65536:
+ p=root/'archive-receipt.json';data=p.read_bytes();out=root/'archive-receipt-full.json.zst'
+ out.write_bytes(subprocess.check_output(['zstd','-q','-3','-c'],input=data))
+ assert subprocess.check_output(['zstd','-q','-dc',str(out)])==data
+ dump(p,dict(details_file=out.name,details_sha256=sha(out),restored_sha256=hashlib.sha256(data).hexdigest(),
+             original_run_manifests_verified=len(verified),associated=len(metadata),compressed=len(compressed)))
 # The inventory itself can be >64KiB; keep this map compressed by construction.
 files={str(p.relative_to(root)):dict(bytes=p.stat().st_size,sha256=sha(p)) for p in sorted(root.rglob('*')) if p.is_file() and p.name not in ['final-inventory.json.zst']}
 payload=(json.dumps(files,sort_keys=True)+'\n').encode()
