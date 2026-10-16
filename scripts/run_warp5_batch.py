@@ -162,9 +162,10 @@ def run(a):
             if active.any():
                 for indices,cc,transport in groups:
                     if active[indices].any():transport.step(cc,active[indices])
-            elapsed=max(h.tick*.1 for ii,cc,h in groups)
+            elapsed=max(h.tick*h.period for ii,cc,h in groups)
             interval_end=time.perf_counter()
-            speed_samples.append(dict(sim_s=elapsed,delta_sim_s=elapsed-previous_elapsed,wall_s=interval_end-interval_start))
+            speed_samples.append(dict(sim_s=elapsed,delta_sim_s=elapsed-previous_elapsed,wall_s=interval_end-interval_start,
+                active_worlds=int(active.sum()),allocated_worlds=len(q['runs'])))
             interval_start=interval_end;previous_elapsed=elapsed
             write(a.output/'progress.json',dict(sim_s=elapsed,active=int(active.sum()),completed=len(report['worlds']),wall_s=time.perf_counter()-loop,timing=[dict(h.seconds) for ii,cc,h in groups]))
             if q.get('warp9_profile_v1'):

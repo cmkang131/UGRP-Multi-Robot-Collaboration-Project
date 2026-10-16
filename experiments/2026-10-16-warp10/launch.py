@@ -13,7 +13,10 @@ def resources():
 def main():
     p=argparse.ArgumentParser();p.add_argument('--sizes',nargs='+',type=int,choices=(1,4,16,64),default=[1,4,16,64])
     p.add_argument('--output',type=Path,required=True);p.add_argument('--uninstrumented',action='store_true')
-    p.add_argument('--first30',action='store_true');a=p.parse_args()
+    p.add_argument('--first30',action='store_true');p.add_argument('--motion-first30',action='store_true');a=p.parse_args()
+    if a.motion_first30:
+        if a.sizes!=[16]:raise ValueError('registered motion cohort is N16; specify --sizes 16')
+        a.first30=True;a.uninstrumented=True
     if platform.node().split('.')[0]!='ugrp-act-l4-gcp4':raise ValueError('gcp4 only')
     sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
     if subprocess.check_output(['git','status','--porcelain','--untracked-files=no'],cwd=ROOT):raise ValueError('clean pinned source required')
@@ -42,6 +45,23 @@ def main():
                 warp10_fixed_work_v1=not a.first30,warp10_first30_only_v1=a.first30,
                 independent_initial_cases=1,duplicate_isolation_worlds=n-1,
                 interpretation='fixed initial replica diagnostic, not independent task success')
+            if a.motion_first30:
+                # COORDINATOR_NOTE/reloc21: progress candidates were rejected.
+                # Keep them off; this new cohort measures only the host bundle.
+                q['runs']=copy.deepcopy(original['runs'])
+                for run in q['runs']:
+                    run['plan']['reloc21_route_progress_v1']=False
+                    run['condition']='warp10_host_candidate_reloc21_progress_off'
+                unique=len({r['seed'] for r in q['runs']})
+                q.update(independent_initial_cases=unique,duplicate_isolation_worlds=n-unique,
+                    interpretation='six registered initial cases, explicit replicas, progress off; first30 teacher motion diagnostic, no LLM/ACT success',
+                    warp10_motion_first30_v1=True)
+                selected=json.loads(table.read_text());selected.update(unit='motion_world',independent_initial_cases=unique,
+                    explicit_replicas=n-unique,controller='existing baseline with rejected reloc21 progress off',
+                    stages=[dict(stage='registered_initial_cases',cumulative_pass_n=unique,rejected_n=0),
+                            dict(stage='explicit_N16_replication',cumulative_pass_n=n,rejected_n=0)],
+                    LLM_ACT_scope='not integrated; not an E2E gate')
+                write(table,selected)
             if a.first30:q['warp9_profile_v1']=False
             for key,value in q['environment'].items():
                 if key.endswith('CALIBRATION'):q['environment'][key]=str(ROOT/'experiments'/value.split('/experiments/',1)[1])
