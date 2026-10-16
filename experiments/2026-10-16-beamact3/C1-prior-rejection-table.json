@@ -1,0 +1,80 @@
+{
+  "source": "335fc8e35 pinned A/B, before C implementation",
+  "A": {
+    "n": 0,
+    "N": 20,
+    "funnel": {
+      "approach": {
+        "cumulative_runs": 16,
+        "frame_pass": 5111,
+        "frame_reject": 6889
+      },
+      "alignment": {
+        "cumulative_runs": 0,
+        "frame_pass": 0,
+        "frame_reject": 7347
+      },
+      "READY": {
+        "cumulative_runs": 0,
+        "frame_pass": 0,
+        "frame_reject": 0
+      },
+      "grasp": {
+        "cumulative_runs": 0,
+        "frame_pass": 0,
+        "frame_reject": 0
+      },
+      "lift_3s": {
+        "cumulative_runs": 0,
+        "frame_pass": 0,
+        "frame_reject": 0
+      }
+    },
+    "failure_stages": {
+      "alignment": 16,
+      "approach": 4
+    },
+    "reasons": {
+      "cap_end": 20
+    }
+  },
+  "B": {
+    "n": 0,
+    "N": 20,
+    "funnel": {
+      "approach": {
+        "cumulative_runs": 13,
+        "frame_pass": 6528,
+        "frame_reject": 5118
+      },
+      "alignment": {
+        "cumulative_runs": 1,
+        "frame_pass": 86,
+        "frame_reject": 6447
+      },
+      "READY": {
+        "cumulative_runs": 1,
+        "frame_pass": 419,
+        "frame_reject": 0
+      },
+      "grasp": {
+        "cumulative_runs": 0,
+        "frame_pass": 0,
+        "frame_reject": 419
+      },
+      "lift_3s": {
+        "cumulative_runs": 0,
+        "frame_pass": 0,
+        "frame_reject": 0
+      }
+    },
+    "failure_stages": {},
+    "reasons": {}
+  },
+  "priority": "alignment largest cumulative failure; copycat remains hypothesis",
+  "raw": [
+    "gcp2:/home/ugrp/ugrp-sim/ops-reviews/beamact3/A/heldout20-v1",
+    "gcp2:/home/ugrp/ugrp-sim/ops-reviews/beamact3/B/heldout20-v1"
+  ],
+  "reproduce": "python -m scripts.analyze_beamact2 --root RAW"
+}

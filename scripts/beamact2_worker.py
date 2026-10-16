@@ -14,6 +14,11 @@ def main():
     torch.set_num_interop_threads(1)
     from harness.beamact3 import load_actor
     from harness.grasp_act_rollout import InputAudit
+    from pathlib import Path
+    meta=json.loads((Path(a.model)/'adapter.json').read_text())
+    if meta.get('schema')=='ugrp.grasp_act.adapter.beamact3c.v1':
+        import importlib
+        load_actor=importlib.import_module('harness.C1-beamact3c').Beam3Actor.load
     actor = load_actor(a.model, device='cpu')
     audit = InputAudit()
     print(json.dumps({'ready': True}), flush=True)
