@@ -92,7 +92,13 @@ def test_report_splits_worktrees_tiers_and_budget_without_writing(project, capsy
     assert tiers["tensorboard"]["tier"] == "infrastructure"
     assert tiers["retired-worktrees"]["tier"] == "retired-worktrees"
     exts = {r["ext"]: r for r in report["experiments"]["by_ext"]}
-    assert exts["jpg"]["bytes"] == 300_000 and report["experiments"]["heavy_media_bytes"] >= 300_000
+    # The fixture also writes the frozen CI assets in RUNTIME_KEEP. Its JPEG
+    # must be counted alongside the explicitly created 300 KB media file.
+    expected_jpg_bytes = 300_000 + sum(
+        (project / path).stat().st_size for path in agent_worktree.RUNTIME_KEEP
+        if Path(path).suffix.lower() == ".jpg")
+    assert exts["jpg"]["bytes"] == expected_jpg_bytes
+    assert report["experiments"]["heavy_media_bytes"] >= expected_jpg_bytes
     assert report["agents"][".kiro"]["bytes"] >= 30_000
     budget = report["budget"]
     assert budget["project_bytes"] == sum(row["bytes"] for row in budget["rows"].values())

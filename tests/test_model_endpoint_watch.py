@@ -112,3 +112,17 @@ def test_tagless_endpoint_next_to_tagged_one_is_ignored():
     cfg = dict(CONFIG, endpoints=[dict(CONFIG['endpoints'][0], tag='novita/turbo')])
     turbo = dict(endpoint(), tag='novita/turbo')
     assert w.check(cfg, get=lambda m: dict(data=dict(endpoints=[endpoint('Other'), turbo]))) == []
+
+
+def test_planner_switch_baseline_and_quantization_guard():
+    from pathlib import Path
+    cfg = json.loads((Path(__file__).resolve().parents[1]/'configs/model_endpoints.json').read_text())
+    ep = cfg['endpoints'][0]
+    assert (ep['provider'], ep['tag'], ep['quantization']) == ('CoreWeave', 'coreweave/fp4', 'fp4')
+    retired = next(e for e in cfg['retired_endpoints'] if e['provider'] == 'DeepInfra')
+    assert retired['baseline_usd_per_million']['prompt'] == .09
+    actual = dict(provider_name='CoreWeave', tag='coreweave/fp4', quantization='fp4', status=0,
+                  pricing={k: str(v/1e6) for k, v in ep['baseline_usd_per_million'].items()})
+    assert w.check(cfg, get=lambda m: dict(data=dict(endpoints=[actual]))) == []
+    actual['quantization'] = 'fp8'
+    assert w.check(cfg, get=lambda m: dict(data=dict(endpoints=[actual])))[0]['kind'] == 'quantization_changed'
