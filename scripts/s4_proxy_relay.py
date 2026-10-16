@@ -39,8 +39,9 @@ def main():
     p.add_argument('--gemini-port',type=int,choices=(8391,8395),default=8391)
     p.add_argument('--gemma-fallback', action='store_true', help='DEV only; default off')
     p.add_argument('--multi-key-v1', action='store_true', help='multi_key_v1; default off, Mac keys only')
-    p.add_argument('--upstream', choices=('default', 'openrouter_v1'), default='default',
+    p.add_argument('--upstream', choices=('default', 'openrouter_v1', 'self_gcp_l4'), default='default',
                    help='openrouter_v1: paid OpenRouter Gemma 4 31B (Keychain ugrp-openrouter); default off')
+    p.add_argument('--self-gcp-candidate', choices=('31b_awq', '26b_a4b_awq'), default='31b_awq')
     p.add_argument('--openrouter-providers', default='DeepInfra',
                    help='comma-separated pinned provider order (recorded in identity.json)')
     p.add_argument('--driver-profile',choices=('main_study_gemini_v1','study_gemma4_31b_v1'),
@@ -55,6 +56,9 @@ def main():
     if a.multi_key_v1 and not (single or a.gemma_fallback):
         raise ValueError('multi_key_v1 requires a Gemma profile')
     openrouter = a.upstream == 'openrouter_v1'
+    self_gcp = a.upstream == 'self_gcp_l4'
+    if self_gcp and (not single or a.multi_key_v1 or a.gemma_fallback or a.decider != 'off'):
+        raise ValueError('self_gcp_l4 requires single Gemma driver without fallback/decider')
     if a.decider!='off' and not openrouter:raise ValueError('JEV_REQUIRES_OPENROUTER')
     if openrouter and not single: raise ValueError('openrouter_v1 requires --driver-profile study_gemma4_31b_v1')
     if openrouter and (a.multi_key_v1 or a.gemma_fallback): raise ValueError('openrouter_v1 excludes multi_key_v1/gemma_fallback')
@@ -62,14 +66,18 @@ def main():
     profile = load_registry()['driver_profiles'][a.driver_profile]
     if not single:profile={**profile,'proxy_url':f'http://127.0.0.1:{a.gemini_port}/v1/chat/completions'}
     if single:
-        source=Path(__file__).parent/('openrouter_upstream.py' if openrouter else 'gemma_fallback_proxy.py')
+        source=Path(__file__).parent/('self_gcp_upstream.py' if self_gcp else 'openrouter_upstream.py' if openrouter else 'gemma_fallback_proxy.py')
         proxy=dict(source_sha256=hashlib.sha256(source.read_bytes()).hexdigest())
-        runtime=dict(provider='openrouter' if openrouter else 'google_aistudio_gemma',key_location='Mac Keychain only')
+        runtime=dict(provider='self_gcp_l4' if self_gcp else 'openrouter' if openrouter else 'google_aistudio_gemma',
+                     key_location='none; SSH loopback only' if self_gcp else 'Mac Keychain only')
     else:
         if a.proxy_pid is None:raise ValueError('Gemini proxy PID required')
         proxy, runtime = live_proxy(profile, a.proxy_pid)
     fallback = None
-    if openrouter:
+    if self_gcp:
+        from scripts.self_gcp_upstream import SelfGCP
+        fallback = SelfGCP(a.output/'self-gcp', a.self_gcp_candidate)
+    elif openrouter:
         from scripts import openrouter_upstream as orp
         orp_cfg = orp.config(tuple(x.strip() for x in a.openrouter_providers.split(',') if x.strip()))
         fallback = orp.OpenRouter(a.gemma_state/'openrouter', provider_order=orp_cfg['provider_order'])
@@ -79,7 +87,7 @@ def main():
         fallback = Gemma(a.gemma_state, expected_model=registered,standard=single,
                          expected_version='001' if single else None, multi_key_v1=a.multi_key_v1)
         fallback.require_image_probe()
-    fb_source = Path(__file__).parent/('openrouter_upstream.py' if openrouter else 'gemma_fallback_proxy.py')
+    fb_source = source if single else Path(__file__).parent/'gemma_fallback_proxy.py'
     receipt = dict(schema='ugrp.s4_ssh_proxy.v1', remote_url=f'http://127.0.0.1:{a.remote_port}/v1/chat/completions', proxy=proxy,
         runtime=runtime, checked_unix=time.time(), valid_for_s=a.seconds, audit_per_post=True,
         authentication='existing_mac_proxy_no_credentials_transferred')
@@ -94,9 +102,15 @@ def main():
             for p in ('scripts/jev_relay_upstream.py','harness/e2e_jev_decider.py','harness/jev_decider_eval.py')}
         (a.output/'identity.json').write_text(json.dumps(receipt, indent=2)+'\n')
     lock = threading.Lock()
-    journal = Journal(a.output/'responses', retry_rate_limits=single or not a.gemma_fallback, cache_errors=not openrouter) if a.idempotent or fallback else None
+    journal = Journal(a.output/'responses', retry_rate_limits=single or not a.gemma_fallback,
+                      cache_errors=not (openrouter or self_gcp)) if a.idempotent or fallback else None
     receipt['idempotent_response_journal'] = bool(journal)
-    if openrouter:
+    if self_gcp:
+        from scripts.llmhost_common import identity
+        receipt.update(driver_profile=a.driver_profile, single_model=True, fallback_enabled=False,
+            upstream='self_gcp_l4', dev_only=True, cohort='self_gcp_l4; separate model/quantization/host',
+            self_gcp_l4=dict(identity(a.self_gcp_candidate), source_sha256=proxy['source_sha256']))
+    elif openrouter:
         receipt.update(driver_profile=a.driver_profile, single_model=True, fallback_enabled=False,
             upstream='openrouter_v1', openrouter_v1=dict(orp_cfg, source_sha256=hashlib.sha256(fb_source.read_bytes()).hexdigest()),
             cohort='openrouter_v1; separate from AI Studio runs')
@@ -141,7 +155,7 @@ def main():
                 try:
                     current = dict(source_sha256=hashlib.sha256(source.read_bytes()).hexdigest()) if single else live_proxy(profile,a.proxy_pid)[0]
                     if current != proxy: raise ValueError('proxy identity changed')
-                    if fallback and hashlib.sha256(fb_source.read_bytes()).hexdigest() != (receipt['openrouter_v1'] if openrouter else receipt['gemma_fallback'])['source_sha256']:
+                    if fallback and hashlib.sha256(fb_source.read_bytes()).hexdigest() != (receipt['self_gcp_l4'] if self_gcp else receipt['openrouter_v1'] if openrouter else receipt['gemma_fallback'])['source_sha256']:
                         raise ValueError('fallback source changed')
                     def primary():
                         request = Request(profile['proxy_url'], data=body, headers={
@@ -174,11 +188,12 @@ def main():
                 response_sha256=hashlib.sha256(raw).hexdigest(), retry_after=retry_after,
                 proxy_source_sha256=proxy['source_sha256'], idempotency_key=key,
                 disposition=disposition, upstream_forwarded=disposition in ('forwarded', 'legacy'))
-            if openrouter:
+            if openrouter or self_gcp:
                 try:
                     response = json.loads(raw)
-                    row.update(upstream='openrouter_v1', response_model=response.get('model'),
+                    row.update(upstream=a.upstream, response_model=response.get('model'),
                         provider=response.get('provider'), openrouter=response.get('ugrp_openrouter'),
+                        self_gcp=response.get('ugrp_self_gcp'),
                         jev=response.get('ugrp_jev'),
                         host_error=response.get('host_error', False))
                 except (ValueError, AttributeError): pass

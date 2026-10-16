@@ -23,19 +23,30 @@ def validate_receipt(receipt, now=None, *, remote_url=URL):
         raise HostError('unregistered loopback relay URL')
     single=receipt.get('driver_profile')=='study_gemma4_31b_v1'
     openrouter=receipt.get('upstream')=='openrouter_v1'
-    source='scripts/openrouter_upstream.py' if openrouter else 'scripts/gemma_fallback_proxy.py'
+    self_gcp=receipt.get('upstream')=='self_gcp_l4'
+    source='scripts/self_gcp_upstream.py' if self_gcp else 'scripts/openrouter_upstream.py' if openrouter else 'scripts/gemma_fallback_proxy.py'
     expected=hashlib.sha256((Path(__file__).resolve().parents[1]/source).read_bytes()).hexdigest() if single else PROXY_SHA256
     if openrouter:
         from scripts.openrouter_upstream import config
         if (not single or receipt.get('single_model') is not True or receipt.get('fallback_enabled') is not False
                 or receipt.get('openrouter_v1') != dict(config(),source_sha256=expected)):
             raise HostError('pinned OpenRouter identity required')
+    if self_gcp:
+        from scripts.llmhost_common import identity
+        try:
+            pinned = dict(identity(receipt['self_gcp_l4']['candidate']), source_sha256=expected)
+        except (ValueError, KeyError):
+            raise HostError('unknown self GCP candidate')
+        if (not single or receipt.get('single_model') is not True
+                or receipt.get('fallback_enabled') is not False or receipt.get('dev_only') is not True
+                or receipt.get('self_gcp_l4') != pinned):
+            raise HostError('pinned self GCP identity required')
     if receipt.get('decider','off')!='off':
         paths=('scripts/jev_relay_upstream.py','harness/e2e_jev_decider.py','harness/jev_decider_eval.py')
         hashes={p:hashlib.sha256((Path(__file__).resolve().parents[1]/p).read_bytes()).hexdigest() for p in paths}
         if not openrouter or receipt.get('decider')!='jev_v1' or receipt.get('jev_source_sha256')!=hashes:
             raise HostError('pinned Jev relay source required')
-    if single and not openrouter and (receipt.get('single_model') is not True or receipt.get('fallback_enabled') is not False
+    if single and not (openrouter or self_gcp) and (receipt.get('single_model') is not True or receipt.get('fallback_enabled') is not False
                    or receipt.get('gemma_model_pin')!={'model_id':'gemma-4-31b-it','version':'001'}
                    or receipt.get('gemma_fallback',{}).get('image_input_confirmed') is not True):
         raise HostError('single Gemma identity/model/image verification missing')

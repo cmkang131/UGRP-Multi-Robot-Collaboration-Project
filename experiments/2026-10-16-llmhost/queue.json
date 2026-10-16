@@ -1,0 +1,17 @@
+{
+  "schema": "ugrp.llmhost.queue.v1",
+  "task": "llmhost",
+  "ready": false,
+  "gpu_start_authorized": false,
+  "requires_coordinator_approval": true,
+  "rejection_table": "/Users/changmin/projects/ugrp-wt/llmhost/experiments/2026-10-16-llmhost/preparation-funnel.json",
+  "account": "changmin5781@gmail.com",
+  "project": "ugrp-sim-b-1014",
+  "instance": "ugrp-act-l4-gcp2",
+  "candidates": [
+    "31b_awq",
+    "26b_a4b_awq"
+  ],
+  "corpus": "pending exact llmalt 40 manifest",
+  "command": "python3 -m scripts.llmhost_trial --candidate 31b_awq --corpus outputs/llmhost/corpus.json --coordinator-approval /tmp/llmhost-approval.json --output outputs/llmhost/trial-31b-01 --hourly-usd \"$LLMHOST_G2_USD_PER_HOUR\" --rate-source \"$LLMHOST_RATE_SOURCE\""
+}

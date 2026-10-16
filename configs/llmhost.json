@@ -1,0 +1,153 @@
+{
+  "schema": "ugrp.llmhost.v1",
+  "enabled": false,
+  "provider": "self_gcp_l4",
+  "account": "changmin5781@gmail.com",
+  "project": "ugrp-sim-b-1014",
+  "instance": "ugrp-act-l4-gcp2",
+  "zone": "asia-northeast3-a",
+  "machine": "g2-standard-8",
+  "endpoint": "http://127.0.0.1:18080/v1/chat/completions",
+  "remote_root": "/home/ugrp/ugrp-sim/llmhost",
+  "image": "vllm/vllm-openai@sha256:e4f88a835143cd22aee2397a26ec6bb80b3a4a6fe0c882bcbc63822904766089",
+  "runtime_seconds": 28800,
+  "idle_seconds": 1200,
+  "models": {
+    "31b_awq": {
+      "repo": "ebircak/gemma-4-31B-it-4bit-W4A16-AWQ",
+      "revision": "a3b96c7a8d07cc84cae0f0261ac2574310b12d37",
+      "official": false,
+      "base_model": "google/gemma-4-31B-it",
+      "quantization": "AWQ INT4 W4A16, compressed-tensors",
+      "served_model": "self_gcp_l4-31b_awq",
+      "architecture": [
+        "Gemma4ForConditionalGeneration"
+      ],
+      "files": [
+        {
+          "path": "LICENSE",
+          "bytes": 10322,
+          "sha256": "c864472c8c2bfe0f95284b20eae8276211214d34a96b20988dbec3d556a2ea16"
+        },
+        {
+          "path": "README.md",
+          "bytes": 10162,
+          "sha256": "8425c983b06800ff07404a169b94cca7e3b414b75bde3d1ad4716c56ac154390"
+        },
+        {
+          "path": "chat_template.jinja",
+          "bytes": 12030,
+          "sha256": "ad0327fea73ccec79e517ddbf53c21ed94adb937bc1c2e7a1eec0c8fec25adf4"
+        },
+        {
+          "path": "config.json",
+          "bytes": 18682,
+          "sha256": "8862dd69029e9e5163504ed748b014b06cbce96ec58fe2b5cd4cf7af497907fc"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 208,
+          "sha256": "002fcdd119e744ae5863f4cf21455b8831d43a280ce7291fbc6ec54cb5f6b818"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 19188422752,
+          "sha256": "de61098a511854d2c1c7266a374bab9dc18095274c277fa55bd301ba46539a06"
+        },
+        {
+          "path": "processor_config.json",
+          "bytes": 1689,
+          "sha256": "32bdf45d2ad4cc29a0822ddd157a182de76644f0419a6228d151495256e9813c"
+        },
+        {
+          "path": "recipe.yaml",
+          "bytes": 43827,
+          "sha256": "5c2b0af0b6e68315efcc4d1ba49b207e690ab758729f1e30c796a1f1dfafdd30"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 32169626,
+          "sha256": "cc8d3a0ce36466ccc1278bf987df5f71db1719b9ca6b4118264f45cb627bfe0f"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 15039,
+          "sha256": "26ef387e975f40646537af92d73ae5631cbb6dc47d6c7aa2476e76e88d47242e"
+        }
+      ],
+      "quantization_details": {
+        "method": "compressed-tensors",
+        "format": "pack-quantized",
+        "weight_bits": 4,
+        "group_size": 128,
+        "vision_tower": "BF16 retained; author/config claim, runtime unverified"
+      }
+    },
+    "26b_a4b_awq": {
+      "repo": "axteam/gemma-4-26B-A4B-it-AWQ-4bit",
+      "revision": "c688a48cf07a3c80edb4fec7d4e9fe04f6a8ca40",
+      "official": false,
+      "base_model": "google/gemma-4-26B-A4B-it",
+      "quantization": "AWQ INT4 W4A16, compressed-tensors",
+      "served_model": "self_gcp_l4-26b_a4b_awq",
+      "architecture": [
+        "Gemma4ForConditionalGeneration"
+      ],
+      "files": [
+        {
+          "path": "README.md",
+          "bytes": 8394,
+          "sha256": "56c6ddb92d4feffbddd3db8564a41b37a740b68564a8c98aa49d94c42fb11b01"
+        },
+        {
+          "path": "chat_template.jinja",
+          "bytes": 18683,
+          "sha256": "ae53464bf3be25802b3a5b37def7fd89667067d7577049b3b2d74c4d8de4c6d4"
+        },
+        {
+          "path": "config.json",
+          "bytes": 25437,
+          "sha256": "95e9e9c2e83e79d4f59dab35a586cd2b096464432786899cbccfb7ca713480f6"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 208,
+          "sha256": "d4226bbe3117d2d253ba4609720ba82c6c4ce4627a9a6ae05387c78983ac03de"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 17567255396,
+          "sha256": "24919564572ebde01c21b0e06b6d92812965bc69c6c7ca1bc2ccc08664fadcf0"
+        },
+        {
+          "path": "processor_config.json",
+          "bytes": 1689,
+          "sha256": "32bdf45d2ad4cc29a0822ddd157a182de76644f0419a6228d151495256e9813c"
+        },
+        {
+          "path": "recipe.yaml",
+          "bytes": 2363,
+          "sha256": "fe61979dd46eac18e3da861e21009441468c49011185fceae5ee18fe067dfd5a"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 32169626,
+          "sha256": "cc8d3a0ce36466ccc1278bf987df5f71db1719b9ca6b4118264f45cb627bfe0f"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 3082,
+          "sha256": "9f4fec4b1dc6ecddf8f4a92e9caea5971c0e67d81309f3f9066a2bee8c362633"
+        }
+      ],
+      "quantization_details": {
+        "method": "compressed-tensors",
+        "format": "pack-quantized",
+        "weight_bits": 4,
+        "group_size": 32,
+        "vision_tower": "BF16 retained; author/config claim, runtime unverified"
+      }
+    }
+  },
+  "image_tag_evidence": "v0.25.1"
+}

@@ -1,0 +1,49 @@
+{
+  "schema": "ugrp.llmhost.preparation-funnel.v1",
+  "candidates": [
+    "31b_awq",
+    "26b_a4b_awq"
+  ],
+  "cumulative": [
+    {
+      "gate": "source_revision_and_hash_metadata",
+      "input": 2,
+      "passed": 2,
+      "rejected": 0
+    },
+    {
+      "gate": "cpu_contract_tests",
+      "input": 2,
+      "passed": 2,
+      "rejected": 0
+    },
+    {
+      "gate": "weights_full_mac_and_remote_hash",
+      "input": 2,
+      "passed": 0,
+      "rejected": 0,
+      "pending": 2
+    }
+  ],
+  "not_run": [
+    "coordinator_approval",
+    "endpoint_alert_clear",
+    "exclusive_L4",
+    "model_load_and_image",
+    "40_at_40rpm"
+  ],
+  "blocking_reason_distribution": {
+    "weights_transfer_pending": 2,
+    "coordinator_approval_missing": 2,
+    "endpoint_alert_active": 2,
+    "llmalt_40_manifest_pending": 2
+  },
+  "distribution_scope": "overlapping preparation blockers, not simulated failure frequencies",
+  "blocked_object": "not_applicable_serving_preparation",
+  "minimum_gap": "not_measured_serving_preparation",
+  "sources": [
+    "configs/llmhost.json",
+    "/Users/changmin/projects/ugrp-wt/llmhost/experiments/2026-10-16-llmhost/summary.json"
+  ],
+  "reproduction": "python3 -m pytest -q tests/test_llmhost.py tests/test_openrouter_upstream.py; python3 -m scripts.llmhost_ctl plan"
+}
