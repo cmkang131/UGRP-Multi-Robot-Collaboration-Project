@@ -25,6 +25,33 @@ def test_every_gcloud_call_names_the_project():
     assert run.call_args.args[0][-2:] == ['--project', 'ugrp-sim-b-1014']
 
 
+def test_gcp3_l4_uses_its_project_gpu_image_and_eight_hour_cap():
+    command = gcpctl.create_command('gcp3', 'ssh-ed25519 AAAA test')
+    for flag, value in (('--project', 'ugrp-sim-c-1016'), ('--machine-type', 'g2-standard-8'),
+                        ('--image-project', 'deeplearning-platform-release'),
+                        ('--accelerator', 'type=nvidia-l4,count=1'), ('--boot-disk-size', '140GB')):
+        assert command[command.index(flag) + 1] == value
+    for flag in ('--max-run-duration=8h', '--instance-termination-action=STOP',
+                 '--maintenance-policy=TERMINATE', '--no-service-account', '--no-scopes'):
+        assert flag in command
+    assert remote_run.wait_budget_s('gcp3') == 7.5 * 3600
+    assert remote_run.wait_budget_s('gcp2') == 23.5 * 3600
+    assert remote_run.DEFAULT_HOST == gcpctl.DEFAULT_HOST == 'gcp2'
+    with patch.object(gcpctl.subprocess, 'run') as run:
+        gcpctl.gcloud('compute', 'instances', 'describe', 'x', host='gcp3')
+    assert run.call_args.args[0][-4:] == ['--account', 'changmin5781@gmail.com', '--project', 'ugrp-sim-c-1016']
+
+
+def test_gcp3_stop_is_blocked_by_an_unwrapped_python_or_ffmpeg_job():
+    with patch.object(gcpctl.subprocess, 'run') as run:
+        run.return_value.returncode = 1
+        assert gcpctl.guest_busy('gcp3')
+    probe = run.call_args.args[0][-1]
+    assert "pgrep -u ugrp -x 'python[0-9.]*|mujoco|ffmpeg'" in probe
+    assert 'test -d ~/ugrp-sim/leases' in probe
+    assert gcpctl.GCP_HOSTS['gcp3']['identity_file'] == '~/.ssh/ugrp_gcp3'
+
+
 def test_stop_defers_while_leases_or_simulations_exist():
     with patch.object(gcpctl, 'status', return_value=('RUNNING', '1.2.3.4', 'n4-highcpu-64')), \
             patch.object(gcpctl, 'guest_busy', return_value=True), patch.object(gcpctl, 'gcloud') as call:
