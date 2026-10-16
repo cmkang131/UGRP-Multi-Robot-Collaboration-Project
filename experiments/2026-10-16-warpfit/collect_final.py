@@ -27,9 +27,11 @@ assert len(rows)==59
 attempts=raw/'R2/attempts.json'
 old=attempts.with_name('attempts.before-supervisor-reconciliation.json')
 if not old.exists():
- old.write_bytes(attempts.read_bytes());a=json.loads(attempts.read_text())
+ old.write_bytes(attempts.read_bytes())
+a=json.loads(attempts.read_text())
+if a[0]['status']=='running':
  assert len(a)==1
- r=json.loads((Path(a[0]['output'])/'result.json').read_text());assert r['completed'] and r['sim_s']==13.7
+ r=json.loads((Path(a[0]['output'])/'result.json').read_text());assert r['completed'] and not r['cap_end']
  a[0].update(status='complete',reconciled_from='finished child result after superseded parent was terminated',exit_code=0)
  dump(attempts,a)
  dump(raw/'R2/funnel.json',dict(stages=[dict(gate='planned_original_long_suite',cumulative_pass=16,rejected=0),
@@ -45,6 +47,9 @@ for p in sorted(raw.glob('R*/**/*-managed/manifest.json')):
    source_changed=m.get('source_changed_during_run'),inputs_changed=m.get('inputs_changed_during_run'),
    finalization_errors=m.get('finalization_errors',[]),exit_code=m.get('exit_code')))
 assert all(not m['source_changed'] and not m['inputs_changed'] and not m['finalization_errors'] for m in managed)
+for r in rows:
+ if r['round'] in (2,3) and '/primitive-v1/' in json.loads(Path(r['reproduce_file']).read_text()).get('fixture',''):
+  assert Path(r['path']+'-managed/manifest.json').is_file()
 dump(out/'all-attempts.json',dict(runs=rows,managed=managed,counts=dict(total=59,
   completed=sum(bool(r['completed']) for r in rows),HOST_ERROR=sum(bool(r['HOST_ERROR']) for r in rows),
   cap_end=sum(bool(r['cap_end']) for r in rows)),reproduce='each reproduce_file contains exact source/fixture/profile/nworld argv'))
