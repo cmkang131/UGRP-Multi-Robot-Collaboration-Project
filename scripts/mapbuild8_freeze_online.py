@@ -18,6 +18,8 @@ def main(a):
     root=Path(__file__).resolve().parents[1];sys.path.insert(0,str(root))
     import numpy as np
     from harness.e2e_rgb_vo import compose
+    from harness.selfmap_map_correction import SelfMapCorrection
+    from harness.rbpf_rejection import motion_variance
     def read(p):return json.loads(p.read_text())
     def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
     def dump(p,x):p.write_text(json.dumps(x,indent=2,allow_nan=False)+'\n')
@@ -31,12 +33,17 @@ def main(a):
     scans=read(a.input/'scans.json') if (a.input/'scans.json').is_file() else None
     if [r['frame_id'] for r in online]!=[r['frame_id'] for r in own]:raise ValueError('FRAME_JOIN_REQUIRED')
     a.output.mkdir(parents=True,exist_ok=False);off=np.zeros(3);rows=[];events=[]
+    nominal=SelfMapCorrection(read(a.input/'static-map.json')) if a.nominal_ablation else None
     reg={e['t']:e for e in route if e['event'] in ('prescan','rescan','postpickup','postsetdown')}
     for r,f in zip(online,own):
         off=compose(off,r['motion_delta']);e=dict(t=r['t'],correction=r['map_event'],rbpf=r['wall_event'])
         if r['t'] in reg:e['registration']=reg[r['t']]
         rows.append(dict(t=r['t'],frame_id=r['frame_id'],off_pose=off.tolist(),on_pose=r['corrected_pose'],lk_pose=r['lk_pose'],rbpf_pose=r['rbpf_pose'],
             motion_delta=r['motion_delta'],motion_covariance=r['motion_covariance'],lk=r['lk'],servo=f['servo']))
+        if nominal is not None:
+            delta=f.get('command_delta_nominal',f['command_delta'])
+            value,_=nominal.step(r['t'],r['frame_id'],delta,np.diag(motion_variance(delta)),r['lk'],dict(segments=[],camera=[0,0]))
+            rows[-1]['nominal_off_pose']=value
         events.append(e)
     dump(a.output/'trajectory.json',rows);dump(a.output/'events.json',events)
     if scans is not None:dump(a.output/'scans.json',scans)
@@ -60,4 +67,5 @@ def main(a):
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__)
     for k in ('input','output','rejection-table'):p.add_argument('--'+k,type=Path,required=True)
+    p.add_argument('--nominal-ablation',action='store_true',help='same own frames, own_command_motion_v1 OFF; all other motion code unchanged, no map re-fit')
     main(p.parse_args())

@@ -33,7 +33,7 @@ def main(a):
     carry_end=next((e['t'] for e in route if e['event']=='estimated_zone_arrival'),math.inf)
     masks=dict(all=np.ones(len(rows),bool),commanded_closed=np.array([int(r['servo']['1'])<=1600 for r in rows]),
                actual_transport_command_interval=np.array([carry_start<=r['t']<=carry_end for r in rows]))
-    for method in ('lk','off','on','rbpf'):
+    for method in ('lk','off','on','rbpf')+(('nominal_off',) if 'nominal_off_pose' in rows[0] else ()):
         pred=np.array([r[method+'_pose'] for r in rows]);xy,yaw=errors(pred,gt);arrays[method]=(xy,yaw)
         coupled=yaw+np.arctan2(xy,req['handoff']['nominal_target_range_m']-xy)
         def metric(mask):
