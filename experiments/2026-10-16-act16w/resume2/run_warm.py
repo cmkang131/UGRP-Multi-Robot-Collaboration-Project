@@ -12,6 +12,9 @@ import time
 BASE = Path('/home/ugrp/ugrp-sim')
 QUALIFIED = BASE/'src/f0db6b1abb842ea65b71c433738210254f300a7c'
 TEACHER = BASE/'src/warp1-teacher-snapshot-6f057f7e'
+class ResourceCap(RuntimeError):
+    pass
+
 API = BASE/'src/0362037280c6cbc4677f70366db43b9892b23690'
 C = BASE/'runs/simalt3/c-env/bin/python'
 WARP = BASE/'runs/simalt3/warp-env/bin/python'
@@ -58,11 +61,13 @@ def main():
                 if proc.poll() is None:raise subprocess.TimeoutExpired(args,deadline-time.time())
                 result=proc.returncode
             except subprocess.TimeoutExpired:
-                write(a.root/'SUPERVISOR_STOP.json',{'category':'cap_end','reason':'existing_VM8h_deadline'})
+                marker={'category':'cap_end','reason':'finite_stage_resource_deadline'}
+                write(a.root/'SUPERVISOR_STOP.json',marker)
+                if (a.root/'controller').exists():write(a.root/'controller/SUPERVISOR_STOP.json',marker)
                 os.killpg(proc.pid,signal.SIGINT)
                 try:proc.wait(timeout=45)
                 except subprocess.TimeoutExpired:os.killpg(proc.pid,signal.SIGTERM);proc.wait(timeout=15)
-                raise RuntimeError('resource cap_end before warm diagnostic completed')
+                raise ResourceCap('resource cap_end before recording stage completed')
             if result:raise RuntimeError(name+' exit '+str(result))
     try:
         # Frozen setup sampler only. No simulator/teacher action runs here.
@@ -86,10 +91,13 @@ def main():
         report.update(status='complete',controller_status=controller['status'],timing=controller['timing'],
               loop_wall_s=controller['loop_wall_s'],sim_s=controller['attempted_control_sim_s'],
               wall_per_SIM=controller['loop_wall_s']/controller['attempted_control_sim_s'])
+    except ResourceCap as error:
+        report.update(status='cap_end',resource_cap_end=True,error=repr(error));raise
     except BaseException as error:
         report.update(status='HOST_ERROR',error=repr(error));raise
     finally:
         report['wall_s']=time.monotonic()-start
+        report['last_child_pid']=report.pop('active_pid',None);report['active_pid']=None
         report['foreign_leases_preserved']=[x.name for x in lease.parent.glob('*.json') if x!=lease]
         report['vm_stop_attempted']=False;write(a.root/'summary.json',report)
         if lease.exists() and json.loads(lease.read_text()).get('pid')==os.getpid():lease.unlink()
