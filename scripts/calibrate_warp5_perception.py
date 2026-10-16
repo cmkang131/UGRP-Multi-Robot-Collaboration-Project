@@ -26,7 +26,8 @@ def calibrate(root,out):
         hsv.append(cv2.cvtColor(im,cv2.COLOR_BGR2HSV)[cv2.erode(mask.astype(np.uint8),np.ones((5,5),np.uint8))>0])
     values=np.concatenate(hsv)
     cal['wall_value_v2']=dict(p00=float(values[:,2].min()),p100=float(values[:,2].max()))
-    cal.update(renderer_profile='warp5_native_visual_v1',sample_count=88,encoding='pil82',
+    meta=json.loads((root/'meta.json').read_text())
+    cal.update(renderer_profile='warp5_native_visual_v2' if meta['renderer_options'].get('warp5_native_visual_v2') else 'warp5_native_visual_v1',sample_count=88,encoding='pil82',
                renderer_source_sha256=hashlib.sha256((Path(__file__).parent/'warp5_render.py').read_bytes()).hexdigest(),
                original_root=str(root),wall_value_v2_basis='original MJWarp wall interior V p00/p100; same existing v2 brightness envelope rule',
                qualification='DEV same88 fitting; independent holdout/motion/pose/E2E not measured')

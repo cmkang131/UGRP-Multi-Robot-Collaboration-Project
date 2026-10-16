@@ -59,7 +59,7 @@ def run(args):
               mjwarp=getattr(mjw,'__version__','unversioned'),physics_steps=0,model_calls=0,
               scene=PROFILE,quality='no_mip_v1',rgb=[640,480],shared_load=True,
               calibration_sha256=digest(args.calibration),calibration=str(args.calibration),
-              renderer_options=dict(samples_per_pixel=args.samples_per_pixel,use_shadows=True,use_textures=True,warp5_native_visual_v1=args.warp5_native_visual_v1),
+              renderer_options=dict(samples_per_pixel=args.samples_per_pixel,use_shadows=True,use_textures=True,warp5_native_visual_v1=args.warp5_native_visual_v1,warp5_native_visual_v2=args.warp5_native_visual_v2),
               reproduction=command,pool_with_cpu=False,segmentation='evaluation only')
     write(args.output/'meta.json',meta)
     try:
@@ -84,7 +84,7 @@ def run(args):
         with unused_efm(model,data):wd=mjw.put_data(model,data,nworld=n,nconmax=ncon,njmax=njmax)
         from scripts.warp5_render import Renderer
         rc=Renderer(model,wm,wd,[(r,r+'__robot_cam',(640,480)) for r in old.ROBOTS],
-              enabled=args.warp5_native_visual_v1,samples_per_pixel=args.samples_per_pixel)
+              enabled=args.warp5_native_visual_v1 or args.warp5_native_visual_v2,samples_per_pixel=args.samples_per_pixel,texture_after_lighting=args.warp5_native_visual_v2)
         write(args.output/(map_path.stem+'-render-compat.json'),rc.audit)
         base=np.stack([f['qpos'] for f in fixtures])
         def render(qpos):
@@ -139,6 +139,7 @@ def main():
     p.add_argument('--source-sha',required=True);p.add_argument('--calibration',type=Path,required=True)
     p.add_argument('--samples-per-pixel',type=int,default=1);p.add_argument('--execute',action='store_true')
     p.add_argument('--warp5-native-visual-v1',action='store_true')
+    p.add_argument('--warp5-native-visual-v2',action='store_true')
     a=p.parse_args()
     if not a.execute or platform.system()!='Linux' or not platform.node().startswith('ugrp-act-l4-gcp2'):
         p.error('explicit gcp2 L4 execution required')

@@ -122,8 +122,6 @@ def detect_floor(rgb, *, servo, profile, options=None):
     hue = ((h >= opt.hue_low) & (h <= opt.hue_high) if opt.hue_low <= opt.hue_high else
            (h >= opt.hue_low) | (h <= opt.hue_high))
     mask = (hue & (s >= opt.saturation_min) & (v >= opt.value_min)).astype(np.uint8)
-    from harness.warp5_perception import exclude_wall
-    mask = exclude_wall(mask, cv2.cvtColor(rgb, cv2.COLOR_RGB2BGR)).astype(np.uint8)
     mask[:int(math.ceil(rgb.shape[0]*opt.roi_top))] = 0
     origin, axes = commanded_camera(servo, profile)
     points, valid = floor_intersections(optical_rays(rgb.shape[1], rgb.shape[0]), origin, axes,

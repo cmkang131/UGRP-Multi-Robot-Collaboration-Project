@@ -57,6 +57,8 @@ class Bridge:
 
 
 def prepare_modules(host):
+    from harness.warp5_perception import install as perception_install
+    perception_install()
     from sim import masterpi_drive_friction_v7 as factory
     from sim import reloc16_scene
     from scripts import grasp_act_host
