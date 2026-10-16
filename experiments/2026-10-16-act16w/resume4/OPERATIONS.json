@@ -49,18 +49,12 @@
     "B": "0/5",
     "pooled": false
   },
-  "progress": "A/B/C/D1 fixed10000 and exact checkpoint readback COMPLETE; native VAL8 D1 running; final40 unopened. All4 model registry rows staged PENDING; native Release not yet created.",
+  "progress": "A/B/C/D1 each10000 complete, VAL8 each0/8; D1 raw recount/full playback ack19:36Z. Frozen A before final; existing final references preparing. Models4 public download/hash76/CPUload4 verified.",
   "next": [
-    "Observe existing orchestrator73402 at /home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1; execution source c27a9d537 unchanged. Never resubmit existing A/B/validation jobs. Summary errors require original diagnosis, no automatic retry.",
-    "A/B and C reviews complete/acked. After TRAIN20 collection completes, run actual DAgger coverage helper and optional saved robot-pose distributions against D0 teacher path; inputs/commands unchanged. Hold review-D1/final40 if h5 actual noninitial labels unqualified. D1 train/eval is already scheduled by existing controller; never manually duplicate.",
-    "Write root/review-A_B.json with approved=true, exact validation_sha256 map from review-A_B-request.json, nonempty playback_receipts list {path:absolute existing VM review JSON,sha256}. This is agent evidence review under authorized task, not user approval. Repeat at WAIT_REVIEW_C and WAIT_REVIEW_D1. Controller automatically trains fresh C and D1, all10000 same c27 source, after each review; do not manually duplicate.",
-    "Controller freezes validation-based selected model only after A/B,h4,h5; then creates final91620\u201391659 references and evaluates once. Do not open final seeds early or tune after final outcomes. Complete pipeline still requires raw recount/playback/public model distribution/report.",
-    "All4 staged model paths root/model-A,B,C,D1. Pending catalog files/ZIPs ready only after respective training. Distinct native Release tag models-20261016-act16w-native-v1. Use local publish_act16w_stream.py memory-only relay; no VM credentials or Mac weight files. Add all4 rows to model_artifacts registry, immutable Release/catelog/checksums. New clone references primary git-shared; run verify_act16w_release.py with existing ACT environment CPU: anonymous public download, archive+all file hashes, real CPU loading. Scope not clean venv/physics success.",
-    "Generate final actual curves on L4 with PYTHONPATH=/home/ugrp/ugrp-sim/runs/act16w-native-plot-deps and plot_act16w_native.py. Final raw/kind n/N, assigned/anysame, initial2plus visibility, cap_end/HOST_ERROR and funnel required. C CPU optional not qualified/no-run note exists; do not start CPU VM.",
-    "Keep original files immutable. Native gate/record formal gate_eligible=false because teacher queue omitted; coordinator separately accepted measured gate (local coordinator-native-gate-recount.md). 82 sidecars added by sourcea13fd8b1d,253 originals unchanged. See native-provenance-annotations.json; scene noslip10 label is pre-application metadata, actual CPU/GPU0.",
-    "Final README/summary/rejection tables/curves + PR539 Refs523; no merge. All source/record originals and failed comparison models retained. Measure allocated L4 window versus parallel optimizer wall separately; configured1.096USD/h estimate only, not actual billing. Own lease/PID/actual GPU+CPU load and foreign workloads checked before removing own leases and stopping L4. No wall cap, idle20/budget-stop retained.",
-    "Supplemental saved-pose gap helper82702ea74 verified A87429: nonfloor closest cargo_red_2_geom=0.107684m; exhaustive first/last matches. May run on completed validation/final worlds, existing exact per-world geometry references; no physics, no collision-cause inference. Keep full points VM-only; retrieve summaries.",
-    "At C validation wait, inspect TRAIN-only first predictions/DAgger label admission coverage: existing OracleHoldBoundary stops all label queries permanently after any gripperPWM<initialOPEN, including1999 vs2000. A/B first commands were1999. This is a coverage concern, not an observed C/DAgger failure yet. Measure actual retained noninitial student-state labels and rejection reasons; never claim successful h5 coverage from initial-only labels. Preserve held_world_reads0 and teacher_actions_executed0. Final40 stays closed if h5 data is unqualified. Do not change student actions or insert a hand-coded grasp path."
+    "Observe existing FINAL40, never resubmit. final-delivery.py independently recounts40, audits40 align/gaps and composes deterministic2 failure+1success ifavailable. Directly inspect all2Hz/10Hz strips after retrieval.",
+    "Update final summary/README/PR539, final outcomes not used for tuning.",
+    "All4 Release models already public redownload/all76files/CPUload verified. Source tag805 catalog staged at creation; verified external catalog and current registry supersede status only.",
+    "Before owned L4 stop inspect all leases, non-own processes and actual CPU/GPU; no foreign workload may be interrupted. idle20/budget-stop unchanged."
   ],
   "native_gate_qualification": "/home/ugrp/ugrp-sim/runs/act16w-native-gate-r2/independent-gate-recount.json",
   "native_record": {
@@ -154,7 +148,8 @@
     "session": 72616,
     "pid": 94859,
     "log": "/home/ugrp/ugrp-sim/runs/act16w-native-progress-D1.jsonl",
-    "scope": "read-only to WAIT_REVIEW_D1/error"
+    "scope": "read-only to WAIT_REVIEW_D1/error",
+    "status": "complete WAIT_REVIEW_D1"
   },
   "dagger_pose_coverage_helper": "/home/ugrp/ugrp-sim/src/34d53cfaadc093ac957bbfffc780a76f372041f9/scripts/audit_act16w_dagger_pose_coverage.py",
   "dagger_audits_waiter": {
@@ -168,7 +163,8 @@
     "pid": 98172,
     "script": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/delivery-ops/D1-delivery-wait.py",
     "log": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/delivery-ops/D1-delivery-wait.log",
-    "scope": "after existing D1 VAL: first30 ifavailable, full87429 playback, all8 raw recount and saved geometry gap supplement; no physics/no auto review ack"
+    "scope": "after existing D1 VAL: first30 ifavailable, full87429 playback, all8 raw recount and saved geometry gap supplement; no physics/no auto review ack",
+    "status": "complete all8 raw/gaps + full87429 replay"
   },
   "completed_h5_data_receipt": "native-h5-data-receipt.json",
   "completed_h5_prefix_reviews": [
@@ -178,11 +174,21 @@
   "native_models": {
     "tag": "models-20261016-act16w-native-v1",
     "staged": 4,
-    "uploaded": 0,
-    "public_verified": 0,
-    "loading_verified": 0,
-    "registry_contains_all4": true
+    "uploaded": 4,
+    "public_verified": 4,
+    "loading_verified": 4,
+    "registry_contains_all4": true,
+    "release_source_sha": "805a3b4400f1d633df24e813c5b2b8cae43b32e8",
+    "verification_root": "/home/ugrp/ugrp-sim/runs/act16w-native-release-public-verify-r1",
+    "source": "/home/ugrp/ugrp-sim/src/805a3b4400f1d633df24e813c5b2b8cae43b32e8",
+    "scope": "fresh public tag805 clone; anonymous redownload/all76 hashes/real CPU loading; no clean-venv/physics claim",
+    "internal_files_verified": 76
   },
   "PR_base": "6d680e375f4e4dd4bbdeb231acfd9f1f92688dba",
-  "PR_conflict": "resolved by owner-byte-exact merge49af0c092; MERGEABLE/CIrunning"
+  "PR_conflict": "resolved by owner-byte-exact merge49af0c092; MERGEABLE/CIrunning",
+  "final_delivery": {
+    "script": "final-delivery.py",
+    "remote": "/home/ugrp/ugrp-sim/runs/act16w-native-experiment-r1/delivery-ops/final-delivery.py",
+    "scope": "wait existing final40 then finite saved-state analyses; no duplicate physics"
+  }
 }

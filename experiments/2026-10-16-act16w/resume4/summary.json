@@ -1,8 +1,8 @@
 {
   "schema": "ugrp.act16w.resume4.v1",
-  "status": "VALIDATE_D1",
+  "status": "FINAL40_REFERENCE_SETUP",
   "complete": false,
-  "updated_utc": "2026-10-16T19:11:17.772548+00:00",
+  "updated_utc": "2026-10-16T19:38:25.387954+00:00",
   "execution_source_sha": "c27a9d537eaae873c7e7bc2ceaeeada69696cc48",
   "orchestration_source_sha": "37a8c833656a58ba25472e2106276f225e95ad26",
   "teacher_library_sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
@@ -161,9 +161,26 @@
       "rejection_table": "native-validation-C-rejection_table-enriched.json"
     },
     "D1": {
-      "status": "running",
-      "n": null,
-      "N": null
+      "n": 0,
+      "N": 8,
+      "kinds": {
+        "cyan": "0/2",
+        "red": "0/2",
+        "green": "0/2",
+        "yellow": "0/2"
+      },
+      "cap_end": 7,
+      "HOST_ERROR": 0,
+      "alignment_rejections": 8,
+      "stage_counts": {
+        "bilateral_load_observed": 0,
+        "lift_success": 0,
+        "release_success": 0,
+        "issued_sequence_complete": 1,
+        "task_success": 0
+      },
+      "raw_recount_matches": true,
+      "rejection_table": "native-validation-D1-rejection_table-enriched.json"
     }
   },
   "A_B_selected_history": "A/off by preregistered n/align tie rule",
@@ -193,30 +210,37 @@
     "D0_normalization_unchanged": true,
     "receipt": "native-h5-data-receipt.json",
     "rejection_table": "native-dagger-rejection_table.json",
-    "task_effect": "pending matched D1 VAL8",
+    "task_effect": "C0/8 vs D1 0/8; observed delta0pp, cap_end3 vs7; finite VAL8, no general-effect claim",
     "full_skill_recovery_expert_qualified": false
   },
   "final40": {
-    "status": "unopened",
+    "status": "selected_A_frozen_before_outcomes; existing controller preparing references",
     "seed_range": [
       91620,
       91659
     ],
     "n": null,
-    "N": null
+    "N": null,
+    "selection": "native-final-selection.json",
+    "checkpoint_sha256": "4955436e15054d76adf3ea7a339896dc1e500e4ed930aeb0c873ec23899f7719",
+    "frozen_utc": "2026-10-16T19:36:21.857988+00:00"
   },
   "artifacts": {
     "curves": "native-abcd-learning-curves.png",
     "matched_montage": "native-A-B-teacher-montage.png",
     "montage_success_row": "teacher reference, not ACT",
     "native_models_staged": 4,
-    "native_models_public_verified": 0,
+    "native_models_public_verified": 4,
     "native_release_tag": "models-20261016-act16w-native-v1",
     "PR": 539,
     "PR_draft": true,
     "PR_current_CI_verified": false,
     "PR_mergeability_issue": "resolved; warp-act-base-refresh-merge.json",
-    "PR_mergeable": true
+    "PR_mergeable": true,
+    "native_model_internal_files_verified": 76,
+    "native_models_CPU_loading_verified": 4,
+    "public_verification": "native-public-model-verification.json",
+    "metadata_public_verification": "native-release-metadata-verification.json"
   },
   "workflow_issues": [
     {
@@ -245,10 +269,8 @@
     "raw_evidence": "retained on owned L4, only summaries/montage/review strips retrieved"
   },
   "remaining": [
-    "finish D1 fixed10000 and exact readback",
-    "native D1 VAL8 raw recount and direct full2Hz/terminal10Hz review",
-    "freeze selection then evaluate unopened final40 once",
-    "public native model assets plus fresh-clone download/all file hashes/CPU loading",
-    "final curves/funnel/README/PR and verified safe owned-VM stop"
-  ]
+    "existing frozen A final40 once; raw recount, geometry and direct playback review",
+    "final README/funnel/results/PR and safe owned-L4 stop"
+  ],
+  "h5_observed_success_delta_percentage_points": 0
 }

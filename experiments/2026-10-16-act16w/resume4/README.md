@@ -143,3 +143,7 @@ movement L1·KL은 내려갔고 completion BCE의 간헐 급등은 남았다. �
 공개 업로드·재다운로드·로딩 확인 전 단계다. 모델 등록/패키지의 비물리11검사가 통과했다.
 최신 warp-act6d680e375와의 녹화 진입점 충돌은 소유자 파일을 byte 그대로 수용해 정리했고
 비물리 계약20검사가 통과했다([인계 병합](warp-act-base-refresh-merge.json)). 실제 연구 실행 소스c27은 고정이다.
+
+D1도 원본 재계수0/8(색별0/2), 정렬 탈락8/8, 안정 들기·내려놓기0, done1·cap_end7·HOST_ERROR0이다. 전체0–90초2Hz181장과 끝80.1–90초10Hz100장을 직접 검토했다. 약5초 대상 이탈 후 끝까지 회복하지 못했다([검토](native-D1-87429-playback-review.json), [h5 비교](native-h5-comparison.json)). 성공률 차이는 C 대비0pp이고 cap_end는3→7이다. 이8회로 일반적인 효과 없음을 주장하지 않는다.
+
+모든 후보가 성공률·정렬 탈락 동률이라 [사전 규칙](native-final-selection.json)대로 A를19:36:21.857988Z에 고정했다. 최종40 결과를 보기 전의 선택이며 이후 튜닝하지 않는다. [Release](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/tag/models-20261016-act16w-native-v1)의 네 모델은 공개 재다운로드·내부76파일 해시·새 공개 태그 체크아웃 CPU 로딩을 확인했다([영수증](native-public-model-verification.json)). 기존 ACT 환경을 사용했으므로 새 가상환경 검증은 아니고 임무 성공·원시 학습 자료 전체 백업도 아니다. 태그 생성 당시 staged였던 상태는 별도 공개 verified catalog와 현재 등록부가 보완한다.
