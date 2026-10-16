@@ -29,13 +29,14 @@ def main():
     p.add_argument('--cases', type=Path, required=True)
     p.add_argument('--indices', required=True)
     p.add_argument('--references', type=Path)
+    p.add_argument('--rejection-table', type=Path, default=OPS / 'prior-rejection_table.json')
     p.add_argument('--export', action='store_true')
     p.add_argument('--memcheck', action='store_true')
     a = p.parse_args()
     assert '/' not in a.tag and a.tag not in ('.', '..')
     src = ROOT / 'src' / a.source_sha
     assert subprocess.check_output(['git', '-C', str(src), 'rev-parse', 'HEAD'], text=True).strip() == a.source_sha
-    table = OPS / 'prior-rejection_table.json'
+    table = a.rejection_table
     assert table.is_absolute() and table.is_file()
     cases = json.loads(a.cases.read_text())
     indices = [int(i) for i in a.indices.split(',')]
