@@ -20,7 +20,7 @@
 |---|---|---|
 |1 실제 명령 주행|MJWarp2세계×4SIM초,세계당16000step·자기82/82프레임 cap_end|전진 회복, 횡이동·넓은 주행 범위 미통과|
 |2 LK·HIGH|FOLDED 두 LK 후보 각각39/40,xy ATE p95 5.13mm·yaw0.191°; HIGH0/40 unknown|RGB 열 제외의 추가 이득 없음; 실제 하중/HIGH 자격 없음|
-|3 부분 지도|FOLDED38/2990셀(1.2709%),잘못된 free0,벽 TP8·FP0,지도 밖0|관측38셀은 맞지만2952셀 unknown; 문/목적지 미관측|
+|3 부분 지도(10cm 격자)|FOLDED38/2990셀(1.2709%),잘못된 free0,벽 TP8·FP0,지도 밖0|관측38셀은 맞지만2952셀 unknown; 문/목적지 미관측|
 |3 화물 장애물|reset collision box5개가 만든 격자 표본11개 중 예측0/11|물체 인스턴스 성공률 아님, 미관측을 성공으로 세지 않음|
 |4 지도 있음/자기 지도 같은 시드·경로/도착|실행0/WITHHELD|warp10 최종 NOT_READY(CPU 접촉 export 오류3회),정상 비교 기준 없음|
 
@@ -43,6 +43,6 @@ seed8318724의 r3 좌/우 집게–동쪽 벽에1.146953mm(2geom쌍/4접점)를 
 
 [수집 회수](capture-retrieval.json): gcp5→gcp2 원본343파일·7,909,113bytes SHA 불일치0. [압축 복원 검증](archive-verification.json): 큰JSON7개를1,826,645→86,224bytes zstd로 보관하고 해제 SHA와 원본343파일을 재확인했다. [영수증](archive-receipts.json)으로 `archive_json.py --receipt <원격 영수증> --restore` 후 재생한다. Mac은 요약·몽타주·검토 영상만 회수했고 전체 raw를 저장하지 않았다. [소스 SHA](source-receipt.json), [분석 재현 명령](reproduce.json)·[실제 수집 명령](physical-reproduction.json), [모든 시도](attempts.json), [검증](validation.json)을 보존했다. 물리 후보1라운드·정상2세계이며 초기화 HOST_ERROR2회와 감사/합성 오류는 별도다. 모든 정상 유한 물리는 cap_end이며 임무 성공이 아니다.
 
-gcp5는8h상한 없이 시작했고 idle20/budget-stop ACTIVE를 유지했다. 자체 실행·GPU·타 lease0 확인 후 [TERMINATED](operations/gcp5-after-stop.json)로 끝냈다. 중간 gcp2 CPU의 수동 stop/setScheduling으로 전송1회가 끊겼고, 예산 발동 증거가 없음을 확인한 뒤 사용자 지시대로 재시작·전송을 마쳤다. 다른 호스트의 lifecycle은 변경하지 않았다. gcp2의 타 lease는 보존한다. 고정4SIM초 수집 loop561.82초는2세계 진단의 지연 기록이며 정식 첫30SIM초 속도 관문 통과나 성능 우위가 아니다. raw의 shared=true는 재사용 기록기의 고정값으로 남았으며 실제 gcp5 할당은 이 작업 단독이었다. 실제 청구 비용은 별도 미측정이다.
+gcp5는8h상한 없이 시작했고 idle20/budget-stop ACTIVE를 유지했다. 자체 실행·GPU·타 lease0 확인 후 [TERMINATED](operations/gcp5-after-stop.json)로 끝냈다. 중간 gcp2 CPU의 수동 stop/setScheduling으로 전송1회가 끊겼고, 예산 발동 증거가 없음을 확인한 뒤 사용자 지시대로 재시작·전송을 마쳤다. 다른 호스트의 lifecycle은 변경하지 않았다. [최종 gcp2 자체 PID/lease0](operations/close-gcp2-final.json)을 확인했고 타 lease는 보존하여 CPU VM을 정지하지 않았다. 고정4SIM초 수집 loop561.82초는2세계 진단의 지연 기록이며 정식 첫30SIM초 속도 관문 통과나 성능 우위가 아니다. raw의 shared=true는 재사용 기록기의 고정값으로 남았으며 실제 gcp5 할당은 이 작업 단독이었다. 실제 청구 비용은 별도 미측정이다.
 
 비물리24 passed,compile·whitespace·CI8shard 신규 검사1회 등록, 표준 `mapbuild3-clean-start` v0.1.0의 읽기 전용 plan을 확인했다. 관리 CLI를 통한 새 물리 인수·전체 CI·승인·병합은 별도다. 모델 키/에이전트 자격 증명 전송0·모델 호출0·Drive0. 전체 판정은 **NOT_READY / PR DRAFT**다.
