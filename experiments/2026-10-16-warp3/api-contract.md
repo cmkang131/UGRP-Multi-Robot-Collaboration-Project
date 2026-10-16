@@ -29,3 +29,5 @@
 추가 ACT15 full 평가 요청1개는7200초 자원 상한에서793step/79.3SIM로 중단됐다. 원본 HOST_ERROR를 보존하고 자원 cap으로 구분하며 **완료된 학생 평가N=0**이다. 전체2Hz159프레임과 마지막10SIM의10Hz100프레임을 직접 검토했다([타임라인](student-resource-playback-review.md)). 옛 발행 trace 부족으로 정책/이식 실패 원인은 미확정이다. 현재 명령 어댑터는 유효 wheel fraction0.40의 world-local GPU ctrl 전달을 별도 확인했다([증거](command-transport-r2-audit.json)); 학생 임무 성공 증거는 아니다.
 
 명령 단위는 기존 계약 그대로다: wheel은0 또는 절댓값0.31–0.40인 부호 있는 **비율**이고 pulse duration은 최대0.15SIM초다. 1.0 요청은 사전 거부한다. 새 물리 수용 상수를 만들거나 계약 범위를 넓히지 않았다.
+
+원래 ACT15 SoloScore의 후처리 점수 경로도 실제 R3 world1의2step 평가 로그로 실행해 직렬화를 확인했다([영수증](student-score-prefix-r1.json)). 원래 모듈 SHA가 actor 소스 감사와 일치하며 새 물리0·완료 학생 평가N=0이다. 짧은 prefix의 provisional 점수를 임무 실패율로 세지 않는다.

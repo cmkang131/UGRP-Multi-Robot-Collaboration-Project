@@ -29,5 +29,12 @@
     "1.096"
   ],
   "source": "2b99e00d82f1f9a15769a9e41d4e599969571c9d",
-  "deadline_utc": "2026-10-16T13:59:09Z"
+  "deadline_utc": "2026-10-16T13:59:09Z",
+  "env": {
+    "MUJOCO_GL": "osmesa",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "LP_NUM_THREADS": "1"
+  },
+  "env_scope": "live /proc/22584/environ whitelist read only these four nonsecret values"
 }

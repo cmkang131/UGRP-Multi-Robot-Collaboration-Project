@@ -1,0 +1,43 @@
+{
+  "passed": true,
+  "scope": "original SoloScore posthoc wiring on two actual ACT15 steps, world1 without reset; no completed student task",
+  "physical_N": 0,
+  "physical_n": 0,
+  "new_physics_steps": 0,
+  "actor_commands_modified": false,
+  "completed_steps_scored": 2,
+  "source_actor": "b4db8ba2fb155ad53b210b48f645fcc759157e7b",
+  "score_module_sha256": "babca2bbea1e07dd9f49f1cccdbc3e8007dd541bfc5982355158c4a90c8901c1",
+  "raw": {
+    "/home/ugrp/ugrp-sim/runs/warp3/student-api-r3/summary.json": "43002d8252369fa281ca57a74359de0f5b98fbde6fdbf000d6d7c7ec94d4c667",
+    "/home/ugrp/ugrp-sim/runs/warp3/student-api-r3/owner/evaluation-only.jsonl": "4bcba90194a15448311e04fb6803fa7f413914d1d6b8709ccddbc35b74f3acdd"
+  },
+  "provisional_score": {
+    "lift_success": false,
+    "max_stable_lift_s": 0.0,
+    "criteria": {
+      "clearance_m": 0.012,
+      "tilt_deg": 10.0,
+      "finger_each_n": 0.5,
+      "hold_s": 3.0,
+      "weld": "off"
+    },
+    "release_success": false,
+    "max_stable_release_s": 0.0,
+    "drop_detected": false,
+    "release_criteria": {
+      "clearance_m": [
+        -0.005,
+        0.006
+      ],
+      "tilt_deg": 10.0,
+      "finger_max_n": 0.1,
+      "linear_speed_m_s": 0.02,
+      "hold_s": 3.0,
+      "airborne_unloaded_drop_clearance_m": 0.012
+    },
+    "physical_success": false,
+    "failure_reason": "grasp_done_not_requested"
+  },
+  "recorded_utc": "2026-10-16T10:02:44.289964+00:00"
+}
