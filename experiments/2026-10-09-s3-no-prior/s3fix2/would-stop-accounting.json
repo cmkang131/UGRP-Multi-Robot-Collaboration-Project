@@ -1,0 +1,25 @@
+{
+  "source": "/Users/changmin/projects/ugrp/outputs/s3-continue-0a690821-s14201-v147/student_record.json",
+  "sha256": "2cc30de518aac33db36d62e65e504258b229b17fa6fe32968c763c231359b644",
+  "pair_hook_invocations": 421,
+  "pair_materialized_rows": 18,
+  "counts": {
+    "r1:sweep.plan:SWEEP_TRANSITION_BLOCKED": 1,
+    "r1:sweep.transition:SWEEP_TRANSITION_BLOCKED": 187,
+    "r2:sweep.plan:SWEEP_TRANSITION_BLOCKED": 1,
+    "r2:sweep.transition:SWEEP_TRANSITION_BLOCKED": 186,
+    "r1:pair.admission:SELF_UNCERTAIN": 2,
+    "r2:pair.admission:SELF_UNCERTAIN": 2,
+    "r2:pair.before_control:POSE_UNCERTAIN": 18,
+    "r1:pair.before_control:POSE_UNCERTAIN": 17,
+    "r2:approach.look:POSE_UNCERTAIN": 3,
+    "r2:approach.drive:POSE_UNCERTAIN": 2,
+    "r2:approach.plan:PAIR_COLLISION_GUARD": 1,
+    "r1:approach.look:POSE_UNCERTAIN": 1
+  },
+  "implementation": "harness/zone_s3_dev_light.py:Audit.note",
+  "per_note_disk_writes": 0,
+  "scope": "Static code and saved record accounting, not cProfile or an I/O time measurement",
+  "other_would_stop_hooks": 90,
+  "total_would_stop_hooks": 511
+}

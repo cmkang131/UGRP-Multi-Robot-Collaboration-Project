@@ -91,7 +91,8 @@ def test_floor_only_packet_and_unchanged_motion_gate():
 
 
 def test_command_camera_clear_mask_no_native_calls_or_fake_doors(monkeypatch):
-    import mujoco
+    # The sensor's fixed robot geometry comes from sim.masterpi_model_v3, which imports MuJoCo.
+    mujoco = pytest.importorskip('mujoco')
     def forbidden(*a, **k):
         raise AssertionError('OFFLINE_NATIVE_CALL_FORBIDDEN')
     for name in ('MjModel','MjData','Renderer','mj_step','mj_forward','mj_kinematics'):

@@ -88,11 +88,20 @@ def test_roi_does_not_join_missing_wall_columns():
 
 
 def test_annotation_recall_preserves_absent_points_and_deduplicates(monkeypatch):
+    import importlib.util
     import sys
     from pathlib import Path
     root=Path(__file__).resolve().parents[1]
-    sys.path.insert(0,str(root/'experiments/2026-10-07-wall-parallax/code'))
-    import replay as ev
+    code=root/'experiments/2026-10-07-wall-parallax/code'
+    # Other experiment tests also import modules named replay/common/evaluate.
+    # Load this exact source and restore its process-global import state.
+    monkeypatch.setattr(sys,'path',[str(code),*sys.path])
+    for name in ('common','evaluate'):
+        monkeypatch.setitem(sys.modules,name,None)
+        del sys.modules[name]
+    spec=importlib.util.spec_from_file_location('_wall_parallax_annotation_replay',code/'replay.py')
+    ev=importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(ev)
     assert len(ev.hashes())==len(ev.FILES)  # All provenance paths exist before RGB extraction.
     monkeypatch.setattr(ev.metric,'project',lambda uv,*a:(np.zeros((len(uv),2)),np.ones(len(uv)),np.ones(len(uv),bool)))
     annotation=dict(polylines=[[[0,50],[639,50]]],ignore=[])

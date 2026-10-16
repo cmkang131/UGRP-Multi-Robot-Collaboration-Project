@@ -1,0 +1,134 @@
+{
+  "r1": {
+    "observations": 915,
+    "detected": 915,
+    "phases": {
+      "rotate_path": 845,
+      "forward_path": 58,
+      "rotate_goal": 12
+    },
+    "final10cm": 885,
+    "stationary_final10cm": 0,
+    "last": {
+      "t": 901.0,
+      "frame": "robots/r1/rgb/17994.jpg",
+      "frame_sha256": "e9f04d6a8e59d7f7ef06d67ccc37f086540a3b28b22ce338154a649cc1cd343a",
+      "visible": true,
+      "reason": "BAND_VISIBLE",
+      "posture": "inspect",
+      "ex_m": 0.018715133796914002,
+      "ey_m": 0.002096986746488269,
+      "ea_rad": 0.34871237002711514,
+      "phase": "rotate_path",
+      "commands": [
+        {
+          "t": 901.0,
+          "kind": "mecanum",
+          "forward": 0.0,
+          "left": 0.0,
+          "turn": 0.35,
+          "duration_s": 0.1
+        }
+      ],
+      "replayed_proposal": {
+        "kind": "mecanum",
+        "forward": 0.0,
+        "left": 0.0,
+        "turn": 0.35,
+        "duration_s": 0.1
+      },
+      "goal_distance_m": 0.01883224857661294,
+      "delta_forward_m": 0.00044288393274598335,
+      "delta_left_m": -0.00028246198866840026,
+      "delta_yaw_rad": 0.1039615402427882,
+      "pixel_error_status": "inverse projection of saved own-RGB fitted grip and fixed target through same static calibration",
+      "pixel_error_xy": [
+        -7.125503392936707,
+        -55.59791576681562
+      ],
+      "eval_only": true
+    },
+    "turn_sign_changes": 835,
+    "near_yaw_range_rad": [
+      0.020143730724843486,
+      0.4139953987515363
+    ],
+    "xyz_tolerance_hit": 14,
+    "all_tolerance_hit": 0
+  },
+  "r2": {
+    "observations": 866,
+    "detected": 866,
+    "phases": {
+      "rotate_path": 852,
+      "forward_path": 13,
+      "rotate_goal": 1
+    },
+    "final10cm": 863,
+    "stationary_final10cm": 0,
+    "last": {
+      "t": 901.0,
+      "frame": "robots/r2/rgb/17994.jpg",
+      "frame_sha256": "bbb7684b900d772d63f2b422c5d0ec4cfcab891892cfcf84fb3b574675ee54ce",
+      "visible": true,
+      "reason": "BAND_VISIBLE",
+      "posture": "inspect",
+      "ex_m": 0.01653330258914018,
+      "ey_m": 0.005420300504833543,
+      "ea_rad": 0.32604035785857377,
+      "phase": "rotate_path",
+      "commands": [
+        {
+          "t": 901.0,
+          "kind": "mecanum",
+          "forward": 0.0,
+          "left": 0.0,
+          "turn": 0.35,
+          "duration_s": 0.1
+        }
+      ],
+      "replayed_proposal": {
+        "kind": "mecanum",
+        "forward": 0.0,
+        "left": 0.0,
+        "turn": 0.35,
+        "duration_s": 0.1
+      },
+      "goal_distance_m": 0.01739913078480555,
+      "delta_forward_m": -0.0002528457707748148,
+      "delta_left_m": -0.00026706977587314496,
+      "delta_yaw_rad": 0.10582034139484753,
+      "pixel_error_status": "inverse projection of saved own-RGB fitted grip and fixed target through same static calibration",
+      "pixel_error_xy": [
+        -18.29647515850513,
+        -49.38700040458855
+      ],
+      "eval_only": true
+    },
+    "turn_sign_changes": 841,
+    "near_yaw_range_rad": [
+      -0.005647942464362934,
+      0.4066148063875368
+    ],
+    "xyz_tolerance_hit": 2,
+    "all_tolerance_hit": 0
+  },
+  "r3": {
+    "alignment_entered": false,
+    "reason": "v152 recorded localizer states contain no align"
+  },
+  "source": "v152 saved own RGB detection events and issued commands; GT displacement is posthoc only",
+  "tables": {
+    "r1": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s3fix8-20261010/saved-analysis-pixels/r1-frames.jsonl",
+      "sha256": "8857d79ff3f5cd54e9007dcc26b69d3d5a64c17f64e789d6290e077d5f639d5b"
+    },
+    "r2": {
+      "path": "/Users/changmin/projects/ugrp/outputs/s3fix8-20261010/saved-analysis-pixels/r2-frames.jsonl",
+      "sha256": "fe6267608c1f7a8df535361c717f959adbcc8571776080db73eb23a17671864b"
+    }
+  },
+  "public_source": "same frozen v152 calibration, no image/GT model refit",
+  "control_source_sha": "2bb6148d",
+  "new_physics_runs": 0
+}

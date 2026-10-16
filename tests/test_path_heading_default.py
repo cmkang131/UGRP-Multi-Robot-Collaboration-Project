@@ -79,8 +79,56 @@ def test_explicit_off_record_matches_pre_change_frozen_bytes():
     try:
         left, right = json.dumps(x.record()).encode(), json.dumps(y.record()).encode()
         assert left == right
-        portable = right.decode().replace(str(legacy.ROOT), '$ROOT').encode()
-        assert hashlib.sha256(portable).hexdigest() == (FIX/'off-initial-record.sha256').read_text().strip()
+        from tests.pinned_source_bundle import json_at
+        # The fixture's provider identity includes source hashes. Reproduce
+        # its original source rather than importing today's shared backend.
+        code = '''import json,hashlib
+from scripts.run_s2_graduation59 import runtime_factory
+from harness import zone_s2_graduation59_contract as before
+from harness import zone_solo_cyan_contract_v106 as legacy
+a=before.bundle('a'*40,1066,**before.NEW_OPTIONS)
+args=(legacy.hp.resolve(legacy.MAP_ID)[0],legacy.ROOT/legacy.CALIBRATION,legacy.CALIBRATION_SHA)
+x=runtime_factory(a,{},[])(*args,**a['task'])
+try:
+ portable=json.dumps(x.record()).replace(str(legacy.ROOT),'$ROOT').encode()
+ import cv2
+ import platform
+ print(json.dumps(dict(record=json.loads(portable),opencv_version=cv2.__version__,
+                      platform=[platform.system(),platform.machine()])))
+finally:x.close()
+'''
+        companions = {str((legacy.ROOT/p).with_name('input_manifest_dev.json').relative_to(legacy.ROOT))
+                      for p in a['source_sha256']
+                      if (legacy.ROOT/p).with_name('input_manifest_dev.json').is_file()}
+        from harness.vision_loc_protocol import VIS3_DIR, FROZEN_FILES
+        companions.update(str((VIS3_DIR/p).resolve().relative_to(legacy.ROOT))
+                          for p in (*FROZEN_FILES, 'prereg_v3.json', 'selected_config_v3.json'))
+        original = json_at('d89912703432117e47b5306bbe50ec9c31a0663c', code,
+                         tuple(a['source_sha256']) + tuple(sorted(companions))
+                         + tuple(str(p.relative_to(legacy.ROOT)) for p in (before.PLAN, before.old.PLAN)))
+        frozen_bytes = (FIX/'off-initial-record.json').read_bytes()
+        assert hashlib.sha256(frozen_bytes).hexdigest() == (FIX/'off-initial-record.sha256').read_text().strip()
+        frozen = json.loads(frozen_bytes)
+        current = json.loads(json.dumps(x.record()).replace(str(legacy.ROOT),'$ROOT'))
+        # Execute the actual pre-change producer on this host. Camera matrix
+        # derivation hashes can differ across numeric libraries/CPU builds;
+        # every field and float still has to match on the same environment.
+        assert json.dumps(current,sort_keys=True).encode() == json.dumps(original['record'],sort_keys=True).encode()
+        def portable_environment(value, reference):
+            if isinstance(value, dict):
+                result = {k: portable_environment(v, reference[k]) for k,v in value.items()}
+                if 'opencv_version' in value:
+                    assert value['opencv_version'] == original['opencv_version']
+                    result['opencv_version'] = reference['opencv_version']
+                return result
+            if isinstance(value, list):
+                return [portable_environment(v, r) for v,r in zip(value,reference,strict=True)]
+            return value
+        if original['platform'] == ['Darwin','arm64']:
+            normalized = portable_environment(original['record'], frozen)
+            # The additional fixed reference was captured on this platform.
+            # Only paths and verified OpenCV metadata are portable here.
+            assert json.dumps(normalized,sort_keys=True).encode() == json.dumps(frozen,sort_keys=True).encode()
         assert not hasattr(y, 'heading_mode')
         assert x.pose.provider.loc._pf.rng.bit_generator.state == y.pose.provider.loc._pf.rng.bit_generator.state
     finally:

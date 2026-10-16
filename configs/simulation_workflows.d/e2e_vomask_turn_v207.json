@@ -1,0 +1,39 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "e2e-vomask-turn-v207",
+      "version": "7.100.0",
+      "purpose": "DEV v206 + non-turn homography inliers; turn homography off. Map projection remains unavailable. Offline exploratory replay only; no live acceptance.",
+      "entry": "scripts/run_e2e_ownmap_live.py",
+      "runner": "scripts.run_e2e_ownmap_live",
+      "docs": "experiments/2026-10-12-e2e-vomask-registration/README.md",
+      "requires": "Committed Azure x86 OSMesa source; current lease/admission; persistent runs",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha",
+        "--seed",
+        "--driver-profile",
+        "--relay-receipt",
+        "--decider",
+        "--exploration-progress",
+        "--pose-fix",
+        "--path-follow",
+        "--wall-cap-s",
+        "--stall-odometry",
+        "--stall-recovery",
+        "--stall-noise",
+        "--mapping-budget",
+        "--boundary-views",
+        "--b-marker-detect",
+        "--ultrasonic-front",
+        "--vo-floor-mask",
+        "--vo-rotation-policy"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "shutdown_grace_s": 60
+    }
+  ]
+}

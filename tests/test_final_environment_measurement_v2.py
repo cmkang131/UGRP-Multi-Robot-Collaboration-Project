@@ -44,6 +44,7 @@ def fake_path_admission(monkeypatch):
 
 def test_v1_and_v87_history_remain_separate_from_sealed_v6h_successors():
     from tests.v6h_successor_pins import SEAL, successor_blob
+    from tests.pinned_source_bundle import bundle_at
     record = env.read(env.ROOT / 'experiments/2026-10-01-final-env-measurement-v2/v87_preservation.json')
     history = '04eb11c6a001f2a7d2ab916765d59b3661c06efe'
     successors = {'harness/owncam_carry_v6e.py', 'harness/zone_own_guards.py'}
@@ -53,19 +54,22 @@ def test_v1_and_v87_history_remain_separate_from_sealed_v6h_successors():
         assert hashlib.sha256(original).hexdigest() == sha, path
         expected = (subprocess.check_output(['git', 'show', f'{SEAL}:{path}'], cwd=env.ROOT)
                     if path in successors else original)
-        actual = successor_blob(path) if path in successors else (env.ROOT / path).read_bytes()
+        actual = (successor_blob(path) if path in successors else
+                  subprocess.check_output(['git', 'show', f'{history}:{path}'], cwd=env.ROOT))
         assert actual == expected, path
     for key, sha in record['bundles'].items():
         mid, check = key.split('/')
         current = env.parent.bundle(mid, check=check)
         assert env.digest(current) != sha, 'a successor must not inherit the historical bundle identity'
-        historical = copy.deepcopy(current)
+        historical = bundle_at(history, env.parent.__name__, mid, check,
+                               tuple(record['files_sha256']))
         assert historical['source_sha256'].keys() <= record['files_sha256'].keys()
-        # Rebuild only historical source hashes and their derived parent digest.
-        # Independently match the parent to its original v84 receipt as well.
+        # Match the pinned acquisition's closure, including its original parent.
+        # New runtime modules must not be grafted into historical receipts.
         historical['source_sha256'] = {path: record['files_sha256'][path]
-                                       for path in current['source_sha256']}
-        parent = env.parent.previous.bundle(mid, check=check)
+                                       for path in historical['source_sha256']}
+        parent = bundle_at(history, env.parent.previous.__name__, mid, check,
+                           tuple(record['files_sha256']))
         assert parent['source_sha256'].keys() <= record['files_sha256'].keys()
         parent['source_sha256'] = {path: record['files_sha256'][path]
                                    for path in parent['source_sha256']}

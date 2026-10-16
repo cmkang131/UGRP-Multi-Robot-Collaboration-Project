@@ -2,7 +2,7 @@
 
 2026-09-28 사용자 결정(#221 최신 코멘트)으로 로봇 입력에 **자기 초음파 거리**를 추가했다. MasterPi 차체 앞면의 초음파 센서를 쓴다. 네 통신 조건 모두 같게 제공하며 조작 변수가 아니다. 용도는 세 가지다. 정적 지도와 비교해 위치 추정을 보조하고(PF 과신 검출), 충돌 여유를 확인하고, 정렬할 때 전방 거리로 단안 깊이의 모호성을 보완한다. GT 금지와 표식 비의존 원칙은 그대로 적용한다.
 
-이 문서는 센서 모델(v2, `masterpi_ultrasonic_v2`; PR #248 적대적 검토 반영)의 사양, 가정, 한계, sim2real 보정 계획을 기록한다. 이 입력은 허용된 관측이다. 2026-09-29부터 구역 연구 실행기에 **명시적으로 켜는 경우에만** 연결된다(12절, 기본 꺼짐, 켜도 어떤 제어기도 값을 쓰지 않는다). 켠 실행은 기존 baseline과 나눠 비교한다. 실험 기록은 [`experiments/2026-09-28-ultrasonic-range`](../experiments/2026-09-28-ultrasonic-range/README.md)에 있다.
+이 문서는 센서 모델(v2, `masterpi_ultrasonic_v2`; PR #248 적대적 검토 반영)의 사양, 가정, 한계, sim2real 보정 계획을 기록한다. 이 입력은 허용된 관측이다. 2026-09-29부터 구역 연구 실행기에 **명시적으로 켜는 경우에만** 연결된다(12절, 기본 꺼짐; 기존 zone 어댑터는 기록 전용, E2E 선택 소비자는 13절). 켠 실행은 기존 baseline과 나눠 비교한다. 실험 기록은 [`experiments/2026-09-28-ultrasonic-range`](../experiments/2026-09-28-ultrasonic-range/README.md)에 있다.
 
 ## 1. 실물 사양
 
@@ -64,7 +64,7 @@
   - 우도는 Thrun *Probabilistic Robotics* 6.3의 beam model 혼합이다(hit / short / max / rand + 경면·다중 반사의 긴 쪽 균등 항). hit 폭에는 센서 σ, 자세 σ, 지도 σ(2 cm, 가정)를 넣는다.
   - 검출 확률은 에코 세기의 logistic(문턱 0.2, 폭 0.05)이다. 그래서 가시 경계(약 35°)에서 우도가 **연속적으로** 바뀐다. 예측 원뿔에 에코가 있는 판독과 무반사 판독의 판독당 |LLR|은 2 nats로 제한한다.
   - `blind`와 `sensor_absent`는 자세 정보가 없으므로 LLR 0이다. 가중치·폭·상한은 가설이며, 6절 3단계(입사각 측정) 뒤에 정한다.
-- **기존 동작 불변:** 새 모듈(`harness/ultrasonic_{model,map,carry}.py`, `harness/range_provider.py`, `sim/ultrasonic_range.py`, `scripts/analyze_ultrasonic_carry_height.py`)은 기존 코드가 import하지 않는다. `rgb-standard-dispatch-v63`의 source closure와 zone study 실행 번들(현재 main, #240·#242·#243 병합 후)의 `runtime_files_sha256`에 들어가지 않는 것을 테스트로 확인했다. 기존 번들에서 이 입력은 OFF다. 실행기 연결은 12절의 어댑터가 켤 때만 붙는다.
+- **기존 동작 불변:** 새 모듈(`harness/ultrasonic_{model,map,carry}.py`, `harness/range_provider.py`, `sim/ultrasonic_range.py`, `scripts/analyze_ultrasonic_carry_height.py`)은 기존 코드가 import하지 않는다. `rgb-standard-dispatch-v63`의 source closure와 zone study 실행 번들(현재 main, #240·#242·#243 병합 후)의 `runtime_files_sha256`에 들어가지 않는 것을 테스트로 확인했다. 기존 번들에서 이 입력은 OFF다. zone 실행기 연결은 12절의 어댑터가 켤 때만 붙는다. E2E는 13절의 별도 선택 연결을 사용한다.
 
 ## 4. 공동 운반 막대·자기 팔과 센서 높이 (실제 장면 `zone_wide_door_tags_v2` + `long_beam`)
 
@@ -311,3 +311,14 @@ PR #249는 도면 비율로 로봇을 다시 모델링한다(측정값 아님). 
 - Thrun, Burgard, Fox, *Probabilistic Robotics* (MIT Press, 2005), 6.3 beam model(hit/short/max/rand)
 - hector_gazebo `gazebo_ros_sonar`(ray 최솟값, min/max clamp): <https://github.com/tu-darmstadt-ros-pkg/hector_gazebo/blob/melodic-devel/hector_gazebo_plugins/src/gazebo_ros_sonar.cpp>
 - PR #248 적대적 검토 기록: `outputs/review-248-20260928.md`(로컬 기본 체크아웃)
+
+## 13. E2E `rgb_vo_us_v1` 소비자 (2026-10-12, DEV 후보)
+
+- 레지스트리 `harness.ultrasonic_input.REGISTERED_RANGE_CONSUMERS`: `harness/e2e_us_stall.py`, `harness/e2e_live_mapping.py`. `sim/e2e_us_input.py`는 취득 전용이다. 기존 egomap56 취득/원장 종료 경로도 명시 등록했으며 동작은 바꾸지 않았다.
+- 기본 off. `e2e-usstall-v206` / 7.99.0 = v205 조합 + `stall_odometry=rgb_vo_us_v1` + `sensors.ultrasonic_front=on_v1`. CLI는 `--ultrasonic-front on_v1`; 센서/소비자 한쪽만 켜면 거부한다. 네 통신 조건에서 같은 규칙·센서 모델·seed 규칙을 쓰며 조건을 소비자에게 전달하지 않는다. E2E 실행기 자체의 현재 통신 조건은 `peer_en`이다.
+- VO 측정 가능 시 기존 융합. 불가하면 자기 전면 유효 판독 5개(5 Hz 프레임, 0.8 s 창)의 max−min ≤ 3σ(r), 예상 전진 ≥ max(2 cm, 잡음폭×2), 창의 누적 명령 yaw ≤ 0.02 rad일 때 평행 이동 증분 0 + 기존 `alpha_extra` 공분산 가산. 명령 yaw는 유지한다. 둘 다 불가하면 기존 `rgb_vo_v2` 경로다. 정지 명령·후진·횡이동·회전·servo 명령·VO 회복·누락은 창을 초기화한다.
+- `RangeReport`의 시각·거리·상태와 고정 모델 잡음만 사용. `ok`/valid, 유한값, 2 cm–4 m 물리 범위, 최신 0–0.12 s, 중복 없는 시각·간격 ≤0.25 s를 검사하며 **근거리 ≤0.5 m**만 후보로 본다. 과거 `last_valid`로 무효값을 대체하지 않는다.
+- 자기 짐·팔 오탐을 줄이기 위해 발행된 팔 명령이 무하중 `SEARCH` 자세(1/3/4/5번 servo, pan 제외)인 구간만 쓴다. 측정 관절·물체 정답을 참조하지 않으며 자세를 바꾸지 않는다. 다른 팔 자세/적재 구간은 범위 밖이다.
+- 취득은 reset 뒤 episode 시각부터 backend advance 뒤 50 ms마다 poll(기존 60 ms due 규칙으로 실제 최소 약100 ms). 이 시각으로 잡음 tick·원장·프레임 시각을 맞춘다. `robots/<rid>/inputs/range.jsonl`에 판독과 seed를 보존하고 종료 manifest가 해시한다. 센서 모듈까지 source closure에 고정한다.
+- 한계: 단일 거리는 벽/자기 팔/움직이는 상대를 구별하지 못한다. 벽과 평행한 이동·같이 움직이는 물체·팔 명령과 실제 자세 차이는 오탐 가능성이다. 이는 완전한 관성 ZUPT나 측정 wheel-slip 비율이 아니라 **전진 증분 억제 가설**이다. 공분산을 줄이는 일반 ZUPT와 달리 여기서는 요청된 DEV 규칙대로 Q를 늘린다. 임계값은 실물 보정하지 않았다.
+- 실데이터 초음파 재생 및 Azure 실행은 미검증. 조사·가벼운 기록: [`2026-10-12-e2e-usstall`](../experiments/2026-10-12-e2e-usstall/README.md).

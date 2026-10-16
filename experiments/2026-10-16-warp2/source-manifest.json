@@ -1,0 +1,423 @@
+{
+  "verified_at": "2026-10-15T18:02:38.535803+00:00",
+  "method": "git show exact SHA; AST parse only; no module import, physics or rendering",
+  "files": [
+    {
+      "flow": "beam_adapter",
+      "sha": "08f129213031255dd188e20df832bb6714dfca9a",
+      "path": "scripts/run_beampair1.py",
+      "sha256": "3a7bb090fe95bf4cb8f291d025e8fd5b8690c27e95b2b2f1f9ac36e359ccf58b",
+      "bytes": 21159
+    },
+    {
+      "flow": "beam_adapter",
+      "sha": "08f129213031255dd188e20df832bb6714dfca9a",
+      "path": "scripts/run_beampair1_batch.py",
+      "sha256": "e836def91196dc2e04d0bae4a90e05c3b79996d97e11a8adff11bd1aabd25613",
+      "bytes": 5319
+    },
+    {
+      "flow": "beam_adapter",
+      "sha": "08f129213031255dd188e20df832bb6714dfca9a",
+      "path": "harness/beampair_teacher.py",
+      "sha256": "cbcd4fa69bef25950930937a96da89bb8ea48639f9fd7ef5688dcfb7b50862b4",
+      "bytes": 4540
+    },
+    {
+      "flow": "beam_adapter",
+      "sha": "08f129213031255dd188e20df832bb6714dfca9a",
+      "path": "harness/beampair_approach.py",
+      "sha256": "3fb688052e7cc9329047470dc57ab1674fcec1043a55b52efefa22e566b016db",
+      "bytes": 5951
+    },
+    {
+      "flow": "beam_adapter",
+      "sha": "08f129213031255dd188e20df832bb6714dfca9a",
+      "path": "harness/beampair_wall_layer.py",
+      "sha256": "9347d282240cf74667034169011b5247e5c1280b7da53871476dedb4c5bcfbb8",
+      "bytes": 5123
+    },
+    {
+      "flow": "beam_adapter",
+      "sha": "08f129213031255dd188e20df832bb6714dfca9a",
+      "path": "harness/beampair_visible_rays.py",
+      "sha256": "9c671b3c747ff0d2332e565080c5bac9e66fdada0784b51e37e3196be26daec5",
+      "bytes": 3041
+    },
+    {
+      "flow": "beam_adapter",
+      "sha": "08f129213031255dd188e20df832bb6714dfca9a",
+      "path": "harness/failure_rgb_tail.py",
+      "sha256": "cb38a5703e5408605ef6f59f911e64d041c4a7a728339e67e821b72414586d90",
+      "bytes": 1693
+    },
+    {
+      "flow": "beam_dependency",
+      "sha": "26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+      "path": "scripts/run_grasp_act_teacher.py",
+      "sha256": "d3429b155d16491a86e77988d60008209b0feaeba03ee00ee33add71652115b2",
+      "bytes": 40282
+    },
+    {
+      "flow": "beam_dependency",
+      "sha": "26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+      "path": "scripts/audit_grasp_act_visibility.py",
+      "sha256": "8cd9054047a16ae3e422fbaef4b2ac09d930bf695d61a5286e5b800cf8e67f06",
+      "bytes": 15030
+    },
+    {
+      "flow": "beam_dependency",
+      "sha": "26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+      "path": "sim/grasp_act_visible_measurements.py",
+      "sha256": "f5af39616bed77ccf4427b5ff41b27763e10f2a1dccf55b48193d38cba00c3e0",
+      "bytes": 2741
+    },
+    {
+      "flow": "beam_dependency",
+      "sha": "26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+      "path": "harness/grasp_act_visible_world.py",
+      "sha256": "2b7d6c0d2b225ee7200aca6332fec646263e54d129e7ecb2359834f232587d8b",
+      "bytes": 5778
+    },
+    {
+      "flow": "beam_dependency",
+      "sha": "26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+      "path": "harness/grasp_act_input_audit.py",
+      "sha256": "be7859ef873aaca51c13e253b224c75c7f2e976d490665513f7d26a757bc7439",
+      "bytes": 1266
+    },
+    {
+      "flow": "beam_dependency",
+      "sha": "26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+      "path": "sim/grasp_act_teacher_v3.py",
+      "sha256": "3f0366d3e5cedba2a46c62f014bf2cad467126156ac06d62c138051492eb7d82",
+      "bytes": 69583
+    },
+    {
+      "flow": "beam_dependency",
+      "sha": "26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+      "path": "sim/grasp_act_port.py",
+      "sha256": "047e2f9550b796999f55d487e48dae96e811ef4cc81da6b16f44460be4a322d0",
+      "bytes": 4811
+    },
+    {
+      "flow": "beam_dependency",
+      "sha": "26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+      "path": "sim/camera_robot_port.py",
+      "sha256": "be94c99a2a597a81e55ab0cbaba44f9340d3c2bbb7a3d14a2078f1d903bc8910",
+      "bytes": 13523
+    },
+    {
+      "flow": "beam_dependency",
+      "sha": "26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+      "path": "sim/masterpi_drive_friction_v7.py",
+      "sha256": "6adcfd8e2fae919df777cf7532ef2e757e3b734dfe980fb38a6b4ccb65c2c2fa",
+      "bytes": 14414
+    },
+    {
+      "flow": "beam_dependency",
+      "sha": "26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+      "path": "sim/multi_masterpi_production.py",
+      "sha256": "715bf66c7dfe0a4a328a75b3cec46541eaefedd29b8a3dd4a251eb14ed789f7e",
+      "bytes": 227346
+    },
+    {
+      "flow": "release",
+      "sha": "8b7f2f4517d827b39a79246b892fa549bbcec0a8",
+      "path": "scripts/run_grasp_act_release.py",
+      "sha256": "d0af6a5c41c452130102fed816859864838457258bec805a581734edf701942d",
+      "bytes": 77712
+    },
+    {
+      "flow": "release",
+      "sha": "8b7f2f4517d827b39a79246b892fa549bbcec0a8",
+      "path": "sim/release24.py",
+      "sha256": "001146e7df5a733898df923c3b761a9d414f65fac7f9ac1c498166fbafa84255",
+      "bytes": 3837
+    },
+    {
+      "flow": "release",
+      "sha": "8b7f2f4517d827b39a79246b892fa549bbcec0a8",
+      "path": "sim/release23.py",
+      "sha256": "277fa1dd2b88481dfd9d62b6f0d95fa5d9eac16d62b0c239eca827e00c8655bb",
+      "bytes": 15634
+    },
+    {
+      "flow": "release",
+      "sha": "8b7f2f4517d827b39a79246b892fa549bbcec0a8",
+      "path": "sim/grasp_act_release_teacher.py",
+      "sha256": "5684d9df13a6a2d02a242fe9165dd353f9fcfa88387018b9b21de05567cccbc0",
+      "bytes": 18814
+    },
+    {
+      "flow": "release",
+      "sha": "8b7f2f4517d827b39a79246b892fa549bbcec0a8",
+      "path": "sim/release_setdown_lookaround.py",
+      "sha256": "189f129a81f694ab812433b325c1ea2065c373715209b451bab2e9ad438413b5",
+      "bytes": 5115
+    },
+    {
+      "flow": "release",
+      "sha": "8b7f2f4517d827b39a79246b892fa549bbcec0a8",
+      "path": "sim/release_regrasp.py",
+      "sha256": "49528a6da857c5506ea322f6bc8591fca0ef03e801e429061ffed7b474417ecd",
+      "bytes": 15015
+    },
+    {
+      "flow": "release",
+      "sha": "8b7f2f4517d827b39a79246b892fa549bbcec0a8",
+      "path": "sim/release_regrasp_recovery.py",
+      "sha256": "c3d289f149723cbf9fa6543d3326076eb6fbbf66b4c5cb9b758f2b0f2fb9f4fc",
+      "bytes": 10405
+    },
+    {
+      "flow": "reloc",
+      "sha": "644289a755ee60df99e916224931c2dec80298eb",
+      "path": "scripts/run_self_map_diagnostic.py",
+      "sha256": "56227e675fb527676b13c70b05536cf82b235acee2b828dc64c5ce4ff1a49d17",
+      "bytes": 29928
+    },
+    {
+      "flow": "reloc",
+      "sha": "644289a755ee60df99e916224931c2dec80298eb",
+      "path": "scripts/offline_self_map.py",
+      "sha256": "cb6bc38f2a2b9c5267149643b1b93497d3eb4daaf4d6dbd58649c21108a114a7",
+      "bytes": 13571
+    },
+    {
+      "flow": "reloc",
+      "sha": "644289a755ee60df99e916224931c2dec80298eb",
+      "path": "scripts/run_reloc10_rotation_check.py",
+      "sha256": "bab15c0948e58c174456310ba5cb086e0f1a7ee271f040fc62c8d54c407c6720",
+      "bytes": 7506
+    },
+    {
+      "flow": "reloc",
+      "sha": "644289a755ee60df99e916224931c2dec80298eb",
+      "path": "scripts/replay_reloc15_carry.py",
+      "sha256": "5d128c89e449357692c9b2ae550e82d3dbdff118cbedbe84f97e4abcf0b211a8",
+      "bytes": 8672
+    },
+    {
+      "flow": "reloc",
+      "sha": "644289a755ee60df99e916224931c2dec80298eb",
+      "path": "sim/own_map_closed_loop.py",
+      "sha256": "ddefb025dccc77977f7ad1577edbba0b4096aee445aa8a46eb1addced010d424",
+      "bytes": 1358
+    },
+    {
+      "flow": "reloc",
+      "sha": "644289a755ee60df99e916224931c2dec80298eb",
+      "path": "sim/active_wall_map.py",
+      "sha256": "54ef317d4264ed135d0fc8b636fef52b0ce0acf8c1f0ca0f71903ac9ead9fafd",
+      "bytes": 1757
+    },
+    {
+      "flow": "reloc",
+      "sha": "644289a755ee60df99e916224931c2dec80298eb",
+      "path": "sim/wall_servo_stiffness.py",
+      "sha256": "3d7d1e1ce9cd69c291f7cc38c3900db62c3265aff1b8582eddd8bd4f11da5144",
+      "bytes": 4209
+    },
+    {
+      "flow": "reloc",
+      "sha": "644289a755ee60df99e916224931c2dec80298eb",
+      "path": "sim/final_environment_checks.py",
+      "sha256": "bd38a19f216dd04353fe39e15f1e4ed68e38fd594ae6f412c434f4426ecac974",
+      "bytes": 8629
+    },
+    {
+      "flow": "reloc",
+      "sha": "644289a755ee60df99e916224931c2dec80298eb",
+      "path": "harness/self_map_input_audit.py",
+      "sha256": "3f916020c5848246863c0ad406b21e864e3b03d82b28a6f197e558872a4c8427",
+      "bytes": 2888
+    },
+    {
+      "flow": "reloc",
+      "sha": "644289a755ee60df99e916224931c2dec80298eb",
+      "path": "harness/failure_rgb_buffer.py",
+      "sha256": "7d8c803e2ebf2a6608d3397aea1a6961453b0cd2d0bbf832c004f4e28722f478",
+      "bytes": 1376
+    },
+    {
+      "flow": "llm_e2e",
+      "sha": "f529e07823c8643cd87c9bd9d9284c536a29afae",
+      "path": "scripts/run_e2e_ownmap_live.py",
+      "sha256": "2faca1c10c2fe5ba173449eab5a449c71df064b9533408966a77bb3748d6b363",
+      "bytes": 74955
+    },
+    {
+      "flow": "llm_e2e",
+      "sha": "f529e07823c8643cd87c9bd9d9284c536a29afae",
+      "path": "sim/e2e_ownmap_live.py",
+      "sha256": "5085b89644de0e1631122cba531e262ce1d063c11a895618e0a6c84aa1600789",
+      "bytes": 4266
+    },
+    {
+      "flow": "llm_e2e",
+      "sha": "f529e07823c8643cd87c9bd9d9284c536a29afae",
+      "path": "sim/e2e_s3_test.py",
+      "sha256": "6838692342e73ca982ec0410ddff3586440f6f91a779b2bdb50314d245947811",
+      "bytes": 5143
+    },
+    {
+      "flow": "llm_e2e",
+      "sha": "f529e07823c8643cd87c9bd9d9284c536a29afae",
+      "path": "sim/zone_s3_no_prior.py",
+      "sha256": "5a3ac5bbdd033ac45de299e1b1e58c3c6d78633777e929bc86287e5a69b8da12",
+      "bytes": 8501
+    },
+    {
+      "flow": "llm_e2e",
+      "sha": "f529e07823c8643cd87c9bd9d9284c536a29afae",
+      "path": "sim/zone_s3_host.py",
+      "sha256": "744ccffda67a609229202101a9b75fd7e0301da9a5155ededc7c6e33033e6fd1",
+      "bytes": 4699
+    },
+    {
+      "flow": "llm_e2e",
+      "sha": "f529e07823c8643cd87c9bd9d9284c536a29afae",
+      "path": "sim/solo_cyan_v106.py",
+      "sha256": "2a1a39d0c629dc0208275164bd75aa01b8941c9f7fb9681c1d480f8762c063b4",
+      "bytes": 5778
+    },
+    {
+      "flow": "llm_e2e",
+      "sha": "f529e07823c8643cd87c9bd9d9284c536a29afae",
+      "path": "sim/final_environment_checks.py",
+      "sha256": "bd38a19f216dd04353fe39e15f1e4ed68e38fd594ae6f412c434f4426ecac974",
+      "bytes": 8629
+    },
+    {
+      "flow": "llm_e2e",
+      "sha": "f529e07823c8643cd87c9bd9d9284c536a29afae",
+      "path": "harness/zone_s3_host.py",
+      "sha256": "24b34e4d4cab4f36c5860725e0499ac46b96d1072dfc980bab4b185692478d41",
+      "bytes": 15473
+    },
+    {
+      "flow": "llm_e2e",
+      "sha": "f529e07823c8643cd87c9bd9d9284c536a29afae",
+      "path": "harness/zone_study_integration.py",
+      "sha256": "1f570a4a54e9f06e2f0bf4ac41d9c6125e662601e05b2242641af0754bf31f5d",
+      "bytes": 36305
+    },
+    {
+      "flow": "llm_e2e",
+      "sha": "f529e07823c8643cd87c9bd9d9284c536a29afae",
+      "path": "harness/e2e_live_mapping.py",
+      "sha256": "83c18a31f72d2dfd3d8d7e34be085f9621a87545d944f2d8f12aca4d3baf9576",
+      "bytes": 13922
+    },
+    {
+      "flow": "beam_dependency",
+      "sha": "26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+      "path": "scripts/cargo_formation_teacher.py",
+      "sha256": "ee334c5be92a9d8cbb9f895d3e63b8454316ba258108c02926e2fcc22b58f61d",
+      "bytes": 18005
+    },
+    {
+      "flow": "beam_dependency",
+      "sha": "26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+      "path": "harness/grasp_act_start_sync.py",
+      "sha256": "6333ab411b433a19f8d2cefa22951d3afd0eec5052c475e6782728ad37e6091c",
+      "bytes": 4738
+    },
+    {
+      "flow": "release",
+      "sha": "8b7f2f4517d827b39a79246b892fa549bbcec0a8",
+      "path": "sim/failure_rgb_recording.py",
+      "sha256": "47020c07418f7a095aa1b955b1c236ae4fafefc4135a8c1fc86d258a3158bec2",
+      "bytes": 1656
+    },
+    {
+      "flow": "release",
+      "sha": "8b7f2f4517d827b39a79246b892fa549bbcec0a8",
+      "path": "sim/release19.py",
+      "sha256": "4f51663436c731cdc3777d99dd8d0b0f75a879ce1ae7fc2dddbd81fb02540f16",
+      "bytes": 5417
+    },
+    {
+      "flow": "reloc",
+      "sha": "644289a755ee60df99e916224931c2dec80298eb",
+      "path": "scripts/run_solo_grasp_act_teacher.py",
+      "sha256": "550cec5cbab0655b7b691bf5e43a73d112769502432d8d61383377e9770ab1d5",
+      "bytes": 45671
+    },
+    {
+      "flow": "reloc",
+      "sha": "644289a755ee60df99e916224931c2dec80298eb",
+      "path": "sim/solo_carry_to_zone.py",
+      "sha256": "2a8f7be68a0d577aca282e6ecf15ec306e6f4fbc65d0b263ad262cde48404588",
+      "bytes": 22902
+    },
+    {
+      "flow": "reloc",
+      "sha": "644289a755ee60df99e916224931c2dec80298eb",
+      "path": "sim/solo_carry_pose.py",
+      "sha256": "383771ab7c772dfc4c0c2c85bf3eab80b7233930034569f01625e29cff8bb101",
+      "bytes": 18231
+    },
+    {
+      "flow": "reloc",
+      "sha": "644289a755ee60df99e916224931c2dec80298eb",
+      "path": "sim/wall_parallax_strafe.py",
+      "sha256": "900ffc309f3b42b63cc85e0b978a987dbc60ddbb772cc3cfd276e9b190335667",
+      "bytes": 5340
+    },
+    {
+      "flow": "reloc",
+      "sha": "644289a755ee60df99e916224931c2dec80298eb",
+      "path": "sim/solo_cyan_v106.py",
+      "sha256": "3b211a7067ab6e2a107351ade071c80a8cc950854ee5643716bcadf686e9963c",
+      "bytes": 5882
+    },
+    {
+      "flow": "reloc",
+      "sha": "644289a755ee60df99e916224931c2dec80298eb",
+      "path": "sim/lazy_camera.py",
+      "sha256": "466fdd5e14e68de2df7c51c4ba1ec9f979a9b935851c3adae4f27c3b22fa3f3e",
+      "bytes": 6725
+    },
+    {
+      "flow": "llm_e2e",
+      "sha": "f529e07823c8643cd87c9bd9d9284c536a29afae",
+      "path": "harness/e2e_s4_live.py",
+      "sha256": "ad39fc410f80b4c8361ae390a7751671526928b007b361af6ef9cd8ef28adc1f",
+      "bytes": 18387
+    },
+    {
+      "flow": "llm_e2e",
+      "sha": "f529e07823c8643cd87c9bd9d9284c536a29afae",
+      "path": "harness/zone_study_llm_driver.py",
+      "sha256": "851ad1c534234ea9f87106568632e90ef5ef95076aaf25d51925fe61a1fbfbe0",
+      "bytes": 33210
+    },
+    {
+      "flow": "llm_e2e",
+      "sha": "f529e07823c8643cd87c9bd9d9284c536a29afae",
+      "path": "sim/lazy_camera.py",
+      "sha256": "466fdd5e14e68de2df7c51c4ba1ec9f979a9b935851c3adae4f27c3b22fa3f3e",
+      "bytes": 6725
+    }
+  ],
+  "resolved_path_discovery": [
+    {
+      "flow": "release",
+      "sha": "8b7f2f4517d827b39a79246b892fa549bbcec0a8",
+      "path": "harness/failure_rgb_buffer.py"
+    },
+    {
+      "flow": "reloc",
+      "sha": "644289a755ee60df99e916224931c2dec80298eb",
+      "path": "sim/solo_carry_probe.py"
+    },
+    {
+      "flow": "reloc",
+      "sha": "644289a755ee60df99e916224931c2dec80298eb",
+      "path": "scripts/run_solo_carry_probe.py"
+    }
+  ],
+  "scope": "Explicit flow execution boundaries and shared low-level world/port files, not a proof of all dynamically imported dependencies. Syntactic sites include evaluation and initialization; manual classification in inventory.md."
+}

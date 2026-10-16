@@ -11,7 +11,7 @@ from harness.zone_solo_cyan_pulse_cal import action_of
 
 
 def command(plan, own_pose, profiles, *, robot_id, loaded=False,
-            heading_mode=DEFAULT, legacy_action=None):
+            heading_mode=DEFAULT, legacy_action=None, min_command_contract=False):
     if heading_mode == 'off':
         return legacy_action  # don't inspect off inputs or rewrite their bytes
     if heading_mode != DEFAULT:
@@ -30,5 +30,6 @@ def command(plan, own_pose, profiles, *, robot_id, loaded=False,
     if math.dist(own_pose[:2], path[-1]) <= .03 and abs(
             math.atan2(math.sin(own_pose[2]-final_yaw), math.cos(own_pose[2]-final_yaw))) <= .06:
         return dict(kind='hold')
-    p, _ = select_waypoint(profiles, loaded, own_pose, point, path[-1], goal_yaw=final_yaw)
+    p, _ = select_waypoint(profiles, loaded, own_pose, point, path[-1], goal_yaw=final_yaw,
+                           min_command_contract=min_command_contract)
     return dict(kind='hold') if p is None else action_of(p)

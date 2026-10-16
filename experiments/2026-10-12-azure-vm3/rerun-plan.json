@@ -1,0 +1,37 @@
+{
+  "source_sha": "cc8fc1a2e62d7f331b732e1261be55c70c016355",
+  "source_branch": "claude/e2e14-combo",
+  "pr": 446,
+  "class": "dev",
+  "batch": "e2e14-rerun-vm3",
+  "run_names": [
+    "e2e15-a-s61001",
+    "e2e15-b-s61001",
+    "e2e15-a-s61002",
+    "e2e15-b-s61002",
+    "e2e15-a-s61003",
+    "e2e15-b-s61003"
+  ],
+  "groups": {
+    "a": "e2e-combo14-vo2-v205",
+    "b": "e2e-stall-budget-v199"
+  },
+  "exact_speed_toggles": "all off both arms",
+  "wall_cap_s": 25200,
+  "workflow_timeout_s": 25200,
+  "watchdog_signal_s": 25200,
+  "first_health_s": 205,
+  "health_interval_s": 600,
+  "exception_poll_s": 5,
+  "relay_local_port": 18394,
+  "relay_remote_port": 18391,
+  "storage_per_run_gib": 4,
+  "arm_other_admitted_reserve_gib": 20,
+  "success_conditions": [
+    "LLM_operated",
+    "own_map_completed",
+    "start_to_finish_transport"
+  ],
+  "raw_root": "azure3:/home/ugrp/ugrp-sim/runs",
+  "mac_policy": "fetch-lite only"
+}

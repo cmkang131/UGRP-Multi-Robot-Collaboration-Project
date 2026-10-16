@@ -83,10 +83,21 @@ def test_seed_is_fixed_at_cli_case_and_direct_backend(tmp_path, map_id):
 @pytest.mark.parametrize('check', c.CHECKS[2:])
 def test_two_door_plan_bundle_and_schedule_preserved(tmp_path, capsys, check):
     frozen = json.loads(BASELINE.read_text())['checks'][check]
-    from tests.test_review_352 import BASE_BYTES
+    from tests.test_review_352 import BASE_BYTES, baseline_writer
     assert legacy_run.main(args(tmp_path, MAP_ID, check)) == 0
-    plan_bytes = capsys.readouterr().out.encode()
-    bundle_bytes = (json.dumps(c.bundle(MAP_ID, check), ensure_ascii=False,
+    current_plan = json.loads(capsys.readouterr().out)
+    current_bundle = c.bundle(MAP_ID, check)
+    old_plan = baseline_writer(tmp_path, check, 'plan')
+    old_bundle = baseline_writer(tmp_path, check, 'bundle')
+    # Current receipts identify today's source; historical writer checks use
+    # the actual historical source and retain every source-dependent field.
+    assert {k:v for k,v in current_plan.items() if k != 'bundles_sha256'} == {
+        k:v for k,v in old_plan.items() if k != 'bundles_sha256'}
+    assert {k:v for k,v in current_bundle.items() if k != 'source_sha256'} == {
+        k:v for k,v in old_bundle.items() if k != 'source_sha256'}
+    assert all(c.base.sha(c.ROOT/p) == digest for p,digest in current_bundle['source_sha256'].items())
+    plan_bytes = (json.dumps(old_plan, ensure_ascii=False, indent=2, allow_nan=False)+'\n').encode()
+    bundle_bytes = (json.dumps(old_bundle, ensure_ascii=False,
                                indent=2, allow_nan=False) + '\n').encode()
     assert hashlib.sha256(plan_bytes).hexdigest() == BASE_BYTES[check]['plan']
     assert hashlib.sha256(bundle_bytes).hexdigest() == BASE_BYTES[check]['bundle']

@@ -1,0 +1,7 @@
+{
+  "stage": "before_fix",
+  "distribution": [{"category": "numeric_cast_overflow", "probes": 2, "reason": "simalt1 C0 and C1 put_data float64 to float32 cast failed; exact field not yet known", "blocking_object": "put_data array (pending audit)", "minimum_gap_m": null, "minimum_gap_status": "not_geometric"}],
+  "funnel": [{"gate": "noslip model import", "entered": 2, "passed": 2, "rejected": 0}, {"gate": "numeric data import", "entered": 2, "passed": 0, "rejected": 2}, {"gate": "accepted physics step", "entered": 0, "passed": 0, "rejected": 0}],
+  "raw_paths": ["ugrp-act-l4-pilot1:/home/changmin/ugrp-sim/runs/simalt1/C0", "ugrp-act-l4-pilot1:/home/changmin/ugrp-sim/runs/simalt1/C1-warning-as-error"],
+  "reproduction": "warp-env/bin/python scripts/simalt_numeric_audit.py --xml runs/simalt1/A-n1/scene.xml --out NEW_AUDIT --sha COMMITTED_SHA --enabled"
+}

@@ -1,0 +1,176 @@
+{
+  "schema": "ugrp.speedctrl3_preliminary.v1",
+  "records": [
+    {
+      "name": "speedctrl3-tests-f012",
+      "local_metadata": "/Users/changmin/projects/ugrp/outputs/oracle-runs/speedctrl3-tests-f012",
+      "source": "f012da8e3f34bfb78c7d5744e5467ee8ab133506",
+      "exit": 1,
+      "command": ".venv-sim/bin/python -m pytest tests/test_lazy_camera.py tests/test_controller_replay.py -q",
+      "log_sha256": "4266d2a816035e758ec64aaa9aea25c5b5390053b2be60f3e922bc3c3789a864",
+      "log": "...............................F.....                                    [100%]\n=================================== FAILURES ===================================\n____________ test_interrupted_invoke_waits_for_managed_cli_cleanup _____________\n\ntmp_path = PosixPath('/tmp/pytest-of-ubuntu/pytest-0/test_interrupted_invoke_waits_0')\nmonkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x748d7e92c680>\n\n    def test_interrupted_invoke_waits_for_managed_cli_cleanup(tmp_path,monkeypatch):\n        import signal,time\n        from types import SimpleNamespace\n        from scripts import benchmark_controller_replay as abba\n        monkeypatch.setattr(abba,'source_check',lambda expected:None)\n        monkeypatch.setattr(abba,'verify_adapter',lambda *a:None)\n        events=[]\n        class Child:\n            def wait(self):\n                events.append('wait')\n                if events.count('wait')==1:raise InterruptedError('HOST_INTERRUPTED:SIGTERM')\n                events.append('worker group cleaned');return 130\n            def poll(self):return None\n            def send_signal(self,sig):events.append(('signal',sig))\n        def popen(command,**kwargs):\n            assert kwargs['start_new_session'] is True\n            assert '--timeout' in command\n            return Child()\n        monkeypatch.setattr(abba.subprocess,'Popen',popen)\n        args=SimpleNamespace(expected_source_sha='a'*40,deadline=time.monotonic()+60,profile=False)\n        case=dict(id='s3',kind='s3',raw='unused',adapter='unused',adapter_sha256='fixed')\n        with pytest.raises(InterruptedError,match='HOST_INTERRUPTED'):\n>           abba.invoke(case,tmp_path/'new',args,scan='off',storage='off')\n\ntests/test_controller_replay.py:387: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\ncase = {'id': 's3', 'kind': 's3', 'raw': 'unused', 'adapter': 'unused', ...}\noutput = PosixPath('/tmp/pytest-of-ubuntu/pytest-0/test_interrupted_invoke_waits_0/new')\nargs = namespace(expected_source_sha='aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', deadline=8672.263857919, profile=False)\nscan = 'off', storage = 'off', local = 0.0\n\n    def invoke(case, output, args, *, scan, storage, local=0.):\n        source_check(args.expected_source_sha)\n        verify_adapter(case['adapter'], case['adapter_sha256'])\n        if shutil.disk_usage(output.parent).free < 10*2**30:\n>           raise RuntimeError('HOST_ERROR: disk below 10 GiB; originals preserved')\nE           RuntimeError: HOST_ERROR: disk below 10 GiB; originals preserved\n\nscripts/benchmark_controller_replay.py:231: RuntimeError\n=========================== short test summary info ============================\nFAILED tests/test_controller_replay.py::test_interrupted_invoke_waits_for_managed_cli_cleanup\n1 failed, 36 passed in 0.81s\nCommand exited with non-zero status 1\nwall=1.03 cpu=0.82+0.15\n"
+    },
+    {
+      "name": "speedctrl3-tests-90a4",
+      "local_metadata": "/Users/changmin/projects/ugrp/outputs/oracle-runs/speedctrl3-tests-90a4",
+      "source": "90a467acad129e6a9d6414628950beb1724b6848",
+      "exit": 0,
+      "command": ".venv-sim/bin/python -m pytest tests/test_lazy_camera.py tests/test_controller_replay.py -q",
+      "log_sha256": "268b320aaa32ef787d6e5315a6c5db36fd8ae49c8c1e4f904de2158a7d0d2ab4",
+      "log": "......................................                                   [100%]\n38 passed in 1.77s\nwall=1.94 cpu=0.80+0.11\n"
+    },
+    {
+      "name": "speedctrl3-tests-1f8b",
+      "local_metadata": "/Users/changmin/projects/ugrp/outputs/oracle-runs/speedctrl3-tests-1f8b",
+      "source": "1f8bb9cacc05cde371cd8d4ae51637f028ca6dfe",
+      "exit": 0,
+      "command": ".venv-sim/bin/python -m pytest tests/test_lazy_camera.py tests/test_controller_replay.py tests/test_controller_exact_speedups.py -q",
+      "log_sha256": "aa8d52ab9b06a85be33d4ad8227276aafdc35ae959057011353e98d96747131e",
+      "log": ".............................................................            [100%]\n61 passed in 1.99s\nwall=2.31 cpu=2.14+0.24\n"
+    },
+    {
+      "name": "speedctrl3-pathcheck-90a4",
+      "local_metadata": "/Users/changmin/projects/ugrp/outputs/oracle-runs/speedctrl3-pathcheck-90a4",
+      "source": "90a467acad129e6a9d6414628950beb1724b6848",
+      "exit": 2,
+      "command": "/usr/bin/env UGRP_EXECUTION_HOST=oracle-x86 MPLBACKEND=Agg PYTHONPATH=/home/ubuntu/ugrp-sim/egomap60-deps .venv-sim/bin/python -m scripts.sim_cli run lazy-camera-abba --record outputs/speedctrl3-pathcheck-90a4/managed --timeout 7200 -- --kind abba --sim-s 5 --output outputs/speedctrl3-pathcheck-90a4/data --expected-source-sha 90a467acad129e6a9d6414628950beb1724b6848",
+      "log_sha256": "5a7766978f94bc6aa5d27c4993a175e4d94824da563be6e05136265acd843cb3",
+      "diagnosis": "Wrong managed CLI verb (run instead of workflow run); argparse exit 2, physics never started."
+    },
+    {
+      "name": "speedctrl3-pathcheck-90a4-r2",
+      "local_metadata": "/Users/changmin/projects/ugrp/outputs/oracle-runs/speedctrl3-pathcheck-90a4-r2",
+      "source": "90a467acad129e6a9d6414628950beb1724b6848",
+      "exit": 130,
+      "command": "/usr/bin/env UGRP_EXECUTION_HOST=oracle-x86 MPLBACKEND=Agg PYTHONPATH=/home/ubuntu/ugrp-sim/egomap60-deps .venv-sim/bin/python -m scripts.sim_cli workflow run lazy-camera-abba --record outputs/speedctrl3-pathcheck-90a4-r2/managed --timeout 7200 -- --kind abba --sim-s 5 --output outputs/speedctrl3-pathcheck-90a4-r2/data --expected-source-sha 90a467acad129e6a9d6414628950beb1724b6848",
+      "log_sha256": "830c419ad084db48f4e9428dcb2cd04a2283c2957c0edbcf4a2d8e29de6fe35c",
+      "stop_receipt": {
+        "reason": "pathcheck complete for both adapters; final source ready; stop idle parent only while S3 research runs",
+        "pid": 47964,
+        "command": ".venv-sim/bin/python -m scripts.sim_cli workflow run lazy-camera-abba --record outputs/speedctrl3-pathcheck-90a4-r2/managed --timeout 7200 -- --kind abba --sim-s 5 --output outputs/speedctrl3-pathcheck-90a4-r2/data --expected-source-sha 90a467acad129e6a9d6414628950beb1724b6848",
+        "child_arm_active": false,
+        "signal": "SIGTERM",
+        "at": 1791634448.6689787
+      },
+      "scope": "5-SIM path check, deliberately stopped idle parent after S3 ABBA and first ego arm for priority research; no performance adoption.",
+      "s3": {
+        "kind": "s3",
+        "complete": true,
+        "same_source": true,
+        "byte_identical": false,
+        "compared_files": 309,
+        "mismatches": [
+          "bundle.json",
+          "student_record.json"
+        ],
+        "frame_proof": "all retained JPEGs and original frame-ledger bytes; superset of consumed frames",
+        "load_means": [
+          1.6259852818080358,
+          2.3909357244318183,
+          2.8119495738636364,
+          2.5597330729166665
+        ],
+        "load_comparable": false,
+        "eager_wall_per_sim": 10.953439733400046,
+        "lazy_wall_per_sim": 10.860894616300175,
+        "reduction_fraction": null
+      },
+      "camera": [
+        {
+          "schema": "ugrp.lazy_camera.v1",
+          "mode": "eager",
+          "batches": 100,
+          "offered": 300,
+          "rendered": 300,
+          "consumer": 0,
+          "recording": 0,
+          "eager": 300,
+          "render_wall_s": 7.670775450997098,
+          "capture_wall_s": 8.291111026006547,
+          "skipped": 0,
+          "retention": "all legacy JPEGs and frame-ledger rows",
+          "module_sha256": "d86bf6ae1235b82de6884f98c2a519edffa586c5d5831cc0fb29b556c62c1623"
+        },
+        {
+          "schema": "ugrp.lazy_camera.v1",
+          "mode": "lazy-v1",
+          "batches": 100,
+          "offered": 300,
+          "rendered": 300,
+          "consumer": 300,
+          "recording": 0,
+          "eager": 0,
+          "render_wall_s": 7.1734529479999765,
+          "capture_wall_s": 7.8522867530009535,
+          "skipped": 0,
+          "retention": "all legacy JPEGs and frame-ledger rows",
+          "module_sha256": "d86bf6ae1235b82de6884f98c2a519edffa586c5d5831cc0fb29b556c62c1623"
+        },
+        {
+          "schema": "ugrp.lazy_camera.v1",
+          "mode": "lazy-v1",
+          "batches": 100,
+          "offered": 300,
+          "rendered": 300,
+          "consumer": 300,
+          "recording": 0,
+          "eager": 0,
+          "render_wall_s": 7.08520935600427,
+          "capture_wall_s": 7.351512081997498,
+          "skipped": 0,
+          "retention": "all legacy JPEGs and frame-ledger rows",
+          "module_sha256": "d86bf6ae1235b82de6884f98c2a519edffa586c5d5831cc0fb29b556c62c1623"
+        },
+        {
+          "schema": "ugrp.lazy_camera.v1",
+          "mode": "eager",
+          "batches": 100,
+          "offered": 300,
+          "rendered": 300,
+          "consumer": 0,
+          "recording": 0,
+          "eager": 300,
+          "render_wall_s": 7.132547191000413,
+          "capture_wall_s": 7.40714011199816,
+          "skipped": 0,
+          "retention": "all legacy JPEGs and frame-ledger rows",
+          "module_sha256": "d86bf6ae1235b82de6884f98c2a519edffa586c5d5831cc0fb29b556c62c1623"
+        }
+      ],
+      "ego_first_arm": {
+        "schema": "ugrp.lazy_camera_measurement.v1",
+        "implementation_sha": "90a467acad129e6a9d6414628950beb1724b6848",
+        "adapter_sha": "2cfe8852ba3b8db8045bb946d45d5f678d134e86",
+        "adapter_fingerprint": "25d703bbe87f405e06110263bcd135f683bcfae1a57dce4f68c3729ac162bbee",
+        "adapter_unchanged": true,
+        "kind": "ego",
+        "mode": "eager",
+        "requested_sim_s": 5.0,
+        "sim_s": 5.0,
+        "wall_s": 15.135565568998572,
+        "wall_per_sim": 3.0271131137997145,
+        "load_mean": [
+          2.3272705078125,
+          2.2755126953125,
+          8.45965576171875
+        ],
+        "timers": {
+          "physics_s": 0.0,
+          "physics_calls": 0,
+          "render_s": 1.2784628739973414,
+          "render_calls": 26
+        },
+        "result_status": "RECORDED",
+        "failure": null,
+        "source_module_sha256": "d86bf6ae1235b82de6884f98c2a519edffa586c5d5831cc0fb29b556c62c1623",
+        "physics_host": "ugrp-x86-sim",
+        "environment": {
+          "LP_NUM_THREADS": "4",
+          "OMP_NUM_THREADS": "1",
+          "MUJOCO_GL": "osmesa",
+          "UGRP_EXECUTION_HOST": "oracle-x86"
+        }
+      }
+    }
+  ]
+}

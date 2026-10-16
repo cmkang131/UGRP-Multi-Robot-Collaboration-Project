@@ -1,0 +1,1576 @@
+{
+  "e2e10-a-s61001-r2": {
+    "r1": {
+      "intervals": 2307,
+      "translation_intervals": 1104,
+      "stalled_intervals": 0,
+      "stall_fraction": 0.0,
+      "stall_duration_s": 0,
+      "stall_segments": 0,
+      "issued_during_stall_m": 0,
+      "actual_path_during_stall_m": 0,
+      "stall_local_increment_error_m": 0,
+      "stall_net_map_error_change_m": 0,
+      "stall_net_odom_error_change_m": 0,
+      "stall_contacts": {},
+      "stalled_without_contact": 0,
+      "map_error_max_m": 4.3761142937502004,
+      "map_error_median_m": 3.258768650045889,
+      "odom_error_max_m": 3.998201114804028,
+      "odom_error_median_m": 2.660181672833716,
+      "first_over_1m_sim_s": 53.0,
+      "longest_segments": [],
+      "sources": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61001-r2/raw/robots/r1/ownmap.jsonl.zst",
+          "bytes": 398611,
+          "sha256": "4be6b525c37b24666c206805e79d76e7bc039495b8baddc8386054016807679f"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61001-r2/raw/robots/r1/frames.jsonl.zst",
+          "bytes": 100844,
+          "sha256": "257e8de7b991f45e03d15353a70dab84beb5a6639b881964c3dbe40fa824a9fe"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61001-r2/raw/robots/r1/commands.jsonl.zst",
+          "bytes": 4000,
+          "sha256": "a8f041e22c66ca1eec2e07e65bafc044d26bbaef006a4806b6fdfc4900764073"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61001-r2/raw/eval_only/r1/trajectory.jsonl.zst",
+          "bytes": 451290,
+          "sha256": "285a45c58bced24d3fdf6e585b865b7b9b5171eaeabe4f53542b4d7072d8e336"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61001-r2/raw/eval_only/contacts.jsonl.zst",
+          "bytes": 2459711,
+          "sha256": "686dd43bfa84c36f071ef081d67375e1aeca63d127cb64e805975c3770136769"
+        }
+      ]
+    },
+    "r2": {
+      "intervals": 2307,
+      "translation_intervals": 1139,
+      "stalled_intervals": 474,
+      "stall_fraction": 0.4161545215100966,
+      "stall_duration_s": 94.7999999999999,
+      "stall_segments": 78,
+      "issued_during_stall_m": 6.12569812848129,
+      "actual_path_during_stall_m": 0.8218324241330888,
+      "stall_local_increment_error_m": 6.032354807135105,
+      "stall_net_map_error_change_m": 4.558969606101269,
+      "stall_net_odom_error_change_m": 4.507605655311646,
+      "stall_contacts": {
+        "cargo_beam_1__bar": 474
+      },
+      "stalled_without_contact": 0,
+      "map_error_max_m": 6.024104760950433,
+      "map_error_median_m": 5.643430944948852,
+      "odom_error_max_m": 6.565903851187988,
+      "odom_error_median_m": 5.386734395514145,
+      "first_over_1m_sim_s": 20.8,
+      "longest_segments": [
+        {
+          "start_index": 278,
+          "end_index": 372,
+          "t0": 55.6,
+          "t1": 74.6,
+          "duration_s": 18.999999999999993,
+          "expected_m": 1.2277243084508822,
+          "actual_path_m": 0.1642305002633196,
+          "map_error_change_m": 1.1989451364704236,
+          "odom_error_change_m": 1.0024778706979043,
+          "contacts": [
+            "cargo_beam_1__bar"
+          ]
+        },
+        {
+          "start_index": 153,
+          "end_index": 206,
+          "t0": 30.6,
+          "t1": 41.4,
+          "duration_s": 10.799999999999997,
+          "expected_m": 0.6978643437510313,
+          "actual_path_m": 0.06408267331161902,
+          "map_error_change_m": 0.6804199985302661,
+          "odom_error_change_m": 0.6898527942721226,
+          "contacts": [
+            "cargo_beam_1__bar"
+          ]
+        },
+        {
+          "start_index": 53,
+          "end_index": 97,
+          "t0": 10.6,
+          "t1": 19.6,
+          "duration_s": 9.000000000000002,
+          "expected_m": 0.581553619792537,
+          "actual_path_m": 0.07806573930281992,
+          "map_error_change_m": 0.5048874197097012,
+          "odom_error_change_m": 0.5717281572671826,
+          "contacts": [
+            "cargo_beam_1__bar"
+          ]
+        },
+        {
+          "start_index": 106,
+          "end_index": 147,
+          "t0": 21.2,
+          "t1": 29.6,
+          "duration_s": 8.400000000000002,
+          "expected_m": 0.5427833784730363,
+          "actual_path_m": 0.0678484475150305,
+          "map_error_change_m": 0.5324992828949551,
+          "odom_error_change_m": 0.5326108801849732,
+          "contacts": [
+            "cargo_beam_1__bar"
+          ]
+        },
+        {
+          "start_index": 375,
+          "end_index": 407,
+          "t0": 75.0,
+          "t1": 81.6,
+          "duration_s": 6.599999999999994,
+          "expected_m": 0.42647265451451516,
+          "actual_path_m": 0.05721283287030518,
+          "map_error_change_m": 0.4131306685393996,
+          "odom_error_change_m": 0.3880407280075877,
+          "contacts": [
+            "cargo_beam_1__bar"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61001-r2/raw/robots/r2/ownmap.jsonl.zst",
+          "bytes": 383425,
+          "sha256": "1497be2935ac71df439eec80fbc2ebb7bd59c147192d8ce6191e28974b86fecc"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61001-r2/raw/robots/r2/frames.jsonl.zst",
+          "bytes": 102611,
+          "sha256": "be51a53b6cd01a01db2527911d5fa2c60f4f150bc080e144a32aaf2164791b4e"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61001-r2/raw/robots/r2/commands.jsonl.zst",
+          "bytes": 4057,
+          "sha256": "fb3c1d930c00f1c8a6fee9bea7ff2673e26c88882bbe2caff59a85f5033e3963"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61001-r2/raw/eval_only/r2/trajectory.jsonl.zst",
+          "bytes": 456153,
+          "sha256": "837b24495d3f34decaeb0bbb420e1c8051a1785369ae3d2f6505d27a9e08ae78"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61001-r2/raw/eval_only/contacts.jsonl.zst",
+          "bytes": 2459711,
+          "sha256": "686dd43bfa84c36f071ef081d67375e1aeca63d127cb64e805975c3770136769"
+        }
+      ]
+    }
+  },
+  "e2e10-a-s61002-r2": {
+    "r1": {
+      "intervals": 2352,
+      "translation_intervals": 1060,
+      "stalled_intervals": 26,
+      "stall_fraction": 0.024528301886792454,
+      "stall_duration_s": 5.199999999999989,
+      "stall_segments": 8,
+      "issued_during_stall_m": 0.33600875810234754,
+      "actual_path_during_stall_m": 0.04915307500685967,
+      "stall_local_increment_error_m": 0.3123229459097341,
+      "stall_net_map_error_change_m": 0.2926067794743581,
+      "stall_net_odom_error_change_m": 0.24563968286689475,
+      "stall_contacts": {
+        "zone_wall_divider_1": 26
+      },
+      "stalled_without_contact": 0,
+      "map_error_max_m": 6.309282206532107,
+      "map_error_median_m": 4.9935382122395415,
+      "odom_error_max_m": 2.2669127477134023,
+      "odom_error_median_m": 1.6877928848447346,
+      "first_over_1m_sim_s": 103.6,
+      "longest_segments": [
+        {
+          "start_index": 1321,
+          "end_index": 1328,
+          "t0": 264.2,
+          "t1": 265.8,
+          "duration_s": 1.6000000000000227,
+          "expected_m": 0.10338731018533803,
+          "actual_path_m": 0.011868504195876092,
+          "map_error_change_m": 0.10327918232710509,
+          "odom_error_change_m": 0.0813220810937505,
+          "contacts": [
+            "zone_wall_divider_1"
+          ]
+        },
+        {
+          "start_index": 1291,
+          "end_index": 1293,
+          "t0": 258.2,
+          "t1": 258.8,
+          "duration_s": 0.6000000000000227,
+          "expected_m": 0.038770241319502005,
+          "actual_path_m": 0.005748465029042907,
+          "map_error_change_m": 0.024817909546480443,
+          "odom_error_change_m": 0.017730462571006633,
+          "contacts": [
+            "zone_wall_divider_1"
+          ]
+        },
+        {
+          "start_index": 1296,
+          "end_index": 1298,
+          "t0": 259.2,
+          "t1": 259.8,
+          "duration_s": 0.6000000000000227,
+          "expected_m": 0.038770241319502,
+          "actual_path_m": 0.006188294070105611,
+          "map_error_change_m": 0.027574810449870313,
+          "odom_error_change_m": 0.023756673193149114,
+          "contacts": [
+            "zone_wall_divider_1"
+          ]
+        },
+        {
+          "start_index": 1313,
+          "end_index": 1315,
+          "t0": 262.6,
+          "t1": 263.2,
+          "duration_s": 0.5999999999999659,
+          "expected_m": 0.038770241319501304,
+          "actual_path_m": 0.006077186484413704,
+          "map_error_change_m": 0.035211375671237555,
+          "odom_error_change_m": 0.030432331433630333,
+          "contacts": [
+            "zone_wall_divider_1"
+          ]
+        },
+        {
+          "start_index": 1334,
+          "end_index": 1336,
+          "t0": 266.8,
+          "t1": 267.4,
+          "duration_s": 0.5999999999999659,
+          "expected_m": 0.03877024131950112,
+          "actual_path_m": 0.006827617210797935,
+          "map_error_change_m": 0.03612508148073701,
+          "odom_error_change_m": 0.03362813726090774,
+          "contacts": [
+            "zone_wall_divider_1"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61002-r2/raw/robots/r1/ownmap.jsonl.zst",
+          "bytes": 389681,
+          "sha256": "3a7588bfc4b56ebfc8258b14a66cf3c382d1d8432e73651597912078678c69e8"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61002-r2/raw/robots/r1/frames.jsonl.zst",
+          "bytes": 98654,
+          "sha256": "000304403d6999f11b5980f09d115bc1f667dc944f38378eae1b8175b8759021"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61002-r2/raw/robots/r1/commands.jsonl.zst",
+          "bytes": 4063,
+          "sha256": "5dc2076c4cf6b7dbb57141a13774ac536fab8f3608a90ce1017de0fb4d45da7d"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61002-r2/raw/eval_only/r1/trajectory.jsonl.zst",
+          "bytes": 465123,
+          "sha256": "aea5ece4b1eddbcf5e952047e5b6c646df515944b7fd674b2883132fcc2e7973"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61002-r2/raw/eval_only/contacts.jsonl.zst",
+          "bytes": 2772428,
+          "sha256": "a1d38b1aff2566af6beab9e6e23868ddff4642db8c79bcd2f57a5b22e8a78252"
+        }
+      ]
+    },
+    "r2": {
+      "intervals": 2352,
+      "translation_intervals": 1174,
+      "stalled_intervals": 786,
+      "stall_fraction": 0.6695059625212947,
+      "stall_duration_s": 157.20000000000002,
+      "stall_segments": 122,
+      "issued_during_stall_m": 10.157803225709504,
+      "actual_path_during_stall_m": 1.437617803269483,
+      "stall_local_increment_error_m": 10.06284881608147,
+      "stall_net_map_error_change_m": 2.331524196052814,
+      "stall_net_odom_error_change_m": 2.9064074032171834,
+      "stall_contacts": {
+        "cargo_beam_1__bar": 786
+      },
+      "stalled_without_contact": 0,
+      "map_error_max_m": 3.626234732754522,
+      "map_error_median_m": 2.096974646210181,
+      "odom_error_max_m": 4.522176824130333,
+      "odom_error_median_m": 3.0472917900982353,
+      "first_over_1m_sim_s": 22.8,
+      "longest_segments": [
+        {
+          "start_index": 55,
+          "end_index": 204,
+          "t0": 11.0,
+          "t1": 41.0,
+          "duration_s": 30.0,
+          "expected_m": 1.9385120659751138,
+          "actual_path_m": 0.2015068078941425,
+          "map_error_change_m": 1.7968300890204558,
+          "odom_error_change_m": 1.9172718686027734,
+          "contacts": [
+            "cargo_beam_1__bar"
+          ]
+        },
+        {
+          "start_index": 1001,
+          "end_index": 1057,
+          "t0": 200.2,
+          "t1": 211.6,
+          "duration_s": 11.400000000000006,
+          "expected_m": 0.7366345850705384,
+          "actual_path_m": 0.10390251341600322,
+          "map_error_change_m": 0.32873750133689894,
+          "odom_error_change_m": 0.21148479400649922,
+          "contacts": [
+            "cargo_beam_1__bar"
+          ]
+        },
+        {
+          "start_index": 539,
+          "end_index": 591,
+          "t0": 107.8,
+          "t1": 118.4,
+          "duration_s": 10.600000000000009,
+          "expected_m": 0.6849409299778598,
+          "actual_path_m": 0.11984784482523597,
+          "map_error_change_m": -0.6054502960011536,
+          "odom_error_change_m": -0.4718780604446944,
+          "contacts": [
+            "cargo_beam_1__bar"
+          ]
+        },
+        {
+          "start_index": 645,
+          "end_index": 672,
+          "t0": 129.0,
+          "t1": 134.6,
+          "duration_s": 5.599999999999994,
+          "expected_m": 0.3618555856486857,
+          "actual_path_m": 0.0615938714632083,
+          "map_error_change_m": 0.051949220813537256,
+          "odom_error_change_m": 0.08674183031538663,
+          "contacts": [
+            "cargo_beam_1__bar"
+          ]
+        },
+        {
+          "start_index": 22,
+          "end_index": 46,
+          "t0": 4.4,
+          "t1": 9.4,
+          "duration_s": 5.0,
+          "expected_m": 0.3230853443291879,
+          "actual_path_m": 0.03474083765147798,
+          "map_error_change_m": 0.27935799289957874,
+          "odom_error_change_m": 0.3152665847829753,
+          "contacts": [
+            "cargo_beam_1__bar"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61002-r2/raw/robots/r2/ownmap.jsonl.zst",
+          "bytes": 387972,
+          "sha256": "ebe1b7da70d9dc3c63d9356d1478d1c9a96d50e7a56a887699891a25074f6db6"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61002-r2/raw/robots/r2/frames.jsonl.zst",
+          "bytes": 104331,
+          "sha256": "f91ecfd5a08522de20f8ed802171082ce0e0823cfe3aa5da0d93b550295b89b5"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61002-r2/raw/robots/r2/commands.jsonl.zst",
+          "bytes": 3914,
+          "sha256": "bfb4a54e56558be1ac26e5c0fab25be9f61cb6bfed7e011c6f0a0bf28d34463f"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61002-r2/raw/eval_only/r2/trajectory.jsonl.zst",
+          "bytes": 461947,
+          "sha256": "5fb06aa9e6fef2d1f5be44a46829eab127c21735df3cc3bc0ff8eba579f8635e"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61002-r2/raw/eval_only/contacts.jsonl.zst",
+          "bytes": 2772428,
+          "sha256": "a1d38b1aff2566af6beab9e6e23868ddff4642db8c79bcd2f57a5b22e8a78252"
+        }
+      ]
+    }
+  },
+  "e2e10-a-s61003-r2": {
+    "r1": {
+      "intervals": 2452,
+      "translation_intervals": 1142,
+      "stalled_intervals": 0,
+      "stall_fraction": 0.0,
+      "stall_duration_s": 0,
+      "stall_segments": 0,
+      "issued_during_stall_m": 0,
+      "actual_path_during_stall_m": 0,
+      "stall_local_increment_error_m": 0,
+      "stall_net_map_error_change_m": 0,
+      "stall_net_odom_error_change_m": 0,
+      "stall_contacts": {},
+      "stalled_without_contact": 0,
+      "map_error_max_m": 3.151912563870286,
+      "map_error_median_m": 2.13198557037221,
+      "odom_error_max_m": 4.124626572665596,
+      "odom_error_median_m": 3.216837783620315,
+      "first_over_1m_sim_s": 41.4,
+      "longest_segments": [],
+      "sources": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61003-r2/raw/robots/r1/ownmap.jsonl.zst",
+          "bytes": 400180,
+          "sha256": "44fd8246d4e2f4b7d47e42cd6b5b89b3c7d050357edc426b9c307117de50413e"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61003-r2/raw/robots/r1/frames.jsonl.zst",
+          "bytes": 105863,
+          "sha256": "1f9637942fcd5c32aa21076e20f07e47b552b77819216cdd9c187ef8b7d768fa"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61003-r2/raw/robots/r1/commands.jsonl.zst",
+          "bytes": 3781,
+          "sha256": "a2c76eb2bd4f7d6b4ac90c11eed2b7e8c55c5ae3bb23f01ea392710d3b903d2a"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61003-r2/raw/eval_only/r1/trajectory.jsonl.zst",
+          "bytes": 480497,
+          "sha256": "99e88adead4941495337db87bcc7cf096536c8b0ca7e24ed7054ff0363122e25"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61003-r2/raw/eval_only/contacts.jsonl.zst",
+          "bytes": 2540926,
+          "sha256": "65643bfcb4cf9cf825c19f99fe9aeaf682828dd48582ac0b709cb10b5530cade"
+        }
+      ]
+    },
+    "r2": {
+      "intervals": 2452,
+      "translation_intervals": 1164,
+      "stalled_intervals": 364,
+      "stall_fraction": 0.3127147766323024,
+      "stall_duration_s": 72.8,
+      "stall_segments": 24,
+      "issued_during_stall_m": 4.704122613432893,
+      "actual_path_during_stall_m": 0.5205953419993784,
+      "stall_local_increment_error_m": 4.628278819290231,
+      "stall_net_map_error_change_m": 4.356664979030791,
+      "stall_net_odom_error_change_m": 4.334686106937614,
+      "stall_contacts": {
+        "cargo_beam_1__bar": 364
+      },
+      "stalled_without_contact": 0,
+      "map_error_max_m": 6.979864712696211,
+      "map_error_median_m": 3.1093698216943664,
+      "odom_error_max_m": 5.224795064348334,
+      "odom_error_median_m": 3.9540459280206095,
+      "first_over_1m_sim_s": 19.2,
+      "longest_segments": [
+        {
+          "start_index": 105,
+          "end_index": 212,
+          "t0": 21.0,
+          "t1": 42.6,
+          "duration_s": 21.6,
+          "expected_m": 1.3957286875020762,
+          "actual_path_m": 0.1272963320287132,
+          "map_error_change_m": 1.323933583352156,
+          "odom_error_change_m": 1.3864238434738463,
+          "contacts": [
+            "cargo_beam_1__bar"
+          ]
+        },
+        {
+          "start_index": 215,
+          "end_index": 289,
+          "t0": 43.0,
+          "t1": 58.0,
+          "duration_s": 15.0,
+          "expected_m": 0.9692560329875376,
+          "actual_path_m": 0.10300150635268474,
+          "map_error_change_m": 0.95069728444231,
+          "odom_error_change_m": 0.9574663169749851,
+          "contacts": [
+            "cargo_beam_1__bar"
+          ]
+        },
+        {
+          "start_index": 49,
+          "end_index": 97,
+          "t0": 9.8,
+          "t1": 19.6,
+          "duration_s": 9.8,
+          "expected_m": 0.6332472748852072,
+          "actual_path_m": 0.068063075244872,
+          "map_error_change_m": 0.6505038683568259,
+          "odom_error_change_m": 0.6242159968067984,
+          "contacts": [
+            "cargo_beam_1__bar"
+          ]
+        },
+        {
+          "start_index": 380,
+          "end_index": 409,
+          "t0": 76.0,
+          "t1": 82.0,
+          "duration_s": 6.0,
+          "expected_m": 0.3877024131950137,
+          "actual_path_m": 0.05096081526070202,
+          "map_error_change_m": 0.36151165756431203,
+          "odom_error_change_m": 0.3354820663498783,
+          "contacts": [
+            "cargo_beam_1__bar"
+          ]
+        },
+        {
+          "start_index": 329,
+          "end_index": 348,
+          "t0": 65.8,
+          "t1": 69.8,
+          "duration_s": 4.0,
+          "expected_m": 0.2584682754633444,
+          "actual_path_m": 0.030038121547075677,
+          "map_error_change_m": 0.14343844847954568,
+          "odom_error_change_m": 0.1273448666452004,
+          "contacts": [
+            "cargo_beam_1__bar"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61003-r2/raw/robots/r2/ownmap.jsonl.zst",
+          "bytes": 396405,
+          "sha256": "99529647e54301181a265dda1327c9070671e7343af0896cdc651258c5adbd56"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61003-r2/raw/robots/r2/frames.jsonl.zst",
+          "bytes": 108513,
+          "sha256": "2114e683aa99a26350b5a5e9cc53e6defd1a440adcfc3491ad3edac0b8cd70e2"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61003-r2/raw/robots/r2/commands.jsonl.zst",
+          "bytes": 3883,
+          "sha256": "7e2659d908de501a9244ad0ef2a0cb3132d843d8fa3624f6a231ae35e4c2c177"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61003-r2/raw/eval_only/r2/trajectory.jsonl.zst",
+          "bytes": 481563,
+          "sha256": "0acacc85dbecaa4c87e449a92d7b22855172406edde767b2a6ec7c923c8d4bc3"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61003-r2/raw/eval_only/contacts.jsonl.zst",
+          "bytes": 2540926,
+          "sha256": "65643bfcb4cf9cf825c19f99fe9aeaf682828dd48582ac0b709cb10b5530cade"
+        }
+      ]
+    }
+  },
+  "e2e10-a-s61004-r2": {
+    "r1": {
+      "intervals": 2369,
+      "translation_intervals": 1034,
+      "stalled_intervals": 164,
+      "stall_fraction": 0.15860735009671179,
+      "stall_duration_s": 32.80000000000007,
+      "stall_segments": 21,
+      "issued_during_stall_m": 2.1194398587994447,
+      "actual_path_during_stall_m": 0.29107858375431295,
+      "stall_local_increment_error_m": 2.160085162499782,
+      "stall_net_map_error_change_m": 2.283744637345734,
+      "stall_net_odom_error_change_m": 1.8816275323134581,
+      "stall_contacts": {
+        "cargo_beam_1__bar": 139,
+        "zone_wall_divider_1": 25
+      },
+      "stalled_without_contact": 0,
+      "map_error_max_m": 5.568731748540182,
+      "map_error_median_m": 3.989031101133673,
+      "odom_error_max_m": 4.261249928249943,
+      "odom_error_median_m": 2.5646066397795964,
+      "first_over_1m_sim_s": 74.8,
+      "longest_segments": [
+        {
+          "start_index": 703,
+          "end_index": 831,
+          "t0": 140.6,
+          "t1": 166.4,
+          "duration_s": 25.80000000000001,
+          "expected_m": 1.667120376738587,
+          "actual_path_m": 0.22303634310008133,
+          "map_error_change_m": 2.082864242007232,
+          "odom_error_change_m": 1.687963475996293,
+          "contacts": [
+            "cargo_beam_1__bar"
+          ]
+        },
+        {
+          "start_index": 1086,
+          "end_index": 1090,
+          "t0": 217.2,
+          "t1": 218.2,
+          "duration_s": 1.0,
+          "expected_m": 0.06461706886583732,
+          "actual_path_m": 0.004392878247975444,
+          "map_error_change_m": 0.04742434667709583,
+          "odom_error_change_m": 0.055943688532873015,
+          "contacts": [
+            "zone_wall_divider_1"
+          ]
+        },
+        {
+          "start_index": 1041,
+          "end_index": 1044,
+          "t0": 208.2,
+          "t1": 209.0,
+          "duration_s": 0.8000000000000114,
+          "expected_m": 0.051693655092669995,
+          "actual_path_m": 0.008826512774930208,
+          "map_error_change_m": -0.005402404355156598,
+          "odom_error_change_m": -0.005393457921552658,
+          "contacts": [
+            "zone_wall_divider_1"
+          ]
+        },
+        {
+          "start_index": 1103,
+          "end_index": 1106,
+          "t0": 220.6,
+          "t1": 221.4,
+          "duration_s": 0.8000000000000114,
+          "expected_m": 0.05169365509266951,
+          "actual_path_m": 0.006426712314536603,
+          "map_error_change_m": 0.04512439666247792,
+          "odom_error_change_m": 0.050519228637237346,
+          "contacts": [
+            "zone_wall_divider_1"
+          ]
+        },
+        {
+          "start_index": 870,
+          "end_index": 872,
+          "t0": 174.0,
+          "t1": 174.6,
+          "duration_s": 0.5999999999999943,
+          "expected_m": 0.03877024131950199,
+          "actual_path_m": 0.006922650548307617,
+          "map_error_change_m": 0.022056459646444093,
+          "odom_error_change_m": -9.577374926816873e-05,
+          "contacts": [
+            "cargo_beam_1__bar"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61004-r2/raw/robots/r1/ownmap.jsonl.zst",
+          "bytes": 385061,
+          "sha256": "e812cd67dad0209f4a4d88222f3771b820902e2bd8403631ff3505eed49a43c2"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61004-r2/raw/robots/r1/frames.jsonl.zst",
+          "bytes": 101708,
+          "sha256": "2f567ec1d418274211e95bbefb1ed38269239a4371b1b8cb8f26b206319597e5"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61004-r2/raw/robots/r1/commands.jsonl.zst",
+          "bytes": 3874,
+          "sha256": "0f1368fedda96d7f2b2998e7ee79e74b6527a8ba40c7ea3b92efa7b83551c0f5"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61004-r2/raw/eval_only/r1/trajectory.jsonl.zst",
+          "bytes": 468130,
+          "sha256": "90e40e02b6ca45d4a385538b7fe2756a9534936efc7ba93dfec72c526f6c2394"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61004-r2/raw/eval_only/contacts.jsonl.zst",
+          "bytes": 2578950,
+          "sha256": "e6eefcac2946f9c3459a8cbf9d380816cde814a3dc73a91ba37e19c53d845dde"
+        }
+      ]
+    },
+    "r2": {
+      "intervals": 2369,
+      "translation_intervals": 1023,
+      "stalled_intervals": 371,
+      "stall_fraction": 0.3626588465298143,
+      "stall_duration_s": 74.2,
+      "stall_segments": 23,
+      "issued_during_stall_m": 4.794586509845066,
+      "actual_path_during_stall_m": 0.5273428321746231,
+      "stall_local_increment_error_m": 4.733699902228451,
+      "stall_net_map_error_change_m": 4.266313869393083,
+      "stall_net_odom_error_change_m": 4.21880376457167,
+      "stall_contacts": {
+        "cargo_beam_1__bar": 371
+      },
+      "stalled_without_contact": 0,
+      "map_error_max_m": 5.093763713528073,
+      "map_error_median_m": 4.617159061167913,
+      "odom_error_max_m": 4.849902383510183,
+      "odom_error_median_m": 4.617766509846322,
+      "first_over_1m_sim_s": 19.8,
+      "longest_segments": [
+        {
+          "start_index": 113,
+          "end_index": 211,
+          "t0": 22.6,
+          "t1": 42.4,
+          "duration_s": 19.799999999999997,
+          "expected_m": 1.2794179635435685,
+          "actual_path_m": 0.11632738296060886,
+          "map_error_change_m": 1.2595899243174984,
+          "odom_error_change_m": 1.2701841384841448,
+          "contacts": [
+            "cargo_beam_1__bar"
+          ]
+        },
+        {
+          "start_index": 215,
+          "end_index": 274,
+          "t0": 43.0,
+          "t1": 55.0,
+          "duration_s": 12.0,
+          "expected_m": 0.7754048263900296,
+          "actual_path_m": 0.06696061846202048,
+          "map_error_change_m": 0.7738246714403547,
+          "odom_error_change_m": 0.7749694056396974,
+          "contacts": [
+            "cargo_beam_1__bar"
+          ]
+        },
+        {
+          "start_index": 55,
+          "end_index": 105,
+          "t0": 11.0,
+          "t1": 21.2,
+          "duration_s": 10.2,
+          "expected_m": 0.6590941024315425,
+          "actual_path_m": 0.08405164439806738,
+          "map_error_change_m": 0.6376446096061474,
+          "odom_error_change_m": 0.6503091183242607,
+          "contacts": [
+            "cargo_beam_1__bar"
+          ]
+        },
+        {
+          "start_index": 310,
+          "end_index": 337,
+          "t0": 62.0,
+          "t1": 67.6,
+          "duration_s": 5.599999999999994,
+          "expected_m": 0.36185558564868225,
+          "actual_path_m": 0.03953596845897967,
+          "map_error_change_m": 0.18962149290082886,
+          "odom_error_change_m": 0.15856319008813013,
+          "contacts": [
+            "cargo_beam_1__bar"
+          ]
+        },
+        {
+          "start_index": 22,
+          "end_index": 46,
+          "t0": 4.4,
+          "t1": 9.4,
+          "duration_s": 5.0,
+          "expected_m": 0.3230853443291879,
+          "actual_path_m": 0.03000145626110253,
+          "map_error_change_m": 0.28538702187565124,
+          "odom_error_change_m": 0.3091391098601023,
+          "contacts": [
+            "cargo_beam_1__bar"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61004-r2/raw/robots/r2/ownmap.jsonl.zst",
+          "bytes": 354770,
+          "sha256": "6cef2ac6b33945ff97b2bda603366ba171c6f9bd2ac23bf1a3b045f587854e20"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61004-r2/raw/robots/r2/frames.jsonl.zst",
+          "bytes": 75852,
+          "sha256": "b6af199bba662798d400332552f3a8a90352b1cf0988e21744031892a9917cc0"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61004-r2/raw/robots/r2/commands.jsonl.zst",
+          "bytes": 4252,
+          "sha256": "e051dc982946c86ef911b4c943fc6a0a2d3abe72dba9114b3adc6791ba8c1f91"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61004-r2/raw/eval_only/r2/trajectory.jsonl.zst",
+          "bytes": 464081,
+          "sha256": "bb24186aadb35b3be618cfc105df7e051942f4127a9e4f8a9715cd96c5b2c23c"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61004-r2/raw/eval_only/contacts.jsonl.zst",
+          "bytes": 2578950,
+          "sha256": "e6eefcac2946f9c3459a8cbf9d380816cde814a3dc73a91ba37e19c53d845dde"
+        }
+      ]
+    }
+  },
+  "e2e10-b-s61001-r2": {
+    "r1": {
+      "intervals": 2165,
+      "translation_intervals": 1104,
+      "stalled_intervals": 0,
+      "stall_fraction": 0.0,
+      "stall_duration_s": 0,
+      "stall_segments": 0,
+      "issued_during_stall_m": 0,
+      "actual_path_during_stall_m": 0,
+      "stall_local_increment_error_m": 0,
+      "stall_net_map_error_change_m": 0,
+      "stall_net_odom_error_change_m": 0,
+      "stall_contacts": {},
+      "stalled_without_contact": 0,
+      "map_error_max_m": 4.3761142937502004,
+      "map_error_median_m": 2.6111670475971165,
+      "odom_error_max_m": 3.998201114804028,
+      "odom_error_median_m": 1.8260836337827686,
+      "first_over_1m_sim_s": 53.0,
+      "longest_segments": [],
+      "sources": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-b-s61001-r2/raw/robots/r1/ownmap.jsonl.zst",
+          "bytes": 392312,
+          "sha256": "07df65680ad330477b4119802a9c6e3f2ddcf848575f4518f211eeaf0c1256ba"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-b-s61001-r2/raw/robots/r1/frames.jsonl.zst",
+          "bytes": 94471,
+          "sha256": "a6efaaf7d07bca8140974787fd3f9faed74093f0a55e00c2c4e05e44a9295c16"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-b-s61001-r2/raw/robots/r1/commands.jsonl.zst",
+          "bytes": 3917,
+          "sha256": "25ce7663958ae7994a741d673ebf13b6727166621d57bff091bb13c3e2e4a75c"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-b-s61001-r2/raw/eval_only/r1/trajectory.jsonl.zst",
+          "bytes": 426534,
+          "sha256": "b87417ffa1ddcacdf78a0abfa4a01eecc6407acc4bf786b418c1bb3ba67e9055"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-b-s61001-r2/raw/eval_only/contacts.jsonl.zst",
+          "bytes": 2310938,
+          "sha256": "f49e7f7a65461d8ac568c787a2ec6f372d534735e1f24f7b08083a55358f5ab8"
+        }
+      ]
+    },
+    "r2": {
+      "intervals": 2165,
+      "translation_intervals": 1139,
+      "stalled_intervals": 474,
+      "stall_fraction": 0.4161545215100966,
+      "stall_duration_s": 94.7999999999999,
+      "stall_segments": 78,
+      "issued_during_stall_m": 6.12569812848129,
+      "actual_path_during_stall_m": 0.8218324241330888,
+      "stall_local_increment_error_m": 6.032354807135105,
+      "stall_net_map_error_change_m": 4.558969606101269,
+      "stall_net_odom_error_change_m": 4.507605655311646,
+      "stall_contacts": {
+        "cargo_beam_1__bar": 474
+      },
+      "stalled_without_contact": 0,
+      "map_error_max_m": 6.024104760950433,
+      "map_error_median_m": 5.595245190993083,
+      "odom_error_max_m": 6.565903851187988,
+      "odom_error_median_m": 5.386780891892132,
+      "first_over_1m_sim_s": 20.8,
+      "longest_segments": [
+        {
+          "start_index": 278,
+          "end_index": 372,
+          "t0": 55.6,
+          "t1": 74.6,
+          "duration_s": 18.999999999999993,
+          "expected_m": 1.2277243084508822,
+          "actual_path_m": 0.1642305002633196,
+          "map_error_change_m": 1.1989451364704236,
+          "odom_error_change_m": 1.0024778706979043,
+          "contacts": [
+            "cargo_beam_1__bar"
+          ]
+        },
+        {
+          "start_index": 153,
+          "end_index": 206,
+          "t0": 30.6,
+          "t1": 41.4,
+          "duration_s": 10.799999999999997,
+          "expected_m": 0.6978643437510313,
+          "actual_path_m": 0.06408267331161902,
+          "map_error_change_m": 0.6804199985302661,
+          "odom_error_change_m": 0.6898527942721226,
+          "contacts": [
+            "cargo_beam_1__bar"
+          ]
+        },
+        {
+          "start_index": 53,
+          "end_index": 97,
+          "t0": 10.6,
+          "t1": 19.6,
+          "duration_s": 9.000000000000002,
+          "expected_m": 0.581553619792537,
+          "actual_path_m": 0.07806573930281992,
+          "map_error_change_m": 0.5048874197097012,
+          "odom_error_change_m": 0.5717281572671826,
+          "contacts": [
+            "cargo_beam_1__bar"
+          ]
+        },
+        {
+          "start_index": 106,
+          "end_index": 147,
+          "t0": 21.2,
+          "t1": 29.6,
+          "duration_s": 8.400000000000002,
+          "expected_m": 0.5427833784730363,
+          "actual_path_m": 0.0678484475150305,
+          "map_error_change_m": 0.5324992828949551,
+          "odom_error_change_m": 0.5326108801849732,
+          "contacts": [
+            "cargo_beam_1__bar"
+          ]
+        },
+        {
+          "start_index": 375,
+          "end_index": 407,
+          "t0": 75.0,
+          "t1": 81.6,
+          "duration_s": 6.599999999999994,
+          "expected_m": 0.42647265451451516,
+          "actual_path_m": 0.05721283287030518,
+          "map_error_change_m": 0.4131306685393996,
+          "odom_error_change_m": 0.3880407280075877,
+          "contacts": [
+            "cargo_beam_1__bar"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-b-s61001-r2/raw/robots/r2/ownmap.jsonl.zst",
+          "bytes": 377075,
+          "sha256": "f5bc62e6021f6983db4ab71122a696b882241b6f5f02957c40e1b4db4a2ae6f8"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-b-s61001-r2/raw/robots/r2/frames.jsonl.zst",
+          "bytes": 96235,
+          "sha256": "fb0c97c7d5f9363ce512f5eeddb9b5142234e992ceae899976f5356bc62fc65a"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-b-s61001-r2/raw/robots/r2/commands.jsonl.zst",
+          "bytes": 3993,
+          "sha256": "5f86dcf65713d4e919c2ee364d56b7d7282db7179f74302fb14b96272f701ec8"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-b-s61001-r2/raw/eval_only/r2/trajectory.jsonl.zst",
+          "bytes": 430213,
+          "sha256": "8e9ae6a96e25679934fad8bc26d76e4b84191348105754f7fda8ba9a3f3e7601"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-b-s61001-r2/raw/eval_only/contacts.jsonl.zst",
+          "bytes": 2310938,
+          "sha256": "f49e7f7a65461d8ac568c787a2ec6f372d534735e1f24f7b08083a55358f5ab8"
+        }
+      ]
+    }
+  },
+  "e2e10-b-s61002-r2": {
+    "r1": {
+      "intervals": 2498,
+      "translation_intervals": 1060,
+      "stalled_intervals": 26,
+      "stall_fraction": 0.024528301886792454,
+      "stall_duration_s": 5.199999999999989,
+      "stall_segments": 8,
+      "issued_during_stall_m": 0.33600875810234754,
+      "actual_path_during_stall_m": 0.04915307500685967,
+      "stall_local_increment_error_m": 0.3123229459097341,
+      "stall_net_map_error_change_m": 0.2926067794743581,
+      "stall_net_odom_error_change_m": 0.24563968286689475,
+      "stall_contacts": {
+        "zone_wall_divider_1": 26
+      },
+      "stalled_without_contact": 0,
+      "map_error_max_m": 6.309282206532107,
+      "map_error_median_m": 5.377107377590335,
+      "odom_error_max_m": 2.2669789276684766,
+      "odom_error_median_m": 1.7371041716587012,
+      "first_over_1m_sim_s": 103.6,
+      "longest_segments": [
+        {
+          "start_index": 1321,
+          "end_index": 1328,
+          "t0": 264.2,
+          "t1": 265.8,
+          "duration_s": 1.6000000000000227,
+          "expected_m": 0.10338731018533803,
+          "actual_path_m": 0.011868504195876092,
+          "map_error_change_m": 0.10327918232710509,
+          "odom_error_change_m": 0.0813220810937505,
+          "contacts": [
+            "zone_wall_divider_1"
+          ]
+        },
+        {
+          "start_index": 1291,
+          "end_index": 1293,
+          "t0": 258.2,
+          "t1": 258.8,
+          "duration_s": 0.6000000000000227,
+          "expected_m": 0.038770241319502005,
+          "actual_path_m": 0.005748465029042907,
+          "map_error_change_m": 0.024817909546480443,
+          "odom_error_change_m": 0.017730462571006633,
+          "contacts": [
+            "zone_wall_divider_1"
+          ]
+        },
+        {
+          "start_index": 1296,
+          "end_index": 1298,
+          "t0": 259.2,
+          "t1": 259.8,
+          "duration_s": 0.6000000000000227,
+          "expected_m": 0.038770241319502,
+          "actual_path_m": 0.006188294070105611,
+          "map_error_change_m": 0.027574810449870313,
+          "odom_error_change_m": 0.023756673193149114,
+          "contacts": [
+            "zone_wall_divider_1"
+          ]
+        },
+        {
+          "start_index": 1313,
+          "end_index": 1315,
+          "t0": 262.6,
+          "t1": 263.2,
+          "duration_s": 0.5999999999999659,
+          "expected_m": 0.038770241319501304,
+          "actual_path_m": 0.006077186484413704,
+          "map_error_change_m": 0.035211375671237555,
+          "odom_error_change_m": 0.030432331433630333,
+          "contacts": [
+            "zone_wall_divider_1"
+          ]
+        },
+        {
+          "start_index": 1334,
+          "end_index": 1336,
+          "t0": 266.8,
+          "t1": 267.4,
+          "duration_s": 0.5999999999999659,
+          "expected_m": 0.03877024131950112,
+          "actual_path_m": 0.006827617210797935,
+          "map_error_change_m": 0.03612508148073701,
+          "odom_error_change_m": 0.03362813726090774,
+          "contacts": [
+            "zone_wall_divider_1"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-b-s61002-r2/raw/robots/r1/ownmap.jsonl.zst",
+          "bytes": 396167,
+          "sha256": "d1a43fe42c5ced8c28f8de9e3d587c40558111fd05a5e05964701428012d0c67"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-b-s61002-r2/raw/robots/r1/frames.jsonl.zst",
+          "bytes": 105143,
+          "sha256": "4f6eb2db634584d39bac044b5cf9f425aaa5a683a83ceb594a666f390766b8d5"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-b-s61002-r2/raw/robots/r1/commands.jsonl.zst",
+          "bytes": 4143,
+          "sha256": "ab7e3a5a81a6d36cdb9097bd52692e030d36d1a5e5e1015254c866b80b117425"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-b-s61002-r2/raw/eval_only/r1/trajectory.jsonl.zst",
+          "bytes": 492228,
+          "sha256": "464e5435d55649263a4accd89e5c757aa35ab49a33df97736360faf5f32f4ea6"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-b-s61002-r2/raw/eval_only/contacts.jsonl.zst",
+          "bytes": 2964880,
+          "sha256": "10de86ed231809be9c9016be93b68bd4319e1170ae4b2276d1183d26d43bc44b"
+        }
+      ]
+    },
+    "r2": {
+      "intervals": 2498,
+      "translation_intervals": 1174,
+      "stalled_intervals": 786,
+      "stall_fraction": 0.6695059625212947,
+      "stall_duration_s": 157.20000000000002,
+      "stall_segments": 122,
+      "issued_during_stall_m": 10.157803225709504,
+      "actual_path_during_stall_m": 1.437617803269483,
+      "stall_local_increment_error_m": 10.06284881608147,
+      "stall_net_map_error_change_m": 2.331524196052814,
+      "stall_net_odom_error_change_m": 2.9064074032171834,
+      "stall_contacts": {
+        "cargo_beam_1__bar": 786
+      },
+      "stalled_without_contact": 0,
+      "map_error_max_m": 3.626234732754522,
+      "map_error_median_m": 2.09696013352992,
+      "odom_error_max_m": 4.522176824130333,
+      "odom_error_median_m": 3.0472664859292546,
+      "first_over_1m_sim_s": 22.8,
+      "longest_segments": [
+        {
+          "start_index": 55,
+          "end_index": 204,
+          "t0": 11.0,
+          "t1": 41.0,
+          "duration_s": 30.0,
+          "expected_m": 1.9385120659751138,
+          "actual_path_m": 0.2015068078941425,
+          "map_error_change_m": 1.7968300890204558,
+          "odom_error_change_m": 1.9172718686027734,
+          "contacts": [
+            "cargo_beam_1__bar"
+          ]
+        },
+        {
+          "start_index": 1001,
+          "end_index": 1057,
+          "t0": 200.2,
+          "t1": 211.6,
+          "duration_s": 11.400000000000006,
+          "expected_m": 0.7366345850705384,
+          "actual_path_m": 0.10390251341600322,
+          "map_error_change_m": 0.32873750133689894,
+          "odom_error_change_m": 0.21148479400649922,
+          "contacts": [
+            "cargo_beam_1__bar"
+          ]
+        },
+        {
+          "start_index": 539,
+          "end_index": 591,
+          "t0": 107.8,
+          "t1": 118.4,
+          "duration_s": 10.600000000000009,
+          "expected_m": 0.6849409299778598,
+          "actual_path_m": 0.11984784482523597,
+          "map_error_change_m": -0.6054502960011536,
+          "odom_error_change_m": -0.4718780604446944,
+          "contacts": [
+            "cargo_beam_1__bar"
+          ]
+        },
+        {
+          "start_index": 645,
+          "end_index": 672,
+          "t0": 129.0,
+          "t1": 134.6,
+          "duration_s": 5.599999999999994,
+          "expected_m": 0.3618555856486857,
+          "actual_path_m": 0.0615938714632083,
+          "map_error_change_m": 0.051949220813537256,
+          "odom_error_change_m": 0.08674183031538663,
+          "contacts": [
+            "cargo_beam_1__bar"
+          ]
+        },
+        {
+          "start_index": 22,
+          "end_index": 46,
+          "t0": 4.4,
+          "t1": 9.4,
+          "duration_s": 5.0,
+          "expected_m": 0.3230853443291879,
+          "actual_path_m": 0.03474083765147798,
+          "map_error_change_m": 0.27935799289957874,
+          "odom_error_change_m": 0.3152665847829753,
+          "contacts": [
+            "cargo_beam_1__bar"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-b-s61002-r2/raw/robots/r2/ownmap.jsonl.zst",
+          "bytes": 394516,
+          "sha256": "f470a623a4731576ebb40ef7b3bcc79de1da2136f649fe170f402fe39754565b"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-b-s61002-r2/raw/robots/r2/frames.jsonl.zst",
+          "bytes": 110859,
+          "sha256": "bf1a6db110d190c4c4e4b1dbc872bc1be27911bcc40a5d8f052e88b84fd62735"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-b-s61002-r2/raw/robots/r2/commands.jsonl.zst",
+          "bytes": 3999,
+          "sha256": "920564b3da38d1a61e093c3bffa4830fc5eefb31f16cc773841fc5a3f0bbc359"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-b-s61002-r2/raw/eval_only/r2/trajectory.jsonl.zst",
+          "bytes": 488500,
+          "sha256": "ef80ac7f76a2fafcb618cc0b3bfab3c6de3539cf1e554b7991755350cb6a5ba6"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-b-s61002-r2/raw/eval_only/contacts.jsonl.zst",
+          "bytes": 2964880,
+          "sha256": "10de86ed231809be9c9016be93b68bd4319e1170ae4b2276d1183d26d43bc44b"
+        }
+      ]
+    }
+  },
+  "e2e10-c-s61001-r2": {
+    "r1": {
+      "intervals": 1990,
+      "translation_intervals": 103,
+      "stalled_intervals": 0,
+      "stall_fraction": 0.0,
+      "stall_duration_s": 0,
+      "stall_segments": 0,
+      "issued_during_stall_m": 0,
+      "actual_path_during_stall_m": 0,
+      "stall_local_increment_error_m": 0,
+      "stall_net_map_error_change_m": 0,
+      "stall_net_odom_error_change_m": 0,
+      "stall_contacts": {},
+      "stalled_without_contact": 0,
+      "map_error_max_m": 0.41835080376480904,
+      "map_error_median_m": 0.24458345983192425,
+      "odom_error_max_m": 0.3024253944853996,
+      "odom_error_median_m": 0.30232148905364536,
+      "first_over_1m_sim_s": null,
+      "longest_segments": [],
+      "sources": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-c-s61001-r2/raw/robots/r1/ownmap.jsonl.zst",
+          "bytes": 164571,
+          "sha256": "ff1d2007b92119060b21fb647960999beafca766793d16b8860dc6c753f86710"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-c-s61001-r2/raw/robots/r1/frames.jsonl.zst",
+          "bytes": 88225,
+          "sha256": "07573be45e41b7d3768654d87791030c3212ade74e625fa53cc761f4755799bc"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-c-s61001-r2/raw/robots/r1/commands.jsonl.zst",
+          "bytes": 3114,
+          "sha256": "1cde9c36a9584139762360c6161e3edbdb6b9a97687ba332ec0f437e0d5941da"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-c-s61001-r2/raw/eval_only/r1/trajectory.jsonl.zst",
+          "bytes": 367723,
+          "sha256": "d89e5310c4978dea6bdec04b9910b4e6b14dad694c4e24f76f52e85c2976eef1"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-c-s61001-r2/raw/eval_only/contacts.jsonl.zst",
+          "bytes": 1913728,
+          "sha256": "5f137bfb46d31e96f074c628c0cd6d0ba57090acb67833a68aa5efb4a3b2ed9a"
+        }
+      ]
+    },
+    "r2": {
+      "intervals": 1990,
+      "translation_intervals": 95,
+      "stalled_intervals": 5,
+      "stall_fraction": 0.05263157894736842,
+      "stall_duration_s": 0.9999999999999716,
+      "stall_segments": 4,
+      "issued_during_stall_m": 0.06461706886583599,
+      "actual_path_during_stall_m": 0.01153574761583951,
+      "stall_local_increment_error_m": 0.059942709445176226,
+      "stall_net_map_error_change_m": 0.042131401524122536,
+      "stall_net_odom_error_change_m": 0.052516209177691675,
+      "stall_contacts": {
+        "cargo_beam_1__bar": 5
+      },
+      "stalled_without_contact": 0,
+      "map_error_max_m": 0.4621876501366795,
+      "map_error_median_m": 0.28346661663091843,
+      "odom_error_max_m": 0.9157666791753709,
+      "odom_error_median_m": 0.9128809566854538,
+      "first_over_1m_sim_s": null,
+      "longest_segments": [
+        {
+          "start_index": 552,
+          "end_index": 553,
+          "t0": 110.4,
+          "t1": 110.8,
+          "duration_s": 0.3999999999999915,
+          "expected_m": 0.025846827546334286,
+          "actual_path_m": 0.004366641724511252,
+          "map_error_change_m": 0.011110265920926066,
+          "odom_error_change_m": 0.022178577475877315,
+          "contacts": [
+            "cargo_beam_1__bar"
+          ]
+        },
+        {
+          "start_index": 555,
+          "end_index": 555,
+          "t0": 111.0,
+          "t1": 111.2,
+          "duration_s": 0.20000000000000284,
+          "expected_m": 0.012923413773167265,
+          "actual_path_m": 0.002500056614861575,
+          "map_error_change_m": 0.007359272858833865,
+          "odom_error_change_m": 0.010750115882732558,
+          "contacts": [
+            "cargo_beam_1__bar"
+          ]
+        },
+        {
+          "start_index": 587,
+          "end_index": 587,
+          "t0": 117.4,
+          "t1": 117.6,
+          "duration_s": 0.19999999999998863,
+          "expected_m": 0.012923413773167153,
+          "actual_path_m": 0.0021786907269214116,
+          "map_error_change_m": 0.010238377954984668,
+          "odom_error_change_m": 0.0067044896469415916,
+          "contacts": [
+            "cargo_beam_1__bar"
+          ]
+        },
+        {
+          "start_index": 704,
+          "end_index": 704,
+          "t0": 140.8,
+          "t1": 141.0,
+          "duration_s": 0.19999999999998863,
+          "expected_m": 0.012923413773167277,
+          "actual_path_m": 0.0024903585495452724,
+          "map_error_change_m": 0.013423484789377937,
+          "odom_error_change_m": 0.01288302617214021,
+          "contacts": [
+            "cargo_beam_1__bar"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-c-s61001-r2/raw/robots/r2/ownmap.jsonl.zst",
+          "bytes": 190705,
+          "sha256": "8a94cb03d43e603085b5a7ef7b62b41106d0028a489a2a57b6893fe9bef18c99"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-c-s61001-r2/raw/robots/r2/frames.jsonl.zst",
+          "bytes": 88018,
+          "sha256": "e25abaaaeeba6f838a60af950fc8c2501aefd6d4228646077967311a0da843f4"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-c-s61001-r2/raw/robots/r2/commands.jsonl.zst",
+          "bytes": 3820,
+          "sha256": "503df26fec6041036ceec77160095fe3dadeba37c880ff9a6811eef8abc00dcf"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-c-s61001-r2/raw/eval_only/r2/trajectory.jsonl.zst",
+          "bytes": 381506,
+          "sha256": "1bda4b12b4a6acf44bb174e12cb4b6e2063f4e040a09836a0f6914ba4aa953e3"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-c-s61001-r2/raw/eval_only/contacts.jsonl.zst",
+          "bytes": 1913728,
+          "sha256": "5f137bfb46d31e96f074c628c0cd6d0ba57090acb67833a68aa5efb4a3b2ed9a"
+        }
+      ]
+    }
+  },
+  "e2e10-c-s61002-r2": {
+    "r1": {
+      "intervals": 2033,
+      "translation_intervals": 166,
+      "stalled_intervals": 0,
+      "stall_fraction": 0.0,
+      "stall_duration_s": 0,
+      "stall_segments": 0,
+      "issued_during_stall_m": 0,
+      "actual_path_during_stall_m": 0,
+      "stall_local_increment_error_m": 0,
+      "stall_net_map_error_change_m": 0,
+      "stall_net_odom_error_change_m": 0,
+      "stall_contacts": {},
+      "stalled_without_contact": 0,
+      "map_error_max_m": 0.632769828272042,
+      "map_error_median_m": 0.29376147245806894,
+      "odom_error_max_m": 0.6482819490065338,
+      "odom_error_median_m": 0.6153062548319805,
+      "first_over_1m_sim_s": null,
+      "longest_segments": [],
+      "sources": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-c-s61002-r2/raw/robots/r1/ownmap.jsonl.zst",
+          "bytes": 196139,
+          "sha256": "84edebb140ad6e2747c051f753af87aeae6254dc4eabe7831dbef824588afaf0"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-c-s61002-r2/raw/robots/r1/frames.jsonl.zst",
+          "bytes": 90091,
+          "sha256": "4c117a11eea2237cb445a8d017640db6954718e3ec08249811ce9a5651e5bc5d"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-c-s61002-r2/raw/robots/r1/commands.jsonl.zst",
+          "bytes": 3943,
+          "sha256": "672e5f5d7bf58294f2094c454e7aa30acda6bb42bdbb5ee00dbb448dd5e9a995"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-c-s61002-r2/raw/eval_only/r1/trajectory.jsonl.zst",
+          "bytes": 384114,
+          "sha256": "86100af88b1ab0701fc0ea99f32fb9d597f80246c71306772ec9970063754da1"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-c-s61002-r2/raw/eval_only/contacts.jsonl.zst",
+          "bytes": 2161059,
+          "sha256": "6a8c463acaabb90b3288831ad7afbd8c6be8800b1e052f43af37930cc72c2147"
+        }
+      ]
+    },
+    "r2": {
+      "intervals": 2033,
+      "translation_intervals": 219,
+      "stalled_intervals": 17,
+      "stall_fraction": 0.0776255707762557,
+      "stall_duration_s": 3.400000000000013,
+      "stall_segments": 13,
+      "issued_during_stall_m": 0.21969803414384295,
+      "actual_path_during_stall_m": 0.030529930681497838,
+      "stall_local_increment_error_m": 0.20952046882605305,
+      "stall_net_map_error_change_m": 0.056515343238389026,
+      "stall_net_odom_error_change_m": 0.019225699823107678,
+      "stall_contacts": {
+        "cargo_beam_1__bar": 17
+      },
+      "stalled_without_contact": 0,
+      "map_error_max_m": 1.25247919655082,
+      "map_error_median_m": 1.0003650773232464,
+      "odom_error_max_m": 1.3873716562682605,
+      "odom_error_median_m": 1.1545552433417914,
+      "first_over_1m_sim_s": 192.4,
+      "longest_segments": [
+        {
+          "start_index": 500,
+          "end_index": 502,
+          "t0": 100.0,
+          "t1": 100.6,
+          "duration_s": 0.5999999999999943,
+          "expected_m": 0.03877024131950171,
+          "actual_path_m": 0.00424729604353837,
+          "map_error_change_m": 0.028862875028499935,
+          "odom_error_change_m": 0.012272312560721699,
+          "contacts": [
+            "cargo_beam_1__bar"
+          ]
+        },
+        {
+          "start_index": 483,
+          "end_index": 484,
+          "t0": 96.6,
+          "t1": 97.0,
+          "duration_s": 0.4000000000000057,
+          "expected_m": 0.025846827546334335,
+          "actual_path_m": 0.002896959145740375,
+          "map_error_change_m": 0.008536672896498676,
+          "odom_error_change_m": 0.007237119907191336,
+          "contacts": [
+            "cargo_beam_1__bar"
+          ]
+        },
+        {
+          "start_index": 507,
+          "end_index": 508,
+          "t0": 101.4,
+          "t1": 101.8,
+          "duration_s": 0.3999999999999915,
+          "expected_m": 0.025846827546334206,
+          "actual_path_m": 0.002857345336004598,
+          "map_error_change_m": 0.017483649198476003,
+          "odom_error_change_m": 0.0071963709582734126,
+          "contacts": [
+            "cargo_beam_1__bar"
+          ]
+        },
+        {
+          "start_index": 761,
+          "end_index": 761,
+          "t0": 152.2,
+          "t1": 152.4,
+          "duration_s": 0.20000000000001705,
+          "expected_m": 0.01292341377316748,
+          "actual_path_m": 0.0017085861470413628,
+          "map_error_change_m": -0.000811452769671761,
+          "odom_error_change_m": -0.0022048729140791146,
+          "contacts": [
+            "cargo_beam_1__bar"
+          ]
+        },
+        {
+          "start_index": 766,
+          "end_index": 766,
+          "t0": 153.2,
+          "t1": 153.4,
+          "duration_s": 0.20000000000001705,
+          "expected_m": 0.01292341377316737,
+          "actual_path_m": 0.002142048489226124,
+          "map_error_change_m": -0.00352558842479489,
+          "odom_error_change_m": -0.0045576486995242416,
+          "contacts": [
+            "cargo_beam_1__bar"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-c-s61002-r2/raw/robots/r2/ownmap.jsonl.zst",
+          "bytes": 281258,
+          "sha256": "df95b6deb78fa0d89c353810842e95ffd364b8e99f01fe6f143015e565db2917"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-c-s61002-r2/raw/robots/r2/frames.jsonl.zst",
+          "bytes": 90158,
+          "sha256": "e3c625611b8fc5e1425139520fc3ccafb72b5fb71049ce8392ecc08e7de85c11"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-c-s61002-r2/raw/robots/r2/commands.jsonl.zst",
+          "bytes": 5009,
+          "sha256": "dc2629a79e316f44f1b0cd1a6b1c03c4f0c6b09ea55de33cba0cbca5efa20e4f"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-c-s61002-r2/raw/eval_only/r2/trajectory.jsonl.zst",
+          "bytes": 408335,
+          "sha256": "07940b277ae763105aa85ecc53147e5081f26b08f6d560ff60f3a8390fa65f54"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-c-s61002-r2/raw/eval_only/contacts.jsonl.zst",
+          "bytes": 2161059,
+          "sha256": "6a8c463acaabb90b3288831ad7afbd8c6be8800b1e052f43af37930cc72c2147"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "stage": "before first physics pilot",
+  "scope": "setup/code inspection; no teacher-success denominator",
+  "distribution": [
+    {"category":"git_snapshot_incomplete","count":2,"reason":"shared store contains commit metadata with missing snapshot blobs; initial checkout and network refetch failed","blocking_object":"source object store","minimum_gap_m":null,"minimum_gap_status":"not geometric","resolution":"non-history snapshot object packs; direct shared.git alternate, no shared gc/prune"},
+    {"category":"renderer_environment","count":1,"reason":"EGL import: NoneType EGL eglQueryString","blocking_object":"L4 C environment EGL library","minimum_gap_m":null,"minimum_gap_status":"not geometric","raw":"/home/ugrp/ugrp-sim/runs/warp1/export-seed0.log","resolution":"reuse existing OSMesa for C renderer"},
+    {"category":"source_import_priority","count":1,"reason":"copied episode inserted backend root before frozen teacher source (static inspection)","blocking_object":"sys.path order","minimum_gap_m":null,"minimum_gap_status":"not geometric","resolution":"remove episode root insertion"}
+  ],
+  "funnel": [
+    {"gate":"Mac nonphysics tests","entered":9,"passed":9,"rejected":0},
+    {"gate":"first EGL export attempt","entered":1,"passed":0,"rejected":1}
+  ],
+  "reproduce": "MUJOCO_GL=egl .../simalt3/c-env/bin/python .../src/8b737c8b/scripts/run_warp_act_teacher.py --physics-backend c_pilot_v1 --export-compiled-only ..."
+}

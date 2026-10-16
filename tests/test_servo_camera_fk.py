@@ -65,6 +65,10 @@ def test_off_golden_transform_and_full_detection_bytes(tmp_path):
     spec=importlib.util.spec_from_file_location('fk_legacy_replay',oldfile)
     legacy=importlib.util.module_from_spec(spec)
     spec.loader.exec_module(legacy)
+    # The 4bbaa79b copy predates harness.wall_column_calibration.adapter (markerless_probe stays hash-pinned
+    # without camera_transform); give it the same adapter-wrapped module the live replay uses.
+    from harness.wall_column_calibration import adapter
+    legacy.mp=adapter(legacy.mp)
     for mode in ['off','v3_unloaded_extrinsic_v1']:
         a,ao,ar=legacy.geometry(SEARCH,mode)
         b,bo,br=replay.geometry(SEARCH,mode,camera_pose='off')

@@ -1,0 +1,335 @@
+[
+ {
+  "acceptable": [],
+  "ambiguous": true,
+  "decision_point": "real_e2e",
+  "family": "dialogue",
+  "group": "real",
+  "id": "REAL01",
+  "label_basis": "none_descriptive",
+  "model_in_stored_run": "gemma-4-31b-it",
+  "n_stored_requests": 12,
+  "n_structurally_admissible": 1,
+  "pair": null,
+  "rule": "-",
+  "source": "/Users/changmin/projects/ugrp/outputs/gemma-latency-check-20261011/wire/000001-call-0001-r1-request.json",
+  "source_sha256": "adba0fe1aaa031da9114f7503189d7fe642bf82fc9290d3b8c77eb268d5a3d8a",
+  "split": "real",
+  "state": {
+   "can_send_to": [
+    "r2",
+    "r3"
+   ],
+   "condition": "peer_en",
+   "dialogue": {
+    "approved": false,
+    "key": null,
+    "own_ack_sent": false,
+    "own_claim": false,
+    "own_go_sent": false,
+    "peer_go_ref": null,
+    "proposal_message_id": null,
+    "route_hash": null,
+    "transport_admitted": false
+   },
+   "epoch_age_s": null,
+   "own_command_history": [],
+   "own_map": {
+    "B_seen_in_own_rgb": false,
+    "pose_sigma_m": 0.2038
+   },
+   "own_rgb_grip": "unknown",
+   "own_rgb_summary": "own wrist RGB: image not included in this text conversion",
+   "own_route_proposal": null,
+   "peer_reports": [],
+   "robot_id": "r1",
+   "role": "end_neg",
+   "sim_time_s": 0.0
+  },
+  "structurally_admissible": [
+   "continue"
+  ]
+ },
+ {
+  "acceptable": [],
+  "ambiguous": true,
+  "decision_point": "real_e2e",
+  "family": "dialogue",
+  "group": "real",
+  "id": "REAL02",
+  "label_basis": "none_descriptive",
+  "model_in_stored_run": "gemma-4-31b-it",
+  "n_stored_requests": 14,
+  "n_structurally_admissible": 1,
+  "pair": null,
+  "rule": "-",
+  "source": "/Users/changmin/projects/ugrp/outputs/gemma-latency-check-20261011/wire/000002-call-0002-r2-request.json",
+  "source_sha256": "897a64a2bb7b625a348e13623695d1acf9ee798a62e459fcc5b8d4a884d9b31d",
+  "split": "real",
+  "state": {
+   "can_send_to": [
+    "r1",
+    "r3"
+   ],
+   "condition": "peer_en",
+   "dialogue": {
+    "approved": false,
+    "key": null,
+    "own_ack_sent": false,
+    "own_claim": false,
+    "own_go_sent": false,
+    "peer_go_ref": null,
+    "proposal_message_id": null,
+    "route_hash": null,
+    "transport_admitted": false
+   },
+   "epoch_age_s": null,
+   "own_command_history": [],
+   "own_map": {
+    "B_seen_in_own_rgb": false,
+    "pose_sigma_m": 0.2038
+   },
+   "own_rgb_grip": "unknown",
+   "own_rgb_summary": "own wrist RGB: image not included in this text conversion",
+   "own_route_proposal": null,
+   "peer_reports": [],
+   "robot_id": "r2",
+   "role": "end_pos",
+   "sim_time_s": 0.0
+  },
+  "structurally_admissible": [
+   "continue"
+  ]
+ },
+ {
+  "acceptable": [],
+  "ambiguous": true,
+  "decision_point": "real_e2e",
+  "family": "dialogue",
+  "group": "real",
+  "id": "REAL03",
+  "label_basis": "none_descriptive",
+  "model_in_stored_run": "gemini-3.8-flash",
+  "n_stored_requests": 6,
+  "n_structurally_admissible": 1,
+  "pair": null,
+  "rule": "-",
+  "source": "/tmp/jevdec/azwire/e2eaz1-first4-r4/cases/e2eaz1-gemini-s61001-on-r2/raw/wire/000003-call-0003-r3-request.json",
+  "source_sha256": "23855b48f8b22fcc226331990cdc14e752a95d84ff76c66b5377b40e82d548c2",
+  "split": "real",
+  "state": {
+   "can_send_to": [
+    "r1",
+    "r2"
+   ],
+   "condition": "peer_en",
+   "dialogue": {
+    "approved": false,
+    "key": null,
+    "own_ack_sent": false,
+    "own_claim": false,
+    "own_go_sent": false,
+    "peer_go_ref": null,
+    "proposal_message_id": null,
+    "route_hash": null,
+    "transport_admitted": false
+   },
+   "epoch_age_s": null,
+   "own_command_history": [],
+   "own_map": {
+    "B_seen_in_own_rgb": false,
+    "pose_sigma_m": 0.2038
+   },
+   "own_rgb_grip": "unknown",
+   "own_rgb_summary": "own wrist RGB: image not included in this text conversion",
+   "own_route_proposal": null,
+   "peer_reports": [],
+   "robot_id": "r3",
+   "role": "idle",
+   "sim_time_s": 0.0
+  },
+  "structurally_admissible": [
+   "continue"
+  ]
+ },
+ {
+  "acceptable": [],
+  "ambiguous": true,
+  "decision_point": "real_e2e",
+  "family": "dialogue",
+  "group": "real",
+  "id": "REAL04",
+  "label_basis": "none_descriptive",
+  "model_in_stored_run": "gemini-3.8-flash",
+  "n_stored_requests": 1,
+  "n_structurally_admissible": 1,
+  "pair": null,
+  "rule": "-",
+  "source": "/tmp/jevdec/azwire/e2eaz1-first4-r4/cases/e2eaz1-gemini-s61001-on-r2/raw/wire/000004-call-0004-r1-request.json",
+  "source_sha256": "e38d16ebe1279da0f085cd5aeb7f77989746bfbe18f17bb6e3ccb55a19cc9435",
+  "split": "real",
+  "state": {
+   "can_send_to": [
+    "r2",
+    "r3"
+   ],
+   "condition": "peer_en",
+   "dialogue": {
+    "approved": false,
+    "key": null,
+    "own_ack_sent": false,
+    "own_claim": false,
+    "own_go_sent": false,
+    "peer_go_ref": null,
+    "proposal_message_id": null,
+    "route_hash": null,
+    "transport_admitted": false
+   },
+   "epoch_age_s": null,
+   "own_command_history": [],
+   "own_map": {
+    "B_seen_in_own_rgb": false,
+    "pose_sigma_m": 0.0348
+   },
+   "own_rgb_grip": "unknown",
+   "own_rgb_summary": "own wrist RGB: image not included in this text conversion",
+   "own_route_proposal": null,
+   "peer_reports": [
+    {
+     "created_at_sim_s": 3.7,
+     "message_id": "w1-r2-1",
+     "sender": "r2",
+     "text": "r2 at end_pos. Green long beam visible. Awaiting route proposal from r1."
+    }
+   ],
+   "robot_id": "r1",
+   "role": "end_neg",
+   "sim_time_s": 3.8
+  },
+  "structurally_admissible": [
+   "continue"
+  ]
+ },
+ {
+  "acceptable": [],
+  "ambiguous": true,
+  "decision_point": "real_e2e",
+  "family": "dialogue",
+  "group": "real",
+  "id": "REAL05",
+  "label_basis": "none_descriptive",
+  "model_in_stored_run": "gemini-3.8-flash",
+  "n_stored_requests": 1,
+  "n_structurally_admissible": 1,
+  "pair": null,
+  "rule": "-",
+  "source": "/tmp/jevdec/azwire/e2eaz1-first4-r4/cases/e2eaz1-gemini-s61002-on-r2/raw/wire/000004-call-0004-r2-request.json",
+  "source_sha256": "c82cd08a97679b029b36430986f67c07eaf7a8a00765eae154c53f1c38543418",
+  "split": "real",
+  "state": {
+   "can_send_to": [
+    "r1",
+    "r3"
+   ],
+   "condition": "peer_en",
+   "dialogue": {
+    "approved": false,
+    "key": null,
+    "own_ack_sent": false,
+    "own_claim": false,
+    "own_go_sent": false,
+    "peer_go_ref": null,
+    "proposal_message_id": null,
+    "route_hash": null,
+    "transport_admitted": false
+   },
+   "epoch_age_s": null,
+   "own_command_history": [],
+   "own_map": {
+    "B_seen_in_own_rgb": false,
+    "pose_sigma_m": 0.2185
+   },
+   "own_rgb_grip": "unknown",
+   "own_rgb_summary": "own wrist RGB: image not included in this text conversion",
+   "own_route_proposal": null,
+   "peer_reports": [
+    {
+     "created_at_sim_s": 3.7,
+     "message_id": "w1-r3-3",
+     "sender": "r3",
+     "text": "r3 is idle per fixed roles. Standing by."
+    }
+   ],
+   "robot_id": "r2",
+   "role": "end_pos",
+   "sim_time_s": 3.8
+  },
+  "structurally_admissible": [
+   "continue"
+  ]
+ },
+ {
+  "acceptable": [],
+  "ambiguous": true,
+  "decision_point": "real_e2e",
+  "family": "dialogue",
+  "group": "real",
+  "id": "REAL06",
+  "label_basis": "none_descriptive",
+  "model_in_stored_run": "gemini-3.8-flash",
+  "n_stored_requests": 1,
+  "n_structurally_admissible": 1,
+  "pair": null,
+  "rule": "-",
+  "source": "/tmp/jevdec/azwire/e2eaz1-first4-r4/cases/e2eaz1-gemini-s61002-on-r2/raw/wire/000005-call-0005-r1-request.json",
+  "source_sha256": "e1c3adb62744c6184700b95c34f9cc382e44f42fe63e73ba03d5db50a4707f33",
+  "split": "real",
+  "state": {
+   "can_send_to": [
+    "r2",
+    "r3"
+   ],
+   "condition": "peer_en",
+   "dialogue": {
+    "approved": false,
+    "key": null,
+    "own_ack_sent": false,
+    "own_claim": false,
+    "own_go_sent": false,
+    "peer_go_ref": null,
+    "proposal_message_id": null,
+    "route_hash": null,
+    "transport_admitted": false
+   },
+   "epoch_age_s": null,
+   "own_command_history": [],
+   "own_map": {
+    "B_seen_in_own_rgb": false,
+    "pose_sigma_m": 0.1406
+   },
+   "own_rgb_grip": "unknown",
+   "own_rgb_summary": "own wrist RGB: image not included in this text conversion",
+   "own_route_proposal": null,
+   "peer_reports": [
+    {
+     "created_at_sim_s": 3.7,
+     "message_id": "w1-r2-2",
+     "sender": "r2",
+     "text": "r2 at end_pos holding beam. Standing by for route proposal."
+    },
+    {
+     "created_at_sim_s": 3.7,
+     "message_id": "w1-r3-3",
+     "sender": "r3",
+     "text": "r3 is idle per fixed roles. Standing by."
+    }
+   ],
+   "robot_id": "r1",
+   "role": "end_neg",
+   "sim_time_s": 4.0
+  },
+  "structurally_admissible": [
+   "continue"
+  ]
+ }
+]

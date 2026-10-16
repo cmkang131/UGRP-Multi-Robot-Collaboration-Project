@@ -1,0 +1,151 @@
+{
+  "schema": "ugrp.gemma_fallback_dev_check.v1",
+  "class": "dev",
+  "pr": 425,
+  "research_result": false,
+  "implementation_source_sha": "8e5f678c",
+  "image_probe_source_sha": "8e5f678cdc5553f8956237b850165e484d2eaaed",
+  "model_id": "gemma-4-31b-it",
+  "model_discovery": {
+    "source": "models.list",
+    "pages": 1,
+    "checked_unix": 1791707159.836771,
+    "model": {
+      "name": "models/gemma-4-31b-it",
+      "version": "001",
+      "displayName": "Gemma 4 31B IT",
+      "description": "Gemma 4 31B IT",
+      "inputTokenLimit": 262144,
+      "outputTokenLimit": 32768,
+      "supportedGenerationMethods": [
+        "generateContent",
+        "countTokens"
+      ],
+      "temperature": 1,
+      "topP": 0.95,
+      "topK": 64,
+      "maxTemperature": 2,
+      "thinking": true
+    },
+    "model_id": "gemma-4-31b-it"
+  },
+  "image_probe": {
+    "model_id": "gemma-4-31b-it",
+    "key_needed": false,
+    "image_input_confirmed": true,
+    "http_status": 200,
+    "image_sha256": "4135e5ae11d0dba68ae6abf0938b6c14744c1d04d92d964391b25bf5859ee8e8",
+    "image_path": "/Users/changmin/projects/ugrp-wt/s4-llm/tests/fixtures/owncam_pair_v2/grip_613_r1_00059.jpg",
+    "request_id": "gemma-image-probe-1791707159839349000",
+    "scope": "one actual image accepted and text returned; accuracy unmeasured",
+    "rpm": null,
+    "rpd": null,
+    "quota_evidence": {
+      "http_status": 200,
+      "headers": {},
+      "violations": [],
+      "checked_unix": 1791707205.416041
+    }
+  },
+  "key_needed": false,
+  "key_location": "macOS Keychain: ugrp-gemma-aistudio",
+  "model_calls": 1,
+  "models_list_calls": 2,
+  "raw_root": "/Users/changmin/projects/ugrp/outputs/gemma-fallback-20261011-keycheck",
+  "raw_files": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gemma-fallback-20261011-keycheck/check.json",
+      "bytes": 606,
+      "sha256": "96fc06f14640389bde854b0f580ec0d4dded26b6ca8ccb08f4bc553d38d446a8"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gemma-fallback-20261011-keycheck/image-probe.json",
+      "bytes": 446,
+      "sha256": "93d36750f6cdd93e6431dc560f1f9a24fe9bc9695f4347d27d5cd61e27846f09"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gemma-fallback-20261011-keycheck/ledger.jsonl",
+      "bytes": 1713,
+      "sha256": "201eca8ea4d93cab5823d58248ca9b244cf738be689b0a84adbfe62990fd2fc2"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gemma-fallback-20261011-keycheck/models-list.json",
+      "bytes": 516,
+      "sha256": "07eb262364f7ba3061c6f4f3bb97f69df337c6be880c89be2a772b32761808d2"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gemma-fallback-20261011-keycheck/quota.json",
+      "bytes": 275,
+      "sha256": "dc54e19548dfa832320e9341f66f38d6306e5b097112c688a06a551ac8f93882"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gemma-fallback-20261011-keycheck/quota.lock",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gemma-fallback-20261011-keycheck/responses/4ad7cc086c922c31bc02358a14e2f2a2b7b8d3339f6b128b92801db4b6a2d732.json",
+      "bytes": 924,
+      "sha256": "0ff354355f72a881d1375a19c86bea40fe4fa5923a03b1c5dc541aa04804bba8"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gemma-fallback-20261011-keycheck/tests-final.xml",
+      "bytes": 31751,
+      "sha256": "2f566f8ff23fb44e88d787160126707f317f7849684c4b6752a05f57fe2dc449"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gemma-fallback-20261011-keycheck/tests.xml",
+      "bytes": 31620,
+      "sha256": "4f77f78b8f09f0abd4c21ae8b2e71b0356f71392ff39e19fbcc3e3c960b84361"
+    }
+  ],
+  "free_limits": {
+    "rpm": null,
+    "rpd": null,
+    "evidence": {
+      "http_status": 200,
+      "headers": {},
+      "violations": [],
+      "checked_unix": 1791707205.416041
+    },
+    "scope": "Successful response exposed no quota headers; active free-tier request limits remain unverified. No 429 was induced."
+  },
+  "toggles_default": "off",
+  "main_study_profile_changed": false,
+  "physical_calls": 0,
+  "render_calls": 0,
+  "scope": "Actual models.list + one recorded own-RGB generation; image acceptance, not robot decision correctness or E2E. Later stable idempotency-key wiring is offline verified.",
+  "unfinished": [
+    "Account-specific RPM/RPD values not exposed",
+    "No real Gemini failure injected; fallback order tested with offline API",
+    "No background service or remote execution started"
+  ],
+  "sources": [
+    "https://ai.google.dev/gemma/docs/core/gemma_on_gemini_api",
+    "https://ai.google.dev/api/models",
+    "https://ai.google.dev/gemini-api/docs/rate-limits"
+  ],
+  "tests": {
+    "files": [
+      "tests/test_gemma_fallback_proxy.py",
+      "tests/test_zone_study_llm_driver.py",
+      "tests/test_s4_live12.py"
+    ],
+    "passed": 214,
+    "failed": 0,
+    "seconds": 36.91,
+    "scope": "offline API failures, real ledger metadata, quota admission, unchanged E2E gate; no provider/physics in tests"
+  },
+  "tested_source_files_sha256": {
+    "harness/pair_llm_live.py": "d134f5ddc1bff2d433a3fe7342139936a057c856bcb04629cb5ffa07bee53453",
+    "harness/s4_live_transport.py": "5683a33051541f6518f80389038280e97041f97cc5abb706a1ba196fc0b6c3ae",
+    "harness/s4_relay_journal.py": "86f55a79e4b29cad6399e06a68a591ee45331445b59b8f14fca09eab61c6567a",
+    "harness/zone_study_llm_driver.py": "c6295984bc78403b3fad2a1a88f6a43a877655b6c8af69e3bb373256caa6fa65",
+    "scripts/gemma_fallback_proxy.py": "3665c847a30433d56f62f5002c78231abb3e6b9cb1b2f66be3f737aa375ef4e2",
+    "scripts/run_ci_tests.py": "d954921b7f625131783ef48a25591371af4f121f5f93c5bfd604106eb0cc771e",
+    "scripts/run_s4_live.py": "33024ce1d8e8a62674a26d4cc2401570140f5abf6030da7fefa0e2b9cc377a4e",
+    "scripts/run_s4_pair_live12.py": "94d64e8dd53a5f0d2f1ff91fc5069f089ea4045e941565e4f06a4de312230a60",
+    "scripts/s4_proxy_relay.py": "82d5065320bb3ef8373f4bd0728386498b605b6896bb721f6beec328f16aa11a",
+    "tests/test_gemma_fallback_proxy.py": "3b5fec0833ccaaee698f4e957f7e79b583d7c029499272e3988e278dbeeedf08"
+  }
+}

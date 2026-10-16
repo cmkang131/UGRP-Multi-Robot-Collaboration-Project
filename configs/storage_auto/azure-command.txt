@@ -1,0 +1,7 @@
+# READY ONLY. Run after the Azure setup task completes; never start the VM here.
+# Copy the six scripts listed in install_storage_automation.py to ~/ugrp-storage-tools/scripts.
+# Mac coordinator fetches a fresh catalog, then streams it over existing SSH:
+# ssh ugrp-sim-azure 'python3 ~/ugrp-storage-tools/scripts/storage_automation.py --host azure --root ~/ugrp-sim/runs --catalog-stdin --execute'
+# Run dry-run first (omit --execute), review its report, then enable this target in the
+# coordinator. Azure is not installed, probed, scheduled, started or stopped by this PR.
+# Apply floor 8 GiB / pressure 18 GiB; requires persistent runs and zstd + lsof.

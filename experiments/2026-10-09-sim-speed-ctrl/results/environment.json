@@ -1,0 +1,26 @@
+{
+  "platform": "macOS-27.2-arm64-arm-64bit",
+  "machine": "arm64",
+  "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+  "python_executable": "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+  "versions": {
+    "numpy": "2.5.2",
+    "scipy": "1.17.1",
+    "opencv": "5.0.0",
+    "mujoco": "3.12.0"
+  },
+  "readback_loadavg": [
+    3.171875,
+    3.31298828125,
+    3.12646484375
+  ],
+  "source_sha": "33f8f182f070b7ab7ca5547e92cfb77aca58b5de",
+  "module_sha256": {
+    "harness/controller_exact_speedups.py": "06b498a2348e42fae46114c055e6745a81dc44f1d276ba54665e6ef46de7b8b9",
+    "scripts/profile_controller_replay.py": "47dd23e9d0380927007522e66ee2d10376db85465e97aea974ce275ddd145c8f",
+    "scripts/profile_saved_physics.py": "6a6b58590100c985445a4719f305ba10dbbbd5eb4290a6ba1e3fbaf83b0ae8ef"
+  },
+  "measurement_scope": "All timer/load/profile and original source/adapter hashes are in each measurement result.json; readback environment is separate from timed runtime",
+  "priority_boundary": "research-priority-boundary.json and research-priority-release.json; own parent paused between managed jobs; active timing worker was not paused",
+  "profiler_windows": "initialization and first/last 100 recorded frames; per-component timers span replay"
+}

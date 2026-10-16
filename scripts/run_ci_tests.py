@@ -24,6 +24,45 @@ from scripts import agent_lock
 from scripts.check_ci_fixtures import check_fixtures
 
 TEST_PATTERNS = (
+    "tests/test_grasp_act_data.py",
+    "tests/test_grasp_act_policy.py",
+    "tests/test_grasp_act_pilot.py",
+    "tests/test_grasp_act_act4.py",
+    "tests/test_grasp_act_memory.py",
+    "tests/test_grasp_act_act6.py",
+    "tests/test_grasp_act_act7.py",
+    "tests/test_grasp_act_act8.py",
+    "tests/test_grasp_act_act9.py",
+    "tests/test_e2e18.py",
+    "tests/test_e2e18_beam_axis.py",
+    "tests/test_e2e18_cadence.py",
+    "tests/test_e2e18_route_coverage.py",
+    "tests/test_e2e18_route_guard.py",
+    "tests/test_e2e_carrier_axes.py",
+    "tests/test_e2e_record_scalars.py",
+    "tests/test_e2e_route_extent.py",
+    "tests/test_e2e_b_partial.py",
+    "tests/test_e2e_boundary_views.py",
+    "tests/test_e2e_boundary_repair.py",
+    "tests/test_e2e_b_marker_detect.py",
+    "tests/test_e2e_b_quad_v2.py",
+    "tests/test_e2e_rgb_vo.py",
+    "tests/test_e2e_vo_floor_mask.py",
+    "tests/test_e2e_explore_deadlock.py",
+    "tests/test_e2e_us_stall.py",
+    "tests/test_e2e14_combo.py",
+    "tests/test_e2e_exact_speedups2.py",
+    "tests/test_e2e_speed3.py",
+    "tests/test_e2e_speed4.py",
+    "tests/test_e2e_overview_replay.py",
+    "tests/test_e2e_runtime_registration.py",
+    "tests/test_e2e_s4_live.py",
+    "tests/test_e2e_goal_route.py",
+    "tests/test_e2e_dialogue.py",
+    "tests/test_e2e_s3_route.py",
+    "tests/test_e2e_own_inputs.py",
+    "tests/test_ownmap_s2.py",
+    "tests/test_lazy_camera.py",
     "tests/test_goal_route_continuous.py",
     "tests/test_own_traversal_graph.py",
     "tests/test_self_odom_grid.py",
@@ -62,6 +101,8 @@ TEST_PATTERNS = (
     "tests/test_self_wall_robust.py",
     "tests/test_self_wall_memory.py",
     "tests/test_coela_runtime_self_walls.py",
+    "tests/test_azure*.py",
+    "tests/test_storage_automation.py",
     "tests/test_s2_path_heading.py",
     "tests/test_path_heading_default.py",
     "tests/test_opencv_wall_robot_mask.py",
@@ -131,6 +172,9 @@ TEST_PATTERNS = (
     "tests/test_zone_identity_jobs.py",  # T13a: own-RGB identity/count and target-job seam (fake only)
     "tests/test_zone_study_scenarios.py", "tests/test_zone_study_protocol.py",
     "tests/test_zone_final_env.py", "tests/test_zone_study_scenarios_v3.py", "tests/test_zone_study_scenarios_v4.py",
+    "tests/test_zone_study_scenarios_v5.py",
+    "tests/test_zone_study_scenarios_v6.py",
+    "tests/test_zone_study_scenarios_v7.py",
     "tests/test_zone_environment_registry.py",
     "tests/test_zone_scenario_scene.py",
     "tests/test_zone_final_environment_runnable.py",
@@ -147,11 +191,24 @@ TEST_PATTERNS = (
     "tests/test_highpose_edge_fit.py",  # v98 HIGH beam-edge consensus fit (recorded own frames)
     "tests/test_highpose_final_veto.py",  # v98 same-tick final veto of terminal endpoints' motion (real runner, fake backend)
     "tests/test_highpose_own_load_occlusion.py",  # v98 own-load occlusion rule: held beam blocking the own camera is no observation, not INVALID_OWN_IMAGE
+    "tests/test_s2_*.py",  # Include real-site, freeze-scope and in-hand S2 option regressions.
     "tests/test_solo_cyan_v106*.py",  # S2 v3 cyan: own RGB/commands, synthetic backend only
     "tests/test_s3_host*.py",  # S3 fixed-role host, no physics or model calls
+    "tests/test_s3_pair_heading.py",
+    "tests/test_s3_exact_cache.py",
+    "tests/test_s3_no_prior.py",  # S3 v142 source/input boundary, no physics
+    "tests/test_s3_camera_render.py",  # shared render call and S2 mount parity, no physics
     "tests/test_highpose_pf_consistency.py",  # v98 PF consistency (one stationary view counts once)
     "tests/test_highpose_relook.py",  # v98 dock look pans + bounded look recovery (synthetic closed loop)
     "tests/test_pair_llm_*.py",  # v100 pair LLM layer: stub model only, fake physics
+    "tests/test_s4_live_stage.py",  # S4 stage admission and transport: stub model, fake physics
+    "tests/test_gemma_fallback_proxy.py",  # Mac DEV fallback/quota/Keychain: fake API only
+    "tests/test_gemma_multi_key.py",  # Opt-in independent key buckets: fake API only
+    "tests/test_s4_study_policy.py",  # English/event/quota policy: offline only
+    "tests/test_s4_live5.py",  # opt-in frozen S3 pair integration, no physics/model
+    "tests/test_s4_grip_r3.py",
+    "tests/test_s4_grip_visual.py",
+    "tests/test_s4_grip_raw.py",  # eval-only recorded contact labels; no physics/model
     "tests/test_zone_final_pair_heldout.py",
     "tests/test_review_352.py",
     "tests/test_review_355.py",
@@ -282,6 +339,7 @@ TEST_PATTERNS = (
     "tests/test_v6h_recorder_contract.py",  # pinned recorder consumer contract; JSON only
     "tests/test_v6h_classifier_properties.py",  # 10,000 seeded evidence chains; no physics
     "tests/test_render_pair_probe_video.py",  # stage-probe report video renderer (reads saved cases only)
+    "tests/test_natural_scene_texture.py",  # pinned PNG, pure XML; no renderer
     "tests/test_render_profile.py",  # opt-in shadow/reflection render profiles (default path unchanged)
     "tests/test_carry_relocalization_b1.py",  # 2026-09-29: offline B1 relocalization measurement (pure arithmetic/thresholds)
     "tests/test_stall_detector_d1.py",  # offline D1 draft reference: NumPy frames only, no controller/simulator
@@ -394,6 +452,7 @@ TEST_PATTERNS = (
     "tests/test_navigation_evidence.py",
     "tests/test_navigation_temporal.py",
     "tests/test_ugrp_session.py",
+    "tests/test_storage_tools.py",
     "tests/test_sim_speed_tools.py",
     "tests/test_sim_speed_review2.py",
     "tests/test_sim_speed_review3.py",
@@ -420,6 +479,8 @@ TEST_PATTERNS = (
     "tests/test_masterpi_drive_friction_v7.py",
     "tests/test_v7_exact_speedups.py",
     "tests/test_v7_speed_benchmark.py",
+    "tests/test_controller_exact_speedups.py",
+    "tests/test_controller_replay.py",
     "tests/test_masterpi_drive_friction_v7_freeze.py",
     "tests/test_masterpi_drive_friction_v7_sphere6.py",
     "tests/test_probe_v7_roller_approx.py",

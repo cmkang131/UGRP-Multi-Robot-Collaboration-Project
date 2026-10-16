@@ -13,6 +13,7 @@ from harness import zone_s2_heading_contract as contract
 from harness import zone_s2_graduation59_contract as baseline
 from harness.zone_solo_cyan_pulse_cal import Runtime as Pulse, action_of
 from scripts.run_s2_heading import runtime_factory
+from harness.zone_final_pair_vision import GRASP_RADIUS_M
 
 
 def profiles():
@@ -31,12 +32,22 @@ def test_far_goal_rotates_without_strafe_or_translation(loaded, angle):
 def test_intermediate_waypoint_never_enables_strafe_and_final_only_fine():
     p, _ = m.select(profiles(), True, [0, .04], 0, 1.)
     assert p['axis'] == 'turn'
-    p, _ = m.select(profiles(), True, [0, .04], 0, .04)
+    p, _ = m.select(profiles(), True, [0, .04], 0, .04, min_command_contract=True)
     # Fine .06 s strafe is not a REAL command: use the shared turn/forward
     # approach until the existing positional tolerance, then final heading.
     assert p['axis'] == 'turn' and abs(p['u']) == .35 and p['duration_s'] == .10
     p, _ = m.select(profiles(), True, [.5, 0], 0, .5)
     assert p['axis'] == 'forward' and p['u'] > 0
+
+
+@pytest.mark.parametrize('error',[.01,.02])
+def test_final_manipulation_uses_its_existing_tolerance(error):
+    before,_=m.select(profiles(),False,[0.,error],0.,error,min_command_contract=True)
+    assert before is None  # default navigation radius stays byte-equivalent
+    p,score=m.select(profiles(),False,[0.,error],0.,error,position_tolerance_m=.003,
+                  min_command_contract=True)
+    assert p['axis']=='turn' and p['duration_s']==.1
+    assert score['phase']=='rotate_path' and m.command_reason(action_of(p)) is None
 
 
 def stub(cls, loaded=False):
@@ -130,16 +141,18 @@ def test_contract_refuses_unregistered_seed_off_execution_and_unknown_mode():
     with pytest.raises(ValueError): contract.require_execution(contract.bundle('a'*40,1066))
 
 
-def test_far_visual_alignment_replaces_strafe_and_waits_for_coast_and_estimate():
+@pytest.mark.parametrize('target',[[.6,.4],[GRASP_RADIUS_M,.01],[GRASP_RADIUS_M,.02]])
+def test_far_visual_alignment_replaces_strafe_and_waits_for_coast_and_estimate(target):
     class Previous(Pulse):
         def __init__(self, **kw):
-            self.state='align'; self.target=[.6,.4]; self.robot_id='r3'
+            self.state='align'; self.target=target; self.robot_id='r3'
             self.last_report=NS(t_est=10.,yaw_rad=0.)
             self.pose=NS(provider=NS(loc=NS(_pf=NS(load=NS(loaded=False)))))
             self.pulse_profiles=profiles();self.fine_rows=[]
         def step(self, now):
             return [('r3',dict(kind='mecanum',forward=0.,left=.35,turn=0.,duration_s=.06))]
-    r=m.runtime_class(Previous)(heading_mode=m.OPTION,pulse_motion_model='v7_pulse_cal_v1')
+    r=m.runtime_class(Previous)(heading_mode=m.OPTION,pulse_motion_model='v7_pulse_cal_v1',
+                                 min_command_contract=m.CONTRACT)
     rows=r.step(10.)
     assert rows[0][1]['turn']==.35 and rows[0][1]['left']==0 and rows[0][1]['duration_s']==.10
     assert r.step(10.05)==[]
@@ -186,12 +199,15 @@ def test_heading_issue_boundary_omits_short_and_mixed_without_changing_off():
     class Previous(Pulse):
         def __init__(self, **kw):
             from harness.zone_final_pair_vision import GRASP_RADIUS_M
-            self.state='align';self.target=[GRASP_RADIUS_M, .015];self.robot_id='r3'
+            # No current visual target: the output guard must omit rather than
+            # invent a recovery direction. Targeted align replacement is above.
+            self.state='align';self.target=None;self.robot_id='r3'
             self.last_report=NS(t_est=10.,yaw_rad=0.)
             self.proposal=None;self.fine_until=10.06
         def step(self, now):
             return [('r3', self.proposal)]
-    on=m.runtime_class(Previous)(heading_mode=m.OPTION,pulse_motion_model='v7_pulse_cal_v1')
+    on=m.runtime_class(Previous)(heading_mode=m.OPTION,pulse_motion_model='v7_pulse_cal_v1',
+                                 min_command_contract=m.CONTRACT)
     off=m.runtime_class(Previous)(heading_mode='off')
     for row in saved:
         action={k:v for k,v in row.items() if k!='t'}
@@ -215,7 +231,7 @@ def test_saved_ownmap_and_s3_proposals_replay_through_one_selector_and_real_port
     with pytest.raises(ValueError,match='one axis and bounded duration'):
         port.apply(bad,row['t'])
     plan=dict(coordinate_frame='r3/own_odom',status='goal_approach',path_m=row['path'])
-    issued=command(plan,row['pose'],profiles(),robot_id='r3')
+    issued=command(plan,row['pose'],profiles(),robot_id='r3',min_command_contract=True)
     assert issued['duration_s']>=.10 and m.command_reason(issued) is None
     port.apply(issued,row['t'])
     for row in fixture['s3']:
@@ -223,8 +239,56 @@ def test_saved_ownmap_and_s3_proposals_replay_through_one_selector_and_real_port
         with pytest.raises(ValueError,match='one axis and bounded duration'):
             port.apply(before,row['t'])
         goal=row['static_goal']
-        p,_=m.select_waypoint(profiles(),False,row['own_estimate'],goal[:2],goal[:2],goal_yaw=goal[2])
+        p,_=m.select_waypoint(profiles(),False,row['own_estimate'],goal[:2],goal[:2],goal_yaw=goal[2],min_command_contract=True)
         issued=action_of(p)
         assert issued==row['projected'] and m.command_reason(issued) is None
         port.apply(issued,row['t'])
     assert len(motors)==3
+
+
+@pytest.mark.parametrize('duration,reason',[
+    (float('nan'),'nonfinite'), (float('inf'),'nonfinite'),
+    (-.1,'duration_outside_real_contract'), (.0999999,'duration_outside_real_contract'),
+    (.80000001,'duration_outside_real_contract'), (1.,'duration_outside_real_contract'),
+    (.10,None), (.80,None)])
+def test_command_reason_duration_boundaries(duration, reason):
+    assert m.command_reason(dict(kind='mecanum',forward=.3,left=0.,turn=0.,duration_s=duration))==reason
+
+
+def test_command_reason_nonfinite_axis_mixed_and_kind():
+    assert m.command_reason(dict(kind='mecanum',forward=float('nan'),duration_s=.1))=='nonfinite'
+    assert m.command_reason(dict(kind='mecanum',forward=.3,left=.3,duration_s=.1))=='mixed_axes'
+    assert m.command_reason(dict(kind='drive',forward=.3,left=.3,duration_s=.01)) is None
+    assert m.command_reason(dict(kind='hold')) is None
+
+
+def test_turn_axis_wraps_at_pi_with_contract():
+    for sign in (1,-1):
+        p,_=m.select(profiles(),False,[-1.,sign*1e-4],0.,1.,min_command_contract=True)
+        assert p['axis']=='turn' and p['duration_s']==.10 and p['mean_delta'][2]*sign>0
+        assert m.command_reason(action_of(p)) is None
+
+
+def test_contract_option_off_reproduces_v145_final_lateral_and_params():
+    pr=profiles()
+    off,_=m.select(pr,True,[0,.04],0,.04)
+    assert off['axis']=='left' and off['duration_s']==.06
+    assert action_of(off)['duration_s']==.06
+    same,_=m.select(pr,True,[0,.04],0,.04,min_command_contract=False)
+    assert same is off
+    on,_=m.select(pr,True,[0,.04],0,.04,min_command_contract=True)
+    assert on['axis']=='turn' and on['duration_s']==.10
+    assert m.PARAMS==dict(final_alignment_m=.10,heading_tolerance_rad=.06,turn_raw_limit=.35,
+        turn_duration_s=.10,lateral_raw_limit=.35,lateral_duration_s=.06,
+        angular_dynamics='unchanged measured pulse, coast and delayed feedback',
+        active_observation_actual_limit_deg=90.,gt_inputs=False)
+
+
+def test_runtime_option_validation_and_default_off():
+    class Previous(Pulse):
+        def __init__(self, **kw): pass
+    with pytest.raises(ValueError): m.runtime_class(Previous)(heading_mode='off',min_command_contract=m.CONTRACT)
+    with pytest.raises(ValueError): m.runtime_class(Previous)(heading_mode=m.OPTION,
+        pulse_motion_model='v7_pulse_cal_v1',min_command_contract='bad')
+    r=m.runtime_class(Previous)(heading_mode=m.OPTION,pulse_motion_model='v7_pulse_cal_v1')
+    assert not getattr(r,'min_command_contract',False)

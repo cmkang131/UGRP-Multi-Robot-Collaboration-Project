@@ -41,3 +41,11 @@ def test_workflow_is_separate_admission_not_replacement_profile():
     assert row['runner'] == 'scripts.run_s2_v133_reproduction'
     original, _ = _row(r.ROOT, 'zone-s2-realism-v133')
     assert original['runner'] == 'scripts.run_s2_landmarks_dev'
+
+
+def test_frozen_baseline_source_hash_tampering_is_rejected():
+    baseline = r.baseline()
+    path = 'harness/zone_solo_cyan_contract_v106.py'
+    baseline['source_sha256'][path] = '0' * 64
+    with pytest.raises(ValueError, match='source changed: ' + path):
+        r.original_contract.require_execution(baseline)

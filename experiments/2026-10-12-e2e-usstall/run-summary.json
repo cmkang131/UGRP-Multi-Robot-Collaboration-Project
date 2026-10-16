@@ -1,0 +1,1240 @@
+{
+  "schema": "ugrp.e2e16.vm4.summary.v1",
+  "status": "COMPLETE",
+  "checked_utc": "2026-10-12T08:32:14.370303+00:00",
+  "source_sha": "f92abe144c5b0db0f3bfecd47bfd3edf7554a75d",
+  "pr": 450,
+  "setup_pr": 451,
+  "branch": "codex/e2e-usstall",
+  "vm": "ugrp-sim-azure4",
+  "conditions": {
+    "A": "v206 rgb_vo_us_v1 + ultrasonic on_v1",
+    "B": "v205 rgb_vo_v2 + ultrasonic off"
+  },
+  "seeds": [
+    61001,
+    61002,
+    61003
+  ],
+  "N": 6,
+  "submitted": 6,
+  "exited": 6,
+  "three_condition_success": 0,
+  "condition_counts": {
+    "LLM_operated": 6,
+    "own_map_completed": 0,
+    "start_to_finish_transport": 0
+  },
+  "zupt_judgements": 19185,
+  "zupt_stationary": 506,
+  "zupt_applied": 506,
+  "execution_errors": 6,
+  "caps": {
+    "runner_wall_s": 25200,
+    "workflow_timeout_s": 25200,
+    "observer_wall_s": 25200,
+    "guest_uptime_s": 28800
+  },
+  "relay": {
+    "local_port": 18416,
+    "remote_port": 18393,
+    "credential_location": "Mac Keychain only"
+  },
+  "admission_errors": [
+    {
+      "time": 1791787432.581339,
+      "kind": "HOST_PREFLIGHT_ERROR",
+      "processes_launched": 0,
+      "cause": "System python lacks PIL when importing sealed receipt validation",
+      "fix": "Use existing shared .venv-sim interpreter; source and bundle unchanged"
+    }
+  ],
+  "retention": {
+    "run_class": "dev",
+    "pr": 450,
+    "raw": "VM4 persistent disk then hash-verified ARM",
+    "mac": "fetch-lite, no media/npz/embedded images",
+    "prune": "only after PR merge/close with hashes and cleanup-records"
+  },
+  "evidence": {
+    "live_sha256": "8854fb369e4811ed923c252c37bfce5f551c3f30e2c7f8a87e0e19df1cc7ffb7",
+    "live_local": "/Users/changmin/projects/ugrp-wt/azure-vm4/outputs/e2e16/live.json",
+    "source_location": "azure4:/home/ugrp/ugrp-sim/src/f92abe144c5b0db0f3bfecd47bfd3edf7554a75d"
+  },
+  "runs": [
+    {
+      "run": "e2e-usstall-a-s61001",
+      "status": "EARLY_STOP",
+      "exit": "130",
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e-usstall-a-s61001",
+      "sim_s": 403.0,
+      "wall_s": 6139.473686077,
+      "phase": "mapping",
+      "furthest_stages": {
+        "r1": "explore",
+        "r2": "explore",
+        "r3": "explore"
+      },
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 17.363825507
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 17.363825507
+        },
+        "B_candidate": {
+          "sim_s": 2.4,
+          "wall_s": 33.654658330000075,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        },
+        "B_view_approach": {
+          "sim_s": 9.6,
+          "wall_s": 100.81242605,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        }
+      },
+      "conditions": {
+        "LLM_operated": true,
+        "own_map_completed": false,
+        "start_to_finish_transport": false
+      },
+      "initial_check": {
+        "unix": 1791787647.04782,
+        "elapsed_s": 205.1444718837738,
+        "passed": true,
+        "checks": {
+          "first_model_response": true,
+          "sim_frames_increase": true,
+          "actual_movement": true,
+          "straight_commands": true,
+          "mapping_entered": true,
+          "no_exception": true,
+          "vo_recorded": true,
+          "ultrasonic_recorded": true
+        }
+      },
+      "latest_check_unix": 1791793598.8280904,
+      "robots": {
+        "r1": {
+          "frames": 2016,
+          "forward_commands": 846,
+          "actual_displacement_m": 2.274819632482397,
+          "ultrasonic": {
+            "range_rows": 4033,
+            "judgements": 2016,
+            "zupt_count": 70,
+            "zupt_applied": 70,
+            "statuses": {
+              "not_forward": 991,
+              "unconfirmed": 191,
+              "vo_available": 748,
+              "invalid_reading": 12,
+              "stationary_range": 70,
+              "not_near": 4
+            }
+          },
+          "vo": {
+            "trace_frames": 2016,
+            "measured_frames": 748,
+            "applied_frames": 811,
+            "applied_fraction": 0.40228174603174605
+          },
+          "map_error_m": {
+            "n": 2016,
+            "max": 4.756425316353693,
+            "median": 4.431120367749835
+          },
+          "control_error_m": {
+            "n": 2016,
+            "max": 1.099776285960838,
+            "median": 0.37528674095301695
+          }
+        },
+        "r2": {
+          "frames": 2016,
+          "forward_commands": 1697,
+          "actual_displacement_m": 4.892554724709788,
+          "ultrasonic": {
+            "range_rows": 4033,
+            "judgements": 2016,
+            "zupt_count": 92,
+            "zupt_applied": 92,
+            "statuses": {
+              "not_forward": 98,
+              "unconfirmed": 340,
+              "vo_available": 1361,
+              "stationary_range": 92,
+              "invalid_reading": 120,
+              "not_near": 5
+            }
+          },
+          "vo": {
+            "trace_frames": 2016,
+            "measured_frames": 1361,
+            "applied_frames": 1449,
+            "applied_fraction": 0.71875
+          },
+          "map_error_m": {
+            "n": 2016,
+            "max": 7.207915447239704,
+            "median": 3.39843190269412
+          },
+          "control_error_m": {
+            "n": 2016,
+            "max": 1.0249160633996135,
+            "median": 0.6660786754989783
+          }
+        },
+        "r3": {
+          "frames": 2016,
+          "forward_commands": 0,
+          "actual_displacement_m": 0.002904687662694035,
+          "ultrasonic": {
+            "range_rows": 4033,
+            "judgements": 2016,
+            "zupt_count": 0,
+            "zupt_applied": 0,
+            "statuses": {
+              "not_forward": 3,
+              "vo_available": 2013
+            }
+          },
+          "vo": {
+            "trace_frames": 2016,
+            "measured_frames": 2013,
+            "applied_frames": 0,
+            "applied_fraction": 0.0
+          },
+          "map_error_m": {
+            "n": 2016,
+            "max": 0.09234263962142522,
+            "median": 0.08446770140909562
+          },
+          "control_error_m": {
+            "n": 2016,
+            "max": 0.002903725282139293,
+            "median": 0.001156627137194376
+          }
+        }
+      },
+      "model": {
+        "calls": 3,
+        "known_cost_usd": 0.00044039999999999997,
+        "missing_cost_calls": 0
+      },
+      "failure": "SIGNAL_SIGINT",
+      "failure_type": "KeyboardInterrupt",
+      "archive_verified": true,
+      "archive_path": "/home/ubuntu/ugrp-archive/runs/native-e2e-usstall-a-s61001",
+      "zupt_displacement_evaluation": {
+        "r1": {
+          "zupt_applied": 70,
+          "aligned_events": 70,
+          "actual_displacement_m": {
+            "max": 0.013484047132090565,
+            "median": 0.0002560412922882384
+          }
+        },
+        "r2": {
+          "zupt_applied": 92,
+          "aligned_events": 92,
+          "actual_displacement_m": {
+            "max": 0.014400018774321238,
+            "median": 0.0019196039813390417
+          }
+        },
+        "r3": {
+          "zupt_applied": 0,
+          "aligned_events": 0,
+          "actual_displacement_m": {
+            "max": null,
+            "median": null
+          }
+        }
+      }
+    },
+    {
+      "run": "e2e-usstall-b-s61001",
+      "status": "EARLY_STOP",
+      "exit": "130",
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e-usstall-b-s61001",
+      "sim_s": 409.0,
+      "wall_s": 6141.326521866,
+      "phase": "mapping",
+      "furthest_stages": {
+        "r1": "explore",
+        "r2": "explore",
+        "r3": "explore"
+      },
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 17.056305651999992
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 17.056305651999992
+        },
+        "B_candidate": {
+          "sim_s": 2.4,
+          "wall_s": 32.99910287900002,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        },
+        "B_view_approach": {
+          "sim_s": 9.6,
+          "wall_s": 99.93613135499993,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        }
+      },
+      "conditions": {
+        "LLM_operated": true,
+        "own_map_completed": false,
+        "start_to_finish_transport": false
+      },
+      "initial_check": {
+        "unix": 1791787647.1190114,
+        "elapsed_s": 205.21467781066895,
+        "passed": true,
+        "checks": {
+          "first_model_response": true,
+          "sim_frames_increase": true,
+          "actual_movement": true,
+          "straight_commands": true,
+          "mapping_entered": true,
+          "no_exception": true
+        }
+      },
+      "latest_check_unix": 1791793599.9900331,
+      "robots": {
+        "r1": {
+          "frames": 2046,
+          "forward_commands": 1664,
+          "actual_displacement_m": 5.509232341788225,
+          "ultrasonic": {
+            "range_rows": 0,
+            "judgements": 0,
+            "zupt_count": 0,
+            "zupt_applied": 0,
+            "statuses": {}
+          },
+          "vo": {
+            "trace_frames": 2046,
+            "measured_frames": 1414,
+            "applied_frames": 1404,
+            "applied_fraction": 0.6862170087976539
+          },
+          "map_error_m": {
+            "n": 2046,
+            "max": 10.740433170627778,
+            "median": 6.11631354390834
+          },
+          "control_error_m": {
+            "n": 2046,
+            "max": 2.1061156036216473,
+            "median": 0.6637001875851032
+          }
+        },
+        "r2": {
+          "frames": 2046,
+          "forward_commands": 1709,
+          "actual_displacement_m": 4.118713757104926,
+          "ultrasonic": {
+            "range_rows": 0,
+            "judgements": 0,
+            "zupt_count": 0,
+            "zupt_applied": 0,
+            "statuses": {}
+          },
+          "vo": {
+            "trace_frames": 2046,
+            "measured_frames": 1378,
+            "applied_frames": 1368,
+            "applied_fraction": 0.6686217008797654
+          },
+          "map_error_m": {
+            "n": 2046,
+            "max": 6.739557025139774,
+            "median": 5.794487417108812
+          },
+          "control_error_m": {
+            "n": 2046,
+            "max": 5.5272881493612775,
+            "median": 1.239033742911468
+          }
+        },
+        "r3": {
+          "frames": 2046,
+          "forward_commands": 0,
+          "actual_displacement_m": 0.251730225716912,
+          "ultrasonic": {
+            "range_rows": 0,
+            "judgements": 0,
+            "zupt_count": 0,
+            "zupt_applied": 0,
+            "statuses": {}
+          },
+          "vo": {
+            "trace_frames": 2046,
+            "measured_frames": 1960,
+            "applied_frames": 0,
+            "applied_fraction": 0.0
+          },
+          "map_error_m": {
+            "n": 2046,
+            "max": 0.20784083385110314,
+            "median": 0.08447606918717172
+          },
+          "control_error_m": {
+            "n": 2046,
+            "max": 0.25166284456287424,
+            "median": 0.0011729332332193294
+          }
+        }
+      },
+      "model": {
+        "calls": 3,
+        "known_cost_usd": 0.000402,
+        "missing_cost_calls": 0
+      },
+      "failure": "SIGNAL_SIGINT",
+      "failure_type": "KeyboardInterrupt",
+      "archive_verified": true,
+      "archive_path": "/home/ubuntu/ugrp-archive/runs/native-e2e-usstall-b-s61001",
+      "zupt_displacement_evaluation": {
+        "r1": {
+          "zupt_applied": 0,
+          "aligned_events": 0,
+          "actual_displacement_m": {
+            "max": null,
+            "median": null
+          }
+        },
+        "r2": {
+          "zupt_applied": 0,
+          "aligned_events": 0,
+          "actual_displacement_m": {
+            "max": null,
+            "median": null
+          }
+        },
+        "r3": {
+          "zupt_applied": 0,
+          "aligned_events": 0,
+          "actual_displacement_m": {
+            "max": null,
+            "median": null
+          }
+        }
+      }
+    },
+    {
+      "run": "e2e-usstall-a-s61002",
+      "status": "EARLY_STOP",
+      "exit": "130",
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e-usstall-a-s61002",
+      "sim_s": 449.0,
+      "wall_s": 6138.913001528,
+      "phase": "mapping",
+      "furthest_stages": {
+        "r1": "explore",
+        "r2": "explore",
+        "r3": "explore"
+      },
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 15.238919828999997
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 15.238919828999997
+        },
+        "B_candidate": {
+          "sim_s": 4.4,
+          "wall_s": 48.10388018899994,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        },
+        "B_view_approach": {
+          "sim_s": 26.4,
+          "wall_s": 234.944097575,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        }
+      },
+      "conditions": {
+        "LLM_operated": true,
+        "own_map_completed": false,
+        "start_to_finish_transport": false
+      },
+      "initial_check": {
+        "unix": 1791787647.1758287,
+        "elapsed_s": 205.27075672149658,
+        "passed": true,
+        "checks": {
+          "first_model_response": true,
+          "sim_frames_increase": true,
+          "actual_movement": true,
+          "straight_commands": true,
+          "mapping_entered": true,
+          "no_exception": true,
+          "vo_recorded": true,
+          "ultrasonic_recorded": true
+        }
+      },
+      "latest_check_unix": 1791793601.1441572,
+      "robots": {
+        "r1": {
+          "frames": 2246,
+          "forward_commands": 940,
+          "actual_displacement_m": 1.6658833789472276,
+          "ultrasonic": {
+            "range_rows": 4494,
+            "judgements": 2246,
+            "zupt_count": 75,
+            "zupt_applied": 75,
+            "statuses": {
+              "not_forward": 353,
+              "unconfirmed": 288,
+              "vo_available": 1499,
+              "invalid_reading": 30,
+              "not_near": 1,
+              "stationary_range": 75
+            }
+          },
+          "vo": {
+            "trace_frames": 2246,
+            "measured_frames": 1499,
+            "applied_frames": 784,
+            "applied_fraction": 0.3490650044523598
+          },
+          "map_error_m": {
+            "n": 2246,
+            "max": 3.2236469942278307,
+            "median": 2.558321676261689
+          },
+          "control_error_m": {
+            "n": 2246,
+            "max": 2.2952816846055653,
+            "median": 1.7882344806916217
+          }
+        },
+        "r2": {
+          "frames": 2246,
+          "forward_commands": 928,
+          "actual_displacement_m": 3.932190095285654,
+          "ultrasonic": {
+            "range_rows": 4494,
+            "judgements": 2246,
+            "zupt_count": 111,
+            "zupt_applied": 111,
+            "statuses": {
+              "not_forward": 1235,
+              "unconfirmed": 253,
+              "vo_available": 636,
+              "invalid_reading": 5,
+              "stationary_range": 111,
+              "not_near": 6
+            }
+          },
+          "vo": {
+            "trace_frames": 2246,
+            "measured_frames": 636,
+            "applied_frames": 746,
+            "applied_fraction": 0.3321460373998219
+          },
+          "map_error_m": {
+            "n": 2246,
+            "max": 1.3615649143093407,
+            "median": 1.3002770438106206
+          },
+          "control_error_m": {
+            "n": 2246,
+            "max": 1.1638334766067011,
+            "median": 1.1046298739512994
+          }
+        },
+        "r3": {
+          "frames": 2246,
+          "forward_commands": 0,
+          "actual_displacement_m": 0.003072177917995924,
+          "ultrasonic": {
+            "range_rows": 4494,
+            "judgements": 2246,
+            "zupt_count": 0,
+            "zupt_applied": 0,
+            "statuses": {
+              "not_forward": 3,
+              "vo_available": 2243
+            }
+          },
+          "vo": {
+            "trace_frames": 2246,
+            "measured_frames": 2243,
+            "applied_frames": 0,
+            "applied_fraction": 0.0
+          },
+          "map_error_m": {
+            "n": 2246,
+            "max": 0.09224691870418271,
+            "median": 0.08455014658587864
+          },
+          "control_error_m": {
+            "n": 2246,
+            "max": 0.0030707995885313135,
+            "median": 0.001467262803553511
+          }
+        }
+      },
+      "model": {
+        "calls": 3,
+        "known_cost_usd": 0.00046737000000000005,
+        "missing_cost_calls": 0
+      },
+      "failure": "SIGNAL_SIGINT",
+      "failure_type": "KeyboardInterrupt",
+      "archive_verified": true,
+      "archive_path": "/home/ubuntu/ugrp-archive/runs/native-e2e-usstall-a-s61002",
+      "zupt_displacement_evaluation": {
+        "r1": {
+          "zupt_applied": 75,
+          "aligned_events": 75,
+          "actual_displacement_m": {
+            "max": 0.014047167630778392,
+            "median": 0.0026485872621452573
+          }
+        },
+        "r2": {
+          "zupt_applied": 111,
+          "aligned_events": 111,
+          "actual_displacement_m": {
+            "max": 0.013183702460524199,
+            "median": 0.0005226978629479424
+          }
+        },
+        "r3": {
+          "zupt_applied": 0,
+          "aligned_events": 0,
+          "actual_displacement_m": {
+            "max": null,
+            "median": null
+          }
+        }
+      }
+    },
+    {
+      "run": "e2e-usstall-b-s61002",
+      "status": "EARLY_STOP",
+      "exit": "130",
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e-usstall-b-s61002",
+      "sim_s": 415.0,
+      "wall_s": 6126.891215863,
+      "phase": "mapping",
+      "furthest_stages": {
+        "r1": "explore",
+        "r2": "explore",
+        "r3": "explore"
+      },
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 19.345467690999953
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 19.345467690999953
+        },
+        "B_candidate": {
+          "sim_s": 4.4,
+          "wall_s": 52.19923173399991,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        },
+        "B_view_approach": {
+          "sim_s": 26.4,
+          "wall_s": 237.800693959,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        }
+      },
+      "conditions": {
+        "LLM_operated": true,
+        "own_map_completed": false,
+        "start_to_finish_transport": false
+      },
+      "initial_check": {
+        "unix": 1791787647.2377,
+        "elapsed_s": 205.33192372322083,
+        "passed": true,
+        "checks": {
+          "first_model_response": true,
+          "sim_frames_increase": true,
+          "actual_movement": true,
+          "straight_commands": true,
+          "mapping_entered": true,
+          "no_exception": true
+        }
+      },
+      "latest_check_unix": 1791793602.2703285,
+      "robots": {
+        "r1": {
+          "frames": 2081,
+          "forward_commands": 841,
+          "actual_displacement_m": 1.903925430260079,
+          "ultrasonic": {
+            "range_rows": 0,
+            "judgements": 0,
+            "zupt_count": 0,
+            "zupt_applied": 0,
+            "statuses": {}
+          },
+          "vo": {
+            "trace_frames": 2081,
+            "measured_frames": 1801,
+            "applied_frames": 827,
+            "applied_fraction": 0.39740509370494953
+          },
+          "map_error_m": {
+            "n": 2081,
+            "max": 1.6121614932744963,
+            "median": 1.4575614285408947
+          },
+          "control_error_m": {
+            "n": 2081,
+            "max": 0.9270086195739572,
+            "median": 0.8540909075051419
+          }
+        },
+        "r2": {
+          "frames": 2080,
+          "forward_commands": 654,
+          "actual_displacement_m": 3.992966683591082,
+          "ultrasonic": {
+            "range_rows": 0,
+            "judgements": 0,
+            "zupt_count": 0,
+            "zupt_applied": 0,
+            "statuses": {}
+          },
+          "vo": {
+            "trace_frames": 2080,
+            "measured_frames": 1907,
+            "applied_frames": 701,
+            "applied_fraction": 0.3370192307692308
+          },
+          "map_error_m": {
+            "n": 2080,
+            "max": 0.569028169320969,
+            "median": 0.46855788549352545
+          },
+          "control_error_m": {
+            "n": 2080,
+            "max": 0.4658311650736626,
+            "median": 0.2358964471013493
+          }
+        },
+        "r3": {
+          "frames": 2080,
+          "forward_commands": 0,
+          "actual_displacement_m": 0.0025494220094159346,
+          "ultrasonic": {
+            "range_rows": 0,
+            "judgements": 0,
+            "zupt_count": 0,
+            "zupt_applied": 0,
+            "statuses": {}
+          },
+          "vo": {
+            "trace_frames": 2080,
+            "measured_frames": 2077,
+            "applied_frames": 0,
+            "applied_fraction": 0.0
+          },
+          "map_error_m": {
+            "n": 2080,
+            "max": 0.09224691870418271,
+            "median": 0.08435222032873471
+          },
+          "control_error_m": {
+            "n": 2080,
+            "max": 0.002548266443424421,
+            "median": 0.0013587066703105682
+          }
+        }
+      },
+      "model": {
+        "calls": 3,
+        "known_cost_usd": 0.00043793,
+        "missing_cost_calls": 0
+      },
+      "failure": "SIGNAL_SIGINT",
+      "failure_type": "KeyboardInterrupt",
+      "archive_verified": true,
+      "archive_path": "/home/ubuntu/ugrp-archive/runs/native-e2e-usstall-b-s61002",
+      "zupt_displacement_evaluation": {
+        "r1": {
+          "zupt_applied": 0,
+          "aligned_events": 0,
+          "actual_displacement_m": {
+            "max": null,
+            "median": null
+          }
+        },
+        "r2": {
+          "zupt_applied": 0,
+          "aligned_events": 0,
+          "actual_displacement_m": {
+            "max": null,
+            "median": null
+          }
+        },
+        "r3": {
+          "zupt_applied": 0,
+          "aligned_events": 0,
+          "actual_displacement_m": {
+            "max": null,
+            "median": null
+          }
+        }
+      }
+    },
+    {
+      "run": "e2e-usstall-a-s61003",
+      "status": "EARLY_STOP",
+      "exit": "130",
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e-usstall-a-s61003",
+      "sim_s": 426.0,
+      "wall_s": 6131.540010781,
+      "phase": "mapping",
+      "furthest_stages": {
+        "r1": "explore",
+        "r2": "explore",
+        "r3": "explore"
+      },
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 18.42462548399999
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 18.42462548399999
+        },
+        "B_candidate": {
+          "sim_s": 2.4,
+          "wall_s": 35.04295136500002,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        },
+        "B_view_approach": {
+          "sim_s": 9.6,
+          "wall_s": 102.13267830000007,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        }
+      },
+      "conditions": {
+        "LLM_operated": true,
+        "own_map_completed": false,
+        "start_to_finish_transport": false
+      },
+      "initial_check": {
+        "unix": 1791787647.3005593,
+        "elapsed_s": 205.39403295516968,
+        "passed": true,
+        "checks": {
+          "first_model_response": true,
+          "sim_frames_increase": true,
+          "actual_movement": true,
+          "straight_commands": true,
+          "mapping_entered": true,
+          "no_exception": true,
+          "vo_recorded": true,
+          "ultrasonic_recorded": true
+        }
+      },
+      "latest_check_unix": 1791793603.583497,
+      "robots": {
+        "r1": {
+          "frames": 2133,
+          "forward_commands": 1059,
+          "actual_displacement_m": 2.655311826444422,
+          "ultrasonic": {
+            "range_rows": 4268,
+            "judgements": 2133,
+            "zupt_count": 67,
+            "zupt_applied": 67,
+            "statuses": {
+              "not_forward": 174,
+              "unconfirmed": 323,
+              "vo_available": 1543,
+              "not_near": 7,
+              "invalid_reading": 19,
+              "stationary_range": 67
+            }
+          },
+          "vo": {
+            "trace_frames": 2133,
+            "measured_frames": 1543,
+            "applied_frames": 965,
+            "applied_fraction": 0.45241443975621193
+          },
+          "map_error_m": {
+            "n": 2133,
+            "max": 1.9642821517371616,
+            "median": 1.6661963282774925
+          },
+          "control_error_m": {
+            "n": 2133,
+            "max": 0.8692198454427268,
+            "median": 0.43052414345699774
+          }
+        },
+        "r2": {
+          "frames": 2133,
+          "forward_commands": 1743,
+          "actual_displacement_m": 2.768630458617534,
+          "ultrasonic": {
+            "range_rows": 4268,
+            "judgements": 2133,
+            "zupt_count": 91,
+            "zupt_applied": 91,
+            "statuses": {
+              "not_forward": 132,
+              "unconfirmed": 382,
+              "vo_available": 1512,
+              "invalid_reading": 14,
+              "stationary_range": 91,
+              "not_near": 2
+            }
+          },
+          "vo": {
+            "trace_frames": 2133,
+            "measured_frames": 1512,
+            "applied_frames": 1559,
+            "applied_fraction": 0.7308954524144398
+          },
+          "map_error_m": {
+            "n": 2133,
+            "max": 5.990296439952484,
+            "median": 2.078605672403431
+          },
+          "control_error_m": {
+            "n": 2133,
+            "max": 3.3325091405978617,
+            "median": 2.8856712610489557
+          }
+        },
+        "r3": {
+          "frames": 2133,
+          "forward_commands": 0,
+          "actual_displacement_m": 0.13396202062640863,
+          "ultrasonic": {
+            "range_rows": 4268,
+            "judgements": 2133,
+            "zupt_count": 0,
+            "zupt_applied": 0,
+            "statuses": {
+              "not_forward": 71,
+              "vo_available": 2062
+            }
+          },
+          "vo": {
+            "trace_frames": 2133,
+            "measured_frames": 2062,
+            "applied_frames": 0,
+            "applied_fraction": 0.0
+          },
+          "map_error_m": {
+            "n": 2133,
+            "max": 0.12276093399160955,
+            "median": 0.08552316659059614
+          },
+          "control_error_m": {
+            "n": 2133,
+            "max": 0.13391631397475734,
+            "median": 0.0014040751638413234
+          }
+        }
+      },
+      "model": {
+        "calls": 3,
+        "known_cost_usd": 0.00044609,
+        "missing_cost_calls": 0
+      },
+      "failure": "SIGNAL_SIGINT",
+      "failure_type": "KeyboardInterrupt",
+      "archive_verified": true,
+      "archive_path": "/home/ubuntu/ugrp-archive/runs/native-e2e-usstall-a-s61003",
+      "zupt_displacement_evaluation": {
+        "r1": {
+          "zupt_applied": 67,
+          "aligned_events": 67,
+          "actual_displacement_m": {
+            "max": 0.0141016091149562,
+            "median": 0.0008646029221320466
+          }
+        },
+        "r2": {
+          "zupt_applied": 91,
+          "aligned_events": 91,
+          "actual_displacement_m": {
+            "max": 0.014180664459050252,
+            "median": 0.0014064265483264852
+          }
+        },
+        "r3": {
+          "zupt_applied": 0,
+          "aligned_events": 0,
+          "actual_displacement_m": {
+            "max": null,
+            "median": null
+          }
+        }
+      }
+    },
+    {
+      "run": "e2e-usstall-b-s61003",
+      "status": "EARLY_STOP",
+      "exit": "130",
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e-usstall-b-s61003",
+      "sim_s": 435.0,
+      "wall_s": 6135.517184717,
+      "phase": "mapping",
+      "furthest_stages": {
+        "r1": "explore",
+        "r2": "explore",
+        "r3": "explore"
+      },
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 17.843757124000035
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 17.843757124000035
+        },
+        "B_candidate": {
+          "sim_s": 2.4,
+          "wall_s": 34.182378604000064,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        },
+        "B_view_approach": {
+          "sim_s": 9.6,
+          "wall_s": 100.05926989199997,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        }
+      },
+      "conditions": {
+        "LLM_operated": true,
+        "own_map_completed": false,
+        "start_to_finish_transport": false
+      },
+      "initial_check": {
+        "unix": 1791787647.3644488,
+        "elapsed_s": 205.45720505714417,
+        "passed": true,
+        "checks": {
+          "first_model_response": true,
+          "sim_frames_increase": true,
+          "actual_movement": true,
+          "straight_commands": true,
+          "mapping_entered": true,
+          "no_exception": true
+        }
+      },
+      "latest_check_unix": 1791793604.8699758,
+      "robots": {
+        "r1": {
+          "frames": 2177,
+          "forward_commands": 1790,
+          "actual_displacement_m": 3.838328167964536,
+          "ultrasonic": {
+            "range_rows": 0,
+            "judgements": 0,
+            "zupt_count": 0,
+            "zupt_applied": 0,
+            "statuses": {}
+          },
+          "vo": {
+            "trace_frames": 2177,
+            "measured_frames": 1350,
+            "applied_frames": 1347,
+            "applied_fraction": 0.6187413872301332
+          },
+          "map_error_m": {
+            "n": 2177,
+            "max": 3.6529814086062613,
+            "median": 1.4157685873094843
+          },
+          "control_error_m": {
+            "n": 2177,
+            "max": 1.1610800253958378,
+            "median": 1.077406335651899
+          }
+        },
+        "r2": {
+          "frames": 2177,
+          "forward_commands": 1245,
+          "actual_displacement_m": 3.0984565107572934,
+          "ultrasonic": {
+            "range_rows": 0,
+            "judgements": 0,
+            "zupt_count": 0,
+            "zupt_applied": 0,
+            "statuses": {}
+          },
+          "vo": {
+            "trace_frames": 2177,
+            "measured_frames": 1632,
+            "applied_frames": 919,
+            "applied_fraction": 0.422140560404226
+          },
+          "map_error_m": {
+            "n": 2177,
+            "max": 2.3876320091522385,
+            "median": 1.927720658406925
+          },
+          "control_error_m": {
+            "n": 2177,
+            "max": 2.7067301932080117,
+            "median": 0.9510105795966537
+          }
+        },
+        "r3": {
+          "frames": 2177,
+          "forward_commands": 0,
+          "actual_displacement_m": 0.0027816622579024883,
+          "ultrasonic": {
+            "range_rows": 0,
+            "judgements": 0,
+            "zupt_count": 0,
+            "zupt_applied": 0,
+            "statuses": {}
+          },
+          "vo": {
+            "trace_frames": 2177,
+            "measured_frames": 2174,
+            "applied_frames": 0,
+            "applied_fraction": 0.0
+          },
+          "map_error_m": {
+            "n": 2177,
+            "max": 0.09214211398685261,
+            "median": 0.08560003898498994
+          },
+          "control_error_m": {
+            "n": 2177,
+            "max": 0.0027813586178404045,
+            "median": 0.001411036669580274
+          }
+        }
+      },
+      "model": {
+        "calls": 3,
+        "known_cost_usd": 0.00031523,
+        "missing_cost_calls": 0
+      },
+      "failure": "SIGNAL_SIGINT",
+      "failure_type": "KeyboardInterrupt",
+      "archive_verified": true,
+      "archive_path": "/home/ubuntu/ugrp-archive/runs/native-e2e-usstall-b-s61003",
+      "zupt_displacement_evaluation": {
+        "r1": {
+          "zupt_applied": 0,
+          "aligned_events": 0,
+          "actual_displacement_m": {
+            "max": null,
+            "median": null
+          }
+        },
+        "r2": {
+          "zupt_applied": 0,
+          "aligned_events": 0,
+          "actual_displacement_m": {
+            "max": null,
+            "median": null
+          }
+        },
+        "r3": {
+          "zupt_applied": 0,
+          "aligned_events": 0,
+          "actual_displacement_m": {
+            "max": null,
+            "median": null
+          }
+        }
+      }
+    }
+  ],
+  "interim_findings": [
+    {
+      "kind": "moving_robot_zero_increment_counterexample",
+      "run": "e2e-usstall-a-s61003",
+      "robot": "r1",
+      "aligned_decisions": 7,
+      "actual_interval_displacement_m": {
+        "max": 0.013186200478286563,
+        "median": 0.012806921270970745
+      },
+      "raw_interval_seconds": 0.2,
+      "evidence_local": "/Users/changmin/projects/ugrp-wt/azure-vm4/outputs/e2e16/zupt-first.json",
+      "sha256": "fe2c75cf6bd366077414cd3e53011834213c48db3cece171aed7691edd44bfef",
+      "controller_source_unchanged": true
+    }
+  ],
+  "vm_final": [
+    {
+      "code": "ProvisioningState/succeeded",
+      "displayStatus": "Provisioning succeeded",
+      "level": "Info",
+      "time": "2026-10-12T08:31:53.9252689+00:00"
+    },
+    {
+      "code": "PowerState/deallocated",
+      "displayStatus": "VM deallocated",
+      "level": "Info"
+    }
+  ],
+  "arm_hash_verification": [
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/native-e2e-usstall-a-s61001",
+      "files": 6154,
+      "hash_matches": 6154
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/native-e2e-usstall-b-s61001",
+      "files": 6241,
+      "hash_matches": 6241
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/native-e2e-usstall-a-s61002",
+      "files": 6845,
+      "hash_matches": 6845
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/native-e2e-usstall-b-s61002",
+      "files": 6346,
+      "hash_matches": 6346
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/native-e2e-usstall-a-s61003",
+      "files": 6508,
+      "hash_matches": 6508
+    },
+    {
+      "path": "/home/ubuntu/ugrp-archive/runs/native-e2e-usstall-b-s61003",
+      "files": 6637,
+      "hash_matches": 6637
+    }
+  ]
+}

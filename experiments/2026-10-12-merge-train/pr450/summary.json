@@ -1,0 +1,35 @@
+{
+  "pr": 450,
+  "original_review_head": "59d495c38d065af4e209a85b875dac504936c90c",
+  "concurrent_summary_head": "66a55c48fa959cf739678ebf43c99370ab606206",
+  "prepared_parent": "25665630",
+  "review_fixes": [
+    "Changed RGB vetoes ultrasonic zero increment; clears range window",
+    "Historical unaggregated model counters corrected separately to null; completed concurrent summary preserved"
+  ],
+  "local_tests": {
+    "passed": 78,
+    "failed": 0,
+    "files": [
+      "test_e2e_us_stall.py",
+      "test_ultrasonic_input.py",
+      "test_simulation_workflow_manager.py"
+    ],
+    "log": "outputs/merge-train-20261012/pr450-tests-final.txt",
+    "sha256": "317e3da05099774b80c042e8a6e0aa0c98ad346fde28bc82890c960097bf44a8"
+  },
+  "source_seal_v211_mismatches": [],
+  "physical_runs": 0,
+  "new_physical_success": null,
+  "research": [
+    {
+      "url": "https://github.com/cra-ros-pkg/robot_localization/blob/rolling-devel/doc/state_estimation_nodes.rst",
+      "use": "Reject incompatible observations before fusion; uses existing own RGB gate, not a new filter."
+    },
+    {
+      "url": "https://arxiv.org/abs/1903.07929",
+      "use": "Zero velocity is a hypothesis requiring evidence; no inertial inputs introduced."
+    }
+  ],
+  "original_raw_modified": false
+}

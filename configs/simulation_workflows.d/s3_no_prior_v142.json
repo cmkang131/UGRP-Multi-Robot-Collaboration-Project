@@ -1,0 +1,21 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "zone-s3-no-prior-v142",
+      "version": "7.35.0",
+      "purpose": "S3 prior 없는 혼합 주문 3대 단일 DEV smoke",
+      "entry": "scripts/run_s3_no_prior.py",
+      "runner": "scripts.run_s3_no_prior",
+      "docs": "experiments/2026-10-09-s3-no-prior/README.md",
+      "requires": "committed SHA; explicit option; own exclusive SIM lock; one finite smoke",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

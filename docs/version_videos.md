@@ -43,6 +43,7 @@ OUT=/Users/changmin/projects/ugrp/outputs bash experiments/2026-09-29-version-vi
 
 | 버전 | 실행 소스(SHA) · 번들 | 대표 case (paired) | 결과 (sim 시간) | 영상 · sha256 | 무엇을 보여주나 | 일반화하지 못하는 것 |
 |---|---|---|---|---|---|---|
+| **S3 coupled exception v148** | `533329b5` · v148/7.41.0 | seed14201, v147과 동일 | HOST_ERROR,21.90 SIM초; B0/2 | 로컬 `s3fix3-20261009/views/v148/execution.mp4`, `5fb02b66…74a519` | 저장 자기 RGB3대,4배속5.5초,초기 관측 | 첫 점 정확3/3이나 인증0/3; 접근 명령이 reset 기본 포트에 거부돼 carry 미인수. [원본/해시](../experiments/2026-10-09-s3-no-prior/s3fix3/README.md) |
 | **S2 path heading v143** | `b60acdca` · v143/7.36.0 |1066,실행 전 첫 seed로 지정(v141와 같은 seed)|DEV 성공423.95SIM초,전체1/3|로컬 `s2-heading-b60acdca-s1066-v143/motion.mp4`, `c8c90783…a78498a`|저장 손목RGB와 평가용 실제 경로,4배속104.95초|3회 비교 DEV이며 나머지1068/1065 실패. S3 기본채택 보류,실물/E2E 성공 아님. [원자료·해시](../experiments/2026-10-09-s2-heading/README.md#비교-dev-최종-결과)|
 | **b-v6c** 운반 | `b604499d`(clean, probe 0.4.1) · v76 | 운반 leg 1, nominal, seed 911 | 실패 `SELF_POSE_UNCERTAIN`(yaw), 8.8 s에 σ가 게이트 52.4 mrad에 닿음 | `carry_L1_nominal_s911_v6c_topdown.mp4` `56063b7e…ffcc0` | 운반 명령 2.7 s 만에 σ가 게이트에 닿는 기준선 실패 | 한 케이스. 33건이 같은 원인이라는 것은 v6c-carry 기록의 결과이며 이 영상이 보이는 것이 아님 |
 | **b-v6d** 정렬 | `052e3eba`(source_dirty, probe 0.4.0) · v76 (병합 트리 `4714263a`는 v80) | 정렬 yaw+/opp, seed 911. b-v6c(`b5234b7a`)와 paired | b-v6c `ALIGN_RELOOK_NO_FIX`(stage 20.5 s) → b-v6d 통과(36.1 s) | `align_yawp-opp_s911_v6c_vs_v6d_topdown.mp4` `efc276c5…d0ab2` | 같은 셀에서 실패가 통과로 바뀜. σ는 게이트보다 아래(원인 아님) | 운반 raw 없음(v6d는 운반 미측정). 정렬 영상은 위치 그림에서 차이가 거의 안 보여 **제출용으로는 약함**. 이 셀 하나이며 v6d 정렬 25/25는 v6d 기록을 따름 |
@@ -101,3 +102,11 @@ SHA256 `384ad6944cf42b44e0238cb3650b82af413c75b97f87cebc72d20c220915c84c`;
 SHA256 `69bdd4f62546e3e38ea024cf94b6bc12b86cef39b8a187ee155b7f11794a1c69`.
 후보722개 중 확인0·관문 실패로 새 물리0, 성공영상 없음. 회색벽/청록문은 평가용GT, 제어입력 아님.
 - 2026-10-06 S2 v117 `ef820ab2` / s1042: REAL pre-grasp 확인 뒤 hover 하강·SIM lifted=true, pickup-site ROI clipped/unknown으로 probe gate 미통과. own-RGB4배속 영상 `/Users/changmin/projects/ugrp/outputs/s2-realism-ef820ab2-analysis/views/s1042-probe/execution.mp4` (34.05s,681frames,sha256 `5ed6f0714aaab173ece3a9630964dfcb76252969e6f08fdd0ec35b0425ad2041`). full/실물 성공 증거 아님. 기록: `experiments/2026-10-06-s2-realism/completed-v117.json`.
+
+## 2026-10-15 ACT15 DAgger1 근거리 학생 (실패 비교)
+
+저장된 **자기 RGB** 영상이며 정답 도식/top 카메라가 아니다.
+
+|버전·소스|대표 case|결과|영상·해시|범위와 한계|
+|---|---|---|---|---|
+|ACT15 DAgger1; 학습1535c8a3, 실행686cccb6|91420, ACT14 p0 실패와 같은 seed; 최다 거부 단계인 정렬 실패 선택|90 SIM초 cap_end, 안정 들기/완료0; 전체 같은20 0/20·새20 0/20|[자기 RGB4배속](../experiments/2026-10-15-act-train/videos/act15-91420-4x.mp4),22.5초/900프레임/169401bytes;SHA256 `e9a95fd808c256f12d37ffa5b753a29bf8e441201340100f4b5ca3d2bb3a34fd`|접근 후 목표가 화면 밖으로 빠지는 사례. 단일 원인·일반화·E2E·실물·기본 채택 아님. [원본·milestone 복제·해시](../experiments/2026-10-15-act-train/act15-video.json), [전체 결과](../experiments/2026-10-15-act-train/act15.md).|

@@ -1,0 +1,34 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "e2e-exact-speed2-v203",
+      "version": "7.96.0",
+      "purpose": "DEV round-2 exact receive-chain toggles (vector rays, shared wall front end, lazy scan, costmap writes, track cells) plus measurement-only rbpf_audit_hash; off by default",
+      "entry": "scripts/run_e2e_ownmap_live.py",
+      "runner": "scripts.run_e2e_ownmap_live",
+      "docs": "experiments/2026-10-12-e2e-speed2/summary.json",
+      "requires": "Committed Azure x86 OSMesa source; current lease/admission; persistent runs",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha",
+        "--seed",
+        "--driver-profile",
+        "--relay-receipt",
+        "--decider",
+        "--exploration-progress",
+        "--pose-fix",
+        "--path-follow",
+        "--wall-cap-s",
+        "--stall-odometry",
+        "--stall-recovery",
+        "--stall-noise",
+        "--mapping-budget"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "shutdown_grace_s": 60
+    }
+  ]
+}

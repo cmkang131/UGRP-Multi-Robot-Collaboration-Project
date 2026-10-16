@@ -83,6 +83,19 @@ def optical_rays(width, height):
 
 
 def floor_intersections(rays, origin, axes, *, downward_min=.05, max_range_m=4.):
+    from harness.e2e_exact_speedups import geometry_enabled
+    if geometry_enabled():
+        return _floor_memo()(rays,origin,axes,downward_min=downward_min,max_range_m=max_range_m)
+    return _floor_intersections(rays,origin,axes,downward_min=downward_min,max_range_m=max_range_m)
+
+
+@lru_cache(maxsize=1)
+def _floor_memo():
+    from harness.controller_exact_speedups import PureMemo
+    return PureMemo(_floor_intersections,maxsize=2)
+
+
+def _floor_intersections(rays, origin, axes, *, downward_min=.05, max_range_m=4.):
     """No backward intersections. Return XYZ and validity, never clip bad ranges."""
     direction = np.asarray(rays) @ np.asarray(axes)
     origin = np.asarray(origin)

@@ -48,6 +48,15 @@ OBSERVATION_FIELDS = ('t', 'range_m', 'valid', 'status')
 RUNTIME_MODULES = ('harness.ultrasonic_input', 'harness.range_provider', 'harness.ultrasonic_model',
                    'sim.ultrasonic_input', 'sim.ultrasonic_range')
 HISTORY_FILE = 'range.jsonl'
+# Explicitly authorized consumers; the legacy zone adapter remains recording-only.
+REGISTERED_RANGE_CONSUMERS = {
+    'rgb_vo_us_v1': ('harness/e2e_us_stall.py', 'harness/e2e_live_mapping.py'),
+}
+REGISTERED_RANGE_WIRING = (
+    'sim/e2e_us_input.py',
+    # Pre-existing egomap56 acquisition and history finalizer (no behavior change).
+    'sim/goal_route_continuous.py', 'scripts/run_own_route_particle_stages.py',
+)
 
 
 class SensorConfigError(ValueError):

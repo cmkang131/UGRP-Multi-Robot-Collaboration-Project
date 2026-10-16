@@ -13,3 +13,10 @@ records, not test inputs. The originals and production registrations are not edi
 contract test modules. All production admission, file hashes, fixed-source validation,
 option rejection and start-proof checks still run. This is not a new executable bundle
 or permission to run a physical experiment from fixture data.
+
+After main evolves, the historical v133 baseline is validated against actual
+Git blobs from its recorded `source_sha`, extracted into pytest's temporary
+directory. Only that historical admission call uses the archived source root;
+new option bundles still validate current checkout bytes. Production admission
+is unchanged and rejects a stale checkout. No hash is regenerated or accepted
+without reading its source bytes; a tampered source digest is rejected in tests.

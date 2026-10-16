@@ -1,0 +1,333 @@
+{
+  "schema": "ugrp.s3_stage_setup_extract.v1",
+  "source_raw": "/Users/changmin/projects/ugrp/outputs/s3-recovery-981baa95-s14201-v152",
+  "source_sha256": {
+    "eval_only/referee_truth.jsonl": "1afaed2fc9c430990e79013b76d44173d6fb03fd37e7cae6692cfaf15928e0f6",
+    "eval_only/r1/trajectory.jsonl": "fa3524574de85043bfcfc464d7e44962c44bde2fb87541eff3848f5f8aff48a1",
+    "eval_only/r2/trajectory.jsonl": "5bdf2e2279f806398fa36c0d80e45b66fd9082577e5ce2f38530cabe316ba563",
+    "eval_only/r3/trajectory.jsonl": "a1b4e65c2c83c3106ab075934154c4f6f067ff1ec5e43371e96ee9aff1c12843",
+    "robots/r1/frames.jsonl": "8045e8f804fb868dfd1b54e1a3bb7934366dee25fc4f31d6f55d53df97e6128e",
+    "robots/r2/frames.jsonl": "d72e28eed08510843496b128639a8b062ca3b42eb58324edfa957ca51bfc4e8c",
+    "robots/r3/frames.jsonl": "5e67c2ade3a7fb366710d675835de4d558be04f2a3636dcea25923bd46abdfeb"
+  },
+  "source_t": 560.0,
+  "eval_only_setup": true,
+  "cases": {
+    "pair": {
+      "source": "/Users/changmin/projects/ugrp/outputs/s3-recovery-981baa95-s14201-v152",
+      "source_t": 560.0,
+      "checkpoint": false,
+      "classification": "reconstructed stationary stage setup, not exact resume",
+      "truth": {
+        "t": 560.0,
+        "items": {
+          "cyan_1": {
+            "kind": "cyan",
+            "x": -0.2000000000006885,
+            "y": -2.4500000000007427,
+            "yaw": 1.012695573254259e-15,
+            "z": 0.015892244579783686,
+            "held": false,
+            "speed": 9.412033124553154e-11
+          },
+          "beam_1": {
+            "kind": "long_beam",
+            "x": 1.2749148886483785,
+            "y": 0.05011256421084961,
+            "yaw": 7.63778178854056e-05,
+            "z": 0.015892244579783818,
+            "held": false,
+            "speed": 1.4530683739953428e-12
+          }
+        },
+        "height_reference": "world_body_center_of_mass_v1"
+      },
+      "robots": {
+        "r1": {
+          "pose": {
+            "t": 560.0,
+            "robot_xyz_m": [
+              0.7813823726071295,
+              0.08434093084374097,
+              0.032004428424024144
+            ],
+            "robot_yaw_rad": -0.16198867717877458,
+            "tilt_deg": 0.07271580090522571
+          },
+          "frame": {
+            "robot_id": "r1",
+            "frame_id": 11175,
+            "sim_time": 560.0,
+            "sha256": "8da727e5c6fed761ba082fc3d8e8619cec8d27c072a71e47f06291aec0d7706f",
+            "camera": "robot_cam",
+            "actuator_state": {
+              "motor_commands": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "servo_pulses": {
+                "1": 2000,
+                "3": 508,
+                "4": 2432,
+                "5": 1320,
+                "6": 1500
+              }
+            },
+            "path": "robots/r1/rgb/11174.jpg",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          }
+        },
+        "r2": {
+          "pose": {
+            "t": 560.0,
+            "robot_xyz_m": [
+              1.7845739369737454,
+              0.006716581709645384,
+              0.03199590636842435
+            ],
+            "robot_yaw_rad": 3.0293192585621243,
+            "tilt_deg": 0.02040288572013318
+          },
+          "frame": {
+            "robot_id": "r2",
+            "frame_id": 11175,
+            "sim_time": 560.0,
+            "sha256": "95308eef58ad497a14af7521d97772ffa6894a305638e344e3d631b1db9a1d12",
+            "camera": "robot_cam",
+            "actuator_state": {
+              "motor_commands": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "servo_pulses": {
+                "1": 2000,
+                "3": 508,
+                "4": 2432,
+                "5": 1320,
+                "6": 1500
+              }
+            },
+            "path": "robots/r2/rgb/11174.jpg",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          }
+        },
+        "r3": {
+          "pose": {
+            "t": 560.0,
+            "robot_xyz_m": [
+              -0.5412972399875646,
+              -2.09793829893232,
+              0.03199587968879942
+            ],
+            "robot_yaw_rad": -1.4491907706033156,
+            "tilt_deg": 0.029253173148993075
+          },
+          "frame": {
+            "robot_id": "r3",
+            "frame_id": 11175,
+            "sim_time": 560.0,
+            "sha256": "5a22596f59c62da56e30eebd87c847afd83912789e370f817c100c7c42a7d4c1",
+            "camera": "robot_cam",
+            "actuator_state": {
+              "motor_commands": [
+                0.35,
+                0.35,
+                0.35,
+                0.35
+              ],
+              "servo_pulses": {
+                "1": 2000,
+                "3": 740,
+                "4": 2320,
+                "5": 1320,
+                "6": 1500
+              }
+            },
+            "path": "robots/r3/rgb/11174.jpg",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 740,
+              "4": 2320,
+              "5": 1320,
+              "6": 1500
+            }
+          }
+        }
+      }
+    },
+    "cyan": {
+      "source": "/Users/changmin/projects/ugrp/outputs/s3-recovery-981baa95-s14201-v152",
+      "source_t": 560.0,
+      "checkpoint": false,
+      "classification": "synthetic r3 approach end in saved v152 scene; v152 had no r3 align entry",
+      "truth": {
+        "t": 560.0,
+        "items": {
+          "cyan_1": {
+            "kind": "cyan",
+            "x": -0.2000000000006885,
+            "y": -2.4500000000007427,
+            "yaw": 1.012695573254259e-15,
+            "z": 0.015892244579783686,
+            "held": false,
+            "speed": 9.412033124553154e-11
+          },
+          "beam_1": {
+            "kind": "long_beam",
+            "x": 1.2749148886483785,
+            "y": 0.05011256421084961,
+            "yaw": 7.63778178854056e-05,
+            "z": 0.015892244579783818,
+            "held": false,
+            "speed": 1.4530683739953428e-12
+          }
+        },
+        "height_reference": "world_body_center_of_mass_v1"
+      },
+      "robots": {
+        "r1": {
+          "pose": {
+            "t": 560.0,
+            "robot_xyz_m": [
+              0.7813823726071295,
+              0.08434093084374097,
+              0.032004428424024144
+            ],
+            "robot_yaw_rad": -0.16198867717877458,
+            "tilt_deg": 0.07271580090522571
+          },
+          "frame": {
+            "robot_id": "r1",
+            "frame_id": 11175,
+            "sim_time": 560.0,
+            "sha256": "8da727e5c6fed761ba082fc3d8e8619cec8d27c072a71e47f06291aec0d7706f",
+            "camera": "robot_cam",
+            "actuator_state": {
+              "motor_commands": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "servo_pulses": {
+                "1": 2000,
+                "3": 508,
+                "4": 2432,
+                "5": 1320,
+                "6": 1500
+              }
+            },
+            "path": "robots/r1/rgb/11174.jpg",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          }
+        },
+        "r2": {
+          "pose": {
+            "t": 560.0,
+            "robot_xyz_m": [
+              1.7845739369737454,
+              0.006716581709645384,
+              0.03199590636842435
+            ],
+            "robot_yaw_rad": 3.0293192585621243,
+            "tilt_deg": 0.02040288572013318
+          },
+          "frame": {
+            "robot_id": "r2",
+            "frame_id": 11175,
+            "sim_time": 560.0,
+            "sha256": "95308eef58ad497a14af7521d97772ffa6894a305638e344e3d631b1db9a1d12",
+            "camera": "robot_cam",
+            "actuator_state": {
+              "motor_commands": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "servo_pulses": {
+                "1": 2000,
+                "3": 508,
+                "4": 2432,
+                "5": 1320,
+                "6": 1500
+              }
+            },
+            "path": "robots/r2/rgb/11174.jpg",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          }
+        },
+        "r3": {
+          "pose": {
+            "t": 560.0,
+            "robot_xyz_m": [
+              -0.4400000000006885,
+              -2.4500000000007427,
+              0.03199587968879942
+            ],
+            "robot_yaw_rad": 0.0,
+            "tilt_deg": 0.029253173148993075
+          },
+          "frame": {
+            "robot_id": "r3",
+            "frame_id": 11175,
+            "sim_time": 560.0,
+            "sha256": "5a22596f59c62da56e30eebd87c847afd83912789e370f817c100c7c42a7d4c1",
+            "camera": "robot_cam",
+            "actuator_state": {
+              "motor_commands": [
+                0.35,
+                0.35,
+                0.35,
+                0.35
+              ],
+              "servo_pulses": {
+                "1": 2000,
+                "3": 740,
+                "4": 2320,
+                "5": 1320,
+                "6": 1500
+              }
+            },
+            "path": "robots/r3/rgb/11174.jpg",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1500
+            }
+          }
+        }
+      }
+    }
+  }
+}

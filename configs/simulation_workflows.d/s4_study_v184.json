@@ -1,0 +1,24 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [{
+    "id": "zone-s4-study-v184",
+    "version": "7.77.0",
+    "title": "S4 single Gemma English/event preparation",
+    "execution_bundle_id": "zone-s4-study-v184",
+    "module": "scripts.run_s4_study_v184",
+    "runner": "scripts.run_s4_study_v184",
+    "entry": "scripts/run_s4_study_v184.py",
+    "docs": "experiments/2026-10-11-s4-gemma-standard/README.md",
+    "output_flag": "--output",
+    "output_kind": "file",
+    "required_inputs": ["--expected-source-sha", "--condition"],
+    "side_effect": "offline_preparation",
+    "driver_profile": "study_gemma4_31b_v1",
+    "prompt_lang": "en",
+    "event_driven_llm": false,
+    "compact_prompt_v1": false,
+    "execution_admitted": false,
+    "research_result": false,
+    "admission": "Azure readiness notification and own-map integration required"
+  }]
+}

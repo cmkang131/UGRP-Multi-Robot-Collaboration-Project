@@ -1,0 +1,15 @@
+{
+  "cause": "Real RGB Robot.receive imports static robot geometry through optional MuJoCo modules; generic offline jobs have no engine",
+  "fix": "Only two engine-dependent functions skip on missing module; entire file explicitly runs in engine-installed CI job",
+  "validation": {
+    "engine_available": "21 passed",
+    "engine_unavailable": "18 passed, 3 skipped"
+  },
+  "logs": {
+    "outputs/merge-train-20261012/pr444-engine-tests.txt": "50a73e0d6f3ca49e09218b1546bfb25820357348249b39375fcdfdd4c1472525",
+    "outputs/merge-train-20261012/pr444-no-engine-tests.txt": "7dd86518ca212a2750be061f0f27ca2b5c990499b4130899e6c7c9a4bbe40a40"
+  },
+  "reference": "https://docs.pytest.org/en/stable/reference/reference.html#pytest-importorskip",
+  "controller_source_changed": false,
+  "physical_runs": 0
+}

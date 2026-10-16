@@ -1,0 +1,21 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "e2e-one-beam-ownmap-inputs",
+      "version": "7.68.0",
+      "purpose": "e2e1 자기 입력·상태 계약과 새 시나리오 최초 RGB 정보 격차 검사",
+      "entry": "scripts/probe_e2e_first_frame.py",
+      "runner": "scripts.probe_e2e_first_frame",
+      "docs": "experiments/2026-10-11-e2e-one-beam/README.md",
+      "requires": "committed oracle-x86 OSMesa archive; persistent ~/ugrp-sim/runs; setup-only, no transport or model",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}
