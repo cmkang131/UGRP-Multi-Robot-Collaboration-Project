@@ -137,9 +137,10 @@
     "Never stop gcp2 CPU VM with foreign beampair/reloc leases/processes; CPU comparison later requires lease and no shared-load verdict",
     "No Mac physics/render/GUI, no model calls, no Google Drive, no GCP1 operations",
     "COORDINATOR_NOTE.md is preexisting untracked and must remain untouched/uncommitted",
-    "Actual L4 NumPy IK480/480 equal; partial stable lift7/7 in group0 but no full episode complete as of00:05UTC"
+    "Actual L4 NumPy IK480/480 equal; partial stable lift7/7 in group0 but no full episode complete as of00:05UTC",
+    "Progress JSON reader now supports result.json.zst and max world ticks. Earlier post-completion0 and frozen44SIM displays were reader undercounts, not physics stalls; controller unchanged."
   ],
-  "recorded": "2026-10-16T00:37:17.854896+00:00",
+  "recorded": "2026-10-16T01:25:57.925731+00:00",
   "scheduler_pid": 17430,
   "scheduler_script": "/home/ugrp/ugrp-sim/runs/warp3/gate_schedule.py",
   "scheduler_endUTC": "2026-10-16T05:57:25.154+00:00",
@@ -155,16 +156,18 @@
   },
   "disk_free_GiB": 14.54,
   "progress_snapshot": {
-    "utc": "2026-10-16T00:36:15Z",
-    "group_ticks": {
-      "0": 337,
-      "2": 226,
-      "3": 239
+    "utc": "2026-10-16T01:25:28Z",
+    "active_group_max_SIM": {
+      "0": 47.8,
+      "2": 30.9,
+      "3": 33.3
     },
-    "terminal_records": 0,
-    "partial_group0_stable_lift": 7,
-    "partial_group0_stable_release": 2,
-    "scope": "unfinished raw prefix, not full success"
+    "completed": 5,
+    "runner_success": 5,
+    "raw_independent_recount_finished": 2,
+    "raw_recount_success": 2,
+    "scope": "full40 cohort and final manifests/playback pending"
   },
-  "endpoint_alert": "Existing active Gemma4-31B@DeepInfra price alert +50% received; no live price refresh and no LLM calls/batches in warp3"
+  "endpoint_alert": "Existing active Gemma4-31B@DeepInfra price alert +50% received; no live price refresh and no LLM calls/batches in warp3",
+  "local_status_helper": "/tmp/ugrp-warp3-status.py"
 }

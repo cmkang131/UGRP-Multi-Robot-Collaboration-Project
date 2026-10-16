@@ -15,6 +15,14 @@ def rows(path):
     return [json.loads(line) for line in raw.splitlines() if line.strip()]
 
 
+def exists(path):
+    return path.exists() or Path(str(path)+'.zst').exists()
+
+
+def read_json(path):
+    return json.loads(path.read_bytes() if path.exists() else subprocess.check_output(['zstd','-dc',str(path)+'.zst']))
+
+
 def digest(path, root, manifest):
     p=Path(path);p=p if p.exists() else Path(str(p)+'.zst')
     sha=hashlib.sha256(p.read_bytes()).hexdigest()
@@ -32,7 +40,7 @@ def main():
     results=[];attempts=[];reasons=Counter();kinds={};sources=set();profiles=[];all_groups_complete=True
     for group in range(7):
         root=a.root/f'teacher-r1-group{group}'
-        summary=json.loads((root/'summary.json').read_text());sources.add(summary['source_sha'])
+        summary=read_json(root/'summary.json');sources.add(summary['source_sha'])
         if summary['status']=='running':raise RuntimeError('unfinished group: '+str(group))
         all_groups_complete &= summary['status']=='complete'
         if summary['physics_backend']!='mjwarp_batch_v1':raise ValueError('non-Warp cohort')
@@ -44,7 +52,7 @@ def main():
         artifact=lambda path:digest(path,root,summary['sha256'])
         for index,seed in enumerate(summary['world_seeds']):
             folder=root/f'world-{index:03d}'
-            if not (folder/'plan.json').exists() or not (folder/'result.json').exists():
+            if not exists(folder/'plan.json') or not exists(folder/'result.json'):
                 resource=bool(summary.get('resource_cap_end'))
                 attempt=dict(group=group,world=folder.name,seed=seed,kind=None,
                     status='cap_end' if resource else 'HOST_ERROR',group_status=summary['status'],raw=str(folder),
@@ -53,7 +61,7 @@ def main():
                     artifact_status='missing episode artifacts; group summary retained')
                 attempts.append(attempt);reasons[attempt['error']]+=1
                 continue
-            plan=json.loads((folder/'plan.json').read_text());result=json.loads((folder/'result.json').read_text())
+            plan=read_json(folder/'plan.json');result=read_json(folder/'result.json')
             if plan['seed']!=seed:raise ValueError('seed differs from frozen group inventory')
             attempt=dict(group=group,world=folder.name,seed=plan['seed'],kind=plan['kind'],status=result['status'],
                 group_status=summary['status'],raw=str(folder),error=result.get('error') or summary.get('error'))

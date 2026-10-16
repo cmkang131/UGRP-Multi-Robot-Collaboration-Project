@@ -1,0 +1,53 @@
+{
+  "utc": "2026-10-16T01:08:51.635578+00:00",
+  "scope": "artifact reader preflight only, no controller change",
+  "funnel": [
+    {
+      "stage": "episode folders",
+      "passed": 40,
+      "rejected": 0
+    },
+    {
+      "stage": "plain result reader",
+      "passed": 38,
+      "rejected": 2
+    },
+    {
+      "stage": "plain or zst result",
+      "passed": 40,
+      "rejected": 0
+    }
+  ],
+  "rejections": [
+    {
+      "category": "compressed_result_not_read",
+      "count": 2,
+      "reason": "frozen compress_logs compresses result.json above64KiB; progress reader only tried plain JSON",
+      "blocking_object": "none:artifact parser",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not geometric"
+    }
+  ],
+  "compressed": [
+    "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group0/world-006/result.json.zst",
+    "/home/ugrp/ugrp-sim/runs/warp3/teacher-r1-group0/world-001/result.json.zst"
+  ],
+  "additional_reader_issue": {
+    "observed_UTC": "2026-10-16T01:17Z",
+    "category": "finished_first_world_clock",
+    "reason": "progress.ticks[0] stops when world0 finishes; show max(ticks) and min/max range",
+    "ticks": [
+      440,
+      406,
+      433,
+      452,
+      452,
+      452,
+      422
+    ],
+    "active": 3,
+    "blocking_object": "none:progress parser",
+    "minimum_gap_m": null,
+    "minimum_gap_status": "not geometric"
+  }
+}
