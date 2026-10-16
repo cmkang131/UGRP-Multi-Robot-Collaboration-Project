@@ -1,0 +1,65 @@
+{
+  "utc": "2026-10-16T15:46:11.319318+00:00",
+  "host": "gcp3",
+  "run": "/home/ugrp/ugrp-sim/runs/warp8/releaseA-s1-native-r1",
+  "world": 0,
+  "source": "/home/ugrp/ugrp-sim/src/8e81b7d96c0c73171635348c90631462adfe1eb0",
+  "mujoco": "3.16.0",
+  "physics_steps": 0,
+  "controller_execution": 0,
+  "reference": "https://mujoco.readthedocs.io/en/latest/mjwarp/api.html#create_render_context",
+  "scope": "GPU rendering only; frozen CPU perception; official default comparison, no gate admission",
+  "summary_sha256": "0e084a0afeb44ae891ba57ea2d94934fb6d8731d418539c24001c4b2c9eea629",
+  "on_off_JPEG_equal_N": 32,
+  "N": 32,
+  "reports": {
+    "shadows_on": {
+      "wall_s": 4.86795692800024,
+      "reproduced_features_N": 32,
+      "decisions": {
+        "r1": {
+          "accepted": false,
+          "reason": "ambiguous_global_landmarks",
+          "score_gap": 8.641976023682219e-13,
+          "groups": [
+            "wall_divider_1:35",
+            "wall_south:21"
+          ]
+        },
+        "r2": {
+          "accepted": false,
+          "reason": "ambiguous_global_landmarks",
+          "score_gap": 8.681055874149024e-12,
+          "groups": [
+            "wall_divider_1:35",
+            "wall_south:21"
+          ]
+        }
+      }
+    },
+    "shadows_off_official_default": {
+      "wall_s": 4.418273498999952,
+      "reproduced_features_N": 32,
+      "decisions": {
+        "r1": {
+          "accepted": false,
+          "reason": "ambiguous_global_landmarks",
+          "score_gap": 8.641976023682219e-13,
+          "groups": [
+            "wall_divider_1:35",
+            "wall_south:21"
+          ]
+        },
+        "r2": {
+          "accepted": false,
+          "reason": "ambiguous_global_landmarks",
+          "score_gap": 8.681055874149024e-12,
+          "groups": [
+            "wall_divider_1:35",
+            "wall_south:21"
+          ]
+        }
+      }
+    }
+  }
+}

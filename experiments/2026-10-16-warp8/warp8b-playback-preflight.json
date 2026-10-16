@@ -1,0 +1,146 @@
+{
+  "utc": "2026-10-16T14:08:44.378669+00:00",
+  "run": "/home/ugrp/ugrp-sim/runs/warp6/graph-isolated-release-s1",
+  "world": 0,
+  "simulation_host": "gcp3",
+  "analysis_host": "gcp3_CPU",
+  "receipt": {
+    "exit_code": 0,
+    "pid": 7372,
+    "end_utc": "2026-10-16T05:43:28.904314+00:00",
+    "status": "exited",
+    "raw_summary_preserved": true,
+    "physical_outcome": "read raw/result.json; native exit is not physical failure"
+  },
+  "source_sha": "82a623ee37c166ac7a9f8eaef7216c905ac1c816",
+  "origin": 1.7000000000001514,
+  "full_2hz_N": 3,
+  "full_SIM_range": [
+    0.0,
+    0.9999999999999998
+  ],
+  "tail_10hz_N": 15,
+  "tail_SIM_range": [
+    0.0,
+    1.4000000000000001
+  ],
+  "exact_top_missing_world_times": [],
+  "native_six_world_times": [
+    1.7000000000001514,
+    1.9000000000001513,
+    2.200000000000151,
+    2.5000000000001514,
+    2.8000000000001517,
+    3.1000000000001515
+  ],
+  "video": {
+    "path": "/home/ugrp/ugrp-sim/ops-reviews/warp8/playback/warp8b-preflight-release-s1/playback-full-tail-3x.mp4",
+    "bytes": 15961,
+    "sha256": "879bf0a795e0b8065850eeae991cd79e5a0134bb7fb274cf4303ce858c3b8005",
+    "ffprobe": {
+      "streams": [
+        {
+          "index": 0,
+          "codec_name": "h264",
+          "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+          "profile": "High",
+          "codec_type": "video",
+          "codec_tag_string": "avc1",
+          "codec_tag": "0x31637661",
+          "width": 960,
+          "height": 270,
+          "coded_width": 960,
+          "coded_height": 270,
+          "closed_captions": 0,
+          "film_grain": 0,
+          "has_b_frames": 2,
+          "sample_aspect_ratio": "1:1",
+          "display_aspect_ratio": "32:9",
+          "pix_fmt": "yuv420p",
+          "level": 30,
+          "color_range": "tv",
+          "color_space": "bt470bg",
+          "chroma_location": "center",
+          "field_order": "progressive",
+          "refs": 1,
+          "is_avc": "true",
+          "nal_length_size": "4",
+          "id": "0x1",
+          "r_frame_rate": "30/1",
+          "avg_frame_rate": "30/1",
+          "time_base": "1/15360",
+          "start_pts": 0,
+          "start_time": "0.000000",
+          "duration_ts": 8192,
+          "duration": "0.533333",
+          "bit_rate": "223590",
+          "bits_per_raw_sample": "8",
+          "nb_frames": "16",
+          "extradata_size": 50,
+          "disposition": {
+            "default": 1,
+            "dub": 0,
+            "original": 0,
+            "comment": 0,
+            "lyrics": 0,
+            "karaoke": 0,
+            "forced": 0,
+            "hearing_impaired": 0,
+            "visual_impaired": 0,
+            "clean_effects": 0,
+            "attached_pic": 0,
+            "timed_thumbnails": 0,
+            "non_diegetic": 0,
+            "captions": 0,
+            "descriptions": 0,
+            "metadata": 0,
+            "dependent": 0,
+            "still_image": 0
+          },
+          "tags": {
+            "language": "und",
+            "handler_name": "VideoHandler",
+            "vendor_id": "[0][0][0][0]",
+            "encoder": "Lavc60.31.102 libx264"
+          }
+        }
+      ],
+      "format": {
+        "filename": "/home/ugrp/ugrp-sim/ops-reviews/warp8/playback/warp8b-preflight-release-s1/playback-full-tail-3x.mp4",
+        "nb_streams": 1,
+        "nb_programs": 0,
+        "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+        "format_long_name": "QuickTime / MOV",
+        "start_time": "0.000000",
+        "duration": "0.533333",
+        "size": "15961",
+        "bit_rate": "239415",
+        "probe_score": 100,
+        "tags": {
+          "major_brand": "isom",
+          "minor_version": "512",
+          "compatible_brands": "isomiso2avc1mp41",
+          "encoder": "Lavf60.16.100"
+        }
+      }
+    }
+  },
+  "script_sha256": "35122a6543c2f05ef8dd1feff18579b4cda4e4fc8000be1a7dd79fd432d0160d",
+  "scope": "native own RGB; top from saved qpos only; missing top is explicitly blank; no interpolation or physics step; verdict requires separate raw recount",
+  "verification_scope": "old warp6 prefix postprocessor test only; no new gate outcomes",
+  "prior_failed_attempt": {
+    "error": "asset root835 lacked runtime generated release wall texture",
+    "correction": "use frozen release adapter8e81b7d9 asset root",
+    "gate_affected": false
+  },
+  "Mac_montages": {
+    "full-2hz-00.jpg": {
+      "bytes": 81652,
+      "sha256": "b447c6b18fb93da3ade817a193c5afb08c39290d9b0bebf66488d239e365a490"
+    },
+    "last10s-10hz-00.jpg": {
+      "bytes": 256074,
+      "sha256": "c3816d58a5092775df91b60f499dd93839cf189f7e683a1717276ec3229ee447"
+    }
+  }
+}

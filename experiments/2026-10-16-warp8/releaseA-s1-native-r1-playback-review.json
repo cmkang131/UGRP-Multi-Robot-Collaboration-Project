@@ -1,0 +1,304 @@
+{
+  "utc": "2026-10-16T15:43:00.067250+00:00",
+  "source_sha": "3170d909089865c45e2cbc6089beb6a2d05e576f",
+  "run": "releaseA-s1-native-r1",
+  "host": "gcp3",
+  "failure_reviews": [
+    {
+      "world": 0,
+      "seed": 110633,
+      "outcome": "active_observation_exhausted",
+      "viewed_montage_files": [
+        "full-2hz-00.jpg",
+        "full-2hz-01.jpg",
+        "full-2hz-02.jpg",
+        "full-2hz-03.jpg",
+        "full-2hz-04.jpg",
+        "last10s-10hz-00.jpg",
+        "last10s-10hz-01.jpg",
+        "last10s-10hz-02.jpg",
+        "last10s-10hz-03.jpg",
+        "last10s-10hz-04.jpg",
+        "last10s-10hz-05.jpg"
+      ],
+      "full_2hz_N": 82,
+      "full_SIM_range": [
+        0,
+        40.5
+      ],
+      "tail_10hz_N": 100,
+      "tail_SIM_range": [
+        31,
+        40.9
+      ],
+      "native_frames_retrieved_per_robot": 6,
+      "video": {
+        "path": "/home/ugrp/ugrp-sim/ops-reviews/warp8/playback/releaseA-s1-native-r1-world000/playback-full-tail-3x.mp4",
+        "bytes": 159229,
+        "sha256": "73bad10062add0e529155816f980cb9803e9db4b2aa5847b300042dc4df3042d",
+        "ffprobe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "h264",
+              "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+              "profile": "High",
+              "codec_type": "video",
+              "codec_tag_string": "avc1",
+              "codec_tag": "0x31637661",
+              "width": 960,
+              "height": 270,
+              "coded_width": 960,
+              "coded_height": 270,
+              "closed_captions": 0,
+              "film_grain": 0,
+              "has_b_frames": 2,
+              "sample_aspect_ratio": "1:1",
+              "display_aspect_ratio": "32:9",
+              "pix_fmt": "yuv420p",
+              "level": 30,
+              "color_range": "tv",
+              "color_space": "bt470bg",
+              "chroma_location": "center",
+              "field_order": "progressive",
+              "refs": 1,
+              "is_avc": "true",
+              "nal_length_size": "4",
+              "id": "0x1",
+              "r_frame_rate": "30/1",
+              "avg_frame_rate": "30/1",
+              "time_base": "1/15360",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 210432,
+              "duration": "13.700000",
+              "bit_rate": "89631",
+              "bits_per_raw_sample": "8",
+              "nb_frames": "411",
+              "extradata_size": 50,
+              "disposition": {
+                "default": 1,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0
+              },
+              "tags": {
+                "language": "und",
+                "handler_name": "VideoHandler",
+                "vendor_id": "[0][0][0][0]",
+                "encoder": "Lavc60.31.102 libx264"
+              }
+            }
+          ],
+          "format": {
+            "filename": "/home/ugrp/ugrp-sim/ops-reviews/warp8/playback/releaseA-s1-native-r1-world000/playback-full-tail-3x.mp4",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+            "format_long_name": "QuickTime / MOV",
+            "start_time": "0.000000",
+            "duration": "13.700000",
+            "size": "159229",
+            "bit_rate": "92980",
+            "probe_score": 100,
+            "tags": {
+              "major_brand": "isom",
+              "minor_version": "512",
+              "compatible_brands": "isomiso2avc1mp41",
+              "encoder": "Lavf60.16.100"
+            }
+          }
+        }
+      },
+      "top_missing_world_times": [
+        42.6
+      ],
+      "timeline": [
+        {
+          "backend_SIM": "0–10.9",
+          "observed": "prefix 집기 뒤 양 자기 카메라를 빔 표면이 채움"
+        },
+        {
+          "backend_SIM": "11–14.5",
+          "observed": "낮추고 개방한 뒤 끝 띠가 다시 보임"
+        },
+        {
+          "backend_SIM": "15–27",
+          "observed": "방향을 바꿔 벽·문·구역과 빔을 번갈아 봄"
+        },
+        {
+          "backend_SIM": "27–36.2",
+          "observed": "추가 pan 방향 변화; 개요에서 빔은 제자리에 남고 양 로봇이 주변을 봄"
+        },
+        {
+          "backend_SIM": "36.2–40.9",
+          "observed": "다시 자기 끝을 보고 정지; 재집기·배송 완료로 이어지지 않음"
+        }
+      ],
+      "dense_vs_sparse": "10Hz 띠에서 pan의 연속 전환과 마지막 정지를 확인. 화물 낙하·급격한 반복 진동은 관찰하지 못함. 마지막 개요1장은 저장 상태가 없어 명시적 빈칸이며 원본 자기 RGB는 존재."
+    },
+    {
+      "world": 1,
+      "seed": 88639,
+      "outcome": "axis_correction_outside_bounded_domain",
+      "viewed_montage_files": [
+        "full-2hz-00.jpg",
+        "full-2hz-01.jpg",
+        "full-2hz-02.jpg",
+        "full-2hz-03.jpg",
+        "full-2hz-04.jpg",
+        "last10s-10hz-00.jpg",
+        "last10s-10hz-01.jpg",
+        "last10s-10hz-02.jpg",
+        "last10s-10hz-03.jpg",
+        "last10s-10hz-04.jpg",
+        "last10s-10hz-05.jpg"
+      ],
+      "full_2hz_N": 82,
+      "full_SIM_range": [
+        0,
+        40.5
+      ],
+      "tail_10hz_N": 100,
+      "tail_SIM_range": [
+        31,
+        40.9
+      ],
+      "native_frames_retrieved_per_robot": 6,
+      "video": {
+        "path": "/home/ugrp/ugrp-sim/ops-reviews/warp8/playback/releaseA-s1-native-r1-world001/playback-full-tail-3x.mp4",
+        "bytes": 160745,
+        "sha256": "5ca2762d9a1d41f8e58deec667ead147bba8e0ae0e273eb5909018d83f574903",
+        "ffprobe": {
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "h264",
+              "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+              "profile": "High",
+              "codec_type": "video",
+              "codec_tag_string": "avc1",
+              "codec_tag": "0x31637661",
+              "width": 960,
+              "height": 270,
+              "coded_width": 960,
+              "coded_height": 270,
+              "closed_captions": 0,
+              "film_grain": 0,
+              "has_b_frames": 2,
+              "sample_aspect_ratio": "1:1",
+              "display_aspect_ratio": "32:9",
+              "pix_fmt": "yuv420p",
+              "level": 30,
+              "color_range": "tv",
+              "color_space": "bt470bg",
+              "chroma_location": "center",
+              "field_order": "progressive",
+              "refs": 1,
+              "is_avc": "true",
+              "nal_length_size": "4",
+              "id": "0x1",
+              "r_frame_rate": "30/1",
+              "avg_frame_rate": "30/1",
+              "time_base": "1/15360",
+              "start_pts": 0,
+              "start_time": "0.000000",
+              "duration_ts": 210432,
+              "duration": "13.700000",
+              "bit_rate": "90493",
+              "bits_per_raw_sample": "8",
+              "nb_frames": "411",
+              "extradata_size": 50,
+              "disposition": {
+                "default": 1,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0,
+                "non_diegetic": 0,
+                "captions": 0,
+                "descriptions": 0,
+                "metadata": 0,
+                "dependent": 0,
+                "still_image": 0
+              },
+              "tags": {
+                "language": "und",
+                "handler_name": "VideoHandler",
+                "vendor_id": "[0][0][0][0]",
+                "encoder": "Lavc60.31.102 libx264"
+              }
+            }
+          ],
+          "format": {
+            "filename": "/home/ugrp/ugrp-sim/ops-reviews/warp8/playback/releaseA-s1-native-r1-world001/playback-full-tail-3x.mp4",
+            "nb_streams": 1,
+            "nb_programs": 0,
+            "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+            "format_long_name": "QuickTime / MOV",
+            "start_time": "0.000000",
+            "duration": "13.700000",
+            "size": "160745",
+            "bit_rate": "93865",
+            "probe_score": 100,
+            "tags": {
+              "major_brand": "isom",
+              "minor_version": "512",
+              "compatible_brands": "isomiso2avc1mp41",
+              "encoder": "Lavf60.16.100"
+            }
+          }
+        }
+      },
+      "top_missing_world_times": [
+        42.6
+      ],
+      "timeline": [
+        {
+          "backend_SIM": "0–10.9",
+          "observed": "prefix 집기 뒤 양 자기 카메라를 빔 표면이 채움"
+        },
+        {
+          "backend_SIM": "11–14.5",
+          "observed": "낮추고 개방한 뒤 끝 띠가 다시 보임"
+        },
+        {
+          "backend_SIM": "15–27",
+          "observed": "방향을 바꿔 벽·문·구역과 빔을 번갈아 봄"
+        },
+        {
+          "backend_SIM": "27–36.2",
+          "observed": "추가 pan 방향 변화; 개요에서 빔은 제자리에 남고 양 로봇이 주변을 봄"
+        },
+        {
+          "backend_SIM": "36.2–40.9",
+          "observed": "다시 자기 끝을 보고 정지; 재집기·배송 완료로 이어지지 않음"
+        }
+      ],
+      "dense_vs_sparse": "10Hz 띠에서 pan의 연속 전환과 마지막 정지를 확인. 화물 낙하·급격한 반복 진동은 관찰하지 못함. 마지막 개요1장은 저장 상태가 없어 명시적 빈칸이며 원본 자기 RGB는 존재."
+    }
+  ],
+  "comparison_success": "native beam40 world000 success, separate task; no native release success exists",
+  "scope": "visual temporal observations; physical verdict and reason distribution are separate original-ledger recounts"
+}

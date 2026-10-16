@@ -1,0 +1,43 @@
+{
+  "schema": "ugrp.warp8e.release_selfmap_next.v1",
+  "flow": "release",
+  "ready": false,
+  "submitted": false,
+  "status": "OWNER_STATIC_MAP_API_PENDING",
+  "account": "changmin5781@gmail.com",
+  "project": "ugrp-sim-c-1016",
+  "gcp_host": "ugrp-act-l4-gcp3",
+  "VM_wall_cap": null,
+  "supervisor_wall_deadline": null,
+  "no_pooling": true,
+  "rejection_table": "/home/ugrp/ugrp-sim/runs/warp8/selfmap-open-r1/rejection_table.json",
+  "release_reloc_selfmap_v1": "lk",
+  "planned_denominators": {
+    "release_A": 40,
+    "release_B": 40
+  },
+  "physics_steps": 0,
+  "baseline": "native beam40/40 preserved; native old releaseA-S1 0/14 not pooled",
+  "blockers": [
+    "owner loaded-camera FK qualification",
+    "owner static map acquisition API",
+    "new-path map error gate not measured",
+    "actual applied current stack evidence required before submission"
+  ],
+  "current_stack_check": {
+    "script": "/Users/changmin/projects/ugrp-wt/stackaudit/scripts/check_current_stack.py",
+    "script_sha256": "732567e427c7d41614cf04d7bbe90442fdd004755cde40b7ea89394e00f8326c",
+    "stack": "/Users/changmin/projects/ugrp-wt/stackaudit/configs/current_stack.json",
+    "stack_sha256": "f8a1aedb2a60e0abebd47a48938420ada0779aeede85516712ead6e515eb8948",
+    "source_status": "owner working files not yet committed; immutable hashes recorded",
+    "report": "selfmap-next-current-stack-check.json",
+    "required_before_gate": true
+  },
+  "expected_new_run_safety": {
+    "placement_graspable_filter_v1": true,
+    "weld": "off",
+    "held_world_reads": 0,
+    "profile": "warp_native_contact_v1",
+    "physics_settings_unchanged": true
+  }
+}

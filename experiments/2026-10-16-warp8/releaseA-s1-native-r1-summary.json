@@ -1,0 +1,473 @@
+{
+  "utc": "2026-10-16T15:25:30.091742+00:00",
+  "simulation_host": "gcp3",
+  "analysis_host": "ugrp-act-l4-gcp3.asia-northeast3-a.c.ugrp-sim-c-1016.internal",
+  "project": "ugrp-sim-c-1016",
+  "CPU_results_pooled": false,
+  "rejection_table": "/home/ugrp/ugrp-sim/ops-reviews/warp8/releaseA-s1-native-r1-recount/rejection_table.json",
+  "collector_sha256": "c95e8a9c0377be7001a069abbbc7cb0cfe93c2c05fde6c87cc3eb90d75d37ad1",
+  "read_errors": [],
+  "reason_distribution_scope": "record occurrences in diagnostic and teacher trace; not unique candidate IDs",
+  "scope": "terminal raw evaluator recount, not ACT/student success or host root-cause proof",
+  "attempts": [
+    {
+      "name": "releaseA-s1-native-r1",
+      "host": "gcp3",
+      "source_sha": "3170d909089865c45e2cbc6089beb6a2d05e576f",
+      "export_only": false,
+      "contact_profile": {
+        "profile": "warp_native_contact_v1",
+        "options": {
+          "noslip_iterations": "0",
+          "cone": "elliptic",
+          "integrator": "implicitfast",
+          "impratio": "5"
+        },
+        "playground_commit": "d59156e099a8785dd58fbce2e25a6ee1f7b5800c",
+        "default_off": true,
+        "sha256": "a1196005ef686c41e7796968315e1ba99a929502f50c0ae461f4e4eab76120a6",
+        "module_sha256": "a5c8d370755034b9f9615f66a94b87883327b7d7ecc4e13082eac2c2d4751c6a",
+        "origin_commit": "df5a1f86aad420f2fab2c10e3ee77cdb5ec11807",
+        "origin_PR": 562
+      },
+      "status": "complete",
+      "terminal": true,
+      "command": [
+        "/home/ugrp/ugrp-sim/ugrp/.venv-warp/bin/python",
+        "/home/ugrp/ugrp-sim/src/3170d909089865c45e2cbc6089beb6a2d05e576f/scripts/run_warp_flow_teacher.py",
+        "--flow",
+        "release",
+        "--adapter-source",
+        "/home/ugrp/ugrp-sim/src/8e81b7d96c0c73171635348c90631462adfe1eb0",
+        "--cases",
+        "/home/ugrp/ugrp-sim/ops-reviews/warp6/release-gate-cases.json",
+        "--indices",
+        "0,2,6,12,18,24,30,36,42,48,52,58,64,74",
+        "--cap-s",
+        "180",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/warp8/releaseA-s1-native-r1",
+        "--vm-hourly-usd",
+        "1.096",
+        "--gcp3-isolated-v1",
+        "--placement-graspable-filter-v1",
+        "--world-model-parameters-v1",
+        "--native-sleep-policy-compat-v1",
+        "--batch-per-world-speed-v1",
+        "--rejection-table",
+        "/home/ugrp/ugrp-sim/ops-reviews/warp8/release-topology-rejection_table.json",
+        "--canonical-xml",
+        "/home/ugrp/ugrp-sim/ops-reviews/warp8/native-refs-v4/releaseA-s1-c312/canonical-scene.xml",
+        "--full-active-dof-workspace-v1",
+        "--warp-native-contact-v1",
+        "--per-world-model-references-v1",
+        "/home/ugrp/ugrp-sim/ops-reviews/warp8/native-refs-v4/releaseA-s1-c312/per-world-references.json"
+      ],
+      "raw": "/home/ugrp/ugrp-sim/runs/warp8/releaseA-s1-native-r1",
+      "N": 14,
+      "completed_N": 14,
+      "success_N": 0,
+      "cap_end_N": 0,
+      "HOST_ERROR_world_N": 0,
+      "setup_wall_s": 98.95764950500006,
+      "total_wall_s": 1049.2426238480002,
+      "loop_wall_s": 948.914400179,
+      "aggregate_task_sim_s": 565.6000000000001,
+      "per_world_wall_SIM": 1.6572029342979389,
+      "batch_sim_s": 40.900000000000006,
+      "task_wall_per_SIM": 1.6777128716036065,
+      "first30": {
+        "ticks": 300,
+        "active_N": 14,
+        "completed_N": 0,
+        "sim_s": 30.0,
+        "loop_wall_s": 664.627023177,
+        "timing": {
+          "render": 49.56855101899873,
+          "readback_remap_jpeg_kinematics": 21.332136100000298,
+          "command_decode_upload": 1.0318442439979663,
+          "physics": 454.5806254640015
+        },
+        "world_sim_s": [
+          30.0,
+          30.0,
+          30.0,
+          30.0,
+          30.0,
+          30.0,
+          30.0,
+          30.0,
+          30.0,
+          30.0,
+          30.0,
+          30.0,
+          30.0,
+          30.0
+        ],
+        "aggregate_world_sim_s": 420.0,
+        "batch_sim_s": 30.0,
+        "per_world_wall_SIM": 1.5824452932785713,
+        "task_wall_per_SIM": 1.5824452932785713,
+        "batch_wall_SIM": 22.1542341059,
+        "scope": "first batch clock >=30 SIM; setup/compile excluded; admission denominator=batch SIM*world count",
+        "basis": "coordinator decision 2026-10-16, user unconfirmed",
+        "block_threshold": 6.0,
+        "warning_threshold": 3.5,
+        "speed_gate_fail": false,
+        "admission_per_world_wall_SIM": 1.5824452932785713,
+        "admission_speed_gate_fail": false,
+        "recorded_task_clock_scope": "source auxiliary metric preserved; completed teacher episodes and active backend clocks can have different startup origins"
+      },
+      "worlds": [
+        {
+          "world": 0,
+          "seed": 110633,
+          "sim_s": 40.400000000000006,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/releaseA-s1-native-r1/world-000/raw",
+          "success": false,
+          "cap_end": false,
+          "recount": {
+            "success": false,
+            "evaluator_N": 25,
+            "settled_s": 2.5,
+            "source_success": false,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": "active_observation_exhausted"
+        },
+        {
+          "world": 1,
+          "seed": 88639,
+          "sim_s": 40.400000000000006,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/releaseA-s1-native-r1/world-001/raw",
+          "success": false,
+          "cap_end": false,
+          "recount": {
+            "success": false,
+            "evaluator_N": 25,
+            "settled_s": 0.0,
+            "source_success": false,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": "axis_correction_outside_bounded_domain"
+        },
+        {
+          "world": 2,
+          "seed": 110600,
+          "sim_s": 40.400000000000006,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/releaseA-s1-native-r1/world-002/raw",
+          "success": false,
+          "cap_end": false,
+          "recount": {
+            "success": false,
+            "evaluator_N": 25,
+            "settled_s": 2.5,
+            "source_success": false,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": "active_observation_exhausted"
+        },
+        {
+          "world": 3,
+          "seed": 110603,
+          "sim_s": 40.400000000000006,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/releaseA-s1-native-r1/world-003/raw",
+          "success": false,
+          "cap_end": false,
+          "recount": {
+            "success": false,
+            "evaluator_N": 25,
+            "settled_s": 2.5,
+            "source_success": false,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": "axis_correction_outside_bounded_domain"
+        },
+        {
+          "world": 4,
+          "seed": 110606,
+          "sim_s": 40.400000000000006,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/releaseA-s1-native-r1/world-004/raw",
+          "success": false,
+          "cap_end": false,
+          "recount": {
+            "success": false,
+            "evaluator_N": 25,
+            "settled_s": 0.0,
+            "source_success": false,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": "axis_correction_outside_bounded_domain"
+        },
+        {
+          "world": 5,
+          "seed": 110609,
+          "sim_s": 40.400000000000006,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/releaseA-s1-native-r1/world-005/raw",
+          "success": false,
+          "cap_end": false,
+          "recount": {
+            "success": false,
+            "evaluator_N": 25,
+            "settled_s": 2.5,
+            "source_success": false,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": "active_observation_exhausted"
+        },
+        {
+          "world": 6,
+          "seed": 110612,
+          "sim_s": 40.400000000000006,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/releaseA-s1-native-r1/world-006/raw",
+          "success": false,
+          "cap_end": false,
+          "recount": {
+            "success": false,
+            "evaluator_N": 25,
+            "settled_s": 0.0,
+            "source_success": false,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": "active_observation_exhausted"
+        },
+        {
+          "world": 7,
+          "seed": 110615,
+          "sim_s": 40.400000000000006,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/releaseA-s1-native-r1/world-007/raw",
+          "success": false,
+          "cap_end": false,
+          "recount": {
+            "success": false,
+            "evaluator_N": 25,
+            "settled_s": 0.0,
+            "source_success": false,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": "active_observation_exhausted"
+        },
+        {
+          "world": 8,
+          "seed": 110618,
+          "sim_s": 40.400000000000006,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/releaseA-s1-native-r1/world-008/raw",
+          "success": false,
+          "cap_end": false,
+          "recount": {
+            "success": false,
+            "evaluator_N": 25,
+            "settled_s": 0.0,
+            "source_success": false,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": "active_observation_exhausted"
+        },
+        {
+          "world": 9,
+          "seed": 110621,
+          "sim_s": 40.400000000000006,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/releaseA-s1-native-r1/world-009/raw",
+          "success": false,
+          "cap_end": false,
+          "recount": {
+            "success": false,
+            "evaluator_N": 25,
+            "settled_s": 0.0,
+            "source_success": false,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": "active_observation_exhausted"
+        },
+        {
+          "world": 10,
+          "seed": 110624,
+          "sim_s": 40.400000000000006,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/releaseA-s1-native-r1/world-010/raw",
+          "success": false,
+          "cap_end": false,
+          "recount": {
+            "success": false,
+            "evaluator_N": 25,
+            "settled_s": 2.5,
+            "source_success": false,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": "active_observation_exhausted"
+        },
+        {
+          "world": 11,
+          "seed": 110627,
+          "sim_s": 40.400000000000006,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/releaseA-s1-native-r1/world-011/raw",
+          "success": false,
+          "cap_end": false,
+          "recount": {
+            "success": false,
+            "evaluator_N": 25,
+            "settled_s": 0.0,
+            "source_success": false,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": "active_observation_exhausted"
+        },
+        {
+          "world": 12,
+          "seed": 110630,
+          "sim_s": 40.400000000000006,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/releaseA-s1-native-r1/world-012/raw",
+          "success": false,
+          "cap_end": false,
+          "recount": {
+            "success": false,
+            "evaluator_N": 25,
+            "settled_s": 0.0,
+            "source_success": false,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": "active_observation_exhausted"
+        },
+        {
+          "world": 13,
+          "seed": 110636,
+          "sim_s": 40.400000000000006,
+          "raw": "/home/ugrp/ugrp-sim/runs/warp8/releaseA-s1-native-r1/world-013/raw",
+          "success": false,
+          "cap_end": false,
+          "recount": {
+            "success": false,
+            "evaluator_N": 25,
+            "settled_s": 0.0,
+            "source_success": false,
+            "agrees": true
+          },
+          "input_audit": {
+            "held_world_reads": 0,
+            "invisible_measurements": 0,
+            "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check"
+          },
+          "audit_pass": true,
+          "weld": "off",
+          "outcome": "active_observation_exhausted"
+        }
+      ],
+      "funnel": [
+        {
+          "stage": "requested",
+          "passed_cumulative_N": 14,
+          "rejected_N": 0
+        },
+        {
+          "stage": "setup",
+          "passed_cumulative_N": 14,
+          "rejected_N": 0,
+          "not_attempted_N": 0,
+          "pending_N": 0
+        },
+        {
+          "stage": "terminal_teacher_trial",
+          "passed_cumulative_N": 14,
+          "rejected_N": 0,
+          "not_trial_N": 0
+        },
+        {
+          "stage": "physical_success",
+          "passed_cumulative_N": 0,
+          "rejected_N": 14
+        }
+      ]
+    }
+  ],
+  "full_recount": "/home/ugrp/ugrp-sim/ops-reviews/warp8/releaseA-s1-native-r1-recount/summary.json"
+}

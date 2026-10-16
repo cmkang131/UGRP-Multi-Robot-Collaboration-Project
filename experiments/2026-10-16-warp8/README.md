@@ -1,4 +1,72 @@
-# warp8d — native contact 관문 인수 (빔40/40·release A-S1 실행 중)
+# warp8e — 자기 지도 입력 14세계 오프라인 점검 완료 / NOT_READY
+
+`nocap-ack nocpu-ack nativecontact-ack ownership-ack latest-ack`.
+내려놓기 위치 다시 잡기를 새 자기 지도 경로로 바꾸기 위한 **입력 점검**을 마쳤다.
+정적 지도 전역 정합·운반 자세 FK API는 mapbuild 소유자에게 요청했고 아직 연결되지 않았다.
+새 경로 위치 오차·release A40/B40은 **미측정·미제출**이다. 기존 native 빔40/40과
+옛 위치 추정 경로의 native release A-S1 0/14는 별도 보존하며 합산하지 않는다.
+실패 분포는 `active_observation_exhausted` 11, `axis_correction_outside_bounded_domain` 3이다.
+옛 Hough 바닥 선/정합 상수를 수정하거나 렌더 차이 진단을 추가하지 않았다.
+
+|gcp3 저장 native 상태 14세계 / 418 자기 뷰|측정|
+|---|---:|
+|새 MJWarp 렌더 JPEG와 원래 소비 JPEG SHA 일치|418/418|
+|집게 열린 카메라 명령 FK 자격|418/418|
+|벽–바닥 경계 가상 스캔이 있는 뷰|190/418|
+|반환 벽 열 / 전체 열|7,653/40,128|
+|바닥 특징점이 있는 뷰 / 특징점 합|417/418 / 77,571|
+|LK 구간|bootstrap 28, servo 변경 unknown 390, 측정 0|
+|새 지도 보정·위치 오차|미측정(API 대기)|
+
+이는 sparse 둘러보기 뷰의 검출 수다. 특징점 존재를 운반 LK·정합 성공으로 해석하지 않는다.
+구역 표시는 기존 RGB 색 서명·성분 크기 조건만 재사용한 보조 성분 수이며 깊이·구역 정체성
+자격을 얻은 검출기가 아니다. 바닥 선/Hough를 실행하거나 지도 증거로 쓰지 않았다.
+[28로봇 검출표](selfmap-open-r1-detection-table.md), [오차표](selfmap-open-r1-error-table.json),
+[순차 funnel/거부표](selfmap-open-r1-rejection_table.json), [요약](selfmap-open-r1-summary.json).
+실제 새 위치 오차가 없는 칸은 null/미측정이며 평가 정답으로 초기화하지 않았다.
+
+기본 off `release_reloc_selfmap_v1`의 `lk`/`rbpf` 관측 어댑터를 추가했다.
+**기존 release 물리 실행기에 교체 연결한 상태는 아니다.** 정합 API가 없으면 수정을 수락하지 않는다.
+LK를 먼저 점검했고 RBPF는 선택지만 있으며 실행·채택하지 않았다. 관련 비물리 **2 passed**다.
+운반 중 grip<=1600의 FK 거부를 우회하지 않고 명령 예측/unknown을 구분한다.
+mapbuild6에서 mapbuild7로 이어지는 담당자에게 loaded FK 자격과 정적 지도 전역 정합을 요청했다.
+
+물리·제어 0, TOP 렌더/입력 0, 모델 호출 0이다. 렌더 소스와 관측 소스를 별도 프로세스로 분리했고
+추정 프로세스는 eval-only 파일을 읽지 않았다. 소스 `5461ba0d82163319251743fe8e4d9e2333374965`,
+mapbuild `c7477b1f64910f498b52e1697488c28b2c4569e1` 및 그 경로가 쓰는 renderer597
+vision 보충 파일을 byte 그대로 사용했다. [2,083파일 출처·SHA](selfmap-owner-manifest.json).
+관측 원본은 `gcp3:/home/ugrp/ugrp-sim/runs/warp8/selfmap-open-r1`이다.
+[명령](selfmap-open-r1-command.json), [완료 receipt](selfmap-open-r1-receipt.json),
+[원격 449파일 재해시·JSON3개 압축/해제SHA 검증](selfmap-open-r1-integrity.json),
+[Mac 요약·표·몽타주10개 SHA 검증](selfmap-open-r1-transfer.json).
+
+기존 native 빔/release 원본의 seal 인계도 완료했다. 38,593파일 재해시 일치,
+기존 선언38,525개 missing0/mismatch0, 큰 JSON61개 압축/해제SHA 일치다.
+[native seal](native-seal-integrity-warp8e.json). 이미 만든 RUN_META 보정54개+summary 주석2개는
+SHA56/56을 확인했고 중복 생성·원본 덮어쓰기0이다([검증](metadata-corrections-verification-warp8e.json)).
+옛 PR/branch/batch·noslip10 표시는 보정 파일에서 실제 native0와 구분하고,
+`gate_eligible=false`의 정식 admission 부재 사유를 보존한다.
+
+실패000/001 새 자기 뷰는 각 r1/r2 16장, 합64장을 직접 봤다(17.9–37.4 world SIM초).
+기존 영상의 처음0–8.5/끝36–40.5/최근40–40.9 task SIM초 프레임 띠도 확인했다.
+두 로봇은 반대 끝을 유지하고 pan으로 벽/바닥을 반복해 본다. 이 관찰을 낙하·새 정합 실패로 확대하지 않는다.
+기존 대표 native 성공·실패 영상은 Mac에서 각각112,368/159,229bytes, SHA·ffprobe 재확인했다.
+[이번 직접 검토 범위](warp8e-playback-review.json). GUI를 열지 않았다.
+
+stackaudit 점검기가 생겨 [다음 release 대기열](selfmap-release-next-queue.json)에 연결했다.
+아직 커밋 전인 소유자 파일의 정확한 SHA를 기록해 읽기 전용 실행했고,
+5항목 current/26항목 unknown으로 **blocked**다([점검 결과](selfmap-next-current-stack-check.json)).
+미제출 후보의 실제 적용 스택 근거를 채워 재검사하기 전에는 제출하지 않는다.
+
+gcp3를 상한 인자 없이 시작했고 idle20·budget-stop ACTIVE를 확인했다.
+종료 lease/PID를 확인해 옛 release lease를 정리했다. 회수 뒤 타 lease/작업PID/GPU client가
+모두 없는 것을 확인하고 정지했으며 **TERMINATED**를 조회했다.
+[정지 전 확인](warp8e-prestop.json), [정지 확인](warp8e-host-stop.json).
+CPU VM 시작0·다른 VM 변경0·키 전송0·Drive 사용0이다. API 대기 중 VM을 켜 두지 않는다.
+
+아래는 warp8d 및 이전 실행의 당시 기록이다.
+
+# warp8d — native contact 관문 인수 (빔40/40·release A-S1 0/14)
 
 `nocap-ack nocpu-ack nativecontact-ack cap-ack ownership-ack`.
 사용자 2026-10-16 23:1x 결정에 따라 `warp_native_contact_v1`로 빔40 → release A40 → B40을 새로 잰다.
@@ -60,6 +128,29 @@ release A 나머지26·B40은 아직 미제출이며 전체 데이터 수용은 
 release A-S1 첫30SIM은 **1.582445** = 664.627wall/(30×14), 배치22.15423이다.
 [비교 표](native-first30-comparison.json), [원본 측정](releaseA-s1-native-r1-first30-speed.json).
 14세계 모두 진행 중이며 최종 release 성공·입력감사는 아직 판정하지 않았다.
+
+## native release A-S1 실패 — 후속 제출 보류
+
+**0/14 성공·cap_end0·HOST_ERROR0**, 종료코드0이다.
+[원장 재계수](releaseA-s1-native-r1-summary.json),
+[12,485파일 SHA·제어구간 감사14건0/0](releaseA-s1-native-r1-terminal-proof.json).
+특권 장면준비 prefix는 제어 입력 감사 범위에서 제외한다.
+종료 사유는 active_observation_exhausted11·axis_correction_outside_bounded_domain3이다.
+거부 원장 최빈 axis_pair_unobserved25회는 고유후보 수가 아니다.
+[물체·틈 단위 원문을 보존한 분포](releaseA-s1-native-r1-failure-distribution.json).
+
+seed110633/88639 실패2건 각각 전체2Hz82장·마지막10Hz100쌍을 모두 검토했다.
+카메라는 실제로 방향을 바꾸지만 추가 관측 뒤 재집기/배송으로 이어지지 않았다.
+[타임라인과 한계](releaseA-s1-native-r1-playback-review.json).
+대표 영상2개(각8MB 이하)와 로봇별6시각 native 프레임을 Mac 회수·SHA·ffprobe 검증했다.
+각 마지막 개요1장은 상태가 없어 빈칸으로 표시하며 자기 RGB는 원본 그대로다.
+
+같은 저장 qpos와 같은 fisheye/no_mip/JPEG82·동결 인식기를 비교했다.
+world000 native 32뷰의 특징 수는 원본과 모두 일치하지만 양쪽 ambiguous,
+C3.12 RGB에서는 양쪽 global_consensus다. 물리 재실행·교사 제어 변경0의
+렌더 입력 분리 진단이며 CPU release 성공으로 대체하지 않는다.
+world001은 native의 다른 지도 합의 뒤 축 보정 도메인 거부를 추가 조사한다.
+후속 A26/B40 미제출, 새 관문 전체 NOT_READY다.
 
 아래는 noslip10 당시 기록이다. 그 안의8h 복원·CPU VM 분석 지시는 최신 사용자 지시로 폐기됐다.
 

@@ -1,0 +1,108 @@
+{
+  "utc": "2026-10-16T16:17:22.156918+00:00",
+  "new_viewed_sheets": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/warp8e-selfmap-open-r1/world000-r1.jpg",
+      "sha256": "fcd8052f38ca0ceaa4389dae69850fa6784857384a61b903fbcc0c385dbd3e09"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/warp8e-selfmap-open-r1/world000-r2.jpg",
+      "sha256": "0f6b47c3fb80669ac0c7582087c99114ac6e90327b6bdf4a036ba8cdb7e8cab5"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/warp8e-selfmap-open-r1/world001-r1.jpg",
+      "sha256": "ca10189b4a892ce8b2d0542191f18511b73a7d4e5fad156dcfd0aa0d36d8dec2"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/warp8e-selfmap-open-r1/world001-r2.jpg",
+      "sha256": "551d887ff1a7973f758f294b8eb9314aae32368283b690f2a6c8ed021b66d222"
+    }
+  ],
+  "new_frames": 64,
+  "new_world_SIM_range": [
+    17.9,
+    37.4
+  ],
+  "prior_viewed_sheets": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/releaseA-s1-native-r1-world000/full-2hz-00.jpg",
+      "sha256": "ed1e9b21b593fe69363d286114cad3c27caa97aeb800d113442559605ff11efa"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/releaseA-s1-native-r1-world000/full-2hz-04.jpg",
+      "sha256": "6193ba246491673b776aa3d3567ba908e2351e05470a806d053771e2a6d6a47f"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/releaseA-s1-native-r1-world000/last10s-10hz-05.jpg",
+      "sha256": "d8b9b7917e26cf4b4b4d9f2f1bae6ae44f76ce11986444dba51fc33255ec3794"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/releaseA-s1-native-r1-world001/full-2hz-00.jpg",
+      "sha256": "4863d194490c8e1a32acaeaad88c00f3c949d1edb0eeb5f0cfc9329a3e4cdd95"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/releaseA-s1-native-r1-world001/full-2hz-04.jpg",
+      "sha256": "66b190ce4fae076858ca791837adac44f753e9ecacfd1c24eda8f25a54e93e6d"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/releaseA-s1-native-r1-world001/last10s-10hz-05.jpg",
+      "sha256": "f7f1d53b1664df95e41a76a70345611ca7885570dc393716cc40e40888ef9452"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beam40-native-r1-world000-v2/full-2hz-04.jpg",
+      "sha256": "2d6d28194ff1cd8ea7bb02081b51efd57e60afb6db78ee82942c7a27f0466213"
+    }
+  ],
+  "prior_task_SIM_ranges": [
+    [
+      0,
+      8.5
+    ],
+    [
+      36,
+      40.5
+    ],
+    [
+      40,
+      40.9
+    ]
+  ],
+  "scope": "explicit subset of prior full playback; current worker does not claim to have newly viewed all old 2Hz/10Hz sheets",
+  "timeline": [
+    "initial own RGB sees opposite robot beyond beam and region paint",
+    "prefix raises arm; foreground beam fills own view",
+    "open-gripper lookaround pans observe textured floor, wall boundary, door opening and opposite robot",
+    "terminal old release restores gaze and remains over own assigned end; no new motion/physics was run"
+  ],
+  "observations": [
+    "two robots retain opposite ends in reviewed frames",
+    "floor texture and wall/floor boundary are visible in multiple selected new views",
+    "peer orange silhouette masks many columns; detector counts are input evidence, not a claim of map fit"
+  ],
+  "new_failure_claim": null,
+  "GUI_calls": 0,
+  "video_verification": [
+    {
+      "kind": "success",
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beam40-native-r1-world000-v2/playback-full-tail-3x.mp4",
+      "sha256": "7b4ddadb4bf1a29a7932f0c870a1e4cd8d32b4d857caaf3c7556cdc2b35db1a8",
+      "ffprobe": {
+        "format": {
+          "duration": "13.533333",
+          "size": "112368"
+        }
+      }
+    },
+    {
+      "kind": "failure",
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/releaseA-s1-native-r1-world000/playback-full-tail-3x.mp4",
+      "sha256": "73bad10062add0e529155816f980cb9803e9db4b2aa5847b300042dc4df3042d",
+      "ffprobe": {
+        "format": {
+          "duration": "13.700000",
+          "size": "159229"
+        }
+      }
+    }
+  ]
+}

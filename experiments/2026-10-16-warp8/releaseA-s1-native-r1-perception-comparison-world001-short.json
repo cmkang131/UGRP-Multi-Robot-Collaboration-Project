@@ -1,0 +1,335 @@
+{
+  "utc": "2026-10-16T15:36:22.940583+00:00",
+  "host": "gcp3_CPU",
+  "run": "/home/ugrp/ugrp-sim/runs/warp8/releaseA-s1-native-r1",
+  "world": 1,
+  "source": "/home/ugrp/ugrp-sim/src/8e81b7d96c0c73171635348c90631462adfe1eb0",
+  "mujoco": "3.12.0",
+  "cv2": "5.0.0",
+  "quality": {
+    "profile": "no_mip_v1",
+    "definition": {
+      "scale": 1,
+      "samples": null,
+      "interpolation": "linear",
+      "min_filter": "linear",
+      "texture_scope": "all"
+    },
+    "offwidth": 1280,
+    "offheight": 720,
+    "requested_samples": 4,
+    "actual_samples": 4,
+    "max_samples": 4,
+    "textures": [
+      {
+        "id": 0,
+        "before_min": 9987,
+        "min": 9729,
+        "mag": 9729,
+        "base_width": 512
+      },
+      {
+        "id": 1,
+        "before_min": 9987,
+        "min": 9729,
+        "mag": 9729,
+        "base_width": 3072
+      },
+      {
+        "id": 2,
+        "before_min": 9987,
+        "min": 9729,
+        "mag": 9729,
+        "base_width": 512
+      },
+      {
+        "id": 3,
+        "before_min": 9987,
+        "min": 9729,
+        "mag": 9729,
+        "base_width": 512
+      },
+      {
+        "id": 4,
+        "before_min": 9987,
+        "min": 9729,
+        "mag": 9729,
+        "base_width": 512
+      },
+      {
+        "id": 5,
+        "before_min": 9987,
+        "min": 9729,
+        "mag": 9729,
+        "base_width": 512
+      },
+      {
+        "id": 6,
+        "before_min": 9987,
+        "min": 9729,
+        "mag": 9729,
+        "base_width": 512
+      },
+      {
+        "id": 7,
+        "before_min": 9987,
+        "min": 9729,
+        "mag": 9729,
+        "base_width": 512
+      }
+    ]
+  },
+  "physics_steps": 0,
+  "controller_execution": 0,
+  "scope": "offline image/perception comparison only; no physical success verdict",
+  "full_summary": "/home/ugrp/ugrp-sim/ops-reviews/warp8/releaseA-s1-native-r1-perception-comparison-world001/summary.json",
+  "full_summary_sha256": "447f652fa99df2c990c1a9b5556df49abdaa9e3615e757aefedea64fd0e4c664",
+  "reports": {
+    "r1": {
+      "native_feature_counts_reproduced": true,
+      "observations_N": 16,
+      "feature_totals": {
+        "native": {
+          "wall_points": 649,
+          "floor_lines": 8,
+          "doors": 0
+        },
+        "C_same_state": {
+          "wall_points": 1260,
+          "floor_lines": 29,
+          "doors": 0
+        }
+      },
+      "decisions": {
+        "native": {
+          "accepted": true,
+          "reason": "global_consensus",
+          "lines": 18,
+          "views_with_evidence": 14,
+          "prior_used": false,
+          "method": "exhaustive_line_consensus_huber",
+          "hypotheses": 154,
+          "localization_support": "map_free_v1",
+          "support_audit": {
+            "generated": 1152,
+            "rejected_before_score": 930,
+            "rejected_after_refine": 0
+          },
+          "acceptance_checks": {
+            "lines": true,
+            "views": true,
+            "normal_rank": true,
+            "score_gap": true
+          },
+          "proposed": [
+            2.766900844391207,
+            -2.3310823837571815,
+            -3.079801856741788
+          ],
+          "inliers": 6,
+          "inlier_views": 6,
+          "groups": [
+            "wall_divider_1:35",
+            "wall_south:21"
+          ],
+          "normal_rank": 2,
+          "score": 5.950463305057653,
+          "score_gap": 0.9910247813604656,
+          "normalized_inlier_rms": 0.22715792721866032,
+          "inlier_segment_rms_m": 0.006198988323734923,
+          "inlier_normal_rms_deg": 0.83041501295514,
+          "sigma": [
+            0.05,
+            0.05,
+            0.05235987755982989
+          ],
+          "coordinate_frame": "map",
+          "observation_epoch_views": {
+            "start": 0,
+            "stop": 16,
+            "count": 16
+          }
+        },
+        "C_same_state": {
+          "accepted": true,
+          "reason": "global_consensus",
+          "lines": 46,
+          "views_with_evidence": 16,
+          "prior_used": false,
+          "method": "exhaustive_line_consensus_huber",
+          "hypotheses": 2060,
+          "localization_support": "map_free_v1",
+          "support_audit": {
+            "generated": 7688,
+            "rejected_before_score": 5214,
+            "rejected_after_refine": 0
+          },
+          "acceptance_checks": {
+            "lines": true,
+            "views": true,
+            "normal_rank": true,
+            "score_gap": true
+          },
+          "proposed": [
+            4.594965052163268,
+            0.1630887583720698,
+            -1.5023178548674134
+          ],
+          "inliers": 26,
+          "inlier_views": 15,
+          "groups": [
+            "pickup:1",
+            "wall_east:30",
+            "zone_A:4",
+            "zone_A:5",
+            "zone_A:7",
+            "zone_B:10",
+            "zone_B:11",
+            "zone_B:9",
+            "zone_C:13",
+            "zone_C:14"
+          ],
+          "normal_rank": 2,
+          "score": 23.802231921534602,
+          "score_gap": 11.17704545960578,
+          "normalized_inlier_rms": 0.7268491138100741,
+          "inlier_segment_rms_m": 0.02610382760031973,
+          "inlier_normal_rms_deg": 1.6002226378654252,
+          "sigma": [
+            0.05,
+            0.05,
+            0.05235987755982989
+          ],
+          "coordinate_frame": "map",
+          "observation_epoch_views": {
+            "start": 0,
+            "stop": 16,
+            "count": 16
+          }
+        }
+      }
+    },
+    "r2": {
+      "native_feature_counts_reproduced": true,
+      "observations_N": 16,
+      "feature_totals": {
+        "native": {
+          "wall_points": 551,
+          "floor_lines": 13,
+          "doors": 0
+        },
+        "C_same_state": {
+          "wall_points": 1155,
+          "floor_lines": 33,
+          "doors": 0
+        }
+      },
+      "decisions": {
+        "native": {
+          "accepted": true,
+          "reason": "global_consensus",
+          "lines": 20,
+          "views_with_evidence": 10,
+          "prior_used": false,
+          "method": "exhaustive_line_consensus_huber",
+          "hypotheses": 235,
+          "localization_support": "map_free_v1",
+          "support_audit": {
+            "generated": 2276,
+            "rejected_before_score": 1907,
+            "rejected_after_refine": 0
+          },
+          "acceptance_checks": {
+            "lines": true,
+            "views": true,
+            "normal_rank": true,
+            "score_gap": true
+          },
+          "proposed": [
+            1.7576924616427507,
+            -2.4133469494877,
+            0.07672454707746684
+          ],
+          "inliers": 6,
+          "inlier_views": 6,
+          "groups": [
+            "wall_divider_1:34",
+            "wall_south:21"
+          ],
+          "normal_rank": 2,
+          "score": 5.905408431429115,
+          "score_gap": 0.919501574370277,
+          "normalized_inlier_rms": 0.31389948061123796,
+          "inlier_segment_rms_m": 0.00779604858020105,
+          "inlier_normal_rms_deg": 1.2303089095067832,
+          "sigma": [
+            0.05,
+            0.05,
+            0.05235987755982989
+          ],
+          "coordinate_frame": "map",
+          "observation_epoch_views": {
+            "start": 0,
+            "stop": 16,
+            "count": 16
+          }
+        },
+        "C_same_state": {
+          "accepted": true,
+          "reason": "global_consensus",
+          "lines": 48,
+          "views_with_evidence": 16,
+          "prior_used": false,
+          "method": "exhaustive_line_consensus_huber",
+          "hypotheses": 1690,
+          "localization_support": "map_free_v1",
+          "support_audit": {
+            "generated": 10528,
+            "rejected_before_score": 8153,
+            "rejected_after_refine": 0
+          },
+          "acceptance_checks": {
+            "lines": true,
+            "views": true,
+            "normal_rank": true,
+            "score_gap": true
+          },
+          "proposed": [
+            4.676092310521727,
+            -0.8195201084406755,
+            1.64515511019899
+          ],
+          "inliers": 35,
+          "inlier_views": 15,
+          "groups": [
+            "pickup:1",
+            "wall_east:30",
+            "wall_north:16",
+            "zone_A:4",
+            "zone_A:5",
+            "zone_A:7",
+            "zone_C:13",
+            "zone_C:14"
+          ],
+          "normal_rank": 2,
+          "score": 31.67447306897582,
+          "score_gap": 19.040726459003828,
+          "normalized_inlier_rms": 0.7706128047377268,
+          "inlier_segment_rms_m": 0.027240140326703733,
+          "inlier_normal_rms_deg": 1.8033185845072999,
+          "sigma": [
+            0.05,
+            0.05,
+            0.05235987755982989
+          ],
+          "coordinate_frame": "map",
+          "observation_epoch_views": {
+            "start": 0,
+            "stop": 16,
+            "count": 16
+          }
+        }
+      }
+    }
+  }
+}
