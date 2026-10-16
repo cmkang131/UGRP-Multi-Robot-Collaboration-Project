@@ -32,10 +32,11 @@ def dataset_view(root, output):
     paths.extend(str(Path(e['path'])/n) for e in manifest['episodes'] for n in e['files'])
     for rel in paths:
         dest=view/rel
+        if dest.is_symlink():dest.unlink()  # only this script's disposable view
         if dest.exists():continue
         dest.parent.mkdir(parents=True,exist_ok=True)
         src=root/rel
-        if src.exists():dest.symlink_to(src)
+        if src.exists():os.link(src,dest)  # safe_path rejects external symlinks
         else:dest.write_bytes(subprocess.check_output(['zstd','-qdc',str(existing(src))]))
     return view
 
