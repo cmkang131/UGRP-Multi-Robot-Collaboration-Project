@@ -68,6 +68,7 @@ def parser():
     p.add_argument('--placement-graspable-filter-v1',action='store_true')
     p.add_argument('--gcp3-isolated-v1',action='store_true',help='explicit warp6 L4 host admission; default OFF')
     p.add_argument('--warp-debug-v1',action='store_true',help='Warp bounds checks and CUDA line information; default OFF')
+    p.add_argument('--warp-workspace-trace-v1',action='store_true',help='synchronize and persist allocations after each existing graph chunk; default OFF')
     p.add_argument('--mps-shared-v1',action='store_true',help='explicit private warp4 MPS runtime cohort; default OFF')
     p.add_argument('--vm-hourly-usd',type=float,required=True)
     return p
@@ -127,6 +128,7 @@ def main():
     hooks.world_model_parameters_v1=a.world_model_parameters_v1
     hooks.batch_sleep_v1=a.world_model_parameters_v1
     hooks.placement_graspable_filter_v1=a.placement_graspable_filter_v1
+    hooks.workspace_trace_v1=a.warp_workspace_trace_v1
     canonical={'xml':a.canonical_xml.read_text() if a.canonical_xml else None}
     report=dict(schema='ugrp.warp4.batch.v1',status='running',source_sha=source,
         host=host,flow=a.flow,physics_backend=a.physics_backend,mujoco=mujoco.__version__,
@@ -134,6 +136,7 @@ def main():
         planned_N=len(indices),started_N=0,completed_N=0,success_n=0,cap_end=0,HOST_ERROR=0,
         training_rgb=False,model_calls=0,weld='off',cpu_results_pooled=False,
         gcp3_isolated_v1=a.gcp3_isolated_v1,warp_debug_v1=a.warp_debug_v1,
+        workspace_trace_v1=a.warp_workspace_trace_v1,
         gate_eligible=False,shared_load=True,vm_hourly_usd=a.vm_hourly_usd,
         placement_graspable_filter_v1=a.placement_graspable_filter_v1,
         cuda_runtime_profile='warp4_private_mps_v1' if a.mps_shared_v1 else 'shared_contexts_baseline',

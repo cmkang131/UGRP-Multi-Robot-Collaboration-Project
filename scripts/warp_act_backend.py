@@ -299,6 +299,7 @@ class WarpTransport(Transport):
         self.init_kernels(contexts)
         # Compile once, then discard the warm-up state before any rollout.
         mjw.step(self.wm,self.wd); wp.synchronize()
+        if getattr(self,'workspace_trace_v1',False):self.trace_workspace('warmup')
         d.tree_asleep[:]=self.source_sleep[0]
         with unused_efm(m,d):
             self.wd = mjw.put_data(m,d,nworld=self.n,nconmax=ncon,njmax=njmax,nvmax=self.nvmax)
@@ -532,8 +533,13 @@ class WarpTransport(Transport):
         self.seconds['command_decode_upload']+=time.perf_counter()-start
         start=time.perf_counter()
         self.graph_tick.zero_()
-        for _ in range(self.graph_repeats):
+        if getattr(self,'workspace_trace_v1',False):self.trace_workspace('before_control')
+        for graph_index in range(self.graph_repeats):
             wp.capture_launch(self.graph)
+            if getattr(self,'workspace_trace_v1',False):
+                # Observe after the existing 16-step graph chunk. This is a
+                # diagnostic synchronization, never a control observation.
+                self.trace_workspace('after_graph',graph_index=graph_index)
         wp.synchronize()
         self.tick+=1
         niter=self.wd.solver_niter.numpy()
@@ -544,6 +550,23 @@ class WarpTransport(Transport):
         if np.any(self.wd.overflow.numpy()):
             raise RuntimeError('MJWarp workspace overflow '+str(self.wd.overflow.numpy().tolist()))
         self.sync_render(contexts)
+
+    def trace_workspace(self,stage,**extra):
+        """Persistent allocation evidence; reject upstream-reported overflow.
+
+        Limits come directly from allocated MJWarp arrays, not a new acceptance
+        tolerance. See MJWarp's fixed-size buffer/OverflowType documentation.
+        """
+        d=self.wd
+        overflow=d.overflow.numpy().tolist()
+        row=dict(stage=stage,control_tick=self.tick,nacon=d.nacon.numpy().tolist(),
+            naconmax=int(d.naconmax),nefc=d.nefc.numpy().tolist(),njmax=int(d.njmax),
+            nvmax=int(d.nvmax),awake_dofs=np.sum(d.tree_awake.numpy()[:,self.dof_tree]!=0,axis=1).tolist(),
+            overflow=overflow,scope='diagnostic only; never passed to teacher',**extra)
+        with (self.out/'workspace-trace.jsonl').open('a') as f:
+            f.write(json.dumps(row)+'\n');f.flush()
+        if any(overflow):
+            raise RuntimeError('MJWarp workspace overflow '+json.dumps(row))
 
     def sync_render(self, contexts):
         import cv2
