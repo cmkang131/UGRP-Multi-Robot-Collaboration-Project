@@ -1,6 +1,7 @@
 """Evaluation-only reset-cargo occupancy targets, separate from static-map score."""
 import argparse
 import json
+import os
 from pathlib import Path
 import sys
 
@@ -24,6 +25,7 @@ def main():
     import mujoco
     from scripts import probe_scene_tex2 as tools
     from scripts.generate_scene_textures import MAPS
+    os.chdir(a.vision_source)  # frozen XML uses relative texture assets
     m,scene,*_=tools.build_model(MAPS[0],'walls_floor_contrast_v5_indigo110_s80')
     d=mujoco.MjData(m);d.qpos[:]=np.load(a.input/'eval-state.npz')['qpos'][0,0];mujoco.mj_forward(m,d)
     roots={m.body(item['body_name']).id for item in scene.config['setup_only']['objects'].values()}
