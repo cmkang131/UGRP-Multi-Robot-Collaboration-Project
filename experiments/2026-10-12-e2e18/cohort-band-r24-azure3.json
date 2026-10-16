@@ -1,0 +1,319 @@
+[
+  {
+    "host": "azure3",
+    "name": "e2e18-v233-s61002-r22",
+    "exit": 130,
+    "result": {
+      "status": "EARLY_STOP",
+      "source_sha": "a26361b5d62a4aec761238f6693ad01b40b15c5d",
+      "seed": 61002,
+      "model": "study_gemma4_31b_v1",
+      "condition": "peer_en",
+      "options": {
+        "enabled": true,
+        "own_inputs": "on_v1",
+        "dialogue": "on_v1",
+        "pulse_budget": "off",
+        "own_route": "goal_route_v1",
+        "arrival_gate": "rgb_geometry_v1",
+        "goal_geometry": "e2e_b80_v1",
+        "covariance_inflation": "nees_frozen_v1",
+        "setdown_reobserve": "boundary_reobserve_v1",
+        "setdown_only_when_relook": "on_v1",
+        "decider": "off",
+        "exploration_progress": "frontier_progress_v1",
+        "pose_fix": "innovation",
+        "path_follow": "rpp_v1",
+        "dev_light": true,
+        "stall_odometry": "rgb_vo_us_v1",
+        "stall_recovery": "off",
+        "stall_noise": "off",
+        "mapping_budget": "case_cap_v1",
+        "mapping_budget_s": 1800.0,
+        "boundary_views": "standoff_fullquad_v1",
+        "b_marker_detect": "partial_known_size_v1",
+        "vo_floor_mask": "homography_v1",
+        "vo_rotation_policy": "no_ransac_v1",
+        "explore_deadlock": "replan_v1",
+        "boundary_association": "extent_v1",
+        "boundary_retry": "navigation_v1",
+        "boundary_coverage": "native_v1",
+        "runtime_registration": "reviewed_v1",
+        "pulse_authorization": "current_go_v1",
+        "exact_speedups": {
+          "provenance_index": true,
+          "sha_validation_cache": true,
+          "omit_discarded_copy": true,
+          "scalar_cells": true,
+          "geometry_cache": true,
+          "vector_rays": true,
+          "shared_wall_frontend": true,
+          "lazy_scan_path": true,
+          "vector_costmap_writes": true,
+          "track_cell_tuples": true
+        },
+        "speed3": "adaptive_v1",
+        "b_partial_accept": "on_v1",
+        "speed5": "lean_v3",
+        "observation_cadence": "on_v1",
+        "route_guard": "dev_nominal_v1",
+        "beam_axis": "undirected_v1",
+        "route_coverage": "native_v1",
+        "carrier_axes": "beam_v1",
+        "carrier_approach": "standoff_v1",
+        "route_extent": "goal_envelope_v1",
+        "record_scalars": "python_v1",
+        "pose_guard": "se2_innovation_v1",
+        "protocol_recovery": "envelope_retry_v1",
+        "camera_load": "nominal_command_v1",
+        "route_tokens": "1600_v1",
+        "protocol_progress": "stage_retry_v1",
+        "route_cost": "bounded_morphology_v1",
+        "align_progress": "dev_continue_v1",
+        "pregrasp_recovery": "bounded_search_v1",
+        "pregrasp_gaze": "own_bearing_v1",
+        "search_bearing": "last_seen_v1",
+        "pulse_admission": "finish_active_v1",
+        "event_projection": "route_hash_v1",
+        "pregrasp_progress": "backup_replan_v1",
+        "gaze_cadence": "settled_frames_v1",
+        "stage_physics": "pregrasp_dt1_v1",
+        "protocol_idempotency": "same_route_v1",
+        "route_handle": "typed_ref_v1",
+        "boundary_frame": "observed_own_v1"
+      },
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "setdowns": 0,
+      "model_calls": 3,
+      "physical_hardware": false,
+      "route_source": "own_map",
+      "host": "azure",
+      "class_": "dev",
+      "pr": 461,
+      "finalization_complete": true,
+      "shutdown_signals": [
+        2,
+        15
+      ],
+      "finalization_errors": [],
+      "failure_type": "KeyboardInterrupt",
+      "failure": "SIGNAL_SIGINT",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/ugrp/ugrp-sim/src/a26361b5d62a4aec761238f6693ad01b40b15c5d/scripts/run_e2e_ownmap_live.py\", line 441, in run\n    trace=robot.receive(own_obs,rgb)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/a26361b5d62a4aec761238f6693ad01b40b15c5d/harness/e2e_live_mapping.py\", line 110, in receive\n    return self._receive(obs,rgb)\n           ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/a26361b5d62a4aec761238f6693ad01b40b15c5d/harness/e2e_live_mapping.py\", line 123, in _receive\n    command,trace=self.goal.receive(**extra, robot_id=self.robot_id,t=self.now,frame_id=obs['frame_id'],\n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/a26361b5d62a4aec761238f6693ad01b40b15c5d/harness/e2e_explore_deadlock.py\", line 115, in received\n    action, trace = receive(**kwargs)\n                    ^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/a26361b5d62a4aec761238f6693ad01b40b15c5d/harness/e2e_rgb_vo.py\", line 491, in received\n    action, trace = receive(**kw)\n                    ^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/a26361b5d62a4aec761238f6693ad01b40b15c5d/harness/e2e_boundary_association.py\", line 90, in received\n    command, trace = receive(**kwargs)\n                     ^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/a26361b5d62a4aec761238f6693ad01b40b15c5d/harness/e2e_boundary_views.py\", line 292, in with_diagnostics\n    command, trace = receive(**kwargs)\n                     ^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/a26361b5d62a4aec761238f6693ad01b40b15c5d/harness/e2e_exploration.py\", line 137, in receive_progress\n    command, trace = receive(**kwargs)\n                     ^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/a26361b5d62a4aec761238f6693ad01b40b15c5d/harness/ego_pose_continuity.py\", line 284, in receive_pose\n    command, trace = receive(**kw)\n                     ^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/a26361b5d62a4aec761238f6693ad01b40b15c5d/harness/e2e_setdown_relook.py\", line 102, in receive_rgb\n    result = receive(**kw)\n             ^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/a26361b5d62a4aec761238f6693ad01b40b15c5d/harness/grid_acceleration.py\", line 106, in receive\n    with using(map_acceleration):return original(**kwargs)\n                                        ^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/a26361b5d62a4aec761238f6693ad01b40b15c5d/harness/e2e_goal_route.py\", line 74, in receive\n    return super().receive(**kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/a26361b5d62a4aec761238f6693ad01b40b15c5d/harness/goal_route_continuous.py\", line 252, in receive\n    cmd,trace=self.explorer.receive(robot_id=robot_id,t=t,frame_id=frame_id,rgb=rgb,servo=servo,observation=observation)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/a26361b5d62a4aec761238f6693ad01b40b15c5d/harness/active_wall_recovery.py\", line 156, in receive\n    self.graph(t)\n  File \"/home/ugrp/ugrp-sim/src/a26361b5d62a4aec761238f6693ad01b40b15c5d/harness/e2e_exploration.py\", line 130, in graph_progress\n    graph(t)\n  File \"/home/ugrp/ugrp-sim/src/a26361b5d62a4aec761238f6693ad01b40b15c5d/harness/active_frontier_cycle.py\", line 128, in graph\n    super().graph(t)\n  File \"/home/ugrp/ugrp-sim/src/a26361b5d62a4aec761238f6693ad01b40b15c5d/harness/active_wall_recovery.py\", line 129, in graph\n    super().graph(t)  # original SLAM/TF/blacklist; _rays excludes reset obstacle history\n    ^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/a26361b5d62a4aec761238f6693ad01b40b15c5d/harness/active_wall_mapping.py\", line 144, in graph\n    self._rays(row,corrected[row['t']])\n  File \"/home/ugrp/ugrp-sim/src/a26361b5d62a4aec761238f6693ad01b40b15c5d/harness/active_wall_recovery.py\", line 104, in _rays\n    return super()._rays(record,pose)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/a26361b5d62a4aec761238f6693ad01b40b15c5d/harness/active_wall_mapping.py\", line 128, in _rays\n    receive_rays(self.grid,self.latest,set(),obs,pose)\n  File \"/home/ugrp/ugrp-sim/src/a26361b5d62a4aec761238f6693ad01b40b15c5d/harness/public_navigation_raytrace.py\", line 52, in receive_rays\n    grid.observe(**payload, pose=pose)  # own identity, frame, schema and pose validation\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/a26361b5d62a4aec761238f6693ad01b40b15c5d/harness/own_map_navigation.py\", line 132, in observe\n    self.odds[c] = float(np.clip(self.odds.get(c,0.)+delta,-4.,4.))\n                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/a26361b5d62a4aec761238f6693ad01b40b15c5d/.venv-sim/lib/python3.12/site-packages/numpy/_core/fromnumeric.py\", line 2334, in clip\n    return _wrapfunc(a, 'clip', a_min, a_max, out=out, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/a26361b5d62a4aec761238f6693ad01b40b15c5d/.venv-sim/lib/python3.12/site-packages/numpy/_core/fromnumeric.py\", line 51, in _wrapfunc\n    return _wrapit(obj, method, *args, **kwds)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/a26361b5d62a4aec761238f6693ad01b40b15c5d/.venv-sim/lib/python3.12/site-packages/numpy/_core/fromnumeric.py\", line 43, in _wrapit\n    result = getattr(arr, method)(*args, **kwds)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/a26361b5d62a4aec761238f6693ad01b40b15c5d/.venv-sim/lib/python3.12/site-packages/numpy/_core/_methods.py\", line 113, in _clip\n    return um.clip(a, min, max, out=out, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/a26361b5d62a4aec761238f6693ad01b40b15c5d/harness/e2e_result_writer.py\", line 45, in signal\n    raise KeyboardInterrupt('SIGNAL_' + signal.Signals(signum).name)\nKeyboardInterrupt: SIGNAL_SIGINT\n",
+      "wall_s": 1007.8566221259989,
+      "frames": 900,
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 20.95654823499899
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 20.95654823499899
+        },
+        "B_boundary": {
+          "sim_s": 3.0,
+          "wall_s": 27.72458817900042
+        }
+      },
+      "sim_s": 360.0,
+      "controller_failure": null,
+      "model_usage": {
+        "upstream_generation_requests_confirmed": 3,
+        "local_quota_wait_responses": 0,
+        "upstream_generation_status_unknown": 0,
+        "requests": 3,
+        "blocked": 0,
+        "by_model": {
+          "DeepInfra/google/gemma-4-31b-it": {
+            "requests": 3,
+            "tokens_total_known": 5031,
+            "usage_unknown_requests": 0
+          }
+        },
+        "upstream_by_model": {},
+        "tokens_prompt": 4915,
+        "tokens_completion": 116,
+        "tokens_total_known": 5031,
+        "usage_unknown_requests": 0,
+        "tokens_complete": true,
+        "api_error_requests": 0,
+        "api_error_fraction": 0.0,
+        "api_clean": true,
+        "latency_ms": {
+          "n": 3,
+          "sum": 15373.701,
+          "max": 6159.814,
+          "median": 4704.918
+        },
+        "failure_classes": {},
+        "response_models": [
+          "google/gemma-4-31b-it"
+        ]
+      },
+      "response_wall_s": [
+        6.159814,
+        4.5089690000000004,
+        4.704917999999999
+      ],
+      "drops": 0
+    },
+    "progress": {
+      "wall_s": 1001.9928974740014,
+      "sim_s": 359.0,
+      "frames": 898,
+      "model_attempts": 3,
+      "first_model_response": true,
+      "own_map_B_generated": true,
+      "own_B_boundary_remembered": true,
+      "own_route_generated": false,
+      "own_route_observed_complete": false,
+      "phase": "mapping",
+      "setdowns": 0,
+      "robots": {
+        "r1": {
+          "pose_own_m": [
+            -2.8083464151433666,
+            0.7633011740626822,
+            -1.7922088196312012
+          ],
+          "stage": "explore",
+          "map_frames": 898,
+          "command": {
+            "kind": "hold"
+          },
+          "translation_commands": 1248,
+          "carrier_approach": null
+        },
+        "r2": {
+          "pose_own_m": [
+            1.4165984431964953,
+            1.3338260312099626,
+            -0.28534639980690457
+          ],
+          "stage": "explore",
+          "map_frames": 898,
+          "command": {
+            "kind": "mecanum",
+            "duration_s": 0.1,
+            "forward": 0.0,
+            "left": 0.0,
+            "turn": 0.35
+          },
+          "translation_commands": 1324,
+          "carrier_approach": null
+        },
+        "r3": {
+          "pose_own_m": [
+            -0.10016917795785228,
+            -0.002494845878476006,
+            0.020609057381895113
+          ],
+          "stage": "explore",
+          "map_frames": 898,
+          "command": {
+            "kind": "hold"
+          },
+          "translation_commands": 0,
+          "carrier_approach": null
+        }
+      },
+      "latest_route_wait": "OWN_GRID_ROUTE_UNAVAILABLE",
+      "route_diagnostics": {
+        "t": 347.6,
+        "beam_pose_own_m": [
+          -3.4924682358248216,
+          0.6298221362786065,
+          3.0558242433156253
+        ],
+        "beam_rgb": {
+          "robot_id": "r1",
+          "frame_id": 870,
+          "t_sim": 347.6,
+          "sha256": "c465dd6d493d2deef38341539e7b58c0057edb15c33b554b4fb937224855274f"
+        },
+        "sigma_xy_m": 0.13272402590277146,
+        "stage": "grid_route",
+        "beam_axis_error_rad": 0.08576841027416794,
+        "strict_margin_m": 0.41817207770831444,
+        "B_own_m": [
+          1.0532292787779771,
+          0.06459041289546684
+        ],
+        "nominal_footprint_cells": {
+          "start": {
+            "free": 279,
+            "unknown": 0,
+            "occupied": 0,
+            "outside": 0
+          },
+          "target": {
+            "free": 247,
+            "unknown": 15,
+            "occupied": 17,
+            "outside": 0
+          }
+        },
+        "planning_extent": {
+          "old_lo": [
+            -143,
+            -80
+          ],
+          "old_hi": [
+            55,
+            82
+          ],
+          "new_lo": [
+            -143,
+            -80
+          ],
+          "new_hi": [
+            55,
+            82
+          ],
+          "added_unknown_cells": 0,
+          "endpoint_pad_cells": 16
+        },
+        "would_stop_unknown": false,
+        "attempts": [
+          {
+            "margin_m": 0.41817207770831444,
+            "allowed_cells": 1192,
+            "total_cells": 32076,
+            "start_clear": true,
+            "target_clear": false,
+            "path_cells": 0
+          },
+          {
+            "margin_m": 0.02,
+            "allowed_cells": 4520,
+            "total_cells": 32076,
+            "start_clear": true,
+            "target_clear": false,
+            "path_cells": 0
+          },
+          {
+            "margin_m": 0.02,
+            "coverage": "native_allow_unknown",
+            "allowed_cells": 9923,
+            "total_cells": 32076,
+            "start_clear": true,
+            "target_clear": false,
+            "path_cells": 0
+          }
+        ],
+        "would_stop_sigma": false,
+        "applied_margin_m": 0.02,
+        "pair_dimensions_m": [
+          1.25,
+          0.4
+        ],
+        "observed_coverage_complete": true,
+        "sigma_contribution_unresolved": false
+      }
+    },
+    "result_sha256": "fc32411364ccaa9b3f0e0b1736c9f9a54dc9ed58bf4a1201f207be4c178a9170"
+  }
+]

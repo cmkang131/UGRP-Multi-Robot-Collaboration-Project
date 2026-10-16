@@ -1,0 +1,58 @@
+{
+  "batch": "r78",
+  "class_": "dev",
+  "pr": 461,
+  "submitted": false,
+  "candidates": {
+    "369": {
+      "parent": "e2e18-v365",
+      "call_snapshot": "prepared_v1"
+    },
+    "370": {
+      "parent": "e2e18-v366",
+      "call_snapshot": "prepared_v1"
+    },
+    "371": {
+      "parent": "e2e18-v367",
+      "call_snapshot": "prepared_v1"
+    },
+    "372": {
+      "parent": "e2e18-v368",
+      "call_snapshot": "prepared_v1"
+    }
+  },
+  "seeds": [
+    61006,
+    61007,
+    61008,
+    61009
+  ],
+  "host": "azure3",
+  "concurrent": 16,
+  "gate_limit": 3.5,
+  "stop_deadline_utc": "2026-10-13T13:00:00Z",
+  "criterion": "No future-state pre-send errors; route approval -> both role claims -> align -> paired grasp -> current GO/ACK -> carry -> B. Count actual completion separately from provider cost.",
+  "cause": {
+    "run": "e2e18-v365-s61006-r77",
+    "route_approved_sim": 74.85,
+    "call_start_sim": 74.9,
+    "failed_prepare_sim": 75.0,
+    "error": "FUTURE_EVENT_OWNER_STATE",
+    "call_ids": [
+      "call-0013-r1",
+      "call-0014-r2"
+    ],
+    "location": "Trial.prepare_call -> call_state -> route_for_events"
+  },
+  "method": "Prepare complete request synchronously at existing _LiveTransport.submit snapshot boundary; deferred reply consumes only the prepared request; default off and future-state validation retained.",
+  "reference": "https://github.com/ros2/message_filters/blob/rolling/src/message_filters/__init__.py",
+  "validation": {
+    "passed": 30,
+    "files": 3,
+    "log": "outputs/e2e18-admin/r78-tests-fixed.txt",
+    "sha256": "caf3c76a101804dc5fdd0e93ba856d956b722dd5e99cf312bd627657e48ba1ef",
+    "includes": "Off reproduces 0.1 SIM skew; on preserves exact earlier own state; native fixture route/claim/GOACK in 4 communication conditions; no physics/provider"
+  },
+  "role": "Strong-rule baseline; not Gemma planner full E2E integration",
+  "checked_unix": 1791889518.6601589
+}

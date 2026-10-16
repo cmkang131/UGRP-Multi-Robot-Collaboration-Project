@@ -469,6 +469,8 @@ class Host:
         write('result.json', row)
         write('dispatch.json', trial.dispatch_log if trial else self.rule_dispatch)
         if trial:
+            if getattr(trial, 'dialogue_call_policy', 'off') != 'off':
+                write('dialogue_call_policy.json', trial.call_events.events)
             write('requests.json', trial.requests)
             write('model_calls.json', records['rows'])
             write('inputs.json', trial.input_log)

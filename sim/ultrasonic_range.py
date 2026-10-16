@@ -57,9 +57,12 @@ class MujocoUltrasonic:
     spec: UltrasonicSpec = DEFAULT_SPEC
     chassis_body: str | None = None      # default: '<robot_id>__robot', or 'robot' for a single twin
     site: str | None = None              # optional sensor site (e.g. a remodel's ultrasonic site)
+    site_frame: str = 'off'              # legacy x-forward site interpretation
     truncated_rays: int = field(init=False, default=0)
 
     def __post_init__(self):
+        if self.site_frame not in ('off','site_z_v1'):raise ValueError('UNKNOWN_SONAR_SITE_FRAME')
+        if self.site_frame!='off' and self.site is None:raise ValueError('SONAR_SITE_REQUIRED')
         name = self.chassis_body or f'{self.robot_id}__robot'
         bid = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_BODY, name)
         if bid < 0 and self.chassis_body is None:
@@ -102,6 +105,10 @@ class MujocoUltrasonic:
         """World origin (transducer face) and 3x3 sensor rotation (forward, left, up)."""
         if self.site_id is not None:
             R = self.data.site_xmat[self.site_id].reshape(3, 3)
+            if self.site_frame=='site_z_v1':
+                # v3 site is at the transducer FACE with its +Z along the beam.
+                # Our cone uses +X forward, so rotate the whole basis, not the mount.
+                return self.data.site_xpos[self.site_id].copy(), np.column_stack((R[:,2],R[:,1],-R[:,0]))
             return self.data.site_xpos[self.site_id] + R[:, 0] * self.spec.face_forward_m, R
         R = self.data.xmat[self.chassis_id].reshape(3, 3)
         return self.data.xpos[self.chassis_id] + R @ self.local_origin, R

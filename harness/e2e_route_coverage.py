@@ -13,6 +13,8 @@ WORKFLOW='configs/simulation_workflows.d/e2e18_v223.json'
 
 class NativeView:
     def __init__(self,grid):self.grid=grid;self.resolution=grid.resolution
+    @property
+    def _clearance_bounds_v1(self):return getattr(self.grid,'_clearance_bounds_v1',False)
     def cell(self,p):return self.grid.cell(p)
     def dense(self):
         state,lo=self.grid.dense();view=state.copy();view[view==0]=-1

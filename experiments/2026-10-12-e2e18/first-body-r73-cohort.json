@@ -1,0 +1,134 @@
+[
+  {
+    "name": "e2e18-v344-s61006-r73",
+    "checked_unix": 1791880949.969145,
+    "cut_sim_s": 34.0,
+    "current_sim_s": 34.0,
+    "phase": "mapping",
+    "frames": 57,
+    "exit": null,
+    "model_calls": 3,
+    "body_sha256": "e02b4d2384718572de74c2ac0c901d2097a031676a84af9751f376e87042454e",
+    "robots": {
+      "r1": {
+        "calls": 13,
+        "choices": {
+          "follow_own_path": 8,
+          "move_camera_to_planned_view": 5
+        },
+        "statuses": {
+          "ok": 13
+        },
+        "max_stationary_s": 6.4,
+        "tail_stationary_s": 0.35,
+        "max_same_choice_without_motion_s": 0.0,
+        "tail_same_choice_without_motion_s": 0.0,
+        "max_wait_choice_interval_s": 0.0,
+        "last_interval": {
+          "choice": "follow_own_path",
+          "status": "ok",
+          "start": 29.8,
+          "end": 34.0,
+          "n": 2,
+          "all_stationary": false,
+          "duration_s": 4.2
+        },
+        "eval_trajectory_sha256": "a2cee2be2ee1ed6c29cbce1d71086bc6ccdc94ca5f0f5c5609e34f8c6e8ac2be"
+      },
+      "r2": {
+        "calls": 15,
+        "choices": {
+          "follow_own_path": 6,
+          "back_off_and_replan": 6,
+          "scan_right": 3
+        },
+        "statuses": {
+          "ok": 15
+        },
+        "max_stationary_s": 1.85,
+        "tail_stationary_s": 0.1,
+        "max_same_choice_without_motion_s": 0.0,
+        "tail_same_choice_without_motion_s": 0.0,
+        "max_wait_choice_interval_s": 0.0,
+        "last_interval": {
+          "choice": "follow_own_path",
+          "status": "ok",
+          "start": 33.2,
+          "end": 34.0,
+          "n": 1,
+          "all_stationary": false,
+          "duration_s": 0.8
+        },
+        "eval_trajectory_sha256": "05470a9ea4a7e9a58038481b3f13c74793d120e63db5a00a7e3a0a6cf95ad0d7"
+      }
+    },
+    "failure": null
+  },
+  {
+    "name": "e2e18-v345-s61006-r73",
+    "checked_unix": 1791880949.9796362,
+    "cut_sim_s": 36.0,
+    "current_sim_s": 36.0,
+    "phase": "mapping",
+    "frames": 61,
+    "exit": null,
+    "model_calls": 3,
+    "body_sha256": "66e53bf225d48e14e9b16a2c8bcd4474059b27d86e32f7fe69fc8b2805892caf",
+    "robots": {
+      "r1": {
+        "calls": 14,
+        "choices": {
+          "follow_own_path": 6,
+          "move_camera_to_planned_view": 5,
+          "back_off_and_replan": 3
+        },
+        "statuses": {
+          "ok": 14
+        },
+        "max_stationary_s": 4.05,
+        "tail_stationary_s": 0.35,
+        "max_same_choice_without_motion_s": 0.0,
+        "tail_same_choice_without_motion_s": 0.0,
+        "max_wait_choice_interval_s": 0.0,
+        "last_interval": {
+          "choice": "back_off_and_replan",
+          "status": "ok",
+          "start": 31.4,
+          "end": 36.0,
+          "n": 3,
+          "all_stationary": false,
+          "duration_s": 4.6
+        },
+        "eval_trajectory_sha256": "1bc7e373c38087a172af7ba2cf83598a2e3db4155603c301a74ee1ad9e677fca"
+      },
+      "r2": {
+        "calls": 20,
+        "choices": {
+          "follow_own_path": 9,
+          "back_off_and_replan": 3,
+          "scan_right": 6,
+          "scan_left": 2
+        },
+        "statuses": {
+          "ok": 20
+        },
+        "max_stationary_s": 1.75,
+        "tail_stationary_s": 0.7,
+        "max_same_choice_without_motion_s": 0.0,
+        "tail_same_choice_without_motion_s": 0.0,
+        "max_wait_choice_interval_s": 0.0,
+        "last_interval": {
+          "choice": "follow_own_path",
+          "status": "ok",
+          "start": 34.2,
+          "end": 36.0,
+          "n": 1,
+          "all_stationary": false,
+          "duration_s": 1.8
+        },
+        "eval_trajectory_sha256": "2e51106f4a239222512355e82e01207a370ae4845855af82a0ac04769df75435"
+      }
+    },
+    "failure": null
+  }
+]

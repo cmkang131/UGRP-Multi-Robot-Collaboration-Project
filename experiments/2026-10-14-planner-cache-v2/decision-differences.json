@@ -1,0 +1,395 @@
+{
+  "counts": {
+    "same": 384,
+    "different_valid_choice": 12,
+    "old_fallback_new_valid": 1,
+    "new_fallback": 3
+  },
+  "mismatches": [
+    {
+      "case_id": "1b2e6ee184e732",
+      "condition": "no_comm",
+      "kind": "different_valid_choice",
+      "old": {
+        "act": "carry",
+        "args": {
+          "cargo": "cyan",
+          "to": "A1",
+          "via": "door_1",
+          "approach": "west",
+          "mode": "solo"
+        },
+        "message": "",
+        "reason": "I will take the cyan order to avoid duplicating effort on the red order, which was previously observed as claimed."
+      },
+      "new": {
+        "act": "help",
+        "args": {
+          "cargo": "beam_1",
+          "partner": "r2",
+          "side": "end_neg"
+        },
+        "message": "",
+        "reason": "The beam has the lowest estimated cost and avoids potential duplication of the cyan or red orders."
+      },
+      "old_correct": true,
+      "new_correct": false
+    },
+    {
+      "case_id": "1cad717bfe1fc0",
+      "condition": "peer_en",
+      "kind": "different_valid_choice",
+      "old": {
+        "act": "reroute",
+        "args": {
+          "via": "door_wide"
+        },
+        "message": "I will use the wide door as I previously observed the narrow one blocked.",
+        "reason": "My own observation of door_narrow being blocked is more reliable than the partner's report."
+      },
+      "new": {
+        "act": "reroute",
+        "args": {
+          "via": "door_narrow"
+        },
+        "message": "I will try the narrow door since r2 reports it is now clear.",
+        "reason": "The partner's recent report of a clear door_narrow outweighs my older observation of it being blocked."
+      },
+      "old_correct": false,
+      "new_correct": true
+    },
+    {
+      "case_id": "1f54ea8f7fdd80",
+      "condition": "peer_en",
+      "kind": "different_valid_choice",
+      "old": {
+        "act": "reroute",
+        "args": {
+          "via": "door_wide"
+        },
+        "message": "I will use the wide door.",
+        "reason": "My own observation shows door_narrow is clear, but the partner report conflicts; using the wide door avoids the risk of blockage."
+      },
+      "new": {
+        "act": "reroute",
+        "args": {
+          "via": "door_narrow"
+        },
+        "message": "I've observed door_narrow is clear, so I will use it.",
+        "reason": "My own recent observation that door_narrow is clear outweighs the conflicting report."
+      },
+      "old_correct": true,
+      "new_correct": false
+    },
+    {
+      "case_id": "28bcf2a965b974",
+      "condition": "peer_en",
+      "kind": "different_valid_choice",
+      "old": {
+        "act": "report",
+        "args": {
+          "fact": "Please back away from can_1 west approach."
+        },
+        "message": "Please back away from the can_1 west approach so I can retrieve it.",
+        "reason": "Robot r2 reported that it is currently obstructing the can approach and needs to retreat."
+      },
+      "new": {
+        "act": "carry",
+        "args": {
+          "approach": "end_neg",
+          "cargo": "beam_1",
+          "mode": "joint",
+          "partner": "r2",
+          "side": "end_neg",
+          "to": "beam_staging",
+          "via": "rotate_clear_of_can"
+        },
+        "message": "I will help you rotate beam_1 to clear the approach for can_1.",
+        "reason": "My observation shows beam_1 blocks can_1, and moving a beam requires two robots."
+      },
+      "old_correct": false,
+      "new_correct": true
+    },
+    {
+      "case_id": "2d1fc58993ca86",
+      "condition": "peer_en",
+      "kind": "old_fallback_new_valid",
+      "old": null,
+      "new": {
+        "act": "report",
+        "args": {
+          "fact": "Please confirm whether you still need help with beam_1."
+        },
+        "message": "I saw your request for beam_1, but it was a while ago; do you still need help?",
+        "reason": "The help request observation is 50 seconds old and marked as stale, making verification the safest next step."
+      },
+      "old_correct": false,
+      "new_correct": false
+    },
+    {
+      "case_id": "3a0e85bc3d2be5",
+      "condition": "peer_en",
+      "kind": "different_valid_choice",
+      "old": {
+        "act": "help",
+        "args": {
+          "partner": "r2",
+          "cargo": "beam_1",
+          "side": "end_neg"
+        },
+        "message": "I am requesting your help to move beam_1.",
+        "reason": "Pairing with r2 for the beam is the most efficient option if r2 is available, matching the cost of solo work."
+      },
+      "new": {
+        "act": "carry",
+        "args": {
+          "approach": "west",
+          "cargo": "cyan",
+          "mode": "solo",
+          "to": "A1",
+          "via": "door_1"
+        },
+        "message": "I will handle the cyan box first.",
+        "reason": "The evidence for r2's availability is stale, making solo work more reliable than attempting to pair now."
+      },
+      "old_correct": true,
+      "new_correct": false
+    },
+    {
+      "case_id": "7a398688e97e2c",
+      "condition": "no_comm",
+      "kind": "new_fallback",
+      "old": {
+        "act": "report",
+        "args": {
+          "fact": "Please confirm whether you still need help with beam_1."
+        },
+        "message": "",
+        "reason": "The help request observation is over 90 seconds old and thus stale, requiring verification before commitment."
+      },
+      "new": null,
+      "old_correct": false,
+      "new_correct": false
+    },
+    {
+      "case_id": "7c665a91406e49",
+      "condition": "no_comm",
+      "kind": "different_valid_choice",
+      "old": {
+        "act": "report",
+        "args": {
+          "fact": "Please back away from can_1 west approach."
+        },
+        "message": "",
+        "reason": "With no information on the obstruction, the report action has the highest priority score and lowest estimated cost."
+      },
+      "new": {
+        "act": "carry",
+        "args": {
+          "approach": "west",
+          "cargo": "can_1",
+          "mode": "solo",
+          "to": "C1",
+          "via": "door_1"
+        },
+        "message": "",
+        "reason": "I will attempt to retrieve can_1 as it is the primary task and the most efficient solo action given the current uncertainty."
+      },
+      "old_correct": true,
+      "new_correct": false
+    },
+    {
+      "case_id": "a85fd08c87065f",
+      "condition": "no_comm",
+      "kind": "different_valid_choice",
+      "old": {
+        "act": "carry",
+        "args": {
+          "cargo": "cyan",
+          "to": "A1",
+          "via": "door_1",
+          "approach": "west",
+          "mode": "solo"
+        },
+        "message": "",
+        "reason": "I will take the cyan order as it is a solo task and avoids the red order which was previously observed as claimed."
+      },
+      "new": {
+        "act": "help",
+        "args": {
+          "cargo": "beam_1",
+          "partner": "r2",
+          "side": "end_neg"
+        },
+        "message": "",
+        "reason": "The beam has the highest priority score and a lower estimated cost than the cyan order, while the red order is likely already claimed."
+      },
+      "old_correct": true,
+      "new_correct": false
+    },
+    {
+      "case_id": "aac700c630ea0b",
+      "condition": "no_comm",
+      "kind": "new_fallback",
+      "old": {
+        "act": "report",
+        "args": {
+          "fact": "Please confirm whose turn it is in corridor_1."
+        },
+        "message": "",
+        "reason": "With no communication and unknown partner state, negotiating for a turn minimizes the risk of a high-cost conflict."
+      },
+      "new": null,
+      "old_correct": false,
+      "new_correct": false
+    },
+    {
+      "case_id": "b1cd1193df6aeb",
+      "condition": "peer_en",
+      "kind": "different_valid_choice",
+      "old": {
+        "act": "carry",
+        "args": {
+          "cargo": "can_1",
+          "to": "C1",
+          "via": "door_1",
+          "approach": "west",
+          "mode": "solo"
+        },
+        "message": "I will retrieve can_1.",
+        "reason": "Based on the provided candidates, this action has the highest priority score and lowest estimated cost."
+      },
+      "new": {
+        "act": "carry",
+        "args": {
+          "approach": "end_neg",
+          "cargo": "beam_1",
+          "mode": "joint",
+          "partner": "r2",
+          "side": "end_neg",
+          "to": "beam_staging",
+          "via": "rotate_clear_of_can"
+        },
+        "message": "I need help moving beam_1 to clear the approach for can_1.",
+        "reason": "Own observations indicate beam_blocks at can_1 west approach, requiring a joint carry of beam_1 to clear the path."
+      },
+      "old_correct": false,
+      "new_correct": true
+    },
+    {
+      "case_id": "d79d84a5cb4828",
+      "condition": "no_comm",
+      "kind": "new_fallback",
+      "old": {
+        "act": "report",
+        "args": {
+          "fact": "Please confirm whose turn it is in corridor_1."
+        },
+        "message": "",
+        "reason": "The only available observation of the partner's intention is from t=653.15, which is stale and unreliable for deciding corridor access."
+      },
+      "new": null,
+      "old_correct": false,
+      "new_correct": false
+    },
+    {
+      "case_id": "dc7ecd02187589",
+      "condition": "no_comm",
+      "kind": "different_valid_choice",
+      "old": {
+        "act": "go_to",
+        "args": {
+          "station": "corridor_1_exit"
+        },
+        "message": "",
+        "reason": "The partner was observed yielding, and although the observation is stale, proceeding is the most efficient action given the current state."
+      },
+      "new": {
+        "act": "yield",
+        "args": {
+          "where": "bay_1"
+        },
+        "message": "",
+        "reason": "The partner's state is unknown due to no communication, and yielding to bay_1 has the highest priority score and lowest expected cost given the uncertainty."
+      },
+      "old_correct": true,
+      "new_correct": false
+    },
+    {
+      "case_id": "f2bac5e08f29f2",
+      "condition": "no_comm",
+      "kind": "different_valid_choice",
+      "old": {
+        "act": "wait",
+        "args": {
+          "until": "partner_arrives",
+          "max_s": 20.0
+        },
+        "message": "",
+        "reason": "Waiting has the lowest expected cost given the uncertainty of the partner's arrival."
+      },
+      "new": {
+        "act": "help",
+        "args": {
+          "cargo": "beam_1",
+          "partner": "r3",
+          "side": "end_neg"
+        },
+        "message": "",
+        "reason": "Reassigning the partner has a lower expected cost than waiting or performing a solo task given the unknown partner state."
+      },
+      "old_correct": true,
+      "new_correct": false
+    },
+    {
+      "case_id": "f38fe0458e4ea3",
+      "condition": "peer_en",
+      "kind": "different_valid_choice",
+      "old": {
+        "act": "reroute",
+        "args": {
+          "via": "door_narrow"
+        },
+        "message": "I will try the narrow door based on the latest update.",
+        "reason": "The latest report from r2 indicates door_narrow is now clear, and it is the most efficient route."
+      },
+      "new": {
+        "act": "reroute",
+        "args": {
+          "via": "door_wide"
+        },
+        "message": "I will use the wide door as my own observation shows the narrow one is blocked.",
+        "reason": "My own observation at 978.2s confirms door_narrow is blocked, outweighing the partner's contradictory report."
+      },
+      "old_correct": true,
+      "new_correct": false
+    },
+    {
+      "case_id": "fc9a12dca39b7c",
+      "condition": "peer_en",
+      "kind": "different_valid_choice",
+      "old": {
+        "act": "report",
+        "args": {
+          "fact": "Please confirm whether you still need help with beam_1."
+        },
+        "message": "I saw the request was withdrawn; please confirm if you still need help with beam_1.",
+        "reason": "My own observation that the help request was withdrawn conflicts with the partner's message, so I must verify before committing."
+      },
+      "new": {
+        "act": "carry",
+        "args": {
+          "approach": "west",
+          "cargo": "cyan",
+          "mode": "solo",
+          "to": "A1",
+          "via": "door_1"
+        },
+        "message": "I'm proceeding with the cyan item as I observed the beam help request was withdrawn.",
+        "reason": "My own observation that the help request was withdrawn outweighs the conflicting report, making solo work the most efficient choice."
+      },
+      "old_correct": false,
+      "new_correct": false
+    }
+  ]
+}

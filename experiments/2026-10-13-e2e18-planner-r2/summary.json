@@ -1,0 +1,415 @@
+{
+  "schema": "ugrp.task_planner.r2.v1",
+  "pr": 473,
+  "branch": "claude/e2e18-gemma-planner",
+  "source_sha": "ccd845fcb5668916917a63331bc1324c87f3ccf0",
+  "base_sha": "f4d79b7772d9e7f115424241f741b44a4ab60094",
+  "bundles": [
+    "e2e18-v373",
+    "e2e18-v374"
+  ],
+  "research_result": false,
+  "status": "code_verified; offline_complete_including_failed_first_attempt; physical_unverified",
+  "tuning": {
+    "no_comm": {
+      "model": {
+        "n": 142,
+        "N": 331
+      },
+      "same_input_rule": {
+        "n": 123,
+        "N": 331
+      },
+      "effective": {
+        "n": 142,
+        "N": 331
+      },
+      "ambiguous": {
+        "n": 50,
+        "N": 53
+      },
+      "stale": {
+        "model": {
+          "n": 21,
+          "N": 54
+        },
+        "rule": {
+          "n": 17,
+          "N": 54
+        }
+      },
+      "wrong": {
+        "model": {
+          "n": 24,
+          "N": 56
+        },
+        "rule": {
+          "n": 22,
+          "N": 56
+        }
+      },
+      "fallback": 0
+    },
+    "structured": {
+      "model": {
+        "n": 221,
+        "N": 331
+      },
+      "same_input_rule": {
+        "n": 222,
+        "N": 331
+      },
+      "effective": {
+        "n": 221,
+        "N": 331
+      },
+      "ambiguous": {
+        "n": 51,
+        "N": 53
+      },
+      "stale": {
+        "model": {
+          "n": 13,
+          "N": 54
+        },
+        "rule": {
+          "n": 17,
+          "N": 54
+        }
+      },
+      "wrong": {
+        "model": {
+          "n": 1,
+          "N": 56
+        },
+        "rule": {
+          "n": 0,
+          "N": 56
+        }
+      },
+      "fallback": 0
+    },
+    "peer_en": {
+      "model": {
+        "n": 225,
+        "N": 331
+      },
+      "same_input_rule": {
+        "n": 231,
+        "N": 331
+      },
+      "effective": {
+        "n": 225,
+        "N": 331
+      },
+      "ambiguous": {
+        "n": 51,
+        "N": 53
+      },
+      "stale": {
+        "model": {
+          "n": 7,
+          "N": 54
+        },
+        "rule": {
+          "n": 17,
+          "N": 54
+        }
+      },
+      "wrong": {
+        "model": {
+          "n": 0,
+          "N": 56
+        },
+        "rule": {
+          "n": 0,
+          "N": 56
+        }
+      },
+      "fallback": 0
+    },
+    "leader_en": {
+      "model": {
+        "n": 225,
+        "N": 331
+      },
+      "same_input_rule": {
+        "n": 231,
+        "N": 331
+      },
+      "effective": {
+        "n": 225,
+        "N": 331
+      },
+      "ambiguous": {
+        "n": 51,
+        "N": 53
+      },
+      "stale": {
+        "model": {
+          "n": 6,
+          "N": 54
+        },
+        "rule": {
+          "n": 17,
+          "N": 54
+        }
+      },
+      "wrong": {
+        "model": {
+          "n": 0,
+          "N": 56
+        },
+        "rule": {
+          "n": 0,
+          "N": 56
+        }
+      },
+      "fallback": 0
+    }
+  },
+  "new_seed": {
+    "no_comm": {
+      "model": {
+        "n": 149,
+        "N": 331
+      },
+      "same_input_rule": {
+        "n": 125,
+        "N": 331
+      },
+      "effective": {
+        "n": 149,
+        "N": 331
+      },
+      "ambiguous": {
+        "n": 53,
+        "N": 53
+      },
+      "stale": {
+        "model": {
+          "n": 30,
+          "N": 54
+        },
+        "rule": {
+          "n": 20,
+          "N": 54
+        }
+      },
+      "wrong": {
+        "model": {
+          "n": 24,
+          "N": 56
+        },
+        "rule": {
+          "n": 22,
+          "N": 56
+        }
+      },
+      "fallback": 0
+    },
+    "structured": {
+      "model": {
+        "n": 213,
+        "N": 331
+      },
+      "same_input_rule": {
+        "n": 228,
+        "N": 331
+      },
+      "effective": {
+        "n": 214,
+        "N": 331
+      },
+      "ambiguous": {
+        "n": 53,
+        "N": 53
+      },
+      "stale": {
+        "model": {
+          "n": 10,
+          "N": 54
+        },
+        "rule": {
+          "n": 20,
+          "N": 54
+        }
+      },
+      "wrong": {
+        "model": {
+          "n": 0,
+          "N": 56
+        },
+        "rule": {
+          "n": 0,
+          "N": 56
+        }
+      },
+      "fallback": 1
+    },
+    "peer_en": {
+      "model": {
+        "n": 222,
+        "N": 331
+      },
+      "same_input_rule": {
+        "n": 237,
+        "N": 331
+      },
+      "effective": {
+        "n": 223,
+        "N": 331
+      },
+      "ambiguous": {
+        "n": 52,
+        "N": 53
+      },
+      "stale": {
+        "model": {
+          "n": 5,
+          "N": 54
+        },
+        "rule": {
+          "n": 20,
+          "N": 54
+        }
+      },
+      "wrong": {
+        "model": {
+          "n": 2,
+          "N": 56
+        },
+        "rule": {
+          "n": 0,
+          "N": 56
+        }
+      },
+      "fallback": 1
+    },
+    "leader_en": {
+      "model": {
+        "n": 220,
+        "N": 331
+      },
+      "same_input_rule": {
+        "n": 237,
+        "N": 331
+      },
+      "effective": {
+        "n": 220,
+        "N": 331
+      },
+      "ambiguous": {
+        "n": 52,
+        "N": 53
+      },
+      "stale": {
+        "model": {
+          "n": 5,
+          "N": 54
+        },
+        "rule": {
+          "n": 20,
+          "N": 54
+        }
+      },
+      "wrong": {
+        "model": {
+          "n": 1,
+          "N": 56
+        },
+        "rule": {
+          "n": 0,
+          "N": 56
+        }
+      },
+      "fallback": 0
+    }
+  },
+  "solo": {
+    "tuning": "24/24",
+    "new_seed": "24/24",
+    "failed_confirmation": "0/24"
+  },
+  "goal_met": {
+    "no_comm": true,
+    "structured": false,
+    "peer_en": false,
+    "leader_en": false
+  },
+  "tests": {
+    "latest_base": "23 passed",
+    "final_native": "12 passed",
+    "scope": "actual scheduler/channel/ledger fixtures, route compilation, finite clock, provider status; no physics",
+    "logs": [
+      "tests-final.txt",
+      "tests-candidate-final.txt",
+      "cli-plan-check.txt"
+    ]
+  },
+  "runs": [
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-planner/outputs/task-planner-r2-probe-20261013",
+      "scope": "development_probe",
+      "budget": {
+        "calls": 28,
+        "accounted_usd": 0.0038623599999999996,
+        "unknown_cost_calls": 0
+      },
+      "summary_sha256": "17102f59f1d39cc0320db635cf83999c9c4d3ab5ef4a88696ea1a552de334457",
+      "raw_manifest": "artifact_manifest.json; COMPRESSED.jsonl when compressed"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-planner/outputs/task-planner-r2-full-20261013",
+      "scope": "tuning",
+      "budget": {
+        "calls": 1563,
+        "accounted_usd": 0.3093877400000021,
+        "unknown_cost_calls": 0
+      },
+      "summary_sha256": "0a5f2f21344cd2ed9f383d3d9b8087f80dcc0afc833b11e5ecb185507f802115",
+      "raw_manifest": "artifact_manifest.json; COMPRESSED.jsonl when compressed"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-planner/outputs/task-planner-r2-confirmation-20261013",
+      "scope": "confirmation_infra_failed",
+      "budget": {
+        "calls": 1333,
+        "accounted_usd": 1.999764480000002,
+        "unknown_cost_calls": 969
+      },
+      "summary_sha256": "5de3c4f75f5ec083fcac598d1260c72b15e81009c70af5ad181e566f056a57df",
+      "raw_manifest": "artifact_manifest.json; COMPRESSED.jsonl when compressed"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-planner/outputs/task-planner-r2-confirmation-retry-20261013",
+      "scope": "frozen_new_seed_retry",
+      "budget": {
+        "calls": 1604,
+        "accounted_usd": 0.3186961000000029,
+        "unknown_cost_calls": 0
+      },
+      "summary_sha256": "de77f35c61e7158c7ffc5fdd313364a552926cd885a629132c8940aeebf20362",
+      "raw_manifest": "artifact_manifest.json; COMPRESSED.jsonl when compressed"
+    }
+  ],
+  "provider_recheck": "provider-recheck.json",
+  "failed_confirmation": "confirmation-failed-recount.json",
+  "new_seed_limit": "Different seed/phrases frozen before model calls; partially exposed during failed attempt, no later prompt tuning; same-set retry is not wholly untouched confirmation.",
+  "submission": {
+    "file": "submission.json.zst",
+    "source_sha": "ccd845fcb5668916917a63331bc1324c87f3ccf0",
+    "vm": "VM3 only",
+    "concurrent": 16,
+    "gate": 3.5,
+    "cells": "8 Gemma + 8 rule, same seeds61006..61013",
+    "status": "supervisor request posted; actual admission and physical results unverified",
+    "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/461#issuecomment-6145775985"
+  },
+  "unknown": [
+    "actual physical completion",
+    "speed gate and first30SIM metrics",
+    "provider invoice reconciliation",
+    "full research method reproduction"
+  ]
+}

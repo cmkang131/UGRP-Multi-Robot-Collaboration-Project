@@ -1,0 +1,570 @@
+[
+  {
+    "run": "e2e18-v236-s61001-r26",
+    "host": "ugrp-sim-azure3",
+    "checked_unix": 1791824994.5144634,
+    "cohort_wall_s": 184.09613097599868,
+    "sim_s": 70.0,
+    "frames": 176,
+    "first_model_response": true,
+    "phase": "mapping",
+    "motion_diagnostic": {
+      "r1": {
+        "first_t": 1.3,
+        "last_t": 71.3,
+        "displacement_m": 0.8915713461198919,
+        "stationary_sim_s": 0.29999999999999716,
+        "shift_last30sim_m": 1.6715634170579228,
+        "tail_max_tilt_deg": 1.3774378042152595
+      },
+      "r2": {
+        "first_t": 1.3,
+        "last_t": 71.3,
+        "displacement_m": 0.46108359102649177,
+        "stationary_sim_s": 0.3499999999999943,
+        "shift_last30sim_m": 0.589215083169729,
+        "tail_max_tilt_deg": 0.16110204153529809
+      }
+    },
+    "actual_issued": {
+      "r1": {
+        "last_command": {
+          "t": 71.3,
+          "kind": "mecanum",
+          "forward": 0.0,
+          "left": 0.0,
+          "turn": 0.35,
+          "duration_s": 0.1
+        },
+        "last_motor": {
+          "t": 71.3,
+          "kind": "mecanum",
+          "forward": 0.0,
+          "left": 0.0,
+          "turn": 0.35,
+          "duration_s": 0.1
+        },
+        "last_motion": {
+          "t": 71.3,
+          "kind": "mecanum",
+          "forward": 0.0,
+          "left": 0.0,
+          "turn": 0.35,
+          "duration_s": 0.1
+        },
+        "tail_span_s": 70.0
+      },
+      "r2": {
+        "last_command": {
+          "t": 71.3,
+          "kind": "mecanum",
+          "forward": 0.35,
+          "left": 0.0,
+          "turn": 0.0,
+          "duration_s": 0.1
+        },
+        "last_motor": {
+          "t": 71.3,
+          "kind": "mecanum",
+          "forward": 0.35,
+          "left": 0.0,
+          "turn": 0.0,
+          "duration_s": 0.1
+        },
+        "last_motion": {
+          "t": 71.3,
+          "kind": "mecanum",
+          "forward": 0.35,
+          "left": 0.0,
+          "turn": 0.0,
+          "duration_s": 0.1
+        },
+        "tail_span_s": 70.0
+      }
+    },
+    "stalls": {
+      "r1": {
+        "translation_commands_120sim": 118,
+        "stationary_sim_s": 1.0
+      },
+      "r2": {
+        "translation_commands_120sim": 222,
+        "stationary_sim_s": 1.0
+      }
+    },
+    "source_file": "outputs/e2e18-admin/status-azure3.json",
+    "note": "evaluation-only movement diagnostic never sent to controller; first stable sample t=1.3"
+  },
+  {
+    "run": "e2e18-v236-s61002-r26",
+    "host": "ugrp-sim-azure3",
+    "checked_unix": 1791824994.5144634,
+    "cohort_wall_s": 170.74806371100203,
+    "sim_s": 59.0,
+    "frames": 148,
+    "first_model_response": true,
+    "phase": "mapping",
+    "motion_diagnostic": {
+      "r1": {
+        "first_t": 1.3,
+        "last_t": 60.3,
+        "displacement_m": 1.6307316429180136,
+        "stationary_sim_s": 0.3999999999999986,
+        "shift_last30sim_m": 1.9720749582694377,
+        "tail_max_tilt_deg": 1.229751940062773
+      },
+      "r2": {
+        "first_t": 1.3,
+        "last_t": 60.3,
+        "displacement_m": 1.204627643398011,
+        "stationary_sim_s": 0.3499999999999943,
+        "shift_last30sim_m": 0.8574803414732965,
+        "tail_max_tilt_deg": 0.15495702939133063
+      }
+    },
+    "actual_issued": {
+      "r1": {
+        "last_command": {
+          "t": 56.3,
+          "kind": "mecanum",
+          "forward": 0.35,
+          "left": 0.0,
+          "turn": 0.0,
+          "duration_s": 0.1
+        },
+        "last_motor": {
+          "t": 56.3,
+          "kind": "mecanum",
+          "forward": 0.35,
+          "left": 0.0,
+          "turn": 0.0,
+          "duration_s": 0.1
+        },
+        "last_motion": {
+          "t": 56.3,
+          "kind": "mecanum",
+          "forward": 0.35,
+          "left": 0.0,
+          "turn": 0.0,
+          "duration_s": 0.1
+        },
+        "tail_span_s": 54.99999999999999
+      },
+      "r2": {
+        "last_command": {
+          "t": 60.3,
+          "kind": "mecanum",
+          "forward": 0.35,
+          "left": 0.0,
+          "turn": 0.0,
+          "duration_s": 0.1
+        },
+        "last_motor": {
+          "t": 60.3,
+          "kind": "mecanum",
+          "forward": 0.35,
+          "left": 0.0,
+          "turn": 0.0,
+          "duration_s": 0.1
+        },
+        "last_motion": {
+          "t": 60.3,
+          "kind": "mecanum",
+          "forward": 0.35,
+          "left": 0.0,
+          "turn": 0.0,
+          "duration_s": 0.1
+        },
+        "tail_span_s": 58.99999999999999
+      }
+    },
+    "stalls": {
+      "r1": {
+        "translation_commands_120sim": 125,
+        "stationary_sim_s": 4.0
+      },
+      "r2": {
+        "translation_commands_120sim": 187,
+        "stationary_sim_s": 1.0
+      }
+    },
+    "source_file": "outputs/e2e18-admin/status-azure3.json",
+    "note": "evaluation-only movement diagnostic never sent to controller; first stable sample t=1.3"
+  },
+  {
+    "run": "e2e18-v236-s61003-r26",
+    "host": "ugrp-sim-azure3",
+    "checked_unix": 1791824994.5144634,
+    "cohort_wall_s": 182.56141138800012,
+    "sim_s": 70.0,
+    "frames": 176,
+    "first_model_response": true,
+    "phase": "mapping",
+    "motion_diagnostic": {
+      "r1": {
+        "first_t": 1.3,
+        "last_t": 71.3,
+        "displacement_m": 2.3725903782421813,
+        "stationary_sim_s": 0.29999999999999716,
+        "shift_last30sim_m": 2.6314413094622497,
+        "tail_max_tilt_deg": 1.5156099751558922
+      },
+      "r2": {
+        "first_t": 1.3,
+        "last_t": 71.3,
+        "displacement_m": 1.830984243958713,
+        "stationary_sim_s": 0.3499999999999943,
+        "shift_last30sim_m": 1.5075550114107172,
+        "tail_max_tilt_deg": 0.147083148577904
+      }
+    },
+    "actual_issued": {
+      "r1": {
+        "last_command": {
+          "t": 71.3,
+          "kind": "mecanum",
+          "forward": 0.0,
+          "left": 0.0,
+          "turn": 0.35,
+          "duration_s": 0.1
+        },
+        "last_motor": {
+          "t": 71.3,
+          "kind": "mecanum",
+          "forward": 0.0,
+          "left": 0.0,
+          "turn": 0.35,
+          "duration_s": 0.1
+        },
+        "last_motion": {
+          "t": 71.3,
+          "kind": "mecanum",
+          "forward": 0.0,
+          "left": 0.0,
+          "turn": 0.35,
+          "duration_s": 0.1
+        },
+        "tail_span_s": 70.0
+      },
+      "r2": {
+        "last_command": {
+          "t": 71.3,
+          "kind": "mecanum",
+          "forward": 0.35,
+          "left": 0.0,
+          "turn": 0.0,
+          "duration_s": 0.1
+        },
+        "last_motor": {
+          "t": 71.3,
+          "kind": "mecanum",
+          "forward": 0.35,
+          "left": 0.0,
+          "turn": 0.0,
+          "duration_s": 0.1
+        },
+        "last_motion": {
+          "t": 71.3,
+          "kind": "mecanum",
+          "forward": 0.35,
+          "left": 0.0,
+          "turn": 0.0,
+          "duration_s": 0.1
+        },
+        "tail_span_s": 70.0
+      }
+    },
+    "stalls": {
+      "r1": {
+        "translation_commands_120sim": 132,
+        "stationary_sim_s": 1.0
+      },
+      "r2": {
+        "translation_commands_120sim": 244,
+        "stationary_sim_s": 1.0
+      }
+    },
+    "source_file": "outputs/e2e18-admin/status-azure3.json",
+    "note": "evaluation-only movement diagnostic never sent to controller; first stable sample t=1.3"
+  },
+  {
+    "run": "e2e18-v236-s61004-r26",
+    "host": "ugrp-sim-azure3",
+    "checked_unix": 1791824994.5144634,
+    "cohort_wall_s": 176.5557446060011,
+    "sim_s": 70.0,
+    "frames": 176,
+    "first_model_response": true,
+    "phase": "mapping",
+    "motion_diagnostic": {
+      "r1": {
+        "first_t": 1.3,
+        "last_t": 71.3,
+        "displacement_m": 1.9637166551398064,
+        "stationary_sim_s": 0.3499999999999943,
+        "shift_last30sim_m": 2.581780792776938,
+        "tail_max_tilt_deg": 1.4405412804690985
+      },
+      "r2": {
+        "first_t": 1.3,
+        "last_t": 71.3,
+        "displacement_m": 0.32953830387613475,
+        "stationary_sim_s": 13.149999999999999,
+        "shift_last30sim_m": 0.406750559831425,
+        "tail_max_tilt_deg": 0.17823262624122838
+      }
+    },
+    "actual_issued": {
+      "r1": {
+        "last_command": {
+          "t": 71.3,
+          "kind": "mecanum",
+          "forward": 0.0,
+          "left": 0.0,
+          "turn": 0.35,
+          "duration_s": 0.1
+        },
+        "last_motor": {
+          "t": 71.3,
+          "kind": "mecanum",
+          "forward": 0.0,
+          "left": 0.0,
+          "turn": 0.35,
+          "duration_s": 0.1
+        },
+        "last_motion": {
+          "t": 71.3,
+          "kind": "mecanum",
+          "forward": 0.0,
+          "left": 0.0,
+          "turn": 0.35,
+          "duration_s": 0.1
+        },
+        "tail_span_s": 70.0
+      },
+      "r2": {
+        "last_command": {
+          "t": 71.3,
+          "kind": "hold"
+        },
+        "last_motor": {
+          "t": 71.3,
+          "kind": "hold"
+        },
+        "last_motion": {
+          "t": 58.3,
+          "kind": "mecanum",
+          "forward": 0.35,
+          "left": 0.0,
+          "turn": 0.0,
+          "duration_s": 0.1
+        },
+        "tail_span_s": 70.0
+      }
+    },
+    "stalls": {
+      "r1": {
+        "translation_commands_120sim": 195,
+        "stationary_sim_s": 11.0
+      },
+      "r2": {
+        "translation_commands_120sim": 189,
+        "stationary_sim_s": 13.0
+      }
+    },
+    "source_file": "outputs/e2e18-admin/status-azure3.json",
+    "note": "evaluation-only movement diagnostic never sent to controller; first stable sample t=1.3"
+  },
+  {
+    "run": "e2e18-v236-s61005-r26",
+    "host": "ugrp-sim-azure3",
+    "checked_unix": 1791824994.5144634,
+    "cohort_wall_s": 183.83460511700105,
+    "sim_s": 71.0,
+    "frames": 178,
+    "first_model_response": true,
+    "phase": "mapping",
+    "motion_diagnostic": {
+      "r1": {
+        "first_t": 1.3,
+        "last_t": 72.3,
+        "displacement_m": 1.7882735415078441,
+        "stationary_sim_s": 1.2000000000000028,
+        "shift_last30sim_m": 2.3068314283331133,
+        "tail_max_tilt_deg": 1.3027003023930477
+      },
+      "r2": {
+        "first_t": 1.3,
+        "last_t": 72.3,
+        "displacement_m": 1.253058889722259,
+        "stationary_sim_s": 0.3499999999999943,
+        "shift_last30sim_m": 1.4122921012947454,
+        "tail_max_tilt_deg": 0.15522639190729545
+      }
+    },
+    "actual_issued": {
+      "r1": {
+        "last_command": {
+          "t": 72.3,
+          "kind": "mecanum",
+          "forward": 0.0,
+          "left": 0.0,
+          "turn": 0.35,
+          "duration_s": 0.1
+        },
+        "last_motor": {
+          "t": 72.3,
+          "kind": "mecanum",
+          "forward": 0.0,
+          "left": 0.0,
+          "turn": 0.35,
+          "duration_s": 0.1
+        },
+        "last_motion": {
+          "t": 72.3,
+          "kind": "mecanum",
+          "forward": 0.0,
+          "left": 0.0,
+          "turn": 0.35,
+          "duration_s": 0.1
+        },
+        "tail_span_s": 71.0
+      },
+      "r2": {
+        "last_command": {
+          "t": 72.3,
+          "kind": "mecanum",
+          "forward": 0.35,
+          "left": 0.0,
+          "turn": 0.0,
+          "duration_s": 0.1
+        },
+        "last_motor": {
+          "t": 72.3,
+          "kind": "mecanum",
+          "forward": 0.35,
+          "left": 0.0,
+          "turn": 0.0,
+          "duration_s": 0.1
+        },
+        "last_motion": {
+          "t": 72.3,
+          "kind": "mecanum",
+          "forward": 0.35,
+          "left": 0.0,
+          "turn": 0.0,
+          "duration_s": 0.1
+        },
+        "tail_span_s": 71.0
+      }
+    },
+    "stalls": {
+      "r1": {
+        "translation_commands_120sim": 123,
+        "stationary_sim_s": 12.0
+      },
+      "r2": {
+        "translation_commands_120sim": 249,
+        "stationary_sim_s": 1.0
+      }
+    },
+    "source_file": "outputs/e2e18-admin/status-azure3.json",
+    "note": "evaluation-only movement diagnostic never sent to controller; first stable sample t=1.3"
+  },
+  {
+    "run": "e2e18-v236-s61006-r26",
+    "host": "ugrp-sim-azure3",
+    "checked_unix": 1791824994.5144634,
+    "cohort_wall_s": 183.09281710199866,
+    "sim_s": 74.0,
+    "frames": 186,
+    "first_model_response": true,
+    "phase": "mapping",
+    "motion_diagnostic": {
+      "r1": {
+        "first_t": 1.3,
+        "last_t": 75.3,
+        "displacement_m": 1.6313742007309258,
+        "stationary_sim_s": 0.7000000000000028,
+        "shift_last30sim_m": 1.8357389481789734,
+        "tail_max_tilt_deg": 1.1686453603756026
+      },
+      "r2": {
+        "first_t": 1.3,
+        "last_t": 75.3,
+        "displacement_m": 0.3559941652942073,
+        "stationary_sim_s": 0.3499999999999943,
+        "shift_last30sim_m": 0.3544974900372275,
+        "tail_max_tilt_deg": 0.16675196545046547
+      }
+    },
+    "actual_issued": {
+      "r1": {
+        "last_command": {
+          "t": 75.3,
+          "kind": "mecanum",
+          "forward": 0.0,
+          "left": 0.0,
+          "turn": -0.35,
+          "duration_s": 0.1
+        },
+        "last_motor": {
+          "t": 75.3,
+          "kind": "mecanum",
+          "forward": 0.0,
+          "left": 0.0,
+          "turn": -0.35,
+          "duration_s": 0.1
+        },
+        "last_motion": {
+          "t": 75.3,
+          "kind": "mecanum",
+          "forward": 0.0,
+          "left": 0.0,
+          "turn": -0.35,
+          "duration_s": 0.1
+        },
+        "tail_span_s": 74.0
+      },
+      "r2": {
+        "last_command": {
+          "t": 75.3,
+          "kind": "mecanum",
+          "forward": 0.0,
+          "left": 0.0,
+          "turn": -0.35,
+          "duration_s": 0.1
+        },
+        "last_motor": {
+          "t": 75.3,
+          "kind": "mecanum",
+          "forward": 0.0,
+          "left": 0.0,
+          "turn": -0.35,
+          "duration_s": 0.1
+        },
+        "last_motion": {
+          "t": 75.3,
+          "kind": "mecanum",
+          "forward": 0.0,
+          "left": 0.0,
+          "turn": -0.35,
+          "duration_s": 0.1
+        },
+        "tail_span_s": 74.0
+      }
+    },
+    "stalls": {
+      "r1": {
+        "translation_commands_120sim": 127,
+        "stationary_sim_s": 1.0
+      },
+      "r2": {
+        "translation_commands_120sim": 245,
+        "stationary_sim_s": 1.0
+      }
+    },
+    "source_file": "outputs/e2e18-admin/status-azure3.json",
+    "note": "evaluation-only movement diagnostic never sent to controller; first stable sample t=1.3"
+  }
+]

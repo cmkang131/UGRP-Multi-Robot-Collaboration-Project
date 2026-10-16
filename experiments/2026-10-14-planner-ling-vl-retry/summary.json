@@ -1,0 +1,99 @@
+{
+  "schema": "planner.ling_vl.retry_result.v1",
+  "status": "stopped",
+  "stop_reason": "FALLBACK_RATE_OVER_5_PERCENT",
+  "source_sha": "c3e164b09d7c1071836610d0a601b037486187eb",
+  "diagnostic_source_sha": "f81bced0",
+  "model": "inclusionai/ling-3.0-flash-vl",
+  "provider": "Novita",
+  "policy": "ling_rate_limit_v1",
+  "previous_137_attempts_excluded": true,
+  "http_attempts": 9,
+  "http_statuses": {
+    "200": 6,
+    "429": 3
+  },
+  "diagnostic_attempts": 3,
+  "main_decisions_called": 4,
+  "main_decisions_planned": 400,
+  "main_not_called": 396,
+  "fallback_after_retries": {
+    "n": 1,
+    "N": 4
+  },
+  "format_errors": {
+    "n": 0,
+    "N": 4,
+    "successful_model_responses": 3
+  },
+  "format_reasks": 0,
+  "retry_distribution_main": {
+    "0": 3,
+    "2": 1
+  },
+  "retry_wait_s": 4.613708708207917,
+  "latency_end_to_end_s": {
+    "median": 1.7696568540413864,
+    "p90": 7.023516083019786,
+    "N": 4,
+    "includes_pacing_and_failed_decision": true
+  },
+  "known_usage_cost_usd": 0.0003207064,
+  "unknown_cost_http_attempts": 3,
+  "conservative_accounted_usd": 0.0016563568,
+  "budget_usd": 0.08,
+  "http_attempt_cap": 600,
+  "cache_off": {
+    "cached_tokens": 9472,
+    "prompt_tokens": 11900,
+    "ratio": 0.7959663865546218,
+    "responses": 3,
+    "prompt_tokens_median": 3533,
+    "diagnostic_cache_warming_possible": true
+  },
+  "cache_on": {
+    "called": 0,
+    "planned": 40,
+    "ratio": null
+  },
+  "images": {
+    "called": 0,
+    "planned": 5,
+    "accepted": 0,
+    "acceptance_rate": null,
+    "status": "not_tested_due_to_stop"
+  },
+  "throttle": {
+    "provider": "Novita",
+    "limit_source": "upstream_provider_shared_pool",
+    "retry_after_present": false,
+    "numeric_rate_headers_present": false,
+    "numeric_quota": null
+  },
+  "load": {
+    "two_robot_calls_per_sim_second": 0.13333333333333333,
+    "concurrent_runs": 16,
+    "calls_per_sim_second": 2.1333333333333333,
+    "rpm_at_wall_sim_1": 128,
+    "rpm_at_wall_sim_3_5": 36.57142857142857,
+    "rpm_at_wall_sim_3": 42.666666666666664,
+    "configured_rpm": 30,
+    "provider_numeric_quota": null,
+    "includes_http_retries": false,
+    "minimum_wall_sim_for_configured_rpm": 4.266666666666667
+  },
+  "tests": {
+    "passed": 21,
+    "files": [
+      "tests/test_openrouter_upstream.py",
+      "tests/test_task_planner_ling.py"
+    ]
+  },
+  "limitations": [
+    "Stopped sample is not a completed planner performance evaluation.",
+    "Raw score table includes uncalled placeholders in the original denominator; they are not dispatched fallbacks.",
+    "Provider billed totals for three HTTP429 responses are unknown; reservations are not billed cost.",
+    "Static-first cache effect and image acceptance unmeasured.",
+    "Historical r80 load estimate, not current Ling E2E measurement."
+  ]
+}

@@ -1,0 +1,80 @@
+[
+  {
+    "host": "azure3",
+    "name": "e2e18-v229-s61005-r15",
+    "result": {
+      "status": "PHYSICAL_STOP",
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "finalization_complete": true,
+      "finalization_errors": [],
+      "failure": "ROBOT_TILT_LIMIT:r1",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/ugrp/ugrp-sim/src/99f15e0f98a2fbdb3845ec5b3a34aa68d853c2ce/scripts/run_e2e_ownmap_live.py\", line 416, in run\n    backend.eval_sample()\n  File \"/home/ugrp/ugrp-sim/src/99f15e0f98a2fbdb3845ec5b3a34aa68d853c2ce/sim/e2e_s3_test.py\", line 83, in eval_sample\n    try:super().eval_sample()\n        ^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/99f15e0f98a2fbdb3845ec5b3a34aa68d853c2ce/sim/s3_release_epoch.py\", line 61, in eval_sample\n    return super().eval_sample()\n           ^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/99f15e0f98a2fbdb3845ec5b3a34aa68d853c2ce/sim/s3_setdown.py\", line 63, in eval_sample\n    try:super().eval_sample()\n        ^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/99f15e0f98a2fbdb3845ec5b3a34aa68d853c2ce/sim/s3_synchronized_carry.py\", line 31, in eval_sample\n    super().eval_sample()\n  File \"/home/ugrp/ugrp-sim/src/99f15e0f98a2fbdb3845ec5b3a34aa68d853c2ce/sim/s3_stage_safety.py\", line 37, in eval_sample\n    super().eval_sample()\n  File \"/home/ugrp/ugrp-sim/src/99f15e0f98a2fbdb3845ec5b3a34aa68d853c2ce/sim/s3_buffered_io.py\", line 67, in eval_sample\n    return super().eval_sample()\n           ^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/99f15e0f98a2fbdb3845ec5b3a34aa68d853c2ce/sim/zone_s3_no_prior.py\", line 126, in eval_sample\n    raise PhysicalStop('ROBOT_TILT_LIMIT:'+rid)\nsim.zone_s3_no_prior.PhysicalStop: ROBOT_TILT_LIMIT:r1\n",
+      "wall_s": 1069.3749821719994,
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 18.0202456779989
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 18.0202456779989
+        },
+        "B_boundary": {
+          "sim_s": 3.0,
+          "wall_s": 25.067048940998575
+        },
+        "route": {
+          "sim_s": 276.0,
+          "wall_s": 825.553768971
+        },
+        "align": {
+          "sim_s": 290.0,
+          "wall_s": 950.0793610909986
+        }
+      },
+      "sim_s": 317.8,
+      "controller_failure": null
+    },
+    "exit": "1"
+  },
+  {
+    "host": "azure4",
+    "name": "e2e18-v229-s61011-r15",
+    "result": {
+      "status": "HOST_ERROR",
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "finalization_complete": true,
+      "finalization_errors": [],
+      "failure": "UNCALIBRATED_EARLY_INTERRUPTION",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/ugrp/ugrp-sim/src/99f15e0f98a2fbdb3845ec5b3a34aa68d853c2ce/scripts/run_e2e_ownmap_live.py\", line 442, in run\n    backend.issue(rid,action);robots[rid].commanded(action,now)\n                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/99f15e0f98a2fbdb3845ec5b3a34aa68d853c2ce/harness/e2e_live_mapping.py\", line 153, in commanded\n    self.goal.command(dict(t=now,**action))\n  File \"/home/ugrp/ugrp-sim/src/99f15e0f98a2fbdb3845ec5b3a34aa68d853c2ce/harness/e2e_explore_deadlock.py\", line 107, in commanded\n    result = command(row)\n             ^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/99f15e0f98a2fbdb3845ec5b3a34aa68d853c2ce/harness/e2e_rgb_vo.py\", line 459, in commanded\n    vo.command(row)\n  File \"/home/ugrp/ugrp-sim/src/99f15e0f98a2fbdb3845ec5b3a34aa68d853c2ce/harness/e2e_rgb_vo.py\", line 279, in command\n    self.nominal.command(row)\n  File \"/home/ugrp/ugrp-sim/src/99f15e0f98a2fbdb3845ec5b3a34aa68d853c2ce/harness/self_pulse_odom.py\", line 111, in command\n    raise ValueError('UNCALIBRATED_EARLY_INTERRUPTION')\nValueError: UNCALIBRATED_EARLY_INTERRUPTION\n",
+      "wall_s": 860.6360389040001,
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 29.646696810999856
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 29.646696810999856
+        },
+        "B_boundary": {
+          "sim_s": 3.0,
+          "wall_s": 36.86419073599973
+        },
+        "route": {
+          "sim_s": 242.0,
+          "wall_s": 777.1961616820008
+        }
+      },
+      "sim_s": 255.59999999999997,
+      "controller_failure": null
+    },
+    "exit": "1"
+  }
+]

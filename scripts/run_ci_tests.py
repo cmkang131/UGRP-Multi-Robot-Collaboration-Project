@@ -24,6 +24,14 @@ from scripts import agent_lock
 from scripts.check_ci_fixtures import check_fixtures
 
 TEST_PATTERNS = (
+    "tests/test_task_planner*.py",
+    "tests/test_e2e_dialogue_call_policy.py",
+    "tests/test_e2e18.py",
+    "tests/test_e2e_body_controller.py",
+    "tests/test_e2e_body_code.py",
+    "tests/test_e2e_approach_efficiency.py",
+    "tests/test_e2e_architecture_stack.py",
+    "tests/test_e2e_body_upstream.py",
     "tests/test_grasp_act_data.py",
     "tests/test_grasp_act_policy.py",
     "tests/test_grasp_act_pilot.py",
@@ -33,7 +41,6 @@ TEST_PATTERNS = (
     "tests/test_grasp_act_act7.py",
     "tests/test_grasp_act_act8.py",
     "tests/test_grasp_act_act9.py",
-    "tests/test_e2e18.py",
     "tests/test_e2e18_beam_axis.py",
     "tests/test_e2e18_cadence.py",
     "tests/test_e2e18_route_coverage.py",

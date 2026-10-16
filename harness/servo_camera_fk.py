@@ -71,7 +71,9 @@ def transform_from_commands(servo, *, camera_pose='off'):
     pose,joints=commanded_joints(servo)
     # Preserve egomap9's unloaded comparison domain. A closed gripper command
     # does not reveal actual load, and loaded sag is unmeasured by this model.
-    if pose[1]<=1600:
+    from harness.e2e_camera_load import ACTIVE,OPTION as LOAD_NOMINAL
+    closed=pose[1]<=1600
+    if closed and ACTIVE.get()!=LOAD_NOMINAL:
         return None,'loaded_or_unknown_load_not_qualified'
     spec=model()
     t=np.eye(4)
@@ -89,7 +91,7 @@ def transform_from_commands(servo, *, camera_pose='off'):
     t=t@fixed_transform(spec['camera'])
     # MuJoCo fixed camera mount convention -> OpenCV right/down/forward.
     rot=t[:3,:3]@np.diag([1.,-1.,-1.])
-    return (t[:3,3].copy(),rot),'servo_fk_nominal_unloaded'
+    return (t[:3,3].copy(),rot),('servo_fk_nominal_load_unknown_unqualified' if closed else 'servo_fk_nominal_unloaded')
 
 
 def camera_output(legacy, *, camera_pose='off', servo=None):

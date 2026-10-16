@@ -1,0 +1,404 @@
+{
+  "source": "outputs/e2e18-admin/align-v236-azure3.json",
+  "sha256": "5b5a06f8fc41ea6bd011ff2e54903d4ec84c6d31777aa0ff772792ebcce8f445",
+  "rows": [
+    {
+      "name": "e2e18-v236-s61002-r26",
+      "phase": "align",
+      "sim_s": 151.0,
+      "robots": {
+        "r1": {
+          "pose_own_m": [
+            -0.4946582207793716,
+            2.3720585748432876,
+            2.0609310625409876
+          ],
+          "own_beam": null,
+          "remembered_B": {
+            "kind": "B",
+            "center_m": [
+              1.051741387965673,
+              0.05710179940676352
+            ],
+            "first_t": 2.4,
+            "first_frame_id": 7,
+            "frame_sha256": "fd682905d840b895f65a13ae55e5300d0f922086a6270e5e3d2372a85bf6c3d9",
+            "source": "own",
+            "node": 0,
+            "observation": {
+              "entity": {
+                "kind": "floor_zone",
+                "id": "B"
+              },
+              "center_m": [
+                1.149115044247787,
+                -0.0243362831858407
+              ],
+              "source": "own",
+              "detector": "floor_color_v3",
+              "candidate_id": 1,
+              "obs_id": "r1-obs-000007",
+              "t_sim": 2.4,
+              "frame_sha256": "fd682905d840b895f65a13ae55e5300d0f922086a6270e5e3d2372a85bf6c3d9",
+              "observations": 6,
+              "first_t": 0.4,
+              "bounds_m": [
+                [
+                  0.45,
+                  -0.65
+                ],
+                [
+                  1.85,
+                  0.55
+                ]
+              ],
+              "confidence": 0.6083400116939229,
+              "partial_extent": true
+            },
+            "first_observed_t": 0.4,
+            "first_observed_node": 0,
+            "last_t": 150.8
+          },
+          "carrier_approach": {
+            "t": 150.5,
+            "status": "reacquire_own_beam",
+            "station_own_m": [
+              -1.5847427902268247,
+              2.435079965403024,
+              -0.1072522454717986
+            ],
+            "grip_own_m": [
+              -1.3827103796332862,
+              2.4133280673303537
+            ],
+            "distance_m": 1.0919047871566103,
+            "heading_error_rad": -2.1681833080127864,
+            "own_beam_age_s": 5.699999999999989,
+            "camera": "inspect",
+            "basis_yaw_rad": -0.1072522454717986,
+            "search_index": 2,
+            "pan_pulse": 1500
+          },
+          "recent_status": {
+            "reacquire_own_beam": 17,
+            "approach": 1,
+            "turn_to_last_seen_beam": 2,
+            "navigate_pregrasp": 42,
+            "gaze_settle": 13
+          },
+          "sigma_xy_m": 1.2005815005963276
+        },
+        "r2": {
+          "pose_own_m": [
+            1.7479186005659482,
+            -0.3756508608725847,
+            -2.389346412199217
+          ],
+          "own_beam": null,
+          "remembered_B": null,
+          "carrier_approach": {
+            "t": 150.4,
+            "status": "acquire_scan",
+            "own_beam_age_s": 10.400000000000006,
+            "B_candidate_available": false,
+            "cycle": 5
+          },
+          "recent_status": {
+            "acquire_scan": 46,
+            "acquire_explore": 13,
+            "acquire_turn": 16
+          },
+          "sigma_xy_m": 0.14682056335539864
+        }
+      }
+    },
+    {
+      "name": "e2e18-v236-s61003-r26",
+      "phase": "align",
+      "sim_s": 132.0,
+      "robots": {
+        "r1": {
+          "pose_own_m": [
+            -1.0208174742712137,
+            0.6790185219460764,
+            2.8322167123331026
+          ],
+          "own_beam": {
+            "rgb": {
+              "robot_id": "r1",
+              "frame_id": 331,
+              "t_sim": 132.0,
+              "sha256": "c702e1a3c38d35fc58ad4467eb0bbebf456c5aa43b3a65033c5df96faaf51faf"
+            },
+            "pose_own_m": [
+              -2.3491705009314527,
+              1.3563859210103573,
+              2.7359805148334906
+            ],
+            "grip_base_m": [
+              1.202771310552139,
+              -0.21482882904992837
+            ],
+            "axis_heading_rad": -0.09623619749961188,
+            "endpoint_model": "long_side_v1",
+            "observed_band_side": "near",
+            "endpoint_side_evidence": {
+              "points": 288,
+              "q02_m": -0.028926374840958485,
+              "q98_m": 0.70563525524262,
+              "long_before": 0,
+              "long_after": 201
+            }
+          },
+          "remembered_B": {
+            "kind": "B",
+            "center_m": [
+              1.051741387965673,
+              0.05710179940676352
+            ],
+            "first_t": 2.4,
+            "first_frame_id": 7,
+            "frame_sha256": "fd682905d840b895f65a13ae55e5300d0f922086a6270e5e3d2372a85bf6c3d9",
+            "source": "own",
+            "node": 0,
+            "observation": {
+              "entity": {
+                "kind": "floor_zone",
+                "id": "B"
+              },
+              "center_m": [
+                1.149115044247787,
+                -0.0243362831858407
+              ],
+              "source": "own",
+              "detector": "floor_color_v3",
+              "candidate_id": 1,
+              "obs_id": "r1-obs-000007",
+              "t_sim": 2.4,
+              "frame_sha256": "fd682905d840b895f65a13ae55e5300d0f922086a6270e5e3d2372a85bf6c3d9",
+              "observations": 6,
+              "first_t": 0.4,
+              "bounds_m": [
+                [
+                  0.45,
+                  -0.65
+                ],
+                [
+                  1.85,
+                  0.55
+                ]
+              ],
+              "confidence": 0.6083400116939229,
+              "partial_extent": true
+            },
+            "first_observed_t": 0.4,
+            "first_observed_node": 0,
+            "last_t": 132.0
+          },
+          "carrier_approach": {
+            "t": 131.6,
+            "status": "navigate_pregrasp",
+            "station_own_m": [
+              -2.7439317172844073,
+              1.6200363557012574,
+              -0.45229957859426967
+            ],
+            "grip_own_m": [
+              -2.561164597933653,
+              1.5312308373804504
+            ],
+            "distance_m": 1.9633230141574323,
+            "heading_error_rad": 2.9986690162522134,
+            "own_beam_age_s": 0.0,
+            "camera": "search",
+            "basis_yaw_rad": -0.45229957859426967,
+            "correct_end": false,
+            "beam_obstacle_source": "own_rgb_center_axis_known_size",
+            "path_points": 116,
+            "rpp": {
+              "path_follow": "rpp_v1",
+              "lookahead_m": 0.6,
+              "carrot_m": [
+                -0.9888179779052733,
+                1.2993255615234376
+              ],
+              "carrot_distance_m": 0.6211318629058598,
+              "phase": "rotate_path",
+              "heading_error_rad": -1.312961242211383,
+              "goal_distance_m": 1.9633230141574323,
+              "before": 1.723867223549258,
+              "after": 1.4625996717361036
+            },
+            "projected_clear": true
+          },
+          "recent_status": {
+            "acquire_scan": 24,
+            "acquire_turn": 34,
+            "reacquire_own_beam": 3,
+            "navigate_pregrasp": 11,
+            "gaze_settle": 3
+          },
+          "sigma_xy_m": 0.3308117761050368
+        },
+        "r2": {
+          "pose_own_m": [
+            4.277036679138665,
+            -1.1830897791423332,
+            1.704302570846349
+          ],
+          "own_beam": null,
+          "remembered_B": null,
+          "carrier_approach": {
+            "t": 131.7,
+            "status": "acquire_scan",
+            "own_beam_age_s": 94.1,
+            "B_candidate_available": false,
+            "cycle": 0
+          },
+          "recent_status": {
+            "null": 58,
+            "acquire_turn": 10,
+            "acquire_scan": 7
+          },
+          "sigma_xy_m": 0.2353388512567852
+        }
+      }
+    },
+    {
+      "name": "e2e18-v236-s61004-r26",
+      "phase": "align",
+      "sim_s": 159.0,
+      "robots": {
+        "r1": {
+          "pose_own_m": [
+            -0.8545505090661165,
+            0.6053221253848455,
+            2.6542113472474265
+          ],
+          "own_beam": {
+            "rgb": {
+              "robot_id": "r1",
+              "frame_id": 398,
+              "t_sim": 158.8,
+              "sha256": "9579bc9ed2fee8871f4442df7023adfafd912aa96c6783cf74ac3157cd229eb9"
+            },
+            "pose_own_m": [
+              -1.1690764778352125,
+              0.3753201099313552,
+              0.6074962377764455
+            ],
+            "grip_base_m": [
+              0.2938921125005685,
+              0.5905134065641119
+            ],
+            "axis_heading_rad": -2.046715109470981,
+            "endpoint_model": "long_side_v1",
+            "observed_band_side": "far",
+            "endpoint_side_evidence": {
+              "points": 3258,
+              "q02_m": -0.3085511112220582,
+              "q98_m": -0.015787151765905304,
+              "long_before": 2552,
+              "long_after": 0
+            }
+          },
+          "remembered_B": {
+            "kind": "B",
+            "center_m": [
+              1.0496160028669872,
+              0.05958335456233704
+            ],
+            "first_t": 2.4,
+            "first_frame_id": 7,
+            "frame_sha256": "eb869e2de0f8292a9564eec5b0dfbd9362cfe0b5ce3fa8b89e28e12e2dece9d3",
+            "source": "own",
+            "node": 0,
+            "observation": {
+              "entity": {
+                "kind": "floor_zone",
+                "id": "B"
+              },
+              "center_m": [
+                1.149115044247787,
+                -0.0243362831858407
+              ],
+              "source": "own",
+              "detector": "floor_color_v3",
+              "candidate_id": 1,
+              "obs_id": "r1-obs-000007",
+              "t_sim": 2.4,
+              "frame_sha256": "eb869e2de0f8292a9564eec5b0dfbd9362cfe0b5ce3fa8b89e28e12e2dece9d3",
+              "observations": 6,
+              "first_t": 0.4,
+              "bounds_m": [
+                [
+                  0.45,
+                  -0.65
+                ],
+                [
+                  1.85,
+                  0.55
+                ]
+              ],
+              "confidence": 0.6107489673358877,
+              "partial_extent": true
+            },
+            "first_observed_t": 0.4,
+            "first_observed_node": 0,
+            "last_t": 158.8
+          },
+          "carrier_approach": {
+            "t": 158.4,
+            "status": "approach_path_unavailable",
+            "station_own_m": [
+              -1.5618469093505702,
+              0.11079278437222534,
+              0.5728634940488689
+            ],
+            "grip_own_m": [
+              -1.3910873235163246,
+              0.22093543662700313
+            ],
+            "distance_m": 0.8630338735980891,
+            "heading_error_rad": -2.0813478531985576,
+            "own_beam_age_s": 0.0,
+            "camera": "search",
+            "basis_yaw_rad": 0.5728634940488689,
+            "correct_end": true,
+            "beam_obstacle_source": "own_rgb_center_axis_known_size",
+            "path_points": 0,
+            "would_stop_path_unavailable": true
+          },
+          "recent_status": {
+            "approach_path_unavailable": 73,
+            "navigate_pregrasp": 1,
+            "gaze_settle": 1
+          },
+          "sigma_xy_m": 0.610404664074005
+        },
+        "r2": {
+          "pose_own_m": [
+            0.17109771357997924,
+            0.26294651825277326,
+            -2.32414380970261
+          ],
+          "own_beam": null,
+          "remembered_B": null,
+          "carrier_approach": {
+            "t": 158.4,
+            "status": "acquire_turn",
+            "own_beam_age_s": 127.60000000000001,
+            "B_candidate_available": false,
+            "cycle": 5
+          },
+          "recent_status": {
+            "acquire_turn": 12,
+            "acquire_scan": 50,
+            "acquire_explore": 13
+          },
+          "sigma_xy_m": 0.09161942705016071
+        }
+      }
+    }
+  ]
+}

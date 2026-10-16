@@ -1,0 +1,10 @@
+{
+  "checked_unix": 1791883886.761445,
+  "batch": "r74",
+  "affected": "VM4 four seed61013 gate samples; actual cohort not launched",
+  "cause": "scripts/s4_proxy_relay.py accepted_call_id only allowed61001-61012 while bundle admitted61013",
+  "evidence": "all four failures at0SIM/no successful model response; request IDs fail original regex; other12 gate samples completed",
+  "fix": "Explicit346/347/348/350 seed61013 ID allowlist including speed-gate prefix; historical namespaces unchanged",
+  "tests": "test_e2e_explore_idle.py:5 passed",
+  "replacement": "VM4 r75 same16 seeds61010-61013; Mac code-r10 relay; immutable new SHA; control logic unchanged"
+}

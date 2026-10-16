@@ -1,0 +1,40 @@
+{
+  "bundles": {
+    "245": "sonar fixed + range recovery",
+    "246": "sonar fixed + range/wall recovery",
+    "247": "sonar fixed + range/wall/time-slot recovery",
+    "248": "sonar fixed only"
+  },
+  "default_off": "sonar_frame=site_z_v1",
+  "root_cause": {
+    "site_definition": "sim/masterpi_model_v3.py: +Z at transducer face",
+    "consumer": "sim/ultrasonic_range.py: +X interpreted as forward; +X points down in v3",
+    "observed": "r35 probe 20/20 samples per dt2 case selected floor at approximately 0.05m; evaluation only",
+    "effect": "range-only clearance keeps retreating from floor; existing US stall fallback also consumes bad geometry"
+  },
+  "change": "Map sensor-cone +X to site +Z, preserve handedness, use site face origin without repeated 6mm offset. No camera/appearance/physics changes; unchanged legacy default. No hit identity reaches control.",
+  "research": [
+    {
+      "url": "https://mujoco.readthedocs.io/en/stable/XMLreference.html#sensor-rangefinder",
+      "verified": true,
+      "fact": "site rangefinder follows site positive Z axis"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/google-deepmind/mujoco/main/src/engine/engine_sensor.c",
+      "verified": true,
+      "lines": "676-690",
+      "fact": "direction site_xmat indices2,5,8 and origin site_xpos"
+    }
+  ],
+  "tests": {
+    "passed": 34,
+    "files": [
+      "test_e2e_sonar_frame.py",
+      "test_e2e_camera_hold.py",
+      "test_e2e_arm_clearance.py"
+    ],
+    "scope": "rotation/beam cone math, actual pose method, queue and full bundle registration; no Mac physics"
+  },
+  "physical_status": "pending corrected-frame VM probe and cohort",
+  "historical_scope": "v242-v244 not admitted to a new cohort; existing probe cannot establish 10degree tilt prevention"
+}

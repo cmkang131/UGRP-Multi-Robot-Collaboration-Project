@@ -1,0 +1,60 @@
+{
+  "versions": [
+    242,
+    243,
+    244
+  ],
+  "default": "off",
+  "options": [
+    "range_v1",
+    "range_wall_v1",
+    "range_wall_slots_v1"
+  ],
+  "prior": "tilt-analysis.md",
+  "numeric_cause": {
+    "prior_stops": 4,
+    "wall_contact_cases": 3,
+    "partner_contact_cases": 1,
+    "penetration_m_approx": 0.002,
+    "rise_m_approx": 0.011,
+    "tilt_limit_deg": 10,
+    "saved_v229_sonar_range_m": [
+      0.054,
+      0.057
+    ]
+  },
+  "change": "Defer whole open scan pose before queueing; calibrated backup and turn; recheck own range/walls; exclude repeated own-odometry locations; optional fixed alternating scan slots with no peer private-state input. Grasp/carry schedules unchanged.",
+  "limits": "No claim of contact identification or safe rear space; recovery is bounded DEV movement. Slots prevent overlapping scheduled scan ramps, not all possible partner contacts. Missing echo is unknown.",
+  "tests": {
+    "passed": 31,
+    "files": [
+      "tests/test_e2e_arm_clearance.py",
+      "tests/test_e2e_camera_hold.py",
+      "tests/test_e2e_pregrasp_acquire.py"
+    ],
+    "scope": "Offline queue/command/sensor and bundle registration; no physics"
+  },
+  "research": [
+    {
+      "url": "https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/core_servers/bt_plugins/actions/BackUp/",
+      "verified": true,
+      "use": "Bounded backup followed by rotation/replan; existing pulse profiles reused."
+    },
+    {
+      "url": "https://moveit.picknik.ai/main/doc/examples/planning_scene/planning_scene_tutorial.html",
+      "verified": true,
+      "use": "Check geometry before arm trajectory; restricted here to own RGB walls/sonar, no runtime scene state."
+    }
+  ],
+  "planned_comparison": {
+    "baseline": "v241 ongoing",
+    "seeds": [
+      61005,
+      61008,
+      61009,
+      61010
+    ],
+    "criterion": "tilt-limit events, scan release and progress to grasp/carry; historical source and staged results kept separate"
+  },
+  "physical_validation": "pending"
+}

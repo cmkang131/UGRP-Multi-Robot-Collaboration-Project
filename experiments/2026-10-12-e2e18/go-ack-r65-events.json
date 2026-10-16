@@ -1,0 +1,207 @@
+[
+  {
+    "version": 321,
+    "kind": "epoch_open",
+    "key": [
+      "order-5",
+      "83ead6a8c353aea7090724fdfb529914265446cb0ecbe2286794c7a45f1c293c",
+      1,
+      0
+    ],
+    "at": 533.95,
+    "latency_ms": null
+  },
+  {
+    "version": 321,
+    "kind": "route_vote",
+    "robot_id": "r1",
+    "call_id": "call-0012-r1",
+    "at": 537.5,
+    "action": {
+      "kind": "route_vote",
+      "choice": "GO",
+      "grip_epoch": 1,
+      "order_id": "order-5",
+      "peer_go_ref": null,
+      "route_hash": "83ead6a8c353aea7090724fdfb529914265446cb0ecbe2286794c7a45f1c293c",
+      "seg": 0
+    },
+    "latency_ms": 7922.349
+  },
+  {
+    "version": 321,
+    "kind": "route_vote",
+    "robot_id": "r2",
+    "call_id": "call-0013-r2",
+    "at": 538.7,
+    "action": {
+      "kind": "route_vote",
+      "choice": "GO",
+      "grip_epoch": 1,
+      "order_id": "order-5",
+      "peer_go_ref": null,
+      "route_hash": "83ead6a8c353aea7090724fdfb529914265446cb0ecbe2286794c7a45f1c293c",
+      "seg": 0
+    },
+    "latency_ms": 5293.682
+  },
+  {
+    "version": 321,
+    "kind": "continue",
+    "robot_id": "r1",
+    "call_id": "call-0014-r1",
+    "at": 540.25,
+    "action": {
+      "kind": "continue"
+    },
+    "latency_ms": 2028.98
+  },
+  {
+    "version": 321,
+    "kind": "route_vote",
+    "robot_id": "r2",
+    "call_id": "call-0015-r2",
+    "at": 543.5,
+    "action": {
+      "kind": "route_vote",
+      "choice": "ACK",
+      "grip_epoch": 1,
+      "order_id": "order-5",
+      "peer_go_ref": "call-0012-r1",
+      "route_hash": "83ead6a8c353aea7090724fdfb529914265446cb0ecbe2286794c7a45f1c293c",
+      "seg": 0
+    },
+    "latency_ms": 4529.542
+  },
+  {
+    "version": 321,
+    "kind": "route_vote",
+    "robot_id": "r1",
+    "call_id": "call-0016-r1",
+    "at": 543.85,
+    "action": {
+      "grip_epoch": 1,
+      "kind": "route_vote",
+      "order_id": "order-5",
+      "peer_go_ref": "call-0013-r2",
+      "route_hash": "83ead6a8c353aea7090724fdfb529914265446cb0ecbe2286794c7a45f1c293c",
+      "seg": 0,
+      "choice": "ACK"
+    },
+    "latency_ms": 3447.973
+  },
+  {
+    "version": 321,
+    "kind": "continue",
+    "robot_id": "r2",
+    "call_id": "call-0017-r2",
+    "at": 546.2,
+    "action": {
+      "kind": "continue"
+    },
+    "latency_ms": 2648.437
+  },
+  {
+    "version": 321,
+    "kind": "epoch_open",
+    "key": [
+      "order-5",
+      "83ead6a8c353aea7090724fdfb529914265446cb0ecbe2286794c7a45f1c293c",
+      1,
+      1
+    ],
+    "at": 555.75,
+    "latency_ms": null
+  },
+  {
+    "version": 321,
+    "kind": "route_vote",
+    "robot_id": "r2",
+    "call_id": "call-0022-r2",
+    "at": 560.3,
+    "action": {
+      "kind": "route_vote",
+      "choice": "GO",
+      "grip_epoch": 1,
+      "order_id": "order-5",
+      "peer_go_ref": null,
+      "route_hash": "83ead6a8c353aea7090724fdfb529914265446cb0ecbe2286794c7a45f1c293c",
+      "seg": 1
+    },
+    "latency_ms": 15435.391
+  },
+  {
+    "version": 323,
+    "kind": "epoch_open",
+    "key": [
+      "order-5",
+      "83ead6a8c353aea7090724fdfb529914265446cb0ecbe2286794c7a45f1c293c",
+      1,
+      0
+    ],
+    "at": 533.95,
+    "latency_ms": null
+  },
+  {
+    "version": 323,
+    "kind": "route_vote",
+    "robot_id": "r1",
+    "call_id": "call-0012-r1",
+    "at": 537.5,
+    "action": {
+      "kind": "route_vote",
+      "choice": "GO",
+      "grip_epoch": 1,
+      "order_id": "order-5",
+      "peer_go_ref": null,
+      "route_hash": "83ead6a8c353aea7090724fdfb529914265446cb0ecbe2286794c7a45f1c293c",
+      "seg": 0
+    },
+    "latency_ms": 6837.435
+  },
+  {
+    "version": 323,
+    "kind": "route_vote",
+    "robot_id": "r2",
+    "call_id": "call-0013-r2",
+    "at": 538.6,
+    "action": {
+      "kind": "route_vote",
+      "choice": "GO",
+      "grip_epoch": 1,
+      "order_id": "order-5",
+      "peer_go_ref": null,
+      "route_hash": "83ead6a8c353aea7090724fdfb529914265446cb0ecbe2286794c7a45f1c293c",
+      "seg": 0
+    },
+    "latency_ms": 5624.835
+  },
+  {
+    "version": 323,
+    "kind": "continue",
+    "robot_id": "r1",
+    "call_id": "call-0014-r1",
+    "at": 540.25,
+    "action": {
+      "kind": "continue"
+    },
+    "latency_ms": 1819.015
+  },
+  {
+    "version": 323,
+    "kind": "route_vote",
+    "robot_id": "r1",
+    "call_id": "call-0016-r1",
+    "at": 543.85,
+    "action": {
+      "grip_epoch": 1,
+      "kind": "route_vote",
+      "order_id": "order-5",
+      "peer_go_ref": "call-0013-r2",
+      "route_hash": "83ead6a8c353aea7090724fdfb529914265446cb0ecbe2286794c7a45f1c293c",
+      "seg": 0,
+      "choice": "ACK"
+    },
+    "latency_ms": 3655.463
+  }
+]

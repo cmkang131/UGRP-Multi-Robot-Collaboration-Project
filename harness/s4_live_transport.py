@@ -17,7 +17,7 @@ URL = 'http://127.0.0.1:18391/v1/chat/completions'
 MAX_RELAY_SECONDS = 28800  # 7 h E2E plus setup/flush, bounded by the VM's 8 h guard.
 
 
-def validate_receipt(receipt, now=None, *, remote_url=URL):
+def validate_receipt(receipt, now=None, *, remote_url=URL, planner_selection=None):
     now = time.time() if now is None else now
     if remote_url not in (URL,'http://127.0.0.1:18393/v1/chat/completions'):
         raise HostError('unregistered loopback relay URL')
@@ -31,14 +31,31 @@ def validate_receipt(receipt, now=None, *, remote_url=URL):
             pinned = config(receipt.get('openrouter_v1', {}).get('provider_order', ()))
         except (ValueError, TypeError):
             raise HostError('registered OpenRouter profile required') from None
+        expected_cfg=dict(pinned,source_sha256=expected)
+        if planner_selection is not None:
+            from harness.task_planner_model import LING, GEMMA_FP4, GEMMA_JSON, DEEPSEEK
+            if planner_selection not in (LING,GEMMA_FP4,GEMMA_JSON,DEEPSEEK) or receipt.get('task_planner_v1') is not True:
+                raise HostError('registered Ling planner identity required')
+            if planner_selection in (GEMMA_FP4,GEMMA_JSON,DEEPSEEK) and receipt.get('openrouter_v1',{}).get('rate_limit_policy')!='planner_rate_limit_v1':
+                raise HostError('Gemma fp4 requires bounded planner rate policy')
+            expected_cfg=dict(config(selection=planner_selection,max_attempts=3 if planner_selection in (GEMMA_FP4,GEMMA_JSON,DEEPSEEK) else 1),source_sha256=expected,
+                selection_source_sha256=hashlib.sha256((Path(__file__).resolve().parents[1]/'harness/task_planner_model.py').read_bytes()).hexdigest())
+        if planner_selection is not None and receipt.get('openrouter_v1',{}).get('rate_limit_policy') in ('ling_rate_limit_v1','planner_rate_limit_v1'):
+            expected_cfg.update(config(selection=planner_selection,max_attempts=3,rate_limit_policy=receipt['openrouter_v1']['rate_limit_policy']))
         if (not single or receipt.get('single_model') is not True or receipt.get('fallback_enabled') is not False
-                or receipt.get('openrouter_v1') != dict(pinned,source_sha256=expected)):
+                or receipt.get('openrouter_v1') != expected_cfg):
             raise HostError('pinned OpenRouter identity required')
     if receipt.get('decider','off')!='off':
         paths=('scripts/jev_relay_upstream.py','harness/e2e_jev_decider.py','harness/jev_decider_eval.py')
         hashes={p:hashlib.sha256((Path(__file__).resolve().parents[1]/p).read_bytes()).hexdigest() for p in paths}
         if not openrouter or receipt.get('decider')!='jev_v1' or receipt.get('jev_source_sha256')!=hashes:
             raise HostError('pinned Jev relay source required')
+    if receipt.get('dialogue_decider','gemma_v0')!='gemma_v0':
+        paths=('scripts/d1_dialogue_upstream.py','harness/e2e_dialogue_decider.py','harness/e2e_llm_memory.py')
+        hashes={p:hashlib.sha256((Path(__file__).resolve().parents[1]/p).read_bytes()).hexdigest() for p in paths}
+        if (not openrouter or receipt.get('dialogue_decider') not in ('d1_v1','code_v1') or receipt.get('decider','off')!='off'
+                or receipt.get('d1_dialogue_source_sha256')!=hashes):
+            raise HostError('pinned d1 dialogue relay source required')
     if single and not openrouter and (receipt.get('single_model') is not True or receipt.get('fallback_enabled') is not False
                    or receipt.get('gemma_model_pin')!={'model_id':'gemma-4-31b-it','version':'001'}
                    or receipt.get('gemma_fallback',{}).get('image_input_confirmed') is not True):
@@ -67,12 +84,13 @@ def bind_openrouter_bundle(bundle, receipt_path):
 
 
 class TunnelLedger(PairLiveLedger):
-    def __init__(self, *, receipt, remote_url=URL, **kwargs):
+    def __init__(self, *, receipt, remote_url=URL, planner_selection=None, **kwargs):
+        self.planner_selection=planner_selection
         self.remote_url=remote_url
         self.receipt_path = Path(receipt)
         raw = self.receipt_path.read_bytes()
         self.receipt_sha256 = hashlib.sha256(raw).hexdigest()
-        self.receipt = validate_receipt(json.loads(raw),remote_url=remote_url)
+        self.receipt = validate_receipt(json.loads(raw),remote_url=remote_url,planner_selection=planner_selection)
         fallback_profile = 'dev_gemini_gemma_fallback_v1'
         requested = kwargs['profile'].get('profile_id', 'main_study_gemini_v1')
         offered = self.receipt.get('driver_profile', 'main_study_gemini_v1')
@@ -91,4 +109,4 @@ class TunnelLedger(PairLiveLedger):
         # The receiving Mac relay performs live PID/listener/source validation.
         if hashlib.sha256(self.receipt_path.read_bytes()).hexdigest() != self.receipt_sha256:
             raise HostError('S4 relay receipt changed during run')
-        validate_receipt(self.receipt,remote_url=self.remote_url)
+        validate_receipt(self.receipt,remote_url=self.remote_url,planner_selection=self.planner_selection)

@@ -1,0 +1,581 @@
+{
+  "PR": 461,
+  "classification": "dev",
+  "parent": "e2e18-v273",
+  "baseline": "r52-v273 continuing milestone",
+  "candidates": {
+    "275": "view5_v1 existing visual+metric gate with five prior eligible views",
+    "276": "view5_pan_v1 candidate views plus bounded stationary search-pan",
+    "277": "view5_restore_v1 candidate views plus own historical camera/body heading"
+  },
+  "seeds": [
+    61006
+  ],
+  "maximum_concurrent_vm3": 6,
+  "vm4_prohibited": true,
+  "keep_existing_r51_r52": true,
+  "launch_policy": "Use r51 natural termination slot and replace r50 only: launch v275/v277 now, v276 only after another slot naturally frees. Keep r52 runs and milestone.",
+  "criteria": [
+    "three fresh ORB/RANSAC+CSM consistent frames produce both real relook receipts",
+    "new own route and pair regrasp",
+    "start-to-end physical transport and all three completion criteria"
+  ],
+  "diagnosis": {
+    "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v273-s61006-r52/raw",
+    "phase": "relook after first carried segment",
+    "first_relook_sim_s_approx": 571,
+    "still_relook_sim_s": 726,
+    "first_carry_displacement_m": 0.4263645940218691,
+    "visual_comparison": [
+      {
+        "robot": "r1",
+        "current": {
+          "frame": 1510,
+          "t": 628.8,
+          "camera": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          },
+          "sha256": "199c35c7fd033d9249af55faff3f7c5d23e2be554d071146bc5b162c320c54a0"
+        },
+        "matches": [
+          {
+            "frame": 1332,
+            "t": 557.6,
+            "distance_m": 0.0,
+            "camera": {
+              "1": 1500,
+              "3": 981,
+              "4": 2152,
+              "5": 1917,
+              "6": 1500
+            },
+            "sha256": "2bc9d3faf7622c2019e16735600224c826c14d075e9882aef2785cf4e8ba7742",
+            "visual": {
+              "accepted": false,
+              "reason": "insufficient_features"
+            }
+          },
+          {
+            "frame": 1347,
+            "t": 563.6,
+            "distance_m": 0.0,
+            "camera": {
+              "1": 1500,
+              "3": 891,
+              "4": 2036,
+              "5": 2054,
+              "6": 1500
+            },
+            "sha256": "c25dad6ebd8e374df2ebe20c3b0458531e40011f03058ffe9c48d8bf0d0a240e",
+            "visual": {
+              "accepted": false,
+              "reason": "insufficient_features"
+            }
+          },
+          {
+            "frame": 194,
+            "t": 102.4,
+            "distance_m": 0.07775792767065114,
+            "camera": {
+              "1": 2000,
+              "3": 740,
+              "4": 2320,
+              "5": 1320,
+              "6": 1750
+            },
+            "sha256": "a9f7828b70f1117f540e73cc41bd6eb16145ce10e49830fecc9832cf4cff95df",
+            "visual": {
+              "accepted": false,
+              "reason": "insufficient_mutual_matches"
+            }
+          },
+          {
+            "frame": 179,
+            "t": 96.4,
+            "distance_m": 0.15792082241727506,
+            "camera": {
+              "1": 2000,
+              "3": 740,
+              "4": 2320,
+              "5": 1320,
+              "6": 1750
+            },
+            "sha256": "86f8912d40671ed907ddd7f185e3a102a3a547a32eb56ca1881eb32df412ce9e",
+            "visual": {
+              "accepted": false,
+              "reason": "insufficient_mutual_matches"
+            }
+          },
+          {
+            "frame": 209,
+            "t": 108.4,
+            "distance_m": 0.18097640806042523,
+            "camera": {
+              "1": 2000,
+              "3": 740,
+              "4": 2320,
+              "5": 1320,
+              "6": 1750
+            },
+            "sha256": "fcc1203ca5014c8403fc3f3a929cda3e0ef73d03e2c55f1415d2413175b9421a",
+            "visual": {
+              "accepted": false,
+              "reason": "insufficient_mutual_matches"
+            }
+          },
+          {
+            "frame": 1317,
+            "t": 551.6,
+            "distance_m": 0.2601969341029828,
+            "camera": {
+              "1": 1500,
+              "3": 896,
+              "4": 2035,
+              "5": 1894,
+              "6": 1500
+            },
+            "sha256": "068812cc05a27a7f4d2919641255b891e5d20748084866cc65696ba101dda320",
+            "visual": {
+              "accepted": false,
+              "reason": "insufficient_features"
+            }
+          },
+          {
+            "frame": 224,
+            "t": 114.4,
+            "distance_m": 0.3128321679978449,
+            "camera": {
+              "1": 2000,
+              "3": 740,
+              "4": 2320,
+              "5": 1320,
+              "6": 1750
+            },
+            "sha256": "e1406431715541ea56e44c66a031fda0b14bc175a0f75cbaedaa323e94bae2f2",
+            "visual": {
+              "accepted": false,
+              "reason": "insufficient_mutual_matches"
+            }
+          },
+          {
+            "frame": 164,
+            "t": 90.4,
+            "distance_m": 0.32022841651923967,
+            "camera": {
+              "1": 2000,
+              "3": 740,
+              "4": 2320,
+              "5": 1320,
+              "6": 1750
+            },
+            "sha256": "6c0358124aa20022ca922ee52eb1acf74599e5cfcafa205babd940a7068a999a",
+            "visual": {
+              "accepted": false,
+              "reason": "insufficient_mutual_matches"
+            }
+          },
+          {
+            "frame": 283,
+            "t": 138.0,
+            "distance_m": 0.5463305908715174,
+            "camera": {
+              "1": 2000,
+              "3": 740,
+              "4": 2320,
+              "5": 1320,
+              "6": 1500
+            },
+            "sha256": "520cff742bfbe399270826c974b27d4a9a7336d75a7c509317fbe0ac34ff87c3",
+            "visual": {
+              "accepted": false,
+              "reason": "insufficient_mutual_matches"
+            }
+          },
+          {
+            "frame": 684,
+            "t": 298.4,
+            "distance_m": 0.8246674543633221,
+            "camera": {
+              "1": 2000,
+              "3": 740,
+              "4": 2320,
+              "5": 1320,
+              "6": 1500
+            },
+            "sha256": "727d322b392b9ead429bb9555ec6d76bd678334856c54d989c594da5f7503594",
+            "visual": {
+              "accepted": false,
+              "reason": "insufficient_mutual_matches"
+            }
+          },
+          {
+            "frame": 683,
+            "t": 298.0,
+            "distance_m": 0.8273478941952617,
+            "camera": {
+              "1": 2000,
+              "3": 740,
+              "4": 2320,
+              "5": 1320,
+              "6": 1500
+            },
+            "sha256": "eced3eb9d6248c34e22e93851abd0dd152f5942f92ab7eaa0cd8abec35bd046b",
+            "visual": {
+              "accepted": false,
+              "reason": "insufficient_mutual_matches"
+            }
+          },
+          {
+            "frame": 685,
+            "t": 298.8,
+            "distance_m": 0.82791237664607,
+            "camera": {
+              "1": 2000,
+              "3": 740,
+              "4": 2320,
+              "5": 1320,
+              "6": 1500
+            },
+            "sha256": "5d7ca0f7de72a456cdc63ae3d65a07325e37bf14f649b528c8a0a9c3aa9f5fc9",
+            "visual": {
+              "accepted": false,
+              "reason": "insufficient_mutual_matches"
+            }
+          },
+          {
+            "frame": 680,
+            "t": 296.8,
+            "distance_m": 0.8280964215052221,
+            "camera": {
+              "1": 2000,
+              "3": 740,
+              "4": 2320,
+              "5": 1320,
+              "6": 1500
+            },
+            "sha256": "90fbb8a0cf6a08fae1848612066178ff02836e8a2ef84321147f9a2b1ec8df2d",
+            "visual": {
+              "accepted": false,
+              "reason": "insufficient_mutual_matches"
+            }
+          }
+        ],
+        "scope": "recorded RGB candidate comparison; actual pinned graph node unavailable while run active"
+      },
+      {
+        "robot": "r2",
+        "current": {
+          "frame": 1510,
+          "t": 628.8,
+          "camera": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          },
+          "sha256": "ebb85c7f0fb35aaa6d3e3d68eb72bb3b3850e4507db5eb14379d444eb6a128c5"
+        },
+        "matches": [
+          {
+            "frame": 1325,
+            "t": 554.8,
+            "distance_m": 0.28928168215273964,
+            "camera": {
+              "1": 1500,
+              "3": 896,
+              "4": 2035,
+              "5": 1894,
+              "6": 1500
+            },
+            "sha256": "157197ab152ae5edd5c99f46f004ce6abcb3bbff1bae1bc6f619caacc8290115",
+            "visual": {
+              "accepted": false,
+              "reason": "insufficient_features"
+            }
+          },
+          {
+            "frame": 1342,
+            "t": 561.6,
+            "distance_m": 0.2924304529531629,
+            "camera": {
+              "1": 1500,
+              "3": 891,
+              "4": 2036,
+              "5": 2054,
+              "6": 1500
+            },
+            "sha256": "0c10f904b2ac3fc1918ade0697091183758319b4abdcdad67b5d062f05f0e801",
+            "visual": {
+              "accepted": false,
+              "reason": "insufficient_features"
+            }
+          },
+          {
+            "frame": 1357,
+            "t": 567.6,
+            "distance_m": 0.2924304529531629,
+            "camera": {
+              "1": 1500,
+              "3": 807,
+              "4": 1897,
+              "5": 2187,
+              "6": 1500
+            },
+            "sha256": "c7554e84c688898a68344177ea118e15273a6a60c9d630c1a99e82a1b91e58a4",
+            "visual": {
+              "accepted": false,
+              "reason": "insufficient_features"
+            }
+          },
+          {
+            "frame": 464,
+            "t": 210.4,
+            "distance_m": 0.35088133576887975,
+            "camera": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1925
+            },
+            "sha256": "b523e36f9f9593f1ffdef5f2251cb63a15c507f18eef1d49ae8528e4e559d293",
+            "visual": {
+              "accepted": false,
+              "reason": "insufficient_mutual_matches"
+            }
+          },
+          {
+            "frame": 479,
+            "t": 216.4,
+            "distance_m": 0.35993418897446144,
+            "camera": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 2000
+            },
+            "sha256": "1e470eb45e13a7ea726b04df24b99b579560857311dcf12a4c8fe179e2f750e1",
+            "visual": {
+              "accepted": false,
+              "reason": "insufficient_mutual_matches"
+            }
+          },
+          {
+            "frame": 449,
+            "t": 204.4,
+            "distance_m": 0.3804277897358146,
+            "camera": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1809
+            },
+            "sha256": "76fef13772a6461e9b5a44199dc49859630a134b111782374277641da2092982",
+            "visual": {
+              "accepted": false,
+              "reason": "insufficient_mutual_matches"
+            }
+          },
+          {
+            "frame": 494,
+            "t": 222.4,
+            "distance_m": 0.38717914051059465,
+            "camera": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 2062
+            },
+            "sha256": "7025374d1c00cde2c438278a9fbd8932946b4bbdc369fca383aef5d9db52d411",
+            "visual": {
+              "accepted": false,
+              "reason": "insufficient_mutual_matches"
+            }
+          },
+          {
+            "frame": 433,
+            "t": 198.0,
+            "distance_m": 0.42752190975940696,
+            "camera": {
+              "1": 2000,
+              "3": 508,
+              "4": 2432,
+              "5": 1320,
+              "6": 1738
+            },
+            "sha256": "71913f6e380fa189fbc61f86c537c8730f075539497d76fc27bdeeac38653e40",
+            "visual": {
+              "accepted": false,
+              "reason": "insufficient_features"
+            }
+          },
+          {
+            "frame": 694,
+            "t": 302.4,
+            "distance_m": 0.7483338591937284,
+            "camera": {
+              "1": 2000,
+              "3": 740,
+              "4": 2320,
+              "5": 1320,
+              "6": 1500
+            },
+            "sha256": "645d93025f95230b6a34d9f3f4b955c1698a29e2daefa7b7e14e81de4fcba176",
+            "visual": {
+              "accepted": false,
+              "reason": "insufficient_mutual_matches"
+            }
+          },
+          {
+            "frame": 754,
+            "t": 326.4,
+            "distance_m": 0.7726567718509953,
+            "camera": {
+              "1": 2000,
+              "3": 740,
+              "4": 2320,
+              "5": 1320,
+              "6": 1500
+            },
+            "sha256": "79b99edc785f36fd23c4a4166d8877fba7d5eb99e5d02deb603b967debb68d4a",
+            "visual": {
+              "accepted": false,
+              "reason": "insufficient_mutual_matches"
+            }
+          },
+          {
+            "frame": 727,
+            "t": 315.6,
+            "distance_m": 0.7728655415411863,
+            "camera": {
+              "1": 2000,
+              "3": 740,
+              "4": 2320,
+              "5": 1320,
+              "6": 1500
+            },
+            "sha256": "c5673c451c23b09a9dcc03f702200d6f1a39f8d1daaf0d4363cbc957847544d4",
+            "visual": {
+              "accepted": false,
+              "reason": "insufficient_mutual_matches"
+            }
+          },
+          {
+            "frame": 752,
+            "t": 325.6,
+            "distance_m": 0.7728655415411863,
+            "camera": {
+              "1": 2000,
+              "3": 740,
+              "4": 2320,
+              "5": 1320,
+              "6": 1500
+            },
+            "sha256": "1d2a74e0d1d6cb55cdfea04f82aefbc4b7d95516493608668420c4d5f9d35d14",
+            "visual": {
+              "accepted": false,
+              "reason": "insufficient_mutual_matches"
+            }
+          },
+          {
+            "frame": 753,
+            "t": 326.0,
+            "distance_m": 0.7728764322762818,
+            "camera": {
+              "1": 2000,
+              "3": 740,
+              "4": 2320,
+              "5": 1320,
+              "6": 1500
+            },
+            "sha256": "ca59c010632c3b18aa803499e315add6f1eed94565c23ba2fe14f3ebe794697c",
+            "visual": {
+              "accepted": false,
+              "reason": "insufficient_mutual_matches"
+            }
+          }
+        ],
+        "scope": "recorded RGB candidate comparison; actual pinned graph node unavailable while run active"
+      }
+    ],
+    "code": "OwnRGBRelook.request pins one nearest pose node; observe refuses rejected ORB/CSM but provides no alternate candidate or active view",
+    "scope": "candidate own-RGB comparison; exact runtime pinned node not available before final trace; no weakened or fabricated receipt"
+  },
+  "standard": [
+    {
+      "url": "https://github.com/UZ-SLAMLab/ORB_SLAM3/blob/master/src/LoopClosing.cc",
+      "method": "retrieve multiple appearance candidates and geometrically verify each; reuse existing ORB/RANSAC+CSM rather than implement Sim3/BoW",
+      "verified": true
+    },
+    {
+      "url": "https://arxiv.org/abs/2007.11898",
+      "method": "place recognition retrieves candidate previous views with geometric verification",
+      "verified": true
+    },
+    {
+      "url": "https://github.com/utiasASRL/vtr3",
+      "method": "own prior visual teach/repeat views; existing local graph uses nearest-five candidate checks",
+      "verified": true
+    }
+  ],
+  "validation": {
+    "status": "passed",
+    "tests": 71,
+    "seconds": 107.33,
+    "files": [
+      "test_e2e_relook_search.py",
+      "test_e2e_setdown_relook.py",
+      "test_e2e_camera_hold.py"
+    ],
+    "output_sha256": "b0315136a635c1ee0b1750d540b3420fb1ecfd9837b92fa072c3dcd5502b3afc"
+  },
+  "reservation": {
+    "checked_unix": 1791857561.426351,
+    "rows": [
+      {
+        "ref": "origin/main",
+        "max_id": 225
+      },
+      {
+        "ref": "origin/codex/e2e18",
+        "max_id": 274
+      },
+      {
+        "ref": "origin/claude/e2e-bcones",
+        "max_id": 213
+      },
+      {
+        "ref": "origin/codex/ego-pose-continuity",
+        "max_id": 145
+      },
+      {
+        "ref": "origin/codex/egomap70-overview",
+        "max_id": 145
+      },
+      {
+        "ref": "origin/codex/real-robot-link",
+        "max_id": 2
+      },
+      {
+        "ref": "origin/codex/integ-target-backend",
+        "max_id": 101
+      }
+    ]
+  },
+  "parallel_comparison": {
+    "new_same_source": [
+      "v275",
+      "v277"
+    ],
+    "baseline": "v273-r52 continues on original SHA cf894f7c; not a same-source causal estimate",
+    "queued_until_natural_slot": "v276"
+  }
+}

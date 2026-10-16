@@ -1,0 +1,48 @@
+{
+  "bundle": "e2e18-v229",
+  "parent": "e2e18-v228",
+  "status": "CANDIDATE_TESTED_NOT_RUN",
+  "toggles": {
+    "align_progress": "dev_continue_v1",
+    "pregrasp_recovery": "bounded_search_v1"
+  },
+  "raw_evidence": "pregrasp-block-v225.json",
+  "cause": "Transport._align discarded freshly computed actions after75SIM when DEV observation_timeout returned empty; stale own beam and NoPath kept the same stop state",
+  "changes": [
+    "Keep computed actions after conservative timeout only DEV+toggle; strict/default unchanged",
+    "Fresh own camera reacquisition scans existing commanded search/p45/inspect postures plus bounded pan, no body movement while lost",
+    "Fresh own RGB station with NoPath logs would-stop and uses existing RPP direct approach only in DEV; no runtime ground truth"
+  ],
+  "tests": {
+    "command": "pytest -q tests/test_e2e_align_progress.py tests/test_e2e_carrier_axes.py tests/test_e2e_protocol_progress.py",
+    "passed": 19,
+    "wall_s": 13.06
+  },
+  "references": [
+    {
+      "url": "https://github.com/ros-navigation/docs.nav2.org/blob/rolling/docs/tutorials/general_tutorials/navigation2_dynamic_point_following/navigation2_dynamic_point_following.md",
+      "verified": "2026-10-12",
+      "application": "Nav2 target-loss bounded search; adapted to existing commanded camera postures instead of base rotation"
+    }
+  ],
+  "limitations": [
+    "No physical success yet",
+    "Known protocol-stage and route-cost toggles from v228 included; v228 itself superseded before gate or cohort"
+  ],
+  "seeds": [
+    61001,
+    61002,
+    61003,
+    61004,
+    61005,
+    61006,
+    61007,
+    61008,
+    61009,
+    61010,
+    61011,
+    61012
+  ],
+  "gate_limit": 3.0,
+  "planned_concurrency_per_vm": 6
+}

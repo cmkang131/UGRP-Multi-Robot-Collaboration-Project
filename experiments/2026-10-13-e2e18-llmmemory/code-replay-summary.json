@@ -1,0 +1,112 @@
+{
+  "schema": "ugrp.code_protocol_replay.v1",
+  "source_parent": "39c6a4ba442fb75fc2a9c500a3be4c1f991b6300",
+  "source_sha256": {
+    "harness/e2e_dialogue_decider.py": "216be0028c66ebd564303155d2d64a2b2a9275eaa9820c42715a911a3fdfb6a5",
+    "harness/e2e_llm_memory.py": "133c1a993559e649301e36926bd138a073b0fb8f21ec29a1c562dae22d77eacf",
+    "harness/e2e_dialogue.py": "02e0d4bec3258c306d6713f29059776947816070a8b69d8f7277a57070f9dba9",
+    "scripts/d1_dialogue_upstream.py": "6a09327c1ef3fa5814465c5229b543b5a49e3fbbbc6026c238580d636eec9c20",
+    "experiments/2026-10-13-e2e18-llmmemory/replay_code.py": "c2bc9b7d335e09c08ad0b003a8d48cbde727de3154d00d6a81af589a06221902"
+  },
+  "correct": 100,
+  "n": 100,
+  "go_correct": 30,
+  "go_n": 30,
+  "cases": [
+    {
+      "run": "e2e18-v304-s61006-r64",
+      "call_id": "call-0014-r1",
+      "expected": "continue",
+      "correct": 10,
+      "n": 10
+    },
+    {
+      "run": "e2e18-v320-s61006-r65",
+      "call_id": "call-0014-r1",
+      "expected": "continue",
+      "correct": 10,
+      "n": 10
+    },
+    {
+      "run": "e2e18-v321-s61006-r65",
+      "call_id": "call-0020-r2",
+      "expected": "continue",
+      "correct": 10,
+      "n": 10
+    },
+    {
+      "run": "e2e18-v321-s61006-r65",
+      "call_id": "call-0021-r1",
+      "expected": "GO",
+      "correct": 10,
+      "n": 10
+    },
+    {
+      "run": "e2e18-v321-s61006-r65",
+      "call_id": "call-0023-r1",
+      "expected": "GO",
+      "correct": 10,
+      "n": 10
+    },
+    {
+      "run": "e2e18-v321-s61006-r65",
+      "call_id": "call-0024-r2",
+      "expected": "continue",
+      "correct": 10,
+      "n": 10
+    },
+    {
+      "run": "e2e18-v321-s61006-r65",
+      "call_id": "call-0025-r1",
+      "expected": "GO",
+      "correct": 10,
+      "n": 10
+    },
+    {
+      "run": "e2e18-v321-s61006-r65",
+      "call_id": "call-0026-r2",
+      "expected": "continue",
+      "correct": 10,
+      "n": 10
+    },
+    {
+      "run": "e2e18-v322-s61006-r65",
+      "call_id": "call-0014-r1",
+      "expected": "continue",
+      "correct": 10,
+      "n": 10
+    },
+    {
+      "run": "e2e18-v323-s61006-r65",
+      "call_id": "call-0018-r1",
+      "expected": "continue",
+      "correct": 10,
+      "n": 10
+    }
+  ],
+  "latency_median_s": 0.00014587497571483254,
+  "decision_model_calls": 0,
+  "decision_cost_usd": 0,
+  "gemma_calls": 0,
+  "missing_observation": 100,
+  "scope": "10 saved requests x 10 deterministic repetitions, not 100 independent scenes; contract labels only; no physical grip labels or live completion",
+  "failures": [],
+  "other_development_replays": [
+    {
+      "batch": "llmmemory-code-replay-v1",
+      "correct": 100,
+      "n": 100,
+      "go_correct": 30,
+      "go_n": 30,
+      "decision_model_calls": 0
+    },
+    {
+      "batch": "llmmemory-code-replay-v2",
+      "correct": 100,
+      "n": 100,
+      "go_correct": 30,
+      "go_n": 30,
+      "decision_model_calls": 0
+    }
+  ]
+}

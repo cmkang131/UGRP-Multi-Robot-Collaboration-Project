@@ -1,0 +1,38 @@
+{
+  "checked_unix": 1791892257.156227,
+  "source": "Mac relay openrouter upstream ledger",
+  "ledger_path": "outputs/e2e18-admin/protocol-provider-r15/openrouter/ledger.jsonl",
+  "ledger_sha256": "6208f456828b36886336fa312db3ab709eebc2b20eb95d64f960ca8ef89c5c10",
+  "status_counts": {
+    "200": 506,
+    "402": 87
+  },
+  "first_failed_request": "e2e18-v377-s61006-r79:call-0037-r1:37",
+  "key_quota": {
+    "limit": 10,
+    "limit_remaining": 5.24530213,
+    "usage": 4.75469787,
+    "usage_daily": 4.12526373,
+    "usage_weekly": 4.69700571,
+    "usage_monthly": 4.75469787,
+    "is_free_tier": false,
+    "is_provisioning_key": false
+  },
+  "account_credits": {
+    "total_credits": 15,
+    "total_usage": 15.205301985,
+    "remaining": -0.2053019850000002
+  },
+  "cause": "Account credits exhausted; key-specific remaining quota is not account funds",
+  "relay_misclassification": "upstream 402 wrapped as 502; runs report S4_TUNNEL_RECOVERY_EXHAUSTED",
+  "remaining_actions": [
+    "r80 first30 SIM calls/tokens/cost projection",
+    "ARM verification for VM4 r77 outstanding"
+  ],
+  "resolution": {
+    "coordinator_comment_utc": "2026-10-13T11:51:38Z",
+    "credits_after_topup": 25,
+    "remaining_approx": 9.79,
+    "instruction": "Resume VM3 only 16 gate3.5; r79 whole batch HOST_ERROR excluded from control comparison; key remaining approx5.25"
+  }
+}

@@ -1,0 +1,852 @@
+{
+  "schema": "planner.r4.summary.v1",
+  "confirmation_seed": 2026101405,
+  "parser_frozen": true,
+  "tests_passed": 17,
+  "vm_execution": false,
+  "accounting": {
+    "client_attempts": 3564,
+    "http_receipts": 3556,
+    "upstream_attempts": 3556,
+    "provider_reported_usd": 1.36172777,
+    "receipts_unknown_cost": 0,
+    "client_unknown_cost_calls": 8,
+    "client_accounted_usd": 1.3777277700000035,
+    "http_statuses": {
+      "200": 3556
+    },
+    "audit_ids_without_receipt": [],
+    "receipt_ids_without_audit": []
+  },
+  "solo": {
+    "n": 24,
+    "N": 24,
+    "rule_n": 24,
+    "fallback": 0,
+    "calls": 24,
+    "cost_usd": 0.004512779999999995,
+    "unknown_cost_calls": 0,
+    "scope": "original 24 synthetic solo diagnostics; not fresh confirmation"
+  },
+  "source_shas": {
+    "dev": "c041ed7e58d1f25b091fd15e643b9435d6f50578",
+    "tuning": "ede50b2c597ee111dfdeb999b193483f3812bffd",
+    "confirmation": "ede50b2c597ee111dfdeb999b193483f3812bffd"
+  },
+  "limitations": [
+    "Geometric error is only a proxy for categorical corruption; task perception accuracy is unverified.",
+    "Tuning observations changed from r3; no causal ablation claim.",
+    "New confirmation uses compositional tuning vocabulary, not a broad unseen-vocabulary challenge.",
+    "Verification is not offered by every original task menu; absent-own counts are reported by domain.",
+    "No physical execution or VM submission in r4."
+  ],
+  "detailed_recount": "summary.json.zst",
+  "sets": {
+    "dev": {
+      "no_comm": {
+        "main": {
+          "n": 55,
+          "N": 200,
+          "rule_n": 52,
+          "effective_n": 55,
+          "fallback": 0,
+          "model_only_wins": 10,
+          "rule_only_wins": 7
+        },
+        "ambiguous": {
+          "n": 0,
+          "N": 0,
+          "rule_n": 0,
+          "effective_n": 0,
+          "fallback": 0,
+          "model_only_wins": 0,
+          "rule_only_wins": 0
+        },
+        "by_quality": {
+          "clear": {
+            "n": 8,
+            "N": 24,
+            "rule_n": 8,
+            "effective_n": 8,
+            "fallback": 0,
+            "model_only_wins": 1,
+            "rule_only_wins": 1
+          },
+          "correction": {
+            "n": 8,
+            "N": 23,
+            "rule_n": 7,
+            "effective_n": 8,
+            "fallback": 0,
+            "model_only_wins": 1,
+            "rule_only_wins": 0
+          },
+          "paraphrase": {
+            "n": 6,
+            "N": 22,
+            "rule_n": 7,
+            "effective_n": 6,
+            "fallback": 0,
+            "model_only_wins": 1,
+            "rule_only_wins": 2
+          },
+          "stale": {
+            "n": 13,
+            "N": 54,
+            "rule_n": 11,
+            "effective_n": 13,
+            "fallback": 0,
+            "model_only_wins": 3,
+            "rule_only_wins": 1
+          },
+          "uncertain": {
+            "n": 1,
+            "N": 21,
+            "rule_n": 2,
+            "effective_n": 1,
+            "fallback": 0,
+            "model_only_wins": 0,
+            "rule_only_wins": 1
+          },
+          "wrong": {
+            "n": 19,
+            "N": 56,
+            "rule_n": 17,
+            "effective_n": 19,
+            "fallback": 0,
+            "model_only_wins": 4,
+            "rule_only_wins": 2
+          }
+        },
+        "parse_failures": {
+          "n": 0,
+          "N": 0
+        }
+      },
+      "peer_en": {
+        "main": {
+          "n": 83,
+          "N": 200,
+          "rule_n": 83,
+          "effective_n": 83,
+          "fallback": 0,
+          "model_only_wins": 3,
+          "rule_only_wins": 3
+        },
+        "ambiguous": {
+          "n": 0,
+          "N": 0,
+          "rule_n": 0,
+          "effective_n": 0,
+          "fallback": 0,
+          "model_only_wins": 0,
+          "rule_only_wins": 0
+        },
+        "by_quality": {
+          "clear": {
+            "n": 20,
+            "N": 24,
+            "rule_n": 20,
+            "effective_n": 20,
+            "fallback": 0,
+            "model_only_wins": 0,
+            "rule_only_wins": 0
+          },
+          "correction": {
+            "n": 19,
+            "N": 23,
+            "rule_n": 18,
+            "effective_n": 19,
+            "fallback": 0,
+            "model_only_wins": 1,
+            "rule_only_wins": 0
+          },
+          "paraphrase": {
+            "n": 19,
+            "N": 22,
+            "rule_n": 20,
+            "effective_n": 19,
+            "fallback": 0,
+            "model_only_wins": 0,
+            "rule_only_wins": 1
+          },
+          "stale": {
+            "n": 11,
+            "N": 54,
+            "rule_n": 10,
+            "effective_n": 11,
+            "fallback": 0,
+            "model_only_wins": 2,
+            "rule_only_wins": 1
+          },
+          "uncertain": {
+            "n": 13,
+            "N": 21,
+            "rule_n": 14,
+            "effective_n": 13,
+            "fallback": 0,
+            "model_only_wins": 0,
+            "rule_only_wins": 1
+          },
+          "wrong": {
+            "n": 1,
+            "N": 56,
+            "rule_n": 1,
+            "effective_n": 1,
+            "fallback": 0,
+            "model_only_wins": 0,
+            "rule_only_wins": 0
+          }
+        },
+        "parse_failures": {
+          "n": 0,
+          "N": 200
+        }
+      }
+    },
+    "tuning": {
+      "leader_en": {
+        "main": {
+          "n": 181,
+          "N": 331,
+          "rule_n": 182,
+          "effective_n": 181,
+          "fallback": 0,
+          "model_only_wins": 4,
+          "rule_only_wins": 5
+        },
+        "ambiguous": {
+          "n": 51,
+          "N": 53,
+          "rule_n": 51,
+          "effective_n": 51,
+          "fallback": 0,
+          "model_only_wins": 0,
+          "rule_only_wins": 0
+        },
+        "by_quality": {
+          "clear": {
+            "n": 41,
+            "N": 54,
+            "rule_n": 42,
+            "effective_n": 41,
+            "fallback": 0,
+            "model_only_wins": 0,
+            "rule_only_wins": 1
+          },
+          "correction": {
+            "n": 43,
+            "N": 55,
+            "rule_n": 41,
+            "effective_n": 43,
+            "fallback": 0,
+            "model_only_wins": 2,
+            "rule_only_wins": 0
+          },
+          "paraphrase": {
+            "n": 44,
+            "N": 56,
+            "rule_n": 45,
+            "effective_n": 44,
+            "fallback": 0,
+            "model_only_wins": 0,
+            "rule_only_wins": 1
+          },
+          "stale": {
+            "n": 9,
+            "N": 54,
+            "rule_n": 10,
+            "effective_n": 9,
+            "fallback": 0,
+            "model_only_wins": 1,
+            "rule_only_wins": 2
+          },
+          "uncertain": {
+            "n": 43,
+            "N": 56,
+            "rule_n": 43,
+            "effective_n": 43,
+            "fallback": 0,
+            "model_only_wins": 1,
+            "rule_only_wins": 1
+          },
+          "wrong": {
+            "n": 1,
+            "N": 56,
+            "rule_n": 1,
+            "effective_n": 1,
+            "fallback": 0,
+            "model_only_wins": 0,
+            "rule_only_wins": 0
+          }
+        },
+        "parse_failures": {
+          "n": 0,
+          "N": 384
+        }
+      },
+      "no_comm": {
+        "main": {
+          "n": 95,
+          "N": 331,
+          "rule_n": 92,
+          "effective_n": 95,
+          "fallback": 3,
+          "model_only_wins": 14,
+          "rule_only_wins": 11
+        },
+        "ambiguous": {
+          "n": 48,
+          "N": 53,
+          "rule_n": 49,
+          "effective_n": 49,
+          "fallback": 1,
+          "model_only_wins": 0,
+          "rule_only_wins": 1
+        },
+        "by_quality": {
+          "clear": {
+            "n": 17,
+            "N": 54,
+            "rule_n": 17,
+            "effective_n": 17,
+            "fallback": 1,
+            "model_only_wins": 2,
+            "rule_only_wins": 2
+          },
+          "correction": {
+            "n": 16,
+            "N": 55,
+            "rule_n": 15,
+            "effective_n": 16,
+            "fallback": 0,
+            "model_only_wins": 1,
+            "rule_only_wins": 0
+          },
+          "paraphrase": {
+            "n": 15,
+            "N": 56,
+            "rule_n": 14,
+            "effective_n": 15,
+            "fallback": 2,
+            "model_only_wins": 3,
+            "rule_only_wins": 2
+          },
+          "stale": {
+            "n": 14,
+            "N": 54,
+            "rule_n": 11,
+            "effective_n": 14,
+            "fallback": 0,
+            "model_only_wins": 3,
+            "rule_only_wins": 0
+          },
+          "uncertain": {
+            "n": 15,
+            "N": 56,
+            "rule_n": 18,
+            "effective_n": 15,
+            "fallback": 0,
+            "model_only_wins": 1,
+            "rule_only_wins": 4
+          },
+          "wrong": {
+            "n": 18,
+            "N": 56,
+            "rule_n": 17,
+            "effective_n": 18,
+            "fallback": 0,
+            "model_only_wins": 4,
+            "rule_only_wins": 3
+          }
+        },
+        "parse_failures": {
+          "n": 0,
+          "N": 0
+        }
+      },
+      "peer_en": {
+        "main": {
+          "n": 184,
+          "N": 331,
+          "rule_n": 182,
+          "effective_n": 184,
+          "fallback": 0,
+          "model_only_wins": 5,
+          "rule_only_wins": 3
+        },
+        "ambiguous": {
+          "n": 50,
+          "N": 53,
+          "rule_n": 51,
+          "effective_n": 51,
+          "fallback": 1,
+          "model_only_wins": 0,
+          "rule_only_wins": 1
+        },
+        "by_quality": {
+          "clear": {
+            "n": 41,
+            "N": 54,
+            "rule_n": 42,
+            "effective_n": 41,
+            "fallback": 0,
+            "model_only_wins": 0,
+            "rule_only_wins": 1
+          },
+          "correction": {
+            "n": 43,
+            "N": 55,
+            "rule_n": 41,
+            "effective_n": 43,
+            "fallback": 0,
+            "model_only_wins": 2,
+            "rule_only_wins": 0
+          },
+          "paraphrase": {
+            "n": 45,
+            "N": 56,
+            "rule_n": 45,
+            "effective_n": 45,
+            "fallback": 0,
+            "model_only_wins": 0,
+            "rule_only_wins": 0
+          },
+          "stale": {
+            "n": 11,
+            "N": 54,
+            "rule_n": 10,
+            "effective_n": 11,
+            "fallback": 0,
+            "model_only_wins": 2,
+            "rule_only_wins": 1
+          },
+          "uncertain": {
+            "n": 43,
+            "N": 56,
+            "rule_n": 43,
+            "effective_n": 43,
+            "fallback": 0,
+            "model_only_wins": 1,
+            "rule_only_wins": 1
+          },
+          "wrong": {
+            "n": 1,
+            "N": 56,
+            "rule_n": 1,
+            "effective_n": 1,
+            "fallback": 0,
+            "model_only_wins": 0,
+            "rule_only_wins": 0
+          }
+        },
+        "parse_failures": {
+          "n": 0,
+          "N": 384
+        }
+      },
+      "structured": {
+        "main": {
+          "n": 179,
+          "N": 331,
+          "rule_n": 177,
+          "effective_n": 179,
+          "fallback": 0,
+          "model_only_wins": 12,
+          "rule_only_wins": 10
+        },
+        "ambiguous": {
+          "n": 51,
+          "N": 53,
+          "rule_n": 51,
+          "effective_n": 51,
+          "fallback": 0,
+          "model_only_wins": 0,
+          "rule_only_wins": 0
+        },
+        "by_quality": {
+          "clear": {
+            "n": 42,
+            "N": 54,
+            "rule_n": 41,
+            "effective_n": 42,
+            "fallback": 0,
+            "model_only_wins": 2,
+            "rule_only_wins": 1
+          },
+          "correction": {
+            "n": 36,
+            "N": 55,
+            "rule_n": 40,
+            "effective_n": 36,
+            "fallback": 0,
+            "model_only_wins": 2,
+            "rule_only_wins": 6
+          },
+          "paraphrase": {
+            "n": 43,
+            "N": 56,
+            "rule_n": 44,
+            "effective_n": 43,
+            "fallback": 0,
+            "model_only_wins": 0,
+            "rule_only_wins": 1
+          },
+          "stale": {
+            "n": 12,
+            "N": 54,
+            "rule_n": 10,
+            "effective_n": 12,
+            "fallback": 0,
+            "model_only_wins": 3,
+            "rule_only_wins": 1
+          },
+          "uncertain": {
+            "n": 44,
+            "N": 56,
+            "rule_n": 41,
+            "effective_n": 44,
+            "fallback": 0,
+            "model_only_wins": 4,
+            "rule_only_wins": 1
+          },
+          "wrong": {
+            "n": 2,
+            "N": 56,
+            "rule_n": 1,
+            "effective_n": 2,
+            "fallback": 0,
+            "model_only_wins": 1,
+            "rule_only_wins": 0
+          }
+        },
+        "parse_failures": {
+          "n": 0,
+          "N": 384
+        }
+      }
+    },
+    "confirmation": {
+      "leader_en": {
+        "main": {
+          "n": 187,
+          "N": 330,
+          "rule_n": 184,
+          "effective_n": 187,
+          "fallback": 0,
+          "model_only_wins": 8,
+          "rule_only_wins": 5
+        },
+        "ambiguous": {
+          "n": 52,
+          "N": 54,
+          "rule_n": 53,
+          "effective_n": 52,
+          "fallback": 0,
+          "model_only_wins": 0,
+          "rule_only_wins": 1
+        },
+        "by_quality": {
+          "clear": {
+            "n": 43,
+            "N": 54,
+            "rule_n": 44,
+            "effective_n": 43,
+            "fallback": 0,
+            "model_only_wins": 0,
+            "rule_only_wins": 1
+          },
+          "correction": {
+            "n": 40,
+            "N": 56,
+            "rule_n": 38,
+            "effective_n": 40,
+            "fallback": 0,
+            "model_only_wins": 2,
+            "rule_only_wins": 0
+          },
+          "paraphrase": {
+            "n": 47,
+            "N": 54,
+            "rule_n": 46,
+            "effective_n": 47,
+            "fallback": 0,
+            "model_only_wins": 1,
+            "rule_only_wins": 0
+          },
+          "stale": {
+            "n": 17,
+            "N": 56,
+            "rule_n": 17,
+            "effective_n": 17,
+            "fallback": 0,
+            "model_only_wins": 3,
+            "rule_only_wins": 3
+          },
+          "uncertain": {
+            "n": 39,
+            "N": 55,
+            "rule_n": 38,
+            "effective_n": 39,
+            "fallback": 0,
+            "model_only_wins": 2,
+            "rule_only_wins": 1
+          },
+          "wrong": {
+            "n": 1,
+            "N": 55,
+            "rule_n": 1,
+            "effective_n": 1,
+            "fallback": 0,
+            "model_only_wins": 0,
+            "rule_only_wins": 0
+          }
+        },
+        "parse_failures": {
+          "n": 0,
+          "N": 384
+        }
+      },
+      "no_comm": {
+        "main": {
+          "n": 91,
+          "N": 330,
+          "rule_n": 85,
+          "effective_n": 91,
+          "fallback": 3,
+          "model_only_wins": 16,
+          "rule_only_wins": 10
+        },
+        "ambiguous": {
+          "n": 50,
+          "N": 54,
+          "rule_n": 51,
+          "effective_n": 51,
+          "fallback": 1,
+          "model_only_wins": 0,
+          "rule_only_wins": 1
+        },
+        "by_quality": {
+          "clear": {
+            "n": 18,
+            "N": 54,
+            "rule_n": 19,
+            "effective_n": 18,
+            "fallback": 2,
+            "model_only_wins": 3,
+            "rule_only_wins": 4
+          },
+          "correction": {
+            "n": 13,
+            "N": 56,
+            "rule_n": 9,
+            "effective_n": 13,
+            "fallback": 0,
+            "model_only_wins": 5,
+            "rule_only_wins": 1
+          },
+          "paraphrase": {
+            "n": 15,
+            "N": 54,
+            "rule_n": 15,
+            "effective_n": 15,
+            "fallback": 1,
+            "model_only_wins": 1,
+            "rule_only_wins": 1
+          },
+          "stale": {
+            "n": 18,
+            "N": 56,
+            "rule_n": 18,
+            "effective_n": 18,
+            "fallback": 0,
+            "model_only_wins": 3,
+            "rule_only_wins": 3
+          },
+          "uncertain": {
+            "n": 15,
+            "N": 55,
+            "rule_n": 15,
+            "effective_n": 15,
+            "fallback": 0,
+            "model_only_wins": 1,
+            "rule_only_wins": 1
+          },
+          "wrong": {
+            "n": 12,
+            "N": 55,
+            "rule_n": 9,
+            "effective_n": 12,
+            "fallback": 0,
+            "model_only_wins": 3,
+            "rule_only_wins": 0
+          }
+        },
+        "parse_failures": {
+          "n": 0,
+          "N": 0
+        }
+      },
+      "peer_en": {
+        "main": {
+          "n": 189,
+          "N": 330,
+          "rule_n": 184,
+          "effective_n": 189,
+          "fallback": 0,
+          "model_only_wins": 8,
+          "rule_only_wins": 3
+        },
+        "ambiguous": {
+          "n": 52,
+          "N": 54,
+          "rule_n": 53,
+          "effective_n": 52,
+          "fallback": 0,
+          "model_only_wins": 0,
+          "rule_only_wins": 1
+        },
+        "by_quality": {
+          "clear": {
+            "n": 44,
+            "N": 54,
+            "rule_n": 44,
+            "effective_n": 44,
+            "fallback": 0,
+            "model_only_wins": 0,
+            "rule_only_wins": 0
+          },
+          "correction": {
+            "n": 40,
+            "N": 56,
+            "rule_n": 38,
+            "effective_n": 40,
+            "fallback": 0,
+            "model_only_wins": 2,
+            "rule_only_wins": 0
+          },
+          "paraphrase": {
+            "n": 47,
+            "N": 54,
+            "rule_n": 46,
+            "effective_n": 47,
+            "fallback": 0,
+            "model_only_wins": 1,
+            "rule_only_wins": 0
+          },
+          "stale": {
+            "n": 17,
+            "N": 56,
+            "rule_n": 17,
+            "effective_n": 17,
+            "fallback": 0,
+            "model_only_wins": 3,
+            "rule_only_wins": 3
+          },
+          "uncertain": {
+            "n": 40,
+            "N": 55,
+            "rule_n": 38,
+            "effective_n": 40,
+            "fallback": 0,
+            "model_only_wins": 2,
+            "rule_only_wins": 0
+          },
+          "wrong": {
+            "n": 1,
+            "N": 55,
+            "rule_n": 1,
+            "effective_n": 1,
+            "fallback": 0,
+            "model_only_wins": 0,
+            "rule_only_wins": 0
+          }
+        },
+        "parse_failures": {
+          "n": 0,
+          "N": 384
+        }
+      },
+      "structured": {
+        "main": {
+          "n": 169,
+          "N": 330,
+          "rule_n": 177,
+          "effective_n": 169,
+          "fallback": 0,
+          "model_only_wins": 9,
+          "rule_only_wins": 17
+        },
+        "ambiguous": {
+          "n": 52,
+          "N": 54,
+          "rule_n": 53,
+          "effective_n": 52,
+          "fallback": 0,
+          "model_only_wins": 0,
+          "rule_only_wins": 1
+        },
+        "by_quality": {
+          "clear": {
+            "n": 39,
+            "N": 54,
+            "rule_n": 41,
+            "effective_n": 39,
+            "fallback": 0,
+            "model_only_wins": 1,
+            "rule_only_wins": 3
+          },
+          "correction": {
+            "n": 36,
+            "N": 56,
+            "rule_n": 38,
+            "effective_n": 36,
+            "fallback": 0,
+            "model_only_wins": 2,
+            "rule_only_wins": 4
+          },
+          "paraphrase": {
+            "n": 41,
+            "N": 54,
+            "rule_n": 44,
+            "effective_n": 41,
+            "fallback": 0,
+            "model_only_wins": 1,
+            "rule_only_wins": 4
+          },
+          "stale": {
+            "n": 17,
+            "N": 56,
+            "rule_n": 17,
+            "effective_n": 17,
+            "fallback": 0,
+            "model_only_wins": 3,
+            "rule_only_wins": 3
+          },
+          "uncertain": {
+            "n": 35,
+            "N": 55,
+            "rule_n": 36,
+            "effective_n": 35,
+            "fallback": 0,
+            "model_only_wins": 2,
+            "rule_only_wins": 3
+          },
+          "wrong": {
+            "n": 1,
+            "N": 55,
+            "rule_n": 1,
+            "effective_n": 1,
+            "fallback": 0,
+            "model_only_wins": 0,
+            "rule_only_wins": 0
+          }
+        },
+        "parse_failures": {
+          "n": 0,
+          "N": 384
+        }
+      }
+    }
+  }
+}

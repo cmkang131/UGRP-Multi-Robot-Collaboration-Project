@@ -1,0 +1,134 @@
+{
+  "PR": 461,
+  "classification": "dev",
+  "candidates": {
+    "266": "matched station20 baseline",
+    "267": "back3 without terminal station shim (parent264)",
+    "268": "back3 plus station20 (parent266)",
+    "269": "back6 plus station20 (parent266)"
+  },
+  "seeds": [
+    61006,
+    61007
+  ],
+  "maximum_concurrent_each_vm": 6,
+  "continuing": [
+    "r49-v265",
+    "r49-v266"
+  ],
+  "replace": [
+    "r48-v262",
+    "r48-v263",
+    "r48-v264",
+    "r49-v264"
+  ],
+  "criteria": [
+    "fresh uncut own RGB band after bounded reset",
+    "two robots ready then paired physical grasp (all four finger contacts and cargo z>0.06m)",
+    "LLM operated, own observed map/route complete, start-to-end transport"
+  ],
+  "diagnosis": {
+    "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v264-s61007-r48/raw/robots/r1/rgb/01537.jpg",
+    "frame_id": 1538,
+    "sim_s": 698.0,
+    "image_sha256": "66e41e559a5f373bb8be3c6abbb21bf2048599ee0ca0b87962511871a94200dc",
+    "observation": {
+      "visible": true,
+      "reason": "BAND_CLIPPED",
+      "end_visible": false,
+      "points": 10250,
+      "axis_heading_rad": 0.35292265834839337,
+      "near_end_base_m": [
+        0.20814157483626675,
+        0.00955605482056044
+      ],
+      "grip_base_m": [
+        0.23629257070952306,
+        0.019925308956895704
+      ],
+      "visible_length_m": 0.2009339182889336,
+      "lateral_spread_m": 0.011862620461095777,
+      "provenance": "own_rgb_lime_hue+issued_pwm_camera_fk+beam_top_plane",
+      "perception": "owncam_pair_beam_perception_v2",
+      "band": {
+        "near_m": -0.0343,
+        "far_m": -0.0011,
+        "length_m": 0.0332,
+        "points": 3812,
+        "touches_invalid_border": true
+      },
+      "grip_source": "band_clipped"
+    },
+    "code": "harness/e2e_live_mapping.py Robot._receive admits only visible+end_visible; e2e_carrier_approach.advance lost_search repeats near station; e2e_live_transport._align requires both ready before close/lift",
+    "rejected_candidate": "1px actual invalid border still BAND_CLIPPED; do not relax grasp perception",
+    "scope": "own RGB and commanded camera pose; no measured joint, contact or simulator state in controller"
+  },
+  "standard": {
+    "source": "https://api.nav2.org/nav2-rolling/html/docking__server_8cpp_source.html",
+    "method": "Nav2 docking resetApproach returns to staging after perception/control failure. Adapt recovery to existing calibrated reverse pulses, bounded count and move-settle-new-image gate.",
+    "verified": true
+  },
+  "parameters": {
+    "reverse_u": -0.35,
+    "duration_s": 0.1,
+    "calibrated_mean_forward_m": -0.012917157771402163,
+    "pulse_caps": [
+      3,
+      6
+    ],
+    "predicted_total_reverse_m": [
+      0.03875147331420649,
+      0.07750294662841298
+    ],
+    "minimum_settle_s": 0.5,
+    "final_grasp_tolerances_unchanged": true
+  },
+  "reservation": {
+    "checked_unix": 1791852217.205725,
+    "rows": [
+      {
+        "ref": "origin/main",
+        "max_id": 225
+      },
+      {
+        "ref": "origin/codex/e2e18",
+        "max_id": 266
+      },
+      {
+        "ref": "origin/claude/e2e-bcones",
+        "max_id": 213
+      },
+      {
+        "ref": "origin/codex/ego-pose-continuity",
+        "max_id": 145
+      },
+      {
+        "ref": "origin/codex/egomap70-overview",
+        "max_id": 145
+      },
+      {
+        "ref": "origin/codex/real-robot-link",
+        "max_id": 2
+      },
+      {
+        "ref": "origin/codex/integ-target-backend",
+        "max_id": 101
+      }
+    ]
+  },
+  "storage": {
+    "per_run_mib": 1024,
+    "previous_max_full1800_sim_bytes": 552397666,
+    "total_reserved_runs_each_vm": 6,
+    "includes_new_and_continuing_remaining": true,
+    "arm_other_reserved_mib": 2048,
+    "mac_per_run_mib": 80
+  },
+  "validation": {
+    "related_tests_passed": 48,
+    "seconds": 70.66,
+    "additional_registration_check": "3 passed, 33 deselected in 8.53s; v267/v268/v269 require_current and source closure",
+    "simulation_claim": false,
+    "total_passed": 51
+  }
+}

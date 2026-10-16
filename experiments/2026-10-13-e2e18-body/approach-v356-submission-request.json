@@ -1,0 +1,28 @@
+{
+  "schema": "ugrp.supervisor_submission_request.v1",
+  "execute": false,
+  "source_sha": "3c3364f8b28b8841995ecaff88748cdad7539fd0",
+  "bundle": "e2e18-v356",
+  "parent": "e2e18-v354",
+  "seed": 61006,
+  "flags_relative_to_parent": [
+    "--approach-efficiency",
+    "regulated_v1"
+  ],
+  "vm": "azure3",
+  "submitter": "supervisor_only",
+  "max_worker_concurrency": "supervisor decides",
+  "deadline_kst": "2026-10-13T22:00:00+09:00",
+  "requested_comparison": "v354 vs v356 same seed/host load",
+  "body_relay_required": false,
+  "checks": [
+    "first 30 SIM raw actual-issued decisions/stop intervals/errors",
+    "align start to evaluated joint grasp SIM time",
+    "actual extra-pulse counts and camera settle budgets",
+    "reacquisition gaps and oscillations",
+    "E2E delivery separately"
+  ],
+  "status": "ready_for_supervisor_submission_not_executed",
+  "local_tests": "36/36 in 3 files",
+  "evidence": "approach-v356-summary.json"
+}

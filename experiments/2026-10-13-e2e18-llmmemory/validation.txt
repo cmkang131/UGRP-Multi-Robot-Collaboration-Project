@@ -1,0 +1,5 @@
+python3 -m pytest -q -rs tests/test_e2e_llm_memory.py tests/test_e2e_vote_ref.py tests/test_e2e_s4_live.py
+62 passed, 1 skipped in 29.96s
+SKIPPED tests/test_e2e_s4_live.py:92: could not import mujoco: import of mujoco halted; None in sys.modules
+git diff --check: passed
+No new provider calls, simulation, rendering or physical execution.

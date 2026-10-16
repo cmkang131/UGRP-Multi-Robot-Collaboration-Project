@@ -68,7 +68,11 @@ class PhysicsBackend(Evaluation):
         from sim.e2e_speed3_profile import enter_contact, contact_command
         # Drive actions are high-level commands; the existing parent converts
         # them to bounded port pulses before validation. Only inspect arm here.
-        if self.bundle['e2e_options'].get('speed3')=='adaptive_v1' and contact_command(action):
+        from sim.e2e_stage_physics import enabled as stage_enabled,update as stage_update
+        if stage_enabled(self):
+            if action.get('kind')=='arm':self.ports[rid].validate_action(action)
+            stage_update(self,getattr(self,'_stage_phase','mapping'),action,robot_id=rid)
+        elif self.bundle['e2e_options'].get('speed3')=='adaptive_v1' and contact_command(action):
             self.ports[rid].validate_action(action)
             enter_contact(self,action)
         return super().issue(rid,action)

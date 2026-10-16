@@ -1,0 +1,1097 @@
+{
+  "candidates": [
+    {
+      "id": 260,
+      "option": "off"
+    },
+    {
+      "id": 261,
+      "option": "path10_v1"
+    },
+    {
+      "id": 262,
+      "option": "path20_v1"
+    }
+  ],
+  "parent": "e2e18-v260",
+  "seed": 61006,
+  "host": "azure3",
+  "reason": "Straight-only pulse port keeps the continuous RPP 0.785rad rotate threshold. At 276-294.8 SIM it proposed forward motion with 0.723-0.767rad path error and blocked projected sweep, followed by backup. Test tighter rotate-before-forward thresholds without mixed-axis uncalibrated commands.",
+  "source": "harness/e2e_rpp_path.py:57; harness/e2e_carrier_approach.py",
+  "geometry": {
+    "beam_half_length_m": 0.3,
+    "grip_from_center_m": 0.27,
+    "base_to_grip_m": 0.2032,
+    "body_half_length_with_padding_m": 0.14,
+    "nominal_axial_clearance_m": 0.03319999999999998,
+    "recorded_lateral_error_m": 0.21663224629935954
+  },
+  "criteria": [
+    "fresh correct-end visual servo and both-robot ready",
+    "actual paired held cargo and complete carried setdown",
+    "all tilt and host failures included"
+  ],
+  "raw_diagnostic": {
+    "run": "e2e18-v260-s61006-r46",
+    "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v260-s61006-r46/raw",
+    "sha256_uncompressed": "12d454f10e2c727c008d54b94ec0b8a7cba41eb6c80af8f3a48f1b23ee7a0422",
+    "evaluation_only": true,
+    "rows": [
+      {
+        "t": 265.2,
+        "status": "recover_backup",
+        "distance": 0.33779936789111925,
+        "bearing": null,
+        "projected_clear": null,
+        "body_error": null,
+        "actual_xy": [
+          1.5672619758890305,
+          -0.16374116782128198
+        ],
+        "own_xy": [
+          0.47888004802465334,
+          -0.16027139047226166
+        ]
+      },
+      {
+        "t": 265.6,
+        "status": "recover_backup",
+        "distance": 0.34033093827764005,
+        "bearing": null,
+        "projected_clear": null,
+        "body_error": null,
+        "actual_xy": [
+          1.5669502341702146,
+          -0.17497397911945944
+        ],
+        "own_xy": [
+          0.4813465070328926,
+          -0.15830272455050742
+        ]
+      },
+      {
+        "t": 276.0,
+        "status": "navigate_pregrasp",
+        "distance": 0.3122014441395902,
+        "bearing": -0.7668718612891235,
+        "projected_clear": false,
+        "body_error": [
+          0.22481150234393993,
+          -0.21663224629935954
+        ],
+        "actual_xy": [
+          1.5705758296497,
+          -0.2100825469237296
+        ],
+        "own_xy": [
+          0.516240403263726,
+          -0.18021539565079644
+        ]
+      },
+      {
+        "t": 276.4,
+        "status": "navigate_pregrasp",
+        "distance": 0.3122014441395902,
+        "bearing": -0.7668718612891235,
+        "projected_clear": false,
+        "body_error": [
+          0.22481150234393993,
+          -0.21663224629935954
+        ],
+        "actual_xy": [
+          1.5703171079915452,
+          -0.2097345099648069
+        ],
+        "own_xy": [
+          0.5263399202754638,
+          -0.17215224616178718
+        ]
+      },
+      {
+        "t": 277.2,
+        "status": "navigate_pregrasp",
+        "distance": 0.3016675317282965,
+        "bearing": -0.6867574811951855,
+        "projected_clear": false,
+        "body_error": [
+          0.23328129441826947,
+          -0.19126718843957385
+        ],
+        "actual_xy": [
+          1.5700621866406863,
+          -0.21000894526563715
+        ],
+        "own_xy": [
+          0.5244855203102713,
+          -0.17548275052641568
+        ]
+      },
+      {
+        "t": 277.6,
+        "status": "navigate_pregrasp",
+        "distance": 0.3043104759083063,
+        "bearing": -0.6858528755207829,
+        "projected_clear": false,
+        "body_error": [
+          0.23549953978971883,
+          -0.1927299470927404
+        ],
+        "actual_xy": [
+          1.5684261578410212,
+          -0.19707760039572797
+        ],
+        "own_xy": [
+          0.5215661564357003,
+          -0.1754250587811597
+        ]
+      },
+      {
+        "t": 278.4,
+        "status": "navigate_pregrasp",
+        "distance": 0.30722529997643383,
+        "bearing": -0.6843016701785626,
+        "projected_clear": false,
+        "body_error": [
+          0.23805680259755446,
+          -0.19420696095309958
+        ],
+        "actual_xy": [
+          1.56757321792138,
+          -0.18528101073105707
+        ],
+        "own_xy": [
+          0.5215661564357003,
+          -0.1754250587811597
+        ]
+      },
+      {
+        "t": 279.2,
+        "status": "navigate_pregrasp",
+        "distance": 0.30722529997643383,
+        "bearing": -0.6843016701785626,
+        "projected_clear": false,
+        "body_error": [
+          0.23805680259755446,
+          -0.19420696095309958
+        ],
+        "actual_xy": [
+          1.5661714052339348,
+          -0.17618161994413664
+        ],
+        "own_xy": [
+          0.5166660696497045,
+          -0.17138485708334236
+        ]
+      },
+      {
+        "t": 279.6,
+        "status": "navigate_pregrasp",
+        "distance": 0.3124488957762412,
+        "bearing": -0.6845995891747994,
+        "projected_clear": false,
+        "body_error": [
+          0.2420455091373892,
+          -0.19758108203523556
+        ],
+        "actual_xy": [
+          1.5661729986975457,
+          -0.17618701062616518
+        ],
+        "own_xy": [
+          0.5127345904303051,
+          -0.1668109775041092
+        ]
+      },
+      {
+        "t": 280.0,
+        "status": "navigate_pregrasp",
+        "distance": 0.31680469063513506,
+        "bearing": -0.6862901250969257,
+        "projected_clear": false,
+        "body_error": [
+          0.2450807978864166,
+          -0.20075012955358473
+        ],
+        "actual_xy": [
+          1.566171436002804,
+          -0.17617782357751777
+        ],
+        "own_xy": [
+          0.5130902982956377,
+          -0.16571811905325654
+        ]
+      },
+      {
+        "t": 280.8,
+        "status": "navigate_pregrasp",
+        "distance": 0.3165658633186118,
+        "bearing": -0.6871961779515088,
+        "projected_clear": false,
+        "body_error": [
+          0.2447141869505502,
+          -0.2008205978573642
+        ],
+        "actual_xy": [
+          1.5643505176191523,
+          -0.15241923345965663
+        ],
+        "own_xy": [
+          0.5130902982956377,
+          -0.16571811905325654
+        ]
+      },
+      {
+        "t": 281.2,
+        "status": "navigate_pregrasp",
+        "distance": 0.3165658633186118,
+        "bearing": -0.6871961779515088,
+        "projected_clear": false,
+        "body_error": [
+          0.2447141869505502,
+          -0.2008205978573642
+        ],
+        "actual_xy": [
+          1.563671424858562,
+          -0.14017295247330117
+        ],
+        "own_xy": [
+          0.524114815108915,
+          -0.15897462940869847
+        ]
+      },
+      {
+        "t": 281.6,
+        "status": "navigate_pregrasp",
+        "distance": 0.30642690784941523,
+        "bearing": -0.712632330578388,
+        "projected_clear": false,
+        "body_error": [
+          0.2318559000416602,
+          -0.20035042168666795
+        ],
+        "actual_xy": [
+          1.5638036925000864,
+          -0.14045520542255818
+        ],
+        "own_xy": [
+          0.5351413126130793,
+          -0.15223437894279193
+        ]
+      },
+      {
+        "t": 282.0,
+        "status": "navigate_pregrasp",
+        "distance": 0.2965021366138217,
+        "bearing": -0.7398000555946712,
+        "projected_clear": false,
+        "body_error": [
+          0.21899747555484753,
+          -0.1998840231663485
+        ],
+        "actual_xy": [
+          1.563804561214784,
+          -0.1404438078913582
+        ],
+        "own_xy": [
+          0.5461697898564085,
+          -0.14549736823730358
+        ]
+      },
+      {
+        "t": 282.4,
+        "status": "navigate_pregrasp",
+        "distance": 0.28681378596986407,
+        "bearing": -0.7688361434810806,
+        "projected_clear": false,
+        "body_error": [
+          0.2061389145999521,
+          -0.19942140233666159
+        ],
+        "actual_xy": [
+          1.5629679501485731,
+          -0.129529230987189
+        ],
+        "own_xy": [
+          0.5572002458870096,
+          -0.13876359787372017
+        ]
+      },
+      {
+        "t": 284.0,
+        "status": "navigate_pregrasp",
+        "distance": 0.27632505662363516,
+        "bearing": -0.6909499521217276,
+        "projected_clear": false,
+        "body_error": [
+          0.21294741443878745,
+          -0.17609354219246795
+        ],
+        "actual_xy": [
+          1.5589821558420585,
+          -0.09644296678757122
+        ],
+        "own_xy": [
+          0.5579213475033723,
+          -0.14041437881614116
+        ]
+      },
+      {
+        "t": 284.4,
+        "status": "navigate_pregrasp",
+        "distance": 0.27632505662363516,
+        "bearing": -0.6909499521217276,
+        "projected_clear": false,
+        "body_error": [
+          0.21294741443878745,
+          -0.17609354219246795
+        ],
+        "actual_xy": [
+          1.5581837479143141,
+          -0.09763536692642212
+        ],
+        "own_xy": [
+          0.5540334032123276,
+          -0.13750329307928502
+        ]
+      },
+      {
+        "t": 284.8,
+        "status": "navigate_pregrasp",
+        "distance": 0.2807532161901852,
+        "bearing": -0.6894294055018869,
+        "projected_clear": false,
+        "body_error": [
+          0.2166317347936122,
+          -0.17858628133606155
+        ],
+        "actual_xy": [
+          1.5581084479498057,
+          -0.09765089239988378
+        ],
+        "own_xy": [
+          0.5555744445720535,
+          -0.13888053996656538
+        ]
+      },
+      {
+        "t": 285.2,
+        "status": "navigate_pregrasp",
+        "distance": 0.2789476628905193,
+        "bearing": -0.689605272083853,
+        "projected_clear": false,
+        "body_error": [
+          0.21520734474453818,
+          -0.17747562480545973
+        ],
+        "actual_xy": [
+          1.5581098433647111,
+          -0.09765252593975468
+        ],
+        "own_xy": [
+          0.5616781912499024,
+          -0.14325245184798308
+        ]
+      },
+      {
+        "t": 285.6,
+        "status": "navigate_pregrasp",
+        "distance": 0.27205491181468805,
+        "bearing": -0.6948764304505213,
+        "projected_clear": false,
+        "body_error": [
+          0.20897430880207474,
+          -0.1741941827478541
+        ],
+        "actual_xy": [
+          1.5591354850446741,
+          -0.08605324110967447
+        ],
+        "own_xy": [
+          0.5632891780489233,
+          -0.1445152774494931
+        ]
+      },
+      {
+        "t": 286.4,
+        "status": "navigate_pregrasp",
+        "distance": 0.27021893676762787,
+        "bearing": -0.6922846935727037,
+        "projected_clear": false,
+        "body_error": [
+          0.20801175723288023,
+          -0.1724800934621633
+        ],
+        "actual_xy": [
+          1.5626924488428753,
+          -0.06208338054709722
+        ],
+        "own_xy": [
+          0.5632891780489233,
+          -0.1445152774494931
+        ]
+      },
+      {
+        "t": 287.2,
+        "status": "navigate_pregrasp",
+        "distance": 0.27021893676762787,
+        "bearing": -0.6922846935727037,
+        "projected_clear": false,
+        "body_error": [
+          0.20801175723288023,
+          -0.1724800934621633
+        ],
+        "actual_xy": [
+          1.5642144797162951,
+          -0.05038384401354183
+        ],
+        "own_xy": [
+          0.5632891780489233,
+          -0.1445152774494931
+        ]
+      },
+      {
+        "t": 287.6,
+        "status": "navigate_pregrasp",
+        "distance": 0.27021893676762787,
+        "bearing": -0.6922846935727037,
+        "projected_clear": false,
+        "body_error": [
+          0.20801175723288023,
+          -0.1724800934621633
+        ],
+        "actual_xy": [
+          1.564215683348157,
+          -0.05037740263336251
+        ],
+        "own_xy": [
+          0.5748919817119454,
+          -0.1388240938546813
+        ]
+      },
+      {
+        "t": 288.0,
+        "status": "navigate_pregrasp",
+        "distance": 0.26013986544278905,
+        "bearing": -0.7225003146718899,
+        "projected_clear": false,
+        "body_error": [
+          0.19514514576441946,
+          -0.1720207013041624
+        ],
+        "actual_xy": [
+          1.5642190807100342,
+          -0.05035241754921619
+        ],
+        "own_xy": [
+          0.5748919817119454,
+          -0.1388240938546813
+        ]
+      },
+      {
+        "t": 288.4,
+        "status": "navigate_pregrasp",
+        "distance": 0.26013986544278905,
+        "bearing": -0.7225003146718899,
+        "projected_clear": false,
+        "body_error": [
+          0.19514514576441946,
+          -0.1720207013041624
+        ],
+        "actual_xy": [
+          1.565603867956825,
+          -0.04194692723929491
+        ],
+        "own_xy": [
+          0.5748847965768381,
+          -0.13884945481710326
+        ]
+      },
+      {
+        "t": 288.8,
+        "status": "navigate_pregrasp",
+        "distance": 0.2601409319671601,
+        "bearing": -0.7237437637870532,
+        "projected_clear": false,
+        "body_error": [
+          0.1949318951480857,
+          -0.17226392756093292
+        ],
+        "actual_xy": [
+          1.5682587078610457,
+          -0.04072940534570384
+        ],
+        "own_xy": [
+          0.5746209950151232,
+          -0.1386893860870285
+        ]
+      },
+      {
+        "t": 289.2,
+        "status": "navigate_pregrasp",
+        "distance": 0.2604348230824903,
+        "bearing": -0.7235182022201183,
+        "projected_clear": false,
+        "body_error": [
+          0.19519101218564253,
+          -0.1724145174744643
+        ],
+        "actual_xy": [
+          1.5690506588349284,
+          -0.039595151160986594
+        ],
+        "own_xy": [
+          0.5746209950151232,
+          -0.1386893860870285
+        ]
+      },
+      {
+        "t": 289.6,
+        "status": "navigate_pregrasp",
+        "distance": 0.2604348230824903,
+        "bearing": -0.7235182022201183,
+        "projected_clear": false,
+        "body_error": [
+          0.19519101218564253,
+          -0.1724145174744643
+        ],
+        "actual_xy": [
+          1.5686862633084004,
+          -0.03859522247137212
+        ],
+        "own_xy": [
+          0.5746209950151232,
+          -0.1386893860870285
+        ]
+      },
+      {
+        "t": 290.0,
+        "status": "navigate_pregrasp",
+        "distance": 0.2604348230824903,
+        "bearing": -0.7235182022201183,
+        "projected_clear": false,
+        "body_error": [
+          0.19519101218564253,
+          -0.1724145174744643
+        ],
+        "actual_xy": [
+          1.5686003522792735,
+          -0.037605999148026356
+        ],
+        "own_xy": [
+          0.5745745545777131,
+          -0.1386603136158949
+        ]
+      },
+      {
+        "t": 290.4,
+        "status": "navigate_pregrasp",
+        "distance": 0.2604867729857828,
+        "bearing": -0.7234484532868762,
+        "projected_clear": false,
+        "body_error": [
+          0.1952419753157776,
+          -0.17243529213980538
+        ],
+        "actual_xy": [
+          1.5687610019580809,
+          -0.03654972933126196
+        ],
+        "own_xy": [
+          0.5745745545777131,
+          -0.1386603136158949
+        ]
+      },
+      {
+        "t": 290.8,
+        "status": "navigate_pregrasp",
+        "distance": 0.2604867729857828,
+        "bearing": -0.7234484532868762,
+        "projected_clear": false,
+        "body_error": [
+          0.1952419753157776,
+          -0.17243529213980538
+        ],
+        "actual_xy": [
+          1.5689535504826946,
+          -0.03552851285174643
+        ],
+        "own_xy": [
+          0.5745743854504007,
+          -0.13866020620952452
+        ]
+      },
+      {
+        "t": 291.2,
+        "status": "navigate_pregrasp",
+        "distance": 0.260486962537353,
+        "bearing": -0.7234482733219478,
+        "projected_clear": false,
+        "body_error": [
+          0.19524214842219878,
+          -0.17243538248114984
+        ],
+        "actual_xy": [
+          1.5688943527910364,
+          -0.034458393840584474
+        ],
+        "own_xy": [
+          0.5745743854504007,
+          -0.13866020620952452
+        ]
+      },
+      {
+        "t": 291.6,
+        "status": "navigate_pregrasp",
+        "distance": 0.260486962537353,
+        "bearing": -0.7234482733219478,
+        "projected_clear": false,
+        "body_error": [
+          0.19524214842219878,
+          -0.17243538248114984
+        ],
+        "actual_xy": [
+          1.5691441502778816,
+          -0.033362379360258015
+        ],
+        "own_xy": [
+          0.5745743854504007,
+          -0.13866020620952452
+        ]
+      },
+      {
+        "t": 292.0,
+        "status": "navigate_pregrasp",
+        "distance": 0.260486962537353,
+        "bearing": -0.7234482733219478,
+        "projected_clear": false,
+        "body_error": [
+          0.19524214842219878,
+          -0.17243538248114984
+        ],
+        "actual_xy": [
+          1.5686969765640437,
+          -0.03177522891655541
+        ],
+        "own_xy": [
+          0.5745738423688211,
+          -0.13865986530169655
+        ]
+      },
+      {
+        "t": 292.4,
+        "status": "navigate_pregrasp",
+        "distance": 0.26048757027181696,
+        "bearing": -0.723447500298214,
+        "projected_clear": false,
+        "body_error": [
+          0.19524273723280353,
+          -0.1724356338578463
+        ],
+        "actual_xy": [
+          1.5688928917367697,
+          -0.03108519536128185
+        ],
+        "own_xy": [
+          0.5745738278950333,
+          -0.1386598566897782
+        ]
+      },
+      {
+        "t": 292.8,
+        "status": "navigate_pregrasp",
+        "distance": 0.2604875863579354,
+        "bearing": -0.7234474564902955,
+        "projected_clear": false,
+        "body_error": [
+          0.19524275684384673,
+          -0.17243563595323727
+        ],
+        "actual_xy": [
+          1.5697275701322804,
+          -0.03010956244059561
+        ],
+        "own_xy": [
+          0.5745937148016659,
+          -0.13867218529020706
+        ]
+      },
+      {
+        "t": 293.2,
+        "status": "navigate_pregrasp",
+        "distance": 0.2604653682855499,
+        "bearing": -0.7234781639902279,
+        "projected_clear": false,
+        "body_error": [
+          0.19522080906733488,
+          -0.17242692302312393
+        ],
+        "actual_xy": [
+          1.5700807867158753,
+          -0.0288604682070876
+        ],
+        "own_xy": [
+          0.5745944880130697,
+          -0.13867266993671143
+        ]
+      },
+      {
+        "t": 293.6,
+        "status": "navigate_pregrasp",
+        "distance": 0.26046450320137315,
+        "bearing": -0.7234792967292518,
+        "projected_clear": false,
+        "body_error": [
+          0.19521996536586916,
+          -0.17242657147460466
+        ],
+        "actual_xy": [
+          1.5699456925973139,
+          -0.028045150045339175
+        ],
+        "own_xy": [
+          0.5745944880130697,
+          -0.13867266993671143
+        ]
+      },
+      {
+        "t": 294.0,
+        "status": "navigate_pregrasp",
+        "distance": 0.26046450320137315,
+        "bearing": -0.7234792967292518,
+        "projected_clear": false,
+        "body_error": [
+          0.19521996536586916,
+          -0.17242657147460466
+        ],
+        "actual_xy": [
+          1.5694490625979918,
+          -0.02698540913572075
+        ],
+        "own_xy": [
+          0.5745946623793988,
+          -0.13867278015142162
+        ]
+      },
+      {
+        "t": 294.4,
+        "status": "navigate_pregrasp",
+        "distance": 0.260464307901287,
+        "bearing": -0.7234795069647755,
+        "projected_clear": false,
+        "body_error": [
+          0.19521978273692214,
+          -0.17242648322878176
+        ],
+        "actual_xy": [
+          1.5685381385674793,
+          -0.02552270750101428
+        ],
+        "own_xy": [
+          0.574621140991224,
+          -0.1386895501142383
+        ]
+      },
+      {
+        "t": 294.8,
+        "status": "navigate_pregrasp",
+        "distance": 0.2604346428109058,
+        "bearing": -0.7235185582130216,
+        "projected_clear": false,
+        "body_error": [
+          0.1951908156971587,
+          -0.17241446761661827
+        ],
+        "actual_xy": [
+          1.567322602952084,
+          -0.02339591825053547
+        ],
+        "own_xy": [
+          0.5747037730444873,
+          -0.13874230528996326
+        ]
+      },
+      {
+        "t": 295.2,
+        "status": "recover_backup",
+        "distance": 0.2603419708599062,
+        "bearing": null,
+        "projected_clear": null,
+        "body_error": null,
+        "actual_xy": [
+          1.5663907192032105,
+          -0.021508452897818234
+        ],
+        "own_xy": [
+          0.5747298309248968,
+          -0.13875800459349405
+        ]
+      },
+      {
+        "t": 295.6,
+        "status": "recover_backup",
+        "distance": 0.2603129665830312,
+        "bearing": null,
+        "projected_clear": null,
+        "body_error": null,
+        "actual_xy": [
+          1.5658899215104214,
+          -0.019751511241246533
+        ],
+        "own_xy": [
+          0.57473040497508,
+          -0.13875836454736418
+        ]
+      },
+      {
+        "t": 296.0,
+        "status": "recover_backup",
+        "distance": 0.26031232433416823,
+        "bearing": null,
+        "projected_clear": null,
+        "body_error": null,
+        "actual_xy": [
+          1.565567564495611,
+          -0.018628372620403733
+        ],
+        "own_xy": [
+          0.5747426719110391,
+          -0.1387660250658271
+        ]
+      },
+      {
+        "t": 296.4,
+        "status": "recover_backup",
+        "distance": 0.26029860742391536,
+        "bearing": null,
+        "projected_clear": null,
+        "body_error": null,
+        "actual_xy": [
+          1.5651756603645337,
+          -0.03215717563368692
+        ],
+        "own_xy": [
+          0.5747330734281058,
+          -0.1387600651916018
+        ]
+      },
+      {
+        "t": 296.8,
+        "status": "recover_backup",
+        "distance": 0.26030933246169796,
+        "bearing": null,
+        "projected_clear": null,
+        "body_error": null,
+        "actual_xy": [
+          1.566077830201296,
+          -0.04321208524422431
+        ],
+        "own_xy": [
+          0.57475131335399,
+          -0.1387717531827923
+        ]
+      },
+      {
+        "t": 297.2,
+        "status": "recover_backup",
+        "distance": 0.2602888671343881,
+        "bearing": null,
+        "projected_clear": null,
+        "body_error": null,
+        "actual_xy": [
+          1.5670838153753406,
+          -0.05583213538840879
+        ],
+        "own_xy": [
+          0.563153353196566,
+          -0.1444728007829532
+        ]
+      },
+      {
+        "t": 297.6,
+        "status": "recover_backup",
+        "distance": 0.2703605668652422,
+        "bearing": null,
+        "projected_clear": null,
+        "body_error": null,
+        "actual_xy": [
+          1.567749798976822,
+          -0.06775902690617036
+        ],
+        "own_xy": [
+          0.5629449000513936,
+          -0.14434667280977387
+        ]
+      },
+      {
+        "t": 298.0,
+        "status": "recover_backup",
+        "distance": 0.2705903590680974,
+        "bearing": null,
+        "projected_clear": null,
+        "body_error": null,
+        "actual_xy": [
+          1.568582708349234,
+          -0.07964536164561298
+        ],
+        "own_xy": [
+          0.5513457135756141,
+          -0.1500452249638378
+        ]
+      },
+      {
+        "t": 298.4,
+        "status": "recover_backup",
+        "distance": 0.2808950619714626,
+        "bearing": null,
+        "projected_clear": null,
+        "body_error": null,
+        "actual_xy": [
+          1.5706796589846093,
+          -0.09229445400416152
+        ],
+        "own_xy": [
+          0.5397482017753776,
+          -0.1557471845915337
+        ]
+      },
+      {
+        "t": 298.8,
+        "status": "recover_backup",
+        "distance": 0.291406408590243,
+        "bearing": null,
+        "projected_clear": null,
+        "body_error": null,
+        "actual_xy": [
+          1.571375841876195,
+          -0.10487357965137872
+        ],
+        "own_xy": [
+          0.5281523656516923,
+          -0.16145255120071236
+        ]
+      },
+      {
+        "t": 299.2,
+        "status": "recover_backup",
+        "distance": 0.30210282899024954,
+        "bearing": null,
+        "projected_clear": null,
+        "body_error": null,
+        "actual_xy": [
+          1.5722958405879572,
+          -0.11676888743739337
+        ],
+        "own_xy": [
+          0.5165582062054213,
+          -0.1671613242989304
+        ]
+      },
+      {
+        "t": 299.6,
+        "status": "recover_backup",
+        "distance": 0.3129653467100626,
+        "bearing": null,
+        "projected_clear": null,
+        "body_error": null,
+        "actual_xy": [
+          1.5727443726699903,
+          -0.1284941032750326
+        ],
+        "own_xy": [
+          0.5049657244372828,
+          -0.17287350339345073
+        ]
+      },
+      {
+        "t": 300.0,
+        "status": "recover_backup",
+        "distance": 0.3001139613343916,
+        "bearing": null,
+        "projected_clear": null,
+        "body_error": null,
+        "actual_xy": [
+          1.5735433328708244,
+          -0.1409833674517551
+        ],
+        "own_xy": [
+          0.4933749213478509,
+          -0.17858908799124185
+        ]
+      }
+    ]
+  },
+  "references": [
+    {
+      "url": "https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/controller_plugins/configuring_rotation_shim_controller/",
+      "verified": true,
+      "use": "Tighter heading alignment before handing off to the single-axis straight pulse; values 0.1/0.2 are DEV candidates, not claimed upstream defaults."
+    },
+    {
+      "url": "https://docs.nav2.org/jazzy/configuration_and_development/configuration_guide/controller_plugins/configuring_regulated_pp/",
+      "verified": true,
+      "use": "RPP ordinarily follows path curvature; the existing calibrated port has no simultaneous angular velocity."
+    }
+  ],
+  "reservation": {
+    "checked_unix": 1791836057.523796,
+    "rows": [
+      {
+        "ref": "origin/main",
+        "max_id": 225
+      },
+      {
+        "ref": "origin/codex/e2e18",
+        "max_id": 260
+      },
+      {
+        "ref": "origin/claude/e2e-bcones",
+        "max_id": 213
+      },
+      {
+        "ref": "origin/codex/ego-pose-continuity",
+        "max_id": 145
+      },
+      {
+        "ref": "origin/codex/egomap70-overview",
+        "max_id": 145
+      },
+      {
+        "ref": "origin/codex/real-robot-link",
+        "max_id": 2
+      },
+      {
+        "ref": "origin/codex/integ-target-backend",
+        "max_id": 101
+      }
+    ]
+  },
+  "validation": {
+    "tests": [
+      "test_e2e_approach_heading.py",
+      "test_e2e_rpp_path.py",
+      "test_e2e_camera_hold.py"
+    ],
+    "passed": 40,
+    "physics": false
+  },
+  "axis_diagnostic": {
+    "samples": 41,
+    "maximum_undirected_axis_error_deg": 20.67348233605977,
+    "example": {
+      "t": 300.0,
+      "camera": "inspect",
+      "status": "recover_backup",
+      "correct_end": null,
+      "distance": 0.3001139613343916,
+      "grip": [
+        0.26694861928421393,
+        0.0046635519925646175
+      ],
+      "rgb_axis": 1.4332759288884962,
+      "eval_relative_axis": -1.5816077767780574,
+      "undirected_axis_error_deg": -7.259887942544554
+    },
+    "feedback_to_control": false,
+    "ownmap_sha256_at_check": "60e8a6ffa93f51f5cc469d8294a28e332814f514a2d177eb07d96924f5181dfb"
+  }
+}

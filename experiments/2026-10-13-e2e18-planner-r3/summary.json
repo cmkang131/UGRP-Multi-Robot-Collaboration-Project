@@ -1,0 +1,638 @@
+{
+  "schema": "ugrp.task_planner.evidence_gate.r3",
+  "gate": "on_v1",
+  "default": "off",
+  "source_sha": "961a4947",
+  "confirmation_seed": 2026101303,
+  "tuning_set_reused": true,
+  "confirmation_independent_physical_data": false,
+  "bundles": [
+    387,
+    388
+  ],
+  "vm": "not_submitted; after PR475/476",
+  "conditions": {
+    "tuning": {
+      "arms": {
+        "no_comm": {
+          "model": {
+            "n": 139,
+            "N": 331
+          },
+          "effective": {
+            "n": 139,
+            "N": 331
+          },
+          "ambiguous": {
+            "n": 51,
+            "N": 53
+          },
+          "same_input_rule": {
+            "n": 123,
+            "N": 331
+          },
+          "subsets": {
+            "stale": {
+              "model": {
+                "n": 17,
+                "N": 54
+              },
+              "rule": {
+                "n": 17,
+                "N": 54
+              }
+            },
+            "wrong": {
+              "model": {
+                "n": 27,
+                "N": 56
+              },
+              "rule": {
+                "n": 22,
+                "N": 56
+              }
+            }
+          },
+          "wait": {
+            "n": 17,
+            "N": 38
+          },
+          "help_uncertain": {
+            "n": 3,
+            "N": 7
+          },
+          "failures": 0,
+          "rule_off": {
+            "n": 123,
+            "N": 331
+          },
+          "rule_ambiguous": {
+            "n": 50,
+            "N": 53
+          },
+          "paired": {
+            "both_correct": 118,
+            "model_only": 21,
+            "rule_only": 5,
+            "both_incorrect": 187
+          },
+          "failures_by_quality": {}
+        },
+        "structured": {
+          "model": {
+            "n": 221,
+            "N": 331
+          },
+          "effective": {
+            "n": 221,
+            "N": 331
+          },
+          "ambiguous": {
+            "n": 52,
+            "N": 53
+          },
+          "same_input_rule": {
+            "n": 222,
+            "N": 331
+          },
+          "subsets": {
+            "stale": {
+              "model": {
+                "n": 17,
+                "N": 54
+              },
+              "rule": {
+                "n": 17,
+                "N": 54
+              }
+            },
+            "wrong": {
+              "model": {
+                "n": 0,
+                "N": 56
+              },
+              "rule": {
+                "n": 0,
+                "N": 56
+              }
+            }
+          },
+          "wait": {
+            "n": 27,
+            "N": 38
+          },
+          "help_uncertain": {
+            "n": 6,
+            "N": 7
+          },
+          "failures": 0,
+          "rule_off": {
+            "n": 222,
+            "N": 331
+          },
+          "rule_ambiguous": {
+            "n": 51,
+            "N": 53
+          },
+          "paired": {
+            "both_correct": 216,
+            "model_only": 5,
+            "rule_only": 6,
+            "both_incorrect": 104
+          },
+          "failures_by_quality": {}
+        },
+        "peer_en": {
+          "model": {
+            "n": 232,
+            "N": 331
+          },
+          "effective": {
+            "n": 232,
+            "N": 331
+          },
+          "ambiguous": {
+            "n": 53,
+            "N": 53
+          },
+          "same_input_rule": {
+            "n": 231,
+            "N": 331
+          },
+          "subsets": {
+            "stale": {
+              "model": {
+                "n": 17,
+                "N": 54
+              },
+              "rule": {
+                "n": 17,
+                "N": 54
+              }
+            },
+            "wrong": {
+              "model": {
+                "n": 0,
+                "N": 56
+              },
+              "rule": {
+                "n": 0,
+                "N": 56
+              }
+            }
+          },
+          "wait": {
+            "n": 27,
+            "N": 38
+          },
+          "help_uncertain": {
+            "n": 5,
+            "N": 7
+          },
+          "failures": 0,
+          "rule_off": {
+            "n": 231,
+            "N": 331
+          },
+          "rule_ambiguous": {
+            "n": 51,
+            "N": 53
+          },
+          "paired": {
+            "both_correct": 228,
+            "model_only": 4,
+            "rule_only": 3,
+            "both_incorrect": 96
+          },
+          "failures_by_quality": {}
+        },
+        "leader_en": {
+          "model": {
+            "n": 231,
+            "N": 331
+          },
+          "effective": {
+            "n": 231,
+            "N": 331
+          },
+          "ambiguous": {
+            "n": 53,
+            "N": 53
+          },
+          "same_input_rule": {
+            "n": 231,
+            "N": 331
+          },
+          "subsets": {
+            "stale": {
+              "model": {
+                "n": 16,
+                "N": 54
+              },
+              "rule": {
+                "n": 17,
+                "N": 54
+              }
+            },
+            "wrong": {
+              "model": {
+                "n": 0,
+                "N": 56
+              },
+              "rule": {
+                "n": 0,
+                "N": 56
+              }
+            }
+          },
+          "wait": {
+            "n": 27,
+            "N": 38
+          },
+          "help_uncertain": {
+            "n": 5,
+            "N": 7
+          },
+          "failures": 0,
+          "rule_off": {
+            "n": 231,
+            "N": 331
+          },
+          "rule_ambiguous": {
+            "n": 51,
+            "N": 53
+          },
+          "paired": {
+            "both_correct": 227,
+            "model_only": 4,
+            "rule_only": 4,
+            "both_incorrect": 96
+          },
+          "failures_by_quality": {}
+        }
+      },
+      "solo": {
+        "n": 24,
+        "N": 24
+      },
+      "requests": 1568,
+      "budget": {
+        "calls": 1568,
+        "accounted_usd": 0.37898229000000216,
+        "unknown_cost_calls": 0
+      },
+      "usage": {
+        "prompt_tokens": 4681217,
+        "completion_tokens": 93334,
+        "total_tokens": 4774551
+      },
+      "changed_inputs": 0,
+      "changed_systems": 0,
+      "changed_solo_inputs": 0,
+      "frozen_rule_english_parser": {
+        "parsed": 384,
+        "unparsed": 0
+      }
+    },
+    "confirmation": {
+      "arms": {
+        "no_comm": {
+          "model": {
+            "n": 133,
+            "N": 331
+          },
+          "effective": {
+            "n": 133,
+            "N": 331
+          },
+          "ambiguous": {
+            "n": 52,
+            "N": 53
+          },
+          "same_input_rule": {
+            "n": 119,
+            "N": 331
+          },
+          "subsets": {
+            "stale": {
+              "model": {
+                "n": 28,
+                "N": 56
+              },
+              "rule": {
+                "n": 24,
+                "N": 56
+              }
+            },
+            "wrong": {
+              "model": {
+                "n": 16,
+                "N": 55
+              },
+              "rule": {
+                "n": 15,
+                "N": 55
+              }
+            }
+          },
+          "wait": {
+            "n": 19,
+            "N": 42
+          },
+          "help_uncertain": {
+            "n": 1,
+            "N": 7
+          },
+          "failures": 0,
+          "rule_off": {
+            "n": 119,
+            "N": 331
+          },
+          "rule_ambiguous": {
+            "n": 52,
+            "N": 53
+          },
+          "paired": {
+            "both_correct": 113,
+            "model_only": 20,
+            "rule_only": 6,
+            "both_incorrect": 192
+          },
+          "failures_by_quality": {}
+        },
+        "structured": {
+          "model": {
+            "n": 228,
+            "N": 331
+          },
+          "effective": {
+            "n": 228,
+            "N": 331
+          },
+          "ambiguous": {
+            "n": 52,
+            "N": 53
+          },
+          "same_input_rule": {
+            "n": 229,
+            "N": 331
+          },
+          "subsets": {
+            "stale": {
+              "model": {
+                "n": 24,
+                "N": 56
+              },
+              "rule": {
+                "n": 24,
+                "N": 56
+              }
+            },
+            "wrong": {
+              "model": {
+                "n": 0,
+                "N": 55
+              },
+              "rule": {
+                "n": 0,
+                "N": 55
+              }
+            }
+          },
+          "wait": {
+            "n": 32,
+            "N": 42
+          },
+          "help_uncertain": {
+            "n": 7,
+            "N": 7
+          },
+          "failures": 0,
+          "rule_off": {
+            "n": 229,
+            "N": 331
+          },
+          "rule_ambiguous": {
+            "n": 52,
+            "N": 53
+          },
+          "paired": {
+            "both_correct": 221,
+            "model_only": 7,
+            "rule_only": 8,
+            "both_incorrect": 95
+          },
+          "failures_by_quality": {}
+        },
+        "peer_en": {
+          "model": {
+            "n": 228,
+            "N": 331
+          },
+          "effective": {
+            "n": 228,
+            "N": 331
+          },
+          "ambiguous": {
+            "n": 52,
+            "N": 53
+          },
+          "same_input_rule": {
+            "n": 173,
+            "N": 331
+          },
+          "subsets": {
+            "stale": {
+              "model": {
+                "n": 22,
+                "N": 56
+              },
+              "rule": {
+                "n": 24,
+                "N": 56
+              }
+            },
+            "wrong": {
+              "model": {
+                "n": 3,
+                "N": 55
+              },
+              "rule": {
+                "n": 11,
+                "N": 55
+              }
+            }
+          },
+          "wait": {
+            "n": 31,
+            "N": 42
+          },
+          "help_uncertain": {
+            "n": 5,
+            "N": 7
+          },
+          "failures": 0,
+          "rule_off": {
+            "n": 173,
+            "N": 331
+          },
+          "rule_ambiguous": {
+            "n": 52,
+            "N": 53
+          },
+          "paired": {
+            "both_correct": 159,
+            "model_only": 69,
+            "rule_only": 14,
+            "both_incorrect": 89
+          },
+          "failures_by_quality": {}
+        },
+        "leader_en": {
+          "model": {
+            "n": 230,
+            "N": 331
+          },
+          "effective": {
+            "n": 230,
+            "N": 331
+          },
+          "ambiguous": {
+            "n": 52,
+            "N": 53
+          },
+          "same_input_rule": {
+            "n": 173,
+            "N": 331
+          },
+          "subsets": {
+            "stale": {
+              "model": {
+                "n": 25,
+                "N": 56
+              },
+              "rule": {
+                "n": 24,
+                "N": 56
+              }
+            },
+            "wrong": {
+              "model": {
+                "n": 2,
+                "N": 55
+              },
+              "rule": {
+                "n": 11,
+                "N": 55
+              }
+            }
+          },
+          "wait": {
+            "n": 31,
+            "N": 42
+          },
+          "help_uncertain": {
+            "n": 6,
+            "N": 7
+          },
+          "failures": 0,
+          "rule_off": {
+            "n": 173,
+            "N": 331
+          },
+          "rule_ambiguous": {
+            "n": 52,
+            "N": 53
+          },
+          "paired": {
+            "both_correct": 161,
+            "model_only": 69,
+            "rule_only": 12,
+            "both_incorrect": 89
+          },
+          "failures_by_quality": {}
+        }
+      },
+      "solo": {
+        "n": 24,
+        "N": 24
+      },
+      "requests": 1567,
+      "budget": {
+        "calls": 1567,
+        "accounted_usd": 0.3742813000000019,
+        "unknown_cost_calls": 0
+      },
+      "usage": {
+        "prompt_tokens": 4673610,
+        "completion_tokens": 93380,
+        "total_tokens": 4766990
+      },
+      "changed_inputs": 0,
+      "changed_systems": 0,
+      "changed_solo_inputs": 0,
+      "frozen_rule_english_parser": {
+        "parsed": 231,
+        "unparsed": 153
+      }
+    }
+  },
+  "accounting": {
+    "http_requests": 3135,
+    "upstream_attempts": 3135,
+    "http_statuses": {
+      "200": 3135
+    },
+    "known_usd": 0.75326359,
+    "unknown_cost_calls": 0,
+    "path": "/Users/changmin/projects/ugrp-wt/e2e18-planner/outputs/task-planner-r3-upstream-20261013/openrouter/ledger.jsonl",
+    "sha256": "cf12af6a25717b2402fd057c73404e122fa996ad6a61169c39c64408f80ca4b4"
+  },
+  "tests": {
+    "passed": 27,
+    "physics": false
+  },
+  "limitations": [
+    "No own observations in coordinator synthetic source; fresh wrong reports cannot be disproved.",
+    "Confirmation uses new seed/new phrases but same synthetic algebra and latent-state cycle.",
+    "Native execution is unverified."
+  ],
+  "new_solo_confirmation": {
+    "seed": 2026101303,
+    "N": 24,
+    "n": 24,
+    "rule_n": 24,
+    "fallback": 0,
+    "called": true,
+    "budget": {
+      "calls": 24,
+      "accounted_usd": 0.005204059999999999,
+      "unknown_cost_calls": 0
+    },
+    "source": "new authored synthetic destination/route/approach cases; not physical",
+    "source_sha": "6ccb006d07f3b0735f5ebfdb7edb1b669c2aac39",
+    "generator_sha256": "3d1064a0f22321a20d69ee0f7b133a130ed42de7dbb326971e7e44f5b11f984f",
+    "changed_inputs": 0
+  },
+  "repeated_solo_scope": "24 per main batch are prior diagnostic replays, not fresh confirmation",
+  "all_provider_accounting": {
+    "http_requests": 3159,
+    "upstream_attempts": 3159,
+    "known_usd": 0.75846765,
+    "unknown_cost_calls": 0,
+    "http_statuses": {
+      "200": 3159
+    }
+  },
+  "new_solo_raw": {
+    "/Users/changmin/projects/ugrp-wt/e2e18-planner/outputs/task-planner-r3-solo-confirmation-20261013/scored.json": "73b6291e81053a2c6fccfbe6ceb3b1d156b395baa9bbec516523577ba1eb8fb5",
+    "/Users/changmin/projects/ugrp-wt/e2e18-planner/outputs/task-planner-r3-solo-confirmation-20261013/summary.json": "ef1c58259507b4ac5d3f13f6c43384c85e9788f0ce651c8b714fe04a36724428",
+    "/Users/changmin/projects/ugrp-wt/e2e18-planner/outputs/task-planner-r3-solo-confirmation-20261013/RUN_META.json": "e8f9d930578fb48ca91da4bc6b0befdd4e02e8f7bc65070a3766906b84022d34"
+  },
+  "new_solo_ledger": {
+    "path": "/Users/changmin/projects/ugrp-wt/e2e18-planner/outputs/task-planner-r3-solo-upstream-20261013/openrouter/ledger.jsonl",
+    "sha256": "a07289b0231a6bc4ab0fe4a42986ba52b4b3e422c21ace0dfc1a4488989dc93f"
+  },
+  "final_controller_code_sha": "1b37e77fa279a46f2f5b2dd1c2b20d49b501f779",
+  "post_evaluation_change": "Native named-clause/time evidence hardening; every evaluated request verified identical."
+}

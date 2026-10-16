@@ -1,0 +1,65 @@
+{
+  "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v257-s61006-r42/raw",
+  "ownmap_sha256_at_check": "7c3428cf20f83df9951c128298637a0b05ba6b7afe579baed38f2b5cc5a6a2cb",
+  "setdown_sha256_at_check": "5f5c322cb6b11f9adc9edf9dc8d0e2e8a1cbe98baf1c4cad89e18381767843a4",
+  "first_fine": {
+    "t": 360.8,
+    "frame_id": 840,
+    "sha256": "ffab1ebe21210648f5af515ef6d6d321f79516465fe85fe0a740042f2509cd22",
+    "pose_own_m": [
+      -1.8526534297280841,
+      -0.8735958519779442,
+      0.8295478983109676
+    ],
+    "carrier_approach": {
+      "t": 360.4,
+      "status": "visual_servo",
+      "station_own_m": [
+        -1.8467695433135702,
+        -0.8588173614773887,
+        0.6444108057806841
+      ],
+      "grip_own_m": [
+        -1.6843205208181231,
+        -0.7367495316028732
+      ],
+      "distance_m": 0.02827338146206071,
+      "heading_error_rad": -0.1824755011133612,
+      "own_beam_age_s": 0.0,
+      "camera": "inspect",
+      "basis_yaw_rad": 0.6444108057806841,
+      "correct_end": true
+    },
+    "own_beam": {
+      "rgb": {
+        "robot_id": "r1",
+        "frame_id": 840,
+        "t_sim": 360.8,
+        "sha256": "ffab1ebe21210648f5af515ef6d6d321f79516465fe85fe0a740042f2509cd22"
+      },
+      "pose_own_m": [
+        -1.4671820832230187,
+        -0.5754530409280949,
+        0.6375754170184816
+      ],
+      "grip_base_m": [
+        0.21515173891408892,
+        -0.031510167954561415
+      ],
+      "axis_heading_rad": -0.19197248129248604,
+      "endpoint_model": "long_side_v1",
+      "observed_band_side": "near",
+      "endpoint_side_evidence": {
+        "points": 9910,
+        "q02_m": -0.039195552940642794,
+        "q98_m": 0.17614713707168111,
+        "long_before": 0,
+        "long_after": 1660
+      }
+    }
+  },
+  "visual_servo_rows": 180,
+  "paired_held_samples": 0,
+  "maximum_cargo_z_m": 0.0165,
+  "evaluation_only": true
+}

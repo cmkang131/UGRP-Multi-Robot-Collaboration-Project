@@ -1,0 +1,58 @@
+{
+  "schema": "ugrp.e2e18.dev_candidates.v1",
+  "criterion": "second actual carried leg, then original B_RGB/revised_GO_ACK/footprint lower gate and separate complete delivery evaluation",
+  "seeds": [
+    61006,
+    61007,
+    61008
+  ],
+  "candidates": [
+    {
+      "bundle": "e2e18-v304",
+      "post_relook": "off"
+    },
+    {
+      "bundle": "e2e18-v320",
+      "post_relook": "retain_route_v1",
+      "wait_s": 60
+    },
+    {
+      "bundle": "e2e18-v321",
+      "post_relook": "carry_through_v1",
+      "wait_s": 30
+    },
+    {
+      "bundle": "e2e18-v322",
+      "post_relook": "map_fast_v1",
+      "wait_s": 30
+    },
+    {
+      "bundle": "e2e18-v323",
+      "post_relook": "carry_nominal_v1",
+      "final_sigma": "would_stop only",
+      "hard_gates": "fresh B_RGB, revised agreement, whole beam nominal polygon inside +1cm retained"
+    }
+  ],
+  "raw_diagnosis": "v303-r62 first paired 517.5SIM, relook timeout to mapping by698SIM, own_grid_route_unavailable; giveup sets seg=0 and plan=None",
+  "code": "harness/e2e_relook_giveup.py:72",
+  "scope": "DEV only; no fake pose correction, existing physical stop and current GO_ACK remain",
+  "concurrency": {
+    "max": 12,
+    "load_limit": 12.8,
+    "speed_gate_wall_per_sim": 3.0,
+    "planned": 12
+  },
+  "references": [
+    "https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/core_servers/waypoint_follower/"
+  ],
+  "method": "Waypoint task failure policy may continue the existing ordered route cursor; compare remap versus retained cursor.",
+  "deadline_kst": "2026-10-13T22:00:00+09:00",
+  "align_reserved": "Claude SDK v310-v319",
+  "drop_guard": "SDK contact_com_rest_v1 evaluation-only rest-flicker correction shared by every compared candidate",
+  "size_check": {
+    "known_B_width_m": 0.8,
+    "beam_length_m": 0.6,
+    "nominal_margin_each_m": 0.01,
+    "maximum_sigma_for_strict_fit_m": 0.030000000000000013
+  }
+}

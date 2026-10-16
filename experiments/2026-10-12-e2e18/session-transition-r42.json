@@ -1,0 +1,69 @@
+{
+  "azure3": {
+    "host": "azure3",
+    "checked_unix": 1791832373.90096,
+    "deallocated": true,
+    "archived": 9,
+    "proofs": "/Users/changmin/projects/ugrp-wt/e2e18/outputs/e2e18-admin/fetched-session-end-azure3.json",
+    "status": {
+      "size": "Standard_D16as_v6",
+      "status": [
+        {
+          "code": "ProvisioningState/succeeded",
+          "displayStatus": "Provisioning succeeded",
+          "level": "Info",
+          "time": "2026-10-12T19:12:47.7975702+00:00"
+        },
+        {
+          "code": "PowerState/deallocated",
+          "displayStatus": "VM deallocated",
+          "level": "Info"
+        }
+      ]
+    }
+  },
+  "azure4": {
+    "host": "azure4",
+    "checked_unix": 1791832426.1820319,
+    "deallocated": true,
+    "archived": 5,
+    "proofs": "/Users/changmin/projects/ugrp-wt/e2e18/outputs/e2e18-admin/fetched-session-end-azure4.json",
+    "status": {
+      "size": "Standard_D16as_v6",
+      "status": [
+        {
+          "code": "ProvisioningState/succeeded",
+          "displayStatus": "Provisioning succeeded",
+          "level": "Info",
+          "time": "2026-10-12T19:13:40.4564078+00:00"
+        },
+        {
+          "code": "PowerState/deallocated",
+          "displayStatus": "VM deallocated",
+          "level": "Info"
+        }
+      ]
+    }
+  },
+  "cost_safety_read_only": {
+    "checked_unix": 1791831403.893404,
+    "cost_usd_delayed": 45.0867904858249,
+    "safety_resources_enabled": true,
+    "vm": [
+      {
+        "vm": "ugrp-sim-azure3",
+        "statuses": [
+          "ProvisioningState/succeeded",
+          "PowerState/running"
+        ]
+      },
+      {
+        "vm": "ugrp-sim-azure4",
+        "statuses": [
+          "ProvisioningState/succeeded",
+          "PowerState/running"
+        ]
+      }
+    ]
+  }
+}

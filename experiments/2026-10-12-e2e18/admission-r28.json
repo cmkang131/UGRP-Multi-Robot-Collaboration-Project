@@ -1,0 +1,13 @@
+{
+  "schema": "e2e18.r28.admission",
+  "status": "ADMISSION_REJECTED_NO_GATE_NO_RAW",
+  "expected_continuing": 3,
+  "actual_continuing": 2,
+  "reason": "seed61005 PHYSICAL_STOP ROBOT_TILT_LIMIT:r2 at274.05SIM",
+  "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v236-s61005-r26/raw",
+  "next_attempt": 29,
+  "next_load": "four fresh +two continuing =six",
+  "tilt_evidence": "tilt-v236-s61005.json",
+  "tilt_sha256": "b1d86d68d754cf35f6e44cf5bb2ea5c95517285736e0cab9bb812ef90233a5d0",
+  "scope": "camera change correlates with tilt; no proven dt causality; nominal command trajectory gripper height0.148-0.155m, arm envelope minz0.083m so no nominal floor crossing"
+}

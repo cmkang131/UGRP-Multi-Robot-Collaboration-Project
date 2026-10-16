@@ -1,0 +1,65 @@
+{
+  "bundle": "e2e18-v230",
+  "status": "TESTED_NOT_RUN",
+  "toggles": {
+    "pregrasp_gaze": "own_bearing_v1",
+    "search_bearing": "last_seen_v1",
+    "pulse_admission": "finish_active_v1"
+  },
+  "evidence": [
+    "search-block-v229.json",
+    "v229-failures-before-v230.json"
+  ],
+  "raw_causes": [
+    "v229 camera-only search at1500+/-250 PWM covers only22.5deg; seed61004 own last-seen bearing about-31deg (approximately), repeated sweep without translation",
+    "seed61011 PulseOdometry rejected a phase-transition command before issued finite motor pulse completed"
+  ],
+  "changes": [
+    "Use own pose+last RGB grip to point commanded pan, bounded+/-60deg and80PWM/frame; no camera geometry/FOV change",
+    "After one six-second camera cycle, restore search and turn using existing calibrated pulses toward last own RGB grip",
+    "Buffer latest command per actuator channel until the issued wheel duration ends, apply arm/pan before new motor command, log deferrals; raw issued commands remain authoritative"
+  ],
+  "tests": {
+    "latest_passed": 15,
+    "files": [
+      "test_e2e_pregrasp_gaze.py",
+      "test_e2e_pulse_admission.py",
+      "test_e2e_align_progress.py"
+    ],
+    "wall_s": 11.95,
+    "previous_gaze_and_carrier_passed": 22
+  },
+  "references": [
+    {
+      "url": "https://github.com/ros-navigation/docs.nav2.org/blob/rolling/docs/tutorials/general_tutorials/navigation2_dynamic_point_following/navigation2_dynamic_point_following.md",
+      "application": "Target-loss recovery by camera search and own bearing turn"
+    },
+    {
+      "url": "https://control.ros.org/master/doc/ros2_controllers/joint_trajectory_controller/doc/trajectory.html",
+      "application": "Explicit command-time replacement; adapted to noninterruptible calibrated finite wheel pulses instead of interpolating an uncalibrated partial pulse"
+    }
+  ],
+  "unresolved": [
+    "seed61005 physical tilt10.46deg with divider-wheel/finger contact; not declared fixed by gaze, numerical dt attribution unproven",
+    "Mapping accuracy and actual grip/carry still unverified"
+  ],
+  "planned_seeds": {
+    "azure3": [
+      61004,
+      61005,
+      61006
+    ],
+    "azure4": [
+      61007,
+      61011,
+      61012
+    ]
+  },
+  "gate": {
+    "limit": 3.0,
+    "sim_s": 30,
+    "new_samples_per_vm": 3,
+    "continuing_per_vm": 3
+  },
+  "wall_cap_s": 10800
+}

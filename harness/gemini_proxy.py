@@ -89,6 +89,7 @@ class GeminiProxyCompleter:
     def complete(self, messages: list[dict[str, Any]], image: str | None = None,
                  images: list[dict[str, str]] | None = None) -> str:
         self.last_usage = None
+        self.last_provider_metadata = {}
         self.last_model = None
         self.last_latency_ms = None
         self.last_finish_reason = None
@@ -161,6 +162,12 @@ class GeminiProxyCompleter:
                 self.last_usage = {k: v for k, v in usage.items()
                                    if k in {'prompt_tokens', 'completion_tokens', 'total_tokens'}
                                    and type(v) is int and v >= 0} or None
+                if self.last_usage is not None:
+                    details=usage.get('prompt_tokens_details')
+                    if isinstance(details,dict) and type(details.get('cached_tokens')) is int:
+                        self.last_provider_metadata['prompt_tokens_details']={'cached_tokens':details['cached_tokens']}
+                    if type(usage.get('cost')) in (int,float):self.last_provider_metadata['cost']=usage['cost']
+                    self.last_provider_metadata.update(model=body.get('model'),provider=body.get('provider'))
             response_model = body.get('model') if isinstance(body, dict) else None
             if isinstance(response_model, str) and response_model.strip():
                 self.last_model = response_model.strip()

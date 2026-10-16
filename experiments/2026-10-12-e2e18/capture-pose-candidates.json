@@ -1,0 +1,270 @@
+{
+  "PR": 461,
+  "classification": "dev",
+  "candidates": {
+    "271": "matched handoff+clip baseline",
+    "272": "pose08_v1 local capture only",
+    "273": "pose08_track_v1 local capture and coarse own-grip pan tracking",
+    "274": "pose12_track_v1 wider local capture and tracking"
+  },
+  "seeds": [
+    61006,
+    61007
+  ],
+  "maximum_concurrent_each_vm": 6,
+  "continuing": {
+    "azure3": [
+      "r50-v269",
+      "r51-v271"
+    ],
+    "azure4": [
+      "r50-v268",
+      "r51-v271"
+    ]
+  },
+  "replace": {
+    "azure3": [
+      "r50-v267",
+      "r50-v268",
+      "r51-v268",
+      "r51-v270"
+    ],
+    "azure4": [
+      "r50-v267",
+      "r50-v269",
+      "r51-v268",
+      "r51-v270"
+    ]
+  },
+  "criteria": [
+    "avoid 18cm-away premature local servo entry",
+    "fresh full band retained through coarse correction; both ready",
+    "paired physical grasp; LLM+own map+start-to-end transport"
+  ],
+  "diagnosis": {
+    "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v268-s61006-r50/raw",
+    "source_sha": "63fb1551d749e1a529f14f238713bfd061fb1172",
+    "recorded": {
+      "t": 202.4,
+      "status": "visual_servo",
+      "distance": 0.1820875851937361,
+      "correct": true,
+      "beam": {
+        "rgb": {
+          "robot_id": "r1",
+          "frame_id": 444,
+          "t_sim": 202.4,
+          "sha256": "b922a801d04b4241e92ff756124ffe9b5957c9bfbddf31260ec6a25d0e4573b9"
+        },
+        "pose_own_m": [
+          -1.1660214892086984,
+          -0.37492048454494453,
+          0.08638681173957763
+        ],
+        "grip_base_m": [
+          0.2594485822838446,
+          0.024014262380455485
+        ],
+        "axis_heading_rad": -0.6389656802316745,
+        "endpoint_model": "long_side_v1",
+        "observed_band_side": "near",
+        "endpoint_side_evidence": {
+          "points": 8984,
+          "q02_m": -0.04058314219643639,
+          "q98_m": 0.15792365882148163,
+          "long_before": 0,
+          "long_after": 903
+        }
+      },
+      "reason": "BAND_VISIBLE",
+      "band": {
+        "near_m": 0.0248,
+        "far_m": 0.0583,
+        "length_m": 0.0334,
+        "points": 2078,
+        "touches_invalid_border": false
+      },
+      "frame_id": 444
+    },
+    "frames": [
+      {
+        "t": 199.2,
+        "frame": 436,
+        "time": 200.5,
+        "servo": {
+          "1": 2000,
+          "3": 508,
+          "4": 2432,
+          "5": 1320,
+          "6": 1644
+        },
+        "path": "robots/r1/rgb/00435.jpg",
+        "sha": "0a33ff1680a6ce402e9de1fd6d42ae0ecaea8f6dbbb66a63a0b6ff3dd822cc4d"
+      },
+      {
+        "t": 200.0,
+        "frame": 438,
+        "time": 201.3,
+        "servo": {
+          "1": 2000,
+          "3": 508,
+          "4": 2432,
+          "5": 1320,
+          "6": 1644
+        },
+        "path": "robots/r1/rgb/00437.jpg",
+        "sha": "6b91e2f682d697f5c6678660f69b8dae009c61c2b04050a9dd6376cb8c21d31a"
+      },
+      {
+        "t": 200.8,
+        "frame": 440,
+        "time": 202.1,
+        "servo": {
+          "1": 2000,
+          "3": 508,
+          "4": 2432,
+          "5": 1320,
+          "6": 1644
+        },
+        "path": "robots/r1/rgb/00439.jpg",
+        "sha": "e1bef3d3015c63739858f844eccc27e408e92e5555ec06888ac9630db10d439c"
+      },
+      {
+        "t": 201.6,
+        "frame": 442,
+        "time": 202.9,
+        "servo": {
+          "1": 2000,
+          "3": 508,
+          "4": 2432,
+          "5": 1320,
+          "6": 1644
+        },
+        "path": "robots/r1/rgb/00441.jpg",
+        "sha": "2fdf8ea3ba7f17b7f12bfad35d23e1c3dd8853c3cd56d46d2b26fd55ab956966"
+      },
+      {
+        "t": 202.4,
+        "frame": 444,
+        "time": 203.7,
+        "servo": {
+          "1": 2000,
+          "3": 508,
+          "4": 2432,
+          "5": 1320,
+          "6": 1644
+        },
+        "path": "robots/r1/rgb/00443.jpg",
+        "sha": "b922a801d04b4241e92ff756124ffe9b5957c9bfbddf31260ec6a25d0e4573b9"
+      },
+      {
+        "t": 204.0,
+        "frame": 448,
+        "time": 205.3,
+        "servo": {
+          "1": 2000,
+          "3": 508,
+          "4": 2432,
+          "5": 1320,
+          "6": 1564
+        },
+        "path": "robots/r1/rgb/00447.jpg",
+        "sha": "7a3c9220603d45f2e707f90d5c495b8dff8f9776af4fef6e9dd2ef0ad3715103"
+      }
+    ],
+    "code": "e2e_carrier_approach.advance had no station-distance fine capture; zone_s3_coarse_fine.Servo changes pan only after planner ready",
+    "rejected_candidate": {
+      "name": "merely retain fine control beyond0.60rad",
+      "prediction_steps": 60,
+      "final_ready": false,
+      "maximum_axis_rad": 1.0135084160997367,
+      "model_only": true
+    },
+    "scope": "own RGB/commanded pan and existing calibration arithmetic; no physical success inferred"
+  },
+  "standard": [
+    {
+      "source": "https://api.nav2.org/nav2-rolling/html/docking__server_8cpp_source.html",
+      "method": "Staging pose before local perception approach; keep the control regions consistent",
+      "verified": true
+    },
+    {
+      "source": "https://github.com/lagadic/visp/blob/master/example/servo-ptu46/servoPtu46Point2DArtVelocity.cpp",
+      "sha256": "e3302fd251e61c271512b7809559338fe93839a197341325763afac5a9b4e850",
+      "method": "ViSP PTU point tracking repeatedly observes a target and updates pan/tilt. Adapt only pan to existing own-grip command geometry and move-settle-look; no velocity law or camera relocation.",
+      "verified": true
+    },
+    {
+      "source": "https://arxiv.org/abs/2309.03476v2",
+      "method": "Visibility retention is a separate visual servo objective. Paper inspected; probabilistic CBF/MPC is not implemented here.",
+      "verified": true
+    }
+  ],
+  "parameters": {
+    "capture_station_radii_m": [
+      0.08,
+      0.12
+    ],
+    "pan_change_min_us": 24,
+    "pan_limits": [
+      1300,
+      1700
+    ],
+    "pan_quantum_us": 4,
+    "pan_settle_s": 0.75,
+    "final_grasp_tolerances_unchanged": true
+  },
+  "validation": {
+    "status": "passed",
+    "files": [
+      "test_e2e_capture_pose.py",
+      "test_e2e_fine_entry.py",
+      "test_e2e_camera_hold.py"
+    ],
+    "tests": 57,
+    "seconds": 91.66,
+    "output": "outputs/e2e18-admin/tests-v272.txt",
+    "output_sha256": "ade9fbd27a0d5ec423ea9d49e7f2f30a7a711d666a70b9df9d73a4a9b4d72fa3"
+  },
+  "reservation": {
+    "checked_unix": 1791854434.337892,
+    "rows": [
+      {
+        "ref": "origin/main",
+        "max_id": 225
+      },
+      {
+        "ref": "origin/codex/e2e18",
+        "max_id": 271
+      },
+      {
+        "ref": "origin/claude/e2e-bcones",
+        "max_id": 213
+      },
+      {
+        "ref": "origin/codex/ego-pose-continuity",
+        "max_id": 145
+      },
+      {
+        "ref": "origin/codex/egomap70-overview",
+        "max_id": 145
+      },
+      {
+        "ref": "origin/codex/real-robot-link",
+        "max_id": 2
+      },
+      {
+        "ref": "origin/codex/integ-target-backend",
+        "max_id": 101
+      }
+    ]
+  },
+  "storage": {
+    "per_run_mib": 1024,
+    "total_reserved_runs_each_vm": 6,
+    "includes_new_and_continuing_remaining": true,
+    "arm_other_reserved_mib": 2048,
+    "mac_per_run_mib": 80
+  },
+  "continuing_reason": "Keep newer handoff comparator and v269s61006 whose r2 remains held after fine alignment; ready receipt pending final trace, not counted as paired grasp."
+}

@@ -289,3 +289,21 @@ class PlanGuidance:
                 'priors_sha256': self.priors_sha256,
                 'capability_scope_sha256': hashlib.sha256(self.capability_scope.encode()).hexdigest(),
                 'previews_shown': len(self.preview_log)}
+
+
+def task_preview(*, own_xy, pickup_xy, destination_xy, via_xy=(), required_robots=1,
+                 speed_m_s=.12, handling_s=20., blockage_risk='unknown', unloading_empty='unknown'):
+    """Geometric task preview from static geometry + own estimate only.
+
+    This is the task-level counterpart of preview_plan: an uncertain nominal
+    cost, never a choice or a live-state measurement. Missing pose -> unknown.
+    """
+    import math
+    points = [own_xy, pickup_xy, *via_xy, destination_xy]
+    if speed_m_s <= 0: raise ValueError('POSITIVE_NOMINAL_SPEED_REQUIRED')
+    distance = None if any(p is None for p in points) else sum(
+        math.dist(a[:2], b[:2]) for a, b in zip(points, points[1:]))
+    return dict(distance_m=distance,
+                expected_s=None if distance is None else distance / speed_m_s + handling_s,
+                required_robots=required_robots, blockage_risk=blockage_risk,
+                unloading_empty=unloading_empty, source='static_geometry_plus_own_pose_nominal_prior')

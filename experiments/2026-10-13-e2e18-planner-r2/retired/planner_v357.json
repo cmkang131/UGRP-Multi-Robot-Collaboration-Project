@@ -1,0 +1,22 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "e2e18-v357",
+      "version": "7.250.0",
+      "purpose": "DEV per-robot Gemma task planner; native own-camera skill adapter; no physical result inherited",
+      "entry": "scripts/run_task_planner.py",
+      "runner": "scripts.run_task_planner",
+      "docs": "experiments/2026-10-13-e2e18-planner/README.md",
+      "requires": "Supervisor-managed Azure; committed source; existing loopback Gemma relay; explicit planner opt-in",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "shutdown_grace_s": 60
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "schema": "ugrp.e2e18.go_ack_diagnosis.v1",
+  "run": "e2e18-v271-s61006-r51",
+  "epoch_open_sim_s": 1068.35,
+  "transport_timeout_sim_s": 1083.4,
+  "ack_r2_frame_sim_s": 1072.0,
+  "ack_r2_valid_until_sim_s": 1082.0,
+  "ack_r1_release_sim_s": 1082.85,
+  "overlap": false,
+  "call13_fenced_json_accepted": true,
+  "calls": [
+    {
+      "call": "call-0012-r1",
+      "start_sim_s": 1068.4,
+      "status": "ok",
+      "contract_error": null,
+      "latency_wall_s": 7.939713667030446
+    },
+    {
+      "call": "call-0013-r2",
+      "start_sim_s": 1068.4,
+      "status": "ok",
+      "contract_error": null,
+      "latency_wall_s": 7.967323125107214
+    },
+    {
+      "call": "call-0014-r1",
+      "start_sim_s": 1071.95,
+      "status": "invalid_json",
+      "contract_error": "MATCHING_CURRENT_GO_ACK_REQUIRED",
+      "latency_wall_s": 6.847727292100899
+    },
+    {
+      "call": "call-0015-r2",
+      "start_sim_s": 1072.1,
+      "status": "ok",
+      "contract_error": null,
+      "latency_wall_s": 9.983978499891236
+    },
+    {
+      "call": "call-0016-r1",
+      "start_sim_s": 1075.45,
+      "status": "invalid_json",
+      "contract_error": "ROUTE_VOTE: CLOSED_SCHEMA_REQUIRED",
+      "latency_wall_s": 9.335852290969342
+    },
+    {
+      "call": "call-0017-r2",
+      "start_sim_s": 1075.7,
+      "status": "invalid_json",
+      "contract_error": "MATCHING_CURRENT_GO_ACK_REQUIRED",
+      "latency_wall_s": 6.830874916980974
+    },
+    {
+      "call": "call-0018-r2",
+      "start_sim_s": 1079.3,
+      "status": "ok",
+      "contract_error": null,
+      "latency_wall_s": 2.699726500082761
+    },
+    {
+      "call": "call-0019-r1",
+      "start_sim_s": 1079.35,
+      "status": "ok",
+      "contract_error": null,
+      "latency_wall_s": 4.668064750032499
+    },
+    {
+      "call": "call-0020-r1",
+      "start_sim_s": 1082.9,
+      "status": "invalid_json",
+      "contract_error": "MATCHING_CURRENT_GO_ACK_REQUIRED",
+      "latency_wall_s": 5.642809416982345
+    }
+  ],
+  "causes": [
+    "repeated GO/ACK rejected by current-vote contract",
+    "extra dialogue_key in r1 ACK rejected by closed schema",
+    "r1 ACK released after r2 own-image freshness expired"
+  ],
+  "code": [
+    "harness/e2e_dialogue.py:151",
+    "harness/e2e_dialogue.py:248",
+    "harness/e2e_dialogue.py:291",
+    "harness/e2e_live_transport.py"
+  ],
+  "raw": "azure3:~/ugrp-sim/runs/e2e18-v271-s61006-r51/raw",
+  "sha256_dialogue": "87654abd12bc6ebb6295ceb771088a028d86fc1be19be22e1358afc93dfddba2"
+}

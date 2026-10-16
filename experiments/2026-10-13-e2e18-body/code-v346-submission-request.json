@@ -1,0 +1,26 @@
+{
+  "execute": false,
+  "submitter": "supervisor_only",
+  "source_sha": "c284abbfdf7da0668226967b8ef32084a80c5fbd",
+  "bundle": "e2e18-v346",
+  "seed": 61006,
+  "flags_relative_to_v344": [
+    "--body-backend code_v1"
+  ],
+  "body_relay_required": false,
+  "gemma_relay_required": true,
+  "phase": "first 30 SIM seconds raw inspection, then supervised seed61006 E2E",
+  "concurrency": "supervisor decides",
+  "deadline": "2026-10-13T22:00:00+09:00",
+  "required_metrics": [
+    "body provider_calls=0",
+    "no 30s terminal mapping silence",
+    "bounded recovery decisions and repeated-skill outcomes",
+    "alignment≈76 to paired grasp SIM delta vs v321 435s",
+    "reacquisition and oscillation counts",
+    "decision counts and errors"
+  ],
+  "warning": "existing supervisor enumeration/admission must include v346; no direct VM submission by this worker",
+  "superseded_by": "code-v349-submission-request.json",
+  "retired_without_vm_run": true
+}

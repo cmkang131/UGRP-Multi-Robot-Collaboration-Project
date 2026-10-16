@@ -1,0 +1,1166 @@
+{
+  "schema": "ugrp.vm-concurrency-benchmark.v1",
+  "status": "COMPLETE",
+  "date_utc": "2026-10-13T09:07:38.543838+00:00",
+  "pr": 461,
+  "run_class": "dev",
+  "research_result": false,
+  "source_sha": "067ef1514fcdb4c6c067775936a7e58085b3c00e",
+  "execution_bundle_id": "e2e18-v344",
+  "seed": 61006,
+  "probe_sim_s": 30,
+  "limit_median_wall_per_sim": 3.0,
+  "subscription": "88b7ee7f-f2f3-4a0d-a0ce-cf7306943676",
+  "host": "azure4",
+  "size": "Standard_F16als_v6",
+  "usd_per_hour": 1.192,
+  "environment": {
+    "cpu_vm4": {
+      "CPU(s)": "16",
+      "Model name": "AMD EPYC 9V74 80-Core Processor",
+      "Thread(s) per core": "1",
+      "Core(s) per socket": "16",
+      "Socket(s)": "1"
+    },
+    "cpu_vm3": {
+      "CPU(s)": "16",
+      "Model name": "AMD EPYC 9V74 80-Core Processor",
+      "Thread(s) per core": "2",
+      "Core(s) per socket": "8",
+      "Socket(s)": "1"
+    },
+    "vm3_scope": "read-only lscpu; no VM3 lifecycle, source, process, or configuration changes",
+    "same_model": true,
+    "generation": "AMD EPYC 9004 Genoa",
+    "render": "OSMesa",
+    "thread_environment": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "LP_NUM_THREADS": "1"
+    }
+  },
+  "guards": {
+    "idle_seconds": 1200,
+    "max_uptime_seconds": 28800,
+    "guest_timer_enabled": true,
+    "guest_timer_active": true,
+    "last_guest_service_result": "success",
+    "daily_backup_enabled": true,
+    "runbook": "Stop-UgrpVMs",
+    "future_daily_firing_not_tested": true
+  },
+  "results": [
+    {
+      "concurrency": 8,
+      "max_wall_per_sim": 2.8818531175000013,
+      "cpu_s_per_run": [
+        52.51432862,
+        54.731984034999996,
+        54.266781847000004,
+        52.375136368,
+        52.274013485,
+        54.636313957,
+        52.004777233,
+        53.935505498000005
+      ],
+      "failure_count": 0,
+      "loadavg_start": [
+        11.27490234375,
+        6.3955078125,
+        2.5947265625
+      ],
+      "loadavg_end": [
+        6.396484375,
+        6.03173828125,
+        2.8212890625
+      ],
+      "loadavg_max": [
+        11.27490234375,
+        6.43896484375,
+        2.8212890625
+      ],
+      "max_host_used_bytes": 6966571008,
+      "max_workload_rss_bytes": 7133188096,
+      "max_process_rss_bytes": 888967168,
+      "resources_sample_interval_s": 1,
+      "raw": "/home/ugrp/ugrp-sim/runs/vm4-f16als-c8-r3",
+      "status": "SPEED_GATE_PASS",
+      "completed": 8,
+      "median_wall_per_sim": 2.7400440511500013,
+      "median_cpu_s_per_valid_run": 53.224917059000006,
+      "per_run": [
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r816800",
+          "sim_s": 30.0,
+          "wall_s": 82.22791337800004,
+          "cpu_s": 52.51432862,
+          "wall_per_sim": 2.740930445933335,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r816801",
+          "sim_s": 30.0,
+          "wall_s": 83.34729317700004,
+          "cpu_s": 54.731984034999996,
+          "wall_per_sim": 2.7782431059000015,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r816802",
+          "sim_s": 30.0,
+          "wall_s": 85.22720023900001,
+          "cpu_s": 54.266781847000004,
+          "wall_per_sim": 2.8409066746333336,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r816803",
+          "sim_s": 30.0,
+          "wall_s": 80.00446560700004,
+          "cpu_s": 52.375136368,
+          "wall_per_sim": 2.666815520233335,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r816804",
+          "sim_s": 30.0,
+          "wall_s": 80.76327913599994,
+          "cpu_s": 52.274013485,
+          "wall_per_sim": 2.6921093045333313,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r816805",
+          "sim_s": 30.0,
+          "wall_s": 82.17472969100004,
+          "cpu_s": 54.636313957,
+          "wall_per_sim": 2.7391576563666677,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r816806",
+          "sim_s": 30.0,
+          "wall_s": 86.45559352500004,
+          "cpu_s": 52.004777233,
+          "wall_per_sim": 2.8818531175000013,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r816807",
+          "sim_s": 30.0,
+          "wall_s": 81.49442268700005,
+          "cpu_s": 53.935505498000005,
+          "wall_per_sim": 2.7164807562333353,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        }
+      ],
+      "compute_usd_per_aggregate_sim_hour": 0.40826656362135016,
+      "compute_usd_per_aggregate_sim_second": 0.00011340737878370839,
+      "cost_estimate_usable": true
+    },
+    {
+      "concurrency": 12,
+      "max_wall_per_sim": 3.1821849596333323,
+      "cpu_s_per_run": [
+        55.42545009,
+        52.207650233,
+        54.029800594,
+        52.4120912,
+        55.469547608,
+        51.752537476,
+        55.399254835,
+        56.248453528,
+        53.292368129,
+        53.349670900999996,
+        54.628616144999995,
+        53.621249633
+      ],
+      "failure_count": 0,
+      "loadavg_start": [
+        5.8837890625,
+        5.93115234375,
+        2.8056640625
+      ],
+      "loadavg_end": [
+        7.21484375,
+        6.4423828125,
+        3.3134765625
+      ],
+      "loadavg_max": [
+        8.16259765625,
+        6.59423828125,
+        3.328125
+      ],
+      "max_host_used_bytes": 9664483328,
+      "max_workload_rss_bytes": 10508324864,
+      "max_process_rss_bytes": 890593280,
+      "resources_sample_interval_s": 1,
+      "raw": "/home/ugrp/ugrp-sim/runs/vm4-f16als-c12-r3",
+      "status": "SPEED_GATE_PASS",
+      "completed": 12,
+      "median_wall_per_sim": 2.8587523939666672,
+      "median_cpu_s_per_valid_run": 53.8255251135,
+      "per_run": [
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r817200",
+          "sim_s": 30.0,
+          "wall_s": 85.61873264500002,
+          "cpu_s": 55.42545009,
+          "wall_per_sim": 2.853957754833334,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r817201",
+          "sim_s": 30.0,
+          "wall_s": 91.22943521399998,
+          "cpu_s": 52.207650233,
+          "wall_per_sim": 3.040981173799999,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r817202",
+          "sim_s": 30.0,
+          "wall_s": 93.65807469000003,
+          "cpu_s": 54.029800594,
+          "wall_per_sim": 3.121935823000001,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r817203",
+          "sim_s": 30.0,
+          "wall_s": 84.57364983299999,
+          "cpu_s": 52.4120912,
+          "wall_per_sim": 2.8191216610999996,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r817204",
+          "sim_s": 30.0,
+          "wall_s": 86.43029148800008,
+          "cpu_s": 55.469547608,
+          "wall_per_sim": 2.8810097162666692,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r817205",
+          "sim_s": 30.0,
+          "wall_s": 81.35114980499998,
+          "cpu_s": 51.752537476,
+          "wall_per_sim": 2.7117049934999993,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r817206",
+          "sim_s": 30.0,
+          "wall_s": 83.35984796900004,
+          "cpu_s": 55.399254835,
+          "wall_per_sim": 2.7786615989666683,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r817207",
+          "sim_s": 30.0,
+          "wall_s": 95.46554878899997,
+          "cpu_s": 56.248453528,
+          "wall_per_sim": 3.1821849596333323,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r817208",
+          "sim_s": 30.0,
+          "wall_s": 83.56455185199991,
+          "cpu_s": 53.292368129,
+          "wall_per_sim": 2.7854850617333304,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r817209",
+          "sim_s": 30.0,
+          "wall_s": 94.96723110099992,
+          "cpu_s": 53.349670900999996,
+          "wall_per_sim": 3.165574370033331,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r817210",
+          "sim_s": 30.0,
+          "wall_s": 84.29500514999995,
+          "cpu_s": 54.628616144999995,
+          "wall_per_sim": 2.8098335049999985,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r817211",
+          "sim_s": 30.0,
+          "wall_s": 85.90641099300001,
+          "cpu_s": 53.621249633,
+          "wall_per_sim": 2.8635470331,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        }
+      ],
+      "compute_usd_per_aggregate_sim_hour": 0.2839694044673556,
+      "compute_usd_per_aggregate_sim_second": 7.888039012982099e-05,
+      "cost_estimate_usable": true
+    },
+    {
+      "concurrency": 16,
+      "max_wall_per_sim": 3.0085587706999983,
+      "cpu_s_per_run": [
+        52.403622817999995,
+        52.241826902,
+        52.410777221000004,
+        56.037011367999995,
+        54.590069777,
+        54.363164993,
+        53.523226995,
+        55.381580836,
+        55.973246736,
+        55.614920805000004,
+        1.4385326759999995,
+        56.358669851,
+        55.000647670999996,
+        56.024700124,
+        55.056959149,
+        56.570693528
+      ],
+      "failure_count": 1,
+      "loadavg_start": [
+        7.21484375,
+        6.4423828125,
+        3.3134765625
+      ],
+      "loadavg_end": [
+        9.18310546875,
+        7.37158203125,
+        3.95556640625
+      ],
+      "loadavg_max": [
+        9.2861328125,
+        7.37158203125,
+        3.95556640625
+      ],
+      "max_host_used_bytes": 12013379584,
+      "max_workload_rss_bytes": 13342449664,
+      "max_process_rss_bytes": 889786368,
+      "resources_sample_interval_s": 1,
+      "raw": "/home/ugrp/ugrp-sim/runs/vm4-f16als-c16-r3",
+      "status": "SPEED_GATE_FAIL",
+      "completed": 15,
+      "median_wall_per_sim": 2.8382714573000007,
+      "median_cpu_s_per_valid_run": 55.056959149,
+      "per_run": [
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r817600",
+          "sim_s": 30.0,
+          "wall_s": 85.68719204499996,
+          "cpu_s": 52.403622817999995,
+          "wall_per_sim": 2.856239734833332,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r817601",
+          "sim_s": 30.0,
+          "wall_s": 87.18930675599995,
+          "cpu_s": 52.241826902,
+          "wall_per_sim": 2.906310225199998,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r817602",
+          "sim_s": 30.0,
+          "wall_s": 86.49008673100002,
+          "cpu_s": 52.410777221000004,
+          "wall_per_sim": 2.883002891033334,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r817603",
+          "sim_s": 30.0,
+          "wall_s": 84.745176947,
+          "cpu_s": 56.037011367999995,
+          "wall_per_sim": 2.8248392315666666,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r817604",
+          "sim_s": 30.0,
+          "wall_s": 84.87948283399999,
+          "cpu_s": 54.590069777,
+          "wall_per_sim": 2.8293160944666664,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r817605",
+          "sim_s": 30.0,
+          "wall_s": 83.14046689600002,
+          "cpu_s": 54.363164993,
+          "wall_per_sim": 2.771348896533334,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r817606",
+          "sim_s": 30.0,
+          "wall_s": 82.73335864599994,
+          "cpu_s": 53.523226995,
+          "wall_per_sim": 2.7577786215333315,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r817607",
+          "sim_s": 30.0,
+          "wall_s": 85.14119304200005,
+          "cpu_s": 55.381580836,
+          "wall_per_sim": 2.8380397680666687,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r817608",
+          "sim_s": 30.0,
+          "wall_s": 89.52682330700009,
+          "cpu_s": 55.973246736,
+          "wall_per_sim": 2.9842274435666694,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r817609",
+          "sim_s": 30.0,
+          "wall_s": 85.14814371900002,
+          "cpu_s": 55.614920805000004,
+          "wall_per_sim": 2.8382714573000007,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r817610",
+          "sim_s": 0.0,
+          "wall_s": 2.879152144000045,
+          "cpu_s": 1.4385326759999995,
+          "wall_per_sim": null,
+          "exit": 1,
+          "expected_stop": false,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r817611",
+          "sim_s": 30.0,
+          "wall_s": 90.25676312099995,
+          "cpu_s": 56.358669851,
+          "wall_per_sim": 3.0085587706999983,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r817612",
+          "sim_s": 30.0,
+          "wall_s": 84.72226574499996,
+          "cpu_s": 55.000647670999996,
+          "wall_per_sim": 2.824075524833332,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r817613",
+          "sim_s": 30.0,
+          "wall_s": 84.42194456499999,
+          "cpu_s": 56.024700124,
+          "wall_per_sim": 2.814064818833333,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r817614",
+          "sim_s": 30.0,
+          "wall_s": 88.49772614800008,
+          "cpu_s": 55.056959149,
+          "wall_per_sim": 2.9499242049333363,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r817615",
+          "sim_s": 30.0,
+          "wall_s": 88.43502682100006,
+          "cpu_s": 56.570693528,
+          "wall_per_sim": 2.947834227366669,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        }
+      ],
+      "compute_usd_per_aggregate_sim_hour": 0.21145122356885004,
+      "compute_usd_per_aggregate_sim_second": 5.8736450991347235e-05,
+      "cost_estimate_usable": false
+    },
+    {
+      "concurrency": 16,
+      "max_wall_per_sim": 3.362235530833334,
+      "cpu_s_per_run": [
+        54.267021851,
+        53.860495967999995,
+        53.148883315,
+        57.064657894,
+        53.796619189000005,
+        53.457667539999996,
+        55.834473362,
+        52.646843751,
+        53.535187969000006,
+        54.413144041,
+        55.212730756,
+        53.87439404,
+        54.358889082999994,
+        54.593539729,
+        54.674791531,
+        53.520546834
+      ],
+      "failure_count": 0,
+      "loadavg_start": [
+        2.5478515625,
+        5.58740234375,
+        3.6328125
+      ],
+      "loadavg_end": [
+        7.96484375,
+        6.83056640625,
+        4.3017578125
+      ],
+      "loadavg_max": [
+        9.48095703125,
+        7.04638671875,
+        4.3291015625
+      ],
+      "max_host_used_bytes": 12602081280,
+      "max_workload_rss_bytes": 14004699136,
+      "max_process_rss_bytes": 892395520,
+      "resources_sample_interval_s": 1,
+      "raw": "/home/ugrp/ugrp-sim/runs/vm4-f16als-c16-r4",
+      "status": "SPEED_GATE_PASS",
+      "completed": 16,
+      "median_wall_per_sim": 2.872915086000001,
+      "median_cpu_s_per_valid_run": 54.070707945500004,
+      "per_run": [
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r827600",
+          "sim_s": 30.0,
+          "wall_s": 83.43465149600001,
+          "cpu_s": 54.267021851,
+          "wall_per_sim": 2.7811550498666673,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r827601",
+          "sim_s": 30.0,
+          "wall_s": 84.81252189200006,
+          "cpu_s": 53.860495967999995,
+          "wall_per_sim": 2.827084063066669,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r827602",
+          "sim_s": 30.0,
+          "wall_s": 83.14306110799998,
+          "cpu_s": 53.148883315,
+          "wall_per_sim": 2.771435370266666,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r827603",
+          "sim_s": 30.0,
+          "wall_s": 86.81024900900002,
+          "cpu_s": 57.064657894,
+          "wall_per_sim": 2.893674966966667,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r827604",
+          "sim_s": 30.0,
+          "wall_s": 86.63231454499999,
+          "cpu_s": 53.796619189000005,
+          "wall_per_sim": 2.8877438181666664,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r827605",
+          "sim_s": 30.0,
+          "wall_s": 100.86706592500002,
+          "cpu_s": 53.457667539999996,
+          "wall_per_sim": 3.362235530833334,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r827606",
+          "sim_s": 30.0,
+          "wall_s": 86.11301383199998,
+          "cpu_s": 55.834473362,
+          "wall_per_sim": 2.8704337943999993,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r827607",
+          "sim_s": 30.0,
+          "wall_s": 84.60953250499995,
+          "cpu_s": 52.646843751,
+          "wall_per_sim": 2.820317750166665,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r827608",
+          "sim_s": 30.0,
+          "wall_s": 85.47689754099997,
+          "cpu_s": 53.535187969000006,
+          "wall_per_sim": 2.8492299180333323,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r827609",
+          "sim_s": 30.0,
+          "wall_s": 86.26189132800005,
+          "cpu_s": 54.413144041,
+          "wall_per_sim": 2.8753963776000018,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r827610",
+          "sim_s": 30.0,
+          "wall_s": 85.84725942,
+          "cpu_s": 55.212730756,
+          "wall_per_sim": 2.861575314,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r827611",
+          "sim_s": 30.0,
+          "wall_s": 91.53012747799994,
+          "cpu_s": 53.87439404,
+          "wall_per_sim": 3.0510042492666645,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r827612",
+          "sim_s": 30.0,
+          "wall_s": 86.42271726199999,
+          "cpu_s": 54.358889082999994,
+          "wall_per_sim": 2.8807572420666663,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r827613",
+          "sim_s": 30.0,
+          "wall_s": 84.393498088,
+          "cpu_s": 54.593539729,
+          "wall_per_sim": 2.8131166029333334,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r827614",
+          "sim_s": 30.0,
+          "wall_s": 89.24805785800004,
+          "cpu_s": 54.674791531,
+          "wall_per_sim": 2.9749352619333345,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        },
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r827615",
+          "sim_s": 30.0,
+          "wall_s": 93.6414090269999,
+          "cpu_s": 53.520546834,
+          "wall_per_sim": 3.1213803008999963,
+          "exit": 1,
+          "expected_stop": true,
+          "finalization_complete": true
+        }
+      ],
+      "compute_usd_per_aggregate_sim_hour": 0.21403217390700005,
+      "compute_usd_per_aggregate_sim_second": 5.9453381640833344e-05,
+      "cost_estimate_usable": true
+    }
+  ],
+  "max_tested_passing_concurrency": 16,
+  "untested_above": 16,
+  "setup_failures": {
+    "count": 44,
+    "missing_body_receipt": 8,
+    "relay_rejected_run_name": 36,
+    "sim_s": 0
+  },
+  "benchmark_attempts": {
+    "total": 52,
+    "complete": 51,
+    "failed": 1,
+    "first_concurrency16_completed": 15,
+    "first_concurrency16_failed": 1,
+    "first_concurrency16_failure": "Remote end closed connection without response during initialization",
+    "repeat_concurrency16_completed": 16,
+    "repeat_concurrency16_failed": 0
+  },
+  "reference": {
+    "size": "Standard_D16as_v6",
+    "usd_per_hour": 0.894,
+    "concurrency": 6,
+    "median_wall_per_sim": 2.09,
+    "compute_usd_per_aggregate_sim_second": 8.650277777777778e-05,
+    "eleven_concurrent_median_wall_per_sim": 3.31,
+    "values": "user supplied and PR461 r69/r70 comments",
+    "comparison_limit": "Different controller mixes and timestamps: r69 v328/v329; r70 v330/v331/v335/v336/v337 under 11 total load. Not paired identical-workload CPU comparison."
+  },
+  "cost": {
+    "formula_usd_per_sim_second": "hourly_rate * median_wall_per_sim / concurrency / 3600",
+    "user_expression_unit": "hourly_rate * median_wall_per_sim / concurrency is USD per aggregate SIM hour; divide by 3600 for USD per SIM second",
+    "f16_concurrency16_reference_cost_reduction_percent": 31.269974019138747,
+    "excludes": [
+      "model calls",
+      "OS disk",
+      "IP",
+      "tax",
+      "startup",
+      "idle time"
+    ],
+    "scope": "throughput estimate from 30-SIM-second probes, not long-run capacity guarantee"
+  },
+  "equivalence": {
+    "reference": "outputs/azure3-runs/speed-gate-e2e18-ugrp-sim-azure3-r73-067ef1514fcd",
+    "first_frame_sha256": {
+      "r1": "15673f61873991c84cfe449747efa858b4986e36d8f48c5874f483574ec0cfc3",
+      "r2": "2d2dbdf9481535bc453d52832f9fdb1b2e47b6f2d76d0adeb4404b71f1d92803",
+      "r3": "9d578bcb5652646d6368fad5d12937da936facff9cf6ca92fe38585e89161777"
+    },
+    "first_frames_equal_runs": 51,
+    "compared_runs": 51,
+    "missing_frames_runs": 1,
+    "first_frames_equal": true,
+    "bundle_only_difference": "wall_cap_s: VM3 7200 vs VM4 450; external gate stops at 30 SIM seconds",
+    "all_other_top_level_bundle_fields_equal": true,
+    "cohort_pooling_allowed": false,
+    "reason": "Speed-gate DEV repetitions of seed61006 are not independent cohort evidence; first frames do not establish full trajectory/late-phase equivalence."
+  },
+  "runs": [
+    {
+      "name": "vm4-f16als-c12-r2",
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/vm4-f16als-c12-r2",
+      "runs": 12,
+      "completed": 0,
+      "status": "SPEED_GATE_FAIL",
+      "raw_bytes": 14010523,
+      "sha256sums_sha256": "5468644df09469e6a52570a038b176d8c7bb02c98ac7323d3f4144b7f03e9f01",
+      "failures": [
+        {
+          "name": "speed-gate-vm4-f16als-c12-r2-00",
+          "reason": "no successful model response"
+        },
+        {
+          "name": "speed-gate-vm4-f16als-c12-r2-01",
+          "reason": "no successful model response"
+        },
+        {
+          "name": "speed-gate-vm4-f16als-c12-r2-02",
+          "reason": "no successful model response"
+        },
+        {
+          "name": "speed-gate-vm4-f16als-c12-r2-03",
+          "reason": "no successful model response"
+        },
+        {
+          "name": "speed-gate-vm4-f16als-c12-r2-04",
+          "reason": "no successful model response"
+        },
+        {
+          "name": "speed-gate-vm4-f16als-c12-r2-05",
+          "reason": "no successful model response"
+        },
+        {
+          "name": "speed-gate-vm4-f16als-c12-r2-06",
+          "reason": "no successful model response"
+        },
+        {
+          "name": "speed-gate-vm4-f16als-c12-r2-07",
+          "reason": "no successful model response"
+        },
+        {
+          "name": "speed-gate-vm4-f16als-c12-r2-08",
+          "reason": "no successful model response"
+        },
+        {
+          "name": "speed-gate-vm4-f16als-c12-r2-09",
+          "reason": "no successful model response"
+        },
+        {
+          "name": "speed-gate-vm4-f16als-c12-r2-10",
+          "reason": "no successful model response"
+        },
+        {
+          "name": "speed-gate-vm4-f16als-c12-r2-11",
+          "reason": "no successful model response"
+        }
+      ]
+    },
+    {
+      "name": "vm4-f16als-c12-r3",
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/vm4-f16als-c12-r3",
+      "runs": 12,
+      "completed": 12,
+      "status": "SPEED_GATE_PASS",
+      "raw_bytes": 105400016,
+      "sha256sums_sha256": "82898ff6278d80bc1b3bc0ef0a698a1dd5c92f2fe60e82bc2059799751209f6d",
+      "failures": []
+    },
+    {
+      "name": "vm4-f16als-c16-r2",
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/vm4-f16als-c16-r2",
+      "runs": 16,
+      "completed": 0,
+      "status": "SPEED_GATE_FAIL",
+      "raw_bytes": 18679997,
+      "sha256sums_sha256": "42389b47f74ee831059b3aded50475e37bfc5e70ea70e9336cebee8da29c51db",
+      "failures": [
+        {
+          "name": "speed-gate-vm4-f16als-c16-r2-00",
+          "reason": "no successful model response"
+        },
+        {
+          "name": "speed-gate-vm4-f16als-c16-r2-01",
+          "reason": "no successful model response"
+        },
+        {
+          "name": "speed-gate-vm4-f16als-c16-r2-02",
+          "reason": "no successful model response"
+        },
+        {
+          "name": "speed-gate-vm4-f16als-c16-r2-03",
+          "reason": "no successful model response"
+        },
+        {
+          "name": "speed-gate-vm4-f16als-c16-r2-04",
+          "reason": "no successful model response"
+        },
+        {
+          "name": "speed-gate-vm4-f16als-c16-r2-05",
+          "reason": "no successful model response"
+        },
+        {
+          "name": "speed-gate-vm4-f16als-c16-r2-06",
+          "reason": "no successful model response"
+        },
+        {
+          "name": "speed-gate-vm4-f16als-c16-r2-07",
+          "reason": "no successful model response"
+        },
+        {
+          "name": "speed-gate-vm4-f16als-c16-r2-08",
+          "reason": "no successful model response"
+        },
+        {
+          "name": "speed-gate-vm4-f16als-c16-r2-09",
+          "reason": "no successful model response"
+        },
+        {
+          "name": "speed-gate-vm4-f16als-c16-r2-10",
+          "reason": "no successful model response"
+        },
+        {
+          "name": "speed-gate-vm4-f16als-c16-r2-11",
+          "reason": "no successful model response"
+        },
+        {
+          "name": "speed-gate-vm4-f16als-c16-r2-12",
+          "reason": "no successful model response"
+        },
+        {
+          "name": "speed-gate-vm4-f16als-c16-r2-13",
+          "reason": "no successful model response"
+        },
+        {
+          "name": "speed-gate-vm4-f16als-c16-r2-14",
+          "reason": "no successful model response"
+        },
+        {
+          "name": "speed-gate-vm4-f16als-c16-r2-15",
+          "reason": "no successful model response"
+        }
+      ]
+    },
+    {
+      "name": "vm4-f16als-c16-r3",
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/vm4-f16als-c16-r3",
+      "runs": 16,
+      "completed": 15,
+      "status": "SPEED_GATE_FAIL",
+      "raw_bytes": 132478080,
+      "sha256sums_sha256": "9d2b896752dd7d2bd2f8ef8a294f15e322a1860dd84f5261f2967ea3203daa4c",
+      "failures": [
+        {
+          "name": "speed-gate-e2e18-v344-s61006-r817610",
+          "reason": "Remote end closed connection without response"
+        }
+      ]
+    },
+    {
+      "name": "vm4-f16als-c16-r4",
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/vm4-f16als-c16-r4",
+      "runs": 16,
+      "completed": 16,
+      "status": "SPEED_GATE_PASS",
+      "raw_bytes": 140836344,
+      "sha256sums_sha256": "850426b3ca4c1d07de557f432124c25c9e43b5c56cd9d6c3fdfe259595d34510",
+      "failures": []
+    },
+    {
+      "name": "vm4-f16als-c8",
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/vm4-f16als-c8",
+      "runs": 8,
+      "completed": 0,
+      "status": "SPEED_GATE_FAIL",
+      "raw_bytes": 7316998,
+      "sha256sums_sha256": "1c5341b191bb9141a808bf2be37a2f1ad3554c1e57606a699af03a7600f40b71",
+      "failures": [
+        {
+          "name": "speed-gate-vm4-f16als-c8-00",
+          "reason": "[Errno 2] No such file or directory: '/home/ugrp/ugrp-sim/relays/e2e18/body.json'"
+        },
+        {
+          "name": "speed-gate-vm4-f16als-c8-01",
+          "reason": "[Errno 2] No such file or directory: '/home/ugrp/ugrp-sim/relays/e2e18/body.json'"
+        },
+        {
+          "name": "speed-gate-vm4-f16als-c8-02",
+          "reason": "[Errno 2] No such file or directory: '/home/ugrp/ugrp-sim/relays/e2e18/body.json'"
+        },
+        {
+          "name": "speed-gate-vm4-f16als-c8-03",
+          "reason": "[Errno 2] No such file or directory: '/home/ugrp/ugrp-sim/relays/e2e18/body.json'"
+        },
+        {
+          "name": "speed-gate-vm4-f16als-c8-04",
+          "reason": "[Errno 2] No such file or directory: '/home/ugrp/ugrp-sim/relays/e2e18/body.json'"
+        },
+        {
+          "name": "speed-gate-vm4-f16als-c8-05",
+          "reason": "[Errno 2] No such file or directory: '/home/ugrp/ugrp-sim/relays/e2e18/body.json'"
+        },
+        {
+          "name": "speed-gate-vm4-f16als-c8-06",
+          "reason": "[Errno 2] No such file or directory: '/home/ugrp/ugrp-sim/relays/e2e18/body.json'"
+        },
+        {
+          "name": "speed-gate-vm4-f16als-c8-07",
+          "reason": "[Errno 2] No such file or directory: '/home/ugrp/ugrp-sim/relays/e2e18/body.json'"
+        }
+      ]
+    },
+    {
+      "name": "vm4-f16als-c8-r2",
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/vm4-f16als-c8-r2",
+      "runs": 8,
+      "completed": 0,
+      "status": "SPEED_GATE_FAIL",
+      "raw_bytes": 9339853,
+      "sha256sums_sha256": "4ae04285f89e23548132cb5acb2c271435fea0959ca7f420ad9e96503855bf14",
+      "failures": [
+        {
+          "name": "speed-gate-vm4-f16als-c8-r2-00",
+          "reason": "no successful model response"
+        },
+        {
+          "name": "speed-gate-vm4-f16als-c8-r2-01",
+          "reason": "no successful model response"
+        },
+        {
+          "name": "speed-gate-vm4-f16als-c8-r2-02",
+          "reason": "no successful model response"
+        },
+        {
+          "name": "speed-gate-vm4-f16als-c8-r2-03",
+          "reason": "no successful model response"
+        },
+        {
+          "name": "speed-gate-vm4-f16als-c8-r2-04",
+          "reason": "no successful model response"
+        },
+        {
+          "name": "speed-gate-vm4-f16als-c8-r2-05",
+          "reason": "no successful model response"
+        },
+        {
+          "name": "speed-gate-vm4-f16als-c8-r2-06",
+          "reason": "no successful model response"
+        },
+        {
+          "name": "speed-gate-vm4-f16als-c8-r2-07",
+          "reason": "no successful model response"
+        }
+      ]
+    },
+    {
+      "name": "vm4-f16als-c8-r3",
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/vm4-f16als-c8-r3",
+      "runs": 8,
+      "completed": 8,
+      "status": "SPEED_GATE_PASS",
+      "raw_bytes": 70823140,
+      "sha256sums_sha256": "0b6b8f66a9d5c5d46bbfc025296f55a7a81032e537b580f2b37d407470cf8f88",
+      "failures": []
+    }
+  ],
+  "archive": {
+    "verified": 8,
+    "total": 8,
+    "raw_bytes": 498884951,
+    "proof_file": "outputs/e2e18-admin/vm4-f16als-archive-proofs.json.zst",
+    "destinations": [
+      {
+        "name": "vm4-f16als-c12-r2",
+        "path": "/home/ugrp/ugrp-sim/arm/native-vm4-f16als-c12-r2"
+      },
+      {
+        "name": "vm4-f16als-c12-r3",
+        "path": "/home/ugrp/ugrp-sim/arm/native-vm4-f16als-c12-r3"
+      },
+      {
+        "name": "vm4-f16als-c16-r2",
+        "path": "/home/ugrp/ugrp-sim/arm/native-vm4-f16als-c16-r2"
+      },
+      {
+        "name": "vm4-f16als-c16-r3",
+        "path": "/home/ugrp/ugrp-sim/arm/native-vm4-f16als-c16-r3"
+      },
+      {
+        "name": "vm4-f16als-c16-r4",
+        "path": "/home/ugrp/ugrp-sim/arm/native-vm4-f16als-c16-r4"
+      },
+      {
+        "name": "vm4-f16als-c8-r2",
+        "path": "/home/ugrp/ugrp-sim/arm/native-vm4-f16als-c8-r2"
+      },
+      {
+        "name": "vm4-f16als-c8-r3",
+        "path": "/home/ugrp/ugrp-sim/arm/native-vm4-f16als-c8-r3"
+      },
+      {
+        "name": "vm4-f16als-c8",
+        "path": "/home/ugrp/ugrp-sim/arm/native-vm4-f16als-c8"
+      }
+    ]
+  },
+  "retrieval": {
+    "lite_verified": true,
+    "heavy_media_fetched": false,
+    "local_root": "outputs/e2e18-admin/vm4-f16als-lite"
+  },
+  "vm_final": {
+    "size": "Standard_F16als_v6",
+    "status": [
+      {
+        "code": "ProvisioningState/succeeded",
+        "displayStatus": "Provisioning succeeded",
+        "level": "Info",
+        "time": "2026-10-13T09:05:51.4951979+00:00"
+      },
+      {
+        "code": "PowerState/deallocated",
+        "displayStatus": "VM deallocated",
+        "level": "Info"
+      }
+    ]
+  },
+  "own_tunnels_terminated": true,
+  "source_and_supervisor_files_changed": false,
+  "references": [
+    "https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/compute-optimized/falsv6-series",
+    "https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/general-purpose/dasv6-series",
+    "docs/azure_simulation.md",
+    "scripts/azure_speed_gate.py",
+    "scripts/s4_proxy_relay.py:accepted_call_id"
+  ]
+}

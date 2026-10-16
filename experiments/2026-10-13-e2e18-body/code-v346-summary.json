@@ -1,0 +1,201 @@
+{
+  "bundle": "e2e18-v346",
+  "body_backend": "code_v1",
+  "code_sha": "c284abbfdf7da0668226967b8ef32084a80c5fbd",
+  "base": "067ef1514fcdb4c6c067775936a7e58085b3c00e",
+  "test": {
+    "files": [
+      "tests/test_e2e_body_code.py",
+      "tests/test_e2e_body_controller.py",
+      "tests/test_e2e_body_upstream.py"
+    ],
+    "passed": 48,
+    "failed": 0,
+    "raw": "outputs/e2e18-body/pytest-code-final.txt",
+    "sha256": "94a929446a433176aaf4ed98a2ed711b0ed52ca9f37805998d658a7aea6efb5c",
+    "committed_copy": "experiments/2026-10-13-e2e18-body/code-v346-pytest.txt"
+  },
+  "replay": {
+    "groups": {
+      "all": {
+        "scenes": 29,
+        "queried": 23,
+        "progress_skill": 23,
+        "skipped": 6,
+        "provider_calls": 0
+      },
+      "scenes-r70-r2.json.zst": {
+        "scenes": 8,
+        "queried": 8,
+        "progress_skill": 8,
+        "skipped": 0,
+        "provider_calls": 0
+      },
+      "mapping": {
+        "scenes": 12,
+        "queried": 12,
+        "progress_skill": 12,
+        "skipped": 0,
+        "provider_calls": 0
+      },
+      "scenes-v321.json.zst": {
+        "scenes": 16,
+        "queried": 10,
+        "progress_skill": 10,
+        "skipped": 6,
+        "provider_calls": 0
+      },
+      "align": {
+        "scenes": 10,
+        "queried": 8,
+        "progress_skill": 8,
+        "skipped": 2,
+        "provider_calls": 0
+      },
+      "grasp_lift": {
+        "scenes": 2,
+        "queried": 0,
+        "progress_skill": 0,
+        "skipped": 2,
+        "provider_calls": 0
+      },
+      "carry": {
+        "scenes": 2,
+        "queried": 0,
+        "progress_skill": 0,
+        "skipped": 2,
+        "provider_calls": 0
+      },
+      "scenes-v344-r73.json.zst": {
+        "scenes": 5,
+        "queried": 5,
+        "progress_skill": 5,
+        "skipped": 0,
+        "provider_calls": 0
+      },
+      "terminal_mapping": {
+        "scenes": 3,
+        "queried": 3,
+        "progress_skill": 3,
+        "skipped": 0,
+        "provider_calls": 0
+      }
+    },
+    "raw": {
+      "path": "outputs/e2e18-body/code-replay-final.json.zst",
+      "sha256": "86246c0d145a02cd52566e58b4e7b081069cd73960555472ea1202a34f537d20",
+      "original_sha256": "212562130bffc5b38e70cf010ef51a027f4dd5c2d803dbecc30e69ba86372e70",
+      "bytes": 18032,
+      "original_bytes": 364650,
+      "roundtrip_verified": true,
+      "committed_copy": "experiments/2026-10-13-e2e18-body/code-v346-replay.json.zst"
+    },
+    "inputs": [
+      {
+        "path": "outputs/e2e18-body/scenes-r70-r2.json.zst",
+        "sha256": "6bfc746fbee3e22866ab01c2818da42f814b55bb777228290771e3e482fbe9af",
+        "original_sha256": "86ace11112b11d0bc6c0ad41eb52b2557872e7ca82b4a187f26ee328d2355d90",
+        "scenes": 8
+      },
+      {
+        "path": "outputs/e2e18-body/scenes-v321.json.zst",
+        "sha256": "17ac96dcbe12f5921325f293a9bb6cdf47295b096c7d13f8cc2d426e63b37784",
+        "original_sha256": "0df0726929f4dcf5995b3e285d0ea1fb13a9ee7407d5cb58dd2b427999a87e7f",
+        "scenes": 16
+      },
+      {
+        "path": "outputs/e2e18-body/scenes-v344-r73.json.zst",
+        "sha256": "60a7c85a715fe17ff4b5bbe68413c118b9d5ba244aea62290649f91fb2f1c68f",
+        "original_sha256": "8d514c875ae42b9ab267d317797f139d7bdbe8deea184f721f26c596c3ce706d",
+        "scenes": 5
+      }
+    ],
+    "scope": "saved scene skill admission only; missing full own costmap; no actual motion or provider",
+    "skipped": [
+      {
+        "source": "scenes-v321.json.zst",
+        "index": 3,
+        "phase": "align",
+        "reason": "no direct motion proposal; runtime intentionally does not query"
+      },
+      {
+        "source": "scenes-v321.json.zst",
+        "index": 5,
+        "phase": "align",
+        "reason": "no direct motion proposal; runtime intentionally does not query"
+      },
+      {
+        "source": "scenes-v321.json.zst",
+        "index": 6,
+        "phase": "grasp_lift",
+        "reason": "current GO/ACK and queued batch not retained; not synthesized"
+      },
+      {
+        "source": "scenes-v321.json.zst",
+        "index": 7,
+        "phase": "carry",
+        "reason": "current GO/ACK and queued batch not retained; not synthesized"
+      },
+      {
+        "source": "scenes-v321.json.zst",
+        "index": 14,
+        "phase": "grasp_lift",
+        "reason": "current GO/ACK and queued batch not retained; not synthesized"
+      },
+      {
+        "source": "scenes-v321.json.zst",
+        "index": 15,
+        "phase": "carry",
+        "reason": "current GO/ACK and queued batch not retained; not synthesized"
+      }
+    ]
+  },
+  "source_sha256": {
+    "harness/e2e_body_code.py": "2f38eb2b8fbd756eb6ee6f7e4d6cb2bc96fce1edb5154fcbf0561da7e7b350d2",
+    "harness/e2e_body_controller.py": "8acf2ecd60397b46a083b36fc59460ccfceadbc8e452c51ce6d0de5f75d3bb6d",
+    "harness/e2e_body_skills.py": "405415aac016681e011715e6cad2f2e9fbaa1219d6cdafcafb429d77bf354e30",
+    "harness/e2e_body_semantics.py": "846cdd7e888d0c1fd3b1b281d12101993f9f30c165489a9e3c89151757edd6de",
+    "scripts/probe_body_code_offline.py": "84e38c643a752d9da49a5fe5fd4d4da535076010bab8ef4288bae936eae1fe49",
+    "scripts/probe_body_decider_offline.py": "0ed615bc7ae8675e5605061e8fc771a3f3fe49c97041e0bec8a439baa0758af3",
+    "scripts/run_e2e_ownmap_live.py": "3bfba2b8a56920fcb843e91e5b320b6df921783f226e23ad639f0b985dff2c23"
+  },
+  "supervisor_source": "azure3:~/ugrp-sim/runs/e2e18-v344-s61006-r73/raw",
+  "current_simulation_runs_submitted": 0,
+  "current_provider_calls": 0,
+  "current_provider_cost_usd": 0,
+  "historical_tests": [
+    {
+      "raw": "outputs/e2e18-body/pytest-code-r1.txt",
+      "passed": 46,
+      "failed": 1,
+      "reason": "Test expected first feedback pulse in same tick; actual bounded executor emits on next proposed-command tick; test timing corrected."
+    },
+    {
+      "raw": "outputs/e2e18-body/pytest-code-r2.txt",
+      "passed": 47,
+      "failed": 0
+    },
+    {
+      "raw": "outputs/e2e18-body/pytest-code-r3.txt",
+      "passed": 48,
+      "failed": 0
+    }
+  ],
+  "staged_replay": {
+    "raw": "outputs/e2e18-body/code-replay-r1.json.zst",
+    "status": "same progress-choice counts before final committed replay; not an independent denominator"
+  },
+  "limitations": [
+    "진행/복구 스킬 선택률; 정확한 스킬 정답률이나 실제 움직임 성공률이 아님",
+    "완전한 과거 costmap 미보존; 실제 매 펄스 안전은 새 VM 실행에서 확인 필요",
+    "v344 terminal 3장면은 각각 독립 초기화; 장기 순환·진척 검증 아님",
+    "실제 native 탐색기 단위 시험은 합성 known-free/no-frontier costmap을 사용",
+    "v346 SIM/파지 시간/재획득/진동/E2E 미확인",
+    "프로토콜 기본과 Gemma 메시지 분리는 #466 담당"
+  ],
+  "references": {
+    "nav2": "https://github.com/ros-navigation/navigation2/blob/main/nav2_bt_navigator/behavior_trees/navigate_to_pose_w_replanning_and_recovery.xml",
+    "rule_change": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/467",
+    "supervisor": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/465#issuecomment-6141846233"
+  }
+}

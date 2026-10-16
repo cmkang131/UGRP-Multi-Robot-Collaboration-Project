@@ -1,0 +1,153 @@
+{
+  "schema": "ugrp.dev_candidates.v1",
+  "raw_source": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v{254,257,258}-s61006-r42/raw/robots/r2/ownmap.jsonl",
+  "observations": {
+    "v254": {
+      "guard_t": 202.8,
+      "range_m": 0.161,
+      "post_recovery_station_distance_m": 0.6751
+    },
+    "v257": {
+      "guard_t": 195.2,
+      "range_status": "no_echo",
+      "post_recovery_station_distance_m": 0.7393
+    },
+    "v258": {
+      "guard_t": 190.0,
+      "range_m": 1.456,
+      "post_recovery_station_distance_m": 0.9522
+    },
+    "inference": "Near-stage posture changes coincide with clearance recovery; this is not an isolated causal proof. Prepare posture before entering the near region, retain through retreat, and compare matched seeds."
+  },
+  "candidates": [
+    {
+      "bundle": "e2e18-v258",
+      "mode": "stage20_v1",
+      "role": "baseline"
+    },
+    {
+      "bundle": "e2e18-v259",
+      "mode": "inspect40_v1",
+      "role": "candidate"
+    },
+    {
+      "bundle": "e2e18-v260",
+      "mode": "inspect60_v1",
+      "role": "candidate"
+    }
+  ],
+  "seeds_by_vm": {
+    "azure3": [
+      61006,
+      61007
+    ],
+    "azure4": [
+      61009,
+      61012
+    ]
+  },
+  "run_class": "dev",
+  "pr": 461,
+  "criteria": [
+    "fresh correct assigned band enters visual_servo",
+    "both robots physically hold lifted cargo in evaluator-only records",
+    "complete transported beam setdown in B",
+    "all original stop and tilt outcomes included"
+  ],
+  "boundaries": [
+    "own RGB station and own odometry only",
+    "fresh RGB remains required for fine alignment",
+    "arm clearance remains active",
+    "no object attachment or world pose input"
+  ],
+  "references": [
+    {
+      "url": "https://moveit.picknik.ai/main/doc/tutorials/pick_and_place_with_moveit_task_constructor/pick_and_place_with_moveit_task_constructor.html",
+      "verified": true,
+      "application": "Use staged pregrasp preparation before approach; only stage ordering is adapted, not planning-scene ground truth or object attachment."
+    }
+  ],
+  "reservation": {
+    "checked_unix": 1791833456.814821,
+    "rows": [
+      {
+        "ref": "origin/main",
+        "max_id": 225
+      },
+      {
+        "ref": "origin/codex/e2e18",
+        "max_id": 258
+      },
+      {
+        "ref": "origin/claude/e2e-bcones",
+        "max_id": 213
+      },
+      {
+        "ref": "origin/codex/ego-pose-continuity",
+        "max_id": 145
+      },
+      {
+        "ref": "origin/codex/egomap70-overview",
+        "max_id": 145
+      },
+      {
+        "ref": "origin/codex/real-robot-link",
+        "max_id": 2
+      },
+      {
+        "ref": "origin/codex/integ-target-backend",
+        "max_id": 101
+      }
+    ]
+  },
+  "raw_excerpt_sha256": "12402275665c9099fa9977b044f904ca352b0d89e8bcde2c75ce81b9f7c343f7",
+  "validation": {
+    "command": "pytest tests/test_e2e_fine_view.py tests/test_e2e_arm_clearance.py tests/test_e2e_camera_hold.py -q",
+    "passed": 48,
+    "scope": "offline regressions and exact bundle registration; no Mac physics"
+  },
+  "prelaunch_seed_revision": {
+    "removed": 61011,
+    "added": 61009,
+    "reason": "r42 s61011 variants remain identical in mapping at 624-627 SIM seconds, so the near-approach toggle is not exercised. s61009 previously reached align and had a tilt stop; retain matched 3-variant DEV comparison. No r43 run has started."
+  },
+  "waves": {
+    "r43": {
+      "azure3": [
+        61006
+      ],
+      "azure4": [
+        61012
+      ]
+    },
+    "r44": {
+      "azure3": [
+        61007
+      ],
+      "azure4": [
+        61009
+      ]
+    }
+  },
+  "wave_reason": "Submit fixed candidates immediately after replacing confirmed repeated approach/clearance cases; keep v257/s61006 with observed visual-servo progress and recently entered s61011 align runs. Each wave adds 3 per VM with total <=6.",
+  "retry": {
+    "r43": "6/6 gate initialization failures: missing MUJOCO_GL=osmesa, no physics or cohort execution",
+    "r45": "same seeds and candidates; explicitly set OSMesa and single BLAS/OMP thread environment in runner",
+    "reference": "https://github.com/google-deepmind/mujoco/blob/main/python/mujoco/rendering/classic/gl_context.py",
+    "source_line": "scripts/run_e2e_ownmap_live.py:693",
+    "matched_live_r42_environment": {
+      "MUJOCO_GL": "osmesa",
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "LP_NUM_THREADS": "1"
+    },
+    "validation": "Python AST parsed both finite runners; actual remote gate is required before cohort admission."
+  },
+  "r44_resource_limit": {
+    "wall_cap_s": 7200,
+    "sim_cap_s": 1800,
+    "global_stop": "2026-10-13T01:00:00Z",
+    "reason": "Allow a promising first grasp to continue through slow loaded carry instead of truncating all cases at 40 minutes. Confirmed repeated blockages remain eligible for supervised replacement. Cap also bounded by relay, VM lifetime and 15-minute final archive reserve."
+  }
+}

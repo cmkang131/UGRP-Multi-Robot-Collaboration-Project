@@ -1,0 +1,126 @@
+{
+  "checked_unix": 1791882535.2831528,
+  "runs": [
+    {
+      "name": "e2e18-v324-s61006-r69",
+      "status": "EARLY_STOP",
+      "failure": "SIGNAL_SIGINT",
+      "controller_failure": null,
+      "last_phase": {
+        "t": 556.65,
+        "event": "phase",
+        "state": "wait_go_ack",
+        "seg": 1,
+        "epoch": 1
+      },
+      "phase_at_stop_s": 3.6000000000000227,
+      "synchronized_segments": [
+        {
+          "t": 544.75,
+          "event": "s3_synchronized_segment",
+          "key": [
+            "order-5",
+            "83ead6a8c353aea7090724fdfb529914265446cb0ecbe2286794c7a45f1c293c",
+            1,
+            0
+          ],
+          "source": "received_own_route",
+          "pulse_budget": "off",
+          "planned_m": 0.747958948388867
+        }
+      ],
+      "transport_trace_sha256_uncompressed": "5dba25645fdcac253deb8b3e30d838978d2e770a8c2f3c63550f4eaf08087a04"
+    },
+    {
+      "name": "e2e18-v325-s61006-r69",
+      "status": "EARLY_STOP",
+      "failure": "SIGNAL_SIGINT",
+      "controller_failure": null,
+      "last_phase": {
+        "t": 556.45,
+        "event": "phase",
+        "state": "wait_go_ack",
+        "seg": 1,
+        "epoch": 1
+      },
+      "phase_at_stop_s": 1.4295000000000755,
+      "synchronized_segments": [
+        {
+          "t": 544.55,
+          "event": "s3_synchronized_segment",
+          "key": [
+            "order-5",
+            "83ead6a8c353aea7090724fdfb529914265446cb0ecbe2286794c7a45f1c293c",
+            1,
+            0
+          ],
+          "source": "received_own_route",
+          "pulse_budget": "off",
+          "planned_m": 0.747958948388867
+        }
+      ],
+      "transport_trace_sha256_uncompressed": "9ee6d2d58a3197d58573a13d908c86b8c66f83b6e7edbf8a739b96234178e7b7"
+    },
+    {
+      "name": "e2e18-v328-s61006-r69",
+      "status": "EARLY_STOP",
+      "failure": "SIGNAL_SIGINT",
+      "controller_failure": null,
+      "last_phase": {
+        "t": 554.95,
+        "event": "phase",
+        "state": "wait_go_ack",
+        "seg": 1,
+        "epoch": 1
+      },
+      "phase_at_stop_s": 5.627250000000004,
+      "synchronized_segments": [
+        {
+          "t": 543.05,
+          "event": "s3_synchronized_segment",
+          "key": [
+            "order-5",
+            "83ead6a8c353aea7090724fdfb529914265446cb0ecbe2286794c7a45f1c293c",
+            1,
+            0
+          ],
+          "source": "received_own_route",
+          "pulse_budget": "off",
+          "planned_m": 0.747958948388867
+        }
+      ],
+      "transport_trace_sha256_uncompressed": "808f4eaf31d407ad2f9de5ade934b7bf6bf9dc29e6132ca91a9c17ab9553cade"
+    },
+    {
+      "name": "e2e18-v329-s61006-r69",
+      "status": "EARLY_STOP",
+      "failure": "SIGNAL_SIGINT",
+      "controller_failure": null,
+      "last_phase": {
+        "t": 554.95,
+        "event": "phase",
+        "state": "lower_open",
+        "seg": 0,
+        "epoch": 1
+      },
+      "phase_at_stop_s": 12.75750000000005,
+      "synchronized_segments": [
+        {
+          "t": 543.05,
+          "event": "s3_synchronized_segment",
+          "key": [
+            "order-5",
+            "83ead6a8c353aea7090724fdfb529914265446cb0ecbe2286794c7a45f1c293c",
+            1,
+            0
+          ],
+          "source": "received_own_route",
+          "pulse_budget": "off",
+          "planned_m": 0.747958948388867
+        }
+      ],
+      "transport_trace_sha256_uncompressed": "d88ca9d634411d5953f25ad4fd6d4c57920c9dcf6fbc626fd8187fba085e2048"
+    }
+  ],
+  "note": "Coordinator known-failure stops preserved. Actual final raw shows SIGNAL_SIGINT and no controller_failure in these four runs. wait_go_ack/lower_open are phases, not independently observed timeout/failure labels. Future stops require the actual failure or measured stalled progression."
+}

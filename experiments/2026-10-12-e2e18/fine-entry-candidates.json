@@ -1,0 +1,197 @@
+{
+  "PR": 461,
+  "class": "dev",
+  "diagnosis": {
+    "r257_61006": {
+      "r1_ready_sim_s": 362.4,
+      "r2_ready": false,
+      "end_sim_s": 713.65,
+      "stopped_at": "pair alignment barrier; close/lift/GO_ACK not entered",
+      "code": "harness/e2e_live_transport.py:117-155"
+    },
+    "near_r2_counterexample": {
+      "name": "e2e18-v259-s61007-r44",
+      "rid": "r2",
+      "near_fresh_count": 35,
+      "correct_count": 31,
+      "abs_axis_pi_count": 0,
+      "samples": [
+        {
+          "t": 1336.4,
+          "dist": 0.05846523280817426,
+          "head": 0.3610383799298269,
+          "grip": [
+            0.2120599225949866,
+            0.038360695576835406
+          ],
+          "axis": 0.45641891760445585,
+          "correct": true,
+          "status": "navigate_pregrasp",
+          "camera": "inspect",
+          "rgb": {
+            "robot_id": "r2",
+            "frame_id": 3134,
+            "t_sim": 1336.4,
+            "sha256": "ff7b9a93da0dfd4c776900e01170cec7db8e5780c7d847c307a1394074496eff"
+          }
+        },
+        {
+          "t": 1336.8,
+          "dist": 0.05916800847631886,
+          "head": 0.45641891760445574,
+          "grip": [
+            0.20708747635338443,
+            0.05805488873354649
+          ],
+          "axis": 0.538135715367858,
+          "correct": true,
+          "status": "navigate_pregrasp",
+          "camera": "inspect",
+          "rgb": {
+            "robot_id": "r2",
+            "frame_id": 3135,
+            "t_sim": 1336.8,
+            "sha256": "4f9413cc343dc087952a7bd2113df0ca49d4dfd64cb8e3ac4497e2b7b971cb09"
+          }
+        },
+        {
+          "t": 1336.0,
+          "dist": 0.05941099023937485,
+          "head": 0.3645586370561418,
+          "grip": [
+            0.2154601103368691,
+            0.019100926965118187
+          ],
+          "axis": 0.36103837992982674,
+          "correct": true,
+          "status": "navigate_pregrasp",
+          "camera": "inspect",
+          "rgb": {
+            "robot_id": "r2",
+            "frame_id": 3133,
+            "t_sim": 1336.0,
+            "sha256": "9b6712f7c379c09d28eb4bf88b6fe020491358c1a8883aa893c55808d0a9065b"
+          }
+        }
+      ]
+    },
+    "entry_code": "harness/e2e_carrier_approach.py:74",
+    "mechanism": "Fresh assigned-band axis 0.456 rad rejected by 0.20rad navigation-to-servo gate; existing servo can issue a corrective calibrated pulse, but navigation continues until its stricter 3cm XY target.",
+    "fine_secondary": {
+      "code": "harness/zone_s3_alignment_ownership.py:116-143",
+      "observed_input": "v259 s61007 r2 t1336.4 own RGB; same recorded counterexample",
+      "offline_predicted_one_step": "after2 pulses no improving one-step action, not ready, yaw residual0.1428rad",
+      "offline_predicted_receding3": "existing3pulse selector reaches unchanged ready envelope after5 predicted pulses; no physical success claim",
+      "change": "v264 reuses existing Servo three-pulse selection by disabling only coarse_axis_ownership; all other refinements retained"
+    }
+  },
+  "candidates": [
+    {
+      "bundle": 260,
+      "role": "baseline"
+    },
+    {
+      "bundle": 261,
+      "approach_heading": "path10_v1"
+    },
+    {
+      "bundle": 262,
+      "approach_heading": "path20_v1"
+    },
+    {
+      "bundle": 263,
+      "fine_entry": "capture60_v1"
+    },
+    {
+      "bundle": 264,
+      "fine_entry": "capture60_mpc_v1",
+      "approach_heading": "path20_v1"
+    }
+  ],
+  "seeds": {
+    "azure3": [
+      61006
+    ],
+    "azure4": [
+      61007
+    ]
+  },
+  "criteria": [
+    "paired held cargo z>0.06m and both fingers of both robots in evaluator records",
+    "complete start-to-B transport",
+    "LLM and own observed route completed, counted separately"
+  ],
+  "bounds": {
+    "VMs": [
+      "azure3",
+      "azure4"
+    ],
+    "concurrency_per_VM": 5,
+    "speed_gate_wall_per_sim": 3.0,
+    "max_sim_s": 1800,
+    "max_wall_s": 7200,
+    "deadline_utc": "2026-10-13T07:00:00Z"
+  },
+  "references": [
+    {
+      "url": "https://docs.nav2.org/jazzy/tutorials/general_tutorials/using_docking/",
+      "verified": true,
+      "application": "Staging navigation hands off to a fresh perception control loop. We retain the existing own-RGB calibrated servo, final readiness tolerances, paired barrier and no weld."
+    },
+    {
+      "url": "https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/controller_plugins/configuring_rotation_shim_controller/",
+      "verified": true,
+      "application": "Inherited v261/v262 rotate-before-path-follow comparison."
+    },
+    {
+      "url": "https://arxiv.org/abs/2105.00788",
+      "verified": "abstract",
+      "application": "Visual predictive control forecasts candidate motions; only receding-horizon structure reused, no neural model or training."
+    },
+    {
+      "url": "https://arxiv.org/abs/2605.22443",
+      "verified": "abstract",
+      "application": "Recent visual MPC constraint/convergence approach surveyed; no terminal stability claim or missing-feature prediction inherited."
+    }
+  ],
+  "reservation": {
+    "checked_unix": 1791849319.836989,
+    "rows": [
+      {
+        "ref": "origin/main",
+        "max_id": 225
+      },
+      {
+        "ref": "origin/codex/e2e18",
+        "max_id": 262
+      },
+      {
+        "ref": "origin/claude/e2e-bcones",
+        "max_id": 213
+      },
+      {
+        "ref": "origin/codex/ego-pose-continuity",
+        "max_id": 145
+      },
+      {
+        "ref": "origin/codex/egomap70-overview",
+        "max_id": 145
+      },
+      {
+        "ref": "origin/codex/real-robot-link",
+        "max_id": 2
+      },
+      {
+        "ref": "origin/codex/integ-target-backend",
+        "max_id": 101
+      }
+    ]
+  },
+  "validation": {
+    "command": "python3 -m pytest tests/test_e2e_fine_entry.py tests/test_e2e_approach_heading.py tests/test_e2e_camera_hold.py -q",
+    "scope": "offline source/recorded-input checks; no Mac simulation",
+    "status": "passed",
+    "passed": 42,
+    "elapsed_s": 64.81
+  }
+}

@@ -1,8 +1,9 @@
-# E2E18 DEV 통합
-- PR #458, base `codex/e2e-speed3`; merge 통합 이력 보존.
-- v216 부분 B 2시점 합의 → v217 정적 캐시 → v218 제곱 거리/OpenCV1 → v219 float32 격자 → v220 관측주기 → v221 경로 진단 → v222 무방향 빔 축 → v223 DEV 미관측 경로 → v224 관측 빔 좌표계/파지 접근 → v225 계산 범위/진단 기록.
-- VM3 seed61001–61006, VM4 seed61007–61012, 각 최대6개·최초7시간/재제출6시간/현재5시간 상한.
-- 속도 30 SIM초: v216 5.17/5.37 → v217 3.02/3.23 → v218 2.78/2.67 → v219 2.90/2.83.
-- 초기 상한2.5 실패 후 상한3.0 재측정: v225 2.952/2.869 통과(VM3 신규2+기존4, VM4 신규3+기존3)·12개 실행 중.
-- 실제 결과/실패/재제출/출처/해시: `run-summary.json`, `gate-*.json`, `initial-health-*.json`.
-- 원본: Azure 영속 `~/ugrp-sim/runs` → ARM 전체 파일 해시 보관; Mac 가벼운 회수.
+# E2E18 DEV
+- PR #461, codex/e2e18; 현재 판정·전체 실행 색인과 해시는 summary.json / run-summary.json.
+- 2026-10-13 07:29 UTC: 114시도, 공동 파지13(동일 seed 재현 포함), 시작→끝 운반0; VM4 사용자 중단6개 분모 제외.
+- 최원: v320/r65 seg1 grasp_lift831.2 SIM초. 두 번째 실제 공동 파지·최종 B 내려놓기는 미확인.
+- v324–v327: 인식 가속·정렬 후보·짧은 GO/ACK; v328–v329: 기존 정렬을 유지한 짧은 GO/ACK 비교.
+- VM3만, 최대12개·부하<12.8·메모리≥6GiB·계획 동시 부하30SIM 속도 게이트≤3.0.
+- 마감2026-10-13 13:00 UTC(22:00 KST), 원본 보관 해시 확인 뒤 VM3 deallocate·확인.
+- 원본: Azure ~/ugrp-sim/runs → ARM /home/ubuntu/ugrp-archive/runs; Mac은 fetch-lite만.
+- 결정 모델·Gemma 대화 구조와 기억 보강(v330–v339)은 별도 작업 결과를 통합 비교 예정.

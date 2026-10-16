@@ -1,0 +1,75 @@
+[
+  {
+    "id": "inclusionai/ling-3.0-flash-vl",
+    "canonical_slug": "inclusionai/ling-3.0-flash-vl-20260910",
+    "hugging_face_id": "inclusionAI/Ling-3.0-flash-VL",
+    "name": "inclusionAI: Ling 3.0 Flash VL",
+    "created": 1789056114,
+    "description": "Ling 3.0 Flash VL builds on Ling 3.0 Flash (124B total / 5.5B active MoE from InclusionAI), further strengthening its language capabilities while adding native visual perception and advanced visual...",
+    "context_length": 262144,
+    "architecture": {
+      "modality": "text+image+video->text",
+      "input_modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "tokenizer": "Other",
+      "instruct_type": null
+    },
+    "pricing": {
+      "prompt": "0.000000021",
+      "completion": "0.0000000616",
+      "input_cache_read": "0.0000000042"
+    },
+    "top_provider": {
+      "context_length": 262144,
+      "max_completion_tokens": 32768,
+      "is_moderated": false
+    },
+    "per_request_limits": null,
+    "supported_parameters": [
+      "frequency_penalty",
+      "include_reasoning",
+      "logit_bias",
+      "logprobs",
+      "max_tokens",
+      "min_p",
+      "presence_penalty",
+      "reasoning",
+      "repetition_penalty",
+      "response_format",
+      "seed",
+      "stop",
+      "structured_outputs",
+      "temperature",
+      "tool_choice",
+      "tools",
+      "top_k",
+      "top_logprobs",
+      "top_p"
+    ],
+    "default_parameters": {},
+    "supported_voices": null,
+    "knowledge_cutoff": null,
+    "expiration_date": null,
+    "links": {
+      "details": "/api/v1/models/inclusionai/ling-3.0-flash-vl-20260910/endpoints"
+    },
+    "benchmarks": {
+      "design_arena": [],
+      "artificial_analysis": {
+        "intelligence_index": 24.6,
+        "coding_index": 57,
+        "agentic_index": 28.7
+      }
+    },
+    "reasoning": {
+      "mandatory": false,
+      "default_enabled": true
+    }
+  }
+]
