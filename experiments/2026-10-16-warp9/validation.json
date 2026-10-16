@@ -1,16 +1,17 @@
 {
-  "recorded_utc": "2026-10-16T07:18:01.896351+00:00",
+  "recorded_utc": "2026-10-16T07:29:36.738663+00:00",
   "tests": {
-    "passed": 38,
+    "passed": 39,
     "files": [
       "tests/test_warp9_analysis.py",
+      "tests/test_warp9_first30.py",
       "tests/test_warp9_profile.py",
       "tests/test_warp9_planner.py",
       "tests/test_warp_act_warp5.py",
       "tests/test_warp_act_core.py",
       "tests/test_warp7_perception.py"
     ],
-    "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_warp9_analysis.py tests/test_warp9_profile.py tests/test_warp9_planner.py tests/test_warp_act_warp5.py tests/test_warp_act_core.py tests/test_warp7_perception.py"
+    "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_warp9_analysis.py tests/test_warp9_first30.py tests/test_warp9_profile.py tests/test_warp9_planner.py tests/test_warp_act_warp5.py tests/test_warp_act_core.py tests/test_warp7_perception.py"
   },
   "diff_check": "PASS",
   "physics_steps": 0,
@@ -24,11 +25,14 @@
     "status": "WAITING_EXCLUSIVE"
   },
   "source_files_sha256": {
-    "tests/test_warp9_analysis.py": "9a058bf75948ce4cf75523b97949ee0c0e406ba0590957a7e5aa32370ba56452",
+    "tests/test_warp9_analysis.py": "1247652effe4f741835a5bed8b696f0698b630f71f7cf06981a5ea8b9d04a9f6",
+    "tests/test_warp9_first30.py": "468547c1995f27812197d9cab266a096e8f4ab6d97793b213b56b6ce7ea3a052",
     "tests/test_warp9_profile.py": "17cf4edbb60b7f6c9928d92b53c109fd1d490eabee03050719a2f80777c8732b",
     "tests/test_warp9_planner.py": "71104e7f68b76149ec56b5798013247b37d8cce76893d6f649404b58c2676393",
     "tests/test_warp_act_warp5.py": "f04ea34fbc086442d11640484ff477f801c7d7c969feae468233f558a9dbac4b",
     "tests/test_warp_act_core.py": "3aa09de496b9003b0b9ca421b10edd5cd8730ed633fe080f89a3e750aeb3d1b6",
     "tests/test_warp7_perception.py": "cbec45506107f63d8e9ee4c677c27b1ff1aca9c0c6bf0618481b2172ddf23e07"
-  }
+  },
+  "first30_regression": "fixed SIM work; median threshold3.5 warning / >6 stop; no physics or completed first30 measurement",
+  "ci_shard_registration": "tests/test_warp9_*.py; four current test files included by pattern; CI execution unverified"
 }
