@@ -29,3 +29,5 @@ R3 SIGSEGV에서 release8world의 in-memory10Hz ring은 잃었다. 이후 기록
 관련 비물리 시험 **27 passed**. C16/정상상태 처리량·독립40/A40/B40·완주 입력 감사·새 기록기의 GPU 검증은 남았다. MPS daemon/client는 종료됐고 다른 작업 PID에는 신호를 보내지 않았다. L4의 다른 작업 lease가 있어 VM을 정지하지 않았다. 8h·유휴20분·budget-stop을 변경하지 않았다. CPU 분석 호스트의 guestTerminate 기록을 확인한 뒤 승인 규칙에 따라 재시작했다.
 
 참고: [MJWarp 배치/graph](https://mujoco.readthedocs.io/en/stable/mjwarp/index.html), [freejoint](https://mujoco.readthedocs.io/en/stable/XMLreference.html#body-freejoint), [private MPS 진단](mps-plan.md), [SciPy1.17.1](https://pypi.org/project/scipy/1.17.1/). 조사·source/static·초기화·부분 GPU 물리·완주/관문을 구분한다.
+
+최종 호스트 확인: CPU gcp2는 다른 lease/managed worker가0인 것을 검사한 뒤 STOP, `TERMINATED` 확인. L4는 `beamact3-A.json`·`warp3.json`을 보존하여 `RUNNING` 그대로다. [입장 검사](cpu-stop-admission.json), [실제 VM 상태](host-final-state.json).
