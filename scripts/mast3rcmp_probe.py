@@ -26,12 +26,15 @@ class Probe:
         self.rows=[]
         self.references=[]
         self.start=time.perf_counter()
+        self.first_frame_start=None
         torch.cuda.reset_peak_memory_stats()
 
     def begin(self,i,timestamp):
         torch.cuda.synchronize()
         self.i=i
         self.timer=time.perf_counter()
+        if self.first_frame_start is None:
+            self.first_frame_start=self.timer
 
     def end(self,frame,status,keyframes,K):
         torch.cuda.synchronize()
@@ -78,7 +81,9 @@ class Probe:
             torch_max_allocated_bytes=torch.cuda.max_memory_allocated(),
             torch_max_reserved_bytes=torch.cuda.max_memory_reserved(),
             frame_seconds=[r.get('seconds') for r in self.rows],
-            processing_seconds=time.perf_counter()-self.start,
+            setup_seconds=(self.first_frame_start-self.start) if self.first_frame_start else None,
+            elapsed_after_probe_init_seconds=time.perf_counter()-self.start,
+            frame_timing_scope='after_image_decode_through_tracking_and_synchronous_backend; initialization_queue_is_upstream_async',
             truth_reads=0,command_reads=0,top_reads=0,
             trajectory_scope='online_and_final_reference_keyframe_corrected_dense_poses')
         (self.out/'summary.json').write_text(json.dumps(summary,indent=2)+'\n')
