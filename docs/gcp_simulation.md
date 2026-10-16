@@ -2,6 +2,14 @@
 
 사용자 요청: "GCP에서 비싼 거나 좋은 거 써서 시뮬레이션 더 빠르게", "GCP 빨리 시간 측정해서 이걸로 넘겨". 현재 실행 프로젝트는 **`ugrp-sim-b-1014`**, 계정은 **`changmin5781@gmail.com`**(gcloud 구성 `ugrp2`)다. 비용 정지된 첫 프로젝트 `ugrp-act-train-1014`의 VM·디스크·원본은 보존하며 시작·생성·삭제하지 않는다. [Azure 실행](azure_simulation.md)은 보조로 남는다.
 
+## 학습·MJWarp VM 실행 시간 상한 제거 (2026-10-16)
+
+사용자 원문: "8시간 상한 — 이건 좀 없애라". L4 등 학습·MJWarp VM은 실행 시간 상한 없음으로 바꾸고, 유휴 20분 종료와 budget-stop은 유지한다. 시뮬레이션 VM gcp1 및 후속 `ugrp-sim-gcp2`의 24시간 상한은 이번 결정 범위 밖으로 유지한다(조정자 해석, 사용자 미확인). 아래 생성 당시의 8시간 설정은 과거 기록이며 이 결정으로 대체한다.
+
+새 VM 생성에서 `max_run_duration` 키가 없거나 JSON `null`이면 `--max-run-duration`과 해당 상한의 `--instance-termination-action=STOP`을 생략한다. 명시한 기존 상한은 그대로 반영한다. 저장된 L4 프로필 `gcp3`의 기본값은 `null`이며, CPU 시뮬레이션 프로필의 `24h`는 유지한다. 실행기도 상한 없는 호스트에는 대기 시한을 두지 않고 임대의 `expected_end_unix`를 `null`로 기록한다. 유한 상한에는 기존 정리 여유 30분을 유지한다. 이 동작은 [공식 생성 옵션](https://docs.cloud.google.com/sdk/gcloud/reference/compute/instances/create#--max-run-duration)에 따른다.
+
+기존 VM 처리에 관한 조정자 제공 상태: `ugrp-act-l4-gcp3`는 정지 상태에서 상한 제거 완료, 실행 중인 `ugrp-act-l4-gcp2`는 다음 정지 때 제거하는 Mac 감시가 동작 중이다. nocap 작업은 GCP 명령을 실행하지 않으며 이 상태와 감시 완료를 별도로 검증하지 않았다.
+
 ## gcp2 이관 결정과 구성
 
 사용자 원문(2026-10-15): "gcp2에서 하면 될 거 같긴해", 이어서 "아니다 별로 빨리 쓰는 거 같지 않아". 이번 작업 지시: "시뮬레이션 호스트를 두 번째 GCP 프로젝트로 옮긴다(속도 우선, 비용 최적화 아님)", "첫 프로젝트는 이제 건드리지 않는다". 배경은 사용자 제공 기록상 22:54 KST 첫 프로젝트의 100% 예산 알림과 gcp1·L4 정지다. 이 작업에서는 첫 프로젝트에 API/SSH 요청을 보내지 않았다.
@@ -24,10 +32,10 @@
 사용자 원문: "프로젝트 그럼 하나 더 만들어". 같은 계정 `changmin5781@gmail.com`에 `ugrp-sim-c-1016`(443356522325)을 추가했다. 결제 계정은 gcp2와 같은 `01C770-8A2F1F-63BA5F`이며 프로젝트 추가를 새 크레딧 지급으로 해석하지 않는다. 기본값은 계속 gcp2다. 할당량 요청에는 `--billing-project=ugrp-sim-c-1016`도 붙인다.
 
 - `gcp3` = `ugrp-act-l4-gcp3`, 서울 `asia-northeast3-a`, gcp2 L4와 같은 `g2-standard-8`·L4 1개·140 GB `pd-balanced`·STANDARD. 고정 공개 이미지 `deeplearning-platform-release/common-cu129-ubuntu-2404-nvidia-580-v20261001`에서 재설치한다. 사용 중인 gcp2 디스크의 이미지·원본·키를 복사하지 않는다.
-- `--max-run-duration=8h --instance-termination-action=STOP --maintenance-policy=TERMINATE --no-service-account --no-scopes`. 전용 개인키는 Mac `~/.ssh/ugrp_gcp3`에만 있고 VM에는 공개키만 둔다. 시작 스크립트는 `scripts/gcp_idle_guard_startup.sh`; 유휴20분 가드는 ugrp의 Python/MuJoCo/ffmpeg 작업도 확인한다. 임대는 수동 정지를 막되 오래 남은 임대만으로 자동 유휴 종료를 막지는 않는다. gcp2 VM의 기존 메타데이터/장치는 변경하지 않는다.
+- 2026-10-16 생성 당시 옵션(상한 제거 결정 전): `--max-run-duration=8h --instance-termination-action=STOP --maintenance-policy=TERMINATE --no-service-account --no-scopes`. 전용 개인키는 Mac `~/.ssh/ugrp_gcp3`에만 있고 VM에는 공개키만 둔다. 시작 스크립트는 `scripts/gcp_idle_guard_startup.sh`; 유휴20분 가드는 ugrp의 Python/MuJoCo/ffmpeg 작업도 확인한다. 임대는 수동 정지를 막되 오래 남은 임대만으로 자동 유휴 종료를 막지는 않는다. gcp2 VM의 기존 메타데이터/장치는 변경하지 않는다.
 - 프로젝트만 필터한 크레딧 포함 순비용1,000 KRW 월 예산·50/100% 이메일 알림 → `budget-stop` → Gen2 함수 `stop_on_budget`, `TARGET_PROJECT=ugrp-sim-c-1016`. 함수 소스·requirements는 gcp2 보존본과 바이트 동일하며 실행 서비스 계정은 `budget-stopper@ugrp-sim-c-1016.iam.gserviceaccount.com`(`roles/compute.instanceAdmin.v1`)이다. 기본 결제 IAM 이메일 알림은 켜 둔다. 실증·시간·해시는 [gcp3setup 기록](../experiments/2026-10-16-gcp3setup/README.md)에 남긴다. 예산 집계 지연·VM 밖 비용의 한계는 gcp2와 같다.
 - 환경은 CPU 재생 `.venv-sim`과 고정 MJWarp `.venv-warp`를 분리한다. MJWarp3.16.0/소스57b4692f·Warp1.15.0·NumPy2.5.2와 주요 영상 패키지는 gcp2 설치본을 대조한다. 인프라 확인은 작은 모형의 2세계·1스텝뿐이며 교사/학생/영상/E2E 관문 통과를 승계하지 않는다.
-- 사용: `python3 scripts/gcpctl.py start gcp3`, `bash scripts/oracle_run.sh --host gcp3 WORKTREE RUN -- COMMAND`, `python3 scripts/gcpctl.py stop gcp3`. 공용 Git 직접참조·해시/fetch-lite·`outputs/gcp3-runs`/`outputs/gcp3-lifecycle`을 사용한다. 대기 한도는 L4 8h에서 기존 정리 여유30분을 뺀7.5h다.
+- 사용: `python3 scripts/gcpctl.py start gcp3`, `bash scripts/oracle_run.sh --host gcp3 WORKTREE RUN -- COMMAND`, `python3 scripts/gcpctl.py stop gcp3`. 공용 Git 직접참조·해시/fetch-lite·`outputs/gcp3-runs`/`outputs/gcp3-lifecycle`을 사용한다. 2026-10-16 상한 제거 결정 전 대기 한도는 L4 8h에서 기존 정리 여유30분을 뺀7.5h였다.
 - 실행기는 `leases/<RUN>.json`에 작업·Mac PID/호스트·시작·예상 종료·소스SHA를 기록한다. VM당40개 임대 상한을 파일 잠금 아래 확인한다. GPU 세계 수는 CPU 프로세스 수가 아니며, GPU 배치 제출 전 기존 임대/PID/GPU 메모리를 확인한다. 완료 검증 뒤 자기 임대만 지우고, 다른 임대 또는 ugrp Python/MuJoCo/ffmpeg가 있으면 정지를 거부한다. 원본은 gcp3 영속 디스크에 남기고 gcp1/gcp2 결과와 합산하지 않는다.
 
 ## gcp1 과거 구성 (보존 기록)

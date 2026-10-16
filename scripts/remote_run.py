@@ -90,9 +90,10 @@ def wait_gcp(host, name, root, lease, sha, started_unix):
     Returns (verified, exit_state). Raw stays on the VM's persistent disk (no ARM archive).
     """
     from scripts.azure_shutdown import write_json
-    deadline = time.monotonic() + wait_budget_s(host)
+    budget_s = wait_budget_s(host)
+    deadline = time.monotonic() + budget_s if budget_s is not None else None
     state = ''
-    while time.monotonic() < deadline:
+    while deadline is None or time.monotonic() < deadline:
         state = ssh(host, f'touch {lease}; test ! -f {root}/EXIT || cat {root}/EXIT', capture_output=True, text=True).stdout.strip()
         if state:
             break
@@ -125,8 +126,10 @@ def wait_gcp(host, name, root, lease, sha, started_unix):
 
 
 def wait_budget_s(host):
-    """Keep the existing 30 minute cleanup reserve inside the target's VM cap."""
-    duration = GCP_HOSTS[host]['max_run_duration']
+    """Reserve 30 minutes inside an explicit VM cap; None means no runtime deadline."""
+    duration = GCP_HOSTS[host].get('max_run_duration')
+    if duration is None:
+        return None
     if not duration.endswith('h'):
         raise ValueError('GCP runtime cap must be specified in hours')
     return float(duration[:-1]) * 3600 - 1800
@@ -268,9 +271,10 @@ def main():
     if host in GCP_HOSTS:
         # Same per-VM ceiling as gcp2 (2026-10-15 user rule). GPU batch worlds
         # are not separate CPU runs; the GPU owner also audits memory/leases.
+        budget_s = wait_budget_s(host)
         lease_data = json.dumps({'task': name, 'pid': os.getpid(), 'owner_host': os.uname().nodename,
                                  'started_unix': started_unix,
-                                 'expected_end_unix': started_unix + wait_budget_s(host),
+                                 'expected_end_unix': started_unix + budget_s if budget_s is not None else None,
                                  'source_sha': sha})
         admission = (f'test ! -e {root} && test ! -e {lease} && '
                      'test "$(find "$HOME/ugrp-sim/leases" -mindepth 1 -maxdepth 1 -type f | wc -l)" -lt 40 && '
