@@ -83,11 +83,11 @@ class Client:
         from types import SimpleNamespace
         return (self.truth_factory or SimpleNamespace)(**truth), tuple(critic)
 
-    def close(self):
+    def close(self, reason='caller_stop'):
         if self.proc is None: return
         try:
             if self.proc.poll() is None:
-                self.proc.stdin.write('{"close":true}\n'); self.proc.stdin.flush()
+                self.proc.stdin.write(json.dumps({'close':reason})+'\n'); self.proc.stdin.flush()
                 self.proc.wait(timeout=30)
             if self.proc.returncode: raise RuntimeError('owner failed: '+str(self.proc.returncode))
         finally:

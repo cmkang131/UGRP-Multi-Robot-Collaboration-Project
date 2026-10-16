@@ -416,8 +416,15 @@ class Owner:
         for tick, jpeg in self.rings[i]:
             (folder/f'{tick:06d}.jpg').write_bytes(jpeg)
 
-    def close(self):
-        for i in range(self.n): self.save_ring(i); self.save_states(i)
+    def close(self, reason='caller_stop'):
+        for i in range(self.n):
+            self.save_ring(i); self.save_states(i)
+            if self.active[i]:
+                cap = 'budget' in reason or 'cap' in reason
+                self.write(str(self.contexts[i]['folder'].relative_to(self.out)/'result.json'),
+                    dict(status='HOST_ERROR' if reason=='HOST_ERROR' else 'cap_end' if cap else 'interrupted',
+                         cap_end=cap, reason=reason, issued_done=False,
+                         teacher_criteria_diagnostic=self.contexts[i]['score'].record(False)))
         self.log.close(); self.hooks.close()
 
     def save_states(self, i):

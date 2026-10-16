@@ -96,8 +96,9 @@ def main():
     except BaseException as error:
         report.update(status='HOST_ERROR', error=repr(error)); raise
     finally:
-        client.close()
-        (a.out/'summary.json').write_text(json.dumps(report, indent=2)+'\n')
+        try: client.close('evaluation_end' if a.full_evaluation else 'smoke_control_budget_end')
+        except BaseException as error: report.update(status='HOST_ERROR', close_error=repr(error), passed=False)
+        finally: (a.out/'summary.json').write_text(json.dumps(report, indent=2)+'\n')
 
 
 if __name__ == '__main__': main()
