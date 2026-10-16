@@ -1,0 +1,579 @@
+{
+  "scope": "one discarded post-compilation warmup step, not steady-state throughput or CUDA root proof",
+  "dt_s": 0.00025,
+  "nworld": 4,
+  "ngeom": 1386,
+  "nv": 222,
+  "nvmax": 128,
+  "broadphase": "NXN",
+  "total_kernel_ms": 7.581919969292358,
+  "grouped": [
+    {
+      "name": "forward kernel _noslip_factor_m__locals__kernel_1d7dff27",
+      "calls": 1,
+      "total_ms": 2.54966402053833
+    },
+    {
+      "name": "forward kernel _noslip_solve__locals__kernel_0300c54e",
+      "calls": 1,
+      "total_ms": 1.9240959882736206
+    },
+    {
+      "name": "forward kernel _noslip_minv_jt__locals__kernel_55834cce",
+      "calls": 1,
+      "total_ms": 1.0741759538650513
+    },
+    {
+      "name": "forward kernel _update_gradient_cholesky_blocked__locals__kernel_a532b408",
+      "calls": 2,
+      "total_ms": 0.3531839996576309
+    },
+    {
+      "name": "forward kernel _cholesky_factorize_solve_blocked__locals__kernel_67c6280a",
+      "calls": 1,
+      "total_ms": 0.15462400019168854
+    },
+    {
+      "name": "forward kernel _primitive_narrowphase__locals__primitive_narrowphase_0c24f339",
+      "calls": 2,
+      "total_ms": 0.11161599680781364
+    },
+    {
+      "name": "forward kernel _cfrc_backward_72237d38",
+      "calls": 16,
+      "total_ms": 0.08089600037783384
+    },
+    {
+      "name": "forward kernel _noslip_qacc_qfrc__locals__kernel_5075127c",
+      "calls": 1,
+      "total_ms": 0.055296000093221664
+    },
+    {
+      "name": "forward kernel _crb_accumulate_073a11b8",
+      "calls": 8,
+      "total_ms": 0.05017600115388632
+    },
+    {
+      "name": "forward kernel _subtree_com_acc_350f0560",
+      "calls": 8,
+      "total_ms": 0.04697600053623319
+    },
+    {
+      "name": "forward kernel _wake_kernel_bd165264",
+      "calls": 1,
+      "total_ms": 0.04608000069856644
+    },
+    {
+      "name": "forward kernel _mul_m_sparse_compact_fbf15af2",
+      "calls": 2,
+      "total_ms": 0.03852800093591213
+    },
+    {
+      "name": "forward kernel _tile_cholesky_factorize_solve_block__locals__kernel_bf0eb8c5",
+      "calls": 1,
+      "total_ms": 0.030719999223947525
+    },
+    {
+      "name": "forward kernel ccd_kernel_builder__locals__ccd_kernel_c9d29619",
+      "calls": 2,
+      "total_ms": 0.030559999868273735
+    },
+    {
+      "name": "forward kernel _island_map_constraints_5d90046a",
+      "calls": 1,
+      "total_ms": 0.027648000046610832
+    },
+    {
+      "name": "forward kernel ccd_kernel_builder__locals__ccd_kernel_564af5fb",
+      "calls": 2,
+      "total_ms": 0.025631999596953392
+    },
+    {
+      "name": "forward kernel _linesearch_iterative_kernel__locals__kernel_dbef3775",
+      "calls": 1,
+      "total_ms": 0.023584000766277313
+    },
+    {
+      "name": "forward kernel _update_sleep_bodies_3fdbdc44",
+      "calls": 4,
+      "total_ms": 0.023552000522613525
+    },
+    {
+      "name": "forward kernel _update_sleep_dofs_3032214a",
+      "calls": 4,
+      "total_ms": 0.023552000522613525
+    },
+    {
+      "name": "forward kernel _comvel_branch_0f933c58",
+      "calls": 2,
+      "total_ms": 0.02355199959129095
+    },
+    {
+      "name": "forward kernel _zero_sleep_counters_e058afd1",
+      "calls": 4,
+      "total_ms": 0.0225280006416142
+    },
+    {
+      "name": "forward kernel _compact_dofs_builder__locals___compact_dofs_03271ef0",
+      "calls": 2,
+      "total_ms": 0.02252800017595291
+    },
+    {
+      "name": "forward kernel _JTDACJ_sparse__locals__kernel_5e4a2f99",
+      "calls": 2,
+      "total_ms": 0.022495999932289124
+    },
+    {
+      "name": "forward kernel ccd_kernel_builder__locals__ccd_kernel_77dd15d3",
+      "calls": 2,
+      "total_ms": 0.021504000760614872
+    },
+    {
+      "name": "forward kernel _update_sleep_trees_ea362e2e",
+      "calls": 4,
+      "total_ms": 0.021504000294953585
+    },
+    {
+      "name": "forward kernel mul_m_kernel__locals___mul_m_e2f5e909",
+      "calls": 2,
+      "total_ms": 0.02044800017029047
+    },
+    {
+      "name": "forward kernel _kinematics_branch_95f8028e",
+      "calls": 1,
+      "total_ms": 0.01945599913597107
+    },
+    {
+      "name": "forward kernel _cacc_branch_ffe1d6c4",
+      "calls": 2,
+      "total_ms": 0.01843199972063303
+    },
+    {
+      "name": "forward kernel _update_constraint_efc__locals__kernel_6cda7e1b",
+      "calls": 2,
+      "total_ms": 0.01740800030529499
+    },
+    {
+      "name": "forward kernel _update_constraint_init_qfrc_constraint_sparse__locals__kernel_dfeceab9",
+      "calls": 2,
+      "total_ms": 0.01740800030529499
+    },
+    {
+      "name": "forward kernel _sweep_awake_trees_813edea5",
+      "calls": 1,
+      "total_ms": 0.01740800030529499
+    },
+    {
+      "name": "forward kernel _spring_damper_dof_passive_44d3399c",
+      "calls": 2,
+      "total_ms": 0.016384000424295664
+    },
+    {
+      "name": "forward kernel _gravity_force_7c63ac28",
+      "calls": 2,
+      "total_ms": 0.01536000007763505
+    },
+    {
+      "name": "forward kernel _island_dsu_ad8ed55d",
+      "calls": 1,
+      "total_ms": 0.015359999611973763
+    },
+    {
+      "name": "forward kernel _update_gradient_init_h_sparse__locals__kernel_ac21eea6",
+      "calls": 2,
+      "total_ms": 0.015327999833971262
+    },
+    {
+      "name": "forward kernel _update_gradient_grad__locals__kernel_5b0f76d6",
+      "calls": 2,
+      "total_ms": 0.015263999812304974
+    },
+    {
+      "name": "forward kernel _apply_ft_9dc677d0",
+      "calls": 1,
+      "total_ms": 0.014336000196635723
+    },
+    {
+      "name": "forward kernel _implicit_free_body_solve_dcb26f31",
+      "calls": 1,
+      "total_ms": 0.014336000196635723
+    },
+    {
+      "name": "forward kernel _efc_contact_jac_sparse__locals__kernel_9e10abcb",
+      "calls": 1,
+      "total_ms": 0.013311999849975109
+    },
+    {
+      "name": "forward kernel _actuator_velocity_00a052f5",
+      "calls": 2,
+      "total_ms": 0.013279999606311321
+    },
+    {
+      "name": "forward kernel _zero_qfrc_constraint_sparse_6b3cbe94",
+      "calls": 2,
+      "total_ms": 0.01228800043463707
+    },
+    {
+      "name": "forward kernel _update_gradient_zero_grad_dot__locals__kernel_467dc747",
+      "calls": 2,
+      "total_ms": 0.01228800043463707
+    },
+    {
+      "name": "forward kernel _cfrc_3922b605",
+      "calls": 2,
+      "total_ms": 0.012287999968975782
+    },
+    {
+      "name": "forward kernel _actuator_force_a8c1d316",
+      "calls": 1,
+      "total_ms": 0.011296000331640244
+    },
+    {
+      "name": "forward kernel _nxn_broadphase__locals__kernel_7564da79",
+      "calls": 1,
+      "total_ms": 0.011264000087976456
+    },
+    {
+      "name": "forward kernel _limit_slide_hinge__locals__kernel_34ce48e1",
+      "calls": 1,
+      "total_ms": 0.011264000087976456
+    },
+    {
+      "name": "forward kernel _efc_contact_init__locals__kernel_6c09a98d",
+      "calls": 1,
+      "total_ms": 0.011264000087976456
+    },
+    {
+      "name": "forward kernel _efc_contact_update__locals__kernel_80e9dbc7",
+      "calls": 1,
+      "total_ms": 0.011264000087976456
+    },
+    {
+      "name": "forward kernel _transmission_13b1d1f2",
+      "calls": 1,
+      "total_ms": 0.011264000087976456
+    },
+    {
+      "name": "forward kernel _qfrc_passive_kernel__locals__kernel_3b470730",
+      "calls": 2,
+      "total_ms": 0.011264000087976456
+    },
+    {
+      "name": "forward kernel _build_cycles_2a92bc5d",
+      "calls": 1,
+      "total_ms": 0.011264000087976456
+    },
+    {
+      "name": "forward kernel _qfrc_bias_4085b6de",
+      "calls": 2,
+      "total_ms": 0.010240000206977129
+    },
+    {
+      "name": "forward kernel _friction_dof__locals__kernel_4d6a3845",
+      "calls": 1,
+      "total_ms": 0.010239999741315842
+    },
+    {
+      "name": "forward kernel _solve_init_dof__locals__kernel_8296350f",
+      "calls": 1,
+      "total_ms": 0.009312000125646591
+    },
+    {
+      "name": "forward kernel _M_13671fca",
+      "calls": 1,
+      "total_ms": 0.009247999638319016
+    },
+    {
+      "name": "forward kernel _reset_compact_maps_2de74a6f",
+      "calls": 2,
+      "total_ms": 0.009216000325977802
+    },
+    {
+      "name": "forward kernel _gather_M_sparse_8250c474",
+      "calls": 1,
+      "total_ms": 0.009216000325977802
+    },
+    {
+      "name": "forward kernel _solve_init_jaref_kernel__locals__kernel_840cf194",
+      "calls": 1,
+      "total_ms": 0.009216000325977802
+    },
+    {
+      "name": "forward kernel _small_cholesky_factorize_solve_block__locals__kernel_e030d734",
+      "calls": 1,
+      "total_ms": 0.009216000325977802
+    },
+    {
+      "name": "forward kernel _cacc_world_6ec26fdb",
+      "calls": 2,
+      "total_ms": 0.009215999860316515
+    },
+    {
+      "name": "forward kernel _equality_weld__locals__kernel_c1306971",
+      "calls": 1,
+      "total_ms": 0.009184000082314014
+    },
+    {
+      "name": "forward kernel _comvel_root_15820f35",
+      "calls": 2,
+      "total_ms": 0.008288000244647264
+    },
+    {
+      "name": "forward kernel _geom_local_to_global_e28b714c",
+      "calls": 1,
+      "total_ms": 0.008191999979317188
+    },
+    {
+      "name": "forward kernel _light_local_to_global_1966b84b",
+      "calls": 1,
+      "total_ms": 0.008191999979317188
+    },
+    {
+      "name": "forward kernel _linesearch_jv_fused_kernel__locals__kernel_a5f300a5",
+      "calls": 1,
+      "total_ms": 0.008191999979317188
+    },
+    {
+      "name": "forward kernel _noslip_delassus__locals__kernel_f38dc1e6",
+      "calls": 1,
+      "total_ms": 0.008191999979317188
+    },
+    {
+      "name": "forward kernel _noslip_qacc_init__locals__kernel_ca7341f2",
+      "calls": 1,
+      "total_ms": 0.008191999979317188
+    },
+    {
+      "name": "forward kernel _scatter_dof_vecs_54d8b54e",
+      "calls": 1,
+      "total_ms": 0.00800000037997961
+    },
+    {
+      "name": "forward kernel _compute_body_inertial_frames_d3bdd81a",
+      "calls": 1,
+      "total_ms": 0.0071680000983178616
+    },
+    {
+      "name": "forward kernel _site_local_to_global_084f92a4",
+      "calls": 1,
+      "total_ms": 0.0071680000983178616
+    },
+    {
+      "name": "forward kernel _cinert_1261260c",
+      "calls": 1,
+      "total_ms": 0.0071680000983178616
+    },
+    {
+      "name": "forward kernel _cdof_3e73eb78",
+      "calls": 1,
+      "total_ms": 0.0071680000983178616
+    },
+    {
+      "name": "forward kernel _cam_local_to_global_ed67ebfa",
+      "calls": 1,
+      "total_ms": 0.0071680000983178616
+    },
+    {
+      "name": "forward kernel _wake_collision_kernel_a9479cf0",
+      "calls": 1,
+      "total_ms": 0.0071680000983178616
+    },
+    {
+      "name": "forward kernel _reset_dsu_47c624fd",
+      "calls": 1,
+      "total_ms": 0.0071680000983178616
+    },
+    {
+      "name": "forward kernel _compress_roots_c06eaa98",
+      "calls": 1,
+      "total_ms": 0.0071680000983178616
+    },
+    {
+      "name": "forward kernel _label_roots_0e48fa05",
+      "calls": 1,
+      "total_ms": 0.0071680000983178616
+    },
+    {
+      "name": "forward kernel _qfrc_actuator_6de5c51c",
+      "calls": 1,
+      "total_ms": 0.0071680000983178616
+    },
+    {
+      "name": "forward kernel _qfrc_actuator_gravcomp_limits_a91eb6a0",
+      "calls": 1,
+      "total_ms": 0.0071680000983178616
+    },
+    {
+      "name": "forward kernel _init_compact_inertia_48546221",
+      "calls": 1,
+      "total_ms": 0.0071680000983178616
+    },
+    {
+      "name": "forward kernel _compute_efc_tree_f03ad272",
+      "calls": 1,
+      "total_ms": 0.0071680000983178616
+    },
+    {
+      "name": "forward kernel _implicit_free_body_reset_m_df0a068d",
+      "calls": 1,
+      "total_ms": 0.0071680000983178616
+    },
+    {
+      "name": "forward kernel _gather_dof_vecs_compact_a4bcec76",
+      "calls": 1,
+      "total_ms": 0.007071999832987785
+    },
+    {
+      "name": "forward kernel _subtree_div_0ef57c26",
+      "calls": 1,
+      "total_ms": 0.006271999794989824
+    },
+    {
+      "name": "forward kernel _wake_equality_kernel_54891b9d",
+      "calls": 1,
+      "total_ms": 0.006175999995321035
+    },
+    {
+      "name": "forward kernel _compute_body_matrices_27760750",
+      "calls": 1,
+      "total_ms": 0.006144000217318535
+    },
+    {
+      "name": "forward kernel _subtree_com_init_002b02fd",
+      "calls": 1,
+      "total_ms": 0.006144000217318535
+    },
+    {
+      "name": "forward kernel _any_awake_changed_2d0d647e",
+      "calls": 1,
+      "total_ms": 0.006144000217318535
+    },
+    {
+      "name": "forward kernel _zero_constraint_counts_82d999b9",
+      "calls": 1,
+      "total_ms": 0.006144000217318535
+    },
+    {
+      "name": "forward kernel _propagate_labels_27039515",
+      "calls": 1,
+      "total_ms": 0.006144000217318535
+    },
+    {
+      "name": "forward kernel _qfrc_smooth__locals__kernel_a2fc994d",
+      "calls": 1,
+      "total_ms": 0.006144000217318535
+    },
+    {
+      "name": "forward kernel _solve_init_efc_87733871",
+      "calls": 1,
+      "total_ms": 0.006144000217318535
+    },
+    {
+      "name": "forward kernel _qderiv_actuator_passive_vel_8dfd9dcc",
+      "calls": 1,
+      "total_ms": 0.006144000217318535
+    },
+    {
+      "name": "forward kernel _gather_rhs_compact_48b89a4c",
+      "calls": 1,
+      "total_ms": 0.005119999870657921
+    },
+    {
+      "name": "forward kernel _solve_done__locals__kernel_90ab94ea",
+      "calls": 1,
+      "total_ms": 0.005119999870657921
+    },
+    {
+      "name": "forward kernel _noslip_state_ac96cbb2",
+      "calls": 1,
+      "total_ms": 0.005119999870657921
+    },
+    {
+      "name": "forward kernel _island_count_dofs_98b6327f",
+      "calls": 1,
+      "total_ms": 0.005119999870657921
+    },
+    {
+      "name": "forward kernel _island_count_constraints_41386354",
+      "calls": 1,
+      "total_ms": 0.005119999870657921
+    },
+    {
+      "name": "forward kernel _island_map_dofs_5da270c5",
+      "calls": 1,
+      "total_ms": 0.005119999870657921
+    },
+    {
+      "name": "forward kernel _qderiv_actuator_passive_6cbfee2a",
+      "calls": 1,
+      "total_ms": 0.005119999870657921
+    },
+    {
+      "name": "forward kernel _next_activation_cf227b4a",
+      "calls": 1,
+      "total_ms": 0.005119999870657921
+    },
+    {
+      "name": "forward kernel _next_position_1c101e8d",
+      "calls": 1,
+      "total_ms": 0.005119999870657921
+    },
+    {
+      "name": "forward kernel _next_time_builder__locals___next_time_0e693a8d",
+      "calls": 1,
+      "total_ms": 0.005119999870657921
+    },
+    {
+      "name": "forward kernel _qderiv_actuator_passive_actuation_sparse_9edf10e9",
+      "calls": 1,
+      "total_ms": 0.0041600000113248825
+    },
+    {
+      "name": "forward kernel _scatter_solution_3c25285e",
+      "calls": 1,
+      "total_ms": 0.004095999989658594
+    },
+    {
+      "name": "forward kernel _init_dof_arrays_81486e05",
+      "calls": 1,
+      "total_ms": 0.004095999989658594
+    },
+    {
+      "name": "forward kernel _island_scan_sizes_2cffa1c8",
+      "calls": 1,
+      "total_ms": 0.004095999989658594
+    },
+    {
+      "name": "forward kernel _qderiv_tendon_damping_ec990995",
+      "calls": 1,
+      "total_ms": 0.004095999989658594
+    },
+    {
+      "name": "forward kernel _next_velocity_d66c2f53",
+      "calls": 1,
+      "total_ms": 0.004095999989658594
+    },
+    {
+      "name": "forward kernel _check_island_can_sleep_58462786",
+      "calls": 1,
+      "total_ms": 0.004095999989658594
+    },
+    {
+      "name": "forward kernel _init_efc_arrays_983ae74b",
+      "calls": 1,
+      "total_ms": 0.003135999897494912
+    },
+    {
+      "name": "forward kernel _init_island_arrays_3f1ee061",
+      "calls": 1,
+      "total_ms": 0.0030720001086592674
+    }
+  ],
+  "raw": "/home/ugrp/ugrp-sim/runs/warp6/profile-nxn-beampair/physics-kernel-profile.json",
+  "raw_sha256": "d44e79567678731accc17c4563ef14aca043dd7753989bf06185f40ed97628f6",
+  "raw_bytes": 44956,
+  "three_noslip_ms": 5.547935962677002,
+  "three_noslip_fraction": 0.731732329693109,
+  "broadphase_ms": 0.011264000087976456,
+  "broadphase_fraction": 0.0014856395390081857
+}

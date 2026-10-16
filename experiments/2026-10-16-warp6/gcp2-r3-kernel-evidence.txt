@@ -1,0 +1,23 @@
+{
+  "utc": "2026-10-16T03:47:00.890406+00:00",
+  "jobs": [
+    {
+      "name": "beampair",
+      "pid": 73446,
+      "exit": null
+    },
+    {
+      "name": "release-s1",
+      "pid": 73447,
+      "exit": null
+    },
+    {
+      "name": "release-s3",
+      "pid": 73448,
+      "exit": null
+    }
+  ]
+}
+Oct 16 03:47:02 ugrp-act-l4-gcp2.asia-northeast3-a.c.ugrp-sim-b-1014.internal kernel: NVRM: Xid (PCI:0000:00:03): 31, pid=73446, name=python, channel 0x00000067, intr 00000000. MMU Fault: ENGINE GRAPHICS GPC2 GPCCLIENT_GCC faulted @ 0x7ac1_017ec000. Fault is of type FAULT_PDE ACCESS_TYPE_VIRT_READ
+Oct 16 03:47:02 ugrp-act-l4-gcp2.asia-northeast3-a.c.ugrp-sim-b-1014.internal kernel: python[73448]: segfault at 0 ip 00007c59b1e929e7 sp 00007ffe51dd11e0 error 4 in libcuda.so.580.178.04[2929e7,7c59b1d66000+f84000] likely on CPU 5 (core 1, socket 0)
+Oct 16 03:47:02 ugrp-act-l4-gcp2.asia-northeast3-a.c.ugrp-sim-b-1014.internal kernel: python[73447]: segfault at 0 ip 00007ee3550929e7 sp 00007ffca08228f0 error 4 in libcuda.so.580.178.04[2929e7,7ee354f66000+f84000] likely on CPU 0 (core 0, socket 0)

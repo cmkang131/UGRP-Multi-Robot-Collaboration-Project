@@ -1,0 +1,74 @@
+[
+  {
+    "reason_category": "BOOT_SSH_NOT_READY",
+    "blocked_object": "software:SSH",
+    "min_gap_m": null,
+    "gap_scope": "nongeometric operation",
+    "detail": "fresh boot connection timed out; serial startup/firewall verified; next direct SSH succeeded",
+    "physical_trial": false
+  },
+  {
+    "reason_category": "ABBREVIATED_SHA_FETCH",
+    "blocked_object": "software:Git",
+    "min_gap_m": null,
+    "gap_scope": "nongeometric operation",
+    "detail": "GitHub fetch rejected abbreviated SHA; used full SHA; no physical execution",
+    "physical_trial": false
+  },
+  {
+    "reason_category": "SHALLOW_REFERENCE_CACHE",
+    "blocked_object": "software:Git",
+    "min_gap_m": null,
+    "gap_scope": "nongeometric operation",
+    "detail": "shared cache was shallow and reference clone rejected it; fetched ancestry once into shared cache; subsequent source clones directly reference shared cache; no gc/prune",
+    "physical_trial": false
+  },
+  {
+    "reason_category": "STALE_GCP2_PROXY_PATH",
+    "blocked_object": "software:SSH",
+    "min_gap_m": null,
+    "gap_scope": "nongeometric operation",
+    "detail": "old gcp2 alias pointed to retired worktree; used gcp3setup helper and verified HostKeyAlias=gcp2; did not disable host-key checking",
+    "physical_trial": false
+  },
+  {
+    "reason_category": "INHERITED_SIGINT_IGNORED",
+    "blocked_object": "software:POSIX signal",
+    "min_gap_m": null,
+    "gap_scope": "nongeometric operation",
+    "detail": "nohup inherited SIGINT=SIG_IGN; R3 prefix continued beyond requested stop; exact owned child terminated; driver now restores normal SIGINT",
+    "physical_trial": false
+  },
+  {
+    "reason_category": "OPTIONAL_PACKAGE_IN_WRONG_ENV",
+    "blocked_object": "software:Python imports",
+    "min_gap_m": null,
+    "gap_scope": "nongeometric operation",
+    "detail": "zstandard not installed in system/CPU env and mujoco_warp absent from system env; used documented zstd CLI and direct source reads; no package installation",
+    "physical_trial": false
+  },
+  {
+    "reason_category": "UNIT_FIXTURE_MISSING_CTRL",
+    "blocked_object": "software:unit-test fixture",
+    "min_gap_m": null,
+    "gap_scope": "nongeometric operation",
+    "detail": "new dispatch fake omitted ctrl:2 failed,35 passed; corrected fixture then37 passed",
+    "physical_trial": false
+  },
+  {
+    "reason_category": "PLAYBACK_ASSET_ROOT_MISMATCH",
+    "blocked_object": "software:derived playback texture resolution",
+    "min_gap_m": null,
+    "gap_scope": "nongeometric operation",
+    "detail": "releaseS3 additional wall texture absent from beampair asset root; preserved failed derived folder and rendered from pinned release8e81b7d9 asset root; source/raw unchanged",
+    "physical_trial": false
+  },
+  {
+    "reason_category": "SEAL_RECEIPT_STATUS_SCHEMA",
+    "blocked_object": "software:artifact sealing",
+    "min_gap_m": null,
+    "gap_scope": "nongeometric operation",
+    "detail": "sealer initially admitted only status=exited, but terminal nonzero receipts use HOST_ERROR; stopped before compression; now requires terminal status, numeric exit_code, end_utc and no live child",
+    "physical_trial": false
+  }
+]

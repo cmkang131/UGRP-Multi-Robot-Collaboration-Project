@@ -26,6 +26,8 @@ from scripts.check_ci_fixtures import check_fixtures
 TEST_PATTERNS = (
     "tests/test_warp_act*.py",  # array math/admission only; no physics or renderer
     "tests/test_warp_flow_model.py",  # model/admission math only; no simulator
+    "tests/test_warp_flow_diagnostics.py",  # fake dispatch; no Warp/CUDA imports
+    "tests/test_simalt_host.py",  # metadata responses are mocked; no network
     "tests/test_e2e18.py",
     "tests/test_e2e18_beam_axis.py",
     "tests/test_e2e18_cadence.py",

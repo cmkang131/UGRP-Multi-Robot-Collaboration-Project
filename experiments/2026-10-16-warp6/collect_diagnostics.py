@@ -5,11 +5,21 @@ import datetime
 import hashlib
 import json
 from pathlib import Path
+import subprocess
+
+
+def read_text(path):
+    if path.exists():
+        return path.read_text()
+    compressed = path.with_name(path.name + '.zst')
+    if compressed.exists():
+        return subprocess.check_output(['zstd', '-d', '-c', str(compressed)], text=True)
+    raise FileNotFoundError(path)
 
 
 def read(path, fallback=None):
     try:
-        return json.loads(path.read_text())
+        return json.loads(read_text(path))
     except (FileNotFoundError, json.JSONDecodeError):
         return fallback if fallback is not None else {}
 
@@ -32,7 +42,7 @@ def main():
         progress = read(run / 'progress.json')
         trace = []
         try:
-            for line in (run / 'workspace-trace.jsonl').read_text().splitlines():
+            for line in read_text(run / 'workspace-trace.jsonl').splitlines():
                 try: trace.append(json.loads(line))
                 except json.JSONDecodeError: pass
         except FileNotFoundError:

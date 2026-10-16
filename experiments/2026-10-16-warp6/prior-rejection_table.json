@@ -1,0 +1,54 @@
+{
+  "schema": "ugrp.warp4.rejection.v1",
+  "population": "final R3 transport worlds, not completed physical trials",
+  "source": "a2216618a",
+  "raw": "/home/ugrp/ugrp-sim/runs/warp4",
+  "reproduce": "python collect_status.py --root /home/ugrp/ugrp-sim/runs/warp4 --out /home/ugrp/ugrp-sim/ops-reviews/warp4/final",
+  "funnel": [
+    {
+      "stage": "requested",
+      "passed_cumulative_N": 12,
+      "rejected_N": 0
+    },
+    {
+      "stage": "native_setup_and_gpu_initialization",
+      "passed_cumulative_N": 12,
+      "rejected_N": 0
+    },
+    {
+      "stage": "observed_gpu_prefix",
+      "passed_cumulative_N": 12,
+      "rejected_N": 0
+    },
+    {
+      "stage": "completed_teacher_trial",
+      "passed_cumulative_N": 0,
+      "rejected_N": 12
+    }
+  ],
+  "rejections": [
+    {
+      "reason_category": "NATIVE_SIGSEGV_MPS_COHORT",
+      "blocked_object": "software:MPS client process",
+      "min_gap_m": null,
+      "count": 8
+    },
+    {
+      "reason_category": "CUDA_ILLEGAL_MEMORY_ACCESS_700",
+      "blocked_object": "software:CUDA/Warp",
+      "min_gap_m": null,
+      "count": 4
+    }
+  ],
+  "gap_scope": "nongeometric host errors; CUDA root cause not isolated",
+  "cap_end_N": 0,
+  "HOST_ERROR_world_N": 12,
+  "physical_failure_N": 0,
+  "physical_failure_scope": "none classified; incomplete runs are not physical failures",
+  "gate_not_submitted": {
+    "beampair": 40,
+    "release_A": 40,
+    "release_B": 40
+  },
+  "scope": "prior warp4 R3; no warp6 outcome yet; largest category first"
+}

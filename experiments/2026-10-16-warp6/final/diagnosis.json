@@ -1,0 +1,269 @@
+{
+  "utc": "2026-10-16T06:29:04.173318+00:00",
+  "status": "NOT_READY",
+  "host": "gcp3",
+  "project": "ugrp-sim-c-1016",
+  "MPS": false,
+  "CUDA_700_reproduced": false,
+  "initial_failure_kernel_identified": false,
+  "root_cause_fixed": false,
+  "gate_submitted": {
+    "beampair": 0,
+    "release_A": 0,
+    "release_B": 0
+  },
+  "CPU_results_pooled": false,
+  "attempts": [
+    {
+      "name": "full-isolated-beampair",
+      "source_sha": "82a623ee37c166ac7a9f8eaef7216c905ac1c816",
+      "status": "HOST_ERROR",
+      "world_N": 4,
+      "sim_s": 25.3,
+      "completed_teacher_N": 0,
+      "success_N": 0,
+      "cap_end_N": 0,
+      "exit_code": -2,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp6/full-isolated-beampair",
+      "reason_categories": [
+        {
+          "reason_category": "SPEED_ADMISSION_LOWER_BOUND",
+          "blocked_object": "software:diagnostic",
+          "min_gap_m": null,
+          "count": 4,
+          "gap_scope": "nongeometric diagnostic error; no geometric claim"
+        }
+      ],
+      "audit_scope": "saved prefix only",
+      "held_world_reads": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "invisible_measurements": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "graph-isolated-beampair",
+      "source_sha": "82a623ee37c166ac7a9f8eaef7216c905ac1c816",
+      "status": "diagnostic_prefix_complete",
+      "world_N": 4,
+      "sim_s": 1.5,
+      "completed_teacher_N": 0,
+      "success_N": 0,
+      "cap_end_N": 0,
+      "exit_code": 0,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp6/graph-isolated-beampair",
+      "reason_categories": [],
+      "audit_scope": "saved prefix only",
+      "held_world_reads": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "invisible_measurements": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "graph-isolated-release-s1",
+      "source_sha": "82a623ee37c166ac7a9f8eaef7216c905ac1c816",
+      "status": "diagnostic_prefix_complete",
+      "world_N": 6,
+      "sim_s": 1.5,
+      "completed_teacher_N": 0,
+      "success_N": 0,
+      "cap_end_N": 0,
+      "exit_code": 0,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp6/graph-isolated-release-s1",
+      "reason_categories": [],
+      "audit_scope": "saved prefix only",
+      "held_world_reads": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "invisible_measurements": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "graph-isolated-release-s3",
+      "source_sha": "82a623ee37c166ac7a9f8eaef7216c905ac1c816",
+      "status": "diagnostic_prefix_complete",
+      "world_N": 2,
+      "sim_s": 1.5,
+      "completed_teacher_N": 0,
+      "success_N": 0,
+      "cap_end_N": 0,
+      "exit_code": 0,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp6/graph-isolated-release-s3",
+      "reason_categories": [],
+      "audit_scope": "saved prefix only",
+      "held_world_reads": [
+        0,
+        0
+      ],
+      "invisible_measurements": [
+        0,
+        0
+      ]
+    },
+    {
+      "name": "profile-nxn-beampair",
+      "source_sha": "400cdb0da18b538ae94e6bd42c8b0c45d7091d9f",
+      "status": "diagnostic_prefix_complete",
+      "world_N": 4,
+      "sim_s": 0.1,
+      "completed_teacher_N": 0,
+      "success_N": 0,
+      "cap_end_N": 0,
+      "exit_code": 0,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp6/profile-nxn-beampair",
+      "reason_categories": [],
+      "audit_scope": "saved prefix only",
+      "held_world_reads": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "invisible_measurements": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "r1-memcheck-beampair",
+      "source_sha": "a1cac293d17c3c0811b843d49c0855a8ba0759fa",
+      "status": "HOST_ERROR",
+      "world_N": 4,
+      "sim_s": null,
+      "completed_teacher_N": 0,
+      "success_N": 0,
+      "cap_end_N": 0,
+      "exit_code": 15,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp6/r1-memcheck-beampair",
+      "reason_categories": [
+        {
+          "reason_category": "DIAGNOSTIC_INSTRUMENTATION_STOP",
+          "blocked_object": "software:diagnostic",
+          "min_gap_m": null,
+          "count": 4,
+          "gap_scope": "nongeometric diagnostic error; no geometric claim"
+        }
+      ],
+      "audit_scope": "saved prefix only",
+      "held_world_reads": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "invisible_measurements": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "r2-debug-trace-beampair",
+      "source_sha": "5c37a18caf03f150a6fab6aba8ce39811fbe360f",
+      "status": "HOST_ERROR",
+      "world_N": 4,
+      "sim_s": null,
+      "completed_teacher_N": 0,
+      "success_N": 0,
+      "cap_end_N": 0,
+      "exit_code": -15,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp6/r2-debug-trace-beampair",
+      "reason_categories": [
+        {
+          "reason_category": "DIAGNOSTIC_INSTRUMENTATION_STOP",
+          "blocked_object": "software:diagnostic",
+          "min_gap_m": null,
+          "count": 4,
+          "gap_scope": "nongeometric diagnostic error; no geometric claim"
+        }
+      ],
+      "audit_scope": "saved prefix only",
+      "held_world_reads": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "invisible_measurements": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "r3-verify-trace-beampair",
+      "source_sha": "0b97fc83f8afd20635925577e8599a258f65f21b",
+      "status": "HOST_ERROR",
+      "world_N": 4,
+      "sim_s": 2.5,
+      "completed_teacher_N": 0,
+      "success_N": 0,
+      "cap_end_N": 0,
+      "exit_code": -15,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp6/r3-verify-trace-beampair",
+      "reason_categories": [
+        {
+          "reason_category": "DIAGNOSTIC_PREFIX_END",
+          "blocked_object": "software:diagnostic",
+          "min_gap_m": null,
+          "count": 4,
+          "gap_scope": "nongeometric diagnostic error; no geometric claim"
+        }
+      ],
+      "audit_scope": "saved prefix only",
+      "held_world_reads": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "invisible_measurements": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "first30_SIM_completed": false,
+  "first30_wall_SIM_lower_bound": 45.75784941286667,
+  "existing_stop_threshold_wall_SIM": 6,
+  "profile_scope": "one discarded post-compilation warmup step, not steady-state throughput or CUDA root proof",
+  "NoSlip_three_kernel_fraction": 0.731732329693109,
+  "broadphase_fraction": 0.0014856395390081857,
+  "physics_parameters_changed": false,
+  "raw_file_N": 4882,
+  "raw_bytes": 91445625,
+  "raw_manifest": "raw-sha256.json.zst",
+  "rejection_table": "/home/ugrp/ugrp-sim/ops-reviews/warp6/final/rejection_table.json"
+}

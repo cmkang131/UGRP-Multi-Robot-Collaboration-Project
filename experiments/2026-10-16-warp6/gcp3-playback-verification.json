@@ -1,0 +1,706 @@
+[
+  {
+    "name": "warp6-graph-beampair",
+    "meta": {
+      "run": "/home/ugrp/ugrp-sim/runs/warp6/graph-isolated-beampair",
+      "world": 0,
+      "sim_world_range": [
+        1.7000000000001514,
+        2.700000000000151
+      ],
+      "mujoco": "3.12.0",
+      "asset_root": "/home/ugrp/ugrp-sim/src/835ccef26aa84b08cc8f7e256fd0f43aa1583ef9",
+      "sim_relative_range": [
+        0.0,
+        0.9999999999999998
+      ],
+      "full_2hz_frames": 3,
+      "terminal_10hz_frames": 15,
+      "native_six_times": [
+        1.7000000000001514,
+        1.9000000000001513,
+        2.200000000000151,
+        2.5000000000001514,
+        2.8000000000001517,
+        3.1000000000001515
+      ],
+      "video_bytes": 13090,
+      "video_sha256": "65a356176702cef4f00d20d22bba61c667c0f2c07080cb8fde4a718f2e2dc236",
+      "ffprobe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "width": 960,
+            "height": 270,
+            "coded_width": 960,
+            "coded_height": 270,
+            "closed_captions": 0,
+            "film_grain": 0,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "32:9",
+            "pix_fmt": "yuv420p",
+            "level": 22,
+            "color_range": "tv",
+            "color_space": "bt470bg",
+            "chroma_location": "center",
+            "field_order": "progressive",
+            "refs": 1,
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "6/1",
+            "avg_frame_rate": "6/1",
+            "time_base": "1/12288",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 6144,
+            "duration": "0.500000",
+            "bit_rate": "194800",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "3",
+            "extradata_size": 50,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "vendor_id": "[0][0][0][0]",
+              "encoder": "Lavc60.31.102 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/home/ugrp/ugrp-sim/ops-reviews/warp6/playback/graph-isolated-beampair/playback-3x.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "0.500000",
+          "size": "13090",
+          "bit_rate": "209440",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf60.16.100"
+          }
+        }
+      },
+      "scope": "finite diagnostic prefix, not a completed teacher trial; original own RGB, evaluator-only overview; no physics step",
+      "postprocessor_sha256": "1dfc5edbeaaca06a436e02ea658507cb2bed930362b671e60b879a1b0b2bf655",
+      "simulation_host": "gcp3",
+      "analysis_host": "gcp2"
+    },
+    "verified_video_sha256": "65a356176702cef4f00d20d22bba61c667c0f2c07080cb8fde4a718f2e2dc236",
+    "local_files": {
+      "full-2hz-00.jpg": {
+        "bytes": 77740,
+        "sha256": "e75b2c7580fd076ff8bccff5b4d367e5f7a40d90daaf1401010f004abaf3d429"
+      },
+      "last10s-10hz-00.jpg": {
+        "bytes": 231087,
+        "sha256": "95651e51e3cdd8ceaa994c8aabe9afbcdf756bf9ce037f76b906b91c9af17f47"
+      },
+      "playback-3x.mp4": {
+        "bytes": 13090,
+        "sha256": "65a356176702cef4f00d20d22bba61c667c0f2c07080cb8fde4a718f2e2dc236"
+      },
+      "playback-meta.json": {
+        "bytes": 3419,
+        "sha256": "96402243fe2c22a9f5bbd9f6f1ece94aa38d94ef4574e8e57d3825675fc1f782"
+      }
+    },
+    "ffprobe": {
+      "streams": [
+        {
+          "index": 0,
+          "codec_name": "h264",
+          "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+          "profile": "High",
+          "codec_type": "video",
+          "codec_tag_string": "avc1",
+          "codec_tag": "0x31637661",
+          "mime_codec_string": "avc1.640016",
+          "width": 960,
+          "height": 270,
+          "coded_width": 960,
+          "coded_height": 270,
+          "has_b_frames": 2,
+          "sample_aspect_ratio": "1:1",
+          "display_aspect_ratio": "32:9",
+          "pix_fmt": "yuv420p",
+          "level": 22,
+          "color_range": "tv",
+          "color_space": "bt470bg",
+          "chroma_location": "center",
+          "field_order": "progressive",
+          "is_avc": "true",
+          "nal_length_size": "4",
+          "id": "0x1",
+          "r_frame_rate": "6/1",
+          "avg_frame_rate": "6/1",
+          "time_base": "1/12288",
+          "start_pts": 0,
+          "start_time": "0.000000",
+          "duration_ts": 6144,
+          "duration": "0.500000",
+          "bit_rate": "194800",
+          "bits_per_raw_sample": "8",
+          "nb_frames": "3",
+          "extradata_size": 50,
+          "disposition": {
+            "default": 1,
+            "dub": 0,
+            "original": 0,
+            "comment": 0,
+            "lyrics": 0,
+            "karaoke": 0,
+            "forced": 0,
+            "hearing_impaired": 0,
+            "visual_impaired": 0,
+            "clean_effects": 0,
+            "attached_pic": 0,
+            "timed_thumbnails": 0,
+            "non_diegetic": 0,
+            "captions": 0,
+            "descriptions": 0,
+            "metadata": 0,
+            "dependent": 0,
+            "still_image": 0,
+            "multilayer": 0
+          },
+          "tags": {
+            "language": "und",
+            "handler_name": "VideoHandler",
+            "encoder": "Lavc60.31.102 libx264"
+          }
+        }
+      ],
+      "format": {
+        "filename": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/warp6-graph-beampair/playback-3x.mp4",
+        "nb_streams": 1,
+        "nb_programs": 0,
+        "nb_stream_groups": 0,
+        "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+        "format_long_name": "QuickTime / MOV",
+        "start_time": "0.000000",
+        "duration": "0.500000",
+        "size": "13090",
+        "bit_rate": "209440",
+        "probe_score": 100,
+        "tags": {
+          "major_brand": "isom",
+          "minor_version": "512",
+          "compatible_brands": "isomiso2avc1mp41",
+          "encoder": "Lavf60.16.100"
+        }
+      }
+    }
+  },
+  {
+    "name": "warp6-graph-release-s3",
+    "meta": {
+      "run": "/home/ugrp/ugrp-sim/runs/warp6/graph-isolated-release-s3",
+      "world": 0,
+      "sim_world_range": [
+        1.7000000000001514,
+        2.700000000000151
+      ],
+      "mujoco": "3.12.0",
+      "asset_root": "/home/ugrp/ugrp-sim/src/8e81b7d96c0c73171635348c90631462adfe1eb0",
+      "sim_relative_range": [
+        0.0,
+        0.9999999999999998
+      ],
+      "full_2hz_frames": 3,
+      "terminal_10hz_frames": 15,
+      "native_six_times": [
+        1.7000000000001514,
+        1.9000000000001513,
+        2.200000000000151,
+        2.5000000000001514,
+        2.8000000000001517,
+        3.1000000000001515
+      ],
+      "video_bytes": 11584,
+      "video_sha256": "a671026c9d8a7e012fc7ed906440ac1322e37b5280a6541fad818e10b0ce3793",
+      "ffprobe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "width": 960,
+            "height": 270,
+            "coded_width": 960,
+            "coded_height": 270,
+            "closed_captions": 0,
+            "film_grain": 0,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "32:9",
+            "pix_fmt": "yuv420p",
+            "level": 22,
+            "color_range": "tv",
+            "color_space": "bt470bg",
+            "chroma_location": "center",
+            "field_order": "progressive",
+            "refs": 1,
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "6/1",
+            "avg_frame_rate": "6/1",
+            "time_base": "1/12288",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 6144,
+            "duration": "0.500000",
+            "bit_rate": "170704",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "3",
+            "extradata_size": 50,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "vendor_id": "[0][0][0][0]",
+              "encoder": "Lavc60.31.102 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/home/ugrp/ugrp-sim/ops-reviews/warp6/playback/graph-isolated-release-s3/playback-3x.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "0.500000",
+          "size": "11584",
+          "bit_rate": "185344",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf60.16.100"
+          }
+        }
+      },
+      "scope": "finite diagnostic prefix, not a completed teacher trial; original own RGB, evaluator-only overview; no physics step",
+      "postprocessor_sha256": "1dfc5edbeaaca06a436e02ea658507cb2bed930362b671e60b879a1b0b2bf655",
+      "simulation_host": "gcp3",
+      "analysis_host": "gcp2"
+    },
+    "verified_video_sha256": "a671026c9d8a7e012fc7ed906440ac1322e37b5280a6541fad818e10b0ce3793",
+    "local_files": {
+      "full-2hz-00.jpg": {
+        "bytes": 81351,
+        "sha256": "ea19ca19fcab2b1041165b94943bab86206f64475bde71e5ab2d89ee1d7ebedf"
+      },
+      "last10s-10hz-00.jpg": {
+        "bytes": 253290,
+        "sha256": "5da3d60750ac52c4f65257ca26cadecfa895f7690d62cce98e9c2e3b9aca32eb"
+      },
+      "playback-3x.mp4": {
+        "bytes": 11584,
+        "sha256": "a671026c9d8a7e012fc7ed906440ac1322e37b5280a6541fad818e10b0ce3793"
+      },
+      "playback-meta.json": {
+        "bytes": 3423,
+        "sha256": "a95087efcafa9f23adfcc61103731b24d9fbdd5d79159740f584849dc36c999e"
+      }
+    },
+    "ffprobe": {
+      "streams": [
+        {
+          "index": 0,
+          "codec_name": "h264",
+          "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+          "profile": "High",
+          "codec_type": "video",
+          "codec_tag_string": "avc1",
+          "codec_tag": "0x31637661",
+          "mime_codec_string": "avc1.640016",
+          "width": 960,
+          "height": 270,
+          "coded_width": 960,
+          "coded_height": 270,
+          "has_b_frames": 2,
+          "sample_aspect_ratio": "1:1",
+          "display_aspect_ratio": "32:9",
+          "pix_fmt": "yuv420p",
+          "level": 22,
+          "color_range": "tv",
+          "color_space": "bt470bg",
+          "chroma_location": "center",
+          "field_order": "progressive",
+          "is_avc": "true",
+          "nal_length_size": "4",
+          "id": "0x1",
+          "r_frame_rate": "6/1",
+          "avg_frame_rate": "6/1",
+          "time_base": "1/12288",
+          "start_pts": 0,
+          "start_time": "0.000000",
+          "duration_ts": 6144,
+          "duration": "0.500000",
+          "bit_rate": "170704",
+          "bits_per_raw_sample": "8",
+          "nb_frames": "3",
+          "extradata_size": 50,
+          "disposition": {
+            "default": 1,
+            "dub": 0,
+            "original": 0,
+            "comment": 0,
+            "lyrics": 0,
+            "karaoke": 0,
+            "forced": 0,
+            "hearing_impaired": 0,
+            "visual_impaired": 0,
+            "clean_effects": 0,
+            "attached_pic": 0,
+            "timed_thumbnails": 0,
+            "non_diegetic": 0,
+            "captions": 0,
+            "descriptions": 0,
+            "metadata": 0,
+            "dependent": 0,
+            "still_image": 0,
+            "multilayer": 0
+          },
+          "tags": {
+            "language": "und",
+            "handler_name": "VideoHandler",
+            "encoder": "Lavc60.31.102 libx264"
+          }
+        }
+      ],
+      "format": {
+        "filename": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/warp6-graph-release-s3/playback-3x.mp4",
+        "nb_streams": 1,
+        "nb_programs": 0,
+        "nb_stream_groups": 0,
+        "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+        "format_long_name": "QuickTime / MOV",
+        "start_time": "0.000000",
+        "duration": "0.500000",
+        "size": "11584",
+        "bit_rate": "185344",
+        "probe_score": 100,
+        "tags": {
+          "major_brand": "isom",
+          "minor_version": "512",
+          "compatible_brands": "isomiso2avc1mp41",
+          "encoder": "Lavf60.16.100"
+        }
+      }
+    }
+  },
+  {
+    "name": "warp6-full-beampair",
+    "meta": {
+      "run": "/home/ugrp/ugrp-sim/runs/warp6/full-isolated-beampair",
+      "world": 0,
+      "sim_world_range": [
+        1.7000000000001514,
+        26.700000000000152
+      ],
+      "mujoco": "3.12.0",
+      "asset_root": "/home/ugrp/ugrp-sim/src/835ccef26aa84b08cc8f7e256fd0f43aa1583ef9",
+      "sim_relative_range": [
+        0.0,
+        25.0
+      ],
+      "full_2hz_frames": 51,
+      "terminal_10hz_frames": 100,
+      "native_six_times": [
+        17.10000000000015,
+        19.000000000000153,
+        21.000000000000153,
+        23.000000000000153,
+        25.000000000000153,
+        27.000000000000153
+      ],
+      "video_bytes": 124773,
+      "video_sha256": "57410fbf2229326bfd42fc417d1bf412ab9bbe6eff8081c78960e38e67948499",
+      "ffprobe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+            "profile": "High",
+            "codec_type": "video",
+            "codec_tag_string": "avc1",
+            "codec_tag": "0x31637661",
+            "width": 960,
+            "height": 270,
+            "coded_width": 960,
+            "coded_height": 270,
+            "closed_captions": 0,
+            "film_grain": 0,
+            "has_b_frames": 2,
+            "sample_aspect_ratio": "1:1",
+            "display_aspect_ratio": "32:9",
+            "pix_fmt": "yuv420p",
+            "level": 22,
+            "color_range": "tv",
+            "color_space": "bt470bg",
+            "chroma_location": "center",
+            "field_order": "progressive",
+            "refs": 1,
+            "is_avc": "true",
+            "nal_length_size": "4",
+            "id": "0x1",
+            "r_frame_rate": "6/1",
+            "avg_frame_rate": "6/1",
+            "time_base": "1/12288",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 104448,
+            "duration": "8.500000",
+            "bit_rate": "116135",
+            "bits_per_raw_sample": "8",
+            "nb_frames": "51",
+            "extradata_size": 50,
+            "disposition": {
+              "default": 1,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0
+            },
+            "tags": {
+              "language": "und",
+              "handler_name": "VideoHandler",
+              "vendor_id": "[0][0][0][0]",
+              "encoder": "Lavc60.31.102 libx264"
+            }
+          }
+        ],
+        "format": {
+          "filename": "/home/ugrp/ugrp-sim/ops-reviews/warp6/playback/full-isolated-beampair/playback-3x.mp4",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "format_long_name": "QuickTime / MOV",
+          "start_time": "0.000000",
+          "duration": "8.500000",
+          "size": "124773",
+          "bit_rate": "117433",
+          "probe_score": 100,
+          "tags": {
+            "major_brand": "isom",
+            "minor_version": "512",
+            "compatible_brands": "isomiso2avc1mp41",
+            "encoder": "Lavf60.16.100"
+          }
+        }
+      },
+      "scope": "finite diagnostic prefix, not a completed teacher trial; original own RGB, evaluator-only overview; no physics step",
+      "postprocessor_sha256": "1dfc5edbeaaca06a436e02ea658507cb2bed930362b671e60b879a1b0b2bf655",
+      "simulation_host": "gcp3",
+      "analysis_host": "gcp2",
+      "original_summary_status": "HOST_ERROR"
+    },
+    "verified_video_sha256": "57410fbf2229326bfd42fc417d1bf412ab9bbe6eff8081c78960e38e67948499",
+    "local_files": {
+      "full-2hz-02.jpg": {
+        "bytes": 240335,
+        "sha256": "441600b24f2e11a4e5cf686fe7d88daf7e8a420209eff9244cacdbe002208685"
+      },
+      "last10s-10hz-05.jpg": {
+        "bytes": 167137,
+        "sha256": "3ed6c9a754b6602b46b308ac9ad8a199bafe45a959fba71161d2412699289774"
+      },
+      "last10s-10hz-04.jpg": {
+        "bytes": 271158,
+        "sha256": "108404e3614ccdf3b77a572a0fae8b9fa84ddd1cfea8a212a4daa757649051ac"
+      },
+      "full-2hz-01.jpg": {
+        "bytes": 287869,
+        "sha256": "31cdbae4ccdc99773afcae0ba0c6d50c0fedf86267ba5ca7f3d1d24c614de925"
+      },
+      "full-2hz-00.jpg": {
+        "bytes": 267599,
+        "sha256": "070b6f5594e9e0a272e971ae229c10f6ae0d879752a43fedde12e95479899232"
+      },
+      "last10s-10hz-03.jpg": {
+        "bytes": 277127,
+        "sha256": "4fe9e814ae75738e640bed494235a40f51607e8a12d2d67cd6b5578f6622e43b"
+      },
+      "last10s-10hz-02.jpg": {
+        "bytes": 281768,
+        "sha256": "4b984a0405543768e3494ff550f9e5cb30125280031e2b0a7c9dc9b9c98de4bf"
+      },
+      "last10s-10hz-00.jpg": {
+        "bytes": 290393,
+        "sha256": "7c69bd39ab09ac5b3402fd9fb46993cc95489f257c6ccd4486e1b623a8925f71"
+      },
+      "last10s-10hz-01.jpg": {
+        "bytes": 288820,
+        "sha256": "e14d6c30a77a50b530a79a18c15260d8475157df6141def2ed569820d22de83f"
+      },
+      "playback-3x.mp4": {
+        "bytes": 124773,
+        "sha256": "57410fbf2229326bfd42fc417d1bf412ab9bbe6eff8081c78960e38e67948499"
+      },
+      "playback-meta.json": {
+        "bytes": 3454,
+        "sha256": "cc3273506132ada4ff6500f9fd6d8a21a191f6e8689e32e51a9076def8421dcf"
+      }
+    },
+    "ffprobe": {
+      "streams": [
+        {
+          "index": 0,
+          "codec_name": "h264",
+          "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+          "profile": "High",
+          "codec_type": "video",
+          "codec_tag_string": "avc1",
+          "codec_tag": "0x31637661",
+          "mime_codec_string": "avc1.640016",
+          "width": 960,
+          "height": 270,
+          "coded_width": 960,
+          "coded_height": 270,
+          "has_b_frames": 2,
+          "sample_aspect_ratio": "1:1",
+          "display_aspect_ratio": "32:9",
+          "pix_fmt": "yuv420p",
+          "level": 22,
+          "color_range": "tv",
+          "color_space": "bt470bg",
+          "chroma_location": "center",
+          "field_order": "progressive",
+          "is_avc": "true",
+          "nal_length_size": "4",
+          "id": "0x1",
+          "r_frame_rate": "6/1",
+          "avg_frame_rate": "6/1",
+          "time_base": "1/12288",
+          "start_pts": 0,
+          "start_time": "0.000000",
+          "duration_ts": 104448,
+          "duration": "8.500000",
+          "bit_rate": "116135",
+          "bits_per_raw_sample": "8",
+          "nb_frames": "51",
+          "extradata_size": 50,
+          "disposition": {
+            "default": 1,
+            "dub": 0,
+            "original": 0,
+            "comment": 0,
+            "lyrics": 0,
+            "karaoke": 0,
+            "forced": 0,
+            "hearing_impaired": 0,
+            "visual_impaired": 0,
+            "clean_effects": 0,
+            "attached_pic": 0,
+            "timed_thumbnails": 0,
+            "non_diegetic": 0,
+            "captions": 0,
+            "descriptions": 0,
+            "metadata": 0,
+            "dependent": 0,
+            "still_image": 0,
+            "multilayer": 0
+          },
+          "tags": {
+            "language": "und",
+            "handler_name": "VideoHandler",
+            "encoder": "Lavc60.31.102 libx264"
+          }
+        }
+      ],
+      "format": {
+        "filename": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/warp6-full-beampair/playback-3x.mp4",
+        "nb_streams": 1,
+        "nb_programs": 0,
+        "nb_stream_groups": 0,
+        "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+        "format_long_name": "QuickTime / MOV",
+        "start_time": "0.000000",
+        "duration": "8.500000",
+        "size": "124773",
+        "bit_rate": "117433",
+        "probe_score": 100,
+        "tags": {
+          "major_brand": "isom",
+          "minor_version": "512",
+          "compatible_brands": "isomiso2avc1mp41",
+          "encoder": "Lavf60.16.100"
+        }
+      }
+    }
+  }
+]

@@ -1,0 +1,755 @@
+{
+  "utc": "2026-10-16T06:27:03.833449+00:00",
+  "status": "NOT_READY",
+  "host": "gcp3",
+  "project": "ugrp-sim-c-1016",
+  "CPU_results_pooled": false,
+  "gate_submitted": {
+    "beampair": 0,
+    "release_A": 0,
+    "release_B": 0
+  },
+  "attempts": [
+    {
+      "name": "full-isolated-beampair",
+      "source_sha": "82a623ee37c166ac7a9f8eaef7216c905ac1c816",
+      "status": "HOST_ERROR",
+      "original_summary_status": "HOST_ERROR",
+      "receipt": {
+        "exit_code": -2,
+        "pid": 8623,
+        "end_utc": "2026-10-16T06:10:23.980116+00:00",
+        "status": "HOST_ERROR",
+        "raw_summary_preserved": true,
+        "physical_outcome": "read raw/result.json; native exit is not physical failure"
+      },
+      "progress": {
+        "ticks": 253,
+        "active_N": 4,
+        "completed_N": 0,
+        "sim_s": 25.3,
+        "loop_wall_s": 1372.735482386,
+        "timing": {
+          "render": 5.581616367999459,
+          "readback_remap_jpeg_kinematics": 5.336522397999033,
+          "command_decode_upload": 0.2695609099982903,
+          "physics": 1311.4906826059998
+        }
+      },
+      "planned_world_N": 4,
+      "completed_teacher_N": 0,
+      "success_N": 0,
+      "cap_end_N": 0,
+      "placement_accepted_N": 4,
+      "placement_rejected_N": 0,
+      "input_audit_scope": "saved diagnostic prefix only; no completed release or held-phase claim",
+      "input_audits": [
+        {
+          "world": "world-000",
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 1145,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "scope": "saved prefix only"
+        },
+        {
+          "world": "world-001",
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 1094,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "scope": "saved prefix only"
+        },
+        {
+          "world": "world-002",
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 995,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "scope": "saved prefix only"
+        },
+        {
+          "world": "world-003",
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 940,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "scope": "saved prefix only"
+        }
+      ],
+      "trace_rows": 0,
+      "max_nacon": null,
+      "max_nefc": null,
+      "max_awake_dofs": null,
+      "first_overflow": null
+    },
+    {
+      "name": "graph-isolated-beampair",
+      "source_sha": "82a623ee37c166ac7a9f8eaef7216c905ac1c816",
+      "status": "diagnostic_prefix_complete",
+      "original_summary_status": "diagnostic_prefix_complete",
+      "receipt": {
+        "exit_code": 0,
+        "pid": 6654,
+        "end_utc": "2026-10-16T05:39:45.560114+00:00",
+        "status": "exited",
+        "raw_summary_preserved": true,
+        "physical_outcome": "read raw/result.json; native exit is not physical failure"
+      },
+      "progress": {
+        "ticks": 15,
+        "active_N": 4,
+        "completed_N": 0,
+        "sim_s": 1.5,
+        "loop_wall_s": 52.417022264000025,
+        "timing": {
+          "render": 0.4486179309997169,
+          "readback_remap_jpeg_kinematics": 0.33326022599931093,
+          "command_decode_upload": 0.014142303999960859,
+          "physics": 49.597249253999735
+        }
+      },
+      "planned_world_N": 4,
+      "completed_teacher_N": 0,
+      "success_N": 0,
+      "cap_end_N": 0,
+      "placement_accepted_N": 4,
+      "placement_rejected_N": 0,
+      "input_audit_scope": "saved diagnostic prefix only; no completed release or held-phase claim",
+      "input_audits": [
+        {
+          "world": "world-000",
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 24,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "scope": "saved prefix only"
+        },
+        {
+          "world": "world-001",
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 21,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "scope": "saved prefix only"
+        },
+        {
+          "world": "world-002",
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 87,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "scope": "saved prefix only"
+        },
+        {
+          "world": "world-003",
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 21,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "scope": "saved prefix only"
+        }
+      ],
+      "trace_rows": 0,
+      "max_nacon": null,
+      "max_nefc": null,
+      "max_awake_dofs": null,
+      "first_overflow": null
+    },
+    {
+      "name": "graph-isolated-release-s1",
+      "source_sha": "82a623ee37c166ac7a9f8eaef7216c905ac1c816",
+      "status": "diagnostic_prefix_complete",
+      "original_summary_status": "diagnostic_prefix_complete",
+      "receipt": {
+        "exit_code": 0,
+        "pid": 7372,
+        "end_utc": "2026-10-16T05:43:28.904314+00:00",
+        "status": "exited",
+        "raw_summary_preserved": true,
+        "physical_outcome": "read raw/result.json; native exit is not physical failure"
+      },
+      "progress": {
+        "ticks": 15,
+        "active_N": 6,
+        "completed_N": 0,
+        "sim_s": 1.5,
+        "loop_wall_s": 61.80663685499985,
+        "timing": {
+          "render": 0.6358019479991981,
+          "readback_remap_jpeg_kinematics": 0.4986627879995922,
+          "command_decode_upload": 0.019399376000137636,
+          "physics": 58.35216699600028
+        }
+      },
+      "planned_world_N": 6,
+      "completed_teacher_N": 0,
+      "success_N": 0,
+      "cap_end_N": 0,
+      "placement_accepted_N": 6,
+      "placement_rejected_N": 0,
+      "input_audit_scope": "saved diagnostic prefix only; no completed release or held-phase claim",
+      "input_audits": [
+        {
+          "world": "world-000",
+          "input_audit": {
+            "held_object": "hidden_v1",
+            "held_world_reads": 0,
+            "held_world_reads_by_site": {},
+            "invisible_measurements": 0,
+            "measurements_by_phase": {},
+            "pick_target_uses": [],
+            "assigned_end_visibility_by_phase": {},
+            "max_assigned_end_blind_s": {},
+            "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check",
+            "control_top_camera_reads": 0,
+            "evaluation_top_camera_reads": 0,
+            "top_camera_counter_scope": "guarded world.render_team_jpeg, from world creation through cleanup; private renderer APIs excluded"
+          },
+          "scope": "saved prefix only"
+        },
+        {
+          "world": "world-001",
+          "input_audit": {
+            "held_object": "hidden_v1",
+            "held_world_reads": 0,
+            "held_world_reads_by_site": {},
+            "invisible_measurements": 0,
+            "measurements_by_phase": {},
+            "pick_target_uses": [],
+            "assigned_end_visibility_by_phase": {},
+            "max_assigned_end_blind_s": {},
+            "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check",
+            "control_top_camera_reads": 0,
+            "evaluation_top_camera_reads": 0,
+            "top_camera_counter_scope": "guarded world.render_team_jpeg, from world creation through cleanup; private renderer APIs excluded"
+          },
+          "scope": "saved prefix only"
+        },
+        {
+          "world": "world-002",
+          "input_audit": {
+            "held_object": "hidden_v1",
+            "held_world_reads": 0,
+            "held_world_reads_by_site": {},
+            "invisible_measurements": 0,
+            "measurements_by_phase": {},
+            "pick_target_uses": [],
+            "assigned_end_visibility_by_phase": {},
+            "max_assigned_end_blind_s": {},
+            "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check",
+            "control_top_camera_reads": 0,
+            "evaluation_top_camera_reads": 0,
+            "top_camera_counter_scope": "guarded world.render_team_jpeg, from world creation through cleanup; private renderer APIs excluded"
+          },
+          "scope": "saved prefix only"
+        },
+        {
+          "world": "world-003",
+          "input_audit": {
+            "held_object": "hidden_v1",
+            "held_world_reads": 0,
+            "held_world_reads_by_site": {},
+            "invisible_measurements": 0,
+            "measurements_by_phase": {},
+            "pick_target_uses": [],
+            "assigned_end_visibility_by_phase": {},
+            "max_assigned_end_blind_s": {},
+            "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check",
+            "control_top_camera_reads": 0,
+            "evaluation_top_camera_reads": 0,
+            "top_camera_counter_scope": "guarded world.render_team_jpeg, from world creation through cleanup; private renderer APIs excluded"
+          },
+          "scope": "saved prefix only"
+        },
+        {
+          "world": "world-004",
+          "input_audit": {
+            "held_object": "hidden_v1",
+            "held_world_reads": 0,
+            "held_world_reads_by_site": {},
+            "invisible_measurements": 0,
+            "measurements_by_phase": {},
+            "pick_target_uses": [],
+            "assigned_end_visibility_by_phase": {},
+            "max_assigned_end_blind_s": {},
+            "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check",
+            "control_top_camera_reads": 0,
+            "evaluation_top_camera_reads": 0,
+            "top_camera_counter_scope": "guarded world.render_team_jpeg, from world creation through cleanup; private renderer APIs excluded"
+          },
+          "scope": "saved prefix only"
+        },
+        {
+          "world": "world-005",
+          "input_audit": {
+            "held_object": "hidden_v1",
+            "held_world_reads": 0,
+            "held_world_reads_by_site": {},
+            "invisible_measurements": 0,
+            "measurements_by_phase": {},
+            "pick_target_uses": [],
+            "assigned_end_visibility_by_phase": {},
+            "max_assigned_end_blind_s": {},
+            "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check",
+            "control_top_camera_reads": 0,
+            "evaluation_top_camera_reads": 0,
+            "top_camera_counter_scope": "guarded world.render_team_jpeg, from world creation through cleanup; private renderer APIs excluded"
+          },
+          "scope": "saved prefix only"
+        }
+      ],
+      "trace_rows": 0,
+      "max_nacon": null,
+      "max_nefc": null,
+      "max_awake_dofs": null,
+      "first_overflow": null
+    },
+    {
+      "name": "graph-isolated-release-s3",
+      "source_sha": "82a623ee37c166ac7a9f8eaef7216c905ac1c816",
+      "status": "diagnostic_prefix_complete",
+      "original_summary_status": "diagnostic_prefix_complete",
+      "receipt": {
+        "exit_code": 0,
+        "pid": 8050,
+        "end_utc": "2026-10-16T05:44:45.481893+00:00",
+        "status": "exited",
+        "raw_summary_preserved": true,
+        "physical_outcome": "read raw/result.json; native exit is not physical failure"
+      },
+      "progress": {
+        "ticks": 15,
+        "active_N": 2,
+        "completed_N": 0,
+        "sim_s": 1.5,
+        "loop_wall_s": 43.035590788000036,
+        "timing": {
+          "render": 0.27554908999968575,
+          "readback_remap_jpeg_kinematics": 0.17628533100014465,
+          "command_decode_upload": 0.008962222999798541,
+          "physics": 41.871162271
+        }
+      },
+      "planned_world_N": 2,
+      "completed_teacher_N": 0,
+      "success_N": 0,
+      "cap_end_N": 0,
+      "placement_accepted_N": 2,
+      "placement_rejected_N": 0,
+      "input_audit_scope": "saved diagnostic prefix only; no completed release or held-phase claim",
+      "input_audits": [
+        {
+          "world": "world-000",
+          "input_audit": {
+            "held_object": "hidden_v1",
+            "held_world_reads": 0,
+            "held_world_reads_by_site": {},
+            "invisible_measurements": 0,
+            "measurements_by_phase": {},
+            "pick_target_uses": [],
+            "assigned_end_visibility_by_phase": {},
+            "max_assigned_end_blind_s": {},
+            "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check",
+            "control_top_camera_reads": 0,
+            "evaluation_top_camera_reads": 0,
+            "top_camera_counter_scope": "guarded world.render_team_jpeg, from world creation through cleanup; private renderer APIs excluded"
+          },
+          "scope": "saved prefix only"
+        },
+        {
+          "world": "world-001",
+          "input_audit": {
+            "held_object": "hidden_v1",
+            "held_world_reads": 0,
+            "held_world_reads_by_site": {},
+            "invisible_measurements": 0,
+            "measurements_by_phase": {},
+            "pick_target_uses": [],
+            "assigned_end_visibility_by_phase": {},
+            "max_assigned_end_blind_s": {},
+            "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check",
+            "control_top_camera_reads": 0,
+            "evaluation_top_camera_reads": 0,
+            "top_camera_counter_scope": "guarded world.render_team_jpeg, from world creation through cleanup; private renderer APIs excluded"
+          },
+          "scope": "saved prefix only"
+        }
+      ],
+      "trace_rows": 0,
+      "max_nacon": null,
+      "max_nefc": null,
+      "max_awake_dofs": null,
+      "first_overflow": null
+    },
+    {
+      "name": "profile-nxn-beampair",
+      "source_sha": "400cdb0da18b538ae94e6bd42c8b0c45d7091d9f",
+      "status": "diagnostic_prefix_complete",
+      "original_summary_status": "diagnostic_prefix_complete",
+      "receipt": {
+        "exit_code": 0,
+        "pid": 28005,
+        "end_utc": "2026-10-16T06:14:15.467481+00:00",
+        "status": "exited",
+        "raw_summary_preserved": true,
+        "physical_outcome": "read raw/result.json; native exit is not physical failure"
+      },
+      "progress": {
+        "ticks": 1,
+        "active_N": 4,
+        "completed_N": 0,
+        "sim_s": 0.1,
+        "loop_wall_s": 3.314202743000351,
+        "timing": {
+          "render": 0.13852074799979164,
+          "readback_remap_jpeg_kinematics": 0.046567736999804765,
+          "command_decode_upload": 0.0009771919999366219,
+          "physics": 3.1680336499998702
+        }
+      },
+      "planned_world_N": 4,
+      "completed_teacher_N": 0,
+      "success_N": 0,
+      "cap_end_N": 0,
+      "placement_accepted_N": 4,
+      "placement_rejected_N": 0,
+      "input_audit_scope": "saved diagnostic prefix only; no completed release or held-phase claim",
+      "input_audits": [
+        {
+          "world": "world-000",
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 0,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "scope": "saved prefix only"
+        },
+        {
+          "world": "world-001",
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 0,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "scope": "saved prefix only"
+        },
+        {
+          "world": "world-002",
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 0,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "scope": "saved prefix only"
+        },
+        {
+          "world": "world-003",
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 0,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "scope": "saved prefix only"
+        }
+      ],
+      "trace_rows": 0,
+      "max_nacon": null,
+      "max_nefc": null,
+      "max_awake_dofs": null,
+      "first_overflow": null
+    },
+    {
+      "name": "r1-memcheck-beampair",
+      "source_sha": "a1cac293d17c3c0811b843d49c0855a8ba0759fa",
+      "status": "HOST_ERROR",
+      "original_summary_status": "running",
+      "receipt": {
+        "exit_code": 15,
+        "pid": 2269,
+        "end_utc": "2026-10-16T05:25:51.171489+00:00",
+        "status": "HOST_ERROR",
+        "raw_summary_preserved": true,
+        "physical_outcome": "read raw/result.json; native exit is not physical failure"
+      },
+      "progress": {},
+      "planned_world_N": 4,
+      "completed_teacher_N": 0,
+      "success_N": 0,
+      "cap_end_N": 0,
+      "placement_accepted_N": 4,
+      "placement_rejected_N": 0,
+      "input_audit_scope": "saved diagnostic prefix only; no completed release or held-phase claim",
+      "input_audits": [
+        {
+          "world": "world-000",
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 0,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "scope": "saved prefix only"
+        },
+        {
+          "world": "world-001",
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 0,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "scope": "saved prefix only"
+        },
+        {
+          "world": "world-002",
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 0,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "scope": "saved prefix only"
+        },
+        {
+          "world": "world-003",
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 0,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "scope": "saved prefix only"
+        }
+      ],
+      "trace_rows": 0,
+      "max_nacon": null,
+      "max_nefc": null,
+      "max_awake_dofs": null,
+      "first_overflow": null
+    },
+    {
+      "name": "r2-debug-trace-beampair",
+      "source_sha": "5c37a18ca",
+      "status": "HOST_ERROR",
+      "original_summary_status": "running",
+      "receipt": {
+        "exit_code": -15,
+        "pid": 4033,
+        "end_utc": "2026-10-16T05:31:06.118647+00:00",
+        "status": "HOST_ERROR",
+        "raw_summary_preserved": true,
+        "physical_outcome": "read raw/result.json; native exit is not physical failure"
+      },
+      "progress": {},
+      "planned_world_N": 4,
+      "completed_teacher_N": 0,
+      "success_N": 0,
+      "cap_end_N": 0,
+      "placement_accepted_N": 4,
+      "placement_rejected_N": 0,
+      "input_audit_scope": "saved diagnostic prefix only; no completed release or held-phase claim",
+      "input_audits": [
+        {
+          "world": "world-000",
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 0,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "scope": "saved prefix only"
+        },
+        {
+          "world": "world-001",
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 0,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "scope": "saved prefix only"
+        },
+        {
+          "world": "world-002",
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 0,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "scope": "saved prefix only"
+        },
+        {
+          "world": "world-003",
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 0,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "scope": "saved prefix only"
+        }
+      ],
+      "trace_rows": 0,
+      "max_nacon": null,
+      "max_nefc": null,
+      "max_awake_dofs": null,
+      "first_overflow": null
+    },
+    {
+      "name": "r3-verify-trace-beampair",
+      "source_sha": "warp6-verify",
+      "status": "HOST_ERROR",
+      "original_summary_status": "running",
+      "receipt": {
+        "exit_code": -15,
+        "pid": 5174,
+        "end_utc": "2026-10-16T05:37:39.407665+00:00",
+        "status": "HOST_ERROR",
+        "raw_summary_preserved": true,
+        "physical_outcome": "read raw/result.json; native exit is not physical failure"
+      },
+      "progress": {
+        "ticks": 25,
+        "active_N": 4,
+        "completed_N": 0,
+        "sim_s": 2.5,
+        "loop_wall_s": 329.75661379400003,
+        "timing": {
+          "render": 0.6355893219999871,
+          "readback_remap_jpeg_kinematics": 0.541541546001099,
+          "command_decode_upload": 0.02393196599973635,
+          "physics": 324.91245227699983
+        }
+      },
+      "planned_world_N": 4,
+      "completed_teacher_N": 0,
+      "success_N": 0,
+      "cap_end_N": 0,
+      "placement_accepted_N": 4,
+      "placement_rejected_N": 0,
+      "input_audit_scope": "saved diagnostic prefix only; no completed release or held-phase claim",
+      "input_audits": [
+        {
+          "world": "world-000",
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 0,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "scope": "saved prefix only"
+        },
+        {
+          "world": "world-001",
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 0,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "scope": "saved prefix only"
+        },
+        {
+          "world": "world-002",
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 0,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "scope": "saved prefix only"
+        },
+        {
+          "world": "world-003",
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 0,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "scope": "saved prefix only"
+        }
+      ],
+      "trace_rows": 10201,
+      "max_nacon": 112,
+      "max_nefc": 157,
+      "max_awake_dofs": 110,
+      "first_overflow": null
+    }
+  ],
+  "raw_file_N": 4882,
+  "raw_bytes": 91445625,
+  "rejection_table": "/home/ugrp/ugrp-sim/ops-reviews/warp6/final/rejection_table.json",
+  "full_summary": "/home/ugrp/ugrp-sim/ops-reviews/warp6/final/summary.json.zst",
+  "raw_manifest": "/home/ugrp/ugrp-sim/ops-reviews/warp6/final/raw-sha256.json.zst"
+}
