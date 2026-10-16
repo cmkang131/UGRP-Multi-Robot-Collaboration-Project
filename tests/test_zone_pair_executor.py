@@ -505,13 +505,25 @@ def test_frozen_m2_sources_or_explicit_followup_hashes():
     post_freeze['harness/owncam_pose_source.py'].add(
         # v6e carry_beam_edge: on_frame calls the opt-in beam-edge tracker only when one is attached.
         'b5c151742ba8d716c2f83423ce64a06cf07bdff8e8cf08b278ff84903529074e')
+    # nsoff v445: new execution defaults; frozen import manifest remains byte-identical.
+    post_freeze.setdefault('scripts/study_owncam_pair_beam.py', set()).add('28aedc82d7e3ce9c7a4607214d4439629562ab5cbe506ac0d9fe02f8d815dbf1')
     for row in files:
         got = hashlib.sha256((ROOT / row['path']).read_bytes()).hexdigest()
         assert got in {row['sha256'], *post_freeze.get(row['path'], ())}, row['path']
     sources = {
-        'scripts/run_m2_pair.py': '3432df1fbefd4779921dc89a20f60fb67299fcdd02aa4568c6ecd14e27978783',
+        'scripts/run_m2_pair.py': '456307ce3ae692a226053266bf205599bacca30b266fc2f5109d2f004a9ec614',
         'harness/pair_owncam_approach.py': '75058e95ff0f78dc388e9e34deba59f0524ef0647fb4e8a2597852ae0440f184',
         'harness/owncam_pair_lift_v3.py': 'faf725e3b1b1ee1e387c0f8c593b7508b6e170387d010debb551df7bd05d087d',
     }
     for path, digest in sources.items():
         assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == digest
+
+
+@pytest.mark.parametrize('profile', ['cargo_native_v1', 'warp_native_contact_v1'])
+def test_native_profile_pair_admission_keeps_weld_off(profile):
+    host, _ = setup()
+    host.pairs.contact_profile = profile
+    assert start(host)['accepted'] is True
+    host, _ = setup()
+    host.pairs.contact_profile, host.pairs.weld = profile, True
+    assert start(host)['accepted'] is False

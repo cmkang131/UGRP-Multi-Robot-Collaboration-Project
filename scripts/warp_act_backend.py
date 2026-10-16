@@ -4,6 +4,7 @@ The scalar teacher is a transitional client. Physics, command relay/interpolatio
 and RGB are batched. C MjData is a kinematic/raycast perception mirror only;
 GPU contact forces have a separate evaluator-only channel.
 """
+from sim.execution_contact_profile import CPU_DEFAULT, WARP_DEFAULT, assert_model_profile, build_world_with_contact
 from collections import defaultdict
 import hashlib
 import time
@@ -19,12 +20,16 @@ def ports_for(context):
 class Transport:
     native_render = False
 
-    def __init__(self, host, source_sha, backend, out):
+    def __init__(self, host, source_sha, backend, out, *, contact_profile=None):
         self.host, self.source_sha, self.backend, self.out = host, source_sha, backend, Path(out)
+        self.contact_profile = contact_profile or (CPU_DEFAULT if self.native_render else WARP_DEFAULT)
         self.seconds = defaultdict(float)
         self.samples = []
         self.rgb = []
         self.contact_forces = None
+
+    def build_world(self, builder, *args, **kwargs):
+        return build_world_with_contact(builder, self.contact_profile, *args, **kwargs)
 
     def capture(self, index, world, robot_id='r1'):
         if self.native_render:
@@ -123,8 +128,7 @@ class WarpTransport(Transport):
             compat={}
             if geometry_asset:compat['geometry']=apply_geometry(model,scene_xml,geometry_asset)
             if actuator_asset:compat['damping']=apply_reference(model,scene_xml,actuator_asset)
-            if model.opt.noslip_iterations!=10 or np.any(c['world'].data.eq_active):
-                raise ValueError('noslip10 / weld OFF required in every world')
+            compat['contact_profile'] = assert_model_profile(model, self.contact_profile, c['world'].data.eq_active)
             self.compat[str(index)]=compat
             models.append(model)
         wp.init()
@@ -134,8 +138,7 @@ class WarpTransport(Transport):
             self.wm=mjw.put_model(m)
             self.model_batch_audit={'mode':'same_static_model','varying_fields':[]}
         self.wm.opt.tolerance.fill_(float(m.opt.tolerance))
-        if self.wm.opt.noslip_iterations != 10:
-            raise RuntimeError('noslip lost in Warp conversion')
+        assert_model_profile(self.wm, self.contact_profile)
         self.compat['collision'] = install_legacy_plane(m)
         # Existing simalt4 dense trace observed max nefc134, rounded to256.
         # Full scene import is added; these are workspace sizes, not physics changes.
@@ -410,7 +413,7 @@ class ExactModelGroups(Transport):
             assets = refs.get(key)
             if assets is None and len(partitions) != 1:
                 raise ValueError('missing exact model compiled reference: '+key)
-            transport = WarpTransport(self.host, self.source_sha, self.backend, root)
+            transport = WarpTransport(self.host, self.source_sha, self.backend, root, contact_profile=self.contact_profile)
             transport.initialize(selected,
                 compiled_reference=Path(assets['actuator']) if assets else compiled_reference,
                 compiled_geometry=Path(assets['geometry']) if assets else compiled_geometry)

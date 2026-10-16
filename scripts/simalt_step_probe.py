@@ -42,6 +42,8 @@ def main():
     p.add_argument('--export-compiled-geometry', type=Path, help='export compiled geometry/caches without steps')
     p.add_argument('--compiled-geometry-312-v1', type=Path,
                    help='default OFF: same-XML C312 mesh representation and compiled geometry caches')
+    from sim.execution_contact_profile import add_argument
+    add_argument(p, warp=True)
     a = p.parse_args()
     if not a.enabled or platform.system() != 'Linux':
         p.error('explicit Linux gcp2 opt-in required; Mac physics/render forbidden')
@@ -57,6 +59,8 @@ def main():
         p.error('damping ablation requires C3.12 and an explicit C3.16 reference')
     a.out.mkdir(parents=True, exist_ok=False)
     m = mujoco.MjModel.from_xml_path(str(a.fixture/'scene.xml'))
+    from sim.execution_contact_profile import configure_model, assert_model_profile
+    configure_model(m, a.contact_profile)
     from simalt_compiled_compat import apply_reference, export_reference, export_geometry, apply_geometry
     if a.export_compiled:
         export_reference(m, a.fixture/'scene.xml', mujoco.__version__, a.export_compiled)
@@ -77,8 +81,7 @@ def main():
     d = mujoco.MjData(m)
     d.qpos[:] = f['qpos']; d.qvel[:] = f['qvel']; d.ctrl[:] = tape[0]
     mujoco.mj_forward(m, d)
-    if m.opt.noslip_iterations != 10 or np.any(m.eq_active0):
-        raise RuntimeError('frozen noslip10 / weld OFF required')
+    assert_model_profile(m, a.contact_profile)
     left, right, box = [m.geom(n).id for n in
                         ('r1__left_finger', 'r1__right_finger', 'cargo_cyan_2_geom')]
     joints = []

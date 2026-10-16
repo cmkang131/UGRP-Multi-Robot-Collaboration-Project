@@ -66,7 +66,7 @@ def read_registry(*, root=ROOT) -> dict:
             or value.get('workflow_id') != WORKFLOW_ID or value.get('workflow_version') != WORKFLOW_VERSION
             or value.get('status') != 'DRAFT_UNSEALED' or value.get('research_result') is not False
             or value.get('weld') != 'off' or value.get('render_profile') != 'floor_light_v1'
-            or value.get('contact_profile') != 'cargo_noslip_v1'
+            or value.get('contact_profile') not in ('cargo_native_v1', 'warp_native_contact_v1', 'cargo_noslip_v1')
             or value.get('sensors') != {'ultrasonic_front': 'off'}
             or tuple(value.get('conditions', ())) != CONDITIONS
             or {k: v['arm'] for k, v in value['conditions'].items()} != ARMS

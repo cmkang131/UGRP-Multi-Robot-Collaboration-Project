@@ -20,6 +20,8 @@ def main():
     p.add_argument('--xml',type=Path,required=True)
     p.add_argument('--out',type=Path,required=True)
     p.add_argument('--enabled',action='store_true')
+    from sim.execution_contact_profile import add_argument
+    add_argument(p, warp=True)
     a=p.parse_args()
     if not a.enabled or platform.system()!='Linux':p.error('explicit Linux-only opt-in required')
     a.out.mkdir(parents=True,exist_ok=False)
@@ -42,13 +44,15 @@ def main():
         wp.init()
         result.update(mujoco_version=mujoco.__version__,warp_version=wp.__version__)
         m=mujoco.MjModel.from_xml_path(str(a.xml))
+        from sim.execution_contact_profile import configure_model, assert_model_profile
+        configure_model(m, a.contact_profile)
         result['model']={k:int(getattr(m,k)) for k in ('nq','nv','nu','ngeom','nbody','neq')}
         result['options']={k:float(getattr(m.opt,k)) for k in ('timestep','iterations','ls_iterations','noslip_iterations','solver','integrator','cone')}
-        if m.opt.noslip_iterations!=10 or np.any(m.eq_active0):raise RuntimeError('noslip=10/weld OFF required')
+        assert_model_profile(m, a.contact_profile)
         d=mujoco.MjData(m);mujoco.mj_forward(m,d)
         result.update(status='converting_model',reference_ncon=int(d.ncon),reference_nefc=int(d.nefc));save()
         model=mjw.put_model(m)
-        if model.opt.noslip_iterations!=10:raise RuntimeError('noslip ignored by model conversion')
+        assert_model_profile(model, a.contact_profile)
         result.update(status='allocating_data',noslip_preserved=True,model_import_s=time.perf_counter()-start);save()
         data=mjw.put_data(m,d,nworld=1)
         result.update(status='compiling_step',capacities={'naconmax':int(data.naconmax),'njmax':int(data.njmax)});save()

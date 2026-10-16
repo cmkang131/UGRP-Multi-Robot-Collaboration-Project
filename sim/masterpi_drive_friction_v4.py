@@ -121,20 +121,21 @@ class StribeckWorld(FrictionWorld):
                 c._presentation_dirty = True
 
 
-def build_world(scene, *, drive_profile, params=None, **kwargs):
+def build_world(scene, *, drive_profile, contact_profile='cargo_native_v1', params=None, **kwargs):
     if drive_profile != PROFILE:
         raise ValueError('explicit '+PROFILE+' required')
     from sim.session_scenes import Scene
     from sim.masterpi_model_v3 import v3_hardware
     from sim.masterpi_robot_models import V3_DRAWING_HARDWARE_KEYS
     from sim.zone_cargo_contact import apply
+    from sim.execution_contact_profile import cargo_name
     if not isinstance(scene, Scene) or not hasattr(scene, 'robot_transform'):
         raise ValueError('requires standard v3 Scene adapter')
     world = StribeckWorld.__new__(StribeckWorld)
     world.drive_parameters = params or DriveParameters()
 
     def transform(xml):
-        xml = apply(scene.transform(xml), 'cargo_noslip_v1')
+        xml = apply(scene.transform(xml), cargo_name(contact_profile))
         xml = scene.robot_transform(xml, hardware=world.physical_params,
                                     calibrated_keys=world.calibration_parameters)
         return transform_xml(xml, world.drive_parameters)

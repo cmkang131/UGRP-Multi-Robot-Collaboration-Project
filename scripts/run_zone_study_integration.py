@@ -320,9 +320,10 @@ def host_spec(scenario, episode, map_bundle):
     from harness.zone_study_inputs import OrderSheetSource
     from harness.zone_pair_executor import make_plan
     setup = scenario['eval']['setup']
-    if (setup['contact_profile'] != 'cargo_noslip_v1' or episode['contact_profile'] != 'cargo_noslip_v1'
+    if (setup['contact_profile'] not in ('cargo_native_v1', 'warp_native_contact_v1', 'cargo_noslip_v1') or episode['contact_profile'] not in ('cargo_native_v1', 'warp_native_contact_v1', 'cargo_noslip_v1')
+            or setup['contact_profile'] != episode['contact_profile']
             or setup['weld'] != 'off'):
-        raise zi.ContractViolation('study requires cargo_noslip_v1 and weld OFF in scenario and episode')
+        raise zi.ContractViolation('study requires matching supported contact profiles and weld OFF in scenario and episode')
     spec = {k: copy.deepcopy(episode[k]) for k in
             ('map', 'goal', 'extra_boxes', 'contact_profile', 'job_sim_limit_s')}
     spec['seed'] = episode['layout_seed']
@@ -389,7 +390,7 @@ def run_bundle(prereg, episode, *, model_adapter=None, driver=None):
                                                     'contact_profile', 'job_sim_limit_s')},
               'actor': 'gemini_proxy' if model_adapter else zi.FIXTURE_ACTOR,
               'model_settings_sha256': digest(model_adapter.client_factory.settings) if model_adapter else None,
-              'host_spec': spec, 'contact_profile_expected': profile_contract(),
+              'host_spec': spec, 'contact_profile_expected': profile_contract(spec['contact_profile']),
               'perception_delay_s': zi.PERCEPTION_DELAY_S,
               'weld': 'off', 'sync_sim': True, 'frame_period_s': OwnCamTeamHost.FRAME_S,
               'executor_tick_s': zi.QUANTUM_S, 'student': dict(prereg['student']),

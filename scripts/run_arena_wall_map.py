@@ -14,7 +14,7 @@ RAW=Path('/Users/changmin/projects/ugrp/outputs/arena-wall-map-v1')
 def acquire_case(case,out,source,backend_factory):
     plan=json.loads((EXP/(case+'-plan.json')).read_text())
     bundle=dict(source_sha=source,execution_bundle_id='egomap20-arena-tour-v1',check='arena-wall-map',
-        case=case,map_id='zone_wide_two_doors_final_v3',contact_profile='cargo_noslip_v1',
+        case=case,map_id='zone_wide_two_doors_final_v3',contact_profile='cargo_native_v1',
         task=dict(robot_id='r3',seed=plan['seed'],destination='B',pickup_slot='P1-2'),
         spawn=plan['spawn_setup_only'],initial_servo=old.PULSES,case_cap_s=plan['cap_s'],capture_s=.1,
         options=dict(servo_stiffness='real_v1',wall_texture='tape_v1',motion_model='s2_pulse_v122',

@@ -56,7 +56,7 @@ def registry():
     value = base.read(ROOT / REGISTRY)
     if (value['execution_bundle_id'] != BUNDLE_ID or value['status'] != 'DRAFT_UNSEALED'
             or value['render_profile'] != 'floor_light_v1' or value['weld'] != 'off'
-            or value['contact_profile'] != 'cargo_noslip_v1'
+            or value['contact_profile'] not in ('cargo_native_v1', 'warp_native_contact_v1', 'cargo_noslip_v1')
             or value['sensors'] != {'ultrasonic_front': 'off'}):
         raise ValueError('invalid final pair registry')
     return value

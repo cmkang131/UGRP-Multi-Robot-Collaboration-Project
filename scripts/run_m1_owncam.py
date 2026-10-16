@@ -39,7 +39,7 @@ SKILLS = {'v4': ('harness.wrist_zone_skill_v4', 'WristZoneDeliveryV4', 'own_rgb_
           'v6': ('harness.wrist_zone_skill_v6', 'WristZoneDeliveryV6', 'own_rgb_bay', {'mode': 'm1'}),
           'v9': ('harness.wrist_zone_skill_v9', 'WristZoneDeliveryV9', 'own_rgb_bay', {'mode': 'm1'})}
 STATIC_KEEPOUT_SKILLS = ('v6', 'v9')     # skills that take the static layout keep-outs (#181 v6+ API)
-CONTACT_PROFILES = ('local_contact_fine', 'cargo_noslip_v1')
+CONTACT_PROFILES = ('cargo_native_v1', 'warp_native_contact_v1', 'local_contact_fine', 'cargo_noslip_v1')
 SPAWN_KEEPOUT_RADIUS_M = .17             # an idle MasterPi footprint (as the #181 v6 runner)
 # Evaluation-only retention rule (amendment A5, fixed before the test): skill phases in which the box
 # must be held (intended set-downs - reseat_*, release and later - are excluded).
@@ -126,8 +126,9 @@ def run(spec, out, student, speedups=None):
                       'timestep_s': float(world.model.opt.timestep),
                       'final_scene_xml_sha256': sha_bytes(world.scene_xml.encode()),
                       'user_decision': 'pending user approval (PR #181/#189); cargo_noslip_v1 is the primary condition'}
-    if profile == 'cargo_noslip_v1' and contact_record['noslip_iterations'] <= 0:
-        raise RuntimeError('cargo_noslip_v1 requested but noslip_iterations is 0 in the built model')
+    if profile in CARGO_PROFILES:
+        from sim.execution_contact_profile import assert_model_profile
+        assert_model_profile(world.model, profile, world.data.eq_active)
     setup_diag = {}
     if spec.get('box_yaw_deg') is not None:
         # Dev diagnostic only (amendment A2): rotate the cyan box in place (setup-only, never an input).

@@ -92,23 +92,26 @@ class Timers:
             setattr(obj, key, original)
 
 
-def world_for(plan, render):
+def world_for(plan, render, contact_profile='cargo_native_v1'):
     from sim.grasp_act_scene import make_scene
     from sim.masterpi_drive_friction_v7 import build_world, PROFILE
     from sim.s2_realism_camera_binding import bind_camera
     scene = make_scene({**plan, 'end_color_scene': 'off'})
     os.environ['UGRP_SIM_OBSERVER_WIDTH'] = '320'
     os.environ['UGRP_SIM_OBSERVER_HEIGHT'] = '240'
-    world = build_world(scene, drive_profile=PROFILE, seed=plan['seed'], width=640,
+    world = build_world(scene, drive_profile=PROFILE, contact_profile=contact_profile, seed=plan['seed'], width=640,
                         height=480, render=render, warehouse_layout=scene.engine_layout,
                         warehouse_cargo_ids=None, roller_collision='mesh', idle_robot_contacts='off')
     for c in world.controllers.values():
         bind_camera(c)
     scene.setup(world)
     import numpy as np
-    if world.model.opt.noslip_iterations != 10 or np.any(world.data.eq_active):
+    from sim.execution_contact_profile import assert_model_profile
+    try:
+        assert_model_profile(world.model, contact_profile, world.data.eq_active)
+    except ValueError:
         world.close()
-        raise RuntimeError('noslip=10 and weld OFF required')
+        raise
     return world, scene
 
 
@@ -149,7 +152,7 @@ def replay(a):
     start = time.perf_counter()
     try:
         reset_start = time.perf_counter()
-        world, scene = world_for(plan, True)
+        world, scene = world_for(plan, True, a.contact_profile)
         report['reset_s'] = time.perf_counter()-reset_start
         report['gl'] = gl_info(world)
         if a.render_backend == 'egl_l4_v1' and 'NVIDIA' not in report['gl']['vendor']:
@@ -257,7 +260,7 @@ def snapshots(a):
         if len(picks)!=30 or len({i for _,i in picks})!=30:
             raise ValueError('30 unique audited snapshot states required')
     a.out.mkdir(parents=True,exist_ok=False)
-    world, scene=world_for(plan,True);m,d=world.model,world.data
+    world, scene=world_for(plan,True,a.contact_profile);m,d=world.model,world.data
     results=[]
     try:
         for n,(stratum,i) in enumerate(picks):
@@ -305,6 +308,8 @@ def main():
     p.add_argument('--sha',required=True);p.add_argument('--cap-s',type=float)
     p.add_argument('--snapshots',action='store_true');p.add_argument('--states',type=Path)
     p.add_argument('--selection',type=Path)
+    from sim.execution_contact_profile import add_argument
+    add_argument(p)
     a=p.parse_args()
     if a.render_backend=='egl_l4_v1' and not a.egl_l4_v1:p.error('egl_l4_v1 is OFF by default')
     try:

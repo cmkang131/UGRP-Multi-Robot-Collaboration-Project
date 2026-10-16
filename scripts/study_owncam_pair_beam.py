@@ -97,7 +97,7 @@ LOST_FRAMES = 2
 PRESTATION_BACK_M = .30
 LIMIT_S = 240.
 STATE_LIMIT_S = {'align': 60., 'wait_lift': 20., 'wait_carry': 15., 'wait_lower': 20., 'wait_open': 15.}
-CONTACT_PROFILES = ('cargo_noslip_v1', 'local_contact_fine')
+CONTACT_PROFILES = ('cargo_native_v1', 'warp_native_contact_v1', 'cargo_noslip_v1', 'local_contact_fine')
 # seed -> beam pose and per-robot start offsets (back m, lateral m, yaw rad) from the station.
 SCENARIOS = {
     # development (tuning allowed, labelled dev, never reported as results)
@@ -493,7 +493,7 @@ def main():
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument('--seed', type=int, choices=sorted(SCENARIOS), required=True)
     p.add_argument('--condition', choices=('stub_approach', 'own_only'), required=True)
-    p.add_argument('--contact-profile', choices=CONTACT_PROFILES, default='cargo_noslip_v1')
+    p.add_argument('--contact-profile', choices=CONTACT_PROFILES, default='cargo_native_v1')
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--allow-dirty', action='store_true')
     p.add_argument('--status-channel', choices=('on', 'off'), required=True,

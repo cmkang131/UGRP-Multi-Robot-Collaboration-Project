@@ -36,7 +36,7 @@ from harness import wrist_zone_skill_v4 as v4  # noqa: E402
 SCHEMA = 'ugrp.zone_owncam_skill_run.v1'
 POSE_SOURCE = 'gt_stub_eval_only'
 VARIANT = 'zone_wide_door'
-CONTACT_PROFILE = 'local_contact_fine'
+CONTACT_PROFILE = 'cargo_native_v1'
 SIM_LIMIT_S = 300.
 STEP_LIMIT = 900
 # v2 (pre-registered in the experiment README before its first recorded run)
@@ -51,7 +51,7 @@ V4_STEP_LIMIT = 1300
 PROFILES = {'v1': PROFILE, 'v2': v2.PROFILE, 'v3': v3.PROFILE, 'v4': v4.PROFILE}
 # Contact profiles selectable per run; always recorded. local_contact_fine is the zone default;
 # cargo_noslip_v1 (sim/zone_cargo_contact.py) is opt-in only and recorded with its hash.
-CONTACT_PROFILES = ('local_contact_fine', 'cargo_noslip_v1')
+CONTACT_PROFILES = ('cargo_native_v1', 'warp_native_contact_v1', 'local_contact_fine', 'cargo_noslip_v1')
 # seed -> start pose (x, y, yaw) of r1, staging cell of the cyan box (order sheet), slot id.
 # 401-402 are DEVELOPMENT scenarios (tuning allowed, never reported as results);
 # 501-505 are the pre-registered test scenarios.
