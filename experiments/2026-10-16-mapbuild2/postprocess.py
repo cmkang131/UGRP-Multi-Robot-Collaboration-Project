@@ -1,4 +1,5 @@
 """One finite, headless follow-up of capture-r4; never a recurring monitor."""
+import argparse
 import datetime
 import hashlib
 import json
@@ -22,6 +23,9 @@ def call(cmd):
 
 
 def main():
+    global SOURCE
+    p=argparse.ArgumentParser();p.add_argument('--source',type=Path,default=SOURCE);args=p.parse_args()
+    SOURCE=args.source.resolve()
     lease=BASE/'leases/mapbuild2-post.json'
     with lease.open('x') as f:json.dump(dict(task='mapbuild2-post',pid=os.getpid(),concurrency=0,gpu_shared=True,
         start=datetime.datetime.now(datetime.timezone.utc).isoformat(),expected_end='after finite capture-r4 + analysis/playback'),f)
