@@ -1,0 +1,41 @@
+{
+  "status": "NOT_READY",
+  "source_sha": "5974a181a2cec9731339a6ce3aadc0464b8dddcf",
+  "physics_host": {
+    "provider": "gcp",
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a",
+    "cpu_count": 8,
+    "schema": "ugrp.grasp_act.host.v1"
+  },
+  "analysis_host": "ugrp-sim-gcp2.asia-northeast3-a.c.ugrp-sim-b-1014.internal",
+  "pool_with_cpu": false,
+  "arms": {
+    "reloc20_default_progress_off": {
+      "attempted": 6,
+      "eligible": 0,
+      "HOST_ERROR": 6,
+      "cap_end": 0,
+      "place": 0,
+      "complete": 0
+    },
+    "reloc21_removal_diagnostic_only": {
+      "attempted": 6,
+      "eligible": 0,
+      "HOST_ERROR": 6,
+      "cap_end": 0,
+      "place": 0,
+      "complete": 0
+    }
+  },
+  "replica_worlds": 4,
+  "verified_files": 431,
+  "hash_mismatches": [],
+  "batch_status": "HOST_ERROR",
+  "runs_file": "/home/ugrp/ugrp-sim/runs/warp7/n16-r3-analysis/runs.json",
+  "scorer_sha256": "f379d04311732a2a25b4c4d5e872fe7537fc04a2de230b65465b69da42220817",
+  "raw": "/home/ugrp/ugrp-sim/runs/warp7/n16-r3",
+  "rejection_table": "/home/ugrp/ugrp-sim/runs/warp7/n16-r3-analysis/rejection-table.json"
+}

@@ -48,6 +48,14 @@ def test_native_model_group_changes_only_documented_batched_values():
     assert layout_digest(aa,{'nv':2},{'mass'})!=layout_digest(aa,{'nv':3},{'mass'})
 
 
+def test_complete_static_rgb_audit_cannot_qualify_production_motion():
+    from scripts.run_warp5_batch import admit_render_gate
+    gate=dict(admitted=True,admission_scope='static DEV motion diagnosis only')
+    with pytest.raises(ValueError,match='explicit motion diagnosis only'):
+        admit_render_gate(gate,False)
+    admit_render_gate(gate,True)
+
+
 def test_native_alpha_keeps_opaque_occluders_and_world_layer_order():
     opaque=np.zeros((2,1,2,3));opaque[:,:,1]=100
     red=np.zeros_like(opaque);red[:,:,:,0]=200

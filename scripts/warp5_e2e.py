@@ -66,7 +66,7 @@ def make_e2e(source,bundle,out,receipt,host,*,expected_sha,decision_backend='rul
     sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=source,text=True).strip()
     if sha!=expected_sha or subprocess.check_output(['git','status','--porcelain','--untracked-files=no'],cwd=source):raise ValueError('clean pinned E2E dependency required')
     if decision_backend!='rule_v1':
-        raise ValueError('live E2E admission pending endpoint alert resolution; use explicit rule_v1 only')
+        raise ValueError('live E2E transport/ACT/relay integration is unverified; CoreWeave price alert is resolved, not the integration gate')
     if bundle['e2e_options'].get('planner')!='rule_v1':raise ValueError('rule-only bundle required')
     bridge=Bridge(host)
     def factory():

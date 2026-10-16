@@ -1,0 +1,53 @@
+{
+  "admitted": false,
+  "checks": {
+    "semantic_labels_present": true,
+    "hashes_match": true,
+    "no_false_components": true,
+    "all_eligible_visible_detected": false
+  },
+  "N": 88,
+  "totals": {
+    "box": {
+      "accepted": 52,
+      "correct": 52,
+      "false_positive": 0,
+      "visible": 82,
+      "detected": 52,
+      "missed": 30,
+      "precision": 1.0,
+      "recall": 0.6341463414634146
+    },
+    "floor_B": {
+      "accepted": 4,
+      "correct": 4,
+      "false_positive": 0,
+      "visible": 10,
+      "detected": 4,
+      "missed": 6,
+      "precision": 1.0,
+      "recall": 0.4
+    },
+    "destination": {
+      "accepted": 4,
+      "correct": 4,
+      "false_positive": 0,
+      "rejection_reasons": {
+        "destination_colour_absent": 241,
+        "destination_component_small": 12,
+        "destination_outside_floor_fit": 7
+      },
+      "visible_but_rejected": 38
+    }
+  },
+  "scope": "MJWarp static own-RGB DEV only; geometry labels evaluator-only; no CPU equivalence",
+  "scorer_sha256": "09acb41aafac47686fec2494a32200051ae4330ffd9836b18c161ca754d7cc41",
+  "raw": "/home/ugrp/ugrp-sim/runs/warp7/render-r1",
+  "verified_files": 2912,
+  "hash_mismatches": [],
+  "rejection_table": "/home/ugrp/ugrp-sim/runs/warp7/colour-r4/rejection-table.json",
+  "box_miss_stages": {
+    "floor_cuboid_projection": 30
+  },
+  "visible_geometry_recall_scope": "Full detector includes silhouette and known-floor cuboid projection; colour miss stages are separate. DEV same88 calibration/evaluation, no holdout qualification."
+}

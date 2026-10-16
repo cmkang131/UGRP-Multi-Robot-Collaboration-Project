@@ -1,0 +1,1249 @@
+[
+  {
+    "name": "n16-r1",
+    "status": "HOST_ERROR",
+    "source_sha": "889929443d5dc177f3cad97cb12d3bf83fc7d432",
+    "physics_host": {
+      "provider": "gcp",
+      "project_id": "ugrp-sim-b-1014",
+      "instance": "ugrp-act-l4-gcp2",
+      "machine_type": "g2-standard-8",
+      "zone": "asia-northeast3-a",
+      "cpu_count": 8,
+      "schema": "ugrp.grasp_act.host.v1"
+    },
+    "composition": {
+      "reloc20_default_progress_off": {
+        "worlds": 11,
+        "unique_initial_cases": 11,
+        "replicas": 0
+      },
+      "reloc21_removal_diagnostic_only": {
+        "worlds": 5,
+        "unique_initial_cases": 5,
+        "replicas": 0
+      }
+    },
+    "raw": "/home/ugrp/ugrp-sim/runs/warp7/n16-r1",
+    "verified_files": 13,
+    "hash_mismatches": [],
+    "source_manifest_sha256": "7ef24cda8165a595d8556456d37ac906a54b2fd174a83f540c5ebc77d82f9801",
+    "gate_stages": [
+      {
+        "stage": "requested",
+        "cumulative_pass_n": 16,
+        "rejected_n": 0
+      },
+      {
+        "stage": "setup",
+        "cumulative_pass_n": 0,
+        "rejected_n": 16
+      },
+      {
+        "stage": "completed",
+        "cumulative_pass_n": 0,
+        "rejected_n": 16
+      }
+    ],
+    "rejections": [
+      {
+        "category": "HOST_ERROR",
+        "reason": "FileNotFoundError(2, 'No such file or directory')",
+        "blocked_object": "batch_adapter",
+        "minimum_gap_m": null,
+        "gap_status": "not_measured"
+      }
+    ],
+    "progress": null,
+    "model_group_N": 0,
+    "models": [],
+    "first30_completed": false,
+    "mission_analysis": null,
+    "camera_demand_parity": []
+  },
+  {
+    "name": "n16-r1b",
+    "status": "HOST_ERROR",
+    "source_sha": "889929443d5dc177f3cad97cb12d3bf83fc7d432",
+    "physics_host": {
+      "provider": "gcp",
+      "project_id": "ugrp-sim-b-1014",
+      "instance": "ugrp-act-l4-gcp2",
+      "machine_type": "g2-standard-8",
+      "zone": "asia-northeast3-a",
+      "cpu_count": 8,
+      "schema": "ugrp.grasp_act.host.v1"
+    },
+    "composition": {
+      "reloc20_default_progress_off": {
+        "worlds": 11,
+        "unique_initial_cases": 11,
+        "replicas": 0
+      },
+      "reloc21_removal_diagnostic_only": {
+        "worlds": 5,
+        "unique_initial_cases": 5,
+        "replicas": 0
+      }
+    },
+    "raw": "/home/ugrp/ugrp-sim/runs/warp7/n16-r1b",
+    "verified_files": 13,
+    "hash_mismatches": [],
+    "source_manifest_sha256": "b50f12087b14f57ae525f9c0583daf98a31b03c6dbe1277f55c67509255d904f",
+    "gate_stages": [
+      {
+        "stage": "requested",
+        "cumulative_pass_n": 16,
+        "rejected_n": 0
+      },
+      {
+        "stage": "setup",
+        "cumulative_pass_n": 0,
+        "rejected_n": 16
+      },
+      {
+        "stage": "completed",
+        "cumulative_pass_n": 0,
+        "rejected_n": 16
+      }
+    ],
+    "rejections": [
+      {
+        "category": "HOST_ERROR",
+        "reason": "ModuleNotFoundError(\"No module named 'markerless_probe'\")",
+        "blocked_object": "batch_adapter",
+        "minimum_gap_m": null,
+        "gap_status": "not_measured"
+      }
+    ],
+    "progress": null,
+    "model_group_N": 0,
+    "models": [],
+    "first30_completed": false,
+    "mission_analysis": null,
+    "camera_demand_parity": []
+  },
+  {
+    "name": "n16-r1c",
+    "status": "HOST_ERROR",
+    "source_sha": "33aebed018c794b1f933ef826ca776ca752f6e1f",
+    "physics_host": {
+      "provider": "gcp",
+      "project_id": "ugrp-sim-b-1014",
+      "instance": "ugrp-act-l4-gcp2",
+      "machine_type": "g2-standard-8",
+      "zone": "asia-northeast3-a",
+      "cpu_count": 8,
+      "schema": "ugrp.grasp_act.host.v1"
+    },
+    "composition": {
+      "reloc20_default_progress_off": {
+        "worlds": 11,
+        "unique_initial_cases": 11,
+        "replicas": 0
+      },
+      "reloc21_removal_diagnostic_only": {
+        "worlds": 5,
+        "unique_initial_cases": 5,
+        "replicas": 0
+      }
+    },
+    "raw": "/home/ugrp/ugrp-sim/runs/warp7/n16-r1c",
+    "verified_files": 37,
+    "hash_mismatches": [],
+    "source_manifest_sha256": "6909e651cb139eb3d9ad7d7186d1057632e2a38b6467ec6068f83ea50d795e7a",
+    "gate_stages": [
+      {
+        "stage": "requested",
+        "cumulative_pass_n": 16,
+        "rejected_n": 0
+      },
+      {
+        "stage": "setup",
+        "cumulative_pass_n": 2,
+        "rejected_n": 14
+      },
+      {
+        "stage": "completed",
+        "cumulative_pass_n": 0,
+        "rejected_n": 16
+      }
+    ],
+    "rejections": [
+      {
+        "category": "HOST_ERROR",
+        "reason": "KeyError('s2_unmapped_blockage_v7')",
+        "blocked_object": "batch_adapter",
+        "minimum_gap_m": null,
+        "gap_status": "not_measured"
+      }
+    ],
+    "progress": null,
+    "model_group_N": 0,
+    "models": [],
+    "first30_completed": false,
+    "mission_analysis": null,
+    "camera_demand_parity": []
+  },
+  {
+    "name": "n16-r1d",
+    "status": "HOST_ERROR",
+    "source_sha": "664d98d4899985159bd66ca423158fa427d374d9",
+    "physics_host": {
+      "provider": "gcp",
+      "project_id": "ugrp-sim-b-1014",
+      "instance": "ugrp-act-l4-gcp2",
+      "machine_type": "g2-standard-8",
+      "zone": "asia-northeast3-a",
+      "cpu_count": 8,
+      "schema": "ugrp.grasp_act.host.v1"
+    },
+    "composition": {
+      "reloc20_default_progress_off": {
+        "worlds": 8,
+        "unique_initial_cases": 6,
+        "replicas": 2
+      },
+      "reloc21_removal_diagnostic_only": {
+        "worlds": 8,
+        "unique_initial_cases": 6,
+        "replicas": 2
+      }
+    },
+    "raw": "/home/ugrp/ugrp-sim/runs/warp7/n16-r1d",
+    "verified_files": 283,
+    "hash_mismatches": [],
+    "source_manifest_sha256": "e91da6ced34fbaea27670611b5bbcb690e44789df01c8e235148c0ae8d90a640",
+    "gate_stages": [
+      {
+        "stage": "requested",
+        "cumulative_pass_n": 16,
+        "rejected_n": 0
+      },
+      {
+        "stage": "setup",
+        "cumulative_pass_n": 16,
+        "rejected_n": 0
+      },
+      {
+        "stage": "completed",
+        "cumulative_pass_n": 0,
+        "rejected_n": 16
+      }
+    ],
+    "rejections": [
+      {
+        "category": "HOST_ERROR",
+        "reason": "ValueError('issued command clock moved backwards')",
+        "blocked_object": "batch_adapter",
+        "minimum_gap_m": null,
+        "gap_status": "not_measured"
+      }
+    ],
+    "progress": null,
+    "model_group_N": 6,
+    "models": [
+      {
+        "worlds": [
+          0,
+          6,
+          12,
+          14
+        ],
+        "model_batch": null,
+        "capacities": {
+          "nconmax": 64,
+          "njmax": 512,
+          "naconmax": 256,
+          "nvmax": 228,
+          "control_steps": 400,
+          "graph_chunk": 16,
+          "graph_repeats": 25
+        },
+        "native_model_adapter": null
+      },
+      {
+        "worlds": [
+          1,
+          7,
+          13,
+          15
+        ],
+        "model_batch": null,
+        "capacities": {
+          "nconmax": 64,
+          "njmax": 512,
+          "naconmax": 256,
+          "nvmax": 222,
+          "control_steps": 400,
+          "graph_chunk": 16,
+          "graph_repeats": 25
+        },
+        "native_model_adapter": null
+      },
+      {
+        "worlds": [
+          3,
+          9
+        ],
+        "model_batch": null,
+        "capacities": {
+          "nconmax": 64,
+          "njmax": 512,
+          "naconmax": 128,
+          "nvmax": 222,
+          "control_steps": 400,
+          "graph_chunk": 16,
+          "graph_repeats": 25
+        },
+        "native_model_adapter": null
+      },
+      {
+        "worlds": [
+          5,
+          11
+        ],
+        "model_batch": null,
+        "capacities": {
+          "nconmax": 64,
+          "njmax": 512,
+          "naconmax": 128,
+          "nvmax": 228,
+          "control_steps": 400,
+          "graph_chunk": 16,
+          "graph_repeats": 25
+        },
+        "native_model_adapter": null
+      },
+      {
+        "worlds": [
+          4,
+          10
+        ],
+        "model_batch": null,
+        "capacities": {
+          "nconmax": 64,
+          "njmax": 512,
+          "naconmax": 128,
+          "nvmax": 228,
+          "control_steps": 400,
+          "graph_chunk": 16,
+          "graph_repeats": 25
+        },
+        "native_model_adapter": null
+      },
+      {
+        "worlds": [
+          2,
+          8
+        ],
+        "model_batch": null,
+        "capacities": {
+          "nconmax": 64,
+          "njmax": 512,
+          "naconmax": 128,
+          "nvmax": 228,
+          "control_steps": 400,
+          "graph_chunk": 16,
+          "graph_repeats": 25
+        },
+        "native_model_adapter": null
+      }
+    ],
+    "first30_completed": false,
+    "mission_analysis": null,
+    "camera_demand_parity": []
+  },
+  {
+    "name": "n16-r1e",
+    "status": "HOST_ERROR",
+    "source_sha": "6a5cceb275d60686c746ab3f10bb69cb6624df53",
+    "physics_host": {
+      "provider": "gcp",
+      "project_id": "ugrp-sim-b-1014",
+      "instance": "ugrp-act-l4-gcp2",
+      "machine_type": "g2-standard-8",
+      "zone": "asia-northeast3-a",
+      "cpu_count": 8,
+      "schema": "ugrp.grasp_act.host.v1"
+    },
+    "composition": {
+      "reloc20_default_progress_off": {
+        "worlds": 8,
+        "unique_initial_cases": 6,
+        "replicas": 2
+      },
+      "reloc21_removal_diagnostic_only": {
+        "worlds": 8,
+        "unique_initial_cases": 6,
+        "replicas": 2
+      }
+    },
+    "raw": "/home/ugrp/ugrp-sim/runs/warp7/n16-r1e",
+    "verified_files": 429,
+    "hash_mismatches": [],
+    "source_manifest_sha256": "f28ef907dfdd022362f0892d4fcbac0e919c8d08b27231bd25bfc56982e86cee",
+    "gate_stages": [
+      {
+        "stage": "requested",
+        "cumulative_pass_n": 16,
+        "rejected_n": 0
+      },
+      {
+        "stage": "setup",
+        "cumulative_pass_n": 16,
+        "rejected_n": 0
+      },
+      {
+        "stage": "completed",
+        "cumulative_pass_n": 0,
+        "rejected_n": 16
+      }
+    ],
+    "rejections": [
+      {
+        "category": "HOST_ERROR",
+        "reason": "KeyboardInterrupt('supervisor stopped this run')",
+        "blocked_object": "batch_adapter",
+        "minimum_gap_m": null,
+        "gap_status": "not_measured"
+      }
+    ],
+    "progress": {
+      "sim_s": 0.4,
+      "active": 16,
+      "completed": 0,
+      "wall_s": 290.36852066600113,
+      "timing": [
+        {
+          "render_and_evaluator_export": 6.826934832999541,
+          "command_and_physics": 31.02304377499604
+        },
+        {
+          "render_and_evaluator_export": 5.825312212997233,
+          "command_and_physics": 29.18221505999827
+        },
+        {
+          "render_and_evaluator_export": 12.127359952995903,
+          "command_and_physics": 42.364669557002344
+        },
+        {
+          "render_and_evaluator_export": 5.8669071509975765,
+          "command_and_physics": 36.77786160100004
+        },
+        {
+          "render_and_evaluator_export": 11.894767337998928,
+          "command_and_physics": 42.75280582600317
+        },
+        {
+          "render_and_evaluator_export": 6.210300048001955,
+          "command_and_physics": 36.89065504600512
+        }
+      ]
+    },
+    "model_group_N": 6,
+    "models": [
+      {
+        "worlds": [
+          4,
+          10
+        ],
+        "model_batch": null,
+        "capacities": {
+          "nconmax": 64,
+          "njmax": 512,
+          "naconmax": 128,
+          "nvmax": 228,
+          "control_steps": 400,
+          "graph_chunk": 16,
+          "graph_repeats": 25
+        },
+        "native_model_adapter": null
+      },
+      {
+        "worlds": [
+          3,
+          9
+        ],
+        "model_batch": null,
+        "capacities": {
+          "nconmax": 64,
+          "njmax": 512,
+          "naconmax": 128,
+          "nvmax": 222,
+          "control_steps": 400,
+          "graph_chunk": 16,
+          "graph_repeats": 25
+        },
+        "native_model_adapter": null
+      },
+      {
+        "worlds": [
+          0,
+          6,
+          12,
+          14
+        ],
+        "model_batch": null,
+        "capacities": {
+          "nconmax": 64,
+          "njmax": 512,
+          "naconmax": 256,
+          "nvmax": 228,
+          "control_steps": 400,
+          "graph_chunk": 16,
+          "graph_repeats": 25
+        },
+        "native_model_adapter": null
+      },
+      {
+        "worlds": [
+          5,
+          11
+        ],
+        "model_batch": null,
+        "capacities": {
+          "nconmax": 64,
+          "njmax": 512,
+          "naconmax": 128,
+          "nvmax": 228,
+          "control_steps": 400,
+          "graph_chunk": 16,
+          "graph_repeats": 25
+        },
+        "native_model_adapter": null
+      },
+      {
+        "worlds": [
+          1,
+          7,
+          13,
+          15
+        ],
+        "model_batch": null,
+        "capacities": {
+          "nconmax": 64,
+          "njmax": 512,
+          "naconmax": 256,
+          "nvmax": 222,
+          "control_steps": 400,
+          "graph_chunk": 16,
+          "graph_repeats": 25
+        },
+        "native_model_adapter": null
+      },
+      {
+        "worlds": [
+          2,
+          8
+        ],
+        "model_batch": null,
+        "capacities": {
+          "nconmax": 64,
+          "njmax": 512,
+          "naconmax": 128,
+          "nvmax": 228,
+          "control_steps": 400,
+          "graph_chunk": 16,
+          "graph_repeats": 25
+        },
+        "native_model_adapter": null
+      }
+    ],
+    "first30_completed": false,
+    "mission_analysis": {
+      "status": "NOT_READY",
+      "source_sha": "6a5cceb275d60686c746ab3f10bb69cb6624df53",
+      "physics_host": {
+        "provider": "gcp",
+        "project_id": "ugrp-sim-b-1014",
+        "instance": "ugrp-act-l4-gcp2",
+        "machine_type": "g2-standard-8",
+        "zone": "asia-northeast3-a",
+        "cpu_count": 8,
+        "schema": "ugrp.grasp_act.host.v1"
+      },
+      "analysis_host": "ugrp-sim-gcp2.asia-northeast3-a.c.ugrp-sim-b-1014.internal",
+      "pool_with_cpu": false,
+      "arms": {
+        "reloc20_default_progress_off": {
+          "attempted": 6,
+          "eligible": 0,
+          "HOST_ERROR": 6,
+          "cap_end": 0,
+          "place": 0,
+          "complete": 0
+        },
+        "reloc21_removal_diagnostic_only": {
+          "attempted": 6,
+          "eligible": 0,
+          "HOST_ERROR": 6,
+          "cap_end": 0,
+          "place": 0,
+          "complete": 0
+        }
+      },
+      "replica_worlds": 4,
+      "verified_files": 429,
+      "hash_mismatches": [],
+      "batch_status": "HOST_ERROR",
+      "runs_file": "/home/ugrp/ugrp-sim/runs/warp7/n16-r1e-analysis/runs.json",
+      "scorer_sha256": "f379d04311732a2a25b4c4d5e872fe7537fc04a2de230b65465b69da42220817",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp7/n16-r1e",
+      "rejection_table": "/home/ugrp/ugrp-sim/runs/warp7/n16-r1e-analysis/rejection-table.json"
+    },
+    "camera_demand_parity": []
+  },
+  {
+    "name": "n16-r2",
+    "status": "HOST_ERROR",
+    "source_sha": "8cd3316f76344d1507547b78440dd4d8b671eacd",
+    "physics_host": {
+      "provider": "gcp",
+      "project_id": "ugrp-sim-b-1014",
+      "instance": "ugrp-act-l4-gcp2",
+      "machine_type": "g2-standard-8",
+      "zone": "asia-northeast3-a",
+      "cpu_count": 8,
+      "schema": "ugrp.grasp_act.host.v1"
+    },
+    "composition": {
+      "reloc20_default_progress_off": {
+        "worlds": 8,
+        "unique_initial_cases": 6,
+        "replicas": 2
+      },
+      "reloc21_removal_diagnostic_only": {
+        "worlds": 8,
+        "unique_initial_cases": 6,
+        "replicas": 2
+      }
+    },
+    "raw": "/home/ugrp/ugrp-sim/runs/warp7/n16-r2",
+    "verified_files": 322,
+    "hash_mismatches": [],
+    "source_manifest_sha256": "1b9630089526795fc4c8bda44ecf6f1627be0e9ae846f834a1a1f84f48262ef0",
+    "gate_stages": [
+      {
+        "stage": "requested",
+        "cumulative_pass_n": 16,
+        "rejected_n": 0
+      },
+      {
+        "stage": "setup",
+        "cumulative_pass_n": 16,
+        "rejected_n": 0
+      },
+      {
+        "stage": "completed",
+        "cumulative_pass_n": 0,
+        "rejected_n": 16
+      }
+    ],
+    "rejections": [
+      {
+        "category": "HOST_ERROR",
+        "reason": "KeyError((0, 'cctv_top'))",
+        "blocked_object": "batch_adapter",
+        "minimum_gap_m": null,
+        "gap_status": "not_measured"
+      }
+    ],
+    "progress": {
+      "sim_s": 0.30000000000000004,
+      "active": 16,
+      "completed": 0,
+      "wall_s": 177.536613527,
+      "timing": [
+        {
+          "render_and_evaluator_export": 9.376869665999891,
+          "command_and_physics": 29.71758222799997
+        },
+        {
+          "render_and_evaluator_export": 4.578363871999954,
+          "command_and_physics": 25.80531754200001
+        },
+        {
+          "render_and_evaluator_export": 4.109297204000086,
+          "command_and_physics": 25.722807488000058
+        },
+        {
+          "render_and_evaluator_export": 4.082047710999973,
+          "command_and_physics": 25.78636570099991
+        },
+        {
+          "render_and_evaluator_export": 3.868334040999912,
+          "command_and_physics": 26.179406872000072
+        },
+        {
+          "render_and_evaluator_export": 6.895948213999986,
+          "command_and_physics": 29.16834323599994
+        }
+      ]
+    },
+    "model_group_N": 6,
+    "models": [
+      {
+        "worlds": [
+          1,
+          7,
+          13,
+          15
+        ],
+        "model_batch": null,
+        "capacities": {
+          "nconmax": 32,
+          "njmax": 256,
+          "naconmax": 128,
+          "nvmax": 64,
+          "control_steps": 400,
+          "graph_chunk": 16,
+          "graph_repeats": 25
+        },
+        "native_model_adapter": null
+      },
+      {
+        "worlds": [
+          2,
+          8
+        ],
+        "model_batch": null,
+        "capacities": {
+          "nconmax": 32,
+          "njmax": 256,
+          "naconmax": 64,
+          "nvmax": 64,
+          "control_steps": 400,
+          "graph_chunk": 16,
+          "graph_repeats": 25
+        },
+        "native_model_adapter": null
+      },
+      {
+        "worlds": [
+          5,
+          11
+        ],
+        "model_batch": null,
+        "capacities": {
+          "nconmax": 32,
+          "njmax": 256,
+          "naconmax": 64,
+          "nvmax": 64,
+          "control_steps": 400,
+          "graph_chunk": 16,
+          "graph_repeats": 25
+        },
+        "native_model_adapter": null
+      },
+      {
+        "worlds": [
+          4,
+          10
+        ],
+        "model_batch": null,
+        "capacities": {
+          "nconmax": 32,
+          "njmax": 256,
+          "naconmax": 64,
+          "nvmax": 64,
+          "control_steps": 400,
+          "graph_chunk": 16,
+          "graph_repeats": 25
+        },
+        "native_model_adapter": null
+      },
+      {
+        "worlds": [
+          3,
+          9
+        ],
+        "model_batch": null,
+        "capacities": {
+          "nconmax": 32,
+          "njmax": 256,
+          "naconmax": 64,
+          "nvmax": 64,
+          "control_steps": 400,
+          "graph_chunk": 16,
+          "graph_repeats": 25
+        },
+        "native_model_adapter": null
+      },
+      {
+        "worlds": [
+          0,
+          6,
+          12,
+          14
+        ],
+        "model_batch": null,
+        "capacities": {
+          "nconmax": 32,
+          "njmax": 256,
+          "naconmax": 128,
+          "nvmax": 64,
+          "control_steps": 400,
+          "graph_chunk": 16,
+          "graph_repeats": 25
+        },
+        "native_model_adapter": null
+      }
+    ],
+    "first30_completed": false,
+    "mission_analysis": {
+      "status": "NOT_READY",
+      "source_sha": "8cd3316f76344d1507547b78440dd4d8b671eacd",
+      "physics_host": {
+        "provider": "gcp",
+        "project_id": "ugrp-sim-b-1014",
+        "instance": "ugrp-act-l4-gcp2",
+        "machine_type": "g2-standard-8",
+        "zone": "asia-northeast3-a",
+        "cpu_count": 8,
+        "schema": "ugrp.grasp_act.host.v1"
+      },
+      "analysis_host": "ugrp-sim-gcp2.asia-northeast3-a.c.ugrp-sim-b-1014.internal",
+      "pool_with_cpu": false,
+      "arms": {
+        "reloc20_default_progress_off": {
+          "attempted": 6,
+          "eligible": 0,
+          "HOST_ERROR": 6,
+          "cap_end": 0,
+          "place": 0,
+          "complete": 0
+        },
+        "reloc21_removal_diagnostic_only": {
+          "attempted": 6,
+          "eligible": 0,
+          "HOST_ERROR": 6,
+          "cap_end": 0,
+          "place": 0,
+          "complete": 0
+        }
+      },
+      "replica_worlds": 4,
+      "verified_files": 322,
+      "hash_mismatches": [],
+      "batch_status": "HOST_ERROR",
+      "runs_file": "/home/ugrp/ugrp-sim/runs/warp7/n16-r2-analysis/runs.json",
+      "scorer_sha256": "f379d04311732a2a25b4c4d5e872fe7537fc04a2de230b65465b69da42220817",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp7/n16-r2",
+      "rejection_table": "/home/ugrp/ugrp-sim/runs/warp7/n16-r2-analysis/rejection-table.json"
+    },
+    "camera_demand_parity": [
+      {
+        "path": "/home/ugrp/ugrp-sim/runs/warp7/n16-r2/groups/3040224d88d54e9b3bb71b73f4e17d9e31bb3080471d04dcdb3937cd6a7aa6e7/camera-demand-parity.json",
+        "sha256": "4f3a631583e7044a2061dfaca3a6da118e3fe3ee4cbc5427f05d2725da34cdec",
+        "rows": [
+          {
+            "tick": 0,
+            "own_command_changed": false,
+            "checks": [
+              {
+                "robot": "r1",
+                "exact": true,
+                "max_delta": 0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/runs/warp7/n16-r2/groups/ab1bc8698667065e66019eecd72b7dd6b581c053efb102e5be5b5c65d061cfd9/camera-demand-parity.json",
+        "sha256": "4f3a631583e7044a2061dfaca3a6da118e3fe3ee4cbc5427f05d2725da34cdec",
+        "rows": [
+          {
+            "tick": 0,
+            "own_command_changed": false,
+            "checks": [
+              {
+                "robot": "r1",
+                "exact": true,
+                "max_delta": 0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/runs/warp7/n16-r2/groups/293e60b219f78815460abf5af4a0d74cd110edb5156f26f71de868104bcadfb3/camera-demand-parity.json",
+        "sha256": "4f3a631583e7044a2061dfaca3a6da118e3fe3ee4cbc5427f05d2725da34cdec",
+        "rows": [
+          {
+            "tick": 0,
+            "own_command_changed": false,
+            "checks": [
+              {
+                "robot": "r1",
+                "exact": true,
+                "max_delta": 0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/runs/warp7/n16-r2/groups/91ae8ffb96cdce90f820e27bee21d7aad935bafdab19906a896e9af66c612478/camera-demand-parity.json",
+        "sha256": "4f3a631583e7044a2061dfaca3a6da118e3fe3ee4cbc5427f05d2725da34cdec",
+        "rows": [
+          {
+            "tick": 0,
+            "own_command_changed": false,
+            "checks": [
+              {
+                "robot": "r1",
+                "exact": true,
+                "max_delta": 0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/runs/warp7/n16-r2/groups/1275b90aa31e88a419c7286f390624aa2c2c65c3126b3e69fb211914b18c1e5d/camera-demand-parity.json",
+        "sha256": "4f3a631583e7044a2061dfaca3a6da118e3fe3ee4cbc5427f05d2725da34cdec",
+        "rows": [
+          {
+            "tick": 0,
+            "own_command_changed": false,
+            "checks": [
+              {
+                "robot": "r1",
+                "exact": true,
+                "max_delta": 0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/runs/warp7/n16-r2/groups/131de9c1907e59ff6fefc40922f60fe7fdfc1e8e18dd2f54d774d148de702ba4/camera-demand-parity.json",
+        "sha256": "4f3a631583e7044a2061dfaca3a6da118e3fe3ee4cbc5427f05d2725da34cdec",
+        "rows": [
+          {
+            "tick": 0,
+            "own_command_changed": false,
+            "checks": [
+              {
+                "robot": "r1",
+                "exact": true,
+                "max_delta": 0
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "n16-r3",
+    "status": "HOST_ERROR",
+    "source_sha": "5974a181a2cec9731339a6ce3aadc0464b8dddcf",
+    "physics_host": {
+      "provider": "gcp",
+      "project_id": "ugrp-sim-b-1014",
+      "instance": "ugrp-act-l4-gcp2",
+      "machine_type": "g2-standard-8",
+      "zone": "asia-northeast3-a",
+      "cpu_count": 8,
+      "schema": "ugrp.grasp_act.host.v1"
+    },
+    "composition": {
+      "reloc20_default_progress_off": {
+        "worlds": 8,
+        "unique_initial_cases": 6,
+        "replicas": 2
+      },
+      "reloc21_removal_diagnostic_only": {
+        "worlds": 8,
+        "unique_initial_cases": 6,
+        "replicas": 2
+      }
+    },
+    "raw": "/home/ugrp/ugrp-sim/runs/warp7/n16-r3",
+    "verified_files": 431,
+    "hash_mismatches": [],
+    "source_manifest_sha256": "d381b265ccfd6d34a3051a5e7f31f63e58d6f1af4b65c138d1b5cf13a1d2ed9b",
+    "gate_stages": [
+      {
+        "stage": "requested",
+        "cumulative_pass_n": 16,
+        "rejected_n": 0
+      },
+      {
+        "stage": "setup",
+        "cumulative_pass_n": 16,
+        "rejected_n": 0
+      },
+      {
+        "stage": "completed",
+        "cumulative_pass_n": 0,
+        "rejected_n": 16
+      }
+    ],
+    "rejections": [
+      {
+        "category": "HOST_ERROR",
+        "reason": "KeyboardInterrupt('supervisor stopped this run')",
+        "blocked_object": "batch_adapter",
+        "minimum_gap_m": null,
+        "gap_status": "not_measured"
+      }
+    ],
+    "progress": {
+      "sim_s": 0.4,
+      "active": 16,
+      "completed": 0,
+      "wall_s": 145.09924463799962,
+      "timing": [
+        {
+          "render_and_evaluator_export": 13.478644865000206,
+          "command_and_physics": 44.786363300000176
+        },
+        {
+          "render_and_evaluator_export": 21.647514544000387,
+          "command_and_physics": 53.00538973499988
+        }
+      ]
+    },
+    "model_group_N": 2,
+    "models": [
+      {
+        "worlds": [
+          1,
+          3,
+          7,
+          9,
+          13,
+          15
+        ],
+        "model_batch": {
+          "mode": "per_world_model_v1",
+          "varying_fields": [
+            "body_inertia",
+            "body_invweight0",
+            "body_mass",
+            "body_pos",
+            "body_subtreemass",
+            "cam_poscom0",
+            "dof_invweight0",
+            "eq_data",
+            "geom_aabb",
+            "geom_rbound",
+            "geom_size",
+            "light_poscom0",
+            "qpos0",
+            "qpos_spring",
+            "stat.meaninertia"
+          ],
+          "worlds": 6,
+          "all_unsupported_arrays_exact": true,
+          "world_array_sha256": {
+            "stat.meaninertia": "867be8622d6dec673dd7ca0bf410b354e4f8a2abf101297e92cdc8e835255c04",
+            "qpos0": "a69ecd7bda946ae09c8f1d089c13600b13b4905e0a007884dd246ec7310b4caa",
+            "qpos_spring": "a69ecd7bda946ae09c8f1d089c13600b13b4905e0a007884dd246ec7310b4caa",
+            "body_pos": "b0c7ecab910ebb7411040644be15e44e5196aa7cf206622850b2822a4c0cbbdb",
+            "body_mass": "ce6974915e9d78d220cd8e41df7ef8298432f9c91466ab2b5154818d0b8a7396",
+            "body_subtreemass": "b0a109323c95b88897486ba31bf1cd447a46073fbf87e9d40abebbdb7ee7d669",
+            "body_inertia": "c751289bd7c57048439e5a55a4a4b31e9f33f2f11d0b1846d29825c9ae3a6155",
+            "body_invweight0": "9d5c0982d2ab9845bf2725afc1bd09e80a03034eeb088c53982334b473d0a0cc",
+            "dof_invweight0": "f1d0c65087185737547c318036bebe211bb1ba752e2f30114af95abccbf64b66",
+            "geom_size": "0a0ec7da022a24bb5b6137b8463dc2d6c4b56c266186367edb63f23fb0105e63",
+            "geom_aabb": "a75c2516122905a97dbbed87397deb8d64d74350393fa1c374e45cd97d7851f9",
+            "geom_rbound": "b2d1f75c7f6b3d57fde0d79e78e40ad8a7f5d2e273277e4cf6cc0074783f15fa",
+            "cam_poscom0": "7df8a0ccf897341c668b30e90de507ff6998131a01211a14efdaab1e28774e77",
+            "light_poscom0": "d6bd3c78f723b38feb634fe885a0618388cdef0e5173c63420c3c0334fce49d4",
+            "eq_data": "f4c22b40722e611b14bebd0d5cc5ea3664c5a2513687aa0a0cca5a45722d995a"
+          },
+          "basis": "pinned MJWarp io.put_model batchable * fields; no parameter approximation",
+          "world_sleep": {
+            "upstream_sha256": "5b50688a8949afa30df1ae6ce2195132fdf50cf6ed821746badd8e06b92d91b0",
+            "generated_sha256": "9285897c33af8c6272a704f956425349162125552e290c793d6349cf7e2e25b3",
+            "before": "weight = dof_length[dof_idx]",
+            "after": "weight = dof_length[worldid * 222 + dof_idx]",
+            "scope": "one world-specific exact array lookup; all sleep/wake predicates unchanged",
+            "length_sha256": "81e8a348a0fd74050aed4ea49b2fcee17108553e7d3c41ee057b359974e2de8c"
+          }
+        },
+        "capacities": {
+          "nconmax": 32,
+          "njmax": 256,
+          "naconmax": 192,
+          "nvmax": 64,
+          "control_steps": 400,
+          "graph_chunk": 16,
+          "graph_repeats": 25
+        },
+        "native_model_adapter": {
+          "edits": {
+            "native_branch": 1,
+            "combine": 1
+          },
+          "source_sha256": "89f1e1a6eb3fc6a4702f88571a500e1746288e142d0b634819cbf59f824a7f8f",
+          "ast_sha256": "1cc0bd37832a974ce864ee9d3d30c3e81e69826736a0b5b11ebd9d0d4c7688b6",
+          "basis": "pinned MJWarp dataclass batchable * fields; exact unsupported arrays/scalars, no numeric tolerance"
+        }
+      },
+      {
+        "worlds": [
+          0,
+          2,
+          4,
+          5,
+          6,
+          8,
+          10,
+          11,
+          12,
+          14
+        ],
+        "model_batch": {
+          "mode": "per_world_model_v1",
+          "varying_fields": [
+            "body_inertia",
+            "body_invweight0",
+            "body_mass",
+            "body_pos",
+            "body_subtreemass",
+            "cam_poscom0",
+            "dof_invweight0",
+            "eq_data",
+            "geom_aabb",
+            "geom_rbound",
+            "geom_size",
+            "light_poscom0",
+            "qpos0",
+            "qpos_spring",
+            "stat.meaninertia"
+          ],
+          "worlds": 10,
+          "all_unsupported_arrays_exact": true,
+          "world_array_sha256": {
+            "stat.meaninertia": "b90d5755fc237dddea71c56d25690c03dc31e29f3e730d0f2b314033088e59b9",
+            "qpos0": "c1cae7f2af4886c02244ea367a082a45f8d69e4e7f67b80fe891fbd4a736ebef",
+            "qpos_spring": "c1cae7f2af4886c02244ea367a082a45f8d69e4e7f67b80fe891fbd4a736ebef",
+            "body_pos": "b840aecffc27f2c01d3c2de7e7b62ae97587ecd680013a7b9088d8a07d3ea733",
+            "body_mass": "a1445fa3b0fa40563b460bd559ea893699d2375dd920289ab1029a1557ed118d",
+            "body_subtreemass": "29f735f8467352135bf5e90b7e642e8b0f6780db25d126e7a0f8db2b651cad44",
+            "body_inertia": "b42824f4d4c4e95c0df2fc09f86c7ed0795a4aa7732cbb4f181b1628a16520dc",
+            "body_invweight0": "522b60570733bf41b6cfe829ee78cc24c3d18860789706388311f95506c6db8e",
+            "dof_invweight0": "3425c3845163f96e47626b8eb7db88618e3dbd022549efd8cef42a50c1444145",
+            "geom_size": "7b87b3c88c7d6e1417d2fc1fce09761ba692b6dab124226cea0b0554c830e67e",
+            "geom_aabb": "a8f7e727d3320839a6dc696bec17ecd3b3a255b54a94d8d6e45ccc3cf47b6cd3",
+            "geom_rbound": "4eab23e1ebd29e4a12a3932405e23cda618fd4de7c0893069b10258205bbfea8",
+            "cam_poscom0": "8be4c9769e4f9f37f1f9f1e7a103942a8a886d09b7e7d7303b7085ae189f2951",
+            "light_poscom0": "12dbd8f41e0da65b81c2cb5216763520ae7ba7c465d53e686bff726a3b824b5c",
+            "eq_data": "69ff0a4407062cebf5a8fd53eeb29ae759df1c55b03a3cb1a1a38a4ea67fc40c"
+          },
+          "basis": "pinned MJWarp io.put_model batchable * fields; no parameter approximation",
+          "world_sleep": {
+            "upstream_sha256": "5b50688a8949afa30df1ae6ce2195132fdf50cf6ed821746badd8e06b92d91b0",
+            "generated_sha256": "3eb0c04aae624a2b726df0f28ffad2a93be45c0c0e9c130a0800f420c972fa5c",
+            "before": "weight = dof_length[dof_idx]",
+            "after": "weight = dof_length[worldid * 228 + dof_idx]",
+            "scope": "one world-specific exact array lookup; all sleep/wake predicates unchanged",
+            "length_sha256": "80c44d768e614743994f01ec561a439565d0619b45e9e6cae0a6582717d0adf0"
+          }
+        },
+        "capacities": {
+          "nconmax": 32,
+          "njmax": 256,
+          "naconmax": 320,
+          "nvmax": 64,
+          "control_steps": 400,
+          "graph_chunk": 16,
+          "graph_repeats": 25
+        },
+        "native_model_adapter": {
+          "edits": {
+            "native_branch": 1,
+            "combine": 1
+          },
+          "source_sha256": "89f1e1a6eb3fc6a4702f88571a500e1746288e142d0b634819cbf59f824a7f8f",
+          "ast_sha256": "1cc0bd37832a974ce864ee9d3d30c3e81e69826736a0b5b11ebd9d0d4c7688b6",
+          "basis": "pinned MJWarp dataclass batchable * fields; exact unsupported arrays/scalars, no numeric tolerance"
+        }
+      }
+    ],
+    "first30_completed": false,
+    "mission_analysis": {
+      "status": "NOT_READY",
+      "source_sha": "5974a181a2cec9731339a6ce3aadc0464b8dddcf",
+      "physics_host": {
+        "provider": "gcp",
+        "project_id": "ugrp-sim-b-1014",
+        "instance": "ugrp-act-l4-gcp2",
+        "machine_type": "g2-standard-8",
+        "zone": "asia-northeast3-a",
+        "cpu_count": 8,
+        "schema": "ugrp.grasp_act.host.v1"
+      },
+      "analysis_host": "ugrp-sim-gcp2.asia-northeast3-a.c.ugrp-sim-b-1014.internal",
+      "pool_with_cpu": false,
+      "arms": {
+        "reloc20_default_progress_off": {
+          "attempted": 6,
+          "eligible": 0,
+          "HOST_ERROR": 6,
+          "cap_end": 0,
+          "place": 0,
+          "complete": 0
+        },
+        "reloc21_removal_diagnostic_only": {
+          "attempted": 6,
+          "eligible": 0,
+          "HOST_ERROR": 6,
+          "cap_end": 0,
+          "place": 0,
+          "complete": 0
+        }
+      },
+      "replica_worlds": 4,
+      "verified_files": 431,
+      "hash_mismatches": [],
+      "batch_status": "HOST_ERROR",
+      "runs_file": "/home/ugrp/ugrp-sim/runs/warp7/n16-r3-analysis/runs.json",
+      "scorer_sha256": "f379d04311732a2a25b4c4d5e872fe7537fc04a2de230b65465b69da42220817",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp7/n16-r3",
+      "rejection_table": "/home/ugrp/ugrp-sim/runs/warp7/n16-r3-analysis/rejection-table.json"
+    },
+    "camera_demand_parity": [
+      {
+        "path": "/home/ugrp/ugrp-sim/runs/warp7/n16-r3/groups/52a5c90a90fc5eb4561af2a319cb482d7b8e76e0b40ee7a87b607a3ccf895502/camera-demand-parity.json",
+        "sha256": "4f3a631583e7044a2061dfaca3a6da118e3fe3ee4cbc5427f05d2725da34cdec",
+        "rows": [
+          {
+            "tick": 0,
+            "own_command_changed": false,
+            "checks": [
+              {
+                "robot": "r1",
+                "exact": true,
+                "max_delta": 0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/runs/warp7/n16-r3/groups/4bbf1e7747f8ae014afbb97763e6875f6b7999cd3b5baa65489d4bacdffbf96c/camera-demand-parity.json",
+        "sha256": "4f3a631583e7044a2061dfaca3a6da118e3fe3ee4cbc5427f05d2725da34cdec",
+        "rows": [
+          {
+            "tick": 0,
+            "own_command_changed": false,
+            "checks": [
+              {
+                "robot": "r1",
+                "exact": true,
+                "max_delta": 0
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

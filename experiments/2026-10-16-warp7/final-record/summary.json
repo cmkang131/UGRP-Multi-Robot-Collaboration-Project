@@ -1,0 +1,33 @@
+{
+  "status": "NOT_READY",
+  "stop_reason": "Repeated throughput symptom in n16-r1e/r2/r3; third round stopped before first30. R2 also has the independent cctv_top cache defect.",
+  "attempt_N": 7,
+  "verified_files": 1528,
+  "hash_mismatches": 0,
+  "physics_backend": "mjwarp_batch_v1",
+  "analysis_host": "ugrp-sim-gcp2.asia-northeast3-a.c.ugrp-sim-b-1014.internal",
+  "pool_with_cpu": false,
+  "elapsed_scope": "progress.wall_s excludes setup; initial render overhead is included only in per-group timing; none are first30 measurements",
+  "throughput": [
+    {
+      "name": "n16-r1e",
+      "sim_s": 0.4,
+      "wall_s": 290.36852066600113
+    },
+    {
+      "name": "n16-r2",
+      "sim_s": 0.30000000000000004,
+      "wall_s": 177.536613527
+    },
+    {
+      "name": "n16-r3",
+      "sim_s": 0.4,
+      "wall_s": 145.09924463799962
+    }
+  ],
+  "LLM_model_calls": 0,
+  "LLM_first30": null,
+  "rejection_table": "/home/ugrp/ugrp-sim/runs/warp7/final-record-v2/rejection-table.json",
+  "raw": "/home/ugrp/ugrp-sim/runs/warp7",
+  "collector_sha256": "a6ee7469fcf7371890f64dbbf811454621460491c6374a5c4e7c57768529eaac"
+}

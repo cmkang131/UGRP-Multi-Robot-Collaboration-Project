@@ -1,5 +1,7 @@
 # warp5 — NOT_READY
 
+**아래는 warp5 당시 기록이다.** 2026-10-16 후속 사용자 지시로 CPU 색 결과 동일성은 관문에서 폐기했다. 최신 MJWarp 자체 영상 평가·N16 진단과 미완료 범위는 [warp7 기록](../2026-10-16-warp7/README.md)에 있다. 가격 경보도 PR #553 CoreWeave 전환으로 해제됐다. 아래의 이전 FAIL·디스크·가격 차단 사유를 현재 상태로 해석하지 않는다.
+
 [Draft PR #550](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/550). `claude/warp5`는 reloc20 `2f4f469e` 위 공통 warp-act `e97464a3`를 병합했다. 공통 `warp_act_backend.py/core.py`는 수정하지 않았다. **렌더 기초 지표는 회복했지만 색 검출 관문이 실패했고, N16 운반·place·E2E 물리 이식은 미완료**다.
 
 ## 검증 결과

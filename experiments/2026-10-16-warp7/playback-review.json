@@ -1,0 +1,137 @@
+{
+  "reviewed_utc": "2026-10-16T06:55:49.205436+00:00",
+  "runs": [
+    {
+      "name": "n16-r1e-world-000",
+      "local": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/warp7/n16-r1e-world-000",
+      "manifest": {
+        "run": "world-000",
+        "original_playback_manifest": "/home/ugrp/ugrp-sim/runs/warp7/n16-r1e/world-000/raw/playback/manifest.json",
+        "source_frame_N": 1,
+        "whole_sim_range": [
+          1.5000000000000178,
+          1.5000000000000178
+        ],
+        "whole_hz": 2,
+        "video_sim_speed": 4,
+        "video_interpolated": false,
+        "last10_source_hz": 10,
+        "last10_camera": "r1/robot_cam",
+        "last10_range": [
+          1.3000000000000178,
+          1.6000000000000179
+        ],
+        "probe": {
+          "programs": [],
+          "streams": [
+            {
+              "width": 640,
+              "height": 120,
+              "r_frame_rate": "8/1"
+            }
+          ],
+          "format": {
+            "duration": "0.125000",
+            "size": "3832"
+          }
+        },
+        "files": {
+          "whole-01.jpg": {
+            "bytes": 37627,
+            "sha256": "2b4453d1874bd81c9d22addc4f84f9dce009ee82ca593d885763c68593742c3f"
+          },
+          "last10-10hz-01.jpg": {
+            "bytes": 13898,
+            "sha256": "608b4e04caf9d834e0f2a8d45ad117a70654664cd6f81ed4e1ab28bbcf72e6c2"
+          },
+          "playback-4x.mp4": {
+            "bytes": 3832,
+            "sha256": "be741baea5568408ceefee40dfc5af2f4963b617efb73983e95b02519a4da3e5"
+          }
+        },
+        "scope": "ffprobe verified; direct filmstrip review is separately documented"
+      },
+      "directly_viewed": [
+        "last10-10hz-01.jpg"
+      ],
+      "timeline": [
+        {
+          "source_absolute_sim_s": [
+            1.3000000000000178,
+            1.6000000000000179
+          ],
+          "visible": "r1 ground texture and purple wall edge stay in nearly the same direction across four10Hz exposures; no transport interval reached"
+        }
+      ],
+      "verification": "all6 listed file hashes across both reviews match; videos ffprobe only, no GUI"
+    },
+    {
+      "name": "n16-r3-world-000",
+      "local": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/warp7/n16-r3-world-000",
+      "manifest": {
+        "run": "world-000",
+        "original_playback_manifest": "/home/ugrp/ugrp-sim/runs/warp7/n16-r3/world-000/raw/playback/manifest.json",
+        "source_frame_N": 1,
+        "whole_sim_range": [
+          2.0000000000001514,
+          2.0000000000001514
+        ],
+        "whole_hz": 2,
+        "video_sim_speed": 4,
+        "video_interpolated": false,
+        "last10_source_hz": 10,
+        "last10_camera": "r1/robot_cam",
+        "last10_range": [
+          1.7000000000001514,
+          2.0000000000001514
+        ],
+        "probe": {
+          "programs": [],
+          "streams": [
+            {
+              "width": 640,
+              "height": 120,
+              "r_frame_rate": "8/1"
+            }
+          ],
+          "format": {
+            "duration": "0.125000",
+            "size": "3842"
+          }
+        },
+        "files": {
+          "whole-01.jpg": {
+            "bytes": 37640,
+            "sha256": "a0d564240194dc32edc2a982cacbd0e7e9fd6dda01b32d731e1729cd375b3000"
+          },
+          "last10-10hz-01.jpg": {
+            "bytes": 13876,
+            "sha256": "bc86c89069ba9dd94a5df62e854909356c1972ed74a61b099bc420871a9e29b3"
+          },
+          "playback-4x.mp4": {
+            "bytes": 3842,
+            "sha256": "a94f27a6af1a9d7cde5009a0fb51a555a5dacf9fc7346d5206ab55f32ab6c4af"
+          }
+        },
+        "scope": "ffprobe verified; direct filmstrip review is separately documented"
+      },
+      "directly_viewed": [
+        "last10-10hz-01.jpg",
+        "whole-01.jpg"
+      ],
+      "timeline": [
+        {
+          "source_absolute_sim_s": [
+            1.7000000000001514,
+            2.0000000000001514
+          ],
+          "visible": "r1 ground texture and purple wall edge stay in nearly the same direction across four10Hz exposures; no transport interval reached"
+        }
+      ],
+      "verification": "all6 listed file hashes across both reviews match; videos ffprobe only, no GUI"
+    }
+  ],
+  "success_comparison_complete": false,
+  "reason": "No successful MJWarp transport run in this cohort.",
+  "limitations": "Only0.3SIM-second rings and a single2Hz overview per run. Cannot diagnose transport oscillation or review a10-second history that did not occur."
+}

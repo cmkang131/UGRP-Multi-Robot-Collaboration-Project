@@ -12,6 +12,15 @@ ROOT=Path(__file__).resolve().parents[1]
 def write(p,value):p.write_text(json.dumps(value,indent=2,allow_nan=False)+'\n')
 
 
+def admit_render_gate(gate,diagnostic):
+    if gate.get('admission_scope')=='static DEV motion diagnosis only' and not diagnostic:
+        raise ValueError('static RGB audit admits explicit motion diagnosis only')
+    measured=gate.get('checks',{})
+    diagnostic_admitted=diagnostic and all(measured.get(k) is True for k in ('semantic_labels_present','hashes_match','no_false_components'))
+    if not gate.get('admitted',False) and not diagnostic_admitted:
+        raise ValueError('MJWarp visual admission missing; control batch withheld')
+
+
 def identity():
     from scripts.grasp_act_host import metadata
     base='http://169.254.169.254/computeMetadata/v1/'
@@ -35,9 +44,7 @@ def run(a):
         # native-image accuracy. Keep incomplete recall NOT_READY; an explicit
         # DEV queue may investigate it only with complete labels/hashes and
         # zero falsely accepted components. Never promote this to E2E-ready.
-        measured=gate.get('checks',{})
-        diagnostic_admitted=diagnostic and all(measured.get(k) is True for k in ('semantic_labels_present','hashes_match','no_false_components'))
-        if not gate.get('admitted',False) and not diagnostic_admitted:raise ValueError('MJWarp visual admission missing; control batch withheld')
+        admit_render_gate(gate,diagnostic)
         if len(q['runs'])<16:raise ValueError('N16 minimum for run-first batch')
     host=identity();a.output.mkdir(parents=True,exist_ok=False)
     for key,value in q.get('environment',{}).items():
@@ -66,7 +73,7 @@ def run(a):
     write(a.output/'queue.json',q)
     report=dict(status='RUNNING',source_sha=sha,host=host,shared_load=True,model_calls=0,
         physics_backend='mjwarp_batch_v1',pool_with_cpu=False,attempted=len(q['runs']),worlds=[],errors=[],
-        diagnostic_only=q.get('diagnostic_only',False),visual_qualified=gate.get('admitted',False) if not a.setup_only else False)
+        diagnostic_only=q.get('diagnostic_only',False),visual_qualified=gate.get('visual_pipeline_qualified',False) if not a.setup_only else False)
     hooks=Batch(host,sha,'mjwarp_batch_v1',a.output)
     hooks.warp5_native_visual_v1=q.get('warp5_native_visual_v1',False)
     hooks.warp5_native_visual_v2=q.get('warp5_native_visual_v2',False)

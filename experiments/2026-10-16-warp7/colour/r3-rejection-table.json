@@ -1,0 +1,62 @@
+{
+  "unit": "frame",
+  "stages": [
+    {
+      "stage": "rendered_labelled",
+      "cumulative_pass_n": 88,
+      "rejected_n": 0
+    },
+    {
+      "stage": "no_false_components",
+      "cumulative_pass_n": 88,
+      "rejected_n": 0
+    }
+  ],
+  "rejection_distribution": [
+    {
+      "category": "box_cyan_miss",
+      "N": 24,
+      "blocked_object": "box_cyan_miss",
+      "minimum_gap_m": null,
+      "gap_status": "image_classification_not_physical_gap"
+    },
+    {
+      "category": "paint_zone_B_miss",
+      "N": 6,
+      "blocked_object": "paint_zone_B_miss",
+      "minimum_gap_m": null,
+      "gap_status": "image_classification_not_physical_gap"
+    },
+    {
+      "category": "box_green_miss",
+      "N": 2,
+      "blocked_object": "box_green_miss",
+      "minimum_gap_m": null,
+      "gap_status": "image_classification_not_physical_gap"
+    },
+    {
+      "category": "box_yellow_miss",
+      "N": 2,
+      "blocked_object": "box_yellow_miss",
+      "minimum_gap_m": null,
+      "gap_status": "image_classification_not_physical_gap"
+    },
+    {
+      "category": "box_red_miss",
+      "N": 2,
+      "blocked_object": "box_red_miss",
+      "minimum_gap_m": null,
+      "gap_status": "image_classification_not_physical_gap"
+    }
+  ],
+  "raw": "/home/ugrp/ugrp-sim/runs/warp7/render-r1",
+  "reproduction": [
+    "python",
+    "-m",
+    "scripts.score_warp7_colours",
+    "--input",
+    "/home/ugrp/ugrp-sim/runs/warp7/render-r1",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/warp7/colour-r3"
+  ]
+}
