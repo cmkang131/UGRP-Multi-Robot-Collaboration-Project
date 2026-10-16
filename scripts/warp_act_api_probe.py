@@ -30,11 +30,30 @@ def main():
         A = Owner(plans, a.out/'A', **options); owners.append(A)
         B = Owner(plans, a.out/'B', **options); owners.append(B)
         np = A.np
+        before_a, before_b = A.integration(), B.integration()
+        report['initial_integration_equal'] = {k: bool(np.array_equal(v, before_b[k])) for k, v in before_a.items()}
+        np.savez_compressed(a.out/'initial-A.npz', **before_a)
+        np.savez_compressed(a.out/'initial-B.npz', **before_b)
+        report['initial_issued'] = [A.previous, B.previous]
+        import dataclasses
+        def arrays(obj, prefix=''):
+            result = {}
+            for field in dataclasses.fields(obj):
+                value = getattr(obj, field.name); name = prefix+field.name
+                if dataclasses.is_dataclass(value): result.update(arrays(value, name+'.'))
+                elif hasattr(value, 'numpy'): result[name] = value.numpy()
+            return result
+        ma, mb = arrays(A.hooks.wm), arrays(B.hooks.wm)
+        report['initial_model_array_differences'] = [k for k, v in ma.items() if not np.array_equal(v, mb[k])]
+        (a.out/'initial-audit.json').write_text(json.dumps(report, indent=2)+'\n')
         def hold(owner, done=None):
             return [dict(command=dict(owner.previous[i], t=owner.origin+owner.tick*.1,
                 wheels=[0.]*4, duration_s=[0.]*4), done=bool(done is not None and i == done)) for i in range(owner.n)]
         for owner in owners: owner.step(hold(owner))
         initial_equal = {k: bool(np.array_equal(v, B.integration()[k])) for k, v in A.integration().items()}
+        report['baseline_next_step_equal'] = initial_equal
+        np.savez_compressed(a.out/'step-A.npz', **A.integration())
+        np.savez_compressed(a.out/'step-B.npz', **B.integration())
         if not all(initial_equal.values()): raise RuntimeError('paired identical baselines differ before reset')
         previous = A.integration(); other_obs = A.read_actor(1)
         fresh = deepcopy(plans[0])
