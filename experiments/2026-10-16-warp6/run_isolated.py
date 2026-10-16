@@ -4,6 +4,7 @@ import datetime
 import hashlib
 import json
 import os
+import signal
 from pathlib import Path
 import subprocess
 
@@ -16,6 +17,9 @@ def write(path, data):
 
 
 def main():
+    # nohup/non-interactive background shells may inherit SIGINT=SIG_IGN.
+    # Restore normal Python interruption before spawning the owned child.
+    signal.signal(signal.SIGINT,signal.default_int_handler)
     p = argparse.ArgumentParser()
     p.add_argument('--source-sha', required=True)
     p.add_argument('--round', required=True)
@@ -67,7 +71,7 @@ def main():
     source_sha=subprocess.check_output(['git','-C',str(src),'rev-parse','HEAD'],text=True).strip()
     with out.with_suffix('.log').open('w') as log:
         child = subprocess.Popen(cmd, cwd=src, env=env, stdin=subprocess.DEVNULL,
-                                 stdout=log, stderr=subprocess.STDOUT)
+                                 stdout=log, stderr=subprocess.STDOUT,start_new_session=True)
         write(ROOT / 'leases/warp6.json', dict(task='warp6', pid=os.getpid(),
               pids=[child.pid], started_at=started.isoformat(),
               expected_end=(started + datetime.timedelta(hours=7)).isoformat(),
