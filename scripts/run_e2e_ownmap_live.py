@@ -78,7 +78,7 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
         source_sha=sha,seed=seed,scenario_id='e2e_one_beam_ownmap',map_id='zone_wide_door_e2e_b80_v1',
         case='pair',check='ownmap-live',host='azure',condition='peer_en',research_result=False,
         route_source='own_map',fixture_restore=False,weld=False,case_cap_s=1800.,wall_cap_s=12600.,
-        initial_health_wall_s=240.,contact_profile='cargo_noslip_v1',
+        initial_health_wall_s=240.,contact_profile='cargo_native_v1',
         pair_drop_guard='contact_com_v1',final_release_guard='supported_phase',
         driver_profile=profile,driver_profile_sha256=digest(load_registry()['driver_profiles'][profile]),
         study_options=dataclasses.asdict(options),

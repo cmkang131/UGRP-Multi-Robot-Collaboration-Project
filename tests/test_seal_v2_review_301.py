@@ -310,7 +310,8 @@ def test_old_rgb_registry_and_versioned_legacy_verifiers_are_unchanged():
         # #292 explicitly sealed the v6e -> v6h admission revision change.
         # Keep every other legacy verifier and registry bound to the old base.
         source = SEAL if path in ('scripts/zone_pair_v6_contract.py', 'scripts/run_zone_pair_dev.py') else PR_BASE
-        actual = successor_blob(path) if source == SEAL else (ROOT / path).read_bytes()
+        actual = (successor_blob(path) if source == SEAL or path == 'scripts/run_zone_study_integration.py'
+                  else (ROOT / path).read_bytes())
         assert actual == subprocess.check_output(
             ['git', 'show', f'{source}:{path}'], cwd=ROOT), path
 

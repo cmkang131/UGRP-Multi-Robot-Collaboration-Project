@@ -31,7 +31,7 @@ def acquire(case,out,source,backend_factory):
     seed={'static':22000,'photo':22001,'speckle':22002}[case]
     cap=8. if case=='static' else 180.
     bundle=dict(source_sha=source,execution_bundle_id='egomap22-active-wall-map-v1',check='active-wall-map',case='active-'+case,
-        map_id='zone_wide_two_doors_final_v3',contact_profile='cargo_noslip_v1',
+        map_id='zone_wide_two_doors_final_v3',contact_profile='cargo_native_v1',
         task=dict(robot_id='r3',seed=seed,destination='B',pickup_slot='P1-2'),
         spawn=[3.25,.75,math.pi],initial_servo=SEARCH,case_cap_s=cap,capture_s=.2,
         options=dict(servo_stiffness='real_v1',wall_texture=('off' if case=='static' else case+'_v1'),

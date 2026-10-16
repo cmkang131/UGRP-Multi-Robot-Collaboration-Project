@@ -23,12 +23,22 @@ from scripts import evaluate_zone_pair_dev as ev
 from scripts.zone_pair_dev_runtime import endpoint, make_scene, queue_snapshot
 
 
+CURRENT_CONTACT_RECEIPT = copy.deepcopy(dev.profile_contract())
+
 def config():
     return json.loads(dev.PREREG.read_text())
 
+def current_config():
+    # Synthetic admission fixture only; historical evaluation fixtures keep config().
+    value = config()
+    value['contact_profile_contract'] = copy.deepcopy(CURRENT_CONTACT_RECEIPT)
+    return value
+
 
 def arguments(tmp_path, *extra):
-    return dev.parser().parse_args(['--run-id', 'dev03', '--output', str(tmp_path / 'new'), *extra])
+    prereg = tmp_path/'current-source-prereg.json'
+    prereg.write_text(json.dumps(current_config()))
+    return dev.parser().parse_args(['--prereg', str(prereg), '--run-id', 'dev03', '--output', str(tmp_path / 'new'), *extra])
 
 
 @pytest.mark.parametrize('run_id,seed', [('dev03', 901), ('dev04', 902)])
@@ -42,7 +52,10 @@ def test_prereg_admission(tmp_path, run_id, seed):
 
 @pytest.mark.parametrize('run_id', ['dev05', 'dev06'])
 def test_v3_draft_prepares_but_cannot_execute_before_startup_decision(tmp_path, run_id):
-    draft = dev.PREREG.with_name('prereg_v3_DRAFT.json')
+    value = json.loads(dev.PREREG.with_name('prereg_v3_DRAFT.json').read_text())
+    value['contact_profile_contract'] = copy.deepcopy(CURRENT_CONTACT_RECEIPT)
+    draft = tmp_path/'current-source-v3-prereg.json'
+    draft.write_text(json.dumps(value))
     args = arguments(tmp_path, '--prereg', str(draft), '--run-id', run_id)
     p, case = dev.load_config(args)
     assert p['supersedes']['sha256'] == dev.sha_file(dev.PREREG)
@@ -60,8 +73,10 @@ def test_v2_freezes_profile_hashes_and_recalculates_budgets():
     old = json.loads(dev.PREVIOUS_PREREG.read_text())
     assert dev.sha_file(dev.PREVIOUS_PREREG) == '85334a68bae0d35c197c612cd610c84307c0eba268a34247e71f4e233a0fe0f3'
     assert [r['id'] for r in old['runs']] == ['dev01', 'dev02']
-    receipt = dev.profile_contract()
-    assert receipt == p['contact_profile_contract']
+    receipt = p['contact_profile_contract']
+    current = dev.profile_contract()
+    assert {k:v for k,v in receipt.items() if k not in ('sha256', 'source_sha256')} == {
+        k:v for k,v in current.items() if k not in ('sha256', 'source_sha256')}
     assert receipt['sha256'] == dev.digest({k: v for k, v in receipt.items() if k != 'sha256'})
     assert receipt['timestep_s'] == .00025
     assert receipt['noslip_iterations'] == 10
@@ -226,7 +241,9 @@ from scripts.run_zone_pair_dev import main
 raise SystemExit(main(sys.argv[1:]))
 '''
     out = tmp_path / 'prepared'
-    result = subprocess.run([sys.executable, '-c', code, '--run-id', 'dev03', '--output', str(out)],
+    prereg = tmp_path/'current-source-prereg.json'
+    prereg.write_text(json.dumps(current_config()))
+    result = subprocess.run([sys.executable, '-c', code, '--prereg', str(prereg), '--run-id', 'dev03', '--output', str(out)],
                             cwd=dev.ROOT, capture_output=True, text=True)
     assert result.returncode == 0, result.stderr
     m = json.loads((out / 'manifest.json').read_text())
@@ -626,7 +643,7 @@ def test_review_p2_prereg_hash_enforced_before_scoring(tmp_path, monkeypatch, fa
 
 def test_review_p2_prepare_preserves_exact_prereg_bytes(tmp_path):
     prereg = tmp_path / 'compact-prereg.json'
-    prereg.write_text(json.dumps(config(), separators=(',', ':')))
+    prereg.write_text(json.dumps(current_config(), separators=(',', ':')))
     out = tmp_path / 'prepared'
     assert dev.main(['--prereg', str(prereg), '--run-id', 'dev03', '--output', str(out)]) == 0
     m = json.loads((out / 'manifest.json').read_text())

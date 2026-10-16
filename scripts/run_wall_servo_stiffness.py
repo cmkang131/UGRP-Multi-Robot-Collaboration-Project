@@ -51,7 +51,7 @@ def acquire_case(case,out,source,backend_factory,*,servo_stiffness='off'):
     cap=55. if static else 30. if exploration else 18.
     bundle=dict(source_sha=source,execution_bundle_id='egomap19-short-map-v1' if exploration else 'egomap19-servo-stiffness-v1',
         check='servo-stiffness',case=case,map_id='zone_wide_two_doors_final_v3',
-        contact_profile='cargo_noslip_v1',task=dict(robot_id='r3',seed=19101 if static else 19103 if exploration else spec['seed'],
+        contact_profile='cargo_native_v1',task=dict(robot_id='r3',seed=19101 if static else 19103 if exploration else spec['seed'],
         destination='B',pickup_slot='P1-2'),spawn=spec['spawn'],initial_servo=old.PULSES,
         options=dict(servo_stiffness=servo_stiffness,wall_texture='off' if static else 'tape_v1',
             drive_profile='masterpi_drive_friction_v7',camera_profile='camera_v3',

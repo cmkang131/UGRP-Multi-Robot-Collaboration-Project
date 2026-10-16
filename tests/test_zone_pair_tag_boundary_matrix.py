@@ -61,7 +61,7 @@ def host_fixture(monkeypatch, static):
     from sim import zone_own_scene_provider
     scene = NS(engine_layout='fixture', config={'static_map': static, 'setup_only': {'objects': {}, 'spawns': {}}},
                setup=lambda w: None, transform=lambda x: x)
-    world = NS(model=NS(opt=NS(noslip_iterations=10, timestep=.00025)), data=NS(time=0.),
+    world = NS(model=NS(opt=NS(noslip_iterations=10, timestep=.00025)), data=NS(time=0., eq_active=[]),
                robot=lambda rid: NS(servo_command_pulses=SEARCH_POSE), close=lambda: None)
     monkeypatch.setattr(zone_own_scene_provider, 'own_scene', lambda *a: scene)
     # Install fake physical dependencies before the host's lazy imports. This

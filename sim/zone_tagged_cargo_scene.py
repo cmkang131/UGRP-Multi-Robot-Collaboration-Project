@@ -19,7 +19,7 @@ from sim.zone_landmarks import TaggedZoneScene
 
 class TaggedCargoZoneScene(TaggedZoneScene):
     @classmethod
-    def from_tagged_cargo(cls, name, seed, *, cargo, goal, contact_profile='local_contact_fine', base_dir=ROOT):
+    def from_tagged_cargo(cls, name, seed, *, cargo, goal, contact_profile='cargo_native_v1', base_dir=ROOT):
         from sim.zone_cargo_contact import CARGO_PROFILES, base_profile
         cargo_profile = contact_profile if contact_profile in CARGO_PROFILES else None
         base = base_profile(contact_profile) if contact_profile is not None else None

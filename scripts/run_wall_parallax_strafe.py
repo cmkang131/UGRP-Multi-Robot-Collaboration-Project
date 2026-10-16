@@ -50,7 +50,7 @@ def acquire_case(case,out,source,backend_factory):
     from time import monotonic
     spec=CASES[case]
     bundle=dict(source_sha=source,execution_bundle_id='egomap15-strafe-v1',check='parallax-strafe',
-        map_id='zone_wide_two_doors_final_v3',contact_profile='cargo_noslip_v1',case=case,
+        map_id='zone_wide_two_doors_final_v3',contact_profile='cargo_native_v1',case=case,
         task=dict(robot_id='r3',seed=spec['seed'],destination='B',pickup_slot='P1-2'),
         options=dict(drive_profile='masterpi_drive_friction_v7',camera_profile='camera_v3',
             roller_collision='mesh',idle_robot_contacts='off',min_wheel_cmd='real_v1'),

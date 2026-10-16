@@ -32,7 +32,7 @@ def scene_contract():
     return value
 
 
-def profile_contract():
+def profile_contract(name='cargo_noslip_v1'):
     """Execute the unchanged base + cargo XML transforms to resolve options.
 
     The minimal named geoms satisfy the base transform's geometry contract.
@@ -42,7 +42,6 @@ def profile_contract():
     from sim.dispatch_contact_profile import contact_profile
     from sim.zone_cargo_contact import apply, base_profile, profile_record
 
-    name = 'cargo_noslip_v1'
     root = ET.Element('mujoco')
     ET.SubElement(root, 'option')
     world = ET.SubElement(root, 'worldbody')

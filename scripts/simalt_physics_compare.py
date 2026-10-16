@@ -38,7 +38,7 @@ def prepare(a):
     from sim.grasp_act_port import DutyActPort
     from scripts.run_grasp_act_teacher import apply
     plan = json.loads(a.plan.read_text())
-    world, scene = world_for(plan, False)
+    world, scene = world_for(plan, False, a.contact_profile)
     try:
         root = ET.fromstring(world.scene_xml)
         removed = set()
@@ -142,6 +142,8 @@ def run(a):
     import numpy as np
     import mujoco
     m = mujoco.MjModel.from_xml_path(str(a.fixture/'scene.xml'))
+    from sim.execution_contact_profile import configure_model, assert_model_profile
+    configure_model(m, a.contact_profile)
     fixture = np.load(a.fixture/'fixture.npz')
     meta = json.loads((a.fixture/'fixture.json').read_text())
     report = {'sha':a.sha,'engine':a.engine,'mujoco_version':mujoco.__version__,'nworld':a.nworld,
@@ -149,7 +151,8 @@ def run(a):
               'fixture_sha256':sha(a.fixture/'fixture.npz'),'xml_sha256':sha(a.fixture/'scene.xml'),
               'training':False,'renderer':'none; physics-only; state ring buffer for offline rendering',
               'status':'running','attempted':0,'completed':0,'failure':0,'HOST_ERROR':0,'cap_end':False,
-              'steps_accepted':0,'cases':[],'physics_overrides':{},'rejection_table':str(a.out/'rejection_table.json')}
+              'steps_accepted':0,'cases':[],'contact_profile':a.contact_profile,
+              'physics_overrides':{} if a.contact_profile in ('legacy_noslip10','cargo_noslip_v1','baseline_noslip10') else 'warp_native_contact_v1 options','rejection_table':str(a.out/'rejection_table.json')}
     if a.gcp2_v1:
         from simalt_host import gcp2_identity
         report['execution_host']=gcp2_identity()
@@ -157,8 +160,7 @@ def run(a):
     write(a.out/'result.json',report)
     states={}; recent=deque(maxlen=100)  # 10s x 10Hz evaluator recording, independent of training/control
     start=time.perf_counter()
-    if m.opt.noslip_iterations != 10 or np.any(m.eq_active0):
-        raise RuntimeError('noslip=10 and weld OFF required')
+    assert_model_profile(m, a.contact_profile)
     report['options']={k:float(getattr(m.opt,k)) for k in ('timestep','iterations','ls_iterations','noslip_iterations','noslip_tolerance','tolerance','integrator','cone','solver')}
     report['physics_hashes']={k:hashlib.sha256(getattr(m,k).tobytes()).hexdigest() for k in ('geom_friction','pair_friction','body_mass','body_inertia','geom_solref','geom_solimp')}
     rgb_recent=deque(maxlen=100)
@@ -188,14 +190,13 @@ def run(a):
         wm=mjw.put_model(m)
         report['warp_version']=wp.__version__
         report['backend_solver_tolerance']=float(wm.opt.tolerance.numpy().item())
-        if a.gcp2_v1:
+        if a.gcp2_v1 and a.contact_profile in ('legacy_noslip10', 'cargo_noslip_v1', 'baseline_noslip10'):
             # io.py:433-436 at pinned 57b4692 clamps to 1e-6 for float32.
             # Preserve the source scene's 1e-8, rather than silently relaxing it.
             wm.opt.tolerance.fill_(float(m.opt.tolerance))
             report['backend_solver_tolerance_before_preservation']=report['backend_solver_tolerance']
             report['backend_solver_tolerance']=float(wm.opt.tolerance.numpy().item())
-        if wm.opt.noslip_iterations != 10:
-            raise RuntimeError('noslip ignored')
+        assert_model_profile(wm, a.contact_profile)
         if a.batch_render_v1:
             rc=mjw.create_render_context(m,nworld=a.nworld,cam_res=(640,480),
                 render_rgb=True,render_depth=False,render_seg=False,
@@ -372,6 +373,8 @@ def main():
     p.add_argument('--gcp2-v1',action='store_true')
     p.add_argument('--unused-efm-v1',action='store_true',help='explicit inactive-workspace adapter opt-in for simalt3')
     p.add_argument('--batch-render-v1',action='store_true',help='default OFF: batched own RGB diagnostic including readback/fisheye')
+    from sim.execution_contact_profile import add_argument
+    add_argument(p, warp=True)
     a=p.parse_args()
     if a.gcp2_v1:
         from simalt_host import gcp2_identity

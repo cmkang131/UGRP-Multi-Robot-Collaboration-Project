@@ -26,7 +26,16 @@ import hashlib
 import json
 import xml.etree.ElementTree as ET
 
+from sim.execution_contact_profile import NATIVE_OPTIONS, CPU_DEFAULT, WARP_DEFAULT
+
 CARGO_PROFILES = {
+    name: {
+        'version': 1, 'base': 'local_contact_fine', 'option': dict(NATIVE_OPTIONS),
+        'scope': 'global solver options; weld OFF',
+        'evidence': 'experiments/2026-10-16-noslip-off; warpfit v1 pinned vendor',
+    } for name in (CPU_DEFAULT, WARP_DEFAULT)
+}
+CARGO_PROFILES.update({
     'cargo_noslip_v1': {
         'version': 1,
         'base': 'local_contact_fine',
@@ -34,7 +43,7 @@ CARGO_PROFILES = {
         'scope': 'global solver option (all contacts)',
         'evidence': 'experiments/2026-09-25-zone-cargo-catalogue (section: slip removal)',
     },
-}
+})
 
 
 def profile_record(name):

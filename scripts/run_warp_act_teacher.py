@@ -41,6 +41,8 @@ def parser():
     p.add_argument('--per-world-model-references-v1',type=Path,help='default OFF: XMLsha→exact C312 assets; preserve batchable per-world model fields')
     p.add_argument('--export-compiled-only',action='store_true')
     p.add_argument('--vm-hourly-usd',type=float,required=True)
+    from sim.execution_contact_profile import add_argument
+    add_argument(p, warp=True)
     return p
 
 
@@ -67,6 +69,9 @@ def main():
     source_sha=subprocess.check_output(['git','-C',str(ROOT),'rev-parse','HEAD'],text=True).strip()
     if subprocess.check_output(['git','-C',str(ROOT),'status','--porcelain','--untracked-files=no']):
         p.error('committed backend source required')
+    from warp_act_backend import CTransport, WarpTransport  # capture current contact policy before frozen imports
+    import sim
+    sim.__path__.insert(0, str(source/'sim'))
     sys.path.insert(0,str(source))
     import numpy as np
     import mujoco
@@ -81,7 +86,7 @@ def main():
     if any(p['kind'] not in ('cyan','red','green','yellow') or p['robot_id']!='r1' for p in world_plans):
         p.error('warp1 supports r1 solo boxes only')
     a.out.mkdir(parents=True,exist_ok=False)
-    report=dict(status='running',physics_backend=a.physics_backend,source_sha=source_sha,
+    report=dict(status='running',physics_backend=a.physics_backend,contact_profile=a.contact_profile,source_sha=source_sha,
         teacher_sha=TEACHER_SHA,host=host,nworld=a.nworld,seed=plan['seed'],
         world_seeds=[p['seed'] for p in world_plans],unique_seeds=len({p['seed'] for p in world_plans}),cap_s=a.cap_s,
         training_rgb=False,training_recording_supported=False,student_evaluation_supported=False,
@@ -90,7 +95,7 @@ def main():
         plan_sha256=hashlib.sha256(a.plan.read_bytes()).hexdigest(),mujoco=mujoco.__version__,
         hourly_usd=a.vm_hourly_usd,price_basis='user/inherited VM estimate; actual billing not measured')
     write(a.out/'summary.json',report)
-    hooks=(WarpTransport if a.physics_backend=='mjwarp_batch_v1' else CTransport)(host,source_sha,a.physics_backend,a.out)
+    hooks=(WarpTransport if a.physics_backend=='mjwarp_batch_v1' else CTransport)(host,source_sha,a.physics_backend,a.out,contact_profile=a.contact_profile)
     generators=[];contexts=[];active=np.ones(a.nworld,bool);reports={};ticks=np.zeros(a.nworld,int)
     start=time.perf_counter();loop_start=None
     try:

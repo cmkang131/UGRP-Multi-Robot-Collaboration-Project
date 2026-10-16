@@ -42,7 +42,7 @@ def pilot_command(output):
     return [sys.executable, '-m', 'scripts.evaluate_gemini_team', '--output', str(output),
             '--seed', '41', '--robots', '1', '--seconds', '300', '--model', 'gemini-3.8-flash',
             '--max-calls', '30', '--max-input-tokens', '60000', '--input-request-estimate', '6000',
-            '--impratio', '10', '--noslip-iterations', '3', '--communication', 'none',
+            '--impratio', '10', '--noslip-iterations', '0', '--communication', 'none',
             '--request-timeout', '30', '--max-transient-failures', '2', '--record']
 
 

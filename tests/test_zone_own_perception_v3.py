@@ -80,6 +80,8 @@ def test_v1_and_v2_files_keep_pins_or_explicit_pair_followup(path):
     digest = hashlib.sha256((ROOT/path).read_bytes()).hexdigest()
     # PR #240 adds opt-in pair target association; archived perception pins stay unchanged.
     followup = {'harness/zone_own_perception.py': '07f8cbf959555bd49f12b3f8a5f93ef14ee5bb559d9385e236d7e8ecd0d694ff'}
+    # nsoff v445 evaluator default; historical pin remains unchanged.
+    followup['scripts/eval_zone_own_perception_v2.py'] = 'ea0b60cc59345213377edbf555d896a1983b9772f260ce83c7610a63a9a3c64a'
     assert digest in {PINNED_SHA256[path], followup.get(path)}, path
 
 
