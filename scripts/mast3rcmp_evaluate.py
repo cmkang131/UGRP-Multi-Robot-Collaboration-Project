@@ -22,6 +22,8 @@ def align(x,y,fit_scale):
     x,y=np.asarray(x,float),np.asarray(y,float)
     if x.shape != y.shape or x.ndim!=2 or len(x)<3:
         raise ValueError('alignment_requires_3_corresponding_points')
+    if not np.isfinite(x).all() or not np.isfinite(y).all():
+        raise ValueError('nonfinite_trajectory')
     xc,yc=x-x.mean(0),y-y.mean(0)
     var=np.sum(xc*xc)
     if var==0:
@@ -30,6 +32,8 @@ def align(x,y,fit_scale):
     signs=np.ones(x.shape[1]); signs[-1]=np.linalg.det(u@vt)
     r=(u*signs)@vt
     scale=float(np.sum(s*signs)/var) if fit_scale else 1.
+    if scale<=0:
+        raise ValueError('nonpositive_alignment_scale')
     t=y.mean(0)-scale*(r@x.mean(0))
     errors=np.linalg.norm(scale*x@r.T+t-y,axis=1)
     return dict(rmse_m=float(np.sqrt(np.mean(errors**2))),median_m=float(np.median(errors)),

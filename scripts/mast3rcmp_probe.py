@@ -36,6 +36,9 @@ class Probe:
     def end(self,frame,status,keyframes,K):
         torch.cuda.synchronize()
         ok=status in ('initialized','tracked','relocalized')
+        if ok and not torch.isfinite(frame.T_WC.data).all().item():
+            status='nonfinite_pose'
+            ok=False
         # Keep Sim(3) scale as well as rotation/translation for final graph warp.
         pose=frame.T_WC.data.detach().cpu().numpy().reshape(-1).tolist() if ok else None
         ref=len(keyframes)-1

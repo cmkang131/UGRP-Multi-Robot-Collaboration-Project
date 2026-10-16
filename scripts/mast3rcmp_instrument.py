@@ -28,12 +28,14 @@ def instrument(src, output):
          '            states.set_frame(frame)\n            probe.end(frame, "initialized", keyframes, K)\n            i += 1'),
         ('            add_new_kf, match_info, try_reloc = tracker.track(frame)',
          '            add_new_kf, match_info, try_reloc = tracker.track(frame)\n'
-         '            probe.end(frame, "tracking_failed" if try_reloc else "tracked", keyframes, K)'),
+         '            probe_status = "tracking_failed" if try_reloc else "tracked"'),
         ('        elif mode == Mode.RELOC:',
          '        elif mode == Mode.RELOC:\n            add_new_kf = False'),
         ('        else:\n            raise Exception("Invalid mode")',
-         '            probe.end(states.get_frame(), "relocalized" if states.get_mode() == Mode.TRACKING else "relocalization_failed", keyframes, K)\n'
+         '            probe_status = "relocalized" if states.get_mode() == Mode.TRACKING else "relocalization_failed"\n'
          '        else:\n            raise Exception("Invalid mode")'),
+        ('        # log time',
+         '        probe.end(frame, probe_status, keyframes, K)\n        # log time'),
         ('    if dataset.save_results:\n        save_dir, seq_name = eval.prepare_savedir(args, dataset)\n        eval.save_traj',
          '    probe.finish(keyframes)\n    if False:  # dense output is in the probe; no GUI/reconstruction exports\n        save_dir, seq_name = eval.prepare_savedir(args, dataset)\n        eval.save_traj'),
     ]
