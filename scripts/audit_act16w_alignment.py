@@ -8,6 +8,7 @@ import argparse
 import json
 import math
 from pathlib import Path
+import subprocess
 import sys
 
 from act16w_runtime import frozen_source, require_gcp2, sha256
@@ -49,7 +50,9 @@ def main():
         raise ValueError('qualified solo BOX west geometry only')
     scene = json.loads((root / 'scene.json').read_text())
     target = scene['box_replicas'][plan['item_id']]['body_name']
-    model = mujoco.MjModel.from_xml_path(str(root / 'scene.xml'))
+    # Qualified scene XML uses paths relative to its source checkout. The
+    # caller runs in that same qualified cwd, as the original Owner does.
+    model = mujoco.MjModel.from_xml_string((root / 'scene.xml').read_text())
     data = mujoco.MjData(model)
     base_id = model.body(plan['robot_id'] + '__robot').id
     target_id = model.body(target).id
@@ -57,7 +60,9 @@ def main():
         ticks, qpos = archive['ticks'].copy(), archive['qpos'].copy()
     if qpos.shape != (len(ticks), model.nq):
         raise ValueError('saved MJWarp qpos/model dimensions differ')
-    actions = [json.loads(line) for line in args.actions.read_text().splitlines() if line.strip()]
+    action_text = (subprocess.check_output(['zstd', '-dc', str(args.actions)], text=True)
+                   if args.actions.suffix == '.zst' else args.actions.read_text())
+    actions = [json.loads(line) for line in action_text.splitlines() if line.strip()]
     if args.action_format == 'student':
         # State tick k is after actor action k-1; initial tick0 has not acted.
         grasp_ticks = {i + 1 for i, row in enumerate(actions)
