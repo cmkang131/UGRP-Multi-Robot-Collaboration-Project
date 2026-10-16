@@ -22,6 +22,13 @@ step0 확인 후, 같은 사전 고정40개87220–87259를 r2로 제출했다.
 원시 평가 시퀀스로 Score40개를 독립 재계산했고8254개 원본 파일 SHA가 일치했다
 ([독립 관문](native-gate-independent.json), [실행 요약](native-gate-summary.json),
 [실제 관문표](native-gate-rejection_table.json)). 기준값·score 모듈·원본은 바꾸지 않았다.
+정식 `--teacher-gate-queue` 없이 실행돼 원본 `gate_eligible=false`40/40이다.
+[조정자 재계수 메모](coordinator-native-gate-recount.md)는 이를 명시하는 조건으로 측정 관문을 인정했다.
+이는 소급 admission이나 원본 flag 변경이 아니다. 장면 메타의 `cargo_noslip_v1(10)`은 적용 전
+빌더 표기이고 그룹별 `native-contact.json`의 실제 CPU/GPU noslip은0이다.
+관문·기록80세계에 보정 sidecar와 배치별 메모 총82개를 추가했고, 대상 원본253개 파일의
+전후 해시가 일치했다([보정 기록](native-provenance-annotations.json)). 첫 native 교사 관문은
+보고 class를 milestone로 주석했으며 원본 class/dev·branch/controller SHA를 보존했다.
 대표성공87244의 전체0–41SIM초2Hz·마지막31.1–41.0초10Hz를 직접 검토했다
 ([타임라인](native-teacher-playback-review.json)). 학생 성공으로 세지 않는다.
 
