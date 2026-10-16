@@ -1,56 +1,584 @@
 {
-  "status": "TWO_NATIVE_PILOTS_APPROVED_FRESH40_PENDING",
+  "status": "FRESH40_NATIVE_AUDIT_IN_PROGRESS",
+  "observed_utc": "2026-10-16T11:07:17.412685+00:00",
+  "N_requested": 40,
+  "bootstrap": {
+    "n": 40,
+    "N": 40,
+    "independent": false,
+    "reason": "8317100-8317139 overlap warp1 debug; separate camera-off bootstrap, never pooled"
+  },
   "funnel": [
     {
-      "gate": "upstream_camera_off",
-      "entered": 40,
+      "gate": "prepared_reference_candidates",
+      "passed": 50,
+      "rejected": 0
+    },
+    {
+      "gate": "predeclared_budget_model_subset",
+      "passed": 40,
+      "rejected": 10
+    },
+    {
+      "gate": "started",
       "passed": 40,
       "rejected": 0,
-      "independent": false
+      "pending": 0
     },
     {
-      "gate": "native_pilots_complete",
-      "entered": 2,
-      "passed": 2,
-      "rejected": 0
-    },
-    {
-      "gate": "native_frame_target_clock_input_camera_audit",
-      "entered": 873,
-      "passed": 873,
-      "rejected": 0
-    },
-    {
-      "gate": "pilot_physical_success_and_command_complete",
-      "entered": 2,
-      "passed": 2,
-      "rejected": 0
-    },
-    {
-      "gate": "pilot_visual_review",
-      "entered": 2,
-      "passed": 2,
-      "rejected": 0
-    },
-    {
-      "gate": "fresh_recording_confirmation",
-      "entered": 40,
-      "completed": 2,
-      "passed": 2,
+      "gate": "terminal_records",
+      "passed": 12,
       "rejected": 0,
-      "pending": 38
+      "unfinished": 28
+    },
+    {
+      "gate": "provisional_physical_and_command_success",
+      "passed": 12,
+      "rejected": 0
+    },
+    {
+      "gate": "native_capture_audited_success",
+      "passed": 11,
+      "rejected": 0,
+      "pending_native_audit": 1
     }
   ],
   "rejections": [
     {
-      "category": "seed_overlap",
-      "count": 40,
-      "reason": "upstream bootstrap overlaps warp1 debug; not independent",
-      "blocking_object": "not_applicable_seed_provenance",
+      "category": "predeclared_budget_model_subset",
+      "count": 10,
+      "reason": "Budget/compatibility only: retain the ongoing two-pilot group and the largest three other exact-model groups. Frozen before any pilot outcome or student training. Red representation is smaller; report cohort scope, no pooling with the50-candidate plan.",
+      "blocking_object": "not_applicable_compute_admission",
       "minimum_gap_m": null,
       "minimum_gap_status": "not_applicable_non_geometric"
     }
   ],
-  "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-pilot-{86821,86822}",
-  "reproduce": "scripts/audit_act16w_record.py --help; API036 make_playback.py; native-pilot-check.json files remain immutable"
+  "rows": [
+    {
+      "seed": 86820,
+      "status": "running",
+      "SIM_s": 40.300000000000004,
+      "native_audit": false,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-00",
+      "world": 0
+    },
+    {
+      "seed": 86821,
+      "status": "success",
+      "SIM_s": 44.800000000000004,
+      "native_audit": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-pilot-86821",
+      "world": 0,
+      "physical_success": true,
+      "command_complete": true,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 139,
+        "blocked_held": 186,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 83,
+          "align": 30,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "original_result_sha256": "1237a17d8d9f36c9790555bb4ca8bf722bca71f4d70405965f5e229f925b91db"
+    },
+    {
+      "seed": 86822,
+      "status": "success",
+      "SIM_s": 42.300000000000004,
+      "native_audit": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-pilot-86822",
+      "world": 0,
+      "physical_success": true,
+      "command_complete": true,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 139,
+        "blocked_held": 185,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 61,
+          "align": 28,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "original_result_sha256": "8ab264266688dd0d794ce66f3c3f8f19a786d323b92f5d059df6dd5e8f22225a"
+    },
+    {
+      "seed": 86823,
+      "status": "running",
+      "SIM_s": 13.0,
+      "native_audit": false,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-02",
+      "world": 0
+    },
+    {
+      "seed": 86824,
+      "status": "running",
+      "SIM_s": 16.3,
+      "native_audit": false,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-01",
+      "world": 0
+    },
+    {
+      "seed": 86825,
+      "status": "success",
+      "SIM_s": 45.300000000000004,
+      "native_audit": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-03",
+      "world": 0,
+      "physical_success": true,
+      "command_complete": true,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 139,
+        "blocked_held": 187,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 99,
+          "align": 18,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "original_result_sha256": "e8b5d82bcc2cbb668803d1f0a3383f3549016647f670194a123c329d225f9a67"
+    },
+    {
+      "seed": 86826,
+      "status": "running",
+      "SIM_s": 40.300000000000004,
+      "native_audit": false,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-00",
+      "world": 1
+    },
+    {
+      "seed": 86827,
+      "status": "running",
+      "SIM_s": 13.0,
+      "native_audit": false,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-02",
+      "world": 1
+    },
+    {
+      "seed": 86828,
+      "status": "success",
+      "SIM_s": 42.800000000000004,
+      "native_audit": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-03",
+      "world": 1,
+      "physical_success": true,
+      "command_complete": true,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 139,
+        "blocked_held": 185,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 76,
+          "align": 18,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "original_result_sha256": "0f58dc836e3690d1f03a6479067865ec711de8819cfa048de167054fea1948e4"
+    },
+    {
+      "seed": 86830,
+      "status": "running",
+      "SIM_s": 40.300000000000004,
+      "native_audit": false,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-00",
+      "world": 2
+    },
+    {
+      "seed": 86831,
+      "status": "running",
+      "SIM_s": 13.0,
+      "native_audit": false,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-02",
+      "world": 2
+    },
+    {
+      "seed": 86832,
+      "status": "success",
+      "SIM_s": 45.900000000000006,
+      "native_audit": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-03",
+      "world": 2,
+      "physical_success": true,
+      "command_complete": true,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 188,
+        "blocked_held": 184,
+        "measurements_by_phase": {
+          "approach": 59,
+          "align": 25,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "original_result_sha256": "a2495f6833630753f4ffb1d3b39299ab6032652bcfe08ff15ea8f95f39c53d9b"
+    },
+    {
+      "seed": 86834,
+      "status": "running",
+      "SIM_s": 40.300000000000004,
+      "native_audit": false,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-00",
+      "world": 3
+    },
+    {
+      "seed": 86835,
+      "status": "running",
+      "SIM_s": 13.0,
+      "native_audit": false,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-02",
+      "world": 3
+    },
+    {
+      "seed": 86836,
+      "status": "success",
+      "SIM_s": 42.7,
+      "native_audit": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-03",
+      "world": 3,
+      "physical_success": true,
+      "command_complete": true,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 139,
+        "blocked_held": 186,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 73,
+          "align": 19,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "original_result_sha256": "db6945e723df52b3ed3a896e0f0e308fc48730a9872a8f9ba5b96d03d6205a0b"
+    },
+    {
+      "seed": 86838,
+      "status": "running",
+      "SIM_s": 40.300000000000004,
+      "native_audit": false,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-00",
+      "world": 4
+    },
+    {
+      "seed": 86839,
+      "status": "running",
+      "SIM_s": 13.0,
+      "native_audit": false,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-02",
+      "world": 4
+    },
+    {
+      "seed": 86842,
+      "status": "running",
+      "SIM_s": 40.300000000000004,
+      "native_audit": false,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-00",
+      "world": 5
+    },
+    {
+      "seed": 86843,
+      "status": "running",
+      "SIM_s": 13.0,
+      "native_audit": false,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-02",
+      "world": 5
+    },
+    {
+      "seed": 86846,
+      "status": "running",
+      "SIM_s": 40.300000000000004,
+      "native_audit": false,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-00",
+      "world": 6
+    },
+    {
+      "seed": 86847,
+      "status": "running",
+      "SIM_s": 13.0,
+      "native_audit": false,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-02",
+      "world": 6
+    },
+    {
+      "seed": 86849,
+      "status": "running",
+      "SIM_s": 16.3,
+      "native_audit": false,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-01",
+      "world": 1
+    },
+    {
+      "seed": 86850,
+      "status": "running",
+      "SIM_s": 40.300000000000004,
+      "native_audit": false,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-00",
+      "world": 7
+    },
+    {
+      "seed": 86851,
+      "status": "running",
+      "SIM_s": 13.0,
+      "native_audit": false,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-02",
+      "world": 7
+    },
+    {
+      "seed": 86852,
+      "status": "running",
+      "SIM_s": 16.3,
+      "native_audit": false,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-01",
+      "world": 2
+    },
+    {
+      "seed": 86853,
+      "status": "running",
+      "SIM_s": 16.3,
+      "native_audit": false,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-01",
+      "world": 3
+    },
+    {
+      "seed": 86854,
+      "status": "running",
+      "SIM_s": 40.300000000000004,
+      "native_audit": false,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-00",
+      "world": 8
+    },
+    {
+      "seed": 86855,
+      "status": "running",
+      "SIM_s": 13.0,
+      "native_audit": false,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-02",
+      "world": 8
+    },
+    {
+      "seed": 86856,
+      "status": "running",
+      "SIM_s": 40.300000000000004,
+      "native_audit": false,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-00",
+      "world": 9
+    },
+    {
+      "seed": 86858,
+      "status": "success",
+      "SIM_s": 39.800000000000004,
+      "native_audit": false,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-00",
+      "world": 10,
+      "physical_success": true,
+      "command_complete": true,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 140,
+        "blocked_held": 184,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 38,
+          "align": 26,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "original_result_sha256": "b228ec396626fc75c6eaac7f08141f12aba3fcfe5ad3ea218f597c84c1fd06a0"
+    },
+    {
+      "seed": 86859,
+      "status": "running",
+      "SIM_s": 13.0,
+      "native_audit": false,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-02",
+      "world": 9
+    },
+    {
+      "seed": 86860,
+      "status": "success",
+      "SIM_s": 41.0,
+      "native_audit": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-03",
+      "world": 4,
+      "physical_success": true,
+      "command_complete": true,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 141,
+        "blocked_held": 185,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 55,
+          "align": 20,
+          "hover": 3
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "original_result_sha256": "6bf3447097b73f6a365f1b5a4f6fa0a1cf7cd782c4b64c612e9c4c2bc81f1e1f"
+    },
+    {
+      "seed": 86862,
+      "status": "running",
+      "SIM_s": 40.300000000000004,
+      "native_audit": false,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-00",
+      "world": 11
+    },
+    {
+      "seed": 86863,
+      "status": "running",
+      "SIM_s": 13.0,
+      "native_audit": false,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-02",
+      "world": 10
+    },
+    {
+      "seed": 86864,
+      "status": "success",
+      "SIM_s": 43.2,
+      "native_audit": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-03",
+      "world": 5,
+      "physical_success": true,
+      "command_complete": true,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 140,
+        "blocked_held": 187,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 74,
+          "align": 21,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "original_result_sha256": "a0d708dc9d4b76db1060258f528078ff736b29e9fd89186d66df3e36f2b78889"
+    },
+    {
+      "seed": 86865,
+      "status": "success",
+      "SIM_s": 44.0,
+      "native_audit": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-03",
+      "world": 6,
+      "physical_success": true,
+      "command_complete": true,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 141,
+        "blocked_held": 185,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 81,
+          "align": 24,
+          "hover": 3
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "original_result_sha256": "67bf151aa6a0b8b317fabe9b51a753f7ffd0c2469f8e70a32573deb552ab0018"
+    },
+    {
+      "seed": 86866,
+      "status": "running",
+      "SIM_s": 40.300000000000004,
+      "native_audit": false,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-00",
+      "world": 12
+    },
+    {
+      "seed": 86867,
+      "status": "running",
+      "SIM_s": 13.0,
+      "native_audit": false,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-02",
+      "world": 11
+    },
+    {
+      "seed": 86868,
+      "status": "success",
+      "SIM_s": 44.900000000000006,
+      "native_audit": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-03",
+      "world": 7,
+      "physical_success": true,
+      "command_complete": true,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 139,
+        "blocked_held": 184,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 88,
+          "align": 28,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "original_result_sha256": "7f9651f01313e07bb05e3e9a5706e72bfc884aa63c51889f49548607b97679df"
+    },
+    {
+      "seed": 86869,
+      "status": "success",
+      "SIM_s": 43.300000000000004,
+      "native_audit": true,
+      "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2/group-03",
+      "world": 8,
+      "physical_success": true,
+      "command_complete": true,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 140,
+        "blocked_held": 185,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 74,
+          "align": 25,
+          "hover": 3
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "original_result_sha256": "9903d7438ebe71a3533797c6fee97b9289b97482f7dad3d1161d0982efc1f9fd"
+    }
+  ],
+  "raw": "/home/ugrp/ugrp-sim/runs/act16w-resume2-data-r2",
+  "native_audit_stage1": "strict-audits-stage1.json",
+  "reproduce": "python3 /home/ugrp/ugrp-sim/src/24751a1ebeb6ce2e7268017b5ff388244daf254b/experiments/2026-10-16-act16w/resume2/summarize_records.py",
+  "final": false
 }
