@@ -1,0 +1,82 @@
+{
+  "source_sha": "3968d416f13d320a151d7c523b15c042c6d82dab",
+  "checked_utc": "2026-10-16T03:44:50.249321+00:00",
+  "config": {
+    "upstream": "openrouter_v1",
+    "endpoint": "https://openrouter.ai/api/v1/chat/completions",
+    "model": "google/gemma-4-31b-it",
+    "provider_order": [
+      "CoreWeave"
+    ],
+    "profile": "coreweave_fp4_v1",
+    "provider": "CoreWeave",
+    "quantization": "fp4",
+    "quantizations": [
+      "fp4"
+    ],
+    "tag": "coreweave/fp4",
+    "allow_fallbacks": false,
+    "dropped_fields": [
+      "reasoning_effort"
+    ],
+    "usage_include": true,
+    "max_attempts": 3,
+    "retry_statuses": [
+      429,
+      500,
+      502,
+      503,
+      504
+    ],
+    "retry_delay_s": 1.0,
+    "key_location": "macOS Keychain: ugrp-openrouter"
+  },
+  "method": "3 sequential chat POSTs; no retries; same own-RGB as #552; generation GETs for receipts",
+  "calls": 3,
+  "http_200": 3,
+  "coreweave": 3,
+  "valid_json_act": 3,
+  "rate_limits": 0,
+  "median_wall_s": 1.52712166600395,
+  "usage_cost_usd": 0.0013634,
+  "source_requests": "/Users/changmin/projects/ugrp-wt/e2e18-planner/outputs/task-planner-ling-vl-main-20261013/off-calls.jsonl",
+  "source_requests_sha256": "e9d4fa6688936f52d86c1aa726c9e2cda15d1662b8b7eaa3265577bacc44d4bc",
+  "image_source": "/Users/changmin/projects/ugrp-wt/e2e18-planner/outputs/task-planner-ling-vl-image/r80-r1-00000.jpg",
+  "image_sha256": "15673f61873991c84cfe449747efa858b4986e36d8f48c5874f483574ec0cfc3",
+  "image_bytes": 13858,
+  "raw_dir": "/Users/changmin/projects/ugrp-wt/plannerswap/outputs/plannerswap-smoke-20261016-b",
+  "simulation_runs": 0,
+  "todo": "Coordinator: next E2E first 30 SIM s: format errors, latency, 429, cache ratio, image delivery",
+  "local_tests": {
+    "files": [
+      "tests/test_openrouter_upstream.py",
+      "tests/test_model_endpoint_watch.py",
+      "tests/test_s4_live_stage.py"
+    ],
+    "first_two": "23 passed in 1.88s",
+    "third": "...........                                                              [100%]\n11 passed in 0.95s"
+  },
+  "preflight_failure": {
+    "source_sha": "fc2198ada",
+    "chat_posts": 0,
+    "reason": "stored request has system/input, not messages; fixed before POST; original endpoint metadata only",
+    "raw_dir": "/Users/changmin/projects/ugrp-wt/plannerswap/outputs/plannerswap-smoke-20261016",
+    "blocking_object": "not_applicable_api",
+    "minimum_gap": "not_measured_not_applicable_api"
+  },
+  "quantization_verification": {
+    "requested": [
+      "fp4"
+    ],
+    "catalog_tag": "coreweave/fp4",
+    "catalog_quantization": "fp4",
+    "response_provider": "CoreWeave (3/3)",
+    "response_header_or_usage_quantization": "not_exposed",
+    "generation_GET": "404 on immediate and later lookup (all 3); no extra chat POSTs",
+    "scope": "fp4 inferred from enforced OpenRouter filter plus current endpoint catalog; not an independent backend measurement"
+  },
+  "cache_tokens": 448,
+  "prompt_tokens_total": 13056,
+  "cache_token_ratio": 0.03431372549019608,
+  "first_30_sim_s_check": "TODO coordinator next E2E; format errors, response time, 429, cache ratio, image delivery"
+}
